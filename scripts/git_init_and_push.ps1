@@ -252,9 +252,16 @@ Ask-Continue "Continuar con el commit inicial?"
 # Commit
 # ---------------------------------------------------------------
 Write-Section "git commit"
-git commit -m "$InitialCommitMessage"
-if ($LASTEXITCODE -ne 0) {
-  Write-Host "git commit devolvio codigo no-cero. Abortando." -ForegroundColor Red
+# 'git commit' escribe '[main abc123] message' a stderr en exito. Mismo patron
+# que fetch/pull/push: scope local con Continue para absorber el ruido.
+$commitExitCode = 0
+& {
+  $ErrorActionPreference = "Continue"
+  git commit -m "$InitialCommitMessage" 2>&1
+  $commitExitCode = $LASTEXITCODE
+}
+if ($commitExitCode -ne 0) {
+  Write-Host "ERROR: git commit devolvio codigo no-cero ($commitExitCode). Abortando." -ForegroundColor Red
   exit 1
 }
 
@@ -323,7 +330,15 @@ Ask-Continue "Proceder con 'git push -u origin main'?"
 # Fetch + rebase si el remoto ya tenia commits
 # ---------------------------------------------------------------
 Write-Section "Fetch + rebase si hay divergencia"
-git fetch origin 2>&1 | Out-Null
+# 'git fetch' emite progreso a stderr ("From <url>", "* branch"); con
+# $ErrorActionPreference = "Stop" eso se convierte en NativeCommandError
+# aunque exit code sea 0. Scope local con Continue para absorber el ruido.
+$fetchExitCode = 0
+& {
+  $ErrorActionPreference = "Continue"
+  git fetch origin 2>&1 | Out-Null
+  $fetchExitCode = $LASTEXITCODE
+}
 # 'git rev-parse --verify <ref>' sale != 0 si la ref no existe; con
 # $ErrorActionPreference=Stop eso seria NativeCommandError. Envoltorio try/catch.
 $remoteMain = $null
@@ -336,8 +351,14 @@ try {
 } catch { }
 if ($remoteMain -and $localMain -and ($remoteMain -ne $localMain)) {
   Write-Host "El remoto tiene commits previos (p.ej. README desde la UI). Rebase sobre origin/main..." -ForegroundColor Yellow
-  git pull --rebase origin main 2>&1
-  if ($LASTEXITCODE -ne 0) {
+  # Mismo patron para 'git pull --rebase' (progreso y conflictos van a stderr).
+  $rebaseExitCode = 0
+  & {
+    $ErrorActionPreference = "Continue"
+    git pull --rebase origin main 2>&1
+    $rebaseExitCode = $LASTEXITCODE
+  }
+  if ($rebaseExitCode -ne 0) {
     Write-Host "ERROR: conflictos durante rebase. Resolver manualmente:" -ForegroundColor Red
     Write-Host "  git status" -ForegroundColor Yellow
     Write-Host "  ... editar archivos ..."
@@ -352,9 +373,18 @@ if ($remoteMain -and $localMain -and ($remoteMain -ne $localMain)) {
 # Push
 # ---------------------------------------------------------------
 Write-Section "git push -u origin main"
-git push -u origin main 2>&1
-if ($LASTEXITCODE -ne 0) {
-  Write-Host "ERROR: git push fallo. Revisa branch protection o credenciales." -ForegroundColor Red
+# 'git push' emite mensajes informativos a stderr (e.g. "To <URL>",
+# "branch 'main' set up..."). Con $ErrorActionPreference = "Stop" eso se
+# convierte en NativeCommandError aunque exit code sea 0. Scope local con
+# Continue para absorber el ruido y capturamos $LASTEXITCODE.
+$pushExitCode = 0
+& {
+  $ErrorActionPreference = "Continue"
+  git push -u origin main 2>&1
+  $pushExitCode = $LASTEXITCODE
+}
+if ($pushExitCode -ne 0) {
+  Write-Host "ERROR: git push fallo (exit $pushExitCode). Revisa branch protection o credenciales." -ForegroundColor Red
   exit 1
 }
 
