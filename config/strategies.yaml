@@ -1,0 +1,135 @@
+# ===========================================================
+# config/strategies.yaml
+# Estrategias configurables. Por defecto todas en "research" o
+# "disabled". NUNCA arranca en "live".
+# ===========================================================
+
+strategies:
+
+  trend_pullback_scalping:
+    enabled: false
+    state: "research"                 # disabled | research | paper | live_candidate | live
+    description: >
+      Entrada en dirección de tendencia de corto plazo esperando
+      un pullback a un nivel dinámico (EMA rápida o VWAP).
+    timeframes: ["5m", "15m"]
+    indicators:
+      - "ema_fast"
+      - "ema_slow"
+      - "vwap"
+      - "rsi"
+      - "atr"
+    entry:
+      trend_filter: "ema_fast > ema_slow"
+      pullback_condition: "close near vwap_band"
+      confirmation: "rsi_cross_50"
+    exit:
+      stop_loss_atr_multiplier: 1.5
+      take_profit_atr_multiplier: 2.0
+      trailing_stop_atr_multiplier: 1.0
+    filters:
+      min_volume_24h_usdt: 5_000_000
+      max_spread_bps: 30
+    notes: "Requiere walk-forward mínimo 3 meses antes de paper."
+
+  range_reversion_scalping:
+    enabled: false
+    state: "research"
+    description: >
+      Compra en soporte / vende en resistencia en rango lateral
+      (Bollinger Bands + RSI extremos).
+    timeframes: ["1m", "3m", "5m"]
+    indicators:
+      - "bollinger"
+      - "rsi"
+      - "atr"
+      - "vwap"
+    entry:
+      band_touch: "lower_band / upper_band"
+      rsi_extreme: "rsi <= 30 / rsi >= 70"
+      confirmation: "rejection candle"
+    exit:
+      stop_loss_atr_multiplier: 1.2
+      take_profit_atr_multiplier: 1.5
+      trailing_stop: false
+    filters:
+      min_volume_24h_usdt: 3_000_000
+      max_spread_bps: 40
+
+  breakout_volume_scalping:
+    enabled: false
+    state: "research"
+    description: >
+      Entrada por ruptura de rango con confirmación de volumen
+      relativo alto.
+    timeframes: ["3m", "5m", "15m"]
+    indicators:
+      - "bollinger"
+      - "volume_relative"
+      - "atr"
+      - "momentum"
+    entry:
+      breakout: "close > donchian_high_20"
+      volume_filter: "volume_relative >= 1.8"
+    exit:
+      stop_loss_atr_multiplier: 1.5
+      take_profit_atr_multiplier: 2.5
+      trailing_stop_atr_multiplier: 1.5
+    filters:
+      min_volume_24h_usdt: 8_000_000
+      max_spread_bps: 25
+
+  vwap_reclaim_scalping:
+    enabled: false
+    state: "research"
+    description: >
+      Entrada cuando el precio recupera VWAP después de偏离-
+      en contra de la tendencia micro.
+    timeframes: ["1m", "5m"]
+    indicators:
+      - "vwap"
+      - "ema_fast"
+      - "atr"
+      - "spread"
+    entry:
+      reclaim: "close crosses above vwap"
+      trend_filter: "vwap slope > 0"
+    exit:
+      stop_loss_atr_multiplier: 1.2
+      take_profit_atr_multiplier: 1.5
+      trailing_stop: false
+    filters:
+      min_volume_24h_usdt: 4_000_000
+      max_spread_bps: 30
+
+  momentum_microtrend_scalping:
+    enabled: false
+    state: "disabled"
+    description: >
+      Sigue micro-tendencia en timeframe corto con momentum y
+      confirmation de order book imbalance (si está disponible).
+    timeframes: ["1m"]
+    indicators:
+      - "ema_fast"
+      - "momentum"
+      - "order_book_imbalance"
+      - "atr"
+    entry:
+      momentum_filter: "momentum > threshold"
+      imbalance_min: 0.15
+    exit:
+      stop_loss_atr_multiplier: 1.0
+      take_profit_atr_multiplier: 1.3
+      trailing_stop_atr_multiplier: 0.8
+    filters:
+      min_volume_24h_usdt: 10_000_000
+      max_spread_bps: 20
+    notes: "Requiere order book feed activo. Desactivada de inicio."
+
+# Estado global del sistema de estrategias.
+global:
+  # Ninguna estrategia puede saltar de "research" a "live".
+  # Siempre pasar por paper → live_candidate → live.
+  required_progression: ["research", "paper", "live_candidate", "live"]
+  require_walk_forward_validation: true
+  require_min_trades_for_promotion: 200

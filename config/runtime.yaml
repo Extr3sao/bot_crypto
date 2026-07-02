@@ -1,0 +1,71 @@
+# ===========================================================
+# config/runtime.yaml
+# Configuración de runtime (modo, scheduler, paths, feature flags).
+# ===========================================================
+
+runtime:
+  # Modo actual. Valores válidos:
+  # research | backtest | paper | shadow-live | live
+  # Por defecto SIEMPRE "paper". Se puede sobreescribir con env var TRADING_MODE.
+  mode: "paper"
+
+  # Live trading — siempre desactivado por defecto.
+  live_trading_enabled: false
+  require_manual_confirmation_for_live: true
+
+  # Scheduler.
+  scheduler:
+    timezone: "UTC"
+    # Ventana activa (formato HH:MM). Por defecto 24h.
+    active_hours:
+      start: "00:00"
+      end: "23:59"
+    # Cadencia del scanner principal (segundos).
+    scanner_interval_seconds: 30
+    # Cadencia de revisión de órdenes pendientes (segundos).
+    orders_poll_interval_seconds: 10
+    # Heartbeat de salud (segundos).
+    health_interval_seconds: 60
+
+  # Persistencia.
+  storage:
+    database_url: "sqlite:///data/storage/bot.db"
+    enable_signal_archive: true
+    enable_order_archive: true
+    enable_decision_archive: true
+
+  # Logs.
+  logging:
+    level: "INFO"
+    format: "json"          # json | text
+    to_file: true
+    file_path: "logs/app.log"
+    rotation: "10 MB"
+    retention: 30            # días
+
+  # Reportes.
+  reports:
+    output_dir: "reports"
+    daily_summary: true
+    backtest_report: true
+    paper_report: true
+
+  # Métricas (placeholder para Fase 8).
+  metrics:
+    enabled: false
+    prometheus_port: 9090
+
+  # Paths.
+  paths:
+    config_dir: "config"
+    data_dir: "data"
+    logs_dir: "logs"
+    reports_dir: "reports"
+    evals_dir: "evals"
+
+  # Feature flags.
+  features:
+    enable_telegram_alerts: false
+    enable_dashboard: false
+    enable_walk_forward: true
+    enable_paper_trading: true

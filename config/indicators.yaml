@@ -1,0 +1,103 @@
+# ===========================================================
+# config/indicators.yaml
+# Catálogo enchufable de indicadores. Activar/desactivar sin
+# tocar código. Los indicadores NO deben estar acoplados a una
+# única estrategia.
+# ===========================================================
+
+indicators:
+
+  ema_fast:
+    type: "ema"
+    enabled: true
+    params:
+      period: 9
+    description: "EMA rápida (default 9). Configurable por estrategia."
+
+  ema_slow:
+    type: "ema"
+    enabled: true
+    params:
+      period: 21
+    description: "EMA lenta (default 21)."
+
+  ema_50:
+    type: "ema"
+    enabled: true
+    params:
+      period: 50
+    description: "EMA de medio plazo."
+
+  rsi:
+    type: "rsi"
+    enabled: true
+    params:
+      period: 14
+    description: "Índice de fuerza relativa."
+
+  macd:
+    type: "macd"
+    enabled: true
+    params:
+      fast: 12
+      slow: 26
+      signal: 9
+
+  atr:
+    type: "atr"
+    enabled: true
+    params:
+      period: 14
+
+  bollinger:
+    type: "bollinger"
+    enabled: true
+    params:
+      period: 20
+      std_dev: 2.0
+
+  vwap:
+    type: "vwap"
+    enabled: true
+    params:
+      anchor: "session"     # session | rolling
+      rolling_period: 96    # si anchor=rolling
+    description: "VWAP anclado a sesión o rolling."
+
+  volume_relative:
+    type: "volume_relative"
+    enabled: true
+    params:
+      lookback: 20
+
+  spread:
+    type: "spread"
+    enabled: true
+    params:
+      source: "best_bid_ask"
+    description: "Spread top-of-book en basis points."
+
+  volatility_recent:
+    type: "volatility"
+    enabled: true
+    params:
+      lookback: 30
+      method: "stddev"
+
+  order_book_imbalance:
+    type: "order_book_imbalance"
+    enabled: false                 # requiere feed de order book
+    params:
+      depth_levels: 10
+
+  momentum:
+    type: "momentum"
+    enabled: true
+    params:
+      lookback: 5
+
+# Indicadores globales para activar o desactivar de golpe.
+global:
+  require_min_candles: 100    # mínimo de velas para calcular con seguridad
+  cache_results: true
+  invalidate_on_new_candle: true

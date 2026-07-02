@@ -1,0 +1,41 @@
+# ============================================================
+# docker-compose.yml — entorno local del bot
+# Modo por defecto: paper trading / backtests. NO live.
+# ============================================================
+
+services:
+  bot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: scalping-bot
+    env_file:
+      - .env
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+      - ./reports:/app/reports
+      - ./config:/app/config:ro
+    environment:
+      # Forzar el modo seguro por defecto
+      TRADING_MODE: ${TRADING_MODE:-paper}
+      LIVE_TRADING_ENABLED: ${LIVE_TRADING_ENABLED:-false}
+      I_UNDERSTAND_THE_RISKS: ${I_UNDERSTAND_THE_RISKS:-false}
+    restart: unless-stopped
+    # No exponer puertos por defecto; añadir cuando exista API interna.
+
+  # Placeholder para una persistencia más robusta en el futuro.
+  # postgres:
+  #   image: postgres:16-alpine
+  #   container_name: scalping-bot-db
+  #   environment:
+  #     POSTGRES_USER: bot
+  #     POSTGRES_PASSWORD: bot
+  #     POSTGRES_DB: bot
+  #   volumes:
+  #     - bot_pg:/var/lib/postgresql/data
+  #   ports:
+  #     - "127.0.0.1:5432:5432"
+  #
+  # volumes:
+  #   bot_pg:

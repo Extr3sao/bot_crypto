@@ -1,0 +1,64 @@
+# ===========================================================
+# config/exchange.yaml
+# Configuración del exchange (vía CCXT o SDK nativo).
+# Cambiar exchange_id sin tocar código.
+# ===========================================================
+
+exchange:
+  # Identificador CCXT. Ejemplos:
+  # binance, kraken, coinbasepro, bitfinex, bybit, okx, bitstamp, gate, mexc
+  id: "binance"
+
+  # Tipo de cuenta: spot | margin. Margin requiere consentimiento
+  # explícito en el release gate.
+  account_type: "spot"
+
+  # SIEMPRE usar sandbox/testnet en desarrollo.
+  # En producción se requiere validar manualmente (ver release-gates.md).
+  sandbox: true
+
+  # Mercado por defecto. Para exchanges sin "spot"/"future" uniforme,
+  # algunos overrides son necesarios.
+  default_type: "spot"
+
+  # Rate limit: respeto de límites que CCXT aplica por exchange.
+  rate_limit_ms: 250
+
+  # Opciones CCXT específicas del exchange. Ejemplo:
+  # options:
+  #   defaultType: "spot"
+  #   adjustForTimeDifference: true
+  options:
+    defaultType: "spot"
+    adjustForTimeDifference: true
+
+  # Timeouts y reintentos.
+  timeouts:
+    request_ms: 15000
+    recv_window_ms: 5000
+
+  retries:
+    max_attempts: 5
+    initial_backoff_ms: 500
+    max_backoff_ms: 8000
+
+  # Defaults de órdenes (pertenecen a execution, no a risk/risk.yaml).
+  time_in_force_default: "GTC"
+  post_only_default: true
+
+  # Endpoints opcionales explícitos (dejar vacío para usar CCXT por defecto).
+  endpoints:
+    api_base: ""
+    ws_base: ""
+
+# Mapeo de símbolos CCXT → formato configurable.
+# Útil para exchanges que usan pares no estándar.
+symbol_mapping:
+  BTCUSDT: "BTC/USDT"
+  ETHUSDT: "ETH/USDT"
+
+# Mercados que no deben operarse nunca.
+excluded_markets:
+  - "Leveraged Tokens"
+  - "Derivatives"
+  - "Options"

@@ -1,0 +1,88 @@
+# ===========================================================
+# config/assets.yaml
+# Whitelist de activos. NO hardcodear en código.
+# Cargar siempre desde este archivo al arrancar.
+# ===========================================================
+
+universe:
+  name: "scalping_universe_v1"
+  description: >
+    Whitelist inicial de 25 pares USDT orientada a scalping.
+    Editable: añadir, quitar o reemplazar pares sin tocar código.
+
+  base_currency: "USDT"
+
+  # Activar o desactivar el universo completo (kill switch universal).
+  enabled: true
+
+  # Lista de pares.
+  pairs:
+    - symbol: "BTC/USDT"
+      enabled: true
+      notes: "Liquidez máxima. Spread típico bajo."
+    - symbol: "ETH/USDT"
+      enabled: true
+      notes: "Alta liquidez. Spread bajo."
+    - symbol: "SOL/USDT"
+      enabled: true
+      notes: "Volatilidad alta. Spread moderado."
+    - symbol: "BNB/USDT"
+      enabled: true
+      notes: "Liquidez media-alta."
+    - symbol: "XRP/USDT"
+      enabled: true
+      notes: "Liquidez alta."
+    - symbol: "ADA/USDT"
+      enabled: true
+    - symbol: "DOGE/USDT"
+      enabled: true
+    - symbol: "AVAX/USDT"
+      enabled: true
+    - symbol: "LINK/USDT"
+      enabled: true
+    - symbol: "DOT/USDT"
+      enabled: true
+    - symbol: "MATIC/USDT"
+      enabled: true
+    - symbol: "LTC/USDT"
+      enabled: true
+    - symbol: "TRX/USDT"
+      enabled: true
+    - symbol: "BCH/USDT"
+      enabled: true
+    - symbol: "ATOM/USDT"
+      enabled: true
+    - symbol: "NEAR/USDT"
+      enabled: true
+    - symbol: "APT/USDT"
+      enabled: true
+    - symbol: "ARB/USDT"
+      enabled: true
+    - symbol: "OP/USDT"
+      enabled: true
+    - symbol: "FIL/USDT"
+      enabled: true
+    - symbol: "INJ/USDT"
+      enabled: true
+    - symbol: "SUI/USDT"
+      enabled: true
+    - symbol: "SEI/USDT"
+      enabled: true
+    - symbol: "TIA/USDT"
+      enabled: true
+    - symbol: "RNDR/USDT"
+      enabled: true
+
+  # Timeframes por defecto. Configurables.
+  timeframes:
+    - "1m"
+    - "3m"
+    - "5m"
+    - "15m"
+
+  # Filtros globales para activar/desactivar un par dinámicamente.
+  filters:
+    min_24h_volume_usdt: 5_000_000     # volumen mínimo 24h
+    max_spread_bps: 30                # spread máximo en basis points
+    max_atr_percent: 8.0              # volatilidad extrema -> desactivar
+    min_atr_percent: 0.05             # mercados muertos -> desactivar
