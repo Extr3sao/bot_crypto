@@ -135,7 +135,15 @@ if (Test-Path (Repo-Path ".git")) {
 }
 
 # Asegurar rama 'main' (cubre .git preexistente en 'master' o detached HEAD).
-$currentBranch = git symbolic-ref --short HEAD 2>$null
+# Envoltorio try/catch defensivo: 'git symbolic-ref --short HEAD' puede salir != 0
+# en detached HEAD y, con $ErrorActionPreference=Stop, eso lanzaria un
+# NativeCommandError que abortaria el script antes de poder decidir la rama actual.
+$currentBranch = $null
+try {
+  $currentBranch = git symbolic-ref --short HEAD 2>$null
+} catch {
+  # Detached HEAD o .git ausente: deja $currentBranch en $null y seguimos.
+}
 if ($currentBranch -and ($currentBranch -ne "main")) {
   git branch -m main | Out-Null
   if ($LASTEXITCODE -ne 0) {
@@ -254,18 +262,38 @@ if ($LASTEXITCODE -ne 0) {
 # Remoto: alta o ajuste
 # ---------------------------------------------------------------
 Write-Section "Remote setup"
-$existingRemote = git remote get-url origin 2>$null
+
+# 'git remote get-url origin' falla con NativeCommandError cuando 'origin' no
+# existe (exit != 0 + $ErrorActionPreference=Stop hace abortar el script).
+# Usamos 'git remote -v' (siempre sale 0, incluso sin remotos) y parseamos
+# la salida para detectar el URL de 'origin'.
+$existingRemote = $null
+foreach ($line in (git remote -v 2>$null)) {
+  if ($line -match '^origin\s+(.+?)\s+\(fetch\)') {
+    $existingRemote = $Matches[1]
+    break
+  }
+}
+
 if ($existingRemote) {
   if ($existingRemote -ne $RemoteUrl) {
     Write-Host "Remote 'origin' actual: $existingRemote" -ForegroundColor Yellow
     Write-Host "Objetivo:                 $RemoteUrl"
     Ask-Continue "Sobreescribir?"
     git remote set-url origin $RemoteUrl
+    if ($LASTEXITCODE -ne 0) {
+      Write-Host "ERROR: 'git remote set-url origin' fallo." -ForegroundColor Red
+      exit 1
+    }
   } else {
     Write-Host "Remote 'origin' ya coincide: $existingRemote"
   }
 } else {
   git remote add origin $RemoteUrl
+  if ($LASTEXITCODE -ne 0) {
+    Write-Host "ERROR: 'git remote add origin' fallo." -ForegroundColor Red
+    exit 1
+  }
   Write-Host "Remote 'origin' anadido: $RemoteUrl"
 }
 
@@ -296,8 +324,16 @@ Ask-Continue "Proceder con 'git push -u origin main'?"
 # ---------------------------------------------------------------
 Write-Section "Fetch + rebase si hay divergencia"
 git fetch origin 2>&1 | Out-Null
-$remoteMain = git rev-parse --verify origin/main 2>$null
-$localMain  = git rev-parse --verify main 2>$null
+# 'git rev-parse --verify <ref>' sale != 0 si la ref no existe; con
+# $ErrorActionPreference=Stop eso seria NativeCommandError. Envoltorio try/catch.
+$remoteMain = $null
+try {
+  $remoteMain = git rev-parse --verify origin/main 2>$null
+} catch { }
+$localMain  = $null
+try {
+  $localMain  = git rev-parse --verify main 2>$null
+} catch { }
 if ($remoteMain -and $localMain -and ($remoteMain -ne $localMain)) {
   Write-Host "El remoto tiene commits previos (p.ej. README desde la UI). Rebase sobre origin/main..." -ForegroundColor Yellow
   git pull --rebase origin main 2>&1
