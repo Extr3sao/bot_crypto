@@ -85,7 +85,7 @@ indent-style = "space"
 # Mypy
 # ----------------------------
 [tool.mypy]
-python_version = "3.11"
+python_version = "3.14"
 strict = true
 warn_unused_ignores = true
 disallow_untyped_defs = true
@@ -114,7 +114,31 @@ markers = [
 [tool.coverage.run]
 source = ["src/trading_bot"]
 branch = true
+omit = ["src/trading_bot/config/__main__.py"]
 
 [tool.coverage.report]
 show_missing = true
 fail_under = 70
+
+# ----------------------------------------------------------------------
+# Dependency groups (PEP 735) - dev deps visibles para uv sync y pip
+# ----------------------------------------------------------------------
+# `uv sync` por defecto solo lee `[dependency-groups]` y `[project.dependencies]`,
+# NO los `[project.optional-dependencies].dev`. Sin este bloque, ruff/mypy/pytest
+# no estan disponibles y los comandos `uv run ruff ...` fallan con
+# `Failed to spawn: program not found`. PEP 735 es el formato moderno y
+# compatible con `pip install` (uv 0.4.5+).
+[dependency-groups]
+dev = [
+  "pytest>=8.0.0",
+  "pytest-bdd>=7.0.0",
+  "pytest-cov>=4.1.0",
+  "hypothesis>=6.98.0",
+  "ruff>=0.4.0",
+  "mypy>=1.9.0",
+  "types-PyYAML>=6.0.12",
+  "types-requests>=2.31.0",
+  "pip-audit>=2.7.0",
+  "safety>=3.0.0",
+  "anyio>=4.3.0",
+]  # fmt: skip
