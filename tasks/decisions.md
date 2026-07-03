@@ -122,6 +122,27 @@
 
 ---
 
+## ADR-0010 — Alias de variables planas → rutas anidadas en Settings
+
+- **Estado**: Decidido.
+- **Contexto**: El cargador de Settings usa `env_nested_delimiter="__"` porque los submodelos (Runtime, Risk, Exchange, etc.) tienen varios niveles de anidamiento y necesitamos pisar keys profundas via env vars sin aplanar manualmente cada subpath. Sin embargo, la documentacion publica que sigue el operador (`.env.example`, `docker-compose.yml`, `docs/live-trading-checklist.md` y los BDDs en `bdd/features/*.feature`) usa exclusivamente nombres planos: `TRADING_MODE`, `LIVE_TRADING_ENABLED`, `I_UNDERSTAND_THE_RISKS`, `EXCHANGE_ID`, `EXCHANGE_SANDBOX`, `LOG_LEVEL`, etc.
+- **Problema**: Sin intervencion, los nombres planos se ignoran silenciosamente y `load_settings()` devuelve los defaults del YAML. Riesgo critico en los release gates: un operador que siga la doc existente para activar live trading (`TRADING_MODE=live` + `LIVE_TRADING_ENABLED=true` + `I_UNDERSTAND_THE_RISKS=true`) acabaria con el bot arrancando en `paper` por el conflicto de defaults ignorados.
+- **Opciones**:
+  - Eliminar `env_nested_delimiter="__"`: docs y modelos convergen a plano, pero rompe la capacidad de pisar paths profundos a dos+ niveles (`Runtime.scheduler.active_hours.start`) y obliga a refactorizar cada submodelo a `BaseSettings`.
+  - Renombrar las variables planas en docs/compose/BDDs a la forma anidada: churn masivo en docs y operadores. Confuso para lectores novatos.
+  - **Custom `PydanticBaseSettingsSource` (`FlatEnvAliasSource`)** que re-mapea un conjunto estable y curado de nombres planos a su path anidado en `Settings`. La precedencia es: process env > .env > flat-alias > YAML > defaults; la forma anidada sigue ganando sobre la plana cuando ambas estan definidas.
+- **Decision**: opcion 3. Implementada en `src/trading_bot/config/settings.py` mediante el dict `FLAT_ENV_ALIASES` y la clase `FlatEnvAliasSource`, exportada en `trading_bot.config.__init__` para introspection.
+- **Mantenimiento**:
+  - Cualquier nuevo nombre plano agregado a `.env.example` / `docker-compose.yml` / `docs/live-trading-checklist.md` / `bdd/features/*.feature` TIENE que aparecer tambien en `FLAT_ENV_ALIASES` (en `settings.py`). Sin esa entrada, `load_settings()` lo ignora y devuelve el default del YAML — el mismo bug que el original.
+  - Los nombres anidados siguen siendo la fuente canonica para automation, fixtures y tests; la forma plana es solo un wrapper de compatibilidad hacia los operadores humanos y hacia la documentacion historica.
+  - Cualquier refactor que retire `env_nested_delimiter="__"` de `model_config` rompe la coexistencia plano/anidado: los docs serian ambiguos. Si se hace, requiere un ADR de remplazo.
+- **Consecuencias**:
+  - `FLAT_ENV_ALIASES` es un single point of failure para la doc publica. Cubierto por tests de regresion en `tests/unit/config/test_settings.py` (process-env, dotenv, case-insensitive, empty-skip, invalid-value, boolean-coercion, extra-ignore, deep-path-passthrough).
+  - El tiempo de carga de `Settings` aumenta marginalmente (un dict comprehension extra); despreciable.
+  - Publicar esta decision como ADR convierte el contrato plano → anidado en una decision visible y buscable, no en una convencion oculta en el codigo. Documenta tambien el checklist para el siguiente contribuidor.
+
+---
+
 ## Excepciones firmadas
 
 > Aquí se documentan desviaciones del flujo SDD o del release gate.
