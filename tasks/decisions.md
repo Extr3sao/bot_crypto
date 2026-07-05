@@ -248,3 +248,40 @@ ADR-0011 | 2026-07-03 | cierre de sprint-001 | sprint cerrado sin `TSK-008` merg
 ADR-0012 | 2026-07-04 | gate-recovery post-TSK-102 | mypy numpy stub 3.12+ en 3.11 + coverage 88.79<90 por app.py 0% + pip-audit nltk 3.9.4 PYSEC-2026-597 transitiva | (a) numpy>=1.26.0,<2.1 en pyproject; (b) app.py omit en coverage.run; (c) --ignore-vuln PYSEC-2026-597 firmado en validate_local.ps1 + ci.yml | context-engineer + usuario
 
 ADR-0013 | 2026-07-04 | TSK-103 reconcile scope | ADR-0013 pendiente pineada en retrieval-log `[06:00]` como pre-condicion de merge de TSK-103.5 | split TSK-102 persiste OHLCV + TSK-103 scanner in-memory via MarketDataSourceProtocol + cross-layer enforcement via AST pine contract scanner no importa `storage.*` directo | context-engineer + usuario
+
+
+## ADR-0012 — Cierre de sprint-002 + Apertura de sprint-003 (firmada 2026-07-05)
+
+**Estado**: firmada y aplicada (PR #3 sqsh-merged a `main` + este commit de docs de cierre).
+
+**Contexto**: sprint-002 arranca tras ADR-0011 (cierre sprint-001) con 7 tickets en scope.
+Tras PR #2 (TSK-008 + TSK-009 + TSK-103.5 BDD wiring) y PR #3 (TSK-104 F1+F2) sprint-002 llega a su fin.
+
+**Tickets cerrados (sprint-002)**: ver `tasks/sprint-002-closure-evidence.md` (referencia primaria) para la tabla completa con notas de cierre. Sumario: TSK-008 + TSK-009 + TSK-101 + TSK-103.5 + TSK-110 + TSK-104 = 6 cerrados.
+
+**Excepciones firmadas** (heredadas de ADR-0011, ratificadas):
+
+| Excepcion                                                          | Mitigacion                                                              |
+| ------------------------------------------------------------------ | ----------------------------------------------------------------------- |
+| TSK-103 (universe scanner core, pre-F5 wiring)                     | scheduled for sprint-003 dentro de TSK-104 F3a scope (reportes per fold) |
+| Adapter `OHLCVStoreSource` (storage -> `OHLCVSourceProtocol`)      | scheduled for sprint-003 con prioridad 2 (TSK-104 F3b blocker Check 1)  |
+
+**Sprint-003 apertura** (RE-SPLIT de TSK-104 F3 segun reviewer del cierre sprint-002):
+
+- **Primary**: TSK-104 F3a (multi-symbol + reports). **DoD**: (1) `BacktestEngine.run` acepta `List[str]` de symbols; (2) `src/trading_bot/backtesting/reports.py::build_fold_report(result) -> FoldReport` con Sharpe/Calmar/Sortino/CAGR/max_drawdown/expectancy/win_rate/profit_factor per-fold; (3) tests unitarios verde (analysis-only, no toca folds); (4) coverage >= 90% sobre el nuevo reports module.
+- **Secondary**: TSK-104 F3b (walk-forward + cross-fold reports). **DoD**: (1) `walk_forward_splits: list[tuple[datetime, datetime, datetime, datetime]]` field en `BacktestInputs` con strict invariant `train_end <= test_start` + no-overlapping entre folds; (2) `walk_forward_run(input, splits) -> list[BacktestResult]` con data-leakage checker (assert que el primer fold's end < el segundo fold's start en el test engine); (3) Hypothesis property tests para no-leak invariant. Bloqueado por storage adapter (Check 1: `OHLCVStoreSource` no en scope todavia, no-fatal para F3b POC).
+- **Tertiary**: TSK-103 (universe scanner core front-end).
+- **Tertiary**: Storage adapter `OHLCVStoreSource`.
+
+**Out of scope (F4+)**: TSK-105 paper trading prep, TSK-106 risk gate integration, TSK-107 execution idempotencia, TSK-108 observability stack (structlog -> Sentry bridge), TSK-109 strategy catalog beyond BacktestEngine.
+
+**Razon**: PR #3 cierra F1+F2 de TSK-104 con cobertura 97.69% y pine contract explicito (Units section en `engine._compute_metrics` + `Metrics TypedDict`). ADR firmada previene el lifecycle gap de sprints previos. **F3a/F3b split** reduce blast radius: walk-forward tiene data-leakage risk si folds se eligen naive; aislarlo en F3b permite F3a cerrar primero (multi-symbol + reports basicos) sin bloquear el camino si F3b se atrasa.
+
+**Consecuencias**:
+
+- Branch `origin/feature/tsk-104-backtest-engine` borrada.
+- Cobertura `src/trading_bot/backtesting/` pineada a 97.69% (gate 90%).
+- 64 tests verdes cierran regression risk para F3a.
+- Sprint-003 con 4 tickets bien priorizados vs sprint-002 con 7 (overhead reducido).
+
+**Co-authored-by**: context-engineer

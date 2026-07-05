@@ -58,7 +58,7 @@ src/trading_bot/
 
 ## Estado
 
-Estado actual: **fase 1 (Market data + Scanner) en transición** post-PR #2 sqsh-merge. Los
+Estado actual: **fase 1 (Market data + Scanner + Backtest engine) en transición** post-PR #2 sqsh-merge. Los
 módulos `scanner/`, `market_data/`, `app.py`, `tests/bdd/` y `tests/unit/scanner/` están
 implementados, con 96% overall coverage y 97% en `app.py`. Pendientes para siguientes
 sprints: `risk/`, `execution/`, `portfolio/`, `paper/`, `observability/`, `storage/` (en
@@ -90,6 +90,7 @@ branch aparte). `backtesting/` F1 en rama `feature/tsk-104-backtest-engine`.
 
 | Fecha       | Cambio                                                                   | Módulos afectados                   | Riesgos                                  | Mitigación                                              |
 | ----------- | ------------------------------------------------------------------------ | ---------------------------------- | ---------------------------------------- | ------------------------------------------------------- |
+| 2026-07-05  | Sqsh-merge PR #3: TSK-104 F2 commission/slippage refinement + 7 advanced metrics (sharpe, sortino, cagr, calmar, max_drawdown, expectancy, avg_trade_pnl) | `src/trading_bot/backtesting/{commissions.py,slippage.py,types.py,engine.py,__init__.py}`, `tests/unit/backtesting/{test_commissions.py,test_slippage.py,test_types.py,test_engine.py}` | Drift dimensional en metricas (expectancy/avg_trade_pnl retornan USD; sharpe/sortino/cagr son ratios) | ADR-0012 firmada con F3a/F3b split y DoD explícito; cobertura 97.69%.  |
 | 2026-07-05  | Sqsh-merge PR #2 → main. Squash integra TSK-008 (CI), TSK-009 (Governance), TSK-103.5 F5 (BDD wiring), misc. | `scanner/`, `market_data/`, `app.py`, `tests/bdd/`, `tests/unit/scanner/`, `.github/`, `docs/`, `tasks/` | Regresiones scanner / BDD; coverage drop bajo 90%; CI no-verde por pip-audit strict. | Tests verde post-merge; coverage 96% overall; rip-audit strict (los CVEs transitivos que aparezcan se gestionan via ADR-firmada). |
 
 ## Última actualización

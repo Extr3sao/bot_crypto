@@ -38,7 +38,7 @@ Fase 1 sin perder rigor metodologico: ningun ticket se promueve a
 | TSK-101 | CCXT connector + sandbox + idempotencia | M | 1 | H | in_progress | 3 |
 | TSK-102 | OHLCV pipeline + normalizacion + cache | M | 1 | M | in_progress | 4 |
 | TSK-103 | Universe scanner + filters (vol 24h, spread, ATR) | M | 1 | M | in_progress | 5 |
-| TSK-104 | Backtest engine minimo + comisiones + slippage | L | 1 | M | blocked | 6 |
+| TSK-104 | Backtest engine minimo + comisiones + slippage | L | 1 | M | done (PR #3 SQ-MERGE; cobertura 97.69% sobre src/trading_bot/backtesting/; 64/64 tests verdes) | 6 |
 | TSK-105 | Paper trading harness + reporter | M | 1 | M | blocked | 7 |
 
 ### Secondary
