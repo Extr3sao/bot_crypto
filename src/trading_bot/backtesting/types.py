@@ -209,9 +209,64 @@ class StrategyProtocol(Protocol):
         ...
 
 
+@dataclass(frozen=True, slots=True)
+class WalkForwardSplit:
+    """Single fold of a walk-forward evaluation (TSK-104 F3).
+
+    Invariants (validated in ``__post_init__``):
+        ``train_start < train_end < test_start < test_end``
+
+    Pine contract:
+        - Strict temporal ordering prevents data leakage between train + test.
+        - Fold-to-fold non-overlap is validated at the engine level
+          (``BacktestEngine.walk_forward_run``), not here.
+        - Frozen dataclass with ``slots=True`` (matches F2 pine contract).
+
+    Anti-patterns (no deben regressar):
+        - NO permitir ``train_end > test_start`` (causa leakage).
+        - NO aceptar ``datetime`` naive (causa comparacion ambigua entre
+          folds con TZ distintos; pine contract: pasar siempre
+          ``tzinfo=datetime.UTC``).
+    """
+
+    train_start: datetime.datetime
+    train_end: datetime.datetime
+    test_start: datetime.datetime
+    test_end: datetime.datetime
+
+    def __post_init__(self) -> None:
+        if not (self.train_start < self.train_end < self.test_start < self.test_end):
+            raise ValueError(
+                "WalkForwardSplit invariant violated: "
+                "train_start < train_end < test_start < test_end. "
+                f"Got train=({self.train_start}, {self.train_end}), "
+                f"test=({self.test_start}, {self.test_end})."
+            )
+
+
+class BacktestInputs(TypedDict):
+    """Inputs para una corrida completa de backtest o walk-forward (TSK-104 F3).
+
+    Pine contract:
+        - ``symbols``: acepta un ``str`` (single-symbol fast path) o una
+          ``list[str]`` (multi-symbol loop). El engine decide el path segun
+          ``isinstance(symbols, str)`` en runtime.
+        - ``timeframe``: string pineada a ``_PERIODS_PER_YEAR`` (ver
+          ``trading_bot.backtesting.engine._PERIODS_PER_YEAR``).
+        - ``walk_forward_splits``: vacia para backtest tradicional; no-vacia
+          para walk-forward evaluation. Si esta vacia, ``walk_forward_run``
+          retorna ``[]`` (F3 contract).
+    """
+
+    symbols: str | list[str]
+    timeframe: str
+    walk_forward_splits: list[WalkForwardSplit]
+
+
 __all__ = [
     "OHLCV",
     "BacktestContext",
+    "BacktestInputs",
     "BacktestResult",
     "EquityPoint",
     "Fill",
@@ -220,4 +275,5 @@ __all__ = [
     "Order",
     "StrategyProtocol",
     "Trade",
+    "WalkForwardSplit",
 ]

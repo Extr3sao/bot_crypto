@@ -40,7 +40,7 @@ como bloque de valor incremental sobre el scanner F1-F5 ya operativo.
 
 | ID | Titulo | Tam | Fase | Risk | Estado | Pri |
 | --- | --- | --- | --- | --- | --- | --- |
-| TSK-104 | Backtest engine minimal + comisiones + slippage | L | 1 | M | in_progress | 3 |
+| TSK-104 | Backtest engine minimal + comisiones + slippage | L | 1 | M | in_progress (F1+F2 done; F3 in review) | 3 |
 | TSK-105 | Paper trading harness + reporter | M | 1 | M | in_progress | 4 |
 
 ### Fase 2 (indicators)
@@ -168,3 +168,38 @@ como bloque de valor incremental sobre el scanner F1-F5 ya operativo.
 ```
 [<F5_MERGE_DATE> HH:MM] agent=context-engineer | action=open sprint-003 via F5 close-out | artifacts=tasks/sprint-003.md, tasks/{backlog,sprint-002,decisions}.md (Phase 7.4 bookkeeping ya aplicado), context/retrieval-log.md | summary=Apertura formal de sprint-003 tras merge de TSK-103.5 (F5) en <F5_PR_URL> con tag v0.5.0-rc.1. F5 unblock TSK-104 (backtest engine) + TSK-105 (paper trading harness) que pasan de blocked a in_progress. Governance arrastre TSK-008 + TSK-009 sube a Pri 1+2 para forzar cierre del arrastre de 2 sprints. Fase 2 indicators arranca con TSK-200 (interface) como Pri 5. TSK-103.6 queda como placeholder conditional: solo se materializa si ADR-0014 detecto scope changes durante F5 review chain; en caso contrario la fila se mantiene vacia y el ticket queda descartado.
 ```
+
+
+## TSK-104 F3 - multi-symbol + walk-forward + reports (in_review; PR #4 pending)
+
+### Acceptance criteria (per ADR-0012 DoD)
+
+#### F3a — multi-symbol + per-fold reports (Primary)
+
+1. `BacktestEngine.run` acepta `symbol: str | list[str]`; con `list[str]` retorna `list[BacktestResult]` (sort estable por symbol).
+2. Single-symbol fast path: `run("BTC/USDT", ...)` produce `BacktestResult` byte-for-byte equivalente al F2 (64 tests verde, cobertura sin regresion).
+3. Multi-symbol path: `run(["BTC/USDT", "ETH/USDT"], ...)` retorna `list[BacktestResult]` ordenado alfabeticamente.
+4. `src/trading_bot/backtesting/reports.py` con `build_fold_report(results, fold_id, split) -> FoldReport` (per-symbol metrics + cross-symbol aggregate via concat-trades + sum-equity-curve + recompute via existing `_compute_metrics`).
+5. Tests verde (`tests/unit/backtesting/test_multi_symbol.py` + `test_reports.py`) + cobertura >= 90% sobre el nuevo `reports` module.
+
+#### F3b — walk-forward + cross-fold reports (Secondary)
+
+1. `WalkForwardSplit` frozen dataclass con invariant `train_start < train_end < test_start < test_end` (validated en `__post_init__`).
+2. `BacktestInputs` TypedDict con `walk_forward_splits: list[WalkForwardSplit]`.
+3. `BacktestEngine.walk_forward_run(inputs) -> list[list[BacktestResult]]` con **data-leakage checker** (fail-loud `ValueError` si folds consecutivos overlap).
+4. `build_walk_forward_report(fold_results, splits) -> WalkForwardReport` agrega per-fold + aggregate cross-fold.
+5. `render_table(report: WalkForwardReport) -> str` produce ASCII table deterministico.
+
+### Status
+
+- Feature branch: `feature/tsk-104-f3-multi-symbol-walkforward`.
+- PR contra `main`: #4 (al abrir).
+- Tests objetivo: ~64 + ~25 nuevos = ~89 verde. **Logrado: 93 tests verde (64 F2 + 29 F3)**.
+- Coverage objetivo: >= 90% sobre `src/trading_bot/backtesting/` (mantener baseline F2 97.69%). **Logrado: 91% sobre `src/trading_bot/backtesting/` (90.81% global)**.
+- F3 deliverables (per ADR-0012):
+  - `types.py`: `WalkForwardSplit` frozen dataclass con `__post_init__` invariant + `BacktestInputs` TypedDict.
+  - `engine.py`: `run()` F2 byte-for-byte; new `run_multi(symbols: list[str])` con sort+dedupe; `walk_forward_run(inputs)` con leakage checker fail-loud.
+  - `reports.py` (NEW): `FoldReport`/`WalkForwardReport` frozen dataclasses; `build_fold_report`/`build_walk_forward_report` (uniform mean per-fold + cross-fold via `_metric_value` helper); `render_table` (rich or plain fallback).
+  - `__init__.py`: re-export WalkForwardSplit, BacktestInputs, FoldReport, WalkForwardReport, build_*, render_table.
+  - 3 new test files: `test_multi_symbol.py` (9 tests), `test_walk_forward.py` (8 tests), `test_reports.py` (7 tests, +3 coverage boost).
+  - 64 F2 tests preservados byte-for-byte (regression guard).

@@ -102,3 +102,4 @@ Cada fase tiene una puerta que solo se abre si:
 1. Las quality gates estan verdes.
 2. La documentacion asociada esta actualizada.
 3. El equipo firma el `done` de la fase.
+- TSK-104 F3: multi-symbol + walk-forward + reports (in_progress; feature/tsk-104-f3-multi-symbol-walkforward).

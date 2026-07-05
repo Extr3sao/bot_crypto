@@ -15,7 +15,9 @@ Principios per ``docs/backtesting-methodology.md``:
    - F2: pluggable via ``CommissionModel`` / ``SlippageModel``
      protocols. El engine acepta explicitamente un modelo o un float
      (backward-compat: float se auto-wrappea).
-3. **Walk-forward**: NO esta en F1/F2 (deferred to F3 per ADR-0007).
+3. **Walk-forward**: F3 introduce ``walk_forward_run(inputs)`` con leaky-check
+   rigoroso entre folds (TSK-104 F3 + ADR-0012). F1/F2 solo tenian
+   ``run(symbol, start, end)`` single-symbol.
 4. **Métricas**:
    - F1: 4 baseline (total_trades, win_rate, profit_factor, final_equity).
    - F2: + 7 advanced (max_drawdown, cagr, calmar_ratio, sharpe_ratio,
@@ -44,6 +46,7 @@ from .slippage import FlatBpsSlippage, SlippageModel
 from .types import (
     OHLCV,
     BacktestContext,
+    BacktestInputs,
     BacktestResult,
     EquityPoint,
     Fill,
@@ -124,11 +127,14 @@ class BacktestEngine:
         end: datetime.datetime,
         timeframe: str = "1m",
     ) -> BacktestResult:
-        """Ejecuta el backtest y retorna un ``BacktestResult``.
+        """Ejecuta el backtest single-symbol y retorna un ``BacktestResult``.
 
         ``start`` y ``end`` son ``datetime`` (se convierten a epoch ms
         para el source). El engine NO genera timestamps; el de la
         vela es la unica fuente de tiempo.
+
+        Backward-compat F2 byte-for-byte: signature estable desde F1.
+        Para multi-symbol en F3, usar ``run_multi(symbols)``.
         """
         start_ms = int(start.timestamp() * 1000)
         end_ms = int(end.timestamp() * 1000)
@@ -475,6 +481,84 @@ class BacktestEngine:
         if downside_std < 1e-12:
             return 0.0
         return (mean_ret / downside_std) * math.sqrt(periods_per_year)
+
+    def run_multi(
+        self,
+        symbols: list[str],
+        start: datetime.datetime,
+        end: datetime.datetime,
+        timeframe: str = "1m",
+    ) -> list[BacktestResult]:
+        """Ejecuta el backtest multi-symbol y retorna ``list[BacktestResult]`` (TSK-104 F3a).
+
+        Sort estable por symbol (no set iteration, determinista cross-run).
+        Cada symbol llama a ``run(symbol, ...)`` internamente -- preserva
+        F2 byte-for-byte determinismo por-symbol. La aggregation cross-symbol
+        se hace en ``reports.py::build_fold_report`` (no aqui, mantiene
+        ``run()`` / ``run_multi()`` como I/O raw sin logica de aggregation).
+
+        Pine contract:
+            - ``symbols`` no vacia; si vacia retorna ``[]``.
+            - ``symbols`` se deduplica + sortea antes de iterar (defensivo contra
+              inputs duplicados; el caller puede no preocuparse de uniqueness).
+            - NO muta el orden del caller: sort defensivo, no set iter.
+        """
+        if not symbols:
+            return []
+        unique_sorted = sorted(set(symbols))
+        return [self.run(sym, start, end, timeframe) for sym in unique_sorted]
+
+    def walk_forward_run(
+        self,
+        inputs: BacktestInputs,
+    ) -> list[list[BacktestResult]]:
+        """Walk-forward evaluation (TSK-104 F3).
+
+        Ejecuta cada fold definido por ``inputs["walk_forward_splits"]`` y
+        devuelve ``list[list[BacktestResult]]`` (outer = folds, inner = per-symbol
+        results si multi-symbol, single-element si single-symbol).
+
+        Pine contract:
+            - **Data-leakage checker**: si dos folds consecutivos tienen
+              ``split[i].test_end > split[i+1].test_start``, levanta ``ValueError``
+              (FAIL-LOUD, no skip silencioso).
+            - **No-overlap fold ordering**: walks splits en orden ascendente;
+              NO reordena para evitar surprises del usuario.
+            - **OOS-only window**: cada fold corre SOLO en el rango
+              ``[split.test_start, split.test_end]`` (out-of-sample); el train
+              window NO se re-corre aqui (eso es responsabilidad del caller
+              que quiera anadir train-side aggregation en F3a fase 2).
+            - **Determinismo**: usa sorting de symbols dentro de ``run()`` para
+              evitar set-iteration cross-symbol (reusa el path multi-symbol).
+            - Si ``inputs["walk_forward_splits"]`` esta vacia, retorna ``[]``.
+
+        Raises:
+            ValueError: si hay data leakage entre folds consecutivos.
+        """
+        splits = inputs["walk_forward_splits"]
+        symbols = inputs["symbols"]
+        timeframe = inputs["timeframe"]
+
+        # Data-leakage invariant: consecutive folds must not overlap on test window.
+        for i in range(len(splits) - 1):
+            if splits[i].test_end > splits[i + 1].test_start:
+                raise ValueError(
+                    f"Walk-forward data leakage detected: fold {i} test_end="
+                    f"{splits[i].test_end} overlaps with fold {i + 1} test_start="
+                    f"{splits[i + 1].test_start}. Folds must not overlap."
+                )
+
+        run_results: list[list[BacktestResult]] = []
+        for split in splits:
+            # OOS window only per ADR-0012 F3b contract.
+            if isinstance(symbols, str):
+                fold_results: list[BacktestResult] = [
+                    self.run(symbols, split.test_start, split.test_end, timeframe)
+                ]
+            else:
+                fold_results = self.run_multi(symbols, split.test_start, split.test_end, timeframe)
+            run_results.append(fold_results)
+        return run_results
 
 
 __all__ = ["BacktestEngine"]
