@@ -44,14 +44,26 @@ class Indicator(Protocol):
     runtime by the F3 registry's duplicate-name check).
 
     Implementations MUST:
-    - Expose ``.name: str`` (unique within the F3
+    - Expose ``.name: str`` (read-only; unique within the F3
       ``IndicatorRegistry``).
     - Expose ``.compute(ohlcv, params) -> IndicatorOutput`` as a
       callable method.  Verified by the ``@runtime_checkable``
       isinstance check (F2 step 2.1 DoD).
     """
 
-    name: str
+    @property
+    def name(self) -> str:
+        """Stable identifier; unique within an ``IndicatorRegistry``.
+
+        Read-only property: mypy accepts both a ``name: str`` class
+        attribute (mutable form) AND a ``@property`` (read-only form)
+        as satisfying this contract per PEP 544.  Concrete
+        implementations are free to choose either form; frozen
+        dataclasses (e.g. ``EmaIndicator``) MUST use the class-
+        attribute form because ``@property`` overrides conflict with
+        ``@dataclass(frozen=True, slots=True)``.
+        """
+        ...
 
     def compute(
         self,

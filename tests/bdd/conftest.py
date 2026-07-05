@@ -39,8 +39,8 @@ directamente sin ``@pytest.mark.asyncio`` explicito).
 
 from __future__ import annotations
 
-import asyncio
 import ast
+import asyncio
 import dataclasses
 import json
 import math
@@ -54,17 +54,12 @@ from pytest_bdd import given, parsers, then, when
 # Re-exports from the unit scanner conftest (TSK-103.5.2.1 pine contract).
 # NO duplican definiciones; los step_defs pueden importarlos
 # directamente desde ``trading_bot.scanner.types`` o desde aqui.
-from tests.unit.scanner.conftest import (  # noqa: F401 — re-export public API
+from tests.unit.scanner.conftest import (
     FakeMarketDataSource,
     build_settings,
     make_flat_ohlcv,
 )
-
-from trading_bot.market_data.types import OHLCV
-from trading_bot.scanner.mode_filters import build_filter_set_per_mode
-from trading_bot.scanner.scanner import UniverseScanner
-from trading_bot.scanner.scoring import compute_rank_score
-from trading_bot.scanner.types import MarketSnapshot
+from trading_bot.config.settings import Settings
 
 # Re-exports for the indicators.feature step defs (TSK-200.4 F4 work;
 # consolidated into conftest per the F5 round-24..27 conftest pine contract
@@ -80,7 +75,11 @@ from trading_bot.indicators import (
     compute_params_hash,
 )
 from trading_bot.indicators.exceptions import ParamsHashError, RegistryFrozenError
-
+from trading_bot.market_data.types import OHLCV
+from trading_bot.scanner.mode_filters import build_filter_set_per_mode
+from trading_bot.scanner.scanner import UniverseScanner
+from trading_bot.scanner.scoring import compute_rank_score
+from trading_bot.scanner.types import MarketSnapshot
 
 # ===========================================================================
 # Helper constants
@@ -148,7 +147,7 @@ def _type_checking_lines(tree: ast.AST) -> set[int]:
             and node.test.id == "TYPE_CHECKING"
         ):
             for child in ast.walk(node):
-                out.add(child.lineno)
+                out.add(child.lineno)  # type: ignore[attr-defined]  # type: ignore[attr-defined]
     return out
 
 
@@ -167,7 +166,7 @@ def _extract_module_name(node: ast.AST) -> str | None:
 
 
 @given('el modo TRADING_MODE es "paper"', target_fixture="settings")
-def _given_mode_paper() -> object:
+def _given_mode_paper() -> Settings:
     """Background step: modo paper. Produce un Settings coherente como fixture.
 
     El ``target_fixture="settings"`` hace que el Settings este disponible
@@ -206,7 +205,7 @@ def _given_filters_active() -> None:
 def _when_full_scan(settings) -> object:  # type: ignore[no-untyped-def]
     registries = build_filter_set_per_mode(settings)
     scanner = UniverseScanner(
-        source=FakeMarketDataSource(),  # type: ignore[arg-type]
+        source=FakeMarketDataSource(),
         registry_per_mode=registries,
         settings=settings,
     )
@@ -357,7 +356,7 @@ def _then_increment_scanner_errors() -> None:
 
 
 @given("kill_switch_enabled = true y activo", target_fixture="kill_settings")
-def _given_kill_switch() -> object:
+def _given_kill_switch() -> Settings:
     return build_settings(
         pairs=[("BTC/USDT", True)],
         kill_switch_enabled=True,
@@ -369,7 +368,7 @@ def _when_kill_iteration(kill_settings) -> object:  # type: ignore[no-untyped-de
     source = FakeMarketDataSource()
     registries = build_filter_set_per_mode(kill_settings)
     scanner = UniverseScanner(
-        source=source,  # type: ignore[arg-type]
+        source=source,
         registry_per_mode=registries,
         settings=kill_settings,
     )
@@ -379,13 +378,17 @@ def _when_kill_iteration(kill_settings) -> object:  # type: ignore[no-untyped-de
 
 
 @then("debe abortar la iteración")
-def _then_aborted(when_kill_iteration: object) -> None:
-    assert when_kill_iteration["result"] == []
+def _then_aborted(when_kill_iteration: dict[str, object]) -> None:
+    result = when_kill_iteration["result"]
+    assert isinstance(result, list)
+    assert result == []
 
 
 @then('debe registrar el evento "scanner_paused_kill_switch"')
-def _then_kill_switch_event(when_kill_iteration: object) -> None:
-    events = {e["event"] for e in when_kill_iteration["cap"]}
+def _then_kill_switch_event(when_kill_iteration: dict[str, object]) -> None:
+    cap = when_kill_iteration["cap"]
+    assert isinstance(cap, list)
+    events = {e["event"] for e in cap}
     assert "scanner.paused.kill_switch" in events, (
         f"kill_switch path debe emitir scanner.paused.kill_switch; events={events}"
     )
@@ -410,7 +413,7 @@ def _given_paper_universe() -> object:
         ohlcv_by_symbol={"BTC/USDT": make_flat_ohlcv("BTC/USDT", 100, last_close=100.0)},
     )
     scanner = UniverseScanner(
-        source=source,  # type: ignore[arg-type]
+        source=source,
         registry_per_mode=registries,
         settings=settings,
     )
@@ -437,7 +440,7 @@ def _then_snapshot_has_10_fields(snapshot_iter) -> None:  # type: ignore[no-unty
 def _then_immutable_after_construction(snapshot_iter) -> None:  # type: ignore[no-untyped-def]
     snap = snapshot_iter[0]
     with pytest.raises(dataclasses.FrozenInstanceError):
-        snap.rank_score = 0.99  # type: ignore[misc]
+        snap.rank_score = 0.99
 
 
 # ===========================================================================
@@ -455,7 +458,7 @@ def _given_any_valid_snapshot() -> MarketSnapshot:
         atr_pct=None,
         volatility_pct=None,
         active=False,
-        rejection_reason="synthetic",
+        rejection_reason="not_whitelisted",
         timestamp=1_700_000_000_000,
         rank_score=0.0,
     )
@@ -483,7 +486,7 @@ def _given_high_atr() -> None:
 
 
 @given("max_atr_percent = 8.0", target_fixture="settings_high_atr")
-def _given_settings_high_atr() -> object:
+def _given_settings_high_atr() -> Settings:
     return build_settings(
         pairs=[("BTC/USDT", True)],
         kill_switch_enabled=False,
@@ -505,7 +508,7 @@ def _when_evaluate_high_atr(settings_high_atr) -> object:  # type: ignore[no-unt
         ohlcv_by_symbol={"BTC/USDT": high_volatility_ohlcv},
     )
     scanner = UniverseScanner(
-        source=source,  # type: ignore[arg-type]
+        source=source,
         registry_per_mode=registries,
         settings=settings_high_atr,
     )
@@ -588,7 +591,7 @@ def _then_other_pairs_normal() -> None:
 
 
 @given("un scan sobre 25 pares en sandbox", target_fixture="sandboxescan_settings")
-def _given_25_pairs() -> object:
+def _given_25_pairs() -> Settings:
     pairs = [(f"SYM{i:02d}/USDT", True) for i in range(25)]
     return build_settings(
         pairs=pairs,
@@ -608,7 +611,7 @@ def _when_25_iter(sandboxescan_settings) -> object:  # type: ignore[no-untyped-d
         },
     )
     scanner = UniverseScanner(
-        source=source,  # type: ignore[arg-type]
+        source=source,
         registry_per_mode=build_filter_set_per_mode(sandboxescan_settings),
         settings=sandboxescan_settings,
     )
@@ -617,8 +620,8 @@ def _when_25_iter(sandboxescan_settings) -> object:  # type: ignore[no-untyped-d
 
 @then('debe emitir log estructurado "scanner.iteration.completed"')
 def _then_iteration_completed_logged(
-    sandboxescan_settings,
-    snapshot_25,  # type: ignore[no-untyped-def]
+    sandboxescan_settings: Settings,
+    snapshot_25: list[object],
 ) -> None:
     with structlog.testing.capture_logs() as cap:
         registries = build_filter_set_per_mode(sandboxescan_settings)
@@ -631,7 +634,7 @@ def _then_iteration_completed_logged(
             },
         )
         scanner = UniverseScanner(
-            source=source,  # type: ignore[arg-type]
+            source=source,
             registry_per_mode=registries,
             settings=sandboxescan_settings,
         )
@@ -765,7 +768,7 @@ def _given_default_scanner() -> object:
 
 
 @when("inspecciono el FilterRegistry interno")
-def _when_inspect_registry(_scanner_inst: object) -> None:  # type: ignore[no-untyped-def]
+def _when_inspect_registry(_scanner_inst: object) -> None:
     pass
 
 
@@ -866,7 +869,7 @@ def _then_no_rank_sort() -> None:
 
 
 @given("la whitelist contiene 0 pares con enabled=true", target_fixture="_empty_settings")
-def _given_zero_enabled() -> object:
+def _given_zero_enabled() -> Settings:
     return build_settings(
         pairs=[("BTC/USDT", False), ("ETH/USDT", False)],
         kill_switch_enabled=False,
@@ -874,10 +877,10 @@ def _given_zero_enabled() -> object:
 
 
 @when("el scanner ejecuta una iteracion sobre universo vacio", target_fixture="_empty_snapshots")
-def _when_empty(_empty_settings: object) -> object:  # type: ignore[no-untyped-def]
+def _when_empty(_empty_settings: Settings) -> object:
     registries = build_filter_set_per_mode(_empty_settings)
     scanner = UniverseScanner(
-        source=FakeMarketDataSource(),  # type: ignore[arg-type]
+        source=FakeMarketDataSource(),
         registry_per_mode=registries,
         settings=_empty_settings,
     )
@@ -900,7 +903,7 @@ def _then_empty_warning() -> None:
 
 
 @given("los 25 pares lanzan excepcion transitoria", target_fixture="_fail_settings")
-def _given_25_fail() -> object:
+def _given_25_fail() -> Settings:
     return build_settings(
         pairs=[(f"SYM{i:02d}/USDT", True) for i in range(25)],
         kill_switch_enabled=False,
@@ -909,7 +912,7 @@ def _given_25_fail() -> object:
 
 
 @when("el scanner completa una iteracion con 25 pares fallando", target_fixture="_fail_iter")
-def _when_25_fail(_fail_settings: object) -> object:  # type: ignore[no-untyped-def]
+def _when_25_fail(_fail_settings: Settings) -> object:
     class FailingSource(FakeMarketDataSource):
         async def fetch_24h_volume_usdt(self, symbol: str) -> float:
             raise RuntimeError("simulated transient error for CL-3")
@@ -923,7 +926,7 @@ def _when_25_fail(_fail_settings: object) -> object:  # type: ignore[no-untyped-
         },
     )
     scanner = UniverseScanner(
-        source=source,  # type: ignore[arg-type]
+        source=source,
         registry_per_mode=registries,
         settings=_fail_settings,
     )
@@ -938,7 +941,7 @@ def _then_empty_after_failures(_fail_iter: object) -> None:
 
 
 @then('el log "scanner.iteration.completed" reporta scanner_errors=25')
-def _then_scanner_errors_25(_fail_settings: object) -> None:
+def _then_scanner_errors_25(_fail_settings: Settings) -> None:
     class FailingSource(FakeMarketDataSource):
         async def fetch_24h_volume_usdt(self, symbol: str) -> float:
             raise RuntimeError("simulated")
@@ -952,7 +955,7 @@ def _then_scanner_errors_25(_fail_settings: object) -> None:
         },
     )
     scanner = UniverseScanner(
-        source=source,  # type: ignore[arg-type]
+        source=source,
         registry_per_mode=registries,
         settings=_fail_settings,
     )
@@ -961,7 +964,7 @@ def _then_scanner_errors_25(_fail_settings: object) -> None:
 
 
 @then("pairs_active=0, pairs_inactive=0")
-def _then_no_active_no_inactive(_fail_settings: object) -> None:
+def _then_no_active_no_inactive(_fail_settings: Settings) -> None:
     pass
 
 
@@ -1144,7 +1147,7 @@ def _given_nan_indicator() -> None:
 
     class _NaNIndicator(EmaIndicator):
         def compute(self, ohlcv, params):  # type: ignore[no-untyped-def]
-            return {"x": float("nan")}  # type: ignore[return-value]
+            return {"x": float("nan")}
 
 
 @when("compute emite el output")
@@ -1585,7 +1588,7 @@ def _when_ast_walk() -> list[str]:
                 and node.test.id == "TYPE_CHECKING"
             ):
                 for child in ast.walk(node):
-                    type_checking.add(child.lineno)
+                    type_checking.add(child.lineno)  # type: ignore[attr-defined]
         for node in ast.walk(tree):
             if getattr(node, "lineno", 0) in type_checking:
                 continue

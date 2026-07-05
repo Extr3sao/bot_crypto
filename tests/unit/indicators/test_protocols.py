@@ -143,4 +143,5 @@ def test_indicator_protocol_attr_name() -> None:
     # ``__annotations__`` populated (PEP 563 + PEP 649 deferred-
     # evaluation don't break the lookup; values may be strings if
     # ``from __future__ import annotations`` is in effect).
-    assert "name" in Indicator.__annotations__
+    assert hasattr(Indicator, "name")
+    assert isinstance(Indicator.name, property)

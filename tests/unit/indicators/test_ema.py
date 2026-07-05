@@ -36,14 +36,13 @@ from __future__ import annotations
 
 import math
 from collections.abc import Mapping
-from typing import cast
 
 import pytest
 
 from trading_bot.indicators.cache import IndicatorCache
 from trading_bot.indicators.ema import EmaIndicator
 from trading_bot.indicators.exceptions import InsufficientHistoryError
-from trading_bot.indicators.protocols import Indicator
+from trading_bot.indicators.protocols import Indicator  # noqa: F401 — re-export for F3 test reference
 from trading_bot.indicators.registry import IndicatorRegistry
 from trading_bot.indicators.types import IndicatorOutput
 from trading_bot.market_data.types import OHLCV
@@ -196,7 +195,7 @@ def test_compute_end_to_end_pipeline() -> None:
     # ``@runtime_checkable`` confirms it at runtime); the cast
     # is purely a type-system annotation.
     registry = IndicatorRegistry()
-    registry.register("ema", cast(Indicator, EmaIndicator()))
+    registry.register("ema", EmaIndicator())
     assert "ema" in registry
     assert len(registry) == 1
     assert registry.get("ema").name == "ema"

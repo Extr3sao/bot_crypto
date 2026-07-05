@@ -36,7 +36,7 @@ import pytest
 
 from trading_bot.config.runtime import TradingMode
 from trading_bot.config.settings import Settings
-from trading_bot.market_data.fake import (  # noqa: F401 — re-export
+from trading_bot.market_data.fake import (
     FakeMarketDataSource,
     assert_called_once_per_symbol,
     build_demo_fetcher,
@@ -44,7 +44,22 @@ from trading_bot.market_data.fake import (  # noqa: F401 — re-export
     make_flat_ohlcv,
     make_high_volatility_ohlcv,
 )
-from trading_bot.market_data.types import OHLCV  # noqa: F401 — re-export
+from trading_bot.market_data.types import OHLCV
+
+__all__ = [
+    "OHLCV",
+    "FakeMarketDataSource",
+    "assert_called_once_per_symbol",
+    "build_demo_fetcher",
+    "build_demo_settings",
+    "build_settings",
+    "load_settings_from_assets_yaml",
+    "make_flat_ohlcv",
+    "make_high_volatility_ohlcv",
+    "settings_live",
+    "settings_paper",
+    "settings_research",
+]
 
 # ---------------------------------------------------------------------------
 # Alias: build_settings is the conftest-local name preserved for backward
@@ -131,12 +146,12 @@ def load_settings_from_assets_yaml(
         resolved = conftest_path.parent.parent.parent.parent
         repo_root = str(resolved)
 
-    settings = load_settings(repo_root=repo_root, env={})
+    settings = load_settings(config_dir=Path(repo_root) / "config", env_file=None)
 
     if mode_override is not None:
         settings = settings.model_copy(
-            update={"runtime": settings.runtime.model_copy(
-                update={"mode": TradingMode(mode_override)}
-            )}
+            update={
+                "runtime": settings.runtime.model_copy(update={"mode": TradingMode(mode_override)})
+            }
         )
     return settings
