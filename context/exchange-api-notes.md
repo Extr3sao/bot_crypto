@@ -44,3 +44,11 @@ Kraken, Coinbase Pro (Advanced Trade), Bitfinex, Bybit, OKX, Bitstamp.
 
 - Documentar quirks de cada exchange añadido con ticket dedicado.
 - Definir cómo manejar pares suspendidos / en mantenimiento.
+
+---
+
+## Estado post-sprint-001 (2026-07-03)
+
+- TSK-101 (`ExchangeConnector` esqueleto CCXT) sigue `blocked-priority-2` a TSK-008 (CI baseline).
+- sin cambios en este archivo; las definiciones de sandbox, rate limits y permisos de API key siguen siendo guia valida para cuando entre TSK-101 en sprint-002.
+- TSK-008 (CI baseline) es bloqueante para evitar PRs de TSK-101 sin CI verde.

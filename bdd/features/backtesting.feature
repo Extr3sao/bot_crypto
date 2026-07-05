@@ -35,12 +35,8 @@ Feature: Backtesting
     Given datos de 6 meses
     When se ejecuta walk-forward con ventana 1 mes y avance 1 semana
     Then debe haber N ejecuciones out-of-sample
-    Y las métricas globales deben ser robustas (no una sola ventana)
+    And las métricas globales deben ser robustas (no una sola ventana)
 
   Scenario: Métricas mínimas exigidas
     When se evalúa un backtest
-    Then el informe debe contener como mínimo:
-      win rate, profit factor, expectancy, max drawdown,
-      Sharpe aprox., Sortino aprox., nº trades, tiempo medio,
-      mejor trade, peor trade, racha máxima pérdidas,
-      ratio beneficio/riesgo, coste total comisiones, slippage estimado
+    Then el informe debe contener como mínimo win rate, profit factor, expectancy, max drawdown, Sharpe aprox., Sortino aprox., nº trades, tiempo medio, mejor trade, peor trade, racha máxima pérdidas, ratio beneficio/riesgo, coste total comisiones y slippage estimado

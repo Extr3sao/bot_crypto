@@ -1,0 +1,33 @@
+--- a/scripts/push_f5_pr.ps1
++++ b/scripts/push_f5_pr.ps1
+@@ -119,9 +119,15 @@ if ($LASTEXITCODE -ne 0) {
+     exit 1
+ }
+
+-# 0.4 — CODEOWNERS teams pre-flight (CRITICAL: dual-review gate)
+-Write-Host "  [CHECK] CODEOWNERS pre-flight (strategy-team + security-team):" -ForegroundColor Yellow
++# 0.4 — CODEOWNERS teams pre-flight (round-17 Q1 fix: exact equality, NOT -SimpleMatch substring)
+ $allTeamsJson = & gh api /orgs/Extr3sao/teams --jq '.[].slug' 2>&1
+ if ($LASTEXITCODE -ne 0) {
+     Write-Host "  [RED] gh api /orgs/Extr3sao/teams failed: $allTeamsJson" -ForegroundColor Red
+     exit 4
+ }
+-$hasStrategy = ($allTeams | Select-String -SimpleMatch "strategy-team").Count -gt 0
+-$hasSecurity = ($allTeams | Select-String -SimpleMatch "security-team").Count -gt 0
++$allTeams = @($allTeamsJson | Where-Object { $_.Trim() -ne "" } | ForEach-Object { $_.Trim() })
++$hasStrategy = @($allTeams | Where-Object { $_ -eq "strategy-team" }).Count -gt 0
++$hasSecurity = @($allTeams | Where-Object { $_ -eq "security-team" }).Count -gt 0
+ if (-not $hasStrategy -or -not $hasSecurity) {
+
+@@ -148,7 +154,13 @@ Write-Host "[Phase 1] Branch ops: refresh main + create $Branch" -ForegroundColor Yellow
+ & git switch $PrBase
+ # --ff-only evita merge commits no deseados en la rama admin
++# round-17 Q2 fix: --ff-only failure ABORTS now (no longer warns-and-continues),
++# para evitar basar la nueva branch desde main stale.
+ $pullOut = & git pull --ff-only 2>&1
+ if ($LASTEXITCODE -ne 0) {
+-    Write-Host "  [WARN] git pull --ff-only failed: $pullOut" -ForegroundColor Yellow
++    Write-Host "  [RED] git pull --ff-only failed: $pullOut" -ForegroundColor Red
++    Write-Host "        NO procede continuar: la branch se basaria en main stale." -ForegroundColor Red
++    exit 12
+ }

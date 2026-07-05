@@ -31,7 +31,7 @@ src/trading_bot/
 | Módulo              | Responsabilidad                                              | Agente(s) responsable(s)        |
 | ------------------- | ------------------------------------------------------------- | ------------------------------- |
 | `app`               | Entrypoint CLI; argparse/Rich; arma scheduler; modos.         | App-level                       |
-| `config`            | Cargador Pydantic tipado de YAML; validación; defaults.       | strategy-engineer               |
+| `config`            | Cargador Pydantic tipado de YAML; validación; defaults; `FlatEnvAliasSource` (ADR-0010). | strategy-engineer               |
 | `market_data`       | Conector CCXT; OHLCV; validación de pares; sandbox.          | execution-engineer              |
 | `indicators`        | Implementación de EMA, RSI, MACD, ATR, BB, VWAP, vol rel., spread, volatilidad, momentum, OB imbalance. | strategy-engineer |
 | `strategies`        | Catálogo de estrategias; interfaz `Strategy.generate(snapshot) -> Signal?`. | strategy-engineer       |
@@ -56,9 +56,38 @@ src/trading_bot/
 
 ## Estado
 
-Estado actual: **fase 0 (Fundaciones)** — los módulos están como `__init__.py`
-vacíos o `pass`. El código real se construye siguiendo `tasks/roadmap.md`.
+Estado actual: **fase 1 (Market data) en transición**. La mayoría de los
+módulos siguen como `__init__.py` vacíos o `pass`. Lo entregado en
+sprint-001 (cerrado vía ADR-0011):
+
+- `src/trading_bot/config/` (M = 38 tests verdes, cobertura 95.03%):
+  `Settings`, `Exchange`, `Risk`, `Runtime`, `StrategiesConfig`,
+  `IndicatorsConfig`, `Universe` + `FlatEnvAliasSource` custom source.
+- `tests/unit/config/` con 10 nuevos regression tests del flat-env
+  alias contract (ADR-0010 firmada).
+
+Pendiente para sprint-002: TSK-008 (CI baseline, Pri 1) + TSK-101..105
+(canal de ingesta Fase 1) + TSK-110 (BDD market_scanner) como
+secundario.
+
+## Cambios recientes
+
+- **TSK-099 cerrado** vía PR
+  [#1](https://github.com/Extr3sao/bot_crypto/pull/1) squash-merge a
+  `main` (cabecera merged-commit apuntada por `git log -1 origin/main`).
+- **ADR-0010 firmada**: `FlatEnvAliasSource` flat-env → nested-path en
+  `src/trading_bot/config/settings.py`. Cubre `TRADING_MODE`,
+  `LIVE_TRADING_ENABLED`, `I_UNDERSTAND_THE_RISKS`, `EXCHANGE_ID`,
+  `EXCHANGE_SANDBOX`, `LOG_LEVEL`/`LOG_FORMAT`/`LOG_TO_FILE`/
+  `LOG_FILE_PATH`, `DATABASE_URL`, `SCHEDULER_TIMEZONE`,
+  `ACTIVE_HOURS_START/END`.
+- **ADR-0011 firmada** (cierre de sprint-001 con excepción: TSK-008
+  arrastrado a sprint-002 como Pri 1).
+- **sprint-001 cerrado** formalmente; **sprint-002 abierto** con
+  7 tickets en scope, columna `Pri` para ordenar ejecución.
 
 ## Última actualización
 
-Pendiente. Será regenerada por `context-engineer` tras cada PR grande.
+2026-07-03 — context-engineer tras cierre de sprint-001 y arranque de
+sprint-002 vía ADR-0011. Próximo refresh esperado post-TSK-008 (CI
+baseline que anclará `Python 3.11` + `coverage 90%`).

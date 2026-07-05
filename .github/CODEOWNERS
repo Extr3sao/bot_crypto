@@ -1,0 +1,151 @@
+# CODEOWNERS — github.com/Extr3sao/bot_crypto
+#
+# Los 9 agentes de `.ai/AGENTS.md` son ROLES metodológicos, NO GitHub
+# handles. Este archivo mapea cada path a un @team del org `Extr3sao`
+# (recomendado) o a individuos concretos (fallback mientras no existan
+# los equipos). Cada @team debe existir en el org antes de mergear
+# este archivo, valida con:
+#
+#   gh api /orgs/Extr3sao/teams --jq '.[].slug'
+#
+# Si un @team no existe, GitHub ignora esa línea y el PR queda sin
+# gate humano para ese path. Por eso la validación de pre-flight es
+# obligatoria.
+#
+# Tabla de traducción role → @team (referencia para humanos):
+#
+#   | Agente (AGENTS.md §2)        | @team en CODEOWNERS            |
+#   | ---------------------------- | ------------------------------ |
+#   | context-engineer             | @Extr3sao/context-team         |
+#   | quant-researcher             | @Extr3sao/quant-team           |
+#   | bdd-analyst                  | @Extr3sao/bdd-team             |
+#   | risk-manager                 | @Extr3sao/risk-team            |
+#   | strategy-engineer            | @Extr3sao/strategy-team        |
+#   | execution-engineer           | @Extr3sao/execution-team       |
+#   | backtest-engineer            | @Extr3sao/backtest-team        |
+#   | observability-engineer       | @Extr3sao/observability-team   |
+#   | security-reviewer            | @Extr3sao/security-team        |
+#
+# ===========================================================================
+# PRE-FLIGHT OBLIGATORIO antes de mergear este archivo a main:
+#
+#   gh api /orgs/Extr3sao/teams --jq '.[].slug'
+#
+# Si el comando anterior NO devuelve TODOS los 10 slugs (los 9 mapeados
+# arriba más @Extr3sao/maintainers), GitHub IGNORA las líneas que
+# referencian teams inexistentes sin error. El PR queda sin gate humano
+# para esos paths — es un fallo silencioso. NO mergear CODEOWNERS hasta
+# que todos los teams existan o hasta aplicar el fallback individual de
+# abajo.
+#
+# ===========================================================================
+# FALLBACK INDIVIDUAL para bootstrap temprano (mientras los @team no
+# existan en el org). Reemplazar los placeholders por usuarios reales UNA
+# SOLA VEZ y dejar como layer de seguridad redundante. Los @team siguen
+# siendo la fuente de verdad cuando se creen.
+#
+#   .ai/agents/security-reviewer.md    @<placeholder-security-handle>
+#   .ai/agents/strategy-engineer.md   @<placeholder-strategy-handle>
+#   .ai/agents/risk-manager.md        @<placeholder-risk-handle>
+#   .ai/agents/execution-engineer.md  @<placeholder-execution-handle>
+#
+# Validación post-merge de CODEOWNERS (corre errores silenciosos):
+#
+#   gh api /repos/Extr3sao/bot_crypto/codeowners/errors \
+#     --jq '.[].message'
+#
+# Si devuelve líneas con "team not found" o "user not found", el gate
+# humano está desactivado para esos paths.
+# ===========================================================================
+#
+# Conventional fallback (cualquier path sin override):
+/                                                                   @Extr3sao/maintainers
+
+# ---------------------------------------------------------------------------
+# Methodology owners: cada agente mapea a su propia ficha en .ai/agents/
+# ---------------------------------------------------------------------------
+/.ai/agents/context-engineer.md                                      @Extr3sao/context-team
+/.ai/agents/quant-researcher.md                                     @Extr3sao/quant-team
+/.ai/agents/bdd-analyst.md                                          @Extr3sao/bdd-team
+/.ai/agents/risk-manager.md                                         @Extr3sao/risk-team
+/.ai/agents/strategy-engineer.md                                    @Extr3sao/strategy-team
+/.ai/agents/execution-engineer.md                                   @Extr3sao/execution-team
+/.ai/agents/backtest-engineer.md                                    @Extr3sao/backtest-team
+/.ai/agents/observability-engineer.md                               @Extr3sao/observability-team
+/.ai/agents/security-reviewer.md                                    @Extr3sao/security-team
+
+# ---------------------------------------------------------------------------
+# Config / secrets: dual review (strategy + security). FlatEnvAliasSource
+# (ADR-0010) hace que TODO cambio aquí pueda afectar el mapa env→settings.
+# ---------------------------------------------------------------------------
+/config/                                                            @Extr3sao/strategy-team @Extr3sao/security-team
+/src/trading_bot/config/                                            @Extr3sao/strategy-team @Extr3sao/security-team
+/.env.example                                                       @Extr3sao/security-team
+/src/trading_bot/config/settings.py                                 @Extr3sao/strategy-team @Extr3sao/security-team
+/src/trading_bot/config/runtime.py                                  @Extr3sao/strategy-team @Extr3sao/security-team
+/src/trading_bot/config/risk.py                                     @Extr3sao/risk-team @Extr3sao/security-team
+
+# ---------------------------------------------------------------------------
+# Risk: veto de risk-manager. Drawdown, sizing, kill switch.
+# ---------------------------------------------------------------------------
+/src/trading_bot/risk/                                               @Extr3sao/risk-team @Extr3sao/security-team
+/config/risk.yaml                                                   @Extr3sao/risk-team @Extr3sao/security-team
+/quality/risk-quality-gates.md                                      @Extr3sao/risk-team
+
+# ---------------------------------------------------------------------------
+# Execution: idempotencia, retries, slippage, auditoría.
+# ---------------------------------------------------------------------------
+/src/trading_bot/execution/                                          @Extr3sao/execution-team @Extr3sao/security-team
+/src/trading_bot/market_data/                                        @Extr3sao/execution-team @Extr3sao/security-team
+/src/trading_bot/portfolio/                                          @Extr3sao/execution-team
+
+# ---------------------------------------------------------------------------
+# Strategy + BDD scenarios: las estrategias son contratos; los BDD
+# scenarios los validan.
+# ---------------------------------------------------------------------------
+/src/trading_bot/strategies/                                         @Extr3sao/strategy-team @Extr3sao/quant-team
+/bdd/features/*.feature                                              @Extr3sao/bdd-team @Extr3sao/strategy-team @Extr3sao/quant-team
+
+# ---------------------------------------------------------------------------
+# Scanner orchestrator (TSK-103.4 + TSK-103.5): dual review
+# (strategy + security) per ADR-0013 + cross-layer AST gate en
+# `tests/unit/scanner/test_cross_layer.py` (TASK-103.4.9 + TSK-103.5.3).
+# Cubrir ambos `src/` y `tests/` para que cualquier regresion del
+# frontera quede pineada por required_approving_review_count >= 2.
+# ---------------------------------------------------------------------------
+/src/trading_bot/scanner/                                              @Extr3sao/strategy-team @Extr3sao/security-team
+/tests/unit/scanner/                                                   @Extr3sao/strategy-team @Extr3sao/security-team
+/tests/bdd/                                                            @Extr3sao/strategy-team @Extr3sao/security-team
+
+# ---------------------------------------------------------------------------
+# Backtest engine: backtest-engineer firma lo reproducible.
+# ---------------------------------------------------------------------------
+/src/trading_bot/backtesting/                                        @Extr3sao/backtest-team @Extr3sao/quant-team
+/src/trading_bot/paper/                                              @Extr3sao/backtest-team @Extr3sao/execution-team
+
+# ---------------------------------------------------------------------------
+# CI / infra: workflows pueden mutar permisos o secretos. Dual review
+# (security + context-engineer).
+# ---------------------------------------------------------------------------
+/.github/workflows/                                                  @Extr3sao/security-team @Extr3sao/context-team
+/.github/CODEOWNERS                                                  @Extr3sao/context-team @Extr3sao/security-team
+/.github/PULL_REQUEST_TEMPLATE.md                                    @Extr3sao/context-team
+/pyproject.toml                                                      @Extr3sao/context-team
+/uv.lock                                                             @Extr3sao/context-team
+/.python-version                                                     @Extr3sao/context-team
+
+# ---------------------------------------------------------------------------
+# Doc governance: arquitectura, release gates, ADRs.
+# ---------------------------------------------------------------------------
+/docs/architecture.md                                                @Extr3sao/context-team
+/quality/                                                            @Extr3sao/context-team
+/tasks/decisions.md                                                  @Extr3sao/context-team
+/tasks/roadmap.md                                                    @Extr3sao/context-team
+/tasks/sprint-001.md /tasks/sprint-002.md /tasks/sprint-*.md         @Extr3sao/context-team
+/context/                                                            @Extr3sao/context-team
+
+# ---------------------------------------------------------------------------
+# Observabilidad: logs, métricas, alertas.
+# ---------------------------------------------------------------------------
+/src/trading_bot/observability/                                      @Extr3sao/observability-team
+/src/trading_bot/storage/                                            @Extr3sao/observability-team

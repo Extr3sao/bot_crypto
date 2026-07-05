@@ -246,6 +246,18 @@ Run-Step "7. python -m trading_bot.config --dump-json (artefacto)" {
   Invoke-Uv run python -m trading_bot.config --dump-json
 }
 
+# -------------------------------------------------------------------
+# Nota de seguridad ADR-0012
+# -------------------------------------------------------------------
+# El gate global de `pip-audit` del repo se ejecuta en CI Baseline
+# (`.github/workflows/ci.yml`) con una exclusion firmada para
+# `PYSEC-2026-597` en `nltk`, dependencia transitiva dev-only que NO se
+# usa en runtime del bot. Este script sigue focalizado a TSK-099 y por
+# diseno solo valida `src/trading_bot/config` + `tests/unit/config`.
+# Si en el futuro se amplia para auditar todo el repo localmente, usar:
+#   uv run pip-audit --ignore-vuln PYSEC-2026-597
+# y mantener ADR-0012 sincronizada.
+
 Write-Host ""
 Write-Host "=== TSK-099 validado end-to-end ===" -ForegroundColor Green
 Write-Host "Cierra TSK-099 con: 'feat: TSK-099 typed config with Pydantic v2' en develop." `

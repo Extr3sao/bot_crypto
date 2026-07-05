@@ -87,6 +87,37 @@ python -m trading_bot.app config-check
 python -m trading_bot.app run --mode backtest --strategy trend_pullback_scalping --symbol BTC/USDT
 ```
 
+## 🛠️ Quality gates (CI local)
+
+> Los mismos gates que GitHub Actions aplica en cada PR se ejecutan
+> 100% en local antes de pushear. Ref: [`docs/ci.md`](docs/ci.md) como
+> runbook canónico y `.github/workflows/ci.yml` como implementación
+> exacta.
+
+```bash
+# Setup (asume `uv` instalado + `.python-version` presente)
+uv sync --all-extras --dev
+
+# Format + lint
+uv run ruff format --check .
+uv run ruff check .
+
+# Type check (strict)
+uv run mypy .
+
+# Auditoria de CVEs
+uv run pip-audit -r <(uv export --all-extras --no-hashes)
+
+# Tests con coverage ≥ 90% (excl. markers slow + market para PR feedback < 5 min)
+uv run pytest -m "not slow and not market" --cov --cov-fail-under=90
+```
+
+En Windows, `scripts/validate_local.ps1` ejecuta los 7 gates
+secuencialmente con timeout y reporta OK/KO por gate. Antes de abrir
+un PR, valida en local; después CI ejecuta los mismos pasos en
+[`.github/workflows/ci.yml`](.github/workflows/ci.yml) sobre
+`ubuntu-latest`.
+
 ## 🛡️ Seguridad
 
 - Nunca commitees `.env`. Ver `.gitignore`.

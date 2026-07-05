@@ -1,0 +1,149 @@
+# CI Baseline (TSK-008)
+#
+# Este workflow define los 4 status-checks required por
+# quality/release-gates.md `Bloque 6`. Si renombras un job, actualiza
+# sincronizadamente `.github/workflows/ci.yml`, `quality/release-gates.md`
+# y `docs/ci.md` — pineado por CODEOWNERS + agents.
+
+name: CI Baseline
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+# Cancelar runs anteriores de la misma rama si llega un push nuevo.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+# ============================================================================
+# Jobs
+# ============================================================================
+# job.id (clave izquierda de YAML) == status-check name en branch protection.
+# Ver quality/release-gates.md `Required status checks`:
+#   1. format-and-lint      -> ruff format --check + ruff check
+#   2. type-check           -> mypy . strict
+#   3. pip-audit            -> uv export + pip-audit -r reqs.txt
+#   4. tests-and-coverage   -> pytest -m "not slow and not market" --cov-fail-under=90
+
+jobs:
+  # --------------------------------------------------------------------------
+  format-and-lint:
+    name: Format + Lint (Ruff)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+
+      - name: Set up Python (.python-version)
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: ".python-version"
+
+      - name: Sync dependencies
+        run: uv sync --all-extras --dev
+
+      - name: Ruff format --check
+        run: uv run ruff format --check .
+
+      - name: Ruff lint
+        run: uv run ruff check .
+
+  # --------------------------------------------------------------------------
+  type-check:
+    name: Type check (Mypy strict)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+
+      - name: Set up Python (.python-version)
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: ".python-version"
+
+      - name: Sync dependencies
+        run: uv sync --all-extras --dev
+
+      - name: Mypy strict
+        run: uv run mypy .
+
+  # --------------------------------------------------------------------------
+  pip-audit:
+    name: Security audit (pip-audit)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+
+      - name: Set up Python (.python-version)
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: ".python-version"
+
+      - name: Sync dependencies
+        run: uv sync --all-extras --dev
+
+      - name: uv export -> requirements.txt
+        run: uv export --all-extras --no-hashes > reqs.txt
+
+      - name: pip-audit
+        # ADR-0012: ignoramos temporalmente PYSEC-2026-597 (nltk 3.9.4),
+        # vulnerabilidad transitiva de tooling dev-only que no participa
+        # en runtime del bot. Revalidar en cada sprint review y retirar
+        # este ignore cuando desaparezca el parent dependency o exista fix.
+        run: uv run pip-audit --ignore-vuln PYSEC-2026-597 -r reqs.txt
+
+  # --------------------------------------------------------------------------
+  tests-and-coverage:
+    name: Tests + Coverage (pytest, fast)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+
+      - name: Set up Python (.python-version)
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: ".python-version"
+
+      - name: Sync dependencies
+        run: uv sync --all-extras --dev
+
+      - name: Pytest (excl. slow + market) + coverage >= 90%
+        # Mismas exclusions que docs/ci.md seccion 3: los markers `slow` y
+        # `market` se quedan para nightly CI por latencia.
+        run: uv run pytest -m "not slow and not market" --cov --cov-fail-under=90
