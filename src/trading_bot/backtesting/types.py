@@ -148,8 +148,8 @@ class Metrics(TypedDict):
       returns USD per trade promedio.
     - ``profit_factor``: **dimensionless ratio** (``gross_profit / gross_loss``,
       both in USD, so the ratio cancels out). Values < 1.0 mean net loss
-      (0.0 = no wins at all); values >= 1.0 mean profitable; ``float('inf')``
-      when all trades are winners.
+      (0.0 = no wins at all); ``1.0 = break-even`` (gross_profit == gross_loss);
+      values > 1.0 mean profitable; ``float('inf')`` when all trades are winners.
     - ``win_rate`` (0..1), ``max_drawdown`` (0..1 as fraction),
       ``cagr``, ``sharpe_ratio``, ``sortino_ratio``, ``calmar_ratio``:
       **dimensionless ratios** / percentages / annualized.
