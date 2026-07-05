@@ -47,7 +47,7 @@ como bloque de valor incremental sobre el scanner F1-F5 ya operativo.
 
 | ID | Titulo | Tam | Fase | Risk | Estado | Pri |
 | --- | --- | --- | --- | --- | --- | --- |
-| TSK-200 | Motor de indicadores (interface, registro, cache) | M | 2 | M | todo | 5 |
+| TSK-200 | Motor de indicadores (interface, registro, cache) | M | 2 | M | in_progress | 5 |
 | TSK-201 | EMA, RSI, MACD, ATR, BB | M | 2 | L | todo | 6 |
 | TSK-202 | VWAP, volume_relative, spread, volatilidad, momentum | M | 2 | M | todo | 7 |
 | TSK-203 | Order book imbalance (detras de un feature flag) | S | 2 | M | todo | 8 |
