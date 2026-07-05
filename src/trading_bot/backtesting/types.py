@@ -29,7 +29,7 @@ from __future__ import annotations
 import datetime
 from collections.abc import Iterator
 from dataclasses import dataclass
-from typing import Literal, Protocol, runtime_checkable
+from typing import Literal, Protocol, TypedDict, runtime_checkable
 
 
 @dataclass(frozen=True, slots=True)
@@ -110,7 +110,7 @@ class BacktestResult:
     final_equity: float
     trades: list[Trade]
     equity_curve: list[EquityPoint]
-    metrics: dict[str, float]
+    metrics: Metrics
 
 
 @dataclass(frozen=True, slots=True)
@@ -129,6 +129,46 @@ class BacktestContext:
     equity: float
     position_qty: float
     position_avg_price: float
+
+
+class Metrics(TypedDict):
+    """Contrato del payload ``BacktestResult.metrics`` (TSK-104 F2).
+
+    Pine contract:
+    - F1 baseline (4 keys): ``total_trades``, ``win_rate``,
+      ``profit_factor``, ``final_equity``.
+    - F2 advanced (7 keys adicionales): ``max_drawdown``, ``cagr``,
+      ``calmar_ratio``, ``sharpe_ratio``, ``sortino_ratio``,
+      ``avg_trade_pnl``, ``expectancy``.
+
+    Units (CRITICAL):
+    - ``expectancy``, ``avg_trade_pnl``, ``profit_factor``,
+      ``final_equity``: **monetary units (USDT)**. ``expectancy``
+      formula = ``(win_rate * avg_win) - (loss_rate * avg_loss)``
+      (Van K. Tharp), returns USD per trade promedio.
+    - ``win_rate`` (0..1), ``max_drawdown`` (0..1 as fraction),
+      ``cagr``, ``sharpe_ratio``, ``sortino_ratio``, ``calmar_ratio``:
+      **dimensionless ratios** / percentages / annualized.
+
+    Todas las keys son obligatorias: si no hay trades, los valores
+    derivados (win_rate, profit_factor, sharpe, etc.) se devuelven
+    como ``0.0`` (o ``float('inf')`` para ``profit_factor`` cuando
+    hay ganancias y ninguna perdida).
+    """
+
+    # F1 baseline
+    total_trades: float
+    win_rate: float
+    profit_factor: float
+    final_equity: float
+    # F2 advanced
+    max_drawdown: float
+    cagr: float
+    calmar_ratio: float
+    sharpe_ratio: float
+    sortino_ratio: float
+    avg_trade_pnl: float
+    expectancy: float
 
 
 @runtime_checkable
@@ -175,6 +215,7 @@ __all__ = [
     "BacktestResult",
     "EquityPoint",
     "Fill",
+    "Metrics",
     "OHLCVSourceProtocol",
     "Order",
     "StrategyProtocol",

@@ -4,29 +4,31 @@ Fase objetivo: 6.
 
 Componentes:
 - ``Engine``: itera velas y emite ordenes simuladas. Pine contract:
-  mismo input -> misma output (determinismo). Comisiones y slippage
-  flat-pct en F1; F2 introducira modelos mas finos.
-- ``Commissions``: fee model configurable (F2: tiered, maker/taker).
-- ``Slippage``: modelo configurable (F2: volume-weighted, random).
-- ``Metrics``: win rate, profit factor, expectancy, drawdown,
-  Sharpe aprox., Sortino aprox., n trades, mejor/peor trade,
-  racha max perdidas, ratio B/R, etc. (F2 anadira los que faltan;
-  F1 solo calcula 4 baseline).
+  mismo input -> misma output (determinismo).
+- ``Commissions``: fee model configurable (F2: ``CommissionModel``
+  protocol + ``FlatPctCommission`` + ``TieredCommission``).
+- ``Slippage``: modelo configurable (F2: ``SlippageModel`` protocol
+  + ``FlatBpsSlippage`` + ``VolumeImpactSlippage``).
+- ``Metrics``: 4 baseline (F1) + 7 advanced (F2): win_rate,
+  profit_factor, expectancy, drawdown, Sharpe, Sortino, CAGR,
+  Calmar, n trades, avg trade pnl, etc.
 - ``WalkForward``: separacion train/test con avance (F3, ADR-0007).
 
-F1 status: implementa ``Engine`` skeleton + tipos + protocolos.
-La data source es un ``OHLCVSourceProtocol``; F1 provee un fake
-in-memory para tests, F2 anadira un adapter sobre ``OHLCVStore``
-(TSK-102) cuando se mergea a main.
+F2 status: F1 + commission/slippage refinados (Protocol-based,
+pluggable) + 7 metricas advanced. Engine acepta tanto ``float``
+(backward compat) como modelos explicitos.
 """
 
+from .commissions import CommissionModel, FlatPctCommission, TieredCommission
 from .engine import BacktestEngine
+from .slippage import FlatBpsSlippage, SlippageModel, VolumeImpactSlippage
 from .types import (
     OHLCV,
     BacktestContext,
     BacktestResult,
     EquityPoint,
     Fill,
+    Metrics,
     OHLCVSourceProtocol,
     Order,
     StrategyProtocol,
@@ -34,14 +36,25 @@ from .types import (
 )
 
 __all__ = [
+    # Types
     "OHLCV",
     "BacktestContext",
+    # Engine
     "BacktestEngine",
     "BacktestResult",
+    # Commissions (F2)
+    "CommissionModel",
     "EquityPoint",
     "Fill",
+    "FlatBpsSlippage",
+    "FlatPctCommission",
+    "Metrics",
     "OHLCVSourceProtocol",
     "Order",
+    # Slippage (F2)
+    "SlippageModel",
     "StrategyProtocol",
+    "TieredCommission",
     "Trade",
+    "VolumeImpactSlippage",
 ]

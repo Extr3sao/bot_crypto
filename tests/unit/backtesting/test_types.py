@@ -125,7 +125,19 @@ def test_backtest_result_is_frozen() -> None:
         final_equity=10_500.0,
         trades=[],
         equity_curve=[],
-        metrics={"total_trades": 0.0},
+        metrics={
+            "total_trades": 0.0,
+            "win_rate": 0.0,
+            "profit_factor": 0.0,
+            "final_equity": 10_500.0,
+            "max_drawdown": 0.0,
+            "cagr": 0.0,
+            "calmar_ratio": 0.0,
+            "sharpe_ratio": 0.0,
+            "sortino_ratio": 0.0,
+            "avg_trade_pnl": 0.0,
+            "expectancy": 0.0,
+        },
     )
     with pytest.raises(dataclasses.FrozenInstanceError):
         result.final_equity = 0.0  # type: ignore[misc]
