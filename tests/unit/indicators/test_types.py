@@ -1,15 +1,19 @@
-"""Tests for ``IndicatorOutput`` contract (TSK-200.1.2).
+"""Tests for ``IndicatorOutput`` contract (TSK-200.1.2 + 1.3).
 
-Per docs/specs/TSK-200-indicators-interface/05-tasks.md row .2:
+Per docs/specs/TSK-200-indicators-interface/05-tasks.md:
 
-- DoD: ``FrozenInstanceError`` on mutation; ``slots=True`` verified.
+- TSK-200.1.2 DoD: ``FrozenInstanceError`` on mutation; ``slots=True``
+  verified.
+- TSK-200.1.3 DoD: NaN, ±inf, non-float raise explicitly; valid
+  floats pass.
 
-Two tests cover those exact invariants; ``IndicatorParams`` is shipped
-alongside but its invariants land in TSK-200.1.3, alongside the
-``__post_init__`` finiteness checks.
+Five tests cover those exact invariants; ``IndicatorParams`` is shipped
+alongside but its invariants land in TSK-200.1.4, alongside the
+exception hierarchy.
 """
 
 import dataclasses
+import math
 
 import pytest
 
@@ -37,3 +41,36 @@ def test_indicator_output_frozen_slots() -> None:
     assert not hasattr(output, "__dict__")
     with pytest.raises(AttributeError):
         output.nonexistent = 1.0  # type: ignore[attr-defined]
+
+
+def test_indicator_output_post_init_rejects_nan() -> None:
+    """NaN entries in ``values`` raise ``ValueError`` at construction."""
+    with pytest.raises(ValueError, match="finite"):
+        IndicatorOutput(values={"ema": float("nan")})
+
+
+def test_indicator_output_post_init_rejects_inf() -> None:
+    """``+inf`` and ``-inf`` entries raise ``ValueError`` at construction."""
+    with pytest.raises(ValueError, match="finite"):
+        IndicatorOutput(values={"pos": math.inf})
+    with pytest.raises(ValueError, match="finite"):
+        IndicatorOutput(values={"neg": -math.inf})
+
+
+def test_indicator_output_post_init_rejects_non_float() -> None:
+    """Non-float entries (``str``, ``int``) raise ``TypeError`` at
+    construction.
+
+    Only the ``str`` case carries a ``# type: ignore[dict-item]``
+    suppression: mypy rejects ``dict[str, str]`` against ``dict[str,
+    float]``.  The ``int`` case does NOT — mypy treats ``dict[str,
+    int]`` as compatible (int promotes to float implicitly under PEP
+    484 in argument positions); a suppression there would be
+    ``[unused-ignore]`` dead code.  ``__post_init__`` still rejects
+    the runtime int via ``isinstance(value, float)``, so the test path
+    is intact.
+    """
+    with pytest.raises(TypeError, match="must be float"):
+        IndicatorOutput(values={"x": "1.0"})  # type: ignore[dict-item]
+    with pytest.raises(TypeError, match="must be float"):
+        IndicatorOutput(values={"x": 1})
