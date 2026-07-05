@@ -40,8 +40,11 @@ directamente sin ``@pytest.mark.asyncio`` explicito).
 from __future__ import annotations
 
 import asyncio
-import dataclasses
 import ast
+import dataclasses
+import json
+import math
+from collections.abc import Mapping
 from pathlib import Path
 
 import pytest
@@ -68,8 +71,6 @@ from trading_bot.scanner.types import MarketSnapshot
 # that step defs must live in conftest.py for pytest-bdd's conftest
 # mechanism to make them globally visible — putting them in test_*.py
 # re-introduces the 149/161-failures regression from F5 round-17..23).
-import math
-
 from trading_bot.indicators import (
     EmaIndicator,
     IndicatorCache,
@@ -78,6 +79,7 @@ from trading_bot.indicators import (
     InsufficientHistoryError,
     compute_params_hash,
 )
+from trading_bot.indicators.exceptions import RegistryFrozenError
 
 
 # ===========================================================================
@@ -1077,8 +1079,6 @@ def _when_compute(ohlcv_100: list[OHLCV], match) -> object:
     parameter ``params: str`` causes pytest to look for a fixture
     named ``params`` and fail with ``fixture 'params' not found``.
     """
-    import json
-
     params = match.group(1)
     parsed = json.loads(params)
     return EmaIndicator().compute(ohlcv_100, parsed)
@@ -1091,8 +1091,6 @@ def _then_is_indicator_output(compute_out: IndicatorOutput) -> None:
 
 @then("el campo values es un Mapping[str, float]")
 def _then_values_is_mapping(compute_out: IndicatorOutput) -> None:
-    from collections.abc import Mapping
-
     assert isinstance(compute_out.values, Mapping)
     for k, v in compute_out.values.items():
         assert isinstance(k, str)
@@ -1137,8 +1135,6 @@ def _then_assign_values_whole_raises(frozen_output: IndicatorOutput) -> None:
     """IndicatorOutput is a frozen dataclass; reassigning ``.values``
     triggers ``FrozenInstanceError`` (AttributeError subclass).
     """
-    import dataclasses
-
     with pytest.raises((dataclasses.FrozenInstanceError, AttributeError, TypeError)):
         frozen_output.values = {}  # type: ignore[misc]
 
@@ -1259,8 +1255,6 @@ def _when_freeze(two_ind_registry: IndicatorRegistry) -> None:
 
 @then("cualquier register() posterior levanta RegistryFrozenError")
 def _then_post_freeze_raises(two_ind_registry: IndicatorRegistry) -> None:
-    from trading_bot.indicators.exceptions import RegistryFrozenError
-
     with pytest.raises(RegistryFrozenError):
         two_ind_registry.register("x", EmaIndicator())
 
@@ -1569,9 +1563,6 @@ def _when_ast_walk() -> list[str]:
     ``tests/unit/indicators/test_cross_layer.py``.  Kept inline so
     BDD scenarios are self-contained and runnable in isolation.
     """
-    import ast
-    from pathlib import Path
-
     FORBIDDEN = (
         "trading_bot.strategies",
         "trading_bot.execution",
