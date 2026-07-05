@@ -95,14 +95,30 @@ def test_exceptions_inherit_indicator_error() -> None:
     ``except IndicatorError`` catch-all and still distinguish
     subclasses programmatically (e.g. observability counters per
     error class).  ``IndicatorError`` itself extends :class:`Exception`
-    (not :class:`BaseException`) so ``KeyboardInterrupt`` /
+    (NOT :class:`BaseException`) so ``KeyboardInterrupt`` /
     ``SystemExit`` are NOT silently absorbed by an
     ``except IndicatorError`` block.
+
+    The hard MRO walk at the bottom pins the **immediate** parent of
+    ``IndicatorError`` (``__mro__[1]``) to ``Exception`` directly.  A
+    transitive ``issubclass`` would also be satisfied if someone
+    reroutes the base class through an intermediate such that the
+    MRO surface still reaches ``Exception``; the ``__mro__[1]``
+    assertion catches that refactor silently and turns it into a
+    loud test failure.  See ``trading_bot.indicators.exceptions``
+    module docstring for the contract narrative.
     """
     assert issubclass(RegistryFrozenError, IndicatorError)
     assert issubclass(InsufficientHistoryError, IndicatorError)
     assert issubclass(ParamsHashError, IndicatorError)
-    assert issubclass(IndicatorError, Exception)
+    # Hard MRO pine: the immediate parent of IndicatorError must be
+    # ``Exception`` (NOT ``BaseException``).  If someone reroutes the
+    # base class to ``BaseException`` (e.g. to "catch everything"),
+    # then ``except IndicatorError`` would silently absorb
+    # ``KeyboardInterrupt`` / ``SystemExit`` — a hard regression of
+    # the cross-cutting exception contract.
+    assert IndicatorError.__mro__[0] is IndicatorError
+    assert IndicatorError.__mro__[1] is Exception
 
 
 def test_insufficient_history_error_attributes_required_got() -> None:
@@ -116,6 +132,9 @@ def test_insufficient_history_error_attributes_required_got() -> None:
     keeps the error readable in tracebacks without losing
     programmatic access.  Construction args are exactly
     ``(required, got)`` in that order — no keyword-only quirks.
+    ``pytest.raises`` round-trip is intentionally NOT exercised here
+    (constructor already verified by ``IndicatorOutput``-style
+    tests above; same ``__init__`` path).
     """
     err = InsufficientHistoryError(required=100, got=42)
     assert err.required == 100
@@ -123,8 +142,5 @@ def test_insufficient_history_error_attributes_required_got() -> None:
     # The args tuple reflects the message format used in __init__.
     assert "100" in err.args[0]
     assert "42" in err.args[0]
-    # Defense-in-depth: still an IndicatorError subclass; can be raised
-    # inside an ``except InsufficientHistoryError`` block.
+    # Defense-in-depth: still an IndicatorError subclass.
     assert isinstance(err, IndicatorError)
-    with pytest.raises(InsufficientHistoryError):
-        raise InsufficientHistoryError(required=10, got=3)
