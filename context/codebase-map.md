@@ -54,7 +54,7 @@ src/trading_bot/
 4. **`market_data` no calcula señales** — solo datos normalizados.
 5. **`observability` no muta estado** — solo lo describe.
 6. **`config` no contiene secretos** — solo defaults leídos desde `.env` en runtime.
-7. **`scanner` no importa** de `execution`, `strategies`, `risk`, `portfolio`, `exchange` (verificado via static import lint en F5).
+7. **`scanner` no importa** de `execution`, `strategies`, `risk`, `portfolio`, `exchange` (verificado por el BDD scenario "Scanner no importa exchange/strategies/execution/risk/portfolio" en `bdd/features/market_scanner.feature`; el ``conftest.py`` pine contract es independiente - consolida step defs en Pattern A).
 
 ## Estado
 
