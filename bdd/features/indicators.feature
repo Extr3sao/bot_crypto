@@ -58,8 +58,7 @@ Feature: Indicator engine
 
   # ----------------- RF-5 -----------------
   Scenario: Cache hit con misma (name, params_hash, last_candle_ts)
-    Given un IndicatorCache vacio con last_candle_ts = 1700000000000
-    And un result A = compute(ohlcv_100, {"period": 9}) cacheado en ("ema", hash, ts)
+    Given un IndicatorCache con un result A = compute(ohlcv_100, {"period": 9}) cacheado en ("ema", hash, ts) sobre cache vacio
     When compute(ohlcv_100, {"period": 9}) es invocado de nuevo
     Then el cache devuelve el mismo result A sin recomputar
     And cache.stats().hits incrementa en 1
@@ -112,7 +111,7 @@ Feature: Indicator engine
   # ----------------- CL-1 -----------------
   Scenario: OHLCV vacio raise InsufficientHistoryError(required=2, got=0)
     Given un OHLCV vacio (lista de 0 velas)
-    When compute(ohlcv, {"period": 9}) es invocado
+    When compute(ohlcv, {"period": 9}) es invocado con OHLCV vacio
     Then debe levantar InsufficientHistoryError(required=at_least_1, got=0)
     And el log estructurado contiene "insufficient_history"
 
@@ -126,7 +125,8 @@ Feature: Indicator engine
   # ----------------- CL-3 -----------------
   Scenario: params no-Mapping raise TypeError defensivo
     Given params = [1, 2, 3] (lista, no Mapping)
-    When compute(ohlcv, params) es invocado
+    And un OHLCV de 13 velas sinteticas
+    When compute(ohlcv, [1, 2, 3]) es invocado con params no-Mapping
     Then debe levantar TypeError("params debe ser Mapping[str, Any]")
 
   # ----------------- CL-4 -----------------
