@@ -152,3 +152,23 @@
 - Estrategias adicionales (orden-flow, market-neutral pairs).
 - Dashboard web minimo.
 - Alertas por Telegram.
+
+## TSK-104 F3a — multi-symbol + per-fold reports
+
+- Branch: feature/tsk-104-f3-multi-symbol-walkforward
+- DoD (per ADR-0012):
+  - `run(symbol: str | list[str])` backward compat verde
+  - cross-symbol aggregation reusa `_compute_metrics`
+  - `reports.py::build_fold_report` verde
+  - tests + coverage >= 90%
+- Riesgo: drag de symbols en equity_curve sum (determinismo OK con sort).
+
+## TSK-104 F3b — walk-forward + cross-fold reports
+
+- Blocked-by: TSK-104 F3a (reports module base).
+- DoD (per ADR-0012):
+  - `WalkForwardSplit.__post_init__` strict invariant
+  - data-leakage checker en `walk_forward_run`
+  - `build_walk_forward_report` cross-fold aggregate
+  - Hypothesis property test para no-overlap invariant
+- Riesgo: data-leakage silent fail (mitigado con ValueError fail-loud).
