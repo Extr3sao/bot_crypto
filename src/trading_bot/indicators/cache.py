@@ -32,7 +32,7 @@ from typing import Any
 from trading_bot.indicators.exceptions import ParamsHashError
 from trading_bot.indicators.types import IndicatorOutput, IndicatorParams
 
-__all__ = ["compute_params_hash", "IndicatorCache", "IndicatorCacheStats"]
+__all__ = ["IndicatorCache", "IndicatorCacheStats", "compute_params_hash"]
 
 
 def compute_params_hash(params: Mapping[str, Any]) -> int:
