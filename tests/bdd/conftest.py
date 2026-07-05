@@ -79,7 +79,7 @@ from trading_bot.indicators import (
     InsufficientHistoryError,
     compute_params_hash,
 )
-from trading_bot.indicators.exceptions import RegistryFrozenError
+from trading_bot.indicators.exceptions import ParamsHashError, RegistryFrozenError
 
 
 # ===========================================================================
@@ -1058,28 +1058,22 @@ def _given_registry_ema9(empty_registry: IndicatorRegistry) -> IndicatorRegistry
 
 
 @when(
-    parsers.re(r"compute\(ohlcv, (\{.*?\})\) es invocado$"),
+    parsers.re(r"compute\(ohlcv, (?P<params>\{.*?\})\) es invocado$"),
     target_fixture="compute_out",
 )
-def _when_compute(ohlcv_100: list[OHLCV], match) -> object:
+def _when_compute(ohlcv_100: list[OHLCV], params: str) -> IndicatorOutput:
     r"""Step def for scenario 1 (RF-1): run EmaIndicator on the 100-candle
     synthetic OHLCV with the JSON-literal params extracted from the
-    step text via parsers.re's capture group.
+    step text via parsers.re's NAMED capture group ``(?P<params>...)``.
 
-    Note: prior round used ``parsers.parse('compute(ohlcv, {params}) es
-    invocado')`` but Python's ``parse`` library treats literal ``{``
-    and ``}`` as escape characters -- they need doubling (``{{`` /
-    ``}}``) and the inner capture handling becomes brittle for nested
-    JSON.  ``parsers.re`` with ``\{.*?\}`` captures the entire JSON
-    literal as a string, which we then ``json.loads`` into a dict
-    for the indicator's ``compute`` call.
-
-    pytest-bdd 7+ passes the regex match object via the special
-    ``match`` parameter (not as a named fixture).  Using a named
-    parameter ``params: str`` causes pytest to look for a fixture
-    named ``params`` and fail with ``fixture 'params' not found``.
+    pytest-bdd 8+ ``parsers.re.parse_arguments`` returns
+    ``match.groupdict()`` (named groups only) and injects each key as
+    a fixture.  An unnamed capture group yields an empty ``groupdict``
+    and the ``match`` object is never wired up -- that was the root
+    cause of the prior round's ``fixture 'match' not found`` failure.
+    Using ``(?P<params>...)`` makes ``params`` available as a
+    positional fixture argument.
     """
-    params = match.group(1)
     parsed = json.loads(params)
     return EmaIndicator().compute(ohlcv_100, parsed)
 
@@ -1224,6 +1218,12 @@ def _then_duplicate_raises(registry_with_ema: IndicatorRegistry) -> None:
 
 @when('registro en orden "alpha", "beta", "gamma"')
 def _when_register_three(empty_registry: IndicatorRegistry) -> None:
+    # NOTE: EmaIndicator.name is hardcoded to "ema", so registering
+    # three EmaIndicator instances under different keys would NOT
+    # surface as distinct names via [ind.name for ind in .all()].
+    # The registry stores the *registered* name as the dict key;
+    # we assert on those keys (insertion order) rather than the
+    # indicator's intrinsic .name attribute.
     empty_registry.register("alpha", EmaIndicator())
     empty_registry.register("beta", EmaIndicator())
     empty_registry.register("gamma", EmaIndicator())
@@ -1231,7 +1231,9 @@ def _when_register_three(empty_registry: IndicatorRegistry) -> None:
 
 @then("all() devuelve [alpha, beta, gamma] en ese orden")
 def _then_alpha_beta_gamma_order_preserved(empty_registry: IndicatorRegistry) -> None:
-    names = [ind.name for ind in empty_registry.all()]
+    # The registry preserves insertion order via its underlying dict;
+    # iterating yields the registered names, not the indicator's .name.
+    names = list(empty_registry)
     assert names == ["alpha", "beta", "gamma"]
 
 
@@ -1731,9 +1733,16 @@ def _when_construct_cache_key(callable_params: dict[str, object]) -> None:
     _ = callable_params
 
 
-@then("debe levantar TypeError (callable not JSON-serializable)")
-def _then_callable_raises(callable_params: dict[str, object]) -> None:
-    with pytest.raises(TypeError):
+@then("debe levantar ParamsHashError (callable not JSON-serializable)")
+def _then_callable_raises_params_hash_error(callable_params: dict[str, object]) -> None:
+    """Pre-existing F4 test design bug (round 5 closure): the Gherkin
+    previously asserted ``TypeError`` but the production code wraps the
+    stdlib ``TypeError`` (raised by ``json.dumps`` on a non-JSON value
+    like a callable) into the engine-class ``ParamsHashError`` so callers
+    can ``except IndicatorError`` uniformly.  We assert the documented
+    contract here.
+    """
+    with pytest.raises(ParamsHashError):
         compute_params_hash(callable_params)
 
 

@@ -34,6 +34,7 @@ requiere un restart del process.
 from __future__ import annotations
 
 from collections import OrderedDict
+from collections.abc import Iterator
 
 from trading_bot.indicators.exceptions import RegistryFrozenError
 from trading_bot.indicators.protocols import Indicator
@@ -151,3 +152,17 @@ class IndicatorRegistry:
     def __len__(self) -> int:
         """Return the number of registered indicators."""
         return len(self._indicators)
+
+    def __iter__(self) -> Iterator[str]:
+        """Iterate over registered names in insertion order.
+
+        Mirrors the underlying ``OrderedDict`` iteration so callers
+        can do ``for name in registry:`` or ``list(registry)`` and get
+        the registered names (not the indicator objects).  This is
+        the canonical way to assert on registration order in tests
+        (e.g. BDD Scenario 6 "Orden de registro preservado en
+        iteracion") without depending on the ``Indicator.name``
+        attribute (which is intrinsic to the indicator class and
+        independent of the key it was registered under).
+        """
+        return iter(self._indicators)

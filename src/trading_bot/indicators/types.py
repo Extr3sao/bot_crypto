@@ -19,6 +19,7 @@ from __future__ import annotations
 import math
 from collections.abc import Mapping
 from dataclasses import dataclass
+from types import MappingProxyType
 from typing import Any
 
 __all__ = ["IndicatorOutput", "IndicatorParams"]
@@ -54,12 +55,18 @@ class IndicatorOutput:
 
     __slots__ = ("values",)
 
-    values: dict[str, float]
+    values: Mapping[str, float]
 
     def __post_init__(self) -> None:
-        """Validate the ``values`` payload at construction time.
+        """Validate the ``values`` payload at construction time + freeze it.
 
-        Rejects:
+        RNF-6 (full immutability): the frozen dataclass prevents
+        reassignment of the ``values`` attribute, but a plain ``dict``
+        is itself mutable, so ``output.values["x"] = 1`` would still
+        succeed.  We wrap the mapping in ``types.MappingProxyType`` so
+        the payload is read-only at both levels (no rebind, no mutation).
+
+        Also rejects:
         - non-``float`` entries (``TypeError``): ``str``, ``int``,
           ``bool``, ``complex``, ``None``, etc.  ``isinstance(True,
           float)`` is ``False``, so booleans are correctly rejected
@@ -81,3 +88,9 @@ class IndicatorOutput:
             if not math.isfinite(value):
                 # math.isfinite is False for NaN, +inf, -inf in one check.
                 raise ValueError(f"IndicatorOutput.values[{key!r}] must be finite, got {value}")
+        # Freeze the inner mapping.  ``frozen=True`` blocks attribute
+        # reassignment but NOT mutation of a mutable field, so we
+        # swap the dict for a read-only ``MappingProxyType`` view.
+        # ``object.__setattr__`` is the documented escape hatch for
+        # frozen dataclasses (see dataclasses docs + PEP 818).
+        object.__setattr__(self, "values", MappingProxyType(self.values))

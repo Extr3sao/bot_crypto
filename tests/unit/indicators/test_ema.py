@@ -35,6 +35,7 @@ The companion implementation lives at
 from __future__ import annotations
 
 import math
+from collections.abc import Mapping
 from typing import cast
 
 import pytest
@@ -115,7 +116,7 @@ def test_compute_basic_periods(period: int) -> None:
     out = indicator.compute(ohlcv, {"period": period})
 
     assert isinstance(out, IndicatorOutput)
-    assert isinstance(out.values, dict)
+    assert isinstance(out.values, Mapping)
     assert "ema" in out.values
     val = out.values["ema"]
     # Strict finiteness check — pins F1 __post_init__ invariant.

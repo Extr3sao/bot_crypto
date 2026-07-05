@@ -130,10 +130,10 @@ Feature: Indicator engine
     Then debe levantar TypeError("params debe ser Mapping[str, Any]")
 
   # ----------------- CL-4 -----------------
-  Scenario: params con callable raise TypeError al construir params_hash
+  Scenario: params con callable raise ParamsHashError al construir params_hash
     Given params = {"fn": lambda x: x}
     When intento construir cache_key = ("ema", params_hash(params), ts)
-    Then debe levantar TypeError (callable not JSON-serializable)
+    Then debe levantar ParamsHashError (callable not JSON-serializable)
 
   # ----------------- CL-5 -----------------
   Scenario: last_candle_ts decreciente log warn + cache miss tratado

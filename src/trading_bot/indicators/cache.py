@@ -79,7 +79,11 @@ def compute_params_hash(params: Mapping[str, Any]) -> int:
               raises, the engine-class wrap catches it.
     """
     try:
-        canonical = json.dumps(dict(params), sort_keys=True, default=str)
+        # RNF-5 determinism: no `default=str` fallback -- a callable's
+        # str() embeds its memory address, which is non-deterministic
+        # across Python runs and would silently break the cache contract.
+        # Let json.dumps raise TypeError instead, then wrap.
+        canonical = json.dumps(dict(params), sort_keys=True)
     except (TypeError, ValueError) as exc:
         # Engine-class wrap: per ``trading_bot.indicators.exceptions``
         # contract, ``ParamsHashError`` inherits from ``IndicatorError``
