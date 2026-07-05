@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import datetime
 import math
+import statistics
 from collections.abc import Iterator
 from itertools import pairwise
 
@@ -533,8 +534,6 @@ def test_engine_metrics_sharpe_known_returns() -> None:
         end=end,
         timeframe="1d",
     )
-    import statistics
-
     expected_sharpe = (statistics.mean(rets) / statistics.stdev(rets)) * math.sqrt(365)
     assert metrics["sharpe_ratio"] == pytest.approx(expected_sharpe, rel=1e-3)
 
@@ -602,6 +601,11 @@ def test_engine_metrics_sharpe_single_trade_gated_to_zero() -> None:
 def test_engine_metrics_sortino_mixed_returns_filters_downside() -> None:
     """Sortino: only downside returns (pnl_pct < 0) contribute to denominator.
 
+    Pine contract: downside_count >= 2 — ``statistics.stdev(downside)`` requires
+    at least 2 negative returns (sample stdev requires n>=2). With 0 or 1
+    negative returns, Sortino is gated to 0.0 (see ``BacktestEngine._compute_sortino``).
+    The example below has exactly 2 negative returns, satisfying this gate.
+
     rets = [+0.05, -0.01, +0.05, -0.02] -> mean=0.0175, downside_std~0.015, ppy=365.
     """
     src = FakeOHLCVSource([])
@@ -652,8 +656,6 @@ def test_engine_metrics_sortino_mixed_returns_filters_downside() -> None:
     # Sortino formula: mean(rets) / downside_std(rets) * sqrt(ppy)
     # downside_std uses only rets<0: [-0.01, -0.02] -> mean=-0.015, sample stdev~0.00707
     downside = [r for r in rets if r < 0]
-    import statistics
-
     expected_sortino = (statistics.mean(rets) / statistics.stdev(downside)) * math.sqrt(365)
     assert metrics["sortino_ratio"] == pytest.approx(expected_sortino, rel=1e-3)
 

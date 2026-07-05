@@ -341,13 +341,17 @@ class BacktestEngine:
         ``expectancy``.
 
         Units (CRITICAL for downstream consumers):
-        - ``expectancy``, ``avg_trade_pnl``, ``profit_factor``, ``final_equity``:
+        - ``expectancy``, ``avg_trade_pnl``, ``final_equity``:
           ABSOLUTE monetary units (quote currency, e.g. USDT).
           ``expectancy = (win_rate * avg_win) - (loss_rate * avg_loss)``
           is the industry-standard formula (Van K. Tharp) and returns
           CUANTO dinero se gana/perdio por trade en promedio, NO un
           porcentaje. Para compararlo entre portfolios de distintos
           tamanos, dividir por ``initial_capital``.
+        - ``profit_factor``: DIMENSIONLESS ratio (``gross_profit / gross_loss``,
+          both in USD, so the ratio cancels out). Values < 1.0 = perdida neta
+          (0.0 = sin wins); values >= 1.0 = profitable;
+          ``float('inf')`` cuando todos los trades son winners.
         - ``win_rate``, ``max_drawdown``, ``cagr``, ``sharpe_ratio``,
           ``sortino_ratio``, ``calmar_ratio``: DIMENSIONLESS ratios
           (0..1 para rates/drawdown, anualizados para los demas).

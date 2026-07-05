@@ -142,10 +142,14 @@ class Metrics(TypedDict):
       ``avg_trade_pnl``, ``expectancy``.
 
     Units (CRITICAL):
-    - ``expectancy``, ``avg_trade_pnl``, ``profit_factor``,
-      ``final_equity``: **monetary units (USDT)**. ``expectancy``
-      formula = ``(win_rate * avg_win) - (loss_rate * avg_loss)``
-      (Van K. Tharp), returns USD per trade promedio.
+    - ``expectancy``, ``avg_trade_pnl``, ``final_equity``:
+      **monetary units (USDT)**. ``expectancy`` formula =
+      ``(win_rate * avg_win) - (loss_rate * avg_loss)`` (Van K. Tharp),
+      returns USD per trade promedio.
+    - ``profit_factor``: **dimensionless ratio** (``gross_profit / gross_loss``,
+      both in USD, so the ratio cancels out). Values < 1.0 mean net loss
+      (0.0 = no wins at all); values >= 1.0 mean profitable; ``float('inf')``
+      when all trades are winners.
     - ``win_rate`` (0..1), ``max_drawdown`` (0..1 as fraction),
       ``cagr``, ``sharpe_ratio``, ``sortino_ratio``, ``calmar_ratio``:
       **dimensionless ratios** / percentages / annualized.
