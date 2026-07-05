@@ -107,6 +107,10 @@ ignore_missing_imports = true
 minversion = "8.0"
 addopts = "-ra --strict-markers --strict-config"
 testpaths = ["tests"]
+# pythonpath enables `python -c "import trading_bot.X"` (no env hacks) AND
+# pytest-bdd collection outside conftest auto-discovery. Resolves the F1
+# DoD-literal caveat surfaced by code-review on commit 7010c3a.
+pythonpath = ["src"]
 markers = [
   "unit: pruebas unitarias",
   "integration: pruebas que requieren servicios externos o red",
