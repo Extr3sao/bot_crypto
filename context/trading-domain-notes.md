@@ -47,3 +47,11 @@
 
 `disabled` → `research` → `paper` → `live_candidate` → `live`.
 Una estrategia NO puede saltarse estados. Cada promoción queda en `tasks/decisions.md`.
+
+---
+
+## Estado post-sprint-001 (2026-07-03)
+
+- TSK-099 (configuración tipada con Pydantic v2 + `FlatEnvAliasSource` ADR-0010) cerrado y mergeado a `main` como PR #1.
+- TSK-008 (CI baseline, sprint-002 Pri 1) arranca con spec `docs/ci.md`.
+- todavia sin trabajo de Fase 1 implementado (TSK-101..105 sigue `blocked-priority-2..7` a TSK-008). Los términos conceptuales arriba siguen siendo guia; los modulos concretos se construiran en sprint-002.

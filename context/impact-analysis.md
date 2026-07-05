@@ -45,9 +45,11 @@ Por cada cambio:
 
 ## Cambios recientes
 
-| Fecha | Cambio | Módulos afectados | Riesgos | Mitigación |
-| ----- | ------ | ----------------- | ------- | ---------- |
-| —     | Inicial  | todos (esqueleto) | bajo    | n/a        |
+| Fecha       | Cambio                                                                  | Módulos afectados | Riesgos                                       | Mitigación                                                                          |
+| ----------- | ----------------------------------------------------------------------- | ----------------- | --------------------------------------------- | ----------------------------------------------------------------------------------- |
+| 2026-07-03  | TSK-099 cerrado: Pydantic v2 typed config + `FlatEnvAliasSource`         | `config/`         | Drift de contrato flat-env vs nested-path     | ADR-0010 firmada; 10 nuevos regression tests pinean el contract.                    |
+| 2026-07-03  | ADR-0011 firmada: cierre sprint-001 con excepción (TSK-008 a sprint-002) | docs (no código)   | Trazabilidad de la excepción                   | Excepciones firmadas registradas en `tasks/decisions.md`.                          |
+| 2026-07-03  | TSK-008 arranque de spec: `docs/ci.md` redactado                        | docs (no código)   | Bajo (sólo spec, sin implementación aún)      | spec anclado en Python 3.11 + coverage 90% + uv como gestor (ADR-0002).            |
 
 ## Pendientes por clarificar
 

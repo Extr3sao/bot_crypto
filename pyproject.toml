@@ -10,9 +10,13 @@ authors = [{ name = "Crypto Scalping Agentic Bot Contributors" }]
 # Estas dependencias se confirmarán y ajustarán en Fase 1.
 # La decisión completa está documentada en docs/architecture.md.
 dependencies = [
-  "ccxt>=4.0.0",
+  "ccxt>=4.0.0,<5.0.0",
   "pandas>=2.1.0",
-  "numpy>=1.26.0",
+  # numpy<2.1: pin a versiones con stubs compatibles con Python 3.11.
+  # numpy>=2.1 uso sintaxis `type` (PEP 695) que requiere Python 3.12+.
+  # Ver ADR-0012. Si se quiere mantener Python 3.11, no subir numpy hasta
+  # que la toolchain completa lo soporte.
+  "numpy>=1.26.0,<2.1",
   "pydantic>=2.6.0",
   "pydantic-settings>=2.2.0",
   "PyYAML>=6.0.1",
@@ -85,7 +89,7 @@ indent-style = "space"
 # Mypy
 # ----------------------------
 [tool.mypy]
-python_version = "3.14"
+python_version = "3.11"
 strict = true
 warn_unused_ignores = true
 disallow_untyped_defs = true
@@ -114,11 +118,13 @@ markers = [
 [tool.coverage.run]
 source = ["src/trading_bot"]
 branch = true
-omit = ["src/trading_bot/config/__main__.py"]
+omit = [
+  "src/trading_bot/config/__main__.py",  # CLI helper omitido hasta Fase 1+.
+]  # fmt: skip
 
 [tool.coverage.report]
 show_missing = true
-fail_under = 70
+fail_under = 90
 
 # ----------------------------------------------------------------------
 # Dependency groups (PEP 735) - dev deps visibles para uv sync y pip

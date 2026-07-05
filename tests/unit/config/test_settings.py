@@ -8,6 +8,7 @@ import pytest
 
 from trading_bot.config import load_settings
 from trading_bot.config.runtime import TradingMode
+from trading_bot.config.settings import Settings
 
 
 def _write_minimal_config(config_dir: Path) -> None:
@@ -385,3 +386,342 @@ def test_dotenv_file_empty_value_skipped(tmp_path: Path, monkeypatch: pytest.Mon
     assert settings.runtime.mode == TradingMode.PAPER
     # EXCHANGE_ID sigue mapeando desde el archivo .env (path diferente).
     assert settings.exchange.id == "coinbase"
+
+
+# ---------------------------------------------------------------------------
+# Coverage-gap tests: YamlDirectorySource, FlatEnvAliasSource error paths,
+# Settings._check_cross_domain_live_invariants, load_settings env_file override.
+# These target uncovered lines reported by coverage gate (88% -> target 95%+).
+# ---------------------------------------------------------------------------
+
+
+def test_yaml_directory_source_returns_empty_when_config_dir_missing(
+    tmp_path: Path,
+) -> None:
+    """``YamlDirectorySource.__call__`` pio ``merged`` si config_dir no existe.
+
+    Cubre la rama ``if not self.config_dir.exists(): return merged`` (line 94)
+    que no es alcanzable via ``load_settings`` (que valida la existencia del
+    directorio al instanciar el source).
+    """
+    from trading_bot.config.settings import YamlDirectorySource
+
+    missing_dir = tmp_path / "does_not_exist"
+    source = YamlDirectorySource(Settings, missing_dir)
+    assert source() == {}
+
+
+def test_yaml_directory_source_skips_missing_yaml_files(
+    tmp_path: Path,
+) -> None:
+    """``YamlDirectorySource.__call__`` salta YAMLs individuales faltantes.
+
+    Cubre la rama ``if not p.exists(): continue`` (line 102). Es la
+    diferencia entre "directorio no existe" (line 94 → return vacio)
+    vs. "directorio existe pero faltan YAMLs individuales" (line 102
+    → continue). El caller debe obtener un merged parcial sin error.
+    """
+    from trading_bot.config.settings import YamlDirectorySource
+    from trading_bot.config.settings import Settings as SettingsT
+
+    # Crear solo 3 de los 6 YAMLs. Las 3 faltantes deben ser saltadas, no
+    # hacer raise.
+    config_dir = tmp_path / "partial_config"
+    config_dir.mkdir()
+    (config_dir / "exchange.yaml").write_text(
+        "exchange:\n  id: binance\n  sandbox: true\n",
+        encoding="utf-8",
+    )
+    (config_dir / "risk.yaml").write_text("risk: {}\n", encoding="utf-8")
+    (config_dir / "runtime.yaml").write_text("runtime:\n  mode: paper\n", encoding="utf-8")
+
+    source = YamlDirectorySource(SettingsT, config_dir)
+    result = source()
+    assert "exchange" in result
+    assert "risk" in result
+    assert "runtime" in result
+    # No raise, partial-merged dict esperado.
+    assert isinstance(result, dict)
+
+
+def test_yaml_directory_source_raises_on_non_dict_yaml(
+    tmp_path: Path,
+) -> None:
+    """YAML cuyo root no es un mapping dict raise ``ValueError`` loud.
+
+    Cubre el branch de error pineado en el source:
+        ``if not isinstance(data, dict): raise ValueError(...)``
+    Sin esto, un YAML con un list/escalar/number en su root se cargaría
+    y el merge subsiguiente lo trataría como keys del dict merged,
+    contaminando el resto del config con un ``type(data).__name__`` accidental.
+    """
+    from trading_bot.config.settings import Settings as SettingsT
+    from trading_bot.config.settings import YamlDirectorySource
+
+    config_dir = tmp_path / "bad_root_config"
+    config_dir.mkdir()
+    # YAML con root como lista (no mapping).
+    (config_dir / "exchange.yaml").write_text(
+        "- item1\n- item2\n", encoding="utf-8"
+    )
+    # Rellenar el resto con contenido valido para que el loop llegue
+    # hasta ``exchange.yaml``.
+    (config_dir / "risk.yaml").write_text("risk: {}\n", encoding="utf-8")
+    (config_dir / "runtime.yaml").write_text("runtime:\n  mode: paper\n", encoding="utf-8")
+    (config_dir / "assets.yaml").write_text("universe: {}\n", encoding="utf-8")
+    (config_dir / "strategies.yaml").write_text("strategies: {}\n", encoding="utf-8")
+    (config_dir / "indicators.yaml").write_text("indicators: {}\n", encoding="utf-8")
+
+    source = YamlDirectorySource(SettingsT, config_dir)
+    with pytest.raises(ValueError, match="debe tener un mapping raiz"):
+        source()
+
+
+def test_yaml_directory_source_raises_on_overlapping_keys(
+    tmp_path: Path,
+) -> None:
+    """YAML con keys que ya existen en un YAML previo raise loud.
+
+    Cubre el branch de error pineado en el source:
+        ``if overlap: raise ValueError(f"YAML '{p}' redefine keys de un YAML previo: ...")``
+    Detecta un documento duplicado o un merge buggy antes de que
+    silenciosamente pise keys por orden de carga (last-writer-wins).
+    """
+    from trading_bot.config.settings import Settings as SettingsT
+    from trading_bot.config.settings import YamlDirectorySource
+
+    config_dir = tmp_path / "overlap_config"
+    config_dir.mkdir()
+    # exchange.yaml define ``retry``; risk.yaml tambien redefine ``retry``.
+    (config_dir / "exchange.yaml").write_text(
+        "retry:\n  value: 1\n", encoding="utf-8"
+    )
+    (config_dir / "risk.yaml").write_text("retry:\n  value: 2\n", encoding="utf-8")
+    (config_dir / "runtime.yaml").write_text("runtime:\n  mode: paper\n", encoding="utf-8")
+    (config_dir / "assets.yaml").write_text("universe: {}\n", encoding="utf-8")
+    (config_dir / "strategies.yaml").write_text("strategies: {}\n", encoding="utf-8")
+    (config_dir / "indicators.yaml").write_text("indicators: {}\n", encoding="utf-8")
+
+    source = YamlDirectorySource(SettingsT, config_dir)
+    with pytest.raises(ValueError, match="redefine keys de un YAML previo"):
+        source()
+
+
+def test_live_mode_requires_kill_switch_enabled(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Cross-domain validator: runtime.mode='live' exige risk.kill_switch_enabled=True.
+
+    Cubre la rama ``raise ValueError(...)`` de
+    ``Settings._check_cross_domain_live_invariants`` (line 203). Sin este
+    pine contract, un operador podria arrancar el bot en LIVE con el kill
+    switch apagado por error y el bot no podria detenerse en una emergencia.
+    """
+    config_dir = tmp_path / "config"
+    _write_minimal_config(config_dir)
+
+    for k in _FLAT_ALIAS_ENV_VARS:
+        monkeypatch.delenv(k, raising=False)
+
+    # Para que el cross-domain validator de Settings (L203) sea alcanzable,
+    # los gates de Runtime deben pasar primero: live_trading_enabled=True +
+    # i_understand_the_risks=True + require_manual_confirmation_for_live=True.
+    # Sin esto, Runtime._check_live_gates aborta con
+    # "runtime.mode='live' requiere runtime.live_trading_enabled=True"
+    # ANTES de que la invariante cross-domain (kill_switch) se evalue,
+    # dejando L203 (raise ValueError) sin cubrir.
+    monkeypatch.setenv("LIVE_TRADING_ENABLED", "true")
+    monkeypatch.setenv("I_UNDERSTAND_THE_RISKS", "true")
+    # Ahora forzar mode=live + kill_switch_enabled=false -> cross-domain raise.
+    monkeypatch.setenv("RUNTIME__MODE", "live")
+    monkeypatch.setenv("RISK__KILL_SWITCH_ENABLED", "false")
+
+    # Match especifico de la invariante cross-domain: pine contract sobre el
+    # mensaje exacto para evitar que un match laxo matchee tambien el error
+    # de Runtime (que dice "live_trading_enabled" en lugar de "kill_switch").
+    with pytest.raises(ValueError, match="risk.kill_switch_enabled=True"):
+        load_settings(config_dir=config_dir, env_file=None)
+
+
+def test_load_settings_with_custom_env_file_overrides_loaded_path(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """``load_settings(env_file=...)`` override el path que FlatEnvAliasSource usa.
+
+    Cubre la linea 223 (FlatEnvAliasSource instanciado dentro de _Tuned).
+    Sin este pine, un cambio accidental al modelo ``model_config.env_file``
+    default podria romper el acoplamiento entre dotenv y FlatEnvAliasSource
+    silenciosamente.
+    """
+    config_dir = tmp_path / "config"
+    _write_minimal_config(config_dir)
+
+    for k in _FLAT_ALIAS_ENV_VARS:
+        monkeypatch.delenv(k, raising=False)
+
+    env_file = tmp_path / "custom.env"
+    env_file.write_text(
+        "TRADING_MODE=backtest\nEXCHANGE_ID=kraken\n",
+        encoding="utf-8",
+    )
+
+    settings = load_settings(config_dir=config_dir, env_file=env_file)
+    assert settings.runtime.mode == TradingMode.BACKTEST
+    assert settings.exchange.id == "kraken"
+
+
+def test_flat_env_alias_source_env_file_none(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """``FlatEnvAliasSource.__call__`` con ``env_file=None`` solo lee process env.
+
+    Cubre la rama ``if self.env_file is not None`` (line 142) — cuando el
+    caller pasa ``env_file=None``, no se intenta leer el archivo. Solo
+    los valores de ``os.environ`` participan del mapping flat.
+    """
+    from trading_bot.config.settings import FlatEnvAliasSource
+
+    for k in _FLAT_ALIAS_ENV_VARS:
+        monkeypatch.delenv(k, raising=False)
+    monkeypatch.setenv("TRADING_MODE", "backtest")
+
+    source = FlatEnvAliasSource(Settings, env_file=None)
+    result = source()
+    assert result == {"runtime": {"mode": "backtest"}}
+
+
+def test_flat_env_alias_source_env_file_nonexistent(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """``FlatEnvAliasSource.__call__`` con env_file que no existe -> solo process env.
+
+    Cubre la rama ``if env_path is not None and env_path.exists()`` (line 150)
+    — el negative branch: el archivo no existe, asi que se salta la lectura
+    y solo ``os.environ`` aporta. Sin este pine, un typo en ``.env.example``
+    podria hacer fallar el load con FileNotFoundError(opaco) en lugar de
+    degradar graciosamente a process-env.
+    """
+    from trading_bot.config.settings import FlatEnvAliasSource
+
+    for k in _FLAT_ALIAS_ENV_VARS:
+        monkeypatch.delenv(k, raising=False)
+    monkeypatch.setenv("TRADING_MODE", "backtest")
+
+    nonexistent_env = tmp_path / "does_not_exist.env"
+    source = FlatEnvAliasSource(Settings, env_file=nonexistent_env)
+    result = source()
+    assert result == {"runtime": {"mode": "backtest"}}
+
+
+# ---------------------------------------------------------------------------
+# Last-mile coverage tests (88% -> 100%): L89, L142, L150, L223.
+# These target specific dead branches / inheritance stubs that the
+# happy-path tests above don't reach because of pydantic-settings' routing
+# (custom sources go through __call__, not get_field_value) and because
+# load_settings() always wraps via _Tuned (bypassing the base
+# Settings.settings_customise_sources).
+# ---------------------------------------------------------------------------
+
+
+def test_yaml_directory_source_get_field_value_is_noop(tmp_path: Path) -> None:
+    """``YamlDirectorySource.get_field_value`` is a pydantic-settings no-op stub.
+
+    Pydantic V2 routes custom sources via ``__call__`` (the dict-returning
+    method), so ``get_field_value`` is effectively dead code required only
+    for inheritance compliance. The return tuple ``(None, field_name,
+    False)`` is contractually stable (ver ``PydanticBaseSettingsSource``).
+    Cubre L89.
+    """
+    from trading_bot.config.settings import YamlDirectorySource
+
+    source = YamlDirectorySource(Settings, tmp_path)
+    assert source.get_field_value(None, "foo") == (None, "foo", False)
+    assert source.get_field_value("any", "bar") == (None, "bar", False)
+    assert source.get_field_value(123, "baz") == (None, "baz", False)
+
+
+def test_flat_env_alias_source_get_field_value_is_noop() -> None:
+    """``FlatEnvAliasSource.get_field_value`` is a pydantic-settings no-op stub.
+
+    Igual que ``YamlDirectorySource.get_field_value`` (arriba), Pydantic
+    V2 rutea fuentes custom via ``__call__`` y nunca invoca este metodo.
+    Pine contract para que un refactor futuro no rompa la firma esperada
+    por la ABC ``PydanticBaseSettingsSource``.
+    Cubre L142.
+    """
+    from trading_bot.config.settings import FlatEnvAliasSource
+
+    source = FlatEnvAliasSource(Settings, env_file=None)
+    assert source.get_field_value(None, "foo") == (None, "foo", False)
+    assert source.get_field_value("any", "bar") == (None, "bar", False)
+    assert source.get_field_value(123, "baz") == (None, "baz", False)
+
+
+def test_flat_env_alias_source_env_file_sequence_uses_first(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """``FlatEnvAliasSource`` con ``env_file`` como Sequence usa solo el primer path.
+
+    Cubre L150: la rama ``isinstance(self.env_file, Sequence) and not
+    isinstance(self.env_file, (str, bytes))`` selecciona solo
+    ``self.env_file[0]`` y descarta los siguientes. Pinear este
+    comportamiento evita que un cambio futuro itere sobre la lista y
+    cambie el contrato de precedencia (last-writer-wins vs first-only).
+    """
+    from trading_bot.config.settings import FlatEnvAliasSource
+
+    for k in _FLAT_ALIAS_ENV_VARS:
+        monkeypatch.delenv(k, raising=False)
+
+    # env_file1 define TRADING_MODE=backtest, env_file2 dice paper.
+    # Si el codigo iterara sobre la lista, paper ganaria.
+    env_file1 = tmp_path / ".env.prod"
+    env_file1.write_text("TRADING_MODE=backtest\n", encoding="utf-8")
+    env_file2 = tmp_path / ".env.local"
+    env_file2.write_text("TRADING_MODE=paper\n", encoding="utf-8")
+
+    # Sequence (list) activa la rama de L150.
+    source = FlatEnvAliasSource(Settings, env_file=[env_file1, env_file2])
+    result = source()
+    # Solo el primer archivo es leido; el segundo se ignora.
+    assert result == {"runtime": {"mode": "backtest"}}
+
+    # Tupla tambien cuenta como Sequence.
+    source_tuple = FlatEnvAliasSource(
+        Settings, env_file=(env_file1, env_file2)
+    )
+    assert source_tuple() == {"runtime": {"mode": "backtest"}}
+
+
+def test_base_settings_customise_sources_direct_call(tmp_path: Path) -> None:
+    """``Settings.settings_customise_sources`` es invocable directamente.
+
+    Mientras ``load_settings()`` envuelve via ``_Tuned`` (que override
+    este classmethod), la instanciacion directa de ``Settings()`` cae
+    por el default. Pine contract: la tupla retornada tiene exactamente
+    6 sources (init, env, dotenv, FlatEnvAlias, file_secret, YamlDir).
+    Cubre L223.
+    """
+    from trading_bot.config.settings import (
+        FlatEnvAliasSource,
+        Settings,
+        YamlDirectorySource,
+    )
+
+    sources = Settings.settings_customise_sources(
+        Settings,
+        init_settings=None,  # type: ignore[arg-type]
+        env_settings=None,  # type: ignore[arg-type]
+        dotenv_settings=None,  # type: ignore[arg-type]
+        file_secret_settings=None,  # type: ignore[arg-type]
+    )
+    assert len(sources) == 6
+    # El 4to source es FlatEnvAliasSource, el 6to es YamlDirectorySource.
+    assert isinstance(sources[3], FlatEnvAliasSource)
+    assert isinstance(sources[5], YamlDirectorySource)
+    # Las primeras 3 entradas son los sources estandar de pydantic-settings
+    # (init, env, dotenv) y la 5ta es file_secret. Se devuelven tal cual.
+    assert sources[0] is None
+    assert sources[1] is None
+    assert sources[2] is None
+    assert sources[4] is None
