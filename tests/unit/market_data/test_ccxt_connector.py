@@ -12,7 +12,7 @@ patch a nivel de módulo.
 
 from __future__ import annotations
 
-from typing import get_args
+from typing import Any, get_args
 from unittest.mock import MagicMock
 
 import ccxt
@@ -463,7 +463,7 @@ def test_read_methods_retries_then_reraise(
     monkeypatch: pytest.MonkeyPatch,
     fast_retry_exchange_cfg: Exchange,
     method_name: str,
-    args: tuple,
+    args: tuple[Any, ...],
 ) -> None:
     """Smoke (coverage gate): ``fetch_ohlcv`` y ``fetch_balance``
     reintentan hasta ``max_attempts`` y propagan el error original sin

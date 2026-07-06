@@ -147,7 +147,7 @@ def _cmd_config_check(args: argparse.Namespace) -> int:
     return 0
 
 
-def _build_demo_scanner(mode: str) -> "UniverseScanner":
+def _build_demo_scanner(mode: str) -> UniverseScanner:
     """Construye un ``UniverseScanner`` pre-cargado con datos sinteticos.
 
     Pipeline:
@@ -174,12 +174,12 @@ def _build_demo_scanner(mode: str) -> "UniverseScanner":
     registry_per_mode = build_filter_set_per_mode(settings)
     return UniverseScanner(
         source=source,
-        registry_per_mode=registry_per_mode,  # type: ignore[arg-type]
+        registry_per_mode=registry_per_mode,
         settings=settings,
     )
 
 
-def _run_single_iteration(mode: str) -> tuple[list["MarketSnapshot"], "CounterSnapshot"]:
+def _run_single_iteration(mode: str) -> tuple[list[MarketSnapshot], CounterSnapshot]:
     """Ejecuta una iteracion del scanner demo. Retorna (snapshots, counters).
 
     Extraido de ``_cmd_scan`` para que tanto ``scan`` como ``run``
@@ -191,7 +191,7 @@ def _run_single_iteration(mode: str) -> tuple[list["MarketSnapshot"], "CounterSn
 
 
 def _print_demo_results(
-    snapshots: list["MarketSnapshot"], counters: "CounterSnapshot", mode: str
+    snapshots: list[MarketSnapshot], counters: CounterSnapshot, mode: str
 ) -> int:
     """Imprime los snapshots en formato tabla + counters. Retorna exit code."""
     print()
@@ -203,7 +203,9 @@ def _print_demo_results(
         print("  (sin snapshots en esta iteracion)")
     else:
         print()
-        print(f"  {'SYMBOL':<14} {'LAST':>10} {'VOL_24H_USDT':>16} {'SPR_BPS':>9} {'ATR%':>7} {'SCORE':>7}  STATUS")
+        print(
+            f"  {'SYMBOL':<14} {'LAST':>10} {'VOL_24H_USDT':>16} {'SPR_BPS':>9} {'ATR%':>7} {'SCORE':>7}  STATUS"
+        )
         print("  " + "-" * 76)
         for snap in snapshots:
             atr = f"{snap.atr_pct:.2f}" if snap.atr_pct is not None else "  n/a"
