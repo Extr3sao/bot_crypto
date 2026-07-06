@@ -134,6 +134,33 @@ def test_settings_rejects_live_with_kill_switch_off(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     """mode='live' requiere risk.kill_switch_enabled=True (cross-domain gate)."""
+    # Hermeticidad del cross-domain validator: clear any env var that
+    # could mask el invariant. ``pydantic-settings`` lee env_nested_delimiter
+    # via ``env_settings`` directamente, asi que ``RISK__KILL_SWITCH_ENABLED``
+    # o ``RISK__LIVE_TRADING_ENABLED`` heredados del host shell o de un test
+    # previo podrian pisar el YAML ``kill_switch_enabled: false`` que este
+    # test escribe y silenciar el raise de ``_check_cross_domain_live_invariants``.
+    from tests.unit.config.test_settings import _FLAT_ALIAS_ENV_VARS
+
+    leaked_env_vars: tuple[str, ...] = (
+        *_FLAT_ALIAS_ENV_VARS,
+        # Nested-form natvars no cubiertas por ``_FLAT_ALIAS_ENV_VARS``
+        # pero que cargan precedencia sobre el YAML. ``RISK__LIVE_TRADING_ENABLED``
+        # ademas abre un atajo para que el gates-check de ``Runtime._check_live_gates``
+        # (mode="after", L203 area) consuma la peticion antes de que el
+        # cross-domain validator de Settings corra.
+        "RISK__LIVE_TRADING_ENABLED",
+        "RISK__KILL_SWITCH_ENABLED",
+        # ``require_manual_confirmation_for_live`` es parte de los
+        # ``Runtime._check_live_gates`` gates (no del cross-domain). Un
+        # host shell residual con esta env var podria degenerar el flujo
+        # Mock(Settings) -> live gates -> cross-domain kill_switch de
+        # manera no deterministica. Clearup explicito cierra el gap.
+        "RUNTIME__REQUIRE_MANUAL_CONFIRMATION_FOR_LIVE",
+    )
+    for k in leaked_env_vars:
+        monkeypatch.delenv(k, raising=False)
+
     config_dir = tmp_path / "config"
     config_dir.mkdir()
     # Solo necesitamos el subset minimo para que Settings valide.

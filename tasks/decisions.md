@@ -285,3 +285,26 @@ Tras PR #2 (TSK-008 + TSK-009 + TSK-103.5 BDD wiring) y PR #3 (TSK-104 F1+F2) sp
 - Sprint-003 con 4 tickets bien priorizados vs sprint-002 con 7 (overhead reducido).
 
 **Co-authored-by**: context-engineer
+
+## ADR-0015 - `@property name` en el `Indicator` Protocol (Fase 2)
+
+- **Estado**: Decidido. Aplicado en commit `9f1fa5b` (TSK-010+TSK-011 cleanup) + cosmetic pass.
+- **Contexto**: `src/trading_bot/indicators/protocols.py::Indicator` declara `name` estructuralmente. La primera version pinaba `name: str` como class attribute mutable en el Protocol. `EmaIndicator` es `@dataclass(frozen=True)` con `name: str = "ema"` como field+frozen-class-attribute. Eso crea una brecha Liskov: el Protocol declara read+write, pero el frozen dataclass solo expone read (post-init inmutable). 11 call sites (`tests/bdd/conftest.py` + `tests/unit/indicators/test_ema.py`) necesitaban `cast(Indicator, EmaIndicator())` para silenciar mypy strict.
+- **Opciones**:
+  - dejar `name: str` mutable y mantener los 11 `cast` (hack ruidoso, fragil ante refactor).
+  - eliminar `name` del Protocol y validar el nombre en el F3 `IndicatorRegistry` unicamente (rompe la intencion de `isinstance(obj, Indicator)` via `__annotations__`).
+  - **declarar `Indicator.name` como `@property def name(self) -> str`** en el Protocol. Mypy acepta tanto class attribute como property descriptor como satisfy del contract per PEP 544 (el Protocol es read-only; un frozen dataclass field provee read access efectivo, asi que la varianza Liskov cierra). Los 11 call sites pierden el `cast`.
+- **Decision**: opcion 3.
+- **Razon**:
+  - PEP 544 explicito: un `@property` en el Protocol es read-only y mypy acepta una class attribute como implementacion mientras provea read access. Los frozen dataclasses exponen `name` como (post-init inmutable) class attribute, lo que satisface el Protocol sin warning en mypy strict.
+  - elimina los 11 shims `cast(Indicator, ...)` que obscurecian los tests y entrenaban a contribuidores a usar `cast` como blunt instrument.
+  - el docstring del Protocol (en `protocols.py`) documenta exactamente por que frozen dataclasses deben usar class-attribute form (no `@property` en el mismo class body) — dataclass machinery trata `name: str = "..."` como init-param + class-attribute default; un property descriptor que retorne el mismo nombre romperia la auto-gen `__init__`. Esta ADR pinea esa explicacion para futuras revisiones.
+- **Mantenimiento**:
+  - cualquier indicador nuevo (RSI, MACD, BB, ATR, VWAP — TSK-201..205) **debe** usar class-attribute form cuando sea frozen dataclass; non-frozen + non-dataclass pueden usar cualquier forma, pero class-attribute es la recomendada por uniformidad.
+  - reintroducir `name: str` mutable en el Protocol requiere ADR de reemplazo + reintroducir los 11 `cast`.
+  - el test `tests/unit/indicators/test_protocols.py::test_indicator_protocol_defines_name` valida que el Protocol expone un property descriptor; futuras regresiones rompen ese test.
+- **Consecuencias**:
+  - **Historical note** (pre-9f1fa5b): los 11 call sites listados en el contexto (`tests/bdd/conftest.py` + `tests/unit/indicators/test_ema.py`) requerian `cast(Indicator, EmaIndicator())` para silenciar mypy strict. El flip del Protocol a `@property` en el commit `9f1fa5b` elimino esos 11 `cast` estructuralmente; este ADR pinea la decision para que futuros lectores no reintroduzcan el cast pensando que sigue siendo necesario.
+  - `test_ema.py::test_compute_end_to_end_pipeline` y los 10 escenarios BDD del `tests/bdd/conftest.py` ya no necesitan `cast(Indicator, ...)`. El pre-commit diff de este commit elimina el import `from trading_bot.indicators.protocols import Indicator` en `test_ema.py` (import no usado tras limpieza de `cast`).
+  - el cross-layer + mypy strict gates del CI cierran en verde sin shims. Cualquier intento futuro de "arreglar" el Protocol volviendo a `name: str` mutable reintroducira los 11 `cast` automaticamente via mypy y sera rechazado en review.
+  - el docstring de `Indicator.name` reemplaza la explicacion vaga anterior ("frozen dataclasses MUST use class-attribute form because @property overrides conflict with @dataclass(frozen=True, slots=True)") por la causa real: dataclass machinery trata `name: str = "..."` como init parameter + class-attribute default; un property descriptor llamado `name` shadowing ese storage rompe `__init__`. La frase previa era imprecisa (slots no son el factor).
