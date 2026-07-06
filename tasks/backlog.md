@@ -132,8 +132,21 @@
     queda absorbida por TSK-102 (`OHLCVStore` SQLite WAL) per
     ADR-0013 opcion 3. Depende de: TSK-099 ✅, TSK-101 ✅,
     TSK-102 ✅, TSK-103.4 ✅.
-- [ ] **TSK-104** Configurar scheduler para descarga on-demand y cache.
-  **Est: M**. Depende de: TSK-099, TSK-102.
+- [ ] **TSK-104** OHLCV Scheduler: pull periodico sobre
+  `OHLCVFetcher` + cache hit con `freshness_window_minutes` + retry con
+  jitter/Retry-After + mode-aware (paper/live real CCXT connector vs
+  backtest/research `MarketDataSourceProtocol` synthetic) + cross-layer
+  enforcement (no `execution`/`strategies`/`risk`/`portfolio`).
+  **Est: L**. Estado real: spec phase en curso en
+  `feature/tsk-104-scheduler-spec` @ `f400c1c`; 5 SDD docs completos
+  (01-requirements + 02-bdd + 03-specify + 04-plan + 05-tasks) + 12
+  escenarios BDD en `bdd/features/ohlcv_scheduler.feature` + PR con
+  cuerpo `pr-body-TSK-104-spec.md` awaiting review. 17 stubs atómicos
+  documentados en `docs/specs/TSK-104-scheduler/05-tasks.md`. Validator
+  importante: el scheduler es el UNICO writer al `OHLCVStore` en
+  runtime; el scanner (TSK-103) lee read-only via
+  `MarketDataSourceProtocol`. Depende de: TSK-099, TSK-101, TSK-102,
+  TSK-103.
 - [ ] **TSK-105** Tests:
   - [ ] unit: conector contra un CCXT mock. **Est: S**. Depende de: TSK-101.
   - [ ] integration: fetch real desde testnet y lectura de datos. **Est: M**. Depende de: TSK-101, TSK-103.

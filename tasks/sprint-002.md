@@ -7,6 +7,19 @@
 > `TSK-102` tienen trabajo local en curso; de ellos, solo `TSK-099`
 > esta ya mergeado en `main` como prerequisito del sprint.
 
+> **Rebadge history (2026-07-XX)**: la fila `TSK-104` de este sprint
+> estuvo asignada transitoriamente a "Backtest engine minimo +
+> comisiones + slippage" (PR #3 SQ-MERGE). La descripción original
+> del backlog (`tasks/backlog.md`) ya contemplaba
+> `TSK-104 = Configurar scheduler para descarga on-demand y cache`,
+> y el branch de trabajo `feature/tsk-104-scheduler-spec` (HEAD
+> `f400c1c`) materializa esa intencion: **5 SDD docs completos + 1
+> BDD feature (`bdd/features/ohlcv_scheduler.feature`, 12 escenarios)
+> + PR-body pendiente**. El backtest engine continua DONE en `main`
+> via PR #3 pero queda fuera de este sprint (Fase 6, ticket separado).
+> Esta fila refleja la asignación actual:
+> `TSK-104 = OHLCV Scheduler spec phase on feature/tsk-104-scheduler-spec`.
+
 ---
 
 ## Duracion
@@ -38,7 +51,7 @@ Fase 1 sin perder rigor metodologico: ningun ticket se promueve a
 | TSK-101 | CCXT connector + sandbox + idempotencia | M | 1 | H | in_progress | 3 |
 | TSK-102 | OHLCV pipeline + normalizacion + cache | M | 1 | M | in_progress | 4 |
 | TSK-103 | Universe scanner + filters (vol 24h, spread, ATR) | M | 1 | M | in_progress | 5 |
-| TSK-104 | Backtest engine minimo + comisiones + slippage | L | 1 | M | done (PR #3 SQ-MERGE; cobertura 97.69% sobre src/trading_bot/backtesting/; 64/64 tests verdes) | 6 |
+| TSK-104 | OHLCV Scheduler: pull periodico sobre OHLCVFetcher + cache hit con freshness window + retry con jitter/Retry-After + mode-aware (paper/live vs backtest/research) + 17 BDD scenarios + cross-layer enforcement | L | 1 | H | in_progress (spec phase on `feature/tsk-104-scheduler-spec` @ `f400c1c`; 5 docs SDD completos + BDD feature; 17 stubs atómicos documentados en `docs/specs/TSK-104-scheduler/05-tasks.md`; PR con cuerpo `pr-body-TSK-104-spec.md` awaiting review) | 6 |
 | TSK-105 | Paper trading harness + reporter | M | 1 | M | blocked | 7 |
 
 ### Secondary
