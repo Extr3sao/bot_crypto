@@ -21,8 +21,9 @@ Atr 6 + helper privado 4).
 from __future__ import annotations
 
 import asyncio
+from collections.abc import Coroutine
 from dataclasses import dataclass
-from typing import Optional
+from typing import Any, TypeVar, cast
 
 import pytest
 
@@ -34,8 +35,9 @@ from trading_bot.scanner.filters import (
     VolumeFilter,
     _compute_atr_pct,
 )
-from trading_bot.scanner.protocols import MarketDataSourceProtocol
+from trading_bot.scanner.types import FilterOutcome
 
+T = TypeVar("T")
 
 # ---------------------------------------------------------------------------
 # FakeMarketDataSource: stub sincronico/async que satisface el Protocol.
@@ -57,13 +59,11 @@ class FakeMarketDataSource:
     porque mypy strict + Protocol structural requiere firmas declaradas).
     """
 
-    volume: Optional[float] = None
-    spread_bps: Optional[float] = None
-    candles: Optional[list[OHLCV]] = None
+    volume: float | None = None
+    spread_bps: float | None = None
+    candles: list[OHLCV] | None = None
 
-    async def fetch_recent(
-        self, symbol: str, limit: int = 100
-    ) -> list[OHLCV]:
+    async def fetch_recent(self, symbol: str, limit: int = 100) -> list[OHLCV]:
         if self.candles is None:
             raise RuntimeError(
                 "FakeMarketDataSource no configurado con `candles`; "
@@ -94,14 +94,17 @@ class FakeMarketDataSource:
 # ---------------------------------------------------------------------------
 
 
-def _run(coro: object) -> object:
+def _run(coro: Coroutine[Any, Any, T]) -> T:
     """Helper que ejecuta una coroutina con ``asyncio.run``.
 
     Encapsula la necesidad de ``asyncio.run`` para tests sync que
     invocan funciones async de los filtros. No es pytest-asyncio; es
     deliberado para no extender la dependencia dev de momento.
+    TypeVar T propaga el retorno del awaitable al caller, asi
+    ``outcome.passed`` / ``outcome.reason`` se infieren correctamente
+    sin necesidad de ``# type: ignore`` en cada sitio de test.
     """
-    return asyncio.run(coro)  # type: ignore[arg-type]
+    return asyncio.run(coro)
 
 
 def _constant_candles(
@@ -122,9 +125,7 @@ def _constant_candles(
     ]
 
 
-def _vol_candles(
-    n: int, *, last_close: float = 100.0, swing: float = 10.0
-) -> list[OHLCV]:
+def _vol_candles(n: int, *, last_close: float = 100.0, swing: float = 10.0) -> list[OHLCV]:
     """Genera ``n`` velas con swings fuertes para ATR alto."""
     candles: list[OHLCV] = []
     for i in range(n):
@@ -153,7 +154,7 @@ def test_volume_paper_min_pass_when_volume_above_threshold() -> None:
     """Volume > min_usdt en modo paper -> ``passed=True``, reason=None."""
     f = VolumeFilter(min_usdt=5_000_000, mode="paper")
     source = FakeMarketDataSource(volume=10_000_000)
-    outcome = _run(f.apply("BTC/USDT", source))
+    outcome: FilterOutcome = _run(f.apply("BTC/USDT", source))
     assert outcome.passed is True
     assert outcome.reason is None
 
@@ -162,7 +163,7 @@ def test_volume_paper_min_fail_emits_volume_below_threshold() -> None:
     """Volume < min_usdt en modo paper -> motivo catalog exacto."""
     f = VolumeFilter(min_usdt=5_000_000, mode="paper")
     source = FakeMarketDataSource(volume=4_999_999)
-    outcome = _run(f.apply("BTC/USDT", source))
+    outcome: FilterOutcome = _run(f.apply("BTC/USDT", source))
     assert outcome.passed is False
     assert outcome.reason == "volume_below_threshold"
 
@@ -171,7 +172,7 @@ def test_volume_live_pass_when_volume_above_live_threshold() -> None:
     """Volume > live_min_usdt en modo live -> pass."""
     f = VolumeFilter(min_usdt=5_000_000, mode="live", live_min_usdt=10_000_000)
     source = FakeMarketDataSource(volume=15_000_000)
-    outcome = _run(f.apply("BTC/USDT", source))
+    outcome: FilterOutcome = _run(f.apply("BTC/USDT", source))
     assert outcome.passed is True
     assert outcome.reason is None
 
@@ -184,7 +185,7 @@ def test_volume_live_endures_emits_live_specific_reason() -> None:
     """
     f = VolumeFilter(min_usdt=5_000_000, mode="live", live_min_usdt=10_000_000)
     source = FakeMarketDataSource(volume=7_000_000)
-    outcome = _run(f.apply("BTC/USDT", source))
+    outcome: FilterOutcome = _run(f.apply("BTC/USDT", source))
     assert outcome.passed is False
     assert outcome.reason == "volume_below_threshold_for_live_min_10M"
 
@@ -193,7 +194,7 @@ def test_volume_live_falls_back_to_min_when_live_min_unset() -> None:
     """En live sin ``live_min_usdt`` -> usa ``min_usdt`` como fallback."""
     f = VolumeFilter(min_usdt=5_000_000, mode="live", live_min_usdt=None)
     source = FakeMarketDataSource(volume=4_000_000)
-    outcome = _run(f.apply("BTC/USDT", source))
+    outcome: FilterOutcome = _run(f.apply("BTC/USDT", source))
     assert outcome.passed is False
     assert outcome.reason == "volume_below_threshold"
 
@@ -202,7 +203,8 @@ def test_volume_constructor_validates_arguments() -> None:
     """3 validaciones: min_usdt negativo, live_min_usdt < min_usdt, mode invalido."""
     mins = pytest.raises(ValueError, match=r"min_usdt")
     with mins:
-        VolumeFilter(min_usdt=-1, mode="paper")  # type: ignore[arg-type]
+        # Sentinel: deliberately invalid input (negative min_usdt) to verify constructor raises.
+        VolumeFilter(min_usdt=-1, mode="paper")
 
     lax_live = pytest.raises(ValueError, match=r"live_min_usdt")
     with lax_live:
@@ -210,7 +212,8 @@ def test_volume_constructor_validates_arguments() -> None:
 
     bad_mode = pytest.raises(ValueError, match=r"mode invalido")
     with bad_mode:
-        VolumeFilter(min_usdt=5_000_000, mode="prod")  # type: ignore[arg-type]
+        # Sentinel: deliberately invalid input (unknown mode "prod") to verify constructor raises.
+        VolumeFilter(min_usdt=5_000_000, mode=cast(Any, "prod"))
 
 
 def test_volume_name_is_volume_class_level_attribute() -> None:
@@ -222,7 +225,7 @@ def test_volume_name_is_volume_class_level_attribute() -> None:
 
 def test_volume_valid_modes_constant_is_complete() -> None:
     """Pinea que ``VALID_MODES`` contiene los 4 modos del runtime."""
-    assert VALID_MODES == frozenset({"research", "backtest", "paper", "live"})
+    assert frozenset({"research", "backtest", "paper", "live"}) == VALID_MODES
 
 
 # ===========================================================================
@@ -234,23 +237,23 @@ def test_spread_pass_when_spread_below_max_bps() -> None:
     """spread < max_bps -> pass."""
     f = SpreadFilter(max_bps=30.0)
     source = FakeMarketDataSource(spread_bps=12.0)
-    outcome = _run(f.apply("BTC/USDT", source))
+    outcome: FilterOutcome = _run(f.apply("BTC/USDT", source))
     assert outcome.passed is True
 
 
 @pytest.mark.parametrize(
     ("spread_bps", "max_bps"),
     [
-        (30.01, 30.0),   # apenas encima -> fail
-        (80.0, 30.0),    # ancho, fail representativo BDD
-        (200.0, 30.0),   # extremo
+        (30.01, 30.0),  # apenas encima -> fail
+        (80.0, 30.0),  # ancho, fail representativo BDD
+        (200.0, 30.0),  # extremo
     ],
 )
 def test_spread_fail_emits_spread_above_threshold(spread_bps: float, max_bps: float) -> None:
     """Parametrizado: spread > max_bps -> motivo catalog exacto."""
     f = SpreadFilter(max_bps=max_bps)
     source = FakeMarketDataSource(spread_bps=spread_bps)
-    outcome = _run(f.apply("BTC/USDT", source))
+    outcome: FilterOutcome = _run(f.apply("BTC/USDT", source))
     assert outcome.passed is False
     assert outcome.reason == "spread_above_threshold"
 
@@ -259,14 +262,15 @@ def test_spread_exact_match_is_pass_not_fail() -> None:
     """Spread == max_bps (en el borde) cuenta como pass (no estricto)."""
     f = SpreadFilter(max_bps=30.0)
     source = FakeMarketDataSource(spread_bps=30.0)
-    outcome = _run(f.apply("BTC/USDT", source))
+    outcome: FilterOutcome = _run(f.apply("BTC/USDT", source))
     assert outcome.passed is True
 
 
 def test_spread_invalid_max_bps_raises() -> None:
     """max_bps < 0 -> ValueError."""
     with pytest.raises(ValueError, match=r"max_bps"):
-        SpreadFilter(max_bps=-1.0)  # type: ignore[arg-type]
+        # Sentinel: deliberately invalid input (negative max_bps) to verify constructor raises.
+        SpreadFilter(max_bps=-1.0)
 
 
 # ===========================================================================
@@ -278,7 +282,7 @@ def test_atr_insufficient_history_emits_canonical_reason() -> None:
     """fetch_recent retorna N < min_history -> motivo ``insufficient_history``."""
     f = AtrFilter(min_pct=0.5, max_pct=5.0, min_history=100)
     source = FakeMarketDataSource(candles=_constant_candles(50))
-    outcome = _run(f.apply("BTC/USDT", source))
+    outcome: FilterOutcome = _run(f.apply("BTC/USDT", source))
     assert outcome.passed is False
     assert outcome.reason == "insufficient_history"
 
@@ -287,7 +291,7 @@ def test_atr_out_of_range_low_emits_atr_out_of_range() -> None:
     """ATR calculado < min_pct -> motivo ``atr_out_of_range``."""
     f = AtrFilter(min_pct=10.0, max_pct=20.0, min_history=10)
     source = FakeMarketDataSource(candles=_constant_candles(20))
-    outcome = _run(f.apply("BTC/USDT", source))
+    outcome: FilterOutcome = _run(f.apply("BTC/USDT", source))
     assert outcome.passed is False
     assert outcome.reason == "atr_out_of_range"
 
@@ -296,7 +300,7 @@ def test_atr_out_of_range_high_emits_atr_out_of_range() -> None:
     """ATR calculado > max_pct -> motivo ``atr_out_of_range``."""
     f = AtrFilter(min_pct=0.0, max_pct=0.5, min_history=10)
     source = FakeMarketDataSource(candles=_vol_candles(20, swing=50.0))
-    outcome = _run(f.apply("BTC/USDT", source))
+    outcome: FilterOutcome = _run(f.apply("BTC/USDT", source))
     assert outcome.passed is False
     assert outcome.reason == "atr_out_of_range"
 
@@ -305,14 +309,15 @@ def test_atr_pass_when_in_range() -> None:
     """ATR calculado dentro de [min_pct, max_pct] -> pass."""
     f = AtrFilter(min_pct=0.0, max_pct=10.0, min_history=10)
     source = FakeMarketDataSource(candles=_vol_candles(20, swing=2.0))
-    outcome = _run(f.apply("BTC/USDT", source))
+    outcome: FilterOutcome = _run(f.apply("BTC/USDT", source))
     assert outcome.passed is True
 
 
 def test_atr_constructor_validates_arguments() -> None:
     """3 validaciones: bounds negativos, max < min, min_history < 1."""
     with pytest.raises(ValueError, match=r"ATR percent bounds"):
-        AtrFilter(min_pct=-1.0, max_pct=5.0)  # type: ignore[arg-type]
+        # Sentinel: deliberately invalid input (negative min_pct) to verify constructor raises.
+        AtrFilter(min_pct=-1.0, max_pct=5.0)
     with pytest.raises(ValueError, match=r"max_pct"):
         AtrFilter(min_pct=10.0, max_pct=5.0)
     with pytest.raises(ValueError, match=r"min_history"):

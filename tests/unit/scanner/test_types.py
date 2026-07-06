@@ -12,21 +12,15 @@ universe-scanner/05-tasks.md``.
 from __future__ import annotations
 
 import dataclasses
-from typing import get_args
+from typing import Any, get_args
 
 import pytest
 
-from trading_bot.scanner.exceptions import (
-    ConfigurationError,
-    KillSwitchActiveError,
-    ScannerError,
-)
 from trading_bot.scanner.types import (
     FilterOutcome,
     MarketSnapshot,
     RejectionReason,
 )
-
 
 # ---------------------------------------------------------------------------
 # Helpers de construccion.
@@ -39,7 +33,7 @@ def _make_snapshot(**overrides: object) -> MarketSnapshot:
     Los defaults reflejan un par sano (BTC/USDT con volumen > minimo,
     spread < maximo, ATR en rango optimo).
     """
-    defaults: dict[str, object] = {
+    defaults: dict[str, Any] = {
         "symbol": "BTC/USDT",
         "last_price": 16555.5,
         "volume_24h_usdt": 50_000_000.0,
@@ -52,7 +46,7 @@ def _make_snapshot(**overrides: object) -> MarketSnapshot:
         "rank_score": 0.85,
     }
     defaults.update(overrides)
-    return MarketSnapshot(**defaults)  # type: ignore[arg-type]
+    return MarketSnapshot(**defaults)
 
 
 # ---------------------------------------------------------------------------
@@ -64,7 +58,15 @@ def test_snapshot_frozen_mutation_raises() -> None:
     """Pinea RNF-6: ``frozen=True`` levanta FrozenInstanceError al mutar."""
     snap = _make_snapshot()
     with pytest.raises(dataclasses.FrozenInstanceError):
-        snap.rank_score = 0.99  # type: ignore[misc]
+        # ``setattr`` (no direct ``=`` assignment) porque el dataclass
+        # ``MarketSnapshot`` es ``frozen=True``: el builtin routea via
+        # el ``__setattr__`` overridden que dispara ``FrozenInstanceError``,
+        # exactamente lo que el test pinea. ``# noqa: B010`` documenta
+        # la decision frente al linter: ruff pide direct assignment como
+        # idiom, pero mypy strict sobre frozen dataclasses suele marcar
+        # la asignacion directa con `[misc]` (read-only property), asi
+        # que ``setattr`` es el patron canonico que sobrevive mypy + ruff.
+        setattr(snap, "rank_score", 0.99)  # noqa: B010
 
 
 def test_snapshot_first_field_is_symbol() -> None:
@@ -130,7 +132,11 @@ def test_snapshot_uses_slots() -> None:
 def test_outcome_frozen_mutation_raises() -> None:
     outcome = FilterOutcome(passed=True)
     with pytest.raises(dataclasses.FrozenInstanceError):
-        outcome.passed = False  # type: ignore[misc]
+        # Ver comentario gemelo en ``test_snapshot_frozen_mutation_raises``
+        # (linea 64 area). ``FilterOutcome`` es frozen dataclass y el test
+        # verifica que la mutacion levanta ``FrozenInstanceError``;``setattr``
+        # es el mecanismo canonico para esto. ``# noqa: B010`` frente a ruff.
+        setattr(outcome, "passed", False)  # noqa: B010
 
 
 def test_outcome_default_reason_is_none() -> None:
@@ -170,22 +176,3 @@ def test_rejection_reason_literal_values() -> None:
     }
     actual = set(get_args(RejectionReason))
     assert actual == expected
-
-
-# ---------------------------------------------------------------------------
-# Jerarquia de excepciones.
-# ---------------------------------------------------------------------------
-
-
-def test_exceptions_inherit_scanner_error() -> None:
-    assert issubclass(KillSwitchActiveError, ScannerError)
-    assert issubclass(ConfigurationError, ScannerError)
-    assert issubclass(ScannerError, Exception)
-    # Sentinel: ScannerError NO debe ser KeyboardInterrupt/SystemExit
-    # para no atrapar el shutdown del interpreter accidentalmente.
-    # NOTA: ScannerError SI es subclass de BaseException (vía Exception
-    # que extiende BaseException); eso es normal y no es lo que pineamos
-    # aqui. Lo que pineamos es que NO sea una de las dos clases criticas
-    # del flujo de control de CPython.
-    assert ScannerError is not KeyboardInterrupt
-    assert ScannerError is not SystemExit

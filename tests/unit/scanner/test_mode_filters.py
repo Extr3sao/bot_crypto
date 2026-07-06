@@ -2,14 +2,14 @@
 
 from __future__ import annotations
 
-import pytest
+from typing import cast
 
 from trading_bot.config.runtime import TradingMode
 from trading_bot.config.settings import Settings
 from trading_bot.scanner.filters import (
+    VALID_MODES,
     AtrFilter,
     SpreadFilter,
-    VALID_MODES,
     VolumeFilter,
 )
 from trading_bot.scanner.mode_filters import build_filter_set_per_mode
@@ -24,7 +24,12 @@ def _build_minimal_settings(
     min_atr_percent: float = 0.05,
 ) -> Settings:
     """Settings minimal via model_construct (sin disco, sin validadores cross-field)."""
-    from trading_bot.config.exchange import Exchange, ExchangeEndpoints, ExchangeRetries, ExchangeTimeouts
+    from trading_bot.config.exchange import (
+        Exchange,
+        ExchangeEndpoints,
+        ExchangeRetries,
+        ExchangeTimeouts,
+    )
     from trading_bot.config.indicators import IndicatorsConfig, IndicatorsGlobal
     from trading_bot.config.risk import DefensiveBlocks, Risk
     from trading_bot.config.runtime import (
@@ -87,10 +92,20 @@ def _build_minimal_settings(
         exchange=exchange,
         risk=risk,
         strategies=StrategiesConfig.model_construct(
-            strategies={}, global_=StrategiesGlobal.model_construct()
+            strategies={},
+            global_=StrategiesGlobal.model_construct(
+                required_progression=["research", "paper"],
+                require_walk_forward_validation=False,
+                require_min_trades_for_promotion=1,
+            ),
         ),
         indicators=IndicatorsConfig.model_construct(
-            indicators={}, global_=IndicatorsGlobal.model_construct()
+            indicators={},
+            global_=IndicatorsGlobal.model_construct(
+                require_min_candles=1,
+                cache_results=False,
+                invalidate_on_new_candle=False,
+            ),
         ),
         runtime=Runtime.model_construct(
             mode=TradingMode.PAPER,
@@ -134,7 +149,9 @@ def test_build_registers_3_filters_in_order_volume_spread_atr() -> None:
 
 def test_build_paper_uses_yaml_bounds_no_live_hardening() -> None:
     """paper/research/backtest: thresholds iguales al YAML (sin endurecer)."""
-    settings = _build_minimal_settings(min_volume_usdt=7_000_000, max_spread_bps=25, max_atr_percent=7.0)
+    settings = _build_minimal_settings(
+        min_volume_usdt=7_000_000, max_spread_bps=25, max_atr_percent=7.0
+    )
     out = build_filter_set_per_mode(settings)
     for mode_str in ("research", "backtest", "paper"):
         reg = out[mode_str]
@@ -154,12 +171,14 @@ def test_build_paper_uses_yaml_bounds_no_live_hardening() -> None:
 
 def test_build_live_applies_spec_hardening() -> None:
     """live: volume threshold = 10M (LIVE_MIN_VOLUME_USDT), spread <= 20, ATR <= 5."""
-    settings = _build_minimal_settings(min_volume_usdt=5_000_000, max_spread_bps=30, max_atr_percent=8.0)
+    settings = _build_minimal_settings(
+        min_volume_usdt=5_000_000, max_spread_bps=30, max_atr_percent=8.0
+    )
     out = build_filter_set_per_mode(settings)
     reg = out["live"]
-    vol = reg.get("volume")
-    spread = reg.get("spread")
-    atr = reg.get("atr")
+    vol = cast(VolumeFilter, reg.get("volume"))
+    spread = cast(SpreadFilter, reg.get("spread"))
+    atr = cast(AtrFilter, reg.get("atr"))
     assert isinstance(vol, VolumeFilter)
     assert vol.live_min_usdt == 10_000_000.0  # LIVE_MIN_VOLUME_USDT
     assert vol.mode == "live"
@@ -174,10 +193,10 @@ def test_build_live_respects_yaml_when_more_strict_than_spec() -> None:
     settings = _build_minimal_settings(max_spread_bps=10, max_atr_percent=2.0)
     out = build_filter_set_per_mode(settings)
     reg = out["live"]
-    assert isinstance(reg.get("spread"), SpreadFilter)
-    assert reg.get("spread").max_bps == 10.0  # YAML es mas estricto.
-    assert isinstance(reg.get("atr"), AtrFilter)
-    assert reg.get("atr").max_pct == 2.0
+    spread = cast(SpreadFilter, reg.get("spread"))
+    atr = cast(AtrFilter, reg.get("atr"))
+    assert spread.max_bps == 10.0  # YAML es mas estricto.
+    assert atr.max_pct == 2.0
 
 
 def test_build_returns_4_distinct_registry_instances() -> None:

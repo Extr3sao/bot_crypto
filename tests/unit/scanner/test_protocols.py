@@ -9,12 +9,8 @@ Cobertura esperada per DoD F1: 4 tests verde en este archivo.
 from __future__ import annotations
 
 from trading_bot.market_data.types import OHLCV
-from trading_bot.scanner.protocols import (
-    Filter,
-    MarketDataSourceProtocol,
-)
+from trading_bot.scanner.protocols import MarketDataSourceProtocol
 from trading_bot.scanner.types import FilterOutcome
-
 
 # ---------------------------------------------------------------------------
 # MarketDataSourceProtocol: runtime_checkable.
@@ -26,9 +22,7 @@ def test_protocol_runtime_checkable() -> None:
     instance of ``MarketDataSourceProtocol`` (runtime_checkable)."""
 
     class FakeSource:
-        async def fetch_recent(
-            self, symbol: str, limit: int = 100
-        ) -> list[OHLCV]:
+        async def fetch_recent(self, symbol: str, limit: int = 100) -> list[OHLCV]:
             return []
 
         async def fetch_24h_volume_usdt(self, symbol: str) -> float:
@@ -47,10 +41,9 @@ def test_protocol_rejects_partial_implementation() -> None:
     runtime_checkable lo pinea en tests."""
 
     class PartialSource:
-        async def fetch_recent(
-            self, symbol: str, limit: int = 100
-        ) -> list[OHLCV]:
+        async def fetch_recent(self, symbol: str, limit: int = 100) -> list[OHLCV]:
             return []
+
         # Faltan fetch_24h_volume_usdt y fetch_spread_bps.
 
     partial = PartialSource()
@@ -70,9 +63,7 @@ def test_filter_protocol_attr_name() -> None:
     class VolumeFilter:
         name = "volume"
 
-        async def apply(
-            self, symbol: str, source: MarketDataSourceProtocol
-        ) -> FilterOutcome:
+        async def apply(self, symbol: str, source: MarketDataSourceProtocol) -> FilterOutcome:
             return FilterOutcome(passed=True)
 
     impl = VolumeFilter()
@@ -88,9 +79,7 @@ def test_filter_protocol_without_name_fails_attribute_check() -> None:
     rompe ese pathway)."""
 
     class AnonFilter:
-        async def apply(
-            self, symbol: str, source: MarketDataSourceProtocol
-        ) -> FilterOutcome:
+        async def apply(self, symbol: str, source: MarketDataSourceProtocol) -> FilterOutcome:
             return FilterOutcome(passed=True)
 
     anon = AnonFilter()

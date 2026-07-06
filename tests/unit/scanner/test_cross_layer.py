@@ -66,14 +66,15 @@ def _extract_imports(path: Path) -> list[str]:
             and node.test.id == "TYPE_CHECKING"
         ):
             for child in ast.walk(node):
-                type_checking_lines.add(child.lineno)
+                # `hasattr` is not a mypy --strict type-guard on
+                # `AST.lineno`; use getattr + isinstance instead.
+                child_lineno = getattr(child, "lineno", None)
+                if isinstance(child_lineno, int):
+                    type_checking_lines.add(child_lineno)
 
     imports: list[str] = []
     for node in ast.walk(tree):
-        # Use getattr with default 0 because ast.walk yields the root
-        # Module node first, and Module.lineno is not always set
-        # in Python 3.11+ (depends on ast.parse flags). Same fix
-        # applied to tests/bdd/conftest.py::_when_inspect_imports.
+        # Outer: 0 (root Module.lineno); inner: None+isinstance. Same fix in tests/bdd/conftest.py::_when_inspect_imports.
         if getattr(node, "lineno", 0) in type_checking_lines:
             continue
         if isinstance(node, ast.Import):

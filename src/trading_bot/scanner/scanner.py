@@ -51,6 +51,7 @@ MEDIO + BAJO fixes del reviewer de handoff (septimo ciclo):
 from __future__ import annotations
 
 import time
+from collections.abc import Callable, Mapping
 from dataclasses import dataclass
 from typing import Final
 from uuid import uuid4
@@ -105,6 +106,7 @@ LIVE_MAX_ATR_PERCENT: Final[float] = 5.0
 # puedan sobreescribir via ``normalizers_per_mode`` del constructor.
 # ---------------------------------------------------------------------------
 
+
 @dataclass(frozen=True, slots=True)
 class ScoreNormalizers:
     """Parametros de normalizacion para ``compute_rank_score`` (spec §6)."""
@@ -138,6 +140,7 @@ class ScoreNormalizers:
 # Per-mode filter bounds (Q2 verdict: single source of truth, derived
 # de Settings + endurecimiento live aplicado localmente).
 # ---------------------------------------------------------------------------
+
 
 @dataclass(frozen=True, slots=True)
 class FilterBounds:
@@ -193,6 +196,7 @@ class FilterBounds:
 # construye fresh en cada iteracion del scheduler).
 # ---------------------------------------------------------------------------
 
+
 class _CachingSource:
     """Wraps ``MarketDataSourceProtocol`` + memoizes per-symbol fetches per run."""
 
@@ -226,6 +230,7 @@ class _CachingSource:
 # puede leer atributos pero NO puede mutar ``scanner.counters.X = Y``
 # (raises ``FrozenInstanceError``).
 # ---------------------------------------------------------------------------
+
 
 class _CountersState:
     """Internal mutable counters (renamed from ``_Counters`` post-fix
@@ -274,6 +279,7 @@ class CounterSnapshot:
 # slots); UniverseScanner los mantiene en ``self._bundles``.
 # ---------------------------------------------------------------------------
 
+
 @dataclass(frozen=True, slots=True)
 class _ModeRegistryBundle:
     """Inmutable bundle per-mode. Derivado una sola vez en ``__init__``."""
@@ -290,6 +296,7 @@ class _ModeRegistryBundle:
 # ---------------------------------------------------------------------------
 # UniverseScanner
 # ---------------------------------------------------------------------------
+
 
 class UniverseScanner:
     """Orchestrator async (TSK-103.4/F4). NO reentrante.
@@ -324,18 +331,16 @@ class UniverseScanner:
         self,
         *,
         source: MarketDataSourceProtocol,
-        registry_per_mode: dict[str, object],
+        registry_per_mode: Mapping[str, FilterRegistry],
         settings: Settings,
         normalizers_per_mode: dict[str, ScoreNormalizers] | None = None,
-        scan_iteration_id_factory=lambda: uuid4().hex,
+        scan_iteration_id_factory: Callable[[], str] = lambda: uuid4().hex,
     ) -> None:
         # --- Validacion de DI ---
         if source is None:
             raise ConfigurationError("UniverseScanner requiere source; got None")
         if registry_per_mode is None or not registry_per_mode:
-            raise ConfigurationError(
-                "UniverseScanner requiere registry_per_mode no-vacio"
-            )
+            raise ConfigurationError("UniverseScanner requiere registry_per_mode no-vacio")
         if settings is None:
             raise ConfigurationError("UniverseScanner requiere settings; got None")
 
@@ -356,9 +361,8 @@ class UniverseScanner:
                 )
             reg.freeze()  # ADR-lock: freeze() opt-in.
 
-            normalizers = (
-                (normalizers_per_mode or {}).get(mode_key)
-                or ScoreNormalizers.for_mode(mode_key)
+            normalizers = (normalizers_per_mode or {}).get(mode_key) or ScoreNormalizers.for_mode(
+                mode_key
             )
             bundles[mode_key] = _ModeRegistryBundle(
                 mode=mode_key,
@@ -415,9 +419,7 @@ class UniverseScanner:
         try:
             return _SCANNER_MODE_MAP[self._settings.runtime.mode]
         except KeyError as exc:
-            supported = ", ".join(
-                f"{m.name} -> {v!r}" for m, v in _SCANNER_MODE_MAP.items()
-            )
+            supported = ", ".join(f"{m.name} -> {v!r}" for m, v in _SCANNER_MODE_MAP.items())
             raise ConfigurationError(
                 f"TradingMode {self._settings.runtime.mode!r} no esta mapeado en "
                 f"_SCANNER_MODE_MAP; supported={supported}. "
@@ -478,9 +480,7 @@ class UniverseScanner:
         bundle = self._bundle_for_current_mode()
 
         # --- Step 1: iteration.started ---
-        self._log.info(
-            "scanner.iteration.started", mode=mode_str, scan_iteration_id=scan_id
-        )
+        self._log.info("scanner.iteration.started", mode=mode_str, scan_iteration_id=scan_id)
 
         # MEDIO fix del reviewer: single ``iteration.completed`` emission
         # al final, funciona para los 3 paths:
@@ -666,11 +666,11 @@ def _now_ms() -> int:
 
 
 __all__ = [
-    "CounterSnapshot",
-    "FilterBounds",
     "LIVE_MAX_ATR_PERCENT",
     "LIVE_MAX_SPREAD_BPS",
     "LIVE_MIN_VOLUME_USDT",
+    "CounterSnapshot",
+    "FilterBounds",
     "ScoreNormalizers",
     "UniverseScanner",
 ]

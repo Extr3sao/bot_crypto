@@ -11,15 +11,24 @@ test functions from ``conftest.py``. Without this file, the 23
 scenarios in ``bdd/features/market_scanner.feature`` would never
 be picked up by pytest.
 
-Why scoped to ``market_scanner.feature`` (not the whole ``bdd/features/``
-directory): the other feature files (backtesting, emergency_pause,
+Why scoped to specific feature files (not the whole ``bdd/features/``
+directory): several feature files (backtesting, emergency_pause,
 execution_engine, paper_trading, risk_manager, signal_generation)
 do NOT have step definitions yet, and several contain pre-existing
 Gherkin parser errors (e.g., the Spanish "Y" step keyword is not
 recognized by the current gherkin parser version). Pointing at the
 directory would cause collection errors that mask the real
-market_scanner regressions. When the other features get step
-definitions wired up in conftest.py, broaden this path.
+regressions. When the other features get step definitions wired up
+in conftest.py / step_defs, broaden this path.
+
+The two feature files below are the ones whose step definitions
+are wired up:
+
+- ``market_scanner.feature`` — step defs in ``tests/bdd/conftest.py``
+  (Pattern A consolidation; F2 work).
+- ``indicators.feature`` — step defs in
+  ``tests/bdd/step_defs/test_indicator_steps.py`` (F4 work; per-feature
+  module per TSK-200.4.5).
 
 Anti-patterns (must NOT regress):
 
@@ -43,8 +52,9 @@ from pathlib import Path
 
 from pytest_bdd import scenarios
 
-# Sole scenarios() call site. Scoped to the ONE feature file whose
-# step definitions are wired up in tests/bdd/conftest.py.
-scenarios(
-    str(Path(__file__).parents[2] / "bdd" / "features" / "market_scanner.feature")
-)
+# Sole scenarios() call site. Scoped to the feature files whose
+# step definitions are wired up:
+#   - market_scanner.feature -> tests/bdd/conftest.py
+#   - indicators.feature     -> tests/bdd/step_defs/test_indicator_steps.py
+scenarios(str(Path(__file__).parents[2] / "bdd" / "features" / "market_scanner.feature"))
+scenarios(str(Path(__file__).parents[2] / "bdd" / "features" / "indicators.feature"))
