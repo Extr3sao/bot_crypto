@@ -29,6 +29,9 @@ el modulo NO importa ``market_data.*``, ``exchange.*``, etc.
 
 from __future__ import annotations
 
+import types
+from typing import Any
+
 import pytest
 from hypothesis import given, settings
 from hypothesis import strategies as st
@@ -36,10 +39,8 @@ from hypothesis import strategies as st
 from trading_bot.scanner.scoring import (
     ATR_WEIGHT,
     SPREAD_WEIGHT,
-    VOLUME_WEIGHT,
     compute_rank_score,
 )
-
 
 # ===========================================================================
 # Sentinel tests (9 casos nominales).
@@ -89,7 +90,7 @@ def test_compute_rank_score_min_when_worst_inputs() -> None:
     0.5*0 + 0.3*0 + 0.2*0 = 0.0.
     """
     score = compute_rank_score(
-        spread_bps=300.0,    # 10x del max; clip a 1.0
+        spread_bps=300.0,  # 10x del max; clip a 1.0
         spread_norm_max=30.0,
         volume_24h_usdt=0.0,
         volume_norm_max=100.0,
@@ -141,15 +142,9 @@ def test_compute_rank_score_atr_pct_none_invalidates_atr_en_rango_true() -> None
         volume_norm_max=100.0,
         atr_optimo=2.0,
     )
-    score_with_atr = compute_rank_score(
-        **base_kwargs, atr_pct=2.0, atr_en_rango=True
-    )
-    score_without_atr = compute_rank_score(
-        **base_kwargs, atr_pct=None, atr_en_rango=True
-    )
-    assert score_with_atr - score_without_atr == pytest.approx(
-        ATR_WEIGHT, abs=1e-9
-    )
+    score_with_atr = compute_rank_score(**base_kwargs, atr_pct=2.0, atr_en_rango=True)
+    score_without_atr = compute_rank_score(**base_kwargs, atr_pct=None, atr_en_rango=True)
+    assert score_with_atr - score_without_atr == pytest.approx(ATR_WEIGHT, abs=1e-9)
 
 
 def test_compute_rank_score_clips_inputs_above_norm_max() -> None:
@@ -196,12 +191,8 @@ def test_compute_rank_score_clips_inputs_below_zero() -> None:
     "field_name",
     ["spread_bps", "volume_24h_usdt", "atr_optimo", "atr_pct"],
 )
-@pytest.mark.parametrize(
-    "bad_input", [float("nan"), float("inf"), float("-inf")]
-)
-def test_compute_rank_score_rejects_non_finite_inputs(
-    field_name: str, bad_input: float
-) -> None:
+@pytest.mark.parametrize("bad_input", [float("nan"), float("inf"), float("-inf")])
+def test_compute_rank_score_rejects_non_finite_inputs(field_name: str, bad_input: float) -> None:
     """NaN / inf inputs -> ValueError explicito (no propagacion silenciosa).
 
     Pine contract: cualquier score NaN rompe la invariante
@@ -230,7 +221,7 @@ def test_compute_rank_score_rejects_non_finite_inputs(
     # cuando finite, seteamos a bad_input explicito (no None).
     bad_kwargs = {**base_kwargs, field_name: bad_input}
     with pytest.raises(ValueError, match=r"debe ser finito"):
-        compute_rank_score(**bad_kwargs)  # type: ignore[arg-type] clip the test_kwargs injection
+        compute_rank_score(**bad_kwargs)  # type: ignore[arg-type]
 
 
 def test_compute_rank_score_rejects_non_positive_norm_max() -> None:
@@ -280,7 +271,7 @@ def test_compute_rank_score_rejects_non_positive_norm_max() -> None:
     ],
 )
 def test_coefficients_are_adm_locked(
-    coef_name: str, expected: float, scoring_module: object
+    coef_name: str, expected: float, scoring_module: types.ModuleType
 ) -> None:
     """Coefs pineados por spec §6 - cambios requieren ADR firmada."""
     actual = getattr(scoring_module, coef_name)
@@ -288,9 +279,10 @@ def test_coefficients_are_adm_locked(
 
 
 @pytest.fixture
-def scoring_module() -> object:
+def scoring_module() -> types.ModuleType:
     """Import lazy del modulo scoring (para no penalizar la coleccion)."""
     from trading_bot.scanner import scoring
+
     return scoring
 
 
@@ -299,9 +291,9 @@ def scoring_module() -> object:
     [
         (0.0, 30.0, 0.0),
         (15.0, 30.0, 0.5),
-        (30.0, 30.0, 1.0),    # borde: equal -> 1.0 (clip inclusive).
-        (60.0, 30.0, 1.0),    # clip desde encima.
-        (-30.0, 30.0, 0.0),   # clip desde debajo.
+        (30.0, 30.0, 1.0),  # borde: equal -> 1.0 (clip inclusive).
+        (60.0, 30.0, 1.0),  # clip desde encima.
+        (-30.0, 30.0, 0.0),  # clip desde debajo.
     ],
 )
 def test_spread_norm_clipping(
@@ -350,16 +342,18 @@ def test_compute_rank_score_is_deterministic_with_identical_inputs() -> None:
         atr_optimo=2.0,
         atr_en_rango=True,
     )
-    s1 = compute_rank_score(**kwargs)
-    s2 = compute_rank_score(**kwargs)
+    merged1: dict[str, Any] = {**kwargs}
+    s1 = compute_rank_score(**merged1)
+    merged2: dict[str, Any] = {**kwargs}
+    s2 = compute_rank_score(**merged2)
     assert s1 == s2
 
     # Casos degenerados equivalentes para atr_term (cubren todos los
     # caminos que producen el mismo 0.0):
     #   (atr_en_rango=True, atr_pct=None)              -> atr_term = 1*0 = 0.
     #   (atr_en_rango=False, atr_pct=2.0)             -> atr_term = 0*1 = 0.
-    s3 = compute_rank_score(**{**kwargs, "atr_en_rango": True, "atr_pct": None})
-    s4 = compute_rank_score(**{**kwargs, "atr_en_rango": False, "atr_pct": 2.0})
+    s3 = compute_rank_score(**{**kwargs, "atr_en_rango": True, "atr_pct": None})  # type: ignore[arg-type]
+    s4 = compute_rank_score(**{**kwargs, "atr_en_rango": False, "atr_pct": 2.0})  # type: ignore[arg-type]
     assert s3 == s4
 
 
@@ -477,7 +471,9 @@ def test_rank_score_monotonic_decreasing_with_spread(
     ),
 )
 @settings(max_examples=500, deadline=None)
-def test_rank_score_deterministic_property(inputs: tuple[float, float, float, float, float | None, float, bool]) -> None:
+def test_rank_score_deterministic_property(
+    inputs: tuple[float, float, float, float, float | None, float, bool],
+) -> None:
     """Pine property (TSK-103.3.3): dos calls con mismos inputs producen
     score bit-identical. Esto es la base del tie-break alfabetico
     (UniverseScanner ordenara desc por score, ties por symbol).
