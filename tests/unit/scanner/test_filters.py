@@ -209,7 +209,7 @@ def test_volume_constructor_validates_arguments() -> None:
     """3 validaciones: min_usdt negativo, live_min_usdt < min_usdt, mode invalido."""
     mins = pytest.raises(ValueError, match=r"min_usdt")
     with mins:
-        VolumeFilter(min_usdt=-1, mode="paper")  # type: ignore[arg-type]
+        VolumeFilter(min_usdt=-1, mode="paper")
 
     lax_live = pytest.raises(ValueError, match=r"live_min_usdt")
     with lax_live:
@@ -217,7 +217,7 @@ def test_volume_constructor_validates_arguments() -> None:
 
     bad_mode = pytest.raises(ValueError, match=r"mode invalido")
     with bad_mode:
-        VolumeFilter(min_usdt=5_000_000, mode="prod")  # type: ignore[arg-type]
+        VolumeFilter(min_usdt=5_000_000, mode="prod")
 
 
 def test_volume_name_is_volume_class_level_attribute() -> None:
@@ -273,7 +273,7 @@ def test_spread_exact_match_is_pass_not_fail() -> None:
 def test_spread_invalid_max_bps_raises() -> None:
     """max_bps < 0 -> ValueError."""
     with pytest.raises(ValueError, match=r"max_bps"):
-        SpreadFilter(max_bps=-1.0)  # type: ignore[arg-type]
+        SpreadFilter(max_bps=-1.0)
 
 
 # ===========================================================================
@@ -319,7 +319,7 @@ def test_atr_pass_when_in_range() -> None:
 def test_atr_constructor_validates_arguments() -> None:
     """3 validaciones: bounds negativos, max < min, min_history < 1."""
     with pytest.raises(ValueError, match=r"ATR percent bounds"):
-        AtrFilter(min_pct=-1.0, max_pct=5.0)  # type: ignore[arg-type]
+        AtrFilter(min_pct=-1.0, max_pct=5.0)
     with pytest.raises(ValueError, match=r"max_pct"):
         AtrFilter(min_pct=10.0, max_pct=5.0)
     with pytest.raises(ValueError, match=r"min_history"):
