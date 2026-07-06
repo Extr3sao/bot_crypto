@@ -734,7 +734,12 @@ def test_caching_source_avoids_double_fetch() -> None:
     )
     registries = build_filter_set_per_mode(settings)
     source = FakeMarketDataSource(
-        volume_by_symbol={"BTC/USDT": 100.0},
+        # Volume > min_volume_usdt (1_000) so VolumeFilter PASSES and the
+        # orchestrator runs SpreadFilter + AtrFilter too. Otherwise the
+        # volume short-circuit skips fetch_spread_bps + fetch_recent and
+        # ``assert_called_once_per_symbol`` would assert against 0 calls
+        # for those methods instead of 1.
+        volume_by_symbol={"BTC/USDT": 1_500_000.0},
         spread_by_symbol={"BTC/USDT": 1.0},
         ohlcv_by_symbol={"BTC/USDT": _flat_ohlcv("BTC/USDT", 100, last_close=100.0)},
     )
