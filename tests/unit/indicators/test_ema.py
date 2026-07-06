@@ -42,7 +42,6 @@ import pytest
 from trading_bot.indicators.cache import IndicatorCache
 from trading_bot.indicators.ema import EmaIndicator
 from trading_bot.indicators.exceptions import InsufficientHistoryError
-from trading_bot.indicators.protocols import Indicator  # noqa: F401 — re-export for F3 test reference
 from trading_bot.indicators.registry import IndicatorRegistry
 from trading_bot.indicators.types import IndicatorOutput
 from trading_bot.market_data.types import OHLCV
@@ -184,16 +183,12 @@ def test_compute_end_to_end_pipeline() -> None:
     - Returned ``IndicatorOutput`` is identical across the two calls
       (determinism pin per RF-7).
     """
-    # Registry F3 contract.  The ``cast`` documents the (runtime
-    # true, mypy-strict-Liskov noisy) conformance between the
-    # ``@dataclass(frozen=True)`` ``EmaIndicator`` and the
-    # ``Indicator`` Protocol: ``Indicator.name: str`` declares a
-    # read+write attribute, but frozen dataclasses expose ``name``
-    # as a (post-init immutability-pinned) class attribute — mypy
-    # strict flags this as a Liskov mismatch at the call site.
-    # The Protocol itself is structurally satisfied (PEP 544
-    # ``@runtime_checkable`` confirms it at runtime); the cast
-    # is purely a type-system annotation.
+    # Registry F3 contract. ``EmaIndicator`` satisfies the
+    # ``Indicator`` Protocol structurally — no ``cast`` needed since
+    # ADR-0015-Fase2 pinned the ``@property name`` form (which mypy
+    # accepts class-attribute satisfaction for, per PEP 544). The
+    # ``@runtime_checkable`` isinstance check is exercised at the F3
+    # registry boundary (TSK-200.3 DoD).
     registry = IndicatorRegistry()
     registry.register("ema", EmaIndicator())
     assert "ema" in registry

@@ -55,13 +55,30 @@ class Indicator(Protocol):
     def name(self) -> str:
         """Stable identifier; unique within an ``IndicatorRegistry``.
 
-        Read-only property: mypy accepts both a ``name: str`` class
-        attribute (mutable form) AND a ``@property`` (read-only form)
-        as satisfying this contract per PEP 544.  Concrete
-        implementations are free to choose either form; frozen
-        dataclasses (e.g. ``EmaIndicator``) MUST use the class-
-        attribute form because ``@property`` overrides conflict with
-        ``@dataclass(frozen=True, slots=True)``.
+        Read-only property per PEP 544. mypy accepts both a plain
+        class attribute (``name: str = "..."``) AND a ``@property``
+        descriptor as satisfying this contract; both provide a
+        ``str``-typed read access. The Protocol is declared as
+        ``@property`` (not as a mutable class attribute) so frozen
+        dataclass implementations can satisfy it WITHOUT a cast
+        shim — see ADR-0015-Fase2 for the full rationale.
+
+        Concrete implementations SHOULD use the plain class-attribute
+        form for parity:
+
+        - ``@dataclass(frozen=True)`` (e.g. ``EmaIndicator``) MUST use
+          the class-attribute form because the auto-generated
+          ``__init__`` from ``@dataclass`` performs
+          ``self.name = name`` as an *assignment statement*. With a
+          ``@property`` descriptor named ``name`` declared in the
+          class body and no matching setter, that assignment raises
+          ``AttributeError`` at instantiation time. The conflict is
+          a dataclass-``__init__``-assignment interaction, not a
+          frozen-vs-``slots`` interaction (both ``frozen=True`` and
+          ``slots=True`` are incidental; the constraint would still
+          bind for non-frozen dataclasses).
+        - Non-frozen, non-dataclass implementations MAY use either
+          form; class attribute is still preferred for uniformity.
         """
         ...
 

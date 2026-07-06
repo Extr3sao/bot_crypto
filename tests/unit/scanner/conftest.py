@@ -46,6 +46,9 @@ from trading_bot.market_data.fake import (
 )
 from trading_bot.market_data.types import OHLCV
 
+# NOTE: pytest fixtures (settings_paper, settings_research, settings_live)
+# are intentionally NOT in __all__ — fixtures are consumed by name in
+# test fn args, not importable via `from conftest import ...`.
 __all__ = [
     "OHLCV",
     "FakeMarketDataSource",
@@ -56,9 +59,6 @@ __all__ = [
     "load_settings_from_assets_yaml",
     "make_flat_ohlcv",
     "make_high_volatility_ohlcv",
-    "settings_live",
-    "settings_paper",
-    "settings_research",
 ]
 
 # ---------------------------------------------------------------------------
