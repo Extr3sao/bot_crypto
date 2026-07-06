@@ -1,7 +1,8 @@
-
 """Tests for ``build_filter_set_per_mode`` (mode_filters.py)."""
 
 from __future__ import annotations
+
+from typing import cast
 
 from trading_bot.config.runtime import TradingMode
 from trading_bot.config.settings import Settings

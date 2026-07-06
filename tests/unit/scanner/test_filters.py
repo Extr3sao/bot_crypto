@@ -27,8 +27,6 @@ from typing import Any, TypeVar, cast
 
 import pytest
 
-T = TypeVar("T")
-
 from trading_bot.market_data.types import OHLCV
 from trading_bot.scanner.filters import (
     VALID_MODES,
@@ -38,6 +36,8 @@ from trading_bot.scanner.filters import (
     _compute_atr_pct,
 )
 from trading_bot.scanner.types import FilterOutcome
+
+T = TypeVar("T")
 
 # ---------------------------------------------------------------------------
 # FakeMarketDataSource: stub sincronico/async que satisface el Protocol.
