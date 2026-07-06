@@ -22,9 +22,13 @@ from __future__ import annotations
 
 import asyncio
 from dataclasses import dataclass
-from typing import Optional
+from typing import Awaitable, Optional, TypeVar
 
 import pytest
+
+from typing import Awaitable, Optional, TypeVar
+
+T = TypeVar("T")
 
 from trading_bot.market_data.types import OHLCV
 from trading_bot.scanner.filters import (
@@ -94,14 +98,17 @@ class FakeMarketDataSource:
 # ---------------------------------------------------------------------------
 
 
-def _run(coro: object) -> object:
+def _run(coro: Awaitable[T]) -> T:
     """Helper que ejecuta una coroutina con ``asyncio.run``.
 
     Encapsula la necesidad de ``asyncio.run`` para tests sync que
     invocan funciones async de los filtros. No es pytest-asyncio; es
     deliberado para no extender la dependencia dev de momento.
+    TypeVar T propaga el retorno del awaitable al caller, asi
+    ``outcome.passed`` / ``outcome.reason`` se infieren correctamente
+    sin necesidad de ``# type: ignore`` en cada sitio de test.
     """
-    return asyncio.run(coro)  # type: ignore[arg-type]
+    return asyncio.run(coro)
 
 
 def _constant_candles(
