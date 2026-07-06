@@ -126,6 +126,16 @@ omit = [
   "src/trading_bot/config/__main__.py",  # CLI helper omitido hasta Fase 1+.
 ]  # fmt: skip
 
+# TSK-013 round-2 (mypy --strict cleanup): los dos bloques
+# ``[[tool.mypy.overrides]]`` que quarantinaban los 5 test files
+# de ``tests/unit/scanner/*`` fueron eliminados en este commit.
+# Los 27 errores restantes (historicamente 115 baseline mypy strict)
+# se resolvieron con concrete type annotations (cast, model_construct
+# required args, object.__setattr__ bypass para Final[..., frozen]),
+# pineando el AC pinned en ``tasks/sprint-003.md`` (Quality cleanup):
+# ``uv run mypy --strict tests/unit/scanner/`` = 0 errores sin
+# ningun ``# type: ignore`` blanket. Cross-link: ADR-0015-Fase2.
+
 [tool.coverage.report]
 show_missing = true
 fail_under = 90
