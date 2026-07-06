@@ -33,6 +33,42 @@
   `.python-version` + hunks de pyproject.toml. Per ADR-0011 sprint-001
   cumple DoD con excepcion firmada. Cross-link ADR-0012 (PR#14)
   cubre el ignore-vuln + numpy pin + app.py omit.
+- [ ] **TSK-010** Mypy cleanup for conftest.py + add `py.typed` markers
+  to 6 `trading_bot.*` modules. **Est: M**. Estado real: `todo`.
+  Surgido del F4-BDD-cleanup (commit `a26e8d7` + retrieval-log entry
+  `[2026-07-06 11:30]`). El gate `mypy --strict` de TSK-008 NO esta
+  verde: 44 errores en `tests/bdd/conftest.py`, breakdown por
+  categoria:
+  - **19 `[unused-ignore]`** — `# type: ignore` redundantes (sin
+    efecto sobre el error que pretendian suprimir). Fix: eliminarlos.
+  - **11 `[import-untyped]`** — modulos `trading_bot.*` sin
+    `py.typed` marker. Lista: `trading_bot.indicators`,
+    `trading_bot.market_data.types`, `trading_bot.scanner.mode_filters`,
+    `trading_bot.scanner.scanner`, `trading_bot.scanner.scoring`,
+    `trading_bot.scanner.types`. Fix A: anadir `py.typed` marker
+    (PEP 561) en cada paquete. Fix B (mas conservador): anadir
+    `[[tool.mypy.overrides]] module = "trading_bot.*"`
+    `disallow_untyped_defs = false` en `pyproject.toml`.
+  - **4 `[attr-defined]`** — `ast.AST` no tiene `lineno` en algunos
+    nodos; `FakeMarketDataSource` es `Any` por subclass. Fix: usar
+    `getattr(node, "lineno", 0)` consistente con `test_cross_layer.py`
+    + anadir type stubs a `tests/unit/scanner/conftest.py`.
+  - **3 `[no-any-return]`** — funciones que retornan `Any` sin
+    anotacion. Fix: tipar el retorno explicitamente.
+  - **3 `[misc]`** — varios (e.g. dataclass frozen `CounterSnapshot`
+    vs `Any`). Fix: ajustar firmas.
+  - **2 `[no-untyped-def]`** — funciones sin type hints. Fix: anadir
+    type hints.
+  - **2 `[index]`** — `object` indexado como secuencia. Fix: tipar
+    el parametro como la clase concreta.
+
+  **Cross-link**: ADR-0010 (FlatEnvAliasSource) + ADR-0011
+  (sprint-001 closure) + TSK-008 (CI baseline gate).
+  **Nota historica**: el 19 `[unused-ignore]` se introdujo por
+  iteraciones previas de code-review que anadian `# type: ignore`
+  speculativos; el cleanup cierra la deuda.
+  Depende de: TSK-008 (CI baseline) mergeado a `main`.
+
 
 ## Tickets Fase 1 (market data)
 

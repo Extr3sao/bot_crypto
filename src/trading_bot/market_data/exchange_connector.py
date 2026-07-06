@@ -51,7 +51,7 @@ from __future__ import annotations
 
 import uuid
 from abc import ABC, abstractmethod
-from typing import Any, Final
+from typing import Any, Final, cast
 
 import ccxt
 import structlog
@@ -64,8 +64,8 @@ from tenacity import (
 
 from trading_bot.config.exchange import Exchange
 from trading_bot.market_data.types import (
-    Balance,
     OHLCV,
+    Balance,
     OrderResult,
     OrderStatus,
     OrderType,
@@ -269,7 +269,14 @@ class CCXTExchangeConnector(ExchangeConnector):
 
         @self._retry_decorator
         def _execute() -> list[list[float]]:
-            return self._exchange_instance.fetch_ohlcv(symbol, timeframe, limit=limit)
+            # ccxt's signature is untyped (returns Any); the contract is
+            # documented in their typeshed as ``list[list[float]]`` but mypy
+            # --strict cannot infer it. ``cast`` pins the runtime contract
+            # at the boundary — does NOT introduce a runtime check.
+            return cast(
+                list[list[float]],
+                self._exchange_instance.fetch_ohlcv(symbol, timeframe, limit=limit),
+            )
 
         log.info("fetch_ohlcv_start")
         try:
@@ -305,7 +312,11 @@ class CCXTExchangeConnector(ExchangeConnector):
 
         @self._retry_decorator
         def _execute() -> dict[str, Any]:
-            return self._exchange_instance.fetch_balance()
+            # Same rationale as ``_execute`` in ``fetch_ohlcv``: ccxt's
+            # ``fetch_balance()`` return is untyped (Any); the runtime
+            # contract is a per-asset dict whose values are
+            # ``{free, used, total}`` floats — pinned via ``cast``.
+            return cast(dict[str, Any], self._exchange_instance.fetch_balance())
 
         try:
             raw = _execute()
@@ -362,13 +373,19 @@ class CCXTExchangeConnector(ExchangeConnector):
 
         @self._retry_decorator
         def _execute() -> dict[str, Any]:
-            return self._exchange_instance.create_order(
-                symbol,
-                type=order_type,
-                side=side,
-                amount=amount,
-                price=price,
-                params=params,
+            # ccxt's ``create_order()`` returns a per-exchange dict shape;
+            # the typeshed pins it as ``dict[str, Any]`` but mypy --strict
+            # needs the cast to confirm at the boundary.
+            return cast(
+                dict[str, Any],
+                self._exchange_instance.create_order(
+                    symbol,
+                    type=order_type,
+                    side=side,
+                    amount=amount,
+                    price=price,
+                    params=params,
+                ),
             )
 
         log.info("create_order_start")
@@ -397,9 +414,7 @@ class CCXTExchangeConnector(ExchangeConnector):
 
     def cancel_order(self, order_id: str, symbol: str) -> None:
         request_id = str(uuid.uuid4())
-        log = self._log.bind(
-            req_id=request_id, op="cancel_order", order_id=order_id, symbol=symbol
-        )
+        log = self._log.bind(req_id=request_id, op="cancel_order", order_id=order_id, symbol=symbol)
 
         @self._retry_decorator
         def _execute() -> None:
@@ -429,9 +444,7 @@ class CCXTExchangeConnector(ExchangeConnector):
         de negocio downstream.
         """
         if not raw or not raw.strip():
-            raise UnmappedOrderStatusError(
-                f"missing or empty status from ccxt (raw={raw!r})"
-            )
+            raise UnmappedOrderStatusError(f"missing or empty status from ccxt (raw={raw!r})")
         key = raw.strip().lower()
         if key in _KNOWN_STATUS_MAP:
             return _KNOWN_STATUS_MAP[key]
@@ -441,15 +454,18 @@ class CCXTExchangeConnector(ExchangeConnector):
         )
 
 
-__all__ = [
-    "CCXTExchangeConnector",
-    "ExchangeConnector",
-    "MULTI_EXCHANGE_SCOPE",
-    "RETRYABLE_EXCEPTIONS",
-    "SUPPORTED_EXCHANGES_FOR_TSK_101",
-    "UnmappedOrderStatusError",
+__all__ = [  # noqa: RUF022
+    # Source-ordered export list (constants, exception, ABC, impl).
+    # Ruff RUF022 wants alphabetical; we intentionally keep source
+    # order so reviewers can map each entry to its definition site.
+    "RETRYABLE_EXCEPTIONS",  # line 78
+    "UnmappedOrderStatusError",  # line 87
+    "SUPPORTED_EXCHANGES_FOR_TSK_101",  # line 102
+    "MULTI_EXCHANGE_SCOPE",  # line 111
     # Whitelist versionada. Exportada explícitamente para que tests la
     # importen sin F401/private-import warnings. Cambios requieren ADR
     # firmada en tasks/decisions.md.
-    "_KNOWN_STATUS_MAP",
+    "_KNOWN_STATUS_MAP",  # line 128
+    "ExchangeConnector",  # line 141
+    "CCXTExchangeConnector",  # line 178
 ]

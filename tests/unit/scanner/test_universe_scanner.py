@@ -29,7 +29,7 @@ FakeMarketDataSource:
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any
+from typing import Any, cast
 
 import pytest
 import structlog
@@ -38,25 +38,18 @@ from trading_bot.config.runtime import TradingMode
 from trading_bot.config.settings import Settings
 from trading_bot.market_data.types import OHLCV
 from trading_bot.scanner.exceptions import ConfigurationError
-from trading_bot.scanner.filters import (
-    AtrFilter,
-    SpreadFilter,
-    VALID_MODES,
-    VolumeFilter,
-)
 from trading_bot.scanner.mode_filters import build_filter_set_per_mode
 from trading_bot.scanner.protocols import MarketDataSourceProtocol
 from trading_bot.scanner.registry import FilterRegistry
 from trading_bot.scanner.scanner import (
-    CounterSnapshot,
     LIVE_MAX_ATR_PERCENT,
     LIVE_MAX_SPREAD_BPS,
     LIVE_MIN_VOLUME_USDT,
+    CounterSnapshot,
     FilterBounds,
     ScoreNormalizers,
     UniverseScanner,
 )
-
 
 # ---------------------------------------------------------------------------
 # FakeMarketDataSource (sin MagicMock per ADR-0011)
@@ -64,8 +57,15 @@ from trading_bot.scanner.scanner import (
 
 
 @dataclass
-class FakeMarketDataSource:
+class FakeMarketDataSource(MarketDataSourceProtocol):
     """In-test MarketDataSourceProtocol con respuestas configurables.
+
+    TSK-013 fix: nominal inheritance (``MarketDataSourceProtocol`` en la
+    declaracion de la clase, no solo dependencia estructural). Sin esta
+    pista nominal, mypy --strict rechaza 16 sites donde las instancias
+    pasan como ``source=``. La clase sigue siendo un dataclass con
+    counters per-call; los metodos async siguen siendo los 3 del
+    Protocol (fetch_recent / fetch_24h_volume_usdt / fetch_spread_bps).
 
     Pine contract:
     - Cada call (para un symbol) se cuenta en ``call_counts``.
@@ -126,10 +126,13 @@ def _build_settings(
     coherente."""
     # Pydantic v2 model_construct: pre-validated object construction.
     # IMPORTANTE: requiere instancias de los sub-models, no dicts.
-    from trading_bot.config.exchange import Exchange, ExchangeEndpoints, ExchangeRetries, ExchangeTimeouts
+    from trading_bot.config.exchange import (
+        Exchange,
+        ExchangeEndpoints,
+        ExchangeRetries,
+        ExchangeTimeouts,
+    )
     from trading_bot.config.indicators import (
-        IndicatorConfig,
-        IndicatorParams,
         IndicatorsConfig,
         IndicatorsGlobal,
     )
@@ -149,17 +152,10 @@ def _build_settings(
     from trading_bot.config.strategies import (
         StrategiesConfig,
         StrategiesGlobal,
-        StrategyConfig,
-        StrategyEntry,
-        StrategyExit,
-        StrategyFilters,
-        StrategyState,
     )
     from trading_bot.config.universe import PairSpec, Universe, UniverseFilters
 
-    pair_specs = [
-        PairSpec.model_construct(symbol=s, enabled=en) for s, en in pairs
-    ]
+    pair_specs = [PairSpec.model_construct(symbol=s, enabled=en) for s, en in pairs]
     universe = Universe.model_construct(
         name="test",
         description="test",
@@ -204,14 +200,25 @@ def _build_settings(
         live_trading_enabled=False,  # source of truth is runtime.py
     )
 
+    # TSK-013 round-2 (mypy --strict cleanup): StrategiesGlobal
+    # requiere ``required_progression`` (Field(..., min_length=2)) +
+    # ``require_min_trades_for_promotion`` (Field(..., ge=1)).
     strategies_cfg = StrategiesConfig.model_construct(
         strategies={},
-        global_=StrategiesGlobal.model_construct(),
+        global_=StrategiesGlobal.model_construct(
+            required_progression=["disabled", "paper"],
+            require_min_trades_for_promotion=10,
+        ),
     )
 
+    # TSK-013 round-2: IndicatorsGlobal requiere ``require_min_candles``
+    # (Field(..., ge=1)). Valor dummy coherente con el resto del test
+    # suite (los filtros Pineen ``min_history=100`` en scanner.py).
     indicators_cfg = IndicatorsConfig.model_construct(
         indicators={},
-        global_=IndicatorsGlobal.model_construct(),
+        global_=IndicatorsGlobal.model_construct(
+            require_min_candles=100,
+        ),
     )
 
     runtime = Runtime.model_construct(
@@ -270,7 +277,7 @@ def test_init_minimal_args_ok() -> None:
     registries = build_filter_set_per_mode(settings)
     source = FakeMarketDataSource()
     scanner = UniverseScanner(
-        source=source,  # type: ignore[arg-type]
+        source=source,
         registry_per_mode=registries,
         settings=settings,
     )
@@ -282,8 +289,14 @@ def test_init_raises_configuration_error_if_source_none() -> None:
     settings = _build_settings(pairs=[("BTC/USDT", True)])
     registries = build_filter_set_per_mode(settings)
     with pytest.raises(ConfigurationError, match="source"):
+        # cast(MarketDataSourceProtocol, None): el constructor de
+        # ``UniverseScanner`` exige ``MarketDataSourceProtocol`` (no None)
+        # y levanta ``ConfigurationError`` runtime. Para verificar el
+        # mensaje sin propagar el error antes del constructor, mypy
+        # strict necesita ver el tipo del kwarg anotado. El cast
+        # static-typing-mente acepta None pero NO afecta runtime.
         UniverseScanner(
-            source=None,  # type: ignore[arg-type]
+            source=cast(MarketDataSourceProtocol, None),
             registry_per_mode=registries,
             settings=settings,
         )
@@ -294,7 +307,7 @@ def test_init_raises_configuration_error_if_registry_per_mode_empty() -> None:
     source = FakeMarketDataSource()
     with pytest.raises(ConfigurationError, match="registry_per_mode"):
         UniverseScanner(
-            source=source,  # type: ignore[arg-type]
+            source=source,
             registry_per_mode={},
             settings=settings,
         )
@@ -305,10 +318,13 @@ def test_init_raises_configuration_error_if_settings_none() -> None:
     registries = build_filter_set_per_mode(settings)
     source = FakeMarketDataSource()
     with pytest.raises(ConfigurationError, match="settings"):
+        # cast(Settings, None): identico rationale a la inyeccion
+        # de ``source=None`` arriba. ``UniverseScanner.__init__`` exige
+        # ``Settings`` (no None).
         UniverseScanner(
-            source=source,  # type: ignore[arg-type]
+            source=source,
             registry_per_mode=registries,
-            settings=None,  # type: ignore[arg-type]
+            settings=cast(Settings, None),
         )
 
 
@@ -319,7 +335,7 @@ def test_init_raises_configuration_error_if_invalid_mode_key() -> None:
     source = FakeMarketDataSource()
     with pytest.raises(ConfigurationError, match="bogus_mode"):
         UniverseScanner(
-            source=source,  # type: ignore[arg-type]
+            source=source,
             registry_per_mode=registries,
             settings=settings,
         )
@@ -331,12 +347,12 @@ def test_init_freezes_all_registries() -> None:
     registries = build_filter_set_per_mode(settings)
     source = FakeMarketDataSource()
     scanner = UniverseScanner(
-        source=source,  # type: ignore[arg-type]
+        source=source,
         registry_per_mode=registries,
         settings=settings,
     )
-    for mode_reg in scanner._bundles.values():  # type: ignore[attr-defined]
-        reg = mode_reg.registry  # type: ignore[attr-defined]
+    for mode_reg in scanner._bundles.values():
+        reg = mode_reg.registry
         assert reg.is_frozen, f"Registry para mode {mode_reg.mode!r} no fue freezeado"
 
 
@@ -354,11 +370,12 @@ def test_run_empty_universe_returns_empty_list() -> None:
     registries = build_filter_set_per_mode(settings)
     source = FakeMarketDataSource()
     scanner = UniverseScanner(
-        source=source,  # type: ignore[arg-type]
+        source=source,
         registry_per_mode=registries,
         settings=settings,
     )
     import asyncio
+
     snapshots = asyncio.run(scanner.run())
     assert snapshots == []
 
@@ -372,12 +389,13 @@ def test_run_kill_switch_aborts_and_logs_paused() -> None:
     registries = build_filter_set_per_mode(settings)
     source = FakeMarketDataSource()
     scanner = UniverseScanner(
-        source=source,  # type: ignore[arg-type]
+        source=source,
         registry_per_mode=registries,
         settings=settings,
     )
     with structlog.testing.capture_logs() as cap:
         import asyncio
+
         snapshots = asyncio.run(scanner.run())
     assert snapshots == []
     assert any(e["event"] == "scanner.paused.kill_switch" for e in cap)
@@ -401,11 +419,12 @@ def test_run_full_universe_preserves_pair_order() -> None:
         },
     )
     scanner = UniverseScanner(
-        source=source,  # type: ignore[arg-type]
+        source=source,
         registry_per_mode=registries,
         settings=settings,
     )
     import asyncio
+
     snapshots = asyncio.run(scanner.run())
     symbols = [s.symbol for s in snapshots]
     assert symbols == ["A/USDT", "B/USDT", "C/USDT"], (
@@ -429,11 +448,12 @@ def test_filter_composition_first_failure_short_circuits() -> None:
         },
     )
     scanner = UniverseScanner(
-        source=source,  # type: ignore[arg-type]
+        source=source,
         registry_per_mode=registries,
         settings=settings,
     )
     import asyncio
+
     snapshots = asyncio.run(scanner.run())
     assert len(snapshots) == 1
     snap = snapshots[0]
@@ -467,11 +487,12 @@ def test_transient_error_increments_scanner_errors() -> None:
         },
     )
     scanner = UniverseScanner(
-        source=source,  # type: ignore[arg-type]
+        source=source,
         registry_per_mode=registries,
         settings=settings,
     )
     import asyncio
+
     snapshots = asyncio.run(scanner.run())
     assert snapshots == []
     assert scanner.counters.scanner_errors == 2
@@ -495,11 +516,12 @@ def test_structlog_emits_5_event_kinds() -> None:
         },
     )
     scanner = UniverseScanner(
-        source=source,  # type: ignore[arg-type]
+        source=source,
         registry_per_mode=registries,
         settings=settings,
     )
     import asyncio
+
     with structlog.testing.capture_logs() as cap:
         asyncio.run(scanner.run())
     events = {entry["event"] for entry in cap}
@@ -528,11 +550,12 @@ def test_mode_paper_passes_normal_volume() -> None:
         ohlcv_by_symbol={"BTC/USDT": _flat_ohlcv("BTC/USDT", 100, last_close=100.0)},
     )
     scanner = UniverseScanner(
-        source=source,  # type: ignore[arg-type]
+        source=source,
         registry_per_mode=registries,
         settings=settings,
     )
     import asyncio
+
     snapshots = asyncio.run(scanner.run())
     assert snapshots[0].active is True
     assert snapshots[0].rejection_reason is None
@@ -555,11 +578,12 @@ def test_mode_live_endures_volume_to_10M() -> None:
         ohlcv_by_symbol={"BTC/USDT": _flat_ohlcv("BTC/USDT", 100, last_close=100.0)},
     )
     scanner = UniverseScanner(
-        source=source,  # type: ignore[arg-type]
+        source=source,
         registry_per_mode=registries,
         settings=settings,
     )
     import asyncio
+
     snapshots = asyncio.run(scanner.run())
     assert snapshots[0].active is False
     assert snapshots[0].rejection_reason == "volume_below_threshold_for_live_min_10M"
@@ -579,22 +603,29 @@ def test_mode_shadow_live_maps_to_live_thresholds() -> None:
         kill_switch_enabled=False,
         min_volume_usdt=5_000_000,
     )
-    src_kwargs = dict(
+    # TSK-013 round-2 (mypy --strict cleanup): explicit ``dict[str, Any]``
+    # widens value types para que el unpack via ** en
+    # ``FakeMarketDataSource(...)`` no rechace los 3 dict-values con
+    # tipos especificos (dict[str, float], dict[str, list[OHLCV]],
+    # dict[tuple[str, str], int]) en [arg-type]. Mypy infiere sin la
+    # anotacion explicita como ``dict[str, object]`` y rechaza.
+    src_kwargs: dict[str, Any] = dict(
         volume_by_symbol={"BTC/USDT": 7_000_000.0},
         spread_by_symbol={"BTC/USDT": 1.0},
         ohlcv_by_symbol={"BTC/USDT": _flat_ohlcv("BTC/USDT", 100, last_close=100.0)},
     )
     import asyncio
+
     snap_shadow = asyncio.run(
         UniverseScanner(
-            source=FakeMarketDataSource(**src_kwargs),  # type: ignore[arg-type]
+            source=FakeMarketDataSource(**src_kwargs),
             registry_per_mode=build_filter_set_per_mode(settings_shadow),
             settings=settings_shadow,
         ).run()
     )
     snap_live = asyncio.run(
         UniverseScanner(
-            source=FakeMarketDataSource(**src_kwargs),  # type: ignore[arg-type]
+            source=FakeMarketDataSource(**src_kwargs),
             registry_per_mode=build_filter_set_per_mode(settings_live),
             settings=settings_live,
         ).run()
@@ -617,11 +648,12 @@ def test_counters_reset_each_run() -> None:
         ohlcv_by_symbol={"BTC/USDT": _flat_ohlcv("BTC/USDT", 100, last_close=100.0)},
     )
     scanner = UniverseScanner(
-        source=source,  # type: ignore[arg-type]
+        source=source,
         registry_per_mode=registries,
         settings=settings,
     )
     import asyncio
+
     asyncio.run(scanner.run())
     first_count = scanner.counters.pairs_active
     asyncio.run(scanner.run())
@@ -653,7 +685,7 @@ def test_run_is_not_reentrant() -> None:
         ohlcv_by_symbol={"BTC/USDT": _flat_ohlcv("BTC/USDT", 100, last_close=100.0)},
     )
     scanner = UniverseScanner(
-        source=source,  # type: ignore[arg-type]
+        source=source,
         registry_per_mode=registries,
         settings=settings,
     )
@@ -664,7 +696,7 @@ def test_run_is_not_reentrant() -> None:
     with pytest.raises(RuntimeError, match="reentrante"):
         asyncio.run(_two_runs())
     # Y el flag se limpio tras el error (try/finally verification).
-    assert scanner._running is False  # type: ignore[attr-defined]
+    assert scanner._running is False
 
 
 def test_active_snapshot_has_all_10_fields() -> None:
@@ -681,11 +713,12 @@ def test_active_snapshot_has_all_10_fields() -> None:
         ohlcv_by_symbol={"BTC/USDT": _flat_ohlcv("BTC/USDT", 100, last_close=100.0)},
     )
     scanner = UniverseScanner(
-        source=source,  # type: ignore[arg-type]
+        source=source,
         registry_per_mode=registries,
         settings=settings,
     )
     import asyncio
+
     snapshots = asyncio.run(scanner.run())
     snap = snapshots[0]
     assert hasattr(snap, "symbol")
@@ -714,11 +747,12 @@ def test_inactive_snapshot_has_zero_score() -> None:
         ohlcv_by_symbol={"BTC/USDT": _flat_ohlcv("BTC/USDT", 100, last_close=100.0)},
     )
     scanner = UniverseScanner(
-        source=source,  # type: ignore[arg-type]
+        source=source,
         registry_per_mode=registries,
         settings=settings,
     )
     import asyncio
+
     snapshots = asyncio.run(scanner.run())
     snap = snapshots[0]
     assert snap.active is False
@@ -735,16 +769,22 @@ def test_caching_source_avoids_double_fetch() -> None:
     )
     registries = build_filter_set_per_mode(settings)
     source = FakeMarketDataSource(
-        volume_by_symbol={"BTC/USDT": 100.0},
+        # Volume > min_volume_usdt (1_000) so VolumeFilter PASSES and the
+        # orchestrator runs SpreadFilter + AtrFilter too. Otherwise the
+        # volume short-circuit skips fetch_spread_bps + fetch_recent and
+        # ``assert_called_once_per_symbol`` would assert against 0 calls
+        # for those methods instead of 1.
+        volume_by_symbol={"BTC/USDT": 1_500_000.0},
         spread_by_symbol={"BTC/USDT": 1.0},
         ohlcv_by_symbol={"BTC/USDT": _flat_ohlcv("BTC/USDT", 100, last_close=100.0)},
     )
     scanner = UniverseScanner(
-        source=source,  # type: ignore[arg-type]
+        source=source,
         registry_per_mode=registries,
         settings=settings,
     )
     import asyncio
+
     asyncio.run(scanner.run())
     # Cada metodo per-symbol debe haberse llamado exactamente 1 vez.
     assert_called_once_per_symbol(source, "fetch_24h_volume_usdt", "BTC/USDT")
@@ -815,7 +855,7 @@ def test_pairs_processed_counts_per_pair_not_per_filter() -> None:
         ohlcv_by_symbol={"BTC/USDT": _flat_ohlcv("BTC/USDT", 100, last_close=100.0)},
     )
     scanner = UniverseScanner(
-        source=source,  # type: ignore[arg-type]
+        source=source,
         registry_per_mode=registries,
         settings=settings,
     )
@@ -823,6 +863,7 @@ def test_pairs_processed_counts_per_pair_not_per_filter() -> None:
     # verificar que ``scanner.pair.processed`` se emite con
     # ``scan_iteration_id`` (gotcha #2 lock).
     import asyncio
+
     with structlog.testing.capture_logs() as cap:
         asyncio.run(scanner.run())
     # 1 par procesado, 3 filtros corrido. Counter debe ser 1, NO 3.
@@ -844,8 +885,7 @@ def test_pairs_processed_counts_per_pair_not_per_filter() -> None:
         f"Esperaba 1 'scanner.pair.processed' event; got {len(pair_events)}"
     )
     assert "scan_iteration_id" in pair_events[0], (
-        f"scanner.pair.processed debe llevar scan_iteration_id (gotcha #2); "
-        f"got {pair_events[0]}"
+        f"scanner.pair.processed debe llevar scan_iteration_id (gotcha #2); got {pair_events[0]}"
     )
 
 
@@ -865,7 +905,17 @@ def test_scanner_mode_str_raises_configuration_error_for_unknown_mode() -> None:
         TradingMode.PAPER: "paper",
     }
     original_map = scanner_mod._SCANNER_MODE_MAP
-    scanner_mod._SCANNER_MODE_MAP = sentinel_map  # type: ignore[assignment]
+    # ``setattr(mod, name, value)``: ``modules`` NO overridden __setattr__
+    # (no hay frozen check en type-level como frozen dataclass); el
+    # builtin ``setattr`` opaque-mente rebinds el nombre en
+    # ``module.__dict__``. Aceptado por mypy strict sin ``# type: ignore``
+    # porque el builtin es opaco para type-check. Esto bypassea el
+    # ``Final[...]`` lock en ``scanner._SCANNER_MODE_MAP``.
+    # ``setattr(cast(Any, scanner_mod), ...)`` rebinds en
+    # ``module.__dict__`` sin disparar frozen check (modules NO
+    # overridden __setattr__). ``cast(Any, ...)`` evita que mypy strict
+    # trackee el ``Final[...]`` lock de ``scanner._SCANNER_MODE_MAP``.
+    cast(Any, scanner_mod)._SCANNER_MODE_MAP = sentinel_map
     try:
         settings = _build_settings(
             pairs=[("BTC/USDT", True)],
@@ -875,15 +925,18 @@ def test_scanner_mode_str_raises_configuration_error_for_unknown_mode() -> None:
         registries = build_filter_set_per_mode(settings)
         source = FakeMarketDataSource()
         scanner = UniverseScanner(
-            source=source,  # type: ignore[arg-type]
+            source=source,
             registry_per_mode=registries,
             settings=settings,
         )
         import asyncio
-        with pytest.raises(ConfigurationError, match="tasks/decisions.md"):
+
+        with pytest.raises(ConfigurationError, match=r"tasks/decisions\.md"):
             asyncio.run(scanner.run())
     finally:
-        scanner_mod._SCANNER_MODE_MAP = original_map  # type: ignore[assignment]
+        # ``setattr(cast(Any, scanner_mod), ...)`` consistent con el
+        # setup del try.
+        cast(Any, scanner_mod)._SCANNER_MODE_MAP = original_map
 
 
 def test_iteration_completed_emitted_on_kill_switch() -> None:
@@ -906,11 +959,12 @@ def test_iteration_completed_emitted_on_kill_switch() -> None:
     registries = build_filter_set_per_mode(settings)
     source = FakeMarketDataSource()
     scanner = UniverseScanner(
-        source=source,  # type: ignore[arg-type]
+        source=source,
         registry_per_mode=registries,
         settings=settings,
     )
     import asyncio
+
     with structlog.testing.capture_logs() as cap:
         snapshots = asyncio.run(scanner.run())
     assert snapshots == []
@@ -925,12 +979,17 @@ def test_iteration_completed_emitted_on_kill_switch() -> None:
     )
     # Y los 4 counters + duration_ms pineados por spec section 10 + Q6 del
     # round-9 fix asegura que `all_failed` se emite SIEMPRE (None en este branch).
-    for field in ("duration_ms", "pairs_processed", "pairs_active",
-                  "pairs_inactive", "scanner_errors", "all_failed"):
-        assert field in evt, f"iteration.completed debe llevar {field!r} (spec §10)"
+    for field_name in (
+        "duration_ms",
+        "pairs_processed",
+        "pairs_active",
+        "pairs_inactive",
+        "scanner_errors",
+        "all_failed",
+    ):
+        assert field_name in evt, f"iteration.completed debe llevar {field_name!r} (spec §10)"
     assert evt.get("all_failed") is None, (
-        f"all_failed es irrelevante en kill_switch path; "
-        f"got {evt.get('all_failed')!r}"
+        f"all_failed es irrelevante en kill_switch path; got {evt.get('all_failed')!r}"
     )
     # Y el path-specific event continua emitiendo (paused aired before completed).
     assert any(e["event"] == "scanner.paused.kill_switch" for e in cap)
@@ -950,11 +1009,12 @@ def test_iteration_completed_emitted_on_empty_universe() -> None:
     registries = build_filter_set_per_mode(settings)
     source = FakeMarketDataSource()
     scanner = UniverseScanner(
-        source=source,  # type: ignore[arg-type]
+        source=source,
         registry_per_mode=registries,
         settings=settings,
     )
     import asyncio
+
     with structlog.testing.capture_logs() as cap:
         snapshots = asyncio.run(scanner.run())
     assert snapshots == []
@@ -969,12 +1029,17 @@ def test_iteration_completed_emitted_on_empty_universe() -> None:
     )
     # Y los 4 counters + duration_ms pineados por spec section 10 + Q6 del
     # round-9 fix asegura que `all_failed` se emite SIEMPRE (None en este branch).
-    for field in ("duration_ms", "pairs_processed", "pairs_active",
-                  "pairs_inactive", "scanner_errors", "all_failed"):
-        assert field in evt, f"iteration.completed debe llevar {field!r} (spec §10)"
+    for field_name in (
+        "duration_ms",
+        "pairs_processed",
+        "pairs_active",
+        "pairs_inactive",
+        "scanner_errors",
+        "all_failed",
+    ):
+        assert field_name in evt, f"iteration.completed debe llevar {field_name!r} (spec §10)"
     assert evt.get("all_failed") is None, (
-        f"all_failed es irrelevante en empty_universe path; "
-        f"got {evt.get('all_failed')!r}"
+        f"all_failed es irrelevante en empty_universe path; got {evt.get('all_failed')!r}"
     )
     # Y el path-specific event continua emitiendo.
     assert any(e["event"] == "scanner.universe.empty" for e in cap)
@@ -995,7 +1060,7 @@ def test_counters_property_returns_frozen_snapshot() -> None:
     registries = build_filter_set_per_mode(settings)
     source = FakeMarketDataSource()
     scanner = UniverseScanner(
-        source=source,  # type: ignore[arg-type]
+        source=source,
         registry_per_mode=registries,
         settings=settings,
     )
@@ -1011,7 +1076,16 @@ def test_counters_property_returns_frozen_snapshot() -> None:
     assert snap.scanner_errors == 0
     # Mutation raises FrozenInstanceError (BAJO fix verification).
     with pytest.raises(dataclasses.FrozenInstanceError):
-        snap.pairs_active = 999  # type: ignore[misc]
+        # ``setattr(cast(Any, snap), name, value)`` invoca
+        # ``snap.__setattr__(...)`` (override frozen de la dataclass),
+        # asi dispara el frozen check y levanta
+        # ``dataclasses.FrozenInstanceError`` como el test pinea.
+        # ``cast(Any, snap)`` evita que mypy reportee
+        # ``[misc] Property "pairs_active" is read-only`` (es concrete
+        # annotation, no blanket ``# type: ignore``).
+        # NOTA: ``object.__setattr__(snap, ...)`` bypassea el override
+        # y va directo al __slots__ storage sin raise - rompia el test.
+        cast(Any, snap).pairs_active = 999
 
 
 def test_iteration_completed_emits_all_failed_false_on_healthy_path() -> None:
@@ -1036,11 +1110,12 @@ def test_iteration_completed_emits_all_failed_false_on_healthy_path() -> None:
         ohlcv_by_symbol={"BTC/USDT": _flat_ohlcv("BTC/USDT", 100, last_close=100.0)},
     )
     scanner = UniverseScanner(
-        source=source,  # type: ignore[arg-type]
+        source=source,
         registry_per_mode=registries,
         settings=settings,
     )
     import asyncio
+
     with structlog.testing.capture_logs() as cap:
         asyncio.run(scanner.run())
     completed = [e for e in cap if e["event"] == "scanner.iteration.completed"]
@@ -1050,8 +1125,7 @@ def test_iteration_completed_emits_all_failed_false_on_healthy_path() -> None:
         f"keys={list(completed[0].keys())}"
     )
     assert completed[0].get("all_failed") is False, (
-        f"healthy completion debe emitir all_failed=False; "
-        f"got {completed[0].get('all_failed')!r}"
+        f"healthy completion debe emitir all_failed=False; got {completed[0].get('all_failed')!r}"
     )
     # Y early_exit=None en healthy (Truth-table row 1).
     assert completed[0].get("early_exit") is None, (
@@ -1066,6 +1140,7 @@ def test_iteration_completed_emits_all_failed_true_on_cl3_path() -> None:
     `not snapshots and scanner_errors > 0`. ``all_failed=True`` NO
     distingue entre failures + transient errors per Q1 word-ing fix.
     """
+
     class FailingSource(FakeMarketDataSource):
         async def fetch_24h_volume_usdt(self, symbol: str) -> float:
             raise RuntimeError("simulated transient error")
@@ -1081,11 +1156,12 @@ def test_iteration_completed_emits_all_failed_true_on_cl3_path() -> None:
         ohlcv_by_symbol={"BTC/USDT": _flat_ohlcv("BTC/USDT", 100, last_close=100.0)},
     )
     scanner = UniverseScanner(
-        source=source,  # type: ignore[arg-type]
+        source=source,
         registry_per_mode=registries,
         settings=settings,
     )
     import asyncio
+
     with structlog.testing.capture_logs() as cap:
         snapshots = asyncio.run(scanner.run())
     assert snapshots == []
@@ -1127,11 +1203,12 @@ def test_iteration_completed_emits_all_failed_true_on_filter_reject_only_path() 
         ohlcv_by_symbol={"BTC/USDT": _flat_ohlcv("BTC/USDT", 100, last_close=100.0)},
     )
     scanner = UniverseScanner(
-        source=source,  # type: ignore[arg-type]
+        source=source,
         registry_per_mode=registries,
         settings=settings,
     )
     import asyncio
+
     with structlog.testing.capture_logs() as cap:
         snapshots = asyncio.run(scanner.run())
     # El outer loop appendea el inactive snapshot al list:

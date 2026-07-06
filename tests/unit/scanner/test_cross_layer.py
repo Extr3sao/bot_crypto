@@ -66,7 +66,11 @@ def _extract_imports(path: Path) -> list[str]:
             and node.test.id == "TYPE_CHECKING"
         ):
             for child in ast.walk(node):
-                type_checking_lines.add(child.lineno)
+                # ``ast.walk`` yields every Node; only stmt-like nodes
+                # have ``lineno``. Without this guard, mypy --strict
+                # raises [attr-defined] on the inner ``child.lineno``.
+                if hasattr(child, "lineno"):
+                    type_checking_lines.add(child.lineno)
 
     imports: list[str] = []
     for node in ast.walk(tree):

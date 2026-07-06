@@ -12,6 +12,7 @@ patch a nivel de módulo.
 
 from __future__ import annotations
 
+from typing import Any, get_args
 from unittest.mock import MagicMock
 
 import ccxt
@@ -23,15 +24,14 @@ from trading_bot.config.exchange import (
     ExchangeTimeouts,
 )
 from trading_bot.market_data.exchange_connector import (
-    CCXTExchangeConnector,
+    _KNOWN_STATUS_MAP,
     MULTI_EXCHANGE_SCOPE,
     SUPPORTED_EXCHANGES_FOR_TSK_101,
+    CCXTExchangeConnector,
     ExchangeConnector,
     UnmappedOrderStatusError,
-    _KNOWN_STATUS_MAP,
 )
 from trading_bot.market_data.types import OrderStatus
-from typing import get_args  # noqa: I001  (kept near first Literal usage for clarity)
 
 
 # ---------------------------------------------------------------------------
@@ -46,9 +46,7 @@ def exchange_cfg() -> Exchange:
         rate_limit_ms=250,
         options={"defaultType": "spot"},
         timeouts=ExchangeTimeouts(request_ms=15000, recv_window_ms=5000),
-        retries=ExchangeRetries(
-            max_attempts=5, initial_backoff_ms=500, max_backoff_ms=8000
-        ),
+        retries=ExchangeRetries(max_attempts=5, initial_backoff_ms=500, max_backoff_ms=8000),
         default_type="spot",
         time_in_force_default="GTC",
         post_only_default=True,
@@ -69,18 +67,24 @@ def mocked_connector(
 # ---------------------------------------------------------------------------
 # Lifecycle
 # ---------------------------------------------------------------------------
-def test_connector_is_exchange_connector(mocked_connector: tuple[CCXTExchangeConnector, MagicMock]) -> None:
+def test_connector_is_exchange_connector(
+    mocked_connector: tuple[CCXTExchangeConnector, MagicMock],
+) -> None:
     connector, _ = mocked_connector
     assert isinstance(connector, ExchangeConnector)
 
 
-def test_sandbox_mode_enabled_at_init(mocked_connector: tuple[CCXTExchangeConnector, MagicMock]) -> None:
+def test_sandbox_mode_enabled_at_init(
+    mocked_connector: tuple[CCXTExchangeConnector, MagicMock],
+) -> None:
     connector, instance = mocked_connector
     instance.set_sandbox_mode.assert_called_once_with(True)
     assert connector.sandbox_enabled is True
 
 
-def test_rate_limit_and_timeout_propagated(mocked_connector: tuple[CCXTExchangeConnector, MagicMock]) -> None:
+def test_rate_limit_and_timeout_propagated(
+    mocked_connector: tuple[CCXTExchangeConnector, MagicMock],
+) -> None:
     _, instance = mocked_connector
     assert instance.rateLimit == 250
     assert instance.timeout == 15000
@@ -96,7 +100,9 @@ def test_load_markets_calls_ccxt(mocked_connector: tuple[CCXTExchangeConnector, 
 # ---------------------------------------------------------------------------
 # fetch_ohlcv
 # ---------------------------------------------------------------------------
-def test_fetch_ohlcv_maps_to_ohlcv_dataclass(mocked_connector: tuple[CCXTExchangeConnector, MagicMock]) -> None:
+def test_fetch_ohlcv_maps_to_ohlcv_dataclass(
+    mocked_connector: tuple[CCXTExchangeConnector, MagicMock],
+) -> None:
     connector, instance = mocked_connector
     instance.fetch_ohlcv.return_value = [
         [1672531200000, 16500.0, 16600.0, 16400.0, 16550.0, 100.5],
@@ -337,12 +343,9 @@ def test_known_status_map_covers_all_order_status_literal_values() -> None:
     actual = set(_KNOWN_STATUS_MAP.values())
     missing_letters = expected - actual
     stale_mappings = actual - expected
-    assert not missing_letters, (
-        f"_KNOWN_STATUS_MAP missing values for: {sorted(missing_letters)}"
-    )
+    assert not missing_letters, f"_KNOWN_STATUS_MAP missing values for: {sorted(missing_letters)}"
     assert not stale_mappings, (
-        f"_KNOWN_STATUS_MAP has stray mappings to deprecated Literals: "
-        f"{sorted(stale_mappings)}"
+        f"_KNOWN_STATUS_MAP has stray mappings to deprecated Literals: {sorted(stale_mappings)}"
     )
 
 
@@ -370,7 +373,7 @@ def test_supported_exchanges_contains_only_binance_at_tsk_101() -> None:
     """Pinea el alcance actual: TSK-101 sólo cubre Binance. Cualquier
     ampliación (Coinbase, Bybit, OKX, Kraken...) requiere un ticket
     dedicado con sandbox testing — ver ``MULTI_EXCHANGE_SCOPE``."""
-    assert SUPPORTED_EXCHANGES_FOR_TSK_101 == frozenset({"binance"})
+    assert frozenset({"binance"}) == SUPPORTED_EXCHANGES_FOR_TSK_101
 
 
 def test_multi_exchange_scope_string_is_self_descriptive() -> None:
@@ -434,12 +437,15 @@ def fast_retry_exchange_cfg() -> Exchange:
         id="binance",
         sandbox=True,
         account_type="spot",
-        rate_limit_ms=10,
+        # MINIMO del Exchange model: ``rate_limit_ms: int = Field(250, ge=50)``
+        # (Binance documenta un floor ~50ms por debajo del cual ccxt no
+        # ofrece throttling efectivo). El fixture ``fast_retry`` no busca
+        # ``rate=10`` como semantica de retry-speed sino minimizar el
+        # pacing para que la smoke corra en ms; 50ms cumple el floor.
+        rate_limit_ms=50,
         options={"defaultType": "spot"},
         timeouts=ExchangeTimeouts(request_ms=1000, recv_window_ms=500),
-        retries=ExchangeRetries(
-            max_attempts=2, initial_backoff_ms=10, max_backoff_ms=50
-        ),
+        retries=ExchangeRetries(max_attempts=2, initial_backoff_ms=10, max_backoff_ms=150),
         default_type="spot",
         time_in_force_default="GTC",
         post_only_default=True,
@@ -457,7 +463,7 @@ def test_read_methods_retries_then_reraise(
     monkeypatch: pytest.MonkeyPatch,
     fast_retry_exchange_cfg: Exchange,
     method_name: str,
-    args: tuple,
+    args: tuple[Any, ...],
 ) -> None:
     """Smoke (coverage gate): ``fetch_ohlcv`` y ``fetch_balance``
     reintentan hasta ``max_attempts`` y propagan el error original sin

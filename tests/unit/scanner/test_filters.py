@@ -22,9 +22,13 @@ from __future__ import annotations
 
 import asyncio
 from dataclasses import dataclass
-from typing import Optional
+from typing import Awaitable, Optional, TypeVar
 
 import pytest
+
+from typing import Awaitable, Optional, TypeVar
+
+T = TypeVar("T")
 
 from trading_bot.market_data.types import OHLCV
 from trading_bot.scanner.filters import (
@@ -94,14 +98,17 @@ class FakeMarketDataSource:
 # ---------------------------------------------------------------------------
 
 
-def _run(coro: object) -> object:
+def _run(coro: Coroutine[Any, Any, T]) -> T:
     """Helper que ejecuta una coroutina con ``asyncio.run``.
 
     Encapsula la necesidad de ``asyncio.run`` para tests sync que
     invocan funciones async de los filtros. No es pytest-asyncio; es
     deliberado para no extender la dependencia dev de momento.
+    TypeVar T propaga el retorno del awaitable al caller, asi
+    ``outcome.passed`` / ``outcome.reason`` se infieren correctamente
+    sin necesidad de ``# type: ignore`` en cada sitio de test.
     """
-    return asyncio.run(coro)  # type: ignore[arg-type]
+    return asyncio.run(coro)
 
 
 def _constant_candles(
@@ -202,7 +209,8 @@ def test_volume_constructor_validates_arguments() -> None:
     """3 validaciones: min_usdt negativo, live_min_usdt < min_usdt, mode invalido."""
     mins = pytest.raises(ValueError, match=r"min_usdt")
     with mins:
-        VolumeFilter(min_usdt=-1, mode="paper")  # type: ignore[arg-type]
+        # Sentinel: deliberately invalid input (negative min_usdt) to verify constructor raises.
+        VolumeFilter(min_usdt=-1, mode="paper")
 
     lax_live = pytest.raises(ValueError, match=r"live_min_usdt")
     with lax_live:
@@ -210,7 +218,8 @@ def test_volume_constructor_validates_arguments() -> None:
 
     bad_mode = pytest.raises(ValueError, match=r"mode invalido")
     with bad_mode:
-        VolumeFilter(min_usdt=5_000_000, mode="prod")  # type: ignore[arg-type]
+        # Sentinel: deliberately invalid input (unknown mode "prod") to verify constructor raises.
+        VolumeFilter(min_usdt=5_000_000, mode="prod")
 
 
 def test_volume_name_is_volume_class_level_attribute() -> None:
@@ -266,7 +275,8 @@ def test_spread_exact_match_is_pass_not_fail() -> None:
 def test_spread_invalid_max_bps_raises() -> None:
     """max_bps < 0 -> ValueError."""
     with pytest.raises(ValueError, match=r"max_bps"):
-        SpreadFilter(max_bps=-1.0)  # type: ignore[arg-type]
+        # Sentinel: deliberately invalid input (negative max_bps) to verify constructor raises.
+        SpreadFilter(max_bps=-1.0)
 
 
 # ===========================================================================
@@ -312,7 +322,8 @@ def test_atr_pass_when_in_range() -> None:
 def test_atr_constructor_validates_arguments() -> None:
     """3 validaciones: bounds negativos, max < min, min_history < 1."""
     with pytest.raises(ValueError, match=r"ATR percent bounds"):
-        AtrFilter(min_pct=-1.0, max_pct=5.0)  # type: ignore[arg-type]
+        # Sentinel: deliberately invalid input (negative min_pct) to verify constructor raises.
+        AtrFilter(min_pct=-1.0, max_pct=5.0)
     with pytest.raises(ValueError, match=r"max_pct"):
         AtrFilter(min_pct=10.0, max_pct=5.0)
     with pytest.raises(ValueError, match=r"min_history"):
