@@ -114,12 +114,12 @@ def _when_compute(ohlcv_100: list[OHLCV], params: str) -> object:
 
 
 @then("el resultado es instancia de IndicatorOutput")
-def _then_is_indicator_output(compute_out: object) -> None:
+def _then_is_indicator_output(compute_out: IndicatorOutput) -> None:
     assert isinstance(compute_out, IndicatorOutput)
 
 
 @then("el campo values es un Mapping[str, float]")
-def _then_values_is_mapping(compute_out: object) -> None:
+def _then_values_is_mapping(compute_out: IndicatorOutput) -> None:
     from collections.abc import Mapping
 
     assert isinstance(compute_out.values, Mapping)
@@ -129,12 +129,12 @@ def _then_values_is_mapping(compute_out: object) -> None:
 
 
 @then('values contiene la clave "ema"')
-def _then_values_has_ema(compute_out: object) -> None:
+def _then_values_has_ema(compute_out: IndicatorOutput) -> None:
     assert "ema" in compute_out.values
 
 
 @then('values["ema"] es un float finito')
-def _then_values_ema_finite(compute_out: object) -> None:
+def _then_values_ema_finite(compute_out: IndicatorOutput) -> None:
     val = compute_out.values["ema"]
     assert isinstance(val, float)
     assert math.isfinite(val)
@@ -183,7 +183,7 @@ def _given_nan_indicator() -> None:
 
     class _NaNIndicator(EmaIndicator):
         def compute(self, ohlcv, params):  # type: ignore[no-untyped-def]
-            return {"x": float("nan")}  # type: ignore[return-value]
+            return {"x": float("nan")}
 
 
 @when("compute emite el output")
@@ -621,7 +621,8 @@ def _when_ast_walk() -> list[str]:
                 and node.test.id == "TYPE_CHECKING"
             ):
                 for child in ast.walk(node):
-                    type_checking.add(child.lineno)
+                    if hasattr(child, "lineno"):
+                        type_checking.add(child.lineno)
         for node in ast.walk(tree):
             if getattr(node, "lineno", 0) in type_checking:
                 continue
