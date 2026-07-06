@@ -209,6 +209,7 @@ def test_volume_constructor_validates_arguments() -> None:
     """3 validaciones: min_usdt negativo, live_min_usdt < min_usdt, mode invalido."""
     mins = pytest.raises(ValueError, match=r"min_usdt")
     with mins:
+        # Sentinel: deliberately invalid input (negative min_usdt) to verify constructor raises.
         VolumeFilter(min_usdt=-1, mode="paper")
 
     lax_live = pytest.raises(ValueError, match=r"live_min_usdt")
@@ -217,6 +218,7 @@ def test_volume_constructor_validates_arguments() -> None:
 
     bad_mode = pytest.raises(ValueError, match=r"mode invalido")
     with bad_mode:
+        # Sentinel: deliberately invalid input (unknown mode "prod") to verify constructor raises.
         VolumeFilter(min_usdt=5_000_000, mode="prod")
 
 
@@ -273,6 +275,7 @@ def test_spread_exact_match_is_pass_not_fail() -> None:
 def test_spread_invalid_max_bps_raises() -> None:
     """max_bps < 0 -> ValueError."""
     with pytest.raises(ValueError, match=r"max_bps"):
+        # Sentinel: deliberately invalid input (negative max_bps) to verify constructor raises.
         SpreadFilter(max_bps=-1.0)
 
 
@@ -319,6 +322,7 @@ def test_atr_pass_when_in_range() -> None:
 def test_atr_constructor_validates_arguments() -> None:
     """3 validaciones: bounds negativos, max < min, min_history < 1."""
     with pytest.raises(ValueError, match=r"ATR percent bounds"):
+        # Sentinel: deliberately invalid input (negative min_pct) to verify constructor raises.
         AtrFilter(min_pct=-1.0, max_pct=5.0)
     with pytest.raises(ValueError, match=r"max_pct"):
         AtrFilter(min_pct=10.0, max_pct=5.0)
