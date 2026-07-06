@@ -98,7 +98,7 @@ class FakeMarketDataSource:
 # ---------------------------------------------------------------------------
 
 
-def _run(coro: Awaitable[T]) -> T:
+def _run(coro: Coroutine[Any, Any, T]) -> T:
     """Helper que ejecuta una coroutina con ``asyncio.run``.
 
     Encapsula la necesidad de ``asyncio.run`` para tests sync que
