@@ -92,8 +92,7 @@ class OHLCVStore:
     def upsert_ohlcv(self, ohlcv_list: Iterable[OHLCV]) -> int:
         """Inserta velas nuevas / actualiza existentes (last-write-wins)."""
         rows = [
-            (o.symbol, o.timestamp, o.open, o.high, o.low, o.close, o.volume)
-            for o in ohlcv_list
+            (o.symbol, o.timestamp, o.open, o.high, o.low, o.close, o.volume) for o in ohlcv_list
         ]
         if not rows:
             return 0
@@ -145,7 +144,7 @@ class OHLCVStore:
     # Sin esto, callers que olviden ``close()`` leak sqlite3.Connection.
     # TSK-104+ (scheduler) y backtest loop son lugares tipicos donde
     # ocurrira el descuido; pin contractualmente con ``with``.
-    def __enter__(self) -> "OHLCVStore":
+    def __enter__(self) -> OHLCVStore:
         return self
 
     def __exit__(self, exc_type: object, exc_val: object, exc_tb: object) -> None:
@@ -201,7 +200,7 @@ def _parse_sqlite_url(database_url: str) -> Path:
             f"otros backends (postgresql, mysql, in-memory, etc.)."
         )
     # Strip 10 chars: "sqlite:///"
-    path_str = database_url[len(prefix):]
+    path_str = database_url[len(prefix) :]
     return Path(path_str)
 
 
@@ -228,13 +227,7 @@ def _is_absolute_path(path_str: str) -> bool:
     """
     if path_str.startswith(("/", "\\")):
         return True
-    if (
-        len(path_str) >= 2
-        and path_str[0].isalpha()
-        and path_str[1] == ":"
-    ):
-        return True
-    return False
+    return bool(len(path_str) >= 2 and path_str[0].isalpha() and path_str[1] == ":")
 
 
 __all__ = [
