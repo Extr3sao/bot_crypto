@@ -53,11 +53,11 @@ como bloque de valor incremental sobre el scanner F1-F5 ya operativo.
 | TSK-203 | Order book imbalance (detras de un feature flag) | S | 2 | M | todo | 8 |
 | TSK-204 | Property tests sobre series sinteticas | S | 2 | L | todo | 9 |
 
-### Secondary (carry from sprint-002 si no cerrado)
+### Quality cleanup (gate-investigation follow-ups)
 
 | ID | Titulo | Tam | Fase | Risk | Estado | Pri |
 | --- | --- | --- | --- | --- | --- | --- |
-| TSK-100 | Storage layer (SQLite + migraciones minimas) | S | 1 | L | todo | 10 |
+| TSK-013 | mypy --strict = 0 errors on tests/unit/scanner/ (gate-investigation triage) | S | 2 | L | todo | 11 |
 
 ### TSK-103 sub-tickets (solo si ADR-0014 surgio de F5 close-out)
 
@@ -90,6 +90,15 @@ como bloque de valor incremental sobre el scanner F1-F5 ya operativo.
 - `TSK-200..TSK-204`: tickets de Fase 2. Arrancan en este sprint con
   TSK-200 (interface + registro) primero; los demas quedan bloqueados
   hasta TSK-200 cerrado.
+- `TSK-013`: ticket formal de cleanup disparado por gate-investigation del
+  TSK-200 PR. Las 115 mypy --strict errors en los 5 archivos de tests
+  del scanner fueron pinned via `[[tool.mypy.overrides]]` scoped en
+  `pyproject.toml` (override temporal aplicado en el commit-ahead, no
+  aun pinned en `main`). DoD: `mypy --strict` returns 0 errors on
+  `tests/unit/scanner/` tree + removal del scoped override en el
+  mismo commit. Cross-link ADR-0015-Fase2 (la decision `@property
+  name` en el `Indicator` Protocol que re-disparo la strict-mypy
+  review y genero las 115 errors).
 - `TSK-100`: arrastre desde sprint-002. Bajo prioridad; OHLCVStore
   minimal ya cubre Fase 1 (TSK-102). Migracion completa queda para
   Fase 9+.
@@ -137,6 +146,46 @@ como bloque de valor incremental sobre el scanner F1-F5 ya operativo.
 - TSK-204: hypothesis property tests sobre series sinteticas (invariantes
   + monotonicidad + determinismo; mirror de F3 pattern).
 
+### TSK-013 (Quality cleanup, gate-investigation follow-up)
+
+Acceptance criteria pinada (sequence-order matters; ejecutar en este orden):
+
+1. **Pre-flight check** (corre el comando ANTES del cleanup para confirmar
+   baseline): `uv run mypy --strict tests/unit/scanner/` reporta
+   actualmente ~115 errors distribuidos en los 5 archivos enumerate:
+   - `tests/unit/scanner/test_filters.py`
+   - `tests/unit/scanner/test_mode_filters.py`
+   - `tests/unit/scanner/test_registry.py`
+   - `tests/unit/scanner/test_scoring.py`
+   - `tests/unit/scanner/test_universe_scanner.py`
+2. **Cleanup**: resolver las 115 errors distribuidas entre los 5
+   archivos. Categorias predominantes (per gate-investigation diagnosis):
+   `var-annotated` (parametros sin anotacion en factories / fixtures),
+   `no-untyped-def` (nested helpers sin tipo en setup/teardown),
+   `attr-defined` (Attribute access sobre dataclass fields sin
+   declaracion explicita), `index`/`no-any-return` (operaciones sobre
+   listas/dicts retornados como `object`). Estrategia: anotar con tipos
+   concretos (no agregar `# type: ignore` salvo casos degenerados).
+3. **Removal of scoped quarantine** on TSK-013 close: el block
+   `[[tool.mypy.overrides]]` con `module = [...]` list + flag disables
+   `disallow_untyped_defs = false` / `warn_return_any = false` /
+   `no_implicit_optional = false` en `pyproject.toml` is **REMOVED** en
+   el mismo commit (o un follow-up atomico inmediatamente despues).
+   Pre-flight del step 1 garantiza que el removal no expone nuevos
+   errors en otros archivos del scope.
+4. **CI gate** `type-check` (job homonimo en `.github/workflows/ci.yml`)
+   **green** per `docs/ci.md` section 3 — `mypy --strict .` (full-project
+   sweep) sin errores.
+5. **Cross-link** ADR-0015-Fase2 (la `@property name` Protocol decision that
+   triggered re-review + 115 errors) + TSK-010 (otro cleanup pendiente,
+   no-scanner per `tasks/backlog.md` Phase 0). **CI runtime conjoin**:
+   TSK-013 cierra el lado scanner; TSK-010 cierra el lado `tests/`
+   general + `py.typed` markers. Aunque los tickets son independientes
+   a nivel de scope narrativo, el gate CI `mypy --strict .` los trata
+   como un solo check global — **ambos deben close para que el CI
+   `type-check` quede green**. No se puede marcar `done` TSK-013 sin
+   antes cerrar TSK-010 (o viceversa).
+
 ## Criterio de salida del sprint
 
 - `TSK-008` + `TSK-009` cerrados (governance arrastre FIN).
@@ -167,4 +216,8 @@ como bloque de valor incremental sobre el scanner F1-F5 ya operativo.
 
 ```
 [<F5_MERGE_DATE> HH:MM] agent=context-engineer | action=open sprint-003 via F5 close-out | artifacts=tasks/sprint-003.md, tasks/{backlog,sprint-002,decisions}.md (Phase 7.4 bookkeeping ya aplicado), context/retrieval-log.md | summary=Apertura formal de sprint-003 tras merge de TSK-103.5 (F5) en <F5_PR_URL> con tag v0.5.0-rc.1. F5 unblock TSK-104 (backtest engine) + TSK-105 (paper trading harness) que pasan de blocked a in_progress. Governance arrastre TSK-008 + TSK-009 sube a Pri 1+2 para forzar cierre del arrastre de 2 sprints. Fase 2 indicators arranca con TSK-200 (interface) como Pri 5. TSK-103.6 queda como placeholder conditional: solo se materializa si ADR-0014 detecto scope changes durante F5 review chain; en caso contrario la fila se mantiene vacia y el ticket queda descartado.
+```
+
+```
+[2026-07-06 17:00] agent=context-engineer | action=open TSK-013 in sprint-003 (formal pin) | artifacts=tasks/sprint-003.md, context/retrieval-log.md | summary=Apertura formal de TSK-013 como follow-up documentado del gate-investigation del TSK-200 PR. New section 'Quality cleanup (gate-investigation follow-ups)' anadido con filas table-Pri=10. DoD block con AC pinada: 'uv run mypy --strict tests/unit/scanner/ returns 0 errors' + los 5 archivos enumerate + removal del scoped [[tool.mypy.overrides]] block en pyproject.toml + CI gate type-check green. Estado real entry agregada debajo de TSK-200..204 con cross-link ADR-0015-Fase2 (la `@property name` Protocol decision que re-disparo las 115 errors). Log entry al final del bloque log. Ticket hermano de TSK-010 (cleanup mypy para el lado no-scanner); ambos abren el camino a 'mypy .' = 0 global en main.
 ```
