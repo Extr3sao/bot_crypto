@@ -68,7 +68,7 @@ Ver la sección "Estructura del repositorio" más abajo. Las decisiones de arqui
 
 ## 🚀 Quick start (modo `backtest`/`paper`)
 
-> Requiere Python 3.11+ y `uv` o `pip`.
+> Requiere Python 3.11+ y `uv` (ADR-0002).
 
 ```bash
 # 1. Clonar
@@ -77,14 +77,14 @@ git clone <repo> && cd crypto-scalping-agentic-bot
 # 2. Copiar variables de entorno
 cp .env.example .env
 
-# 3. Instalar
-pip install -e ".[dev]"
+# 3. Instalar dependencias
+uv sync --all-extras --dev
 
 # 4. Validar configuración
-python -m trading_bot.app config-check
+uv run python -m trading_bot.app config-check
 
-# 5. Ejecutar un backtest (cuando la Fase 6 esté implementada)
-python -m trading_bot.app run --mode backtest --strategy trend_pullback_scalping --symbol BTC/USDT
+# 5. Ejecutar una iteracion demo segura
+uv run python -m trading_bot.app scan --demo
 ```
 
 ## 🛠️ Quality gates (CI local)
@@ -186,4 +186,6 @@ Lee `.ai/methodology-hybrid.md` antes de proponer cambios. Toda nueva estrategia
 
 ## ⚖️ Licencia
 
-Pendiente de decidir (ver `tasks/decisions.md` ADR-0001).
+Licencia propietaria / uso interno privado. No se permite distribucion
+externa ni publicacion open source sin un nuevo ADR (ver ADR-0001 en
+`tasks/decisions.md`).

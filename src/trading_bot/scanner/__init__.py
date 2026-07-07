@@ -59,18 +59,23 @@ from trading_bot.scanner.exceptions import (
     ScannerError,
 )
 from trading_bot.scanner.filters import (
+    VALID_MODES,
     AtrFilter,
     SpreadFilter,
-    VALID_MODES,
     VolumeFilter,
     _compute_atr_pct,
 )
 from trading_bot.scanner.mode_filters import build_filter_set_per_mode
+from trading_bot.scanner.protocols import (
+    Filter,
+    MarketDataSourceProtocol,
+)
+from trading_bot.scanner.registry import FilterRegistry
 from trading_bot.scanner.scanner import (
-    CounterSnapshot,
     LIVE_MAX_ATR_PERCENT,
     LIVE_MAX_SPREAD_BPS,
     LIVE_MIN_VOLUME_USDT,
+    CounterSnapshot,
     FilterBounds,
     ScoreNormalizers,
     UniverseScanner,
@@ -81,11 +86,6 @@ from trading_bot.scanner.scoring import (
     VOLUME_WEIGHT,
     compute_rank_score,
 )
-from trading_bot.scanner.protocols import (
-    Filter,
-    MarketDataSourceProtocol,
-)
-from trading_bot.scanner.registry import FilterRegistry
 from trading_bot.scanner.types import (
     FilterOutcome,
     MarketSnapshot,
@@ -94,6 +94,12 @@ from trading_bot.scanner.types import (
 
 __all__ = [
     "ATR_WEIGHT",
+    "LIVE_MAX_ATR_PERCENT",
+    "LIVE_MAX_SPREAD_BPS",
+    "LIVE_MIN_VOLUME_USDT",
+    "SPREAD_WEIGHT",
+    "VALID_MODES",
+    "VOLUME_WEIGHT",
     "AtrFilter",
     "ConfigurationError",
     "CounterSnapshot",
@@ -102,19 +108,13 @@ __all__ = [
     "FilterOutcome",
     "FilterRegistry",
     "KillSwitchActiveError",
-    "LIVE_MAX_ATR_PERCENT",
-    "LIVE_MAX_SPREAD_BPS",
-    "LIVE_MIN_VOLUME_USDT",
     "MarketDataSourceProtocol",
     "MarketSnapshot",
     "RejectionReason",
-    "SPREAD_WEIGHT",
     "ScannerError",
     "ScoreNormalizers",
     "SpreadFilter",
     "UniverseScanner",
-    "VALID_MODES",
-    "VOLUME_WEIGHT",
     "VolumeFilter",
     "_compute_atr_pct",
     "build_filter_set_per_mode",

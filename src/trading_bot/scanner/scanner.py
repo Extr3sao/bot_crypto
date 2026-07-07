@@ -51,6 +51,7 @@ MEDIO + BAJO fixes del reviewer de handoff (septimo ciclo):
 from __future__ import annotations
 
 import time
+from collections.abc import Callable, Mapping
 from dataclasses import dataclass
 from typing import Final
 from uuid import uuid4
@@ -324,10 +325,10 @@ class UniverseScanner:
         self,
         *,
         source: MarketDataSourceProtocol,
-        registry_per_mode: dict[str, object],
+        registry_per_mode: Mapping[str, FilterRegistry],
         settings: Settings,
-        normalizers_per_mode: dict[str, ScoreNormalizers] | None = None,
-        scan_iteration_id_factory=lambda: uuid4().hex,
+        normalizers_per_mode: Mapping[str, ScoreNormalizers] | None = None,
+        scan_iteration_id_factory: Callable[[], str] = lambda: uuid4().hex,
     ) -> None:
         # --- Validacion de DI ---
         if source is None:
@@ -347,7 +348,9 @@ class UniverseScanner:
                     f"registry_per_mode key {mode_key!r} no esta en "
                     f"VALID_MODES={sorted(VALID_MODES)}"
                 )
-            # Verificacion de tipo sin importar (evita import circular en type hints).
+            # Guard runtime defensivo: aunque el type contract ya exige
+            # FilterRegistry, mantenemos el mensaje explicito por si el
+            # constructor recibe objetos incorrectos desde codigo no tipado.
             freeze = getattr(reg, "freeze", None)
             if not callable(freeze):
                 raise ConfigurationError(
@@ -666,11 +669,11 @@ def _now_ms() -> int:
 
 
 __all__ = [
-    "CounterSnapshot",
-    "FilterBounds",
     "LIVE_MAX_ATR_PERCENT",
     "LIVE_MAX_SPREAD_BPS",
     "LIVE_MIN_VOLUME_USDT",
+    "CounterSnapshot",
+    "FilterBounds",
     "ScoreNormalizers",
     "UniverseScanner",
 ]

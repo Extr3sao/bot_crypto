@@ -36,10 +36,8 @@ from hypothesis import strategies as st
 from trading_bot.scanner.scoring import (
     ATR_WEIGHT,
     SPREAD_WEIGHT,
-    VOLUME_WEIGHT,
     compute_rank_score,
 )
-
 
 # ===========================================================================
 # Sentinel tests (9 casos nominales).

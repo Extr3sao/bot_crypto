@@ -25,9 +25,9 @@ from .reports import FoldReport, build_fold_report
 from .slippage import FlatBpsSlippage, SlippageModel, VolumeImpactSlippage
 from .store_source import OHLCVStoreSource
 from .types import (
-    BacktestInputs,
     OHLCV,
     BacktestContext,
+    BacktestInputs,
     BacktestResult,
     EquityPoint,
     Fill,
@@ -39,7 +39,7 @@ from .types import (
 )
 from .walk_forward import walk_forward_run
 
-__all__ = [
+__all__ = [  # noqa: RUF022
     # Types
     "BacktestInputs",
     "OHLCV",

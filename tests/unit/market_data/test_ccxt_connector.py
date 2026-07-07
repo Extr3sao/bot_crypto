@@ -12,6 +12,7 @@ patch a nivel de módulo.
 
 from __future__ import annotations
 
+from typing import get_args
 from unittest.mock import MagicMock
 
 import ccxt
@@ -23,15 +24,14 @@ from trading_bot.config.exchange import (
     ExchangeTimeouts,
 )
 from trading_bot.market_data.exchange_connector import (
-    CCXTExchangeConnector,
+    _KNOWN_STATUS_MAP,
     MULTI_EXCHANGE_SCOPE,
     SUPPORTED_EXCHANGES_FOR_TSK_101,
+    CCXTExchangeConnector,
     ExchangeConnector,
     UnmappedOrderStatusError,
-    _KNOWN_STATUS_MAP,
 )
 from trading_bot.market_data.types import OrderStatus
-from typing import get_args  # noqa: I001  (kept near first Literal usage for clarity)
 
 
 # ---------------------------------------------------------------------------
@@ -277,6 +277,33 @@ def test_fetch_balance_maps_to_balance_dataclass(
     assert "info" not in by_asset
 
 
+def test_fetch_ticker_returns_raw_payload(
+    mocked_connector: tuple[CCXTExchangeConnector, MagicMock],
+) -> None:
+    connector, instance = mocked_connector
+    instance.fetch_ticker.return_value = {"symbol": "BTC/USDT", "quoteVolume": 123.0}
+
+    ticker = connector.fetch_ticker("BTC/USDT")
+
+    assert ticker["quoteVolume"] == 123.0
+    instance.fetch_ticker.assert_called_once_with("BTC/USDT")
+
+
+def test_fetch_order_book_returns_raw_payload(
+    mocked_connector: tuple[CCXTExchangeConnector, MagicMock],
+) -> None:
+    connector, instance = mocked_connector
+    instance.fetch_order_book.return_value = {
+        "bids": [[99.0, 1.0]],
+        "asks": [[101.0, 1.0]],
+    }
+
+    order_book = connector.fetch_order_book("BTC/USDT", limit=10)
+
+    assert order_book["bids"][0][0] == 99.0
+    instance.fetch_order_book.assert_called_once_with("BTC/USDT", limit=10)
+
+
 # ---------------------------------------------------------------------------
 # _normalize_status exhaustiveness (TSK-101 reviewer fix + ADR lock)
 # ---------------------------------------------------------------------------
@@ -370,7 +397,7 @@ def test_supported_exchanges_contains_only_binance_at_tsk_101() -> None:
     """Pinea el alcance actual: TSK-101 sólo cubre Binance. Cualquier
     ampliación (Coinbase, Bybit, OKX, Kraken...) requiere un ticket
     dedicado con sandbox testing — ver ``MULTI_EXCHANGE_SCOPE``."""
-    assert SUPPORTED_EXCHANGES_FOR_TSK_101 == frozenset({"binance"})
+    assert frozenset({"binance"}) == SUPPORTED_EXCHANGES_FOR_TSK_101
 
 
 def test_multi_exchange_scope_string_is_self_descriptive() -> None:
@@ -434,11 +461,11 @@ def fast_retry_exchange_cfg() -> Exchange:
         id="binance",
         sandbox=True,
         account_type="spot",
-        rate_limit_ms=10,
+        rate_limit_ms=50,
         options={"defaultType": "spot"},
         timeouts=ExchangeTimeouts(request_ms=1000, recv_window_ms=500),
         retries=ExchangeRetries(
-            max_attempts=2, initial_backoff_ms=10, max_backoff_ms=50
+            max_attempts=2, initial_backoff_ms=10, max_backoff_ms=100
         ),
         default_type="spot",
         time_in_force_default="GTC",
@@ -457,7 +484,7 @@ def test_read_methods_retries_then_reraise(
     monkeypatch: pytest.MonkeyPatch,
     fast_retry_exchange_cfg: Exchange,
     method_name: str,
-    args: tuple,
+    args: tuple[object, ...],
 ) -> None:
     """Smoke (coverage gate): ``fetch_ohlcv`` y ``fetch_balance``
     reintentan hasta ``max_attempts`` y propagan el error original sin

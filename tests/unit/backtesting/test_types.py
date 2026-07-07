@@ -19,9 +19,9 @@ from hypothesis import given
 from hypothesis import strategies as st
 
 from trading_bot.backtesting.types import (
-    BacktestInputs,
     OHLCV,
     BacktestContext,
+    BacktestInputs,
     BacktestResult,
     EquityPoint,
     Fill,

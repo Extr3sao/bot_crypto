@@ -21,6 +21,8 @@ Why a dedicated file (vs. extending the existing
 
 from __future__ import annotations
 
+import itertools
+
 import pytest
 
 from trading_bot.market_data.fake import (
@@ -32,7 +34,6 @@ from trading_bot.market_data.fake import (
     make_high_volatility_ohlcv,
 )
 from trading_bot.market_data.types import OHLCV
-
 
 # ===========================================================================
 # make_flat_ohlcv
@@ -64,7 +65,7 @@ def test_make_flat_ohlcv_uses_symbol_for_every_row() -> None:
 def test_make_flat_ohlcv_timestamps_monotonic() -> None:
     """Los timestamps crecen 1 minuto entre velas consecutivas."""
     rows = make_flat_ohlcv("BTC/USDT", 5, last_close=100.0)
-    for prev, curr in zip(rows, rows[1:]):
+    for prev, curr in itertools.pairwise(rows):
         assert curr.timestamp - prev.timestamp == 60_000
 
 

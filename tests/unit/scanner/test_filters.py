@@ -22,7 +22,6 @@ from __future__ import annotations
 
 import asyncio
 from dataclasses import dataclass
-from typing import Optional
 
 import pytest
 
@@ -34,8 +33,6 @@ from trading_bot.scanner.filters import (
     VolumeFilter,
     _compute_atr_pct,
 )
-from trading_bot.scanner.protocols import MarketDataSourceProtocol
-
 
 # ---------------------------------------------------------------------------
 # FakeMarketDataSource: stub sincronico/async que satisface el Protocol.
@@ -57,9 +54,9 @@ class FakeMarketDataSource:
     porque mypy strict + Protocol structural requiere firmas declaradas).
     """
 
-    volume: Optional[float] = None
-    spread_bps: Optional[float] = None
-    candles: Optional[list[OHLCV]] = None
+    volume: float | None = None
+    spread_bps: float | None = None
+    candles: list[OHLCV] | None = None
 
     async def fetch_recent(
         self, symbol: str, limit: int = 100
@@ -222,7 +219,7 @@ def test_volume_name_is_volume_class_level_attribute() -> None:
 
 def test_volume_valid_modes_constant_is_complete() -> None:
     """Pinea que ``VALID_MODES`` contiene los 4 modos del runtime."""
-    assert VALID_MODES == frozenset({"research", "backtest", "paper", "live"})
+    assert frozenset({"research", "backtest", "paper", "live"}) == VALID_MODES
 
 
 # ===========================================================================

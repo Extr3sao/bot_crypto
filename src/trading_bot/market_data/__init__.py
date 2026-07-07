@@ -35,6 +35,7 @@ from trading_bot.market_data.fake import (
     make_flat_ohlcv,
     make_high_volatility_ohlcv,
 )
+from trading_bot.market_data.live_source import CCXTMarketDataSource
 from trading_bot.market_data.ohlcv_fetcher import OHLCVFetcher
 from trading_bot.market_data.types import (
     Balance,
@@ -47,6 +48,7 @@ from trading_bot.market_data.types import (
 
 __all__ = [
     "CCXTExchangeConnector",
+    "CCXTMarketDataSource",
     "ExchangeConnector",
     "FakeMarketDataSource",
     "MULTI_EXCHANGE_SCOPE",

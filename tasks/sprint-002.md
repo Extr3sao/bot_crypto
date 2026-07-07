@@ -3,9 +3,17 @@
 > Sprint abierto el 2026-07-03 via ADR-0011.
 > `TSK-008` se arrastro desde `sprint-001` como prioridad 1.
 
-> **Estado real del worktree**: `TSK-008`, `TSK-009`, `TSK-101` y
-> `TSK-102` tienen trabajo local en curso; de ellos, solo `TSK-099`
-> esta ya mergeado en `main` como prerequisito del sprint.
+> **Estado real del worktree (al cierre via PR #2)**: `TSK-008` + `TSK-009`
+> cierran la governance arrastre de 2 sprints via **PR #2**
+> (commit `da0424a`) en un solo PR que incluye `.github/workflows/ci.yml`
+> (4 jobs status-checks per Bloque 6) + `.python-version = 3.11` +
+> `.github/CODEOWNERS` (9-agent mapping + dual-review paths sensibles)
+> + `.github/PULL_REQUEST_TEMPLATE.md` + branch-protection admin rules
+> en `quality/release-gates.md` Bloque 6.
+> `TSK-099` (prereq merge) + `TSK-101` (PR#12) + `TSK-102` (PR#13) +
+> `TSK-103.4` (F4 orquestador) + `TSK-103.5` (F5 wiring + 17 BDD +
+> ADR-0013) mergeados en `main`. TSK-008/009 arrastrados del sprint-001
+> culminan via PR #2.
 
 ---
 
@@ -28,8 +36,8 @@ Fase 1 sin perder rigor metodologico: ningun ticket se promueve a
 
 | ID | Titulo | Tamano | Fase | Risk | Estado | Pri |
 | --- | --- | --- | --- | --- | --- | --- |
-| TSK-008 | Baseline CI: ruff + mypy + pytest markers + pip-audit + workflow GHA | S | 1 | M | in_progress | 1 |
-| TSK-009 | CODEOWNERS + PR template + branch-protection admin rules | S | 0 | M | in_progress | 2 |
+| TSK-008 | Baseline CI: ruff + mypy + pytest markers + pip-audit + workflow GHA | S | 1 | M | done | 1 |
+| TSK-009 | CODEOWNERS + PR template + branch-protection admin rules | S | 0 | M | done | 2 |
 
 ### Fase 1 (market data + universe)
 
@@ -60,12 +68,31 @@ Fase 1 sin perder rigor metodologico: ningun ticket se promueve a
 
 ## Estado real por ticket
 
-- `TSK-008`: implementado en local, pendiente de PR/merge. **TODO**: PR#N real a reclamitar (este ticket no entro en PR-A/B/C, ver [2026-07-04 08:30] retrieval-log para detalle).
-- `TSK-009`: iniciado en local, pendiente de PR/merge. Patch
-  adicional requerido por F5 kickoff: anadir
-  `/src/trading_bot/scanner/` y `/tests/unit/scanner/` a CODEOWNERS
-  con dual-review `@Extr3sao/strategy-team @Extr3sao/security-team`
-  (Block P2-Dual del runbook F4 PR).
+- `TSK-008`: **done** via **PR #2** (commit `da0424a`). CI baseline
+  operativo con `.github/workflows/ci.yml` (4 jobs:
+  `format-and-lint` + `type-check` + `pip-audit` +
+  `tests-and-coverage`, cuyas keys matchean exactamente los
+  status-checks required en `quality/release-gates.md` Bloque 6) +
+  `.python-version = 3.11` (single line) +
+  ajustes `pyproject.toml` (mypy `python_version` corregido a
+  `3.11`; coverage `fail_under` promovido de `70` a `90`).
+  Cross-link ADR-0012 cubre numpy<2.1 + app.py omit +
+  `--ignore-vuln PYSEC-2026-597` firmado en `validate_local.ps1` y
+  job `pip-audit` de `ci.yml`.
+- `TSK-009`: **done** via **PR #2** (commit `da0424a`, mismo PR que
+  TSK-008). `.github/CODEOWNERS` mapea los 9 agentes documentados
+  en `AGENTS.md` seccion 2 con dual-review para paths sensibles
+  (config, risk, execution, secrets, workflows); pre-flight con
+  `gh api orgs teams` documentado en el header. `.github/PULL_REQUEST_TEMPLATE.md`
+  estructura el PR en 5 bloques (header + quality gates + 4
+  checklists dedicadas por tipo de cambio + sign-off 9-agent +
+  merge procedure) con detalles de cambio en `<details>`
+  colapsables (round-3 fix). Branch-protection rules en
+  `quality/release-gates.md` Bloque 6 con `required_status_checks`
+  alineados a `docs/ci.md` seccion 3 + `required_pull_request_reviews`
+  (dual-review) + commands `gh api` JSON inline PowerShell + bash.
+  Patch adicional para scanner paths pines via F5 PR (Block
+  P2-Dual del runbook).
 - `TSK-101`: mergeado en PR#12 (2026-07-04 08:30) - upstream `feature/tsk-101-ccxt-connector`.
 - `TSK-102`: mergeado en PR#13 (2026-07-04 08:30) - upstream `feature/tsk-102-ohlcv-pipeline`.
 - `ADR-0012` (gate-recovery): mergeado en PR#14 (2026-07-04 08:30) - upstream `feature/adr-0012-gate-recovery`. No tagged como ticket en `tasks/backlog.md` (es un ADR), pero pineado como prerequisito del coverage gate para TSK-101/102.
@@ -92,7 +119,29 @@ Fase 1 sin perder rigor metodologico: ningun ticket se promueve a
   CODEOWNERS dual-review del scanner.
 
 [F5_MERGE_TIME_PENDING] agent=context-engineer | action=close TSK-103.5 (F5) PR merged to main | artifacts=tests/unit/scanner/conftest.py, tests/bdd/{__init__,conftest}.py, tests/bdd/step_defs/{__init__}.py + 7 step_defs modules, .github/CODEOWNERS, scripts/{validate_gates_f5,push_f5_pr,check_bdd_fixtures}.py, pr-body-TASK-103.5.md, git:tag@v0.5.0-rc.1, tasks/{backlog,sprint-002,decisions}.md | summary=F5 PR squash-mergeado a `main` per scripts/push_f5_pr.ps1 PowerShell runbook (Phase 0-7). Pre-flight: 7/7 quality gates verdes (Gate 7 BDD fixture injection contract wired en round-24..27). Branch refresh: main fast-forwarded via --ff-only (round-17 Q2 fix). 13 F5 files staged selectively. Round-17 hardened commit (Q1 CODEOWNERS exact-match, Q2 --ff-only abort, Q3 72-char body, Q4a required-CI filter, Q4b dual-team-membership). Phase 4.5 cached team membership. Phase 5 dual-approved-required polling. Phase 6 squash-merge con --delete-branch. Tag v0.5.0-rc.1 pushed. Post-merge: backlog/sprint/decision flips via Phase 7.4 manual steps. ADR-0013 cross-linked (signed [11:00]) + ADR-0014 (conditional per F5 review chain).
-- `TSK-104+`: dependen de consolidar TSK-101..103 en `main` antes de empezar.
+- `TSK-104` (OHLCV Scheduler): ahora **formalmente unblocked** per
+  consolidacion de TSK-099 + TSK-101 (PR#12) + TSK-102 (PR#13) +
+  TSK-103.4 (F4) + TSK-103.5 (F5 wiring + 17 BDD pytest-bdd) en
+  `main`. Spec phase complete con 5 SDD docs en
+  `docs/specs/TSK-104-scheduler/` + 12 escenarios BDD en
+  `bdd/features/ohlcv_scheduler.feature` + 17 stubs atomicos en
+  `05-tasks.md`. F1 (types+protocols+exceptions) + F2 (cache+filters)
+  implementados en local; F3a (orchestrator) + F3b (retries/run_loop)
+  pendientes via `feature/tsk-104-scheduler-spec`.
+- `TSK-105` (Paper trading harness + reporter): ahora
+  **formalmente unblocked** per TSK-103.5 close. DoD per
+  `docs/paper-trading-methodology.md`. Scheduling en sprint-003
+  con `MarketDataSourceProtocol` (TSK-103.2 protocol) para feeds
+  en vivo vs `OHLCVStore` replay indistintamente.
+- `TSK-110` (BDD scenarios para market_scanner): ahora
+  **formalmente unblocked y absorbed**: el scope original (17
+  escenarios BDD pytest-bdd para market_scanner) fue consumido por
+  TSK-103.5 (F5 wiring), per `tasks/backlog.md` TSK-103.5 entry.
+  TSK-110 queda como `done` en `tasks/backlog.md` tras F5 merge.
+- **Estado real al cierre sprint-002**: las 3 tickets que dependian
+  de TSK-101/102/103 en `main` quedan **formalmente unblocked** para
+  sprint-003 (TSK-104 + TSK-105 + TSK-110 absorbed). PRD #2
+  cierra el bloque governance que completa las 3 exit criteria.
 
 ## DoD resumida
 
@@ -132,11 +181,11 @@ Fase 1 sin perder rigor metodologico: ningun ticket se promueve a
 - Dual-team approval verificado: strategy-team + security-team (>= 1 APPROVED each per Phase 4.5 + Phase 5 dual-review logic).
 - 7/7 quality gates verdes (Gate 7 BDD fixture injection contract, wired en round-24..27 de la review chain).
 
-## Criterio de salida del sprint
+## Criterio de salida del sprint (al cierre via ADR-0015)
 
-- `TSK-008` cerrado con CI verde end-to-end en una PR.
-- Al menos uno de `TSK-101..103` cerrado y mergeado.
-- `TSK-009` cerrado si el equipo aprueba CODEOWNERS.
+- [x] `TSK-008` cerrado con CI verde end-to-end — **PR #2** (commit `da0424a`).
+- [x] Al menos uno de `TSK-101..103` cerrado y mergeado: TSK-101 (PR#12) + TSK-102 (PR#13) + TSK-103.4 (F4) + TSK-103.5 (F5 wiring + ADR-0013) mergeados en `main`.
+- [x] `TSK-009` cerrado con CODEOWNERS dual-review — **PR #2** (commit `da0424a`, mismo PR).
 
 ## Riesgos detectados
 
@@ -179,4 +228,6 @@ Fase 1 sin perder rigor metodologico: ningun ticket se promueve a
 [2026-07-04 12:00] agent=context-engineer | action=close TSK-103.4 (F4) | artifacts=src/trading_bot/scanner/{scanner,mode_filters}.py, src/trading_bot/scanner/__init__.py, tests/unit/scanner/{test_universe_scanner,test_mode_filters,test_cross_layer}.py, docs/specs/TSK-103-universe-scanner/03-specify.md, tasks/backlog.md, tasks/sprint-002.md, context/retrieval-log.md | summary=Cierre del sub-ticket TSK-103.4 (F4 UniverseScanner orquestador + cross-layer enforcement AST) tras 11 rondas de code-review chain (round-1..round-11). Fixes materializados: round-1 P0 `pairs_processed` semantica per-pair; round-2 P2 `_scanner_mode_str` ConfigurationError fallback con mention a tasks/decisions.md; round-7 MEDIO observability contract gap en kill_switch / empty_universe paths ahora cierran `scanner.iteration.completed` con tag `early_exit` y `duration_ms` + 4 counters pineados; round-7 BAJO `counters` property retorna fresh `CounterSnapshot` frozen dataclass (`scanner.counters.pairs_active = 999` raise FrozenInstanceError; `_Counters` rename a `_CountersState` para preservar naming clarity); round-10 formula tightening: el discriminador exclusivo para `all_failed=True` es `pairs_active == 0` (no `not snapshots and scanner_errors > 0`), cubriendo BOTH all-transient-errors AND all-filter-rejected sin distinguirlos per Q1. Spec §10 actualizado con verdad-table 4 rows (early_exit x all_failed ortogonal), temporal ordering en paths abort, 4-attrs inline-list para CounterSnapshot. Total sentinels: ~33 verde (21 base + 2 round-10 all_failed en CL-3 transients + healthy completion + 1 round-11 filter-reject-only + 6 mode_filters builder + 3 cross-layer AST). Pendiente solo: run local suite (ruff + mypy + pytest + coverage >=90% + 6 quality gates per `quality/code-quality.md`) en el host del user + push PR desde `feature/tsk-103-4-universe-scanner` via gh pr create. TSK-103.5 (F5 wiring + Settings + 17 escenarios BDD pytest-bdd + 6 quality gates) queda desbloqueado para kickoff una vez F4 mergeado a main.
 
 [2026-07-04 13:00] agent=context-engineer | action=kickoff TSK-103.5 (F5) wiring con Settings + 17 BDD pytest-bdd + 6 quality gates | artifacts=docs/specs/TSK-103-universe-scanner/05-tasks.md (F5 section refinada con sub-stub breakdown), tasks/backlog.md (TSK-103.5 blocked->in_progress), tasks/sprint-002.md (sub-tickets table + estado real + DoD + log entry), context/retrieval-log.md (esta entrada) | summary=Kickoff formal de TSK-103.5 una vez cumplidas las pre-condiciones: (1) TSK-099 merged en main (TSK-099 ✅ PRD merge 9eed3fd); (2) TSK-101 + TSK-102 merged via PR#12 + PR#13; (3) ADR-0012 gate-recovery merged via PR#14; (4) F4 (TSK-103.4) done + ADR-0013 firmada en retrieval-log `[11:00]`. Cadena sub-ticket documentada en `05-tasks.md` F5 section con stub counts: `.1(8 stubs)=Fixture wiring Settings real via conftest.py + _build_settings helper + Settings(paper/research) fixtures + mode parametrize + smoke pytest 30+ tests` -> `.2(7 stubs)=23 BDD scenarios pytest-bdd glue + step_defs split en 7 step modules cubriendo RF-1..RF-10 + CL-1/CL-3/CL-6 + smoke pytest-bdd 23/23` -> `.3(3 stubs)=ADR-0013 verification loop (ya firmada; sync grep + D1-a alignment + cross-layer AST)` -> `.4(6 stubs)=tasks/backlog.md TSK-103.5 entry + TSK-099/100/103 sub-tables + TSK-104 depende de F5 merge` -> `.5(5 stubs)=tasks/sprint-002.md tabla + estado real + log entry + DoD con 6 gates + Riesgos especificos F5` -> `.6(1 stub)=retrieval-log esta entrada` -> `.7(6 stubs)=6 quality gates verdes per docs/ci.md sec 3: ruff check + ruff format + mypy strict + pytest --cov-fail-under=90 + safety + pip-audit --ignore-vuln PYSEC-2026-597 (ADR-0012 firmado)`. Total ~36 stubs end-to-end. Pre-merge requerira patch CODEOWNERS para `/src/trading_bot/scanner/` + dual-review pineado (Block P2-Dual del prior turn); sin este patch el PR F5 cae en single-review via `@Extr3sao/maintainers` fallback. Pendiente kickoff host: ejecutar Block G0..G7 del runbook F5 (Block G7 son los 6 quality gates en orden: ruff check, ruff format, mypy, pytest --cov-fail-under=90, safety, pip-audit).
+
+[2026-07-05 HH:MM] agent=context-engineer | action=close sprint-002 via PR #2 (commit da0424a) + open sprint-003 via ADR-0015 | artifacts=tasks/{sprint-002,sprint-003,backlog,decisions}.md (Phase 7.4 bookkeeping), git:PR-2@da0424a | summary=Cierre formal de sprint-002 via PR #2 (commit `da0424a`) que cierra TSK-008 (CI baseline con `.github/workflows/ci.yml` 4 jobs status-checks per Bloque 6 + `.python-version = 3.11` + pyproject hunks mypy/coverage) + TSK-009 (CODEOWNERS 9-agent mapping + dual-review paths sensibles + PULL_REQUEST_TEMPLATE 5 bloques con `<details>` colapsables + branch-protection rules documentadas en quality/release-gates.md Bloque 6) en un solo PR. Las 2 governance tickets que arrastraban 2 sprints culminan. Fase 1 ingesta completa: TSK-099 (prereq) + TSK-101 (PR#12) + TSK-102 (PR#13) + TSK-103.4 (F4 orquestador + cross-layer AST) + TSK-103.5 (F5 wiring + 17 BDD pytest-bdd + ADR-0013 + 7/7 quality gates verdes) mergeados en main. ADR-0015 firmada para documentar el cierre sprint-002 + apertura sprint-003 con TSK-104 (OHLCV Scheduler F3a-F4 implementation, formalizado unblocked per TSK-101..103 merge) + TSK-105 (paper trading harness unblocked per TSK-103.5 close) + TSK-110 (BDD market_scanner absorbed per F5 close) + TSK-013.4 (ruff backfill deferred from TSK-013.3 sweep) + TSK-200..204 (Fase 2 indicators arranca con interface). Las excepciones ratificadas al cierre: ADR-0011 (sprint-001 cierre con TSK-008 arrastre, consumada por esta ADR-0015) + ADR-0012 (gate-recovery firmada 2026-07-04, vigente sin cambios) + ADR-0013 (scope reconcile TSK-103 firmada 2026-07-04, vigente sin cambios). ADR-0014 (F5 closure pendiente per sprint-003 retrieval-log) queda como pendiente sin firmar al cierre sprint-002 — se firmara en el momento del cierre sprint-003 cuando el F5 review chain + dual-team discussion confirmen no-scope-drift. Backlog entry flip TSK-008/009 → `done` + TSK-110 → `done` (absorbed) **pendiente de aplicar** a `tasks/backlog.md` con cross-link PR #2 commit `da0424a` (follow-up atómico recomendado: TSK-008 actualmente tiene `[x]` done con TODO string `PR#N real a reclamitar` a reemplazar; TSK-009 requiere nueva entrada F0 `[x] done` con creacion explicita; TSK-110 requiere nueva entrada F1 `[x] done absorbed by TSK-103.5`).
 ```

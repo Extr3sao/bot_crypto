@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "Sistema modular y seguro de trading algorítmico para scalping de criptomonedas, con metodología SDD/BDD/CDD/TDD."
 readme = "README.md"
 requires-python = ">=3.11"
-license = { text = "TBD" }
+license = { text = "Proprietary" }
 authors = [{ name = "Crypto Scalping Agentic Bot Contributors" }]
 
 # Estas dependencias se confirmarán y ajustarán en Fase 1.

@@ -110,15 +110,20 @@ Los modos (`research | backtest | paper | shadow-live | live`) y el bloqueo
 de live se controlan en `config/runtime.yaml` + `.env`. El código debe
 fallear rápido si está en `live` sin todas las variables requeridas.
 
-## 13. Decisiones pendientes (ADR)
+## 13. Estado ADR
 
-| ID     | Tema                                            | Estado |
-| ------ | ----------------------------------------------- | ------ |
-| ADR-0001 | Licencia del proyecto                          | Pendiente |
-| ADR-0002 | Gestor de deps (uv vs poetry vs pip)            | Pendiente |
-| ADR-0003 | Dashboard (web vs CLI)                          | Pendiente |
-| ADR-0004 | Telemetría (Prometheus vs OpenTelemetry)        | Pendiente |
-| ADR-0005 | Persistencia de órdenes y fills                  | Pendiente |
+| ID       | Tema                                  | Estado   |
+| -------- | ------------------------------------- | -------- |
+| ADR-0001 | Licencia del proyecto                 | Decidido |
+| ADR-0002 | Gestor de dependencias                | Decidido |
+| ADR-0003 | Dashboard (web vs CLI)                | Decidido |
+| ADR-0004 | Telemetria inicial                    | Decidido |
+| ADR-0005 | Persistencia de ordenes y fills       | Decidido |
+
+Notas:
+- ADR-0001 fija licencia propietaria / uso interno privado.
+- ADR-0002 fija `uv` como gestor canonico para onboarding y CI.
+- ADR-0003 difiere el dashboard web hasta Fase 8.
 
 ## 14. Anti-patrones arquitectónicos prohibidos
 

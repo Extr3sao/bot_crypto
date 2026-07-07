@@ -29,7 +29,6 @@ FakeMarketDataSource:
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any
 
 import pytest
 import structlog
@@ -38,25 +37,17 @@ from trading_bot.config.runtime import TradingMode
 from trading_bot.config.settings import Settings
 from trading_bot.market_data.types import OHLCV
 from trading_bot.scanner.exceptions import ConfigurationError
-from trading_bot.scanner.filters import (
-    AtrFilter,
-    SpreadFilter,
-    VALID_MODES,
-    VolumeFilter,
-)
 from trading_bot.scanner.mode_filters import build_filter_set_per_mode
-from trading_bot.scanner.protocols import MarketDataSourceProtocol
 from trading_bot.scanner.registry import FilterRegistry
 from trading_bot.scanner.scanner import (
-    CounterSnapshot,
     LIVE_MAX_ATR_PERCENT,
     LIVE_MAX_SPREAD_BPS,
     LIVE_MIN_VOLUME_USDT,
+    CounterSnapshot,
     FilterBounds,
     ScoreNormalizers,
     UniverseScanner,
 )
-
 
 # ---------------------------------------------------------------------------
 # FakeMarketDataSource (sin MagicMock per ADR-0011)
@@ -126,10 +117,13 @@ def _build_settings(
     coherente."""
     # Pydantic v2 model_construct: pre-validated object construction.
     # IMPORTANTE: requiere instancias de los sub-models, no dicts.
-    from trading_bot.config.exchange import Exchange, ExchangeEndpoints, ExchangeRetries, ExchangeTimeouts
+    from trading_bot.config.exchange import (
+        Exchange,
+        ExchangeEndpoints,
+        ExchangeRetries,
+        ExchangeTimeouts,
+    )
     from trading_bot.config.indicators import (
-        IndicatorConfig,
-        IndicatorParams,
         IndicatorsConfig,
         IndicatorsGlobal,
     )
@@ -149,11 +143,6 @@ def _build_settings(
     from trading_bot.config.strategies import (
         StrategiesConfig,
         StrategiesGlobal,
-        StrategyConfig,
-        StrategyEntry,
-        StrategyExit,
-        StrategyFilters,
-        StrategyState,
     )
     from trading_bot.config.universe import PairSpec, Universe, UniverseFilters
 
@@ -612,7 +601,7 @@ def test_counters_reset_each_run() -> None:
     )
     registries = build_filter_set_per_mode(settings)
     source = FakeMarketDataSource(
-        volume_by_symbol={"BTC/USDT": 100.0},
+        volume_by_symbol={"BTC/USDT": 10_000.0},
         spread_by_symbol={"BTC/USDT": 1.0},
         ohlcv_by_symbol={"BTC/USDT": _flat_ohlcv("BTC/USDT", 100, last_close=100.0)},
     )
@@ -676,7 +665,7 @@ def test_active_snapshot_has_all_10_fields() -> None:
     )
     registries = build_filter_set_per_mode(settings)
     source = FakeMarketDataSource(
-        volume_by_symbol={"BTC/USDT": 100.0},
+        volume_by_symbol={"BTC/USDT": 10_000.0},
         spread_by_symbol={"BTC/USDT": 1.0},
         ohlcv_by_symbol={"BTC/USDT": _flat_ohlcv("BTC/USDT", 100, last_close=100.0)},
     )
@@ -735,7 +724,7 @@ def test_caching_source_avoids_double_fetch() -> None:
     )
     registries = build_filter_set_per_mode(settings)
     source = FakeMarketDataSource(
-        volume_by_symbol={"BTC/USDT": 100.0},
+        volume_by_symbol={"BTC/USDT": 10_000.0},
         spread_by_symbol={"BTC/USDT": 1.0},
         ohlcv_by_symbol={"BTC/USDT": _flat_ohlcv("BTC/USDT", 100, last_close=100.0)},
     )
@@ -880,7 +869,7 @@ def test_scanner_mode_str_raises_configuration_error_for_unknown_mode() -> None:
             settings=settings,
         )
         import asyncio
-        with pytest.raises(ConfigurationError, match="tasks/decisions.md"):
+        with pytest.raises(ConfigurationError, match=r"tasks/decisions\.md"):
             asyncio.run(scanner.run())
     finally:
         scanner_mod._SCANNER_MODE_MAP = original_map  # type: ignore[assignment]
@@ -925,9 +914,9 @@ def test_iteration_completed_emitted_on_kill_switch() -> None:
     )
     # Y los 4 counters + duration_ms pineados por spec section 10 + Q6 del
     # round-9 fix asegura que `all_failed` se emite SIEMPRE (None en este branch).
-    for field in ("duration_ms", "pairs_processed", "pairs_active",
+    for key in ("duration_ms", "pairs_processed", "pairs_active",
                   "pairs_inactive", "scanner_errors", "all_failed"):
-        assert field in evt, f"iteration.completed debe llevar {field!r} (spec §10)"
+        assert field in evt, f"iteration.completed debe llevar {key!r} (spec §10)"
     assert evt.get("all_failed") is None, (
         f"all_failed es irrelevante en kill_switch path; "
         f"got {evt.get('all_failed')!r}"
@@ -969,9 +958,9 @@ def test_iteration_completed_emitted_on_empty_universe() -> None:
     )
     # Y los 4 counters + duration_ms pineados por spec section 10 + Q6 del
     # round-9 fix asegura que `all_failed` se emite SIEMPRE (None en este branch).
-    for field in ("duration_ms", "pairs_processed", "pairs_active",
+    for key in ("duration_ms", "pairs_processed", "pairs_active",
                   "pairs_inactive", "scanner_errors", "all_failed"):
-        assert field in evt, f"iteration.completed debe llevar {field!r} (spec §10)"
+        assert field in evt, f"iteration.completed debe llevar {key!r} (spec §10)"
     assert evt.get("all_failed") is None, (
         f"all_failed es irrelevante en empty_universe path; "
         f"got {evt.get('all_failed')!r}"

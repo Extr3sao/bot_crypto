@@ -21,14 +21,18 @@ from __future__ import annotations
 import argparse
 import asyncio
 import sys
+import time
+from collections.abc import Callable
 from typing import TYPE_CHECKING
 
 from pydantic import ValidationError
 
 from trading_bot import __version__
 from trading_bot.config import load_settings
+from trading_bot.config.runtime import TradingMode
 
 if TYPE_CHECKING:
+    from trading_bot.config.settings import Settings
     from trading_bot.scanner.scanner import CounterSnapshot, UniverseScanner
     from trading_bot.scanner.types import MarketSnapshot
 
@@ -118,6 +122,45 @@ def _build_parser() -> argparse.ArgumentParser:
         choices=["research", "backtest", "paper", "live", "shadow_live"],
         help="Modo del bot (default: paper). Por ahora delega a scan --demo.",
     )
+    run_parser.add_argument(
+        "--demo",
+        action="store_true",
+        default=True,
+        help="Usa FakeMarketDataSource (sin exchange real). DEFAULT.",
+    )
+    run_parser.add_argument(
+        "--no-demo",
+        dest="demo",
+        action="store_false",
+        help="Usa config + CCXT + SQLite cache real en vez del fake.",
+    )
+    run_parser.add_argument(
+        "--config-dir",
+        default="config",
+        help="Directorio con los YAML (default: ./config).",
+    )
+    run_parser.add_argument(
+        "--env-file",
+        default=".env",
+        help="Path al .env (default: ./.env). Pasar vacio para no cargar.",
+    )
+    run_parser.add_argument(
+        "--iterations",
+        type=int,
+        default=1,
+        help="Numero de iteraciones a ejecutar (default: 1).",
+    )
+    run_parser.add_argument(
+        "--interval-seconds",
+        type=int,
+        default=None,
+        help="Override del intervalo entre iteraciones. Default: runtime.scheduler.scanner_interval_seconds.",
+    )
+    run_parser.add_argument(
+        "--continuous",
+        action="store_true",
+        help="Ejecuta iteraciones continuas hasta Ctrl+C.",
+    )
 
     sub.add_parser("kill-switch", help="Activa/desactiva el kill switch.")
     sub.add_parser("status", help="Muestra estado actual del bot.")
@@ -131,9 +174,8 @@ def _build_parser() -> argparse.ArgumentParser:
 
 
 def _cmd_config_check(args: argparse.Namespace) -> int:
-    env_file = args.env_file if args.env_file else None
     try:
-        settings = load_settings(config_dir=args.config_dir, env_file=env_file)
+        settings = _load_runtime_settings(config_dir=args.config_dir, env_file=args.env_file)
     except ValidationError as exc:
         sys.stderr.write("ERROR: la configuracion no es valida.\n\n")
         sys.stderr.write(exc.json(indent=2) + "\n")
@@ -147,7 +189,7 @@ def _cmd_config_check(args: argparse.Namespace) -> int:
     return 0
 
 
-def _build_demo_scanner(mode: str) -> "UniverseScanner":
+def _build_demo_scanner(mode: str) -> UniverseScanner:
     """Construye un ``UniverseScanner`` pre-cargado con datos sinteticos.
 
     Pipeline:
@@ -174,24 +216,96 @@ def _build_demo_scanner(mode: str) -> "UniverseScanner":
     registry_per_mode = build_filter_set_per_mode(settings)
     return UniverseScanner(
         source=source,
-        registry_per_mode=registry_per_mode,  # type: ignore[arg-type]
+        registry_per_mode=registry_per_mode,
         settings=settings,
     )
 
 
-def _run_single_iteration(mode: str) -> tuple[list["MarketSnapshot"], "CounterSnapshot"]:
-    """Ejecuta una iteracion del scanner demo. Retorna (snapshots, counters).
+def _build_live_scanner(
+    mode: str,
+    *,
+    config_dir: str,
+    env_file: str,
+) -> tuple[UniverseScanner, Callable[[], None]]:
+    from trading_bot.market_data import (
+        CCXTExchangeConnector,
+        CCXTMarketDataSource,
+        OHLCVFetcher,
+    )
+    from trading_bot.scanner import build_filter_set_per_mode
+    from trading_bot.scanner.scanner import UniverseScanner
+    from trading_bot.storage.ohlcv_store import OHLCVStore
 
-    Extraido de ``_cmd_scan`` para que tanto ``scan`` como ``run``
-    puedan invocarlo sin construir ``argparse.Namespace`` falsos.
-    """
-    scanner = _build_demo_scanner(mode=mode)
-    snapshots = asyncio.run(scanner.run())
-    return snapshots, scanner.counters
+    settings = _load_runtime_settings(config_dir=config_dir, env_file=env_file)
+    if settings.runtime.mode.value != mode:
+        settings = settings.model_copy(
+            update={
+                "runtime": settings.runtime.model_copy(
+                    update={"mode": TradingMode(mode)}
+                )
+            }
+        )
+    timeframe = settings.universe.timeframes[0]
+    connector = CCXTExchangeConnector(settings.exchange)
+    connector.load_markets()
+    store = OHLCVStore(settings.runtime.storage.database_url)
+    fetcher = OHLCVFetcher(connector, store)
+    source = CCXTMarketDataSource(
+        connector=connector,
+        fetcher=fetcher,
+        store=store,
+        timeframe=timeframe,
+    )
+    registry_per_mode = build_filter_set_per_mode(settings)
+    scanner = UniverseScanner(
+        source=source,
+        registry_per_mode=registry_per_mode,  # type: ignore[arg-type]
+        settings=settings,
+    )
+    return scanner, source.close
+
+
+def _load_runtime_settings(*, config_dir: str, env_file: str) -> Settings:
+    env_path = env_file if env_file else None
+    return load_settings(config_dir=config_dir, env_file=env_path)
+
+
+def _build_scanner(
+    mode: str,
+    *,
+    demo: bool,
+    config_dir: str,
+    env_file: str,
+) -> tuple[UniverseScanner, Callable[[], None] | None]:
+    if demo:
+        return _build_demo_scanner(mode=mode), None
+    return _build_live_scanner(mode=mode, config_dir=config_dir, env_file=env_file)
+
+
+def _run_single_iteration(
+    mode: str,
+    *,
+    demo: bool = True,
+    config_dir: str = "config",
+    env_file: str = ".env",
+) -> tuple[list[MarketSnapshot], CounterSnapshot]:
+    """Ejecuta una iteracion del scanner. Retorna (snapshots, counters)."""
+    scanner, cleanup = _build_scanner(
+        mode=mode,
+        demo=demo,
+        config_dir=config_dir,
+        env_file=env_file,
+    )
+    try:
+        snapshots = asyncio.run(scanner.run())
+        return snapshots, scanner.counters
+    finally:
+        if cleanup is not None:
+            cleanup()
 
 
 def _print_demo_results(
-    snapshots: list["MarketSnapshot"], counters: "CounterSnapshot", mode: str
+    snapshots: list[MarketSnapshot], counters: CounterSnapshot, mode: str
 ) -> int:
     """Imprime los snapshots en formato tabla + counters. Retorna exit code."""
     print()
@@ -230,28 +344,50 @@ def _print_demo_results(
 
 
 def _cmd_scan(args: argparse.Namespace) -> int:
-    if not args.demo:
-        sys.stderr.write(
-            "ERROR: --no-demo (exchange connector real) no esta implementado todavia. "
-            "Usa --demo para validar la orquestacion con datos sinteticos. "
-            "Pendiente: TSK-101 wiring (CCXTExchangeConnector + OHLCVFetcher).\n"
-        )
-        return 2
-
-    snapshots, counters = _run_single_iteration(mode=args.mode)
+    snapshots, counters = _run_single_iteration(
+        mode=args.mode,
+        demo=args.demo,
+        config_dir=args.config_dir,
+        env_file=args.env_file,
+    )
     return _print_demo_results(snapshots, counters, mode=args.mode)
 
 
 def _cmd_run(args: argparse.Namespace) -> int:
-    """Stub del scheduler. Por ahora delega a ``_run_single_iteration``
-    (el nucleo de ``scan --demo``) para que el usuario pueda ver el
-    orquestador funcionando en ``paper`` sin tener que aprender dos
-    sub-comandos. La implementacion real (scheduler APScheduler +
-    loop continuo) entra en Fase 2.
-    """
-    print(f"[run] scheduler real pendiente; ejecutando una iteracion --demo (mode={args.mode}).")
-    snapshots, counters = _run_single_iteration(mode=args.mode)
-    return _print_demo_results(snapshots, counters, mode=args.mode)
+    """Scheduler basico: varias iteraciones con sleep configurable."""
+    settings = _load_runtime_settings(config_dir=args.config_dir, env_file=args.env_file)
+    interval_seconds = args.interval_seconds or settings.runtime.scheduler.scanner_interval_seconds
+    iterations = args.iterations
+    if iterations < 1:
+        sys.stderr.write("ERROR: --iterations debe ser >= 1.\n")
+        return 2
+
+    mode_label = "demo" if args.demo else "live-source"
+    print(
+        f"[run] starting scheduler loop "
+        f"(mode={args.mode}, source={mode_label}, interval={interval_seconds}s)."
+    )
+
+    try:
+        current = 0
+        while args.continuous or current < iterations:
+            current += 1
+            print(f"[run] iteration {current}")
+            snapshots, counters = _run_single_iteration(
+                mode=args.mode,
+                demo=args.demo,
+                config_dir=args.config_dir,
+                env_file=args.env_file,
+            )
+            _print_demo_results(snapshots, counters, mode=args.mode)
+            if not args.continuous and current >= iterations:
+                break
+            time.sleep(interval_seconds)
+    except KeyboardInterrupt:
+        print("[run] interrupted by user.")
+        return 130
+
+    return 0
 
 
 # ---------------------------------------------------------------------------

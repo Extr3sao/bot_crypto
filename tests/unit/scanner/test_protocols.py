@@ -10,11 +10,9 @@ from __future__ import annotations
 
 from trading_bot.market_data.types import OHLCV
 from trading_bot.scanner.protocols import (
-    Filter,
     MarketDataSourceProtocol,
 )
 from trading_bot.scanner.types import FilterOutcome
-
 
 # ---------------------------------------------------------------------------
 # MarketDataSourceProtocol: runtime_checkable.

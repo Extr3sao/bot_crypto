@@ -136,6 +136,32 @@ class OHLCVStore:
             for r in cur.fetchall()
         ]
 
+    def get_ohlcv_range(self, symbol: str, start: int, end: int) -> list[OHLCV]:
+        """Devuelve velas dentro de ``[start, end]`` en orden ASC.
+
+        Este shape es el que consume el backtest engine via
+        ``OHLCVSourceProtocol``: rango temporal explicito y orden
+        cronologico ascendente para replay determinista.
+        """
+        cur = self._conn.execute(
+            "SELECT symbol, timestamp, open, high, low, close, volume "
+            "FROM ohlcv WHERE symbol = ? AND timestamp >= ? AND timestamp <= ? "
+            "ORDER BY timestamp ASC",
+            (symbol, start, end),
+        )
+        return [
+            OHLCV(
+                symbol=str(r[0]),
+                timestamp=int(r[1]),
+                open=float(r[2]),
+                high=float(r[3]),
+                low=float(r[4]),
+                close=float(r[5]),
+                volume=float(r[6]),
+            )
+            for r in cur.fetchall()
+        ]
+
     def close(self) -> None:
         self._conn.close()
 
@@ -145,7 +171,7 @@ class OHLCVStore:
     # Sin esto, callers que olviden ``close()`` leak sqlite3.Connection.
     # TSK-104+ (scheduler) y backtest loop son lugares tipicos donde
     # ocurrira el descuido; pin contractualmente con ``with``.
-    def __enter__(self) -> "OHLCVStore":
+    def __enter__(self) -> OHLCVStore:
         return self
 
     def __exit__(self, exc_type: object, exc_val: object, exc_tb: object) -> None:
@@ -226,15 +252,9 @@ def _is_absolute_path(path_str: str) -> bool:
     del modulo (los tests no fallan en Windows cuando el caller
     documento una ruta absoluta via la convencion ``sqlite:////<path>``).
     """
-    if path_str.startswith(("/", "\\")):
-        return True
-    if (
-        len(path_str) >= 2
-        and path_str[0].isalpha()
-        and path_str[1] == ":"
-    ):
-        return True
-    return False
+    return path_str.startswith(("/", "\\")) or (
+        len(path_str) >= 2 and path_str[0].isalpha() and path_str[1] == ":"
+    )
 
 
 __all__ = [

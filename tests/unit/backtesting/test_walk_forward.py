@@ -6,10 +6,10 @@ import datetime
 
 import pytest
 
-from trading_bot.backtesting.engine import BacktestEngine
-from trading_bot.backtesting.types import BacktestContext, BacktestInputs, OHLCV, Order
-from trading_bot.backtesting.walk_forward import walk_forward_run
 from tests.unit.backtesting.test_engine import FakeOHLCVSource, _make_flat_candles
+from trading_bot.backtesting.engine import BacktestEngine
+from trading_bot.backtesting.types import OHLCV, BacktestContext, BacktestInputs, Order
+from trading_bot.backtesting.walk_forward import walk_forward_run
 
 
 class _BuyThenSell:

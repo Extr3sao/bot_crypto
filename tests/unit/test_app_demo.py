@@ -228,13 +228,39 @@ def test_cmd_scan_with_demo_runs_iteration(capsys: pytest.CaptureFixture[str]) -
     assert "Market scanner iteration" in captured.out
 
 
-def test_cmd_scan_with_no_demo_returns_error_code() -> None:
-    """_cmd_scan con --no-demo (exchange connector no implementado)
-    debe retornar exit code 2 + mensaje a stderr."""
+def test_cmd_scan_with_no_demo_uses_real_iteration_path(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
     parser = _build_parser()
     args = parser.parse_args(["scan", "--no-demo"])
+    snapshots, counters = _run_single_iteration("paper")
+
+    called: dict[str, object] = {}
+
+    def _fake_run_single_iteration(  # type: ignore[no-untyped-def]
+        mode,
+        *,
+        demo=True,
+        config_dir="config",
+        env_file=".env",
+    ):
+        called["mode"] = mode
+        called["demo"] = demo
+        called["config_dir"] = config_dir
+        called["env_file"] = env_file
+        return snapshots, counters
+
+    monkeypatch.setattr("trading_bot.app._run_single_iteration", _fake_run_single_iteration)
+
     exit_code = _cmd_scan(args)
-    assert exit_code == 2
+
+    assert exit_code == 0
+    assert called == {
+        "mode": "paper",
+        "demo": False,
+        "config_dir": "config",
+        "env_file": ".env",
+    }
 
 
 # ===========================================================================
@@ -258,7 +284,6 @@ def test_cmd_config_check_succeeds_with_default_config(
 
 def test_cmd_config_check_with_invalid_config_returns_error_code(
     capsys: pytest.CaptureFixture[str],
-    tmp_path,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     """Hermetic: config-check con un ValidationError debe retornar 1
@@ -274,7 +299,6 @@ def test_cmd_config_check_with_invalid_config_returns_error_code(
                     "type": "missing",
                     "loc": ("universe",),
                     "input": {},
-                    "msg": "Field required",
                 }
             ],
         )
@@ -319,6 +343,54 @@ def test_main_run_runs_iteration(capsys: pytest.CaptureFixture[str]) -> None:
 
     captured = capsys.readouterr()
     assert "Market scanner iteration" in captured.out
+
+
+def test_main_run_multiple_iterations_uses_scheduler_loop(
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    from trading_bot.scanner.scanner import CounterSnapshot
+
+    call_counter = {"count": 0}
+
+    def _fake_run_single_iteration(  # type: ignore[no-untyped-def]
+        mode,
+        *,
+        demo=True,
+        config_dir="config",
+        env_file=".env",
+    ):
+        call_counter["count"] += 1
+        snap = MarketSnapshot(
+            symbol="BTC/USDT",
+            last_price=100.0,
+            volume_24h_usdt=50_000_000.0,
+            spread_bps=5.0,
+            atr_pct=1.0,
+            volatility_pct=None,
+            active=True,
+            rejection_reason=None,
+            timestamp=1_700_000_000_000,
+            rank_score=0.75,
+        )
+        counters = CounterSnapshot(
+            pairs_processed=1,
+            pairs_active=1,
+            pairs_inactive=0,
+            scanner_errors=0,
+        )
+        return [snap], counters
+
+    monkeypatch.setattr("trading_bot.app._run_single_iteration", _fake_run_single_iteration)
+    monkeypatch.setattr("trading_bot.app.time.sleep", lambda *_args, **_kwargs: None)
+
+    exit_code = main(["run", "--iterations", "2", "--interval-seconds", "1"])
+
+    assert exit_code == 0
+    assert call_counter["count"] == 2
+    captured = capsys.readouterr()
+    assert "[run] iteration 1" in captured.out
+    assert "[run] iteration 2" in captured.out
 
 
 def test_main_kill_switch_stub_returns_zero(

@@ -2,14 +2,12 @@
 
 from __future__ import annotations
 
-import pytest
-
 from trading_bot.config.runtime import TradingMode
 from trading_bot.config.settings import Settings
 from trading_bot.scanner.filters import (
+    VALID_MODES,
     AtrFilter,
     SpreadFilter,
-    VALID_MODES,
     VolumeFilter,
 )
 from trading_bot.scanner.mode_filters import build_filter_set_per_mode
@@ -24,7 +22,12 @@ def _build_minimal_settings(
     min_atr_percent: float = 0.05,
 ) -> Settings:
     """Settings minimal via model_construct (sin disco, sin validadores cross-field)."""
-    from trading_bot.config.exchange import Exchange, ExchangeEndpoints, ExchangeRetries, ExchangeTimeouts
+    from trading_bot.config.exchange import (
+        Exchange,
+        ExchangeEndpoints,
+        ExchangeRetries,
+        ExchangeTimeouts,
+    )
     from trading_bot.config.indicators import IndicatorsConfig, IndicatorsGlobal
     from trading_bot.config.risk import DefensiveBlocks, Risk
     from trading_bot.config.runtime import (

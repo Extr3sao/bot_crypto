@@ -51,7 +51,7 @@ from __future__ import annotations
 
 import uuid
 from abc import ABC, abstractmethod
-from typing import Any, Final
+from typing import Any, Final, cast
 
 import ccxt
 import structlog
@@ -64,8 +64,8 @@ from tenacity import (
 
 from trading_bot.config.exchange import Exchange
 from trading_bot.market_data.types import (
-    Balance,
     OHLCV,
+    Balance,
     OrderResult,
     OrderStatus,
     OrderType,
@@ -152,6 +152,14 @@ class ExchangeConnector(ABC):
     @abstractmethod
     def fetch_balance(self) -> list[Balance]:
         """Devuelve balances por asset con campos ``free``/``used``/``total``."""
+
+    @abstractmethod
+    def fetch_ticker(self, symbol: str) -> dict[str, Any]:
+        """Devuelve el ticker bruto del exchange para ``symbol``."""
+
+    @abstractmethod
+    def fetch_order_book(self, symbol: str, limit: int = 5) -> dict[str, Any]:
+        """Devuelve el order book bruto del exchange para ``symbol``."""
 
     @abstractmethod
     def create_order(
@@ -269,7 +277,10 @@ class CCXTExchangeConnector(ExchangeConnector):
 
         @self._retry_decorator
         def _execute() -> list[list[float]]:
-            return self._exchange_instance.fetch_ohlcv(symbol, timeframe, limit=limit)
+            return cast(
+                list[list[float]],
+                self._exchange_instance.fetch_ohlcv(symbol, timeframe, limit=limit),
+            )
 
         log.info("fetch_ohlcv_start")
         try:
@@ -305,7 +316,7 @@ class CCXTExchangeConnector(ExchangeConnector):
 
         @self._retry_decorator
         def _execute() -> dict[str, Any]:
-            return self._exchange_instance.fetch_balance()
+            return cast(dict[str, Any], self._exchange_instance.fetch_balance())
 
         try:
             raw = _execute()
@@ -325,6 +336,47 @@ class CCXTExchangeConnector(ExchangeConnector):
         ]
         log.info("fetch_balance_ok", n_assets=len(balances))
         return balances
+
+    def fetch_ticker(self, symbol: str) -> dict[str, Any]:
+        request_id = str(uuid.uuid4())
+        log = self._log.bind(req_id=request_id, op="fetch_ticker", symbol=symbol)
+
+        @self._retry_decorator
+        def _execute() -> dict[str, Any]:
+            return self._exchange_instance.fetch_ticker(symbol)
+
+        log.info("fetch_ticker_start")
+        try:
+            ticker = _execute()
+        except Exception:
+            log.error("fetch_ticker_failed", exc_info=True)
+            raise
+
+        log.info("fetch_ticker_ok")
+        return ticker
+
+    def fetch_order_book(self, symbol: str, limit: int = 5) -> dict[str, Any]:
+        request_id = str(uuid.uuid4())
+        log = self._log.bind(
+            req_id=request_id,
+            op="fetch_order_book",
+            symbol=symbol,
+            limit=limit,
+        )
+
+        @self._retry_decorator
+        def _execute() -> dict[str, Any]:
+            return self._exchange_instance.fetch_order_book(symbol, limit=limit)
+
+        log.info("fetch_order_book_start")
+        try:
+            order_book = _execute()
+        except Exception:
+            log.error("fetch_order_book_failed", exc_info=True)
+            raise
+
+        log.info("fetch_order_book_ok")
+        return order_book
 
     # ------------------------------------------------------------------------
     # Write operations (idempotent)
@@ -362,13 +414,16 @@ class CCXTExchangeConnector(ExchangeConnector):
 
         @self._retry_decorator
         def _execute() -> dict[str, Any]:
-            return self._exchange_instance.create_order(
-                symbol,
-                type=order_type,
-                side=side,
-                amount=amount,
-                price=price,
-                params=params,
+            return cast(
+                dict[str, Any],
+                self._exchange_instance.create_order(
+                    symbol,
+                    type=order_type,
+                    side=side,
+                    amount=amount,
+                    price=price,
+                    params=params,
+                ),
             )
 
         log.info("create_order_start")
@@ -441,7 +496,7 @@ class CCXTExchangeConnector(ExchangeConnector):
         )
 
 
-__all__ = [
+__all__ = [  # noqa: RUF022
     "CCXTExchangeConnector",
     "ExchangeConnector",
     "MULTI_EXCHANGE_SCOPE",

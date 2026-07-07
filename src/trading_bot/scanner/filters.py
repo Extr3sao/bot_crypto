@@ -39,7 +39,6 @@ from trading_bot.market_data.types import OHLCV
 from trading_bot.scanner.protocols import MarketDataSourceProtocol
 from trading_bot.scanner.types import FilterOutcome, RejectionReason
 
-
 # ----------------------------------------------------------------------------
 # Constantes publicas (parte del API publico del modulo).
 # ----------------------------------------------------------------------------
@@ -256,9 +255,9 @@ class AtrFilter:
 
 
 __all__ = [
+    "VALID_MODES",
     "AtrFilter",
     "SpreadFilter",
-    "VALID_MODES",
     "VolumeFilter",
     "_compute_atr_pct",  # publico por convencion para tests con `# noqa: F401`.
 ]

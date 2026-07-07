@@ -5,11 +5,7 @@
 > Phase 7.4 manual bookkeeping (backlog.md flip + sprint-002.md log entry +
 > decisions.md ADR-0014 opcional).
 
-> **Estado real del worktree al abrir sprint-003**: TSK-008/TSK-009 governance
-> arrastre desde sprint-002; TSK-099/101/102/103.x mergeados en main;
-> TSK-103.5 cerrado en `<F5_PR_URL>`; 7/7 quality gates verdes per
-> `docs/ci.md sec 3` (incluido Gate 7 BDD fixture injection contract per
-> round-24..27 review chain).
+> **Estado real del worktree (sprint-003 abierto via ADR-0015 post-PR #2 merge)**: TSK-008/TSK-009 governance cerradas en sprint-002 via **PR #2** (commit `da0424a`) — ya no son arrastre. TSK-099/101/102/103.x mergeados en main; TSK-103.5 cerrado en `<F5_PR_URL>`; 7/7 quality gates verdes per `docs/ci.md sec 3` (incluido Gate 7 BDD fixture injection contract per round-24..27 review chain).
 
 ---
 
@@ -33,8 +29,9 @@ como bloque de valor incremental sobre el scanner F1-F5 ya operativo.
 
 | ID | Titulo | Tam | Fase | Risk | Estado | Pri |
 | --- | --- | --- | --- | --- | --- | --- |
-| TSK-008 | Baseline CI: ruff + mypy + pytest markers + pip-audit + workflow GHA | S | 1 | M | in_progress | 1 |
-| TSK-009 | CODEOWNERS + PR template + branch-protection admin rules | S | 0 | M | in_progress | 2 |
+| TSK-008 | Baseline CI: ruff + mypy + pytest markers + pip-audit + workflow GHA | S | 1 | M | done | - |
+| TSK-009 | CODEOWNERS + PR template + branch-protection admin rules | S | 0 | M | done | - |
+| TSK-013.4 | Backfill ruff format + ruff check drift on main (deferred from TSK-013.3 sweep) | M | 0 | M | todo | 1 |
 
 ### Fase 1 (backtest + paper trading ahora desbloqueados)
 
@@ -71,14 +68,18 @@ como bloque de valor incremental sobre el scanner F1-F5 ya operativo.
 
 ## Estado real por ticket
 
-- `TSK-008`: arrastre desde sprint-002 como Pri 1. Pendiente PR dedicado
-  `feature/tsk-008-ci-baseline` con `.github/workflows/ci.yml` +
-  `.python-version` + hunks de pyproject.toml. Cross-link ADR-0012 cubre
-  numpy<2.1 + app.py omit + PYSEC-2026-597.
-- `TSK-009`: arrastre desde sprint-002. El patch CODEOWNERS para scanner
-  + tests/bdd ya esta en el F5 PR (dual-review pineado per Block P2-Dual
-  del runbook). Pendiente: PR template + branch-protection admin rules
-  en PR dedicado `feature/tsk-009-governance`.
+- `TSK-008`: **done** via **PR #2** (commit `da0424a`) cerrado al
+  cierre de sprint-002 (per `ADR-0015`). CI baseline operativo con
+  `.github/workflows/ci.yml` (4 jobs pineados a status-checks
+  required en `quality/release-gates.md` Bloque 6) +
+  `.python-version = 3.11` + ajustes `pyproject.toml`. Cross-link
+  ADR-0012 cubre numpy<2.1 + app.py omit + PYSEC-2026-597.
+- `TSK-009`: **done** via **PR #2** (commit `da0424a`, mismo PR que
+  TSK-008). Cerrado al cierre de sprint-002 (per `ADR-0015`).
+  CODEOWNERS con mapping 9-agent + dual-review para paths sensibles
+  + PULL_REQUEST_TEMPLATE 5 bloques con collapsibles `<details>` +
+  branch-protection rules documentadas en `quality/release-gates.md`
+  Bloque 6.
 - `TSK-104`: ahora `in_progress` (desbloqueado por F5 close-out). DoD
   per `docs/backtesting-methodology.md` + `quality/risk-quality-gates.md`:
   engine con OHLCVStore replay + commissions + slippage parametrizables

@@ -252,9 +252,9 @@ class StrategyProtocol(Protocol):
 
 
 __all__ = [
-    "BacktestInputs",
     "OHLCV",
     "BacktestContext",
+    "BacktestInputs",
     "BacktestResult",
     "EquityPoint",
     "Fill",

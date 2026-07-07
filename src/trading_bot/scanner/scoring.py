@@ -34,7 +34,6 @@ from __future__ import annotations
 import math
 from typing import Final
 
-
 # ----------------------------------------------------------------------------
 # Coeficientes ADR-locked (spec §6).
 # Expuestos como Final[float] para que los tests los pineen como invariantes.
@@ -94,7 +93,7 @@ def compute_rank_score(
     volume_24h_usdt: float,
     volume_norm_max: float,
     atr_pct: float | None,
-    atr_optimo: float,  # noqa: ARG001 - reserved for ADR-0013 extension
+    atr_optimo: float,
     atr_en_rango: bool,
 ) -> float:
     """RF-10: scoring cerrado per spec §6 (formula ADR-locked).

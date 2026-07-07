@@ -15,10 +15,8 @@ from dataclasses import dataclass
 
 import pytest
 
-from trading_bot.scanner.protocols import Filter
 from trading_bot.scanner.registry import FilterRegistry
 from trading_bot.scanner.types import FilterOutcome
-
 
 # ---------------------------------------------------------------------------
 # Fakes: stubs que satisfacen el Protocol estructural ``Filter``.
@@ -40,7 +38,7 @@ class _StubFilter:
 
     async def apply(
         self, symbol: str, source: object
-    ) -> FilterOutcome:  # noqa: ARG002 — param unused en stub
+    ) -> FilterOutcome:
         return FilterOutcome(passed=True, reason=None)
 
 
