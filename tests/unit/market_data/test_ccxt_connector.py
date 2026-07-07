@@ -429,16 +429,38 @@ def fast_retry_exchange_cfg() -> Exchange:
     tarde segundos), necesitamos ``max_attempts=2`` + backoff minimo.
     Los tests que SI prueban happy-path con retries reales usan
     ``exchange_cfg``.
+
+    Notes TSK-013.9 (latent fixture invalidity discovered en route):
+
+    + ``rate_limit_ms`` usa 50 (no 10) porque el modelo ``Exchange``
+      en ``src/trading_bot/config/exchange.py:45`` exige ``ge=50``.
+      En este fixture ambos valores son metadata que el connector
+      pasa al ``ccxt.Exchange`` mock; el connector NO llama a CCXT
+      real, asi que 50ms vs 10ms no impacta wall-clock.
+
+    + ``max_backoff_ms`` usa 200 (no 50, ni 100) porque:
+
+      1. El modelo ``ExchangeRetries`` exige ``ge=100`` — 50 rompe
+         loud en pytest SETUP con ``ValidationError``.
+      2. 100 seria el MINIMO valido pero sits exactly on the
+         constraint boundary: cualquier tightening futuro (e.g. a
+         ``ge=200`` para escenarios invariants mas estrictos) rompe
+         este fixture silenciosamente. 200 deja 100ms de headroom.
+      3. Worst-case total wall-clock del retry sigue siendo ~200ms
+         (max_attempts=2), despreciable para la duracion del test.
+
+      Bajar el param exige tocar los constraints del modelo (scope
+      src/, fuera de este ticket test-only).
     """
     return Exchange(
         id="binance",
         sandbox=True,
         account_type="spot",
-        rate_limit_ms=10,
+        rate_limit_ms=50,
         options={"defaultType": "spot"},
         timeouts=ExchangeTimeouts(request_ms=1000, recv_window_ms=500),
         retries=ExchangeRetries(
-            max_attempts=2, initial_backoff_ms=10, max_backoff_ms=50
+            max_attempts=2, initial_backoff_ms=10, max_backoff_ms=200
         ),
         default_type="spot",
         time_in_force_default="GTC",
@@ -447,7 +469,7 @@ def fast_retry_exchange_cfg() -> Exchange:
 
 
 @pytest.mark.parametrize(
-    "method_name, args",
+    "method_name, method_args",
     [
         ("fetch_ohlcv", ("BTC/USDT", "1h", 5)),
         ("fetch_balance", ()),
@@ -457,7 +479,7 @@ def test_read_methods_retries_then_reraise(
     monkeypatch: pytest.MonkeyPatch,
     fast_retry_exchange_cfg: Exchange,
     method_name: str,
-    args: tuple,
+    method_args: tuple,
 ) -> None:
     """Smoke (coverage gate): ``fetch_ohlcv`` y ``fetch_balance``
     reintentan hasta ``max_attempts`` y propagan el error original sin
@@ -469,11 +491,12 @@ def test_read_methods_retries_then_reraise(
       - ``reraise=True`` del decorator tenacity tras agotar
         ``max_attempts`` (no swallow).
 
-    El parametrize explicito (``method_name, args``) con ``getattr``
+    El parametrize explicito (``method_name, method_args``) con ``getattr``
     elimina el if/else interno y deja pytest reportar cada caso por
-    separado:
-      - ``test_read_methods...reraise[fetch_ohlcv-BTC/USDT-1h-5]``
-      - ``test_read_methods...reraise[fetch_balance-()]``
+    separado. Tras el rename del param name ``args`` a ``method_args``
+    (TSK-013.9), pytest genera ids descriptivos:
+      - ``test_read_methods...reraise[fetch_ohlcv-method_args0]``
+      - ``test_read_methods...reraise[fetch_balance-method_args1]``
     Anadir un tercer read method futuro (e.g. ``fetch_ticker``)
     requiere extender SOLO el parametrize; si se olvida, pytest emite
     un parametrize id faltante en el reporte, NO un branch silencioso.
@@ -481,16 +504,17 @@ def test_read_methods_retries_then_reraise(
     instance = MagicMock(spec=ccxt.Exchange)
     instance.fetch_ohlcv.side_effect = ccxt.NetworkError("simulated outage")
     instance.fetch_balance.side_effect = ccxt.NetworkError("simulated outage")
-    # ``lambda *_factory_args`` evita colision visual con el param
-    # ``args: tuple`` del test; Python scoping los mantiene
-    # independientes pero el rename es defensivo contra sombreado
-    # futuro si se mueve la lambda a una funcion nombrada.
+    # TSK-013.9 fix: ``args`` colisionaba con pytest fixtures/builtin
+    # ``args``. ``method_args`` es descriptivo + evita la colision. La
+    # lambda ``lambda *factory_args`` mantiene su propio scope local
+    # (factory args de ``ccxt.binance(...)`` factory call) — son
+    # variables distintas en Python por ser argumentos, no nombres.
     monkeypatch.setattr(ccxt, "binance", lambda *_factory_args: instance)
     connector = CCXTExchangeConnector(fast_retry_exchange_cfg)
 
     method = getattr(connector, method_name)
     with pytest.raises(ccxt.NetworkError, match="simulated outage"):
-        method(*args)
+        method(*method_args)
     # max_attempts=2 -> 2 intentos antes del reraise=True.
     assert getattr(instance, method_name).call_count == 2
 

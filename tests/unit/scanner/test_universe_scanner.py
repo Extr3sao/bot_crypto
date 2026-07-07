@@ -734,8 +734,14 @@ def test_caching_source_avoids_double_fetch() -> None:
         min_volume_usdt=1_000,
     )
     registries = build_filter_set_per_mode(settings)
+    # TSK-013.8 fix: el volume anterior era de 100.0 USDT, debajo
+    # del threshold min_volume_usdt=1_000, lo que provocaba
+    # short-circuit del VolumeFilter ANTES de invocar fetch_spread_bps
+    # y fetch_recent — haciendo imposible verificar el pine contract
+    # "1 call per symbol per fetch_* per run()". Subimos a 10_000.0
+    # USDT para que volume pasara y los tres fetches corrieran.
     source = FakeMarketDataSource(
-        volume_by_symbol={"BTC/USDT": 100.0},
+        volume_by_symbol={"BTC/USDT": 10_000.0},
         spread_by_symbol={"BTC/USDT": 1.0},
         ohlcv_by_symbol={"BTC/USDT": _flat_ohlcv("BTC/USDT", 100, last_close=100.0)},
     )
