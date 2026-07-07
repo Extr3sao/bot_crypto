@@ -25,14 +25,34 @@
   `.env.example`, `.gitignore`.
 - [x] **TSK-008** Baseline de calidad: ruff, mypy, pytest con markers,
   pip-audit, workflow de GitHub Actions. **Est: S**. Estado real:
-  `done`. **TODO**: PR#N real a reclamitar (no entro en PR-A/B/C del
-  milestone Fase 1 ingesta: PR#12/13/14 son TSK-101/102/ADR-0012). Si
-  el merge de TSK-008 fue pre-PR#12 o ya en uno de los 3, anotar el
-  numero concreto; si esta pendiente, abrir PR dedicado
-  `feature/tsk-008-ci-baseline` con `.github/workflows/ci.yml` +
-  `.python-version` + hunks de pyproject.toml. Per ADR-0011 sprint-001
-  cumple DoD con excepcion firmada. Cross-link ADR-0012 (PR#14)
-  cubre el ignore-vuln + numpy pin + app.py omit.
+  `done`, mergeado en **PR #2** (commit `da0424a`, mismo PR que TSK-009)
+  en `main` el 2026-07-05 via cierre sprint-002 (per **ADR-0015**).
+  Cubre `.github/workflows/ci.yml` (4 jobs `format-and-lint` +
+  `type-check` + `pip-audit` + `tests-and-coverage`, cuyas keys
+  matchean exactamente los status-checks required en
+  `quality/release-gates.md` Bloque 6) + `.python-version = 3.11`
+  (single line) + ajustes `pyproject.toml` (mypy `python_version =
+  3.11`, coverage `fail_under = 90`). Cross-link ADR-0012 cubre
+  `numpy<2.1` + `app.py` omit + `--ignore-vuln PYSEC-2026-597`
+  firmado en `validate_local.ps1` y job `pip-audit` de `ci.yml`.
+  ADR-0011 sprint-001 cierra con excepcion firmada; ADR-0015
+  sprint-002 cierre definitivo via PR #2.
+
+- [x] **TSK-009** CODEOWNERS + PR template + branch-protection admin
+  rules. **Est: S**. Estado real: `done`, mergeado en **PR #2**
+  (commit `da0424a`, mismo PR que TSK-008) en `main` el 2026-07-05
+  via cierre sprint-002 (per **ADR-0015**). Cubre
+  `.github/CODEOWNERS` (9-agent mapping per `AGENTS.md` seccion 2 con
+  dual-review paths sensibles: `config`, `risk`, `execution`,
+  `secrets`, `workflows`; pre-flight con `gh api orgs teams`
+  documentado en el header) + `.github/PULL_REQUEST_TEMPLATE.md`
+  (5 bloques con collapsibles `<details>` per round-3 fix) +
+  branch-protection admin rules documentadas en
+  `quality/release-gates.md` Bloque 6 con `required_status_checks`
+  + `required_pull_request_reviews` (dual-review) + commands `gh api`
+  JSON inline PowerShell + bash con `--delete-branch`
+  post-squash-merge. Patch adicional para scanner paths pines via
+  F5 PR (Block P2-Dual del runbook). Depende de: ninguno.
 
 ## Tickets Fase 1 (market data)
 
@@ -42,8 +62,12 @@
 - [x] **TSK-099** Capa de configuracion tipada con **Pydantic v2**
   (`src/trading_bot/config/`). **Est: M**. Estado real: `done`,
   mergeado en `main` (`9eed3fd`, ADR-0010).
-- [ ] **TSK-100** Cerrar ADR-0001 (licencia) y ADR-0002 (gestor deps)
-  si se decide hacerlo en este sprint. **Est: S**. Depende de: -
+- [x] **TSK-100** Cerrar ADR-0001 (licencia) y ADR-0002 (gestor deps).
+  **Est: S**. Estado real: `done`. ADR-0001 deja el proyecto con
+  licencia propietaria / uso interno privado; ADR-0002 fija `uv` como
+  gestor de dependencias canonico para onboarding y CI. Cierre
+  documental aplicado en `README.md`, `docs/architecture.md` y
+  `pyproject.toml`. Depende de: -
 - [x] **TSK-101** Implementar `market_data/exchange_connector.py`
   con interfaz `ExchangeConnector` y adaptador CCXT. **Est: M**.
   Estado real: `done`, mergeado en PR#12 (`feature/tsk-101-ccxt-connector`,
@@ -138,21 +162,16 @@
   - [ ] unit: conector contra un CCXT mock. **Est: S**. Depende de: TSK-101.
   - [ ] integration: fetch real desde testnet y lectura de datos. **Est: M**. Depende de: TSK-101, TSK-103.
 
-## Tickets Baseline Health & Risk (ADR-0016 umbrella)
-
-> Diagnostico confirmado via checkout main @ 2774021 + `uv run mypy src/trading_bot/` + `uv run pytest`. **10 issues pre-existentes** (no introducidos por PRs recientes): 8 mypy errors + 2 pytest failures + 2 pytest setup-time errors. Umbrella ADR-0016 firma la estrategia fix-forward atomico. Cherry-pick safe por ticket (independiente de TSK-013.4 / TSK-104 work).
-
-- [ ] **TSK-013.5** **Pri 1 (Money-Risk)** Restore cross-domain live fail-fast validator. **Est: S**. Estado real: `todo`. **Risk: H** (runtime validation breach — falla permite arrancar bot en `mode=live` con `risk.kill_switch_enabled=False`, incapaz de abortar en emergencia de mercado). Diagnostico confirmado: `tests/unit/config/test_failfast.py::test_settings_rejects_live_with_kill_switch_off` configura `mode=live + live_trading_enabled=true + i_understand_the_risks=true + kill_switch_enabled=false` y NO levanta `ValidationError`; el cross-domain invariant `_check_cross_domain_live_invariants` no frena. Cross-link ADR-0016 (umbrella) + ADR-0010 (flat-env alias context). **DoD**: `pytest tests/unit/config/test_failfast.py::test_settings_rejects_live_with_kill_switch_off` verde + `Settings._check_cross_domain_live_invariants` raises `ValidationError` loud cuando precondiciones live se cumplen pero `risk.kill_switch_enabled=False`. Cobertura >= 90% mantenida sobre `src/trading_bot/config/settings.py`. Depende de: ninguno (remediation directa).
-
-- [ ] **TSK-013.6** **Pri 2 (Connector hardening)** Mypy `no-any-return` batch en CCXT connector. **Est: S**. Estado real: `todo`. **Risk: M** (typing drift detectado; runtime behavior correcto per duck-typing CCXT; afecta solo strict mypy CI gate). 5 errors pre-existentes en `src/trading_bot/market_data/exchange_connector.py`: `:280` retorna `Any` declarado `list[list[float]]`, `:316/343/366/414` retornan `Any` declarado `dict[str, Any]`. Diagnostico: CCXT v4 devuelve `Any` no tipado en runtime; las signatures post-TSK-101 asumían tipado estricto sin `cast()` o `# type: ignore[no-any-return]` ADR-firmado. Cross-link ADR-0016 + ADR-0012 (gate-recovery precedent via numpy<2.1). **DoD**: `uv run mypy src/trading_bot/market_data/exchange_connector.py` rc=0 con 5 fixes via `cast()` narrowing (preferido) o `# type: ignore[no-any-return]` ADR-firmado bajo ADR-0016. Cobertura >= 90% mantenida. Atomic commit. Depende de: ninguno.
-
-- [ ] **TSK-013.7** **Pri 3 (Scanner typing)** `UniverseScanner.__init__` registry param signature drift. **Est: S**. Estado real: `todo`. **Risk: M** (mypy drift; runtime behavior correcto via dispatch dinamico). 3 errors en `src/trading_bot/scanner/scanner.py`: `:323` `[no-untyped-def]` (parametros sin anotacion en helper definido en el bloque), `:357` `[attr-defined]` `"object" has no attribute "freeze"`, `:365` `[arg-type]` `Argument "registry" to "_ModeRegistryBundle" has incompatible type "object"; expected "FilterRegistry"`. Diagnostico: el parametro `registry_per_mode` (o el registry extraido en scope local) se infiere como `Mapping[str, object]` por mypy pero `_ModeRegistryBundle.__init__` espera `Mapping[str, FilterRegistry]`. Fix: anotacion explicita al param narrowing o `Mapping[str, FilterRegistry]` cast. Cross-link ADR-0016 + ADR-0013 (TSK-103 cross-layer enforcement origin). **DoD**: `uv run mypy src/trading_bot/scanner/scanner.py` rc=0 + 3 sentinels nuevos pineando el type narrowing. Cobertura >= 90% mantenida. Depende de: ninguno.
-
-- [ ] **TSK-013.8** **Pri 4 (QA)** UniverseScanner caching source regression test fix. **Est: S**. Estado real: `todo`. **Risk: L** (test-only bug; runtime behavior correcto). Diagnostico confirmado: `tests/unit/scanner/test_universe_scanner.py::test_caching_source_avoids_double_fetch` configura `volume_by_symbol={"BTC/USDT": 100.0}` con `min_volume_usdt=1_000` → `VolumeFilter` rechaza → F4 short-circuit (round-7 fix per retrieval-log) corto-circuita antes de `fetch_spread_bps` y `fetch_recent` → counters muestran 0 calls. El test intenta pinear "caching evita double-fetch per symbol per run" pero el short-circuit correctamente implementado previene las llamadas posteriores. Fix per thinker: ajustar `FakeMarketDataSource` mock `volume_by_symbol={"BTC/USDT": 10_000.0}` (pass volume filter) y verificar las 3 fetches corren **1 sola vez** cada una. Cross-link ADR-0016 + ADR-0013 (F4 short-circuit context). **DoD**: `pytest tests/unit/scanner/test_universe_scanner.py::test_caching_source_avoids_double_fetch` verde + 0 cambios en `src/trading_bot/scanner/scanner.py` (test-only fix). Depende de: ninguno.
-
-- [ ] **TSK-013.9** **Pri 5 (Test setup)** Parametrize `args` collision en retry tests. **Est: S**. Estado real: `todo`. **Risk: L** (test setup-time error; no afecta runtime). 2 **ERROR** (no FAILED) en `tests/unit/market_data/test_ccxt_connector.py::test_read_methods_retries_then_reraise[fetch_ohlcv-args0]` y `[fetch_balance-args1]`. Diagnostico per thinker: el parametrize usa `args` como identifier del param (`pytest.param("fetch_ohlcv", args0)`), per pytest convention `args` puede entrar en conflicto con fixtures o con `_pytest.compat`; el expected fix es renombrar a `method_args` en `pytest.param(...)` IDs + actualizar la function signature `(*, method_name, method_args, **kwargs)` o similar. Cross-link ADR-0016 + ADR-0012 (retry decorator context via tenacity). **DoD**: 2 ERRORS pasan a PASSED, verificando el retry-then-reraise behavior en CCXT connector. Test-only fix. Depende de: ninguno.
-
-- [ ] **TSK-013.10** **Pri 6 (Latent drift audit)** Sweep test fixtures against `Exchange`/`ExchangeRetries`/`ExchangeTimeouts` model constraints. **Est: S**. Estado real: `todo`. **Risk: L** (test-only drift; runtime behavior OK porque pydantic valida solo en uso real de los modelos, no al construir fixtures). **Audit completed**: `code_searcher` sweep sobre `tests/unit/` + `tests/bdd/` revela 2 violaciones latentes en `tests/unit/market_data/test_ccxt_connector.py::fast_retry_exchange_cfg` (line 437 + 441): `rate_limit_ms=10` violates `Exchange.rate_limit_ms=Field(..., ge=50)` y `max_backoff_ms=50` violates `ExchangeRetries.max_backoff_ms=Field(8_000, ge=100)`. Ambas correcciones ya cubiertas en TSK-013.8+013.9 branch `feature/tsk-013.8-013.9-test-fixes` @ d6c9141 (cherry-pick-safe commit con bumps a `rate_limit_ms=50` + `max_backoff_ms=200` + 100ms headroom per reviewer round-1 feedback). **Pattern catalogued**: ademàs, 4 sites usan `model_construct()` para bypass intencional de validation (`tests/unit/scanner/test_mode_filters.py:62-63` + `tests/unit/scanner/test_universe_scanner.py:182-183`). Bypass intencional pero deuda potencial: si una constraint futura se endurezca (e.g. `ExchangeRetries.initial_backoff_ms` `ge=10` -> `ge=50`), los 4 sites seguiran pasando sin disparar test raises. Cross-link TSK-013.8+013.9 (origen del descubrimiento), ADR-0016 (umbrella baseline remediation), ADR-0017 (TSK-013.5 escalacion que cerro partial-fix similar). **DoD**: (a) sweep reproducible via `code_searcher`; (b) audit log en `context/retrieval-log.md`; (c) backlog entry cross-linkeado; (d) cherry-pick-safe fix-forward en TSK-013.8+013.9 ya push state. **Proactive recurrence**: aplicar TSK-013.10 audit pattern antes de cualquier PR que enderece constraints en `Exchange*`, `Risk`, `Runtime`, `Universe`, `StrategiesConfig`, `IndicatorsConfig` para evitar regresiones CI silenciosas (model_construct + fixture-construction != model-validation). Depende de: ninguno (cataloging directo).
+- [x] **TSK-110** BDD scenarios para market_scanner. **Est: S**.
+  Estado real: `done`, scope absorbed per **TSK-103.5** (F5 wiring
+  con 17 escenarios pytest-bdd mergeados a `main` con tag
+  `v0.5.0-rc.1` y ADR-0013 firmada en retrieval-log
+  `[2026-07-04 11:00]`). El scope original (escenarios BDD para
+  market_scanner) **fue completamente consumido** por TSK-103.5's
+  17 escenarios pytest-bdd; no queda trabajo residual sin hacer.
+  Absorbido formalmente al cierre sprint-002 via **ADR-0015**.
+  Sin esta nota, TSK-110 quedaria duplicado contra F5. Unblocked
+  per TSK-103.5 close. Depende de: TSK-103.5 ✅.
 
 ## Tickets Fase 2 (indicadores)
 
@@ -161,6 +180,75 @@
 - [ ] **TSK-202** VWAP, volume_relative, spread, volatilidad, momentum.
 - [ ] **TSK-203** Order book imbalance (detras de un feature flag).
 - [ ] **TSK-204** Property tests sobre series sinteticas.
+
+## Tickets hygiene / cleanup
+
+- [ ] **TSK-111** Cleanup de pre-existentes ruff format + ruff check sobre `main` (bloquea futuras PRs desde first push). **Est: M**. Estado real: `todo`. Detectado tras F5 merge (TSK-103.5) per code-review de las PRs convergentes: el camino de git-rebase hace que cualquier feature PR subsiguiente herede los failures de `main` aunque su propio codigo este limpio, y el CI los reporta en rojo en first push. Cross-link con ADR-0012 (CI gate-recovery firmado 2026-07-04) como precedente: analogamente al coverage gate que tambien fallo en main antes de ser ADR-firmado, el ruff gate necesita el mismo tratamiento (ADR o ticket dedicado). **Pri**: 1 (blocker universal para TSK-104+, TSK-200+, y todo ticket de Fase 1/2+). **DoD**: `uv run ruff format --check .` rc=0 + `uv run ruff check .` rc=0 sobre `main` (sin overlays por feature branch). Cherry-pick safe (solo estilo + imports, no toca logica).  Depende de: ninguno (remediation directa).
+
+  **SUPERSEDED NOTICE** (added 2026-07-XX post-Ticket-013.4-backfill): la numeracion canonica adoptada es **`TSK-013.4`** (siguiendo la convencion sub-task `TSK-103.X` pineada en `## Tickets Fase 1`). Este ticket queda como referencia historica del primer intento de catalogar este bloque de hygiene; no genera PR propio. Toda accion concreta se canaliza via **TSK-013.4** en el PR `feature/tsk-013.4-ruff-cleanup`. Al cerrar TSK-013.4, **cherry-pick manual** del flip `- [ ]` → `- [x]` en este ticket en un follow-up commit sombra (no requiere PR dedicada; se hace dentro del mismo PR TSK-013.4 antes del squash-merge para mantener historial coherente).
+
+  **Notas de ground-truth (basher 2026-07-XX)**:
+  - User-reported counts: 14 ruff format issues + 47 ruff check errors.
+  - Counts reales (basher oficial via `ruff format --check .` + `ruff check . --output-format=concise`): 29 ruff format issues + 84 ruff check errors (84 en 27 archivos unicos). El user-reported 47 y el 49 del primer basher eran estimaciones bajas; el conteo oficial post-rerun es 84.
+  - Diferencia atribuida a: user claims de un check anterior parcial; los 27 archivos con errors si matchean los ejemplos del user (`test_scoring.py`, `market_data/fake.py`, `market_data/ohlcv_fetcher.py`, `market_data/types.py`).
+
+  **Checklist 1: ruff format drift (29 archivos pendientes — exact list via `uv run ruff format --check .` 2026-07-XX)**:
+  - [ ] scripts/check_bdd_fixtures.py
+  - [ ] src/trading_bot/app.py
+  - [ ] src/trading_bot/market_data/__init__.py
+  - [ ] src/trading_bot/market_data/exchange_connector.py
+  - [ ] src/trading_bot/market_data/fake.py
+  - [ ] src/trading_bot/market_data/ohlcv_fetcher.py
+  - [ ] src/trading_bot/market_data/types.py
+  - [ ] src/trading_bot/scanner/filters.py
+  - [ ] src/trading_bot/scanner/protocols.py
+  - [ ] src/trading_bot/scanner/scanner.py
+  - [ ] src/trading_bot/scanner/scoring.py
+  - [ ] src/trading_bot/scanner/types.py
+  - [ ] src/trading_bot/storage/ohlcv_store.py
+  - [ ] tests/bdd/conftest.py
+  - [ ] tests/bdd/test_features.py
+  - [ ] tests/unit/config/test_settings.py
+  - [ ] tests/unit/market_data/test_ccxt_connector.py
+  - [ ] tests/unit/market_data/test_fake.py
+  - [ ] tests/unit/market_data/test_ohlcv_fetcher.py
+  - [ ] tests/unit/scanner/conftest.py
+  - [ ] tests/unit/scanner/test_filters.py
+  - [ ] tests/unit/scanner/test_mode_filters.py
+  - [ ] tests/unit/scanner/test_protocols.py
+  - [ ] tests/unit/scanner/test_registry.py
+  - [ ] tests/unit/scanner/test_scoring.py
+  - [ ] tests/unit/scanner/test_universe_scanner.py
+  - [ ] tests/unit/scheduler/test_filters.py
+  - [ ] tests/unit/storage/test_ohlcv_store.py
+  - [ ] tests/unit/test_app_demo.py
+
+  **Checklist 2: ruff check errors (49 errores en 26 archivos unicos)** — mismo conjunto de archivos que Checklist 1. Tipos predominantes: F401 (unused imports), I001 (import sort), N803 (naming convention), W291 (trailing whitespace). Enumeracion exacta via `uv run ruff check . --output-format=concise` cuando se abra el PR; duplicacion promedio ~2 errores por archivo.
+
+  **Accion concreta**: ejecutar `uv run ruff format .` + `uv run ruff check --fix .` en una sola pasada dentro del PR `feature/tsk-111-ruff-cleanup`. Verificar que el auto-fix no toca logica de negocio (solo estilo + imports). Si algun fix requiere decision (e.g. renombrar variable N803), abrir ADR-0015 dedicada. Cross-link con TSK-008 (PR#N pendiente) y ADR-0012 al abrir el PR para que el reviewer chain entienda el history de la exception pre-firma.
+
+- [ ] **TSK-013.4** Backfill: address 14 pre-existing ruff format issues + 47 ruff errors on `main` (deferred scope del sweep TSK-013.3). **Est: M**. Estado real: `todo`. **Pri lógico**: 1 (blocker universal — toda TSK-013.x + TSK-104+ + TSK-200+ PR queda bloqueada por el gate del ruff sin este fix). **Scheduling authoritative**: Pri 3 en `tasks/sprint-003.md` Foundations table (la cual es la source-of-truth para orden de ejecucion; **después** de TSK-008 + TSK-009, dependencia tecnica: el gate no se enforce hasta TSK-008 mergee el workflow GHA). **Convencion adopted** `[!NOTE]`: TSK-013.X sigue la numeracion sub-task del workstream paralelo del usuario (TSK-013.3 = sweep feature-complete recien cerrado, TSK-013.4 = este backfill). **El parent `TSK-013` no esta formalizado en `tasks/*.md`** (verificado via `code_searcher TSK-0(1[0-9])`: 0 matches); el naming se mantiene por consistencia con la convencion TSK-103.X ya pineada en `## Tickets Fase 1`. **Origen**: el round-1 code-reviewer de las 3 PRs del sweep TSK-013.3 marco "14 ruff format + 47 ruff check errors" como `outside TSK-013.3 scope`; el equipo decidio diferir para un ticket dedicado. **Sin este backfill, cada TSK-013.x PR futura choca con el mismo lint drift en first push** porque CI sobre `main` falla el gate pre-PR. **Cross-ref**: TSK-013.4 es el nombre canonico; TSK-111 cubre el mismo scope con naming inicial incorrecto y ahora apunta a este ticket via SUPERSEDED NOTICE en su entrada. **DoD**: `uv run ruff format --check .` rc=0 + `uv run ruff check .` rc=0 sobre `main` (sin overlays por feature branch). Cherry-pick safe: solo estilo + imports + dead code, no toca logica de negocio. Depende de: ninguno (remediation directa).
+
+  **Baseline (paso 2 del backfill — quoted del user mas ground-truth)**:
+  - **User-reported counts (sweep TSK-013.3 round-1 code-reviewer)**: 14 ruff format issues + 47 ruff check errors. Ejemplos: `tests/unit/scanner/test_scoring.py` F401 (unused imports); `src/trading_bot/market_data/{fake,ohlcv_fetcher,types}.py` format drift.
+  - **Ground-truth re-run via `uv run ruff format --check .` + `uv run ruff check . --output-format=concise`**: 29 ruff format issues + 84 ruff check errors (84 errores en 27 archivos unicos). El reporte 47 era estimacion baja del escuadron TSK-013.3; el conteo real post-rerun es 84. Los 4 ejemplos citados por el usuario SÍ estan en el ground-truth list (`test_scoring.py`, `market_data/{fake,ohlcv_fetcher,types}.py`).
+
+  **Plan de ejecucion (paso 3 — scheduling a sprint-003)**:
+  - Asignar a sprint-003 Pri 3 en la Foundations table (TSK-008 + TSK-009 + TSK-013.4 son las 3 cargas de governance que llevan arrastre, en ese orden de dependencia).
+  - PR dedicado `feature/tsk-013.4-ruff-cleanup` con 3 commits atomicos: (a) `uv run ruff format .` auto-fix + commit; (b) `uv run ruff check --fix .` para F401/I001 + commit; (c) correccion manual de los N803 residuales + commit. El orden previene que el auto-fix de (b) enmascare el drift de (a).
+  - Verificar cherry-pick safety antes de mergear: `git log -p --stat` sobre los 3 commits debe mostrar 0 lineas de logica de negocio tocadas.
+  - Si algun fix requiere ADR (e.g. renombrar variable N803 que rompe interfaz publica), abrir ADR-0015 dedicada con seccion "Justificacion" + "Alternativas consideradas" en `tasks/decisions.md`.
+
+  **Cross-links relevantes**:
+  - **TSK-111** (mismo scope, naming inicial con numeracion lineal): merge/rename candidate en el PR de TSK-013.4.
+  - **TSK-008** (CI baseline, Pri 1 sprint-003): dependencia tecnica. Sin el workflow GHA de TSK-008, el gate de `ruff format --check` + `ruff check` no esta enforced — desde el punto de vista del usuario final, TSK-008 + TSK-013.4 son ambos prerequisite para que cualquier PR futura pase; pero en orden de ejecucion TSK-013.4 va **despues** de TSK-008 (el gate tiene que existir antes de poder pasar). **Si TSK-008 no estuviera mergeado**, TSK-013.4 queda fence-policy al estilo del coverage gate pre-ADR-0012 (firmar ADR-0015 si la blocker status cambia).
+  - **ADR-0012** (CI gate-recovery + numpy<2.1 + app.py omit + PYSEC-2026-597 firmado): precedente analogamente al coverage gate que tambien fallo en main antes de ser ADR-firmado.
+  - **ADR-0002** (uv como gestor canonico): asegura que `uv run` se usa consistentemente entre local y CI.
+
+  **Riesgos**:
+  - **Lingering F401 en `backtesting/__init__.py` + variantes**: revisar manualmente antes de auto-fix porque podrian ser imports intencionales que se usan via `__getattr__` lazy.
+  - **N803 en tests/bdd**: el naming de step-definition fixtures puede ser conflictivo con el linter; ADR-0015 puede ser necesaria.
+  - **`src/trading_bot/app.py`** tiene format drift + sin tests propios — la cobertura al 90% lo cubre con `--cov-append` per ADR-0012, pero si el auto-fix crea churn, reabrir cobertura mid-PR.
 
 ## Backlog de ideas (no comprometidas)
 
