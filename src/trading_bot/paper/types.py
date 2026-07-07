@@ -68,6 +68,7 @@ class PaperExecutionSummary:
     ending_cash: float = 0.0
     ending_equity: float = 0.0
     win_rate_closed: float = 0.0
+    risk_events: list[str] = field(default_factory=list)
 
 
 @dataclass(frozen=True, slots=True)

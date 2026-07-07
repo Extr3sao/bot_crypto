@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import datetime
 import sqlite3
 from pathlib import Path
 from uuid import uuid4
@@ -116,6 +117,25 @@ class PaperBroker:
             )
             """
         )
+        self._conn.execute(
+            """
+            CREATE TABLE IF NOT EXISTS paper_risk_state (
+                id INTEGER PRIMARY KEY CHECK (id = 1),
+                consecutive_losses INTEGER NOT NULL DEFAULT 0,
+                cooldown_end_ms INTEGER NOT NULL DEFAULT 0,
+                last_trade_date TEXT NOT NULL DEFAULT '',
+                today_trade_count INTEGER NOT NULL DEFAULT 0
+            )
+            """
+        )
+        self._conn.execute(
+            """
+            INSERT INTO paper_risk_state (
+                id, consecutive_losses, cooldown_end_ms, last_trade_date, today_trade_count
+            ) VALUES (1, 0, 0, '', 0)
+            ON CONFLICT (id) DO NOTHING
+            """
+        )
 
     @property
     def db_path(self) -> Path:
@@ -147,6 +167,8 @@ class PaperBroker:
         fills: list[PaperFill] = []
         closed_trades: list[PaperClosedTrade] = []
         cash_balance = self._get_cash_balance()
+        risk_events: list[str] = []
+        cons_losses, cooldown_ms, last_trade_date, today_count = self._get_risk_state()
 
         for symbol, position in list(open_positions.items()):
             snapshot = snapshot_by_symbol.get(symbol)
@@ -167,22 +189,56 @@ class PaperBroker:
                     sell_fill=sell_fill,
                 )
                 closed_trades.append(closed_trade)
+                if closed_trade.realized_pnl < 0.0:
+                    cons_losses += 1
+                else:
+                    cons_losses = 0
+                if cons_losses >= risk.max_consecutive_losses:
+                    cooldown_ms = (
+                        closed_trade.closed_at_ms + risk.consecutive_loss_cooldown_minutes * 60_000
+                    )
                 del open_positions[symbol]
             else:
                 updated_position = self._mark_position(position, snapshot)
                 self._upsert_position(updated_position)
                 open_positions[symbol] = updated_position
 
+        now_ms = max((snapshot.timestamp for snapshot in snapshots), default=0)
+        in_cooldown = bool(now_ms > 0 and now_ms < cooldown_ms)
+        if in_cooldown:
+            risk_events.append("cooldown_active")
+        if now_ms > 0:
+            today_str = datetime.datetime.fromtimestamp(now_ms / 1000.0, tz=datetime.UTC).strftime(
+                "%Y-%m-%d"
+            )
+            if today_str != last_trade_date:
+                today_count = 0
+                last_trade_date = today_str
+
         for symbol in active_symbols:
             if symbol in open_positions:
                 continue
             if len(open_positions) >= risk.max_open_positions:
                 break
+            if in_cooldown:
+                continue
+            if today_count >= risk.max_trades_per_day:
+                if "max_trades_per_day_reached" not in risk_events:
+                    risk_events.append("max_trades_per_day_reached")
+                continue
             snapshot = snapshot_by_symbol[symbol]
             slots_remaining = max(risk.max_open_positions - len(open_positions), 1)
+            max_asset_notional = cash_balance * (risk.max_asset_exposure_pct / 100.0)
+            current_total_notional = sum(
+                position.notional_usdt for position in open_positions.values()
+            )
+            max_total_notional = cash_balance * (risk.max_total_exposure_pct / 100.0)
+            remaining_total_exposure = max(0.0, max_total_notional - current_total_notional)
             target_notional = min(
                 risk.max_order_notional_usdt,
                 cash_balance / slots_remaining,
+                max_asset_notional,
+                remaining_total_exposure,
             )
             if target_notional < risk.min_order_notional_usdt:
                 continue
@@ -197,6 +253,7 @@ class PaperBroker:
             cash_balance -= total_cash_required
             self._set_cash_balance(cash_balance)
             fills.append(buy_fill)
+            today_count += 1
             position = PaperPosition(
                 symbol=snapshot.symbol,
                 qty=buy_fill.qty,
@@ -229,6 +286,8 @@ class PaperBroker:
         closed_wins = sum(1 for trade in closed_trades if trade.realized_pnl > 0.0)
         win_rate_closed = (closed_wins / len(closed_trades)) if closed_trades else 0.0
 
+        self._update_risk_state(cons_losses, cooldown_ms, last_trade_date, today_count)
+
         return PaperExecutionSummary(
             fills=fills,
             open_positions=sorted(current_positions, key=lambda position: position.symbol),
@@ -240,6 +299,7 @@ class PaperBroker:
             ending_cash=ending_cash,
             ending_equity=ending_equity,
             win_rate_closed=win_rate_closed,
+            risk_events=risk_events,
         )
 
     def close(self) -> None:
@@ -261,6 +321,24 @@ class PaperBroker:
         self._conn.execute(
             "UPDATE paper_account SET cash_balance = ? WHERE account_id = 1",
             (cash_balance,),
+        )
+
+    def _get_risk_state(self) -> tuple[int, int, str, int]:
+        row = self._conn.execute(
+            "SELECT consecutive_losses, cooldown_end_ms, last_trade_date, today_trade_count "
+            "FROM paper_risk_state WHERE id = 1"
+        ).fetchone()
+        if row is None:
+            return 0, 0, "", 0
+        return int(row[0]), int(row[1]), str(row[2]), int(row[3])
+
+    def _update_risk_state(
+        self, losses: int, cooldown: int, last_date: str, today_count: int
+    ) -> None:
+        self._conn.execute(
+            "UPDATE paper_risk_state SET consecutive_losses = ?, cooldown_end_ms = ?, "
+            "last_trade_date = ?, today_trade_count = ? WHERE id = 1",
+            (losses, cooldown, last_date, today_count),
         )
 
     def _load_open_positions(self) -> dict[str, PaperPosition]:
@@ -423,8 +501,8 @@ class PaperBroker:
         entry_fill_id = str(row[0]) if row is not None else ""
         total_commission = position.entry_commission + sell_fill.commission
         realized_pnl = (
-            (sell_fill.fill_price - position.entry_price) * position.qty - total_commission
-        )
+            sell_fill.fill_price - position.entry_price
+        ) * position.qty - total_commission
         invested = position.entry_price * position.qty + position.entry_commission
         realized_pnl_pct = realized_pnl / invested if invested > 0.0 else 0.0
         trade = PaperClosedTrade(

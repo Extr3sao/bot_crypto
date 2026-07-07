@@ -146,9 +146,7 @@ def _build_settings(
     )
     from trading_bot.config.universe import PairSpec, Universe, UniverseFilters
 
-    pair_specs = [
-        PairSpec.model_construct(symbol=s, enabled=en) for s, en in pairs
-    ]
+    pair_specs = [PairSpec.model_construct(symbol=s, enabled=en) for s, en in pairs]
     universe = Universe.model_construct(
         name="test",
         description="test",
@@ -348,6 +346,7 @@ def test_run_empty_universe_returns_empty_list() -> None:
         settings=settings,
     )
     import asyncio
+
     snapshots = asyncio.run(scanner.run())
     assert snapshots == []
 
@@ -367,6 +366,7 @@ def test_run_kill_switch_aborts_and_logs_paused() -> None:
     )
     with structlog.testing.capture_logs() as cap:
         import asyncio
+
         snapshots = asyncio.run(scanner.run())
     assert snapshots == []
     assert any(e["event"] == "scanner.paused.kill_switch" for e in cap)
@@ -395,6 +395,7 @@ def test_run_full_universe_preserves_pair_order() -> None:
         settings=settings,
     )
     import asyncio
+
     snapshots = asyncio.run(scanner.run())
     symbols = [s.symbol for s in snapshots]
     assert symbols == ["A/USDT", "B/USDT", "C/USDT"], (
@@ -423,6 +424,7 @@ def test_filter_composition_first_failure_short_circuits() -> None:
         settings=settings,
     )
     import asyncio
+
     snapshots = asyncio.run(scanner.run())
     assert len(snapshots) == 1
     snap = snapshots[0]
@@ -461,6 +463,7 @@ def test_transient_error_increments_scanner_errors() -> None:
         settings=settings,
     )
     import asyncio
+
     snapshots = asyncio.run(scanner.run())
     assert snapshots == []
     assert scanner.counters.scanner_errors == 2
@@ -489,6 +492,7 @@ def test_structlog_emits_5_event_kinds() -> None:
         settings=settings,
     )
     import asyncio
+
     with structlog.testing.capture_logs() as cap:
         asyncio.run(scanner.run())
     events = {entry["event"] for entry in cap}
@@ -522,6 +526,7 @@ def test_mode_paper_passes_normal_volume() -> None:
         settings=settings,
     )
     import asyncio
+
     snapshots = asyncio.run(scanner.run())
     assert snapshots[0].active is True
     assert snapshots[0].rejection_reason is None
@@ -549,6 +554,7 @@ def test_mode_live_endures_volume_to_10M() -> None:
         settings=settings,
     )
     import asyncio
+
     snapshots = asyncio.run(scanner.run())
     assert snapshots[0].active is False
     assert snapshots[0].rejection_reason == "volume_below_threshold_for_live_min_10M"
@@ -574,6 +580,7 @@ def test_mode_shadow_live_maps_to_live_thresholds() -> None:
         ohlcv_by_symbol={"BTC/USDT": _flat_ohlcv("BTC/USDT", 100, last_close=100.0)},
     )
     import asyncio
+
     snap_shadow = asyncio.run(
         UniverseScanner(
             source=FakeMarketDataSource(**src_kwargs),  # type: ignore[arg-type]
@@ -611,6 +618,7 @@ def test_counters_reset_each_run() -> None:
         settings=settings,
     )
     import asyncio
+
     asyncio.run(scanner.run())
     first_count = scanner.counters.pairs_active
     asyncio.run(scanner.run())
@@ -675,6 +683,7 @@ def test_active_snapshot_has_all_10_fields() -> None:
         settings=settings,
     )
     import asyncio
+
     snapshots = asyncio.run(scanner.run())
     snap = snapshots[0]
     assert hasattr(snap, "symbol")
@@ -708,6 +717,7 @@ def test_inactive_snapshot_has_zero_score() -> None:
         settings=settings,
     )
     import asyncio
+
     snapshots = asyncio.run(scanner.run())
     snap = snapshots[0]
     assert snap.active is False
@@ -734,6 +744,7 @@ def test_caching_source_avoids_double_fetch() -> None:
         settings=settings,
     )
     import asyncio
+
     asyncio.run(scanner.run())
     # Cada metodo per-symbol debe haberse llamado exactamente 1 vez.
     assert_called_once_per_symbol(source, "fetch_24h_volume_usdt", "BTC/USDT")
@@ -812,6 +823,7 @@ def test_pairs_processed_counts_per_pair_not_per_filter() -> None:
     # verificar que ``scanner.pair.processed`` se emite con
     # ``scan_iteration_id`` (gotcha #2 lock).
     import asyncio
+
     with structlog.testing.capture_logs() as cap:
         asyncio.run(scanner.run())
     # 1 par procesado, 3 filtros corrido. Counter debe ser 1, NO 3.
@@ -833,8 +845,7 @@ def test_pairs_processed_counts_per_pair_not_per_filter() -> None:
         f"Esperaba 1 'scanner.pair.processed' event; got {len(pair_events)}"
     )
     assert "scan_iteration_id" in pair_events[0], (
-        f"scanner.pair.processed debe llevar scan_iteration_id (gotcha #2); "
-        f"got {pair_events[0]}"
+        f"scanner.pair.processed debe llevar scan_iteration_id (gotcha #2); got {pair_events[0]}"
     )
 
 
@@ -869,6 +880,7 @@ def test_scanner_mode_str_raises_configuration_error_for_unknown_mode() -> None:
             settings=settings,
         )
         import asyncio
+
         with pytest.raises(ConfigurationError, match=r"tasks/decisions\.md"):
             asyncio.run(scanner.run())
     finally:
@@ -900,6 +912,7 @@ def test_iteration_completed_emitted_on_kill_switch() -> None:
         settings=settings,
     )
     import asyncio
+
     with structlog.testing.capture_logs() as cap:
         snapshots = asyncio.run(scanner.run())
     assert snapshots == []
@@ -914,12 +927,17 @@ def test_iteration_completed_emitted_on_kill_switch() -> None:
     )
     # Y los 4 counters + duration_ms pineados por spec section 10 + Q6 del
     # round-9 fix asegura que `all_failed` se emite SIEMPRE (None en este branch).
-    for key in ("duration_ms", "pairs_processed", "pairs_active",
-                  "pairs_inactive", "scanner_errors", "all_failed"):
-        assert field in evt, f"iteration.completed debe llevar {key!r} (spec §10)"
+    for key in (
+        "duration_ms",
+        "pairs_processed",
+        "pairs_active",
+        "pairs_inactive",
+        "scanner_errors",
+        "all_failed",
+    ):
+        assert key in evt, f"iteration.completed debe llevar {key!r} (spec §10)"
     assert evt.get("all_failed") is None, (
-        f"all_failed es irrelevante en kill_switch path; "
-        f"got {evt.get('all_failed')!r}"
+        f"all_failed es irrelevante en kill_switch path; got {evt.get('all_failed')!r}"
     )
     # Y el path-specific event continua emitiendo (paused aired before completed).
     assert any(e["event"] == "scanner.paused.kill_switch" for e in cap)
@@ -944,6 +962,7 @@ def test_iteration_completed_emitted_on_empty_universe() -> None:
         settings=settings,
     )
     import asyncio
+
     with structlog.testing.capture_logs() as cap:
         snapshots = asyncio.run(scanner.run())
     assert snapshots == []
@@ -958,12 +977,17 @@ def test_iteration_completed_emitted_on_empty_universe() -> None:
     )
     # Y los 4 counters + duration_ms pineados por spec section 10 + Q6 del
     # round-9 fix asegura que `all_failed` se emite SIEMPRE (None en este branch).
-    for key in ("duration_ms", "pairs_processed", "pairs_active",
-                  "pairs_inactive", "scanner_errors", "all_failed"):
-        assert field in evt, f"iteration.completed debe llevar {key!r} (spec §10)"
+    for key in (
+        "duration_ms",
+        "pairs_processed",
+        "pairs_active",
+        "pairs_inactive",
+        "scanner_errors",
+        "all_failed",
+    ):
+        assert key in evt, f"iteration.completed debe llevar {key!r} (spec §10)"
     assert evt.get("all_failed") is None, (
-        f"all_failed es irrelevante en empty_universe path; "
-        f"got {evt.get('all_failed')!r}"
+        f"all_failed es irrelevante en empty_universe path; got {evt.get('all_failed')!r}"
     )
     # Y el path-specific event continua emitiendo.
     assert any(e["event"] == "scanner.universe.empty" for e in cap)
@@ -1030,6 +1054,7 @@ def test_iteration_completed_emits_all_failed_false_on_healthy_path() -> None:
         settings=settings,
     )
     import asyncio
+
     with structlog.testing.capture_logs() as cap:
         asyncio.run(scanner.run())
     completed = [e for e in cap if e["event"] == "scanner.iteration.completed"]
@@ -1039,8 +1064,7 @@ def test_iteration_completed_emits_all_failed_false_on_healthy_path() -> None:
         f"keys={list(completed[0].keys())}"
     )
     assert completed[0].get("all_failed") is False, (
-        f"healthy completion debe emitir all_failed=False; "
-        f"got {completed[0].get('all_failed')!r}"
+        f"healthy completion debe emitir all_failed=False; got {completed[0].get('all_failed')!r}"
     )
     # Y early_exit=None en healthy (Truth-table row 1).
     assert completed[0].get("early_exit") is None, (
@@ -1055,6 +1079,7 @@ def test_iteration_completed_emits_all_failed_true_on_cl3_path() -> None:
     `not snapshots and scanner_errors > 0`. ``all_failed=True`` NO
     distingue entre failures + transient errors per Q1 word-ing fix.
     """
+
     class FailingSource(FakeMarketDataSource):
         async def fetch_24h_volume_usdt(self, symbol: str) -> float:
             raise RuntimeError("simulated transient error")
@@ -1075,6 +1100,7 @@ def test_iteration_completed_emits_all_failed_true_on_cl3_path() -> None:
         settings=settings,
     )
     import asyncio
+
     with structlog.testing.capture_logs() as cap:
         snapshots = asyncio.run(scanner.run())
     assert snapshots == []
@@ -1121,6 +1147,7 @@ def test_iteration_completed_emits_all_failed_true_on_filter_reject_only_path() 
         settings=settings,
     )
     import asyncio
+
     with structlog.testing.capture_logs() as cap:
         snapshots = asyncio.run(scanner.run())
     # El outer loop appendea el inactive snapshot al list:
