@@ -1234,6 +1234,12 @@ def test_scan_iteration_id_factory_callable_used_by_run() -> None:
     ``Callable[[], str]``. mypy strict acepta esta firma; runtime: el
     factory se invoca exactamente una vez por ``run()`` y el ID generado
     aparece ligado al scan_iteration_id del log de iteracion.
+
+    Note: ``asyncio.run(scanner.run())`` se usa porque el proyecto no
+    tiene ``pytest-asyncio`` configurado en ``pyproject.toml``; si se
+    agrega ``pytest-asyncio`` en el futuro (e.g. TSK-105 paper trading
+    harness), convertir este sentinel a ``async def`` +
+    ``@pytest.mark.asyncio`` para alinear con la convencion del proyecto.
     """
     calls: list[str] = []
 
