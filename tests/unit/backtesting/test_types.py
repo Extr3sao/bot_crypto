@@ -15,8 +15,11 @@ import datetime
 from collections.abc import Iterator
 
 import pytest
+from hypothesis import given
+from hypothesis import strategies as st
 
 from trading_bot.backtesting.types import (
+    BacktestInputs,
     OHLCV,
     BacktestContext,
     BacktestResult,
@@ -26,6 +29,7 @@ from trading_bot.backtesting.types import (
     Order,
     StrategyProtocol,
     Trade,
+    WalkForwardSplit,
 )
 
 # ===========================================================================
@@ -154,6 +158,99 @@ def test_backtest_context_is_frozen() -> None:
     )
     with pytest.raises(dataclasses.FrozenInstanceError):
         ctx.equity = 9_999.0  # type: ignore[misc]
+
+
+def test_backtest_inputs_is_frozen() -> None:
+    inputs = BacktestInputs(
+        symbols="BTC/USDT",
+        start=datetime.datetime(2024, 1, 1, tzinfo=datetime.UTC),
+        end=datetime.datetime(2024, 1, 2, tzinfo=datetime.UTC),
+    )
+    with pytest.raises(dataclasses.FrozenInstanceError):
+        inputs.timeframe = "5m"  # type: ignore[misc]
+
+
+def test_backtest_inputs_rejects_empty_symbol_list() -> None:
+    with pytest.raises(ValueError, match="al menos un symbol"):
+        BacktestInputs(
+            symbols=[],
+            start=datetime.datetime(2024, 1, 1, tzinfo=datetime.UTC),
+            end=datetime.datetime(2024, 1, 2, tzinfo=datetime.UTC),
+        )
+
+
+def test_backtest_inputs_rejects_invalid_fold_order() -> None:
+    with pytest.raises(ValueError, match="train_start <= train_end <= test_start <= test_end"):
+        BacktestInputs(
+            symbols="BTC/USDT",
+            start=datetime.datetime(2024, 1, 1, tzinfo=datetime.UTC),
+            end=datetime.datetime(2024, 2, 1, tzinfo=datetime.UTC),
+            walk_forward_splits=[
+                (
+                    datetime.datetime(2024, 1, 10, tzinfo=datetime.UTC),
+                    datetime.datetime(2024, 1, 20, tzinfo=datetime.UTC),
+                    datetime.datetime(2024, 1, 15, tzinfo=datetime.UTC),
+                    datetime.datetime(2024, 1, 25, tzinfo=datetime.UTC),
+                )
+            ],
+        )
+
+
+def test_backtest_inputs_rejects_overlapping_folds() -> None:
+    with pytest.raises(ValueError, match="folds no solapados"):
+        BacktestInputs(
+            symbols="BTC/USDT",
+            start=datetime.datetime(2024, 1, 1, tzinfo=datetime.UTC),
+            end=datetime.datetime(2024, 3, 1, tzinfo=datetime.UTC),
+            walk_forward_splits=[
+                (
+                    datetime.datetime(2024, 1, 1, tzinfo=datetime.UTC),
+                    datetime.datetime(2024, 1, 10, tzinfo=datetime.UTC),
+                    datetime.datetime(2024, 1, 11, tzinfo=datetime.UTC),
+                    datetime.datetime(2024, 1, 20, tzinfo=datetime.UTC),
+                ),
+                (
+                    datetime.datetime(2024, 1, 20, tzinfo=datetime.UTC),
+                    datetime.datetime(2024, 1, 25, tzinfo=datetime.UTC),
+                    datetime.datetime(2024, 1, 26, tzinfo=datetime.UTC),
+                    datetime.datetime(2024, 2, 5, tzinfo=datetime.UTC),
+                ),
+            ],
+        )
+
+
+@given(
+    st.lists(
+        st.tuples(
+            st.datetimes(timezones=st.just(datetime.UTC)),
+            st.integers(min_value=0, max_value=5),
+            st.integers(min_value=0, max_value=5),
+            st.integers(min_value=0, max_value=5),
+        ),
+        min_size=1,
+        max_size=5,
+    )
+)
+def test_backtest_inputs_accepts_non_overlapping_walk_forward_splits(
+    fold_specs: list[tuple[datetime.datetime, int, int, int]]
+) -> None:
+    splits: list[WalkForwardSplit] = []
+    cursor: datetime.datetime | None = None
+    for base, train_days, gap_days, test_days in sorted(fold_specs, key=lambda item: item[0]):
+        train_start = max(base, cursor) if cursor is not None else base
+        train_end = train_start + datetime.timedelta(days=train_days)
+        test_start = train_end + datetime.timedelta(days=gap_days)
+        test_end = test_start + datetime.timedelta(days=test_days)
+        splits.append((train_start, train_end, test_start, test_end))
+        cursor = test_end + datetime.timedelta(seconds=1)
+
+    inputs = BacktestInputs(
+        symbols=["BTC/USDT"],
+        start=min(split[0] for split in splits),
+        end=max(split[3] for split in splits),
+        walk_forward_splits=splits,
+    )
+    assert inputs.walk_forward_splits == splits
 
 
 # ===========================================================================

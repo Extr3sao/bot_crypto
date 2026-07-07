@@ -372,6 +372,67 @@ def test_engine_metrics_have_required_keys() -> None:
         assert key in result.metrics
 
 
+def test_engine_run_accepts_multiple_symbols_and_returns_one_result_per_symbol() -> None:
+    candles = _make_flat_candles("BTC/USDT", 5) + _make_flat_candles("ETH/USDT", 5)
+    src = FakeOHLCVSource(candles)
+    engine = BacktestEngine(
+        src,
+        _AlwaysBuyThenSellAfterN(sell_after_bars=2),
+        initial_capital=10_000.0,
+    )
+
+    start = _to_dt(1_700_000_000_000)
+    end = _to_dt(1_700_000_000_000 + 5 * 60_000)
+    results = engine.run(["BTC/USDT", "ETH/USDT"], start, end)
+
+    assert len(results) == 2
+    assert [result.symbol for result in results] == ["BTC/USDT", "ETH/USDT"]
+    assert all(len(result.trades) == 1 for result in results)
+
+
+def test_engine_multisymbol_isolates_stateful_strategy_per_symbol() -> None:
+    candles = _make_flat_candles("BTC/USDT", 5) + _make_flat_candles("ETH/USDT", 5)
+    src = FakeOHLCVSource(candles)
+    shared_strategy = _AlwaysBuyThenSellAfterN(sell_after_bars=2)
+    engine = BacktestEngine(src, shared_strategy, initial_capital=10_000.0)
+
+    start = _to_dt(1_700_000_000_000)
+    end = _to_dt(1_700_000_000_000 + 5 * 60_000)
+    results = engine.run(["BTC/USDT", "ETH/USDT"], start, end)
+
+    assert len(results) == 2
+    assert all(len(result.trades) == 1 for result in results)
+    # El strategy compartido original no debe quedar "gastado" por el branch multi-symbol.
+    assert shared_strategy._has_bought is False
+
+
+def test_engine_multisymbol_uses_explicit_strategy_factory_when_provided() -> None:
+    candles = _make_flat_candles("BTC/USDT", 5) + _make_flat_candles("ETH/USDT", 5)
+    src = FakeOHLCVSource(candles)
+    created: list[_AlwaysBuyThenSellAfterN] = []
+
+    def _factory() -> _AlwaysBuyThenSellAfterN:
+        strategy = _AlwaysBuyThenSellAfterN(sell_after_bars=2)
+        created.append(strategy)
+        return strategy
+
+    engine = BacktestEngine(
+        src,
+        _AlwaysBuyThenSellAfterN(sell_after_bars=2),
+        initial_capital=10_000.0,
+        strategy_factory=_factory,
+    )
+
+    start = _to_dt(1_700_000_000_000)
+    end = _to_dt(1_700_000_000_000 + 5 * 60_000)
+    results = engine.run(["BTC/USDT", "ETH/USDT"], start, end)
+
+    assert len(results) == 2
+    assert len(created) == 2
+    assert created[0] is not created[1]
+    assert all(len(result.trades) == 1 for result in results)
+
+
 # ===========================================================================
 # F2 advanced metrics tests (TSK-104 F2)
 # ===========================================================================
