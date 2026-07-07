@@ -135,8 +135,8 @@ def load_settings_from_assets_yaml(
 
     if mode_override is not None:
         settings = settings.model_copy(
-            update={"runtime": settings.runtime.model_copy(
-                update={"mode": TradingMode(mode_override)}
-            )}
+            update={
+                "runtime": settings.runtime.model_copy(update={"mode": TradingMode(mode_override)})
+            }
         )
     return settings

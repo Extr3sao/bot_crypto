@@ -43,7 +43,10 @@ class OHLCVFetcher:
         self._clock_fn = clock_fn
 
     def fetch_and_cache(
-        self, symbol: str, timeframe: str, limit: int,
+        self,
+        symbol: str,
+        timeframe: str,
+        limit: int,
     ) -> list[OHLCV]:
         log = structlog.get_logger(self.__class__.__module__).bind(
             op="fetch_and_cache",

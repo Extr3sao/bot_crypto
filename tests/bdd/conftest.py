@@ -38,9 +38,9 @@ directamente sin ``@pytest.mark.asyncio`` explicito).
 
 from __future__ import annotations
 
+import ast
 import asyncio
 import dataclasses
-import ast
 from pathlib import Path
 
 import pytest
@@ -50,18 +50,16 @@ from pytest_bdd import given, then, when
 # Re-exports from the unit scanner conftest (TSK-103.5.2.1 pine contract).
 # NO duplican definiciones; los step_defs pueden importarlos
 # directamente desde ``trading_bot.scanner.types`` o desde aqui.
-from tests.unit.scanner.conftest import (  # noqa: F401 — re-export public API
+from tests.unit.scanner.conftest import (
     FakeMarketDataSource,
     build_settings,
     make_flat_ohlcv,
 )
-
 from trading_bot.market_data.types import OHLCV
 from trading_bot.scanner.mode_filters import build_filter_set_per_mode
 from trading_bot.scanner.scanner import UniverseScanner
 from trading_bot.scanner.scoring import compute_rank_score
 from trading_bot.scanner.types import MarketSnapshot
-
 
 # ===========================================================================
 # Helper constants
@@ -368,8 +366,7 @@ def _then_aborted(when_kill_iteration: object) -> None:
 def _then_kill_switch_event(when_kill_iteration: object) -> None:
     events = {e["event"] for e in when_kill_iteration["cap"]}
     assert "scanner.paused.kill_switch" in events, (
-        f"kill_switch path debe emitir scanner.paused.kill_switch; "
-        f"events={events}"
+        f"kill_switch path debe emitir scanner.paused.kill_switch; events={events}"
     )
 
 
@@ -479,8 +476,7 @@ def _given_settings_high_atr() -> object:
 def _when_evaluate_high_atr(settings_high_atr) -> object:  # type: ignore[no-untyped-def]
     registries = build_filter_set_per_mode(settings_high_atr)
     high_volatility_ohlcv = [
-        _ohlcv_with_range("BTC/USDT", close=100.0 + i, daily_pct=0.12)
-        for i in range(100)
+        _ohlcv_with_range("BTC/USDT", close=100.0 + i, daily_pct=0.12) for i in range(100)
     ]
     source = FakeMarketDataSource(
         volume_by_symbol={"BTC/USDT": 1_000_000.0},
@@ -600,7 +596,8 @@ def _when_25_iter(sandboxescan_settings) -> object:  # type: ignore[no-untyped-d
 
 @then('debe emitir log estructurado "scanner.iteration.completed"')
 def _then_iteration_completed_logged(
-    sandboxescan_settings, snapshot_25  # type: ignore[no-untyped-def]
+    sandboxescan_settings,
+    snapshot_25,  # type: ignore[no-untyped-def]
 ) -> None:
     with structlog.testing.capture_logs() as cap:
         registries = build_filter_set_per_mode(sandboxescan_settings)
@@ -626,8 +623,8 @@ def _then_iteration_completed_logged(
 
 
 @then(
-    "el log contiene los campos \"scan_iteration_id\", \"duration_ms\", "
-    "\"pairs_processed\", \"pairs_active\", \"pairs_inactive\" y \"scanner_errors\""
+    'el log contiene los campos "scan_iteration_id", "duration_ms", '
+    '"pairs_processed", "pairs_active", "pairs_inactive" y "scanner_errors"'
 )
 def _then_required_fields_present() -> None:
     pass
@@ -638,7 +635,7 @@ def _then_required_fields_present() -> None:
 # ===========================================================================
 
 
-@given("runtime.mode = \"live\"")
+@given('runtime.mode = "live"')
 def _given_mode_live() -> None:
     pass
 
@@ -653,10 +650,7 @@ def _when_pair_vol_7m() -> None:
     pass
 
 
-@then(
-    'debe marcar el par como "inactivo" con motivo '
-    "\"volume_below_threshold_for_live_min_10M\""
-)
+@then('debe marcar el par como "inactivo" con motivo "volume_below_threshold_for_live_min_10M"')
 def _then_live_hardening() -> None:
     pass
 
@@ -666,7 +660,7 @@ def _then_live_hardening() -> None:
 # ===========================================================================
 
 
-@given("runtime.mode = \"backtest\"")
+@given('runtime.mode = "backtest"')
 def _given_mode_backtest() -> None:
     pass
 
@@ -691,7 +685,7 @@ def _then_last_price_close_match() -> None:
 # ===========================================================================
 
 
-@given("el modulo \"trading_bot/scanner\"")
+@given('el modulo "trading_bot/scanner"')
 def _given_scanner_package() -> None:
     pass
 
@@ -713,8 +707,7 @@ def _when_inspect_imports() -> object:
                 continue
             mod = _extract_module_name(node)
             if mod and any(
-                mod == prefix or mod.startswith(prefix + ".")
-                for prefix in FORBIDDEN_PREFIXES
+                mod == prefix or mod.startswith(prefix + ".") for prefix in FORBIDDEN_PREFIXES
             ):
                 violations.append(f"{py_file.name}:{node_lineno}: {mod}")
     return violations
@@ -732,9 +725,7 @@ def _then_no_forbidden_imports(when_inspect_imports) -> None:  # type: ignore[no
     )
 
 
-@then(
-    "solo puede importar \"trading_bot.market_data\" y \"trading_bot.config\""
-)
+@then('solo puede importar "trading_bot.market_data" y "trading_bot.config"')
 def _then_only_allowed(when_inspect_imports) -> None:  # type: ignore[no-untyped-def]
     assert True  # placeholder; pine contract via test_cross_layer.py.
 
@@ -782,9 +773,7 @@ def _then_compose_includes_price() -> None:
     pass
 
 
-@then(
-    "un par con last_price = 0.5 queda inactivo con motivo \"price_below_threshold\""
-)
+@then('un par con last_price = 0.5 queda inactivo con motivo "price_below_threshold"')
 def _then_price_below_threshold() -> None:
     pass
 
@@ -794,16 +783,12 @@ def _then_price_below_threshold() -> None:
 # ===========================================================================
 
 
-@given(
-    "un par con spread_bps = 10, volume_24h_usdt = 50_000_000, atr_pct = 2.0"
-)
+@given("un par con spread_bps = 10, volume_24h_usdt = 50_000_000, atr_pct = 2.0")
 def _given_score_inputs() -> None:
     pass
 
 
-@given(
-    "los rangos de normalizacion son spread_max=30, vol_max=100_000_000, atr_optimo=2.0"
-)
+@given("los rangos de normalizacion son spread_max=30, vol_max=100_000_000, atr_optimo=2.0")
 def _given_score_normalizers() -> None:
     pass
 
@@ -823,11 +808,7 @@ def _when_eval_score() -> float:
 
 @then("rank_score debe aproximarse a 0.4833 dentro de tolerancia 1e-3")
 def _then_score_near_4833(_score: float) -> None:
-    expected = (
-        0.5 * (1 - 10.0 / 30.0)
-        + 0.3 * (50_000_000.0 / 100_000_000.0)
-        + 0.2 * 1.0
-    )
+    expected = 0.5 * (1 - 10.0 / 30.0) + 0.3 * (50_000_000.0 / 100_000_000.0) + 0.2 * 1.0
     assert abs(_score - expected) < 1e-3, (
         f"rank_score formula drift; expected {expected:.4f}, got {_score:.4f}"
     )
@@ -848,9 +829,7 @@ def _when_returns_list() -> None:
     pass
 
 
-@then(
-    "el orden de la lista sigue el orden de iteracion sobre universe.pairs"
-)
+@then("el orden de la lista sigue el orden de iteracion sobre universe.pairs")
 def _then_order_preserved() -> None:
     pass
 
@@ -865,7 +844,7 @@ def _then_no_rank_sort() -> None:
 # ===========================================================================
 
 
-@given('la whitelist contiene 0 pares con enabled=true', target_fixture="_empty_settings")
+@given("la whitelist contiene 0 pares con enabled=true", target_fixture="_empty_settings")
 def _given_zero_enabled() -> object:
     return build_settings(
         pairs=[("BTC/USDT", False), ("ETH/USDT", False)],
@@ -889,7 +868,7 @@ def _then_empty(_empty_snapshots: object) -> None:
     assert _empty_snapshots == []
 
 
-@then("registra un warning \"scanner.universe.empty\"")
+@then('registra un warning "scanner.universe.empty"')
 def _then_empty_warning() -> None:
     pass
 
@@ -937,9 +916,7 @@ def _then_empty_after_failures(_fail_iter: object) -> None:
     assert _fail_iter == []
 
 
-@then(
-    "el log \"scanner.iteration.completed\" reporta scanner_errors=25"
-)
+@then('el log "scanner.iteration.completed" reporta scanner_errors=25')
 def _then_scanner_errors_25(_fail_settings: object) -> None:
     class FailingSource(FakeMarketDataSource):
         async def fetch_24h_volume_usdt(self, symbol: str) -> float:

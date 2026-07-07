@@ -1,6 +1,6 @@
 """Motor de ejecución: órdenes idempotentes, retries, slippage.
 
-Fase objetivo: implementación cruzada Fase 4–6 según modo.
+Fase objetivo: implementación cruzada Fase 4-6 según modo.
 
 Responsabilidades:
 - ``OrderBuilder``: validación antes del envío.

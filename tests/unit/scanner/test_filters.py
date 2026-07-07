@@ -22,7 +22,6 @@ from __future__ import annotations
 
 import asyncio
 from dataclasses import dataclass
-from typing import Optional
 
 import pytest
 
@@ -34,8 +33,6 @@ from trading_bot.scanner.filters import (
     VolumeFilter,
     _compute_atr_pct,
 )
-from trading_bot.scanner.protocols import MarketDataSourceProtocol
-
 
 # ---------------------------------------------------------------------------
 # FakeMarketDataSource: stub sincronico/async que satisface el Protocol.
@@ -57,13 +54,11 @@ class FakeMarketDataSource:
     porque mypy strict + Protocol structural requiere firmas declaradas).
     """
 
-    volume: Optional[float] = None
-    spread_bps: Optional[float] = None
-    candles: Optional[list[OHLCV]] = None
+    volume: float | None = None
+    spread_bps: float | None = None
+    candles: list[OHLCV] | None = None
 
-    async def fetch_recent(
-        self, symbol: str, limit: int = 100
-    ) -> list[OHLCV]:
+    async def fetch_recent(self, symbol: str, limit: int = 100) -> list[OHLCV]:
         if self.candles is None:
             raise RuntimeError(
                 "FakeMarketDataSource no configurado con `candles`; "
@@ -122,9 +117,7 @@ def _constant_candles(
     ]
 
 
-def _vol_candles(
-    n: int, *, last_close: float = 100.0, swing: float = 10.0
-) -> list[OHLCV]:
+def _vol_candles(n: int, *, last_close: float = 100.0, swing: float = 10.0) -> list[OHLCV]:
     """Genera ``n`` velas con swings fuertes para ATR alto."""
     candles: list[OHLCV] = []
     for i in range(n):
@@ -222,7 +215,7 @@ def test_volume_name_is_volume_class_level_attribute() -> None:
 
 def test_volume_valid_modes_constant_is_complete() -> None:
     """Pinea que ``VALID_MODES`` contiene los 4 modos del runtime."""
-    assert VALID_MODES == frozenset({"research", "backtest", "paper", "live"})
+    assert frozenset({"research", "backtest", "paper", "live"}) == VALID_MODES
 
 
 # ===========================================================================
@@ -241,9 +234,9 @@ def test_spread_pass_when_spread_below_max_bps() -> None:
 @pytest.mark.parametrize(
     ("spread_bps", "max_bps"),
     [
-        (30.01, 30.0),   # apenas encima -> fail
-        (80.0, 30.0),    # ancho, fail representativo BDD
-        (200.0, 30.0),   # extremo
+        (30.01, 30.0),  # apenas encima -> fail
+        (80.0, 30.0),  # ancho, fail representativo BDD
+        (200.0, 30.0),  # extremo
     ],
 )
 def test_spread_fail_emits_spread_above_threshold(spread_bps: float, max_bps: float) -> None:

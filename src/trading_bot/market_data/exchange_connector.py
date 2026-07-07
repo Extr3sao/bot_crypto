@@ -64,8 +64,8 @@ from tenacity import (
 
 from trading_bot.config.exchange import Exchange
 from trading_bot.market_data.types import (
-    Balance,
     OHLCV,
+    Balance,
     OrderResult,
     OrderStatus,
     OrderType,
@@ -397,9 +397,7 @@ class CCXTExchangeConnector(ExchangeConnector):
 
     def cancel_order(self, order_id: str, symbol: str) -> None:
         request_id = str(uuid.uuid4())
-        log = self._log.bind(
-            req_id=request_id, op="cancel_order", order_id=order_id, symbol=symbol
-        )
+        log = self._log.bind(req_id=request_id, op="cancel_order", order_id=order_id, symbol=symbol)
 
         @self._retry_decorator
         def _execute() -> None:
@@ -429,9 +427,7 @@ class CCXTExchangeConnector(ExchangeConnector):
         de negocio downstream.
         """
         if not raw or not raw.strip():
-            raise UnmappedOrderStatusError(
-                f"missing or empty status from ccxt (raw={raw!r})"
-            )
+            raise UnmappedOrderStatusError(f"missing or empty status from ccxt (raw={raw!r})")
         key = raw.strip().lower()
         if key in _KNOWN_STATUS_MAP:
             return _KNOWN_STATUS_MAP[key]
@@ -442,14 +438,14 @@ class CCXTExchangeConnector(ExchangeConnector):
 
 
 __all__ = [
-    "CCXTExchangeConnector",
-    "ExchangeConnector",
     "MULTI_EXCHANGE_SCOPE",
     "RETRYABLE_EXCEPTIONS",
     "SUPPORTED_EXCHANGES_FOR_TSK_101",
-    "UnmappedOrderStatusError",
     # Whitelist versionada. Exportada explícitamente para que tests la
     # importen sin F401/private-import warnings. Cambios requieren ADR
     # firmada en tasks/decisions.md.
     "_KNOWN_STATUS_MAP",
+    "CCXTExchangeConnector",
+    "ExchangeConnector",
+    "UnmappedOrderStatusError",
 ]

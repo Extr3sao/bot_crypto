@@ -21,6 +21,8 @@ Why a dedicated file (vs. extending the existing
 
 from __future__ import annotations
 
+import itertools
+
 import pytest
 
 from trading_bot.market_data.fake import (
@@ -32,7 +34,6 @@ from trading_bot.market_data.fake import (
     make_high_volatility_ohlcv,
 )
 from trading_bot.market_data.types import OHLCV
-
 
 # ===========================================================================
 # make_flat_ohlcv
@@ -64,7 +65,7 @@ def test_make_flat_ohlcv_uses_symbol_for_every_row() -> None:
 def test_make_flat_ohlcv_timestamps_monotonic() -> None:
     """Los timestamps crecen 1 minuto entre velas consecutivas."""
     rows = make_flat_ohlcv("BTC/USDT", 5, last_close=100.0)
-    for prev, curr in zip(rows, rows[1:]):
+    for prev, curr in itertools.pairwise(rows):
         assert curr.timestamp - prev.timestamp == 60_000
 
 
@@ -81,9 +82,7 @@ def test_make_flat_ohlcv_returns_ohlcv_instances() -> None:
 
 def test_make_high_volatility_ohlcv_returns_correct_count() -> None:
     """make_high_volatility_ohlcv returns exactly ``n`` velas."""
-    rows = make_high_volatility_ohlcv(
-        "BTC/USDT", 100, close=100.0, daily_pct=0.12
-    )
+    rows = make_high_volatility_ohlcv("BTC/USDT", 100, close=100.0, daily_pct=0.12)
     assert len(rows) == 100
 
 
@@ -91,9 +90,7 @@ def test_make_high_volatility_ohlcv_daily_range_matches_pct() -> None:
     """Pine contract: high - low = daily_pct * close (12% diario)."""
     close = 100.0
     daily_pct = 0.12
-    rows = make_high_volatility_ohlcv(
-        "BTC/USDT", 50, close=close, daily_pct=daily_pct
-    )
+    rows = make_high_volatility_ohlcv("BTC/USDT", 50, close=close, daily_pct=daily_pct)
     expected_range = close * daily_pct  # 12.0
     for row in rows:
         assert row.high - row.low == expected_range
@@ -101,18 +98,14 @@ def test_make_high_volatility_ohlcv_daily_range_matches_pct() -> None:
 
 def test_make_high_volatility_ohlcv_uses_symbol_for_every_row() -> None:
     """Cada vela lleva el ``symbol`` inyectado (PK compuesta persistence)."""
-    rows = make_high_volatility_ohlcv(
-        "SOL/USDT", 5, close=50.0, daily_pct=0.08
-    )
+    rows = make_high_volatility_ohlcv("SOL/USDT", 5, close=50.0, daily_pct=0.08)
     for row in rows:
         assert row.symbol == "SOL/USDT"
 
 
 def test_make_high_volatility_ohlcv_close_equals_input() -> None:
     """Cada vela tiene ``open=high=low=close=close`` (vela con todo al close)."""
-    rows = make_high_volatility_ohlcv(
-        "BTC/USDT", 10, close=200.0, daily_pct=0.10
-    )
+    rows = make_high_volatility_ohlcv("BTC/USDT", 10, close=200.0, daily_pct=0.10)
     for row in rows:
         assert row.close == 200.0
         # half = 200 * 0.10 / 2 = 10 -> high=210, low=190
@@ -122,9 +115,7 @@ def test_make_high_volatility_ohlcv_close_equals_input() -> None:
 
 def test_make_high_volatility_ohlcv_small_daily_pct() -> None:
     """daily_pct muy chico (0.5%) produce velas casi planas."""
-    rows = make_high_volatility_ohlcv(
-        "BTC/USDT", 5, close=1000.0, daily_pct=0.005
-    )
+    rows = make_high_volatility_ohlcv("BTC/USDT", 5, close=1000.0, daily_pct=0.005)
     for row in rows:
         assert row.high - row.low == 5.0  # 0.5% of 1000
 

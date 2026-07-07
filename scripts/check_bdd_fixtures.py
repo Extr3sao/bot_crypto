@@ -18,14 +18,15 @@ Solves 3 false-positive classes + 1 architecture bug in a regex-based check:
                       for target_fixture; fixtures cross files freely.
 
 Usage:
-    .\.venv\Scripts\python.exe scripts/check_bdd_fixtures.py
-    .\.venv\Scripts\python.exe scripts/check_bdd_fixtures.py tests/bdd/
+    .\\.venv\\Scripts\\python.exe scripts/check_bdd_fixtures.py
+    .\\.venv\\Scripts\\python.exe scripts/check_bdd_fixtures.py tests/bdd/
 
 Exit codes:
     0 \u2014 all steps resolve to a producer (or implicit pytest fixture)
     1 \u2014 at least one MISSING CONSUMER detected
     2 \u2014 parse error in a step_defs file
 """
+
 from __future__ import annotations
 
 import ast
@@ -46,14 +47,14 @@ __all__ = ["StepInfo", "main"]
 # ----------------------------------------------------------------------
 PYTEST_FIXTURE_PATTERN: re.Pattern[str] = re.compile(
     r"^(?:"
-    r"capsys|capfd|capfdbinary|capsysbinary"                       # capture streams
-    r"|tmp_path|tmp_path_factory|tmpdir|tmpdir_factory"            # temp dirs
-    r"|cache"                                                        # session cache
-    r"|request|pytestconfig|pytester"                               # test infra
-    r"|monkeypatch"                                                  # patching
-    r"|recwarn|doctest_namespace|warning_checker"                   # warnings / doctest
-    r"|record_(?:property|testsuite_property|xml_attribute)"        # reporting
-    r"|line_matcher"                                                 # pytester matcher
+    r"capsys|capfd|capfdbinary|capsysbinary"  # capture streams
+    r"|tmp_path|tmp_path_factory|tmpdir|tmpdir_factory"  # temp dirs
+    r"|cache"  # session cache
+    r"|request|pytestconfig|pytester"  # test infra
+    r"|monkeypatch"  # patching
+    r"|recwarn|doctest_namespace|warning_checker"  # warnings / doctest
+    r"|record_(?:property|testsuite_property|xml_attribute)"  # reporting
+    r"|line_matcher"  # pytester matcher
     r")$",
     re.IGNORECASE,
 )
@@ -160,19 +161,20 @@ def _scan_step_defs(
             if not _is_bdd_step(node):
                 continue  # skip helpers (no @given/@when/@then)
             bdd_dec = next(
-                d for d in node.decorator_list
-                if _decorator_name(d) in BDD_DECORATOR_NAMES
+                d for d in node.decorator_list if _decorator_name(d) in BDD_DECORATOR_NAMES
             )
             produces = _target_fixture(bdd_dec)
             text = _step_text(bdd_dec)
             params = _step_params(node)
-            per_file.append({
-                "name": node.name,
-                "lineno": node.lineno,
-                "text": text,
-                "params": params,
-                "produces": produces,
-            })
+            per_file.append(
+                {
+                    "name": node.name,
+                    "lineno": node.lineno,
+                    "text": text,
+                    "params": params,
+                    "produces": produces,
+                }
+            )
             if produces:
                 project_producers.setdefault(produces, []).append(
                     (path, text or node.name, node.lineno)
@@ -185,8 +187,9 @@ def _scan_step_defs(
 def _print_banner(total_steps: int, file_count: int, root: str) -> None:
     """Print a scanned-files banner so 0-file case is visible."""
     print("=" * 70)
-    print(f"Scanned {total_steps} BDD step(s) across {file_count} file(s) "
-          f"from {root}/step_defs/*.py")
+    print(
+        f"Scanned {total_steps} BDD step(s) across {file_count} file(s) from {root}/step_defs/*.py"
+    )
     print("=" * 70)
 
 

@@ -15,10 +15,8 @@ from dataclasses import dataclass
 
 import pytest
 
-from trading_bot.scanner.protocols import Filter
 from trading_bot.scanner.registry import FilterRegistry
 from trading_bot.scanner.types import FilterOutcome
-
 
 # ---------------------------------------------------------------------------
 # Fakes: stubs que satisfacen el Protocol estructural ``Filter``.
@@ -38,9 +36,7 @@ class _StubFilter:
     name: str
     marker: str  # valor opaque para identificar instancias en tests.
 
-    async def apply(
-        self, symbol: str, source: object
-    ) -> FilterOutcome:  # noqa: ARG002 — param unused en stub
+    async def apply(self, symbol: str, source: object) -> FilterOutcome:
         return FilterOutcome(passed=True, reason=None)
 
 
@@ -116,9 +112,7 @@ def test_freeze_blocks_subsequent_register_raises_runtime_error() -> None:
     registry.freeze()
     assert registry.is_frozen is True
     with pytest.raises(RuntimeError, match=r"freeze"):
-        registry.register(
-            "b", _StubFilter(name="b", marker="B")
-        )
+        registry.register("b", _StubFilter(name="b", marker="B"))
 
 
 def test_freeze_is_idempotent_and_does_not_corrupt_state() -> None:

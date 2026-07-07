@@ -30,9 +30,7 @@ OrderType = Literal["limit", "market"]
 # EXITOSA con partial fill se elevara como UnmappedOrderStatusError tras
 # el POST; el caller reintentaba y duplicaba la posición. Ver
 # `context/retrieval-log.md` entrada 2026-07-04 02:00.
-OrderStatus = Literal[
-    "open", "partially_filled", "closed", "canceled", "rejected", "expired"
-]
+OrderStatus = Literal["open", "partially_filled", "closed", "canceled", "rejected", "expired"]
 
 
 @dataclass(frozen=True, slots=True)
@@ -54,8 +52,8 @@ class OHLCV:
     2026-07-04 04:30 y `bdd/features/market_scanner.feature`.
     """
 
-    symbol: str          # par "BASE/QUOTE" (e.g. "BTC/USDT")
-    timestamp: int       # ms since epoch (formato ccxt estandar)
+    symbol: str  # par "BASE/QUOTE" (e.g. "BTC/USDT")
+    timestamp: int  # ms since epoch (formato ccxt estandar)
     open: float
     high: float
     low: float
@@ -89,8 +87,8 @@ class OrderResult:
 
 
 __all__ = [
-    "Balance",
     "OHLCV",
+    "Balance",
     "OrderResult",
     "OrderStatus",
     "OrderType",

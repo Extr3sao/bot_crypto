@@ -34,7 +34,6 @@ from __future__ import annotations
 import math
 from typing import Final
 
-
 # ----------------------------------------------------------------------------
 # Coeficientes ADR-locked (spec §6).
 # Expuestos como Final[float] para que los tests los pineen como invariantes.
@@ -70,17 +69,13 @@ def _validate_finite(name: str, value: float) -> None:
     adicional se aplica en el call site con un chequeo explicito.
     """
     if not math.isfinite(value):
-        raise ValueError(
-            f"{name} debe ser finito; got {value!r}"
-        )
+        raise ValueError(f"{name} debe ser finito; got {value!r}")
 
 
 def _validate_positive_denominator(name: str, value: float) -> None:
     """Guard adicional: ``norm_max`` debe ser > 0 (denominador)."""
     if value <= 0:
-        raise ValueError(
-            f"{name} debe ser > 0 (denominador); got {value!r}"
-        )
+        raise ValueError(f"{name} debe ser > 0 (denominador); got {value!r}")
 
 
 # ----------------------------------------------------------------------------
@@ -94,7 +89,7 @@ def compute_rank_score(
     volume_24h_usdt: float,
     volume_norm_max: float,
     atr_pct: float | None,
-    atr_optimo: float,  # noqa: ARG001 - reserved for ADR-0013 extension
+    atr_optimo: float,
     atr_en_rango: bool,
 ) -> float:
     """RF-10: scoring cerrado per spec §6 (formula ADR-locked).
@@ -142,11 +137,7 @@ def compute_rank_score(
     vol_norm = min(max(volume_24h_usdt / volume_norm_max, 0.0), 1.0)
     atr_term = 1.0 if atr_en_rango and atr_pct is not None else 0.0
 
-    return (
-        SPREAD_WEIGHT * (1.0 - spread_norm)
-        + VOLUME_WEIGHT * vol_norm
-        + ATR_WEIGHT * atr_term
-    )
+    return SPREAD_WEIGHT * (1.0 - spread_norm) + VOLUME_WEIGHT * vol_norm + ATR_WEIGHT * atr_term
 
 
 __all__ = [
