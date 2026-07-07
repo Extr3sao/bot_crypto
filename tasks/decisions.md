@@ -221,6 +221,43 @@
 
 ---
 
+## ADR-0016 - Baseline Health Remediation (mypy + pytest pre-existentes en main)
+
+- **Estado**: Decidido.
+- **Contexto**: verificacion via `git checkout main @ 2774021` + `uv run mypy src/trading_bot/` + `uv run pytest` revela **10 issues pre-existentes** (no introducidos por PRs recientes en `main`):
+  - **8 mypy errors** (gate `-p` strict):
+    - `src/trading_bot/market_data/exchange_connector.py:280` `[no-any-return]` retorna `Any` declarado `list[list[float]]`
+    - `src/trading_bot/market_data/exchange_connector.py:316/343/366/414` `[no-any-return]` retornan `Any` declarado `dict[str, Any]`
+    - `src/trading_bot/scanner/scanner.py:323` `[no-untyped-def]` parametros sin anotacion
+    - `src/trading_bot/scanner/scanner.py:357` `[attr-defined]` `"object" has no attribute "freeze"`
+    - `src/trading_bot/scanner/scanner.py:365` `[arg-type]` `_ModeRegistryBundle` espera `FilterRegistry` mypy ve `object`
+  - **2 pytest FAILED** (assertion-time):
+    - `tests/unit/config/test_failfast.py::test_settings_rejects_live_with_kill_switch_off` configura `mode=live + live_trading_enabled=true + i_understand_true + kill_switch_enabled=false` y NO raises `ValidationError`; `_check_cross_domain_live_invariants` no frena.
+    - `tests/unit/scanner/test_universe_scanner.py::test_caching_source_avoids_double_fetch` `volume=100.0` vs `min_volume_usdt=1000` → `VolumeFilter` fail → F4 short-circuit corto-circuita antes de `fetch_spread_bps`/`fetch_recent`; counters muestran 0 calls; el test asume que todas las fetches corren.
+  - **2 pytest ERROR** (setup-time):
+    - `tests/unit/market_data/test_ccxt_connector.py::test_read_methods_retries_then_reraise[fetch_ohlcv-args0]`
+    - `tests/unit/market_data/test_ccxt_connector.py::test_read_methods_retries_then_reraise[fetch_balance-args1]`
+    - Diagnostico per thinker: parametrize `args` identifier collision con pytest convention.
+- **Opciones**:
+  - 1 PR unico "main baseline health" (10 fixes en un solo commit) — coverage CI failure se rechaza al primer pase, alto blast radius.
+  - 5 PRs atómicos separados por ticket (TSK-013.5..013.9) — cherry-pick safe independientes, review chain simple, rollback granular.
+  - Firmar ADR-0016 sin PR — no resuelve; gate sigue rojo, deuda documentada pero no fix-forwarded.
+- **Decision**: opcion **2**. 5 tickets atomicos en `tasks/backlog.md` seccion "Baseline Health & Risk" con numeracion TSK-013.5..013.9:
+  - **TSK-013.5**: Pri 1, money-risk. Restore cross-domain live fail-fast validator.
+  - **TSK-013.6**: Pri 2, connector hardening. 5 mypy `no-any-return` via `cast()` narrowing (preferido) o `# type: ignore[no-any-return]` ADR-firmado sola donde el `cast()` es invasive.
+  - **TSK-013.7**: Pri 3, scanner typing. 3 mypy errors en `_ModeRegistryBundle.__init__`.
+  - **TSK-013.8**: Pri 4, QA. Test mock fix (no codigo de produccion).
+  - **TSK-013.9**: Pri 5, test setup. Parametrize identifier rename `args` → `method_args`.
+  El method ADR-firmado es **`cast()` preferida** sobre `# type: ignore` salvo justificación técnica en code review (e.g. CCXT v4 internal typing sin stub exportado).
+- **Razon**: money-risk primero per `docs/risk-policy.md` (TSK-013.5 — runtime validation breach permite LIVE sin kill switch). Cherry-pick safe (independientes). Documenta el method (DSO — Domain-Specific Override) para futuros tickets similares. Anti-pattern evitada: *un PR grande acumula risk*; *ADR sin accion no resuelve*.
+- **Consecuencias**:
+  - 5 PRs atomicos seran abiertos contra `main`. Cada uno aislado para blame + rollback.
+  - Post-fix: 8 mypy errors cerrados (TSK-013.6 + TSK-013.7); 4 pytest issues cerrados (TSK-013.5 + TSK-013.8 + TSK-013.9).
+  - Cross-link con ADRs existentes: **ADR-0012** (gate-recovery precedent — numpy<2.1 + coverage.run omit + pip-audit --ignore-vuln), **ADR-0010** (flat-env alias context para TSK-013.5), **ADR-0013** (cross-layer enforcement context para TSK-013.7 + TSK-013.8).
+  - Tickets no son gate-blocker para TSK-013.4 ruff backfill (independiente scopes lint) ni para TSK-104 scheduler work (independiente scopes OHLCV).
+  - El use de `cast()` y la justificacion de cualquier `# type: ignore` quedan documentadas en el cuerpo de cada PR (inline comment). Si un upstream CCXT cambia signature y el `cast()` queda stale, reabri este ADR.
+  - **Riesgo residual**: si el reviewer chain rechaza un PR individual, los demas pueden merge independientemente. Senate-style review no es necesario (no son cambios atomicos entre si).
+
 ## ADR-0014 - F5 closure (TSK-103.5 merge review)
 
 - **Estado**: Pendiente (se firma solo si scope changes emerged durante F5 review chain o dual-team discussion).
