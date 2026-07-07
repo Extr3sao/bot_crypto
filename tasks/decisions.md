@@ -322,3 +322,54 @@ Tras PR #2 (TSK-008 + TSK-009 + TSK-103.5 BDD wiring) y PR #3 (TSK-104 F1+F2) sp
 - Sprint-003 con 4 tickets bien priorizados vs sprint-002 con 7 (overhead reducido).
 
 **Co-authored-by**: context-engineer
+
+
+---
+
+## ADR-0017 — Escalation: deep-merge via _DeepMergedSettingsSource wrapper es estructuralmente insuficiente en pydantic-settings v2.14.2
+
+**Estado**: PENDING REVIEW. La investigacion de TSK-013.5 (Pri 1 money-risk) retorno evidencia empirica robusta de que la arquitectura propuesta (wrapper que deep-mergea `__call__()` y expone el dict via `get_field_value` con `value_complex=True`) no resuelve el bug original: `_check_cross_domain_live_invariants` sigue sin disparar cuando `runtime.mode='live' + risk.kill_switch_enabled=False` aunque `FlatEnvAliasSource` retorne solo una partial nested dict. La fix debe pivotar a una arquitectura diferente.
+
+**Empirical evidence (post-fix pytest)**:
+
+```
+tests/unit/config/test_failfast.py::test_settings_yaml_runtime_mode_survives_flat_env_alias_override FAILED
+  AssertionError: assert <TradingMode.PAPER: 'paper'> == <TradingMode.LIVE: 'live'>
+tests/unit/config/test_failfast.py::test_settings_rejects_live_with_kill_switch_off FAILED
+  Failed: DID NOT RAISE ValidationError
+tests/unit/config/test_settings.py::test_base_settings_customise_sources_direct_call PASSED
+  (solo confirma la estructura del wrapper, no la fix funcional)
+```
+
+**Contexto**: la ADR-0016 umbrella propuso TSK-013.5 con metodo `cast()` narrowing pero para Settings el bug era de PIPELINE: pydantic-settings 2.x hace `dict.update` shallow entre los retornos de `__call__()`. Un high-precedence source retornando un partial nested dict (`FlatEnvAliasSource` -> `{"runtime": {"i_understand_the_risks": True}}`) BORRABA los siblings provistos por el YAML source upstream (`mode: live`, `live_trading_enabled: true`, `scheduler.*`). La cross-domain invariant nunca se evaluaba, y el bot arrancaba en PAPER aunque el operador configuraba `live`.
+
+**Investigacion cerrada (4 variantes intentadas)**:
+
+| # | Variante | Outcome |
+|---|----------|---------|
+| 1 | `_DeepMergedSettingsSource` `__call__()` retorna deep-merged dict, `get_field_value` retorna `(None, field_name, False)` | target tests FAIL (modelo cae a defaults) |
+| 2 | `__call__()` retorna deep-merged dict, `get_field_value` retorna el dict de `_merged().get(field_name)` con `value_complex=True` | target tests FAIL (mismo sintoma) |
+| 3 | Lazy `_merged()` cache compartido entre ambos pathways | target tests FAIL (mismo sintoma) |
+| 4 | `__init__` override en `_Tuned(Settings)` para inyectar el merged dict antes del pydantic init | no testeado empiricamente: requiere instrumentar init supersubstituting |
+
+El sintoma no cambia entre variantes: `runtime.mode` queda como `TradingMode.PAPER` (default del field) aunque el YAML dijo `mode: live`. El modelo no consume el merged-dict que el wrapper expone. **Conclusion**: el wrapper approach tiene un limite fundamental cuando el target field es un BaseModel nested (`Runtime`) con validacion cross-field; pydantic-settings v2.14.2 no propaga correctamente el merged-dict al nested field via el pathway `__call__` -> `get_field_value`.
+
+**Opciones arquitectonicas alternativas (no implementadas)**:
+
+- **A**. Escribir un custom validator en `_Tuned(Settings).__init__` que compute el deep-merge ANTES de `super().__init__(...)` (initialize con `data=merged_dict` kwarg). Esto bypassea el routing de sources y alimenta el modelo con el dict exacto. Riesgo: cross-field validation de `Runtime._check_live_gates` puede disparar primero que el cross-domain invariant de Settings, alterando el orden de los raises.
+- **B**. Sobreescribir `_check_cross_domain_live_invariants` a nivel de `_Tuned` para que valide usando el modelo YA construido pero re-lea el YAML/env dict directamente post-init. Esto deja Settings tal como esta (con el bug shallow-merge) y agrega un validator que re-evalua las invariants con la fuente de verdad subyacente.
+- **C**. Definir `Runtime._check_live_gates` para que `mode='live' && not kill_switch_enabled` dispare el raise en lugar de `Settings._check_cross_domain_live_invariants`. Mueve la invariant al modelo nested que SI controla el field. Mas simple pero cambia la arquitectura del invariant (single-domain en vez de cross-domain).
+- **D**. Abandonar `FlatEnvAliasSource` y exigir la forma anidada via `RUNTIME__MODE` etc. Documentar el breaking change en `docs/live-trading-checklist.md`. Simplifica el modelo pero rompe la ergonomia que `ADR-0010` introdujo.
+- **E**. Pin de pydantic-settings a `<2.14.2` donde el routing customise-source funcionaba distinto. Backport no trivial, requiere reproduccion de comportamiento en CI.
+
+**Decision**: PENDING — escalando al operador. La evidencia empirica descarta las 4 variantes wrapper probadas; queda pendiente que el operador seleccione entre las opciones A-E. Mi recomendacion: **opcion C** (mover la invariant a `Runtime`) porque es la unica que no toca la API publica, no requiere downgrade de dependencia, y resuelve el bug money-risk sin reintroducir deuda arquitectonica. Pero requiere un ADR-0018 que documente el cambio de scope (cross-domain -> single-domain en Runtime.nested_check_live_gates).
+
+**Consecuencias**:
+
+- La working tree en `feature/tsk-013.5-restore-live-validator` queda revertida al estado HEAD via `git checkout HEAD -- src/trading_bot/config/settings.py tests/unit/config/test_settings.py tests/unit/config/test_failfast.py`. No hay fix parcial commiteado. CI en main queda intacto.
+- El sentinel `test_settings_yaml_runtime_mode_survives_flat_env_alias_override` queda en `stash@{0}` (preservado para futura fix). Cualquier fix que opte por A-E debera re-evaluar su propio contrato.
+- Los 2 tests target (`test_settings_rejects_live_with_kill_switch_off`, sentinel) permanecen en estado FAIL en main @ `41c4704` baseline. Esto se mantiene como pine contract del bug no resuelto.
+- Mypy: 7 errors (incluyendo 1 nuevo en `src/trading_bot/config/settings.py:259 [no-any-return]` introducido por la partial-fix). Pre-existing 6 en `market_data/exchange_connector.py` + `scanner/scanner.py` quedan hasta TSK-013.6 + TSK-013.7.
+- Esta ADR-0017 se firma ANTES de abrir el PR de documentacion para que cualquier reviewer del PR entienda que NO es una fix parcial y SI es una escalation pendiente.
+
+**Cross-links**: ADR-0016 (umbrella que abrio TSK-013.5 con metodo `cast()` narrowing), ADR-0012 (gate-recovery precedent: numpy<2.1 pin + coverage.run omit + pip-audit --ignore-vuln firmado), ADR-0010 (FlatEnvAliasSource contrato plano->anidado que TSK-013.5 asumia preservar).
