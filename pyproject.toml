@@ -100,6 +100,33 @@ plugins = ["pydantic.mypy"]
 module = ["ccxt.*"]
 ignore_missing_imports = true
 
+# First-party modules sin marker `py.typed` (PEP 561). Lista cerrada
+# de 13 sub-paquetes conocidos al cierre de sprint-002; ``mypy strict``
+# sigue aplicando chequeo completo al contenido (anotaciones, returns,
+# narrowing). Lista explicita (NO ``trading_bot.*`` glob) para fail-
+# fast en primeros imports typo'd: un glob silenciaria typos como
+# ``from trading_bot.configs import X`` tipandolos como ``Any``.
+# TODO sprint-003+: si todos los sub-paquetes quedan totalmente
+# anotados, reemplazar por un marker ``py.typed`` (PEP 561).
+[[tool.mypy.overrides]]
+module = [
+  "trading_bot.backtesting", "trading_bot.backtesting.*",
+  "trading_bot.config", "trading_bot.config.*",
+  "trading_bot.market_data", "trading_bot.market_data.*",
+  "trading_bot.indicators", "trading_bot.indicators.*",
+  "trading_bot.observability", "trading_bot.observability.*",
+  "trading_bot.paper", "trading_bot.paper.*",
+  "trading_bot.portfolio", "trading_bot.portfolio.*",
+  "trading_bot.risk", "trading_bot.risk.*",
+  "trading_bot.scanner", "trading_bot.scanner.*",
+  "trading_bot.scheduler", "trading_bot.scheduler.*",
+  "trading_bot.storage", "trading_bot.storage.*",
+  "trading_bot.strategies", "trading_bot.strategies.*",
+  "trading_bot.execution", "trading_bot.execution.*",
+  "trading_bot.utils", "trading_bot.utils.*",
+]
+ignore_missing_imports = true
+
 # ----------------------------
 # Pytest
 # ----------------------------
