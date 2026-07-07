@@ -34,10 +34,12 @@ Limitaciones documentadas para handoff a F2/F3:
 
 from __future__ import annotations
 
+import copy
 import datetime
 import math
 import statistics
-from typing import cast
+from collections.abc import Callable
+from typing import cast, overload
 
 from .commissions import CommissionModel, FlatPctCommission
 from .slippage import FlatBpsSlippage, SlippageModel
@@ -98,11 +100,13 @@ class BacktestEngine:
         commission: float | CommissionModel = 0.001,
         slippage_bps: float | SlippageModel = 5.0,
         initial_capital: float = 10_000.0,
+        strategy_factory: Callable[[], StrategyProtocol] | None = None,
     ) -> None:
         if initial_capital <= 0.0:
             raise ValueError(f"initial_capital must be > 0, got {initial_capital}")
         self.source = source
         self.strategy = strategy
+        self.strategy_factory = strategy_factory
         # Backward compat: float -> FlatPctCommission; explicit model -> as-is.
         self.commission_model: CommissionModel = (
             commission
@@ -117,19 +121,60 @@ class BacktestEngine:
         )
         self.initial_capital = initial_capital
 
+    @overload
     def run(
         self,
         symbol: str,
         start: datetime.datetime,
         end: datetime.datetime,
         timeframe: str = "1m",
-    ) -> BacktestResult:
+    ) -> BacktestResult: ...
+
+    @overload
+    def run(
+        self,
+        symbol: list[str],
+        start: datetime.datetime,
+        end: datetime.datetime,
+        timeframe: str = "1m",
+    ) -> list[BacktestResult]: ...
+
+    def run(
+        self,
+        symbol: str | list[str],
+        start: datetime.datetime,
+        end: datetime.datetime,
+        timeframe: str = "1m",
+    ) -> BacktestResult | list[BacktestResult]:
         """Ejecuta el backtest y retorna un ``BacktestResult``.
 
         ``start`` y ``end`` son ``datetime`` (se convierten a epoch ms
         para el source). El engine NO genera timestamps; el de la
         vela es la unica fuente de tiempo.
+
+        F3a extension:
+        - ``symbol`` puede ser ``str`` (backward compat) o ``Sequence[str]``.
+        - En modo multi-symbol, cada symbol se ejecuta con una estrategia
+          aislada para evitar state leakage entre runs.
         """
+        if isinstance(symbol, str):
+            return self._run_single(symbol, start, end, timeframe, self.strategy)
+
+        results: list[BacktestResult] = []
+        for one_symbol in symbol:
+            strategy = self._make_strategy_instance()
+            results.append(self._run_single(one_symbol, start, end, timeframe, strategy))
+        return results
+
+    def _run_single(
+        self,
+        symbol: str,
+        start: datetime.datetime,
+        end: datetime.datetime,
+        timeframe: str,
+        strategy: StrategyProtocol,
+    ) -> BacktestResult:
+        """Internal single-symbol execution path."""
         start_ms = int(start.timestamp() * 1000)
         end_ms = int(end.timestamp() * 1000)
 
@@ -170,7 +215,7 @@ class BacktestEngine:
                 position_qty=position_qty,
                 position_avg_price=position_avg_price,
             )
-            order = self.strategy.on_candle(ctx, candle)
+            order = strategy.on_candle(ctx, candle)
 
             if position_qty > 0.0:
                 bars_held += 1
@@ -199,7 +244,7 @@ class BacktestEngine:
 
         metrics = self._compute_metrics(trades, equity, equity_curve, start, end, timeframe)
         return BacktestResult(
-            strategy_name=self.strategy.name,
+            strategy_name=strategy.name,
             symbol=symbol,
             timeframe=timeframe,
             start=start,
@@ -210,6 +255,24 @@ class BacktestEngine:
             equity_curve=equity_curve,
             metrics=metrics,
         )
+
+    def _make_strategy_instance(self) -> StrategyProtocol:
+        """Create a fresh strategy instance for multi-symbol runs.
+
+        Preference order:
+        1. explicit ``strategy_factory`` from the caller
+        2. ``deepcopy(self.strategy)`` for deterministic state isolation
+        """
+        if self.strategy_factory is not None:
+            return self.strategy_factory()
+        try:
+            cloned = copy.deepcopy(self.strategy)
+        except Exception as exc:  # pragma: no cover - defensive branch
+            raise TypeError(
+                "Multi-symbol backtests require a cloneable strategy or "
+                "an explicit strategy_factory."
+            ) from exc
+        return cloned
 
     # ------------------------------------------------------------------
     # Internal helpers (deterministic, no side-effects)

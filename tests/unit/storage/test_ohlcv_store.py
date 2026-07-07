@@ -92,7 +92,8 @@ def test_parse_unsupported_scheme_raises_not_implemented() -> None:
     ],
 )
 def test_is_absolute_path_cross_platform(
-    path_str: str, expected: bool,
+    path_str: str,
+    expected: bool,
 ) -> None:
     """Pinea la heuristica cross-platform de ``_is_absolute_path``.
 
@@ -165,10 +166,12 @@ def test_upsert_empty_list_is_noop_returns_zero(tmp_path: Path) -> None:
 
 def test_upsert_then_get_round_trips_data(tmp_path: Path) -> None:
     with OHLCVStore(f"sqlite:///{tmp_path}/bot.db") as store:
-        store.upsert_ohlcv([
-            _make_ohlcv("BTC/USDT", 1672531200000, 100.0),
-            _make_ohlcv("BTC/USDT", 1672534800000, 200.0),
-        ])
+        store.upsert_ohlcv(
+            [
+                _make_ohlcv("BTC/USDT", 1672531200000, 100.0),
+                _make_ohlcv("BTC/USDT", 1672534800000, 200.0),
+            ]
+        )
         rows = store.get_ohlcv("BTC/USDT", limit=10)
         assert len(rows) == 2
         # get_ohlcv devuelve DESC; la primera fila debe ser ts mayor.
@@ -198,10 +201,12 @@ def test_upsert_same_key_with_updated_values_overwrites(tmp_path: Path) -> None:
 
 def test_get_ohlcv_filters_by_symbol(tmp_path: Path) -> None:
     with OHLCVStore(f"sqlite:///{tmp_path}/bot.db") as store:
-        store.upsert_ohlcv([
-            _make_ohlcv("BTC/USDT", 1672531200000, 100.0),
-            _make_ohlcv("ETH/USDT", 1672531200000, 200.0),
-        ])
+        store.upsert_ohlcv(
+            [
+                _make_ohlcv("BTC/USDT", 1672531200000, 100.0),
+                _make_ohlcv("ETH/USDT", 1672531200000, 200.0),
+            ]
+        )
         btc = store.get_ohlcv("BTC/USDT", limit=10)
         eth = store.get_ohlcv("ETH/USDT", limit=10)
         assert len(btc) == 1
@@ -217,12 +222,60 @@ def test_get_ohlcv_empty_store_returns_empty_list(tmp_path: Path) -> None:
 
 def test_get_ohlcv_limit_caps_results(tmp_path: Path) -> None:
     with OHLCVStore(f"sqlite:///{tmp_path}/bot.db") as store:
-        store.upsert_ohlcv([
-            _make_ohlcv("BTC/USDT", 1672531200000 + i * 1000)
-            for i in range(50)
-        ])
+        store.upsert_ohlcv([_make_ohlcv("BTC/USDT", 1672531200000 + i * 1000) for i in range(50)])
         rows = store.get_ohlcv("BTC/USDT", limit=10)
         assert len(rows) == 10
+
+
+# ---------------------------------------------------------------------------
+# get_ohlcv_range (TSK-104 F3 walk-forward; port-forward fixup para
+# soportar el cherry-pick de fix/tsk-014.1-protocol-attr@3ce0b0f en el
+# branch feat/tsk-104-f3-walk-forward).
+# ---------------------------------------------------------------------------
+def test_get_ohlcv_range_returns_ascending_within_bounds(
+    tmp_path: Path,
+) -> None:
+    """F3 walk-forward: ASC + bounds inclusivos + filtro por symbol.
+
+    Regresion seguro para ``OHLCVStoreSource.iter_candles`` (consume
+    este method en
+    ``src/trading_bot/backtesting/store_source.py`` introducido por el
+    cherry-pick).
+    """
+    with OHLCVStore(f"sqlite:///{tmp_path}/bot.db") as store:
+        store.upsert_ohlcv(
+            [
+                _make_ohlcv("BTC/USDT", 1672531200000, 100.0),
+                _make_ohlcv("BTC/USDT", 1672531260000, 101.0),
+                _make_ohlcv("BTC/USDT", 1672531320000, 102.0),
+                # Out-of-range antes/despues del bounds seleccionado.
+                _make_ohlcv("BTC/USDT", 1672531000000, 50.0),
+                _make_ohlcv("BTC/USDT", 1672531400000, 110.0),
+                # Symbol distinto.
+                _make_ohlcv("ETH/USDT", 1672531260000, 200.0),
+            ]
+        )
+        rows = store.get_ohlcv_range("BTC/USDT", 1672531200000, 1672531320000)
+        assert [r.timestamp for r in rows] == [
+            1672531200000,
+            1672531260000,
+            1672531320000,
+        ]
+        assert [r.close for r in rows] == [100.0, 101.0, 102.0]
+
+
+def test_get_ohlcv_range_empty_window_returns_empty_list(
+    tmp_path: Path,
+) -> None:
+    """Bounds sin velas: ``[]`` determinista (no ``None``, no error)."""
+    with OHLCVStore(f"sqlite:///{tmp_path}/bot.db") as store:
+        store.upsert_ohlcv(
+            [
+                _make_ohlcv("BTC/USDT", 1672531200000, 100.0),
+            ]
+        )
+        rows = store.get_ohlcv_range("BTC/USDT", 1672532000000, 1672533000000)
+        assert rows == []
 
 
 # ---------------------------------------------------------------------------
@@ -254,9 +307,7 @@ def test_init_failure_closes_connection_and_reraises(
     """
     url = f"sqlite:///{tmp_path}/subdir/bot.db"
     fake_conn = MagicMock(spec=sqlite3.Connection)
-    fake_conn.execute.side_effect = sqlite3.DatabaseError(
-        "simulated WAL fail"
-    )
+    fake_conn.execute.side_effect = sqlite3.DatabaseError("simulated WAL fail")
     monkeypatch.setattr(sqlite3, "connect", lambda *a, **kw: fake_conn)
 
     with pytest.raises(sqlite3.DatabaseError, match="simulated WAL fail"):

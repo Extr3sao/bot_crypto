@@ -21,10 +21,13 @@ pluggable) + 7 metricas advanced. Engine acepta tanto ``float``
 
 from .commissions import CommissionModel, FlatPctCommission, TieredCommission
 from .engine import BacktestEngine
+from .reports import FoldReport, build_fold_report
 from .slippage import FlatBpsSlippage, SlippageModel, VolumeImpactSlippage
+from .store_source import OHLCVStoreSource
 from .types import (
     OHLCV,
     BacktestContext,
+    BacktestInputs,
     BacktestResult,
     EquityPoint,
     Fill,
@@ -34,27 +37,38 @@ from .types import (
     StrategyProtocol,
     Trade,
 )
+from .walk_forward import (
+    walk_forward_run,
+)  # Notas de agrupacion (solo documentacion, NO dentro de ``__all__`` para
 
+# preservar ordenamiento alfabetico estricto que ``ruff check -R`` exige):
+# - Types: BacktestContext, BacktestEngine, BacktestInputs, BacktestResult,
+#          CommissionModel, EquityPoint, Fill, FlatBpsSlippage,
+#          FlatPctCommission, FoldReport, Metrics, OHLCV, OHLCVSourceProtocol,
+#          OHLCVStoreSource, Order, SlippageModel, StrategyProtocol,
+#          TieredCommission, Trade, VolumeImpactSlippage.
+# - Functions: build_fold_report, walk_forward_run.
 __all__ = [
-    # Types
     "OHLCV",
     "BacktestContext",
-    # Engine
     "BacktestEngine",
+    "BacktestInputs",
     "BacktestResult",
-    # Commissions (F2)
     "CommissionModel",
     "EquityPoint",
     "Fill",
     "FlatBpsSlippage",
     "FlatPctCommission",
+    "FoldReport",
     "Metrics",
     "OHLCVSourceProtocol",
+    "OHLCVStoreSource",
     "Order",
-    # Slippage (F2)
     "SlippageModel",
     "StrategyProtocol",
     "TieredCommission",
     "Trade",
     "VolumeImpactSlippage",
+    "build_fold_report",
+    "walk_forward_run",
 ]

@@ -28,7 +28,7 @@ from __future__ import annotations
 
 import datetime
 from collections.abc import Iterator
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Literal, Protocol, TypedDict, runtime_checkable
 
 
@@ -131,6 +131,32 @@ class BacktestContext:
     position_avg_price: float
 
 
+WalkForwardSplit = tuple[
+    datetime.datetime,
+    datetime.datetime,
+    datetime.datetime,
+    datetime.datetime,
+]
+
+
+@dataclass(frozen=True, slots=True)
+class BacktestInputs:
+    """Immutable input contract for backtest and walk-forward runs."""
+
+    symbols: str | list[str]
+    start: datetime.datetime
+    end: datetime.datetime
+    timeframe: str = "1m"
+    walk_forward_splits: list[WalkForwardSplit] = field(default_factory=list)
+
+    def __post_init__(self) -> None:
+        if self.start > self.end:
+            raise ValueError("BacktestInputs requiere start <= end.")
+        if isinstance(self.symbols, list) and not self.symbols:
+            raise ValueError("BacktestInputs requiere al menos un symbol.")
+        _validate_walk_forward_splits(self.walk_forward_splits)
+
+
 class Metrics(TypedDict):
     """Contrato del payload ``BacktestResult.metrics`` (TSK-104 F2).
 
@@ -169,6 +195,22 @@ class Metrics(TypedDict):
     sortino_ratio: float
     avg_trade_pnl: float
     expectancy: float
+
+
+def _validate_walk_forward_splits(splits: list[WalkForwardSplit]) -> None:
+    previous_test_end: datetime.datetime | None = None
+    for idx, (train_start, train_end, test_start, test_end) in enumerate(splits):
+        if not (train_start <= train_end <= test_start <= test_end):
+            raise ValueError(
+                "walk_forward_splits requiere train_start <= train_end <= "
+                f"test_start <= test_end (fold={idx})."
+            )
+        if previous_test_end is not None and previous_test_end >= train_start:
+            raise ValueError(
+                "walk_forward_splits requiere folds no solapados "
+                f"(fold={idx}, previous_test_end >= current_train_start)."
+            )
+        previous_test_end = test_end
 
 
 @runtime_checkable
@@ -212,6 +254,7 @@ class StrategyProtocol(Protocol):
 __all__ = [
     "OHLCV",
     "BacktestContext",
+    "BacktestInputs",
     "BacktestResult",
     "EquityPoint",
     "Fill",
@@ -220,4 +263,5 @@ __all__ = [
     "Order",
     "StrategyProtocol",
     "Trade",
+    "WalkForwardSplit",
 ]
