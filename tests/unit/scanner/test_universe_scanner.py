@@ -28,6 +28,7 @@ FakeMarketDataSource:
 
 from __future__ import annotations
 
+import asyncio
 from dataclasses import dataclass, field
 from typing import Any
 
@@ -1160,3 +1161,102 @@ def test_score_normalizers_for_mode_live_tighter() -> None:
     assert paper.spread_norm_max == 30.0
     assert live.spread_norm_max == 20.0
     assert live.volume_norm_max == 200_000_000.0
+
+
+# ---------------------------------------------------------------------------
+# Sentinels TSK-013.7 (typing narrowing: Mapping[str, FilterRegistry] +
+# Callable[[], str]). Pinean que el narrowing explicito en __init__
+# preserva el contrato runtime sin introducir regresiones.
+# ---------------------------------------------------------------------------
+
+
+def test_registry_per_mode_accepts_mapping_typed_filter_registry() -> None:
+    """Sentinel A (TSK-013.7 narrowing happy path).
+
+    ``dict[str, FilterRegistry]`` satisface ``Mapping[str, FilterRegistry]``
+    por duck-typing; mypy strict acepta la construccion y el constructor
+    invoca ``registry.freeze()`` por cada entry (ADR-lock). El simple
+    hecho de que ``UniverseScanner.__init__`` retorne sin levantar
+    prueba que el narrowing se compilo + el freeze() corrio ok.
+    """
+    registry = FilterRegistry()
+    registry.register("volume", VolumeFilter(min_usdt=5_000_000.0, mode="paper"))
+    registry.register("spread", SpreadFilter(max_bps=30.0))
+    registry.register("atr", AtrFilter(min_pct=0.05, max_pct=8.0, min_history=100))
+    settings = _build_settings(pairs=[("BTC/USDT", True)], mode="paper")
+    source = FakeMarketDataSource(
+        volume_by_symbol={"BTC/USDT": 50_000_000.0},
+        spread_by_symbol={"BTC/USDT": 5.0},
+        ohlcv_by_symbol={"BTC/USDT": []},
+    )
+    # Mypy strict rc=0 sobre esta linea confirma el narrowing Mapping[str, FilterRegistry].
+    scanner = UniverseScanner(
+        source=source,
+        registry_per_mode={"paper": registry},
+        settings=settings,
+    )
+    # Constructor retorno OK + freeze() invocado sobre ``registry`` por
+    # __init__: narrowing + freeze-lock validados juntos sin acoplar a
+    # ningun mensaje de error privado.
+    assert scanner.counters.pairs_processed == 0
+
+
+def test_registry_per_mode_rejects_object_without_freeze_via_getattr_guard() -> None:
+    """Sentinel B (TSK-013.7 narrowing + runtime guard).
+
+    Tras el narrowing a ``Mapping[str, FilterRegistry]``, un objeto SIN
+    ``.freeze()`` callable sigue levantando ``ConfigurationError`` en
+    runtime. Esto confirma que el getattr-guard defensivo del __init__
+    se preservo con el narrowing y que duck-typed mocks sin freeze()
+    siguen siendo rechazados loud.
+    """
+
+    class _NoFreezeMock:
+        """Mock sin .freeze(): simulador de un registry duck-typed invalido."""
+
+    settings = _build_settings(pairs=[("BTC/USDT", True)], mode="paper")
+    source = FakeMarketDataSource()
+    with pytest.raises(ConfigurationError, match=r"sin \.freeze\(\)"):
+        # type: ignore[arg-type] — intentional: probamos el guard runtime
+        # con un objeto que NO es FilterRegistry (cumple narrowing mypy
+        # seria un sentinel incompleto; el guard es la red de seguridad).
+        UniverseScanner(
+            source=source,
+            registry_per_mode={"paper": _NoFreezeMock()},
+            settings=settings,
+        )
+
+
+def test_scan_iteration_id_factory_callable_used_by_run() -> None:
+    """Sentinel C (TSK-013.7 Callable[[], str] annotation).
+
+    ``scan_iteration_id_factory`` ahora requiere annotation explicita
+    ``Callable[[], str]``. mypy strict acepta esta firma; runtime: el
+    factory se invoca exactamente una vez por ``run()`` y el ID generado
+    aparece ligado al scan_iteration_id del log de iteracion.
+    """
+    calls: list[str] = []
+
+    def _factory() -> str:
+        calls.append("invoked")
+        return "custom-id-001"
+
+    settings = _build_settings(pairs=[("BTC/USDT", True)], mode="paper")
+    source = FakeMarketDataSource(
+        volume_by_symbol={"BTC/USDT": 50_000_000.0},
+        spread_by_symbol={"BTC/USDT": 5.0},
+        ohlcv_by_symbol={"BTC/USDT": []},
+    )
+    registry_per_mode = build_filter_set_per_mode(settings)
+    scanner = UniverseScanner(
+        source=source,
+        registry_per_mode=registry_per_mode,
+        settings=settings,
+        scan_iteration_id_factory=_factory,
+    )
+    # Pre-condicion: factory NO invocado antes de run().
+    assert calls == []
+    # run() invoca factory exactamente una vez (mirroring _run_impl's
+    # ``scan_id = self._id_factory()``).
+    asyncio.run(scanner.run())
+    assert calls == ["invoked"]

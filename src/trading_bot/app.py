@@ -174,7 +174,7 @@ def _build_demo_scanner(mode: str) -> "UniverseScanner":
     registry_per_mode = build_filter_set_per_mode(settings)
     return UniverseScanner(
         source=source,
-        registry_per_mode=registry_per_mode,  # type: ignore[arg-type]
+        registry_per_mode=registry_per_mode,
         settings=settings,
     )
 

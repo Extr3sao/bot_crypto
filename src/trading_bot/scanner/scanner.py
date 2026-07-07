@@ -51,6 +51,7 @@ MEDIO + BAJO fixes del reviewer de handoff (septimo ciclo):
 from __future__ import annotations
 
 import time
+from collections.abc import Callable, Mapping
 from dataclasses import dataclass
 from typing import Final
 from uuid import uuid4
@@ -297,8 +298,13 @@ class UniverseScanner:
     Constructor DI:
       - ``source``: ``MarketDataSourceProtocol`` (CCXTMarketDataSource en
         produccion; ``FakeMarketDataSource`` en tests).
-      - ``registry_per_mode``: ``dict[str, FilterRegistry]`` con key ∈
-        ``VALID_MODES``; cada registry se congela al instanciar.
+      - ``registry_per_mode``: ``Mapping[str, FilterRegistry]`` con key ∈
+        ``VALID_MODES``; cada registry se congela al instanciar. El tipo
+        ``Mapping`` (read-only contract) estrecha el parametro a nivel
+        mypy sin obligar al caller a pasar un ``dict`` literal; ``dict``
+        satisfies ``Mapping`` por duck-typing. Pine contract defensivo:
+        cualquier objeto sin ``getattr(reg, "freeze")`` callable deja
+        al constructor con ``ConfigurationError`` (ver __init__ body).
       - ``settings``: ``Settings`` (typed config); controla universe.pairs
         + runtime.mode + risk.kill_switch_enabled.
       - ``normalizers_per_mode``: opcional; default usa ``ScoreNormalizers.for_mode``.
@@ -324,10 +330,10 @@ class UniverseScanner:
         self,
         *,
         source: MarketDataSourceProtocol,
-        registry_per_mode: dict[str, object],
+        registry_per_mode: Mapping[str, FilterRegistry],
         settings: Settings,
         normalizers_per_mode: dict[str, ScoreNormalizers] | None = None,
-        scan_iteration_id_factory=lambda: uuid4().hex,
+        scan_iteration_id_factory: Callable[[], str] = lambda: uuid4().hex,
     ) -> None:
         # --- Validacion de DI ---
         if source is None:

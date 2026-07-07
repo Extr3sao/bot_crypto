@@ -51,7 +51,7 @@ from __future__ import annotations
 
 import uuid
 from abc import ABC, abstractmethod
-from typing import Any, Final
+from typing import Any, Final, cast
 
 import ccxt
 import structlog
@@ -269,7 +269,17 @@ class CCXTExchangeConnector(ExchangeConnector):
 
         @self._retry_decorator
         def _execute() -> list[list[float]]:
-            return self._exchange_instance.fetch_ohlcv(symbol, timeframe, limit=limit)
+            # CCXT v4 expone fetch_ohlcv como Any (sin stubs granulares);
+            # el connector declara ``list[list[float]]`` y cada fila se
+            # valida como 6-tuple en el comprehension de abajo. El ``cast``
+            # aqui es la frontera explicita entre CCXT ``Any`` y el contrato
+            # tipado del connector (ADR-0016: ``cast()`` preferida sobre
+            # ``# type: ignore[no-any-return]``). Cherry-pick safe: solo
+            # afecta mypy, sin cambios de logica de negocio.
+            return cast(
+                list[list[float]],
+                self._exchange_instance.fetch_ohlcv(symbol, timeframe, limit=limit),
+            )
 
         log.info("fetch_ohlcv_start")
         try:
@@ -305,7 +315,8 @@ class CCXTExchangeConnector(ExchangeConnector):
 
         @self._retry_decorator
         def _execute() -> dict[str, Any]:
-            return self._exchange_instance.fetch_balance()
+            # CCXT Any -> dict[str, Any] (ver comentario ADR-0016 en fetch_ohlcv).
+            return cast(dict[str, Any], self._exchange_instance.fetch_balance())
 
         try:
             raw = _execute()
@@ -362,13 +373,20 @@ class CCXTExchangeConnector(ExchangeConnector):
 
         @self._retry_decorator
         def _execute() -> dict[str, Any]:
-            return self._exchange_instance.create_order(
-                symbol,
-                type=order_type,
-                side=side,
-                amount=amount,
-                price=price,
-                params=params,
+            # CCXT Any -> dict[str, Any] (ver comentario ADR-0016 en fetch_ohlcv).
+            # ``create_order`` consume ``OrderResult`` por campos
+            # ``res["id"]``, ``res["symbol"]``, ``res["amount"]``: la
+            # coercion a dict[str, Any] solo afecta mypy, no la logica.
+            return cast(
+                dict[str, Any],
+                self._exchange_instance.create_order(
+                    symbol,
+                    type=order_type,
+                    side=side,
+                    amount=amount,
+                    price=price,
+                    params=params,
+                ),
             )
 
         log.info("create_order_start")
