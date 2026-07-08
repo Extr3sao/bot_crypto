@@ -360,3 +360,20 @@ ADR-0013 | 2026-07-04 | TSK-103 reconcile scope | ADR-0013 pendiente pineada en 
   - Columna `Pri` ajustada en `tasks/sprint-003.md` Foundations table: `TSK-013.4` ahora Pri 1; `TSK-008/009` done sin Pri; `TSK-104` adjustada a Pri 3; `TSK-105` Pri 4.
   - `TSK-008/009` ya no son arrastre en sprint-003 (overhead reducido: 2 governance tickets fuera del scope, 5 primary/secondary quedan).
   - Branch lifecycle: PR #2 mergeable a main; el squash-merge con `--delete-branch` borrara `feature/tsk-008-009-governance` post-merge per las branch-protection rules pineadas.
+
+## ADR-0017 — Branch Protection `gh api` Apply Auth-Gated (TSK-008/009 follow-up)
+
+- **Estado**: Decidido.
+- **Fecha**: 2026-07-08
+- **Contexto**: TSK-008 (CI baseline) y TSK-009 (CODEOWNERS + PR template + branch-protection specs) cerraron por merge de PR #2 → commit `da0424a` al cierre sprint-002 (ADR-0015). El Bloque 6 de `quality/release-gates.md` documenta la ejecución física del JSON payload de branch-protection via `gh api repos/Extr3sao/bot_crypto/branches/main/protection ...` PERO requiere permisos `admin:org` que ni los agentes locales ni el CI tienen. Consecuencia directa: el gate humano está desactivado silenciosamente si el PR se mergea sin que un admin haya aplicado primero las reglas.
+- **Decision**: TSK-008 / TSK-009 permanecen formalmente cerrados. La ejecución del Bloque 6 queda como "Day 2 Operation" (auth-gated manual ops) a ser ejecutada por el owner del repo a discreción, sin re-abrir los tickets. Cualquier cambio de scope posterior debe pasar por un ADR numerado ≥ ADR-0018 o superior.
+- **Consecuencias**:
+  - Cierra el "ghost technical debt" (tickets siempre in_progress por falta de permisos de red): ambos tickets pueden permanecer archivados sin arrastrar el sprint-003.
+  - `main` queda sin branch-protection enforced on GitHub hasta que el owner aplique Bloque 6 manualmente. Riesgo aceptable para repo en desarrollo temprano; revisar pre-promoción a live (`docs/live-trading-checklist.md`).
+  - Cross-link: el código de Bloque 6 sigue en `quality/release-gates.md` con su pre-flight de teams (`gh api /orgs/Extr3sao/teams --jq '.[].slug'`); ejecutar ese comando antes del apply es obligatorio per el aviso de ERRORES SILENCIOSOS documentado en `.github/CODEOWNERS` header.
+  - F5-precedent reuse: el patrón `<HANDLER_PLACEHOLDER>` que ya uso F5 (`<F5_PR_URL>`, `<F5_MERGE_DATE>`) aplica también acá: el bloque de branch-protection en sí está mergeado como código; solo falta la ejecución del API call por el actor autorizado.
+- **Alternativas consideradas**:
+  - (a) Mantener TSK-009 en in_progress hasta que `gh api` corra — RECHAZADO porque bloquea indefinidamente y carece de plan de resolución formal.
+  - (b) Reabrir el ticket cuando un admin aplique el payload — RECHAZADO porque desdibuja la frontera entre "trabajo mergeado" y "operación post-merge", creando historial confuso.
+  - (c) Firmar ADR-0017 (esta opción) — ACEPTADO porque documenta la delegación sin crear overtime y mantiene ADR-0015 como fuente única de verdad del cierre real.
+
