@@ -20,7 +20,7 @@ from pydantic_settings import BaseSettings
 from trading_bot.config import load_settings
 from trading_bot.config.risk import Risk
 from trading_bot.config.runtime import Runtime
-from trading_bot.config.settings import YamlDirectorySource
+from trading_bot.config.settings import FLAT_ENV_ALIASES, YamlDirectorySource
 
 # ---------------------------------------------------------------------------
 # 1. YAML malformado
@@ -92,6 +92,7 @@ def _good_risk() -> dict[str, float | int]:
         "max_open_positions": 3,
         "max_trades_per_day": 20,
         "max_consecutive_losses": 3,
+        "consecutive_loss_cooldown_minutes": 60,
         "max_asset_exposure_pct": 10,
         "max_total_exposure_pct": 25,
         "min_order_notional_usdt": 20,
@@ -176,6 +177,12 @@ def test_settings_rejects_live_with_kill_switch_off(
         "  i_understand_the_risks: true\n  require_manual_confirmation_for_live: true\n",
         encoding="utf-8",
     )
+    # Clear all env vars that FlatEnvAliasSource reads so the YAML's values
+    # are authoritative. The host shell may set TRADING_MODE, EXCHANGE_ID,
+    # LOG_LEVEL, etc.; without this, those env vars silently override the
+    # YAML's runtime.mode='live' and the cross-domain gate does not fire.
+    for env_var in FLAT_ENV_ALIASES:
+        monkeypatch.delenv(env_var, raising=False)
     # Set agreement env var so Settings picks it up if YAML miss.
     monkeypatch.setenv("I_UNDERSTAND_THE_RISKS", "true")
     with pytest.raises(ValidationError) as exc:
