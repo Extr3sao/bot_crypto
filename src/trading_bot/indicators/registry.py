@@ -42,6 +42,7 @@ from trading_bot.indicators.protocols import Indicator
 __all__ = ["IndicatorRegistry"]
 
 
+Design note: Mirrors `FilterRegistry` semantics (freeze(), duplicate rejection) — see `docs/specs/TSK-200-indicators-interface/` for the F2-mirror design rationale (ADR-candidate deferred: cache divergence scoped locally).
 class IndicatorRegistry:
     """Ordered, freeze-friendly registry of ``Indicator`` instances."""
 
