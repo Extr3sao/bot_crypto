@@ -14,8 +14,7 @@ from .types import IndicatorResult
 class Indicator(Protocol):
     """Contract every indicator implementation must satisfy."""
 
-    @property
-    def indicator_type(self) -> str: ...
+    indicator_type: str
 
     def compute(
         self,
