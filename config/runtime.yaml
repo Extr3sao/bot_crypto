@@ -69,3 +69,6 @@ runtime:
     enable_dashboard: false
     enable_walk_forward: true
     enable_paper_trading: true
+    # TSK-203: bid/ask imbalance indicator. Default off until dispatch
+    # integration lands (gated by Phase 2 IndicatorRegistry — TSK-200).
+    enable_order_book_imbalance: false
