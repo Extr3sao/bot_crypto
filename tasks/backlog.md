@@ -152,3 +152,80 @@
 - Estrategias adicionales (orden-flow, market-neutral pairs).
 - Dashboard web minimo.
 - Alertas por Telegram.
+## Tickets polish (TSK-016 cross-cutting)
+
+- [ ] **TSK-016** Polish bundle for `paper` module (3 strongly-recommended items, follow-up PR to F5). **Est: S**. **Origen**: code-reviewer verdict on the paper-module work (downstream of TSK-103.5 wiring + TSK-103.4 scanner + TSK-102 OHLCVStore). **Pri**: 2 (cheap relative to the alternatives; needed before any live `paper`-shared-DB scenario). **DoD**: all 3 polish items below verde in `pytest` + `ruff` + `mypy`; one PR titled `chore(paper): polish bundle (TSK-016)`; cross-referenced from `retrieval-log.md`. **Out-of-scope**: async/locking infrastructure; paper-trading state migration tooling; multi-host replication. **Cross-refs**: TSK-103.5 (paper wiring), TSK-102 (OHLCVStore UPSERT reference pattern), TSK-013.4 / TSK-111 (ruff precedent for code-quality tickets). **Depende de**: ninguno (cada polish item es independiente; pueden hacerse en commits atomicos).
+
+  **Polish 1: `PaperExecutionSummary` caller parity test.** Add a parity test en `tests/unit/paper/test_paper_types.py::test_paper_execution_summary_caller_parity` que escupa fail-loud cualquier dia que se anada un nuevo required field al dataclass `PaperExecutionSummary` sin propagarlo a todos los call-sites. Mismo patron defensivo que la parity test flagged para `Risk.model_fields` post-`de1c110`.
+
+  **Concrete file:line refs (audit 2026-07-XX)**:
+  - `src/trading_bot/paper/__init__.py:20, 32` — re-export + `__all__` entry.
+  - `src/trading_bot/paper/types.py:60` — dataclass definition. `:103` — `TradeTicket.execution_summary: PaperExecutionSummary | None = None` (callback field). `:127` — dataclass export.
+  - `src/trading_bot/paper/reporting.py:14, 24` — type import + fn parameter `execution_summary: PaperExecutionSummary | None`.
+  - `src/trading_bot/paper/broker.py:16, 149, 152, 291` — type import + return-type annotation + 2 return paths (early-no-op line 152, post-position-update line 291).
+  - `tests/unit/paper/test_reporting.py:16, 100` — type import + test fixture construction.
+
+  **Test contract**: assert `set(f.name for f in dataclasses.fields(PaperExecutionSummary)) <= {f-name-in-caller-site-unions}` (closed under addition). Inject a temporary new **required** field on `PaperExecutionSummary` in the test to confirm the gate is non-tautological (not just a vacuous pass).
+
+  **Polish 2 (AMENDED 2026-07-08 post-audit): `datetime.UTC` standard ratificado + lint-defense via ruff rule. NO migracion pendiente.** Auditoria ground-truth via `code_searcher` (baseline 2026-07-08) revela que el codebase ya esta en el estado canonico:
+
+  | Patron buscado | Matches en `src/` | Matches en `tests/` | Match total | Accion |
+  | -------------- | ----------------- | ------------------- | ----------- | ------ |
+  | `datetime.timezone.utc` | **0** | 0 | **0** | Nada — no hay blanco a migrar. |
+  | `datetime.utcnow()` (deprecated Python 3.12+) | **0** | 0 | **0** | Nada — API deprecated no se usa. |
+  | `datetime.now()` naive | **1** (docstring-only en `src/trading_bot/backtesting/engine.py:10`) | 0 | 1 | Non-issue — docstring referencia el no-uso, no es codigo live. |
+  | `datetime.UTC` canonical | 2 (sitios en `src/`) | 94 (fixtures + assertions) | **96** | Patron ya canonico. |
+
+  **Cross-link arquitectonico**: codificado via **ADR-0017** (status-quo confirmation) firmada en `tasks/decisions.md` el 2026-07-08. La ADR formaliza `datetime.UTC` como estandar obligatorio del proyecto y rechaza explicitamente `datetime.timezone.utc` + `datetime.utcnow()` + `datetime.now()` naive (ultimo sin uso explicito no anclado a `tz=`).
+
+  **Alcance del PR TSK-016 Polish 2 (re-definido post-audit)**:
+
+  1. `pyproject.toml`: anadir `"UP017"` + selectivamente `"DTZ005"`, `"DTZ006"`, `"DTZ007"` al array `[tool.ruff.lint] select`. La combinacion cubre los 3 vectores que el audit demuestra que el codebase debe rechazar: `datetime.utcnow()`, `datetime.now()` naive, y `datetime.fromtimestamp()` sin tz. Verificar antes de commit con `uv run ruff check . --select UP017,DTZ005,DTZ006,DTZ007` (expect: 0 violations).
+  2. `tasks/decisions.md`: anadir ADR-0017 con `Estado: Decidido y aplicado` + cross-link a esta entrada TSK-016 Polish 2 + cross-link a TSK-013.4 / TSK-111 (precedente de ruff-cleanup antes de introducir reglas).
+  3. `tasks/backlog.md`: amend esta entrada Polish 2 con la tabla baseline + ratifica el cross-link a ADR-0017 (este mismo amend).
+  4. `tests/`: agregar regression test (e.g. `tests/unit/test_datetime_standard.py::test_no_deprecated_datetime_apis_in_src`) que escanea `src/` con AST y assert no contiene llamadas a `datetime.utcnow()`, `datetime.now(sin_tz)`, ni `datetime.timezone.utc`. El test es un bellwether independiente de ruff (cubre el caso donde ruff config quede desincronizada).
+
+  **Concrete file:line refs de los sitios canónicos (los unicos en `src/` que muestran el patron adoptable)**:
+
+  - **`src/trading_bot/paper/broker.py:211`**: `datetime.datetime.fromtimestamp(now_ms / 1000.0, tz=datetime.UTC).strftime("%Y-%m-%d")`. Conversion ms -> dt con timezone explicito.
+  - **`src/trading_bot/paper/harness.py:103`**: `self._now_fn = now_fn or (lambda: datetime.datetime.now(datetime.UTC))`. Current-time con timezone explicito.
+
+  Los 94 matches en `tests/` son fixtures con la firma `datetime.datetime(2026, 1, 1, ..., tzinfo=datetime.UTC)` (literales con `tz=`); no son codigo de produccion pero confirman estabilidad del patron.
+
+  **Dependencias tecnologicas**:
+
+  - **ruff >= 0.1** requerido para `UP017` (estable desde 0.4.x; validar pin actual en `pyproject.toml` antes de mergear).
+  - **TSK-013.4 / TSK-111** ruff-cleanup DEBE estar mergeado antes de este PR — la regla nueva no debe anadir violations en el primer push. Si TSK-013.4 no esta mergeado, firmar ADR-0017-extension con la misma logica que ADR-0012 (gate-recovery precedent).
+
+  **Reframing del PR**: el titulo del commit / PR sera el amend. Originalmente Polish 2 era "(paper): align datetime.timezone.utc -> datetime.UTC". Post-audit, el titulo correcto es "(paper): ratify datetime.UTC standard + enable ruff UP017/DTZ lint-defense (TSK-016 / polish 2 + ADR-0017)". Evita confusion con reviewer que vea el titulo original esperando una migracion.
+
+  **Polish 3: `paper_risk_state` multi-process UPSERT.** Refactor del split `INSERT` (line 133) + `UPDATE` (line 339) en `broker.py` a un unico atómico `INSERT ... ON CONFLICT (id) DO UPDATE SET ...` (mismo patron que ya usa `OHLCVStore` per TSK-102). Multi-process safety: dos paper-trading procesos compartiendo la misma DB no deberian poder producir stale-write o fail-fast por contention.
+
+  **Concrete file:line refs (audit 2026-07-XX)**:
+  - `src/trading_bot/paper/broker.py:122` — `CREATE TABLE IF NOT EXISTS paper_risk_state (id INTEGER PRIMARY KEY, ...)`.
+  - `src/trading_bot/paper/broker.py:133` — `INSERT INTO paper_risk_state (consecutive_losses, cooldown_end_ms, ...)` (insert path; **sin `ON CONFLICT`** — stale-write risk entre writers).
+  - `src/trading_bot/paper/broker.py:329` — `SELECT ... FROM paper_risk_state WHERE id = 1` (read path).
+  - `src/trading_bot/paper/broker.py:339` — `UPDATE paper_risk_state SET consecutive_losses = ?, cooldown_end_ms = ?, ...` (update path; depende del SELECT previo — race-prone si dos writers).
+
+  **Reference pattern ya en el repo**: `src/trading_bot/storage/ohlcv_store.py:13-17` (modulo doc) + `INSERT ON CONFLICT (symbol, timestamp) DO UPDATE` (line ~50).
+
+  **Out-of-scope (deja como TSK-016+ future)**: `_upsert_position` method en `src/trading_bot/paper/broker.py:391` (paper_positions UPSERT — mismo patron pero distinto table; cubrira un ticket dedicado para evitar overload de TSK-016).
+
+  **New test `tests/unit/paper/test_broker.py::test_paper_risk_state_upsert_is_race_free`**: abrir 2 connections SQLite al mismo file (`sqlite:///:memory:` cache compartida via file-backed tmp), ambas con `PRAGMA journal_mode = WAL` + `PRAGMA busy_timeout = 5000`; 2 threads escribiendo `consecutive_losses` con valores diferentes interleaveados via `time.sleep(0.001)` para forzar contention; assert `consecutive_losses` final siempre es el del segundo writer (last-write-wins) sin leak de valor intermedio.
+
+  **Riesgos**:
+  - **PRAGMA busy_timeout**: SQLite WAL necesita `busy_timeout >= 5000` para que contention entre 2 paper-trading processes no fail-fast al segundo writer. Verify si `broker.py` ya setea esto en connection-open; si no, anadir.
+  - **Last-write-wins semantics**: rompe si 2 procesos actualizan distintos fields del mismo row en paralelo (e.g., uno escribe `consecutive_losses`, otro escribe `cooldown_end_ms` simultaneamente — el segundo hace overwrite de los dos). Para uso single-operator, OK. Documentar el scope explicito en el PR body.
+  - **Cross-module side-effects**: el UPSERT en `paper_risk_state` requiere la misma migracion SQLite-user_version que usa `storage/ohlcv_store.py` (PRAGMA user_version v1 + WAL pragmas). Verify que el `paper_risk_state` se crea con la misma `PRAGMA user_version` consistency en connection-open.
+
+  **Plan de ejecucion (3 commits atomicos — squash al mergear)**:
+  - Commit 1: `(paper): add PaperExecutionSummary caller parity test (TSK-016 / polish 1)`. Add test; run pytest; si green, commit.
+  - Commit 2: `(paper): enable ruff UP017 datetime.UTC audit (TSK-016 / polish 2)`. Anade la regla ruff; run ruff check; verify 0 nuevos violations; commit.
+  - Commit 3: `(paper): atomic UPSERT for paper_risk_state (TSK-016 / polish 3)`. Refactor 2-statement split a ON CONFLICT; anadir race-free test en `tests/unit/paper/test_broker.py`; run pytest + ruff + mypy; commit.
+
+## Backlog de ideas (no comprometidas)
+
+- Indicadores adicionales (e.g. Hurst, Fractal dimension).
+- Estrategias adicionales (orden-flow, market-neutral pairs).
+- Dashboard web minimo.
+- Alertas por Telegram.
