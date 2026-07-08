@@ -138,6 +138,10 @@
   - [ ] unit: conector contra un CCXT mock. **Est: S**. Depende de: TSK-101.
   - [ ] integration: fetch real desde testnet y lectura de datos. **Est: M**. Depende de: TSK-101, TSK-103.
 
+## Tickets hygiene / cleanup
+
+- [ ] **TSK-014** Latent: 4 collection errors en `tests/unit/indicators/*` por falta de export de `IndicatorRegistry` en `src/trading_bot/indicators/__init__.py`. **Est: S**. Estado real: `todo`. **Origen**: detectado durante el baseline test del regression-fix bundle `fda5134` en `feature/tsk-013.10-latent-fixture-audit` — `uv run pytest --continue-on-collection-errors -q` reporta 526 collected / 521 passed / 1 failed / 4 errors; los 4 errors son collection errors en `tests/unit/indicators/*` por imports rotos al ejecutar `from trading_bot.indicators import ...` (NotFoundError / ImportError). Out-of-scope de `fda5134` (regression-fix bundle); 521/522 runnable tests PASS sigue siendo green baseline. **Cross-link**: `feature/tsk-013.10-latent-fixture-audit` (PR TBD en sprint-003); `tasks/decisions.md` ADR pendiente solo si la fix requiere decision arquitectonica (no esperado — puramente anadir symbol al `__all__`). **DoD**: los 4 collection errors desaparecen; `uv run pytest -q` corre entero sin necesidad de `--ignore=tests/unit/indicators`; coverage de `src/trading_bot/indicators/` >= 90% per ADR-0012; ruff + ruff-format clean en el modulo (probable F401/I001 residual). **Pri**: 3 (latent hygiene; no bloquea el PR `fda5134` ni `infra/no-ghost-crlf`). Depende de: ninguno (remediation directa: anadir `IndicatorRegistry` + cualquier otro export que los tests importan al `__init__.py`).
+
 ## Tickets Fase 2 (indicadores)
 
 - [ ] **TSK-200** Motor de indicadores (interface, registro, cache).
