@@ -234,6 +234,105 @@
 
 ---
 
+## ADR-0017 - Estandar de fechas/horas: `datetime.UTC` canonico (status-quo confirmation)
+
+- **Estado**: Decidido y aplicado. Firmada 2026-07-08 tras auditoria de TSK-016 Polish 2.
+
+- **Contexto**: TSK-016 (chore bundle del modulo `paper`) Polish 2 propuso un
+  plan de "migration-clean audit + ruff UP017 defensivo" para sustituir el uso
+  de `datetime.timezone.utc` por `datetime.UTC`. Auditoria ejecutada via
+  `code_searcher` sobre `src/` + `tests/` confirma que **el codebase ya esta
+  en el estado objetivo**:
+
+  | Patron buscado | Matches en `src/` | Matches en `tests/` | Match total |
+  | -------------- | ----------------- | ------------------- | ----------- |
+  | `datetime.timezone.utc` | **0** | 0 | 0 |
+  | `datetime.utcnow()` (deprecated) | **0** | 0 | 0 |
+  | `datetime.now()` naive | **1** (docstring en `src/trading_bot/backtesting/engine.py:10` — non-issue) | 0 | 1 |
+  | `datetime.UTC` canonical | 2 (referencias canónicas) | 94 | **96** |
+
+- **Problema**: el plan original de TSK-016 Polish 2 asumia una migracion
+  pendiente (`datetime.timezone.utc` -> `datetime.UTC`). El audit demuestra que
+  esa migracion **ya esta completa** en el codebase, presumiblemente por
+  decision organica tomada durante el sweep TSK-013.x (ADR-0016 baseline health)
+  o por la convencion adoptada al escribir los componentes `paper/` (TSK-103.5
+  wiring). Sin una ADR que formalice el estado, cualquier pull request que use
+  `datetime.timezone.utc` o `datetime.now()` naive pasaria el lint + CI hasta que
+  un reviewer detecte el drift manualmente.
+
+- **Sitios canónicos de referencia** (los unicos en `src/` que muestran el
+  patron adoptable):
+
+  - **`src/trading_bot/paper/broker.py:211`**: `datetime.datetime.fromtimestamp(now_ms / 1000.0, tz=datetime.UTC).strftime("%Y-%m-%d")`. Patron de conversion `ms` -> `dt` con timezone explicito.
+  - **`src/trading_bot/paper/harness.py:103`**: `self._now_fn = now_fn or (lambda: datetime.datetime.now(datetime.UTC))`. Patron current-time con timezone explicito.
+
+  Los 94 matches restantes son fixtures / assertions de tests con la misma
+  firma canonica (`tzinfo=datetime.UTC` en `datetime.datetime(...)` literals)
+  y confirman que el formato es estable en el codebase.
+
+- **Opciones**:
+
+  1. Mantener el plan de TSK-016 Polish 2 como migracion (rechazado: no hay
+     blanco a migrar; un PR vacio que remplace 0 lineas corrompe el historial).
+  2. Cerrar TSK-016 Polish 2 como "no-op" sin rastro arquitectonico (rechazado:
+     no previene futura regresion; un nuevo contribuidor podria reintroducir
+     `datetime.utcnow()` o naive `datetime.now()` sin que el gate lo frene).
+  3. **Codificar `datetime.UTC` como estandar de proyecto via esta ADR + anadir
+     `UP017` (y selectivamente la familia `DTZ`) como regla ruff obligatoria en
+     `pyproject.toml` para que cualquier uso futuro del patron deprecated /
+     naive falle el gate de lint automaticamente.**
+
+- **Decision**: opcion 3. Tres cambios atomicos asociados a esta ADR:
+
+  1. **ADR firmada** (este bloque; status-quo confirmation).
+  2. **Regla ruff `[tool.ruff.lint] select = [..., "UP017", ...]`** anadida en
+     `pyproject.toml`. `UP017` (deprecado desde Python 3.12) prohibe
+     `datetime.utcnow()`; la familia `DTZ` (`DTZ001`..`DTZ007`) prohibe `datetime.now()`
+     sin `tz=` y otras construcciones naive-timezone. Al menos una de las
+     dos familias debe quedar activada; recomendada la combinacion
+     `["UP017", "DTZ005", "DTZ006", "DTZ007"]` para cubrir las APIs que el
+     audit demuestra usa el codebase.
+  3. **Cross-link en TSK-016 Polish 2** (`tasks/backlog.md`) reemplazando el
+     framing "align `datetime.timezone.utc` -> `datetime.UTC`" por "ratify
+     `datetime.UTC` como estandar + defensively enable ruff UP017 + DTZ".
+
+- **Razon**:
+
+  - El audit revela un codebase ya canonico — la primera opcion generaria
+    churn vacio.
+  - El codebase NO tiene proteccion automatica contra regresion: si un
+    contribuidor escribe `datetime.utcnow()` o `datetime.now()`, ni ruff ni
+    mypy fallan (la version actual de pyproject no incluye `UP017` ni `DTZ`).
+  - La combinacion `UP017 + DTZ005/006/007` es la minimo-invasiva per la
+    guia oficial de ruff (Upgrade rules + flake8-datetime rules): cubre
+    los 3 vectores que el codebase usa (`datetime.utcnow`, naive datetime.now,
+    y `datetime.fromtimestamp` sin tz) sin impacto en APIs que el codebase
+    NO usa (e.g. `datetime.today()`, `datetime.fromordinal()`).
+
+- **Consecuencias**:
+
+  - 0 cambios de codigo en el codebase (los 96 sitios canonical ya cumplen).
+  - 1 cambio en `pyproject.toml`: anadir `"UP017"` + DTZ005/006/007 en la
+    lista `select`. Verificar pre-PR con `uv run ruff check . --select UP017,DTZ005,DTZ006,DTZ007` para confirmar 0 violations.
+  - Cross-ref con TSK-016 (Polish 2 entry) que pasa de "migration task" a
+    "ratification + lint-defense task".
+  - Cross-ref con ADR-0012 (gate-recovery precedent que demuestra que
+    dificultades de lint/GI deben codificarse via ADR-firmada, no via
+    silenciosa exclusion del gate).
+  - Cross-ref con TSK-013.4 / TSK-111 (ruff cleanup que precede y
+    desbloquea esta regla; sin el backfill, la regla nueva podria
+    agregar violations pre-existentes que frenarian el first push).
+  - **Riesgo residual**: si un futuro contribuidor propone un patron
+    timezone-aware que ruff no reconozca (e.g. `datetime.timezone(datetime.timedelta(hours=9))`),
+    la regla lo aceptara porque es timezone-explicit. Esta ADR no cubre
+    ese caso; si surge, abrir ADR-0017+ de extension.
+  - **Out of scope**: locacion geografica del trading (CET/EST/JST explicit),
+    DST handling, conversion a ISO-8601 strings para serializacion JSON
+    (esos pertenecen a tickets de `observability` o `reporting`, no al
+    fundamento del timezone).
+
+---
+
 ## Excepciones firmadas
 
 > Aqui se documentan desviaciones del flujo SDD o del release gate.
