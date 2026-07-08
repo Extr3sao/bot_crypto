@@ -127,3 +127,20 @@ fallear rápido si está en `live` sin todas las variables requeridas.
 3. **Send-and-forget en threads sin traceback handling**.
 4. **Estado mutable global** no encapsulado.
 5. **Mezclar I/O y cálculo** en una misma función.
+
+## 15. Política de finales de línea (LF)
+
+El repositorio se compromete a **LF (Unix)** en todo archivo de texto. La
+directiva `* text=auto eol=lf` en `.gitattributes` (raíz) aplica la
+convención independientemente de `core.autocrlf` del sistema operativo:
+un clon fresco en Windows con `core.autocrlf=true` por defecto no
+introducirá CRLF en cada save. **Windows contributors**: no configuren
+`core.autocrlf=true` ni editores que reescriban CRLF al guardar; clonen
+con defaults y dejen que `.gitattributes` resuelva. Si un archivo
+binario entra al repo (`*.parquet`, `*.png`, `*.pkl`, `*.h5`,
+`*.feather`, `*.npz`, etc.), el siguiente contribuidor debe añadir
+una línea explícita `*.X binary` en `.gitattributes` para evitar que
+Git intente renormalizarlo. La política audita `data/` y `notebooks/`
+por archivos binarios en cada PR. Una vez auditado el repo, el set
+de extensiones binarias comprometidas a día de hoy es **vacío**; el
+`.gitattributes` actual solamente fija la regla de LF para texto.
