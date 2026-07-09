@@ -74,7 +74,7 @@ $labels = @(
 foreach ($l in $labels) {
     gh label create $l.name --color $l.color --description $l.description --force 2>&1 | Out-Null
     if ($LASTEXITCODE -ne 0 -and $LASTEXITCODE -ne 2) {
-        Write-Host ("label create failed for {0}; continuing" -f $l.name) -ForegroundColor Yellow
+        Write-Host "label create failed for $($l.name); continuing" -ForegroundColor Yellow
     }
 }
 

@@ -118,6 +118,42 @@ un PR, valida en local; después CI ejecuta los mismos pasos en
 [`.github/workflows/ci.yml`](.github/workflows/ci.yml) sobre
 `ubuntu-latest`.
 
+## 🪟 Windows hosts: prefer `pwsh` (PowerShell 7+) over Windows PowerShell 5.1
+
+Los scripts de workflow PowerShell en `scripts/*.ps1` (incluidos los
+PR pipeline scripts como `scripts/open-pr-tsk-0204.ps1` y
+`scripts/open-pr-tsk-104-walk-forward.ps1`) están escritos para ser
+parseable en ambos motores, pero **`pwsh` (PowerShell 7+) es el motor
+de elección** en hosts Windows. Razones:
+
+- **Parser más robusto**: `pwsh` parsea correctamente
+  here-strings `@"...`@` con `$variable` interpoladas (donde PS 5.1
+  falla con `ParserError: Missing terminator`); también evita
+  interpretaciones incorrectas de `$scope:` scope-qualified variables
+  dentro de strings interpolados.
+- **Distribución simple** (3 vías): Microsoft Store,
+  `winget install --id Microsoft.PowerShell --accept-package-agreements`,
+  o `choco install powershell-core`. Default install path es
+  `C:\Users\<user>\AppData\Local\Microsoft\WindowsApps\pwsh.exe`.
+
+Para invocar scripts `.ps1` desde un host Windows:
+
+```powershell
+# PowerShell 7+ (motor preferido)
+pwsh -NoProfile -File .\scripts\open-pr-tsk-0204.ps1
+
+# Windows PowerShell 5.1 (legacy fallback; algunas features pueden fallar)
+powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\open-pr-tsk-0204.ps1
+```
+
+**Política de nuevos scripts**: declara `#!/usr/bin/env pwsh` +
+`#requires -Version 7` y skip PS 5.1 compat. Features PS 7+ usables
+sin restricciones: `??` null-coalescing, `using namespace`,
+`#requires -Version`, y `ForEach-Object -Parallel`. (PowerShell no
+tiene operador ternario nativo — para condicionales concisos use
+`if ($cond) { $a } else { $b }` inline.) La formalización del pivot
+pwsh-only vive en `tasks/decisions.md` (entry pendiente de firmar).
+
 ## 🛡️ Seguridad
 
 - Nunca commitees `.env`. Ver `.gitignore`.
