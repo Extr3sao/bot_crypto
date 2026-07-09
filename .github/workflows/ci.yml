@@ -204,13 +204,22 @@ jobs:
           }
 
       - name: "Smoke: dry-run the PR-pipeline script"
-        # Without $GH_TOKEN, the script exits 1 at `gh auth status` (auth
-        # gate). With GH_TOKEN, the script proceeds through pre-flight +
-        # idempotency and exits 0 at the `-DryRun` early-exit. Either exit
-        # code is smoke-passing; anything else (ParserError, unexpected
-        # runtime error) trips the gate. Future iteration: wire a service-
-        # account PAT via `secrets.PR_PIPELINE_SMOKE_PAT` + `env: GH_TOKEN`
-        # to actually exercise the idempotency branch on every PR.
+        # Wired via `env: GH_TOKEN: ${{ secrets.PR_PIPELINE_SMOKE_PAT }}` below
+        # — a service-account PAT scoped `repo` only (no `workflow` needed),
+        # provisioned by the repo admin at Settings → Secrets and variables
+        # → Actions → New repository secret.
+        # Once provisioned: the script exits 0 at the `-DryRun` early-exit
+        # (full no-PR-branch path). Until provisioned: the script exits 1
+        # at `gh auth status` (parse-tripwire smoke). Either exit code is
+        # smoke-passing; both are read-only (no PR/label side effects).
+        # If the secret is in active use, log its invocation timestamp in
+        # `context/retrieval-log.md`; rotation cadence is org-admin
+        # responsibility (see `quality/release-gates.md` for the
+        # credentials-rotation policy). ADR-0020 keeps the pwsh-only
+        # contract that makes this scripted dry-run the canonical pre-PAT
+        # sandbox.
+        env:
+          GH_TOKEN: ${{ secrets.PR_PIPELINE_SMOKE_PAT }}
         shell: pwsh
         run: |
           pwsh -NoProfile -File ./scripts/open-pr-tsk-0204.ps1 -DryRun
@@ -219,4 +228,8 @@ jobs:
               Write-Host "smoke failed: exit $exit (expected 0 or 1)"
               exit 1
           }
-          Write-Host "smoke OK: exit $exit (0=full path, 1=auth-gate)"
+          if ($exit -eq 0) {
+              Write-Host "smoke OK: exit 0 (full path) — secret-backed no-PR-branch verified"
+          } else {
+              Write-Host "smoke OK: exit 1 (auth-gate) — PR_PIPELINE_SMOKE_PAT not yet provisioned; parse-tripwire only"
+          }
