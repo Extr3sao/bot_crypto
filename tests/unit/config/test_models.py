@@ -66,6 +66,9 @@ def test_universe_min_volume_must_be_positive() -> None:
 def test_exchange_minimal_loads() -> None:
     e = Exchange.model_validate({"id": "binance"})
     assert e.id == "binance"
+    assert e.api_key == ""
+    assert e.api_secret == ""
+    assert e.password == ""
     assert e.sandbox is True  # safe default
     assert e.time_in_force_default == "GTC"
     assert e.post_only_default is True

@@ -38,6 +38,8 @@ data/raw/*
 data/processed/*
 data/backtests/*
 data/storage/*
+data/chart_snapshots/*
+data/*.db
 !data/raw/.gitkeep
 !data/processed/.gitkeep
 !data/backtests/.gitkeep
@@ -46,6 +48,8 @@ data/storage/*
 # ============================================================
 # Logs y reportes
 # ============================================================
+*.log
+*.out.txt
 logs/*
 !logs/.gitkeep
 reports/*

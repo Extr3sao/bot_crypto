@@ -364,13 +364,11 @@ def test_logger_attribution_uses_module_name(
 
 
 # ---------------------------------------------------------------------------
-# P2 — Soporte de exchanges whitelist (TSK-101 = solo Binance sandbox-tested)
+# P2 — Soporte de exchanges whitelist.
 # ---------------------------------------------------------------------------
-def test_supported_exchanges_contains_only_binance_at_tsk_101() -> None:
-    """Pinea el alcance actual: TSK-101 sólo cubre Binance. Cualquier
-    ampliación (Coinbase, Bybit, OKX, Kraken...) requiere un ticket
-    dedicado con sandbox testing — ver ``MULTI_EXCHANGE_SCOPE``."""
-    assert SUPPORTED_EXCHANGES_FOR_TSK_101 == frozenset({"binance"})
+def test_supported_exchanges_contains_binance_and_bitunix() -> None:
+    """El whitelist actual debe incluir los exchanges aprobados localmente."""
+    assert SUPPORTED_EXCHANGES_FOR_TSK_101 == frozenset({"binance", "bitunix"})
 
 
 def test_multi_exchange_scope_string_is_self_descriptive() -> None:
@@ -434,11 +432,11 @@ def fast_retry_exchange_cfg() -> Exchange:
         id="binance",
         sandbox=True,
         account_type="spot",
-        rate_limit_ms=10,
+        rate_limit_ms=50,
         options={"defaultType": "spot"},
         timeouts=ExchangeTimeouts(request_ms=1000, recv_window_ms=500),
         retries=ExchangeRetries(
-            max_attempts=2, initial_backoff_ms=10, max_backoff_ms=50
+            max_attempts=2, initial_backoff_ms=10, max_backoff_ms=100
         ),
         default_type="spot",
         time_in_force_default="GTC",

@@ -50,6 +50,9 @@ FLAT_ENV_ALIASES: dict[str, tuple[str, ...]] = {
     "I_UNDERSTAND_THE_RISKS": ("runtime", "i_understand_the_risks"),
     # Exchange
     "EXCHANGE_ID": ("exchange", "id"),
+    "EXCHANGE_API_KEY": ("exchange", "api_key"),
+    "EXCHANGE_API_SECRET": ("exchange", "api_secret"),
+    "EXCHANGE_PASSWORD": ("exchange", "password"),
     "EXCHANGE_SANDBOX": ("exchange", "sandbox"),
     # Observabilidad (Runtime.Logging)
     "LOG_LEVEL": ("runtime", "logging", "level"),

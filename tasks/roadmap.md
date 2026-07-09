@@ -86,6 +86,10 @@
 - Metricas Prometheus.
 - Alertas desactivadas por defecto hasta validacion.
 - Runbook de incidentes.
+- Trade journal con tesis de entrada, zonas tecnicas, indicadores,
+  capturas de grafico y diagnostico post-cierre.
+- Feedback loop que explica aciertos/fallos y genera recomendaciones
+  auditables sin auto-aplicarlas en live.
 
 ## Fase 9 - Live trading controlado
 

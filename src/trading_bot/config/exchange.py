@@ -44,6 +44,9 @@ class Exchange(BaseModel):
         max_length=20,
         description="CCXT exchange id, e.g. binance, kraken, bybit.",
     )
+    api_key: str = ""
+    api_secret: str = ""
+    password: str = ""
     account_type: str = Field("spot", pattern=_ACCOUNT_TYPE_RE)
     sandbox: bool = True
     default_type: str = Field("spot", pattern=_DEFAULT_TYPE_RE)

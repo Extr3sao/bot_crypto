@@ -152,3 +152,24 @@
 - Estrategias adicionales (orden-flow, market-neutral pairs).
 - Dashboard web minimo.
 - Alertas por Telegram.
+
+## Tickets Fase 8/9 (feedback, observabilidad y aprendizaje)
+
+- [ ] **TSK-860** Trade Intelligence Feedback Loop. **Est: L**.
+  Estado real: specs SDD generados en
+  `docs/specs/TSK-860-trade-intelligence-feedback/` (5 docs) +
+  implementacion local parcial de `trade_journal`, `market_structure`,
+  `charting` fallback SVG, `feedback` evaluator e integracion con
+  auto-trade futures live.
+  Objetivo: por cada operacion guardar tesis, indicadores, soportes,
+  resistencias, order blocks, zonas de acumulacion/distribucion,
+  entrada, TP, SL, snapshot de grafico y diagnostico post-cierre.
+  El feedback genera recomendaciones, pero no modifica live trading
+  sin ADR/revision humana. Depende de: market data OHLCV, execution
+  correlation (`order_id`/`position_id`) y security review para
+  TradingView/snapshots. Evidencia local: 22 tests unitarios verdes
+  (`trade_journal`, `market_structure`, `charting`, `feedback`) +
+  `test_app_trade_journal`; Ruff verde sobre paquetes nuevos y
+  conexion `app.py`. Verificacion live: `tradeCaseId` y
+  `chartSnapshotPath` aparecen en `/health`, y SQLite guarda casos,
+  tesis, snapshots y outcomes.
