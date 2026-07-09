@@ -21,6 +21,7 @@ pluggable) + 7 metricas advanced. Engine acepta tanto ``float``
 
 from .commissions import CommissionModel, FlatPctCommission, TieredCommission
 from .engine import BacktestEngine
+from .reports import FoldReport, build_fold_report
 from .slippage import FlatBpsSlippage, SlippageModel, VolumeImpactSlippage
 from .types import (
     OHLCV,
@@ -34,27 +35,36 @@ from .types import (
     StrategyProtocol,
     Trade,
 )
+from .walk_forward_reports import (
+    MetricAggregate,
+    WalkForwardAggregateReport,
+    build_walk_forward_aggregate,
+    build_walk_forward_aggregate_payload,
+    render_walk_forward_aggregate_markdown,
+)
 
 __all__ = [
-    # Types
     "OHLCV",
     "BacktestContext",
-    # Engine
     "BacktestEngine",
     "BacktestResult",
-    # Commissions (F2)
     "CommissionModel",
     "EquityPoint",
     "Fill",
     "FlatBpsSlippage",
     "FlatPctCommission",
+    "MetricAggregate",
     "Metrics",
     "OHLCVSourceProtocol",
     "Order",
-    # Slippage (F2)
     "SlippageModel",
     "StrategyProtocol",
     "TieredCommission",
     "Trade",
     "VolumeImpactSlippage",
+    "WalkForwardAggregateReport",
+    "build_fold_report",
+    "build_walk_forward_aggregate",
+    "build_walk_forward_aggregate_payload",
+    "render_walk_forward_aggregate_markdown",
 ]
