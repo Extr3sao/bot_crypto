@@ -13,6 +13,9 @@ Componentes:
   profit_factor, expectancy, drawdown, Sharpe, Sortino, CAGR,
   Calmar, n trades, avg trade pnl, etc.
 - ``WalkForward``: separacion train/test con avance (F3, ADR-0007).
+  NOTE: ``walk_forward_run`` (F3b POC) intentionally NOT exported here
+  because it depends on ``BacktestInputs`` which lives on a non-merged
+  branch. Re-introduce once TSK-104 F3b ``BacktestInputs`` lands on main.
 
 F2 status: F1 + commission/slippage refinados (Protocol-based,
 pluggable) + 7 metricas advanced. Engine acepta tanto ``float``
@@ -21,7 +24,7 @@ pluggable) + 7 metricas advanced. Engine acepta tanto ``float``
 
 from .commissions import CommissionModel, FlatPctCommission, TieredCommission
 from .engine import BacktestEngine
-from .reports import FoldReport, build_fold_report
+from .reports import build_fold_report
 from .slippage import FlatBpsSlippage, SlippageModel, VolumeImpactSlippage
 from .types import (
     OHLCV,
@@ -44,7 +47,6 @@ from .walk_forward_reports import (
 )
 
 __all__ = [
-    "OHLCV",
     "BacktestContext",
     "BacktestEngine",
     "BacktestResult",
@@ -55,6 +57,7 @@ __all__ = [
     "FlatPctCommission",
     "MetricAggregate",
     "Metrics",
+    "OHLCV",
     "OHLCVSourceProtocol",
     "Order",
     "SlippageModel",

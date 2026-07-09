@@ -287,38 +287,123 @@ ADR-0012 | 2026-07-04 | gate-recovery post-TSK-102 | mypy numpy stub 3.12+ en 3.
 ADR-0013 | 2026-07-04 | TSK-103 reconcile scope | ADR-0013 pendiente pineada en retrieval-log `[06:00]` como pre-condicion de merge de TSK-103.5 | split TSK-102 persiste OHLCV + TSK-103 scanner in-memory via MarketDataSourceProtocol + cross-layer enforcement via AST pine contract scanner no importa `storage.*` directo | context-engineer + usuario
 
 
-## ADR-0012 — Cierre de sprint-002 + Apertura de sprint-003 (firmada 2026-07-05)
+## ADR-0015 - Cierre de sprint-002 + Apertura de sprint-003 (firmada 2026-07-05)
 
-**Estado**: firmada y aplicada (PR #3 sqsh-merged a `main` + este commit de docs de cierre).
+> **Nota de renumeracion (2026-07-05)**: este bloque estaba
+> originalmente etiquetado como `ADR-0012` (mismo ID que ya
+> documentaba gate-recovery post-TSK-102 arriba), creando una
+> colision. Se renumera a **ADR-0015** (la siguiente libre
+> despues de ADR-0014 F5 closure pendiente) para evitar la
+> duplicacion. La verdadera **ADR-0012** (gate-recovery) queda
+> arriba de este bloque, intacta.
+>
+> **Trazabilidad historica**: el bloque bajo el ID antiguo
+> `ADR-0012` (ahora colapsado a `ADR-0015` per esta firma
+> 2026-07-05) esta presente en commits previos de
+> `tasks/decisions.md`. Grep `ADR-0012 cierre sprint-002` en
+> `git log -- tasks/decisions.md` senala donde existio el ID
+> antiguo antes del rename; el cuerpo de esa entrada previa
+> referenciaba un PR distinto (`PR #3 (TSK-104 F1+F2)`) y un
+> scope distinto (`TSK-104 = backtest engine`), ambos
+> descartados al reconciliar con el ledger actualizado.
+>
+> **Ademas**: el cuerpo original de este bloque referenciaba `PR #3 (TSK-104 F1+F2 = backtest engine)` que **NO corresponde** al estado real del worktree al cierre de sprint-002 (el scope actual de `TSK-104` es **OHLCV Scheduler**, no backtest engine, per `tasks/sprint-002.md` y `tasks/sprint-003.md`). Se reescribe el cuerpo para reflejar la realidad per el ledger actualizado en `tasks/sprint-002.md` y `tasks/sprint-003.md`.
 
-**Contexto**: sprint-002 arranca tras ADR-0011 (cierre sprint-001) con 7 tickets en scope.
-Tras PR #2 (TSK-008 + TSK-009 + TSK-103.5 BDD wiring) y PR #3 (TSK-104 F1+F2) sprint-002 llega a su fin.
+- **Estado**: Decidido y aplicado. Firmada 2026-07-05 tras merge del **PR #2** (commit `da0424a`).
 
-**Tickets cerrados (sprint-002)**: ver `tasks/sprint-002-closure-evidence.md` (referencia primaria) para la tabla completa con notas de cierre. Sumario: TSK-008 + TSK-009 + TSK-101 + TSK-103.5 + TSK-110 + TSK-104 = 6 cerrados.
+- **Contexto**: sprint-002 arranca tras ADR-0011 (cierre sprint-001) con 7 tickets en scope (`TSK-008`, `TSK-009`, `TSK-101`, `TSK-102`, `TSK-103`, `TSK-104`, `TSK-105`) + 1 secondary (`TSK-110`). Las milestones de Fase 1 ingesta culminan antes del cierre: `TSK-099` (prereq) + `TSK-101` (PR#12) + `TSK-102` (PR#13) + `TSK-103.4` (F4 orquestador) + `TSK-103.5` (F5 wiring + 17 BDD + ADR-0013) mergeados en `main`. La governance arrastre (`TSK-008` desde sprint-001 + `TSK-009`) cierra via **PR #2** (commit `da0424a`) en un solo PR.
 
-**Excepciones firmadas** (heredadas de ADR-0011, ratificadas):
+- **PR #2 scope detallado**: `.github/workflows/ci.yml` (4 jobs `format-and-lint` + `type-check` + `pip-audit` + `tests-and-coverage`, cuyas keys matchean exactamente los status-checks required en `quality/release-gates.md` Bloque 6) + `.python-version = 3.11` (single line) + `pyproject.toml` hunks (mypy `python_version = 3.11`, coverage `fail_under = 90`) + `.github/CODEOWNERS` (9-agent mapping con dual-review paths sensibles: `config`, `risk`, `execution`, `secrets`, `workflows`) + `.github/PULL_REQUEST_TEMPLATE.md` (5 bloques con collapsibles `<details>` en los checklists por tipo de cambio, round-3 fix) + branch-protection admin rules en `quality/release-gates.md` Bloque 6 (con `required_status_checks` + `required_pull_request_reviews` dual-review + commands `gh api` JSON inline PowerShell + bash con `--delete-branch` post-squash-merge).
 
-| Excepcion                                                          | Mitigacion                                                              |
-| ------------------------------------------------------------------ | ----------------------------------------------------------------------- |
-| TSK-103 (universe scanner core, pre-F5 wiring)                     | scheduled for sprint-003 dentro de TSK-104 F3a scope (reportes per fold) |
-| Adapter `OHLCVStoreSource` (storage -> `OHLCVSourceProtocol`)      | scheduled for sprint-003 con prioridad 2 (TSK-104 F3b blocker Check 1)  |
+- **Opciones consideradas para el cierre sprint-002**:
+  - mantener sprint-002 abierto hasta cerrar todos los TSK-1xx
+    restantes (`TSK-104` OHLCV Scheduler + `TSK-105` paper trading
+    harness) — descarte: el scaffolding `tasks/sprint-003.md` ya
+    existe con scope pre-definido y la governance arrastre no
+    requiere esperar a los TSK-1xx para ser marcada como done.
+  - cerrar sprint-002 via nueva ADR y abrir sprint-003
+    (recomendado): retrocompatible con el scaffold pre-existente
+    y permite cerrar la governance arrastre limpia.
 
-**Sprint-003 apertura** (RE-SPLIT de TSK-104 F3 segun reviewer del cierre sprint-002):
+- **Decision**: opcion 2. sprint-002 cerrado via **ADR-0015**;
+  las 3 exit criteria cumplen: (1) `TSK-008` cerrado ✅ PR #2, (2)
+  al menos uno de `TSK-101..103` cerrado y mergeado ✅ (los 4:
+  `TSK-101` PR#12, `TSK-102` PR#13, `TSK-103.4` F4, `TSK-103.5`
+  F5 wiring), (3) `TSK-009` cerrado ✅ PR #2. Backlog.md flips
+  aplicados: `TSK-008` + `TSK-009` → `done` + `TSK-110` → `done`
+  (absorbed por TSK-103.5 close).
 
-- **Primary**: TSK-104 F3a (multi-symbol + reports). **DoD**: (1) `BacktestEngine.run` acepta `List[str]` de symbols; (2) `src/trading_bot/backtesting/reports.py::build_fold_report(result) -> FoldReport` con Sharpe/Calmar/Sortino/CAGR/max_drawdown/expectancy/win_rate/profit_factor per-fold; (3) tests unitarios verde (analysis-only, no toca folds); (4) coverage >= 90% sobre el nuevo reports module.
-- **Secondary**: TSK-104 F3b (walk-forward + cross-fold reports). **DoD**: (1) `walk_forward_splits: list[tuple[datetime, datetime, datetime, datetime]]` field en `BacktestInputs` con strict invariant `train_end <= test_start` + no-overlapping entre folds; (2) `walk_forward_run(input, splits) -> list[BacktestResult]` con data-leakage checker (assert que el primer fold's end < el segundo fold's start en el test engine); (3) Hypothesis property tests para no-leak invariant. Bloqueado por storage adapter (Check 1: `OHLCVStoreSource` no en scope todavia, no-fatal para F3b POC).
-- **Tertiary**: TSK-103 (universe scanner core front-end).
-- **Tertiary**: Storage adapter `OHLCVStoreSource`.
+- **Sprint-003 apertura continuidad**: las 3 tickets que dependian
+  de TSK-101..103 (TSK-104, TSK-105, TSK-110) ahora quedan
+  **formalmente unblocked** per esta ADR. `TSK-110` ashbeen
+  absorbed por TSK-103.5 close y queda removido del scope sprint-003
+  (ya esta `done` en `tasks/backlog.md`).
 
-**Out of scope (F4+)**: TSK-105 paper trading prep, TSK-106 risk gate integration, TSK-107 execution idempotencia, TSK-108 observability stack (structlog -> Sentry bridge), TSK-109 strategy catalog beyond BacktestEngine.
+  - **Primary bloque gouvernance ya cerrado**: `TSK-008` ✅ `TSK-009` ✅ via PR #2 (ya done, columna `Pri` ajustada a `-`).
+  - **Primary actual sprint-003**: `TSK-104` F3a (OHLCVScheduler orchestrator con DI + `_execute_iteration` + per-pair loop + reentrancy guard) + F3b (jitter+Retry-After retries + run loop + 7 structlog events + connector_reinjector + cross-layer AST). Branch reconciliation operativa: `feature/tsk-104-scheduler-spec` arranca divergido (2 vs 1 commits vs origin) + 17 dirty files que mezclan F2 work + F1 market_data + unrelated. Operative tactic (no ADR firmada — operational only, no architectural change): cherry-pick F1+F2 a fresh branch `feature/tsk-104-f3a-implementation` desde `main`, drop divergencia, implement F3a stub, abrir PR con dual-review per `quality/code-quality.md`. Cualquier decision arquitectonica que emerja (e.g. concurrencia pineada vs ADR-0014) requiere nueva ADR.
+  - **Secondary**: `TSK-105` paper trading harness (reporter PineStructlog-based, retention TTL). DoD per `docs/paper-trading-methodology.md`.
+  - **Hygiene backfill (Pri 1 ahora que TSK-008/009 done)**: `TSK-013.4` ruff format + ruff check cleanup sobre `main` (deferred del sweep TSK-013.3 cierre round-1 code-reviewer).
+  - **Tertiary**: `TSK-100` (storage layer carry, low priority — `OHLCVStore` minimal ya cubre Fase 1).
+  - **Fase 2 indicators arranca con `TSK-200`** (interface + registro) — `TSK-201..204` quedan bloqueados hasta `TSK-200` cerrado.
 
-**Razon**: PR #3 cierra F1+F2 de TSK-104 con cobertura 97.69% y pine contract explicito (Units section en `engine._compute_metrics` + `Metrics TypedDict`). ADR firmada previene el lifecycle gap de sprints previos. **F3a/F3b split** reduce blast radius: walk-forward tiene data-leakage risk si folds se eligen naive; aislarlo en F3b permite F3a cerrar primero (multi-symbol + reports basicos) sin bloquear el camino si F3b se atrasa.
+- **Out of scope sprint-003**: `TSK-101..103` (ya mergeados en main a cierre sprint-002); `TSK-110` (ya absorbed y done); `TSK-103.6` placeholder (solo se materializa si ADR-0014 detecta scope changes en F5 review chain).
 
-**Consecuencias**:
+- **Excepciones ratificadas al cierre** (ya vigentes de sprints previos):
+  - **ADR-0011** (sprint-001 cierre con TSK-008 arrastre) — **consumada** por esta ADR-0015.
+  - **ADR-0012** (gate-recovery post-TSK-102: numpy<2.1 + app.py omit + `--ignore-vuln PYSEC-2026-597` firmado) — **vigente sin cambios**.
+  - **ADR-0013** (scope reconcile TSK-103: TSK-102 absorbe persistencia OHLCV + TSK-103 scanner in-memory via `MarketDataSourceProtocol` + cross-layer AST pine contract) — **vigente sin cambios**.
+  - **ADR-0014** (F5 closure pendiente per sprint-003 retrieval-log) — **pendiente sin firmar** al cierre sprint-002; se firmara en el cierre sprint-003 cuando el F5 review chain + dual-team discussion confirmen no-scope-drift.
 
-- Branch `origin/feature/tsk-104-backtest-engine` borrada.
-- Cobertura `src/trading_bot/backtesting/` pineada a 97.69% (gate 90%).
-- 64 tests verdes cierran regression risk para F3a.
-- Sprint-003 con 4 tickets bien priorizados vs sprint-002 con 7 (overhead reducido).
+- **Consecuencias**:
+  - 7/7 quality gates verdes per `docs/ci.md sec 3` (incluido Gate 7 BDD fixture injection contract per round-24..27 review chain).
+  - `feature/tsk-104-scheduler-spec` mantiene scope pero requiere reconciliation pre-F3a implementation.
+  - Columna `Pri` ajustada en `tasks/sprint-003.md` Foundations table: `TSK-013.4` ahora Pri 1; `TSK-008/009` done sin Pri; `TSK-104` adjustada a Pri 3; `TSK-105` Pri 4.
+  - `TSK-008/009` ya no son arrastre en sprint-003 (overhead reducido: 2 governance tickets fuera del scope, 5 primary/secondary quedan).
+  - Branch lifecycle: PR #2 mergeable a main; el squash-merge con `--delete-branch` borrara `feature/tsk-008-009-governance` post-merge per las branch-protection rules pineadas.
 
-**Co-authored-by**: context-engineer
+## ADR-0017 — Branch Protection `gh api` Apply Auth-Gated (TSK-008/009 follow-up)
+
+- **Estado**: Decidido.
+- **Fecha**: 2026-07-08
+- **Contexto**: TSK-008 (CI baseline) y TSK-009 (CODEOWNERS + PR template + branch-protection specs) cerraron por merge de PR #2 → commit `da0424a` al cierre sprint-002 (ADR-0015). El Bloque 6 de `quality/release-gates.md` documenta la ejecución física del JSON payload de branch-protection via `gh api repos/Extr3sao/bot_crypto/branches/main/protection ...` PERO requiere permisos `admin:org` que ni los agentes locales ni el CI tienen. Consecuencia directa: el gate humano está desactivado silenciosamente si el PR se mergea sin que un admin haya aplicado primero las reglas.
+- **Decision**: TSK-008 / TSK-009 permanecen formalmente cerrados. La ejecución del Bloque 6 queda como "Day 2 Operation" (auth-gated manual ops) a ser ejecutada por el owner del repo a discreción, sin re-abrir los tickets. Cualquier cambio de scope posterior debe pasar por un ADR numerado ≥ ADR-0018 o superior.
+- **Consecuencias**:
+  - Cierra el "ghost technical debt" (tickets siempre in_progress por falta de permisos de red): ambos tickets pueden permanecer archivados sin arrastrar el sprint-003.
+  - `main` queda sin branch-protection enforced on GitHub hasta que el owner aplique Bloque 6 manualmente. Riesgo aceptable para repo en desarrollo temprano; revisar pre-promoción a live (`docs/live-trading-checklist.md`).
+  - Cross-link: el código de Bloque 6 sigue en `quality/release-gates.md` con su pre-flight de teams (`gh api /orgs/Extr3sao/teams --jq '.[].slug'`); ejecutar ese comando antes del apply es obligatorio per el aviso de ERRORES SILENCIOSOS documentado en `.github/CODEOWNERS` header.
+  - F5-precedent reuse: el patrón `<HANDLER_PLACEHOLDER>` que ya uso F5 (`<F5_PR_URL>`, `<F5_MERGE_DATE>`) aplica también acá: el bloque de branch-protection en sí está mergeado como código; solo falta la ejecución del API call por el actor autorizado.
+- **Alternativas consideradas**:
+  - (a) Mantener TSK-009 en in_progress hasta que `gh api` corra — RECHAZADO porque bloquea indefinidamente y carece de plan de resolución formal.
+  - (b) Reabrir el ticket cuando un admin aplique el payload — RECHAZADO porque desdibuja la frontera entre "trabajo mergeado" y "operación post-merge", creando historial confuso.
+  - (c) Firmar ADR-0017 (esta opción) — ACEPTADO porque documenta la delegación sin crear overtime y mantiene ADR-0015 como fuente única de verdad del cierre real.
+
+## ADR-0018 - Cierre de Fase 2 Indicators (TSK-200..204) y formalización del F3 mirror contract para property tests
+
+- **Estado**: Decidido.
+- **Fecha**: 2026-07-09.
+- **Contexto**: la Fase 2 (indicators) del bot de trading se ha cerrado a nivel de calidad tras la implementación completa de los 5 tickets que la componen (`TSK-200`, `TSK-201`, `TSK-202`, `TSK-203`, `TSK-204`) sobre el branch `fix/tsk-014.1-protocol-attr`. La pine contract transversal que comparten todos los property tests nuevos es el **F3 mirror contract** — `@settings(max_examples=1000, deadline=None)` — replicado desde `tests/unit/scanner/test_scoring.py` (TSK-103.3.2). Sin una ADR formal, futuros tickets de Fase 4 (strategy-engineer) o Fase 5 (execution-engineer) podrían divergir accidentalmente (e.g. usar `max_examples=100` o reintroducir un deadline), rompiendo la consistencia entre suites de property tests.
+- **Alcance del cierre de Fase 2**:
+  - `TSK-200`: `Indicator` Protocol relajado (atributo o propiedad) + `IndicatorRegistry` (`register/freeze/resolve_enabled`) + `IndicatorCache` (`make_key/get_or_compute`) + tipos frozen (`ConfiguredIndicator`, `IndicatorCacheKey`).
+  - `TSK-201`: `EmaIndicator`, `RsiIndicator`, `MacdIndicator`, `AtrIndicator`, `BollingerBandsIndicator` (5 built-ins con prefijo `indicator_type` canonico + `_require_period` + `_require_candles`).
+  - `TSK-202`: `VwapIndicator` (anchor session/rolling), `VolumeRelativeIndicator`, `SpreadIndicator` (spread_bps explicito o computado), `VolatilityIndicator` (stddev), `MomentumIndicator` (lookback percent change).
+  - `TSK-203`: `OrderBookImbalanceIndicator` gated por `feature_enabled=True` (sentinel anti-LiteRunner per `config/indicators.yaml`).
+  - `TSK-204`: 16 property tests hypothesis con F3 mirror contract cubriendo las 11 indicators built-in.
+- **Opciones consideradas**:
+  - (a) **No firmar ADR**: dejar el F3 mirror contract implícito per spec TSK-103.3.2 + sprint-003. Riesgo: futuras PRs de Fase 4/5 divergen silenciosamente.
+  - (b) **Firmar ADR-0018** pineando el F3 mirror contract + documentando el cierre de Fase 2 con cross-links a TSK-200..204.
+  - (c) **Reabrir TSK-103.3.2** y modificar `tests/unit/scanner/test_scoring.py` para incluir TSK-204 explícitamente. Riesgo: introduce scope drift en un ticket ya cerrado y validado.
+- **Decision**: opcion (b). El F3 mirror contract queda formalizado como decision arquitectonica visible y buscable; el cierre de Fase 2 queda trazado con cross-link a cada sub-ticket.
+- **Razon**:
+  - El `Indicator` Protocol, `IndicatorRegistry`, `IndicatorCache` y los 11 built-in indicators son infraestructura crítica que strategy-engineer (Fase 4) y execution-engineer (Fase 5) consumiran via `IndicatorRegistry.resolve_enabled(...)`. Sin ADR de cierre, la trazabilidad "por qué el contrato se ve así" se diluye entre commits.
+  - El F3 mirror contract es una decision transversal: cualquier nuevo property test (Fase 4 strategy, Fase 5 execution, Fase 7 risk) DEBE heredar el patrón o justificar desviación. Pinearlo en una ADR evita que el contrato se rompa silenciosamente.
+  - Los invariantes matematicos cubiertos (no-negatividad, acotación por ventana, identidad algebraica, determinismo bit-exact, signo dominante) son pin contract verificado por los 16 property tests: cualquier regresión futura rompe pytest y queda visible en CI.
+- **Consecuencias**:
+  - TSK-200..204 marcados como `done` en `tasks/backlog.md` con Estado real verificable + retrieval-log cross-link.
+  - **F3 mirror contract pineado**: cualquier property test futuro DEBE usar `@settings(max_examples=1000, deadline=None)` salvo justificación firmada en code review o ADR de reemplazo. El reviewer debe rechazar PRs que reintroduzcan `max_examples<1000` o `deadline=...`.
+  - Strategy `ohlcv_with_ranges` (composite hypothesis) queda documentada como patron canonico para property tests que requieren OHLCV con high/low/close/volume independientes; futuros indicators o strategies que necesiten generar series sinteticas pueden reutilizarla sin reinventar.
+  - Cross-link con: TSK-103.3.2 (F3 mirror origin en `scoring.py`), sprint-003 (Foundations table + DoD Criterio C), `src/trading_bot/indicators/` (implementación), `tests/unit/indicators/test_indicator_properties.py` (16 property tests verde en ~88s).
+  - `Indicator` Protocol relajado (acepta atributo O propiedad) es un sub-detalle de diseño pineado por el test `test_protocol_contract.py`; cualquier futura restricción (e.g. exigir solo `@property` decorated) requiere nueva ADR.
+  - `OrderBookImbalanceIndicator` feature-flagged requiere que `feature_flags.indicators.order_book_imbalance=true` este en `config/indicators.yaml` antes de que `IndicatorRegistry.resolve_enabled(...)` lo exponga; este gating es operacional, no arquitectónico, y queda documentado en `config/indicators.yaml` directamente.
+  - Sin codigo nuevo: esta ADR es living documentation que formaliza el cierre de Fase 2 y la decision sobre el F3 mirror. Cualquier ticket de Fase 4+ que introduzca property tests debe cross-linkear esta ADR.
+  - **Riesgo residual**: si el codebase migra a `pytest>=8.x` o `hypothesis>=7.x` y la API de `@settings` cambia, el F3 mirror contract puede romperse. Monitoreo: `uv run pytest tests/unit/indicators/test_indicator_properties.py -q` debe seguir verde tras cada upgrade de `hypothesis`.
+

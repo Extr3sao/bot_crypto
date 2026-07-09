@@ -54,6 +54,31 @@ Cada día se genera `reports/paper/<YYYY-MM-DD>.md` con:
   - Win rate cae < 30%.
   - Más de 3 errores definidos en una sesión.
 
+### PineStructlog event taxonomy (TSK-105)
+
+`PaperSessionRunner` emite los siguientes eventos estructurados durante una
+sesion paper, siguiendo la convencion `PineStructlog` del proyecto (consistente
+con F5 spec section 10: single-emission point per logical event, nombres
+dotted, context binding via `structlog`).
+
+| Evento | Nivel | Trigger | Campos clave |
+| --- | --- | --- | --- |
+| `paper.session.started` | info | Inicio de `run_session` despues de `_validate_runtime` | `session_id`, `mode`, `paper_trading_enabled` |
+| `paper.scanner.completed` | info | Tras `scanner.run()` | `session_id`, `mode`, `total_snapshots`, `scanner_errors` |
+| `paper.broker.reconciled` | info | Tras `broker.reconcile_session()` (solo si broker esta configurado) | `session_id`, `mode`, `fills_count`, `closed_trades`, `realized_pnl`, `ending_equity`, `risk_events` |
+| `paper.report.alerts` | warning | Cuando `build_session_alerts()` devuelve lista no vacia (solo si reports habilitados) | `session_id`, `mode`, `count`, `codes` |
+| `paper.report.written` | info | Tras `write_session_report()` (solo si `paper_report=True`) | `session_id`, `mode`, `markdown_path`, `json_path` |
+| `paper.session.completed` | info | Final de `run_session` | `session_id`, `mode`, `duration_ms`, counts totales/activos/inactivos, etc. |
+
+Context binding: `session_id` y `mode` se bindean al logger al inicio de la
+sesion, de forma que todos los eventos subsiguientes heredan este contexto
+sin repeticion manual.
+
+Consumidores: cualquier consumer de structlog (file writer, JSON exporter,
+OTel bridge). El broker y los helpers de reporting devuelven datos (no
+emiten logs) para que el harness mantenga el binding consistente y el
+contrato de single-emission point.
+
 ## 6. Lo que el paper no puede probar
 
 - Latencia en producción (puede ser peor).
