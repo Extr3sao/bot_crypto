@@ -3,7 +3,8 @@
 # Opens the GitHub PR for branch feat/tsk-0204-fase2-f3b-structlog.
 # Idempotent: re-running after a PR is already open will exit cleanly.
 # Cross-links: TSK-200..204 indicators + TSK-104 F3b residuo + TSK-105 PineStructlog.
-# ADRs cited: ADR-0017 (branch-protection auth-gated), ADR-0018 (F3 mirror contract).
+# ADRs cited: ADR-0017 (branch-protection auth-gated), ADR-0018 (F3 mirror contract),
+#             ADR-0020 (pwsh-only workflow scripts).
 #
 # Compatible with both Windows PowerShell 5.1 (`powershell.exe`) and
 # PowerShell 7+ (`pwsh`):
@@ -12,6 +13,18 @@
 #   - Uses `-f` format-string for the line-50 message (avoids PS5.1 parser
 #     confusion with `$branch:` scope-qualified variable interpretation
 #     inside an interpolated double-quoted string).
+#
+# Modes:
+#   - (default) live run: pre-flight + idempotency + label pre-create + gh pr create.
+#   - -DryRun switch: pre-flight + idempotency, then exit BEFORE label pre-create
+#     and BEFORE gh pr create. Smoke-test friendly — exercises the no-PR branch
+#     without consuming any real GitHub state. Used by the smoke CI job in
+#     `.github/workflows/ci.yml` (`smoke-pr-pipeline`).
+
+[CmdletBinding()]
+param(
+    [switch]$DryRun
+)
 
 $ErrorActionPreference = 'Stop'
 
@@ -53,12 +66,21 @@ Write-Host "branch in sync: $localSha"
 
 # --- idempotency ---
 Write-Host "=== idempotency check ===" -ForegroundColor Cyan
-$existingPr = @(gh pr list --head $branch --base main --state all --json number,title 2>&1 | ConvertFrom-Json)
+$existingPr = @(gh pr list --head $branch --base main --state all --json number,title,url 2>&1 | ConvertFrom-Json)
 if ($existingPr.Count -gt 0) {
     # PS5.1-safe: format string with -f avoids the `$branch:` scope-qualified
     # variable interpretation that PS5.1 mistakes inside interpolated strings.
     Write-Host ("PR already exists for {0}: #{1} -- {2}" -f $branch, $existingPr[0].number, $existingPr[0].title) -ForegroundColor Yellow
+    Write-Host ("URL: {0}" -f $existingPr[0].url) -ForegroundColor Yellow
     Write-Host "no-op. run 'gh pr view --web' to inspect." -ForegroundColor Yellow
+    exit 0
+}
+
+# --- dry-run early-exit ---
+# Stops before label pre-create + gh pr create. Smoke-friendly: exercises
+# pre-flight + idempotency without consuming any real GitHub state.
+if ($DryRun) {
+    Write-Host "DRY RUN: idempotency passed (no existing PR); exiting before label create + gh pr create." -ForegroundColor Yellow
     exit 0
 }
 

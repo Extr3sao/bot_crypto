@@ -147,3 +147,76 @@ jobs:
         # Mismas exclusions que docs/ci.md seccion 3: los markers `slow` y
         # `market` se quedan para nightly CI por latencia.
         run: uv run pytest -m "not slow and not market" --cov --cov-fail-under=90
+
+  # --------------------------------------------------------------------------
+  # Smoke PR-pipeline (parse + preflight tripwire): exercises the PR-pipeline
+  # PowerShell script in two layers:
+  #   (1) PSParser tokenize — regression tripwire that catches PS5.1
+  #       syntactic regressions before merge.
+  #   (2) pwsh `-DryRun` — exercises pre-flight and reaches the auth gate;
+  #       OR, if a service-account PAT is supplied via a future
+  #       `secrets.PR_PIPELINE_SMOKE_PAT` + `env: GH_TOKEN`, reaches the
+  #       idempotency check + `-DryRun` early-exit.
+  # Without PAT: exit 1 at `gh auth status` — smoke-passing.
+  # With PAT:    exit 0 at the `-DryRun` early-exit — smoke-passing.
+  # Either path is read-only (no PR/label side effects), and either tripwire
+  # catches ParserError or unexpected runtime failures correctly.
+  # NOT a required status-check (per quality/release-gates.md Bloque 6, only
+  # the 4 jobs above are the gates). CODEOWNERS dual-review applies
+  # (security + context per `.github/workflows/` rule).
+  # --------------------------------------------------------------------------
+  smoke-pr-pipeline:
+    name: "Smoke PR-pipeline (parse + preflight, no side effects)"
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install pwsh (PowerShell 7+)
+        uses: microsoft/powershell@v1.1.0
+
+      - name: "PSParser tokenize the PR-pipeline script (pwsh 7+ only)"
+        # Regression tripwire: any PS5.1-syntactic regression in
+        # scripts/open-pr-tsk-0204.ps1 trips this check before merge.
+        # Note: the class `System.Management.Automation.Language.Parser`
+        # exists only in PowerShell 7.0+. The PS 5.1 equivalent is
+        # `System.Management.Automation.Parser` (no `.Language` segment).
+        # The smoke job installs pwsh via `microsoft/powershell@v1.1.0`
+        # so CI runs the right runtime; if a developer copy-pastes this
+        # step into a local Windows PowerShell 5.1, the type will not
+        # resolve and the namespace path must be swapped manually.
+        # ADR-0020 keeps the pwsh-only direction for this kind of script.
+        shell: pwsh
+        run: |
+          $tokens = $null
+          $errs = $null
+          $null = [System.Management.Automation.Language.Parser]::ParseFile(
+              "./scripts/open-pr-tsk-0204.ps1",
+              [ref]$tokens,
+              [ref]$errs
+          )
+          if ($errs.Count -gt 0) {
+              $errs | ForEach-Object { Write-Host $_ }
+              exit 1
+          } else {
+              Write-Host "PARSER-OK"
+          }
+
+      - name: "Smoke: dry-run the PR-pipeline script"
+        # Without $GH_TOKEN, the script exits 1 at `gh auth status` (auth
+        # gate). With GH_TOKEN, the script proceeds through pre-flight +
+        # idempotency and exits 0 at the `-DryRun` early-exit. Either exit
+        # code is smoke-passing; anything else (ParserError, unexpected
+        # runtime error) trips the gate. Future iteration: wire a service-
+        # account PAT via `secrets.PR_PIPELINE_SMOKE_PAT` + `env: GH_TOKEN`
+        # to actually exercise the idempotency branch on every PR.
+        shell: pwsh
+        run: |
+          pwsh -NoProfile -File ./scripts/open-pr-tsk-0204.ps1 -DryRun
+          $exit = $LASTEXITCODE
+          if ($exit -ne 0 -and $exit -ne 1) {
+              Write-Host "smoke failed: exit $exit (expected 0 or 1)"
+              exit 1
+          }
+          Write-Host "smoke OK: exit $exit (0=full path, 1=auth-gate)"
