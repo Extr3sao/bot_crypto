@@ -4,6 +4,14 @@
 # Idempotent: re-running after a PR is already open will exit cleanly.
 # Cross-links: TSK-200..204 indicators + TSK-104 F3b residuo + TSK-105 PineStructlog.
 # ADRs cited: ADR-0017 (branch-protection auth-gated), ADR-0018 (F3 mirror contract).
+#
+# Compatible with both Windows PowerShell 5.1 (`powershell.exe`) and
+# PowerShell 7+ (`pwsh`):
+#   - Uses literal here-strings `@'...'@` for the PR body (no interpolation,
+#     avoids PS5.1 parser issues with `"@` terminator detection).
+#   - Uses `-f` format-string for the line-50 message (avoids PS5.1 parser
+#     confusion with `$branch:` scope-qualified variable interpretation
+#     inside an interpolated double-quoted string).
 
 $ErrorActionPreference = 'Stop'
 
@@ -47,7 +55,9 @@ Write-Host "branch in sync: $localSha"
 Write-Host "=== idempotency check ===" -ForegroundColor Cyan
 $existingPr = @(gh pr list --head $branch --base main --state all --json number,title 2>&1 | ConvertFrom-Json)
 if ($existingPr.Count -gt 0) {
-    Write-Host "PR already exists for $branch: #$($existingPr[0].number) -- $($existingPr[0].title)" -ForegroundColor Yellow
+    # PS5.1-safe: format string with -f avoids the `$branch:` scope-qualified
+    # variable interpretation that PS5.1 mistakes inside interpolated strings.
+    Write-Host ("PR already exists for {0}: #{1} -- {2}" -f $branch, $existingPr[0].number, $existingPr[0].title) -ForegroundColor Yellow
     Write-Host "no-op. run 'gh pr view --web' to inspect." -ForegroundColor Yellow
     exit 0
 }
@@ -64,14 +74,21 @@ $labels = @(
 foreach ($l in $labels) {
     gh label create $l.name --color $l.color --description $l.description --force 2>&1 | Out-Null
     if ($LASTEXITCODE -ne 0 -and $LASTEXITCODE -ne 2) {
-        Write-Host "label create failed for $($l.name); continuing" -ForegroundColor Yellow
+        Write-Host ("label create failed for {0}; continuing" -f $l.name) -ForegroundColor Yellow
     }
 }
 
 # --- open PR ---
 Write-Host "=== opening PR ===" -ForegroundColor Cyan
 
-$prBody = @"
+# PS5.1-safe: literal here-string @'...'@ (no interpolation). The body is
+# pure markdown with no live $variable references; the only $ that may
+# appear is literal text inside code blocks describing commands the user
+# will run later (e.g. ``git cherry-pick $fix-branch-commit-...`` quoted as
+# example prose, NOT something PowerShell should expand). Using @
+# avoids the PS5.1 parser misidentifying premature `"@` terminators
+# inside the multi-line markdown body.
+$prBody = @'
 ## Resumen
 
 Cierra **Fase 2 Indicators** (TSK-200..204) + **TSK-104 F3b residuo** (cross-fold aggregated reports) + **TSK-105 PineStructlog** (5 structlog events nuevos) + **ledger sync** (ADR-0018 + retrieval-log entries + sprint-003 log updates + TSK-200..204 backlog flips).
@@ -149,13 +166,13 @@ git pull --ff-only
 #   git cherry-pick <fix-branch-commit-with-types.py-BacktestInputs>
 #   esto habilitara un PR de seguimiento re-introduciendo walk_forward.py + __init__ removido.
 ```
-"@
+'@
 
 gh pr create --base main --head $branch --title "TSK-200..204 + TSK-104 F3b + TSK-105 PineStructlog close" --body $prBody 2>&1
 
 if ($LASTEXITCODE -eq 0) {
     Write-Host "PR opened successfully. inspect with: gh pr view --web" -ForegroundColor Green
 } else {
-    Write-Host "PR creation failed (exit $LASTEXITCODE)" -ForegroundColor Red
+    Write-Host ("PR creation failed (exit {0})" -f $LASTEXITCODE) -ForegroundColor Red
     exit 1
 }
