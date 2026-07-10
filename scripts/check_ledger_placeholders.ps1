@@ -59,6 +59,11 @@ function Get-OffendingMatches {
         Write-Warning "Ledger path '$Path' not found; guard is a no-op (PASS)."
         return @()
     }
+    # BOM-tolerant reading: [System.IO.File]::ReadAllLines() strips the UTF-8
+    # BOM (EF BB BF) from the first line automatically. Select-String/Get-Content
+    # BOM behavior varies across pwsh versions and Windows codepages; explicit
+    # ReadAllLines is the cross-platform contract (closes Q8 sub-nit #1).
+    $lines = [System.IO.File]::ReadAllLines($Path)
     # Patrones prohibidos (regex case-insensitive):
     # 1. `TSK-NNN placeholder` standalone (word-boundary)
     # 2. `(TSK-NNN placeholder o equivalente)` parenthetical
@@ -67,24 +72,26 @@ function Get-OffendingMatches {
         "\(TSK-\d+\s+placeholder\s+o\s+equivalente\)"
     )
     $hits = @()
-    foreach ($re in $patterns) {
-        $matches_in_file = Select-String -Path $Path -Pattern $re -CaseSensitive:$false
-        foreach ($m in $matches_in_file) {
-            $line = $m.Line
-            # Allowlist: si la linea texto matchea algun pattern del allowlist, skip.
-            $is_allowed = $false
-            foreach ($allowed in $ALLOWLIST_PATTERNS) {
-                if ($line -match $allowed) {
-                    $is_allowed = $true
-                    break
+    for ($i = 0; $i -lt $lines.Length; $i++) {
+        $lineNumber = $i + 1
+        $line = $lines[$i]
+        foreach ($re in $patterns) {
+            if ($line -match $re) {
+                # Allowlist: si la linea texto matchea algun pattern del allowlist, skip.
+                $is_allowed = $false
+                foreach ($allowed in $ALLOWLIST_PATTERNS) {
+                    if ($line -match $allowed) {
+                        $is_allowed = $true
+                        break
+                    }
                 }
-            }
-            if ($is_allowed) { continue }
-            $hits += [pscustomobject]@{
-                LineNumber = $m.LineNumber
-                Pattern    = $re
-                Line       = $line
-                File       = $Path
+                if ($is_allowed) { continue }
+                $hits += [pscustomobject]@{
+                    LineNumber = $lineNumber
+                    Pattern    = $re
+                    Line       = $line
+                    File       = $Path
+                }
             }
         }
     }
@@ -92,44 +99,64 @@ function Get-OffendingMatches {
 }
 
 function Invoke-SelfTest {
-    Write-Host ">>> Self-test: failure case (expected: 1 hit)"
-    $tmp = [System.IO.Path]::GetTempFileName()
-    try {
-        # Failure pattern
-        @'
-TSK-999 placeholder remains pending in ledger.
-'@ | Set-Content -LiteralPath $tmp -Encoding utf8
-        $fail = Get-OffendingMatches -Path $tmp
-        if (@($fail).Count -lt 1) {
-            Write-Error "Self-test FAIL: forbidden pattern not detected"
-            return $false
+    # Per-fixture try/finally: each test case gets its own dedicated temp
+    # file and a paired cleanup block. If one case fails mid-way (e.g., a
+    # `Write-Error` under `$ErrorActionPreference = "Stop"`), prior fixtures
+    # are still cleaned up by their own finally blocks — no fixture leak
+    # on early abort or partial test run (closes Q8 sub-nit #2).
+    $fixtures = @(
+        @{
+            Label    = "failure case (expected: 1 hit)"
+            Content  = "TSK-999 placeholder remains pending in ledger.`n"
+            MinHits  = 1
+            MaxHits  = 1
+            PassText = "hit detected"
+        },
+        @{
+            Label    = "clean text (expected: 0 hits)"
+            Content  = "TSK-021 se firmo en tasks/backlog.md (no es placeholder).`n"
+            MinHits  = 0
+            MaxHits  = 0
+            PassText = "clean text accepted"
+        },
+        # Parenthetical fixture co-fires BOTH patterns: pattern 1 matches the
+        # inner `TSK-021 placeholder` (followed by `)` word-boundary) and
+        # pattern 2 matches the full parenthetical. Assert exact 2-hit count
+        # so the label and assertion align (reviewer sub-nit).
+        @{
+            Label    = "parenthetical ambiguity (expected: 2 hits, both patterns)"
+            Content  = "Cross-link: tasks/backlog.md ticket retroactivo (TSK-021 placeholder o equivalente).`n"
+            MinHits  = 2
+            MaxHits  = 2
+            PassText = "parenthetical detected"
         }
-        Write-Host "  hit detected: $($fail[0].Line.Trim())"
+    )
 
-        Write-Host ">>> Self-test: clean text (expected: 0 hits)"
-        @'
-TSK-021 se firmo en tasks/backlog.md (no es placeholder).
-'@ | Set-Content -LiteralPath $tmp -Encoding utf8
-        $clean = Get-OffendingMatches -Path $tmp
-        if (@($clean).Count -ne 0) {
-            Write-Error "Self-test FAIL: legitimate text flagged (false positive)"
-            return $false
+    foreach ($fx in $fixtures) {
+        Write-Host ">>> Self-test: $($fx.Label)"
+        $tmp = [System.IO.Path]::GetTempFileName()
+        try {
+            Set-Content -LiteralPath $tmp -Value $fx.Content -Encoding utf8
+            $matches = Get-OffendingMatches -Path $tmp
+            $count = @($matches).Count
+            $minOk = ($count -ge $fx.MinHits)
+            $maxOk = ($count -le $fx.MaxHits)
+            if (-not ($minOk -and $maxOk)) {
+                Write-Error "Self-test FAIL on '$($fx.Label)': got $count hits (expected min=$($fx.MinHits) max=$($fx.MaxHits))"
+                return $false
+            }
+            if ($fx.Label.StartsWith("clean text")) {
+                Write-Host "  $($fx.PassText)"
+            } else {
+                # Print the matched pattern explicitly to disambiguate which
+                # pattern fire (pattern 1 inner, pattern 2 outer parenthetical).
+                Write-Host "  $($fx.PassText): pattern='$($matches[0].Pattern)' line='$($matches[0].Line.Trim())'"
+            }
+        } finally {
+            Remove-Item -LiteralPath $tmp -Force -ErrorAction SilentlyContinue
         }
-        Write-Host "  clean text accepted"
-
-        Write-Host ">>> Self-test: parenthetical ambiguity (expected: 1 hit)"
-        @'
-Cross-link: tasks/backlog.md ticket retroactivo (TSK-021 placeholder o equivalente).
-'@ | Set-Content -LiteralPath $tmp -Encoding utf8
-        $parens = Get-OffendingMatches -Path $tmp
-        if (@($parens).Count -lt 1) {
-            Write-Error "Self-test FAIL: parenthetical ambiguity not detected"
-            return $false
-        }
-        Write-Host "  parenthetical detected"
-    } finally {
-        Remove-Item -LiteralPath $tmp -Force -ErrorAction SilentlyContinue
     }
+
     Write-Host "Self-test PASS"
     return $true
 }
