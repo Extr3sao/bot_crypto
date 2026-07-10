@@ -64,16 +64,22 @@ class PaperExecutionSummary:
 
 @dataclass(frozen=True, slots=True)
 class PaperSessionMetrics:
-    """Stub metrics returned by build_session_metrics().
+    """Stub metrics returned by ``build_session_metrics()`` (TSK-105 in-progress).
 
-    Shape-compatible with the eventual TSK-105 implementation; all
-    fields default to zero so structlog event payloads don't blow up.
+    Shape-compatible with the eventual TSK-105 implementation. Beyond the
+    basic snapshot-derived counters, we pin the broker-derived fields
+    ``fills_opened`` and ``ending_equity`` so the contract tests under
+    ``tests/unit/paper/test_harness.py`` (``test_runner_includes_execution_summary_when_broker_is_enabled``)
+    can assert the values post-broker reconciliation without further
+    dataclass mutations when TSK-105 ships the real broker math.
     """
 
     total_snapshots: int = 0
     active_snapshots: int = 0
     inactive_snapshots: int = 0
     scanner_errors: int = 0
+    fills_opened: int = 0
+    ending_equity: float = 0.0
 
 
 __all__ = [
