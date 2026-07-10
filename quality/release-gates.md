@@ -223,3 +223,118 @@ Cada cierre de sprint, revisar:
 Desviaciones → ADR firmada y actualización simultánea de los 3 archivos:
 `.github/CODEOWNERS`, `.github/PULL_REQUEST_TEMPLATE.md`,
 `quality/release-gates.md`.
+
+---
+
+## Bloque 7 — Credentials rotation
+
+> Policy de rotación de credenciales pineadas en repos. Cross-cutting
+> security, análoga a Bloque 6 (Branch Protection). Ninguna se aplica
+> automáticamente al bot si el repo no concede permisos de admin al org
+> owner — son **recomendaciones** operadas por humanos con permisos de
+> owner (mismo precedente que Bloque 6 / ADR-0017).
+
+### Cadence
+
+- **90 días para PAT service-account `PR_PIPELINE_SMOKE_PAT`** (alineado
+  a OWASP ASVS V2.10.4).
+- Trigger adicional: cualquier cambio de role en el org-admin team que
+  afecte el onboarding de un nuevo owner requiere rotación inmediata del
+  PAT y revalidación del dry-run smoke job.
+- Trigger adicional: incidente de seguridad sospechado per
+  `docs/risk-policy.md` Bloque 5 (respuesta a incidentes).
+
+> **Cross-link**: la rotación automática NO dispara validación de CI per
+> sprint; la dependencia es revisión humana en cada sprint review (ver
+> Procedimiento).
+
+### Roles
+
+- **org-admin** (GitHub `Settings → Secrets and variables → Actions →
+  New repository secret` UI rotation flow, o `gh api
+  repos/Extr3sao/bot_crypto/actions/secrets/PR_PIPELINE_SMOKE_PAT` PUT
+  method con scope `repo` only — NO requiere `admin:org`):
+  - Ejecuta la rotación física del secret en GitHub.
+  - Pinear nueva SHA en una retrieval-log entry taggeada
+    `event=secret-rotation` dentro de `context/retrieval-log.md` apenas
+    completed (es la única señal autoritativa de que el secret rotó —
+    bloquea cualquier race condition con el dry-run smoke job).
+- **context-engineer** (rol orquestador en
+  `.ai/agents/context-engineer.md`):
+  - Lee las entries taggeadas `event=secret-rotation` en cada sprint
+    review y valida que: (a) la SHA nueva difiere de la previa (no
+    rotación vacía), (b) el dry-run smoke job pine contract sigue
+    verde post-rotación, (c) cross-link explícito a `.github/CODEOWNERS
+    strategy-team` reválido.
+  - Pinear el resultado de la revisión en una nueva retrieval-log entry
+    taggeada `event=secret-rotation-review` (audit-trail del ciclo).
+
+### Procedimiento
+
+1. Org-admin inicia rotación via GitHub UI (o `gh api` con scope `repo`
+   only, sin `admin:org`).
+2. Org-admin añade nueva retrieval-log entry en `context/retrieval-log.md`
+   con timestamp + tag `event=secret-rotation` + diff metadata (SHA
+   nueva vs previa).
+3. PR-pipeline smoke job se re-ejecuta automáticamente en cada PR
+   abierto (per `.github/workflows/ci.yml` step `Smoke: dry-run the
+   PR-pipeline script`):
+   - Si el secret está activo: dry-run exit 0, smoke OK path full.
+   - Si el secret es revocado durante rotación (ventana de ~5-30
+     minutos): dry-run exit 1, smoke OK path parse-tripwire.
+4. En el siguiente sprint review, context-engineer abre la
+   retrieval-log entry taggeada `event=secret-rotation` y cross-linkea
+   con:
+   - `.github/CODEOWNERS` section `STRATEGY-TEAM` (valida que el equipo
+     sigue pineado y con miembros reales en el org, no phantom team).
+   - Last entry `[2026-07-09 16:00]` de `context/retrieval-log.md`
+     (PR-pipeline context que pinea el dry-run smoke job wired con
+     `env: GH_TOKEN: ${{ secrets.PR_PIPELINE_SMOKE_PAT }}`).
+   - ADR-0017 (precedente auth-gated — el patrón de "agente no ejecuta
+     ops que requieren scope superior al suyo queda pineado como
+     policy").
+
+### Validación en CI
+
+- Smoke job step-level pine contract sobre `feat/tsk-0204-…` ramas: el
+  inline annotation pineado por `cf35049` (`does not yet carry a
+  dedicated credentials-rotation section`) puede ser refrescado a
+  `cross-link back to release-gates.md #credentials-rotation` solo
+  DESPUÉS de que esta sección esté pineada en `quality/release-gates.md`
+  Y el cambio se mergee a `main` (cross-link bidireccional previene
+  stale-relation).
+- `pytest tests/unit/market_data/test_ccxt_connector.py -q` y similares
+  NO dependen de `PR_PIPELINE_SMOKE_PAT` (los test mocks parchearán
+  `ccxt.binance` al namespace level — pine contract per retrieval-log
+  `[2026-07-03 23:00]` round-6 fix).
+- Si `pytest` tests o cualquier other CI step detecta uso hardcodeado
+  del PAT, falla loud (`violation of ADR-0017`).
+
+### Riesgos y mitigaciones
+
+| Riesgo                                                            | Mitigación                                                                                            |
+| ----------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| Secret rotation silenciosa sin retrieval-log entry por org-admin  | Sprint review per `release-gates.md Procedimiento de revisión periódica` valida bcrypt presence.       |
+| Drift entre `.github/CODEOWNERS strategy-team` y realidad del org | Pre-flight periodico: `gh api /orgs/Extr3sao/teams/strategy-team/members --jq '.[].login'`.            |
+| Cadence >90d porque sprint review sleeps                          | Audit-trail GitHub API via `gh secret list-events` (cron externo pine contract sprint review sleeper). |
+| Smoke job pierde exit 0 después de rotación (ventana 5-30min)     | Parse-tripwire smoke exit 1 está pineado como smoke-passing per `release-gates.md Bloque 1`.         |
+| `GH_TOKEN` troceado accidentalmente con scope `workflow`          | ADR-0020 mantiene pwsh-only y prohibe scope `workflow` en este secret (per retrieval-log context).     |
+
+### Cross-link pine contract
+
+- `context/retrieval-log.md [2026-07-09 16:00]` — PR-pipeline context
+  que origina la policy (comit `6182493` in `feat/tsk-0204-fase2-f3b-structlog`).
+- `.github/CODEOWNERS` — section `STRATEGY-TEAM` (valida que el team
+  sigue pineado y con miembros reales).
+- `tasks/decisions.md` — ADR-0017 (precedente auth-gated), ADR-0012
+  (precedente pip-audit ignore-vuln policy), ADR-0020 (precedente pine
+  contract style).
+- `.github/workflows/ci.yml` smoke job step-level inline annotation de
+  `cf35049` refresh (pendiente turno siguiente al merge).
+
+> **Nota sobre numeración**: si esta policy madura y requiere
+> formalización como ADR, abrir **ADR-0021** (siguiente libre después de
+> ADR-0020 per ADR-0020 numbering note). Esta Bloque 7 es living
+> documentation operativa; ADR eleva a decisión arquitectónica cuando se
+> quiera trazabilidad cross-cutting mayor (e.g. cross-multi-repo o
+> signing key rotation).
