@@ -142,11 +142,49 @@ function Invoke-SelfTest {
             MaxHits     = 2
             PassText    = "parenthetical detected"
             ShowDetails = $true
+        },
+        # R3 fixture: BOM-prefixed UTF-8 content — regression-covers the
+        # interaction between the Q8-sub-nit #1 BOM tolerance
+        # (`[System.IO.File]::ReadAllLines()`) AND the `ff139a6` polish
+        # PSCustomObject `$patterns` shape in a single combo. `Set-Content
+        # -Encoding utf8` defaults to UTF-8 WITHOUT BOM in pwsh 7, so the
+        # literal `[char]0xFEFF` MUST be prepended to force the BOM into
+        # the bytes on disk before ReadAllLines strips it back out.
+        @{
+            Label       = "BOM prefix tolerance (expected: 1 hit)"
+            Content     = "$([char]0xFEFF)TSK-321 placeholder to test BOM strip.`n"
+            MinHits     = 1
+            MaxHits     = 1
+            PassText    = "BOM stripped and hit detected"
+            ShowDetails = $true
         }
     )
 
     $total = $fixtures.Count
     $i = 1
+    # R2 contract guard (pre-loop, indexed pass per fixture):
+    # a future hand-added fixture that forgot any of the 5 required fields
+    # would crash later in tight code (MinHits comparison or the R1
+    # `$matches.Count -gt 0` guard), failing the entire self-test on an
+    # UNRELATED line that doesn't surface the fixture as the cause. Doing
+    # this assertion upfront means the error appears at the top of the
+    # diagnostic — before any `>>> Self-test:` output accumulates —
+    # with the fixture's array index, its Label (with a `<missing Label>`
+    # fallback if Label itself is missing), AND the comma-joined list of
+    # all missing fields reported in one throw (one round-trip per fix).
+    for ($i = 0; $i -lt $fixtures.Count; $i++) {
+        $fx = $fixtures[$i]
+        $missing = @()
+        foreach ($required in @('Label', 'Content', 'MinHits', 'MaxHits', 'ShowDetails')) {
+            if (-not $fx.ContainsKey($required)) {
+                $missing += $required
+            }
+        }
+        if ($missing.Count -gt 0) {
+            throw "fixture #$($i + 1) (label: $($fx.Label ?? '<missing Label>')) missing: $($missing -join ', ')"
+        }
+    }
+
     foreach ($fx in $fixtures) {
         Write-Host ">>> Self-test: $($fx.Label)"
         $tmp = [System.IO.Path]::GetTempFileName()
@@ -164,9 +202,19 @@ function Invoke-SelfTest {
             if (-not $fx.ShowDetails) {
                 Write-Host "  $($fx.PassText)"
             } else {
-                # Print the matched pattern_name + pattern explicitly to disambiguate
-                # which pattern fired (PatternName: friendly label; Pattern: raw regex).
-                Write-Host "  $($fx.PassText): pattern_name='$($matches[0].PatternName)' pattern='$($matches[0].Pattern)' line='$($matches[0].Line.Trim())'"
+                # R1 null-guard: a future fixture with `MinHits = 0` AND
+                # `ShowDetails = $true` (legal combo per the data shape)
+                # would raise `Index was out of range` under
+                # `Set-StrictMode -Version Latest` if we unconditionally
+                # dereferenced `$matches[0]`. Render only when there's
+                # at least one match; otherwise fall through to the
+                # diagnostic-anomaly line so future maintainers see the
+                # contradiction immediately instead of a cryptic crash.
+                if (@($matches).Count -gt 0) {
+                    Write-Host "  $($fx.PassText): pattern_name='$($matches[0].PatternName)' pattern='$($matches[0].Pattern)' line='$($matches[0].Line.Trim())'"
+                } else {
+                    Write-Host "  $($fx.PassText): (no match captured — diagnostic anomaly)"
+                }
             }
         } finally {
             Remove-Item -LiteralPath $tmp -Force -ErrorAction SilentlyContinue
