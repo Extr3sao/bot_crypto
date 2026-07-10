@@ -89,3 +89,15 @@ docker-data/
 # Sistema SDD / outputs generados
 # ============================================================
 .ai/skills/*.tmp
+
+# ============================================================
+# Workstream transient commit bodies (`git commit -F <body>`).
+# Pino explícito para que `git add -A` accidental nunca trackee
+# estos ficheros. CF `.github/workflows/ci.yml` step
+# `Forbid tracked transient files` que grep-checka el nombre
+# contra `git ls-files` y rompe el build si filtra alguno.
+# `*.out.txt` cubría implicitamente algunos pero NO todos
+# (`commit_msg.txt`, `commit_msg_cluster1.txt`, etc.) — este
+# patrón fijo la convención permanente.
+# ============================================================
+commit_msg*.txt
