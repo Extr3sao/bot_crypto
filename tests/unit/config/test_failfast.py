@@ -176,8 +176,23 @@ def test_settings_rejects_live_with_kill_switch_off(
         "  i_understand_the_risks: true\n  require_manual_confirmation_for_live: true\n",
         encoding="utf-8",
     )
-    # Set agreement env var so Settings picks it up if YAML miss.
-    monkeypatch.setenv("I_UNDERSTAND_THE_RISKS", "true")
+    # Cluster 4 fix: clear potentially polluting env vars so the YAML
+    # ``runtime:\n  mode: live\n  ...`` block is the single source of truth
+    # for runtime settings. Pydantic-settings source-precedence otherwise
+    # lets ``RUNTIME__MODE`` / ``TRADING_MODE`` / ``RUNTIME__LIVE_TRADING_ENABLED``
+    # etc. silently shadow the YAML's full ``runtime`` namespace, which would
+    # leave ``mode`` defaulting to PAPER and bypass the cross-domain kill-switch
+    # gate below.
+    for env_name in (
+        "TRADING_MODE",
+        "LIVE_TRADING_ENABLED",
+        "I_UNDERSTAND_THE_RISKS",
+        "RUNTIME__MODE",
+        "RUNTIME__LIVE_TRADING_ENABLED",
+        "RUNTIME__I_UNDERSTAND_THE_RISKS",
+    ):
+        monkeypatch.delenv(env_name, raising=False)
+
     with pytest.raises(ValidationError) as exc:
         load_settings(config_dir=config_dir, env_file=None)
     assert "kill_switch_enabled" in str(exc.value)
