@@ -94,6 +94,7 @@ strict = true
 warn_unused_ignores = true
 disallow_untyped_defs = true
 no_implicit_optional = true
+plugins = ["pydantic.mypy"]
 
 # Strategy B (TSK-200): per-module overrides using separate [[tool.mypy.overrides]]
 # tables (mypy warns on bundled module lists). Tests.* + paper.* stubs get a broad
@@ -123,7 +124,22 @@ module = "src.trading_bot.paper.*"
 disallow_untyped_defs = false
 warn_unused_ignores = false
 disable_error_code = ["arg-type", "attr-defined", "union-attr", "misc"]
-plugins = ["pydantic.mypy"]
+
+[[tool.mypy.overrides]]
+# ccxt-upstream-annotated return types: disabling [no-any-return] for the
+# 3 concrete connectors (bitunix spot, bitunix futures, CCXT connector).
+# The 7 sites (bitunix:336, exchange_connector:279/315/372,
+# bitunix_futures:290/298/332) all forward ccxt's `Any`-typed API
+# payloads through narrowly-declared `-> dict[str, Any]` / `-> list[...]`
+# signatures. Tightening this would require either runtime type-narrowing
+# (`isinstance` on every ccxt payload key) or a Protocol wrapper for ccxt
+# payloads; defer to next ADR (TSK-200-followup).
+module = [
+    "src.trading_bot.market_data.bitunix",
+    "src.trading_bot.market_data.bitunix_futures",
+    "src.trading_bot.market_data.exchange_connector",
+]
+disable_error_code = ["no-any-return"]
 
 [[tool.mypy.overrides]]
 module = ["ccxt.*"]

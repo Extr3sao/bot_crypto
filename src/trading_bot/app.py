@@ -304,8 +304,10 @@ def _build_demo_scanner(mode: str) -> UniverseScanner:
     source = build_demo_fetcher(settings)
     registry_per_mode = build_filter_set_per_mode(settings)
     return UniverseScanner(
-        source=source, registry_per_mode=registry_per_mode, settings=settings  # type: ignore[arg-type]
-    )  # type: ignore[arg-type]
+        source=source,
+        registry_per_mode=registry_per_mode,
+        settings=settings,
+    )
 
 
 def _build_live_scanner(
@@ -325,8 +327,10 @@ def _build_live_scanner(
     source = BitunixMarketDataSource(client)
     registry_per_mode = build_filter_set_per_mode(scanner_settings)
     scanner = UniverseScanner(
-        source=source, registry_per_mode=registry_per_mode, settings=scanner_settings,
-    )  # type: ignore[arg-type]
+        source=source,
+        registry_per_mode=registry_per_mode,
+        settings=scanner_settings,
+    )
     return scanner, settings, client
 
 
@@ -1171,12 +1175,12 @@ def _cmd_place_order(args: argparse.Namespace) -> int:
         return 2
 
     if args.market_kind == "futures":
-        client = BitunixFuturesClient(
+        futures_client = BitunixFuturesClient(
             api_key=settings.exchange.api_key,
             api_secret=settings.exchange.api_secret,
         )
         try:
-            order = client.place_order(
+            order = futures_client.place_order(
                 symbol=args.symbol,
                 side=args.side,
                 qty=float(args.amount),

@@ -218,7 +218,7 @@ def test_compute_rank_score_rejects_non_finite_inputs(field_name: str, bad_input
     # cuando finite, seteamos a bad_input explicito (no None).
     bad_kwargs = {**base_kwargs, field_name: bad_input}
     with pytest.raises(ValueError, match=r"debe ser finito"):
-        compute_rank_score(**bad_kwargs)  # type: ignore[arg-type] clip the test_kwargs injection
+        compute_rank_score(**bad_kwargs)  # type: ignore[arg-type]  # clip the test_kwargs injection
 
 
 def test_compute_rank_score_rejects_non_positive_norm_max() -> None:

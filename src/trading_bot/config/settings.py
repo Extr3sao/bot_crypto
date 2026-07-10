@@ -281,4 +281,8 @@ def load_settings(
     # arriba) lo enruta a BOTH dotenv_settings y FlatEnvAliasSource. El
     # antiguo `_Tuned(_env_file=...)` instance-kwarg pasaba el mismo path
     # por una segunda via redundante; ya no hace falta.
-    return _Tuned()  # type: ignore[call-arg]  # YAML/dotenv/env populated at runtime  # type: ignore[call-arg]  # YAML/dotenv/env populated at runtime
+    # YAML/dotenv/env populated at runtime via Settings.model_config + customise_sources.
+    # The prior `# type: ignore[call-arg]` directive is obsolete after the
+    # TSK-200 pydantic.mypy plugin was promoted to global [tool.mypy]
+    # (see pyproject.toml); _Tuned() now type-checks cleanly without it.
+    return _Tuned()  # YAML/dotenv/env populated at runtime

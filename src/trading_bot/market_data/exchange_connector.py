@@ -49,7 +49,6 @@ Alcance multi-exchange (P2 — entry 2026-07-04 02:00):
 
 from __future__ import annotations
 
-import typing
 import uuid
 from abc import ABC, abstractmethod
 from typing import Any, Final
@@ -280,7 +279,7 @@ class CCXTExchangeConnector(ExchangeConnector):
 
         log.info("fetch_ohlcv_start")
         try:
-            raw = typing.cast(list[list[float]], _execute())
+            raw = _execute()
         except Exception:
             log.error("fetch_ohlcv_failed", exc_info=True)
             raise
@@ -315,7 +314,7 @@ class CCXTExchangeConnector(ExchangeConnector):
             return self._exchange_instance.fetch_balance()
 
         try:
-            raw = typing.cast(dict[str, typing.Any], _execute())
+            raw = _execute()
         except Exception:
             log.error("fetch_balance_failed", exc_info=True)
             raise

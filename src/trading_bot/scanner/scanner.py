@@ -331,7 +331,7 @@ class UniverseScanner:
         self,
         *,
         source: MarketDataSourceProtocol,
-        registry_per_mode: dict[str, object],
+        registry_per_mode: dict[str, FilterRegistry],
         settings: Settings,
         normalizers_per_mode: dict[str, ScoreNormalizers] | None = None,
         scan_iteration_id_factory: Callable[[], str] = lambda: uuid4().hex,
