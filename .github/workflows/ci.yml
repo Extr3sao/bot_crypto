@@ -58,6 +58,28 @@ jobs:
       - name: Ruff format --check
         run: uv run ruff format --check .
 
+      - name: Forbid tracked transient files
+        # Catches wrong-tracked temp files (commit_msg*.txt bodies +
+        # tmp_/transient prefixes — per user-spec regex `tmp_|transient`,
+        # both unanchored so a stray `src/tmp_helper.py` or
+        # `tests/transient_state.py` would also trip the build, which
+        # is the explicit contract — devs rename or remove rather than
+        # whitelist). Pine contract: a transient body written to repo
+        # root for `git commit -F file` should NEVER end up `git add`-ed;
+        # uncommitted local bodies are out of scope (they don't appear
+        # in `git ls-files`). Exit 1 surfaces offending paths so the
+        # developer can `rm -f` and re-commit. Dry-run verified clean
+        # on `b4b543d` (0 tracked transients).
+        run: |
+          set -e
+          hits=$(git ls-files | grep -E 'commit_msg.*\.txt|tmp_|transient' || true)
+          if [ -n "$hits" ]; then
+            echo "ERROR: tracked transient files present:"
+            echo "$hits"
+            exit 1
+          fi
+          echo "OK: 0 tracked transient files"
+
       - name: Ruff lint
         run: uv run ruff check .
 
