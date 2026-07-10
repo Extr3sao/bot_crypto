@@ -109,6 +109,8 @@ como bloque de valor incremental sobre el scanner F1-F5 ya operativo.
   minimal ya cubre Fase 1 (TSK-102). Migracion completa queda para
   Fase 9+.
 
+> **Triage anchor**: las decisiones de calidad post-F5 (Q8 polish + TSK-200-cleanup + 18-failure closure + mypy-residual 7→0 + `CCXTOHLCVProtocol` widening) están consolidadas en **ADR-0022** `Triage index` table commitada en `b98c8f8 → b4b543d` — single-source-of-truth para oncall/TFs que aterricen en sprint-003 con los quality gates verdes y necesiten localizar el *por qué* de cada decisión reciente sin leer commit-by-commit.
+
 ## DoD resumida
 
 ### TSK-008
