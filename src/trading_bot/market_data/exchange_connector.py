@@ -64,12 +64,16 @@ from tenacity import (
 
 from trading_bot.config.exchange import Exchange
 from trading_bot.market_data.types import (
+    CCXTOHLCVProtocol,
+    CCXTPayloadProtocol,
     OHLCV,
     Balance,
     OrderResult,
     OrderStatus,
     OrderType,
     Side,
+    narrow_ccxt_ohlcv,
+    narrow_ccxt_payload,
 )
 
 # Excepciones que justifican reintento. NO incluyen errores semánticos
@@ -274,8 +278,10 @@ class CCXTExchangeConnector(ExchangeConnector):
         )
 
         @self._retry_decorator
-        def _execute() -> list[list[float]]:
-            return self._exchange_instance.fetch_ohlcv(symbol, timeframe, limit=limit)
+        def _execute() -> CCXTOHLCVProtocol:
+            return narrow_ccxt_ohlcv(
+                self._exchange_instance.fetch_ohlcv(symbol, timeframe, limit=limit)
+            )
 
         log.info("fetch_ohlcv_start")
         try:
@@ -310,8 +316,8 @@ class CCXTExchangeConnector(ExchangeConnector):
         log = self._log.bind(req_id=request_id, op="fetch_balance")
 
         @self._retry_decorator
-        def _execute() -> dict[str, Any]:
-            return self._exchange_instance.fetch_balance()
+        def _execute() -> CCXTPayloadProtocol:
+            return narrow_ccxt_payload(self._exchange_instance.fetch_balance())
 
         try:
             raw = _execute()
@@ -367,14 +373,16 @@ class CCXTExchangeConnector(ExchangeConnector):
         )
 
         @self._retry_decorator
-        def _execute() -> dict[str, Any]:
-            return self._exchange_instance.create_order(
-                symbol,
-                type=order_type,
-                side=side,
-                amount=amount,
-                price=price,
-                params=params,
+        def _execute() -> CCXTPayloadProtocol:
+            return narrow_ccxt_payload(
+                self._exchange_instance.create_order(
+                    symbol,
+                    type=order_type,
+                    side=side,
+                    amount=amount,
+                    price=price,
+                    params=params,
+                )
             )
 
         log.info("create_order_start")

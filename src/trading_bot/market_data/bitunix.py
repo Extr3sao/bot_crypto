@@ -27,7 +27,7 @@ from email.utils import parsedate_to_datetime
 from typing import Any
 from urllib.error import HTTPError
 
-from trading_bot.market_data.types import OHLCV, Balance
+from trading_bot.market_data.types import CCXTPayloadProtocol, OHLCV, Balance, narrow_ccxt_payload
 
 
 def _sha256_hex(value: str) -> str:
@@ -325,7 +325,7 @@ class BitunixSpotClient:
         order_type: str,
         amount: float,
         price: float,
-    ) -> dict[str, Any]:
+    ) -> CCXTPayloadProtocol:
         rule = self.get_symbol(symbol)
         side_num = 2 if side == "buy" else 1
         type_num = 2 if order_type == "market" else 1
@@ -333,17 +333,19 @@ class BitunixSpotClient:
         normalized_amount = rule.round_base_amount(amount)
         if normalized_amount <= 0:
             raise BitunixAPIError("La cantidad normalizada ha quedado en 0.")
-        return self._request(
-            "POST",
-            "/api/spot/v1/order/place_order",
-            payload={
-                "side": side_num,
-                "type": type_num,
-                "volume": _format_decimal(normalized_amount, rule.base_precision),
-                "price": _format_decimal(normalized_price, rule.quote_precision),
-                "symbol": rule.api_symbol,
-            },
-            auth=True,
+        return narrow_ccxt_payload(
+            self._request(
+                "POST",
+                "/api/spot/v1/order/place_order",
+                payload={
+                    "side": side_num,
+                    "type": type_num,
+                    "volume": _format_decimal(normalized_amount, rule.base_precision),
+                    "price": _format_decimal(normalized_price, rule.quote_precision),
+                    "symbol": rule.api_symbol,
+                },
+                auth=True,
+            ),
         )
 
 

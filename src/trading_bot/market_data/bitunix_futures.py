@@ -21,6 +21,7 @@ from typing import Any
 from urllib.error import HTTPError
 
 from trading_bot.market_data.bitunix import BitunixAPIError, to_api_symbol
+from trading_bot.market_data.types import CCXTPayloadProtocol, narrow_ccxt_payload
 
 
 def _sha256_hex(value: str) -> str:
@@ -261,7 +262,7 @@ class BitunixFuturesClient:
         client_id: str | None = None,
         tp_price: float | None = None,
         sl_price: float | None = None,
-    ) -> dict[str, Any]:
+    ) -> CCXTPayloadProtocol:
         payload: dict[str, Any] = {  # TSK-200: cast target
             "symbol": to_api_symbol(symbol),
             "side": side.upper(),
@@ -287,19 +288,23 @@ class BitunixFuturesClient:
             payload["slStopType"] = "MARK_PRICE"
             payload["slOrderType"] = "MARKET"
 
-        return self._request(
-            "POST",
-            "/api/v1/futures/trade/place_order",
-            payload=payload,
-            auth=True,
+        return narrow_ccxt_payload(
+            self._request(
+                "POST",
+                "/api/v1/futures/trade/place_order",
+                payload=payload,
+                auth=True,
+            )
         )
 
-    def flash_close_position(self, position_id: str) -> dict[str, Any]:
-        return self._request(
-            "POST",
-            "/api/v1/futures/trade/flash_close_position",
-            payload={"positionId": str(position_id)},
-            auth=True,
+    def flash_close_position(self, position_id: str) -> CCXTPayloadProtocol:
+        return narrow_ccxt_payload(
+            self._request(
+                "POST",
+                "/api/v1/futures/trade/flash_close_position",
+                payload={"positionId": str(position_id)},
+                auth=True,
+            )
         )
 
     def place_position_tpsl(
@@ -310,7 +315,7 @@ class BitunixFuturesClient:
         qty: float,
         tp_price: float | None = None,
         sl_price: float | None = None,
-    ) -> dict[str, Any]:
+    ) -> CCXTPayloadProtocol:
         if tp_price is None and sl_price is None:
             raise BitunixAPIError("Hace falta tp_price o sl_price para colocar TP/SL.")
 
@@ -329,11 +334,13 @@ class BitunixFuturesClient:
             payload["slOrderType"] = "MARKET"
             payload["slQty"] = _format_decimal(qty)
 
-        return self._request(
-            "POST",
-            "/api/v1/futures/tpsl/place_order",
-            payload=payload,
-            auth=True,
+        return narrow_ccxt_payload(
+            self._request(
+                "POST",
+                "/api/v1/futures/tpsl/place_order",
+                payload=payload,
+                auth=True,
+            )
         )
 
 
