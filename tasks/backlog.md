@@ -138,6 +138,59 @@
   - [ ] unit: conector contra un CCXT mock. **Est: S**. Depende de: TSK-101.
   - [ ] integration: fetch real desde testnet y lectura de datos. **Est: M**. Depende de: TSK-101, TSK-103.
 
+- [ ] **TSK-022** Multi-exchange adapter (Protocol genérico y
+  subclases de extension). **Est: L**. Estado real: `todo` (Specs
+  SDD recien redactados en `docs/specs/TSK-022-multi-exchange-adapter/01-requirements.md`).
+  **Risk: M** (refactor central + cross-layer AST enforcement).
+  **Fase**: 1 (Market Data). **Pri**: 2 (post-TSK-021 credentials
+  rotation, pre-TSK-100 storage layer carry).
+  **DoD**:
+  - [ ] Implementar un único `MultiExchangeConnector(Protocol)` per
+        `RF-MX-1` del spec.
+  - [ ] Crear subclases explícitas para al menos `BinanceConnector`,
+        `BitunixSpotConnector`, `BitunixFuturesConnector` per `RF-MX-2`.
+  - [ ] Feature flag multi-array en `config/assets.yaml` con prefijo
+        `exchanges: [{id, enabled, sandbox, type}]` per `RF-MX-3`.
+  - [ ] Cross-layer AST test (`tests/unit/market_data/test_cross_layer.py`
+        NEW) asegurando que `scanner`, `execution`, `strategies` solo
+        importan el Protocol; nunca subclases concretas per `RF-MX-4`
+        + `ADR-0013` precedent.
+  - [ ] Tests de integración a base de sandboxes verificables para
+        las 3 instanciaciones (ccxt sandboxed o fake exchange mock)
+        per `RF-MX-5`. Coverage >= 90% sobre `src/trading_bot/market_data/`.
+  - [ ] Reusar `narrow_ccxt_payload` / `narrow_ccxt_ohlcv` runtime
+        guards per `RF-MX-8` y `ADR-0022 Q4` Consecuencias.
+  - [ ] Override-removal discipline preserved: no se reintroduce el
+        `market_data.* disable_error_code = ["no-any-return"]` per
+        `ADR-0022 Q4` y `RNF-5` del spec.
+  - [ ] PR con dual-review per `.github/CODEOWNERS` (`market_data/` +
+        `config/` paths sensibles).
+  **Nota de colisión de ID**: este ticket fue invocado originalmente
+  bajo el ID `TSK-105` por sugerencia del backlog context; sin embargo
+  `TSK-105` ya está ocupado (paper-trading tests scoped). Acatando
+  `ADR-0016` anti-pattern "dos scopes al mismo ID acumulan drift",
+  la feature acquire el primer slot fundacional libre post-TSK-021:
+  **`TSK-022 - Multi-exchange adapter`**. La ADR firmada en la que este
+  ticket es forward-looking — `ADR-0022 Q5` Consecuencias item "Forward-looking
+  unblock" — citaba `TSK-105 multi-exchange adapter` por histórico; ese
+  ID queda substituible formalmente acá.
+  **Cross-links**:
+  - `tasks/decisions.md ADR-0022 Q5` (Consecuencias item "Forward-looking
+    unblock" — este ticket materializa el desbloqueo por el type widening
+    int+float de `b4b543d`).
+  - `tasks/decisions.md ADR-0022 Q4` (Protocol + runtime guard design
+    heredable — `narrow_ccxt_payload`, `narrow_ccxt_ohlcv` reusados
+    sin modification).
+  - `tasks/decisions.md ADR-0013` (cross-layer AST enforcement model).
+  - `tasks/decisions.md ADR-0016` (`cast()` preference + atomic-chore
+    per file batching para 4 archivos del refactor).
+  - `tasks/decisions.md ADR-0010` (flat-env alias para `runtime.exchange_id`
+    precedence).
+  - `tasks/decisions.md ADR-0006` (Binance via CCXT baseline, superset-multiplicado).
+  - `tasks/decisions.md ADR-0008` (reserva histórica "sustitucion del
+    exchange" firmada en ADR-0006 revisión; este ticket es la materialización).
+  Depende de: ADR-0022 Q5 (cerrada en commit `b4b543d`).
+
 ## Tickets Baseline Health & Risk (ADR-0016 umbrella)
 
 ## Tickets Operations Risk (silent-failure auth-gated)
