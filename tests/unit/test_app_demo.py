@@ -28,6 +28,7 @@ from trading_bot.app import (
     _build_demo_scanner,
     _build_parser,
     _cmd_config_check,
+    _cmd_run,
     _cmd_scan,
     _print_demo_results,
     _run_single_iteration,
@@ -193,7 +194,7 @@ def test_build_parser_has_all_subcommands() -> None:
     # the private _actions / _SubParsersAction internals that have
     # been renamed in some Python 3.13+ argparse refactors.
     help_text = parser.format_help()
-    for cmd in ("config-check", "scan", "run", "kill-switch", "status"):
+    for cmd in ("config-check", "scan", "run", "place-order", "kill-switch", "status"):
         assert cmd in help_text, f"subcommand {cmd!r} missing from parser help"
 
 
@@ -210,6 +211,41 @@ def test_build_parser_scan_no_demo_flag() -> None:
     parser = _build_parser()
     args = parser.parse_args(["scan", "--no-demo"])
     assert args.demo is False
+
+
+def test_build_parser_run_defaults_to_continuous_loop() -> None:
+    """Pine contract: run sin flags adicionales deja el loop continuo activo."""
+    parser = _build_parser()
+    args = parser.parse_args(["run"])
+    assert args.mode == "paper"
+    assert args.loop_seconds == 30
+    assert args.once is False
+    assert args.web_port == 0
+    assert args.web_host == "127.0.0.1"
+
+
+def test_build_parser_place_order_requires_explicit_fields() -> None:
+    """place-order debe parsear su contrato base sin ambigüedad."""
+    parser = _build_parser()
+    args = parser.parse_args(
+        [
+            "place-order",
+            "--symbol",
+            "BTC/USDT",
+            "--side",
+            "buy",
+            "--order-type",
+            "market",
+            "--amount",
+            "0.001",
+            "--confirm-live",
+        ]
+    )
+    assert args.symbol == "BTC/USDT"
+    assert args.side == "buy"
+    assert args.order_type == "market"
+    assert args.amount == 0.001
+    assert args.confirm_live is True
 
 
 # ===========================================================================
@@ -234,6 +270,35 @@ def test_cmd_scan_with_no_demo_returns_error_code() -> None:
     parser = _build_parser()
     args = parser.parse_args(["scan", "--no-demo"])
     exit_code = _cmd_scan(args)
+    assert exit_code == 2
+
+
+def test_cmd_run_once_executes_single_iteration(
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    """run --once debe ejecutar una sola iteracion y retornar 0."""
+    parser = _build_parser()
+    args = parser.parse_args(["run", "--mode", "paper", "--once"])
+    exit_code = _cmd_run(args)
+    assert exit_code == 0
+
+    captured = capsys.readouterr()
+    assert "Market scanner iteration" in captured.out
+
+
+def test_cmd_run_rejects_non_positive_loop_seconds() -> None:
+    """run debe rechazar intervalos no positivos con exit code 2."""
+    parser = _build_parser()
+    args = parser.parse_args(["run", "--loop-seconds", "0"])
+    exit_code = _cmd_run(args)
+    assert exit_code == 2
+
+
+def test_cmd_run_rejects_negative_web_port() -> None:
+    """run debe rechazar web-port negativos con exit code 2."""
+    parser = _build_parser()
+    args = parser.parse_args(["run", "--web-port", "-1"])
+    exit_code = _cmd_run(args)
     assert exit_code == 2
 
 
@@ -312,9 +377,8 @@ def test_main_scan_runs_iteration(capsys: pytest.CaptureFixture[str]) -> None:
 
 
 def test_main_run_runs_iteration(capsys: pytest.CaptureFixture[str]) -> None:
-    """Pine contract: main con ``run`` delega a scan --demo y retorna 0.
-    Pine contract: _cmd_run debe ejecutar la iteracion (no solo loggear)."""
-    exit_code = main(["run", "--mode", "paper"])
+    """Pine contract: main con ``run --once`` ejecuta la iteracion y retorna 0."""
+    exit_code = main(["run", "--mode", "paper", "--once"])
     assert exit_code == 0
 
     captured = capsys.readouterr()

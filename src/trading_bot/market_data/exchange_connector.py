@@ -99,7 +99,7 @@ class UnmappedOrderStatusError(RuntimeError):
 # requiere un ticket dedicado con sandbox testing y la confirmación de
 # que el adapter traduce ``clientOrderId`` y emite los mismos status
 # canónicos.
-SUPPORTED_EXCHANGES_FOR_TSK_101: Final[frozenset[str]] = frozenset({"binance"})
+SUPPORTED_EXCHANGES_FOR_TSK_101: Final[frozenset[str]] = frozenset({"binance", "bitunix"})
 
 # Scope descriptivo del ticket multi-exchange (TSK-105). Se usa en
 # mensajes de error para que el caller sepa dónde abrir la incidencia.
@@ -202,7 +202,13 @@ class CCXTExchangeConnector(ExchangeConnector):
         self._log = structlog.get_logger(self._log_name)
 
         exchange_class = getattr(ccxt, config.id)
-        options: dict[str, Any] = {"enableRateLimit": True}
+        options: dict[str, Any] = {
+            "enableRateLimit": True,
+            "apiKey": config.api_key,
+            "secret": config.api_secret,
+        }
+        if config.password:
+            options["password"] = config.password
         # `enableRateLimit: True` evita llamar a `wait` manual: ccxt pacea
         # las requests para no chocar con el rate limit del exchange.
         # Config del usuario sobreescribe si lo define en `options`.

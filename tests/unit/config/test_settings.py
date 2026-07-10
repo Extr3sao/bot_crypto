@@ -170,8 +170,11 @@ _FLAT_ALIAS_ENV_VARS: tuple[str, ...] = (
     "TRADING_MODE",
     "LIVE_TRADING_ENABLED",
     "I_UNDERSTAND_THE_RISKS",
-    "EXCHANGE_ID",
-    "EXCHANGE_SANDBOX",
+        "EXCHANGE_ID",
+        "EXCHANGE_API_KEY",
+        "EXCHANGE_API_SECRET",
+        "EXCHANGE_PASSWORD",
+        "EXCHANGE_SANDBOX",
     "LOG_LEVEL",
     "LOG_FORMAT",
     "LOG_TO_FILE",
@@ -200,6 +203,9 @@ def test_flat_env_alias_from_process_env(tmp_path: Path, monkeypatch: pytest.Mon
 
     monkeypatch.setenv("TRADING_MODE", "backtest")
     monkeypatch.setenv("EXCHANGE_ID", "kraken")
+    monkeypatch.setenv("EXCHANGE_API_KEY", "k-process")
+    monkeypatch.setenv("EXCHANGE_API_SECRET", "s-process")
+    monkeypatch.setenv("EXCHANGE_PASSWORD", "p-process")
     monkeypatch.setenv("ACTIVE_HOURS_START", "08:00")
     monkeypatch.setenv("ACTIVE_HOURS_END", "16:00")
 
@@ -207,6 +213,9 @@ def test_flat_env_alias_from_process_env(tmp_path: Path, monkeypatch: pytest.Mon
 
     assert settings.runtime.mode == TradingMode.BACKTEST
     assert settings.exchange.id == "kraken"
+    assert settings.exchange.api_key == "k-process"
+    assert settings.exchange.api_secret == "s-process"
+    assert settings.exchange.password == "p-process"
     assert settings.runtime.scheduler.active_hours.start == "08:00"
     assert settings.runtime.scheduler.active_hours.end == "16:00"
 
@@ -220,6 +229,9 @@ def test_flat_env_alias_from_dotenv_file(tmp_path: Path, monkeypatch: pytest.Mon
     env_file.write_text(
         "TRADING_MODE=paper\n"
         "EXCHANGE_ID=coinbase\n"
+        "EXCHANGE_API_KEY=k-dotenv\n"
+        "EXCHANGE_API_SECRET=s-dotenv\n"
+        "EXCHANGE_PASSWORD=p-dotenv\n"
         "ACTIVE_HOURS_START=09:00\n"
         "ACTIVE_HOURS_END=17:30\n",
         encoding="utf-8",
@@ -233,6 +245,9 @@ def test_flat_env_alias_from_dotenv_file(tmp_path: Path, monkeypatch: pytest.Mon
 
     assert settings.runtime.mode == TradingMode.PAPER
     assert settings.exchange.id == "coinbase"
+    assert settings.exchange.api_key == "k-dotenv"
+    assert settings.exchange.api_secret == "s-dotenv"
+    assert settings.exchange.password == "p-dotenv"
     assert settings.runtime.scheduler.active_hours.start == "09:00"
     assert settings.runtime.scheduler.active_hours.end == "17:30"
 
