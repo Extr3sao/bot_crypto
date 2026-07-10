@@ -889,4 +889,192 @@ en `ADR-0016` (“Un PR grande acumula risk”).
 Esta ADR usa **ADR-0022**. `ADR-0019` sigue libre per el precedent de
 `ADR-0020` + `ADR-0021`. El primer ID libre después de esta es **ADR-0023**.
 
+---
+
+## ADR-0023 — Pin the ID-collision + numbering-note pattern (auto-reset behavior rule)
+
+- **Estado**: Decidido.
+- **Fecha**: 2026-07-10.
+
+### Contexto
+
+El ledger arquitectónico (`tasks/decisions.md`) ha acumulado un patrón
+de drift repetitivo (desviación de estado) a lo largo de 3 ADRs
+consecutivas respecto a la gestión del "siguiente ID libre":
+
+1. **ADR-0020** (post-2026-07-08) cerró con: "el primer ID libre
+   después de esta ADR es **ADR-0021**".
+2. **ADR-0021** (2026-07-09) cerró con: "Esta ADR usa `ADR-0021` por
+   consistent sequential order; … El primer ID libre después de
+   esta ADR es `ADR-0022`."
+3. **ADR-0022** (2026-07-10) cerró con: "El primer ID libre
+   después de esta es **ADR-0023**."
+
+El drift radica en que la nota al pie "primer ID libre" se vuelve
+obsoleta o engañosa en el instante en que se firma una nueva ADR. Si
+un oncall o feature team lee ADR-0020 aisladamente, asume que `ADR-0021`
+está libre sin contexto del estado global, generando un riesgo alto
+de colisión. No existe una regla formal sobre cuándo ni cómo actualizar
+estas referencias.
+
+Existen además dos side-issues relacionados que esta ADR también
+direcciona sin scope-creep:
+
+- **Riesgo de colisión de IDs en tickets** — precedente TSK-022: un
+  user solicitó "Open TSK-105 mult…" sin validar el backlog. `TSK-105`
+  ya estaba ocupado con paper-trading tests, forzando un rename
+  reactivo a `TSK-022`. La misma prevención aplica a ADRs y tickets.
+- **Referencias futuras y slots reservados** — precedente ADR-0019
+  reservado retroactivamente en ADR-0020. Falta definir si estos slots
+  expiran o persisten de manera indefinida bloqueando la secuencia.
+
+### Opciones
+
+- **(a) No formal rule**: dejar el drift tal como está, confiando en
+  las referencias cruzadas en lenguaje natural. **Rechazada**: existe
+  evidencia comprobada de 3 instancias consecutivas de drift (ADR-0020
+  → 0021 → 0022).
+- **(b) Auto-reset on every signing**: estipular que cada nueva ADR
+  debe actualizar atómicamente los punteros `próximo libre` de TODAS
+  las ADRs anteriores. **Rechazada**: gran blast radius; obliga a
+  modificar ADRs históricas ya firmadas, perdiendo inmutabilidad del
+  ledger.
+- **(c) Drift-acknowledgment convention**: la nueva ADR cita en su
+  `Numbering note` la ADR anterior que cerró el slot y declara el
+  nuevo. Funciona como una lista enlazada auto-correctiva. Pros:
+  bajo roce, sin cambios retroactivos.
+- **(d) Drop the "primer ID libre" pattern entirely**: prohibir que las
+  ADRs individuales declaren el "siguiente libre". Se reemplaza con
+  una única tabla global/header en el tope inferior o superior de
+  `decisions.md` gestionada en cada commit.
+- **(e) Hybrid (c) + (d)** — **(elegida)**: elimina la afirmación
+  per-ADR del "next free". El estado secuencial se regirá por la
+  estructura atómica del top-level dashboard de `decisions.md` (table
+  ledger-top mantenida en simultáneo con cada commit de nueva ADR) +
+  observación directa de headings `## ADR-XXXX` (truth-of-truth via
+  `grep`). Las `Numbering note` locales quedan reservadas solo para
+  cita histórica inmediata (e.g. "esta ADR usa 0023 per ADR-0020
+  precedent por consistent sequential order") sin claim sobre
+  próximo libre.
+
+### Decision
+
+Opción (e) Hybrid (c) + (d). Las ADRs futuras y presentes ya no
+deben reclamar de manera aislada "el primer ID libre después de esta
+es ADR-XXXX" como regla universal en su footnote. En su lugar:
+
+1. El estado secuencial verdadero se deriva del `grep '^## ADR-'` sobre
+   `tasks/decisions.md` (autoritativo).
+2. Una metadata global "ADRs abiertas / cerradas / siguiente libre"
+   se mantiene en el header de `decisions.md` (después del closing
+   intro "Log append-only…" pero antes del primer ADR), actualizada
+   atómicamente en cada commit que cierra una nueva ADR.
+3. Cada nueva ADR-XXXX firma el cierre de su propio slot y abre el
+   siguiente (incremento +1), pero NO cita el número explícitamente
+   — la cita se delega a la tabla header.
+
+### Razon
+
+- **Centraliza la fuente de verdad**: la tabla header + los headings
+  `## ADR-` del propio markdown son la truth; las footnotes per-ADR
+  son stale by construction para cualquier ADR firmada después del
+  T+n-sprint mark.
+- **Minimiza blast radius**: opción (b) fuerza el retroactive touch
+  de ADRs históricas (en mi contra de la inmutabilidad del ledger
+  firmada en `.ai/methodology-hybrid.md`).
+- **Mantiene valor forense**: opción (c) preserva el patrón "lista
+  enlazada" para casos especiales (F5 pendiente, slots retroactivos,
+  renumeración histórica) sin force-overhead de actualización atómica
+  en cada commit.
+- **Habilita detección mecánica**: con la fuente de verdad en headings,
+  el mechanical check `grep '^## ADR-' tasks/decisions.md | wc -l` da
+  el número directo de ADRs firmadas; comparar contra la tabla header
+  + contra el último commit `git log -1` permite validar coherencia
+  sin ambigüedad.
+
+### Consecuencias
+
+- **ID-collision check-before-open policy (precedente TSK-022 inline-fix)**:
+  Previo a solicitar la creación de un nuevo ticket (`TSK-NNN`) o una
+  nueva ADR (`ADR-XXXX`), agentes y mantenedores DEBEN ejecutar la
+  verificación mecánica obligatoria:
+  - Para Tickets: `grep -oE '^\- \[ \] \*\*TSK-[0-9]+\*\*' tasks/backlog.md`
+    + cross-check con `git log --oneline tasks/backlog.md | head -20`
+    para IDs no-committed.
+  - Para ADRs: `grep -oE '^## ADR-[0-9]+' tasks/decisions.md | sort -u`
+    para confirmar el slot libre.
+  - Política pine contract con el precedent `TSK-022 Nota de colisión
+    de ID` (`tasks/backlog.md`): la omisión del check dispara el rename
+    reactivo, el cual está explícitamente prohibido per esta ADR.
+- **Reserved-slot sunset policy (precedente ADR-0019 retroactivo)**:
+  Las reservas retroactivas (como `ADR-0019` dejado retroactivo per
+  `ADR-0020`) NO persisten indefinidamente. Se establece la
+  **6-sprint sunset rule**: si el ticket o justificación arquitectónica
+  que originó la reserva del slot no se materializa en los próximos
+  6 sprints contados desde su firma, el slot queda tácitamente
+  liberado y disponible para la siguiente decisión que precise un
+  retro-fill. Aplicación: `ADR-0019` fue reservado con F5 closure
+  success condition per `ADR-0014`. F5 cerró per `ADR-0015`. Por
+  tanto, `ADR-0019` queda liberado al sprint-007 per la regla
+ 6-sprint si no se usa antes (sprint-001 + 002 + 003 ya trascurridos =
+  3 sprints; ventana cierra en sprint-007).
+- **Mechanical detection script for future drift**: pinado el check
+  ejecutable:
+  ```bash
+  # 1. List of "primer ID libre" claims anchored to per-ADR footnotes
+  grep -E 'el primer ID libre después de esta ADR es .*ADR-00' tasks/decisions.md
+
+  # 2. Truth-of-truth: real top-level ADR headings
+  grep -oE '^## ADR-[0-9]{4}' tasks/decisions.md | sort -u
+
+  # 3. Si los dos NO concueran, drift detected.
+  ```
+  Este script queda pineado como "next step" para CI integration (no
+  parte de esta ADR — queda para ADR-0024 o ticket posterior en
+  `quality/release-gates.md` Bloque de Detection Gates).
+- **Mitigación / Riesgo residual — drift re-introduction**: Si un
+  desarrollador futuro desestima la política y reintroduce la oración
+  "el primer ID libre después de esta ADR es …" en una nueva ADR, el
+  drift retornaría. Como mitigación documentada (out of scope de
+  ADR-0023, queda para ticket posterior): añadir al Bloque 7 / nuevo
+  Bloque de `quality/release-gates.md` un test automatizado en CI
+  que ejecute `quality/check_ledger_decisions.py` para rechazar PRs
+  que reintroduzcan variaciones prohibidas del regex. Pine contract
+  con el precedent `Forbid tracked transient files` step en
+  `.github/workflows/ci.yml`. Out of scope de esta ADR.
+
+### Cross-link pine contract
+
+- `tasks/decisions.md ADR-0020` — originador del drift: "el primer ID
+  libre después de esta ADR es **ADR-0021**" (paragraph en cierre).
+- `tasks/decisions.md ADR-0021` — acumulador del drift: "El primer ID
+  libre después de esta ADR es `ADR-0022`." (paragraph en cierre).
+- `tasks/decisions.md ADR-0022` — tercera instancia del drift: "El
+  primer ID libre después de esta es **ADR-0023**." (paragraph en
+  cierre).
+- `tasks/decisions.md ADR-0024` (futuro) — primer ADR firmado bajo la
+  regla (e) hybrid; should NOT contener "el primer ID libre
+  después de esta es …".
+- `tasks/decisions.md ADR-0018` — Precedente metodológico del *mirror
+  contract* (originado en property tests Hypothesis/F3 mirror) usado
+  análogamente aquí para fijar un patrón normativo contra erosión
+  sistemática de estándares. ADR-0023 es el mirror-equivalent a
+  ADR-0018 pero aplicado al ID-numbering pattern.
+- `tasks/decisions.md ADR-0020` — `Numbering note` precedent del formato
+  "ADR-XXXX + ADR-0019 retroactivo + ADR-0021 next free" que esta ADR
+  reforma.
+- **TSK-022 ID-collision precedent**: `tasks/backlog.md` `Nota de
+  colisión de ID` block + `docs/specs/TSK-022-multi-exchange-adapter/01-requirements.md`
+  sección D1. La omisión del check-before-open produjo un rename
+  reactivo a TSK-022; esta ADR pincha la policy para que la próxima
+  vez sea prevent detection, no reactive rename.
+
+### Numbering note
+
+Esta ADR usa **ADR-0023** por consistent sequential order per
+`ADR-0020` precedent (primera libre post-`ADR-0022`). Si la regla (e)
+hybrid auto-aplica la próxima vez que se firme `ADR-0024`, la tabla
+global del ledger (header section) se actualizará atómicamente, por
+lo que NO se requerirá per-ADR "next free" footnote nunca más.
+
 
