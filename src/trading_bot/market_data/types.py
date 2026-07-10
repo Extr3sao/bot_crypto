@@ -140,8 +140,8 @@ class CCXTOHLCVProtocol(Protocol):
     with extra metadata; downstream code reads by index.
     """
 
-    def __getitem__(self, index: int) -> list[float]: ...
-    def __iter__(self) -> Iterator[list[float]]: ...
+    def __getitem__(self, index: int) -> list[float | int]: ...
+    def __iter__(self) -> Iterator[list[float | int]]: ...
     def __len__(self) -> int: ...
 
 
@@ -183,10 +183,10 @@ def narrow_ccxt_ohlcv(data: Any) -> CCXTOHLCVProtocol:
 
 
 __all__ = [
-    "CCXTOHLCVProtocol",
-    "CCXTPayloadProtocol",
     "OHLCV",
     "Balance",
+    "CCXTOHLCVProtocol",
+    "CCXTPayloadProtocol",
     "OrderResult",
     "OrderStatus",
     "OrderType",
