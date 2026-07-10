@@ -215,12 +215,12 @@ jobs:
         # at `gh auth status` (parse-tripwire smoke). Either exit code is
         # smoke-passing; both are read-only (no PR/label side effects).
         # If the secret is in active use, log its invocation timestamp in
-        # `context/retrieval-log.md`; rotation cadence is org-admin
-        # responsibility (cross-link back to `quality/release-gates.md`
-        # §Bloque 7 — Credentials rotation for the 90-day cadence + roles
-        # + sprint-review dependency). ADR-0020 keeps the pwsh-only
-        # contract that makes this scripted dry-run the canonical pre-PAT
-        # sandbox.
+        # `context/retrieval-log.md`. Rotation cadence is org-admin
+        # responsibility — cross-link back to release-gates.md
+        # #credentials-rotation (org-admin responsibility, NOT
+        # engineering-owned). ADR-0021 firmed the policy; ADR-0020 keeps
+        # the pwsh-only contract that makes this scripted dry-run the
+        # canonical pre-PAT sandbox.
         env:
           GH_TOKEN: ${{ secrets.PR_PIPELINE_SMOKE_PAT }}
         shell: pwsh
