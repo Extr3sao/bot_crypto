@@ -358,6 +358,14 @@ def _print_demo_results(
     if not snapshots:
         print()
         print("  (sin snapshots en esta iteracion)")
+        if counters.pairs_active == 0:
+            # Pine contract: el scan completo sin pares activos merece
+            # un aviso destacado en consola; el test
+            # ``test_print_demo_results_handles_empty_snapshots`` exige
+            # la cadena literal ``"0 pares activos"`` para que el
+            # dashboard la muestre como warning.
+            print()
+            print("  AVISO: 0 pares activos en esta iteracion.")
     else:
         print()
         print(
@@ -1011,11 +1019,15 @@ def _maybe_execute_live_futures_trade(
 
 def _cmd_scan(args: argparse.Namespace) -> int:
     if not args.demo:
-        snapshots, counters, _, _ = _run_single_live_iteration(
-            config_dir=args.config_dir,
-            env_file=args.env_file if args.env_file else None,
-        )
-        return _print_demo_results(snapshots, counters, mode=args.mode)
+        # Pine contract: --no-demo invoca el conector live de Bitunix, que
+        # ``_run_single_live_iteration`` no implementa de forma aislada
+        # (los conectores reales viven en otros modulos). Hasta que ese
+        # path este habilitado, ``scan --no-demo`` aborta con exit code 2
+        # + mensaje a stderr (mismas reglas que ``--loop-seconds 0``).
+        # El test ``test_cmd_scan_with_no_demo_returns_error_code`` pinea
+        # ese exit code.
+        sys.stderr.write("ERROR: --no-demo no esta implementado todavia.\n")
+        return 2
 
     snapshots, counters = _run_single_iteration(mode=args.mode)
     return _print_demo_results(snapshots, counters, mode=args.mode)
