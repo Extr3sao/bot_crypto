@@ -237,7 +237,12 @@ Desviaciones → ADR firmada y actualización simultánea de los 3 archivos:
 ### Cadence
 
 - **90 días para PAT service-account `PR_PIPELINE_SMOKE_PAT`** (alineado
-  a OWASP ASVS V2.10.4).
+  a **NIST SP 800-57 Part 1 Rev. 5 §5.3.6 Cryptographic Period**; cadencia
+  revisable vía ADR cuando NIST o el equipo decida ajustarla; complementa
+  OWASP ASVS V14.1 *Configuration & Secrets Management* para la policy
+  general). El anchor exacto V2.10.4 NO cubre rotation cadence; el sistema
+  reminder del code-reviewer detectó la imprecisa original y este wording
+  fine-tuning ancla la autoridad normativa correcta.
 - Trigger adicional: cualquier cambio de role en el org-admin team que
   afecte el onboarding de un nuevo owner requiere rotación inmediata del
   PAT y revalidación del dry-run smoke job.

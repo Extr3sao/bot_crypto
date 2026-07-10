@@ -216,9 +216,9 @@ jobs:
         # smoke-passing; both are read-only (no PR/label side effects).
         # If the secret is in active use, log its invocation timestamp in
         # `context/retrieval-log.md`; rotation cadence is org-admin
-        # responsibility (kept inline — no cross-link, since
-        # `quality/release-gates.md` does not yet carry a dedicated
-        # credentials-rotation section). ADR-0020 keeps the pwsh-only
+        # responsibility (cross-link back to `quality/release-gates.md`
+        # §Bloque 7 — Credentials rotation for the 90-day cadence + roles
+        # + sprint-review dependency). ADR-0020 keeps the pwsh-only
         # contract that makes this scripted dry-run the canonical pre-PAT
         # sandbox.
         env:
