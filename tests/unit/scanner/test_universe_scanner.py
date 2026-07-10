@@ -726,7 +726,14 @@ def test_inactive_snapshot_has_zero_score() -> None:
 
 
 def test_caching_source_avoids_double_fetch() -> None:
-    """Gotcha #1: una sola llamada per symbol per fetch_* per run()."""
+    """Gotcha #1: una sola llamada per symbol per fetch_* per run().
+
+    Los volumen/spread/ohlcv deben pasar los filtros (volume=5M > min=1K,
+    spread=1 < max=30bps, OHLCV con ATR en [0.05, 8.0]) para que el
+    short-circuit de Q4 no aborte antes de llegar a spread + atr fetches.
+    Con volume=100 (<min=1K) la assertion de ``fetch_spread_bps`` fallaría
+    con got=0 porque volume filter corto-circuita el resto.
+    """
     settings = _build_settings(
         pairs=[("BTC/USDT", True)],
         kill_switch_enabled=False,
@@ -734,7 +741,7 @@ def test_caching_source_avoids_double_fetch() -> None:
     )
     registries = build_filter_set_per_mode(settings)
     source = FakeMarketDataSource(
-        volume_by_symbol={"BTC/USDT": 100.0},
+        volume_by_symbol={"BTC/USDT": 5_000_000.0},
         spread_by_symbol={"BTC/USDT": 1.0},
         ohlcv_by_symbol={"BTC/USDT": _flat_ohlcv("BTC/USDT", 100, last_close=100.0)},
     )
