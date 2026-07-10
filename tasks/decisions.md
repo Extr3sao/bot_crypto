@@ -534,11 +534,8 @@ Riesgo residual: si un CI Windows self-hosted corre con Windows PowerShell 5.1 s
        (slip del org-admin), context-engineer debe:
        (a) abrir alerta inmediata con taxonomía `event=secret-rotation-unlogged`,
        (b) escribir un **ticket retroactivo PineABLE** para absorver las lecciones
-       post-rotation. Sugerencia de ID placeholder: **TSK-021** (siguiente libre
-       backlog per `tasks/backlog.md` post TSK-020 referenced en retrieval-log
-       `[2026-07-04 14:30]` typography actually cross-confirmed).
-  - **Pine como ledger entry**: TSK-021 (placeholder) PineAR el ticket retroactivo
-    PineABLE como medida de mitigación del riesgo residual documentado abajo.
+       post-rotation. ID firmado: **TSK-021** (creado en `tasks/backlog.md` sección "Tickets Operations Risk (silent-failure retrospectives, auth-gated)" con DoD completo + cross-links a ADR-0021, ADR-0017, ADR-0012, ADR-0020).
+  - **Pine como ledger entry**: **TSK-021** (firmado en `tasks/backlog.md` sección "Tickets Operations Risk (silent-failure retrospectives, auth-gated)" con DoD completo + cross-links a ADR-0021, ADR-0017, ADR-0012, ADR-0020) PineAR el ticket retroactivo PineABLE como medida de mitigación del riesgo residual documentado abajo.
 
 - **Riesgo residual**:
   - **Escenario silente (impacto alto)**: si el org-admin completa una rotación
@@ -575,7 +572,7 @@ Riesgo residual: si un CI Windows self-hosted corre con Windows PowerShell 5.1 s
   - `.github/CODEOWNERS STRATEGY-TEAM` (PinePineado per retrieval-log `[2026-07-04 14:30]`).
   - `context/retrieval-log.md` entries futuras taggeadas `event=secret-rotation`
     (una por rotación, cross-linkadas aquí).
-  - `tasks/backlog.md` ticket retroactivo PineABLE (TSK-021 placeholder o equivalente).
+  - `tasks/backlog.md` **TSK-021** (ticket retroactivo PineABLE firmado, sección "Tickets Operations Risk (silent-failure retrospectives, auth-gated)").
   - Precedents ADRs: ADR-0017 (auth-gated), ADR-0012 (inline-comment + ignore-vuln
     pattern), ADR-0020 (numbering note + pwsh-only context).
   - Retrieval-log precedents: `[2026-07-09 16:00]` (origen), `[2026-07-09 18:25]`

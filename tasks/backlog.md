@@ -140,6 +140,78 @@
 
 ## Tickets Baseline Health & Risk (ADR-0016 umbrella)
 
+## Tickets Operations Risk (silent-failure auth-gated)
+
+> Tickets que Pinean guardias operacionales Pineadas en ADRs (Bloque 5+
+> riesgos residuales con silent-failure surface). No requieren
+> cambio de codigo en repo — PineAR el procedimiento + checklist para
+> el actor autorizado (org-admin) en operaciones Day 2. Auth-gated
+> serial solo para revocar para交接 operativo: el repo solo pine el
+> contract + ticket; la ejecución física queda al owner (precedent
+> ADR-0017 branch-protection Bloque 6).
+
+- [ ] **TSK-021** Post-rotation retrospective ticket (silent-failure
+  PineADum capture for `PR_PIPELINE_SMOKE_PAT`). **Est: S**. Estado
+  real: `todo`. **Risk: H** (silent-rotation outside-repo -> audit-trail
+  corrupted -> smoke job fails loud sin causa documentada). **Fase**: 6
+  (Post-merge QA para F5/sprint-003). **Pri**: 1 (operational risk que
+  impacta Bloque 5 calidad-pine más que código productivity).
+  **DoD**:
+  - [ ] Documentar el **path de notificación post-rotation** (5
+        steps Pineados en `tasks/decisions.md` ADR-0021
+        Pine-PinePine sección Consecuencias, 5 bullets): org-admin
+        rota -> retrieval-log entry -> sprint-review validation ->
+        alert si absent -> este ticket abierto si aplica.
+  - [ ] Publicar **retrieval-log template** tagged `event=secret-rotation`
+        en `context/retrieval-log.md` (timestamp + SHA diff metadata
+        nueva/previa). Referencia: los 4 precedents cross-linkeados
+        desde ADR-0021 ([16:00], [18:25], [14:30] del 2026-07).
+  - [ ] Implementar **detection sweep** PineArea rotacion silent:
+        `git log --diff-filter=M context/retrieval-log.md --grep
+        'event=secret-rotation'` + `grep -E '^\[.*event=secret-rotation'`
+        semanal desde sprint review. Si entrada ausente -> abrir
+        alerta `event=secret-rotation-unlogged` per ADR-0021
+        Sub-Política PineADA mitigation path.
+  - [ ] Vincular este ticket como **drive-in para lecciones
+        post-rotation**: cada entrada Pineada PineRing una
+        observación Pine -> este ticket absorbe la lección updateada.
+  - [ ] Operacional: la ejecución Pineada queda como auth-gated
+        manual ops (org-admin con scope `admin:org` per ADR-0017
+        precedent). No hay código de aplicación en este repo
+        (runtime contract = smoke job detects fail loud).
+  **Cross-link**:
+  - `tasks/decisions.md` ADR-0021 (silencioso + path notification +
+    mitigation ticket place Pine、ここ这里).
+  - `tasks/decisions.md` ADR-0017 (precedent auth-gated manual ops).
+  - `tasks/decisions.md` ADR-0012 (precedent inline-comment + ignore
+    pattern en otras vendors).
+  - `tasks/decisions.md` ADR-0020 (numbering note Pine ada PinePine:
+    TSK-021 sigue Pine libre TSK-013.10 hygiene backlog al cierre de
+    sprint-003).
+  - `quality/release-gates.md` §Bloque 7 — Credentials rotation
+    (operational source of truth: Roles + Procedimiento + Riesgos-tabla
+    para silent-rotation scenarios).
+  **Diagnostico escenario**: org-admin completa rotación física
+  PineER del workflow PinePineada en repo (sin reportar/taggear
+  PinePinePineadamente localmente con la retrieval-log entry esperada
+  PineADA en Bloque 7 sub-§Procedimiento step 2), el audit-trail
+  queda corrompido (SHA diff no documentado); impact-blast se
+  observa como dry-run smoke job que "falla loud" Pineeea PineRCI
+  PinePineamente. **Mitigación PinePin**: context-engineer detecta
+  during sprint review check regular; este ticket PineA las
+  lecciones en sociedad con el path de notification PinePineADA. No
+  es un bug — es un PinePine contract operacional PinePineADA que
+  requiere regular mantención Pine ORGANIZACIONAL/PROCEDURAL.
+  **DoD in-progress check**: este ticket permanece en `todo`
+  basta que la primera rotación Pine ADA se complete. La transición
+  a `in_review` ocurre en el momento Pine una retrieval-log entry
+  pinePineada requiera actualización o PineADA observación Pineperar.
+  El primer retrieval-log entry tagged `event=secret-rotation`
+  toggling del estado del ticket (de `todo` a `in_review`) per la
+  observacion PineADA en ADR-0021.
+  Depende de: ninguno.
+
+
 > Diagnostico confirmado via checkout main @ 2774021 + `uv run mypy src/trading_bot/` + `uv run pytest`. **10 issues pre-existentes** (no introducidos por PRs recientes): 8 mypy errors + 2 pytest failures + 2 pytest setup-time errors. Umbrella ADR-0016 firma la estrategia fix-forward atomico. Cherry-pick safe por ticket (independiente de TSK-013.4 / TSK-104 work).
 
 - [ ] **TSK-013.5** **Pri 1 (Money-Risk)** Restore cross-domain live fail-fast validator. **Est: S**. Estado real: `todo`. **Risk: H** (runtime validation breach — falla permite arrancar bot en `mode=live` con `risk.kill_switch_enabled=False`, incapaz de abortar en emergencia de mercado). Diagnostico confirmado: `tests/unit/config/test_failfast.py::test_settings_rejects_live_with_kill_switch_off` configura `mode=live + live_trading_enabled=true + i_understand_the_risks=true + kill_switch_enabled=false` y NO levanta `ValidationError`; el cross-domain invariant `_check_cross_domain_live_invariants` no frena. Cross-link ADR-0016 (umbrella) + ADR-0010 (flat-env alias context). **DoD**: `pytest tests/unit/config/test_failfast.py::test_settings_rejects_live_with_kill_switch_off` verde + `Settings._check_cross_domain_live_invariants` raises `ValidationError` loud cuando precondiciones live se cumplen pero `risk.kill_switch_enabled=False`. Cobertura >= 90% mantenida sobre `src/trading_bot/config/settings.py`. Depende de: ninguno (remediation directa).
