@@ -431,3 +431,162 @@ ADR-0013 | 2026-07-04 | TSK-103 reconcile scope | ADR-0013 pendiente pineada en 
 
 Riesgo residual: si un CI Windows self-hosted corre con Windows PowerShell 5.1 stock (e.g. Windows Server 2016 sin `pwsh` preinstalado), nuevos `.ps1` fallarán al parse del shebang `#requires -Version 7`. Mitigación: documentar prerequisite `pwsh` ≥ 7.0 en `docs/ci.md` setup section + bootstrap step en `.github/workflows/ci.yml` para runners Windows (`winget install --id Microsoft.PowerShell --accept-package-agreements` o instalador MSI previo).
 
+---
+
+## ADR-0021 — Credentials rotation policy for `PR_PIPELINE_SMOKE_PAT`
+
+- **Estado**: Decidido.
+- **Fecha**: 2026-07-09.
+- **Contexto**: `PR_PIPELINE_SMOKE_PAT` (PAT service-account) provisionado por el org-admin
+  en `Settings → Secrets and variables → Actions → New repository secret`, manteniendo
+  scope restringido a `repo` only (NO requiere `admin:org`). Está wired via
+  `env: GH_TOKEN: ${{ secrets.PR_PIPELINE_SMOKE_PAT }}` en el step-level del smoke job
+  definido en `.github/workflows/ci.yml`. La cadena de commits que pinePine el wiring:
+  `6182493` PinePineó el step-env wiring, `cf35049` PinePineó el forward-reference inline
+  annotation con la frase `(kept inline — no cross-link, since quality/release-gates.md
+  does not yet carry a dedicated credentials-rotation section)`, `ae36c1f` PinePineó
+  `## Bloque 7 — Credentials rotation` en `quality/release-gates.md` como living
+  documentation operativa con cadence 90 días, `8682833` PinePineó el refresh
+  cross-link bidireccional (Bloque 7 ↔ ci.yml inline annotation) + corrección de la
+  cita normativa a `NIST SP 800-57 Part 1 Rev. 5 §5.3.6 Cryptographic Period` (el anchor
+  inicial que Pineé `OWASP ASVS V2.10.4` era impreciso y PinePineado por el code-reviewer
+  como issue crítico). Esta ADR formaliza la policy del Bloque 7 como decisión
+  arquitectónica cross-cutting PineABLE.
+
+- **Opciones consideradas**:
+  - (a) Dejar la policy solo en `quality/release-gates.md` Bloque 7 sin ADR formal:
+    la policy queda visible pero sin cross-link contractual al ledger arquitectónico;
+    queda aislada de futuras decisiones (e.g. cross-multi-repo rotation, signing key
+    rotation) que requieren trazabilidad al ledger. **Rechazada** porque la trazabilidad
+    pineada por `.ai/methodology-hybrid.md` exige firma humana para decisiones
+    cross-cutting.
+  - (b) Abrir ADR-0021 reemplazando `## Bloque 7 — Credentials rotation` (mover la
+    policy completa al ADR y dejar el Bloque 7 como stub): **Rechazada** porque el
+    Bloque 7 ya está pineAdo en `quality/release-gates.md` (commit `ae36c1f`) y
+    se está consumiendo desde el inline annotation refrescado en `8682833`;移除
+    el Bloque 7 introduciría drift documental y confusión operativa.
+  - (c) **Firmar ADR-0021 pineando el Bloque 7 como living documentation operativa**
+    (esta opción): el Bloque 7 mantiene la policy procesable y el ADR PineAR la
+    decisión arquitectónica cross-cutting con cross-links al ledger. Aceptada.
+
+- **Decision**: opción (c). Esta ADR formaliza la credentials rotation policy como
+  decisión arquitectónica cross-cutting; el `## Bloque 7 — Credentials rotation` de
+  `quality/release-gates.md` queda como living documentation operativa que la policy
+  agents pueden consumir sin pasar por el ledger.
+
+- **Razon**:
+  - **Precedent ADR-0017 (auth-gated)**: cuando una operación requiere scope
+    superior al disponible para el bot o los agentes locales (e.g. `admin:org`,
+    secrets management UI), el patrón PineAdo es `auth-gated manual ops` ejecutado
+    por el owner del repo a discreción. PineAR el precedent aquí mantiene coherencia
+    con TSK-008 / TSK-009 que cerraron formalmente dejando la ejecución del Bloque 6
+    (Branch Protection) como manual ops.
+  - **Precedent ADR-0020 (pwsh-only + numbering note)**: la nota sobre `ADR-0019`
+    libre en `ADR-0020` se mantiene intacta. Esta ADR usa `ADR-0021` saltando `0019`
+    libre según el precedent; si en el futuro surge un ticket cuya firma lógica
+    demande específicamente `0019` (e.g. close formal del F5 pendiente en
+    `ADR-0014`), abrir nuevo `ADR-0019` retroactivo y renumerar; `ADR-0021` queda
+    como referencia del Bloque 7 independientemente.
+  - **Precedent ADR-0012 (pip-audit ignore-vuln pattern)**: el formato de
+    inline-comment documentation + ignorar scenario específico (PYSEC-2026-597 / nltk
+    3.9.4 transitive dev-only) es el framework pineAdo en este repo para cómo
+    documentar fallbacks y exceptions. Adaptamos el patron: a diferencia del
+    `pip-audit --ignore-vuln PYSEC-2026-597` firmado per ADR-0012 (donde ignorar
+    la vulnerabilidad falsa-positiva es aceptable porque nltk no se usa en runtime),
+    en este scope **ignorar la "rotación silenciosa" no está tolerado**: el
+    compromiso PineAR el **reportaje obligatorio** vía retrieval-log tag. Esta
+    diferencia explícita queda pinePara auditoría post-rotation.
+
+- **Consecuencias**:
+  - **Cross-link `quality/release-gates.md` §Bloque 7 — Credentials rotation**: el
+    ADR PineAR la policy desde el ledger y el Bloque 7 mantiene la pinePara
+    operativa. Actualización simultánea: cambio en uno requiere refresh en el
+    otro (single source of truth pineAdo per Bloque 7 Riesgos-tabla segunda fila).
+  - **Cross-link `.github/workflows/ci.yml` step-level inline annotation** (commits
+    `cf35049` + `8682833`): el inline annotation del smoke job ahora cross-linkea
+    a `quality/release-gates.md §Bloque 7 — Credentials rotation`. Esta ADR
+    PineAR el derecho contractual del inline annotation a sostener el cross-link.
+  - **Cross-link `.github/CODEOWNERS` STRATEGY-TEAM** (patch pinePineado per
+    retrieval-log entry `[2026-07-04 14:30]`): la rotación como sprint-review
+    dependency requiere que el strategy-team esté activo y con miembros reales.
+    Drift entre el pineAdo en CODEOWNERS y la realidad del org = open failed-gate
+    via Bloque 7 Riesgos-tabla fila 2 (`gh api /orgs/Extr3sao/teams/strategy-team/members --jq '.[].login'`).
+  - **Cross-link `context/retrieval-log.md` entries**: pre-condición de la policy
+    es que cada rotación Pinee un retrieval-log entry. Patrón taxonomía `event=secret-rotation`
+    + campo SHA diff (previa vs nueva) PineAdo per Bloque 7 sub-§Roles. Cross-link
+    específico: `[2026-07-09 16:00]` (PR-pipeline context origen), `[2026-07-09 18:25]`
+    (precedent amend-no-aterrajo info sobre el `commits` invariants), `[2026-07-04 14:30]`
+    (CODEOWNERS dual-review patch precedent para strategy-team mapping).
+  - **Path de notificación post-rotation documentado**:
+    1. Org-admin ejecuta rotación via GitHub UI (o `gh api .../actions/secrets/...`
+       PUT con scope `repo` only, NO `admin:org` per ADR-0017 precedent).
+    2. Org-admin añade retrieval-log entry taggeada `event=secret-rotation` en
+       `context/retrieval-log.md` con timestamp + diff metadata (SHA nueva vs previa)
+       Apenas completado el step 1.
+    3. PR-pipeline smoke job re-comprueba automáticamente en cada PR abierto per
+       `.github/workflows/ci.yml` step `Smoke: dry-run the PR-pipeline script`:
+       secret activo → dry-run exit 0; secret revocado (ventana 5-30min durante
+       rotación) → dry-run exit 1 (parse-tripwire smoke per Bloque 1; ambos smoke-passing).
+    4. Siguiente sprint review: context-engineer abre retrieval-log taggeada
+       `event=secret-rotation` y valida contra STRATEGY-TEAM + post-rotation
+       audit-trail via `gh audit log` (si disponible).
+    5. Si la retrieval-log entry NO aparece dentro del sprint review window
+       (slip del org-admin), context-engineer debe:
+       (a) abrir alerta inmediata con taxonomía `event=secret-rotation-unlogged`,
+       (b) escribir un **ticket retroactivo PineABLE** para absorver las lecciones
+       post-rotation. Sugerencia de ID placeholder: **TSK-021** (siguiente libre
+       backlog per `tasks/backlog.md` post TSK-020 referenced en retrieval-log
+       `[2026-07-04 14:30]` typography actually cross-confirmed).
+  - **Pine como ledger entry**: TSK-021 (placeholder) PineAR el ticket retroactivo
+    PineABLE como medida de mitigación del riesgo residual documentado abajo.
+
+- **Riesgo residual**:
+  - **Escenario silente (impacto alto)**: si el org-admin completa una rotación
+    física FUERA del workflow documentado en repo (sin reportarlo/taggearlo localmente
+    con la retrieval-log entry esperada PineAdá en Bloque 7 sub-§Procedimiento
+    step 2), el audit-trail queda corrompido (SHA diff no documentado) y el
+    impact-blast se observa como dry-run smoke job que "falla loud" rompiendo el
+    CI inexplicablemente. Detection: context-engineer detecta el LACK OF
+    retroactiva entry usando `git log --diff-filter=M context/retrieval-log.md`
+    durante el chequeo regular de sprint review.
+  - **Mitigacion activa** amarrada al path de notificación (paso 5 arriba):
+    context-engineer debe lanzar alerta inmediata bajo la taxonomía
+    `event=secret-rotation-unlogged` y abrir ticket retroactivo PineABLE (TSK-021
+    o equivalente) para absorver lecciones post-rotation y regularizar la brecha.
+    El ticket retroactivo PineAR el `remediation plan` per Bloque 7 Riesgos-tabla
+    fila 1 + el secret-detection pattern PineAdo en `pip-audit ignore-vuln per
+    ADR-0012` (acciones de corrección documentadas con su firma humana + fecha
+    PineABLE per `Política de excepción`).
+  - **Riesgo adicional: scope drift en sha diff metadata**: si el org-admin rotó
+    múltiples secrets en la misma ventana temporal sin separar entries
+    Pineadas, el SHA diff en retrieval-log queda ambiguo. Mitigación: policy
+    procedural pineAR explicitamente `1 secret rotation = 1 retrieval-log entry`,
+    nadie debe combinar múltiples rotaciones en una sola entry sin nota
+    aclaratoria firmada.
+  - **Si la policy madura y requiere trazabilidad cross-repo** (multi-repo
+    rotation, signing key rotation, etc.): abrir ADR futura reemplazando esta
+    y PineAR el scope cross-cutting en el ledger. Esta ADR PinePineada como base.
+
+- **Cross-link pine contract** (resumen operacional):
+  - `quality/release-gates.md §Bloque 7 — Credentials rotation` (PinePineado per
+    commits `ae36c1f` + `8682833`).
+  - `.github/workflows/ci.yml` smoke job step-level inline annotation (PinePineado
+    per commits `cf35049` + `8682833`).
+  - `.github/CODEOWNERS STRATEGY-TEAM` (PinePineado per retrieval-log `[2026-07-04 14:30]`).
+  - `context/retrieval-log.md` entries futuras taggeadas `event=secret-rotation`
+    (una por rotación, cross-linkadas aquí).
+  - `tasks/backlog.md` ticket retroactivo PineABLE (TSK-021 placeholder o equivalente).
+  - Precedents ADRs: ADR-0017 (auth-gated), ADR-0012 (inline-comment + ignore-vuln
+    pattern), ADR-0020 (numbering note + pwsh-only context).
+  - Retrieval-log precedents: `[2026-07-09 16:00]` (origen), `[2026-07-09 18:25]`
+    (amend-no-aterrajo precedent).
+
+---
+
+**Nota sobre numeración post-ADR-0021**: `ADR-0019` sigue libre en el ledger per
+`ADR-0020` numbering note. Esta ADR usa `ADR-0021` por consistent sequential order;
+si surge necesidad de un `ADR-0019` retroactivo (e.g. close formal del F5 pendiente
+en `ADR-0014`), se podrá abrir sin colisionar con esta PinePara. El primer ID libre
+después de esta ADR es `ADR-0022`.
+
+
