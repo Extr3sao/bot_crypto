@@ -2,9 +2,8 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
-
 import typing
+from dataclasses import dataclass
 
 from trading_bot.market_data.types import OHLCV
 from trading_bot.trade_journal.types import EntryThesis, TradeOutcome, WinLoss

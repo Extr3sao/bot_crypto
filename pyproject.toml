@@ -115,7 +115,6 @@ disable_error_code = [
     "typeddict-unknown-key", # sometimes fixtures add extra keys
     "call-arg",         # mock signature drift
     "type-arg",         # generic unwrap in tests
-    "syntax",           # noqa comment validations in test strings
     "assignment",       # mock variable rebinding
     "no-any-return",    # mock returns are explicitly Any
 ]

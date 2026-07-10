@@ -51,8 +51,9 @@ MEDIO + BAJO fixes del reviewer de handoff (septimo ciclo):
 from __future__ import annotations
 
 import time
+from collections.abc import Callable
 from dataclasses import dataclass
-from typing import Callable, Final
+from typing import Final
 from uuid import uuid4
 
 import structlog
