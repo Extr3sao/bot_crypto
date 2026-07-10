@@ -67,16 +67,25 @@ function Get-OffendingMatches {
     # Patrones prohibidos (regex case-insensitive):
     # 1. `TSK-NNN placeholder` standalone (word-boundary)
     # 2. `(TSK-NNN placeholder o equivalente)` parenthetical
+    # Patrones prohibidos (regex case-insensitive, friendly labels for output):
+    # 1. `TSK-NNN placeholder` standalone (word-boundary)
+    # 2. `(TSK-NNN placeholder o equivalente)` parenthetical
     $patterns = @(
-        "TSK-\d+\s+placeholder\b",
-        "\(TSK-\d+\s+placeholder\s+o\s+equivalente\)"
+        [pscustomobject]@{
+            Pattern     = "TSK-\d+\s+placeholder\b"
+            PatternName = "TSK-NNN placeholder standalone"
+        },
+        [pscustomobject]@{
+            Pattern     = "\(TSK-\d+\s+placeholder\s+o\s+equivalente\)"
+            PatternName = "parenthetical (TSK-NNN placeholder o equivalente)"
+        }
     )
     $hits = @()
     for ($i = 0; $i -lt $lines.Length; $i++) {
         $lineNumber = $i + 1
         $line = $lines[$i]
         foreach ($re in $patterns) {
-            if ($line -match $re) {
+            if ($line -match $re.Pattern) {
                 # Allowlist: si la linea texto matchea algun pattern del allowlist, skip.
                 $is_allowed = $false
                 foreach ($allowed in $ALLOWLIST_PATTERNS) {
@@ -87,10 +96,11 @@ function Get-OffendingMatches {
                 }
                 if ($is_allowed) { continue }
                 $hits += [pscustomobject]@{
-                    LineNumber = $lineNumber
-                    Pattern    = $re
-                    Line       = $line
-                    File       = $Path
+                    LineNumber  = $lineNumber
+                    Pattern     = $re.Pattern
+                    PatternName = $re.PatternName
+                    Line        = $line
+                    File        = $Path
                 }
             }
         }
@@ -106,32 +116,37 @@ function Invoke-SelfTest {
     # on early abort or partial test run (closes Q8 sub-nit #2).
     $fixtures = @(
         @{
-            Label    = "failure case (expected: 1 hit)"
-            Content  = "TSK-999 placeholder remains pending in ledger.`n"
-            MinHits  = 1
-            MaxHits  = 1
-            PassText = "hit detected"
+            Label       = "failure case (expected: 1 hit)"
+            Content     = "TSK-999 placeholder remains pending in ledger.`n"
+            MinHits     = 1
+            MaxHits     = 1
+            PassText    = "hit detected"
+            ShowDetails = $true
         },
         @{
-            Label    = "clean text (expected: 0 hits)"
-            Content  = "TSK-021 se firmo en tasks/backlog.md (no es placeholder).`n"
-            MinHits  = 0
-            MaxHits  = 0
-            PassText = "clean text accepted"
+            Label       = "clean text (expected: 0 hits)"
+            Content     = "TSK-021 se firmo en tasks/backlog.md (no es placeholder).`n"
+            MinHits     = 0
+            MaxHits     = 0
+            PassText    = "clean text accepted"
+            ShowDetails = $false
         },
         # Parenthetical fixture co-fires BOTH patterns: pattern 1 matches the
         # inner `TSK-021 placeholder` (followed by `)` word-boundary) and
         # pattern 2 matches the full parenthetical. Assert exact 2-hit count
         # so the label and assertion align (reviewer sub-nit).
         @{
-            Label    = "parenthetical ambiguity (expected: 2 hits, both patterns)"
-            Content  = "Cross-link: tasks/backlog.md ticket retroactivo (TSK-021 placeholder o equivalente).`n"
-            MinHits  = 2
-            MaxHits  = 2
-            PassText = "parenthetical detected"
+            Label       = "parenthetical ambiguity (expected: 2 hits, both patterns)"
+            Content     = "Cross-link: tasks/backlog.md ticket retroactivo (TSK-021 placeholder o equivalente).`n"
+            MinHits     = 2
+            MaxHits     = 2
+            PassText    = "parenthetical detected"
+            ShowDetails = $true
         }
     )
 
+    $total = $fixtures.Count
+    $i = 1
     foreach ($fx in $fixtures) {
         Write-Host ">>> Self-test: $($fx.Label)"
         $tmp = [System.IO.Path]::GetTempFileName()
@@ -142,19 +157,21 @@ function Invoke-SelfTest {
             $minOk = ($count -ge $fx.MinHits)
             $maxOk = ($count -le $fx.MaxHits)
             if (-not ($minOk -and $maxOk)) {
+                Write-Warning "Self-test ABORTED at fixture #$i/$total ($($fx.Label))"
                 Write-Error "Self-test FAIL on '$($fx.Label)': got $count hits (expected min=$($fx.MinHits) max=$($fx.MaxHits))"
                 return $false
             }
-            if ($fx.Label.StartsWith("clean text")) {
+            if (-not $fx.ShowDetails) {
                 Write-Host "  $($fx.PassText)"
             } else {
-                # Print the matched pattern explicitly to disambiguate which
-                # pattern fire (pattern 1 inner, pattern 2 outer parenthetical).
-                Write-Host "  $($fx.PassText): pattern='$($matches[0].Pattern)' line='$($matches[0].Line.Trim())'"
+                # Print the matched pattern_name + pattern explicitly to disambiguate
+                # which pattern fired (PatternName: friendly label; Pattern: raw regex).
+                Write-Host "  $($fx.PassText): pattern_name='$($matches[0].PatternName)' pattern='$($matches[0].Pattern)' line='$($matches[0].Line.Trim())'"
             }
         } finally {
             Remove-Item -LiteralPath $tmp -Force -ErrorAction SilentlyContinue
         }
+        $i++
     }
 
     Write-Host "Self-test PASS"
@@ -174,7 +191,7 @@ if (@($hits).Count -gt 0) {
     Write-Host ""
     Write-Error "Ledger placeholder grep-guard REJECTED the working tree."
     foreach ($h in @($hits)) {
-        Write-Error "  $($h.File):$($h.LineNumber)  pattern='$($h.Pattern)'"
+        Write-Error "  $($h.File):$($h.LineNumber)  pattern_name='$($h.PatternName)' pattern='$($h.Pattern)'"
         Write-Error "    > $($h.Line.Trim())"
     }
     Write-Host ""
