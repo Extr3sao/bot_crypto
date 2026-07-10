@@ -262,3 +262,15 @@ Write-Host ""
 Write-Host "=== TSK-099 validado end-to-end ===" -ForegroundColor Green
 Write-Host "Cierra TSK-099 con: 'feat: TSK-099 typed config with Pydantic v2' en develop." `
   -ForegroundColor Green
+
+
+# -----------------------------------------------------------------------------
+# Bloque 8: Ledger placeholder grep-guard (Q8 sub-nit post-TSK-021)
+# -----------------------------------------------------------------------------
+Write-Host ">>> [8/N] Ledger placeholder grep-guard (Q8 sub-nit close)"
+
+& pwsh ./scripts/check_ledger_placeholders.ps1
+if ($LASTEXITCODE -ne 0) {
+    throw "Ledger placeholder grep-guard REJECTED the working tree. Fix placeholders in tasks/decisions.md before continuing (re-run: pwsh ./scripts/check_ledger_placeholders.ps1 -SelfTest para validar manually)."
+}
+Write-Host "Ledger placeholder grep-guard OK"
