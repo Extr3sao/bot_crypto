@@ -550,7 +550,7 @@ def test_live_mode_requires_kill_switch_enabled(
     # Match especifico de la invariante cross-domain: pine contract sobre el
     # mensaje exacto para evitar que un match laxo matchee tambien el error
     # de Runtime (que dice "live_trading_enabled" en lugar de "kill_switch").
-    with pytest.raises(ValueError, match="risk.kill_switch_enabled=True"):
+    with pytest.raises(ValueError, match=r"risk.kill_switch_enabled=True"):
         load_settings(config_dir=config_dir, env_file=None)
 
 

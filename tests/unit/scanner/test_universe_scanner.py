@@ -881,7 +881,7 @@ def test_scanner_mode_str_raises_configuration_error_for_unknown_mode() -> None:
         )
         import asyncio
 
-        with pytest.raises(ConfigurationError, match="tasks/decisions.md"):
+        with pytest.raises(ConfigurationError, match=r"tasks/decisions.md"):
             asyncio.run(scanner.run())
     finally:
         scanner_mod._SCANNER_MODE_MAP = original_map  # type: ignore[assignment]
@@ -927,7 +927,7 @@ def test_iteration_completed_emitted_on_kill_switch() -> None:
     )
     # Y los 4 counters + duration_ms pineados por spec section 10 + Q6 del
     # round-9 fix asegura que `all_failed` se emite SIEMPRE (None en este branch).
-    for field in (
+    for key in (
         "duration_ms",
         "pairs_processed",
         "pairs_active",
@@ -935,7 +935,7 @@ def test_iteration_completed_emitted_on_kill_switch() -> None:
         "scanner_errors",
         "all_failed",
     ):
-        assert field in evt, f"iteration.completed debe llevar {field!r} (spec §10)"
+        assert key in evt, f"iteration.completed debe llevar {key!r} (spec §10)"
     assert evt.get("all_failed") is None, (
         f"all_failed es irrelevante en kill_switch path; got {evt.get('all_failed')!r}"
     )
@@ -977,7 +977,7 @@ def test_iteration_completed_emitted_on_empty_universe() -> None:
     )
     # Y los 4 counters + duration_ms pineados por spec section 10 + Q6 del
     # round-9 fix asegura que `all_failed` se emite SIEMPRE (None en este branch).
-    for field in (
+    for key in (
         "duration_ms",
         "pairs_processed",
         "pairs_active",
@@ -985,7 +985,7 @@ def test_iteration_completed_emitted_on_empty_universe() -> None:
         "scanner_errors",
         "all_failed",
     ):
-        assert field in evt, f"iteration.completed debe llevar {field!r} (spec §10)"
+        assert key in evt, f"iteration.completed debe llevar {key!r} (spec §10)"
     assert evt.get("all_failed") is None, (
         f"all_failed es irrelevante en empty_universe path; got {evt.get('all_failed')!r}"
     )
