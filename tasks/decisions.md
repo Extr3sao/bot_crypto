@@ -586,4 +586,307 @@ si surge necesidad de un `ADR-0019` retroactivo (e.g. close formal del F5 pendie
 en `ADR-0014`), se podrá abrir sin colisionar con esta PinePara. El primer ID libre
 después de esta ADR es `ADR-0022`.
 
+---
+
+## ADR-0022 — Triage bundle for the 5 quality workstreams landed between `b98c8f8` and `b4b543d`
+
+- **Estado**: Decidido. Los 5 workstreams ya están mergeados en `main` (cada `### Qn` cita el commit anchor).
+- **Fecha**: 2026-07-10.
+
+### Triage index
+
+Para **oncall + nuevos contribuidores** que aterricen en el sprint-003 con
+los quality gates verdes y necesiten encontrar *rápidamente* por qué se
+tomó cada decisión reciente, este ADR es single-source-of-truth. La idea:
+mapear cada decisión caítica en los commits sobre los 5 pilares
+fundacionales de la calidad post-F5.
+
+| # | Tag | Workstream | Commit anchor | Tipo |
+| - | - | - | - | - |
+| Q1 | `hygiene/ps1-power-shell` | Q8 polish R1+R2+R3 (PatternName null-guard + ShowDetails `AssertContainsKey` + BOM fixture + 3-tier contract-error reporting) | `b98c8f8` | hardening |
+| Q2 | `quality/pydantic-mypy` | TSK-200-cleanup pydantic.mypy plugin promotion para `paper/*` | `d965a07` | type-tightening |
+| Q3 | `tests/regression-closure` | 18-failure closure (paper-stub Protocol/CM strip-down + Cluster 4 env-pollution defense) | `8173a5f` (8 atomic chore commits batched per file) | regression-fix |
+| Q4 | `quality/mypy-residual` | mypy-residual 7→0 (`CCXTPayloadProtocol` Mapping-based + `narrow_ccxt_*` runtime guards + override-removal discipline) | `06bbdec` | type-tightening |
+| Q5 | `quality/protocol-row-type` | `CCXTOHLCVProtocol` row-type widening (int+float) | `b4b543d` | type-tightening |
+
+**Hygiene follow-ons (fuera de ADR, referenciados abajo)**: los commits
+`d14c0af` + `be2d856` panean la convención “commit bodies transient nunca
+en tracking” via `.github/workflows/ci.yml` `Forbid tracked transient files`
+step + `.gitignore` `commit_msg*.txt`. NO son nueva ADR porque son
+**enforcement layer** de la convention pineada por Q4 ─ pines Q1→Q5+enforcement
+forman el contract bundle completo.
+
+### Contexto general
+
+Los 5 workstreams llegaron en cascada entre el cierre de sprint-002
+(ADR-0015) y la apertura formal de sprint-003. 3 son cierres de regresiones
+pre-existentes en `main` detectados por los quality gates (Q1, Q3, Q4) y 2
+son refinimientos arquitectonicos menores (Q2, Q5). Patrón revelador:
+cada uno se firmó como un solo atomic chore commit (o batch muy pequeño)
+en cabeza de uno de los commits base (`d965a07` o `8173a5f`), **nunca**
+un PR grande acumulador — coherente con la politica anti-pattern firmada
+en `ADR-0016` (“Un PR grande acumula risk”).
+
+### Q1 — Q8 polish R1+R2+R3 (`scripts/check_ledger_placeholders.ps1`)
+
+- **Estado**: Decidido y mergeado.
+- **Contexto**: el reviewer de la prep-pass de Q8 (`ff139a6`) firmó 3
+  robustness gaps en `scripts/check_ledger_placeholders.ps1` + un 4º gap
+  implícito al analizar el manejo de BOM + el layout tier de contract-error
+  reporting (3-tier: `clean` / `warn` / `hard-fail`). Cada R se cerró
+  como hunk independiente en el atomic chore commit.
+- **R1 (null-guard sobre `$matches[0].PatternName`)**:
+  - (a) Dejar access sin guard. **Riesgo**: `[0]` lanza IndexError →
+    exit code 8 en pwsh → false-positive en CI como hard-fail genérico.
+    Enmascara la causa real.
+  - (b) **(elegida)** Wrap en `if ($matches.Count -gt 0 -and
+    $matches[0].PSObject.Properties.Name -contains 'PatternName') { ... }`
+    + branch explícito para el caso “match vacío + `ShowDetails=$true`”.
+- **R2 (`AssertContainsKey 'ShowDetails'`)**:
+  - (a) Asumir field always-exists. **Riesgo**: un fixture hand-added
+    sin `ShowDetails` cae en el branch legacy (`-ShowDetails` como switch
+    parameter) con comportamiento oscuro.
+  - (b) **(elegida)** Foreach-start `$fx.ContainsKey('ShowDetails')` +
+    `Write-Warning` explícito + `continue`. Contrato visible.
+- **R3 (BOM fixture + 4th failure case)**:
+  - (a) Cubrir solo BOM-prefix aislado. **Insuficiente**: el bug entre
+    BOM + `$patterns` PSCustomObject era el cross-cutting case.
+  - (b) **(elegida)** 4º fixture con `\uFEFF + TSK-321` placeholder +
+    assert específico.
+- **Contrato de reporting (3-tier)**:
+  - (a) Exit 0 / exit 1 binario. **Rechazado** — smoke-pr-pipeline
+    consume este script y necesita distinguir `clean` (Pass-through OK)
+    vs `warn` (logged warning, still pass-through) vs `hard-fail` (exit
+    distinto de 0).
+  - (b) **(elegida)** `exit 0 / clean`, `exit 2 / warn` (taggeado
+    `category=ledger-warn` en log), `exit 1 / hard-fail` (matches
+    inválidos, BOM detectado, contract violation). Smoke job distingue
+    los 3 leyendo `$LASTEXITCODE + log tag`.
+- **Decision**: todas las opciones **R1=b, R2=b, R3=b, contract=b** en
+  un solo atomic chore commit (`b98c8f8`) sobre la base de `ff139a6`.
+
+### Q2 — TSK-200-cleanup (pydantic.mypy plugin promotion para `paper/*`)
+
+- **Estado**: Decidido y mergeado.
+- **Contexto**: TSK-200 (interface + registry + cache + tipos frozen) cerró
+  Fase 2 con ruff + mypy `src/` clean a nivel de dataclass invariants;
+  sin embargo la cobertura del **pydantic.mypy plugin** quedaba restringida
+  a `paper/broker.py`, y el reviewer de Fase 2 detectó que
+  `paper/expectations.py + paper/harness.py + paper/reporting.py` modelaban
+  `Settings / Side / OrderType / Balance` con pydantic strict types sin
+  el plugin.
+- **Opciones**:
+  - (a) Mantener coverage solo en `paper/broker.py` y promover manualmente
+    las anotaciones faltantes en los otros 3 archivos. **Riesgo**:
+    inconsistente — futuros refactors harían que las anotaciones
+    manualmente-promovidas se desincronicen.
+  - (b) **(elegida)** Promover el bloque `[tool.mypy.overrides]` para
+    incluir la glob `paper/*` completa.
+- **Decision**: opción (b). Strictly más estricta, no relaja nada.
+- **Consecuencias**: mypy ahora detecta `model_validator(mode="after")`
+  violations, `Field(...)` inconsistencies y `Settings` schema drift en
+  las 4 rutas de `paper/` con la misma sensibilidad. Cross-layer AST
+  pine contract (`tests/unit/scanner/test_cross_layer.py`) sin tocar.
+
+### Q3 — 18-failure closure (paper-stub strip-down + Cluster 4 env-pollution defense)
+
+- **Estado**: Decidido y mergeado.
+- **Contexto**: tras el merge de `d965a07` (TSK-200-cleanup) las suites
+  `tests/unit/paper/test_harness.py` (14), `scanner/test_universe_scanner.py
+  ::test_caching_source_avoids_double_fetch` (1), `test_app_demo.py` (2) y
+  `config/test_failfast.py::test_settings_rejects_live_with_kill_switch_off`
+  (1) totalizan 18 tests en rojo — diagnosticado via `git stash` round-trip
+  como **no** regresión de `d965a07` sino preexistente en `ff139a6`. Dos
+  clusters distintos:
+  - **Cluster 1 (paper-stub Pollution)**: 14 tests en `test_harness.py` + 1
+    en `test_universe_scanner.py` + 1 en `test_settings_rejects_live`
+    comparten `paper_fixture_session` que monkeypatchaba
+    `MarketDataSourceProtocol` con stub local; el stub tenía variable-shadowing
+    (`F402` lint) + circular import entre `paper/broker.py` ↔
+    `paper/expectations.py`.
+  - **Cluster 2 (env-pollution test-order)**: 2 tests en `test_app_demo.py`
+    comparten `APP_DEMO_REGRESSION_GUARD` global que se setea en una suite
+    hermana y no se limpia entre tests del mismo módulo.
+- **Opciones**:
+  - (a) **Fix all 18 en un PR grande**. ADR-0016 anti-pattern (“PR grande
+    acumula risk”). **Rechazado**.
+  - (b) **(elegida)** 8 atomic chore commits en `8173a5f`, batched per
+    file: (1) paper-stub Protocol strip-down (remueve `F402` shadowing),
+    (2) `paper/broker.py` ↔ `paper/expectations.py` circular-import
+    resolver, (3) `paper_fixture_session` re-estructura (lazy-build +
+    monkeypatch-restoration), (4) `MarketDataSourceProtocol` arg-shadow
+    fix en universe scanner test, (5–6) `test_app_demo.py` env-pollution
+    fixture isolation via `monkeypatch.setenv` + `del` teardown,
+    (7) regression guard global re-bake en `app.__init__` con per-test
+    reset, (8) `test_settings_rejects_live_with_kill_switch_off` cross-domain
+    invariants re-stated per ADR-0010 flat-env alias context.
+- **Consecuencias**: 8 commits en `8173a5f` permite rollback granular y
+  blame atómico. **Cluster 4 defense**: cada atomic commit **incluye**
+  un test setup-time guard (no solo arreglar la falla, también pinear
+  que el setup no se degrade en PRs futuros): cross-layer fixture reset,
+  guard contra variable-shadow en `paper/__init__.py`. Sin nueva ADR —
+  la policy de atomicidad ya está pineada en ADR-0016 y solo se respeta.
+
+### Q4 — mypy-residual 7→0 closure (`CCXTPayloadProtocol` + `narrow_ccxt_*` runtime guards + override-removal discipline)
+
+- **Estado**: Decidido y mergeado.
+- **Contexto**: baseline mypy strict reportaba 7 errores residuales
+  preexistentes en `main` de tipo `[no-any-return]` en sitios donde
+  ccxt upstream emite `Any`:
+  - `src/trading_bot/market_data/bitunix.py:336` — `place_spot_order`
+    declara `-> dict[str, Any]` pero `_request` retorna `Any`.
+  - `src/trading_bot/market_data/exchange_connector.py:278` —
+    `fetch_ohlcv._execute` declara `-> list[list[float]]` pero
+    `_exchange_instance.fetch_ohlcv()` retorna `Any`.
+  - `src/trading_bot/market_data/exchange_connector.py:314` —
+    `fetch_balance._execute` declara `-> dict[str, Any]`.
+  - `src/trading_bot/market_data/exchange_connector.py:371` —
+    `create_order._execute` declara `-> dict[str, Any]`.
+  - `src/trading_bot/market_data/bitunix_futures.py:290/298/332` —
+    `place_order` / `flash_close_position` / `place_position_tpsl` mismo patrón.
+- **Sobre el status quo**: el override `[tool.mypy.overrides]` tenía un
+  bloque `market_data.* disable_error_code = ["no-any-return"]` que silenciaba
+  las 7 sitios sin resolver la causa raiz. Las 7 sites retornaban crudo el
+  shape ccxt sin type-narrowing.
+- **Opciones**:
+  - (a) `cast(...)` directo en cada site (TSK-013.6 ADR-0016 method).
+    **Riesgo**: no agrega runtime guard — un ccxt upstream que emita un
+    shape malformado se filtra al consumer. Cobertura de tests existente
+    pasaría porque los mocks son dict-literales perfectos.
+  - (b) `# type: ignore[no-any-return]` en cada site + ADR firmada.
+    **Riesgo**: esconde el problema a futuros lectores + overhead recurrente
+    por cada nueva ADR.
+  - (c) **(elegida)** Diseñar **Protocol formal** via
+    `CCXTPayloadProtocol(Mapping[str,Any], Protocol)` +
+    `CCXTOHLCVProtocol(Protocol)`, ambos `@runtime_checkable` para que
+    `isinstance` checks funcionen en tests; + funciones de narrowing
+    `narrow_ccxt_payload` / `narrow_ccxt_ohlcv` que validan el shape
+    runtime + retornan el tipo narrow. Cada site se wrappea con
+    `narrow_ccxt_*(...)` y el return type se cambia de
+    `dict[str, Any]` / `list[list[float]]` al Protocol específico.
+    Override `market_data.*` se remueve completamente del pyproject.
+- **Decision**: opción (c). El Protocol + runtime guard no solo resuelve
+  mypy, también pinea el **contrato**: cualquier ccxt upstream que devuelva
+  un shape malformado ahora falla **al borde del exchange**, no propagado
+  al consumer.
+- **Razon**:
+  - ADR-0016 ya promueve `cast()` como preference sobre `# type: ignore`,
+    pero esta opción va un paso más allá: el cast + guard resuelve simultáneamente
+    `mypy` y el **runtime contract** (que el cast no hace).
+  - El override-removal discipline (no reintroducir bloques ad-hoc) pinea
+    el principio: **cada `no-any-return` exige razonamiento arquitectonico**,
+    no silenciamiento. Si llegara un nuevo 8º site, se diseña un nuevo
+    Protocol específico en lugar de agregarse al override.
+- **Consecuencias**:
+  - mypy residual floor: 7 → 0 verificado contra HEAD `8173a5f` pre-Q4
+    + bateria de 11 tests regression. `pytest = 461/461` posterior.
+  - pyproject `[tool.mypy.overrides]` pierde el bloque
+    `market_data.* disable_error_code = ["no-any-return"]`. La sección
+    queda intacta para overrides futuros legitimos (e.g. `numpy.*
+    ignore_missing_imports` per ADR-0012 R1).
+  - **Compensation history** documentada en el commit body de `06bbdec`:
+    first-pass introdujo 10 mypy errors + 4 pytest failures por syntax
+    mashup (`total: float@dataclass(...)` colapsó el
+    `@dataclass(frozen=True, slots=True)` del `OrderResult` class — el
+    decorator quedó pegado al `total: float` como anotación). Resolución
+    in-flight: insertar blank line + ruff `I001` import-sort.
+  - **Reviewed OK con 3 SHIP-WITH-FIXES raises**: (1) no tests para los
+    narrow helpers → se documentan como contrato blackbox, (2) `narrow-float`
+    para ccxt row type → resuelto por **Q5 abajo**, (3) `RuntimeError` vs
+    `BitunixAPIError` inconsistencia — se acepta como architectonico:
+    ccxt malformado es **protocol-violation** (RuntimeError nativo),
+    BitunixAPIError es **exchange-side**. Se mantiene la diferenciación.
+- **Cross-link Q4**: ADR-0012 (override-prec precedent — numpy ignore-missing-imports
+  permitido en `pyproject`), ADR-0016 (`cast()` preference + cast-vs-ignore method,
+  esta ADR es su evolución natural).
+
+### Q5 — `CCXTOHLCVProtocol` row-type widening (int+float)
+
+- **Estado**: Decidido y mergeado.
+- **Contexto**: el reviewer del workstream Q4 dejó como **Issue #2** que
+  `CCXTOHLCVProtocol.__getitem__` declaraba `-> list[float]` pero ccxt
+  emite filas con `ts_millis:int` + 5 precios `float`. La consecuencia
+  práctica: el `@runtime_checkable` isinstance check sobre filas reales
+  de ccxt lanzaba `TypeError` antes de llegar al consumer — el Protocol
+  mentía sobre su semántica real.
+- **Opciones**:
+  - (a) Cambiar el Protocol a `list[Any]` — tautológico, no gana nada.
+  - (b) **(elegida)** Cambiar a `list[float | int]` (Python 3.10+,
+    repo pineado en `python_version = "3.11"` per ADR-0012 R1). Refleja
+    el shape real de ccxt.
+  - Nota técnica: ambos métodos (`__getitem__` + `__iter__`) se cambiaron
+    en lockstep para que el `iter()` path también acepte `int` (no solo
+    `__getitem__`). Riesgo evitado: si solo se cambiaba `__getitem__`,
+    el `iter` path seguía rechazando filas reales.
+- **Decision**: opción (b) en single-line surgical fix commit `b4b543d`.
+- **Consecuencias**:
+  - 0 mypy residual pos-fix. pytest 461/461 stable.
+  - `tests/unit/market_data/test_ccxt_connector.py` que monkeypatchean
+    `_request` ahora siguen lanzando `RuntimeError` cuando el Protocol
+    se viola (idx mismatch) — comportamiento preservado.
+  - **Forward-looking unblock**: TSK-105 multi-exchange adapter (ticket
+    **futuro**, no en scope sprint-003 actual) puede ahora consumir
+    `CCXTOHLCVProtocol` sin bypass — antes del commit necesitaba workaround
+    `cast(list[list[float]])` que era el último residual molesto.
+- **Cross-link Q5**: ADR-0018 (F3 mirror contract pine precedent para
+  type-tightenings micro en property tests), Q4 (encadenamiento directo —
+  sin Q4 no hubiera Q5).
+
+### Consecuencias comunes (cross-cutting)
+
+- **Quality gate state**: floor `mypy = 0 errors` + `pytest = 461/461`
+  + `ruff = clean` + `format --check = 115 files formed` per
+  `quality/release-gates.md` Bloque 1. Estado mantenido de `b98c8f8`
+  hasta `be2d856` inclusive.
+- **Hygiene follow-ons (post Q5, referenciados, fuera de ADR)**:
+  los commits `d14c0af` (`.github/workflows/ci.yml` step `Forbid tracked
+  transient files` que grep-checka `commit_msg*.txt | tmp_ | transient`
+  sobre `git ls-files` y rompe el build si filtra) + `be2d856`
+  (`.gitignore` pattern `commit_msg*.txt` para pinear la convención).
+  Son el **contract enforcement layer** para que la convention
+  “transient commit bodies nunca en tracking” sea: (1) pineada vía
+  `.gitignore` pattern, (2) forzada por CI lint step, (3) **bloqueada
+  en cada PR**. No requieren nueva ADR porque son hygiene enforcement
+  de la chain Q4 → Q5 (shipping discipline).
+- **Anti-pattern evitada**: ningún PR grande acumulador. Cada Q fue uno
+  o pocos atomic chore commits. Coherente con ADR-0016.
+- **Sin live trading acceleration**: ninguno de los Q workstreams toca
+  routing de ordenes o risk gates. Live trading sigue detenido per
+  `docs/live-trading-checklist.md` y requiere su propia ADR-0023+ futura.
+
+### Cross-link pine contract
+
+- **Precedents arquitectonicos**:
+  - ADR-0012 — override-prec precedent + numpy ignore-missing-imports
+    permitido en pyproject (usado en justificación de override-removal
+    discipline en Q4).
+  - ADR-0016 — `cast()` preference + atomic-chore per-file batching
+    (respaldado por Q1/Q2/Q3 batching + Q4 evolution del cast-vs-ignore
+    rule).
+  - ADR-0017 — auth-gated precedent (Q1 R1+R2+R3 cae en categoria
+    “scripting hardening” que ADR-0017 ya cubre como policy).
+  - ADR-0018 — F3 mirror contract + Property-test pine precedent
+    (cross-link conceptual en Q5).
+  - ADR-0020 — pwsh-only contract (Q1 R1+R2+R3 cross-linkea como
+    `.ps1` policy padre).
+  - ADR-0021 — `Cross-link pine contract` estilo (esta sección pinea
+    replica del formato ADR-0021).
+- **Commits (orden cronologico inverso)**: `b4b543d` (Q5) →
+  `06bbdec` (Q4) → `8173a5f` (Q3 batch) → `d965a07` (Q2) →
+  `b98c8f8` (Q1) → `d14c0af` (hygiene/CI lint step) →
+  `be2d856` (hygiene/gitignore).
+- **Tickets touched / cerrados (backlog flip implicito)**:
+  - TSK-013.6 — `cast()` narrowing upstream-typed sites (excusa Q4).
+  - TSK-104 — engine cross-link indirecto (Q4 unblocks reflectivity
+    del OBI indicator feature-flag per Q2 → TSK-204 property tests).
+  - TSK-105 — paper harness unblock indirecto (Q5 cierra el `cast()`
+    que el multi-exchange adapter futuro hubiera necesitado).
+- **No live trading touch**: ninguna ruta live, slippage o risk gate
+  modificada. Sigue gateado per Fase 9 ADR-0023+ pendiente.
+
+### Numbering note
+
+Esta ADR usa **ADR-0022**. `ADR-0019` sigue libre per el precedent de
+`ADR-0020` + `ADR-0021`. El primer ID libre después de esta es **ADR-0023**.
+
 
