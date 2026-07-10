@@ -584,7 +584,7 @@ Riesgo residual: si un CI Windows self-hosted corre con Windows PowerShell 5.1 s
 `ADR-0020` numbering note. Esta ADR usa `ADR-0021` por consistent sequential order;
 si surge necesidad de un `ADR-0019` retroactivo (e.g. close formal del F5 pendiente
 en `ADR-0014`), se podrá abrir sin colisionar con esta PinePara. El primer ID libre
-después de esta ADR es `ADR-0022`.
+después de `ADR-0022` (cerrada en `137f533`) es `ADR-0023`.
 
 ---
 
