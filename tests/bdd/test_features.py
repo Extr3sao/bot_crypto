@@ -45,6 +45,4 @@ from pytest_bdd import scenarios
 
 # Sole scenarios() call site. Scoped to the ONE feature file whose
 # step definitions are wired up in tests/bdd/conftest.py.
-scenarios(
-    str(Path(__file__).parents[2] / "bdd" / "features" / "market_scanner.feature")
-)
+scenarios(str(Path(__file__).parents[2] / "bdd" / "features" / "market_scanner.feature"))

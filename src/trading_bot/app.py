@@ -180,7 +180,9 @@ def _start_web_server(host: str, port: int, state: RuntimeState, lock: Lock) -> 
 
 
 def _build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(prog="trading-bot", description="crypto-scalping-agentic-bot CLI")
+    parser = argparse.ArgumentParser(
+        prog="trading-bot", description="crypto-scalping-agentic-bot CLI"
+    )
     parser.add_argument("--version", action="version", version=f"trading-bot {__version__}")
     sub = parser.add_subparsers(dest="command", required=False)
 
@@ -248,12 +250,16 @@ def _build_parser() -> argparse.ArgumentParser:
     order_parser.add_argument("--tp-price", type=float, default=None)
     order_parser.add_argument("--sl-price", type=float, default=None)
 
-    positions_parser = sub.add_parser("positions", help="Lista posiciones abiertas en futures Bitunix.")
+    positions_parser = sub.add_parser(
+        "positions", help="Lista posiciones abiertas en futures Bitunix."
+    )
     positions_parser.add_argument("--config-dir", default="config")
     positions_parser.add_argument("--env-file", default=".env")
     positions_parser.add_argument("--symbol", default=None)
 
-    close_parser = sub.add_parser("close-position", help="Cierra una posicion futures por positionId.")
+    close_parser = sub.add_parser(
+        "close-position", help="Cierra una posicion futures por positionId."
+    )
     close_parser.add_argument("--position-id", required=True)
     close_parser.add_argument("--config-dir", default="config")
     close_parser.add_argument("--env-file", default=".env")
@@ -297,10 +303,14 @@ def _build_demo_scanner(mode: str) -> UniverseScanner:
     settings = build_demo_settings(pairs=DEFAULT_DEMO_PAIRS, mode=mode, kill_switch_enabled=False)
     source = build_demo_fetcher(settings)
     registry_per_mode = build_filter_set_per_mode(settings)
-    return UniverseScanner(source=source, registry_per_mode=registry_per_mode, settings=settings)
+    return UniverseScanner(
+        source=source, registry_per_mode=registry_per_mode, settings=settings  # type: ignore[arg-type]
+    )  # type: ignore[arg-type]
 
 
-def _build_live_scanner(config_dir: str, env_file: str | None) -> tuple[UniverseScanner, Settings, BitunixSpotClient]:
+def _build_live_scanner(
+    config_dir: str, env_file: str | None
+) -> tuple[UniverseScanner, Settings, BitunixSpotClient]:
     from trading_bot.scanner.mode_filters import build_filter_set_per_mode
     from trading_bot.scanner.scanner import UniverseScanner
 
@@ -314,7 +324,9 @@ def _build_live_scanner(config_dir: str, env_file: str | None) -> tuple[Universe
     )
     source = BitunixMarketDataSource(client)
     registry_per_mode = build_filter_set_per_mode(scanner_settings)
-    scanner = UniverseScanner(source=source, registry_per_mode=registry_per_mode, settings=scanner_settings)
+    scanner = UniverseScanner(
+        source=source, registry_per_mode=registry_per_mode, settings=scanner_settings,
+    )  # type: ignore[arg-type]
     return scanner, settings, client
 
 
@@ -324,13 +336,17 @@ def _run_single_iteration(mode: str) -> tuple[list[MarketSnapshot], CounterSnaps
     return snapshots, scanner.counters
 
 
-def _run_single_live_iteration(config_dir: str, env_file: str | None) -> tuple[list[MarketSnapshot], CounterSnapshot, BitunixSpotClient, Settings]:
+def _run_single_live_iteration(
+    config_dir: str, env_file: str | None
+) -> tuple[list[MarketSnapshot], CounterSnapshot, BitunixSpotClient, Settings]:
     scanner, settings, client = _build_live_scanner(config_dir, env_file)
     snapshots = asyncio.run(scanner.run())
     return snapshots, scanner.counters, client, settings
 
 
-def _print_demo_results(snapshots: list[MarketSnapshot], counters: CounterSnapshot, mode: str) -> int:
+def _print_demo_results(
+    snapshots: list[MarketSnapshot], counters: CounterSnapshot, mode: str
+) -> int:
     print()
     print("=" * 78)
     print(f"Market scanner iteration -- DEMO mode (mode={mode}, synthetic data)")
@@ -340,7 +356,9 @@ def _print_demo_results(snapshots: list[MarketSnapshot], counters: CounterSnapsh
         print("  (sin snapshots en esta iteracion)")
     else:
         print()
-        print(f"  {'SYMBOL':<14} {'LAST':>10} {'VOL_24H_USDT':>16} {'SPR_BPS':>9} {'ATR%':>7} {'SCORE':>7}  STATUS")
+        print(
+            f"  {'SYMBOL':<14} {'LAST':>10} {'VOL_24H_USDT':>16} {'SPR_BPS':>9} {'ATR%':>7} {'SCORE':>7}  STATUS"
+        )
         print("  " + "-" * 76)
         for snap in snapshots:
             atr = f"{snap.atr_pct:.2f}" if snap.atr_pct is not None else "  n/a"
@@ -529,7 +547,9 @@ def _to_slash_symbol(api_symbol: str) -> str:
     return api_symbol
 
 
-def _find_open_trade_case(symbol: str, journal_url: str = _default_trade_journal_url()) -> TradeCase | None:
+def _find_open_trade_case(
+    symbol: str, journal_url: str = _default_trade_journal_url()
+) -> TradeCase | None:
     with TradeJournalStore(journal_url) as journal:
         cases = journal.list_cases(symbol=symbol, status="open", limit=1)
     return cases[0] if cases else None
@@ -635,9 +655,7 @@ def _reconcile_open_trade_cases_with_positions(
     journal_url: str = _default_trade_journal_url(),
 ) -> list[str]:
     by_symbol = {
-        _to_slash_symbol(position.symbol): position
-        for position in positions
-        if position.qty > 0
+        _to_slash_symbol(position.symbol): position for position in positions if position.qty > 0
     }
     reconciled: list[str] = []
     with TradeJournalStore(journal_url) as journal:
@@ -695,7 +713,9 @@ def _maybe_execute_live_trade(
     if trade_quote_usdt <= 0:
         return {"status": "SKIPPED", "reason": "trade_quote_usdt_must_be_positive"}
 
-    active = sorted((snap for snap in snapshots if snap.active), key=lambda snap: snap.rank_score, reverse=True)
+    active = sorted(
+        (snap for snap in snapshots if snap.active), key=lambda snap: snap.rank_score, reverse=True
+    )
     if not active:
         return {"status": "SKIPPED", "reason": "no_active_signals"}
 
@@ -709,19 +729,29 @@ def _maybe_execute_live_trade(
         last_trade_ts = execution.traded_symbols.get(snap.symbol)
         if last_trade_ts is not None and (now_ts - last_trade_ts) < symbol_cooldown_seconds:
             cooldown_left = int(symbol_cooldown_seconds - (now_ts - last_trade_ts))
-            print(f"[run] live-skip symbol={snap.symbol} reason=symbol_cooldown_active cooldown_left_seconds={cooldown_left}")
+            print(
+                f"[run] live-skip symbol={snap.symbol} reason=symbol_cooldown_active cooldown_left_seconds={cooldown_left}"
+            )
             continue
 
         rule = client.get_symbol(snap.symbol)
         if not rule.is_open or rule.quote != "USDT":
-            print(f"[run] live-skip symbol={snap.symbol} reason=symbol_not_open_or_quote_not_usdt is_open={rule.is_open} quote={rule.quote}")
+            print(
+                f"[run] live-skip symbol={snap.symbol} reason=symbol_not_open_or_quote_not_usdt is_open={rule.is_open} quote={rule.quote}"
+            )
             continue
 
-        min_target_usdt = rule.min_trade_value_usdt * min_notional_buffer if rule.min_trade_value_usdt > 0 else 0.0
+        min_target_usdt = (
+            rule.min_trade_value_usdt * min_notional_buffer
+            if rule.min_trade_value_usdt > 0
+            else 0.0
+        )
         desired_usdt = max(trade_quote_usdt, min_target_usdt)
         target_usdt = min(desired_usdt, usdt_free)
         if target_usdt < rule.min_trade_value_usdt:
-            print(f"[run] live-skip symbol={snap.symbol} reason=target_below_min_notional target_usdt={target_usdt:.6f} min_trade_value_usdt={rule.min_trade_value_usdt:.6f}")
+            print(
+                f"[run] live-skip symbol={snap.symbol} reason=target_below_min_notional target_usdt={target_usdt:.6f} min_trade_value_usdt={rule.min_trade_value_usdt:.6f}"
+            )
             continue
 
         raw_amount = target_usdt / snap.last_price
@@ -735,7 +765,9 @@ def _maybe_execute_live_trade(
             print(f"[run] live-skip symbol={snap.symbol} reason=rounded_amount_zero")
             continue
         if amount < rule.min_volume:
-            print(f"[run] live-skip symbol={snap.symbol} reason=amount_below_min_volume amount={amount:.12f} min_volume={rule.min_volume:.12f}")
+            print(
+                f"[run] live-skip symbol={snap.symbol} reason=amount_below_min_volume amount={amount:.12f} min_volume={rule.min_volume:.12f}"
+            )
             continue
         if estimated_cost < rule.min_trade_value_usdt:
             print(
@@ -833,7 +865,9 @@ def _maybe_execute_live_futures_trade(
     if trade_quote_usdt <= 0:
         return {"status": "SKIPPED", "reason": "trade_quote_usdt_must_be_positive"}
 
-    active = sorted((snap for snap in snapshots if snap.active), key=lambda snap: snap.rank_score, reverse=True)
+    active = sorted(
+        (snap for snap in snapshots if snap.active), key=lambda snap: snap.rank_score, reverse=True
+    )
     active_api_symbols = {to_api_symbol(snap.symbol) for snap in active}
     desired_directions: dict[str, str] = {}
     direction_reasons: dict[str, str] = {}
@@ -854,10 +888,10 @@ def _maybe_execute_live_futures_trade(
     if not active:
         return {"status": "SKIPPED", "reason": "no_active_signals"}
 
-    open_positions = [position for position in futures_client.get_pending_positions() if position.qty > 0]
-    reconciled_trade_cases = _reconcile_open_trade_cases_with_positions(
-        positions=open_positions
-    )
+    open_positions = [
+        position for position in futures_client.get_pending_positions() if position.qty > 0
+    ]
+    reconciled_trade_cases = _reconcile_open_trade_cases_with_positions(positions=open_positions)
     if open_positions:
         return {
             "status": "SKIPPED",
@@ -879,12 +913,16 @@ def _maybe_execute_live_futures_trade(
         last_trade_ts = execution.traded_symbols.get(api_symbol)
         if last_trade_ts is not None and (now_ts - last_trade_ts) < symbol_cooldown_seconds:
             cooldown_left = int(symbol_cooldown_seconds - (now_ts - last_trade_ts))
-            print(f"[run] futures-skip symbol={snap.symbol} reason=symbol_cooldown_active cooldown_left_seconds={cooldown_left}")
+            print(
+                f"[run] futures-skip symbol={snap.symbol} reason=symbol_cooldown_active cooldown_left_seconds={cooldown_left}"
+            )
             continue
 
         rule = futures_client.get_symbol(snap.symbol)
         if rule.symbol_status != "OPEN" or not rule.is_api_supported:
-            print(f"[run] futures-skip symbol={snap.symbol} reason=symbol_not_tradeable status={rule.symbol_status} api_supported={rule.is_api_supported}")
+            print(
+                f"[run] futures-skip symbol={snap.symbol} reason=symbol_not_tradeable status={rule.symbol_status} api_supported={rule.is_api_supported}"
+            )
             continue
 
         target_usdt = min(trade_quote_usdt, available_margin)
@@ -938,7 +976,9 @@ def _maybe_execute_live_futures_trade(
 
         order_id = order.get("orderId")
         new_positions = futures_client.get_pending_positions(snap.symbol)
-        position_id = next((position.position_id for position in new_positions if position.qty > 0), None)
+        position_id = next(
+            (position.position_id for position in new_positions if position.qty > 0), None
+        )
         _mark_trade_case_order_open(
             trade_case_id=trade_case_id,
             order_id=str(order_id) if order_id is not None else None,
@@ -1004,28 +1044,42 @@ def _cmd_run(args: argparse.Namespace) -> int:
 
     def execute_iteration(iteration: int) -> int:
         if args.mode in {"live", "shadow_live"}:
-            print(f"[run] ejecutando una iteracion {loop_label} (mode={args.mode})." if args.once else "")
+            print(
+                f"[run] ejecutando una iteracion {loop_label} (mode={args.mode})."
+                if args.once
+                else ""
+            )
             try:
                 snapshots, counters, client, settings = _run_single_live_iteration(
                     config_dir=args.config_dir,
                     env_file=env_file,
                 )
             except Exception as exc:
-                live_execution.last_event = {"status": "ERROR", "reason": type(exc).__name__, "message": str(exc)}
+                live_execution.last_event = {
+                    "status": "ERROR",
+                    "reason": type(exc).__name__,
+                    "message": str(exc),
+                }
                 with lock:
                     _update_runtime_state(
                         state,
                         [],
-                        type("CounterSnapshotLike", (), {
-                            "pairs_processed": 0,
-                            "pairs_active": 0,
-                            "pairs_inactive": 0,
-                            "scanner_errors": 1,
-                        })(),
+                        type(
+                            "CounterSnapshotLike",
+                            (),
+                            {
+                                "pairs_processed": 0,
+                                "pairs_active": 0,
+                                "pairs_inactive": 0,
+                                "scanner_errors": 1,
+                            },
+                        )(),
                         iteration=iteration,
                         live_execution=live_execution,
                     )
-                print(f"[run] live-error={json.dumps(live_execution.last_event, ensure_ascii=True)}")
+                print(
+                    f"[run] live-error={json.dumps(live_execution.last_event, ensure_ascii=True)}"
+                )
                 return 1
 
             if args.auto_trade:
@@ -1056,16 +1110,26 @@ def _cmd_run(args: argparse.Namespace) -> int:
                             symbol_cooldown_seconds=args.symbol_cooldown_seconds,
                         )
                 except Exception as exc:
-                    live_execution.last_event = {"status": "ERROR", "reason": type(exc).__name__, "message": str(exc)}
-                print(f"[run] live-event={json.dumps(live_execution.last_event, ensure_ascii=True)}")
+                    live_execution.last_event = {
+                        "status": "ERROR",
+                        "reason": type(exc).__name__,
+                        "message": str(exc),
+                    }
+                print(
+                    f"[run] live-event={json.dumps(live_execution.last_event, ensure_ascii=True)}"
+                )
 
             with lock:
-                _update_runtime_state(state, snapshots, counters, iteration=iteration, live_execution=live_execution)
+                _update_runtime_state(
+                    state, snapshots, counters, iteration=iteration, live_execution=live_execution
+                )
             return _print_demo_results(snapshots, counters, mode=args.mode)
 
         snapshots, counters = _run_single_iteration(mode=args.mode)
         with lock:
-            _update_runtime_state(state, snapshots, counters, iteration=iteration, live_execution=live_execution)
+            _update_runtime_state(
+                state, snapshots, counters, iteration=iteration, live_execution=live_execution
+            )
         return _print_demo_results(snapshots, counters, mode=args.mode)
 
     if args.once:
@@ -1075,7 +1139,9 @@ def _cmd_run(args: argparse.Namespace) -> int:
             web_server.server_close()
         return exit_code
 
-    print(f"[run] iniciando loop continuo {loop_label} (mode={args.mode}, every={args.loop_seconds}s). Ctrl+C para salir.")
+    print(
+        f"[run] iniciando loop continuo {loop_label} (mode={args.mode}, every={args.loop_seconds}s). Ctrl+C para salir."
+    )
     iteration = 0
     try:
         while True:
@@ -1214,7 +1280,9 @@ def _cmd_close_position(args: argparse.Namespace) -> int:
     except BitunixAPIError as exc:
         print(json.dumps({"success": False, "error": str(exc)}, ensure_ascii=True))
         return 1
-    print(json.dumps({"success": True, "marketKind": "futures", "result": result}, ensure_ascii=True))
+    print(
+        json.dumps({"success": True, "marketKind": "futures", "result": result}, ensure_ascii=True)
+    )
     return 0
 
 
@@ -1236,7 +1304,9 @@ def _cmd_set_tpsl(args: argparse.Namespace) -> int:
     except BitunixAPIError as exc:
         print(json.dumps({"success": False, "error": str(exc)}, ensure_ascii=True))
         return 1
-    print(json.dumps({"success": True, "marketKind": "futures", "result": result}, ensure_ascii=True))
+    print(
+        json.dumps({"success": True, "marketKind": "futures", "result": result}, ensure_ascii=True)
+    )
     return 0
 
 

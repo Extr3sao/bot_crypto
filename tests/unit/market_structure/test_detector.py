@@ -6,7 +6,9 @@ from trading_bot.market_data.types import OHLCV
 from trading_bot.market_structure import detect_market_structure, distance_to_zone_bps
 
 
-def _candle(ts: int, open_: float, high: float, low: float, close: float, volume: float = 100.0) -> OHLCV:
+def _candle(
+    ts: int, open_: float, high: float, low: float, close: float, volume: float = 100.0
+) -> OHLCV:
     return OHLCV(
         symbol="BTC/USDT",
         timestamp=ts,
@@ -105,4 +107,3 @@ def test_distance_to_zone_bps_rejects_invalid_price() -> None:
 
     with pytest.raises(ValueError, match="price must be > 0"):
         distance_to_zone_bps(0, zone)
-

@@ -24,4 +24,3 @@ class ChartSnapshotRequest:
 
 
 __all__ = ["ChartSnapshotRequest"]
-

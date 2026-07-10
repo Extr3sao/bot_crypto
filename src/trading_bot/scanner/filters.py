@@ -39,7 +39,6 @@ from trading_bot.market_data.types import OHLCV
 from trading_bot.scanner.protocols import MarketDataSourceProtocol
 from trading_bot.scanner.types import FilterOutcome, RejectionReason
 
-
 # ----------------------------------------------------------------------------
 # Constantes publicas (parte del API publico del modulo).
 # ----------------------------------------------------------------------------
@@ -151,16 +150,12 @@ class VolumeFilter:
                     f"min_usdt ({min_usdt}); live no puede ser mas permisivo."
                 )
         if mode not in VALID_MODES:
-            raise ValueError(
-                f"mode invalido {mode!r}; esperado uno de {sorted(VALID_MODES)}"
-            )
+            raise ValueError(f"mode invalido {mode!r}; esperado uno de {sorted(VALID_MODES)}")
         self.min_usdt = min_usdt
         self.mode = mode
         self.live_min_usdt = live_min_usdt
 
-    async def apply(
-        self, symbol: str, source: MarketDataSourceProtocol
-    ) -> FilterOutcome:
+    async def apply(self, symbol: str, source: MarketDataSourceProtocol) -> FilterOutcome:
         volume_usdt = await source.fetch_24h_volume_usdt(symbol)
         if self.mode == "live" and self.live_min_usdt is not None:
             threshold = self.live_min_usdt
@@ -195,9 +190,7 @@ class SpreadFilter:
             raise ValueError(f"max_bps debe ser >= 0; got {max_bps}")
         self.max_bps = max_bps
 
-    async def apply(
-        self, symbol: str, source: MarketDataSourceProtocol
-    ) -> FilterOutcome:
+    async def apply(self, symbol: str, source: MarketDataSourceProtocol) -> FilterOutcome:
         spread = await source.fetch_spread_bps(symbol)
         if spread > self.max_bps:
             return FilterOutcome(passed=False, reason="spread_above_threshold")
@@ -229,23 +222,16 @@ class AtrFilter:
         min_history: int = 100,
     ) -> None:
         if min_pct < 0 or max_pct < 0:
-            raise ValueError(
-                f"ATR percent bounds deben ser >= 0; "
-                f"got min={min_pct} max={max_pct}"
-            )
+            raise ValueError(f"ATR percent bounds deben ser >= 0; got min={min_pct} max={max_pct}")
         if max_pct < min_pct:
-            raise ValueError(
-                f"max_pct ({max_pct}) debe ser >= min_pct ({min_pct})"
-            )
+            raise ValueError(f"max_pct ({max_pct}) debe ser >= min_pct ({min_pct})")
         if min_history < 1:
             raise ValueError(f"min_history debe ser >= 1; got {min_history}")
         self.min_pct = min_pct
         self.max_pct = max_pct
         self.min_history = min_history
 
-    async def apply(
-        self, symbol: str, source: MarketDataSourceProtocol
-    ) -> FilterOutcome:
+    async def apply(self, symbol: str, source: MarketDataSourceProtocol) -> FilterOutcome:
         candles = await source.fetch_recent(symbol, self.min_history)
         if len(candles) < self.min_history:
             return FilterOutcome(passed=False, reason="insufficient_history")
@@ -256,9 +242,9 @@ class AtrFilter:
 
 
 __all__ = [
+    "VALID_MODES",
     "AtrFilter",
     "SpreadFilter",
-    "VALID_MODES",
     "VolumeFilter",
-    "_compute_atr_pct",  # publico por convencion para tests con `# noqa: F401`.
+    "_compute_atr_pct",  # publico por convencion para tests.
 ]

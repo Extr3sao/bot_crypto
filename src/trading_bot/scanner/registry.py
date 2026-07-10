@@ -24,7 +24,7 @@ La decision actual esta pineada por los tests
 from __future__ import annotations
 
 from collections import OrderedDict
-from typing import Iterator, Optional
+from collections.abc import Iterator
 
 from trading_bot.scanner.protocols import Filter
 
@@ -64,7 +64,7 @@ class FilterRegistry:
         """Devuelve la lista de filtros en orden de insercion."""
         return list(self._filters.values())
 
-    def get(self, name: str) -> Optional[Filter]:
+    def get(self, name: str) -> Filter | None:
         """Acceso por nombre; ``None`` si no existe (lookup no-pinea)."""
         return self._filters.get(name)
 

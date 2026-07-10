@@ -35,7 +35,7 @@ class Risk(BaseModel):
     max_order_notional_usdt: float = Field(..., gt=0)
     default_stop_loss_pct: float = Field(..., gt=0, le=20)
     default_take_profit_pct: float = Field(..., gt=0, le=20)
-    blocks: DefensiveBlocks = Field(default_factory=DefensiveBlocks)
+    blocks: DefensiveBlocks = Field(default_factory=lambda: DefensiveBlocks())
     kill_switch_enabled: bool = True
     # Defensive double of runtime.live_trading_enabled. The single source of
     # truth is runtime.yaml; setting this to True triggers a fail-fast error

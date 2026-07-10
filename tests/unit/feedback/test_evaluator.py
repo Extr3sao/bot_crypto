@@ -91,4 +91,3 @@ def test_evaluate_rejects_invalid_qty() -> None:
                 closed_at=4,
             )
         )
-

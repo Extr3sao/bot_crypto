@@ -91,14 +91,29 @@ def _render_svg(request: ChartSnapshotRequest) -> str:
         y_low = y_for(candle.low)
         body_y = min(y_open, y_close)
         body_h = max(abs(y_close - y_open), 1.0)
-        parts.append(f"<line x1='{x:.2f}' y1='{y_high:.2f}' x2='{x:.2f}' y2='{y_low:.2f}' stroke='{color}' stroke-width='1.4'/>")
-        parts.append(f"<rect x='{x - candle_w / 2:.2f}' y='{body_y:.2f}' width='{candle_w:.2f}' height='{body_h:.2f}' fill='{color}'/>")
+        parts.append(
+            f"<line x1='{x:.2f}' y1='{y_high:.2f}' x2='{x:.2f}' y2='{y_low:.2f}' stroke='{color}' stroke-width='1.4'/>"
+        )
+        parts.append(
+            f"<rect x='{x - candle_w / 2:.2f}' y='{body_y:.2f}' width='{candle_w:.2f}' height='{body_h:.2f}' fill='{color}'/>"
+        )
 
     parts.extend(
         [
-            _price_line("ENTRY", request.entry_price, y_for(request.entry_price), "#f2f4f8", pad_left, plot_w),
-            _price_line("TP", request.tp_price, y_for(request.tp_price), "#00d084", pad_left, plot_w),
-            _price_line("SL", request.sl_price, y_for(request.sl_price), "#ff5a5f", pad_left, plot_w),
+            _price_line(
+                "ENTRY",
+                request.entry_price,
+                y_for(request.entry_price),
+                "#f2f4f8",
+                pad_left,
+                plot_w,
+            ),
+            _price_line(
+                "TP", request.tp_price, y_for(request.tp_price), "#00d084", pad_left, plot_w
+            ),
+            _price_line(
+                "SL", request.sl_price, y_for(request.sl_price), "#ff5a5f", pad_left, plot_w
+            ),
             "</svg>",
         ]
     )

@@ -36,7 +36,9 @@ def build_entry_thesis(
     if payload.entry_price <= 0:
         raise ValueError("entry_price must be > 0")
 
-    created_at = payload.created_at if payload.created_at is not None else payload.candles[-1].timestamp
+    created_at = (
+        payload.created_at if payload.created_at is not None else payload.candles[-1].timestamp
+    )
     zones = detect_market_structure(
         list(payload.candles),
         symbol=payload.symbol,
@@ -116,4 +118,3 @@ def _dedupe(items: list[str]) -> list[str]:
 
 
 __all__ = ["EntryThesisInput", "build_entry_thesis"]
-

@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import secrets
 import time
 import urllib.parse
@@ -86,8 +87,11 @@ class BitunixFuturesClient:
         api_secret: str = "",
         futures_base_url: str = "https://fapi.bitunix.com",
     ) -> None:
-        self.api_key = api_key
-        self.api_secret = api_secret
+        # Bloom-hygiene v1 (consistency w/ bitunix.py): kwarg value wins; fall back to env-var
+        # if kwarg is empty (canonical case for direct script callers). No literal
+        # credentials stored in this module.
+        self.api_key = api_key or os.getenv("BITUNIX_API_KEY", "")
+        self.api_secret = api_secret or os.getenv("BITUNIX_API_SECRET", "")
         self.futures_base_url = futures_base_url.rstrip("/")
         self.user_agent = (
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
@@ -200,7 +204,9 @@ class BitunixFuturesClient:
             bonus=float(row.get("bonus", 0) or 0),
         )
 
-    def get_trading_pairs(self, symbols: list[str] | None = None) -> dict[str, BitunixFuturesSymbol]:
+    def get_trading_pairs(
+        self, symbols: list[str] | None = None
+    ) -> dict[str, BitunixFuturesSymbol]:
         if symbols is None and self._symbol_cache is not None:
             return self._symbol_cache
 
@@ -256,7 +262,7 @@ class BitunixFuturesClient:
         tp_price: float | None = None,
         sl_price: float | None = None,
     ) -> dict[str, Any]:
-        payload: dict[str, Any] = {
+        payload: dict[str, Any] = {  # TSK-200: cast target
             "symbol": to_api_symbol(symbol),
             "side": side.upper(),
             "qty": _format_decimal(qty),

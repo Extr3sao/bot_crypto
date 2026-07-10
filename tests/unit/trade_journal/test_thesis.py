@@ -101,4 +101,3 @@ def test_build_entry_thesis_rejects_bad_direction() -> None:
                 candles=_candles_near_support(),
             )
         )
-

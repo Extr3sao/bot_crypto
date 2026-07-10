@@ -178,7 +178,7 @@ class PaperSessionRunner:
             started_at=started_at,
             ended_at=ended_at,
             duration_ms=duration_ms,
-            snapshots=snapshots,
+            snapshots=tuple(snapshots),
             counters=counters,
             metrics=metrics,
             execution_summary=execution_summary,

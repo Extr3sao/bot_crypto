@@ -170,11 +170,11 @@ _FLAT_ALIAS_ENV_VARS: tuple[str, ...] = (
     "TRADING_MODE",
     "LIVE_TRADING_ENABLED",
     "I_UNDERSTAND_THE_RISKS",
-        "EXCHANGE_ID",
-        "EXCHANGE_API_KEY",
-        "EXCHANGE_API_SECRET",
-        "EXCHANGE_PASSWORD",
-        "EXCHANGE_SANDBOX",
+    "EXCHANGE_ID",
+    "EXCHANGE_API_KEY",
+    "EXCHANGE_API_SECRET",
+    "EXCHANGE_PASSWORD",
+    "EXCHANGE_SANDBOX",
     "LOG_LEVEL",
     "LOG_FORMAT",
     "LOG_TO_FILE",
@@ -436,8 +436,8 @@ def test_yaml_directory_source_skips_missing_yaml_files(
     vs. "directorio existe pero faltan YAMLs individuales" (line 102
     → continue). El caller debe obtener un merged parcial sin error.
     """
-    from trading_bot.config.settings import YamlDirectorySource
     from trading_bot.config.settings import Settings as SettingsT
+    from trading_bot.config.settings import YamlDirectorySource
 
     # Crear solo 3 de los 6 YAMLs. Las 3 faltantes deben ser saltadas, no
     # hacer raise.
@@ -476,9 +476,7 @@ def test_yaml_directory_source_raises_on_non_dict_yaml(
     config_dir = tmp_path / "bad_root_config"
     config_dir.mkdir()
     # YAML con root como lista (no mapping).
-    (config_dir / "exchange.yaml").write_text(
-        "- item1\n- item2\n", encoding="utf-8"
-    )
+    (config_dir / "exchange.yaml").write_text("- item1\n- item2\n", encoding="utf-8")
     # Rellenar el resto con contenido valido para que el loop llegue
     # hasta ``exchange.yaml``.
     (config_dir / "risk.yaml").write_text("risk: {}\n", encoding="utf-8")
@@ -508,9 +506,7 @@ def test_yaml_directory_source_raises_on_overlapping_keys(
     config_dir = tmp_path / "overlap_config"
     config_dir.mkdir()
     # exchange.yaml define ``retry``; risk.yaml tambien redefine ``retry``.
-    (config_dir / "exchange.yaml").write_text(
-        "retry:\n  value: 1\n", encoding="utf-8"
-    )
+    (config_dir / "exchange.yaml").write_text("retry:\n  value: 1\n", encoding="utf-8")
     (config_dir / "risk.yaml").write_text("retry:\n  value: 2\n", encoding="utf-8")
     (config_dir / "runtime.yaml").write_text("runtime:\n  mode: paper\n", encoding="utf-8")
     (config_dir / "assets.yaml").write_text("universe: {}\n", encoding="utf-8")
@@ -702,9 +698,7 @@ def test_flat_env_alias_source_env_file_sequence_uses_first(
     assert result == {"runtime": {"mode": "backtest"}}
 
     # Tupla tambien cuenta como Sequence.
-    source_tuple = FlatEnvAliasSource(
-        Settings, env_file=(env_file1, env_file2)
-    )
+    source_tuple = FlatEnvAliasSource(Settings, env_file=(env_file1, env_file2))
     assert source_tuple() == {"runtime": {"mode": "backtest"}}
 
 

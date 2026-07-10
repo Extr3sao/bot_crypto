@@ -15,8 +15,10 @@ from __future__ import annotations
 import asyncio
 import hashlib
 import json
+import os
 import secrets
 import time
+import typing
 import urllib.parse
 import urllib.request
 from dataclasses import dataclass
@@ -39,7 +41,7 @@ def _format_decimal(value: float, decimals: int | None = None) -> str:
 
 def _round_down(value: float, decimals: int) -> float:
     factor = 10**decimals
-    return int(value * factor) / factor
+    return typing.cast(float, int(value * factor) / factor)
 
 
 def _ts_to_ms(value: str) -> int:
@@ -83,8 +85,11 @@ class BitunixSpotClient:
         api_secret: str = "",
         public_base_url: str = "https://openapi.bitunix.com",
     ) -> None:
-        self.api_key = api_key
-        self.api_secret = api_secret
+        # Bloom-hygiene v1 (TSK-178 bitunix env-var wiring): kwarg value wins; fall back to env-var
+        # if kwarg is empty (the canonical case for direct script callers).
+        # No literal credentials stored in this module.
+        self.api_key = api_key or os.getenv("BITUNIX_API_KEY", "")
+        self.api_secret = api_secret or os.getenv("BITUNIX_API_SECRET", "")
         self.public_base_url = public_base_url.rstrip("/")
         self.user_agent = (
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
@@ -197,7 +202,7 @@ class BitunixSpotClient:
 
         rows = self._request("GET", "/api/spot/v1/common/coin_pair/list")
         catalog: dict[str, BitunixSpotSymbol] = {}
-        for row in rows:
+        for row in typing.cast(list[typing.Any], rows):
             api_symbol = str(row["symbol"]).upper()
             base = str(row["base"]).upper()
             quote = str(row["quote"]).upper()
@@ -228,10 +233,13 @@ class BitunixSpotClient:
     def fetch_last_price(self, symbol: str) -> float:
         api_symbol = to_api_symbol(symbol)
         return float(
-            self._request(
-                "GET",
-                "/api/spot/v1/market/last_price",
-                params={"symbol": api_symbol},
+            typing.cast(
+                typing.Any,
+                self._request(
+                    "GET",
+                    "/api/spot/v1/market/last_price",
+                    params={"symbol": api_symbol},
+                ),
             )
         )
 

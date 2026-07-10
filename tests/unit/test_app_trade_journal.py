@@ -171,7 +171,9 @@ def test_reconcile_missing_open_trade_cases_closes_orphan_case(tmp_path: Path) -
     assert case.outcome.exit_reason == "position_missing_on_reconcile"
 
 
-def test_reconcile_open_trade_cases_closes_direction_mismatch_and_attaches_position(tmp_path: Path) -> None:
+def test_reconcile_open_trade_cases_closes_direction_mismatch_and_attaches_position(
+    tmp_path: Path,
+) -> None:
     journal_url = f"sqlite:///{tmp_path}/trade_journal.db"
     snap = MarketSnapshot(
         symbol="BTC/USDT",

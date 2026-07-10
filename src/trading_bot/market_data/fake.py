@@ -45,12 +45,10 @@ class.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any
 
 from trading_bot.config.runtime import TradingMode
 from trading_bot.config.settings import Settings
 from trading_bot.market_data.types import OHLCV
-
 
 # ===========================================================================
 # 1. FakeMarketDataSource — MarketDataSourceProtocol impl
@@ -101,9 +99,7 @@ class FakeMarketDataSource:
         return float(self.spread_by_symbol.get(symbol, 0.0))
 
 
-def assert_called_once_per_symbol(
-    source: FakeMarketDataSource, method: str, symbol: str
-) -> None:
+def assert_called_once_per_symbol(source: FakeMarketDataSource, method: str, symbol: str) -> None:
     """Pine contract del gotcha #1: 1 call per method per symbol per ``run()``."""
     calls = source.call_counts.get((method, symbol), 0)
     assert calls == 1, (
@@ -117,9 +113,7 @@ def assert_called_once_per_symbol(
 # ===========================================================================
 
 
-def make_flat_ohlcv(
-    symbol: str, n: int, *, last_close: float
-) -> list[OHLCV]:
+def make_flat_ohlcv(symbol: str, n: int, *, last_close: float) -> list[OHLCV]:
     """Genera ``n`` velas con ``high - low = 1`` y ``last_close`` configurable.
 
     Daily range = 1 unit. Pineado por ``test_universe_scanner.py`` para

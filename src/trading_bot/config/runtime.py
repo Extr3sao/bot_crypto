@@ -36,7 +36,7 @@ class Scheduler(BaseModel):
     """Scheduler cadences."""
 
     timezone: str = "UTC"
-    active_hours: SchedulerActiveHours = Field(default_factory=SchedulerActiveHours)
+    active_hours: SchedulerActiveHours = Field(default_factory=lambda: SchedulerActiveHours())
     scanner_interval_seconds: int = Field(30, ge=1)
     orders_poll_interval_seconds: int = Field(10, ge=1)
     health_interval_seconds: int = Field(60, ge=1)
@@ -124,13 +124,13 @@ class Runtime(BaseModel):
             "tras un ADR documentado en tasks/decisions.md."
         ),
     )
-    scheduler: Scheduler = Field(default_factory=Scheduler)
-    storage: Storage = Field(default_factory=Storage)
-    logging: LoggingBlock = Field(default_factory=LoggingBlock)
-    reports: Reports = Field(default_factory=Reports)
-    metrics: Metrics = Field(default_factory=Metrics)
-    paths: Paths = Field(default_factory=Paths)
-    features: FeatureFlags = Field(default_factory=FeatureFlags)
+    scheduler: Scheduler = Field(default_factory=lambda: Scheduler())
+    storage: Storage = Field(default_factory=lambda: Storage())
+    logging: LoggingBlock = Field(default_factory=lambda: LoggingBlock())
+    reports: Reports = Field(default_factory=lambda: Reports())
+    metrics: Metrics = Field(default_factory=lambda: Metrics())
+    paths: Paths = Field(default_factory=lambda: Paths())
+    features: FeatureFlags = Field(default_factory=lambda: FeatureFlags())
 
     @model_validator(mode="after")
     def _check_live_gates(self) -> Runtime:

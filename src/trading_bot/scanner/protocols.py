@@ -42,9 +42,7 @@ class MarketDataSourceProtocol(Protocol):
     validacion runtime (P3 del reviewer de TSK-101 round-3).
     """
 
-    async def fetch_recent(
-        self, symbol: str, limit: int = 100
-    ) -> list[OHLCV]:
+    async def fetch_recent(self, symbol: str, limit: int = 100) -> list[OHLCV]:
         """Devuelve las ``limit`` velas mas recientes de ``symbol``.
 
         El conector CCXT (TSK-101) ya inyecta ``symbol`` en cada vela
@@ -80,9 +78,7 @@ class Filter(Protocol):
 
     name: str
 
-    async def apply(
-        self, symbol: str, source: MarketDataSourceProtocol
-    ) -> FilterOutcome:
+    async def apply(self, symbol: str, source: MarketDataSourceProtocol) -> FilterOutcome:
         """Devuelve ``FilterOutcome(passed=True)`` o ``(passed=False, reason=...)``."""
         ...
 

@@ -54,9 +54,9 @@ class StrategyConfig(BaseModel):
     description: str = ""
     timeframes: list[str] = Field(..., min_length=1)
     indicators: list[str] = Field(..., min_length=1)
-    entry: StrategyEntry = Field(default_factory=StrategyEntry)
-    exit: StrategyExit = Field(default_factory=StrategyExit)
-    filters: StrategyFilters = Field(default_factory=StrategyFilters)
+    entry: StrategyEntry = Field(default_factory=lambda: StrategyEntry())
+    exit: StrategyExit = Field(default_factory=lambda: StrategyExit())
+    filters: StrategyFilters = Field(default_factory=lambda: StrategyFilters())
     notes: str | None = None
 
 

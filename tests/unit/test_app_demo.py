@@ -106,9 +106,7 @@ def test_run_single_iteration_paper_inactive_snapshots_have_rejection_reason() -
 
     inactive = [s for s in snapshots if not s.active]
     for snap in inactive:
-        assert snap.rejection_reason, (
-            f"{snap.symbol} esta inactivo pero sin rejection_reason"
-        )
+        assert snap.rejection_reason, f"{snap.symbol} esta inactivo pero sin rejection_reason"
 
 
 def test_run_single_iteration_paper_counters_add_up() -> None:

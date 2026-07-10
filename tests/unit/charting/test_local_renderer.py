@@ -73,4 +73,3 @@ def test_local_renderer_rejects_empty_candles(tmp_path: Path) -> None:
                 captured_at=11,
             )
         )
-

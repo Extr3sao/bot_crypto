@@ -331,7 +331,7 @@ def _reject_secret_keys(payload: object, path: str = "") -> None:
 def _parse_sqlite_url(database_url: str) -> Path:
     if not database_url.startswith(_SQLITE_PREFIX):
         raise NotImplementedError("TradeJournalStore solo soporta sqlite:///<path>.")
-    return Path(database_url[len(_SQLITE_PREFIX):])
+    return Path(database_url[len(_SQLITE_PREFIX) :])
 
 
 __all__ = ["CURRENT_SCHEMA_VERSION", "TradeJournalStore"]

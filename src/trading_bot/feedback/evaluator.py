@@ -4,8 +4,10 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+import typing
+
 from trading_bot.market_data.types import OHLCV
-from trading_bot.trade_journal.types import EntryThesis, TradeOutcome
+from trading_bot.trade_journal.types import EntryThesis, TradeOutcome, WinLoss
 
 
 @dataclass(frozen=True, slots=True)
@@ -34,12 +36,28 @@ def evaluate_trade_outcome(payload: TradeEvaluationInput) -> TradeOutcome:
 
     if direction == "LONG":
         pnl_gross = (payload.exit_price - entry) * payload.qty
-        mfe = max((candle.high - entry) for candle in payload.candles_after_entry) if payload.candles_after_entry else 0.0
-        mae = max((entry - candle.low) for candle in payload.candles_after_entry) if payload.candles_after_entry else 0.0
+        mfe = (
+            max((candle.high - entry) for candle in payload.candles_after_entry)
+            if payload.candles_after_entry
+            else 0.0
+        )
+        mae = (
+            max((entry - candle.low) for candle in payload.candles_after_entry)
+            if payload.candles_after_entry
+            else 0.0
+        )
     else:
         pnl_gross = (entry - payload.exit_price) * payload.qty
-        mfe = max((entry - candle.low) for candle in payload.candles_after_entry) if payload.candles_after_entry else 0.0
-        mae = max((candle.high - entry) for candle in payload.candles_after_entry) if payload.candles_after_entry else 0.0
+        mfe = (
+            max((entry - candle.low) for candle in payload.candles_after_entry)
+            if payload.candles_after_entry
+            else 0.0
+        )
+        mae = (
+            max((candle.high - entry) for candle in payload.candles_after_entry)
+            if payload.candles_after_entry
+            else 0.0
+        )
 
     pnl_net = pnl_gross - payload.fees
     r_multiple = pnl_net / (risk_per_unit * payload.qty)
@@ -54,7 +72,7 @@ def evaluate_trade_outcome(payload: TradeEvaluationInput) -> TradeOutcome:
         r_multiple=round(r_multiple, 6),
         mfe=round(mfe, 10),
         mae=round(mae, 10),
-        win_loss=win_loss,
+        win_loss=typing.cast(WinLoss, win_loss),
         closed_at=payload.closed_at,
         post_trade_diagnosis=diagnosis,
     )
@@ -71,11 +89,13 @@ def _diagnose(
     tags: list[str] = []
     if win_loss == "win":
         if thesis.direction == "LONG" and any(
-            tag in thesis.criteria_met for tag in ("near_support", "near_range_low", "near_accumulation")
+            tag in thesis.criteria_met
+            for tag in ("near_support", "near_range_low", "near_accumulation")
         ):
             tags.append("support_respected")
         if thesis.direction == "SHORT" and any(
-            tag in thesis.criteria_met for tag in ("near_resistance", "near_range_high", "near_distribution")
+            tag in thesis.criteria_met
+            for tag in ("near_resistance", "near_range_high", "near_distribution")
         ):
             tags.append("resistance_rejected")
     else:
@@ -97,4 +117,3 @@ def _diagnose(
 
 
 __all__ = ["TradeEvaluationInput", "evaluate_trade_outcome"]
-

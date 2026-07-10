@@ -53,8 +53,8 @@ def _pivot_zones(
     zones: list[TechnicalZone] = []
     for idx in range(swing_window, len(candles) - swing_window):
         candle = candles[idx]
-        left = candles[idx - swing_window:idx]
-        right = candles[idx + 1:idx + swing_window + 1]
+        left = candles[idx - swing_window : idx]
+        right = candles[idx + 1 : idx + swing_window + 1]
         neighbors = left + right
         if candle.low < min(row.low for row in neighbors):
             zones.append(
@@ -136,7 +136,9 @@ def _order_block_zone(
         current_bullish = current.close > current.open
         prev_bullish = prev.close > prev.open
         current_bearish = current.close < current.open
-        if impulse >= atr and ((prev_bearish and current_bullish) or (prev_bullish and current_bearish)):
+        if impulse >= atr and (
+            (prev_bearish and current_bullish) or (prev_bullish and current_bearish)
+        ):
             return _zone(
                 symbol=symbol,
                 timeframe=timeframe,
@@ -161,7 +163,7 @@ def _consolidation_zone(
     timeframe: str,
     detected_at: int,
 ) -> TechnicalZone | None:
-    window = candles[-min(8, len(candles)):]
+    window = candles[-min(8, len(candles)) :]
     high = max(candle.high for candle in window)
     low = min(candle.low for candle in window)
     avg_close = mean(candle.close for candle in window)
@@ -181,7 +183,11 @@ def _consolidation_zone(
             detected_at=detected_at,
             source="tight_range_relative_volume",
             suffix=str(window[-1].timestamp),
-            evidence={"range_pct": range_pct, "recent_volume": recent_volume, "baseline_volume": baseline},
+            evidence={
+                "range_pct": range_pct,
+                "recent_volume": recent_volume,
+                "baseline_volume": baseline,
+            },
         )
     return None
 

@@ -2,14 +2,12 @@
 
 from __future__ import annotations
 
-import pytest
-
 from trading_bot.config.runtime import TradingMode
 from trading_bot.config.settings import Settings
 from trading_bot.scanner.filters import (
+    VALID_MODES,
     AtrFilter,
     SpreadFilter,
-    VALID_MODES,
     VolumeFilter,
 )
 from trading_bot.scanner.mode_filters import build_filter_set_per_mode
@@ -24,7 +22,12 @@ def _build_minimal_settings(
     min_atr_percent: float = 0.05,
 ) -> Settings:
     """Settings minimal via model_construct (sin disco, sin validadores cross-field)."""
-    from trading_bot.config.exchange import Exchange, ExchangeEndpoints, ExchangeRetries, ExchangeTimeouts
+    from trading_bot.config.exchange import (
+        Exchange,
+        ExchangeEndpoints,
+        ExchangeRetries,
+        ExchangeTimeouts,
+    )
     from trading_bot.config.indicators import IndicatorsConfig, IndicatorsGlobal
     from trading_bot.config.risk import DefensiveBlocks, Risk
     from trading_bot.config.runtime import (
@@ -134,7 +137,9 @@ def test_build_registers_3_filters_in_order_volume_spread_atr() -> None:
 
 def test_build_paper_uses_yaml_bounds_no_live_hardening() -> None:
     """paper/research/backtest: thresholds iguales al YAML (sin endurecer)."""
-    settings = _build_minimal_settings(min_volume_usdt=7_000_000, max_spread_bps=25, max_atr_percent=7.0)
+    settings = _build_minimal_settings(
+        min_volume_usdt=7_000_000, max_spread_bps=25, max_atr_percent=7.0
+    )
     out = build_filter_set_per_mode(settings)
     for mode_str in ("research", "backtest", "paper"):
         reg = out[mode_str]
@@ -154,7 +159,9 @@ def test_build_paper_uses_yaml_bounds_no_live_hardening() -> None:
 
 def test_build_live_applies_spec_hardening() -> None:
     """live: volume threshold = 10M (LIVE_MIN_VOLUME_USDT), spread <= 20, ATR <= 5."""
-    settings = _build_minimal_settings(min_volume_usdt=5_000_000, max_spread_bps=30, max_atr_percent=8.0)
+    settings = _build_minimal_settings(
+        min_volume_usdt=5_000_000, max_spread_bps=30, max_atr_percent=8.0
+    )
     out = build_filter_set_per_mode(settings)
     reg = out["live"]
     vol = reg.get("volume")

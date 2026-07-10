@@ -52,8 +52,8 @@ class Exchange(BaseModel):
     default_type: str = Field("spot", pattern=_DEFAULT_TYPE_RE)
     rate_limit_ms: int = Field(250, ge=50)
     options: dict[str, object] = Field(default_factory=dict)
-    timeouts: ExchangeTimeouts = Field(default_factory=ExchangeTimeouts)
-    retries: ExchangeRetries = Field(default_factory=ExchangeRetries)
+    timeouts: ExchangeTimeouts = Field(default_factory=lambda: ExchangeTimeouts())
+    retries: ExchangeRetries = Field(default_factory=lambda: ExchangeRetries())
     time_in_force_default: str = Field("GTC", pattern=_TIME_IN_FORCE_RE)
     post_only_default: bool = True
-    endpoints: ExchangeEndpoints = Field(default_factory=ExchangeEndpoints)
+    endpoints: ExchangeEndpoints = Field(default_factory=lambda: ExchangeEndpoints())

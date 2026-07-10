@@ -281,4 +281,4 @@ def load_settings(
     # arriba) lo enruta a BOTH dotenv_settings y FlatEnvAliasSource. El
     # antiguo `_Tuned(_env_file=...)` instance-kwarg pasaba el mismo path
     # por una segunda via redundante; ya no hace falta.
-    return _Tuned()
+    return _Tuned()  # type: ignore[call-arg]  # YAML/dotenv/env populated at runtime  # type: ignore[call-arg]  # YAML/dotenv/env populated at runtime

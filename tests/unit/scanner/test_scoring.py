@@ -36,10 +36,8 @@ from hypothesis import strategies as st
 from trading_bot.scanner.scoring import (
     ATR_WEIGHT,
     SPREAD_WEIGHT,
-    VOLUME_WEIGHT,
     compute_rank_score,
 )
-
 
 # ===========================================================================
 # Sentinel tests (9 casos nominales).
@@ -89,7 +87,7 @@ def test_compute_rank_score_min_when_worst_inputs() -> None:
     0.5*0 + 0.3*0 + 0.2*0 = 0.0.
     """
     score = compute_rank_score(
-        spread_bps=300.0,    # 10x del max; clip a 1.0
+        spread_bps=300.0,  # 10x del max; clip a 1.0
         spread_norm_max=30.0,
         volume_24h_usdt=0.0,
         volume_norm_max=100.0,
@@ -141,15 +139,9 @@ def test_compute_rank_score_atr_pct_none_invalidates_atr_en_rango_true() -> None
         volume_norm_max=100.0,
         atr_optimo=2.0,
     )
-    score_with_atr = compute_rank_score(
-        **base_kwargs, atr_pct=2.0, atr_en_rango=True
-    )
-    score_without_atr = compute_rank_score(
-        **base_kwargs, atr_pct=None, atr_en_rango=True
-    )
-    assert score_with_atr - score_without_atr == pytest.approx(
-        ATR_WEIGHT, abs=1e-9
-    )
+    score_with_atr = compute_rank_score(**base_kwargs, atr_pct=2.0, atr_en_rango=True)
+    score_without_atr = compute_rank_score(**base_kwargs, atr_pct=None, atr_en_rango=True)
+    assert score_with_atr - score_without_atr == pytest.approx(ATR_WEIGHT, abs=1e-9)
 
 
 def test_compute_rank_score_clips_inputs_above_norm_max() -> None:
@@ -196,12 +188,8 @@ def test_compute_rank_score_clips_inputs_below_zero() -> None:
     "field_name",
     ["spread_bps", "volume_24h_usdt", "atr_optimo", "atr_pct"],
 )
-@pytest.mark.parametrize(
-    "bad_input", [float("nan"), float("inf"), float("-inf")]
-)
-def test_compute_rank_score_rejects_non_finite_inputs(
-    field_name: str, bad_input: float
-) -> None:
+@pytest.mark.parametrize("bad_input", [float("nan"), float("inf"), float("-inf")])
+def test_compute_rank_score_rejects_non_finite_inputs(field_name: str, bad_input: float) -> None:
     """NaN / inf inputs -> ValueError explicito (no propagacion silenciosa).
 
     Pine contract: cualquier score NaN rompe la invariante
@@ -291,6 +279,7 @@ def test_coefficients_are_adm_locked(
 def scoring_module() -> object:
     """Import lazy del modulo scoring (para no penalizar la coleccion)."""
     from trading_bot.scanner import scoring
+
     return scoring
 
 
@@ -299,9 +288,9 @@ def scoring_module() -> object:
     [
         (0.0, 30.0, 0.0),
         (15.0, 30.0, 0.5),
-        (30.0, 30.0, 1.0),    # borde: equal -> 1.0 (clip inclusive).
-        (60.0, 30.0, 1.0),    # clip desde encima.
-        (-30.0, 30.0, 0.0),   # clip desde debajo.
+        (30.0, 30.0, 1.0),  # borde: equal -> 1.0 (clip inclusive).
+        (60.0, 30.0, 1.0),  # clip desde encima.
+        (-30.0, 30.0, 0.0),  # clip desde debajo.
     ],
 )
 def test_spread_norm_clipping(
@@ -477,7 +466,9 @@ def test_rank_score_monotonic_decreasing_with_spread(
     ),
 )
 @settings(max_examples=500, deadline=None)
-def test_rank_score_deterministic_property(inputs: tuple[float, float, float, float, float | None, float, bool]) -> None:
+def test_rank_score_deterministic_property(
+    inputs: tuple[float, float, float, float, float | None, float, bool],
+) -> None:
     """Pine property (TSK-103.3.3): dos calls con mismos inputs producen
     score bit-identical. Esto es la base del tie-break alfabetico
     (UniverseScanner ordenara desc por score, ties por symbol).

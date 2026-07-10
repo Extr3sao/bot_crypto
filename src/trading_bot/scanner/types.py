@@ -28,7 +28,7 @@ Regla de extension (ADR-0001 implicitamente via doc-style):
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Literal, Optional
+from typing import Literal
 
 # Catalogo cerrado de motivos por los que un par puede quedar inactivo
 # en un ``MarketSnapshot``. Los valores documentados coinciden
@@ -75,16 +75,16 @@ class MarketSnapshot:
     - Dataclass ``OHLCV`` (TSK-102 round-2 fix).
     """
 
-    symbol: str                          # par BASE/QUOTE (e.g. "BTC/USDT").
-    last_price: float                    # ultimo close de OHLCV reciente.
-    volume_24h_usdt: float               # volumen rolling 24h en USDT.
-    spread_bps: float                    # spread top-of-book en basis points.
-    atr_pct: Optional[float]             # None si insufficient_history.
-    volatility_pct: Optional[float]      # Idem (extensibilidad Fase 2 ATR).
-    active: bool                         # True si pasa todos los filtros default.
-    rejection_reason: Optional[RejectionReason]  # None si active=True.
-    timestamp: int                       # ms since epoch (OHLCV reciente).
-    rank_score: float                    # ∈ [0, 1]. 0.0 si active=False.
+    symbol: str  # par BASE/QUOTE (e.g. "BTC/USDT").
+    last_price: float  # ultimo close de OHLCV reciente.
+    volume_24h_usdt: float  # volumen rolling 24h en USDT.
+    spread_bps: float  # spread top-of-book en basis points.
+    atr_pct: float | None  # None si insufficient_history.
+    volatility_pct: float | None  # Idem (extensibilidad Fase 2 ATR).
+    active: bool  # True si pasa todos los filtros default.
+    rejection_reason: RejectionReason | None  # None si active=True.
+    timestamp: int  # ms since epoch (OHLCV reciente).
+    rank_score: float  # ∈ [0, 1]. 0.0 si active=False.
 
 
 @dataclass(frozen=True, slots=True)
@@ -102,7 +102,7 @@ class FilterOutcome:
     """
 
     passed: bool
-    reason: Optional[RejectionReason] = None
+    reason: RejectionReason | None = None
 
 
 __all__ = ["FilterOutcome", "MarketSnapshot", "RejectionReason"]

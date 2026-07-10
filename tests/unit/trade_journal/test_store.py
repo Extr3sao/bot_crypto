@@ -194,4 +194,3 @@ def test_store_rejects_secret_like_payload_keys(tmp_path: Path) -> None:
         )
         with pytest.raises(ValueError, match="secret-like key"):
             store.save_entry_thesis(bad_thesis)
-
