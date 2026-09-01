@@ -81,6 +81,17 @@ class PaperSessionMetrics:
     fills_opened: int = 0
     ending_equity: float = 0.0
 
+    def to_dict(self) -> dict[str, float | int]:
+        """JSON-serialisable snapshot (used by PaperOrchestrator.status)."""
+        return {
+            "total_snapshots": self.total_snapshots,
+            "active_snapshots": self.active_snapshots,
+            "inactive_snapshots": self.inactive_snapshots,
+            "scanner_errors": self.scanner_errors,
+            "fills_opened": self.fills_opened,
+            "ending_equity": self.ending_equity,
+        }
+
 
 __all__ = [
     "PaperBacktestExpectation",
