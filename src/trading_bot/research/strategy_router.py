@@ -14,7 +14,7 @@ May return NO_TRADE if no strategy passes its gates. Never forces trades.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any, Protocol
+from typing import Any
 
 __all__ = [
     "RouterDecision",
@@ -86,9 +86,7 @@ class StrategyRouter:
     If nothing passes → NO_TRADE with reason. Never forces a trade.
     """
 
-    def __init__(self, gates: RouterGatesLike | None = None) -> None:
-        from .router_gates import RouterGates
-
+    def __init__(self, gates: RouterGates | None = None) -> None:
         self.gates = gates if gates is not None else RouterGates()
 
     def route(
@@ -107,7 +105,7 @@ class StrategyRouter:
                 "direction": "LONG",       # or "SHORT" or "BOTH"
                 "enabled": True,
                 "status": "CONFIRMED",     # from research pipeline
-                "min_data_quality": 0.5,   # optional per-strategy override
+                "priority": 0.5,           # optional tie-breaker
             },
             ...
         }
@@ -125,15 +123,13 @@ class StrategyRouter:
             )
 
         # Gate: context freshness
-        if self.gates.require_fresh_context:
-            stale = self._is_stale(context)
-            if stale:
-                return RouterDecision(
-                    asset=asset,
-                    timestamp=timestamp,
-                    no_trade_reason="stale_context",
-                    trace=[f"context at {timestamp} is stale"],
-                )
+        if self.gates.require_fresh_context and self._is_stale(context):
+            return RouterDecision(
+                asset=asset,
+                timestamp=timestamp,
+                no_trade_reason="stale_context",
+                trace=[f"context at {timestamp} is stale"],
+            )
         trace.append("context_fresh")
 
         # Gate: data quality
@@ -157,25 +153,23 @@ class StrategyRouter:
         best_score: float = -1.0
 
         for sid, entry in strategy_map.items():
-            reasons: list[str] = []
-
             # Gate: enabled
             if not entry.get("enabled", False):
-                reasons.append(f"{sid}: disabled")
+                trace.append(f"{sid}: disabled")
                 continue
 
             # Gate: confirmed status
             if self.gates.require_confirmed:
                 status = entry.get("status", "PENDING")
                 if status != "CONFIRMED":
-                    reasons.append(f"{sid}: status={status}, need CONFIRMED")
+                    trace.append(f"{sid}: status={status}, need CONFIRMED")
                     continue
 
             # Gate: regime match
             if self.gates.require_regime_match and current_regime:
                 allowed = entry.get("regimes", [])
                 if allowed and current_regime not in allowed:
-                    reasons.append(f"{sid}: regime {current_regime} not in {allowed}")
+                    trace.append(f"{sid}: regime {current_regime} not in {allowed}")
                     continue
 
             # Score: prefer strategies that list this regime explicitly
@@ -231,13 +225,3 @@ class StrategyRouter:
         bars = dq.get("bars_in_window", 0)
         # 120 bars = full window = 1.0; linear below that
         return float(min(1.0, bars / 120.0))
-
-
-class RouterGatesLike(Protocol):
-    require_confirmed: bool
-    require_regime_match: bool
-    min_data_quality: float
-    require_fresh_context: bool
-
-
-__all__ += ["RouterGatesLike"]

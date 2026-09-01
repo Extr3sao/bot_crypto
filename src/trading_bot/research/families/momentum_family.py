@@ -78,7 +78,7 @@ class MomentumFamily:
             macd=macd.get("macd"),
             macd_signal=macd.get("signal"),
             macd_histogram=histogram,
-            momentum=momentum,
+            custom={"momentum": momentum},
             atr=atr,
             atr_pct=(atr / current_price * 100) if current_price > 0 else None,
             structural_stop_width=(

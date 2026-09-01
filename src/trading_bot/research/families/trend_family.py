@@ -57,10 +57,19 @@ class TrendFamily:
         atr = indicators.get("atr")
 
         vals = [ema_fast, ema_mid, ema_slow, ema_slow_prev, atr]
-        if not all(isinstance(v, (int, float)) for v in vals):
+        if not all(
+            isinstance(v, (int, float))
+            for v in vals
+        ):
             return []
 
-        assert all(isinstance(v, (int, float)) for v in vals)
+        # mypy: the guard above narrows every element to a number; re-binding
+        # the five values keeps the arithmetic below strict-clean without casts.
+        ema_fast = float(ema_fast)  # type: ignore[arg-type]  # narrowed above
+        ema_mid = float(ema_mid)  # type: ignore[arg-type]
+        ema_slow = float(ema_slow)  # type: ignore[arg-type]
+        ema_slow_prev = float(ema_slow_prev)  # type: ignore[arg-type]
+        atr = float(atr)  # type: ignore[arg-type]
 
         if atr <= 0 or ema_slow <= 0 or ema_slow_prev <= 0:
             return []
