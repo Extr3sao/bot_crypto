@@ -23,6 +23,7 @@ from trading_bot.config.exchange import (
     ExchangeRetries,
     ExchangeTimeouts,
 )
+from trading_bot.market_data.exceptions import ConnectorProtocolError
 from trading_bot.market_data.exchange_connector import (
     _KNOWN_STATUS_MAP,
     MULTI_EXCHANGE_SCOPE,
@@ -31,7 +32,7 @@ from trading_bot.market_data.exchange_connector import (
     ExchangeConnector,
     UnmappedOrderStatusError,
 )
-from trading_bot.market_data.types import OrderStatus
+from trading_bot.market_data.types import MarketRules, OrderStatus
 
 
 # ---------------------------------------------------------------------------
@@ -284,6 +285,137 @@ def test_fetch_balance_maps_to_balance_dataclass(
 
 
 # ---------------------------------------------------------------------------
+# fetch_market_rules (catálogo markets real, fail-closed)
+# ---------------------------------------------------------------------------
+
+
+def _fake_market(**overrides: object) -> dict[str, object]:
+    market: dict[str, object] = {
+        "active": True,
+        "quote": "USDT",
+        "limits": {"cost": {"min": 10.0}, "amount": {"min": 0.0001}},
+        "precision": {"amount": 6, "price": 2},
+    }
+    market.update(overrides)
+    return market
+
+
+def test_fetch_market_rules_maps_catalog(
+    mocked_connector: tuple[CCXTExchangeConnector, MagicMock],
+) -> None:
+    connector, instance = mocked_connector
+    instance.markets = {"BTC/USDT": _fake_market()}
+
+    rules = connector.fetch_market_rules("BTC/USDT")
+    assert isinstance(rules, MarketRules)
+    assert rules.symbol == "BTC/USDT"
+    assert rules.is_open is True
+    assert rules.quote == "USDT"
+    assert rules.min_trade_value_usdt == 10.0
+    assert rules.min_volume == 0.0001
+    assert rules.base_precision == 6
+    assert rules.quote_precision == 2
+
+
+def test_fetch_market_rules_precision_tick_size_converted_to_decimals(
+    mocked_connector: tuple[CCXTExchangeConnector, MagicMock],
+) -> None:
+    """CCXT puede expresar precisión como tick size (float); se convierte a
+    decimales para ``MarketRules.round_*`` (0.00000001 -> 8)."""
+    connector, instance = mocked_connector
+    instance.markets = {
+        "BTC/USDT": _fake_market(
+            precision={"amount": 0.00000001, "price": 0.01},
+        )
+    }
+
+    rules = connector.fetch_market_rules("BTC/USDT")
+    assert rules.base_precision == 8
+    assert rules.quote_precision == 2
+
+
+def test_fetch_market_rules_defaults_when_limits_missing(
+    mocked_connector: tuple[CCXTExchangeConnector, MagicMock],
+) -> None:
+    """Límites ausentes → 0.0 (sin mínimo declarado); precisión ausente → 8."""
+    connector, instance = mocked_connector
+    instance.markets = {"BTC/USDT": {"active": True, "quote": "USDT"}}
+
+    rules = connector.fetch_market_rules("BTC/USDT")
+    assert rules.min_trade_value_usdt == 0.0
+    assert rules.min_volume == 0.0
+    assert rules.base_precision == 8
+    assert rules.quote_precision == 8
+
+
+def test_fetch_market_rules_unknown_symbol_fails_closed(
+    mocked_connector: tuple[CCXTExchangeConnector, MagicMock],
+) -> None:
+    """Un símbolo ausente del catálogo no fabrica reglas: error loud."""
+    connector, instance = mocked_connector
+    instance.markets = {"ETH/USDT": _fake_market()}
+
+    with pytest.raises(ConnectorProtocolError, match="no se fabrican reglas"):
+        connector.fetch_market_rules("BTC/USDT")
+
+
+def test_fetch_market_rules_missing_quote_fails_closed(
+    mocked_connector: tuple[CCXTExchangeConnector, MagicMock],
+) -> None:
+    """Sin ``quote`` no se puede determinar la divisa: error loud."""
+    connector, instance = mocked_connector
+    instance.markets = {"BTC/USDT": {"active": True}}
+
+    with pytest.raises(ConnectorProtocolError, match="quote"):
+        connector.fetch_market_rules("BTC/USDT")
+
+
+# ---------------------------------------------------------------------------
+# fetch_24h_volume_usdt / fetch_spread_bps (ticker real, fail-closed)
+# ---------------------------------------------------------------------------
+def test_fetch_24h_volume_usdt_from_ticker(
+    mocked_connector: tuple[CCXTExchangeConnector, MagicMock],
+) -> None:
+    connector, instance = mocked_connector
+    instance.fetch_ticker.return_value = {
+        "symbol": "BTC/USDT",
+        "quoteVolume": 1_234_567.89,
+        "bid": 100.0,
+        "ask": 100.1,
+    }
+    assert connector.fetch_24h_volume_usdt("BTC/USDT") == pytest.approx(1_234_567.89)
+    instance.fetch_ticker.assert_called_once_with("BTC/USDT")
+
+
+def test_fetch_24h_volume_usdt_missing_quote_volume_fails_closed(
+    mocked_connector: tuple[CCXTExchangeConnector, MagicMock],
+) -> None:
+    """Sin ``quoteVolume`` no se fabrica un valor: 0.0 → VolumeFilter rechaza."""
+    connector, instance = mocked_connector
+    instance.fetch_ticker.return_value = {"symbol": "BTC/USDT"}
+    assert connector.fetch_24h_volume_usdt("BTC/USDT") == 0.0
+
+
+def test_fetch_spread_bps_from_ticker(
+    mocked_connector: tuple[CCXTExchangeConnector, MagicMock],
+) -> None:
+    connector, instance = mocked_connector
+    instance.fetch_ticker.return_value = {"bid": 100.0, "ask": 100.1}
+    spread = connector.fetch_spread_bps("BTC/USDT")
+    # (0.1 / 100.05) * 10000 ≈ 9.995 bps
+    assert spread == pytest.approx(9.995, abs=1e-3)
+
+
+def test_fetch_spread_bps_missing_bid_ask_fails_closed(
+    mocked_connector: tuple[CCXTExchangeConnector, MagicMock],
+) -> None:
+    """Sin ``bid``/``ask`` no se simula spread 0: inf → SpreadFilter rechaza."""
+    connector, instance = mocked_connector
+    instance.fetch_ticker.return_value = {"symbol": "BTC/USDT"}
+    assert connector.fetch_spread_bps("BTC/USDT") == float("inf")
+
+
+# ---------------------------------------------------------------------------
 # _normalize_status exhaustiveness (TSK-101 reviewer fix + ADR lock)
 # ---------------------------------------------------------------------------
 def test_normalize_status_known_statuses() -> None:
@@ -369,9 +501,9 @@ def test_logger_attribution_uses_module_name(
 # ---------------------------------------------------------------------------
 # P2 — Soporte de exchanges whitelist.
 # ---------------------------------------------------------------------------
-def test_supported_exchanges_contains_binance_and_bitunix() -> None:
+def test_supported_exchanges_contains_binance_bitunix_bybit() -> None:
     """El whitelist actual debe incluir los exchanges aprobados localmente."""
-    assert frozenset({"binance", "bitunix"}) == SUPPORTED_EXCHANGES_FOR_TSK_101
+    assert frozenset({"binance", "bitunix", "bybit"}) == SUPPORTED_EXCHANGES_FOR_TSK_101
 
 
 def test_multi_exchange_scope_string_is_self_descriptive() -> None:
