@@ -53,6 +53,8 @@ class PaperOrchestratorStatus:
     equity: float = 0.0
     kill_switch_active: bool = False
     mode: str = "paper"
+    # CP-PO-002: canonical decision-cycle counters (None when disabled).
+    cycle: dict[str, Any] | None = None
     last_errors: list[str] = field(default_factory=list)
 
     def to_dict(self) -> dict[str, Any]:
@@ -65,6 +67,7 @@ class PaperOrchestratorStatus:
             "realized_pnl": self.realized_pnl,
             "equity": self.equity,
             "kill_switch_active": self.kill_switch_active,
+            "cycle": self.cycle,
             "last_errors": list(self.last_errors),
         }
 
@@ -94,6 +97,10 @@ class PaperOrchestrator:
         max_sessions: int | None = None,
         interval_seconds: float = 30.0,
         now_fn: Callable[[], datetime.datetime] | None = None,
+        # -- CP-PO-002 canonical decision cycle (optional; default off) -----
+        cycle_engine: Any | None = None,
+        cycle_history_reader: Any | None = None,
+        history_lookback_bars: int = 120,
     ) -> None:
         self._settings = settings
         self._scanner_factory = scanner_factory
@@ -104,6 +111,9 @@ class PaperOrchestrator:
         self._max_sessions = max_sessions
         self._interval_seconds = interval_seconds
         self._now_fn = now_fn or (lambda: datetime.datetime.now(datetime.UTC))
+        self._cycle_engine = cycle_engine
+        self._cycle_history_reader = cycle_history_reader
+        self._history_lookback_bars = history_lookback_bars
         self._log = structlog.get_logger("paper_orchestrator")
 
         self._status = PaperOrchestratorStatus(mode=settings.runtime.mode.value)
@@ -133,14 +143,20 @@ class PaperOrchestrator:
             while not self._stop_requested:
                 if self._gate_failed():
                     break
-                if self._max_sessions is not None and self._status.sessions_completed >= self._max_sessions:
+                if (
+                    self._max_sessions is not None
+                    and self._status.sessions_completed >= self._max_sessions
+                ):
                     log = self._log.bind(sessions_completed=self._status.sessions_completed)
                     log.info("paper.orchestrator.max_sessions_reached")
                     break
 
                 await self._run_one_session()
 
-                if self._max_sessions is not None and self._status.sessions_completed >= self._max_sessions:
+                if (
+                    self._max_sessions is not None
+                    and self._status.sessions_completed >= self._max_sessions
+                ):
                     break
                 if self._stop_requested:
                     break
@@ -167,6 +183,9 @@ class PaperOrchestrator:
             expectation=self._expectation,
             report_output_dir=self._report_output_dir,
             now_fn=self._now_fn,
+            cycle_engine=self._cycle_engine,
+            cycle_history_reader=self._cycle_history_reader,
+            history_lookback_bars=self._history_lookback_bars,
         )
         result = await runner.run_session()
 
@@ -174,7 +193,11 @@ class PaperOrchestrator:
         self._status.sessions_completed += 1
         self._status.last_session_id = result.session_id
         self._status.last_session_metrics = result.metrics.to_dict()
-        self._status.equity = float(self._broker.equity) if self._broker is not None else self._status.equity
+        if result.cycle_counts is not None:
+            self._status.cycle = result.cycle_counts.to_dict()
+        self._status.equity = (
+            float(self._broker.equity) if self._broker is not None else self._status.equity
+        )
         if result.execution_summary is not None:
             self._status.realized_pnl = float(result.execution_summary.realized_pnl)
 

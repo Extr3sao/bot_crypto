@@ -142,7 +142,9 @@ markers = [
   "regression: pruebas de regresión histórica",
   "slow: pruebas lentas",
   "market: smoke-tests sobre conectores de mercado",
+  "orphaned: pruebas de un esfuerzo paralelo nunca fusionado (v031-v033); importan módulos inexistentes y se excluyen de la recolección",
 ]
+
 
 [tool.coverage.run]
 source = ["src/trading_bot"]

@@ -41,6 +41,9 @@ class PaperSessionResult:
     counters: Any = None
     metrics: Any = None
     execution_summary: Any = None
+    # CP-PO-002: canonical decision-cycle counters (None when the cycle
+    # stage is not configured for this runner).
+    cycle_counts: Any = None
     report_markdown_path: Any = None
     report_json_path: Any = None
 
