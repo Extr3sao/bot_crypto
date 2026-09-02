@@ -64,6 +64,8 @@ include = ["trading_bot*"]
 [tool.ruff]
 target-version = "py311"
 line-length = 100
+extend-exclude = ["*.sh"]  # shell scripts are not Python (cert_env.sh)
+force-exclude = true      # apply exclusions even to explicitly-passed paths
 
 [tool.ruff.lint]
 select = [
