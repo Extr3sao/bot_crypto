@@ -73,3 +73,48 @@ def test_runtime_entry_points_importable() -> None:
         "trading_bot.research.families",
     ):
         importlib.import_module(mod)
+
+
+def test_every_tracked_module_imports_under_declared_environment() -> None:
+    """Permanent anti-false-success closure gate (CERT-PO-L5-001 root cause).
+
+    Imports EVERY tracked ``src/trading_bot/*.py`` module (excluding __init__
+    stubs, which are exercised transitively) with the real Python runtime and
+    fails on any ModuleNotFoundError. This is deliberately NOT a path-string
+    mapping: importlib resolution reflects the exact import semantics a clean
+    checkout would experience. Regresses the six bindings that previously made
+    the certified candidate unimportable (cost_model, candle_filter,
+    scanner_bridge, observability.journal, paper.signal_types,
+    domain.enums.kill_switch) and any future missing-transitive-module of the
+    same class.
+    """
+
+    import importlib
+    import subprocess
+
+    repo = Path(__file__).resolve().parents[2]
+    tracked = subprocess.run(
+        ["git", "ls-files"], capture_output=True, text=True, check=True, cwd=repo
+    ).stdout.splitlines()
+
+    modules: list[str] = []
+    for rel in tracked:
+        if not rel.startswith("src/trading_bot/") or not rel.endswith(".py"):
+            continue
+        if rel.endswith("__init__.py"):
+            continue  # exercised transitively by every submodule import
+        modules.append(rel[len("src/"):-3].replace("/", "."))
+
+    failures: list[str] = []
+    for mod in sorted(set(modules)):
+        try:
+            importlib.import_module(mod)
+        except ModuleNotFoundError as exc:
+            failures.append(f"{mod} -> {exc}")
+
+    assert not failures, (
+        "Tracked module(s) fail to import under the declared environment "
+        "(dependency closure is NOT tracked/complete — a clean checkout "
+        "cannot reproduce this tree):\n  "
+        + "\n  ".join(failures)
+    )
