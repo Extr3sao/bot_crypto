@@ -25,6 +25,7 @@ import asyncio
 import pytest
 
 from trading_bot.config.runtime import TradingMode
+from trading_bot.config.settings import Settings
 from trading_bot.market_data.fake import build_demo_fetcher, build_demo_settings
 from trading_bot.paper.broker import PaperBroker
 from trading_bot.paper.paper_orchestrator import PaperOrchestrator
@@ -33,7 +34,7 @@ from trading_bot.scanner.scanner import UniverseScanner
 from trading_bot.strategies.types import Signal
 
 
-def _build_paper_settings():
+def _build_paper_settings() -> Settings:
     """Paper settings for BTC/ETH/SOL.
 
     kill_switch_enabled=False here because of a PRE-EXISTING divergence in
@@ -54,7 +55,7 @@ def _build_paper_settings():
     return settings
 
 
-def _build_scanner(settings):
+def _build_scanner(settings: Settings) -> UniverseScanner:
     source = build_demo_fetcher(settings)
     return UniverseScanner(
         source=source,
