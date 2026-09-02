@@ -11,6 +11,7 @@ from typing import Any
 from .types import PaperBacktestExpectation
 
 
+
 def build_expectation_from_fold_report(
     fold_report: Any,
     *,
@@ -44,4 +45,4 @@ def build_expectation_from_fold_report(
     )
 
 
-__all__ = ["build_expectation_from_fold_report"]
+__all__ = ["PaperBacktestExpectation", "build_expectation_from_fold_report"]
