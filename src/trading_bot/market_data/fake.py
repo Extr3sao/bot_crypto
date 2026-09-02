@@ -45,10 +45,13 @@ class.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from typing import TYPE_CHECKING
 
 from trading_bot.config.runtime import TradingMode
-from trading_bot.config.settings import Settings
 from trading_bot.market_data.types import OHLCV
+
+if TYPE_CHECKING:
+    from trading_bot.config.settings import Settings
 
 # ===========================================================================
 # 1. FakeMarketDataSource — MarketDataSourceProtocol impl
@@ -214,6 +217,7 @@ def build_demo_settings(
         SchedulerActiveHours,
         Storage,
     )
+    from trading_bot.config.settings import Settings
     from trading_bot.config.strategies import StrategiesConfig, StrategiesGlobal
     from trading_bot.config.universe import PairSpec, Universe, UniverseFilters
 

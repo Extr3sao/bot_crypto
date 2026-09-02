@@ -15,6 +15,7 @@ from __future__ import annotations
 import asyncio
 import hashlib
 import json
+import math
 import os
 import secrets
 import time
@@ -27,7 +28,23 @@ from email.utils import parsedate_to_datetime
 from typing import Any
 from urllib.error import HTTPError
 
-from trading_bot.market_data.types import CCXTPayloadProtocol, OHLCV, Balance, narrow_ccxt_payload
+import structlog
+
+from trading_bot.market_data.exceptions import (
+    ConnectorProtocolError,
+    UnsupportedConnectorOperationError,
+)
+from trading_bot.market_data.types import (
+    OHLCV,
+    Balance,
+    CCXTPayloadProtocol,
+    ExchangeMarketType,
+    MarketRules,
+    OrderResult,
+    OrderType,
+    Side,
+    narrow_ccxt_payload,
+)
 
 
 def _sha256_hex(value: str) -> str:
@@ -365,10 +382,227 @@ class BitunixMarketDataSource:
         return await asyncio.to_thread(self._client.fetch_spread_bps, symbol)
 
 
+def _check_ohlcv_row(row: object, symbol: str) -> None:
+    """Valida un row devuelto por el cliente antes de entregarlo (frontera).
+
+    Un payload REST inválido no debe convertirse en un ``OHLCV`` canónico
+    silencioso: si el cliente devuelve algo que no es un ``OHLCV`` bien
+    formado (tipo incorrecto, símbolo distinto del solicitado o valores no
+    finitos), se falla loud con ``ConnectorProtocolError``.
+    """
+    if not isinstance(row, OHLCV):
+        raise ConnectorProtocolError(
+            f"Bitunix spot devolvió row OHLCV inválido: {type(row).__name__!r}. "
+            "El adapter no fabrica valores válidos desde payloads incompletos."
+        )
+    if not row.symbol or row.symbol != symbol:
+        raise ConnectorProtocolError(
+            f"Bitunix spot devolvió row con symbol={row.symbol!r} para la "
+            f"solicitud {symbol!r}; se aborta en la frontera."
+        )
+    for value in (row.open, row.high, row.low, row.close, row.volume):
+        if not math.isfinite(float(value)):
+            raise ConnectorProtocolError(
+                f"Bitunix spot devolvió valor no finito en row de {symbol!r} "
+                f"({value!r}); se aborta en la frontera."
+            )
+
+
+class BitunixSpotConnector:
+    """Fachada de dominio sobre ``BitunixSpotClient`` (TSK-022.5, RF-MX-2).
+
+    Implementa ``MultiExchangeConnector`` sin exponer el cliente REST a los
+    consumidores: ``scanner``/``execution``/``strategies`` reciben únicamente
+    el Protocol por inyección de dependencias (frontera RF-MX-4 / ADR-0013).
+
+    - ``exchange_id == "bitunix"``, ``market_type == "spot"``.
+    - ``sandbox_enabled`` es observable (flag declarativo del target; el
+      wiring de URLs sandbox reales es responsabilidad del composition root
+      y del gate de integración TSK-022.7).
+    - OHLCV y balances se validan en la frontera: un payload REST incompleto
+      produce ``ConnectorProtocolError``, nunca un valor por defecto.
+    - ``create_order`` NO se simula: el cliente REST ``place_spot_order`` no
+      correlaciona ``client_order_id`` y ``OrderResult.client_order_id`` es
+      obligatorio (§2.1); sin idempotencia verificable el adapter falla loud
+      antes de enviar una request ambigua.
+    - ``cancel_order`` tampoco se simula: sin cancelación nativa en el
+      cliente, se levanta ``UnsupportedConnectorOperationError``.
+    """
+
+    exchange_id: str = "bitunix"
+    market_type: ExchangeMarketType = "spot"
+
+    def __init__(self, client: BitunixSpotClient, *, sandbox: bool = True) -> None:
+        self._client = client
+        self._sandbox = sandbox
+        self._log_name = self.__class__.__module__
+        self._log = structlog.get_logger(self._log_name)
+
+    @property
+    def sandbox_enabled(self) -> bool:
+        return self._sandbox
+
+    def _bind(self, op: str, **extra: Any) -> Any:
+        return self._log.bind(
+            exchange_id=self.exchange_id,
+            market_type=self.market_type,
+            sandbox=self.sandbox_enabled,
+            op=op,
+            **extra,
+        )
+
+    # ------------------------------------------------------------------
+    # Lifecycle
+    # ------------------------------------------------------------------
+    def load_markets(self) -> None:
+        """Carga el catálogo de símbolos del cliente spot (sin retry)."""
+        log = self._bind("load_markets")
+        try:
+            self._client.fetch_symbol_catalog()
+        except Exception:
+            log.error("bitunix_spot_load_markets_failed", exc_info=True)
+            raise
+        log.info("bitunix_spot_load_markets_ok")
+
+    # ------------------------------------------------------------------
+    # Read operations
+    # ------------------------------------------------------------------
+    def fetch_ohlcv(self, symbol: str, timeframe: str, limit: int) -> list[OHLCV]:
+        """OHLCV canónico. Solo ``1m``: el cliente REST fija ``interval=1``;
+        otro timeframe falla loud en vez de devolver velas del intervalo
+        equivocado."""
+        if timeframe != "1m":
+            raise UnsupportedConnectorOperationError(
+                f"Bitunix spot solo expone klines '1m' (cliente REST fija "
+                f"interval=1); timeframe {timeframe!r} no soportado. "
+                "Ampliar el cliente con verificación sandbox antes de habilitar."
+            )
+        log = self._bind("fetch_ohlcv", symbol=symbol, timeframe=timeframe, limit=limit)
+        try:
+            rows = self._client.fetch_recent_ohlcv(symbol, limit)
+        except Exception:
+            log.error("bitunix_spot_fetch_ohlcv_failed", exc_info=True)
+            raise
+        for row in rows:
+            _check_ohlcv_row(row, symbol)
+        log.info("bitunix_spot_fetch_ohlcv_ok", n=len(rows))
+        return rows
+
+    def fetch_24h_volume_usdt(self, symbol: str) -> float:
+        """Volumen rolling 24h en USDT: delega en el cliente REST real."""
+        log = self._bind("fetch_24h_volume_usdt", symbol=symbol)
+        try:
+            volume = self._client.fetch_24h_volume_usdt(symbol)
+        except Exception:
+            log.error("bitunix_spot_fetch_24h_volume_failed", exc_info=True)
+            raise
+        log.info("bitunix_spot_fetch_24h_volume_ok", volume_usdt=volume)
+        return volume
+
+    def fetch_spread_bps(self, symbol: str) -> float:
+        """Spread top-of-book en bps: delega en el order book real del cliente."""
+        log = self._bind("fetch_spread_bps", symbol=symbol)
+        try:
+            spread = self._client.fetch_spread_bps(symbol)
+        except Exception:
+            log.error("bitunix_spot_fetch_spread_failed", exc_info=True)
+            raise
+        log.info("bitunix_spot_fetch_spread_ok", spread_bps=spread)
+        return spread
+
+    def fetch_market_rules(self, symbol: str) -> MarketRules:
+        """Reglas de negociación: delega en el catálogo real del cliente spot.
+
+        ``get_symbol`` resuelve desde ``fetch_symbol_catalog`` (datos reales
+        del exchange, cacheados) y mapea a ``MarketRules`` conservando los
+        campos nativos (precisiones, mínimos, estado). Un símbolo ausente
+        produce ``BitunixAPIError`` (fail-loud): no se fabrican reglas.
+        """
+        log = self._bind("fetch_market_rules", symbol=symbol)
+        try:
+            rule = self._client.get_symbol(symbol)
+        except Exception:
+            log.error("bitunix_spot_fetch_market_rules_failed", exc_info=True)
+            raise
+        if not isinstance(rule, BitunixSpotSymbol):
+            raise ConnectorProtocolError(
+                f"Bitunix spot devolvió reglas inválidas: {type(rule).__name__!r}. "
+                "Se aborta en la frontera, sin valores por defecto."
+            )
+        rules = MarketRules(
+            symbol=rule.ccxt_symbol,
+            is_open=rule.is_open,
+            quote=rule.quote,
+            min_trade_value_usdt=rule.min_trade_value_usdt,
+            min_volume=rule.min_volume,
+            base_precision=rule.base_precision,
+            quote_precision=rule.quote_precision,
+        )
+        log.info(
+            "bitunix_spot_fetch_market_rules_ok",
+            is_open=rules.is_open,
+            quote=rules.quote,
+            min_trade_value_usdt=rules.min_trade_value_usdt,
+            min_volume=rules.min_volume,
+        )
+        return rules
+
+    def fetch_balance(self) -> list[Balance]:
+        """Balances spot normalizados a ``list[Balance]`` (frontera validada)."""
+        log = self._bind("fetch_balance")
+        try:
+            rows = self._client.fetch_balances()
+        except Exception:
+            log.error("bitunix_spot_fetch_balance_failed", exc_info=True)
+            raise
+        for row in rows:
+            if not isinstance(row, Balance):
+                raise ConnectorProtocolError(
+                    f"Bitunix spot devolvió balance inválido: {type(row).__name__!r}. "
+                    "Se aborta en la frontera, sin valores por defecto."
+                )
+        log.info("bitunix_spot_fetch_balance_ok", n_assets=len(rows))
+        return rows
+
+    # ------------------------------------------------------------------
+    # Write operations (sin simulación)
+    # ------------------------------------------------------------------
+    def create_order(
+        self,
+        symbol: str,
+        side: Side,
+        order_type: OrderType,
+        amount: float,
+        price: float | None = None,
+        client_order_id: str | None = None,
+    ) -> OrderResult:
+        """NO simulado: el cliente spot no correlaciona ``client_order_id``.
+
+        ``OrderResult.client_order_id`` es obligatorio y debe conservarse en
+        todos los adapters incluyendo retries (§2.1). ``place_spot_order`` no
+        acepta ni refleja un client ID, así que no puede garantizarse la
+        idempotencia; se falla loud antes de enviar la request.
+        """
+        raise UnsupportedConnectorOperationError(
+            "BitunixSpotConnector.create_order no soportado: el cliente REST "
+            "place_spot_order no correlaciona client_order_id y el Protocol "
+            "exige conservarlo (03-specify.md §2.1). No se envía una orden "
+            "sin idempotencia verificable."
+        )
+
+    def cancel_order(self, order_id: str, symbol: str) -> None:
+        """NO simulado: el cliente spot no expone cancelación nativa."""
+        raise UnsupportedConnectorOperationError(
+            "BitunixSpotConnector.cancel_order no soportado: BitunixSpotClient "
+            "no implementa cancelación; el adapter no simula éxito."
+        )
+
+
 __all__ = [
     "BitunixAPIError",
     "BitunixMarketDataSource",
     "BitunixSpotClient",
+    "BitunixSpotConnector",
     "BitunixSpotSymbol",
     "_format_decimal",
     "_round_down",

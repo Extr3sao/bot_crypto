@@ -31,7 +31,6 @@ from trading_bot.charting import ChartSnapshotRequest, render_local_chart_snapsh
 from trading_bot.config import TradingMode, load_settings
 from trading_bot.market_data.bitunix import (
     BitunixAPIError,
-    BitunixMarketDataSource,
     BitunixSpotClient,
     to_api_symbol,
 )
@@ -46,7 +45,7 @@ from trading_bot.trade_journal import (
 
 if TYPE_CHECKING:
     from trading_bot.config.settings import Settings
-    from trading_bot.market_data.types import Balance
+    from trading_bot.market_data.types import Balance, MultiExchangeConnector
     from trading_bot.scanner.scanner import CounterSnapshot, UniverseScanner
     from trading_bot.scanner.types import MarketSnapshot
 
@@ -84,6 +83,22 @@ class LiveExecutionState:
 
 def _utc_now_iso() -> str:
     return datetime.now(UTC).isoformat()
+
+
+def _force_utf8_stdio() -> None:
+    """Fuerza UTF-8 en stdout/stderr (Windows cp1252 rompe con no-ASCII).
+
+    Sin esto, un ``log.error(exc_info=True)`` que renderice un traceback o
+    body con caracteres no-ASCII (p. ej. un error de ccxt con símbolo o
+    mensaje raro) lanza ``UnicodeEncodeError`` dentro del propio handler de
+    logging, enmascarando el error real (regresión observada con RNDR/USDT
+    en el scanner por consola cp1252). Mismo contrato que
+    ``web/run.py::_force_utf8_stdio``: regla del repo UTF-8 sin BOM.
+    """
+    for stream in (sys.stdout, sys.stderr):
+        reconfigure = getattr(stream, "reconfigure", None)
+        if reconfigure is not None:
+            reconfigure(encoding="utf-8")
 
 
 def _render_dashboard_html(state: RuntimeState) -> str:
@@ -312,7 +327,8 @@ def _build_demo_scanner(mode: str) -> UniverseScanner:
 
 def _build_live_scanner(
     config_dir: str, env_file: str | None
-) -> tuple[UniverseScanner, Settings, BitunixSpotClient]:
+) -> tuple[UniverseScanner, Settings, MultiExchangeConnector]:
+    from trading_bot.market_data.wiring import resolve_scanner_source
     from trading_bot.scanner.mode_filters import build_filter_set_per_mode
     from trading_bot.scanner.scanner import UniverseScanner
 
@@ -320,18 +336,23 @@ def _build_live_scanner(
     scanner_settings = settings.model_copy(
         update={"risk": settings.risk.model_copy(update={"kill_switch_enabled": False})}
     )
-    client = BitunixSpotClient(
-        api_key=settings.exchange.api_key,
-        api_secret=settings.exchange.api_secret,
-    )
-    source = BitunixMarketDataSource(client)
+    # Fuente del scanner + connector de ejecución: MISMO connector del hub
+    # multi-exchange (exchange configurado en runtime.exchange_id, bybit por
+    # defecto). Sin fallback silencioso (CL-4) y sin client de exchange
+    # hardcodeado: el path de órdenes usa ``create_order`` del hub.
+    source = resolve_scanner_source(scanner_settings, session_id="scan-live")
+    connector: MultiExchangeConnector = source.connector
+    # Catálogo de markets cargado antes de arrancar: ``fetch_market_rules``
+    # (path de ejecución) y el scanner necesitan el catálogo; si falla,
+    # fail-fast al arranque (mismo contrato que ``load_markets`` del hub).
+    connector.load_markets()
     registry_per_mode = build_filter_set_per_mode(scanner_settings)
     scanner = UniverseScanner(
         source=source,
         registry_per_mode=registry_per_mode,
         settings=scanner_settings,
     )
-    return scanner, settings, client
+    return scanner, settings, connector
 
 
 def _run_single_iteration(mode: str) -> tuple[list[MarketSnapshot], CounterSnapshot]:
@@ -342,10 +363,10 @@ def _run_single_iteration(mode: str) -> tuple[list[MarketSnapshot], CounterSnaps
 
 def _run_single_live_iteration(
     config_dir: str, env_file: str | None
-) -> tuple[list[MarketSnapshot], CounterSnapshot, BitunixSpotClient, Settings]:
-    scanner, settings, client = _build_live_scanner(config_dir, env_file)
+) -> tuple[list[MarketSnapshot], CounterSnapshot, MultiExchangeConnector, Settings]:
+    scanner, settings, connector = _build_live_scanner(config_dir, env_file)
     snapshots = asyncio.run(scanner.run())
-    return snapshots, scanner.counters, client, settings
+    return snapshots, scanner.counters, connector, settings
 
 
 def _print_demo_results(
@@ -709,7 +730,7 @@ def _maybe_execute_live_trade(
     *,
     settings: Settings,
     snapshots: list[MarketSnapshot],
-    client: BitunixSpotClient,
+    connector: MultiExchangeConnector,
     execution: LiveExecutionState,
     trade_quote_usdt: float,
     max_live_orders: int,
@@ -731,7 +752,7 @@ def _maybe_execute_live_trade(
     if not active:
         return {"status": "SKIPPED", "reason": "no_active_signals"}
 
-    balances = client.fetch_balances()
+    balances = connector.fetch_balance()
     usdt_balance = _balance_for_asset(balances, "USDT")
     usdt_free = usdt_balance.free if usdt_balance is not None else 0.0
     if usdt_free <= 0:
@@ -746,7 +767,7 @@ def _maybe_execute_live_trade(
             )
             continue
 
-        rule = client.get_symbol(snap.symbol)
+        rule = connector.fetch_market_rules(snap.symbol)
         if not rule.is_open or rule.quote != "USDT":
             print(
                 f"[run] live-skip symbol={snap.symbol} reason=symbol_not_open_or_quote_not_usdt is_open={rule.is_open} quote={rule.quote}"
@@ -789,7 +810,7 @@ def _maybe_execute_live_trade(
             )
             continue
 
-        order = client.place_spot_order(
+        order = connector.create_order(
             symbol=snap.symbol,
             side="buy",
             order_type="market",
@@ -804,8 +825,9 @@ def _maybe_execute_live_trade(
             "score": round(snap.rank_score, 3),
             "amount": amount,
             "estimatedCostUsdt": round(estimated_cost, 4),
-            "orderId": order.get("orderId"),
-            "placeStatus": order.get("placeStatus"),
+            "orderId": order.id,
+            "orderStatus": order.status,
+            "clientOrderId": order.client_order_id,
         }
 
     return {"status": "SKIPPED", "reason": "no_tradeable_active_signal"}
@@ -1066,7 +1088,7 @@ def _cmd_run(args: argparse.Namespace) -> int:
                 else ""
             )
             try:
-                snapshots, counters, client, settings = _run_single_live_iteration(
+                snapshots, counters, connector, settings = _run_single_live_iteration(
                     config_dir=args.config_dir,
                     env_file=env_file,
                 )
@@ -1101,7 +1123,14 @@ def _cmd_run(args: argparse.Namespace) -> int:
             if args.auto_trade:
                 try:
                     if args.market_kind == "futures":
+                        # Path futures: Bitunix-native (TP/SL, posiciones) y
+                        # fuera del contrato ``MultiExchangeConnector`` (el hub
+                        # no expone TP/SL). Se construyen sus clientes locales.
                         futures_client = BitunixFuturesClient(
+                            api_key=settings.exchange.api_key,
+                            api_secret=settings.exchange.api_secret,
+                        )
+                        market_client = BitunixSpotClient(
                             api_key=settings.exchange.api_key,
                             api_secret=settings.exchange.api_secret,
                         )
@@ -1109,17 +1138,20 @@ def _cmd_run(args: argparse.Namespace) -> int:
                             settings=settings,
                             snapshots=snapshots,
                             futures_client=futures_client,
-                            market_client=client,
+                            market_client=market_client,
                             execution=live_execution,
                             trade_quote_usdt=args.trade_quote_usdt,
                             max_live_orders=args.max_live_orders,
                             symbol_cooldown_seconds=args.symbol_cooldown_seconds,
                         )
                     else:
+                        # Path spot: exchange-neutral vía el hub
+                        # (create_order/fetch_balance/fetch_market_rules del
+                        # connector configurado en runtime.exchange_id).
                         live_execution.last_event = _maybe_execute_live_trade(
                             settings=settings,
                             snapshots=snapshots,
-                            client=client,
+                            connector=connector,
                             execution=live_execution,
                             trade_quote_usdt=args.trade_quote_usdt,
                             max_live_orders=args.max_live_orders,
@@ -1327,6 +1359,9 @@ def _cmd_set_tpsl(args: argparse.Namespace) -> int:
 
 
 def main(argv: list[str] | None = None) -> int:
+    # Entry point CLI: UTF-8 en stdout/stderr antes de cualquier log (fix
+    # UnicodeEncodeError cp1252 en Windows; ver `_force_utf8_stdio`).
+    _force_utf8_stdio()
     parser = _build_parser()
     args = parser.parse_args(argv if argv is not None else sys.argv[1:])
 

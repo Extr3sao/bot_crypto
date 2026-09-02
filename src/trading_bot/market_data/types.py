@@ -10,6 +10,7 @@ al exchange (regla arquitectónica §11 en `docs/architecture.md`).
 
 from __future__ import annotations
 
+import math
 from collections.abc import Iterator
 from dataclasses import dataclass
 from typing import Any, Literal, Protocol, cast, runtime_checkable
@@ -32,6 +33,10 @@ OrderType = Literal["limit", "market"]
 # el POST; el caller reintentaba y duplicaba la posición. Ver
 # `context/retrieval-log.md` entrada 2026-07-04 02:00.
 OrderStatus = Literal["open", "partially_filled", "closed", "canceled", "rejected", "expired"]
+# Tipo de mercado del hub multi-exchange (TSK-022). Distingue Spot de Futures
+# sin introducir una segunda API de órdenes; las diferencias nativas se
+# encapsulan en cada adapter.
+ExchangeMarketType = Literal["spot", "futures"]
 
 
 @dataclass(frozen=True, slots=True)
@@ -85,6 +90,39 @@ class OrderResult:
     price: float
     amount: float
     filled: float
+
+
+def _round_down(value: float, decimals: int) -> float:
+    """Redondea hacia abajo a ``decimals`` decimales (precisión del exchange)."""
+    factor: int = 10 ** max(0, decimals)
+    # ``math.floor`` devuelve int; la división es float explícito (mypy strict
+    # pedía el cast para no-any-return con los overloads de math.floor).
+    return float(math.floor(value * factor)) / factor
+
+
+@dataclass(frozen=True, slots=True)
+class MarketRules:
+    """Reglas de negociación de un símbolo desde el catálogo del exchange.
+
+    Superficie mínima para ejecución exchange-neutral: lo que exige un path
+    de órdenes (símbolo abierto, quote, mínimo nocional, mínimo de volumen y
+    precisión de redondeo) sin exponer tipos nativos del exchange. La
+    conversión de precisión nativa (tick size, decimales) vive en el adapter.
+    """
+
+    symbol: str
+    is_open: bool
+    quote: str
+    min_trade_value_usdt: float
+    min_volume: float
+    base_precision: int
+    quote_precision: int
+
+    def round_base_amount(self, amount: float) -> float:
+        return _round_down(amount, self.base_precision)
+
+    def round_price(self, price: float) -> float:
+        return _round_down(price, self.quote_precision)
 
 
 # ---------------------------------------------------------------------------
@@ -155,10 +193,14 @@ def narrow_ccxt_payload(data: Any) -> CCXTPayloadProtocol:
     ``__getitem__``/``get``/``keys``/``values``/``items``/etc.).
     """
     if not isinstance(data, dict):
-        raise RuntimeError(f"ccxt expected dict payload, got {type(data).__name__}: {data!r}")
+        raise RuntimeError(
+            f"protocol violation: ccxt expected dict payload, got {type(data).__name__}: {data!r}"
+        )
     for key in data:
         if not isinstance(key, str):
-            raise RuntimeError(f"ccxt dict key must be str, got {type(key).__name__}: {key!r}")
+            raise RuntimeError(
+                f"protocol violation: ccxt dict key must be str, got {type(key).__name__}: {key!r}"
+            )
     return cast(CCXTPayloadProtocol, data)
 
 
@@ -172,14 +214,63 @@ def narrow_ccxt_ohlcv(data: Any) -> CCXTOHLCVProtocol:
     """
     if not isinstance(data, list):
         raise RuntimeError(
-            f"ccxt fetch_ohlcv expected list-of-lists, got {type(data).__name__}: {data!r}"
+            f"protocol violation: ccxt fetch_ohlcv expected list-of-lists, "
+            f"got {type(data).__name__}: {data!r}"
         )
     for idx, row in enumerate(data):
         if not isinstance(row, list):
             raise RuntimeError(
-                f"ccxt OHLCV row #{idx} must be list, got {type(row).__name__}: {row!r}"
+                f"protocol violation: ccxt OHLCV row #{idx} must be list, "
+                f"got {type(row).__name__}: {row!r}"
             )
     return cast(CCXTOHLCVProtocol, data)
+
+
+@runtime_checkable
+class MultiExchangeConnector(Protocol):
+    """Protocol de consumo del hub multi-exchange (TSK-022, RF-MX-1).
+
+    Contrato canónico definido en `03-specify.md` §2.1. No contiene estado
+    global ni realiza I/O al importarse; los consumers reciben únicamente
+    este Protocol por inyección de dependencias, nunca una subclase concreta
+    (frontera RF-MX-4 / ADR-0013).
+
+    Marcado ``@runtime_checkable`` para que los tests de contrato puedan
+    validar fake connectors con ``isinstance`` sin usar una ABC concreta.
+    Nota: los miembros de datos (``exchange_id``, ``market_type``) no se
+    comprueban en ``isinstance`` (solo los miembros callable y propiedades);
+    los tests de contrato los verifican explícitamente como atributos.
+    """
+
+    exchange_id: str
+    market_type: ExchangeMarketType
+
+    @property
+    def sandbox_enabled(self) -> bool: ...
+
+    def load_markets(self) -> None: ...
+
+    def fetch_ohlcv(self, symbol: str, timeframe: str, limit: int) -> list[OHLCV]: ...
+
+    def fetch_24h_volume_usdt(self, symbol: str) -> float: ...
+
+    def fetch_spread_bps(self, symbol: str) -> float: ...
+
+    def fetch_market_rules(self, symbol: str) -> MarketRules: ...
+
+    def fetch_balance(self) -> list[Balance]: ...
+
+    def create_order(
+        self,
+        symbol: str,
+        side: Side,
+        order_type: OrderType,
+        amount: float,
+        price: float | None = None,
+        client_order_id: str | None = None,
+    ) -> OrderResult: ...
+
+    def cancel_order(self, order_id: str, symbol: str) -> None: ...
 
 
 __all__ = [
@@ -187,6 +278,9 @@ __all__ = [
     "Balance",
     "CCXTOHLCVProtocol",
     "CCXTPayloadProtocol",
+    "ExchangeMarketType",
+    "MarketRules",
+    "MultiExchangeConnector",
     "OrderResult",
     "OrderStatus",
     "OrderType",

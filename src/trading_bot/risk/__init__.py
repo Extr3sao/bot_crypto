@@ -1,10 +1,5 @@
-"""Risk manager: sizing, drawdown, kill switch, bloqueos.
+"""Risk manager: sizing, drawdown, kill switch, bloqueos (Fase 5)."""
 
-Fase objetivo: 5.
+from .manager import PositionSize, RiskCheck, RiskManager
 
-Reglas duras:
-- Ningún sizing se calcula fuera de este módulo.
-- ``KillSwitch`` solo se desactiva manualmente.
-- Toda decisión se registra en ``logs/risk-decisions.log``.
-- Tests con ``hypothesis`` para invariantes.
-"""
+__all__ = ["PositionSize", "RiskCheck", "RiskManager"]

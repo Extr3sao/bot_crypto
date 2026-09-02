@@ -50,6 +50,9 @@ FLAT_ENV_ALIASES: dict[str, tuple[str, ...]] = {
     "I_UNDERSTAND_THE_RISKS": ("runtime", "i_understand_the_risks"),
     # Exchange
     "EXCHANGE_ID": ("exchange", "id"),
+    # Multi-exchange runtime target (TSK-022): el plano RUNTIME_EXCHANGE_ID
+    # mapea a runtime.exchange_id. Distinto de EXCHANGE_ID (legacy -> exchange.id).
+    "RUNTIME_EXCHANGE_ID": ("runtime", "exchange_id"),
     "EXCHANGE_API_KEY": ("exchange", "api_key"),
     "EXCHANGE_API_SECRET": ("exchange", "api_secret"),
     "EXCHANGE_PASSWORD": ("exchange", "password"),
@@ -61,6 +64,14 @@ FLAT_ENV_ALIASES: dict[str, tuple[str, ...]] = {
     "LOG_FILE_PATH": ("runtime", "logging", "file_path"),
     # Persistencia (Runtime.Storage)
     "DATABASE_URL": ("runtime", "storage", "database_url"),
+    # Auditoría de decisiones (Runtime.Audit)
+    "AUDIT_WIN_RATE_THRESHOLD": ("runtime", "audit", "win_rate_threshold"),
+    "AUDIT_MIN_TRADES_FOR_ALERT": ("runtime", "audit", "min_trades_for_alert"),
+    "AUDIT_ALERT_ON_LOW_WIN_RATE": ("runtime", "audit", "alert_on_low_win_rate"),
+    # Modo paper (Runtime.Paper)
+    "PAPER_INITIAL_EQUITY": ("runtime", "paper", "initial_equity"),
+    "PAPER_USE_EXCHANGE_BALANCE": ("runtime", "paper", "use_exchange_balance"),
+    "PAPER_BALANCE_CURRENCY": ("runtime", "paper", "balance_currency"),
     # Scheduler (Runtime.Scheduler)
     "SCHEDULER_TIMEZONE": ("runtime", "scheduler", "timezone"),
     "ACTIVE_HOURS_START": ("runtime", "scheduler", "active_hours", "start"),
@@ -206,6 +217,53 @@ class Settings(BaseSettings):
             raise ValueError(
                 "runtime.mode='live' requiere risk.kill_switch_enabled=True para "
                 "que el kill switch pueda detener el bot en una emergencia."
+            )
+        return self
+
+    @model_validator(mode="after")
+    def _check_multi_exchange_resolution(self) -> Settings:
+        """Resuelve ``runtime.exchange_id`` contra ``universe.exchanges`` (fail-fast).
+
+        Sin fallback implícito: si ``runtime.exchange_id`` está definido pero no
+        resuelve ningún target habilitado, la carga aborta. ``paper`` exige
+        sandbox y ``live`` con sandbox se rechaza. Un ``exchange_id`` vacío
+        (config legacy/minimal sin multi-exchange) omite la resolución.
+        """
+        exchange_id = self.runtime.exchange_id
+        if not exchange_id:
+            # CL-4: con targets multi-exchange declarados, un exchange_id
+            # vacío/ausente es un error de configuración (nunca fallback).
+            # Solo se permite vacío en configs legacy/minimal SIN exchanges.
+            if self.universe.exchanges:
+                raise ValueError(
+                    "runtime.exchange_id vacío con universe.exchanges declarado: "
+                    "configura RUNTIME_EXCHANGE_ID o runtime.exchange_id en "
+                    "config/runtime.yaml (CL-4; sin fallback silencioso a Binance)."
+                )
+            return self
+
+        enabled = [t for t in self.universe.exchanges if t.enabled and t.id == exchange_id]
+        if not enabled:
+            raise ValueError(
+                f"runtime.exchange_id={exchange_id!r} no resuelve ningún target "
+                f"habilitado en universe.exchanges (IDs habilitados: "
+                f"{sorted(t.id for t in self.universe.exchanges if t.enabled)})."
+            )
+        if len(enabled) > 1:
+            raise ValueError(
+                f"runtime.exchange_id={exchange_id!r} resuelve múltiples targets "
+                "habilitados; la ambigüedad debe rechazarse en Universe."
+            )
+
+        target = enabled[0]
+        if self.runtime.mode == TradingMode.PAPER and not target.sandbox:
+            raise ValueError(
+                f"runtime.mode='paper' exige sandbox=true para el target "
+                f"{exchange_id!r}; recibido sandbox={target.sandbox}."
+            )
+        if self.runtime.mode == TradingMode.LIVE and target.sandbox:
+            raise ValueError(
+                f"runtime.mode='live' no admite sandbox=true para el target {exchange_id!r}."
             )
         return self
 

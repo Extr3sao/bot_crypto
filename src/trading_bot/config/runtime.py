@@ -46,6 +46,8 @@ class Storage(BaseModel):
     """Persistence backend settings."""
 
     database_url: str = "sqlite:///data/storage/bot.db"
+    # Journal de operaciones y decisiones de entrada (persistente a disco).
+    journal_db_path: str = "data/storage/trade_journal.db"
     enable_signal_archive: bool = True
     enable_order_archive: bool = True
     enable_decision_archive: bool = True
@@ -88,6 +90,32 @@ class Paths(BaseModel):
     evals_dir: str = "evals"
 
 
+class Paper(BaseModel):
+    """Config del modo paper: capital inicial y balance desde el exchange.
+
+    ``use_exchange_balance`` intenta leer el balance real (o sandbox) del
+    exchange vía el hub multi-exchange (TSK-022); sin credenciales o ante
+    cualquier error se cae a ``initial_equity`` (nunca falla el arranque).
+    """
+
+    initial_equity: float = Field(10_000.0, gt=0)
+    use_exchange_balance: bool = False
+    balance_currency: str = "USDT"
+
+
+class Audit(BaseModel):
+    """Config del reporte de auditoría de decisiones.
+
+    Define el umbral de win-rate por motivo de entrada y cuándo se marca
+    una alerta (motivo con suficientes operaciones cerradas por debajo
+    del umbral).
+    """
+
+    win_rate_threshold: float = Field(0.5, ge=0.0, le=1.0)
+    min_trades_for_alert: int = Field(3, ge=1)
+    alert_on_low_win_rate: bool = True
+
+
 class FeatureFlags(BaseModel):
     """Feature toggles for cross-cutting capabilities."""
 
@@ -108,6 +136,11 @@ class Runtime(BaseModel):
     model_config = ConfigDict(populate_by_name=True)
 
     mode: TradingMode = TradingMode.PAPER
+    exchange_id: str = Field(
+        "",
+        max_length=20,
+        description="ID del exchange que el composition root resuelve contra universe.exchanges.",
+    )
     live_trading_enabled: bool = False
     require_manual_confirmation_for_live: bool = True
     # NOTE: el `validation_alias` de este campo NO es la fuente principal
@@ -128,6 +161,8 @@ class Runtime(BaseModel):
     storage: Storage = Field(default_factory=lambda: Storage())
     logging: LoggingBlock = Field(default_factory=lambda: LoggingBlock())
     reports: Reports = Field(default_factory=lambda: Reports())
+    audit: Audit = Field(default_factory=lambda: Audit())
+    paper: Paper = Field(default_factory=lambda: Paper())
     metrics: Metrics = Field(default_factory=lambda: Metrics())
     paths: Paths = Field(default_factory=lambda: Paths())
     features: FeatureFlags = Field(default_factory=lambda: FeatureFlags())

@@ -49,6 +49,13 @@ class Exchange(BaseModel):
     password: str = ""
     account_type: str = Field("spot", pattern=_ACCOUNT_TYPE_RE)
     sandbox: bool = True
+    demo_trading: bool = Field(
+        False,
+        description=(
+            "Entorno demo del exchange (Bybit Demo Trading, api-demo.*). "
+            "Solo bybit: incompatible con set_sandbox_mode de CCXT (testnet)."
+        ),
+    )
     default_type: str = Field("spot", pattern=_DEFAULT_TYPE_RE)
     rate_limit_ms: int = Field(250, ge=50)
     options: dict[str, object] = Field(default_factory=dict)

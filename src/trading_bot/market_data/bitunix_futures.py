@@ -16,12 +16,30 @@ import secrets
 import time
 import urllib.parse
 import urllib.request
+import uuid
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, Final
 from urllib.error import HTTPError
 
+import structlog
+
 from trading_bot.market_data.bitunix import BitunixAPIError, to_api_symbol
-from trading_bot.market_data.types import CCXTPayloadProtocol, narrow_ccxt_payload
+from trading_bot.market_data.exceptions import (
+    ConnectorProtocolError,
+    UnsupportedConnectorOperationError,
+)
+from trading_bot.market_data.types import (
+    OHLCV,
+    Balance,
+    CCXTPayloadProtocol,
+    ExchangeMarketType,
+    MarketRules,
+    OrderResult,
+    OrderStatus,
+    OrderType,
+    Side,
+    narrow_ccxt_payload,
+)
 
 
 def _sha256_hex(value: str) -> str:
@@ -344,9 +362,260 @@ class BitunixFuturesClient:
         )
 
 
+_FUTURES_STATUS_MAP: Final[dict[str, OrderStatus]] = {
+    "new": "open",
+    "open": "open",
+    "partially_filled": "partially_filled",
+    "filled": "closed",
+    "closed": "closed",
+    "canceled": "canceled",
+    "cancelled": "canceled",
+    "rejected": "rejected",
+    "expired": "expired",
+}
+
+
+class BitunixFuturesConnector:
+    """Fachada de dominio sobre ``BitunixFuturesClient`` (TSK-022.6, RF-MX-2).
+
+    Implementa ``MultiExchangeConnector`` para ``exchange_id == "bitunix"`` y
+    ``market_type == "futures"``, manteniendo aislados los campos nativos
+    (``positionId``, ``clientId``, ``tradeSide``, ``reduceOnly``, TP/SL) en
+    el cliente REST (spec §3.3): los consumidores solo reciben el Protocol.
+
+    - ``fetch_balance`` normaliza el contrato de cuenta futures a
+      ``list[Balance]`` (free=available, used=frozen, total=free+used).
+    - ``create_order`` conserva ``client_order_id``/``clientId`` y devuelve
+      un ``OrderResult`` con estado canónico; un payload sin ``orderId`` o
+      con correlación rota falla loud en la frontera.
+    - ``cancel_order`` NO es no-op: el cliente no expone cancelación, así que
+      se levanta ``UnsupportedConnectorOperationError`` antes de enviar una
+      request ambigua.
+    - ``fetch_ohlcv`` NO se simula: el cliente futures no implementa klines
+      OHLCV; falla loud hasta que exista un endpoint verificado en sandbox.
+    - ``sandbox_enabled`` es observable (flag declarativo del target).
+    """
+
+    exchange_id: str = "bitunix"
+    market_type: ExchangeMarketType = "futures"
+
+    def __init__(self, client: BitunixFuturesClient, *, sandbox: bool = True) -> None:
+        self._client = client
+        self._sandbox = sandbox
+        self._log_name = self.__class__.__module__
+        self._log = structlog.get_logger(self._log_name)
+
+    @property
+    def sandbox_enabled(self) -> bool:
+        return self._sandbox
+
+    def _bind(self, op: str, **extra: Any) -> Any:
+        return self._log.bind(
+            exchange_id=self.exchange_id,
+            market_type=self.market_type,
+            sandbox=self.sandbox_enabled,
+            op=op,
+            **extra,
+        )
+
+    # ------------------------------------------------------------------
+    # Lifecycle
+    # ------------------------------------------------------------------
+    def load_markets(self) -> None:
+        """Carga el catálogo de pares futures (sin retry, fail-fast)."""
+        log = self._bind("load_markets")
+        try:
+            self._client.get_trading_pairs()
+        except Exception:
+            log.error("bitunix_futures_load_markets_failed", exc_info=True)
+            raise
+        log.info("bitunix_futures_load_markets_ok")
+
+    # ------------------------------------------------------------------
+    # Read operations
+    # ------------------------------------------------------------------
+    def fetch_ohlcv(self, symbol: str, timeframe: str, limit: int) -> list[OHLCV]:
+        """No soportado (loud): el cliente futures no implementa klines.
+
+        No se fabrica OHLCV spot ni se inventa un endpoint; un consumo de
+        OHLCV futures debe esperar a un endpoint verificado en sandbox.
+        """
+        raise UnsupportedConnectorOperationError(
+            "BitunixFuturesConnector.fetch_ohlcv no soportado: "
+            "BitunixFuturesClient no implementa klines OHLCV futures. "
+            "Se falla loud en vez de devolver velas de otro mercado o "
+            "simular un endpoint no verificado."
+        )
+
+    def fetch_24h_volume_usdt(self, symbol: str) -> float:
+        """No soportado (loud): sin endpoint de volumen 24h verificado."""
+        raise UnsupportedConnectorOperationError(
+            "BitunixFuturesConnector.fetch_24h_volume_usdt no soportado: "
+            "BitunixFuturesClient no implementa volumen 24h futures. "
+            "Se falla loud en vez de fabricar un valor."
+        )
+
+    def fetch_spread_bps(self, symbol: str) -> float:
+        """No soportado (loud): sin order book spot para spread en futures."""
+        raise UnsupportedConnectorOperationError(
+            "BitunixFuturesConnector.fetch_spread_bps no soportado: "
+            "BitunixFuturesClient no implementa spread top-of-book. "
+            "Se falla loud en vez de fabricar un valor."
+        )
+
+    def fetch_market_rules(self, symbol: str) -> MarketRules:
+        """No soportado (loud): el catálogo futures no expone los campos de
+        ``MarketRules`` (``min_trade_value_usdt``).
+
+        No se mapea desde ``get_trading_pairs`` parcialmente (faltaría
+        ``min_trade_value_usdt`` y el estado spot/futures difiere); se falla
+        loud en vez de fabricar reglas incompletas para ejecución.
+        """
+        raise UnsupportedConnectorOperationError(
+            "BitunixFuturesConnector.fetch_market_rules no soportado: "
+            "el catálogo futures no expone los campos completos de "
+            "MarketRules (min_trade_value_usdt). Se falla loud en vez de "
+            "fabricar reglas incompletas para ejecución."
+        )
+
+    def fetch_balance(self) -> list[Balance]:
+        """Cuenta futures normalizada a ``list[Balance]`` (frontera validada)."""
+        log = self._bind("fetch_balance")
+        try:
+            account = self._client.get_account()
+        except Exception:
+            log.error("bitunix_futures_fetch_balance_failed", exc_info=True)
+            raise
+        if not isinstance(account, BitunixFuturesAccount) or not account.margin_coin:
+            raise ConnectorProtocolError(
+                f"Bitunix futures devolvió cuenta inválida: "
+                f"{type(account).__name__!r}. Se aborta en la frontera."
+            )
+        free = account.available
+        used = account.frozen
+        log.info("bitunix_futures_fetch_balance_ok", asset=account.margin_coin)
+        return [
+            Balance(
+                asset=account.margin_coin,
+                free=free,
+                used=used,
+                total=free + used,
+            )
+        ]
+
+    # ------------------------------------------------------------------
+    # Write operations
+    # ------------------------------------------------------------------
+    def create_order(
+        self,
+        symbol: str,
+        side: Side,
+        order_type: OrderType,
+        amount: float,
+        price: float | None = None,
+        client_order_id: str | None = None,
+    ) -> OrderResult:
+        """Coloca orden futures conservando ``client_order_id``/``clientId``.
+
+        El cliente envía ``clientId`` en el payload (idempotencia); la
+        respuesta debe permitir determinar la orden (``orderId``) o se falla
+        loud. Un ``clientId`` reflejado que no coincida con el enviado rompe
+        la correlación y también falla loud.
+        """
+        cid = client_order_id or str(uuid.uuid4())
+        log = self._bind(
+            "create_order",
+            symbol=symbol,
+            side=side,
+            type=order_type,
+            client_order_id=cid,
+        )
+        try:
+            payload = self._client.place_order(
+                symbol=symbol,
+                side=side,
+                qty=amount,
+                order_type=order_type.upper(),
+                price=price,
+                client_id=cid,
+            )
+        except Exception:
+            log.error("bitunix_futures_create_order_failed", exc_info=True)
+            raise
+
+        order_id = payload.get("orderId")
+        if not order_id:
+            raise ConnectorProtocolError(
+                "Bitunix futures place_order no devolvió orderId; el payload "
+                "no permite determinar la orden creada."
+            )
+
+        echoed_client_id = payload.get("clientId")
+        if echoed_client_id is not None and str(echoed_client_id) != cid:
+            raise ConnectorProtocolError(
+                "Bitunix futures devolvió clientId que no coincide con el "
+                "enviado: correlación rota (respuesta no determinable)."
+            )
+
+        status = self._normalize_futures_status(payload.get("status"))
+        log.info(
+            "bitunix_futures_create_order_ok",
+            order_id=str(order_id),
+            status=status,
+        )
+        return OrderResult(
+            id=str(order_id),
+            client_order_id=str(echoed_client_id or cid),
+            symbol=symbol,
+            status=status,
+            side=side,
+            type=order_type,
+            price=float(payload.get("price", price or 0.0)),
+            amount=amount,
+            filled=float(payload.get("filled", 0.0)),
+        )
+
+    def cancel_order(self, order_id: str, symbol: str) -> None:
+        """No soportado (loud): el cliente no expone cancelación de órdenes.
+
+        No se simula éxito ni se reutiliza ``flash_close_position`` (cierra
+        posiciones, no cancela órdenes pendientes).
+        """
+        raise UnsupportedConnectorOperationError(
+            "BitunixFuturesConnector.cancel_order no soportado: "
+            "BitunixFuturesClient no expone cancelación de órdenes "
+            "pendientes; el adapter no simula éxito ni envía una request "
+            "ambigua."
+        )
+
+    # ------------------------------------------------------------------
+    # Helpers
+    # ------------------------------------------------------------------
+    @staticmethod
+    def _normalize_futures_status(raw: object) -> OrderStatus:
+        """Mapa de status futures al Literal canónico.
+
+        Un ack de colocación sin ``status`` se considera ``open`` (la orden
+        fue aceptada; los payloads de error ya elevan ``BitunixAPIError`` en
+        el cliente). Un status presente pero desconocido falla loud para
+        forzar la ampliación del whitelist (mismo patrón ADR lock que
+        ``_KNOWN_STATUS_MAP`` de TSK-101).
+        """
+        if raw is None or (isinstance(raw, str) and not raw.strip()):
+            return "open"
+        key = str(raw).strip().lower()
+        if key in _FUTURES_STATUS_MAP:
+            return _FUTURES_STATUS_MAP[key]
+        raise ConnectorProtocolError(
+            f"Bitunix futures devolvió status no mapeado: {raw!r}. "
+            "Ampliar _FUTURES_STATUS_MAP con verificación sandbox antes de continuar."
+        )
+
+
 __all__ = [
     "BitunixFuturesAccount",
     "BitunixFuturesClient",
+    "BitunixFuturesConnector",
     "BitunixFuturesPosition",
     "BitunixFuturesSymbol",
 ]

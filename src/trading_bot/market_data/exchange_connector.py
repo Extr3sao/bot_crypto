@@ -49,6 +49,7 @@ Alcance multi-exchange (P2 — entry 2026-07-04 02:00):
 
 from __future__ import annotations
 
+import math
 import uuid
 from abc import ABC, abstractmethod
 from typing import Any, Final
@@ -63,11 +64,14 @@ from tenacity import (
 )
 
 from trading_bot.config.exchange import Exchange
+from trading_bot.market_data.exceptions import ConnectorProtocolError
 from trading_bot.market_data.types import (
-    CCXTOHLCVProtocol,
-    CCXTPayloadProtocol,
     OHLCV,
     Balance,
+    CCXTOHLCVProtocol,
+    CCXTPayloadProtocol,
+    ExchangeMarketType,
+    MarketRules,
     OrderResult,
     OrderStatus,
     OrderType,
@@ -98,12 +102,13 @@ class UnmappedOrderStatusError(RuntimeError):
     """
 
 
-# IDs de exchange sandbox-testeados con este connector. TSK-101 sólo
-# cubre Binance. Cualquier ampliación (Coinbase, Bybit, OKX, Kraken...)
-# requiere un ticket dedicado con sandbox testing y la confirmación de
-# que el adapter traduce ``clientOrderId`` y emite los mismos status
-# canónicos.
-SUPPORTED_EXCHANGES_FOR_TSK_101: Final[frozenset[str]] = frozenset({"binance", "bitunix"})
+# IDs de exchange soportados por este connector. TSK-101 cubrió Binance
+# (sandbox); se amplió a bitunix (TSK-022) y a bybit (spot, demo trading
+# vía ``enable_demo_trading``). Cualquier otra ampliación (Coinbase, OKX,
+# Kraken...) requiere un ticket dedicado con sandbox testing y la
+# confirmación de que el adapter traduce ``clientOrderId`` y emite los
+# mismos status canónicos.
+SUPPORTED_EXCHANGES_FOR_TSK_101: Final[frozenset[str]] = frozenset({"binance", "bitunix", "bybit"})
 
 # Scope descriptivo del ticket multi-exchange (TSK-105). Se usa en
 # mensajes de error para que el caller sepa dónde abrir la incidencia.
@@ -227,12 +232,28 @@ class CCXTExchangeConnector(ExchangeConnector):
         if config.sandbox:
             # Importante: ANTES de `load_markets()` — si se hace después,
             # ccxt puede tener URLs de producción pre-cargadas en caché.
-            self._exchange_instance.set_sandbox_mode(True)
-            self._log.info(
-                "connector_sandbox_enabled",
-                exchange=config.id,
-                ex_req_ms=config.timeouts.request_ms,
-            )
+            if config.demo_trading:
+                # Bybit Demo Trading (api-demo.*): entorno virtual con fondos
+                # demo. CCXT lanza NotSupported si sandbox mode ya está
+                # activo, así que demo_trading y sandbox son mutuamente
+                # excluyentes (fail-fast abajo para ids no-bybit).
+                if config.id != "bybit":
+                    raise ValueError(
+                        f"demo_trading=True solo está soportado para bybit, recibido {config.id!r}."
+                    )
+                self._exchange_instance.enable_demo_trading(True)
+                self._log.info(
+                    "connector_demo_trading_enabled",
+                    exchange=config.id,
+                    ex_req_ms=config.timeouts.request_ms,
+                )
+            else:
+                self._exchange_instance.set_sandbox_mode(True)
+                self._log.info(
+                    "connector_sandbox_enabled",
+                    exchange=config.id,
+                    ex_req_ms=config.timeouts.request_ms,
+                )
 
         # Decorador per-instance: usa los parámetros del YAML del
         # exchange concreto (no globales) — distinto exchange puede
@@ -337,6 +358,189 @@ class CCXTExchangeConnector(ExchangeConnector):
         ]
         log.info("fetch_balance_ok", n_assets=len(balances))
         return balances
+
+    def fetch_24h_volume_usdt(self, symbol: str) -> float:
+        """Volumen rolling 24h en USDT desde el ticker (``quoteVolume``).
+
+        Datos reales del exchange (ticker público), nunca fabricados. Si el
+        ticker no expone ``quoteVolume`` o el valor no es convertible, se
+        devuelve ``0.0``: el ``VolumeFilter`` del scanner rechazará el par
+        (fail-closed), en vez de inventar un volumen.
+        """
+        request_id = str(uuid.uuid4())
+        log = self._log.bind(req_id=request_id, op="fetch_24h_volume_usdt", symbol=symbol)
+
+        @self._retry_decorator
+        def _execute() -> CCXTPayloadProtocol:
+            return narrow_ccxt_payload(self._exchange_instance.fetch_ticker(symbol))
+
+        log.info("fetch_24h_volume_usdt_start")
+        try:
+            raw = _execute()
+        except Exception:
+            log.error("fetch_24h_volume_usdt_failed", exc_info=True)
+            raise
+
+        quote_volume = raw.get("quoteVolume")
+        if quote_volume is None:
+            log.warning("fetch_24h_volume_usdt_missing_quote_volume", symbol=symbol)
+            return 0.0
+        try:
+            volume = float(quote_volume)
+        except (TypeError, ValueError):
+            log.warning("fetch_24h_volume_usdt_invalid_quote_volume", symbol=symbol)
+            return 0.0
+        if volume < 0:
+            log.warning("fetch_24h_volume_usdt_negative_quote_volume", symbol=symbol)
+            return 0.0
+        log.info("fetch_24h_volume_usdt_ok", volume_usdt=volume, symbol=symbol)
+        return volume
+
+    def fetch_spread_bps(self, symbol: str) -> float:
+        """Spread top-of-book en bps desde el ticker (``bid``/``ask``).
+
+        Datos reales del exchange, nunca fabricados. Sin ``bid``/``ask``
+        válidos se devuelve ``inf``: el ``SpreadFilter`` rechazará el par
+        (fail-closed), en vez de simular un spread de 0 bps.
+        """
+        request_id = str(uuid.uuid4())
+        log = self._log.bind(req_id=request_id, op="fetch_spread_bps", symbol=symbol)
+
+        @self._retry_decorator
+        def _execute() -> CCXTPayloadProtocol:
+            return narrow_ccxt_payload(self._exchange_instance.fetch_ticker(symbol))
+
+        log.info("fetch_spread_bps_start")
+        try:
+            raw = _execute()
+        except Exception:
+            log.error("fetch_spread_bps_failed", exc_info=True)
+            raise
+
+        bid = raw.get("bid")
+        ask = raw.get("ask")
+        if bid is None or ask is None:
+            log.warning("fetch_spread_bps_missing_bid_ask", symbol=symbol)
+            return float("inf")
+        try:
+            bid_f = float(bid)
+            ask_f = float(ask)
+        except (TypeError, ValueError):
+            log.warning("fetch_spread_bps_invalid_bid_ask", symbol=symbol)
+            return float("inf")
+        mid = (bid_f + ask_f) / 2.0
+        if mid <= 0:
+            log.warning("fetch_spread_bps_invalid_mid", symbol=symbol)
+            return float("inf")
+        spread = ((ask_f - bid_f) / mid) * 10_000.0
+        log.info("fetch_spread_bps_ok", spread_bps=spread, symbol=symbol)
+        return spread
+
+    def fetch_market_rules(self, symbol: str) -> MarketRules:
+        """Reglas de negociación del símbolo desde el catálogo ``markets``.
+
+        Lee el catálogo local de CCXT (poblado por ``load_markets()``): quote,
+        estado, mínimos (``limits.cost.min`` / ``limits.amount.min``) y
+        precisión de redondeo (``precision.amount``/``precision.price``).
+        Datos reales del exchange, nunca fabricados.
+
+        Fail-closed:
+        - Catálogo no cargado (``load_markets()`` pendiente) o símbolo ausente
+          → ``ConnectorProtocolError`` (no se inventan reglas; el hub exige
+          ``load_markets()`` explícito, fail-fast como el resto del arranque).
+        - ``quote`` ausente → ``ConnectorProtocolError`` (no se puede
+          determinar la divisa de cotización).
+        - Límites ausentes → ``0.0`` (sin mínimo declarado: el ejecutor aplica
+          sus propias reglas de risk, p. ej. ``risk.min_order_notional_usdt``).
+        - Precisión ausente/no convertible → 8 decimales (default conservador;
+          el redondeo hacia abajo nunca sobrepasa el tamaño aceptado).
+        """
+        request_id = str(uuid.uuid4())
+        log = self._log.bind(
+            req_id=request_id, op="fetch_market_rules", symbol=symbol, exchange=self._config.id
+        )
+        log.info("fetch_market_rules_start")
+        markets = self._exchange_instance.markets
+        if not markets:
+            log.error("fetch_market_rules_markets_not_loaded", symbol=symbol)
+            raise ConnectorProtocolError(
+                f"{self._config.id} aún no tiene el catálogo de markets cargado: "
+                "llama a load_markets() antes de fetch_market_rules (fail-closed, "
+                "sin reglas fabricadas)."
+            )
+        try:
+            market = markets[symbol]
+        except KeyError:
+            log.error("fetch_market_rules_symbol_not_in_catalog", symbol=symbol)
+            raise ConnectorProtocolError(
+                f"{self._config.id} no lista {symbol!r} en su catálogo de "
+                "markets; no se fabrican reglas para un par desconocido "
+                "(fail-closed)."
+            ) from None
+
+        quote = market.get("quote")
+        if not quote:
+            log.error("fetch_market_rules_missing_quote", symbol=symbol)
+            raise ConnectorProtocolError(
+                f"{self._config.id} no expone quote para {symbol!r}; sin "
+                "divisa de cotización no se pueden resolver las reglas "
+                "(fail-closed)."
+            )
+
+        limits = market.get("limits") or {}
+        cost = limits.get("cost") or {}
+        amount = limits.get("amount") or {}
+        precision = market.get("precision") or {}
+        rules = MarketRules(
+            symbol=symbol,
+            is_open=bool(market.get("active", True)),
+            quote=str(quote),
+            min_trade_value_usdt=self._limit_to_float(cost.get("min")),
+            min_volume=self._limit_to_float(amount.get("min")),
+            base_precision=self._precision_to_decimals(precision.get("amount")),
+            quote_precision=self._precision_to_decimals(precision.get("price")),
+        )
+        log.info(
+            "fetch_market_rules_ok",
+            is_open=rules.is_open,
+            quote=rules.quote,
+            min_trade_value_usdt=rules.min_trade_value_usdt,
+            min_volume=rules.min_volume,
+            base_precision=rules.base_precision,
+            quote_precision=rules.quote_precision,
+        )
+        return rules
+
+    @staticmethod
+    def _limit_to_float(value: Any) -> float:
+        """Convierte un límite del catálogo CCXT a float; ausente → ``0.0``."""
+        if value is None:
+            return 0.0
+        try:
+            return float(value)
+        except (TypeError, ValueError):
+            return 0.0
+
+    @staticmethod
+    def _precision_to_decimals(value: Any) -> int:
+        """Normaliza la precisión CCXT a decimales de redondeo.
+
+        CCXT puede expresar precisión como decimal places (int, p. ej. ``8``)
+        o como tick size (float, p. ej. ``0.00000001``). Ambos se reducen a
+        ``decimals`` para ``MarketRules.round_*``. Un valor ausente o no
+        convertible cae a 8 decimales (default conservador).
+        """
+        if value is None:
+            return 8
+        try:
+            numeric = float(value)
+        except (TypeError, ValueError):
+            return 8
+        if numeric >= 1.0:
+            return int(numeric)
+        if numeric > 0.0:
+            return max(0, round(math.log10(1.0 / numeric)))
+        return 8
 
     # ------------------------------------------------------------------------
     # Write operations (idempotent)
@@ -451,6 +655,72 @@ class CCXTExchangeConnector(ExchangeConnector):
         )
 
 
+class BinanceConnector(CCXTExchangeConnector):
+    """Adapter Binance del hub multi-exchange (TSK-022.4, RF-MX-2).
+
+    Implementa ``MultiExchangeConnector`` reutilizando toda la lógica CCXT
+    de ``CCXTExchangeConnector`` (sandbox ANTES de ``load_markets()``, rate
+    limit, timeouts, retries idempotentes con ``client_order_id``, guards
+    ``narrow_ccxt_payload``/``narrow_ccxt_ohlcv`` y whitelist estricta de
+    ``OrderStatus``) sin duplicarla.
+
+    ``CCXTExchangeConnector`` se conserva como clase genérica de
+    compatibilidad TSK-101 (whitelist ``SUPPORTED_EXCHANGES_FOR_TSK_101``);
+    el nuevo wiring multi-exchange usa ``BinanceConnector``.
+
+    Identidad del target: ``exchange_id == "binance"``,
+    ``market_type == "spot"``. El sandbox sigue controlado por
+    ``config.sandbox`` (default paper + sandbox).
+    """
+
+    exchange_id: str = "binance"
+    market_type: ExchangeMarketType = "spot"
+
+    def __init__(self, config: Exchange) -> None:
+        # Fail-fast de identidad: un adapter "Binance" no debe construirse
+        # sobre un config de otro exchange (mismo patrón whitelist TSK-101).
+        if config.id != "binance":
+            raise ValueError(
+                f"BinanceConnector exige config.id='binance', recibido "
+                f"{config.id!r}. Para otros exchanges del whitelist TSK-101 "
+                "usa CCXTExchangeConnector."
+            )
+        super().__init__(config)
+
+
+class BybitConnector(CCXTExchangeConnector):
+    """Adapter Bybit (spot) del hub multi-exchange — demo trading.
+
+    Reutiliza la lógica CCXT de ``CCXTExchangeConnector`` sin duplicarla
+    (retries idempotentes, rate limit, guards ``narrow_ccxt_*`` y whitelist
+    de ``OrderStatus``).
+
+    Entorno: el target ``sandbox: true`` mapea a **Demo Trading** de Bybit
+    (``api-demo.bybit.com``) vía ``config.demo_trading``, NO a testnet: las
+    API keys creadas bajo "Demo Trading" solo funcionan contra el entorno
+    demo, y CCXT prohíbe combinar ``enable_demo_trading`` con
+    ``set_sandbox_mode``. Con ``sandbox: false`` (live) se usan las URLs de
+    producción.
+
+    Identidad del target: ``exchange_id == "bybit"``,
+    ``market_type == "spot"``.
+    """
+
+    exchange_id: str = "bybit"
+    market_type: ExchangeMarketType = "spot"
+
+    def __init__(self, config: Exchange) -> None:
+        # Fail-fast de identidad: un adapter "Bybit" no debe construirse
+        # sobre un config de otro exchange (mismo patrón whitelist TSK-101).
+        if config.id != "bybit":
+            raise ValueError(
+                f"BybitConnector exige config.id='bybit', recibido "
+                f"{config.id!r}. Para otros exchanges del whitelist TSK-101 "
+                "usa CCXTExchangeConnector."
+            )
+        super().__init__(config)
+
+
 __all__ = [
     "MULTI_EXCHANGE_SCOPE",
     "RETRYABLE_EXCEPTIONS",
@@ -459,6 +729,8 @@ __all__ = [
     # importen sin F401/private-import warnings. Cambios requieren ADR
     # firmada en tasks/decisions.md.
     "_KNOWN_STATUS_MAP",
+    "BinanceConnector",
+    "BybitConnector",
     "CCXTExchangeConnector",
     "ExchangeConnector",
     "UnmappedOrderStatusError",

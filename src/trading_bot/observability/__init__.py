@@ -1,10 +1,6 @@
-"""Observabilidad.
+"""Observabilidad (Fase 8)."""
 
-Fase objetivo: 8.
+from .journal import TradeJournal
+from .metrics import MetricPoint, MetricsCollector
 
-Componentes:
-- ``Logger``: ``structlog`` JSON con ``request_id``, ``signal_id``.
-- ``Metrics``: placeholder Prometheus.
-- ``Alerts``: desactivadas por defecto hasta validación.
-- ``Runbook``: documento de referencia para incidentes.
-"""
+__all__ = ["MetricPoint", "MetricsCollector", "TradeJournal"]
