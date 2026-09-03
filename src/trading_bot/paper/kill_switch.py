@@ -9,11 +9,10 @@ V0.3 requires a kill switch that can:
 from __future__ import annotations
 
 import time
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Any, Literal
 
 import structlog
-
 
 KillReason = Literal[
     "MANUAL",           # Manual trigger

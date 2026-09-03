@@ -11,7 +11,6 @@ from typing import Any
 from .types import PaperBacktestExpectation
 
 
-
 def build_expectation_from_fold_report(
     fold_report: Any,
     *,

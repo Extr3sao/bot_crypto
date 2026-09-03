@@ -12,7 +12,7 @@ from __future__ import annotations
 import json
 from dataclasses import dataclass, field
 from datetime import datetime
-from typing import Any, Optional
+from typing import Any
 from uuid import uuid4
 
 from trading_bot.domain.events.hashing import compute_event_hash, verify_hash_chain
@@ -46,7 +46,7 @@ class EventStore:
         event_type: EventType,
         ticket_id: str = "",
         actor: str = "system",
-        payload: Optional[dict[str, Any]] = None,
+        payload: dict[str, Any] | None = None,
     ) -> DeskEvent:
         """Append a new event to the store.
 
@@ -66,7 +66,7 @@ class EventStore:
             previous_hash=self._previous_hash,
         )
 
-        event_dict = {
+        event_dict: dict[str, Any] = {
             "event_id": str(event_id),
             "timestamp": timestamp,
             "ticket_id": ticket_id,
@@ -100,9 +100,9 @@ class EventStore:
 
     def get_events(
         self,
-        ticket_id: Optional[str] = None,
-        event_type: Optional[EventType] = None,
-        since: Optional[datetime] = None,
+        ticket_id: str | None = None,
+        event_type: EventType | None = None,
+        since: datetime | None = None,
     ) -> list[dict[str, Any]]:
         """Get events, optionally filtered."""
         events = list(self._events)
@@ -127,7 +127,7 @@ class EventStore:
         """
         events = self.get_trade_events(ticket_id)
 
-        trade = {
+        trade: dict[str, Any] = {
             "ticket_id": ticket_id,
             "events": [],
             "proposal": None,

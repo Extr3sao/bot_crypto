@@ -190,7 +190,7 @@ def recover_startup_positions(
                 net_pnl=result.net_pnl,
                 reason="orphan_reconciliation_close",
             )
-        except Exception as exc:  # noqa: BLE001 — recovery nunca debe crashear
+        except Exception as exc:
             report.errors.append(f"{trade_id}: {exc}")
             logger.error("startup_recovery.error", trade_id=trade_id, error=str(exc))
 

@@ -12,14 +12,12 @@ Invalid trades are QUARANTINED, not deleted silently.
 
 from __future__ import annotations
 
-import math
 from dataclasses import dataclass, field
 from typing import Any
 
 import structlog
 
 from trading_bot.paper.broker import ClosedTrade
-
 
 # Maximum reasonable deviation of entry price from a reference price
 # (e.g., the signal price). If entry deviates more than this fraction,
