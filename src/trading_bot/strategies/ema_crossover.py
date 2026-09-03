@@ -10,6 +10,7 @@ Parameters configurable via StrategyConfig.entry_rules / exit_rules.
 from __future__ import annotations
 
 from collections.abc import Sequence
+from typing import Any, cast
 
 from trading_bot.indicators.types import IndicatorResult
 from trading_bot.market_data.types import OHLCV
@@ -70,12 +71,19 @@ class EmaCrossoverStrategy:
         sl_price = current_price - (atr * sl_mult)
         tp_price = current_price + (atr * tp_mult)
 
-        # EMA history for crossover detection (relaxed: check last N bars)
-        ema_fast_history = indicators.get("ema_fast_history", [])
-        ema_slow_history = indicators.get("ema_slow_history", [])
+        # EMA history for crossover detection (relaxed: check last N bars).
+        # Contract: producers of "*_history" indicator keys always supply
+        # lists of per-bar values (see EmaCrossoverFamily/scanner wiring); a
+        # scalar IndicatorResult for these keys is never produced. The cast is
+        # annotation-only and preserves the exact runtime fallback of
+        # ``.get(key, [])``.
+        ema_fast_history = cast(list[Any], indicators.get("ema_fast_history", []))
+        ema_slow_history = cast(list[Any], indicators.get("ema_slow_history", []))
         crossover_window = indicators.get("crossover_window", 3)
 
-        def _had_cross(window_fast: list, window_slow: list, direction: str) -> bool:
+        def _had_cross(
+            window_fast: list[Any], window_slow: list[Any], direction: str
+        ) -> bool:
             """Check if a crossover happened within the window of last N bars.
 
             LONG cross: any bar where prev_fast <= prev_slow AND current fast > slow
