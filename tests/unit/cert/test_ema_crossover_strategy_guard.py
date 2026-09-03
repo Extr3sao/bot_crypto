@@ -188,3 +188,40 @@ def test_require_crossover_absent_falls_back_to_state_only() -> None:
     )
     assert signal is not None
     assert signal.side == "buy"
+
+
+def test_malformed_scalar_history_ignored_safely() -> None:
+    """Negative: scalar (non-list) history must not crash and must not signal."""
+    strat = EmaCrossoverStrategy()
+    indicators = _indicators(fast=30.0, slow=20.0, fast_history=[], slow_history=[])
+    indicators["ema_fast_history"] = 5.0  # malformed: scalar instead of list
+    indicators["ema_slow_history"] = 3.0
+    signal = strat.evaluate(_candles(close=101.0), indicators, _cfg())
+    assert signal is None
+
+
+def test_malformed_dict_history_ignored_safely() -> None:
+    """Negative: dict history must not crash and must not produce execution."""
+    strat = EmaCrossoverStrategy()
+    indicators = _indicators(fast=30.0, slow=20.0, fast_history=[], slow_history=[])
+    indicators["ema_fast_history"] = {"latest": 5.0}  # malformed: dict not list
+    indicators["ema_slow_history"] = {"latest": 3.0}
+    # Crossover is required; malformed history carries no crossover evidence,
+    # so the strategy must ignore it and return no signal (never crash).
+    signal = strat.evaluate(_candles(close=101.0), indicators, _cfg())
+    assert signal is None
+
+
+def test_malformed_history_state_only_fallback() -> None:
+    """Negative: malformed history + no crossover requirement still signals safely."""
+    strat = EmaCrossoverStrategy()
+    indicators = _indicators(fast=30.0, slow=20.0, fast_history=[], slow_history=[])
+    indicators["ema_fast_history"] = 5.0
+    indicators["ema_slow_history"] = 3.0
+    signal = strat.evaluate(
+        _candles(close=101.0),
+        indicators,
+        _cfg(require_crossover=False),
+    )
+    assert signal is not None
+    assert signal.side == "buy"

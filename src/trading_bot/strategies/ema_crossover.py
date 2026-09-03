@@ -10,7 +10,7 @@ Parameters configurable via StrategyConfig.entry_rules / exit_rules.
 from __future__ import annotations
 
 from collections.abc import Sequence
-from typing import Any, cast
+from typing import Any
 
 from trading_bot.indicators.types import IndicatorResult
 from trading_bot.market_data.types import OHLCV
@@ -72,13 +72,15 @@ class EmaCrossoverStrategy:
         tp_price = current_price + (atr * tp_mult)
 
         # EMA history for crossover detection (relaxed: check last N bars).
-        # Contract: producers of "*_history" indicator keys always supply
-        # lists of per-bar values (see EmaCrossoverFamily/scanner wiring); a
-        # scalar IndicatorResult for these keys is never produced. The cast is
-        # annotation-only and preserves the exact runtime fallback of
-        # ``.get(key, [])``.
-        ema_fast_history = cast(list[Any], indicators.get("ema_fast_history", []))
-        ema_slow_history = cast(list[Any], indicators.get("ema_slow_history", []))
+        # Contract (RUN-OP-002A): "*_history" indicator keys are OPTIONAL
+        # per-bar series supplied by callers; no in-tree producer emits them
+        # today. The generic indicator dict allows scalar/dict values too
+        # (IndicatorResult = float | list[float] | dict[str, float]), so
+        # malformed non-list history must be IGNORED SAFELY - treated as "no
+        # history" - never crash the strategy and never produce accidental
+        # execution.
+        ema_fast_history = _history_series(indicators.get("ema_fast_history", []))
+        ema_slow_history = _history_series(indicators.get("ema_slow_history", []))
         crossover_window = indicators.get("crossover_window", 3)
 
         def _had_cross(
@@ -276,6 +278,17 @@ class EmaCrossoverStrategy:
             )
 
         return None
+
+
+def _history_series(value: object) -> list[Any]:
+    """Safely narrow an optional per-bar history indicator to a list.
+
+    Only a list carries crossover history.  Any other shape (scalar float,
+    dict, None) is malformed for this consumer and maps to "no history", so
+    the strategy falls back to state-only logic instead of crashing on
+    ``len()``/indexing.
+    """
+    return value if isinstance(value, list) else []
 
 
 __all__ = ["EmaCrossoverStrategy"]
