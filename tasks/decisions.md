@@ -1115,3 +1115,13 @@ que NO se requerirá per-ADR "next free" footnote nunca más.
 - **Clasificación wall-clock**: `session.py` conserva `datetime.now(UTC)` únicamente para timeout operativo de sesiones con deadline real (no decisión); el resto de módulos MA-2 no contiene llamadas wall-clock (auditado por tests AST).
 - **Evidencia**: `docs/ma2-temporal-contract.md`, `tests/unit/multi_agent/test_temporal_authority.py` (T1–T6 + guardas DEF-MA2), `reports/multi_agent/ma2/VALIDATION_REPORT.json`.
 
+## ADR-MA-0004 — Bounded deterministic structured debate (MA-3)
+
+- **Estado**: Decidido y verificado en `CP-MA-003` (implementación; certificación pendiente en CERT-MA3-001).
+- **Decisión**: la capa de debate se construye exclusivamente sobre el sustrato MA-1 certificado (`AgentBus`/`Blackboard`/`CommunicationSession`/`TraceContext`/`AgentEvidence`); no existe un segundo runtime de comunicación. `DebateRouter` decide `NO_DEBATE|DEBATE_REQUIRED` de forma cerrada y determinista (sin LLM) preservando la fast path. Tres críticos ortogonales deterministas (`EvidenceCritic`, `RegimeCritic`, `CounterSignalCritic`) emiten `CritiqueRecord` inmutables (stance+materiality, nunca decisión de trading). Las revisiones producen NUEVOS `TradeProposal` canónicos con linaje inmutable `ProposalRevision` (el original nunca se muta); `NO_PROPOSAL`/`ABSTAIN`/`UNRESOLVED` son resultados de primera clase.
+- **Anti-loop (MA-3G/O)**: una ronda solo continúa si aporta información material (evidencia única nueva, claims nuevos, revisiones). Un challenge cuya claim ya fue respondida no dispara otra revisión; la evidencia que reclama la posición de un proposal revisado se valida contra toda la cadena de linaje (`DebateContext.lineage_of`), evitando el eco revisión→challenge→revisión. Máximo `MAX_DEBATE_ROUNDS = 3`.
+- **Deduplicación de evidencia**: el `DebateLedger` canonicaliza por evidencia (id/fuente/fingerprint); N referencias de N agentes = 1 evidencia única con atribución preservada (`UNIQUE_EVIDENCE_COUNT` separado).
+- **Autoridad temporal**: toda marca temporal de debate deriva de `AgentBus.now()` (ADR-MA-0003); cero llamadas wall-clock en `debate.py` (auditado por AST en tests y validator).
+- **Fuera de alcance**: sin ConsensusEngine, votación, weighting histórico, LLM críticos, integración RiskManager/PaperBroker ni selección final (MA-4).
+- **Evidencia**: `src/trading_bot/multi_agent/{contracts/debate,debate}.py`, `tests/unit/multi_agent/test_debate.py` (38 tests), `scripts/validate_ma3_structured_debate.py` (11/11), `reports/multi_agent/ma3/VALIDATION_REPORT.json`.
+

@@ -1,0 +1,32 @@
+{
+  "validator": "ma3-structured-debate",
+  "total": 11,
+  "passed": 11,
+  "failed": 0,
+  "results": {
+    "conflict_creates_debate": "PASS",
+    "challenge_exists": "PASS",
+    "counter_evidence_survives": "PASS",
+    "evidence_requests_traceable": "PASS",
+    "revision_immutable": "PASS",
+    "evidence_not_double_counted": "PASS",
+    "loop_terminates": "PASS",
+    "unresolved_remains_unresolved": "PASS",
+    "deterministic_replay": "PASS",
+    "single_temporal_authority": "PASS",
+    "execution_capability_zero": "PASS"
+  },
+  "details": {
+    "conflict_creates_debate": "conflict -> DEBATE_REQUIRED, uncontested -> NO_DEBATE",
+    "challenge_exists": "4 challenges, 6 CRITIQUE messages",
+    "counter_evidence_survives": "2 counter refs in report, 4 adversarial critiques",
+    "evidence_requests_traceable": "1 requests, 1 responses, outcome=INSUFFICIENT_EVIDENCE, invented_evidence=0",
+    "revision_immutable": "p:rev -> p:rev:r-bd3f895b, original preserved (confidence 0.86)",
+    "evidence_not_double_counted": "3 attributions -> 1 unique evidence item",
+    "loop_terminates": "rounds=2/3, termination=NO_NEW_EVIDENCE",
+    "unresolved_remains_unresolved": "outcome=UNRESOLVED reproduced across independent runs",
+    "deterministic_replay": "identical DebateReport and message ordering across replay",
+    "single_temporal_authority": "wall_clock_calls_in_debate_logic=0, timestamps derive from injected bus clock",
+    "execution_capability_zero": "3 critics verified, no forbidden capabilities, 0 execution imports"
+  }
+}
