@@ -1,0 +1,51 @@
+{
+  "agent_versions": 1,
+  "commit": "81670670711705b033fc429f62a4138504cdaf67",
+  "contracts_tested": [
+    "AgentManifest",
+    "AgentMessage",
+    "AgentEvidence",
+    "TradeProposal",
+    "TraceContext",
+    "VerificationMetadata"
+  ],
+  "effective_permissions": [
+    "READ"
+  ],
+  "environment": {
+    "platform": "Windows-10-10.0.26200-SP0",
+    "python": "3.11.15",
+    "uv": "uv 0.11.26 (396ef7ce4 2026-06-30 x86_64-pc-windows-msvc)"
+  },
+  "errors": [],
+  "evidence_id": "smoke-evidence",
+  "evidence_paths": [
+    "reports/multi_agent/ma0/RUN_REPORT.json",
+    "reports/multi_agent/ma0/RUN_REPORT.md"
+  ],
+  "forbidden_capability_rejected": true,
+  "message_id": "smoke-message",
+  "mode": "PAPER_OFFLINE_ONLY",
+  "proposal_direction": "NO_TRADE",
+  "registries_tested": [
+    "AgentRegistry",
+    "CapabilityRegistry"
+  ],
+  "result": "PASS",
+  "run_id": "ma0-smoke-run",
+  "tests": [
+    "manifest construction and immutability",
+    "agent version registration and lifecycle transition",
+    "safe READ permission grant",
+    "forbidden PRODUCTION_ACTION rejection",
+    "evidence/message/proposal trace correlation",
+    "NO_TRADE serialization round-trip",
+    "builder/verifier identity separation"
+  ],
+  "verification": {
+    "artifact_id": "smoke-proposal",
+    "builder_agent_id": "smoke-strategy-agent",
+    "independent_verification_required": true,
+    "verifier_agent_id": "smoke-verifier"
+  }
+}
