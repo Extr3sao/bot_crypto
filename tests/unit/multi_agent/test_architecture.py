@@ -27,7 +27,7 @@ def _imports(path: Path) -> list[str]:
 
 
 def test_contract_and_registry_modules_do_not_import_trading_runtime() -> None:
-    source_files = sorted(MA_ROOT.glob("contracts/*.py")) + sorted(MA_ROOT.glob("registry/*.py"))
+    source_files = sorted(MA_ROOT.rglob("*.py"))
     assert source_files
     violations = [
         f"{path}: {module}"

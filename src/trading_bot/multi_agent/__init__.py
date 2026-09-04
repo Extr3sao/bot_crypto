@@ -1,10 +1,26 @@
-"""Deterministic multi-agent foundation.
+"""Deterministic multi-agent foundation and communication runtime.
 
-MA-0 provides neutral contracts and governance registries only. It has no
-runtime trading authority and deliberately does not import paper, risk,
-execution, exchange, or orchestration modules.
+MA-0 provides neutral contracts and governance registries. MA-1 adds an
+in-process communication plane, but neither phase has trading authority.
 """
 
+from .blackboard import BLACKBOARD_TOPICS, Blackboard, BlackboardArtifact
+from .bus import TOPIC_BY_MESSAGE_TYPE, AgentBus, MessageHandler
+from .communication_errors import (
+    CommunicationError,
+    DuplicateMessageConflictError,
+    EvidenceMissingError,
+    ExpiredMessageError,
+    InvalidMessageError,
+    ReplyCorrelationError,
+    SessionMaxRoundsError,
+    SessionTerminatedError,
+    SessionTimeoutError,
+    TraceMismatchError,
+    UnauthorizedTopicError,
+    UnknownReceiverError,
+    UnknownSenderError,
+)
 from .contracts import (
     AgentCapability,
     AgentEvidence,
@@ -31,8 +47,17 @@ from .registry import (
     MultiAgentGovernanceError,
     UnknownAgentError,
 )
+from .session import (
+    CommunicationReplay,
+    CommunicationSession,
+    CommunicationSessionState,
+    SessionStatus,
+)
 
 __all__ = [
+    "BLACKBOARD_TOPICS",
+    "TOPIC_BY_MESSAGE_TYPE",
+    "AgentBus",
     "AgentCapability",
     "AgentEvidence",
     "AgentLifecycleState",
@@ -41,18 +66,38 @@ __all__ = [
     "AgentMessageType",
     "AgentRegistry",
     "AgentRole",
+    "Blackboard",
+    "BlackboardArtifact",
     "CapabilityDeniedError",
     "CapabilityPolicy",
     "CapabilityRegistry",
+    "CommunicationError",
+    "CommunicationReplay",
+    "CommunicationSession",
+    "CommunicationSessionState",
     "DeclaredCapabilities",
     "DuplicateAgentVersionError",
+    "DuplicateMessageConflictError",
+    "EvidenceMissingError",
+    "ExpiredMessageError",
     "ForbiddenAction",
     "InvalidLifecycleTransitionError",
+    "InvalidMessageError",
+    "MessageHandler",
     "MultiAgentGovernanceError",
+    "ReplyCorrelationError",
+    "SessionMaxRoundsError",
+    "SessionStatus",
+    "SessionTerminatedError",
+    "SessionTimeoutError",
     "TraceContext",
+    "TraceMismatchError",
     "TradeDirection",
     "TradeProposal",
     "TradeProposalStatus",
+    "UnauthorizedTopicError",
     "UnknownAgentError",
+    "UnknownReceiverError",
+    "UnknownSenderError",
     "VerificationMetadata",
 ]
