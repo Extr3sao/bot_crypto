@@ -112,6 +112,8 @@ class CommunicationSession:
         except Exception as exc:
             self.fail(f"message rejected: {type(exc).__name__}")
             raise
+        if accepted.message_id in self._message_ids:
+            return accepted
         self._message_ids.append(accepted.message_id)
         self._round += 1
         if self._round >= self.max_rounds:

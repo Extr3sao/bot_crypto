@@ -255,6 +255,7 @@ def test_session_completes_and_replays_same_state() -> None:
     )
     bus.register_evidence(_evidence())
     session.send(_message("proposal", message_type=AgentMessageType.PROPOSAL, evidence_refs=("ev-1",)))
+    session.send(_message("proposal", message_type=AgentMessageType.PROPOSAL, evidence_refs=("ev-1",)))
     session.send(_message("critique", sender="critic", receiver="strategy", message_type=AgentMessageType.CRITIQUE, evidence_refs=("ev-1",)))
     session.complete("fixture dialogue completed")
     replay = CommunicationReplay.replay(session, bus.accepted_messages)
