@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from collections.abc import Callable
-from datetime import UTC, datetime
+from datetime import datetime
 from typing import Final
 
 from trading_bot.multi_agent.blackboard import Blackboard
@@ -55,18 +55,33 @@ class AgentBus:
         agent_registry: AgentRegistry,
         capability_registry: CapabilityRegistry,
         blackboard: Blackboard,
-        clock: Callable[[], datetime] | None = None,
+        clock: Callable[[], datetime],
     ) -> None:
+        """Create a bus bound to one explicit temporal authority.
+
+        The run clock is a required constructor dependency: temporal
+        validation must never fall back to host wall-clock time, otherwise
+        deterministic replay against historical fixtures silently fails
+        (DEF-MA2-001).
+        """
         self.agent_registry = agent_registry
         self.capability_registry = capability_registry
         self.blackboard = blackboard
-        self._clock = clock or (lambda: datetime.now(UTC))
+        self._clock = clock
         self._handlers: dict[str, MessageHandler] = {}
         self._subscriptions: dict[str, list[tuple[str, MessageHandler]]] = {}
         self._accepted: list[AgentMessage] = []
         self._accepted_by_id: dict[str, AgentMessage] = {}
         self._pending_requests: dict[str, str] = {}
         self._evidence: dict[str, AgentEvidence] = {}
+
+    def now(self) -> datetime:
+        """Return the current decision time from the injected run clock.
+
+        Single temporal authority for every bus-side temporal comparison
+        (message expiry, future-dated rejection, evidence availability).
+        """
+        return self._clock()
 
     @property
     def accepted_messages(self) -> tuple[AgentMessage, ...]:
@@ -156,9 +171,7 @@ class AgentBus:
         """Deliver one immutable message to every eligible enabled receiver."""
         self._validate(message, allow_broadcast=True)
         receivers = tuple(
-            agent_id
-            for agent_id in sorted(self._handlers)
-            if agent_id != message.sender
+            agent_id for agent_id in sorted(self._handlers) if agent_id != message.sender
         )
         delivered: list[AgentMessage] = []
         for receiver in receivers:
@@ -213,7 +226,7 @@ class AgentBus:
                 raise UnauthorizedTopicError(f"receiver lacks READ capability: {message.receiver}")
         if message.run_id != self.blackboard.run_id or message.trace_id != self.blackboard.trace_id:
             raise TraceMismatchError("message trace does not match bus trace")
-        now = self._clock()
+        now = self.now()
         if message.expires_at is not None and now >= message.expires_at:
             raise ExpiredMessageError(f"message expired: {message.message_id}")
         if message.created_at > now:
@@ -227,7 +240,9 @@ class AgentBus:
                 if evidence is None:
                     raise EvidenceMissingError(f"unknown evidence: {evidence_id}")
                 if not evidence.is_valid_at(message.created_at):
-                    raise ExpiredMessageError(f"evidence unavailable at message time: {evidence_id}")
+                    raise ExpiredMessageError(
+                        f"evidence unavailable at message time: {evidence_id}"
+                    )
         elif message.message_type in {
             AgentMessageType.PROPOSAL,
             AgentMessageType.CRITIQUE,

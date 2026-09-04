@@ -121,7 +121,9 @@ class CommunicationSession:
             self._termination_reason = "maximum rounds reached"
         return accepted
 
-    def complete(self, reason: str = "participants completed communication") -> CommunicationSessionState:
+    def complete(
+        self, reason: str = "participants completed communication"
+    ) -> CommunicationSessionState:
         self._ensure_active()
         self._status = SessionStatus.COMPLETED
         self._termination_reason = reason
@@ -138,13 +140,17 @@ class CommunicationSession:
             raise SessionMaxRoundsError(self._termination_reason or "maximum rounds reached")
         if self._status is not SessionStatus.ACTIVE:
             raise SessionTerminatedError(self._termination_reason or self._status.value)
-        current = now or datetime.now(UTC)
-        if current.tzinfo is None or current.utcoffset() is None:
-            raise ValueError("now must be timezone-aware")
-        if self.deadline is not None and current >= self.deadline:
-            self._status = SessionStatus.TIMEOUT
-            self._termination_reason = "session deadline reached"
-            raise SessionTimeoutError(self._termination_reason)
+        # Operational timeout enforcement only: wall-clock is read solely when a
+        # real deadline exists (live sessions). Deadline-free deterministic
+        # replay never touches host time (DEF-MA2-003 temporal audit).
+        if self.deadline is not None:
+            current = now or datetime.now(UTC)
+            if current.tzinfo is None or current.utcoffset() is None:
+                raise ValueError("now must be timezone-aware")
+            if current >= self.deadline:
+                self._status = SessionStatus.TIMEOUT
+                self._termination_reason = "session deadline reached"
+                raise SessionTimeoutError(self._termination_reason)
 
 
 @dataclass(frozen=True, slots=True)
@@ -159,7 +165,9 @@ class CommunicationReplay:
     """Reconstruct session and blackboard state from ordered messages."""
 
     @staticmethod
-    def replay(session: CommunicationSession, messages: tuple[AgentMessage, ...]) -> CommunicationSessionState:
+    def replay(
+        session: CommunicationSession, messages: tuple[AgentMessage, ...]
+    ) -> CommunicationSessionState:
         replay_session = CommunicationSession(
             session_id=session.session_id,
             run_id=session.run_id,
@@ -173,9 +181,15 @@ class CommunicationReplay:
             if replay_session.state.status is not SessionStatus.ACTIVE:
                 break
             replay_session.send(message, now=message.created_at)
-        if session.state.status is SessionStatus.COMPLETED and replay_session.state.status is SessionStatus.ACTIVE:
+        if (
+            session.state.status is SessionStatus.COMPLETED
+            and replay_session.state.status is SessionStatus.ACTIVE
+        ):
             replay_session.complete(session.state.termination_reason or "replayed completion")
-        elif session.state.status is SessionStatus.FAILED and replay_session.state.status is SessionStatus.ACTIVE:
+        elif (
+            session.state.status is SessionStatus.FAILED
+            and replay_session.state.status is SessionStatus.ACTIVE
+        ):
             replay_session.fail(session.state.termination_reason or "replayed failure")
         return replay_session.state
 
@@ -184,7 +198,9 @@ class CommunicationReplay:
         session: CommunicationSession, messages: tuple[AgentMessage, ...]
     ) -> CommunicationReplayResult:
         """Replay accepted messages into fresh runtime state for auditability."""
-        replay_blackboard = Blackboard(run_id=session.run_id, trace_id=session.bus.blackboard.trace_id)
+        replay_blackboard = Blackboard(
+            run_id=session.run_id, trace_id=session.bus.blackboard.trace_id
+        )
         replay_clock = [session.started_at]
         replay_bus = AgentBus(
             agent_registry=session.bus.agent_registry,
@@ -208,9 +224,15 @@ class CommunicationReplay:
                 break
             replay_clock[0] = message.created_at
             replay_session.send(message, now=message.created_at)
-        if session.state.status is SessionStatus.COMPLETED and replay_session.state.status is SessionStatus.ACTIVE:
+        if (
+            session.state.status is SessionStatus.COMPLETED
+            and replay_session.state.status is SessionStatus.ACTIVE
+        ):
             replay_session.complete(session.state.termination_reason or "replayed completion")
-        elif session.state.status is SessionStatus.FAILED and replay_session.state.status is SessionStatus.ACTIVE:
+        elif (
+            session.state.status is SessionStatus.FAILED
+            and replay_session.state.status is SessionStatus.ACTIVE
+        ):
             replay_session.fail(session.state.termination_reason or "replayed failure")
         return CommunicationReplayResult(
             session_state=replay_session.state,

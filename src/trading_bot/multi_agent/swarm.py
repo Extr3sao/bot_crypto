@@ -51,8 +51,7 @@ def register_swarm_agents(
     conflicting identities fail closed through the canonical registries.
     """
     manifests = [
-        ASSET_EXPERT_FACTORIES[asset]().manifest
-        for asset in sorted(ASSET_EXPERT_FACTORIES)
+        ASSET_EXPERT_FACTORIES[asset]().manifest for asset in sorted(ASSET_EXPERT_FACTORIES)
     ]
     manifests.extend(
         STRATEGY_EXPERT_FACTORIES[strategy]().manifest
@@ -107,7 +106,6 @@ class SpecialistSwarm:
         trace: TraceContext,
         now_ts: int | None = None,
         timeframe: str = "5m",
-        run_time: datetime | None = None,
         strategy_names: tuple[str, ...] = (
             "momentum",
             "trend",
@@ -116,9 +114,16 @@ class SpecialistSwarm:
             "volatility",
         ),
     ) -> SwarmRun:
-        # Single temporal authority: run_time overrides bus clock for
-        # all message timestamps within this evaluation pass.
-        decision_time = run_time if run_time is not None else self.bus._clock()
+        """Run one deterministic MA-2 evaluation pass.
+
+        Single temporal authority (DEF-MA2-003): every message timestamp,
+        proposal ``expires_at`` and board admission time in this pass is
+        derived from the run clock injected into the ``AgentBus``. Callers
+        that need a fixed decision time (fixtures, replay) must inject it
+        via ``AgentBus(..., clock=...)`` — host wall-clock time is never
+        read on the MA-2 decision path.
+        """
+        decision_time = self.bus.now()
         assessments: list[AssetAssessment] = []
         evaluations: list[StrategyEvaluation] = []
         messages: list[AgentMessage] = []

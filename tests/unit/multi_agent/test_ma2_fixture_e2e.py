@@ -6,7 +6,7 @@ No RiskManager, PaperBroker, or live execution is involved.
 
 from __future__ import annotations
 
-from collections.abc import Mapping, Sequence
+from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass
 from datetime import UTC, datetime, timedelta
 
@@ -44,6 +44,7 @@ CONTEXT_TS = 1_767_268_800_000  # 2026-01-01 12:00:00 UTC
 # ---------------------------------------------------------------------------
 # Fixture helpers
 # ---------------------------------------------------------------------------
+
 
 @dataclass(frozen=True)
 class E2EResult:
@@ -100,7 +101,9 @@ def _candles_accelerating(asset: str, count: int = 80) -> list[OHLCV]:
     for i in range(count):
         ts = start + i * 300_000
         price *= 1.002  # 0.2% compound per bar
-        out.append(OHLCV(f"{asset}/USDT", ts, price * 0.998, price * 1.002, price * 0.996, price, 100.0))
+        out.append(
+            OHLCV(f"{asset}/USDT", ts, price * 0.998, price * 1.002, price * 0.996, price, 100.0)
+        )
     return out
 
 
@@ -112,7 +115,9 @@ def _candles_descending(asset: str, count: int = 80) -> list[OHLCV]:
     for i in range(count):
         ts = start + i * 300_000
         price *= 0.998  # 0.2% compound decline per bar
-        out.append(OHLCV(f"{asset}/USDT", ts, price * 1.002, price * 0.998, price * 0.996, price, 100.0))
+        out.append(
+            OHLCV(f"{asset}/USDT", ts, price * 1.002, price * 0.998, price * 0.996, price, 100.0)
+        )
     return out
 
 
@@ -126,29 +131,23 @@ def _candles_flat(asset: str, count: int = 80) -> list[OHLCV]:
     return out
 
 
-def _make_bus(clock: object | None = None) -> tuple[AgentBus, AgentRegistry, CapabilityRegistry]:
+def _make_bus(clock: Callable[[], datetime]) -> tuple[AgentBus, AgentRegistry, CapabilityRegistry]:
+    """Build a bus with an explicit required run clock (DEF-MA2-001)."""
     agent_reg = AgentRegistry()
     cap_reg = CapabilityRegistry()
     register_swarm_agents(agent_reg, cap_reg)
     bb = Blackboard(run_id=TRACE.run_id, trace_id=TRACE.trace_id)
     # DEF-MA2-001: construct directly — no kwargs composition for temporal authority
-    if clock is not None:
-        bus = AgentBus(
-            agent_registry=agent_reg,
-            capability_registry=cap_reg,
-            blackboard=bb,
-            clock=clock,  # type: ignore[arg-type]
-        )
-    else:
-        bus = AgentBus(
-            agent_registry=agent_reg,
-            capability_registry=cap_reg,
-            blackboard=bb,
-        )
+    bus = AgentBus(
+        agent_registry=agent_reg,
+        capability_registry=cap_reg,
+        blackboard=bb,
+        clock=clock,
+    )
     return bus, agent_reg, cap_reg
 
 
-def _fixed_clock(ts: datetime) -> object:
+def _fixed_clock(ts: datetime) -> Callable[[], datetime]:
     return lambda: ts
 
 
@@ -156,9 +155,12 @@ def _run_swarm(
     contexts: Mapping[str, AssetContext],
     candles_by_asset: Mapping[str, Sequence[OHLCV]],
     *,
-    strategies: tuple[str, ...] = ("momentum",),
+    strategy_names: tuple[str, ...] = ("momentum",),
     now: datetime = NOW,
 ) -> E2EResult:
+    # Single temporal authority: the fixed clock injected into the bus is the
+    # one decision time for bus validation, message timestamps and board
+    # admission (DEF-MA2-003).
     bus, _, _ = _make_bus(clock=_fixed_clock(now))
     board = OpportunityBoard(run_id=TRACE.run_id, now=now)
     swarm = SpecialistSwarm(bus=bus, board=board)
@@ -167,8 +169,7 @@ def _run_swarm(
         candles_by_asset,
         trace=TRACE,
         timeframe="5m",
-        run_time=now,
-        strategy_names=strategies,
+        strategy_names=strategy_names,
     )
     ranked = board.rank(
         assessments={a.asset: a for a in swarm_run.assessments},
@@ -235,6 +236,7 @@ def _make_proposal(
 # Expected: MomentumExpert proposes SOL
 # ---------------------------------------------------------------------------
 
+
 def test_case1_sol_strong_momentum_proposal() -> None:
     result = _run_swarm(
         contexts={
@@ -247,16 +249,14 @@ def test_case1_sol_strong_momentum_proposal() -> None:
             "ETH": _candles_descending("ETH"),
             "SOL": _candles_accelerating("SOL"),
         },
-        strategies=("momentum",),
+        strategy_names=("momentum",),
     )
     sol_proposals = [
-        opp for opp in result.swarm_run.evaluations
-        if opp.asset == "SOL" and opp.proposals
+        opp for opp in result.swarm_run.evaluations if opp.asset == "SOL" and opp.proposals
     ]
     assert sol_proposals, "SOL should have momentum proposals"
     btc_proposals = [
-        opp for opp in result.swarm_run.evaluations
-        if opp.asset == "BTC" and opp.proposals
+        opp for opp in result.swarm_run.evaluations if opp.asset == "BTC" and opp.proposals
     ]
     assert not btc_proposals, "BTC should have no proposals (neutral)"
     assert len(result.ranked) >= 1
@@ -267,17 +267,22 @@ def test_case1_sol_strong_momentum_proposal() -> None:
 # CASE 2: SOL Momentum LONG + SOL Breakout LONG — two opportunities, no conflict
 # ---------------------------------------------------------------------------
 
+
 def test_case2_two_same_direction_no_conflict() -> None:
     """When both Momentum and Breakout emit LONG for SOL, no conflict exists."""
     board = OpportunityBoard(run_id=TRACE.run_id, now=NOW)
-    p1, ev1 = _make_proposal("proposal:mom-sol-long", "SOL", TradeDirection.LONG, "momentum", "ev:1")
+    p1, ev1 = _make_proposal(
+        "proposal:mom-sol-long", "SOL", TradeDirection.LONG, "momentum", "ev:1"
+    )
     p2, ev2 = _make_proposal("proposal:bo-sol-long", "SOL", TradeDirection.LONG, "breakout", "ev:2")
     board.add_evidence(ev1)
     board.add_evidence(ev2)
     board.add(p1, source_agent_id="strategy-expert-momentum", source_agent_version="1.0.0")
     board.add(p2, source_agent_id="strategy-expert-breakout", source_agent_version="1.0.0")
     snap = board.snapshot()
-    assert len(snap.opportunities) == 2, "two distinct LONG proposals should produce two opportunities"
+    assert len(snap.opportunities) == 2, (
+        "two distinct LONG proposals should produce two opportunities"
+    )
     assert len(snap.conflicts) == 0
     ranked = board.rank()
     assert len(ranked) == 2
@@ -287,11 +292,16 @@ def test_case2_two_same_direction_no_conflict() -> None:
 # CASE 3: SOL Momentum LONG + SOL MeanReversion SHORT → ConflictCase
 # ---------------------------------------------------------------------------
 
+
 def test_case3_opposite_direction_conflict() -> None:
     """Board detects directional conflict for same asset with opposite directions."""
     board = OpportunityBoard(run_id=TRACE.run_id, now=NOW)
-    p1, ev1 = _make_proposal("proposal:mom-sol-long", "SOL", TradeDirection.LONG, "momentum", "ev:1")
-    p2, ev2 = _make_proposal("proposal:mr-sol-short", "SOL", TradeDirection.SHORT, "mean_reversion", "ev:2")
+    p1, ev1 = _make_proposal(
+        "proposal:mom-sol-long", "SOL", TradeDirection.LONG, "momentum", "ev:1"
+    )
+    p2, ev2 = _make_proposal(
+        "proposal:mr-sol-short", "SOL", TradeDirection.SHORT, "mean_reversion", "ev:2"
+    )
     board.add_evidence(ev1)
     board.add_evidence(ev2)
     board.add(p1, source_agent_id="strategy-expert-momentum", source_agent_version="1.0.0")
@@ -315,6 +325,7 @@ def test_case3_opposite_direction_conflict() -> None:
 # CASE 4: Duplicate proposal → one opportunity
 # ---------------------------------------------------------------------------
 
+
 def test_case4_duplicate_proposal_deduplication() -> None:
     expert = MomentumExpert()
     sol_ctx = _ctx("SOL")
@@ -326,7 +337,9 @@ def test_case4_duplicate_proposal_deduplication() -> None:
 
     board = OpportunityBoard(run_id=TRACE.run_id, now=proposal.created_at)
     board.add_evidence(evidence)
-    opp1 = board.add(proposal, source_agent_id=expert.manifest.agent_id, source_agent_version="1.0.0")
+    opp1 = board.add(
+        proposal, source_agent_id=expert.manifest.agent_id, source_agent_version="1.0.0"
+    )
     dup = proposal.model_copy(update={"proposal_id": proposal.proposal_id + "-dup"})
     opp2 = board.add(dup, source_agent_id=expert.manifest.agent_id, source_agent_version="1.0.0")
     assert opp1 is opp2 or opp1.proposal.proposal_id == opp2.proposal.proposal_id
@@ -337,6 +350,7 @@ def test_case4_duplicate_proposal_deduplication() -> None:
 # ---------------------------------------------------------------------------
 # CASE 5: Stale proposal → not rankable
 # ---------------------------------------------------------------------------
+
 
 def test_case5_stale_proposal_not_rankable() -> None:
     """A proposal that was admitted, then expired, is excluded from ranking."""
@@ -364,6 +378,7 @@ def test_case5_stale_proposal_not_rankable() -> None:
 # CASE 6: All experts emit NO_PROPOSAL → empty board
 # ---------------------------------------------------------------------------
 
+
 def test_case6_all_experts_no_proposal() -> None:
     bus, _, _ = _make_bus(clock=_fixed_clock(NOW))
     board = OpportunityBoard(run_id=TRACE.run_id, now=NOW)
@@ -381,7 +396,6 @@ def test_case6_all_experts_no_proposal() -> None:
             "SOL": _candles_flat("SOL"),
         },
         trace=TRACE,
-        run_time=NOW,
         strategy_names=("momentum",),
     )
     all_no_proposal = all(ev.no_proposal for ev in result.evaluations)
@@ -396,6 +410,7 @@ def test_case6_all_experts_no_proposal() -> None:
 # CASE 7: One strategy across assets — deterministic ordering
 # ---------------------------------------------------------------------------
 
+
 def test_case7_one_strategy_deterministic_ordering() -> None:
     ctx_map = {
         "BTC": _ctx("BTC", returns=-0.01, trend_spread=0.001),
@@ -407,19 +422,20 @@ def test_case7_one_strategy_deterministic_ordering() -> None:
         "ETH": _candles_accelerating("ETH"),
         "SOL": _candles_accelerating("SOL"),
     }
-    run1 = _run_swarm(ctx_map, candles_map, strategies=("momentum",))
-    run2 = _run_swarm(ctx_map, candles_map, strategies=("momentum",))
+    run1 = _run_swarm(ctx_map, candles_map, strategy_names=("momentum",))
+    run2 = _run_swarm(ctx_map, candles_map, strategy_names=("momentum",))
     assert run1.ranked == run2.ranked, "repeated swarm must produce identical ranking"
     ids = [r.proposal_id for r in run1.ranked]
     assert len(ids) > 0, "at least one proposal expected for this fixture"
     # Verify deterministic repeat, not lexicographic order
-    run3 = _run_swarm(ctx_map, candles_map, strategies=("momentum",))
+    run3 = _run_swarm(ctx_map, candles_map, strategy_names=("momentum",))
     assert [r.proposal_id for r in run3.ranked] == ids, "third run must match first exactly"
 
 
 # ---------------------------------------------------------------------------
 # Determinism: identical inputs → identical outputs
 # ---------------------------------------------------------------------------
+
 
 def test_deterministic_replay() -> None:
     """Given identical inputs, SwarmRun + board + ranking must be identical."""
@@ -433,8 +449,8 @@ def test_deterministic_replay() -> None:
         "ETH": _candles_flat("ETH"),
         "SOL": _candles_accelerating("SOL"),
     }
-    run1 = _run_swarm(ctx_map, candles_map, strategies=("momentum",))
-    run2 = _run_swarm(ctx_map, candles_map, strategies=("momentum",))
+    run1 = _run_swarm(ctx_map, candles_map, strategy_names=("momentum",))
+    run2 = _run_swarm(ctx_map, candles_map, strategy_names=("momentum",))
     assert len(run1.ranked) == len(run2.ranked)
     for r1, r2 in zip(run1.ranked, run2.ranked, strict=True):
         assert r1.proposal_id == r2.proposal_id
@@ -447,12 +463,18 @@ def test_deterministic_replay() -> None:
 # Execution boundary: no execution imports
 # ---------------------------------------------------------------------------
 
+
 def test_no_execution_imports_in_specialist_modules() -> None:
     """MA-2 specialist/opportunity/swarm modules must not import execution gateways."""
     import ast
     from pathlib import Path
 
-    forbidden = ("trading_bot.paper", "trading_bot.risk", "trading_bot.execution", "trading_bot.config")
+    forbidden = (
+        "trading_bot.paper",
+        "trading_bot.risk",
+        "trading_bot.execution",
+        "trading_bot.config",
+    )
     target_files = [
         Path("src/trading_bot/multi_agent/specialists.py"),
         Path("src/trading_bot/multi_agent/opportunity.py"),
@@ -477,12 +499,13 @@ def test_no_execution_imports_in_specialist_modules() -> None:
 # Traceability: every proposal traces to evidence
 # ---------------------------------------------------------------------------
 
+
 def test_traceability_chain() -> None:
     """Every ranked opportunity must trace evidence back through proposal."""
     result = _run_swarm(
         contexts={"SOL": _ctx("SOL", returns=0.06, trend_spread=0.015)},
         candles_by_asset={"SOL": _candles_accelerating("SOL")},
-        strategies=("momentum",),
+        strategy_names=("momentum",),
     )
     snap = result.board.snapshot()
     for opp in snap.opportunities:
@@ -499,6 +522,7 @@ def test_traceability_chain() -> None:
 # Bus message flow
 # ---------------------------------------------------------------------------
 
+
 def test_ma2_swarm_bus_publishes_messages() -> None:
     """Swarm must publish assessment and proposal messages through the bus."""
     bus, _, _ = _make_bus(clock=_fixed_clock(NOW))
@@ -509,7 +533,6 @@ def test_ma2_swarm_bus_publishes_messages() -> None:
         contexts={"SOL": _ctx("SOL", returns=0.06, trend_spread=0.015)},
         candles_by_asset={"SOL": _candles_accelerating("SOL")},
         trace=TRACE,
-        run_time=NOW,
         strategy_names=("momentum",),
     )
     assert len(result.messages) > 0

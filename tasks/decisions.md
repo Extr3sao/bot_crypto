@@ -1074,7 +1074,44 @@ es ADR-XXXX" como regla universal en su footnote. En su lugar:
 Esta ADR usa **ADR-0023** por consistent sequential order per
 `ADR-0020` precedent (primera libre post-`ADR-0022`). Si la regla (e)
 hybrid auto-aplica la próxima vez que se firme `ADR-0024`, la tabla
-global del ledger (header section) se actualizará atómicamente, por
-lo que NO se requerirá per-ADR "next free" footnote nunca más.
+global del ledger (header section) se actualizará atómicamente, por lo
+que NO se requerirá per-ADR "next free" footnote nunca más.
 
+## ADR-MA-0001 — Canonical TradeProposal and MA-0 isolation
+
+- **Estado**: Decidido para MA-0A/MA-0B.
+- **Contexto**: la especificación multi-agente proponía `OpportunityProposal`,
+  pero el repositorio ya contiene propuesta semántica en la capa de trading.
+- **Decisión**: usar `trading_bot.multi_agent.contracts.TradeProposal` como
+  vocabulario canónico de propuestas de trading; no crear un segundo contrato
+  runtime con la misma semántica. La `research`-side `Proposal` existente se
+  mantiene únicamente como input de generación de código hasta una migración
+  explícita. MA-0 permanece fuera del runtime paper y no puede conceder
+  ejecución, modificar riesgo ni acceder al broker.
+- **Razón**: evita duplicación semántica y preserva la frontera certificada
+  `CandidatePortfolio → RiskManager → PaperBroker`.
+- **Consecuencias**: las fases posteriores deben consumir `TradeProposal`,
+  conservar trazabilidad PIT y pasar por los gates deterministas; cualquier
+  adapter o migración futura requiere tests y una nueva decisión documentada.
+- **Evidencia**: `docs/architecture/multi_agent/RFC-MA-001-canonical-contracts.md`,
+  `reports/multi_agent/ma0/TRACEABILITY_MATRIX.md`,
+  `reports/multi_agent/ma0/RUN_REPORT.json`.
+
+## ADR-MA-0002 — Deterministic MA-1 communication runtime
+
+- **Estado**: Decidido y verificado en `CP-MA-001`.
+- **Decisión**: implementar un `AgentBus` síncrono y tipado sobre los contratos MA-0 existentes; usar un `Blackboard` append-only con copias defensivas; y limitar toda comunicación mediante `CommunicationSession` con estados terminales explícitos.
+- **Guardas**: identidad registrada y habilitada, capacidades `WRITE`/`READ`, topic derivado del tipo de mensaje, evidencia enlazada y disponible, trace consistente, expiración y protección contra duplicados.
+- **Replay**: los mensajes aceptados y ordenados reconstruyen el mismo estado de sesión y el mismo historial del blackboard en un checkout limpio.
+- **No alcance**: sin especialistas, LLM, Redis, Kafka, RiskManager, PaperBroker, estrategia runtime o ejecución live.
+- **Evidencia**: `docs/architecture/multi_agent/RFC-MA-003-communication-runtime.md`, `reports/multi_agent/ma1/RUN_REPORT.md`, `reports/multi_agent/ma1/TRACEABILITY_MATRIX.md`.
+
+## ADR-MA-0003 — Single temporal authority and canonical MA-2 evaluate API
+
+- **Estado**: Decidido y verificado en `CP-MA-002.1` (DEF-MA2-001, DEF-MA2-002, DEF-MA2-003).
+- **Decisión**: el reloj de ejecución (run clock) es la única autoridad temporal de MA-2. `AgentBus` lo exige como dependencia explícita de constructor (`clock=` requerido, sin fallback a wall-clock) y lo expone vía `AgentBus.now()`; `SpecialistSwarm.evaluate()` deriva `decision_time` exclusivamente de él (el parámetro `run_time=` fue eliminado como segunda autoridad). `OpportunityBoard` recibe el mismo tiempo de run explícitamente. El contrato formal vive en `docs/ma2-temporal-contract.md`.
+- **API canónica**: `SpecialistSwarm.evaluate(..., strategy_names=...)` es la única firma admitida; no existe alias `strategies=` ni se añadirá (sin evidencia de contrato público previo).
+- **Invariantes**: `data_time <= created_at <= decision_time < expires_at` para propuestas válidas; fallos cerrados en expiración y fechado futuro; replay determinista `mismas entradas + mismo reloj = misma validez temporal`.
+- **Clasificación wall-clock**: `session.py` conserva `datetime.now(UTC)` únicamente para timeout operativo de sesiones con deadline real (no decisión); el resto de módulos MA-2 no contiene llamadas wall-clock (auditado por tests AST).
+- **Evidencia**: `docs/ma2-temporal-contract.md`, `tests/unit/multi_agent/test_temporal_authority.py` (T1–T6 + guardas DEF-MA2), `reports/multi_agent/ma2/VALIDATION_REPORT.json`.
 

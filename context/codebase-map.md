@@ -16,6 +16,7 @@ src/trading_bot/
 ├── indicators/            # motor enchufable de indicadores técnicos
 ├── strategies/            # estrategias; emiten señales, no órdenes
 ├── scanner/               # UniverseScanner + ranking + filtros + scoring (F5 IMPLEMENTADO)
+├── multi_agent/           # MA-0A/MA-0B neutral contracts and governance registries (not runtime-wired)
 ├── risk/                  # risk manager, sizing, drawdown, kill switch
 ├── execution/             # órdenes, retries, idempotencia
 ├── portfolio/             # estado de posiciones, balances, PnL
@@ -36,6 +37,7 @@ src/trading_bot/
 | `indicators`        | EMA, RSI, MACD, ATR, BB, VWAP, vol rel., spread, volatilidad, momentum, OB imbalance. | skeleton   | strategy-engineer                |
 | `strategies`        | Catálogo; interfaz `Strategy.generate(snapshot) -> Signal?`. | skeleton   | strategy-engineer                |
 | `scanner`           | `UniverseScanner` async iteration; filtros Volume/Spread/ATR vía `FilterRegistry` pluggable; scoring formula; retry-tolerant; 23 BDD scenarios verdes. | implementado (TSK-103.5 F5) | strategy-engineer + risk-manager |
+| `multi_agent`       | MA-0A strict immutable contracts and MA-0B deterministic Agent/Capability registries; isolated from paper/risk/execution. | foundation implemented; not runtime-authoritative | context-engineer + strategy-engineer + security-reviewer |
 | `risk`              | Veredicto de señal; sizing; drawdown; kill switch.            | skeleton                        | risk-manager                     |
 | `execution`         | Órdenes con `client_order_id`; retries tenacity; slippage.   | skeleton                        | execution-engineer               |
 | `portfolio`         | Posiciones; balances; reconciliación.                        | skeleton                        | risk-manager + execution-engineer |
@@ -55,6 +57,34 @@ src/trading_bot/
 5. **`observability` no muta estado** — solo lo describe.
 6. **`config` no contiene secretos** — solo defaults leídos desde `.env` en runtime.
 7. **`scanner` no importa** de `execution`, `strategies`, `risk`, `portfolio`, `exchange` (verificado por el BDD scenario "Scanner no importa exchange/strategies/execution/risk/portfolio" en `bdd/features/market_scanner.feature`; el ``conftest.py`` pine contract es independiente - consolida step defs en Pattern A).
+
+## Multi-agent foundation (MA-0)
+
+- Contracts: `AgentManifest`, `AgentMessage`, `AgentEvidence`, `TradeProposal`,
+  `TraceContext`, and `VerificationMetadata`.
+- Governance: versioned `AgentRegistry` and default-deny `CapabilityRegistry`.
+- Validation: 19 focused tests, scoped Ruff/Mypy, and deterministic smoke
+  evidence under `reports/multi_agent/ma0/`.
+- Boundary: no import or runtime wiring to paper, risk, execution, exchange,
+  credentials, LLMs, AgentBus, ranker, dialogue, or live trading.
+- Status: `REPRODUCIBLE_FOUNDATION_READY`; MA-0 source, tests, RFC/evidence
+  artifacts, and validator are tracked. Clean-checkout dependency closure is
+  PASS. Full regression retains one independently reproduced baseline config
+  expectation mismatch (`binance` expected, `bybit` actual).
+
+## Multi-agent communication runtime (MA-1)
+
+- `AgentBus`: synchronous typed FIFO routing, direct route, broadcast,
+  request/reply, subscriptions, identity/capability/topic/evidence/trace/
+  expiry validation, and duplicate safety.
+- `Blackboard`: fixed-topic append-only history with producer, timestamp,
+  version, trace, evidence linkage, and defensive copies.
+- `CommunicationSession`: bounded participant sessions with explicit terminal
+  states and deterministic replay of session and blackboard state.
+- Fixture-only E2E reconstructs proposal, critique, evidence/revision, and
+  termination. No specialist agents or trading integration are present.
+- Status: `MA1_COMMUNICATION_CERTIFIED` at `CP-MA-001`; 19/19 gates pass,
+  `RISK_CALLS=0`, `BROKER_CALLS=0`, `LIVE_CALLS=0`, `FALSE_SUCCESS=0`.
 
 ## Estado
 
@@ -95,7 +125,7 @@ branch aparte). `backtesting/` F1 en rama `feature/tsk-104-backtest-engine`.
 
 ## Última actualización
 
-2026-07-05 — context-engineer post-PR #2 sqsh-merge a `main` (merge_commit
-`da0424a87d4ea685a54ccc8ee9c34f65fda38d74`) + branch delete de
-`origin/feature/tsk-103-5-bdd-wiring`. Próximo refresh esperado: post-merge de TSK-102
-(OHLCVStore en rama aparte) o de TSK-104 F2/F3 (backtesting commission refinement).
+2026-09-04 — context-engineer after MA-0 closeout and MA-1 certification.
+MA-0/MA-1 remain isolated and non-trading-authoritative; evidence is under
+`reports/multi_agent/{ma0,ma1}/`. Full regression has one independently
+reproduced baseline config expectation failure; no configuration was changed.
