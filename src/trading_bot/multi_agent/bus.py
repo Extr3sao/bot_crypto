@@ -120,6 +120,12 @@ class AgentBus:
 
     def publish(self, message: AgentMessage, *, topic: str | None = None) -> AgentMessage:
         """Validate, append, broadcast to subscriptions, and route a message."""
+        self._validate(message)
+        expected_topic = TOPIC_BY_MESSAGE_TYPE.get(message.message_type)
+        if expected_topic is None or (topic is not None and topic != expected_topic):
+            raise UnauthorizedTopicError(
+                f"topic is not authorized for message type {message.message_type}: {topic}"
+            )
         if isinstance(message, AgentMessage):
             existing = self._accepted_by_id.get(message.message_id)
             if existing is not None:
@@ -128,12 +134,6 @@ class AgentBus:
                         f"message ID already exists with different content: {message.message_id}"
                     )
                 return existing
-        self._validate(message)
-        expected_topic = TOPIC_BY_MESSAGE_TYPE.get(message.message_type)
-        if expected_topic is None or (topic is not None and topic != expected_topic):
-            raise UnauthorizedTopicError(
-                f"topic is not authorized for message type {message.message_type}: {topic}"
-            )
         topic = expected_topic
         if topic is None:
             raise UnauthorizedTopicError(f"no topic for message type: {message.message_type}")

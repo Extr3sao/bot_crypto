@@ -258,8 +258,11 @@ def test_session_completes_and_replays_same_state() -> None:
     session.send(_message("critique", sender="critic", receiver="strategy", message_type=AgentMessageType.CRITIQUE, evidence_refs=("ev-1",)))
     session.complete("fixture dialogue completed")
     replay = CommunicationReplay.replay(session, bus.accepted_messages)
+    rebuilt = CommunicationReplay.replay_with_blackboard(session, bus.accepted_messages)
     assert session.state.status is SessionStatus.COMPLETED
     assert replay == session.state
+    assert rebuilt.session_state == session.state
+    assert rebuilt.blackboard_history == bus.blackboard.history
     assert replay.accepted_message_ids == ("proposal", "critique")
 
 

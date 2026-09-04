@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from datetime import UTC, datetime, timedelta
 from enum import StrEnum
 
+from trading_bot.multi_agent.blackboard import Blackboard, BlackboardArtifact
 from trading_bot.multi_agent.bus import AgentBus
 from trading_bot.multi_agent.communication_errors import (
     SessionMaxRoundsError,
@@ -144,8 +145,16 @@ class CommunicationSession:
             raise SessionTimeoutError(self._termination_reason)
 
 
+@dataclass(frozen=True, slots=True)
+class CommunicationReplayResult:
+    """Replayed session state and independently rebuilt blackboard history."""
+
+    session_state: CommunicationSessionState
+    blackboard_history: tuple[BlackboardArtifact, ...]
+
+
 class CommunicationReplay:
-    """Reconstruct a session state from its accepted ordered messages."""
+    """Reconstruct session and blackboard state from ordered messages."""
 
     @staticmethod
     def replay(session: CommunicationSession, messages: tuple[AgentMessage, ...]) -> CommunicationSessionState:
@@ -168,9 +177,48 @@ class CommunicationReplay:
             replay_session.fail(session.state.termination_reason or "replayed failure")
         return replay_session.state
 
+    @staticmethod
+    def replay_with_blackboard(
+        session: CommunicationSession, messages: tuple[AgentMessage, ...]
+    ) -> CommunicationReplayResult:
+        """Replay accepted messages into fresh runtime state for auditability."""
+        replay_blackboard = Blackboard(run_id=session.run_id, trace_id=session.bus.blackboard.trace_id)
+        replay_clock = [session.started_at]
+        replay_bus = AgentBus(
+            agent_registry=session.bus.agent_registry,
+            capability_registry=session.bus.capability_registry,
+            blackboard=replay_blackboard,
+            clock=lambda: replay_clock[0],
+        )
+        for evidence in session.bus.evidence:
+            replay_bus.register_evidence(evidence)
+        replay_session = CommunicationSession(
+            session_id=session.session_id,
+            run_id=session.run_id,
+            participants=session.participants,
+            max_rounds=session.max_rounds,
+            bus=replay_bus,
+            started_at=session.started_at,
+            timeout=None,
+        )
+        for message in messages:
+            if replay_session.state.status is not SessionStatus.ACTIVE:
+                break
+            replay_clock[0] = message.created_at
+            replay_session.send(message, now=message.created_at)
+        if session.state.status is SessionStatus.COMPLETED and replay_session.state.status is SessionStatus.ACTIVE:
+            replay_session.complete(session.state.termination_reason or "replayed completion")
+        elif session.state.status is SessionStatus.FAILED and replay_session.state.status is SessionStatus.ACTIVE:
+            replay_session.fail(session.state.termination_reason or "replayed failure")
+        return CommunicationReplayResult(
+            session_state=replay_session.state,
+            blackboard_history=replay_blackboard.history,
+        )
+
 
 __all__ = [
     "CommunicationReplay",
+    "CommunicationReplayResult",
     "CommunicationSession",
     "CommunicationSessionState",
     "SessionStatus",

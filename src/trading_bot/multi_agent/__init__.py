@@ -49,6 +49,7 @@ from .registry import (
 )
 from .session import (
     CommunicationReplay,
+    CommunicationReplayResult,
     CommunicationSession,
     CommunicationSessionState,
     SessionStatus,
@@ -73,6 +74,7 @@ __all__ = [
     "CapabilityRegistry",
     "CommunicationError",
     "CommunicationReplay",
+    "CommunicationReplayResult",
     "CommunicationSession",
     "CommunicationSessionState",
     "DeclaredCapabilities",
