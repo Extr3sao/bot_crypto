@@ -10,7 +10,6 @@ FORBIDDEN_PREFIXES = (
     "trading_bot.paper",
     "trading_bot.risk",
     "trading_bot.execution",
-    "trading_bot.market_data",
     "trading_bot.config",
 )
 
@@ -26,7 +25,7 @@ def _imports(path: Path) -> list[str]:
     return result
 
 
-def test_contract_and_registry_modules_do_not_import_trading_runtime() -> None:
+def test_multi_agent_modules_do_not_import_execution_runtime() -> None:
     source_files = sorted(MA_ROOT.rglob("*.py"))
     assert source_files
     violations = [

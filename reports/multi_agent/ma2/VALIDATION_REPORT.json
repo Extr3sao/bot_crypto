@@ -1,0 +1,29 @@
+{
+  "validator": "ma2-specialist-swarm",
+  "total": 10,
+  "passed": 10,
+  "failed": 0,
+  "results": {
+    "proposal_provenance": "PASS",
+    "evidence_binding": "PASS",
+    "evidence_matching": "PASS",
+    "deduplication": "PASS",
+    "conflict_detection": "PASS",
+    "conflict_marking": "PASS",
+    "ranking_determinism": "PASS",
+    "execution_capability_zero": "PASS",
+    "stale_expiry": "PASS",
+    "no_execution_imports": "PASS"
+  },
+  "details": {
+    "proposal_provenance": "1 proposals from strategy-expert-momentum",
+    "evidence_binding": "all proposals have evidence refs",
+    "evidence_matching": "all refs resolve to registered evidence",
+    "deduplication": "semantically identical proposals collapsed to 1",
+    "conflict_detection": "1 conflict(s) detected",
+    "conflict_marking": "2 conflicted rankings",
+    "execution_capability_zero": "9 agents verified, no forbidden capabilities",
+    "stale_expiry": "expired proposal excluded from ranking",
+    "no_execution_imports": "clean"
+  }
+}
