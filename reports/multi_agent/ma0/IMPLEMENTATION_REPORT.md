@@ -5,18 +5,17 @@
 ```text
 MA_0A: IMPLEMENTED_AND_VERIFIED
 MA_0B: IMPLEMENTED_AND_VERIFIED
-FOUNDATION: READY_FOR_MA1
-CERTIFIED: NO
+MA_0_FOUNDATION: REPRODUCIBLE_FOUNDATION_READY
+CERTIFIED: FOUNDATION_READY
 PRODUCTION_READY: NO
 LIVE_READY: NO
 FALSE_SUCCESS: 0
 ```
 
-## HEAD
+## Commits
 
-- `HEAD_BEFORE`: `a24da88445042a74de6ef3e5489446c2be1de61c`
-- `HEAD_AFTER`: not committed; current checkout HEAD is `81670670711705b033fc429f62a4138504cdaf67`
-- Current branch: `main`
+- Foundation closeout: `6573215adad29247914c07d5a2eb302582d41292`
+- MA-1 final implementation: `53bc66679e6418ac7bc8fce742910525d81567dc`
 
 ## Files added
 
@@ -57,101 +56,33 @@ FALSE_SUCCESS: 0
 - `reports/multi_agent/ma0/IMPLEMENTATION_REPORT.md`
 - `reports/multi_agent/ma0/TRACEABILITY_MATRIX.md`
 
-## Contracts implemented
-
-- Strict immutable `AgentManifest`
-- `DeclaredCapabilities` (descriptive only; effective grants remain registry-controlled)
-- Structured immutable `AgentMessage`
-- SHA-256 and PIT-aware `AgentEvidence`
-- Canonical `TradeProposal` with explicit `NO_TRADE`
-- `TraceContext`
-- `VerificationMetadata`
-- Canonical enums and governance errors
-
-## Registries implemented
-
-- Version-retaining `AgentRegistry`
-- Deterministic default-deny `CapabilityRegistry`
-- Explicit deny precedence
-- Permanent MA-0 denial of production action, risk override, and direct broker access
-- Explicit builder/verifier separation
-
-## Invariants verified
-
-- Unknown fields rejected
-- Models immutable
-- Naive timestamps rejected
-- Future data timestamps rejected
-- Confidence constrained to `[0, 1]`
-- SHA-256 content hashes required
-- `NO_TRADE` round-trips explicitly
-- Duplicate agent/version registration fails loudly
-- Invalid lifecycle transitions fail loudly
-- Unknown permissions deny
-- Explicit deny dominates grant
-- Builder and verifier cannot collide when independent verification is required
-- MA-0 source does not import trading runtime modules
-
 ## Quality evidence
 
-- New MA-0 tests: **19 passed**
-- Affected existing tests: **165 passed**
-- Ruff: **PASS** on MA-0 implementation, tests, and smoke validator
-- Mypy: **PASS** on 18 MA-0 source/test files
-- Deterministic smoke: **PASS**
-- Full regression: **599 passed, 2 failures**; see blockers below
+- MA-0 focused tests: **19 passed** in the first clean MA-0 checkout.
+- Affected scanner/paper/router tests: **165 passed**.
+- Dependency closure guard: **3 passed** in the clean MA-0 checkout.
+- Ruff: **PASS** on MA-0 implementation, tests, and smoke validator.
+- Mypy: **PASS** on 18 MA-0 source/test files.
+- Deterministic smoke: **PASS**.
+- All MA-0 source files, tests, RFCs, evidence, and validator are tracked.
+- `INTERNAL_IMPORTED_MODULES_UNTRACKED = 0`.
+- `EXTERNAL_WORKTREE_DEPENDENCIES = 0`.
 
-## Defects found and fixed
+## Independently reproduced baseline debt
 
-- Corrected an evidence test that used a decision time after evidence availability.
-- Corrected MA-0 capability policy so direct policy construction cannot grant
-  permanently denied capabilities.
-- Hardened `AgentEvidence.metadata` as an immutable tuple to close nested
-  mutation through a frozen Pydantic model.
-- Resolved Ruff import-order findings.
+The full suite in a clean checkout from the final MA-1 implementation reports:
 
-## Remaining defects/blockers
+```text
+609 passed, 1 failed
+```
 
-- Full regression has an unrelated configuration expectation mismatch:
-  `test_load_settings_happy_path` expects `binance`, while current settings
-  resolve `bybit`. No MA-0 or runtime configuration change was made.
-- The dependency-closure guard reports new MA-0 files as untracked. The
-  implementation must be committed before that guard can pass on a clean tree.
-- Full-repository Ruff and Mypy remain outside this MA-0 scope and are already
-  non-clean in unrelated existing files; scoped MA-0 gates are clean.
-- Current working tree contains pre-existing untracked `.agentic-backup/` and
-  `.worktrees/`; they were not modified or removed.
+The failure is outside MA-0/MA-1:
+`tests/unit/config/test_settings.py::test_load_settings_happy_path` expects
+`binance`, while current settings resolution returns `bybit`. Configuration
+was not changed to hide this debt.
 
 ## Runtime authority classification
 
-| Component | Classification |
-|---|---|
-| MA-0 contracts | FOUNDATION; not runtime-authoritative |
-| MA-0 registries | FOUNDATION; not trading-authoritative |
-| MA-0 unit/property/architecture tests | TEST_ONLY |
-| MA-0 smoke validator | VALIDATION path; not runtime-authoritative |
-| Existing scanner/paper/risk/broker path | Existing runtime authority, unchanged |
-
-## Governance violations
-
-```text
-GOVERNANCE_VIOLATIONS: 0
-LIVE_ACTIONS: 0
-PRODUCTION_ACTIONS: 0
-RISK_OVERRIDES: 0
-NEW_RUNTIME_DEPENDENCIES: 0
-```
-
-## Evidence
-
-- `reports/multi_agent/ma0/RUN_REPORT.json`
-- `reports/multi_agent/ma0/RUN_REPORT.md`
-- `reports/multi_agent/ma0/TRACEABILITY_MATRIX.md`
-- `context/retrieval-log.md`
-
-## Next permitted phase
-
-MA-1 may begin only after the MA-0 files are committed and the clean tracked
-snapshot reruns the focused tests, smoke validator, and dependency-closure
-checks. MA-1 must consume these exact contracts and must not introduce a
-second trade-proposal vocabulary.
+MA-0 contracts, registries, tests, smoke validator, and evidence are
+FOUNDATION/VALIDATION artifacts. They are not trading-authoritative. Existing
+scanner, paper, risk, broker, and live paths were not modified.

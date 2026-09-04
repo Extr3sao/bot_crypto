@@ -1,6 +1,6 @@
 {
   "agent_versions": 1,
-  "commit": "81670670711705b033fc429f62a4138504cdaf67",
+  "commit": "53bc66679e6418ac7bc8fce742910525d81567dc",
   "contracts_tested": [
     "AgentManifest",
     "AgentMessage",
@@ -9,9 +9,11 @@
     "TraceContext",
     "VerificationMetadata"
   ],
-  "effective_permissions": [
-    "READ"
-  ],
+  "dependency_closure": {
+    "external_worktree_dependencies": 0,
+    "internal_imported_modules_untracked": 0,
+    "result": "PASS"
+  },
   "environment": {
     "platform": "Windows-10-10.0.26200-SP0",
     "python": "3.11.15",
@@ -24,24 +26,20 @@
     "reports/multi_agent/ma0/RUN_REPORT.md"
   ],
   "forbidden_capability_rejected": true,
-  "message_id": "smoke-message",
   "mode": "PAPER_OFFLINE_ONLY",
   "proposal_direction": "NO_TRADE",
-  "registries_tested": [
-    "AgentRegistry",
-    "CapabilityRegistry"
-  ],
+  "registries_tested": ["AgentRegistry", "CapabilityRegistry"],
   "result": "PASS",
   "run_id": "ma0-smoke-run",
-  "tests": [
-    "manifest construction and immutability",
-    "agent version registration and lifecycle transition",
-    "safe READ permission grant",
-    "forbidden PRODUCTION_ACTION rejection",
-    "evidence/message/proposal trace correlation",
-    "NO_TRADE serialization round-trip",
-    "builder/verifier identity separation"
-  ],
+  "tests": {
+    "ma0_focused": "19 passed",
+    "affected_scanner_paper_router": "165 passed",
+    "dependency_closure": "3 passed"
+  },
+  "tracking": {
+    "all_ma0_artifacts_tracked": true,
+    "second_clean_checkout": true
+  },
   "verification": {
     "artifact_id": "smoke-proposal",
     "builder_agent_id": "smoke-strategy-agent",

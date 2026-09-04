@@ -22,4 +22,4 @@ No row is marked PASS without an executed test or smoke artifact.
 | Runtime boundary | MA0A/0B architectural | MA-001/002 | no forbidden imports | architecture test | focused pytest + Ruff/Mypy | PASS |
 | Real new-code execution | MA0 definition of done | MA-001/002 | `validate_multi_agent_foundation.py` | deterministic smoke | `uv run python scripts/validate_multi_agent_foundation.py` | `RUN_REPORT.json`, PASS |
 | Affected runtime regression | quality gate | MA-001/002 | unchanged scanner/paper path | 165 focused tests | `uv run pytest ...` | PASS |
-| Full regression | quality gate | MA-001/002 | repository-wide | full pytest | `uv run pytest -q` | INCOMPLETE/FAIL: 599 passed, 2 unrelated/tracking failures |
+| Full regression | quality gate | MA-001/002 | repository-wide | full pytest | `uv run pytest -q` | INCOMPLETE/FAIL: 609 passed, 1 independently reproduced baseline config failure |

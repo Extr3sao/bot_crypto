@@ -1,0 +1,43 @@
+{
+  "checkpoint_id": "CP-MA-001",
+  "commits": {
+    "ma0_foundation": "6573215adad29247914c07d5a2eb302582d41292",
+    "ma1_final": "53bc66679e6418ac7bc8fce742910525d81567dc"
+  },
+  "status": "MA1_COMMUNICATION_CERTIFIED",
+  "gates": {
+    "ma0_reproducibility": "PASS",
+    "agent_bus": "PASS",
+    "blackboard": "PASS",
+    "communication_session": "PASS",
+    "capability_enforcement": "PASS",
+    "traceability": "PASS",
+    "deterministic_replay": "PASS",
+    "fail_closed_matrix": "PASS",
+    "fixture_e2e": "PASS",
+    "ma1": "19/19",
+    "false_success": 0
+  },
+  "verification": {
+    "ma1_tests": "28 passed",
+    "ma1_plus_dependency_closure": "31 passed",
+    "affected_scanner_paper_router": "165 passed",
+    "dependency_closure": "3 passed",
+    "full_regression": "609 passed, 1 baseline failure",
+    "ruff_scoped": "PASS",
+    "mypy_scoped": "PASS",
+    "second_clean_checkout": "PASS"
+  },
+  "side_effects": {
+    "risk_calls": 0,
+    "broker_calls": 0,
+    "live_calls": 0
+  },
+  "baseline_debt": {
+    "test": "tests/unit/config/test_settings.py::test_load_settings_happy_path",
+    "expected": "binance",
+    "actual": "bybit",
+    "configuration_changed": false
+  },
+  "next_phase": "MA2_SPECIALIST_AGENTS"
+}
