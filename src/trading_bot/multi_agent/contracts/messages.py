@@ -35,6 +35,9 @@ class AgentMessage(BaseModel):
     causation_id: str | None = None
     correlation_id: str | None = None
     expires_at: datetime | None = None
+    # Optional structured payload (MA-3 debate artifacts travel inside the
+    # certified MA-1 message envelope; no parallel message system).
+    payload: tuple[tuple[str, str], ...] = ()
     trace: TraceContext | None = None
 
     @field_validator("created_at", "data_time", "expires_at")
@@ -49,6 +52,21 @@ class AgentMessage(BaseModel):
     def _reject_empty_references(cls, value: object) -> object:
         if isinstance(value, (tuple, list)) and any(not item for item in value):
             raise ValueError("evidence references must contain non-empty identifiers")
+        return value
+
+    @field_validator("payload", mode="before")
+    @classmethod
+    def _freeze_payload(cls, value: object) -> object:
+        if isinstance(value, dict):
+            return tuple(sorted((str(k), str(v)) for k, v in value.items()))
+        if isinstance(value, (tuple, list)) and any(
+            not isinstance(item, tuple)
+            or len(item) != 2
+            or not item[0]
+            or not isinstance(item[1], str)
+            for item in value
+        ):
+            raise ValueError("payload must be non-empty string key/value pairs")
         return value
 
     @model_validator(mode="after")

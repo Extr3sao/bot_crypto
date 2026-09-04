@@ -1,6 +1,20 @@
 """Public exports for MA-0A neutral contracts."""
 
 from .capability import DeclaredCapabilities
+from .debate import (
+    CritiqueRecord,
+    CritiqueStance,
+    DebateEventType,
+    DebateOutcome,
+    DebatePosition,
+    DebateReport,
+    DebateRouterDecision,
+    DebateRouteReason,
+    DebateTerminationReason,
+    EvidenceItem,
+    ProposalRevision,
+    RequestedAction,
+)
 from .enums import (
     AgentCapability,
     AgentLifecycleState,
@@ -24,8 +38,20 @@ __all__ = [
     "AgentMessage",
     "AgentMessageType",
     "AgentRole",
+    "CritiqueRecord",
+    "CritiqueStance",
+    "DebateEventType",
+    "DebateOutcome",
+    "DebatePosition",
+    "DebateReport",
+    "DebateRouteReason",
+    "DebateRouterDecision",
+    "DebateTerminationReason",
     "DeclaredCapabilities",
+    "EvidenceItem",
     "ForbiddenAction",
+    "ProposalRevision",
+    "RequestedAction",
     "TraceContext",
     "TradeDirection",
     "TradeProposal",
