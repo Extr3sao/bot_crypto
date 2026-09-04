@@ -62,16 +62,44 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def build_settings(args: argparse.Namespace) -> Settings:
+def parse_assets(raw: str) -> list[str]:
+    """Normalize the ``--assets`` CLI value into an ordered, de-duplicated list.
+
+    Invariant (DEF-OP-003-ENTRYPOINT-ASSETS): the CLI text is parsed into a
+    normalized asset list EXACTLY ONCE, at the boundary. Downstream code
+    iterates ASSETS (a list), never the raw string, so per-character
+    splitting ("BTC,ETH,SOL" -> B,T,C,...) is impossible.
+
+    - strips and upper-cases every token;
+    - drops empty tokens and de-duplicates (order-preserving);
+    - raises on whitespace-only / empty input.
+    """
+    seen: set[str] = set()
+    out: list[str] = []
+    for token in raw.split(","):
+        normalized = token.strip().upper()
+        if not normalized:
+            continue
+        if normalized not in seen:
+            seen.add(normalized)
+            out.append(normalized)
+    if not out:
+        raise ValueError("--assets requires at least one non-empty asset code")
+    return out
+
+
+def build_settings(args: argparse.Namespace, assets: Sequence[str]) -> Settings:
     """Load settings and restrict the universe to the requested assets.
 
     Assets are given as base codes (BTC, ETH, ...); they are mapped to
     '<ASSET>/USDT' pairs so the scanner only visits the requested assets.
+    ``assets`` MUST be the normalized list produced by ``parse_assets``
+    (never the raw CLI string).
     """
     from trading_bot.config.universe import PairSpec
 
     settings = load_settings(config_dir=args.config_dir)
-    pairs = [PairSpec(symbol=f"{asset}/USDT", enabled=True) for asset in args.assets]
+    pairs = [PairSpec(symbol=f"{asset}/USDT", enabled=True) for asset in assets]
     universe = settings.universe.model_copy(update={"pairs": pairs, "timeframes": [args.timeframe]})
     return settings.model_copy(update={"universe": universe})
 
@@ -190,12 +218,13 @@ def build_cycle_engine(settings: Settings, broker: PaperBroker) -> PaperCycleEng
 async def main() -> int:
     args = parse_args()
 
-    assets = [a.strip().upper() for a in args.assets.split(",") if a.strip()]
-    if not assets:
-        print("No assets configured — nothing to do.", file=sys.stderr)
+    try:
+        assets = parse_assets(args.assets)
+    except ValueError as exc:
+        print(str(exc), file=sys.stderr)
         return 1
 
-    settings = build_settings(args)
+    settings = build_settings(args, assets)
 
     # Hard PAPER guarantee: this entrypoint never runs LIVE, regardless of YAML/env.
     if settings.runtime.mode is not TradingMode.PAPER:

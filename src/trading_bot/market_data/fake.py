@@ -44,6 +44,7 @@ class.
 
 from __future__ import annotations
 
+import time
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING
 
@@ -116,17 +117,32 @@ def assert_called_once_per_symbol(source: FakeMarketDataSource, method: str, sym
 # ===========================================================================
 
 
-def make_flat_ohlcv(symbol: str, n: int, *, last_close: float) -> list[OHLCV]:
+def make_flat_ohlcv(
+    symbol: str,
+    n: int,
+    *,
+    last_close: float,
+    now_ms: int | None = None,
+) -> list[OHLCV]:
     """Genera ``n`` velas con ``high - low = 1`` y ``last_close`` configurable.
 
     Daily range = 1 unit. Pineado por ``test_universe_scanner.py`` para
     escenarios "all filters pass" donde el ATR% debe caer dentro del
     rango (spread 1 / close 100 = 1%).
+
+    Timestamps (DEF-OP-003-FAKE-EPOCH): the series is anchored at
+    ``now_ms`` (default: the wall clock at call time), so synthetic market
+    data is FRESH relative to the run and the canonical decision cycle's
+    freshness gate (router ``STALE_THRESHOLD_MS``) can pass. Passing an
+    explicit ``now_ms`` makes output fully deterministic. Spacing stays
+    exactly 60_000 ms between candles.
     """
+    anchor = now_ms if now_ms is not None else int(time.time() * 1000)
+    base = anchor - (n - 1) * 60_000
     return [
         OHLCV(
             symbol=symbol,
-            timestamp=1_700_000_000_000 + i * 60_000,
+            timestamp=base + i * 60_000,
             open=last_close,
             high=last_close + 0.5,
             low=last_close - 0.5,
@@ -313,6 +329,8 @@ def build_demo_settings(
 
 def build_demo_fetcher(
     settings: Settings,
+    *,
+    now_ms: int | None = None,
 ) -> FakeMarketDataSource:
     """Construye un ``FakeMarketDataSource`` pre-poblado para el CLI demo.
 
@@ -333,6 +351,9 @@ def build_demo_fetcher(
     abrumar al usuario con logs.
     """
     source = FakeMarketDataSource()
+    # One clock per fetcher: all seeded symbols share the same anchor so the
+    # whole fake universe is coherent (DEF-OP-003-FAKE-EPOCH).
+    anchor = now_ms if now_ms is not None else int(time.time() * 1000)
     # Acepta cualquier settings (lee pares desde settings.universe.pairs).
     for pair in settings.universe.pairs:
         if not pair.enabled:
@@ -341,31 +362,31 @@ def build_demo_fetcher(
         if sym == "BTC/USDT":
             source.volume_by_symbol[sym] = 50_000_000.0
             source.spread_by_symbol[sym] = 5.0
-            source.ohlcv_by_symbol[sym] = make_flat_ohlcv(sym, 100, last_close=100.0)
+            source.ohlcv_by_symbol[sym] = make_flat_ohlcv(sym, 100, last_close=100.0, now_ms=anchor)
         elif sym == "ETH/USDT":
             source.volume_by_symbol[sym] = 30_000_000.0
             source.spread_by_symbol[sym] = 8.0
-            source.ohlcv_by_symbol[sym] = make_flat_ohlcv(sym, 100, last_close=100.0)
+            source.ohlcv_by_symbol[sym] = make_flat_ohlcv(sym, 100, last_close=100.0, now_ms=anchor)
         elif sym == "SOL/USDT":
             source.volume_by_symbol[sym] = 8_000_000.0
             source.spread_by_symbol[sym] = 12.0
-            source.ohlcv_by_symbol[sym] = make_flat_ohlcv(sym, 100, last_close=50.0)
+            source.ohlcv_by_symbol[sym] = make_flat_ohlcv(sym, 100, last_close=50.0, now_ms=anchor)
         elif sym == "AVAX/USDT":
             # Volume bajo -> VolumeFilter rechaza.
             source.volume_by_symbol[sym] = 1_000_000.0
             source.spread_by_symbol[sym] = 5.0
-            source.ohlcv_by_symbol[sym] = make_flat_ohlcv(sym, 100, last_close=20.0)
+            source.ohlcv_by_symbol[sym] = make_flat_ohlcv(sym, 100, last_close=20.0, now_ms=anchor)
         elif sym == "MATIC/USDT":
             # Spread alto -> SpreadFilter rechaza.
             source.volume_by_symbol[sym] = 20_000_000.0
             source.spread_by_symbol[sym] = 50.0
-            source.ohlcv_by_symbol[sym] = make_flat_ohlcv(sym, 100, last_close=1.0)
+            source.ohlcv_by_symbol[sym] = make_flat_ohlcv(sym, 100, last_close=1.0, now_ms=anchor)
         else:
             # Default razonable: activo pero con volumen bajo para que
             # el usuario vea al menos 1 motivo de rechazo si lo activa.
             source.volume_by_symbol[sym] = 10_000_000.0
             source.spread_by_symbol[sym] = 10.0
-            source.ohlcv_by_symbol[sym] = make_flat_ohlcv(sym, 100, last_close=1.0)
+            source.ohlcv_by_symbol[sym] = make_flat_ohlcv(sym, 100, last_close=1.0, now_ms=anchor)
     return source
 
 

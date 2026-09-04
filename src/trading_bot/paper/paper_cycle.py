@@ -71,8 +71,10 @@ class CycleStageCounts:
 
     contexts_built: int = 0
     context_errors: int = 0
+    router_invocations: int = 0
     router_no_trade: int = 0
     router_errors: int = 0
+    strategy_invocations: int = 0
     signals_generated: int = 0
     strategy_errors: int = 0
     adapter_errors: int = 0
@@ -88,8 +90,10 @@ class CycleStageCounts:
         return {
             "contexts_built": self.contexts_built,
             "context_errors": self.context_errors,
+            "router_invocations": self.router_invocations,
             "router_no_trade": self.router_no_trade,
             "router_errors": self.router_errors,
+            "strategy_invocations": self.strategy_invocations,
             "signals_generated": self.signals_generated,
             "strategy_errors": self.strategy_errors,
             "adapter_errors": self.adapter_errors,
@@ -207,6 +211,7 @@ class PaperCycleEngine:
                 counts.router_errors += 1
                 _reject(counts, symbol, "router", f"{type(exc).__name__}: {exc}")
                 continue
+            counts.router_invocations += 1
 
             if decision.is_no_trade or not decision.strategy_id:
                 counts.router_no_trade += 1
@@ -218,6 +223,7 @@ class PaperCycleEngine:
                 counts.strategy_errors += 1
                 _reject(counts, symbol, "strategy", f"family_not_found:{decision.family}")
                 continue
+            counts.strategy_invocations += 1
 
             wanted = (decision.direction or "ANY").upper()
             try:
@@ -390,6 +396,7 @@ class RouteOnlyEngine:
                 counts.router_errors += 1
                 _reject(counts, symbol, "router", f"{type(exc).__name__}: {exc}")
                 continue
+            counts.router_invocations += 1
             if decision.is_no_trade or not decision.strategy_id:
                 counts.router_no_trade += 1
                 _reject(counts, symbol, "router", f"NO_TRADE:{decision.no_trade_reason}")
