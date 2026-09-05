@@ -25,6 +25,15 @@ from .contracts import (
     AgentMessage,  # noqa: F401
     AgentMessageType,  # noqa: F401
     AgentRole,  # noqa: F401
+    CritiqueRecord,  # noqa: F401
+    CritiqueStance,  # noqa: F401
+    DebateOutcome,  # noqa: F401
+    DebateReport,  # noqa: F401
+    DecisionCandidate,
+    DecisionEligibility,
+    DecisionOutcome,
+    DecisionPackage,
+    DecisionReason,
     DeclaredCapabilities,
     ForbiddenAction,
     TraceContext,
@@ -48,6 +57,16 @@ from .debate import (
     EvidenceCritic,
     RegimeCritic,
     register_debate_agents,
+)
+from .decision import (
+    DECISION_SCHEMA_VERSION,
+    DecisionEngine,
+    DecisionError,
+    DecisionPackageVerifier,
+    DecisionVerification,
+    DecisionVerificationStatus,
+    LineageResolution,
+    TerminalProposalResolver,
 )
 from .opportunity import (
     ConflictCase,
@@ -98,6 +117,7 @@ __all__ = [
     "BLACKBOARD_TOPICS",
     "CRITIC_FACTORIES",
     "DEBATE_SCHEMA_VERSION",
+    "DECISION_SCHEMA_VERSION",
     "MAX_DEBATE_ROUNDS",
     "STRATEGY_EXPERT_FACTORIES",
     "TOPIC_BY_MESSAGE_TYPE",
@@ -125,6 +145,16 @@ __all__ = [
     "DebateRouter",
     "DebateSession",
     "DebateStatus",
+    "DecisionCandidate",
+    "DecisionEligibility",
+    "DecisionEngine",
+    "DecisionError",
+    "DecisionOutcome",
+    "DecisionPackage",
+    "DecisionPackageVerifier",
+    "DecisionReason",
+    "DecisionVerification",
+    "DecisionVerificationStatus",
     "DeclaredCapabilities",
     "DuplicateAgentVersionError",
     "DuplicateMessageConflictError",
@@ -135,6 +165,7 @@ __all__ = [
     "ForbiddenAction",
     "InvalidLifecycleTransitionError",
     "InvalidMessageError",
+    "LineageResolution",
     "MeanReversionExpert",
     "MessageHandler",
     "MetaRanker",
@@ -156,6 +187,7 @@ __all__ = [
     "StrategyEvaluation",
     "StrategyExpert",
     "SwarmRun",
+    "TerminalProposalResolver",
     "TraceContext",
     "TraceMismatchError",
     "TradeDirection",
