@@ -1,0 +1,15 @@
+[PASS] best_admissible_candidate_selected — selected=p:sol
+[PASS] higher_raw_score_cannot_bypass_eligibility — selected=p:low high=INELIGIBLE_STALE
+[PASS] insufficient_evidence_blocks_selection — eligibility=INELIGIBLE_INSUFFICIENT_EVIDENCE
+[PASS] unresolved_material_conflict_blocks_selection — selected=p:btc
+[PASS] revision_can_alter_winner — selected=p:btc
+[PASS] no_trade_first_class
+[PASS] rejected_alternatives_retained
+[PASS] same_evidence_not_double_counted — meta=0.55 decision=0.55
+[PASS] ordering_does_not_alter_result
+[PASS] decision_replay_deterministic
+[PASS] decision_package_independently_verifies — verifier=VERIFIED tampered=REJECTED
+[PASS] execution_capability_zero — wall_clock=[] imports=[]
+[PASS] dynamic_execution_boundary — outcome=SELECTED verifier=VERIFIED
+
+MA-4 validator: 13/13 PASS, 0 FAIL

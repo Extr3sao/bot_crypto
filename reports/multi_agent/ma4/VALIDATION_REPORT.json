@@ -1,0 +1,44 @@
+{
+  "validator": "ma4-decision-engine",
+  "total": 13,
+  "passed": 13,
+  "failed": 0,
+  "results": {
+    "best_admissible_candidate_selected": "PASS",
+    "higher_raw_score_cannot_bypass_eligibility": "PASS",
+    "insufficient_evidence_blocks_selection": "PASS",
+    "unresolved_material_conflict_blocks_selection": "PASS",
+    "revision_can_alter_winner": "PASS",
+    "no_trade_first_class": "PASS",
+    "rejected_alternatives_retained": "PASS",
+    "same_evidence_not_double_counted": "PASS",
+    "ordering_does_not_alter_result": "PASS",
+    "decision_replay_deterministic": "PASS",
+    "decision_package_independently_verifies": "PASS",
+    "execution_capability_zero": "PASS",
+    "dynamic_execution_boundary": "PASS"
+  },
+  "details": {
+    "best_admissible_candidate_selected": "SOL momentum .91 (SUPPORTED) selected over BTC .83 and ETH .79",
+    "higher_raw_score_cannot_bypass_eligibility": "confidence .99 stale (data_time -30h) -> INELIGIBLE_STALE; fresh .70 selected",
+    "insufficient_evidence_blocks_selection": "empty evidence_refs -> INELIGIBLE_INSUFFICIENT_EVIDENCE -> NO_TRADE",
+    "unresolved_material_conflict_blocks_selection": "SOL LONG .95 vs SOL SHORT .90 debate UNRESOLVED -> both INELIGIBLE_UNRESOLVED_CONFLICT; BTC .70 selected (opportunity competition without forced resolution)",
+    "revision_can_alter_winner": "SOL .90 revised to .55 via ProposalRevision lineage -> BTC .84 becomes SELECTED (debate is not decorative)",
+    "no_trade_first_class": "empty board -> NO_TRADE with NO_VALID_CANDIDATES, selected=None, valid package",
+    "rejected_alternatives_retained": "all non-selected candidates preserved as RejectedAlternative with typed reasons (LOWER_RANKED_ALTERNATIVE)",
+    "same_evidence_not_double_counted": "meta_ranker_score == candidate.meta_score exactly; counter_evidence_materiality=0 absent debate; final == meta - penalty",
+    "ordering_does_not_alter_result": "permuted proposal/evidence/report order -> identical package.to_dict()",
+    "decision_replay_deterministic": "3 runs -> byte-identical canonical JSON",
+    "decision_package_independently_verifies": "verifier VERIFIED on authentic package, REJECTED on tampered outcome; builder=decision-engine != verifier=decision-package-verifier",
+    "execution_capability_zero": "0 wall-clock calls (AST), 0 execution/risk/broker imports (structural), no position/leverage/broker fields in package payload",
+    "dynamic_execution_boundary": "full decide+verify pass executed with trading_bot.{paper,execution,broker,risk} imports blocked"
+  },
+  "score_component_provenance": {
+    "meta_ranker_score": "META_RANKER (canonical MA-2 MetaRanker V1 over terminal proposal)",
+    "counter_evidence_materiality": "DEBATE (mean materiality of standing unanswered challenges; revisions already reflected in revised confidence)"
+  },
+  "temporal_authority": {
+    "decision_path_wall_clock_calls": 0,
+    "source": "explicit now parameter supplied from the injected run clock (AgentBus.now() upstream); AST-audited"
+  }
+}
