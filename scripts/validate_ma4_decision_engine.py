@@ -27,6 +27,11 @@ CP-MA-004.1 additions (cross-run authority / ADR-MA-0006):
 CP-MA-004.2 additions (selected evidence authority binding):
  17. package-side evidence strip/swap tamper rejected; exact terminal
      proposal binding independently reconstructed (never package-trusted)
+
+CP-MA-004.3 additions (authoritative debate blockers):
+ 18. authoritative debate-derived blockers re-derived from DebateReports
+     (UNRESOLVED, INSUFFICIENT_EVIDENCE) - strong consistent forgeries
+     rejected even when package-side eligibility/reasons rewritten
 """
 
 from __future__ import annotations
@@ -813,6 +818,97 @@ def check_selected_evidence_authority_binding() -> None:
     )
 
 
+def check_authoritative_debate_blocker_rederivation() -> None:
+    """CP-MA-004.3 (CERT-MA4-001-RETRY-2-001): the verifier must re-derive
+    debate-derived blocking state (UNRESOLVED, INSUFFICIENT_EVIDENCE) from
+    the authoritative DebateReports, never from package-side claims. Two
+    fully internally-consistent forgeries (eligibility flipped to ELIGIBLE,
+    rejection reasons cleared, selection/reasons/alternatives rewritten)
+    must both REJECT; the honest no-trade packages must stay VERIFIED."""
+    verifier = DecisionPackageVerifier()
+
+    def forge(pkg: DecisionPackage, selected_id: str) -> DecisionPackage:
+        forged_candidates = tuple(
+            c.model_copy(
+                update={"eligibility": DecisionEligibility.ELIGIBLE, "rejection_reasons": ()}
+            )
+            if c.final_proposal_id == selected_id
+            else c
+            for c in pkg.candidate_set
+        )
+        return pkg.model_copy(
+            update={
+                "candidate_set": forged_candidates,
+                "selected_candidate_id": selected_id,
+                "outcome": DecisionOutcome.SELECTED,
+                "decision_reasons": (DecisionReason.HIGHEST_ADMISSIBLE_SCORE,),
+                "rejected_alternatives": tuple(
+                    a for a in pkg.rejected_alternatives if a.final_proposal_id != selected_id
+                ),
+            }
+        )
+
+    # UNRESOLVED strong forgery: SOL LONG vs SOL SHORT with UNRESOLVED report.
+    p_l = _proposal("p:l", confidence=0.95)
+    p_s = _proposal("p:s", strategy="mean_reversion").model_copy(
+        update={"direction": TradeDirection.SHORT, "confidence": 0.9}
+    )
+    unresolved_report = _report(("p:l", "p:s"), outcome=DebateOutcome.UNRESOLVED)
+    unresolved_pkg = _decide([p_l, p_s], reports=[unresolved_report])
+    unresolved_props = {"p:l": p_l, "p:s": p_s}
+    unresolved_reg = _registry_for([p_l, p_s])
+    unresolved_forged = forge(unresolved_pkg, "p:l")
+    unresolved_verdict = verifier.verify(
+        unresolved_forged,
+        proposals=unresolved_props,
+        evidence_registry=unresolved_reg,
+        reports=[unresolved_report],
+        now=CLOCK,
+    ).verdict.value
+    unresolved_honest = verifier.verify(
+        unresolved_pkg,
+        proposals=unresolved_props,
+        evidence_registry=unresolved_reg,
+        reports=[unresolved_report],
+        now=CLOCK,
+    ).verdict.value
+
+    # INSUFFICIENT_EVIDENCE strong forgery: single proposal + IE report.
+    eth = _proposal("p:eth", asset="ETH", strategy="trend", confidence=0.79)
+    insufficient_report = _report(("p:eth",), outcome=DebateOutcome.INSUFFICIENT_EVIDENCE)
+    insufficient_pkg = _decide([eth], reports=[insufficient_report])
+    insufficient_props = {"p:eth": eth}
+    insufficient_reg = _registry_for([eth])
+    insufficient_forged = forge(insufficient_pkg, "p:eth")
+    insufficient_verdict = verifier.verify(
+        insufficient_forged,
+        proposals=insufficient_props,
+        evidence_registry=insufficient_reg,
+        reports=[insufficient_report],
+        now=CLOCK,
+    ).verdict.value
+    insufficient_honest = verifier.verify(
+        insufficient_pkg,
+        proposals=insufficient_props,
+        evidence_registry=insufficient_reg,
+        reports=[insufficient_report],
+        now=CLOCK,
+    ).verdict.value
+
+    ok = (
+        unresolved_verdict == "REJECTED"
+        and unresolved_honest == "VERIFIED"
+        and insufficient_verdict == "REJECTED"
+        and insufficient_honest == "VERIFIED"
+    )
+    check(
+        "authoritative_debate_blocker_rederivation",
+        ok,
+        f"unresolved_forged={unresolved_verdict} unresolved_honest={unresolved_honest} "
+        f"insufficient_forged={insufficient_verdict} insufficient_honest={insufficient_honest}",
+    )
+
+
 def main() -> int:
     check_best_admissible_selected()
     check_higher_raw_score_cannot_bypass()
@@ -830,6 +926,7 @@ def main() -> int:
     check_sibling_cross_run_contamination()
     check_verifier_cross_run_rejection()
     check_selected_evidence_authority_binding()
+    check_authoritative_debate_blocker_rederivation()
     check_execution_capability_zero()
     check_dynamic_boundary()
 

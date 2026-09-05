@@ -53,6 +53,7 @@ from trading_bot.multi_agent.decision import (
     DECISION_ENGINE_ID,
     DECISION_SCHEMA_VERSION,
     DECISION_VERIFIER_ID,
+    DecisionVerificationStatus,
     TerminalProposalResolver,
 )
 from trading_bot.multi_agent.opportunity import MetaRanker, Opportunity
@@ -1989,6 +1990,317 @@ class TestSelectedEvidenceBinding:
         assert selected.score_breakdown.component("meta_ranker_score") == selected.meta_score
         assert selected.decision_score == selected.score_breakdown.final_score
         assert self._verify(package, proposals, registry, reports).passed
+
+
+# ---------------------------------------------------------------------------
+# CP-MA-004.3 - authoritative debate-derived blockers (CERT-MA4-001-RETRY-2-
+# 001). The verifier never trusts package-side eligibility / rejection /
+# decision claims for blocking debate state: it re-derives UNRESOLVED and
+# INSUFFICIENT_EVIDENCE from the authoritative DebateReports (lineage-aware)
+# and board conflicts from an optional authoritative snapshot.
+# ---------------------------------------------------------------------------
+
+
+class TestAuthoritativeDebateBlockers:
+    STRONG_CRITIQUE = CritiqueRecord(
+        schema_version=SCHEMA,
+        critique_id="critique:chg",
+        proposal_id="p:l",
+        critic_agent_id="critic-regime",
+        critic_version="1.0.0",
+        stance=CritiqueStance.CHALLENGE,
+        materiality=0.3,
+        claim="material counter-signal",
+        counter_evidence_refs=("ev:counter",),
+        confidence=0.8,
+        requested_action=RequestedAction.REVISE,
+        trace=TRACE,
+        created_at=CLOCK,
+    )
+
+    def _unresolved_package(self) -> tuple:
+        """Honest SOL LONG vs SOL SHORT with UNRESOLVED debate -> NO_TRADE."""
+        p_l = _proposal("p:l", direction=TradeDirection.LONG, asset="SOL", strategy="momentum", confidence=0.95)
+        p_s = _proposal("p:s", direction=TradeDirection.SHORT, asset="SOL", strategy="mean_reversion", confidence=0.90)
+        report = DebateReport(
+            schema_version=SCHEMA,
+            debate_id="debate:unresolved",
+            run_id=TRACE.run_id,
+            proposal_ids=("p:l", "p:s"),
+            participants=("critic-regime",),
+            initial_claims=("claim",),
+            critiques=(self.STRONG_CRITIQUE,),
+            counter_evidence=("ev:counter",),
+            round_count=1,
+            max_rounds=3,
+            termination_reason=DebateTerminationReason.UNRESOLVED,
+            outcome=DebateOutcome.UNRESOLVED,
+            unique_supporting_evidence_count=0,
+            unique_counter_evidence_count=1,
+            trace=TRACE,
+            created_at=CLOCK,
+        )
+        proposals = {"p:l": p_l, "p:s": p_s}
+        registry = {
+            "ev:p:l": _evidence_run("ev:p:l", run_id=TRACE.run_id, trace=TRACE),
+            "ev:p:s": _evidence_run("ev:p:s", run_id=TRACE.run_id, trace=TRACE),
+        }
+        package = _make_engine().decide(
+            snapshot=OpportunitySnapshot(opportunities=(), conflicts=()),
+            proposals=proposals,
+            evidence_registry=registry,
+            reports=[report],
+            now=CLOCK,
+        )
+        assert package.outcome is DecisionOutcome.NO_TRADE
+        return package, proposals, registry, [report]
+
+    def _insufficient_package(self) -> tuple:
+        """Honest ETH proposal with INSUFFICIENT_EVIDENCE debate -> NO_TRADE."""
+        p_eth = _proposal("p:eth", asset="ETH", strategy="trend", confidence=0.79)
+        report = DebateReport(
+            schema_version=SCHEMA,
+            debate_id="debate:insufficient",
+            run_id=TRACE.run_id,
+            proposal_ids=("p:eth",),
+            participants=("critic-evidence",),
+            initial_claims=("claim",),
+            round_count=1,
+            max_rounds=3,
+            termination_reason=DebateTerminationReason.INSUFFICIENT_EVIDENCE,
+            outcome=DebateOutcome.INSUFFICIENT_EVIDENCE,
+            unique_supporting_evidence_count=0,
+            unique_counter_evidence_count=0,
+            trace=TRACE,
+            created_at=CLOCK,
+        )
+        proposals = {"p:eth": p_eth}
+        registry = {"ev:p:eth": _evidence_run("ev:p:eth", run_id=TRACE.run_id, trace=TRACE)}
+        package = _make_engine().decide(
+            snapshot=OpportunitySnapshot(opportunities=(), conflicts=()),
+            proposals=proposals,
+            evidence_registry=registry,
+            reports=[report],
+            now=CLOCK,
+        )
+        assert package.outcome is DecisionOutcome.NO_TRADE
+        return package, proposals, registry, [report]
+
+    @staticmethod
+    def _forge_consistent_selection(package, selected_id: str) -> DecisionPackage:
+        """Fully internally-consistent forgery: flip eligibility, clear
+        reasons, rewrite selection/reasons/alternatives (T15/T16 vector).
+        The ONLY contradiction is against the authoritative DebateReports."""
+        forged_candidates = tuple(
+            c.model_copy(
+                update={"eligibility": DecisionEligibility.ELIGIBLE, "rejection_reasons": ()}
+            )
+            if c.final_proposal_id == selected_id
+            else c
+            for c in package.candidate_set
+        )
+        return package.model_copy(
+            update={
+                "candidate_set": forged_candidates,
+                "selected_candidate_id": selected_id,
+                "outcome": DecisionOutcome.SELECTED,
+                "decision_reasons": (DecisionReason.HIGHEST_ADMISSIBLE_SCORE,),
+                "rejected_alternatives": tuple(
+                    a for a in package.rejected_alternatives if a.final_proposal_id != selected_id
+                ),
+            }
+        )
+
+    def test_verifier_rejects_forged_eligible_selected_candidate_when_debate_unresolved(
+        self,
+    ) -> None:
+        """T15 strong UNRESOLVED forgery (CERT-MA4-001-RETRY-2-001 vector)."""
+        package, proposals, registry, reports = self._unresolved_package()
+        forged = self._forge_consistent_selection(package, "p:l")
+        result = DecisionPackageVerifier().verify(
+            forged, proposals=proposals, evidence_registry=registry, reports=reports, now=CLOCK
+        )
+        assert not result.passed
+        assert any(
+            name == "authoritative_debate_blocker_rederivation" and status == "FAIL"
+            for name, status, _ in result.checks
+        )
+
+    def test_verifier_rejects_forged_eligible_selected_candidate_when_debate_insufficient_evidence(
+        self,
+    ) -> None:
+        """T16 strong INSUFFICIENT_EVIDENCE forgery."""
+        package, proposals, registry, reports = self._insufficient_package()
+        forged = self._forge_consistent_selection(package, "p:eth")
+        result = DecisionPackageVerifier().verify(
+            forged, proposals=proposals, evidence_registry=registry, reports=reports, now=CLOCK
+        )
+        assert not result.passed
+        assert any(
+            name == "authoritative_debate_blocker_rederivation" and status == "FAIL"
+            for name, status, _ in result.checks
+        )
+
+    def test_verifier_accepts_genuinely_resolved_debate_candidate(self) -> None:
+        """RESOLVED control: initial conflict -> revision -> REVISED terminal.
+        The verifier distinguishes historical challenge from standing blocker
+        and must not over-block, even with a conflicting snapshot present."""
+        p1 = _proposal("p1", confidence=0.9)
+        p2 = p1.model_copy(update={"proposal_id": "p2"})
+        report = _report_with_revisions_and_answered_challenge(
+            ("p1", "p2"), [_ForcedRev("p1", "p2")], answered_critique_id="critique:chg"
+        )
+        proposals = {"p1": p1, "p2": p2}
+        registry = {
+            "ev:p1": _evidence("ev:p1", "strategy-expert-momentum", claim="c"),
+            "ev:p2": _evidence("ev:p2", "strategy-expert-momentum", claim="c"),
+        }
+        from trading_bot.multi_agent.opportunity import ConflictCase, Opportunity
+
+        snapshot = OpportunitySnapshot(
+            opportunities=(
+                Opportunity(proposal=p2, evidence_refs=("ev:p2",), source_agent_id="s", source_agent_version="1"),
+            ),
+            conflicts=(
+                ConflictCase(
+                    conflict_id="conflict:1",
+                    asset="SOL",
+                    proposal_ids=("p1", "p2"),
+                    directions=("LONG", "SHORT"),
+                ),
+            ),
+        )
+        package = _make_engine().decide(
+            snapshot=snapshot,
+            proposals=proposals,
+            evidence_registry=registry,
+            reports=[report],
+            now=CLOCK,
+        )
+        assert package.selected_candidate_id == "p2"
+        result = DecisionPackageVerifier().verify(
+            package,
+            proposals=proposals,
+            evidence_registry=registry,
+            reports=[report],
+            snapshot=snapshot,
+            now=CLOCK,
+        )
+        assert result.passed
+        assert any(
+            name == "authoritative_debate_blocker_rederivation" and status == "PASS"
+            for name, status, _ in result.checks
+        )
+
+    def test_verifier_does_not_trust_package_eligibility_for_debate_blockers(
+        self,
+    ) -> None:
+        """The forbidden fallback pattern: a package claiming ELIGIBLE must
+        not bypass the authoritative blocker. Assert the check keyed honestly
+        (re-derivation) and that even a rejected-candidate-consistent
+        eligibility flip cannot override it (covered by T15; here we assert
+        the check itself never reads package claims to establish authority)."""
+        package, proposals, registry, reports = self._unresolved_package()
+        forged = self._forge_consistent_selection(package, "p:l")
+        # The forgery is internally consistent: every package-side field
+        # agrees with SELECTED/p:l+ELIGIBLE. Only external authority disagrees.
+        result = DecisionPackageVerifier().verify(
+            forged, proposals=proposals, evidence_registry=registry, reports=reports, now=CLOCK
+        )
+        assert result.verdict is DecisionVerificationStatus.REJECTED
+        # And the honest NO_TRADE package verifies as a valid non-selection.
+        honest = DecisionPackageVerifier().verify(
+            package, proposals=proposals, evidence_registry=registry, reports=reports, now=CLOCK
+        )
+        assert honest.passed
+
+    def test_verifier_rejects_forged_selection_with_board_conflict_without_debate(
+        self,
+    ) -> None:
+        """Board-conflict-without-debate blocker re-derived from the snapshot:
+        deleting the package-side conflict marker cannot resurrect a selection."""
+        p_a = _proposal("p:a", direction=TradeDirection.LONG, asset="SOL", confidence=0.95)
+        p_b = _proposal("p:b", direction=TradeDirection.SHORT, asset="SOL", strategy="mean_reversion", confidence=0.90)
+        from trading_bot.multi_agent.opportunity import ConflictCase
+
+        snapshot = OpportunitySnapshot(
+            opportunities=(),
+            conflicts=(
+                ConflictCase(
+                    conflict_id="conflict:2",
+                    asset="SOL",
+                    proposal_ids=("p:a", "p:b"),
+                    directions=("LONG", "SHORT"),
+                ),
+            ),
+        )
+        proposals = {"p:a": p_a, "p:b": p_b}
+        registry = {
+            "ev:p:a": _evidence_run("ev:p:a", run_id=TRACE.run_id, trace=TRACE),
+            "ev:p:b": _evidence_run("ev:p:b", run_id=TRACE.run_id, trace=TRACE),
+        }
+        package = _make_engine().decide(
+            snapshot=snapshot,
+            proposals=proposals,
+            evidence_registry=registry,
+            reports=(),
+            now=CLOCK,
+        )
+        assert package.outcome is DecisionOutcome.NO_TRADE
+        forged = self._forge_consistent_selection(package, "p:a")
+        result = DecisionPackageVerifier().verify(
+            forged,
+            proposals=proposals,
+            evidence_registry=registry,
+            reports=(),
+            snapshot=snapshot,
+            now=CLOCK,
+        )
+        assert not result.passed
+        assert any(
+            name == "authoritative_debate_blocker_rederivation" and status == "FAIL"
+            for name, status, _ in result.checks
+        )
+
+    def test_debate_blocker_replay_deterministic(self) -> None:
+        """valid x3 VERIFIED identical; T15 x3 and T16 x3 REJECTED identical."""
+        valid_pkg, v_proposals, v_registry, v_reports = self._unresolved_package()
+        verifier = DecisionPackageVerifier()
+        honest_results = [
+            json.dumps(
+                verifier.verify(
+                    valid_pkg, proposals=v_proposals, evidence_registry=v_registry, reports=v_reports, now=CLOCK
+                ).to_dict(),
+                sort_keys=True,
+            )
+            for _ in range(3)
+        ]
+        assert len(set(honest_results)) == 1 and '"VERIFIED"' in honest_results[0]
+
+        t15 = self._forge_consistent_selection(valid_pkg, "p:l")
+        t15_results = [
+            json.dumps(
+                verifier.verify(
+                    t15, proposals=v_proposals, evidence_registry=v_registry, reports=v_reports, now=CLOCK
+                ).to_dict(),
+                sort_keys=True,
+            )
+            for _ in range(3)
+        ]
+        assert len(set(t15_results)) == 1 and '"REJECTED"' in t15_results[0]
+
+        insufficient_pkg, i_proposals, i_registry, i_reports = self._insufficient_package()
+        t16 = self._forge_consistent_selection(insufficient_pkg, "p:eth")
+        t16_results = [
+            json.dumps(
+                verifier.verify(
+                    t16, proposals=i_proposals, evidence_registry=i_registry, reports=i_reports, now=CLOCK
+                ).to_dict(),
+                sort_keys=True,
+            )
+            for _ in range(3)
+        ]
+        assert len(set(t16_results)) == 1 and '"REJECTED"' in t16_results[0]
 
 
 # ---------------------------------------------------------------------------

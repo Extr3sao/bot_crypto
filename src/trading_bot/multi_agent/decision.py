@@ -656,7 +656,7 @@ class DecisionPackageVerifier:
     are never trusted as their own source of truth (CP-MA-004.2).
     """
 
-    version = "decision-package-verifier-v2"
+    version = "decision-package-verifier-v3"
 
     def __init__(self) -> None:
         self._resolver = TerminalProposalResolver()
@@ -669,6 +669,7 @@ class DecisionPackageVerifier:
         evidence_registry: Mapping[str, Any],
         now: datetime,
         reports: Sequence[DebateReport] = (),
+        snapshot: OpportunitySnapshot | None = None,
     ) -> DecisionVerification:
         checks: list[tuple[str, str, str]] = []
 
@@ -691,17 +692,26 @@ class DecisionPackageVerifier:
         selected_candidate = next(
             (c for c in package.candidate_set if c.final_proposal_id == selected), None
         )
+        # NO_TRADE is first-class: no selection satisfies this trivially.
+        selected_ok = selected is None or (
+            selected_candidate is not None
+            and selected_candidate.eligibility is DecisionEligibility.ELIGIBLE
+        )
         record(
             "selected_exists_and_eligible",
-            selected_candidate is not None
-            and selected_candidate.eligibility is DecisionEligibility.ELIGIBLE,
+            selected_ok,
             f"selected={selected}",
         )
         if selected_candidate is not None:
             proposal = proposals.get(selected_candidate.final_proposal_id)
-            temporal_ok = proposal is not None and (
-                (proposal.expires_at is None or now < proposal.expires_at)
+            # Temporal eligibility is re-derived from the authoritative
+            # proposal + decision time: expired, future-dated AND the committed
+            # 24h staleness window (never trusted from package claims).
+            temporal_ok = (
+                proposal is not None
+                and (proposal.expires_at is None or now < proposal.expires_at)
                 and proposal.data_time <= now
+                and (now - proposal.data_time) <= PROPOSAL_STALE_AFTER
             )
             record(
                 "no_stale_or_expired_selection",
@@ -735,10 +745,52 @@ class DecisionPackageVerifier:
         )
         record("trace_complete", trace_ok, f"run_id={package.run_id}")
 
-        unresolved_selected = selected_candidate is not None and (
-            selected_candidate.eligibility is DecisionEligibility.INELIGIBLE_UNRESOLVED_CONFLICT
-        )
-        record("no_unresolved_blocking_conflict_selected", not unresolved_selected)
+        # -- CP-MA-004.3: authoritative debate-derived blockers --------------
+        # Never trust package-side eligibility / rejection_reasons / reasons /
+        # outcome claims for blocking debate state: re-derive from the
+        # authoritative DebateReports (lineage-aware, mirroring the engine's
+        # committed eligibility gates) and, when a snapshot is supplied, from
+        # authoritative board conflicts. The package is the object under
+        # verification - never the authority for its own blockers.
+        blockers: list[str] = []
+        blocker_detail = "selected candidate missing"
+        if selected_candidate is not None:
+            root = selected_candidate.proposal_id
+            resolution: LineageResolution | None = None
+            try:
+                resolution = self._resolver.resolve(reports, proposals)
+            except DecisionError:
+                blockers.append("LINEAGE_ERROR")
+            report = next(
+                (item for item in reports if root in item.proposal_ids),
+                None,
+            )
+            if report is not None and report.run_id == package.run_id:
+                if report.outcome is DebateOutcome.UNRESOLVED:
+                    blockers.append("UNRESOLVED")
+                if report.outcome is DebateOutcome.INSUFFICIENT_EVIDENCE:
+                    blockers.append("INSUFFICIENT_EVIDENCE")
+            if snapshot is not None and resolution is not None:
+                conflicted_ids = {
+                    pid
+                    for conflict in snapshot.conflicts
+                    for pid in conflict.proposal_ids
+                }
+                lineage_members = (
+                    tuple(
+                        pid
+                        for pid, lineage in resolution.lineage_of.items()
+                        if lineage == root
+                    )
+                    or (root,)
+                )
+                if any(pid in conflicted_ids for pid in lineage_members) and report is None:
+                    blockers.append("BOARD_CONFLICT_WITHOUT_DEBATE")
+            blocker_detail = (
+                f"root={root} blockers={sorted(blockers)} "
+                f"package_eligibility={selected_candidate.eligibility.value}"
+            )
+        record("authoritative_debate_blocker_rederivation", not blockers, blocker_detail)
 
         # Score decomposition + anti-double-counting.
         score_ok = True
@@ -842,8 +894,10 @@ class DecisionPackageVerifier:
         # is by evidence identity SET — input ordering carries no semantics.
         # Policy: SELECTED_AUTHORITY_CRITICAL (exact binding), rejected
         # candidates REJECTED_AUDIT_ONLY (registered subset, no exact set).
-        binding_ok = False
-        binding_detail = "selected candidate missing"
+        # NO_TRADE packages legitimately carry no selection: binding is
+        # trivially satisfied, never a failure.
+        binding_ok = True
+        binding_detail = "no selection (NO_TRADE)"
         if selected_candidate is not None:
             final = proposals.get(selected_candidate.final_proposal_id)
             if final is None:
@@ -868,6 +922,12 @@ class DecisionPackageVerifier:
                     and getattr(evidence_registry[ref], "trace", None) is not None
                     and evidence_registry[ref].trace.trace_id != final.trace_id
                 )
+                future_evidence = sorted(
+                    ref
+                    for ref in candidate_refs
+                    if ref in evidence_registry
+                    and getattr(evidence_registry[ref], "available_at", now) > now
+                )
                 binding_ok = (
                     bool(proposal_authority)
                     and bool(candidate_refs)
@@ -876,23 +936,25 @@ class DecisionPackageVerifier:
                     and not unknown
                     and not foreign
                     and not foreign_trace
+                    and not future_evidence
                 )
                 binding_detail = (
                     f"proposal={sorted(proposal_authority)} candidate={sorted(candidate_refs)} "
-                    f"unknown={unknown} foreign_run={foreign} foreign_trace={foreign_trace}"
+                    f"unknown={unknown} foreign_run={foreign} foreign_trace={foreign_trace} "
+                    f"future={future_evidence}"
                 )
         record("selected_evidence_binding", binding_ok, binding_detail)
 
-        # REJECTED_AUDIT_ONLY: every candidate-declared ref must at least
-        # resolve to registered, current-run evidence (no exact set equality).
+        # REJECTED_AUDIT_ONLY: every supporting ref a rejected candidate
+        # declares must resolve to registered, current-run evidence (no exact
+        # set equality). Counter-evidence refs are excluded: they are
+        # debate-derived informational refs that may legitimately live only in
+        # the DebateReport and never appear in the engine evidence registry.
         rejected_audit_bad: list[str] = []
         for candidate in package.candidate_set:
             if candidate.final_proposal_id == selected:
                 continue
-            for ref in (
-                *candidate.supporting_evidence_refs,
-                *candidate.counter_evidence_refs,
-            ):
+            for ref in candidate.supporting_evidence_refs:
                 evidence = evidence_registry.get(ref)
                 if evidence is None or getattr(evidence, "run_id", None) != package.run_id:
                     rejected_audit_bad.append(ref)
