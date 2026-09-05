@@ -1639,7 +1639,25 @@ class TestCrossRunIsolation:
             name == "run_authority_proposals" and status == "FAIL" for name, status, _ in result.checks
         )
 
-    # -- Deterministic replay after repair -----------------------------------
+    def test_verifier_rejects_reports_registry_foreign_run(self) -> None:
+        package, proposals, registry, reports = self._fresh_package()
+        unreferenced = _report_supported(("p:btc",)).model_copy(
+            update={"debate_id": "debate:other", "run_id": self.RUN_B}
+        )
+        result = DecisionPackageVerifier().verify(
+            package,
+            proposals=proposals,
+            evidence_registry=registry,
+            reports=[*reports, unreferenced],
+            now=CLOCK,
+        )
+        assert not result.passed
+        assert any(
+            name == "run_authority_reports_registry" and status == "FAIL"
+            for name, status, _ in result.checks
+        )
+
+    # -- Deterministic replay after repair (CP-MA-004.2 §21) -----------------
 
     def test_replay_after_repair_valid_and_contaminated(self) -> None:
         proposals, registry, reports = _three_candidates()
@@ -1670,6 +1688,307 @@ class TestCrossRunIsolation:
                 )
             rejections += 1
         assert rejections == 3
+
+    def test_replay_evidence_tamper_verification_deterministic(self) -> None:
+        """Strip and swap tampers reject identically across 3 runs each."""
+        package, proposals, registry, reports = TestSelectedEvidenceBinding()._decided()
+        selected_id = package.selected_candidate_id
+        verifier = DecisionPackageVerifier()
+
+        def _verify(pkg, reg):
+            return verifier.verify(pkg, proposals=proposals, evidence_registry=reg, reports=reports, now=CLOCK)
+
+        # Full strip x3 (CERT-MA4-001-RETRY-001 vector).
+        stripped = package.model_copy(
+            update={
+                "candidate_set": tuple(
+                    c.model_copy(update={"supporting_evidence_refs": ()})
+                    if c.final_proposal_id == selected_id
+                    else c
+                    for c in package.candidate_set
+                )
+            }
+        )
+        strip_results = [_verify(stripped, registry) for _ in range(3)]
+        assert all(not r.passed for r in strip_results)
+        assert len({json.dumps(r.to_dict(), sort_keys=True) for r in strip_results}) == 1
+
+        # Swap x3 (registered, current-run, trace-consistent but uncommitted).
+        extra = _evidence_run("ev:replay-swap", run_id=self.RUN_A, trace=TRACE)
+        swap_registry = {**registry, "ev:replay-swap": extra}
+        swapped = package.model_copy(
+            update={
+                "candidate_set": tuple(
+                    c.model_copy(
+                        update={
+                            "supporting_evidence_refs": (
+                                *c.supporting_evidence_refs[:-1],
+                                "ev:replay-swap",
+                            )
+                        }
+                    )
+                    if c.final_proposal_id == selected_id
+                    else c
+                    for c in package.candidate_set
+                )
+            }
+        )
+        swap_results = [_verify(swapped, swap_registry) for _ in range(3)]
+        assert all(not r.passed for r in swap_results)
+        assert len({json.dumps(r.to_dict(), sort_keys=True) for r in swap_results}) == 1
+
+        # Clean control still verifies identically x3.
+        clean_results = [_verify(package, registry) for _ in range(3)]
+        assert all(r.passed for r in clean_results)
+        assert len({json.dumps(r.to_dict(), sort_keys=True) for r in clean_results}) == 1
+
+
+# ---------------------------------------------------------------------------
+# CP-MA-004.2 - selected evidence authority binding (CERT-MA4-001-RETRY-001)
+#
+# Evidence authority originates from the canonical terminal TradeProposal;
+# the package's own lists are never trusted as their own source of truth.
+# Policy: SELECTED_AUTHORITY_CRITICAL (exact set binding), rejected
+# candidates REJECTED_AUDIT_ONLY (registered + current-run subset).
+# ---------------------------------------------------------------------------
+
+
+class TestSelectedEvidenceBinding:
+    RUN_A = TRACE.run_id
+    RUN_B = "run-b"
+
+    def _decided(self) -> tuple:
+        proposals, registry, reports = _three_candidates()
+        package = _make_engine().decide(
+            snapshot=OpportunitySnapshot(opportunities=(), conflicts=()),
+            proposals=proposals,
+            evidence_registry=registry,
+            reports=reports,
+            now=CLOCK,
+        )
+        return package, proposals, registry, reports
+
+    def _verify(self, package, proposals, registry, reports):
+        return DecisionPackageVerifier().verify(
+            package, proposals=proposals, evidence_registry=registry, reports=reports, now=CLOCK
+        )
+
+    def _selected(self, package):
+        return next(
+            c for c in package.candidate_set if c.final_proposal_id == package.selected_candidate_id
+        )
+
+    def test_selected_candidate_exact_evidence_verified(self) -> None:
+        """Control: untouched package binds exactly to the terminal proposal."""
+        package, proposals, registry, reports = self._decided()
+        result = self._verify(package, proposals, registry, reports)
+        assert result.passed
+        assert any(
+            name == "selected_evidence_binding" and status == "PASS"
+            for name, status, _ in result.checks
+        )
+
+    def test_selected_candidate_empty_evidence_rejected(self) -> None:
+        """Full stripping - the exact CERT-MA4-001-RETRY-001 certification vector."""
+        package, proposals, registry, reports = self._decided()
+        stripped = tuple(
+            c.model_copy(update={"supporting_evidence_refs": ()})
+            if c.final_proposal_id == package.selected_candidate_id
+            else c
+            for c in package.candidate_set
+        )
+        tampered = package.model_copy(update={"candidate_set": stripped})
+        result = self._verify(tampered, proposals, registry, reports)
+        assert not result.passed
+        assert any(
+            name == "selected_evidence_binding" and status == "FAIL" for name, status, _ in result.checks
+        )
+
+    def test_selected_candidate_partial_evidence_rejected(self) -> None:
+        package, proposals, registry, reports = self._decided()
+        selected = self._selected(package)
+        assert len(selected.supporting_evidence_refs) >= 1
+        partial = tuple(
+            c.model_copy(
+                update={"supporting_evidence_refs": c.supporting_evidence_refs[:-1]}
+            )
+            if c.final_proposal_id == package.selected_candidate_id
+            else c
+            for c in package.candidate_set
+        )
+        tampered = package.model_copy(update={"candidate_set": partial})
+        result = self._verify(tampered, proposals, registry, reports)
+        assert not result.passed
+
+    def test_selected_candidate_swapped_evidence_rejected(self) -> None:
+        """Swapped ref is registered, current-run, trace-consistent - and still
+        rejected because it is not evidence committed by the terminal proposal."""
+        package, proposals, registry, reports = self._decided()
+        extra = _evidence_run(
+            "ev:valid-but-uncommitted", run_id=self.RUN_A, trace=TRACE
+        )
+        registry = {**registry, "ev:valid-but-uncommitted": extra}
+        swapped = tuple(
+            c.model_copy(
+                update={
+                    "supporting_evidence_refs": (
+                        *c.supporting_evidence_refs[:-1],
+                        "ev:valid-but-uncommitted",
+                    )
+                }
+            )
+            if c.final_proposal_id == package.selected_candidate_id
+            else c
+            for c in package.candidate_set
+        )
+        tampered = package.model_copy(update={"candidate_set": swapped})
+        result = self._verify(tampered, proposals, registry, reports)
+        assert not result.passed
+
+    def test_selected_candidate_added_evidence_rejected(self) -> None:
+        package, proposals, registry, reports = self._decided()
+        extra = _evidence_run("ev:added", run_id=self.RUN_A, trace=TRACE)
+        registry = {**registry, "ev:added": extra}
+        enriched = tuple(
+            c.model_copy(
+                update={
+                    "supporting_evidence_refs": (
+                        *c.supporting_evidence_refs,
+                        "ev:added",
+                    )
+                }
+            )
+            if c.final_proposal_id == package.selected_candidate_id
+            else c
+            for c in package.candidate_set
+        )
+        tampered = package.model_copy(update={"candidate_set": enriched})
+        result = self._verify(tampered, proposals, registry, reports)
+        assert not result.passed
+
+    def test_selected_candidate_duplicate_evidence_rejected(self) -> None:
+        package, proposals, registry, reports = self._decided()
+        selected = self._selected(package)
+        refs = selected.supporting_evidence_refs
+        assert len(refs) >= 1
+        duplicated = tuple(
+            c.model_copy(update={"supporting_evidence_refs": (*refs, refs[0])})
+            if c.final_proposal_id == package.selected_candidate_id
+            else c
+            for c in package.candidate_set
+        )
+        tampered = package.model_copy(update={"candidate_set": duplicated})
+        result = self._verify(tampered, proposals, registry, reports)
+        assert not result.passed
+
+    def test_selected_candidate_final_proposal_binding(self) -> None:
+        """T14: package pointing at a non-terminal ancestor must be rejected."""
+        p1 = _proposal("p1", confidence=0.9)
+        p2 = p1.model_copy(update={"proposal_id": "p2"})
+        report = _report_with_revisions_and_answered_challenge(
+            ("p1", "p2"), [_ForcedRev("p1", "p2")], answered_critique_id="critique:chg"
+        )
+        registry = {
+            "ev:p1": _evidence("ev:p1", "strategy-expert-momentum", claim="c"),
+            "ev:p2": _evidence("ev:p2", "strategy-expert-momentum", claim="c"),
+        }
+        package = _make_engine().decide(
+            snapshot=OpportunitySnapshot(opportunities=(), conflicts=()),
+            proposals={"p1": p1, "p2": p2},
+            evidence_registry=registry,
+            reports=[report],
+            now=CLOCK,
+        )
+        assert package.selected_candidate_id == "p2"  # honest engine binds terminal
+        ancestor = package.model_copy(
+            update={
+                "selected_candidate_id": "p1",
+                "candidate_set": tuple(
+                    c.model_copy(update={"final_proposal_id": "p1"})
+                    for c in package.candidate_set
+                ),
+            }
+        )
+        result = self._verify(ancestor, {"p1": p1, "p2": p2}, registry, [report])
+        assert not result.passed
+        assert any(
+            name == "final_proposal_binding" and status == "FAIL" for name, status, _ in result.checks
+        )
+
+    def test_rejected_candidate_audit_allows_incomplete_refs(self) -> None:
+        """REJECTED_AUDIT_ONLY: a rejected candidate keeps its refs; the audit
+        requires registered + current-run, not exact terminal binding."""
+        package, proposals, registry, reports = self._decided()
+        rejected_ids = {c.final_proposal_id for c in package.candidate_set} - {
+            package.selected_candidate_id
+        }
+        target = next(
+            c for c in package.candidate_set if c.final_proposal_id in rejected_ids
+        )
+        subset = target.supporting_evidence_refs[:-1] or ()
+        tampered = package.model_copy(
+            update={
+                "candidate_set": tuple(
+                    c.model_copy(update={"supporting_evidence_refs": subset})
+                    if c.final_proposal_id == target.final_proposal_id
+                    else c
+                    for c in package.candidate_set
+                )
+            }
+        )
+        result = self._verify(tampered, proposals, registry, reports)
+        assert result.passed  # audit-only policy: subset still verifies
+
+    def test_binding_is_order_independent(self) -> None:
+        """Canonical identity comparison: [E1, E2] == [E2, E1] when the
+        terminal proposal legitimately commits two evidence items."""
+        p = _proposal("p:multi", confidence=0.9).model_copy(
+            update={"evidence_refs": ("ev:multi-a", "ev:multi-b")}
+        )
+        registry = {
+            "ev:multi-a": _evidence_run("ev:multi-a", run_id=self.RUN_A, trace=TRACE),
+            "ev:multi-b": _evidence_run("ev:multi-b", run_id=self.RUN_A, trace=TRACE),
+        }
+        package = _make_engine().decide(
+            snapshot=OpportunitySnapshot(opportunities=(), conflicts=()),
+            proposals={"p:multi": p},
+            evidence_registry=registry,
+            reports=(),
+            now=CLOCK,
+        )
+        selected = self._selected(package)
+        assert len(selected.supporting_evidence_refs) == 2
+        # Clean control verifies with canonical set equality.
+        assert self._verify(
+            package, {"p:multi": p}, registry, ()
+        ).passed
+        # Input-order permutation of the same identities must also verify.
+        permuted = package.model_copy(
+            update={
+                "candidate_set": tuple(
+                    c.model_copy(
+                        update={
+                            "supporting_evidence_refs": tuple(
+                                reversed(c.supporting_evidence_refs)
+                            )
+                        }
+                    )
+                    for c in package.candidate_set
+                )
+            }
+        )
+        assert self._verify(
+            permuted, {"p:multi": p}, registry, ()
+        ).passed
+
+    def test_binding_consistency_with_scores(self) -> None:
+        """Score binding audit: meta component == meta_score and final ==
+        meta - penalty still hold alongside the evidence binding (no redesign)."""
+        package, proposals, registry, reports = self._decided()
+        selected = self._selected(package)
+        assert selected.score_breakdown.component("meta_ranker_score") == selected.meta_score
+        assert selected.decision_score == selected.score_breakdown.final_score
+        assert self._verify(package, proposals, registry, reports).passed
 
 
 # ---------------------------------------------------------------------------

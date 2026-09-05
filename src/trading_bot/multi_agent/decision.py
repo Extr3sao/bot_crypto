@@ -650,9 +650,16 @@ class DecisionPackageVerifier:
     This is NOT RiskManager: it checks internal decision consistency only.
     The builder of a package can never be its verifier (enforced via
     ``VerificationMetadata`` and by this class being stateless/separate).
+
+    Evidence authority for the selected candidate originates from the
+    canonical terminal ``TradeProposal`` — the package's own evidence lists
+    are never trusted as their own source of truth (CP-MA-004.2).
     """
 
-    version = "decision-package-verifier-v1"
+    version = "decision-package-verifier-v2"
+
+    def __init__(self) -> None:
+        self._resolver = TerminalProposalResolver()
 
     def verify(
         self,
@@ -819,6 +826,104 @@ class DecisionPackageVerifier:
             not foreign_reports,
             f"foreign={foreign_reports}",
         )
+        # Registry-side report authority: a report not referenced by any
+        # candidate (or fed under a forged debate_id) still must not belong
+        # to another run — closure covers the candidate-referenced subset.
+        record(
+            "run_authority_reports_registry",
+            all(report.run_id == package.run_id for report in reports),
+            f"checked={len(reports)}",
+        )
+
+        # -- CP-MA-004.2: selected evidence authority binding -----------------
+        # Evidence authority originates from the canonical terminal
+        # TradeProposal, NOT from the package's own lists (a stripped list
+        # would otherwise pass resolvability vacuously). Canonical comparison
+        # is by evidence identity SET — input ordering carries no semantics.
+        # Policy: SELECTED_AUTHORITY_CRITICAL (exact binding), rejected
+        # candidates REJECTED_AUDIT_ONLY (registered subset, no exact set).
+        binding_ok = False
+        binding_detail = "selected candidate missing"
+        if selected_candidate is not None:
+            final = proposals.get(selected_candidate.final_proposal_id)
+            if final is None:
+                binding_ok, binding_detail = False, "terminal proposal missing from registry"
+            else:
+                proposal_authority = frozenset(final.evidence_refs)
+                candidate_refs = frozenset(selected_candidate.supporting_evidence_refs)
+                duplicates = len(selected_candidate.supporting_evidence_refs) != len(
+                    candidate_refs
+                )
+                unknown = sorted(candidate_refs - set(evidence_registry))
+                foreign = sorted(
+                    ref
+                    for ref in candidate_refs
+                    if ref in evidence_registry
+                    and getattr(evidence_registry[ref], "run_id", None) != package.run_id
+                )
+                foreign_trace = sorted(
+                    ref
+                    for ref in candidate_refs
+                    if ref in evidence_registry
+                    and getattr(evidence_registry[ref], "trace", None) is not None
+                    and evidence_registry[ref].trace.trace_id != final.trace_id
+                )
+                binding_ok = (
+                    bool(proposal_authority)
+                    and bool(candidate_refs)
+                    and not duplicates
+                    and candidate_refs == proposal_authority
+                    and not unknown
+                    and not foreign
+                    and not foreign_trace
+                )
+                binding_detail = (
+                    f"proposal={sorted(proposal_authority)} candidate={sorted(candidate_refs)} "
+                    f"unknown={unknown} foreign_run={foreign} foreign_trace={foreign_trace}"
+                )
+        record("selected_evidence_binding", binding_ok, binding_detail)
+
+        # REJECTED_AUDIT_ONLY: every candidate-declared ref must at least
+        # resolve to registered, current-run evidence (no exact set equality).
+        rejected_audit_bad: list[str] = []
+        for candidate in package.candidate_set:
+            if candidate.final_proposal_id == selected:
+                continue
+            for ref in (
+                *candidate.supporting_evidence_refs,
+                *candidate.counter_evidence_refs,
+            ):
+                evidence = evidence_registry.get(ref)
+                if evidence is None or getattr(evidence, "run_id", None) != package.run_id:
+                    rejected_audit_bad.append(ref)
+        record(
+            "rejected_candidates_evidence_audit",
+            not rejected_audit_bad,
+            f"violations={sorted(set(rejected_audit_bad))}",
+        )
+
+        # -- CP-MA-004.2: final proposal identity binding ----------------------
+        # Independently re-resolve lineages: the package must point at the
+        # canonical terminal proposal, never at an ancestor carrying later
+        # evidence.
+        lineage_ok = False
+        lineage_detail = ""
+        try:
+            resolution = self._resolver.resolve(reports, proposals)
+            lineage_ok = True
+            for candidate in package.candidate_set:
+                root = candidate.proposal_id
+                expected = resolution.terminal_by_root.get(root, root)
+                if root in resolution.invalid_roots or candidate.final_proposal_id != expected:
+                    lineage_ok = False
+                    lineage_detail = f"candidate {root}: final={candidate.final_proposal_id} terminal={expected}"
+                    break
+            if lineage_ok:
+                lineage_detail = f"roots={len(resolution.terminal_by_root)} all terminal-bound"
+        except DecisionError as exc:
+            lineage_ok = False
+            lineage_detail = f"lineage resolution failed: {exc}"
+        record("final_proposal_binding", lineage_ok, lineage_detail)
 
         verdict = (
             DecisionVerificationStatus.VERIFIED

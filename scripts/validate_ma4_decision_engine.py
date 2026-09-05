@@ -23,6 +23,10 @@ CP-MA-004.1 additions (cross-run authority / ADR-MA-0006):
  14. foreign-run evidence with forged current trace_id rejected
  15. sibling cross-run contamination rejected (board proposals, assessments)
  16. verifier rejects cross-run tampered evidence/reports/proposals
+
+CP-MA-004.2 additions (selected evidence authority binding):
+ 17. package-side evidence strip/swap tamper rejected; exact terminal
+     proposal binding independently reconstructed (never package-trusted)
 """
 
 from __future__ import annotations
@@ -708,6 +712,107 @@ def check_verifier_cross_run_rejection() -> None:
     )
 
 
+def check_selected_evidence_authority_binding() -> None:
+    """CP-MA-004.2 (CERT-MA4-001-RETRY-001): the verifier must independently
+    reconstruct the selected candidate's evidence authority from the canonical
+    terminal TradeProposal — never trusting the package's own lists. Full
+    stripping (the certification defect vector), partial stripping and
+    swapping (with registered, current-run, trace-consistent evidence) must
+    all REJECT; the clean package must still VERIFY."""
+    sol = _proposal("p:sol", confidence=0.91)
+    btc = _proposal("p:btc", asset="BTC", strategy="breakout", confidence=0.83)
+    report = _report(("p:sol",), outcome=DebateOutcome.SUPPORTED, critiques=(_support("p:sol"),))
+    package = _decide([sol, btc], reports=[report])
+    proposals = {p.proposal_id: p for p in (sol, btc)}
+    registry = _registry_for([sol, btc])
+    verifier = DecisionPackageVerifier()
+    selected_id = package.selected_candidate_id
+    assert selected_id is not None
+
+    def verdict(pkg: DecisionPackage, reg: Mapping[str, AgentEvidence]) -> str:
+        return verifier.verify(
+            pkg, proposals=proposals, evidence_registry=reg, reports=[report], now=CLOCK
+        ).verdict.value
+
+    clean = verdict(package, registry)
+
+    def retarget(package: DecisionPackage, **update: object) -> DecisionPackage:
+        return package.model_copy(
+            update={
+                "candidate_set": tuple(
+                    c.model_copy(update=update)
+                    if c.final_proposal_id == selected_id
+                    else c
+                    for c in package.candidate_set
+                )
+            }
+        )
+
+    stripped = verdict(retarget(package, supporting_evidence_refs=()), registry)
+
+    # Partial stripping needs a terminal proposal committing TWO evidence
+    # items: strip one of two and the set no longer matches the authority.
+    multi = _proposal("p:multi", confidence=0.9).model_copy(
+        update={"evidence_refs": ("ev:multi-a", "ev:multi-b")}
+    )
+    multi_registry = {
+        **_registry_for([multi]),
+        "ev:multi-a": _evidence("ev:multi-a", "strategy-expert-momentum"),
+        "ev:multi-b": _evidence("ev:multi-b", "strategy-expert-momentum"),
+    }
+    multi_package = _decide([multi], reports=[])
+    multi_selected = multi_package.selected_candidate_id
+    assert multi_selected is not None
+    multi_partial = (
+        multi_package.model_copy(
+            update={
+                "candidate_set": tuple(
+                    c.model_copy(update={"supporting_evidence_refs": ("ev:multi-a",)})
+                    if c.final_proposal_id == multi_selected
+                    else c
+                    for c in multi_package.candidate_set
+                )
+            }
+        )
+    )
+    partial = verifier.verify(
+        multi_partial,
+        proposals={"p:multi": multi},
+        evidence_registry=multi_registry,
+        reports=[],
+        now=CLOCK,
+    ).verdict.value
+    multi_clean = verifier.verify(
+        multi_package,
+        proposals={"p:multi": multi},
+        evidence_registry=multi_registry,
+        reports=[],
+        now=CLOCK,
+    ).verdict.value
+
+    swap_registry = {**registry, "ev:uncommitted": _evidence("ev:uncommitted", "strategy-expert-breakout")}
+    swapped = verdict(
+        retarget(package, supporting_evidence_refs=("ev:uncommitted",)), swap_registry
+    )
+    added = verdict(
+        retarget(package, supporting_evidence_refs=("ev:p:sol", "ev:uncommitted")), swap_registry
+    )
+    ok = (
+        clean == "VERIFIED"
+        and multi_clean == "VERIFIED"
+        and stripped == "REJECTED"
+        and partial == "REJECTED"
+        and swapped == "REJECTED"
+        and added == "REJECTED"
+    )
+    check(
+        "selected_evidence_authority_binding",
+        ok,
+        f"clean={clean} multi_clean={multi_clean} stripped={stripped} "
+        f"partial={partial} swapped={swapped} added={added}",
+    )
+
+
 def main() -> int:
     check_best_admissible_selected()
     check_higher_raw_score_cannot_bypass()
@@ -724,6 +829,7 @@ def main() -> int:
     check_foreign_evidence_forged_trace_rejected()
     check_sibling_cross_run_contamination()
     check_verifier_cross_run_rejection()
+    check_selected_evidence_authority_binding()
     check_execution_capability_zero()
     check_dynamic_boundary()
 
