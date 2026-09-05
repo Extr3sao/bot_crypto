@@ -48,7 +48,7 @@ uv run python scripts/validate_demo_paper_01.py --report-dir reports/demo-paper-
 ## Stop cleanly
 
 - Without `--dashboard`, the bounded fixture command exits on its own.
-- With `--dashboard`, press `Enter` in the terminal running the command.
+- With `--dashboard`, press `Ctrl+C` in the terminal running the command; the dashboard opens automatically in the browser and auto-refreshes every 3s.
 - For a foreground process interrupted during a longer public-data run, use `Ctrl+C`; no live broker is connected.
 
 `DEMO-PAPER-01` is a functional paper demonstration, not a live-trading release or profitability validation.

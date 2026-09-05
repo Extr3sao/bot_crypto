@@ -12,6 +12,8 @@ import argparse
 import dataclasses
 import json
 import threading
+import time
+import webbrowser
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from hashlib import sha256
@@ -820,12 +822,47 @@ class DashboardServer:
                     self.send_response(200)
                     self.send_header("Content-Type", "application/json")
                 elif self.path == "/":
-                    body = (
-                        b"<html><body><h1>TRADING AGENTIC PORTABLE</h1>"
-                        b"<p>PAPER MODE - LIVE DISABLED</p>"
-                        b"<p>Read-only dashboard: <a href='/api/status'>status JSON</a></p>"
-                        b"</body></html>"
+                    s = state_ref.to_dict()
+                    decisions_rows = "".join(
+                        "<tr>"
+                        f"<td>{d.get('decision_id', '')}</td>"
+                        f"<td>{d.get('outcome', '')}</td>"
+                        f"<td>{d.get('verifier', '')}</td>"
+                        "</tr>"
+                        for d in s.get("decisions", [])
                     )
+                    body = f"""<html><head><meta http-equiv="refresh" content="3">
+<style>body{{font-family:Segoe UI,Arial;margin:2rem;background:#0f1216;color:#e6e6e6}}
+h1{{font-size:1.3rem}} .badge{{background:#c0392b;padding:.2rem .6rem;border-radius:4px}}
+table{{border-collapse:collapse}}td,th{{border:1px solid #333;padding:.3rem .6rem;font-size:.85rem}}
+.grid{{display:flex;gap:1rem;flex-wrap:wrap}}.card{{background:#171c22;padding:.8rem 1rem;border-radius:6px;min-width:8rem}}
+.card b{{display:block;font-size:1.2rem}}</style></head><body>
+<h1>TRADING AGENTIC PORTABLE <span class="badge">PAPER MODE &bull; LIVE DISABLED</span></h1>
+<div class="grid">
+<div class="card">Run<b>{s["run_id"]}</b></div>
+<div class="card">Ciclos<b>{s["cycles"]}</b></div>
+<div class="card">Propuestas<b>{s["trade_proposals"]}</b></div>
+<div class="card">Debates<b>{s["debates"]}</b></div>
+<div class="card">NO_TRADE<b>{s["no_trade"]}</b></div>
+<div class="card">Seleccionados<b>{s["decisions_selected"]}</b></div>
+<div class="card">Risk accept/reject<b>{s["risk_accepts"]}/{s["risk_rejects"]}</b></div>
+<div class="card">Trades paper<b>{s["paper_trades"]}</b></div>
+<div class="card">Cerrados<b>{s["closed_trades"]}</b></div>
+<div class="card">PnL realizado<b>{s["realized_pnl"]:.2f}</b></div>
+<div class="card">PnL no realizado<b>{s["unrealized_pnl"]:.2f}</b></div>
+</div>
+<h2>Embudo de decisiones</h2>
+<p>Scans: {s["market_scans"]} &rarr; evaluaciones: {s["asset_assessments"]}/{s["strategy_evaluations"]}
+&rarr; propuestas: {s["trade_proposals"]} &rarr; debates: {s["debates"]}
+&rarr; seleccionados: {s["decisions_selected"]} / NO_TRADE: {s["no_trade"]}
+&rarr; risk accept: {s["risk_accepts"]}, risk reject: {s["risk_rejects"]}
+&rarr; trades paper: {s["paper_trades"]}</p>
+<h2>Decisiones</h2>
+<table><tr><th>decision_id</th><th>resultado</th><th>verifier</th></tr>{decisions_rows}</table>
+<p>Read-only: este dashboard no tiene endpoints de orden, riesgo ni ejecuci&oacute;n.
+Detalle completo en <a href="/api/status" style="color:#7db6f9">/api/status</a>.
+Se actualiza solo cada 3s.</p>
+</body></html>""".encode()
                     self.send_response(200)
                     self.send_header("Content-Type", "text/html; charset=utf-8")
                 else:
@@ -892,13 +929,29 @@ def main(argv: list[str] | None = None) -> int:
     if args.dashboard:
         dashboard = create_dashboard_server(result.state)
         dashboard.start()
-    print(json.dumps(result.state.to_dict(), indent=2, default=str))
     if dashboard is not None:
-        print(f"Dashboard: {dashboard.url}")
+        # Keep the console readable: the full status JSON goes to a file.
+        status_path = Path(args.output_dir) / "DASHBOARD_STATUS.json"
+        status_path.parent.mkdir(parents=True, exist_ok=True)
+        status_path.write_text(
+            json.dumps(result.state.to_dict(), indent=2, default=str), encoding="utf-8"
+        )
+        print("=" * 60)
+        print("TRADING AGENTIC PORTABLE - PAPER MODE (LIVE DISABLED)")
+        print(f"Dashboard read-only disponible en:  {dashboard.url}")
+        print(f"Estado completo JSON: {status_path}")
+        print("=" * 60)
+        webbrowser.open(dashboard.url)
         try:
-            input("Press Enter to stop the paper demo...\n")
+            while True:
+                time.sleep(0.5)
+        except KeyboardInterrupt:
+            print("\nDeteniendo demo paper...")
         finally:
             dashboard.stop()
+        print("Demo detenido. Reportes en:", args.output_dir)
+    else:
+        print(json.dumps(result.state.to_dict(), indent=2, default=str))
     return 0
 
 
