@@ -1157,3 +1157,24 @@ que NO se requerirá per-ADR "next free" footnote nunca más.
 - **Politica de candidatos rechazados (documentada)**: SELECTED_AUTHORITY_CRITICAL para el seleccionado (binding exacto); REJECTED_AUDIT_ONLY para los rechazados (auditables como instantaneas: refs registradas y del run actual, sin igualdad exacta de conjunto). Decision deliberada para no encerrar al motor en representaciones derivadas de resumen; se documenta y queda cubierta por `rejected_candidates_evidence_audit`.
 - **Auditoria de score binding**: `meta_ranker_score == meta_score`, `decision_score == final_score` y descomposicion se mantienen verificados junto al binding; sin rediseno de scoring.
 - **Evidencia**: `tests/unit/multi_agent/test_decision.py` (71 tests; TestSelectedEvidenceBinding con strip/partial/swap/add/duplicate/order-independence/T14; tamper replay determinista strip+swap x3); `scripts/validate_ma4_decision_engine.py` 18/18 con `selected_evidence_authority_binding`; matriz T1-T14 en probes de certificacion.
+
+## ADR-MA-0008 - Authoritative eligibility / debate-blocker verification (MA-4, verifier v3)
+
+- **Estado**: Decidido y verificado en `CP-MA-004.3` (reparacion de CERT-MA4-001-RETRY-2-001, hallazgo de CERT-MA4-001-RETRY-2 sobre `91b5283`).
+- **Defecto observado**: el tamper T10 fuerte - forjar internamente un paquete consistente (eligibility=ELIGIBLE, rejection_reasons limpio, seleccion/reasons/alternatives reescritos) sobre un paquete honesto UNRESOLVED - verificaba: `no_unresolved_blocking_conflict_selected` confiaba en el campo de eligibility del paquete. Misma clase arquitectonica que los defectos previos: DO NOT TRUST AUTHORITY-CRITICAL CLAIMS FROM THE ARTIFACT BEING VERIFIED.
+- **Decision**: el verificador re-deriva ahora el estado bloqueante de debate desde los `DebateReport` autoritativos (lineage-aware, espejo de los gates de elegibilidad del motor) y, cuando recibe un `OpportunitySnapshot` opcional, desde los conflictos del board. `UNRESOLVED` e `INSUFFICIENT_EVIDENCE` autoritativos implican REJECT del candidato seleccionado sin importar claims del paquete (eligibility, rejection_reasons, decision_reasons, outcome, selected_candidate_id). Version: `decision-package-verifier-v3`.
+- **Inventario de claims autoritativos (documentado, previene trust-the-package)**:
+  - final_proposal_id -> TerminalProposalResolver (ALREADY_REDERIVED, CP-MA-004.2: final_proposal_binding)
+  - supporting_evidence_refs -> terminal TradeProposal (ALREADY_REDERIVED, CP-MA-004.2: selected_evidence_binding)
+  - run authority -> artefactos run-bound (ALREADY_REDERIVED, CP-MA-004.1: run_authority_*)
+  - trace authority -> TraceContext/artefactos (ALREADY_REDERIVED: binding + trace_complete)
+  - future-dated/expired/stale -> proposal autoritativa + decision_time (ALREADY_REDERIVED para future/expired; stale 24h y evidencia futura re-derivados NUEVOS en CP-MA-004.3)
+  - evidencia invalida/extranjera -> registro (ALREADY_REDERIVED; future evidence ahora re-derivado)
+  - evidencia vacia -> terminal proposal (ALREADY_REDERIVED: non-empty binding)
+  - bloqueante UNRESOLVED -> DebateReports (NEWLY_REQUIRED, CP-MA-004.3)
+  - bloqueante INSUFFICIENT_EVIDENCE -> DebateReports (NEWLY_REQUIRED, CP-MA-004.3)
+  - conflicto de board sin debate -> OpportunitySnapshot (NEWLY_REQUIRED, CP-MA-004.3, parametro opcional)
+  - descomposicion de score -> MetaRanker/componentes DEBATE (ALREADY_REDERIVED: score_decomposition_valid)
+  El verificador NO reimplementa el motor completo (separacion DecisionEngine construye / Verifier valida invariantes criticas).
+- **Correcciones latentes adicionales descubiertas y reparadas**: (a) `rejected_candidates_evidence_audit` auditaba counter_evidence_refs (refs informativas derivadas del debate que pueden vivir solo en el reporte) -> ahora solo supporting refs (REJECTED_AUDIT_ONLY fiel); (b) `selected_evidence_binding` y `selected_exists_and_eligible` rechazaban paquetes NO_TRADE honestos (sin seleccion) -> ahora trivially satisfied; NO_TRADE sigue siendo de primera clase.
+- **Evidencia**: `tests/unit/multi_agent/test_decision.py` (77 tests; TestAuthoritativeDebateBlockers con T15/T16/resolved-control/no-package-claim/board-conflict/replay x3), `scripts/validate_ma4_decision_engine.py` 19/19 (`authoritative_debate_blocker_rederivation`), probe D 28/28 (T10 fuerte REJECT).
