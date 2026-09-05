@@ -55,7 +55,7 @@ from trading_bot.multi_agent.decision import (
     DECISION_VERIFIER_ID,
     TerminalProposalResolver,
 )
-from trading_bot.multi_agent.opportunity import MetaRanker
+from trading_bot.multi_agent.opportunity import MetaRanker, Opportunity
 from trading_bot.multi_agent.specialists import AssetAssessment
 
 SCHEMA = "ma-3-v1"
@@ -1292,16 +1292,13 @@ class TestDecisionVerifier:
         )
 
     def test_valid_package_verifies(self) -> None:
-        proposals, _, _ = _three_candidates()
+        proposals, registry, reports = _three_candidates()
         package = self._verified_package()
         result = DecisionPackageVerifier().verify(
             package,
             proposals=proposals,
-            evidence_registry={
-                ref: object()
-                for candidate in package.candidate_set
-                for ref in candidate.supporting_evidence_refs
-            },
+            evidence_registry=registry,
+            reports=reports,
             now=CLOCK + timedelta(minutes=1),
         )
         assert result.passed
@@ -1334,13 +1331,345 @@ class TestDecisionVerifier:
     def test_verifier_rejects_expired_selection(self) -> None:
         package = self._verified_package()
         late = CLOCK + timedelta(hours=2)
+        _, registry, reports = _three_candidates()
         result = DecisionPackageVerifier().verify(
             package,
             proposals={c.final_proposal_id: _proposal(c.final_proposal_id) for c in package.candidate_set},
-            evidence_registry={ref: object() for c in package.candidate_set for ref in c.supporting_evidence_refs},
+            evidence_registry=registry,
+            reports=reports,
             now=late,
         )
         assert not result.passed
+
+
+# ---------------------------------------------------------------------------
+# CP-MA-004.1 — cross-run isolation (RUN AUTHORITY / ADR-MA-0006)
+#
+# Run authority is first-class: trace_id is scoped inside run_id and a
+# matching trace never overrides a run mismatch. Matrix A-H plus sibling
+# artifacts and verifier cross-run rejection.
+# ---------------------------------------------------------------------------
+
+
+def _trace_for(run_id: str, trace_id: str | None = None) -> TraceContext:
+    return TraceContext(
+        run_id=run_id,
+        trace_id=trace_id or f"{run_id}-trace",
+        correlation_id="corr",
+        causation_id="cause",
+    )
+
+
+def _evidence_run(
+    evidence_id: str,
+    *,
+    run_id: str,
+    trace: TraceContext,
+    producer: str = "strategy-expert-momentum",
+) -> AgentEvidence:
+    return AgentEvidence(
+        schema_version=SCHEMA,
+        evidence_id=evidence_id,
+        run_id=run_id,
+        producer_agent_id=producer,
+        evidence_type="strategy_signal",
+        source_ref=f"ctx:{evidence_id}",
+        claim_refs=("claim",),
+        observed_at=CLOCK,
+        available_at=CLOCK,
+        content_hash="a" * 64,
+        metadata=(),
+        trace=trace,
+    )
+
+
+def _proposal_run(
+    proposal_id: str,
+    *,
+    run_id: str,
+    trace: TraceContext,
+    confidence: float = 0.9,
+) -> TradeProposal:
+    return TradeProposal(
+        schema_version=SCHEMA,
+        proposal_id=proposal_id,
+        run_id=run_id,
+        trace_id=trace.trace_id,
+        asset="SOL",
+        direction=TradeDirection.LONG,
+        strategy="momentum",
+        timeframe="5m",
+        regime="TREND_UP",
+        evidence_refs=(f"ev:{proposal_id}",),
+        invalidation="structural stop",
+        confidence=confidence,
+        data_time=CLOCK,
+        created_at=CLOCK,
+        expires_at=CLOCK + timedelta(minutes=15),
+        trace=trace,
+    )
+
+
+class TestCrossRunIsolation:
+    RUN_A = TRACE.run_id
+    RUN_B = "run-b"
+
+    def _board(self, *proposals: TradeProposal) -> OpportunitySnapshot:
+        return OpportunitySnapshot(
+            opportunities=tuple(
+                Opportunity(
+                    proposal=p,
+                    evidence_refs=tuple(p.evidence_refs),
+                    source_agent_id="strategy-expert-momentum",
+                    source_agent_version="1.0.0",
+                )
+                for p in proposals
+            ),
+            conflicts=(),
+        )
+
+    def _current_engine(self) -> DecisionEngine:
+        return DecisionEngine(run_id=self.RUN_A)
+
+    # -- Matrix A-H ---------------------------------------------------------
+
+    def test_matrix_A_foreign_proposal_fail_closed(self) -> None:
+        p = _proposal_run("p:sol", run_id=self.RUN_B, trace=_trace_for(self.RUN_B))
+        with pytest.raises(DecisionError):
+            self._current_engine().decide(
+                snapshot=self._board(p),
+                proposals={p.proposal_id: p},
+                evidence_registry={
+                    "ev:p:sol": _evidence_run("ev:p:sol", run_id=self.RUN_B, trace=_trace_for(self.RUN_B))
+                },
+                now=CLOCK,
+            )
+
+    def test_matrix_B_foreign_debate_report_fail_closed(self) -> None:
+        """DEF-MA4-001 regression: foreign report must not flip the decision."""
+        p = _proposal_run("p:sol", run_id=self.RUN_A, trace=TRACE)
+        foreign = _report_supported(("p:sol",)).model_copy(update={"run_id": self.RUN_B})
+        with pytest.raises(DecisionError, match="debate report run does not match engine run"):
+            self._current_engine().decide(
+                snapshot=self._board(p),
+                proposals={p.proposal_id: p},
+                evidence_registry={"ev:p:sol": _evidence_run("ev:p:sol", run_id=self.RUN_A, trace=TRACE)},
+                reports=[foreign],
+                now=CLOCK,
+            )
+
+    def test_matrix_C_foreign_evidence_ineligible(self) -> None:
+        p = _proposal_run("p:sol", run_id=self.RUN_A, trace=TRACE)
+        package = self._current_engine().decide(
+            snapshot=self._board(),
+            proposals={p.proposal_id: p},
+            evidence_registry={
+                "ev:p:sol": _evidence_run("ev:p:sol", run_id=self.RUN_B, trace=_trace_for(self.RUN_B))
+            },
+            now=CLOCK,
+        )
+        cand = next(c for c in package.candidate_set if c.final_proposal_id == "p:sol")
+        assert cand.eligibility is DecisionEligibility.INELIGIBLE_INVALID_EVIDENCE
+        assert package.outcome is DecisionOutcome.NO_TRADE
+
+    def test_matrix_D_forged_trace_foreign_evidence_rejected(self) -> None:
+        """DEF-MA4-002 regression: matching trace_id never grants run authority."""
+        p = _proposal_run("p:sol", run_id=self.RUN_A, trace=TRACE)
+        forged = _evidence_run("ev:p:sol", run_id=self.RUN_B, trace=_trace_for(self.RUN_B)).model_copy(
+            update={"trace": TRACE}
+        )
+        package = self._current_engine().decide(
+            snapshot=self._board(),
+            proposals={p.proposal_id: p},
+            evidence_registry={"ev:p:sol": forged},
+            now=CLOCK,
+        )
+        cand = next(c for c in package.candidate_set if c.final_proposal_id == "p:sol")
+        assert cand.eligibility is DecisionEligibility.INELIGIBLE_INVALID_EVIDENCE
+        assert package.outcome is DecisionOutcome.NO_TRADE
+
+    def test_matrix_E_current_run_foreign_trace_rejected(self) -> None:
+        p = _proposal_run("p:sol", run_id=self.RUN_A, trace=TRACE)
+        evidence = _evidence_run(
+            "ev:p:sol", run_id=self.RUN_A, trace=_trace_for(self.RUN_A, "other-trace")
+        )
+        package = self._current_engine().decide(
+            snapshot=self._board(),
+            proposals={p.proposal_id: p},
+            evidence_registry={"ev:p:sol": evidence},
+            now=CLOCK,
+        )
+        cand = next(c for c in package.candidate_set if c.final_proposal_id == "p:sol")
+        assert cand.eligibility is DecisionEligibility.INELIGIBLE_INVALID_EVIDENCE
+
+    def test_matrix_F_foreign_revision_fail_closed(self) -> None:
+        """Revisions are scoped inside their report: foreign report => fail closed."""
+        p1 = _proposal_run("p1", run_id=self.RUN_A, trace=TRACE)
+        p2 = p1.model_copy(update={"proposal_id": "p2"})
+        report = _report_with_revisions(["p1", "p2"], [_ForcedRev("p1", "p2")]).model_copy(
+            update={"run_id": self.RUN_B}
+        )
+        with pytest.raises(DecisionError, match="debate report run does not match engine run"):
+            self._current_engine().decide(
+                snapshot=self._board(p1),
+                proposals={"p1": p1, "p2": p2},
+                evidence_registry={"ev:p1": _evidence_run("ev:p1", run_id=self.RUN_A, trace=TRACE)},
+                reports=[report],
+                now=CLOCK,
+            )
+
+    def test_matrix_G_mixed_evidence_set_isolates_contamination(self) -> None:
+        good = _proposal_run("p:good", run_id=self.RUN_A, trace=TRACE, confidence=0.9)
+        bad = _proposal_run("p:bad", run_id=self.RUN_A, trace=TRACE, confidence=0.95)
+        registry = {
+            "ev:p:good": _evidence_run("ev:p:good", run_id=self.RUN_A, trace=TRACE),
+            "ev:p:bad": _evidence_run("ev:p:bad", run_id=self.RUN_B, trace=_trace_for(self.RUN_B)),
+        }
+        package = self._current_engine().decide(
+            snapshot=self._board(),
+            proposals={"p:good": good, "p:bad": bad},
+            evidence_registry=registry,
+            now=CLOCK,
+        )
+        by_id = {c.final_proposal_id: c for c in package.candidate_set}
+        assert by_id["p:bad"].eligibility is DecisionEligibility.INELIGIBLE_INVALID_EVIDENCE
+        assert by_id["p:good"].eligibility is DecisionEligibility.ELIGIBLE
+        assert package.outcome is DecisionOutcome.SELECTED
+        assert package.selected_candidate_id == "p:good"
+
+    def test_matrix_H_all_current_control_selects_and_verifies(self) -> None:
+        proposals, registry, reports = _three_candidates()
+        package = _make_engine().decide(
+            snapshot=OpportunitySnapshot(opportunities=(), conflicts=()),
+            proposals=proposals,
+            evidence_registry=registry,
+            reports=reports,
+            now=CLOCK,
+        )
+        assert package.outcome is DecisionOutcome.SELECTED
+        result = DecisionPackageVerifier().verify(
+            package,
+            proposals=proposals,
+            evidence_registry=registry,
+            reports=reports,
+            now=CLOCK + timedelta(minutes=1),
+        )
+        assert result.passed
+
+    # -- Sibling artifacts ---------------------------------------------------
+
+    def test_foreign_snapshot_proposal_fail_closed(self) -> None:
+        p_ok = _proposal_run("p:ok", run_id=self.RUN_A, trace=TRACE)
+        p_foreign = _proposal_run("p:foreign", run_id=self.RUN_B, trace=_trace_for(self.RUN_B))
+        with pytest.raises(DecisionError, match="board proposal run does not match engine run"):
+            self._current_engine().decide(
+                snapshot=self._board(p_foreign),
+                proposals={"p:ok": p_ok},
+                evidence_registry={"ev:p:ok": _evidence_run("ev:p:ok", run_id=self.RUN_A, trace=TRACE)},
+                now=CLOCK,
+            )
+
+    def test_foreign_assessment_fail_closed(self) -> None:
+        import dataclasses
+
+        p = _proposal_run("p:sol", run_id=self.RUN_A, trace=TRACE)
+        foreign = dataclasses.replace(_assessment("SOL"), trace=_trace_for(self.RUN_B))
+        with pytest.raises(DecisionError, match="assessment run does not match engine run"):
+            self._current_engine().decide(
+                snapshot=self._board(p),
+                proposals={p.proposal_id: p},
+                evidence_registry={"ev:p:sol": _evidence_run("ev:p:sol", run_id=self.RUN_A, trace=TRACE)},
+                assessments={"SOL": foreign},
+                now=CLOCK,
+            )
+
+    # -- Verifier cross-run authority ---------------------------------------
+
+    def _fresh_package(self) -> tuple:
+        proposals, registry, reports = _three_candidates()
+        package = _make_engine().decide(
+            snapshot=OpportunitySnapshot(opportunities=(), conflicts=()),
+            proposals=proposals,
+            evidence_registry=registry,
+            reports=reports,
+            now=CLOCK,
+        )
+        return package, proposals, registry, reports
+
+    def test_verifier_rejects_foreign_run_evidence(self) -> None:
+        package, proposals, registry, reports = self._fresh_package()
+        selected = next(
+            c for c in package.candidate_set if c.final_proposal_id == package.selected_candidate_id
+        )
+        ref = selected.supporting_evidence_refs[0]
+        poisoned = dict(registry)
+        poisoned[ref] = registry[ref].model_copy(update={"run_id": self.RUN_B})
+        result = DecisionPackageVerifier().verify(
+            package, proposals=proposals, evidence_registry=poisoned, reports=reports, now=CLOCK
+        )
+        assert not result.passed
+        assert any(
+            name == "run_authority_evidence" and status == "FAIL" for name, status, _ in result.checks
+        )
+
+    def test_verifier_rejects_foreign_run_report(self) -> None:
+        package, proposals, registry, reports = self._fresh_package()
+        poisoned = [
+            r.model_copy(update={"run_id": self.RUN_B}) if i == 0 else r
+            for i, r in enumerate(reports)
+        ]
+        result = DecisionPackageVerifier().verify(
+            package, proposals=proposals, evidence_registry=registry, reports=poisoned, now=CLOCK
+        )
+        assert not result.passed
+        assert any(
+            name == "run_authority_debate_reports" and status == "FAIL"
+            for name, status, _ in result.checks
+        )
+
+    def test_verifier_rejects_foreign_run_proposal(self) -> None:
+        package, proposals, registry, reports = self._fresh_package()
+        poisoned = dict(proposals)
+        poisoned["p:sol"] = proposals["p:sol"].model_copy(update={"run_id": self.RUN_B})
+        result = DecisionPackageVerifier().verify(
+            package, proposals=poisoned, evidence_registry=registry, reports=reports, now=CLOCK
+        )
+        assert not result.passed
+        assert any(
+            name == "run_authority_proposals" and status == "FAIL" for name, status, _ in result.checks
+        )
+
+    # -- Deterministic replay after repair -----------------------------------
+
+    def test_replay_after_repair_valid_and_contaminated(self) -> None:
+        proposals, registry, reports = _three_candidates()
+        packages = [
+            _make_engine().decide(
+                snapshot=OpportunitySnapshot(opportunities=(), conflicts=()),
+                proposals=proposals,
+                evidence_registry=registry,
+                reports=reports,
+                now=CLOCK,
+            )
+            for _ in range(3)
+        ]
+        assert (
+            packages[0].model_dump_json() == packages[1].model_dump_json() == packages[2].model_dump_json()
+        )
+
+        foreign = reports[0].model_copy(update={"run_id": self.RUN_B})
+        rejections = 0
+        for _ in range(3):
+            with pytest.raises(DecisionError, match="debate report run does not match engine run"):
+                _make_engine().decide(
+                    snapshot=OpportunitySnapshot(opportunities=(), conflicts=()),
+                    proposals=proposals,
+                    evidence_registry=registry,
+                    reports=[foreign],
+                    now=CLOCK,
+                )
+            rejections += 1
+        assert rejections == 3
 
 
 # ---------------------------------------------------------------------------

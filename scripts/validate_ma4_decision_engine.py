@@ -17,6 +17,12 @@ Checks (minimum per CP-MA-004):
  10. decision replay deterministic (x3, canonical JSON)
  11. decision package independently verifies (builder != verifier)
  12. execution capability = 0 (structural + payload scan)
+
+CP-MA-004.1 additions (cross-run authority / ADR-MA-0006):
+ 13. foreign-run DebateReport rejected (and its revisions with it)
+ 14. foreign-run evidence with forged current trace_id rejected
+ 15. sibling cross-run contamination rejected (board proposals, assessments)
+ 16. verifier rejects cross-run tampered evidence/reports/proposals
 """
 
 from __future__ import annotations
@@ -24,6 +30,7 @@ from __future__ import annotations
 import ast
 import json
 from collections.abc import Mapping, Sequence
+from dataclasses import replace as dataclasses_replace
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from types import ModuleType
@@ -50,7 +57,11 @@ from trading_bot.multi_agent.contracts import (
     TradeDirection,
     TradeProposal,
 )
-from trading_bot.multi_agent.decision import DECISION_ENGINE_ID, DECISION_VERIFIER_ID
+from trading_bot.multi_agent.decision import (
+    DECISION_ENGINE_ID,
+    DECISION_VERIFIER_ID,
+    DecisionError,
+)
 from trading_bot.multi_agent.specialists import AssetAssessment
 
 SCHEMA = "ma-3-v1"
@@ -520,6 +531,183 @@ def check_dynamic_boundary() -> None:
     check("dynamic_execution_boundary", ok, detail)
 
 
+# ---------------------------------------------------------------------------
+# CP-MA-004.1 — cross-run authority (ADR-MA-0006)
+# ---------------------------------------------------------------------------
+
+FOREIGN_RUN = "foreign-run"
+
+
+def check_foreign_debate_report_rejected() -> None:
+    """DEF-MA4-001: a foreign-run DebateReport must fail closed (and its
+    revisions with it); the identical current-run report must still select."""
+    sol = _proposal("p:sol", confidence=0.91)
+    report = _report(("p:sol",), outcome=DebateOutcome.SUPPORTED, critiques=(_support("p:sol"),))
+    control = _decide([sol], reports=[report])
+    try:
+        _decide([sol], reports=[report.model_copy(update={"run_id": FOREIGN_RUN})])
+        ok, detail = False, "foreign-run report accepted"
+    except DecisionError as exc:
+        ok = True
+        detail = str(exc)
+    check(
+        "foreign_debate_report_rejected",
+        ok and control.outcome is DecisionOutcome.SELECTED,
+        detail,
+    )
+
+
+def check_foreign_evidence_forged_trace_rejected() -> None:
+    """DEF-MA4-002: run authority is first-class — a foreign-run evidence
+    artifact with a forged current-run trace_id must never become material."""
+    sol = _proposal("p:sol", confidence=0.91)
+    engine = DecisionEngine(run_id=TRACE.run_id)
+    registry = _registry_for([sol])
+
+    # Case B: foreign run + forged current trace (the original defect vector).
+    forged = registry["ev:p:sol"].model_copy(
+        update={"run_id": FOREIGN_RUN, "trace": TRACE}
+    )
+    package = engine.decide(
+        snapshot=OpportunitySnapshot(opportunities=(), conflicts=()),
+        proposals={"p:sol": sol},
+        evidence_registry={"ev:p:sol": forged},
+        now=CLOCK,
+    )
+    cand = next(c for c in package.candidate_set if c.final_proposal_id == "p:sol")
+    case_b = cand.eligibility is DecisionEligibility.INELIGIBLE_INVALID_EVIDENCE and (
+        package.outcome is DecisionOutcome.NO_TRADE
+    )
+
+    # Case C: foreign run + foreign trace (plain authority violation).
+    foreign = registry["ev:p:sol"].model_copy(
+        update={"run_id": FOREIGN_RUN, "trace": TRACE.model_copy(update={"run_id": FOREIGN_RUN})}
+    )
+    package_c = engine.decide(
+        snapshot=OpportunitySnapshot(opportunities=(), conflicts=()),
+        proposals={"p:sol": sol},
+        evidence_registry={"ev:p:sol": foreign},
+        now=CLOCK,
+    )
+    cand_c = next(c for c in package_c.candidate_set if c.final_proposal_id == "p:sol")
+    case_c = cand_c.eligibility is DecisionEligibility.INELIGIBLE_INVALID_EVIDENCE
+    check(
+        "foreign_evidence_forged_trace_rejected",
+        case_b and case_c,
+        f"forged={cand.eligibility.value} plain={cand_c.eligibility.value}",
+    )
+
+
+def check_sibling_cross_run_contamination() -> None:
+    """Sibling artifacts: board-path proposals and AssetAssessments carry run
+    authority too — both must fail closed on a foreign run."""
+    from trading_bot.multi_agent.opportunity import Opportunity
+
+    sol = _proposal("p:sol", confidence=0.91)
+    engine = DecisionEngine(run_id=TRACE.run_id)
+    registry = _registry_for([sol])
+
+    ok = True
+    detail_parts: list[str] = []
+    # Sibling 1: foreign-run proposal via the OpportunityBoard path.
+    try:
+        engine.decide(
+            snapshot=OpportunitySnapshot(
+                opportunities=(
+                    Opportunity(
+                        proposal=sol.model_copy(update={"run_id": FOREIGN_RUN}),
+                        evidence_refs=("ev:p:sol",),
+                        source_agent_id="s",
+                        source_agent_version="1",
+                    ),
+                ),
+                conflicts=(),
+            ),
+            proposals={"p:sol": sol},
+            evidence_registry=registry,
+            now=CLOCK,
+        )
+        ok = False
+        detail_parts.append("board proposal accepted")
+    except DecisionError as exc:
+        detail_parts.append(f"board: {exc}")
+
+    # Sibling 2: foreign-run AssetAssessment feeding MetaRanker.
+    assessment = AssetAssessment(
+        asset="SOL",
+        timestamp=1_768_046_400_000,
+        regime="TREND_UP",
+        trend_quality=0.9,
+        volatility_quality=0.8,
+        liquidity_quality=0.9,
+        relative_strength=0.85,
+        market_quality=0.8,
+        confidence=0.9,
+        evidence=(),
+        trace=TRACE,
+        agent_id="asset-expert-sol",
+        agent_version="1.0.0",
+    )
+    try:
+        engine.decide(
+            snapshot=OpportunitySnapshot(opportunities=(), conflicts=()),
+            proposals={"p:sol": sol},
+            evidence_registry=registry,
+            assessments={"SOL": dataclasses_replace(assessment, trace=TRACE.model_copy(update={"run_id": FOREIGN_RUN}))},
+            now=CLOCK,
+        )
+        ok = False
+        detail_parts.append("assessment accepted")
+    except DecisionError as exc:
+        detail_parts.append(f"assessment: {exc}")
+    check("sibling_cross_run_contamination_rejected", ok, " | ".join(detail_parts))
+
+
+def check_verifier_cross_run_rejection() -> None:
+    """Verifier independence under cross-run tampering: poisoned evidence,
+    reports and proposals must each be REJECTED; the clean package verifies."""
+    sol = _proposal("p:sol", confidence=0.91)
+    btc = _proposal("p:btc", asset="BTC", strategy="breakout", confidence=0.83)
+    report = _report(("p:sol",), outcome=DebateOutcome.SUPPORTED, critiques=(_support("p:sol"),))
+    package = _decide([sol, btc], reports=[report])
+    proposals = {p.proposal_id: p for p in (sol, btc)}
+    registry = _registry_for([sol, btc])
+    now = CLOCK + timedelta(minutes=1)
+
+    control = DecisionPackageVerifier().verify(
+        package, proposals=proposals, evidence_registry=registry, reports=[report], now=now
+    )
+
+    poisoned_registry = dict(registry)
+    poisoned_registry["ev:p:sol"] = registry["ev:p:sol"].model_copy(update={"run_id": FOREIGN_RUN})
+    via_evidence = DecisionPackageVerifier().verify(
+        package, proposals=proposals, evidence_registry=poisoned_registry, reports=[report], now=now
+    )
+
+    via_report = DecisionPackageVerifier().verify(
+        package,
+        proposals=proposals,
+        evidence_registry=registry,
+        reports=[report.model_copy(update={"run_id": FOREIGN_RUN})],
+        now=now,
+    )
+
+    poisoned_proposals = dict(proposals)
+    poisoned_proposals["p:sol"] = sol.model_copy(update={"run_id": FOREIGN_RUN})
+    via_proposal = DecisionPackageVerifier().verify(
+        package, proposals=poisoned_proposals, evidence_registry=registry, reports=[report], now=now
+    )
+    check(
+        "verifier_cross_run_rejection",
+        control.passed
+        and not via_evidence.passed
+        and not via_report.passed
+        and not via_proposal.passed,
+        f"control={control.verdict.value} evidence={via_evidence.verdict.value} "
+        f"report={via_report.verdict.value} proposal={via_proposal.verdict.value}",
+    )
+
+
 def main() -> int:
     check_best_admissible_selected()
     check_higher_raw_score_cannot_bypass()
@@ -532,6 +720,10 @@ def main() -> int:
     check_order_independence()
     check_replay_determinism()
     check_independent_verification()
+    check_foreign_debate_report_rejected()
+    check_foreign_evidence_forged_trace_rejected()
+    check_sibling_cross_run_contamination()
+    check_verifier_cross_run_rejection()
     check_execution_capability_zero()
     check_dynamic_boundary()
 

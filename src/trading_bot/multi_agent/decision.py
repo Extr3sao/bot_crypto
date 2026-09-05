@@ -268,8 +268,35 @@ class DecisionEngine:
     ) -> DecisionPackage:
         if now.tzinfo is None or now.utcoffset() is None:
             raise DecisionError("decision time must be timezone-aware")
+        # -- Run authority (ADR-MA-0006) -------------------------------------
+        # Every consumed artifact must belong to this run. ``trace_id`` is
+        # scoped *inside* ``run_id``: a matching trace never overrides a run
+        # mismatch. Foreign-run artifacts fail closed explicitly — never
+        # silently ignored, remapped or rewritten.
+        #   RUN_BOUND: TradeProposal (mapping + board path), DebateReport
+        #   (which scopes its ProposalRevisions), AgentEvidence,
+        #   AssetAssessment (via its required trace).
+        #   GLOBAL_SAFE: ConflictCase (derived board metadata, no authority).
         if any(proposal.run_id != self.run_id for proposal in proposals.values()):
             raise DecisionError("proposal run does not match engine run")
+        # Sibling artifact: snapshot proposals are the same TradeProposal
+        # class via the OpportunityBoard path — enforce the identical rule.
+        if any(
+            opportunity.proposal.run_id != self.run_id
+            for opportunity in snapshot.opportunities
+        ):
+            raise DecisionError("board proposal run does not match engine run")
+        # DEF-MA4-001: a foreign-run DebateReport must never influence
+        # eligibility, counter-evidence, dissent, scores or selection.
+        if any(report.run_id != self.run_id for report in reports):
+            raise DecisionError("debate report run does not match engine run")
+        # Sibling artifact: AssetAssessment feeds the MetaRanker regime fit
+        # and always carries a trace — foreign-run assessments rejected too.
+        if assessments is not None and any(
+            assessment.trace.run_id != self.run_id
+            for assessment in assessments.values()
+        ):
+            raise DecisionError("assessment run does not match engine run")
 
         events: list[tuple[str, str]] = []
         events.append((DecisionEventType.DECISION_STARTED.value, json.dumps({})))
@@ -507,6 +534,13 @@ class DecisionEngine:
                     DecisionEligibility.INELIGIBLE_INVALID_EVIDENCE,
                     (DecisionReason.INVALID_EVIDENCE,),
                 )
+            # DEF-MA4-002: run authority is a first-class evidence boundary —
+            # a forged matching trace_id never grants run authority.
+            if getattr(evidence, "run_id", None) != self.run_id:
+                return (
+                    DecisionEligibility.INELIGIBLE_INVALID_EVIDENCE,
+                    (DecisionReason.INVALID_EVIDENCE,),
+                )
             if getattr(evidence, "available_at", now) > now:
                 return (
                     DecisionEligibility.INELIGIBLE_FUTURE_DATED,
@@ -627,6 +661,7 @@ class DecisionPackageVerifier:
         proposals: Mapping[str, TradeProposal],
         evidence_registry: Mapping[str, Any],
         now: datetime,
+        reports: Sequence[DebateReport] = (),
     ) -> DecisionVerification:
         checks: list[tuple[str, str, str]] = []
 
@@ -744,6 +779,46 @@ class DecisionPackageVerifier:
             if candidate.final_proposal_id == selected
         )
         record("material_evidence_resolvable", evidence_ok)
+
+        # -- Cross-run authority (CP-MA-004.1 / ADR-MA-0006) ------------------
+        # Independent authority audit: every consumed artifact must belong to
+        # the package run. trace_id equality never overrides run mismatch.
+        foreign_proposals = sorted(
+            pid
+            for pid in {c.final_proposal_id for c in package.candidate_set}
+            if pid in proposals and proposals[pid].run_id != package.run_id
+        )
+        record(
+            "run_authority_proposals",
+            not foreign_proposals,
+            f"foreign={foreign_proposals}",
+        )
+
+        foreign_evidence: list[str] = []
+        if selected_candidate is not None:
+            foreign_evidence = sorted(
+                ref
+                for ref in selected_candidate.supporting_evidence_refs
+                if ref in evidence_registry
+                and getattr(evidence_registry[ref], "run_id", None) != package.run_id
+            )
+        record(
+            "run_authority_evidence",
+            not foreign_evidence,
+            f"foreign={foreign_evidence}",
+        )
+
+        report_by_id = {report.debate_id: report for report in reports}
+        foreign_reports = sorted(
+            debate_id
+            for debate_id in {c.debate_id for c in package.candidate_set if c.debate_id}
+            if debate_id in report_by_id and report_by_id[debate_id].run_id != package.run_id
+        )
+        record(
+            "run_authority_debate_reports",
+            not foreign_reports,
+            f"foreign={foreign_reports}",
+        )
 
         verdict = (
             DecisionVerificationStatus.VERIFIED
