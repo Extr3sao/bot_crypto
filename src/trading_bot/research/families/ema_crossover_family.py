@@ -84,17 +84,27 @@ class EmaCrossoverFamily:
 
         # LONG
         if fast_ema > slow_ema and rsi > 50:
-            structural_stop = current_price - atr * 1.5
+            natural_stop = current_price - atr * 1.5
+            # Floor ONCE and reuse the same value for both stop fields
+            # (W1-OP TARGET-B): before, effective_stop carried the raw
+            # (possibly negative) value while structural_stop claimed 0.01,
+            # and the floor application was never signaled via
+            # floor_bound/minimum_stop_floor. A stop <= 0 is nonsense for
+            # downstream risk/execution code.
+            floor_applied = natural_stop < 0.01
+            structural_stop = max(natural_stop, 0.01)
             signals.append(AlphaSignal(
                 family=self.family_name,
                 symbol=symbol,
                 timestamp=timestamp,
                 direction="LONG",
                 entry_reference=current_price,
-                structural_stop=max(structural_stop, 0.01),
+                structural_stop=structural_stop,
                 timeframe=str(kwargs.get("timeframe", "5m")),
                 features=feat,
                 effective_stop=structural_stop,
+                minimum_stop_floor=0.01 if floor_applied else None,
+                floor_bound=floor_applied,
             ))
 
         # SHORT
