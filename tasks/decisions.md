@@ -1138,3 +1138,12 @@ que NO se requerirá per-ADR "next free" footnote nunca más.
 - **Fuera de alcance**: sin LLM judge, weighting histórico/reputación/calibración (MA-5), ConsensusEngine, integración CandidatePortfolio/RiskManager/PaperBroker, ni ejecución.
 - **Evidencia**: `src/trading_bot/multi_agent/{contracts/decision,decision}.py`, `tests/unit/multi_agent/test_decision.py` (45 tests), `scripts/validate_ma4_decision_engine.py` (13/13), `reports/multi_agent/ma4/VALIDATION_REPORT.json`.
 
+
+## ADR-MA-0006 - Run authority and cross-run isolation (MA-4)
+
+- **Status**: Decidido y verificado en `CP-MA-004.1` (reparación sobre CERT-MA4-001 NOT_CERTIFIED).
+- **Defectos observados** (CERT-MA4-001): DEF-MA4-001, un `DebateReport` de otro run alteraba la decisión actual (SELECTED -> NO_TRADE vía un UNRESOLVED ajeno); DEF-MA4-002, evidencia con `run_id` ajeno y trace_id forjado al run actual era admitida como material porque el gate solo comparaba trace_id.
+- **Decisión**: la autoridad de run es de primera clase y jerárquica - `run_id` -> `trace_id` -> identidad del artefacto. Un `trace_id` coincidente nunca concede autoridad de run. Todo artefacto consumido por `DecisionEngine.decide()` debe pertenecer al run del motor.
+- **Clasificación de artefactos**: RUN_BOUND = `TradeProposal` (mapeo y ruta board), `DebateReport` (que acota sus `ProposalRevision`), `AgentEvidence`, `AssetAssessment` (vía trace obligatoria). GLOBAL_SAFE = `ConflictCase` (metadato derivado del board, sin autoridad). FAIL-CLOSED: artefacto RUN_BOUND con run ajeno -> `DecisionError` explícito (report/assessment/board-proposal) o `INELIGIBLE_INVALID_EVIDENCE` (evidencia); nunca aceptación silenciosa, remapeo ni reescritura de run_id.
+- **Verificador endurecido**: `DecisionPackageVerifier` audita de forma independiente `run_authority_proposals`, `run_authority_evidence` y `run_authority_debate_reports`; builder != verifier se preserva.
+- **Evidencia**: defectos reproducidos en el árbol pre-reparación (`deace58`, código idéntico a `f26f70f`); tests de regresión matriz A-H + hermanos + verificador + replay x3 en `tests/unit/multi_agent/test_decision.py` (TestCrossRunIsolation); validator extendido 17/17 (`scripts/validate_ma4_decision_engine.py`).
