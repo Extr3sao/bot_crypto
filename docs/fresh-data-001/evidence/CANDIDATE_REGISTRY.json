@@ -1,0 +1,800 @@
+{
+  "candidates": [
+    {
+      "candidate_id": "cand:trend:BTC/USDT:USDT:ALL:LONG:cb3919b7ddc2",
+      "config_sha256": "6586b7364941413d910240fb346a9a37c288195ca32638c2de04d33eaefad180",
+      "costs": {
+        "fee_rate": 0.0005,
+        "slippage_bps": 5.0
+      },
+      "criteria_sha256": "956ca53ece4c5abee15050b91372cbcf7cd820f82be9064112e962157b924b09",
+      "direction": "LONG",
+      "discovery_metrics": {
+        "asset_concentration": 1.0,
+        "config_sha256": "6586b7364941413d910240fb346a9a37c288195ca32638c2de04d33eaefad180",
+        "direction": "LONG",
+        "discovery_window": [
+          "2026-08-19T00:00:00+00:00",
+          "2026-08-21T01:59:59.999000+00:00"
+        ],
+        "family": "trend",
+        "fees_r": 6.923602,
+        "gross_expectancy_r": 0.240226,
+        "gross_pf": 1.812207,
+        "gross_pnl_r": 17.056012,
+        "losses": 42,
+        "max_drawdown_r": 15.521945,
+        "net_expectancy_r": 0.093977,
+        "net_pf": 1.255816,
+        "net_pnl_r": 6.67234,
+        "regime": "ALL",
+        "regime_concentration": 0.661972,
+        "slippage_r": 3.460071,
+        "stability_halves": {
+          "h1_net_exp_r": 0.133314,
+          "h2_net_exp_r": 0.037005
+        },
+        "symbol": "BTC/USDT:USDT",
+        "trades": 71,
+        "trades_per_day": 87.384615,
+        "win_rate": 0.408451,
+        "wins": 29
+      },
+      "discovery_window": [
+        "2026-08-19T00:00:00+00:00",
+        "2026-08-21T01:59:59.999000+00:00"
+      ],
+      "family": "trend",
+      "frozen_sha256": "7736ecb7faf9786c4003a80198960a968da2b1eabdaa0243c01dedc4f0e8a06d",
+      "regimes": [
+        "ALL"
+      ],
+      "status": "FROZEN_AWAITING_CONFIRMATION",
+      "symbols": [
+        "BTC/USDT:USDT"
+      ]
+    },
+    {
+      "candidate_id": "cand:momentum:ETH/USDT:USDT:ALL:LONG:575bde54e79e",
+      "config_sha256": "a16b3488d28274d3740367385ee7943fa8576e7b25a447e7e4f10e600d1cfd3d",
+      "costs": {
+        "fee_rate": 0.0005,
+        "slippage_bps": 5.0
+      },
+      "criteria_sha256": "956ca53ece4c5abee15050b91372cbcf7cd820f82be9064112e962157b924b09",
+      "direction": "LONG",
+      "discovery_metrics": {
+        "asset_concentration": 1.0,
+        "config_sha256": "a16b3488d28274d3740367385ee7943fa8576e7b25a447e7e4f10e600d1cfd3d",
+        "direction": "LONG",
+        "discovery_window": [
+          "2026-08-19T00:00:00+00:00",
+          "2026-08-21T01:59:59.999000+00:00"
+        ],
+        "family": "momentum",
+        "fees_r": 15.302527,
+        "gross_expectancy_r": 0.965711,
+        "gross_pf": 3.038811,
+        "gross_pnl_r": 116.851085,
+        "losses": 74,
+        "max_drawdown_r": 34.011807,
+        "net_expectancy_r": 0.776042,
+        "net_pf": 2.306162,
+        "net_pnl_r": 93.901118,
+        "regime": "ALL",
+        "regime_concentration": 0.760331,
+        "slippage_r": 7.64744,
+        "stability_halves": {
+          "h1_net_exp_r": 2.094573,
+          "h2_net_exp_r": -0.398274
+        },
+        "symbol": "ETH/USDT:USDT",
+        "trades": 121,
+        "trades_per_day": 79.561644,
+        "win_rate": 0.38843,
+        "wins": 47
+      },
+      "discovery_window": [
+        "2026-08-19T00:00:00+00:00",
+        "2026-08-21T01:59:59.999000+00:00"
+      ],
+      "family": "momentum",
+      "frozen_sha256": "07da53f56903bbe50a899e48ab3a99da747a60e3e050e32794fbc093240a817f",
+      "regimes": [
+        "ALL"
+      ],
+      "status": "FROZEN_AWAITING_CONFIRMATION",
+      "symbols": [
+        "ETH/USDT:USDT"
+      ]
+    },
+    {
+      "candidate_id": "cand:trend:ETH/USDT:USDT:ALL:LONG:c6c125f6198d",
+      "config_sha256": "e7668ef99150341a64b73dbe167b3820bd09acb6c437862ff5a440b926504d72",
+      "costs": {
+        "fee_rate": 0.0005,
+        "slippage_bps": 5.0
+      },
+      "criteria_sha256": "956ca53ece4c5abee15050b91372cbcf7cd820f82be9064112e962157b924b09",
+      "direction": "LONG",
+      "discovery_metrics": {
+        "asset_concentration": 1.0,
+        "config_sha256": "e7668ef99150341a64b73dbe167b3820bd09acb6c437862ff5a440b926504d72",
+        "direction": "LONG",
+        "discovery_window": [
+          "2026-08-19T00:00:00+00:00",
+          "2026-08-21T01:59:59.999000+00:00"
+        ],
+        "family": "trend",
+        "fees_r": 10.856718,
+        "gross_expectancy_r": 2.491519,
+        "gross_pf": 12.094526,
+        "gross_pnl_r": 343.829659,
+        "losses": 56,
+        "max_drawdown_r": 31.753256,
+        "net_expectancy_r": 2.373531,
+        "net_pf": 10.032165,
+        "net_pnl_r": 327.547295,
+        "regime": "ALL",
+        "regime_concentration": 0.565217,
+        "slippage_r": 5.425646,
+        "stability_halves": {
+          "h1_net_exp_r": 2.839693,
+          "h2_net_exp_r": -0.944442
+        },
+        "symbol": "ETH/USDT:USDT",
+        "trades": 138,
+        "trades_per_day": 123.813084,
+        "win_rate": 0.594203,
+        "wins": 82
+      },
+      "discovery_window": [
+        "2026-08-19T00:00:00+00:00",
+        "2026-08-21T01:59:59.999000+00:00"
+      ],
+      "family": "trend",
+      "frozen_sha256": "80d5fd6cfde28613beed056cdafcd911ef0fd55aefa77092b42967d9467d95ee",
+      "regimes": [
+        "ALL"
+      ],
+      "status": "FROZEN_AWAITING_CONFIRMATION",
+      "symbols": [
+        "ETH/USDT:USDT"
+      ]
+    },
+    {
+      "candidate_id": "cand:breakout:ETH/USDT:USDT:ALL:LONG:9d1a6972be52",
+      "config_sha256": "c01148a7c72f5631ae2d8d62eb4864f2bff38acf66e8b058957ed2feabd29309",
+      "costs": {
+        "fee_rate": 0.0005,
+        "slippage_bps": 5.0
+      },
+      "criteria_sha256": "956ca53ece4c5abee15050b91372cbcf7cd820f82be9064112e962157b924b09",
+      "direction": "LONG",
+      "discovery_metrics": {
+        "asset_concentration": 1.0,
+        "config_sha256": "c01148a7c72f5631ae2d8d62eb4864f2bff38acf66e8b058957ed2feabd29309",
+        "direction": "LONG",
+        "discovery_window": [
+          "2026-08-19T00:00:00+00:00",
+          "2026-08-21T01:59:59.999000+00:00"
+        ],
+        "family": "breakout",
+        "fees_r": 7.177527,
+        "gross_expectancy_r": 3.73159,
+        "gross_pf": 8.109343,
+        "gross_pnl_r": 111.947698,
+        "losses": 17,
+        "max_drawdown_r": 11.322564,
+        "net_expectancy_r": 3.372773,
+        "net_pf": 5.525447,
+        "net_pnl_r": 101.1832,
+        "regime": "ALL",
+        "regime_concentration": 0.8,
+        "slippage_r": 3.58697,
+        "stability_halves": {
+          "h1_net_exp_r": 5.55033,
+          "h2_net_exp_r": -0.982339
+        },
+        "symbol": "ETH/USDT:USDT",
+        "trades": 30,
+        "trades_per_day": 16.941176,
+        "win_rate": 0.433333,
+        "wins": 13
+      },
+      "discovery_window": [
+        "2026-08-19T00:00:00+00:00",
+        "2026-08-21T01:59:59.999000+00:00"
+      ],
+      "family": "breakout",
+      "frozen_sha256": "8917345402cd7ba699904ca9afa2fc858278ac85c567b5e4de108a7b24684152",
+      "regimes": [
+        "ALL"
+      ],
+      "status": "FROZEN_AWAITING_CONFIRMATION",
+      "symbols": [
+        "ETH/USDT:USDT"
+      ]
+    },
+    {
+      "candidate_id": "cand:ema_crossover:ETH/USDT:USDT:ALL:LONG:7117ef3244af",
+      "config_sha256": "65814f429fe185817fc3f63ec8f8c6bae02eeb39597d0e3813869d24074ee2b2",
+      "costs": {
+        "fee_rate": 0.0005,
+        "slippage_bps": 5.0
+      },
+      "criteria_sha256": "956ca53ece4c5abee15050b91372cbcf7cd820f82be9064112e962157b924b09",
+      "direction": "LONG",
+      "discovery_metrics": {
+        "asset_concentration": 1.0,
+        "config_sha256": "65814f429fe185817fc3f63ec8f8c6bae02eeb39597d0e3813869d24074ee2b2",
+        "direction": "LONG",
+        "discovery_window": [
+          "2026-08-19T00:00:00+00:00",
+          "2026-08-21T01:59:59.999000+00:00"
+        ],
+        "family": "ema_crossover",
+        "fees_r": 78.37697,
+        "gross_expectancy_r": 3.249113,
+        "gross_pf": 7.112542,
+        "gross_pnl_r": 1098.200205,
+        "losses": 203,
+        "max_drawdown_r": 122.81774,
+        "net_expectancy_r": 2.901344,
+        "net_pf": 4.965174,
+        "net_pnl_r": 980.654334,
+        "regime": "ALL",
+        "regime_concentration": 0.822485,
+        "slippage_r": 39.168901,
+        "stability_halves": {
+          "h1_net_exp_r": 5.026957,
+          "h2_net_exp_r": -0.814159
+        },
+        "symbol": "ETH/USDT:USDT",
+        "trades": 338,
+        "trades_per_day": 177.959781,
+        "win_rate": 0.399408,
+        "wins": 135
+      },
+      "discovery_window": [
+        "2026-08-19T00:00:00+00:00",
+        "2026-08-21T01:59:59.999000+00:00"
+      ],
+      "family": "ema_crossover",
+      "frozen_sha256": "49360f61ddb3770010ebfe91985ad1583ae522b13a3b7f0e1fb2e34aa99a7d20",
+      "regimes": [
+        "ALL"
+      ],
+      "status": "FROZEN_AWAITING_CONFIRMATION",
+      "symbols": [
+        "ETH/USDT:USDT"
+      ]
+    },
+    {
+      "candidate_id": "cand:momentum:SOL/USDT:USDT:ALL:LONG:759811c0cbcc",
+      "config_sha256": "9edb1a21f177eecfb0aee325d0f1b4431ba2c342fc9a1e868e05586a45f1f121",
+      "costs": {
+        "fee_rate": 0.0005,
+        "slippage_bps": 5.0
+      },
+      "criteria_sha256": "956ca53ece4c5abee15050b91372cbcf7cd820f82be9064112e962157b924b09",
+      "direction": "LONG",
+      "discovery_metrics": {
+        "asset_concentration": 1.0,
+        "config_sha256": "9edb1a21f177eecfb0aee325d0f1b4431ba2c342fc9a1e868e05586a45f1f121",
+        "direction": "LONG",
+        "discovery_window": [
+          "2026-08-19T00:00:00+00:00",
+          "2026-08-21T01:59:59.999000+00:00"
+        ],
+        "family": "momentum",
+        "fees_r": 15.957552,
+        "gross_expectancy_r": 1.884902,
+        "gross_pf": 5.740023,
+        "gross_pnl_r": 201.684553,
+        "losses": 58,
+        "max_drawdown_r": 24.595603,
+        "net_expectancy_r": 1.661236,
+        "net_pf": 4.342923,
+        "net_pnl_r": 177.752213,
+        "regime": "ALL",
+        "regime_concentration": 0.785047,
+        "slippage_r": 7.974788,
+        "stability_halves": {
+          "h1_net_exp_r": 2.881769,
+          "h2_net_exp_r": 0.370286
+        },
+        "symbol": "SOL/USDT:USDT",
+        "trades": 107,
+        "trades_per_day": 61.879518,
+        "win_rate": 0.457944,
+        "wins": 49
+      },
+      "discovery_window": [
+        "2026-08-19T00:00:00+00:00",
+        "2026-08-21T01:59:59.999000+00:00"
+      ],
+      "family": "momentum",
+      "frozen_sha256": "cc1b04fc2753889206b258d58a84d63e6b9bdb3d236dd3141b8c59b0b5e44f04",
+      "regimes": [
+        "ALL"
+      ],
+      "status": "FROZEN_AWAITING_CONFIRMATION",
+      "symbols": [
+        "SOL/USDT:USDT"
+      ]
+    },
+    {
+      "candidate_id": "cand:trend:SOL/USDT:USDT:ALL:LONG:86b3a3a4a3ec",
+      "config_sha256": "ed115f0356501092ac24c30b01cabbdd75d3b93f431c010b294eb6496a7331e7",
+      "costs": {
+        "fee_rate": 0.0005,
+        "slippage_bps": 5.0
+      },
+      "criteria_sha256": "956ca53ece4c5abee15050b91372cbcf7cd820f82be9064112e962157b924b09",
+      "direction": "LONG",
+      "discovery_metrics": {
+        "asset_concentration": 1.0,
+        "config_sha256": "ed115f0356501092ac24c30b01cabbdd75d3b93f431c010b294eb6496a7331e7",
+        "direction": "LONG",
+        "discovery_window": [
+          "2026-08-19T00:00:00+00:00",
+          "2026-08-21T01:59:59.999000+00:00"
+        ],
+        "family": "trend",
+        "fees_r": 5.88417,
+        "gross_expectancy_r": 0.213356,
+        "gross_pf": 1.567295,
+        "gross_pnl_r": 15.574989,
+        "losses": 45,
+        "max_drawdown_r": 26.479977,
+        "net_expectancy_r": 0.092469,
+        "net_pf": 1.208423,
+        "net_pnl_r": 6.750204,
+        "regime": "ALL",
+        "regime_concentration": 0.369863,
+        "slippage_r": 2.940615,
+        "stability_halves": {
+          "h1_net_exp_r": 0.293863,
+          "h2_net_exp_r": -0.624998
+        },
+        "symbol": "SOL/USDT:USDT",
+        "trades": 73,
+        "trades_per_day": 85.117409,
+        "win_rate": 0.383562,
+        "wins": 28
+      },
+      "discovery_window": [
+        "2026-08-19T00:00:00+00:00",
+        "2026-08-21T01:59:59.999000+00:00"
+      ],
+      "family": "trend",
+      "frozen_sha256": "bb6c9e7ca3e0bc3203c40a9510b25fff73fcfd2fae2bf535f206bbce474cd8b0",
+      "regimes": [
+        "ALL"
+      ],
+      "status": "FROZEN_AWAITING_CONFIRMATION",
+      "symbols": [
+        "SOL/USDT:USDT"
+      ]
+    },
+    {
+      "candidate_id": "cand:breakout:SOL/USDT:USDT:ALL:LONG:48f47cccc0b3",
+      "config_sha256": "85f271a615414fddced8c479df38b948eab5f055a11d0d5b4d2202f38f308e01",
+      "costs": {
+        "fee_rate": 0.0005,
+        "slippage_bps": 5.0
+      },
+      "criteria_sha256": "956ca53ece4c5abee15050b91372cbcf7cd820f82be9064112e962157b924b09",
+      "direction": "LONG",
+      "discovery_metrics": {
+        "asset_concentration": 1.0,
+        "config_sha256": "85f271a615414fddced8c479df38b948eab5f055a11d0d5b4d2202f38f308e01",
+        "direction": "LONG",
+        "discovery_window": [
+          "2026-08-19T00:00:00+00:00",
+          "2026-08-21T01:59:59.999000+00:00"
+        ],
+        "family": "breakout",
+        "fees_r": 7.993014,
+        "gross_expectancy_r": 3.676084,
+        "gross_pf": 9.402478,
+        "gross_pnl_r": 117.634686,
+        "losses": 14,
+        "max_drawdown_r": 11.644495,
+        "net_expectancy_r": 3.301474,
+        "net_pf": 6.702673,
+        "net_pnl_r": 105.647162,
+        "regime": "ALL",
+        "regime_concentration": 0.875,
+        "slippage_r": 3.99451,
+        "stability_halves": {
+          "h1_net_exp_r": 5.315161,
+          "h2_net_exp_r": 1.019295
+        },
+        "symbol": "SOL/USDT:USDT",
+        "trades": 32,
+        "trades_per_day": 17.03512,
+        "win_rate": 0.5625,
+        "wins": 18
+      },
+      "discovery_window": [
+        "2026-08-19T00:00:00+00:00",
+        "2026-08-21T01:59:59.999000+00:00"
+      ],
+      "family": "breakout",
+      "frozen_sha256": "296c72d09eeff2d510014205aa16bc71efd4f749902a58291e7253926e879401",
+      "regimes": [
+        "ALL"
+      ],
+      "status": "FROZEN_AWAITING_CONFIRMATION",
+      "symbols": [
+        "SOL/USDT:USDT"
+      ]
+    },
+    {
+      "candidate_id": "cand:ema_crossover:SOL/USDT:USDT:ALL:LONG:84818bf36a3f",
+      "config_sha256": "ce733e29c94b3639c691bfe1095790c167714db81e3eb5622d10b198b5cf7bb8",
+      "costs": {
+        "fee_rate": 0.0005,
+        "slippage_bps": 5.0
+      },
+      "criteria_sha256": "956ca53ece4c5abee15050b91372cbcf7cd820f82be9064112e962157b924b09",
+      "direction": "LONG",
+      "discovery_metrics": {
+        "asset_concentration": 1.0,
+        "config_sha256": "ce733e29c94b3639c691bfe1095790c167714db81e3eb5622d10b198b5cf7bb8",
+        "direction": "LONG",
+        "discovery_window": [
+          "2026-08-19T00:00:00+00:00",
+          "2026-08-21T01:59:59.999000+00:00"
+        ],
+        "family": "ema_crossover",
+        "fees_r": 88.407513,
+        "gross_expectancy_r": 2.876968,
+        "gross_pf": 6.910411,
+        "gross_pnl_r": 1027.07762,
+        "losses": 195,
+        "max_drawdown_r": 96.24921,
+        "net_expectancy_r": 2.50557,
+        "net_pf": 4.841272,
+        "net_pnl_r": 894.488441,
+        "regime": "ALL",
+        "regime_concentration": 0.868347,
+        "slippage_r": 44.181666,
+        "stability_halves": {
+          "h1_net_exp_r": 3.935926,
+          "h2_net_exp_r": 0.365037
+        },
+        "symbol": "SOL/USDT:USDT",
+        "trades": 357,
+        "trades_per_day": 186.26087,
+        "win_rate": 0.453782,
+        "wins": 162
+      },
+      "discovery_window": [
+        "2026-08-19T00:00:00+00:00",
+        "2026-08-21T01:59:59.999000+00:00"
+      ],
+      "family": "ema_crossover",
+      "frozen_sha256": "69c859c3ad95fd8a3ec31faa975bdb501d7e048767abee6bb1c6f08764a98a60",
+      "regimes": [
+        "ALL"
+      ],
+      "status": "FROZEN_AWAITING_CONFIRMATION",
+      "symbols": [
+        "SOL/USDT:USDT"
+      ]
+    }
+  ],
+  "criteria": {
+    "max_regime_concentration": 0.9,
+    "min_net_expectancy_r": 0.05,
+    "min_net_pf": 1.15,
+    "min_stability_halves_positive": true,
+    "min_trades": 30,
+    "require_both_halves_nonempty": true,
+    "schema_version": "fresh-criteria-v1"
+  },
+  "registry_sha256": "345c0024374bb20fda7f7957ef9721f59aca39f95cc78a69b17d5fbff591a343",
+  "rejected": [
+    {
+      "direction": "LONG",
+      "family": "momentum",
+      "legacy_context_note": "",
+      "net_expectancy_r": 1.889414,
+      "net_pf": 5.389302,
+      "reason": "regime_concentration_too_high",
+      "regime": "ALL",
+      "symbol": "BTC/USDT:USDT",
+      "trades": 95
+    },
+    {
+      "direction": "SHORT",
+      "family": "momentum",
+      "legacy_context_note": "",
+      "net_expectancy_r": -1.164527,
+      "net_pf": 8.2e-05,
+      "reason": "net_exp_r_below_threshold;net_pf_below_threshold;regime_concentration_too_high;no_stability_across_halves",
+      "regime": "ALL",
+      "symbol": "BTC/USDT:USDT",
+      "trades": 34
+    },
+    {
+      "direction": "SHORT",
+      "family": "trend",
+      "legacy_context_note": "",
+      "net_expectancy_r": 0.0,
+      "net_pf": 0.0,
+      "reason": "trades<30;net_exp_r_below_threshold;net_pf_below_threshold;no_stability_across_halves",
+      "regime": "ALL",
+      "symbol": "BTC/USDT:USDT",
+      "trades": 0
+    },
+    {
+      "direction": "LONG",
+      "family": "breakout",
+      "legacy_context_note": "",
+      "net_expectancy_r": 3.588051,
+      "net_pf": 5.729811,
+      "reason": "regime_concentration_too_high",
+      "regime": "ALL",
+      "symbol": "BTC/USDT:USDT",
+      "trades": 35
+    },
+    {
+      "direction": "SHORT",
+      "family": "breakout",
+      "legacy_context_note": "",
+      "net_expectancy_r": -1.731518,
+      "net_pf": 0.0,
+      "reason": "trades<30;net_exp_r_below_threshold;net_pf_below_threshold;regime_concentration_too_high;no_stability_across_halves",
+      "regime": "ALL",
+      "symbol": "BTC/USDT:USDT",
+      "trades": 10
+    },
+    {
+      "direction": "LONG",
+      "family": "mean_reversion",
+      "legacy_context_note": "",
+      "net_expectancy_r": 0.711543,
+      "net_pf": 3.125035,
+      "reason": "trades<30;regime_concentration_too_high",
+      "regime": "ALL",
+      "symbol": "BTC/USDT:USDT",
+      "trades": 5
+    },
+    {
+      "direction": "SHORT",
+      "family": "mean_reversion",
+      "legacy_context_note": "",
+      "net_expectancy_r": -0.887084,
+      "net_pf": 0.130031,
+      "reason": "trades<30;net_exp_r_below_threshold;net_pf_below_threshold;regime_concentration_too_high;no_stability_across_halves",
+      "regime": "ALL",
+      "symbol": "BTC/USDT:USDT",
+      "trades": 15
+    },
+    {
+      "direction": "LONG",
+      "family": "volatility",
+      "legacy_context_note": "",
+      "net_expectancy_r": -1.205537,
+      "net_pf": 0.0,
+      "reason": "trades<30;net_exp_r_below_threshold;net_pf_below_threshold;regime_concentration_too_high;no_stability_across_halves",
+      "regime": "ALL",
+      "symbol": "BTC/USDT:USDT",
+      "trades": 1
+    },
+    {
+      "direction": "SHORT",
+      "family": "volatility",
+      "legacy_context_note": "",
+      "net_expectancy_r": 0.0,
+      "net_pf": 0.0,
+      "reason": "trades<30;net_exp_r_below_threshold;net_pf_below_threshold;no_stability_across_halves",
+      "regime": "ALL",
+      "symbol": "BTC/USDT:USDT",
+      "trades": 0
+    },
+    {
+      "direction": "LONG",
+      "family": "ema_crossover",
+      "legacy_context_note": "",
+      "net_expectancy_r": 2.224453,
+      "net_pf": 4.015057,
+      "reason": "regime_concentration_too_high",
+      "regime": "ALL",
+      "symbol": "BTC/USDT:USDT",
+      "trades": 357
+    },
+    {
+      "direction": "SHORT",
+      "family": "ema_crossover",
+      "legacy_context_note": "",
+      "net_expectancy_r": -1.497783,
+      "net_pf": 0.0,
+      "reason": "net_exp_r_below_threshold;net_pf_below_threshold;regime_concentration_too_high;no_stability_across_halves",
+      "regime": "ALL",
+      "symbol": "BTC/USDT:USDT",
+      "trades": 121
+    },
+    {
+      "direction": "SHORT",
+      "family": "momentum",
+      "legacy_context_note": "",
+      "net_expectancy_r": -0.812925,
+      "net_pf": 0.026449,
+      "reason": "net_exp_r_below_threshold;net_pf_below_threshold;no_stability_across_halves",
+      "regime": "ALL",
+      "symbol": "ETH/USDT:USDT",
+      "trades": 66
+    },
+    {
+      "direction": "SHORT",
+      "family": "trend",
+      "legacy_context_note": "",
+      "net_expectancy_r": 0.0,
+      "net_pf": 0.0,
+      "reason": "trades<30;net_exp_r_below_threshold;net_pf_below_threshold;no_stability_across_halves",
+      "regime": "ALL",
+      "symbol": "ETH/USDT:USDT",
+      "trades": 0
+    },
+    {
+      "direction": "SHORT",
+      "family": "breakout",
+      "legacy_context_note": "",
+      "net_expectancy_r": -1.43317,
+      "net_pf": 0.0,
+      "reason": "trades<30;net_exp_r_below_threshold;net_pf_below_threshold;regime_concentration_too_high;no_stability_across_halves",
+      "regime": "ALL",
+      "symbol": "ETH/USDT:USDT",
+      "trades": 11
+    },
+    {
+      "direction": "LONG",
+      "family": "mean_reversion",
+      "legacy_context_note": "",
+      "net_expectancy_r": 0.758361,
+      "net_pf": 2.987644,
+      "reason": "trades<30;regime_concentration_too_high",
+      "regime": "ALL",
+      "symbol": "ETH/USDT:USDT",
+      "trades": 11
+    },
+    {
+      "direction": "SHORT",
+      "family": "mean_reversion",
+      "legacy_context_note": "",
+      "net_expectancy_r": -0.781942,
+      "net_pf": 0.186226,
+      "reason": "trades<30;net_exp_r_below_threshold;net_pf_below_threshold;regime_concentration_too_high;no_stability_across_halves",
+      "regime": "ALL",
+      "symbol": "ETH/USDT:USDT",
+      "trades": 15
+    },
+    {
+      "direction": "LONG",
+      "family": "volatility",
+      "legacy_context_note": "",
+      "net_expectancy_r": -1.121089,
+      "net_pf": 0.0,
+      "reason": "trades<30;net_exp_r_below_threshold;net_pf_below_threshold;regime_concentration_too_high;no_stability_across_halves",
+      "regime": "ALL",
+      "symbol": "ETH/USDT:USDT",
+      "trades": 1
+    },
+    {
+      "direction": "SHORT",
+      "family": "volatility",
+      "legacy_context_note": "",
+      "net_expectancy_r": -1.325665,
+      "net_pf": 0.0,
+      "reason": "trades<30;net_exp_r_below_threshold;net_pf_below_threshold;regime_concentration_too_high;no_stability_across_halves",
+      "regime": "ALL",
+      "symbol": "ETH/USDT:USDT",
+      "trades": 4
+    },
+    {
+      "direction": "SHORT",
+      "family": "ema_crossover",
+      "legacy_context_note": "",
+      "net_expectancy_r": -1.255773,
+      "net_pf": 0.019988,
+      "reason": "net_exp_r_below_threshold;net_pf_below_threshold;regime_concentration_too_high;no_stability_across_halves",
+      "regime": "ALL",
+      "symbol": "ETH/USDT:USDT",
+      "trades": 135
+    },
+    {
+      "direction": "SHORT",
+      "family": "momentum",
+      "legacy_context_note": "",
+      "net_expectancy_r": -0.734734,
+      "net_pf": 0.091989,
+      "reason": "net_exp_r_below_threshold;net_pf_below_threshold;no_stability_across_halves",
+      "regime": "ALL",
+      "symbol": "SOL/USDT:USDT",
+      "trades": 65
+    },
+    {
+      "direction": "SHORT",
+      "family": "trend",
+      "legacy_context_note": "",
+      "net_expectancy_r": 0.0,
+      "net_pf": 0.0,
+      "reason": "trades<30;net_exp_r_below_threshold;net_pf_below_threshold;no_stability_across_halves",
+      "regime": "ALL",
+      "symbol": "SOL/USDT:USDT",
+      "trades": 0
+    },
+    {
+      "direction": "SHORT",
+      "family": "breakout",
+      "legacy_context_note": "",
+      "net_expectancy_r": -1.368808,
+      "net_pf": 0.0,
+      "reason": "trades<30;net_exp_r_below_threshold;net_pf_below_threshold;regime_concentration_too_high;no_stability_across_halves",
+      "regime": "ALL",
+      "symbol": "SOL/USDT:USDT",
+      "trades": 5
+    },
+    {
+      "direction": "LONG",
+      "family": "mean_reversion",
+      "legacy_context_note": "",
+      "net_expectancy_r": 0.125516,
+      "net_pf": 1.223873,
+      "reason": "trades<30;regime_concentration_too_high",
+      "regime": "ALL",
+      "symbol": "SOL/USDT:USDT",
+      "trades": 5
+    },
+    {
+      "direction": "SHORT",
+      "family": "mean_reversion",
+      "legacy_context_note": "",
+      "net_expectancy_r": -0.688325,
+      "net_pf": 0.281932,
+      "reason": "trades<30;net_exp_r_below_threshold;net_pf_below_threshold;regime_concentration_too_high;no_stability_across_halves",
+      "regime": "ALL",
+      "symbol": "SOL/USDT:USDT",
+      "trades": 14
+    },
+    {
+      "direction": "LONG",
+      "family": "volatility",
+      "legacy_context_note": "",
+      "net_expectancy_r": 4.266745,
+      "net_pf": 0.0,
+      "reason": "trades<30;regime_concentration_too_high",
+      "regime": "ALL",
+      "symbol": "SOL/USDT:USDT",
+      "trades": 1
+    },
+    {
+      "direction": "SHORT",
+      "family": "volatility",
+      "legacy_context_note": "",
+      "net_expectancy_r": 0.0,
+      "net_pf": 0.0,
+      "reason": "trades<30;net_exp_r_below_threshold;net_pf_below_threshold;no_stability_across_halves",
+      "regime": "ALL",
+      "symbol": "SOL/USDT:USDT",
+      "trades": 0
+    },
+    {
+      "direction": "SHORT",
+      "family": "ema_crossover",
+      "legacy_context_note": "",
+      "net_expectancy_r": -1.280185,
+      "net_pf": 0.015289,
+      "reason": "net_exp_r_below_threshold;net_pf_below_threshold;regime_concentration_too_high;no_stability_across_halves",
+      "regime": "ALL",
+      "symbol": "SOL/USDT:USDT",
+      "trades": 135
+    }
+  ],
+  "schema_version": "candidate-registry-v1"
+}
