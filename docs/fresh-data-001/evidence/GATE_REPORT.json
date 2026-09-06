@@ -1,0 +1,52 @@
+{
+  "checkpoint": "FRESH-DATA-001",
+  "data_cutoff": "2026-08-22T11:20:00+00:00",
+  "decision": "CANDIDATES_FROZEN_AWAITING_CONFIRMATION",
+  "discovery_window": [
+    "2026-08-19T00:00:00+00:00",
+    "2026-08-21T01:59:59.999000+00:00"
+  ],
+  "g10_deterministic_rerun": true,
+  "g11_candidate_configs_frozen": [
+    "7736ecb7faf9786c4003a80198960a968da2b1eabdaa0243c01dedc4f0e8a06d",
+    "07da53f56903bbe50a899e48ab3a99da747a60e3e050e32794fbc093240a817f",
+    "80d5fd6cfde28613beed056cdafcd911ef0fd55aefa77092b42967d9467d95ee",
+    "8917345402cd7ba699904ca9afa2fc858278ac85c567b5e4de108a7b24684152",
+    "49360f61ddb3770010ebfe91985ad1583ae522b13a3b7f0e1fb2e34aa99a7d20",
+    "cc1b04fc2753889206b258d58a84d63e6b9bdb3d236dd3141b8c59b0b5e44f04",
+    "bb6c9e7ca3e0bc3203c40a9510b25fff73fcfd2fae2bf535f206bbce474cd8b0",
+    "296c72d09eeff2d510014205aa16bc71efd4f749902a58291e7253926e879401",
+    "69c859c3ad95fd8a3ec31faa975bdb501d7e048767abee6bb1c6f08764a98a60"
+  ],
+  "g12_no_post_hoc_selection": {
+    "no_best_asset_peeking": true,
+    "no_parameter_sweep": true,
+    "preregistered_criteria": {
+      "max_regime_concentration": 0.9,
+      "min_net_expectancy_r": 0.05,
+      "min_net_pf": 1.15,
+      "min_stability_halves_positive": true,
+      "min_trades": 30,
+      "require_both_halves_nonempty": true,
+      "schema_version": "fresh-criteria-v1"
+    }
+  },
+  "g13_no_paper_routing_impact": {
+    "paperbroker_referenced_in_discovery_code": false,
+    "riskmanager_referenced_in_discovery_code": false
+  },
+  "g14_live_execution": 0,
+  "g1_source_baseline_certified": "aa065cf4047031e402c9f6f9d469f19414429d78 / e55bd767a26a622559ed39f53d4fee7ec3e656ae",
+  "g2_fresh_start_after_2026_08_18": true,
+  "g3_dataset_quality_pass": true,
+  "g4_chronological_immutable_split": "6c7179f9d70461d5986256518f0e9338d88a378eeb2e1c98af7da67a9f6300c8",
+  "g5_confirmation_unread": true,
+  "g6_final_holdout_unread": true,
+  "g7_legacy_decision_impact": 0,
+  "g8_pit_no_lookahead": true,
+  "g9_realistic_costs": {
+    "fee_rate": 0.0005,
+    "slippage_bps": 5.0
+  },
+  "generated_at": "2026-09-06T13:49:20.419760+00:00"
+}
