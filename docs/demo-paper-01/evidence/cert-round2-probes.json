@@ -1,0 +1,233 @@
+{
+  "dp01_01_runtime_authority_static": {
+    "demo_imports": [
+      "trading_bot.config.runtime",
+      "trading_bot.market_data.fake",
+      "trading_bot.market_data.types",
+      "trading_bot.multi_agent.blackboard",
+      "trading_bot.multi_agent.bus",
+      "trading_bot.multi_agent.contracts",
+      "trading_bot.multi_agent.debate",
+      "trading_bot.multi_agent.decision",
+      "trading_bot.multi_agent.opportunity",
+      "trading_bot.multi_agent.registry",
+      "trading_bot.multi_agent.specialists",
+      "trading_bot.multi_agent.swarm",
+      "trading_bot.paper.broker",
+      "trading_bot.paper.candidate_portfolio",
+      "trading_bot.research.asset_intelligence.registry",
+      "trading_bot.research.types",
+      "trading_bot.risk.manager",
+      "trading_bot.strategies.types"
+    ],
+    "forbidden_parallel_classes": [],
+    "pnl_computing_functions": [],
+    "verifier_dependency": true,
+    "uses_certified_swarm": true,
+    "uses_certified_debate": true,
+    "uses_paper_broker": true,
+    "uses_risk_manager": true,
+    "uses_candidate_portfolio": true
+  },
+  "dp01_08_broker_no_network": {
+    "broker_network_markers": [],
+    "paper_only": true
+  },
+  "dp01_24_frequency_kpi_no_runtime_effect": {
+    "threshold_lowering_lines": []
+  },
+  "dp01_24_kpi_definition": {
+    "kpi_lines": [
+      "\"trades_per_day\": self.paper_trades,",
+      "\"days_ge_3_trades\": 1 if self.paper_trades >= 3 else 0,"
+    ],
+    "observational_only": true
+  },
+  "dp01_04_05_no_trade_and_reject_side_effects": {
+    "no_trade": 2,
+    "risk_calls": 2,
+    "broker_calls": 1,
+    "paper_trades": 1,
+    "broker_calls_equals_paper_trades": true,
+    "decisions_outcomes": [
+      "NO_TRADE",
+      "NO_TRADE",
+      "SELECTED",
+      "SELECTED"
+    ],
+    "verifier_verdicts": [
+      "VERIFIED",
+      "VERIFIED",
+      "VERIFIED",
+      "VERIFIED"
+    ],
+    "no_trade_visible_in_decisions": true,
+    "no_trade_visible_in_events": true,
+    "no_trade_visible_in_funnel": true
+  },
+  "dp01_10_11_canonical_pnl": {
+    "closed_trades": 1,
+    "realized_pnl": 242.82705154,
+    "closed_event_pnls": [
+      242.82705153530873
+    ],
+    "realized_equals_event_sum": false,
+    "pnl_source": "PaperBroker fills -> broker.check_positions -> risk.record_trade_result"
+  },
+  "dp01_12_single_run_trace": {
+    "run_ids": [
+      "demo-paper-01-fixture"
+    ],
+    "trace_ids": [
+      "trace-demo-paper-01-fixture"
+    ],
+    "no_cross_run_contamination": true
+  },
+  "dp01_13_decision_trace": {
+    "success_chain_present": true,
+    "no_trade_or_reject_chain_present": true
+  },
+  "dp01_17_run_report_consistency": {
+    "md_keys": [
+      "Broker",
+      "FALSE_SUCCESS",
+      "Live trading",
+      "Mode",
+      "Private exchange calls",
+      "Provider",
+      "Real broker calls",
+      "Result",
+      "Run ID",
+      "asset_assessments",
+      "closed_trades",
+      "debates",
+      "decisions_rejected",
+      "decisions_selected",
+      "market_scans",
+      "no_trade",
+      "paper_trades",
+      "risk_accepts",
+      "risk_rejects",
+      "strategy_evaluations",
+      "trade_proposals"
+    ],
+    "mismatches": {},
+    "false_success": 0
+  },
+  "dp01_19_23_dashboard_visibility": {
+    "funnel_entries": 3,
+    "decisions_outcomes": [
+      "NO_TRADE",
+      "SELECTED"
+    ],
+    "decision_reasons_present": true,
+    "rejected_alternatives_present": true,
+    "verifier_verdict_in_decisions": true,
+    "debate_fields_present": true,
+    "debate_critiques": 12,
+    "risk_reject_reason": "Max open positions reached (1)",
+    "risk_reject_blocked_by": "max_positions",
+    "risk_accepts_counter": 1,
+    "open_positions": 0,
+    "realized_pnl": 242.82705154,
+    "unrealized_pnl": 0,
+    "position_events": [
+      "paper.session.started",
+      "paper.position_opened",
+      "paper.position_closed",
+      "paper.session.completed"
+    ]
+  },
+  "dp01_14_deterministic": {
+    "byte_identical": true
+  },
+  "dp02_03_verified_selected_adapts": {
+    "adapted": true,
+    "is_canonical_trade_candidate": true,
+    "no_sizing_fields": true,
+    "verifier": "VERIFIED"
+  },
+  "dp03_verified_only_negative_probes": {
+    "no_trade_emits_none": true,
+    "foreign_run_emits_none": true,
+    "tampered_evidence_emits_none": true,
+    "missing_terminal_proposal_emits_none": true,
+    "invalid_trace_emits_none": true
+  },
+  "dp11_future_proposal_verifier": {
+    "adapt": false,
+    "note": "None means fail-closed"
+  },
+  "dp11_stale_proposal_verifier": {
+    "adapt": false,
+    "note": "None means fail-closed"
+  },
+  "dp01_06_portfolio_admission": {
+    "admitted": true,
+    "portfolio_type": "CandidatePortfolio"
+  },
+  "dp07_risk_reject_zero_broker": {
+    "approved": false,
+    "reason": "Max open positions reached (1)",
+    "blocked_by": "max_positions",
+    "broker_calls_after_reject": 0
+  },
+  "dp07_risk_accept_paper_path": {
+    "approved": true,
+    "sizing": {
+      "notional_usdt": 1000.0
+    },
+    "broker_result": "PaperPosition",
+    "paper_position_opened": true,
+    "stop_and_tp_sourced_from_risk": true
+  },
+  "dp15_dashboard_read_only": {
+    "get_root": true,
+    "get_api_status": 200,
+    "post_responses": {
+      "/": 405,
+      "/api/status": 405,
+      "/api/order": 405,
+      "/api/risk": 405
+    },
+    "no_order_endpoint_get": 404,
+    "execution_control_endpoints": 0,
+    "risk_override_endpoints": 0,
+    "status_has_visibility_keys": true
+  },
+  "dp18_dashboard_failure_non_authoritative": {
+    "dashboard_stopped_then_runtime_ok": true,
+    "bounded_cycles": 2,
+    "bounded_false_success": 0,
+    "dashboard_state_reference_only": true
+  },
+  "dp09_dynamic_paper_only_boundary": {
+    "demo_completed_under_dynamic_block": true,
+    "real_broker_calls": 0,
+    "private_exchange_calls": 0,
+    "live_calls": 0,
+    "report_live_calls": 0,
+    "report_real_broker_calls": 0,
+    "report_private_exchange_calls": 0,
+    "paper_trades": 1,
+    "broker_calls": 1,
+    "realized_pnl": 242.82705154,
+    "false_success": 0
+  },
+  "dp13_stale_context_fails_closed": {
+    "raised": "AssetContextError",
+    "detail": "stale asset context: ts 1785585600000 older than 900000ms (N5)"
+  },
+  "dp13_pit_future_window_fails_closed": {
+    "raised": "AssetContextError",
+    "detail": "point-in-time violation: window_end_ts 1785585601000 > context ts 1785585600000"
+  },
+  "dp13_cross_run_artifact_fails_closed_at_construction": {
+    "raised": "ValidationError",
+    "detail": "1 validation error for AgentEvidence\n  Value error, trace.run_id must match evidence.run_id [type=value_error, input_value={'schema_version': 'ma-2-...pit', decision_id=None)}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.13/v/value_error"
+  },
+  "dp13_cross_run_artifact_fails_closed": {
+    "raised": "TraceMismatchError",
+    "detail": "evidence run does not match bus run"
+  }
+}

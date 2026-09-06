@@ -1,0 +1,61 @@
+{
+  "market_scans": 3,
+  "trade_proposals": 3,
+  "debates": 3,
+  "decisions_selected": 3,
+  "no_trade": 0,
+  "risk_accepts": 1,
+  "risk_rejects": 2,
+  "paper_trades": 1,
+  "closed_trades": 0,
+  "realized_pnl": 0.0,
+  "unrealized_pnl": 0.0,
+  "errors": [],
+  "broker_calls": 1,
+  "live_calls": 0,
+  "real_broker_calls": 0,
+  "private_exchange_calls": 0,
+  "false_success": 0,
+  "risk_calls": 3,
+  "provider": "ccxt-public-binance",
+  "decisions_outcomes": [
+    "SELECTED",
+    "SELECTED",
+    "SELECTED"
+  ],
+  "verifiers": [
+    "VERIFIED"
+  ],
+  "funnel": [
+    {
+      "asset": "BTC",
+      "cycle": 1,
+      "debate_outcomes": [
+        "SUPPORTED"
+      ],
+      "proposal_ids": [
+        "proposal:d1dd5c4c7281d2b01b7c8969"
+      ]
+    },
+    {
+      "asset": "ETH",
+      "cycle": 2,
+      "debate_outcomes": [
+        "SUPPORTED"
+      ],
+      "proposal_ids": [
+        "proposal:1a793c91902cb7cc8ec7ccac"
+      ]
+    },
+    {
+      "asset": "SOL",
+      "cycle": 3,
+      "debate_outcomes": [
+        "SUPPORTED"
+      ],
+      "proposal_ids": [
+        "proposal:37e8eac150cf933dd6b08c58"
+      ]
+    }
+  ]
+}
