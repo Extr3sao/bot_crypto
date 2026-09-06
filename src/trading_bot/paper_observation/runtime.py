@@ -1150,7 +1150,10 @@ def create_campaign_dashboard(runtime: CampaignRuntime, *, host: str = "127.0.0.
             server._thread.start()  # type: ignore[attr-defined]
 
         def stop(self) -> None:
-            server.shutdown()
+            # shutdown() blocks forever if serve_forever was never started.
+            thread = getattr(server, "_thread", None)
+            if thread is not None:
+                server.shutdown()
             server.server_close()
 
         @property
@@ -1225,6 +1228,8 @@ def main(argv: list[str] | None = None) -> int:
         runtime.new_campaign()
 
     server = create_campaign_dashboard(runtime) if args.dashboard else None
+    if server is not None:
+        server.start()
     try:
         result = runtime.run_bounded_session(cycles=args.cycles, interval_seconds=args.interval_seconds)
         print(json.dumps({"campaign_id": runtime.campaign_id, "session": result["session"]}, indent=2, default=str))
@@ -1240,8 +1245,7 @@ def main(argv: list[str] | None = None) -> int:
         return 0
     finally:
         if server is not None:
-            server.shutdown()
-            server.server_close()
+            server.stop()
 
 
 if __name__ == "__main__":
