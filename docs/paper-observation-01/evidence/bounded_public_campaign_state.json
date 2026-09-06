@@ -1,0 +1,258 @@
+{
+  "assets": [
+    "BTC",
+    "ETH",
+    "SOL"
+  ],
+  "by_asset": {
+    "BTC": {
+      "assessments": 1,
+      "evaluations": 0,
+      "losses": 0,
+      "net_pnl": 0.0,
+      "proposals": 0,
+      "risk_accepted": 0,
+      "selected": 0,
+      "trades": 0,
+      "wins": 0
+    },
+    "ETH": {
+      "assessments": 1,
+      "evaluations": 0,
+      "losses": 0,
+      "net_pnl": 0.0,
+      "proposals": 0,
+      "risk_accepted": 0,
+      "selected": 0,
+      "trades": 0,
+      "wins": 0
+    },
+    "SOL": {
+      "assessments": 1,
+      "evaluations": 0,
+      "losses": 0,
+      "net_pnl": 0.0,
+      "proposals": 2,
+      "risk_accepted": 0,
+      "selected": 1,
+      "trades": 0,
+      "wins": 0
+    }
+  },
+  "by_regime": {
+    "LOW_VOLATILITY": {
+      "assessments": 0,
+      "evaluations": 0,
+      "losses": 0,
+      "net_pnl": 0.0,
+      "proposals": 2,
+      "risk_accepted": 0,
+      "selected": 1,
+      "trades": 0,
+      "wins": 0
+    }
+  },
+  "by_strategy": {
+    "breakout": {
+      "assessments": 0,
+      "evaluations": 3,
+      "losses": 0,
+      "net_pnl": 0.0,
+      "proposals": 0,
+      "risk_accepted": 0,
+      "selected": 0,
+      "trades": 0,
+      "wins": 0
+    },
+    "mean_reversion": {
+      "assessments": 0,
+      "evaluations": 3,
+      "losses": 0,
+      "net_pnl": 0.0,
+      "proposals": 0,
+      "risk_accepted": 0,
+      "selected": 0,
+      "trades": 0,
+      "wins": 0
+    },
+    "momentum": {
+      "assessments": 0,
+      "evaluations": 3,
+      "losses": 0,
+      "net_pnl": 0.0,
+      "proposals": 0,
+      "risk_accepted": 0,
+      "selected": 0,
+      "trades": 0,
+      "wins": 0
+    },
+    "trend": {
+      "assessments": 0,
+      "evaluations": 3,
+      "losses": 0,
+      "net_pnl": 0.0,
+      "proposals": 0,
+      "risk_accepted": 0,
+      "selected": 0,
+      "trades": 0,
+      "wins": 0
+    },
+    "volatility": {
+      "assessments": 0,
+      "evaluations": 3,
+      "losses": 0,
+      "net_pnl": 0.0,
+      "proposals": 0,
+      "risk_accepted": 0,
+      "selected": 0,
+      "trades": 0,
+      "wins": 0
+    }
+  },
+  "campaign_id": "poc01-paper-observation-01-001",
+  "campaign_start": "2026-09-06T09:31:45.724385+00:00",
+  "campaign_status": "STOPPED",
+  "closed_trades": [],
+  "daily": {
+    "2026-09-06": {
+      "closes": 0,
+      "data_health_events": 0,
+      "debates": 1,
+      "false_success": 0,
+      "fees": 0.0,
+      "losses": 0,
+      "max_intraday_drawdown": 0.0,
+      "no_trade": 2,
+      "proposals": 2,
+      "realized_pnl": 0.0,
+      "risk_accepts": 0,
+      "risk_rejects": 0,
+      "runtime_errors": 0,
+      "scans": 3,
+      "selected": 1,
+      "trades": 0,
+      "unrealized_pnl": 0.0,
+      "valid": true,
+      "valid_duration_hours": 0.0,
+      "wins": 0
+    }
+  },
+  "data_health": {
+    "duplicate_candles": 0,
+    "future_events": 0,
+    "gaps": 0,
+    "provider_failures": 0,
+    "stale_events": 0
+  },
+  "debate_metrics": {
+    "confidence_decreased": 0,
+    "confidence_increased": 0,
+    "counter_evidence": 0,
+    "critiques": 6,
+    "debates": 1,
+    "decision_changed_after_debate": 0,
+    "material_dissent": 0,
+    "resolved": 1,
+    "revisions": 0,
+    "unresolved": 0,
+    "winner_changed_after_debate": 0
+  },
+  "decision_metrics": {
+    "blocked_unresolved_conflict": 0,
+    "candidate_count": 0,
+    "no_trade": 0,
+    "rejected": 1,
+    "revision_changed_winner": 0,
+    "selected": 1,
+    "selected_with_dissent": 0,
+    "verifier_rejected": 1,
+    "verifier_verified": 0
+  },
+  "equity": 10000.0,
+  "errors": [
+    "verifier_rejected_natural_output decision_id=decision:e878de49a042f31c checks=['selected_evidence_binding']"
+  ],
+  "fees": 0.0,
+  "funnel": {
+    "CRITIQUES": 1,
+    "DEBATES": 1,
+    "DEBATE_RESOLVED": 1,
+    "DECISION_REJECTED": 1,
+    "DECISION_SELECTED": 1,
+    "MARKET_SCANS": 3,
+    "NO_TRADE": 2,
+    "REVISIONS": 1,
+    "TRADE_PROPOSALS": 1,
+    "VERIFIER_REJECTED": 1
+  },
+  "heartbeat": {
+    "campaign_state": "STOPPED",
+    "last_persistence_success": "2026-09-06T09:33:23.148949+00:00",
+    "last_reconciliation_success": null,
+    "last_scan_time": "2026-09-06T09:31:51.303485+00:00",
+    "last_successful_decision_cycle": 3,
+    "provider_status": "OK",
+    "resumed_at": "2026-09-06T09:33:23.148949+00:00",
+    "stopped_at": "2026-09-06T09:33:23.148949+00:00"
+  },
+  "implementation_commit": "a282fcca2098",
+  "initial_equity": 10000.0,
+  "last_market_timestamp": 1788687000000,
+  "last_processed_decision_ids": [
+    "decision:e878de49a042f31c"
+  ],
+  "last_successful_scan_time": "2026-09-06T09:31:51.303485+00:00",
+  "open_positions": [],
+  "processed_data_fingerprints": [
+    "BTC:1788687000000",
+    "ETH:1788687000000",
+    "SOL:1788687000000"
+  ],
+  "processed_fill_ids": [],
+  "processed_order_ids": [],
+  "processed_proposal_ids": [],
+  "provider": "ccxt",
+  "realized_pnl": 0.0,
+  "reasons": {
+    "DUPLICATE_MARKET_EVENT": 6,
+    "NO_PROPOSAL": 2,
+    "VERIFIER_REJECTED_NATURAL_OUTPUT": 1
+  },
+  "risk_metrics": {
+    "accepts": 0,
+    "asset_exposure": {},
+    "avg_simultaneous_positions": 0.0,
+    "max_simultaneous_positions": 0,
+    "reason_distribution": {},
+    "rejection_rate": 0.0,
+    "rejects": 0
+  },
+  "run_id": "poc01-paper-observation-01-001-run1",
+  "runs": [
+    {
+      "cycles": 2,
+      "ended_at": "2026-09-06T09:31:57.425345+00:00",
+      "started_at": "2026-09-06T09:31:45.923479+00:00",
+      "stopped_early": false
+    },
+    {
+      "cycles": 1,
+      "ended_at": "2026-09-06T09:33:16.333737+00:00",
+      "started_at": "2026-09-06T09:33:10.852213+00:00",
+      "stopped_early": false
+    }
+  ],
+  "schema_version": "poc01-state-v1",
+  "strategies": [
+    "momentum",
+    "trend",
+    "breakout",
+    "mean_reversion",
+    "volatility"
+  ],
+  "trace_id": "trace-poc01-paper-observation-01-001",
+  "unrealized_pnl": 0.0,
+  "warnings": [
+    "upstream engine/verifier contract gap under multi-proposal agreement; certified modules frozen - surfaced, not repaired"
+  ]
+}

@@ -1,0 +1,32 @@
+2026-09-06 11:54:20 [info     ] risk.signal_approved           confidence=0.807777 notional=1000.0 side=buy symbol=BTC/USDT
+2026-09-06 11:54:20 [info     ] paper.fill_opened              entry_commission=0.5 notional=1000.0 price=117.34407065441073 quantity=8.521947418588312 side=buy symbol=BTC/USDT
+2026-09-06 11:54:20 [info     ] paper.fill_closed              entry_commission=0.5 equity=10598.6800479936 exit_commission=0.5 gross_pnl=599.6800479935988 net_pnl=598.6800479935988 reason=take_profit symbol=BTC/USDT
+2026-09-06 11:54:20 [info     ] risk.trade_recorded            consecutive_losses=0 daily_pnl=598.6800479935988 equity=10598.6800479936 pnl=598.6800479935988
+2026-09-06 11:54:20 [info     ] risk.signal_approved           confidence=0.807777 notional=1000.0 side=buy symbol=BTC/USDT
+2026-09-06 11:54:20 [info     ] paper.fill_opened              entry_commission=0.5 notional=1000.0 price=187.75051304705693 quantity=5.326217136617702 side=buy symbol=BTC/USDT
+PASS 01_certified_demo_path_reused — trading_bot.demo.paper_multi_agent.DecisionToCandidateAdapter
+PASS 02_paper_only
+PASS 03_durable_state
+PASS 04_atomic_persistence
+PASS 05_safe_stop
+PASS 06_safe_resume
+PASS 07_duplicate_prevention
+PASS 08_campaign_run_identity
+PASS 09_data_freshness
+PASS 10_decision_trace
+PASS 11_daily_reports
+PASS 12_campaign_report
+PASS 13_canonical_pnl
+PASS 14_asset_attribution
+PASS 15_strategy_attribution
+PASS 16_regime_attribution
+PASS 17_debate_metrics
+PASS 18_risk_metrics
+PASS 19_frequency_kpi_observational
+PASS 20_dashboard_read_only
+PASS 21_watchdog
+PASS 22_credentials_not_consumed
+PASS 23_real_broker_calls_zero
+PASS 24_live_calls_zero
+PASS 25_false_success_zero
+25/25 PASS
