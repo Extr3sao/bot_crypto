@@ -1,0 +1,52 @@
+{
+  "checkpoint": "FRESH-DATA-001-R1",
+  "data_cutoff": "2026-09-06T15:15:00+00:00",
+  "decision": "STOP_NO_EDGE",
+  "discovery_window": [
+    "2026-08-19T00:00:00+00:00",
+    "2026-08-30T04:20:59.999000+00:00"
+  ],
+  "g10_old_candidates_superseded": true,
+  "g11_new_split_hashed_immutable": "bbbaf275540d8e506a85f8e58513f48d0fc1888d56b86b1a5138a8b82175d4ff",
+  "g12_confirmation_inaccessible": true,
+  "g13_holdout_inaccessible": true,
+  "g14_deterministic_discovery": true,
+  "g15_legacy_impact": 0,
+  "g16_paper_impact": 0,
+  "g17_live_execution": 0,
+  "g1_full_pagination": {
+    "BTC/USDT:USDT": {
+      "candle_count": 5367,
+      "fetch_pages": 6,
+      "first_ts": 1787097600000,
+      "last_ts": 1788707400000
+    },
+    "ETH/USDT:USDT": {
+      "candle_count": 5367,
+      "fetch_pages": 6,
+      "first_ts": 1787097600000,
+      "last_ts": 1788707400000
+    },
+    "SOL/USDT:USDT": {
+      "candle_count": 5367,
+      "fetch_pages": 6,
+      "first_ts": 1787097600000,
+      "last_ts": 1788707400000
+    }
+  },
+  "g2_cutoff_is_last_closed_candle": true,
+  "g3_candles_per_symbol_gt_1000": true,
+  "g4_data_quality_pass": true,
+  "g5_edge_sanity_audit_pass": true,
+  "g6_r_independent_recomputation_pass": true,
+  "g7_fees_slippage_both_sides_pass": true,
+  "g8_no_lookahead_pass": true,
+  "g9_overlap_capital_semantics_pass": true,
+  "generated_at": "2026-09-06T15:24:46.043834+00:00",
+  "r0_supersede": {
+    "candidates": 9,
+    "preserved": true,
+    "status": "SUPERSEDED_INSUFFICIENT_DISCOVERY_WINDOW"
+  },
+  "total_fresh_days": 18.635
+}

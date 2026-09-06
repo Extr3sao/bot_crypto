@@ -1,0 +1,61 @@
+{
+  "data_cutoff": "2026-09-06T15:15:00+00:00",
+  "fresh_start_utc": "2026-08-19T00:00:00+00:00",
+  "manifest_sha256": "4a1882a7eb10b33c362badc81362c0b95ac8e98aac587251ee251c2ae46fd858",
+  "provider": "binanceusdm-public",
+  "schema_version": "fresh-data-manifest-v1",
+  "symbols": {
+    "BTC/USDT:USDT": {
+      "candles": 5367,
+      "quality": {
+        "before_start": 0,
+        "candles": 5367,
+        "duplicates": 0,
+        "first_open_ms": 1787097600000,
+        "gap_bars": 0,
+        "gaps": 0,
+        "last_close_ms": 1788707699999,
+        "non_positive_volume": 0,
+        "ohlc_violations": 0,
+        "passed": true,
+        "symbol": "BTC/USDT:USDT"
+      },
+      "sha256": "3418ec5dd270997d70873ded76b1c003072e4c099f61ae4fa890199f4ba8b04b"
+    },
+    "ETH/USDT:USDT": {
+      "candles": 5367,
+      "quality": {
+        "before_start": 0,
+        "candles": 5367,
+        "duplicates": 0,
+        "first_open_ms": 1787097600000,
+        "gap_bars": 0,
+        "gaps": 0,
+        "last_close_ms": 1788707699999,
+        "non_positive_volume": 0,
+        "ohlc_violations": 0,
+        "passed": true,
+        "symbol": "ETH/USDT:USDT"
+      },
+      "sha256": "e113cbdb8b1d35852b1a947c89944f1b1d3278d964c034175652699c3541a066"
+    },
+    "SOL/USDT:USDT": {
+      "candles": 5367,
+      "quality": {
+        "before_start": 0,
+        "candles": 5367,
+        "duplicates": 0,
+        "first_open_ms": 1787097600000,
+        "gap_bars": 0,
+        "gaps": 0,
+        "last_close_ms": 1788707699999,
+        "non_positive_volume": 0,
+        "ohlc_violations": 0,
+        "passed": true,
+        "symbol": "SOL/USDT:USDT"
+      },
+      "sha256": "0634be201038e863df0007c0f00e1f7c1b7bb8bcf1cd1a44189ff396130861b7"
+    }
+  },
+  "timeframe": "5m"
+}
