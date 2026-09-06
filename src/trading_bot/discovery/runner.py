@@ -20,6 +20,7 @@ from __future__ import annotations
 
 import itertools
 import json
+from collections.abc import Callable
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from typing import Any
@@ -273,6 +274,7 @@ def evaluate_combo_with_ledger(
     symbol: str,
     regime_filter: str,
     direction_filter: str,
+    bar_filter: Callable[[int], bool] | None = None,
 ) -> tuple[DiscoveryRun, TradeLedger]:
     """Evaluate one (family, symbol, regime, direction) combination.
 
@@ -282,6 +284,11 @@ def evaluate_combo_with_ledger(
     stop. Single-position policy: no overlapping trades; a trade that never
     exits inside the window is excluded. Returns the metrics plus the full
     TradeLedger for independent recomputation.
+
+    ``bar_filter`` (EDGE-RESEARCH-002): optional pre-registered predicate
+    over signal-bar timestamps (e.g. higher-timeframe trend context). It is
+    a CONDITIONING GATE only — it never alters prices, stops, costs, or
+    exit logic. ``None`` (the default) reproduces R1 behaviour exactly.
     """
 
     candles = accessor.read(symbol, "discovery")
@@ -324,6 +331,8 @@ def evaluate_combo_with_ledger(
         bar = candles[index]
         if bar.timestamp not in allowed_ts:
             continue
+        if bar_filter is not None and not bar_filter(bar.timestamp):
+            continue  # pre-registered conditioning gate (context only)
         history = candles[: index + 1]
         signals: list[AlphaSignal] = family.generate(history, {}, None)
         signal = next(
@@ -514,11 +523,18 @@ def run_discovery(
     regime_filters: tuple[str, ...] = ("ALL",),
     directions: tuple[str, ...] = ("LONG", "SHORT"),
     min_trades: int = 30,
+    bar_filter: Callable[[int], bool] | None = None,
+    run_instances: list[Any] | None = None,
 ) -> DiscoveryRunResult:
-    """Run the full pre-registered grid over the discovery slice only."""
+    """Run the pre-registered grid over the discovery slice only.
+
+    ``bar_filter`` / ``run_instances`` (EDGE-RESEARCH-002): optional
+    pre-registered conditioning gate and family-instance override. Defaults
+    reproduce R1 behaviour exactly (no filter, committed families).
+    """
     runs: list[DiscoveryRun] = []
     ledgers: list[TradeLedger] = []
-    instances = _family_instances()
+    instances = run_instances if run_instances is not None else _family_instances()
     for symbol in symbols:
         for inst in instances:
             for regime in regime_filters:
@@ -529,6 +545,7 @@ def run_discovery(
                         symbol=symbol,
                         regime_filter=regime,
                         direction_filter=direction,
+                        bar_filter=bar_filter,
                     )
                     runs.append(run)
                     ledgers.append(ledger)
