@@ -1,0 +1,111 @@
+{
+  "source_path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\his.zip",
+  "source_zip_sha256": "1390a125fad267028ebbf0e47e1c0618e9b5252f43a99c2218c31acdbd326e1f",
+  "files": [
+    {
+      "name": "BLOCKED_V57_R26_B.csv",
+      "zip_member": "fran_v57_r31_9_tp_volume_regime_diagnostic/fran_v57_r31_9_tp_volume_regime_diagnostic/salida_v57_r26_B/BLOCKED_V57_R26_B.csv",
+      "sha256": "f0bb7367588f7d14afcdaa8c60008b68f6a11e1b7a8fe67fe45928d09df3bcec",
+      "size_bytes": 1104421,
+      "metadata_only": false
+    },
+    {
+      "name": "BY_ASSET_V57_R26_B.csv",
+      "zip_member": "fran_v57_r31_9_tp_volume_regime_diagnostic/fran_v57_r31_9_tp_volume_regime_diagnostic/salida_v57_r26_B/BY_ASSET_V57_R26_B.csv",
+      "sha256": "3805ab872e9a4be577253b00528f9acc4040868b2cbe249d45e078d37f035558",
+      "size_bytes": 4563,
+      "metadata_only": false
+    },
+    {
+      "name": "BY_FAMILY_V57_R26_B.csv",
+      "zip_member": "fran_v57_r31_9_tp_volume_regime_diagnostic/fran_v57_r31_9_tp_volume_regime_diagnostic/salida_v57_r26_B/BY_FAMILY_V57_R26_B.csv",
+      "sha256": "1b915206767f341c2cab08214c518af00c5d13d77901794604ee2fec3cb9869c",
+      "size_bytes": 426,
+      "metadata_only": false
+    },
+    {
+      "name": "CAMPAIGN_FINAL_BCD.json",
+      "zip_member": "fran_v58_3_research_daemon_robust_installer/fran_v58_3_research_daemon_robust_installer/evidence/CAMPAIGN_FINAL_BCD.json",
+      "sha256": "9d7fabbb2b2ffd20726680b6c9c566419a4b1dd6fa1c95c2f5b9f043ca19c906",
+      "size_bytes": 61769,
+      "metadata_only": false
+    },
+    {
+      "name": "DAILY_COVERAGE_V57_R26_B.csv",
+      "zip_member": "fran_v57_r31_9_tp_volume_regime_diagnostic/fran_v57_r31_9_tp_volume_regime_diagnostic/salida_v57_r26_B/DAILY_COVERAGE_V57_R26_B.csv",
+      "sha256": "3caa7482cec0f6d83b64750963513e6f9d17539a0c874224b55b4c96321f8576",
+      "size_bytes": 4490,
+      "metadata_only": false
+    },
+    {
+      "name": "E_VOLATILITY_EXPANSION.json",
+      "zip_member": "fran_v58_3_research_daemon_robust_installer/fran_v58_3_research_daemon_robust_installer/campaigns/registered/E_VOLATILITY_EXPANSION.json",
+      "sha256": "3dd20ea97953057e62e2864ea164549f68d3d11d35246035ba74eb6833154a16",
+      "size_bytes": 379,
+      "metadata_only": true
+    },
+    {
+      "name": "FBS_BY_EXIT_REASON_V57_R26_B.csv",
+      "zip_member": "fran_v57_r31_9_tp_volume_regime_diagnostic/fran_v57_r31_9_tp_volume_regime_diagnostic/salida_v57_r26_B/FBS_BY_EXIT_REASON_V57_R26_B.csv",
+      "sha256": "3260b6b2d832c2b3fb2176b8cd8fa4c73a7e2d7cefbe1d09de864775d22bc66b",
+      "size_bytes": 573,
+      "metadata_only": false
+    },
+    {
+      "name": "F_LIQUIDITY_SWEEP_REVERSION.json",
+      "zip_member": "fran_v58_3_research_daemon_robust_installer/fran_v58_3_research_daemon_robust_installer/campaigns/registered/F_LIQUIDITY_SWEEP_REVERSION.json",
+      "sha256": "5e639c5610f1ae3d0b3d07fb38f56b336e6742fbfe6ca431cbe9eb4e1843f41f",
+      "size_bytes": 381,
+      "metadata_only": true
+    },
+    {
+      "name": "G_CROSS_SECTIONAL_MOMENTUM.json",
+      "zip_member": "fran_v58_3_research_daemon_robust_installer/fran_v58_3_research_daemon_robust_installer/campaigns/registered/G_CROSS_SECTIONAL_MOMENTUM.json",
+      "sha256": "a970e6588f227ff2e0947f846d193d7a366c4df8d4f12ee26ceefa29fa707111",
+      "size_bytes": 417,
+      "metadata_only": true
+    },
+    {
+      "name": "OPPORTUNITIES_V57_R26_B.csv",
+      "zip_member": "fran_v57_r31_9_tp_volume_regime_diagnostic/fran_v57_r31_9_tp_volume_regime_diagnostic/salida_v57_r26_B/OPPORTUNITIES_V57_R26_B.csv",
+      "sha256": "df7f30222fdda54de383a8ed6eca2cc7ca30673e93a4f5abfc945612623a4b61",
+      "size_bytes": 1271911,
+      "metadata_only": false
+    },
+    {
+      "name": "RESULTADOS_V57_R26_B.json",
+      "zip_member": "fran_v57_r31_9_tp_volume_regime_diagnostic/fran_v57_r31_9_tp_volume_regime_diagnostic/salida_v57_r26_B/RESULTADOS_V57_R26_B.json",
+      "sha256": "dae39fed9544c66b20b18d0c5d824ff09d0d8b358b89d8d80d2e21795093c91a",
+      "size_bytes": 22160,
+      "metadata_only": false
+    },
+    {
+      "name": "RESULTADOS_V57_R31_9_DIAGNOSTIC.json",
+      "zip_member": "fran_v57_r31_9_tp_volume_regime_diagnostic/fran_v57_r31_9_tp_volume_regime_diagnostic/salida_v57_r31_9_DIAGNOSTIC/RESULTADOS_V57_R31_9_DIAGNOSTIC.json",
+      "sha256": "3e328f1c39fa3ebd9eabc25aa21eae44a09ea39e805eb37e812b978ae4809cd1",
+      "size_bytes": 3673,
+      "metadata_only": false
+    },
+    {
+      "name": "TP_VOLUME_REGIME_CLASSIFICATION_V57_R31_9.csv",
+      "zip_member": "fran_v57_r31_9_tp_volume_regime_diagnostic/fran_v57_r31_9_tp_volume_regime_diagnostic/salida_v57_r31_9_DIAGNOSTIC/TP_VOLUME_REGIME_CLASSIFICATION_V57_R31_9.csv",
+      "sha256": "f9c65cf402bb2cbb041ff4dfab73988bf9497f3f1f944ca7ab75699f4a76a735",
+      "size_bytes": 329431,
+      "metadata_only": false
+    },
+    {
+      "name": "TRADES_V57_R26_B.csv",
+      "zip_member": "fran_v57_r31_9_tp_volume_regime_diagnostic/fran_v57_r31_9_tp_volume_regime_diagnostic/salida_v57_r26_B/TRADES_V57_R26_B.csv",
+      "sha256": "6b70269747cf763c6482f191731a5e657e34ce045ec55dbc96d9b6edf7e6c77d",
+      "size_bytes": 652260,
+      "metadata_only": false
+    },
+    {
+      "name": "research_registry.json",
+      "zip_member": "fran_v58_3_research_daemon_robust_installer/fran_v58_3_research_daemon_robust_installer/research_registry.json",
+      "sha256": "960c6ca2739a7b6e00cc44b506eee47568ff34595d7bd17ab6930f0cf5deaff3",
+      "size_bytes": 1147,
+      "metadata_only": false
+    }
+  ]
+}

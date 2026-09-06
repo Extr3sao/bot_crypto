@@ -1,0 +1,23 @@
+{
+  "trades": 2217,
+  "complete_days": 108,
+  "gross_pnl": 1923.3044633308157,
+  "fees": 5805.7574709909595,
+  "net_pnl": -3882.453007660144,
+  "pf": 0.8094220176749788,
+  "expectancy_r": -0.08665853223975328,
+  "by_asset_rows": 30,
+  "trades_by_family": {
+    "FBS": 451,
+    "TP": 1766,
+    "BR": 0,
+    "LSR": 0
+  },
+  "daily_rows": 108,
+  "opportunities": 24379,
+  "trades_recomputed": 2217,
+  "gross_pnl_recomputed": 1923.3044633308157,
+  "fees_recomputed": 5805.757470990947,
+  "net_pnl_recomputed": -3882.4530076601413,
+  "trades_by_symbol_count": 30
+}
