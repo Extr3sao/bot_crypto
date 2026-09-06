@@ -376,9 +376,16 @@ class DecisionEngine:
                     ),
                 ),
             )
-            supporting = tuple(
-                sorted({*final_proposal.evidence_refs, *facts.supporting_refs})
-            )
+            # ADR-MA-0009 (MODEL A / DEF-MA4-003 repair): the candidate's
+            # supporting evidence authority is the terminal proposal's
+            # evidence set (ADR-MA-0007 canonical identity, enforced by
+            # DecisionPackageVerifier-v3 selected_evidence_binding).
+            # Debate-derived corroboration remains in the DebateReport and
+            # the candidate's debate provenance fields (debate_id,
+            # debate_outcome, material_dissent, challenged_by).  Unioning
+            # agreement evidence here made the verifier reject natural
+            # multi-proposal agreement, so it is no longer done.
+            supporting = tuple(sorted(set(final_proposal.evidence_refs)))
             counter = tuple(sorted(set(facts.counter_refs)))
             candidates.append(
                 DecisionCandidate(

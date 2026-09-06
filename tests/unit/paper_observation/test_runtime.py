@@ -44,9 +44,10 @@ def make_runtime(
     name: str = "test-campaign",
     strategies: tuple[str, ...] = ("momentum",),
 ) -> CampaignRuntime:
-    """Single-family scenarios mirror the certified demo's deterministic fixture
-    design: one proposal per asset per cycle → SELECTED survives the frozen
-    verifier (the multi-family agreement gap is covered separately)."""
+    """Scenario design note: single-family scenarios give one proposal per
+    asset per cycle (deterministic SELECTED); the natural multi-family
+    agreement shape is covered by test_natural_agreement_reaches_risk_manager.
+    """
     return CampaignRuntime(output_dir=tmp_path, campaign_name=name, provider="fake", strategies=strategies)
 
 
@@ -293,12 +294,14 @@ def test_selected_verified_risk_accept_opens_paper_position(tmp_path: Path) -> N
     assert state.open_positions[0]["symbol"].endswith("/USDT")
 
 
-def test_verifier_rejection_on_natural_output_surfaced_as_defect(tmp_path: Path) -> None:
-    """§22: multi-proposal agreement triggers the frozen engine/verifier gap.
+def test_natural_agreement_reaches_risk_manager(tmp_path: Path) -> None:
+    """CP-MA4-POSTCERT-001 §15: after the DEF-MA4-003 repair (ADR-MA-0009
+    MODEL A), natural multi-strategy agreement (momentum+trend both LONG →
+    debate cross-support) must verify and the valid candidate must reach the
+    RiskManager instead of being blocked before risk by the verifier.
 
-    momentum+trend both LONG → debate cross-support → candidate evidence
-    superset → verifier REJECT. The campaign must stay fail-closed and record
-    it as an operational defect.
+    The campaign does NOT require Risk ACCEPT — only that the verifier no
+    longer incorrectly blocks naturally generated valid packages.
     """
     rt = make_runtime(tmp_path, strategies=("momentum", "trend"))
     state = make_state(rt)
@@ -308,9 +311,13 @@ def test_verifier_rejection_on_natural_output_surfaced_as_defect(tmp_path: Path)
     risk, broker = rt._rehydrate(state)
     rt.run_cycle(bars_by_asset=bars, risk=risk, broker=broker, now=now)
     # all three assets produce 2 same-direction proposals (momentum+trend LONG)
-    assert state.decision_metrics["verifier_rejected"] == 3
-    assert state.funnel.get("PAPER_OPEN", 0) == 0  # fail-closed: no order without VERIFIED
-    assert any("verifier_rejected_natural_output" in e for e in state.errors)
+    assert state.decision_metrics["verifier_rejected"] == 0
+    assert state.decision_metrics["verifier_verified"] == 3
+    assert state.funnel.get("CANDIDATE_ADMITTED", 0) == 3
+    # every valid package reached a RiskManager evaluation (accept or reject)
+    assert state.risk_metrics["accepts"] + state.risk_metrics["rejects"] == 3
+    # no natural verifier rejection surfaced as defect anymore
+    assert not any("verifier_rejected_natural_output" in e for e in state.errors)
 
 
 def test_risk_reject_has_zero_broker_side_effects(tmp_path: Path) -> None:

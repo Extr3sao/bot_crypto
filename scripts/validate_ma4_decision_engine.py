@@ -157,6 +157,7 @@ def _report(
     critiques: tuple[CritiqueRecord, ...] = (),
     revisions: tuple[ProposalRevision, ...] = (),
     debate_id: str = "debate:v",
+    supporting: tuple[str, ...] = (),
 ) -> DebateReport:
     counter = tuple(
         sorted({ref for c in critiques for ref in c.counter_evidence_refs})
@@ -169,6 +170,7 @@ def _report(
         participants=("critic-evidence", "critic-regime", "critic-counter-signal"),
         initial_claims=tuple(f"claim-{pid}" for pid in proposal_ids),
         critiques=critiques,
+        supporting_evidence=supporting,
         counter_evidence=counter,
         unique_supporting_evidence_count=0,
         unique_counter_evidence_count=len(set(counter)),
@@ -909,6 +911,163 @@ def check_authoritative_debate_blocker_rederivation() -> None:
     )
 
 
+def check_natural_multi_proposal_agreement_verified() -> None:
+    """CP-MA4-POSTCERT-001 / DEF-MA4-003 (ADR-MA-0009 MODEL A): a genuine
+    multi-proposal directional agreement (Momentum LONG + Trend LONG, same
+    asset/run/trace, debate SUPPORT spanning both evidence sets) must select
+    through the real engine path with the candidate's supporting evidence
+    bound to the terminal proposal authority — and must VERIFY.
+
+    Pre-repair, the engine unioned debate-derived supporting refs into the
+    candidate, making verifier-v3 selected_evidence_binding reject exactly
+    this natural shape (observed in POC01 fixture and public bounded runs).
+    """
+    momentum = _proposal("p:ag-m", asset="BTC", strategy="momentum", confidence=0.82)
+    trend = _proposal("p:ag-t", asset="BTC", strategy="trend", confidence=0.78)
+    props = {p.proposal_id: p for p in (momentum, trend)}
+    reg = _registry_for([momentum, trend])
+    # Debate corroboration legitimately spans both proposals' evidence.
+    agreement_report = _report(
+        ("p:ag-m", "p:ag-t"),
+        outcome=DebateOutcome.SUPPORTED,
+        debate_id="debate:agreement",
+        supporting=("ev:p:ag-m", "ev:p:ag-t"),
+    )
+    package = _decide(
+        [momentum, trend],
+        reports=[agreement_report],
+    )
+    selected_id = package.selected_candidate_id
+    selected = next(
+        (c for c in package.candidate_set if c.final_proposal_id == selected_id), None
+    )
+    authority_ok = (
+        selected is not None
+        and selected_id is not None
+        and frozenset(selected.supporting_evidence_refs)
+        == frozenset(props[selected_id].evidence_refs)
+        and selected.debate_outcome is DebateOutcome.SUPPORTED
+    )
+    verdict = DecisionPackageVerifier().verify(
+        package,
+        proposals=props,
+        evidence_registry=reg,
+        reports=[agreement_report],
+        now=CLOCK,
+    ).verdict.value
+    check(
+        "natural_multi_proposal_agreement_verified",
+        authority_ok and verdict == "VERIFIED",
+        f"selected={selected_id} authority_ok={authority_ok} verdict={verdict}",
+    )
+
+
+def check_unauthorized_agreement_evidence_rejected() -> None:
+    """CP-MA4-POSTCERT-001 §6: the repair must accept natural corroboration
+    WITHOUT accepting evidence injection. Starting from the valid agreement
+    package, three unauthorized wideness variants must all REJECT:
+    (a) unrelated registered evidence added to support,
+    (b) foreign-run evidence added to support,
+    (c) the other proposal's evidence promoted into the selected candidate's
+        support set (cross-proposal authority contamination).
+    """
+    momentum = _proposal("p:ag-m", asset="BTC", strategy="momentum", confidence=0.82)
+    trend = _proposal("p:ag-t", asset="BTC", strategy="trend", confidence=0.78)
+    props = {p.proposal_id: p for p in (momentum, trend)}
+    reg = _registry_for([momentum, trend])
+    agreement_report = _report(
+        ("p:ag-m", "p:ag-t"),
+        outcome=DebateOutcome.SUPPORTED,
+        debate_id="debate:agreement",
+        supporting=("ev:p:ag-m", "ev:p:ag-t"),
+    )
+    package = _decide(
+        [momentum, trend],
+        reports=[agreement_report],
+    )
+    selected_id = package.selected_candidate_id
+    assert selected_id is not None
+    verifier = DecisionPackageVerifier()
+
+    def widen(refs: tuple[str, ...], extra: str) -> DecisionPackage:
+        return package.model_copy(
+            update={
+                "candidate_set": tuple(
+                    c.model_copy(
+                        update={"supporting_evidence_refs": (*refs, extra)}
+                    )
+                    if c.final_proposal_id == selected_id
+                    else c
+                    for c in package.candidate_set
+                )
+            }
+        )
+
+    # (a) unrelated registered evidence.
+    reg["ev:unrelated"] = _evidence("ev:unrelated", "strategy-expert-momentum")
+    selected = next(
+        c for c in package.candidate_set if c.final_proposal_id == selected_id
+    )
+    unrelated_verdict = verifier.verify(
+        widen(selected.supporting_evidence_refs, "ev:unrelated"),
+        proposals=props,
+        evidence_registry=reg,
+        reports=[agreement_report],
+        now=CLOCK,
+    ).verdict.value
+
+    # (b) foreign-run evidence.
+    foreign = AgentEvidence(
+        schema_version=SCHEMA,
+        evidence_id="ev:foreign-ag",
+        run_id="other-run",
+        producer_agent_id="strategy-expert-trend",
+        evidence_type="strategy_signal",
+        source_ref="ctx:ev:foreign-ag",
+        claim_refs=("claim",),
+        observed_at=CLOCK,
+        available_at=CLOCK,
+        content_hash="a" * 64,
+        metadata=(),
+        trace=TraceContext(
+            run_id="other-run",
+            trace_id="other-trace",
+            correlation_id="other-corr",
+            causation_id="other-cause",
+        ),
+    )
+    reg["ev:foreign-ag"] = foreign
+    foreign_verdict = verifier.verify(
+        widen(selected.supporting_evidence_refs, "ev:foreign-ag"),
+        proposals=props,
+        evidence_registry=reg,
+        reports=[agreement_report],
+        now=CLOCK,
+    ).verdict.value
+
+    # (c) cross-proposal authority contamination.
+    other_ref = next(
+        ref
+        for ref in ("ev:p:ag-m", "ev:p:ag-t")
+        if ref not in selected.supporting_evidence_refs
+    )
+    cross_verdict = verifier.verify(
+        widen(selected.supporting_evidence_refs, other_ref),
+        proposals=props,
+        evidence_registry=reg,
+        reports=[agreement_report],
+        now=CLOCK,
+    ).verdict.value
+
+    check(
+        "unauthorized_agreement_evidence_rejected",
+        unrelated_verdict == "REJECTED"
+        and foreign_verdict == "REJECTED"
+        and cross_verdict == "REJECTED",
+        f"unrelated={unrelated_verdict} foreign={foreign_verdict} cross={cross_verdict}",
+    )
+
+
 def main() -> int:
     check_best_admissible_selected()
     check_higher_raw_score_cannot_bypass()
@@ -926,6 +1085,8 @@ def main() -> int:
     check_sibling_cross_run_contamination()
     check_verifier_cross_run_rejection()
     check_selected_evidence_authority_binding()
+    check_natural_multi_proposal_agreement_verified()
+    check_unauthorized_agreement_evidence_rejected()
     check_authoritative_debate_blocker_rederivation()
     check_execution_capability_zero()
     check_dynamic_boundary()
