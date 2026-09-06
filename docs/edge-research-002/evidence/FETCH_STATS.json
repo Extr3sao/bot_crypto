@@ -1,0 +1,20 @@
+{
+  "BTC/USDT:USDT": {
+    "candle_count": 5390,
+    "fetch_pages": 6,
+    "first_ts": 1787097600000,
+    "last_ts": 1788714300000
+  },
+  "ETH/USDT:USDT": {
+    "candle_count": 5390,
+    "fetch_pages": 6,
+    "first_ts": 1787097600000,
+    "last_ts": 1788714300000
+  },
+  "SOL/USDT:USDT": {
+    "candle_count": 5390,
+    "fetch_pages": 6,
+    "first_ts": 1787097600000,
+    "last_ts": 1788714300000
+  }
+}

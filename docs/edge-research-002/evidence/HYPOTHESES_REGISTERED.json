@@ -1,0 +1,169 @@
+{
+  "count": 6,
+  "hypotheses": [
+    {
+      "config_sha256": "617a0d873e5ad00b8748330d741129737be0e9947fb1463221402fd665a0d84e",
+      "economic_rationale": "5m execution filtered by 15m+1h trend alignment: higher timeframes carry the persistent directional drift that 5m noise obscures; trading only with both horizons rising conditions entries on the slower structure",
+      "exact_config": {
+        "context_rule": "last two CLOSED bucket closes rising on BOTH horizons",
+        "context_timeframes": [
+          "15m",
+          "1h"
+        ],
+        "execution_timeframe": "5m",
+        "resampling": "closed-bucket only; forming bucket never consulted"
+      },
+      "hypothesis_id": "H-A-MTF-CONTEXT",
+      "pre_registered_acceptance": {
+        "max_regime_concentration": 0.9,
+        "max_temporal_concentration": 0.5,
+        "min_net_expectancy_r": 0.05,
+        "min_net_pf": 1.15,
+        "min_positive_thirds": 2,
+        "min_stability_halves_positive": true,
+        "min_trades": 30,
+        "note": "identical to pre-registered R1 v2 criteria; no threshold was tuned",
+        "require_both_halves_nonempty": true
+      },
+      "registered_before_execution": true
+    },
+    {
+      "config_sha256": "22b3ad1e8253c07acd97bfea9b004771e9dabd54896ca32ab27e5a8eb30fbc8b",
+      "economic_rationale": "Extreme volatility degrades stop quality (gap risk, slippage) and dead volatility starves breakouts; the ex-ante mid ATR% tercile isolates tradeable conditions without tuning",
+      "exact_config": {
+        "atr_period_bars": 288,
+        "bucket": "mid tercile [q33, q66] of discovery-window ATR%",
+        "quantiles": [
+          0.33,
+          0.66
+        ]
+      },
+      "hypothesis_id": "H-B-VOL-MID-BUCKET",
+      "pre_registered_acceptance": {
+        "max_regime_concentration": 0.9,
+        "max_temporal_concentration": 0.5,
+        "min_net_expectancy_r": 0.05,
+        "min_net_pf": 1.15,
+        "min_positive_thirds": 2,
+        "min_stability_halves_positive": true,
+        "min_trades": 30,
+        "note": "identical to pre-registered R1 v2 criteria; no threshold was tuned",
+        "require_both_halves_nonempty": true
+      },
+      "registered_before_execution": true
+    },
+    {
+      "config_sha256": "518ef21d681d4f8b25419a15defaa12a6920aed94a26599473ab1b9454c53ab9",
+      "economic_rationale": "Short-horizon continuation strategies (momentum/trend/breakout) crowd the same signal; fading extreme 5m moves toward a mean is a structurally different return source",
+      "exact_config": {
+        "directions": [
+          "LONG",
+          "SHORT"
+        ],
+        "families": [
+          "mean_reversion"
+        ],
+        "note": "committed MeanReversion family, unmodified parameters"
+      },
+      "hypothesis_id": "H-C-MEAN-REVERSION-FADE",
+      "pre_registered_acceptance": {
+        "max_regime_concentration": 0.9,
+        "max_temporal_concentration": 0.5,
+        "min_net_expectancy_r": 0.05,
+        "min_net_pf": 1.15,
+        "min_positive_thirds": 2,
+        "min_stability_halves_positive": true,
+        "min_trades": 30,
+        "note": "identical to pre-registered R1 v2 criteria; no threshold was tuned",
+        "require_both_halves_nonempty": true
+      },
+      "registered_before_execution": true
+    },
+    {
+      "config_sha256": "ed4b4ac81accef6c26f182cb0806ea0f723a4c818df1d22089e53e1f004298ab",
+      "economic_rationale": "Breakout entry chases extended prices (poor location, stop distance); entering with the trend AFTER a pullback improves location and asymmetry without new parameters",
+      "exact_config": {
+        "directions": [
+          "LONG",
+          "SHORT"
+        ],
+        "families": [
+          "trend"
+        ],
+        "note": "committed Trend family; pullback expressed as a context gate",
+        "pullback_gate": "15m bucket close below its previous value (LONG side counters chase)"
+      },
+      "hypothesis_id": "H-D-TREND-PULLBACK",
+      "pre_registered_acceptance": {
+        "max_regime_concentration": 0.9,
+        "max_temporal_concentration": 0.5,
+        "min_net_expectancy_r": 0.05,
+        "min_net_pf": 1.15,
+        "min_positive_thirds": 2,
+        "min_stability_halves_positive": true,
+        "min_trades": 30,
+        "note": "identical to pre-registered R1 v2 criteria; no threshold was tuned",
+        "require_both_halves_nonempty": true
+      },
+      "registered_before_execution": true
+    },
+    {
+      "config_sha256": "5a98f88bd3710f5ea203381f32d725f2ce9e24053de14d96d5b79d6f50237509",
+      "economic_rationale": "Relative strength among BTC/ETH/SOL rotates capital toward the structurally stronger asset; ranks use closed bars only (PIT), computed per bar across the fixed trio",
+      "exact_config": {
+        "directions": [
+          "LONG"
+        ],
+        "rs_lookback_bars": 288,
+        "rule": "trade symbol only if its 24h close-to-close return ranks 1st of 3",
+        "universe": [
+          "BTC/USDT:USDT",
+          "ETH/USDT:USDT",
+          "SOL/USDT:USDT"
+        ]
+      },
+      "hypothesis_id": "H-E-CROSS-SECTIONAL-RS",
+      "pre_registered_acceptance": {
+        "max_regime_concentration": 0.9,
+        "max_temporal_concentration": 0.5,
+        "min_net_expectancy_r": 0.05,
+        "min_net_pf": 1.15,
+        "min_positive_thirds": 2,
+        "min_stability_halves_positive": true,
+        "min_trades": 30,
+        "note": "identical to pre-registered R1 v2 criteria; no threshold was tuned",
+        "require_both_halves_nonempty": true
+      },
+      "registered_before_execution": true
+    },
+    {
+      "config_sha256": "47ef44dc73b1b14200286c38058ad09caa60f477e8cce7362f4e1ddf78745507",
+      "economic_rationale": "Crypto liquidity concentrates in the US session overlay; session conditioning is a structural time-of-day hypothesis with ex-ante boundaries (no window search)",
+      "exact_config": {
+        "directions": [
+          "LONG",
+          "SHORT"
+        ],
+        "families": null,
+        "session_utc": [
+          13,
+          21
+        ]
+      },
+      "hypothesis_id": "H-F-US-SESSION",
+      "pre_registered_acceptance": {
+        "max_regime_concentration": 0.9,
+        "max_temporal_concentration": 0.5,
+        "min_net_expectancy_r": 0.05,
+        "min_net_pf": 1.15,
+        "min_positive_thirds": 2,
+        "min_stability_halves_positive": true,
+        "min_trades": 30,
+        "note": "identical to pre-registered R1 v2 criteria; no threshold was tuned",
+        "require_both_halves_nonempty": true
+      },
+      "registered_before_execution": true
+    }
+  ],
+  "schema_version": "edge-research-002-hypotheses-v1"
+}
