@@ -179,6 +179,9 @@ class DemoState:
     funnel: list[dict[str, Any]] = field(default_factory=list)
     warnings: list[str] = field(default_factory=list)
     errors: list[str] = field(default_factory=list)
+    # LEGACY-HIST-001: read-only/shadow historical evidence layer summary.
+    # Observability only; never consumed by scoring, risk or execution.
+    legacy_evidence: dict[str, Any] = field(default_factory=dict)
 
     def emit(self, event: str, **payload: Any) -> None:
         self.events.append(
@@ -229,6 +232,7 @@ class DemoState:
             "false_success": self.false_success,
             "decisions": list(self.decisions),
             "funnel": list(self.funnel),
+            "legacy_evidence": dict(self.legacy_evidence),
             "events": list(self.events),
             "warnings": list(self.warnings),
             "errors": list(self.errors),
@@ -562,6 +566,45 @@ def _reconcile(
         state.false_success += 1
 
 
+def _attach_legacy_evidence_summary(state: "DemoState") -> None:
+    """LEGACY-HIST-001: attach the read-only legacy evidence layer summary.
+
+    Shadow-only: the summary is observability metadata for reports/dashboard.
+    It is never read by MetaRanker, risk, PaperBroker or any execution path,
+    and ingest failures never affect the run (best-effort by design).
+    """
+    try:
+        from trading_bot.legacy_evidence import (
+            LegacyEvidenceBuilder,
+            LegacyEvidenceIngester,
+        )
+
+        ingester = LegacyEvidenceIngester()
+        store, _report = LegacyEvidenceBuilder(
+            ingester, "reports/legacy-hist-001/flat"
+        ).build()
+        state.legacy_evidence = {
+            "enabled": True,
+            "mode": "SHADOW_ONLY",
+            "source_system": "FRAN_V5_LEGACY",
+            "source_zip_sha256": ingester.source_sha256(),
+            "consumed_development_period": True,
+            "record_count": len(store),
+            "catalogued_symbols": store.catalogued_symbols(),
+            "eligible_for_context": True,
+            "eligible_for_training": False,
+            "eligible_for_candidate_promotion": False,
+            "eligible_for_confirmation": False,
+            "can_affect_execution": False,
+        }
+    except Exception as exc:  # noqa: BLE001 - layer must never break trading
+        state.legacy_evidence = {
+            "enabled": False,
+            "mode": "SHADOW_ONLY",
+            "error": f"legacy evidence layer unavailable: {exc}",
+        }
+
+
 def _write_reports(state: DemoState, output_dir: Path) -> DemoRun:
     output_dir.mkdir(parents=True, exist_ok=True)
     report_json = output_dir / "RUN_REPORT.json"
@@ -699,6 +742,7 @@ def run_fixture_demo(
     _reconcile(state, broker, risk, {"SOL/USDT": 105.0, "BTC/USDT": 100.0})
     state.open_positions = len(broker.positions)
     state.emit("paper.session.completed", closed_trades=state.closed_trades)
+    _attach_legacy_evidence_summary(state)
     return _write_reports(state, Path(output_dir))
 
 
@@ -803,6 +847,7 @@ def run_real_market_demo(
             state.emit("market.provider_error", asset=asset, error=str(exc))
     state.open_positions = len(broker.positions)
     state.emit("paper.session.completed", closed_trades=state.closed_trades)
+    _attach_legacy_evidence_summary(state)
     return _write_reports(state, Path(output_dir))
 
 
