@@ -12,6 +12,7 @@ from __future__ import annotations
 import hashlib
 import itertools
 import json
+from collections.abc import Callable
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from pathlib import Path
@@ -84,6 +85,7 @@ class SymbolDataset:
     candles: tuple[OHLCV, ...]
     quality: DataQualityReport
     sha256: str
+    fetch_pages: int = 0  # number of paginated requests used (0 = synthetic fixture)
 
 
 def validate_quality(symbol: str, candles: list[OHLCV]) -> DataQualityReport:
@@ -132,38 +134,78 @@ def _ms(moment: datetime) -> int:
 class DatasetFetcher:
     """Fetches closed 5m futures candles for the current canonical universe.
 
+    Full-history pagination (FRESH-DATA-001-R1): the loop advances
+    ``since = last_timestamp + timeframe`` until the exchange reports no
+    further closed candles; a short page is NEVER treated as exhaustion
+    (Binance returns fewer rows than requested on the tail and on interim
+    pages — FRESH-DATA-001 truncated at 1000 bars because of exactly that).
+    Page continuity, monotonic timestamps and closed-candle-only semantics
+    are validated; quality failures raise (no silent imputation).
+
     Public endpoints only: no API key, no secret, no private call.
     """
 
-    def __init__(self, symbols: tuple[str, ...] = ("BTC/USDT:USDT", "ETH/USDT:USDT", "SOL/USDT:USDT")) -> None:
-        self.symbols = symbols
+    PAGE_LIMIT = 1000  # Binance futures candles per request (exchange cap)
 
-    def fetch(self, *, max_bars_per_symbol: int = 12000) -> dict[str, SymbolDataset]:
+    def __init__(
+        self,
+        symbols: tuple[str, ...] = ("BTC/USDT:USDT", "ETH/USDT:USDT", "SOL/USDT:USDT"),
+        *,
+        exchange_factory: Callable[[], Any] | None = None,
+    ) -> None:
+        self.symbols = symbols
+        self._exchange_factory = exchange_factory
+
+    def _make_exchange(self) -> Any:
+        if self._exchange_factory is not None:
+            return self._exchange_factory()
         import ccxt
 
-        exchange = ccxt.binanceusdm({"enableRateLimit": True})
+        return ccxt.binanceusdm({"enableRateLimit": True})
+
+    def fetch(self, *, max_bars_per_symbol: int = 60_000) -> dict[str, SymbolDataset]:
+        exchange = self._make_exchange()
         try:
             since = _ms(FRESH_START_UTC)
+            now_ms = _ms(datetime.now(tz=UTC))
             datasets: dict[str, SymbolDataset] = {}
             for symbol in self.symbols:
                 rows: list[list[Any]] = []
                 cursor = since
+                pages = 0
                 while len(rows) < max_bars_per_symbol:
                     batch = exchange.fetch_ohlcv(
-                        symbol, timeframe="5m", since=cursor, limit=1500
+                        symbol, timeframe="5m", since=cursor, limit=self.PAGE_LIMIT
                     )
                     if not batch:
                         break
+                    pages += 1
+                    # Page continuity + monotonic timestamps (fail loud).
+                    last_ts = rows[-1][0] if rows else None
+                    batch_first = int(batch[0][0])
+                    if last_ts is not None:
+                        if batch_first < last_ts + TIMEFRAME_MS:
+                            raise ValueError(
+                                f"pagination overlap/dupe for {symbol}: "
+                                f"first={batch_first} last={last_ts}"
+                            )
+                        if batch_first > last_ts + TIMEFRAME_MS:
+                            raise ValueError(
+                                f"pagination gap (missing page) for {symbol}: "
+                                f"first={batch_first} expected={last_ts + TIMEFRAME_MS}"
+                            )
+                    stamps = [int(r[0]) for r in batch]
+                    if any(b <= a for a, b in itertools.pairwise(stamps)):
+                        raise ValueError(f"non-monotonic timestamps in page for {symbol}")
                     rows.extend(batch)
-                    next_cursor = batch[-1][0] + TIMEFRAME_MS
+                    next_cursor = stamps[-1] + TIMEFRAME_MS
                     if next_cursor <= cursor:
                         break
                     cursor = next_cursor
-                    if len(batch) < 1500:
-                        break
+                    # NOTE: no short-page early exit — a short batch is not
+                    # exhaustion; continue until an empty batch arrives.
                 # Drop candles whose close_time is still open OR in the future
                 # (PIT: only fully closed candles).
-                now_ms = _ms(datetime.now(tz=UTC))
                 closed = [
                     OHLCV(
                         symbol=symbol,
@@ -189,6 +231,7 @@ class DatasetFetcher:
                     candles=tuple(ordered),
                     quality=quality,
                     sha256=sha256_candles(ordered),
+                    fetch_pages=pages,
                 )
             return datasets
         finally:
@@ -231,7 +274,7 @@ def build_data_manifest(datasets: dict[str, SymbolDataset], *, data_cutoff: date
 
 
 def load_or_fetch(
-    cache_dir: Path | str, *, max_bars_per_symbol: int = 12000
+    cache_dir: Path | str, *, max_bars_per_symbol: int = 60_000
 ) -> tuple[dict[str, SymbolDataset], dict[str, Any]]:
     """Fetch (or reuse) the dataset; persist the manifest next to the cache.
 
@@ -248,3 +291,16 @@ def load_or_fetch(
     manifest = build_data_manifest(datasets, data_cutoff=data_cutoff)
     manifest_path.write_text(json.dumps(manifest, indent=2, sort_keys=True), encoding="utf-8")
     return datasets, manifest
+
+
+def fetch_stats_of(datasets: dict[str, SymbolDataset]) -> dict[str, dict[str, Any]]:
+    """FETCH_PAGES / FIRST_TS / LAST_TS / CANDLE_COUNT per symbol (R1 gate G1)."""
+    return {
+        sym: {
+            "fetch_pages": ds.fetch_pages,
+            "first_ts": ds.candles[0].timestamp if ds.candles else None,
+            "last_ts": ds.candles[-1].timestamp if ds.candles else None,
+            "candle_count": ds.quality.candles,
+        }
+        for sym, ds in sorted(datasets.items())
+    }
