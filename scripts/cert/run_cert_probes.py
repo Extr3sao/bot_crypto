@@ -9,7 +9,6 @@ writes only under reports/ (gitignored).
 from __future__ import annotations
 
 import ast
-import importlib
 import io
 import json
 import sys
@@ -34,7 +33,7 @@ def record(name: str, **data: Any) -> None:
 def probe(name: str, fn: Any) -> Any:
     try:
         result = fn()
-    except Exception as exc:  # noqa: BLE001 - probes record raised errors as evidence
+    except Exception as exc:
         record(name, raised=type(exc).__name__, detail=str(exc)[:300])
         return None
     record(name, **result) if isinstance(result, dict) else record(name, result=str(result))
@@ -53,7 +52,6 @@ RISK_SRC = (ROOT / "src/trading_bot/risk/manager.py").read_text(encoding="utf-8"
 def static_audits() -> None:
     tree = ast.parse(DEMO_SRC)
     classes = [n.name for n in ast.walk(tree) if isinstance(n, ast.ClassDef)]
-    functions = [n.name for n in ast.walk(tree) if isinstance(n, ast.FunctionDef)]
     imports = sorted(
         {
             node.module
@@ -391,8 +389,10 @@ def dynamic_block_probes() -> None:
 
 def pit_probes() -> None:
     from trading_bot.multi_agent.bus import AgentBus
-    from trading_bot.multi_agent.contracts import AgentEvidence, AgentMessage, AgentMessageType, TraceContext
-    from trading_bot.multi_agent.opportunity import OpportunityBoard
+    from trading_bot.multi_agent.contracts import (
+        AgentEvidence,
+        TraceContext,
+    )
     from trading_bot.research.asset_intelligence.registry import CryptoAssetAgentRegistry
 
     trace = TraceContext(run_id="pit-run", trace_id="pit-trace", correlation_id="pit", causation_id="pit")
@@ -417,8 +417,8 @@ def pit_probes() -> None:
     probe("dp13_pit_future_window_fails_closed", pit_violation)
 
     # Cross-run artifact
-    from trading_bot.multi_agent.registry import AgentRegistry, CapabilityRegistry
     from trading_bot.multi_agent import register_swarm_agents
+    from trading_bot.multi_agent.registry import AgentRegistry, CapabilityRegistry
 
     agents = AgentRegistry()
     caps = CapabilityRegistry()
