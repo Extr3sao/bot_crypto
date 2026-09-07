@@ -1,0 +1,92 @@
+{
+  "schema_version": "asset-incremental-analysis-v1",
+  "purpose": "OBSERVATIONAL Track-D evidence; no selection/promotion",
+  "analysis_window": [
+    "2026-08-31T17:00:00+00:00",
+    "2026-09-07T17:00:00+00:00"
+  ],
+  "window_overlap_disclosure": "Overlaps previously defined EDGE-RESEARCH-002 confirmation/holdout and R1 holdout ranges. No EDGE/R1 candidate evaluated/consulted; no promotion decision produced. EDGE confirmation remains BLOCKED.",
+  "occupancy_proxy_hours": 2.0,
+  "portfolio_baseline": {
+    "BTC/USDT:USDT": {
+      "signals_total": 281,
+      "signals_per_day": 40.14
+    },
+    "ETH/USDT:USDT": {
+      "signals_total": 305,
+      "signals_per_day": 43.57
+    },
+    "SOL/USDT:USDT": {
+      "signals_total": 323,
+      "signals_per_day": 46.14
+    }
+  },
+  "candidates": {
+    "XRP/USDT:USDT": {
+      "analysis_window": [
+        "2026-08-31T17:00:00+00:00",
+        "2026-09-07T17:00:00+00:00"
+      ],
+      "signals_total": 314,
+      "signals_per_day": 44.86,
+      "by_family": {
+        "momentum-LONG": 39,
+        "momentum-SHORT": 40,
+        "trend-LONG": 4,
+        "trend-SHORT": 4,
+        "breakout-LONG": 25,
+        "breakout-SHORT": 23,
+        "mean_reversion-LONG": 24,
+        "mean_reversion-SHORT": 31,
+        "ema_crossover-LONG": 62,
+        "ema_crossover-SHORT": 62
+      },
+      "overlap_with_portfolio_pct": 83.8,
+      "incremental_outside_open_positions_pct": 0.0,
+      "incremental_no_nearby_signal_pct": 0.0,
+      "return_correlation_5m": {
+        "BTC/USDT:USDT": 0.6629,
+        "ETH/USDT:USDT": 0.6755,
+        "SOL/USDT:USDT": 0.7142
+      },
+      "realized_vol_5m_pct": 0.3269,
+      "direction_concentration": {
+        "LONG": 154,
+        "SHORT": 160
+      }
+    },
+    "DOGE/USDT:USDT": {
+      "analysis_window": [
+        "2026-08-31T17:00:00+00:00",
+        "2026-09-07T17:00:00+00:00"
+      ],
+      "signals_total": 319,
+      "signals_per_day": 45.57,
+      "by_family": {
+        "momentum-LONG": 39,
+        "momentum-SHORT": 37,
+        "trend-LONG": 6,
+        "trend-SHORT": 3,
+        "breakout-LONG": 23,
+        "breakout-SHORT": 29,
+        "mean_reversion-LONG": 29,
+        "mean_reversion-SHORT": 30,
+        "ema_crossover-LONG": 67,
+        "ema_crossover-SHORT": 56
+      },
+      "overlap_with_portfolio_pct": 80.3,
+      "incremental_outside_open_positions_pct": 0.0,
+      "incremental_no_nearby_signal_pct": 0.0,
+      "return_correlation_5m": {
+        "BTC/USDT:USDT": 0.693,
+        "ETH/USDT:USDT": 0.7198,
+        "SOL/USDT:USDT": 0.767
+      },
+      "realized_vol_5m_pct": 0.2857,
+      "direction_concentration": {
+        "LONG": 164,
+        "SHORT": 155
+      }
+    }
+  }
+}
