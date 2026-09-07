@@ -13,6 +13,8 @@ production-ready).
 from __future__ import annotations
 
 import json
+import subprocess
+import sys
 import threading
 import time
 import urllib.error
@@ -155,6 +157,26 @@ def main() -> int:
             if (s.startswith("import ") or s.startswith("from ")) and any(f in s for f in forbidden):
                 clean2 = False
         _check("webui_no_authority_imports", clean2)
+        # 16 DEF-FE-003: package import must be side-effect free; -m execution warning-free
+        proc = subprocess.run(
+            [sys.executable, "-c",
+             "import sys, trading_bot.frontend_observability as p;"
+             "assert 'trading_bot.frontend_observability.server' not in sys.modules, 'server preloaded';"
+             "assert 'trading_bot.frontend_observability.projections' not in sys.modules, 'projections preloaded';"],
+            capture_output=True, text=True, timeout=120, check=False,
+        )
+        _check("no_premature_server_import", proc.returncode == 0, proc.stderr.strip()[:200])
+        help_run = subprocess.run(
+            [sys.executable, "-m", "trading_bot.frontend_observability.server", "--help"],
+            capture_output=True, text=True, timeout=120, check=False,
+        )
+        _check(
+            "module_help_warning_free",
+            help_run.returncode == 0
+            and "RuntimeWarning" not in help_run.stderr
+            and "--reports-root" in help_run.stdout,
+            help_run.stderr.strip()[:200],
+        )
     finally:
         server.shutdown()
         server.server_close()

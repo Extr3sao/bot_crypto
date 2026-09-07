@@ -218,11 +218,23 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="read-only frontend observability server")
     parser.add_argument("--port", type=int, default=DEFAULT_PORT)
     parser.add_argument("--host", default="127.0.0.1")
+    parser.add_argument(
+        "--reports-root",
+        "--campaign-root",
+        dest="reports_root",
+        default=None,
+        metavar="PATH",
+        help="explicit read-only artifacts root (default: positional discovery of <repo>/reports; "
+        "point this at the campaign worktree's reports/ when serving from a different worktree)",
+    )
     args = parser.parse_args()
+    if args.reports_root:
+        projections.set_reports_root(args.reports_root)
     server = create_server(args.host, args.port)
     thread = threading.Thread(target=server.serve_forever, daemon=True)
     thread.start()
     print(f"frontend observability (read-only): http://{args.host}:{server.server_port}/  — Ctrl+C to stop")
+    print(f"artifacts root: {projections.reports_root()}")
     try:
         while True:
             threading.Event().wait(3600)

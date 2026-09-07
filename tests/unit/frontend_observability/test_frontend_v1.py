@@ -7,6 +7,8 @@ in a committed runtime artifact and the server must reject all mutations.
 from __future__ import annotations
 
 import json
+import subprocess
+import sys
 import threading
 import urllib.error
 import urllib.request
@@ -264,3 +266,63 @@ def test_daily_route_json(server: ThreadingHTTPServer) -> None:
         assert resp.status == 200
         payload = json.loads(resp.read())
     assert "days" in payload
+
+
+# ----------------------------------------------------------------------
+# DEF-FE-003 (premature server import) + DEF-FE-004 (explicit artifacts root)
+# ----------------------------------------------------------------------
+
+
+def _subprocess(*args: str, code: str | None = None) -> subprocess.CompletedProcess[str]:
+    cmd = [sys.executable, *(["-c", code] if code else args)]
+    return subprocess.run(cmd, capture_output=True, text=True, timeout=120, check=False)
+
+
+def test_package_import_is_side_effect_free() -> None:
+    """DEF-FE-003: importing the package must not preload server/projections."""
+    proc = _subprocess(
+        code=(
+            "import sys, trading_bot.frontend_observability as p;"
+            "assert 'trading_bot.frontend_observability.server' not in sys.modules, 'server preloaded';"
+            "assert 'trading_bot.frontend_observability.projections' not in sys.modules, 'projections preloaded';"
+            "print('OK')"
+        )
+    )
+    assert proc.returncode == 0, proc.stderr
+    assert "OK" in proc.stdout
+
+
+def test_module_execution_no_runtime_warning() -> None:
+    """`python -m ...server --help` must be warning-free and expose --reports-root."""
+    proc = _subprocess("-m", "trading_bot.frontend_observability.server", "--help")
+    assert proc.returncode == 0, proc.stderr
+    assert "RuntimeWarning" not in proc.stderr, proc.stderr
+    assert "--reports-root" in proc.stdout
+
+
+def test_lazy_package_reexports_resolve() -> None:
+    import trading_bot.frontend_observability as pkg
+
+    assert callable(pkg.create_server)
+    assert callable(pkg.main)
+    assert callable(pkg.overview)
+    assert "create_server" in dir(pkg)
+    with pytest.raises(AttributeError):
+        _ = pkg.definitely_not_an_export  # intentional attribute probe
+
+
+def test_set_reports_root_redirects_projections(tmp_path) -> None:
+    camp = tmp_path / "paper-observation-01" / "poc01-x"
+    camp.mkdir(parents=True)
+    (camp / "CAMPAIGN_STATE.json").write_text(json.dumps(_CAMPAIGN_STATE), encoding="utf-8")
+    original = projections.reports_root()
+    try:
+        projections.set_reports_root(tmp_path)
+        assert projections.reports_root() == tmp_path.resolve()
+        payload = projections.overview()
+        assert payload["campaign_id"] == "poc01-test-001"
+        assert payload["reports_root"] == str(tmp_path.resolve())
+        names = [r["name"] for r in projections.report_list()]
+        assert "CAMPAIGN_STATE.json" in names
+    finally:
+        projections.set_reports_root(original)

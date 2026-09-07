@@ -21,6 +21,25 @@ _DEMO_REPORT = REPORTS / "demo-paper-01" / "RUN_REPORT.json"
 _DEMO_STATUS = REPORTS / "demo-paper-01" / "DASHBOARD_STATUS.json"
 
 
+def reports_root() -> Path:
+    """Current read-only artifacts root (explicit override or discovered)."""
+    return REPORTS
+
+
+def set_reports_root(root: Path | str) -> None:
+    """Point every projection at an explicit reports root (read-only).
+
+    DEF-FE-004 remedy: default discovery is positional (``reports/`` next to
+    the *code*), which silently shows stale mirrored artifacts when the
+    server runs from a different worktree than the campaign runtime.  This
+    only changes where artifacts are READ from; nothing is ever written.
+    """
+    global REPORTS, _DEMO_REPORT, _DEMO_STATUS
+    REPORTS = Path(root).resolve()
+    _DEMO_REPORT = REPORTS / "demo-paper-01" / "RUN_REPORT.json"
+    _DEMO_STATUS = REPORTS / "demo-paper-01" / "DASHBOARD_STATUS.json"
+
+
 def _load(path: Path) -> dict[str, Any] | None:
     try:
         with open(path, encoding="utf-8") as fh:
@@ -95,6 +114,7 @@ def overview() -> dict[str, Any]:
         "mode": "PAPER",
         "data": "REAL_PUBLIC_MARKET" if state.get("provider") == "ccxt" else "DEMO_FIXTURE",
         "live_disabled": True,
+        "reports_root": str(REPORTS),
         "campaign_id": state.get("campaign_id"),
         "campaign_state": state.get("campaign_status"),
         "campaign_start": state.get("campaign_start"),
@@ -393,6 +413,14 @@ def trades() -> dict[str, Any]:
 # --------------------------------------------------------------------------
 
 
+def _display_path(p: Path) -> str:
+    """Repo-relative display path when possible, absolute otherwise."""
+    try:
+        return str(p.relative_to(REPO_ROOT))
+    except ValueError:
+        return str(p)
+
+
 def report_list() -> list[dict[str, Any]]:
     root = campaign_root()
     out: list[dict[str, Any]] = []
@@ -405,14 +433,14 @@ def report_list() -> list[dict[str, Any]]:
                     {
                         "campaign_id": d.name,
                         "name": f.name,
-                        "path": str(f.relative_to(REPO_ROOT)),
+                        "path": _display_path(f),
                         "bytes": f.stat().st_size,
                     }
                 )
     demo = REPORTS / "demo-paper-01"
     if demo.is_dir():
         for f in sorted(demo.glob("RUN_REPORT.*")):
-            out.append({"campaign_id": "demo-paper-01", "name": f.name, "path": str(f.relative_to(REPO_ROOT)), "bytes": f.stat().st_size})
+            out.append({"campaign_id": "demo-paper-01", "name": f.name, "path": _display_path(f), "bytes": f.stat().st_size})
     return out
 
 
@@ -428,7 +456,7 @@ def report_content(rel_path: str) -> dict[str, Any]:
         text = target.read_text(encoding="utf-8")
     except OSError:
         return {"error": "unreadable"}
-    return {"path": str(target.relative_to(REPO_ROOT)), "content": text[:200_000]}
+    return {"path": _display_path(target), "content": text[:200_000]}
 
 
 # --------------------------------------------------------------------------
