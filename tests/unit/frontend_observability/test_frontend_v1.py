@@ -384,6 +384,41 @@ def test_trades_of_robust() -> None:
     assert projections._trades_of({}) == 0
 
 
+def test_completed_valid_days_semantics() -> None:
+    """DEF-POC01-OBS-005: burn-in and partial days never count (A2/A3)."""
+    from datetime import UTC, datetime, timedelta
+
+    from trading_bot.frontend_observability.projections import completed_valid_days
+
+    today = datetime.now(UTC).date()
+    day = lambda off: (today + timedelta(days=off)).isoformat()  # noqa: E731
+    start = (today - timedelta(days=3)).isoformat() + "T00:00:00+00:00"
+    daily = {
+        day(-3): {"valid": True, "trades": 3, "runtime_errors": 0, "false_success": 0},  # burn-in
+        day(-2): {"valid": True, "trades": 3, "runtime_errors": 0, "false_success": 0},  # finalized counted
+        day(-1): {"valid": True, "trades": 9, "runtime_errors": 2, "false_success": 0},  # invalid
+        day(0): {"valid": True, "trades": 5, "runtime_errors": 0, "false_success": 0},  # partial
+    }
+    r = completed_valid_days(daily, start)
+    assert r["burn_in_included_in_kpi"] is False
+    assert r["completed_valid_days"] == 1  # only day(-2)
+    assert r["days_ge_3"] == 1
+    assert r["percent_days_ge_3"] == 100.0
+    by_date = {d["date"]: d for d in r["days"]}
+    assert by_date[day(-3)]["counted"] is False  # burn-in excluded
+    assert by_date[day(-1)]["counts_toward_kpi"] is False  # validity contract
+    assert by_date[day(0)]["finalized"] is False  # partial day never counts
+
+
+def test_overview_valid_days_uses_completed_semantics() -> None:
+    """overview() must not count observed dates (raw runtime semantics = 2)."""
+    o = projections.overview()
+    raw = len(o["day_frequency"]["days"])  # observed dates
+    assert o["campaign_progress"]["valid_days"] <= raw
+    assert o["day_frequency"]["burn_in_included_in_kpi"] is False
+    assert o["campaign_progress"]["valid_days"] == o["day_frequency"]["completed_valid_days"]
+
+
 def test_daily_series_without_state(monkeypatch, tmp_path) -> None:
     monkeypatch.setattr(projections, "_campaign_state_path", lambda: tmp_path / "missing.json")
     payload = projections.daily_series()

@@ -168,3 +168,35 @@ documented above.
 more robust for paths containing `+` or `%` outside the jail's
 charset). Not exploitable across the jail boundary; recorded for a
 future hygiene pass. No runtime authority involved.
+
+---
+
+## DEF-POC01-OBS-005 — VALID_DAY_SEMANTICS
+
+**Status:** REGISTERED 2026-09-07 · repaired in observation plane only (commit on
+`feat/frontend-observability-v1`); runtime untouched (frozen).
+
+**Evidence (live, 2026-09-07T16:10Z):** `/api/campaign` reports
+`valid_days=2` and `frequency.days_ge_3=1` (`trades_by_day={'2026-09-06': 3,
+'2026-09-07': 0}`) while:
+- `2026-09-06` is the BURN_IN launch day (never counts toward the KPI);
+- `2026-09-07` (D1) had not rolled over at observation time (partial day);
+- the campaign window starts 2026-09-07, so **COMPLETED_VALID_DAYS = 0**.
+
+**Root cause (runtime, read-only audit):**
+`src/trading_bot/paper_observation/runtime.py:969` —
+`valid_days = [d for d, e in state.daily.items() if e.get("valid", True)]`
+counts every observed calendar date with a non-False flag; no finalization
+check (day < today), no counted-window check (burn-in exclusion). The daily
+entry for the partial day is also marked `valid: True` with
+`valid_duration_hours: 0.0`.
+
+**Classification:** observation/reporting defect. Raw daily observations
+remain immutable and correct; only the aggregation semantics are wrong.
+
+**Repair scope (allowed):** frontend projection `completed_valid_days()` —
+COMPLETED_VALID_DAYS = count(finalized counted UTC days passing the validity
+contract); burn-in excluded; partial day excluded; runtime's own values
+echoed side-by-side so the mismatch stays visible. Runtime repair deferred to
+an authorized POC01 maintenance checkpoint (must not touch the frozen
+campaign mid-window).

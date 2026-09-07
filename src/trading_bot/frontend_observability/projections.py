@@ -28,7 +28,7 @@ import json
 import subprocess
 import time
 import urllib.request
-from datetime import UTC, datetime, timedelta
+from datetime import UTC, date, datetime, timedelta
 from pathlib import Path
 from typing import Any
 
@@ -297,6 +297,74 @@ def _counted_window(campaign_start: str) -> dict[str, Any]:
     }
 
 
+def _day_validity(entry: dict[str, Any]) -> tuple[bool, list[str]]:
+    """POC01 day-validity contract (observational projection, A2/A3 semantics).
+
+    A day is valid only if: runtime had no errors that day, FALSE_SUCCESS=0,
+    and the runtime validity flag is not explicitly False. Raw observations
+    stay immutable; this evaluates the contract for *counting* only.
+    """
+    problems: list[str] = []
+    if entry.get("valid") is False:
+        problems.append("runtime_flag_invalid")
+    if int(entry.get("runtime_errors", 0) or 0) > 0:
+        problems.append("runtime_errors")
+    if int(entry.get("false_success", 0) or 0) > 0:
+        problems.append("false_success")
+    return (not problems, problems)
+
+
+def completed_valid_days(daily: dict[str, Any], campaign_start: str) -> dict[str, Any]:
+    """DEF-POC01-OBS-005 repair (observation plane only).
+
+    COMPLETED_VALID_DAYS == count(finalized counted UTC days satisfying the
+    validity contract). Burn-in never counts; the current partial day never
+    counts; observed dates alone never count. The runtime API's own values
+    are echoed as ``runtime_api_semantics`` so the defect stays visible.
+    """
+    cw = _counted_window(campaign_start)
+    try:
+        window_start = date.fromisoformat(cw["counted_window_start"])
+    except (KeyError, TypeError, ValueError):
+        window_start = None
+    today = datetime.now(UTC).date()
+    days: list[dict[str, Any]] = []
+    for day in sorted(daily):
+        try:
+            d = date.fromisoformat(day)
+        except ValueError:
+            continue
+        finalized = d < today
+        counted = window_start is not None and d >= window_start
+        entry = daily[day] if isinstance(daily[day], dict) else {}
+        valid, problems = _day_validity(entry)
+        trades = _trades_of(entry)
+        days.append(
+            {
+                "date": day,
+                "finalized": finalized,
+                "counted": counted,
+                "trades": trades,
+                "day_ge_3": trades >= 3,
+                "valid": valid,
+                "validity_problems": problems,
+                "counts_toward_kpi": bool(finalized and counted and valid),
+            }
+        )
+    kpi_days = [d for d in days if d["counts_toward_kpi"]]
+    ge3 = sum(1 for d in kpi_days if d["day_ge_3"])
+    return {
+        "completed_valid_days": len(kpi_days),
+        "days_ge_3": ge3,
+        "percent_days_ge_3": round(ge3 / len(kpi_days) * 100, 2) if kpi_days else 0.0,
+        "burn_in_date": cw.get("launch_day_burn_in"),
+        "burn_in_included_in_kpi": False,
+        "current_partial_day": today.isoformat(),
+        "target_days": 7,
+        "days": days,
+    }
+
+
 def overview() -> dict[str, Any]:
     state = _load_state()
     if state is None:
@@ -357,8 +425,10 @@ def overview() -> dict[str, Any]:
         "risk_accepts_today": today_entry.get("risk_accepts"),
         "risk_rejects_today": today_entry.get("risk_rejects"),
         "burn_in": _counted_window(state.get("campaign_start", "")),
+        "day_frequency": completed_valid_days(daily, state.get("campaign_start", "")),
         "campaign_progress": {
-            "valid_days": sum(1 for e in daily.values() if e.get("valid", True)),
+            # DEF-POC01-OBS-005: only finalized counted valid days (not observed dates)
+            "valid_days": completed_valid_days(daily, state.get("campaign_start", ""))["completed_valid_days"],
             "target_days": 7,
             "counted_window_start": _counted_window(state.get("campaign_start", "")).get("counted_window_start"),
         },
@@ -390,12 +460,12 @@ def daily_series() -> dict[str, Any]:
         return {"source": "unavailable", "days": []}
     daily = state.get("daily", {})
     days: list[dict[str, Any]] = []
-    for date in sorted(daily):
-        e = daily[date] if isinstance(daily[date], dict) else {}
+    for day_key in sorted(daily):
+        e = daily[day_key] if isinstance(daily[day_key], dict) else {}
         trades = _trades_of(e)
         days.append(
             {
-                "date": date,
+                "date": day_key,
                 "scans": e.get("scans"),
                 "proposals": e.get("proposals"),
                 "debates": e.get("debates"),
