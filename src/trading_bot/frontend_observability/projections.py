@@ -1,43 +1,185 @@
-"""Read-only observability projections for the frontend (§9-16).
+"""Read-only observability projections for the frontend (§9-17).
 
 Every number and object is a projection of committed runtime artifacts
-(CAMPAIGN_STATE.json, DAILY_REPORT.json, CAMPAIGN_REPORT.json,
-RUN_REPORT.json).  This module performs NO calculation that could become
-an accounting authority: it reads, formats, and marks insufficient
-samples.  It never writes to the trading runtime.
+(CAMPAIGN_STATE.json, DAILY_REPORT.json, CAMPAIGN_REPORT.json) and, when
+configured, the POC01 runtime's read-only /api/campaign summary.  This
+module performs NO calculation that could become an accounting authority:
+it reads, formats, and marks insufficient samples.  It never writes to the
+trading runtime.
+
+Source authority model (DEF-FE-004, FIXED):
+
+1. explicit ``--reports-root``          (highest authority)
+2. explicit ``--campaign-api``          (live summary; artifacts still used
+                                         for detail views)
+3. unambiguous worktree discovery       (exactly one root containing
+                                         campaign state)
+4. fail loud: SOURCE_NOT_CONFIGURED / FAIL_AMBIGUOUS_SOURCE
+
+A stale artifact snapshot is never shown silently: every overview payload
+carries ``data_source``, ``reports_root``, ``last_persisted_at``,
+``stale_age_seconds`` and ``stale``.
 """
 
 from __future__ import annotations
 
 import itertools
 import json
+import subprocess
+import time
+import urllib.request
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import Any
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
-REPORTS = REPO_ROOT / "reports"
 
-_DEMO_REPORT = REPORTS / "demo-paper-01" / "RUN_REPORT.json"
-_DEMO_STATUS = REPORTS / "demo-paper-01" / "DASHBOARD_STATUS.json"
+# Committed staleness threshold: the POC01 runtime persists every cycle
+# (~5 min cadence); an artifact snapshot older than this is STALE_DATA.
+STALE_AFTER_SECONDS = 900
+
+CAMPAIGN_NAMESPACE = "paper-observation-01"
 
 
-def reports_root() -> Path:
-    """Current read-only artifacts root (explicit override or discovered)."""
-    return REPORTS
+class SourceNotConfigured(RuntimeError):
+    """No explicit source and unambiguous discovery found nothing."""
+
+
+class AmbiguousSource(RuntimeError):
+    """Multiple candidate report roots exist; refusing to pick positionally."""
+
+
+# Current source configuration (mutated only by configure_source/resolve).
+_source: dict[str, Any] = {
+    "reports_root": None,  # Path | None (explicit)
+    "campaign_api": None,  # str | None (explicit URL)
+    "resolved_root": None,  # Path | None (after resolution)
+    "discovery": "unset",  # unset | explicit | discovered | campaign_api
+    "api_payload": None,
+    "api_fetched_at": None,
+    "api_error": None,
+}
+_WORKTREE_ROOTS: list[Path] | None = None
+
+
+# ---------------------------------------------------------------------------
+# source configuration / resolution (§5-6)
+# ---------------------------------------------------------------------------
+
+
+def configure_source(
+    reports_root: Path | str | None = None, campaign_api: str | None = None
+) -> None:
+    """Set explicit source configuration (CLI entry point)."""
+    _source["reports_root"] = Path(reports_root).resolve() if reports_root else None
+    _source["campaign_api"] = campaign_api
+    _source["resolved_root"] = _source["reports_root"]
+    _source["discovery"] = "explicit" if reports_root else ("campaign_api" if campaign_api else "unset")
+    _source["api_payload"] = None
+    _source["api_fetched_at"] = None
+    _source["api_error"] = None
 
 
 def set_reports_root(root: Path | str) -> None:
-    """Point every projection at an explicit reports root (read-only).
+    """Backwards-compatible alias: point projections at an explicit root."""
+    configure_source(reports_root=root)
 
-    DEF-FE-004 remedy: default discovery is positional (``reports/`` next to
-    the *code*), which silently shows stale mirrored artifacts when the
-    server runs from a different worktree than the campaign runtime.  This
-    only changes where artifacts are READ from; nothing is ever written.
+
+def candidate_report_roots() -> list[Path]:
+    """All plausible report roots: every git worktree of this repository."""
+    global _WORKTREE_ROOTS
+    if _WORKTREE_ROOTS is None:
+        roots: list[Path] = [REPO_ROOT]
+        try:
+            proc = subprocess.run(
+                ["git", "-C", str(REPO_ROOT), "worktree", "list", "--porcelain"],
+                capture_output=True, text=True, timeout=15, check=False,
+            )
+            if proc.returncode == 0:
+                for line in proc.stdout.splitlines():
+                    if line.startswith("worktree "):
+                        p = Path(line[len("worktree "):].strip())
+                        if p.is_dir() and p not in roots:
+                            roots.append(p)
+        except (OSError, subprocess.SubprocessError):
+            pass
+        _WORKTREE_ROOTS = roots
+    unique: list[Path] = []
+    seen: set[Path] = set()
+    for wt in _WORKTREE_ROOTS:
+        rp = (wt / "reports").resolve()
+        if rp in seen:
+            continue
+        seen.add(rp)
+        unique.append(rp)
+    return unique
+
+
+def _root_has_campaign_state(root: Path) -> bool:
+    ns = root / CAMPAIGN_NAMESPACE
+    return ns.is_dir() and any(ns.glob("*/CAMPAIGN_STATE.json"))
+
+
+def resolve_source() -> Path:
+    """Resolve the artifact root per the §5 priority; fail loud when unclear."""
+    resolved = _source["resolved_root"]
+    if resolved is not None:
+        return resolved if isinstance(resolved, Path) else Path(resolved)
+    candidates = [r for r in candidate_report_roots() if _root_has_campaign_state(r)]
+    if len(candidates) == 1:
+        _source["resolved_root"] = candidates[0]
+        _source["discovery"] = "discovered"
+        return candidates[0]
+    if len(candidates) == 0:
+        raise SourceNotConfigured(
+            "SOURCE_NOT_CONFIGURED: no --reports-root/--campaign-api given and "
+            "no worktree contains campaign artifacts (paper-observation-01/*/CAMPAIGN_STATE.json)"
+        )
+    raise AmbiguousSource(
+        "FAIL_AMBIGUOUS_SOURCE: multiple candidate report roots hold campaign "
+        f"state: {[str(c) for c in candidates]} — pass --reports-root explicitly"
+    )
+
+
+def reports_root() -> Path:
+    """Current read-only artifacts root (resolved)."""
+    resolved = resolve_source()
+    return resolved if isinstance(resolved, Path) else Path(resolved)
+
+
+def campaign_api_url() -> str | None:
+    url = _source["campaign_api"]
+    return url if isinstance(url, str) else None
+
+
+def fetch_campaign_api(timeout: float = 4.0) -> dict[str, Any] | None:
+    """Fetch the POC01 runtime's read-only /api/campaign summary (if configured).
+
+    Never raises: on failure the error is recorded and callers fall back to
+    persisted artifacts with DATA_SOURCE = ARTIFACT_SNAPSHOT.
     """
-    global REPORTS, _DEMO_REPORT, _DEMO_STATUS
-    REPORTS = Path(root).resolve()
-    _DEMO_REPORT = REPORTS / "demo-paper-01" / "RUN_REPORT.json"
-    _DEMO_STATUS = REPORTS / "demo-paper-01" / "DASHBOARD_STATUS.json"
+    url = _source["campaign_api"]
+    if not url:
+        return None
+    try:
+        req = urllib.request.Request(url, headers={"Accept": "application/json"})
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            payload = json.loads(resp.read())
+        if isinstance(payload, dict):
+            _source["api_payload"] = payload
+            _source["api_fetched_at"] = datetime.now(UTC).isoformat()
+            _source["api_error"] = None
+        else:
+            _source["api_error"] = f"unexpected payload: {str(payload)[:120]}"
+    except Exception as exc:
+        _source["api_error"] = f"{type(exc).__name__}: {exc}"
+    payload = _source["api_payload"]
+    return payload if isinstance(payload, dict) else None
+
+
+# ---------------------------------------------------------------------------
+# artifact access (all reads go through the resolved root)
+# ---------------------------------------------------------------------------
 
 
 def _load(path: Path) -> dict[str, Any] | None:
@@ -50,7 +192,7 @@ def _load(path: Path) -> dict[str, Any] | None:
 
 
 def campaign_root() -> Path:
-    return REPORTS / "paper-observation-01"
+    return reports_root() / CAMPAIGN_NAMESPACE
 
 
 def latest_campaign_dir() -> Path | None:
@@ -61,15 +203,66 @@ def latest_campaign_dir() -> Path | None:
     return dirs[0] if dirs else None
 
 
-def _ratio(part: float, whole: float) -> float | None:
-    if whole <= 0:
+def _campaign_state_path() -> Path:
+    d = latest_campaign_dir()
+    return (d / "CAMPAIGN_STATE.json") if d else Path("nonexistent")
+
+
+def _load_state() -> dict[str, Any] | None:
+    return _load(_campaign_state_path())
+
+
+def _iso_ms(ms: Any) -> Any:
+    try:
+        return datetime.fromtimestamp(int(ms) / 1000, tz=UTC).isoformat()
+    except (TypeError, ValueError, OSError):
         return None
-    return round(part / whole, 4)
 
 
-# --------------------------------------------------------------------------
+def source_info() -> dict[str, Any]:
+    """Staleness + authority block for the header and the validator (§7)."""
+    state_path = _campaign_state_path()
+    state = _load(state_path)
+    api = _source["api_payload"]
+    if api is not None and _source["campaign_api"]:
+        fetch_campaign_api()  # refresh best-effort
+        api = _source["api_payload"]
+    if api is not None:
+        data_source = "POC01_API+ARTIFACTS"
+        last_persisted = _source["api_fetched_at"]
+        try:
+            age = int((datetime.now(UTC) - datetime.fromisoformat(last_persisted)).total_seconds())
+        except (TypeError, ValueError):
+            age = 0
+    elif state is not None:
+        data_source = "ARTIFACT_SNAPSHOT"
+        mtime = state_path.stat().st_mtime
+        last_persisted = datetime.fromtimestamp(mtime, tz=UTC).isoformat()
+        age = int(time.time() - mtime)
+    else:
+        data_source = "NONE"
+        last_persisted = None
+        age = None
+    info = {
+        "data_source": data_source,
+        "reports_root": str(_source["resolved_root"]) if _source["resolved_root"] else None,
+        "campaign_api": _source["campaign_api"],
+        "discovery": _source["discovery"],
+        "campaign_id": (api or state or {}).get("campaign_id"),
+        "last_persisted_at": last_persisted,
+        "stale_age_seconds": age,
+        "stale_threshold_seconds": STALE_AFTER_SECONDS,
+        "stale": bool(age is not None and age > STALE_AFTER_SECONDS),
+        "api_error": _source["api_error"],
+    }
+    if info["stale"]:
+        info["stale_marker"] = "STALE_DATA"
+    return info
+
+
+# ---------------------------------------------------------------------------
 # §9 OVERVIEW
-# --------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 
 def _trades_of(entry: dict[str, Any]) -> int:
@@ -80,50 +273,74 @@ def _trades_of(entry: dict[str, Any]) -> int:
     return int(entry.get("wins", 0) or 0) + int(entry.get("losses", 0) or 0)
 
 
+def _counted_window(campaign_start: str) -> dict[str, Any]:
+    """POC01 window semantics: launch day = BURN_IN; 7 complete days follow."""
+    try:
+        start = datetime.fromisoformat(campaign_start)
+    except (TypeError, ValueError):
+        return {"status": "UNKNOWN", "note": "campaign_start not parseable"}
+    window_start = (start.date() + timedelta(days=1))
+    window_end = window_start + timedelta(days=7)
+    today = datetime.now(UTC).date()
+    if today < window_start:
+        status = "BURN_IN (launch day, not counted)"
+    elif today < window_end:
+        status = f"COUNTED_DAY_{(today - window_start).days + 1} (partial day)"
+    else:
+        status = "WINDOW_COMPLETE (pending validation)"
+    return {
+        "status": status,
+        "launch_day_burn_in": start.date().isoformat(),
+        "counted_window_start": window_start.isoformat(),
+        "counted_window_end": window_end.isoformat(),
+        "target_days": 7,
+    }
+
+
 def overview() -> dict[str, Any]:
-    state = _load(_latest(_campaign_state_path()))
+    state = _load_state()
     if state is None:
-        demo = _load(_DEMO_STATUS) or _load(_DEMO_REPORT)
-        if demo is None:
-            return {
-                "mode": "PAPER",
-                "live_disabled": True,
-                "error": "no campaign or demo artifacts found in reports root",
-            }
-        return {
-            "mode": demo.get("mode", "PAPER"),
-            "data": demo.get("provider", "DEMO_FIXTURE"),
-            "live_disabled": True,
-            "note": "no campaign state found; showing certified fixture demo summary",
-            "equity": demo.get("equity"),
-            "pnl_today": demo.get("realized_pnl"),
-            "total_pnl": demo.get("realized_pnl"),
-            "realized_pnl": demo.get("realized_pnl"),
-            "unrealized_pnl": demo.get("unrealized_pnl", 0),
-            "trades_today": demo.get("paper_trades"),
-            "ge_3_target": "informational",
-            "open_positions": demo.get("open_positions"),
-            "closed_trades": demo.get("closed_trades"),
-            "campaign_progress": "N/A (fixture demo)",
-        }
+        raise SourceNotConfigured(
+            "SOURCE_NOT_CONFIGURED: no CAMPAIGN_STATE.json under the resolved reports root "
+            f"({_source['resolved_root']})"
+        )
+    api = fetch_campaign_api() if _source["campaign_api"] else None
     daily = state.get("daily", {})
     today = max(daily) if daily else None
     today_entry = daily.get(today, {}) if today else {}
     trades_today = _trades_of(today_entry)
+    heartbeat = state.get("heartbeat", {}) or {}
+    src = source_info()
     return {
         "mode": "PAPER",
         "data": "REAL_PUBLIC_MARKET" if state.get("provider") == "ccxt" else "DEMO_FIXTURE",
         "live_disabled": True,
-        "reports_root": str(REPORTS),
-        "campaign_id": state.get("campaign_id"),
-        "campaign_state": state.get("campaign_status"),
+        # §7 staleness visibility
+        "data_source": src["data_source"],
+        "reports_root": src["reports_root"],
+        "campaign_api": src["campaign_api"],
+        "last_persisted_at": src["last_persisted_at"],
+        "stale_age_seconds": src["stale_age_seconds"],
+        "stale": src["stale"],
+        "stale_threshold_seconds": src["stale_threshold_seconds"],
+        "stale_marker": src.get("stale_marker"),
+        "api_error": src["api_error"],
+        # identity / health (API summary preferred when available)
+        "campaign_id": (api or state).get("campaign_id"),
+        "campaign_state": (api or state).get("campaign_status") or (api or {}).get("campaign_state"),
         "campaign_start": state.get("campaign_start"),
+        "provider_status": (api or {}).get("runtime_health", {}).get("provider_status")
+        if isinstance((api or {}).get("runtime_health"), dict)
+        else heartbeat.get("provider_status"),
+        "run_id": state.get("run_id"),
+        # canonical accounting passthrough (artifacts are the authority for numbers)
         "equity": state.get("equity"),
         "initial_equity": state.get("initial_equity"),
-        "pnl_today": today_entry.get("realized_pnl", 0.0),
-        "total_pnl": state.get("realized_pnl"),
         "realized_pnl": state.get("realized_pnl"),
         "unrealized_pnl": state.get("unrealized_pnl"),
+        "fees": state.get("fees"),
+        "net_pnl": state.get("realized_pnl"),
+        "pnl_today": today_entry.get("realized_pnl", 0.0),
         "max_drawdown": _max_drawdown_from_daily(daily),
         "trades_today": trades_today,
         "trades_today_date": today,
@@ -132,13 +349,24 @@ def overview() -> dict[str, Any]:
             "met": trades_today >= 3,
             "status": "informational only",
         },
-        "open_positions": len(state.get("open_positions", {})),
-        "closed_trades": len(state.get("closed_trades", [])),
+        "open_positions": len(state.get("open_positions", {}) or {}),
+        "closed_trades": len(state.get("closed_trades", []) or []),
+        "scans_today": today_entry.get("scans"),
+        "proposals_today": today_entry.get("proposals"),
+        "selected_today": today_entry.get("selected"),
+        "risk_accepts_today": today_entry.get("risk_accepts"),
+        "risk_rejects_today": today_entry.get("risk_rejects"),
+        "burn_in": _counted_window(state.get("campaign_start", "")),
         "campaign_progress": {
             "valid_days": sum(1 for e in daily.values() if e.get("valid", True)),
             "target_days": 7,
-            "counted_window_start": "next complete UTC midnight after campaign_start (launch day = BURN_IN)",
+            "counted_window_start": _counted_window(state.get("campaign_start", "")).get("counted_window_start"),
         },
+        "campaign_api_summary": {
+            k: api.get(k)
+            for k in ("campaign_id", "campaign_state", "elapsed_hours", "funnel", "performance", "frequency")
+            if isinstance(api, dict) and k in api
+        } if api else None,
     }
 
 
@@ -157,7 +385,7 @@ def _max_drawdown_from_daily(daily: dict[str, Any]) -> float | None:
 
 def daily_series() -> dict[str, Any]:
     """Per-day projection of the canonical daily aggregates (for charts)."""
-    state = _load(_campaign_state_path())
+    state = _load_state()
     if state is None:
         return {"source": "unavailable", "days": []}
     daily = state.get("daily", {})
@@ -190,29 +418,16 @@ def daily_series() -> dict[str, Any]:
     return {"source": "CAMPAIGN_STATE daily aggregates", "days": days}
 
 
-def _campaign_state_path() -> Path:
-    d = latest_campaign_dir()
-    return (d / "CAMPAIGN_STATE.json") if d else Path("nonexistent")
-
-
-def _latest(path: Path) -> Path:
-    return path
-
-
-# --------------------------------------------------------------------------
-# §9 OPPORTUNITY FUNNEL
-# --------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
+# §10 OPPORTUNITY FUNNEL
+# ---------------------------------------------------------------------------
 
 
 def funnel() -> dict[str, Any]:
-    state = _load(_campaign_state_path())
+    state = _load_state()
     if state is None:
-        demo = _load(_DEMO_STATUS) or _load(_DEMO_REPORT)
-        f = (demo or {}).get("funnel", {})
-        src = "demo RUN_REPORT"
-    else:
-        f = state.get("funnel", {})
-        src = "CAMPAIGN_STATE"
+        raise SourceNotConfigured("SOURCE_NOT_CONFIGURED: no campaign state for funnel")
+    f = state.get("funnel", {}) or {}
     # Canonical §12 funnel keys as persisted by the POC01 runtime.
     steps = [
         "MARKET_SCANS",
@@ -223,79 +438,85 @@ def funnel() -> dict[str, Any]:
         "CANDIDATE_ADMITTED",
         "RISK_ACCEPT",
         "PAPER_OPEN",
+        "PAPER_CLOSE",
     ]
     counts = {k: int(f.get(k, 0) or 0) for k in steps}
-    counts["NO_TRADE"] = int(f.get("NO_TRADE", 0) or 0)
-    counts["RISK_REJECT"] = int(f.get("RISK_REJECT", 0) or 0)
+    for extra in ("NO_TRADE", "RISK_REJECT", "RISK_CALLS", "BROKER_CALLS", "CRITIQUES", "REVISIONS"):
+        if extra in f:
+            counts[extra] = int(f.get(extra, 0) or 0)
     conversions = {}
     for prev, cur in itertools.pairwise(steps):
         conversions[f"{prev}->{cur}"] = _ratio(counts[cur], counts[prev])
-    return {"source": src, "counts": counts, "conversions": conversions}
+    return {"source": "CAMPAIGN_STATE", "counts": counts, "conversions": conversions}
 
 
-# --------------------------------------------------------------------------
-# §10 AGENT CONVERSATION TIMELINE (structured artifacts only)
-# --------------------------------------------------------------------------
+def _ratio(part: float, whole: float) -> float | None:
+    if whole <= 0:
+        return None
+    return round(part / whole, 4)
+
+
+# ---------------------------------------------------------------------------
+# §11 AGENT CONVERSATION (structured aggregates only; per-event detail is
+#     NOT persisted by the campaign runtime — say so, never invent dialogue)
+# ---------------------------------------------------------------------------
 
 
 def agent_timeline(limit: int = 200) -> dict[str, Any]:
-    report = _load(_DEMO_REPORT) or {}
-    events = report.get("events", [])
-    items: list[dict[str, Any]] = []
-    for ev in events:
-        kind = ev.get("event", "")
-        entry: dict[str, Any] = {"event": kind, "run_id": ev.get("run_id"), "trace_id": ev.get("trace_id")}
-        for key in ("symbol", "side", "confidence", "notional", "price", "reason", "verifier"):
-            if key in ev:
-                entry[key] = ev[key]
-        if any(k in ev for k in ("stance", "proposal", "decision", "verdict", "fill")) or kind:
-            items.append(entry)
-    decisions = report.get("decisions", [])
-    for dec in decisions:
-        outcome = dec.get("outcome")
-        pkg = dec.get("package", {}) or {}
-        items.append(
-            {
-                "event": f"DecisionEngine.{outcome}",
-                "decision_id": dec.get("decision_id"),
-                "verifier": dec.get("verifier"),
-                "cycle": dec.get("cycle"),
-                "package_winner": pkg.get("winner"),
-            }
-        )
-    return {"source": "RUN_REPORT.json events+decisions", "items": items[-limit:]}
+    state = _load_state()
+    if state is None:
+        raise SourceNotConfigured("SOURCE_NOT_CONFIGURED: no campaign state for agent timeline")
+    dm = state.get("debate_metrics", {}) or {}
+    funnel = state.get("funnel", {}) or {}
+    return {
+        "source": "CAMPAIGN_STATE debate_metrics/funnel aggregates",
+        "per_event_messages": "NOT_PERSISTED",
+        "note": "the POC01 runtime persists debate/decision aggregates, not per-event "
+        "agent messages; no narrative is invented here",
+        "aggregates": {
+            "debates": dm.get("debates") or funnel.get("DEBATES"),
+            "critiques": dm.get("critiques") or funnel.get("CRITIQUES"),
+            "counter_evidence": dm.get("counter_evidence"),
+            "material_dissent": dm.get("material_dissent"),
+            "revisions": dm.get("revisions") or funnel.get("REVISIONS"),
+            "resolved": dm.get("resolved") or funnel.get("DEBATE_RESOLVED"),
+            "unresolved": dm.get("unresolved") or funnel.get("DEBATE_UNRESOLVED"),
+            "confidence_increased": dm.get("confidence_increased"),
+            "confidence_decreased": dm.get("confidence_decreased"),
+            "decision_changed_after_debate": dm.get("decision_changed_after_debate"),
+            "winner_changed_after_debate": dm.get("winner_changed_after_debate"),
+        },
+        "items": [],
+        "limit": limit,
+    }
 
 
-# --------------------------------------------------------------------------
-# §11 STRATEGY VIEW (insufficient samples marked, never computed)
-# --------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
+# §12/§13 STRATEGY + ASSET VIEWS
+# ---------------------------------------------------------------------------
 
 
 def strategies() -> dict[str, Any]:
-    state = _load(_campaign_state_path())
+    state = _load_state()
     if state is None:
-        demo = _load(_DEMO_STATUS) or {}
-        by = demo.get("pnl_by_strategy") or {}
-        return {
-            "source": "demo DASHBOARD_STATUS",
-            "strategies": [
-                {"strategy": name, "net_pnl": pnl, "sample": "INSUFFICIENT_SAMPLE"}
-                for name, pnl in by.items()
-            ],
-        }
+        raise SourceNotConfigured("SOURCE_NOT_CONFIGURED: no campaign state for strategies")
+    by = state.get("by_strategy", {}) or {}
+    # Render the full frozen universe; absent families are honest zeros.
+    names = list(dict.fromkeys(list(state.get("strategies", []) or []) + sorted(by)))
     out = []
-    for name, agg in state.get("by_strategy", {}).items():
+    for name in names:
+        agg = by.get(name, {}) or {}
         trades = int(agg.get("trades", 0) or 0)
         out.append(
             {
                 "strategy": name,
-                "evaluations": agg.get("evaluations"),
-                "proposals": agg.get("proposals"),
-                "selected": agg.get("selected"),
+                "evaluations": agg.get("evaluations", 0),
+                "proposals": agg.get("proposals", 0),
+                "selected": agg.get("selected", 0),
                 "trades": trades,
-                "wins": agg.get("wins"),
-                "losses": agg.get("losses"),
-                "net_pnl": agg.get("net_pnl"),
+                "wins": agg.get("wins", 0),
+                "losses": agg.get("losses", 0),
+                "net_pnl": agg.get("net_pnl", 0.0),
                 "expectancy": agg.get("expectancy"),
                 "profit_factor": agg.get("profit_factor"),
                 "sample": "OK" if trades >= 30 else "INSUFFICIENT_SAMPLE",
@@ -304,113 +525,113 @@ def strategies() -> dict[str, Any]:
     return {"source": "CAMPAIGN_STATE", "strategies": out}
 
 
-# --------------------------------------------------------------------------
-# §12 ASSET VIEW
-# --------------------------------------------------------------------------
-
-
 def assets_view() -> dict[str, Any]:
-    state = _load(_campaign_state_path())
+    state = _load_state()
     if state is None:
-        demo = _load(_DEMO_STATUS) or {}
-        by = demo.get("pnl_by_asset") or {}
-        return {
-            "source": "demo DASHBOARD_STATUS",
-            "assets": [
-                {"asset": a, "net_pnl": pnl, "sample": "INSUFFICIENT_SAMPLE"} for a, pnl in by.items()
-            ],
-        }
+        raise SourceNotConfigured("SOURCE_NOT_CONFIGURED: no campaign state for assets")
+    by = state.get("by_asset", {}) or {}
+    names = list(dict.fromkeys(list(state.get("assets", []) or []) + sorted(by)))
     out = []
-    for name, agg in state.get("by_asset", {}).items():
+    for name in names:
+        agg = by.get(name, {}) or {}
+        trades = int(agg.get("trades", 0) or 0)
         out.append(
             {
                 "asset": name,
-                "proposals": agg.get("proposals"),
-                "selected": agg.get("selected"),
-                "risk_accepted": agg.get("risk_accepted"),
-                "trades": agg.get("trades"),
-                "net_pnl": agg.get("net_pnl"),
-                "sample": "OK" if int(agg.get("trades", 0) or 0) >= 30 else "INSUFFICIENT_SAMPLE",
+                "proposals": agg.get("proposals", 0),
+                "selected": agg.get("selected", 0),
+                "risk_accepted": agg.get("risk_accepted", 0),
+                "trades": trades,
+                "net_pnl": agg.get("net_pnl", 0.0),
+                "sample": "OK" if trades >= 30 else "INSUFFICIENT_SAMPLE",
             }
         )
     return {
         "source": "CAMPAIGN_STATE",
         "assets": out,
-        "data_health": {
-            "last_market_timestamp": state.get("last_market_timestamp"),
-            "last_successful_scan_time": state.get("last_successful_scan_time"),
-            "freshness_invariant": "market_data_time <= decision_time <= execution_time",
-        },
+        "data_health": state.get("data_health", {}) or {},
+        "last_market_timestamp": state.get("last_market_timestamp"),
+        "last_market_timestamp_iso": _iso_ms(state.get("last_market_timestamp")),
+        "last_successful_scan_time": state.get("last_successful_scan_time"),
+        "freshness_invariant": "market_data_time <= decision_time <= execution_time",
     }
 
 
-# --------------------------------------------------------------------------
-# §13 DECISIONS VIEW
-# --------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
+# §14 DECISIONS (aggregates + typed risk/block reasons)
+# ---------------------------------------------------------------------------
 
 
 def decisions() -> dict[str, Any]:
-    report = _load(_DEMO_REPORT) or {}
-    items = []
-    for dec in report.get("decisions", []):
-        pkg = dec.get("package", {}) or {}
-        items.append(
-            {
-                "decision_id": dec.get("decision_id"),
-                "outcome": dec.get("outcome"),
-                "verifier": dec.get("verifier"),
-                "verifier_version": dec.get("verifier_version"),
-                "winner": pkg.get("winner"),
-                "alternatives": pkg.get("alternatives"),
-                "dissent": pkg.get("dissent"),
-                "revisions": pkg.get("revisions"),
-            }
-        )
-    state = _load(_campaign_state_path())
-    dm = (state or {}).get("decision_metrics", {})
+    state = _load_state()
+    if state is None:
+        raise SourceNotConfigured("SOURCE_NOT_CONFIGURED: no campaign state for decisions")
+    dm = state.get("decision_metrics", {}) or {}
+    rm = state.get("risk_metrics", {}) or {}
+    reasons = state.get("reasons", {}) or {}
     return {
-        "source": "RUN_REPORT decisions + campaign decision_metrics",
-        "decisions": items,
+        "source": "CAMPAIGN_STATE decision_metrics/risk_metrics/reasons",
+        "per_decision_detail": "NOT_PERSISTED",
         "campaign_aggregates": {
             "selected": dm.get("selected"),
             "rejected": dm.get("rejected"),
             "no_trade": dm.get("no_trade"),
             "verifier_verified": dm.get("verifier_verified"),
             "verifier_rejected": dm.get("verifier_rejected"),
+            "selected_with_dissent": dm.get("selected_with_dissent"),
+            "blocked_unresolved_conflict": dm.get("blocked_unresolved_conflict"),
         },
+        "risk": {
+            "accepts": rm.get("accepts"),
+            "rejects": rm.get("rejects"),
+            "rejection_rate": rm.get("rejection_rate"),
+            "reason_distribution": rm.get("reason_distribution", {}) or {},
+        },
+        "block_reasons": {k: v for k, v in reasons.items() if isinstance(v, (int, float))},
+        "decisions": [],
     }
 
 
-# --------------------------------------------------------------------------
-# §14 TRADES / PORTFOLIO (canonical PnL passthrough)
-# --------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
+# §15 TRADES / PORTFOLIO (canonical PnL passthrough)
+# ---------------------------------------------------------------------------
 
 
 def trades() -> dict[str, Any]:
-    state = _load(_campaign_state_path())
-    if state is not None:
-        return {
-            "source": "CAMPAIGN_STATE (canonical accounting passthrough)",
-            "open_positions": state.get("open_positions", {}),
-            "closed_trades": state.get("closed_trades", []),
-            "realized_pnl": state.get("realized_pnl"),
-            "unrealized_pnl": state.get("unrealized_pnl"),
-            "fees": state.get("fees"),
-            "note": "PnL originates from PaperBroker/reconciliation; frontend adds nothing",
-        }
-    report = _load(_DEMO_REPORT) or {}
+    state = _load_state()
+    if state is None:
+        raise SourceNotConfigured("SOURCE_NOT_CONFIGURED: no campaign state for trades")
+    open_pos = state.get("open_positions", {}) or {}
+    open_list = []
+    if isinstance(open_pos, dict):
+        for symbol, pos in open_pos.items():
+            entry = dict(pos) if isinstance(pos, dict) else {"value": pos}
+            entry.setdefault("symbol", symbol)
+            open_list.append(entry)
+    else:  # already a list
+        open_list = list(open_pos)
+    closed = []
+    for t in state.get("closed_trades", []) or []:
+        row = dict(t)
+        row["opened_at"] = row.get("opened_at") or "NOT_PERSISTED"
+        row["closed_at"] = row.get("closed_at") or _iso_ms(row.get("closed_at_ms")) or "NOT_PERSISTED"
+        closed.append(row)
+    realized = state.get("realized_pnl")
     return {
-        "source": "demo RUN_REPORT",
-        "closed_trades": report.get("trades", report.get("closed_trades", [])),
-        "realized_pnl": report.get("realized_pnl"),
-        "unrealized_pnl": report.get("unrealized_pnl", 0),
-        "note": "canonical numbers from demo accounting",
+        "source": "CAMPAIGN_STATE (canonical accounting passthrough)",
+        "open_positions": open_list,
+        "closed_trades": closed,
+        "realized_pnl": realized,
+        "unrealized_pnl": state.get("unrealized_pnl"),
+        "fees": state.get("fees"),
+        "closed_trades_pnl_sum": round(sum(float(t.get("pnl", 0.0) or 0.0) for t in closed), 6),
+        "note": "PnL originates from PaperBroker/reconciliation; frontend adds nothing",
     }
 
 
-# --------------------------------------------------------------------------
-# §15 REPORTS (read-only file access, path-jail)
-# --------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
+# §16 REPORTS (read-only file access, path jail, campaign isolation)
+# ---------------------------------------------------------------------------
 
 
 def _display_path(p: Path) -> str:
@@ -422,6 +643,7 @@ def _display_path(p: Path) -> str:
 
 
 def report_list() -> list[dict[str, Any]]:
+    """Only artifacts of the resolved campaign — no demo/legacy/fixture reports."""
     root = campaign_root()
     out: list[dict[str, Any]] = []
     if root.is_dir():
@@ -437,16 +659,12 @@ def report_list() -> list[dict[str, Any]]:
                         "bytes": f.stat().st_size,
                     }
                 )
-    demo = REPORTS / "demo-paper-01"
-    if demo.is_dir():
-        for f in sorted(demo.glob("RUN_REPORT.*")):
-            out.append({"campaign_id": "demo-paper-01", "name": f.name, "path": _display_path(f), "bytes": f.stat().st_size})
     return out
 
 
 def report_content(rel_path: str) -> dict[str, Any]:
-    """Serve reports only from the reports/ jail; reject everything else."""
-    base = REPORTS.resolve()
+    """Serve reports only from the reports jail; reject everything else."""
+    base = reports_root().resolve()
     target = (base / rel_path).resolve()
     if base not in target.parents and target != base:
         return {"error": "path outside reports jail"}
@@ -459,22 +677,24 @@ def report_content(rel_path: str) -> dict[str, Any]:
     return {"path": _display_path(target), "content": text[:200_000]}
 
 
-# --------------------------------------------------------------------------
-# §16 REPLAY GROUNDWORK — honest partial
-# --------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
+# §17 REPLAY GROUNDWORK — honest partial
+# ---------------------------------------------------------------------------
 
 
 def replay_status() -> dict[str, Any]:
-    report = _load(_DEMO_REPORT) or {}
-    events = report.get("events", [])
+    state = _load_state()
+    if state is None:
+        raise SourceNotConfigured("SOURCE_NOT_CONFIGURED: no campaign state for replay")
+    closed = state.get("closed_trades", []) or []
     chain = [
-        {"step": "market", "evidence": "market.scan events", "available": any("scan" in e.get("event", "") for e in events)},
-        {"step": "agents", "evidence": "proposal/critique events", "available": any("proposal" in e.get("event", "") for e in events)},
-        {"step": "debate", "evidence": "debate events + DebateReport refs", "available": any("debate" in e.get("event", "") for e in events)},
-        {"step": "decision", "evidence": "DecisionPackage records", "available": bool(report.get("decisions"))},
-        {"step": "risk", "evidence": "risk.approved/rejected events", "available": any("risk" in e.get("event", "") for e in events)},
-        {"step": "trade", "evidence": "paper.fill events", "available": any("fill" in e.get("event", "") for e in events)},
-        {"step": "outcome", "evidence": "closed trades + realized PnL", "available": bool(report.get("closed_trades") or report.get("realized_pnl"))},
+        {"step": "market", "evidence": "per-event market records", "available": False, "detail": "NOT_PERSISTED (funnel aggregates only)"},
+        {"step": "agents", "evidence": "per-event agent messages", "available": False, "detail": "NOT_PERSISTED"},
+        {"step": "debate", "evidence": "per-debate reports", "available": False, "detail": "NOT_PERSISTED (aggregate metrics only)"},
+        {"step": "decision", "evidence": "last_processed_decision_ids + decision ids on trades", "available": bool(state.get("last_processed_decision_ids") or closed)},
+        {"step": "risk", "evidence": "risk_metrics reason distribution", "available": bool(state.get("risk_metrics"))},
+        {"step": "trade", "evidence": "closed_trades with decision refs", "available": bool(closed)},
+        {"step": "outcome", "evidence": "canonical realized PnL", "available": state.get("realized_pnl") is not None},
     ]
     full = all(c["available"] for c in chain)
     return {

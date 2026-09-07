@@ -5,15 +5,56 @@ modified by these fixes (read-only projections/server only).
 
 ---
 
-## DEF-FE-001 / DEF-FE-002 — PRE-EXISTING REFERENCES
+## DEF-FE-001 — SPA_HASH_ROUTER_NOT_RENDERING
+
+**Status:** FIXED (2026-09-07, V1.2-R2).
+
+**Reproduction (real Chrome, before fix):**
+
+```text
+URL = http://127.0.0.1:8767/#trades
+active_tab  = overview      (WRONG)
+visible     = [s-overview]  (WRONG)
+console     = pageerror: Identifier 'rp' has already been declared
+            = Failed to load resource: ... 404 (favicon)
+```
+
+**Root causes (two independent defects):**
+
+1. **Script-killing SyntaxError:** the V1.1 `loadAll()` declared `const rp`
+   (reports payload) while a module-scope `const rp` also existed —
+   `Identifier 'rp' has already been declared` aborted the entire script
+   at parse time, so the router, data loading and rendering never ran. The
+   static `class="on"` Overview markup was all the user ever saw.
+2. **Router never wired to initial load correctly:** `route()` delegated to
+   synthetic `a.click()` and the click handler only toggled classes; on a
+   direct hash load the hashchange event never fires, and back/forward
+   navigation depended on the same fragile path.
+
+**Fix:** SPA rewritten (V1.2) with an explicit hash router: `TABS`
+registry, `activate(tab)` toggling exactly one tab + one panel,
+`route()` resolving `location.hash` (unknown hash → `location.replace
+('#overview')` safe fallback), `hashchange` listener, and `route()` called
+on load. Click handlers removed entirely — anchors keep their native hash
+behaviour, which is what makes back/forward work. The `rp`/`re` collisions
+renamed (`rpEl`, `reEl`). Favicon served as 204 (no console noise).
+
+**Verified (real Chrome, after fix):** direct `#trades` → tab=trades,
+panel=s-trades only, 3 real campaign trade rows; click → `#funnel`; back →
+`#trades`; forward → `#funnel`; reload → stays `#funnel`; manual Refresh →
+stays; auto-refresh (30 s) → stays; console errors = 0. Browser E2E suite
+`tests/e2e/test_browser_v1_2.py` = 5/5.
+
+---
+
+## DEF-FE-002 — PRE-EXISTING REFERENCE
 
 **Status:** NOT_FOUND_IN_REPOSITORY (as of 2026-09-07).
 
 A repo-wide and worktree-wide search found no prior registration of
-DEF-FE-001 or DEF-FE-002 anywhere in `docs/`, `scripts/`, or `tests/`
-(they are referenced only in the checkpoint instructions that introduced
-DEF-FE-003). They are recorded here as `UNVERIFIED — origin external`;
-no claims are made about their content or resolution.
+DEF-FE-002 anywhere in `docs/`, `scripts/`, or `tests/` (it is referenced
+only in the checkpoint instructions). Recorded as `UNVERIFIED — origin
+external`; no claims are made about its content or resolution.
 
 ---
 
@@ -60,7 +101,7 @@ confined to the read-only observability package.
 
 ## DEF-FE-004 — POSITIONAL_ARTIFACT_DISCOVERY (found during this investigation)
 
-**Status:** MITIGATED (2026-09-07, same commit).
+**Status:** FIXED (2026-09-07, V1.2-R2; was MITIGATED in V1.1).
 
 **Problem:** `projections.py` discovered campaign artifacts purely
 positionally: `REPO_ROOT = Path(__file__).parents[3]` → `<worktree>/reports`.
@@ -88,12 +129,30 @@ when no explicit root is given, the positional default is unchanged
 matching the campaign worktree byte-for-byte, POST→405 everywhere, and the
 campaign's own dashboard on 8766 stayed 200 throughout.
 
-**Residual limitation (documented, not hidden):** `--campaign-api` /
-live-polling of the runtime's `/api/campaign` endpoint is NOT implemented
-in this checkpoint. The frontend remains artifact-file-based (pull, not
-push). A reader pointed at a live worktree still sees the last persisted
-snapshot, not an in-memory live view. Deferred to a future checkpoint as
-a non-authority observability improvement.
+**V1.2-R2 completion:** full source-authority model implemented —
+1. explicit `--reports-root`
+2. explicit `--campaign-api` (POC01 `/api/campaign` summary overlay;
+   artifacts stay authoritative for detail views and canonical PnL)
+3. unambiguous worktree discovery via `git worktree list --porcelain`
+   (exactly one root with campaign state → auto-bind)
+4. fail loud: `SOURCE_NOT_CONFIGURED` (HTTP 503) when nothing is found,
+   `FAIL_AMBIGUOUS_SOURCE` (HTTP 503) when several roots hold campaign
+   state — never a positional pick.
+
+Staleness is always visible: header shows `DATA_SOURCE`,
+`REPORTS_ROOT`, `CAMPAIGN_API`, `LAST_PERSISTED_AT`, `STALE_AGE` and a
+red `STALE_DATA` banner appears past the committed 900 s threshold.
+
+**Live acceptance (2026-09-07):** server bound to
+`.worktrees/poc01-execution/reports` + `--campaign-api
+http://127.0.0.1:8766/api/campaign` serves `DATA_SOURCE:
+POC01_API+ARTIFACTS`, campaign `poc01-paper-observation-01-001`, state
+ACTIVE, canonical realized PnL −19.17547331 == closed-trades PnL sum,
+MARKET_SCANS advancing (483+), STALE_AGE 0 s.
+
+**Residual limitation (documented, not hidden):** the campaign API is a
+summary overlay; per-event agent messages and per-decision detail remain
+`NOT_PERSISTED` by the runtime and are shown as such (never invented).
 
 **Tests:** `test_set_reports_root_redirects_projections`.
 **Validator:** `overview` payload assertions plus the live-root smoke

@@ -25,6 +25,8 @@ from pathlib import Path
 from trading_bot.frontend_observability import projections
 from trading_bot.frontend_observability.server import create_server
 
+REPO_ROOT = Path(__file__).resolve().parents[1]
+
 CHECKS: list[tuple[str, bool, str]] = []
 
 
@@ -57,6 +59,26 @@ def _post(base: str, path: str) -> int:
 
 
 def main() -> int:
+    # Bind the artifact source like an operator would (V1.2 source authority):
+    # explicit argv > well-known live campaign worktree > fail loud.  Discovery
+    # is intentionally ambiguous in this repository (multiple worktrees hold
+    # campaign artifacts), so the validator never picks positionally.
+    args = sys.argv[1:]
+    if "--reports-root" in args:
+        root = Path(args[args.index("--reports-root") + 1])
+    else:
+        default = REPO_ROOT.parent / "poc01-execution" / "reports"
+        if (default / "paper-observation-01").is_dir():
+            root = default
+        else:
+            print("FAIL source_binding — no --reports-root given and no "
+                  f"campaign artifacts at {default}")
+            print("usage: uv run python scripts/validate_frontend_observability_v1.py "
+                  "--reports-root <PATH>")
+            return 1
+    projections.configure_source(reports_root=root)
+    _check("source_binding", True, str(root))
+
     server: ThreadingHTTPServer = create_server("127.0.0.1", 0)
     thread = threading.Thread(target=server.serve_forever, daemon=True)
     thread.start()
@@ -174,8 +196,109 @@ def main() -> int:
             "module_help_warning_free",
             help_run.returncode == 0
             and "RuntimeWarning" not in help_run.stderr
-            and "--reports-root" in help_run.stdout,
+            and "--reports-root" in help_run.stdout
+            and "--campaign-api" in help_run.stdout,
             help_run.stderr.strip()[:200],
+        )
+        # 17 V1.2: source authority model — discovery must fail loud, never pick positionally
+        import trading_bot.frontend_observability.projections as proj2
+
+        _check(
+            "fail_loud_source_resolution",
+            hasattr(proj2, "SourceNotConfigured")
+            and hasattr(proj2, "AmbiguousSource")
+            and hasattr(proj2, "resolve_source"),
+        )
+        # 18 V1.2: staleness visibility contract
+        info = proj2.source_info()
+        _check(
+            "staleness_visibility",
+            all(
+                k in info
+                for k in (
+                    "data_source",
+                    "reports_root",
+                    "last_persisted_at",
+                    "stale_age_seconds",
+                    "stale",
+                    "stale_threshold_seconds",
+                )
+            ),
+            str(sorted(info))[:160],
+        )
+        # 19 V1.2: live campaign identity from the bound source
+        ov = proj2.overview()
+        _check(
+            "live_campaign_identity",
+            ov.get("campaign_id") == "poc01-paper-observation-01-001"
+            and ov.get("campaign_state") == "ACTIVE"
+            and ov.get("data") == "REAL_PUBLIC_MARKET",
+            str(ov.get("campaign_id")),
+        )
+        # 20 V1.2: campaign report isolation — no demo/legacy/fixture reports surfaced
+        items = proj2.report_list()
+        _check(
+            "campaign_report_isolation",
+            bool(items)
+            and all(i["campaign_id"] == "poc01-paper-observation-01-001" for i in items)
+            and all("RUN_REPORT" not in i["name"] for i in items),
+            f"{len(items)} files",
+        )
+        # 21 V1.2: real funnel projection (non-zero scans from the live campaign)
+        fu = proj2.funnel()
+        _check(
+            "real_funnel_projection",
+            fu["counts"].get("MARKET_SCANS", 0) > 0
+            and "PAPER_OPEN" in fu["counts"]
+            and "PAPER_CLOSE" in fu["counts"],
+            str(fu["counts"].get("MARKET_SCANS")),
+        )
+        # 22 V1.2: real trade projection + canonical PnL equality
+        tr = proj2.trades()
+        closed = tr.get("closed_trades", [])
+        _check(
+            "real_trade_projection",
+            len(closed) >= 1
+            and all(t.get("decision_id") for t in closed)
+            and tr.get("closed_trades_pnl_sum") is not None,
+            f"{len(closed)} closed trades",
+        )
+        _check(
+            "frontend_pnl_equals_canonical",
+            abs(float(tr.get("realized_pnl") or 0) - float(tr.get("closed_trades_pnl_sum") or 0)) < 0.005
+            and abs(float(tr.get("realized_pnl") or 0) - float(ov.get("realized_pnl") or 0)) < 0.000001,
+            f"realized={tr.get('realized_pnl')} sum={tr.get('closed_trades_pnl_sum')}",
+        )
+        # 23 V1.2: risk reasons visible (typed MAX_POSITIONS / CONSECUTIVE_LOSS_COOLDOWN)
+        de = proj2.decisions()
+        reasons = set((de.get("risk", {}) or {}).get("reason_distribution", {}) or {})
+        _check(
+            "real_risk_reason_projection",
+            bool(reasons & {"MAX_POSITIONS", "CONSECUTIVE_LOSS_COOLDOWN"}),
+            str(sorted(reasons)),
+        )
+        # 24 V1.2: SPA hash-router routes exist for all 9 tabs
+        html = webui_mod.INDEX_HTML
+        tabs = ("overview", "funnel", "agents", "strategies", "assets", "decisions", "trades", "reports", "replay")
+        _check(
+            "hash_router_9_routes",
+            all(f'data-t="{t}"' in html for t in tabs) and "TABS=" in html and "hashchange" in html,
+        )
+        # 25 V1.2: unknown-hash fallback present
+        _check("unknown_hash_fallback", "location.replace(" in html and "#overview" in html)
+        # 26 V1.2: no fixture leakage in campaign-served payloads
+        leak = json.dumps({"agents": proj2.agent_timeline(), "decisions": de, "trades": tr})
+        _check("no_fixture_leakage", "demo" not in leak.lower() and "fixture" not in leak.lower())
+        # 27 V1.2: browser E2E suite exists and covers the §19 sequence
+        e2e = Path("tests/e2e/test_browser_v1_2.py")
+        e2e_src = e2e.read_text(encoding="utf-8") if e2e.exists() else ""
+        _check(
+            "browser_e2e_suite",
+            bool(e2e_src)
+            and all(
+                m in e2e_src
+                for m in ("go_back", "go_forward", "reload", "auto", "console", "#trades", "tr-closed")
+            ),
         )
     finally:
         server.shutdown()

@@ -14,6 +14,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from typing import Any
 
 from trading_bot.frontend_observability import projections, webui
+from trading_bot.frontend_observability.projections import AmbiguousSource, SourceNotConfigured
 
 DEFAULT_PORT = 8767
 
@@ -80,25 +81,36 @@ def render_assets_html(payload: dict[str, Any]) -> str:
 def render_decisions_html(payload: dict[str, Any]) -> str:
     parts = ["<h1>DECISIONS</h1>"]
     agg = payload.get("campaign_aggregates", {})
-    parts.append(f"<p>campaign aggregates: {escape(json.dumps(agg, default=str))}</p><ul>")
-    for d in payload.get("decisions", []):
-        parts.append(f"<li><b>{escape(str(d.get('outcome')))}</b> verifier={escape(str(d.get('verifier')))} winner={escape(str(d.get('winner')))}</li>")
-    parts.append("</ul>")
+    parts.append(f"<p>campaign aggregates: {escape(json.dumps(agg, default=str))}</p>")
+    risk = payload.get("risk", {})
+    parts.append(f"<p>risk: {escape(json.dumps(risk, default=str))}</p>")
+    parts.append(f"<p>block reasons: {escape(json.dumps(payload.get('block_reasons', {}), default=str))}</p>")
+    parts.append(f"<p>{escape(str(payload.get('per_decision_detail')))}</p>")
     return "".join(parts)
 
 
 def render_trades_html(payload: dict[str, Any]) -> str:
-    return (
-        "<h1>TRADES / PORTFOLIO</h1><p>canonical accounting passthrough — the frontend computes nothing</p>"
-        f"<pre>{escape(json.dumps(payload, indent=2, default=str)[:20000])}</pre>"
+    parts = ["<h1>TRADES / PORTFOLIO</h1><p>canonical accounting passthrough — the frontend computes nothing</p>"]
+    closed = payload.get("closed_trades", []) or []
+    rows = "".join(
+        "<tr><td>"
+        + "</td><td>".join(
+            escape(str(t.get(k)))
+            for k in ("symbol", "asset", "side", "strategy", "entry_price", "exit_price", "exit_reason", "pnl", "decision_id", "closed_at")
+        )
+        + "</td></tr>"
+        for t in closed
     )
+    head = "<tr><th>symbol</th><th>asset</th><th>side</th><th>strategy</th><th>entry</th><th>exit</th><th>exit reason</th><th>PnL</th><th>decision</th><th>closed</th></tr>"
+    parts.append(f"<table>{head}{rows}</table>")
+    parts.append(f"<p>closed trades PnL sum: {escape(str(payload.get('closed_trades_pnl_sum')))} · realized PnL: {escape(str(payload.get('realized_pnl')))}</p>")
+    return "".join(parts)
 
 
 def render_timeline_html(payload: dict[str, Any]) -> str:
-    parts = ["<h1>AGENT CONVERSATION (structured artifacts only)</h1><ol>"]
-    for item in payload.get("items", []):
-        parts.append(f"<li>{escape(json.dumps(item, default=str))}</li>")
-    parts.append("</ol>")
+    parts = ["<h1>AGENT CONVERSATION (structured artifacts only)</h1>"]
+    parts.append(f"<p>{escape(str(payload.get('note')))}</p>")
+    parts.append(f"<pre>{escape(json.dumps(payload.get('aggregates', {}), indent=2, default=str))}</pre>")
     return "".join(parts)
 
 
@@ -162,8 +174,17 @@ class FrontendHandler(BaseHTTPRequestHandler):
                 params = dict(pair.split("=", 1) for pair in query.split("&") if "=" in pair)
                 payload = projections.report_content(params.get("path", ""))
                 self._json(payload)
+            elif path == "/source":
+                self._json(projections.source_info())
+            elif path == "/favicon.ico":
+                self.send_response(204)
+                self.end_headers()
             else:
                 self._plain(b"not found", 404)
+        except SourceNotConfigured as exc:
+            self._json({"error": "SOURCE_NOT_CONFIGURED", "detail": str(exc)}, status=503)
+        except AmbiguousSource as exc:
+            self._json({"error": "FAIL_AMBIGUOUS_SOURCE", "detail": str(exc)}, status=503)
         except Exception as exc:
             self._json({"error": str(exc)}, status=500)
 
@@ -224,17 +245,35 @@ def main() -> int:
         dest="reports_root",
         default=None,
         metavar="PATH",
-        help="explicit read-only artifacts root (default: positional discovery of <repo>/reports; "
-        "point this at the campaign worktree's reports/ when serving from a different worktree)",
+        help="explicit read-only artifacts root (source authority #1; point this at the "
+        "campaign worktree's reports/ when serving from a different worktree)",
+    )
+    parser.add_argument(
+        "--campaign-api",
+        dest="campaign_api",
+        default=None,
+        metavar="URL",
+        help="POC01 runtime read-only summary endpoint, e.g. http://127.0.0.1:8766/api/campaign "
+        "(source authority #2 for identity/health/summary; artifacts stay authoritative "
+        "for detail views)",
     )
     args = parser.parse_args()
-    if args.reports_root:
-        projections.set_reports_root(args.reports_root)
+    projections.configure_source(reports_root=args.reports_root, campaign_api=args.campaign_api)
+    try:
+        resolved = projections.reports_root()
+    except (SourceNotConfigured, AmbiguousSource) as exc:
+        if args.campaign_api is None:
+            print(f"source resolution failed: {exc}", flush=True)
+            print("pass --reports-root <PATH> and/or --campaign-api <URL>", flush=True)
+            return 2
+        resolved = None  # API-only mode; artifact views will 503 until a root exists
     server = create_server(args.host, args.port)
     thread = threading.Thread(target=server.serve_forever, daemon=True)
     thread.start()
     print(f"frontend observability (read-only): http://{args.host}:{server.server_port}/  — Ctrl+C to stop")
-    print(f"artifacts root: {projections.reports_root()}")
+    print(f"artifacts root: {resolved if resolved else '(none — campaign-api mode)'}")
+    if args.campaign_api:
+        print(f"campaign api:   {args.campaign_api}")
     try:
         while True:
             threading.Event().wait(3600)
