@@ -216,3 +216,51 @@ def test_strategies_sample_labels(campaign_reports_root) -> None:
     by_name = {s["strategy"]: s for s in payload["strategies"]}
     assert by_name["momentum"]["sample"] == "INSUFFICIENT_SAMPLE"  # 5 trades < 30
     assert by_name["trend"]["sample"] == "INSUFFICIENT_SAMPLE"
+
+
+# ----------------------------------------------------------------------
+# V1.1 — SPA index, daily series projection, robust trade counting
+# ----------------------------------------------------------------------
+
+
+def test_trades_of_robust() -> None:
+    assert projections._trades_of({"trades": 5}) == 5
+    assert projections._trades_of({"wins": 2, "losses": 1}) == 3
+    assert projections._trades_of({}) == 0
+
+
+def test_daily_series_projection(campaign_reports_root) -> None:
+    payload = projections.daily_series()
+    assert payload["source"] == "CAMPAIGN_STATE daily aggregates"
+    assert len(payload["days"]) == 1
+    day = payload["days"][0]
+    assert day["date"] == "2026-09-07"
+    assert day["trades"] == 1
+    assert day["day_ge_3"] is False
+    assert day["realized_pnl"] == 123.5
+    assert day["valid"] is True
+
+
+def test_daily_series_without_state(monkeypatch, tmp_path) -> None:
+    monkeypatch.setattr(projections, "_campaign_state_path", lambda: tmp_path / "missing.json")
+    payload = projections.daily_series()
+    assert payload["days"] == []  # no artifacts -> honest empty series
+
+
+def test_index_serves_spa(server: ThreadingHTTPServer) -> None:
+    status, body = _get(server, "/")
+    assert status == 200
+    html = body.decode("utf-8")
+    assert "POC01 · Paper Observation" in html
+    assert "LIVE DISABLED" in html
+    # read-only by construction: no forms, no POST method usage in the UI
+    assert "<form" not in html
+    assert "method=\"POST\"" not in html and "method:'POST'" not in html
+
+
+def test_daily_route_json(server: ThreadingHTTPServer) -> None:
+    req = urllib.request.Request(f"{_base(server)}/daily", headers={"Accept": "application/json"})
+    with urllib.request.urlopen(req, timeout=5) as resp:
+        assert resp.status == 200
+        payload = json.loads(resp.read())
+    assert "days" in payload

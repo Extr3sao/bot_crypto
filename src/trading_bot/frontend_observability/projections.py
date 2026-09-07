@@ -53,6 +53,14 @@ def _ratio(part: float, whole: float) -> float | None:
 # --------------------------------------------------------------------------
 
 
+def _trades_of(entry: dict[str, Any]) -> int:
+    """Robust per-day trade count from canonical daily aggregates (no computation of our own)."""
+    t = entry.get("trades")
+    if isinstance(t, (int, float)):
+        return int(t)
+    return int(entry.get("wins", 0) or 0) + int(entry.get("losses", 0) or 0)
+
+
 def overview() -> dict[str, Any]:
     state = _load(_latest(_campaign_state_path()))
     if state is None:
@@ -82,6 +90,7 @@ def overview() -> dict[str, Any]:
     daily = state.get("daily", {})
     today = max(daily) if daily else None
     today_entry = daily.get(today, {}) if today else {}
+    trades_today = _trades_of(today_entry)
     return {
         "mode": "PAPER",
         "data": "REAL_PUBLIC_MARKET" if state.get("provider") == "ccxt" else "DEMO_FIXTURE",
@@ -96,10 +105,11 @@ def overview() -> dict[str, Any]:
         "realized_pnl": state.get("realized_pnl"),
         "unrealized_pnl": state.get("unrealized_pnl"),
         "max_drawdown": _max_drawdown_from_daily(daily),
-        "trades_today": today_entry.get("trades", 0),
+        "trades_today": trades_today,
+        "trades_today_date": today,
         "ge_3_target": {
             "target": 3,
-            "met": today_entry.get("trades", 0) >= 3,
+            "met": trades_today >= 3,
             "status": "informational only",
         },
         "open_positions": len(state.get("open_positions", {})),
@@ -114,15 +124,50 @@ def overview() -> dict[str, Any]:
 
 def _max_drawdown_from_daily(daily: dict[str, Any]) -> float | None:
     """Projection-only drawdown from per-day realized PnL (canonical numbers stay in accounting)."""
-    values = [float(e.get("realized_pnl", 0.0)) for e in sorted(daily.values(), key=lambda e: str(e)[:0] + str(e))]
-    if not values:
+    if not daily:
         return None
+    values = [float(daily[k].get("realized_pnl", 0.0) or 0.0) for k in sorted(daily)]
     equity, peak, mdd = 0.0, 0.0, 0.0
     for v in values:
         equity += v
         peak = max(peak, equity)
         mdd = max(mdd, peak - equity)
     return round(mdd, 6)
+
+
+def daily_series() -> dict[str, Any]:
+    """Per-day projection of the canonical daily aggregates (for charts)."""
+    state = _load(_campaign_state_path())
+    if state is None:
+        return {"source": "unavailable", "days": []}
+    daily = state.get("daily", {})
+    days: list[dict[str, Any]] = []
+    for date in sorted(daily):
+        e = daily[date] if isinstance(daily[date], dict) else {}
+        trades = _trades_of(e)
+        days.append(
+            {
+                "date": date,
+                "scans": e.get("scans"),
+                "proposals": e.get("proposals"),
+                "debates": e.get("debates"),
+                "no_trade": e.get("no_trade"),
+                "risk_accepts": e.get("risk_accepts"),
+                "risk_rejects": e.get("risk_rejects"),
+                "closes": e.get("closes"),
+                "wins": e.get("wins"),
+                "losses": e.get("losses"),
+                "trades": trades,
+                "day_ge_3": trades >= 3,
+                "realized_pnl": e.get("realized_pnl"),
+                "max_intraday_drawdown": e.get("max_intraday_drawdown"),
+                "fees": e.get("fees"),
+                "false_success": e.get("false_success"),
+                "data_health_events": e.get("data_health_events"),
+                "valid": e.get("valid", True),
+            }
+        )
+    return {"source": "CAMPAIGN_STATE daily aggregates", "days": days}
 
 
 def _campaign_state_path() -> Path:

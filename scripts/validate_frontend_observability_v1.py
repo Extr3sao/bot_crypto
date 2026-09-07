@@ -80,7 +80,7 @@ def main() -> int:
             "RISK_ACCEPT" in payload.get("campaign_aggregates", {})
             or True  # decisions aggregates always expose verifier/risk fields
         )
-        status_f, funnel_payload = _get(base, "/funnel")
+        _status_f, funnel_payload = _get(base, "/funnel")
         risk_visible = "RISK_ACCEPT" in funnel_payload.get("counts", {}) and "RISK_REJECT" in funnel_payload.get("counts", {})
         _check("risk_visibility", risk_visible)
         # 6 PnL passthrough (value passthrough + explicit no-authority note)
@@ -130,12 +130,37 @@ def main() -> int:
                 if (s.startswith("import ") or s.startswith("from ")) and any(f in s for f in forbidden):
                     clean = False
         _check("no_authority_imports", clean)
+        # 13 SPA index (V1.1): polished single-page UI, still zero control surface
+        status, body = _get(base, "/")
+        html = body.decode("utf-8", "replace") if isinstance(body, bytes) else str(body)
+        spa_ok = (
+            status == 200
+            and "POC01 · Paper Observation" in html
+            and "LIVE DISABLED" in html
+            and "<form" not in html
+            and "method=\"POST\"" not in html
+            and "method:'POST'" not in html
+            and all(t in html for t in ("Overview", "Funnel", "Agents", "Strategies", "Assets", "Decisions", "Trades", "Reports", "Replay"))
+        )
+        _check("spa_index_readonly", spa_ok)
+        # 14 daily-series endpoint (V1.1)
+        status, payload = _get(base, "/daily")
+        _check("daily_series_endpoint", status == 200 and isinstance(payload, dict) and "days" in payload)
+        # 15 webui module is also free of authority imports
+        import trading_bot.frontend_observability.webui as webui_mod
+
+        clean2 = True
+        for line in Path(webui_mod.__file__).read_text(encoding="utf-8").splitlines():
+            s = line.strip()
+            if (s.startswith("import ") or s.startswith("from ")) and any(f in s for f in forbidden):
+                clean2 = False
+        _check("webui_no_authority_imports", clean2)
     finally:
         server.shutdown()
         server.server_close()
 
     passed = sum(1 for _, ok, _ in CHECKS if ok)
-    print(f"\nFRONTEND-OBSERVABILITY-V1 validator: {passed}/{len(CHECKS)} PASS")
+    print(f"\nFRONTEND-OBSERVABILITY-V1.1 validator: {passed}/{len(CHECKS)} PASS")
     if passed == len(CHECKS):
         print("RESULT: FRONTEND_OBSERVABILITY_V1_FUNCTIONAL")
         return 0

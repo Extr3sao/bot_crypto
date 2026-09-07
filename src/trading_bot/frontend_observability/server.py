@@ -13,13 +13,24 @@ from html import escape
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from typing import Any
 
-from trading_bot.frontend_observability import projections
+from trading_bot.frontend_observability import projections, webui
 
 DEFAULT_PORT = 8767
 
 
 def _json_bytes(payload: dict[str, Any]) -> bytes:
     return json.dumps(payload, indent=2, default=str).encode()
+
+
+def render_daily_html(payload: dict[str, Any]) -> str:
+    rows = "".join(
+        "<tr><td>"
+        + "</td><td>".join(escape(str(d.get(k))) for k in ("date", "trades", "day_ge_3", "realized_pnl", "scans", "proposals", "debates"))
+        + "</td></tr>"
+        for d in payload.get("days", [])
+    )
+    head = "<tr><th>date</th><th>trades</th><th>≥3</th><th>realized PnL</th><th>scans</th><th>proposals</th><th>debates</th></tr>"
+    return f"<h1>DAILY SERIES</h1><table>{head}{rows}</table>"
 
 
 def render_overview_html(payload: dict[str, Any]) -> str:
@@ -116,21 +127,7 @@ class FrontendHandler(BaseHTTPRequestHandler):
         path = path.rstrip("/") or "/"
         try:
             if path == "/":
-                links = "".join(
-                    f"<li><a href='{p}'>{t}</a></li>"
-                    for p, t in (
-                        ("/overview", "Overview"),
-                        ("/funnel", "Opportunity funnel"),
-                        ("/agents", "Agent conversation"),
-                        ("/strategies", "Strategies"),
-                        ("/assets", "Assets"),
-                        ("/decisions", "Decisions"),
-                        ("/trades", "Trades/Portfolio"),
-                        ("/reports", "Reports"),
-                        ("/replay", "Replay status"),
-                    )
-                )
-                self._html(f"<h1>PAPER · REAL PUBLIC MARKET · LIVE DISABLED</h1><ul>{links}</ul>")
+                self._html(webui.INDEX_HTML)
             elif path == "/overview":
                 payload = projections.overview()
                 self._both(render_overview_html(payload), payload)
@@ -158,6 +155,9 @@ class FrontendHandler(BaseHTTPRequestHandler):
             elif path == "/reports":
                 items = projections.report_list()
                 self._both(render_reports_html(items), {"reports": items})
+            elif path == "/daily":
+                payload = projections.daily_series()
+                self._both(render_daily_html(payload), payload)
             elif path == "/api/reports/content":
                 params = dict(pair.split("=", 1) for pair in query.split("&") if "=" in pair)
                 payload = projections.report_content(params.get("path", ""))
