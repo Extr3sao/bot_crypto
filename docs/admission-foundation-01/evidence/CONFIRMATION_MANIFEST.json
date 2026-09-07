@@ -1,0 +1,40 @@
+{
+  "acceptance_criteria": {
+    "min_trades": 30,
+    "net_expectancy_r_gt": 0.0,
+    "net_pf_gt": 1.0,
+    "note": "no parameter sweep; no direction change; no asset substitution",
+    "source": "EDGE-RESEARCH-002 frozen v2 criteria (pre-registered)",
+    "stability": "thirds and halves sign-consistency"
+  },
+  "assets": [
+    "SOL/USDT:USDT"
+  ],
+  "candidate_config_sha256": [
+    "9edb1a21f177eecf",
+    "85f271a615414fdd",
+    "ce733e29c94b3639"
+  ],
+  "commit": "bb46c92119e707504520cbd12e01a00a93b613a1",
+  "confirmation_id": "CONF-EDGE-002-001",
+  "consumed": false,
+  "cost_model_sha256": "poc01-canonical-costs (fees entry+exit, slippage both sides)",
+  "created_at": "2026-09-07T20:58:34+02:00",
+  "data_source": "binanceusdm-public (ccxt, no credentials)",
+  "expected_bars": 4032,
+  "manifest_sha256": "db4ad2c36724e0aa1883cecc408c640d3718d9c293144de9ee1df325f280b894",
+  "notes": "Future data only: window starts AFTER this manifest's commit. R1 confirmation/holdout and EDGE windows are NOT reused. Single-use consumption guard applies.",
+  "protocol_version": "CONFIRMATION-PROTOCOL-V2",
+  "schema_version": "confirmation-manifest-v2",
+  "strategy_ids": [
+    "edge-002-ha-momentum",
+    "edge-002-ha-breakout",
+    "edge-002-hf-session-ema"
+  ],
+  "timeframes": [
+    "5m"
+  ],
+  "window_end": "2026-09-22T00:00:00+00:00",
+  "window_start": "2026-09-08T00:00:00+00:00",
+  "window_status": "COMMITTED"
+}

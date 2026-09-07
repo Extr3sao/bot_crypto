@@ -1,0 +1,41 @@
+{
+  "records": [
+    {
+      "admission_state": "ASSET_CANDIDATE",
+      "asset_id": "XRP/USDT:USDT",
+      "correlation": "PASS (max 0.66-0.71 vs BTC/ETH/SOL, 5m)",
+      "data_quality": "PASS",
+      "evidence": [
+        "feat/research-expansion-v1@fffd469 docs/research-expansion-v1/ASSET_CANDIDATES.md",
+        "feat/edge-research-002@e831420 docs/asset-incremental-analysis/ASSET_INCREMENTAL_ANALYSIS.json"
+      ],
+      "history_depth": "PASS (400d+)",
+      "incremental_opportunity": "FAIL/current universe (0.0% outside occupied intervals)",
+      "liquidity": "PASS",
+      "notes": "liquidity PASS; incremental opportunity FAIL under the current strategy universe",
+      "opportunity_overlap": "HIGH (83.8% signal-time overlap)",
+      "slippage": "PROXY_MEASURED",
+      "spread": "NOT_MEASURED",
+      "strategy_compatibility": "PASS (all 5 families fire)"
+    },
+    {
+      "admission_state": "ASSET_CANDIDATE",
+      "asset_id": "DOGE/USDT:USDT",
+      "correlation": "PASS (max 0.69-0.77 vs BTC/ETH/SOL, 5m)",
+      "data_quality": "PASS",
+      "evidence": [
+        "feat/research-expansion-v1@fffd469 docs/research-expansion-v1/ASSET_CANDIDATES.md",
+        "feat/edge-research-002@e831420 docs/asset-incremental-analysis/ASSET_INCREMENTAL_ANALYSIS.json"
+      ],
+      "history_depth": "PASS (400d+)",
+      "incremental_opportunity": "FAIL/current universe (0.0% outside occupied intervals)",
+      "liquidity": "PASS",
+      "notes": "liquidity PASS; incremental opportunity FAIL under the current strategy universe",
+      "opportunity_overlap": "HIGH (80.3% signal-time overlap)",
+      "slippage": "PROXY_MEASURED",
+      "spread": "NOT_MEASURED",
+      "strategy_compatibility": "PASS (all 5 families fire)"
+    }
+  ],
+  "schema_version": "asset-admission-contract-v1"
+}

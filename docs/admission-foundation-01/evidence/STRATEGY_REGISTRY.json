@@ -1,0 +1,408 @@
+{
+  "count": 8,
+  "records": [
+    {
+      "admission_state": "DISCOVERY_PASS",
+      "assets": [
+        "SOL/USDT:USDT"
+      ],
+      "code_sha256": "065a65f",
+      "config_sha256": "85f271a615414fdd",
+      "confirmation_status": "BLOCKED_CONFIRMATION_AUTHORITY",
+      "created_at": "2026-09-07T05:55:19+00:00",
+      "cv_status": "NOT_RUN",
+      "directions": [
+        "LONG"
+      ],
+      "discovery_status": "PASS",
+      "evidence_refs": [
+        {
+          "claim": "discovery_manifest+results",
+          "decision": "DISCOVERY_PASS (3/36 passers)",
+          "evidence": "docs/edge-research-002/evidence/DISCOVERY_RESULTS.json + HYPOTHESIS_RESULTS.json",
+          "sha256": "9ededa00f2819b635c639357eebef2644eed2ae635b03b4a10a14ee2ae9a1c00",
+          "source": "feat/edge-research-002@065a65f"
+        },
+        {
+          "claim": "confirmation blocked",
+          "decision": "CONFIRMATION_BLOCKED (lock ordering unprovable)",
+          "evidence": "docs/edge-research-002/evidence/CONFIRMATION_AUTHORITY_AUDIT.json",
+          "sha256": "2fa786505592cffd2262aaba3e328d08febfdbd21109957a444332a128023aa1",
+          "source": "feat/edge-research-002@a647dfb"
+        },
+        {
+          "claim": "stability evidence",
+          "decision": "recorded; concentration risk NOT eliminated by pass",
+          "evidence": "thirds/halves recorded in DISCOVERY_RESULTS.json",
+          "sha256": "44ea649d6da534b537cdb94f22f8daea4c114e21df1854f6cdf6379967a5b806",
+          "source": "feat/edge-research-002@065a65f"
+        }
+      ],
+      "family": "breakout",
+      "holdout_status": "NOT_RUN",
+      "identity_hash": "a473c3f3d5d53f35c9e6cc79f176f7276c581e310cdc37fd1cc019bc3265839c",
+      "net_expectancy": 0.341706,
+      "net_profit_factor": 1.371249,
+      "notes": "SOL concentration 100%; LONG concentration 100%; do NOT promote",
+      "origin": "pre-registered orthogonal hypothesis execution",
+      "promotion_history": [],
+      "regime_results": {
+        "note": "single-asset LONG discovery; regime metrics in discovery evidence"
+      },
+      "rejection_reasons": [],
+      "robustness_status": "NOT_RUN",
+      "shadow_status": "NOT_RUN",
+      "source": "EDGE-RESEARCH-002",
+      "strategy_id": "edge-002-ha-breakout",
+      "timeframes": [
+        "5m"
+      ],
+      "trade_count": 36,
+      "version": "v1",
+      "walk_forward_status": "NOT_RUN"
+    },
+    {
+      "admission_state": "DISCOVERY_PASS",
+      "assets": [
+        "SOL/USDT:USDT"
+      ],
+      "code_sha256": "065a65f",
+      "config_sha256": "9edb1a21f177eecf",
+      "confirmation_status": "BLOCKED_CONFIRMATION_AUTHORITY",
+      "created_at": "2026-09-07T05:55:19+00:00",
+      "cv_status": "NOT_RUN",
+      "directions": [
+        "LONG"
+      ],
+      "discovery_status": "PASS",
+      "evidence_refs": [
+        {
+          "claim": "discovery_manifest+results",
+          "decision": "DISCOVERY_PASS (3/36 passers)",
+          "evidence": "docs/edge-research-002/evidence/DISCOVERY_RESULTS.json + HYPOTHESIS_RESULTS.json",
+          "sha256": "9ededa00f2819b635c639357eebef2644eed2ae635b03b4a10a14ee2ae9a1c00",
+          "source": "feat/edge-research-002@065a65f"
+        },
+        {
+          "claim": "confirmation blocked",
+          "decision": "CONFIRMATION_BLOCKED (lock ordering unprovable)",
+          "evidence": "docs/edge-research-002/evidence/CONFIRMATION_AUTHORITY_AUDIT.json",
+          "sha256": "2fa786505592cffd2262aaba3e328d08febfdbd21109957a444332a128023aa1",
+          "source": "feat/edge-research-002@a647dfb"
+        },
+        {
+          "claim": "stability evidence",
+          "decision": "recorded; concentration risk NOT eliminated by pass",
+          "evidence": "thirds/halves recorded in DISCOVERY_RESULTS.json",
+          "sha256": "44ea649d6da534b537cdb94f22f8daea4c114e21df1854f6cdf6379967a5b806",
+          "source": "feat/edge-research-002@065a65f"
+        }
+      ],
+      "family": "momentum",
+      "holdout_status": "NOT_RUN",
+      "identity_hash": "bef0d6ef4e47b266410d9029eab4fb6f38d21a1a658cd9300476ddeacde8afcd",
+      "net_expectancy": 0.249553,
+      "net_profit_factor": 1.329317,
+      "notes": "SOL concentration 100%; LONG concentration 100%; do NOT promote",
+      "origin": "pre-registered orthogonal hypothesis execution",
+      "promotion_history": [],
+      "regime_results": {
+        "note": "single-asset LONG discovery; regime metrics in discovery evidence"
+      },
+      "rejection_reasons": [],
+      "robustness_status": "NOT_RUN",
+      "shadow_status": "NOT_RUN",
+      "source": "EDGE-RESEARCH-002",
+      "strategy_id": "edge-002-ha-momentum",
+      "timeframes": [
+        "5m"
+      ],
+      "trade_count": 51,
+      "version": "v1",
+      "walk_forward_status": "NOT_RUN"
+    },
+    {
+      "admission_state": "DISCOVERY_PASS",
+      "assets": [
+        "SOL/USDT:USDT"
+      ],
+      "code_sha256": "065a65f",
+      "config_sha256": "ce733e29c94b3639",
+      "confirmation_status": "BLOCKED_CONFIRMATION_AUTHORITY",
+      "created_at": "2026-09-07T05:55:19+00:00",
+      "cv_status": "NOT_RUN",
+      "directions": [
+        "LONG"
+      ],
+      "discovery_status": "PASS",
+      "evidence_refs": [
+        {
+          "claim": "discovery_manifest+results",
+          "decision": "DISCOVERY_PASS (3/36 passers)",
+          "evidence": "docs/edge-research-002/evidence/DISCOVERY_RESULTS.json + HYPOTHESIS_RESULTS.json",
+          "sha256": "9ededa00f2819b635c639357eebef2644eed2ae635b03b4a10a14ee2ae9a1c00",
+          "source": "feat/edge-research-002@065a65f"
+        },
+        {
+          "claim": "confirmation blocked",
+          "decision": "CONFIRMATION_BLOCKED (lock ordering unprovable)",
+          "evidence": "docs/edge-research-002/evidence/CONFIRMATION_AUTHORITY_AUDIT.json",
+          "sha256": "2fa786505592cffd2262aaba3e328d08febfdbd21109957a444332a128023aa1",
+          "source": "feat/edge-research-002@a647dfb"
+        },
+        {
+          "claim": "stability evidence",
+          "decision": "recorded; concentration risk NOT eliminated by pass",
+          "evidence": "thirds/halves recorded in DISCOVERY_RESULTS.json",
+          "sha256": "44ea649d6da534b537cdb94f22f8daea4c114e21df1854f6cdf6379967a5b806",
+          "source": "feat/edge-research-002@065a65f"
+        }
+      ],
+      "family": "ema_crossover",
+      "holdout_status": "NOT_RUN",
+      "identity_hash": "593963eb78d977d4e68a5da23d095a8e42b168e8a576779f72a2537c97462144",
+      "net_expectancy": 0.615557,
+      "net_profit_factor": 1.791153,
+      "notes": "SOL concentration 100%; LONG concentration 100%; do NOT promote",
+      "origin": "pre-registered orthogonal hypothesis execution",
+      "promotion_history": [],
+      "regime_results": {
+        "note": "single-asset LONG discovery; regime metrics in discovery evidence"
+      },
+      "rejection_reasons": [],
+      "robustness_status": "NOT_RUN",
+      "shadow_status": "NOT_RUN",
+      "source": "EDGE-RESEARCH-002",
+      "strategy_id": "edge-002-hf-session-ema",
+      "timeframes": [
+        "5m"
+      ],
+      "trade_count": 34,
+      "version": "v1",
+      "walk_forward_status": "NOT_RUN"
+    },
+    {
+      "admission_state": "LEGACY_PAPER_BASELINE",
+      "assets": [
+        "BTC/USDT:USDT",
+        "ETH/USDT:USDT",
+        "SOL/USDT:USDT"
+      ],
+      "code_sha256": "3c274cc",
+      "config_sha256": "PENDING_RETRO_ADMISSION",
+      "confirmation_status": "NOT_RUN",
+      "created_at": "2026-09-07T18:58:38.466241+00:00",
+      "cv_status": "NOT_RUN",
+      "directions": [
+        "LONG",
+        "SHORT"
+      ],
+      "discovery_status": "NOT_RUN",
+      "evidence_refs": [
+        {
+          "claim": "paper_runtime_certified",
+          "decision": "grandfathered LEGACY_PAPER_BASELINE",
+          "evidence": "runs certified in PAPER via the multi-agent chain",
+          "sha256": "f240ed07fd6b23c5a5de8e3a1e18cf5b85805985bc9c5a340b52858103fab2aa",
+          "source": "CERT-DEMO-PAPER-01 (a282fcc) + POC01 30/30 (57f300f lineage)"
+        }
+      ],
+      "family": "breakout",
+      "holdout_status": "NOT_RUN",
+      "identity_hash": "2010642f1a4182916086ea73c5037572ced98e2817ab8db95c03867e0afab222",
+      "notes": "Grandfathered: strategy predates the admission registry. It is certified to RUN in the frozen POC01 PAPER plane, but has NO modern discovery/robustness/CV/walk-forward/confirmation gates. Evidence is NOT fabricated; retro-admission may run later without touching the frozen campaign.",
+      "origin": "certified multi-agent runtime (pre-registry)",
+      "promotion_history": [],
+      "regime_results": {},
+      "rejection_reasons": [],
+      "robustness_status": "NOT_RUN",
+      "shadow_status": "NOT_RUN",
+      "source": "POC01_RUNTIME",
+      "strategy_id": "poc01-breakout",
+      "timeframes": [
+        "5m"
+      ],
+      "version": "v1",
+      "walk_forward_status": "NOT_RUN"
+    },
+    {
+      "admission_state": "LEGACY_PAPER_BASELINE",
+      "assets": [
+        "BTC/USDT:USDT",
+        "ETH/USDT:USDT",
+        "SOL/USDT:USDT"
+      ],
+      "code_sha256": "3c274cc",
+      "config_sha256": "PENDING_RETRO_ADMISSION",
+      "confirmation_status": "NOT_RUN",
+      "created_at": "2026-09-07T18:58:38.466241+00:00",
+      "cv_status": "NOT_RUN",
+      "directions": [
+        "LONG",
+        "SHORT"
+      ],
+      "discovery_status": "NOT_RUN",
+      "evidence_refs": [
+        {
+          "claim": "paper_runtime_certified",
+          "decision": "grandfathered LEGACY_PAPER_BASELINE",
+          "evidence": "runs certified in PAPER via the multi-agent chain",
+          "sha256": "f240ed07fd6b23c5a5de8e3a1e18cf5b85805985bc9c5a340b52858103fab2aa",
+          "source": "CERT-DEMO-PAPER-01 (a282fcc) + POC01 30/30 (57f300f lineage)"
+        }
+      ],
+      "family": "mean_reversion",
+      "holdout_status": "NOT_RUN",
+      "identity_hash": "a6572a0239c4985dc2bc5fb097bb7c30637f5e1afecee1056decb4576f3321ea",
+      "notes": "Grandfathered: strategy predates the admission registry. It is certified to RUN in the frozen POC01 PAPER plane, but has NO modern discovery/robustness/CV/walk-forward/confirmation gates. Evidence is NOT fabricated; retro-admission may run later without touching the frozen campaign.",
+      "origin": "certified multi-agent runtime (pre-registry)",
+      "promotion_history": [],
+      "regime_results": {},
+      "rejection_reasons": [],
+      "robustness_status": "NOT_RUN",
+      "shadow_status": "NOT_RUN",
+      "source": "POC01_RUNTIME",
+      "strategy_id": "poc01-mean_reversion",
+      "timeframes": [
+        "5m"
+      ],
+      "version": "v1",
+      "walk_forward_status": "NOT_RUN"
+    },
+    {
+      "admission_state": "LEGACY_PAPER_BASELINE",
+      "assets": [
+        "BTC/USDT:USDT",
+        "ETH/USDT:USDT",
+        "SOL/USDT:USDT"
+      ],
+      "code_sha256": "3c274cc",
+      "config_sha256": "PENDING_RETRO_ADMISSION",
+      "confirmation_status": "NOT_RUN",
+      "created_at": "2026-09-07T18:58:38.466241+00:00",
+      "cv_status": "NOT_RUN",
+      "directions": [
+        "LONG",
+        "SHORT"
+      ],
+      "discovery_status": "NOT_RUN",
+      "evidence_refs": [
+        {
+          "claim": "paper_runtime_certified",
+          "decision": "grandfathered LEGACY_PAPER_BASELINE",
+          "evidence": "runs certified in PAPER via the multi-agent chain",
+          "sha256": "f240ed07fd6b23c5a5de8e3a1e18cf5b85805985bc9c5a340b52858103fab2aa",
+          "source": "CERT-DEMO-PAPER-01 (a282fcc) + POC01 30/30 (57f300f lineage)"
+        }
+      ],
+      "family": "momentum",
+      "holdout_status": "NOT_RUN",
+      "identity_hash": "e2361652725e51a6162b37030cb7acf895c9e0c9614f3d88fc46a3fa31a3b49d",
+      "notes": "Grandfathered: strategy predates the admission registry. It is certified to RUN in the frozen POC01 PAPER plane, but has NO modern discovery/robustness/CV/walk-forward/confirmation gates. Evidence is NOT fabricated; retro-admission may run later without touching the frozen campaign.",
+      "origin": "certified multi-agent runtime (pre-registry)",
+      "promotion_history": [],
+      "regime_results": {},
+      "rejection_reasons": [],
+      "robustness_status": "NOT_RUN",
+      "shadow_status": "NOT_RUN",
+      "source": "POC01_RUNTIME",
+      "strategy_id": "poc01-momentum",
+      "timeframes": [
+        "5m"
+      ],
+      "version": "v1",
+      "walk_forward_status": "NOT_RUN"
+    },
+    {
+      "admission_state": "LEGACY_PAPER_BASELINE",
+      "assets": [
+        "BTC/USDT:USDT",
+        "ETH/USDT:USDT",
+        "SOL/USDT:USDT"
+      ],
+      "code_sha256": "3c274cc",
+      "config_sha256": "PENDING_RETRO_ADMISSION",
+      "confirmation_status": "NOT_RUN",
+      "created_at": "2026-09-07T18:58:38.466241+00:00",
+      "cv_status": "NOT_RUN",
+      "directions": [
+        "LONG",
+        "SHORT"
+      ],
+      "discovery_status": "NOT_RUN",
+      "evidence_refs": [
+        {
+          "claim": "paper_runtime_certified",
+          "decision": "grandfathered LEGACY_PAPER_BASELINE",
+          "evidence": "runs certified in PAPER via the multi-agent chain",
+          "sha256": "f240ed07fd6b23c5a5de8e3a1e18cf5b85805985bc9c5a340b52858103fab2aa",
+          "source": "CERT-DEMO-PAPER-01 (a282fcc) + POC01 30/30 (57f300f lineage)"
+        }
+      ],
+      "family": "trend",
+      "holdout_status": "NOT_RUN",
+      "identity_hash": "bf1d1b1775fea85c16008d39835a6d264c232eca1642d670562ada534ab9edc4",
+      "notes": "Grandfathered: strategy predates the admission registry. It is certified to RUN in the frozen POC01 PAPER plane, but has NO modern discovery/robustness/CV/walk-forward/confirmation gates. Evidence is NOT fabricated; retro-admission may run later without touching the frozen campaign.",
+      "origin": "certified multi-agent runtime (pre-registry)",
+      "promotion_history": [],
+      "regime_results": {},
+      "rejection_reasons": [],
+      "robustness_status": "NOT_RUN",
+      "shadow_status": "NOT_RUN",
+      "source": "POC01_RUNTIME",
+      "strategy_id": "poc01-trend",
+      "timeframes": [
+        "5m"
+      ],
+      "version": "v1",
+      "walk_forward_status": "NOT_RUN"
+    },
+    {
+      "admission_state": "LEGACY_PAPER_BASELINE",
+      "assets": [
+        "BTC/USDT:USDT",
+        "ETH/USDT:USDT",
+        "SOL/USDT:USDT"
+      ],
+      "code_sha256": "3c274cc",
+      "config_sha256": "PENDING_RETRO_ADMISSION",
+      "confirmation_status": "NOT_RUN",
+      "created_at": "2026-09-07T18:58:38.466241+00:00",
+      "cv_status": "NOT_RUN",
+      "directions": [
+        "LONG",
+        "SHORT"
+      ],
+      "discovery_status": "NOT_RUN",
+      "evidence_refs": [
+        {
+          "claim": "paper_runtime_certified",
+          "decision": "grandfathered LEGACY_PAPER_BASELINE",
+          "evidence": "runs certified in PAPER via the multi-agent chain",
+          "sha256": "f240ed07fd6b23c5a5de8e3a1e18cf5b85805985bc9c5a340b52858103fab2aa",
+          "source": "CERT-DEMO-PAPER-01 (a282fcc) + POC01 30/30 (57f300f lineage)"
+        }
+      ],
+      "family": "volatility",
+      "holdout_status": "NOT_RUN",
+      "identity_hash": "85fbcf43f5ef370908f6b1feceb4e5bf6170835a88e9e7cd91939a643752ea51",
+      "notes": "Grandfathered: strategy predates the admission registry. It is certified to RUN in the frozen POC01 PAPER plane, but has NO modern discovery/robustness/CV/walk-forward/confirmation gates. Evidence is NOT fabricated; retro-admission may run later without touching the frozen campaign.",
+      "origin": "certified multi-agent runtime (pre-registry)",
+      "promotion_history": [],
+      "regime_results": {},
+      "rejection_reasons": [],
+      "robustness_status": "NOT_RUN",
+      "shadow_status": "NOT_RUN",
+      "source": "POC01_RUNTIME",
+      "strategy_id": "poc01-volatility",
+      "timeframes": [
+        "5m"
+      ],
+      "version": "v1",
+      "walk_forward_status": "NOT_RUN"
+    }
+  ],
+  "registered_at": "2026-09-07T18:58:38.467259+00:00",
+  "registry_sha256": "5014eafb8d173c4a0b402063da79b93948aeefc8fdb75501ce3e8b04602c9b4e",
+  "schema_version": "strategy-registry-v1"
+}
