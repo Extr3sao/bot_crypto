@@ -1,9 +1,32 @@
 {
   "checkpoint": "EDGE-RESEARCH-002",
-  "data_cutoff": "2026-09-06T17:10:00+00:00",
-  "elapsed_days_since_r1": 0.0799,
+  "data_cutoff": "2026-09-07T05:30:00+00:00",
+  "decision": "NEW_CANDIDATES_FROZEN",
+  "discovery_window": [
+    "2026-08-19T00:00:00+00:00",
+    "2026-08-30T12:53:59.999000+00:00"
+  ],
+  "g10_deterministic_recheck": true,
+  "g11_negative_results_recorded": true,
+  "g12_paper_impact": 0,
+  "g13_live_execution": 0,
+  "g1_r1_baseline_verified": true,
+  "g2_no_r1_reuse": true,
+  "g3_confirmation_holdout_locked": true,
+  "g4_new_discovery_window": true,
+  "g5_hypotheses_preregistered_before_execution": true,
+  "g6_one_execution_per_config": true,
+  "g7_no_parameter_sweeps": true,
+  "g8_pit_no_lookahead": true,
+  "g9_costs_both_sides": true,
+  "generated_at": "2026-09-07T05:46:17.537969+00:00",
   "hypotheses_registered": 6,
-  "min_required_days": 0.25,
-  "r1_cutoff": "2026-09-06T15:15:00+00:00",
-  "result": "WAIT_FOR_NEW_DATA"
+  "passers": 3,
+  "r1_evidence_correction": {
+    "breakout_eth_long_r1_reason": "insufficient_subperiod_stability (real reason; R1 record already correct, no contradiction found)",
+    "r1_results_altered": false
+  },
+  "r1_status": "CONSUMED_DISCOVERY (never reused; confirmation/holdout still LOCKED)",
+  "rejections": 129,
+  "runs_total": 132
 }

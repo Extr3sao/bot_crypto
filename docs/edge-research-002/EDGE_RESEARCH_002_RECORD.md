@@ -117,3 +117,48 @@ Artifacts: `reports/edge-research-002/` (runtime) mirrored to
 DATA_MANIFEST, FETCH_STATS, GATE_REPORT (+ SPLIT_MANIFEST,
 DISCOVERY_RESULTS, TRADE_LEDGERS, HYPOTHESIS_RESULTS,
 REJECTED_HYPOTHESES once executed).
+
+## 8. EXECUTION (2026-09-07) — six hypotheses run exactly once
+
+Executed under the frozen preregistration of this record (no retuning, no
+sweeps, one run per config). New data gate satisfied: 14.2 h of new closed
+candles since the R1 cutoff.
+
+```text
+DATA_CUTOFF:        2026-09-07T05:30:00Z (last closed 5m candle)
+SPLIT (fresh-split-v1, sha256 8fa4eb8e...f101e):
+  DISCOVERY      2026-08-19T00:00Z .. 2026-08-30T12:53:59Z (60%)
+  CONFIRMATION   2026-08-30T12:53:59Z .. 2026-09-03T09:11:59Z (20%, LOCKED)
+  FINAL_HOLDOUT  2026-09-03T09:11:59Z .. 2026-09-07T05:30:00Z (20%, LOCKED)
+GATES: 14/14 PASS (G1..G14, incl. deterministic double-run, PIT, costs both sides)
+DECISION: NEW_CANDIDATES_FROZEN
+```
+
+Passers (pre-registered v2 criteria: N>=30, net exp R > 0, net PF > 1,
+thirds+halves stability, no extreme concentration):
+
+| Hypothesis | Family | Direction | Symbol | N | Net exp R | Net PF |
+| --- | --- | --- | --- | --- | --- | --- |
+| H-A-MTF-CONTEXT | momentum | LONG | SOL/USDT:USDT | 51 | +0.2496 | 1.329 |
+| H-A-MTF-CONTEXT | breakout | LONG | SOL/USDT:USDT | 36 | +0.3417 | 1.371 |
+| H-F-US-SESSION | ema_crossover | LONG | SOL/USDT:USDT | 34 | +0.6156 | 1.791 |
+
+Negative results (recorded, not hidden): H-B-VOL-MID-BUCKET 0/36 passers,
+H-C-MEAN-REVERSION-FADE 0/6, H-D-TREND-PULLBACK 0/6, H-E-CROSS-SECTIONAL-RS
+0/12. Dominant rejection reasons: trades<30 (sub-threshold sample, e.g. BTC
+variants), negative expectancy, insufficient subperiod stability.
+
+Honest observations:
+
+1. All three passers are SOL LONG — heavy asset/direction concentration.
+   Recorded as an observational caveat; no exclusion/tuning was performed.
+2. `ema_crossover` (H-F passer) is the runner's registered fifth family in
+   this preregistration — frozen before execution; not retconned.
+3. Magnitudes are moderate (<=0.62R) versus R0's suspicious +2R/+3R —
+   consistent with the R1 audit fixing the R/overlap semantics.
+
+CANDIDATE STATUS: FROZEN — confirmation/holdout remain LOCKED. Confirmation
+execution is NOT authorized in this phase (see PARALLEL-WORK-01 Track C:
+methodology specs only). Next authorized action: confirmation run against
+the LOCKED confirmation window under the same frozen configs, in a dedicated
+checkpoint.

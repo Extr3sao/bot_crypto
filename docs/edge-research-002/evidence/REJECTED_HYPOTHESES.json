@@ -1,0 +1,1304 @@
+[
+  {
+    "direction": "LONG",
+    "family": "momentum",
+    "net_expectancy_r": 0.239717,
+    "net_pf": 1.278509,
+    "reason": "trades<30",
+    "symbol": "BTC/USDT:USDT",
+    "trades": 29
+  },
+  {
+    "direction": "SHORT",
+    "family": "momentum",
+    "net_expectancy_r": -0.205224,
+    "net_pf": 0.688967,
+    "reason": "trades<30",
+    "symbol": "BTC/USDT:USDT",
+    "trades": 7
+  },
+  {
+    "direction": "LONG",
+    "family": "trend",
+    "net_expectancy_r": 0.152044,
+    "net_pf": 1.260261,
+    "reason": "trades<30",
+    "symbol": "BTC/USDT:USDT",
+    "trades": 10
+  },
+  {
+    "direction": "SHORT",
+    "family": "trend",
+    "net_expectancy_r": 0.0,
+    "net_pf": 0.0,
+    "reason": "trades<30",
+    "symbol": "BTC/USDT:USDT",
+    "trades": 0
+  },
+  {
+    "direction": "LONG",
+    "failures": [
+      "net_exp_r_below_threshold",
+      "net_pf_below_threshold",
+      "insufficient_subperiod_stability"
+    ],
+    "family": "breakout",
+    "net_expectancy_r": -0.072692,
+    "net_pf": 0.935219,
+    "symbol": "BTC/USDT:USDT",
+    "trades": 32
+  },
+  {
+    "direction": "SHORT",
+    "family": "breakout",
+    "net_expectancy_r": -1.924406,
+    "net_pf": 0.0,
+    "reason": "trades<30",
+    "symbol": "BTC/USDT:USDT",
+    "trades": 1
+  },
+  {
+    "direction": "LONG",
+    "family": "mean_reversion",
+    "net_expectancy_r": 0.242017,
+    "net_pf": Infinity,
+    "reason": "trades<30",
+    "symbol": "BTC/USDT:USDT",
+    "trades": 1
+  },
+  {
+    "direction": "SHORT",
+    "failures": [
+      "net_exp_r_below_threshold",
+      "net_pf_below_threshold",
+      "insufficient_subperiod_stability",
+      "no_stability_across_halves"
+    ],
+    "family": "mean_reversion",
+    "net_expectancy_r": -0.993922,
+    "net_pf": 0.130084,
+    "symbol": "BTC/USDT:USDT",
+    "trades": 39
+  },
+  {
+    "direction": "LONG",
+    "family": "volatility",
+    "net_expectancy_r": -1.445849,
+    "net_pf": 0.0,
+    "reason": "trades<30",
+    "symbol": "BTC/USDT:USDT",
+    "trades": 2
+  },
+  {
+    "direction": "SHORT",
+    "family": "volatility",
+    "net_expectancy_r": 0.0,
+    "net_pf": 0.0,
+    "reason": "trades<30",
+    "symbol": "BTC/USDT:USDT",
+    "trades": 0
+  },
+  {
+    "direction": "LONG",
+    "failures": [
+      "net_exp_r_below_threshold",
+      "net_pf_below_threshold",
+      "insufficient_subperiod_stability"
+    ],
+    "family": "ema_crossover",
+    "net_expectancy_r": -0.535086,
+    "net_pf": 0.577401,
+    "symbol": "BTC/USDT:USDT",
+    "trades": 75
+  },
+  {
+    "direction": "SHORT",
+    "family": "ema_crossover",
+    "net_expectancy_r": -1.105366,
+    "net_pf": 0.185872,
+    "reason": "trades<30",
+    "symbol": "BTC/USDT:USDT",
+    "trades": 17
+  },
+  {
+    "direction": "LONG",
+    "failures": [
+      "net_exp_r_below_threshold",
+      "net_pf_below_threshold",
+      "insufficient_subperiod_stability"
+    ],
+    "family": "momentum",
+    "net_expectancy_r": -0.305031,
+    "net_pf": 0.680315,
+    "symbol": "ETH/USDT:USDT",
+    "trades": 43
+  },
+  {
+    "direction": "SHORT",
+    "family": "momentum",
+    "net_expectancy_r": -0.424921,
+    "net_pf": 0.435915,
+    "reason": "trades<30",
+    "symbol": "ETH/USDT:USDT",
+    "trades": 12
+  },
+  {
+    "direction": "LONG",
+    "family": "trend",
+    "net_expectancy_r": 0.636188,
+    "net_pf": 1.905994,
+    "reason": "trades<30",
+    "symbol": "ETH/USDT:USDT",
+    "trades": 11
+  },
+  {
+    "direction": "SHORT",
+    "family": "trend",
+    "net_expectancy_r": 0.0,
+    "net_pf": 0.0,
+    "reason": "trades<30",
+    "symbol": "ETH/USDT:USDT",
+    "trades": 0
+  },
+  {
+    "direction": "LONG",
+    "failures": [
+      "net_exp_r_below_threshold",
+      "net_pf_below_threshold",
+      "insufficient_subperiod_stability"
+    ],
+    "family": "breakout",
+    "net_expectancy_r": -0.15682,
+    "net_pf": 0.859267,
+    "symbol": "ETH/USDT:USDT",
+    "trades": 33
+  },
+  {
+    "direction": "SHORT",
+    "family": "breakout",
+    "net_expectancy_r": -1.720179,
+    "net_pf": 0.0,
+    "reason": "trades<30",
+    "symbol": "ETH/USDT:USDT",
+    "trades": 5
+  },
+  {
+    "direction": "LONG",
+    "family": "mean_reversion",
+    "net_expectancy_r": 0.605629,
+    "net_pf": Infinity,
+    "reason": "trades<30",
+    "symbol": "ETH/USDT:USDT",
+    "trades": 1
+  },
+  {
+    "direction": "SHORT",
+    "failures": [
+      "net_exp_r_below_threshold",
+      "net_pf_below_threshold",
+      "insufficient_subperiod_stability",
+      "no_stability_across_halves"
+    ],
+    "family": "mean_reversion",
+    "net_expectancy_r": -0.916471,
+    "net_pf": 0.131146,
+    "symbol": "ETH/USDT:USDT",
+    "trades": 45
+  },
+  {
+    "direction": "LONG",
+    "family": "volatility",
+    "net_expectancy_r": -1.120654,
+    "net_pf": 0.0,
+    "reason": "trades<30",
+    "symbol": "ETH/USDT:USDT",
+    "trades": 5
+  },
+  {
+    "direction": "SHORT",
+    "family": "volatility",
+    "net_expectancy_r": -1.001539,
+    "net_pf": 0.0,
+    "reason": "trades<30",
+    "symbol": "ETH/USDT:USDT",
+    "trades": 2
+  },
+  {
+    "direction": "LONG",
+    "failures": [
+      "net_exp_r_below_threshold",
+      "net_pf_below_threshold",
+      "insufficient_subperiod_stability"
+    ],
+    "family": "ema_crossover",
+    "net_expectancy_r": -0.441277,
+    "net_pf": 0.611827,
+    "symbol": "ETH/USDT:USDT",
+    "trades": 75
+  },
+  {
+    "direction": "SHORT",
+    "family": "ema_crossover",
+    "net_expectancy_r": -1.125746,
+    "net_pf": 0.193878,
+    "reason": "trades<30",
+    "symbol": "ETH/USDT:USDT",
+    "trades": 23
+  },
+  {
+    "direction": "SHORT",
+    "family": "momentum",
+    "net_expectancy_r": -0.509106,
+    "net_pf": 0.281095,
+    "reason": "trades<30",
+    "symbol": "SOL/USDT:USDT",
+    "trades": 17
+  },
+  {
+    "direction": "LONG",
+    "family": "trend",
+    "net_expectancy_r": 0.009372,
+    "net_pf": 1.013403,
+    "reason": "trades<30",
+    "symbol": "SOL/USDT:USDT",
+    "trades": 24
+  },
+  {
+    "direction": "SHORT",
+    "family": "trend",
+    "net_expectancy_r": -1.156673,
+    "net_pf": 0.0,
+    "reason": "trades<30",
+    "symbol": "SOL/USDT:USDT",
+    "trades": 1
+  },
+  {
+    "direction": "SHORT",
+    "family": "breakout",
+    "net_expectancy_r": -0.567544,
+    "net_pf": 0.279316,
+    "reason": "trades<30",
+    "symbol": "SOL/USDT:USDT",
+    "trades": 7
+  },
+  {
+    "direction": "LONG",
+    "family": "mean_reversion",
+    "net_expectancy_r": -1.115129,
+    "net_pf": 0.0,
+    "reason": "trades<30",
+    "symbol": "SOL/USDT:USDT",
+    "trades": 5
+  },
+  {
+    "direction": "SHORT",
+    "failures": [
+      "net_exp_r_below_threshold",
+      "net_pf_below_threshold",
+      "insufficient_subperiod_stability",
+      "no_stability_across_halves"
+    ],
+    "family": "mean_reversion",
+    "net_expectancy_r": -0.739494,
+    "net_pf": 0.187152,
+    "symbol": "SOL/USDT:USDT",
+    "trades": 39
+  },
+  {
+    "direction": "LONG",
+    "family": "volatility",
+    "net_expectancy_r": -0.192131,
+    "net_pf": 0.637031,
+    "reason": "trades<30",
+    "symbol": "SOL/USDT:USDT",
+    "trades": 5
+  },
+  {
+    "direction": "SHORT",
+    "family": "volatility",
+    "net_expectancy_r": -0.883029,
+    "net_pf": 0.040821,
+    "reason": "trades<30",
+    "symbol": "SOL/USDT:USDT",
+    "trades": 4
+  },
+  {
+    "direction": "LONG",
+    "failures": [
+      "net_pf_below_threshold"
+    ],
+    "family": "ema_crossover",
+    "net_expectancy_r": 0.096887,
+    "net_pf": 1.114636,
+    "symbol": "SOL/USDT:USDT",
+    "trades": 71
+  },
+  {
+    "direction": "SHORT",
+    "family": "ema_crossover",
+    "net_expectancy_r": -1.004838,
+    "net_pf": 0.147569,
+    "reason": "trades<30",
+    "symbol": "SOL/USDT:USDT",
+    "trades": 24
+  },
+  {
+    "direction": "LONG",
+    "family": "momentum",
+    "net_expectancy_r": -1.10505,
+    "net_pf": 0.135112,
+    "reason": "trades<30",
+    "symbol": "BTC/USDT:USDT",
+    "trades": 20
+  },
+  {
+    "direction": "SHORT",
+    "family": "momentum",
+    "net_expectancy_r": -0.813243,
+    "net_pf": 0.227526,
+    "reason": "trades<30",
+    "symbol": "BTC/USDT:USDT",
+    "trades": 18
+  },
+  {
+    "direction": "LONG",
+    "family": "trend",
+    "net_expectancy_r": -1.210122,
+    "net_pf": 0.0,
+    "reason": "trades<30",
+    "symbol": "BTC/USDT:USDT",
+    "trades": 3
+  },
+  {
+    "direction": "SHORT",
+    "family": "trend",
+    "net_expectancy_r": 0.241486,
+    "net_pf": Infinity,
+    "reason": "trades<30",
+    "symbol": "BTC/USDT:USDT",
+    "trades": 1
+  },
+  {
+    "direction": "LONG",
+    "family": "breakout",
+    "net_expectancy_r": -0.984555,
+    "net_pf": 0.149019,
+    "reason": "trades<30",
+    "symbol": "BTC/USDT:USDT",
+    "trades": 17
+  },
+  {
+    "direction": "SHORT",
+    "family": "breakout",
+    "net_expectancy_r": -1.225031,
+    "net_pf": 0.165418,
+    "reason": "trades<30",
+    "symbol": "BTC/USDT:USDT",
+    "trades": 19
+  },
+  {
+    "direction": "LONG",
+    "family": "mean_reversion",
+    "net_expectancy_r": -1.001601,
+    "net_pf": 0.102529,
+    "reason": "trades<30",
+    "symbol": "BTC/USDT:USDT",
+    "trades": 22
+  },
+  {
+    "direction": "SHORT",
+    "family": "mean_reversion",
+    "net_expectancy_r": -1.159826,
+    "net_pf": 0.116361,
+    "reason": "trades<30",
+    "symbol": "BTC/USDT:USDT",
+    "trades": 12
+  },
+  {
+    "direction": "LONG",
+    "family": "volatility",
+    "net_expectancy_r": -0.600631,
+    "net_pf": 0.312401,
+    "reason": "trades<30",
+    "symbol": "BTC/USDT:USDT",
+    "trades": 5
+  },
+  {
+    "direction": "SHORT",
+    "family": "volatility",
+    "net_expectancy_r": -1.319535,
+    "net_pf": 0.0,
+    "reason": "trades<30",
+    "symbol": "BTC/USDT:USDT",
+    "trades": 3
+  },
+  {
+    "direction": "LONG",
+    "failures": [
+      "net_exp_r_below_threshold",
+      "net_pf_below_threshold",
+      "insufficient_subperiod_stability",
+      "no_stability_across_halves"
+    ],
+    "family": "ema_crossover",
+    "net_expectancy_r": -1.023887,
+    "net_pf": 0.157009,
+    "symbol": "BTC/USDT:USDT",
+    "trades": 30
+  },
+  {
+    "direction": "SHORT",
+    "failures": [
+      "net_exp_r_below_threshold",
+      "net_pf_below_threshold",
+      "insufficient_subperiod_stability",
+      "no_stability_across_halves"
+    ],
+    "family": "ema_crossover",
+    "net_expectancy_r": -1.008063,
+    "net_pf": 0.241955,
+    "symbol": "BTC/USDT:USDT",
+    "trades": 36
+  },
+  {
+    "direction": "LONG",
+    "family": "momentum",
+    "net_expectancy_r": -0.621103,
+    "net_pf": 0.255972,
+    "reason": "trades<30",
+    "symbol": "ETH/USDT:USDT",
+    "trades": 26
+  },
+  {
+    "direction": "SHORT",
+    "family": "momentum",
+    "net_expectancy_r": -0.627074,
+    "net_pf": 0.226092,
+    "reason": "trades<30",
+    "symbol": "ETH/USDT:USDT",
+    "trades": 21
+  },
+  {
+    "direction": "LONG",
+    "family": "trend",
+    "net_expectancy_r": -0.643397,
+    "net_pf": 0.298448,
+    "reason": "trades<30",
+    "symbol": "ETH/USDT:USDT",
+    "trades": 4
+  },
+  {
+    "direction": "SHORT",
+    "family": "trend",
+    "net_expectancy_r": -1.065832,
+    "net_pf": 0.0,
+    "reason": "trades<30",
+    "symbol": "ETH/USDT:USDT",
+    "trades": 3
+  },
+  {
+    "direction": "LONG",
+    "family": "breakout",
+    "net_expectancy_r": -0.400182,
+    "net_pf": 0.540223,
+    "reason": "trades<30",
+    "symbol": "ETH/USDT:USDT",
+    "trades": 16
+  },
+  {
+    "direction": "SHORT",
+    "family": "breakout",
+    "net_expectancy_r": -1.023904,
+    "net_pf": 0.102529,
+    "reason": "trades<30",
+    "symbol": "ETH/USDT:USDT",
+    "trades": 17
+  },
+  {
+    "direction": "LONG",
+    "family": "mean_reversion",
+    "net_expectancy_r": -0.768334,
+    "net_pf": 0.089469,
+    "reason": "trades<30",
+    "symbol": "ETH/USDT:USDT",
+    "trades": 17
+  },
+  {
+    "direction": "SHORT",
+    "family": "mean_reversion",
+    "net_expectancy_r": -1.024029,
+    "net_pf": 0.064721,
+    "reason": "trades<30",
+    "symbol": "ETH/USDT:USDT",
+    "trades": 21
+  },
+  {
+    "direction": "LONG",
+    "family": "volatility",
+    "net_expectancy_r": -0.875076,
+    "net_pf": 0.114956,
+    "reason": "trades<30",
+    "symbol": "ETH/USDT:USDT",
+    "trades": 4
+  },
+  {
+    "direction": "SHORT",
+    "family": "volatility",
+    "net_expectancy_r": 0.6528,
+    "net_pf": 8.433268,
+    "reason": "trades<30",
+    "symbol": "ETH/USDT:USDT",
+    "trades": 4
+  },
+  {
+    "direction": "LONG",
+    "failures": [
+      "net_exp_r_below_threshold",
+      "net_pf_below_threshold",
+      "insufficient_subperiod_stability",
+      "no_stability_across_halves"
+    ],
+    "family": "ema_crossover",
+    "net_expectancy_r": -0.569093,
+    "net_pf": 0.390523,
+    "symbol": "ETH/USDT:USDT",
+    "trades": 31
+  },
+  {
+    "direction": "SHORT",
+    "failures": [
+      "net_exp_r_below_threshold",
+      "net_pf_below_threshold",
+      "temporal_concentration_too_high",
+      "insufficient_subperiod_stability",
+      "no_stability_across_halves"
+    ],
+    "family": "ema_crossover",
+    "net_expectancy_r": -0.746336,
+    "net_pf": 0.304756,
+    "symbol": "ETH/USDT:USDT",
+    "trades": 30
+  },
+  {
+    "direction": "LONG",
+    "failures": [
+      "net_exp_r_below_threshold",
+      "net_pf_below_threshold",
+      "insufficient_subperiod_stability"
+    ],
+    "family": "momentum",
+    "net_expectancy_r": -0.155181,
+    "net_pf": 0.818279,
+    "symbol": "SOL/USDT:USDT",
+    "trades": 30
+  },
+  {
+    "direction": "SHORT",
+    "family": "momentum",
+    "net_expectancy_r": -0.899455,
+    "net_pf": 0.072158,
+    "reason": "trades<30",
+    "symbol": "SOL/USDT:USDT",
+    "trades": 29
+  },
+  {
+    "direction": "LONG",
+    "family": "trend",
+    "net_expectancy_r": -0.469519,
+    "net_pf": 0.44999,
+    "reason": "trades<30",
+    "symbol": "SOL/USDT:USDT",
+    "trades": 14
+  },
+  {
+    "direction": "SHORT",
+    "family": "trend",
+    "net_expectancy_r": 0.0,
+    "net_pf": 0.0,
+    "reason": "trades<30",
+    "symbol": "SOL/USDT:USDT",
+    "trades": 0
+  },
+  {
+    "direction": "LONG",
+    "family": "breakout",
+    "net_expectancy_r": -0.292737,
+    "net_pf": 0.73423,
+    "reason": "trades<30",
+    "symbol": "SOL/USDT:USDT",
+    "trades": 20
+  },
+  {
+    "direction": "SHORT",
+    "family": "breakout",
+    "net_expectancy_r": -1.363739,
+    "net_pf": 0.0,
+    "reason": "trades<30",
+    "symbol": "SOL/USDT:USDT",
+    "trades": 12
+  },
+  {
+    "direction": "LONG",
+    "family": "mean_reversion",
+    "net_expectancy_r": -0.357653,
+    "net_pf": 0.208922,
+    "reason": "trades<30",
+    "symbol": "SOL/USDT:USDT",
+    "trades": 13
+  },
+  {
+    "direction": "SHORT",
+    "family": "mean_reversion",
+    "net_expectancy_r": -0.627504,
+    "net_pf": 0.219095,
+    "reason": "trades<30",
+    "symbol": "SOL/USDT:USDT",
+    "trades": 21
+  },
+  {
+    "direction": "LONG",
+    "family": "volatility",
+    "net_expectancy_r": 3.264883,
+    "net_pf": Infinity,
+    "reason": "trades<30",
+    "symbol": "SOL/USDT:USDT",
+    "trades": 1
+  },
+  {
+    "direction": "SHORT",
+    "family": "volatility",
+    "net_expectancy_r": -0.334775,
+    "net_pf": 0.340838,
+    "reason": "trades<30",
+    "symbol": "SOL/USDT:USDT",
+    "trades": 4
+  },
+  {
+    "direction": "LONG",
+    "failures": [
+      "net_exp_r_below_threshold",
+      "net_pf_below_threshold",
+      "insufficient_subperiod_stability",
+      "no_stability_across_halves"
+    ],
+    "family": "ema_crossover",
+    "net_expectancy_r": -0.382445,
+    "net_pf": 0.618188,
+    "symbol": "SOL/USDT:USDT",
+    "trades": 43
+  },
+  {
+    "direction": "SHORT",
+    "failures": [
+      "net_exp_r_below_threshold",
+      "net_pf_below_threshold",
+      "insufficient_subperiod_stability",
+      "no_stability_across_halves"
+    ],
+    "family": "ema_crossover",
+    "net_expectancy_r": -1.163883,
+    "net_pf": 0.03777,
+    "symbol": "SOL/USDT:USDT",
+    "trades": 35
+  },
+  {
+    "direction": "LONG",
+    "failures": [
+      "net_exp_r_below_threshold",
+      "net_pf_below_threshold",
+      "insufficient_subperiod_stability",
+      "no_stability_across_halves"
+    ],
+    "family": "mean_reversion",
+    "net_expectancy_r": -0.690256,
+    "net_pf": 0.275639,
+    "symbol": "BTC/USDT:USDT",
+    "trades": 53
+  },
+  {
+    "direction": "SHORT",
+    "failures": [
+      "net_exp_r_below_threshold",
+      "net_pf_below_threshold",
+      "insufficient_subperiod_stability",
+      "no_stability_across_halves"
+    ],
+    "family": "mean_reversion",
+    "net_expectancy_r": -1.087277,
+    "net_pf": 0.091679,
+    "symbol": "BTC/USDT:USDT",
+    "trades": 57
+  },
+  {
+    "direction": "LONG",
+    "failures": [
+      "net_exp_r_below_threshold",
+      "net_pf_below_threshold",
+      "insufficient_subperiod_stability",
+      "no_stability_across_halves"
+    ],
+    "family": "mean_reversion",
+    "net_expectancy_r": -0.348644,
+    "net_pf": 0.521856,
+    "symbol": "ETH/USDT:USDT",
+    "trades": 49
+  },
+  {
+    "direction": "SHORT",
+    "failures": [
+      "net_exp_r_below_threshold",
+      "net_pf_below_threshold",
+      "insufficient_subperiod_stability",
+      "no_stability_across_halves"
+    ],
+    "family": "mean_reversion",
+    "net_expectancy_r": -0.911758,
+    "net_pf": 0.152391,
+    "symbol": "ETH/USDT:USDT",
+    "trades": 64
+  },
+  {
+    "direction": "LONG",
+    "failures": [
+      "net_exp_r_below_threshold",
+      "net_pf_below_threshold",
+      "no_stability_across_halves"
+    ],
+    "family": "mean_reversion",
+    "net_expectancy_r": -0.230681,
+    "net_pf": 0.647911,
+    "symbol": "SOL/USDT:USDT",
+    "trades": 49
+  },
+  {
+    "direction": "SHORT",
+    "failures": [
+      "net_exp_r_below_threshold",
+      "net_pf_below_threshold",
+      "insufficient_subperiod_stability",
+      "no_stability_across_halves"
+    ],
+    "family": "mean_reversion",
+    "net_expectancy_r": -0.690447,
+    "net_pf": 0.253691,
+    "symbol": "SOL/USDT:USDT",
+    "trades": 53
+  },
+  {
+    "direction": "LONG",
+    "family": "trend",
+    "net_expectancy_r": 0.110904,
+    "net_pf": 1.662478,
+    "reason": "trades<30",
+    "symbol": "BTC/USDT:USDT",
+    "trades": 5
+  },
+  {
+    "direction": "SHORT",
+    "family": "trend",
+    "net_expectancy_r": -0.173121,
+    "net_pf": 0.41088,
+    "reason": "trades<30",
+    "symbol": "BTC/USDT:USDT",
+    "trades": 2
+  },
+  {
+    "direction": "LONG",
+    "family": "trend",
+    "net_expectancy_r": 1.025896,
+    "net_pf": 3.390787,
+    "reason": "trades<30",
+    "symbol": "ETH/USDT:USDT",
+    "trades": 6
+  },
+  {
+    "direction": "SHORT",
+    "family": "trend",
+    "net_expectancy_r": -0.596082,
+    "net_pf": 0.141888,
+    "reason": "trades<30",
+    "symbol": "ETH/USDT:USDT",
+    "trades": 6
+  },
+  {
+    "direction": "LONG",
+    "family": "trend",
+    "net_expectancy_r": -0.412476,
+    "net_pf": 0.420777,
+    "reason": "trades<30",
+    "symbol": "SOL/USDT:USDT",
+    "trades": 12
+  },
+  {
+    "direction": "SHORT",
+    "family": "trend",
+    "net_expectancy_r": -0.462953,
+    "net_pf": 0.083875,
+    "reason": "trades<30",
+    "symbol": "SOL/USDT:USDT",
+    "trades": 8
+  },
+  {
+    "direction": "LONG",
+    "family": "momentum",
+    "net_expectancy_r": 0.373436,
+    "net_pf": 1.625241,
+    "reason": "trades<30",
+    "symbol": "BTC/USDT:USDT",
+    "trades": 12
+  },
+  {
+    "direction": "LONG",
+    "family": "trend",
+    "net_expectancy_r": 0.234236,
+    "net_pf": 1.594501,
+    "reason": "trades<30",
+    "symbol": "BTC/USDT:USDT",
+    "trades": 3
+  },
+  {
+    "direction": "LONG",
+    "family": "breakout",
+    "net_expectancy_r": 1.264294,
+    "net_pf": 2.437197,
+    "reason": "trades<30",
+    "symbol": "BTC/USDT:USDT",
+    "trades": 6
+  },
+  {
+    "direction": "LONG",
+    "family": "ema_crossover",
+    "net_expectancy_r": -0.052027,
+    "net_pf": 0.948286,
+    "reason": "trades<30",
+    "symbol": "BTC/USDT:USDT",
+    "trades": 20
+  },
+  {
+    "direction": "LONG",
+    "failures": [
+      "net_exp_r_below_threshold",
+      "net_pf_below_threshold",
+      "insufficient_subperiod_stability",
+      "no_stability_across_halves"
+    ],
+    "family": "momentum",
+    "net_expectancy_r": -0.714141,
+    "net_pf": 0.214432,
+    "symbol": "ETH/USDT:USDT",
+    "trades": 30
+  },
+  {
+    "direction": "LONG",
+    "family": "trend",
+    "net_expectancy_r": -0.831811,
+    "net_pf": 0.006717,
+    "reason": "trades<30",
+    "symbol": "ETH/USDT:USDT",
+    "trades": 8
+  },
+  {
+    "direction": "LONG",
+    "family": "breakout",
+    "net_expectancy_r": -0.784136,
+    "net_pf": 0.244214,
+    "reason": "trades<30",
+    "symbol": "ETH/USDT:USDT",
+    "trades": 18
+  },
+  {
+    "direction": "LONG",
+    "failures": [
+      "net_exp_r_below_threshold",
+      "net_pf_below_threshold",
+      "insufficient_subperiod_stability",
+      "no_stability_across_halves"
+    ],
+    "family": "ema_crossover",
+    "net_expectancy_r": -0.826832,
+    "net_pf": 0.271822,
+    "symbol": "ETH/USDT:USDT",
+    "trades": 40
+  },
+  {
+    "direction": "LONG",
+    "failures": [
+      "net_exp_r_below_threshold",
+      "net_pf_below_threshold",
+      "insufficient_subperiod_stability",
+      "no_stability_across_halves"
+    ],
+    "family": "momentum",
+    "net_expectancy_r": -0.360697,
+    "net_pf": 0.587729,
+    "symbol": "SOL/USDT:USDT",
+    "trades": 38
+  },
+  {
+    "direction": "LONG",
+    "family": "trend",
+    "net_expectancy_r": -0.454938,
+    "net_pf": 0.431033,
+    "reason": "trades<30",
+    "symbol": "SOL/USDT:USDT",
+    "trades": 15
+  },
+  {
+    "direction": "LONG",
+    "family": "breakout",
+    "net_expectancy_r": -0.458226,
+    "net_pf": 0.611235,
+    "reason": "trades<30",
+    "symbol": "SOL/USDT:USDT",
+    "trades": 26
+  },
+  {
+    "direction": "LONG",
+    "failures": [
+      "net_exp_r_below_threshold",
+      "net_pf_below_threshold",
+      "insufficient_subperiod_stability",
+      "no_stability_across_halves"
+    ],
+    "family": "ema_crossover",
+    "net_expectancy_r": -0.437019,
+    "net_pf": 0.577764,
+    "symbol": "SOL/USDT:USDT",
+    "trades": 49
+  },
+  {
+    "direction": "LONG",
+    "family": "momentum",
+    "net_expectancy_r": 0.463215,
+    "net_pf": 1.538345,
+    "reason": "trades<30",
+    "symbol": "BTC/USDT:USDT",
+    "trades": 19
+  },
+  {
+    "direction": "SHORT",
+    "family": "momentum",
+    "net_expectancy_r": -0.891594,
+    "net_pf": 0.140702,
+    "reason": "trades<30",
+    "symbol": "BTC/USDT:USDT",
+    "trades": 19
+  },
+  {
+    "direction": "LONG",
+    "family": "trend",
+    "net_expectancy_r": 0.753674,
+    "net_pf": 2.246451,
+    "reason": "trades<30",
+    "symbol": "BTC/USDT:USDT",
+    "trades": 4
+  },
+  {
+    "direction": "SHORT",
+    "family": "trend",
+    "net_expectancy_r": 0.241486,
+    "net_pf": Infinity,
+    "reason": "trades<30",
+    "symbol": "BTC/USDT:USDT",
+    "trades": 1
+  },
+  {
+    "direction": "LONG",
+    "family": "breakout",
+    "net_expectancy_r": 0.173102,
+    "net_pf": 1.174858,
+    "reason": "trades<30",
+    "symbol": "BTC/USDT:USDT",
+    "trades": 14
+  },
+  {
+    "direction": "SHORT",
+    "family": "breakout",
+    "net_expectancy_r": -1.206288,
+    "net_pf": 0.074501,
+    "reason": "trades<30",
+    "symbol": "BTC/USDT:USDT",
+    "trades": 14
+  },
+  {
+    "direction": "LONG",
+    "family": "mean_reversion",
+    "net_expectancy_r": -0.340944,
+    "net_pf": 0.474607,
+    "reason": "trades<30",
+    "symbol": "BTC/USDT:USDT",
+    "trades": 17
+  },
+  {
+    "direction": "SHORT",
+    "family": "mean_reversion",
+    "net_expectancy_r": -1.073554,
+    "net_pf": 0.078616,
+    "reason": "trades<30",
+    "symbol": "BTC/USDT:USDT",
+    "trades": 15
+  },
+  {
+    "direction": "LONG",
+    "family": "volatility",
+    "net_expectancy_r": -0.873515,
+    "net_pf": 0.0,
+    "reason": "trades<30",
+    "symbol": "BTC/USDT:USDT",
+    "trades": 4
+  },
+  {
+    "direction": "SHORT",
+    "family": "volatility",
+    "net_expectancy_r": -1.254423,
+    "net_pf": 0.0,
+    "reason": "trades<30",
+    "symbol": "BTC/USDT:USDT",
+    "trades": 3
+  },
+  {
+    "direction": "LONG",
+    "failures": [
+      "net_exp_r_below_threshold",
+      "net_pf_below_threshold",
+      "insufficient_subperiod_stability"
+    ],
+    "family": "ema_crossover",
+    "net_expectancy_r": 0.037966,
+    "net_pf": 1.037696,
+    "symbol": "BTC/USDT:USDT",
+    "trades": 36
+  },
+  {
+    "direction": "SHORT",
+    "failures": [
+      "net_exp_r_below_threshold",
+      "net_pf_below_threshold",
+      "insufficient_subperiod_stability",
+      "no_stability_across_halves"
+    ],
+    "family": "ema_crossover",
+    "net_expectancy_r": -1.264758,
+    "net_pf": 0.086635,
+    "symbol": "BTC/USDT:USDT",
+    "trades": 35
+  },
+  {
+    "direction": "LONG",
+    "failures": [
+      "insufficient_subperiod_stability"
+    ],
+    "family": "momentum",
+    "net_expectancy_r": 0.238836,
+    "net_pf": 1.25488,
+    "symbol": "ETH/USDT:USDT",
+    "trades": 30
+  },
+  {
+    "direction": "SHORT",
+    "family": "momentum",
+    "net_expectancy_r": -0.799493,
+    "net_pf": 0.165625,
+    "reason": "trades<30",
+    "symbol": "ETH/USDT:USDT",
+    "trades": 24
+  },
+  {
+    "direction": "LONG",
+    "family": "trend",
+    "net_expectancy_r": 3.126089,
+    "net_pf": 6.010363,
+    "reason": "trades<30",
+    "symbol": "ETH/USDT:USDT",
+    "trades": 5
+  },
+  {
+    "direction": "SHORT",
+    "family": "trend",
+    "net_expectancy_r": -0.020378,
+    "net_pf": 0.916325,
+    "reason": "trades<30",
+    "symbol": "ETH/USDT:USDT",
+    "trades": 2
+  },
+  {
+    "direction": "LONG",
+    "family": "breakout",
+    "net_expectancy_r": 1.156289,
+    "net_pf": 2.118525,
+    "reason": "trades<30",
+    "symbol": "ETH/USDT:USDT",
+    "trades": 14
+  },
+  {
+    "direction": "SHORT",
+    "family": "breakout",
+    "net_expectancy_r": -1.164925,
+    "net_pf": 0.044132,
+    "reason": "trades<30",
+    "symbol": "ETH/USDT:USDT",
+    "trades": 17
+  },
+  {
+    "direction": "LONG",
+    "family": "mean_reversion",
+    "net_expectancy_r": 0.23909,
+    "net_pf": 1.468303,
+    "reason": "trades<30",
+    "symbol": "ETH/USDT:USDT",
+    "trades": 18
+  },
+  {
+    "direction": "SHORT",
+    "family": "mean_reversion",
+    "net_expectancy_r": -0.827129,
+    "net_pf": 0.194036,
+    "reason": "trades<30",
+    "symbol": "ETH/USDT:USDT",
+    "trades": 20
+  },
+  {
+    "direction": "LONG",
+    "family": "volatility",
+    "net_expectancy_r": -0.516071,
+    "net_pf": 0.223566,
+    "reason": "trades<30",
+    "symbol": "ETH/USDT:USDT",
+    "trades": 4
+  },
+  {
+    "direction": "SHORT",
+    "family": "volatility",
+    "net_expectancy_r": -0.740446,
+    "net_pf": 0.036616,
+    "reason": "trades<30",
+    "symbol": "ETH/USDT:USDT",
+    "trades": 4
+  },
+  {
+    "direction": "LONG",
+    "failures": [
+      "insufficient_subperiod_stability"
+    ],
+    "family": "ema_crossover",
+    "net_expectancy_r": 0.607291,
+    "net_pf": 1.69715,
+    "symbol": "ETH/USDT:USDT",
+    "trades": 36
+  },
+  {
+    "direction": "SHORT",
+    "failures": [
+      "net_exp_r_below_threshold",
+      "net_pf_below_threshold",
+      "insufficient_subperiod_stability",
+      "no_stability_across_halves"
+    ],
+    "family": "ema_crossover",
+    "net_expectancy_r": -1.006543,
+    "net_pf": 0.154305,
+    "symbol": "ETH/USDT:USDT",
+    "trades": 36
+  },
+  {
+    "direction": "LONG",
+    "failures": [
+      "insufficient_subperiod_stability"
+    ],
+    "family": "momentum",
+    "net_expectancy_r": 0.143952,
+    "net_pf": 1.195312,
+    "symbol": "SOL/USDT:USDT",
+    "trades": 30
+  },
+  {
+    "direction": "SHORT",
+    "family": "momentum",
+    "net_expectancy_r": -0.842673,
+    "net_pf": 0.105598,
+    "reason": "trades<30",
+    "symbol": "SOL/USDT:USDT",
+    "trades": 22
+  },
+  {
+    "direction": "LONG",
+    "family": "trend",
+    "net_expectancy_r": 0.920942,
+    "net_pf": 2.464058,
+    "reason": "trades<30",
+    "symbol": "SOL/USDT:USDT",
+    "trades": 8
+  },
+  {
+    "direction": "SHORT",
+    "family": "trend",
+    "net_expectancy_r": -0.778011,
+    "net_pf": 0.0,
+    "reason": "trades<30",
+    "symbol": "SOL/USDT:USDT",
+    "trades": 4
+  },
+  {
+    "direction": "LONG",
+    "family": "breakout",
+    "net_expectancy_r": -0.314987,
+    "net_pf": 0.677377,
+    "reason": "trades<30",
+    "symbol": "SOL/USDT:USDT",
+    "trades": 17
+  },
+  {
+    "direction": "SHORT",
+    "family": "breakout",
+    "net_expectancy_r": -1.194529,
+    "net_pf": 0.014883,
+    "reason": "trades<30",
+    "symbol": "SOL/USDT:USDT",
+    "trades": 14
+  },
+  {
+    "direction": "LONG",
+    "family": "mean_reversion",
+    "net_expectancy_r": 0.061558,
+    "net_pf": 1.102731,
+    "reason": "trades<30",
+    "symbol": "SOL/USDT:USDT",
+    "trades": 17
+  },
+  {
+    "direction": "SHORT",
+    "family": "mean_reversion",
+    "net_expectancy_r": -0.826747,
+    "net_pf": 0.141209,
+    "reason": "trades<30",
+    "symbol": "SOL/USDT:USDT",
+    "trades": 19
+  },
+  {
+    "direction": "LONG",
+    "family": "volatility",
+    "net_expectancy_r": -0.614674,
+    "net_pf": 0.07102,
+    "reason": "trades<30",
+    "symbol": "SOL/USDT:USDT",
+    "trades": 4
+  },
+  {
+    "direction": "SHORT",
+    "family": "volatility",
+    "net_expectancy_r": -1.032885,
+    "net_pf": 0.0,
+    "reason": "trades<30",
+    "symbol": "SOL/USDT:USDT",
+    "trades": 5
+  },
+  {
+    "direction": "SHORT",
+    "family": "ema_crossover",
+    "net_expectancy_r": -1.038425,
+    "net_pf": 0.070412,
+    "reason": "trades<30",
+    "symbol": "SOL/USDT:USDT",
+    "trades": 29
+  }
+]

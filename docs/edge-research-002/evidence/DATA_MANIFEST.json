@@ -1,60 +1,60 @@
 {
-  "data_cutoff": "2026-09-06T17:10:00+00:00",
+  "data_cutoff": "2026-09-07T05:30:00+00:00",
   "fresh_start_utc": "2026-08-19T00:00:00+00:00",
-  "manifest_sha256": "eecb5e6d4f5e060bab15dd05c56699ecc74c1f3f47f1b2c12284c5e2fa16e114",
+  "manifest_sha256": "0bec6540cd7f97bf95364c0b1fb81c990c1d3303f0e5f152b28e1a84518edba2",
   "provider": "binanceusdm-public",
   "schema_version": "fresh-data-manifest-v1",
   "symbols": {
     "BTC/USDT:USDT": {
-      "candles": 5390,
+      "candles": 5538,
       "quality": {
         "before_start": 0,
-        "candles": 5390,
+        "candles": 5538,
         "duplicates": 0,
         "first_open_ms": 1787097600000,
         "gap_bars": 0,
         "gaps": 0,
-        "last_close_ms": 1788714599999,
+        "last_close_ms": 1788758999999,
         "non_positive_volume": 0,
         "ohlc_violations": 0,
         "passed": true,
         "symbol": "BTC/USDT:USDT"
       },
-      "sha256": "b54c61f5f79821a80c589bad23477a86bb7c5461ef1ca0330995dd78ecd6c727"
+      "sha256": "6ec2bd21724d88a6fbea9ca8478baad8a4dd1b58bf2ec4081074a463a5f9d2de"
     },
     "ETH/USDT:USDT": {
-      "candles": 5390,
+      "candles": 5538,
       "quality": {
         "before_start": 0,
-        "candles": 5390,
+        "candles": 5538,
         "duplicates": 0,
         "first_open_ms": 1787097600000,
         "gap_bars": 0,
         "gaps": 0,
-        "last_close_ms": 1788714599999,
+        "last_close_ms": 1788758999999,
         "non_positive_volume": 0,
         "ohlc_violations": 0,
         "passed": true,
         "symbol": "ETH/USDT:USDT"
       },
-      "sha256": "03a50a8f8e9619590d3a0aa06e9ba6d3bb3b9c7ae0adba052ebcbe1231d80988"
+      "sha256": "9cefe9cf5b0f0848f841f1eea74dabac5cddffc4c5c94be7bc983f4fb77c000d"
     },
     "SOL/USDT:USDT": {
-      "candles": 5390,
+      "candles": 5538,
       "quality": {
         "before_start": 0,
-        "candles": 5390,
+        "candles": 5538,
         "duplicates": 0,
         "first_open_ms": 1787097600000,
         "gap_bars": 0,
         "gaps": 0,
-        "last_close_ms": 1788714599999,
+        "last_close_ms": 1788758999999,
         "non_positive_volume": 0,
         "ohlc_violations": 0,
         "passed": true,
         "symbol": "SOL/USDT:USDT"
       },
-      "sha256": "611cf905eb8c1f68400fc4054271d77862e8a404b67f4b2a49876286eb33d6f4"
+      "sha256": "c2002b5843b92faa9763013c2af39a03946c0fc583ca38060b0b3eb1ccd1252e"
     }
   },
   "timeframe": "5m"

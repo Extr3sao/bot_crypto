@@ -1,0 +1,22 @@
+{
+  "confirmation": [
+    "2026-08-30T12:53:59.999000+00:00",
+    "2026-09-03T09:11:59.999000+00:00"
+  ],
+  "discovery": [
+    "2026-08-19T00:00:00+00:00",
+    "2026-08-30T12:53:59.999000+00:00"
+  ],
+  "final_holdout": [
+    "2026-09-03T09:11:59.999000+00:00",
+    "2026-09-07T05:30:00+00:00"
+  ],
+  "fractions": {
+    "confirmation": 0.2,
+    "discovery": 0.6,
+    "final_holdout": 0.2
+  },
+  "locked_after_freeze": true,
+  "schema_version": "fresh-split-v1",
+  "split_sha256": "8fa4eb8e535955c472f27d733feeda3038aa489b8bfbf702dd1b243cedfa101e"
+}
