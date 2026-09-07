@@ -1,0 +1,118 @@
+{
+  "schema_version": "edge-confirmation-authority-audit-v1",
+  "checkpoint": "EDGE-RESEARCH-002-CONFIRMATION-01",
+  "candidates_frozen_from_discovery": [
+    {
+      "hypothesis_id": "H-A-MTF-CONTEXT",
+      "family": "momentum",
+      "symbol": "SOL/USDT:USDT",
+      "direction": "LONG",
+      "config_sha256": "9edb1a21f177eecfb0aee325d0f1b4431ba2c342fc9a1e868e05586a45f1f121",
+      "discovery_window": [
+        "2026-08-19T00:00:00+00:00",
+        "2026-08-30T12:53:59.999000+00:00"
+      ],
+      "trades": 51,
+      "net_expectancy_r": 0.249553,
+      "net_pf": 1.329317,
+      "stability_thirds": {
+        "t1_net_exp_r": 0.886267,
+        "t2_net_exp_r": -0.352917,
+        "t3_net_exp_r": 0.018477
+      },
+      "stability_halves": {
+        "h1_net_exp_r": 0.402458,
+        "h2_net_exp_r": 0.063409
+      }
+    },
+    {
+      "hypothesis_id": "H-A-MTF-CONTEXT",
+      "family": "breakout",
+      "symbol": "SOL/USDT:USDT",
+      "direction": "LONG",
+      "config_sha256": "85f271a615414fddced8c479df38b948eab5f055a11d0d5b4d2202f38f308e01",
+      "discovery_window": [
+        "2026-08-19T00:00:00+00:00",
+        "2026-08-30T12:53:59.999000+00:00"
+      ],
+      "trades": 36,
+      "net_expectancy_r": 0.341706,
+      "net_pf": 1.371249,
+      "stability_thirds": {
+        "t1_net_exp_r": 0.26221,
+        "t2_net_exp_r": 0.652612,
+        "t3_net_exp_r": 0.24043
+      },
+      "stability_halves": {
+        "h1_net_exp_r": -0.029022,
+        "h2_net_exp_r": 0.99761
+      }
+    },
+    {
+      "hypothesis_id": "H-F-US-SESSION",
+      "family": "ema_crossover",
+      "symbol": "SOL/USDT:USDT",
+      "direction": "LONG",
+      "config_sha256": "ce733e29c94b3639c691bfe1095790c167714db81e3eb5622d10b198b5cf7bb8",
+      "discovery_window": [
+        "2026-08-19T00:00:00+00:00",
+        "2026-08-30T12:53:59.999000+00:00"
+      ],
+      "trades": 34,
+      "net_expectancy_r": 0.615557,
+      "net_pf": 1.791153,
+      "stability_thirds": {
+        "t1_net_exp_r": 0.76258,
+        "t2_net_exp_r": -0.818857,
+        "t3_net_exp_r": 1.602049
+      },
+      "stability_halves": {
+        "h1_net_exp_r": 0.176288,
+        "h2_net_exp_r": 1.243084
+      }
+    }
+  ],
+  "confirmation_window_from_committed_split_manifest": {
+    "confirmation": [
+      "2026-08-30T12:53:59.999000+00:00",
+      "2026-09-03T09:11:59.999000+00:00"
+    ],
+    "final_holdout": [
+      "2026-09-03T09:11:59.999000+00:00",
+      "2026-09-07T05:30:00+00:00"
+    ],
+    "split_sha256": "8fa4eb8e535955c472f27d733feeda3038aa489b8bfbf702dd1b243cedfa101e"
+  },
+  "authority_gates": {
+    "G_lock_1_window_defined_before_discovery_results": {
+      "verdict": "FAIL",
+      "evidence": "SPLIT_MANIFEST.json first appears in git at 065a65f (2026-09-07T05:55:19Z) \u2014 the SAME commit as DISCOVERY_RESULTS.json/HYPOTHESIS_RESULTS.json. Pre-registration commits 79b3d2b/4d6dee5/2089fc6 contain HYPOTHESES_REGISTERED.json and DATA_MANIFEST.json (cutoff 2026-09-06T17:10:00Z, 5390 candles/symbol) but NO split window. The pre-registration record states only the LOCKED policy, not the window."
+    },
+    "G_lock_2_fingerprint": {
+      "verdict": "PASS",
+      "evidence": "split_sha256=8fa4eb8e535955c472f27d733feeda3038aa489b8bfbf702dd1b243cedfa101e (content hash of window set)"
+    },
+    "G_lock_3_locked": {
+      "verdict": "PASS",
+      "evidence": "locked_after_freeze=true; SplitAccessError fail-closed access control in discovery/split.py; G3 probes passed"
+    },
+    "G_lock_4_not_consumed": {
+      "verdict": "PASS",
+      "evidence": "No CONFIRMATION_RESULTS/holdout artifacts exist anywhere in repo or reports; executor evaluates only the discovery slice; REJECTED_HYPOTHESES.json contains discovery-window rejections only"
+    },
+    "G_lock_ordering_LOCK_TS_lt_DISCOVERY_TS": {
+      "verdict": "FAIL",
+      "evidence": "Dataset was re-fetched at execution (DATA_MANIFEST cutoff moved 2026-09-06T17:10Z->2026-09-07T05:30Z, 5390->5538 candles); split boundaries were computed at run start from the refreshed cutoff and committed only with the results. No committed artifact proves the window was fixed before discovery results existed; an auditor cannot distinguish 'locked first' from 'window chosen after seeing results'."
+    },
+    "cross_window_overlap_disclosure": {
+      "verdict": "RECORDED",
+      "evidence": "EDGE discovery [08-19..08-30T12:53:59.999Z] overlaps R1 confirmation [08-30T04:20:59.999..09-02T21:47:59.999Z] by ~8.55h; EDGE confirmation [08-30T12:53:59.999..09-03T09:11:59.999Z] overlaps R1 final_holdout [09-02T21:47:59.999..09-06T15:15Z] by ~11.4h. R1 windows were never consumed (R1=STOP_NO_EDGE), so no data has been double-used for any decision; recorded as risk for any future confirmation checkpoint design."
+    }
+  },
+  "decision": {
+    "CONFIRMATION_RUNS": 0,
+    "HOLDOUT_EXECUTIONS": 0,
+    "RESULT": "BLOCKED_CONFIRMATION_AUTHORITY",
+    "note": "Per checkpoint rule: if LOCK_TIMESTAMP < DISCOVERY_RESULT_TIMESTAMP cannot be proven, CONFIRMATION_RUNS=0 and no new confirmation window may be manufactured now. The frozen discovery candidates remain frozen; a compliant confirmation requires a future checkpoint whose FIRST commit pins window+fingerprint before any execution commit, with the R1-overlap declared and resolved."
+  }
+}
