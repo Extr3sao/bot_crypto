@@ -6,6 +6,7 @@ from .feed_guard import (
     FeedGuardAction,
     FeedGuardVerdict,
 )
+from .gateway import ExecutionGateway, GatewayReceipt, VenuePort
 from .intent import (
     AckQueryResult,
     AmbiguousAckRecovery,
@@ -25,6 +26,7 @@ from .live_gate import GateReport, GateResult, LiveTradingBlocked, LiveTradingGa
 __all__ = [
     "AckQueryResult",
     "AmbiguousAckRecovery",
+    "ExecutionGateway",
     "ExecutionJournal",
     "ExecutionReliabilityError",
     "ExecutionState",
@@ -36,6 +38,7 @@ __all__ = [
     "FillLedger",
     "GateReport",
     "GateResult",
+    "GatewayReceipt",
     "IdempotentSubmitGate",
     "JournalTransition",
     "LiveTradingBlocked",
@@ -43,6 +46,7 @@ __all__ = [
     "RecoveryDecision",
     "RecoveryVerdict",
     "TradeIntent",
+    "VenuePort",
     "compute_intent_id",
     "derive_client_order_id",
 ]
