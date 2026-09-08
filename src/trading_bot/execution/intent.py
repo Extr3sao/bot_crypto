@@ -175,6 +175,12 @@ class AmbiguousAckRecovery:
                 reason="order already adopted; no further submits allowed",
                 venue_order_id=venue_order_id,
             )
+        if self.state == "BLOCKED":
+            return RecoveryVerdict(
+                decision=RecoveryDecision.BLOCK,
+                query_result=AckQueryResult.UNCERTAIN,
+                reason="already blocked; remains blocked until reconciliation",
+            )
         if self.state != "ACK_UNKNOWN":
             raise ExecutionReliabilityError(f"resolve requires ACK_UNKNOWN state, got {self.state}")
         if query_result is AckQueryResult.FOUND:

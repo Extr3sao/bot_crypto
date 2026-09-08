@@ -22,14 +22,23 @@ from .intent import (
 )
 from .journal import ExecutionJournal, ExecutionState, JournalTransition
 from .live_gate import GateReport, GateResult, LiveTradingBlocked, LiveTradingGate
+from .service import (
+    AmbiguousSubmit,
+    ExecutionService,
+    FeedBlockedError,
+    StartupReconciliationReport,
+)
 
 __all__ = [
     "AckQueryResult",
     "AmbiguousAckRecovery",
+    "AmbiguousSubmit",
     "ExecutionGateway",
     "ExecutionJournal",
     "ExecutionReliabilityError",
+    "ExecutionService",
     "ExecutionState",
+    "FeedBlockedError",
     "FeedDeadManGuard",
     "FeedFreshness",
     "FeedGuardAction",
@@ -45,6 +54,7 @@ __all__ = [
     "LiveTradingGate",
     "RecoveryDecision",
     "RecoveryVerdict",
+    "StartupReconciliationReport",
     "TradeIntent",
     "VenuePort",
     "compute_intent_id",

@@ -222,22 +222,60 @@ class ExecutionGateway:
                 new_state=ExecutionState.ACK_UNKNOWN,
                 reason="ack unknown entered",
             )
-        outcome = query_result if query_result is not None else venue.query(cloid)
-        verdict = recovery.resolve(outcome, venue_order_id=venue.venue_order_id_of(cloid))
-        if verdict.decision.value == "adopt":
-            self.journal.record(
-                intent_id=intent_id,
-                client_order_id=cloid,
-                new_state=ExecutionState.ACCEPTED,
-                reason="adopted after venue query",
-                venue_order_id=verdict.venue_order_id,
-            )
-            if verdict.venue_order_id is not None:
-                self._venue_refs[intent_id] = verdict.venue_order_id
+        try:
+            outcome = query_result if query_result is not None else venue.query(cloid)
+        except Exception as exc:
+            # Venue query failed: uncertainty stands, never invent a definitive
+            # answer. BLOCK (idempotent on repeat calls).
+            if self.journal.current_state(intent_id) != ExecutionState.RECONCILING:
+                self.journal.record(
+                    intent_id=intent_id,
+                    client_order_id=cloid,
+                    new_state=ExecutionState.RECONCILING,
+                    reason="venue query failed; blocked",
+                    evidence={"error_class": type(exc).__name__},
+                )
             return GatewayReceipt(
                 intent_id=intent_id,
                 client_order_id=cloid,
-                venue_order_id=verdict.venue_order_id,
+                venue_order_id=None,
+                journal_state=ExecutionState.RECONCILING,
+                submitted_now=False,
+                detail="blocked: venue query failed",
+            )
+        verdict = recovery.resolve(outcome, venue_order_id=venue.venue_order_id_of(cloid))
+        if verdict.decision.value == "adopt":
+            if verdict.venue_order_id is not None:
+                self._venue_refs.setdefault(intent_id, verdict.venue_order_id)
+            if self.journal.current_state(intent_id) != ExecutionState.ACCEPTED:
+                self.journal.record(
+                    intent_id=intent_id,
+                    client_order_id=cloid,
+                    new_state=ExecutionState.ACCEPTED,
+                    reason="adopted after venue query",
+                    venue_order_id=verdict.venue_order_id,
+                )
+            else:
+                # Late/duplicate ACK: already ACCEPTED. Round-trip through
+                # RECONCILING so the append-only chain stays FSM-legal while
+                # proving the resolution was idempotent (no second order).
+                self.journal.record(
+                    intent_id=intent_id,
+                    client_order_id=cloid,
+                    new_state=ExecutionState.RECONCILING,
+                    reason="late/duplicate ack; already ACCEPTED",
+                )
+                self.journal.record(
+                    intent_id=intent_id,
+                    client_order_id=cloid,
+                    new_state=ExecutionState.ACCEPTED,
+                    reason="late/duplicate ack; idempotent re-adoption",
+                    venue_order_id=verdict.venue_order_id,
+                )
+            return GatewayReceipt(
+                intent_id=intent_id,
+                client_order_id=cloid,
+                venue_order_id=self._venue_refs.get(intent_id),
                 journal_state=ExecutionState.ACCEPTED,
                 submitted_now=False,
                 detail="adopted existing venue order",
@@ -273,12 +311,13 @@ class ExecutionGateway:
                 submitted_now=True,
                 detail="controlled retry with same client_order_id",
             )
-        self.journal.record(
-            intent_id=intent_id,
-            client_order_id=cloid,
-            new_state=ExecutionState.RECONCILING,
-            reason="venue query inconclusive; blocked",
-        )
+        if self.journal.current_state(intent_id) != ExecutionState.RECONCILING:
+            self.journal.record(
+                intent_id=intent_id,
+                client_order_id=cloid,
+                new_state=ExecutionState.RECONCILING,
+                reason="venue query inconclusive; blocked",
+            )
         return GatewayReceipt(
             intent_id=intent_id,
             client_order_id=cloid,

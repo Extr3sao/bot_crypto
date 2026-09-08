@@ -1198,3 +1198,46 @@ que NO se requerirá per-ADR "next free" footnote nunca más.
 - **Track E (stat validation)**: `backtesting/stat_validation.py` — bootstrap Sharpe CI percentil, P(Sharpe>0), permutation test sign-flip; todos con seed explícita; tiny-N y zero-variance fallan closed (INSUFFICIENT_EVIDENCE, sin números fabricados). `research/admission_stats.py` expone evidencia multi-gate para el camino de admisión (un p-value solo NUNCA promueve; AdmissionController existente intacto). No duplica Monte Carlo/walk-forward.
 - **Track F (health projection)**: `paper/health_projection.py` contrato read-only para frontend futuro (strategy/asset/timeframe/regime/health_state/métricas/next_gate); sin controles de trading.
 - **Evidencia**: 58 tests nuevos (gateway E2E A1-A4, conformance, health, regime v2 con causalidad, correlation con invarianza futura, stat validation, admission stats, projection); full unit 837 passed / 1 failed (baseline conocido binance-vs-bybit); closure guard PASS tras staging; POC01 validator 9/9 PASS post-cambios.
+- **CORRECCIÓN (EVIDENCE-RECONCILIATION, PORTFOLIO-AND-RUNTIME-INTEGRATION-01)**: el conteo "58 tests nuevos" era un error de transcripción. Cánónico verificado con `pytest --collect-only`: TEST_FILES_ADDED=8, TEST_FUNCTIONS_ADDED=72, TEST_CASES_COLLECTED=72, PARAMETRIZED_CASES=0, TOTAL_NEW_PYTEST_ITEMS=72 (execution 19 = gateway_e2e 16 + conformance 3; health 13; regime_v2 9; correlation 9; stat_validation 12 + admission_stats 6; projection 4). FULL_REGRESSION canónico: COLLECTED=839, PASSED=838, FAILED=1, SKIPPED=0, XFAILED=0, XPASSED=0, ERRORS=0. El 1 failed (`test_load_settings_happy_path`, binance-vs-bybit) fue REPRODUCIDO en el BASE limpio `01f7792` vía worktree detached con el mismo entorno -> defecto pre-existente driven por `.env` local (EXCHANGE_ID=bybit), NO un defecto del checkpoint. La diferencia 837->838 se debe a que la corrida previa antecedió al staging que hace pasar el closure guard. FALSE_SUCCESS=0.
+
+## ADR-0026 — Portfolio intelligence + runtime wiring + health UI + evidence reconciliation (PORTFOLIO-AND-RUNTIME-INTEGRATION-01)
+
+**Date:** 2026-09-08 · **BASE:** 01f7792 · **Status:** ACCEPTED
+
+**Context.** Previous FINAL_REPORT had NEW_TESTS=58 vs component sum 72 and an
+ambiguous "837 passed / 1 pre-existing baseline" regression line. The
+checkpoint mandated Phase 0 evidence reconciliation before new implementation.
+
+**Decision.**
+
+1. Evidence reconciliation: canonical NEW_TESTS=72 (8 files, 0 parametrized,
+   measured via --collect-only at BASE); FULL_REGRESSION decomposed exactly
+   (839/838/1/0/0/0/0); the single failure proven pre-existing at BASE via
+   detached worktree (environment-driven .env EXCHANGE_ID=bybit). Corrections
+   applied to ADR-0025 and FINAL_REPORT_HARDENING_01 with before/after values;
+   canonical record in docs/external-audit-01/EVIDENCE_RECONCILIATION.md.
+2. Portfolio Intelligence V1 (portfolio/intelligence.py): canonical read-only
+   PortfolioIntelligenceSnapshot with dynamic-correlation cluster exposure
+   (BTC/ETH/SOL may be one risk cluster in FUSED regimes), separate asset vs
+   strategy correlation vs signal overlap, marginal portfolio value as
+   evidence-only. Does NOT change RiskManager or POC01 limits.
+3. StrategyRegimeEligibility (research/regime_eligibility.py): evidence model
+   with pre-declared regime-signature fallback (no opportunistic merging),
+   fail-closed INSUFFICIENT_EVIDENCE. Future StrategyRouter input, not active.
+4. Execution runtime wiring (execution/service.py + journal replay):
+   ExecutionService mounts the certified primitives as one authority path with
+   durable JSONL reload (validated chain), restart-safe sticky identity,
+   fail-closed startup reconciliation. Status = PARTIALLY_INTEGRATED (no real
+   adapter call-site consumes it yet; OKX/Kraken adapters ABSENT — not claimed).
+5. Health UI contract (paper/health_view.py): read-only rows + evidence-backed
+   strategy x regime matrix; honest INSUFFICIENT_EVIDENCE empty cells; no
+   family-name inference.
+6. HEALTH x RISK contract (risk/reject_analysis.py): observational ledger,
+   deterministic GOOD_CANDIDATE_BLOCKED_BY_RISK vs
+   LOW_QUALITY_CANDIDATE_CORRECTLY_BLOCKED classification after shadow N>=20.
+
+**Consequences.** POC01 untouched (validator 9/9; RUNTIME/PNL/TRADE_CHANGED=0,
+LIVE_CALLS=0, FALSE_SUCCESS=0). Full unit suite 896/897 (1 pre-existing env
+failure). Ruff + mypy clean on all checkpoint modules. NEXT:
+CONTINUE_POC01 + SHADOW_NEXT_CAMPAIGN_INTEGRATION +
+LEGACY_STRATEGY_RETRO_VALIDATION + FUTURE_CONFIRMATION_WAIT.

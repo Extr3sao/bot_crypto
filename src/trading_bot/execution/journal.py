@@ -197,6 +197,51 @@ class ExecutionJournal:
     def current_state(self, intent_id: str) -> ExecutionState | None:
         return self._current.get(intent_id)
 
+    def load_replay(self, path: Path | str | None = None) -> int:
+        """Replay a JSONL journal written by :meth:`record` (restart recovery).
+
+        Validates each line's state chain per intent (``previous_state`` must
+        match the last replayed state) and repopulates the in-memory history
+        WITHOUT re-persisting. Returns the number of transitions replayed.
+        Safe to call when the file does not exist yet (fresh mount).
+        """
+        replay_path = Path(path) if path is not None else self.path
+        if replay_path is None:
+            raise ExecutionReliabilityError("load_replay requires a journal path")
+        if not replay_path.exists():
+            return 0
+        replayed = 0
+        with replay_path.open("r", encoding="utf-8") as handle:
+            for line in handle:
+                line = line.strip()
+                if not line:
+                    continue
+                data = json.loads(line)
+                intent_id = str(data["intent_id"])
+                state = _state(str(data["new_state"]))  # raises on unknown state
+                previous = self._current.get(intent_id)
+                expected_prev = previous.value if previous is not None else ""
+                recorded_prev = str(data.get("previous_state", ""))
+                if recorded_prev != expected_prev:
+                    raise ExecutionReliabilityError(
+                        f"journal replay chain break for intent {intent_id}: "
+                        f"expected previous {expected_prev!r}, found {recorded_prev!r}"
+                    )
+                transition = JournalTransition(
+                    previous_state=recorded_prev,
+                    new_state=state.value,
+                    intent_id=intent_id,
+                    client_order_id=str(data["client_order_id"]),
+                    venue_order_id=data.get("venue_order_id"),
+                    timestamp=float(data["timestamp"]),
+                    evidence=dict(data.get("evidence", {})),
+                    reason=str(data.get("reason", "")),
+                )
+                self._transitions.setdefault(intent_id, []).append(transition)
+                self._current[intent_id] = state
+                replayed += 1
+        return replayed
+
     def history(self, intent_id: str) -> tuple[JournalTransition, ...]:
         return tuple(self._transitions.get(intent_id, ()))
 

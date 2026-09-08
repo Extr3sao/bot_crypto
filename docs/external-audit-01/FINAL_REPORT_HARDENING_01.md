@@ -162,20 +162,30 @@ deferred to keep POC01 frozen).
 
 ## NEW_TESTS
 
-58 new tests:
-- execution: 16 gateway E2E (A1-A4) + 3 conformance (72 total execution suite)
-- strategies health: 13
-- regime v2: 9 (incl. future-mutation causality)
-- correlation: 9 (incl. future-data invariance)
-- stat validation: 12
-- admission stats: 6
-- health projection: 4
+**CORRECTED (EVIDENCE-RECONCILIATION, PORTFOLIO-AND-RUNTIME-INTEGRATION-01):**
+the originally reported "58" was a transcription error. Canonical counts
+verified via `pytest --collect-only`:
+
+- TEST_FILES_ADDED: 8
+- TEST_FUNCTIONS_ADDED: 72
+- TEST_CASES_COLLECTED: 72
+- PARAMETRIZED_CASES: 0
+- TOTAL_NEW_PYTEST_ITEMS: 72
+
+Breakdown: execution 19 (gateway_e2e 16 + conformance 3), health 13,
+regime_v2 9, correlation 9, stat_validation 12, admission_stats 6,
+projection 4.
 
 ## FULL_REGRESSION
 
-PASS — unit suite 837 passed / 1 failed (pre-existing baseline
-`test_load_settings_happy_path` binance-vs-bybit from local `.env`, unchanged,
-documented in prior checkpoints). POC01 validator 9/9 PASS after all changes.
+**CORRECTED (EVIDENCE-RECONCILIATION):** canonical tally: COLLECTED=839,
+PASSED=838, FAILED=1, SKIPPED=0, XFAILED=0, XPASSED=0, ERRORS=0.
+The single failure (`test_load_settings_happy_path`, binance-vs-bybit from
+local `.env` `EXCHANGE_ID=bybit`) was **reproduced on clean BASE `01f7792`
+in a detached git worktree** with the same environment -> pre-existing,
+environment-driven, NOT a checkpoint defect. (The earlier "837 passed"
+predated staging the new modules; with them tracked, the closure guard
+passes, hence 838.) POC01 validator 9/9 PASS after all changes.
 
 ## DEPENDENCY_CLOSURE
 
