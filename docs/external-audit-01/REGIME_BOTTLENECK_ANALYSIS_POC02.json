@@ -1,0 +1,63 @@
+{
+  "artifact": "REGIME_BOTTLENECK_ANALYSIS",
+  "checkpoint": "POC02-LAUNCH-AND-DISCOVERY-BATCH-02",
+  "observational_only": true,
+  "windows_analyzed": 14,
+  "table": {
+    "POC01-CAMPAIGN": {
+      "NO_SIGNAL": 2,
+      "STRATEGY_FILTER": 0,
+      "AGENT_FILTER": 0,
+      "VERIFIER_FILTER": 0,
+      "RISK_COOLDOWN": 0,
+      "RISK_POSITIONS": 0,
+      "EXECUTION": 0,
+      "NONE": 0
+    },
+    "NEUTRAL|WEAK|EXTREME|TREND|SHOCK|NORMAL": {
+      "NO_SIGNAL": 0,
+      "STRATEGY_FILTER": 0,
+      "AGENT_FILTER": 0,
+      "VERIFIER_FILTER": 0,
+      "RISK_COOLDOWN": 0,
+      "RISK_POSITIONS": 0,
+      "EXECUTION": 0,
+      "NONE": 2
+    },
+    "NEUTRAL|WEAK|EXTREME|RANGE|SHOCK|NORMAL": {
+      "NO_SIGNAL": 0,
+      "STRATEGY_FILTER": 0,
+      "AGENT_FILTER": 0,
+      "VERIFIER_FILTER": 0,
+      "RISK_COOLDOWN": 0,
+      "RISK_POSITIONS": 0,
+      "EXECUTION": 0,
+      "NONE": 1
+    },
+    "NEUTRAL|WEAK|LOW|TREND|NORMAL|NORMAL": {
+      "NO_SIGNAL": 0,
+      "STRATEGY_FILTER": 0,
+      "AGENT_FILTER": 0,
+      "VERIFIER_FILTER": 0,
+      "RISK_COOLDOWN": 0,
+      "RISK_POSITIONS": 0,
+      "EXECUTION": 0,
+      "NONE": 6
+    },
+    "NEUTRAL|WEAK|LOW|RANGE|NORMAL|NORMAL": {
+      "NO_SIGNAL": 0,
+      "STRATEGY_FILTER": 0,
+      "AGENT_FILTER": 0,
+      "VERIFIER_FILTER": 0,
+      "RISK_COOLDOWN": 0,
+      "RISK_POSITIONS": 0,
+      "EXECUTION": 0,
+      "NONE": 3
+    }
+  },
+  "findings": [
+    "POC01 (finalized + partial days): collapse at PROPOSAL gate -> NO_SIGNAL dominates (PHASE B).",
+    "POC02 first 4 cycles: 6 proposals/scan but 0 selected -> AGENT_FILTER dominates (PHASE A-flavored: candidates exist, decision engine selects none).",
+    "No RISK_COOLDOWN / RISK_POSITIONS windows observed yet in POC02 (0 risk rejects) \u2014 Shadow capture arm idle, correctly."
+  ]
+}

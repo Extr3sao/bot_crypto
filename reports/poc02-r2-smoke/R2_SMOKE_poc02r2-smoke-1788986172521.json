@@ -1,0 +1,323 @@
+{
+  "ARBITRATION_NONE_GROUPS": 0,
+  "LIVE_CALLS_REQUIRED": 0,
+  "MARKET_DATA_PROVIDER": "binanceusdm (public REST OHLCV, no credentials)",
+  "MODE": "PAPER",
+  "NATURAL_CASES_TO_RISK": 3,
+  "NATURAL_WINDOWS": 3,
+  "RISK_ACCEPTS": 3,
+  "checkpoint": "MA-DIRECTION-ARBITRATION-AND-POC02-REPAIR-01",
+  "honesty_note": "Natural outcomes only. If NATURAL_CASES_TO_RISK=0 with source=binanceusdm-public-5m, no valid signal existed in the scanned window; deterministic fixture (--fixture) provides secondary proof.",
+  "live_calls": 0,
+  "run_id": "poc02r2-smoke-1788986172521",
+  "source": "deterministic-fixture",
+  "track": "F",
+  "windows": [
+    {
+      "asset": "BTC",
+      "decision_outcome": "SELECTED",
+      "decision_time": "2026-08-29T15:35:00+00:00",
+      "groups": [
+        {
+          "asset": "BTC",
+          "confidence": 0.800868,
+          "counter_evidence": [
+            "evidence:proposal:4b366a19d94d60d0b04d0b2d"
+          ],
+          "created_at": "2026-08-29T15:35:00+00:00",
+          "decision_time": "2026-08-29T15:35:00+00:00",
+          "direction_scores": [
+            {
+              "direction": "LONG",
+              "evidence_refs": [
+                "evidence:proposal:142fed843cb7fdb51c8a02c3"
+              ],
+              "proposal_ref": "proposal:142fed843cb7fdb51c8a02c3",
+              "score": 0.800868,
+              "score_components": [
+                [
+                  "proposal_confidence",
+                  0.583682
+                ],
+                [
+                  "evidence_quality",
+                  1.0
+                ],
+                [
+                  "asset_assessment",
+                  0.721525
+                ],
+                [
+                  "freshness",
+                  1.0
+                ],
+                [
+                  "regime_fit",
+                  1.0
+                ],
+                [
+                  "strategy_applicability",
+                  0.5
+                ]
+              ]
+            },
+            {
+              "direction": "SHORT",
+              "evidence_refs": [
+                "evidence:proposal:4b366a19d94d60d0b04d0b2d"
+              ],
+              "proposal_ref": "proposal:4b366a19d94d60d0b04d0b2d",
+              "score": 0.772974,
+              "score_components": [
+                [
+                  "proposal_confidence",
+                  0.416318
+                ],
+                [
+                  "evidence_quality",
+                  1.0
+                ],
+                [
+                  "asset_assessment",
+                  0.721525
+                ],
+                [
+                  "freshness",
+                  1.0
+                ],
+                [
+                  "regime_fit",
+                  1.0
+                ],
+                [
+                  "strategy_applicability",
+                  0.5
+                ]
+              ]
+            }
+          ],
+          "group_id": "group:312b4b62b085e38da9c1b3c9",
+          "long_candidate_ref": "proposal:142fed843cb7fdb51c8a02c3",
+          "run_id": "poc02r2-smoke-1788986172521:BTC",
+          "schema_version": "dir-v1",
+          "selected_direction": "LONG",
+          "selection_reason": "HIGHER_EVIDENCE_SCORE",
+          "short_candidate_ref": "proposal:4b366a19d94d60d0b04d0b2d",
+          "strategy": "momentum",
+          "timeframe": "5m",
+          "trace_id": "trace-poc02r2-smoke-1788986172521:BTC"
+        }
+      ],
+      "proposals_on_board": 1,
+      "reached_risk": true,
+      "risk_verdict": "ACCEPT",
+      "run_id": "poc02r2-smoke-1788986172521:BTC",
+      "selected_candidate_id": "proposal:142fed843cb7fdb51c8a02c3",
+      "verifier_verdict": "VERIFIED"
+    },
+    {
+      "asset": "ETH",
+      "decision_outcome": "SELECTED",
+      "decision_time": "2026-08-29T15:35:00+00:00",
+      "groups": [
+        {
+          "asset": "ETH",
+          "confidence": 0.800868,
+          "counter_evidence": [
+            "evidence:proposal:e0c33db12831d19797bed431"
+          ],
+          "created_at": "2026-08-29T15:35:00+00:00",
+          "decision_time": "2026-08-29T15:35:00+00:00",
+          "direction_scores": [
+            {
+              "direction": "LONG",
+              "evidence_refs": [
+                "evidence:proposal:83ebdcbcb95887f6de66cc10"
+              ],
+              "proposal_ref": "proposal:83ebdcbcb95887f6de66cc10",
+              "score": 0.800868,
+              "score_components": [
+                [
+                  "proposal_confidence",
+                  0.583682
+                ],
+                [
+                  "evidence_quality",
+                  1.0
+                ],
+                [
+                  "asset_assessment",
+                  0.721525
+                ],
+                [
+                  "freshness",
+                  1.0
+                ],
+                [
+                  "regime_fit",
+                  1.0
+                ],
+                [
+                  "strategy_applicability",
+                  0.5
+                ]
+              ]
+            },
+            {
+              "direction": "SHORT",
+              "evidence_refs": [
+                "evidence:proposal:e0c33db12831d19797bed431"
+              ],
+              "proposal_ref": "proposal:e0c33db12831d19797bed431",
+              "score": 0.772974,
+              "score_components": [
+                [
+                  "proposal_confidence",
+                  0.416318
+                ],
+                [
+                  "evidence_quality",
+                  1.0
+                ],
+                [
+                  "asset_assessment",
+                  0.721525
+                ],
+                [
+                  "freshness",
+                  1.0
+                ],
+                [
+                  "regime_fit",
+                  1.0
+                ],
+                [
+                  "strategy_applicability",
+                  0.5
+                ]
+              ]
+            }
+          ],
+          "group_id": "group:3ed949a7181ff6ddef66c233",
+          "long_candidate_ref": "proposal:83ebdcbcb95887f6de66cc10",
+          "run_id": "poc02r2-smoke-1788986172521:ETH",
+          "schema_version": "dir-v1",
+          "selected_direction": "LONG",
+          "selection_reason": "HIGHER_EVIDENCE_SCORE",
+          "short_candidate_ref": "proposal:e0c33db12831d19797bed431",
+          "strategy": "momentum",
+          "timeframe": "5m",
+          "trace_id": "trace-poc02r2-smoke-1788986172521:ETH"
+        }
+      ],
+      "proposals_on_board": 1,
+      "reached_risk": true,
+      "risk_verdict": "ACCEPT",
+      "run_id": "poc02r2-smoke-1788986172521:ETH",
+      "selected_candidate_id": "proposal:83ebdcbcb95887f6de66cc10",
+      "verifier_verdict": "VERIFIED"
+    },
+    {
+      "asset": "SOL",
+      "decision_outcome": "SELECTED",
+      "decision_time": "2026-08-29T15:35:00+00:00",
+      "groups": [
+        {
+          "asset": "SOL",
+          "confidence": 0.800868,
+          "counter_evidence": [
+            "evidence:proposal:e5a0aa6af70fc41b158c888b"
+          ],
+          "created_at": "2026-08-29T15:35:00+00:00",
+          "decision_time": "2026-08-29T15:35:00+00:00",
+          "direction_scores": [
+            {
+              "direction": "LONG",
+              "evidence_refs": [
+                "evidence:proposal:a9f5363ed09989e852eba9c6"
+              ],
+              "proposal_ref": "proposal:a9f5363ed09989e852eba9c6",
+              "score": 0.800868,
+              "score_components": [
+                [
+                  "proposal_confidence",
+                  0.583682
+                ],
+                [
+                  "evidence_quality",
+                  1.0
+                ],
+                [
+                  "asset_assessment",
+                  0.721525
+                ],
+                [
+                  "freshness",
+                  1.0
+                ],
+                [
+                  "regime_fit",
+                  1.0
+                ],
+                [
+                  "strategy_applicability",
+                  0.5
+                ]
+              ]
+            },
+            {
+              "direction": "SHORT",
+              "evidence_refs": [
+                "evidence:proposal:e5a0aa6af70fc41b158c888b"
+              ],
+              "proposal_ref": "proposal:e5a0aa6af70fc41b158c888b",
+              "score": 0.772974,
+              "score_components": [
+                [
+                  "proposal_confidence",
+                  0.416318
+                ],
+                [
+                  "evidence_quality",
+                  1.0
+                ],
+                [
+                  "asset_assessment",
+                  0.721525
+                ],
+                [
+                  "freshness",
+                  1.0
+                ],
+                [
+                  "regime_fit",
+                  1.0
+                ],
+                [
+                  "strategy_applicability",
+                  0.5
+                ]
+              ]
+            }
+          ],
+          "group_id": "group:7d1708d7f2cd1d1066666341",
+          "long_candidate_ref": "proposal:a9f5363ed09989e852eba9c6",
+          "run_id": "poc02r2-smoke-1788986172521:SOL",
+          "schema_version": "dir-v1",
+          "selected_direction": "LONG",
+          "selection_reason": "HIGHER_EVIDENCE_SCORE",
+          "short_candidate_ref": "proposal:e5a0aa6af70fc41b158c888b",
+          "strategy": "momentum",
+          "timeframe": "5m",
+          "trace_id": "trace-poc02r2-smoke-1788986172521:SOL"
+        }
+      ],
+      "proposals_on_board": 1,
+      "reached_risk": true,
+      "risk_verdict": "ACCEPT",
+      "run_id": "poc02r2-smoke-1788986172521:SOL",
+      "selected_candidate_id": "proposal:a9f5363ed09989e852eba9c6",
+      "verifier_verdict": "VERIFIED"
+    }
+  ]
+}
