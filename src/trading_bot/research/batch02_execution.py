@@ -89,7 +89,7 @@ def funding_by_ms_from_rows(
     ts = [int(r["timestamp"]) for r in rows]
     spacings = [ts[i + 1] - ts[i] for i in range(len(ts) - 1)]
     median_ms = statistics.median(spacings) if spacings else 8 * 3_600_000
-    interval_s = canon_funding_interval_s(int(round(median_ms / 1000)))
+    interval_s = canon_funding_interval_s(round(median_ms / 1000))
     by_ms: dict[int, float] = {}
     for t, r in zip(ts, (float(r["fundingRate"]) for r in rows), strict=True):
         by_ms[t] = canon_rate_per_period(r, source_unit="decimal_per_interval")

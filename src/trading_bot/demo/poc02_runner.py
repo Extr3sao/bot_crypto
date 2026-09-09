@@ -4,7 +4,7 @@ Launches the preregistered POC-02-paper-clean-01 campaign (see
 ``docs/external-audit-01/POC02_MANIFEST.md``) on a NEW campaign identity,
 separate artifacts and separate accounting from POC01:
 
-- MARKET_DATA_PROVIDER = binance (public REST OHLCV, no credentials)
+- MARKET_DATA_PROVIDER = binanceusdm (public REST OHLCV, no credentials)
 - EXECUTION_MODE       = PAPER
 - EXECUTION_VENUE_MODEL= PaperBroker
 
@@ -33,7 +33,6 @@ from trading_bot.demo.paper_multi_agent import (
     DecisionToCandidateAdapter,
     DemoSafetyError,
     DemoState,
-    _fetch_public_bars,
     _proposal_set,
     _reconcile,
     _write_reports,
@@ -58,19 +57,38 @@ __all__ = [
 ]
 
 POC02_CAMPAIGN_ID = "POC-02-paper-clean-01"
-POC02_MANIFEST_SHA256 = "0f4e02a68744c474410c70016e5043b71313807fd616be5b6b40915a4978c5dc"
+POC02_MANIFEST_PATH = (
+    Path(__file__).resolve().parents[3]
+    / "docs" / "external-audit-01" / "POC02_MANIFEST.md"
+)
+POC02_MANIFEST_SHA256 = "895a9374c13901ccf68d9cdca4671a91691ff5a97bf67df4d34503177567e035"
 
 PROVIDER_AUTHORITY: dict[str, str] = {
-    "MARKET_DATA_PROVIDER": "binance (public REST OHLCV, no credentials)",
+    "MARKET_DATA_PROVIDER": "binanceusdm (public REST OHLCV, no credentials)",
     "EXECUTION_MODE": "PAPER",
     "EXECUTION_VENUE_MODEL": "PaperBroker",
 }
 
 
-def evaluate_launch_gates(manifest_sha256: str) -> dict[str, Any]:
-    """Evaluate the PREREGISTERED launch gates (A, unchanged)."""
+def evaluate_launch_gates(manifest_sha256: str | None = None) -> dict[str, Any]:
+    """Evaluate the PREREGISTERED launch gates (A, unchanged).
+
+    ``manifest_committed`` hashes the ACTUAL manifest file on disk and
+    compares it to the recorded constant — a self-comparison here would be
+    a false-pass (the gate previously compared its argument to itself and
+    passed even when the disk hash diverged).
+    """
+    try:
+        disk_manifest_sha256 = hashlib.sha256(
+            POC02_MANIFEST_PATH.read_bytes()
+        ).hexdigest()
+    except OSError:
+        disk_manifest_sha256 = ""
     gates: dict[str, bool] = {
-        "manifest_committed": manifest_sha256 == POC02_MANIFEST_SHA256,
+        "manifest_committed": (
+            disk_manifest_sha256 == POC02_MANIFEST_SHA256
+            and (manifest_sha256 in (None, POC02_MANIFEST_SHA256))
+        ),
         "campaign_id_new": POC02_CAMPAIGN_ID != "POC-01-paper-observation-01",
         "provider_authority_explicit": set(PROVIDER_AUTHORITY) == {
             "MARKET_DATA_PROVIDER",
@@ -89,6 +107,91 @@ def evaluate_launch_gates(manifest_sha256: str) -> dict[str, Any]:
         "total": len(gates),
         "launch_authorized": all(gates.values()),
     }
+
+
+_PROVIDER_DOWNGRADES: list[dict[str, str]] = []
+
+
+def _fetch_public_bars_binanceusdm(
+    assets: tuple[str, ...], limit: int = 120
+) -> dict[str, list[OHLCV]]:
+    """Fetch PUBLIC binanceusdm OHLCV only (no credentials, no private calls).
+
+    Manifest E1 authority: MARKET_DATA_PROVIDER = binanceusdm.
+    """
+    import ccxt
+
+    exchange = ccxt.binanceusdm({"enableRateLimit": True})
+    try:
+        bars: dict[str, list[OHLCV]] = {}
+        for asset in assets:
+            symbol = f"{asset}/USDT:USDT"
+            rows = exchange.fetch_ohlcv(symbol, timeframe="5m", limit=limit)
+            bars[asset] = [
+                OHLCV(
+                    symbol=symbol,
+                    timestamp=int(row[0]),
+                    open=float(row[1]),
+                    high=float(row[2]),
+                    low=float(row[3]),
+                    close=float(row[4]),
+                    volume=float(row[5]),
+                )
+                for row in rows
+            ]
+        return bars
+    finally:
+        close = getattr(exchange, "close", None)
+        if callable(close):
+            close()
+
+
+def _fetch_public_bars(assets: tuple[str, ...], limit: int = 120) -> dict[str, list[OHLCV]]:
+    """Manifest-E1 bar fetch with explicit provider-downgrade tracking.
+
+    First tries the authoritative binanceusdm public endpoint; only if it is
+    unreachable falls back to ccxt.binance spot PUBLIC data and records the
+    downgrade in ``_PROVIDER_DOWNGRADES`` (surfaced in every telemetry
+    write).  No credentials are used on either path; POC01's shared demo
+    module is untouched.
+    """
+    try:
+        bars = _fetch_public_bars_binanceusdm(assets, limit)
+        _PROVIDER_DOWNGRADES.clear()
+        return bars
+    except Exception as exc:
+        _PROVIDER_DOWNGRADES.append(
+            {
+                "authoritative": "binanceusdm",
+                "fallback": "binance-spot-public",
+                "reason": f"{type(exc).__name__}: {exc}",
+            }
+        )
+    import ccxt
+
+    exchange = ccxt.binance({"enableRateLimit": True})
+    try:
+        bars: dict[str, list[OHLCV]] = {}
+        for asset in assets:
+            symbol = f"{asset}/USDT"
+            rows = exchange.fetch_ohlcv(symbol, timeframe="5m", limit=limit)
+            bars[asset] = [
+                OHLCV(
+                    symbol=symbol,
+                    timestamp=int(row[0]),
+                    open=float(row[1]),
+                    high=float(row[2]),
+                    low=float(row[3]),
+                    close=float(row[4]),
+                    volume=float(row[5]),
+                )
+                for row in rows
+            ]
+        return bars
+    finally:
+        close = getattr(exchange, "close", None)
+        if callable(close):
+            close()
 
 
 _SHADOW_CAPTURE_FIELDS = (
@@ -222,7 +325,7 @@ class Poc02Bundle:
     ) -> dict[str, Any]:
         run_id = f"poc02-{int(time.time() * 1000)}"
         trace_id = f"trace-{run_id}"
-        state = DemoState(run_id=run_id, trace_id=trace_id, provider="binance-public")
+        state = DemoState(run_id=run_id, trace_id=trace_id, provider="binanceusdm-public")
         state.campaign_id = POC02_CAMPAIGN_ID
         state.mode = "PAPER"
         state.assets = assets
@@ -490,6 +593,7 @@ class Poc02Bundle:
             "campaign_id": POC02_CAMPAIGN_ID,
             "run_id": run_id,
             "provider_authority": PROVIDER_AUTHORITY,
+            "provider_downgrades": list(_PROVIDER_DOWNGRADES),
             "live_calls": state.live_calls,
             "real_broker_calls": self.real_broker_calls,
             "private_exchange_calls": self.private_exchange_calls,
