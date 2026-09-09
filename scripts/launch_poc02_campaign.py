@@ -34,14 +34,13 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 if str(REPO_ROOT / "src") not in sys.path:
     sys.path.insert(0, str(REPO_ROOT / "src"))
 
+from trading_bot.config.runtime import TradingMode  # noqa: E402
 from trading_bot.demo.poc02_runner import (  # noqa: E402
     POC02_CAMPAIGN_ID,
     PROVIDER_AUTHORITY,
     Poc02Bundle,
     evaluate_launch_gates,
 )
-from trading_bot.execution.cost_model import ExecutionCostModel  # noqa: E402
-from trading_bot.config.runtime import TradingMode  # noqa: E402
 
 CAMPAIGN_DIR = REPO_ROOT / "reports" / "poc02-paper-clean-01"
 LAUNCH_RECORD = CAMPAIGN_DIR / "POC02_LAUNCH_RECORD.json"
@@ -84,10 +83,7 @@ def build_launch_record() -> dict:
 
     # step 1 — window (TBD in manifest -> set at authorization, then frozen)
     prev = _load_json(LAUNCH_RECORD)
-    if prev.get("start_utc"):
-        start_iso = prev["start_utc"]
-    else:
-        start_iso = now.isoformat()
+    start_iso = prev["start_utc"] if prev.get("start_utc") else now.isoformat()
     end_iso = prev.get("end_utc") or (
         (datetime.fromisoformat(start_iso) + timedelta(days=DURATION_COUNTED_DAYS))
         .replace(microsecond=0)
@@ -103,7 +99,6 @@ def build_launch_record() -> dict:
     risk_policy_sha256 = _sha256_bytes(
         risk_model.model_dump_json().encode("utf-8")
     )
-    cost_model = ExecutionCostModel(commission_bps=5.0, slippage_bps=1.0)
     cost_model_sha256 = _sha256_bytes(
         json.dumps(
             {

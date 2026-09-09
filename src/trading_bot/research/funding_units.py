@@ -32,11 +32,11 @@ from dataclasses import dataclass
 
 __all__ = [
     "FundingUnitContract",
+    "annualized_rate",
     "canon_funding_interval_s",
     "canon_rate_per_period",
-    "annualized_rate",
-    "funding_pnl",
     "contract_fingerprint",
+    "funding_pnl",
 ]
 
 CONTRACT_ID = "FUNDING-UNITS-CANONICAL-V1"

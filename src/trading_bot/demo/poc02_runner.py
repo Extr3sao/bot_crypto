@@ -171,11 +171,11 @@ def _fetch_public_bars(assets: tuple[str, ...], limit: int = 120) -> dict[str, l
 
     exchange = ccxt.binance({"enableRateLimit": True})
     try:
-        bars: dict[str, list[OHLCV]] = {}
+        fallback: dict[str, list[OHLCV]] = {}
         for asset in assets:
             symbol = f"{asset}/USDT"
             rows = exchange.fetch_ohlcv(symbol, timeframe="5m", limit=limit)
-            bars[asset] = [
+            fallback[asset] = [
                 OHLCV(
                     symbol=symbol,
                     timestamp=int(row[0]),
@@ -187,7 +187,7 @@ def _fetch_public_bars(assets: tuple[str, ...], limit: int = 120) -> dict[str, l
                 )
                 for row in rows
             ]
-        return bars
+        return fallback
     finally:
         close = getattr(exchange, "close", None)
         if callable(close):
