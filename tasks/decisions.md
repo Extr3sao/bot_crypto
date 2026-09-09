@@ -1385,3 +1385,53 @@ candidate research, shadow V2 preparation, and Bybit conformance.
 - **Consequences**: no new strategy enters PAPER; POC02 accumulates coverage + shadow evidence to
   2026-09-30; confirmation window CONF-EDGE-002-001 remains locked until 2026-09-22 (consumed=false).
 - **Hermetic regression**: 1118 passed / 0 failed (re-verified on committed HEAD).
+
+## ADR-0031 — POC02-OBSERVATION-AND-ALPHA-DIAGNOSIS-01: operate, diagnose, no tuning
+
+- **Context**: POC02 day 1 needed operation + evidence layers (coverage, daily performance,
+  frequency KPIs, bottleneck×regime, strategy/agent attribution, shadow resolution, regime map)
+  without changing any trading parameter or launching new research.
+- **Decision**:
+  1. OBSERVE ONLY: all new code is additive analytics reading persisted ledgers
+     (`poc02_observation.py`, `shadow/resolver.py`, observation CLI); nothing gates, routes,
+     sizes, or tunes. Risk policy hash unchanged; agents NOT loosened; no strategy changes.
+  2. Bottleneck taxonomy gains OTHER_RISK (§5): risk rejections without a persisted reason
+     split are labeled OTHER_RISK — the previous default label (RISK_COOLDOWN without evidence)
+     was an inference and is now forbidden. The runner passes an explicit reason split.
+  3. Per-candidate attribution persisted (AGENT_REJECT/SELECTED/RISK_REJECT/PAPER_OPEN/CLOSE)
+     in `POC02_ATTRIBUTION.jsonl`; paper closes mirror broker true-net economics via a
+     read-only `PaperBroker.closed_trades` view.
+  4. Shadow PIT resolution uses REAL public binanceusdm 5m bars only; captures stay PENDING
+     (never synthesized) when bars are unavailable; provider errors surface loudly.
+  5. §15 carry funding: public probes PROVED true depth ≈ 2019-09-10→present (batch-02's
+     INSUFFICIENT_SAMPLE was a fetch-page artifact, not a data ceiling); recorded as a SOURCE
+     proposal ONLY — research execution still blocked pending source/schema/PIT/cost validation.
+  6. DISCOVERY_BATCH_03 = NOT_STARTED (§13): no actionable coverage gap exists on day-1 evidence.
+- **Results**: POC02_STATUS ACTIVE; day-1 dominant bottleneck AGENT_FILTER 33/33 windows
+  (momentum LONG/SHORT pairs mutually refute via critic-counter-signal → UNRESOLVED_CONFLICT);
+  AGENT_FILTER_RATE 1.0; 0 shadow captures (0 Risk rejections); 0 paper trades;
+  COMPLETED_VALID_DAYS 0 (day 1 OPEN at checkpoint); coverage NOT_YET_MEASURABLE.
+- **Consequences**: observation continues to checkpoint triggers (3 valid days / 25 shadow
+  resolutions / 2026-09-22 / campaign end); regime-dependence and risk-value questions stay
+  explicitly unanswered until sample exists; funding-source validation may preregister a
+  batch-03 hypothesis if (and only if) a validated coverage gap emerges.
+- **Evidence**: FINAL_REPORT_POC02_OBSERVATION_AND_ALPHA_DIAGNOSIS_01.md,
+  FUNDING_HISTORY_SOURCE_PROPOSAL.md, observation/DAILY_OBSERVATION_2026-09-09.json,
+  observation/STATUS.json; hermetic 1152/0 on the staged working tree; LIVE_CALLS=0;
+  FALSE_SUCCESS=0; POC01 diff (committed + working tree) empty; CONF-EDGE-002-001 untouched.
+
+## ADR-0002 — Deterministic Direction Arbitration (ADR-DIR-0001) — 2026-09-09 (MA-DIRECTION-ARBITRATION-AND-POC02-REPAIR-01)
+
+Simultaneous LONG/SHORT from one directional evaluation are ALTERNATIVE_DIRECTIONS,
+not independent claims. New immutable OpportunityGroup + deterministic LLM-free
+DirectionArbiter resolve one direction (or explicit NONE) BEFORE critique; the
+losing side's evidence is preserved as EXPECTED_ALTERNATIVE_DIRECTION and never
+stripped. Cross-strategy opposition is never arbitrated (TRUE_COUNTER_EVIDENCE);
+CounterSignalCritic is NOT weakened. Independent OpportunityGroupVerifier enforces
+binding/score/PIT/replay integrity (builder != verifier). POC-02-paper-clean-01
+classified DIAGNOSTIC_BLOCKED_CAMPAIGN (STRUCTURAL_AGENT_DIRECTION_CONFLICT),
+frozen in docs/external-audit-01/POC02_PRE_REPAIR_BASELINE.*; replacement
+POC-02-R2-direction-arbitration-01 preregistered (POC02_R2_MANIFEST.md) and
+launched with 8/8 gates. DEF-STRAT-RUNTIME-001 registered (canonical strategy
+experts bypassed by POC02 runtime composition; not auto-activated).
+Full text: docs/external-audit-01/FINAL_REPORT_MA_DIRECTION_ARBITRATION.md (§ADR).

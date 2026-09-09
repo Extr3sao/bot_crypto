@@ -1,0 +1,48 @@
+{
+  "campaign_id": "POC-02-paper-clean-01",
+  "manifest": "docs/external-audit-01/POC02_MANIFEST.md",
+  "manifest_sha256": "895a9374c13901ccf68d9cdca4671a91691ff5a97bf67df4d34503177567e035",
+  "launch_gates": {
+    "gates": {
+      "manifest_committed": true,
+      "campaign_id_new": true,
+      "provider_authority_explicit": true,
+      "coverage_contract_preregistered": true,
+      "shadow_surface_importable": true,
+      "safety_counters_zero": true
+    },
+    "passed": 6,
+    "failed": 0,
+    "total": 6,
+    "launch_authorized": true
+  },
+  "start_utc": "2026-09-09T13:38:55+00:00",
+  "end_utc": "2026-09-30T13:38:55+00:00",
+  "duration_counted_days": 21,
+  "burn_in_days": 1,
+  "provider_authority": {
+    "MARKET_DATA_PROVIDER": "binanceusdm (public REST OHLCV, no credentials)",
+    "EXECUTION_MODE": "PAPER",
+    "EXECUTION_VENUE_MODEL": "PaperBroker"
+  },
+  "risk_policy_sha256": "1008149169c584af11996654864a7d4afd1f722fec046b45c754997fe542f676",
+  "cost_model_sha256": "915a6fcb8a5f1f6486452c901ca45eaf4a1b2ceee89e1b34c1552cf7b1794896",
+  "cost_model": {
+    "commission_bps": 5.0,
+    "slippage_bps": 1.0
+  },
+  "shadow_ledger_captures": "reports\\poc02-paper-clean-01\\shadow\\shadow_captures.jsonl",
+  "shadow_ledger_outcomes": "reports\\poc02-paper-clean-01\\shadow\\shadow_outcomes.jsonl",
+  "shadow_ledger_separate_from_poc01": true,
+  "live_plumbing_zero_before_first_scan": true,
+  "coverage_contract": {
+    "minimum_ratio": 0.8,
+    "expected_minutes_per_day": 1440,
+    "zero_trade_day_can_be_valid": true
+  },
+  "live": false,
+  "launched_at_utc": "2026-09-09T13:38:55+00:00",
+  "launch_authorized": true,
+  "consistency_probe": "informational",
+  "relaunched_at_utc": "2026-09-09T14:25:10+00:00"
+}

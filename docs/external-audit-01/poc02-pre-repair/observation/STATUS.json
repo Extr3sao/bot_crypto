@@ -1,0 +1,426 @@
+{
+  "agent_filter": {
+    "AGENT_FILTER_RATE": 1.0,
+    "AGENT_FILTER_RATE_BY_ASSET": {
+      "BTC": {
+        "AGENT_FILTER_RATE": 1.0,
+        "agent_rejects": 6,
+        "reached_agent": 6,
+        "single_observation": false
+      },
+      "ETH": {
+        "AGENT_FILTER_RATE": 1.0,
+        "agent_rejects": 6,
+        "reached_agent": 6,
+        "single_observation": false
+      },
+      "SOL": {
+        "AGENT_FILTER_RATE": 1.0,
+        "agent_rejects": 6,
+        "reached_agent": 6,
+        "single_observation": false
+      }
+    },
+    "AGENT_FILTER_RATE_BY_REGIME": {
+      "proposal:1b52aef7f47df081aa328898": {
+        "AGENT_FILTER_RATE": 1.0,
+        "agent_rejects": 3,
+        "reached_agent": 3,
+        "single_observation": false
+      },
+      "proposal:3820d4b185759e6ae4bfca98": {
+        "AGENT_FILTER_RATE": 1.0,
+        "agent_rejects": 1,
+        "reached_agent": 1,
+        "single_observation": true
+      },
+      "proposal:6c00630a7c3dccff34de6787": {
+        "AGENT_FILTER_RATE": 1.0,
+        "agent_rejects": 2,
+        "reached_agent": 2,
+        "single_observation": false
+      },
+      "proposal:8f8916d5936f1054060682b3": {
+        "AGENT_FILTER_RATE": 1.0,
+        "agent_rejects": 1,
+        "reached_agent": 1,
+        "single_observation": true
+      },
+      "proposal:920a5e7fe21b3266de099774": {
+        "AGENT_FILTER_RATE": 1.0,
+        "agent_rejects": 2,
+        "reached_agent": 2,
+        "single_observation": false
+      },
+      "proposal:c6b397f8b3bb4f2a3520b8c6": {
+        "AGENT_FILTER_RATE": 1.0,
+        "agent_rejects": 1,
+        "reached_agent": 1,
+        "single_observation": true
+      },
+      "proposal:d084b809feafcccdd5991355": {
+        "AGENT_FILTER_RATE": 1.0,
+        "agent_rejects": 2,
+        "reached_agent": 2,
+        "single_observation": false
+      },
+      "proposal:d5bef0a833be4fa9068b52f0": {
+        "AGENT_FILTER_RATE": 1.0,
+        "agent_rejects": 3,
+        "reached_agent": 3,
+        "single_observation": false
+      },
+      "proposal:da0b8db17a7c02e3b81c4ae1": {
+        "AGENT_FILTER_RATE": 1.0,
+        "agent_rejects": 1,
+        "reached_agent": 1,
+        "single_observation": true
+      },
+      "proposal:f054b95c2136c328cc76d0d9": {
+        "AGENT_FILTER_RATE": 1.0,
+        "agent_rejects": 2,
+        "reached_agent": 2,
+        "single_observation": false
+      }
+    },
+    "AGENT_FILTER_RATE_BY_STRATEGY": {
+      "momentum": {
+        "AGENT_FILTER_RATE": 1.0,
+        "agent_rejects": 18,
+        "reached_agent": 18,
+        "single_observation": false
+      }
+    },
+    "agent_rejects": 18,
+    "agents_loosened": false,
+    "candidate_detail_note": "per-candidate evidence/counter-evidence/critic persisted in POC02_ATTRIBUTION.jsonl (AGENT_REJECT rows); agents unchanged",
+    "candidates_reaching_agent": 18,
+    "cycle_windows_AGENT_FILTER": 33,
+    "cycle_windows_total": 33,
+    "rejection_reason_distribution": {
+      "UNRESOLVED_CONFLICT": 18
+    },
+    "selected": 0
+  },
+  "artifact": "POC02_READ_ONLY_STATUS",
+  "bottleneck": {
+    "counts": {
+      "AGENT_FILTER": 33
+    },
+    "dominant": "AGENT_FILTER",
+    "proportions": {
+      "AGENT_FILTER": 1.0
+    },
+    "windows_observed": 33
+  },
+  "campaign_id": "POC-02-paper-clean-01",
+  "coverage": {
+    "day_rows": [
+      {
+        "coverage_ratio_day": 0.004861,
+        "day_validity": "PENDING",
+        "observed_cycles": 11,
+        "observed_minutes": 7,
+        "utc_day": "2026-09-09"
+      }
+    ]
+  },
+  "execution": "PaperBroker",
+  "frequency": {
+    "COMPLETED_VALID_DAYS": 0,
+    "DAYS_GE_3": 0,
+    "MEDIAN_TRADES_PER_VALID_DAY": null,
+    "PERCENT_DAYS_GE_3": null,
+    "TARGET_TRADES_PER_VALID_DAY": 3,
+    "TOTAL_TRADES": 0,
+    "TRADES_PER_VALID_DAY": null,
+    "denominator_note": "partial/invalid days excluded; zero-trade valid days retained",
+    "target_lowered": false
+  },
+  "market_data_provider": "binanceusdm (public, no credentials)",
+  "mode": "PAPER",
+  "no_controls": true,
+  "read_only": true,
+  "regime_bottleneck_matrix": {
+    "matrix": {
+      "NEUTRAL|WEAK|EXTREME|RANGE|SHOCK|NORMAL": {
+        "counts": {
+          "AGENT_FILTER": 1
+        },
+        "proportions": {
+          "AGENT_FILTER": 1.0
+        },
+        "single_observation": true,
+        "windows": 1
+      },
+      "NEUTRAL|WEAK|EXTREME|TREND|SHOCK|NORMAL": {
+        "counts": {
+          "AGENT_FILTER": 2
+        },
+        "proportions": {
+          "AGENT_FILTER": 1.0
+        },
+        "single_observation": false,
+        "windows": 2
+      },
+      "NEUTRAL|WEAK|LOW|RANGE|NORMAL|NORMAL": {
+        "counts": {
+          "AGENT_FILTER": 17
+        },
+        "proportions": {
+          "AGENT_FILTER": 1.0
+        },
+        "single_observation": false,
+        "windows": 17
+      },
+      "NEUTRAL|WEAK|LOW|TRANSITION|NORMAL|NORMAL": {
+        "counts": {
+          "AGENT_FILTER": 1
+        },
+        "proportions": {
+          "AGENT_FILTER": 1.0
+        },
+        "single_observation": true,
+        "windows": 1
+      },
+      "NEUTRAL|WEAK|LOW|TREND|NORMAL|NORMAL": {
+        "counts": {
+          "AGENT_FILTER": 12
+        },
+        "proportions": {
+          "AGENT_FILTER": 1.0
+        },
+        "single_observation": false,
+        "windows": 12
+      }
+    },
+    "note": "proportions are within-regime; single-observation cells are flagged, not interpreted",
+    "regimes_observed": 5
+  },
+  "regime_coverage_map": {
+    "INSUFFICIENT_EVIDENCE": [
+      "NEUTRAL|WEAK|EXTREME|RANGE|SHOCK|NORMAL",
+      "NEUTRAL|WEAK|EXTREME|TREND|SHOCK|NORMAL",
+      "NEUTRAL|WEAK|LOW|TRANSITION|NORMAL|NORMAL",
+      "proposal:1b52aef7f47df081aa328898",
+      "proposal:3820d4b185759e6ae4bfca98",
+      "proposal:6c00630a7c3dccff34de6787",
+      "proposal:8f8916d5936f1054060682b3",
+      "proposal:920a5e7fe21b3266de099774",
+      "proposal:c6b397f8b3bb4f2a3520b8c6",
+      "proposal:d084b809feafcccdd5991355",
+      "proposal:d5bef0a833be4fa9068b52f0",
+      "proposal:da0b8db17a7c02e3b81c4ae1",
+      "proposal:f054b95c2136c328cc76d0d9"
+    ],
+    "NO_EDGE_REGIMES": [],
+    "UNDER_COVERED_REGIMES": [],
+    "WELL_COVERED_REGIMES": [],
+    "discovery_batch_03": "NOT_STARTED",
+    "next_research_input_note": "research targets come from regimes with observed market movement but \u22480 proposals (NO_SIGNAL_REGIME) or NO_EDGE \u2014 evidence first, then hypotheses (no automatic Discovery Batch 03)",
+    "regimes": {
+      "NEUTRAL|WEAK|EXTREME|RANGE|SHOCK|NORMAL": {
+        "classification": "INSUFFICIENT_EVIDENCE",
+        "downstream_progress": 0,
+        "proposals": 0,
+        "strategies": [],
+        "windows": 1
+      },
+      "NEUTRAL|WEAK|EXTREME|TREND|SHOCK|NORMAL": {
+        "classification": "INSUFFICIENT_EVIDENCE",
+        "downstream_progress": 0,
+        "proposals": 0,
+        "strategies": [],
+        "windows": 2
+      },
+      "NEUTRAL|WEAK|LOW|RANGE|NORMAL|NORMAL": {
+        "classification": "NO_SIGNAL_REGIME",
+        "downstream_progress": 0,
+        "proposals": 0,
+        "strategies": [],
+        "windows": 17
+      },
+      "NEUTRAL|WEAK|LOW|TRANSITION|NORMAL|NORMAL": {
+        "classification": "INSUFFICIENT_EVIDENCE",
+        "downstream_progress": 0,
+        "proposals": 0,
+        "strategies": [],
+        "windows": 1
+      },
+      "NEUTRAL|WEAK|LOW|TREND|NORMAL|NORMAL": {
+        "classification": "NO_SIGNAL_REGIME",
+        "downstream_progress": 0,
+        "proposals": 0,
+        "strategies": [],
+        "windows": 12
+      },
+      "proposal:1b52aef7f47df081aa328898": {
+        "classification": "INSUFFICIENT_EVIDENCE",
+        "downstream_progress": 0,
+        "proposals": 3,
+        "strategies": [
+          "momentum"
+        ],
+        "windows": 0
+      },
+      "proposal:3820d4b185759e6ae4bfca98": {
+        "classification": "INSUFFICIENT_EVIDENCE",
+        "downstream_progress": 0,
+        "proposals": 1,
+        "strategies": [
+          "momentum"
+        ],
+        "windows": 0
+      },
+      "proposal:6c00630a7c3dccff34de6787": {
+        "classification": "INSUFFICIENT_EVIDENCE",
+        "downstream_progress": 0,
+        "proposals": 2,
+        "strategies": [
+          "momentum"
+        ],
+        "windows": 0
+      },
+      "proposal:8f8916d5936f1054060682b3": {
+        "classification": "INSUFFICIENT_EVIDENCE",
+        "downstream_progress": 0,
+        "proposals": 1,
+        "strategies": [
+          "momentum"
+        ],
+        "windows": 0
+      },
+      "proposal:920a5e7fe21b3266de099774": {
+        "classification": "INSUFFICIENT_EVIDENCE",
+        "downstream_progress": 0,
+        "proposals": 2,
+        "strategies": [
+          "momentum"
+        ],
+        "windows": 0
+      },
+      "proposal:c6b397f8b3bb4f2a3520b8c6": {
+        "classification": "INSUFFICIENT_EVIDENCE",
+        "downstream_progress": 0,
+        "proposals": 1,
+        "strategies": [
+          "momentum"
+        ],
+        "windows": 0
+      },
+      "proposal:d084b809feafcccdd5991355": {
+        "classification": "INSUFFICIENT_EVIDENCE",
+        "downstream_progress": 0,
+        "proposals": 2,
+        "strategies": [
+          "momentum"
+        ],
+        "windows": 0
+      },
+      "proposal:d5bef0a833be4fa9068b52f0": {
+        "classification": "INSUFFICIENT_EVIDENCE",
+        "downstream_progress": 0,
+        "proposals": 3,
+        "strategies": [
+          "momentum"
+        ],
+        "windows": 0
+      },
+      "proposal:da0b8db17a7c02e3b81c4ae1": {
+        "classification": "INSUFFICIENT_EVIDENCE",
+        "downstream_progress": 0,
+        "proposals": 1,
+        "strategies": [
+          "momentum"
+        ],
+        "windows": 0
+      },
+      "proposal:f054b95c2136c328cc76d0d9": {
+        "classification": "INSUFFICIENT_EVIDENCE",
+        "downstream_progress": 0,
+        "proposals": 2,
+        "strategies": [
+          "momentum"
+        ],
+        "windows": 0
+      }
+    }
+  },
+  "risk_value_test": {
+    "PAPER_ACCEPTED": {
+      "expectancy_net": null,
+      "losses": 0,
+      "n": 0,
+      "profit_factor": null,
+      "wins": 0
+    },
+    "SHADOW_REJECTED": {
+      "expectancy_net": null,
+      "losses": 0,
+      "n": 0,
+      "profit_factor": null,
+      "wins": 0
+    },
+    "automatic_risk_change": false,
+    "comparison": null,
+    "status": "INSUFFICIENT_SAMPLE \u2014 no interpretation, no Risk change",
+    "sufficient_sample": false
+  },
+  "runtime": {
+    "RUNTIME_STALE": false,
+    "age_minutes": 2.7,
+    "heartbeat_utc": "2026-09-09T18:27:50+00:00",
+    "note": "heartbeat fresh",
+    "status": "ACTIVE"
+  },
+  "shadow": {
+    "captures_by_reason": {},
+    "captures_total": 0,
+    "isolation": {
+      "SHADOW_FREQUENCY_CONTAMINATION": 0,
+      "SHADOW_PAPERBROKER_CALLS": 0,
+      "SHADOW_PNL_CONTAMINATION": 0,
+      "labels": "EXCLUDED_FROM_PAPER_PNL + EXCLUDED_FROM_PAPER_FREQUENCY"
+    },
+    "label": "SHADOW \u2014 counterfactual, EXCLUDED from paper PnL and frequency",
+    "resolved_total": 0
+  },
+  "strategy_contribution": {
+    "attributed_proposals": 18,
+    "evidence_gap": 48,
+    "insufficient_evidence_strategies": [],
+    "profitability_claim": "NONE \u2014 insufficient sample; observational counts only",
+    "state_counter_proposals": 66,
+    "strategies": {
+      "momentum": {
+        "agent_rejects": 18,
+        "assets": [
+          "BTC",
+          "ETH",
+          "SOL"
+        ],
+        "incremental_note": "overlap/incrementality require proposal-id level co-occurrence; recorded as evidence, not a profitability claim",
+        "net_pnl": 0.0,
+        "paper_trades": 0,
+        "proposals": 18,
+        "regime_distribution": {
+          "proposal:1b52aef7f47df081aa328898": 3,
+          "proposal:3820d4b185759e6ae4bfca98": 1,
+          "proposal:6c00630a7c3dccff34de6787": 2,
+          "proposal:8f8916d5936f1054060682b3": 1,
+          "proposal:920a5e7fe21b3266de099774": 2,
+          "proposal:c6b397f8b3bb4f2a3520b8c6": 1,
+          "proposal:d084b809feafcccdd5991355": 2,
+          "proposal:d5bef0a833be4fa9068b52f0": 3,
+          "proposal:da0b8db17a7c02e3b81c4ae1": 1,
+          "proposal:f054b95c2136c328cc76d0d9": 2
+        },
+        "risk_accepts": 0,
+        "risk_rejects": 0,
+        "selected": 0,
+        "strategy": "momentum"
+      }
+    }
+  },
+  "written_at_utc": "2026-09-09T18:30:30+00:00"
+}

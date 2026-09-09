@@ -1,0 +1,74 @@
+{
+  "checkpoint": "MA-DIRECTION-ARBITRATION-AND-POC02-REPAIR-01",
+  "frozen_at_utc": "2026-09-09T19:05:00Z",
+  "authoritative_base_commit": "53c5910",
+  "campaign": {
+    "campaign_id": "POC-02-paper-clean-01",
+    "window_utc": "2026-09-09T13:38:55Z -> 2026-09-30T00:00:00Z",
+    "mode": "PAPER",
+    "market_data_provider": "binanceusdm (public REST OHLCV, no credentials)",
+    "execution": "PaperBroker",
+    "shadow": "ENABLED (Shadow V2, RiskGateRouter)",
+    "coverage_contract": ">= 0.80"
+  },
+  "runtime_state_at_freeze": {
+    "cycles_observed": 11,
+    "market_scans": 11,
+    "strategy_evaluations": 11,
+    "trade_proposals_attributed": 18,
+    "direction_distribution": { "LONG": 9, "SHORT": 9 },
+    "debates": 11,
+    "critic_outcomes": {
+      "critic_counter_signal": "CHALLENGE on every dual-direction proposal set (material_dissent=true, 18/18)",
+      "critic_evidence": "SUPPORT (all evidence PIT-valid)",
+      "critic_regime": "SUPPORT (coherent)"
+    },
+    "selected": 0,
+    "verified": 0,
+    "risk_calls": 0,
+    "paper_trades": 0,
+    "paper_closes": 0,
+    "shadow_captures": 0,
+    "shadow_resolved": 0,
+    "net_pnl": 0.0,
+    "live_calls": 0,
+    "real_broker_calls": 0,
+    "private_exchange_calls": 0,
+    "shadow_paperbroker_calls": 0
+  },
+  "observation_windows": {
+    "total": 33,
+    "by_bottleneck": { "AGENT_FILTER": 33 },
+    "agent_filter_rate": 1.0,
+    "typed_reason": "UNRESOLVED_CONFLICT",
+    "critic": "critic-counter-signal"
+  },
+  "strategy_attribution": {
+    "momentum": 18,
+    "trend": 0,
+    "breakout": 0,
+    "mean_reversion": 0,
+    "volatility": 0,
+    "note": "Attribution counts candidates that reached the Decision stage. All five strategy experts are registered and invoked; only momentum-family fixture evaluation reached the decision stage in POC02 runtime. See DEF-STRAT-RUNTIME-001."
+  },
+  "confirmation_lock": {
+    "id": "CONF-EDGE-002-001",
+    "window": "2026-09-08 -> 2026-09-22",
+    "consumed": false,
+    "executions": 0
+  },
+  "artifact_hashes_sha256": {
+    "_comment": "SHA-256 over frozen copies in docs/external-audit-01/poc02-pre-repair/ (immutable snapshot of campaign artifacts at freeze time)",
+    "POC02_CAMPAIGN_STATE.json": "058c0b122b4d352b603a821615dbcf337c2ba1ec6fab925591fc1c0b313fac9a",
+    "POC02_CYCLE_LEDGER.jsonl": "495d10665f178cd6f04317679cdfb6c86531df953da07fccab407d9c90336238",
+    "POC02_COVERAGE_DAILY.jsonl": "f8117d6ff879ba80a74ab75da91934a97378da37b423b52bee5b55931aedc8b2",
+    "POC02_LAUNCH_RECORD.json": "9a31298fc1d5f60f9d5abaec45850b8a63cc2de0d1934b6efaf328edf07a3fec",
+    "POC02_ATTRIBUTION.jsonl": "2bdca63cb625e7243aef3b77736d9747e50f55bbd4770de0424379f7e9569f31"
+  },
+  "governance": {
+    "old_artifacts_modified": 0,
+    "poc01_modified": 0,
+    "risk_manager_modified": 0,
+    "thresholds_modified": 0
+  }
+}

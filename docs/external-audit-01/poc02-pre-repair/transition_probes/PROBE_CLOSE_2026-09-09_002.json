@@ -1,0 +1,32 @@
+{
+  "artifact": "POC02_TRANSITION_PROBE",
+  "campaign_coverage": {
+    "CAMPAIGN_COVERAGE": "NOT_YET_MEASURABLE",
+    "CLOSED_ELIGIBLE_DAYS": 0,
+    "INVALID_CLOSED_DAYS": 0,
+    "OPEN_ELIGIBLE_DAY": [
+      "2026-09-09"
+    ],
+    "TARGET_COVERAGE": 0.8,
+    "VALID_CLOSED_DAYS": 0,
+    "denominator_source": "CLOSED_ELIGIBLE only (\u00a74); future days never counted",
+    "numerator_source": "VALID_CLOSED only (\u00a73)",
+    "threshold_lowered": false
+  },
+  "commit": "6f0513fbc60913d33858e9f5d0ec38173781c5d9",
+  "day_finalizations_after": [],
+  "evaluated_at_utc": "2026-09-09T17:48:22+00:00",
+  "finalize_attempted": true,
+  "finalize_result": {
+    "DAY_NOT_CLOSED": true,
+    "finalization_count": 0,
+    "finalized": false,
+    "now_utc": "2026-09-09T17:48:22.908395+00:00",
+    "utc_day": "2026-09-09"
+  },
+  "gate": "UTC_NOW >= 2026-09-10T00:00:00Z",
+  "gate_open": false,
+  "probe_id": "PROBE_CLOSE_2026-09-09_002",
+  "result": "DAY_NOT_CLOSED",
+  "utc_now": "2026-09-09T17:48:22+00:00"
+}

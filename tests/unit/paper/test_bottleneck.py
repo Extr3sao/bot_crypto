@@ -150,8 +150,19 @@ def test_activity_with_zero_scans_and_proposals_neither_nor() -> None:
         ({"market_scans": 1, "trade_proposals": 0}, BottleneckState.NO_SIGNAL),
         ({"market_scans": 1, "trade_proposals": 1, "selected_decisions": 0}, BottleneckState.AGENT_FILTER),
         ({"market_scans": 1, "trade_proposals": 1, "selected_decisions": 1, "verifier_rejects": 1}, BottleneckState.VERIFIER_FILTER),
-        ({"market_scans": 1, "trade_proposals": 1, "selected_decisions": 1, "risk_rejects": 1}, BottleneckState.RISK_COOLDOWN),
+        # POC02-OBSERVATION taxonomy §5: rejections without a persisted
+        # reason split are OTHER_RISK — labeling them RISK_COOLDOWN without
+        # evidence was an inference, now forbidden.
+        ({"market_scans": 1, "trade_proposals": 1, "selected_decisions": 1, "risk_rejects": 1}, BottleneckState.OTHER_RISK),
+        ({"market_scans": 1, "trade_proposals": 1, "selected_decisions": 1, "risk_rejects": 2, "risk_rejects_by_reason": {"CONSECUTIVE_LOSS_COOLDOWN": 2}}, BottleneckState.RISK_COOLDOWN),
+        ({"market_scans": 1, "trade_proposals": 1, "selected_decisions": 1, "risk_rejects": 2, "risk_rejects_by_reason": {"MAX_POSITIONS": 1, "MAX_TOTAL_EXPOSURE": 1}}, BottleneckState.RISK_POSITIONS),
+        ({"market_scans": 1, "trade_proposals": 1, "selected_decisions": 1, "risk_rejects": 1, "risk_rejects_by_reason": {"OTHER": 1}}, BottleneckState.OTHER_RISK),
+        ({"market_scans": 1, "trade_proposals": 1, "selected_decisions": 1, "risk_rejects": 3, "risk_rejects_by_reason": {"CONSECUTIVE_LOSS_COOLDOWN": 1, "MAX_POSITIONS": 1, "OTHER": 1}}, BottleneckState.OTHER_RISK),
     ],
 )
 def test_classification_matrix(activity: dict, expected: str) -> None:
     assert classify_window(window_id="z", activity=activity).bottleneck == expected
+
+
+def test_other_risk_is_in_canonical_taxonomy() -> None:
+    assert "OTHER_RISK" in BottleneckState.ALL

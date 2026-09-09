@@ -1,0 +1,42 @@
+{
+  "campaign_id": "POC-02-paper-clean-01",
+  "cycles_total": 11,
+  "provider_errors_total": 0,
+  "live_calls": 0,
+  "real_broker_calls": 0,
+  "private_exchange_calls": 0,
+  "shadow_paperbroker_calls": 0,
+  "decisions_total": 0,
+  "paper_trades_total": 0,
+  "shadow_captures_total": 0,
+  "shadow_resolved_total": 0,
+  "last_run_ids": [
+    "poc02-1788978470436",
+    "poc02-1788978472083",
+    "poc02-1788978474013"
+  ],
+  "heartbeat_utc": "2026-09-09T18:27:50+00:00",
+  "status": "ACTIVE",
+  "window": {
+    "start_utc": "2026-09-09T13:38:55+00:00",
+    "end_utc": "2026-09-30T13:38:55+00:00"
+  },
+  "provider_authority": {
+    "MARKET_DATA_PROVIDER": "binanceusdm (public REST OHLCV, no credentials)",
+    "EXECUTION_MODE": "PAPER",
+    "EXECUTION_VENUE_MODEL": "PaperBroker"
+  },
+  "coverage_today": {
+    "coverage_ratio": 0.004861,
+    "day_validity": "PENDING",
+    "expected_cycles": 288,
+    "expected_minutes": 1440,
+    "observed_cycles": 11,
+    "observed_minutes": 7,
+    "provider_consecutive_failures": 0,
+    "provider_data_gap": false,
+    "provider_downtime_minutes": 0,
+    "runtime_downtime_minutes": 1433,
+    "utc_day": "2026-09-09"
+  }
+}

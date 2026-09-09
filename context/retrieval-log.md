@@ -158,3 +158,22 @@ Code-reviewer reporto 3 rondas con nits accionables, todos cerrados: (1) fmean->
 [2026-09-09] ALPHA-DISCOVERY-AND-SHADOW-V2-01 — retrieved POC01 daily reports (read-only), LEGACY_RETRO_EXECUTION_RESULTS.json, STRATEGY_LAB_CANDIDATES_01.json (+git-immutability proof), CONFIRMATION_MANIFEST.json via `git show 39578a6` (no checkout), Risk/cost-model/campaign-config sources for POC02 hashes. Produced: forensic_funnel.py + tests, discovery_execution.py + tests (real PIT run, 32 cells), discovery_view.py + tests, shadow/router.py + tests, POC02_MANIFEST.md, LEGACY_FAILURE_DIAGNOSIS.json, FINAL_REPORT + ADR-0029. POC01 untouched (hash re-verified). Hermetic 1052/0.
 
 [2026-09-09] POC02-LAUNCH-AND-DISCOVERY-BATCH-02 — retrieved POC02_MANIFEST.md (hash-verified against committed blob), POC01 campaign state + daily reports (read-only continuity check), batch-01 results + frozen specs (drift guard), REAL binanceusdm public OHLCV (17,520×1h / 1,500×5m per asset) and fetchFundingRateHistory (90 obs/symbol, 8h, depth-limited — never synthesized), Risk/cost-model sources for gate hashes. Produced: poc02_runner.py + launch script + tests, funding_units.py canonical contract + tests, discovery_batch02_spec.py (mirror-verified vs batch-01 source of truth) + batch02_execution.py + driver + tests, bottleneck.py + tests, DISCOVERY_BATCH_02_PREREGISTRATION.json (committed e1f1193 before execution), DISCOVERY_BATCH_02_RESULTS.json (2939276), REGIME_BOTTLENECK_ANALYSIS_POC02.json, STRATEGY_LAB_CANDIDATES_02.json, FINAL_REPORT, ADR-0030. POC01 untouched (empty diff on reports/paper-observation-01). Hermetic 1118/0 on committed HEAD.
+
+[2026-09-09] POC02-OBSERVATION-AND-ALPHA-DIAGNOSIS-01 — retrieved POC02 campaign state/coverage/launch
+records + cycle ledger (11 cycles), shadow integration/router/outcome/reject_metrics sources,
+day_state authority, bottleneck model, decision contracts (rejected_alternatives), RiskManager
+blocked_by taxonomy, PaperBroker economics (true-net PnL, commissions), regime_v2 canonical keys,
+demo _proposal_set/_FixtureFamily (momentum-only fixture family), CONF-EDGE-002-001 via
+`git show 39578a6` (consumed=false). Probed live: binanceusdm public funding depth (500-obs page
+cap vs 1000-obs deep pagination to 2019-09-10 — SOURCE proposal, not executed). Produced:
+paper/poc02_observation.py + tests, shadow/resolver.py + tests, OTHER_RISK taxonomy (+test
+update: unlabeled risk rejects are no longer inferred as RISK_COOLDOWN), runner attribution
+ledger + risk-reason split + paper-close mirroring, PaperBroker.closed_trades read-only view,
+scripts/poc02_observation.py (daily/status/resolve-shadow), FUNDING_HISTORY_SOURCE_PROPOSAL.md,
+FINAL_REPORT + ADR-0031. POC01 untouched (empty diff, committed + working tree). Hermetic
+1152/0 on staged tree. LIVE_CALLS=0; FALSE_SUCCESS=0.
+
+## 2026-09-09 — MA-DIRECTION-ARBITRATION-AND-POC02-REPAIR-01
+- Read: multi_agent/{opportunity,debate,decision,specialists,swarm,contracts/debate}.py; research/families/*.py; demo/{paper_multi_agent,poc02_runner}.py; multi_agent/arbitration.py (new); POC02 frozen artifacts.
+- Wrote: docs/external-audit-01/{POC02_PRE_REPAIR_BASELINE.md,.json, poc02-pre-repair/, DIR-AUDIT-01.md, POC02_CAMPAIGN_CLASSIFICATION.md, POC02_R2_MANIFEST.md, CARRY_FUNDING_DEEP_01_PREREG.md}; src/trading_bot/multi_agent/arbitration.py; tests/unit/multi_agent/test_arbitration.py; scripts/{poc02_r2_smoke.py,launch_poc02_r2_campaign.py}; additive _proposal_set(arbitrate) flag; tasks/decisions.md ADR-0002.
+- Actions: frozen baseline hashed (5 artifacts); conflict reproduced (DIR-01 test); DEF-STRAT-RUNTIME-001 registered; R2 smoke 3/3 natural + 3/3 fixture windows reached Risk (verifier VERIFIED); R2 campaign launched (8/8 gates, new identity, fresh shadow ledger); CONF-EDGE-002-001 verified consumed=false window 2026-09-08→2026-09-22; LIVE=0; POC01/POC02 artifacts untouched (git-verified).

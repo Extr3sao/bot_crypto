@@ -1,0 +1,184 @@
+{
+  "amends": "RECEIPT_2026-09-09_003.json",
+  "artifact": "POC02_DAILY_EVIDENCE_RECEIPT",
+  "artifact_hashes": {
+    "POC02_COVERAGE_DAILY.jsonl": "1e7d161aedbeba1155974cb9d900f2e638e0202c86d947d91ba778c1877c8d75",
+    "POC02_CYCLE_LEDGER.jsonl": "5d5412d1cd17a99103a9d58505dacaa4c27b8116c8b3776ce970f9cf27376449",
+    "shadow_captures.jsonl": "MISSING",
+    "shadow_outcomes.jsonl": "MISSING"
+  },
+  "bottleneck_state": {
+    "by_asset": {
+      "BTC": {
+        "AGENT_FILTER": 1
+      },
+      "ETH": {
+        "AGENT_FILTER": 1
+      },
+      "SOL": {
+        "AGENT_FILTER": 1
+      }
+    },
+    "by_regime": {
+      "NEUTRAL|WEAK|LOW|TREND|NORMAL|NORMAL": {
+        "AGENT_FILTER": 3
+      }
+    },
+    "dominant_bottleneck": "AGENT_FILTER",
+    "dominant_checkpoint_category": "AGENT_FILTER",
+    "totals_canonical": {
+      "AGENT_FILTER": 3
+    },
+    "totals_checkpoint_categories": {
+      "AGENT_FILTER": 3
+    },
+    "windows_observed": 3
+  },
+  "campaign_id": "POC-02-paper-clean-01",
+  "commit": "2bda355070026b32f8ee41eed1ed1c63dda229b7",
+  "config_fingerprint": {
+    "cost_model_sha256": "915a6fcb8a5f1f6486452c901ca45eaf4a1b2ceee89e1b34c1552cf7b1794896",
+    "risk_policy_sha256": "1008149169c584af11996654864a7d4afd1f722fec046b45c754997fe542f676"
+  },
+  "coverage_status": {
+    "coverage_ratio": 0.004167,
+    "day_validity": "PENDING",
+    "expected_cycles": 288,
+    "expected_minutes": 1440,
+    "observed_cycles": 8,
+    "observed_minutes": 6,
+    "provider_consecutive_failures": 0,
+    "provider_data_gap": false,
+    "provider_downtime_minutes": 0,
+    "runtime_downtime_minutes": 1434,
+    "utc_day": "2026-09-09"
+  },
+  "cycle_count": 1,
+  "governance_negatives": {
+    "LIVE_CALLS": 0,
+    "MAINNET": "disabled",
+    "PRIVATE_CALLS": 0,
+    "REAL_BROKER_CALLS": 0,
+    "cross_ledger_contamination": 0,
+    "duplicate_daily_coverage": 0,
+    "live_trading_enabled": false,
+    "mode_is_paper": true,
+    "undeclared_credentials": 0
+  },
+  "is_amendment": true,
+  "market_data": {
+    "assets": {
+      "BTC": {
+        "bars_sha256": "b7a2718183896bd6aa2ce0b33802c261ff5d1a19bb8c16284baf1efbfe29678a",
+        "expected_rows_in_span": 120,
+        "freshness_lag_minutes": 0.8,
+        "gap_count": 0,
+        "gap_diagnostics": "OK",
+        "interval": "5m",
+        "rows": 120,
+        "symbol": "BTC/USDT:USDT",
+        "window_first_ms": 1788939900000,
+        "window_last_ms": 1788975600000
+      },
+      "ETH": {
+        "bars_sha256": "20f71f3cca0e27aa96a4c7fbe65944a4d1849e1a8b5729fa22c40d21eaf0d372",
+        "expected_rows_in_span": 120,
+        "freshness_lag_minutes": 0.8,
+        "gap_count": 0,
+        "gap_diagnostics": "OK",
+        "interval": "5m",
+        "rows": 120,
+        "symbol": "ETH/USDT:USDT",
+        "window_first_ms": 1788939900000,
+        "window_last_ms": 1788975600000
+      },
+      "SOL": {
+        "bars_sha256": "c8e0c045b6be60811076850e20290ce085a81114931f493026a9b2adedb97138",
+        "expected_rows_in_span": 120,
+        "freshness_lag_minutes": 0.8,
+        "gap_count": 0,
+        "gap_diagnostics": "OK",
+        "interval": "5m",
+        "rows": 120,
+        "symbol": "SOL/USDT:USDT",
+        "window_first_ms": 1788939900000,
+        "window_last_ms": 1788975600000
+      }
+    },
+    "intervals": [
+      "5m"
+    ],
+    "market_data_fingerprint": "a7143460dfdc6744a00ce1e22c3ee8ad7704f8c6325b78a4cb9cb27b98a7e992",
+    "provider": "binanceusdm (public REST OHLCV, no credentials)",
+    "provider_downgrades": [],
+    "request_timestamp_utc": "2026-09-09T17:40:48+00:00",
+    "symbols": [
+      "BTC/USDT:USDT",
+      "ETH/USDT:USDT",
+      "SOL/USDT:USDT"
+    ],
+    "unit_invariants": {
+      "no_ms_x3600000_conversion": true,
+      "no_synthetic_replacement": true,
+      "pagination_monotonic": true,
+      "timestamps_are_epoch_ms": true
+    }
+  },
+  "paper_executions": 0,
+  "poc01_invariant": {
+    "POC01_EVIDENCE_CHANGED": 0,
+    "POC01_RUNTIME_CHANGED": 0,
+    "changed_paths": []
+  },
+  "proposal_funnel": {
+    "conversions": {
+      "paper_per_risk_accept": null,
+      "paper_per_scan": 0.0,
+      "proposals_per_scan": 2.0,
+      "risk_survivors_per_selected": null,
+      "selected_per_proposal": 0.0
+    },
+    "counts": {
+      "debates": 3,
+      "decisions_rejected": 6,
+      "decisions_selected": 0,
+      "errors": 0,
+      "market_scans": 3,
+      "no_trade": 3,
+      "paper_trades": 0,
+      "risk_accepts": 0,
+      "risk_rejects": 0,
+      "strategy_evaluations": 3,
+      "trade_proposals": 6,
+      "verifier_rejects": 0
+    },
+    "interpretation_note": "proposal funnel: distinguishes insufficient edge (upstream NO_SIGNAL) from over-filtering (collapse at AGENT/VERIFIER/RISK)"
+  },
+  "provenance": {
+    "entrypoint": "scripts/launch_poc02_campaign.py --daily",
+    "preregistered_manifest": "docs/external-audit-01/POC02_MANIFEST.md",
+    "provider_authority": {
+      "EXECUTION_MODE": "PAPER",
+      "EXECUTION_VENUE_MODEL": "PaperBroker",
+      "MARKET_DATA_PROVIDER": "binanceusdm (public REST OHLCV, no credentials)"
+    },
+    "runtime": "trading_bot.demo.poc02_runner.Poc02Bundle"
+  },
+  "receipt_id": "RECEIPT_2026-09-09_004",
+  "receipt_sha256": "8b24adffc62e88fa6326eb07edfa7644da8a9bd91b92bd591dbe228571d196e5",
+  "run_ids": [
+    "poc02-1788975648831"
+  ],
+  "shadow": {
+    "INVALID": 0,
+    "MATURED": 0,
+    "PENDING": 0,
+    "captures_total": 0,
+    "horizon_hours": 48,
+    "never_routed_back": true,
+    "observational_only": true,
+    "resolved_total": 0
+  },
+  "utc_day": "2026-09-09",
+  "written_at_utc": "2026-09-09T17:40:48+00:00"
+}

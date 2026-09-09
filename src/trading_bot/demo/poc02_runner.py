@@ -244,6 +244,11 @@ class Poc02Bundle:
             outcomes_path=Path(shadow_dir) / "shadow_outcomes.jsonl",
         )
         self.router = RiskGateRouter(self.shadow)
+        # POC02-OBSERVATION-AND-ALPHA-DIAGNOSIS-01: additive evidence ledgers.
+        # Attribution rows mirror the funnel per candidate (§7/§8); paper
+        # open/close rows give daily PnL attribution (§3). They are written
+        # AFTER the real decisions and never feed back into any gate, size,
+        # or route (observational only).
         self.health = StrategyHealthTracker()
         self.live_calls = 0
         self.real_broker_calls = 0
@@ -252,6 +257,8 @@ class Poc02Bundle:
         # bars actually used by the most recent run_cycle (market-data
         # authority provenance; set by run_cycle, never used for routing)
         self.last_bars_by_asset: dict[str, list[OHLCV]] = {}
+        self._attribution_path = self.output_dir / "POC02_ATTRIBUTION.jsonl"
+        self._paper_ledger_path = self.output_dir / "POC02_PAPER_TRADES.jsonl"
 
     # -- safety ----------------------------------------------------------------
 
@@ -320,6 +327,51 @@ class Poc02Bundle:
 
     # -- one POC02 scan cycle -----------------------------------------------------
 
+    # -- observational evidence writers (never gate anything) ----------------
+
+    def _write_attribution_row(self, row: dict[str, Any]) -> None:
+        """Append one attribution row (§7/§8) to the additive evidence ledger."""
+        row = {
+            "campaign_id": POC02_CAMPAIGN_ID,
+            "written_at": datetime.now(UTC).isoformat(),
+            **row,
+        }
+        self._attribution_path.parent.mkdir(parents=True, exist_ok=True)
+        with self._attribution_path.open("a", encoding="utf-8") as fh:
+            fh.write(json.dumps(row, sort_keys=True, default=str) + "\n")
+
+    def _write_paper_closes(self, closed_before: int) -> int:
+        """Append PAPER_CLOSE rows for broker trades closed since last check.
+
+        Net PnL comes from the broker's own accounting (true-net: gross minus
+        entry+exit commissions); this only mirrors it into the evidence
+        ledger. Returns the number of rows appended.
+        """
+        trades = self.broker.closed_trades
+        appended = 0
+        for trade in trades[closed_before:]:
+            gross = (
+                (trade.exit_price - trade.entry_price)
+                if trade.side == "buy"
+                else (trade.entry_price - trade.exit_price)
+            ) * trade.quantity
+            self._write_attribution_row(
+                {
+                    "stage": "PAPER_CLOSE",
+                    "symbol": trade.symbol,
+                    "side": trade.side,
+                    "entry_price": trade.entry_price,
+                    "exit_price": trade.exit_price,
+                    "quantity": trade.quantity,
+                    "gross_pnl": gross,
+                    "net_pnl": trade.pnl,
+                    "exit_reason": trade.exit_reason,
+                    "closed_at": trade.closed_at,
+                }
+            )
+            appended += 1
+        return appended
+
     def run_cycle(
         self,
         *,
@@ -347,6 +399,8 @@ class Poc02Bundle:
         # change to paper/shadow paths).
         self.last_bars_by_asset = bars_by_asset
         bottleneck_rows: list[dict[str, Any]] = []
+        # blocked_by reasons observed this cycle (drives the §5 risk split)
+        self._risk_reasons_this_cycle: list[str] = []
 
         for asset in assets:
             bars = bars_by_asset[asset]
@@ -356,6 +410,8 @@ class Poc02Bundle:
             state.market_scans += 1
             state.asset_assessments += 1
             state.strategy_evaluations += 1
+            # per-window risk-reason split (§5): reset for each asset window
+            self._risk_reasons_this_cycle = []
             try:
                 proposals, evidence, assessments, board, reports, prices = _proposal_set(
                     asset=asset,
@@ -394,7 +450,9 @@ class Poc02Bundle:
                     run_id=run_id,
                     adapter=adapter,
                 )
+                closes_before = len(self.broker.closed_trades)
                 _reconcile(state, self.broker, self.risk, prices)
+                self._write_paper_closes(closes_before)
                 post = {
                     "scans": state.market_scans,
                     "proposals": state.trade_proposals,
@@ -411,9 +469,24 @@ class Poc02Bundle:
                         "selected_decisions": delta["selected"],
                         "risk_accepts": delta["risk_accepts"],
                         "executed_paper_trades": delta["paper"],
+                        "risk_rejects_by_reason": {
+                            "CONSECUTIVE_LOSS_COOLDOWN": sum(
+                                1 for r in self._risk_reasons_this_cycle
+                                if r == "consecutive_loss_cooldown"
+                            ),
+                            "MAX_POSITIONS": sum(
+                                1 for r in self._risk_reasons_this_cycle
+                                if r == "max_positions"
+                            ),
+                            "OTHER": sum(
+                                1 for r in self._risk_reasons_this_cycle
+                                if r not in {"consecutive_loss_cooldown", "max_positions"}
+                            ),
+                        },
                     },
                     regime=self._regime_key(bars),
                 )
+                self._risk_reasons_this_cycle = []  # consumed; avoid double-count on retry
                 bottleneck_rows.append(window.to_dict())
             except Exception as exc:  # provider error is loud but non-fatal per asset
                 state.errors.append(f"{asset}: {type(exc).__name__}: {exc}")
@@ -468,6 +541,57 @@ class Poc02Bundle:
         elif package.selected_candidate_id is not None:
             state.decisions_selected += 1
         state.decisions_rejected += len(package.rejected_alternatives)
+        # §8 attribution: agent-stage evidence per candidate (observational).
+        cand_by_id = {c.final_proposal_id: c for c in package.candidate_set}
+
+        def _regime_of(final_id: str | None) -> str | None:
+            if final_id is None:
+                return None
+            proposal = proposals.get(final_id)
+            regime = getattr(proposal, "regime", None)
+            return str(regime) if regime else None
+
+        for alt in package.rejected_alternatives:
+            c = cand_by_id.get(alt.final_proposal_id)
+            self._write_attribution_row(
+                {
+                    "stage": "AGENT_REJECT",
+                    "decision_id": package.decision_id,
+                    "run_id": run_id,
+                    "proposal_id": alt.final_proposal_id,
+                    "asset": c.asset if c else None,
+                    "direction": c.direction if c else None,
+                    "strategy_id": c.strategy if c else None,
+                    "regime": _regime_of(alt.final_proposal_id),
+                    "decision_score": alt.decision_score,
+                    "meta_score": alt.meta_score,
+                    "decision_reasons": [r.value for r in alt.rejection_reasons],
+                    "summary": alt.summary,
+                    "supporting_evidence_refs": list(c.supporting_evidence_refs) if c else [],
+                    "counter_evidence_refs": list(c.counter_evidence_refs) if c else [],
+                    "challenged_by": list(c.challenged_by) if c else [],
+                    "material_dissent": c.material_dissent if c else None,
+                }
+            )
+        if package.selected_candidate_id is not None:
+            sel = cand_by_id.get(package.selected_candidate_id)
+            self._write_attribution_row(
+                {
+                    "stage": "SELECTED",
+                    "decision_id": package.decision_id,
+                    "run_id": run_id,
+                    "proposal_id": package.selected_candidate_id,
+                    "asset": sel.asset if sel else None,
+                    "direction": sel.direction if sel else None,
+                    "strategy_id": sel.strategy if sel else None,
+                    "regime": _regime_of(package.selected_candidate_id),
+                    "decision_score": sel.decision_score if sel else None,
+                    "decision_reasons": [r.value for r in package.decision_reasons],
+                    "supporting_evidence_refs": list(sel.supporting_evidence_refs) if sel else [],
+                    "counter_evidence_refs": list(sel.counter_evidence_refs) if sel else [],
+                    "challenged_by": list(sel.challenged_by) if sel else [],
+                }
+            )
         candidate = adapter.adapt(
             package,
             proposals=proposals,
@@ -523,6 +647,7 @@ class Poc02Bundle:
         if not check.approved or check.position_size is None:
             state.risk_rejects += 1
             state.emit("risk.rejected", reason=check.reason, blocked_by=check.blocked_by)
+            self._risk_reasons_this_cycle.append(str(check.blocked_by or "other"))
             # A4/A5: shadow capture at the real Risk-REJECT point
             ctx = self.shadow_ctx(
                 candidate=candidate,
@@ -532,6 +657,24 @@ class Poc02Bundle:
                 run_id=run_id,
             )
             self.router.decide(verdict="REJECT", reason=str(check.reason), ctx=ctx)
+            # §8 attribution row: one per risk-REJECTED candidate
+            self._write_attribution_row(
+                {
+                    "stage": "RISK_REJECT",
+                    "decision_id": package.decision_id,
+                    "run_id": run_id,
+                    "asset": candidate.asset,
+                    "direction": (
+                        "LONG"
+                        if candidate.direction is TradeDirection.LONG
+                        else "SHORT"
+                    ),
+                    "strategy_id": candidate.candidate.strategy_id,
+                    "regime": candidate.candidate.regime or "UNCLASSIFIED",
+                    "risk_reason": str(check.reason),
+                    "risk_blocked_by": check.blocked_by,
+                }
+            )
             return
         state.risk_accepts += 1
         decision = self.router.decide(verdict="ACCEPT", reason=None, ctx={"decision_id": package.decision_id})
@@ -556,6 +699,27 @@ class Poc02Bundle:
             self.risk.add_position(result.symbol, result)
             state.paper_trades += 1
             state.emit("paper.position_opened", symbol=result.symbol, price=result.entry_price)
+            # §3/§7 attribution: paper OPEN with strategy/regime identity
+            self._write_attribution_row(
+                {
+                    "stage": "PAPER_OPEN",
+                    "decision_id": package.decision_id,
+                    "run_id": run_id,
+                    "asset": candidate.asset,
+                    "direction": (
+                        "LONG"
+                        if candidate.direction is TradeDirection.LONG
+                        else "SHORT"
+                    ),
+                    "strategy_id": candidate.candidate.strategy_id,
+                    "regime": candidate.candidate.regime or "UNCLASSIFIED",
+                    "symbol": result.symbol,
+                    "entry_price": result.entry_price,
+                    "notional_usdt": result.notional_usdt,
+                    "entry_commission": result.entry_commission,
+                    "opened_at": result.opened_at,
+                }
+            )
 
     # -- telemetry ----------------------------------------------------------------
 

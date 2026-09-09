@@ -354,6 +354,7 @@ def _proposal_set(
     run_id: str,
     trace_id: str,
     directions: tuple[str, ...],
+    arbitrate: bool = False,
 ) -> tuple[
     dict[str, Any],
     dict[str, Any],
@@ -362,7 +363,21 @@ def _proposal_set(
     tuple[Any, ...],
     dict[str, float],
 ]:
-    """Build real MA-2 artifacts and admit them to the canonical board."""
+    """Build real MA-2 artifacts and admit them to the canonical board.
+
+    ``arbitrate=False`` (default) preserves the committed POC02 behavior
+    byte-for-byte: both fixture directions enter the board/debate as
+    independent claims and can deterministically deadlock
+    (STRUCTURAL_AGENT_DIRECTION_CONFLICT, see DIR-AUDIT-01).
+
+    ``arbitrate=True`` applies the deterministic direction-arbitration
+    contract (ADR-DIR-0001): simultaneous LONG/SHORT from one evaluation are
+    grouped as ALTERNATIVE_DIRECTIONS and resolved to one direction (or
+    explicit NONE) BEFORE critique; only the selected side is admitted to the
+    board/debate. The losing side's evidence is preserved in the
+    OpportunityGroup provenance — never stripped (DIR-08). Only the named
+    POC02-R2 composition may pass ``arbitrate=True``.
+    """
     bus = _setup_bus(run_id, trace_id, now)
     board = OpportunityBoard(run_id=run_id, now=now)
     root_trace = _trace(run_id, trace_id, f"market:{asset}:{bars[-1].timestamp}")
@@ -377,6 +392,7 @@ def _proposal_set(
         item.evidence_id: item for item in asset_assessment.evidence
     }
     positions: list[DebatePosition] = []
+    groups: list[Any] = []
     prices = {asset: bars[-1].close}
     for direction in directions:
         expert = StrategyExpert(cast(Any, _FixtureFamily(direction)))
@@ -392,6 +408,10 @@ def _proposal_set(
             proposals[proposal.proposal_id] = proposal
             evidence_registry[item.evidence_id] = item
             bus.register_evidence(item)
+            if arbitrate:
+                # Group formation happens AFTER all candidates exist; here we
+                # only register evidence. Board admission is deferred below.
+                continue
             board.add_evidence(item)
             board.add(
                 proposal,
@@ -409,6 +429,54 @@ def _proposal_set(
                     evidence_refs=proposal.evidence_refs,
                 )
             )
+    if arbitrate:
+        from trading_bot.multi_agent.arbitration import DirectionArbiter
+
+        arbiter = DirectionArbiter()
+        formed = arbiter.form_groups(
+            run_id=run_id,
+            trace_id=trace_id,
+            proposals=proposals,
+            evidence_registry=evidence_registry,
+            assessments={asset: asset_assessment},
+            decision_time=now,
+        )
+        source_agent_by_ref = {
+            proposal.proposal_id: "strategy-expert-momentum" for proposal in proposals.values()
+        }
+        for group in formed:
+            resolved = arbiter.select_direction(group, proposals=proposals)
+            groups.append(resolved)
+            selected_ref = (
+                resolved.long_candidate_ref
+                if resolved.selected_direction == "LONG"
+                else resolved.short_candidate_ref
+                if resolved.selected_direction == "SHORT"
+                else None
+            )
+            if selected_ref is None:
+                continue  # explicit NO_TRADE for this evaluation: nothing critiqued
+            selected_proposal = proposals[selected_ref]
+            board.add_evidence(evidence_registry[selected_proposal.evidence_refs[0]])
+            board.add(
+                selected_proposal,
+                source_agent_id=source_agent_by_ref[selected_ref],
+                source_agent_version="1.0.0",
+            )
+            positions.append(
+                DebatePosition(
+                    proposal_id=selected_ref,
+                    owner_agent_id=source_agent_by_ref[selected_ref],
+                    asset=selected_proposal.asset,
+                    direction=selected_proposal.direction,
+                    strategy=selected_proposal.strategy,
+                    claim=(
+                        f"{selected_proposal.strategy} {selected_proposal.direction.value} "
+                        f"proposal (arbitrated {resolved.group_id})"
+                    ),
+                    evidence_refs=selected_proposal.evidence_refs,
+                )
+            )
     reports: list[Any] = []
     if positions:
         session = DebateSession(
@@ -423,6 +491,10 @@ def _proposal_set(
         report = session.run()
         reports.append(report)
         proposals.update(session.revised_proposals)
+    if arbitrate:
+        # Publish groups through the blackboard-visible return channel:
+        # attach them to the board's run metadata without mutating board state.
+        board.arbitration_groups = tuple(groups)  # type: ignore[attr-defined]
     return proposals, evidence_registry, {asset: asset_assessment}, board, tuple(reports), prices
 
 

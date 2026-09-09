@@ -1,0 +1,83 @@
+{
+  "assets": {
+    "BTC": {
+      "bars": 120,
+      "first_ts": 1788939900000,
+      "last_ts": 1788975600000
+    },
+    "ETH": {
+      "bars": 120,
+      "first_ts": 1788939900000,
+      "last_ts": 1788975600000
+    },
+    "SOL": {
+      "bars": 120,
+      "first_ts": 1788939900000,
+      "last_ts": 1788975600000
+    }
+  },
+  "bottlenecks": [
+    {
+      "bottleneck": "AGENT_FILTER",
+      "counts": {
+        "broker_errors": 0,
+        "paper": 0,
+        "proposals": 2,
+        "risk_accepts": 0,
+        "risk_rejects": 0,
+        "scans": 1,
+        "selected": 0,
+        "verifier_rejects": 0
+      },
+      "reason": "proposals existed but none selected",
+      "regime": "NEUTRAL|WEAK|LOW|TREND|NORMAL|NORMAL",
+      "window_id": "poc02-1788975648831:BTC"
+    },
+    {
+      "bottleneck": "AGENT_FILTER",
+      "counts": {
+        "broker_errors": 0,
+        "paper": 0,
+        "proposals": 2,
+        "risk_accepts": 0,
+        "risk_rejects": 0,
+        "scans": 1,
+        "selected": 0,
+        "verifier_rejects": 0
+      },
+      "reason": "proposals existed but none selected",
+      "regime": "NEUTRAL|WEAK|LOW|TREND|NORMAL|NORMAL",
+      "window_id": "poc02-1788975648831:ETH"
+    },
+    {
+      "bottleneck": "AGENT_FILTER",
+      "counts": {
+        "broker_errors": 0,
+        "paper": 0,
+        "proposals": 2,
+        "risk_accepts": 0,
+        "risk_rejects": 0,
+        "scans": 1,
+        "selected": 0,
+        "verifier_rejects": 0
+      },
+      "reason": "proposals existed but none selected",
+      "regime": "NEUTRAL|WEAK|LOW|TREND|NORMAL|NORMAL",
+      "window_id": "poc02-1788975648831:SOL"
+    }
+  ],
+  "campaign_id": "POC-02-paper-clean-01",
+  "live_calls": 0,
+  "private_exchange_calls": 0,
+  "provider_authority": {
+    "EXECUTION_MODE": "PAPER",
+    "EXECUTION_VENUE_MODEL": "PaperBroker",
+    "MARKET_DATA_PROVIDER": "binanceusdm (public REST OHLCV, no credentials)"
+  },
+  "provider_downgrades": [],
+  "real_broker_calls": 0,
+  "run_id": "poc02-1788975648831",
+  "shadow_captures_total": 0,
+  "shadow_paperbroker_calls": 0,
+  "shadow_resolved_total": 0
+}

@@ -1,0 +1,51 @@
+{
+  "bundle_constructed": true,
+  "campaign_id": "POC-02-R2-direction-arbitration-01",
+  "checkpoint": "MA-DIRECTION-ARBITRATION-AND-POC02-REPAIR-01",
+  "confirmation_lock": {
+    "consumed": false,
+    "executions": 0,
+    "id": "CONF-EDGE-002-001"
+  },
+  "freezes": {
+    "agent_config_sha256": "b032e7fbbfbad5cc006fee1901928192fd78d37513aeb5c09b75ca40f9e14c41",
+    "arbitration_contract_sha256": "14ebaf33c8af9c60d50f0e54d5dc003f59897bc498e9624ba68807a111063363",
+    "coverage_contract": ">= 0.80 per completed UTC day",
+    "fees_slippage": "PaperBroker preregistered schedule (unchanged from POC02)",
+    "frequency_kpi": ">= 3 executed valid PAPER trades per valid UTC day",
+    "risk_policy_sha256": "72e6f3c94eebbaffdc2ef0a57d31f7ce9acb2c38c9b10689e6f0ba073808a5d3",
+    "shadow_v2": "ENABLED (fresh ledger)"
+  },
+  "launch_authorized": true,
+  "launch_gates": {
+    "detail": {
+      "artifact_mismatches": [],
+      "smoke_proof": "R2_SMOKE_poc02r2-smoke-1788986172521.json"
+    },
+    "failed": 0,
+    "gates": {
+      "arbitration_contract_importable": true,
+      "campaign_id_new": true,
+      "coverage_contract_preregistered": true,
+      "old_campaign_artifacts_immutable": true,
+      "provider_authority_explicit": true,
+      "safety_counters_zero": true,
+      "shadow_surface_importable": true,
+      "smoke_reached_risk": true
+    },
+    "launch_authorized": true,
+    "passed": 8,
+    "total": 8
+  },
+  "launched_at_utc": "2026-09-09T20:39:22.506046+00:00",
+  "manifest_sha256": "7408f1cedde62edaafac5f1fe2a44824f45e5f1331a462702d0139599791b6b8",
+  "old_artifacts_modified": 0,
+  "provider_authority": {
+    "DIRECTION_ARBITRATION": "DirectionArbiter (ADR-DIR-0001) pre-critique",
+    "EXECUTION_MODE": "PAPER",
+    "EXECUTION_VENUE_MODEL": "PaperBroker",
+    "MARKET_DATA_PROVIDER": "binanceusdm (public REST OHLCV, no credentials)"
+  },
+  "runtime_commit": "6f0513fbc60913d33858e9f5d0ec38173781c5d9",
+  "status": "LAUNCHED"
+}

@@ -1,0 +1,172 @@
+{
+  "accounting_authority": "PaperBroker/PaperExecutionSummary",
+  "asset_assessments": 3,
+  "assets": [
+    "BTC",
+    "ETH",
+    "SOL"
+  ],
+  "broker_calls": 0,
+  "campaign_id": "POC-02-paper-clean-01",
+  "closed_trades": 0,
+  "commit": "a38e11e",
+  "cycles": 3,
+  "days_ge_3_trades": 0,
+  "debates": 3,
+  "decisions": [
+    {
+      "decision_id": "decision:2d8c43f4d12ee8a2",
+      "outcome": "NO_TRADE",
+      "reasons": [
+        "UNRESOLVED_CONFLICT"
+      ],
+      "selected_candidate_id": null,
+      "verifier": "VERIFIED"
+    },
+    {
+      "decision_id": "decision:4a038a787093fd64",
+      "outcome": "NO_TRADE",
+      "reasons": [
+        "UNRESOLVED_CONFLICT"
+      ],
+      "selected_candidate_id": null,
+      "verifier": "VERIFIED"
+    },
+    {
+      "decision_id": "decision:4e9fd3b6f60a855e",
+      "outcome": "NO_TRADE",
+      "reasons": [
+        "UNRESOLVED_CONFLICT"
+      ],
+      "selected_candidate_id": null,
+      "verifier": "VERIFIED"
+    }
+  ],
+  "decisions_rejected": 6,
+  "decisions_selected": 0,
+  "errors": [],
+  "events": [
+    {
+      "EXECUTION_MODE": "PAPER",
+      "EXECUTION_VENUE_MODEL": "PaperBroker",
+      "MARKET_DATA_PROVIDER": "binanceusdm (public REST OHLCV, no credentials)",
+      "broker": "PaperBroker",
+      "event": "paper.session.started",
+      "live_disabled": true,
+      "run_id": "poc02-1788978474013",
+      "trace_id": "trace-poc02-1788978474013"
+    },
+    {
+      "decision_id": "decision:2d8c43f4d12ee8a2",
+      "event": "decision.started",
+      "run_id": "poc02-1788978474013",
+      "trace_id": "trace-poc02-1788978474013"
+    },
+    {
+      "decision_id": "decision:2d8c43f4d12ee8a2",
+      "event": "decision.verified",
+      "run_id": "poc02-1788978474013",
+      "trace_id": "trace-poc02-1788978474013"
+    },
+    {
+      "decision_id": "decision:4a038a787093fd64",
+      "event": "decision.started",
+      "run_id": "poc02-1788978474013",
+      "trace_id": "trace-poc02-1788978474013"
+    },
+    {
+      "decision_id": "decision:4a038a787093fd64",
+      "event": "decision.verified",
+      "run_id": "poc02-1788978474013",
+      "trace_id": "trace-poc02-1788978474013"
+    },
+    {
+      "decision_id": "decision:4e9fd3b6f60a855e",
+      "event": "decision.started",
+      "run_id": "poc02-1788978474013",
+      "trace_id": "trace-poc02-1788978474013"
+    },
+    {
+      "decision_id": "decision:4e9fd3b6f60a855e",
+      "event": "decision.verified",
+      "run_id": "poc02-1788978474013",
+      "trace_id": "trace-poc02-1788978474013"
+    },
+    {
+      "closed_trades": 0,
+      "event": "paper.session.completed",
+      "run_id": "poc02-1788978474013",
+      "trace_id": "trace-poc02-1788978474013"
+    }
+  ],
+  "execution_authority": "PaperBroker",
+  "false_success": 0,
+  "fees": 0.0,
+  "funnel": [
+    {
+      "asset": "BTC",
+      "cycle": "BTC",
+      "debate_outcomes": [
+        "UNRESOLVED"
+      ],
+      "proposal_ids": [
+        "proposal:8f8916d5936f1054060682b3",
+        "proposal:c6b397f8b3bb4f2a3520b8c6"
+      ]
+    },
+    {
+      "asset": "ETH",
+      "cycle": "ETH",
+      "debate_outcomes": [
+        "UNRESOLVED"
+      ],
+      "proposal_ids": [
+        "proposal:1b52aef7f47df081aa328898",
+        "proposal:d5bef0a833be4fa9068b52f0"
+      ]
+    },
+    {
+      "asset": "SOL",
+      "cycle": "SOL",
+      "debate_outcomes": [
+        "UNRESOLVED"
+      ],
+      "proposal_ids": [
+        "proposal:3820d4b185759e6ae4bfca98",
+        "proposal:da0b8db17a7c02e3b81c4ae1"
+      ]
+    }
+  ],
+  "live_calls": 0,
+  "live_disabled": true,
+  "live_trading": false,
+  "market_scans": 3,
+  "mode": "PAPER",
+  "no_trade": 3,
+  "open_positions": 0,
+  "paper_trades": 0,
+  "private_exchange_calls": 0,
+  "provider": "binanceusdm-public",
+  "real_broker_calls": 0,
+  "realized_pnl": 0.0,
+  "result_classification": "DEMO_FUNCTIONAL_PASS",
+  "risk_accepts": 0,
+  "risk_calls": 0,
+  "risk_rejects": 0,
+  "run_id": "poc02-1788978474013",
+  "strategies": [
+    "Momentum",
+    "Trend",
+    "Breakout",
+    "MeanReversion",
+    "Volatility"
+  ],
+  "strategy_evaluations": 3,
+  "trace_id": "trace-poc02-1788978474013",
+  "trade_proposals": 6,
+  "trades_per_day": 0,
+  "trades_today": 0,
+  "unrealized_pnl": 0,
+  "verifier_rejects": 0,
+  "warnings": []
+}

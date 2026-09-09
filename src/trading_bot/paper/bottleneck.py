@@ -33,6 +33,7 @@ class BottleneckState:
     VERIFIER_FILTER = "VERIFIER_FILTER"  # selected, verifier rejected
     RISK_COOLDOWN = "RISK_COOLDOWN"  # risk rejected on consecutive-loss cooldown
     RISK_POSITIONS = "RISK_POSITIONS"  # risk rejected on MAX_POSITIONS / exposure
+    OTHER_RISK = "OTHER_RISK"  # risk rejected on any other reason (POC02-OBSERVATION taxonomy §5)
     EXECUTION = "EXECUTION"  # risk approved, paper execution failed
     NONE = "NONE"  # a trade opened; no collapse this window
 
@@ -43,6 +44,7 @@ class BottleneckState:
         VERIFIER_FILTER,
         RISK_COOLDOWN,
         RISK_POSITIONS,
+        OTHER_RISK,
         EXECUTION,
         NONE,
     )
@@ -147,7 +149,10 @@ def classify_window(
             + by_reason.get("MAX_TOTAL_EXPOSURE", 0)
             or 0
         )
-        if cooldown > 0 and cooldown >= positions:
+        other = int(
+            risk_rejects - cooldown - positions
+        )  # any persisted split remainder (daily limit, drawdown, sizing, ...)
+        if cooldown > 0 and cooldown > positions and cooldown > other:
             return BottleneckWindow(
                 window_id=window_id,
                 regime=regime,
@@ -155,13 +160,21 @@ def classify_window(
                 counts=counts,
                 reason="risk rejections dominated by consecutive-loss cooldown",
             )
-        if positions > 0:
+        if positions > 0 and positions > other:
             return BottleneckWindow(
                 window_id=window_id,
                 regime=regime,
                 bottleneck=BottleneckState.RISK_POSITIONS,
                 counts=counts,
                 reason="risk rejections dominated by position/exposure limits",
+            )
+        if other > 0:
+            return BottleneckWindow(
+                window_id=window_id,
+                regime=regime,
+                bottleneck=BottleneckState.OTHER_RISK,
+                counts=counts,
+                reason="risk rejections dominated by other risk reasons (persisted split)",
             )
         return BottleneckWindow(
             window_id=window_id,

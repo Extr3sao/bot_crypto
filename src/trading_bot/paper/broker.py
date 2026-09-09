@@ -116,6 +116,11 @@ class PaperBroker:
     def positions(self) -> dict[str, PaperPosition]:
         return dict(self._positions)
 
+    @property
+    def closed_trades(self) -> tuple[ClosedTrade, ...]:
+        """Read-only view of all closed trades (observational/evidence use)."""
+        return tuple(self._closed_trades)
+
     def __enter__(self) -> PaperBroker:
         return self
 

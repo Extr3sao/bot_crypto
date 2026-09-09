@@ -1,0 +1,30 @@
+<!doctype html><html><head><meta charset="utf-8">
+<meta http-equiv="refresh" content="30"><title>POC02 STATUS (read-only)</title>
+<style>body{font-family:Segoe UI,Arial;margin:2rem;background:#0f1216;color:#e6e6e6}
+h1{font-size:1.25rem}h2{font-size:1.05rem;margin-top:1.4rem}
+table{border-collapse:collapse}td,th{border:1px solid #333;padding:.3rem .6rem;font-size:.85rem}
+.badge{padding:.2rem .6rem;border-radius:4px;color:#fff}</style></head><body>
+<h1>POC02 OBSERVATION STATUS <span style="background:#2874a6;padding:.2rem .6rem;border-radius:4px">PAPER MODE &bull; LIVE DISABLED</span> <span style="background:#6c3483;padding:.2rem .6rem;border-radius:4px">SHADOW &bull; COUNTERFACTUAL &bull; EXCLUDED FROM PAPER PnL/FREQUENCY</span> <span style="background:#1e8449;padding:.2rem .6rem;border-radius:4px">LIVE-HEARTBEAT-OK</span></h1>
+<p>Campaign <b>POC-02-paper-clean-01</b> &middot; heartbeat 2026-09-09T18:27:50+00:00
+&middot; written 2026-09-09T18:30:30+00:00</p>
+
+<h2>Daily coverage (PAPER runtime)</h2>
+<table><tr><th>UTC day</th><th>coverage</th><th>validity</th><th>cycles</th><th>minutes</th></tr><tr><td>2026-09-09</td><td>0.004861</td><td>PENDING</td><td>11</td><td>7</td></tr></table>
+
+<h2>Frequency KPI (target ≥ 3 executed paper trades / valid UTC day — unchanged)</h2>
+<table><tr><td>COMPLETED_VALID_DAYS</td><td>0</td></tr><tr><td>DAYS_GE_3</td><td>0</td></tr><tr><td>PERCENT_DAYS_GE_3</td><td>None</td></tr><tr><td>TOTAL_TRADES</td><td>0</td></tr><tr><td>TRADES_PER_VALID_DAY</td><td>None</td></tr><tr><td>MEDIAN_TRADES_PER_VALID_DAY</td><td>None</td></tr><tr><td>TARGET_TRADES_PER_VALID_DAY</td><td>3</td></tr><tr><td>denominator_note</td><td>partial/invalid days excluded; zero-trade valid days retained</td></tr><tr><td>target_lowered</td><td>False</td></tr></table>
+
+<h2>Bottleneck distribution (current evidence)</h2>
+<table><tr><th>bottleneck</th><th>windows</th><th>%</th></tr><tr><td>AGENT_FILTER</td><td>33</td><td>100.0%</td></tr></table>
+
+<h2>Regime coverage map (research input — no auto batch)</h2>
+<table><tr><th>regime</th><th>windows</th><th>proposals</th><th>strategies</th><th>class</th></tr><tr><td>NEUTRAL|WEAK|EXTREME|RANGE|SHOCK|NORMAL</td><td>1</td><td>0</td><td>0</td><td>INSUFFICIENT_EVIDENCE</td></tr><tr><td>NEUTRAL|WEAK|EXTREME|TREND|SHOCK|NORMAL</td><td>2</td><td>0</td><td>0</td><td>INSUFFICIENT_EVIDENCE</td></tr><tr><td>NEUTRAL|WEAK|LOW|RANGE|NORMAL|NORMAL</td><td>17</td><td>0</td><td>0</td><td>NO_SIGNAL_REGIME</td></tr><tr><td>NEUTRAL|WEAK|LOW|TRANSITION|NORMAL|NORMAL</td><td>1</td><td>0</td><td>0</td><td>INSUFFICIENT_EVIDENCE</td></tr><tr><td>NEUTRAL|WEAK|LOW|TREND|NORMAL|NORMAL</td><td>12</td><td>0</td><td>0</td><td>NO_SIGNAL_REGIME</td></tr><tr><td>proposal:1b52aef7f47df081aa328898</td><td>0</td><td>3</td><td>1</td><td>INSUFFICIENT_EVIDENCE</td></tr><tr><td>proposal:3820d4b185759e6ae4bfca98</td><td>0</td><td>1</td><td>1</td><td>INSUFFICIENT_EVIDENCE</td></tr><tr><td>proposal:6c00630a7c3dccff34de6787</td><td>0</td><td>2</td><td>1</td><td>INSUFFICIENT_EVIDENCE</td></tr><tr><td>proposal:8f8916d5936f1054060682b3</td><td>0</td><td>1</td><td>1</td><td>INSUFFICIENT_EVIDENCE</td></tr><tr><td>proposal:920a5e7fe21b3266de099774</td><td>0</td><td>2</td><td>1</td><td>INSUFFICIENT_EVIDENCE</td></tr><tr><td>proposal:c6b397f8b3bb4f2a3520b8c6</td><td>0</td><td>1</td><td>1</td><td>INSUFFICIENT_EVIDENCE</td></tr><tr><td>proposal:d084b809feafcccdd5991355</td><td>0</td><td>2</td><td>1</td><td>INSUFFICIENT_EVIDENCE</td></tr><tr><td>proposal:d5bef0a833be4fa9068b52f0</td><td>0</td><td>3</td><td>1</td><td>INSUFFICIENT_EVIDENCE</td></tr><tr><td>proposal:da0b8db17a7c02e3b81c4ae1</td><td>0</td><td>1</td><td>1</td><td>INSUFFICIENT_EVIDENCE</td></tr><tr><td>proposal:f054b95c2136c328cc76d0d9</td><td>0</td><td>2</td><td>1</td><td>INSUFFICIENT_EVIDENCE</td></tr></table>
+
+<h2>Shadow (§9/§10) — counterfactual only</h2>
+<p>captures 0 &middot; resolved 0 &middot;
+isolation SHADOW_PAPERBROKER_CALLS=0</p>
+
+<p style="color:#85929e">READ-ONLY surface: no controls, no orders, no risk or execution
+endpoints. PAPER rows come from the paper ledger; SHADOW rows are counterfactual and never
+count toward paper PnL or trade frequency.</p>
+</body></html>

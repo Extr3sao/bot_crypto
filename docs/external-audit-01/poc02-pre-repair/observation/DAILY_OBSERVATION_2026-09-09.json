@@ -1,0 +1,131 @@
+{
+  "artifact": "POC02_DAILY_OBSERVATION_REPORT",
+  "bottleneck_distribution": {
+    "counts": {
+      "AGENT_FILTER": 33
+    },
+    "dominant": "AGENT_FILTER",
+    "proportions": {
+      "AGENT_FILTER": 1.0
+    },
+    "windows_observed": 33
+  },
+  "campaign_id": "POC-02-paper-clean-01",
+  "confirmation_lock": {
+    "confirmation_id": "CONF-EDGE-002-001",
+    "consumed": false,
+    "executions": 0,
+    "window": "2026-09-08 \u2192 2026-09-22"
+  },
+  "daily_performance": [
+    {
+      "DAY_COUNTS_FOR_COVERAGE": false,
+      "FINALIZED": false,
+      "coverage_ratio_day": 0.004861,
+      "day_closed": false,
+      "day_validity": "PENDING",
+      "debates": 33,
+      "expected_cycles": 288,
+      "expected_minutes": 1440,
+      "gross_pnl": 0,
+      "losses": 0,
+      "net_pnl": 0,
+      "observed_cycles": 11,
+      "observed_minutes": 7,
+      "paper_closes": 0,
+      "paper_opens": 0,
+      "proposals": 66,
+      "provider_downtime_minutes": 0,
+      "risk_accepts": 0,
+      "risk_rejects": 0,
+      "runtime_downtime_minutes": 1433,
+      "scans": 33,
+      "selected": 0,
+      "signals_if_persisted": 18,
+      "trades": 0,
+      "trades_ge_3": false,
+      "utc_day": "2026-09-09",
+      "verified": 33,
+      "wins": 0
+    }
+  ],
+  "days_finalized_now": [],
+  "discovery_batch_03": "NOT_STARTED",
+  "frequency_kpis": {
+    "COMPLETED_VALID_DAYS": 0,
+    "DAYS_GE_3": 0,
+    "MEDIAN_TRADES_PER_VALID_DAY": null,
+    "PERCENT_DAYS_GE_3": null,
+    "TARGET_TRADES_PER_VALID_DAY": 3,
+    "TOTAL_TRADES": 0,
+    "TRADES_PER_VALID_DAY": null,
+    "denominator_note": "partial/invalid days excluded; zero-trade valid days retained",
+    "target_lowered": false
+  },
+  "generated_at_utc": "2026-09-09T18:30:30+00:00",
+  "no_parameter_change": true,
+  "regime_bottleneck_matrix": {
+    "matrix": {
+      "NEUTRAL|WEAK|EXTREME|RANGE|SHOCK|NORMAL": {
+        "counts": {
+          "AGENT_FILTER": 1
+        },
+        "proportions": {
+          "AGENT_FILTER": 1.0
+        },
+        "single_observation": true,
+        "windows": 1
+      },
+      "NEUTRAL|WEAK|EXTREME|TREND|SHOCK|NORMAL": {
+        "counts": {
+          "AGENT_FILTER": 2
+        },
+        "proportions": {
+          "AGENT_FILTER": 1.0
+        },
+        "single_observation": false,
+        "windows": 2
+      },
+      "NEUTRAL|WEAK|LOW|RANGE|NORMAL|NORMAL": {
+        "counts": {
+          "AGENT_FILTER": 17
+        },
+        "proportions": {
+          "AGENT_FILTER": 1.0
+        },
+        "single_observation": false,
+        "windows": 17
+      },
+      "NEUTRAL|WEAK|LOW|TRANSITION|NORMAL|NORMAL": {
+        "counts": {
+          "AGENT_FILTER": 1
+        },
+        "proportions": {
+          "AGENT_FILTER": 1.0
+        },
+        "single_observation": true,
+        "windows": 1
+      },
+      "NEUTRAL|WEAK|LOW|TREND|NORMAL|NORMAL": {
+        "counts": {
+          "AGENT_FILTER": 12
+        },
+        "proportions": {
+          "AGENT_FILTER": 1.0
+        },
+        "single_observation": false,
+        "windows": 12
+      }
+    },
+    "note": "proportions are within-regime; single-observation cells are flagged, not interpreted",
+    "regimes_observed": 5
+  },
+  "runtime_staleness": {
+    "RUNTIME_STALE": false,
+    "age_minutes": 2.7,
+    "display_note": "stale heartbeats must surface RUNTIME_STALE; old data is never silently presented as current",
+    "heartbeat_utc": "2026-09-09T18:27:50+00:00",
+    "stale_after_minutes": 30,
+    "status": "ACTIVE"
+  }
+}
