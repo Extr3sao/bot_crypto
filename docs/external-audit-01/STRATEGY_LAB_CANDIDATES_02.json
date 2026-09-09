@@ -1,0 +1,57 @@
+{
+  "artifact": "STRATEGY_LAB_CANDIDATES_02",
+  "checkpoint": "POC02-LAUNCH-AND-DISCOVERY-BATCH-02",
+  "track": "G",
+  "note": "RESEARCH ONLY - no candidate enters PAPER; no promotions; batch-02 verdicts are COMPLETE (gates evaluated), never 'PASS' as a global label",
+  "updated_at_utc": "2026-09-09T15:30:00Z",
+  "preregistration": "DISCOVERY_BATCH_02_PREREGISTRATION.json",
+  "preregistration_sha256_committed": "see DISCOVERY_BATCH_02_PREREGISTRATION.json (committed e1f1193, re-frozen pre-results)",
+  "results": "DISCOVERY_BATCH_02_RESULTS.json",
+  "candidates": [
+    {
+      "batch": "DISCOVERY-BATCH-02",
+      "candidate_id": "discovery:volatility_structure_v2",
+      "state": "COMPLETE",
+      "deeper_window_verdict": "DISCOVERY_FAIL",
+      "cells": "6 cells (BTC/ETH/SOL x 5m/1h): 5 DISCOVERY_FAIL, 1 INSUFFICIENT_SAMPLE",
+      "headline": "deeper ~730-day 1h window refutes the batch-01 LEAD: PF 0.92 (BTC 1h), net expectancy < 0, permutation p 0.66 — the batch-01 PF 2.5-3.0 does not survive the independent window",
+      "promotions": 0
+    },
+    {
+      "batch": "DISCOVERY-BATCH-02",
+      "candidate_id": "discovery:cross_sectional_v2",
+      "state": "COMPLETE",
+      "deeper_window_verdict": "DISCOVERY_FAIL",
+      "cells": "2 cells (universe BTC+ETH+SOL x 5m/1h): both DISCOVERY_FAIL",
+      "redundancy_protocol": {
+        "leader_persistence": 0.8481,
+        "turnover_per_100_bars": 15.186,
+        "momentum_family_correlation_1h": 0.8949,
+        "momentum_family_correlation_5m": 0.9072,
+        "verdict_rule": "REDUNDANT_CANDIDATE if corr > 0.8 AND persistence < 0.6",
+        "verdict": "DISTINCT_EVIDENCE by the preregistered rule (high correlation but high persistence), recorded as redundant-behavior evidence in the lab notes; candidate FAILed the performance gates regardless"
+      },
+      "promotions": 0
+    },
+    {
+      "batch": "DISCOVERY-BATCH-02",
+      "candidate_id": "discovery:carry_funding_v2",
+      "state": "COMPLETE",
+      "def_discovery_001": "RESOLVED — new fingerprinted spec (FUNDING-UNITS-CANONICAL-V1) + real funding authority; batch-01 spec untouched in history",
+      "cells": "6 cells: 3 DISCOVERY_FAIL (5m), 3 INSUFFICIENT_SAMPLE (1h — public funding depth limited to ~30 days, n=8 < 15; INSUFFICIENT_DATA policy respected, never synthesized)",
+      "headline": "true-carry direction rule evaluated under the canonical unit contract; no economic edge found in the evaluable cells",
+      "promotions": 0
+    }
+  ],
+  "batch01_leads_status": {
+    "volatility_structure_1h": "LEAD_ONLY -> REFUTED_BY_DEEPER_WINDOW (batch-02)",
+    "cross_sectional_1h": "LEAD_ONLY -> REFUTED_BY_DEEPER_WINDOW (batch-02)",
+    "note": "Batch-01 leads were NEVER 'VALIDATED'; per Track G they are displayed as LEAD_ONLY and now carry the deeper-window refutation"
+  },
+  "governance": {
+    "paper_promotions": 0,
+    "research_only": true,
+    "no_retuning_after_results": true,
+    "confirmation_lock_untouched": "CONF-EDGE-002-001 (immutable evidence tree, 39578a6)"
+  }
+}
