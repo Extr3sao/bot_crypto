@@ -5,111 +5,131 @@ from __future__ import annotations
 import pytest
 
 from trading_bot.research.funding_units import (
-    FUNDING_UNIT_CONTRACT_V2,
-    FundingObservation,
-    accrue_long,
+    FundingUnitContract,
     annualized_rate,
+    canon_funding_interval_s,
+    canon_rate_per_period,
     contract_fingerprint,
-    periods_per_day,
+    funding_pnl,
 )
 
 
-def _obs(rate: float, interval_hours: float = 8.0) -> FundingObservation:
-    return FundingObservation(
-        timestamp_ms=1_700_000_000_000,
-        rate_decimal=rate,
-        source="binanceusdm",
-        interval_hours=interval_hours,
-    )
-
-
 # --------------------------------------------------------------------------
-# sign correctness (LONG/SHORT)
+# sign correctness (LONG/SHORT) — DB2-06
 # --------------------------------------------------------------------------
 
 def test_positive_funding_long_pays() -> None:
-    # 1bp per 8h on 10k notional -> long pays 1.0 USDT per period.
-    assert accrue_long(rate_decimal=0.0001, notional=10_000.0) == -1.0
+    # 1bp per interval on 10k notional -> long pays 1.0 quote per settlement.
+    assert funding_pnl("LONG", 10_000.0, 0.0001) == -1.0
 
 
 def test_negative_funding_long_receives() -> None:
-    assert accrue_long(rate_decimal=-0.0001, notional=10_000.0) == 1.0
+    assert funding_pnl("LONG", 10_000.0, -0.0001) == 1.0
 
 
 def test_zero_funding_is_zero() -> None:
-    assert accrue_long(rate_decimal=0.0, notional=50_000.0) == 0.0
+    assert funding_pnl("LONG", 50_000.0, 0.0) == 0.0
 
 
-def test_short_is_negation_of_long() -> None:
-    long_pnl = accrue_long(rate_decimal=0.0001, notional=10_000.0)
-    assert -long_pnl == accrue_long(rate_decimal=0.0001, notional=-10_000.0)
+def test_short_receives_positive_funding() -> None:
+    assert funding_pnl("SHORT", 10_000.0, 0.0001) == 1.0
+    assert funding_pnl("SHORT", 10_000.0, -0.0001) == -1.0
 
 
-# --------------------------------------------------------------------------
-# interval handling (8h vs other)
-# --------------------------------------------------------------------------
-
-def test_periods_per_day_8h_vs_4h_vs_1h() -> None:
-    assert periods_per_day(_obs(0.0001, 8.0)) == 3.0
-    assert periods_per_day(_obs(0.0001, 4.0)) == 6.0
-    assert periods_per_day(_obs(0.0001, 1.0)) == 24.0
+def test_short_is_exact_negation_of_long() -> None:
+    assert funding_pnl("SHORT", 10_000.0, 0.0001) == -funding_pnl("LONG", 10_000.0, 0.0001)
 
 
-def test_annualization_is_derived_from_observed_interval() -> None:
-    # 1bp per 8h -> 3 periods/day -> 0.0001*3*365 = 10.95% annualized.
-    assert abs(annualized_rate(_obs(0.0001, 8.0)) - 0.1095) < 1e-9
-    # same rate on 1h interval triples the annualized figure.
-    assert abs(annualized_rate(_obs(0.0001, 1.0)) - 0.876) < 1e-9
-
-
-# --------------------------------------------------------------------------
-# unit guard (bps vs decimal)
-# --------------------------------------------------------------------------
-
-def test_bps_vs_decimal_confusion_rejected() -> None:
-    # 1.0 would be "100%" — must be caught as unit misuse.
+def test_invalid_side_rejected() -> None:
     with pytest.raises(ValueError):
-        _obs(1.0)
+        funding_pnl("long", 10_000.0, 0.0001)  # lowercase is not the enum
     with pytest.raises(ValueError):
-        _obs(0.5)
-    # 4.999% per period is still accepted (extreme but possible).
-    _obs(0.0499)
-
-
-def test_invalid_interval_rejected() -> None:
+        funding_pnl("FLAT", 10_000.0, 0.0001)
     with pytest.raises(ValueError):
-        _obs(0.0001, 0.0)
-    with pytest.raises(ValueError):
-        _obs(0.0001, -8.0)
+        funding_pnl("LONG", -1.0, 0.0001)
 
 
 # --------------------------------------------------------------------------
-# contract identity
+# unit canonicalization (bps vs percent vs decimal)
 # --------------------------------------------------------------------------
 
-def test_contract_fingerprint_stable() -> None:
-    fp = contract_fingerprint(FUNDING_UNIT_CONTRACT_V2)
+def test_canon_rate_decimal_passthrough() -> None:
+    assert canon_rate_per_period(0.0001, source_unit="decimal_per_interval") == 0.0001
+
+
+def test_canon_rate_percent_converts() -> None:
+    assert canon_rate_per_period(0.01, source_unit="percent_per_interval") == 0.0001
+
+
+def test_canon_rate_bps_converts() -> None:
+    assert canon_rate_per_period(1.0, source_unit="bps_per_interval") == 0.0001
+
+
+def test_canon_rate_unknown_unit_fails_closed() -> None:
+    with pytest.raises(ValueError):
+        canon_rate_per_period(1.0, source_unit="satoshis")
+    with pytest.raises(ValueError):
+        canon_rate_per_period(float("nan"), source_unit="decimal_per_interval")
+    with pytest.raises(ValueError):
+        canon_rate_per_period(float("inf"), source_unit="decimal_per_interval")
+
+
+# --------------------------------------------------------------------------
+# interval canonicalization (8h vs other; never assumed)
+# --------------------------------------------------------------------------
+
+def test_canon_interval_seconds_and_durations() -> None:
+    assert canon_funding_interval_s(28_800) == 28_800
+    assert canon_funding_interval_s("8h") == 28_800
+    assert canon_funding_interval_s("4h") == 14_400
+    assert canon_funding_interval_s("1h") == 3_600
+    assert canon_funding_interval_s("30m") == 1_800
+
+
+def test_canon_interval_none_requires_explicit_default() -> None:
+    with pytest.raises(ValueError):
+        canon_funding_interval_s(None)
+    assert canon_funding_interval_s(None, default_s=28_800) == 28_800
+
+
+def test_canon_interval_invalid_fails_closed() -> None:
+    with pytest.raises(ValueError):
+        canon_funding_interval_s(0)
+    with pytest.raises(ValueError):
+        canon_funding_interval_s(-3600)
+
+
+# --------------------------------------------------------------------------
+# derived annualization (never an input)
+# --------------------------------------------------------------------------
+
+def test_annualization_8h_vs_1h() -> None:
+    # 1bp per 8h -> 3 intervals/day -> 0.0001 * (365*86400/28800) = 0.1095
+    assert abs(annualized_rate(0.0001, 28_800) - 0.1095) < 1e-9
+    # same rate on 1h triples it
+    assert abs(annualized_rate(0.0001, 3_600) - 0.876) < 1e-9
+
+
+def test_annualization_invalid_interval_rejected() -> None:
+    with pytest.raises(ValueError):
+        annualized_rate(0.0001, 0)
+
+
+# --------------------------------------------------------------------------
+# contract identity (fingerprint)
+# --------------------------------------------------------------------------
+
+def test_contract_fingerprint_stable_and_deterministic() -> None:
+    fp = contract_fingerprint()
     assert len(fp) == 64
-    assert fp == contract_fingerprint(FUNDING_UNIT_CONTRACT_V2)
+    assert fp == contract_fingerprint()
+    assert fp == contract_fingerprint(FundingUnitContract())
 
 
-def test_contract_records_decimal_units_and_real_source() -> None:
-    d = FUNDING_UNIT_CONTRACT_V2.to_dict()
-    assert d["rate_unit"] == "decimal_per_period"
-    assert "binanceusdm" in d["data_source"]
-    assert "never an input" in d["annualization"]
-
-
-# --------------------------------------------------------------------------
-# PIT: observation timestamps
-# --------------------------------------------------------------------------
-
-def test_pit_timestamp_invariant_documented() -> None:
-    # The contract requires observation.timestamp_ms <= decision time;
-    # FundingObservation enforces validity at construction.
-    o = _obs(0.0001)
-    assert o.timestamp_ms <= 1_700_000_000_001  # decision time >= obs time
-    with pytest.raises(ValueError):
-        FundingObservation(
-            timestamp_ms=-1, rate_decimal=0.0001, source="x", interval_hours=8.0
-        )
+def test_contract_documents_pit_and_sign_conventions() -> None:
+    c = FundingUnitContract()
+    assert "funding_time <= t" in c.pit_invariant
+    assert "PAYS" in c.long_positive_funding
+    assert "RECEIVES" in c.short_positive_funding
+    assert "never assumed" in c.assumption_policy
+    assert "DEF-DISCOVERY-001" in c.notes

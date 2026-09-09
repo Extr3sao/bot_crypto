@@ -1,0 +1,65 @@
+{
+  "artifact": "DISCOVERY_BATCH_02_PREREGISTRATION",
+  "checkpoint": "POC02-LAUNCH-AND-DISCOVERY-BATCH-02",
+  "batch": "DISCOVERY-BATCH-02",
+  "frozen_before_execution": true,
+  "created_at_utc": "2026-09-09T12:40:00Z",
+  "candidates": [
+    "volatility_structure_v2",
+    "cross_sectional_v2",
+    "carry_funding_v2"
+  ],
+  "eval_spec_fingerprints": {
+    "volatility_structure_v2": "d94173d751043871b0ee7206d0a61ff4de9b71c512a0b0744a601422a0f4d879",
+    "cross_sectional_v2": "5e311b48acd2318515f0b79c6b87819851e6240fd2c3dd1c94879580e87a22f6",
+    "carry_funding_v2": "5702172fd947a321ecdf0b5dcd2d48a22c7d9d47cde8ad68f06a803dc00ff1b3"
+  },
+  "funding_unit_contract": {
+    "contract_id": "FUNDING-UNITS-CANONICAL-V1",
+    "sha256": "529738ac652ba32cdd607257a349492db2d50152419c079d8e16274f17e42f43",
+    "canonical_rate_unit": "decimal_fraction_per_interval",
+    "pit_invariant": "decision t may use rates with funding_time <= t"
+  },
+  "frozen_protocol_unchanged": {
+    "name": "canonical legacy discovery protocol (batch-01 execution values)",
+    "commission_rate": 0.0004,
+    "slippage_bps": 2.0,
+    "min_trades_per_cell": 15,
+    "min_sharpe": 0.0,
+    "min_expectancy": 0.0,
+    "max_pvalue": 0.05,
+    "confidence_level": 0.9,
+    "no_per_track_lowering": true
+  },
+  "no_retuning_of_leads": {
+    "volatility_structure_v2": "SAME entry/stop/exit/params as batch-01 volatility_structure; deeper window only",
+    "cross_sectional_v2": "SAME entry/stop/exit/params as batch-01 cross_sectional; deeper window only; PIT ranking explicit",
+    "verification": "verify_batch01_spec_unchanged() hard-fails on any economic drift"
+  },
+  "data_window": {
+    "description": "Deeper preregistered window (C2): 1h PIT OHLCV, public binanceusdm, ~730 days back from the batch launch instant; 5m cells bounded at the most recent 1500 bars (preregistered bound)",
+    "timeframes": { "5m": 1500, "1h": 17520 },
+    "assets": ["BTC", "ETH", "SOL"],
+    "data_source": "binanceusdm-public (ccxt REST, no credentials)",
+    "window_start": "AT_EXECUTION: now_utc - bars*interval",
+    "window_end": "AT_EXECUTION: now_utc (preregistration freezes LENGTH, not wall-clock anchor)",
+    "expected_bars_1h_per_asset": 17520,
+    "funding_history": "REAL binanceusdm funding history via fetchFundingRateHistory (C6); INSUFFICIENT_DATA if depth unavailable — never synthetic"
+  },
+  "acceptance": {
+    "gates": "FROZEN LegacyRetroHarness gates (identical thresholds — no lowering)",
+    "cell_states": ["DISCOVERY_PASS", "DISCOVERY_FAIL", "INSUFFICIENT_SAMPLE"],
+    "no_global_pass_from_one_cell": "regime x asset x timeframe attribution required (Track D)",
+    "redundancy_check": "cross_sectional_v2 correlated with momentum family => REDUNDANT_CANDIDATE (Track C4)"
+  },
+  "frequency_value": {
+    "metrics": ["raw opportunities/day", "qualifying opportunities/day", "days with opportunity", "overlap with current universe", "incremental opportunities/day", "incremental during NO_SIGNAL windows"],
+    "never_tuned": true
+  },
+  "governance": {
+    "commit_before_results": true,
+    "paper_promotions": 0,
+    "research_only": true,
+    "def_discovery_001_repair": "carry_funding_v2 (new fingerprinted spec + funding_units contract); batch-01 spec untouched"
+  }
+}
