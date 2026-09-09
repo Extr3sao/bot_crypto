@@ -38,9 +38,6 @@ from trading_bot.research.discovery_batch02_spec import (
 from trading_bot.research.discovery_execution import (
     DiscoveryCell,
     DiscoveryReport,
-    _fingerprint_candles,
-    _metrics_payload,
-    _regime_label,
 )
 from trading_bot.research.funding_units import (
     canon_funding_interval_s,
@@ -49,6 +46,11 @@ from trading_bot.research.funding_units import (
 )
 from trading_bot.research.legacy_retro import LegacyRetroHarness
 from trading_bot.research.regime import RegimeEngine
+from trading_bot.research.retro_execution import (
+    _fingerprint_candles,
+    _metrics_payload,
+    _regime_label,
+)
 
 __all__ = [
     "BATCH02_PREREG_JSON",
@@ -173,7 +175,7 @@ def execute_batch02(
         regime = _regime_label(engine.detect(candles))
         n = len(trades)
         net_returns = [t.net_return for t in trades]
-        payload = _metrics_payload(trades)
+        payload = _metrics_payload(list(trades))
         if payload.get("insufficient_sample"):
             status, reason = "INSUFFICIENT_SAMPLE", f"n={n} < harness MIN_SAMPLE"
         else:
