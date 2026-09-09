@@ -1,0 +1,323 @@
+{
+  "protocol_fingerprint": "d2f17f91470adc44af62c41900215b063e0c345785c509300305d3c96bbf01ee",
+  "dataset_fingerprint": "68778ce1dd11d03d74f59d5a",
+  "data_window": {
+    "BTC:5m": "2026-09-05T21:40:00+00:00..2026-09-09T08:55:00+00:00 n=1000",
+    "BTC:1h": "2026-07-29T17:00:00+00:00..2026-09-09T08:00:00+00:00 n=1000",
+    "ETH:5m": "2026-09-05T21:40:00+00:00..2026-09-09T08:55:00+00:00 n=1000",
+    "ETH:1h": "2026-07-29T17:00:00+00:00..2026-09-09T08:00:00+00:00 n=1000",
+    "SOL:5m": "2026-09-05T21:40:00+00:00..2026-09-09T08:55:00+00:00 n=1000",
+    "SOL:1h": "2026-07-29T17:00:00+00:00..2026-09-09T08:00:00+00:00 n=1000"
+  },
+  "risk_model": "structural_stop_adverse_first_next_bar_open_v1",
+  "cells": [
+    {
+      "strategy_id": "momentum",
+      "asset": "BTC",
+      "timeframe": "5m",
+      "regime": "LOW_VOL|MIXED|TRENDING",
+      "status": "INSUFFICIENT_SAMPLE",
+      "n_trades": 9,
+      "metrics_json": "{\"cost_model\": \"protocol commission_rate + slippage both sides\", \"gross_expectancy\": -0.0006139702698275306, \"max_drawdown\": 0.016240538095148915, \"n\": 9, \"net_expectancy\": -0.0018139702698275308, \"permutation_pvalue\": 0.942, \"prob_sharpe_gt0\": 0.036, \"profit_factor\": 0.25783013596025584, \"sharpe_ci_high\": -0.07926297208442672, \"sharpe_ci_low\": -2.6700505109764125, \"sharpe_per_trade\": -0.6292890329526745, \"win_rate\": 0.2222222222222222}",
+      "reason": "n=9 < preregistered minimum 15"
+    },
+    {
+      "strategy_id": "trend",
+      "asset": "BTC",
+      "timeframe": "5m",
+      "regime": "LOW_VOL|MIXED|TRENDING",
+      "status": "INSUFFICIENT_SAMPLE",
+      "n_trades": 0,
+      "metrics_json": "{}",
+      "reason": "n=0 < preregistered minimum 15"
+    },
+    {
+      "strategy_id": "breakout",
+      "asset": "BTC",
+      "timeframe": "5m",
+      "regime": "LOW_VOL|MIXED|TRENDING",
+      "status": "FAILED_CELL",
+      "n_trades": 24,
+      "metrics_json": "{\"cost_model\": \"protocol commission_rate + slippage both sides\", \"gross_expectancy\": -0.0011871298653529643, \"max_drawdown\": 0.05884021819037899, \"n\": 24, \"net_expectancy\": -0.0023871298653529638, \"permutation_pvalue\": 1.0, \"prob_sharpe_gt0\": 0.0, \"profit_factor\": 0.10376436776212133, \"sharpe_ci_high\": -0.7383668405450136, \"sharpe_ci_low\": -7.219850223175143, \"sharpe_per_trade\": -1.3251886396618622, \"win_rate\": 0.08333333333333333}",
+      "reason": "failed gates: expectancy,sharpe,ci_excludes_negative,significance"
+    },
+    {
+      "strategy_id": "mean_reversion",
+      "asset": "BTC",
+      "timeframe": "5m",
+      "regime": "LOW_VOL|MIXED|TRENDING",
+      "status": "FAILED_CELL",
+      "n_trades": 15,
+      "metrics_json": "{\"cost_model\": \"protocol commission_rate + slippage both sides\", \"gross_expectancy\": -0.00012433880706756272, \"max_drawdown\": 0.019746877479636882, \"n\": 15, \"net_expectancy\": -0.001324338807067563, \"permutation_pvalue\": 0.934, \"prob_sharpe_gt0\": 0.036, \"profit_factor\": 0.4004037772658336, \"sharpe_ci_high\": -0.023236093424294675, \"sharpe_ci_low\": -1.0561351717771577, \"sharpe_per_trade\": -0.430936732127476, \"win_rate\": 0.3333333333333333}",
+      "reason": "failed gates: expectancy,sharpe,ci_excludes_negative,significance"
+    },
+    {
+      "strategy_id": "volatility",
+      "asset": "BTC",
+      "timeframe": "5m",
+      "regime": "LOW_VOL|MIXED|TRENDING",
+      "status": "INSUFFICIENT_SAMPLE",
+      "n_trades": 4,
+      "metrics_json": "{\"cost_model\": \"protocol commission_rate + slippage both sides\", \"insufficient_sample\": true, \"n\": 4}",
+      "reason": "n=4 < preregistered minimum 15"
+    },
+    {
+      "strategy_id": "momentum",
+      "asset": "BTC",
+      "timeframe": "1h",
+      "regime": "HIGH_VOL|MIXED|RANGING",
+      "status": "FAILED_CELL",
+      "n_trades": 20,
+      "metrics_json": "{\"cost_model\": \"protocol commission_rate + slippage both sides\", \"gross_expectancy\": 0.005550972834154582, \"max_drawdown\": 0.08625260007354707, \"n\": 20, \"net_expectancy\": 0.004350972834154582, \"permutation_pvalue\": 0.49, \"prob_sharpe_gt0\": 0.608, \"profit_factor\": 1.5725232568451917, \"sharpe_ci_high\": 0.33260732161278933, \"sharpe_ci_low\": -1.168113156374891, \"sharpe_per_trade\": 0.08954989299720185, \"win_rate\": 0.25}",
+      "reason": "failed gates: sharpe,significance"
+    },
+    {
+      "strategy_id": "trend",
+      "asset": "BTC",
+      "timeframe": "1h",
+      "regime": "HIGH_VOL|MIXED|RANGING",
+      "status": "INSUFFICIENT_SAMPLE",
+      "n_trades": 9,
+      "metrics_json": "{\"cost_model\": \"protocol commission_rate + slippage both sides\", \"gross_expectancy\": 0.01892820520750937, \"max_drawdown\": 0.06397188552187344, \"n\": 9, \"net_expectancy\": 0.017728205207509364, \"permutation_pvalue\": 0.428, \"prob_sharpe_gt0\": 0.74, \"profit_factor\": 3.0257510105141012, \"sharpe_ci_high\": 0.5947778362567312, \"sharpe_ci_low\": -0.7232470698417827, \"sharpe_per_trade\": 0.2509568295083694, \"win_rate\": 0.4444444444444444}",
+      "reason": "n=9 < preregistered minimum 15"
+    },
+    {
+      "strategy_id": "breakout",
+      "asset": "BTC",
+      "timeframe": "1h",
+      "regime": "HIGH_VOL|MIXED|RANGING",
+      "status": "FAILED_CELL",
+      "n_trades": 20,
+      "metrics_json": "{\"cost_model\": \"protocol commission_rate + slippage both sides\", \"gross_expectancy\": 0.008690271634290184, \"max_drawdown\": 0.0596941194846353, \"n\": 20, \"net_expectancy\": 0.007490271634290185, \"permutation_pvalue\": 0.346, \"prob_sharpe_gt0\": 0.762, \"profit_factor\": 2.3071530857736517, \"sharpe_ci_high\": 0.41065508565188397, \"sharpe_ci_low\": -0.4165336391895578, \"sharpe_per_trade\": 0.1809726576113047, \"win_rate\": 0.25}",
+      "reason": "failed gates: significance"
+    },
+    {
+      "strategy_id": "mean_reversion",
+      "asset": "BTC",
+      "timeframe": "1h",
+      "regime": "HIGH_VOL|MIXED|RANGING",
+      "status": "FAILED_CELL",
+      "n_trades": 15,
+      "metrics_json": "{\"cost_model\": \"protocol commission_rate + slippage both sides\", \"gross_expectancy\": -0.007219369890973525, \"max_drawdown\": 0.13106524163748212, \"n\": 15, \"net_expectancy\": -0.008419369890973525, \"permutation_pvalue\": 0.994, \"prob_sharpe_gt0\": 0.004, \"profit_factor\": 0.1925264935806324, \"sharpe_ci_high\": -0.29714404002264455, \"sharpe_ci_low\": -2.0728425657526897, \"sharpe_per_trade\": -0.7612109825225826, \"win_rate\": 0.13333333333333333}",
+      "reason": "failed gates: expectancy,sharpe,ci_excludes_negative,significance"
+    },
+    {
+      "strategy_id": "volatility",
+      "asset": "BTC",
+      "timeframe": "1h",
+      "regime": "HIGH_VOL|MIXED|RANGING",
+      "status": "INSUFFICIENT_SAMPLE",
+      "n_trades": 4,
+      "metrics_json": "{\"cost_model\": \"protocol commission_rate + slippage both sides\", \"insufficient_sample\": true, \"n\": 4}",
+      "reason": "n=4 < preregistered minimum 15"
+    },
+    {
+      "strategy_id": "momentum",
+      "asset": "ETH",
+      "timeframe": "5m",
+      "regime": "LOW_VOL|MIXED|TRENDING",
+      "status": "FAILED_CELL",
+      "n_trades": 23,
+      "metrics_json": "{\"cost_model\": \"protocol commission_rate + slippage both sides\", \"gross_expectancy\": -0.002448736306325288, \"max_drawdown\": 0.08556496738250448, \"n\": 23, \"net_expectancy\": -0.0036487363063252877, \"permutation_pvalue\": 1.0, \"prob_sharpe_gt0\": 0.0, \"profit_factor\": 0.11960079224106597, \"sharpe_ci_high\": -0.5392023949598758, \"sharpe_ci_low\": -3.0410476234463473, \"sharpe_per_trade\": -1.0632051978479098, \"win_rate\": 0.13043478260869565}",
+      "reason": "failed gates: expectancy,sharpe,ci_excludes_negative,significance"
+    },
+    {
+      "strategy_id": "trend",
+      "asset": "ETH",
+      "timeframe": "5m",
+      "regime": "LOW_VOL|MIXED|TRENDING",
+      "status": "INSUFFICIENT_SAMPLE",
+      "n_trades": 0,
+      "metrics_json": "{}",
+      "reason": "n=0 < preregistered minimum 15"
+    },
+    {
+      "strategy_id": "breakout",
+      "asset": "ETH",
+      "timeframe": "5m",
+      "regime": "LOW_VOL|MIXED|TRENDING",
+      "status": "FAILED_CELL",
+      "n_trades": 29,
+      "metrics_json": "{\"cost_model\": \"protocol commission_rate + slippage both sides\", \"gross_expectancy\": -0.0021927407193013384, \"max_drawdown\": 0.09529375537278739, \"n\": 29, \"net_expectancy\": -0.0033927407193013385, \"permutation_pvalue\": 1.0, \"prob_sharpe_gt0\": 0.0, \"profit_factor\": 0.018739329714474878, \"sharpe_ci_high\": -1.6678401764037734, \"sharpe_ci_low\": -7.6860048940715595, \"sharpe_per_trade\": -2.5861789092719287, \"win_rate\": 0.06896551724137931}",
+      "reason": "failed gates: expectancy,sharpe,ci_excludes_negative,significance"
+    },
+    {
+      "strategy_id": "mean_reversion",
+      "asset": "ETH",
+      "timeframe": "5m",
+      "regime": "LOW_VOL|MIXED|TRENDING",
+      "status": "INSUFFICIENT_SAMPLE",
+      "n_trades": 13,
+      "metrics_json": "{\"cost_model\": \"protocol commission_rate + slippage both sides\", \"gross_expectancy\": 0.001102187477891718, \"max_drawdown\": 0.02182835756305462, \"n\": 13, \"net_expectancy\": -9.781252210828203e-05, \"permutation_pvalue\": 0.474, \"prob_sharpe_gt0\": 0.462, \"profit_factor\": 0.9619627461615281, \"sharpe_ci_high\": 0.3827057861834011, \"sharpe_ci_low\": -0.6511750607675992, \"sharpe_per_trade\": -0.016842139360055138, \"win_rate\": 0.46153846153846156}",
+      "reason": "n=13 < preregistered minimum 15"
+    },
+    {
+      "strategy_id": "volatility",
+      "asset": "ETH",
+      "timeframe": "5m",
+      "regime": "LOW_VOL|MIXED|TRENDING",
+      "status": "INSUFFICIENT_SAMPLE",
+      "n_trades": 3,
+      "metrics_json": "{\"cost_model\": \"protocol commission_rate + slippage both sides\", \"insufficient_sample\": true, \"n\": 3}",
+      "reason": "n=3 < preregistered minimum 15"
+    },
+    {
+      "strategy_id": "momentum",
+      "asset": "ETH",
+      "timeframe": "1h",
+      "regime": "MIXED",
+      "status": "FAILED_CELL",
+      "n_trades": 29,
+      "metrics_json": "{\"cost_model\": \"protocol commission_rate + slippage both sides\", \"gross_expectancy\": -0.0004957790615862606, \"max_drawdown\": 0.19322441510499802, \"n\": 29, \"net_expectancy\": -0.00169577906158626, \"permutation_pvalue\": 0.502, \"prob_sharpe_gt0\": 0.338, \"profit_factor\": 0.8636011295229715, \"sharpe_ci_high\": 0.1967737173310367, \"sharpe_ci_low\": -2.18665629558168, \"sharpe_per_trade\": -0.033274615949483805, \"win_rate\": 0.13793103448275862}",
+      "reason": "failed gates: expectancy,sharpe,ci_excludes_negative,significance"
+    },
+    {
+      "strategy_id": "trend",
+      "asset": "ETH",
+      "timeframe": "1h",
+      "regime": "MIXED",
+      "status": "INSUFFICIENT_SAMPLE",
+      "n_trades": 10,
+      "metrics_json": "{\"cost_model\": \"protocol commission_rate + slippage both sides\", \"gross_expectancy\": 0.015659001628291865, \"max_drawdown\": 0.10052067786828359, \"n\": 10, \"net_expectancy\": 0.014459001628291867, \"permutation_pvalue\": 0.48, \"prob_sharpe_gt0\": 0.71, \"profit_factor\": 2.0827314753589232, \"sharpe_ci_high\": 0.5238047059861924, \"sharpe_ci_low\": -1.428534036396474, \"sharpe_per_trade\": 0.17089770864217702, \"win_rate\": 0.3}",
+      "reason": "n=10 < preregistered minimum 15"
+    },
+    {
+      "strategy_id": "breakout",
+      "asset": "ETH",
+      "timeframe": "1h",
+      "regime": "MIXED",
+      "status": "FAILED_CELL",
+      "n_trades": 21,
+      "metrics_json": "{\"cost_model\": \"protocol commission_rate + slippage both sides\", \"gross_expectancy\": 0.003990344555007216, \"max_drawdown\": 0.12163859038005723, \"n\": 21, \"net_expectancy\": 0.0027903445550072183, \"permutation_pvalue\": 0.476, \"prob_sharpe_gt0\": 0.65, \"profit_factor\": 1.2829603654366413, \"sharpe_ci_high\": 0.28264941154633966, \"sharpe_ci_low\": -2.6566111965404504, \"sharpe_per_trade\": 0.04854794267236979, \"win_rate\": 0.09523809523809523}",
+      "reason": "failed gates: sharpe,significance"
+    },
+    {
+      "strategy_id": "mean_reversion",
+      "asset": "ETH",
+      "timeframe": "1h",
+      "regime": "MIXED",
+      "status": "INSUFFICIENT_SAMPLE",
+      "n_trades": 14,
+      "metrics_json": "{\"cost_model\": \"protocol commission_rate + slippage both sides\", \"gross_expectancy\": 0.0010576895118896434, \"max_drawdown\": 0.10570811388574695, \"n\": 14, \"net_expectancy\": -0.00014231048811035586, \"permutation_pvalue\": 0.486, \"prob_sharpe_gt0\": 0.5, \"profit_factor\": 0.9866358035375229, \"sharpe_ci_high\": 0.4035205596441928, \"sharpe_ci_low\": -0.5629851350635019, \"sharpe_per_trade\": -0.005541298914079731, \"win_rate\": 0.42857142857142855}",
+      "reason": "n=14 < preregistered minimum 15"
+    },
+    {
+      "strategy_id": "volatility",
+      "asset": "ETH",
+      "timeframe": "1h",
+      "regime": "MIXED",
+      "status": "INSUFFICIENT_SAMPLE",
+      "n_trades": 6,
+      "metrics_json": "{\"cost_model\": \"protocol commission_rate + slippage both sides\", \"gross_expectancy\": -0.009234873065459096, \"max_drawdown\": 0.06807553342453786, \"n\": 6, \"net_expectancy\": -0.010434873065459099, \"permutation_pvalue\": 0.926, \"prob_sharpe_gt0\": 0.028, \"profit_factor\": 0.20111761060386632, \"sharpe_ci_high\": -0.07442839041341089, \"sharpe_ci_low\": -3.435149870538887, \"sharpe_per_trade\": -0.7170987361283011, \"win_rate\": 0.16666666666666666}",
+      "reason": "n=6 < preregistered minimum 15"
+    },
+    {
+      "strategy_id": "momentum",
+      "asset": "SOL",
+      "timeframe": "5m",
+      "regime": "LOW_VOL|MIXED|TRENDING",
+      "status": "FAILED_CELL",
+      "n_trades": 20,
+      "metrics_json": "{\"cost_model\": \"protocol commission_rate + slippage both sides\", \"gross_expectancy\": -0.0019936830273650915, \"max_drawdown\": 0.08492680395988585, \"n\": 20, \"net_expectancy\": -0.003193683027365091, \"permutation_pvalue\": 0.98, \"prob_sharpe_gt0\": 0.024, \"profit_factor\": 0.3478332713494439, \"sharpe_ci_high\": -0.1055013577400018, \"sharpe_ci_low\": -1.4571375724371716, \"sharpe_per_trade\": -0.4816337989638777, \"win_rate\": 0.15}",
+      "reason": "failed gates: expectancy,sharpe,ci_excludes_negative,significance"
+    },
+    {
+      "strategy_id": "trend",
+      "asset": "SOL",
+      "timeframe": "5m",
+      "regime": "LOW_VOL|MIXED|TRENDING",
+      "status": "INSUFFICIENT_SAMPLE",
+      "n_trades": 2,
+      "metrics_json": "{\"cost_model\": \"protocol commission_rate + slippage both sides\", \"insufficient_sample\": true, \"n\": 2}",
+      "reason": "n=2 < preregistered minimum 15"
+    },
+    {
+      "strategy_id": "breakout",
+      "asset": "SOL",
+      "timeframe": "5m",
+      "regime": "LOW_VOL|MIXED|TRENDING",
+      "status": "FAILED_CELL",
+      "n_trades": 23,
+      "metrics_json": "{\"cost_model\": \"protocol commission_rate + slippage both sides\", \"gross_expectancy\": -0.0023242374122177875, \"max_drawdown\": 0.09155937732185554, \"n\": 23, \"net_expectancy\": -0.0035242374122177876, \"permutation_pvalue\": 0.996, \"prob_sharpe_gt0\": 0.0, \"profit_factor\": 0.19117295926588365, \"sharpe_ci_high\": -0.2532668522790122, \"sharpe_ci_low\": -7.287790532394082, \"sharpe_per_trade\": -0.7893751386975663, \"win_rate\": 0.08695652173913043}",
+      "reason": "failed gates: expectancy,sharpe,ci_excludes_negative,significance"
+    },
+    {
+      "strategy_id": "mean_reversion",
+      "asset": "SOL",
+      "timeframe": "5m",
+      "regime": "LOW_VOL|MIXED|TRENDING",
+      "status": "INSUFFICIENT_SAMPLE",
+      "n_trades": 14,
+      "metrics_json": "{\"cost_model\": \"protocol commission_rate + slippage both sides\", \"gross_expectancy\": -0.0012681501919961508, \"max_drawdown\": 0.051270235788115515, \"n\": 14, \"net_expectancy\": -0.002468150191996151, \"permutation_pvalue\": 0.896, \"prob_sharpe_gt0\": 0.108, \"profit_factor\": 0.4771617749476295, \"sharpe_ci_high\": 0.11522893908615106, \"sharpe_ci_low\": -1.5262211956436857, \"sharpe_per_trade\": -0.33275844697930534, \"win_rate\": 0.21428571428571427}",
+      "reason": "n=14 < preregistered minimum 15"
+    },
+    {
+      "strategy_id": "volatility",
+      "asset": "SOL",
+      "timeframe": "5m",
+      "regime": "LOW_VOL|MIXED|TRENDING",
+      "status": "INSUFFICIENT_SAMPLE",
+      "n_trades": 3,
+      "metrics_json": "{\"cost_model\": \"protocol commission_rate + slippage both sides\", \"insufficient_sample\": true, \"n\": 3}",
+      "reason": "n=3 < preregistered minimum 15"
+    },
+    {
+      "strategy_id": "momentum",
+      "asset": "SOL",
+      "timeframe": "1h",
+      "regime": "LOW_VOL|MIXED|RANGING",
+      "status": "FAILED_CELL",
+      "n_trades": 23,
+      "metrics_json": "{\"cost_model\": \"protocol commission_rate + slippage both sides\", \"gross_expectancy\": -0.0008245003634857273, \"max_drawdown\": 0.1628106596100924, \"n\": 23, \"net_expectancy\": -0.0020245003634857275, \"permutation_pvalue\": 0.5, \"prob_sharpe_gt0\": 0.358, \"profit_factor\": 0.8427410927070483, \"sharpe_ci_high\": 0.21962610960093348, \"sharpe_ci_low\": -1.2111920830694354, \"sharpe_per_trade\": -0.047063508384161616, \"win_rate\": 0.21739130434782608}",
+      "reason": "failed gates: expectancy,sharpe,ci_excludes_negative,significance"
+    },
+    {
+      "strategy_id": "trend",
+      "asset": "SOL",
+      "timeframe": "1h",
+      "regime": "LOW_VOL|MIXED|RANGING",
+      "status": "INSUFFICIENT_SAMPLE",
+      "n_trades": 13,
+      "metrics_json": "{\"cost_model\": \"protocol commission_rate + slippage both sides\", \"gross_expectancy\": 0.006046578979718228, \"max_drawdown\": 0.1445943143090897, \"n\": 13, \"net_expectancy\": 0.004846578979718226, \"permutation_pvalue\": 0.488, \"prob_sharpe_gt0\": 0.604, \"profit_factor\": 1.3167678752003116, \"sharpe_ci_high\": 0.37422540415574757, \"sharpe_ci_low\": -1.2511998139712646, \"sharpe_per_trade\": 0.07415007877281435, \"win_rate\": 0.23076923076923078}",
+      "reason": "n=13 < preregistered minimum 15"
+    },
+    {
+      "strategy_id": "breakout",
+      "asset": "SOL",
+      "timeframe": "1h",
+      "regime": "LOW_VOL|MIXED|RANGING",
+      "status": "FAILED_CELL",
+      "n_trades": 18,
+      "metrics_json": "{\"cost_model\": \"protocol commission_rate + slippage both sides\", \"gross_expectancy\": 0.007917439983897136, \"max_drawdown\": 0.09393584650261326, \"n\": 18, \"net_expectancy\": 0.0067174399838971326, \"permutation_pvalue\": 0.448, \"prob_sharpe_gt0\": 0.706, \"profit_factor\": 1.6624354685957787, \"sharpe_ci_high\": 0.3619667941342414, \"sharpe_ci_low\": -1.1790274761479498, \"sharpe_per_trade\": 0.11763794730023791, \"win_rate\": 0.16666666666666666}",
+      "reason": "failed gates: significance"
+    },
+    {
+      "strategy_id": "mean_reversion",
+      "asset": "SOL",
+      "timeframe": "1h",
+      "regime": "LOW_VOL|MIXED|RANGING",
+      "status": "FAILED_CELL",
+      "n_trades": 16,
+      "metrics_json": "{\"cost_model\": \"protocol commission_rate + slippage both sides\", \"gross_expectancy\": 0.008876289799733142, \"max_drawdown\": 0.14405116869340767, \"n\": 16, \"net_expectancy\": 0.007676289799733141, \"permutation_pvalue\": 0.342, \"prob_sharpe_gt0\": 0.664, \"profit_factor\": 1.5533815233134394, \"sharpe_ci_high\": 0.45996343259668016, \"sharpe_ci_low\": -0.5099121204601696, \"sharpe_per_trade\": 0.1316260021563899, \"win_rate\": 0.375}",
+      "reason": "failed gates: significance"
+    },
+    {
+      "strategy_id": "volatility",
+      "asset": "SOL",
+      "timeframe": "1h",
+      "regime": "LOW_VOL|MIXED|RANGING",
+      "status": "INSUFFICIENT_SAMPLE",
+      "n_trades": 6,
+      "metrics_json": "{\"cost_model\": \"protocol commission_rate + slippage both sides\", \"gross_expectancy\": -0.00442728854233234, \"max_drawdown\": 0.05177748999009419, \"n\": 6, \"net_expectancy\": -0.005627288542332339, \"permutation_pvalue\": 0.716, \"prob_sharpe_gt0\": 0.274, \"profit_factor\": 0.5675158706834247, \"sharpe_ci_high\": 0.3740176105175482, \"sharpe_ci_low\": -2.018883096575225, \"sharpe_per_trade\": -0.21738113843886167, \"win_rate\": 0.3333333333333333}",
+      "reason": "n=6 < preregistered minimum 15"
+    }
+  ],
+  "baselines": [],
+  "proposed_status": {
+    "momentum": "LEGACY_VALIDATION_FAIL",
+    "trend": "INSUFFICIENT_EVIDENCE",
+    "breakout": "LEGACY_VALIDATION_FAIL",
+    "mean_reversion": "LEGACY_VALIDATION_FAIL",
+    "volatility": "INSUFFICIENT_EVIDENCE"
+  }
+}

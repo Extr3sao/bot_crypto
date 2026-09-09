@@ -1,0 +1,79 @@
+{
+  "checkpoint": "POC01-RECOVERY-AND-EVIDENCE-01",
+  "track": "C",
+  "note": "RESEARCH ONLY - no candidate enters PAPER; no POC01 authority change",
+  "admitted_at_utc": "2026-09-09T09:00:00Z",
+  "candidates": [
+    {
+      "idea_id": "idea-carry-funding-01",
+      "decision": "ACCEPTED_TO_LAB",
+      "candidate_id": "lab:181b85a1e4009d1007dc",
+      "spec_fingerprint": "181b85a1e4009d1007dce0b8d5f2eef245e4ee0b2b70e608a45bddd8a8fb8610",
+      "title": "Perpetual funding-rate carry (delta-neutral)",
+      "category": "carry_funding",
+      "target_regimes": [
+        "FUSED_CORRELATION",
+        "RANGE"
+      ]
+    },
+    {
+      "idea_id": "idea-cross-sectional-rs-01",
+      "decision": "ACCEPTED_TO_LAB",
+      "candidate_id": "lab:a979a2fc0e9a84303782",
+      "spec_fingerprint": "a979a2fc0e9a84303782936510f75a5d47e680a6e5ebd10702a163e264680605",
+      "title": "Cross-sectional relative-strength rotation",
+      "category": "cross_sectional",
+      "target_regimes": [
+        "TRANSITION",
+        "BEAR"
+      ]
+    },
+    {
+      "idea_id": "idea-session-time-01",
+      "decision": "ACCEPTED_TO_LAB",
+      "candidate_id": "lab:85c0c2e35aa3473975ea",
+      "spec_fingerprint": "85c0c2e35aa3473975ea1ca78fd194f7f4db7d36e42ddd5b21a8953ea18da540",
+      "title": "Session/time-of-day liquidity cycle",
+      "category": "session_time",
+      "target_regimes": [
+        "RANGE"
+      ]
+    },
+    {
+      "idea_id": "idea-vol-structure-01",
+      "decision": "ACCEPTED_TO_LAB",
+      "candidate_id": "lab:d800ae987e81fd9b9a0a",
+      "spec_fingerprint": "d800ae987e81fd9b9a0a3e71f4fd0ae3cdfa74910ab1cedf4f6ffabb69c87ba1",
+      "title": "Volatility term-structure compression",
+      "category": "volatility_structure",
+      "target_regimes": [
+        "CORRECTION",
+        "HIGH_VOL"
+      ]
+    },
+    {
+      "idea_id": "idea-liquidity-flow-01",
+      "decision": "ACCEPTED_TO_LAB",
+      "candidate_id": "lab:a4ea5ae6a0378d6c3cc2",
+      "spec_fingerprint": "a4ea5ae6a0378d6c3cc2f17569ce037bf6bb458f1f706ed0d375a8822b10a98f",
+      "title": "Order-flow imbalance fade",
+      "category": "liquidity_flow",
+      "target_regimes": [
+        "RANGE",
+        "TRANSITION"
+      ]
+    },
+    {
+      "idea_id": "idea-regime-transition-defense-01",
+      "decision": "ACCEPTED_TO_LAB",
+      "candidate_id": "lab:876872db4af946f87990",
+      "spec_fingerprint": "876872db4af946f879907e667b1ae62fa872bc439b5e5dca757be6c0abee029a",
+      "title": "Regime-transition defensive flip",
+      "category": "multi_timeframe_context",
+      "target_regimes": [
+        "CORRECTION",
+        "TRANSITION"
+      ]
+    }
+  ]
+}

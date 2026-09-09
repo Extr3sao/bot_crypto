@@ -1291,3 +1291,49 @@ lock verification (Track F), and a hermetic regression environment (GOV-05).
   commit `39578a6`.
 - NEXT: CONTINUE_POC01 + POST_POC01_ANALYSIS + SHADOW_CAMPAIGN_V2 +
   CONFIRMATION_WAIT.
+
+## ADR-0028 — POC01 recovery + valid-day semantics repair + retro execution + shadow V2 prep (POC01-RECOVERY-AND-EVIDENCE-01)
+
+Date: 2026-09-09 · Base: `31fd5d2`
+
+### Context
+
+Runtime was DOWN 15.25h (2026-09-08T17:12:49Z -> 2026-09-09T08:28:07Z).
+Checkpoint required recovery via the existing resume contract, an audit of
+the reported valid-day contradiction (DEF-POC01-OBS-006), coverage metrics,
+execution of the frozen legacy retro protocol on real data, orthogonal
+candidate research, shadow V2 preparation, and Bybit conformance.
+
+### Decision
+
+1. **Recovery**: resumed via `run_campaign_observation(resume=True)` — the
+   existing contract. Campaign_id preserved (`POC-01-paper-observation-01`);
+   sha256 diff proves only the heartbeat and a new 09-09 daily report were
+   appended; 09-08 artifacts byte-identical.
+2. **DEF-POC01-OBS-006 CONFIRMED and repaired** (`paper/observation_metrics.py`):
+   COMPLETED_VALID_DAYS = count(FINALIZED ∧ COUNTED ∧ VALID), decoupled from
+   trade count; DAYS_GE_3 / PERCENT_DAYS_GE_3 separate; zero-trade valid
+   days count. Reporting semantics only; raw observations immutable.
+3. **Artifact-date correction**: 2026-09-07 has no daily-report artifact ->
+   NOT_OBSERVED. First finalized/counted/valid day = 2026-09-08 (0 trades).
+4. **Coverage accounting**: per-day expected/observed/downtime minutes with
+   UTC-midnight clipping; coverage is evidence only, never a validity
+   override; no new threshold invented.
+5. **Retro execution on real data**: fingerprint verified equal to the
+   frozen value pre-execution; 30 real-data cells; honest negative result
+   (0 VALIDATED / 14 FAILED / 16 INSUFFICIENT). Proposed statuses are
+   evidence only; POC01 authority untouched; 0 baselines (fail-closed).
+6. **Lab intake**: 6 orthogonal regime-first candidates (carry_funding,
+   cross_sectional, session_time, liquidity_flow, volatility_structure,
+   multi_timeframe_context) — spec-frozen, RESEARCH ONLY.
+7. **Shadow V2 prep** (`shadow/integration.py`): ShadowCaptureHook wiring
+   Risk-REJECT -> capture -> PIT resolution; isolation AST-tested.
+8. **Bybit**: full conformance suite through the real `BybitConnector` call
+   path with simulated transport — PASS.
+
+### Consequences
+
+- COMPLETED_VALID_DAYS = 1 (2026-09-08, zero-trade valid day counts).
+- 15.25h outage fully reported as per-day coverage evidence.
+- NEXT: CONTINUE_POC01 + LEGACY_EVIDENCE_ANALYSIS + STRATEGY_DISCOVERY +
+  SHADOW_CAMPAIGN_V2 + CONFIRMATION_WAIT.

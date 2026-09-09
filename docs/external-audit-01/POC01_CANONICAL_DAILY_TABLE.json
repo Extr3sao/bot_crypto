@@ -1,0 +1,175 @@
+{
+  "checkpoint": "POC01-RECOVERY-AND-EVIDENCE-01",
+  "generated_at_utc": "2026-09-09T09:36:51.968869+00:00",
+  "downtime_interval_utc": [
+    "2026-09-08T17:12:49+00:00",
+    "2026-09-09T08:28:07+00:00"
+  ],
+  "downtime_seconds_total": 54918,
+  "days": [
+    {
+      "date": "2026-09-06",
+      "status": "BURN_IN",
+      "counted": false,
+      "finalized": true,
+      "valid": false,
+      "validity_reason": "preregistered burn-in day; excluded from all KPIs",
+      "coverage": {
+        "expected_observation_minutes": 1440.0,
+        "observed_minutes": 1440.0,
+        "downtime_minutes": 0.0,
+        "coverage_ratio": 1.0,
+        "scans_expected": null,
+        "scans_observed": 0,
+        "provider_failures": 0,
+        "data_gaps": 0,
+        "stale_events": 0,
+        "future_events": 0,
+        "runtime_outage_intervals": []
+      },
+      "activity": {
+        "scans": 0,
+        "proposals": 0,
+        "selected": 0,
+        "risk_accepts": 0,
+        "risk_rejects": 0,
+        "paper_opens": 0,
+        "paper_closes": 0,
+        "trades": 0,
+        "realized_pnl": 0.0,
+        "trades_ge_3": false,
+        "provider_failures": 0
+      },
+      "runtime_downtime_minutes": 0.0
+    },
+    {
+      "date": "2026-09-07",
+      "status": "PARTIAL",
+      "counted": false,
+      "finalized": false,
+      "valid": false,
+      "validity_reason": "current UTC day; observation still in progress",
+      "coverage": {
+        "expected_observation_minutes": 1440.0,
+        "observed_minutes": 1440.0,
+        "downtime_minutes": 0.0,
+        "coverage_ratio": 1.0,
+        "scans_expected": null,
+        "scans_observed": 0,
+        "provider_failures": 0,
+        "data_gaps": 0,
+        "stale_events": 0,
+        "future_events": 0,
+        "runtime_outage_intervals": []
+      },
+      "activity": {
+        "scans": 0,
+        "proposals": 0,
+        "selected": 0,
+        "risk_accepts": 0,
+        "risk_rejects": 0,
+        "paper_opens": 0,
+        "paper_closes": 0,
+        "trades": 0,
+        "realized_pnl": 0.0,
+        "trades_ge_3": false,
+        "provider_failures": 0
+      },
+      "runtime_downtime_minutes": 0.0
+    },
+    {
+      "date": "2026-09-08",
+      "status": "COUNTED",
+      "counted": true,
+      "finalized": true,
+      "valid": true,
+      "validity_reason": "finalized: observation contract satisfied (complete decision cycle, no provider failures); runtime outage recorded as coverage evidence (MATERIAL_OBSERVATION_GAP, no preregistered day-invalidation threshold)",
+      "coverage": {
+        "expected_observation_minutes": 1440.0,
+        "observed_minutes": 1032.8166666833333,
+        "downtime_minutes": 407.1833333166667,
+        "coverage_ratio": 0.7172337963078703,
+        "scans_expected": null,
+        "scans_observed": 1,
+        "provider_failures": 0,
+        "data_gaps": 0,
+        "stale_events": 0,
+        "future_events": 0,
+        "runtime_outage_intervals": [
+          [
+            "2026-09-08T17:12:49+00:00",
+            "2026-09-09T08:28:07+00:00"
+          ]
+        ]
+      },
+      "activity": {
+        "scans": 1,
+        "proposals": 0,
+        "selected": 0,
+        "risk_accepts": 0,
+        "risk_rejects": 0,
+        "paper_opens": 0,
+        "paper_closes": 0,
+        "trades": 0,
+        "realized_pnl": 0.0,
+        "trades_ge_3": false,
+        "provider_failures": 0
+      },
+      "runtime_downtime_minutes": 407.1833333166667
+    },
+    {
+      "date": "2026-09-09",
+      "status": "PARTIAL",
+      "counted": false,
+      "finalized": false,
+      "valid": false,
+      "validity_reason": "current UTC day; observation still in progress",
+      "coverage": {
+        "expected_observation_minutes": 1440.0,
+        "observed_minutes": 931.8833333333333,
+        "downtime_minutes": 508.1166666666667,
+        "coverage_ratio": 0.6471412037037036,
+        "scans_expected": null,
+        "scans_observed": 0,
+        "provider_failures": 0,
+        "data_gaps": 0,
+        "stale_events": 0,
+        "future_events": 0,
+        "runtime_outage_intervals": [
+          [
+            "2026-09-08T17:12:49+00:00",
+            "2026-09-09T08:28:07+00:00"
+          ]
+        ]
+      },
+      "activity": {
+        "scans": 0,
+        "proposals": 0,
+        "selected": 0,
+        "risk_accepts": 0,
+        "risk_rejects": 0,
+        "paper_opens": 0,
+        "paper_closes": 0,
+        "trades": 0,
+        "realized_pnl": 0.0,
+        "trades_ge_3": false,
+        "provider_failures": 0
+      },
+      "runtime_downtime_minutes": 508.1166666666667
+    }
+  ],
+  "kpis": {
+    "COMPLETED_VALID_DAYS": 1,
+    "DAYS_GE_3": 0,
+    "PERCENT_DAYS_GE_3": 0.0,
+    "TOTAL_TRADES": 0,
+    "AVG_TRADES_PER_VALID_DAY": 0.0
+  },
+  "notes": [
+    "DEF-POC01-OBS-006 repair: validity decoupled from trade count; zero-trade valid days count.",
+    "2026-09-07 recorded NOT_OBSERVED (no daily-report artifact) \u2014 corrects the prior D1 date mapping; nothing hidden.",
+    "2026-09-08 valid with 0 trades; 6.79h outage within the day reported as coverage evidence.",
+    "2026-09-09 PARTIAL (resumed 08:28:07Z); excluded from KPIs.",
+    "No new validity threshold invented; preregistered contract applied."
+  ]
+}

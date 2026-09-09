@@ -145,3 +145,12 @@ Code-reviewer reporto 3 rondas con nits accionables, todos cerrados: (1) fmean->
 - Git object read: `git show 39578a6:docs/admission-foundation-01/evidence/CONFIRMATION_MANIFEST.json` — CONF-EDGE-002-001 verified consumed=false, window 2026-09-08→2026-09-22, immutable.
 - Proven: settings baseline failure is host-env driven (EXCHANGE_ID=bybit exported); `env -u` + hermetic runner → 947/0. Repo default unchanged.
 - POC01 isolation: sha256 manifest of all campaign artifacts identical before/after checkpoint.
+
+[2026-09-09] POC01-RECOVERY-AND-EVIDENCE-01 retrieval log
+- Probed: ports 8766/8767 (000, down), netstat (no listeners), CAMPAIGN_STATE heartbeat (2026-09-08T17:12:49Z).
+- Executed: run_campaign_observation(resume=True) at 2026-09-09T08:28:07Z — existing resume contract; campaign_id preserved; sha256 before/after diff = heartbeat + new 09-09 daily report only.
+- Read: paper_multi_agent.py (dashboard default port 8765; daily report date-dir semantics) — recovery mechanics.
+- Audited: docs continuity records vs artifacts — DEF-POC01-OBS-006 confirmed (validity trade-coupled); 2026-09-07 has no daily artifact (prior D1 date mapping wrong; corrected honestly).
+- Network: ccxt.binanceusdm public fetch_ohlcv OK (no credentials); dataset frozen + fingerprinted for retro execution.
+- Read: research/families/* generate() contract, regime.py RegimeType, indicators/builtin.py — retro executor integration.
+- Git object read: CONFIRMATION_MANIFEST.json @ 39578a6 — consumed=false re-verified.
