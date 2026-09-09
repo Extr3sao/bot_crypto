@@ -1,0 +1,356 @@
+{
+  "source": "LEGACY_RETRO_EXECUTION_RESULTS.json (protocol_fingerprint d2f17f91470a\u2026, NOT re-executed)",
+  "cell_counts": {
+    "total": 30,
+    "failed": 14,
+    "insufficient": 16,
+    "validated": 0
+  },
+  "primary_failure_modes": {
+    "INSUFFICIENT_SAMPLE(n<15)": 16,
+    "NEGATIVE_NET_EXPECTANCY": 9,
+    "PROB_SHARPE_BELOW_0.90": 5
+  },
+  "gate_incidence": {
+    "NEGATIVE_NET_EXPECTANCY": 9,
+    "PF_BELOW_1": 9,
+    "PROB_SHARPE_BELOW_0.90": 14,
+    "NOT_SIGNIFICANT": 14,
+    "SHARPE_CI_ENTIRELY_BELOW_0": 7
+  },
+  "gate_incidence_by_strategy": {
+    "breakout": {
+      "NEGATIVE_NET_EXPECTANCY": 3,
+      "PF_BELOW_1": 3,
+      "PROB_SHARPE_BELOW_0.90": 6,
+      "NOT_SIGNIFICANT": 6,
+      "SHARPE_CI_ENTIRELY_BELOW_0": 3
+    },
+    "mean_reversion": {
+      "NEGATIVE_NET_EXPECTANCY": 2,
+      "PF_BELOW_1": 2,
+      "PROB_SHARPE_BELOW_0.90": 3,
+      "NOT_SIGNIFICANT": 3,
+      "SHARPE_CI_ENTIRELY_BELOW_0": 2
+    },
+    "momentum": {
+      "PROB_SHARPE_BELOW_0.90": 5,
+      "NOT_SIGNIFICANT": 5,
+      "NEGATIVE_NET_EXPECTANCY": 4,
+      "PF_BELOW_1": 4,
+      "SHARPE_CI_ENTIRELY_BELOW_0": 2
+    }
+  },
+  "cost_analysis": {
+    "avg_cost_drag_per_trade": 0.0012,
+    "largest_drag_cells": [
+      [
+        "breakout",
+        "BTC",
+        "5m",
+        0.0012,
+        -0.00119
+      ],
+      [
+        "mean_reversion",
+        "BTC",
+        "5m",
+        0.0012,
+        -0.00012
+      ],
+      [
+        "momentum",
+        "BTC",
+        "1h",
+        0.0012,
+        0.00555
+      ],
+      [
+        "breakout",
+        "BTC",
+        "1h",
+        0.0012,
+        0.00869
+      ],
+      [
+        "mean_reversion",
+        "BTC",
+        "1h",
+        0.0012,
+        -0.00722
+      ]
+    ]
+  },
+  "failed_cell_detail": {
+    "breakout": [
+      {
+        "cell": "BTC/5m/LOW_VOL|MIXED|TRENDING",
+        "gates": [
+          "NEGATIVE_NET_EXPECTANCY",
+          "PF_BELOW_1",
+          "PROB_SHARPE_BELOW_0.90",
+          "NOT_SIGNIFICANT",
+          "SHARPE_CI_ENTIRELY_BELOW_0"
+        ],
+        "net": -0.00239,
+        "pf": 0.104,
+        "p": 1.0
+      },
+      {
+        "cell": "BTC/1h/HIGH_VOL|MIXED|RANGING",
+        "gates": [
+          "PROB_SHARPE_BELOW_0.90",
+          "NOT_SIGNIFICANT"
+        ],
+        "net": 0.00749,
+        "pf": 2.307,
+        "p": 0.346
+      },
+      {
+        "cell": "ETH/5m/LOW_VOL|MIXED|TRENDING",
+        "gates": [
+          "NEGATIVE_NET_EXPECTANCY",
+          "PF_BELOW_1",
+          "PROB_SHARPE_BELOW_0.90",
+          "NOT_SIGNIFICANT",
+          "SHARPE_CI_ENTIRELY_BELOW_0"
+        ],
+        "net": -0.00339,
+        "pf": 0.019,
+        "p": 1.0
+      },
+      {
+        "cell": "ETH/1h/MIXED",
+        "gates": [
+          "PROB_SHARPE_BELOW_0.90",
+          "NOT_SIGNIFICANT"
+        ],
+        "net": 0.00279,
+        "pf": 1.283,
+        "p": 0.476
+      },
+      {
+        "cell": "SOL/5m/LOW_VOL|MIXED|TRENDING",
+        "gates": [
+          "NEGATIVE_NET_EXPECTANCY",
+          "PF_BELOW_1",
+          "PROB_SHARPE_BELOW_0.90",
+          "NOT_SIGNIFICANT",
+          "SHARPE_CI_ENTIRELY_BELOW_0"
+        ],
+        "net": -0.00352,
+        "pf": 0.191,
+        "p": 0.996
+      },
+      {
+        "cell": "SOL/1h/LOW_VOL|MIXED|RANGING",
+        "gates": [
+          "PROB_SHARPE_BELOW_0.90",
+          "NOT_SIGNIFICANT"
+        ],
+        "net": 0.00672,
+        "pf": 1.662,
+        "p": 0.448
+      }
+    ],
+    "mean_reversion": [
+      {
+        "cell": "BTC/5m/LOW_VOL|MIXED|TRENDING",
+        "gates": [
+          "NEGATIVE_NET_EXPECTANCY",
+          "PF_BELOW_1",
+          "PROB_SHARPE_BELOW_0.90",
+          "NOT_SIGNIFICANT",
+          "SHARPE_CI_ENTIRELY_BELOW_0"
+        ],
+        "net": -0.00132,
+        "pf": 0.4,
+        "p": 0.934
+      },
+      {
+        "cell": "BTC/1h/HIGH_VOL|MIXED|RANGING",
+        "gates": [
+          "NEGATIVE_NET_EXPECTANCY",
+          "PF_BELOW_1",
+          "PROB_SHARPE_BELOW_0.90",
+          "NOT_SIGNIFICANT",
+          "SHARPE_CI_ENTIRELY_BELOW_0"
+        ],
+        "net": -0.00842,
+        "pf": 0.193,
+        "p": 0.994
+      },
+      {
+        "cell": "SOL/1h/LOW_VOL|MIXED|RANGING",
+        "gates": [
+          "PROB_SHARPE_BELOW_0.90",
+          "NOT_SIGNIFICANT"
+        ],
+        "net": 0.00768,
+        "pf": 1.553,
+        "p": 0.342
+      }
+    ],
+    "momentum": [
+      {
+        "cell": "BTC/1h/HIGH_VOL|MIXED|RANGING",
+        "gates": [
+          "PROB_SHARPE_BELOW_0.90",
+          "NOT_SIGNIFICANT"
+        ],
+        "net": 0.00435,
+        "pf": 1.573,
+        "p": 0.49
+      },
+      {
+        "cell": "ETH/5m/LOW_VOL|MIXED|TRENDING",
+        "gates": [
+          "NEGATIVE_NET_EXPECTANCY",
+          "PF_BELOW_1",
+          "PROB_SHARPE_BELOW_0.90",
+          "NOT_SIGNIFICANT",
+          "SHARPE_CI_ENTIRELY_BELOW_0"
+        ],
+        "net": -0.00365,
+        "pf": 0.12,
+        "p": 1.0
+      },
+      {
+        "cell": "ETH/1h/MIXED",
+        "gates": [
+          "NEGATIVE_NET_EXPECTANCY",
+          "PF_BELOW_1",
+          "PROB_SHARPE_BELOW_0.90",
+          "NOT_SIGNIFICANT"
+        ],
+        "net": -0.0017,
+        "pf": 0.864,
+        "p": 0.502
+      },
+      {
+        "cell": "SOL/5m/LOW_VOL|MIXED|TRENDING",
+        "gates": [
+          "NEGATIVE_NET_EXPECTANCY",
+          "PF_BELOW_1",
+          "PROB_SHARPE_BELOW_0.90",
+          "NOT_SIGNIFICANT",
+          "SHARPE_CI_ENTIRELY_BELOW_0"
+        ],
+        "net": -0.00319,
+        "pf": 0.348,
+        "p": 0.98
+      },
+      {
+        "cell": "SOL/1h/LOW_VOL|MIXED|RANGING",
+        "gates": [
+          "NEGATIVE_NET_EXPECTANCY",
+          "PF_BELOW_1",
+          "PROB_SHARPE_BELOW_0.90",
+          "NOT_SIGNIFICANT"
+        ],
+        "net": -0.00202,
+        "pf": 0.843,
+        "p": 0.5
+      }
+    ]
+  },
+  "insufficient_detail": [
+    {
+      "strategy_id": "momentum",
+      "cell": "BTC/5m/LOW_VOL|MIXED|TRENDING",
+      "n": 9,
+      "reason": "n=9 < preregistered minimum 15"
+    },
+    {
+      "strategy_id": "trend",
+      "cell": "BTC/5m/LOW_VOL|MIXED|TRENDING",
+      "n": 0,
+      "reason": "n=0 < preregistered minimum 15"
+    },
+    {
+      "strategy_id": "volatility",
+      "cell": "BTC/5m/LOW_VOL|MIXED|TRENDING",
+      "n": 4,
+      "reason": "n=4 < preregistered minimum 15"
+    },
+    {
+      "strategy_id": "trend",
+      "cell": "BTC/1h/HIGH_VOL|MIXED|RANGING",
+      "n": 9,
+      "reason": "n=9 < preregistered minimum 15"
+    },
+    {
+      "strategy_id": "volatility",
+      "cell": "BTC/1h/HIGH_VOL|MIXED|RANGING",
+      "n": 4,
+      "reason": "n=4 < preregistered minimum 15"
+    },
+    {
+      "strategy_id": "trend",
+      "cell": "ETH/5m/LOW_VOL|MIXED|TRENDING",
+      "n": 0,
+      "reason": "n=0 < preregistered minimum 15"
+    },
+    {
+      "strategy_id": "mean_reversion",
+      "cell": "ETH/5m/LOW_VOL|MIXED|TRENDING",
+      "n": 13,
+      "reason": "n=13 < preregistered minimum 15"
+    },
+    {
+      "strategy_id": "volatility",
+      "cell": "ETH/5m/LOW_VOL|MIXED|TRENDING",
+      "n": 3,
+      "reason": "n=3 < preregistered minimum 15"
+    },
+    {
+      "strategy_id": "trend",
+      "cell": "ETH/1h/MIXED",
+      "n": 10,
+      "reason": "n=10 < preregistered minimum 15"
+    },
+    {
+      "strategy_id": "mean_reversion",
+      "cell": "ETH/1h/MIXED",
+      "n": 14,
+      "reason": "n=14 < preregistered minimum 15"
+    },
+    {
+      "strategy_id": "volatility",
+      "cell": "ETH/1h/MIXED",
+      "n": 6,
+      "reason": "n=6 < preregistered minimum 15"
+    },
+    {
+      "strategy_id": "trend",
+      "cell": "SOL/5m/LOW_VOL|MIXED|TRENDING",
+      "n": 2,
+      "reason": "n=2 < preregistered minimum 15"
+    },
+    {
+      "strategy_id": "mean_reversion",
+      "cell": "SOL/5m/LOW_VOL|MIXED|TRENDING",
+      "n": 14,
+      "reason": "n=14 < preregistered minimum 15"
+    },
+    {
+      "strategy_id": "volatility",
+      "cell": "SOL/5m/LOW_VOL|MIXED|TRENDING",
+      "n": 3,
+      "reason": "n=3 < preregistered minimum 15"
+    },
+    {
+      "strategy_id": "trend",
+      "cell": "SOL/1h/LOW_VOL|MIXED|RANGING",
+      "n": 13,
+      "reason": "n=13 < preregistered minimum 15"
+    },
+    {
+      "strategy_id": "volatility",
+      "cell": "SOL/1h/LOW_VOL|MIXED|RANGING",
+      "n": 6,
+      "reason": "n=6 < preregistered minimum 15"
+    }
+  ],
+  "diagnosis": "Failure dominated by statistical significance + negative net expectancy (cost-adjusted), not drawdown; sample size is the binding constraint for the other half."
+}

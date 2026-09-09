@@ -154,3 +154,5 @@ Code-reviewer reporto 3 rondas con nits accionables, todos cerrados: (1) fmean->
 - Network: ccxt.binanceusdm public fetch_ohlcv OK (no credentials); dataset frozen + fingerprinted for retro execution.
 - Read: research/families/* generate() contract, regime.py RegimeType, indicators/builtin.py — retro executor integration.
 - Git object read: CONFIRMATION_MANIFEST.json @ 39578a6 — consumed=false re-verified.
+
+[2026-09-09] ALPHA-DISCOVERY-AND-SHADOW-V2-01 — retrieved POC01 daily reports (read-only), LEGACY_RETRO_EXECUTION_RESULTS.json, STRATEGY_LAB_CANDIDATES_01.json (+git-immutability proof), CONFIRMATION_MANIFEST.json via `git show 39578a6` (no checkout), Risk/cost-model/campaign-config sources for POC02 hashes. Produced: forensic_funnel.py + tests, discovery_execution.py + tests (real PIT run, 32 cells), discovery_view.py + tests, shadow/router.py + tests, POC02_MANIFEST.md, LEGACY_FAILURE_DIAGNOSIS.json, FINAL_REPORT + ADR-0029. POC01 untouched (hash re-verified). Hermetic 1052/0.

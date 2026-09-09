@@ -1337,3 +1337,22 @@ candidate research, shadow V2 preparation, and Bybit conformance.
 - 15.25h outage fully reported as per-day coverage evidence.
 - NEXT: CONTINUE_POC01 + LEGACY_EVIDENCE_ANALYSIS + STRATEGY_DISCOVERY +
   SHADOW_CAMPAIGN_V2 + CONFIRMATION_WAIT.
+
+## ADR-0029 — Discovery Batch 01, Shadow V2 router, POC02 preregistration, forensic funnel (ALPHA-DISCOVERY-AND-SHADOW-V2-01)
+
+- **Decision.** (1) POC01 is classified `DEGRADED_OBSERVATIONAL_CAMPAIGN` and will not be used for
+  production/profitability/frequency certification. (2) Discovery Batch 01 executed the six lab
+  candidates under the frozen legacy gates (no threshold lowering); zero passers, all failures and
+  below-minimum cells persisted; `DEF-DISCOVERY-001` registered for the carry_funding funding-window
+  unit ambiguity (repair = new fingerprinted batch, never a post-hoc edit). (3) Shadow V2 ships a
+  single `RiskGateRouter` (ACCEPT→PAPER unchanged / REJECT→immutable capture) plus conditioned
+  counterfactual metrics; strictly observational, mounted only in the next campaign. (4) POC02 is
+  preregistered (provider authority, ex-ante ≥0.80 coverage contract, shadow enabled) and NOT launched.
+- **Alternatives rejected.** Tuning discovery thresholds to manufacture trades; running discovery with
+  a looser harness; activating shadow inside POC01; launching POC02 immediately.
+- **Consequences.** Next campaign gains risk-reject counterfactual evidence; POC02 launch requires
+  governance authorization only (manifest frozen). Funnel telemetry now attributes frequency failure
+  (currently NO_SIGNAL at the PROPOSAL gate; SIGNAL/VERIFIED gates NOT_RECORDED by the runtime).
+- **Evidence.** FINAL_REPORT_ALPHA_DISCOVERY_AND_SHADOW_V2_01.md, DISCOVERY_BATCH_01_RESULTS.json,
+  LEGACY_FAILURE_DIAGNOSIS.json, POC02_MANIFEST.md; hermetic full-suite 1052/0 (exit 0); LIVE_CALLS=0;
+  FALSE_SUCCESS=0; POC01 artifacts byte-identical throughout.
