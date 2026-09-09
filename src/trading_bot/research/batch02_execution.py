@@ -180,7 +180,7 @@ def execute_batch02(
             status, reason = "INSUFFICIENT_SAMPLE", f"n={n} < harness MIN_SAMPLE"
         else:
             verdict = harness.evaluate_cell(
-                strategy_id=f"discovery:{category}",
+                strategy_id=category,
                 asset=asset,
                 timeframe=tf,
                 regime=regime,
@@ -251,11 +251,12 @@ def execute_batch02(
         series = {
             a: candles_by_key[(a, tf)] for a in assets if (a, tf) in candles_by_key
         }
+        universe_key = "+".join(assets)
         if len(series) < 2 or len(series) != len(assets):
             report.cells.append(
                 DiscoveryCell(
                     category="cross_sectional_v2",
-                    asset="|".join(assets),
+                    asset=universe_key,
                     timeframe=tf,
                     regime="UNCLASSIFIED",
                     status="NOT_APPLICABLE",
@@ -271,7 +272,7 @@ def execute_batch02(
         )
         _emit(
             "cross_sectional_v2",
-            "|".join(assets),
+            universe_key,
             tf,
             series[assets[0]],
             cs.trades,

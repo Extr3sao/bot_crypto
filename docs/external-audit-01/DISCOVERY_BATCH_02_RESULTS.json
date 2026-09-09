@@ -1,0 +1,503 @@
+{
+  "artifact": "DISCOVERY_BATCH_02_RESULTS",
+  "checkpoint": "POC02-LAUNCH-AND-DISCOVERY-BATCH-02",
+  "batch": "DISCOVERY-BATCH-02",
+  "preregistration": "DISCOVERY_BATCH_02_PREREGISTRATION.json",
+  "preregistration_sha256": "711c20fbb93d02fc061f6c07e71a5c381a5700f1fb6ddae42c2d54921e9eaf96",
+  "frozen_protocol_fingerprint": "a2bb90f3b8a988768dcc3aa21fc93676bdd2e28e611c88d6581ae80158c6d6de",
+  "batch01_spec_verification": {
+    "volatility_structure_v2": "volatility_structure",
+    "cross_sectional_v2": "cross_sectional"
+  },
+  "executed_at_utc": "2026-09-09T15:12:34+00:00",
+  "window_end_utc": "2026-09-09T15:12:34.350000+00:00",
+  "window_bars": {
+    "1h": 17520,
+    "5m": 1500
+  },
+  "funding_provenance": {
+    "BTC/USDT:USDT": {
+      "provider": "binanceusdm-public-ccxt",
+      "symbol": "BTC/USDT:USDT",
+      "interval_s": 28799,
+      "n_observations": 90,
+      "first_funding_ms": 1786377600000,
+      "last_funding_ms": 1788940800004,
+      "fetched_at_ms": 1788966790494,
+      "source_unit": "decimal_per_interval",
+      "freshness_note": "span_days=29.67 first=1786377600000 last=1788940800004 (public endpoint depth-limited; recorded, not extended)",
+      "window_start_ms": 1786374754350,
+      "window_end_ms": 1788966754350,
+      "data_fingerprint": "cc525f83e11c635745ec54b6f38a9197783aad2d30ce9691ad3be9cb2d4acd85"
+    },
+    "ETH/USDT:USDT": {
+      "provider": "binanceusdm-public-ccxt",
+      "symbol": "ETH/USDT:USDT",
+      "interval_s": 28799,
+      "n_observations": 90,
+      "first_funding_ms": 1786377600000,
+      "last_funding_ms": 1788940800004,
+      "fetched_at_ms": 1788966801670,
+      "source_unit": "decimal_per_interval",
+      "freshness_note": "span_days=29.67 first=1786377600000 last=1788940800004 (public endpoint depth-limited; recorded, not extended)",
+      "window_start_ms": 1786374754350,
+      "window_end_ms": 1788966754350,
+      "data_fingerprint": "8ee63e2cfabce3eb758bc98619c3103e0b8d82ca737033491439e7651fb147f2"
+    },
+    "SOL/USDT:USDT": {
+      "provider": "binanceusdm-public-ccxt",
+      "symbol": "SOL/USDT:USDT",
+      "interval_s": 28799,
+      "n_observations": 90,
+      "first_funding_ms": 1786377600000,
+      "last_funding_ms": 1788940800004,
+      "fetched_at_ms": 1788966815677,
+      "source_unit": "decimal_per_interval",
+      "freshness_note": "span_days=29.67 first=1786377600000 last=1788940800004 (public endpoint depth-limited; recorded, not extended)",
+      "window_start_ms": 1786374754350,
+      "window_end_ms": 1788966754350,
+      "data_fingerprint": "376ef8d28431bba26f961e963301ebc3d4d39ffb79e1073751330bfb065511b9"
+    }
+  },
+  "dataset_fingerprint": "5446061a6e7df6f06e27c1d1",
+  "window_meta": {
+    "BTC:5m": "n=1500 first=1788516900000 last=1788966600000",
+    "BTC:1h": "n=17520 first=1725897600000 last=1788966000000",
+    "ETH:5m": "n=1500 first=1788516900000 last=1788966600000",
+    "ETH:1h": "n=17520 first=1725897600000 last=1788966000000",
+    "SOL:5m": "n=1500 first=1788516900000 last=1788966600000",
+    "SOL:1h": "n=17520 first=1725897600000 last=1788966000000"
+  },
+  "preregistration_detail": {
+    "batch": "DISCOVERY-BATCH-02",
+    "prereg_note": "specs + window committed BEFORE execution; no retuning",
+    "prereg_artifact": "DISCOVERY_BATCH_02_PREREGISTRATION.json",
+    "prereg_sha256": "711c20fbb93d02fc061f6c07e71a5c381a5700f1fb6ddae42c2d54921e9eaf96",
+    "frozen_protocol": {
+      "commission_rate": 0.0004,
+      "slippage_bps": 2.0
+    },
+    "unit_contract_fingerprint": "529738ac652ba32cdd607257a349492db2d50152419c079d8e16274f17e42f43",
+    "batch01_spec_verification": {
+      "volatility_structure_v2": "volatility_structure",
+      "cross_sectional_v2": "cross_sectional"
+    },
+    "eval_spec_fingerprints": {
+      "volatility_structure_v2": "d94173d751043871b0ee7206d0a61ff4de9b71c512a0b0744a601422a0f4d879",
+      "cross_sectional_v2": "5e311b48acd2318515f0b79c6b87819851e6240fd2c3dd1c94879580e87a22f6",
+      "carry_funding_v2": "5702172fd947a321ecdf0b5dcd2d48a22c7d9d47cde8ad68f06a803dc00ff1b3"
+    },
+    "windows": {
+      "5m": {
+        "end_utc_exclusive_ms": 1788966754350
+      },
+      "1h": {
+        "end_utc_exclusive_ms": 1788966754350
+      }
+    }
+  },
+  "cells": [
+    {
+      "category": "volatility_structure_v2",
+      "asset": "BTC",
+      "timeframe": "1h",
+      "regime": "HIGH_VOL|MIXED|RANGING",
+      "status": "DISCOVERY_FAIL",
+      "n_trades": 196,
+      "metrics": {
+        "cost_model": "protocol commission_rate + slippage both sides",
+        "gross_expectancy": 0.00039300629279081557,
+        "max_drawdown": 0.5959085145995314,
+        "n": 196,
+        "net_expectancy": -0.0008069937072091836,
+        "permutation_pvalue": 0.66,
+        "prob_sharpe_gt0": 0.334,
+        "profit_factor": 0.9224081650155278,
+        "sharpe_ci_high": 0.08461094696932993,
+        "sharpe_ci_low": -0.1771097908929056,
+        "sharpe_per_trade": -0.029486569405118086,
+        "win_rate": 0.336734693877551
+      },
+      "reason": "failed gates: expectancy,sharpe,ci_excludes_negative,significance",
+      "spec_fingerprint": "d94173d751043871b0ee7206d0a61ff4de9b71c512a0b0744a601422a0f4d879"
+    },
+    {
+      "category": "carry_funding_v2",
+      "asset": "BTC",
+      "timeframe": "1h",
+      "regime": "HIGH_VOL|MIXED|RANGING",
+      "status": "INSUFFICIENT_SAMPLE",
+      "n_trades": 8,
+      "metrics": {
+        "cost_model": "protocol commission_rate + slippage both sides",
+        "direction_rule": "SHORT when mean funding > 0 (true carry); LONG when < 0",
+        "funding_observations": 90,
+        "gross_expectancy": -0.008585195983625,
+        "max_drawdown": 0.07514500694849802,
+        "n": 8,
+        "net_expectancy": -0.009592142233625,
+        "observed_interval_h": 8.0,
+        "observed_interval_s": 28800,
+        "permutation_pvalue": 0.982,
+        "prob_sharpe_gt0": 0.002,
+        "profit_factor": 0.13827519155340787,
+        "sharpe_ci_high": -0.2922965550589117,
+        "sharpe_ci_low": -4.22032836023774,
+        "sharpe_per_trade": -0.9371062073429737,
+        "source": "binanceusdm.fetch_funding_rate_history",
+        "unit_contract": "FUNDING-UNITS-CANONICAL-V1",
+        "win_rate": 0.125
+      },
+      "reason": "n=8 < preregistered minimum 15",
+      "spec_fingerprint": "5702172fd947a321ecdf0b5dcd2d48a22c7d9d47cde8ad68f06a803dc00ff1b3"
+    },
+    {
+      "category": "volatility_structure_v2",
+      "asset": "BTC",
+      "timeframe": "5m",
+      "regime": "HIGH_VOL|MIXED|TRENDING",
+      "status": "DISCOVERY_FAIL",
+      "n_trades": 15,
+      "metrics": {
+        "cost_model": "protocol commission_rate + slippage both sides",
+        "gross_expectancy": -0.002023769993533333,
+        "max_drawdown": 0.04729778568727905,
+        "n": 15,
+        "net_expectancy": -0.003223769993533333,
+        "permutation_pvalue": 1.0,
+        "prob_sharpe_gt0": 0.0,
+        "profit_factor": 0.00914525666516353,
+        "sharpe_ci_high": -1.333755119813896,
+        "sharpe_ci_low": -4.890435818258496,
+        "sharpe_per_trade": -2.0027526254898502,
+        "win_rate": 0.06666666666666667
+      },
+      "reason": "failed gates: expectancy,sharpe,ci_excludes_negative,significance",
+      "spec_fingerprint": "d94173d751043871b0ee7206d0a61ff4de9b71c512a0b0744a601422a0f4d879"
+    },
+    {
+      "category": "carry_funding_v2",
+      "asset": "BTC",
+      "timeframe": "5m",
+      "regime": "HIGH_VOL|MIXED|TRENDING",
+      "status": "DISCOVERY_FAIL",
+      "n_trades": 16,
+      "metrics": {
+        "cost_model": "protocol commission_rate + slippage both sides",
+        "direction_rule": "SHORT when mean funding > 0 (true carry); LONG when < 0",
+        "funding_observations": 90,
+        "gross_expectancy": 0.0004336364525625002,
+        "max_drawdown": 0.04239798023377354,
+        "n": 16,
+        "net_expectancy": -0.0007525804224374997,
+        "observed_interval_h": 8.0,
+        "observed_interval_s": 28800,
+        "permutation_pvalue": 0.688,
+        "prob_sharpe_gt0": 0.31,
+        "profit_factor": 0.7216070375156747,
+        "sharpe_ci_high": 0.21636592372408667,
+        "sharpe_ci_low": -4.5051619438004264,
+        "sharpe_per_trade": -0.11695024651053566,
+        "source": "binanceusdm.fetch_funding_rate_history",
+        "unit_contract": "FUNDING-UNITS-CANONICAL-V1",
+        "win_rate": 0.125
+      },
+      "reason": "failed gates: expectancy,sharpe,ci_excludes_negative,significance",
+      "spec_fingerprint": "5702172fd947a321ecdf0b5dcd2d48a22c7d9d47cde8ad68f06a803dc00ff1b3"
+    },
+    {
+      "category": "volatility_structure_v2",
+      "asset": "ETH",
+      "timeframe": "1h",
+      "regime": "HIGH_VOL|MIXED|RANGING",
+      "status": "DISCOVERY_FAIL",
+      "n_trades": 187,
+      "metrics": {
+        "cost_model": "protocol commission_rate + slippage both sides",
+        "gross_expectancy": 0.0019525653584705884,
+        "max_drawdown": 0.4580616036101271,
+        "n": 187,
+        "net_expectancy": 0.0007525653584705882,
+        "permutation_pvalue": 0.412,
+        "prob_sharpe_gt0": 0.636,
+        "profit_factor": 1.048385837043893,
+        "sharpe_ci_high": 0.1285342301853703,
+        "sharpe_ci_low": -0.10936844465101092,
+        "sharpe_per_trade": 0.017387547182519805,
+        "win_rate": 0.3422459893048128
+      },
+      "reason": "failed gates: significance",
+      "spec_fingerprint": "d94173d751043871b0ee7206d0a61ff4de9b71c512a0b0744a601422a0f4d879"
+    },
+    {
+      "category": "carry_funding_v2",
+      "asset": "ETH",
+      "timeframe": "1h",
+      "regime": "HIGH_VOL|MIXED|RANGING",
+      "status": "INSUFFICIENT_SAMPLE",
+      "n_trades": 8,
+      "metrics": {
+        "cost_model": "protocol commission_rate + slippage both sides",
+        "direction_rule": "SHORT when mean funding > 0 (true carry); LONG when < 0",
+        "funding_observations": 90,
+        "gross_expectancy": -0.01212896241725,
+        "max_drawdown": 0.10114414272483363,
+        "n": 8,
+        "net_expectancy": -0.013172064917249999,
+        "observed_interval_h": 8.0,
+        "observed_interval_s": 28800,
+        "permutation_pvalue": 0.99,
+        "prob_sharpe_gt0": 0.006,
+        "profit_factor": 0.10867198371320912,
+        "sharpe_ci_high": -0.411257376238196,
+        "sharpe_ci_low": -3.868262366771287,
+        "sharpe_per_trade": -1.0546144977961494,
+        "source": "binanceusdm.fetch_funding_rate_history",
+        "unit_contract": "FUNDING-UNITS-CANONICAL-V1",
+        "win_rate": 0.125
+      },
+      "reason": "n=8 < preregistered minimum 15",
+      "spec_fingerprint": "5702172fd947a321ecdf0b5dcd2d48a22c7d9d47cde8ad68f06a803dc00ff1b3"
+    },
+    {
+      "category": "volatility_structure_v2",
+      "asset": "ETH",
+      "timeframe": "5m",
+      "regime": "HIGH_VOL|MIXED|RANGING",
+      "status": "INSUFFICIENT_SAMPLE",
+      "n_trades": 14,
+      "metrics": {
+        "cost_model": "protocol commission_rate + slippage both sides",
+        "gross_expectancy": -0.0005195442627857142,
+        "max_drawdown": 0.030763259240556784,
+        "n": 14,
+        "net_expectancy": -0.0017195442627857143,
+        "permutation_pvalue": 0.812,
+        "prob_sharpe_gt0": 0.114,
+        "profit_factor": 0.4538680585521098,
+        "sharpe_ci_high": 0.10340322153547055,
+        "sharpe_ci_low": -1.8869138542722967,
+        "sharpe_per_trade": -0.29168228422637166,
+        "win_rate": 0.21428571428571427
+      },
+      "reason": "n=14 < preregistered minimum 15",
+      "spec_fingerprint": "d94173d751043871b0ee7206d0a61ff4de9b71c512a0b0744a601422a0f4d879"
+    },
+    {
+      "category": "carry_funding_v2",
+      "asset": "ETH",
+      "timeframe": "5m",
+      "regime": "HIGH_VOL|MIXED|RANGING",
+      "status": "DISCOVERY_FAIL",
+      "n_trades": 16,
+      "metrics": {
+        "cost_model": "protocol commission_rate + slippage both sides",
+        "direction_rule": "SHORT when mean funding > 0 (true carry); LONG when < 0",
+        "funding_observations": 90,
+        "gross_expectancy": -0.0027091033303750004,
+        "max_drawdown": 0.06062647053372827,
+        "n": 16,
+        "net_expectancy": -0.003900813955375,
+        "observed_interval_h": 8.0,
+        "observed_interval_s": 28800,
+        "permutation_pvalue": 1.0,
+        "prob_sharpe_gt0": 0.0,
+        "profit_factor": 0.0,
+        "sharpe_ci_high": -3.3546291961055075,
+        "sharpe_ci_low": -5.635209240306483,
+        "sharpe_per_trade": -4.049955573833426,
+        "source": "binanceusdm.fetch_funding_rate_history",
+        "unit_contract": "FUNDING-UNITS-CANONICAL-V1",
+        "win_rate": 0.0
+      },
+      "reason": "failed gates: expectancy,sharpe,ci_excludes_negative,significance",
+      "spec_fingerprint": "5702172fd947a321ecdf0b5dcd2d48a22c7d9d47cde8ad68f06a803dc00ff1b3"
+    },
+    {
+      "category": "volatility_structure_v2",
+      "asset": "SOL",
+      "timeframe": "1h",
+      "regime": "HIGH_VOL|MIXED|RANGING",
+      "status": "DISCOVERY_FAIL",
+      "n_trades": 186,
+      "metrics": {
+        "cost_model": "protocol commission_rate + slippage both sides",
+        "gross_expectancy": -0.0027093452304193548,
+        "max_drawdown": 0.7132149036594806,
+        "n": 186,
+        "net_expectancy": -0.003909345230419354,
+        "permutation_pvalue": 0.874,
+        "prob_sharpe_gt0": 0.09,
+        "profit_factor": 0.7923358536065273,
+        "sharpe_ci_high": 0.02948779447666014,
+        "sharpe_ci_low": -0.24580142795213833,
+        "sharpe_per_trade": -0.09204019647809566,
+        "win_rate": 0.3225806451612903
+      },
+      "reason": "failed gates: expectancy,sharpe,ci_excludes_negative,significance",
+      "spec_fingerprint": "d94173d751043871b0ee7206d0a61ff4de9b71c512a0b0744a601422a0f4d879"
+    },
+    {
+      "category": "carry_funding_v2",
+      "asset": "SOL",
+      "timeframe": "1h",
+      "regime": "HIGH_VOL|MIXED|RANGING",
+      "status": "INSUFFICIENT_SAMPLE",
+      "n_trades": 8,
+      "metrics": {
+        "cost_model": "protocol commission_rate + slippage both sides",
+        "direction_rule": "SHORT when mean funding > 0 (true carry); LONG when < 0",
+        "funding_observations": 90,
+        "gross_expectancy": -0.008785396673125001,
+        "max_drawdown": 0.07890407994544868,
+        "n": 8,
+        "net_expectancy": -0.009984659173125,
+        "observed_interval_h": 8.0,
+        "observed_interval_s": 28800,
+        "permutation_pvalue": 0.856,
+        "prob_sharpe_gt0": 0.1,
+        "profit_factor": 0.367333296944769,
+        "sharpe_ci_high": 0.12334164566631503,
+        "sharpe_ci_low": -6.002523959296367,
+        "sharpe_per_trade": -0.4252454184425566,
+        "source": "binanceusdm.fetch_funding_rate_history",
+        "unit_contract": "FUNDING-UNITS-CANONICAL-V1",
+        "win_rate": 0.125
+      },
+      "reason": "n=8 < preregistered minimum 15",
+      "spec_fingerprint": "5702172fd947a321ecdf0b5dcd2d48a22c7d9d47cde8ad68f06a803dc00ff1b3"
+    },
+    {
+      "category": "volatility_structure_v2",
+      "asset": "SOL",
+      "timeframe": "5m",
+      "regime": "HIGH_VOL|MIXED|TRENDING",
+      "status": "DISCOVERY_FAIL",
+      "n_trades": 15,
+      "metrics": {
+        "cost_model": "protocol commission_rate + slippage both sides",
+        "gross_expectancy": -0.0024564566648666666,
+        "max_drawdown": 0.0651859451724892,
+        "n": 15,
+        "net_expectancy": -0.0036564566648666663,
+        "permutation_pvalue": 0.95,
+        "prob_sharpe_gt0": 0.064,
+        "profit_factor": 0.2970295694455147,
+        "sharpe_ci_high": 0.020092715810760078,
+        "sharpe_ci_low": -3.0209236478980523,
+        "sharpe_per_trade": -0.47752682699053584,
+        "win_rate": 0.13333333333333333
+      },
+      "reason": "failed gates: expectancy,sharpe,ci_excludes_negative,significance",
+      "spec_fingerprint": "d94173d751043871b0ee7206d0a61ff4de9b71c512a0b0744a601422a0f4d879"
+    },
+    {
+      "category": "carry_funding_v2",
+      "asset": "SOL",
+      "timeframe": "5m",
+      "regime": "HIGH_VOL|MIXED|TRENDING",
+      "status": "DISCOVERY_FAIL",
+      "n_trades": 16,
+      "metrics": {
+        "cost_model": "protocol commission_rate + slippage both sides",
+        "direction_rule": "SHORT when mean funding > 0 (true carry); LONG when < 0",
+        "funding_observations": 90,
+        "gross_expectancy": -0.0008785801883124998,
+        "max_drawdown": 0.07145798376550763,
+        "n": 16,
+        "net_expectancy": -0.0020741101883125002,
+        "observed_interval_h": 8.0,
+        "observed_interval_s": 28800,
+        "permutation_pvalue": 0.82,
+        "prob_sharpe_gt0": 0.176,
+        "profit_factor": 0.551090351213663,
+        "sharpe_ci_high": 0.129910894303142,
+        "sharpe_ci_low": -3.160490222462989,
+        "sharpe_per_trade": -0.23242720091423527,
+        "source": "binanceusdm.fetch_funding_rate_history",
+        "unit_contract": "FUNDING-UNITS-CANONICAL-V1",
+        "win_rate": 0.125
+      },
+      "reason": "failed gates: expectancy,sharpe,ci_excludes_negative,significance",
+      "spec_fingerprint": "5702172fd947a321ecdf0b5dcd2d48a22c7d9d47cde8ad68f06a803dc00ff1b3"
+    },
+    {
+      "category": "cross_sectional_v2",
+      "asset": "BTC+ETH+SOL",
+      "timeframe": "5m",
+      "regime": "HIGH_VOL|MIXED|TRENDING",
+      "status": "DISCOVERY_FAIL",
+      "n_trades": 16,
+      "metrics": {
+        "cost_model": "protocol commission_rate + slippage both sides",
+        "gross_expectancy": -0.0008215855866875,
+        "max_drawdown": 0.03230999819163069,
+        "n": 16,
+        "net_expectancy": -0.0020215855866875,
+        "permutation_pvalue": 1.0,
+        "prob_sharpe_gt0": 0.0,
+        "profit_factor": 0.13478869792158094,
+        "redundancy": {
+          "leader_persistence": 0.8481,
+          "momentum_family_correlation": 0.9072,
+          "turnover_per_100_bars": 15.186,
+          "verdict": "DISTINCT_EVIDENCE"
+        },
+        "sharpe_ci_high": -0.3116106996979221,
+        "sharpe_ci_low": -1.5515482482893557,
+        "sharpe_per_trade": -0.7757748021557426,
+        "win_rate": 0.125
+      },
+      "reason": "failed gates: expectancy,sharpe,ci_excludes_negative,significance",
+      "spec_fingerprint": "5e311b48acd2318515f0b79c6b87819851e6240fd2c3dd1c94879580e87a22f6"
+    },
+    {
+      "category": "cross_sectional_v2",
+      "asset": "BTC+ETH+SOL",
+      "timeframe": "1h",
+      "regime": "HIGH_VOL|MIXED|RANGING",
+      "status": "DISCOVERY_FAIL",
+      "n_trades": 181,
+      "metrics": {
+        "cost_model": "protocol commission_rate + slippage both sides",
+        "gross_expectancy": -0.0010722115529944733,
+        "max_drawdown": 0.4613224154835333,
+        "n": 181,
+        "net_expectancy": -0.002272211552994474,
+        "permutation_pvalue": 0.954,
+        "prob_sharpe_gt0": 0.048,
+        "profit_factor": 0.709426689089156,
+        "redundancy": {
+          "leader_persistence": 0.8623,
+          "momentum_family_correlation": 0.8949,
+          "turnover_per_100_bars": 13.77,
+          "verdict": "DISTINCT_EVIDENCE"
+        },
+        "sharpe_ci_high": -0.0014033477953639987,
+        "sharpe_ci_low": -0.2681257893820767,
+        "sharpe_per_trade": -0.11629042671429572,
+        "win_rate": 0.35911602209944754
+      },
+      "reason": "failed gates: expectancy,sharpe,ci_excludes_negative,significance",
+      "spec_fingerprint": "5e311b48acd2318515f0b79c6b87819851e6240fd2c3dd1c94879580e87a22f6"
+    }
+  ],
+  "frequency": {
+    "note": "Track E: raw frequency here; incremental/NO_SIGNAL overlap analyzed in the batch report",
+    "opportunities_by_category": {
+      "volatility_structure_v2": 613,
+      "carry_funding_v2": 72,
+      "cross_sectional_v2": 197
+    },
+    "days_with_opportunity_by_category": {
+      "volatility_structure_v2": 275,
+      "carry_funding_v2": 12,
+      "cross_sectional_v2": 185
+    }
+  },
+  "governance": {
+    "research_only": true,
+    "paper_promotions": 0,
+    "no_retuning_after_results": true
+  }
+}

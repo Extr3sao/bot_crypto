@@ -33,6 +33,7 @@ import json
 from collections.abc import Callable
 from typing import Any
 
+from trading_bot.market_data.types import OHLCV
 from trading_bot.research.discovery_execution import (
     DISCOVERY_EVAL_SPECS as BATCH01_EVAL_SPECS,
 )
@@ -46,7 +47,6 @@ from trading_bot.research.funding_units import (
     canon_funding_interval_s,
     canon_rate_per_period,
 )
-from trading_bot.market_data.types import OHLCV
 from trading_bot.research.retro_execution import TradeOutcome
 
 __all__ = [
@@ -54,10 +54,10 @@ __all__ = [
     "COST_RATE",
     "SLIPPAGE_BPS",
     "batch02_eval_fingerprint",
-    "verify_batch01_spec_unchanged",
     "carry_funding_v2_signals",
-    "volatility_structure_v2_signals",
     "cross_sectional_v2_signals",
+    "verify_batch01_spec_unchanged",
+    "volatility_structure_v2_signals",
 ]
 
 # --------------------------------------------------------------------------
@@ -225,52 +225,40 @@ def volatility_structure_v2_signals(
     cost_rate: float = COST_RATE,
     slippage_bps: float = SLIPPAGE_BPS,
     atr_z: float = 1.5,
-    atr_exit_z: float = 0.5,
-    max_hold_bars: int = 48,
-    lookback: int = 96,
+    hold_bars: int = 48,
 ) -> DiscoverySignalResult:
-    """Mirror of batch-01 ``volatility_structure`` signal (v1 source of
-    truth: ``discovery_execution._vol_structure_signals``)."""
-
-    def atr_z_at(i: int) -> float | None:
-        end = i - 1
-        if end < 14:
-            return None
-        trs = []
-        for k in range(end - 14 + 1, end + 1):
-            h, low, pc = candles[k].high, candles[k].low, candles[k - 1].close
-            trs.append(max(h - low, abs(h - pc), abs(low - pc)))
-        mean = sum(trs) / 14
-        var = sum((t - mean) ** 2 for t in trs) / 14
-        sd = var ** 0.5
-        if sd <= 0:
-            return None
-        return float((trs[-1] - mean) / sd)
-
-    def z_mean_at(i: int) -> float | None:
-        zs = [atr_z_at(k) for k in range(max(0, i - lookback), i)]
-        zs = [z for z in zs if z is not None]
-        if len(zs) < lookback // 2:
-            return None
-        return sum(zs) / len(zs)
+    """EXACT mirror of batch-01 ``volatility_structure`` signal (source of
+    truth: ``discovery_execution._vol_structure_signals``): LONG when the
+    CURRENT ATR(14) z-score against its trailing-60-bar distribution
+    exceeds +1.5 (expansion continuation); 2*ATR adverse-first stop;
+    max-hold exit; non-overlapping holds.  Deeper window ONLY — the
+    signal semantics are the v1 mechanics with the frozen v1 defaults.
+    """
 
     def direction_at(i: int) -> str | None:
-        zm = z_mean_at(i)
-        if zm is None or zm <= atr_z:
+        a = _atr(candles, i)
+        if a is None or i < 60:
             return None
-        return "LONG"
-
-    def exit_at(i: int) -> bool:
-        zm = z_mean_at(i)
-        return zm is not None and zm < atr_exit_z
+        hist = []
+        for k in range(i - 60, i):
+            ak = _atr(candles, k)
+            if ak is not None:
+                hist.append(ak)
+        if len(hist) < 30:
+            return None
+        mean = sum(hist) / len(hist)
+        sd = (sum((x - mean) ** 2 for x in hist) / len(hist)) ** 0.5
+        if sd <= 0:
+            return None
+        return "LONG" if (a - mean) / sd > atr_z else None
 
     trades = _simulate_long_only(
         direction_at,
         candles,
         cost_rate=cost_rate,
         slippage_bps=slippage_bps,
-        hold_bars=max_hold_bars,
-        exit_early=exit_at,
+        hold_bars=hold_bars,
+        exit_early=None,
     )
     return DiscoverySignalResult("volatility_structure_v2", trades, len(trades))
 

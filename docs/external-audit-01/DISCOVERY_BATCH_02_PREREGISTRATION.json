@@ -38,22 +38,40 @@
   },
   "data_window": {
     "description": "Deeper preregistered window (C2): 1h PIT OHLCV, public binanceusdm, ~730 days back from the batch launch instant; 5m cells bounded at the most recent 1500 bars (preregistered bound)",
-    "timeframes": { "5m": 1500, "1h": 17520 },
-    "assets": ["BTC", "ETH", "SOL"],
+    "timeframes": {
+      "5m": 1500,
+      "1h": 17520
+    },
+    "assets": [
+      "BTC",
+      "ETH",
+      "SOL"
+    ],
     "data_source": "binanceusdm-public (ccxt REST, no credentials)",
     "window_start": "AT_EXECUTION: now_utc - bars*interval",
     "window_end": "AT_EXECUTION: now_utc (preregistration freezes LENGTH, not wall-clock anchor)",
     "expected_bars_1h_per_asset": 17520,
-    "funding_history": "REAL binanceusdm funding history via fetchFundingRateHistory (C6); INSUFFICIENT_DATA if depth unavailable — never synthetic"
+    "funding_history": "REAL binanceusdm funding history via fetchFundingRateHistory (C6); INSUFFICIENT_DATA if depth unavailable \u2014 never synthetic"
   },
   "acceptance": {
-    "gates": "FROZEN LegacyRetroHarness gates (identical thresholds — no lowering)",
-    "cell_states": ["DISCOVERY_PASS", "DISCOVERY_FAIL", "INSUFFICIENT_SAMPLE"],
+    "gates": "FROZEN LegacyRetroHarness gates (identical thresholds \u2014 no lowering)",
+    "cell_states": [
+      "DISCOVERY_PASS",
+      "DISCOVERY_FAIL",
+      "INSUFFICIENT_SAMPLE"
+    ],
     "no_global_pass_from_one_cell": "regime x asset x timeframe attribution required (Track D)",
     "redundancy_check": "cross_sectional_v2 correlated with momentum family => REDUNDANT_CANDIDATE (Track C4)"
   },
   "frequency_value": {
-    "metrics": ["raw opportunities/day", "qualifying opportunities/day", "days with opportunity", "overlap with current universe", "incremental opportunities/day", "incremental during NO_SIGNAL windows"],
+    "metrics": [
+      "raw opportunities/day",
+      "qualifying opportunities/day",
+      "days with opportunity",
+      "overlap with current universe",
+      "incremental opportunities/day",
+      "incremental during NO_SIGNAL windows"
+    ],
     "never_tuned": true
   },
   "governance": {
@@ -61,5 +79,6 @@
     "paper_promotions": 0,
     "research_only": true,
     "def_discovery_001_repair": "carry_funding_v2 (new fingerprinted spec + funding_units contract); batch-01 spec untouched"
-  }
+  },
+  "frozen_before_execution_note": "vol_structure_v2 signal MIRROR corrected to exact v1 semantics BEFORE any batch-02 result was persisted (window text only; economic semantics unchanged from batch-01); fingerprint re-frozen"
 }
