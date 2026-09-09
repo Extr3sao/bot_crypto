@@ -235,3 +235,33 @@ class TestPreregistrationIntegrity:
     def test_candidate_set_exact(self):
         assert set(BATCH02_EVAL_SPECS) == {
             "volatility_structure_v2", "cross_sectional_v2", "carry_funding_v2"}
+
+
+# --------------------------------------------------------------------------
+# C6 — real funding-data authority (DEF-DISCOVERY-001 unit regression)
+# --------------------------------------------------------------------------
+class TestFundingDataAuthority:
+    def test_funding_interval_from_ms_timestamps_is_not_scaled(self):
+        """Settlement timestamps are epoch ms: the observed interval is the
+        raw spacing (8h = 28_800_000 ms -> 28_800 s), never re-scaled."""
+        from unittest import mock
+
+        from trading_bot.research.funding_data import fetch_funding_history
+
+        t0 = 1_700_000_000_000
+        rows = [
+            {"timestamp": t0 + i * 28_800_000, "fundingRate": 0.0001}
+            for i in range(4)
+        ]
+        fake_ccxt = mock.MagicMock()
+        fake_ex = mock.MagicMock()
+        fake_ex.fetch_funding_rate_history.return_value = rows
+        fake_ccxt.binanceusdm.return_value = fake_ex
+        with mock.patch.dict("sys.modules", {"ccxt": fake_ccxt}):
+            ds = fetch_funding_history(
+                "BTC/USDT:USDT",
+                window_start_ms=t0 - 1_000,
+                window_end_ms=t0 + 5 * 28_800_000,
+            )
+        assert ds.interval_s == 28_800, ds.interval_s
+        assert ds.n_observations == 4

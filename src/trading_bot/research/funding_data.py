@@ -141,12 +141,15 @@ def fetch_funding_history(
                 last_ms = t
         ordered = sorted(rates)
         for a, b in zip(ordered, ordered[1:]):
-            intervals.append((b - a) * 3_600_000)
+            # timestamps are already epoch ms: the spacing in ms is (b - a).
+            # (A prior draft multiplied by 3_600_000 here — the exact
+            # hour-vs-ms unit confusion DEF-DISCOVERY-001 records.)
+            intervals.append(b - a)
         observed_interval = (
             canon_funding_interval_s(funding_interval_s)
             if funding_interval_s is not None
-            else (min(set(intervals)) if intervals else 0)
-        )
+            else (min(intervals) // 1000 if intervals else 0)
+        )  # spacings are epoch-ms deltas; interval_s is SECONDS
         span_days = (
             (last_ms - first_ms) / 86_400_000.0
             if first_ms is not None and last_ms is not None else 0.0
