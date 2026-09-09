@@ -555,14 +555,42 @@ def write_receipt(
 # daily operation
 # --------------------------------------------------------------------------
 
+def finalize_previous_days(day_auth, today: str) -> list[dict]:
+    """Finalize every OPEN/PENDING prior bucket whose UTC boundary passed.
+
+    §2/§6 of the day-transition contract: before any new-day work, all
+    earlier days with buckets are finalized (idempotently) so the
+    authoritative coverage reflects closed days only. Returns one record
+    per finalization attempt.
+    """
+    results: list[dict] = []
+    rows = day_auth._load_coverage_rows()
+    for prior_day in sorted(rows):
+        if prior_day >= today:
+            continue
+        st = day_auth.day_state(prior_day)
+        if st.day_validity in ("VALID", "INVALID"):
+            continue  # already finalized
+        fin = day_auth.finalize_day(prior_day)
+        fin["utc_day"] = prior_day
+        results.append(fin)
+    return results
+
+
 def run_daily(cycles: int) -> int:
     now = datetime.now(UTC).replace(microsecond=0)
     day = now.strftime("%Y-%m-%d")
 
+    # §2-first: finalize any prior bucket whose boundary has passed
+    from trading_bot.paper.day_state import DayStateAuthority
+
+    day_auth = DayStateAuthority(CAMPAIGN_DIR)
+    prior_finalizations = finalize_previous_days(day_auth, day)
+
     # §1 pre-cycle gates — fail closed
     gates = pre_cycle_gates(now)
     if not gates["passed"]:
-        print(json.dumps({"PRE_CYCLE_GATES": "FAIL", **gates}, indent=2))
+        print(json.dumps({"PRE_CYCLE_GATES": "FAIL", "PRIOR_FINALIZATIONS": prior_finalizations, **gates}, indent=2))
         return 2
 
     # §2 daily idempotency
@@ -712,9 +740,6 @@ def run_daily(cycles: int) -> int:
     )
 
     # §9 coverage AUTHORITY (closed days only) + §10 zero-trade classification
-    from trading_bot.paper.day_state import DayStateAuthority
-
-    day_auth = DayStateAuthority(CAMPAIGN_DIR)
     day_st = day_auth.day_state(day)  # during the day: OPEN, contribution 0
     cov = day_auth.campaign_coverage(
         window_start=lr["start_utc"], window_end=lr["end_utc"]
