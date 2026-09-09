@@ -438,6 +438,52 @@ def zero_trade_classification(funnel: dict, bottlenecks: dict) -> dict:
 # §16 — immutable daily evidence receipt
 # --------------------------------------------------------------------------
 
+def write_reconciliation_receipt(
+    now: datetime, day: str, launch_record: dict, commit: str
+) -> str:
+    """§10 — append-only reconciliation of the CURRENT day bucket.
+
+    Declares DAY_CLOSED=false, DAY_VALIDITY=PENDING,
+    DAY_COUNTS_FOR_COVERAGE=false for the open bucket and classifies any
+    prior "valid days = N" presentation as PROVISIONAL. Never deletes or
+    rewrites historical evidence.
+    """
+    rec_dir = CAMPAIGN_DIR / "reconciliation"
+    rec_dir.mkdir(parents=True, exist_ok=True)
+    existing = sorted(rec_dir.glob(f"RECONCILIATION_{day}_*.json"))
+    seq = len(existing) + 1
+    payload = {
+        "artifact": "POC02_DAY_RECONCILIATION",
+        "reconciliation_id": f"RECONCILIATION_{day}_{seq:03d}",
+        "utc_day": day,
+        "written_at_utc": now.isoformat(),
+        "commit": commit,
+        "campaign_id": POC02_CAMPAIGN_ID,
+        "DAY_BUCKET_EXISTS": True,
+        "DAY_CLOSED": False,
+        "DAY_VALIDITY": "PENDING",
+        "DAY_COUNTS_FOR_COVERAGE": False,
+        "authority_model": {
+            "CAMPAIGN_COVERAGE": "VALID_CLOSED_DAYS / CLOSED_ELIGIBLE_DAYS",
+            "zero_denominator": "NOT_YET_MEASURABLE",
+            "open_day_contribution": 0,
+            "prior_presentations": (
+                "any earlier '1/1'-style output is classified "
+                "PROVISIONAL_COVERAGE_PRESENTATION — observational, "
+                "never authoritative campaign coverage"
+            ),
+        },
+        "provisional_context": {
+            "observed_minutes": launch_record.get("provisional_minutes"),
+            "note": "see POC02_COVERAGE_DAILY.jsonl for bucket detail",
+        },
+        "history_unchanged": True,
+    }
+    path = rec_dir / f"{payload['reconciliation_id']}.json"
+    path.write_text(json.dumps(payload, indent=2, sort_keys=True), encoding="utf-8")
+    return path.name
+
+
 def write_receipt(
     *,
     now: datetime,
@@ -528,6 +574,10 @@ def run_daily(cycles: int) -> int:
 
     lr = _load_json(LAUNCH_RECORD)
     commit = _git("rev-parse", "HEAD")
+
+    # §10 reconciliation: the current bucket is OPEN/PENDING, counts=false.
+    # Appended once per process run (idempotent by content, never deletes).
+    reconciliation_name = write_reconciliation_receipt(now, day, lr, commit)
 
     bundle = Poc02Bundle(
         output_dir=CAMPAIGN_DIR / "cycles",
@@ -661,8 +711,16 @@ def run_daily(cycles: int) -> int:
         json.dumps(state_persisted, indent=2, default=str), encoding="utf-8"
     )
 
-    # §9 coverage summary + §10 zero-trade classification
-    cov = coverage_summary(now)
+    # §9 coverage AUTHORITY (closed days only) + §10 zero-trade classification
+    from trading_bot.paper.day_state import DayStateAuthority
+
+    day_auth = DayStateAuthority(CAMPAIGN_DIR)
+    day_st = day_auth.day_state(day)  # during the day: OPEN, contribution 0
+    cov = day_auth.campaign_coverage(
+        window_start=lr["start_utc"], window_end=lr["end_utc"]
+    )
+    provisional = day_auth.provisional_metrics(current_day=day)
+    amendment_chain = day_auth.amendment_chain(day)
     zero = zero_trade_classification(funnel, bottlenecks)
     poc01 = poc01_invariant()
 
@@ -685,10 +743,19 @@ def run_daily(cycles: int) -> int:
             "dominant_checkpoint_category"
         ],
         "ZERO_TRADE_DAY": zero,
-        "VALID_COVERAGE_ROW": True,
+        "DAY_BUCKET_EXISTS": day_st.day_bucket_exists,
+        "DAY_HAS_VALID_EVIDENCE": day_st.day_has_valid_evidence,
+        "DAY_STATUS": day_st.day_validity,
+        "DAY_VALIDITY": day_st.day_validity,
+        "DAY_COUNTS_FOR_COVERAGE": day_st.day_counts_for_coverage,
+        "DAY_BUCKET_COUNT": 1 if day_st.day_bucket_exists else 0,
+        "DAY_RECEIPT_COUNT": amendment_chain["receipt_count"],
         "DAILY_IDEMPOTENCY_STATUS": idempotency_status,
         "COVERAGE_TODAY": coverage_day,
         "CAMPAIGN_COVERAGE": cov,
+        "PROVISIONAL_OBSERVED_BUCKETS": provisional,
+        "RECONCILIATION_RECEIPT": reconciliation_name,
+        "OPEN_DAY_COVERAGE_CONTRIBUTION": 0 if not day_st.day_closed else 1,
         "MARKET_DATA_FINGERPRINT": md["market_data_fingerprint"],
         "RECEIPT": receipt_path.name,
         "GOVERNANCE_NEGATIVES_OK": negatives_ok,
