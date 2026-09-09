@@ -1,0 +1,128 @@
+{
+  "arbitration": {
+    "groups": [
+      {
+        "asset": "SOL",
+        "confidence": 0.843755,
+        "counter_evidence": [
+          "evidence:proposal:3dd77e91e90fde793c27d70b"
+        ],
+        "created_at": "2026-09-09T21:10:00+00:00",
+        "decision_time": "2026-09-09T21:10:00+00:00",
+        "direction_scores": [
+          {
+            "direction": "LONG",
+            "evidence_refs": [
+              "evidence:proposal:3dd77e91e90fde793c27d70b"
+            ],
+            "proposal_ref": "proposal:3dd77e91e90fde793c27d70b",
+            "score": 0.841137,
+            "score_components": [
+              [
+                "proposal_confidence",
+                0.492144
+              ],
+              [
+                "evidence_quality",
+                1.0
+              ],
+              [
+                "asset_assessment",
+                0.554677
+              ],
+              [
+                "freshness",
+                1.0
+              ],
+              [
+                "regime_fit",
+                1.0
+              ],
+              [
+                "strategy_applicability",
+                1.0
+              ]
+            ]
+          },
+          {
+            "direction": "SHORT",
+            "evidence_refs": [
+              "evidence:proposal:0c5ac08658fb650b8ce19614"
+            ],
+            "proposal_ref": "proposal:0c5ac08658fb650b8ce19614",
+            "score": 0.843755,
+            "score_components": [
+              [
+                "proposal_confidence",
+                0.507856
+              ],
+              [
+                "evidence_quality",
+                1.0
+              ],
+              [
+                "asset_assessment",
+                0.554677
+              ],
+              [
+                "freshness",
+                1.0
+              ],
+              [
+                "regime_fit",
+                1.0
+              ],
+              [
+                "strategy_applicability",
+                1.0
+              ]
+            ]
+          }
+        ],
+        "group_id": "group:9e5fb2fd809f96be77710776",
+        "long_candidate_ref": "proposal:3dd77e91e90fde793c27d70b",
+        "run_id": "poc02-1788988294016",
+        "schema_version": "dir-v1",
+        "selected_direction": "SHORT",
+        "selection_reason": "HIGHER_EVIDENCE_SCORE",
+        "short_candidate_ref": "proposal:0c5ac08658fb650b8ce19614",
+        "strategy": "momentum",
+        "timeframe": "5m",
+        "trace_id": "trace-poc02-1788988294016"
+      }
+    ],
+    "signals": 2
+  },
+  "assets": {
+    "BTC": {
+      "bars": 120,
+      "first_ts": 1788952500000,
+      "last_ts": 1788988200000
+    },
+    "ETH": {
+      "bars": 120,
+      "first_ts": 1788952500000,
+      "last_ts": 1788988200000
+    },
+    "SOL": {
+      "bars": 120,
+      "first_ts": 1788952500000,
+      "last_ts": 1788988200000
+    }
+  },
+  "bottlenecks": [],
+  "campaign_id": "POC-02-paper-clean-01",
+  "live_calls": 0,
+  "private_exchange_calls": 0,
+  "provider_authority": {
+    "EXECUTION_MODE": "PAPER",
+    "EXECUTION_VENUE_MODEL": "PaperBroker",
+    "MARKET_DATA_PROVIDER": "binanceusdm (public REST OHLCV, no credentials)"
+  },
+  "provider_downgrades": [],
+  "real_broker_calls": 0,
+  "run_id": "poc02-1788988294016",
+  "shadow_captures_total": 0,
+  "shadow_paperbroker_calls": 0,
+  "shadow_resolved_total": 0
+}

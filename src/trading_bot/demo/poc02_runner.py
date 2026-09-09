@@ -21,6 +21,7 @@ private/order-capable method use fails the campaign.
 
 from __future__ import annotations
 
+import dataclasses
 import hashlib
 import json
 import time
@@ -216,13 +217,26 @@ class Poc02Bundle:
         shadow_dir: Path | str,
         equity: float = 10_000.0,
         manifest_sha256: str = POC02_MANIFEST_SHA256,
+        arbitrate: bool = False,
+        campaign_id: str = POC02_CAMPAIGN_ID,
     ) -> None:
+        """Certified POC02 runtime bundle.
+
+        Defaults preserve the frozen ``POC-02-paper-clean-01`` behavior
+        byte-for-byte (``arbitrate=False``, legacy campaign id). The R2
+        replacement campaign (``POC-02-R2-direction-arbitration-01``,
+        ``docs/external-audit-01/POC02_R2_MANIFEST.md``) opts in explicitly
+        with ``arbitrate=True`` + its own campaign id — the ONLY allowed
+        topology change, preregistered in the R2 manifest.
+        """
         gates = evaluate_launch_gates(manifest_sha256)
         if not gates["launch_authorized"]:
             raise DemoSafetyError(f"POC02 launch gate failed: {gates}")
         self.output_dir = Path(output_dir)
         self.output_dir.mkdir(parents=True, exist_ok=True)
         self.gates = gates
+        self.arbitrate = arbitrate
+        self.campaign_id = campaign_id
 
         settings = build_demo_settings(
             pairs=[("BTC/USDT", True), ("ETH/USDT", True), ("SOL/USDT", True)],
@@ -332,7 +346,7 @@ class Poc02Bundle:
     def _write_attribution_row(self, row: dict[str, Any]) -> None:
         """Append one attribution row (§7/§8) to the additive evidence ledger."""
         row = {
-            "campaign_id": POC02_CAMPAIGN_ID,
+            "campaign_id": self.campaign_id,
             "written_at": datetime.now(UTC).isoformat(),
             **row,
         }
@@ -381,7 +395,7 @@ class Poc02Bundle:
         run_id = f"poc02-{int(time.time() * 1000)}"
         trace_id = f"trace-{run_id}"
         state = DemoState(run_id=run_id, trace_id=trace_id, provider="binanceusdm-public")
-        state.campaign_id = POC02_CAMPAIGN_ID
+        state.campaign_id = self.campaign_id
         state.mode = "PAPER"
         state.assets = assets
         state.emit(
@@ -401,6 +415,8 @@ class Poc02Bundle:
         bottleneck_rows: list[dict[str, Any]] = []
         # blocked_by reasons observed this cycle (drives the §5 risk split)
         self._risk_reasons_this_cycle: list[str] = []
+        # A2 arbitration telemetry for this cycle (only when arbitrating)
+        self._last_arbitration: dict[str, Any] | None = None
 
         for asset in assets:
             bars = bars_by_asset[asset]
@@ -420,8 +436,17 @@ class Poc02Bundle:
                     run_id=run_id,
                     trace_id=trace_id,
                     directions=directions,
+                    arbitrate=self.arbitrate,
                 )
                 state.debates += len(reports)
+                if self.arbitrate:
+                    groups = getattr(board, "arbitration_groups", ())
+                    self._last_arbitration = {
+                        "groups": [g.to_dict() for g in groups],
+                        "signals": sum(
+                            1 for g in groups for item in g.direction_scores
+                        ),
+                    }
                 state.funnel.append(
                     {
                         "cycle": asset,
@@ -679,17 +704,17 @@ class Poc02Bundle:
         state.risk_accepts += 1
         decision = self.router.decide(verdict="ACCEPT", reason=None, ctx={"decision_id": package.decision_id})
         assert decision.verdict == "ACCEPT"
-        approved_signal = Signal(
-            **{
-                **signal.__dict__,
-                "stop_loss_pct": check.position_size.stop_loss_pct,
-                "take_profit_pct": check.position_size.take_profit_pct,
-                "metadata": {
-                    **signal.metadata,
-                    "notional_usdt": check.position_size.notional_usdt,
-                    "risk_approved_by": "RiskManager",
-                },
-            }
+        # Signal is a frozen+slots dataclass (no __dict__): derive the
+        # risk-approved signal via dataclasses.replace, never attribute copy.
+        approved_signal = dataclasses.replace(
+            signal,
+            stop_loss_pct=check.position_size.stop_loss_pct,
+            take_profit_pct=check.position_size.take_profit_pct,
+            metadata={
+                **signal.metadata,
+                "notional_usdt": check.position_size.notional_usdt,
+                "risk_approved_by": "RiskManager",
+            },
         )
         result = self.broker.execute_signal(approved_signal)
         state.broker_calls += 1
@@ -781,5 +806,7 @@ class Poc02Bundle:
                 for a, b in bars_by_asset.items()
             },
         }
+        if self._last_arbitration is not None:
+            telemetry["arbitration"] = self._last_arbitration
         path = self.output_dir / f"POC02_TELEMETRY_{run_id}.json"
         path.write_text(json.dumps(telemetry, indent=2, sort_keys=True, default=str), encoding="utf-8")

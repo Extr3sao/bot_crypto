@@ -1,0 +1,117 @@
+{
+  "arbitration_telemetry": {
+    "agent_rejects_after_arbitration": 12,
+    "deadlock_disappeared": false,
+    "groups_total": 0,
+    "long_selected": 0,
+    "none_selected": 0,
+    "selection_reasons": {
+      "BELOW_MIN_DIRECTION_SCORE": 0,
+      "HIGHER_EVIDENCE_SCORE": 0,
+      "SOLE_DIRECTIONAL_CANDIDATE": 0,
+      "UNRESOLVED_SCORE_TIE": 0
+    },
+    "short_selected": 0,
+    "thresholds_optimized": false,
+    "true_cross_strategy_conflicts": 0,
+    "unresolved_conflicts_after_arbitration": 6
+  },
+  "artifact": "POC02_R2_DAILY_EVIDENCE_RECEIPT",
+  "bottleneck_state": {
+    "by_regime": {
+      "NEUTRAL|WEAK|LOW|TREND|NORMAL|NORMAL": {
+        "AGENT_FILTER": 6
+      }
+    },
+    "dominant_bottleneck": "AGENT_FILTER",
+    "dominant_checkpoint_category": "AGENT_FILTER",
+    "totals_canonical": {
+      "AGENT_FILTER": 6
+    },
+    "totals_checkpoint_categories": {
+      "AGENT_FILTER": 6
+    },
+    "windows_observed": 6
+  },
+  "campaign_id": "POC-02-R2-direction-arbitration-01",
+  "commit": "618160b85e7731651169e5526d3d9352ed54eb84",
+  "coverage_status": {
+    "coverage_ratio": 0.000694,
+    "day_validity": "PENDING",
+    "expected_cycles": 288,
+    "expected_minutes": 1440,
+    "observed_cycles": 2,
+    "observed_minutes": 1,
+    "runtime_downtime_minutes": 1439,
+    "utc_day": "2026-09-09"
+  },
+  "cycle_count": 2,
+  "frozen_poc02_invariant": {
+    "FROZEN_COPIES_MATCH": true,
+    "OLD_CAMPAIGN_MODIFIED": 0,
+    "mismatched": [],
+    "old_modified_paths": []
+  },
+  "governance_negatives": {
+    "LIVE_CALLS": 0,
+    "PRIVATE_CALLS": 0,
+    "REAL_BROKER_CALLS": 0,
+    "cross_ledger_contamination": 0,
+    "live_trading_enabled": false,
+    "mode_is_paper": true
+  },
+  "is_amendment": false,
+  "poc01_invariant": {
+    "POC01_EVIDENCE_CHANGED": 0,
+    "POC01_RUNTIME_CHANGED": 0,
+    "changed_paths": []
+  },
+  "proposal_funnel": {
+    "AGENT_REJECT": 12,
+    "DEBATES": 6,
+    "DIRECTION_LONG_SELECTED": 0,
+    "DIRECTION_NONE": 0,
+    "DIRECTION_SHORT_SELECTED": 0,
+    "ERRORS": 0,
+    "MARKET_SCANS": 6,
+    "NO_TRADE": 6,
+    "OPPORTUNITY_GROUPS": 0,
+    "PAPER_CLOSE": 0,
+    "PAPER_OPEN": 0,
+    "PROPOSALS": 12,
+    "RISK_ACCEPT": 0,
+    "RISK_REJECT": 0,
+    "SELECTED": 0,
+    "SHADOW_CAPTURE": 0,
+    "SHADOW_RESOLVED": 0,
+    "SIGNALS": 0,
+    "STRATEGY_INVOCATIONS": 6,
+    "VERIFIER_REJECTED": 0,
+    "VERIFIER_VERIFIED": 6
+  },
+  "provenance": {
+    "composition": "_proposal_set(arbitrate=True)",
+    "entrypoint": "scripts/launch_poc02_r2_daily.py --daily",
+    "preregistered_manifest": "docs/external-audit-01/POC02_R2_MANIFEST.md",
+    "runtime": "trading_bot.demo.poc02_runner.Poc02Bundle (certified, unchanged)"
+  },
+  "receipt_id": "RECEIPT_2026-09-09_001",
+  "receipt_sha256": "7bcca7ad9199525a9ae562a2b9a4bec02e4ec81235fb984a08be909431af5bdf",
+  "run_ids": [
+    "poc02-1788988128475",
+    "poc02-1788988130188"
+  ],
+  "shadow": {
+    "INVALID": 0,
+    "MATURED": 0,
+    "PENDING": 0,
+    "captures_total": 0,
+    "horizon_hours": 48,
+    "never_routed_back": true,
+    "observational_only": true,
+    "resolved_total": 0
+  },
+  "shadow_by_reason": {},
+  "utc_day": "2026-09-09",
+  "written_at_utc": "2026-09-09T21:08:47+00:00"
+}
