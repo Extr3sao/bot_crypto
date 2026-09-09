@@ -1356,3 +1356,32 @@ candidate research, shadow V2 preparation, and Bybit conformance.
 - **Evidence.** FINAL_REPORT_ALPHA_DISCOVERY_AND_SHADOW_V2_01.md, DISCOVERY_BATCH_01_RESULTS.json,
   LEGACY_FAILURE_DIAGNOSIS.json, POC02_MANIFEST.md; hermetic full-suite 1052/0 (exit 0); LIVE_CALLS=0;
   FALSE_SUCCESS=0; POC01 artifacts byte-identical throughout.
+
+## ADR-0030 — POC02-LAUNCH-AND-DISCOVERY-BATCH-02: launch, batch-02 execution, lead refutation
+
+- **Context**: Batch-01 left two LEAD_ONLY candidates (volatility_structure, cross_sectional) and
+  DEF-DISCOVERY-001 (carry_funding unit ambiguity). POC02 was preregistered (POC02_MANIFEST.md,
+  coverage ≥ 0.80, shadow enabled) but not launched. Project question: do the leads survive a
+  deeper independent window, and can POC02 start cleanly?
+- **Decision**:
+  1. LAUNCH POC02 automatically (all 6 preregistered gates evaluated by code; the manifest-gate
+     implementation was found self-comparing — a false-pass — and was fixed to hash the real
+     manifest from disk before gates were evaluated; recorded as guard-worked, FALSE_SUCCESS=0).
+  2. POC02 identity is NEW (`POC-02-paper-clean-01`); POC01 artifacts/tracking remain untouched
+     (`git diff 61d9bbd..HEAD -- reports/paper-observation-01/` empty; continues to original end).
+  3. Batch-02 executed under a NEW preregistration committed BEFORE execution (`e1f1193`):
+     deeper independent windows (1h×17,520 / 5m×1,500, ending before batch-01 windows),
+     NO threshold changes, `verify_batch01_spec_unchanged` hard gate, canonical funding unit
+     contract (`FUNDING-UNITS-CANONICAL-V1`), REAL binanceusdm funding history (INSUFFICIENT_DATA
+     if depth is short — never synthetic).
+  4. Execution defects were repaired BEFORE results were persisted: v2 spec mirror drift
+     (corrected trade-for-trade identical to the batch-01 source of truth) and a funding-authority
+     unit regression (ms spacing stored as seconds). An earlier execution attempt whose artifact
+     showed applicability-label discards was superseded by the clean `2939276` run.
+- **Results**: ALL THREE batch-02 candidates DISCOVERY_FAIL (vol-structure n=196 BTC-1h,
+  negative expectancy; cross-sectional corr 0.89–0.91 with momentum family, redundancy evidence
+  recorded under the frozen rule; carry 5m FAIL, 1h INSUFFICIENT_SAMPLE on public funding depth).
+  Batch-01 leads are REFUTED_BY_DEEPER_WINDOW. PAPER_PROMOTIONS = 0.
+- **Consequences**: no new strategy enters PAPER; POC02 accumulates coverage + shadow evidence to
+  2026-09-30; confirmation window CONF-EDGE-002-001 remains locked until 2026-09-22 (consumed=false).
+- **Hermetic regression**: 1118 passed / 0 failed (re-verified on committed HEAD).
