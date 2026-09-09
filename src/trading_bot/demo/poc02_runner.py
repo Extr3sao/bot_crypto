@@ -249,6 +249,9 @@ class Poc02Bundle:
         self.real_broker_calls = 0
         self.private_exchange_calls = 0
         self.shadow_paperbroker_calls = 0
+        # bars actually used by the most recent run_cycle (market-data
+        # authority provenance; set by run_cycle, never used for routing)
+        self.last_bars_by_asset: dict[str, list[OHLCV]] = {}
 
     # -- safety ----------------------------------------------------------------
 
@@ -339,6 +342,10 @@ class Poc02Bundle:
         bars_by_asset = _fetch_public_bars(assets)
         if any(len(b) < 40 for b in bars_by_asset.values()):
             raise RuntimeError("public market provider returned insufficient OHLCV history")
+        # Market-data authority: stash the exact bars used this cycle for
+        # the campaign's per-cycle provenance block (additive, no behavior
+        # change to paper/shadow paths).
+        self.last_bars_by_asset = bars_by_asset
         bottleneck_rows: list[dict[str, Any]] = []
 
         for asset in assets:
