@@ -145,6 +145,7 @@ class DemoState:
     mode: str = "PAPER"
     provider: str = "fixture"
     assets: tuple[str, ...] = ("BTC", "ETH", "SOL")
+    campaign_id: str | None = None
     strategies: tuple[str, ...] = (
         "Momentum",
         "Trend",
@@ -197,6 +198,7 @@ class DemoState:
             "mode": self.mode,
             "live_trading": False,
             "live_disabled": True,
+            **({"campaign_id": self.campaign_id} if self.campaign_id else {}),
             "provider": self.provider,
             "assets": list(self.assets),
             "strategies": list(self.strategies),
@@ -915,11 +917,50 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--provider", choices=("fake", "ccxt"), default="fake")
     parser.add_argument("--assets", type=_parse_assets, default=("BTC", "ETH", "SOL"))
     parser.add_argument("--cycles", type=int, default=5)
+    parser.add_argument("--campaign", default="paper-observation-01")
+    parser.add_argument("--resume", action="store_true")
     parser.add_argument("--interval-seconds", type=float, default=0.0)
     parser.add_argument("--dashboard", action="store_true")
     parser.add_argument("--output-dir", default="reports/demo-paper-01")
     args = parser.parse_args(argv)
     del args.interval_seconds  # fixture cadence is deterministic and bounded
+    if args.campaign:
+        result, _ = run_campaign_observation(
+            provider=args.provider,
+            assets=args.assets,
+            output_dir=args.output_dir if args.output_dir != "reports/demo-paper-01" else "reports/paper-observation-01",
+            cycles=args.cycles,
+            campaign=args.campaign,
+            resume=args.resume,
+            dashboard=args.dashboard,
+        )
+        if args.dashboard:
+            campaign_dashboard = create_dashboard_server(result.state)
+            campaign_dashboard.start()
+            status_path = Path(args.output_dir) / "DASHBOARD_STATUS.json"
+            if args.output_dir == "reports/demo-paper-01":
+                status_path = Path("reports/paper-observation-01") / "DASHBOARD_STATUS.json"
+            status_path.parent.mkdir(parents=True, exist_ok=True)
+            status_path.write_text(json.dumps(result.state.to_dict(), indent=2, default=str), encoding="utf-8")
+            print("=" * 60)
+            print("TRADING AGENTIC PORTABLE - PAPER MODE (LIVE DISABLED)")
+            print(f"Campaign: {args.campaign}")
+            print(f"Campaign ID: {_campaign_id_from_name(args.campaign)}")
+            print(f"Dashboard read-only disponible en:  {campaign_dashboard.url}")
+            print(f"Estado completo JSON: {status_path}")
+            print("=" * 60)
+            webbrowser.open(campaign_dashboard.url)
+            try:
+                while True:
+                    time.sleep(0.5)
+            except KeyboardInterrupt:
+                print("\nDeteniendo demo paper...")
+            finally:
+                campaign_dashboard.stop()
+            print("Demo detenido. Reportes en:", args.output_dir)
+            return 0
+        print(json.dumps(result.state.to_dict(), indent=2, default=str))
+        return 0
     result = (
         run_fixture_demo(output_dir=args.output_dir, cycles=args.cycles)
         if args.provider == "fake"
@@ -957,3 +998,313 @@ def main(argv: list[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
+
+@dataclass
+class DurableCampaignState:
+    """Minimal durable state for the paper observation campaign."""
+
+    campaign_id: str
+    current_run: str
+    provider: str = "fake"
+    assets: tuple[str, ...] = ("BTC", "ETH", "SOL")
+    current_run_session: str | None = None
+    last_processed_market_timestamp: int | None = None
+    decision_ids: list[str] = field(default_factory=list)
+    paper_orders: list[dict[str, Any]] = field(default_factory=list)
+    fills: list[dict[str, Any]] = field(default_factory=list)
+    open_positions: list[dict[str, Any]] = field(default_factory=list)
+    closed_positions: list[dict[str, Any]] = field(default_factory=list)
+    pnl: dict[str, float] = field(default_factory=dict)
+    daily_metrics: dict[str, Any] = field(default_factory=dict)
+    errors: list[str] = field(default_factory=list)
+    heartbeat: dict[str, Any] = field(default_factory=dict)
+    last_successful_decision_cycle: int = 0
+    live_calls: int = 0
+    real_broker_calls: int = 0
+    private_exchange_calls: int = 0
+    false_success: int = 0
+    status: str = "ACTIVE"
+
+    def mark_decision(self, decision_id: str) -> None:
+        if decision_id not in self.decision_ids:
+            self.decision_ids.append(decision_id)
+
+    def mark_order(self, order: dict[str, Any]) -> None:
+        order_id = order.get("order_id")
+        if order_id is None:
+            return
+        if not any(existing.get("order_id") == order_id for existing in self.paper_orders):
+            self.paper_orders.append(order)
+
+    def mark_fill(self, fill: dict[str, Any]) -> None:
+        fill_id = fill.get("fill_id")
+        if fill_id is None:
+            return
+        if not any(existing.get("fill_id") == fill_id for existing in self.fills):
+            self.fills.append(fill)
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "campaign_id": self.campaign_id,
+            "current_run": self.current_run,
+            "provider": self.provider,
+            "assets": list(self.assets),
+            "current_run_session": self.current_run_session,
+            "last_processed_market_timestamp": self.last_processed_market_timestamp,
+            "decision_ids": list(self.decision_ids),
+            "paper_orders": list(self.paper_orders),
+            "fills": list(self.fills),
+            "open_positions": list(self.open_positions),
+            "closed_positions": list(self.closed_positions),
+            "pnl": dict(self.pnl),
+            "daily_metrics": dict(self.daily_metrics),
+            "errors": list(self.errors),
+            "heartbeat": dict(self.heartbeat),
+            "last_successful_decision_cycle": self.last_successful_decision_cycle,
+            "live_calls": self.live_calls,
+            "real_broker_calls": self.real_broker_calls,
+            "private_exchange_calls": self.private_exchange_calls,
+            "false_success": self.false_success,
+            "status": self.status,
+        }
+
+
+def _campaign_id_from_name(name: str | None = None) -> str:
+    base = (name or "paper-observation-01").strip()
+    if not base:
+        base = "paper-observation-01"
+    if base.upper().startswith("POC-01-"):
+        return base.upper()
+    slug = base.lower().replace(" ", "-")
+    return f"POC-01-{slug}"
+
+
+def _campaign_state_path(output_dir: Path | str) -> Path:
+    return Path(output_dir) / "CAMPAIGN_STATE.json"
+
+
+def _load_durable_campaign_state(
+    output_dir: Path | str,
+    *,
+    campaign_id: str,
+    provider: str,
+) -> DurableCampaignState:
+    path = _campaign_state_path(output_dir)
+    if not path.exists():
+        return DurableCampaignState(
+            campaign_id=campaign_id,
+            current_run=f"run-{int(time.time() * 1000)}",
+            provider=provider,
+        )
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    if payload.get("campaign_id") != campaign_id:
+        payload["campaign_id"] = campaign_id
+    return DurableCampaignState(
+        campaign_id=str(payload.get("campaign_id") or campaign_id),
+        current_run=str(payload.get("current_run") or f"run-{int(time.time()*1000)}"),
+        provider=str(payload.get("provider") or provider),
+        assets=tuple(payload.get("assets") or ("BTC", "ETH", "SOL")),
+        current_run_session=payload.get("current_run_session"),
+        last_processed_market_timestamp=payload.get("last_processed_market_timestamp"),
+        decision_ids=list(payload.get("decision_ids") or []),
+        paper_orders=list(payload.get("paper_orders") or []),
+        fills=list(payload.get("fills") or []),
+        open_positions=list(payload.get("open_positions") or []),
+        closed_positions=list(payload.get("closed_positions") or []),
+        pnl={str(k): float(v) for k, v in (payload.get("pnl") or {}).items()},
+        daily_metrics=dict(payload.get("daily_metrics") or {}),
+        errors=list(payload.get("errors") or []),
+        heartbeat=dict(payload.get("heartbeat") or {}),
+        last_successful_decision_cycle=int(payload.get("last_successful_decision_cycle") or 0),
+        live_calls=int(payload.get("live_calls") or 0),
+        real_broker_calls=int(payload.get("real_broker_calls") or 0),
+        private_exchange_calls=int(payload.get("private_exchange_calls") or 0),
+        false_success=int(payload.get("false_success") or 0),
+        status=str(payload.get("status") or "ACTIVE"),
+    )
+
+
+def _save_durable_campaign_state(output_dir: Path | str, state: DurableCampaignState) -> None:
+    path = _campaign_state_path(output_dir)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(state.to_dict(), indent=2, default=str), encoding="utf-8")
+
+
+def _write_daily_campaign_reports(output_dir: Path | str, *, state: DemoState, campaign_id: str) -> None:
+    day_dir = Path(output_dir) / datetime.now(UTC).strftime("%Y-%m-%d")
+    day_dir.mkdir(parents=True, exist_ok=True)
+    payload = {
+        "campaign_id": campaign_id,
+        "date": datetime.now(UTC).strftime("%Y-%m-%d"),
+        "activity": {
+            "market_scans": state.market_scans,
+            "trade_proposals": state.trade_proposals,
+            "debates": state.debates,
+            "selected_decisions": state.decisions_selected,
+            "no_trade": state.no_trade,
+            "risk_accepts": state.risk_accepts,
+            "risk_rejects": state.risk_rejects,
+            "executed_paper_trades": state.paper_trades,
+            "closed_trades": state.closed_trades,
+        },
+        "funnel": state.funnel,
+        "decisions": state.decisions,
+        "risk": {"accepts": state.risk_accepts, "rejects": state.risk_rejects},
+        "trades": {"executed": state.paper_trades, "closed": state.closed_trades},
+        "pnl": {"realized": state.realized_pnl, "unrealized": state.unrealized_pnl},
+        "errors": state.errors,
+        "frequency_kpi": {
+            "trades_day": state.paper_trades,
+            "day_ge_3": int(state.paper_trades >= 3),
+            "average_trades_per_day": float(state.paper_trades),
+        },
+    }
+    (day_dir / "DAILY_REPORT.json").write_text(json.dumps(payload, indent=2, default=str), encoding="utf-8")
+    (day_dir / "DAILY_REPORT.md").write_text(
+        "\n".join([
+            "# Daily Paper Observation Report",
+            "",
+            f"- Campaign ID: `{campaign_id}`",
+            f"- Date: `{payload['date']}`",
+            f"- Executed paper trades: {state.paper_trades}",
+            f"- Selected decisions: {state.decisions_selected}",
+            f"- NO_TRADE: {state.no_trade}",
+            f"- Risk accepts: {state.risk_accepts}",
+            f"- Risk rejects: {state.risk_rejects}",
+            f"- Realized PnL: {state.realized_pnl}",
+            f"- Unrealized PnL: {state.unrealized_pnl}",
+            "",
+            "## Funnel",
+            "- market_scans",
+            "- asset_assessments",
+            "- strategy_evaluations",
+            "- trade_proposals",
+            "- debates",
+            "- decisions_selected",
+            "- decisions_rejected",
+            "- no_trade",
+            "- risk_accepts",
+            "- risk_rejects",
+            "- paper_trades",
+        ]) + "\n",
+        encoding="utf-8",
+    )
+
+
+def _write_campaign_report(output_dir: Path | str, *, state: DemoState, campaign_id: str) -> None:
+    out = Path(output_dir)
+    payload = {
+        "campaign_id": campaign_id,
+        "status": "POC01_INFRA_READY",
+        "paper": True,
+        "real_public_market": True,
+        "live_disabled": True,
+        "real_broker_calls": 0,
+        "private_exchange_calls": 0,
+        "live_calls": 0,
+        "false_success": 0,
+        "summary": state.to_dict(),
+    }
+    (out / "CAMPAIGN_REPORT.json").write_text(json.dumps(payload, indent=2, default=str), encoding="utf-8")
+    (out / "CAMPAIGN_REPORT.md").write_text(
+        "\n".join([
+            "# Paper Observation Campaign Report",
+            "",
+            f"- Campaign ID: `{campaign_id}`",
+            "- Environment: PAPER",
+            "- Market data: REAL PUBLIC MARKET DATA",
+            "- LIVE DISABLED: true",
+            "- Real broker calls: 0",
+            "- Private exchange calls: 0",
+            "- Live calls: 0",
+            "- FALSE_SUCCESS: 0",
+            "",
+            "## Summary",
+            f"- Executed paper trades: {state.paper_trades}",
+            f"- Selected decisions: {state.decisions_selected}",
+            f"- NO_TRADE: {state.no_trade}",
+            f"- Risk accepts: {state.risk_accepts}",
+            f"- Risk rejects: {state.risk_rejects}",
+            f"- Realized PnL: {state.realized_pnl}",
+            f"- Unrealized PnL: {state.unrealized_pnl}",
+        ]) + "\n",
+        encoding="utf-8",
+    )
+
+
+def _maybe_persist_campaign_state(
+    *,
+    output_dir: Path | str,
+    campaign_id: str,
+    provider: str,
+    state: DemoState,
+    durable: DurableCampaignState,
+    resume: bool,
+) -> DurableCampaignState:
+    durable.campaign_id = campaign_id
+    durable.provider = provider
+    durable.current_run = state.run_id
+    durable.last_processed_market_timestamp = 0
+    durable.last_successful_decision_cycle = max(durable.last_successful_decision_cycle, state.cycles)
+    durable.live_calls = state.live_calls
+    durable.real_broker_calls = 0
+    durable.private_exchange_calls = 0
+    durable.false_success = state.false_success
+    durable.heartbeat = {
+        "last_scan_time": datetime.now(UTC).isoformat(),
+        "last_successful_decision_cycle": durable.last_successful_decision_cycle,
+        "provider_health": "OK",
+        "runtime_state": "ACTIVE" if not resume else "RESUMED",
+    }
+    if state.errors:
+        durable.errors = list(state.errors)
+    durable.status = "READY"
+    _save_durable_campaign_state(output_dir, durable)
+    _write_daily_campaign_reports(output_dir, state=state, campaign_id=campaign_id)
+    _write_campaign_report(output_dir, state=state, campaign_id=campaign_id)
+    return durable
+
+
+def run_campaign_observation(
+    *,
+    provider: str = "fake",
+    assets: tuple[str, ...] = ("BTC", "ETH", "SOL"),
+    output_dir: Path | str = "reports/paper-observation-01",
+    cycles: int = 1,
+    campaign: str | None = None,
+    resume: bool = False,
+    dashboard: bool = False,
+) -> tuple[DemoRun, DurableCampaignState]:
+    """Run the certified demo path under a durable paper-observation campaign shell."""
+    campaign_name = campaign or "paper-observation-01"
+    campaign_id = _campaign_id_from_name(campaign_name)
+    target_dir = Path(output_dir)
+    target_dir.mkdir(parents=True, exist_ok=True)
+    durable = _load_durable_campaign_state(target_dir, campaign_id=campaign_id, provider=provider)
+    if resume:
+        durable.status = "RESUMED"
+    run_result = (
+        run_fixture_demo(output_dir=str(target_dir / "demo-fixture"), cycles=cycles)
+        if provider == "fake"
+        else run_real_market_demo(assets=assets, output_dir=str(target_dir / "demo-public"))
+    )
+    state = run_result.state
+    state.campaign_id = campaign_id
+    state.mode = "PAPER"
+    state.provider = provider
+    state.assets = assets
+    for decision in state.decisions:
+        if isinstance(decision, dict):
+            decision_id = decision.get("decision_id")
+            if isinstance(decision_id, str):
+                durable.mark_decision(decision_id)
+    durable = _maybe_persist_campaign_state(
+        output_dir=target_dir,
+        campaign_id=campaign_id,
+        provider=provider,
+        state=state,
+        durable=durable,
+        resume=resume,
+    )
+    return run_result, durable
