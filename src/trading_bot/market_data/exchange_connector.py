@@ -630,6 +630,97 @@ class CCXTExchangeConnector(ExchangeConnector):
         log.info("cancel_order_ok")
 
     # ------------------------------------------------------------------------
+    # Reliability-primitive support (SHADOW-AND-LEGACY-VALIDATION-01, Track D).
+    # Additive surface required by ExecutionGateway ACK-recovery and fill
+    # reconciliation. Inherited by Binance/Bybit/Bitunix adapters.
+    # ------------------------------------------------------------------------
+
+    def fetch_order_query(self, client_order_id: str, symbol: str) -> dict[str, Any] | None:
+        """Query an order by STABLE client_order_id (ACK_UNKNOWN recovery).
+
+        Returns the normalized order payload when the venue knows the
+        order, ``None`` when the venue definitively does not know it, and
+        propagates transport failure for the caller to classify as
+        UNCERTAIN (never guessed here).
+
+        Semantics per exchange family:
+        - ``ccxt``-canonical: ``fetch_order(None, symbol, params={'clientOrderId': cid})``.
+        - Binance/Bybit/Bitunix accept the client id in ``originalClientOrderId``
+          / ``orderLinkId`` / ``clientOrderId`` params respectively; unknown
+          ids surface as a ``ccxt.OrderNotFound`` (-> ``None``).
+        """
+        request_id = str(uuid.uuid4())
+        log = self._log.bind(
+            req_id=request_id, op="fetch_order_query", symbol=symbol, client_order_id=client_order_id
+        )
+
+        @self._retry_decorator
+        def _execute() -> CCXTPayloadProtocol | None:
+            return narrow_ccxt_payload(
+                self._exchange_instance.fetch_order(
+                    None, symbol, params={"clientOrderId": client_order_id}
+                )
+            )
+
+        log.info("fetch_order_query_start")
+        try:
+            res = _execute()
+        except ccxt.OrderNotFound:
+            # Venue definitively does not know this client id -> ABSENT.
+            log.info("fetch_order_query_absent")
+            return None
+        except Exception:
+            log.error("fetch_order_query_failed", exc_info=True)
+            raise
+
+        if res is None or not res.get("id"):
+            # Some adapters return an empty payload for unknown ids.
+            log.info("fetch_order_query_absent")
+            return None
+        log.info("fetch_order_query_ok", exchange_id=res["id"])
+        return {k: res[k] for k in res}
+
+    def fetch_recent_fills(self, symbol: str, limit: int = 50) -> list[dict[str, Any]]:
+        """Recent venue fills for idempotent fill reconciliation.
+
+        Maps ccxt ``fetch_my_trades`` (symbol-scoped). Fill identity is the
+        venue trade id; the gateway's FillLedger deduplicates by it.
+        """
+        request_id = str(uuid.uuid4())
+        log = self._log.bind(req_id=request_id, op="fetch_recent_fills", symbol=symbol)
+
+        @self._retry_decorator
+        def _execute() -> list[CCXTPayloadProtocol]:
+            raw = self._exchange_instance.fetch_my_trades(symbol, limit=limit)
+            if not isinstance(raw, list):
+                raise RuntimeError("protocol violation: fetch_my_trades must return a list")
+            return [narrow_ccxt_payload(t) for t in raw]
+
+        log.info("fetch_recent_fills_start")
+        try:
+            trades = _execute()
+        except Exception:
+            log.error("fetch_recent_fills_failed", exc_info=True)
+            raise
+
+        fills: list[dict[str, Any]] = []
+        for t in trades:
+            fills.append(
+                {
+                    "fill_id": str(t.get("id") or ""),
+                    "order_id": str(t.get("order") or ""),
+                    "symbol": str(t.get("symbol") or symbol),
+                    "side": str(t.get("side") or ""),
+                    "price": float(t.get("price") or 0.0),
+                    "amount": float(t.get("amount") or 0.0),
+                    "fee": float((t.get("fee") or {}).get("cost", 0.0) or 0.0),
+                    "timestamp": t.get("timestamp"),
+                }
+            )
+        log.info("fetch_recent_fills_ok", count=len(fills))
+        return fills
+
+    # ------------------------------------------------------------------------
     # Helpers
     # ------------------------------------------------------------------------
     @staticmethod

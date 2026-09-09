@@ -1241,3 +1241,53 @@ LIVE_CALLS=0, FALSE_SUCCESS=0). Full unit suite 896/897 (1 pre-existing env
 failure). Ruff + mypy clean on all checkpoint modules. NEXT:
 CONTINUE_POC01 + SHADOW_NEXT_CAMPAIGN_INTEGRATION +
 LEGACY_STRATEGY_RETRO_VALIDATION + FUTURE_CONFIRMATION_WAIT.
+
+## ADR-0027 — Shadow campaign V1, legacy retro-validation, adapter wiring, hermetic regression (SHADOW-AND-LEGACY-VALIDATION-01)
+
+Date: 2026-09-09 · Base: `e07352d`
+
+### Context
+
+Six-track checkpoint: POC01 continuity certification (Track A), shadow
+next-campaign capture/outcome/analysis (Track B), preregistered legacy
+retro-validation (Track C), adapter wiring through the reliability
+primitives (Track D), Strategy Lab research intake (Track E), confirmation
+lock verification (Track F), and a hermetic regression environment (GOV-05).
+
+### Decision
+
+1. **POC01 continuity**: structural certification only — runtime was DOWN
+   at checkpoint time (12.7h heartbeat gap); no restart performed. Resume
+   identity proven deterministic; campaign artifacts sha256-verified
+   byte-identical before/after. D1 finalized (0 trades → 0 valid days).
+2. **Shadow plane** (`src/trading_bot/shadow/`): immutable rejected-candidate
+   capture with deterministic economic `shadow_candidate_id`; PIT outcome
+   engine (strictly post-decision bars, adverse-first intrabar,
+   append-stable); per-reason metrics classifying blocks only with
+   sufficient evidence. Zero imports from the POC01 runtime (enforced by
+   isolation grep + review).
+3. **Legacy retro** (`research/legacy_retro.py`): EX-ANTE frozen protocol
+   with SHA-256 fingerprint; modern gates COMPOSED (expectancy + Sharpe +
+   CI-excludes-negative + permutation) — no single statistic certifies;
+   baselines only from VALIDATED cells. Real-data executions pending
+   (harness proven on synthetic PIT series).
+4. **Adapter wiring** (`execution/adapter_binding.py` + additive
+   `fetch_order_query`/`fetch_recent_fills` on `CCXTExchangeConnector`):
+   REAL connectors now drive the certified gateway path. Binance passes
+   the full conformance suite through its real code path (simulated
+   transport, no network). Bitunix classified NOT_COMPATIBLE_WITH_CCXT_BINDING.
+5. **Lab intake** (`research/lab_intake.py`): research-only contract;
+   orthogonality + regime-first hypothesis required; spec fingerprint
+   frozen at admission; no path to PAPER.
+6. **Hermetic regression** (`scripts/run_regression_hermetic.py`): strips
+   host EXCHANGE_*/POC01_*/CAMPAIGN_*/TRADING_* env; host 946/1 → hermetic
+   **947/0**. Application defaults deliberately NOT altered.
+
+### Consequences
+
+- Shadow/retro/lab artifacts are evidence planes only; runtime authority
+  unchanged during POC01.
+- CONF-EDGE-002-001 remains unconsumed; manifest verified immutable at
+  commit `39578a6`.
+- NEXT: CONTINUE_POC01 + POST_POC01_ANALYSIS + SHADOW_CAMPAIGN_V2 +
+  CONFIRMATION_WAIT.

@@ -134,3 +134,14 @@ Code-reviewer reporto 3 rondas con nits accionables, todos cerrados: (1) fmean->
 - Known-baseline note: test_load_settings_happy_path fails wherever
   EXCHANGE_ID is exported from local .env (bybit vs binance default) —
   environment contamination, NOT a code defect (proven at BASE).
+
+[2026-09-09] SHADOW-AND-LEGACY-VALIDATION-01 retrieval log
+- Read: reports/paper-observation-01/{CAMPAIGN_STATE,CAMPAIGN_REPORT,2026-09-08/DAILY_REPORT}.{json,md}; demo-fixture/RUN_REPORT.json — Track A continuity + D1 evidence.
+- Read: src/trading_bot/demo/paper_multi_agent.py (resume semantics, campaign-id derivation) — structural continuity proof; NO runtime execution (state mutation avoided).
+- Probed: http://127.0.0.1:8766/api/campaign + :8767 → connection refused (API/UI SERVICE_DOWN; classified, not restarted).
+- Read: src/trading_bot/market_data/exchange_connector.py (+ Binance/Bybit subclasses), market_data/bitunix.py, config/exchange.py, execution/{gateway,service,conformance,intent,journal}.py, execution/cost_model.py — Track D binding design.
+- Read: research/families/* (legacy strategy surface), backtesting/{engine,types,stat_validation}.py — Track C integration (no duplication).
+- Read: risk/reject_analysis.py (existing Track F contract from e07352d) — shadow analysis composes with it.
+- Git object read: `git show 39578a6:docs/admission-foundation-01/evidence/CONFIRMATION_MANIFEST.json` — CONF-EDGE-002-001 verified consumed=false, window 2026-09-08→2026-09-22, immutable.
+- Proven: settings baseline failure is host-env driven (EXCHANGE_ID=bybit exported); `env -u` + hermetic runner → 947/0. Repo default unchanged.
+- POC01 isolation: sha256 manifest of all campaign artifacts identical before/after checkpoint.
