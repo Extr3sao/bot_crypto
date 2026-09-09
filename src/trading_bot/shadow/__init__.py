@@ -18,12 +18,22 @@ from trading_bot.shadow.outcome import (
     ShadowTrade,
     ShadowTradeOutcome,
 )
+from trading_bot.shadow.router import (
+    ConditionedShadowMetrics,
+    RiskDecision,
+    RiskGateRouter,
+    ShadowCounters,
+)
 
 __all__ = [
     "SHADOW_LABELS",
+    "ConditionedShadowMetrics",
+    "RiskDecision",
+    "RiskGateRouter",
     "ShadowBar",
     "ShadowCandidateCapture",
     "ShadowCandidateLedger",
+    "ShadowCounters",
     "ShadowOutcomeEngine",
     "ShadowTrade",
     "ShadowTradeOutcome",
