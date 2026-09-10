@@ -222,7 +222,7 @@ def main() -> int:
                 "per_side_bps": bps,
                 "N": len(net),
                 "gross_expectancy_R": float(np.mean([t.gross_r for t in trades])) if trades else 0.0,
-                "cost_per_trade_R": float(np.mean([t.cost_r * (bps / COST_SIDE_BPS)])) if trades else 0.0,
+                "cost_per_trade_R": float(np.mean([x.cost_r * (bps / COST_SIDE_BPS) for x in trades])) if trades else 0.0,
                 "net_expectancy_R": float(np.mean(net)) if net else 0.0,
                 "net_total_R": float(np.sum(net)) if net else 0.0,
             }

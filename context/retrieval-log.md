@@ -210,3 +210,15 @@ FINAL_REPORT + ADR-0031. POC01 untouched (empty diff, committed + working tree).
 - TRACK B: H1 FINAL DISCOVERY_FAIL, cost-independent (gross −0.0030 R, gross PF 0.995<1, Sharpe CI<0, perm p=1.0, halves/thirds negative); failed-memory #10 amended (SHORT_ON_SHOCK mechanism; NORMAL→HIGH N=11 and BULL|RANGE→NEUTRAL|TRANSITION N=20 = POST_HOC_LEAD_ONLY, DO_NOT_RETEST).
 - TRACK C/D: exactly ONE hypothesis selected pre-result (performance-blind): H3 = BTC↔ETH beta-neutral log-spread mean reversion (rolling OLS beta 336-bar, |z|>=2.5 entry, corr gate 0.60, two-leg 5 bps/side costs, PIT trailing windows, future-mutation invariant preregistered). H3_SPEC.json + H3_MANIFEST.json + H3_SELECTION_RATIONALE.md written; H3_EXECUTIONS=0; execution forbidden until next checkpoint verifies prereg ordering.
 - TRACKS E/F/G: R2 ACTIVE unchanged (heartbeat 11:28:51Z, 11 cycles); shadow 11/0 mature-only (earliest 2026-09-11T21:15Z, INSUFFICIENT_SAMPLE); CONF-EDGE-002-001 untouched; Risk unchanged; LIVE=0.
+
+## 2026-09-10 — H3-PREREG-VERIFICATION-AND-DISCOVERY-01
+- TRACK A: spec sha256 90c56699... verified identical (working tree == blob at 83b3acd == expected); PREREG_DRIFT=false.
+- TRACK B/C: engine table monotone 0/5/10/20/40 bps -> -0.3674/-0.3783/-0.3892/-0.4111/-0.4547 (identical trade set, NET=GROSS-COST, COST>=0); multi-leg = 4 executions/RT, cost_r = 2*(side_bps/10000)*(1+|beta|)/std.
+- TRACK D: FUNDING_INCLUDED=false, FUNDING_EXCLUDED_BY_PREREG (spec.cost_model.funding=N/A); post-run materiality: gross-level failure, omission cannot change conclusion.
+- TRACK E: future-mutation adversarial test PASS (mutate strictly after T; features + 118 entry decisions <= T byte-identical).
+- TRACK F: sync perfect: 58633/58633 rows, COMMON 58633, missing/misaligned/stale = 0, identical timestamp sequences.
+- TRACK G: neutrality gate FAILED -> DEF-H3-NEUTRALITY-001 registered (mean abs net dollar exposure 0.344 vs <=0.10 bar); H3 not to be described as beta-neutral; result terminal regardless (gross PF 0.492).
+- TRACK H: exactly 1 economic execution 2026-09-10T20:16:48Z (marker before result); one pre-result crash (comprehension bug, nothing written) documented in H3_EXECUTION_LOG.md; ordering 83b3acd < execution < commit (POST_RUN_FILL pattern).
+- TRACKS I/J/K: N=243, gross -0.367 R / net -0.378 R, PF 0.492/0.482, Sharpe -0.227 CI [-0.390,-0.087], P>0=0.001, perm p=1.0, halves/thirds [-1,-1]/[-1,-1,-1], WF -0.189, MC DD95 134.6 R, mean hold 32.8 bars; cost drag 0.011 R; sensitivity (prereg 2.5/5/10) monotone; orthogonality: overlap 0.490 proxy / 0.391 H1, daily corr 0.009 / -0.035 -> REDUNDANT=false.
+- TRACK L/M: B4=DISCOVERY_FAIL (terminal; PAPER_PROMOTIONS=0); H1_REPORT_SEMANTICS.md written (doc-only; H1_RESULT untouched).
+- TRACKS N/O: R2 ACTIVE unchanged; shadow 11/0 mature-only; CONF-EDGE-002-001 untouched; Risk unchanged; LIVE=0.
