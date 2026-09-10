@@ -45,3 +45,38 @@ from a gap that is not documented here (ALPHA-01/ALPHA-04).
 - Any "gap" in HIGH_VOL/TRENDING regimes rests on retro cells that FAILED — hypotheses
   there must explain why the new mechanism is not the same failed mechanism
   (TRACK G failed-research memory is binding).
+
+---
+
+## REFRESH — H3-GOVERNANCE-RECONCILIATION-AND-H5-SELECTION-01 (2026-09-10)
+
+Evidence consumed: FAILED_RESEARCH_MEMORY #1–#11 (incl. H1 transition defense and
+H3 BTC/ETH relative-value), H1_RESULT.json, H3_RESULT.json, COST_SENSITIVITY_AUDIT.json,
+R2 attribution ledger (coarse labels only), legacy retro cells. No new backtest was run
+for this refresh (performance-blind).
+
+### Updated canonical regime coverage table (addendum)
+
+| Regime (canonical coarse) | Discovery evidence (new) | Status (updated) |
+| --- | --- | --- |
+| LOW_VOLATILITY (any trend/structure) | unchanged from base report | **ACTIVITY_WITHOUT_EDGE** |
+| HIGH_VOLATILITY \| MIXED \| RANGING | unchanged | **UNDER_COVERED** (runtime) + **ACTIVITY_WITHOUT_EDGE** (retro) |
+| LOW_VOLATILITY \| MIXED \| TRENDING | unchanged | **UNDER_COVERED** + **ACTIVITY_WITHOUT_EDGE** |
+| CORRECTION / regime-transition (any vol) | H1 (N=10,193): transition STATE alone carries zero gross edge (−0.003 R); 6.5 qualifying transitions/day are cost-dominated | **ACTIVITY_WITHOUT_EDGE** (was INSUFFICIENT_OBSERVATION — now discovered-and-refuted at 1h with frozen spec) |
+| Cross-asset displacement (BTC↔ETH majors) | H3 (N=243): |z|≥2.5 trailing-z dislocations CONTINUE, not revert (gross PF 0.492); genuinely orthogonal (daily PnL corr 0.009/−0.035) but edge-less; "beta-neutral" label withdrawn (DEF-H3-NEUTRALITY-001) | **ACTIVITY_WITHOUT_EDGE** (new row — cross-asset family now discovered-and-refuted in this normalization) |
+| Order-flow imbalance regimes (taker-flow extremes, high/low participation) | **no discovery ever run**; data authority PROVEN in frozen committed dataset (12-field klines incl. numberOfTrades + takerBuyBaseVolume, 58,633 rows BTC/ETH, 52,458 SOL, 2020-01→2026-09) | **INSUFFICIENT_OBSERVATION — largest evidence-backed remaining GAP (selected for H5)** |
+| Session / time-of-day | unchanged; cost-blocked (memory #9) | **ACTIVITY_WITHOUT_EDGE / cost-blocked** |
+
+### Honest reading (refresh)
+
+- Two previously-open structural gaps are now **closed by refutation** (transition state,
+  trailing-z relative value). The remaining largest gap with (a) no discovery ever run,
+  (b) proven data authority in already-frozen committed files, and (c) an economic
+  mechanism distinct from #1–#11, is **order-flow imbalance** (buyer/seller taker
+  participation extremes and trade-count/flow-participation regimes).
+- Failed-memory exclusions consumed (E1): legacy directional families (#1–#4),
+  volatility_structure (#6), cross_sectional (#7), carry_funding (#8), session (#9),
+  H1 transition-state defense (#10), H3 BTC/ETH trailing-z relative value (#11).
+  The H5 candidate conditions on ORDER FLOW (who traded), a variable none of #1–#11 used.
+- NO_SIGNAL: still not assigned anywhere — R2 continues to produce signals; funnel loss
+  remains downstream of signal generation.

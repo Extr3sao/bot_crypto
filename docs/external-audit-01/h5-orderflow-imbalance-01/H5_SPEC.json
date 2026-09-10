@@ -1,0 +1,83 @@
+{
+  "checkpoint": "H3-GOVERNANCE-RECONCILIATION-AND-H5-SELECTION-01",
+  "strategy_id": "H5-ORDERFLOW-IMBALANCE-CONTINUATION-01",
+  "spec_version": "1.0.0-frozen",
+  "created_utc": "2026-09-10",
+  "status": "PREREGISTERED_NOT_EXECUTED",
+  "authority": {
+    "gap": "REGIME_COVERAGE_GAP_REPORT.md REFRESH (2026-09-10): order-flow imbalance regimes = INSUFFICIENT_OBSERVATION, largest remaining gap with proven data authority",
+    "failed_memory_check": "FAILED_RESEARCH_MEMORY.md #1-#11 consumed: no price-shape, vol-state, cross-sectional, funding, time-of-day, regime-label or trailing-z mechanism is repackaged; order-flow conditioning is new to the program",
+    "selection_record": "H5_SELECTION_RATIONALE.md (performance-blind; no signal statistic observed)"
+  },
+  "economic_hypothesis": {
+    "statement": "Bars where aggressive taker flow is strongly one-sided (|OFI| >= 0.30) while market participation is elevated (trade count >= 1.5x its trailing norm) mark directional pressure from impatient/informed traders that tends to PERSIST into the following bars; entering WITH the flow side at the next bar open and holding a fixed horizon monetizes that persistence.",
+    "family": "order_flow_microstructure",
+    "is_not": "price-pattern momentum, regime-state conditioning, relative-value reversion, carry, session timing; NOT a repackaging of FAILED_RESEARCH_MEMORY #1-#11",
+    "mechanism": "flow continuation (WITH the aggressive side), in contrast to H3's refuted reversion premise"
+  },
+  "assets": ["BTCUSDT", "ETHUSDT", "SOLUSDT"],
+  "timeframe": "1h",
+  "data": {
+    "source": "committed frozen 12-field klines (docs/external-audit-01/h1-regime-transition-01/dataset/{ASSET}_1h.jsonl); fields: openTime, open, high, low, close, volume, closeTime, quoteVolume, numberOfTrades, takerBuyBaseVolume, takerBuyQuoteVolume, ignore",
+    "window": "2020-01-01T00:00:00Z -> 2026-09-09T00:00:00Z (frozen; BTC 58,633 / ETH 58,633 / SOL 52,458 rows)",
+    "fingerprint_rule": "sha256 per asset file recorded at execution; no synthetic rows",
+    "per_asset_evaluation": "assets evaluated independently and pooled for the headline metrics; no cross-asset pairing"
+  },
+  "features": {
+    "order_flow_imbalance": "OFI_t = (2*takerBuyBaseVolume_t - volume_t) / volume_t  [in (-1, +1]; = +1 all taker-buy, -1 all taker-sell]",
+    "participation": "P_t = numberOfTrades_t / SMA(numberOfTrades, 336 bars ending at t)",
+    "normalization": "OFI z-scored against trailing 336-bar mean/std of OFI (zOFI_t); participation uses its own trailing norm (P_t)",
+    "pit_semantics": "OFI_t, zOFI_t, P_t use ONLY bars with close_time <= decision_time; trailing 336-bar windows; no full-window statistics, no future normalization"
+  },
+  "direction_rules": {
+    "entry_long": "zOFI_t >= +2.5 AND P_t >= 1.5 AND flat (flow strongly buy-sided at elevated participation)",
+    "entry_short": "zOFI_t <= -2.5 AND P_t >= 1.5 AND flat (flow strongly sell-sided at elevated participation)",
+    "entry_instant": "next bar open (bar t+1) = the fill instant of the decision; no lookahead",
+    "exit_rule": "fixed horizon: exit at close of bar t+12 (HOLD_BARS=12; the hypothesis is about the IMMEDIATE continuation window, matching the 1h flow-memory horizon)",
+    "stop_invalidation": "adverse move of 1.0 x trailing ATR14 (window t-13..t) from entry, checked pessimistically (stop assumed first when SL and horizon land in one bar; same frozen convention as H1)",
+    "max_holding_period_bars": 12,
+    "cooldown_bars": 4,
+    "incomplete_tail": "transitions without 12 remaining bars are skipped and counted (mechanical completeness)"
+  },
+  "cost_model": {
+    "legs": 1,
+    "round_trip_bps": 10.0,
+    "cost_basis": "identical to frozen H1 cost basis (5 bps/side binanceusdm taker reference)",
+    "accounting": "ABSOLUTE semantics (DEF-RESEARCH-COST-001): net_r = gross_r - (10/10000)/(ATR14/entry); cost scenarios 0/5/10/20/40 bps recomputed with absolute anchoring only",
+    "fees_slippage": "included in the 10 bps RT",
+    "funding": "N/A — single-asset 1h horizon with 12-bar exits; perp funding is a separate mechanism (declared ex ante; materiality assessed post-run only if a gate passes)"
+  },
+  "minimum_n": { "total_trades": 30, "direction_cell": 15, "asset_cell": 10 },
+  "acceptance_gates": {
+    "DISCOVERY_PASS_requires_ALL": {
+      "net_expectancy_R": "> 0.0",
+      "profit_factor_net": "> 1.15",
+      "P_Sharpe_gt_0": ">= 0.90",
+      "permutation_p": "<= 0.05",
+      "halves": "uniform sign, positive",
+      "thirds": "uniform sign, positive",
+      "walk_forward_last_third_net_R": "> 0.0"
+    }
+  },
+  "robustness_gates": {
+    "cost_sensitivity": "absolute semantics, scenarios 0/5/10/20/40 bps RT + preregistered 5/20 reporting",
+    "bootstrap_sharpe": "2000 resamples, frozen seed 20260910",
+    "permutation": "1000 sign-flips, frozen seed 20260910",
+    "monte_carlo_dd95": "2000 resamples",
+    "halves_thirds": "chronological sign stability required",
+    "direction_stability": "both LONG and SHORT cells reported; pass does not require both positive, but a single-direction-only result must be labeled DIRECTION_ASYMMETRIC"
+  },
+  "orthogonality_gates": {
+    "comparison_families": ["momentum", "trend", "breakout", "mean_reversion", "volatility", "volatility_structure", "cross_sectional", "carry_funding", "H1_transition_defense", "H3_relative_value"],
+    "measurables": ["trade-time overlap vs frozen ROC(24) proxy", "daily PnL correlation on common days", "trade-time overlap + daily PnL correlation vs deterministic H1 and H3 replays", "regime activation overlap"],
+    "redundant_candidate_rule": "trade-time overlap > 0.6 AND daily PnL correlation > 0.7 vs ANY comparison family -> REDUNDANT_CANDIDATE even if raw PF attractive"
+  },
+  "execution_protocol": {
+    "exactly_once": "single economic execution via the ResearchExecutionLedger (STARTED persisted + fsync'd BEFORE any economic work; attempt rows append-only; recovery = new attempt_id with RECOVERY_OF link)",
+    "ordering_rule": "H5 execution commit MUST be strictly later than this preregistration commit",
+    "no_peeking": "no performance statistic may be computed or observed before the economic execution",
+    "marker": "H5_EXECUTION_MARKER.json (completion marker) written before H5_RESULT.json; authority and attempts live in the ledger"
+  },
+  "promotion_boundary": "DISCOVERY_PASS -> PREPARE_H5_CONFIRMATION_MANIFEST on an UNSEEN window only (no PAPER, no confirmation shortcut); DISCOVERY_FAIL -> FAILED_RESEARCH_MEMORY #12; INSUFFICIENT_* -> allowed re-entry with deeper data only",
+  "prohibited": ["parameter sweep", "fallback thresholds", "alternative window after result", "post-result threshold changes", "retrospective relabeling", "reusing any #1-#11 mechanism under a new name"]
+}

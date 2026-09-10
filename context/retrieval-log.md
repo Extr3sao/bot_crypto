@@ -222,3 +222,11 @@ FINAL_REPORT + ADR-0031. POC01 untouched (empty diff, committed + working tree).
 - TRACKS I/J/K: N=243, gross -0.367 R / net -0.378 R, PF 0.492/0.482, Sharpe -0.227 CI [-0.390,-0.087], P>0=0.001, perm p=1.0, halves/thirds [-1,-1]/[-1,-1,-1], WF -0.189, MC DD95 134.6 R, mean hold 32.8 bars; cost drag 0.011 R; sensitivity (prereg 2.5/5/10) monotone; orthogonality: overlap 0.490 proxy / 0.391 H1, daily corr 0.009 / -0.035 -> REDUNDANT=false.
 - TRACK L/M: B4=DISCOVERY_FAIL (terminal; PAPER_PROMOTIONS=0); H1_REPORT_SEMANTICS.md written (doc-only; H1_RESULT untouched).
 - TRACKS N/O: R2 ACTIVE unchanged; shadow 11/0 mature-only; CONF-EDGE-002-001 untouched; Risk unchanged; LIVE=0.
+
+## 2026-09-10 — H3-GOVERNANCE-RECONCILIATION-AND-H5-SELECTION-01
+- Track A: both H3 attempts reconstructed (attempt 1 crashed during report-table construction AFTER economic evaluation, BEFORE marker/result persistence); classified RESULT_COMPUTED_NOT_OBSERVED; exactly-once certified (1 experiment / 2 attempts / 1 completed / 1 failed) -> docs/external-audit-01/h3-relative-value-01/H3_EXECUTION_FORENSICS.md; ledger bootstrapped via scripts/bootstrap_h3_execution_ledger.py
+- Track B: src/trading_bot/research/execution_ledger.py (append-only, STARTED+fsync BEFORE economic work, recovery links, failure-atomic acquire) + 7 adversarial tests in tests/unit/research/test_execution_ledger.py
+- Track C: DEF-H3-EXEC-001 (LATE_EXECUTION_MARKER, FIXED) in docs/audit/DEFECT_REGISTER.md; H3 FAILED_RESEARCH preserved, no rerun; neutrality label withdrawn
+- Track D: Shadow 11 captures / 0 mature / 0 resolved (earliest 2026-09-11T21:15Z); POLICY_CONCLUSION=INSUFFICIENT_SAMPLE; Risk unchanged
+- Track E: REGIME_COVERAGE_GAP_REPORT.md addendum (order-flow regimes INSUFFICIENT_OBSERVATION with data authority: klines field 8/9 present in all three frozen assets)
+- Track F/G: H5 = H5-ORDERFLOW-IMBALANCE-CONTINUATION-01 selected performance-blind; H5_SPEC.json (H5_EXECUTIONS=0) + H5_MANIFEST.json + H5_SELECTION_RATIONALE.md frozen; no performance statistic observed
