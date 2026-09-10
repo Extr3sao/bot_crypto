@@ -1,0 +1,13 @@
+{
+  "economic_execution": 1,
+  "written_before_results": true,
+  "spec_sha256": "8baaff7dea28a346c9754eb408f537aaee24978b9dce279d213942863e5fc701",
+  "dataset_sha256": "5a33c678c5ddca91e2b736ffc6add535e4fba83b35ba7e983abb1b1f3112460f",
+  "row_counts": {
+    "BTCUSDT": 58633,
+    "ETHUSDT": 58633,
+    "SOLUSDT": 52458
+  },
+  "executed_at_utc": "2026-09-10T11:42:29.382416+00:00",
+  "prereg_commit": "3ad054d84bb32aa54b4c04bffb66a14bf8b7ada9"
+}

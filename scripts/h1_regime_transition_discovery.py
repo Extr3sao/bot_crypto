@@ -51,7 +51,7 @@ from trading_bot.research.h1_regime_transition import (  # noqa: E402
 SPEC_SHA_EXPECTED = "8baaff7dea28a346c9754eb408f537aaee24978b9dce279d213942863e5fc701"
 ASSETS = ("BTCUSDT", "ETHUSDT", "SOLUSDT")
 WINDOW_START_MS = 1_577_836_800_000  # 2020-01-01T00:00:00Z
-WINDOW_END_MS = 1_786_992_000_000  # 2026-09-09T00:00:00Z
+WINDOW_END_MS = 1_788_912_000_000  # 2026-09-09T00:00:00Z (frozen spec; corrected from an earlier miscomputed constant BEFORE any evaluation — prereg alignment, not tuning)
 BASE_URL = "https://fapi.binance.com/fapi/v1/klines?symbol={sym}&interval=1h&startTime={start}&endTime={end}&limit=1500"
 PREREQ_BARS = 201  # 200-bar state window + 1 prior bar for the transition
 
@@ -64,45 +64,64 @@ def _sha256_file(path: Path) -> str:
     return h.hexdigest()
 
 
-def _fetch_json(url: str, retries: int = 3):
+def _fetch_json(url: str, retries: int = 5):
     for attempt in range(retries):
         try:
             req = urllib.request.Request(url, headers={"User-Agent": "h1-regime-transition-01/1"})
             with urllib.request.urlopen(req, timeout=30) as r:
                 return json.loads(r.read())
+        except urllib.error.HTTPError as exc:
+            if exc.code == 429 and attempt < retries - 1:
+                time.sleep(float(exc.headers.get("Retry-After", "5")) or 5.0)
+                continue
+            if attempt == retries - 1:
+                raise
+            time.sleep(2.0 * (attempt + 1))
         except Exception:
             if attempt == retries - 1:
                 raise
-            time.sleep(1.5 * (attempt + 1))
+            time.sleep(2.0 * (attempt + 1))
     return None
 
 
+CACHE_DIR = OUT / "dataset"
+
+
 def fetch_klines(symbol: str) -> list[list]:
-    """Public klines for the frozen window; fails loudly if partial."""
+    """Public klines for the frozen window; resumable raw-row cache on disk.
+
+    The cache stores the provider's raw rows verbatim (no synthetic fill);
+    it exists so a crashed fetch can resume without re-downloading. A
+    complete cache (last row reaching the frozen window end) is reused;
+    otherwise fetching resumes from the last cached open time.
+    """
+    CACHE_DIR.mkdir(parents=True, exist_ok=True)
+    cache = CACHE_DIR / f"{symbol}_1h.jsonl"
     rows: list[list] = []
-    start = WINDOW_START_MS
-    while start < WINDOW_END_MS:
-        url = BASE_URL.format(sym=symbol, start=start, end=WINDOW_END_MS)
-        batch = _fetch_json(url)
-        if not batch:
-            raise RuntimeError(f"{symbol}: empty klines page at {start}")
-        rows.extend(batch)
-        last_open = int(batch[-1][0])
-        if len(batch) < 1500:
-            break
-        start = last_open + 3_600_000
-    # de-dup + monotonic guard (no synthetic fill; gaps remain gaps)
-    seen: set[int] = set()
-    dedup: list[list] = []
-    for row in rows:
-        ts = int(row[0])
-        if ts in seen:
-            continue
-        seen.add(ts)
-        dedup.append(row)
-    if len(dedup) < 5000:
-        raise RuntimeError(f"{symbol}: suspiciously few klines ({len(dedup)}) — refusing")
-    return dedup
+    if cache.exists():
+        rows = [json.loads(line) for line in cache.read_text(encoding="utf-8").splitlines() if line.strip()]
+        if rows and int(rows[-1][0]) + 3_600_000 >= WINDOW_END_MS:
+            return rows  # complete cached window
+        if rows:
+            print(f"{symbol}: resuming cache at {rows[-1][0]} ({len(rows)} rows)", flush=True)
+    start = int(rows[-1][0]) + 3_600_000 if rows else WINDOW_START_MS
+    with cache.open("a", encoding="utf-8") as fh:
+        while start < WINDOW_END_MS:
+            url = BASE_URL.format(sym=symbol, start=start, end=WINDOW_END_MS)
+            batch = _fetch_json(url)
+            if not batch:
+                raise RuntimeError(f"{symbol}: empty klines page at {start}")
+            for row in batch:
+                fh.write(json.dumps(row, separators=(",", ":")) + "\n")
+            fh.flush()
+            rows.extend(batch)
+            last_open = int(batch[-1][0])
+            if len(batch) < 1500:
+                break
+            start = last_open + 3_600_000
+    if len(rows) < 5000:
+        raise RuntimeError(f"{symbol}: suspiciously few klines ({len(rows)}) — refusing")
+    return rows
 
 
 def to_bars(rows: list[list], symbol: str):
@@ -138,8 +157,15 @@ def evaluate_asset(symbol: str, rows: list[list]) -> Evaluation:
         proxy_trades=proxy_trades,
         no_trade_opportunities=sum(1 for e in events if not e.tradeable),
         skipped_incomplete=skipped_incomplete,
-        skipped_open=skipped_open,
+        skipped_open_position=skipped_open,
     )
+
+
+def append_attempt_note(note: str) -> None:
+    """Append-only record of failed start attempts (no results written)."""
+    LOG.parent.mkdir(parents=True, exist_ok=True)
+    with LOG.open("a", encoding="utf-8") as fh:
+        fh.write(f"- ATTEMPT {datetime.now(UTC).isoformat()}: {note}\n")
 
 
 def write_marker(spec_sha: str, dataset_sha: str, row_counts: dict[str, int]) -> None:
@@ -192,7 +218,19 @@ def main() -> int:
     dataset_blob = json.dumps(row_counts, sort_keys=True).encode()
     dataset_sha = hashlib.sha256(dataset_blob).hexdigest()
 
-    write_marker(spec_sha, dataset_sha, row_counts)
+    # NOTE: marker + attempt notes are ECONOMIC-RUN-ONLY artifacts. The replay
+    # path must never mutate them (a replay that rewrote the exactly-once
+    # marker or appended a crash note would corrupt execution evidence).
+    if not args.replay:
+        append_attempt_note(
+            f"first invocation crashed in evaluate_asset (constructor kwarg "
+            f"skipped_open vs skipped_open_position) AFTER all three fetches, "
+            f"BEFORE any simulation output was consumed, persisted or classified; "
+            f"no marker/result existed. Spec unchanged ({spec_sha[:12]}...); counts "
+            f"{json.dumps(row_counts)}"
+        )
+
+        write_marker(spec_sha, dataset_sha, row_counts)  # exactly-once marker BEFORE results
 
     # ---- pooled results (B1) ----
     all_trades: list[Trade] = [t for ev in evaluations.values() for t in ev.trades]
@@ -241,7 +279,7 @@ def main() -> int:
         "accounting": {
             "no_trade_opportunities": sum(ev.no_trade_opportunities for ev in evaluations.values()),
             "skipped_incomplete": sum(ev.skipped_incomplete for ev in evaluations.values()),
-            "skipped_open_position": sum(ev.skipped_open for ev in evaluations.values()),
+            "skipped_open_position": sum(ev.skipped_open_position for ev in evaluations.values()),
             "paper_promotions": 0,
             "confirmation_usage": "none",
             "live_calls": 0,
@@ -252,8 +290,13 @@ def main() -> int:
 
     if args.replay:
         existing = json.loads(RESULT.read_text(encoding="utf-8"))
-        core_existing = {k: existing[k] for k in existing if k not in ("runtime_seconds", "technical_replay")}
-        core_new = {k: result for k in ()}  # placeholder to appease linters
+        # execution_commit is filled POST-RUN (after the artifacts commit), so it
+        # must be excluded from BOTH sides of the determinism compare.
+        core_existing = {
+            k: existing[k]
+            for k in existing
+            if k not in ("runtime_seconds", "technical_replay", "execution_commit")
+        }
         core_new = {k: result[k] for k in result if k not in ("runtime_seconds", "technical_replay", "execution_commit")}
         if core_existing != core_new:
             print("REPLAY MISMATCH: results differ from economic run — refusing to overwrite")

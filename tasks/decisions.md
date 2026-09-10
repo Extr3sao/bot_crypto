@@ -1420,7 +1420,7 @@ candidate research, shadow V2 preparation, and Bybit conformance.
   observation/STATUS.json; hermetic 1152/0 on the staged working tree; LIVE_CALLS=0;
   FALSE_SUCCESS=0; POC01 diff (committed + working tree) empty; CONF-EDGE-002-001 untouched.
 
-## ADR-0002 — Deterministic Direction Arbitration (ADR-DIR-0001) — 2026-09-09 (MA-DIRECTION-ARBITRATION-AND-POC02-REPAIR-01)
+## ADR-0032 — Deterministic Direction Arbitration (ADR-DIR-0001) — 2026-09-09 (MA-DIRECTION-ARBITRATION-AND-POC02-REPAIR-01)
 
 Simultaneous LONG/SHORT from one directional evaluation are ALTERNATIVE_DIRECTIONS,
 not independent claims. New immutable OpportunityGroup + deterministic LLM-free

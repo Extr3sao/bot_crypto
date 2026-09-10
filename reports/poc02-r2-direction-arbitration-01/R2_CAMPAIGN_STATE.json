@@ -1,15 +1,15 @@
 {
-  "cycles_total": 10,
+  "cycles_total": 11,
   "live_calls": 0,
   "real_broker_calls": 0,
   "private_exchange_calls": 0,
   "shadow_paperbroker_calls": 0,
-  "shadow_captures_total": 10,
+  "shadow_captures_total": 11,
   "shadow_resolved_total": 0,
-  "heartbeat_utc": "2026-09-10T08:16:41+00:00",
+  "heartbeat_utc": "2026-09-10T11:28:51+00:00",
   "status": "ACTIVE",
   "campaign_id": "POC-02-R2-direction-arbitration-01",
   "last_run_ids": [
-    "poc02-1789028202115"
+    "poc02-1789039733163"
   ]
 }

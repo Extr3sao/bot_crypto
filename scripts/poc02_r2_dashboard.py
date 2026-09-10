@@ -534,6 +534,12 @@ def _render_home(campaign_id: str) -> bytes:
 <table><tr><th>Estrategia</th><th>Estado</th><th>Operaciones</th><th>Resultado</th><th>¿Datos suficientes?</th><th>Próximo paso</th></tr>
 {strat_rows}</table>
 
+<h2>Laboratorio — investigación</h2>
+<table><tr><th>Hipótesis</th><th>Qué busca</th><th>Estado</th></tr>
+<tr><td>H1 — Defensa en cambio de régimen</td><td>Oportunidades con costo realista en ventanas posteriores a cambios de régimen (corrección/volatilidad), donde las estrategias actuales no tienen cobertura con evidencia</td><td><b>EN INVESTIGACIÓN</b></td></tr>
+</table>
+<p class="muted">"EN INVESTIGACIÓN" significa que la hipótesis está en evaluación científica preregistrada. Nunca se muestra "VALIDADA" sin evidencia de admisión. Un resultado positivo aún requeriría confirmación antes de cualquier uso operativoun no promoted automáticamente.</p>
+
 <h2>Criptomonedas</h2>
 <p class="muted">BTC, ETH y SOL se analizan en cada ciclo. Muestra actual: {s["paper_opens_total"]} operación(es) — demasiado pequeña para conclusions por moneda.</p>
 

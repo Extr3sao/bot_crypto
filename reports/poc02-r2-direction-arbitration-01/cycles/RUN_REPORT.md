@@ -1,6 +1,6 @@
 # DEMO-PAPER-01 Run Report
 
-- Run ID: `poc02-1789028202115`
+- Run ID: `poc02-1789039733163`
 - Mode: **PAPER**
 - Provider: `binanceusdm-public`
 - Live trading: **DISABLED**
@@ -17,8 +17,8 @@
 - decisions_selected: 3
 - decisions_rejected: 3
 - no_trade: 0
-- risk_accepts: 1
-- risk_rejects: 2
+- risk_accepts: 2
+- risk_rejects: 1
 - paper_trades: 1
 - closed_trades: 0
 

@@ -28,3 +28,22 @@ cost mechanism. It may only be promoted if H1/H2 evidence changes the cost pictu
   gap report update re-ranks them (no random proliferation, ALPHA-04).
 - Confirmation lock CONF-EDGE-002-001 untouched; nothing in this plan reads or uses the
   confirmation window.
+
+---
+
+## RESOLUTION UPDATE (H1-REGIME-TRANSITION-DISCOVERY-01, 2026-09-10)
+
+**H1 = DISCOVERY_FAIL** (N=10193, one economic execution, spec sha 8baaff7d…,
+marker 5a33c678…): gross −0.003 R / net −0.128 R, PF 0.833, P(Sharpe>0)=0.0,
+halves/thirds uniformly negative. Registered as FAILED_RESEARCH_MEMORY #10.
+Governance consequences:
+
+- H1 does NOT advance to confirmation or PAPER (no promotion; PAPER_PROMOTIONS=0).
+- H2 (vol term-structure gate) is **BLOCKED**: its activation premise
+  ("vol-state conditioning changes the picture") is directly undercut by #10 —
+  a vol-state variable alone carried zero gross edge. May only re-enter with a
+  mechanism change registered against #10, not a re-parameterization.
+- H3 (relative-value) remains the top unblocked IDEA (orthogonal family,
+  cost realism still weak). H4 remains cost-blocked (#9).
+- Next selection input: REGIME_COVERAGE_GAP_REPORT + FAILED_RESEARCH_MEMORY
+  #1–#10. No random proliferation.
