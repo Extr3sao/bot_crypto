@@ -1,0 +1,25 @@
+# Defect Register — FORENSIC AUDIT 2026-09-06
+
+| ID | Severity | Area | Description | Evidence | Status |
+| --- | --- | --- | --- | --- | --- |
+| P0-1 | P0 CRITICAL | Lineage/Integration | Certified work fragmented across 5 unmerged branches: POC01 campaign infra (durable state, resume, `/api/campaign`, watchdog), MA-4 DEF-MA4-003 fix + CERT-MA4-002, legacy-evidence layer, discovery R1 semantics, edge-research executor. HEAD (a282fcc) lacks all of it. | `git worktree list`; branch logs; this audit's endpoint probes (`/api/campaign` 404 in HEAD, present in poc01-setup) | OPEN |
+| P1-1 | P1 HIGH | Dashboard | Only `/` + `/api/status`; funnel is aggregate-only; positions/trades/decisions/debate objects not individually reachable via HTTP. | curl GET /api/status; code inspection (2 endpoints, line 820) | OPEN |
+| P1-2 | P1 HIGH | Persistence | `storage/event_store.py` not imported by demo/paper runtime (orphan); runtime persistence = JSON reports only in HEAD. POC01 durable state unmerged. | grep imports; file listing | OPEN |
+| P1-3 | P1 HIGH | Edge | No confirmed net edge. R1 honest re-audit collapsed R0's +2R/+3R to ≤0.48R / PF<1.5 with first-third concentration; STOP_NO_EDGE. Frequency KPI (≥3/day) never demonstrated. | FRESH-DATA-001-R1 record (14c7af2) | OPEN |
+| P1-4 | P1 HIGH | Runtime continuity | HEAD runtime is single-shot `--cycles N`; no loop/heartbeat/resume/watchdog in HEAD. | `paper_multi_agent.py` main; POC01 branch diff | OPEN |
+| P2-1 | P2 MEDIUM | Replay | `session.replay()`/`replay_with_blackboard()` exist; no run-level `replay(run_id)` CLI or DecisionTrace export tool in HEAD. | grep `def replay`; CLI inventory | OPEN |
+| P2-2 | P2 MEDIUM | Dead code | Empty package shells `agents/desk_lead/`, `paper_dashboard/`, `web/` (only `__pycache__`); Bitunix legacy connectors unused by runtime. | ls; import-graph probes | OPEN |
+| P2-3 | P2 MEDIUM | Market Intelligence | Regime engine labels 98.5% of bars MIXED → regime metrics degenerate when default bucket counted. | FRESH-DATA-001-R1 audit note | OPEN (metric fixed in R1 harness; engine untouched) |
+| P2-4 | P2 MEDIUM | Strategy Router | `StrategyRouter` (SELECTED/REJECTED/NOT_APPLICABLE) is research-plane only; runtime uses `paper/strategy_selector.py`. | grep class StrategyRouter; import probe | OPEN |
+| P3-1 | P3 LOW | Docs | Multi-generation convergence docs exist (ADR_PAPER_LEGACY_CONVERGENCE etc.) but do not state which generation is authoritative for operators. | docs listing | OPEN |
+| P3-2 | P3 LOW | Tests | pytest-bdd deprecation warnings (39+39) — pytest 10 compat debt. | pytest warnings summary | OPEN |
+| DEF-RESEARCH-COST-001 | P2 MEDIUM (display-only) | Research evaluation | H1 `compute_trade_metrics` sensitivity branch applied the cost DELTA vs the 10 bps baseline to the GROSS series instead of the ABSOLUTE scenario cost: reported `slippage_sensitivity_net_R` {5bps: +0.0592 (impossible: > gross −0.0030), 20bps: −0.1275 (coincides with 10 bps baseline)} violated monotonicity. Root cause proven by exact reproduction (machine precision) in COST_SENSITIVITY_AUDIT.json. B4 classification unaffected (consumed precomputed 10 bps net series). | docs/external-audit-01/cost-sensitivity-audit-01/COST_SENSITIVITY_AUDIT.json (TRADE_SET_SHA256, monotonicity table, legacy reproduction) | FIXED (component repaired + regression test; committed H1 result artifact intentionally NOT rewritten — anomaly documented) |
+
+## Non-defects (verified clean)
+
+- `FALSE_SUCCESS = 0` (validator check false_success_zero PASS).
+- BUILDER != VERIFIER preserved everywhere.
+- TEST_TARGET == RUNTIME_TARGET for the certified chain (validator imports the same runtime modules it exercises).
+- LIVE disabled by construction in the audited runtime; kill switches exist in legacy plane.
+- Read-only dashboard (POST 405) verified against a live process.
+- `DEMO_FIXTURE` labeling discipline intact; fixture PnL never mixed with market PnL.

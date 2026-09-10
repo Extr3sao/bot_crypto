@@ -1,0 +1,110 @@
+{
+  "checkpoint": "H1-EVIDENCE-INTEGRITY-AND-H3-RELATIVE-VALUE-PREREG-01",
+  "strategy_id": "H3-RELVAL-BTCETH-BETANEUTRAL-SPREAD-01",
+  "spec_version": "1.0.0-frozen",
+  "created_utc": "2026-09-10",
+  "status": "PREREGISTERED_NOT_EXECUTED",
+  "authority": {
+    "gap": "REGIME_COVERAGE_GAP_REPORT.md: LOW_VOL/RANGE ACTIVITY_WITHOUT_EDGE; cross-asset family absent from legacy universe",
+    "failed_memory_check": "FAILED_RESEARCH_MEMORY.md #1-#10: no mechanism reuse; #7 orthogonality pre-declared; #1/#9/#10 cost lessons honored via sparse entries + two-leg costs; #8 not reused",
+    "selection_record": "H3_SELECTION_RATIONALE.md (pre-result; no backtest observed during selection)"
+  },
+  "economic_hypothesis": {
+    "statement": "When BTC and ETH co-move (rolling correlation gate), temporary divergences of the beta-adjusted log-price spread between the two majors represent relative mispricing and revert toward the rolling mean; the strategy monetizes the relative displacement market-neutrally, holding no directional view on either asset.",
+    "family": "relative_value",
+    "is_not": "directional momentum/trend under another name; single-asset view; funding carry",
+    "mechanism": "spread = log(P_BTC) - beta * log(P_ETH); beta and spread mean/std from trailing window; enter when |z| >= 2.5 against recent spread trend; exit at z <= 0.5 toward the mean; hard stop at |z| >= 4.0; time stop at 48 bars"
+  },
+  "assets": {
+    "pair": ["BTCUSDT", "ETHUSDT"],
+    "roles": { "leg_A": "BTCUSDT", "leg_B": "ETHUSDT" },
+    "direction_rule": "z >= +2.5: SHORT A / LONG B; z <= -2.5: LONG A / SHORT B (both legs always opposite)"
+  },
+  "timeframe": "1h",
+  "data": {
+    "source": "binanceusdm public REST /fapi/v1/klines 1h (identical provider authority as H1)",
+    "window": "2020-01-01T00:00:00Z -> 2026-09-09T00:00:00Z (frozen; BTC/ETH both 58,633 rows)",
+    "fingerprint_rule": "sha256 over raw cached rows manifest recorded at execution; no synthetic rows",
+    "synchronization": {
+      "alignment": "1h bars joined on identical openTime (provider-aligned); bar t usable only if BOTH legs present at t",
+      "missing_leg_policy": "if one leg unavailable at t: NO_SIGNAL (never forward-fill, never use a later candle to fill an earlier missing asset)",
+      "staleness_bound": "max 1 missing bar tolerated in the feature window, else NO_SIGNAL",
+      "gap_handling": "gap > 1 bar invalidates the trailing feature window until rebuilt",
+      "provider_identity": "binanceusdm fapi, UTC"
+    }
+  },
+  "features": {
+    "log_spread": "s_t = ln(close_BTC_t) - beta_t * ln(close_ETH_t)",
+    "hedge_ratio": {
+      "method": "OLS of d(ln close_BTC) on d(ln close_ETH) over trailing window (beta of returns, level-invariant)",
+      "lookback_bars": 336,
+      "update": "rolling, recomputed every bar from trailing observations only",
+      "min_observations": 168
+    },
+    "normalization": "z_t = (s_t - mean_t) / std_t; mean/std over the same trailing 336-bar window as beta",
+    "correlation_gate": "rolling Pearson corr of ln-returns over 336 bars must be >= 0.60 at decision time, else NO_SIGNAL",
+    "regime_applicability": "all regimes (gate is the correlation itself); regime attribution recorded per trade for reporting"
+  },
+  "direction_rules": {
+    "entry_short_spread": "z_t >= +2.5 AND corr_gate AND flat: SHORT leg A (BTC), LONG leg B (ETH)",
+    "entry_long_spread": "z_t <= -2.5 AND corr_gate AND flat: LONG leg A (BTC), SHORT leg B (ETH)",
+    "exit": "z crosses back through |z| <= 0.5 toward the mean",
+    "hard_stop": "|z| >= 4.0 against the position",
+    "time_stop_bars": 48,
+    "cooldown_bars": 4,
+    "sizing": "notional_B = |beta_t| * notional_A (beta-weighted, no leverage above 1x gross)"
+  },
+  "entry_rule": "next bar open after decision (bar t+1), both legs simultaneously at open[t+1] (entry instant identical for both legs; no leg-level lookahead)",
+  "exit_rule": "first bar whose close satisfies exit/stop conditions, executed at that bar's close; if exit and stop coincide in one bar, the stop is assumed first (pessimistic, same convention as H1)",
+  "stop_invalidation": "hard stop |z| >= 4.0 (spread dislocation invalidates reversion premise)",
+  "max_holding_period_bars": 48,
+  "pit_semantics": {
+    "rule": "beta_t, mean_t, std_t, corr_t, z_t use ONLY observations with close_time <= decision_time; entry uses next bar open (the fill instant)",
+    "future_mutation_invariant": "modifying future prices must leave past beta, spread, z, signals and trades byte-identical; regression test required at execution",
+    "no_full_window_regression": true,
+    "no_future_normalization": true
+  },
+  "cost_model": {
+    "legs": 2,
+    "round_trip_bps_per_leg": 5.0,
+    "accounting": "both legs charged on entry AND exit (4 executions per round trip): entry leg A + entry leg B + exit leg A + exit leg B; total cost per trade in R = sum over legs of (bps/10000)/risk_unit_leg",
+    "fees": "included in the 5 bps/side (binanceusdm taker reference, matching frozen H1 cost basis)",
+    "slippage": "included in the 5 bps/side",
+    "funding": "N/A — spot-perp basis not part of the mechanism; declared N/A ex ante",
+    "sensitivity_bps": [2.5, 5.0, 10.0],
+    "minimum_edge_preregistered": "a single 1.0 R-equivalent spread move must exceed total two-leg round-trip cost at the preregistered sizing (cost hurdle check reported, not tuned)"
+  },
+  "minimum_n": { "total_trades": 30, "direction_cell": 15 },
+  "acceptance_gates": {
+    "DISCOVERY_PASS_requires_ALL": {
+      "net_expectancy_R": "> 0.0",
+      "profit_factor_net": "> 1.15",
+      "P_Sharpe_gt_0": ">= 0.90",
+      "permutation_p": "<= 0.05",
+      "halves": "uniform sign, positive",
+      "thirds": "uniform sign, positive",
+      "walk_forward_last_third_net_R": "> 0.0",
+      "orthogonality": "NOT redundant (trade-time overlap <= 0.6 OR daily PnL correlation <= 0.7)",
+      "market_neutrality_structural": "beta-weighted gross exposure reported; net directional beta exposure |net_beta_exposure| <= 0.10 average"
+    }
+  },
+  "robustness_gates": {
+    "bootstrap_sharpe": "2000 resamples, frozen seed 20260910",
+    "permutation": "1000 sign-flips, frozen seed 20260910",
+    "monte_carlo_dd95": "2000 resamples",
+    "slippage_sensitivity": "net expectancy recomputed at 2.5/5/10 bps per leg using ABSOLUTE cost semantics (DEF-RESEARCH-COST-001 repair)",
+    "halves_thirds": "chronological sign stability required"
+  },
+  "orthogonality_gates": {
+    "comparison_families": ["momentum", "trend", "breakout", "mean_reversion", "volatility", "volatility_structure", "cross_sectional", "carry_funding", "H1_transition_defense"],
+    "measurables": ["trade-time overlap vs legacy ROC(24) proxy (deterministic replay)", "daily PnL correlation on common days", "H1 trade-time overlap (deterministic replay)", "regime activation overlap"],
+    "redundant_candidate_rule": "trade-time overlap > 0.6 AND daily PnL correlation > 0.7 -> REDUNDANT_CANDIDATE even if raw PF attractive"
+  },
+  "execution_protocol": {
+    "exactly_once": "single economic execution; deterministic replay flagged technical only; exactly-once marker written before results",
+    "ordering_rule": "H3 execution commit MUST be strictly later than this preregistration commit",
+    "no_peeking": "no performance statistic may be computed or observed before the economic execution; selection was performance-blind"
+  },
+  "promotion_boundary": "DISCOVERY_PASS -> PREPARE_H3_CONFIRMATION_PROTOCOL only (no PAPER, no confirmation shortcut); DISCOVERY_FAIL -> FAILED_RESEARCH_MEMORY #11; INSUFFICIENT_* -> allowed re-entry with deeper data",
+  "prohibited": ["parameter sweep", "fallback thresholds", "alternative window after result", "post-result threshold changes", "retrospective relabeling"]
+}

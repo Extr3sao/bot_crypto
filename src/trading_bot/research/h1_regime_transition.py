@@ -432,13 +432,20 @@ def split_sign(rs: list[float], parts: int) -> list[int]:
 
 
 def compute_trade_metrics(trades: list[Trade], cost_bps: float = COST_RT_BPS) -> dict[str, object]:
-    """B1 metrics over a trade list (net R recomputable at sensitivity bps)."""
+    """B1 metrics over a trade list (net R recomputable at sensitivity bps).
+
+    DEF-RESEARCH-COST-001 repair: the applied cost is ALWAYS the absolute
+    ``cost_bps`` round trip — never a delta vs the 10 bps baseline applied
+    to gross. Absolute semantics preserve the mathematical invariants
+    NET = GROSS - COST and monotone non-increasing net in cost for a fixed
+    trade set. The precomputed ``t.net_r`` equals the absolute formula at
+    the default 10 bps, so the default path is numerically unchanged.
+    """
     if cost_bps == COST_RT_BPS:
         net = [t.net_r for t in trades]
         gross = [t.gross_r for t in trades]
     else:
-        delta = (cost_bps - COST_RT_BPS) / 10_000.0
-        net = [t.gross_r - delta / t.risk_frac for t in trades]
+        net = [t.gross_r - (cost_bps / 10_000.0) / t.risk_frac for t in trades]
         gross = [t.gross_r for t in trades]
     if not net:
         return {"N": 0}

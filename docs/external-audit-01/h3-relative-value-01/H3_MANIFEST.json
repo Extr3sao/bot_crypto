@@ -1,0 +1,34 @@
+{
+  "checkpoint": "H1-EVIDENCE-INTEGRITY-AND-H3-RELATIVE-VALUE-PREREG-01",
+  "manifest_version": "1.0.0-frozen",
+  "created_utc": "2026-09-10",
+  "strategy_id": "H3-RELVAL-BTCETH-BETANEUTRAL-SPREAD-01",
+  "spec_path": "docs/external-audit-01/h3-relative-value-01/H3_SPEC.json",
+  "selection_record_path": "docs/external-audit-01/h3-relative-value-01/H3_SELECTION_RATIONALE.md",
+  "prereg": {
+    "rule": "H3 execution commit MUST be strictly later than the commit containing this manifest (GOV-03 analogue)",
+    "prereg_commit": "PENDING_COMMIT_NOW",
+    "spec_sha256": "TO_FILL_AT_COMMIT_TIME",
+    "manifest_sha256": "TO_FILL_AT_COMMIT_TIME (committed blob hash; recorded in the final report)",
+    "dataset_declaration_sha256": "EMBEDDED (spec.data.window + fingerprint_rule; dataset fetched at execution from frozen provider/window)",
+    "cost_model_sha256": "EMBEDDED (spec.cost_model; no separate file)",
+    "protocol_sha256": "EMBEDDED (spec.execution_protocol)"
+  },
+  "state_at_prereg": {
+    "h3_executions": 0,
+    "h3_backtests_run": 0,
+    "performance_observed": false,
+    "h1_final_status": "DISCOVERY_FAIL (final; cost-independent; DEF-RESEARCH-COST-001 display-only)",
+    "def_research_cost_001": "CONFIRMED — FORMULA_DEFECT, display-only, component repaired, regression test added",
+    "r2_campaign": "ACTIVE (POC-02-R2-direction-arbitration-01; unchanged)",
+    "shadow": { "captures": 11, "resolved": 0, "earliest_maturity_utc": "2026-09-11T21:15Z", "policy_conclusion": "INSUFFICIENT_SAMPLE" },
+    "confirmation": { "id": "CONF-EDGE-002-001", "consumed": false, "executions": 0, "closes_utc": "2026-09-22T00:00Z" },
+    "risk_changed": 0,
+    "live_calls": 0
+  },
+  "next_checkpoint_contract": {
+    "verify_prereg_ordering": "H3 execution commit strictly after this prereg commit; spec sha256 unchanged",
+    "then": "EXECUTE_H3_EXACTLY_ONCE",
+    "forbidden_before_execution": ["parameter sweep", "threshold tuning", "window change", "performance peeking"]
+  }
+}

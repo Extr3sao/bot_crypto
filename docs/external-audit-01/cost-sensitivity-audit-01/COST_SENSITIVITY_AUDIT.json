@@ -1,0 +1,99 @@
+{
+  "checkpoint": "H1-EVIDENCE-INTEGRITY-AND-H3-RELATIVE-VALUE-PREREG-01",
+  "track": "A \u2014 H1 cost-sensitivity audit",
+  "dataset": {
+    "row_counts": {
+      "BTCUSDT": 58633,
+      "ETHUSDT": 58633,
+      "SOLUSDT": 52458
+    },
+    "row_counts_match_economic_run": true,
+    "dataset_manifest_sha256": "5a33c678c5ddca91e2b736ffc6add535e4fba83b35ba7e983abb1b1f3112460f",
+    "dataset_manifest_matches_marker": true,
+    "file_sha256": {
+      "BTCUSDT_1h.jsonl": "52a79db49893251d74c61bbda0a02948dffcce8b54f486d58ba2af1bb3595f4b",
+      "ETHUSDT_1h.jsonl": "2a91389142f9377fc172bbc944003160a0ba3b9de41593a013b9369851684088",
+      "SOLUSDT_1h.jsonl": "1628c4fa7ac2818ec0524e7c133c7eb65ae5ae5f3d13b28539508a38775af62e"
+    },
+    "no_synthetic_rows": true
+  },
+  "trade_set": {
+    "N": 10193,
+    "N_matches_reported": true,
+    "gross_expectancy_R_recomputed": -0.003034409236485425,
+    "gross_expectancy_R_reported": -0.0030344092364854567,
+    "gross_reproducible": true,
+    "TRADE_SET_SHA256": "edb7e495ec047d62d879327fa2568b7b140f19bc9ffab691ddbe61254e5d1535",
+    "identity_fields": [
+      "asset",
+      "direction",
+      "entry_ts",
+      "exit_ts",
+      "entry_price",
+      "stop_price",
+      "exit_price",
+      "risk_frac",
+      "gross_r",
+      "transition_label",
+      "kind"
+    ],
+    "same_trade_set_across_scenarios": true,
+    "note": "cost scenarios are recomputations over the frozen trade list; no trade decision consumes any cost scenario, so the trade set cannot drift"
+  },
+  "monotonicity_table": [
+    {
+      "cost_bps": 0.0,
+      "N": 10193,
+      "gross_total_R": -30.929733347495937,
+      "cost_total_R": 0.0,
+      "net_total_R": -30.929733347495937,
+      "gross_expectancy_R": -0.003034409236485425,
+      "cost_per_trade_R": 0.0,
+      "net_expectancy_R": -0.003034409236485425
+    },
+    {
+      "cost_bps": 5.0,
+      "N": 10193,
+      "gross_total_R": -30.929733347495937,
+      "cost_total_R": 634.3509945939276,
+      "net_total_R": -665.2807279414204,
+      "gross_expectancy_R": -0.003034409236485425,
+      "cost_per_trade_R": 0.06223398357636884,
+      "net_expectancy_R": -0.06526839281285396
+    },
+    {
+      "cost_bps": 10.0,
+      "N": 10193,
+      "gross_total_R": -30.929733347495937,
+      "cost_total_R": 1268.7019891878551,
+      "net_total_R": -1299.6317225353444,
+      "gross_expectancy_R": -0.003034409236485425,
+      "cost_per_trade_R": 0.12446796715273768,
+      "net_expectancy_R": -0.12750237638922243
+    },
+    {
+      "cost_bps": 20.0,
+      "N": 10193,
+      "gross_total_R": -30.929733347495937,
+      "cost_total_R": 2537.4039783757103,
+      "net_total_R": -2568.3337117232068,
+      "gross_expectancy_R": -0.003034409236485425,
+      "cost_per_trade_R": 0.24893593430547536,
+      "net_expectancy_R": -0.25197034354196085
+    }
+  ],
+  "monotonicity_invariant": true,
+  "net_equals_gross_minus_cost": true,
+  "absolute_cost_semantics": "net_r = gross_r - (cost_bps/10000)/risk_frac  [risk_frac = ATR14/entry; R = price-move/ATR14]",
+  "legacy_defect_reproduction": {
+    "5.0_reported": 0.05919957433988362,
+    "5.0_recomputed_legacy": 0.05919957433988384,
+    "5.0_match": true,
+    "20.0_reported": -0.1275023763892236,
+    "20.0_recomputed_legacy": -0.12750237638922243,
+    "20.0_match": true
+  },
+  "classification": "FORMULA_DEFECT",
+  "scope": "display-only: slippage_sensitivity_net_R report field; B4 classification consumed the precomputed 10 bps net series (t.net_r) and is arithmetically independent of the defective branch",
+  "runtime_seconds": 10.9
+}

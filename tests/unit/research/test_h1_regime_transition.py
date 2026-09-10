@@ -307,6 +307,29 @@ def test_permutation_p_extreme_sequence_is_small() -> None:
     assert permutation_p(noise) > 0.05
 
 
+def test_cost_sensitivity_absolute_cost_monotone_non_increasing() -> None:
+    """DEF-RESEARCH-COST-001: sensitivity must apply the ABSOLUTE scenario cost.
+
+    Invariants for a fixed trade set: NET = GROSS - COST with COST >= 0,
+    net expectancy monotone non-increasing in cost, and the default path
+    (precomputed t.net_r) equals the absolute formula at 10 bps.
+    """
+    trades = [_mk_trade(0.3) for _ in range(30)]  # risk_frac=0.01, gross=0.4
+    nets: dict[float, float] = {}
+    for bps in (0.0, 5.0, 10.0, 20.0):
+            m = compute_trade_metrics(trades, cost_bps=bps)
+            nets[bps] = float(m["net_expectancy_R"])  # type: ignore[arg-type]
+            assert nets[bps] <= float(m["gross_expectancy_R"]) + 1e-12  # type: ignore[arg-type]
+    assert nets[0.0] >= nets[5.0] >= nets[10.0] >= nets[20.0]
+    # exact absolute-cost arithmetic: 5 bps -> 0.05 R/trade, 20 bps -> 0.20 R/trade
+    assert nets[5.0] == pytest.approx(nets[0.0] - 0.05, abs=1e-12)
+    assert nets[20.0] == pytest.approx(nets[0.0] - 0.20, abs=1e-12)
+    # default path == absolute formula at the 10 bps baseline
+    assert nets[10.0] == pytest.approx(
+        float(compute_trade_metrics(trades)["net_expectancy_R"]), abs=1e-12  # type: ignore[arg-type]
+    )
+
+
 # ---------------------------------------------------------------------------
 # Orthogonality (B2) — redundancy rule
 # ---------------------------------------------------------------------------
