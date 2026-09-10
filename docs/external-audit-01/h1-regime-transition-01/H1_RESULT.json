@@ -2,7 +2,7 @@
   "checkpoint": "H1-REGIME-TRANSITION-DISCOVERY-01",
   "spec_sha256": "8baaff7dea28a346c9754eb408f537aaee24978b9dce279d213942863e5fc701",
   "prereg_commit": "3ad054d84bb32aa54b4c04bffb66a14bf8b7ada9",
-  "execution_commit": "POST_RUN_FILL",
+  "execution_commit": "b9ddc35504b45e2e779e568c593625c0964628fc",
   "technical_replay": false,
   "economic_executions": 1,
   "dataset": {
@@ -2203,5 +2203,6 @@
     "live_calls": 0,
     "false_success": 0
   },
-  "runtime_seconds": 965.5
+  "runtime_seconds": 965.5,
+  "execution_commit_filled_at_utc": "2026-09-10T12:20:00+00:00"
 }
