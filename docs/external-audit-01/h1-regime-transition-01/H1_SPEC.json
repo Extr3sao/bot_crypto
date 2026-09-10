@@ -1,0 +1,98 @@
+{
+  "spec_id": "H1-REGIME-TRANSITION-DISCOVERY-01",
+  "preregistered_at_utc": "2026-09-10",
+  "checkpoint": "H1-REGIME-TRANSITION-DISCOVERY-01",
+  "status": "FROZEN_BEFORE_DATA",
+  "hypothesis": {
+    "statement": "A regime-transition defensive mechanism provides independent, cost-aware opportunities in the post-transition window where the current legacy universe has insufficient or poor coverage (gap: REGIME TRANSITION / CORRECTION, INSUFFICIENT_OBSERVATION per REGIME_COVERAGE_GAP_REPORT.md).",
+    "direction_rule": "Trade ONLY the direction the NEW canonical regime state implies, deterministically: stress in {CORRECTION, SHOCK} -> SHORT; trend_direction == BULL and market_structure == BREAKOUT -> LONG; otherwise NO_TRADE. Direction is never derived from the raw impulse bar, never from LLM output, never broadened into generic momentum/trend after seeing data.",
+    "target_gap": "CORRECTION / TRANSITION (REGIME_COVERAGE_GAP_REPORT.md: largest INSUFFICIENT_OBSERVATION gap)",
+    "orthogonality_claim": "Adds a regime state variable conditioning the entry window; legacy momentum was never evaluated conditionally on transitions."
+  },
+  "transition_identity": {
+    "regime_source": "src/trading_bot/research/regime_v2.py::derive_market_regime_state (canonical six-dimension PIT state)",
+    "state_window_bars_1h": 200,
+    "qualifying_transition": "state[t-1] != state[t] (six-dim key change) AND at least one of: (volatility in {NORMAL, LOW} -> {HIGH, EXTREME}) OR (stress NORMAL -> {CORRECTION, SHOCK}) OR (market_structure in {TREND, RANGE} -> TRANSITION)",
+    "transition_bar": "first 1h bar t whose state key differs from state[t-1]; decision_time = close_time of bar t; entry = open of bar t+1",
+    "no_retrospective_relabeling": true,
+    "six_dimensions_preserved": ["trend_direction", "trend_strength", "volatility", "market_structure", "stress", "correlation_regime"]
+  },
+  "universe": {
+    "assets": ["BTCUSDT", "ETHUSDT", "SOLUSDT"],
+    "timeframe": "1h",
+    "data_source": "binanceusdm public REST /fapi/v1/klines (same provider authority already frozen for POC02)",
+    "data_window": {"start_utc": "2020-01-01T00:00:00Z", "end_utc": "2026-09-09T00:00:00Z"},
+    "no_synthetic_data": true
+  },
+  "entry_exit": {
+    "entry": "market at open of bar t+1 after transition bar close (t)",
+    "cooldown": "one open position per asset at a time; no re-entry until exit",
+    "stop_loss": "entry +/- ATR(14) of the trailing 14 completed 1h bars ending at t (direction-adjusted)",
+    "take_profit": "none (time exit)",
+    "time_exit": "close of bar t+12 (12h horizon)",
+    "pessimistic_fill": "if stop and time exit fall in the same bar, the stop is assumed first",
+    "exit_fill": "stop level intrabar, else close of the time-exit bar"
+  },
+  "cost_model": {
+    "round_trip_bps": 10.0,
+    "slippage_sensitivity_bps": [5.0, 20.0],
+    "cost_basis": "identical to CARRY-FUNDING-DEEP-01 preregistered cost (5 bps per side); sensitivity reported at 5 and 20 bps RT",
+    "cost_accounting": "net R = gross R - cost_rt_bps/10000 / (risk_atr/entry_price)"
+  },
+  "minimum_n": {"total_trades": 30, "primary_cell": 15, "primary_cell_definition": "asset x direction pooled across transitions (3 assets x 2 directions)"},
+  "acceptance_thresholds": {
+    "DISCOVERY_PASS_requires_ALL": {
+      "net_expectancy_R": "> 0.0",
+      "profit_factor_net": "> 1.15",
+      "p_sharpe_gt_0_bootstrap": ">= 0.90",
+      "permutation_p_value": "<= 0.05",
+      "halves_sign_consistent": true,
+      "thirds_sign_consistent": true,
+      "walk_forward_last_third_net_expectancy_R": "> 0.0"
+    },
+    "no_threshold_may_change_after_seeing_results": true
+  },
+  "result_classes": ["DISCOVERY_PASS", "DISCOVERY_FAIL", "INSUFFICIENT_SAMPLE", "INSUFFICIENT_DATA", "REDUNDANT_CANDIDATE"],
+  "robustness": {
+    "halves": "first half vs second half of trade sequence, net R sign",
+    "thirds": "three equal chronological thirds, net R sign",
+    "permutation": {"n": 1000, "seed": 20260910, "method": "shuffle trade R sequence signs of entry order vs realized cumulative path"},
+    "bootstrap": {"n": 2000, "seed": 20260910, "method": "bootstrap mean net R, P(mean>0)"},
+    "monte_carlo_dd": "bootstrap trade sequence, 95th percentile max drawdown in R",
+    "slippage": "recompute net expectancy at 5 and 20 bps RT"
+  },
+  "orthogonality_test": {
+    "legacy_proxy": "ROC(24)-breakout momentum on the same 1h bars (long when ROC24 > +2%, short when ROC24 < -2%, same entry/exit/cost mechanics)",
+    "metrics": ["signal-day overlap", "trade-time overlap (entry within +/-3 bars)", "PnL correlation over calendar-day aggregated R where both active", "regime activation overlap"],
+    "redundant_candidate_rule": "trade-time overlap > 0.6 AND pnl_correlation > 0.7 -> REDUNDANT_CANDIDATE even if raw PF attractive"
+  },
+  "frequency_value": {
+    "metrics": ["raw opportunities/day", "qualifying opportunities/day (pass direction rule)", "incremental opportunities/day (transition events outside legacy-proxy active windows)", "opportunities during NO_SIGNAL / AGENT_FILTER / idle periods (from R2 regime attribution where available)"],
+    "constraint": "Do NOT tune for >=3/day; report only."
+  },
+  "pit_semantics": {
+    "regime_at_t": "uses only bars with close_time <= decision_time",
+    "signal_at_t": "uses only bars with close_time <= decision_time",
+    "entry_at_t": "open of the NEXT bar after decision_time",
+    "future_mutation_invariant": "changing any candle after decision_time must not change past regime, transition, signal, or trade decision (enforced by unit test)"
+  },
+  "execution_discipline": {
+    "economic_executions": 1,
+    "exactly_once_marker": "docs/external-audit-01/h1-regime-transition-01/H1_EXECUTION_MARKER.json written BEFORE result artifacts; runner refuses a second economic run",
+    "technical_replay_allowed": "deterministic replay permitted for verification; flagged technical_replay=true and never counted as a second experiment",
+    "no_parameter_sweep": true,
+    "no_fallback_thresholds": true,
+    "no_alternative_window_after_result": true,
+    "paper_promotions": 0,
+    "confirmation_usage": "CONF-EDGE-002-001 untouched; this research neither reads nor uses the confirmation window"
+  },
+  "failed_memory_check": {
+    "must_not_reuse": ["volatility_structure (REFUTED_BY_DEEPER_WINDOW)", "cross_sectional (REDUNDANT_WITH_MOMENTUM)", "carry_funding extremes contrarian (DISCOVERY_FAIL)", "legacy momentum unconditional (14 FAILED retro cells)"],
+    "distinction": "H1 is a transition-STATE conditional entry with regime-implied direction and time-boxed horizon; it reuses no failed threshold, no funding signal, no cross-sectional ranking, and no unconditional momentum trigger. Orthogonality is measured, not assumed."
+  },
+  "protocol": {
+    "pipeline": "fetch klines -> validate (monotonic, uniform, no gaps > 1h tolerated by gap-fill skip) -> derive state[t] for t >= 200 -> detect qualifying transitions -> apply direction rule -> simulate trades with frozen entry/exit/cost -> compute B1 metrics -> B2 orthogonality -> B3 frequency -> classify B4 -> write results",
+    "metrics": ["N", "gross_expectancy_R", "net_expectancy_R", "PF_gross", "PF_net", "Sharpe", "Sharpe_CI95", "P_Sharpe_gt_0", "permutation_p", "win_rate", "max_drawdown_R", "cost_drag_R", "halves", "thirds", "walk_forward", "MC_DD95_R", "opportunities_per_day", "incremental_opportunities"],
+    "reporting": "overall + by asset + by direction + by transition class (preregistered identity components)"
+  }
+}

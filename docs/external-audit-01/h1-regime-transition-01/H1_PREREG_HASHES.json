@@ -1,0 +1,11 @@
+{
+  "spec_path": "docs/external-audit-01/h1-regime-transition-01/H1_SPEC.json",
+  "spec_sha256": "8baaff7dea28a346c9754eb408f537aaee24978b9dce279d213942863e5fc701",
+  "config_sha256": "8baaff7dea28a346c9754eb408f537aaee24978b9dce279d213942863e5fc701",
+  "protocol_sha256": "8baaff7dea28a346c9754eb408f537aaee24978b9dce279d213942863e5fc701",
+  "dataset_declaration": "binanceusdm public REST /fapi/v1/klines 1h, BTCUSDT/ETHUSDT/SOLUSDT, 2020-01-01T00:00:00Z -> 2026-09-09T00:00:00Z, fetched at execution time, no synthetic rows; dataset_declaration_sha256 computed post-fetch over fetched-row hash and recorded in H1_EXECUTION_MARKER.json",
+  "dataset_declaration_sha256": "DEFERRED_TO_FETCH (pre-declared definition above)",
+  "cost_model_sha256": "8baaff7dea28a346c9754eb408f537aaee24978b9dce279d213942863e5fc701 (cost model is embedded in frozen spec: 10 bps RT, sensitivity 5/20)",
+  "prereg_commit": "PENDING_COMMIT_NOW",
+  "rule": "H1 execution commit MUST be strictly later than the commit containing this file"
+}
