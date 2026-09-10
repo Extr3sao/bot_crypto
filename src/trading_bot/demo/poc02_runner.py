@@ -207,6 +207,53 @@ _SHADOW_CAPTURE_FIELDS = (
 )
 
 
+class PaperIntentLedger:
+    """A2/A3 — durable economic-intent ledger (exactly-once paper execution).
+
+    One row per Risk-ACCEPTED economic intent; an intent key already consumed
+    by a successful PAPER_OPEN can never open a second paper position for the
+    same UTC day (retry / cycle replay / resume / duplicate-signal safe).
+    Enforcement is R2-composition-only (``arbitrate=True``); the frozen
+    POC02 path is untouched. Ledger writes never route or size anything —
+    they only make duplicate intent visible and non-executable.
+    """
+
+    def __init__(self, path: Path | str) -> None:
+        self._path = Path(path)
+        self._executed: set[str] = set()
+        if self._path.exists():
+            for line in self._path.read_text(encoding="utf-8").splitlines():
+                if not line.strip():
+                    continue
+                try:
+                    row = json.loads(line)
+                except json.JSONDecodeError:
+                    continue
+                if row.get("event") == "INTENT_EXECUTED":
+                    self._executed.add(str(row.get("intent_key")))
+
+    @staticmethod
+    def key_for(utc_date: str, asset: str, side: str, strategy_id: str) -> str:
+        return f"{utc_date}|{asset}|{side}|{strategy_id}"
+
+    def already_executed(self, key: str) -> bool:
+        return key in self._executed
+
+    def mark_executed(self, key: str, *, decision_id: str, run_id: str) -> None:
+        if key in self._executed:
+            return
+        self._executed.add(key)
+        row = {
+            "event": "INTENT_EXECUTED",
+            "intent_key": key,
+            "decision_id": decision_id,
+            "run_id": run_id,
+            "written_at": datetime.now(UTC).isoformat(),
+        }
+        with self._path.open("a", encoding="utf-8") as fh:
+            fh.write(json.dumps(row, sort_keys=True) + "\n")
+
+
 class Poc02Bundle:
     """Runtime bundle for one POC02 process: paper, shadow, telemetry."""
 
@@ -251,6 +298,13 @@ class Poc02Bundle:
             equity=equity,
         )
         self.broker = PaperBroker(equity=equity)
+        # A2/A3 intent ledger exists only in the R2 composition — the frozen
+        # POC02 output directories must gain no new artifacts.
+        self.intent_ledger: PaperIntentLedger | None = (
+            PaperIntentLedger(self.output_dir / "R2_INTENT_LEDGER.jsonl")
+            if arbitrate
+            else None
+        )
 
         shadow_path = Path(shadow_dir) / "shadow_captures.jsonl"
         self.shadow = ShadowCaptureHook(
@@ -716,9 +770,71 @@ class Poc02Bundle:
                 "risk_approved_by": "RiskManager",
             },
         )
-        result = self.broker.execute_signal(approved_signal)
+
+        def _terminal(disposition: str, detail: str | None = None) -> None:
+            """EXE-01/EXE-03: every Risk ACCEPT gets one typed terminal row."""
+            self._write_attribution_row(
+                {
+                    "stage": "RISK_ACCEPT_RESOLVED",
+                    "decision_id": package.decision_id,
+                    "run_id": run_id,
+                    "asset": candidate.asset,
+                    "direction": (
+                        "LONG"
+                        if candidate.direction is TradeDirection.LONG
+                        else "SHORT"
+                    ),
+                    "strategy_id": candidate.candidate.strategy_id,
+                    "regime": candidate.candidate.regime or "UNCLASSIFIED",
+                    "proposal_id": package.selected_candidate_id,
+                    "risk_verdict": "ACCEPT",
+                    "risk_timestamp": datetime.now(UTC).isoformat(),
+                    "paper_execution_attempted": disposition not in (
+                        "CANCELLED_BY_EXPLICIT_POST_RISK_GATE"
+                    ),
+                    "final_disposition": disposition,
+                    "disposition_detail": detail,
+                }
+            )
+
+        # A2/A3: exactly-once per economic intent (R2 composition only).
+        # Duplicate intent is a typed terminal disposition, never a second
+        # paper position for the same asset/side/strategy on the same UTC day.
+        intent_key: str | None = None
+        if self.intent_ledger is not None:
+            intent_key = self.intent_ledger.key_for(
+                datetime.now(UTC).strftime("%Y-%m-%d"),
+                candidate.asset,
+                str(approved_signal.side),
+                candidate.candidate.strategy_id,
+            )
+            if self.intent_ledger.already_executed(intent_key):
+                state.emit(
+                    "paper.duplicate_intent_suppressed",
+                    asset=candidate.asset,
+                    intent_key=intent_key,
+                )
+                _terminal(
+                    "DUPLICATE_ECONOMIC_INTENT",
+                    f"intent already executed this UTC day: {intent_key}",
+                )
+                return
+        try:
+            result = self.broker.execute_signal(approved_signal)
+        except Exception as exc:  # execution defect is loud AND terminally classified
+            state.broker_calls += 1
+            state.errors.append(
+                f"{candidate.asset}: {type(exc).__name__}: {exc}"
+            )
+            state.emit(
+                "paper.execution_failed",
+                asset=candidate.asset,
+                error=str(exc),
+            )
+            _terminal("EXECUTION_FAILED", f"{type(exc).__name__}: {exc}")
+            return
         state.broker_calls += 1
-        from trading_bot.paper.broker import PaperPosition
+        from trading_bot.paper.broker import ClosedTrade, PaperPosition
 
         if isinstance(result, PaperPosition):
             self.risk.add_position(result.symbol, result)
@@ -745,6 +861,21 @@ class Poc02Bundle:
                     "opened_at": result.opened_at,
                 }
             )
+            if self.intent_ledger is not None and intent_key is not None:
+                self.intent_ledger.mark_executed(
+                    intent_key,
+                    decision_id=package.decision_id,
+                    run_id=run_id,
+                )
+            _terminal("PAPER_OPENED")
+            return
+        if isinstance(result, ClosedTrade):
+            # opposite-side signal closed the existing position instead of opening
+            _terminal("CLOSED_OPPOSITE_POSITION", f"symbol={result.symbol}")
+            return
+        # None: broker skipped (same-side duplicate intent / explicit gate)
+        state.emit("paper.skip_duplicate", asset=candidate.asset)
+        _terminal("ALREADY_OPEN_POSITION")
 
     # -- telemetry ----------------------------------------------------------------
 
@@ -786,7 +917,9 @@ class Poc02Bundle:
         bars_by_asset: dict[str, list[OHLCV]],
     ) -> None:
         telemetry = {
-            "campaign_id": POC02_CAMPAIGN_ID,
+            # DEF-R2-002 (telemetry): must be the bundle's campaign id — the
+            # hardcoded frozen id misattributed R2 telemetry rows to POC-02.
+            "campaign_id": self.campaign_id,
             "run_id": run_id,
             "provider_authority": PROVIDER_AUTHORITY,
             "provider_downgrades": list(_PROVIDER_DOWNGRADES),

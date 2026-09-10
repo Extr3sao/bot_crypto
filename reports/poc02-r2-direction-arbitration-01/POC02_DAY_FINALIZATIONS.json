@@ -1,0 +1,44 @@
+{
+  "2026-09-09": {
+    "amendments": [
+      {
+        "amended_at_utc": "2026-09-10T08:16:59.249938+00:00",
+        "corrected_reason_codes": [
+          "COVERAGE_BELOW_MINIMUM"
+        ],
+        "corrected_validity": "INVALID",
+        "detail": {
+          "checkpoint": "POC02-R2-GOVERNANCE-RECONCILIATION-AND-ALPHA-SEARCH-01",
+          "defect": "COVERAGE_VALIDITY_CONTRACT_BYPASS",
+          "evidence": {
+            "contract": ">= 0.80 observed/expected minutes per completed UTC day",
+            "coverage_ratio": 0.002778,
+            "manifest": "docs/external-audit-01/POC02_R2_MANIFEST.md",
+            "manifest_sha256": "7408f1cedde62edaafac5f1fe2a44824f45e5f1331a462702d0139599791b6b8"
+          }
+        },
+        "prior_reason_codes": [
+          "CONTRACT_SATISFIED"
+        ],
+        "prior_validity": "VALID",
+        "trigger_reason_code": "DEF_R2_003"
+      }
+    ],
+    "contract": {
+      "min_ratio": 0.8,
+      "semantics": "FINALIZED & COUNTED & VALID (trade-count independent, DEF-POC01-OBS-006); outages are coverage evidence, not a day-invalidation threshold",
+      "zero_trade_day_can_be_valid": true
+    },
+    "cycles": 6,
+    "finalization_count": 1,
+    "finalized_at_utc": "2026-09-10T05:09:12.649181+00:00",
+    "last_amended_at_utc": "2026-09-10T08:16:59.249938+00:00",
+    "observed_minutes": 4,
+    "reason_codes": [
+      "COVERAGE_BELOW_MINIMUM"
+    ],
+    "receipts": 4,
+    "utc_day": "2026-09-09",
+    "validity": "INVALID"
+  }
+}

@@ -1,0 +1,348 @@
+{
+  "A1_counter_semantics": {
+    "RAW_RISK_ACCEPT_EVENTS": 25,
+    "classification": "POST_RISK_EXECUTION_DEFECT (DEF-R2-001, repaired in commit 007b691)",
+    "note": "risk_accepts counts per candidate risk verdicts; multi-asset cycles legitimately yield up to 3 accepts per run"
+  },
+  "A2_economic_identity": {
+    "EXECUTION_ATTEMPTS": 4,
+    "RAW_RISK_ACCEPT_EVENTS": 25,
+    "UNIQUE_ACCEPTED_INTENTS": 9,
+    "UNIQUE_PAPER_ORDERS": 3,
+    "UNIQUE_PAPER_TRADES": 4,
+    "intent_key": "(utc_date, asset, direction, strategy)"
+  },
+  "A3_exactly_once": {
+    "economic_orders_per_intent_MAX": 2,
+    "economic_orders_per_intent_avg": 0.333333,
+    "enforcement": "R2_INTENT_LEDGER.jsonl (R2 composition only)",
+    "violation": true,
+    "violation_note": "pre-enforcement cross-process duplicates exist (PaperBroker is in-memory per process); enforcement armed via R2_INTENT_LEDGER from 2026-09-10T06:58Z \u2014 post-arm cycles show max=1"
+  },
+  "A4_defect": {
+    "DEF_R2_002": "CONFIRMED",
+    "components": {
+      "coverage_filename_binding": "DayStateAuthority hardcoded POC02 filename; R2 ledger invisible to finalizer",
+      "funnel_double_count": "receipts 001-004 PAPER_OPEN/RISK_REJECT summed state+attribution counters",
+      "pre_repair_silent_failures": 21,
+      "telemetry_campaign_id": "POC02_TELEMETRY rows hardcoded frozen campaign id",
+      "unclassified_accepts": 0
+    },
+    "repairs": [
+      "typed RISK_ACCEPT_RESOLVED terminal rows on every accept path",
+      "funnel counts PAPER_OPEN/RISK_REJECT once from state counters",
+      "DayStateAuthority(coverage_filename=...) \u2014 default frozen",
+      "telemetry campaign_id from bundle",
+      "PaperIntentLedger exactly-once (R2 composition only)"
+    ]
+  },
+  "DISPOSITION_TOTALS": {
+    "EXECUTION_FAILED": 21,
+    "PAPER_OPENED": 4
+  },
+  "campaign_id": "POC-02-R2-direction-arbitration-01",
+  "checkpoint": "POC02-R2-DAY1-EXECUTION-RECONCILIATION-01",
+  "risk_rejects_raw": 8,
+  "rows": [
+    {
+      "asset": null,
+      "classification_source": "RUN_EVIDENCE(DEF-R2-001)",
+      "decision_id": null,
+      "direction": null,
+      "disposition_detail": "BTC: AttributeError: 'Signal' object has no attribute '__dict__'",
+      "risk_verdict": "ACCEPT",
+      "run_id": "poc02-1788988254401",
+      "strategy": null,
+      "terminal_disposition": "EXECUTION_FAILED",
+      "utc_date": "2026-09-09"
+    },
+    {
+      "asset": null,
+      "classification_source": "RUN_EVIDENCE(DEF-R2-001)",
+      "decision_id": null,
+      "direction": null,
+      "disposition_detail": "ETH: AttributeError: 'Signal' object has no attribute '__dict__'",
+      "risk_verdict": "ACCEPT",
+      "run_id": "poc02-1788988254401",
+      "strategy": null,
+      "terminal_disposition": "EXECUTION_FAILED",
+      "utc_date": "2026-09-09"
+    },
+    {
+      "asset": null,
+      "classification_source": "RUN_EVIDENCE(DEF-R2-001)",
+      "decision_id": null,
+      "direction": null,
+      "disposition_detail": "SOL: AttributeError: 'Signal' object has no attribute '__dict__'",
+      "risk_verdict": "ACCEPT",
+      "run_id": "poc02-1788988254401",
+      "strategy": null,
+      "terminal_disposition": "EXECUTION_FAILED",
+      "utc_date": "2026-09-09"
+    },
+    {
+      "asset": null,
+      "classification_source": "RUN_EVIDENCE(DEF-R2-001)",
+      "decision_id": null,
+      "direction": null,
+      "disposition_detail": "BTC: AttributeError: 'Signal' object has no attribute '__dict__'",
+      "risk_verdict": "ACCEPT",
+      "run_id": "poc02-1788988255955",
+      "strategy": null,
+      "terminal_disposition": "EXECUTION_FAILED",
+      "utc_date": "2026-09-09"
+    },
+    {
+      "asset": null,
+      "classification_source": "RUN_EVIDENCE(DEF-R2-001)",
+      "decision_id": null,
+      "direction": null,
+      "disposition_detail": "ETH: AttributeError: 'Signal' object has no attribute '__dict__'",
+      "risk_verdict": "ACCEPT",
+      "run_id": "poc02-1788988255955",
+      "strategy": null,
+      "terminal_disposition": "EXECUTION_FAILED",
+      "utc_date": "2026-09-09"
+    },
+    {
+      "asset": null,
+      "classification_source": "RUN_EVIDENCE(DEF-R2-001)",
+      "decision_id": null,
+      "direction": null,
+      "disposition_detail": "SOL: AttributeError: 'Signal' object has no attribute '__dict__'",
+      "risk_verdict": "ACCEPT",
+      "run_id": "poc02-1788988255955",
+      "strategy": null,
+      "terminal_disposition": "EXECUTION_FAILED",
+      "utc_date": "2026-09-09"
+    },
+    {
+      "asset": null,
+      "classification_source": "RUN_EVIDENCE(DEF-R2-001)",
+      "decision_id": null,
+      "direction": null,
+      "disposition_detail": "BTC: AttributeError: 'Signal' object has no attribute '__dict__'",
+      "risk_verdict": "ACCEPT",
+      "run_id": "poc02-1788988292568",
+      "strategy": null,
+      "terminal_disposition": "EXECUTION_FAILED",
+      "utc_date": "2026-09-09"
+    },
+    {
+      "asset": null,
+      "classification_source": "RUN_EVIDENCE(DEF-R2-001)",
+      "decision_id": null,
+      "direction": null,
+      "disposition_detail": "ETH: AttributeError: 'Signal' object has no attribute '__dict__'",
+      "risk_verdict": "ACCEPT",
+      "run_id": "poc02-1788988292568",
+      "strategy": null,
+      "terminal_disposition": "EXECUTION_FAILED",
+      "utc_date": "2026-09-09"
+    },
+    {
+      "asset": null,
+      "classification_source": "RUN_EVIDENCE(DEF-R2-001)",
+      "decision_id": null,
+      "direction": null,
+      "disposition_detail": "SOL: AttributeError: 'Signal' object has no attribute '__dict__'",
+      "risk_verdict": "ACCEPT",
+      "run_id": "poc02-1788988292568",
+      "strategy": null,
+      "terminal_disposition": "EXECUTION_FAILED",
+      "utc_date": "2026-09-09"
+    },
+    {
+      "asset": null,
+      "classification_source": "RUN_EVIDENCE(DEF-R2-001)",
+      "decision_id": null,
+      "direction": null,
+      "disposition_detail": "BTC: AttributeError: 'Signal' object has no attribute '__dict__'",
+      "risk_verdict": "ACCEPT",
+      "run_id": "poc02-1788988294016",
+      "strategy": null,
+      "terminal_disposition": "EXECUTION_FAILED",
+      "utc_date": "2026-09-09"
+    },
+    {
+      "asset": null,
+      "classification_source": "RUN_EVIDENCE(DEF-R2-001)",
+      "decision_id": null,
+      "direction": null,
+      "disposition_detail": "ETH: AttributeError: 'Signal' object has no attribute '__dict__'",
+      "risk_verdict": "ACCEPT",
+      "run_id": "poc02-1788988294016",
+      "strategy": null,
+      "terminal_disposition": "EXECUTION_FAILED",
+      "utc_date": "2026-09-09"
+    },
+    {
+      "asset": null,
+      "classification_source": "RUN_EVIDENCE(DEF-R2-001)",
+      "decision_id": null,
+      "direction": null,
+      "disposition_detail": "SOL: AttributeError: 'Signal' object has no attribute '__dict__'",
+      "risk_verdict": "ACCEPT",
+      "run_id": "poc02-1788988294016",
+      "strategy": null,
+      "terminal_disposition": "EXECUTION_FAILED",
+      "utc_date": "2026-09-09"
+    },
+    {
+      "asset": null,
+      "classification_source": "RUN_EVIDENCE(DEF-R2-001)",
+      "decision_id": null,
+      "direction": null,
+      "disposition_detail": "BTC: AttributeError: 'Signal' object has no attribute '__dict__'",
+      "risk_verdict": "ACCEPT",
+      "run_id": "poc02-1788988354180",
+      "strategy": null,
+      "terminal_disposition": "EXECUTION_FAILED",
+      "utc_date": "2026-09-09"
+    },
+    {
+      "asset": null,
+      "classification_source": "RUN_EVIDENCE(DEF-R2-001)",
+      "decision_id": null,
+      "direction": null,
+      "disposition_detail": "ETH: AttributeError: 'Signal' object has no attribute '__dict__'",
+      "risk_verdict": "ACCEPT",
+      "run_id": "poc02-1788988354180",
+      "strategy": null,
+      "terminal_disposition": "EXECUTION_FAILED",
+      "utc_date": "2026-09-09"
+    },
+    {
+      "asset": null,
+      "classification_source": "RUN_EVIDENCE(DEF-R2-001)",
+      "decision_id": null,
+      "direction": null,
+      "disposition_detail": "SOL: AttributeError: 'Signal' object has no attribute '__dict__'",
+      "risk_verdict": "ACCEPT",
+      "run_id": "poc02-1788988354180",
+      "strategy": null,
+      "terminal_disposition": "EXECUTION_FAILED",
+      "utc_date": "2026-09-09"
+    },
+    {
+      "asset": null,
+      "classification_source": "RUN_EVIDENCE(DEF-R2-001)",
+      "decision_id": null,
+      "direction": null,
+      "disposition_detail": "BTC: AttributeError: 'Signal' object has no attribute '__dict__'",
+      "risk_verdict": "ACCEPT",
+      "run_id": "poc02-1788988356448",
+      "strategy": null,
+      "terminal_disposition": "EXECUTION_FAILED",
+      "utc_date": "2026-09-09"
+    },
+    {
+      "asset": null,
+      "classification_source": "RUN_EVIDENCE(DEF-R2-001)",
+      "decision_id": null,
+      "direction": null,
+      "disposition_detail": "ETH: AttributeError: 'Signal' object has no attribute '__dict__'",
+      "risk_verdict": "ACCEPT",
+      "run_id": "poc02-1788988356448",
+      "strategy": null,
+      "terminal_disposition": "EXECUTION_FAILED",
+      "utc_date": "2026-09-09"
+    },
+    {
+      "asset": null,
+      "classification_source": "RUN_EVIDENCE(DEF-R2-001)",
+      "decision_id": null,
+      "direction": null,
+      "disposition_detail": "SOL: AttributeError: 'Signal' object has no attribute '__dict__'",
+      "risk_verdict": "ACCEPT",
+      "run_id": "poc02-1788988356448",
+      "strategy": null,
+      "terminal_disposition": "EXECUTION_FAILED",
+      "utc_date": "2026-09-09"
+    },
+    {
+      "asset": null,
+      "classification_source": "RUN_EVIDENCE(DEF-R2-001)",
+      "decision_id": null,
+      "direction": null,
+      "disposition_detail": "BTC: AttributeError: 'Signal' object has no attribute '__dict__'",
+      "risk_verdict": "ACCEPT",
+      "run_id": "poc02-1788988392120",
+      "strategy": null,
+      "terminal_disposition": "EXECUTION_FAILED",
+      "utc_date": "2026-09-09"
+    },
+    {
+      "asset": null,
+      "classification_source": "RUN_EVIDENCE(DEF-R2-001)",
+      "decision_id": null,
+      "direction": null,
+      "disposition_detail": "ETH: AttributeError: 'Signal' object has no attribute '__dict__'",
+      "risk_verdict": "ACCEPT",
+      "run_id": "poc02-1788988392120",
+      "strategy": null,
+      "terminal_disposition": "EXECUTION_FAILED",
+      "utc_date": "2026-09-09"
+    },
+    {
+      "asset": null,
+      "classification_source": "RUN_EVIDENCE(DEF-R2-001)",
+      "decision_id": null,
+      "direction": null,
+      "disposition_detail": "SOL: AttributeError: 'Signal' object has no attribute '__dict__'",
+      "risk_verdict": "ACCEPT",
+      "run_id": "poc02-1788988392120",
+      "strategy": null,
+      "terminal_disposition": "EXECUTION_FAILED",
+      "utc_date": "2026-09-09"
+    },
+    {
+      "asset": "BTC",
+      "classification_source": "RUN_EVIDENCE(PAPER_OPEN_ROW)",
+      "decision_id": "decision:42171a4a76b15f44",
+      "direction": "SHORT",
+      "disposition_detail": null,
+      "risk_verdict": "ACCEPT",
+      "run_id": "poc02-1788988572153",
+      "strategy": "momentum",
+      "terminal_disposition": "PAPER_OPENED",
+      "utc_date": "2026-09-09"
+    },
+    {
+      "asset": "BTC",
+      "classification_source": "RUN_EVIDENCE(PAPER_OPEN_ROW)",
+      "decision_id": "decision:035b246c9cfb58c3",
+      "direction": "LONG",
+      "disposition_detail": null,
+      "risk_verdict": "ACCEPT",
+      "run_id": "poc02-1789016419433",
+      "strategy": "momentum",
+      "terminal_disposition": "PAPER_OPENED",
+      "utc_date": "2026-09-10"
+    },
+    {
+      "asset": "BTC",
+      "classification_source": "PERSISTED_RISK_ACCEPT_RESOLVED",
+      "decision_id": "decision:ef7b59870bff8414",
+      "direction": "SHORT",
+      "disposition_detail": null,
+      "risk_verdict": "ACCEPT",
+      "run_id": "poc02-1789016952870",
+      "strategy": "momentum",
+      "terminal_disposition": "PAPER_OPENED",
+      "utc_date": "2026-09-10"
+    },
+    {
+      "asset": "BTC",
+      "classification_source": "PERSISTED_RISK_ACCEPT_RESOLVED",
+      "decision_id": "decision:2773615805fad816",
+      "direction": "LONG",
+      "disposition_detail": null,
+      "risk_verdict": "ACCEPT",
+      "run_id": "poc02-1789023481052",
+      "strategy": "momentum",
+      "terminal_disposition": "PAPER_OPENED",
+      "utc_date": "2026-09-10"
+    }
+  ]
+}

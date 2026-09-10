@@ -266,11 +266,12 @@ def aggregate_r2_funnel(cycle_rows: list[dict]) -> dict:
         agg["PAPER_OPEN"] += int(s.get("paper_trades", 0) or 0)
         # VERIFIER_VERIFIED: every decision reached the verifier
         agg["VERIFIER_VERIFIED"] += int(s.get("cycles", 0) or 0)
+        # DEF-R2-002 (telemetry): PAPER_OPEN/RISK_REJECT are counted ONCE from
+        # the authoritative runtime state counters. The attribution-stage add
+        # below covers only stages without a state counter (AGENT_REJECT);
+        # adding both double-counted (receipt 004: PAPER_OPEN=2 for 1 open).
         for stage, key in (
             ("AGENT_REJECT", "AGENT_REJECT"),
-            ("RISK_REJECT", "RISK_REJECT"),
-            ("PAPER_OPEN", "PAPER_OPEN"),
-            ("PAPER_CLOSE", "PAPER_CLOSE"),
         ):
             agg[key] += int(s.get(f"attribution_{stage}", 0) or 0)
         for group in row.get("arbitration", {}).get("groups", []):
@@ -458,7 +459,12 @@ def run_daily(cycles: int, dry_run: bool = False) -> int:
         print(json.dumps({"PRE_CYCLE_GATES": "PASS", "DRY_RUN": True, **gates}, indent=2))
         return 0
 
-    day_auth = DayStateAuthority(CAMPAIGN_DIR)
+    # DEF-R2-002 (telemetry): the authority must read the R2 coverage ledger —
+    # the default POC02 filename made every prior-R2 day invisible to the
+    # finalizer (2026-09-09 stayed PENDING after close).
+    day_auth = DayStateAuthority(
+        CAMPAIGN_DIR, coverage_filename=COVERAGE_LEDGER.name
+    )
     prior_finalizations = finalize_previous_days(day_auth, day)
     idem = daily_idempotency(day)
     idempotency_status = (

@@ -15,30 +15,30 @@
   "debates": 3,
   "decisions": [
     {
-      "decision_id": "decision:42171a4a76b15f44",
+      "decision_id": "decision:3b635d9c114ad710",
       "outcome": "SELECTED",
       "reasons": [
         "HIGHEST_ADMISSIBLE_SCORE"
       ],
-      "selected_candidate_id": "proposal:45bf4883cc62051570c07785",
+      "selected_candidate_id": "proposal:c9c8485c8cac72ccfeb64480",
       "verifier": "VERIFIED"
     },
     {
-      "decision_id": "decision:95469eca268ba889",
+      "decision_id": "decision:7d6eef8c852a875d",
       "outcome": "SELECTED",
       "reasons": [
         "HIGHEST_ADMISSIBLE_SCORE"
       ],
-      "selected_candidate_id": "proposal:d2d5933c9b2c7356398ca422",
+      "selected_candidate_id": "proposal:c545bcab1d87bf31a42eb4f7",
       "verifier": "VERIFIED"
     },
     {
-      "decision_id": "decision:0b9498c70ef3b987",
+      "decision_id": "decision:b92e5d4d4abcbe9e",
       "outcome": "SELECTED",
       "reasons": [
         "HIGHEST_ADMISSIBLE_SCORE"
       ],
-      "selected_candidate_id": "proposal:ad01bbd8e0366c2461cedc60",
+      "selected_candidate_id": "proposal:84cad09268c12bd1fe0b5df1",
       "verifier": "VERIFIED"
     }
   ],
@@ -53,71 +53,71 @@
       "broker": "PaperBroker",
       "event": "paper.session.started",
       "live_disabled": true,
-      "run_id": "poc02-1788988572153",
-      "trace_id": "trace-poc02-1788988572153"
+      "run_id": "poc02-1789028202115",
+      "trace_id": "trace-poc02-1789028202115"
     },
     {
-      "decision_id": "decision:42171a4a76b15f44",
+      "decision_id": "decision:3b635d9c114ad710",
       "event": "decision.started",
-      "run_id": "poc02-1788988572153",
-      "trace_id": "trace-poc02-1788988572153"
+      "run_id": "poc02-1789028202115",
+      "trace_id": "trace-poc02-1789028202115"
     },
     {
-      "decision_id": "decision:42171a4a76b15f44",
+      "decision_id": "decision:3b635d9c114ad710",
       "event": "decision.verified",
-      "run_id": "poc02-1788988572153",
-      "trace_id": "trace-poc02-1788988572153"
+      "run_id": "poc02-1789028202115",
+      "trace_id": "trace-poc02-1789028202115"
     },
     {
       "event": "paper.position_opened",
-      "price": 78201.8798120188,
-      "run_id": "poc02-1788988572153",
+      "price": 78019.29807019299,
+      "run_id": "poc02-1789028202115",
       "symbol": "BTC/USDT",
-      "trace_id": "trace-poc02-1788988572153"
+      "trace_id": "trace-poc02-1789028202115"
     },
     {
-      "decision_id": "decision:95469eca268ba889",
+      "decision_id": "decision:7d6eef8c852a875d",
       "event": "decision.started",
-      "run_id": "poc02-1788988572153",
-      "trace_id": "trace-poc02-1788988572153"
+      "run_id": "poc02-1789028202115",
+      "trace_id": "trace-poc02-1789028202115"
     },
     {
-      "decision_id": "decision:95469eca268ba889",
+      "decision_id": "decision:7d6eef8c852a875d",
       "event": "decision.verified",
-      "run_id": "poc02-1788988572153",
-      "trace_id": "trace-poc02-1788988572153"
+      "run_id": "poc02-1789028202115",
+      "trace_id": "trace-poc02-1789028202115"
     },
     {
       "blocked_by": "max_positions",
       "event": "risk.rejected",
       "reason": "Max open positions reached (1)",
-      "run_id": "poc02-1788988572153",
-      "trace_id": "trace-poc02-1788988572153"
+      "run_id": "poc02-1789028202115",
+      "trace_id": "trace-poc02-1789028202115"
     },
     {
-      "decision_id": "decision:0b9498c70ef3b987",
+      "decision_id": "decision:b92e5d4d4abcbe9e",
       "event": "decision.started",
-      "run_id": "poc02-1788988572153",
-      "trace_id": "trace-poc02-1788988572153"
+      "run_id": "poc02-1789028202115",
+      "trace_id": "trace-poc02-1789028202115"
     },
     {
-      "decision_id": "decision:0b9498c70ef3b987",
+      "decision_id": "decision:b92e5d4d4abcbe9e",
       "event": "decision.verified",
-      "run_id": "poc02-1788988572153",
-      "trace_id": "trace-poc02-1788988572153"
+      "run_id": "poc02-1789028202115",
+      "trace_id": "trace-poc02-1789028202115"
     },
     {
       "blocked_by": "max_positions",
       "event": "risk.rejected",
       "reason": "Max open positions reached (1)",
-      "run_id": "poc02-1788988572153",
-      "trace_id": "trace-poc02-1788988572153"
+      "run_id": "poc02-1789028202115",
+      "trace_id": "trace-poc02-1789028202115"
     },
     {
       "closed_trades": 0,
       "event": "paper.session.completed",
-      "run_id": "poc02-1788988572153",
-      "trace_id": "trace-poc02-1788988572153"
+      "run_id": "poc02-1789028202115",
+      "trace_id": "trace-poc02-1789028202115"
     }
   ],
   "execution_authority": "PaperBroker",
@@ -131,8 +131,8 @@
         "SUPPORTED"
       ],
       "proposal_ids": [
-        "proposal:45bf4883cc62051570c07785",
-        "proposal:76a783b854c54c5ff831fd25"
+        "proposal:7d526cbb8b406f88f57a5c67",
+        "proposal:c9c8485c8cac72ccfeb64480"
       ]
     },
     {
@@ -142,8 +142,8 @@
         "SUPPORTED"
       ],
       "proposal_ids": [
-        "proposal:aaf7c911276e5a5b00897adb",
-        "proposal:d2d5933c9b2c7356398ca422"
+        "proposal:4a0b2806e23f637854ff2499",
+        "proposal:c545bcab1d87bf31a42eb4f7"
       ]
     },
     {
@@ -153,8 +153,8 @@
         "SUPPORTED"
       ],
       "proposal_ids": [
-        "proposal:ad01bbd8e0366c2461cedc60",
-        "proposal:f5ab18d023b2ac913a95d3ba"
+        "proposal:84cad09268c12bd1fe0b5df1",
+        "proposal:b1b10c63812e768aa107ff5d"
       ]
     }
   ],
@@ -174,7 +174,7 @@
   "risk_accepts": 1,
   "risk_calls": 0,
   "risk_rejects": 2,
-  "run_id": "poc02-1788988572153",
+  "run_id": "poc02-1789028202115",
   "strategies": [
     "Momentum",
     "Trend",
@@ -183,7 +183,7 @@
     "Volatility"
   ],
   "strategy_evaluations": 3,
-  "trace_id": "trace-poc02-1788988572153",
+  "trace_id": "trace-poc02-1789028202115",
   "trade_proposals": 6,
   "trades_per_day": 1,
   "trades_today": 1,

@@ -1,0 +1,45 @@
+{
+  "CARRY_RESULT": "DISCOVERY_FAIL",
+  "CORE": {
+    "N": 769,
+    "losses": 376,
+    "net_expectancy_per_trade": 0.00085321,
+    "profit_factor": 1.062031,
+    "sharpe_annualized": 0.405871,
+    "win_rate": 0.5111,
+    "wins": 393
+  },
+  "PAPER_PROMOTIONS": 0,
+  "cost_roundtrip_bps": 10.0,
+  "data_fingerprint": "8b0e796c808158cc087848ad1d388d121b4b10ec1bb6b243bd7f9576f811965b",
+  "evaluated_at_utc": "2026-09-09T22:06:16.324885+00:00",
+  "experiment": "CARRY-FUNDING-DEEP-01",
+  "funding_rows": 7670,
+  "halves": {
+    "chunk_means": [
+      -0.00229802,
+      0.0040719
+    ],
+    "status": "INCONSISTENT"
+  },
+  "joined_trades": 7667,
+  "no_retuning": true,
+  "permutation_p_value": 0.283,
+  "permutations": 1000,
+  "prereg": "docs/external-audit-01/CARRY_FUNDING_DEEP_01_PREREG.md",
+  "seed": 20260910,
+  "skipped_no_price": 3,
+  "thirds": {
+    "chunk_means": [
+      0.00136599,
+      -0.00168051,
+      0.00297534
+    ],
+    "status": "INCONSISTENT"
+  },
+  "thresholds": {
+    "q_hi": 0.00045929,
+    "q_lo": -5.436e-05,
+    "quantile": 0.05
+  }
+}

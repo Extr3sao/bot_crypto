@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Trading Agent — PAPER Dashboard</title>
+<style>
+:root{color-scheme:dark;font:14px ui-monospace,monospace}body{margin:0;background:#0d1117;color:#e6edf3}header,main{max-width:1400px;margin:auto;padding:16px}header{border-bottom:1px solid #30363d}section{margin:16px 0;padding:12px;background:#161b22;border:1px solid #30363d;border-radius:8px}table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:6px;border-bottom:1px solid #30363d}.badge{padding:3px 8px;border:1px solid #58a6ff;border-radius:4px;color:#58a6ff}.muted{color:#8b949e}.positive{color:#3fb950}.negative{color:#f85149}
+</style></head>
+<body>
+<header><strong>Trading Agent</strong> <span class="badge">PAPER</span> <span id="status" class="badge">STOPPED</span> <span id="connection" class="muted">connecting…</span></header>
+<main>
+<section><h2>Status</h2><pre id="summary">Loading read-only paper projection…</pre></section>
+<section><h2>Decision stream</h2><div id="events" class="muted">waiting for events…</div></section>
+<section><h2>Open positions</h2><table><thead><tr><th>symbol</th><th>side</th><th>strategy</th><th>entry</th><th>current</th><th>PnL</th></tr></thead><tbody id="positions"></tbody></table></section>
+<section><h2>Recent trades</h2><table><thead><tr><th>time</th><th>symbol</th><th>strategy</th><th>PnL</th><th>reason</th></tr></thead><tbody id="trades"></tbody></table></section>
+<section><h2>Assets</h2><table><thead><tr><th>symbol</th><th>price</th><th>regime</th><th>strategy</th><th>open</th></tr></thead><tbody id="assets"></tbody></table></section>
+<section><h2>Risk decisions</h2><table><thead><tr><th>time</th><th>symbol</th><th>decision</th><th>reason</th></tr></thead><tbody id="risk"></tbody></table></section>
+</main>
+<script>
+"use strict";
+const $=id=>document.getElementById(id), esc=s=>String(s??"").replace(/[&<>\"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])), money=v=>v==null?"—":Number(v).toFixed(2), time=v=>v?new Date(v*1000).toLocaleTimeString("en-GB",{hour12:false}):"—";
+function row(id,items,fn){$(id).innerHTML=items.map(fn).join("")||'<tr><td colspan="8" class="muted">none</td></tr>'}
+function render(s){$("status").textContent=s.runtime_status;$("summary").textContent=JSON.stringify({mode:s.mode,runtime_status:s.runtime_status,equity:s.equity,realized_pnl:s.realized_pnl,unrealized_pnl:s.unrealized_pnl,cycles:s.cycles,positions_open:s.positions_open,trades_today:s.trades_today,read_only:true},null,2);
+row("positions",s.open_positions,p=>`<tr><td>${esc(p.symbol)}</td><td>${esc(p.side)}</td><td>${esc(p.strategy||"—")}</td><td>${money(p.entry_price)}</td><td>${money(p.current_price)}</td><td>${money(p.unrealized_pnl)}</td></tr>`);
+row("trades",s.recent_trades,t=>`<tr><td>${time(t.closed_at)}</td><td>${esc(t.symbol)}</td><td>${esc(t.strategy)}</td><td>${money(t.pnl)}</td><td>${esc(t.exit_reason)}</td></tr>`);
+row("assets",s.assets,a=>`<tr><td>${esc(a.symbol)}</td><td>${money(a.price)}</td><td>${esc(a.regime||"—")}</td><td>${esc(a.strategy||"NO_TRADE")}</td><td>${a.open_position?"YES":"—"}</td></tr>`);
+row("risk",s.recent_risk_decisions,d=>`<tr><td>${time(d.timestamp)}</td><td>${esc(d.symbol||"—")}</td><td>${esc(d.decision)}</td><td>${esc(d.reason||"—")}</td></tr>`)}
+async function refresh(){try{const r=await fetch("/api/snapshot");render(await r.json())}catch(e){}}
+const es=new EventSource("/ws/events");es.onopen=()=>{$("connection").textContent="live (SSE)"};es.onerror=()=>{$("connection").textContent="reconnecting…"};es.onmessage=e=>{$("events").textContent=e.data};["cycle_completed","context_built","strategy_selected","signal_generated","signal_rejected","risk_accepted","risk_rejected","position_opened","position_closed","sl_triggered","tp_triggered","runtime_error"].forEach(t=>es.addEventListener(t,e=>{$("events").textContent=e.data}));refresh();setInterval(refresh,5000);
+</script></body></html>

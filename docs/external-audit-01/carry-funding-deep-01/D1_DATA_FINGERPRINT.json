@@ -1,0 +1,19 @@
+{
+  "dataset": "BTCUSDT_FUNDING_DEEP",
+  "fingerprint_sha256": "8b0e796c808158cc087848ad1d388d121b4b10ec1bb6b243bd7f9576f811965b",
+  "first_ts_utc": "2019-09-10T08:00:00+00:00",
+  "interval_distribution_hours": {
+    "8.0": 7669
+  },
+  "last_ts_utc": "2026-09-09T16:00:00.002000+00:00",
+  "monotonic": true,
+  "pinned_at_utc": "2026-09-09T21:39:33.424953+00:00",
+  "provenance": {
+    "dedupe": "by fundingTime",
+    "endpoint_quirk": "startTime=0/absent returns recent-only 500 rows; real depth requires a concrete early startTime",
+    "no_synthetic_rows": true,
+    "pagination": "startTime cursor anchored at 2019-09-10, 1000/page"
+  },
+  "provider": "binanceusdm public /fapi/v1/fundingRate",
+  "rows": 7670
+}

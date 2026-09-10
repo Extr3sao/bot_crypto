@@ -45,11 +45,11 @@ from pathlib import Path
 from typing import Any
 
 __all__ = [
-    "DayState",
-    "DayStateAuthority",
     "COVERAGE_MIN",
     "MINUTES_PER_DAY",
     "VALIDITY_MIN_RATIO",
+    "DayState",
+    "DayStateAuthority",
 ]
 
 COVERAGE_MIN = 0.80
@@ -102,9 +102,15 @@ class DayStateAuthority:
     dependence, no sleeps).
     """
 
-    def __init__(self, campaign_dir: Path | str, *, clock=None) -> None:
+    def __init__(
+        self,
+        campaign_dir: Path | str,
+        *,
+        clock=None,
+        coverage_filename: str = "POC02_COVERAGE_DAILY.jsonl",
+    ) -> None:
         self._dir = Path(campaign_dir)
-        self._coverage_path = self._dir / "POC02_COVERAGE_DAILY.jsonl"
+        self._coverage_path = self._dir / coverage_filename
         self._finalization_path = self._dir / "POC02_DAY_FINALIZATIONS.json"
         self._receipts_dir = self._dir / "receipts"
         self._clock = clock or (lambda: datetime.now(UTC))
@@ -295,10 +301,68 @@ class DayStateAuthority:
         # contract: cycles must have been observed with recorded provenance
         if st.cycles > 0 and st.observed_minutes == 0:
             reasons.append("CYCLES_WITHOUT_MINUTE_STAMPS")
+        # DEF-R2-003 repair: the preregistered numeric coverage contract
+        # (VALIDITY_MIN_RATIO = 0.80 observed/expected minutes per completed
+        # UTC day) is ENFORCED here. It was previously declared but never
+        # checked (metadata only), which let a 0.0028-coverage day finalize
+        # VALID — a silent contract bypass. The ratio is applied to the full
+        # 1440-minute denominator exactly as the manifests preregister
+        # ("runtime cadence x 1440 min"); no launch-day/burn-in exception
+        # exists in any R2 manifest, so none is invented here.
+        if (
+            st.observed_minutes > 0
+            and st.observed_minutes / MINUTES_PER_DAY < VALIDITY_MIN_RATIO
+        ):
+            reasons.append("COVERAGE_BELOW_MINIMUM")
         ok = not reasons
         return (VALID if ok else INVALID), tuple(
             reasons if not ok else ("CONTRACT_SATISFIED",)
         )
+
+    def amend_day(self, day: str, *, reason_code: str, detail: dict) -> dict:
+        """§9 — formally correct an already-finalized day.
+
+        The original finalization record is preserved verbatim in the
+        append-only ``amendments`` chain; the day's authoritative validity
+        and reason codes are replaced by the corrected evaluation of the
+        SAME immutable evidence. Never invoked by ``finalize_day`` —
+        amendments are explicit governance acts with a trigger reason code.
+        """
+        now = self._clock()
+        fin = self._load_finalizations()
+        existing = fin.get(day)
+        if existing is None:
+            return {"amended": False, "reason": "NOT_FINALIZED", "utc_day": day}
+        st = self.day_state(day)  # evidence comes from the immutable bucket
+        validity, reasons = self._evaluate_validity(st)
+        amendments = list(existing.get("amendments", []))
+        prior_validity = existing["validity"]
+        prior_reasons = list(existing.get("reason_codes", []))
+        amendments.append(
+            {
+                "amended_at_utc": now.isoformat(),
+                "trigger_reason_code": reason_code,
+                "detail": detail,
+                "prior_validity": prior_validity,
+                "prior_reason_codes": prior_reasons,
+                "corrected_validity": validity,
+                "corrected_reason_codes": list(reasons),
+            }
+        )
+        existing["amendments"] = amendments
+        existing["validity"] = validity
+        existing["reason_codes"] = list(reasons)
+        existing["last_amended_at_utc"] = now.isoformat()
+        self._save_finalizations(fin)
+        return {
+            "amended": True,
+            "utc_day": day,
+            "prior_validity": prior_validity,
+            "validity": validity,
+            "reason_codes": list(reasons),
+            "amendment_count": len(amendments),
+            "original_finalized_at_utc": existing.get("finalized_at_utc"),
+        }
 
     # -- coverage (§3/§4) ----------------------------------------------------
 

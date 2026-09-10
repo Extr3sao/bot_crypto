@@ -1,6 +1,6 @@
 """POC02 daily coverage authority tests (DAILY COVERAGE AUTHORITY RECONCILIATION).
 
-Covers §11–§14 and §17:
+Covers §11-§14 and §17:
 
 - OPEN day + successful cycle + valid receipt contributes 0 to the
   coverage numerator (§11 OPEN_DAY_COVERAGE_CONTRIBUTION = 0)
@@ -135,7 +135,7 @@ def test_boundary_is_pure_utc_not_local(tmp_path: Path) -> None:
 
 def test_closed_valid_day_counts_and_invalid_does_not(tmp_path: Path) -> None:
     auth = _mk(tmp_path, lambda: datetime(2026, 9, 11, tzinfo=UTC))
-    _write_bucket(tmp_path, "2026-09-09", cycles=10, minutes=200)
+    _write_bucket(tmp_path, "2026-09-09", cycles=10, minutes=1200)  # >= 0.80
     _write_receipts(tmp_path, "2026-09-09", 1)
     _write_bucket(tmp_path, "2026-09-10", cycles=0, minutes=0)
     assert auth.finalize_day("2026-09-09")["validity"] == VALID
@@ -169,7 +169,7 @@ def test_zero_denominator_is_not_yet_measurable_not_one(tmp_path: Path) -> None:
 
 def test_pending_validation_day_not_counted_until_finalized(tmp_path: Path) -> None:
     auth = _mk(tmp_path, lambda: datetime(2026, 9, 10, 12, tzinfo=UTC))
-    _write_bucket(tmp_path, "2026-09-09", cycles=5, minutes=100)
+    _write_bucket(tmp_path, "2026-09-09", cycles=5, minutes=1200)  # >= 0.80
     _write_receipts(tmp_path, "2026-09-09", 1)
     st = auth.day_state("2026-09-09")
     assert st.day_validity == PENDING_VALIDATION
@@ -204,7 +204,7 @@ def test_five_cycles_same_day_single_bucket(tmp_path: Path) -> None:
             {"utc_day": "2026-09-09", "observed_cycles": 0, "observed_minutes": 0},
         )
         row["observed_cycles"] = i
-        row["observed_minutes"] = i
+        row["observed_minutes"] = i * 288  # 5th cycle reaches the 1440 contract
         rows["2026-09-09"] = row
         auth._coverage_path.write_text(
             "".join(json.dumps(r, sort_keys=True) + "\n" for r in rows.values()),
@@ -245,7 +245,7 @@ def test_five_cycles_same_day_single_bucket(tmp_path: Path) -> None:
 
 def test_double_finalization_is_idempotent(tmp_path: Path) -> None:
     auth = _mk(tmp_path, lambda: datetime(2026, 9, 10, 1, tzinfo=UTC))
-    _write_bucket(tmp_path, "2026-09-09", cycles=4, minutes=90)
+    _write_bucket(tmp_path, "2026-09-09", cycles=4, minutes=1200)  # >= 0.80
     _write_receipts(tmp_path, "2026-09-09", 1)
     first = auth.finalize_day("2026-09-09")
     assert first["finalized"] and not first.get("already_finalized")
@@ -266,7 +266,7 @@ def test_retry_after_failed_first_cycle_single_authoritative_outcome(
     # failed first cycle: no bucket; successful retry creates exactly one
     auth = _mk(tmp_path, lambda: datetime(2026, 9, 9, 20, tzinfo=UTC))
     assert auth.day_state("2026-09-09").day_bucket_exists is False
-    _write_bucket(tmp_path, "2026-09-09", cycles=2, minutes=40)  # retry
+    _write_bucket(tmp_path, "2026-09-09", cycles=2, minutes=1200)  # retry, >= 0.80
     _write_receipts(tmp_path, "2026-09-09", 2)  # original + amendment
     st = auth.day_state("2026-09-09")
     assert st.day_bucket_exists and st.cycles == 2
@@ -295,6 +295,76 @@ def test_partial_artifacts_are_invalid_not_valid(tmp_path: Path) -> None:
     res = auth.finalize_day("2026-09-09")
     assert res["validity"] == INVALID
     assert "NO_VALID_EVIDENCE" in res["reason_codes"]
+
+
+# --------------------------------------------------------------------------
+# DEF-R2-003 — the numeric coverage contract is ENFORCED, and corrections
+# to an already-finalized day go through the explicit amendment path
+# --------------------------------------------------------------------------
+
+def test_coverage_below_minimum_invalidates_day(tmp_path: Path) -> None:
+    """GOV-01/GOV-05: >= 0.80 is binding — a 0.0028 day can never be VALID."""
+    auth = _mk(tmp_path, lambda: datetime(2026, 9, 10, 2, tzinfo=UTC))
+    _write_bucket(tmp_path, "2026-09-09", cycles=6, minutes=4)
+    _write_receipts(tmp_path, "2026-09-09", 4)
+    res = auth.finalize_day("2026-09-09")
+    assert res["validity"] == INVALID
+    assert "COVERAGE_BELOW_MINIMUM" in res["reason_codes"]
+    # exactly at the boundary (0.80) is VALID — never a raised threshold
+    auth2 = _mk(tmp_path, lambda: datetime(2026, 9, 12, tzinfo=UTC))
+    _write_bucket(tmp_path, "2026-09-10", cycles=288, minutes=1152)
+    _write_receipts(tmp_path, "2026-09-10", 1)
+    assert auth2.finalize_day("2026-09-10")["validity"] == VALID
+
+
+def test_amend_day_corrects_finalized_day_and_preserves_original(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """§9: original finalization verbatim; corrected validity from same evidence."""
+    import trading_bot.paper.day_state as ds
+
+    clock = {"now": datetime(2026, 9, 10, 2, tzinfo=UTC)}
+    auth = _mk(tmp_path, lambda: clock["now"])
+    _write_bucket(tmp_path, "2026-09-09", cycles=6, minutes=4)
+    _write_receipts(tmp_path, "2026-09-09", 4)
+    # simulate the PRE-REPAIR evaluator (ratio declared but unenforced) so the
+    # original finalization reproduces the real defective outcome: VALID @ 0.0028
+    monkeypatch.setattr(ds, "VALIDITY_MIN_RATIO", 0.0)
+    original = auth.finalize_day("2026-09-09")
+    assert original["validity"] == VALID  # the (defective) pre-repair outcome
+    original_stamp = auth._load_finalizations()["2026-09-09"]["finalized_at_utc"]
+    monkeypatch.undo()  # restore the enforcing contract
+    clock["now"] = datetime(2026, 9, 10, 6, tzinfo=UTC)
+    res = auth.amend_day(
+        "2026-09-09",
+        reason_code="DEF_R2_003",
+        detail={"defect": "COVERAGE_VALIDITY_CONTRACT_BYPASS"},
+    )
+    assert res["amended"] is True
+    assert res["prior_validity"] == "VALID"
+    assert res["validity"] == INVALID
+    assert "COVERAGE_BELOW_MINIMUM" in res["reason_codes"]
+    # original record preserved in the append-only chain
+    fin = auth._load_finalizations()["2026-09-09"]
+    assert fin["finalization_count"] == 1
+    assert fin["finalized_at_utc"] == original_stamp
+    assert fin["amendments"][0]["prior_validity"] == "VALID"
+    assert fin["amendments"][0]["trigger_reason_code"] == "DEF_R2_003"
+    # day state now reflects the corrected validity; not counted for coverage
+    st = auth.day_state("2026-09-09")
+    assert st.day_validity == INVALID
+    assert st.day_counts_for_coverage is False
+    # idempotence of the day state; second amendment appends to the chain
+    res2 = auth.amend_day("2026-09-09", reason_code="RECHECK", detail={})
+    assert res2["amendment_count"] == 2
+    assert len(auth._load_finalizations()["2026-09-09"]["amendments"]) == 2
+
+
+def test_amend_day_rejects_unfinalized_day(tmp_path: Path) -> None:
+    auth = _mk(tmp_path, lambda: datetime(2026, 9, 10, 2, tzinfo=UTC))
+    res = auth.amend_day("2026-09-09", reason_code="X", detail={})
+    assert res["amended"] is False
+    assert res["reason"] == "NOT_FINALIZED"
 
 
 # --------------------------------------------------------------------------
