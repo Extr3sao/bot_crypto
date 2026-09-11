@@ -1,0 +1,97 @@
+{
+  "OI_FULL_HISTORY_DATASET_SHA256": "16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99",
+  "USE_COMMON_WINDOW": true,
+  "checkpoint": "OI-FULL-HISTORY-FREEZE-01",
+  "common_research_window_utc": [
+    "2021-12-01T00:00:00Z",
+    "2026-09-10T23:55:00Z"
+  ],
+  "excluded_provider_fields": [
+    "count_toptrader_long_short_ratio",
+    "sum_toptrader_long_short_ratio",
+    "count_long_short_ratio",
+    "sum_taker_long_short_vol_ratio"
+  ],
+  "expected_interval_seconds": 300,
+  "expected_rows_complete_utc_day": 288,
+  "family": "open_interest_full_history",
+  "field_whitelist": [
+    "create_time",
+    "sum_open_interest",
+    "sum_open_interest_value",
+    "symbol"
+  ],
+  "ledger": "data/processed/oi_full_history/OI_DAY_VALIDITY_LEDGER.jsonl",
+  "native_cadence": "5m",
+  "normalizer_commit": "ec2483ff78d6ab39bf59e48cf5c609f68dba4804",
+  "normalizer_version": "2.1.0",
+  "per_symbol": {
+    "BTCUSDT": {
+      "checksum_failures": 0,
+      "duplicates": 0,
+      "files": 2201,
+      "first_timestamp_ms": 1598918400000,
+      "gaps": 637,
+      "invalid_breakdown": {
+        "INVALID_GAP": 72
+      },
+      "invalid_days": 72,
+      "invalid_values": 0,
+      "last_timestamp_ms": 1789084500000,
+      "raw_order_inversions": 4750,
+      "rows": 613152,
+      "schema_drift": 0,
+      "valid_days": 2129
+    },
+    "ETHUSDT": {
+      "checksum_failures": 0,
+      "duplicates": 0,
+      "files": 1745,
+      "first_timestamp_ms": 1638316800000,
+      "gaps": 143,
+      "invalid_breakdown": {
+        "INVALID_GAP": 10
+      },
+      "invalid_days": 10,
+      "invalid_values": 0,
+      "last_timestamp_ms": 1789084500000,
+      "raw_order_inversions": 5002,
+      "rows": 499680,
+      "schema_drift": 0,
+      "valid_days": 1735
+    },
+    "SOLUSDT": {
+      "checksum_failures": 0,
+      "duplicates": 0,
+      "files": 1745,
+      "first_timestamp_ms": 1638316800000,
+      "gaps": 163,
+      "invalid_breakdown": {
+        "INVALID_GAP": 12,
+        "INVALID_VALUE": 1
+      },
+      "invalid_days": 13,
+      "invalid_values": 0,
+      "last_timestamp_ms": 1789084500000,
+      "raw_order_inversions": 4805,
+      "rows": 498816,
+      "schema_drift": 0,
+      "valid_days": 1732
+    }
+  },
+  "pre_common_auxiliary_data": "BTCUSDT 2020-09-01..2021-11-30 preserved, excluded from H6 by default",
+  "quality_status": "PASS_WITH_EXPLICIT_GAPS",
+  "schema_version": "2.0.1",
+  "source": "SOURCE_BINANCE_VISION_USDM_METRICS_DAILY (official data.binance.vision archive)",
+  "totals": {
+    "files": 5691,
+    "invalid_days": 95,
+    "rows_valid": 1611648,
+    "valid_days": 5596,
+    "valid_days_in_common_window": 5202
+  },
+  "unit_semantics": {
+    "sum_open_interest": "BASE_ASSET_UNITS",
+    "sum_open_interest_value": "USDT_NOTIONAL"
+  }
+}

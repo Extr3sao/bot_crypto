@@ -1,0 +1,18 @@
+{
+  "OI_FULL_HISTORY_DATASET_SHA256": "16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99",
+  "checkpoint": "OI-FULL-HISTORY-FREEZE-01",
+  "conclusion": "PASS",
+  "cross_run_determinism": {
+    "A_equals_B": true,
+    "method": "two independent full normalizations of 5,691 raw archives (run A snapshot: evidence_run_A_manifest.json; run B: on-disk)",
+    "run_A_sha256": "16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99",
+    "run_B_sha256": "16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99"
+  },
+  "matches_frozen_manifest": true,
+  "sensitivity": {
+    "C_differs_from_A": true,
+    "C_sha256": "83b97d3587103c0ed8c7a95c43c19d76bda6edaeb19bdfad564baae7533f99b0",
+    "method": "one synthetic normalized_sha256 flip in the canonical payload (real raw archive untouched)"
+  },
+  "track": "I"
+}

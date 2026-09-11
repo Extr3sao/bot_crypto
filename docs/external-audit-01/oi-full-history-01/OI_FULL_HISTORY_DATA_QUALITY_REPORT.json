@@ -1,0 +1,82 @@
+{
+  "checkpoint": "OI-FULL-HISTORY-FREEZE-01",
+  "track": "F",
+  "generated_utc": "2026-09-11",
+  "OI_FULL_HISTORY_QUALITY": "PASS_WITH_EXPLICIT_GAPS",
+  "verdict_basis": "0 checksum failures, 0 schema drift, 0 invalid values; 95/5691 days (1.7%) carry small provider-side gaps; ALL invalid days inside the common research window are isolated single days (max run length 1); the common research window can exclude affected days without future knowledge (exclusion is defined by the day-level validity ledger, computed only from same-day data).",
+  "source_authority": "SOURCE_BINANCE_VISION_USDM_METRICS_DAILY (official data.binance.vision archive + official .CHECKSUM sha256 sidecars)",
+  "native_cadence": "5m",
+  "expected_rows_per_complete_utc_day": 288,
+  "totals": {
+    "FILES": 5691,
+    "VALID_DAYS": 5596,
+    "INVALID_DAYS": 95,
+    "ROWS_VALID": 1611648,
+    "CHECKSUM_FAILURES": 0,
+    "SCHEMA_DRIFT": 0,
+    "INVALID_VALUES": 0,
+    "MISSING_DATES": 0
+  },
+  "per_asset": {
+    "BTCUSDT": {
+      "FILES": 2201,
+      "VALID_DAYS": 2129,
+      "INVALID_DAYS": 72,
+      "ROWS": 613152,
+      "FIRST_TIMESTAMP_UTC": "2020-09-01T00:00:00Z",
+      "LAST_TIMESTAMP_UTC": "2026-09-10T23:55:00Z",
+      "GAPS": "72 isolated single-day files with 4-17 missing 5m intervals each (provider-side); 62 pre-common-window, 10 inside common window",
+      "DUPLICATES": 0,
+      "CHECKSUM_FAILURES": 0,
+      "SCHEMA_DRIFT": 0,
+      "INVALID_VALUES": 0,
+      "RAW_ORDER_INVERSIONS_PRESENT": true,
+      "RAW_ORDER_INVERSIONS_NOTE": "provider files are not row-sorted in any era; deterministic sort applied; counted per file in the ledger"
+    },
+    "ETHUSDT": {
+      "FILES": 1745,
+      "VALID_DAYS": 1735,
+      "INVALID_DAYS": 10,
+      "ROWS": 499680,
+      "FIRST_TIMESTAMP_UTC": "2021-12-01T00:00:00Z",
+      "LAST_TIMESTAMP_UTC": "2026-09-10T23:55:00Z",
+      "GAPS": "10 isolated single-day files (provider-side)",
+      "DUPLICATES": 0,
+      "CHECKSUM_FAILURES": 0,
+      "SCHEMA_DRIFT": 0,
+      "INVALID_VALUES": 0,
+      "RAW_ORDER_INVERSIONS_PRESENT": true
+    },
+    "SOLUSDT": {
+      "FILES": 1745,
+      "VALID_DAYS": 1732,
+      "INVALID_DAYS": 13,
+      "ROWS": 498816,
+      "FIRST_TIMESTAMP_UTC": "2021-12-01T00:00:00Z",
+      "LAST_TIMESTAMP_UTC": "2026-09-10T23:55:00Z",
+      "GAPS": "13 files: 12 gap days + 1 grid-shift day (2024-04-02: 00:05->next-day 00:00, 3 missing + 1 off-grid)",
+      "DUPLICATES": 0,
+      "CHECKSUM_FAILURES": 0,
+      "SCHEMA_DRIFT": 0,
+      "INVALID_VALUES": 0,
+      "RAW_ORDER_INVERSIONS_PRESENT": true
+    }
+  },
+  "defects_registered": {
+    "DEF-DATA-OI-002": "provider exact-duplicate row emission (2020-09..2021-05 era): every row twice, byte-identical payloads; collapsed deterministically under schema 2.0.1; conflicting duplicates would invalidate the day",
+    "provider_string_timestamps": "create_time is 'YYYY-MM-DD HH:MM:SS' UTC in all eras; normalizer converts deterministically"
+  },
+  "gap_research_impact": {
+    "common_window_days_total": 1745,
+    "days_valid_all_three_symbols": 1732,
+    "multi_day_gap_runs_in_window": 0,
+    "isolated_invalid_days_in_window": {"BTCUSDT": 10, "ETHUSDT": 10, "SOLUSDT": 13},
+    "exclusion_policy": "H6 dataset = union of day-level valid per symbol; invalid days excluded by the validity ledger only (no future knowledge required); no synthesis, no interpolation, no forward-fill"
+  },
+  "determinism": {
+    "cross_run_A_equals_B": true,
+    "OI_FULL_HISTORY_DATASET_SHA256": "16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99",
+    "sensitivity_C_differs_from_A": true
+  },
+  "alpha_leakage": 0
+}

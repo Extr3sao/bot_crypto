@@ -1,0 +1,25 @@
+{
+  "FILES_CHECKSUM_FAIL": 0,
+  "FILES_EXPECTED": 5691,
+  "FILES_ON_DISK_PASS": 5691,
+  "MISSING_DATES": [],
+  "checkpoint": "OI-FULL-HISTORY-FREEZE-01",
+  "per_symbol": {
+    "BTCUSDT": {
+      "expected": 2201,
+      "pass": 2201
+    },
+    "ETHUSDT": {
+      "expected": 1745,
+      "pass": 1745
+    },
+    "SOLUSDT": {
+      "expected": 1745,
+      "pass": 1745
+    }
+  },
+  "retrieval_date_utc": "2026-09-11",
+  "source": "data.binance.vision official archive (USD-M daily metrics) + official .CHECKSUM sha256 sidecars",
+  "track": "A",
+  "verification": "full re-verification pass over on-disk archive (no downloads)"
+}
