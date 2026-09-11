@@ -1,0 +1,85 @@
+{
+  "experiment_id": 1,
+  "hypothesis_id": "H6-OI-POSITION-STOCK-01",
+  "checkpoint": "OI-FULL-HISTORY-FREEZE-01 + H6-HYPOTHESIS-SELECTION-AND-PREREG-ONLY",
+  "preregistered_utc": "2026-09-11",
+  "status_at_prereg": "PREREGISTERED_NOT_EXECUTED",
+  "H6_EXECUTIONS": 0,
+  "H6_BACKTESTS": 0,
+  "PERFORMANCE_OBSERVED": false,
+
+  "spec": {
+    "path": "docs/external-audit-01/oi-full-history-01/H6_SPEC.json",
+    "sha256": "f514fecf42b52d2e1c2946cac9dee94b2570d485cb236b9a6c663f46f5bbf148"
+  },
+
+  "dataset": {
+    "oi_full_history": {
+      "manifest_path": "data/processed/oi_full_history/OI_FULL_HISTORY_DATASET_MANIFEST.json",
+      "manifest_sha256": "2ba25a22dde9c166b6bf0915ee878552dc8f1293a36c8c8104c90860172e1df7",
+      "ledger_path": "data/processed/oi_full_history/OI_DAY_VALIDITY_LEDGER.jsonl",
+      "ledger_sha256": "a7dea756852332c895359a04c6cb0fc185a57f11b780207e01c5d4c768c3282a",
+      "OI_FULL_HISTORY_DATASET_SHA256": "16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99",
+      "quality_status": "PASS_WITH_EXPLICIT_GAPS",
+      "valid_days_total": 5596,
+      "valid_days_common_window_all_symbols": 1732
+    },
+    "price_authority": {
+      "files": [
+        "docs/external-audit-01/h1-regime-transition-01/dataset/BTCUSDT_1h.jsonl",
+        "docs/external-audit-01/h1-regime-transition-01/dataset/ETHUSDT_1h.jsonl",
+        "docs/external-audit-01/h1-regime-transition-01/dataset/SOLUSDT_1h.jsonl"
+      ],
+      "commit_anchor": "cb3de4f",
+      "covers_common_window": true,
+      "last_bucket_openTime_ms": 1788912000000
+    },
+    "field_whitelist": {
+      "path": "docs/external-audit-01/oi-full-history-01/H6_FEATURE_AUTHORITY_WHITELIST.json",
+      "sha256": "32f03cf9df6fa4549a1e8778dfdc54cd98816996c9c4ec0650213c0e677fefc5"
+    }
+  },
+
+  "common_window_utc": ["2021-12-01T00:00:00Z", "2026-09-10T23:59:59Z"],
+  "assets": ["BTCUSDT", "ETHUSDT", "SOLUSDT"],
+  "decision_timeframe": "1h",
+  "entry_timing": "NEXT_HOUR_OPEN",
+  "exit_timing": "NEXT_HOUR_CLOSE",
+  "stop": "NONE",
+  "cooldown": "NONE",
+  "threshold_rule": "PIT_ROLLING_DISTRIBUTION (robust z_oi = (delta_oi - rolling_median)/(1.4826*rolling_MAD) over trailing 720 completed hourly changes, min 336 observations; expansion qualifies at z_oi >= +1.0; contraction => NO_TRADE; MAD==0 => NO_SIGNAL; frozen pre-execution; NO_PARAMETER_SWEEP)",
+  "cost_model": {"BASE_TOTAL_ROUND_TRIP_COST_BPS": 10, "COST_SENSITIVITY_BPS": [0, 10, 20, 40]},
+  "funding_accounting": {"FUNDING_DISCOVERY_ACCOUNTING": "EXCLUDED_WITH_LIMITATION", "funding_materiality_gate_before_promotion": true},
+
+  "gates": {
+    "minimum_N": {"per_asset": 30, "pooled": 100},
+    "P_Sharp_greater_0_min": 0.90,
+    "permutation_p_max": 0.05,
+    "sharpe_ci_excludes_zero": true,
+    "robustness": ["halves", "thirds", "walk-forward"],
+    "orthogonality_vs_momentum_abs_r_max": 0.50,
+    "H5_PNL_CORRELATION": "NOT_EVALUABLE_FROM_PERSISTED_EVIDENCE"
+  },
+
+  "governance": {
+    "failed_memory_review": "H6_FAILED_MEMORY_COLLISION_REVIEW.md (PASS; M-A trade-flow DEFERRED with reasons)",
+    "mechanism_evidence": "H6_MECHANISM_EVIDENCE.md (OFFICIAL_EXCHANGE_DOC + peer-reviewed; no repository returns inspected)",
+    "prereg_consistency_audit": "H6_PREREG_CONSISTENCY_AUDIT.json (UNRESOLVED_FIELDS = [])",
+    "builder_verifier_separation": "H6_SELF_VERIFICATION by builder + H6_EXTERNAL_VERIFIER_PACKAGE for genuinely independent verification; H6_INDEPENDENT_VERIFICATION=PASS requires an external verifier run",
+    "immutability": "after any economic execution this manifest is immutable; post-execution state externalized per DEF-H5-GOV-001 lesson; prereg commit hash NOT embedded (post-commit record: H6_PREREG_COMMIT_RECORD.json)"
+  },
+
+  "provenance": {
+    "baseline_commit": "cb3de4f2e03d5ff51f2fdfb557af5392e29dd0dc",
+    "normalizer_commit": "ec2483ff78d6ab39bf59e48cf5c609f68dba4804",
+    "note": "no prereg-commit self-reference inside this manifest (P0-J); the post-commit H6_PREREG_COMMIT_RECORD.json carries the commit identity"
+  },
+
+  "H5_state_untouched": {
+    "H5_RESULT": "DISCOVERY_FAIL",
+    "H5_RERUNS": 0,
+    "H5_RESULT_SHA256": "2427310dbed8445b1e39b1feaba7a8289918ab79a258f66b065da7cf2b7fe60f",
+    "H5_SPEC_SHA256": "c743fba4a2a589dc1c3a15c7cd48b1b6ddf80255b8a157ea4f7ef19cc2f81023",
+    "H5_MANIFEST_SHA256": "29ececb759aff059282a0324b3b94b4bcd13b35b51060c6c742f2eaa48db0a86"
+  }
+}

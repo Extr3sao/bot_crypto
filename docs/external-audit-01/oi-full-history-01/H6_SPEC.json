@@ -1,0 +1,174 @@
+{
+  "experiment_id": 1,
+  "hypothesis_id": "H6-OI-POSITION-STOCK-01",
+  "schema": "H6_SPEC/1.1.0",
+  "preregistered_utc": "2026-09-11",
+  "status_at_prereg": "PREREGISTERED_NOT_EXECUTED",
+  "H6_EXECUTIONS": 0,
+  "H6_BACKTESTS": 0,
+  "PERFORMANCE_OBSERVED": false,
+
+  "mechanism": {
+    "name": "OI_CONFIRMED_CONTINUATION",
+    "family": "position_stock_conditioning",
+    "statement": "Significant new position-stock expansion confirms the immediately preceding price direction and predicts continuation in the next completed hour. Primary qualifying condition is OI expansion only (robust z >= +1.0); OI contraction hours yield NO_TRADE in the discovery design.",
+    "external_evidence": ["H6_MECHANISM_EVIDENCE.md E-1 (CME, OFFICIAL_EXCHANGE_DOC)", "E-2 (Investopedia)", "E-3 (MDPI Economies 14(7):178, peer-reviewed)"],
+    "failed_memory_review": "H6_FAILED_MEMORY_COLLISION_REVIEW.md (PASS)"
+  },
+
+  "assets": ["BTCUSDT", "ETHUSDT", "SOLUSDT"],
+
+  "common_window_utc": {
+    "start": "2021-12-01T00:00:00Z",
+    "end": "2026-09-10T23:59:59Z",
+    "USE_COMMON_WINDOW": true,
+    "pre_common_auxiliary_data": "BTCUSDT 2020-09-01..2021-11-30 OI preserved as PRE_COMMON_AUXILIARY_DATA; MUST NOT influence hypothesis selection, thresholds, metrics or performance (default frozen here)",
+    "archive_validity_vs_decision_eligibility": {
+      "ARCHIVE_DAY_VALIDITY": "OI_DAY_VALIDITY_LEDGER.jsonl is a forensic data-quality artifact; it does NOT directly control historical decision eligibility",
+      "DECISION_ELIGIBILITY_AT_T": "strictly causal (data_time <= T): completed 1h price bar exists; CURRENT_HOUR_OI_COMPLETENESS = exactly 12 distinct 5m OI snapshots in the completed hour; previous-hour reference complete; rolling feature history >= minimum; last observation not stale (<= 600s); no future knowledge of the remainder of the UTC day. A gap strictly AFTER T must not alter eligibility or feature/signal state at T (adversarially tested)."
+    }
+  },
+
+  "data_authority": {
+    "oi_dataset": {
+      "path": "data/processed/oi_full_history/",
+      "manifest": "data/processed/oi_full_history/OI_FULL_HISTORY_DATASET_MANIFEST.json",
+      "ledger": "data/processed/oi_full_history/OI_DAY_VALIDITY_LEDGER.jsonl",
+      "OI_FULL_HISTORY_DATASET_SHA256": "16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99",
+      "schema_version": "2.0.1",
+      "normalizer_version": "2.1.0",
+      "native_cadence": "5m",
+      "unit_semantics": {"sum_open_interest": "BASE_ASSET_UNITS", "sum_open_interest_value": "USDT_NOTIONAL"}
+    },
+    "price_authority": {
+      "path_template": "docs/external-audit-01/h1-regime-transition-01/dataset/{ASSET}_1h.jsonl",
+      "description": "committed frozen 12-field official Binance USD-M 1h klines (H1 dataset; unchanged since cb3de4f; covers the entire common window through the 2026-09-10T00:00Z bucket)",
+      "fields_used": ["openTime", "open", "close"],
+      "commit_anchor": "cb3de4f",
+      "temporary_extension_files": "NOT part of H6 authority and MUST NOT be referenced (data/raw/binance_um/klines_1h_ext/ was probed for the authority audit and is excluded)"
+    },
+    "field_whitelist": "H6_FEATURE_AUTHORITY_WHITELIST.json (this directory)",
+    "forbidden_fields": ["count_toptrader_long_short_ratio", "sum_toptrader_long_short_ratio", "count_long_short_ratio", "sum_taker_long_short_vol_ratio"]
+  },
+
+  "decision_timeframe": {
+    "bucket": "1h",
+    "decision_time": "completed 1h bucket close (openTime + 3600_000 ms)",
+    "primary_holding_horizon_hours": 1,
+    "oi_aggregation_rule": "causal: use only 5m observations with oi_time <= decision_time; CURRENT_HOUR_OI_COMPLETENESS requires exactly 12 distinct snapshots in the completed decision hour",
+    "pit_invariant": "oi_time <= decision_time for every observation used"
+  },
+
+  "oi_field_whitelist": ["sum_open_interest", "sum_open_interest_value"],
+
+  "feature_transformations": [
+    {
+      "name": "delta_oi_1h",
+      "definition": "sum_open_interest(last 5m snapshot of completed hour H) - sum_open_interest(last 5m snapshot of completed hour H-1); base-asset units; requires exactly 12 distinct snapshots in BOTH hours, else NO_SIGNAL for that hour",
+      "window": "1h",
+      "causal": true
+    },
+    {
+      "name": "z_oi",
+      "definition": "ROBUST location/scale z-score of delta_oi_1h: z = (delta_oi - rolling_median) / (1.4826 * rolling_MAD) over the trailing 30 calendar days (720 completed hourly changes) strictly BEFORE the decision time; if MAD == 0 => NO_SIGNAL",
+      "window": "30d trailing, center=median, scale=1.4826*MAD, min 336 valid historical observations",
+      "causal": true,
+      "note": "single frozen robust definition; rolling std is NOT used; no alternative scale was evaluated"
+    },
+    {
+      "name": "price_direction_1h",
+      "definition": "completed decision-hour close > open => UP; close < open => DOWN; close == open => NO_SIGNAL",
+      "window": "1h",
+      "causal": true
+    }
+  ],
+
+  "rolling_windows": {
+    "z_oi": {"length_hours": 720, "min_observations": 336, "center": "median", "scale": "1.4826*MAD", "update": "strictly trailing, recompute per decision hour from PIT data only"}
+  },
+
+  "threshold_rule": {
+    "type": "PIT_ROLLING_DISTRIBUTION",
+    "expansion_condition": "z_oi >= +1.0",
+    "contraction_condition": "NOT USED in discovery design: OI contraction hours produce NO_TRADE (P0-D simplification; a contraction-reversal variant would be a separate preregistered experiment)",
+    "neutral_or_insufficient": "z_oi < +1.0, MAD == 0, or < 336 historical observations => NO_SIGNAL",
+    "note": "thresholds frozen BEFORE any performance observation; NO parameter sweep is permitted; changing these values after any economic execution invalidates the experiment"
+  },
+
+  "direction_semantics": {
+    "LONG": "price UP (close > open) AND z_oi >= +1.0",
+    "SHORT": "price DOWN (close < open) AND z_oi >= +1.0",
+    "NO_TRADE": "z_oi < +1.0, or price close == open, or any NO_SIGNAL condition",
+    "no_inferred_direction": "direction derives only from the frozen price/OI definitions above"
+  },
+
+  "entry_timing": "next 1h bar OPEN (the bar immediately after the decision hour)",
+  "exit_timing": "same next 1h bar CLOSE",
+  "primary_holding_horizon": "exactly 1h",
+  "stop_invalidation": "NONE in the primary H6 discovery test (no ATR stop, no signal-flip exit; trade management belongs to a later preregistered experiment)",
+  "cooldown": "NONE required: fixed 1h non-overlapping per-asset outcome definition (entry at next hour open, exit at that hour's close); secondary horizons are NOT computed and MAY NOT influence PASS/FAIL",
+
+  "cost_model": {
+    "BASE_TOTAL_ROUND_TRIP_COST_BPS": 10,
+    "definition": "10 bps is the TOTAL modeled round-trip trading friction (single canonical number; not decomposed into per-side fees/slippage)",
+    "COST_SENSITIVITY_BPS": [0, 10, 20, 40],
+    "sensitivity_role": "diagnostic robustness only, NOT parameter selection",
+    "gross_reporting_required": true,
+    "purpose": "distinguish NO_GROSS_EDGE from EDGE_KILLED_BY_COSTS",
+    "primary_gate_application": "primary economic gates use 10 bps TOTAL RT"
+  },
+
+  "funding_accounting": {
+    "FUNDING_DISCOVERY_ACCOUNTING": "EXCLUDED_WITH_LIMITATION",
+    "reason": "no PIT-safe authoritative funding series exists in the repository for all three assets (BTCUSDT deep series exists in docs/external-audit-01/carry-funding-deep-01/; ETHUSDT/SOLUSDT do not)",
+    "funding_materiality_gate_before_promotion": true,
+    "note": "funding is NOT silently zero forever; any promotion requires a funding materiality audit"
+  },
+
+  "minimum_N": {
+    "per_asset_trades": 30,
+    "pooled_trades": 100,
+    "note": "hours are the independent unit; non-overlapping 1h outcomes per asset; if realized N is below minimum, result is INSUFFICIENT_SAMPLE (a FAIL-class outcome, not a promotion)"
+  },
+
+  "robustness_gates": [
+    "halves consistency: sign of net expectancy must agree across first/second half of the common window",
+    "thirds consistency: at least 2 of 3 thirds positive net expectancy",
+    "walk-forward: rolling 3-fold forward evaluation must not have all folds negative"
+  ],
+
+  "statistical_gates": {
+    "P_Sharp_greater_0_min": 0.90,
+    "permutation_p_max": 0.05,
+    "sharpe_ci_excludes_zero": true,
+    "permutation": "sign-flip permutation on hourly trade returns, 10,000 draws, fixed seed 20260911"
+  },
+
+  "orthogonality_gates": {
+    "MAX_ABS_DAILY_CORRELATION_TO_MOMENTUM_PROXY": 0.50,
+    "comparator": "the exact preregistered ROC(24h) momentum proxy definition (frozen before H6 execution; daily series construction frozen before execution)",
+    "H5_PNL_CORRELATION": "NOT_EVALUABLE_FROM_PERSISTED_EVIDENCE (H5 daily PnL arrays were never persisted; do not regenerate H5)",
+    "computed_before_economics": true,
+    "implementation": "CORRECT Pearson implementation, verified by the standard self-test r(X,X)=1, r(X,-X)=-1, constant series guarded",
+    "violation": "violation => no promotion regardless of economics"
+  },
+
+  "pit_rules": {
+    "oi": "oi_time <= decision_time",
+    "price": "decision hour uses only the completed bucket's OHLC",
+    "features": "z-score windows strictly trailing; no centered windows; no backfill; no interpolation from future data",
+    "future_mutation": "DECISION_ELIGIBILITY_AT_T, FEATURE_STATE_AT_T and SIGNAL_INPUT_AT_T must be byte-identical under mutations strictly after T (FUTURE_SAME_DAY_GAP_MUTATION test); PAST_GAP_BEFORE_T may change eligibility; FUTURE_GAP_AFTER_T must not",
+    "archive_validity_role": "day-level ledger is evidence only; eligibility is causal per decision time"
+  },
+
+  "insufficient_sample_policy": "if realized N < minimum_N, or any gate dataset is missing, result = INSUFFICIENT_SAMPLE / REPAIR_REQUIRED; no parameter relaxation, no window extension to chase N",
+
+  "pass_fail_semantics": {
+    "PASS_requires": "ALL of: minimum_N met, net expectancy > 0 at 10 bps TOTAL RT, P(Sharpe>0) >= 0.90, permutation p <= 0.05, Sharpe CI excludes 0, halves + thirds + walk-forward consistent, |daily corr vs momentum proxy| <= 0.50, funding materiality gate if promoted",
+    "FAIL_is_terminal": "any unmet gate => DISCOVERY_FAIL, terminal, recorded in FAILED_RESEARCH_MEMORY.md; post-hoc subcells are POST_HOC_LEAD_ONLY and never promoted",
+    "no_rerun": "no rerun, no retuning, no threshold change after first economic execution"
+  },
+
+  "experiment_invalidation": "spec/manifest hash drift, dataset fingerprint drift, or any execution before this prereg is committed => experiment invalid",
+  "forbidden_until_execution_checkpoint": ["economic backtest on real data", "signal generation on real data", "performance metric computation on real data", "parameter sweep", "threshold tuning"]
+}

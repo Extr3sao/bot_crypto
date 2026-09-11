@@ -1,0 +1,236 @@
+{
+  "CONTRADICTIONS_FOUND": 0,
+  "CONTRADICTIONS_RESOLVED": [
+    "mechanism.name",
+    "continuation_vs_reversal",
+    "decision_timeframe.bucket",
+    "primary_holding_horizon",
+    "stop_invalidation",
+    "cooldown",
+    "cost canonical",
+    "cost definition single",
+    "orthogonality threshold",
+    "experiment_id",
+    "experiment_id type",
+    "z center",
+    "z scale",
+    "z window",
+    "z min obs",
+    "threshold",
+    "contraction role",
+    "price direction rule",
+    "price filter",
+    "funding policy",
+    "funding materiality gate",
+    "H6_EXECUTIONS",
+    "H6_BACKTESTS",
+    "PERFORMANCE_OBSERVED",
+    "manifest hypothesis matches spec",
+    "manifest assets match spec",
+    "manifest window matches spec",
+    "whitelist fields subset of spec oi whitelist",
+    "manifest gate orthogonality matches spec",
+    "spec sha in manifest matches current spec bytes"
+  ],
+  "UNRESOLVED_FIELDS": [],
+  "artifact": "P0-C prereg consistency audit",
+  "checkpoint": "OI-FULL-HISTORY-FREEZE-01 + H6-HYPOTHESIS-SELECTION-AND-PREREG-ONLY",
+  "checks": [
+    {
+      "canonical": "OI_CONFIRMED_CONTINUATION",
+      "dimension": "mechanism.name",
+      "resolved": true,
+      "value": "OI_CONFIRMED_CONTINUATION"
+    },
+    {
+      "canonical": "continuation_only (contraction => NO_TRADE)",
+      "dimension": "continuation_vs_reversal",
+      "resolved": true,
+      "value": "continuation_only (contraction => NO_TRADE)"
+    },
+    {
+      "canonical": "1h",
+      "dimension": "decision_timeframe.bucket",
+      "resolved": true,
+      "value": "1h"
+    },
+    {
+      "canonical": 1,
+      "dimension": "primary_holding_horizon",
+      "resolved": true,
+      "value": 1
+    },
+    {
+      "canonical": "NONE in the primary H6 discovery test (no ATR stop, no signal-flip exit; trade management belongs to a later preregistered experiment)",
+      "dimension": "stop_invalidation",
+      "resolved": true,
+      "value": "NONE in the primary H6 discovery test (no ATR stop, no signal-flip exit; trade management belongs to a later preregistered experiment)"
+    },
+    {
+      "canonical": "NONE required: fixed 1h non-overlapping per-asset outcome definition (entry at next hour open, exit at that hour's close); secondary horizons are NOT computed and MAY NOT influence PASS/FAIL",
+      "dimension": "cooldown",
+      "resolved": true,
+      "value": "NONE required: fixed 1h non-overlapping per-asset outcome definition (entry at next hour open, exit at that hour's close); secondary horizons are NOT computed and MAY NOT influence PASS/FAIL"
+    },
+    {
+      "canonical": 10,
+      "dimension": "cost canonical",
+      "resolved": true,
+      "value": 10
+    },
+    {
+      "canonical": "10 bps is the TOTAL modeled round-trip trading friction (single canonical number; not decomposed into per-side fees/slippage)",
+      "dimension": "cost definition single",
+      "resolved": true,
+      "value": "10 bps is the TOTAL modeled round-trip trading friction (single canonical number; not decomposed into per-side fees/slippage)"
+    },
+    {
+      "canonical": 0.5,
+      "dimension": "orthogonality threshold",
+      "resolved": true,
+      "value": 0.5
+    },
+    {
+      "canonical": 1,
+      "dimension": "experiment_id",
+      "resolved": true,
+      "value": 1
+    },
+    {
+      "canonical": "int",
+      "dimension": "experiment_id type",
+      "resolved": true,
+      "value": "int"
+    },
+    {
+      "canonical": "median",
+      "dimension": "z center",
+      "resolved": true,
+      "value": "median"
+    },
+    {
+      "canonical": "1.4826*MAD",
+      "dimension": "z scale",
+      "resolved": true,
+      "value": "1.4826*MAD"
+    },
+    {
+      "canonical": 720,
+      "dimension": "z window",
+      "resolved": true,
+      "value": 720
+    },
+    {
+      "canonical": 336,
+      "dimension": "z min obs",
+      "resolved": true,
+      "value": 336
+    },
+    {
+      "canonical": "z_oi >= +1.0",
+      "dimension": "threshold",
+      "resolved": true,
+      "value": "z_oi >= +1.0"
+    },
+    {
+      "canonical": "NOT USED in discovery design: OI contraction hours produce NO_TRADE (P0-D simplification; a contraction-reversal variant would be a separate preregistered experiment)",
+      "dimension": "contraction role",
+      "resolved": true,
+      "value": "NOT USED in discovery design: OI contraction hours produce NO_TRADE (P0-D simplification; a contraction-reversal variant would be a separate preregistered experiment)"
+    },
+    {
+      "canonical": "completed decision-hour close > open => UP; close < open => DOWN; close == open => NO_SIGNAL",
+      "dimension": "price direction rule",
+      "resolved": true,
+      "value": "completed decision-hour close > open => UP; close < open => DOWN; close == open => NO_SIGNAL"
+    },
+    {
+      "canonical": "no separate price-threshold filter (direction from close vs open only)",
+      "dimension": "price filter",
+      "resolved": true,
+      "value": "no separate price-threshold filter (direction from close vs open only)"
+    },
+    {
+      "canonical": "EXCLUDED_WITH_LIMITATION",
+      "dimension": "funding policy",
+      "resolved": true,
+      "value": "EXCLUDED_WITH_LIMITATION"
+    },
+    {
+      "canonical": true,
+      "dimension": "funding materiality gate",
+      "resolved": true,
+      "value": true
+    },
+    {
+      "canonical": 0,
+      "dimension": "H6_EXECUTIONS",
+      "resolved": true,
+      "value": 0
+    },
+    {
+      "canonical": 0,
+      "dimension": "H6_BACKTESTS",
+      "resolved": true,
+      "value": 0
+    },
+    {
+      "canonical": false,
+      "dimension": "PERFORMANCE_OBSERVED",
+      "resolved": true,
+      "value": false
+    },
+    {
+      "canonical": "H6-OI-POSITION-STOCK-01",
+      "dimension": "manifest hypothesis matches spec",
+      "resolved": true,
+      "value": "H6-OI-POSITION-STOCK-01"
+    },
+    {
+      "canonical": [
+        "BTCUSDT",
+        "ETHUSDT",
+        "SOLUSDT"
+      ],
+      "dimension": "manifest assets match spec",
+      "resolved": true,
+      "value": [
+        "BTCUSDT",
+        "ETHUSDT",
+        "SOLUSDT"
+      ]
+    },
+    {
+      "canonical": "2021-12-01T00:00:00Z",
+      "dimension": "manifest window matches spec",
+      "resolved": true,
+      "value": "2021-12-01T00:00:00Z"
+    },
+    {
+      "canonical": 0.5,
+      "dimension": "manifest gate orthogonality matches spec",
+      "resolved": true,
+      "value": 0.7
+    },
+    {
+      "canonical": [
+        "sum_open_interest",
+        "sum_open_interest_value"
+      ],
+      "dimension": "whitelist fields subset of spec oi whitelist",
+      "resolved": true,
+      "value": [
+        "sum_open_interest",
+        "sum_open_interest_value"
+      ]
+    },
+    {
+      "canonical": "f514fecf42b52d2e1c2946cac9dee94b2570d485cb236b9a6c663f46f5bbf148",
+      "dimension": "spec sha in manifest matches current spec bytes",
+      "resolved": true,
+      "value": "e93dcb3cc83ff4d4a9a6daec4cd189bb36fa47325526139610afa82f84bb457e"
+    }
+  ],
+  "commit_allowed": true,
+  "dimensions_checked": 30
+}
