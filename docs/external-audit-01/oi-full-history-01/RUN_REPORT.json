@@ -1,0 +1,69 @@
+{
+  "checkpoint": "OI-FULL-HISTORY-FREEZE-01 + H6-HYPOTHESIS-SELECTION-AND-PREREG-ONLY + R2-SHADOW-CONTINUATION",
+  "run_date_utc": "2026-09-11",
+  "actor": "buffy-agent (Freebuff)",
+  "branch": "feat/ma-2-specialist-opportunity-swarm",
+  "commits": {
+    "OI_FREEZE_COMMIT": "256bd5ec6b82242c0b52e70a96dcd19edda61aa7",
+    "H6_PREREG_COMMIT": "e683e04e5df39d0f2f5feb6097664536b93cc636",
+    "VERIFICATION_COMMIT": "c6b25f4",
+    "two_stage_freeze": "P0-I honored: data-freeze authority (256bd5e) separated from H6 prereg (e683e04)"
+  },
+  "tracks": {
+    "A_full_ingestion": "PASS — 5,691/5,691 files (BTC 2201, ETH 1745, SOL 1745), checksums 100% PASS, 0 missing dates",
+    "B_schema_semantics": "PASS — OI_SCHEMA_SEMANTICS.md frozen (schema 2.0.1); provider string timestamps documented; unit governance unambiguous",
+    "C_field_whitelist": "PASS — H6_FEATURE_AUTHORITY_WHITELIST.json frozen pre-prereg; 4 ratio fields forbidden",
+    "D_normalization": "PASS — deterministic full-history normalization (1,611,648 rows); DEF-DATA-OI-002 exact-duplicate collapse",
+    "E_valid_day_ledger": "PASS — OI_DAY_VALIDITY_LEDGER.jsonl: 5,596 VALID / 95 invalid, all classified, none silently dropped",
+    "F_quality": "PASS_WITH_EXPLICIT_GAPS — 0 checksum failures, 0 schema drift, 0 invalid values; all common-window gaps isolated single days",
+    "G_common_window": "FROZEN — 2021-12-01T00:00:00Z → 2026-09-10T23:59:59Z; USE_COMMON_WINDOW=true; 1,732/1,745 days valid across all three symbols",
+    "H_price_authority": "PASS — committed frozen 1h klines (H1 dataset) cover the entire common window (last bucket 2026-09-10T00:00Z); no extension needed; temporary probe files excluded from authority",
+    "I_fingerprint": "PASS — OI_FULL_HISTORY_DATASET_SHA256=16779b7d…; cross-run A==B; synthetic mutation C!=A; real raw untouched",
+    "J_pit": "PASS — DECISION_ELIGIBILITY_AT_T strictly causal; FUTURE_SAME_DAY_GAP_MUTATION, PAST_GAP_BEFORE_T, future-mutation tests all pass",
+    "K_alpha_leakage": "PASS — ALPHA_LEAKAGE=0 (sweep of all new code/reports)",
+    "L_collision_review": "PASS — H6_FAILED_MEMORY_COLLISION_REVIEW.md (all 12 failed families analyzed; M-A trade flow DEFERRED with reasons)",
+    "M_mechanism_evidence": "PASS — CME (OFFICIAL_EXCHANGE_DOC) + Investopedia + MDPI peer-reviewed; no repository returns inspected",
+    "N_selection": "PASS — exactly one hypothesis: H6-OI-POSITION-STOCK-01",
+    "O_prereg": "FROZEN — H6_SPEC.json (sha f514fecf…) + H6_MANIFEST.json (sha 345334c3…); no commit self-reference (P0-J); immutability proven (git diff vs prereg commit EMPTY)",
+    "P_implementation_status": "SELECTION+PREREG ONLY — H6_EXECUTIONS=0, H6_BACKTESTS=0, PERFORMANCE_OBSERVED=false",
+    "Q_self_verification": "PASS — scripts/verify_h6_prereg.py: 57/57 checks (H6_SELF_VERIFICATION.json)",
+    "Q2_independent": "PENDING_EXTERNAL_VERIFIER — H6_EXTERNAL_VERIFIER_PACKAGE.{json,md} + PROMPT.md ready; no genuinely independent verifier available in this environment",
+    "R_shadow": "WAIT — runtime UTC 2026-09-11T17:56:25Z < earliest maturity 21:15Z; 11 captures, 0 mature, 0 resolved (mature-only rule)",
+    "S_confirmation": "UNTouched — CONF-EDGE-002-001 consumed=false executions=0 until 2026-09-22T00:00:00Z",
+    "T_tests": "PASS — OI freeze 28/28, data admission 22/22, FULL HERMETIC 1287 passed / 0 failed / 0 skipped"
+  },
+  "p0_corrections": {
+    "P0-A_builder_verifier": "H6_SELF_VERIFICATION ≠ H6_INDEPENDENT_VERIFICATION; external package prepared; status PENDING_INDEPENDENT_VERIFICATION",
+    "P0-B_causality": "ARCHIVE_DAY_VALIDITY ≠ DECISION_ELIGIBILITY_AT_T; causal helpers + adversarial tests implemented",
+    "P0-C_consistency": "H6_PREREG_CONSISTENCY_AUDIT: 30/30 dimensions resolved, UNRESOLVED_FIELDS=[]",
+    "P0-D_simplification": "expansion-only continuation, 1h horizon, no stop, no cooldown, robust median/MAD z",
+    "P0-E_cost": "BASE_TOTAL_ROUND_TRIP_COST_BPS=10 (single canonical TOTAL RT); sensitivities 0/10/20/40 diagnostic; gross mandatory",
+    "P0-F_funding": "EXCLUDED_WITH_LIMITATION + funding_materiality_gate_before_promotion=true (no authoritative ETH/SOL funding history)",
+    "P0-G_orthogonality": "MAX_ABS_DAILY_CORRELATION_TO_MOMENTUM_PROXY=0.50; H5_PNL_CORRELATION=NOT_EVALUABLE_FROM_PERSISTED_EVIDENCE",
+    "P0-H_eligibility": "CURRENT_HOUR_OI_COMPLETENESS=12 snapshots; rolling window 720h/min 336; NO_SIGNAL handling causal",
+    "P0-I_two_commits": "256bd5e (freeze) then e683e04 (prereg)",
+    "P0-J_no_self_reference": "H6_PREREG_COMMIT_RECORD.json post-commit; manifest carries no commit hash"
+  },
+  "invariants": {
+    "H6_SELECTED": true,
+    "H6_EXECUTIONS": 0,
+    "H6_BACKTESTS": 0,
+    "PERFORMANCE_OBSERVED": false,
+    "H5_RERUNS": 0,
+    "RISK_CHANGED": 0,
+    "PAPER_PROMOTIONS": 0,
+    "LIVE_TRADING_CALLS": 0,
+    "CREDENTIALS_USED": 0,
+    "FALSE_SUCCESS": 0,
+    "ALPHA_LEAKAGE": 0
+  },
+  "hash_guards": {
+    "OI_FULL_HISTORY_DATASET_SHA256": "16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99",
+    "H6_SPEC_SHA256": "f514fecf42b52d2e1c2946cac9dee94b2570d485cb236b9a6c663f46f5bbf148",
+    "H6_MANIFEST_SHA256": "345334c3107860a56fcbc8b2ec04a01e70b81b09ee551a54eeaf4a566b2cb29d",
+    "H5_RESULT_SHA256_unchanged": true,
+    "H5_SPEC_SHA256_unchanged": true,
+    "H5_MANIFEST_SHA256_unchanged": true
+  },
+  "status": "PENDING_INDEPENDENT_VERIFICATION"
+}
