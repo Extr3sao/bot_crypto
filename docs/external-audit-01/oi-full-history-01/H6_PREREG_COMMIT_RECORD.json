@@ -1,0 +1,20 @@
+{
+  "H6_PREREG_COMMIT": "e683e04e5df39d0f2f5feb6097664536b93cc636",
+  "artifact": "H6_PREREG_COMMIT_RECORD (P0-J post-commit evidence; does not change prereg semantics)",
+  "commit_timestamp": "2026-09-11T19:50:27+02:00",
+  "consistency_audit_sha256": "b0c4b80b3ffad88ef41645878aed91327a8002f3a06a3f92fbb6e325505c64ac",
+  "dataset_sha256": "16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99",
+  "generated_utc": "2026-09-11",
+  "git_tree_identity": "838836ae1fb87ab1fcee6e76dfa776974c63d910",
+  "immutability_proof": {
+    "git_diff_prereg_commit_manifest_empty": true,
+    "git_diff_prereg_commit_spec_empty": true
+  },
+  "manifest_blob_sha256": "345334c3107860a5adcc753f5b34976d2b4df9061de34a94507d2bd8f58752dc",
+  "oi_dataset_manifest_sha256": "2ba25a22dde9c166b6bf0915ee878552dc8f1293a36c8c8104c90860172e1df7",
+  "prereg_commit_short": "e683e04",
+  "selection_rationale_sha256": "0f5b91f247c1898de35fdad1ff6a4723bd1fc80cde1564124cf0f907739ffdef",
+  "spec_blob_sha256": "f514fecf42b52d2e1c2946cac9dee94b2570d485cb236b9a6c663f46f5bbf148",
+  "validity_ledger_evidence_sha256": "a7dea756852332c895359a04c6cb0fc185a57f11b780207e01c5d4c768c3282a",
+  "whitelist_sha256": "32f03cf9df6fa4549a1e8778dfdc54cd98816996c9c4ec0650213c0e677fefc5"
+}

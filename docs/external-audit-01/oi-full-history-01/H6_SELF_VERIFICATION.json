@@ -1,0 +1,300 @@
+{
+  "H6_INDEPENDENT_VERIFICATION": "PENDING_EXTERNAL_VERIFIER",
+  "H6_SELF_VERIFICATION": "PASS",
+  "artifact": "H6_SELF_VERIFICATION (Track Q) \u2014 builder self-verification, NOT independent certification",
+  "checks": [
+    {
+      "check": "artifact_exists:H6_SPEC.json",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "artifact_exists:H6_MANIFEST.json",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "artifact_exists:H6_PREREG_COMMIT_RECORD.json",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "artifact_exists:H6_FEATURE_AUTHORITY_WHITELIST.json",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "artifact_exists:H6_FAILED_MEMORY_COLLISION_REVIEW.md",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "artifact_exists:H6_MECHANISM_EVIDENCE.md",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "artifact_exists:H6_PREREG_CONSISTENCY_AUDIT.json",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "artifact_exists:OI_DAY_VALIDITY_LEDGER.jsonl",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "artifact_exists:OI_FULL_HISTORY_DATASET_MANIFEST.json",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "manifest.spec_sha256_matches_spec_bytes",
+      "detail": "f514fecf42b52d2e1c2946cac9dee94b2570d485cb236b9a6c663f46f5bbf148",
+      "ok": true
+    },
+    {
+      "check": "commit_record.spec_sha_matches",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "commit_record.manifest_sha_matches",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "commit_record.whitelist_sha_matches",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "commit_record.oi_dataset_manifest_sha_matches",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "commit_record.ledger_sha_matches",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "dataset_fingerprint_recomputed_matches_frozen",
+      "detail": "16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99",
+      "ok": true
+    },
+    {
+      "check": "manifest_dataset_sha_matches_frozen",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "git_diff_empty_since_prereg:spec",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "git_diff_empty_since_prereg:manifest",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "commit_record.tree_is_ancestor_identity",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "experiment_id_is_1",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "hypothesis_id_consistent",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "assets_consistent",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "window_consistent",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "decision_timeframe_1h",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "horizon_1h",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "entry_next_hour_open",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "exit_same_hour_close",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "stop_none",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "cooldown_none",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "expansion_only",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "robust_z_mad_definition",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "cost_single_canonical_10bps",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "funding_excluded_with_limitation",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "orthogonality_0p50_single",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "h5_comparator_honest",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "minimum_N_frozen",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "statistical_gates_frozen",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "robustness_gates_frozen",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "causal_eligibility_frozen",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "twelve_snapshot_rule_in_spec",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "future_gap_invariant_in_spec",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "whitelist_contains_oi_fields",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "whitelist_excludes_ratio_fields",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "spec_forbidden_matches_whitelist",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "consistency_audit_pass",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "no_execution_counters",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "no_performance_fields_in_spec",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "status_at_prereg",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "no_sweep_language",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "collision_review_pass",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "mechanism_evidence_tiers",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "h5_result_unchanged",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "h5_manifest_unchanged",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "price_authority_covers_window:BTCUSDT",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "price_authority_covers_window:ETHUSDT",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "price_authority_covers_window:SOLUSDT",
+      "detail": "",
+      "ok": true
+    }
+  ],
+  "checks_failed": 0,
+  "checks_total": 57,
+  "dataset_sha256": "16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99",
+  "generated_utc": "2026-09-11",
+  "ledger_sha256": "a7dea756852332c895359a04c6cb0fc185a57f11b780207e01c5d4c768c3282a",
+  "manifest_sha256": "345334c3107860a5adcc753f5b34976d2b4df9061de34a94507d2bd8f58752dc",
+  "prereg_commit": "e683e04e5df39d0f2f5feb6097664536b93cc636",
+  "spec_sha256": "f514fecf42b52d2e1c2946cac9dee94b2570d485cb236b9a6c663f46f5bbf148"
+}

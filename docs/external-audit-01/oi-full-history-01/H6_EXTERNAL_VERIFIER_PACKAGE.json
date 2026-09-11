@@ -1,0 +1,72 @@
+{
+  "artifact": "H6_EXTERNAL_VERIFIER_PACKAGE (Track Q2) — self-contained inputs for a genuinely independent verifier",
+  "generated_utc": "2026-09-11",
+  "builder_agent": "buffy-agent (Freebuff) — MUST NOT be the verifier",
+  "H6_PREREG_COMMIT": "e683e04e5df39d0f2f5feb6097664536b93cc636",
+  "OI_FREEZE_COMMIT": "256bd5ec6b82242c0b52e70a96dcd19edda61aa7",
+  "repository_state_note": "verify against commit e683e04 (or a descendant whose git diff vs e683e04 is EMPTY for every prereg artifact listed below)",
+  "artifacts": {
+    "H6_SPEC.json": {"path": "docs/external-audit-01/oi-full-history-01/H6_SPEC.json", "sha256": "f514fecf42b52d2e1c2946cac9dee94b2570d485cb236b9a6c663f46f5bbf148"},
+    "H6_MANIFEST.json": {"path": "docs/external-audit-01/oi-full-history-01/H6_MANIFEST.json", "sha256": "345334c3107860a56fcbc8b2ec04a01e70b81b09ee551a54eeaf4a566b2cb29d"},
+    "H6_SELECTION_RATIONALE.md": {"path": "docs/external-audit-01/oi-full-history-01/H6_SELECTION_RATIONALE.md", "sha256_at_prereg": "recompute with git show e683e04:<path> | sha256sum"},
+    "H6_FEATURE_AUTHORITY_WHITELIST.json": {"path": "docs/external-audit-01/oi-full-history-01/H6_FEATURE_AUTHORITY_WHITELIST.json", "sha256": "32f03cf9df6fa4549a1e8778dfdc54cd98816996c9c4ec0650213c0e677fefc5"},
+    "H6_PREREG_COMMIT_RECORD.json": {"path": "docs/external-audit-01/oi-full-history-01/H6_PREREG_COMMIT_RECORD.json", "role": "post-commit evidence; carries commit identity; NOT part of prereg semantics"},
+    "OI_FULL_HISTORY_DATASET_MANIFEST.json": {"path": "data/processed/oi_full_history/OI_FULL_HISTORY_DATASET_MANIFEST.json", "committed_copy": "docs/external-audit-01/oi-full-history-01/OI_FULL_HISTORY_DATASET_MANIFEST.json"},
+    "OI_DAY_VALIDITY_LEDGER.jsonl": {"path": "data/processed/oi_full_history/OI_DAY_VALIDITY_LEDGER.jsonl", "committed_evidence_copy": "docs/external-audit-01/oi-full-history-01/OI_DAY_VALIDITY_LEDGER.evidence.jsonl"}
+  },
+  "expected_invariants": {
+    "OI_FULL_HISTORY_DATASET_SHA256": "16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99",
+    "H5_RESULT_SHA256": "2427310dbed8445b1e39b1feaba7a8289918ab79a258f66b065da7cf2b7fe60f",
+    "H5_MANIFEST_SHA256": "29ececb759aff059282a0324b3b94b4bcd13b35b51060c6c742f2eaa48db0a86",
+    "H5_SPEC_SHA256": "c743fba4a2a589dc1c3a15c7cd48b1b6ddf80255b8a157ea4f7ef19cc2f81023",
+    "canonical_semantics": {
+      "experiment_id": 1,
+      "hypothesis_id": "H6-OI-POSITION-STOCK-01",
+      "mechanism": "OI_CONFIRMED_CONTINUATION (expansion-only; contraction => NO_TRADE)",
+      "assets": ["BTCUSDT", "ETHUSDT", "SOLUSDT"],
+      "window": ["2021-12-01T00:00:00Z", "2026-09-10T23:59:59Z"],
+      "decision_timeframe": "1h",
+      "entry": "NEXT_HOUR_OPEN",
+      "exit": "NEXT_HOUR_CLOSE",
+      "stop": "NONE",
+      "cooldown": "NONE",
+      "BASE_TOTAL_ROUND_TRIP_COST_BPS": 10,
+      "COST_SENSITIVITY_BPS": [0, 10, 20, 40],
+      "FUNDING_DISCOVERY_ACCOUNTING": "EXCLUDED_WITH_LIMITATION",
+      "MAX_ABS_DAILY_CORRELATION_TO_MOMENTUM_PROXY": 0.50,
+      "z_definition": "median / 1.4826*MAD over trailing 720 completed hourly OI changes, min 336 observations, MAD==0 => NO_SIGNAL",
+      "threshold": "z_oi >= +1.0",
+      "minimum_N": {"per_asset": 30, "pooled": 100},
+      "H6_EXECUTIONS": 0,
+      "H6_BACKTESTS": 0,
+      "PERFORMANCE_OBSERVED": false
+    }
+  },
+  "test_commands": [
+    "PYTHONPATH=src .venv/Scripts/python.exe -m pytest tests/unit/research/test_oi_full_history.py -q  # expect 28 passed",
+    "PYTHONPATH=src .venv/Scripts/python.exe -m pytest tests/unit/research/test_data_admission.py -q  # expect 22 passed",
+    "PYTHONPATH=src .venv/Scripts/python.exe scripts/verify_h6_prereg.py  # expect H6_SELF_VERIFICATION=PASS (builder's own verifier)",
+    "env -u EXCHANGE_ID -u EXCHANGE_SANDBOX -u EXCHANGE_API_KEY -u EXCHANGE_SECRET -u BINANCE_API_KEY -u BINANCE_SECRET PYTHONPATH=src .venv/Scripts/python.exe -m pytest tests -q  # full hermetic, expect FAILED=0"
+  ],
+  "forbidden_outcomes": [
+    "verifier mutates any prereg artifact",
+    "verifier executes an economic H6 backtest",
+    "verifier accepts PERFORMANCE_OBSERVED=true or H6_EXECUTIONS>0",
+    "verifier recomputes the dataset fingerprint and obtains a value different from OI_FULL_HISTORY_DATASET_SHA256 without concluding FAIL",
+    "verifier claims H6_INDEPENDENT_VERIFICATION=PASS while any check fails"
+  ],
+  "required_verdict_schema": {
+    "VERIFIER_ID": "string",
+    "VERIFIER_CONTEXT": "string (agent/model/session identity, must differ from builder)",
+    "PREREG_COMMIT": "string",
+    "SPEC_SHA256": "string",
+    "MANIFEST_SHA256": "string",
+    "DATASET_SHA256": "string",
+    "TEST_RESULTS": "object",
+    "PIT_RESULT": "PASS | FAIL",
+    "NO_PERFORMANCE_OBSERVED": true,
+    "DRIFT_RESULT": "NO_DRIFT | DRIFT_FOUND",
+    "FINAL_VERDICT": "PASS | FAIL | BLOCKED_INSUFFICIENT_EVIDENCE"
+  },
+  "note": "Only FINAL_VERDICT=PASS allows H6_INDEPENDENT_VERIFICATION=PASS. Until then the checkpoint status is PENDING_INDEPENDENT_VERIFICATION (correct governance, not a failure)."
+}
