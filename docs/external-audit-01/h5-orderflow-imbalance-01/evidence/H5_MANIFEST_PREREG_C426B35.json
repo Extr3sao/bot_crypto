@@ -1,0 +1,36 @@
+{
+  "checkpoint": "H3-GOVERNANCE-RECONCILIATION-AND-H5-SELECTION-01",
+  "manifest_version": "1.0.0-frozen",
+  "created_utc": "2026-09-10",
+  "strategy_id": "H5-ORDERFLOW-IMBALANCE-CONTINUATION-01",
+  "spec_path": "docs/external-audit-01/h5-orderflow-imbalance-01/H5_SPEC.json",
+  "selection_record_path": "docs/external-audit-01/h5-orderflow-imbalance-01/H5_SELECTION_RATIONALE.md",
+  "prereg": {
+    "rule": "H5 execution commit MUST be strictly later than the commit containing this manifest; spec sha256 must be verified unchanged before execution",
+    "prereg_commit": "PENDING_COMMIT_NOW",
+    "spec_sha256": "TO_FILL_AT_COMMIT_TIME (recorded in final report)",
+    "manifest_sha256": "TO_FILL_AT_COMMIT_TIME (committed blob hash)",
+    "dataset_declaration_sha256": "EMBEDDED (spec.data: committed frozen 12-field klines, frozen window, fingerprint_rule)",
+    "cost_model_sha256": "EMBEDDED (spec.cost_model: single leg, 10 bps RT, absolute semantics)",
+    "protocol_sha256": "EMBEDDED (spec.execution_protocol: ResearchExecutionLedger-gated exactly-once)"
+  },
+  "state_at_prereg": {
+    "h5_executions": 0,
+    "h5_backtests_run": 0,
+    "performance_observed": false,
+    "h3_final_status": "FAILED_RESEARCH (DISCOVERY_FAIL preserved; no rerun; DEF-H3-EXEC-001 reconciled: 1 experiment / 2 attempts / 1 completed / 1 failed; CERTIFY_EXACTLY_ONCE_H3=true)",
+    "h3_neutrality": "FAILED (DEF-H3-NEUTRALITY-001; H3 not to be described as beta-neutral)",
+    "research_execution_ledger": "OPERATIONAL (src/trading_bot/research/execution_ledger.py; 7 adversarial tests passing; STARTED-before-evaluation enforced)",
+    "r2_campaign": "ACTIVE (POC-02-R2-direction-arbitration-01; unchanged; DIAGNOSTIC/DEGRADED/NON-CERTIFYING)",
+    "shadow": { "captures": 11, "mature": 0, "resolved": 0, "pending": 11, "earliest_maturity_utc": "2026-09-11T21:15Z", "policy_conclusion": "INSUFFICIENT_SAMPLE" },
+    "confirmation": { "id": "CONF-EDGE-002-001", "consumed": false, "executions": 0, "closes_utc": "2026-09-22T00:00Z" },
+    "failed_memory_count": 11,
+    "risk_changed": 0,
+    "live_calls": 0
+  },
+  "next_checkpoint_contract": {
+    "verify_prereg_ordering": "H5 execution commit strictly after this prereg commit; spec sha256 unchanged; no parameter drift",
+    "execution_flow": "ledger.acquire -> ledger.start_attempt (durable) -> sync/PIT checks -> economic evaluation -> H5_EXECUTION_MARKER.json -> H5_RESULT.json -> ledger.finish_completed",
+    "forbidden_before_execution": ["parameter sweep", "threshold tuning", "window change", "performance peeking", "executing H2/H4 or any other hypothesis"]
+  }
+}

@@ -1435,3 +1435,33 @@ POC-02-R2-direction-arbitration-01 preregistered (POC02_R2_MANIFEST.md) and
 launched with 8/8 gates. DEF-STRAT-RUNTIME-001 registered (canonical strategy
 experts bypassed by POC02 runtime composition; not auto-activated).
 Full text: docs/external-audit-01/FINAL_REPORT_MA_DIRECTION_ARBITRATION.md (§ADR).
+
+## ADR-0033 — H5 terminal failure, prereg-restore authority, information-set exhausted (H5-RESULT-INTEGRITY-RECONCILIATION-02) — 2026-09-11
+
+- **Estado**: Decidido.
+- **Contexto**: H5 (order-flow imbalance continuation) closed DISCOVERY_FAIL with a
+  post-execution mutation of the prereg manifest (DEF-H5-GOV-001), an unresolved
+  self-fingerprint question (DEF-H5-GOV-002), and an invalid orthogonality metric
+  (DEF-H5-ORTHO-001, r=61.9). A prior restoration attempt was BLOCKED on git access.
+- **Decision**:
+  1. The committed git blob at `c426b35` (blob `a1eee0d2`, sha256 `29ececb7…`) is the
+     sole restoration authority for prereg artifacts; embedded self-fingerprints are
+     secondary confirmation only. H5_MANIFEST.json restored byte-identical; contaminated
+     and intermediate states preserved under `evidence/`.
+  2. Durable ledger rows win over summary artifacts; ledger rows are never rewritten —
+     recovery links are governance-established in `H5_EXECUTION_RECORD.json`.
+  3. Corrected H5 orthogonality = 0.6070166220125719 (= 61.9157 / 102 common days;
+     the buggy code computed n·r). H5 stays DISCOVERY_FAIL; H5_ORTHOGONALITY reconciled
+     without rerun.
+  4. **CURRENT_INFORMATION_SET = EXHAUSTED_FOR_NOW**: no H6 based on another OHLCV
+     transformation; no parameter search over H5. Next alpha work only via the selected
+     new data families in `docs/external-audit-01/h5-orderflow-imbalance-01/ALPHA_DATA_EXPANSION_PLAN.md`
+     (adopt: open interest via data.binance.vision; experiment: funding deep history),
+     each requiring full preregistration and source validation first. R2 campaign,
+     shadow (11 captures) and CONF-EDGE-002-001 unchanged; no live trading.
+- **Consecuencias**: same-data strategy proliferation is blocked until new information
+  families land; failed-memory register grows to 12 entries; all restoration/forensics
+  evidence preserved for audit.
+- **Evidence**: docs/external-audit-01/h5-orderflow-imbalance-01/{H5_PREREG_RESTORATION_REPORT.json,
+  H5_EXECUTION_RECORD.json, H5_ORTHOGONALITY_RECONCILIATION.md, FAILED_RESEARCH_MEMORY.md #12,
+  FINAL_REPORT_H5_RESULT_INTEGRITY_RECONCILIATION_02.md}.

@@ -1,0 +1,36 @@
+{
+  "checkpoint": "ALPHA-DATA-ADMISSION-01",
+  "conclusion": "PASS",
+  "cross_run_full_sample_evidence": {
+    "all_families_identical": true,
+    "method": "full-sample re-ingestion: staged rerun (OI family + trade_flow per symbol) compared against pre-rerun manifest snapshot (evidence/run_A/)",
+    "open_interest": {
+      "files_compared": 21,
+      "identical": true
+    },
+    "trade_flow": {
+      "files_compared": 21,
+      "identical": true
+    }
+  },
+  "dataset": "open_interest sample BTCUSDT 2026-09-01..07 (21 files incl. ETH/SOL window; this proof uses BTCUSDT subset of 7 files)",
+  "determinism_A_equals_B": true,
+  "normalizer_version": "1.0.0",
+  "order_independence_D_equals_A": true,
+  "perturbation": {
+    "field": "open_interest_contracts",
+    "method": "dataclasses.replace (records are frozen dataclasses; original list untouched)",
+    "original_value": 112667.209,
+    "perturbed_value": 112668.209,
+    "real_raw_files_modified": false,
+    "record_index": 1008
+  },
+  "records_in_proof": 2016,
+  "run_A_fingerprint": "b649ee8723898fe2b65b4bba0a71399b236a8ba372354995c8050e821a000049",
+  "run_B_fingerprint": "b649ee8723898fe2b65b4bba0a71399b236a8ba372354995c8050e821a000049",
+  "run_C_fingerprint": "b6ebbd82757936d8e7731c306707fa8cea744a26c8e4ccd5c86cbd0f564ef450",
+  "run_D_fingerprint_order_reversed": "b649ee8723898fe2b65b4bba0a71399b236a8ba372354995c8050e821a000049",
+  "schema_version": "1.0.0",
+  "sensitivity_C_differs_from_A": true,
+  "track": "H"
+}

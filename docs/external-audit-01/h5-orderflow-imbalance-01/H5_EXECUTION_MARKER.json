@@ -1,0 +1,9 @@
+{
+  "attempt_id": "H5-ORDERFLOW-IMBALANCE-CONTINUATION-01#a2",
+  "completed_at": "2026-09-10T22:57:30.915245+00:00",
+  "experiment_id": "H5-ORDERFLOW-IMBALANCE-CONTINUATION-01",
+  "marker_version": "1.0.0",
+  "result_class": "DISCOVERY_FAIL",
+  "started_at": "",
+  "total_trades": 107
+}

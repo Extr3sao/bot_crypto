@@ -1,0 +1,44 @@
+{
+  "checkpoint": "ALPHA-DATA-ADMISSION-01",
+  "defect": "DEF-DATA-OI-001",
+  "classification": "SEMANTIC_DATA_CONTRACT_DEFECT",
+  "PREVIOUS_DECLARATION": "15m",
+  "CORRECT_DECLARATION": "5m",
+  "FIXED": true,
+  "ground_truth_evidence": {
+    "method": "direct measurement of raw provider files: data/raw/binance_um/metrics/{BTCUSDT,ETHUSDT,SOLUSDT}/*-metrics-2026-09-01..07 (full-file timestamp scan, not head-row sampling)",
+    "source_files_measured": 21,
+    "rows_per_complete_utc_day": 288,
+    "unique_timestamps_per_file": 288,
+    "observed_timestamp_delta_seconds": 300,
+    "timestamp_deltas_uniform": true,
+    "rows_per_hour": 12,
+    "interpretation": "12 records/hour = one record every 5 minutes = native 5m cadence",
+    "provider_row_order": "NOT guaranteed sorted in raw files (observed order e.g. 00:00 -> 00:15 -> 00:25 -> 00:30 ...); the SET of timestamps is a perfect 5m UTC grid; normalized output is deterministically sorted",
+    "measurement_note": "An earlier head-rows probe (first rows 00:00 -> 00:15) was misleading; the authoritative evidence is the full-file delta histogram over all 21 sample files."
+  },
+  "corrected_contract": {
+    "OPEN_INTEREST_NATIVE_PERIOD": "5m",
+    "EXPECTED_INTERVAL_SECONDS": 300,
+    "EXPECTED_ROWS_COMPLETE_UTC_DAY": 288
+  },
+  "code_locations_corrected": [
+    "src/trading_bot/research/data_contracts.py (OPEN_INTEREST_NATIVE_PERIOD / OPEN_INTEREST_EXPECTED_INTERVAL_SECONDS / OPEN_INTEREST_EXPECTED_ROWS_PER_DAY / schema version bump for OI semantics)",
+    "src/trading_bot/research/source_readers.py (expected metrics rows per day 288, expected interval 300s, strict per-file row-count check)",
+    "src/trading_bot/research/data_quality.py (5m-grid missing-interval detection for OI)",
+    "tests/unit/research/test_data_admission.py (contract constants, 5m grid gap test, provider row-order guarantee test)"
+  ],
+  "post_fix_verification": {
+    "data_admission_tests": "22 passed / 0 failed",
+    "source_files": 21,
+    "normalized_open_interest_rows": 6048,
+    "rows_per_day_per_file": 288,
+    "duplicate_timestamps_per_symbol_day": 0,
+    "missing_expected_intervals": 0,
+    "timestamps_monotonic_after_canonical_sort": true,
+    "quality_errors": 0,
+    "pit_invariant": "data_time <= decision cutoff enforced by quality engine; no future interpolation, no forward-fill from future observations"
+  },
+  "scope_discipline": "Only Data-Admission OI metrics cadence references were corrected. 15m references belonging to strategy/timeframe semantics elsewhere in the repository were NOT modified.",
+  "authority": "Official Binance USD-M metrics archive files measured directly (data.binance.vision); no third-party source consulted."
+}

@@ -1,0 +1,61 @@
+{
+  "_evidence_note": "Preserved contaminated on-disk state before restoration of H5_MANIFEST.json to its frozen prereg blob.",
+  "_preserved_from": "docs/external-audit-01/h5-orderflow-imbalance-01/H5_MANIFEST.json",
+  "_preservation_reason": "Track A / P0 finding: manifest contained post-execution state and violated prereg-artifact immutability.",
+  "contaminated_blob": {
+    "checkpoint": "H3-GOVERNANCE-RECONCILIATION-AND-H5-SELECTION-01",
+    "manifest_version": "1.0.0-frozen",
+    "created_utc": "2026-09-10",
+    "strategy_id": "H5-ORDERFLOW-IMBALANCE-CONTINUATION-01",
+    "spec_path": "docs/external-audit-01/h5-orderflow-imbalance-01/H5_SPEC.json",
+    "selection_record_path": "docs/external-audit-01/h5-orderflow-imbalance-01/H5_SELECTION_RATIONALE.md",
+    "prereg": {
+      "rule": "H5 execution commit MUST be strictly later than the commit containing this manifest; spec sha256 must be verified unchanged before execution",
+      "prereg_commit": "c426b35",
+      "spec_sha256": "c743fba4a2a589dc1c3a15c7cd48b1b6ddf80255b8a157ea4f7ef19cc2f81023 (VERIFIED unchanged from commit c426b35)",
+      "manifest_sha256": "29ececb759aff059282a0324b3b94b4bcd13b35b51060c6c742f2eaa48db0a86",
+      "dataset_declaration_sha256": "EMBEDDED (spec.data: committed frozen 12-field klines, frozen window, fingerprint_rule)",
+      "cost_model_sha256": "EMBEDDED (spec.cost_model: single leg, 10 bps RT, absolute semantics)",
+      "protocol_sha256": "EMBEDDED (spec.execution_protocol: ResearchExecutionLedger-gated exactly-once)",
+      "prereg_verified_utc": "2026-09-11T...",
+      "prereg_verified_by": "buffy-agent independent verification",
+      "prereg_verification_status": "PASS - spec unchanged, SHA256 matches"
+    },
+    "state_at_prereg": {
+      "_note": "Snapshot at preregistration time (c426b35); execution state below",
+      "h5_executions": 0,
+      "h5_backtests_run": 0,
+      "performance_observed": false,
+      "_h5_execution_completed": true,
+      "_h5_result": "DISCOVERY_FAIL",
+      "_h5_result_utc": "2026-09-10T22:57:30Z",
+      "_h5_completed_executions": 1,
+      "_h5_failed_attempts": 1,
+      "_h5_attempt_recovery_note": "A1 failed due to runner bug (simulate_proxy unpacking). A2 started fresh (identity not consumed by FAILED attempt). recovery_of_attempt_id not set in A2 ledger row — acceptable since A1 FAILED did not consume experiment identity. Parameters identical: spec_sha256, dataset_sha256, protocol_sha256, prereg_commit all match.",
+      "_h5_total_trades": 107,
+      "_h5_net_expectancy_R": 0.2351,
+      "_h5_PF_net": 1.3500,
+      "_h5_SHARPE": 0.0894,
+      "_h5_P_Sharpe_gt_0": 0.8285,
+      "_h5_permutation_p": 0.1838,
+      "_h5_halves": [1, -1],
+      "_h5_thirds": [1, 1, -1],
+      "_h5_walk_forward_last_third": -0.0858,
+      "_h5_cost_drag_R": 0.0962,
+      "h3_final_status": "FAILED_RESEARCH (DISCOVERY_FAIL preserved; no rerun; DEF-H3-EXEC-001 reconciled: 1 experiment / 2 attempts / 1 completed / 1 failed; CERTIFY_EXACTLY_ONCE_H3=false — corrected semantics: EVALUATION_ATTEMPTS=2)",
+      "h3_neutrality": "FAILED (DEF-H3-NEUTRALITY-001; H3 not to be described as beta-neutral)",
+      "research_execution_ledger": "OPERATIONAL (src/trading_bot/research/execution_ledger.py; 7 adversarial tests passing; STARTED-before-evaluation enforced)",
+      "r2_campaign": "ACTIVE (POC-02-R2-direction-arbitration-01; unchanged; DIAGNOSTIC/DEGRADED/NON-CERTIFYING)",
+      "shadow": { "captures": 11, "mature": 0, "resolved": 0, "pending": 11, "earliest_maturity_utc": "2026-09-11T21:15Z", "policy_conclusion": "INSUFFICIENT_SAMPLE" },
+      "confirmation": { "id": "CONF-EDGE-002-001", "consumed": false, "executions": 0, "closes_utc": "2026-09-22T00:00Z" },
+      "failed_memory_count": 11,
+      "risk_changed": 0,
+      "live_calls": 0
+    },
+    "next_checkpoint_contract": {
+      "verify_prereg_ordering": "H5 execution commit strictly after this prereg commit; spec sha256 unchanged; no parameter drift",
+      "execution_flow": "ledger.acquire -> ledger.start_attempt (durable) -> sync/PIT checks -> economic evaluation -> H5_EXECUTION_MARKER.json -> H5_RESULT.json -> ledger.finish_completed",
+      "forbidden_before_execution": ["parameter sweep", "threshold tuning", "window change", "performance peeking", "executing H2/H4 or any other hypothesis"]
+    }
+  }
+}

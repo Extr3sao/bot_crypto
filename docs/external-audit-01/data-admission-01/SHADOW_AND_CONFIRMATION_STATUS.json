@@ -1,0 +1,28 @@
+{
+  "checkpoint": "ALPHA-DATA-ADMISSION-01",
+  "recorded_at_utc": "2026-09-11T14:04:30Z (initial) / finalized with checkpoint",
+  "track_l_shadow": {
+    "captures_total": 11,
+    "captures_file": "reports/poc02-r2-direction-arbitration-01/shadow/shadow_captures.jsonl",
+    "maturity_model": "maturity_time is derived from capture decision_time + horizon (not stored per row); authoritative earliest maturity 2026-09-11T21:15Z per prior checkpoint record",
+    "current_utc_at_check": "2026-09-11T14:04:30Z",
+    "SHADOW_MATURE": 0,
+    "SHADOW_RESOLVED": 0,
+    "action_taken": "NONE — current UTC precedes earliest maturity; mature-only rule forbids early resolution",
+    "risk_modified": false,
+    "policy": "resolve only when maturity_time <= current UTC using immutable PIT rules; until sufficient N: SHADOW_POLICY_CONCLUSION=INSUFFICIENT_SAMPLE"
+  },
+  "track_m_confirmation": {
+    "confirmation_id": "CONF-EDGE-002-001",
+    "consumed": false,
+    "executions": 0,
+    "closes_utc": "2026-09-22T00:00Z",
+    "action_taken": "NONE — lock untouched; no early performance inspection",
+    "evidence": "consumed=false/executions=0 verified in reports/poc02-paper-clean-01/observation/DAILY_OBSERVATION_2026-09-09.json, R2_LAUNCH_RECORD.json, and frozen prereg manifests (H3/H5)"
+  },
+  "integrity": {
+    "RISK_CHANGED": 0,
+    "PAPER_PROMOTIONS": 0,
+    "LIVE_TRADING_CALLS": 0
+  }
+}

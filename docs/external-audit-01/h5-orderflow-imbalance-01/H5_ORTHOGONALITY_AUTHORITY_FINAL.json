@@ -1,0 +1,42 @@
+{
+  "checkpoint": "ALPHA-DATA-ADMISSION-01 / H5-GOVERNANCE-FINAL-CLOSURE",
+  "generated_utc": "2026-09-11T12:20:00Z",
+  "EXECUTED_CODE_AUTHORITY": "COMPLETE",
+  "recovery_method": "compiled execution artifact (CPython 3.11 pyc, timestamp-validated bytecode cache)",
+  "evidence_chain": [
+    "scripts/__pycache__/h5_run_exactly_once.cpython-311.pyc (preserved as evidence/H5_EXECUTED_RUNNER_PYC.pyc, sha256 28adcf70059df3cfbbbd9f93bd9fe336cab8972611cb6ebfe737bf35385ef3f8)",
+    "pyc compiled at 2026-09-10T22:56:52.671769Z (filesystem mtime, UTC)",
+    "pyc header embeds source identity: source_mtime=2026-09-10T22:56:17Z, source_size=22801 bytes",
+    "executed attempts: a1 started 22:57:03Z, a2 completed 22:57:30Z (durable ledger)",
+    "current source file: mtime 2026-09-10T22:58:09Z, size 22480 bytes -> edited 39 seconds AFTER completion and does NOT match the compiled identity",
+    "bytecode of compute_orthogonality_diagnostics (executed): NO np.corrcoef; uses numpy mean/sum/std with variables cov, sx, sy, corr -> hand-rolled covariance-division form",
+    "current source claims np.corrcoef (proper Pearson) -> current source is NOT the executed code for this function"
+  ],
+  "executed_formula": {
+    "form": "corr = np.sum((xs - mx) * (ys - my)) / (np.std(xs) * np.std(ys))",
+    "identity": "n * Pearson_r (covariance accumulated as raw SUM, divided by product of population stds)",
+    "proof": "evidence/PEARSON_VERIFIER_SELFTEST.json (buggy_formula_is_n_times_pearson=true) + evidence/EXECUTED_ORTHOGONALITY_DISASSEMBLY.txt (bytecode)",
+    "formula_identity_status": "PROVEN_BYTECODE_LEVEL"
+  },
+  "input_arrays": {
+    "status": "NOT_PERSISTED",
+    "detail": "per-day H5 and ROC(24) proxy daily PnL arrays for the 102 common days were never persisted; the correction is an exact algebraic inversion of the published statistic, not a recomputation from raw arrays"
+  },
+  "B2_conditional_derivation": {
+    "DERIVED_CONDITIONAL_PEARSON": 0.6070166220125719,
+    "computation": "61.91569544528234 / 102",
+    "label": "NOT_INDEPENDENT_RECOMPUTATION",
+    "authority_upgrade_vs_prior_checkpoint": "prior: valid only IF formula proven -> NOW: formula identity PROVEN at bytecode level against the hash-anchored executed artifact; input arrays remain non-persisted, so the value stays a derived (not recomputed) statistic",
+    "usable_as_primary_experiment_evidence": false,
+    "usable_as_forensic_reconciliation_evidence": true
+  },
+  "invariants": {
+    "H5_RESULT_json_unchanged": true,
+    "H5_RESULT_sha256": "2427310dbed8445b1e39b1feaba7a8289918ab79a258f66b065da7cf2b7fe60f",
+    "H5_PREREG_manifest_unchanged": true,
+    "H5_PREREG_sha256": "29ececb759aff059282a0324b3b94b4bcd13b35b51060c6c742f2eaa48db0a86",
+    "H5_RERUNS": 0
+  },
+  "H5_RESULT": "DISCOVERY_FAIL",
+  "promotion_effect": "NONE"
+}

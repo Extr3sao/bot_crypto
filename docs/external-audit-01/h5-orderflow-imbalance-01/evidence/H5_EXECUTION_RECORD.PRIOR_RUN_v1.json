@@ -1,0 +1,40 @@
+{
+  "_provenance": "Extracted from contaminated H5_MANIFEST.json state_at_prereg/execution_record area and moved to a dedicated execution artifact. Prereg manifest restored separately.",
+  "_note": "Attempt state remains authoritative in ResearchExecutionLedger; this file is a persisted summary artifact only.",
+  "experiment_id": "H5-ORDERFLOW-IMBALANCE-CONTINUATION-01",
+  "prereg_commit": "c426b35",
+  "spec_sha256": "c743fba4a2a589dc1c3a15c7cd48b1b6ddf80255b8a157ea4f7ef19cc2f81023",
+  "dataset_sha256": "3cb2d6ec1298533d53da50f2b9cc2ec2ff770733d89c2a1aceed758b705ec0ad",
+  "protocol_sha256": "4f63a6b11c7ddf31f3323c6e60e103e20cb04cf7f184a99d5b2b9349522ffa3d",
+  "economic_parameters_unchanged_from_prereg": true,
+  "final_completed_attempt_id": "H5-ORDERFLOW-IMBALANCE-CONTINUATION-01/a2",
+  "execution_lock_interval_ms": 15,
+  "attempts": [
+    {
+      "attempt_id": "H5-ORDERFLOW-IMBALANCE-CONTINUATION-01/a1",
+      "status": "FAILED",
+      "result_class": null,
+      "started_at": "2026-09-10T22:55:57.528925+00:00",
+      "completed_at": "2026-09-10T22:55:57.547580+00:00",
+      "failure_reason": "economic evaluation failed: ' trades, '",
+      "recovered_by_attempt_id": "H5-ORDERFLOW-IMBALANCE-CONTINUATION-01/a2",
+      "identity_consumed": false
+    },
+    {
+      "attempt_id": "H5-ORDERFLOW-IMBALANCE-CONTINUATION-01/a2",
+      "status": "COMPLETED",
+      "result_class": "DISCOVERY_FAIL",
+      "started_at": "2026-09-10T22:57:28.277869+00:00",
+      "completed_at": "2026-09-10T22:57:42.608115+00:00",
+      "failure_reason": null,
+      "recovery_of_attempt_id": "H5-ORDERFLOW-IMBALANCE-CONTINUATION-01/a1",
+      "identity_consumed": true
+    }
+  ],
+  "counts": {
+    "economic_experiment_ids": 1,
+    "execution_attempts": 2,
+    "failed_attempts": 1,
+    "completed_attempts": 1
+  }
+}

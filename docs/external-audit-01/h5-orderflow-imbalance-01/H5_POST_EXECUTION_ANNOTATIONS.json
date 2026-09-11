@@ -1,0 +1,44 @@
+{
+  "_provenance": "Rebuilt during H5-RESULT-INTEGRITY-RECONCILIATION-02 from the preserved contaminated manifest (H5_MANIFEST_POST_EXECUTION_CONTAMINATED.json) and the durable ResearchExecutionLedger. Post-execution state must never be written back into the prereg H5_MANIFEST.json (restored byte-identical to commit c426b35). Prior run v1 preserved at evidence/H5_POST_EXECUTION_ANNOTATIONS.PRIOR_RUN_v1.json.",
+  "generated_utc": "2026-09-11T11:38:05Z",
+  "generated_by": "buffy-agent (Freebuff)",
+  "experiment_ids": ["H5-ORDERFLOW-IMBALANCE-CONTINUATION-01"],
+  "execution_attempts": 2,
+  "failed_attempts": 1,
+  "completed_attempts": 1,
+  "completed_attempt_id": "H5-ORDERFLOW-IMBALANCE-CONTINUATION-01#a2",
+  "result_class": "DISCOVERY_FAIL",
+  "result_sha256": "2427310dbed8445b1e39b1feaba7a8289918ab79a258f66b065da7cf2b7fe60f",
+  "prereg_commit": "c426b35",
+  "spec_sha256": "c743fba4a2a589dc1c3a15c7cd48b1b6ddf80255b8a157ea4f7ef19cc2f81023",
+  "dataset_sha256": "3cb2d6ec1298533d53da50f2b9cc2ec2ff770733d89c2a1aceed758b705ec0ad",
+  "protocol_sha256": "8452c0cfd6f6b71feca6736e66158f9e7105e7924fc2deba6879c7d0716b8e92",
+  "prereg_verification": {
+    "h5_prereg_verified": true,
+    "h5_prereg_verifier": "buffy-agent (re-verified 2026-09-11: working-tree H5_SPEC.json sha256 equals the spec hash recorded at prereg)",
+    "h5_prereg_drift_detected": false
+  },
+  "implementation_verification": {
+    "h5_implementation_verified": true,
+    "h5_implementation_verification_status": "PASS",
+    "detail_artifact": "H5_IMPLEMENTATION_POST_EXECUTION_STATUS.json"
+  },
+  "data_schema_authority": "PASS",
+  "data_contract_path": "docs/external-audit-01/source_registry.json",
+  "recovery_notes": "a1 FAILED during economic evaluation (too many values to unpack (expected 2)) without consuming the experiment identity; a2 started fresh on the same identity and COMPLETED. Economic parameters unchanged from the frozen spec. Recovery links reconciled in H5_EXECUTION_RECORD.json.",
+  "exactly_once_semantics": {
+    "CERTIFY_EXACTLY_ONCE_H5": false,
+    "EVALUATION_ATTEMPTS": "UNKNOWN_NOT_PERSISTED (a1 died inside economic evaluation)"
+  },
+  "post_execution_governance": {
+    "H5_PREREG_RESTORED": true,
+    "prereg_manifest_restored_to": "commit c426b35 blob a1eee0d287d6ce335024cb850251bd1e34d13e17 (sha256 29ececb7...)",
+    "DEF_H5_GOV_001": "CONFIRMED_FIXED",
+    "DEF_H5_GOV_002": "REJECTED (self-fingerprint was valid; committed blob used as restoration authority)",
+    "DEF_H5_ORTHO_001": "RECONCILED (corrected r = 0.6070166220125719; see H5_ORTHOGONALITY_RECONCILIATION.md)",
+    "H5_PROMOTED_TO_PAPER": false,
+    "PAPER_PROMOTIONS": 0,
+    "RISK_CHANGED": 0,
+    "LIVE_CALLS": 0
+  }
+}

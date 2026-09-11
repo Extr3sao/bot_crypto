@@ -1,0 +1,70 @@
+{
+  "checkpoint": "H5-RESULT-INTEGRITY-RECONCILIATION-02",
+  "generated_utc": "2026-09-11T11:33:22Z",
+  "generated_by": "buffy-agent (Freebuff)",
+  "supersedes": "H5_PREREG_RESTORATION_BLOCKED_REPORT.json (BLOCKED_PREREG_AUTHORITY, 2026-09-11T12:49 local prior run)",
+  "P0": {
+    "authoritative_commit": "c426b35",
+    "commit_exists": true,
+    "commit_subject": "H3-GOVERNANCE-RECONCILIATION-AND-H5-SELECTION-01: execution ledger + H5 prereg",
+    "blob_git_oid": "a1eee0d287d6ce335024cb850251bd1e34d13e17",
+    "retrieval_method": "git cat-file blob a1eee0d287d6ce335024cb850251bd1e34d13e17 | sha256sum",
+    "AUTHORITATIVE_BLOB_SHA256": "29ececb759aff059282a0324b3b94b4bcd13b35b51060c6c742f2eaa48db0a86",
+    "note": "Do NOT confuse the git object id (sha1 a1eee0d2...) with the content sha256 (29ececb7...). The manifest's self-declared manifest_sha256 matches the sha256 of the committed bytes; the prior run's BLOCKED status was an environment artifact, not an authority failure."
+  },
+  "P1": {
+    "source": "working-tree H5_MANIFEST.json bytes as found at run start (2026-09-11T11:10Z)",
+    "copied_to": "H5_MANIFEST_POST_EXECUTION_CONTAMINATED.json",
+    "copy_preserved_from_prior_run": true,
+    "copy_verified_byte_identical_at_this_run": true,
+    "verification": "cmp working-tree bytes vs copy at 2026-09-11T11:10Z: identical; sha256 re-verified after restore",
+    "CONTAMINATED_SHA256": "ed087e6c7bd569555918cefe23d8cead714a28094231d9747569b7dcdf94b94e",
+    "contaminated_blob_state": "uncommitted (git hash-object 7c75a01a); first committed by the prior blocked run's working tree only",
+    "supplementary_preservation": {
+      "GEN3_WRONG_RESTORE": {
+        "path": "evidence/H5_MANIFEST_GEN3_WRONG_RESTORE_DFD89A28.json",
+        "sha256": "dfd89a28157f09554160f9a01afe9740d9075a8538980c0a022ecf9282d5c32e",
+        "explanation": "The working-tree H5_MANIFEST.json found at this run's start was NOT the true post-execution contaminated state and NOT the prereg blob: it was a second post-execution rewrite (prereg fields filled in, state_at_prereg campaign snapshot dropped) produced by the prior run's failed restoration at 12:07 local. Preserved as generation-3 evidence before restoring."
+      }
+    }
+  },
+  "P2": {
+    "prereg_vs_contaminated_diff": [
+      "prereg_commit: 'PENDING_COMMIT_NOW' -> 'c426b35'",
+      "spec_sha256: 'TO_FILL_AT_COMMIT_TIME (recorded in final report)' -> 'c743fba4a2a589dc1c3a15c7cd48b1b6ddf80255b8a157ea4f7ef19cc2f81023'",
+      "manifest_sha256: 'TO_FILL_AT_COMMIT_TIME (committed blob hash)' -> '29ececb759aff059282a0324b3b94b4bcd13b35b51060c6c742f2eaa48db0a86'",
+      "added: prereg_verified_utc / prereg_verified_by / prereg_verification_status",
+      "added: state_at_prereg._note",
+      "added (post-execution contamination): _h5_execution_completed, _h5_result, _h5_result_utc, _h5_completed_executions, _h5_failed_attempts, _h5_attempt_recovery_note, _h5_total_trades, _h5_net_expectancy_R, _h5_PF_net, _h5_SHARPE, _h5_P_Sharpe_gt_0, _h5_permutation_p, _h5_halves, _h5_thirds, _h5_walk_forward_last_third, _h5_cost_drag_R",
+      "modified: h3_final_status (CERTIFY_EXACTLY_ONCE_H3 true -> false)",
+      "removed: none (prereg fields preserved)"
+    ],
+    "internal_manifest_sha256_vs_authoritative_blob": {
+      "declared_in_contaminated_file": "29ececb759aff059282a0324b3b94b4bcd13b35b51060c6c742f2eaa48db0a86",
+      "AUTHORITATIVE_BLOB_SHA256": "29ececb759aff059282a0324b3b94b4bcd13b35b51060c6c742f2eaa48db0a86",
+      "match": true
+    },
+    "INTERNAL_FINGERPRINT_VALID": true,
+    "DEF_H5_GOV_002": "REJECTED",
+    "DEF_H5_GOV_002_note": "The self-fingerprint was valid. It was used ONLY as secondary confirmation; the committed blob remained the sole restoration authority. See DEF_H5_GOV_002_SELF_FINGERPRINT_MISMATCH.md for the resolution record."
+  },
+  "P3": {
+    "restore_method": "cp evidence/H5_MANIFEST_PREREG_C426B35.json H5_MANIFEST.json (copy verified byte-identical to git cat-file blob a1eee0d2 prior to use)",
+    "restored_at_utc": "2026-09-11T11:33:22Z",
+    "verification": {
+      "git_diff_c426b35_H5_MANIFEST_json": "EMPTY",
+      "sha256_after_restore": "29ececb759aff059282a0324b3b94b4bcd13b35b51060c6c742f2eaa48db0a86",
+      "cmp_vs_evidence_copy": "BYTE_IDENTICAL"
+    },
+    "H5_PREREG_RESTORED": true
+  },
+  "integrity_anchors_rechecked": {
+    "H5_SPEC.json_sha256": "c743fba4a2a589dc1c3a15c7cd48b1b6ddf80255b8a157ea4f7ef19cc2f81023",
+    "H5_RESULT.json_sha256": "2427310dbed8445b1e39b1feaba7a8289918ab79a258f66b065da7cf2b7fe60f",
+    "ledger_a2_result_sha256": "2427310dbed8445b1e39b1feaba7a8289918ab79a258f66b065da7cf2b7fe60f",
+    "result_anchored_in_ledger": true
+  },
+  "H5_RERUNS": 0,
+  "FALSE_SUCCESS": 0,
+  "STATUS": "RESTORED"
+}

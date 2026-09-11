@@ -1,0 +1,20 @@
+{
+  "alpha_leakage": 0,
+  "checkpoint": "ALPHA-DATA-ADMISSION-01",
+  "dataset_fingerprint_covered": true,
+  "engine": "src/trading_bot/research/data_quality.py (checks: ordering, duplicates, schema, nulls, nonpositive, out-of-order, PIT cutoff, expected-interval grid, future records)",
+  "family": "open_interest",
+  "files": 21,
+  "files_with_quality_errors": 0,
+  "manifest": "data/processed/open_interest/DATASET_MANIFEST.json",
+  "normalized_sha256_covered": true,
+  "normalizer_commit": "ec2483ff78d6ab39bf59e48cf5c609f68dba4804",
+  "normalizer_version": "1.0.0",
+  "official_checksum_verified_all": true,
+  "quality_errors_detail": {},
+  "raw_source_sha256_covered": true,
+  "rows_total": 6048,
+  "rows_within_pit": 6048,
+  "schema_version": "1.0.0",
+  "verdict": "PASS"
+}

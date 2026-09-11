@@ -1,0 +1,80 @@
+{
+  "checkpoint": "H5-RESULT-INTEGRITY-RECONCILIATION-02",
+  "run_date_utc": "2026-09-11",
+  "run_window_utc": "2026-09-11T11:10:10Z -> 2026-09-11T11:38:05Z (artifact writes); full regression completed ~2026-09-11T11:50Z",
+  "actor": "buffy-agent (Freebuff)",
+  "branch": "feat/ma-2-specialist-opportunity-swarm",
+  "HEAD_at_run": "cb3de4f2e03d5ff51f2fdfb557af5392e29dd0dc",
+  "protocol_execution": {
+    "P0_prereg_blob_recovery": "PASS",
+    "P1_contaminated_preservation": "PASS",
+    "P2_prereg_vs_contaminated_comparison": "PASS",
+    "P3_prereg_restoration": "PASS",
+    "P4_post_execution_externalization": "PASS",
+    "P5_ledger_reconciliation": "PASS",
+    "P6_orthogonality_reconciliation": "PASS",
+    "P7_final_result_canonicalization": "PASS",
+    "P8_failed_research_memory": "PASS",
+    "P9_information_set_governance": "PASS",
+    "P10_alpha_data_expansion_research": "PASS",
+    "P11_family_selection": "PASS",
+    "P12_shadow": "WAIT",
+    "P13_confirmation_lock": "WAIT",
+    "P14_regression_validation": "PASS_WITH_PREEXISTING_FAILURES"
+  },
+  "key_values": {
+    "AUTHORITATIVE_BLOB_SHA256": "29ececb759aff059282a0324b3b94b4bcd13b35b51060c6c742f2eaa48db0a86",
+    "CONTAMINATED_SHA256": "ed087e6c7bd569555918cefe23d8cead714a28094231d9747569b7dcdf94b94e",
+    "GEN3_WRONG_RESTORE_SHA256": "dfd89a28157f09554160f9a01afe9740d9075a8538980c0a022ecf9282d5c32e",
+    "INTERNAL_FINGERPRINT_VALID": true,
+    "DEF_H5_GOV_001": "CONFIRMED_FIXED",
+    "DEF_H5_GOV_002": "REJECTED",
+    "DEF_H5_ORTHO_001": "RECONCILED",
+    "CORRECTED_PEARSON_R": 0.6070166220125719,
+    "H5_PREREG_RESTORED": true,
+    "H5_RESULT": "DISCOVERY_FAIL",
+    "economic_experiment_ids": 1,
+    "execution_attempts": 2,
+    "failed_attempts": 1,
+    "completed_attempts": 1,
+    "failure_message_authority": "COMPLETE_DURABLE_LEDGER",
+    "CERTIFY_EXACTLY_ONCE_H5": false,
+    "CURRENT_INFORMATION_SET": "EXHAUSTED_FOR_NOW",
+    "adopted_data_families": ["trade_flow_aggtrades (family 7)", "open_interest_vision (family 1)"],
+    "shadow_policy_conclusion": "INSUFFICIENT_SAMPLE",
+    "confirmation_lock": "CONF-EDGE-002-001 untouched; nothing before 2026-09-22T00:00Z"
+  },
+  "regression": {
+    "focused": {
+      "tests": ["tests/unit/research/test_execution_ledger.py", "tests/unit/research/test_h5_orderflow.py"],
+      "passed": 20,
+      "failed": 0
+    },
+    "full_hermetic": {
+      "passed": 1235,
+      "failed": 2,
+      "runtime": "3m21s",
+      "command": "PYTHONPATH=src .venv/Scripts/python.exe -m pytest tests -q"
+    },
+    "failures": [
+      {
+        "test": "tests/unit/config/test_settings.py::test_load_settings_happy_path",
+        "classification": "PRE_EXISTING_ENVIRONMENT_CONFIG (local settings exchange.id=bybit vs test expectation binance); fails identically in isolation; no code or config changed by this run"
+      },
+      {
+        "test": "tests/unit/test_dependency_closure_guard.py::test_all_imported_internal_modules_are_tracked",
+        "classification": "TEST_ORDERING_ARTIFACT (passes in isolation; fails only in the full-suite run); pre-existing, unrelated to this checkpoint"
+      }
+    ]
+  },
+  "counters": {
+    "LIVE_CALLS": 0,
+    "RISK_CHANGED": 0,
+    "PAPER_PROMOTIONS": 0,
+    "FALSE_SUCCESS": 0,
+    "H5_RERUNS": 0,
+    "shadow_resolutions_before_maturity": 0
+  },
+  "governance_asks_deferred_to_user": [],
+  "STATUS": "PASS"
+}

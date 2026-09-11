@@ -1,0 +1,35 @@
+{
+  "checkpoint": "ALPHA-DATA-ADMISSION-01",
+  "family": "TRADE_FLOW (high-resolution aggregate trades)",
+  "data_family_code": "DATA-FAMILY-A",
+  "source_id": "SOURCE_BINANCE_VISION_USDM_AGGTRADES_DAILY",
+  "decision": "ADMIT_WITH_LIMITATIONS",
+  "decision_basis": "Official source, checksum-verified, deep history, proven quality/PIT/fingerprint behavior on a 7-day engineering sample. Limitation is cost of full backfill, not quality.",
+  "scorecard": {
+    "DATA_AUTHORITY": {"score": "5/5", "evidence": "official data.binance.vision archive; official .CHECKSUM sha256 sidecars verified on all 21 sample files; tooling MIT license separated from Binance data terms"},
+    "HISTORICAL_DEPTH": {"score": "5/5", "evidence": "daily archive BTCUSDT/ETHUSDT from 2019-12-31, SOLUSDT from 2020-09-14 through 2026-09-10; 0 missing files first-to-last (DATA_ARCHIVE_COVERAGE_MATRIX.json)"},
+    "PIT_SAFETY": {"score": "5/5", "evidence": "event-time (transact_time) UTC ms; immutable archives; data_time <= decision cutoff enforced and tested (future-mutation tests PASS)"},
+    "QUALITY": {"score": "5/5", "evidence": "16,269,514 rows normalized, 0 quality errors, 0 duplicate agg_trade_ids, monotonic after canonical sort, price/quantity invariants hold"},
+    "INFORMATION_DISTINCTNESS": {"score": "YES", "evidence": "event-level direction (buyer_is_maker -> taker side), per-trade size, burst structure and intra-bar sequence are not derivable from hourly OHLCV / takerBuyBaseVolume / funding / regime state (Track J, data-level only)"},
+    "COST": {"score": "2/5", "evidence": "full 3-symbol backfill ~101 GB compressed / ~455 GB uncompressed, ~6,700 files (Track D1)"},
+    "STORAGE": {"score": "2/5", "evidence": "same as COST; 7-day sample = 186 MB compressed / ~840 MB uncompressed"},
+    "PORTABILITY": {"score": "5/5", "evidence": "plain zip+CSV with sha256 sidecars; no proprietary tooling required"}
+  },
+  "limitations": [
+    "FULL_BACKFILL = COST_REVIEW_REQUIRED (~101 GB compressed, 3 symbols); not required for this checkpoint",
+    "sample window (2026-09-01..07) is engineering validation only, NOT alpha evidence (Track I)"
+  ],
+  "sample_evidence": {
+    "files": 21,
+    "rows_total": 16269514,
+    "rows_per_symbol": {"BTCUSDT": 7517538, "ETHUSDT": 6932098, "SOLUSDT": 1819878},
+    "window_utc": "2026-09-01/2026-09-07",
+    "official_checksum": "PASS (21/21)",
+    "quality_errors": 0,
+    "pit_within": "16269514/16269514",
+    "manifest": "data/processed/trade_flow/DATASET_MANIFEST.json"
+  },
+  "direction_semantics_authority": "Official USD-M aggTrades schema: is_buyer_maker=true => buyer is maker => taker side is SELL; false => taker side is BUY. Documented in data_contracts.py and validated by tests.",
+  "retrieval_date_utc": "2026-09-11",
+  "alpha_leakage": 0
+}

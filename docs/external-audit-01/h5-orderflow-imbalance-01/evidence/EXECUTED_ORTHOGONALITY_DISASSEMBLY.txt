@@ -1,0 +1,448 @@
+              0 MAKE_CELL               20 (d1)
+              2 MAKE_CELL               21 (d2)
+              4 MAKE_CELL               22 (h_idx)
+
+180           6 RESUME                   0
+
+186           8 LOAD_CONST               1 (0)
+             10 LOAD_CONST               2 (None)
+             12 IMPORT_NAME              0 (numpy)
+             14 STORE_FAST               3 (np)
+
+189          16 BUILD_MAP                0
+
+190          18 BUILD_MAP                0
+
+191          20 BUILD_MAP                0
+
+188          22 LOAD_CONST               3 (('h5_vs_roc_proxy', 'h5_vs_h1', 'h5_vs_h3'))
+             24 BUILD_CONST_KEY_MAP      3
+             26 STORE_FAST               4 (result)
+
+195          28 LOAD_FAST                0 (h5_trades)
+             30 EXTENDED_ARG             1
+             32 POP_JUMP_FORWARD_IF_FALSE   400 (to 834)
+             34 LOAD_FAST                1 (proxy_trades)
+             36 EXTENDED_ARG             1
+             38 POP_JUMP_FORWARD_IF_FALSE   397 (to 834)
+
+196          40 LOAD_CONST               4 (<code object <listcomp> at 0x0000020D866A9FB0, file "C:\Users\GVLLFR0035\Downloads\bot freebuff\scripts\h5_run_exactly_once.py", line 196>)
+             42 MAKE_FUNCTION            0
+             44 LOAD_FAST                0 (h5_trades)
+             46 GET_ITER
+             48 PRECALL                  0
+             52 CALL                     0
+             62 STORE_FAST               5 (h5_entries)
+
+197          64 LOAD_CONST               5 (<code object <listcomp> at 0x0000020D866AA090, file "C:\Users\GVLLFR0035\Downloads\bot freebuff\scripts\h5_run_exactly_once.py", line 197>)
+             66 MAKE_FUNCTION            0
+             68 LOAD_FAST                1 (proxy_trades)
+             70 GET_ITER
+             72 PRECALL                  0
+             76 CALL                     0
+             86 STORE_FAST               6 (proxy_entries)
+
+200          88 LOAD_CONST               1 (0)
+             90 STORE_FAST               7 (overlap)
+
+201          92 LOAD_FAST                5 (h5_entries)
+             94 GET_ITER
+        >>   96 FOR_ITER                34 (to 166)
+             98 STORE_DEREF             22 (h_idx)
+
+202         100 LOAD_GLOBAL              3 (NULL + any)
+            112 LOAD_CLOSURE            22 (h_idx)
+            114 BUILD_TUPLE              1
+            116 LOAD_CONST               6 (<code object <genexpr> at 0x0000020D86699130, file "C:\Users\GVLLFR0035\Downloads\bot freebuff\scripts\h5_run_exactly_once.py", line 202>)
+            118 MAKE_FUNCTION            8 (closure)
+            120 LOAD_FAST                6 (proxy_entries)
+            122 GET_ITER
+            124 PRECALL                  0
+            128 CALL                     0
+            138 PRECALL                  1
+            142 CALL                     1
+            152 POP_JUMP_FORWARD_IF_FALSE     5 (to 164)
+
+203         154 LOAD_FAST                7 (overlap)
+            156 LOAD_CONST               7 (1)
+            158 BINARY_OP               13 (+=)
+            162 STORE_FAST               7 (overlap)
+        >>  164 JUMP_BACKWARD           35 (to 96)
+
+204     >>  166 LOAD_FAST                7 (overlap)
+            168 LOAD_GLOBAL              5 (NULL + len)
+            180 LOAD_FAST                0 (h5_trades)
+            182 PRECALL                  1
+            186 CALL                     1
+            196 BINARY_OP               11 (/)
+            200 STORE_FAST               8 (overlap_ratio)
+
+207         202 LOAD_CONST               8 (<code object daily_r at 0x0000020D8641AD50, file "C:\Users\GVLLFR0035\Downloads\bot freebuff\scripts\h5_run_exactly_once.py", line 207>)
+            204 MAKE_FUNCTION            0
+            206 STORE_FAST               9 (daily_r)
+
+214         208 PUSH_NULL
+            210 LOAD_FAST                9 (daily_r)
+            212 LOAD_FAST                0 (h5_trades)
+            214 PRECALL                  1
+            218 CALL                     1
+            228 PUSH_NULL
+            230 LOAD_FAST                9 (daily_r)
+            232 LOAD_FAST                1 (proxy_trades)
+            234 PRECALL                  1
+            238 CALL                     1
+            248 SWAP                     2
+            250 STORE_DEREF             20 (d1)
+            252 STORE_DEREF             21 (d2)
+
+215         254 LOAD_GLOBAL              7 (NULL + sorted)
+            266 LOAD_GLOBAL              9 (NULL + set)
+            278 LOAD_DEREF              20 (d1)
+            280 PRECALL                  1
+            284 CALL                     1
+            294 LOAD_GLOBAL              9 (NULL + set)
+            306 LOAD_DEREF              21 (d2)
+            308 PRECALL                  1
+            312 CALL                     1
+            322 BINARY_OP                1 (&)
+            326 PRECALL                  1
+            330 CALL                     1
+            340 STORE_FAST              10 (common)
+
+216         342 LOAD_CONST               2 (None)
+            344 STORE_FAST              11 (corr)
+
+217         346 LOAD_GLOBAL              5 (NULL + len)
+            358 LOAD_FAST               10 (common)
+            360 PRECALL                  1
+            364 CALL                     1
+            374 LOAD_CONST               9 (30)
+            376 COMPARE_OP               5 (>=)
+            382 POP_JUMP_FORWARD_IF_FALSE   175 (to 734)
+
+218         384 LOAD_CLOSURE            20 (d1)
+            386 BUILD_TUPLE              1
+            388 LOAD_CONST              10 (<code object <listcomp> at 0x0000020D866AA5D0, file "C:\Users\GVLLFR0035\Downloads\bot freebuff\scripts\h5_run_exactly_once.py", line 218>)
+            390 MAKE_FUNCTION            8 (closure)
+            392 LOAD_FAST               10 (common)
+            394 GET_ITER
+            396 PRECALL                  0
+            400 CALL                     0
+            410 STORE_FAST              12 (xs)
+
+219         412 LOAD_CLOSURE            21 (d2)
+            414 BUILD_TUPLE              1
+            416 LOAD_CONST              11 (<code object <listcomp> at 0x0000020D866AA4F0, file "C:\Users\GVLLFR0035\Downloads\bot freebuff\scripts\h5_run_exactly_once.py", line 219>)
+            418 MAKE_FUNCTION            8 (closure)
+            420 LOAD_FAST               10 (common)
+            422 GET_ITER
+            424 PRECALL                  0
+            428 CALL                     0
+            438 STORE_FAST              13 (ys)
+
+220         440 LOAD_FAST                3 (np)
+            442 LOAD_METHOD              5 (mean)
+            464 LOAD_FAST               12 (xs)
+            466 PRECALL                  1
+            470 CALL                     1
+            480 LOAD_FAST                3 (np)
+            482 LOAD_METHOD              5 (mean)
+            504 LOAD_FAST               13 (ys)
+            506 PRECALL                  1
+            510 CALL                     1
+            520 STORE_FAST              15 (my)
+            522 STORE_FAST              14 (mx)
+
+221         524 LOAD_FAST                3 (np)
+            526 LOAD_METHOD              6 (sum)
+            548 LOAD_FAST               12 (xs)
+            550 LOAD_FAST               14 (mx)
+            552 BINARY_OP               10 (-)
+            556 LOAD_FAST               13 (ys)
+            558 LOAD_FAST               15 (my)
+            560 BINARY_OP               10 (-)
+            564 BINARY_OP                5 (*)
+            568 PRECALL                  1
+            572 CALL                     1
+            582 STORE_FAST              16 (cov)
+
+222         584 LOAD_FAST                3 (np)
+            586 LOAD_METHOD              7 (std)
+            608 LOAD_FAST               12 (xs)
+            610 PRECALL                  1
+            614 CALL                     1
+            624 LOAD_FAST                3 (np)
+            626 LOAD_METHOD              7 (std)
+            648 LOAD_FAST               13 (ys)
+            650 PRECALL                  1
+            654 CALL                     1
+            664 STORE_FAST              18 (sy)
+            666 STORE_FAST              17 (sx)
+
+223         668 LOAD_FAST               17 (sx)
+            670 LOAD_CONST               1 (0)
+            672 COMPARE_OP               4 (>)
+            678 POP_JUMP_FORWARD_IF_FALSE    27 (to 734)
+            680 LOAD_FAST               18 (sy)
+            682 LOAD_CONST               1 (0)
+            684 COMPARE_OP               4 (>)
+            690 POP_JUMP_FORWARD_IF_FALSE    21 (to 734)
+
+224         692 LOAD_GLOBAL             17 (NULL + float)
+            704 LOAD_FAST               16 (cov)
+            706 LOAD_FAST               17 (sx)
+            708 LOAD_FAST               18 (sy)
+            710 BINARY_OP                5 (*)
+            714 BINARY_OP               11 (/)
+            718 PRECALL                  1
+            722 CALL                     1
+            732 STORE_FAST              11 (corr)
+
+227     >>  734 LOAD_GLOBAL             17 (NULL + float)
+            746 LOAD_FAST                8 (overlap_ratio)
+            748 PRECALL                  1
+            752 CALL                     1
+
+228         762 LOAD_FAST               11 (corr)
+
+229         764 LOAD_GLOBAL              5 (NULL + len)
+            776 LOAD_FAST               10 (common)
+            778 PRECALL                  1
+            782 CALL                     1
+
+230         792 LOAD_FAST                8 (overlap_ratio)
+            794 LOAD_CONST              12 (0.6)
+            796 COMPARE_OP               4 (>)
+            802 JUMP_IF_FALSE_OR_POP     9 (to 822)
+            804 LOAD_FAST               11 (corr)
+            806 LOAD_CONST               2 (None)
+            808 IS_OP                    1
+            810 JUMP_IF_FALSE_OR_POP     5 (to 822)
+            812 LOAD_FAST               11 (corr)
+            814 LOAD_CONST              13 (0.7)
+            816 COMPARE_OP               4 (>)
+
+226     >>  822 LOAD_CONST              14 (('trade_time_overlap', 'daily_pnl_correlation', 'common_days', 'redundant'))
+            824 BUILD_CONST_KEY_MAP      4
+            826 LOAD_FAST                4 (result)
+            828 LOAD_CONST              15 ('h5_vs_roc_proxy')
+            830 STORE_SUBSCR
+
+234     >>  834 LOAD_FAST                2 (h1_trades)
+            836 EXTENDED_ARG             1
+            838 POP_JUMP_FORWARD_IF_FALSE   437 (to 1714)
+
+235         840 LOAD_CONST              16 (<code object <listcomp> at 0x0000020D866AA410, file "C:\Users\GVLLFR0035\Downloads\bot freebuff\scripts\h5_run_exactly_once.py", line 235>)
+            842 MAKE_FUNCTION            0
+            844 LOAD_FAST                0 (h5_trades)
+            846 GET_ITER
+            848 PRECALL                  0
+            852 CALL                     0
+            862 STORE_FAST               5 (h5_entries)
+
+236         864 LOAD_CONST              17 (<code object <listcomp> at 0x0000020D866AA950, file "C:\Users\GVLLFR0035\Downloads\bot freebuff\scripts\h5_run_exactly_once.py", line 236>)
+            866 MAKE_FUNCTION            0
+            868 LOAD_FAST                2 (h1_trades)
+            870 GET_ITER
+            872 PRECALL                  0
+            876 CALL                     0
+            886 STORE_FAST              19 (h1_entries)
+
+237         888 LOAD_CONST               1 (0)
+            890 STORE_FAST               7 (overlap)
+
+238         892 LOAD_FAST                5 (h5_entries)
+            894 GET_ITER
+        >>  896 FOR_ITER                34 (to 966)
+            898 STORE_DEREF             22 (h_idx)
+
+239         900 LOAD_GLOBAL              3 (NULL + any)
+            912 LOAD_CLOSURE            22 (h_idx)
+            914 BUILD_TUPLE              1
+            916 LOAD_CONST              18 (<code object <genexpr> at 0x0000020D86699330, file "C:\Users\GVLLFR0035\Downloads\bot freebuff\scripts\h5_run_exactly_once.py", line 239>)
+            918 MAKE_FUNCTION            8 (closure)
+            920 LOAD_FAST               19 (h1_entries)
+            922 GET_ITER
+            924 PRECALL                  0
+            928 CALL                     0
+            938 PRECALL                  1
+            942 CALL                     1
+            952 POP_JUMP_FORWARD_IF_FALSE     5 (to 964)
+
+240         954 LOAD_FAST                7 (overlap)
+            956 LOAD_CONST               7 (1)
+            958 BINARY_OP               13 (+=)
+            962 STORE_FAST               7 (overlap)
+        >>  964 JUMP_BACKWARD           35 (to 896)
+
+241     >>  966 LOAD_FAST                0 (h5_trades)
+            968 POP_JUMP_FORWARD_IF_FALSE    18 (to 1006)
+            970 LOAD_FAST                7 (overlap)
+            972 LOAD_GLOBAL              5 (NULL + len)
+            984 LOAD_FAST                0 (h5_trades)
+            986 PRECALL                  1
+            990 CALL                     1
+           1000 BINARY_OP               11 (/)
+           1004 JUMP_FORWARD             1 (to 1008)
+        >> 1006 LOAD_CONST               1 (0)
+        >> 1008 STORE_FAST               8 (overlap_ratio)
+
+243        1010 LOAD_CONST              19 (<code object <dictcomp> at 0x0000020D86691D40, file "C:\Users\GVLLFR0035\Downloads\bot freebuff\scripts\h5_run_exactly_once.py", line 243>)
+           1012 MAKE_FUNCTION            0
+           1014 LOAD_FAST                0 (h5_trades)
+           1016 GET_ITER
+           1018 PRECALL                  0
+           1022 CALL                     0
+           1032 STORE_DEREF             20 (d1)
+
+244        1034 LOAD_CONST              20 (<code object <dictcomp> at 0x0000020D866923D0, file "C:\Users\GVLLFR0035\Downloads\bot freebuff\scripts\h5_run_exactly_once.py", line 244>)
+           1036 MAKE_FUNCTION            0
+           1038 LOAD_FAST                2 (h1_trades)
+           1040 GET_ITER
+           1042 PRECALL                  0
+           1046 CALL                     0
+           1056 STORE_DEREF             21 (d2)
+
+245        1058 LOAD_GLOBAL              7 (NULL + sorted)
+           1070 LOAD_GLOBAL              9 (NULL + set)
+           1082 LOAD_DEREF              20 (d1)
+           1084 PRECALL                  1
+           1088 CALL                     1
+           1098 LOAD_GLOBAL              9 (NULL + set)
+           1110 LOAD_DEREF              21 (d2)
+           1112 PRECALL                  1
+           1116 CALL                     1
+           1126 BINARY_OP                1 (&)
+           1130 PRECALL                  1
+           1134 CALL                     1
+           1144 STORE_FAST              10 (common)
+
+246        1146 LOAD_CONST               2 (None)
+           1148 STORE_FAST              11 (corr)
+
+247        1150 LOAD_GLOBAL              5 (NULL + len)
+           1162 LOAD_FAST               10 (common)
+           1164 PRECALL                  1
+           1168 CALL                     1
+           1178 LOAD_CONST               9 (30)
+           1180 COMPARE_OP               5 (>=)
+           1186 POP_JUMP_FORWARD_IF_FALSE   213 (to 1614)
+
+248        1188 LOAD_CLOSURE            20 (d1)
+           1190 BUILD_TUPLE              1
+           1192 LOAD_CONST              21 (<code object <listcomp> at 0x0000020D866AA6B0, file "C:\Users\GVLLFR0035\Downloads\bot freebuff\scripts\h5_run_exactly_once.py", line 248>)
+           1194 MAKE_FUNCTION            8 (closure)
+           1196 LOAD_FAST               10 (common)
+           1198 GET_ITER
+           1200 PRECALL                  0
+           1204 CALL                     0
+           1214 STORE_FAST              12 (xs)
+
+249        1216 LOAD_CLOSURE            21 (d2)
+           1218 BUILD_TUPLE              1
+           1220 LOAD_CONST              22 (<code object <listcomp> at 0x0000020D866AAB10, file "C:\Users\GVLLFR0035\Downloads\bot freebuff\scripts\h5_run_exactly_once.py", line 249>)
+           1222 MAKE_FUNCTION            8 (closure)
+           1224 LOAD_FAST               10 (common)
+           1226 GET_ITER
+           1228 PRECALL                  0
+           1232 CALL                     0
+           1242 STORE_FAST              13 (ys)
+
+250        1244 LOAD_FAST                3 (np)
+           1246 LOAD_METHOD              5 (mean)
+           1268 LOAD_FAST               12 (xs)
+           1270 PRECALL                  1
+           1274 CALL                     1
+           1284 LOAD_FAST                3 (np)
+           1286 LOAD_METHOD              5 (mean)
+           1308 LOAD_FAST               13 (ys)
+           1310 PRECALL                  1
+           1314 CALL                     1
+           1324 STORE_FAST              15 (my)
+           1326 STORE_FAST              14 (mx)
+
+251        1328 LOAD_FAST                3 (np)
+           1330 LOAD_METHOD              6 (sum)
+           1352 LOAD_FAST                3 (np)
+           1354 LOAD_METHOD              9 (array)
+           1376 LOAD_FAST               12 (xs)
+           1378 PRECALL                  1
+           1382 CALL                     1
+           1392 LOAD_FAST               14 (mx)
+           1394 BINARY_OP               10 (-)
+           1398 LOAD_FAST                3 (np)
+           1400 LOAD_METHOD              9 (array)
+           1422 LOAD_FAST               13 (ys)
+           1424 PRECALL                  1
+           1428 CALL                     1
+           1438 LOAD_FAST               15 (my)
+           1440 BINARY_OP               10 (-)
+           1444 BINARY_OP                5 (*)
+           1448 PRECALL                  1
+           1452 CALL                     1
+           1462 STORE_FAST              16 (cov)
+
+252        1464 LOAD_FAST                3 (np)
+           1466 LOAD_METHOD              7 (std)
+           1488 LOAD_FAST               12 (xs)
+           1490 PRECALL                  1
+           1494 CALL                     1
+           1504 LOAD_FAST                3 (np)
+           1506 LOAD_METHOD              7 (std)
+           1528 LOAD_FAST               13 (ys)
+           1530 PRECALL                  1
+           1534 CALL                     1
+           1544 STORE_FAST              18 (sy)
+           1546 STORE_FAST              17 (sx)
+
+253        1548 LOAD_FAST               17 (sx)
+           1550 LOAD_CONST               1 (0)
+           1552 COMPARE_OP               4 (>)
+           1558 POP_JUMP_FORWARD_IF_FALSE    27 (to 1614)
+           1560 LOAD_FAST               18 (sy)
+           1562 LOAD_CONST               1 (0)
+           1564 COMPARE_OP               4 (>)
+           1570 POP_JUMP_FORWARD_IF_FALSE    21 (to 1614)
+
+254        1572 LOAD_GLOBAL             17 (NULL + float)
+           1584 LOAD_FAST               16 (cov)
+           1586 LOAD_FAST               17 (sx)
+           1588 LOAD_FAST               18 (sy)
+           1590 BINARY_OP                5 (*)
+           1594 BINARY_OP               11 (/)
+           1598 PRECALL                  1
+           1602 CALL                     1
+           1612 STORE_FAST              11 (corr)
+
+257     >> 1614 LOAD_GLOBAL             17 (NULL + float)
+           1626 LOAD_FAST                8 (overlap_ratio)
+           1628 PRECALL                  1
+           1632 CALL                     1
+
+258        1642 LOAD_FAST               11 (corr)
+
+259        1644 LOAD_GLOBAL              5 (NULL + len)
+           1656 LOAD_FAST               10 (common)
+           1658 PRECALL                  1
+           1662 CALL                     1
+
+260        1672 LOAD_FAST                8 (overlap_ratio)
+           1674 LOAD_CONST              12 (0.6)
+           1676 COMPARE_OP               4 (>)
+           1682 JUMP_IF_FALSE_OR_POP     9 (to 1702)
+           1684 LOAD_FAST               11 (corr)
+           1686 LOAD_CONST               2 (None)
+           1688 IS_OP                    1
+           1690 JUMP_IF_FALSE_OR_POP     5 (to 1702)
+           1692 LOAD_FAST               11 (corr)
+           1694 LOAD_CONST              13 (0.7)
+           1696 COMPARE_OP               4 (>)
+
+256     >> 1702 LOAD_CONST              14 (('trade_time_overlap', 'daily_pnl_correlation', 'common_days', 'redundant'))
+           1704 BUILD_CONST_KEY_MAP      4
+           1706 LOAD_FAST                4 (result)
+           1708 LOAD_CONST              23 ('h5_vs_h1')
+           1710 STORE_SUBSCR
+
+263     >> 1714 LOAD_FAST                4 (result)
+           1716 RETURN_VALUE

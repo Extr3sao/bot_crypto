@@ -69,10 +69,15 @@ def main() -> None:
     )
 
     # Run C: one-record synthetic perturbation (real raw files untouched)
-    records_c = copy.deepcopy(records)
-    target = records_c[len(records_c) // 2]
+    import dataclasses
+
+    records_c = list(records)
+    target_idx = len(records_c) // 2
+    target = records_c[target_idx]
     original_value = target.open_interest_contracts
-    target.open_interest_contracts = original_value + 1.0
+    records_c[target_idx] = dataclasses.replace(
+        target, open_interest_contracts=original_value + 1.0
+    )
     stats_c = normalize_open_interest(records_c, decision_time_ms=2 ** 62)
     fp_c = fingerprint_open_interest(
         records_c,
@@ -109,6 +114,7 @@ def main() -> None:
         "order_independence_D_equals_A": fp_d == fp_a,
         "perturbation": {
             "record_index": len(records) // 2,
+            "method": "dataclasses.replace (records are frozen dataclasses; original list untouched)",
             "field": "open_interest_contracts",
             "original_value": original_value,
             "perturbed_value": original_value + 1.0,

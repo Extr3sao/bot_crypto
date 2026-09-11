@@ -1,0 +1,34 @@
+{
+  "_provenance": "Rebuilt during H5-RESULT-INTEGRITY-RECONCILIATION-02. Merges the frozen pre-execution implementation verification (H5_IMPLEMENTATION_VERIFICATION.json, kept byte-identical, sha256 43e79b2d... recorded in FINAL_REPORT_H5_DISCOVERY_01 context) with post-execution status derived from durable evidence.",
+  "generated_utc": "2026-09-11T11:38:05Z",
+  "generated_by": "buffy-agent (Freebuff)",
+  "spec_sha256": "c743fba4a2a589dc1c3a15c7cd48b1b6ddf80255b8a157ea4f7ef19cc2f81023",
+  "spec_sha_matches_prereg": true,
+  "spec_unchanged_since_prereg_verified_utc": "2026-09-11T11:10:10Z",
+  "pre_execution_verification_artifact": "H5_IMPLEMENTATION_VERIFICATION.json",
+  "pre_execution_verdict": "PASS",
+  "pre_execution_details": {
+    "verifier": "scripts/h5_implementation_verifier.py",
+    "tolerance": 1e-09,
+    "constant_drift_checks_all_true": true,
+    "fixture_trades_ref": 6,
+    "fixture_trades_engine": 6,
+    "fixture_mismatch_count": 0,
+    "feature_spot_checks_ok": true
+  },
+  "implementation_commit_claim": {
+    "value_in_H5_RESULT.json": "f0c246f2f0c05625",
+    "git_object_exists": false,
+    "resolution": "NOT_VERIFIABLE — not a valid git object in this repository (repo history spans to 2026-07-02; not a truncation artifact). The claim is preserved as-is inside the frozen, ledger-anchored H5_RESULT.json; it is NOT relied upon by this reconciliation. Implementation identity is instead evidenced by the frozen pre-execution verifier PASS (fixture equivalence, constant drift checks) and by the frozen runner file scripts/h5_run_exactly_once.py whose PROTOCOL_SHA256 derivation exactly matches all durable ledger rows.",
+    "run_id_1efbe3e1a1514bfd": "same treatment — recorded in prior annotations as implementation commit sha; not a valid git object; treated as a run identifier, not as commit authority",
+    "use_as_authority": "DISALLOWED_FOR_IDENTITY_CLAIMS"
+  },
+  "post_execution_status": {
+    "implementation_matches_committed_spec": true,
+    "basis": "spec_sha256 identity chain + pre-execution verifier PASS + durable ledger protocol_sha256 match to frozen runner derivation",
+    "implementation_post_execution_status": "PASS_IDENTITY_CHAIN_VERIFIED",
+    "implementation_commit_sha256_claim": "UNVERIFIED_PRESERVED_AS_CLAIM"
+  },
+  "H5_RESULT": "DISCOVERY_FAIL",
+  "H5_RERUNS": 0
+}

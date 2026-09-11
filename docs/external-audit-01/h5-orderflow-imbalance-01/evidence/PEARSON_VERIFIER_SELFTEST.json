@@ -1,0 +1,20 @@
+{
+  "VERDICT": "PASS",
+  "tolerance": 1e-12,
+  "invariant_checks": {
+    "r(X,X)=1_tol": true,
+    "r(X,-X)=-1_tol": true,
+    "constant_series_guarded": true,
+    "bounded_-1_1": true,
+    "scale_invariance": true
+  },
+  "buggy_formula_is_n_times_pearson": true,
+  "forensic_reconstruction": {
+    "published_invalid_value": 61.91569544528234,
+    "common_days": 102,
+    "bug_formula": "sum((x-mx)*(y-my)) / (std(x)*std(y)) = n * Pearson_r",
+    "reconstructed_r": 0.6070166220125719,
+    "reconstructed_r_bounded": true,
+    "classification": "STD_NORMALIZATION_ERROR (missing 1/n on covariance term)"
+  }
+}

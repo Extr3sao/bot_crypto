@@ -1,0 +1,127 @@
+{
+  "aggTrades": {
+    "BTCUSDT_daily": {
+      "checksum_coverage": "FULL",
+      "checksum_files": 0,
+      "compressed_bytes_total": 44522317394,
+      "first_available": "2019-12-31",
+      "last_available": "2026-09-10",
+      "listing_prefix": "data/futures/um/daily/aggTrades/BTCUSDT/",
+      "missing_count": 0,
+      "missing_dates_or_months": [],
+      "non_dated_part_files": 0,
+      "retrieval_date_utc": "2026-09-11",
+      "zip_files": 2446
+    },
+    "BTCUSDT_monthly": {
+      "checksum_coverage": "FULL",
+      "checksum_files": 0,
+      "compressed_bytes_total": 44030199865,
+      "first_available": "2020-01",
+      "last_available": "2026-08",
+      "listing_prefix": "data/futures/um/monthly/aggTrades/BTCUSDT/",
+      "missing_count": 0,
+      "missing_dates_or_months": [],
+      "non_dated_part_files": 1,
+      "retrieval_date_utc": "2026-09-11",
+      "zip_files": 80
+    },
+    "ETHUSDT_daily": {
+      "checksum_coverage": "FULL",
+      "checksum_files": 0,
+      "compressed_bytes_total": 42086381867,
+      "first_available": "2019-12-31",
+      "last_available": "2026-09-10",
+      "listing_prefix": "data/futures/um/daily/aggTrades/ETHUSDT/",
+      "missing_count": 0,
+      "missing_dates_or_months": [],
+      "non_dated_part_files": 0,
+      "retrieval_date_utc": "2026-09-11",
+      "zip_files": 2446
+    },
+    "ETHUSDT_monthly": {
+      "checksum_coverage": "FULL",
+      "checksum_files": 0,
+      "compressed_bytes_total": 41733653778,
+      "first_available": "2020-01",
+      "last_available": "2026-08",
+      "listing_prefix": "data/futures/um/monthly/aggTrades/ETHUSDT/",
+      "missing_count": 0,
+      "missing_dates_or_months": [],
+      "non_dated_part_files": 0,
+      "retrieval_date_utc": "2026-09-11",
+      "zip_files": 80
+    },
+    "SOLUSDT_daily": {
+      "checksum_coverage": "FULL",
+      "checksum_files": 0,
+      "compressed_bytes_total": 14308632127,
+      "first_available": "2020-09-14",
+      "last_available": "2026-09-10",
+      "listing_prefix": "data/futures/um/daily/aggTrades/SOLUSDT/",
+      "missing_count": 0,
+      "missing_dates_or_months": [],
+      "non_dated_part_files": 1,
+      "retrieval_date_utc": "2026-09-11",
+      "zip_files": 2188
+    },
+    "SOLUSDT_monthly": {
+      "checksum_coverage": "FULL",
+      "checksum_files": 0,
+      "compressed_bytes_total": 14248870192,
+      "first_available": "2020-09",
+      "last_available": "2026-08",
+      "listing_prefix": "data/futures/um/monthly/aggTrades/SOLUSDT/",
+      "missing_count": 0,
+      "missing_dates_or_months": [],
+      "non_dated_part_files": 0,
+      "retrieval_date_utc": "2026-09-11",
+      "zip_files": 72
+    }
+  },
+  "bucket": "data.binance.vision (official Binance public data)",
+  "checkpoint": "ALPHA-DATA-ADMISSION-01",
+  "open_interest_metrics": {
+    "BTCUSDT_daily": {
+      "checksum_coverage": "FULL",
+      "checksum_files": 0,
+      "compressed_bytes_total": 25467697,
+      "first_available": "2020-09-01",
+      "last_available": "2026-09-10",
+      "listing_prefix": "data/futures/um/daily/metrics/BTCUSDT/",
+      "missing_count": 0,
+      "missing_dates_or_months": [],
+      "non_dated_part_files": 0,
+      "retrieval_date_utc": "2026-09-11",
+      "zip_files": 2201
+    },
+    "ETHUSDT_daily": {
+      "checksum_coverage": "FULL",
+      "checksum_files": 0,
+      "compressed_bytes_total": 20577894,
+      "first_available": "2021-12-01",
+      "last_available": "2026-09-10",
+      "listing_prefix": "data/futures/um/daily/metrics/ETHUSDT/",
+      "missing_count": 0,
+      "missing_dates_or_months": [],
+      "non_dated_part_files": 0,
+      "retrieval_date_utc": "2026-09-11",
+      "zip_files": 1745
+    },
+    "SOLUSDT_daily": {
+      "checksum_coverage": "FULL",
+      "checksum_files": 0,
+      "compressed_bytes_total": 19570801,
+      "first_available": "2021-12-01",
+      "last_available": "2026-09-10",
+      "listing_prefix": "data/futures/um/daily/metrics/SOLUSDT/",
+      "missing_count": 0,
+      "missing_dates_or_months": [],
+      "non_dated_part_files": 0,
+      "retrieval_date_utc": "2026-09-11",
+      "zip_files": 1745
+    }
+  },
+  "probe_type": "METADATA_LISTING_ONLY (no archive download)",
+  "retrieval_date_utc": "2026-09-11"
+}

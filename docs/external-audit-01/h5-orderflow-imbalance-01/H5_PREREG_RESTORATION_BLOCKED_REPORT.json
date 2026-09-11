@@ -1,0 +1,28 @@
+{
+  "_checkpoint": "H5-RESULT-INTEGRITY-RECONCILIATION-01 / P0",
+  "_command_attempted": [
+    "git rev-parse --verify c426b35^{commit}",
+    "git cat-file -e c426b35:docs/external-audit-01/h5-orderflow-imbalance-01/H5_MANIFEST.json",
+    "git ls-tree c426b35 -- docs/external-audit-01/h5-orderflow-imbalance-01/H5_MANIFEST.json"
+  ],
+  "_probe_result": "BLOCKED — git commands did not return usable output in the current environment. No authoritative git object read completed.",
+  "AUTHORITATIVE_COMMIT": "c426b35",
+  "AUTHORITATIVE_FILE_FOUND": false,
+  "AUTHORITATIVE_BLOB_SHA256": null,
+  "CONTAMINATED_SHA256": null,
+  "CONTAMINATED_DIFFERS_FROM_PREREG": null,
+  "INTERNAL_FINGERPRINT_VALID": null,
+  "RESTORATION_METHOD_USED": null,
+  "H5_PREREG_RESTORED": false,
+  "GIT_DIFF_AFTER_RESTORE": null,
+  "EXECUTION_RECORD_EXTERNALIZED": false,
+  "POST_EXECUTION_ANNOTATIONS_EXTERNALIZED": false,
+  "LEDGER_RECOVERY_LINK": "pending git probe and ledger read",
+  "DEF_H5_GOV_001": "CONFIRMED_UNRESOLVED",
+  "DEF_H5_GOV_002": "PENDING",
+  "H5_RESULT": "DISCOVERY_FAIL",
+  "H5_RERUNS": 0,
+  "FALSE_SUCCESS": 0,
+  "STATUS": "BLOCKED_PREREG_AUTHORITY",
+  "_rejection_note": "Do not use the contaminated working-tree H5_MANIFEST.json internal manifest_sha256 as restoration authority. Do not reconstruct the prereg blob from the contaminated file. Do not pretend restoration was completed. Recovery must be gated on a byte-identical authoritative blob from c426b35."
+}

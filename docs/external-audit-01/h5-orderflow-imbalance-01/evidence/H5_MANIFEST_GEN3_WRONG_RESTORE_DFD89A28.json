@@ -1,0 +1,31 @@
+{
+  "checkpoint": "H3-GOVERNANCE-RECONCILIATION-AND-H5-SELECTION-01",
+  "manifest_version": "1.0.0-frozen",
+  "created_utc": "2026-09-10",
+  "strategy_id": "H5-ORDERFLOW-IMBALANCE-CONTINUATION-01",
+  "spec_path": "docs/external-audit-01/h5-orderflow-imbalance-01/H5_SPEC.json",
+  "selection_record_path": "docs/external-audit-01/h5-orderflow-imbalance-01/H5_SELECTION_RATIONALE.md",
+  "prereg": {
+    "rule": "H5 execution commit MUST be strictly later than the commit containing this manifest; spec sha256 must be verified unchanged before execution",
+    "prereg_commit": "c426b35",
+    "spec_sha256": "c743fba4a2a589dc1c3a15c7cd48b1b6ddf80255b8a157ea4f7ef19cc2f81023",
+    "manifest_sha256": "29ececb759aff059282a0324b3b94b4bcd13b35b51060c6c742f2eaa48db0a86",
+    "dataset_declaration_sha256": "EMBEDDED (spec.data: committed frozen 12-field klines, frozen window, fingerprint_rule)",
+    "cost_model_sha256": "EMBEDDED (spec.cost_model: single leg, 10 bps RT, absolute semantics)",
+    "protocol_sha256": "EMBEDDED (spec.execution_protocol: ResearchExecutionLedger-gated exactly-once)",
+    "prereg_verified_utc": "2026-09-11T...",
+    "prereg_verified_by": "buffy-agent independent verification",
+    "prereg_verification_status": "PASS - spec unchanged, SHA256 matches"
+  },
+  "state_at_prereg": {
+    "_note": "Snapshot at preregistration time (c426b35)",
+    "h5_executions": 0,
+    "h5_backtests_run": 0,
+    "performance_observed": false
+  },
+  "next_checkpoint_contract": {
+    "verify_prereg_ordering": "H5 execution commit strictly after this prereg commit; spec sha256 unchanged; no parameter drift",
+    "execution_flow": "ledger.acquire -> ledger.start_attempt (durable) -> sync/PIT checks -> economic evaluation -> H5_EXECUTION_MARKER.json -> H5_RESULT.json -> ledger.finish_completed",
+    "forbidden_before_execution": ["parameter sweep", "threshold tuning", "window change", "performance peeking", "executing H2/H4 or any other hypothesis"]
+  }
+}

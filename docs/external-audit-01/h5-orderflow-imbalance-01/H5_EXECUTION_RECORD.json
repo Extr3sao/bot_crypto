@@ -1,0 +1,113 @@
+{
+  "_authority": "ResearchExecutionLedger (append-only, fsync'd). This file is a persisted summary artifact; on any conflict the ledger rows win.",
+  "checkpoint": "H5-RESULT-INTEGRITY-RECONCILIATION-02",
+  "generated_utc": "2026-09-11T11:38:05Z",
+  "generated_by": "buffy-agent (Freebuff)",
+  "experiment_id": "H5-ORDERFLOW-IMBALANCE-CONTINUATION-01",
+  "ledger_path": "docs/external-audit-01/h5-orderflow-imbalance-01/execution_ledger/research_execution_ledger.jsonl",
+  "ledger_rows": 4,
+  "prereg_commit": "c426b35",
+  "spec_sha256": "c743fba4a2a589dc1c3a15c7cd48b1b6ddf80255b8a157ea4f7ef19cc2f81023",
+  "dataset_sha256": "3cb2d6ec1298533d53da50f2b9cc2ec2ff770733d89c2a1aceed758b705ec0ad",
+  "protocol_sha256": "8452c0cfd6f6b71feca6736e66158f9e7105e7924fc2deba6879c7d0716b8e92",
+  "protocol_sha256_note": "Exactly the value the frozen runner derives (scripts/h5_run_exactly_once.py PROTOCOL_SHA256; reproduced independently at reconciliation): sha256 of sort_keys JSON {acquire:'atomic lock',started_before_evaluation:true,fsync:true,marker_before_result:true,exactly_once_ledger:true}. Ledger rows carry this value on all four rows.",
+  "economic_parameters_unchanged_from_prereg": true,
+  "failure_message_authority": "COMPLETE_DURABLE_LEDGER",
+  "counts": {
+    "economic_experiment_ids": 1,
+    "execution_attempts": 2,
+    "failed_attempts": 1,
+    "completed_attempts": 1
+  },
+  "attempts": [
+    {
+      "attempt_id": "H5-ORDERFLOW-IMBALANCE-CONTINUATION-01#a1",
+      "attempt_index": 1,
+      "state": "FAILED",
+      "started_at": "2026-09-10T22:57:03.993990+00:00",
+      "finished_at": "2026-09-10T22:57:09.304156+00:00",
+      "failure_reason_verbatim": "economic evaluation failed: too many values to unpack (expected 2)",
+      "recovered_by_attempt_id": "H5-ORDERFLOW-IMBALANCE-CONTINUATION-01#a2",
+      "recovered_by_note": "Recovery link established by governance reconciliation (a2 is the same-identity retry that completed); the ledger row itself has recovery_of_attempt_id=null (see gaps).",
+      "identity_consumed": false,
+      "result_sha256": null
+    },
+    {
+      "attempt_id": "H5-ORDERFLOW-IMBALANCE-CONTINUATION-01#a2",
+      "attempt_index": 2,
+      "state": "COMPLETED",
+      "started_at": "2026-09-10T22:57:25.458561+00:00",
+      "finished_at": "2026-09-10T22:57:30.931333+00:00",
+      "failure_reason": null,
+      "recovery_of_attempt_id": "H5-ORDERFLOW-IMBALANCE-CONTINUATION-01#a1",
+      "recovery_of_attempt_id_in_ledger_row": null,
+      "recovery_note": "Governance-reconciled value: a2 is the effective recovery of failed a1 on the same experiment identity (a1 failed before identity consumption). The durable ledger row records recovery_of_attempt_id=null; per append-only policy the row is NOT rewritten — this file and TRACK_B carry the reconciled link.",
+      "identity_consumed": true,
+      "result_sha256": "2427310dbed8445b1e39b1feaba7a8289918ab79a258f66b065da7cf2b7fe60f",
+      "result_sha256_verification": "matches sha256 of H5_RESULT.json (recomputed 2026-09-11): TRUE"
+    }
+  ],
+  "cross_artifact_anchoring": {
+    "H5_RESULT.json": {
+      "sha256": "2427310dbed8445b1e39b1feaba7a8289918ab79a258f66b065da7cf2b7fe60f",
+      "timestamp_utc": "2026-09-10T22:57:28.882769+00:00",
+      "attempt_id_field": "H5-ORDERFLOW-IMBALANCE-CONTINUATION-01#a2",
+      "anchored_in_ledger": true
+    },
+    "H5_EXECUTION_MARKER.json": {
+      "attempt_id": "H5-ORDERFLOW-IMBALANCE-CONTINUATION-01#a2",
+      "completed_at": "2026-09-10T22:57:30.915245+00:00",
+      "result_class": "DISCOVERY_FAIL",
+      "total_trades": 107,
+      "started_at_field": "empty (known artifact defect of the legacy marker schema; ledger STARTED rows are the durable proof of start ordering)"
+    },
+    "lock_file": "H5-ORDERFLOW-IMBALANCE-CONTINUATION-01.lock content '2026-09-10 22:57:30.917403+00:00' consistent with a2 completion instant"
+  },
+  "exactly_once_semantics": {
+    "ECONOMIC_EXPERIMENT_IDS": 1,
+    "EXECUTION_ATTEMPTS": 2,
+    "EVALUATION_ATTEMPTS": "UNKNOWN_NOT_PERSISTED",
+    "note": "Per H3_EXACTLY_ONCE_SEMANTICS_CORRECTION.md semantics, exactly-once certification requires exactly one evaluation execution. a1 failed INSIDE economic evaluation (failure_reason: economic evaluation failed) and a2 re-executed the evaluation; whether a1 completed its evaluation pass is not persisted, so EVALUATION_ATTEMPTS is 1-or-2 and cannot be certified as 1.",
+    "CERTIFY_EXACTLY_ONCE_H5": false,
+    "FUTURE_PROTOCOL_STATUS": "PASS (ledger durable STARTED-before-evaluation, append-only attempts, recovery links, atomic authority)"
+  },
+  "prior_artifact_discrepancies": [
+    {
+      "artifact": "H5_EXECUTION_RECORD.json (prior run v1, preserved at evidence/H5_EXECUTION_RECORD.PRIOR_RUN_v1.json)",
+      "field": "attempts[a1].started_at/completed_at",
+      "prior_value": "2026-09-10T22:55:57.528925+00:00 / 2026-09-10T22:55:57.547580+00:00",
+      "ledger_value": "2026-09-10T22:57:03.993990+00:00 / 2026-09-10T22:57:09.304156+00:00",
+      "resolution": "LEDGER WINS"
+    },
+    {
+      "artifact": "H5_EXECUTION_RECORD.json (prior run v1)",
+      "field": "attempts[a1].failure_reason",
+      "prior_value": "economic evaluation failed: ' trades, '",
+      "ledger_value": "economic evaluation failed: too many values to unpack (expected 2)",
+      "resolution": "LEDGER WINS; prior text likely a paraphrase of the same unpacking bug — original verbatim error IS available, so failure_message_authority=COMPLETE_DURABLE_LEDGER"
+    },
+    {
+      "artifact": "H5_EXECUTION_RECORD.json (prior run v1)",
+      "field": "protocol_sha256",
+      "prior_value": "4f63a6b11c7ddf31f3323c6e60e103e20cb04cf7f184a99d5b2b9349522ffa3d",
+      "ledger_and_runner_value": "8452c0cfd6f6b71feca6736e66158f9e7105e7924fc2deba6879c7d0716b8e92",
+      "resolution": "LEDGER + FROZEN RUNNER WINS; prior value unsupported by any retrievable evidence (provenance of 4f63a6b1 unknown, never verified)"
+    },
+    {
+      "artifact": "H5_EXECUTION_RECORD.json (prior run v1)",
+      "field": "attempts[a2].started_at/completed_at",
+      "prior_value": "2026-09-10T22:57:28.277869+00:00 / 2026-09-10T22:57:42.608115+00:00",
+      "ledger_value": "2026-09-10T22:57:25.458561+00:00 / 2026-09-10T22:57:30.931333+00:00",
+      "resolution": "LEDGER WINS (prior values look shifted toward H5_RESULT timestamp 22:57:28.88 and an unexplained 22:57:42 end)"
+    }
+  ],
+  "gaps_reconciled_here": [
+    "a1.recovered_by_attempt_id = H5-ORDERFLOW-IMBALANCE-CONTINUATION-01#a2 (governance-established)",
+    "a2.recovery_of_attempt_id = H5-ORDERFLOW-IMBALANCE-CONTINUATION-01#a1 (governance-established; ledger row retains null)",
+    "spec/dataset/protocol hash identity across a1 and a2 verified from ledger rows (spec_sha256 and protocol_sha256 identical on all 4 rows; dataset_sha256 empty on both — empty-dataset-fingerprint runner defect, actual dataset anchored via H5_RESULT.json dataset_sha256 = 3cb2d6ec...)"
+  ],
+  "H5_RESULT": "DISCOVERY_FAIL",
+  "H5_RERUNS": 0,
+  "FALSE_SUCCESS": 0,
+  "STATUS": "RECONCILED"
+}

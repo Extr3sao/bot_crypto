@@ -1,0 +1,53 @@
+{
+  "checkpoint": "ALPHA-DATA-ADMISSION-01",
+  "report": "SOURCE AUTHORITY — every external claim in this checkpoint is anchored to an official source; no blog/third-party source was used anywhere.",
+  "registry": "DATA_SOURCE_REGISTRY.json (this directory) is the authoritative registry for this checkpoint; legacy docs/external-audit-01/source_registry.json is PRESERVED UNTOUCHED because a prior-run H5 evidence artifact references it by path (evidence chain immutability).",
+  "license_separation": {
+    "TOOLING_LICENSE": "MIT (binance/binance-public-data GitHub tooling)",
+    "DATA_USAGE_TERMS": "Binance official public data terms (distinct from tooling license)",
+    "claimed_correctly_separated": true
+  },
+  "claim_evidence_register": [
+    {
+      "CLAIM": "aggTrades daily archive depth: BTCUSDT/ETHUSDT from 2019-12-31, SOLUSDT from 2020-09-14; 0 missing files through 2026-09-10",
+      "SOURCE": "SOURCE_BINANCE_VISION_USDM_AGGTRADES_DAILY",
+      "EVIDENCE": "DATA_ARCHIVE_COVERAGE_MATRIX.json (metadata-only S3 listing, 2026-09-11)",
+      "DECISION": "HISTORICAL_DEPTH 5/5 for trade flow"
+    },
+    {
+      "CLAIM": "OI metrics archive depth: BTCUSDT from 2020-09-01, ETHUSDT/SOLUSDT from 2021-12-01",
+      "SOURCE": "SOURCE_BINANCE_VISION_USDM_METRICS_DAILY",
+      "EVIDENCE": "DATA_ARCHIVE_COVERAGE_MATRIX.json (independent per-asset probes, NOT inferred)",
+      "DECISION": "HISTORICAL_DEPTH 4/5 for OI; no assumption of per-asset symmetry"
+    },
+    {
+      "CLAIM": "REST openInterestHist deep history is limited to ~30 days for USD-M",
+      "SOURCE": "SOURCE_BINANCE_USDM_OPEN_INTEREST_HIST_REST (official API, empirical probe)",
+      "EVIDENCE": "startTime 39 days old rejected with error -1130; recent window works (2026-09-11)",
+      "DECISION": "REST_DEEP_HISTORY=INSUFFICIENT; archive supersedes for research history"
+    },
+    {
+      "CLAIM": "Native OI metrics cadence is 5m (288 rows/day), not 15m",
+      "SOURCE": "SOURCE_BINANCE_VISION_USDM_METRICS_DAILY (raw files measured directly)",
+      "EVIDENCE": "OI_CADENCE_RECONCILIATION.json: uniform 300s deltas across all 21 sample files",
+      "DECISION": "DEF-DATA-OI-001 corrected everywhere (contracts, readers, quality engine, tests)"
+    },
+    {
+      "CLAIM": "aggTrades USD-M schema is 7 columns; is_buyer_maker semantics determine taker side",
+      "SOURCE": "SOURCE_BINANCE_PUBLIC_DATA_SCHEMA_DOCS (official binance-public-data README)",
+      "EVIDENCE": "schema frozen in src/trading_bot/research/data_contracts.py; taker-direction mapping tested",
+      "DECISION": "D2 contract frozen with schema authority; no inferred direction"
+    },
+    {
+      "CLAIM": "Official checksum sidecars (.CHECKSUM sha256) exist for both families",
+      "SOURCE": "SOURCE_BINANCE_PUBLIC_DATA_SCHEMA_DOCS + direct verification",
+      "EVIDENCE": "42/42 sample files verified PASS at ingestion; FULL checksum coverage in listings",
+      "DECISION": "provider mismatch / corrupt-file guards enforced in source_readers.py"
+    }
+  ],
+  "no_credentials_used": true,
+  "no_trading_calls_made": true,
+  "third_party_sources_used": 0,
+  "retrieval_date_utc": "2026-09-11",
+  "alpha_leakage": 0
+}

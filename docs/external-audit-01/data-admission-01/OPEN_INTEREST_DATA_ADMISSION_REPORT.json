@@ -1,0 +1,46 @@
+{
+  "checkpoint": "ALPHA-DATA-ADMISSION-01",
+  "family": "OPEN_INTEREST (position-stock metrics, native 5m cadence)",
+  "data_family_code": "DATA-FAMILY-B",
+  "source_id": "SOURCE_BINANCE_VISION_USDM_METRICS_DAILY",
+  "decision": "ADMIT",
+  "decision_basis": "Official deep archive (2020-09-01+), tiny storage footprint, perfect 5m grid quality, PIT-safe observation semantics. No cost limitation.",
+  "scorecard": {
+    "DATA_AUTHORITY": {"score": "5/5", "evidence": "official data.binance.vision metrics archive; official .CHECKSUM sha256 sidecars verified 21/21"},
+    "HISTORICAL_DEPTH": {"score": "4/5", "evidence": "BTCUSDT from 2020-09-01; ETHUSDT/SOLUSDT from 2021-12-01 (independently probed per asset, NOT inferred) through 2026-09-10; 0 missing files; dwarfs the ~30-day REST ceiling"},
+    "PIT_SAFETY": {"score": "5/5", "evidence": "observation-time (create_time) semantics; no interpolation; no forward-fill; REST deep-history insufficiency documented (error -1130 on 39-day-old window, empirically verified)"},
+    "QUALITY": {"score": "5/5", "evidence": "6,048 rows = 21 files x 288; exact 5m UTC grid (uniform 300s deltas); 0 duplicates; 0 missing intervals; monotonic after canonical sort; DEF-DATA-OI-001 cadence defect corrected"},
+    "INFORMATION_DISTINCTNESS": {"score": "YES", "evidence": "outstanding position-stock information, categorically distinct from transaction-flow information carried by OHLCV/trade flow (Track J, data-level only)"},
+    "COST": {"score": "5/5", "evidence": "full 3-symbol ~6-year history = ~66 MB compressed"},
+    "STORAGE": {"score": "5/5", "evidence": "same; 7-day sample = 42 files... 21 zips ~12KB/day each"},
+    "PORTABILITY": {"score": "5/5", "evidence": "plain zip+CSV + sha256 sidecars"}
+  },
+  "unit_authority": {
+    "UNIT_AUTHORITY": "OFFICIAL_DOCUMENTED",
+    "sum_open_interest": "open interest in BASE-ASSET units (e.g. BTC for BTCUSDT) per official binance-public-data README mapping for metrics files",
+    "sum_open_interest_value": "open interest notional in USDT",
+    "contract_mapping": "OpenInterestRecord.open_interest_contracts carries sum_open_interest (base-asset units); OpenInterestRecord.open_interest_value carries sum_open_interest_value (USDT). The two are never conflated; REST field names (sumOpenInterest/sumOpenInterestValue) map to the same semantics.",
+    "note": "REST_HISTORY_LIMIT (~30d) applies to /futures/data/openInterestHist; the archive is the deep source."
+  },
+  "limitations": [
+    "ETHUSDT/SOLUSDT history starts 2021-12-01 (shorter than trade-flow depth for those assets)",
+    "metrics are aggregate/cumulative snapshots at 5m cadence; no per-account or per-price-level breakdown",
+    "provider raw files are not row-sorted; canonical sort is part of the deterministic normalizer"
+  ],
+  "sample_evidence": {
+    "files": 21,
+    "rows_total": 6048,
+    "rows_per_symbol": {"BTCUSDT": 2016, "ETHUSDT": 2016, "SOLUSDT": 2016},
+    "native_cadence": "5m",
+    "expected_rows_per_complete_day": 288,
+    "window_utc": "2026-09-01/2026-09-07",
+    "official_checksum": "PASS (21/21)",
+    "quality_errors": 0,
+    "pit_within": "6048/6048",
+    "manifest": "data/processed/open_interest/DATASET_MANIFEST.json"
+  },
+  "rest_history_limit": "~30 days (EMPIRICALLY VERIFIED 2026-09-11: startTime 39 days old rejected with error -1130; recent window works)",
+  "archive_history": {"BTCUSDT": "2020-09-01 -> 2026-09-10", "ETHUSDT": "2021-12-01 -> 2026-09-10", "SOLUSDT": "2021-12-01 -> 2026-09-10"},
+  "retrieval_date_utc": "2026-09-11",
+  "alpha_leakage": 0
+}

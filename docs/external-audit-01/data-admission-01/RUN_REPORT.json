@@ -1,0 +1,56 @@
+{
+  "checkpoint": "ALPHA-DATA-ADMISSION-01 + HERMETIC-BASELINE-RECONCILIATION-01 + H5-GOVERNANCE-FINAL-CLOSURE",
+  "run_date_utc": "2026-09-11",
+  "actor": "buffy-agent (Freebuff)",
+  "branch": "feat/ma-2-specialist-opportunity-swarm",
+  "baseline_commit": "cb3de4f2e03d5ff51f2fdfb557af5392e29dd0dc",
+  "commits": {
+    "HERMETIC_FIX_COMMIT": "692286b",
+    "DATA_ADMISSION_COMMIT": "ec2483ff78d6ab39bf59e48cf5c609f68dba4804"
+  },
+  "tracks": {
+    "A_clean_baseline": "PASS — disposable worktree @ cb3de4f, clean, environment recorded",
+    "A1_settings": "PASS — HOST_ENVIRONMENT_CONTAMINATION proven (bybit->FAIL, unset/binance->PASS, garbage->FAIL at clean baseline); test made hermetic; 26/26 under all four adversarial envs",
+    "A2_dependency_closure": "PASS — UNTRACKED_IMPORTED_H5_SOURCE proven (guard correct, not an ordering artifact); H5 code family tracked @692286b; guard not weakened",
+    "A3_full_hermetic": "PASS — 1259 passed / 0 failed / 0 skipped @ ec2483f (no exclusions)",
+    "B1_executed_code": "COMPLETE semantics via pyc; EXECUTED_SOURCE_TEXT_AUTHORITY=INCOMPLETE (source edited 39s post-execution)",
+    "B2_conditional_derivation": "PASS — DERIVED_CONDITIONAL_PEARSON=0.6070166220125719 (61.91569544528234/102), label NOT_INDEPENDENT_RECOMPUTATION; bytecode-level formula proof",
+    "C_source_registry": "PASS — 6 official sources registered; legacy source_registry.json preserved untouched (referenced by H5 evidence chain)",
+    "D_trade_flow": "PASS — coverage proven per asset (BTC/ETH 2019-12-31+, SOL 2020-09-14+), 0 missing files; 7-day sample ingested",
+    "D1_cost": "FULL_BACKFILL=COST_REVIEW_REQUIRED (~101 GB compressed / ~455 GB uncompressed)",
+    "E_open_interest": "PASS — REST limit ~30d empirically verified (error -1130); archive BTC 2020-09-01+, ETH/SOL 2021-12-01+; 7-day sample ingested",
+    "F_quality_engine": "PASS — deterministic engine + adversarial tests (corrupt/missing/duplicate/schema/provider/PIT/future-mutation)",
+    "G_raw_normalized": "PASS — raw immutable, normalized deterministic, provenance (RAW_SOURCE_SHA256/NORMALIZER_VERSION/NORMALIZER_COMMIT/NORMALIZED_SHA256) complete",
+    "H_fingerprints": "PASS — A==B cross-run on full sample (42/42), C!=A sensitivity, order independence",
+    "I_alpha_leakage": "PASS — ALPHA_LEAKAGE=0 (code/report sweep: zero hits)",
+    "J_distinctness": "PASS — trade flow YES (event-level flow), OI YES (position stock); conceptual/data-level only",
+    "K_admission": "PASS — TRADE_FLOW=ADMIT_WITH_LIMITATIONS; OPEN_INTEREST=ADMIT",
+    "L_shadow": "WAIT — 11 captures, earliest maturity 2026-09-11T21:15Z > current UTC at check; mature-only rule enforced (0 resolved)",
+    "M_confirmation": "WAIT — CONF-EDGE-002-001 consumed=false executions=0, closes 2026-09-22T00:00Z; untouched",
+    "N_tests": "PASS — data-admission 22/22; settings matrix 26/26 x4; dependency guard 3/3; FULL hermetic 1259/0",
+    "O_evidence": "PASS — full report set in docs/external-audit-01/data-admission-01/ (+ H5 authority in h5 folder)"
+  },
+  "defects_registered": {
+    "DEF-DATA-OI-001": "SEMANTIC_DATA_CONTRACT_DEFECT — OI native cadence was 15m, actually 5m (288 rows/day); corrected everywhere; FIXED=true",
+    "prior_checkpoint": "PREVIOUS_CHECKPOINT_CANONICAL_STATUS corrected PASS -> REPAIR_REQUIRED, then resolved"
+  },
+  "hash_guards": {
+    "H5_RESULT_sha256": "2427310dbed8445b1e39b1feaba7a8289918ab79a258f66b065da7cf2b7fe60f",
+    "H5_RESULT_unchanged": true,
+    "H5_SPEC_sha256": "c743fba4a2a589dc1c3a15c7cd48b1b6ddf80255b8a157ea4f7ef19cc2f81023",
+    "H5_SPEC_unchanged": true,
+    "H5_MANIFEST_prereg_sha256": "29ececb759aff059282a0324b3b94b4bcd13b35b51060c6c742f2eaa48db0a86",
+    "H5_MANIFEST_unchanged_vs_c426b35": true
+  },
+  "invariants": {
+    "H6_CREATED": false,
+    "H5_RERUNS": 0,
+    "RISK_CHANGED": 0,
+    "PAPER_PROMOTIONS": 0,
+    "LIVE_TRADING_CALLS": 0,
+    "CREDENTIALS_USED": 0,
+    "FALSE_SUCCESS": 0,
+    "ADMITTED_DATA_FAMILIES": 2
+  },
+  "status": "PASS"
+}

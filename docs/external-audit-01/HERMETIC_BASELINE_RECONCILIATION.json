@@ -1,0 +1,75 @@
+{
+  "checkpoint": "ALPHA-DATA-ADMISSION-01 + HERMETIC-BASELINE-RECONCILIATION-01",
+  "generated_utc": "2026-09-11",
+  "previous_checkpoint_status_corrected": {
+    "previous_claim": "PASS with 1235 passed / 2 failed",
+    "corrected_status": "REPAIR_REQUIRED (FALSE_SUCCESS=0 policy: a green status with 2 unexplained failures is not PASS)",
+    "resolved_by": "this checkpoint — both failures root-caused, repaired, and proven"
+  },
+  "track_a_clean_baseline": {
+    "BASELINE_COMMIT": "cb3de4f2e03d5ff51f2fdfb557af5392e29dd0dc",
+    "worktree": ".worktrees/baseline-cb3de4f (detached, disposable)",
+    "clean_worktree_proven": true,
+    "environment": {
+      "PYTHON_VERSION": "3.11.15",
+      "PYTEST_VERSION": "9.1.1",
+      "UV_VERSION": "0.11.26",
+      "OS": "Windows (bash/Git Bash toolchain)"
+    },
+    "relevant_env_observed_on_host": {
+      "EXCHANGE_ID": "bybit (SET on host — contamination source)",
+      "EXCHANGE_SANDBOX": "SET (value not recorded)",
+      "EXCHANGE_API_KEY": "SET (value never read or recorded)",
+      "EXCHANGE_SECRET": "SET (value never read or recorded)",
+      "BINANCE_API_KEY": "SET (value never read or recorded)",
+      "BINANCE_SECRET": "SET (value never read or recorded)",
+      "PYTHONPATH": "not set on host; set to src explicitly for runs"
+    }
+  },
+  "track_a1_settings_root_cause": {
+    "ROOT_CAUSE": "HOST_ENVIRONMENT_CONTAMINATION",
+    "mechanism": "settings loader maps flat env aliases (EXCHANGE_ID -> exchange.id, etc.); the unit test did not control these, so a host EXCHANGE_ID=bybit overrode the Binance fixture",
+    "clean_baseline_adversarial_matrix": {
+      "bybit": "FAIL",
+      "unset": "PASS",
+      "binance": "PASS",
+      "garbage": "FAIL"
+    },
+    "verdict": "FAILURE_IS_HOST_ENV_CONTAMINATION (baseline code correct; test was not hermetic)",
+    "repair": "test neutralizes documented flat env aliases (monkeypatch.delenv) so it explicitly supplies the configuration it expects; application defaults unchanged",
+    "post_repair_matrix_main_tree": {
+      "unset": "26 passed",
+      "binance": "26 passed",
+      "bybit": "26 passed",
+      "garbage": "26 passed"
+    }
+  },
+  "track_a2_dependency_closure_root_cause": {
+    "ROOT_CAUSE": "UNTRACKED_IMPORTED_H5_SOURCE",
+    "mechanism": "src/trading_bot/research/h5_orderflow.py (plus runner/scripts and tests) existed as imported-but-untracked source from H5 execution; the guard correctly refuses imported modules that are not git-tracked (clean-checkout contract)",
+    "not_an_ordering_artifact": true,
+    "evidence": "full-suite failure lists only h5_orderflow.py; guard passes 3/3 in a clean worktree at cb3de4f (no H5 files); fails in main tree until files are tracked",
+    "repair": "H5 code family tracked in commit 692286b (scoped, code-only); guard NOT weakened",
+    "classification": "DEF-TEST-ISOLATION-001 CONFIRMED + FIXED (isolation defect was repo hygiene, not test order)"
+  },
+  "final_hermetic_gate": {
+    "FINAL_HERMETIC_PASSED": 1259,
+    "FINAL_HERMETIC_FAILED": 0,
+    "FINAL_HERMETIC_SKIPPED": 0,
+    "command": "env -u EXCHANGE_ID -u EXCHANGE_SANDBOX -u EXCHANGE_API_KEY -u EXCHANGE_SECRET -u BINANCE_API_KEY -u BINANCE_SECRET PYTHONPATH=src .venv/Scripts/python.exe -m pytest tests -q",
+    "FINAL_HERMETIC_COMMIT": "ec2483ff78d6ab39bf59e48cf5c609f68dba4804",
+    "duration_seconds": 176,
+    "exclusions": "NONE (no skips, no deselections, no pre-existing exceptions)"
+  },
+  "commits": {
+    "HERMETIC_FIX_COMMIT": "692286b",
+    "DATA_ADMISSION_COMMIT": "ec2483ff78d6ab39bf59e48cf5c609f68dba4804",
+    "note": "692286b = 4 H5 code-family files only; ec2483f = data-admission src/scripts/tests + hermetic settings repair"
+  },
+  "worktree_status": {
+    "tracked_code": "CLEAN — all imported src/trading_bot/** and tests tracked as of ec2483f",
+    "untracked_evidence": "docs/external-audit-01/**, docs/audit/**, data/raw/**, data/processed/** remain untracked BY DESIGN (evidence/raw-data are not code; report generated at checkpoint end, post-gate)",
+    "unrelated": "his.zip (pre-existing user archive, 2026-08-22, untouched)",
+    "claim": "NOT git-clean overall; tracked-code surface is clean and reproducible — stated explicitly per protocol"
+  }
+}
