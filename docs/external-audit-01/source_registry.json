@@ -1,0 +1,49 @@
+{
+  "source_registry": {
+    "dataset_authority": {
+      "name": "Binance USDM 1h klines - frozen committed dataset",
+      "commit": "c426b35",
+      "paths": {
+        "BTCUSDT": "docs/external-audit-01/h1-regime-transition-01/dataset/BTCUSDT_1h.jsonl",
+        "ETHUSDT": "docs/external-audit-01/h1-regime-transition-01/dataset/ETHUSDT_1h.jsonl",
+        "SOLUSDT": "docs/external-audit-01/h1-regime-transition-01/dataset/SOLUSDT_1h.jsonl"
+      },
+      "window": "2020-01-01T00:00:00Z -> 2026-09-09T00:00:00Z",
+      "frozen": true,
+      "fingerprint_rule": "sha256 per asset file recorded at execution; no synthetic rows"
+    },
+    "field_mapping": {
+      "description": "Binance USDM kline 12-field structure (api.binance.com)",
+      "authority": "https://binance-docs.github.io/apidocs/spot/en/#kline-candlestick-data",
+      "fields": [
+        {"index": 0, "name": "openTime", "type": "long", "unit": "ms", "notes": "Bar open timestamp"},
+        {"index": 1, "name": "open", "type": "float", "unit": "asset", "notes": "Open price"},
+        {"index": 2, "name": "high", "type": "float", "unit": "asset", "notes": "High price"},
+        {"index": 3, "name": "low", "type": "float", "unit": "asset", "notes": "Low price"},
+        {"index": 4, "name": "close", "type": "float", "unit": "asset", "notes": "Close price"},
+        {"index": 5, "name": "volume", "type": "float", "unit": "base", "notes": "Total traded base asset volume"},
+        {"index": 6, "name": "closeTime", "type": "long", "unit": "ms", "notes": "Bar close timestamp"},
+        {"index": 7, "name": "quoteVolume", "type": "float", "unit": "quote", "notes": "Total traded quote asset volume"},
+        {"index": 8, "name": "numberOfTrades", "type": "int", "unit": "count", "notes": "Total number of trades"},
+        {"index": 9, "name": "takerBuyBaseVolume", "type": "float", "unit": "base", "notes": "Taker buy base asset volume (aggressive buyer volume)"},
+        {"index": 10, "name": "takerBuyQuoteVolume", "type": "float", "unit": "quote", "notes": "Taker buy quote asset volume"},
+        {"index": 11, "name": "ignore", "type": "float", "unit": "-", "notes": "Ignore this field"}
+      ],
+      "critical_fields_for_h5": {
+        "volume": {"index": 5, "constraint": "volume >= 0"},
+        "numberOfTrades": {"index": 8, "constraint": "numberOfTrades >= 0"},
+        "takerBuyBaseVolume": {"index": 9, "constraint": "0 <= takerBuyBaseVolume <= volume"}
+      }
+    },
+    "validation_rules": {
+      "volume_non_negative": "volume >= 0",
+      "taker_buy_bounds": "0 <= takerBuyBaseVolume <= volume",
+      "numberOfTrades_non_negative": "numberOfTrades >= 0",
+      "timestamp_monotonic": "timestamps must be strictly increasing",
+      "no_duplicates": "no duplicate timestamps",
+      "no_future_timestamps": "data_time <= decision_time",
+      "no_divide_by_zero": "if volume == 0: NO_SIGNAL (OFI undefined)",
+      "bar_completion": "1h bar t is complete at close_time = openTime + 3600000 - 1ms"
+    }
+  }
+}
