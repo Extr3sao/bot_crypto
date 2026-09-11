@@ -8,7 +8,25 @@ import pytest
 
 from trading_bot.config import load_settings
 from trading_bot.config.runtime import TradingMode
-from trading_bot.config.settings import Settings
+from trading_bot.config.settings import FLAT_ENV_ALIASES, Settings
+
+
+@pytest.fixture(autouse=True)
+def _hermetic_process_env(monkeypatch: pytest.MonkeyPatch) -> None:
+    """BASE-02: make settings tests immune to the host process environment.
+
+    Every documented flat env alias (FLAT_ENV_ALIASES: EXCHANGE_ID,
+    EXCHANGE_SANDBOX, EXCHANGE_API_KEY, ...) is removed from the process env
+    for the duration of each test and restored afterwards (monkeypatch records
+    the prior value, including absence). Assertions in this module validate
+    the fixture YAML written by ``_write_minimal_config`` — a host
+    ``EXCHANGE_ID=bybit`` must never flip the ``exchange.id == "binance"``
+    assertion. Discovered via HERMETIC-BASELINE-RECONCILIATION-01 Track A1:
+    clean-baseline adversarial matrix proved
+    FAILURE_IS_HOST_ENV_CONTAMINATION, not a baseline defect.
+    """
+    for name in FLAT_ENV_ALIASES:
+        monkeypatch.delenv(name, raising=False)
 
 
 def _write_minimal_config(config_dir: Path) -> None:
