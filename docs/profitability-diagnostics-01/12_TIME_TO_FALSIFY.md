@@ -1,0 +1,8 @@
+# Time to falsify
+
+```json
+{
+  "H1_H3_H5": "UNKNOWN: this checkpoint did not reconstruct complete commit-to-result timelines.",
+  "recommendation": "persist idea/spec/data/discovery timestamps in one immutable ledger."
+}
+```

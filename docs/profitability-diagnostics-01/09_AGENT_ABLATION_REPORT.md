@@ -1,0 +1,8 @@
+# Agent ablation report
+
+```json
+{
+  "reason": "Persisted evidence lacks identical alternative outcomes and replay inputs.",
+  "status": "ABLATION_NOT_YET_EVALUABLE"
+}
+```

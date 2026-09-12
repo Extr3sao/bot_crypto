@@ -1,0 +1,12 @@
+# Risk value-add audit
+
+```json
+{
+  "counterfactual_expectancy": "UNKNOWN",
+  "risk_rejection_reasons": {
+    "AGENT_REJECT": 6,
+    "MAX_POSITIONS": 11
+  },
+  "verdict": "INSUFFICIENT_EVIDENCE"
+}
+```

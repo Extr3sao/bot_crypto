@@ -1,0 +1,11 @@
+# Complexity audit
+
+```json
+{
+  "findings": [
+    "Critic/MetaRanker/DecisionEngine are individually reachable but lack separated outcome evidence.",
+    "Verifier is essential integrity control, not measured economic filter.",
+    "Risk max-position gate has captures but no resolved outcomes."
+  ]
+}
+```

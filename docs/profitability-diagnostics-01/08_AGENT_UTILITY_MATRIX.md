@@ -1,0 +1,28 @@
+# Agent utility matrix
+
+```json
+{
+  "agents": [
+    {
+      "agent_id": "asset-specialists",
+      "classification": "KEEP_BUT_MEASURE",
+      "economic_evidence": "UNKNOWN"
+    },
+    {
+      "agent_id": "critic-counter-signal",
+      "classification": "KEEP_BUT_MEASURE",
+      "economic_evidence": "UNKNOWN"
+    },
+    {
+      "agent_id": "meta-ranker",
+      "classification": "KEEP_BUT_MEASURE",
+      "economic_evidence": "UNKNOWN"
+    },
+    {
+      "agent_id": "decision-verifier",
+      "classification": "KEEP",
+      "economic_evidence": "integrity only"
+    }
+  ]
+}
+```

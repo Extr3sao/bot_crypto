@@ -1,0 +1,84 @@
+# Runtime authority map
+
+```json
+{
+  "TEST_TARGET_EQUALS_RUNTIME_TARGET": "PARTIAL_FALSE: MA validation reports prove contracts; R2 reports prove runtime composition.",
+  "components": [
+    {
+      "classification": "RUNTIME_AUTHORITATIVE",
+      "component": "Market Data",
+      "evidence": "R2 launch: public binanceusdm OHLCV"
+    },
+    {
+      "classification": "RUNTIME_REACHABLE",
+      "component": "Market Intelligence",
+      "evidence": "poc02_runner composes asset context"
+    },
+    {
+      "classification": "RUNTIME_REACHABLE",
+      "component": "Asset Intelligence",
+      "evidence": "telemetry asset_assessments"
+    },
+    {
+      "classification": "RUNTIME_REACHABLE",
+      "component": "Strategy Router",
+      "evidence": "paper_cycle canonical path; telemetry strategy_evaluations"
+    },
+    {
+      "classification": "RUNTIME_AUTHORITATIVE",
+      "component": "Trade Proposal",
+      "evidence": "telemetry trade_proposals"
+    },
+    {
+      "classification": "RUNTIME_REACHABLE",
+      "component": "Agent Review / Critic",
+      "evidence": "telemetry debates and decision reasons"
+    },
+    {
+      "classification": "RUNTIME_REACHABLE",
+      "component": "MetaRanker",
+      "evidence": "poc02_runner DecisionEngine composition"
+    },
+    {
+      "classification": "RUNTIME_AUTHORITATIVE",
+      "component": "Decision Engine",
+      "evidence": "persisted decision events"
+    },
+    {
+      "classification": "RUNTIME_AUTHORITATIVE",
+      "component": "Independent Verifier",
+      "evidence": "persisted verifier=VERIFIED events"
+    },
+    {
+      "classification": "RUNTIME_AUTHORITATIVE",
+      "component": "Risk Engine",
+      "evidence": "risk.rejected and risk accept counters"
+    },
+    {
+      "classification": "RUNTIME_REACHABLE",
+      "component": "Portfolio",
+      "evidence": "open_positions persisted"
+    },
+    {
+      "classification": "RUNTIME_AUTHORITATIVE",
+      "component": "Execution / PaperBroker",
+      "evidence": "R2 launch authority and paper.position_opened"
+    },
+    {
+      "classification": "RUNTIME_REACHABLE",
+      "component": "Reconciliation",
+      "evidence": "poc02_r2_reconciliation script"
+    },
+    {
+      "classification": "RUNTIME_AUTHORITATIVE",
+      "component": "Shadow",
+      "evidence": "11 persisted capture records"
+    },
+    {
+      "classification": "DEAD_CODE",
+      "component": "Live execution",
+      "evidence": "launch state records live_calls=0 and real_broker_calls=0"
+    }
+  ]
+}
+```

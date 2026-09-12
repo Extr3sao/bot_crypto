@@ -1,0 +1,20 @@
+# Rejection reason analysis
+
+```json
+{
+  "classification": "MISSING_EVIDENCE for economic quality",
+  "observed": {
+    "AGENT_REJECT": 6,
+    "MAX_POSITIONS": 11
+  },
+  "taxonomy": [
+    "AGENT_REJECT",
+    "COOLDOWN",
+    "DATA_INVALID",
+    "DUPLICATE_INTENT",
+    "MAX_POSITIONS",
+    "STALE_DATA",
+    "OTHER"
+  ]
+}
+```

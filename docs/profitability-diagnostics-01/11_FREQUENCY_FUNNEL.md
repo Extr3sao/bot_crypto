@@ -1,0 +1,10 @@
+# Frequency funnel
+
+```json
+{
+  "observed_paper_orders": 6,
+  "primary_recorded_loss": "AGENT_REJECT and MAX_POSITIONS",
+  "root_cause": "UNKNOWN_ECONOMICALLY; evidence identifies frequency reduction but not whether it destroys edge.",
+  "target": ">=3 valid executions/day"
+}
+```

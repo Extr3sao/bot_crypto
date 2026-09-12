@@ -1,0 +1,31 @@
+{
+  "defects": [
+    {
+      "CLAIM": "Runtime funnel is fully measurable.",
+      "CONFIDENCE": "HIGH",
+      "DEFECT_ID": "PD-001",
+      "EVIDENCE": "Signals/router/critic/metaranker per-stage counts are absent.",
+      "IMPACT": "Cannot locate all frequency loss precisely.",
+      "RECOMMENDATION": "Persist one trace keyed by proposal/decision through every gate.",
+      "SOURCE": "R2 telemetry"
+    },
+    {
+      "CLAIM": "Risk and Shadow value are economically measurable.",
+      "CONFIDENCE": "HIGH",
+      "DEFECT_ID": "PD-002",
+      "EVIDENCE": "No authoritative outcomes for rejected candidates.",
+      "IMPACT": "No counterfactual expectancy or overfiltering claim is valid.",
+      "RECOMMENDATION": "Resolve existing captures only under the Shadow authority, then analyze immutable outcomes.",
+      "SOURCE": "11 Shadow captures; 0 resolved outcomes"
+    },
+    {
+      "CLAIM": "Agent layers add measured economic value.",
+      "CONFIDENCE": "HIGH",
+      "DEFECT_ID": "PD-003",
+      "EVIDENCE": "No matched selected/non-selected outcome series or ablation replay inputs.",
+      "IMPACT": "Complexity remains economically unproven.",
+      "RECOMMENDATION": "Persist deterministic proposal-set snapshots and decision latencies for future offline ablation.",
+      "SOURCE": "R2 persisted reports"
+    }
+  ]
+}

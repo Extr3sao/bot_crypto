@@ -1,0 +1,12 @@
+# Critic value-add audit
+
+```json
+{
+  "decision_reasons": {
+    "AGENT_REJECT": 6,
+    "MAX_POSITIONS": 11
+  },
+  "outcome_comparison": "UNKNOWN",
+  "verdict": "INSUFFICIENT_EVIDENCE"
+}
+```

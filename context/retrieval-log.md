@@ -230,3 +230,7 @@ FINAL_REPORT + ADR-0031. POC01 untouched (empty diff, committed + working tree).
 - Track D: Shadow 11 captures / 0 mature / 0 resolved (earliest 2026-09-11T21:15Z); POLICY_CONCLUSION=INSUFFICIENT_SAMPLE; Risk unchanged
 - Track E: REGIME_COVERAGE_GAP_REPORT.md addendum (order-flow regimes INSUFFICIENT_OBSERVATION with data authority: klines field 8/9 present in all three frozen assets)
 - Track F/G: H5 = H5-ORDERFLOW-IMBALANCE-CONTINUATION-01 selected performance-blind; H5_SPEC.json (H5_EXECUTIONS=0) + H5_MANIFEST.json + H5_SELECTION_RATIONALE.md frozen; no performance statistic observed
+
+## 2026-09-12 — PROFITABILITY-DIAGNOSTICS-01
+- agent=Codex action=read-only decision-funnel and multi-agent utility diagnostics artifacts=docs/profitability-diagnostics-01/, scripts/profitability_diagnostics/, specs/profitability-diagnostics-01/
+- Evidence source: persisted POC-02 R2 cycle ledger, intent ledger, launch/state records and Shadow captures. No H6 economics, risk/runtime changes, confirmation consumption, Shadow resolution, broker execution or protected-state mutation performed.
