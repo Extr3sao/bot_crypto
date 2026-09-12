@@ -1,0 +1,22 @@
+{
+  "H6_PREREG_COMMIT_V2": "ee58c7a5a0a46cf6af17dc9606118ef0f1fcd335",
+  "O_DATA_FREEZE_V2_COMMIT": "3f2e9c7",
+  "commit_timestamp": "2026-09-12T10:44:53+02:00",
+  "dataset_manifest_path": "docs/external-audit-01/oi-full-history-02/OI_FULL_HISTORY_DATASET_MANIFEST_V2.json",
+  "dataset_sha256": "16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99",
+  "manifest_path": "docs/external-audit-01/oi-full-history-02/H6_MANIFEST_V2.json",
+  "manifest_sha256": "5f9aba446686a32b94238cd5f7285742e53c4db551f0c2135df37837ac5fcf0d",
+  "note": "Post-commit record does NOT change prereg semantics; it annotates the commit identity externally.",
+  "parent_sha": "440d7e55f7efeb7838aab30cb0e17bb86f437b53",
+  "prereg_commit": "ee58c7a5a0a46cf6af17dc9606118ef0f1fcd335",
+  "price_authority_manifest_path": "docs/external-audit-01/oi-full-history-02/PRICE_1H_AUTHORITY_V2_MANIFEST.json",
+  "price_authority_sha256": "e1c2462a6aa9ba0c921154d259a28c49be1e2fc58a544dbd97af8ecabef52168",
+  "price_commit": "440d7e5",
+  "rationale_path": "docs/external-audit-01/oi-full-history-02/H6_SELECTION_RATIONALE_V2.md",
+  "rationale_sha256": "25aba49b182429038a08eb295d688914ca630fa858b347ad0f804d7ee64f1dff",
+  "spec_path": "docs/external-audit-01/oi-full-history-02/H6_SPEC_V2.json",
+  "spec_sha256": "221cfa1d6eb3dae30948e9605f258075c0cd69e8f38187da4959c3e696b8b000",
+  "tree_sha": "f8ceb17691f01c38dfd39d51b6c5fb6f1500cbba",
+  "whitelist_path": "docs/external-audit-01/oi-full-history-02/H6_FEATURE_AUTHORITY_WHITELIST_V2.json",
+  "whitelist_sha256": "e5383fa6b1cf7aa0577d47642662cf9c58e9ed5943bb53d174414186d9f8f450"
+}

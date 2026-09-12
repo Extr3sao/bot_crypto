@@ -1,0 +1,229 @@
+{
+  "artifact": "H6_EXTERNAL_VERIFIER_PACKAGE_V2 — self-contained inputs for a genuinely independent verifier (H6-PREREG-REPAIR-01 round 2)",
+  "generated_utc": "2026-09-12",
+  "builder_agent": "buffy-agent (Freebuff) — MUST NOT be the verifier; verifier must be a different agent/model/session",
+  "checkpoint": "H6-PREREG-REPAIR-01 + OI-DATASET-REFREEZE-02 + PIT-CAUSALITY-REPAIR-01 + PRICE-AUTHORITY-REPAIR-01 + CONFIRMATION-AUTHORITY-REPAIR-01",
+  "H6_PREREG_COMMIT_V2": "ee58c7a5a0a46cf6af17dc9606118ef0f1fcd335",
+  "OI_DATA_FREEZE_V2_COMMIT": "3f2e9c7715db0dedf51a63d71bac1a3f65a87605",
+  "PRICE_AUTHORITY_COMMIT": "440d7e55f7efeb7838aab30cb0e17bb86f437b53",
+  "old_prereg_commit_historical": "e683e04e5df39d0f2f5feb6097664536b93cc636 (FAILED_EXTERNAL_VERIFICATION, IMMUTABLE — never rewritten)",
+  "old_oi_freeze_commit_historical": "256bd5ec6b82242c0b52e70a96dcd19edda61aa7",
+  "repository_state_note": "verify against commit ee58c7a (or a descendant whose git diff vs ee58c7a is EMPTY for every V2 prereg artifact listed below). The three freeze/prereg commits are linear: 3f2e9c7 -> 440d7e5 -> ee58c7a.",
+  "artifacts_from_git_objects": {
+    "H6_SPEC_V2.json": {
+      "path": "docs/external-audit-01/oi-full-history-02/H6_SPEC_V2.json",
+      "sha256_from_git_object": "221cfa1d6eb3dae30948e9605f258075c0cd69e8f38187da4959c3e696b8b000",
+      "derivation": "git show ee58c7a:<path> | sha256sum"
+    },
+    "H6_MANIFEST_V2.json": {
+      "path": "docs/external-audit-01/oi-full-history-02/H6_MANIFEST_V2.json",
+      "sha256_from_git_object": "5f9aba446686a32b94238cd5f7285742e53c4db551f0c2135df37837ac5fcf0d",
+      "derivation": "git show ee58c7a:<path> | sha256sum"
+    },
+    "H6_SELECTION_RATIONALE_V2.md": {
+      "path": "docs/external-audit-01/oi-full-history-02/H6_SELECTION_RATIONALE_V2.md",
+      "sha256_from_git_object": "25aba49b182429038a08eb295d688914ca630fa858b347ad0f804d7ee64f1dff",
+      "derivation": "git show ee58c7a:<path> | sha256sum"
+    },
+    "H6_FAILED_MEMORY_COLLISION_REVIEW_V2.md": {
+      "path": "docs/external-audit-01/oi-full-history-02/H6_FAILED_MEMORY_COLLISION_REVIEW_V2.md",
+      "sha256_from_git_object": "1a4f134ec4224b1e0d2a1ea4335d16f6ddf77b6d868ef1a3b8774cc4cee4d84a",
+      "derivation": "git show ee58c7a:<path> | sha256sum"
+    },
+    "H6_MECHANISM_EVIDENCE_V2.md": {
+      "path": "docs/external-audit-01/oi-full-history-02/H6_MECHANISM_EVIDENCE_V2.md",
+      "sha256_from_git_object": "803549ce449f7b2d91c23d49cd195aa64a4927db5ea560aeec39b770adcd77f5",
+      "derivation": "git show ee58c7a:<path> | sha256sum"
+    },
+    "H6_FEATURE_AUTHORITY_WHITELIST_V2.json": {
+      "path": "docs/external-audit-01/oi-full-history-02/H6_FEATURE_AUTHORITY_WHITELIST_V2.json",
+      "sha256_from_git_object": "e5383fa6b1cf7aa0577d47642662cf9c58e9ed5943bb53d174414186d9f8f450",
+      "derivation": "git show ee58c7a:<path> | sha256sum"
+    },
+    "H6_PREREG_CONSISTENCY_AUDIT_V2.json": {
+      "path": "docs/external-audit-01/oi-full-history-02/H6_PREREG_CONSISTENCY_AUDIT_V2.json",
+      "sha256_from_git_object": "1780649edda74ccd6a099f483c7e62424ebd372b19f95c833d2fda82e8e05286",
+      "derivation": "git show ee58c7a:<path> | sha256sum; verdict must be PASS with CONTRADICTIONS_FOUND=0 UNRESOLVED_CONTRADICTIONS=[]"
+    },
+    "H6_PREREG_COMMIT_RECORD_V2.json": {
+      "path": "docs/external-audit-01/oi-full-history-02/H6_PREREG_COMMIT_RECORD_V2.json",
+      "role": "post-commit evidence (contains prereg commit identity); NOT part of prereg semantics; hashes inside must match git objects above",
+      "sha256": "recompute from working tree (post-commit)",
+      "note": "do not expect this file inside the prereg commit; it annotates the commit externally"
+    },
+    "OI_FULL_HISTORY_DATASET_MANIFEST_V2.json": {
+      "path": "docs/external-audit-01/oi-full-history-02/OI_FULL_HISTORY_DATASET_MANIFEST_V2.json",
+      "sha256_from_git_object": "24160d1c8eb42dc6feaaddabed469916898f27814c34d567b5533e54f15532ac",
+      "also_committed_at": "3f2e9c7 and ee58c7a ancestors via price commit ancestry",
+      "derivation": "git show <commit>:<path> | sha256sum (file is tracked)"
+    },
+    "OI_ARCHIVE_DAY_VALIDITY_LEDGER_V2.jsonl": {
+      "path": "docs/external-audit-01/oi-full-history-02/OI_ARCHIVE_DAY_VALIDITY_LEDGER_V2.jsonl",
+      "sha256_from_git_object": "bb2b43c27a88bf9fe3ec22573903a61007f046ddc1256b5caa3e788cba15e714",
+      "also_committed_at": "3f2e9c7",
+      "line_count_expected": 5691,
+      "note": "FORENSIC ONLY — must NOT gate decision eligibility"
+    },
+    "PRICE_1H_AUTHORITY_V2_MANIFEST.json": {
+      "path": "docs/external-audit-01/oi-full-history-02/PRICE_1H_AUTHORITY_V2_MANIFEST.json",
+      "sha256_from_git_object": "c7726cc1b64fed99a62bd0ef72f84677b3b31fd58cbad4aa63dec4c75f18c1e2",
+      "committed_at": "440d7e5"
+    },
+    "BTCUSDT_1h_v2.jsonl": {
+      "path": "docs/external-audit-01/oi-full-history-02/BTCUSDT_1h_v2.jsonl",
+      "committed_at": "440d7e5",
+      "note": "frozen 1h klines 2021-12-01..2026-09-10 for price authority"
+    },
+    "ETHUSDT_1h_v2.jsonl": {
+      "path": "docs/external-audit-01/oi-full-history-02/ETHUSDT_1h_v2.jsonl",
+      "committed_at": "440d7e5"
+    },
+    "SOLUSDT_1h_v2.jsonl": {
+      "path": "docs/external-audit-01/oi-full-history-02/SOLUSDT_1h_v2.jsonl",
+      "committed_at": "440d7e5"
+    }
+  },
+  "expected_fingerprints": {
+    "OI_FULL_HISTORY_DATASET_SHA256_V2": "16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99",
+    "OI_FULL_HISTORY_DATASET_SHA256": "16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99",
+    "PRICE_AUTHORITY_SHA256_V2": "e1c2462a6aa9ba0c921154d259a28c49be1e2fc58a544dbd97af8ecabef52168",
+    "H5_RESULT_SHA256": "2427310dbed8445b1e39b1feaba7a8289918ab79a258f66b065da7cf2b7fe60f",
+    "H5_MANIFEST_SHA256": "29ececb759aff059282a0324b3b94b4bcd13b35b51060c6c742f2eaa48db0a86",
+    "H5_SPEC_SHA256": "c743fba4a2a589dc1c3a15c7cd48b1b6ddf80255b8a157ea4f7ef19cc2f81023"
+  },
+  "canonical_semantics_v2": {
+    "experiment_id": 1,
+    "hypothesis_id": "H6-OI-CONFIRMED-CONTINUATION-02",
+    "spec_version": 2,
+    "mechanism": "OI_CONFIRMED_CONTINUATION (expansion-only; contraction => NO_TRADE; raw delta>0 AND z>=1 required)",
+    "assets": ["BTCUSDT", "ETHUSDT", "SOLUSDT"],
+    "common_window_utc": ["2021-12-01T00:00:00Z", "2026-09-10T23:59:59Z"],
+    "decision_timeframe": "1h (completed bucket close)",
+    "entry": "NEXT_HOUR_OPEN",
+    "exit": "NEXT_HOUR_CLOSE",
+    "primary_holding_horizon_hours": 1,
+    "stop": "NONE",
+    "cooldown": "NONE",
+    "decision_spacing": "NO COOLDOWN / ONE DECISION PER COMPLETED ASSET-HOUR",
+    "BASE_TOTAL_ROUND_TRIP_COST_BPS": 10,
+    "COST_SENSITIVITY_BPS": [0, 10, 20, 40],
+    "FUNDING_DISCOVERY_ACCOUNTING": "EXCLUDED_WITH_LIMITATION",
+    "funding_materiality_gate_before_promotion": true,
+    "MAX_ABS_DAILY_CORRELATION_TO_MOMENTUM_PROXY": 0.5,
+    "z_definition": "robust z = (delta_oi - rolling_median) / (1.4826 * rolling_MAD) over trailing 720 completed hourly changes, min 336 obs, MAD==0 => NO_SIGNAL; causal PIT",
+    "threshold_expansion": "delta_oi > 0 AND z_oi >= +1.0; else NO_TRADE",
+    "threshold_example_repaired": "median=-10 MAD=1 delta=-8 => z=1.349 but delta<0 => NO_TRADE (EXT-CONS-004)",
+    "minimum_N": {"per_asset": 30, "pooled": 100},
+    "H6_EXECUTIONS": 0,
+    "H6_BACKTESTS": 0,
+    "PERFORMANCE_OBSERVED": false
+  },
+  "defects_to_reverify": [
+    {
+      "id": "EXT-DATA-001",
+      "title": "Dataset fingerprint mismatch + BTCUSDT 2024-06-05 forensic",
+      "verifier_tasks": [
+        "recompute OI dataset fingerprint from committed ledger bytes (canonical JSON sorted by symbol/day) — expect 16779b7...",
+        "verify BTCUSDT 2024-06-05 normalized bytes match committed V2 bytes: bytes sha bcd3d849... (not 6a30f5... contaminated)",
+        "run OI_DATASET_V2_DETERMINISM_REPORT checks: per-file A==B and global A==B and sensitivity C!=A",
+        "verify TEST_DATASET_WRITE_FORBIDDEN guard exists in scripts/normalize_oi_full_history.py and tests use tmp_path only"
+      ]
+    },
+    {
+      "id": "EXT-PRICE-001",
+      "title": "Price authority missing 47 hours",
+      "verifier_tasks": [
+        "verify PRICE_1H_AUTHORITY_V2_MANIFEST shows 0 missing common-window hours per asset, expected 41880, covers_common_window=true",
+        "check BTCUSDT/ETHUSDT/SOLUSDT shards cover 2021-12-01T00:00Z..2026-09-10T23:00Z with no PRICE_AUTHORITY_CONFLICT on overlap at 2026-09-09T00:00Z"
+      ]
+    },
+    {
+      "id": "EXT-PIT-001",
+      "title": "Causality / future leak (valid_days_for)",
+      "verifier_tasks": [
+        "confirm oi_dataset_v2.py exposes oi_state_at / decision_eligibility_at_v2 with causal (record_time <= decision_time) and ledger marked forensic-only",
+        "run tests/unit/research/test_oi_full_history_v2_pit.py — all 12 must pass (non-vacuous baseline eligible, future-gap/mutation/file byte-identical at T, past-gap flips, etc.)"
+      ]
+    },
+    {
+      "id": "EXT-CONS-001",
+      "title": "Eight contradictions",
+      "verifier_tasks": [
+        "run scripts/h6_v2_consistency_audit.py — expect CONTRADICTIONS_FOUND=0 UNRESOLVED_CONTRADICTIONS=[] (60/60 dimensions)",
+        "spot-check H6_SPEC_V2 vs H6_MANIFEST_V2 vs supporting docs agree on mechanism/cooldown/holding/cost/MAD/expansion rule"
+      ]
+    },
+    {
+      "id": "EXT-CONS-002",
+      "title": "Package manifest SHA wrong (worktree vs git object)",
+      "verifier_tasks": [
+        "recompute all SHAs via git show ee58c7a:<path> (not working tree) and compare to H6_PREREG_COMMIT_RECORD_V2.json; git diff ee58c7a -- H6_SPEC_V2.json and H6_MANIFEST_V2.json must be EMPTY"
+      ]
+    },
+    {
+      "id": "EXT-CONS-004",
+      "title": "z>=1 alone allows raw OI contraction",
+      "verifier_tasks": [
+        "verify H6_SPEC_V2 threshold_rule requires delta_oi > 0 AND z>=1, feature_engine.py has raw-sign guard, and whitelist regression test blocks contraction case median=-10 MAD=1 delta=-8"
+      ]
+    },
+    {
+      "id": "EXT-CONF-001",
+      "title": "Confirmation consumed/executions lacks authoritative ledger",
+      "verifier_tasks": [
+        "confirm no pre-existing immutable ledger existed (search git log); verify CONFIRMATION_AUTHORITY_REPORT_V2 shows PRE_LEDGER_HISTORY=NOT_INDEPENDENTLY_PROVEN (honest limitation)",
+        "verify forward ledger docs/external-audit-01/oi-full-history-02/CONFIRMATION_LEDGER_V2.jsonl is append-only with LOCK_CHECK until 2026-09-22 and not consumed"
+      ]
+    },
+    {
+      "id": "FULL-HERMETIC-001",
+      "title": "Full hermetic: 1286 passed 1 timeout (test_non_get_methods_are_405)",
+      "verifier_tasks": [
+        "inspect src/trading_bot/paper_dashboard/server.py fix (2s timeout, POST drain, stop() join)",
+        "run 20 repetitions: .venv/Scripts/python.exe -m pytest tests/unit/paper_dashboard/test_server.py::test_non_get_methods_are_405 -q (expect 20/20)",
+        "run full hermetic: env -u EXCHANGE_ID ... PYTHONPATH=src .venv/Scripts/python.exe -m pytest tests -q (expect FAILED=0, no hidden skips)"
+      ]
+    }
+  ],
+  "test_commands_for_verifier": [
+    "PYTHONPATH=src .venv/Scripts/python.exe -m pytest tests/unit/research/test_oi_full_history_v2_pit.py -q   # PIT non-vacuous 12 passed",
+    "PYTHONPATH=src .venv/Scripts/python.exe -m pytest tests/unit/research/test_oi_full_history.py -q   # OI freeze + isolation (28 passed)",
+    ".venv/Scripts/python.exe scripts/h6_v2_consistency_audit.py   # expect PASS 60/60",
+    ".venv/Scripts/python.exe scripts/verify_h6_prereg.py  # if present; otherwise manual hash recompute above",
+    "for i in $(seq 1 20); do PYTHONPATH=src .venv/Scripts/python.exe -m pytest tests/unit/paper_dashboard/test_server.py::test_non_get_methods_are_405 -q || exit 1; done   # 20/20",
+    "env -u EXCHANGE_ID -u EXCHANGE_SANDBOX -u EXCHANGE_API_KEY -u EXCHANGE_SECRET -u BINANCE_API_KEY -u BINANCE_SECRET PYTHONPATH=src .venv/Scripts/python.exe -m pytest tests -q   # full hermetic FAILED=0"
+  ],
+  "forbidden_outcomes_for_verifier": [
+    "verifier mutates any V2 prereg artifact",
+    "verifier executes an economic H6 backtest or inspects H6 performance (PERFORMANCE_OBSERVED must remain false)",
+    "verifier accepts H6_EXECUTIONS>0 or H6_BACKTESTS>0",
+    "verifier claims H6_INDEPENDENT_VERIFICATION=PASS while any check above fails",
+    "verifier recomputes dataset fingerprint and obtains a value different from declared without concluding FAIL",
+    "verifier consumes CONF-EDGE-002-001 before 2026-09-22T00:00:00Z or executes it"
+  ],
+  "required_verdict_schema": {
+    "VERIFIER_ID": "string",
+    "VERIFIER_CONTEXT": "string (agent/model/session; MUST differ from builder buffy-agent)",
+    "PREREG_COMMIT_V2": "ee58c7a5a0a46cf6af17dc9606118ef0f1fcd335",
+    "SPEC_SHA256_V2": "221cfa1d6eb3dae30948e9605f258075c0cd69e8f38187da4959c3e696b8b000",
+    "MANIFEST_SHA256_V2": "5f9aba446686a32b94238cd5f7285742e53c4db551f0c2135df37837ac5fcf0d",
+    "DATASET_SHA256_V2": "16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99",
+    "PRICE_AUTHORITY_SHA256_V2": "e1c2462a6aa9ba0c921154d259a28c49be1e2fc58a544dbd97af8ecabef52168",
+    "PIT_RESULT": "PASS | FAIL",
+    "PERFORMANCE_CONTAMINATION": "false",
+    "DRIFT_RESULT": "NO_DRIFT | DRIFT_FOUND",
+    "DEFECT_REREVERIFY": {
+      "EXT-DATA-001": "PASS | FAIL",
+      "EXT-PRICE-001": "PASS | FAIL",
+      "EXT-PIT-001": "PASS | FAIL",
+      "EXT-CONS-001": "PASS | FAIL",
+      "EXT-CONS-002": "PASS | FAIL",
+      "EXT-CONS-004": "PASS | FAIL",
+      "EXT-CONF-001": "PASS | LIMITATION_EXPLICIT | FAIL",
+      "FULL-HERMETIC-001": "PASS | FAIL"
+    },
+    "TEST_RESULTS": "object with focused + full hermetic counts",
+    "FINAL_VERDICT": "PASS | FAIL | BLOCKED_INSUFFICIENT_EVIDENCE",
+    "NOTE": "Only FINAL_VERDICT=PASS allows H6_INDEPENDENT_VERIFICATION=PASS and opens H6-INDEPENDENT-IMPLEMENTATION-AND-DISCOVERY-01; otherwise H6 must NOT execute"
+  }
+}
