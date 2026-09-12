@@ -1,0 +1,92 @@
+{
+  "checkpoint": "H6-PREREG-REPAIR-01 + OI-DATASET-REFREEZE-02 + PIT-CAUSALITY-REPAIR-01 + PRICE-AUTHORITY-REPAIR-01",
+  "old_prereg_commit": "e683e04e5df39d0f2f5feb6097664536b93cc636",
+  "old_spec_sha": "f514fecf42b52d2e1c2946cac9dee94b2570d485cb236b9a6c663f46f5bbf148",
+  "old_manifest_sha": "345334c3107860a5adcc753f5b34976d2b4df9061de34a94507d2bd8f58752dc",
+  "external_verdict": "FAIL",
+  "defects": [
+    {
+      "defect_id": "EXT-DATA-001",
+      "claim": "The normalized OI dataset matches its frozen fingerprint.",
+      "old_evidence": "Verifier recomputed 5e2a10f7... vs declared 16779b7...; BTCUSDT 2024-06-05 normalized bytes/ledger disagree.",
+      "root_cause": "Synthetic unit-test artifact pollution: test_valid_day_classification wrote synthetic 100.0/5000.0 bytes with temp path into canonical data/processed/oi_full_history/BTCUSDT-oi-5m-2024-06-05.jsonl via default out_dir; no TEST_DATASET_WRITE_FORBIDDEN guard; ledger held clean bcd3d8... so global fingerprint diverged.",
+      "repair": "Isolated V2 root data/processed/oi_full_history_v2/ never reused; new normalizer scripts/normalize_oi_full_history_v2.py with fail-closed guard; both V1 and V2 normalizers patched to require out_dir=tmp_path under PYTEST_CURRENT_TEST; full 5691-file rebuild from raw authority into V2; per-file + global determinism A==B and sensitivity C!=A; contaminated V1 file restored to clean bytes.",
+      "tests": ["tests/unit/research/test_oi_full_history.py (patched isolation)", "tests/unit/research/test_oi_full_history_v2_pit.py::test_2024_06_05_contamination_never_reaches_canonical", "tests/unit/research/test_oi_full_history_v2_pit.py::test_test_isolation_guard_forbids_canonical_write"],
+      "execution_evidence": ["docs/external-audit-01/oi-full-history-02/EXT_DATA_001_FORENSIC_REPORT.json", "docs/external-audit-01/oi-full-history-02/EXT_DATA_001_FORENSIC_REPORT.md", "docs/external-audit-01/oi-full-history-02/OI_FULL_HISTORY_DATASET_MANIFEST_V2.json (sha 16779b7... recomputed clean)", "docs/external-audit-01/oi-full-history-02/OI_DATASET_V2_DETERMINISM_REPORT.json (A==B, C!=A)"],
+      "status": "PASS",
+      "OI_DATASET_SHA256_V2": "16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99"
+    },
+    {
+      "defect_id": "EXT-PRICE-001",
+      "claim": "Frozen price authority covers the H6 common window through 2026-09-10.",
+      "old_evidence": "All assets ended 2026-09-09T00:00Z; missing 47 required hours.",
+      "root_cause": "H1 frozen klines at cb3de4f covered only through 2026-09-09T00:00Z; common window required through 2026-09-10T23:00Z (41880 hourly buckets); 47 tail hours were simply not yet materialized.",
+      "repair": "Official Binance USDM 1h klines for 2026-09-09 and 2026-09-10 retrieved into data/raw/binance_um/klines_1h_ext/; scripts/build_price_authority_v2.py appends only missing hours with overlap byte/economic equality at 2026-09-09T00:00Z PASS and no PRICE_AUTHORITY_CONFLICT; V2 covers 2021-12-01T00:00Z..2026-09-10T23:00Z with MISSING_HOURS=0 per asset.",
+      "tests": ["PRICE_AUTHORITY_V2_REPORT.json continuity checks", "manual overlap verification byte/economic equality"],
+      "execution_evidence": ["docs/external-audit-01/oi-full-history-02/PRICE_1H_AUTHORITY_V2_MANIFEST.json (per-asset expected 41880 available 41880 missing 0)", "docs/external-audit-01/oi-full-history-02/PRICE_AUTHORITY_V2_REPORT.json", "data/processed/price_1h_v2/*_1h.jsonl (BTC 58680 ETH 58680 SOL 52505, last_open 1789081200000)"],
+      "status": "PASS",
+      "PRICE_AUTHORITY_SHA256_V2": "e1c2462a6aa9ba0c921154d259a28c49be1e2fc58a544dbd97af8ecabef52168"
+    },
+    {
+      "defect_id": "EXT-PIT-001",
+      "claim": "A later same-day gap cannot alter an earlier decision (timestamp-scoped PIT).",
+      "old_evidence": "Rows loaded only from ledger VALID days (valid_days_for/iter_oi_rows); later same-day missing snapshot invalidated whole day and removed observations at T; supplied harness was vacuous (could not reach eligible baseline).",
+      "root_cause": "V1 oi_dataset.py gated eligibility on final archive-day validity (VALID classification) instead of causal timestamp-scoped completeness; day-level knowledge leak.",
+      "repair": "New causal reader src/trading_bot/research/oi_dataset_v2.py with oi_state_at(symbol, decision_time) filtering record_time <= decision_time only, iter_oi_rows_v2 scanning filesystem shards (no ledger validity query), decision_eligibility_at_v2 requiring exactly 12 snapshots in current+previous hour, no conflicting duplicate <=T, rolling history >=336 via causal changes, staleness <=600s; V1 path annotated as forensic-only; non-vacuous adversarial tests A-G prove future-gap immunity and past-gap sensitivity.",
+      "tests": ["tests/unit/research/test_oi_full_history_v2_pit.py::test_pit_future_same_day_gap_does_not_change_T", "test_pit_future_mutation_does_not_change_T", "test_pit_future_file_addition_does_not_change_T", "test_pit_past_gap_before_T_may_change_eligibility", "test_pit_out_of_order_rows_canonical_state_unchanged", "test_pit_exact_duplicate_collapse_authorized", "test_pit_conflicting_duplicate_makes_ineligible"],
+      "execution_evidence": ["src/trading_bot/research/oi_dataset_v2.py", "docs/external-audit-01/oi-full-history-02/PIT_CAUSALITY_V2_REPORT.json (PASS)", "docs/external-audit-01/oi-full-history-02/PIT_CAUSALITY_V2_REPORT.md"],
+      "status": "PASS"
+    },
+    {
+      "defect_id": "EXT-CONS-001",
+      "claim": "Frozen H6 preregistration has one coherent contract (8 contradictions resolved).",
+      "old_evidence": "H6_EXTERNAL_CONSISTENCY_AUDIT.json recorded 8 unresolved contradictions across spec/rationale/manifest/whitelist.",
+      "root_cause": "V1 carried contradictory language (e.g., legacy cooldown/stop alternatives, cost decomposition ambiguity, price window vs execution timing drift) without a machine-checked canonicalization.",
+      "repair": "Canonicalized V2: mechanism OI_CONFIRMED_CONTINUATION, cooldown NONE, decision spacing one per completed asset-hour, holding exactly next 1h, entry next-hour OPEN exit same CLOSE, stop NONE, cost 10 bps total RT with sensitivity [0,10,20,40], rolling 30d median/1.4826*MAD with min 336, contraction NO_TRADE, orthogonality <=0.50, archive validity forensic-only; all V2 docs rewritten to agree literally; scripts/h6_v2_consistency_audit.py machine-checks 60 dimensions.",
+      "tests": ["scripts/h6_v2_consistency_audit.py -> CONTRADICTIONS_FOUND=0", "H6_PREREG_CONSISTENCY_AUDIT_V2.json"],
+      "execution_evidence": ["docs/external-audit-01/oi-full-history-02/H6_PREREG_CONSISTENCY_AUDIT_V2.json (0 unresolved)", "docs/external-audit-01/oi-full-history-02/H6_PREREG_CONSISTENCY_AUDIT_V2.md", "docs/external-audit-01/oi-full-history-02/H6_SPEC_V2.json (sha 221cfa1d6eb3...)", "docs/external-audit-01/oi-full-history-02/H6_MANIFEST_V2.json"],
+      "status": "PASS"
+    },
+    {
+      "defect_id": "EXT-CONS-002",
+      "claim": "The external verifier package has correct hashes (from Git object bytes).",
+      "old_evidence": "Declared manifest SHA differed from Git/worktree SHA.",
+      "root_cause": "Builder computed package SHA from mutable worktree file bytes without verifying against Git object store; worktree vs committed blob drift.",
+      "repair": "H6_EXTERNAL_VERIFIER_PACKAGE_V2 will be built post-prereg commit by reading bytes from Git objects (git show HEAD:<path> | sha256) for SPEC/MANIFEST/RATIONALE/WHITELIST and frozen dataset/price manifests; no worktree claims.",
+      "tests": ["H6_PREREG_COMMIT_V2 diff empty checks (git diff <commit> -- H6_SPEC_V2.json empty)"],
+      "execution_evidence": ["To be recorded in H6_EXTERNAL_VERIFIER_PACKAGE_V2.json post-commit; parent audit shows spec sha 221cfa1d... manifest sha 5f9aba44... consistent"],
+      "status": "PENDING_POST_COMMIT"
+    },
+    {
+      "defect_id": "EXT-CONS-004",
+      "claim": "z_oi >= 1 selects expansion only (raw OI contraction cannot qualify).",
+      "old_evidence": "With median -10 MAD 1, delta -8 gives z=1.349 and would pass without raw delta>0; contraction could generate trade despite NO_TRADE claim.",
+      "root_cause": "V1 frozen rule required only z_oi >= 1 without requiring delta_oi > 0; positive z from negative median/MAD allowed contraction to qualify.",
+      "repair": "H6 V2 requires BOTH delta_oi > 0 AND robust_z_oi >= 1.0; MAD==0 => NO_TRADE; contraction explicitly NO_TRADE; src/trading_bot/research/h6/feature_engine.py compute_signal implements raw-sign gate; docs and spec freeze example median=-10 MAD=1 delta=-8 -> NO_TRADE.",
+      "tests": ["tests/unit/research/test_oi_full_history_v2_pit.py::test_oi_sign_rule_blocks_contraction_even_when_z_would_pass (median -10 MAD 1 delta -8 => NO_TRADE, delta>0+z<1 NO_TRADE, UP+z>=1 LONG, DOWN+z>=1 SHORT)"],
+      "execution_evidence": ["src/trading_bot/research/h6/feature_engine.py (raw-sign guard)", "docs/external-audit-01/oi-full-history-02/H6_SPEC_V2.json threshold_rule expansion_condition_detail"],
+      "status": "PASS"
+    },
+    {
+      "defect_id": "EXT-CONF-001",
+      "claim": "Confirmation lock is independently evidenced (not just hard-coded declarations).",
+      "old_evidence": "Reports say consumed=false/executions=0 but source hard-codes them; no authoritative runtime consumption ledger found.",
+      "root_cause": "No append-only immutable ConfirmationExecutionLedger existed; confirmation state was only a report field, not a durable event log.",
+      "repair": "Full repository search found no prior authoritative ledger -> recorded PRE_LEDGER_CONFIRMATION_HISTORY=NOT_INDEPENDENTLY_PROVEN (honest limitation, not fabricated PASS); created forward-going append-only ledger docs/external-audit-01/oi-full-history-02/CONFIRMATION_LEDGER_V2.jsonl with schema confirmation_id/event_type/attempt_id/timestamp/commit/dataset/spec/status and events CREATED/STARTED/COMPLETED/FAILED/CONSUMED/LOCK_CHECK with exactly-once identifiers; bootstrap LOCK_CHECK emitted at 2026-09-12; lock remains until 2026-09-22T00:00Z.",
+      "tests": ["Confirmation ledger append-only validation (sha 18829090...)", "src/trading_bot/research/h6/conf_lock.py assert_confirmation_locked gate"],
+      "execution_evidence": ["docs/external-audit-01/oi-full-history-02/CONFIRMATION_AUTHORITY_REPORT_V2.json (LIMITATION_EXPLICIT historically, PASS forward)", "docs/external-audit-01/oi-full-history-02/CONFIRMATION_LEDGER_V2.jsonl"],
+      "status": "LIMITATION_EXPLICIT_FORWARD_ENFORCEMENT"
+    },
+    {
+      "defect_id": "FULL-HERMETIC-001",
+      "claim": "Full hermetic suite: 1286 passed 1 failed (dashboard timeout) is not green; must be  FAILED=0.",
+      "old_evidence": "tests/unit/paper_dashboard/test_server.py::test_non_get_methods_are_405 timed out under full suite; isolated repeat passed.",
+      "root_cause": "src/trading_bot/paper_dashboard/server.py had no socket timeout, _method_not_allowed did not drain request body, and stop() did not join thread or reset event; under full-suite parallelism the SSE handler thread and undrained POST body could briefly stall the next ephemeral server instance; race produced intermittent timeout (not mere latency).",
+      "repair": "Patched server: _Server.timeout=2.0, _method_not_allowed drains Content-Length, stop() does shutdown+server_close with suppress, joins thread with timeout, clears _stop event; idempotent.",
+      "tests": ["5/5 isolated repeats of test_non_get_methods_are_405 already PASS post-fix; need 20/20 + dashboard suite + full hermetic"],
+      "execution_evidence": ["src/trading_bot/paper_dashboard/server.py (patched)", "Repeated hermetic to be re-proved before final gate"],
+      "status": "REPAIR_APPLIED_PENDING_FULL_PROOF"
+    }
+  ],
+  "summary": {"total": 8, "PASS": 5, "LIMITATION_EXPLICIT": 1, "PENDING_POST_COMMIT": 1, "REPAIR_APPLIED_PENDING_FULL_PROOF": 1}
+}

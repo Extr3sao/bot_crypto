@@ -1,0 +1,470 @@
+{
+  "CONTRADICTIONS_FOUND": 0,
+  "CONTRADICTIONS_RESOLVED": [
+    "hypothesis_id",
+    "manifest hypothesis matches spec",
+    "spec_version",
+    "manifest spec_version",
+    "mechanism.name",
+    "mechanism family",
+    "assets",
+    "manifest assets match spec",
+    "window start",
+    "manifest window start",
+    "window end",
+    "decision_timeframe.bucket",
+    "manifest decision_timeframe",
+    "primary_holding_horizon",
+    "entry_timing",
+    "manifest entry",
+    "exit_timing",
+    "stop",
+    "manifest stop",
+    "cooldown",
+    "manifest cooldown",
+    "decision_spacing",
+    "cost canonical",
+    "manifest cost",
+    "cost definition single",
+    "cost sensitivity",
+    "funding policy",
+    "funding gate",
+    "orthogonality threshold",
+    "manifest orthogonality",
+    "z window",
+    "z min obs",
+    "z center",
+    "z scale",
+    "expansion requires delta>0 AND z>=1",
+    "manifest threshold_rule contains delta_oi",
+    "LONG direction",
+    "SHORT direction",
+    "NO_TRADE",
+    "H6_EXECUTIONS",
+    "manifest H6_EXECUTIONS",
+    "H6_BACKTESTS",
+    "PERFORMANCE_OBSERVED",
+    "oi dataset path V2",
+    "price authority template V2",
+    "price covers window",
+    "whitelist fields subset of spec oi whitelist",
+    "spec sha in manifest matches current spec bytes",
+    "rationale cost 10 bps",
+    "rationale orthogonality 0.50",
+    "rationale normalization median/MAD",
+    "rationale cooldown NONE",
+    "rationale V2 ledger",
+    "rationale raw-sign rule",
+    "failed review cooldown NONE",
+    "failed review archive forensic",
+    "failed review normalization",
+    "failed review funding",
+    "failed review cost 10",
+    "H5_RESULT_SHA256"
+  ],
+  "UNRESOLVED_CONTRADICTIONS": [],
+  "UNRESOLVED_FIELDS": [],
+  "artifact": "H6_PREREG_CONSISTENCY_AUDIT_V2 (machine-check)",
+  "checkpoint": "H6-PREREG-REPAIR-01 + OI-DATASET-REFREEZE-02",
+  "checks": [
+    {
+      "canonical": "H6-OI-CONFIRMED-CONTINUATION-02",
+      "dimension": "hypothesis_id",
+      "resolved": true,
+      "value": "H6-OI-CONFIRMED-CONTINUATION-02"
+    },
+    {
+      "canonical": "H6-OI-CONFIRMED-CONTINUATION-02",
+      "dimension": "manifest hypothesis matches spec",
+      "resolved": true,
+      "value": "H6-OI-CONFIRMED-CONTINUATION-02"
+    },
+    {
+      "canonical": 2,
+      "dimension": "spec_version",
+      "resolved": true,
+      "value": 2
+    },
+    {
+      "canonical": 2,
+      "dimension": "manifest spec_version",
+      "resolved": true,
+      "value": 2
+    },
+    {
+      "canonical": "OI_CONFIRMED_CONTINUATION",
+      "dimension": "mechanism.name",
+      "resolved": true,
+      "value": "OI_CONFIRMED_CONTINUATION"
+    },
+    {
+      "canonical": "position_stock_conditioning",
+      "dimension": "mechanism family",
+      "resolved": true,
+      "value": "position_stock_conditioning"
+    },
+    {
+      "canonical": [
+        "BTCUSDT",
+        "ETHUSDT",
+        "SOLUSDT"
+      ],
+      "dimension": "assets",
+      "resolved": true,
+      "value": [
+        "BTCUSDT",
+        "ETHUSDT",
+        "SOLUSDT"
+      ]
+    },
+    {
+      "canonical": [
+        "BTCUSDT",
+        "ETHUSDT",
+        "SOLUSDT"
+      ],
+      "dimension": "manifest assets match spec",
+      "resolved": true,
+      "value": [
+        "BTCUSDT",
+        "ETHUSDT",
+        "SOLUSDT"
+      ]
+    },
+    {
+      "canonical": "2021-12-01T00:00:00Z",
+      "dimension": "window start",
+      "resolved": true,
+      "value": "2021-12-01T00:00:00Z"
+    },
+    {
+      "canonical": "2021-12-01T00:00:00Z",
+      "dimension": "manifest window start",
+      "resolved": true,
+      "value": "2021-12-01T00:00:00Z"
+    },
+    {
+      "canonical": "2026-09-10T23:59:59Z",
+      "dimension": "window end",
+      "resolved": true,
+      "value": "2026-09-10T23:59:59Z"
+    },
+    {
+      "canonical": "1h",
+      "dimension": "decision_timeframe.bucket",
+      "resolved": true,
+      "value": "1h"
+    },
+    {
+      "canonical": "1h",
+      "dimension": "manifest decision_timeframe",
+      "resolved": true,
+      "value": "1h"
+    },
+    {
+      "canonical": 1,
+      "dimension": "primary_holding_horizon",
+      "resolved": true,
+      "value": 1
+    },
+    {
+      "canonical": "next 1h bar OPEN (the bar immediately after the decision hour)",
+      "dimension": "entry_timing",
+      "resolved": true,
+      "value": "next 1h bar OPEN (the bar immediately after the decision hour)"
+    },
+    {
+      "canonical": true,
+      "dimension": "manifest entry",
+      "resolved": true,
+      "value": true
+    },
+    {
+      "canonical": "same next 1h bar CLOSE",
+      "dimension": "exit_timing",
+      "resolved": true,
+      "value": "same next 1h bar CLOSE"
+    },
+    {
+      "canonical": "NONE in the primary H6 discovery test (no ATR stop, no signal-flip exit; trade management belongs to a later preregistered experiment)",
+      "dimension": "stop",
+      "resolved": true,
+      "value": "NONE in the primary H6 discovery test (no ATR stop, no signal-flip exit; trade management belongs to a later preregistered experiment)"
+    },
+    {
+      "canonical": "NONE",
+      "dimension": "manifest stop",
+      "resolved": true,
+      "value": "NONE"
+    },
+    {
+      "canonical": "NONE required: fixed 1h non-overlapping per-asset outcome definition (entry at next hour open, exit at that hour's close); secondary horizons are NOT computed and MAY NOT influence PASS/FAIL",
+      "dimension": "cooldown",
+      "resolved": true,
+      "value": "NONE required: fixed 1h non-overlapping per-asset outcome definition (entry at next hour open, exit at that hour's close); secondary horizons are NOT computed and MAY NOT influence PASS/FAIL"
+    },
+    {
+      "canonical": "NONE",
+      "dimension": "manifest cooldown",
+      "resolved": true,
+      "value": "NONE"
+    },
+    {
+      "canonical": "NO COOLDOWN / ONE DECISION PER COMPLETED ASSET-HOUR",
+      "dimension": "decision_spacing",
+      "resolved": true,
+      "value": "NO COOLDOWN / ONE DECISION PER COMPLETED ASSET-HOUR"
+    },
+    {
+      "canonical": 10,
+      "dimension": "cost canonical",
+      "resolved": true,
+      "value": 10
+    },
+    {
+      "canonical": 10,
+      "dimension": "manifest cost",
+      "resolved": true,
+      "value": 10
+    },
+    {
+      "canonical": "10 bps is the TOTAL modeled round-trip trading friction (single canonical number; not decomposed into per-side fees/slippage)",
+      "dimension": "cost definition single",
+      "resolved": true,
+      "value": "10 bps is the TOTAL modeled round-trip trading friction (single canonical number; not decomposed into per-side fees/slippage)"
+    },
+    {
+      "canonical": [
+        0,
+        10,
+        20,
+        40
+      ],
+      "dimension": "cost sensitivity",
+      "resolved": true,
+      "value": [
+        0,
+        10,
+        20,
+        40
+      ]
+    },
+    {
+      "canonical": "EXCLUDED_WITH_LIMITATION",
+      "dimension": "funding policy",
+      "resolved": true,
+      "value": "EXCLUDED_WITH_LIMITATION"
+    },
+    {
+      "canonical": true,
+      "dimension": "funding gate",
+      "resolved": true,
+      "value": true
+    },
+    {
+      "canonical": 0.5,
+      "dimension": "orthogonality threshold",
+      "resolved": true,
+      "value": 0.5
+    },
+    {
+      "canonical": 0.5,
+      "dimension": "manifest orthogonality",
+      "resolved": true,
+      "value": 0.5
+    },
+    {
+      "canonical": 720,
+      "dimension": "z window",
+      "resolved": true,
+      "value": 720
+    },
+    {
+      "canonical": 336,
+      "dimension": "z min obs",
+      "resolved": true,
+      "value": 336
+    },
+    {
+      "canonical": "median",
+      "dimension": "z center",
+      "resolved": true,
+      "value": "median"
+    },
+    {
+      "canonical": "1.4826*MAD",
+      "dimension": "z scale",
+      "resolved": true,
+      "value": "1.4826*MAD"
+    },
+    {
+      "canonical": "delta_oi > 0 AND z_oi >= +1.0",
+      "dimension": "expansion requires delta>0 AND z>=1",
+      "resolved": true,
+      "value": "delta_oi > 0 AND z_oi >= +1.0"
+    },
+    {
+      "canonical": true,
+      "dimension": "manifest threshold_rule contains delta_oi",
+      "resolved": true,
+      "value": true
+    },
+    {
+      "canonical": "price UP (close > open) AND delta_oi > 0 AND z_oi >= +1.0",
+      "dimension": "LONG direction",
+      "resolved": true,
+      "value": "price UP (close > open) AND delta_oi > 0 AND z_oi >= +1.0"
+    },
+    {
+      "canonical": "price DOWN (close < open) AND delta_oi > 0 AND z_oi >= +1.0",
+      "dimension": "SHORT direction",
+      "resolved": true,
+      "value": "price DOWN (close < open) AND delta_oi > 0 AND z_oi >= +1.0"
+    },
+    {
+      "canonical": "delta_oi <= 0, or z_oi < +1.0, or price close == open, or any NO_SIGNAL condition",
+      "dimension": "NO_TRADE",
+      "resolved": true,
+      "value": "delta_oi <= 0, or z_oi < +1.0, or price close == open, or any NO_SIGNAL condition"
+    },
+    {
+      "canonical": 0,
+      "dimension": "H6_EXECUTIONS",
+      "resolved": true,
+      "value": 0
+    },
+    {
+      "canonical": 0,
+      "dimension": "manifest H6_EXECUTIONS",
+      "resolved": true,
+      "value": 0
+    },
+    {
+      "canonical": 0,
+      "dimension": "H6_BACKTESTS",
+      "resolved": true,
+      "value": 0
+    },
+    {
+      "canonical": false,
+      "dimension": "PERFORMANCE_OBSERVED",
+      "resolved": true,
+      "value": false
+    },
+    {
+      "canonical": "data/processed/oi_full_history_v2/",
+      "dimension": "oi dataset path V2",
+      "resolved": true,
+      "value": "data/processed/oi_full_history_v2/"
+    },
+    {
+      "canonical": "data/processed/price_1h_v2/{ASSET}_1h.jsonl",
+      "dimension": "price authority template V2",
+      "resolved": true,
+      "value": "data/processed/price_1h_v2/{ASSET}_1h.jsonl"
+    },
+    {
+      "canonical": true,
+      "dimension": "price covers window",
+      "resolved": true,
+      "value": true
+    },
+    {
+      "canonical": [
+        "sum_open_interest",
+        "sum_open_interest_value"
+      ],
+      "dimension": "whitelist fields subset of spec oi whitelist",
+      "resolved": true,
+      "value": [
+        "sum_open_interest",
+        "sum_open_interest_value"
+      ]
+    },
+    {
+      "canonical": "221cfa1d6eb3dae30948e9605f258075c0cd69e8f38187da4959c3e696b8b000",
+      "dimension": "spec sha in manifest matches current spec bytes",
+      "resolved": true,
+      "value": "221cfa1d6eb3dae30948e9605f258075c0cd69e8f38187da4959c3e696b8b000"
+    },
+    {
+      "canonical": true,
+      "dimension": "rationale cost 10 bps",
+      "resolved": true,
+      "value": true
+    },
+    {
+      "canonical": true,
+      "dimension": "rationale orthogonality 0.50",
+      "resolved": true,
+      "value": true
+    },
+    {
+      "canonical": true,
+      "dimension": "rationale normalization median/MAD",
+      "resolved": true,
+      "value": true
+    },
+    {
+      "canonical": true,
+      "dimension": "rationale cooldown NONE",
+      "resolved": true,
+      "value": true
+    },
+    {
+      "canonical": true,
+      "dimension": "rationale V2 ledger",
+      "resolved": true,
+      "value": true
+    },
+    {
+      "canonical": true,
+      "dimension": "rationale raw-sign rule",
+      "resolved": true,
+      "value": true
+    },
+    {
+      "canonical": true,
+      "dimension": "failed review cooldown NONE",
+      "resolved": true,
+      "value": true
+    },
+    {
+      "canonical": true,
+      "dimension": "failed review archive forensic",
+      "resolved": true,
+      "value": true
+    },
+    {
+      "canonical": true,
+      "dimension": "failed review normalization",
+      "resolved": true,
+      "value": true
+    },
+    {
+      "canonical": true,
+      "dimension": "failed review funding",
+      "resolved": true,
+      "value": true
+    },
+    {
+      "canonical": true,
+      "dimension": "failed review cost 10",
+      "resolved": true,
+      "value": true
+    },
+    {
+      "canonical": "2427310dbed8445b1e39b1feaba7a8289918ab79a258f66b065da7cf2b7fe60f",
+      "dimension": "H5_RESULT_SHA256",
+      "resolved": true,
+      "value": "2427310dbed8445b1e39b1feaba7a8289918ab79a258f66b065da7cf2b7fe60f"
+    }
+  ],
+  "commit_allowed": true,
+  "dimensions_checked": 60,
+  "manifest_path": "docs/external-audit-01/oi-full-history-02/H6_MANIFEST_V2.json",
+  "manifest_sha256": "5f9aba446686a32b94238cd5f7285742e53c4db551f0c2135df37837ac5fcf0d",
+  "spec_path": "docs/external-audit-01/oi-full-history-02/H6_SPEC_V2.json",
+  "spec_sha256": "221cfa1d6eb3dae30948e9605f258075c0cd69e8f38187da4959c3e696b8b000",
+  "verdict": "PASS"
+}

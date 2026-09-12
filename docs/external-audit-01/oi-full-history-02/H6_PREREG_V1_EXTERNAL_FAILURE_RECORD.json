@@ -1,0 +1,20 @@
+{
+  "old_prereg_commit": "e683e04e5df39d0f2f5feb6097664536b93cc636",
+  "old_oi_freeze_commit": "256bd5ec6b82242c0b52e70a96dcd19edda61aa7",
+  "old_spec_sha": "f514fecf42b52d2e1c2946cac9dee94b2570d485cb236b9a6c663f46f5bbf148",
+  "old_manifest_sha": "345334c3107860a5adcc753f5b34976d2b4df9061de34a94507d2bd8f58752dc",
+  "old_dataset_sha_declared": "16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99",
+  "old_dataset_sha_actual": "5e2a10f7bee5b83bd30bc9c716f027f28f5a971d69a93753f72749ce0d74b4ae",
+  "external_verdict": "FAIL",
+  "external_verification_report": "docs/external-audit-01/oi-full-history-01/H6_EXTERNAL_VERIFICATION_REPORT.json",
+  "verification_utc": "2026-09-12T07:14:14Z",
+  "verifier": "Codex independent external verifier (/root)",
+  "defect_ids": ["EXT-DATA-001", "EXT-PRICE-001", "EXT-PIT-001", "EXT-CONS-001", "EXT-CONS-002", "EXT-CONS-004", "EXT-CONF-001", "FULL-HERMETIC-001"],
+  "status": "FAILED_EXTERNAL_VERIFICATION",
+  "immutability": "OLD_H6_PREREG V1 is immutable historical evidence; never rewritten; remains at e683e04",
+  "H6_EXECUTIONS": 0,
+  "H6_BACKTESTS": 0,
+  "PERFORMANCE_OBSERVED": false,
+  "FALSE_SUCCESS": 0,
+  "note": "V1 failure is preserved as governance evidence. V2 is a new clean preregistration with different identity H6-OI-CONFIRMED-CONTINUATION-02 / spec_version 2."
+}

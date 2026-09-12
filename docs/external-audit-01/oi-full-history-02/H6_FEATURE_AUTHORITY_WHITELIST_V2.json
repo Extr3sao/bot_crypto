@@ -1,0 +1,22 @@
+{
+  "checkpoint": "OI-DATASET-REFREEZE-02 + H6-HYPOTHESIS-SELECTION-AND-PREREG-V2",
+  "artifact": "H6 feature authority whitelist V2 (Track C V2)",
+  "frozen_before": "any H6 preregistration V2, feature computation on real data, or performance inspection",
+  "dataset_scope": "OI full history V2 (schema 2.0.1) + price authority V2 for context",
+  "ALLOWED_FIELDS": [
+    {"field": "sum_open_interest", "unit": "BASE_ASSET_UNITS", "source": "SOURCE_BINANCE_VISION_USDM_METRICS_DAILY", "role": "OI level (position stock)"},
+    {"field": "sum_open_interest_value", "unit": "USDT_NOTIONAL", "source": "SOURCE_BINANCE_VISION_USDM_METRICS_DAILY", "role": "OI notional (position stock)"},
+    {"field": "price_open_high_low_close_volume_1h", "unit": "PRICE/VOLUME", "source": "price authority V2 (PRICE_1H_AUTHORITY_V2_MANIFEST.json, covers common window fully 2021-12-01->2026-09-10)", "role": "market context only"}
+  ],
+  "FORBIDDEN_FIELDS_FOR_H6": [
+    "count_toptrader_long_short_ratio",
+    "sum_toptrader_long_short_ratio",
+    "count_long_short_ratio",
+    "sum_taker_long_short_vol_ratio"
+  ],
+  "FORBIDDEN_REASON": "prevent post-hoc feature expansion; these fields were not admitted by a data-admission checkpoint",
+  "static_field_authority_checks": "Implemented in src/trading_bot/research/h6/whitelist.py::assert_field_allowed / H6FieldAccess (fail-closed; H6_FORBIDDEN_FEATURE_ACCESS on any forbidden or non-whitelisted field outside row metadata)",
+  "runtime_accessor": "src/trading_bot/research/h6/whitelist.py::H6FieldAccess / check_row_whitelist",
+  "whitelist_change_policy": "adding any field requires a separate data-admission checkpoint BEFORE hypothesis selection; no whitelist edits after prereg commit V2",
+  "frozen_utc": "2026-09-12"
+}

@@ -1,0 +1,90 @@
+{
+  "experiment_id": 1,
+  "hypothesis_id": "H6-OI-CONFIRMED-CONTINUATION-02",
+  "checkpoint": "H6-PREREG-REPAIR-01 + OI-DATASET-REFREEZE-02 + PIT-CAUSALITY-REPAIR-01 + PRICE-AUTHORITY-REPAIR-01",
+  "spec_version": 2,
+  "preregistered_utc": "2026-09-12",
+  "status_at_prereg": "PREREGISTERED_NOT_EXECUTED",
+  "H6_EXECUTIONS": 0,
+  "H6_BACKTESTS": 0,
+  "PERFORMANCE_OBSERVED": false,
+  "spec": {
+    "path": "docs/external-audit-01/oi-full-history-02/H6_SPEC_V2.json",
+    "sha256": "221cfa1d6eb3dae30948e9605f258075c0cd69e8f38187da4959c3e696b8b000",
+    "previous_spec_sha256_v1": "f514fecf42b52d2e1c2946cac9dee94b2570d485cb236b9a6c663f46f5bbf148 (IMMUTABLE historical; not overwritten)"
+  },
+  "dataset": {
+    "oi_full_history_v2": {
+      "path": "data/processed/oi_full_history_v2/",
+      "manifest_path": "data/processed/oi_full_history_v2/OI_FULL_HISTORY_DATASET_MANIFEST_V2.json",
+      "manifest_committed_copy": "docs/external-audit-01/oi-full-history-02/OI_FULL_HISTORY_DATASET_MANIFEST_V2.json",
+      "manifest_sha256": "24160d1c8eb42dc6feaaddabed469916898f27814c34d567b5533e54f15532ac",
+      "ledger_path": "data/processed/oi_full_history_v2/OI_ARCHIVE_DAY_VALIDITY_LEDGER_V2.jsonl",
+      "ledger_committed_copy": "docs/external-audit-01/oi-full-history-02/OI_ARCHIVE_DAY_VALIDITY_LEDGER_V2.jsonl",
+      "ledger_sha256": "bb2b43c27a88bf9ff334fa5adcc753f5b34976d2b4df9061de34a94507d2bd8f58752dc",
+      "OI_FULL_HISTORY_DATASET_SHA256_V2": "16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99",
+      "OI_FULL_HISTORY_DATASET_SHA256": "16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99",
+      "quality_status": "PASS_WITH_EXPLICIT_GAPS",
+      "valid_days_total": 5596,
+      "valid_days_common_window_all_symbols": 1732,
+      "normalizer_commit": "derived-at-v2-freeze",
+      "normalizer_version": "2.1.0",
+      "schema_version": "2.0.1",
+      "determinism": "A==B per-file and global; C!=A sensitivity PASS (see OI_DATASET_V2_DETERMINISM_REPORT.json)",
+      "legacy_v1_fingerprint": "16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99 (V1 declared) vs 5e2a10f7bee5b83bd30bc9c716f027f28f5a971d69a93753f72749ce0d74b4ae (V1 actual bytes due to single-file contamination); V2 rebuild proves clean bytes now match declared legacy value"
+    },
+    "price_authority_v2": {
+      "path_template": "data/processed/price_1h_v2/{ASSET}_1h.jsonl",
+      "manifest_path": "docs/external-audit-01/oi-full-history-02/PRICE_1H_AUTHORITY_V2_MANIFEST.json",
+      "manifest_sha256": "c7726cc1b64fed99a62bd0ef72f84677b3b31fd58cbad4aa63dec4c75f18c1e2",
+      "PRICE_AUTHORITY_SHA256_V2": "e1c2462a6aa9ba0c921154d259a28c49be1e2fc58a544dbd97af8ecabef52168",
+      "covers_common_window": true,
+      "expected_hours_per_asset": 41880,
+      "missing_hours_per_asset": 0,
+      "overlap_verification": "PASS at 2026-09-09T00:00Z byte/economic equality for all three assets; no PRICE_AUTHORITY_CONFLICT"
+    },
+    "field_whitelist": {
+      "path": "docs/external-audit-01/oi-full-history-02/H6_FEATURE_AUTHORITY_WHITELIST_V2.json",
+      "sha256": "e5383fa6b1cf7aa0577d47642662cf9c58e9ed5943bb53d174414186d9f8f450"
+    }
+  },
+  "common_window_utc": ["2021-12-01T00:00:00Z", "2026-09-10T23:59:59Z"],
+  "assets": ["BTCUSDT", "ETHUSDT", "SOLUSDT"],
+  "decision_timeframe": "1h",
+  "entry_timing": "NEXT_HOUR_OPEN",
+  "exit_timing": "NEXT_HOUR_CLOSE",
+  "stop": "NONE",
+  "cooldown": "NONE",
+  "threshold_rule": "PIT_ROLLING_DISTRIBUTION (robust z_oi = (delta_oi - rolling_median)/(1.4826*rolling_MAD) over trailing 720 completed hourly changes, min 336 observations; qualifying expansion requires delta_oi > 0 AND z_oi >= +1.0; contraction => NO_TRADE; MAD==0 => NO_SIGNAL; frozen pre-execution; NO_PARAMETER_SWEEP)",
+  "cost_model": {"BASE_TOTAL_ROUND_TRIP_COST_BPS": 10, "COST_SENSITIVITY_BPS": [0, 10, 20, 40]},
+  "funding_accounting": {"FUNDING_DISCOVERY_ACCOUNTING": "EXCLUDED_WITH_LIMITATION", "funding_materiality_gate_before_promotion": true},
+  "gates": {
+    "minimum_N": {"per_asset": 30, "pooled": 100},
+    "P_Sharp_greater_0_min": 0.90,
+    "permutation_p_max": 0.05,
+    "sharpe_ci_excludes_zero": true,
+    "robustness": ["halves", "thirds", "walk-forward"],
+    "orthogonality_vs_momentum_abs_r_max": 0.50,
+    "H5_PNL_CORRELATION": "NOT_EVALUABLE_FROM_PERSISTED_EVIDENCE"
+  },
+  "governance": {
+    "failed_memory_review": "H6_FAILED_MEMORY_COLLISION_REVIEW_V2.md (PASS; M-A DEFERRED; canonical semantics concordant)",
+    "mechanism_evidence": "H6_MECHANISM_EVIDENCE_V2.md (OFFICIAL_EXCHANGE_DOC + IJFS corrected citation; no returns inspected)",
+    "prereg_consistency_audit": "H6_PREREG_CONSISTENCY_AUDIT_V2.json (CONTRADICTIONS_FOUND=0, UNRESOLVED_CONTRADICTIONS=[])",
+    "builder_verifier_separation": "H6_SELF_VERIFICATION_V2 by builder + H6_EXTERNAL_VERIFIER_PACKAGE_V2 for independent verification; H6_INDEPENDENT_VERIFICATION=PASS requires external verifier run",
+    "immutability": "after any economic execution this manifest V2 is immutable; post-execution state externalized; prereg commit hash NOT embedded (post-commit H6_PREREG_COMMIT_RECORD_V2.json)"
+  },
+  "provenance": {
+    "v1_prereg_commit_historical": "e683e04e5df39d0f2f5feb6097664536b93cc636 (FAILED_EXTERNAL_VERIFICATION, IMMUTABLE)",
+    "v1_oi_freeze_commit_historical": "256bd5ec6b82242c0b52e70a96dcd19edda61aa7",
+    "v2_repair_commits": "to be recorded in H6_PREREG_COMMIT_RECORD_V2.json post-commit",
+    "note": "no prereg-commit self-reference inside this manifest (P0-J); the post-commit record carries the commit identity"
+  },
+  "H5_state_untouched": {
+    "H5_RESULT": "DISCOVERY_FAIL",
+    "H5_RERUNS": 0,
+    "H5_RESULT_SHA256": "2427310dbed8445b1e39b1feaba7a8289918ab79a258f66b065da7cf2b7fe60f",
+    "H5_SPEC_SHA256": "c743fba4a2a589dc1c3a15c7cd48b1b6ddf80255b8a157ea4f7ef19cc2f81023",
+    "H5_MANIFEST_SHA256": "29ececb759aff059282a0324b3b94b4bcd13b35b51060c6c742f2eaa48db0a86"
+  }
+}
