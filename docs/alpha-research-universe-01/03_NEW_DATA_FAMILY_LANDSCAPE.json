@@ -1,0 +1,1 @@
+{"P0":"timestamped funding history","P1":"mark/index and premium history","DEFER":["cross-exchange ticks","liquidations","L2"],"REJECT_NOW":["full aggTrades backfill","on-chain/options"]}

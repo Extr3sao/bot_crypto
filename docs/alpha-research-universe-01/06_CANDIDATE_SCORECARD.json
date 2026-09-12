@@ -1,0 +1,1 @@
+{"formula":"sum(positive 0..5) - sum(penalties 0..5); tie-break=orthogonality then PIT safety","ARC-01":{"score":20,"penalties":9},"ARC-02":{"score":23,"penalties":6},"ARC-03":{"score":15,"penalties":11},"ARC-04":{"score":12,"penalties":13},"ARC-05":{"score":10,"penalties":17}}
