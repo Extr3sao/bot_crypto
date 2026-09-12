@@ -1,0 +1,26 @@
+{
+  "checkpoint": "PIT-CAUSALITY-REPAIR-01 + OI-DATASET-REFREEZE-02",
+  "reader": "src/trading_bot/research/oi_dataset_v2.py (decision_eligibility_at_v2, oi_state_at_ms, iter_oi_rows_v2)",
+  "v1_defect": "src/trading_bot/research/oi_dataset.py:valid_days_for/iter_oi_rows used ledger VALID classification to decide which shards to read; a later same-day gap (missing snapshot at T+N) invalidated the whole day and removed observations at T — forbidden day-level future validity",
+  "v2_repair": "V2 scans filesystem for existing VALID shards only and filters by timestamp_ms <= decision_time_ms strictly causally; ledger OI_ARCHIVE_DAY_VALIDITY_LEDGER_V2.jsonl is forensic-only and MUST NOT gate eligibility; no query of final UTC-day validity; rolling history computed from causal hourly changes only",
+  "tests": {
+    "harness": "tests/unit/research/test_oi_full_history_v2_pit.py (non-vacuous baseline: current_hour_complete == true at T before mutation)",
+    "A_FUTURE_SAME_DAY_GAP_AFTER_T": "Remove observation at T+2h; eligibility_at_T_before == eligibility_at_T_after; feature_state byte-identical — PASS",
+    "B_FUTURE_MUTATION_AFTER_T": "Change OI values strictly >T; state at T unchanged — PASS",
+    "C_FUTURE_FILE_ADDITION": "Add next-day file; state at T unchanged — PASS",
+    "D_PAST_GAP_BEFORE_T": "Remove required observation <T inside completed hour; eligibility changes to false — PASS",
+    "E_OUT_OF_ORDER": "Shuffle rows inside shard file; canonical state unchanged — PASS",
+    "F_EXACT_DUPLICATE": "Provider-authorized identical duplicate collapse -> VALID with collapsed count — PASS",
+    "G_CONFLICTING_DUPLICATE": "Same ts different payload <=T -> CONFLICTING_DUPLICATE ineligible — PASS",
+    "total": "7/7 adversarial + 12 total in file all PASS"
+  },
+  "api_guarantees": {
+    "oi_state_at": "record_time <= decision_time only; never queries 'Will this UTC day ultimately be VALID?'",
+    "decision_eligibility_at_v2": "Requires exactly 12 snapshots in current + previous hour, no conflicting duplicate <=T, rolling history >=336 via causal changes, staleness <=600s, nothing >T read",
+    "future_gap_immunity": "A gap strictly AFTER T cannot change eligibility or feature/signal state at T — proven by A/B/C",
+    "past_gap_sensitivity": "A gap strictly BEFORE T may change eligibility — proven by D (INELIGIBLE rollback)",
+    "staleness": "Last OI observation age <= 600s at decision time",
+    "ledger_role": "FORENSIC only — not a trading gate"
+  },
+  "verdict": "PASS"
+}

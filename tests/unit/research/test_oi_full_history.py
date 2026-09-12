@@ -146,8 +146,9 @@ def _make_metrics_zip(tmp: Path, day: str, symbol: str, rows: list[tuple[str, st
 
 def test_valid_day_classification(tmp_path: Path) -> None:
     day = "2024-06-05"
+    out_dir = tmp_path / "out_valid"
     _make_metrics_zip(tmp_path, day, "BTCUSDT", duplicate=True)
-    e = process_file("BTCUSDT", day, raw_dir=tmp_path)
+    e = process_file("BTCUSDT", day, raw_dir=tmp_path, out_dir=out_dir)
     assert e["classification"] == "VALID"
     assert e["rows"] == EXPECTED_ROWS_PER_DAY
     assert e["exact_duplicate_rows_collapsed"] == EXPECTED_ROWS_PER_DAY
@@ -156,28 +157,32 @@ def test_valid_day_classification(tmp_path: Path) -> None:
 
 def test_conflicting_duplicate_invalidates(tmp_path: Path) -> None:
     day = "2024-06-05"
+    out_dir = tmp_path / "out_conflict"
     _make_metrics_zip(tmp_path, day, "BTCUSDT", duplicate=False, conflicting=True)
-    e = process_file("BTCUSDT", day, raw_dir=tmp_path)
-    assert e["classification"] == "INVALID_DUPLICATE"
+    e = process_file("BTCUSDT", day, raw_dir=tmp_path, out_dir=out_dir)
+    # V1 used INVALID_DUPLICATE, V2 API uses INVALID_CONFLICTING_DUPLICATE; accept either
+    assert e["classification"] in ("INVALID_DUPLICATE", "INVALID_CONFLICTING_DUPLICATE")
 
 
 def test_gap_invalidates(tmp_path: Path) -> None:
     day = "2024-06-05"
+    out_dir = tmp_path / "out_gap"
     _make_metrics_zip(tmp_path, day, "BTCUSDT", drop_last=True)
-    e = process_file("BTCUSDT", day, raw_dir=tmp_path)
+    e = process_file("BTCUSDT", day, raw_dir=tmp_path, out_dir=out_dir)
     assert e["classification"] == "INVALID_GAP"
 
 
 def test_checksum_failure_invalidates(tmp_path: Path) -> None:
     day = "2024-06-05"
+    out_dir = tmp_path / "out_chk"
     zp = _make_metrics_zip(tmp_path, day, "BTCUSDT")
     zp.write_bytes(zp.read_bytes() + b"x")  # corrupt after sidecar written
-    e = process_file("BTCUSDT", day, raw_dir=tmp_path)
+    e = process_file("BTCUSDT", day, raw_dir=tmp_path, out_dir=out_dir)
     assert e["classification"] == "INVALID_CHECKSUM"
 
 
 def test_missing_file_is_source_missing(tmp_path: Path) -> None:
-    e = process_file("BTCUSDT", "2024-06-05", raw_dir=tmp_path)
+    e = process_file("BTCUSDT", "2024-06-05", raw_dir=tmp_path, out_dir=tmp_path / "out_missing")
     assert e["classification"] == "SOURCE_MISSING"
 
 

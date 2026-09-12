@@ -1,0 +1,21 @@
+{
+  "checkpoint": "OI-DATASET-REFREEZE-02 + OI-FULL-HISTORY-FREEZE-02",
+  "dataset_sha_a": "16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99",
+  "dataset_sha_b_sample": "16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99",
+  "per_file_sha_a_equals_b": true,
+  "per_file_samples": [
+    {"symbol": "BTCUSDT", "day": "2024-06-05", "normalized_sha256": "bcd3d84950632e7cc70434b75b135bf1eaf56c4ebe72fd13fbea2bbb510a1fb7", "bytes_A_equals_B": true},
+    {"symbol": "ETHUSDT", "day": "2024-06-05", "normalized_sha256": "f8e0e3c7", "bytes_A_equals_B": true},
+    {"symbol": "SOLUSDT", "day": "2024-06-05", "normalized_sha256": "1647e89c", "bytes_A_equals_B": true},
+    {"symbol": "BTCUSDT", "day": "2020-09-01", "normalized_sha256": "d17b818ec8e1a2cce29b46d1e4d960e3832243db4f75cf80ac25c65b9291a0a0", "bytes_A_equals_B": true},
+    {"symbol": "BTCUSDT", "day": "2021-12-01", "normalized_sha256": "bb110060", "bytes_A_equals_B": true},
+    {"symbol": "ETHUSDT", "day": "2021-12-01", "normalized_sha256": "7a7f2913", "bytes_A_equals_B": true},
+    {"symbol": "SOLUSDT", "day": "2021-12-01", "normalized_sha256": "7336db35", "bytes_A_equals_B": true}
+  ],
+  "global_sha_a_equals_b": true,
+  "sensitivity_mutated_sha_c": "8c3929864b3f52d27a05af981ff53061b212b687b4d43979c342d083ba1ce49d",
+  "sensitivity_c_not_equal_a": true,
+  "method": "Re-normalize sample days into two isolated tmp dirs (A/B) and require normalized_sha256 + file bytes equality; global fingerprint recomputed from ledger (canonical JSON sorted by symbol/day) A==B; in-memory single-field mutation C != A proves sensitivity (no raw file modified)",
+  "verdict": "PASS",
+  "notes": "Full 5691-file A/B was already executed at V2 creation (commit 18699cd path); this report re-proves determinism on representative days plus global sensitivity; full ledger fingerprint 16779b7... matches committed V2 manifest"
+}

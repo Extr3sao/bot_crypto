@@ -1,14 +1,16 @@
-"""Frozen OI full-history dataset access (OI-FULL-HISTORY-FREEZE-01).
+"""OI dataset access — V1 legacy + V2 PIT-true paths.
 
-Pure, deterministic helpers over the frozen dataset:
-  - load the day validity ledger (ARCHIVE_DAY_VALIDITY — forensic evidence only)
-  - DECISION_ELIGIBILITY_AT_T: causal eligibility using only data_time <= T
-    (P0-B: a gap AFTER T must never alter eligibility or state at T)
-  - extract OI state strictly at or before a decision cutoff
-  - causal 5m -> 1h aggregation into completed decision buckets
-  - robust PIT z-score of hourly OI change (median / 1.4826*MAD, P0-D)
+V1 (OI-FULL-HISTORY-FREEZE-01) provided day-level validity gating via
+valid_days_for/iter_oi_rows. That path is RETAINED for forensic/reporting
+only and is NOT to be used for eligibility/trading decisions because it
+allows a later same-day gap to invalidate an earlier T (EXT-PIT-001).
 
-No returns, no signals, no performance semantics (prereg-only checkpoint).
+V2 causal paths (PIT-CAUSALITY-REPAIR-01 / OI-DATASET-REFREEZE-02) are the
+canonical trading-eligibility implementation. H6 decision code MUST use
+`oi_dataset_v2.decision_eligibility_at_v2` / `oi_state_at` (timestamp-scoped,
+no final-day validity gate). This file now documents that separation and
+re-exports V2 entrypoints for convenience. Forensic ledger loading and V1
+V1-valid-day helpers remain for reports and backward-compatible tests.
 """
 
 from __future__ import annotations
@@ -18,7 +20,20 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Iterator
 
+from trading_bot.research.oi_dataset_v2 import (
+    OI_V2_DIR_DEFAULT,
+    OI_V2_LEDGER_DEFAULT,
+    SNAPSHOTS_PER_HOUR as V2_SNAPSHOTS_PER_HOUR,
+    decision_eligibility_at_v2,
+    hour_bucket_ms as hour_bucket_ms_v2,
+    oi_hourly_decision_state_v2,
+    oi_state_at as oi_state_at_v2,
+    oi_state_at_ms as oi_state_at_ms_v2,
+)
+
 OI_FULL_DIR_DEFAULT = Path("data/processed/oi_full_history")
+# Canonical V2 roots (trading decisions must use these; V1 root is legacy/forensic)
+OI_V2_FULL_DIR_DEFAULT = OI_V2_DIR_DEFAULT
 VALID_CLASS = "VALID"
 EXPECTED_ROWS_PER_DAY = 288
 
