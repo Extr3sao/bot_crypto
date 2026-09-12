@@ -1,0 +1,30 @@
+{
+  "checkpoint": "H6-V3-REPAIR",
+  "record": "H6_V3_POST_COMMIT_RECORD",
+  "created_utc": "2026-09-12T15:23:01.893421+00:00",
+  "commit": "b2c6b2b15274688b3feb117b1f5a78c3db44ee5a",
+  "tree": "0ccd6cac873c8abdf23372500ac63c550221f470",
+  "parent": "9f1d844312419575d6b635a7356111050fd9b93a",
+  "branch": "repair/h6-v3-repair",
+  "subject": "[H6-V3-04a] Shadow/price governance evidence + durable test records",
+  "artifact_sha256": {
+    "docs/external-audit-01/oi-full-history-03/H6_SPEC_V3.json": "cd354e0603a4b8ee754d38a2a6e3a2689c06e683b732ab34bec03e631c50eeea",
+    "docs/external-audit-01/oi-full-history-03/H6_MANIFEST_V3.json": "de42e4a1581855243969820ba4658582f398735586764ca0a8684920db95ecb3",
+    "docs/external-audit-01/oi-full-history-03/H6_FEATURE_AUTHORITY_WHITELIST_V3.json": "c59718cafcd8c0a23ea6cbf7244e328f668c95bf40744e3520752c52fa0a1b31",
+    "docs/external-audit-01/oi-full-history-03/H6_DATA_AUTHORITY_V3.json": "4e2bada45fa06fb10ed89815759f2bc258d093afab70b93c6a983763e528466b"
+  },
+  "dataset_sha256": "16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99",
+  "price_sha256": "e1c2462a6aa9ba0c921154d259a28c49be1e2fc58a544dbd97af8ecabef52168",
+  "freeze_verification": {
+    "docs/external-audit-01/oi-full-history-03/H6_SPEC_V3.json": true,
+    "docs/external-audit-01/oi-full-history-03/H6_MANIFEST_V3.json": true,
+    "docs/external-audit-01/oi-full-history-03/H6_FEATURE_AUTHORITY_WHITELIST_V3.json": true,
+    "docs/external-audit-01/oi-full-history-03/H6_DATA_AUTHORITY_V3.json": true
+  },
+  "governance": {
+    "H6_EXECUTIONS": 0,
+    "H6_BACKTESTS": 0,
+    "PERFORMANCE_OBSERVED": false
+  },
+  "note": "separate post-commit artifact; not referenced by (and does not alter) the frozen prereg files"
+}

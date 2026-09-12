@@ -1,0 +1,154 @@
+{
+  "checkpoint": "H6-V3-REPAIR",
+  "matrix": "V3_DEFECT_REGRESSION",
+  "H6_EXECUTIONS": 0,
+  "H6_BACKTESTS": 0,
+  "PERFORMANCE_OBSERVED": false,
+  "rows": [
+    {
+      "id": "EXT-DATA-001",
+      "external_evidence": "V2 verifier could not independently prove dataset authority/determinism from clean worktree",
+      "root_cause": "builder-worktree-local data paths; no portable authority contract",
+      "repair": "H6_DATA_AUTHORITY_V3.json + --data-root/TRADING_AGENTIC_DATA_ROOT/shared-root resolution in normalizer, runtime reader, and verifiers",
+      "tests": ["test_h6_v3_test_isolation.py", "prove_h6_v3_dataset_determinism.py"],
+      "runtime_evidence": "DATA_AUTHORITY_RESULT.json (PASS); DATASET_DETERMINISM_V3_RESULT.json (A==B==committed)",
+      "status": "PASS"
+    },
+    {
+      "id": "EXT-PRICE-001",
+      "external_evidence": "price authority could not be verified portably",
+      "root_cause": "same portability defect as EXT-DATA-001",
+      "repair": "portable data-root resolution + verify_price_overlap_v3.py",
+      "tests": ["verify_price_overlap_v3.py"],
+      "runtime_evidence": "PRICE_OVERLAP_V3_RESULT.json (169,724 rows, 0 mismatches)",
+      "status": "PASS"
+    },
+    {
+      "id": "EXT-PIT-001",
+      "external_evidence": "only PASS_STATIC obtained",
+      "root_cause": "no dynamic PIT tests executable from clean context",
+      "repair": "synthetic-fixture dynamic suite incl. byte-invariance of serialized state at T",
+      "tests": ["test_oi_full_history_v2_pit.py (14 tests)"],
+      "runtime_evidence": "PIT_DYNAMIC_RESULT.json (14 passed, non-vacuous baseline)",
+      "status": "PASS"
+    },
+    {
+      "id": "EXT-CONS-001",
+      "external_evidence": "cross-artifact contradictions suspected",
+      "root_cause": "no independent consistency audit ran before freeze",
+      "repair": "scripts/audit_h6_v3_consistency.py (19 dimension groups)",
+      "tests": ["audit_h6_v3_consistency.py"],
+      "runtime_evidence": "H6_V3_CONSISTENCY_AUDIT.json CONTRADICTIONS_FOUND=0 UNRESOLVED=[]",
+      "status": "PASS"
+    },
+    {
+      "id": "EXT-CONS-002",
+      "external_evidence": "V2 manifest internal inconsistencies",
+      "root_cause": "manual hash copy-paste + evidence-copy side effects",
+      "repair": "programmatic generation; hash provenance; evidence copies only on canonical builds",
+      "tests": ["test_hash_validator.py", "audit_h6_v3_consistency.py"],
+      "runtime_evidence": "all provenance hashes match actual bytes",
+      "status": "PASS"
+    },
+    {
+      "id": "EXT-CONS-004",
+      "external_evidence": "raw-sign rule enforcement questioned",
+      "root_cause": "negative median/MAD could let contraction qualify",
+      "repair": "raw-sign rule in threshold_rule; regression test",
+      "tests": ["test_oi_sign_rule_blocks_contraction_even_when_z_would_pass"],
+      "runtime_evidence": "PIT_STATIC_AND_ISOLATION_RESULT.json PASS",
+      "status": "PASS"
+    },
+    {
+      "id": "EXT-CONF-001",
+      "external_evidence": "conf_lock.py referenced absent manifest file",
+      "root_cause": "static manifest as primary authority",
+      "repair": "CONFIRMATION_LEDGER_V2.jsonl is primary; manifest only legacy fallback; fail-closed when ledger missing/invalid",
+      "tests": ["test_confirmation_ledger_lock.py"],
+      "runtime_evidence": "confirmation ledger authority tests PASS",
+      "status": "PASS"
+    },
+    {
+      "id": "FULL-HERMETIC-001",
+      "external_evidence": "suite state uncertain at V2 close",
+      "root_cause": "untracked modules + host env leakage",
+      "repair": "root conftest.py worktree-authoritative sys.path; hermetic runner strips host env",
+      "tests": ["run_regression_hermetic.py (full suite)"],
+      "runtime_evidence": "FULL_HERMETIC_RESULT_1.json + _2.json: 1332 passed / 0 failed each",
+      "status": "PASS"
+    },
+    {
+      "id": "EXT-FEATURE-WHITELIST-001",
+      "external_evidence": "H6FieldAccess({'unadmitted_metric': 7}) allowed .get and [] access",
+      "root_cause": "accessor not fail-closed on all paths",
+      "repair": "H6FieldAccess fail-closed on [], get, get(default), keys/values/items, iteration, in, attribute, len; H6ForbiddenFeatureAccess; no None silently returned",
+      "tests": ["test_h6_whitelist_bypass.py", "test_h6_whitelist_static_scan.py"],
+      "runtime_evidence": "WHITELIST_BYPASS_PATHS=0; adversarial unadmitted_metric injection fails closed before signal creation",
+      "status": "PASS"
+    },
+    {
+      "id": "EXT-MANIFEST-HASH-001",
+      "external_evidence": "71-character malformed OI ledger hash; mismatch vs git-object SHA256",
+      "root_cause": "manual human/AI copy-paste of hash strings (generator root cause: no programmatic derivation + no validation gate)",
+      "repair": "hash_validator.py strict ^[0-9a-f]{64}$; all V3 hashes derived from actual bytes; generation aborts before serialization on any invalid hash; HASH_PROVENANCE per hash",
+      "tests": ["test_hash_validator.py (63/65/71/non-hex/valid cases)"],
+      "runtime_evidence": "H6_MANIFEST_V3 hash_provenance all validate; consistency audit re-hashes every artifact",
+      "status": "PASS"
+    },
+    {
+      "id": "EXT-CONF-002",
+      "external_evidence": "confirmation state not derived from ledger",
+      "root_cause": "hard-coded booleans + absent manifest",
+      "repair": "confirmation_state() reducer; exactly-once attempt_id; malformed sequences fail closed",
+      "tests": ["test_confirmation_ledger_lock.py", "test_h6_confirmation_isolation.py"],
+      "runtime_evidence": "CONF-EDGE-002-001 LOCKED before 2026-09-22T00:00:00Z; START/CONSUME/EXECUTION/PERFORMANCE-PEEK forbidden",
+      "status": "PASS"
+    },
+    {
+      "id": "EXT-PORTABLE-DATA-001",
+      "external_evidence": "clean worktree could not access any dataset authority",
+      "root_cause": "absolute Windows builder paths; machine-dependent locators embedded in ledger/rows",
+      "repair": "canonical locators (data/raw/..., data/processed/...) independent of data-root location; portable resolution chain; worktree-authoritative conftest vs shared-venv editable .pth",
+      "tests": ["test_oi_full_history_v2_pit.py", "test_h6_v3_test_isolation.py"],
+      "runtime_evidence": "clean-worktree simulation (fresh worktree at prereg commit): env/data/determinism/price/audit/51 tests all PASS",
+      "status": "PASS"
+    },
+    {
+      "id": "EXT-SHADOW-002",
+      "external_evidence": "11/11 PROFITABLE_REJECT and TAKE_PROFIT_HIT rejected; maturity_time == capture_time",
+      "root_cause": "wrong field mapped into maturity_time at resolution time (zero-horizon derivation); automatic TP winner on ambiguous same-bar touches",
+      "repair": "SHADOW_V2_INVALIDATION_RECORD (claim retracted, evidence preserved); SHADOW_MATURITY_AUTHORITY_V2 = capture+48h per capture; re-derivation gated on maturity + first-touch with AMBIGUOUS_FIRST_TOUCH; UNRESOLVED allowed",
+      "tests": ["test_shadow_maturity_48h.py"],
+      "runtime_evidence": "resolution report AWAITING_REDERIVATION/EXPLICIT_UNRESOLVED; N=11 INSUFFICIENT_SAMPLE regardless of outcome; no Risk/MAX_POSITIONS changes",
+      "status": "PASS"
+    },
+    {
+      "id": "EXT-HERMETIC-002",
+      "external_evidence": "hidden skips / non-reproducible green risk",
+      "root_cause": "environment-dependent skips and imports",
+      "repair": "hermetic runner env-stripping retained; skips enumerated (6, all environment-gated dataset tests with explicit reasons); no skip added to manufacture green",
+      "tests": ["run_regression_hermetic.py"],
+      "runtime_evidence": "FULL_HERMETIC 1+2: 1332 passed / 0 failed / 6 explicit skips",
+      "status": "PASS"
+    },
+    {
+      "id": "EXT-DASHBOARD-002",
+      "external_evidence": "test_non_get_methods_are_405 flake suspected from 7-run sample",
+      "root_cause": "insufficient repetition evidence",
+      "repair": "20 independent process repetitions recorded durably",
+      "tests": ["test_non_get_methods_are_405 x20"],
+      "runtime_evidence": "DASHBOARD_REPEAT_20_RESULT.json 20/20 PASS",
+      "status": "PASS"
+    },
+    {
+      "id": "EXT-PRICE-LIMIT-001",
+      "external_evidence": "PRICE_OVERLAP = LIMITATION_PARTIAL (equality shown at single boundary timestamp only)",
+      "root_cause": "overlap verification sampled one timestamp",
+      "repair": "full element-wise overlap verification of all shared rows + strict 1h tail continuity",
+      "tests": ["verify_price_overlap_v3.py"],
+      "runtime_evidence": "PRICE_OVERLAP_V3_RESULT.json: 169,724 rows compared, 0 mismatches, 0 gaps -> PRICE_OVERLAP=PASS (continuity PASS not downgraded)",
+      "status": "PASS"
+    }
+  ],
+  "summary": {"total": 16, "PASS": 16, "FAIL": 0, "OPEN": 0}
+}
