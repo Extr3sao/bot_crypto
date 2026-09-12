@@ -1,0 +1,15 @@
+{
+  "checkpoint": "PRICE-AUTHORITY-REPAIR-01",
+  "common_window_utc": ["2021-12-01T00:00:00Z", "2026-09-10T23:00:00Z"],
+  "expected_hours_per_asset": 41880,
+  "assets": ["BTCUSDT", "ETHUSDT", "SOLUSDT"],
+  "per_asset": {
+    "BTCUSDT": {"v2_rows_total": 58680, "h1_rows": 58633, "extension_rows": 48, "missing_hours_added": 47, "missing_hours_common": 0, "duplicate_hours_common": 0, "non_hourly_transitions": 0, "covers_common_window": true, "v2_sha256": "41e9238666a0b98c02cffd19d36a590b8463f6556e215c49f068452674ef9027"},
+    "ETHUSDT": {"v2_rows_total": 58680, "h1_rows": 58633, "extension_rows": 48, "missing_hours_added": 47, "missing_hours_common": 0, "duplicate_hours_common": 0, "non_hourly_transitions": 0, "covers_common_window": true, "v2_sha256": "7c72c0bb55d4aac9460dde54eb73305b5d30bdec99ea4b500eac9e1319ddd7ba"},
+    "SOLUSDT": {"v2_rows_total": 52505, "h1_rows": 52458, "extension_rows": 48, "missing_hours_added": 47, "missing_hours_common": 0, "duplicate_hours_common": 0, "non_hourly_transitions": 0, "covers_common_window": true, "v2_sha256": "6f147463b504f5026d887e77306cfa629ee5feb8cbdb01923643133091da03ff"}
+  },
+  "PRICE_AUTHORITY_SHA256_V2": "e1c2462a6aa9ba0c921154d259a28c49be1e2fc58a544dbd97af8ecabef52168",
+  "overlap_verification": "PASS at 2026-09-09T00:00Z byte/economic equality for all assets; no PRICE_AUTHORITY_CONFLICT",
+  "source": "H1 cb3de4f + official data.binance.vision klines_1h_ext daily zips",
+  "verdict": "PASS"
+}

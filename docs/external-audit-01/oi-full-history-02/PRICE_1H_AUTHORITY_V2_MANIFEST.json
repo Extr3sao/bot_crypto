@@ -1,0 +1,119 @@
+{
+  "PRICE_AUTHORITY_SHA256_V2": "e1c2462a6aa9ba0c921154d259a28c49be1e2fc58a544dbd97af8ecabef52168",
+  "PRICE_AUTHORITY_SHA256_V2_method": "sha256(canonical_json(sorted {symbol: v2_sha256}))",
+  "all_assets_cover_common_window": true,
+  "assets": [
+    "BTCUSDT",
+    "ETHUSDT",
+    "SOLUSDT"
+  ],
+  "checkpoint": "PRICE-AUTHORITY-REPAIR-01",
+  "common_window_utc": [
+    "2021-12-01T00:00:00Z",
+    "2026-09-10T23:00:00Z"
+  ],
+  "expected_hours_per_asset": 41880,
+  "overlap_verification": "byte/economic equality at 2026-09-09T00:00Z for all assets PASS; no PRICE_AUTHORITY_CONFLICT",
+  "per_asset": {
+    "BTCUSDT": {
+      "available_hours_common": 41880,
+      "common_window": [
+        "2021-12-01T00:00:00Z",
+        "2026-09-10T23:00:00Z"
+      ],
+      "covers_common_window": true,
+      "duplicate_hours_common": 0,
+      "expected_hours_common": 41880,
+      "extension_rows_total": 48,
+      "first_missing_common_hour_utc": null,
+      "first_open_ms": 1577836800000,
+      "first_open_utc": "2020-01-01T00:00:00+00:00",
+      "h1_last_open_ms": 1788912000000,
+      "h1_path": "docs/external-audit-01/h1-regime-transition-01/dataset/BTCUSDT_1h.jsonl",
+      "h1_rows": 58633,
+      "last_missing_common_hour_utc": null,
+      "last_open_ms": 1789081200000,
+      "last_open_utc": "2026-09-10T23:00:00+00:00",
+      "missing_hours_added": 47,
+      "missing_hours_common": 0,
+      "non_hourly_transitions": 0,
+      "overlap_check": "PASS",
+      "raw_extension_zips": [
+        "data/raw/binance_um/klines_1h_ext/BTCUSDT/BTCUSDT-1h-2026-09-09.zip",
+        "data/raw/binance_um/klines_1h_ext/BTCUSDT/BTCUSDT-1h-2026-09-10.zip"
+      ],
+      "symbol": "BTCUSDT",
+      "v2_bytes_len": 8434238,
+      "v2_path": "data/processed/price_1h_v2/BTCUSDT_1h.jsonl",
+      "v2_rows_total": 58680,
+      "v2_sha256": "41e9238666a0b98c02cffd19d36a590b8463f6556e215c49f068452674ef9027"
+    },
+    "ETHUSDT": {
+      "available_hours_common": 41880,
+      "common_window": [
+        "2021-12-01T00:00:00Z",
+        "2026-09-10T23:00:00Z"
+      ],
+      "covers_common_window": true,
+      "duplicate_hours_common": 0,
+      "expected_hours_common": 41880,
+      "extension_rows_total": 48,
+      "first_missing_common_hour_utc": null,
+      "first_open_ms": 1577836800000,
+      "first_open_utc": "2020-01-01T00:00:00+00:00",
+      "h1_last_open_ms": 1788912000000,
+      "h1_path": "docs/external-audit-01/h1-regime-transition-01/dataset/ETHUSDT_1h.jsonl",
+      "h1_rows": 58633,
+      "last_missing_common_hour_utc": null,
+      "last_open_ms": 1789081200000,
+      "last_open_utc": "2026-09-10T23:00:00+00:00",
+      "missing_hours_added": 47,
+      "missing_hours_common": 0,
+      "non_hourly_transitions": 0,
+      "overlap_check": "PASS",
+      "raw_extension_zips": [
+        "data/raw/binance_um/klines_1h_ext/ETHUSDT/ETHUSDT-1h-2026-09-09.zip",
+        "data/raw/binance_um/klines_1h_ext/ETHUSDT/ETHUSDT-1h-2026-09-10.zip"
+      ],
+      "symbol": "ETHUSDT",
+      "v2_bytes_len": 8257249,
+      "v2_path": "data/processed/price_1h_v2/ETHUSDT_1h.jsonl",
+      "v2_rows_total": 58680,
+      "v2_sha256": "7c72c0bb55d4aac9460dde54eb73305b5d30bdec99ea4b500eac9e1319ddd7ba"
+    },
+    "SOLUSDT": {
+      "available_hours_common": 41880,
+      "common_window": [
+        "2021-12-01T00:00:00Z",
+        "2026-09-10T23:00:00Z"
+      ],
+      "covers_common_window": true,
+      "duplicate_hours_common": 0,
+      "expected_hours_common": 41880,
+      "extension_rows_total": 48,
+      "first_missing_common_hour_utc": null,
+      "first_open_ms": 1600066800000,
+      "first_open_utc": "2020-09-14T07:00:00+00:00",
+      "h1_last_open_ms": 1788912000000,
+      "h1_path": "docs/external-audit-01/h1-regime-transition-01/dataset/SOLUSDT_1h.jsonl",
+      "h1_rows": 52458,
+      "last_missing_common_hour_utc": null,
+      "last_open_ms": 1789081200000,
+      "last_open_utc": "2026-09-10T23:00:00+00:00",
+      "missing_hours_added": 47,
+      "missing_hours_common": 0,
+      "non_hourly_transitions": 0,
+      "overlap_check": "PASS",
+      "raw_extension_zips": [
+        "data/raw/binance_um/klines_1h_ext/SOLUSDT/SOLUSDT-1h-2026-09-09.zip",
+        "data/raw/binance_um/klines_1h_ext/SOLUSDT/SOLUSDT-1h-2026-09-10.zip"
+      ],
+      "symbol": "SOLUSDT",
+      "v2_bytes_len": 7090217,
+      "v2_path": "data/processed/price_1h_v2/SOLUSDT_1h.jsonl",
+      "v2_rows_total": 52505,
+      "v2_sha256": "6f147463b504f5026d887e77306cfa629ee5feb8cbdb01923643133091da03ff"
+    }
+  },
+  "source_official": "Binance USDM 1h klines via official data.binance.vision daily zip archives (data/raw/binance_um/klines_1h_ext/) + frozen H1 1h klines (cb3de4f)"
+}

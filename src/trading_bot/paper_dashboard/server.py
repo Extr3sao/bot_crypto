@@ -19,6 +19,8 @@ _HTML = (Path(__file__).parent / "dashboard.html").read_text(encoding="utf-8")
 class _Server(ThreadingHTTPServer):
     daemon_threads = True
     allow_reuse_address = True
+    # Avoid indefinite blocking on accept / handler threads during teardown
+    timeout = 2.0
 
 
 class PaperDashboardServer:
@@ -63,6 +65,13 @@ class PaperDashboardServer:
                 self.wfile.write(body)
 
             def _method_not_allowed(self) -> None:
+                # Discard any request body so the connection can close cleanly
+                try:
+                    length = int(self.headers.get("Content-Length") or 0)
+                    if length:
+                        self.rfile.read(min(length, 1 << 20))
+                except Exception:
+                    pass
                 self._json({"error": "read-only dashboard: method not allowed"}, 405)
 
             do_POST = _method_not_allowed
@@ -199,9 +208,26 @@ class PaperDashboardServer:
     def stop(self) -> None:
         self._stop.set()
         if self._server:
-            self._server.shutdown()
-            self._server.server_close()
+            try:
+                self._server.shutdown()
+            except Exception:
+                pass
+            try:
+                self._server.server_close()
+            except Exception:
+                pass
             self._server = None
+        if self._thread is not None:
+            try:
+                self._thread.join(timeout=2.0)
+            except Exception:
+                pass
+            self._thread = None
+        # Reset stop event so a new start() on same instance (if any) begins clean
+        try:
+            self._stop.clear()
+        except Exception:
+            pass
 
     def _refresh(self) -> None:
         try:

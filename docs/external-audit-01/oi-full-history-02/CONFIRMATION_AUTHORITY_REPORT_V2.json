@@ -1,0 +1,36 @@
+{
+  "checkpoint": "CONFIRMATION-AUTHORITY-REPAIR-01",
+  "confirmation_id": "CONF-EDGE-002-001",
+  "window": ["2026-09-08T00:00:00Z", "2026-09-22T00:00:00Z"],
+  "pre_ledger_history": {
+    "status": "NOT_INDEPENDENTLY_PROVEN",
+    "external_verdict": "BLOCKED_INSUFFICIENT_EVIDENCE",
+    "evidence_found": [
+      "reports/poc02-r2-direction-arbitration-01/R2_LAUNCH_RECORD.json declares consumed=false executions=0 (hard-coded in source generator)",
+      "reports/poc02-paper-clean-01/observation/DAILY_OBSERVATION_2026-09-09.json declares consumed=false executions=0",
+      "No append-only authoritative ConfirmationExecutionLedger with CREATED/STARTED/COMPLETED/FAILED/CONSUMED/LOCK_CHECK found"
+    ],
+    "decision": "LIMITATION_EXPLICIT — do not fabricate consumed=false history; external verifier adjudicates whether this blocks H6",
+    "search_scope": "Full worktree + committed tree for confirmation ledger / execution ledger / campaign consumption ledger / attempt ledger"
+  },
+  "forward_ledger": {
+    "path": "docs/external-audit-01/oi-full-history-02/CONFIRMATION_LEDGER_V2.jsonl",
+    "schema": ["confirmation_id", "event_type", "attempt_id", "timestamp", "commit", "dataset", "spec", "status"],
+    "event_types": ["CREATED", "STARTED", "COMPLETED", "FAILED", "CONSUMED", "LOCK_CHECK"],
+    "append_only": true,
+    "exactly_once_from_now": true,
+    "bootstrap_entry": {
+      "confirmation_id": "CONF-EDGE-002-001",
+      "event_type": "LOCK_CHECK",
+      "attempt_id": "LOCK_CHECK-2026-09-12T00:00:00Z",
+      "timestamp": "2026-09-12T00:00:00Z",
+      "commit": "18699cd58d244eff0f7dc227d2ed6006a733310a",
+      "dataset": "16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99",
+      "spec": "221cfa1d6eb3dae30948e9605f258075c0cd69e8f38187da4959c3e696b8b000",
+      "status": "LOCKED_UNTIL_2026-09-22T00:00:00Z_CONSUMED_FALSE_EXECUTIONS_0"
+    },
+    "ledger_sha256": "188290908fe4765c0197f7fc27c0572a19d7b2d34a82741cc04c223bb18e5add"
+  },
+  "operational_lock": "LOCKED until 2026-09-22T00:00:00Z — CONF-EDGE-002-001 must not be consumed or executed; no performance peek",
+  "verdict": "LIMITATION_EXPLICIT historically (external verifier decides), PASS forward"
+}
