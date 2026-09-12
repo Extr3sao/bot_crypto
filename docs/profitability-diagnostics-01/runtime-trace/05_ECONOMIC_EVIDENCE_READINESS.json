@@ -1,0 +1,1 @@
+{"risk_value_add":"NO","critic_value_add":"NO","metaranker_value_add":"NO","agent_ablation":"NO","overfiltering":"NO","frequency_loss_point":"PARTIAL","missing_evidence":["matched terminal outcomes","native proposal traces","persisted ranking alternatives","per-stage Critic and MetaRanker events"]}

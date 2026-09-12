@@ -11,6 +11,8 @@ The paper runtime has several deterministic multi-agent gates, but its persisted
 - **FR-003** State counterfactual, risk, Critic, MetaRanker, agent-ablation, complexity, frequency, and time-to-falsify results with `UNKNOWN` or `INSUFFICIENT_SAMPLE` when authority is absent.
 - **FR-004** Emit the requested Markdown/JSON report set and defect register outside the H6 namespace.
 - **FR-005** Prove diagnostics do not modify protected runtime state.
+- **FR-006** Define an immutable, append-only proposal trace identity and event contract spanning proposal through outcome without decision authority.
+- **FR-007** Provide deterministic trace queries, replay, completeness accounting, reason-code cohorts, and outcome-readiness reports.
 
 ## Non-goals
 
@@ -29,3 +31,5 @@ No H6/H5 economics, no trade execution, no risk/configuration changes, no Shadow
 - **AC-003** Diagnostics unit tests demonstrate deterministic output and no input-state mutation.
 - **AC-004** Focused diagnostics tests pass.
 - **AC-005** A verification matrix maps each criterion to direct evidence.
+- **AC-006** Trace event persistence is append-only and idempotent; malformed identity fails loudly.
+- **AC-007** Queries by run, proposal, trace, and reason are deterministic, and replay never mutates decision evidence.

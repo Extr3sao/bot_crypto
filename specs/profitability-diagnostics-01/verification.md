@@ -22,3 +22,10 @@ PYTHONPATH=src ...python.exe scripts/profitability_diagnostics/run.py
 ```
 
 Residual risks: the R2 evidence persists no matched realized outcomes for 11 Shadow risk rejections, no closed trades, and no per-stage Critic/MetaRanker counters. This checkpoint therefore makes no profitability or overfiltering claim.
+
+| AC-006 | `test_store_is_append_only_idempotent_and_queryable`, `test_malformed_trace_identity_fails_loudly` | PASS (focused trace suite) |
+| AC-007 | `test_outcome_is_separate_from_decision_and_replay` and run/proposal/reason query assertions | PASS (focused trace suite) |
+
+PD-002/PD-003 residual risk: persistence and replay are verified as a sidecar contract only. Active runtime adapters have intentionally not been connected, so historic coverage remains zero and economic readiness remains insufficient.
+
+Full hermetic suite attempt before the change emitted progress through 11%, then the harness returned control without a final pytest summary or exit code. Its Python processes later exited, but that is not proof of success; result is recorded as `INCONCLUSIVE_TOOL_OUTPUT` and is not used as a passing gate.
