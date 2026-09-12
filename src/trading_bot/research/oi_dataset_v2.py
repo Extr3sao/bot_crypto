@@ -31,6 +31,36 @@ REPO = Path(__file__).resolve().parents[3]
 OI_V2_DIR_DEFAULT = REPO / "data" / "processed" / "oi_full_history_v2"
 OI_V2_LEDGER_DEFAULT = OI_V2_DIR_DEFAULT / "OI_ARCHIVE_DAY_VALIDITY_LEDGER_V2.jsonl"
 
+
+def resolve_oi_v2_data_dir() -> Path:
+    """V3 portable data-root resolution (EXT-PORTABLE-DATA-001).
+
+    Discovery order per H6_DATA_AUTHORITY_V3.json:
+      1. explicit override (callers may always pass data_dir=...)
+      2. env TRADING_AGENTIC_DATA_ROOT  -> <root>/data/processed/oi_full_history_v2
+         (or <root>/processed/oi_full_history_v2 when root already includes /data)
+      3. worktree-local repo data dir (builder layout)
+      4. shared main-repo data dir (clean worktrees with nested .worktrees path)
+    Never searches arbitrary user directories.
+    """
+    env_root = os.environ.get("TRADING_AGENTIC_DATA_ROOT")
+    if env_root:
+        r = Path(env_root)
+        for cand in (r / "data" / "processed" / "oi_full_history_v2", r / "processed" / "oi_full_history_v2"):
+            if cand.is_dir():
+                return cand
+        return r / "data" / "processed" / "oi_full_history_v2"
+    if OI_V2_DIR_DEFAULT.is_dir():
+        return OI_V2_DIR_DEFAULT
+    # clean-worktree layout: <main>/.worktrees/<name> -> main repo at parents[1]
+    try:
+        shared = REPO.parents[1] / "data" / "processed" / "oi_full_history_v2"
+    except IndexError:  # repo checked out at filesystem root or non-nested
+        shared = REPO.parent / "data" / "processed" / "oi_full_history_v2"
+    if shared.is_dir():
+        return shared
+    return OI_V2_DIR_DEFAULT
+
 # ---- frozen constants (H6 V2 spec mirrors these) ----
 SNAPSHOTS_PER_HOUR = 12
 HOUR_MS = 3_600_000
@@ -152,7 +182,7 @@ def oi_state_at(
     required_history: list[datetime] | None = None,
     source: str | None = None,
     *,
-    data_dir: Path = OI_V2_DIR_DEFAULT,
+    data_dir: Path | None = None,
 ) -> list[dict[str, object]]:
     """V2 causal OI state: only records with record_time <= decision_time.
 
@@ -160,6 +190,8 @@ def oi_state_at(
     query "Will this UTC day ultimately be VALID?". It filters strictly by
     timestamp.
     """
+    if data_dir is None:
+        data_dir = resolve_oi_v2_data_dir()
     cutoff_ms = int(decision_time.timestamp() * 1000)
     return _causal_rows_v2(data_dir, symbol, cutoff_ms)
 
@@ -167,9 +199,11 @@ def oi_state_at(
 def oi_state_at_ms(
     cutoff_ms: int,
     symbol: str,
-    data_dir: Path = OI_V2_DIR_DEFAULT,
+    data_dir: Path | None = None,
 ) -> list[dict[str, object]]:
     """Ms-variant of oi_state_at (causal)."""
+    if data_dir is None:
+        data_dir = resolve_oi_v2_data_dir()
     return _causal_rows_v2(data_dir, symbol, cutoff_ms)
 
 
@@ -180,9 +214,11 @@ def hour_bucket_ms(ts_ms: int) -> int:
 def oi_hourly_decision_state_v2(
     decision_time_ms: int,
     symbol: str,
-    data_dir: Path = OI_V2_DIR_DEFAULT,
+    data_dir: Path | None = None,
 ) -> dict[str, object]:
     """OI state causally available at decision_time_ms (1h buckets), no day-validity gate."""
+    if data_dir is None:
+        data_dir = resolve_oi_v2_data_dir()
     rows = oi_state_at_ms(decision_time_ms, symbol, data_dir)
     if not rows:
         return {"symbol": symbol, "decision_time_ms": decision_time_ms, "available": False}
@@ -290,7 +326,7 @@ def _median(xs: list[float]) -> float:
 def decision_eligibility_at_v2(
     decision_time_ms: int,
     symbol: str,
-    data_dir: Path = OI_V2_DIR_DEFAULT,
+    data_dir: Path | None = None,
 ) -> dict[str, object]:
     """Causal decision eligibility at T — V2 PIT-true version.
 
@@ -304,6 +340,8 @@ def decision_eligibility_at_v2(
 
     A gap strictly AFTER T cannot change the result of this function.
     """
+    if data_dir is None:
+        data_dir = resolve_oi_v2_data_dir()
     hour_start = decision_time_ms - HOUR_MS
     cur_ts = _snapshots_in_window_v2(data_dir, symbol, hour_start, decision_time_ms)
     checks: dict[str, bool] = {"current_hour_complete": len(cur_ts) == SNAPSHOTS_PER_HOUR}

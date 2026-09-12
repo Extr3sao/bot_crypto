@@ -16,6 +16,7 @@ import hashlib
 import io
 import json
 import math
+import os
 import subprocess
 import sys
 import zipfile
@@ -45,6 +46,28 @@ CANONICAL_V2_DATA_ROOTS = [
     OUT_V2_DEFAULT.resolve(),
     (REPO / "data" / "processed" / "oi_full_history").resolve(),
 ]
+
+
+def _canonical_authority_roots() -> list[Path]:
+    """All canonical dataset authority roots (V3 portability, EXT-PORTABLE-DATA-001).
+
+    Tests must fail closed against EVERY resolvable authority location:
+    worktree-local, TRADING_AGENTIC_DATA_ROOT env root, and the shared main-repo
+    data root (clean-worktree layout). A test must never be able to write to the
+    shared canonical authority just because it runs from a different worktree.
+    """
+    roots = list(CANONICAL_V2_DATA_ROOTS)
+    env = os.environ.get("TRADING_AGENTIC_DATA_ROOT")
+    if env:
+        r = Path(env)
+        for proc in ("oi_full_history_v2", "oi_full_history"):
+            roots.append(r / "data" / "processed" / proc)
+            roots.append(r / "processed" / proc)
+    # shared main-repo candidates (worktree nested at <main>/.worktrees/<name> or <main>)
+    for base in {REPO.parents[1] if len(REPO.parents) > 1 else REPO.parent, REPO.parent}:
+        for proc in ("oi_full_history_v2", "oi_full_history"):
+            roots.append(base / "data" / "processed" / proc)
+    return roots
 
 
 def _sha256_file(path: Path) -> str:
@@ -77,7 +100,7 @@ def _guard_not_canonical_under_pytest(out_dir: Path) -> None:
         resolved = out_dir.resolve()
     except Exception:
         return
-    for root in CANONICAL_V2_DATA_ROOTS:
+    for root in _canonical_authority_roots():
         try:
             # If out_dir is inside or equal to a canonical root, block it.
             if resolved == root or root in resolved.parents:
@@ -114,10 +137,11 @@ def process_file_v2(
     """
     _guard_not_canonical_under_pytest(out_dir)
     zip_path = raw_dir / symbol / f"{symbol}-metrics-{day}.zip"
-    try:
-        raw_rel = str(zip_path.relative_to(REPO)).replace("\\", "/")
-    except ValueError:
-        raw_rel = str(zip_path).replace("\\", "/")
+    # V3 PORTABILITY FIX (EXT-PORTABLE-DATA-001): locators must be canonical and
+    # data-root-independent. Never embed machine-specific absolute paths in the
+    # ledger or in normalized rows; a verifier with a different data root must
+    # reproduce byte-identical output.
+    raw_rel = f"data/raw/binance_um/metrics/{symbol}/{zip_path.name}"
     entry: dict[str, object] = {"symbol": symbol, "day": day, "raw_source": raw_rel}
     if not zip_path.exists():
         entry.update(classification="SOURCE_MISSING", rows=0)
@@ -248,10 +272,8 @@ def process_file_v2(
             buf += (json.dumps(rec, sort_keys=True, separators=(",", ":")) + "\n").encode("utf-8")
         out_path.parent.mkdir(parents=True, exist_ok=True)
         out_path.write_bytes(bytes(buf))
-        try:
-            norm_rel = str(out_path.relative_to(REPO)).replace("\\", "/")
-        except ValueError:
-            norm_rel = str(out_path).replace("\\", "/")
+        # Canonical portable locator (see raw_rel comment above)
+        norm_rel = f"data/processed/oi_full_history_v2/{symbol}/{out_path.name}"
         entry["normalized_path"] = norm_rel
         entry["normalized_sha256"] = hashlib.sha256(bytes(buf)).hexdigest()
         fp_payload = json.dumps(
@@ -355,9 +377,17 @@ def build_v2_dataset(out_dir: Path = OUT_V2_DEFAULT, raw_dir: Path = RAW) -> tup
     out_manifest = out_dir / "OI_FULL_HISTORY_DATASET_MANIFEST_V2.json"
     out_manifest.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     # committed evidence copy (data/processed is gitignored)
-    EVID_V2.mkdir(parents=True, exist_ok=True)
-    (EVID_V2 / "OI_FULL_HISTORY_DATASET_MANIFEST_V2.json").write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    (EVID_V2 / "OI_ARCHIVE_DAY_VALIDITY_LEDGER_V2.jsonl").write_bytes((out_dir / "OI_ARCHIVE_DAY_VALIDITY_LEDGER_V2.jsonl").read_bytes())
+    # V3 FIX: write evidence copies ONLY when building the canonical root itself.
+    # A/B determinism or forensic runs into TEMP must never mutate tracked repo
+    # artifacts (they previously stamped machine paths into the committed manifest).
+    try:
+        is_canonical_build = out_dir.resolve() == OUT_V2_DEFAULT.resolve()
+    except Exception:
+        is_canonical_build = False
+    if is_canonical_build:
+        EVID_V2.mkdir(parents=True, exist_ok=True)
+        (EVID_V2 / "OI_FULL_HISTORY_DATASET_MANIFEST_V2.json").write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+        (EVID_V2 / "OI_ARCHIVE_DAY_VALIDITY_LEDGER_V2.jsonl").write_bytes((out_dir / "OI_ARCHIVE_DAY_VALIDITY_LEDGER_V2.jsonl").read_bytes())
     print(json.dumps({k: manifest[k] for k in ("quality_status", "totals", "OI_FULL_HISTORY_DATASET_SHA256_V2")}, indent=2))
     return ledger, manifest
 

@@ -291,6 +291,136 @@ def test_pit_conflicting_duplicate_makes_ineligible(tmp_path: Path) -> None:
     assert after["eligible"] is False
 
 
+# ---- H (V3): FUTURE CONFLICTING DUPLICATE >T MUST NOT ALTER STATE AT T ----
+
+def test_pit_future_conflicting_duplicate_after_T_does_not_change_T(tmp_path: Path) -> None:
+    """A conflicting duplicate with timestamp STRICTLY AFTER T must not retroactively
+    alter eligibility, causal state, or feature inputs observed at T (byte-invariance)."""
+    from trading_bot.research.oi_dataset_v2 import (
+        decision_eligibility_at_v2,
+        oi_state_at_ms,
+        _hourly_changes_v2,
+        _robust_z_change,
+    )
+    days = [f"2024-06-{d:02d}" for d in range(1, 16)]
+    out = _build_days(tmp_path, days)
+    T = int(datetime(2024, 6, 15, 12, 0, tzinfo=timezone.utc).timestamp() * 1000)
+
+    def snapshot() -> str:
+        elig = decision_eligibility_at_v2(T, "BTCUSDT", out)
+        state = oi_state_at_ms(T, "BTCUSDT", out)
+        changes = _hourly_changes_v2(out, "BTCUSDT", T)
+        robust = _robust_z_change(changes, T)
+        blob = json.dumps(
+            {"eligibility": elig, "causal_state": state, "changes": changes, "robust": robust},
+            sort_keys=True,
+            separators=(",", ":"),
+        )
+        return hashlib.sha256(blob.encode("utf-8")).hexdigest()
+
+    before_elig = decision_eligibility_at_v2(T, "BTCUSDT", out)
+    assert before_elig["checks"]["current_hour_complete"] is True  # non-vacuous baseline
+    before_hash = snapshot()
+
+    # Inject conflicting duplicate STRICTLY AFTER T (same future ts, different payload)
+    shard = out / "BTCUSDT" / "BTCUSDT-oi-5m-2024-06-15.jsonl"
+    future_ts = T + 3 * 3600 * 1000
+    orig = shard.read_text().splitlines()
+    conflict = None
+    for ln in orig:
+        obj = json.loads(ln)
+        if int(obj["timestamp_ms"]) == future_ts:
+            obj["sum_open_interest"] = float(obj["sum_open_interest"]) + 777.0
+            conflict = json.dumps(obj, sort_keys=True, separators=(",", ":"))
+            break
+    assert conflict is not None, "future row to duplicate must exist"
+    shard.write_text("\n".join(orig + [conflict]) + "\n", encoding="utf-8")
+
+    after_hash = snapshot()
+    after_elig = decision_eligibility_at_v2(T, "BTCUSDT", out)
+    assert after_hash == before_hash, "future conflicting duplicate >T must be invisible at T"
+    assert after_elig["eligible"] == before_elig["eligible"]
+    assert after_elig["checks"]["no_conflicting_duplicate"] == before_elig["checks"]["no_conflicting_duplicate"]
+
+
+# ---- I (V3): PIT BYTE-INVARIANCE ACROSS ALL FUTURE-ONLY MUTATIONS (spec 16) ----
+
+def test_pit_byte_invariance_serialized_state_all_future_mutations(tmp_path: Path) -> None:
+    """Spec 16: for every future-only mutation, the serialized feature state,
+    history window, eligible state and signal input at T must be BYTE-identical."""
+    from trading_bot.research.oi_dataset_v2 import (
+        decision_eligibility_at_v2,
+        oi_state_at_ms,
+        _hourly_changes_v2,
+        _robust_z_change,
+    )
+    days = [f"2024-06-{d:02d}" for d in range(1, 16)]
+    out = _build_days(tmp_path, days)
+    T = int(datetime(2024, 6, 15, 12, 0, tzinfo=timezone.utc).timestamp() * 1000)
+    shard = out / "BTCUSDT" / "BTCUSDT-oi-5m-2024-06-15.jsonl"
+
+    def snapshot() -> str:
+        elig = decision_eligibility_at_v2(T, "BTCUSDT", out)
+        state = oi_state_at_ms(T, "BTCUSDT", out)
+        changes = _hourly_changes_v2(out, "BTCUSDT", T)  # history window input
+        robust = _robust_z_change(changes, T)  # feature state
+        blob = json.dumps(
+            {"eligibility": elig, "causal_state": state, "changes": changes, "robust": robust},
+            sort_keys=True,
+            separators=(",", ":"),
+        )
+        return hashlib.sha256(blob.encode("utf-8")).hexdigest()
+
+    baseline = snapshot()
+    assert decision_eligibility_at_v2(T, "BTCUSDT", out)["checks"]["current_hour_complete"] is True
+
+    # mutation 1: future same-day gap (drop row at T+2h)
+    future_gap_ts = T + 2 * 3600 * 1000
+    lines = shard.read_text().splitlines()
+    kept = [ln for ln in lines if int(json.loads(ln)["timestamp_ms"]) != future_gap_ts]
+    assert len(kept) == len(lines) - 1
+    shard.write_text("\n".join(kept) + "\n", encoding="utf-8")
+    assert snapshot() == baseline, "future gap changed serialized state at T"
+
+    # mutation 2: future value mutation at T+3h
+    future_mut_ts = T + 3 * 3600 * 1000
+    lines = shard.read_text().splitlines()
+    out_lines = []
+    mutated = False
+    for ln in lines:
+        obj = json.loads(ln)
+        if int(obj["timestamp_ms"]) == future_mut_ts:
+            obj["sum_open_interest"] = 99999.0
+            obj["sum_open_interest_value"] = 99999.0 * 50
+            ln = json.dumps(obj, sort_keys=True, separators=(",", ":"))
+            mutated = True
+        out_lines.append(ln)
+    assert mutated
+    shard.write_text("\n".join(out_lines) + "\n", encoding="utf-8")
+    assert snapshot() == baseline, "future value mutation changed serialized state at T"
+
+    # mutation 3: future file addition (next day)
+    _make_metrics_zip(tmp_path, "2024-06-16", "BTCUSDT")
+    e = process_file_v2("BTCUSDT", "2024-06-16", raw_dir=tmp_path, out_dir=out)
+    assert e["classification"] == "VALID"
+    assert snapshot() == baseline, "future file addition changed serialized state at T"
+
+    # mutation 4: future conflicting duplicate at T+4h
+    future_dup_ts = T + 4 * 3600 * 1000
+    lines = out / "BTCUSDT" / "BTCUSDT-oi-5m-2024-06-15.jsonl"
+    orig = lines.read_text().splitlines()
+    conflict = None
+    for ln in orig:
+        obj = json.loads(ln)
+        if int(obj["timestamp_ms"]) == future_dup_ts:
+            obj["sum_open_interest"] = float(obj["sum_open_interest"]) + 555.0
+            conflict = json.dumps(obj, sort_keys=True, separators=(",", ":"))
+            break
+    assert conflict is not None
+    lines.write_text("\n".join(orig + [conflict]) + "\n", encoding="utf-8")
+    assert snapshot() == baseline, "future conflicting duplicate changed serialized state at T"
+
+
 # ---- TEST ISOLATION GUARD ----
 
 def test_test_isolation_guard_forbids_canonical_write(tmp_path: Path) -> None:
@@ -316,13 +446,15 @@ def test_test_isolation_guard_forbids_canonical_write(tmp_path: Path) -> None:
 
 def test_2024_06_05_contamination_never_reaches_canonical(tmp_path: Path) -> None:
     """V2 canonical must remain clean (81040.448) even after any synthetic test runs; synthetic 100.0 must never pollute it."""
-    v2_clean = REPO / "data" / "processed" / "oi_full_history_v2" / "BTCUSDT" / "BTCUSDT-oi-5m-2024-06-05.jsonl"
+    from trading_bot.research.oi_dataset_v2 import resolve_oi_v2_data_dir
+
+    v2_clean = resolve_oi_v2_data_dir() / "BTCUSDT" / "BTCUSDT-oi-5m-2024-06-05.jsonl"
     assert v2_clean.exists(), "V2 clean file must exist (V1 may have been restored to clean bytes)"
     first_v2 = json.loads(v2_clean.read_text().splitlines()[0])
     assert first_v2["sum_open_interest"] == pytest.approx(81040.448)
     assert first_v2["sum_open_interest"] != 100.0
     # If a V1 file still exists, it should ALSO be clean now (we restored it from V2 bytes). The forensic report preserves the contaminated hash evidence.
-    v1 = REPO / "data" / "processed" / "oi_full_history" / "BTCUSDT" / "BTCUSDT-oi-5m-2024-06-05.jsonl"
+    v1 = resolve_oi_v2_data_dir().parents[1] / "oi_full_history" / "BTCUSDT" / "BTCUSDT-oi-5m-2024-06-05.jsonl"
     if v1.exists():
         first_v1 = json.loads(v1.read_text().splitlines()[0])
         assert first_v1["sum_open_interest"] != 100.0, "V1 file was restored to clean bytes; 100.0 synthetic must not survive"
