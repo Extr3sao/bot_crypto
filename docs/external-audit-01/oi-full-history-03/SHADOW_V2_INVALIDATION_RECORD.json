@@ -1,0 +1,33 @@
+{
+  "checkpoint": "H6-V3-REPAIR-AND-PORTABLE-VERIFICATION-AUTHORITY-01",
+  "invalidated_artifact": "reports/poc02-r2-direction-arbitration-01/shadow/SHADOW_RESOLUTION_LEDGER.jsonl (builder-claimed 11/11 PROFITABLE_REJECT)",
+  "previous_claim": {
+    "total_captures": 11,
+    "mature_captures": 11,
+    "resolved_captures": 11,
+    "outcome": "11/11 PROFITABLE_REJECT",
+    "maturity_range_claimed": "2026-09-09T21:15:00Z..2026-09-10T11:25:00Z",
+    "counterfactual_report": "reports/poc02-r2-direction-arbitration-01/shadow/SHADOW_COUNTERFACTUAL_REPORT.json"
+  },
+  "verdict": "INVALIDATED",
+  "invalidated_status": "previous 11/11 outcome claim = INVALIDATED",
+  "reason": "maturity timestamps equalled capture timestamps (maturity_time == decision_time) despite frozen 48h rule; zero horizon violates mature-only invariant",
+  "evidence": {
+    "capture_example_decision_time": "2026-09-09T21:15:00+00:00",
+    "capture_example_maturity_time_claimed": "2026-09-09T21:15:00Z",
+    "delta_hours_claimed": 0,
+    "correct_maturity_if_48h": "2026-09-11T21:15:00Z",
+    "correct_horizon_hours": 48,
+    "external_verifier_finding": "SHADOW_MATURITY_RECONCILIATION=FAIL, SHADOW_11_OF_11_RESULT=REJECTED, classification=WRONG_MATURITY_DERIVATION"
+  },
+  "frozen_protocol": {
+    "maturity_horizon": "48 hours",
+    "earliest_correct_maturity": "2026-09-11T21:15:00Z",
+    "latest_correct_maturity": "2026-09-12T11:25:00Z",
+    "maturity_derivation": "maturity_time = capture decision_time + 48h per SHADOW_AND_CONFIRMATION_STATUS earliest maturity 2026-09-11T21:15Z",
+    "no_risk_conclusion_allowed": true,
+    "isolation": "No Risk conclusion allowed from invalidated outcomes; N=11 still INSUFFICIENT_SAMPLE even if correctly resolved"
+  },
+  "disposition": "Preserved as invalid historical evidence; do not delete historical report; superseded by SHADOW_MATURITY_AUTHORITY_V2 and SHADOW_RESOLUTION_LEDGER_V2 (or empty pending true 48h maturity)",
+  "H6_impact": "NONE — H6 V3 must not consume Shadow outcomes; see H6_SHADOW_ISOLATION_REPORT"
+}

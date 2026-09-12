@@ -1,0 +1,18 @@
+{
+  "checkpoint": "H6-V3-REPAIR",
+  "proof": "PIT_DYNAMIC_RESULT",
+  "command": "python -m pytest -p no:cacheprovider -q tests/unit/research/test_oi_full_history_v2_pit.py",
+  "commit": "0941082fc875a66287d2b09159112963141bcf27",
+  "environment": {
+    "python": "3.11.15",
+    "platform": "win32"
+  },
+  "started_utc": "2026-09-12T14:39:33.111867+00:00",
+  "duration_s": 18.3,
+  "exit_code": 0,
+  "passed": 14,
+  "failed": 0,
+  "skipped": 0,
+  "status": "PASS",
+  "ended_utc": "2026-09-12T14:39:33.111867+00:00"
+}

@@ -1,0 +1,161 @@
+{
+  "checkpoint": "H6-V3-REPAIR",
+  "test": "tests/unit/paper_dashboard/test_server.py::test_non_get_methods_are_405",
+  "command": "python -m pytest -p no:cacheprovider -q <test> (x20 independent processes)",
+  "commit": "0941082fc875a66287d2b09159112963141bcf27",
+  "environment": {
+    "python": "3.11.15",
+    "platform": "win32",
+    "tz": "UTC"
+  },
+  "started_utc": "2026-09-12T14:38:40.481993+00:00",
+  "total_duration_s": 58.4,
+  "runs": [
+    {
+      "run": 1,
+      "exit_code": 0,
+      "pass": true,
+      "duration_s": 4.28,
+      "tail": "1 passed in 1.62s"
+    },
+    {
+      "run": 2,
+      "exit_code": 0,
+      "pass": true,
+      "duration_s": 3.32,
+      "tail": "1 passed in 1.25s"
+    },
+    {
+      "run": 3,
+      "exit_code": 0,
+      "pass": true,
+      "duration_s": 3.0,
+      "tail": "1 passed in 1.07s"
+    },
+    {
+      "run": 4,
+      "exit_code": 0,
+      "pass": true,
+      "duration_s": 2.02,
+      "tail": "1 passed in 0.87s"
+    },
+    {
+      "run": 5,
+      "exit_code": 0,
+      "pass": true,
+      "duration_s": 1.84,
+      "tail": "1 passed in 0.87s"
+    },
+    {
+      "run": 6,
+      "exit_code": 0,
+      "pass": true,
+      "duration_s": 2.06,
+      "tail": "1 passed in 0.92s"
+    },
+    {
+      "run": 7,
+      "exit_code": 0,
+      "pass": true,
+      "duration_s": 2.25,
+      "tail": "1 passed in 0.95s"
+    },
+    {
+      "run": 8,
+      "exit_code": 0,
+      "pass": true,
+      "duration_s": 1.95,
+      "tail": "1 passed in 0.84s"
+    },
+    {
+      "run": 9,
+      "exit_code": 0,
+      "pass": true,
+      "duration_s": 1.69,
+      "tail": "1 passed in 0.83s"
+    },
+    {
+      "run": 10,
+      "exit_code": 0,
+      "pass": true,
+      "duration_s": 1.89,
+      "tail": "1 passed in 0.84s"
+    },
+    {
+      "run": 11,
+      "exit_code": 0,
+      "pass": true,
+      "duration_s": 1.81,
+      "tail": "1 passed in 0.86s"
+    },
+    {
+      "run": 12,
+      "exit_code": 0,
+      "pass": true,
+      "duration_s": 1.73,
+      "tail": "1 passed in 0.82s"
+    },
+    {
+      "run": 13,
+      "exit_code": 0,
+      "pass": true,
+      "duration_s": 1.96,
+      "tail": "1 passed in 0.97s"
+    },
+    {
+      "run": 14,
+      "exit_code": 0,
+      "pass": true,
+      "duration_s": 2.99,
+      "tail": "1 passed in 1.25s"
+    },
+    {
+      "run": 15,
+      "exit_code": 0,
+      "pass": true,
+      "duration_s": 3.17,
+      "tail": "1 passed in 1.12s"
+    },
+    {
+      "run": 16,
+      "exit_code": 0,
+      "pass": true,
+      "duration_s": 2.79,
+      "tail": "1 passed in 1.12s"
+    },
+    {
+      "run": 17,
+      "exit_code": 0,
+      "pass": true,
+      "duration_s": 2.44,
+      "tail": "1 passed in 0.90s"
+    },
+    {
+      "run": 18,
+      "exit_code": 0,
+      "pass": true,
+      "duration_s": 6.66,
+      "tail": "1 passed in 3.80s"
+    },
+    {
+      "run": 19,
+      "exit_code": 0,
+      "pass": true,
+      "duration_s": 6.61,
+      "tail": "1 passed in 2.81s"
+    },
+    {
+      "run": 20,
+      "exit_code": 0,
+      "pass": true,
+      "duration_s": 3.86,
+      "tail": "1 passed in 1.35s"
+    }
+  ],
+  "passed": 20,
+  "failed": 0,
+  "skipped": 0,
+  "exit_code": 0,
+  "status": "PASS",
+  "ended_utc": "2026-09-12T14:38:40.481993+00:00"
+}

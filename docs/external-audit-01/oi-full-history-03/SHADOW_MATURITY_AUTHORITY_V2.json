@@ -1,0 +1,104 @@
+{
+  "checkpoint": "H6-V3-REPAIR-AND-PORTABLE-VERIFICATION-AUTHORITY-01",
+  "authority_id": "SHADOW-MATURITY-AUTHORITY-V2",
+  "protocol_version": "SHADOW-48H-MATURE-ONLY-V1",
+  "horizon_hours": 48,
+  "horizon_source": "docs/external-audit-01/FINAL_REPORT_H3_GOVERNANCE_RECONCILIATION_AND_H5_SELECTION_01.md | SHADOW_AND_CONFIRMATION_STATUS earliest maturity 2026-09-11T21:15Z",
+  "captures_total": 11,
+  "captures_file": "reports/poc02-r2-direction-arbitration-01/shadow/shadow_captures.jsonl",
+  "maturity_derivation": "maturity_time = capture decision_time + 48 hours (ISO 8601 UTC)",
+  "captures": [
+    {
+      "capture_id": "shadow:8c69b5c0ed40b44bfa3671e4",
+      "capture_time": "2026-09-09T21:15:00+00:00",
+      "maturity_time": "2026-09-11T21:15:00+00:00",
+      "protocol_version": "SHADOW-48H-MATURE-ONLY-V1",
+      "historical_maturity_claim": "2026-09-09T21:15:00Z (invalid, 0h)",
+      "correct_maturity": "2026-09-11T21:15:00+00:00"
+    },
+    {
+      "capture_id": "shadow:82923f111e8989b4b7646573",
+      "capture_time": "2026-09-09T21:15:00+00:00",
+      "maturity_time": "2026-09-11T21:15:00+00:00",
+      "protocol_version": "SHADOW-48H-MATURE-ONLY-V1",
+      "historical_maturity_claim": "2026-09-09T21:15:00Z (invalid, 0h)",
+      "correct_maturity": "2026-09-11T21:15:00+00:00"
+    },
+    {
+      "capture_id": "shadow:a3a2a742d26629cdd63a27c8",
+      "capture_time": "2026-09-10T05:00:00+00:00",
+      "maturity_time": "2026-09-12T05:00:00+00:00",
+      "protocol_version": "SHADOW-48H-MATURE-ONLY-V1",
+      "historical_maturity_claim": "2026-09-10T05:00:00Z (invalid, 0h)",
+      "correct_maturity": "2026-09-12T05:00:00+00:00"
+    },
+    {
+      "capture_id": "shadow:ca69ab8abbaaa2a4eda31bd3",
+      "capture_time": "2026-09-10T05:00:00+00:00",
+      "maturity_time": "2026-09-12T05:00:00+00:00",
+      "protocol_version": "SHADOW-48H-MATURE-ONLY-V1",
+      "historical_maturity_claim": "2026-09-10T05:00:00Z (invalid, 0h)",
+      "correct_maturity": "2026-09-12T05:00:00+00:00"
+    },
+    {
+      "capture_id": "shadow:75604a8b7e6fdc1855cd3822",
+      "capture_time": "2026-09-10T05:05:00+00:00",
+      "maturity_time": "2026-09-12T05:05:00+00:00",
+      "protocol_version": "SHADOW-48H-MATURE-ONLY-V1",
+      "historical_maturity_claim": "2026-09-10T05:05:00Z (invalid, 0h)",
+      "correct_maturity": "2026-09-12T05:05:00+00:00"
+    },
+    {
+      "capture_id": "shadow:f7acfb38d3d87482b76119f3",
+      "capture_time": "2026-09-10T05:05:00+00:00",
+      "maturity_time": "2026-09-12T05:05:00+00:00",
+      "protocol_version": "SHADOW-48H-MATURE-ONLY-V1",
+      "historical_maturity_claim": "2026-09-10T05:05:00Z (invalid, 0h)",
+      "correct_maturity": "2026-09-12T05:05:00+00:00"
+    },
+    {
+      "capture_id": "shadow:f3b4035d1b1486e284c0f5d2",
+      "capture_time": "2026-09-10T06:55:00+00:00",
+      "maturity_time": "2026-09-12T06:55:00+00:00",
+      "protocol_version": "SHADOW-48H-MATURE-ONLY-V1",
+      "historical_maturity_claim": "2026-09-10T06:55:00Z (invalid, 0h)",
+      "correct_maturity": "2026-09-12T06:55:00+00:00"
+    },
+    {
+      "capture_id": "shadow:b171e0697c60c431f8beb2ac",
+      "capture_time": "2026-09-10T06:55:00+00:00",
+      "maturity_time": "2026-09-12T06:55:00+00:00",
+      "protocol_version": "SHADOW-48H-MATURE-ONLY-V1",
+      "historical_maturity_claim": "2026-09-10T06:55:00Z (invalid, 0h)",
+      "correct_maturity": "2026-09-12T06:55:00+00:00"
+    },
+    {
+      "capture_id": "shadow:d6dbf74040e3f38ac338a787",
+      "capture_time": "2026-09-10T08:15:00+00:00",
+      "maturity_time": "2026-09-12T08:15:00+00:00",
+      "protocol_version": "SHADOW-48H-MATURE-ONLY-V1",
+      "historical_maturity_claim": "2026-09-10T08:15:00Z (invalid, 0h)",
+      "correct_maturity": "2026-09-12T08:15:00+00:00"
+    },
+    {
+      "capture_id": "shadow:08f652ea2216f0be397f3343",
+      "capture_time": "2026-09-10T08:15:00+00:00",
+      "maturity_time": "2026-09-12T08:15:00+00:00",
+      "protocol_version": "SHADOW-48H-MATURE-ONLY-V1",
+      "historical_maturity_claim": "2026-09-10T08:15:00Z (invalid, 0h)",
+      "correct_maturity": "2026-09-12T08:15:00+00:00"
+    },
+    {
+      "capture_id": "shadow:65a9243e746c9082d125bdf1",
+      "capture_time": "2026-09-10T11:25:00+00:00",
+      "maturity_time": "2026-09-12T11:25:00+00:00",
+      "protocol_version": "SHADOW-48H-MATURE-ONLY-V1",
+      "historical_maturity_claim": "2026-09-10T11:25:00Z (invalid, 0h)",
+      "correct_maturity": "2026-09-12T11:25:00+00:00"
+    }
+  ],
+  "earliest_correct_maturity": "2026-09-11T21:15:00+00:00",
+  "latest_correct_maturity": "2026-09-12T11:25:00+00:00",
+  "resolution_policy": "resolve only when maturity_time <= current_utc; until sufficient N: SHADOW_POLICY_CONCLUSION=INSUFFICIENT_SAMPLE; no Risk changes",
+  "isolation_note": "Even if all 11 happen to be profitable after correct 48h re-resolution, N=11 still INSUFFICIENT_SAMPLE; no gate tuning"
+}

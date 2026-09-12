@@ -1,0 +1,36 @@
+{
+  "checkpoint": "H6-V3-REPAIR",
+  "proof": "FULL_HERMETIC_RESULT_2",
+  "command": "python scripts/run_regression_hermetic.py -p no:cacheprovider -q (full canonical suite, host env stripped)",
+  "commit": "2cd8f850633cd2f04c22f00ffed8d9b0ab636d09",
+  "environment": {
+    "python": "3.11.15",
+    "platform": "win32",
+    "tz": "UTC"
+  },
+  "started_utc": "2026-09-12T14:55:02.294080+00:00",
+  "duration_s": 194.3,
+  "exit_code": 0,
+  "passed": 1332,
+  "failed": 0,
+  "skipped": 6,
+  "status": "PASS",
+  "ended_utc": "2026-09-12T14:55:02.294080+00:00",
+  "stdout_tail": [
+    "tests/bdd/test_features.py: 39 warnings",
+    "  C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Lib\\site-packages\\_pytest\\fixtures.py:1986: PytestRemovedIn10Warning: Passing baseid to FixtureDef is deprecated. Pass node instead for fixture scoping.",
+    "    fixture_def = FixtureDef(",
+    "",
+    "-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html",
+    "=========================== short test summary info ===========================",
+    "SKIPPED [1] tests\\unit\\research\\test_data_admission.py:328: ingestion not run in this environment",
+    "SKIPPED [1] tests\\unit\\research\\test_oi_full_history.py:73: raw sample not present on this machine",
+    "SKIPPED [1] tests\\unit\\research\\test_oi_full_history.py:344: frozen OI dataset not on this machine",
+    "SKIPPED [1] tests\\unit\\research\\test_oi_full_history.py:351: frozen OI dataset not on this machine",
+    "SKIPPED [1] tests\\unit\\research\\test_oi_full_history.py:356: frozen OI dataset not on this machine",
+    "SKIPPED [1] tests\\unit\\research\\test_oi_full_history.py:365: frozen OI dataset not on this machine",
+    "1332 passed, 6 skipped, 78 warnings in 191.17s (0:03:11)",
+    "[hermetic] stripping host env prefixes: ('EXCHANGE_', 'POC01_', 'CAMPAIGN_', 'TRADING_')",
+    "[hermetic] running: C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m pytest -p no:cacheprovider -q --junitxml=.pytest_cache/junit_hermetic2.xml"
+  ]
+}

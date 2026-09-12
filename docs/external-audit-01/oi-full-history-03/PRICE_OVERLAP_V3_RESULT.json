@@ -1,0 +1,49 @@
+{
+  "checkpoint": "H6-V3-REPAIR",
+  "proof": "PRICE_OVERLAP_V3_FULL",
+  "command": "python scripts/verify_price_overlap_v3.py [--data-root <path>]",
+  "commit": "9f1d844312419575d6b635a7356111050fd9b93a",
+  "data_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data",
+  "environment": {
+    "python": "3.11.15",
+    "platform": "win32"
+  },
+  "started_utc": "2026-09-12T15:11:05.083629+00:00",
+  "ended_utc": "2026-09-12T15:11:05.083629+00:00",
+  "exit_code": 0,
+  "per_asset": {
+    "BTCUSDT": {
+      "h1_rows": 58633,
+      "v2_rows": 58680,
+      "overlap_rows_compared": 58633,
+      "mismatch_count": 0,
+      "extension_tail_hours": 48,
+      "tail_continuity_gaps": 0,
+      "overlap_boundary_ts_match": true,
+      "overlap_equal": true
+    },
+    "ETHUSDT": {
+      "h1_rows": 58633,
+      "v2_rows": 58680,
+      "overlap_rows_compared": 58633,
+      "mismatch_count": 0,
+      "extension_tail_hours": 48,
+      "tail_continuity_gaps": 0,
+      "overlap_boundary_ts_match": true,
+      "overlap_equal": true
+    },
+    "SOLUSDT": {
+      "h1_rows": 52458,
+      "v2_rows": 52505,
+      "overlap_rows_compared": 52458,
+      "mismatch_count": 0,
+      "extension_tail_hours": 48,
+      "tail_continuity_gaps": 0,
+      "overlap_boundary_ts_match": true,
+      "overlap_equal": true
+    }
+  },
+  "total_rows_compared": 169724,
+  "status": "PASS",
+  "note": "full element-wise overlap of frozen H1 klines vs V2 extended authority (all rows, all assets) + strict 1h continuity of extension tail"
+}

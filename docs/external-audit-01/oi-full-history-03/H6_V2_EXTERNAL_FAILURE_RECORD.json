@@ -1,0 +1,101 @@
+{
+  "checkpoint": "H6-V3-REPAIR-AND-PORTABLE-VERIFICATION-AUTHORITY-01",
+  "V2_prereg_commit": "ee58c7a5a0a46cf6af17dc9606118ef0f1fcd335",
+  "V2_evidence_package_commit": "0941082fc875a66287d2b09159112963141bcf27",
+  "V2_spec_sha256": "221cfa1d6eb3dae30948e9605f258075c0cd69e8f38187da4959c3e696b8b000",
+  "V2_manifest_sha256": "5f9aba446686a32b94238cd5f7285742e53c4db551f0c2135df37837ac5fcf0d",
+  "V2_spec_path": "docs/external-audit-01/oi-full-history-02/H6_SPEC_V2.json",
+  "V2_manifest_path": "docs/external-audit-01/oi-full-history-02/H6_MANIFEST_V2.json",
+  "V2_manifest_claimed_ledger_sha256": "bb2b43c27a88bf9ff334fa5adcc753f5b34976d2b4df9061de34a94507d2bd8f58752dc",
+  "V2_manifest_claimed_ledger_sha256_len": 71,
+  "V2_actual_ledger_sha256": "bb2b43c27a88bf9fe3ec22573903a61007f046ddc1256b5caa3e788cba15e714",
+  "V2_actual_ledger_sha256_len": 64,
+  "V2_ledger_path": "docs/external-audit-01/oi-full-history-02/OI_ARCHIVE_DAY_VALIDITY_LEDGER_V2.jsonl",
+  "V2_dataset_sha256": "16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99",
+  "V2_price_authority_sha256": "e1c2462a6aa9ba0c921154d259a28c49be1e2fc58a544dbd97af8ecabef52168",
+  "external_verifier_id": "Codex independent verifier",
+  "external_verifier_context": "PROFITABILITY_DIAGNOSTICS_ONLY",
+  "verification_utc": "2026-09-12",
+  "verifier_base_commit": "0941082fc875a66287d2b09159112963141bcf27",
+  "external_verdict": "FAIL",
+  "final_verdict": "FAIL",
+  "defect_ids": [
+    "EXT-FEATURE-WHITELIST-001",
+    "EXT-MANIFEST-HASH-001",
+    "EXT-CONF-002",
+    "EXT-PORTABLE-DATA-001",
+    "EXT-SHADOW-002",
+    "EXT-HERMETIC-002",
+    "EXT-DASHBOARD-002",
+    "EXT-PRICE-LIMIT-001"
+  ],
+  "defect_details": {
+    "EXT-FEATURE-WHITELIST-001": {
+      "severity": "BLOCKING_FOR_H6",
+      "claim": "H6FieldAccess fail-closed whitelist",
+      "reproduction": "H6FieldAccess({\"unadmitted_metric\": 7}).get(\"unadmitted_metric\") returns 7 and [\"unadmitted_metric\"] returns 7 — not fail-closed",
+      "status": "FAILED_EXTERNAL_VERIFICATION"
+    },
+    "EXT-MANIFEST-HASH-001": {
+      "severity": "BLOCKING_FOR_H6",
+      "claim": "Manifest ledger hash malformed 71 chars and mismatches Git bytes",
+      "manifest_ledger_sha": "bb2b43c27a88bf9ff334fa5adcc753f5b34976d2b4df9061de34a94507d2bd8f58752dc",
+      "actual_ledger_sha": "bb2b43c27a88bf9fe3ec22573903a61007f046ddc1256b5caa3e788cba15e714",
+      "status": "FAILED_EXTERNAL_VERIFICATION"
+    },
+    "EXT-CONF-002": {
+      "severity": "BLOCKING_FOR_H6",
+      "claim": "conf_lock.py references absent confirmation file and does not enforce CONFIRMATION_LEDGER_V2",
+      "reproduction": "conf_lock points to absent docs/external-audit-01/confirmations/CONF-EDGE-002-001.json and does not consume the V2 JSONL ledger",
+      "confirmation_authority": "FAIL",
+      "confirmation_h6_blocking_status": "BLOCKING_FOR_H6",
+      "status": "FAILED_EXTERNAL_VERIFICATION"
+    },
+    "EXT-PORTABLE-DATA-001": {
+      "severity": "BLOCKING_FOR_H6",
+      "claim": "Clean verifier worktree could not independently access raw OI inputs and/or canonical normalized V2 inputs",
+      "detail": "Raw OI authority (5691 official metrics archives + checksums) and canonical normalized V2 (data/processed/oi_full_history_v2/) are gitignored; verifier worktree had no accessible copy; DATASET_AUTHORITY/DATASET_FINGERPRINT/DATASET_DETERMINISM/TEST_ISOLATION/dynamic PIT blocked",
+      "status": "BLOCKED_INSUFFICIENT_EVIDENCE"
+    },
+    "EXT-SHADOW-002": {
+      "severity": "NOT_BLOCKING_FOR_H6_BUT_GOVERNANCE",
+      "claim": "Claimed 11 Shadow resolutions are invalid due to 48h maturity violation",
+      "detail": "reported maturity timestamps == capture timestamps while frozen protocol requires 48-hour maturity; resolution ledger maturity_time == decision_time proves zero horizon",
+      "capture_maturity_range_reported": "2026-09-09T21:15:00Z..2026-09-10T11:25:00Z",
+      "correct_maturity_range_if_48h": "2026-09-11T21:15:00Z..2026-09-12T11:25:00Z",
+      "shadow_maturity_reconciliation": "FAIL",
+      "shadow_outcome_rederivation": "FAIL",
+      "shadow_11_of_11_result": "REJECTED",
+      "status": "FAILED_EXTERNAL_VERIFICATION"
+    },
+    "EXT-HERMETIC-002": {
+      "severity": "INFRASTRUCTURE",
+      "claim": "External verifier did not obtain completed full-hermetic result",
+      "status": "INCONCLUSIVE_TOOL_OUTPUT",
+      "detail": "No durable FULL_HERMETIC_RESULT.json was produced; tool output truncation prevented verdict"
+    },
+    "EXT-DASHBOARD-002": {
+      "severity": "LOW",
+      "claim": "Verifier observed 7 repeated passes not required 20/20",
+      "detail": "Expected 20/20 independent iterations of dashboard flake test; only 7 evidenced",
+      "status": "INCOMPLETE_EVIDENCE"
+    },
+    "EXT-PRICE-LIMIT-001": {
+      "severity": "LIMITATION",
+      "claim": "Price Authority PASS but overlap verification LIMITATION_PARTIAL",
+      "price_authority": "PASS",
+      "price_continuity": "PASS",
+      "price_overlap": "LIMITATION_PARTIAL",
+      "limitation": "Provider zip checksum and economic-field overlap were not independently rederived",
+      "status": "LIMITATION_PARTIAL"
+    }
+  },
+  "old_v1_prereg_commit": "e683e04e5df39d0f2f5feb6097664536b93cc636",
+  "old_v1_spec_sha": "f514fecf42b52d2e1c2946cac9dee94b2570d485cb236b9a6c663f46f5bbf148",
+  "old_v1_manifest_sha": "345334c3107860a5adcc753f5b34976d2b4df9061de34a94507d2bd8f58752dc",
+  "immutability": "V2 prereg at ee58c7a is now FAILED_EXTERNAL_VERIFICATION_V2 and IMMUTABLE; never rewritten; preserved as evidence",
+  "H6_EXECUTIONS": 0,
+  "H6_BACKTESTS": 0,
+  "PERFORMANCE_OBSERVED": false,
+  "FALSE_SUCCESS": 0
+}

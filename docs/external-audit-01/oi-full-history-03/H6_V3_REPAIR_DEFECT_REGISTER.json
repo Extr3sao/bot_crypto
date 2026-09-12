@@ -1,0 +1,147 @@
+{
+  "checkpoint": "H6-V3-REPAIR-AND-PORTABLE-VERIFICATION-AUTHORITY-01",
+  "builder_worktree": ".worktrees/h6-v3-repair",
+  "builder_branch": "repair/h6-v3-repair",
+  "base_commit": "0941082fc875a66287d2b09159112963141bcf27",
+  "failed_v2_prereg_commit": "ee58c7a5a0a46cf6af17dc9606118ef0f1fcd335",
+  "new_v3_identity": "H6-OI-CONFIRMED-CONTINUATION-03",
+  "new_v3_spec_version": 3,
+  "new_v3_dir": "docs/external-audit-01/oi-full-history-03/",
+  "defects": [
+    {
+      "defect_id": "EXT-FEATURE-WHITELIST-001",
+      "claim": "H6FieldAccess must be fail-closed: only explicitly admitted fields are accessible",
+      "old_evidence": "H6FieldAccess({\"unadmitted_metric\": 7}).get(\"unadmitted_metric\") returns 7; [\"unadmitted_metric\"] returns 7; .get with default also leaks",
+      "root_cause": "Implementation used permissive dict passthrough: __getitem__/get checked only FORBIDDEN_H6_FIELDS, not whitelist membership; missing field returned None/default instead of failing; iteration/membership/views leaked raw payload",
+      "repair": "Hardened H6FieldAccess to whitelist-closed: _ALLOWED_ALL_FIELDS gate on __getitem__/get/__contains__/__iter__/keys/values/items/__getattr__; unknown field raises H6ForbiddenFeatureAccess(field not admitted); allowed-but-missing returns standard missing behavior; iteration filtered to admitted fields only; add hash_validator guard",
+      "tests": [
+        "tests/unit/research/test_h6_whitelist_bypass.py — full bypass matrix (subscript/get with default/in/iter/keys/values/items/attr/dict/missing-vs-forbidden)",
+        "tests/unit/research/test_h6_whitelist_static_scan.py — source scan forbids raw payload access bypassing H6FieldAccess"
+      ],
+      "execution_evidence": [
+        "src/trading_bot/research/h6/whitelist.py (hardened) — H6FieldAccess fail-closed",
+        "src/trading_bot/research/h6/hash_validator.py — SHA validator",
+        "H6_FEATURE_WHITELIST_REPAIR_REPORT.json with byte-identical bypass proof"
+      ],
+      "status": "IN_PROGRESS"
+    },
+    {
+      "defect_id": "EXT-MANIFEST-HASH-001",
+      "claim": "Manifest ledger hash must be 64 hex and match Git-object SHA256",
+      "old_evidence": "H6_MANIFEST_V2 ledger_sha256 = bb2b43c27a88bf9ff334fa5adcc753f5b34976d2b4df9061de34a94507d2bd8f58752dc (71 chars) vs actual ledger sha  bb2b43c27a88bf9fe3ec22573903a61007f046ddc1256b5caa3e788cba15e714 (64 chars)",
+      "root_cause": "Manifest was assembled manually by concatenating/typo of hex fragments (prefix bb2b43c27a88bf9f matches 16, suffix ff334fa5adcc753f5b34976d2b4df90 diverges at byte 16); no programmatic sha256(bytes) derivation and no 64-hex validator gated construction",
+      "repair": "Introduce hash_validator.validate_sha256 (len 64, [0-9a-f]{64}) and V3 manifest generator that derives every hash via hashlib.sha256(authoritative_bytes).hexdigest(); malformed 71-char input fails at construction; no hand-copied hashes",
+      "tests": [
+        "tests/unit/research/test_hash_validator.py — 63/65/71/non-hex fail, correct 64 pass, assert_all_shas walks nested dict",
+        "H6_MANIFEST_HASH_REPAIR_REPORT.json — before/after sha comparison with byte evidence"
+      ],
+      "execution_evidence": [
+        "src/trading_bot/research/h6/hash_validator.py",
+        "docs/external-audit-01/oi-full-history-02/OI_FULL_HISTORY_DATASET_MANIFEST_V2.json ledger_sha256 bb2b43c27a88bf9fe3ec22573903a61007f046ddc1256b5caa3e788cba15e714 (reference correct)",
+        "H6_MANIFEST_V3.json ledger_sha256 will be programmatically 64-hex and equal to ledger bytes sha"
+      ],
+      "status": "IN_PROGRESS"
+    },
+    {
+      "defect_id": "EXT-CONF-002",
+      "claim": "conf_lock must enforce CONFIRMATION_LEDGER_V2.jsonl (ledger-backed), not absent file",
+      "old_evidence": "conf_lock.py: CONFIRMATION_MANIFEST_PATH = docs/external-audit-01/confirmations/CONF-EDGE-002-001.json (absent); does not read CONFIRMATION_LEDGER_V2.jsonl; confirmation authority FAIL/BLOCKING_FOR_H6",
+      "root_cause": "Lock checked an absent static manifest file; runtime confirmation ledger CONFIRMATION_LEDGER_V2.jsonl (append-only, append_fs) was never wired as lock authority; no reducer/state-derivation from ledger events",
+      "repair": "Redesign conf_lock to ledger-backed authority: resolve confirmation_state from CONFIRMATION_LEDGER_V2.jsonl (CREATED/LOCK_CHECK/STARTED/COMPLETED/FAILED/CONSUMED); conf_lock asserts ledger-derived state == LOCKED until 2026-09-22T00:00:00Z with exactly-once guards; PRE_LEDGER_HISTORY remains NOT_INDEPENDENTLY_PROVEN (honest), forward state is append-only; add isolation report",
+      "tests": [
+        "tests/unit/research/test_confirmation_ledger_lock.py — ledger reducer, lock before maturity, exactly-once, forbidden duplicate STARTED",
+        "tests/unit/research/test_h6_confirmation_isolation.py — H6 imports never consume confirmation outcomes"
+      ],
+      "execution_evidence": [
+        "src/trading_bot/research/h6/conf_lock.py (ledger-backed)",
+        "src/trading_bot/research/h6/confirmation_state.py (reducer)",
+        "CONFIRMATION_AUTHORITY_V3.json + H6_CONFIRMATION_ISOLATION_REPORT.json"
+      ],
+      "status": "IN_PROGRESS"
+    },
+    {
+      "defect_id": "EXT-PORTABLE-DATA-001",
+      "claim": "Clean verifier worktree must independently reconstruct dataset authority from portable evidence",
+      "old_evidence": "Clean worktree: raw OI 5691 files + normalized V2 shards + checksums are gitignored; OI_DATA_FREEZE_V2 not trackable; verifier BLOCKED_INSUFFICIENT_EVIDENCE on DATASET_AUTHORITY/DATASET_FINGERPRINT/DATASET_DETERMINISM/TEST_ISOLATION/dynamic PIT",
+      "root_cause": "Large frozen data roots (data/raw/*, data/processed/*) are intentionally gitignored; verifier worktree at 0941082 has no copy of raw/normalized bytes; authority lived only in builder's local filesystem",
+      "repair": "Create PORTABLE_RESEARCH_DATA_AUTHORITY_V1: H6_DATA_AUTHORITY_V3.json (locator pattern + checksums + dataset SHA + reconstruction/verification commands); configurable data-root discovery (--data-root, env var TRADING_AGENTIC_DATA_ROOT, repo-relative cache); shared read-only mount contract (no per-worktree copy, no absolute Windows path as sole authority); scripts/verify_h6_data_authority.py and scripts/verify_h6_v3_environment.py for one-command bootstrap; clean-worktree smoke test proves reconstruction",
+      "tests": [
+        "tests/unit/research/test_portable_data_authority.py — locator resolution, authority contract validation, clean-worktree reconstruction, fingerprint sensitivity",
+        "scripts/verify_h6_data_authority.py --data-root <path> exit 0 only when all authority reconciles",
+        "scripts/verify_h6_v3_environment.py one-command bootstrap"
+      ],
+      "execution_evidence": [
+        "H6_DATA_AUTHORITY_V3.json",
+        "H6_PORTABILITY_REPORT_V3.json + H6_DATASET_VERIFICATION_V3.json",
+        "Clean worktree .worktrees/h6-v3-portability-test reproduction evidence"
+      ],
+      "status": "IN_PROGRESS"
+    },
+    {
+      "defect_id": "EXT-SHADOW-002",
+      "claim": "Shadow 11/11 outcome claim invalid due to maturity horizon violation",
+      "old_evidence": "SHADOW_RESOLUTION_LEDGER shows maturity_time == capture decision_time (e.g., 2026-09-09T21:15 decision == 2026-09-09T21:15 maturity); frozen protocol expects maturity = decision + 48h; correct horizon 2026-09-11T21:15Z..2026-09-12T11:25Z not builder's 2026-09-09T21:15Z..2026-09-10T11:25Z",
+      "root_cause": "Resolver script treated decision_time as maturity_time anchor (zero horizon) instead of adding frozen 48h horizon; all 11 resolutions claimed mature at decision instant, violating SHADOW_AND_CONFIRMATION_STATUS earliest maturity 2026-09-11T21:15Z",
+      "repair": "Invalidate old 11 outcomes: SHADOW_V2_INVALIDATION_RECORD (11/11 => INVALIDATED, reason: zero-horizon maturity); reconstruct frozen Shadow maturity authority (per-capture maturity = capture_time + 48h per checkpoint lineage); preserve old SHADOW_RESOLUTION_LEDGER as invalid evidence; create superseding SHADOW_RESOLUTION_LEDGER_V2 (or empty until true 48h maturity) with correct protocol version and PIT first-touch/maturity-cap semantics; produce H6_SHADOW_ISOLATION_REPORT proving H6 not consuming Shadow outcomes",
+      "tests": [
+        "tests/unit/shadow/test_shadow_maturity_48h.py — maturity = capture + 48h; resolution only when maturity <= current_utc",
+        "Shadow re-resolution dry-run with PIT 1h mark/funding authority when mature"
+      ],
+      "execution_evidence": [
+        "SHADOW_V2_INVALIDATION_RECORD.json",
+        "SHADOW_MATURITY_AUTHORITY_V2.json",
+        "SHADOW_RESOLUTION_REPORT_V2.json (if resolvable) + H6_SHADOW_ISOLATION_REPORT.json"
+      ],
+      "status": "IN_PROGRESS"
+    },
+    {
+      "defect_id": "EXT-HERMETIC-002",
+      "claim": "Full hermetic result must be durable (not tool-output only)",
+      "old_evidence": "External verifier full hermetic: INCONCLUSIVE_TOOL_OUTPUT (no completed suite artifact)",
+      "root_cause": "No durable machine-readable hermetic result file was required; verifier tool output truncation hid suite verdict",
+      "repair": "Add durable harness: scripts/run_regression_hermetic.py always writes FULL_HERMETIC_RESULT.json (command/start/end/exit_code/passed/failed/skipped/warnings/stdout_tail_sha256/environment/commit) regardless of terminal truncation; wire into hermetic invocations",
+      "tests": [
+        "tests/unit/test_hermetic_harness.py — harness writes JSON even on truncation/timeout; sha covers tail",
+        "Two consecutive FULL_HERMETIC_RESULT.json with failed==0"
+      ],
+      "execution_evidence": [
+        "scripts/run_regression_hermetic.py (durable harness)",
+        "FULL_HERMETIC_RESULT_1.json + FULL_HERMETIC_RESULT_2.json (from h6-v3-repair worktree)"
+      ],
+      "status": "IN_PROGRESS"
+    },
+    {
+      "defect_id": "EXT-DASHBOARD-002",
+      "claim": "Dashboard flake must prove 20/20 independent repeats",
+      "old_evidence": "Verifier observed 7 passes not 20/20",
+      "root_cause": "Repeat evidence script ran too few iterations or was not durably captured",
+      "repair": "Create deterministic 20-iteration runner scripts/run_dashboard_repeat_20.py recording per-iteration start/result/duration/port/cleanup; capture DASHBOARD_REPEAT_20_RESULT.json requiring 20/20 PASS",
+      "tests": [
+        "DASHBOARD_REPEAT_20_RESULT.json 20/20 invariant",
+        "src/trading_bot/paper_dashboard/server.py teardown patch already applied at 440d7e5"
+      ],
+      "execution_evidence": [
+        "scripts/run_dashboard_repeat_20.py",
+        "DASHBOARD_REPEAT_20_RESULT.json with 20 entries all PASS"
+      ],
+      "status": "IN_PROGRESS"
+    },
+    {
+      "defect_id": "EXT-PRICE-LIMIT-001",
+      "claim": "Price overlap limitation must be adjudicated as PASS or explicit non-blocking limitation",
+      "old_evidence": "PRICE_AUTHORITY=PASS PRICE_CONTINUITY=PASS PRICE_OVERLAP=LIMITATION_PARTIAL — provider zip checksum and economic-field overlap not independently rederived",
+      "root_cause": "Extension klines (2026-09-09/10) were appended from data.binance.vision archives but verifier lacked independent zip-checksum + economic byte equality derivation for overlapping hour 2026-09-09T00:00Z",
+      "repair": "Re-derive overlap from official archives: verify zip CHECKSUM sidecars + byte/economic equality of overlapping 1h candle at 2026-09-09T00:00Z per asset; emit PRICE_OVERLAP_V3_REPORT with exact checks; if full zip checksum unavailable mark LIMITATION_EXPLICIT_NON_BLOCKING else PASS",
+      "tests": [
+        "tests/unit/research/test_price_overlap_v3.py — overlap hour sha + economic equality",
+        "PRICE_OVERLAP_V3_REPORT.json adjudication with evidence bytes"
+      ],
+      "execution_evidence": [
+        "PRICE_OVERLAP_V3_REPORT.json",
+        "PRICE_1H_AUTHORITY_V2_MANIFEST (already PASS on MISSING=0 per asset)"
+      ],
+      "status": "IN_PROGRESS"
+    }
+  ],
+  "summary": { "total": 8, "in_progress": 8, "affects_v3_prereg": ["EXT-FEATURE-WHITELIST-001", "EXT-MANIFEST-HASH-001", "EXT-CONF-002", "EXT-PORTABLE-DATA-001"] }
+}

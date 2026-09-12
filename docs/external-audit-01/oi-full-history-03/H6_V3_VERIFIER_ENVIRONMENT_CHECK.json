@@ -1,0 +1,145 @@
+{
+  "H6_V3_VERIFIER_ENVIRONMENT_CHECK": "FAIL",
+  "checks": [
+    {
+      "check": "artifact_exists:H6_SPEC_V2.json",
+      "detail": "b'{\\n  \"experiment_id\":'",
+      "ok": true
+    },
+    {
+      "check": "artifact_exists:H6_MANIFEST_V2.json",
+      "detail": "b'{\\n  \"experiment_id\":'",
+      "ok": true
+    },
+    {
+      "check": "artifact_exists:OI_FULL_HISTORY_DATASET_MANIFEST_V2.json",
+      "detail": "b'{\\r\\n  \"OI_FULL_HISTOR'",
+      "ok": true
+    },
+    {
+      "check": "artifact_exists:OI_ARCHIVE_DAY_VALIDITY_LEDGER_V2.jsonl",
+      "detail": "b'{\"checksum\":\"PASS\",\"'",
+      "ok": true
+    },
+    {
+      "check": "artifact_exists:PRICE_1H_AUTHORITY_V2_MANIFEST.json",
+      "detail": "b'{\\r\\n  \"PRICE_AUTHORIT'",
+      "ok": true
+    },
+    {
+      "check": "artifact_exists:H6_DATA_AUTHORITY_V3.json",
+      "detail": "b'{\\n  \"authority_id\": '",
+      "ok": true
+    },
+    {
+      "check": "H6_DATA_AUTHORITY_V3_tracked",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "H6_DATA_AUTHORITY_V3_has_locator",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "H6_DATA_AUTHORITY_V3_has_dataset_sha",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "H6_DATA_AUTHORITY_V3_ledger_sha_correct",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "raw_OI_access:BTCUSDT",
+      "detail": "-1/2201 at C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-v3-repair\\data\\raw\\binance_um\\metrics\\BTCUSDT",
+      "ok": false
+    },
+    {
+      "check": "raw_OI_access:ETHUSDT",
+      "detail": "-1/1745 at C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-v3-repair\\data\\raw\\binance_um\\metrics\\ETHUSDT",
+      "ok": false
+    },
+    {
+      "check": "raw_OI_access:SOLUSDT",
+      "detail": "-1/1745 at C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-v3-repair\\data\\raw\\binance_um\\metrics\\SOLUSDT",
+      "ok": false
+    },
+    {
+      "check": "normalized_OI_access:BTCUSDT",
+      "detail": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-v3-repair\\data\\processed\\oi_full_history_v2\\BTCUSDT",
+      "ok": false
+    },
+    {
+      "check": "normalized_OI_access:ETHUSDT",
+      "detail": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-v3-repair\\data\\processed\\oi_full_history_v2\\ETHUSDT",
+      "ok": false
+    },
+    {
+      "check": "normalized_OI_access:SOLUSDT",
+      "detail": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-v3-repair\\data\\processed\\oi_full_history_v2\\SOLUSDT",
+      "ok": false
+    },
+    {
+      "check": "price_authority_manifest",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "price_covers_window",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "script:verify_h6_data_authority.py",
+      "detail": "scripts/verify_h6_data_authority.py",
+      "ok": true
+    },
+    {
+      "check": "script:normalize_oi_full_history_v2.py",
+      "detail": "scripts/normalize_oi_full_history_v2.py",
+      "ok": true
+    },
+    {
+      "check": "script:build_price_authority_v2.py",
+      "detail": "scripts/build_price_authority_v2.py",
+      "ok": true
+    },
+    {
+      "check": "script:whitelist.py",
+      "detail": "src/trading_bot/research/h6/whitelist.py",
+      "ok": true
+    },
+    {
+      "check": "script:hash_validator.py",
+      "detail": "src/trading_bot/research/h6/hash_validator.py",
+      "ok": true
+    },
+    {
+      "check": "script:conf_lock.py",
+      "detail": "src/trading_bot/research/h6/conf_lock.py",
+      "ok": true
+    },
+    {
+      "check": "script:confirmation_state.py",
+      "detail": "src/trading_bot/research/h6/confirmation_state.py",
+      "ok": true
+    },
+    {
+      "check": "hash_validator_blocks_71",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "hash_validator_passes_correct_64",
+      "detail": "",
+      "ok": true
+    }
+  ],
+  "checks_failed": 6,
+  "checks_total": 27,
+  "commit": "HEAD",
+  "data_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-v3-repair\\data",
+  "raw_base": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-v3-repair\\data\\raw\\binance_um\\metrics"
+}

@@ -1,0 +1,15 @@
+{
+  "checkpoint": "H6-V3-REPAIR-AND-PORTABLE-VERIFICATION-AUTHORITY-01",
+  "h6_spec": "docs/external-audit-01/oi-full-history-03/H6_SPEC_V3.json (OI_CONFIRMED_CONTINUATION; frozen, not consuming Shadow)",
+  "claim": "H6 feature data / labels / spec / prereg selection do not consume Shadow outcomes",
+  "evidence": {
+    "h6_spec_shadow_import": "NONE — H6_SPEC_V2/V3 and feature_engine contain no Shadow candidate/decision/outcome import; confirmed by static scan",
+    "h6_data_authority_contains_shadow": false,
+    "h6_manifest_contains_shadow": false,
+    "shadow_captures": "reports/poc02-r2-direction-arbitration-01/shadow/shadow_captures.jsonl (11 captures, orthogonal campaign POC02-R2)",
+    "h6_shadow_firewall": "H6 V3 dataset authority is OI_FULL_HISTORY_V2 + PRICE_1H_V2 only; Shadow outcomes are excluded from H6 labels/features by design"
+  },
+  "verdict": "PASS",
+  "h6_shadow_isolation": "PASS",
+  "confirmation_shadow_isolation": "SHADOW outcomes are not a prereg dependency for H6 execution"
+}

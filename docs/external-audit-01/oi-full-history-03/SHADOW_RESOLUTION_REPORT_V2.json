@@ -1,0 +1,19 @@
+{
+  "checkpoint": "H6-V3-REPAIR-AND-PORTABLE-VERIFICATION-AUTHORITY-01",
+  "supersedes_invalid_artifact": "reports/poc02-r2-direction-arbitration-01/shadow/SHADOW_RESOLUTION_LEDGER.jsonl",
+  "superseding_artifact": "docs/external-audit-01/oi-full-history-03/SHADOW_RESOLUTION_LEDGER_V2.jsonl",
+  "disposition": "Old ledger preserved as invalid evidence; do not silently overwrite. Superseding V2 ledger re-derives resolutions only after correct 48h maturity using frozen strategy/Shadow rules; unverifiable market paths are marked AMBIGUOUS_FIRST_TOUCH when both TP and SL occur within same coarse bar",
+  "status": "AWAITING_REDERIVATION",
+  "reason_awaiting": "Correct maturity horizon not yet reached vs builder's resolved time, and no frozen intraday market path for first-touch derivation is verifiable in this checkpoint without H6 execution; no new R computed; old 11 entries all have maturity == decision (0h) and are invalid",
+  "maturity_authority": "docs/external-audit-01/oi-full-history-03/SHADOW_MATURITY_AUTHORITY_V2.json (48h)",
+  "resolution_rules": {
+    "entry": "plan.entry_reference per capture, verified against price authority V2 1h bars where separable",
+    "direction": "plan direction (LONG/SHORT) frozen per capture",
+    "TP_SL": "plan.take_profit / plan.stop_loss per capture; invalidation preregistered_v1",
+    "horizon": "48h from capture; maturity cap applies; beyond-cap truncated",
+    "first_touch": "if both TP and SL occur within same coarse bar and order cannot be known -> AMBIGUOUS_FIRST_TOUCH, not winner",
+    "costs": "COST_BPS per capture (preregistered_v1; re-cost under 10 bps for consistency check is diagnostic only)"
+  },
+  "sample_note": "N=11 remains INSUFFICIENT_SAMPLE for any Risk change regardless of outcome",
+  "h6_shadow_isolation": "NONE — H6 does not consume Shadow outcomes; see H6_SHADOW_ISOLATION_REPORT"
+}

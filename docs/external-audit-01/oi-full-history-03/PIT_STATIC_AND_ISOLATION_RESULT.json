@@ -1,0 +1,18 @@
+{
+  "checkpoint": "H6-V3-REPAIR",
+  "proof": "PIT_STATIC_AND_ISOLATION_RESULT",
+  "command": "python -m pytest -p no:cacheprovider -q tests/unit/research/test_oi_full_history_v2_pit.py tests/unit/research/test_h6_v3_test_isolation.py tests/unit/research/test_h6_whitelist_bypass.py tests/unit/research/test_h6_whitelist_static_scan.py tests/unit/research/test_hash_validator.py tests/unit/research/test_confirmation_ledger_lock.py tests/unit/research/test_h6_confirmation_isolation.py tests/unit/shadow/test_shadow_maturity_48h.py",
+  "commit": "0941082fc875a66287d2b09159112963141bcf27",
+  "environment": {
+    "python": "3.11.15",
+    "platform": "win32"
+  },
+  "started_utc": "2026-09-12T14:40:28.791805+00:00",
+  "duration_s": 55.7,
+  "exit_code": 0,
+  "passed": 51,
+  "failed": 0,
+  "skipped": 0,
+  "status": "PASS",
+  "ended_utc": "2026-09-12T14:40:28.792813+00:00"
+}
