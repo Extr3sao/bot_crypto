@@ -11,6 +11,8 @@
   "output_namespace": "docs\\profitability-diagnostics-01",
   "shadow_captures": 11,
   "shadow_outcomes": 0,
+  "runtime_trace": {"schema": "decision-trace-v1", "active_wiring": false, "historic_reconstructed": 0},
+  "pre_trace_full_hermetic_suite": {"status": "INCONCLUSIVE_TOOL_OUTPUT", "observed_progress": "11%", "final_exit_code_observed": false},
   "state_before_equals_after": true,
   "status": "PASS_WITH_EVIDENCE_GAPS",
   "telemetry_files": 14

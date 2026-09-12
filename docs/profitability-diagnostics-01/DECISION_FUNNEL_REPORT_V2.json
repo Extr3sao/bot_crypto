@@ -1,0 +1,9 @@
+{
+  "authority": "persisted R2 ledger plus sidecar trace foundation",
+  "historic_proposals": 90,
+  "native_trace_events_active_runtime": 0,
+  "historically_reconstructed_traces": 0,
+  "reason_cohorts": {"UNRESOLVED_CONFLICT": 6, "MAX_POSITIONS": 11},
+  "status": "PASS_WITH_EVIDENCE_GAPS",
+  "unknown": ["per-proposal terminal dispositions", "economic outcomes"]
+}

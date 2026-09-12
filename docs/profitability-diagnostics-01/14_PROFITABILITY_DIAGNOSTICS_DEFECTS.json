@@ -26,6 +26,24 @@
       "IMPACT": "Complexity remains economically unproven.",
       "RECOMMENDATION": "Persist deterministic proposal-set snapshots and decision latencies for future offline ablation.",
       "SOURCE": "R2 persisted reports"
+    },
+    {
+      "CLAIM": "Per-proposal runtime trace coverage is complete.",
+      "CONFIDENCE": "HIGH",
+      "DEFECT_ID": "PD-004",
+      "EVIDENCE": "decision-trace-v1 is a tested sidecar foundation; active runtime wiring is false and historic reconstruction is 0.",
+      "IMPACT": "Terminal disposition and stage completeness cannot yet be measured in production evidence.",
+      "RECOMMENDATION": "Add native append-only emission at each stage; fail the cycle visibly when trace persistence fails.",
+      "SOURCE": "runtime-trace coverage report"
+    },
+    {
+      "CLAIM": "Risk, Critic, and MetaRanker economic value can be estimated.",
+      "CONFIDENCE": "HIGH",
+      "DEFECT_ID": "PD-005",
+      "EVIDENCE": "0 linked authoritative outcomes; MAX_POSITIONS cohort=11; no Critic or MetaRanker candidate snapshots.",
+      "IMPACT": "Counterfactual expectancy, ablation, and profitability attribution are not evaluable.",
+      "RECOMMENDATION": "Collect separately sourced mature outcomes and immutable candidate-set snapshots before analysis.",
+      "SOURCE": "economic readiness reports"
     }
   ]
 }

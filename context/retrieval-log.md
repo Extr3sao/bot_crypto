@@ -234,3 +234,7 @@ FINAL_REPORT + ADR-0031. POC01 untouched (empty diff, committed + working tree).
 ## 2026-09-12 — PROFITABILITY-DIAGNOSTICS-01
 - agent=Codex action=read-only decision-funnel and multi-agent utility diagnostics artifacts=docs/profitability-diagnostics-01/, scripts/profitability_diagnostics/, specs/profitability-diagnostics-01/
 - Evidence source: persisted POC-02 R2 cycle ledger, intent ledger, launch/state records and Shadow captures. No H6 economics, risk/runtime changes, confirmation consumption, Shadow resolution, broker execution or protected-state mutation performed.
+
+## 2026-09-12 — RUNTIME-TRACE-AND-SHADOW-OUTCOME-AUTHORITY-01
+- agent=Codex action=added sidecar immutable decision-trace-v1 contract, append-only JSONL store, deterministic query/replay utility, trace readiness/cohort documentation and focused tests.
+- Scope boundary: no active runtime wiring, decision logic, risk threshold, sizing, broker, PaperBroker, Shadow capture/resolution, H5/H6/OI/PIT/confirmation file, configuration, or live-trading change. Historic aggregate telemetry reconstructed 0 per-proposal traces; economic outcomes remain unavailable.
