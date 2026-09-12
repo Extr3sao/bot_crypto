@@ -1,0 +1,50 @@
+{
+  "ALLOWED_FIELDS": [
+    {
+      "field": "sum_open_interest",
+      "role": "OI level (position stock)",
+      "source": "SOURCE_BINANCE_VISION_USDM_METRICS_DAILY",
+      "unit": "BASE_ASSET_UNITS"
+    },
+    {
+      "field": "sum_open_interest_value",
+      "role": "OI notional (position stock)",
+      "source": "SOURCE_BINANCE_VISION_USDM_METRICS_DAILY",
+      "unit": "USDT_NOTIONAL"
+    },
+    {
+      "field": "price_open_high_low_close_volume_1h",
+      "role": "market context only",
+      "source": "price authority V2 (PRICE_1H_AUTHORITY_V2_MANIFEST.json, covers common window fully 2021-12-01->2026-09-10)",
+      "unit": "PRICE/VOLUME"
+    }
+  ],
+  "FORBIDDEN_FIELDS": [
+    "count_toptrader_long_short_ratio",
+    "sum_toptrader_long_short_ratio",
+    "count_long_short_ratio",
+    "sum_taker_long_short_vol_ratio"
+  ],
+  "H6_CONFIRMATION_DATA_DEPENDENCY": "NONE",
+  "H6_SHADOW_DATA_DEPENDENCY": "NONE",
+  "artifact": "H6 feature authority whitelist V3",
+  "checkpoint": "H6-V3-REPAIR-PREREG",
+  "enforcement": {
+    "accessor": "H6FieldAccess (fail-closed)",
+    "bypass_paths_allowed": 0,
+    "covers": [
+      "__getitem__",
+      "get",
+      "keys",
+      "values",
+      "items",
+      "iteration",
+      "contains",
+      "attribute",
+      "len"
+    ],
+    "exception": "H6ForbiddenFeatureAccess"
+  },
+  "frozen_before": "any H6 V3 execution, backtest, or performance inspection",
+  "supersedes": "docs/external-audit-01/oi-full-history-02/H6_FEATURE_AUTHORITY_WHITELIST_V2.json"
+}

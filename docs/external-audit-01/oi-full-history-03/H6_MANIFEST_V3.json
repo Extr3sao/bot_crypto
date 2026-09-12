@@ -1,0 +1,72 @@
+{
+  "checkpoint": "H6-V3-REPAIR-PREREG",
+  "commit": "2cd8f850633cd2f04c22f00ffed8d9b0ab636d09",
+  "data_authority_ref": "docs/external-audit-01/oi-full-history-03/H6_DATA_AUTHORITY_V3.json",
+  "experiment": "H6-OI-CONFIRMED-CONTINUATION-03",
+  "governance": {
+    "H6_BACKTESTS": 0,
+    "H6_CONFIRMATION_DATA_DEPENDENCY": "NONE",
+    "H6_CONFIRMATION_PERFORMANCE_DEPENDENCY": "NONE",
+    "H6_CONFIRMATION_RESULT_DEPENDENCY": "NONE",
+    "H6_EXECUTIONS": 0,
+    "H6_SHADOW_DATA_DEPENDENCY": "NONE",
+    "PERFORMANCE_OBSERVED": false,
+    "PRE_LEDGER_CONFIRMATION_HISTORY": "NOT_INDEPENDENTLY_PROVEN (LIMITATION_EXPLICIT_NON_BLOCKING for V3: V3 decisions depend on no prior confirmation results)",
+    "status_at_prereg": "PENDING_EXTERNAL_VERIFICATION_V3"
+  },
+  "hash_provenance": [
+    {
+      "algorithm": "sha256",
+      "artifact": "H6_SPEC_V2.json (economics source, read not retyped)",
+      "bytes_source": "actual stored bytes (committed copy)",
+      "path": "docs/external-audit-01/oi-full-history-02/H6_SPEC_V2.json",
+      "sha256": "221cfa1d6eb3dae30948e9605f258075c0cd69e8f38187da4959c3e696b8b000"
+    },
+    {
+      "algorithm": "sha256",
+      "artifact": "OI_FULL_HISTORY_DATASET_MANIFEST_V2.json",
+      "bytes_source": "actual stored bytes (committed copy)",
+      "path": "docs/external-audit-01/oi-full-history-02/OI_FULL_HISTORY_DATASET_MANIFEST_V2.json",
+      "sha256": "24160d1c8eb42dc6feaaddabed469916898f27814c34d567b5533e54f15532ac"
+    },
+    {
+      "algorithm": "sha256",
+      "artifact": "OI_ARCHIVE_DAY_VALIDITY_LEDGER_V2.jsonl",
+      "bytes_source": "actual stored bytes (committed copy, 5691 lines)",
+      "path": "docs/external-audit-01/oi-full-history-02/OI_ARCHIVE_DAY_VALIDITY_LEDGER_V2.jsonl",
+      "sha256": "bb2b43c27a88bf9fe3ec22573903a61007f046ddc1256b5caa3e788cba15e714"
+    },
+    {
+      "algorithm": "sha256(canonical_json(files[])) with per-file normalized_sha256 recomputed from actual file bytes",
+      "artifact": "OI_FULL_HISTORY_DATASET_SHA256_V2 (dataset fingerprint)",
+      "bytes_source": "actual canonical normalized authority files under shared data root",
+      "path": "declared inside OI_FULL_HISTORY_DATASET_MANIFEST_V2.json; independently recomputed from actual normalized bytes by scripts/prove_h6_v3_dataset_determinism.py",
+      "sha256": "16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99"
+    },
+    {
+      "algorithm": "sha256",
+      "artifact": "PRICE_1H_AUTHORITY_V2_MANIFEST.json",
+      "bytes_source": "actual stored bytes (committed copy)",
+      "path": "docs/external-audit-01/oi-full-history-02/PRICE_1H_AUTHORITY_V2_MANIFEST.json",
+      "sha256": "e1c2462a6aa9ba0c921154d259a28c49be1e2fc58a544dbd97af8ecabef52168"
+    },
+    {
+      "algorithm": "sha256",
+      "artifact": "H6_DATA_AUTHORITY_V3.json",
+      "bytes_source": "actual stored bytes (committed copy)",
+      "path": "docs/external-audit-01/oi-full-history-03/H6_DATA_AUTHORITY_V3.json",
+      "sha256": "4e2bada45fa06fb10ed89815759f2bc258d093afab70b93c6a983763e528466b"
+    },
+    {
+      "algorithm": "sha256",
+      "artifact": "H6_FEATURE_AUTHORITY_WHITELIST_V3.json",
+      "bytes_source": "actual stored bytes (this generation)",
+      "path": "docs/external-audit-01/oi-full-history-03/H6_FEATURE_AUTHORITY_WHITELIST_V3.json",
+      "sha256": "c59718cafcd8c0a23ea6cbf7244e328f668c95bf40744e3520752c52fa0a1b31"
+    }
+  ],
+  "preregistered_utc": "2026-09-12T14:48:14.101250+00:00",
+  "spec_ref": "docs/external-audit-01/oi-full-history-03/H6_SPEC_V3.json",
+  "whitelist_ref": "docs/external-audit-01/oi-full-history-03/H6_FEATURE_AUTHORITY_WHITELIST_V3.json",
+  "whitelist_sha256": "c59718cafcd8c0a23ea6cbf7244e328f668c95bf40744e3520752c52fa0a1b31"
+}

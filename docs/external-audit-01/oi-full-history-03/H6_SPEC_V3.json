@@ -1,0 +1,169 @@
+{
+  "checkpoint": "H6-V3-REPAIR-PREREG",
+  "data_authority_v3": {
+    "OI_FULL_HISTORY_DATASET_SHA256_V2": "16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99",
+    "authority_doc": "docs/external-audit-01/oi-full-history-03/H6_DATA_AUTHORITY_V3.json",
+    "authority_doc_sha256": "4e2bada45fa06fb10ed89815759f2bc258d093afab70b93c6a983763e528466b",
+    "dataset_manifest_v2_committed_copy_sha256": "24160d1c8eb42dc6feaaddabed469916898f27814c34d567b5533e54f15532ac",
+    "ledger_v2_committed_copy_sha256": "bb2b43c27a88bf9fe3ec22573903a61007f046ddc1256b5caa3e788cba15e714",
+    "portable_resolution": "--data-root | TRADING_AGENTIC_DATA_ROOT | shared main-repo data root | official source reconstruction",
+    "price_authority_sha256_v2": "e1c2462a6aa9ba0c921154d259a28c49be1e2fc58a544dbd97af8ecabef52168"
+  },
+  "economics": {
+    "assets": [
+      "BTCUSDT",
+      "ETHUSDT",
+      "SOLUSDT"
+    ],
+    "common_window_utc": {
+      "USE_COMMON_WINDOW": true,
+      "archive_validity_vs_decision_eligibility": {
+        "ARCHIVE_DAY_VALIDITY": "OI_ARCHIVE_DAY_VALIDITY_LEDGER_V2.jsonl is a forensic data-quality artifact ONLY; it MUST NOT directly control historical decision eligibility \u2014 eligibility is timestamp-scoped causal (PIT) per decision_time",
+        "DECISION_ELIGIBILITY_AT_T": "strictly causal (data_time <= T): completed 1h price bar exists; CURRENT_HOUR_OI_COMPLETENESS = exactly 12 distinct 5m OI snapshots in the completed hour; previous-hour reference complete; rolling feature history >= 336 valid hourly OI changes; last observation not stale (<= 600s); no conflicting duplicate <= T. No final UTC-day validity; no observations > T. A gap strictly AFTER T must not alter eligibility or feature/signal state at T (adversarially tested in PIT_CAUSALITY_V2_REPORT)."
+      },
+      "end": "2026-09-10T23:59:59Z",
+      "pre_common_auxiliary_data": "BTCUSDT 2020-09-01..2021-11-30 OI preserved as PRE_COMMON_AUXILIARY_DATA; MUST NOT influence hypothesis selection, thresholds, metrics or performance (default frozen here)",
+      "start": "2021-12-01T00:00:00Z"
+    },
+    "cost_model": {
+      "BASE_TOTAL_ROUND_TRIP_COST_BPS": 10,
+      "COST_SENSITIVITY_BPS": [
+        0,
+        10,
+        20,
+        40
+      ],
+      "definition": "10 bps is the TOTAL modeled round-trip trading friction (single canonical number; not decomposed into per-side fees/slippage)",
+      "gross_reporting_required": true,
+      "primary_gate_application": "primary economic gates use 10 bps TOTAL RT",
+      "purpose": "distinguish NO_GROSS_EDGE from EDGE_KILLED_BY_COSTS",
+      "sensitivity_role": "diagnostic robustness only, NOT parameter selection"
+    },
+    "decision_spacing": "NO COOLDOWN / ONE DECISION PER COMPLETED ASSET-HOUR",
+    "decision_timeframe": {
+      "bucket": "1h",
+      "decision_time": "completed 1h bucket close (openTime + 3600_000 ms)",
+      "oi_aggregation_rule": "causal V2: use only 5m observations with oi_time <= decision_time; CURRENT_HOUR_OI_COMPLETENESS requires exactly 12 distinct snapshots in the completed decision hour; previous-hour reference also 12; PIT timestamp-scoped reads (oi_state_at) with no final UTC-day validity gate",
+      "pit_invariant": "oi_time <= decision_time for every observation used; no day-level future validity query",
+      "primary_holding_horizon_hours": 1
+    },
+    "direction_semantics": {
+      "LONG": "price UP (close > open) AND delta_oi > 0 AND z_oi >= +1.0",
+      "NO_TRADE": "delta_oi <= 0, or z_oi < +1.0, or price close == open, or any NO_SIGNAL condition",
+      "SHORT": "price DOWN (close < open) AND delta_oi > 0 AND z_oi >= +1.0",
+      "no_inferred_direction": "direction derives only from the frozen price/OI definitions above"
+    },
+    "entry_timing": "next 1h bar OPEN (the bar immediately after the decision hour)",
+    "exit_timing": "same next 1h bar CLOSE",
+    "experiment_invalidation": "spec/manifest hash drift, dataset fingerprint drift, or any execution before this prereg is committed => experiment invalid",
+    "feature_transformations": [
+      {
+        "causal": true,
+        "definition": "sum_open_interest(last 5m snapshot of completed hour H) - sum_open_interest(last 5m snapshot of completed hour H-1); base-asset units; requires exactly 12 distinct snapshots in BOTH hours, else NO_TRADE for that hour",
+        "name": "delta_oi_1h",
+        "window": "1h"
+      },
+      {
+        "causal": true,
+        "definition": "ROBUST location/scale z-score of delta_oi_1h: z = (delta_oi - rolling_median) / (1.4826 * rolling_MAD) over the trailing 30 calendar days (720 completed hourly changes) strictly BEFORE the decision time; if MAD == 0 => NO_TRADE (causal; PIT timestamp-scoped)",
+        "name": "z_oi",
+        "note": "single frozen robust definition; rolling std is NOT used; no alternative scale was evaluated",
+        "window": "30d trailing, center=median, scale=1.4826*MAD, min 336 valid historical observations"
+      },
+      {
+        "causal": true,
+        "definition": "completed decision-hour close > open => UP; close < open => DOWN; close == open => NO_TRADE",
+        "name": "price_direction_1h",
+        "window": "1h"
+      }
+    ],
+    "forbidden_until_execution_checkpoint": [
+      "economic backtest on real data",
+      "signal generation on real data",
+      "performance metric computation on real data",
+      "parameter sweep",
+      "threshold tuning"
+    ],
+    "funding_accounting": {
+      "FUNDING_DISCOVERY_ACCOUNTING": "EXCLUDED_WITH_LIMITATION",
+      "funding_materiality_gate_before_promotion": true,
+      "note": "funding is NOT silently zero forever; any promotion requires a funding materiality audit",
+      "reason": "no PIT-safe authoritative funding series exists in the repository for all three assets (BTCUSDT deep series exists in docs/external-audit-01/carry-funding-deep-01/; ETHUSDT/SOLUSDT do not)"
+    },
+    "insufficient_sample_policy": "if realized N < minimum_N, or any gate dataset is missing, result = INSUFFICIENT_SAMPLE / REPAIR_REQUIRED; no parameter relaxation, no window extension to chase N",
+    "minimum_N": {
+      "note": "hours are the independent unit; non-overlapping 1h outcomes per asset; if realized N is below minimum, result is INSUFFICIENT_SAMPLE (a FAIL-class outcome, not a promotion)",
+      "per_asset_trades": 30,
+      "pooled_trades": 100
+    },
+    "oi_field_whitelist": [
+      "sum_open_interest",
+      "sum_open_interest_value"
+    ],
+    "orthogonality_gates": {
+      "H5_PNL_CORRELATION": "NOT_EVALUABLE_FROM_PERSISTED_EVIDENCE (H5 daily PnL arrays were never persisted; do not regenerate H5)",
+      "MAX_ABS_DAILY_CORRELATION_TO_MOMENTUM_PROXY": 0.5,
+      "comparator": "the exact preregistered ROC(24h) momentum proxy definition (frozen before H6 execution; daily series construction frozen before execution)",
+      "computed_before_economics": true,
+      "implementation": "CORRECT Pearson implementation, verified by the standard self-test r(X,X)=1, r(X,-X)=-1, constant series guarded",
+      "violation": "violation => no promotion regardless of economics"
+    },
+    "pass_fail_semantics": {
+      "FAIL_is_terminal": "any unmet gate => DISCOVERY_FAIL, terminal, recorded in FAILED_RESEARCH_MEMORY.md; post-hoc subcells are POST_HOC_LEAD_ONLY and never promoted",
+      "PASS_requires": "ALL of: minimum_N met, net expectancy > 0 at 10 bps TOTAL RT, P(Sharpe>0) >= 0.90, permutation p <= 0.05, Sharpe CI excludes 0, halves + thirds + walk-forward consistent, |daily corr vs momentum proxy| <= 0.50, funding materiality gate if promoted",
+      "no_rerun": "no rerun, no retuning, no threshold change after first economic execution"
+    },
+    "primary_holding_horizon": "exactly 1h",
+    "robustness_gates": [
+      "halves consistency: sign of net expectancy must agree across first/second half of the common window",
+      "thirds consistency: at least 2 of 3 thirds positive net expectancy",
+      "walk-forward: rolling 3-fold forward evaluation must not have all folds negative"
+    ],
+    "rolling_windows": {
+      "z_oi": {
+        "center": "median",
+        "length_hours": 720,
+        "min_observations": 336,
+        "scale": "1.4826*MAD",
+        "update": "strictly trailing, recompute per decision hour from PIT data only"
+      }
+    },
+    "threshold_rule": {
+      "contraction_condition": "NO_TRADE: OI contraction hours (delta_oi <= 0) produce NO_TRADE regardless of z (a contraction-reversal variant would be a separate preregistered experiment)",
+      "example_repaired": "median=-10, MAD=1, delta_oi=-8 => z=1.349 BUT delta_oi<0 => NO_TRADE (previously would have fired; now blocked)",
+      "expansion_condition": "delta_oi > 0 AND z_oi >= +1.0",
+      "expansion_condition_detail": "qualifying expansion requires BOTH raw OI expansion (current delta_oi > 0, base-asset units) AND robust_z_oi >= 1.0; positive z alone with delta_oi <= 0 is NOT qualifying (contraction never qualifies even if z >= 1 due to negative median/MAD). If MAD == 0 => NO_TRADE (H6 V2 raw-sign rule, EXT-CONS-004 repair).",
+      "neutral_or_insufficient": "delta_oi <= 0, or z_oi < +1.0, or MAD == 0, or < 336 historical observations => NO_TRADE/NO_SIGNAL",
+      "note": "thresholds frozen BEFORE any performance observation; NO parameter sweep is permitted; changing these values after any economic execution invalidates the experiment",
+      "type": "PIT_ROLLING_DISTRIBUTION"
+    }
+  },
+  "economics_carried_forward_unchanged_from": {
+    "artifact": "docs/external-audit-01/oi-full-history-02/H6_SPEC_V2.json",
+    "retune": "NONE (spec 33/34)",
+    "spec_sha256_of_carried_block": "221cfa1d6eb3dae30948e9605f258075c0cd69e8f38187da4959c3e696b8b000"
+  },
+  "governance": {
+    "H6_BACKTESTS": 0,
+    "H6_CONFIRMATION_DATA_DEPENDENCY": "NONE",
+    "H6_CONFIRMATION_PERFORMANCE_DEPENDENCY": "NONE",
+    "H6_CONFIRMATION_RESULT_DEPENDENCY": "NONE",
+    "H6_EXECUTIONS": 0,
+    "H6_SHADOW_DATA_DEPENDENCY": "NONE",
+    "PERFORMANCE_OBSERVED": false,
+    "PRE_LEDGER_CONFIRMATION_HISTORY": "NOT_INDEPENDENTLY_PROVEN (LIMITATION_EXPLICIT_NON_BLOCKING for V3: V3 decisions depend on no prior confirmation results)",
+    "status_at_prereg": "PENDING_EXTERNAL_VERIFICATION_V3"
+  },
+  "hypothesis_id": "H6-OI-CONFIRMED-CONTINUATION-03",
+  "prereg_commit": "PENDING (filled by freeze commit step; this field is completed by the post-commit record, not self-referentially here)",
+  "preregistered_utc": "2026-09-12T14:48:14.101250+00:00",
+  "repair_evidence": {
+    "DASHBOARD_REPEAT_20_RESULT": "docs/external-audit-01/oi-full-history-03/DASHBOARD_REPEAT_20_RESULT.json",
+    "DATASET_DETERMINISM_V3_RESULT": "docs/external-audit-01/oi-full-history-03/DATASET_DETERMINISM_V3_RESULT.json",
+    "DATA_AUTHORITY_RESULT": "docs/external-audit-01/oi-full-history-03/DATA_AUTHORITY_RESULT.json",
+    "FULL_HERMETIC_RESULT_1": "docs/external-audit-01/oi-full-history-03/FULL_HERMETIC_RESULT_1.json",
+    "PIT_DYNAMIC_RESULT": "docs/external-audit-01/oi-full-history-03/PIT_DYNAMIC_RESULT.json"
+  },
+  "supersedes": "H6-OI-CONFIRMED-CONTINUATION-02 (FAILED_EXTERNAL_VERIFICATION_V2)",
+  "supersession_condition": "V3 supersedes V2 only after independent external verification; until then V3 is PENDING_EXTERNAL_VERIFICATION_V3"
+}
