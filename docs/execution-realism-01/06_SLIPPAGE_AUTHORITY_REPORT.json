@@ -1,0 +1,10 @@
+{
+  "checkpoint": "EXECUTION-REALISM-AND-COST-AUTHORITY-01",
+  "repo_preserved_fields": ["decision_price (signal.price)", "intended_price=signal.price", "fill_price (slippage-adjusted entry/exit)", "fill_timestamp (opened_at/closed_at floats)", "notional/qty/side/stop/tp"],
+  "missing_for_real": ["submitted_price (no limit orders in paper)", "real venue fill_price", "real fill timestamp against exchange"],
+  "paper_synthetic_slippage": {"per_leg_bps": 1.0, "round_trip_bps": 2.0, "mechanism": "entry_slippage_price/exit_slippage_price worsens: buy*(1+mult)/buy/(1+mult) sell/(1+mult)/sell*(1+mult)", "included_in": "ExecutionCostModel.compute_costs total_cost and PaperBroker net PnL"},
+  "real_market_slippage": "NOT_MEASURED",
+  "r2_paper_evidence": {"intent_ledger_lines": 3, "keys": ["2026-09-10|BTC|buy|momentum", "2026-09-10|BTC|sell|momentum", "2026-09-10|ETH|sell|momentum"], "note": "paper INTENT_EXECUTED only; not exchange fills; shadow 11 are Risk REJECT not broker fills"},
+  "never_mix": true,
+  "sources": ["SRC-PAPER-001", "SRC-EXEC-001"]
+}

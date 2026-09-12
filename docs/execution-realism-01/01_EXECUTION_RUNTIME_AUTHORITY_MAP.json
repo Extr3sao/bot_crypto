@@ -1,0 +1,34 @@
+{
+  "checkpoint": "EXECUTION-REALISM-AND-COST-AUTHORITY-01",
+  "base_commit": "0941082fc875a66287d2b09159112963141bcf27",
+  "generated_at_utc": "2026-09-12T11:30:00Z",
+  "runtime_classification_legend": "RUNTIME_AUTHORITATIVE = exercised by certified PAPER session; RUNTIME_REACHABLE = importable/mounted but not on every path; TEST_ONLY/RESEARCH_ONLY/LEGACY/DEAD as labeled",
+  "components": [
+    {"component": "PaperBroker", "path": "src/trading_bot/paper/broker.py", "classification": "RUNTIME_AUTHORITATIVE", "evidence": "sole execution boundary in paper_cycle.PaperCycleEngine + reports/poc02-r2/R2_CYCLE_LEDGER.jsonl broker_calls=0 when NO_TRADE but executes correctly; reconcile_session() checks SL/TP; ClosedTrade.pnl = true net (both commissions)", "lifecycle": "execute_signal() -> PaperPosition; check_positions()/check_positions_ohlc(both_hit_policy=stop_first) -> ClosedTrade; equity == initial + sum(pnl)"},
+    {"component": "PaperBroker types", "path": "src/trading_bot/paper/types.py", "classification": "RUNTIME_AUTHORITATIVE", "evidence": "PaperExecutionSummary + PaperSessionResult + PaperSessionMetrics consumed by harness/reporting"},
+    {"component": "PaperCycleEngine", "path": "src/trading_bot/paper/paper_cycle.py", "classification": "RUNTIME_AUTHORITATIVE", "evidence": "PIT OHLCV -> AssetAgent -> StrategyRouter -> AlphaFamily -> SignalAdapter -> CandidatePortfolio -> RiskManager -> PaperBroker; intent_cloid PAPER-<sha(symbol,strategy,direction,bar)>; IdempotencyGuard; R2 15 cycles exercised", "invariants": "Risk-before-broker mandatory; fail-closed on router/adapter/risk error; exactly-once per (symbol,strategy,direction,bar)"},
+    {"component": "ExecutionCostModel", "path": "src/trading_bot/execution/cost_model.py", "classification": "RUNTIME_AUTHORITATIVE", "evidence": "PaperBroker defaults commission 5bp + slippage 1bp (total ~12bps RT); execution/cost_model.compute_costs() used by StartupReconciler? No — standalone. Invariant rss: fees by notional, slippage worsens fill, net_pnl = gross - total_cost; planned_net_rr() for cost-aware admission", "params": "commission_bps=5.0, slippage_bps=1.0, validates 0..1000 bps"},
+    {"component": "TradeIntent + intent_id", "path": "src/trading_bot/execution/intent.py", "classification": "RUNTIME_AUTHORITATIVE", "evidence": "canonical fields account_id/venue/symbol/side/order_type/quantity/limit_price/reduce_only -> sha256; derive_client_order_id; FillLedger, IdempotentSubmitGate, AmbiguousAckRecovery", "fields": "CANONICAL_INTENT_FIELDS 8-tuple"},
+    {"component": "ExecutionGateway", "path": "src/trading_bot/execution/gateway.py", "classification": "RUNTIME_REACHABLE", "evidence": "VenuePort submit/query/venue_order_id_of; GatewayReceipt; adapter-agnostic (no network I/O itself); economic_orders_per_intent <= 1", "note": "not exercised by PAPER path today — paper uses PaperBroker directly; reserved for future execution-service mounting"},
+    {"component": "ExecutionService", "path": "src/trading_bot/execution/service.py", "classification": "RUNTIME_REACHABLE", "evidence": "durable JSONL journal reload; feed dead-man guard; startup reconciliation fail-closed; LIVE disabled (port injected by caller)", "note": "runtime-reachable but PAPER still uses PaperBroker; no LIVE port wired"},
+    {"component": "ExecutionJournal", "path": "src/trading_bot/execution/journal.py", "classification": "RUNTIME_REACHABLE", "evidence": "append-only state CREATED/SUBMITTING/... with reason+evidence; durable JSONL"},
+    {"component": "FeedGuard", "path": "src/trading_bot/execution/feed_guard.py", "classification": "RUNTIME_REACHABLE", "evidence": "FeedDeadManGuard + FeedGuardVerdict BLOCK forbids entry (intent not journaled REJECTED — transient)"},
+    {"component": "LiveGate", "path": "src/trading_bot/execution/live_gate.py", "classification": "RUNTIME_REACHABLE", "evidence": "pre-flight validator imported by config/runtime.py; runtime.mode/paper vs live disabled; no credentials in authority"},
+    {"component": "IdempotencyGuard", "path": "src/trading_bot/execution/idempotency.py", "classification": "RUNTIME_AUTHORITATIVE", "evidence": "reused by PaperCycleEngine for neutral PAPER exactly-once (R2_INTENT_LEDGER 3 entries: 2026-09-10 BTC buy/sell, ETH sell)"},
+    {"component": "Reconciliation", "path": "src/trading_bot/paper/reconciliation.py", "classification": "RUNTIME_AUTHORITATIVE", "evidence": "StartupReconciler CLOSE_ORPHANED policy; startup_reconciliation_report.json; PaperBroker.reconcile_session builds price map from snapshots", "ledger": "R2_COVERAGE_DAILY.jsonl 2 days; downtime 1436/1435 min observed"},
+    {"component": "SignalAdapter", "path": "src/trading_bot/paper/signal_adapter.py", "classification": "RUNTIME_AUTHORITATIVE", "evidence": "single conversion point AlphaSignal -> Signal; only caller of PaperBroker.execute_signal (via cycle)"},
+    {"component": "OHLCVFetcher + ExchangeConnector", "path": "src/trading_bot/market_data/ohlcv_fetcher.py + exchange_connector.py", "classification": "RUNTIME_AUTHORITATIVE", "evidence": "public binanceusdm REST OHLCV/CCXT; fetch_ohlcv + OHLCVStore upsert idempotent; no credentials; fills price authority for candles (1h shards 58680/58680/52505)"},
+    {"component": "RiskManager", "path": "src/trading_bot/risk/manager.py", "classification": "RUNTIME_AUTHORITATIVE", "evidence": "mandatory risk path before broker; max_open_positions=3, min/max notional, blocks (spread/ATR/latency/weekend); shadow captures 11 Max open positions reached (1)"},
+    {"component": "Shadow (RiskGateRouter + Capture)", "path": "src/trading_bot/shadow/", "classification": "RUNTIME_AUTHORITATIVE", "evidence": "R2 shadow_captures 11 (all Mature->Resolved 11/11, PROFITABLE_REJECT 11, mean net_R 0.39); SHADOW_PAPERBROKER_CALLS=0", "note": "diagnostic only, not traded"},
+    {"component": "Backtesting / strategy_lab", "path": "src/trading_bot/backtesting/ + strategy_lab/", "classification": "RESEARCH_ONLY", "evidence": "legacy retro execution not on PAPER runtime path"},
+    {"component": "Demo/poc02 legacy scripts", "path": "scripts/launch_poc02* + demo/paper_multi_agent", "classification": "LEGACY", "evidence": "superseded by R2 launcher; still reachable but not canonical PAPER path after ADR convergence"}
+  ],
+  "invariants_verified": [
+    "PaperBroker.execute_signal is the ONLY execution boundary (grep: zero exchange order calls in paper path)",
+    "equity invariant: equity == initial_equity + sum(ClosedTrade.pnl) because _close_position deducts BOTH commissions",
+    "slippage worsens: entry buy * (1+mult), sell / (1+mult); exit buy / (1+mult), sell * (1+mult)",
+    "OHLC conservative: both_hit_policy=stop_first (SL before TP)",
+    "intent_cloid deterministic: PAPER-sha256(s,st,d,t) [symbol,strategy,direction,bar_ts]",
+    "economic_orders_per_intent <= 1 (IdempotentSubmitGate)"
+  ]
+}

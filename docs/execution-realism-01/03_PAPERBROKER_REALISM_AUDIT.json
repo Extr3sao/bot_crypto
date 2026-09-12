@@ -1,0 +1,37 @@
+{
+  "checkpoint": "EXECUTION-REALISM-AND-COST-AUTHORITY-01",
+  "base_commit": "0941082fc875a66287d2b09159112963141bcf27",
+  "fill_model": {
+    "entry_long": "signal.price * (1 + slippage_bps/10000)",
+    "entry_short": "signal.price / (1 + slippage_bps/10000)",
+    "exit_long": "exit_price / (1 + slippage_bps/10000)",
+    "exit_short": "exit_price * (1 + slippage_bps/10000)",
+    "price_source": "signal/last PRICE only (no bid/ask/mid)",
+    "uses_bid_ask_mid": false,
+    "uses_bar_ohlc": "exit via check_positions(close) and check_positions_ohlc(high,low) with stop_first",
+    "immediate_deterministic": true,
+    "slippage_bps_per_leg": 1.0,
+    "commission_bps_per_leg": 5.0,
+    "total_default_round_trip_bps": 12.0
+  },
+  "pnl_accounting": {
+    "gross": "(slippage-adjusted exit - slippage-adjusted entry) * qty (buy) / inverse (sell)",
+    "fees": "entry_commission + exit_commission on notional (both deducted at close; entry stored on PaperPosition)",
+    "net": "gross - entry_commission - exit_commission",
+    "invariant": "equity == initial_equity + sum(ClosedTrade.pnl)"
+  },
+  "behaviors": {
+    "position_sizing": "notional = metadata.notional_usdt or 1% equity; qty = notional / fill_price",
+    "opposite_side": "closes existing via _close_position(reason=signal)",
+    "same_side_duplicate": "skipped (paper.skip_duplicate)",
+    "ohlc_tp_sl": "LONG: low<=SL / high>=TP; SHORT: high>=SL / low<=TP; both_hit -> stop_first (conservative)",
+    "funding": "NOT_INCLUDED",
+    "latency": "NOT_MODELED (0)",
+    "partial_fills": "NOT_MODELED (always 100%)",
+    "market_impact": "NOT_MODELED (0)",
+    "spread": "NOT_MODELED (0)"
+  },
+  "optimistic_assumptions": ["ZERO_SPREAD_ASSUMPTION", "ZERO_LATENCY_ASSUMPTION", "NO_PARTIAL_FILL_MODEL", "ZERO_FUNDING_ASSUMPTION", "MIDPRICE_FILL_ASSUMPTION", "NO_MARKET_IMPACT_MODEL"],
+  "fee_realism": "taker+taker 10bps RT matches Binance VIP0 taker+taker 10bps (5+5); maker+maker would be 4bps but paper assumes taker; slippage adds 2bps RT beyond fees",
+  "verdict": "DETERMINISTIC_AND_CONSERVATIVE_ON_SL_TRUE_NET_PNL_AND_IDEMPOTENT_BUT_OPTIMISTIC_ON_SPREAD_LATENCY_PARTIALS_IMPACT"
+}

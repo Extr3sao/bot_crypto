@@ -1,0 +1,12 @@
+{
+  "checkpoint": "EXECUTION-REALISM-AND-COST-AUTHORITY-01",
+  "gaps": {
+    "L1_bookTicker": {"status": "NOT_AVAILABLE", "value": "HIGH", "cost": "LOW", "storage": "LOW (KB/day)", "improvement": "spread median->P99, BASE/STRESSED totals", "recommendation": "ADOPT_P1"},
+    "L2_depth": {"status": "NOT_AVAILABLE", "value": "LOW_for_current_size", "cost": "HIGH", "storage": "MEDIUM", "improvement": "partial fills, impact", "recommendation": "DEFER"},
+    "aggTrades": {"status": "PARTIALLY_AVAILABLE", "value": "MEDIUM", "cost": "HIGH for full 100GB", "storage": "HIGH (~100GB 3 assets 5yrs)", "download": "HIGH (needs COST_REVIEW_REQUIRED)", "improvement": "adverse 50ms-5s, intensity, effective spread", "recommendation": "EXPERIMENT_sample_then_review"},
+    "mark_price": {"status": "PARTIALLY_AVAILABLE", "value": "LOW_MEDIUM", "cost": "LOW", "storage": "LOW", "improvement": "accurate mark vs last", "recommendation": "EXPERIMENT"},
+    "funding_history_ETH_SOL": {"status": "PARTIALLY_AVAILABLE (BTC deep only)", "value": "HIGH (H6 gate)", "cost": "LOW (8 calls/asset for 6yrs, 8h cadence ~8k rows)", "storage": "LOW", "improvement": "parity for 3-asset H6 promotion gate", "recommendation": "ADOPT_P0"},
+    "funding_history_BTC": {"status": "AVAILABLE", "rows": 7670, "fingerprint": "8b0e796c808158cc", "coverage": "2019-09-10..2026-09-09 8h 100%"},
+    "ohlcv_authority": {"status": "AVAILABLE", "note": "BTC/ETH/SOL 1h 58680/58680/52505 + 5m 288/d"}
+  }
+}

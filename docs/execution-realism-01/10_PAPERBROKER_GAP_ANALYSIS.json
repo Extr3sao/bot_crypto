@@ -1,0 +1,19 @@
+{
+  "checkpoint": "EXECUTION-REALISM-AND-COST-AUTHORITY-01",
+  "do_not_modify_paperbroker": true,
+  "gaps": [
+    {"dimension": "fill side", "current": "UNREALISTIC (signal ±1bp, no bid/ask)", "realistic": "ask (long) / bid (short) + slippage", "status": "UNREALISTIC"},
+    {"dimension": "spread", "current": "MISSING (0)", "realistic": "0.013 BTC / 0.039 ETH / 0.98 SOL bps RT at 2026-09-12 snapshot; historical UNKNOWN", "status": "MISSING"},
+    {"dimension": "slippage", "current": "APPROXIMATION (1bp/leg synthetic)", "realistic": "NOT_MEASURED (no venue fills)", "status": "APPROXIMATION"},
+    {"dimension": "fees", "current": "MATCH (5+5 fee, 12 RT with slip; planned_net_rr correct)", "realistic": "Binance VIP0 2/5 (1.8/4.5 BNB) official", "status": "MATCH"},
+    {"dimension": "funding", "current": "MISSING (0 honest, EXCLUDED_WITH_LIMITATION)", "realistic": "BTC deep 7670 rows; ~0 or ~0.4 bps per 8h if 1h bar straddles settlement", "status": "MISSING"},
+    {"dimension": "latency", "current": "UNREALISTIC (0 ms simulated)", "realistic": "NOT_MEASURED (no VenuePort mounted; adverse_move contract exists with None coverage)", "status": "UNREALISTIC"},
+    {"dimension": "partial fills", "current": "MISSING (always 100%)", "realistic": "UNKNOWN", "status": "MISSING"},
+    {"dimension": "rejects", "current": "APPROXIMATION (skip_duplicate + intent_cloid only)", "realistic": "UNKNOWN (no venue rejects; feed BLOCK exists)", "status": "APPROXIMATION"},
+    {"dimension": "liquidity", "current": "UNKNOWN", "realistic": "SMALL/MEDIUM/LARGE buckets TBD", "status": "UNKNOWN"},
+    {"dimension": "market impact", "current": "MISSING (0)", "realistic": "UNKNOWN", "status": "MISSING"},
+    {"dimension": "order lifecycle", "current": "APPROXIMATION (market-only, no limit/cancel)", "realistic": "UNMODELED (gateway+journal exist but not mounted for PAPER)", "status": "APPROXIMATION"},
+    {"dimension": "reconciliation", "current": "MATCH (reconcile_session + StartupReconciler CLOSE_ORPHANED)", "realistic": "MATCH (in-paper recon)", "status": "MATCH"}
+  ],
+  "top_improvements": ["bookTicker archiver (bid/ask per cycle for spread P99)", "Venue-timed fills (mount ExecutionGateway PaperVenue for decision->fill ms + limit lifecycle)", "Funding deep ETH/SOL paginated backfill to 2019-09-10 parity"]
+}

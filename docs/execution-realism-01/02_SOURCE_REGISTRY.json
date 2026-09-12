@@ -1,0 +1,105 @@
+{
+  "checkpoint": "EXECUTION-REALISM-AND-COST-AUTHORITY-01",
+  "generated_at_utc": "2026-09-12T11:30:00Z",
+  "sources": [
+    {
+      "SOURCE_ID": "SRC-FEE-001",
+      "URL": "https://www.binance.com/en/fee/futureFee",
+      "TYPE": "OFFICIAL_EXCHANGE_DOC",
+      "PROVIDER": "binance",
+      "RETRIEVED_AT": "2026-09-12T11:25:00Z",
+      "VERSION_OR_DATE": "live page 2026-09-12",
+      "CLAIM_SUPPORTED": "USD-M futures VIP0 fee tier: maker 0.02% (2 bps), taker 0.05% (5 bps); with BNB 10% discount: 0.018%/0.045%",
+      "EVIDENCE": "Page rendered + corroborated by binance.com/en/square/post/24640040632442 and blog/futures/421499824684902239; some mirror pages show 0.04% taker variant (captured as UNKNOWN)",
+      "RELIABILITY": "HIGH"
+    },
+    {
+      "SOURCE_ID": "SRC-FEE-002",
+      "URL": "https://www.binance.com/en/support/faq/detail/360033544231",
+      "TYPE": "OFFICIAL_EXCHANGE_DOC",
+      "PROVIDER": "binance",
+      "RETRIEVED_AT": "2026-09-12T11:25:00Z",
+      "VERSION_OR_DATE": "live page",
+      "CLAIM_SUPPORTED": "Futures fee structure: regular user maker 0.02%, taker 0.05% as base tier example",
+      "EVIDENCE": "FAQ example quote; page required JS rendering but secondary sources corroborate",
+      "RELIABILITY": "HIGH"
+    },
+    {
+      "SOURCE_ID": "SRC-SPREAD-001",
+      "URL": "https://fapi.binance.com/fapi/v1/ticker/bookTicker?symbol=BTCUSDT",
+      "TYPE": "OFFICIAL_EXCHANGE_DATA",
+      "PROVIDER": "binance",
+      "RETRIEVED_AT": "2026-09-12T11:28:00Z",
+      "VERSION_OR_DATE": "live snapshot",
+      "CLAIM_SUPPORTED": "Real-time best bid/ask snapshot for spread characterization (see 05_SPREAD_AUTHORITY_REPORT)",
+      "EVIDENCE": "Direct JSON: bid 77333.2 / ask 77333.3 => 0.013 bps BTC; ETH 0.039 bps; SOL 0.98 bps (5 samples each, stable)",
+      "RELIABILITY": "HIGH (point-in-time)"
+    },
+    {
+      "SOURCE_ID": "SRC-FUND-001",
+      "URL": "https://fapi.binance.com/fapi/v1/fundingRate?symbol=BTCUSDT&limit=3",
+      "TYPE": "OFFICIAL_EXCHANGE_DATA",
+      "PROVIDER": "binance",
+      "RETRIEVED_AT": "2026-09-12T11:28:00Z",
+      "VERSION_OR_DATE": "live",
+      "CLAIM_SUPPORTED": "Funding rate live: ~0.00003593/BTC 0.00004999/ETH 0.00004064/SOL per 8h (~0.36/0.50/0.41 bps)",
+      "EVIDENCE": "Direct API JSON with fundingTime/markPrice/fundingRate",
+      "RELIABILITY": "HIGH"
+    },
+    {
+      "SOURCE_ID": "SRC-FUND-DEEP-001",
+      "URL": "docs/external-audit-01/carry-funding-deep-01/BTCUSDT_FUNDING_DEEP.jsonl",
+      "TYPE": "OFFICIAL_EXCHANGE_DATA",
+      "PROVIDER": "binance",
+      "RETRIEVED_AT": "2026-09-09T21:39:33Z",
+      "VERSION_OR_DATE": "7,670 rows 2019-09-10T08:00Z..2026-09-09T16:00Z",
+      "CLAIM_SUPPORTED": "Historical funding distribution: 8h cadence 100% (7669 intervals), fingerprint 8b0e796c..., provenance startTime paginated 1000/page",
+      "EVIDENCE": "File sha 81936d1b, D1_DATA_FINGERPRINT.json; monotonic true, deduped by fundingTime",
+      "RELIABILITY": "HIGH"
+    },
+    {
+      "SOURCE_ID": "SRC-PAPER-001",
+      "URL": "src/trading_bot/paper/broker.py",
+      "TYPE": "SOURCE_CODE",
+      "PROVIDER": "internal",
+      "RETRIEVED_AT": "2026-09-12T11:18:00Z",
+      "VERSION_OR_DATE": "commit 0941082",
+      "CLAIM_SUPPORTED": "PaperBroker fill model: slippage worsens fill, fee entry+exit, no spread, no partial fills, OHLC check stop_first conservative",
+      "EVIDENCE": "execute_signal() uses slippage_mult; _close_position deducts both commissions; check_positions_ohlc stop_first",
+      "RELIABILITY": "HIGH"
+    },
+    {
+      "SOURCE_ID": "SRC-EXEC-001",
+      "URL": "src/trading_bot/execution/cost_model.py",
+      "TYPE": "SOURCE_CODE",
+      "PROVIDER": "internal",
+      "RETRIEVED_AT": "2026-09-12T11:18:00Z",
+      "VERSION_OR_DATE": "commit 0941082",
+      "CLAIM_SUPPORTED": "ExecutionCostModel: commission_bps 5, slippage_bps 1 default; compute_costs() true net PnL",
+      "EVIDENCE": "Class + planned_net_rr() cost-aware admission helper",
+      "RELIABILITY": "HIGH"
+    },
+    {
+      "SOURCE_ID": "SRC-EXEC-002",
+      "URL": "src/trading_bot/execution/intent.py + gateway.py + service.py",
+      "TYPE": "SOURCE_CODE",
+      "PROVIDER": "internal",
+      "RETRIEVED_AT": "2026-09-12T11:18:00Z",
+      "VERSION_OR_DATE": "commit 0941082",
+      "CLAIM_SUPPORTED": "Execution reliability: deterministic intent_id, idempotent submit, fill ledgers, ACK recovery; PaperCycleEngine intent_cloid PAPER-<sha> per (symbol,strategy,direction,bar)",
+      "EVIDENCE": "TradeIntent canonical fields + IdempotencyGuard; Gateway SUBMITTING flow",
+      "RELIABILITY": "HIGH"
+    },
+    {
+      "SOURCE_ID": "SRC-H6-001",
+      "URL": "docs/external-audit-01/oi-full-history-02/H6_SPEC_V2.json",
+      "TYPE": "SOURCE_CODE",
+      "PROVIDER": "internal",
+      "RETRIEVED_AT": "2026-09-12T11:18:00Z",
+      "VERSION_OR_DATE": "commit ee58c7a",
+      "CLAIM_SUPPORTED": "H6 discovery cost: 10 bps TOTAL RT (sensitivities 0/10/20/40), gross_reporting_required, funding EXCLUDED_WITH_LIMITATION",
+      "EVIDENCE": "cost_model and funding_accounting sections",
+      "RELIABILITY": "HIGH"
+    }
+  ]
+}

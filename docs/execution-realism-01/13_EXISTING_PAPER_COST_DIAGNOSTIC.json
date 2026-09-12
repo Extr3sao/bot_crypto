@@ -1,0 +1,13 @@
+{
+  "checkpoint": "EXECUTION-REALISM-AND-COST-AUTHORITY-01",
+  "note": "DIAGNOSTIC_ONLY — do not alter stored official PnL; do not include DEMO trades as performance evidence",
+  "campaigns": {
+    "POC01": "DEGRADED_OBSERVATIONAL_CAMPAIGN (invalid for performance)",
+    "POC02_R2": "DIAGNOSTIC_CAMPAIGN + DEGRADED_OBSERVATIONAL (invalid for performance)",
+    "H1_H3_H5_carry": "DISCOVERY_FAIL (gross failure, cost cannot rescue)"
+  },
+  "authoritative_paper_trades_today": {"R2_INTENT_LEDGER_lines": 3, "keys": ["2026-09-10|BTC|buy|momentum", "2026-09-10|BTC|sell|momentum", "2026-09-10|ETH|sell|momentum"], "R2_CYCLE_CLOSED_TRADES": 0, "shadow_captures": 11, "shadow_not_trades": true},
+  "diagnostic_reaccounting": "For each ClosedTrade compute parallel execution_realism_adjusted_estimate (gross minus realism ExecutionRealismEstimate fee+spread+slippage_real+funding where known; else None->INSUFFICIENT). Do NOT rewrite ClosedTrade.pnl.",
+  "current_result": "INSUFFICIENT_EXECUTION_EVIDENCE for re-accounting (no ClosedTrade with both legs closed in sampled snapshot)",
+  "historical_synthetic_classification": {"H1": "GROSS_NEGATIVE -> NEGATIVE_AFTER_COSTS (worse)", "H3": "GROSS_NEGATIVE", "H5": "GROSS_NEGATIVE", "carry_deep_769": "not robust (halves/thirds inconsistent, p 0.283) regardless of cost"}
+}

@@ -1,0 +1,21 @@
+{
+  "checkpoint": "EXECUTION-REALISM-AND-COST-AUTHORITY-01",
+  "historical_spread_authority": "UNAVAILABLE",
+  "observational_sample": {
+    "endpoint": "fapi/v1/ticker/bookTicker",
+    "retrieved_at_utc": "2026-09-12T11:28:00Z",
+    "assets": ["BTCUSDT", "ETHUSDT", "SOLUSDT"],
+    "regime_at_sample": "LOW_VOLATILITY",
+    "samples_per_asset": 5,
+    "rows": [
+      {"asset": "BTCUSDT", "bid": 77333.2, "ask": 77333.3, "spread_bps": 0.012931048417830722, "abs_spread": 0.1},
+      {"asset": "ETHUSDT", "bid": 2535.49, "ask": 2535.5, "spread_bps": 0.039440030448564395, "abs_spread": 0.01},
+      {"asset": "SOLUSDT", "bid": 102.07, "ask": 102.08, "spread_bps": 0.9796718099441702, "abs_spread": 0.01}
+    ],
+    "median_bps": {"BTCUSDT": 0.012931048417830722, "ETHUSDT": 0.039440030448564395, "SOLUSDT": 0.9796718099441702},
+    "scope_label": "OBSERVATIONAL_SAMPLE_2026-09-12T11:28Z_LOW_VOL_5X_PER_ASSET_NOT_HISTORICAL",
+    "extrapolation_warning": "DO_NOT_EXTRAPOLATE_to_high_vol_or_multi_year"
+  },
+  "round_trip_spread_cost_at_sample_bps": {"BTCUSDT": 0.0129, "ETHUSDT": 0.039, "SOLUSDT": 0.98},
+  "sources": ["SRC-SPREAD-001"]
+}

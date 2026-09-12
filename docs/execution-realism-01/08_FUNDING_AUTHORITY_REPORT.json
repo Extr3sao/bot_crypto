@@ -1,0 +1,15 @@
+{
+  "checkpoint": "EXECUTION-REALISM-AND-COST-AUTHORITY-01",
+  "status": "ADMIT_WITH_LIMITATIONS",
+  "coverage": {
+    "BTCUSDT": {"rows": 7670, "from": "2019-09-10T08:00:00+00:00", "to": "2026-09-09T16:00:00.002000+00:00", "interval_hours": 8.0, "intervals_ok": 7669, "fingerprint_sha256": "8b0e796c808158cc087848ad1d388d121b4b10ec1bb6b243bd7f9576f811965b", "pit_safe": true, "file_sha16": "81936d1b"},
+    "ETHUSDT": {"rows": 90, "status": "INSUFFICIENT_DATA (single fetch page 2024, not full paginated)", "deep_admitted": false},
+    "SOLUSDT": {"rows": 90, "status": "INSUFFICIENT_DATA", "deep_admitted": false}
+  },
+  "provider": "binanceusdm public /fapi/v1/fundingRate",
+  "funding_schedule_utc": ["00:00:00", "08:00:00", "16:00:00"],
+  "pit_contract": "fundingTime <= decision_time (FUNDING-UNITS-CANONICAL-V1, ms, decimal per 8h)",
+  "cost_contract": "src/trading_bot/execution_realism/funding.py (funding_cost_usdt/bps, funding_events_in_holding; deterministic synthetic only; LONG pays positive rate, SHORT receives)",
+  "one_hour_holding_note": "H6 1h (open->close) typically 0 events unless bar straddles 00/08/16 UTC; max 1 per 1h window; live sample 2026-09-12: ~0.36 BTC / 0.50 ETH / 0.41 SOL bps per 8h",
+  "sources": ["SRC-FUND-001", "SRC-FUND-DEEP-001"]
+}

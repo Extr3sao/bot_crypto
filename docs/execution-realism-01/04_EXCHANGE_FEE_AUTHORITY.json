@@ -1,0 +1,13 @@
+{
+  "checkpoint": "EXECUTION-REALISM-AND-COST-AUTHORITY-01",
+  "retrieved_at_utc": "2026-09-12T11:25:00Z",
+  "configured_exchange": {"id": "binance", "default_type": "spot", "market_data_provider": "binanceusdm", "runtime_mode": "paper", "effective_market_for_fees": "usdm"},
+  "portable_profiles": [
+    {"provider": "binance", "market": "usdm", "vip_tier": "VIP0", "maker_bps": 2.0, "taker_bps": 5.0, "round_trip_taker_bps": 10.0, "round_trip_maker_bps": 4.0, "bnb_discount": false, "fingerprint": "binance:usdm:VIP0:noBNB", "source": "OFFICIAL_EXCHANGE_DOC:binance.com/fee/futureFee"},
+    {"provider": "binance", "market": "usdm", "vip_tier": "VIP0", "maker_bps": 1.8, "taker_bps": 4.5, "round_trip_taker_bps": 9.0, "round_trip_maker_bps": 3.6, "bnb_discount": true, "fingerprint": "binance:usdm:VIP0:BNB", "source": "OFFICIAL_EXCHANGE_DOC:binance.com/fee/futureFee (10% BNB)"}
+  ],
+  "canonical_vip0_taker": {"maker_bps": 2.0, "taker_bps": 5.0, "round_trip_bps": 10.0},
+  "variant_taker_4bps": {"status": "UNKNOWN", "note": "Some mirrors report 0.04% taker (8bps RT); captured but not canonical until qualified by VIP/market-type; tracked as UNKNOWN scenario"},
+  "sources": ["SRC-FEE-001", "SRC-FEE-002"],
+  "h6_vs_official_classification": "APPROXIMATELY_REALISTIC (H6 10 bps exactly matches VIP0 taker+taker; PaperBroker fees match but adds 2bps slippage; UNKNOWN once spread/funding/impact added)"
+}

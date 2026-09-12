@@ -1,0 +1,3 @@
+BASE_COMMIT=0941082fc875a66287d2b09159112963141bcf27
+WORKTREE=.worktrees/execution-realism-01
+BRANCH=audit/execution-realism-01

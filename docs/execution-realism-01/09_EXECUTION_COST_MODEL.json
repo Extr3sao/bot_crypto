@@ -1,0 +1,28 @@
+{
+  "checkpoint": "EXECUTION-REALISM-AND-COST-AUTHORITY-01",
+  "taxonomy": "TOTAL_COST = EXCHANGE_FEES + SPREAD_COST + SLIPPAGE + MARKET_IMPACT + FUNDING + OTHER; each as CostComponent(bps|null, confidence, source)",
+  "scenarios": {
+    "IDEALIZED": "fees only (known)",
+    "BASE": "fees + median observed spread/slippage (needs median evidence)",
+    "STRESSED": "fees + P90 (needs P90)",
+    "SEVERE": "fees + P99 / conservative bound (needs P99)",
+    "UNKNOWN": "insufficient evidence — do not fabricate"
+  },
+  "authority_contract": "ExecutionCostAuthority(authority_id, provider, market, asset, profile=ExchangeExecutionProfile, valid_from/to, scenarios, source_refs, confidence, limitations) — diagnostic, not wired into trading",
+  "profile_canonical": [
+    {"id": "BINANCE_USDM_VIP0", "maker_bps": 2.0, "taker_bps": 5.0, "rt_taker": 10.0, "rt_maker": 4.0},
+    {"id": "BINANCE_USDM_VIP0_BNB", "maker_bps": 1.8, "taker_bps": 4.5, "rt_taker": 9.0, "rt_maker": 3.6}
+  ],
+  "populated_authorities_2026_09_12_low_vol": {
+    "BTCUSDT": {"IDEALIZED_bps": 10.0, "BASE_bps": 10.0129, "STRESSED": "UNKNOWN", "SEVERE": "UNKNOWN"},
+    "ETHUSDT": {"IDEALIZED_bps": 10.0, "BASE_bps": 10.039, "STRESSED": "UNKNOWN", "SEVERE": "UNKNOWN"},
+    "SOLUSDT": {"IDEALIZED_bps": 10.0, "BASE_bps": 10.98, "STRESSED": "UNKNOWN", "SEVERE": "UNKNOWN"},
+    "with_paper_synthetic_slippage_2bps_RT": {"BTCUSDT": 12.01, "ETHUSDT": 12.04, "SOLUSDT": 12.98},
+    "funding_if_bar_straddles_settlement_bps": "~0.36 BTC / 0.50 ETH / 0.41 SOL (live 2026-09-12 per 8h sample; historical TBD)",
+    "impact_bps": "0 for paper 20-500 USDT but NOT_EMPIRICALLY_ESTIMATED beyond"
+  },
+  "h6_10bps_classification": "APPROXIMATELY_REALISTIC_to_OPTIMISTIC (fee exact for VIP0 taker; slightly optimistic once spread (SOL) and optimistic vs real slippage/latency/impact at P90+)",
+  "estimate_contract": "ExecutionRealismEstimate.build(asset,direction,order_type,notional,holding, fee,spread,slippage,impact,funding) -> total None if any missing; missing_components explicit; net_edge_bps(gross) = gross - total",
+  "funding_helper": "funding_events_in_holding(entry_ms, exit_ms, 8h) -> 0/1 per 1h bar (straddle check); H6 1h ~12.5% of bars contain settlement",
+  "confidence": "HIGH fee; MEDIUM fee+spread snapshot; LOW/UNKNOWN P90/P99/real slippage/impact/latency"
+}

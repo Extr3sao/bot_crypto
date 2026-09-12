@@ -1,0 +1,16 @@
+{
+  "checkpoint": "EXECUTION-REALISM-AND-COST-AUTHORITY-01",
+  "traced_path": "decision -> verification -> RiskManager.check_signal -> PaperBroker.execute_signal (synchronous in-process)",
+  "measurements": {
+    "decision_to_risk_ms": "~0 COMPUTE_LATENCY (same call stack)",
+    "risk_to_intent_ms": "~0 (intent_cloid built before Risk)",
+    "intent_to_fill_ms": "0 SIMULATED_PAPER_LATENCY (immediate PaperPosition, no VenuePort)",
+    "decision_to_fill_ms": "0 simulated",
+    "network_latency_ms": "NOT_MEASURED (LIVE_CALLS 0, no VenuePort mounted for PAPER)",
+    "feed_staleness_guard": "FeedDeadManGuard BLOCK if stale (not exercised in R2)"
+  },
+  "offline_contract": "src/trading_bot/execution_realism/adverse_move.py (AdverseMoveHorizons h_50ms..h_5s, coverage explicit; do not fabricate sub-second from 5m/1h candles)",
+  "aggTrades_opportunity": "TRADE_FLOW admitted sample could support 250ms-5s adverse only where depth archived; full 100GB backfill remains COST_REVIEW_REQUIRED",
+  "latency_authority": "UNKNOWN for real venue; paper 0 ms (correctly simulated but not realistic)",
+  "sources": ["SRC-PAPER-001", "SRC-EXEC-002"]
+}
