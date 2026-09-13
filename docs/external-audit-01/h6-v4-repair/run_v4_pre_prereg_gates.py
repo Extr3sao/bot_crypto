@@ -4,6 +4,12 @@ Nothing may be frozen while a pre-prereg gate is red. Each gate runs in a subpro
 crash in one cannot mask another, and the report records the python executable, repo
 root, git commit and the resolved module path authority for every run.
 
+DATASET_DETERMINISM is the bounded clean-worktree gate, not the full A/B proof: the proof
+re-normalizes 5,691 raw files twice (~2.5 h) and its result cannot depend on the executing
+worktree, so it is reused under an explicit commit + proof-input binding while the
+layout-sensitive half (resolving the shared data root and recomputing the authority
+fingerprint from actual bytes) is re-executed. See checkpoint section 25.
+
 No economics.
 """
 
@@ -72,7 +78,8 @@ GATES = [
     ("PERFORMANCE_CONTAMINATION", [PY, "-m", "pytest", f"{NT}/test_data_admission.py", "-q"]),
     ("V4_SPEC_COMPLETE_AND_SEMANTIC_DIFF", [PY, "docs/external-audit-01/h6-v4-repair/h6_v4_validate.py"]),
     ("DATA_AUTHORITY", [PY, "scripts/verify_h6_data_authority.py", "--data-root", DATA_ROOT]),
-    ("DATASET_DETERMINISM", [PY, "scripts/prove_h6_v3_dataset_determinism.py", "--data-root", DATA_ROOT]),
+    ("DATASET_DETERMINISM", [PY, "scripts/verify_h6_v4_clean_worktree_determinism.py"]),
+    ("PIT_DYNAMIC", [PY, "scripts/verify_h6_v4_pit_dynamic.py"]),
     ("PRICE_AUTHORITY_OVERLAP", [PY, "scripts/verify_price_overlap_v3.py", "--data-root", DATA_ROOT]),
     ("CONSISTENCY_AUDIT", [PY, "scripts/audit_h6_v3_consistency.py"]),
 ]

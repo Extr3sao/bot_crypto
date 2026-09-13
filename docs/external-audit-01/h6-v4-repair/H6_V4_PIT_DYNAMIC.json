@@ -1,0 +1,80 @@
+{
+  "artifact": "H6_V4_PIT_DYNAMIC",
+  "checkpoint": "H6-V4-AUTHORITY-CONTRACT-AND-RUNTIME-BINDING-REPAIR-01",
+  "symbol": "BTCUSDT",
+  "data_dir": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\processed\\oi_full_history_v2",
+  "observations_in_authority": 244224,
+  "first_observation_utc": "2024-05-13T00:00:00+00:00",
+  "last_observation_utc": "2026-09-10T23:55:00+00:00",
+  "price_input": "deterministic synthetic up-hour (price authority covered separately)",
+  "min_observations": 336,
+  "frozen_rolling_length_hours": 720,
+  "trailing_window_days": 17,
+  "future_tail_hours": 72,
+  "H6_BACKTESTS": 0,
+  "H6_EXECUTIONS": 0,
+  "PERFORMANCE_OBSERVED": false,
+  "decisions_scanned": 28,
+  "decisions_eligible": 28,
+  "max_rolling_changes": 409,
+  "max_abs_robust_z_oi": 3.4980455422927696,
+  "distinct_delta_oi_values": 28,
+  "decisions_with_positive_MAD": 28,
+  "current_hour_snapshot_count_histogram": {
+    "12": 28
+  },
+  "qualifying_signals": [
+    {
+      "decision_time": "2024-06-05T12:00:00+00:00",
+      "direction": "LONG",
+      "delta_oi": 434.00100000000384,
+      "robust_z_oi": 1.4709755004718956,
+      "rolling_median_delta_oi": 18.864000000001397,
+      "rolling_mad_delta_oi": 190.35400000000664,
+      "price_direction": "UP"
+    },
+    {
+      "decision_time": "2024-06-07T06:00:00+00:00",
+      "direction": "LONG",
+      "delta_oi": 792.8419999999896,
+      "robust_z_oi": 2.893475005740498,
+      "rolling_median_delta_oi": 10.80800000000454,
+      "rolling_mad_delta_oi": 182.29800000000978,
+      "price_direction": "UP"
+    },
+    {
+      "decision_time": "2024-06-07T12:00:00+00:00",
+      "direction": "LONG",
+      "delta_oi": 490.70299999999406,
+      "robust_z_oi": 1.8156790916074599,
+      "rolling_median_delta_oi": 10.80800000000454,
+      "rolling_mad_delta_oi": 178.27199999998265,
+      "price_direction": "UP"
+    }
+  ],
+  "qualifying_signal_count": 3,
+  "future_invisibility_violations": [],
+  "causal_slice_rows_max": 4897,
+  "future_tail_rows_compared_max": 864,
+  "future_mutation_violations": [],
+  "past_mutation_undetected": [],
+  "boundary_rows_checked": 28,
+  "boundary_leak_violations": [],
+  "exceptions": [],
+  "checks": {
+    "no_exceptions_on_real_data": true,
+    "scan_produced_decisions": true,
+    "non_vacuous_eligible_decisions": true,
+    "non_vacuous_rolling_window": true,
+    "non_vacuous_dispersion": true,
+    "non_vacuous_varying_deltas": true,
+    "non_vacuous_qualifying_signal": true,
+    "future_invisibility_with_real_future_tail": true,
+    "future_mutation_invariance": true,
+    "past_mutation_sensitivity": true,
+    "boundary_observation_excluded_on_real_data": true,
+    "boundary_observation_present": true,
+    "hour_snapshots_within_contract": true
+  },
+  "PIT_DYNAMIC": "PASS"
+}

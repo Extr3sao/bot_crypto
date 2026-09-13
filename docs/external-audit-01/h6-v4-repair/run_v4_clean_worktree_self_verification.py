@@ -42,6 +42,13 @@ def _main_repo_root() -> Path:
 
 
 CLEAN = _main_repo_root() / ".worktrees" / "h6-v4-clean-self-verify"
+
+
+def _rel_to_main(path: Path) -> str:
+    try:
+        return str(path.relative_to(_main_repo_root())).replace("\\", "/")
+    except ValueError:
+        return str(path).replace("\\", "/")
 NT = "tests/unit/research"
 DATA_ROOT = "C:/Users/GVLLFR0035/Downloads/bot freebuff/data"
 
@@ -151,7 +158,10 @@ def main() -> int:
         "checkpoint": "H6-V4-AUTHORITY-CONTRACT-AND-RUNTIME-BINDING-REPAIR-01",
         "independence": "BUILDER_SELF_VERIFICATION_V4",
         "does_not_satisfy": "INDEPENDENT_EXTERNAL_VERIFICATION_V4",
-        "clean_worktree": str(CLEAN.relative_to(REPO)).replace("\\", "/"),
+        # The clean worktree lives under the MAIN checkout, not under this worktree (the
+        # canonical layout removed in [H6-V4-06]); report it relative to the main root so the
+        # path stays readable without assuming nesting inside REPO.
+        "clean_worktree": _rel_to_main(CLEAN),
         "source_commit": head,
         "base_commit": "a548716",
         "python_executable": PY,
