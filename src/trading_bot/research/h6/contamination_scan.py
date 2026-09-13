@@ -27,11 +27,13 @@ FORBIDDEN_PATTERNS = (
     "H6_THRESHOLD_OPTIMIZATION",
 )
 
+# V4 repair (V3-AUTH-001): the scanned directory was the superseded V1 package.
+# Active H6 evidence lives under the versioned V4 repair package.
 SCANNED_DIRECTORIES = (
     Path("src/trading_bot"),
     Path("scripts"),
     Path("reports"),
-    Path("docs/external-audit-01/oi-full-history-01"),
+    Path("docs/external-audit-01/h6-v4-repair"),
 )
 
 

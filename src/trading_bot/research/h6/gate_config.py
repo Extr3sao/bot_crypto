@@ -7,9 +7,18 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-SPEC_SHA256 = "f514fecf42b52d2e1c2946cac9dee94b2570d485cb236b9a6c663f46f5bbf148"
-MANIFEST_SHA256 = "345334c3107860a5adcc753f5b34976d2b4df9061de34a94507d2bd8f58752dc"
-DATASET_SHA256 = "16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99"
+# V4 repair (V3-AUTH-001): these were three more stale V1 literals. They now resolve
+# from the single versioned runtime authority binding and are UNBOUND while unbound.
+def __getattr__(name: str):
+    from trading_bot.research.h6 import runtime_authority as _ra
+
+    if name == "SPEC_SHA256":
+        return _ra.spec_sha256_or_unbound()
+    if name == "MANIFEST_SHA256":
+        return _ra.manifest_sha256_or_unbound()
+    if name == "DATASET_SHA256":
+        return _ra.dataset_sha256_or_unbound()
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
 
 
 @dataclass(frozen=True, slots=True)

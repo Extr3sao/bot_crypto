@@ -6,11 +6,12 @@ Builder self-tests do NOT convert PENDING -> PASS.
 from __future__ import annotations
 
 from enum import StrEnum
-from pathlib import Path
 
+# V4 repair (V3-AUTH-001): the report location is no longer a module literal. It comes
+# from runtime_authority and is resolved against the repository root, never the CWD.
 from trading_bot.research.h6.external_verifier_report import (
-    REPORT_PATH,
     external_report_exists,
+    report_path,
     read_external_verdict,
 )
 

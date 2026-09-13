@@ -4,10 +4,14 @@ This package prepares the H6 execution machinery ONLY. H6 economic
 execution remains BLOCKED until external verification passes and the
 confirmation lock is cleared.
 
-Frozen authority:
-- H6_SPEC.json (committed blob e683e04)
-- H6_MANIFEST.json (committed blob e683e04)
-- H6_FEATURE_AUTHORITY_WHITELIST.json
+Frozen authority (V4) is NOT hard-coded here. It resolves from the single
+versioned runtime binding:
+
+    docs/external-audit-01/h6-v4-repair/H6_RUNTIME_AUTHORITY_BINDING_V4.json
+
+via ``trading_bot.research.h6.runtime_authority``. While the binding does not
+exist (pre-freeze) the runtime is UNBOUND_PRE_FREEZE and fails closed. The V3
+package hard-coded the superseded V1 blob ``e683e04`` across eleven files.
 """
 
 from __future__ import annotations

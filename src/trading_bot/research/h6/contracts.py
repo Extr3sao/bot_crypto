@@ -11,8 +11,21 @@ from datetime import datetime
 from enum import StrEnum
 from typing import Any
 
-DATASET_SHA256 = "16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99"
-SPEC_SHA256 = "f514fecf42b52d2e1c2946cac9dee94b2570d485cb236b9a6c663f46f5bbf148"
+# V4 repair (V3-AUTH-001): NO hash literals in the runtime package. Both values are
+# resolved from the single versioned runtime authority binding. While the binding does
+# not exist (pre-freeze) they resolve to UNBOUND and every consumer stays fail-closed.
+def __getattr__(name: str):  # PEP 562 — keeps `from ...contracts import SPEC_SHA256` working
+    from trading_bot.research.h6 import runtime_authority as _ra
+
+    if name == "SPEC_SHA256":
+        return _ra.spec_sha256_or_unbound()
+    if name == "DATASET_SHA256":
+        return _ra.dataset_sha256_or_unbound()
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+
+
+def __dir__():
+    return sorted(list(globals().keys()) + ["SPEC_SHA256", "DATASET_SHA256"])
 
 
 class PriceDirection(StrEnum):

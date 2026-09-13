@@ -20,8 +20,26 @@ from trading_bot.research.h6.contracts import (
     SignalDirection,
 )
 
-DATASET_SHA256 = "16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99"
-SPEC_SHA256 = "f514fecf42b52d2e1c2946cac9dee94b2570d485cb236b9a6c663f46f5bbf148"
+# V4 repair (V3-AUTH-001): no hash literals here. Both values come from the single
+# versioned runtime authority binding and resolve to UNBOUND while unbound.
+def _spec_sha256() -> str:
+    from trading_bot.research.h6 import runtime_authority as _ra
+
+    return _ra.spec_sha256_or_unbound()
+
+
+def _dataset_sha256() -> str:
+    from trading_bot.research.h6 import runtime_authority as _ra
+
+    return _ra.dataset_sha256_or_unbound()
+
+
+def __getattr__(name: str):  # PEP 562 back-compat for attribute-style access
+    if name == "SPEC_SHA256":
+        return _spec_sha256()
+    if name == "DATASET_SHA256":
+        return _dataset_sha256()
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
 
 
 @dataclass(frozen=True, slots=True)
@@ -147,8 +165,8 @@ class H6FeatureEngine:
             robust_z_oi=robust_z,
             decision_eligible=True,
             eligibility_reason="eligible",
-            dataset_sha256=DATASET_SHA256,
-            spec_sha256=SPEC_SHA256,
+            dataset_sha256=_dataset_sha256(),
+            spec_sha256=_spec_sha256(),
         )
 
     def _ineligible(
@@ -178,8 +196,8 @@ class H6FeatureEngine:
             robust_z_oi=robust_z,
             decision_eligible=False,
             eligibility_reason=reason,
-            dataset_sha256=DATASET_SHA256,
-            spec_sha256=SPEC_SHA256,
+            dataset_sha256=_dataset_sha256(),
+            spec_sha256=_spec_sha256(),
         )
 
 
@@ -217,8 +235,8 @@ def compute_signal(feature: H6FeatureState) -> H6Signal:
             robust_z_oi=feature.robust_z_oi,
             price_direction=feature.price_direction,
             evidence=feature.eligibility_reason,
-            dataset_sha256=DATASET_SHA256,
-            spec_sha256=SPEC_SHA256,
+            dataset_sha256=_dataset_sha256(),
+            spec_sha256=_spec_sha256(),
         )
 
     if feature.price_direction == PriceDirection.NONE:
@@ -231,8 +249,8 @@ def compute_signal(feature: H6FeatureState) -> H6Signal:
             robust_z_oi=feature.robust_z_oi,
             price_direction=feature.price_direction,
             evidence="price flat => NO_TRADE",
-            dataset_sha256=DATASET_SHA256,
-            spec_sha256=SPEC_SHA256,
+            dataset_sha256=_dataset_sha256(),
+            spec_sha256=_spec_sha256(),
         )
 
     if feature.robust_z_oi < 1.0:
@@ -245,8 +263,8 @@ def compute_signal(feature: H6FeatureState) -> H6Signal:
             robust_z_oi=feature.robust_z_oi,
             price_direction=feature.price_direction,
             evidence="z_oi < 1.0 => NO_TRADE",
-            dataset_sha256=DATASET_SHA256,
-            spec_sha256=SPEC_SHA256,
+            dataset_sha256=_dataset_sha256(),
+            spec_sha256=_spec_sha256(),
         )
 
     if feature.delta_oi <= 0:
@@ -259,8 +277,8 @@ def compute_signal(feature: H6FeatureState) -> H6Signal:
             robust_z_oi=feature.robust_z_oi,
             price_direction=feature.price_direction,
             evidence=f"delta_oi={feature.delta_oi} <=0 => NO_TRADE (raw-sign rule; contraction never qualifies even if z>=1)",
-            dataset_sha256=DATASET_SHA256,
-            spec_sha256=SPEC_SHA256,
+            dataset_sha256=_dataset_sha256(),
+            spec_sha256=_spec_sha256(),
         )
 
     if feature.price_direction == PriceDirection.UP:
@@ -283,6 +301,6 @@ def compute_signal(feature: H6FeatureState) -> H6Signal:
         robust_z_oi=feature.robust_z_oi,
         price_direction=feature.price_direction,
         evidence=evidence,
-        dataset_sha256=DATASET_SHA256,
-        spec_sha256=SPEC_SHA256,
+        dataset_sha256=_dataset_sha256(),
+        spec_sha256=_spec_sha256(),
     )

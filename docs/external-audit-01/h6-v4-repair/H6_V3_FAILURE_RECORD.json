@@ -1,0 +1,178 @@
+{
+  "record": "H6_V3_FAILURE_RECORD",
+  "checkpoint": "H6-V4-AUTHORITY-CONTRACT-AND-RUNTIME-BINDING-REPAIR-01",
+  "created_utc": "2026-09-13T00:00:00Z",
+  "authority": "V3 is IMMUTABLE FAILED HISTORY. Nothing in this file mutates V3 artifacts.",
+  "v3_identity": {
+    "prereg_freeze_commit": "9f1d844312419575d6b635a7356111050fd9b93a",
+    "final_builder_package_commit": "a5487164803fb601f87f2cd4c865929c30da274e",
+    "builder_crosscheck_branch": "audit/h6-external-verification-v3",
+    "verifier_evidence_commits": [
+      "1a58e03",
+      "f7b4487",
+      "d9674f2",
+      "24ea186",
+      "625449d",
+      "a608bbd"
+    ],
+    "verifier_evidence_is_read_only": true,
+    "verifier_commits_merged_or_cherry_picked": false
+  },
+  "v3_status": {
+    "H6_V1": "FAILED_EXTERNAL_VERIFICATION",
+    "H6_V2": "FAILED_EXTERNAL_VERIFICATION_V2",
+    "H6_V3": "FAILED_PRE_EXECUTION",
+    "H6_BACKTESTS": 0,
+    "H6_EXECUTIONS": 0,
+    "PERFORMANCE_OBSERVED": false,
+    "note": "V3 never executed economically. No PnL, Sharpe, PF, expectancy or win rate was ever computed for H6."
+  },
+  "defects": [
+    {
+      "defect_id": "V3-WL-001",
+      "title": "Raw backing map exposed via H6FieldAccess.data",
+      "severity": "HIGH",
+      "root_cause": "H6FieldAccess is @dataclass(frozen=True, slots=True) with a `data` field. Because slots=True creates a real slot descriptor, normal attribute lookup for `data` succeeds and the class __getattr__ guard that raises AttributeError for the name 'data' is DEAD CODE. `wrapped.data['count_long_short_ratio']` therefore retrieves a forbidden provider field.",
+      "evidence": "verifier: WHITELIST_ADVERSARIAL_ATTACKS FAIL 28/35 blocked; VERIFIER_EVIDENCE_whitelist_attack.json",
+      "frozen_contract_violated": "H6_FEATURE_AUTHORITY_WHITELIST_V3.enforcement.bypass_paths_allowed = 0"
+    },
+    {
+      "defect_id": "V3-WL-002",
+      "title": "repr / str / copy / pickle / backing-object leakage of forbidden values",
+      "severity": "MEDIUM",
+      "root_cause": "The dataclass-generated __repr__ renders the whole payload including forbidden field names AND values; copy.copy and pickle round-trips carry the same raw backing mapping because forbidden values were retained in memory.",
+      "evidence": "verifier: 5 MEDIUM leaks observed; repr/str/format + copy.copy + pickle all leaked all four forbidden names",
+      "impact": "logs, tracebacks and evidence dumps are evidence surfaces; forbidden feature values must never reach them"
+    },
+    {
+      "defect_id": "V3-WL-003",
+      "title": "Whitelist not on the actual H6 runtime data path",
+      "severity": "HIGH",
+      "root_cause": "Whole-src scan: the only files referencing H6FieldAccess / check_row_whitelist / assert_field_allowed are whitelist.py itself and the h6/__init__.py re-export. No OI-reading module (feature_engine, eligibility, oi_dataset_v2, data loaders) invokes the accessor.",
+      "evidence": "verifier: WHITELIST_RUNTIME_REACHABILITY = FAIL_NOT_WIRED; h6_runtime_modules_reading_confirmation_data = []",
+      "consequence": "the control existed but provided no runtime guarantee; feature authority was enforced only by the normaliser stripping forbidden columns and by static scans"
+    },
+    {
+      "defect_id": "V3-AUTH-001",
+      "title": "Control plane bound to failed/superseded V1 authority",
+      "severity": "HIGH",
+      "root_cause": "18 bindings across 11 files still pin V1 identity constants (e683e04e5df39d0f2f5feb6097664536b93cc636, f514fecf42b52d2e1c2946cac9dee94b2570d485cb236b9a6c663f46f5bbf148, 345334c3107860a5adcc753f5b34976d2b4df9061de34a94507d2bd8f58752dc, and paths under oi-full-history-01) while the live frozen authority was V3.",
+      "affected_files": [
+        "src/trading_bot/research/h6/contracts.py",
+        "src/trading_bot/research/h6/feature_engine.py",
+        "src/trading_bot/research/h6/execution_harness.py",
+        "src/trading_bot/research/h6/gate_config.py",
+        "src/trading_bot/research/h6/frozen_contract_snapshot.py",
+        "src/trading_bot/research/h6/external_verifier_report.py",
+        "src/trading_bot/research/h6/contamination_scan.py",
+        "scripts/download_oi_full_history.py",
+        "scripts/normalize_oi_full_history.py",
+        "scripts/run_h6_exactly_once.py",
+        "scripts/verify_h6_prereg.py"
+      ],
+      "evidence": "verifier: CONTROL_PLANE_V1_BINDING = FAIL (18 bindings / 11 files); CROSS_ARTIFACT_CONSISTENCY = FAIL",
+      "consequences": [
+        "fail-closed in practice (can_execute_h6() = false) but bound to the wrong authority",
+        "a legitimate V3 report would have been rejected by _verify_external_report() with H6PreregMismatch",
+        "a V1-keyed report claiming PASS would have satisfied the gate while V3 was the live freeze",
+        "external_verifier_report.REPORT_PATH was relative and therefore CWD-dependent"
+      ]
+    },
+    {
+      "defect_id": "V3-SPEC-001",
+      "title": "statistical_gates missing from the V3 frozen spec",
+      "severity": "HIGH",
+      "root_cause": "H6_SPEC_V3.economics does not contain `statistical_gates` at all (not at top level, not relocated). The runtime contract loader frozen_contract_snapshot.py requires spec['statistical_gates'].",
+      "lost_values": {
+        "P_Sharp_greater_0_min": 0.9,
+        "permutation": "sign-flip permutation on hourly trade returns, 10,000 draws, fixed seed 20260911",
+        "permutation_p_max": 0.05,
+        "sharpe_ci_excludes_zero": true
+      },
+      "evidence": "verifier: V2_TO_V3_ECONOMIC_SEMANTIC_DRIFT = FAIL; 20/24 V2 economic fields carried, 4 absent"
+    },
+    {
+      "defect_id": "V3-SPEC-002",
+      "title": "Structured pit_rules missing from the V3 frozen spec",
+      "severity": "HIGH",
+      "root_cause": "The standalone structured `pit_rules` block present in H6_SPEC_V2 was dropped. Only prose fragments survive inside common_window_utc.archive_validity_vs_decision_eligibility. The runtime loader requires spec['pit_rules']['oi'|'price'|'future_mutation'].",
+      "evidence": "verifier: required_keys_absent_from_v3_economics includes 'pit_rules'",
+      "note": "prose is NOT a substitute for fields required by runtime contracts"
+    },
+    {
+      "defect_id": "V3-SPEC-003",
+      "title": "stop_invalidation absent from the V3 frozen spec",
+      "severity": "MEDIUM",
+      "root_cause": "H6_SPEC_V2 had stop_invalidation = 'NONE in the primary H6 discovery test (no ATR stop, no signal-flip exit; trade management belongs to a later preregistered experiment)'. H6_SPEC_V3.economics omits the field entirely, so the V3 frozen text is silent on stops and the on-disk spec cannot answer the question.",
+      "evidence": "verifier: V2_TO_V3_ECONOMIC_SEMANTIC_DRIFT; field absent and textually unrecoverable"
+    },
+    {
+      "defect_id": "V3-SPEC-004",
+      "title": "cooldown absent as a standalone frozen field",
+      "severity": "LOW",
+      "root_cause": "H6_SPEC_V2 had cooldown = 'NONE required: fixed 1h non-overlapping per-asset outcome definition ...'. H6_SPEC_V3.economics omits the field (the identical `decision_spacing` field from V2 is present and does convey NO COOLDOWN, so the semantics survive only indirectly).",
+      "evidence": "verifier: V2_TO_V3_ECONOMIC_SEMANTIC_DRIFT; 4 V2 economic fields absent from V3.economics"
+    },
+    {
+      "defect_id": "V3-IMPORT-001",
+      "title": "Shared editable .pth can import the main checkout instead of the worktree",
+      "severity": "HIGH",
+      "root_cause": "The shared virtualenv's __editable__.crypto_scalping_agentic_bot-0.1.0.pth contains the ABSOLUTE path C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src. Because git worktrees share that venv, any Python process launched from any worktree imports trading_bot from the MAIN checkout, which sits at base commit 0941082 (pre-repair).",
+      "concrete_divergence": {
+        "path": "src/trading_bot/research/oi_dataset_v2.py",
+        "audited_a548716_sha256": "8e2803cfdbfc002363bf8d9cf6cebaa892f144fc7e13b6669596775d82a89b62",
+        "main_checkout_sha256": "e91d56b7b957ad47b6937f7a7b1a18e87c4c2af98fd1ca611930bdbcd39f604a"
+      },
+      "evidence": "verifier: PYTHON_IMPORT_AUTHORITY gate; bare import from the verifier worktree resolved to C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\__init__.py",
+      "consequence": "any H6 result produced without an explicit import override has unproven target authority"
+    },
+    {
+      "defect_id": "V3-FEATURE-001",
+      "title": "build_completed_hour_oi fails for non-empty snapshots (.start/.end on a tuple)",
+      "severity": "MEDIUM",
+      "root_cause": "src/trading_bot/research/h6/eligibility.py::build_completed_hour_oi does `ts_to_use = _hour_close_boundaries(hour_close_time)` where that helper returns a plain TUPLE, then accesses `ts_to_use.start` / `ts_to_use.end` -> AttributeError for any non-empty snapshot list. With an EMPTY list the predicate is never evaluated, so the function appears to work exactly in the vacuous case.",
+      "evidence": "verifier: minimal reproduction — build_completed_hour_oi([], ...) -> OK; build_completed_hour_oi([one_snapshot], ...) -> AttributeError: 'tuple' object has no attribute 'start'",
+      "reachability": "no runtime caller (only the h6/__init__.py re-export)"
+    },
+    {
+      "defect_id": "V3-FEATURE-002",
+      "title": "Inclusive hour-window bounds can produce 13 snapshots instead of 12",
+      "severity": "MEDIUM",
+      "root_cause": "build_completed_hour_oi selects `start <= s.oi_time <= end` (INCLUSIVE on both ends). The frozen grid is 5 minutes aligned to :00, so an hour ending at T contains 13 points in [T-1h, T] but exactly 12 in the required half-open [T-1h, T). The eligibility helper _snapshots_in_window_v2 and SNAPSHOTS_PER_HOUR = 12 both use half-open semantics, so the inclusive variant would make snapshot_count != 12 and always fail CURRENT_HOUR_OI_COMPLETENESS even after V3-FEATURE-001 is fixed.",
+      "evidence": "verifier: half-open vs inclusive analysis in VERIFIER_EVIDENCE_pit_nonvacuous.md; verifier harness had to use half-open [T-1h, T) to reach 12 snapshots and an ELIGIBLE state"
+    }
+  ],
+  "preserved_v3_passes": {
+    "note": "These V3 PASS results are available as evidence and do NOT cancel the critical failures above.",
+    "DATA_AUTHORITY_V3": "PASS (10/10 checks; ledger/manifest sha256 match, independent dataset fingerprint recomputation, 5596/5596 normalised files and 5691/5691 raw zips byte-verified, BTC 2024-06-05 forensic PASS)",
+    "PIT_DYNAMIC_V3": "PASS (non-vacuous harness: ELIGIBLE baseline with robust_z 269.1, LONG signal; future mutations byte-invariant, past mutations detected; builder suite 14 passed)",
+    "PRICE_AUTHORITY_V3": "PASS (both PRICE_CONTINUITY and PRICE_FULL_OVERLAP, 9/9 checks; authority sha256 recomputes to e1c2462a...)",
+    "CONFIRMATION_V3": "PASS (CONFIRMATION_LEDGER, CONFIRMATION_LOCK, CONFIRMATION_H6_FIREWALL; 12/12 adversarial lock cases)",
+    "SHADOW_ISOLATION_V3": "PASS (SHADOW_INVALIDATION, SHADOW_MATURITY_AUTHORITY 48h 11/11, SHADOW_H6_FIREWALL)",
+    "also_passing": [
+      "GIT_AUTHORITY / PREREG_FREEZE / FROZEN_ARTIFACT_HASH_RECOMPUTATION / POST_PREREG_IMMUTABILITY / ANCESTRY_INTEGRITY",
+      "PYTHON_IMPORT_AUTHORITY (passes only WITH the explicit PYTHONPATH override)",
+      "TEST_TARGET_AUTHORITY",
+      "PERFORMANCE_CONTAMINATION",
+      "H5_IMMUTABILITY",
+      "DEFECT_REGRESSION_MATRIX_PRESENCE"
+    ]
+  },
+  "v3_gates_deliberately_not_completed": [
+    "DASHBOARD_20X",
+    "FULL_HERMETIC",
+    "full A/B determinism rerun",
+    "remaining V3 defect matrix reruns"
+  ],
+  "v4_scope_note": "V3 FAILED on critical authority gates before any economic execution. V4 therefore repairs authority, whitelist, runtime binding and spec consistency and re-preregisters. The economic mechanism is unchanged and NOT retuned. No economic result may be observed.",
+  "economics_guard": {
+    "H6_BACKTESTS": 0,
+    "H6_EXECUTIONS": 0,
+    "PERFORMANCE_OBSERVED": false
+  },
+  "confirmation_ledger_limitation": {
+    "status": "LIMITATION_EXPLICIT_NON_BLOCKING",
+    "condition": "only while H6 has NO confirmation data/result dependency",
+    "detail": "V3 verifier found that an absent confirmation ledger fails closed but a ledger truncated to zero lines is accepted as a valid not-consumed locked state, and that the ledger has no hash chain/signature/entry-count pin. Not redesigned in V4 because H6 declares H6_CONFIRMATION_DATA_DEPENDENCY = NONE."
+  }
+}
