@@ -4,7 +4,7 @@
   "audited_target_commit": "a5487164803fb601f87f2cd4c865929c30da274e",
   "prereg_commit": "9f1d844312419575d6b635a7356111050fd9b93a",
   "base_commit": "0941082fc875a66287d2b09159112963141bcf27",
-  "phase": "CONFIRMATION_SHADOW_COMPLETE",
+  "phase": "PRICE_AUTHORITY_COMPLETE",
   "completed_gates": [
     "VERIFIER_ENVIRONMENT",
     "GIT_AUTHORITY",
@@ -30,7 +30,9 @@
     "CONFIRMATION_H6_FIREWALL",
     "SHADOW_INVALIDATION",
     "SHADOW_MATURITY_AUTHORITY",
-    "SHADOW_H6_FIREWALL"
+    "SHADOW_H6_FIREWALL",
+    "PRICE_CONTINUITY",
+    "PRICE_FULL_OVERLAP"
   ],
   "failed_gates": [
     "WHITELIST_ADVERSARIAL_ATTACKS",
@@ -52,8 +54,8 @@
     "WHITELIST_ADVERSARIAL_ATTACKS": "FAIL",
     "WHITELIST_RUNTIME_REACHABILITY": "FAIL_NOT_WIRED",
     "DYNAMIC_PIT_NON_VACUOUS_HARNESS": "PASS",
-    "PRICE_CONTINUITY": "PENDING",
-    "PRICE_FULL_OVERLAP": "PENDING",
+    "PRICE_CONTINUITY": "PASS",
+    "PRICE_FULL_OVERLAP": "PASS",
     "CONFIRMATION_LEDGER": "PASS",
     "CONFIRMATION_LOCK": "PASS",
     "CONFIRMATION_H6_FIREWALL": "PASS",
@@ -141,8 +143,22 @@
     "docs/external-audit-01/h6-external-verification-v3/verifier_pit_nonvacuous.py",
     "docs/external-audit-01/h6-external-verification-v3/VERIFIER_EVIDENCE_confirmation_shadow.json",
     "docs/external-audit-01/h6-external-verification-v3/VERIFIER_EVIDENCE_confirmation_shadow.md",
-    "docs/external-audit-01/h6-external-verification-v3/verifier_confirmation_shadow.py"
+    "docs/external-audit-01/h6-external-verification-v3/verifier_confirmation_shadow.py",
+    "docs/external-audit-01/h6-external-verification-v3/VERIFIER_EVIDENCE_price_authority.json",
+    "docs/external-audit-01/h6-external-verification-v3/verifier_price_authority.py"
   ],
+  "gate_results_price_authority": {
+    "price_authority_sha256_recomputed": "e1c2462a6aa9ba0c921154d259a28c49be1e2fc58a544dbd97af8ecabef52168",
+    "matches_frozen_authority": true,
+    "matches_manifest": true,
+    "assets_verified": 3,
+    "asset_file_sha256_and_bytelen_match": "3/3",
+    "distinct_hours_in_common_window_per_asset": 41880,
+    "duplicate_hours": 0,
+    "non_hourly_transitions": 0,
+    "window_edges_covered": "3/3 (2021-12-01T00:00Z .. 2026-09-10T23:00Z)",
+    "checks_passed": "9/9"
+  },
   "gate_results_confirmation_shadow": {
     "adversarial_lock_cases": 12,
     "adversarial_lock_cases_passing": 12,
@@ -344,9 +360,9 @@
     "H6_EXECUTIONS": 0,
     "PERFORMANCE_OBSERVED": false
   },
-  "last_command": "PYTHONPATH=<verifier>/src python docs/external-audit-01/h6-external-verification-v3/verifier_confirmation_shadow.py --out docs/external-audit-01/h6-external-verification-v3/VERIFIER_EVIDENCE_confirmation_shadow.json",
-  "next_command": "PRICE_CONTINUITY + PRICE_FULL_OVERLAP: verify PRICE_1H_AUTHORITY_V2_MANIFEST.json against the actual 1h kline authority (41880 expected hours per asset, common window 2021-12-01..2026-09-10) and recompute the price authority sha256 e1c2462a… ; then DASHBOARD_20X, FULL_HERMETIC, A_B_DETERMINISM",
+  "last_command": "PYTHONPATH=<verifier>/src python docs/external-audit-01/h6-external-verification-v3/verifier_price_authority.py --out docs/external-audit-01/h6-external-verification-v3/VERIFIER_EVIDENCE_price_authority.json",
+  "next_command": "A_B_DETERMINISM: PYTHONPATH=<verifier>/src python scripts/prove_h6_v3_dataset_determinism.py --data-root \"C:/Users/GVLLFR0035/Downloads/bot freebuff/data\" (full independent double re-normalisation into verifier temp roots, ~360s) -- then DASHBOARD_20X, FULL_HERMETIC, SKIP_AUDIT_DEEP, DEFECT_REGRESSION_RERUN",
   "final_verdict_preview": "FAIL. Five gates have failed with unrepaired defects (WHITELIST_ADVERSARIAL_ATTACKS, WHITELIST_RUNTIME_REACHABILITY, CROSS_ARTIFACT_CONSISTENCY, V2_TO_V3_ECONOMIC_SEMANTIC_DRIFT, CONTROL_PLANE_V1_BINDING). Data-plane and PIT gates all PASS. Remaining gates still OPEN.",
-  "remaining_open_gates": ["PRICE_CONTINUITY", "PRICE_FULL_OVERLAP", "DASHBOARD_20X", "FULL_HERMETIC", "SKIP_AUDIT_DEEP", "A_B_DETERMINISM", "DEFECT_REGRESSION_RERUN"],
+  "remaining_open_gates": ["DASHBOARD_20X", "FULL_HERMETIC", "SKIP_AUDIT_DEEP", "A_B_DETERMINISM", "DEFECT_REGRESSION_RERUN"],
   "timestamp": "2026-09-13T00:00:00Z"
 }

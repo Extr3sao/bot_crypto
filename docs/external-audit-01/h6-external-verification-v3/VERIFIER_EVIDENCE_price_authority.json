@@ -1,0 +1,41 @@
+{
+  "verifier_type": "INDEPENDENT_PRICE_AUTHORITY_V3",
+  "timestamp_utc": "2026-09-13T07:30:14Z",
+  "audited_target_commit": "a5487164803fb601f87f2cd4c865929c30da274e",
+  "manifest_path": "docs/external-audit-01/oi-full-history-02/PRICE_1H_AUTHORITY_V2_MANIFEST.json",
+  "manifest_sha256": "c7726cc1b64fed99a62bd0ef72f84677b3b31fd58cbad4aa63dec4c75f18c1e2",
+  "declared": {
+    "price_authority_sha256": "e1c2462a6aa9ba0c921154d259a28c49be1e2fc58a544dbd97af8ecabef52168",
+    "method": "sha256(canonical_json(sorted {symbol: v2_sha256}))",
+    "expected_hours_per_asset": 41880,
+    "common_window_utc": [
+      "2021-12-01T00:00:00Z",
+      "2026-09-10T23:00:00Z"
+    ],
+    "all_assets_cover_common_window": true,
+    "overlap_verification": "byte/economic equality at 2026-09-09T00:00Z for all assets PASS; no PRICE_AUTHORITY_CONFLICT"
+  },
+  "economics": {
+    "H6_BACKTESTS": 0,
+    "H6_EXECUTIONS": 0,
+    "PERFORMANCE_OBSERVED": false
+  },
+  "per_asset": {},
+  "price_authority_sha256_recomputed": "e1c2462a6aa9ba0c921154d259a28c49be1e2fc58a544dbd97af8ecabef52168",
+  "price_authority_sha256_declared_frozen": "e1c2462a6aa9ba0c921154d259a28c49be1e2fc58a544dbd97af8ecabef52168",
+  "price_authority_sha256_matches_frozen": true,
+  "price_authority_sha256_matches_manifest": true,
+  "checks": {
+    "all_three_asset_files_present": true,
+    "all_asset_sha256_match": true,
+    "all_asset_byte_length_match": true,
+    "all_asset_row_count_match": true,
+    "all_assets_41880_distinct_hours": true,
+    "all_assets_duplicate_free": true,
+    "all_assets_cover_window_edges": true,
+    "all_assets_strictly_hourly": true,
+    "price_authority_sha256_recomputes": true
+  },
+  "PRICE_CONTINUITY": "PASS",
+  "PRICE_FULL_OVERLAP": "PASS"
+}
