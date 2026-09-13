@@ -1,0 +1,161 @@
+{
+  "verifier_commit": "a5487164803fb601f87f2cd4c865929c30da274e",
+  "verifier_branch": "audit/h6-external-verification-v3",
+  "audited_target_commit": "a5487164803fb601f87f2cd4c865929c30da274e",
+  "prereg_commit": "9f1d844312419575d6b635a7356111050fd9b93a",
+  "base_commit": "0941082fc875a66287d2b09159112963141bcf27",
+  "phase": "DATA_AUTHORITY_COMPLETE",
+  "completed_gates": [
+    "VERIFIER_ENVIRONMENT",
+    "GIT_AUTHORITY",
+    "PREREG_FREEZE",
+    "FROZEN_ARTIFACT_HASH_RECOMPUTATION",
+    "POST_PREREG_IMMUTABILITY",
+    "ANCESTRY_INTEGRITY",
+    "PYTHON_IMPORT_AUTHORITY",
+    "TEST_TARGET_AUTHORITY",
+    "DATA_AUTHORITY"
+  ],
+  "failed_gates": [],
+  "blocked_gates": [],
+  "gate_status": {
+    "GIT_AUTHORITY": "PASS",
+    "PREREG_FREEZE": "PASS",
+    "FROZEN_ARTIFACT_HASH_RECOMPUTATION": "PASS",
+    "POST_PREREG_IMMUTABILITY": "PASS",
+    "ANCESTRY_INTEGRITY": "PASS",
+    "PYTHON_IMPORT_AUTHORITY": "PASS",
+    "TEST_TARGET_AUTHORITY": "PASS",
+    "DATA_AUTHORITY": "PASS",
+    "WHITELIST_ADVERSARIAL_ATTACKS": "PENDING",
+    "WHITELIST_RUNTIME_REACHABILITY": "PENDING",
+    "DYNAMIC_PIT_NON_VACUOUS_HARNESS": "PENDING",
+    "PRICE_CONTINUITY": "PENDING",
+    "PRICE_FULL_OVERLAP": "PENDING",
+    "CONFIRMATION_LEDGER": "PENDING",
+    "CONFIRMATION_LOCK": "PENDING",
+    "CONFIRMATION_H6_FIREWALL": "PENDING",
+    "SHADOW_INVALIDATION": "PENDING",
+    "SHADOW_MATURITY_AUTHORITY": "PENDING",
+    "SHADOW_H6_FIREWALL": "PENDING",
+    "V2_TO_V3_ECONOMIC_SEMANTIC_DRIFT": "PENDING",
+    "PERFORMANCE_CONTAMINATION": "PENDING",
+    "H5_IMMUTABILITY": "PENDING",
+    "CROSS_ARTIFACT_CONSISTENCY": "PENDING",
+    "DASHBOARD_20X": "PENDING",
+    "FULL_HERMETIC": "PENDING",
+    "SKIP_AUDIT": "PENDING",
+    "DEFECT_REGRESSION_MATRIX": "PENDING",
+    "A_B_DETERMINISM": "PENDING"
+  },
+  "gate_results": {
+    "GIT_AUTHORITY": {
+      "linear_chain": "a548716 <- b2c6b2b <- 9f1d844 <- 2cd8f85 <- f048520 <- 0941082",
+      "merge_commits_in_slice": 0,
+      "all_ancestry_claims_resolved_as_direct_parent": true,
+      "frozen_artifacts_hash_match": "4/4",
+      "frozen_artifacts_drift": "0/4",
+      "critical_question_verdict": "NO_GOVERNED_SEMANTIC_MUTATION_AFTER_PREREG"
+    },
+    "PYTHON_IMPORT_AUTHORITY": {
+      "bare_import_contaminated": true,
+      "bare_import_resolved_to": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\__init__.py",
+      "root_cause": "__editable__.crypto_scalping_agentic_bot-0.1.0.pth pins the MAIN checkout src (absolute path) into the shared venv",
+      "remediation": "PYTHONPATH=<verifier worktree>/src (builder code NOT modified)",
+      "critical_modules_inside_worktree": "28/28",
+      "resolved_bytes_match_audited_commit": true
+    },
+    "TEST_TARGET_AUTHORITY": {
+      "TEST_TARGET": "AUDITED_TARGET",
+      "resolve_assertions": "5 passed",
+      "critical_test_run": "37 passed in 40.47s"
+    },
+    "DATA_AUTHORITY": {
+      "resolved_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data",
+      "resolution_mechanism": "repo_relative_shared_cache",
+      "RAW_UNIQUE_PROVIDER_FILES": 5691,
+      "AGGREGATE_FILES_IN_RAW_DIR": 11383,
+      "reconciliation": "11383 = 5691 zip + 5691 CHECKSUM + 1 stray csv; unique provider-day authority is 5691",
+      "A_INPUT_FILES": 5691,
+      "B_INPUT_FILES": 5691,
+      "A_OUTPUT_FILES": 5596,
+      "B_OUTPUT_FILES": 5596,
+      "OTHER_FILES": 1,
+      "ledger_sha256_match": true,
+      "manifest_sha256_match": true,
+      "independent_dataset_fingerprint_match": true,
+      "per_day_fingerprint_mismatches": 0,
+      "normalized_files_verified": "5596/5596",
+      "raw_zips_verified_vs_official_checksum": "5691/5691",
+      "forensic_btc_2024_06_05": "PASS",
+      "checks_passed": "10/10"
+    }
+  },
+  "evidence_files": [
+    "docs/external-audit-01/h6-external-verification-v3/VERIFIER_EVIDENCE_git_authority.json",
+    "docs/external-audit-01/h6-external-verification-v3/VERIFIER_EVIDENCE_git_authority.md",
+    "docs/external-audit-01/h6-external-verification-v3/verifier_git_authority.py",
+    "docs/external-audit-01/h6-external-verification-v3/VERIFIER_EVIDENCE_python_import_authority.json",
+    "docs/external-audit-01/h6-external-verification-v3/VERIFIER_EVIDENCE_python_import_authority.md",
+    "docs/external-audit-01/h6-external-verification-v3/verifier_python_import_authority.py",
+    "docs/external-audit-01/h6-external-verification-v3/VERIFIER_EVIDENCE_test_target_authority.json",
+    "docs/external-audit-01/h6-external-verification-v3/verifier_target_authority_test.py",
+    "docs/external-audit-01/h6-external-verification-v3/VERIFIER_EVIDENCE_data_authority.json",
+    "docs/external-audit-01/h6-external-verification-v3/VERIFIER_EVIDENCE_data_authority.md",
+    "docs/external-audit-01/h6-external-verification-v3/verifier_data_authority.py",
+    "docs/external-audit-01/h6-external-verification-v3/VERIFIER_PROGRESS.json"
+  ],
+  "known_defects": [],
+  "known_findings_non_blocking": [
+    {
+      "id": "FIND-PY-01",
+      "severity": "HIGH",
+      "title": "Shared-venv editable .pth pins the MAIN checkout src",
+      "detail": "Any bare `python` process launched from a git worktree imports trading_bot from the main checkout, which is at the BASE commit 0941082, i.e. PRE-REPAIR code. Confirmed divergence example: src/trading_bot/research/oi_dataset_v2.py (audited a548716 sha 8e2803cf… vs main-checkout sha e91d56b7…). Any H6 result produced without an explicit import override has unproven target authority.",
+      "verifier_action": "PYTHONPATH override applied to all verifier commands; builder code untouched. PASS with documented mandatory rule.",
+      "status": "MITIGATED_AND_DOCUMENTED"
+    },
+    {
+      "id": "FIND-DATA-01",
+      "severity": "LOW",
+      "title": "Stray uncompressed CSV inside the raw authority directory",
+      "detail": "data/raw/binance_um/metrics/BTCUSDT/BTCUSDT-metrics-2026-09-10.csv (35,891 bytes) is not covered by the frozen locator pattern and is referenced by no ledger entry. The .zip for that day also exists. No effect on ledger/manifest/fingerprint.",
+      "status": "NON_BLOCKING_HYGIENE"
+    },
+    {
+      "id": "FIND-DATA-02",
+      "severity": "INFO",
+      "title": "Two distinct valid 'manifest hashes'",
+      "detail": "file-bytes sha256 = 24160d1c… (pinned by H6_DATA_AUTHORITY_V3.json, verified MATCH); embedded manifest_sha256 field = bdf3088c… = sha256(compact_json(manifest minus that field)) (verified self-consistent). By design, not drift.",
+      "status": "DOCUMENTED"
+    }
+  ],
+  "known_risks": [
+    {
+      "id": "RISK-DATA-AB",
+      "severity": "MEDIUM",
+      "description": "Full independent A/B re-normalisation determinism has NOT been reproduced by this verifier. Byte-level verification of every normalised file, every raw zip and every per-day fingerprint was performed instead, which is a stronger per-file statement but does not prove normaliser run-to-run determinism.",
+      "status": "OPEN"
+    },
+    {
+      "id": "RISK-PY-02",
+      "severity": "MEDIUM",
+      "description": "The PYTHONPATH override is per-invocation; a future pip/uv editable re-install re-pins the main checkout.",
+      "status": "OPEN"
+    }
+  ],
+  "independence": {
+    "label": "BUILDER_CROSSCHECK_V3",
+    "reason": "This verifier runs in the same Freebuff/DeepSeek builder context that produced H6 V3. It does NOT satisfy INDEPENDENT_EXTERNAL_VERIFICATION_V3 even if every gate passes.",
+    "verifier_built_h6_v3": false,
+    "verifier_modified_builder_artifacts": false
+  },
+  "economics_guards": {
+    "H6_BACKTESTS": 0,
+    "H6_EXECUTIONS": 0,
+    "PERFORMANCE_OBSERVED": false
+  },
+  "last_command": "PYTHONPATH=<verifier>/src python docs/external-audit-01/h6-external-verification-v3/verifier_data_authority.py --out docs/external-audit-01/h6-external-verification-v3/VERIFIER_EVIDENCE_data_authority.json",
+  "next_command": "WHITELIST_ADVERSARIAL_ATTACKS: PYTHONPATH=<verifier>/src python -m pytest docs/external-audit-01/h6-external-verification-v3/verifier_whitelist_adversarial_test.py -q  # then WHITELIST_RUNTIME_REACHABILITY, DYNAMIC_PIT_NON_VACUOUS_HARNESS, PRICE_CONTINUITY, PRICE_FULL_OVERLAP, CONFIRMATION_*, SHADOW_*, V2_TO_V3_DRIFT, PERFORMANCE_CONTAMINATION, H5_IMMUTABILITY, CROSS_ARTIFACT_CONSISTENCY, DASHBOARD_20X, FULL_HERMETIC, SKIP_AUDIT, DEFECT_REGRESSION_MATRIX",
+  "timestamp": "2026-09-13T00:00:00Z"
+}

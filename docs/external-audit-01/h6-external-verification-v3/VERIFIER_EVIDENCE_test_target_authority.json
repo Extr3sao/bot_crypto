@@ -1,0 +1,53 @@
+{
+  "verifier_type": "INDEPENDENT_TEST_TARGET_AUTHORITY_V3",
+  "timestamp_utc": "2026-09-13T00:00:00Z",
+  "audited_target_commit": "a5487164803fb601f87f2cd4c865929c30da274e",
+  "verifier_worktree": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3",
+  "verifier_branch": "audit/h6-external-verification-v3",
+  "python_executable": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+  "python_version": "3.11.15",
+  "pytest_version": "9.1.1",
+  "module_resolution_control": {
+    "repository_conftest_guard": "conftest.py force-prepends THIS worktree's src to sys.path[0] for all pytest runs",
+    "explicit_override_also_applied": "PYTHONPATH=<verifier worktree>/src",
+    "overridden_editable_pth": "__editable__.crypto_scalping_agentic_bot-0.1.0.pth pins the MAIN checkout src",
+    "dependency_gate": "PYTHON_IMPORT_AUTHORITY = PASS (see VERIFIER_EVIDENCE_python_import_authority.json)"
+  },
+  "resolve_assertions": {
+    "command": "PYTHONPATH=<verifier>/src python -m pytest docs/external-audit-01/h6-external-verification-v3/verifier_target_authority_test.py -q",
+    "cwd": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3",
+    "result": "5 passed",
+    "assertions": [
+      "verifier root is not the main checkout",
+      "trading_bot resolves INSIDE the verifier worktree",
+      "12 critical modules resolve INSIDE the verifier worktree",
+      "resolved module bytes == blob bytes at a548716 (0 mismatches)",
+      "worktree HEAD == a5487164803fb601f87f2cd4c865929c30da274e"
+    ],
+    "target_source": "verifier worktree working tree, byte-verified against git blob a548716"
+  },
+  "critical_test_runs": [
+    {
+      "command": "PYTHONPATH=<verifier>/src python -m pytest tests/unit/research/test_h6_whitelist_bypass.py tests/unit/research/test_h6_whitelist_static_scan.py tests/unit/research/test_h6_confirmation_isolation.py tests/unit/research/test_h6_v3_test_isolation.py tests/unit/research/test_hash_validator.py tests/unit/research/test_confirmation_ledger_lock.py tests/unit/shadow/test_shadow_maturity_48h.py -q -p no:cacheprovider",
+      "cwd": "<verifier worktree>",
+      "python_executable": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+      "result": "37 passed in 40.47s",
+      "exit_code": 0,
+      "economics": "none: these are unit/契约 tests; no H6 backtest, no H6 execution, no performance observation"
+    }
+  ],
+  "target_source_inventory": [
+    "tests/unit/research/test_h6_whitelist_bypass.py",
+    "tests/unit/research/test_h6_whitelist_static_scan.py",
+    "tests/unit/research/test_h6_confirmation_isolation.py",
+    "tests/unit/research/test_h6_v3_test_isolation.py",
+    "tests/unit/research/test_hash_validator.py",
+    "tests/unit/research/test_confirmation_ledger_lock.py",
+    "tests/unit/research/test_oi_full_history_v2_pit.py (not run in this gate)",
+    "tests/unit/shadow/test_shadow_maturity_48h.py"
+  ],
+  "TEST_TARGET": "AUDITED_TARGET",
+  "TEST_TARGET == AUDITED_TARGET": true,
+  "TEST_TARGET_AUTHORITY": "PASS",
+  "caveat": "Every command above was executed from the verifier worktree with an explicit PYTHONPATH override AND with a printed/asserted module resolution. Commands run without both controls would not satisfy this gate."
+}

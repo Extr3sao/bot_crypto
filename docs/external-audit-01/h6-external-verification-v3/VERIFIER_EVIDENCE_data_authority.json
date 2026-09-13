@@ -1,0 +1,264 @@
+{
+  "verifier_type": "INDEPENDENT_DATA_AUTHORITY_VERIFICATION_V3",
+  "timestamp_utc": "2026-09-13T07:11:28Z",
+  "audited_target_commit": "a5487164803fb601f87f2cd4c865929c30da274e",
+  "normalizer_commit_used": "3f2e9c7",
+  "available_python": "3.11.15 (main, Jun 23 2026, 15:20:37) [MSC v.1944 64 bit (AMD64)]",
+  "economics": {
+    "H6_BACKTESTS": 0,
+    "H6_EXECUTIONS": 0,
+    "PERFORMANCE_OBSERVED": false
+  },
+  "data_root_resolution": {
+    "resolved_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data",
+    "resolution_mechanism": "repo_relative_shared_cache",
+    "candidates_tried": [
+      {
+        "source": "TRADING_AGENTIC_DATA_ROOT",
+        "path": null,
+        "exists": false
+      },
+      {
+        "source": "repo_relative",
+        "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data",
+        "exists": true
+      }
+    ],
+    "read_only": true,
+    "note": "The verifier worktree has an EMPTY data/ tree (versioned empty dirs only); the shared authoritative root is the main checkout's data/ directory. This is consistent with the frozen portability constraint.",
+    "verifier_worktree_data_tree_empty": true
+  },
+  "raw_inventory": {
+    "raw_metrics_dir": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\raw\\binance_um\\metrics",
+    "per_symbol": {
+      "BTCUSDT": {
+        "zip": 2201,
+        "checksum": 2201,
+        "other": [
+          "BTCUSDT-metrics-2026-09-10.csv"
+        ]
+      },
+      "ETHUSDT": {
+        "zip": 1745,
+        "checksum": 1745,
+        "other": []
+      },
+      "SOLUSDT": {
+        "zip": 1745,
+        "checksum": 1745,
+        "other": []
+      }
+    },
+    "RAW_UNIQUE_PROVIDER_FILES": 5691,
+    "CHECKSUM_SIDECAR_FILES": 5691,
+    "OTHER_FILES": 1,
+    "OTHER_FILE_NAMES": [
+      "BTCUSDT-metrics-2026-09-10.csv"
+    ],
+    "AGGREGATE_FILES_IN_RAW_DIR": 11383,
+    "builder_reported_file_count": 11383,
+    "builder_report_reconciles": true,
+    "reconciliation": "The builder's 11,383 is an AGGREGATE file count in the raw metrics directory (5,691 .zip + 5,691 .CHECKSUM sidecars + 1 stray .csv). It is NOT a count of unique provider days. The unique provider-day authority is 5,691.",
+    "matches_frozen_expected_counts": {
+      "BTCUSDT": true,
+      "ETHUSDT": true,
+      "SOLUSDT": true
+    },
+    "total_matches_frozen_5691": true,
+    "A_INPUT_FILES": 5691,
+    "B_INPUT_FILES": 5691
+  },
+  "ledger": {
+    "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\processed\\oi_full_history_v2\\OI_ARCHIVE_DAY_VALIDITY_LEDGER_V2.jsonl",
+    "sha256_verifier": "bb2b43c27a88bf9fe3ec22573903a61007f046ddc1256b5caa3e788cba15e714",
+    "sha256_declared": "bb2b43c27a88bf9fe3ec22573903a61007f046ddc1256b5caa3e788cba15e714",
+    "sha256_match": true,
+    "line_count_verifier": 5691,
+    "line_count_expected": 5691,
+    "line_count_match": true,
+    "malformed_lines": 0,
+    "classifications": {
+      "VALID": 5596,
+      "INVALID_GAP": 94,
+      "INVALID_VALUE": 1
+    },
+    "symbols": {
+      "BTCUSDT": 2201,
+      "ETHUSDT": 1745,
+      "SOLUSDT": 1745
+    }
+  },
+  "manifest": {
+    "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\processed\\oi_full_history_v2\\OI_FULL_HISTORY_DATASET_MANIFEST_V2.json",
+    "sha256_verifier": "24160d1c8eb42dc6feaaddabed469916898f27814c34d567b5533e54f15532ac",
+    "sha256_declared": "24160d1c8eb42dc6feaaddabed469916898f27814c34d567b5533e54f15532ac",
+    "sha256_match": true,
+    "declared_dataset_sha256": "16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99",
+    "declared_dataset_sha256_matches_frozen": true,
+    "declared_ledger_sha256": "bb2b43c27a88bf9fe3ec22573903a61007f046ddc1256b5caa3e788cba15e714",
+    "declared_ledger_sha256_matches_computed": true,
+    "self_manifest_sha256_field": "bdf3088caa08120784964f44e5fa5e81f0a1b6bacee99282a012f3a5dc08ef89",
+    "self_manifest_sha256_matches_bytes": false,
+    "self_manifest_sha256_is_compact_excluding_self": true,
+    "authority_pins_file_bytes_hash": true,
+    "dual_hash_nuance": "TWO distinct 'manifest hashes' exist: (a) file-bytes sha256 = 24160d1c\u2026 which is what H6_DATA_AUTHORITY_V3.json pins, and (b) the embedded manifest_sha256 field = sha256(compact_json(manifest minus that field)). Both verified consistent.",
+    "quality_status": "PASS_WITH_EXPLICIT_GAPS",
+    "totals": {
+      "files": 5691,
+      "invalid_days": 95,
+      "rows_valid": 1611648,
+      "valid_days": 5596,
+      "valid_days_in_common_window": 5202,
+      "valid_days_in_common_window_all_symbols": 1732
+    },
+    "per_symbol": {
+      "BTCUSDT": {
+        "checksum_failures": 0,
+        "duplicates": 0,
+        "files": 2201,
+        "first_timestamp_ms": 1598918400000,
+        "gaps": 637,
+        "invalid_breakdown": {
+          "INVALID_GAP": 72
+        },
+        "invalid_days": 72,
+        "invalid_values": 0,
+        "last_timestamp_ms": 1789084500000,
+        "raw_order_inversions": 4750,
+        "rows": 613152,
+        "schema_drift": 0,
+        "valid_days": 2129
+      },
+      "ETHUSDT": {
+        "checksum_failures": 0,
+        "duplicates": 0,
+        "files": 1745,
+        "first_timestamp_ms": 1638316800000,
+        "gaps": 143,
+        "invalid_breakdown": {
+          "INVALID_GAP": 10
+        },
+        "invalid_days": 10,
+        "invalid_values": 0,
+        "last_timestamp_ms": 1789084500000,
+        "raw_order_inversions": 5002,
+        "rows": 499680,
+        "schema_drift": 0,
+        "valid_days": 1735
+      },
+      "SOLUSDT": {
+        "checksum_failures": 0,
+        "duplicates": 0,
+        "files": 1745,
+        "first_timestamp_ms": 1638316800000,
+        "gaps": 163,
+        "invalid_breakdown": {
+          "INVALID_GAP": 12,
+          "INVALID_VALUE": 1
+        },
+        "invalid_days": 13,
+        "invalid_values": 0,
+        "last_timestamp_ms": 1789084500000,
+        "raw_order_inversions": 4805,
+        "rows": 498816,
+        "schema_drift": 0,
+        "valid_days": 1732
+      }
+    },
+    "schema_version": "2.0.1",
+    "normalizer_version": "2.1.0"
+  },
+  "dataset_fingerprint_independent": {
+    "algorithm": "sha256(canonical_json({schema_version, normalizer_version, files:[7 fields sorted by (symbol, day)]}))",
+    "sha256_verifier": "16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99",
+    "sha256_frozen": "16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99",
+    "match": true,
+    "derived_from": "ledger bytes read by this verifier (not from any builder helper)"
+  },
+  "per_day_fingerprint_recomputation": {
+    "days_checked": 5596,
+    "mismatches": 0,
+    "mismatch_sample": [],
+    "pass": true
+  },
+  "normalized_byte_verification": {
+    "entries_checked": 5596,
+    "matched": 5596,
+    "mismatched": 0,
+    "missing": 0,
+    "mismatch_sample": [],
+    "A_OUTPUT_FILES": 5596,
+    "B_OUTPUT_FILES": 5596,
+    "pass": true,
+    "meaning": "Every normalised dataset file on disk was re-hashed by the verifier and compared against the sha256 recorded in the frozen ledger. This is a byte-level reconstruction check equivalent to an independent re-freeze."
+  },
+  "raw_zip_checksum_verification": {
+    "zips_checked": 5691,
+    "matched_official_sidecar": 5691,
+    "mismatched": 0,
+    "missing_sidecar": 0,
+    "mismatch_sample": [],
+    "pass": true
+  },
+  "btc_2024_06_05_forensic": {
+    "raw_zip": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\raw\\binance_um\\metrics\\BTCUSDT\\BTCUSDT-metrics-2024-06-05.zip",
+    "zip_sha256": "0ef289911a8aa9bd0ee68ab04473dca51c815bfca438629d580aa2fcb0e06058",
+    "official_sidecar_sha256": "0ef289911a8aa9bd0ee68ab04473dca51c815bfca438629d580aa2fcb0e06058",
+    "zip_matches_official": true,
+    "zip_matches_frozen_forensic_checksum": true,
+    "normalized_path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\processed\\oi_full_history_v2\\BTCUSDT\\BTCUSDT-oi-5m-2024-06-05.jsonl",
+    "normalized_sha256": "bcd3d84950632e7cc70434b75b135bf1eaf56c4ebe72fd13fbea2bbb510a1fb7",
+    "normalized_matches_frozen": true,
+    "ledger_entry_present": true,
+    "ledger_entry": {
+      "checksum": "PASS",
+      "classification": "VALID",
+      "dataset_fingerprint": "2c823c022ac62e9f8d3bc551f8c966f169b199cc951c00c927144f579e0d7656",
+      "day": "2024-06-05",
+      "duplicates": 0,
+      "exact_duplicate_rows_collapsed": 0,
+      "first_timestamp_ms": 1717545600000,
+      "invalid_values": 0,
+      "last_timestamp_ms": 1717631700000,
+      "missing_first": [],
+      "missing_intervals": 0,
+      "normalized_path": "data/processed/oi_full_history_v2/BTCUSDT/BTCUSDT-oi-5m-2024-06-05.jsonl",
+      "normalized_sha256": "bcd3d84950632e7cc70434b75b135bf1eaf56c4ebe72fd13fbea2bbb510a1fb7",
+      "normalizer_version": "2.1.0",
+      "off_grid": 0,
+      "raw_order_inversions": 0,
+      "raw_source": "data/raw/binance_um/metrics/BTCUSDT/BTCUSDT-metrics-2024-06-05.zip",
+      "raw_source_sha256": "0ef289911a8aa9bd0ee68ab04473dca51c815bfca438629d580aa2fcb0e06058",
+      "rows": 288,
+      "rows_within_pit": 288,
+      "schema_version": "2.0.1",
+      "symbol": "BTCUSDT"
+    },
+    "ledger_normalized_sha256_matches_disk": true,
+    "ledger_raw_sha256_matches_disk": true
+  },
+  "test_isolation": {
+    "guard_symbol_present": true,
+    "guard_grep": [
+      "scripts/normalize_oi_full_history_v2.py:93:def _guard_not_canonical_under_pytest(out_dir: Path) -> None:",
+      "scripts/normalize_oi_full_history_v2.py:138:    _guard_not_canonical_under_pytest(out_dir)",
+      "scripts/normalize_oi_full_history_v2.py:290:    _guard_not_canonical_under_pytest(out_dir) if \"PYTEST_CURRENT_TEST\" in __import__(\"os\").environ else None"
+    ],
+    "canonical_root_has_git_tracked_evidence_copies": true,
+    "note": "The normaliser refuses to write the canonical root under pytest (PYTEST_CURRENT_TEST guard), and only writes committed evidence copies when out_dir resolves to the canonical root."
+  },
+  "checks": {
+    "raw_inventory_reconciles": true,
+    "raw_counts_match_frozen": true,
+    "ledger_sha256_match": true,
+    "ledger_line_count_match": true,
+    "manifest_sha256_match": true,
+    "independent_dataset_fingerprint_match": true,
+    "per_day_fingerprints_recompute": true,
+    "normalized_bytes_match_ledger": true,
+    "raw_zips_match_official_checksums": true,
+    "forensic_day_pass": true
+  },
+  "DATA_AUTHORITY": "PASS",
+  "A/B_determinism_status": "NOT_RUN_IN_THIS_GATE: byte-level normalized reconstruction + per-day fingerprint recomputation for all 5,691 days performed instead. A full independent A/B re-normalisation into verifier temp roots is tracked as the next heavy gate."
+}

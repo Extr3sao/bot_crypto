@@ -1,0 +1,605 @@
+{
+  "verifier_type": "INDEPENDENT_PYTHON_IMPORT_AUTHORITY_V3",
+  "timestamp_utc": "2026-09-13T07:06:36Z",
+  "audited_target_commit": "a5487164803fb601f87f2cd4c865929c30da274e",
+  "verifier_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3",
+  "main_checkout_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff",
+  "interpreter": {
+    "sys_executable": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+    "python_version": "3.11.15 (main, Jun 23 2026, 15:20:37) [MSC v.1944 64 bit (AMD64)]",
+    "venv_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv",
+    "venv_is_shared_by_all_worktrees": true,
+    "note": "The venv lives inside the MAIN checkout, so every worktree resolves the same site-packages.",
+    "pyvenv_cfg": "home = C:\\Users\\GVLLFR0035\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\nimplementation = CPython\nuv = 0.11.26\nversion_info = 3.11\ninclude-system-site-packages = false\nprompt = crypto-scalping-agentic-bot\n"
+  },
+  "editable_install": {
+    "site_packages": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Lib\\site-packages",
+    "pth_files": {
+      "__editable__.crypto_scalping_agentic_bot-0.1.0.pth": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\n",
+      "_virtualenv.pth": "import _virtualenv",
+      "a1_coverage.pth": "import sys; exec('import os\\n\\nif os.getenv(\"COVERAGE_PROCESS_START\") or os.getenv(\"COVERAGE_PROCESS_CONFIG\"):\\n try:\\n  import coverage\\n except:\\n  pass\\n else:\\n  coverage.process_startup(slug=\"pth\")')\n",
+      "distutils-precedence.pth": "import os; var = 'SETUPTOOLS_USE_DISTUTILS'; enabled = os.environ.get(var, 'local') == 'local'; enabled and __import__('_distutils_hack').add_shim(); \n"
+    },
+    "editable_pth": "__editable__.crypto_scalping_agentic_bot-0.1.0.pth",
+    "editable_pth_target": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src",
+    "target_is_absolute": true,
+    "target_points_into_main_checkout": true,
+    "defect": "The editable install hard-codes the MAIN checkout's src as an absolute path. The path is added to sys.path during site initialisation for EVERY interpreter launched from ANY worktree, so `import trading_bot` silently resolves to the main checkout's code. A verifier that trusts a bare import therefore audits the wrong tree."
+  },
+  "bare_import_probe": {
+    "command": "python -c \"import trading_bot; print(trading_bot.__file__)\" (no PYTHONPATH)",
+    "cwd": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3",
+    "resolved_modules": {
+      "trading_bot": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\__init__.py",
+      "trading_bot.research.h6": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\h6\\__init__.py",
+      "trading_bot.research.h6.whitelist": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\h6\\whitelist.py",
+      "trading_bot.research.h6.conf_lock": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\h6\\conf_lock.py",
+      "trading_bot.research.h6.confirmation_state": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\h6\\confirmation_state.py",
+      "trading_bot.research.h6.execution_ledger": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\h6\\execution_ledger.py",
+      "trading_bot.research.h6.execution_harness": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\h6\\execution_harness.py",
+      "trading_bot.research.h6.eligibility": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\h6\\eligibility.py",
+      "trading_bot.research.h6.feature_engine": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\h6\\feature_engine.py",
+      "trading_bot.research.h6.contamination_scan": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\h6\\contamination_scan.py",
+      "trading_bot.research.h6.drift_guard": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\h6\\drift_guard.py",
+      "trading_bot.research.h6.contracts": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\h6\\contracts.py",
+      "trading_bot.research.h6.cost": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\h6\\cost.py",
+      "trading_bot.research.h6.hash_validator": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\h6\\hash_validator.py",
+      "trading_bot.research.h6.assertions": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\h6\\assertions.py",
+      "trading_bot.research.h6.external_verification": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\h6\\external_verification.py",
+      "trading_bot.research.h6.gate_config": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\h6\\gate_config.py",
+      "trading_bot.research.h6.funding": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\h6\\funding.py",
+      "trading_bot.research.h6.result_schema": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\h6\\result_schema.py",
+      "trading_bot.shadow": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\shadow\\__init__.py",
+      "trading_bot.shadow.resolver": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\shadow\\resolver.py",
+      "trading_bot.shadow.integration": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\shadow\\integration.py",
+      "trading_bot.shadow.outcome": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\shadow\\outcome.py",
+      "trading_bot.shadow.capture": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\shadow\\capture.py",
+      "trading_bot.shadow.reject_metrics": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\shadow\\reject_metrics.py",
+      "trading_bot.shadow.router": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\shadow\\router.py",
+      "trading_bot.execution.service": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\execution\\service.py",
+      "trading_bot.execution.idempotency": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\execution\\idempotency.py"
+    },
+    "sys_path": [
+      "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3\\docs\\external-audit-01\\h6-external-verification-v3",
+      "C:\\Users\\GVLLFR0035\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\\python311.zip",
+      "C:\\Users\\GVLLFR0035\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\\DLLs",
+      "C:\\Users\\GVLLFR0035\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\\Lib",
+      "C:\\Users\\GVLLFR0035\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none",
+      "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv",
+      "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Lib\\site-packages",
+      "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src"
+    ],
+    "trading_bot_resolved": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\__init__.py",
+    "resolved_outside_verifier_worktree": true,
+    "verdict": "CONTAMINATED_RESOLVES_TO_MAIN_CHECKOUT"
+  },
+  "remediated_probe": {
+    "cwd": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3",
+    "sys_path": [
+      "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3\\docs\\external-audit-01\\h6-external-verification-v3",
+      "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3\\src",
+      "C:\\Users\\GVLLFR0035\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\\python311.zip",
+      "C:\\Users\\GVLLFR0035\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\\DLLs",
+      "C:\\Users\\GVLLFR0035\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\\Lib",
+      "C:\\Users\\GVLLFR0035\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none",
+      "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv",
+      "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Lib\\site-packages",
+      "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src"
+    ],
+    "resolved_modules": {
+      "trading_bot": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3\\src\\trading_bot\\__init__.py",
+      "trading_bot.research.h6": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3\\src\\trading_bot\\research\\h6\\__init__.py",
+      "trading_bot.research.h6.whitelist": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3\\src\\trading_bot\\research\\h6\\whitelist.py",
+      "trading_bot.research.h6.conf_lock": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3\\src\\trading_bot\\research\\h6\\conf_lock.py",
+      "trading_bot.research.h6.confirmation_state": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3\\src\\trading_bot\\research\\h6\\confirmation_state.py",
+      "trading_bot.research.h6.execution_ledger": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3\\src\\trading_bot\\research\\h6\\execution_ledger.py",
+      "trading_bot.research.h6.execution_harness": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3\\src\\trading_bot\\research\\h6\\execution_harness.py",
+      "trading_bot.research.h6.eligibility": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3\\src\\trading_bot\\research\\h6\\eligibility.py",
+      "trading_bot.research.h6.feature_engine": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3\\src\\trading_bot\\research\\h6\\feature_engine.py",
+      "trading_bot.research.h6.contamination_scan": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3\\src\\trading_bot\\research\\h6\\contamination_scan.py",
+      "trading_bot.research.h6.drift_guard": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3\\src\\trading_bot\\research\\h6\\drift_guard.py",
+      "trading_bot.research.h6.contracts": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3\\src\\trading_bot\\research\\h6\\contracts.py",
+      "trading_bot.research.h6.cost": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3\\src\\trading_bot\\research\\h6\\cost.py",
+      "trading_bot.research.h6.hash_validator": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3\\src\\trading_bot\\research\\h6\\hash_validator.py",
+      "trading_bot.research.h6.assertions": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3\\src\\trading_bot\\research\\h6\\assertions.py",
+      "trading_bot.research.h6.external_verification": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3\\src\\trading_bot\\research\\h6\\external_verification.py",
+      "trading_bot.research.h6.gate_config": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3\\src\\trading_bot\\research\\h6\\gate_config.py",
+      "trading_bot.research.h6.funding": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3\\src\\trading_bot\\research\\h6\\funding.py",
+      "trading_bot.research.h6.result_schema": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3\\src\\trading_bot\\research\\h6\\result_schema.py",
+      "trading_bot.shadow": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3\\src\\trading_bot\\shadow\\__init__.py",
+      "trading_bot.shadow.resolver": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3\\src\\trading_bot\\shadow\\resolver.py",
+      "trading_bot.shadow.integration": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3\\src\\trading_bot\\shadow\\integration.py",
+      "trading_bot.shadow.outcome": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3\\src\\trading_bot\\shadow\\outcome.py",
+      "trading_bot.shadow.capture": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3\\src\\trading_bot\\shadow\\capture.py",
+      "trading_bot.shadow.reject_metrics": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3\\src\\trading_bot\\shadow\\reject_metrics.py",
+      "trading_bot.shadow.router": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3\\src\\trading_bot\\shadow\\router.py",
+      "trading_bot.execution.service": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3\\src\\trading_bot\\execution\\service.py",
+      "trading_bot.execution.idempotency": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3\\src\\trading_bot\\execution\\idempotency.py"
+    }
+  },
+  "module_authority": [
+    {
+      "module": "trading_bot",
+      "resolved_under_PYTHONPATH": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3\\src\\trading_bot\\__init__.py",
+      "resolved_inside_verifier_worktree": true,
+      "bare_import_path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\__init__.py",
+      "bare_import_was_outside_verifier_worktree": true,
+      "status": "OK"
+    },
+    {
+      "module": "trading_bot.research.h6",
+      "resolved_under_PYTHONPATH": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3\\src\\trading_bot\\research\\h6\\__init__.py",
+      "resolved_inside_verifier_worktree": true,
+      "bare_import_path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\h6\\__init__.py",
+      "bare_import_was_outside_verifier_worktree": true,
+      "status": "OK"
+    },
+    {
+      "module": "trading_bot.research.h6.whitelist",
+      "resolved_under_PYTHONPATH": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3\\src\\trading_bot\\research\\h6\\whitelist.py",
+      "resolved_inside_verifier_worktree": true,
+      "bare_import_path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\h6\\whitelist.py",
+      "bare_import_was_outside_verifier_worktree": true,
+      "status": "OK"
+    },
+    {
+      "module": "trading_bot.research.h6.conf_lock",
+      "resolved_under_PYTHONPATH": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3\\src\\trading_bot\\research\\h6\\conf_lock.py",
+      "resolved_inside_verifier_worktree": true,
+      "bare_import_path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\h6\\conf_lock.py",
+      "bare_import_was_outside_verifier_worktree": true,
+      "status": "OK"
+    },
+    {
+      "module": "trading_bot.research.h6.confirmation_state",
+      "resolved_under_PYTHONPATH": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3\\src\\trading_bot\\research\\h6\\confirmation_state.py",
+      "resolved_inside_verifier_worktree": true,
+      "bare_import_path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\h6\\confirmation_state.py",
+      "bare_import_was_outside_verifier_worktree": true,
+      "status": "OK"
+    },
+    {
+      "module": "trading_bot.research.h6.execution_ledger",
+      "resolved_under_PYTHONPATH": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3\\src\\trading_bot\\research\\h6\\execution_ledger.py",
+      "resolved_inside_verifier_worktree": true,
+      "bare_import_path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\h6\\execution_ledger.py",
+      "bare_import_was_outside_verifier_worktree": true,
+      "status": "OK"
+    },
+    {
+      "module": "trading_bot.research.h6.execution_harness",
+      "resolved_under_PYTHONPATH": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3\\src\\trading_bot\\research\\h6\\execution_harness.py",
+      "resolved_inside_verifier_worktree": true,
+      "bare_import_path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\h6\\execution_harness.py",
+      "bare_import_was_outside_verifier_worktree": true,
+      "status": "OK"
+    },
+    {
+      "module": "trading_bot.research.h6.eligibility",
+      "resolved_under_PYTHONPATH": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3\\src\\trading_bot\\research\\h6\\eligibility.py",
+      "resolved_inside_verifier_worktree": true,
+      "bare_import_path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\h6\\eligibility.py",
+      "bare_import_was_outside_verifier_worktree": true,
+      "status": "OK"
+    },
+    {
+      "module": "trading_bot.research.h6.feature_engine",
+      "resolved_under_PYTHONPATH": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3\\src\\trading_bot\\research\\h6\\feature_engine.py",
+      "resolved_inside_verifier_worktree": true,
+      "bare_import_path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\h6\\feature_engine.py",
+      "bare_import_was_outside_verifier_worktree": true,
+      "status": "OK"
+    },
+    {
+      "module": "trading_bot.research.h6.contamination_scan",
+      "resolved_under_PYTHONPATH": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3\\src\\trading_bot\\research\\h6\\contamination_scan.py",
+      "resolved_inside_verifier_worktree": true,
+      "bare_import_path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\h6\\contamination_scan.py",
+      "bare_import_was_outside_verifier_worktree": true,
+      "status": "OK"
+    },
+    {
+      "module": "trading_bot.research.h6.drift_guard",
+      "resolved_under_PYTHONPATH": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3\\src\\trading_bot\\research\\h6\\drift_guard.py",
+      "resolved_inside_verifier_worktree": true,
+      "bare_import_path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\h6\\drift_guard.py",
+      "bare_import_was_outside_verifier_worktree": true,
+      "status": "OK"
+    },
+    {
+      "module": "trading_bot.research.h6.contracts",
+      "resolved_under_PYTHONPATH": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3\\src\\trading_bot\\research\\h6\\contracts.py",
+      "resolved_inside_verifier_worktree": true,
+      "bare_import_path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\h6\\contracts.py",
+      "bare_import_was_outside_verifier_worktree": true,
+      "status": "OK"
+    },
+    {
+      "module": "trading_bot.research.h6.cost",
+      "resolved_under_PYTHONPATH": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3\\src\\trading_bot\\research\\h6\\cost.py",
+      "resolved_inside_verifier_worktree": true,
+      "bare_import_path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\h6\\cost.py",
+      "bare_import_was_outside_verifier_worktree": true,
+      "status": "OK"
+    },
+    {
+      "module": "trading_bot.research.h6.hash_validator",
+      "resolved_under_PYTHONPATH": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3\\src\\trading_bot\\research\\h6\\hash_validator.py",
+      "resolved_inside_verifier_worktree": true,
+      "bare_import_path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\h6\\hash_validator.py",
+      "bare_import_was_outside_verifier_worktree": true,
+      "status": "OK"
+    },
+    {
+      "module": "trading_bot.research.h6.assertions",
+      "resolved_under_PYTHONPATH": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3\\src\\trading_bot\\research\\h6\\assertions.py",
+      "resolved_inside_verifier_worktree": true,
+      "bare_import_path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\h6\\assertions.py",
+      "bare_import_was_outside_verifier_worktree": true,
+      "status": "OK"
+    },
+    {
+      "module": "trading_bot.research.h6.external_verification",
+      "resolved_under_PYTHONPATH": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3\\src\\trading_bot\\research\\h6\\external_verification.py",
+      "resolved_inside_verifier_worktree": true,
+      "bare_import_path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\h6\\external_verification.py",
+      "bare_import_was_outside_verifier_worktree": true,
+      "status": "OK"
+    },
+    {
+      "module": "trading_bot.research.h6.gate_config",
+      "resolved_under_PYTHONPATH": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3\\src\\trading_bot\\research\\h6\\gate_config.py",
+      "resolved_inside_verifier_worktree": true,
+      "bare_import_path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\h6\\gate_config.py",
+      "bare_import_was_outside_verifier_worktree": true,
+      "status": "OK"
+    },
+    {
+      "module": "trading_bot.research.h6.funding",
+      "resolved_under_PYTHONPATH": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3\\src\\trading_bot\\research\\h6\\funding.py",
+      "resolved_inside_verifier_worktree": true,
+      "bare_import_path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\h6\\funding.py",
+      "bare_import_was_outside_verifier_worktree": true,
+      "status": "OK"
+    },
+    {
+      "module": "trading_bot.research.h6.result_schema",
+      "resolved_under_PYTHONPATH": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3\\src\\trading_bot\\research\\h6\\result_schema.py",
+      "resolved_inside_verifier_worktree": true,
+      "bare_import_path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\h6\\result_schema.py",
+      "bare_import_was_outside_verifier_worktree": true,
+      "status": "OK"
+    },
+    {
+      "module": "trading_bot.shadow",
+      "resolved_under_PYTHONPATH": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3\\src\\trading_bot\\shadow\\__init__.py",
+      "resolved_inside_verifier_worktree": true,
+      "bare_import_path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\shadow\\__init__.py",
+      "bare_import_was_outside_verifier_worktree": true,
+      "status": "OK"
+    },
+    {
+      "module": "trading_bot.shadow.resolver",
+      "resolved_under_PYTHONPATH": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3\\src\\trading_bot\\shadow\\resolver.py",
+      "resolved_inside_verifier_worktree": true,
+      "bare_import_path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\shadow\\resolver.py",
+      "bare_import_was_outside_verifier_worktree": true,
+      "status": "OK"
+    },
+    {
+      "module": "trading_bot.shadow.integration",
+      "resolved_under_PYTHONPATH": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3\\src\\trading_bot\\shadow\\integration.py",
+      "resolved_inside_verifier_worktree": true,
+      "bare_import_path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\shadow\\integration.py",
+      "bare_import_was_outside_verifier_worktree": true,
+      "status": "OK"
+    },
+    {
+      "module": "trading_bot.shadow.outcome",
+      "resolved_under_PYTHONPATH": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3\\src\\trading_bot\\shadow\\outcome.py",
+      "resolved_inside_verifier_worktree": true,
+      "bare_import_path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\shadow\\outcome.py",
+      "bare_import_was_outside_verifier_worktree": true,
+      "status": "OK"
+    },
+    {
+      "module": "trading_bot.shadow.capture",
+      "resolved_under_PYTHONPATH": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3\\src\\trading_bot\\shadow\\capture.py",
+      "resolved_inside_verifier_worktree": true,
+      "bare_import_path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\shadow\\capture.py",
+      "bare_import_was_outside_verifier_worktree": true,
+      "status": "OK"
+    },
+    {
+      "module": "trading_bot.shadow.reject_metrics",
+      "resolved_under_PYTHONPATH": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3\\src\\trading_bot\\shadow\\reject_metrics.py",
+      "resolved_inside_verifier_worktree": true,
+      "bare_import_path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\shadow\\reject_metrics.py",
+      "bare_import_was_outside_verifier_worktree": true,
+      "status": "OK"
+    },
+    {
+      "module": "trading_bot.shadow.router",
+      "resolved_under_PYTHONPATH": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3\\src\\trading_bot\\shadow\\router.py",
+      "resolved_inside_verifier_worktree": true,
+      "bare_import_path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\shadow\\router.py",
+      "bare_import_was_outside_verifier_worktree": true,
+      "status": "OK"
+    },
+    {
+      "module": "trading_bot.execution.service",
+      "resolved_under_PYTHONPATH": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3\\src\\trading_bot\\execution\\service.py",
+      "resolved_inside_verifier_worktree": true,
+      "bare_import_path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\execution\\service.py",
+      "bare_import_was_outside_verifier_worktree": true,
+      "status": "OK"
+    },
+    {
+      "module": "trading_bot.execution.idempotency",
+      "resolved_under_PYTHONPATH": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3\\src\\trading_bot\\execution\\idempotency.py",
+      "resolved_inside_verifier_worktree": true,
+      "bare_import_path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\execution\\idempotency.py",
+      "bare_import_was_outside_verifier_worktree": true,
+      "status": "OK"
+    }
+  ],
+  "on_disk_vs_audited_blob": [
+    {
+      "module": "trading_bot",
+      "path": "src/trading_bot/__init__.py",
+      "tracked_at_audited_commit": true,
+      "on_disk_sha256": "3a1d288181fff9773024fdbc49a365a48c7c2e8adb31be578d228b5962b45d12",
+      "audited_blob_sha256": "3a1d288181fff9773024fdbc49a365a48c7c2e8adb31be578d228b5962b45d12",
+      "match": true
+    },
+    {
+      "module": "trading_bot.research.h6",
+      "path": "src/trading_bot/research/h6/__init__.py",
+      "tracked_at_audited_commit": true,
+      "on_disk_sha256": "67e9d01d813cc207bd59af1dc3a411f518ca09b1d7dd2d4c061a040e827e6f85",
+      "audited_blob_sha256": "67e9d01d813cc207bd59af1dc3a411f518ca09b1d7dd2d4c061a040e827e6f85",
+      "match": true
+    },
+    {
+      "module": "trading_bot.research.h6.whitelist",
+      "path": "src/trading_bot/research/h6/whitelist.py",
+      "tracked_at_audited_commit": true,
+      "on_disk_sha256": "8f3bf2b8b0212abc8d7f487199bdb704e83ddf57c5917e99494471333fd0c250",
+      "audited_blob_sha256": "8f3bf2b8b0212abc8d7f487199bdb704e83ddf57c5917e99494471333fd0c250",
+      "match": true
+    },
+    {
+      "module": "trading_bot.research.h6.conf_lock",
+      "path": "src/trading_bot/research/h6/conf_lock.py",
+      "tracked_at_audited_commit": true,
+      "on_disk_sha256": "c44ce036e53373ca318590cb8e07c5f89743c3e9c561f15cfc68499058a295f9",
+      "audited_blob_sha256": "c44ce036e53373ca318590cb8e07c5f89743c3e9c561f15cfc68499058a295f9",
+      "match": true
+    },
+    {
+      "module": "trading_bot.research.h6.confirmation_state",
+      "path": "src/trading_bot/research/h6/confirmation_state.py",
+      "tracked_at_audited_commit": true,
+      "on_disk_sha256": "e6307f97a6039d375574c4791b553ec5d0fbe87477a4ca53766e314af3cee95a",
+      "audited_blob_sha256": "e6307f97a6039d375574c4791b553ec5d0fbe87477a4ca53766e314af3cee95a",
+      "match": true
+    },
+    {
+      "module": "trading_bot.research.h6.execution_ledger",
+      "path": "src/trading_bot/research/h6/execution_ledger.py",
+      "tracked_at_audited_commit": true,
+      "on_disk_sha256": "4dba15fdf52e2517539771ce0e36e145f4bdd71b84a62ef8f22e962ca44b30a8",
+      "audited_blob_sha256": "4dba15fdf52e2517539771ce0e36e145f4bdd71b84a62ef8f22e962ca44b30a8",
+      "match": true
+    },
+    {
+      "module": "trading_bot.research.h6.execution_harness",
+      "path": "src/trading_bot/research/h6/execution_harness.py",
+      "tracked_at_audited_commit": true,
+      "on_disk_sha256": "25e60ed72b7f5199d07ecbacc9a0f5f7bd36a59b805ef4ffc8adf502e2749c6f",
+      "audited_blob_sha256": "25e60ed72b7f5199d07ecbacc9a0f5f7bd36a59b805ef4ffc8adf502e2749c6f",
+      "match": true
+    },
+    {
+      "module": "trading_bot.research.h6.eligibility",
+      "path": "src/trading_bot/research/h6/eligibility.py",
+      "tracked_at_audited_commit": true,
+      "on_disk_sha256": "3ba22deba8864f20f8b2c8b600c4bdad1224f8ab113d9bcbdfb55f3e784d1e28",
+      "audited_blob_sha256": "3ba22deba8864f20f8b2c8b600c4bdad1224f8ab113d9bcbdfb55f3e784d1e28",
+      "match": true
+    },
+    {
+      "module": "trading_bot.research.h6.feature_engine",
+      "path": "src/trading_bot/research/h6/feature_engine.py",
+      "tracked_at_audited_commit": true,
+      "on_disk_sha256": "99f437c5a3f83833696d1286fce850f3d411258003da08f40722d2f811f03b88",
+      "audited_blob_sha256": "99f437c5a3f83833696d1286fce850f3d411258003da08f40722d2f811f03b88",
+      "match": true
+    },
+    {
+      "module": "trading_bot.research.h6.contamination_scan",
+      "path": "src/trading_bot/research/h6/contamination_scan.py",
+      "tracked_at_audited_commit": true,
+      "on_disk_sha256": "8f78006219704e489a5fcdbbc30994786609975d7341d093a8b14070addcfb9c",
+      "audited_blob_sha256": "8f78006219704e489a5fcdbbc30994786609975d7341d093a8b14070addcfb9c",
+      "match": true
+    },
+    {
+      "module": "trading_bot.research.h6.drift_guard",
+      "path": "src/trading_bot/research/h6/drift_guard.py",
+      "tracked_at_audited_commit": true,
+      "on_disk_sha256": "0f58baf05f47f626b7580a74e6fa50695cdcd18f56a2901543a0fa575dab28e8",
+      "audited_blob_sha256": "0f58baf05f47f626b7580a74e6fa50695cdcd18f56a2901543a0fa575dab28e8",
+      "match": true
+    },
+    {
+      "module": "trading_bot.research.h6.contracts",
+      "path": "src/trading_bot/research/h6/contracts.py",
+      "tracked_at_audited_commit": true,
+      "on_disk_sha256": "b0f4c64c8890acf8fe40ba91a676aaba64d72980e82e756bcf852dfa3ce001ba",
+      "audited_blob_sha256": "b0f4c64c8890acf8fe40ba91a676aaba64d72980e82e756bcf852dfa3ce001ba",
+      "match": true
+    },
+    {
+      "module": "trading_bot.research.h6.cost",
+      "path": "src/trading_bot/research/h6/cost.py",
+      "tracked_at_audited_commit": true,
+      "on_disk_sha256": "8d3f96fab235d0418e3a5a6479ba237cc8a5196ec639ef1a771efb8ad498f395",
+      "audited_blob_sha256": "8d3f96fab235d0418e3a5a6479ba237cc8a5196ec639ef1a771efb8ad498f395",
+      "match": true
+    },
+    {
+      "module": "trading_bot.research.h6.hash_validator",
+      "path": "src/trading_bot/research/h6/hash_validator.py",
+      "tracked_at_audited_commit": true,
+      "on_disk_sha256": "ee8e24bc6cbe105a0b26b72e870a8d823ab090837769a32f2cc6cd5f6cb3f54b",
+      "audited_blob_sha256": "ee8e24bc6cbe105a0b26b72e870a8d823ab090837769a32f2cc6cd5f6cb3f54b",
+      "match": true
+    },
+    {
+      "module": "trading_bot.research.h6.assertions",
+      "path": "src/trading_bot/research/h6/assertions.py",
+      "tracked_at_audited_commit": true,
+      "on_disk_sha256": "fc0e462f1970c23b07859588dcd861712eed0309030d8a9176f8c296ce7c16ed",
+      "audited_blob_sha256": "fc0e462f1970c23b07859588dcd861712eed0309030d8a9176f8c296ce7c16ed",
+      "match": true
+    },
+    {
+      "module": "trading_bot.research.h6.external_verification",
+      "path": "src/trading_bot/research/h6/external_verification.py",
+      "tracked_at_audited_commit": true,
+      "on_disk_sha256": "0976b4992d26627652f1fa5dd375696516a3e01fb0f9cae53e07aaa2fed9873f",
+      "audited_blob_sha256": "0976b4992d26627652f1fa5dd375696516a3e01fb0f9cae53e07aaa2fed9873f",
+      "match": true
+    },
+    {
+      "module": "trading_bot.research.h6.gate_config",
+      "path": "src/trading_bot/research/h6/gate_config.py",
+      "tracked_at_audited_commit": true,
+      "on_disk_sha256": "fd39132eee281e91e8882ba48073afcb4b52ccc3e77b12ba2566d590b02d7238",
+      "audited_blob_sha256": "fd39132eee281e91e8882ba48073afcb4b52ccc3e77b12ba2566d590b02d7238",
+      "match": true
+    },
+    {
+      "module": "trading_bot.research.h6.funding",
+      "path": "src/trading_bot/research/h6/funding.py",
+      "tracked_at_audited_commit": true,
+      "on_disk_sha256": "457e0f304be11e8b74720ccc23ae8e57305da30f972e1641c266e9f7e2dc2aca",
+      "audited_blob_sha256": "457e0f304be11e8b74720ccc23ae8e57305da30f972e1641c266e9f7e2dc2aca",
+      "match": true
+    },
+    {
+      "module": "trading_bot.research.h6.result_schema",
+      "path": "src/trading_bot/research/h6/result_schema.py",
+      "tracked_at_audited_commit": true,
+      "on_disk_sha256": "7f2b8666279c4c4f6d4d4661f6e393bfbb171df1d587ccbc8c2456b6c509c113",
+      "audited_blob_sha256": "7f2b8666279c4c4f6d4d4661f6e393bfbb171df1d587ccbc8c2456b6c509c113",
+      "match": true
+    },
+    {
+      "module": "trading_bot.shadow",
+      "path": "src/trading_bot/shadow/__init__.py",
+      "tracked_at_audited_commit": true,
+      "on_disk_sha256": "1e4577e65b9f9650432866e9cefeaab487e188f616270386e3f4c37c3e99ca89",
+      "audited_blob_sha256": "1e4577e65b9f9650432866e9cefeaab487e188f616270386e3f4c37c3e99ca89",
+      "match": true
+    },
+    {
+      "module": "trading_bot.shadow.resolver",
+      "path": "src/trading_bot/shadow/resolver.py",
+      "tracked_at_audited_commit": true,
+      "on_disk_sha256": "68f1a96d819af261a448fdb4496fbdfb9bbcbc1c467205849e248df6e8f74c8c",
+      "audited_blob_sha256": "68f1a96d819af261a448fdb4496fbdfb9bbcbc1c467205849e248df6e8f74c8c",
+      "match": true
+    },
+    {
+      "module": "trading_bot.shadow.integration",
+      "path": "src/trading_bot/shadow/integration.py",
+      "tracked_at_audited_commit": true,
+      "on_disk_sha256": "e8f4e935b533cbaa964079ac9c631b2f9cb1cadafd156ad46c97695a8fa253c1",
+      "audited_blob_sha256": "e8f4e935b533cbaa964079ac9c631b2f9cb1cadafd156ad46c97695a8fa253c1",
+      "match": true
+    },
+    {
+      "module": "trading_bot.shadow.outcome",
+      "path": "src/trading_bot/shadow/outcome.py",
+      "tracked_at_audited_commit": true,
+      "on_disk_sha256": "cbb8ea2a16cd0dd70ee4aca35b94bbf17498ab977c5d1c7dc2650877bbcf87e6",
+      "audited_blob_sha256": "cbb8ea2a16cd0dd70ee4aca35b94bbf17498ab977c5d1c7dc2650877bbcf87e6",
+      "match": true
+    },
+    {
+      "module": "trading_bot.shadow.capture",
+      "path": "src/trading_bot/shadow/capture.py",
+      "tracked_at_audited_commit": true,
+      "on_disk_sha256": "428d62f350b0763cd28dbc05522f5274ea7cea173f6627fcae06124d073ef220",
+      "audited_blob_sha256": "428d62f350b0763cd28dbc05522f5274ea7cea173f6627fcae06124d073ef220",
+      "match": true
+    },
+    {
+      "module": "trading_bot.shadow.reject_metrics",
+      "path": "src/trading_bot/shadow/reject_metrics.py",
+      "tracked_at_audited_commit": true,
+      "on_disk_sha256": "94d2dfb2fa54a5376eb8d9cd2da7c7f31e172594b4c348e2eac5479bea32aaca",
+      "audited_blob_sha256": "94d2dfb2fa54a5376eb8d9cd2da7c7f31e172594b4c348e2eac5479bea32aaca",
+      "match": true
+    },
+    {
+      "module": "trading_bot.shadow.router",
+      "path": "src/trading_bot/shadow/router.py",
+      "tracked_at_audited_commit": true,
+      "on_disk_sha256": "c148111a3a01e43fece84e7093bbece95c456c1ccde01a390cb8300dee4700ef",
+      "audited_blob_sha256": "c148111a3a01e43fece84e7093bbece95c456c1ccde01a390cb8300dee4700ef",
+      "match": true
+    },
+    {
+      "module": "trading_bot.execution.service",
+      "path": "src/trading_bot/execution/service.py",
+      "tracked_at_audited_commit": true,
+      "on_disk_sha256": "f8e1727c74784bc14eb43b97143947649786216adfa252b6b4a990e92cf66e95",
+      "audited_blob_sha256": "f8e1727c74784bc14eb43b97143947649786216adfa252b6b4a990e92cf66e95",
+      "match": true
+    },
+    {
+      "module": "trading_bot.execution.idempotency",
+      "path": "src/trading_bot/execution/idempotency.py",
+      "tracked_at_audited_commit": true,
+      "on_disk_sha256": "c99313a7e5a9e0be323e250414e68caf8cee8861c99c39094b3ce11a16c40da7",
+      "audited_blob_sha256": "c99313a7e5a9e0be323e250414e68caf8cee8861c99c39094b3ce11a16c40da7",
+      "match": true
+    }
+  ],
+  "contamination_delta": {
+    "verifier_src": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3\\src",
+    "main_checkout_src": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src",
+    "py_files_differing": [
+      {
+        "path": "trading_bot/research/oi_dataset_v2.py",
+        "kind": "CONTENT_DIFFERS"
+      }
+    ],
+    "py_files_differing_count": 1,
+    "py_files_only_in_main_checkout_count": 0,
+    "py_files_only_in_main_checkout_sample": [],
+    "interpretation": "Files listed here are what a bare `import trading_bot` would actually execute from the verifier worktree instead of the audited commit's code."
+  },
+  "verifier_local_remediation": {
+    "method": "explicit PYTHONPATH prepending the verifier worktree's own src",
+    "PYTHONPATH": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3\\src",
+    "builder_code_modified": false,
+    "reason": "PYTHONPATH entries precede site-packages-derived paths on sys.path, so the worktree's src wins the resolution race without touching the builder venv."
+  },
+  "PYTHON_IMPORT_AUTHORITY": "PASS",
+  "residual_risks": [
+    "The shared venv means pip/uv re-installs will re-pin the main checkout; the PYTHONPATH override is per-invocation and not persistent.",
+    "pytest is protected separately by the repository root conftest.py, which force-prepends this worktree's src; non-pytest verifier scripts have no such protection and must rely on the explicit PYTHONPATH.",
+    "Any verifier result produced BEFORE this gate without the PYTHONPATH override must be treated as having an unproven import authority."
+  ],
+  "conclusion": {
+    "bare_import_contaminated": true,
+    "all_critical_modules_resolve_inside_worktree_under_PYTHONPATH": true,
+    "all_resolved_modules_match_audited_commit_bytes": true,
+    "on_disk_audited_mismatches": [],
+    "mandatory_rule": "Every verifier command that imports project modules MUST set PYTHONPATH=<verifier worktree>/src and MUST print the resolved __file__ of the modules it uses."
+  }
+}

@@ -1,0 +1,624 @@
+{
+  "verifier_type": "INDEPENDENT_GIT_AUTHORITY_VERIFICATION_V3",
+  "scope": "H6 V3 prereg freeze + post-prereg immutability",
+  "timestamp_utc": "2026-09-13T07:04:00Z",
+  "repository_root": "C:/Users/GVLLFR0035/Downloads/bot freebuff/.worktrees/h6-external-verifier-v3",
+  "executing_worktree": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3",
+  "verifier_base_commit": "a5487164803fb601f87f2cd4c865929c30da274e",
+  "verifier_branch": "audit/h6-external-verification-v3",
+  "sha256_backends": {
+    "primary": "python hashlib.sha256",
+    "crosscheck": "pure-python SHA256 (independent implementation in this script)",
+    "crosscheck_selftest": "PASS",
+    "builder_hash_helper_used": false,
+    "working_tree_bytes_used": false
+  },
+  "commits": [
+    {
+      "full_sha": "0941082fc875a66287d2b09159112963141bcf27",
+      "tree_sha": "f69e880c8f18a61994f272a9e5af09fcc01fc330",
+      "parent_shas": [
+        "ee58c7a5a0a46cf6af17dc9606118ef0f1fcd335"
+      ],
+      "parent_count": 1,
+      "is_merge": false,
+      "commit_message_subject": "H6-REPAIR-CLOSE-01: verifier package V2 + final evidence (NOT_EXECUTED)",
+      "commit_message_full": "H6-REPAIR-CLOSE-01: verifier package V2 + final evidence (NOT_EXECUTED)\n\nExternal Verifier Package V2 from git objects (ee58c7a):\n - H6_EXTERNAL_VERIFIER_PACKAGE_V2.json/md + H6_EXTERNAL_VERIFIER_PROMPT_V2.md\n - all SHAs from git show bytes (spec 221cfa1d, manifest 5f9aba44,\n   rationale 25aba49b, whitelist e5383fa6, dataset 16779b7, price e1c2462)\n - 8-defect reverify matrix (EXT-DATA/PRICE/PIT/CONS/CONS-002/CONS-004/CONF/FULL-HERMETIC)\n - test commands (PIT 12, OI 28, audit 60/60, 20x flake, full hermetic)\n\nEvidence:\n - H6_EXTERNAL_DEFECT_REGRESSION_MATRIX_V2.json finalized (7 PASS + 1 LIMITATION_EXPLICIT, full-hermetic now PASS 1299/0\u00d72 + 20/20)\n - H6_SELF_VERIFICATION_V2.json refreshed to 32/32 PASS (added full_hermetic + flake checks)\n - H6_PREREG_COMMIT_RECORD_V2.json (post-commit annotation, not prereg semantics)\n - RUN_REPORT.{md,json} + FINAL_REPORT.md alias (PENDING_EXTERNAL_REVERIFICATION)\n\nH6_EXECUTIONS=0 H6_BACKTESTS=0 PERFORMANCE_OBSERVED=false FALSE_SUCCESS=0\nH6_PREREG_COMMIT_V2 ee58c7a unchanged (git diff still EMPTY for SPEC/MANIFEST)\nH6_INDEPENDENT_VERIFICATION_V2 = PENDING (builder cannot certify itself)\n\n\ud83e\udd16 Generated with Codebuff\nCo-Authored-By: Codebuff <noreply@codebuff.com>\n",
+      "author": "Crypto Bot Admin <admin@bot-crypto.local>",
+      "author_date": "2026-09-12T11:05:34+02:00",
+      "committer_date": "2026-09-12T11:05:34+02:00",
+      "abbrev_requested": "0941082"
+    },
+    {
+      "full_sha": "f048520b1828d5035da7eb6859b854c6b1670e97",
+      "tree_sha": "19580846f22e77e884314be06cee9931d8abc421",
+      "parent_shas": [
+        "0941082fc875a66287d2b09159112963141bcf27"
+      ],
+      "parent_count": 1,
+      "is_merge": false,
+      "commit_message_subject": "[H6-V3-01] repair whitelist/hash/data/PIT portability",
+      "commit_message_full": "[H6-V3-01] repair whitelist/hash/data/PIT portability\n\n- whitelist fail-closed accessor (all paths reject unadmitted fields)\n- strict SHA256 validator for manifest hashes\n- portable data-root resolution (env/CLI/shared) in normalizer + runtime reader\n- canonical data-root-independent locators in ledger/normalized rows\n- canonical-authority write guard for tests (fail closed on all roots)\n- dataset determinism + mutation-sensitivity + BTC 2024-06-05 forensic proof\n- worktree-authoritative conftest (shared-venv editable .pth isolation)\n- dynamic PIT byte-invariance tests (future perturbations invisible at T)\n\n\ud83e\udd16 Generated with Codebuff\nCo-Authored-By: Codebuff <noreply@codebuff.com>\n",
+      "author": "Crypto Bot Admin <admin@bot-crypto.local>",
+      "author_date": "2026-09-12T16:45:33+02:00",
+      "committer_date": "2026-09-12T16:45:33+02:00",
+      "abbrev_requested": "f048520"
+    },
+    {
+      "full_sha": "2cd8f850633cd2f04c22f00ffed8d9b0ab636d09",
+      "tree_sha": "0f144769da69039bfd3416585d274485a5398860",
+      "parent_shas": [
+        "f048520b1828d5035da7eb6859b854c6b1670e97"
+      ],
+      "parent_count": 1,
+      "is_merge": false,
+      "commit_message_subject": "[H6-V3-02] repair confirmation/Shadow governance",
+      "commit_message_full": "[H6-V3-02] repair confirmation/Shadow governance\n\n- confirmation state reducer derives authoritative state from\n  ConfirmationExecutionLedger (no hard-coded booleans, no absent manifest)\n- conf_lock fails closed when ledger missing/invalid\n- exactly-once attempt_id semantics (duplicate START rejected)\n- Shadow maturity authority: capture + 48h, per-capture frozen protocol\n- V2 invalid 11/11 claim preserved as invalidated evidence, not deleted\n\n\ud83e\udd16 Generated with Codebuff\nCo-Authored-By: Codebuff <noreply@codebuff.com>\n",
+      "author": "Crypto Bot Admin <admin@bot-crypto.local>",
+      "author_date": "2026-09-12T16:45:45+02:00",
+      "committer_date": "2026-09-12T16:45:45+02:00",
+      "abbrev_requested": "2cd8f85"
+    },
+    {
+      "full_sha": "9f1d844312419575d6b635a7356111050fd9b93a",
+      "tree_sha": "8279000b6eaf6b37a32ed2d30b16c10e9e3ec071",
+      "parent_shas": [
+        "2cd8f850633cd2f04c22f00ffed8d9b0ab636d09"
+      ],
+      "parent_count": 1,
+      "is_merge": false,
+      "commit_message_subject": "H6-PREREG-V3: frozen preregistration (PENDING_EXTERNAL_VERIFICATION_V3)",
+      "commit_message_full": "H6-PREREG-V3: frozen preregistration (PENDING_EXTERNAL_VERIFICATION_V3)\n\n- H6_SPEC_V3 / H6_MANIFEST_V3 / H6_FEATURE_AUTHORITY_WHITELIST_V3 generated\n  programmatically; every hash derived from actual bytes and validated\n  ^[0-9a-f]{64}$ before serialization\n- economics carried forward UNCHANGED from frozen V2 spec (no retune;\n  10bps TOTAL RT kept; hypothesis advances to -03)\n- selection rationale / mechanism evidence / collision review V3 recorded\n- consistency audit: CONTRADICTIONS_FOUND=0, UNRESOLVED=[]\n- H6_EXECUTIONS=0, H6_BACKTESTS=0, PERFORMANCE_OBSERVED=false\n\n\ud83e\udd16 Generated with Codebuff\nCo-Authored-By: Codebuff <noreply@codebuff.com>\n",
+      "author": "Crypto Bot Admin <admin@bot-crypto.local>",
+      "author_date": "2026-09-12T16:59:11+02:00",
+      "committer_date": "2026-09-12T16:59:11+02:00",
+      "abbrev_requested": "9f1d844"
+    },
+    {
+      "full_sha": "b2c6b2b15274688b3feb117b1f5a78c3db44ee5a",
+      "tree_sha": "0ccd6cac873c8abdf23372500ac63c550221f470",
+      "parent_shas": [
+        "9f1d844312419575d6b635a7356111050fd9b93a"
+      ],
+      "parent_count": 1,
+      "is_merge": false,
+      "commit_message_subject": "[H6-V3-04a] Shadow/price governance evidence + durable test records",
+      "commit_message_full": "[H6-V3-04a] Shadow/price governance evidence + durable test records\n\n- price overlap full verification: 169,724 rows compared, 0 mismatches,\n  0 tail gaps -> PRICE_OVERLAP=PASS (repairs V2 LIMITATION_PARTIAL)\n- Shadow V2 invalidation record + 48h maturity authority + resolution\n  report (preserved as evidence, not deleted)\n- durable results: PIT_DYNAMIC, PIT_STATIC_AND_ISOLATION, DATA_AUTHORITY,\n  DATASET_DETERMINISM_V3, DASHBOARD_REPEAT_20 (20/20),\n  FULL_HERMETIC 1+2 (1332 passed / 0 failed)\n- V3 verifier environment check records\n\n\ud83e\udd16 Generated with Codebuff\nCo-Authored-By: Codebuff <noreply@codebuff.com>\n",
+      "author": "Crypto Bot Admin <admin@bot-crypto.local>",
+      "author_date": "2026-09-12T17:11:06+02:00",
+      "committer_date": "2026-09-12T17:11:06+02:00",
+      "abbrev_requested": "b2c6b2b"
+    },
+    {
+      "full_sha": "a5487164803fb601f87f2cd4c865929c30da274e",
+      "tree_sha": "c52321dee44c97a34a6aab28963076fd88d913b0",
+      "parent_shas": [
+        "b2c6b2b15274688b3feb117b1f5a78c3db44ee5a"
+      ],
+      "parent_count": 1,
+      "is_merge": false,
+      "commit_message_subject": "[H6-V3-04] add V3 external verifier package and final evidence",
+      "commit_message_full": "[H6-V3-04] add V3 external verifier package and final evidence\n\n- defect regression matrix: 16/16 external defects PASS with evidence\n- post-commit record (commit/tree/parent/frozen artifact hashes,\n  freeze diffs EMPTY, non-self-referential)\n- external verifier prompt V3: clean worktree, portable data authority,\n  independent fingerprint, whitelist attack, dynamic PIT, confirmation\n  ledger, Shadow audit, hermetic, NO H6 economics\n- verifier package index with 15 gates and expected values\n- final builder status: PENDING_EXTERNAL_VERIFICATION_V3\n  (H6_EXECUTIONS=0, H6_BACKTESTS=0, PERFORMANCE_OBSERVED=false)\n\n\ud83e\udd16 Generated with Codebuff\nCo-Authored-By: Codebuff <noreply@codebuff.com>\n",
+      "author": "Crypto Bot Admin <admin@bot-crypto.local>",
+      "author_date": "2026-09-12T17:24:38+02:00",
+      "committer_date": "2026-09-12T17:24:38+02:00",
+      "abbrev_requested": "a548716"
+    }
+  ],
+  "ancestry_checks": [
+    {
+      "test": "0941082 is ancestor of f048520",
+      "a_ancestor": "0941082fc875a66287d2b09159112963141bcf27",
+      "b_descendant": "f048520b1828d5035da7eb6859b854c6b1670e97",
+      "claimed_relation": "ancestor",
+      "observed_relation": "DIRECT_PARENT",
+      "is_ancestor": true,
+      "is_direct_parent": true,
+      "direct_parent_reverse": false,
+      "pass": true
+    },
+    {
+      "test": "f048520 is direct_parent of 2cd8f85",
+      "a_ancestor": "f048520b1828d5035da7eb6859b854c6b1670e97",
+      "b_descendant": "2cd8f850633cd2f04c22f00ffed8d9b0ab636d09",
+      "claimed_relation": "direct_parent",
+      "observed_relation": "DIRECT_PARENT",
+      "is_ancestor": true,
+      "is_direct_parent": true,
+      "direct_parent_reverse": false,
+      "pass": true
+    },
+    {
+      "test": "2cd8f85 is direct_parent of 9f1d844",
+      "a_ancestor": "2cd8f850633cd2f04c22f00ffed8d9b0ab636d09",
+      "b_descendant": "9f1d844312419575d6b635a7356111050fd9b93a",
+      "claimed_relation": "direct_parent",
+      "observed_relation": "DIRECT_PARENT",
+      "is_ancestor": true,
+      "is_direct_parent": true,
+      "direct_parent_reverse": false,
+      "pass": true
+    },
+    {
+      "test": "9f1d844 is ancestor of b2c6b2b",
+      "a_ancestor": "9f1d844312419575d6b635a7356111050fd9b93a",
+      "b_descendant": "b2c6b2b15274688b3feb117b1f5a78c3db44ee5a",
+      "claimed_relation": "ancestor",
+      "observed_relation": "DIRECT_PARENT",
+      "is_ancestor": true,
+      "is_direct_parent": true,
+      "direct_parent_reverse": false,
+      "pass": true
+    },
+    {
+      "test": "b2c6b2b is direct_parent of a548716",
+      "a_ancestor": "b2c6b2b15274688b3feb117b1f5a78c3db44ee5a",
+      "b_descendant": "a5487164803fb601f87f2cd4c865929c30da274e",
+      "claimed_relation": "direct_parent",
+      "observed_relation": "DIRECT_PARENT",
+      "is_ancestor": true,
+      "is_direct_parent": true,
+      "direct_parent_reverse": false,
+      "pass": true
+    }
+  ],
+  "frozen_artifacts": [
+    {
+      "artifact": "H6_SPEC_V3",
+      "path": "docs/external-audit-01/oi-full-history-03/H6_SPEC_V3.json",
+      "prereg_blob_id": "fb9f5457948edcb7ac8956ad7d4cd24d1d6010c3",
+      "prereg_bytes": 11442,
+      "prereg_sha256": "cd354e0603a4b8ee754d38a2a6e3a2689c06e683b732ab34bec03e631c50eeea",
+      "prereg_sha256_pure": "cd354e0603a4b8ee754d38a2a6e3a2689c06e683b732ab34bec03e631c50eeea",
+      "b2c6b2b_blob_id": "fb9f5457948edcb7ac8956ad7d4cd24d1d6010c3",
+      "b2c6b2b_bytes": 11442,
+      "b2c6b2b_sha256": "cd354e0603a4b8ee754d38a2a6e3a2689c06e683b732ab34bec03e631c50eeea",
+      "b2c6b2b_sha256_pure": "cd354e0603a4b8ee754d38a2a6e3a2689c06e683b732ab34bec03e631c50eeea",
+      "a548716_blob_id": "fb9f5457948edcb7ac8956ad7d4cd24d1d6010c3",
+      "a548716_bytes": 11442,
+      "a548716_sha256": "cd354e0603a4b8ee754d38a2a6e3a2689c06e683b732ab34bec03e631c50eeea",
+      "a548716_sha256_pure": "cd354e0603a4b8ee754d38a2a6e3a2689c06e683b732ab34bec03e631c50eeea",
+      "declared_sha256": "cd354e0603a4b8ee754d38a2a6e3a2689c06e683b732ab34bec03e631c50eeea",
+      "verifier_sha256": "cd354e0603a4b8ee754d38a2a6e3a2689c06e683b732ab34bec03e631c50eeea",
+      "hash_match_declared_vs_verifier": true,
+      "hashlib_purepython_agree": true,
+      "drift_prereg_to_b2c6b2b": false,
+      "drift_prereg_to_final": false,
+      "drift": false,
+      "final_sha256": "cd354e0603a4b8ee754d38a2a6e3a2689c06e683b732ab34bec03e631c50eeea",
+      "final_blob_id": "fb9f5457948edcb7ac8956ad7d4cd24d1d6010c3"
+    },
+    {
+      "artifact": "H6_MANIFEST_V3",
+      "path": "docs/external-audit-01/oi-full-history-03/H6_MANIFEST_V3.json",
+      "prereg_blob_id": "73a66e1436b2379e9a0b81edbe68a4f2d42fbcf3",
+      "prereg_bytes": 3796,
+      "prereg_sha256": "de42e4a1581855243969820ba4658582f398735586764ca0a8684920db95ecb3",
+      "prereg_sha256_pure": "de42e4a1581855243969820ba4658582f398735586764ca0a8684920db95ecb3",
+      "b2c6b2b_blob_id": "73a66e1436b2379e9a0b81edbe68a4f2d42fbcf3",
+      "b2c6b2b_bytes": 3796,
+      "b2c6b2b_sha256": "de42e4a1581855243969820ba4658582f398735586764ca0a8684920db95ecb3",
+      "b2c6b2b_sha256_pure": "de42e4a1581855243969820ba4658582f398735586764ca0a8684920db95ecb3",
+      "a548716_blob_id": "73a66e1436b2379e9a0b81edbe68a4f2d42fbcf3",
+      "a548716_bytes": 3796,
+      "a548716_sha256": "de42e4a1581855243969820ba4658582f398735586764ca0a8684920db95ecb3",
+      "a548716_sha256_pure": "de42e4a1581855243969820ba4658582f398735586764ca0a8684920db95ecb3",
+      "declared_sha256": "de42e4a1581855243969820ba4658582f398735586764ca0a8684920db95ecb3",
+      "verifier_sha256": "de42e4a1581855243969820ba4658582f398735586764ca0a8684920db95ecb3",
+      "hash_match_declared_vs_verifier": true,
+      "hashlib_purepython_agree": true,
+      "drift_prereg_to_b2c6b2b": false,
+      "drift_prereg_to_final": false,
+      "drift": false,
+      "final_sha256": "de42e4a1581855243969820ba4658582f398735586764ca0a8684920db95ecb3",
+      "final_blob_id": "73a66e1436b2379e9a0b81edbe68a4f2d42fbcf3"
+    },
+    {
+      "artifact": "H6_FEATURE_AUTHORITY_WHITELIST_V3",
+      "path": "docs/external-audit-01/oi-full-history-03/H6_FEATURE_AUTHORITY_WHITELIST_V3.json",
+      "prereg_blob_id": "eaeb60715b2f789b01c04ba17b340a245d917eea",
+      "prereg_bytes": 1558,
+      "prereg_sha256": "c59718cafcd8c0a23ea6cbf7244e328f668c95bf40744e3520752c52fa0a1b31",
+      "prereg_sha256_pure": "c59718cafcd8c0a23ea6cbf7244e328f668c95bf40744e3520752c52fa0a1b31",
+      "b2c6b2b_blob_id": "eaeb60715b2f789b01c04ba17b340a245d917eea",
+      "b2c6b2b_bytes": 1558,
+      "b2c6b2b_sha256": "c59718cafcd8c0a23ea6cbf7244e328f668c95bf40744e3520752c52fa0a1b31",
+      "b2c6b2b_sha256_pure": "c59718cafcd8c0a23ea6cbf7244e328f668c95bf40744e3520752c52fa0a1b31",
+      "a548716_blob_id": "eaeb60715b2f789b01c04ba17b340a245d917eea",
+      "a548716_bytes": 1558,
+      "a548716_sha256": "c59718cafcd8c0a23ea6cbf7244e328f668c95bf40744e3520752c52fa0a1b31",
+      "a548716_sha256_pure": "c59718cafcd8c0a23ea6cbf7244e328f668c95bf40744e3520752c52fa0a1b31",
+      "declared_sha256": "c59718cafcd8c0a23ea6cbf7244e328f668c95bf40744e3520752c52fa0a1b31",
+      "verifier_sha256": "c59718cafcd8c0a23ea6cbf7244e328f668c95bf40744e3520752c52fa0a1b31",
+      "hash_match_declared_vs_verifier": true,
+      "hashlib_purepython_agree": true,
+      "drift_prereg_to_b2c6b2b": false,
+      "drift_prereg_to_final": false,
+      "drift": false,
+      "final_sha256": "c59718cafcd8c0a23ea6cbf7244e328f668c95bf40744e3520752c52fa0a1b31",
+      "final_blob_id": "eaeb60715b2f789b01c04ba17b340a245d917eea"
+    },
+    {
+      "artifact": "H6_DATA_AUTHORITY_V3",
+      "path": "docs/external-audit-01/oi-full-history-03/H6_DATA_AUTHORITY_V3.json",
+      "prereg_blob_id": "66c27831d339c7c3fc25a0c6f75c0592259bb192",
+      "prereg_bytes": 5285,
+      "prereg_sha256": "4e2bada45fa06fb10ed89815759f2bc258d093afab70b93c6a983763e528466b",
+      "prereg_sha256_pure": "4e2bada45fa06fb10ed89815759f2bc258d093afab70b93c6a983763e528466b",
+      "b2c6b2b_blob_id": "66c27831d339c7c3fc25a0c6f75c0592259bb192",
+      "b2c6b2b_bytes": 5285,
+      "b2c6b2b_sha256": "4e2bada45fa06fb10ed89815759f2bc258d093afab70b93c6a983763e528466b",
+      "b2c6b2b_sha256_pure": "4e2bada45fa06fb10ed89815759f2bc258d093afab70b93c6a983763e528466b",
+      "a548716_blob_id": "66c27831d339c7c3fc25a0c6f75c0592259bb192",
+      "a548716_bytes": 5285,
+      "a548716_sha256": "4e2bada45fa06fb10ed89815759f2bc258d093afab70b93c6a983763e528466b",
+      "a548716_sha256_pure": "4e2bada45fa06fb10ed89815759f2bc258d093afab70b93c6a983763e528466b",
+      "declared_sha256": "4e2bada45fa06fb10ed89815759f2bc258d093afab70b93c6a983763e528466b",
+      "verifier_sha256": "4e2bada45fa06fb10ed89815759f2bc258d093afab70b93c6a983763e528466b",
+      "hash_match_declared_vs_verifier": true,
+      "hashlib_purepython_agree": true,
+      "drift_prereg_to_b2c6b2b": false,
+      "drift_prereg_to_final": false,
+      "drift": false,
+      "final_sha256": "4e2bada45fa06fb10ed89815759f2bc258d093afab70b93c6a983763e528466b",
+      "final_blob_id": "66c27831d339c7c3fc25a0c6f75c0592259bb192"
+    }
+  ],
+  "post_prereg_change_classification": [
+    {
+      "range": "9f1d844312419575d6b635a7356111050fd9b93a..b2c6b2b15274688b3feb117b1f5a78c3db44ee5a",
+      "files": [
+        {
+          "status": "A",
+          "path": "docs/external-audit-01/oi-full-history-03/DASHBOARD_REPEAT_20_RESULT.json",
+          "class": "EVIDENCE_ONLY"
+        },
+        {
+          "status": "A",
+          "path": "docs/external-audit-01/oi-full-history-03/DATASET_DETERMINISM_V3_RESULT.json",
+          "class": "EVIDENCE_ONLY"
+        },
+        {
+          "status": "A",
+          "path": "docs/external-audit-01/oi-full-history-03/DATA_AUTHORITY_RESULT.json",
+          "class": "EVIDENCE_ONLY"
+        },
+        {
+          "status": "A",
+          "path": "docs/external-audit-01/oi-full-history-03/FULL_HERMETIC_RESULT_1.json",
+          "class": "EVIDENCE_ONLY"
+        },
+        {
+          "status": "A",
+          "path": "docs/external-audit-01/oi-full-history-03/FULL_HERMETIC_RESULT_2.json",
+          "class": "EVIDENCE_ONLY"
+        },
+        {
+          "status": "A",
+          "path": "docs/external-audit-01/oi-full-history-03/H6_DATA_AUTHORITY_CHECK.json",
+          "class": "DATA_AUTHORITY"
+        },
+        {
+          "status": "A",
+          "path": "docs/external-audit-01/oi-full-history-03/H6_SHADOW_ISOLATION_REPORT.json",
+          "class": "EVIDENCE_ONLY"
+        },
+        {
+          "status": "A",
+          "path": "docs/external-audit-01/oi-full-history-03/H6_SHADOW_ISOLATION_REPORT.md",
+          "class": "EVIDENCE_ONLY"
+        },
+        {
+          "status": "A",
+          "path": "docs/external-audit-01/oi-full-history-03/H6_V2_EXTERNAL_FAILURE_RECORD.json",
+          "class": "EVIDENCE_ONLY"
+        },
+        {
+          "status": "A",
+          "path": "docs/external-audit-01/oi-full-history-03/H6_V2_EXTERNAL_FAILURE_RECORD.md",
+          "class": "EVIDENCE_ONLY"
+        },
+        {
+          "status": "A",
+          "path": "docs/external-audit-01/oi-full-history-03/H6_V3_REPAIR_DEFECT_REGISTER.json",
+          "class": "EVIDENCE_ONLY"
+        },
+        {
+          "status": "A",
+          "path": "docs/external-audit-01/oi-full-history-03/H6_V3_REPAIR_DEFECT_REGISTER.md",
+          "class": "EVIDENCE_ONLY"
+        },
+        {
+          "status": "A",
+          "path": "docs/external-audit-01/oi-full-history-03/H6_V3_VERIFIER_ENVIRONMENT_CHECK.json",
+          "class": "EVIDENCE_ONLY"
+        },
+        {
+          "status": "A",
+          "path": "docs/external-audit-01/oi-full-history-03/PIT_DYNAMIC_RESULT.json",
+          "class": "EVIDENCE_ONLY"
+        },
+        {
+          "status": "A",
+          "path": "docs/external-audit-01/oi-full-history-03/PIT_STATIC_AND_ISOLATION_RESULT.json",
+          "class": "EVIDENCE_ONLY"
+        },
+        {
+          "status": "A",
+          "path": "docs/external-audit-01/oi-full-history-03/PRICE_OVERLAP_V3_RESULT.json",
+          "class": "EVIDENCE_ONLY"
+        },
+        {
+          "status": "A",
+          "path": "docs/external-audit-01/oi-full-history-03/SHADOW_MATURITY_AUTHORITY_V2.json",
+          "class": "EVIDENCE_ONLY"
+        },
+        {
+          "status": "A",
+          "path": "docs/external-audit-01/oi-full-history-03/SHADOW_MATURITY_AUTHORITY_V2.md",
+          "class": "EVIDENCE_ONLY"
+        },
+        {
+          "status": "A",
+          "path": "docs/external-audit-01/oi-full-history-03/SHADOW_RESOLUTION_REPORT_V2.json",
+          "class": "EVIDENCE_ONLY"
+        },
+        {
+          "status": "A",
+          "path": "docs/external-audit-01/oi-full-history-03/SHADOW_RESOLUTION_REPORT_V2.md",
+          "class": "EVIDENCE_ONLY"
+        },
+        {
+          "status": "A",
+          "path": "docs/external-audit-01/oi-full-history-03/SHADOW_V2_INVALIDATION_RECORD.json",
+          "class": "EVIDENCE_ONLY"
+        },
+        {
+          "status": "A",
+          "path": "docs/external-audit-01/oi-full-history-03/SHADOW_V2_INVALIDATION_RECORD.md",
+          "class": "EVIDENCE_ONLY"
+        },
+        {
+          "status": "A",
+          "path": "scripts/verify_price_overlap_v3.py",
+          "class": "CODE"
+        }
+      ],
+      "class_counts": {
+        "EVIDENCE_ONLY": 21,
+        "DATA_AUTHORITY": 1,
+        "CODE": 1
+      },
+      "file_count": 23,
+      "sensitive_files_touching_h6_authority": [
+        {
+          "status": "A",
+          "path": "docs/external-audit-01/oi-full-history-03/DATASET_DETERMINISM_V3_RESULT.json",
+          "class": "EVIDENCE_ONLY"
+        },
+        {
+          "status": "A",
+          "path": "docs/external-audit-01/oi-full-history-03/DATA_AUTHORITY_RESULT.json",
+          "class": "EVIDENCE_ONLY"
+        },
+        {
+          "status": "A",
+          "path": "docs/external-audit-01/oi-full-history-03/H6_DATA_AUTHORITY_CHECK.json",
+          "class": "DATA_AUTHORITY"
+        },
+        {
+          "status": "A",
+          "path": "docs/external-audit-01/oi-full-history-03/H6_SHADOW_ISOLATION_REPORT.json",
+          "class": "EVIDENCE_ONLY"
+        },
+        {
+          "status": "A",
+          "path": "docs/external-audit-01/oi-full-history-03/H6_SHADOW_ISOLATION_REPORT.md",
+          "class": "EVIDENCE_ONLY"
+        },
+        {
+          "status": "A",
+          "path": "docs/external-audit-01/oi-full-history-03/PIT_DYNAMIC_RESULT.json",
+          "class": "EVIDENCE_ONLY"
+        },
+        {
+          "status": "A",
+          "path": "docs/external-audit-01/oi-full-history-03/PIT_STATIC_AND_ISOLATION_RESULT.json",
+          "class": "EVIDENCE_ONLY"
+        },
+        {
+          "status": "A",
+          "path": "docs/external-audit-01/oi-full-history-03/SHADOW_MATURITY_AUTHORITY_V2.json",
+          "class": "EVIDENCE_ONLY"
+        },
+        {
+          "status": "A",
+          "path": "docs/external-audit-01/oi-full-history-03/SHADOW_MATURITY_AUTHORITY_V2.md",
+          "class": "EVIDENCE_ONLY"
+        },
+        {
+          "status": "A",
+          "path": "docs/external-audit-01/oi-full-history-03/SHADOW_RESOLUTION_REPORT_V2.json",
+          "class": "EVIDENCE_ONLY"
+        },
+        {
+          "status": "A",
+          "path": "docs/external-audit-01/oi-full-history-03/SHADOW_RESOLUTION_REPORT_V2.md",
+          "class": "EVIDENCE_ONLY"
+        },
+        {
+          "status": "A",
+          "path": "docs/external-audit-01/oi-full-history-03/SHADOW_V2_INVALIDATION_RECORD.json",
+          "class": "EVIDENCE_ONLY"
+        },
+        {
+          "status": "A",
+          "path": "docs/external-audit-01/oi-full-history-03/SHADOW_V2_INVALIDATION_RECORD.md",
+          "class": "EVIDENCE_ONLY"
+        }
+      ]
+    },
+    {
+      "range": "b2c6b2b15274688b3feb117b1f5a78c3db44ee5a..a5487164803fb601f87f2cd4c865929c30da274e",
+      "files": [
+        {
+          "status": "A",
+          "path": "docs/external-audit-01/oi-full-history-03/H6_EXTERNAL_VERIFIER_PACKAGE_V3.json",
+          "class": "EVIDENCE_ONLY"
+        },
+        {
+          "status": "A",
+          "path": "docs/external-audit-01/oi-full-history-03/H6_EXTERNAL_VERIFIER_PROMPT_V3.md",
+          "class": "EVIDENCE_ONLY"
+        },
+        {
+          "status": "A",
+          "path": "docs/external-audit-01/oi-full-history-03/H6_V3_DEFECT_REGRESSION_MATRIX.json",
+          "class": "EVIDENCE_ONLY"
+        },
+        {
+          "status": "A",
+          "path": "docs/external-audit-01/oi-full-history-03/H6_V3_POST_COMMIT_RECORD.json",
+          "class": "EVIDENCE_ONLY"
+        },
+        {
+          "status": "A",
+          "path": "scripts/make_v3_post_commit_record.py",
+          "class": "CODE"
+        }
+      ],
+      "class_counts": {
+        "EVIDENCE_ONLY": 4,
+        "CODE": 1
+      },
+      "file_count": 5,
+      "sensitive_files_touching_h6_authority": []
+    }
+  ],
+  "prereg_role_evidence": {
+    "subject": "H6-PREREG-V3: frozen preregistration (PENDING_EXTERNAL_VERIFICATION_V3)",
+    "body": "H6-PREREG-V3: frozen preregistration (PENDING_EXTERNAL_VERIFICATION_V3)\n\n- H6_SPEC_V3 / H6_MANIFEST_V3 / H6_FEATURE_AUTHORITY_WHITELIST_V3 generated\n  programmatically; every hash derived from actual bytes and validated\n  ^[0-9a-f]{64}$ before serialization\n- economics carried forward UNCHANGED from frozen V2 spec (no retune;\n  10bps TOTAL RT kept; hypothesis advances to -03)\n- selection rationale / mechanism evidence / collision review V3 recorded\n- consistency audit: CONTRADICTIONS_FOUND=0, UNRESOLVED=[]\n- H6_EXECUTIONS=0, H6_BACKTESTS=0, PERFORMANCE_OBSERVED=false\n\n\ud83e\udd16 Generated with Codebuff\nCo-Authored-By: Codebuff <noreply@codebuff.com>",
+    "paths_matching_h6_v3": [
+      "docs/external-audit-01/oi-full-history-03/H6_DATA_AUTHORITY_V3.json",
+      "docs/external-audit-01/oi-full-history-03/H6_FEATURE_AUTHORITY_WHITELIST_V3.json",
+      "docs/external-audit-01/oi-full-history-03/H6_MANIFEST_V3.json",
+      "docs/external-audit-01/oi-full-history-03/H6_SPEC_V3.json"
+    ],
+    "H6_SPEC_V3": "PRESENT_IN_PREREG_TREE",
+    "H6_MANIFEST_V3": "PRESENT_IN_PREREG_TREE",
+    "H6_FEATURE_AUTHORITY_WHITELIST_V3": "PRESENT_IN_PREREG_TREE",
+    "H6_DATA_AUTHORITY_V3": "PRESENT_IN_PREREG_TREE",
+    "prereg_commit_touched_paths_count": 9,
+    "prereg_commit_introduced_or_modified": [
+      "docs/external-audit-01/oi-full-history-03/H6_FEATURE_AUTHORITY_WHITELIST_V3.json",
+      "docs/external-audit-01/oi-full-history-03/H6_MANIFEST_V3.json",
+      "docs/external-audit-01/oi-full-history-03/H6_SPEC_V3.json"
+    ],
+    "H6_SPEC_V3_exists_at_base": false,
+    "H6_SPEC_V3_authored_in_prereg_commit": true,
+    "H6_MANIFEST_V3_exists_at_base": false,
+    "H6_MANIFEST_V3_authored_in_prereg_commit": true,
+    "H6_FEATURE_AUTHORITY_WHITELIST_V3_exists_at_base": false,
+    "H6_FEATURE_AUTHORITY_WHITELIST_V3_authored_in_prereg_commit": true,
+    "H6_DATA_AUTHORITY_V3_exists_at_base": false,
+    "H6_DATA_AUTHORITY_V3_authored_in_prereg_commit": false,
+    "H6_DATA_AUTHORITY_V3_introduced_by": "f048520 [H6-V3-01] repair whitelist/hash/data/PIT portability",
+    "interpretation": "Three of the four frozen artifacts were authored by the prereg commit itself; H6_DATA_AUTHORITY_V3.json was authored by the immediately preceding repair commit f048520 and was CARRIED UNCHANGED into the prereg tree (so the prereg commit froze it rather than regenerating it). Either way each artifact is present in the prereg tree and byte-identical at b2c6b2b and a548716."
+  },
+  "resolved_shas": {
+    "0941082": "0941082fc875a66287d2b09159112963141bcf27",
+    "f048520": "f048520b1828d5035da7eb6859b854c6b1670e97",
+    "2cd8f85": "2cd8f850633cd2f04c22f00ffed8d9b0ab636d09",
+    "9f1d844": "9f1d844312419575d6b635a7356111050fd9b93a",
+    "b2c6b2b": "b2c6b2b15274688b3feb117b1f5a78c3db44ee5a",
+    "a548716": "a5487164803fb601f87f2cd4c865929c30da274e"
+  },
+  "linear_chain_head_to_base": [
+    "a5487164803fb601f87f2cd4c865929c30da274e",
+    "b2c6b2b15274688b3feb117b1f5a78c3db44ee5a",
+    "9f1d844312419575d6b635a7356111050fd9b93a",
+    "2cd8f850633cd2f04c22f00ffed8d9b0ab636d09",
+    "f048520b1828d5035da7eb6859b854c6b1670e97",
+    "0941082fc875a66287d2b09159112963141bcf27"
+  ],
+  "base_is_single_parent_of_head_path": true,
+  "commit_count_base_to_head": 5,
+  "merge_commits_in_slice": [],
+  "post_prereg_full_path_lists": {
+    "9f1d844312419575d6b635a7356111050fd9b93a..b2c6b2b15274688b3feb117b1f5a78c3db44ee5a": [
+      "docs/external-audit-01/oi-full-history-03/DASHBOARD_REPEAT_20_RESULT.json",
+      "docs/external-audit-01/oi-full-history-03/DATASET_DETERMINISM_V3_RESULT.json",
+      "docs/external-audit-01/oi-full-history-03/DATA_AUTHORITY_RESULT.json",
+      "docs/external-audit-01/oi-full-history-03/FULL_HERMETIC_RESULT_1.json",
+      "docs/external-audit-01/oi-full-history-03/FULL_HERMETIC_RESULT_2.json",
+      "docs/external-audit-01/oi-full-history-03/H6_DATA_AUTHORITY_CHECK.json",
+      "docs/external-audit-01/oi-full-history-03/H6_SHADOW_ISOLATION_REPORT.json",
+      "docs/external-audit-01/oi-full-history-03/H6_SHADOW_ISOLATION_REPORT.md",
+      "docs/external-audit-01/oi-full-history-03/H6_V2_EXTERNAL_FAILURE_RECORD.json",
+      "docs/external-audit-01/oi-full-history-03/H6_V2_EXTERNAL_FAILURE_RECORD.md",
+      "docs/external-audit-01/oi-full-history-03/H6_V3_REPAIR_DEFECT_REGISTER.json",
+      "docs/external-audit-01/oi-full-history-03/H6_V3_REPAIR_DEFECT_REGISTER.md",
+      "docs/external-audit-01/oi-full-history-03/H6_V3_VERIFIER_ENVIRONMENT_CHECK.json",
+      "docs/external-audit-01/oi-full-history-03/PIT_DYNAMIC_RESULT.json",
+      "docs/external-audit-01/oi-full-history-03/PIT_STATIC_AND_ISOLATION_RESULT.json",
+      "docs/external-audit-01/oi-full-history-03/PRICE_OVERLAP_V3_RESULT.json",
+      "docs/external-audit-01/oi-full-history-03/SHADOW_MATURITY_AUTHORITY_V2.json",
+      "docs/external-audit-01/oi-full-history-03/SHADOW_MATURITY_AUTHORITY_V2.md",
+      "docs/external-audit-01/oi-full-history-03/SHADOW_RESOLUTION_REPORT_V2.json",
+      "docs/external-audit-01/oi-full-history-03/SHADOW_RESOLUTION_REPORT_V2.md",
+      "docs/external-audit-01/oi-full-history-03/SHADOW_V2_INVALIDATION_RECORD.json",
+      "docs/external-audit-01/oi-full-history-03/SHADOW_V2_INVALIDATION_RECORD.md",
+      "scripts/verify_price_overlap_v3.py"
+    ],
+    "b2c6b2b15274688b3feb117b1f5a78c3db44ee5a..a5487164803fb601f87f2cd4c865929c30da274e": [
+      "docs/external-audit-01/oi-full-history-03/H6_EXTERNAL_VERIFIER_PACKAGE_V3.json",
+      "docs/external-audit-01/oi-full-history-03/H6_EXTERNAL_VERIFIER_PROMPT_V3.md",
+      "docs/external-audit-01/oi-full-history-03/H6_V3_DEFECT_REGRESSION_MATRIX.json",
+      "docs/external-audit-01/oi-full-history-03/H6_V3_POST_COMMIT_RECORD.json",
+      "scripts/make_v3_post_commit_record.py"
+    ]
+  },
+  "critical_question_post_prereg_semantic_mutations": {
+    "H6_ECONOMIC_SEMANTICS": {
+      "modified_after_prereg": false,
+      "hits": [],
+      "verdict": "UNCHANGED_AFTER_PREREG"
+    },
+    "FEATURE_AUTHORITY": {
+      "modified_after_prereg": false,
+      "hits": [],
+      "verdict": "UNCHANGED_AFTER_PREREG"
+    },
+    "DATASET_AUTHORITY": {
+      "modified_after_prereg": false,
+      "hits": [],
+      "verdict": "UNCHANGED_AFTER_PREREG"
+    },
+    "PIT_IMPLEMENTATION": {
+      "modified_after_prereg": false,
+      "hits": [],
+      "verdict": "UNCHANGED_AFTER_PREREG"
+    },
+    "CONFIRMATION_AUTHORITY": {
+      "modified_after_prereg": false,
+      "hits": [],
+      "verdict": "UNCHANGED_AFTER_PREREG"
+    },
+    "SHADOW_BEHAVIOR": {
+      "modified_after_prereg": false,
+      "hits": [],
+      "verdict": "UNCHANGED_AFTER_PREREG"
+    }
+  },
+  "critical_question_verdict": "NO_GOVERNED_SEMANTIC_MUTATION_AFTER_PREREG",
+  "post_prereg_changes_are_evidence_only": true,
+  "post_prereg_frozen_authority_mutations": [],
+  "git_authority_status": "PASS",
+  "summary": {
+    "ancestry_checks_pass": true,
+    "no_merge_commits_in_slice": true,
+    "prereg_freeze_pass": true,
+    "post_prereg_immutability_pass": true,
+    "frozen_authority_mutations_after_prereg": 0
+  }
+}
