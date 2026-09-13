@@ -1,0 +1,110 @@
+{
+  "verifier_type": "INDEPENDENT_DYNAMIC_PIT_NONVACUOUS_HARNESS_V3",
+  "timestamp_utc": "2026-09-13T07:25:27Z",
+  "audited_target_commit": "a5487164803fb601f87f2cd4c865929c30da274e",
+  "symbol": "TSTUSDT",
+  "decision_time_utc": "2026-03-20T12:00:00+00:00",
+  "synthetic": true,
+  "real_data_touched": false,
+  "economics": {
+    "H6_BACKTESTS": 0,
+    "H6_EXECUTIONS": 0,
+    "PERFORMANCE_OBSERVED": false
+  },
+  "mutations": [
+    {
+      "mutation": "future_row_value_mutation",
+      "description": "a row strictly after T (1774008300000) scaled x3",
+      "expected": "UNCHANGED",
+      "per_artifact_changed": {
+        "signal_input_at_t": false,
+        "decision_eligibility_at_t": false,
+        "feature_state_at_t": false,
+        "signal": false
+      },
+      "result": "PASS",
+      "observed_eligible": true,
+      "observed_signal": "{\"asset\":\"TSTUSDT\",\"dataset_sha256\":\"16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99\",\"decision_time\":\"2026-03-20 12:00:00+00:00\",\"direction\":\"LONG\",\"entry_time\":\"2026-03-20 13:00:00+00:00\",\"evidence\":\"UP + z_oi >= 1.0 => LONG\",\"exit_time\":\"2026-03-20 14:00:00+00:00\",\"price_direction\":\"UP\",\"robust_z_oi\":269.1218130311615,\"spec_sha256\":\"f514fecf42b52d2e1c2946cac9dee94b2570d485cb236b9a6c663f46f5bbf148\"}"
+    },
+    {
+      "mutation": "future_row_addition",
+      "description": "60 later rows removed and one row appended far after T",
+      "expected": "UNCHANGED",
+      "per_artifact_changed": {
+        "signal_input_at_t": false,
+        "decision_eligibility_at_t": false,
+        "feature_state_at_t": false,
+        "signal": false
+      },
+      "result": "PASS",
+      "observed_eligible": true,
+      "observed_signal": "{\"asset\":\"TSTUSDT\",\"dataset_sha256\":\"16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99\",\"decision_time\":\"2026-03-20 12:00:00+00:00\",\"direction\":\"LONG\",\"entry_time\":\"2026-03-20 13:00:00+00:00\",\"evidence\":\"UP + z_oi >= 1.0 => LONG\",\"exit_time\":\"2026-03-20 14:00:00+00:00\",\"price_direction\":\"UP\",\"robust_z_oi\":269.1218130311615,\"spec_sha256\":\"f514fecf42b52d2e1c2946cac9dee94b2570d485cb236b9a6c663f46f5bbf148\"}"
+    },
+    {
+      "mutation": "past_row_value_mutation",
+      "description": "a row strictly before T (1774004100000) scaled x1.5",
+      "expected": "CHANGED",
+      "per_artifact_changed": {
+        "signal_input_at_t": true,
+        "decision_eligibility_at_t": true,
+        "feature_state_at_t": true,
+        "signal": true
+      },
+      "result": "PASS",
+      "observed_eligible": true,
+      "observed_signal": "{\"asset\":\"TSTUSDT\",\"dataset_sha256\":\"16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99\",\"decision_time\":\"2026-03-20 12:00:00+00:00\",\"direction\":\"LONG\",\"entry_time\":\"2026-03-20 13:00:00+00:00\",\"evidence\":\"UP + z_oi >= 1.0 => LONG\",\"exit_time\":\"2026-03-20 14:00:00+00:00\",\"price_direction\":\"UP\",\"robust_z_oi\":78.2324969647916,\"spec_sha256\":\"f514fecf42b52d2e1c2946cac9dee94b2570d485cb236b9a6c663f46f5bbf148\"}"
+    },
+    {
+      "mutation": "past_gap_before_T",
+      "description": "current decision hour's 12 snapshots deleted (gap immediately before T)",
+      "expected": "CHANGED",
+      "per_artifact_changed": {
+        "signal_input_at_t": true,
+        "decision_eligibility_at_t": true,
+        "feature_state_at_t": true,
+        "signal": true
+      },
+      "result": "PASS",
+      "observed_eligible": false,
+      "observed_signal": "{\"asset\":\"TSTUSDT\",\"dataset_sha256\":\"16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99\",\"decision_time\":\"2026-03-20 12:00:00+00:00\",\"direction\":\"NO_TRADE\",\"entry_time\":null,\"evidence\":\"CURRENT_HOUR_OI_COMPLETENESS != 12\",\"exit_time\":null,\"price_direction\":\"UP\",\"robust_z_oi\":0.0,\"spec_sha256\":\"f514fecf42b52d2e1c2946cac9dee94b2570d485cb236b9a6c663f46f5bbf148\"}"
+    }
+  ],
+  "baseline": {
+    "hashes": {
+      "signal_input_at_t": "36f76693c3b3b50c4885a75199f78799482232c5a77bf4bfe73ecd5818a64817",
+      "decision_eligibility_at_t": "be0bbd94794bd8d7c8895a7eadd979cc8e09cbb8dfde6e0c8def780b6e7d9c53",
+      "feature_state_at_t": "256894e1561531010144afdde83933ddbf43c21d79ecd2305b976efd456a11e9",
+      "signal": "3a4c7eaec1105f97b85a4adbd63a4284f019b829872a311a92067e6cab325583"
+    },
+    "eligible": true,
+    "reason": "ELIGIBLE",
+    "rolling_n": 467,
+    "n_current_snapshots": 12,
+    "feature_eligible": true,
+    "robust_z_oi": 269.1218130311615,
+    "delta_oi": 4005.0,
+    "signal": "{\"asset\":\"TSTUSDT\",\"dataset_sha256\":\"16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99\",\"decision_time\":\"2026-03-20 12:00:00+00:00\",\"direction\":\"LONG\",\"entry_time\":\"2026-03-20 13:00:00+00:00\",\"evidence\":\"UP + z_oi >= 1.0 => LONG\",\"exit_time\":\"2026-03-20 14:00:00+00:00\",\"price_direction\":\"UP\",\"robust_z_oi\":269.1218130311615,\"spec_sha256\":\"f514fecf42b52d2e1c2946cac9dee94b2570d485cb236b9a6c663f46f5bbf148\"}",
+    "causal_rows": 5617,
+    "max_ts_le_T": 1774008000000
+  },
+  "non_vacuity": {
+    "baseline_eligible": true,
+    "baseline_reason": "ELIGIBLE",
+    "baseline_rolling_n": 467,
+    "baseline_feature_eligible": true,
+    "baseline_robust_z_oi": 269.1218130311615,
+    "baseline_delta_oi": 4005.0,
+    "baseline_signal": "{\"asset\":\"TSTUSDT\",\"dataset_sha256\":\"16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99\",\"decision_time\":\"2026-03-20 12:00:00+00:00\",\"direction\":\"LONG\",\"entry_time\":\"2026-03-20 13:00:00+00:00\",\"evidence\":\"UP + z_oi >= 1.0 => LONG\",\"exit_time\":\"2026-03-20 14:00:00+00:00\",\"price_direction\":\"UP\",\"robust_z_oi\":269.1218130311615,\"spec_sha256\":\"f514fecf42b52d2e1c2946cac9dee94b2570d485cb236b9a6c663f46f5bbf148\"}",
+    "baseline_causal_rows": 5617,
+    "max_causal_timestamp_le_T": true,
+    "NON_VACUOUS": true
+  },
+  "summary": {
+    "non_vacuous_baseline": true,
+    "future_mutations_all_invariant": true,
+    "past_mutations_all_detected": true,
+    "future_mutations": 2,
+    "past_mutations": 2
+  },
+  "DYNAMIC_PIT_NON_VACUOUS_HARNESS": "PASS"
+}
