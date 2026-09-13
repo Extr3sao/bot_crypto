@@ -6,7 +6,7 @@
 H6_EXECUTIONS        = 0
 H6_BACKTESTS         = 0
 PERFORMANCE_OBSERVED = false
-rows                 = 27
+rows                 = 30
 ```
 
 | ID | Gen | Root cause | Repair | Runtime reachability | Status |
@@ -38,6 +38,9 @@ rows                 = 27
 | `V3-IMPORT-001` | V3 | The shared venv's editable .pth pins the MAIN checkout's src, so a bare `import trading_bot` inside a worktree resolves outside that worktree. | Portable scripts/verify_python_import_authority.py guard + worktree-local PYTHONPATH bootstrap; every run report records python executable, repo root, git commit and module paths. | ENVIRONMENT (gates all other evidence) | REPAIRED_IN_V4_PENDING_INDEPENDENT_VERIFICATION |
 | `V3-FEATURE-001` | V3 | _hour_close_boundaries returned a bare tuple while the caller read .start/.end, so build_completed_hour_oi raised AttributeError for every non-empty snapshot list. | One explicit HourWindow dataclass; single representation for both helper and caller. | RUNTIME (eligibility.build_completed_hour_oi) | REPAIRED_IN_V4_PENDING_INDEPENDENT_VERIFICATION |
 | `V3-FEATURE-002` | V3 | Inclusive hour-window bounds could yield 13 5m snapshots for an hour on a grid aligned to :00 instead of the frozen 12. | Half-open [T-1h, T) semantics: the stamp exactly at T belongs to the NEXT hour; conflicting duplicates fail closed. | RUNTIME | REPAIRED_IN_V4_PENDING_INDEPENDENT_VERIFICATION |
+| `V4-SELF-WINDOW-001` | V4 | The feature engine enforced only the rolling-observation MINIMUM (336) and never the window LENGTH, and build_feature_state derived its hour range from len(observations)//12+2. prepare_decision_from_data_root passes the whole causal store, so median/MAD -- and therefore robust_z and the signal -- were a function of how much history existed rather than of the preregistered 720-hour window. | The engine applies the frozen trailing window to the series it receives (hist[-length_hours:], matching V2's hist[-ROBUST_Z_WINDOW_HOURS:]) and reads both window values from the bound frozen spec. The hour range is clipped to the history that exists and only the two hours a decision consumes are materialised, so a full-store caller no longer amplifies cost by dataset length (375k obs -> 720 window, ~21 s). | RUNTIME (feature_engine.compute_feature_state, preparation.build_feature_state) | REPAIRED_IN_V4_PENDING_INDEPENDENT_VERIFICATION |
+| `V4-SELF-DATAROOT-001` | V4 | prepare_decision_from_data_root forwarded its argument to a reader that returns no rows for a directory lacking the symbol shards, so passing the authority-documented data root produced a well-formed NO_TRADE decision built from ZERO observations. | Explicit store resolution from the documented root shapes (data root, repo root, or the store itself) with structural validation; an unresolvable root or a store without shards for the symbol raises instead of returning an empty answer. | RUNTIME (preparation.prepare_decision_from_data_root) | REPAIRED_IN_V4_PENDING_INDEPENDENT_VERIFICATION |
+| `V4-SELF-CLEANWT-001` | V4 | The clean-worktree self-verification nested its worktree one level deeper than the canonical layout, so the shared data-root fallback looked too shallow, the frozen dataset appeared absent and a data-dependent test failed; the reporter then assumed the nested layout and crashed after every gate had passed, losing the evidence file. | Ancestor-walking data-root resolution from [H6-V4-06], the verification worktree created at the canonical depth under the main checkout, and a layout-independent path reporter. | HARNESS | REPAIRED_IN_V4_PENDING_INDEPENDENT_VERIFICATION |
 
 ## Test / evidence index
 
@@ -68,6 +71,9 @@ rows                 = 27
 * `V3-IMPORT-001` — test: `scripts/verify_python_import_authority.py --json`; evidence: `h6-v4-repair/PYTHON_IMPORT_AUTHORITY_V4.json`
 * `V3-FEATURE-001` — test: `trading_bot/tests/unit/research/test_h6_v4_hour_aggregation.py::test_twelve_valid_snapshots_are_eligible_and_non_empty_input_does_not_crash`; evidence: `H6_V4_HOUR_AGGREGATION_RESULT.json`
 * `V3-FEATURE-002` — test: `trading_bot/tests/unit/research/test_h6_v4_hour_aggregation.py::test_thirteen_including_t_excludes_t_deterministically, ::test_snapshot_exactly_t_is_classified_into_the_next_hour, ::test_conflicting_duplicate_timestamp_fails_closed`; evidence: `H6_V4_HOUR_AGGREGATION_RESULT.json`
+* `V4-SELF-WINDOW-001` — test: `trading_bot/tests/unit/research/test_h6_v4_rolling_window_contract.py (7 tests: cap, trailing equality, ancient-history invariance, no fabricated padding)`; evidence: `H6_V4_PIT_DYNAMIC.json (runtime_entry_point: 720 changes on 375,697 observations, equals trailing slice)`
+* `V4-SELF-DATAROOT-001` — test: `trading_bot/tests/unit/research/test_h6_v4_data_root_resolution.py (7 tests incl. unresolvable root and shard-less target raising)`; evidence: `H6_V4_PIT_DYNAMIC.json (runtime_entry_point_resolves_the_data_root)`
+* `V4-SELF-CLEANWT-001` — test: `docs/external-audit-01/h6-v4-repair/run_v4_clean_worktree_self_verification.py (14/14 gates from a fresh checkout)`; evidence: `H6_V4_CLEAN_WORKTREE_SELF_VERIFICATION.json`
 
 > Builder self-verification only. `REPAIRED_IN_V4_PENDING_INDEPENDENT_VERIFICATION`
 > is not a certification. Independent verification is

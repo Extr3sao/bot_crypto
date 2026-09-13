@@ -221,6 +221,59 @@ ROWS = [
      "runtime_reachability": "RUNTIME",
      "evidence": "H6_V4_HOUR_AGGREGATION_RESULT.json",
      "status": R4},
+
+    # ---------------------------------------- V4 defects found during V4 self-verification
+    {"defect_id": "V4-SELF-WINDOW-001", "generation": "V4",
+     "root_cause": (
+         "The feature engine enforced only the rolling-observation MINIMUM (336) and never the "
+         "window LENGTH, and build_feature_state derived its hour range from "
+         "len(observations)//12+2. prepare_decision_from_data_root passes the whole causal "
+         "store, so median/MAD -- and therefore robust_z and the signal -- were a function of "
+         "how much history existed rather than of the preregistered 720-hour window."
+     ),
+     "repair": (
+         "The engine applies the frozen trailing window to the series it receives "
+         "(hist[-length_hours:], matching V2's hist[-ROBUST_Z_WINDOW_HOURS:]) and reads both "
+         "window values from the bound frozen spec. The hour range is clipped to the history "
+         "that exists and only the two hours a decision consumes are materialised, so a "
+         "full-store caller no longer amplifies cost by dataset length (375k obs -> 720 "
+         "window, ~21 s)."
+     ),
+     "test": f"{NT}/test_h6_v4_rolling_window_contract.py (7 tests: cap, trailing equality, ancient-history invariance, no fabricated padding)",
+     "runtime_reachability": "RUNTIME (feature_engine.compute_feature_state, preparation.build_feature_state)",
+     "evidence": "H6_V4_PIT_DYNAMIC.json (runtime_entry_point: 720 changes on 375,697 observations, equals trailing slice)",
+     "status": R4},
+    {"defect_id": "V4-SELF-DATAROOT-001", "generation": "V4",
+     "root_cause": (
+         "prepare_decision_from_data_root forwarded its argument to a reader that returns no "
+         "rows for a directory lacking the symbol shards, so passing the authority-documented "
+         "data root produced a well-formed NO_TRADE decision built from ZERO observations."
+     ),
+     "repair": (
+         "Explicit store resolution from the documented root shapes (data root, repo root, or "
+         "the store itself) with structural validation; an unresolvable root or a store "
+         "without shards for the symbol raises instead of returning an empty answer."
+     ),
+     "test": f"{NT}/test_h6_v4_data_root_resolution.py (7 tests incl. unresolvable root and shard-less target raising)",
+     "runtime_reachability": "RUNTIME (preparation.prepare_decision_from_data_root)",
+     "evidence": "H6_V4_PIT_DYNAMIC.json (runtime_entry_point_resolves_the_data_root)",
+     "status": R4},
+    {"defect_id": "V4-SELF-CLEANWT-001", "generation": "V4",
+     "root_cause": (
+         "The clean-worktree self-verification nested its worktree one level deeper than the "
+         "canonical layout, so the shared data-root fallback looked too shallow, the frozen "
+         "dataset appeared absent and a data-dependent test failed; the reporter then assumed "
+         "the nested layout and crashed after every gate had passed, losing the evidence file."
+     ),
+     "repair": (
+         "Ancestor-walking data-root resolution from [H6-V4-06], the verification worktree "
+         "created at the canonical depth under the main checkout, and a layout-independent "
+         "path reporter."
+     ),
+     "test": "docs/external-audit-01/h6-v4-repair/run_v4_clean_worktree_self_verification.py (14/14 gates from a fresh checkout)",
+     "runtime_reachability": "HARNESS",
+     "evidence": "H6_V4_CLEAN_WORKTREE_SELF_VERIFICATION.json",
+     "status": R4},
 ]
 
 
@@ -233,7 +286,7 @@ def main() -> None:
         "PERFORMANCE_OBSERVED": False,
         "row_count": len(ROWS),
         "generation_counts": {
-            g: sum(1 for r in ROWS if r["generation"] == g) for g in ("V1", "V2", "V3")
+            g: sum(1 for r in ROWS if r["generation"] == g) for g in ("V1", "V2", "V3", "V4")
         },
         "status_counts": {
             s: sum(1 for r in ROWS if r["status"] == s) for s in sorted({r["status"] for r in ROWS})

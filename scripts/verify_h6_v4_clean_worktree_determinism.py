@@ -25,12 +25,17 @@ halves:
       on all three sub-proofs, and be bound to EXACTLY this worktree's commit.
 
 Reuse is only sound while the proof's INPUTS are unchanged.  The gate therefore
-requires the proof's commit to be an ancestor of this worktree's HEAD **and** the
-normalization / data-authority code to be byte-identical between the two
-(``git diff --name-only <proof_commit>..HEAD -- <authority code>`` must be empty).
+requires the proof's commit to be an ancestor of this worktree's HEAD **and**
+every file in PROOF_INPUT_PATHS (the standalone proof and the normalizer module
+it imports -- its only project dependency) to be byte-identical between the
+evidence commit and HEAD, compared by git blob IDs.  The gate also asserts the
+proof stays free of ``trading_bot`` imports, so those two files are provably the
+only inputs that can decide the proof's RESULT.  The runtime data-root resolver
+is deliberately NOT a proof input: it cannot change what the proof computed, and
+its layout-sensitive behaviour is re-executed locally by half (1) of this gate.
 Commits that only add evidence, tests or harnesses do not invalidate the proof;
-any commit that touches the normalizer or the data-root resolver does, and the
-gate then FAILS closed instead of silently accepting stale evidence.
+any commit that touches a PROOF_INPUT_PATHS file does, and the gate then FAILS
+closed instead of silently accepting stale evidence.
 
 DATA-ONLY: no signals, no performance, no economics.
 Exit 0 iff both halves PASS.
@@ -56,11 +61,20 @@ from trading_bot.research.oi_dataset_v2 import (  # noqa: E402
 )
 
 EVID = REPO / "docs" / "external-audit-01" / "h6-v4-repair"
-# Inputs whose bytes decide the reused proof's result.
+# Inputs whose bytes decide the reused proof's RESULT. The proof is a standalone script:
+# it embeds the fingerprint derivation and its only project dependency is the normalizer
+# module (neither file mentions `trading_bot`, which the gate asserts below). Anything not
+# in this list -- including the runtime data-root resolver -- cannot change what the proof
+# computed, so it does not invalidate the reuse; the layout-sensitive behaviour it does
+# affect is re-executed locally by half (1) of this gate.
 PROOF_INPUT_PATHS = [
+    "scripts/prove_h6_v3_dataset_determinism.py",
     "scripts/normalize_oi_full_history_v2.py",
-    "src/trading_bot/research/oi_dataset_v2.py",
 ]
+PROOF_IMPORT_SCOPE_NOTE = (
+    "proof and normalizer must stay free of project-module imports, otherwise the reuse "
+    "scope below would be wrong and PROOF_INPUT_PATHS would have to be widened"
+)
 LEDGER = REPO / "docs/external-audit-01/oi-full-history-02/OI_ARCHIVE_DAY_VALIDITY_LEDGER_V2.jsonl"
 MANIFEST = REPO / "docs/external-audit-01/oi-full-history-02/OI_FULL_HISTORY_DATASET_MANIFEST_V2.json"
 OUT_NAME = "H6_V4_CLEAN_WORKTREE_DETERMINISM.json"
@@ -74,6 +88,38 @@ def _head() -> str:
 
 def _norm(p: str) -> str:
     return os.path.normcase(os.path.normpath(str(p)))
+
+
+def _git(*args: str) -> subprocess.CompletedProcess:
+    return subprocess.run(["git", *args], cwd=str(REPO), capture_output=True, text=True)
+
+
+def _proof_inputs_unchanged(proof_commit: str, head: str) -> tuple[bool, list[str], dict]:
+    """Byte-level check: are every proof input identical at the evidence commit and HEAD?
+
+    Compares git blob IDs rather than working-tree bytes so the check is independent of
+    checkout state and of any unrelated intermediate commit.
+    """
+    changed: list[str] = []
+    blobs: dict[str, dict[str, str]] = {}
+    for path in PROOF_INPUT_PATHS:
+        at_evidence = _git("rev-parse", f"{proof_commit}:{path}")
+        at_head = _git("rev-parse", f"{head}:{path}")
+        b_ev = at_evidence.stdout.strip()
+        b_hd = at_head.stdout.strip()
+        blobs[path] = {"at_evidence_commit": b_ev, "at_head": b_hd}
+        if at_evidence.returncode != 0 or at_head.returncode != 0 or b_ev != b_hd:
+            changed.append(path)
+    return (not changed), changed, blobs
+
+
+def _proof_scope_is_stdlib_only() -> tuple[bool, list[str]]:
+    offenders = [
+        path
+        for path in PROOF_INPUT_PATHS
+        if "trading_bot" in (REPO / path).read_text(encoding="utf-8", errors="replace")
+    ]
+    return (not offenders), offenders
 
 
 def main() -> int:
@@ -121,16 +167,10 @@ def main() -> int:
         mut = durable.get("mutation_sensitivity", {}) or {}
         fore = durable.get("btc_2024_06_05_forensic", {}) or {}
         proof_commit = str(durable.get("commit") or "")
-        anc = subprocess.run(
-            ["git", "merge-base", "--is-ancestor", proof_commit, head],
-            cwd=str(REPO), capture_output=True, text=True,
-        )
-        diff = subprocess.run(
-            ["git", "diff", "--name-only", f"{proof_commit}..{head}", "--", *PROOF_INPUT_PATHS],
-            cwd=str(REPO), capture_output=True, text=True,
-        )
-        changed_inputs = [ln for ln in diff.stdout.splitlines() if ln.strip()]
-        rebind_ok = anc.returncode == 0 and not changed_inputs
+        anc = _git("merge-base", "--is-ancestor", proof_commit, head)
+        inputs_ok, changed_inputs, input_blobs = _proof_inputs_unchanged(proof_commit, head)
+        scope_ok, scope_offenders = _proof_scope_is_stdlib_only()
+        rebind_ok = anc.returncode == 0 and inputs_ok and scope_ok
         reuse.update(
             {
                 "evidence_present": True,
@@ -140,7 +180,10 @@ def main() -> int:
                 "evidence_duration_seconds": durable.get("duration_seconds"),
                 "evidence_commit_is_ancestor_of_head": anc.returncode == 0,
                 "proof_input_paths": PROOF_INPUT_PATHS,
+                "proof_input_blob_ids": input_blobs,
                 "proof_input_paths_changed_since_evidence": changed_inputs,
+                "proof_import_scope_note": PROOF_IMPORT_SCOPE_NOTE,
+                "proof_inputs_with_project_imports": scope_offenders,
                 "reuse_binding_ok": rebind_ok,
                 "commit_matches_clean_worktree": proof_commit == head,
                 "data_root_matches_resolved": _norm(durable.get("data_root", ""))
