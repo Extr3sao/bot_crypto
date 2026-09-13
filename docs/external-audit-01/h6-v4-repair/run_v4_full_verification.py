@@ -33,6 +33,8 @@ def _env(*, hermetic: bool = False) -> dict:
     e["PYTHONPATH"] = str(SRC)
     e["PYTHONHASHSEED"] = "0"
     e["TZ"] = "UTC"
+    # Re-verification outputs stay in this checkpoint's evidence dir.
+    e["H6_EVIDENCE_DIR"] = str(OUT)
     if not hermetic:
         e["TRADING_AGENTIC_DATA_ROOT"] = e.get(
             "TRADING_AGENTIC_DATA_ROOT", "C:/Users/GVLLFR0035/Downloads/bot freebuff/data"

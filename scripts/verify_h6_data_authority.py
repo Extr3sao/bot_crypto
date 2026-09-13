@@ -47,6 +47,13 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--data-root", default=None, help="root containing raw/binance_um/metrics/ and processed/oi_full_history_v2/")
     ap.add_argument("--manifest", default="docs/external-audit-01/oi-full-history-02/OI_FULL_HISTORY_DATASET_MANIFEST_V2.json")
     ap.add_argument("--ledger", default="docs/external-audit-01/oi-full-history-02/OI_ARCHIVE_DAY_VALIDITY_LEDGER_V2.jsonl")
+    ap.add_argument(
+        "--evidence-dir",
+        default=os.environ.get("H6_EVIDENCE_DIR"),
+        help="directory for the machine-readable result (default: the historical V3 evidence dir); "
+        "set H6_EVIDENCE_DIR or pass this flag so a re-verification checkpoint never rewrites "
+        "another checkpoint's frozen evidence",
+    )
     args = ap.parse_args(argv)
 
     repo = Path(__file__).resolve().parents[1]
@@ -152,8 +159,11 @@ def main(argv: list[str] | None = None) -> int:
         print(f"FAIL manifest/ledger parse {e}", file=sys.stderr)
         ok = False
 
-    # Write machine-readable result alongside
-    result_path = repo / "docs" / "external-audit-01" / "oi-full-history-03" / "H6_DATA_AUTHORITY_CHECK.json"
+    # Write machine-readable result alongside, in this checkpoint's own evidence dir when asked.
+    evidence_dir = Path(args.evidence_dir) if args.evidence_dir else repo / "docs" / "external-audit-01" / "oi-full-history-03"
+    if not evidence_dir.is_absolute():
+        evidence_dir = repo / evidence_dir
+    result_path = evidence_dir / "H6_DATA_AUTHORITY_CHECK.json"
     result_path.parent.mkdir(parents=True, exist_ok=True)
     result = {"verdict": "PASS" if ok else "FAIL", **out}
     result_path.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")

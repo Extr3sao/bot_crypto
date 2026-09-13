@@ -11,8 +11,10 @@ Exit non-zero if any contradiction or unresolved item.
 
 from __future__ import annotations
 
+import argparse
 import hashlib
 import json
+import os
 import re
 import subprocess
 from pathlib import Path
@@ -20,6 +22,19 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[1]
 E3 = REPO / "docs/external-audit-01/oi-full-history-03"
 E2 = REPO / "docs/external-audit-01/oi-full-history-02"
+
+
+def _evidence_dir(cli: str | None) -> Path:
+    """Where the audit result is written. Inputs always come from the frozen V3 dir.
+
+    A later checkpoint (V4) re-runs this audit as a regression check; it must not
+    overwrite the V3 record it is checking, so the output dir is overridable.
+    """
+    raw = cli or os.environ.get("H6_EVIDENCE_DIR")
+    if not raw:
+        return E3
+    p = Path(raw)
+    return p if p.is_absolute() else REPO / p
 
 
 def sha256_file(p: Path) -> str:
@@ -31,6 +46,15 @@ def sha256_file(p: Path) -> str:
 
 
 def main() -> int:
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument(
+        "--evidence-dir",
+        default=os.environ.get("H6_EVIDENCE_DIR"),
+        help="directory for H6_V3_CONSISTENCY_AUDIT.json (default: the historical V3 evidence dir)",
+    )
+    args = ap.parse_args()
+    out_dir = _evidence_dir(args.evidence_dir)
+
     spec = json.loads((E3 / "H6_SPEC_V3.json").read_text(encoding="utf-8"))
     man = json.loads((E3 / "H6_MANIFEST_V3.json").read_text(encoding="utf-8"))
     wl = json.loads((E3 / "H6_FEATURE_AUTHORITY_WHITELIST_V3.json").read_text(encoding="utf-8"))
@@ -176,7 +200,8 @@ def main() -> int:
         "UNRESOLVED": unresolved,
         "status": "PASS" if not contradictions and not unresolved else "FAIL",
     }
-    (E3 / "H6_V3_CONSISTENCY_AUDIT.json").write_text(json.dumps(out, indent=2) + "\n", encoding="utf-8")
+    out_dir.mkdir(parents=True, exist_ok=True)
+    (out_dir / "H6_V3_CONSISTENCY_AUDIT.json").write_text(json.dumps(out, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({k: out[k] for k in ("status", "CONTRADICTIONS_FOUND", "UNRESOLVED")}, indent=2))
     if contradictions:
         print(json.dumps(contradictions, indent=1))

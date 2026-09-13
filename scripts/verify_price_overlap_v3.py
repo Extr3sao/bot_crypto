@@ -43,6 +43,11 @@ def resolve_data_root(cli: str | None) -> Path:
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--data-root", default=None)
+    ap.add_argument(
+        "--evidence-dir",
+        default=os.environ.get("H6_EVIDENCE_DIR"),
+        help="directory for the machine-readable result (default: the historical V3 evidence dir)",
+    )
     args = ap.parse_args()
     root = resolve_data_root(args.data_root)
 
@@ -90,8 +95,11 @@ def main() -> int:
         "status": "PASS" if ok else "FAIL",
         "note": "full element-wise overlap of frozen H1 klines vs V2 extended authority (all rows, all assets) + strict 1h continuity of extension tail",
     }
-    EVID3.mkdir(parents=True, exist_ok=True)
-    (EVID3 / "PRICE_OVERLAP_V3_RESULT.json").write_text(json.dumps(out, indent=2) + "\n", encoding="utf-8")
+    evidence_dir = Path(args.evidence_dir) if args.evidence_dir else EVID3
+    if not evidence_dir.is_absolute():
+        evidence_dir = REPO / evidence_dir
+    evidence_dir.mkdir(parents=True, exist_ok=True)
+    (evidence_dir / "PRICE_OVERLAP_V3_RESULT.json").write_text(json.dumps(out, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({"status": out["status"], "total_rows_compared": out["total_rows_compared"], "per_asset": {a: r["overlap_equal"] for a, r in per_asset.items()}}, indent=2))
     return 0 if ok else 1
 

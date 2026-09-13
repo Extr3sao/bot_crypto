@@ -40,6 +40,9 @@ def env() -> dict:
     e["PYTHONPATH"] = str(SRC)
     e["TRADING_AGENTIC_DATA_ROOT"] = DATA_ROOT
     e["PYTHONHASHSEED"] = "0"
+    # Keep this checkpoint's re-verification outputs inside its own evidence dir, so a V4
+    # run never rewrites the frozen V3 audit records it is re-checking.
+    e["H6_EVIDENCE_DIR"] = str(OUT)
     return e
 
 

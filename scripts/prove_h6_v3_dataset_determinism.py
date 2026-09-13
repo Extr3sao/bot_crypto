@@ -143,6 +143,11 @@ def main() -> int:
     t0 = time.time()
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--data-root", default=None, help="root containing raw/binance_um/metrics and processed/oi_full_history_v2")
+    ap.add_argument(
+        "--evidence-dir",
+        default=os.environ.get("H6_EVIDENCE_DIR"),
+        help="directory for the machine-readable result (default: the historical V3 evidence dir)",
+    )
     args = ap.parse_args()
     data_root = resolve_data_root(args.data_root)
     raw = data_root / "raw" / "binance_um" / "metrics"
@@ -257,8 +262,11 @@ def main() -> int:
     out["ended_utc"] = datetime.now(timezone.utc).isoformat()
     out["exit_code"] = 0 if out["status"] == "PASS" else 1
 
-    EVID.mkdir(parents=True, exist_ok=True)
-    (EVID / "DATASET_DETERMINISM_V3_RESULT.json").write_text(
+    evidence_dir = Path(args.evidence_dir) if args.evidence_dir else EVID
+    if not evidence_dir.is_absolute():
+        evidence_dir = REPO / evidence_dir
+    evidence_dir.mkdir(parents=True, exist_ok=True)
+    (evidence_dir / "DATASET_DETERMINISM_V3_RESULT.json").write_text(
         json.dumps(out, indent=2) + "\n", encoding="utf-8"
     )
     print(json.dumps({"status": out["status"], "duration_seconds": out["duration_seconds"]}, indent=2))

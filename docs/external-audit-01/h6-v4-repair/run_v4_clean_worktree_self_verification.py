@@ -70,6 +70,9 @@ def main() -> int:
     env["PYTHONHASHSEED"] = "0"
     env["TZ"] = "UTC"
     env["TRADING_AGENTIC_DATA_ROOT"] = DATA_ROOT
+    # Sub-gate results are written into the audited worktree's evidence dir, not into the
+    # disposable clean worktree and not into the frozen V3 audit records.
+    env["H6_EVIDENCE_DIR"] = str(OUT)
 
     gates: list[dict] = []
 
