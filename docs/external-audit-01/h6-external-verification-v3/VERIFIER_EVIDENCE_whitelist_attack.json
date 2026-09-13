@@ -1,0 +1,329 @@
+{
+  "verifier_type": "INDEPENDENT_WHITELIST_ATTACK_V3",
+  "timestamp_utc": "2026-09-13T07:16:18Z",
+  "audited_target_commit": "a5487164803fb601f87f2cd4c865929c30da274e",
+  "frozen_whitelist_path": "docs/external-audit-01/oi-full-history-03/H6_FEATURE_AUTHORITY_WHITELIST_V3.json",
+  "frozen_whitelist_sha256": "c59718cafcd8c0a23ea6cbf7244e328f668c95bf40744e3520752c52fa0a1b31",
+  "frozen_allowed_fields": [
+    "price_open_high_low_close_volume_1h",
+    "sum_open_interest",
+    "sum_open_interest_value"
+  ],
+  "frozen_forbidden_fields": [
+    "count_long_short_ratio",
+    "count_toptrader_long_short_ratio",
+    "sum_taker_long_short_vol_ratio",
+    "sum_toptrader_long_short_ratio"
+  ],
+  "module_resolution": {
+    "whitelist_module": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3\\src\\trading_bot\\research\\h6\\whitelist.py",
+    "inside_verifier_worktree": true
+  },
+  "contract_cross_check": {
+    "frozen_allowed_set_equals_code_ALLOWED_H6_FIELDS": true,
+    "frozen_forbidden_set_equals_code_FORBIDDEN_H6_FIELDS": true,
+    "code_allows_extra_logical_fields": [
+      "source_file",
+      "source_sha256",
+      "timestamp_ms",
+      "unit_semantics"
+    ],
+    "declared_bypass_paths_allowed": 0,
+    "declared_covers": [
+      "__getitem__",
+      "get",
+      "keys",
+      "values",
+      "items",
+      "iteration",
+      "contains",
+      "attribute",
+      "len"
+    ],
+    "note": "The code additionally admits PIT/bookkeeping metadata fields (timestamp_ms, unit_semantics, source_file, source_sha256) which are not 'features'. The frozen artifact's ALLOWED_FIELDS lists only the three FEATURE fields, so the code's admitted set is a superset. Verified explicitly below."
+  },
+  "attacks": [
+    {
+      "attack": "subscript forbidden field",
+      "blocked": true,
+      "detail": "H6ForbiddenFeatureAccess",
+      "severity_if_bypass": "HIGH"
+    },
+    {
+      "attack": "subscript non-admitted field",
+      "blocked": true,
+      "detail": "H6ForbiddenFeatureAccess",
+      "severity_if_bypass": "HIGH"
+    },
+    {
+      "attack": "get() forbidden field",
+      "blocked": true,
+      "detail": "H6ForbiddenFeatureAccess",
+      "severity_if_bypass": "HIGH"
+    },
+    {
+      "attack": "get() non-admitted field",
+      "blocked": true,
+      "detail": "H6ForbiddenFeatureAccess",
+      "severity_if_bypass": "HIGH"
+    },
+    {
+      "attack": "contains forbidden field",
+      "blocked": true,
+      "detail": "H6ForbiddenFeatureAccess",
+      "severity_if_bypass": "HIGH"
+    },
+    {
+      "attack": "contains non-admitted field",
+      "blocked": true,
+      "detail": "H6ForbiddenFeatureAccess",
+      "severity_if_bypass": "HIGH"
+    },
+    {
+      "attack": "getattr forbidden field count_long_short_ratio",
+      "blocked": true,
+      "detail": "H6ForbiddenFeatureAccess",
+      "severity_if_bypass": "HIGH"
+    },
+    {
+      "attack": "getattr forbidden field count_toptrader_long_short_ratio",
+      "blocked": true,
+      "detail": "H6ForbiddenFeatureAccess",
+      "severity_if_bypass": "HIGH"
+    },
+    {
+      "attack": "getattr forbidden field sum_taker_long_short_vol_ratio",
+      "blocked": true,
+      "detail": "H6ForbiddenFeatureAccess",
+      "severity_if_bypass": "HIGH"
+    },
+    {
+      "attack": "getattr forbidden field sum_toptrader_long_short_ratio",
+      "blocked": true,
+      "detail": "H6ForbiddenFeatureAccess",
+      "severity_if_bypass": "HIGH"
+    },
+    {
+      "attack": "getattr non-admitted field",
+      "blocked": true,
+      "detail": "H6ForbiddenFeatureAccess",
+      "severity_if_bypass": "HIGH"
+    },
+    {
+      "attack": "assert_field_allowed forbidden",
+      "blocked": true,
+      "detail": "H6ForbiddenFeatureAccess",
+      "severity_if_bypass": "HIGH"
+    },
+    {
+      "attack": "check_row_whitelist full forbidden row",
+      "blocked": true,
+      "detail": "H6ForbiddenFeatureAccess",
+      "severity_if_bypass": "HIGH"
+    },
+    {
+      "attack": "check_row_whitelist forbidden-only row",
+      "blocked": true,
+      "detail": "H6ForbiddenFeatureAccess",
+      "severity_if_bypass": "HIGH"
+    },
+    {
+      "attack": "iteration yields no forbidden",
+      "blocked": true,
+      "detail": "leaked=[]",
+      "severity_if_bypass": "HIGH"
+    },
+    {
+      "attack": "keys() yields no forbidden",
+      "blocked": true,
+      "detail": "leaked=[]",
+      "severity_if_bypass": "HIGH"
+    },
+    {
+      "attack": "items() yields no forbidden",
+      "blocked": true,
+      "detail": "leaked=[]",
+      "severity_if_bypass": "HIGH"
+    },
+    {
+      "attack": "values() yields no forbidden",
+      "blocked": true,
+      "detail": "leaked=[]",
+      "severity_if_bypass": "HIGH"
+    },
+    {
+      "attack": "**unpack yields no forbidden",
+      "blocked": true,
+      "detail": "leaked=[]",
+      "severity_if_bypass": "HIGH"
+    },
+    {
+      "attack": "dict(wrapped) yields no forbidden",
+      "blocked": true,
+      "detail": "leaked=[]",
+      "severity_if_bypass": "HIGH"
+    },
+    {
+      "attack": "json via items() yields no forbidden",
+      "blocked": true,
+      "detail": "leaked=[]",
+      "severity_if_bypass": "HIGH"
+    },
+    {
+      "attack": "json default=str yields no forbidden",
+      "blocked": true,
+      "detail": "leaked=[]",
+      "severity_if_bypass": "HIGH"
+    },
+    {
+      "attack": "repr() leaks no forbidden names",
+      "blocked": false,
+      "detail": "leaked=['count_long_short_ratio', 'count_toptrader_long_short_ratio', 'sum_taker_long_short_vol_ratio', 'sum_toptrader_long_short_ratio']",
+      "severity_if_bypass": "MEDIUM"
+    },
+    {
+      "attack": "str() leaks no forbidden names",
+      "blocked": false,
+      "detail": "leaked=['count_long_short_ratio', 'count_toptrader_long_short_ratio', 'sum_taker_long_short_vol_ratio', 'sum_toptrader_long_short_ratio']",
+      "severity_if_bypass": "MEDIUM"
+    },
+    {
+      "attack": "format() leaks no forbidden names",
+      "blocked": false,
+      "detail": "leaked=['count_long_short_ratio', 'count_toptrader_long_short_ratio', 'sum_taker_long_short_vol_ratio', 'sum_toptrader_long_short_ratio']",
+      "severity_if_bypass": "MEDIUM"
+    },
+    {
+      "attack": "direct .data attribute exposes raw mapping",
+      "blocked": false,
+      "detail": "forbidden keys retrievable from raw backing: ['count_long_short_ratio', 'count_toptrader_long_short_ratio', 'sum_taker_long_short_vol_ratio', 'sum_toptrader_long_short_ratio']",
+      "severity_if_bypass": "HIGH"
+    },
+    {
+      "attack": "object.__getattribute__(wrapped,'data')",
+      "blocked": false,
+      "detail": "forbidden keys retrievable from raw backing: ['count_long_short_ratio', 'count_toptrader_long_short_ratio', 'sum_taker_long_short_vol_ratio', 'sum_toptrader_long_short_ratio']",
+      "severity_if_bypass": "HIGH"
+    },
+    {
+      "attack": "introspection: vars() leaks no forbidden",
+      "blocked": true,
+      "detail": "raised TypeError",
+      "severity_if_bypass": "MEDIUM"
+    },
+    {
+      "attack": "introspection: __dict__ leaks no forbidden",
+      "blocked": true,
+      "detail": "raised AttributeError",
+      "severity_if_bypass": "MEDIUM"
+    },
+    {
+      "attack": "introspection: copy.copy leaks no forbidden",
+      "blocked": false,
+      "detail": "leaked=['count_long_short_ratio', 'count_toptrader_long_short_ratio', 'sum_taker_long_short_vol_ratio', 'sum_toptrader_long_short_ratio'] ; result_type=H6FieldAccess",
+      "severity_if_bypass": "MEDIUM"
+    },
+    {
+      "attack": "introspection: pickle roundtrip leaks no forbidden",
+      "blocked": false,
+      "detail": "leaked=['count_long_short_ratio', 'count_toptrader_long_short_ratio', 'sum_taker_long_short_vol_ratio', 'sum_toptrader_long_short_ratio'] ; result_type=H6FieldAccess",
+      "severity_if_bypass": "MEDIUM"
+    },
+    {
+      "attack": "attempt to rebind .data",
+      "blocked": true,
+      "detail": "FrozenInstanceError",
+      "severity_if_bypass": "MEDIUM"
+    },
+    {
+      "attack": "attempt to add new attribute",
+      "blocked": true,
+      "detail": "TypeError",
+      "severity_if_bypass": "MEDIUM"
+    },
+    {
+      "attack": "allowed_keys() == code admitted set",
+      "blocked": true,
+      "detail": "allowed_keys=['price_open_high_low_close_volume_1h', 'source_file', 'source_sha256', 'sum_open_interest', 'sum_open_interest_value', 'timestamp_ms', 'unit_semantics']",
+      "severity_if_bypass": "MEDIUM"
+    },
+    {
+      "attack": "nested-dict value not key-screened (by design?)",
+      "blocked": true,
+      "detail": "observed nested payload passes through: True (documented limitation: the wrapper screens KEY NAMES, not nested VALUE structure)",
+      "severity_if_bypass": "LOW"
+    }
+  ],
+  "runtime_reachability": {
+    "enforcement_module": "src/trading_bot/research/h6/whitelist.py",
+    "enforcement_module_sha256_on_disk": "8f3bf2b8b0212abc8d7f487199bdb704e83ddf57c5917e99494471333fd0c250",
+    "modules_using_enforcement_primitives_outside_enforcement_module": [],
+    "modules_using_enforcement_outside_count": 0,
+    "enforcement_primitives_self_references_only": [
+      {
+        "path": "src/trading_bot/research/h6/whitelist.py",
+        "uses": [
+          "_ALLOWED_ALL_FIELDS",
+          "assert_field_allowed"
+        ]
+      }
+    ],
+    "all_src_files_referencing_primitives": [
+      "src/trading_bot/research/h6/__init__.py",
+      "src/trading_bot/research/h6/whitelist.py"
+    ],
+    "modules_referencing_forbidden_fields_outside_enforcement": [],
+    "forbidden_references_outside_enforcement_count": 0,
+    "h6_execution_gate_can_execute_h6": "False",
+    "reachability_verdict": "NOT_WIRED_INTO_ANY_RUNTIME_DATA_PATH",
+    "interpretation": "No module outside whitelist.py (and the package __init__ re-export) invokes the fail-closed accessor. The H6 economic execution path is hard-gated OFF (can_execute_h6() is False), so there is currently no runtime OI-reading path to bypass. Feature authority is therefore currently enforced by (a) the normaliser's field whitelist stripping forbidden columns from the dataset bytes and (b) static scans, NOT by the runtime accessor. The accessor is a control that is present but not yet wired into a live data path."
+  },
+  "attacks_total": 35,
+  "attacks_blocked": 28,
+  "attacks_bypassed": [
+    {
+      "attack": "repr() leaks no forbidden names",
+      "blocked": false,
+      "detail": "leaked=['count_long_short_ratio', 'count_toptrader_long_short_ratio', 'sum_taker_long_short_vol_ratio', 'sum_toptrader_long_short_ratio']",
+      "severity_if_bypass": "MEDIUM"
+    },
+    {
+      "attack": "str() leaks no forbidden names",
+      "blocked": false,
+      "detail": "leaked=['count_long_short_ratio', 'count_toptrader_long_short_ratio', 'sum_taker_long_short_vol_ratio', 'sum_toptrader_long_short_ratio']",
+      "severity_if_bypass": "MEDIUM"
+    },
+    {
+      "attack": "format() leaks no forbidden names",
+      "blocked": false,
+      "detail": "leaked=['count_long_short_ratio', 'count_toptrader_long_short_ratio', 'sum_taker_long_short_vol_ratio', 'sum_toptrader_long_short_ratio']",
+      "severity_if_bypass": "MEDIUM"
+    },
+    {
+      "attack": "direct .data attribute exposes raw mapping",
+      "blocked": false,
+      "detail": "forbidden keys retrievable from raw backing: ['count_long_short_ratio', 'count_toptrader_long_short_ratio', 'sum_taker_long_short_vol_ratio', 'sum_toptrader_long_short_ratio']",
+      "severity_if_bypass": "HIGH"
+    },
+    {
+      "attack": "object.__getattribute__(wrapped,'data')",
+      "blocked": false,
+      "detail": "forbidden keys retrievable from raw backing: ['count_long_short_ratio', 'count_toptrader_long_short_ratio', 'sum_taker_long_short_vol_ratio', 'sum_toptrader_long_short_ratio']",
+      "severity_if_bypass": "HIGH"
+    },
+    {
+      "attack": "introspection: copy.copy leaks no forbidden",
+      "blocked": false,
+      "detail": "leaked=['count_long_short_ratio', 'count_toptrader_long_short_ratio', 'sum_taker_long_short_vol_ratio', 'sum_toptrader_long_short_ratio'] ; result_type=H6FieldAccess",
+      "severity_if_bypass": "MEDIUM"
+    },
+    {
+      "attack": "introspection: pickle roundtrip leaks no forbidden",
+      "blocked": false,
+      "detail": "leaked=['count_long_short_ratio', 'count_toptrader_long_short_ratio', 'sum_taker_long_short_vol_ratio', 'sum_toptrader_long_short_ratio'] ; result_type=H6FieldAccess",
+      "severity_if_bypass": "MEDIUM"
+    }
+  ],
+  "WHITELIST_ADVERSARIAL_ATTACKS": "FAIL",
+  "WHITELIST_RUNTIME_REACHABILITY": "FAIL_NOT_WIRED"
+}

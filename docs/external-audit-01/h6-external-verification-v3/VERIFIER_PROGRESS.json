@@ -4,7 +4,7 @@
   "audited_target_commit": "a5487164803fb601f87f2cd4c865929c30da274e",
   "prereg_commit": "9f1d844312419575d6b635a7356111050fd9b93a",
   "base_commit": "0941082fc875a66287d2b09159112963141bcf27",
-  "phase": "DATA_AUTHORITY_COMPLETE",
+  "phase": "WHITELIST_AND_CROSS_ARTIFACT_COMPLETE",
   "completed_gates": [
     "VERIFIER_ENVIRONMENT",
     "GIT_AUTHORITY",
@@ -14,9 +14,16 @@
     "ANCESTRY_INTEGRITY",
     "PYTHON_IMPORT_AUTHORITY",
     "TEST_TARGET_AUTHORITY",
-    "DATA_AUTHORITY"
+    "DATA_AUTHORITY",
+    "WHITELIST_ADVERSARIAL_ATTACKS",
+    "WHITELIST_RUNTIME_REACHABILITY",
+    "CROSS_ARTIFACT_CONSISTENCY"
   ],
-  "failed_gates": [],
+  "failed_gates": [
+    "WHITELIST_ADVERSARIAL_ATTACKS",
+    "WHITELIST_RUNTIME_REACHABILITY",
+    "CROSS_ARTIFACT_CONSISTENCY"
+  ],
   "blocked_gates": [],
   "gate_status": {
     "GIT_AUTHORITY": "PASS",
@@ -27,8 +34,8 @@
     "PYTHON_IMPORT_AUTHORITY": "PASS",
     "TEST_TARGET_AUTHORITY": "PASS",
     "DATA_AUTHORITY": "PASS",
-    "WHITELIST_ADVERSARIAL_ATTACKS": "PENDING",
-    "WHITELIST_RUNTIME_REACHABILITY": "PENDING",
+    "WHITELIST_ADVERSARIAL_ATTACKS": "FAIL",
+    "WHITELIST_RUNTIME_REACHABILITY": "FAIL_NOT_WIRED",
     "DYNAMIC_PIT_NON_VACUOUS_HARNESS": "PENDING",
     "PRICE_CONTINUITY": "PENDING",
     "PRICE_FULL_OVERLAP": "PENDING",
@@ -41,7 +48,7 @@
     "V2_TO_V3_ECONOMIC_SEMANTIC_DRIFT": "PENDING",
     "PERFORMANCE_CONTAMINATION": "PENDING",
     "H5_IMMUTABILITY": "PENDING",
-    "CROSS_ARTIFACT_CONSISTENCY": "PENDING",
+    "CROSS_ARTIFACT_CONSISTENCY": "FAIL",
     "DASHBOARD_20X": "PENDING",
     "FULL_HERMETIC": "PENDING",
     "SKIP_AUDIT": "PENDING",
@@ -103,9 +110,71 @@
     "docs/external-audit-01/h6-external-verification-v3/VERIFIER_EVIDENCE_data_authority.json",
     "docs/external-audit-01/h6-external-verification-v3/VERIFIER_EVIDENCE_data_authority.md",
     "docs/external-audit-01/h6-external-verification-v3/verifier_data_authority.py",
-    "docs/external-audit-01/h6-external-verification-v3/VERIFIER_PROGRESS.json"
+    "docs/external-audit-01/h6-external-verification-v3/VERIFIER_PROGRESS.json",
+    "docs/external-audit-01/h6-external-verification-v3/VERIFIER_EVIDENCE_whitelist_attack.json",
+    "docs/external-audit-01/h6-external-verification-v3/VERIFIER_EVIDENCE_whitelist_and_cross_artifact.md",
+    "docs/external-audit-01/h6-external-verification-v3/verifier_whitelist_attack.py",
+    "docs/external-audit-01/h6-external-verification-v3/VERIFIER_EVIDENCE_cross_artifact_consistency.json"
   ],
-  "known_defects": [],
+  "verifier_commits": [
+    "1a58e03 [H6-V3-VERIFIER] independent evidence: git authority, python import authority, test target, data authority"
+  ],
+  "known_defects": [
+    {
+      "id": "FIND-WL-01",
+      "gate": "WHITELIST_ADVERSARIAL_ATTACKS",
+      "severity": "HIGH",
+      "title": "H6FieldAccess.data slot exposes the raw mapping containing all forbidden fields",
+      "detail": "H6FieldAccess is @dataclass(frozen=True, slots=True) with field `data`. The class __getattr__ raises AttributeError for the name 'data', but that guard is DEAD CODE because slots=True creates a real slot descriptor, so normal attribute lookup succeeds first. `wrapped.data['count_long_short_ratio']` retrieves a forbidden field. Frozen artifact declares enforcement.bypass_paths_allowed = 0.",
+      "status": "OPEN_UNREPAIRED"
+    },
+    {
+      "id": "FIND-WL-02",
+      "gate": "WHITELIST_ADVERSARIAL_ATTACKS",
+      "severity": "MEDIUM",
+      "title": "dataclass repr/str/format leak forbidden field names AND values",
+      "status": "OPEN_UNREPAIRED"
+    },
+    {
+      "id": "FIND-WL-03",
+      "gate": "WHITELIST_ADVERSARIAL_ATTACKS",
+      "severity": "MEDIUM",
+      "title": "copy.copy / pickle carry the raw backing payload (same root cause as FIND-WL-01)",
+      "status": "OPEN_UNREPAIRED"
+    },
+    {
+      "id": "FIND-WL-04",
+      "gate": "WHITELIST_RUNTIME_REACHABILITY",
+      "severity": "HIGH",
+      "title": "Fail-closed accessor is not invoked by any runtime module",
+      "detail": "Whole-src scan: only whitelist.py (definition) and h6/__init__.py (re-export) reference H6FieldAccess/check_row_whitelist/assert_field_allowed. No OI-reading module uses it. H6 execution is currently hard-gated off (can_execute_h6() = false), so feature authority is presently enforced by the normaliser's field-whitelist stripping plus static scans, NOT by a runtime control.",
+      "status": "OPEN_UNREPAIRED"
+    },
+    {
+      "id": "FIND-XART-01",
+      "gate": "CROSS_ARTIFACT_CONSISTENCY",
+      "severity": "HIGH",
+      "title": "Runtime H6 execution gate is bound to the superseded, FAILED V1 preregistration",
+      "detail": "src/trading_bot/research/h6/execution_harness.py pins PREREG_COMMIT=e683e04…, SPEC_SHA256=f514fecf…, MANIFEST_SHA256=345334c3… (all V1) and external_verifier_report.py pins the oi-full-history-01 report path. Live frozen authority is V3 (9f1d844 / cd354e06… / de42e4a1…). A legitimate V3 report would be rejected by _verify_external_report(), so the gate can never be enabled through the legitimate path; conversely a V1-keyed report claiming PASS would satisfy it while V3 is the live freeze. Observed state today is fail-closed (can_execute_h6() = false).",
+      "status": "OPEN_UNREPAIRED"
+    },
+    {
+      "id": "FIND-XART-02",
+      "gate": "CROSS_ARTIFACT_CONSISTENCY",
+      "severity": "MEDIUM",
+      "title": "External verifier report path is relative and CWD-dependent",
+      "status": "OPEN_UNREPAIRED"
+    }
+  ],
+  "gate_results_whitelist_cross_artifact": {
+    "attacks_total": 35,
+    "attacks_blocked": 28,
+    "attacks_bypassed": 7,
+    "bypasses_high_severity": 2,
+    "bypasses_medium_severity": 5,
+    "runtime_reachability_verdict": "NOT_WIRED_INTO_ANY_RUNTIME_DATA_PATH",
+    "h6_execution_gate_can_execute_h6": false
+  },
   "known_findings_non_blocking": [
     {
       "id": "FIND-PY-01",
@@ -155,7 +224,8 @@
     "H6_EXECUTIONS": 0,
     "PERFORMANCE_OBSERVED": false
   },
-  "last_command": "PYTHONPATH=<verifier>/src python docs/external-audit-01/h6-external-verification-v3/verifier_data_authority.py --out docs/external-audit-01/h6-external-verification-v3/VERIFIER_EVIDENCE_data_authority.json",
-  "next_command": "WHITELIST_ADVERSARIAL_ATTACKS: PYTHONPATH=<verifier>/src python -m pytest docs/external-audit-01/h6-external-verification-v3/verifier_whitelist_adversarial_test.py -q  # then WHITELIST_RUNTIME_REACHABILITY, DYNAMIC_PIT_NON_VACUOUS_HARNESS, PRICE_CONTINUITY, PRICE_FULL_OVERLAP, CONFIRMATION_*, SHADOW_*, V2_TO_V3_DRIFT, PERFORMANCE_CONTAMINATION, H5_IMMUTABILITY, CROSS_ARTIFACT_CONSISTENCY, DASHBOARD_20X, FULL_HERMETIC, SKIP_AUDIT, DEFECT_REGRESSION_MATRIX",
+  "last_command": "PYTHONPATH=<verifier>/src python docs/external-audit-01/h6-external-verification-v3/verifier_whitelist_attack.py --out docs/external-audit-01/h6-external-verification-v3/VERIFIER_EVIDENCE_whitelist_attack.json",
+  "next_command": "PERFORMANCE_CONTAMINATION + V2_TO_V3_ECONOMIC_SEMANTIC_DRIFT + H5_IMMUTABILITY + DEFECT_REGRESSION_MATRIX: PYTHONPATH=<verifier>/src python docs/external-audit-01/h6-external-verification-v3/verifier_remaining_gates.py --out docs/external-audit-01/h6-external-verification-v3/VERIFIER_EVIDENCE_remaining_gates.json  # then DYNAMIC_PIT_NON_VACUOUS_HARNESS, PRICE_CONTINUITY, PRICE_FULL_OVERLAP, CONFIRMATION_*, SHADOW_*, DASHBOARD_20X, FULL_HERMETIC, SKIP_AUDIT",
+  "final_verdict_preview": "FAIL (three gates failed with unrepaired defects: WHITELIST_ADVERSARIAL_ATTACKS, WHITELIST_RUNTIME_REACHABILITY, CROSS_ARTIFACT_CONSISTENCY). Remaining gates still OPEN.",
   "timestamp": "2026-09-13T00:00:00Z"
 }

@@ -1,0 +1,67 @@
+{
+  "verifier_type": "INDEPENDENT_CROSS_ARTIFACT_CONSISTENCY_V3",
+  "timestamp_utc": "2026-09-13T00:00:00Z",
+  "audited_target_commit": "a5487164803fb601f87f2cd4c865929c30da274e",
+  "prereg_commit": "9f1d844312419575d6b635a7356111050fd9b93a",
+  "current_frozen_authority": {
+    "spec_sha256": "cd354e0603a4b8ee754d38a2a6e3a2689c06e683b732ab34bec03e631c50eeea",
+    "manifest_sha256": "de42e4a1581855243969820ba4658582f398735586764ca0a8684920db95ecb3",
+    "whitelist_sha256": "c59718cafcd8c0a23ea6cbf7244e328f668c95bf40744e3520752c52fa0a1b31",
+    "data_authority_sha256": "4e2bada45fa06fb10ed89815759f2bc258d093afab70b93c6a983763e528466b",
+    "dataset_sha256": "16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99"
+  },
+  "runtime_execution_gate": {
+    "module": "src/trading_bot/research/h6/execution_harness.py",
+    "pinned_prereg_commit": "e683e04e5df39d0f2f5feb6097664536b93cc636",
+    "pinned_spec_sha256": "f514fecf42b52d2e1c2946cac9dee94b2570d485cb236b9a6c663f46f5bbf148",
+    "pinned_manifest_sha256": "345334c3107860a5adcc753f5b34976d2b4df9061de34a94507d2bd8f58752dc",
+    "pinned_dataset_sha256": "16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99",
+    "report_path_module": "src/trading_bot/research/h6/external_verifier_report.py",
+    "report_path": "docs/external-audit-01/oi-full-history-01/H6_EXTERNAL_VERIFIER_REPORT.json",
+    "report_path_is_relative_cwd_dependent": true,
+    "can_execute_h6_observed": false
+  },
+  "authority_binding_findings": [
+    {
+      "id": "FIND-XART-01",
+      "severity": "HIGH",
+      "title": "Runtime H6 execution gate is bound to the SUPERSEDED, FAILED V1 preregistration",
+      "evidence": {
+        "gate_pins_prereg_commit": "e683e04e5df39d0f2f5feb6097664536b93cc636",
+        "gate_pins_spec_sha256": "f514fecf42b52d2e1c2946cac9dee94b2570d485cb236b9a6c663f46f5bbf148",
+        "gate_report_path": "docs/external-audit-01/oi-full-history-01/H6_EXTERNAL_VERIFIER_REPORT.json",
+        "v1_identity_sources": [
+          "docs/external-audit-01/oi-full-history-01/H6_PREREG_COMMIT_RECORD.json (H6_PREREG_COMMIT = e683e04…)",
+          "docs/external-audit-01/oi-full-history-02/H6_MANIFEST_V2.json: v1_prereg_commit_historical = e683e04… (FAILED_EXTERNAL_VERIFICATION, IMMUTABLE)",
+          "docs/external-audit-01/oi-full-history-02/H6_PREREG_REPAIR_DEFECT_REGISTER.json (old_prereg_commit, old_spec_sha, old_manifest_sha)"
+        ],
+        "current_v3_identity": "9f1d844 / cd354e06… / de42e4a1…"
+      },
+      "consequences_fail_closed": "Any legitimate V3 external-verification report records prereg_commit=9f1d844, spec_sha256=cd354e06…, manifest_sha256=de42e4a1…. _verify_external_report() would raise H6PreregMismatch, so can_execute_h6() can never return True through the legitimate path. The gate's enablement condition is not reachable for the live frozen authority.",
+      "consequences_governance": "Conversely, a report carrying the V1 hashes with FINAL_VERDICT=PASS at the V1 path would satisfy the gate while the live frozen authority is V3 — binding the runtime release decision to a preregistration that FAILED external verification and was superseded. Observed state today is fail-closed because no V1 report is present.",
+      "verifier_action": "REPORTED ONLY. Not repaired, per audit independence rules.",
+      "status": "OPEN_UNREPAIRED"
+    },
+    {
+      "id": "FIND-XART-02",
+      "severity": "MEDIUM",
+      "title": "External verifier report path is relative and CWD-dependent",
+      "evidence": {
+        "code": "REPORT_PATH = Path(\"docs/external-audit-01/oi-full-history-01/H6_EXTERNAL_VERIFIER_REPORT.json\")",
+        "note": "A relative module-level Path resolves against the process working directory, so can_execute_h6() can differ between invocations depending on CWD, and can be satisfied by a file outside the audited worktree."
+      },
+      "verifier_action": "REPORTED ONLY.",
+      "status": "OPEN_UNREPAIRED"
+    }
+  ],
+  "consistency_checks": {
+    "gate_dataset_sha_matches_current": true,
+    "gate_spec_sha_matches_current": false,
+    "gate_manifest_sha_matches_current": false,
+    "gate_prereg_commit_matches_current": false,
+    "h6_package_init_docstring_references_v1": true,
+    "note": "src/trading_bot/research/h6/__init__.py still documents 'Frozen authority: H6_SPEC.json (committed blob e683e04) …' i.e. V1, while the frozen authority is V3."
+  },
+  "CROSS_ARTIFACT_CONSISTENCY": "FAIL",
+  "verdict_summary": "The data-plane artifacts are fully self-consistent and hash-verified; the CONTROL plane (runtime execution gate + package docstring) is still bound to the V1 preregistration. Currently fail-closed in practice, but the authority binding is wrong."
+}
