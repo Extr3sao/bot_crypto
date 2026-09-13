@@ -3,7 +3,7 @@
  "checkpoint": "H6-V4-AUTHORITY-CONTRACT-AND-RUNTIME-BINDING-REPAIR-01",
  "proof": "FULL_HERMETIC_RESULT_1",
  "command": "python scripts/run_regression_hermetic.py -p no:cacheprovider -q (host env stripped)",
- "commit": "d7b6bef602639372a079afe419b6cc889f6c7b9e",
+ "commit": "814db85c5158ae26ed4d8471643a955cdad80c6f",
  "python_executable": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
  "module_authority": {
   "trading_bot": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-v4-repair\\src\\trading_bot\\__init__.py",
@@ -19,10 +19,10 @@
   "platform": "win32",
   "tz": "UTC"
  },
- "started_utc": "2026-09-13T10:34:48.159185+00:00",
- "duration_s": 221.26,
+ "started_utc": "2026-09-13T14:05:12.799441+00:00",
+ "duration_s": 291.28,
  "exit_code": 0,
- "passed": 1404,
+ "passed": 1411,
  "failed": 0,
  "skipped": 6,
  "skips": [
@@ -51,19 +51,11 @@
   "SKIPPED [1] tests\\unit\\research\\test_oi_full_history.py:351: frozen OI dataset not on this machine",
   "SKIPPED [1] tests\\unit\\research\\test_oi_full_history.py:356: frozen OI dataset not on this machine",
   "SKIPPED [1] tests\\unit\\research\\test_oi_full_history.py:365: frozen OI dataset not on this machine",
-  "1404 passed, 6 skipped, 78 warnings in 215.50s (0:03:35)",
+  "1411 passed, 6 skipped, 78 warnings in 284.72s (0:04:44)",
   "[hermetic] stripping host env prefixes: ('EXCHANGE_', 'POC01_', 'CAMPAIGN_', 'TRADING_')",
   "[hermetic] running: C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m pytest -p no:cacheprovider -q"
  ],
  "stderr_tail": [
-  "    self.handle_one_request()",
-  "  File \"C:\\Users\\GVLLFR0035\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\\Lib\\http\\server.py\", line 408, in handle_one_request",
-  "    self.raw_requestline = self.rfile.readline(65537)",
-  "                           ^^^^^^^^^^^^^^^^^^^^^^^^^^",
-  "  File \"C:\\Users\\GVLLFR0035\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\\Lib\\socket.py\", line 718, in readinto",
-  "    return self._sock.recv_into(b)",
-  "           ^^^^^^^^^^^^^^^^^^^^^^^",
-  "ConnectionResetError: [WinError 10054] Se ha forzado la interrupci\u00f3n de una conexi\u00f3n existente por el host remoto",
   "----------------------------------------",
   "----------------------------------------"
  ],

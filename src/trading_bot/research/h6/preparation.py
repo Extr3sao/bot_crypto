@@ -207,13 +207,27 @@ def prepare_decision_from_data_root(
 ) -> PreparedDecision:
     """Runtime entry point reading the authoritative normalised OI store.
 
+    ``data_root`` may be the documented data root (``<repo>/data``, i.e. the value of
+    ``TRADING_AGENTIC_DATA_ROOT``), the repo root, or the store directory itself; the
+    store is resolved explicitly and an unresolvable or empty target RAISES. The causal
+    reader silently returns nothing for a directory that does not contain the shards, so
+    without this check a wrong ``data_root`` produced a plausible-looking NO_TRADE
+    decision from zero observations instead of failing loudly.
+
     Uses the frozen causal reader (``oi_dataset_v2.oi_state_at_ms``) and then the
     fail-closed boundary. The verifier-visible path is identical to
     ``prepare_decision``, so TEST_TARGET == RUNTIME_TARGET holds by construction.
     """
-    from trading_bot.research.oi_dataset_v2 import oi_state_at_ms
+    from trading_bot.research.oi_dataset_v2 import oi_state_at_ms, resolve_oi_v2_data_dir_from
 
-    rows = oi_state_at_ms(_ms(decision_time), symbol, data_root)
+    store = resolve_oi_v2_data_dir_from(Path(data_root))
+    sym_dir = store / symbol
+    if not any(sym_dir.glob(f"{symbol}-oi-5m-*.jsonl")):
+        raise FileNotFoundError(
+            f"no H6 OI shards for {symbol} under {store} (resolved from {data_root!s}); "
+            "refusing to return a decision built from an empty store"
+        )
+    rows = oi_state_at_ms(_ms(decision_time), symbol, store)
     return prepare_decision(
         rows,
         symbol=symbol,

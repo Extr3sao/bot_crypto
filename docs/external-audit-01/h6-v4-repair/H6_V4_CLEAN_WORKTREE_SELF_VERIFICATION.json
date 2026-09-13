@@ -4,13 +4,13 @@
  "independence": "BUILDER_SELF_VERIFICATION_V4",
  "does_not_satisfy": "INDEPENDENT_EXTERNAL_VERIFICATION_V4",
  "clean_worktree": ".worktrees/h6-v4-clean-self-verify",
- "source_commit": "7166b4698279eb7b74666c562b6d7504ffe5ffb0",
+ "source_commit": "814db85c5158ae26ed4d8471643a955cdad80c6f",
  "base_commit": "a548716",
  "python_executable": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
  "module_path_authority": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-v4-clean-self-verify\\src",
  "data_root": "C:/Users/GVLLFR0035/Downloads/bot freebuff/data",
- "timestamp_utc": "2026-09-13T13:40:17Z",
- "duration_s": 567.96,
+ "timestamp_utc": "2026-09-13T14:15:21Z",
+ "duration_s": 584.72,
  "gates": [
   {
    "gate": "PYTHON_IMPORT_AUTHORITY",
@@ -40,7 +40,7 @@
    "status": "PASS",
    "stdout_tail": [
     ".................................                                        [100%]",
-    "33 passed in 7.04s"
+    "33 passed in 6.51s"
    ],
    "stderr_tail": []
   },
@@ -51,7 +51,7 @@
    "status": "PASS",
    "stdout_tail": [
     ".....                                                                    [100%]",
-    "5 passed, 28 deselected in 8.27s"
+    "5 passed, 28 deselected in 6.41s"
    ],
    "stderr_tail": []
   },
@@ -62,7 +62,7 @@
    "status": "PASS",
    "stdout_tail": [
     ".............                                                            [100%]",
-    "13 passed in 7.14s"
+    "13 passed in 6.37s"
    ],
    "stderr_tail": []
   },
@@ -73,7 +73,7 @@
    "status": "PASS",
    "stdout_tail": [
     "..........................                                               [100%]",
-    "26 passed in 16.56s"
+    "26 passed in 13.27s"
    ],
    "stderr_tail": []
   },
@@ -159,7 +159,7 @@
    "status": "PASS",
    "stdout_tail": [
     ".........                                                                [100%]",
-    "9 passed in 59.66s"
+    "9 passed in 69.14s (0:01:09)"
    ],
    "stderr_tail": []
   },
@@ -172,7 +172,7 @@
     ".....................s.............                                      [100%]",
     "=========================== short test summary info ===========================",
     "SKIPPED [1] tests\\unit\\research\\test_data_admission.py:328: ingestion not run in this environment",
-    "34 passed, 1 skipped in 6.41s"
+    "34 passed, 1 skipped in 8.68s"
    ],
    "stderr_tail": []
   },
@@ -183,7 +183,7 @@
    "status": "PASS",
    "stdout_tail": [
     "prereg_commit = e2195681c06f725134e9cf06e370bb7870ab41c9",
-    "head_commit   = 7166b4698279eb7b74666c562b6d7504ffe5ffb0",
+    "head_commit   = 814db85c5158ae26ed4d8471643a955cdad80c6f",
     "git diff      = (empty)",
     "  ok    H6_SPEC_V4.json                          blob=aab9baa9901c",
     "  ok    H6_MANIFEST_V4.json                      blob=492c2e6b7e4c",
@@ -215,12 +215,12 @@
     "SKIPPED [1] tests\\unit\\research\\test_oi_full_history.py:351: frozen OI dataset not on this machine",
     "SKIPPED [1] tests\\unit\\research\\test_oi_full_history.py:356: frozen OI dataset not on this machine",
     "SKIPPED [1] tests\\unit\\research\\test_oi_full_history.py:365: frozen OI dataset not on this machine",
-    "1404 passed, 6 skipped, 78 warnings in 325.87s (0:05:25)",
+    "1411 passed, 6 skipped, 78 warnings in 326.00s (0:05:26)",
     "[hermetic] stripping host env prefixes: ('EXCHANGE_', 'POC01_', 'CAMPAIGN_', 'TRADING_')",
     "[hermetic] running: C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m pytest -p no:cacheprovider -q"
    ],
    "stderr_tail": [],
-   "passed": 1404,
+   "passed": 1411,
    "failed": 0,
    "skipped": 6
   }

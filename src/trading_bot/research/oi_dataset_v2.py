@@ -116,6 +116,34 @@ def load_ledger_v2(ledger_path: Path = OI_V2_LEDGER_DEFAULT) -> list[dict[str, o
     return entries
 
 
+def resolve_oi_v2_data_dir_from(root: Path) -> Path:
+    """Resolve the V2 normalized store from an EXPLICIT root, or fail loudly.
+
+    V4 repair: ``oi_state_at_ms(..., data_dir)`` silently yields no rows when handed a
+    directory that does not directly contain ``<SYMBOL>/<SYMBOL>-oi-5m-*.jsonl``, so a
+    caller passing the authority-documented *data root* (``<repo>/data``, the value of
+    ``TRADING_AGENTIC_DATA_ROOT``) got an empty observation set and a plausible-looking
+    NO_TRADE decision instead of an error. Accept the root shapes the project actually
+    documents and reject everything else.
+    """
+    root = Path(root)
+    expected_store = root / "processed" / "oi_full_history_v2"
+    repo_root_store = root / "data" / "processed" / "oi_full_history_v2"
+    if expected_store.is_dir():
+        return expected_store
+    if repo_root_store.is_dir():
+        return repo_root_store
+    # `root` may already BE the store directory. Accept it only if it structurally looks
+    # like one; accepting any existing directory would let an unrelated path through and
+    # re-create the silent-empty-store behaviour this function exists to prevent.
+    if root.is_dir() and any(root.glob("*/*-oi-5m-*.jsonl")):
+        return root
+    raise FileNotFoundError(
+        "could not resolve the V2 OI store from "
+        f"{root!s}; tried {expected_store!s}, {repo_root_store!s}, and {root!s} itself"
+    )
+
+
 def _scan_normalized_rows_v2(data_dir: Path, symbol: str) -> Iterator[Path]:
     """Yield all *validated* normalized OI shard paths for symbol under data_dir.
 

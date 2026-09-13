@@ -21,6 +21,12 @@ What it proves, on REAL frozen canonical observations (no synthetic OI)
                       the T decision (proves the check in (2) is not vacuous).
 5. ELIGIBILITY      : insufficient rolling history yields an ineligible, NO_TRADE
                       decision rather than a signal.
+6. RUNTIME ENTRY POINT: ``prepare_decision_from_data_root`` is invoked on the FULL
+                      authoritative store (hundreds of thousands of causal
+                      observations) at real decision times, with the authority's own
+                      data root as the argument.  It must resolve the store, use exactly
+                      the frozen 720-observation window, and agree with a decision built
+                      from the equivalent trailing slice.
 
 Economics guard: feature computation only. No PnL, no returns, no performance.
 
@@ -44,6 +50,7 @@ import bisect
 import json
 import os
 import sys
+import time
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -51,8 +58,14 @@ REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO / "src"))
 
 from trading_bot.research.h6.contracts import SignalDirection  # noqa: E402
-from trading_bot.research.h6.feature_engine import CompletedHourPrice  # noqa: E402
-from trading_bot.research.h6.preparation import prepare_decision  # noqa: E402
+from trading_bot.research.h6.feature_engine import (  # noqa: E402
+    CompletedHourPrice,
+    frozen_rolling_window,
+)
+from trading_bot.research.h6.preparation import (  # noqa: E402
+    prepare_decision,
+    prepare_decision_from_data_root,
+)
 from trading_bot.research.oi_dataset_v2 import (  # noqa: E402
     iter_oi_rows_v2,
     resolve_oi_v2_data_dir,
@@ -83,6 +96,12 @@ _SCAN_DAYS = 7
 _SCAN_START = datetime(2024, 6, 1, 0, 0, tzinfo=timezone.utc)
 _HOURS_STEP = 6
 
+# Real runtime-entry-point checks against the whole authoritative store.
+_FULL_STORE_DECISIONS = [
+    datetime(2024, 6, 5, 12, 0, tzinfo=timezone.utc),
+    datetime(2024, 6, 5, 18, 0, tzinfo=timezone.utc),
+]
+
 
 def _decisions() -> list[datetime]:
     out: list[datetime] = []
@@ -97,9 +116,16 @@ def _price_at(t: datetime) -> CompletedHourPrice:
     return CompletedHourPrice(bucket_close_time=t, open=PRICE_OPEN, close=PRICE_CLOSE)
 
 
+frozen_window = int(frozen_rolling_window()[0])
+
+
 def main() -> int:
     processed = resolve_oi_v2_data_dir()
-    load_from = int((_SCAN_START - timedelta(days=TRAILING_DAYS + 2)).timestamp() * 1000)
+    # Load enough trailing history that every comparison slice can hold the full frozen
+    # window, not just the shorter scan slice.
+    load_from = int(
+        (min([_SCAN_START] + _FULL_STORE_DECISIONS) - timedelta(days=32)).timestamp() * 1000
+    )
     rows = sorted(
         (r for r in iter_oi_rows_v2(processed, SYMBOL) if int(r["timestamp_ms"]) >= load_from),
         key=lambda r: int(r["timestamp_ms"]),
@@ -240,7 +266,58 @@ def main() -> int:
                 }
             )
 
+    # ---- (6) the real runtime entry point, on the whole authoritative store ----------
+    full_store: list[dict] = []
+    full_store_errors: list[str] = []
+    data_root = processed.parents[1] if processed.name == "oi_full_history_v2" else processed
+    for t in _FULL_STORE_DECISIONS:
+        try:
+            t0 = time.time()
+            rt = prepare_decision_from_data_root(
+                data_root=data_root, symbol=SYMBOL, decision_time=t, price=_price_at(t)
+            )
+            elapsed = time.time() - t0
+            # Equivalent trailing slice. The runtime clips its hour range at
+            # T-(window+1)h unconditionally, so the slice must start one hour earlier
+            # still: otherwise its own data-derived start lands one hour later and the
+            # two series differ by a single observation.
+            t_ms = int(t.timestamp() * 1000)
+            first = bisect.bisect_left(
+                stamps, int((t - timedelta(hours=frozen_window + 2)).timestamp() * 1000)
+            )
+            cut = bisect.bisect_right(stamps, t_ms)
+            slice_decision = prepare_decision(
+                rows[first:cut], symbol=SYMBOL, decision_time=t, price=_price_at(t)
+            )
+            full_store.append(
+                {
+                    "decision_time": t.isoformat(),
+                    "data_root_argument": str(data_root),
+                    "resolved_store": str(processed),
+                    "observations_admitted": rt.observations_admitted,
+                    "rolling_changes": rt.rolling_changes,
+                    "trailing_slice_rolling_changes": slice_decision.rolling_changes,
+                    "decision_eligible": rt.feature_state.decision_eligible,
+                    "robust_z_oi": rt.feature_state.robust_z_oi,
+                    "direction": rt.signal.direction.value,
+                    "elapsed_s": round(elapsed, 2),
+                    "frozen_window_enforced": rt.rolling_changes == frozen_window,
+                    "equals_trailing_slice": (
+                        rt.feature_state.to_dict() == slice_decision.feature_state.to_dict()
+                        and rt.signal.to_dict() == slice_decision.signal.to_dict()
+                    ),
+                }
+            )
+        except Exception as exc:
+            full_store_errors.append(f"{t.isoformat()}: {type(exc).__name__}: {exc}")
+
     checks = {
+        "runtime_entry_point_no_errors": not full_store_errors,
+        "runtime_entry_point_frozen_window": bool(full_store)
+        and all(d["frozen_window_enforced"] for d in full_store),
+        "runtime_entry_point_equals_trailing_slice": bool(full_store)
+        and all(d["equals_trailing_slice"] for d in full_store),
+        "runtime_entry_point_resolves_the_data_root": bool(full_store),
         "no_exceptions_on_real_data": not errors,
         "scan_produced_decisions": scanned > 0,
         "non_vacuous_eligible_decisions": eligible >= 1,
@@ -266,6 +343,9 @@ def main() -> int:
             "distinct_delta_oi_values": len(deltas),
             "decisions_with_positive_MAD": mad_positive,
             "current_hour_snapshot_count_histogram": {str(k): v for k, v in sorted(hour_snapshot_counts.items())},
+            "frozen_window_length": frozen_window,
+            "runtime_entry_point": full_store,
+            "runtime_entry_point_errors": full_store_errors,
             "qualifying_signals": signals[:10],
             "qualifying_signal_count": len(signals),
             "future_invisibility_violations": future_invariance_violations,
