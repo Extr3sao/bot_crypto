@@ -1,0 +1,291 @@
+"""Build the H6 V4 defect regression matrix from the V1 / V2 / V3 defect registers.
+
+Every defect ever recorded against H6 is listed with root cause, repair, the test that
+covers it, whether the repair sits on the RUNTIME path, the evidence artefact, and a
+status that does not overclaim.
+
+Status vocabulary:
+  REPAIRED_IN_V4_PENDING_INDEPENDENT_VERIFICATION
+  CARRIED_FORWARD_PASS (repaired in an earlier generation; re-verified where in V4 scope)
+  REVERIFIED_IN_V4
+
+No economics.
+"""
+
+from __future__ import annotations
+
+import json
+from pathlib import Path
+
+REPO = Path(__file__).resolve().parents[3]
+OUT = REPO / "docs/external-audit-01" / "h6-v4-repair"
+
+R4 = "REPAIRED_IN_V4_PENDING_INDEPENDENT_VERIFICATION"
+CARRIED = "CARRIED_FORWARD_PASS"
+REVERIFIED = "REVERIFIED_IN_V4"
+
+NT = "trading_bot/tests/unit/research"
+
+ROWS = [
+    # ------------------------------------------------------------------ V1 defects
+    {"defect_id": "EXT-DATA-001", "generation": "V1",
+     "root_cause": "Synthetic test artifacts leaked into the canonical normalized OI file (100.0 payload + temp path), so declared fingerprint != actual bytes.",
+     "repair": "V2 rebuilt the dataset in an isolated root with a fail-closed TEST_DATASET_WRITE_FORBIDDEN guard (normalizer v2).",
+     "test": "tests/unit/research/test_oi_full_history.py; OI_DATASET_V2_DETERMINISM_REPORT.json (A==B, C!=A)",
+     "runtime_reachability": "DATA (not code)",
+     "evidence": "docs/external-audit-01/oi-full-history-02/OI_FULL_HISTORY_DATASET_MANIFEST_V2.json; h6-v4-repair/H6_DATA_AUTHORITY_V4.json",
+     "status": CARRIED},
+    {"defect_id": "EXT-PRICE-001", "generation": "V1",
+     "root_cause": "Price authority stopped at 2026-09-09; 47 hours of the frozen window were missing.",
+     "repair": "Official klines_1h_ext tail appended only, overlap byte/economic equality PASS, missing hours = 0.",
+     "test": "PRICE_1H_AUTHORITY_V2_MANIFEST.json; scripts/verify_price_overlap_v3.py",
+     "runtime_reachability": "DATA (not code)",
+     "evidence": "docs/external-audit-01/oi-full-history-02/PRICE_AUTHORITY_V2_REPORT.json",
+     "status": CARRIED},
+    {"defect_id": "EXT-PIT-001", "generation": "V1",
+     "root_cause": "Day-level validity gating leaked into decision eligibility and the PIT harness was vacuous (baseline never eligible).",
+     "repair": "Timestamp-scoped causal eligibility (data_time <= T) + non-vacuous dynamic harness with baseline eligibility.",
+     "test": "tests/unit/research/test_oi_full_history.py; tests/unit/research/test_h6_v4_hour_aggregation.py",
+     "runtime_reachability": "RUNTIME (preparation.admitted_causal_observations)",
+     "evidence": "PIT_CAUSALITY_V2_REPORT.json; PIT_DYNAMIC_RESULT.json",
+     "status": CARRIED},
+    {"defect_id": "EXT-CONS-001", "generation": "V1",
+     "root_cause": "No independent cross-artifact consistency audit ran before freeze.",
+     "repair": "scripts/audit_h6_v3_consistency.py across 19 dimension groups.",
+     "test": "scripts/audit_h6_v3_consistency.py",
+     "runtime_reachability": "GOVERNANCE",
+     "evidence": "H6_V3_CONSISTENCY_AUDIT.json (CONTRADICTIONS_FOUND=0)",
+     "status": CARRIED},
+    {"defect_id": "EXT-CONS-002", "generation": "V1",
+     "root_cause": "Manual hash copy-paste into manifests, so declared hashes drifted from bytes (71-char ledger hash).",
+     "repair": "All hashes programmatically derived; V4 additionally removes every hash literal from the runtime package and resolves from one binding.",
+     "test": "tests/unit/research/test_h6_v4_authority_binding.py::test_only_the_binding_module_holds_authority_literals",
+     "runtime_reachability": "RUNTIME (runtime_authority)",
+     "evidence": "h6-v4-repair/H6_V4_ECONOMIC_SEMANTIC_DIFF.json; H6_RUNTIME_AUTHORITY_BINDING_V4.json",
+     "status": REVERIFIED},
+    {"defect_id": "EXT-CONS-004", "generation": "V1",
+     "root_cause": "Evidence-copy side effects mutated authoritative artifacts.",
+     "repair": "Evidence artefacts are separate files; V4 freezes SPEC/MANIFEST/WHITELIST/DATA_AUTHORITY and proves post-freeze immutability.",
+     "test": "verifier/V4 immutability diff (git diff prereg..HEAD must be empty for the four artefacts)",
+     "runtime_reachability": "GOVERNANCE",
+     "evidence": "H6_V4_POST_FREEZE_IMMUTABILITY.json",
+     "status": CARRIED},
+    {"defect_id": "EXT-CONF-001", "generation": "V1",
+     "root_cause": "Confirmation-lock evidence could not be independently verified.",
+     "repair": "Confirmation lock hardened; dependency on H6 remains NONE.",
+     "test": "tests/unit/research/test_h6_confirmation_isolation.py",
+     "runtime_reachability": "RUNTIME (conf_lock)",
+     "evidence": "CONFIRMATION_AUTHORITY_REPORT_V2.json",
+     "status": CARRIED},
+    {"defect_id": "FULL-HERMETIC-001", "generation": "V1",
+     "root_cause": "Full hermetic runs were not reproducible from a clean checkout.",
+     "repair": "Worktree-authoritative conftest.py sys.path guard + import-authority tool; two hermetic runs required.",
+     "test": "conftest.py; scripts/verify_python_import_authority.py; FULL_HERMETIC_RESULT_1/2.json",
+     "runtime_reachability": "ENVIRONMENT",
+     "evidence": "h6-v4-repair/FULL_HERMETIC_RESULT_1.json, FULL_HERMETIC_RESULT_2.json",
+     "status": REVERIFIED},
+
+    # ------------------------------------------------------------------ V2 defects
+    {"defect_id": "EXT-FEATURE-WHITELIST-001", "generation": "V2",
+     "root_cause": "H6FieldAccess was not fail-closed: an unadmitted field could be read back via get()/[] and the whole inbound mapping was retained.",
+     "repair": "Accessor redesigned to never STORE forbidden values (sanitized immutable state) AND a separate fail-closed boundary rejects dirty rows on the real runtime path.",
+     "test": "tests/unit/research/test_h6_v4_whitelist_authority.py (15 attack surfaces + injection)",
+     "runtime_reachability": "RUNTIME (preparation.prepare_decision -> feature_authority.admitted_observation)",
+     "evidence": "h6-v4-repair/H6_FEATURE_AUTHORITY_WHITELIST_V4.json",
+     "status": R4},
+    {"defect_id": "EXT-MANIFEST-HASH-001", "generation": "V2",
+     "root_cause": "Manifest declared a 71-character ledger hash that did not match the ledger bytes.",
+     "repair": "V3 corrected the ledger fingerprint; V4 carries the corrected value and records the discrepancy explicitly.",
+     "test": "scripts/audit_h6_v3_consistency.py; h6_v4_build.py",
+     "runtime_reachability": "DATA (not code)",
+     "evidence": "H6_V2_EXTERNAL_FAILURE_RECORD.json; H6_DATA_AUTHORITY_V4.json",
+     "status": CARRIED},
+    {"defect_id": "EXT-CONF-002", "generation": "V2",
+     "root_cause": "Confirmation tamper evidence was thin; lock could not be shown to resist mutation.",
+     "repair": "Confirmation lock isolation suite; H6 dependency remains NONE.",
+     "test": "tests/unit/research/test_h6_confirmation_isolation.py",
+     "runtime_reachability": "RUNTIME (conf_lock)",
+     "evidence": "CONFIRMATION_AUTHORITY_REPORT_V2.json",
+     "status": CARRIED},
+    {"defect_id": "EXT-PORTABLE-DATA-001", "generation": "V2",
+     "root_cause": "Data authority was builder-worktree local and not portable to a clean verifier.",
+     "repair": "Portable authority contract: --data-root / TRADING_AGENTIC_DATA_ROOT / shared-root resolution.",
+     "test": "tests/unit/research/test_h6_v3_test_isolation.py",
+     "runtime_reachability": "ENVIRONMENT/DATA",
+     "evidence": "DATA_AUTHORITY_RESULT.json (PASS)",
+     "status": CARRIED},
+    {"defect_id": "EXT-SHADOW-002", "generation": "V2",
+     "root_cause": "Shadow invalidation / maturity authority not independently demonstrable.",
+     "repair": "Explicit shadow invalidation record + maturity authority artifact; firewall to H6 proven.",
+     "test": "tests/unit/research/test_h6_confirmation_isolation.py",
+     "runtime_reachability": "GOVERNANCE",
+     "evidence": "SHADOW_V2_INVALIDATION_RECORD.json; SHADOW_MATURITY_AUTHORITY_V2.json",
+     "status": CARRIED},
+    {"defect_id": "EXT-HERMETIC-002", "generation": "V2",
+     "root_cause": "Hermetic runs polluted by editable-install imports of the main checkout.",
+     "repair": "Worktree-authoritative conftest.py guard; V4 adds a portable import-authority tool and records resolution in every run report.",
+     "test": "scripts/verify_python_import_authority.py",
+     "runtime_reachability": "ENVIRONMENT",
+     "evidence": "h6-v4-repair/VERIFIER_IMPORT_AUTHORITY.json; FULL_HERMETIC_RESULT_1/2.json",
+     "status": REVERIFIED},
+    {"defect_id": "EXT-DASHBOARD-002", "generation": "V2",
+     "root_cause": "Dashboard build was not reproducible across repeated runs.",
+     "repair": "Dashboard repeated 20x with result recorded.",
+     "test": "DASHBOARD_REPEAT_20",
+     "runtime_reachability": "ENVIRONMENT",
+     "evidence": "h6-v4-repair/DASHBOARD_REPEAT_20_RESULT.json",
+     "status": REVERIFIED},
+    {"defect_id": "EXT-PRICE-LIMIT-001", "generation": "V2",
+     "root_cause": "Price authority horizon did not match the frozen common window.",
+     "repair": "Full-window price authority with overlap verification.",
+     "test": "scripts/verify_price_overlap_v3.py",
+     "runtime_reachability": "DATA (not code)",
+     "evidence": "PRICE_OVERLAP_V3_RESULT.json",
+     "status": CARRIED},
+
+    # ------------------------------------------------- V3 builder-crosscheck defects
+    {"defect_id": "V3-WL-001", "generation": "V3",
+     "root_cause": "H6FieldAccess was a slots dataclass, so 'data' was a real slot and the __getattr__ guard for 'data' was dead code; the whole raw row was one attribute access away.",
+     "repair": "The accessor no longer stores a raw mapping. Construction validates inbound keys and retains only admitted data in an immutable MappingProxy.",
+     "test": f"{NT}/test_h6_v4_whitelist_authority.py::test_no_forbidden_value_is_stored, ::test_forbidden_values_are_not_recoverable",
+     "runtime_reachability": "RUNTIME",
+     "evidence": "H6_FEATURE_AUTHORITY_WHITELIST_V4.json enforcement.forbidden_values_stored = 0",
+     "status": R4},
+    {"defect_id": "V3-WL-002", "generation": "V3",
+     "root_cause": "repr / copy / deepcopy / pickle carried the retained forbidden provider values.",
+     "repair": "repr and str render key NAMES only; copy/deepcopy/pickle reconstruct sanitized state only.",
+     "test": f"{NT}/test_h6_v4_whitelist_authority.py::test_repr_and_str_never_render_values, ::test_forbidden_values_are_not_recoverable",
+     "runtime_reachability": "RUNTIME",
+     "evidence": "H6_FEATURE_AUTHORITY_WHITELIST_V4.json enforcement.forbidden_values_recoverable = 0",
+     "status": R4},
+    {"defect_id": "V3-WL-003", "generation": "V3",
+     "root_cause": "Nothing outside whitelist.py used H6FieldAccess, so the whitelist was decorative and never on the H6 data path.",
+     "repair": "New fail-closed boundary (feature_authority.admitted_observation) wired into the real runtime entry point (preparation.prepare_decision), which the engine consumes typed observations from.",
+     "test": f"{NT}/test_h6_v4_whitelist_authority.py::test_runtime_whitelist_is_reachable_on_the_real_path, ::test_forbidden_injection_fails_closed_before_feature_or_signal",
+     "runtime_reachability": "RUNTIME (verified by test)",
+     "evidence": "h6-v4-repair/V4_RUNTIME_REACHABILITY.json",
+     "status": R4},
+    {"defect_id": "V3-AUTH-001", "generation": "V3",
+     "root_cause": "The active control plane pinned the superseded, failed V1 preregistration (commit e683e04 / spec f514fecf / manifest 345334c3 and the oi-full-history-01 report path) across eleven files.",
+     "repair": "All literals removed. Exactly one non-economic binding artifact is the sole authority; every module resolves from runtime_authority.",
+     "test": f"{NT}/test_h6_v4_authority_binding.py::test_no_stale_v1_active_binding_in_h6_package, ::test_only_the_binding_module_holds_authority_literals",
+     "runtime_reachability": "RUNTIME",
+     "evidence": "h6-v4-repair/H6_V4_AUTHORITY_BINDING_AUDIT.json",
+     "status": R4},
+    {"defect_id": "V3-SPEC-001", "generation": "V3",
+     "root_cause": "The V3 frozen spec silently dropped statistical_gates, so the permutation seed and draw count had no live frozen authority, while runtime code still read them.",
+     "repair": "statistical_gates restored AND made structured (method/targets/draws/seed) so the runtime has a machine-checkable frozen source.",
+     "test": "h6_v4_validate.py (runtime parser acceptance + completeness); test_h6_v4_authority_binding.py",
+     "runtime_reachability": "RUNTIME (frozen_contract_snapshot)",
+     "evidence": "H6_V4_ECONOMIC_SEMANTIC_DIFF.json",
+     "status": R4},
+    {"defect_id": "V3-SPEC-002", "generation": "V3",
+     "root_cause": "Structured pit_rules were absent from the V3 frozen spec.",
+     "repair": "Structured pit_rules restored with oi / price / features / future_mutation / archive_validity_role plus an explicit data_time_leq_decision_time invariant.",
+     "test": "h6_v4_validate.py; frozen_contract_snapshot.parse_frozen_spec",
+     "runtime_reachability": "RUNTIME",
+     "evidence": "H6_V4_ECONOMIC_SEMANTIC_DIFF.json",
+     "status": R4},
+    {"defect_id": "V3-SPEC-003", "generation": "V3",
+     "root_cause": "stop_invalidation was absent as a frozen field.",
+     "repair": "stop_invalidation restored verbatim (`NONE in the primary H6 discovery test ...`).",
+     "test": "h6_v4_validate.py completeness (stop_invalidation present and non-vacuous)",
+     "runtime_reachability": "CONFIG",
+     "evidence": "H6_V4_ECONOMIC_SEMANTIC_DIFF.json (IDENTICAL)",
+     "status": R4},
+    {"defect_id": "V3-SPEC-004", "generation": "V3",
+     "root_cause": "cooldown was absent as a standalone frozen field.",
+     "repair": "cooldown restored verbatim (fixed 1h non-overlapping per-asset outcome definition).",
+     "test": "h6_v4_validate.py completeness (cooldown present and non-vacuous)",
+     "runtime_reachability": "CONFIG",
+     "evidence": "H6_V4_ECONOMIC_SEMANTIC_DIFF.json (IDENTICAL)",
+     "status": R4},
+    {"defect_id": "V3-IMPORT-001", "generation": "V3",
+     "root_cause": "The shared venv's editable .pth pins the MAIN checkout's src, so a bare `import trading_bot` inside a worktree resolves outside that worktree.",
+     "repair": "Portable scripts/verify_python_import_authority.py guard + worktree-local PYTHONPATH bootstrap; every run report records python executable, repo root, git commit and module paths.",
+     "test": "scripts/verify_python_import_authority.py --json",
+     "runtime_reachability": "ENVIRONMENT (gates all other evidence)",
+     "evidence": "h6-v4-repair/PYTHON_IMPORT_AUTHORITY_V4.json",
+     "status": R4},
+    {"defect_id": "V3-FEATURE-001", "generation": "V3",
+     "root_cause": "_hour_close_boundaries returned a bare tuple while the caller read .start/.end, so build_completed_hour_oi raised AttributeError for every non-empty snapshot list.",
+     "repair": "One explicit HourWindow dataclass; single representation for both helper and caller.",
+     "test": f"{NT}/test_h6_v4_hour_aggregation.py::test_twelve_valid_snapshots_are_eligible_and_non_empty_input_does_not_crash",
+     "runtime_reachability": "RUNTIME (eligibility.build_completed_hour_oi)",
+     "evidence": "H6_V4_HOUR_AGGREGATION_RESULT.json",
+     "status": R4},
+    {"defect_id": "V3-FEATURE-002", "generation": "V3",
+     "root_cause": "Inclusive hour-window bounds could yield 13 5m snapshots for an hour on a grid aligned to :00 instead of the frozen 12.",
+     "repair": "Half-open [T-1h, T) semantics: the stamp exactly at T belongs to the NEXT hour; conflicting duplicates fail closed.",
+     "test": f"{NT}/test_h6_v4_hour_aggregation.py::test_thirteen_including_t_excludes_t_deterministically, ::test_snapshot_exactly_t_is_classified_into_the_next_hour, ::test_conflicting_duplicate_timestamp_fails_closed",
+     "runtime_reachability": "RUNTIME",
+     "evidence": "H6_V4_HOUR_AGGREGATION_RESULT.json",
+     "status": R4},
+]
+
+
+def main() -> None:
+    matrix = {
+        "artifact": "H6_V4_DEFECT_REGRESSION_MATRIX",
+        "checkpoint": "H6-V4-AUTHORITY-CONTRACT-AND-RUNTIME-BINDING-REPAIR-01",
+        "H6_EXECUTIONS": 0,
+        "H6_BACKTESTS": 0,
+        "PERFORMANCE_OBSERVED": False,
+        "row_count": len(ROWS),
+        "generation_counts": {
+            g: sum(1 for r in ROWS if r["generation"] == g) for g in ("V1", "V2", "V3")
+        },
+        "status_counts": {
+            s: sum(1 for r in ROWS if r["status"] == s) for s in sorted({r["status"] for r in ROWS})
+        },
+        "rows": ROWS,
+        "note": (
+            "Builder self-verification only. Statuses marked PENDING_INDEPENDENT_VERIFICATION "
+            "are not certified; independent verification is H6-EXTERNAL-INDEPENDENT-VERIFICATION-V4."
+        ),
+    }
+    (OUT / "H6_V4_DEFECT_REGRESSION_MATRIX.json").write_text(
+        json.dumps(matrix, indent=1) + "\n", encoding="utf-8"
+    )
+
+    lines = [
+        "# H6 V4 — Defect regression matrix",
+        "",
+        "**Checkpoint:** `H6-V4-AUTHORITY-CONTRACT-AND-RUNTIME-BINDING-REPAIR-01`",
+        "",
+        "```",
+        "H6_EXECUTIONS        = 0",
+        "H6_BACKTESTS         = 0",
+        "PERFORMANCE_OBSERVED = false",
+        f"rows                 = {len(ROWS)}",
+        "```",
+        "",
+        f"| ID | Gen | Root cause | Repair | Runtime reachability | Status |",
+        f"|----|-----|-----------|--------|----------------------|--------|",
+    ]
+    for r in ROWS:
+        lines.append(
+            f"| `{r['defect_id']}` | {r['generation']} | {r['root_cause']} | {r['repair']} | "
+            f"{r['runtime_reachability']} | {r['status']} |"
+        )
+    lines += [
+        "",
+        "## Test / evidence index",
+        "",
+    ]
+    for r in ROWS:
+        lines.append(f"* `{r['defect_id']}` — test: `{r['test']}`; evidence: `{r['evidence']}`")
+    lines += [
+        "",
+        "> Builder self-verification only. `REPAIRED_IN_V4_PENDING_INDEPENDENT_VERIFICATION`",
+        "> is not a certification. Independent verification is",
+        "> `H6-EXTERNAL-INDEPENDENT-VERIFICATION-V4` by a different context/agent.",
+        "",
+    ]
+    (OUT / "H6_V4_DEFECT_REGRESSION_MATRIX.md").write_text("\n".join(lines), encoding="utf-8")
+    print(json.dumps({"rows": len(ROWS), "status_counts": matrix["status_counts"],
+                      "generation_counts": matrix["generation_counts"]}, indent=1))
+
+
+if __name__ == "__main__":
+    main()

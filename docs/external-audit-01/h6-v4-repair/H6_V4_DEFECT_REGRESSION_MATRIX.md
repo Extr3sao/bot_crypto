@@ -1,0 +1,74 @@
+# H6 V4 — Defect regression matrix
+
+**Checkpoint:** `H6-V4-AUTHORITY-CONTRACT-AND-RUNTIME-BINDING-REPAIR-01`
+
+```
+H6_EXECUTIONS        = 0
+H6_BACKTESTS         = 0
+PERFORMANCE_OBSERVED = false
+rows                 = 27
+```
+
+| ID | Gen | Root cause | Repair | Runtime reachability | Status |
+|----|-----|-----------|--------|----------------------|--------|
+| `EXT-DATA-001` | V1 | Synthetic test artifacts leaked into the canonical normalized OI file (100.0 payload + temp path), so declared fingerprint != actual bytes. | V2 rebuilt the dataset in an isolated root with a fail-closed TEST_DATASET_WRITE_FORBIDDEN guard (normalizer v2). | DATA (not code) | CARRIED_FORWARD_PASS |
+| `EXT-PRICE-001` | V1 | Price authority stopped at 2026-09-09; 47 hours of the frozen window were missing. | Official klines_1h_ext tail appended only, overlap byte/economic equality PASS, missing hours = 0. | DATA (not code) | CARRIED_FORWARD_PASS |
+| `EXT-PIT-001` | V1 | Day-level validity gating leaked into decision eligibility and the PIT harness was vacuous (baseline never eligible). | Timestamp-scoped causal eligibility (data_time <= T) + non-vacuous dynamic harness with baseline eligibility. | RUNTIME (preparation.admitted_causal_observations) | CARRIED_FORWARD_PASS |
+| `EXT-CONS-001` | V1 | No independent cross-artifact consistency audit ran before freeze. | scripts/audit_h6_v3_consistency.py across 19 dimension groups. | GOVERNANCE | CARRIED_FORWARD_PASS |
+| `EXT-CONS-002` | V1 | Manual hash copy-paste into manifests, so declared hashes drifted from bytes (71-char ledger hash). | All hashes programmatically derived; V4 additionally removes every hash literal from the runtime package and resolves from one binding. | RUNTIME (runtime_authority) | REVERIFIED_IN_V4 |
+| `EXT-CONS-004` | V1 | Evidence-copy side effects mutated authoritative artifacts. | Evidence artefacts are separate files; V4 freezes SPEC/MANIFEST/WHITELIST/DATA_AUTHORITY and proves post-freeze immutability. | GOVERNANCE | CARRIED_FORWARD_PASS |
+| `EXT-CONF-001` | V1 | Confirmation-lock evidence could not be independently verified. | Confirmation lock hardened; dependency on H6 remains NONE. | RUNTIME (conf_lock) | CARRIED_FORWARD_PASS |
+| `FULL-HERMETIC-001` | V1 | Full hermetic runs were not reproducible from a clean checkout. | Worktree-authoritative conftest.py sys.path guard + import-authority tool; two hermetic runs required. | ENVIRONMENT | REVERIFIED_IN_V4 |
+| `EXT-FEATURE-WHITELIST-001` | V2 | H6FieldAccess was not fail-closed: an unadmitted field could be read back via get()/[] and the whole inbound mapping was retained. | Accessor redesigned to never STORE forbidden values (sanitized immutable state) AND a separate fail-closed boundary rejects dirty rows on the real runtime path. | RUNTIME (preparation.prepare_decision -> feature_authority.admitted_observation) | REPAIRED_IN_V4_PENDING_INDEPENDENT_VERIFICATION |
+| `EXT-MANIFEST-HASH-001` | V2 | Manifest declared a 71-character ledger hash that did not match the ledger bytes. | V3 corrected the ledger fingerprint; V4 carries the corrected value and records the discrepancy explicitly. | DATA (not code) | CARRIED_FORWARD_PASS |
+| `EXT-CONF-002` | V2 | Confirmation tamper evidence was thin; lock could not be shown to resist mutation. | Confirmation lock isolation suite; H6 dependency remains NONE. | RUNTIME (conf_lock) | CARRIED_FORWARD_PASS |
+| `EXT-PORTABLE-DATA-001` | V2 | Data authority was builder-worktree local and not portable to a clean verifier. | Portable authority contract: --data-root / TRADING_AGENTIC_DATA_ROOT / shared-root resolution. | ENVIRONMENT/DATA | CARRIED_FORWARD_PASS |
+| `EXT-SHADOW-002` | V2 | Shadow invalidation / maturity authority not independently demonstrable. | Explicit shadow invalidation record + maturity authority artifact; firewall to H6 proven. | GOVERNANCE | CARRIED_FORWARD_PASS |
+| `EXT-HERMETIC-002` | V2 | Hermetic runs polluted by editable-install imports of the main checkout. | Worktree-authoritative conftest.py guard; V4 adds a portable import-authority tool and records resolution in every run report. | ENVIRONMENT | REVERIFIED_IN_V4 |
+| `EXT-DASHBOARD-002` | V2 | Dashboard build was not reproducible across repeated runs. | Dashboard repeated 20x with result recorded. | ENVIRONMENT | REVERIFIED_IN_V4 |
+| `EXT-PRICE-LIMIT-001` | V2 | Price authority horizon did not match the frozen common window. | Full-window price authority with overlap verification. | DATA (not code) | CARRIED_FORWARD_PASS |
+| `V3-WL-001` | V3 | H6FieldAccess was a slots dataclass, so 'data' was a real slot and the __getattr__ guard for 'data' was dead code; the whole raw row was one attribute access away. | The accessor no longer stores a raw mapping. Construction validates inbound keys and retains only admitted data in an immutable MappingProxy. | RUNTIME | REPAIRED_IN_V4_PENDING_INDEPENDENT_VERIFICATION |
+| `V3-WL-002` | V3 | repr / copy / deepcopy / pickle carried the retained forbidden provider values. | repr and str render key NAMES only; copy/deepcopy/pickle reconstruct sanitized state only. | RUNTIME | REPAIRED_IN_V4_PENDING_INDEPENDENT_VERIFICATION |
+| `V3-WL-003` | V3 | Nothing outside whitelist.py used H6FieldAccess, so the whitelist was decorative and never on the H6 data path. | New fail-closed boundary (feature_authority.admitted_observation) wired into the real runtime entry point (preparation.prepare_decision), which the engine consumes typed observations from. | RUNTIME (verified by test) | REPAIRED_IN_V4_PENDING_INDEPENDENT_VERIFICATION |
+| `V3-AUTH-001` | V3 | The active control plane pinned the superseded, failed V1 preregistration (commit e683e04 / spec f514fecf / manifest 345334c3 and the oi-full-history-01 report path) across eleven files. | All literals removed. Exactly one non-economic binding artifact is the sole authority; every module resolves from runtime_authority. | RUNTIME | REPAIRED_IN_V4_PENDING_INDEPENDENT_VERIFICATION |
+| `V3-SPEC-001` | V3 | The V3 frozen spec silently dropped statistical_gates, so the permutation seed and draw count had no live frozen authority, while runtime code still read them. | statistical_gates restored AND made structured (method/targets/draws/seed) so the runtime has a machine-checkable frozen source. | RUNTIME (frozen_contract_snapshot) | REPAIRED_IN_V4_PENDING_INDEPENDENT_VERIFICATION |
+| `V3-SPEC-002` | V3 | Structured pit_rules were absent from the V3 frozen spec. | Structured pit_rules restored with oi / price / features / future_mutation / archive_validity_role plus an explicit data_time_leq_decision_time invariant. | RUNTIME | REPAIRED_IN_V4_PENDING_INDEPENDENT_VERIFICATION |
+| `V3-SPEC-003` | V3 | stop_invalidation was absent as a frozen field. | stop_invalidation restored verbatim (`NONE in the primary H6 discovery test ...`). | CONFIG | REPAIRED_IN_V4_PENDING_INDEPENDENT_VERIFICATION |
+| `V3-SPEC-004` | V3 | cooldown was absent as a standalone frozen field. | cooldown restored verbatim (fixed 1h non-overlapping per-asset outcome definition). | CONFIG | REPAIRED_IN_V4_PENDING_INDEPENDENT_VERIFICATION |
+| `V3-IMPORT-001` | V3 | The shared venv's editable .pth pins the MAIN checkout's src, so a bare `import trading_bot` inside a worktree resolves outside that worktree. | Portable scripts/verify_python_import_authority.py guard + worktree-local PYTHONPATH bootstrap; every run report records python executable, repo root, git commit and module paths. | ENVIRONMENT (gates all other evidence) | REPAIRED_IN_V4_PENDING_INDEPENDENT_VERIFICATION |
+| `V3-FEATURE-001` | V3 | _hour_close_boundaries returned a bare tuple while the caller read .start/.end, so build_completed_hour_oi raised AttributeError for every non-empty snapshot list. | One explicit HourWindow dataclass; single representation for both helper and caller. | RUNTIME (eligibility.build_completed_hour_oi) | REPAIRED_IN_V4_PENDING_INDEPENDENT_VERIFICATION |
+| `V3-FEATURE-002` | V3 | Inclusive hour-window bounds could yield 13 5m snapshots for an hour on a grid aligned to :00 instead of the frozen 12. | Half-open [T-1h, T) semantics: the stamp exactly at T belongs to the NEXT hour; conflicting duplicates fail closed. | RUNTIME | REPAIRED_IN_V4_PENDING_INDEPENDENT_VERIFICATION |
+
+## Test / evidence index
+
+* `EXT-DATA-001` — test: `tests/unit/research/test_oi_full_history.py; OI_DATASET_V2_DETERMINISM_REPORT.json (A==B, C!=A)`; evidence: `docs/external-audit-01/oi-full-history-02/OI_FULL_HISTORY_DATASET_MANIFEST_V2.json; h6-v4-repair/H6_DATA_AUTHORITY_V4.json`
+* `EXT-PRICE-001` — test: `PRICE_1H_AUTHORITY_V2_MANIFEST.json; scripts/verify_price_overlap_v3.py`; evidence: `docs/external-audit-01/oi-full-history-02/PRICE_AUTHORITY_V2_REPORT.json`
+* `EXT-PIT-001` — test: `tests/unit/research/test_oi_full_history.py; tests/unit/research/test_h6_v4_hour_aggregation.py`; evidence: `PIT_CAUSALITY_V2_REPORT.json; PIT_DYNAMIC_RESULT.json`
+* `EXT-CONS-001` — test: `scripts/audit_h6_v3_consistency.py`; evidence: `H6_V3_CONSISTENCY_AUDIT.json (CONTRADICTIONS_FOUND=0)`
+* `EXT-CONS-002` — test: `tests/unit/research/test_h6_v4_authority_binding.py::test_only_the_binding_module_holds_authority_literals`; evidence: `h6-v4-repair/H6_V4_ECONOMIC_SEMANTIC_DIFF.json; H6_RUNTIME_AUTHORITY_BINDING_V4.json`
+* `EXT-CONS-004` — test: `verifier/V4 immutability diff (git diff prereg..HEAD must be empty for the four artefacts)`; evidence: `H6_V4_POST_FREEZE_IMMUTABILITY.json`
+* `EXT-CONF-001` — test: `tests/unit/research/test_h6_confirmation_isolation.py`; evidence: `CONFIRMATION_AUTHORITY_REPORT_V2.json`
+* `FULL-HERMETIC-001` — test: `conftest.py; scripts/verify_python_import_authority.py; FULL_HERMETIC_RESULT_1/2.json`; evidence: `h6-v4-repair/FULL_HERMETIC_RESULT_1.json, FULL_HERMETIC_RESULT_2.json`
+* `EXT-FEATURE-WHITELIST-001` — test: `tests/unit/research/test_h6_v4_whitelist_authority.py (15 attack surfaces + injection)`; evidence: `h6-v4-repair/H6_FEATURE_AUTHORITY_WHITELIST_V4.json`
+* `EXT-MANIFEST-HASH-001` — test: `scripts/audit_h6_v3_consistency.py; h6_v4_build.py`; evidence: `H6_V2_EXTERNAL_FAILURE_RECORD.json; H6_DATA_AUTHORITY_V4.json`
+* `EXT-CONF-002` — test: `tests/unit/research/test_h6_confirmation_isolation.py`; evidence: `CONFIRMATION_AUTHORITY_REPORT_V2.json`
+* `EXT-PORTABLE-DATA-001` — test: `tests/unit/research/test_h6_v3_test_isolation.py`; evidence: `DATA_AUTHORITY_RESULT.json (PASS)`
+* `EXT-SHADOW-002` — test: `tests/unit/research/test_h6_confirmation_isolation.py`; evidence: `SHADOW_V2_INVALIDATION_RECORD.json; SHADOW_MATURITY_AUTHORITY_V2.json`
+* `EXT-HERMETIC-002` — test: `scripts/verify_python_import_authority.py`; evidence: `h6-v4-repair/VERIFIER_IMPORT_AUTHORITY.json; FULL_HERMETIC_RESULT_1/2.json`
+* `EXT-DASHBOARD-002` — test: `DASHBOARD_REPEAT_20`; evidence: `h6-v4-repair/DASHBOARD_REPEAT_20_RESULT.json`
+* `EXT-PRICE-LIMIT-001` — test: `scripts/verify_price_overlap_v3.py`; evidence: `PRICE_OVERLAP_V3_RESULT.json`
+* `V3-WL-001` — test: `trading_bot/tests/unit/research/test_h6_v4_whitelist_authority.py::test_no_forbidden_value_is_stored, ::test_forbidden_values_are_not_recoverable`; evidence: `H6_FEATURE_AUTHORITY_WHITELIST_V4.json enforcement.forbidden_values_stored = 0`
+* `V3-WL-002` — test: `trading_bot/tests/unit/research/test_h6_v4_whitelist_authority.py::test_repr_and_str_never_render_values, ::test_forbidden_values_are_not_recoverable`; evidence: `H6_FEATURE_AUTHORITY_WHITELIST_V4.json enforcement.forbidden_values_recoverable = 0`
+* `V3-WL-003` — test: `trading_bot/tests/unit/research/test_h6_v4_whitelist_authority.py::test_runtime_whitelist_is_reachable_on_the_real_path, ::test_forbidden_injection_fails_closed_before_feature_or_signal`; evidence: `h6-v4-repair/V4_RUNTIME_REACHABILITY.json`
+* `V3-AUTH-001` — test: `trading_bot/tests/unit/research/test_h6_v4_authority_binding.py::test_no_stale_v1_active_binding_in_h6_package, ::test_only_the_binding_module_holds_authority_literals`; evidence: `h6-v4-repair/H6_V4_AUTHORITY_BINDING_AUDIT.json`
+* `V3-SPEC-001` — test: `h6_v4_validate.py (runtime parser acceptance + completeness); test_h6_v4_authority_binding.py`; evidence: `H6_V4_ECONOMIC_SEMANTIC_DIFF.json`
+* `V3-SPEC-002` — test: `h6_v4_validate.py; frozen_contract_snapshot.parse_frozen_spec`; evidence: `H6_V4_ECONOMIC_SEMANTIC_DIFF.json`
+* `V3-SPEC-003` — test: `h6_v4_validate.py completeness (stop_invalidation present and non-vacuous)`; evidence: `H6_V4_ECONOMIC_SEMANTIC_DIFF.json (IDENTICAL)`
+* `V3-SPEC-004` — test: `h6_v4_validate.py completeness (cooldown present and non-vacuous)`; evidence: `H6_V4_ECONOMIC_SEMANTIC_DIFF.json (IDENTICAL)`
+* `V3-IMPORT-001` — test: `scripts/verify_python_import_authority.py --json`; evidence: `h6-v4-repair/PYTHON_IMPORT_AUTHORITY_V4.json`
+* `V3-FEATURE-001` — test: `trading_bot/tests/unit/research/test_h6_v4_hour_aggregation.py::test_twelve_valid_snapshots_are_eligible_and_non_empty_input_does_not_crash`; evidence: `H6_V4_HOUR_AGGREGATION_RESULT.json`
+* `V3-FEATURE-002` — test: `trading_bot/tests/unit/research/test_h6_v4_hour_aggregation.py::test_thirteen_including_t_excludes_t_deterministically, ::test_snapshot_exactly_t_is_classified_into_the_next_hour, ::test_conflicting_duplicate_timestamp_fails_closed`; evidence: `H6_V4_HOUR_AGGREGATION_RESULT.json`
+
+> Builder self-verification only. `REPAIRED_IN_V4_PENDING_INDEPENDENT_VERIFICATION`
+> is not a certification. Independent verification is
+> `H6-EXTERNAL-INDEPENDENT-VERIFICATION-V4` by a different context/agent.

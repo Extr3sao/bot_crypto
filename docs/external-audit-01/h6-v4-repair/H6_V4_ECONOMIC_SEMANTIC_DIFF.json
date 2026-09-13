@@ -1,0 +1,448 @@
+{
+ "artifact": "H6_V4_ECONOMIC_SEMANTIC_DIFF",
+ "checkpoint": "H6-V4-AUTHORITY-CONTRACT-AND-RUNTIME-BINDING-REPAIR-01",
+ "v2_spec": "docs/external-audit-01/oi-full-history-02/H6_SPEC_V2.json",
+ "v4_spec": "docs/external-audit-01/h6-v4-repair/H6_SPEC_V4.json",
+ "v4_spec_sha256": "9de2b147acf63086b5980d6a47d5483d6900476563d45a6d8779f6c6accdee3d",
+ "runtime_parser_accepts_v4_spec": {
+  "ok": true,
+  "error": null,
+  "permutation_method": "sign-flip",
+  "permutation_draws": 10000,
+  "permutation_seed": 20260911,
+  "stop_invalidation_present": true,
+  "cooldown_present": true,
+  "pit_data_time_leq_decision_time": true
+ },
+ "v4_spec_completeness": {
+  "required_field_count": 39,
+  "present_count": 39,
+  "missing": [],
+  "vacuous": []
+ },
+ "declared_representation_relocations": [
+  {
+   "v2_path": "statistical_gates.permutation",
+   "v4_path": "statistical_gates.permutation.{method,targets,draws,seed,definition}",
+   "classification": "STRUCTURALLY_RELOCATED_WITH_IDENTICAL_MEANING",
+   "justification": "V2 stored the permutation design as one prose string; V4 keeps that exact string as permutation.definition AND freezes the same four facts as typed fields. Values are unchanged (sign-flip / hourly trade returns / 10000 / 20260911)."
+  },
+  {
+   "v2_path": "common_window_utc.archive_validity_vs_decision_eligibility.DECISION_ELIGIBILITY_AT_T",
+   "v4_path": "pit_rules.decision_eligibility (original location retained too)",
+   "classification": "STRUCTURALLY_RELOCATED_WITH_IDENTICAL_MEANING",
+   "justification": "V4 gives PIT eligibility a first-class structured home. The original V2 location is retained verbatim, so no information moves or changes."
+  },
+  {
+   "v2_path": "robustness_gates",
+   "v4_path": "statistical_gates.robustness + statistical_gates.robustness_rules",
+   "classification": "STRUCTURALLY_RELOCATED_WITH_IDENTICAL_MEANING",
+   "justification": "Same robustness rules (halves/thirds/walk-forward) grouped with the other gates."
+  }
+ ],
+ "semantic_fields": [
+  {
+   "field": "assets",
+   "v2": [
+    "BTCUSDT",
+    "ETHUSDT",
+    "SOLUSDT"
+   ],
+   "v4": [
+    "BTCUSDT",
+    "ETHUSDT",
+    "SOLUSDT"
+   ],
+   "classification": "IDENTICAL"
+  },
+  {
+   "field": "common_window_utc.end",
+   "v2": "2026-09-10T23:59:59Z",
+   "v4": "2026-09-10T23:59:59Z",
+   "classification": "IDENTICAL"
+  },
+  {
+   "field": "common_window_utc.start",
+   "v2": "2021-12-01T00:00:00Z",
+   "v4": "2021-12-01T00:00:00Z",
+   "classification": "IDENTICAL"
+  },
+  {
+   "field": "cooldown",
+   "v2": "NONE required: fixed 1h non-overlapping per-asset outcome definition (entry at next hour open, exit at that hour's close); secondary horizons are NOT computed and MAY NOT influence PASS/FAIL",
+   "v4": "NONE required: fixed 1h non-overlapping per-asset outcome definition (entry at next hour open, exit at that hour's close); secondary horizons are NOT computed and MAY NOT influence PASS/FAIL",
+   "classification": "IDENTICAL"
+  },
+  {
+   "field": "cost_model.BASE_TOTAL_ROUND_TRIP_COST_BPS",
+   "v2": 10,
+   "v4": 10,
+   "classification": "IDENTICAL"
+  },
+  {
+   "field": "cost_model.COST_SENSITIVITY_BPS",
+   "v2": [
+    0,
+    10,
+    20,
+    40
+   ],
+   "v4": [
+    0,
+    10,
+    20,
+    40
+   ],
+   "classification": "IDENTICAL"
+  },
+  {
+   "field": "decision_spacing",
+   "v2": "NO COOLDOWN / ONE DECISION PER COMPLETED ASSET-HOUR",
+   "v4": "NO COOLDOWN / ONE DECISION PER COMPLETED ASSET-HOUR",
+   "classification": "IDENTICAL"
+  },
+  {
+   "field": "decision_timeframe.bucket",
+   "v2": "1h",
+   "v4": "1h",
+   "classification": "IDENTICAL"
+  },
+  {
+   "field": "decision_timeframe.primary_holding_horizon_hours",
+   "v2": 1,
+   "v4": 1,
+   "classification": "IDENTICAL"
+  },
+  {
+   "field": "direction_semantics",
+   "v2": {
+    "LONG": "price UP (close > open) AND delta_oi > 0 AND z_oi >= +1.0",
+    "NO_TRADE": "delta_oi <= 0, or z_oi < +1.0, or price close == open, or any NO_SIGNAL condition",
+    "SHORT": "price DOWN (close < open) AND delta_oi > 0 AND z_oi >= +1.0",
+    "no_inferred_direction": "direction derives only from the frozen price/OI definitions above"
+   },
+   "v4": {
+    "LONG": "price UP (close > open) AND delta_oi > 0 AND z_oi >= +1.0",
+    "NO_TRADE": "delta_oi <= 0, or z_oi < +1.0, or price close == open, or any NO_SIGNAL condition",
+    "SHORT": "price DOWN (close < open) AND delta_oi > 0 AND z_oi >= +1.0",
+    "no_inferred_direction": "direction derives only from the frozen price/OI definitions above"
+   },
+   "classification": "IDENTICAL"
+  },
+  {
+   "field": "entry_timing",
+   "v2": "next 1h bar OPEN (the bar immediately after the decision hour)",
+   "v4": "next 1h bar OPEN (the bar immediately after the decision hour)",
+   "classification": "IDENTICAL"
+  },
+  {
+   "field": "exit_timing",
+   "v2": "same next 1h bar CLOSE",
+   "v4": "same next 1h bar CLOSE",
+   "classification": "IDENTICAL"
+  },
+  {
+   "field": "feature_transformations",
+   "v2": [
+    {
+     "causal": true,
+     "definition": "sum_open_interest(last 5m snapshot of completed hour H) - sum_open_interest(last 5m snapshot of completed hour H-1); base-asset units; requires exactly 12 distinct snapshots in BOTH hours, else NO_TRADE for that hour",
+     "name": "delta_oi_1h",
+     "window": "1h"
+    },
+    {
+     "causal": true,
+     "definition": "ROBUST location/scale z-score of delta_oi_1h: z = (delta_oi - rolling_median) / (1.4826 * rolling_MAD) over the trailing 30 calendar days (720 completed hourly changes) strictly BEFORE the decision time; if MAD == 0 => NO_TRADE (causal; PIT timestamp-scoped)",
+     "name": "z_oi",
+     "note": "single frozen robust definition; rolling std is NOT used; no alternative scale was evaluated",
+     "window": "30d trailing, center=median, scale=1.4826*MAD, min 336 valid historical observations"
+    },
+    {
+     "causal": true,
+     "definition": "completed decision-hour close > open => UP; close < open => DOWN; close == open => NO_TRADE",
+     "name": "price_direction_1h",
+     "window": "1h"
+    }
+   ],
+   "v4": [
+    {
+     "causal": true,
+     "definition": "sum_open_interest(last 5m snapshot of completed hour H) - sum_open_interest(last 5m snapshot of completed hour H-1); base-asset units; requires exactly 12 distinct snapshots in BOTH hours, else NO_TRADE for that hour",
+     "name": "delta_oi_1h",
+     "window": "1h"
+    },
+    {
+     "causal": true,
+     "definition": "ROBUST location/scale z-score of delta_oi_1h: z = (delta_oi - rolling_median) / (1.4826 * rolling_MAD) over the trailing 30 calendar days (720 completed hourly changes) strictly BEFORE the decision time; if MAD == 0 => NO_TRADE (causal; PIT timestamp-scoped)",
+     "name": "z_oi",
+     "note": "single frozen robust definition; rolling std is NOT used; no alternative scale was evaluated",
+     "window": "30d trailing, center=median, scale=1.4826*MAD, min 336 valid historical observations"
+    },
+    {
+     "causal": true,
+     "definition": "completed decision-hour close > open => UP; close < open => DOWN; close == open => NO_TRADE",
+     "name": "price_direction_1h",
+     "window": "1h"
+    }
+   ],
+   "classification": "IDENTICAL"
+  },
+  {
+   "field": "funding_accounting",
+   "v2": {
+    "FUNDING_DISCOVERY_ACCOUNTING": "EXCLUDED_WITH_LIMITATION",
+    "funding_materiality_gate_before_promotion": true,
+    "note": "funding is NOT silently zero forever; any promotion requires a funding materiality audit",
+    "reason": "no PIT-safe authoritative funding series exists in the repository for all three assets (BTCUSDT deep series exists in docs/external-audit-01/carry-funding-deep-01/; ETHUSDT/SOLUSDT do not)"
+   },
+   "v4": {
+    "FUNDING_DISCOVERY_ACCOUNTING": "EXCLUDED_WITH_LIMITATION",
+    "funding_materiality_gate_before_promotion": true,
+    "note": "funding is NOT silently zero forever; any promotion requires a funding materiality audit",
+    "reason": "no PIT-safe authoritative funding series exists in the repository for all three assets (BTCUSDT deep series exists in docs/external-audit-01/carry-funding-deep-01/; ETHUSDT/SOLUSDT do not)"
+   },
+   "classification": "IDENTICAL"
+  },
+  {
+   "field": "insufficient_sample_policy",
+   "v2": "if realized N < minimum_N, or any gate dataset is missing, result = INSUFFICIENT_SAMPLE / REPAIR_REQUIRED; no parameter relaxation, no window extension to chase N",
+   "v4": "if realized N < minimum_N, or any gate dataset is missing, result = INSUFFICIENT_SAMPLE / REPAIR_REQUIRED; no parameter relaxation, no window extension to chase N",
+   "classification": "IDENTICAL"
+  },
+  {
+   "field": "mechanism.family",
+   "v2": "position_stock_conditioning",
+   "v4": "position_stock_conditioning",
+   "classification": "IDENTICAL"
+  },
+  {
+   "field": "mechanism.name",
+   "v2": "OI_CONFIRMED_CONTINUATION",
+   "v4": "OI_CONFIRMED_CONTINUATION",
+   "classification": "IDENTICAL"
+  },
+  {
+   "field": "mechanism.statement",
+   "v2": "Significant new position-stock expansion confirms the immediately preceding price direction and predicts continuation in the next completed hour. Primary qualifying condition is OI expansion ONLY: delta_oi > 0 AND robust_z_oi >= +1.0; OI contraction or MAD-zero hours yield NO_TRADE. This explicitly prevents OI contraction (even with z >= 1 due to negative rolling median) from qualifying as expansion.",
+   "v4": "Significant new position-stock expansion confirms the immediately preceding price direction and predicts continuation in the next completed hour. Primary qualifying condition is OI expansion ONLY: delta_oi > 0 AND robust_z_oi >= +1.0; OI contraction or MAD-zero hours yield NO_TRADE. This explicitly prevents OI contraction (even with z >= 1 due to negative rolling median) from qualifying as expansion.",
+   "classification": "IDENTICAL"
+  },
+  {
+   "field": "minimum_N",
+   "v2": {
+    "note": "hours are the independent unit; non-overlapping 1h outcomes per asset; if realized N is below minimum, result is INSUFFICIENT_SAMPLE (a FAIL-class outcome, not a promotion)",
+    "per_asset_trades": 30,
+    "pooled_trades": 100
+   },
+   "v4": {
+    "note": "hours are the independent unit; non-overlapping 1h outcomes per asset; if realized N is below minimum, result is INSUFFICIENT_SAMPLE (a FAIL-class outcome, not a promotion)",
+    "per_asset_trades": 30,
+    "pooled_trades": 100
+   },
+   "classification": "IDENTICAL"
+  },
+  {
+   "field": "oi_field_whitelist",
+   "v2": [
+    "sum_open_interest",
+    "sum_open_interest_value"
+   ],
+   "v4": [
+    "sum_open_interest",
+    "sum_open_interest_value"
+   ],
+   "classification": "IDENTICAL"
+  },
+  {
+   "field": "orthogonality_gates",
+   "v2": {
+    "H5_PNL_CORRELATION": "NOT_EVALUABLE_FROM_PERSISTED_EVIDENCE (H5 daily PnL arrays were never persisted; do not regenerate H5)",
+    "MAX_ABS_DAILY_CORRELATION_TO_MOMENTUM_PROXY": 0.5,
+    "comparator": "the exact preregistered ROC(24h) momentum proxy definition (frozen before H6 execution; daily series construction frozen before execution)",
+    "computed_before_economics": true,
+    "implementation": "CORRECT Pearson implementation, verified by the standard self-test r(X,X)=1, r(X,-X)=-1, constant series guarded",
+    "violation": "violation => no promotion regardless of economics"
+   },
+   "v4": {
+    "H5_PNL_CORRELATION": "NOT_EVALUABLE_FROM_PERSISTED_EVIDENCE (H5 daily PnL arrays were never persisted; do not regenerate H5)",
+    "MAX_ABS_DAILY_CORRELATION_TO_MOMENTUM_PROXY": 0.5,
+    "comparator": "the exact preregistered ROC(24h) momentum proxy definition (frozen before H6 execution; daily series construction frozen before execution)",
+    "computed_before_economics": true,
+    "implementation": "CORRECT Pearson implementation, verified by the standard self-test r(X,X)=1, r(X,-X)=-1, constant series guarded",
+    "violation": "violation => no promotion regardless of economics"
+   },
+   "classification": "IDENTICAL"
+  },
+  {
+   "field": "pass_fail_semantics",
+   "v2": {
+    "FAIL_is_terminal": "any unmet gate => DISCOVERY_FAIL, terminal, recorded in FAILED_RESEARCH_MEMORY.md; post-hoc subcells are POST_HOC_LEAD_ONLY and never promoted",
+    "PASS_requires": "ALL of: minimum_N met, net expectancy > 0 at 10 bps TOTAL RT, P(Sharpe>0) >= 0.90, permutation p <= 0.05, Sharpe CI excludes 0, halves + thirds + walk-forward consistent, |daily corr vs momentum proxy| <= 0.50, funding materiality gate if promoted",
+    "no_rerun": "no rerun, no retuning, no threshold change after first economic execution"
+   },
+   "v4": {
+    "FAIL_is_terminal": "any unmet gate => DISCOVERY_FAIL, terminal, recorded in FAILED_RESEARCH_MEMORY.md; post-hoc subcells are POST_HOC_LEAD_ONLY and never promoted",
+    "PASS_requires": "ALL of: minimum_N met, net expectancy > 0 at 10 bps TOTAL RT, P(Sharpe>0) >= 0.90, permutation p <= 0.05, Sharpe CI excludes 0, halves + thirds + walk-forward consistent, |daily corr vs momentum proxy| <= 0.50, funding materiality gate if promoted",
+    "no_rerun": "no rerun, no retuning, no threshold change after first economic execution"
+   },
+   "classification": "IDENTICAL"
+  },
+  {
+   "field": "pit_rules.archive_validity_role",
+   "v2": "day-level ledger is forensic EVIDENCE only; eligibility is causal per decision time (PIT-CAUSALITY-REPAIR-01)",
+   "v4": "day-level ledger is forensic EVIDENCE only; eligibility is causal per decision time (PIT-CAUSALITY-REPAIR-01)",
+   "classification": "IDENTICAL"
+  },
+  {
+   "field": "pit_rules.data_time_leq_decision_time",
+   "v2": true,
+   "v4": true,
+   "classification": "IDENTICAL"
+  },
+  {
+   "field": "pit_rules.decision_eligibility",
+   "v2": "strictly causal (data_time <= T): completed 1h price bar exists; CURRENT_HOUR_OI_COMPLETENESS = exactly 12 distinct 5m OI snapshots in the completed hour; previous-hour reference complete; rolling feature history >= 336 valid hourly OI changes; last observation not stale (<= 600s); no conflicting duplicate <= T. No final UTC-day validity; no observations > T. A gap strictly AFTER T must not alter eligibility or feature/signal state at T (adversarially tested in PIT_CAUSALITY_V2_REPORT).",
+   "v4": "strictly causal (data_time <= T): completed 1h price bar exists; CURRENT_HOUR_OI_COMPLETENESS = exactly 12 distinct 5m OI snapshots in the completed hour; previous-hour reference complete; rolling feature history >= 336 valid hourly OI changes; last observation not stale (<= 600s); no conflicting duplicate <= T. No final UTC-day validity; no observations > T. A gap strictly AFTER T must not alter eligibility or feature/signal state at T (adversarially tested in PIT_CAUSALITY_V2_REPORT).",
+   "classification": "IDENTICAL"
+  },
+  {
+   "field": "pit_rules.features",
+   "v2": "z-score windows strictly trailing; no centered windows; no backfill; no interpolation from future data",
+   "v4": "z-score windows strictly trailing; no centered windows; no backfill; no interpolation from future data",
+   "classification": "IDENTICAL"
+  },
+  {
+   "field": "pit_rules.future_mutation",
+   "v2": "DECISION_ELIGIBILITY_AT_T, FEATURE_STATE_AT_T and SIGNAL_INPUT_AT_T must be byte-identical under mutations strictly after T (FUTURE_SAME_DAY_GAP_MUTATION test, non-vacuous baseline); PAST_GAP_BEFORE_T may change eligibility; FUTURE_GAP_AFTER_T must not; tested in PIT_CAUSALITY_V2_REPORT",
+   "v4": "DECISION_ELIGIBILITY_AT_T, FEATURE_STATE_AT_T and SIGNAL_INPUT_AT_T must be byte-identical under mutations strictly after T (FUTURE_SAME_DAY_GAP_MUTATION test, non-vacuous baseline); PAST_GAP_BEFORE_T may change eligibility; FUTURE_GAP_AFTER_T must not; tested in PIT_CAUSALITY_V2_REPORT",
+   "classification": "IDENTICAL"
+  },
+  {
+   "field": "pit_rules.oi",
+   "v2": "oi_time <= decision_time (V2 causal: oi_state_at / decision_eligibility_at_v2; no final-day validity gate; ledger forensic only)",
+   "v4": "oi_time <= decision_time (V2 causal: oi_state_at / decision_eligibility_at_v2; no final-day validity gate; ledger forensic only)",
+   "classification": "IDENTICAL"
+  },
+  {
+   "field": "pit_rules.price",
+   "v2": "decision hour uses only the completed bucket's OHLC",
+   "v4": "decision hour uses only the completed bucket's OHLC",
+   "classification": "IDENTICAL"
+  },
+  {
+   "field": "primary_holding_horizon",
+   "v2": "exactly 1h",
+   "v4": "exactly 1h",
+   "classification": "IDENTICAL"
+  },
+  {
+   "field": "robustness_gates",
+   "v2": [
+    "halves consistency: sign of net expectancy must agree across first/second half of the common window",
+    "thirds consistency: at least 2 of 3 thirds positive net expectancy",
+    "walk-forward: rolling 3-fold forward evaluation must not have all folds negative"
+   ],
+   "v4": [
+    "halves consistency: sign of net expectancy must agree across first/second half of the common window",
+    "thirds consistency: at least 2 of 3 thirds positive net expectancy",
+    "walk-forward: rolling 3-fold forward evaluation must not have all folds negative"
+   ],
+   "classification": "IDENTICAL"
+  },
+  {
+   "field": "rolling_windows.z_oi.center",
+   "v2": "median",
+   "v4": "median",
+   "classification": "IDENTICAL"
+  },
+  {
+   "field": "rolling_windows.z_oi.length_hours",
+   "v2": 720,
+   "v4": 720,
+   "classification": "IDENTICAL"
+  },
+  {
+   "field": "rolling_windows.z_oi.min_observations",
+   "v2": 336,
+   "v4": 336,
+   "classification": "IDENTICAL"
+  },
+  {
+   "field": "statistical_gates.P_Sharp_greater_0_min",
+   "v2": 0.9,
+   "v4": 0.9,
+   "classification": "IDENTICAL"
+  },
+  {
+   "field": "statistical_gates.permutation",
+   "v2": {
+    "method": "sign-flip",
+    "targets": "hourly trade returns",
+    "draws": 20260911,
+    "seed": 20260911,
+    "definition": "sign-flip permutation on hourly trade returns, 10,000 draws, fixed seed 20260911"
+   },
+   "v4": {
+    "method": "sign-flip",
+    "targets": "hourly trade returns",
+    "draws": 10000,
+    "seed": 20260911,
+    "definition": "sign-flip permutation on hourly trade returns, 10,000 draws, fixed seed 20260911"
+   },
+   "classification": "STRUCTURALLY_RELOCATED_WITH_IDENTICAL_MEANING"
+  },
+  {
+   "field": "statistical_gates.permutation_p_max",
+   "v2": 0.05,
+   "v4": 0.05,
+   "classification": "IDENTICAL"
+  },
+  {
+   "field": "statistical_gates.sharpe_ci_excludes_zero",
+   "v2": true,
+   "v4": true,
+   "classification": "IDENTICAL"
+  },
+  {
+   "field": "stop_invalidation",
+   "v2": "NONE in the primary H6 discovery test (no ATR stop, no signal-flip exit; trade management belongs to a later preregistered experiment)",
+   "v4": "NONE in the primary H6 discovery test (no ATR stop, no signal-flip exit; trade management belongs to a later preregistered experiment)",
+   "classification": "IDENTICAL"
+  },
+  {
+   "field": "threshold_rule",
+   "v2": {
+    "contraction_condition": "NO_TRADE: OI contraction hours (delta_oi <= 0) produce NO_TRADE regardless of z (a contraction-reversal variant would be a separate preregistered experiment)",
+    "example_repaired": "median=-10, MAD=1, delta_oi=-8 => z=1.349 BUT delta_oi<0 => NO_TRADE (previously would have fired; now blocked)",
+    "expansion_condition": "delta_oi > 0 AND z_oi >= +1.0",
+    "expansion_condition_detail": "qualifying expansion requires BOTH raw OI expansion (current delta_oi > 0, base-asset units) AND robust_z_oi >= 1.0; positive z alone with delta_oi <= 0 is NOT qualifying (contraction never qualifies even if z >= 1 due to negative median/MAD). If MAD == 0 => NO_TRADE (H6 V2 raw-sign rule, EXT-CONS-004 repair).",
+    "neutral_or_insufficient": "delta_oi <= 0, or z_oi < +1.0, or MAD == 0, or < 336 historical observations => NO_TRADE/NO_SIGNAL",
+    "note": "thresholds frozen BEFORE any performance observation; NO parameter sweep is permitted; changing these values after any economic execution invalidates the experiment",
+    "type": "PIT_ROLLING_DISTRIBUTION"
+   },
+   "v4": {
+    "contraction_condition": "NO_TRADE: OI contraction hours (delta_oi <= 0) produce NO_TRADE regardless of z (a contraction-reversal variant would be a separate preregistered experiment)",
+    "example_repaired": "median=-10, MAD=1, delta_oi=-8 => z=1.349 BUT delta_oi<0 => NO_TRADE (previously would have fired; now blocked)",
+    "expansion_condition": "delta_oi > 0 AND z_oi >= +1.0",
+    "expansion_condition_detail": "qualifying expansion requires BOTH raw OI expansion (current delta_oi > 0, base-asset units) AND robust_z_oi >= 1.0; positive z alone with delta_oi <= 0 is NOT qualifying (contraction never qualifies even if z >= 1 due to negative median/MAD). If MAD == 0 => NO_TRADE (H6 V2 raw-sign rule, EXT-CONS-004 repair).",
+    "neutral_or_insufficient": "delta_oi <= 0, or z_oi < +1.0, or MAD == 0, or < 336 historical observations => NO_TRADE/NO_SIGNAL",
+    "note": "thresholds frozen BEFORE any performance observation; NO parameter sweep is permitted; changing these values after any economic execution invalidates the experiment",
+    "type": "PIT_ROLLING_DISTRIBUTION"
+   },
+   "classification": "IDENTICAL"
+  }
+ ],
+ "summary": {
+  "IDENTICAL": 39,
+  "STRUCTURALLY_RELOCATED_WITH_IDENTICAL_MEANING": 1,
+  "CHANGED": 0,
+  "DROPPED": 0,
+  "ADDED_ECONOMIC_FILTER": 0
+ },
+ "UNEXPLAINED_DIFFERENCES": 0,
+ "ECONOMIC_RETUNE_COUNT": 0,
+ "unexplained_detail": [],
+ "V4_SPEC_COMPLETE": true,
+ "V2_TO_V4_UNEXPLAINED_ECONOMIC_DIFF": 0,
+ "verdict": "PASS"
+}
