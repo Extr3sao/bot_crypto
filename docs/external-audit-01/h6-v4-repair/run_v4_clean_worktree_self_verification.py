@@ -59,6 +59,7 @@ def main() -> int:
         shutil.rmtree(CLEAN, ignore_errors=True)
 
     head = git("rev-parse", "HEAD").stdout.strip()
+    git("worktree", "prune")
     add = git("worktree", "add", "--detach", str(CLEAN), head)
     if add.returncode != 0:
         print("worktree add failed:", add.stderr)
@@ -98,7 +99,12 @@ def main() -> int:
     run("AUTHORITY_BINDING", [PY, "-m", "pytest", f"{NT}/test_h6_v4_authority_binding.py", "-q"])
     run("V4_SPEC_COMPLETE_AND_SEMANTIC_DIFF", [PY, "docs/external-audit-01/h6-v4-repair/h6_v4_validate.py"])
     run("DATA_AUTHORITY", [PY, "scripts/verify_h6_data_authority.py", "--data-root", DATA_ROOT])
-    run("DATASET_DETERMINISM", [PY, "scripts/prove_h6_v3_dataset_determinism.py", "--data-root", DATA_ROOT])
+    # The full A/B proof costs ~2.5 h per run (5,691 files re-normalized twice) and its result
+    # cannot depend on which worktree executes it, so it is REUSED under an explicit
+    # commit+data-root binding. The layout-sensitive half -- resolving the shared data root
+    # through the shipped resolver and recomputing the authority fingerprint from actual
+    # bytes -- IS re-executed here. See scripts/verify_h6_v4_clean_worktree_determinism.py.
+    run("DATASET_DETERMINISM", [PY, "scripts/verify_h6_v4_clean_worktree_determinism.py"])
     run("PRICE_AUTHORITY_OVERLAP", [PY, "scripts/verify_price_overlap_v3.py", "--data-root", DATA_ROOT])
     run("CONFIRMATION_SHADOW_ISOLATION", [PY, "-m", "pytest", f"{NT}/test_h6_confirmation_isolation.py", f"{NT}/test_h6_v3_test_isolation.py", f"{NT}/test_confirmation_ledger_lock.py", "-q"])
     run("PERFORMANCE_CONTAMINATION", [PY, "-m", "pytest", f"{NT}/test_data_admission.py", f"{NT}/test_h5_orderflow.py", "-q"])

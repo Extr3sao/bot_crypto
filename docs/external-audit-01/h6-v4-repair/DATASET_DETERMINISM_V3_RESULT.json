@@ -1,0 +1,59 @@
+{
+  "checkpoint": "H6-V3-REPAIR",
+  "proof": "DATASET_DETERMINISM_V3",
+  "command": "python scripts/prove_h6_v3_dataset_determinism.py --data-root <path>",
+  "commit": "d7b6bef602639372a079afe419b6cc889f6c7b9e",
+  "data_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data",
+  "data_root_source": "TRADING_AGENTIC_DATA_ROOT",
+  "environment": {
+    "python": "3.11.15",
+    "platform": "win32"
+  },
+  "started_utc": "2026-09-13T10:44:59.285196+00:00",
+  "temp_root": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\h6v3_det_uq8ew2ul",
+  "determinism": {
+    "method": "independent full re-normalization A and B from shared raw authority into separate TEMP roots",
+    "files_normalized_per_run": 5691,
+    "raw_counts": {
+      "BTCUSDT": 2201,
+      "ETHUSDT": 1745,
+      "SOLUSDT": 1745
+    },
+    "ledger_bytes_A_equals_B": true,
+    "fingerprint_A": "16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99",
+    "fingerprint_B": "16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99",
+    "committed_authority_fingerprint": "16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99",
+    "canonical_bytes_fingerprint": "16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99",
+    "fingerprint_A_equals_B": true,
+    "fingerprint_A_equals_committed": true,
+    "fingerprint_commits_to_actual_bytes": true,
+    "determinism_status": "PASS"
+  },
+  "mutation_sensitivity": {
+    "mutated_file": "BTCUSDT/BTCUSDT-oi-5m-2024-06-05.jsonl (first 16 bytes overwritten, same length)",
+    "fingerprint_C": "ca5e90a923d6f689758269c3e854735bf4fd81b85ba8f597aed0411b64d6a151",
+    "fingerprint_C_differs_from_A": true,
+    "mutation_status": "PASS",
+    "real_raw_files_modified": false,
+    "canonical_authority_modified": false,
+    "note": "mutation applied to verifier TEMP copy only"
+  },
+  "btc_2024_06_05_forensic": {
+    "raw_zip": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\raw\\binance_um\\metrics\\BTCUSDT\\BTCUSDT-metrics-2024-06-05.zip",
+    "official_checksum_expected": "0ef289911a8aa9bd0ee68ab04473dca51c815bfca438629d580aa2fcb0e06058",
+    "raw_sha256_actual": "0ef289911a8aa9bd0ee68ab04473dca51c815bfca438629d580aa2fcb0e06058",
+    "official_checksum_match": true,
+    "renormalized_entry_classification": "VALID",
+    "renormalized_normalized_sha256": "bcd3d84950632e7cc70434b75b135bf1eaf56c4ebe72fd13fbea2bbb510a1fb7",
+    "canonical_normalized_sha256": "bcd3d84950632e7cc70434b75b135bf1eaf56c4ebe72fd13fbea2bbb510a1fb7",
+    "byte_identical": true,
+    "forensic_status": "PASS",
+    "v1_contamination_mechanism": "V1 dataset wrote into the shared canonical root without per-file provenance; BTC 2024-06-05 normalized content diverged from official raw",
+    "v2_clean_authority": "V2 refreeze wrote to dedicated oi_full_history_v2 root with per-file raw/normalized sha256 provenance",
+    "v3_portable_verification_path": "any verifier resolves --data-root, re-normalizes the day from the official sidecar-checked zip, compares byte-identity vs committed canonical"
+  },
+  "status": "PASS",
+  "duration_seconds": 8862.4,
+  "ended_utc": "2026-09-13T13:12:41.394386+00:00",
+  "exit_code": 0
+}

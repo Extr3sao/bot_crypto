@@ -2,7 +2,7 @@
  "artifact": "H6_V4_DASHBOARD_REPEAT_20",
  "checkpoint": "H6-V4-AUTHORITY-CONTRACT-AND-RUNTIME-BINDING-REPAIR-01",
  "test": "tests/unit/paper_dashboard/test_server.py::test_non_get_methods_are_405",
- "commit": "e2195681c06f725134e9cf06e370bb7870ab41c9",
+ "commit": "d7b6bef602639372a079afe419b6cc889f6c7b9e",
  "python_executable": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
  "module_authority": {
   "trading_bot": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-v4-repair\\src\\trading_bot\\__init__.py",
@@ -18,154 +18,154 @@
   "platform": "win32",
   "tz": "UTC"
  },
- "started_utc": "2026-09-13T08:07:46.448677+00:00",
- "total_duration_s": 35.23,
+ "started_utc": "2026-09-13T10:34:08.186342+00:00",
+ "total_duration_s": 39.97,
  "runs": [
   {
    "run": 1,
    "exit_code": 0,
    "pass": true,
-   "duration_s": 1.65,
+   "duration_s": 1.84,
    "tail": [
     ".                                                                        [100%]",
-    "1 passed in 0.84s"
+    "1 passed in 0.88s"
    ]
   },
   {
    "run": 2,
    "exit_code": 0,
    "pass": true,
-   "duration_s": 1.64,
+   "duration_s": 2.07,
    "tail": [
     ".                                                                        [100%]",
-    "1 passed in 0.80s"
+    "1 passed in 0.89s"
    ]
   },
   {
    "run": 3,
    "exit_code": 0,
    "pass": true,
-   "duration_s": 1.6,
+   "duration_s": 1.84,
    "tail": [
     ".                                                                        [100%]",
-    "1 passed in 0.78s"
+    "1 passed in 0.84s"
    ]
   },
   {
    "run": 4,
    "exit_code": 0,
    "pass": true,
-   "duration_s": 1.63,
+   "duration_s": 1.87,
    "tail": [
     ".                                                                        [100%]",
-    "1 passed in 0.83s"
+    "1 passed in 0.87s"
    ]
   },
   {
    "run": 5,
    "exit_code": 0,
    "pass": true,
-   "duration_s": 1.66,
+   "duration_s": 1.89,
    "tail": [
     ".                                                                        [100%]",
-    "1 passed in 0.83s"
+    "1 passed in 0.92s"
    ]
   },
   {
    "run": 6,
    "exit_code": 0,
    "pass": true,
-   "duration_s": 1.65,
+   "duration_s": 1.98,
    "tail": [
     ".                                                                        [100%]",
-    "1 passed in 0.81s"
+    "1 passed in 0.88s"
    ]
   },
   {
    "run": 7,
    "exit_code": 0,
    "pass": true,
-   "duration_s": 1.66,
+   "duration_s": 1.76,
    "tail": [
     ".                                                                        [100%]",
-    "1 passed in 0.82s"
+    "1 passed in 0.80s"
    ]
   },
   {
    "run": 8,
    "exit_code": 0,
    "pass": true,
-   "duration_s": 1.74,
+   "duration_s": 1.75,
    "tail": [
     ".                                                                        [100%]",
-    "1 passed in 0.86s"
+    "1 passed in 0.85s"
    ]
   },
   {
    "run": 9,
    "exit_code": 0,
    "pass": true,
-   "duration_s": 1.71,
+   "duration_s": 1.9,
    "tail": [
     ".                                                                        [100%]",
-    "1 passed in 0.83s"
+    "1 passed in 0.90s"
    ]
   },
   {
    "run": 10,
    "exit_code": 0,
    "pass": true,
-   "duration_s": 1.59,
+   "duration_s": 1.95,
    "tail": [
     ".                                                                        [100%]",
-    "1 passed in 0.79s"
+    "1 passed in 0.94s"
    ]
   },
   {
    "run": 11,
    "exit_code": 0,
    "pass": true,
-   "duration_s": 1.61,
+   "duration_s": 1.86,
    "tail": [
     ".                                                                        [100%]",
-    "1 passed in 0.79s"
+    "1 passed in 0.85s"
    ]
   },
   {
    "run": 12,
    "exit_code": 0,
    "pass": true,
-   "duration_s": 1.61,
+   "duration_s": 1.71,
    "tail": [
     ".                                                                        [100%]",
-    "1 passed in 0.81s"
+    "1 passed in 0.82s"
    ]
   },
   {
    "run": 13,
    "exit_code": 0,
    "pass": true,
-   "duration_s": 1.61,
+   "duration_s": 1.67,
    "tail": [
     ".                                                                        [100%]",
-    "1 passed in 0.81s"
+    "1 passed in 0.82s"
    ]
   },
   {
    "run": 14,
    "exit_code": 0,
    "pass": true,
-   "duration_s": 1.63,
+   "duration_s": 1.7,
    "tail": [
     ".                                                                        [100%]",
-    "1 passed in 0.83s"
+    "1 passed in 0.84s"
    ]
   },
   {
    "run": 15,
    "exit_code": 0,
    "pass": true,
-   "duration_s": 1.63,
+   "duration_s": 1.67,
    "tail": [
     ".                                                                        [100%]",
     "1 passed in 0.81s"
@@ -175,50 +175,50 @@
    "run": 16,
    "exit_code": 0,
    "pass": true,
-   "duration_s": 1.63,
-   "tail": [
-    ".                                                                        [100%]",
-    "1 passed in 0.85s"
-   ]
-  },
-  {
-   "run": 17,
-   "exit_code": 0,
-   "pass": true,
-   "duration_s": 1.62,
-   "tail": [
-    ".                                                                        [100%]",
-    "1 passed in 0.81s"
-   ]
-  },
-  {
-   "run": 18,
-   "exit_code": 0,
-   "pass": true,
-   "duration_s": 1.79,
+   "duration_s": 1.71,
    "tail": [
     ".                                                                        [100%]",
     "1 passed in 0.83s"
    ]
   },
   {
+   "run": 17,
+   "exit_code": 0,
+   "pass": true,
+   "duration_s": 1.85,
+   "tail": [
+    ".                                                                        [100%]",
+    "1 passed in 0.82s"
+   ]
+  },
+  {
+   "run": 18,
+   "exit_code": 0,
+   "pass": true,
+   "duration_s": 1.72,
+   "tail": [
+    ".                                                                        [100%]",
+    "1 passed in 0.82s"
+   ]
+  },
+  {
    "run": 19,
    "exit_code": 0,
    "pass": true,
-   "duration_s": 1.68,
+   "duration_s": 1.79,
    "tail": [
     ".                                                                        [100%]",
-    "1 passed in 0.81s"
+    "1 passed in 0.88s"
    ]
   },
   {
    "run": 20,
    "exit_code": 0,
    "pass": true,
-   "duration_s": 1.64,
+   "duration_s": 2.16,
    "tail": [
     ".                                                                        [100%]",
-    "1 passed in 0.82s"
+    "1 passed in 0.94s"
    ]
   }
  ],
