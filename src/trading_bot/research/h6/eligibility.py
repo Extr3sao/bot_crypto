@@ -6,6 +6,7 @@ must not alter eligibility at T.
 
 from __future__ import annotations
 
+from dataclasses import dataclass
 from datetime import datetime, timedelta
 from typing import Iterable, Sequence
 
@@ -15,17 +16,85 @@ from trading_bot.research.h6.feature_engine import (
 )
 
 
+@dataclass(frozen=True, slots=True)
+class HourWindow:
+    """Half-open completed-hour window ``[start, end)``.
+
+    V4 repairs V3-FEATURE-001 / V3-FEATURE-002. V3 returned a bare tuple from a
+    ``_hour_close_boundaries`` helper while the caller read ``.start`` / ``.end``
+    (AttributeError for every non-empty snapshot list), and used INCLUSIVE bounds
+    which yield 13 grid points for an hour on a 5-minute grid aligned to :00
+    instead of the required 12.
+
+    One explicit representation, one explicit boundary rule:
+    the frozen contract requires exactly 12 distinct 5m snapshots per completed
+    hour, which is ``[T-1h, T)`` — the snapshot stamped exactly at T belongs to the
+    NEXT hour, never to the hour it closes.
+    """
+
+    start: datetime
+    end: datetime
+
+    def __post_init__(self) -> None:
+        if not self.end > self.start:
+            raise ValueError(f"invalid hour window: start={self.start!r} end={self.end!r}")
+
+    @property
+    def seconds(self) -> float:
+        return (self.end - self.start).total_seconds()
+
+    def contains(self, when: datetime) -> bool:
+        """Half-open membership: start <= when < end."""
+        return self.start <= when < self.end
+
+    def as_tuple(self) -> tuple[datetime, datetime]:
+        return self.start, self.end
+
+
+def _hour_close_boundaries(hour_close_time: datetime) -> HourWindow:
+    """The completed-hour window that CLOSES at ``hour_close_time``."""
+    return HourWindow(start=hour_close_time - timedelta(hours=1), end=hour_close_time)
+
+
+def _distinct_by_time(snapshots: Iterable[ObservedOI]) -> list[ObservedOI]:
+    """Distinct snapshots by timestamp.
+
+    A repeated timestamp with an identical payload is a harmless duplicate and
+    collapses to one observation. A repeated timestamp with a *conflicting* payload
+    is ambiguous provider data: the hour cannot be aggregated causally, so the
+    aggregation fails closed (``ValueError``) instead of silently picking a winner.
+    """
+    seen: dict[datetime, ObservedOI] = {}
+    for s in snapshots:
+        prior = seen.get(s.oi_time)
+        if prior is not None and (
+            prior.sum_open_interest != s.sum_open_interest
+            or prior.sum_open_interest_value != s.sum_open_interest_value
+        ):
+            raise ValueError(
+                "conflicting duplicate 5m OI snapshot at "
+                f"{s.oi_time.isoformat()} "
+                f"(sum_open_interest {prior.sum_open_interest!r} vs {s.sum_open_interest!r})"
+            )
+        seen[s.oi_time] = s
+    return list(seen.values())
+
+
 def build_completed_hour_oi(
-    snapshots: Iterable[ObservOI],
+    snapshots: Iterable[ObservedOI],
     *,
     hour_close_time: datetime,
 ) -> CompletedHourOI:
     """Aggregate exactly the 5m snapshots belonging to one completed hour.
 
-    Snapshots must satisfy `snapshot.oi_time <= hour_close_time`.
+    Window is half-open ``[hour_close_time - 1h, hour_close_time)``. A snapshot
+    stamped exactly at ``hour_close_time`` is NOT part of this hour. Snapshots
+    strictly after the window are invisible.
+
+    Non-empty input must never crash (V3-FEATURE-001).
     """
-    ts_to_use = _hour_close_boundaries(hour_close_time)
-    within = [s for s in snapshots if ts_to_use.start <= s.oi_time <= ts_to_use.end]
+    window = _hour_close_boundaries(hour_close_time)
+    within = [s for s in snapshots if window.contains(s.oi_time)]
     distinct = _distinct_by_time(within)
     if len(distinct) == 0:
         return CompletedHourOI(
@@ -41,16 +110,32 @@ def build_completed_hour_oi(
     )
 
 
-def _hour_close_boundaries(hour_close_time: datetime) -> tuple[datetime, datetime]:
-    start = hour_close_time - timedelta(hours=1)
-    return start, hour_close_time
+def completed_hour_oi_window(
+    snapshots: Iterable[ObservedOI],
+    *,
+    hour_close_time: datetime,
+) -> tuple[CompletedHourOI, list[ObservedOI]]:
+    """As ``build_completed_hour_oi`` but also returns the snapshots retained.
 
-
-def _distinct_by_time(snapshots: Iterable[ObservOI]) -> list[ObservOI]:
-    seen: dict[datetime, ObservOI] = {}
-    for s in snapshots:
-        seen[s.oi_time] = s
-    return list(seen.values())
+    Used by tests and diagnostics to prove which observations were admitted and
+    which were excluded (e.g. the snapshot stamped exactly at the boundary).
+    """
+    window = _hour_close_boundaries(hour_close_time)
+    within = [s for s in snapshots if window.contains(s.oi_time)]
+    distinct = sorted(_distinct_by_time(within), key=lambda s: s.oi_time)
+    if not distinct:
+        return (
+            CompletedHourOI(hour_close_time=hour_close_time, oi_last_snapshot=0.0, snapshot_count=0),
+            [],
+        )
+    return (
+        CompletedHourOI(
+            hour_close_time=hour_close_time,
+            oi_last_snapshot=distinct[-1].sum_open_interest,
+            snapshot_count=len(distinct),
+        ),
+        distinct,
+    )
 
 
 def completed_hour_changes_before(
