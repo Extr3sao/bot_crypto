@@ -52,13 +52,17 @@ def resolve_oi_v2_data_dir() -> Path:
         return r / "data" / "processed" / "oi_full_history_v2"
     if OI_V2_DIR_DEFAULT.is_dir():
         return OI_V2_DIR_DEFAULT
-    # clean-worktree layout: <main>/.worktrees/<name> -> main repo at parents[1]
-    try:
-        shared = REPO.parents[1] / "data" / "processed" / "oi_full_history_v2"
-    except IndexError:  # repo checked out at filesystem root or non-nested
-        shared = REPO.parent / "data" / "processed" / "oi_full_history_v2"
-    if shared.is_dir():
-        return shared
+    # Worktree layouts: <main>/.worktrees/<name>, and also nested ones where a verifier
+    # creates its own worktree inside a worktree. Walk the ancestors instead of assuming
+    # a single level. The walk stays bounded to directories that are themselves repo or
+    # worktree roots (they contain .git or .worktrees), so no arbitrary user directory is
+    # ever searched.
+    for ancestor in REPO.parents:
+        if not ((ancestor / ".git").exists() or (ancestor / ".worktrees").is_dir()):
+            continue
+        shared = ancestor / "data" / "processed" / "oi_full_history_v2"
+        if shared.is_dir():
+            return shared
     return OI_V2_DIR_DEFAULT
 
 # ---- frozen constants (H6 V2 spec mirrors these) ----

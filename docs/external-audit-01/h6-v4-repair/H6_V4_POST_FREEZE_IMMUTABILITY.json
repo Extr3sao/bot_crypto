@@ -1,0 +1,57 @@
+{
+ "artifact": "H6_V4_POST_FREEZE_IMMUTABILITY",
+ "checkpoint": "H6-V4-AUTHORITY-CONTRACT-AND-RUNTIME-BINDING-REPAIR-01",
+ "timestamp_utc": "2026-09-13T08:13:42Z",
+ "prereg_commit": "e2195681c06f725134e9cf06e370bb7870ab41c9",
+ "head_commit": "5b0e18acef8c33f7d8eae394cda17535b5a7d2c0",
+ "git_diff_prereg_to_head": "(empty)",
+ "diff_is_empty": true,
+ "frozen_artifacts": [
+  {
+   "path": "docs/external-audit-01/h6-v4-repair/H6_SPEC_V4.json",
+   "prereg_blob_id": "aab9baa9901c3107b031d45de33b96a8b5300681",
+   "head_blob_id": "aab9baa9901c3107b031d45de33b96a8b5300681",
+   "blob_ids_equal": true,
+   "prereg_sha256": "9de2b147acf63086b5980d6a47d5483d6900476563d45a6d8779f6c6accdee3d",
+   "head_sha256": "9de2b147acf63086b5980d6a47d5483d6900476563d45a6d8779f6c6accdee3d",
+   "byte_hashes_equal": true,
+   "DRIFT": false
+  },
+  {
+   "path": "docs/external-audit-01/h6-v4-repair/H6_MANIFEST_V4.json",
+   "prereg_blob_id": "492c2e6b7e4cb6b8b931d0551fa36f96827f58b7",
+   "head_blob_id": "492c2e6b7e4cb6b8b931d0551fa36f96827f58b7",
+   "blob_ids_equal": true,
+   "prereg_sha256": "0cb199fd5ce28e94a749134cb1c537a8d532f78ae2296a2e614228d747289e01",
+   "head_sha256": "0cb199fd5ce28e94a749134cb1c537a8d532f78ae2296a2e614228d747289e01",
+   "byte_hashes_equal": true,
+   "DRIFT": false
+  },
+  {
+   "path": "docs/external-audit-01/h6-v4-repair/H6_FEATURE_AUTHORITY_WHITELIST_V4.json",
+   "prereg_blob_id": "31b8691e309209321bb93f713179d1db968129f8",
+   "head_blob_id": "31b8691e309209321bb93f713179d1db968129f8",
+   "blob_ids_equal": true,
+   "prereg_sha256": "6c697b88f469c40621b5701cc5e7efc8947f7353adf0b5f09a8cc1df98f45f50",
+   "head_sha256": "6c697b88f469c40621b5701cc5e7efc8947f7353adf0b5f09a8cc1df98f45f50",
+   "byte_hashes_equal": true,
+   "DRIFT": false
+  },
+  {
+   "path": "docs/external-audit-01/h6-v4-repair/H6_DATA_AUTHORITY_V4.json",
+   "prereg_blob_id": "8db6b2a014de2382940484ba1e877f06784b9496",
+   "head_blob_id": "8db6b2a014de2382940484ba1e877f06784b9496",
+   "blob_ids_equal": true,
+   "prereg_sha256": "cb30606a62db189144b18db0eddc4213f472ea656dc31b12a97050efaf1097d2",
+   "head_sha256": "cb30606a62db189144b18db0eddc4213f472ea656dc31b12a97050efaf1097d2",
+   "byte_hashes_equal": true,
+   "DRIFT": false
+  }
+ ],
+ "POST_FREEZE_ARTIFACT_DRIFT": 0,
+ "drift_paths": [],
+ "status": "PASS",
+ "H6_BACKTESTS": 0,
+ "H6_EXECUTIONS": 0,
+ "PERFORMANCE_OBSERVED": false
+}
