@@ -9,6 +9,7 @@ the decision time.
 
 from __future__ import annotations
 
+import functools
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from typing import Iterable, Sequence
@@ -133,9 +134,13 @@ class H6FeatureEngine:
 
         delta_oi = current_hour_oi.oi_last_snapshot - previous_hour_oi.oi_last_snapshot
 
-        median, mad = _robust_median_and_mad(completed_hour_changes_before)
+        # Frozen window: strictly trailing, most recent `length_hours` observations.
+        window_length, min_observations = frozen_rolling_window()
+        window = list(completed_hour_changes_before)[-window_length:]
 
-        if mad == 0.0 or len(completed_hour_changes_before) < 336:
+        median, mad = _robust_median_and_mad(window)
+
+        if mad == 0.0 or len(window) < min_observations:
             return self._ineligible(
                 asset,
                 decision_time,
@@ -199,6 +204,32 @@ class H6FeatureEngine:
             dataset_sha256=_dataset_sha256(),
             spec_sha256=_spec_sha256(),
         )
+
+
+@functools.lru_cache(maxsize=8)
+def _frozen_rolling_contract(spec_sha256: str) -> tuple[int, int]:
+    from trading_bot.research.h6.frozen_contract_snapshot import load_frozen_h6_snapshot
+
+    snap = load_frozen_h6_snapshot()
+    return int(snap.rolling_window_length_hours), int(snap.rolling_min_observations)
+
+
+def frozen_rolling_window() -> tuple[int, int]:
+    """``(length_hours, min_observations)`` of the preregistered rolling window.
+
+    V4 repair: the engine used to enforce only the observation MINIMUM, never the window
+    LENGTH, so the statistic silently depended on how much history the caller happened to
+    pass. ``prepare_decision_from_data_root`` passes the whole causal store, which turned
+    median/MAD -- and hence robust_z and the signal -- into a function of dataset age
+    rather than of the frozen trailing window. The V2 economic authority truncates the
+    series (``hist[-ROBUST_Z_WINDOW_HOURS:]``); this restores exactly that, reading both
+    values from the bound frozen spec rather than hard-coding them here.
+
+    Fail-closed: with no bound authority this raises rather than guessing a window.
+    """
+    from trading_bot.research.h6 import runtime_authority as _ra
+
+    return _frozen_rolling_contract(_ra.spec_sha256_or_unbound())
 
 
 def _price_direction(open: float, close: float) -> PriceDirection:

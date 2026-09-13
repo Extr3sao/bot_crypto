@@ -36,6 +36,7 @@ from trading_bot.research.h6.feature_engine import (
     H6Signal,
     ObservedOI,
     compute_signal,
+    frozen_rolling_window,
 )
 
 HOUR_MS = 3_600_000
@@ -90,14 +91,33 @@ def to_observed_oi(observations: Sequence[AdmittedOIObservation]) -> list[Observ
     ]
 
 
+def _oldest_hour_close(observations: Sequence[AdmittedOIObservation]) -> datetime | None:
+    """Close time of the hour containing the OLDEST observation handed over."""
+    if not observations:
+        return None
+    oldest = min(o.oi_time() for o in observations)
+    return oldest.replace(minute=0, second=0, microsecond=0) + timedelta(hours=1)
+
+
 def completed_hours_ending_at(
     observations: Sequence[AdmittedOIObservation],
     *,
     first_hour_close: datetime,
     last_hour_close: datetime,
 ) -> list[CompletedHourOI]:
-    """Half-open completed-hour aggregates across a range of hour-close times."""
-    snaps = to_observed_oi(observations)
+    """Half-open completed-hour aggregates across a range of hour-close times.
+
+    The observations are first restricted to the union of the queried hour windows,
+    ``[first_hour_close - 1h, last_hour_close)``.  No snapshot outside that union can
+    belong to any queried window, so the restriction is semantics-preserving; it keeps
+    the cost proportional to the WINDOW rather than to however much history the caller
+    passes.
+    """
+    if last_hour_close < first_hour_close:
+        return []
+    union_start = first_hour_close - timedelta(hours=1)
+    kept = [o for o in observations if union_start <= o.oi_time() < last_hour_close]
+    snaps = to_observed_oi(kept)
     hours: list[CompletedHourOI] = []
     close = first_hour_close
     while close <= last_hour_close:
@@ -115,13 +135,26 @@ def build_feature_state(
     engine: H6FeatureEngine | None = None,
 ) -> tuple[H6FeatureState, CompletedHourOI, CompletedHourOI | None, int]:
     """Aggregate and compute the frozen feature state from admitted observations only."""
-    snaps = to_observed_oi(observations)
+    # Only the two hours a decision actually consumes are converted; a caller may hand
+    # over the whole causal store, so this must not materialise every snapshot.
+    recent = [o for o in observations if o.oi_time() >= decision_time - timedelta(hours=2)]
+    snaps = to_observed_oi(recent)
     current = build_completed_hour_oi(snaps, hour_close_time=decision_time)
     previous = build_completed_hour_oi(snaps, hour_close_time=decision_time - timedelta(hours=1))
 
+    # The frozen window bounds the number of hourly CHANGES (each change pairs two
+    # consecutive completed hours), so the hour range spans length_hours + 1 closes.  It
+    # is additionally clipped to the history that actually exists: materialising the full
+    # window over a shorter history would fabricate zero-level "completed" hours, which
+    # are not observations at all.  The engine then applies the frozen window to the
+    # series it receives, so a caller passing everything still gets the frozen window.
+    window_hours, _min_observations = frozen_rolling_window()
+    window_start = decision_time - timedelta(hours=window_hours + 1)
+    oldest_close = _oldest_hour_close(observations)
+    first_hour_close = max(window_start, oldest_close) if oldest_close is not None else window_start
     hours = completed_hours_ending_at(
         observations,
-        first_hour_close=decision_time - timedelta(hours=len(observations) // 12 + 2),
+        first_hour_close=first_hour_close,
         last_hour_close=decision_time,
     )
     changes = completed_hour_changes_before(hours, strictly_before_decision_time=decision_time)
