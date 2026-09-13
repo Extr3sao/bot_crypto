@@ -1,0 +1,92 @@
+{
+ "experiment_id": 4,
+ "hypothesis_id": "H6-OI-CONFIRMED-CONTINUATION-04",
+ "checkpoint": "H6-V4-AUTHORITY-CONTRACT-AND-RUNTIME-BINDING-REPAIR-01",
+ "spec_version": 4,
+ "preregistered_utc": "2026-09-13",
+ "status_at_prereg": "PREREGISTERED_NOT_EXECUTED",
+ "H6_EXECUTIONS": 0,
+ "H6_BACKTESTS": 0,
+ "PERFORMANCE_OBSERVED": false,
+ "spec": {
+  "path": "docs/external-audit-01/h6-v4-repair/H6_SPEC_V4.json",
+  "sha256": "9de2b147acf63086b5980d6a47d5483d6900476563d45a6d8779f6c6accdee3d",
+  "previous_spec_sha256_v2": "221cfa1d6eb3dae30948e9605f258075c0cd69e8f38187da4959c3e696b8b000 (IMMUTABLE historical; not overwritten)",
+  "previous_spec_sha256_v3": "IMMUTABLE_FAILED_PRE_EXECUTION (not overwritten)"
+ },
+ "product": {
+  "whitelist_path": "docs/external-audit-01/h6-v4-repair/H6_FEATURE_AUTHORITY_WHITELIST_V4.json",
+  "data_authority_path": "docs/external-audit-01/h6-v4-repair/H6_DATA_AUTHORITY_V4.json",
+  "runtime_authority_binding_expected": "docs/external-audit-01/h6-v4-repair/H6_RUNTIME_AUTHORITY_BINDING_V4.json",
+  "note": "The authority binding is generated POST-FREEZE and is NON-ECONOMIC."
+ },
+ "dataset": {
+  "oi_full_history_v2": {
+   "path": "data/processed/oi_full_history_v2/ (normalized authority)",
+   "manifest_path": "data/processed/oi_full_history_v2/OI_FULL_HISTORY_DATASET_MANIFEST_V2.json",
+   "manifest_committed_copy": "docs/external-audit-01/oi-full-history-02/OI_FULL_HISTORY_DATASET_MANIFEST_V2.json",
+   "manifest_sha256": "24160d1c8eb42dc6feaaddabed469916898f27814c34d567b5533e54f15532ac",
+   "ledger_path": "data/processed/oi_full_history_v2/OI_ARCHIVE_DAY_VALIDITY_LEDGER_V2.jsonl",
+   "ledger_sha256": "bb2b43c27a88bf9fe3ec22573903a61007f046ddc1256b5caa3e788cba15e714",
+   "ledger_line_count_expected": 5691,
+   "OI_FULL_HISTORY_DATASET_SHA256": "16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99",
+   "schema_version": "2.0.1",
+   "normalizer_version": "2.1.0",
+   "expected_file_counts": {
+    "BTCUSDT": 2201,
+    "ETHUSDT": 1745,
+    "SOLUSDT": 1745,
+    "TOTAL": 5691
+   }
+  },
+  "price_authority_v2": {
+   "path_template": "data/processed/price_1h_v2/{ASSET}_1h.jsonl",
+   "manifest_path": "docs/external-audit-01/oi-full-history-02/PRICE_1H_AUTHORITY_V2_MANIFEST.json",
+   "manifest_sha256": "c7726cc1b64fed99a62bd0ef72f84677b3b31fd58cbad4aa63dec4c75f18c1e2",
+   "PRICE_AUTHORITY_SHA256_V2": "e1c2462a6aa9ba0c921154d259a28c49be1e2fc58a544dbd97af8ecabef52168",
+   "covers_common_window": true,
+   "expected_hours_per_asset": 41880,
+   "missing_hours_per_asset": 0,
+   "overlap_verification": "PASS at 2026-09-09T00:00Z byte/economic equality for all three assets; no PRICE_AUTHORITY_CONFLICT"
+  },
+  "field_whitelist": {
+   "path": "docs/external-audit-01/h6-v4-repair/H6_FEATURE_AUTHORITY_WHITELIST_V4.json"
+  }
+ },
+ "common_window_utc": [
+  "2021-12-01T00:00:00Z",
+  "2026-09-10T23:59:59Z"
+ ],
+ "assets": [
+  "BTCUSDT",
+  "ETHUSDT",
+  "SOLUSDT"
+ ],
+ "decision_timeframe": "1h",
+ "entry_timing": "NEXT_HOUR_OPEN",
+ "exit_timing": "NEXT_HOUR_CLOSE",
+ "stop": "NONE",
+ "cooldown": "NONE",
+ "statistical_gates": {
+  "P_Sharp_greater_0_min": 0.9,
+  "permutation_p_max": 0.05,
+  "sharpe_ci_excludes_zero": true,
+  "permutation_method": "sign-flip",
+  "permutation_draws": 10000,
+  "permutation_seed": 20260911
+ },
+ "governance": {
+  "v3_failure_record": "docs/external-audit-01/h6-v4-repair/H6_V3_FAILURE_RECORD.json",
+  "v4_defect_regression_matrix": "docs/external-audit-01/h6-v4-repair/H6_V4_DEFECT_REGRESSION_MATRIX.json",
+  "selection_rationale": "docs/external-audit-01/h6-v4-repair/H6_SELECTION_RATIONALE_V4.md",
+  "mechanism_evidence": "docs/external-audit-01/h6-v4-repair/H6_MECHANISM_EVIDENCE_V4.md",
+  "failed_memory_collision_review": "docs/external-audit-01/h6-v4-repair/H6_FAILED_MEMORY_COLLISION_REVIEW_V4.md",
+  "immutability": "After this prereg commit the V4 economic artefacts (SPEC/MANIFEST/WHITELIST/DATA_AUTHORITY) are immutable. A non-economic H6_RUNTIME_AUTHORITY_BINDING_V4.json is created post-freeze and MUST NOT modify them.",
+  "builder_verifier_separation": "Builder self-verification is builder evidence only and is NOT independent. Independent verification is H6-EXTERNAL-INDEPENDENT-VERIFICATION-V4 by a different context/agent."
+ },
+ "provenance": {
+  "v2_prereg_historical": "IMMUTABLE (superseded by V4 for governance defects only)",
+  "v3_prereg_historical": "IMMUTABLE_FAILED_PRE_EXECUTION",
+  "note": "no prereg-commit self-reference inside this manifest; the post-freeze binding carries it"
+ }
+}

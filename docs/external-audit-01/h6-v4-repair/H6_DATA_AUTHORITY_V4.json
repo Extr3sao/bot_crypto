@@ -1,0 +1,105 @@
+{
+ "authority_id": "PORTABLE_RESEARCH_DATA_AUTHORITY_V1",
+ "authority_version": "1.0.1",
+ "checkpoint": "H6-V4-AUTHORITY-CONTRACT-AND-RUNTIME-BINDING-REPAIR-01",
+ "provider": "Binance USD-M (data.binance.vision official archives)",
+ "dataset_family": "open_interest_full_history_v2",
+ "symbols": [
+  "BTCUSDT",
+  "ETHUSDT",
+  "SOLUSDT"
+ ],
+ "date_ranges": {
+  "BTCUSDT": [
+   "2020-09-01",
+   "2026-09-10"
+  ],
+  "ETHUSDT": [
+   "2021-12-01",
+   "2026-09-10"
+  ],
+  "SOLUSDT": [
+   "2021-12-01",
+   "2026-09-10"
+  ]
+ },
+ "raw_source_type": "Binance USD-M daily metrics ZIP archives + CHECKSUM sidecars",
+ "raw_source_base": "https://s3-ap-northeast-1.amazonaws.com/data.binance.vision",
+ "raw_source_locator_pattern": "data/futures/um/daily/metrics/{symbol}/{symbol}-metrics-{day}.zip (+ .CHECKSUM)",
+ "raw_source_local_relative": "data/raw/binance_um/metrics/{symbol}/{symbol}-metrics-{day}.zip",
+ "checksum_source_pattern": "data/futures/um/daily/metrics/{symbol}/{symbol}-metrics-{day}.zip.CHECKSUM (sha256 hex + filename)",
+ "local_cache_discovery_order": [
+  "--data-root <path> (explicit CLI flag to verify_h6_data_authority.py / verify_h6_v3_environment.py)",
+  "env TRADING_AGENTIC_DATA_ROOT",
+  "repo-relative configured cache path: data/raw/binance_um/metrics/ and data/processed/oi_full_history_v2/",
+  "public official source reconstruction via scripts/download_oi_full_history.py --symbol <symbol>"
+ ],
+ "local_cache_relative_or_configurable_path": "data/raw/binance_um/metrics/ (primary) + data/processed/oi_full_history_v2/ (normalized authority)",
+ "verifier_read_only_mapping": "No per-worktree copy; verifier resolves shared data root READ ONLY via --data-root or TRADING_AGENTIC_DATA_ROOT env var; absolute Windows path is never the only authority",
+ "expected_file_counts": {
+  "BTCUSDT": 2201,
+  "ETHUSDT": 1745,
+  "SOLUSDT": 1745,
+  "TOTAL": 5691
+ },
+ "raw_source_locator_example": "https://s3-ap-northeast-1.amazonaws.com/data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2024-06-05.zip",
+ "checksum_locator_example": "https://s3-ap-northeast-1.amazonaws.com/data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2024-06-05.zip.CHECKSUM",
+ "normalizer_version": "2.1.0",
+ "normalizer_path": "scripts/normalize_oi_full_history_v2.py",
+ "normalizer_commit": "3f2e9c7",
+ "schema_version": "2.0.1",
+ "field_whitelist": [
+  "create_time",
+  "symbol",
+  "sum_open_interest",
+  "sum_open_interest_value"
+ ],
+ "excluded_provider_fields": [
+  "count_toptrader_long_short_ratio",
+  "sum_toptrader_long_short_ratio",
+  "count_long_short_ratio",
+  "sum_taker_long_short_vol_ratio"
+ ],
+ "manifest_path": "data/processed/oi_full_history_v2/OI_FULL_HISTORY_DATASET_MANIFEST_V2.json",
+ "manifest_committed_copy": "docs/external-audit-01/oi-full-history-02/OI_FULL_HISTORY_DATASET_MANIFEST_V2.json",
+ "manifest_sha256": "24160d1c8eb42dc6feaaddabed469916898f27814c34d567b5533e54f15532ac",
+ "ledger_path": "data/processed/oi_full_history_v2/OI_ARCHIVE_DAY_VALIDITY_LEDGER_V2.jsonl",
+ "ledger_committed_copy": "docs/external-audit-01/oi-full-history-02/OI_ARCHIVE_DAY_VALIDITY_LEDGER_V2.jsonl",
+ "ledger_sha256": "bb2b43c27a88bf9fe3ec22573903a61007f046ddc1256b5caa3e788cba15e714",
+ "ledger_line_count_expected": 5691,
+ "dataset_fingerprint_algorithm": "sha256(canonical_json({schema_version, normalizer_version, files: sorted([symbol, day, raw_source_sha256, normalized_sha256, rows, dataset_fingerprint, classification])}))",
+ "dataset_sha256": "16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99",
+ "dataset_sha256_method": "same as scripts/normalize_oi_full_history_v2.py build_v2_dataset fingerprint derivation (64 hex, lowercase)",
+ "required_fields": [
+  "timestamp_ms",
+  "sum_open_interest",
+  "sum_open_interest_value",
+  "unit_semantics",
+  "source_file",
+  "source_sha256"
+ ],
+ "forbidden_fields": [
+  "count_toptrader_long_short_ratio",
+  "sum_toptrader_long_short_ratio",
+  "count_long_short_ratio",
+  "sum_taker_long_short_vol_ratio"
+ ],
+ "price_authority": {
+  "manifest_path": "docs/external-audit-01/oi-full-history-02/PRICE_1H_AUTHORITY_V2_MANIFEST.json",
+  "price_authority_sha256": "e1c2462a6aa9ba0c921154d259a28c49be1e2fc58a544dbd97af8ecabef52168",
+  "common_window_utc": [
+   "2021-12-01T00:00:00Z",
+   "2026-09-10T23:00:00Z"
+  ],
+  "expected_hours_per_asset": 41880,
+  "source_official": "Binance USDM 1h klines via official data.binance.vision daily zip archives (data/raw/binance_um/klines_1h_ext/) + frozen H1 1h klines (cb3de4f)"
+ },
+ "reconstruction_command": "python scripts/normalize_oi_full_history_v2.py --out-dir <data-root>/oi_full_history_v2 (or python scripts/normalize_oi_full_history_v2.py [<data-root>])",
+ "verification_command": "python scripts/verify_h6_data_authority.py --data-root <path>  (exit 0 PASS, non-zero FAIL)",
+ "environment_bootstrap_command": "python scripts/verify_h6_v3_environment.py [--data-root <path>]",
+ "portability_constraint": "No machine-specific absolute Windows path is the only authority; discovery order resolves explicitly",
+ "re_admission_policy": "If local source absent, verifier may fetch bounded subset (e.g., BTC 2024-06-05) from official public source without reproducing full 5691 fetch; full 5691 backfill is via scripts/download_oi_full_history.py --symbol all",
+ "supersedes": "docs/external-audit-01/oi-full-history-03/H6_DATA_AUTHORITY_V3.json",
+ "unchanged_data_facts": "The data authority facts are IDENTICAL to V3 (dataset fingerprint, manifest hash, ledger hash, counts, schema/normalizer versions). V3 DATA_AUTHORITY = PASS. No data was rebuilt.",
+ "field_whitelist_artifact": "docs/external-audit-01/h6-v4-repair/H6_FEATURE_AUTHORITY_WHITELIST_V4.json"
+}

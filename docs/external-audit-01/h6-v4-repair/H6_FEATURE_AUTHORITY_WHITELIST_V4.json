@@ -1,0 +1,92 @@
+{
+ "artifact": "H6 feature authority whitelist V4",
+ "checkpoint": "H6-V4-AUTHORITY-CONTRACT-AND-RUNTIME-BINDING-REPAIR-01",
+ "supersedes": "docs/external-audit-01/oi-full-history-03/H6_FEATURE_AUTHORITY_WHITELIST_V3.json",
+ "ALLOWED_FIELDS": [
+  {
+   "field": "sum_open_interest",
+   "role": "OI level (position stock)",
+   "source": "SOURCE_BINANCE_VISION_USDM_METRICS_DAILY",
+   "unit": "BASE_ASSET_UNITS"
+  },
+  {
+   "field": "sum_open_interest_value",
+   "role": "OI notional (position stock)",
+   "source": "SOURCE_BINANCE_VISION_USDM_METRICS_DAILY",
+   "unit": "USDT_NOTIONAL"
+  },
+  {
+   "field": "price_open_high_low_close_volume_1h",
+   "role": "market context only",
+   "source": "price authority V2 (PRICE_1H_AUTHORITY_V2_MANIFEST.json, covers common window fully 2021-12-01->2026-09-10)",
+   "unit": "PRICE/VOLUME"
+  }
+ ],
+ "FORBIDDEN_FIELDS": [
+  "count_toptrader_long_short_ratio",
+  "sum_toptrader_long_short_ratio",
+  "count_long_short_ratio",
+  "sum_taker_long_short_vol_ratio"
+ ],
+ "ALLOWED_METADATA_FIELDS": [
+  {
+   "field": "timestamp_ms",
+   "role": "PIT ordering / provenance (never a feature)"
+  },
+  {
+   "field": "unit_semantics",
+   "role": "unit provenance (never a feature)"
+  },
+  {
+   "field": "source_file",
+   "role": "provenance (never a feature)"
+  },
+  {
+   "field": "source_sha256",
+   "role": "provenance (never a feature)"
+  }
+ ],
+ "H6_CONFIRMATION_DATA_DEPENDENCY": "NONE",
+ "H6_SHADOW_DATA_DEPENDENCY": "NONE",
+ "enforcement": {
+  "accessor": "H6FieldAccess — SANITIZING. Forbidden values are never stored: construction validates inbound keys and retains only admitted data in an immutable mapping.",
+  "boundary": "feature_authority.admitted_observation — FAIL-CLOSED. A row carrying a forbidden or unadmitted field is rejected BEFORE any aggregation/feature/signal exists.",
+  "runtime_path": "preparation.prepare_decision / prepare_decision_from_data_root is the actual H6 runtime entry point and calls the fail-closed boundary first.",
+  "bypass_paths_allowed": 0,
+  "forbidden_values_stored": 0,
+  "forbidden_values_recoverable": 0,
+  "covers": [
+   "__getitem__",
+   "get",
+   "get_default",
+   "keys",
+   "values",
+   "items",
+   "iteration",
+   "contains",
+   "len",
+   "attribute",
+   "repr",
+   "str",
+   "copy",
+   "deepcopy",
+   "pickle",
+   "json_serialization",
+   "mapping_unpack",
+   "object_getattribute",
+   "vars",
+   "__dict__"
+  ],
+  "exception": "H6ForbiddenFeatureAccess",
+  "rejection_exceptions": [
+   "H6ForbiddenRowRejected",
+   "H6UnadmittedField"
+  ]
+ },
+ "frozen_before": "any H6 V4 execution, backtest, or performance inspection",
+ "repairs": {
+  "V3-WL-001": "raw backing mapping exposed via H6FieldAccess.data (dataclass slot defeated __getattr__)",
+  "V3-WL-002": "repr/copy/pickle/backing-object leakage of unadmitted provider values",
+  "V3-WL-003": "whitelist not on the actual H6 runtime data path (decorative)"
+ }
+}

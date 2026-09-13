@@ -1,0 +1,257 @@
+{
+ "artifact": "H6_V4_PRE_PREREG_GATES",
+ "checkpoint": "H6-V4-AUTHORITY-CONTRACT-AND-RUNTIME-BINDING-REPAIR-01",
+ "timestamp_utc": "2026-09-13T08:06:14Z",
+ "python_executable": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+ "repo_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-v4-repair",
+ "git_commit": "7a2fd9ec39c3d641104553903bd1a7e8377aa525",
+ "data_root": "C:/Users/GVLLFR0035/Downloads/bot freebuff/data",
+ "module_path_authority": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-v4-repair\\src",
+ "gates": [
+  {
+   "gate": "PYTHON_IMPORT_AUTHORITY",
+   "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe scripts/verify_python_import_authority.py --json",
+   "returncode": 0,
+   "status": "PASS",
+   "stdout_tail": [
+    "   \"file\": \"C:\\\\Users\\\\GVLLFR0035\\\\Downloads\\\\bot freebuff\\\\.worktrees\\\\h6-v4-repair\\\\src\\\\trading_bot\\\\research\\\\h6\\\\preparation.py\"",
+    "  },",
+    "  \"trading_bot.research.h6.frozen_contract_snapshot\": {",
+    "   \"ok\": true,",
+    "   \"file\": \"C:\\\\Users\\\\GVLLFR0035\\\\Downloads\\\\bot freebuff\\\\.worktrees\\\\h6-v4-repair\\\\src\\\\trading_bot\\\\research\\\\h6\\\\frozen_contract_snapshot.py\"",
+    "  },",
+    "  \"trading_bot.research.oi_dataset_v2\": {",
+    "   \"ok\": true,",
+    "   \"file\": \"C:\\\\Users\\\\GVLLFR0035\\\\Downloads\\\\bot freebuff\\\\.worktrees\\\\h6-v4-repair\\\\src\\\\trading_bot\\\\research\\\\oi_dataset_v2.py\"",
+    "  }",
+    " },",
+    " \"sys_path\": [",
+    "  \"C:\\\\Users\\\\GVLLFR0035\\\\Downloads\\\\bot freebuff\\\\.worktrees\\\\h6-v4-repair\\\\scripts\",",
+    "  \"C:\\\\Users\\\\GVLLFR0035\\\\Downloads\\\\bot freebuff\\\\.worktrees\\\\h6-v4-repair\\\\src\",",
+    "  \"C:\\\\Users\\\\GVLLFR0035\\\\AppData\\\\Roaming\\\\uv\\\\python\\\\cpython-3.11-windows-x86_64-none\\\\python311.zip\",",
+    "  \"C:\\\\Users\\\\GVLLFR0035\\\\AppData\\\\Roaming\\\\uv\\\\python\\\\cpython-3.11-windows-x86_64-none\\\\DLLs\",",
+    "  \"C:\\\\Users\\\\GVLLFR0035\\\\AppData\\\\Roaming\\\\uv\\\\python\\\\cpython-3.11-windows-x86_64-none\\\\Lib\",",
+    "  \"C:\\\\Users\\\\GVLLFR0035\\\\AppData\\\\Roaming\\\\uv\\\\python\\\\cpython-3.11-windows-x86_64-none\",",
+    "  \"C:\\\\Users\\\\GVLLFR0035\\\\Downloads\\\\bot freebuff\\\\.venv\",",
+    "  \"C:\\\\Users\\\\GVLLFR0035\\\\Downloads\\\\bot freebuff\\\\.venv\\\\Lib\\\\site-packages\",",
+    "  \"C:\\\\Users\\\\GVLLFR0035\\\\Downloads\\\\bot freebuff\\\\src\"",
+    " ],",
+    " \"failures\": [],",
+    " \"PYTHON_IMPORT_AUTHORITY\": \"PASS\"",
+    "}"
+   ],
+   "stderr_tail": []
+  },
+  {
+   "gate": "WHITELIST_ATTACKS",
+   "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m pytest tests/unit/research/test_h6_v4_whitelist_authority.py -q",
+   "returncode": 0,
+   "status": "PASS",
+   "stdout_tail": [
+    ".................................                                        [100%]",
+    "33 passed in 12.53s"
+   ],
+   "stderr_tail": []
+  },
+  {
+   "gate": "HOUR_AGGREGATION",
+   "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m pytest tests/unit/research/test_h6_v4_hour_aggregation.py -q",
+   "returncode": 0,
+   "status": "PASS",
+   "stdout_tail": [
+    ".............                                                            [100%]",
+    "13 passed in 5.38s"
+   ],
+   "stderr_tail": []
+  },
+  {
+   "gate": "CONTROL_PLANE_CURRENT_AUTHORITY",
+   "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m pytest tests/unit/research/test_h6_v4_authority_binding.py -q -k not pre_freeze",
+   "returncode": 0,
+   "status": "PASS",
+   "stdout_tail": [
+    ".........................                                                [100%]",
+    "25 passed, 1 deselected in 9.95s"
+   ],
+   "stderr_tail": []
+  },
+  {
+   "gate": "WHITELIST_STATIC_AND_BYPASS",
+   "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m pytest tests/unit/research/test_h6_whitelist_bypass.py tests/unit/research/test_h6_whitelist_static_scan.py -q",
+   "returncode": 0,
+   "status": "PASS",
+   "stdout_tail": [
+    "................                                                         [100%]",
+    "16 passed in 3.24s"
+   ],
+   "stderr_tail": []
+  },
+  {
+   "gate": "CONFIRMATION_ISOLATION",
+   "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m pytest tests/unit/research/test_h6_confirmation_isolation.py tests/unit/research/test_confirmation_ledger_lock.py -q",
+   "returncode": 0,
+   "status": "PASS",
+   "stdout_tail": [
+    ".......                                                                  [100%]",
+    "7 passed in 3.43s"
+   ],
+   "stderr_tail": []
+  },
+  {
+   "gate": "SHADOW_ISOLATION",
+   "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m pytest tests/unit/research/test_h6_v3_test_isolation.py -q",
+   "returncode": 0,
+   "status": "PASS",
+   "stdout_tail": [
+    "..                                                                       [100%]",
+    "2 passed in 35.17s"
+   ],
+   "stderr_tail": []
+  },
+  {
+   "gate": "H5_IMMUTABILITY",
+   "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m pytest tests/unit/research/test_h5_orderflow.py -q",
+   "returncode": 0,
+   "status": "PASS",
+   "stdout_tail": [
+    ".............                                                            [100%]",
+    "13 passed in 2.78s"
+   ],
+   "stderr_tail": []
+  },
+  {
+   "gate": "PERFORMANCE_CONTAMINATION",
+   "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m pytest tests/unit/research/test_data_admission.py -q",
+   "returncode": 0,
+   "status": "PASS",
+   "stdout_tail": [
+    ".....................s                                                   [100%]",
+    "=========================== short test summary info ===========================",
+    "SKIPPED [1] tests\\unit\\research\\test_data_admission.py:328: ingestion not run in this environment",
+    "21 passed, 1 skipped in 2.39s"
+   ],
+   "stderr_tail": []
+  },
+  {
+   "gate": "V4_SPEC_COMPLETE_AND_SEMANTIC_DIFF",
+   "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe docs/external-audit-01/h6-v4-repair/h6_v4_validate.py",
+   "returncode": 0,
+   "status": "PASS",
+   "stdout_tail": [
+    "VERDICT                          = PASS",
+    "runtime_parser_accepts_v4_spec   = {'ok': True, 'error': None, 'permutation_method': 'sign-flip', 'permutation_draws': 10000, 'permutation_seed': 20260911, 'stop_invalidation_present': True, 'cooldown_present': True, 'pit_data_time_leq_decision_time': True}",
+    "missing/vacuous                  = [] []",
+    "summary                          = {'IDENTICAL': 39, 'STRUCTURALLY_RELOCATED_WITH_IDENTICAL_MEANING': 1, 'CHANGED': 0, 'DROPPED': 0, 'ADDED_ECONOMIC_FILTER': 0}",
+    "UNEXPLAINED_DIFFERENCES          = 0",
+    "report -> docs\\external-audit-01\\h6-v4-repair\\H6_V4_ECONOMIC_SEMANTIC_DIFF.json"
+   ],
+   "stderr_tail": []
+  },
+  {
+   "gate": "DATA_AUTHORITY",
+   "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe scripts/verify_h6_data_authority.py --data-root C:/Users/GVLLFR0035/Downloads/bot freebuff/data",
+   "returncode": 0,
+   "status": "PASS",
+   "stdout_tail": [
+    "{",
+    "  \"checksum_BTCUSDT_2020-09-01\": \"PASS\",",
+    "  \"checksum_BTCUSDT_2024-06-05\": \"PASS\",",
+    "  \"checksum_ETHUSDT_2021-12-01\": \"PASS\",",
+    "  \"checksum_SOLUSDT_2021-12-01\": \"PASS\",",
+    "  \"data_root_resolved\": \"C:\\\\Users\\\\GVLLFR0035\\\\Downloads\\\\bot freebuff\\\\data\",",
+    "  \"dataset_sha256_manifest\": \"16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99\",",
+    "  \"ledger_lines\": 5691,",
+    "  \"ledger_path\": \"C:\\\\Users\\\\GVLLFR0035\\\\Downloads\\\\bot freebuff\\\\.worktrees\\\\h6-v4-repair\\\\docs\\\\external-audit-01\\\\oi-full-history-02\\\\OI_ARCHIVE_DAY_VALIDITY_LEDGER_V2.jsonl\",",
+    "  \"ledger_sha256_actual\": \"bb2b43c27a88bf9fe3ec22573903a61007f046ddc1256b5caa3e788cba15e714\",",
+    "  \"ledger_sha256_claim\": \"bb2b43c27a88bf9fe3ec22573903a61007f046ddc1256b5caa3e788cba15e714\",",
+    "  \"manifest_path\": \"C:\\\\Users\\\\GVLLFR0035\\\\Downloads\\\\bot freebuff\\\\.worktrees\\\\h6-v4-repair\\\\docs\\\\external-audit-01\\\\oi-full-history-02\\\\OI_FULL_HISTORY_DATASET_MANIFEST_V2.json\",",
+    "  \"normalized_BTCUSDT_2020-09-01\": \"exists\",",
+    "  \"normalized_BTCUSDT_2024-06-05\": \"exists\",",
+    "  \"normalized_ETHUSDT_2021-12-01\": \"exists\",",
+    "  \"normalized_SOLUSDT_2021-12-01\": \"exists\",",
+    "  \"normalized_root\": \"C:\\\\Users\\\\GVLLFR0035\\\\Downloads\\\\bot freebuff\\\\data\\\\processed\\\\oi_full_history_v2\",",
+    "  \"price_manifest_exists\": true,",
+    "  \"raw_BTCUSDT\": 2201,",
+    "  \"raw_ETHUSDT\": 1745,",
+    "  \"raw_SOLUSDT\": 1745,",
+    "  \"raw_base\": \"C:\\\\Users\\\\GVLLFR0035\\\\Downloads\\\\bot freebuff\\\\data\\\\raw\\\\binance_um\\\\metrics\",",
+    "  \"verdict\": \"PASS\"",
+    "}"
+   ],
+   "stderr_tail": []
+  },
+  {
+   "gate": "DATASET_DETERMINISM",
+   "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe scripts/prove_h6_v3_dataset_determinism.py --data-root C:/Users/GVLLFR0035/Downloads/bot freebuff/data",
+   "returncode": 0,
+   "status": "PASS",
+   "stdout_tail": [
+    "  500/1745",
+    "  1000/1745",
+    "  1500/1745",
+    "[SOLUSDT] normalizing 1745 days -> C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\h6v3_det_d3or3i7d\\B...",
+    "  500/1745",
+    "  1000/1745",
+    "  1500/1745",
+    "{",
+    "  \"quality_status\": \"PASS_WITH_EXPLICIT_GAPS\",",
+    "  \"totals\": {",
+    "    \"files\": 5691,",
+    "    \"valid_days\": 5596,",
+    "    \"invalid_days\": 95,",
+    "    \"rows_valid\": 1611648,",
+    "    \"valid_days_in_common_window\": 5202,",
+    "    \"valid_days_in_common_window_all_symbols\": 1732",
+    "  },",
+    "  \"OI_FULL_HISTORY_DATASET_SHA256_V2\": \"16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99\"",
+    "}",
+    "[2/3] Mutation sensitivity (verifier TEMP copy, one normalized file mutated)...",
+    "[3/3] BTC 2024-06-05 forensic (official raw -> normalize -> compare canonical)...",
+    "{",
+    "  \"status\": \"PASS\",",
+    "  \"duration_seconds\": 170.2",
+    "}"
+   ],
+   "stderr_tail": []
+  },
+  {
+   "gate": "PRICE_AUTHORITY_OVERLAP",
+   "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe scripts/verify_price_overlap_v3.py --data-root C:/Users/GVLLFR0035/Downloads/bot freebuff/data",
+   "returncode": 0,
+   "status": "PASS",
+   "stdout_tail": [
+    "{",
+    "  \"status\": \"PASS\",",
+    "  \"total_rows_compared\": 169724,",
+    "  \"per_asset\": {",
+    "    \"BTCUSDT\": true,",
+    "    \"ETHUSDT\": true,",
+    "    \"SOLUSDT\": true",
+    "  }",
+    "}"
+   ],
+   "stderr_tail": []
+  },
+  {
+   "gate": "CONSISTENCY_AUDIT",
+   "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe scripts/audit_h6_v3_consistency.py",
+   "returncode": 0,
+   "status": "PASS",
+   "stdout_tail": [
+    "{",
+    "  \"status\": \"PASS\",",
+    "  \"CONTRADICTIONS_FOUND\": 0,",
+    "  \"UNRESOLVED\": []",
+    "}"
+   ],
+   "stderr_tail": []
+  }
+ ],
+ "gate_count": 14,
+ "passed": 14,
+ "failed_gates": [],
+ "ALL_PRE_PREREG_GATES_PASS": true,
+ "H6_BACKTESTS": 0,
+ "H6_EXECUTIONS": 0,
+ "PERFORMANCE_OBSERVED": false
+}
