@@ -1,0 +1,74 @@
+{
+ "artifact": "H6_EXTERNAL_VERIFIER_PACKAGE_V4",
+ "checkpoint": "H6-V4-AUTHORITY-CONTRACT-AND-RUNTIME-BINDING-REPAIR-01",
+ "next_verification": "H6-EXTERNAL-INDEPENDENT-VERIFICATION-V4",
+ "verifier_must_be_different_context": true,
+ "builder_self_certification_forbidden": true,
+ "builder_self_verification_is_not_independent": true,
+ "generation": "H6-V4",
+ "prereg_commit": "e2195681c06f725134e9cf06e370bb7870ab41c9",
+ "worktree": ".worktrees/h6-v4-repair",
+ "branch": "repair/h6-v4-repair",
+ "base_commit": "a548716",
+ "status": "PENDING_EXTERNAL_VERIFICATION_V4",
+ "H6_BACKTESTS": 0,
+ "H6_EXECUTIONS": 0,
+ "PERFORMANCE_OBSERVED": false,
+ "economics_forbidden_for_verifier": {
+  "H6_BACKTESTS": 0,
+  "H6_EXECUTIONS": 0,
+  "PERFORMANCE_OBSERVED": false,
+  "do_not_compute": ["PnL", "Sharpe from H6 outcomes", "profit factor", "expectancy", "win rate", "future returns"]
+ },
+ "frozen_artifacts": {
+  "spec": "docs/external-audit-01/h6-v4-repair/H6_SPEC_V4.json",
+  "manifest": "docs/external-audit-01/h6-v4-repair/H6_MANIFEST_V4.json",
+  "whitelist": "docs/external-audit-01/h6-v4-repair/H6_FEATURE_AUTHORITY_WHITELIST_V4.json",
+  "data_authority": "docs/external-audit-01/h6-v4-repair/H6_DATA_AUTHORITY_V4.json"
+ },
+ "runtime_binding": {
+  "path": "docs/external-audit-01/h6-v4-repair/H6_RUNTIME_AUTHORITY_BINDING_V4.json",
+  "non_economic": true,
+  "generated_post_freeze": true,
+  "schema_version": "H6-RUNTIME-AUTHORITY-BINDING-V1"
+ },
+ "expected_external_verifier_report_path": "docs/external-audit-01/h6-external-verification-v4/H6_EXTERNAL_VERIFICATION_V4_REPORT.json",
+ "execution_gate": {
+  "can_execute_h6_while_unverified": false,
+  "note": "can_execute_h6() returns False until a real, correctly-bound external PASS report exists at the versioned path. This package deliberately creates no such report."
+ },
+ "builder_evidence_index": {
+  "v3_failure_memory": "docs/external-audit-01/h6-v4-repair/H6_V3_FAILURE_RECORD.json",
+  "pre_prereg_gates": "docs/external-audit-01/h6-v4-repair/H6_V4_PRE_PREREG_GATES.json",
+  "semantic_diff": "docs/external-audit-01/h6-v4-repair/H6_V4_ECONOMIC_SEMANTIC_DIFF.json",
+  "defect_regression_matrix": "docs/external-audit-01/h6-v4-repair/H6_V4_DEFECT_REGRESSION_MATRIX.json",
+  "authority_binding_audit": "docs/external-audit-01/h6-v4-repair/H6_V4_AUTHORITY_BINDING_AUDIT.json",
+  "post_freeze_immutability": "docs/external-audit-01/h6-v4-repair/H6_V4_POST_FREEZE_IMMUTABILITY.json",
+  "dashboard_repeat_20": "docs/external-audit-01/h6-v4-repair/DASHBOARD_REPEAT_20_RESULT.json",
+  "full_hermetic_1": "docs/external-audit-01/h6-v4-repair/FULL_HERMETIC_RESULT_1.json",
+  "full_hermetic_2": "docs/external-audit-01/h6-v4-repair/FULL_HERMETIC_RESULT_2.json",
+  "clean_worktree_self_verification": "docs/external-audit-01/h6-v4-repair/H6_V4_CLEAN_WORKTREE_SELF_VERIFICATION.json"
+ },
+ "verifier_contract_hard_requirements": [
+  "Run the independent verifier from a DIFFERENT context/agent than the builder.",
+  "Establish PYTHON_IMPORT_AUTHORITY before trusting any project-module result: a bare import inside a worktree can resolve to the main checkout.",
+  "Independently recompute the four frozen artifact SHA256 values from Git blobs, not from working-tree copies.",
+  "Independently attack the feature-authority boundary (H6FieldAccess AND feature_authority.admitted_observation) and confirm forbidden values are neither stored nor recoverable and that injection fails closed on the real preparation path.",
+  "Independently verify the completed-hour window is half-open and yields exactly 12 snapshots.",
+  "Independently verify post-freeze immutability via blob IDs AND byte hashes.",
+  "Do NOT repair builder artefacts. Record defects and continue independent gates."
+ ],
+ "reuse_note": "V3 DATA_AUTHORITY, DATASET_FINGERPRINT, BTC 2024-06-05 forensic, PIT_DYNAMIC, PRICE_AUTHORITY, PRICE_OVERLAP, CONFIRMATION_LOCK, CONFIRMATION_H6_FIREWALL, SHADOW_INVALIDATION, SHADOW_MATURITY, SHADOW_H6_FIREWALL, PERFORMANCE_CONTAMINATION and H5_IMMUTABILITY evidence remains valid and is reused; no data was rebuilt.",
+ "known_non_blocking_limitations": [
+  {
+   "id": "CONFIRMATION_LEDGER_TAMPER_EVIDENCE",
+   "status": "LIMITATION_EXPLICIT_NON_BLOCKING",
+   "condition": "H6 data/result dependency on the confirmation ledger remains NONE"
+  },
+  {
+   "id": "BUILDER_CONTEXT_SELF_VERIFICATION",
+   "status": "LIMITATION_EXPLICIT_NON_BLOCKING",
+   "detail": "All V4 verification in this package is BUILDER_SELF_VERIFICATION_V4, produced in the same context as the builder. It does not satisfy INDEPENDENT_EXTERNAL_VERIFICATION_V4."
+  }
+ ]
+}

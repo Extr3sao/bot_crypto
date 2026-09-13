@@ -1,0 +1,63 @@
+{
+ "artifact": "H6_V4_FULL_HERMETIC_2",
+ "checkpoint": "H6-V4-AUTHORITY-CONTRACT-AND-RUNTIME-BINDING-REPAIR-01",
+ "proof": "FULL_HERMETIC_RESULT_2",
+ "command": "python scripts/run_regression_hermetic.py -p no:cacheprovider -q (host env stripped)",
+ "commit": "e2195681c06f725134e9cf06e370bb7870ab41c9",
+ "python_executable": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+ "module_authority": {
+  "trading_bot": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-v4-repair\\src\\trading_bot\\__init__.py",
+  "modules": {
+   "trading_bot.research.h6": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-v4-repair\\src\\trading_bot\\research\\h6\\__init__.py",
+   "trading_bot.research.h6.whitelist": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-v4-repair\\src\\trading_bot\\research\\h6\\whitelist.py",
+   "trading_bot.research.h6.feature_authority": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-v4-repair\\src\\trading_bot\\research\\h6\\feature_authority.py",
+   "trading_bot.research.h6.preparation": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-v4-repair\\src\\trading_bot\\research\\h6\\preparation.py"
+  }
+ },
+ "environment": {
+  "python": "3.11.15",
+  "platform": "win32",
+  "tz": "UTC"
+ },
+ "started_utc": "2026-09-13T08:10:45.212781+00:00",
+ "duration_s": 125.19,
+ "exit_code": 0,
+ "passed": 1404,
+ "failed": 0,
+ "skipped": 6,
+ "skips": [
+  "SKIPPED [1] tests\\unit\\research\\test_data_admission.py:328: ingestion not run in this environment",
+  "SKIPPED [1] tests\\unit\\research\\test_oi_full_history.py:73: raw sample not present on this machine",
+  "SKIPPED [1] tests\\unit\\research\\test_oi_full_history.py:344: frozen OI dataset not on this machine",
+  "SKIPPED [1] tests\\unit\\research\\test_oi_full_history.py:351: frozen OI dataset not on this machine",
+  "SKIPPED [1] tests\\unit\\research\\test_oi_full_history.py:356: frozen OI dataset not on this machine",
+  "SKIPPED [1] tests\\unit\\research\\test_oi_full_history.py:365: frozen OI dataset not on this machine"
+ ],
+ "stdout_tail": [
+  "============================== warnings summary ===============================",
+  "tests/bdd/test_features.py: 39 warnings",
+  "  C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Lib\\site-packages\\pytest_bdd\\compat.py:28: PytestRemovedIn10Warning: Passing nodeid to _register_fixture is deprecated. Pass node instead for fixture scoping.",
+  "    request._fixturemanager._register_fixture(",
+  "",
+  "tests/bdd/test_features.py: 39 warnings",
+  "  C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Lib\\site-packages\\_pytest\\fixtures.py:1986: PytestRemovedIn10Warning: Passing baseid to FixtureDef is deprecated. Pass node instead for fixture scoping.",
+  "    fixture_def = FixtureDef(",
+  "",
+  "-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html",
+  "=========================== short test summary info ===========================",
+  "SKIPPED [1] tests\\unit\\research\\test_data_admission.py:328: ingestion not run in this environment",
+  "SKIPPED [1] tests\\unit\\research\\test_oi_full_history.py:73: raw sample not present on this machine",
+  "SKIPPED [1] tests\\unit\\research\\test_oi_full_history.py:344: frozen OI dataset not on this machine",
+  "SKIPPED [1] tests\\unit\\research\\test_oi_full_history.py:351: frozen OI dataset not on this machine",
+  "SKIPPED [1] tests\\unit\\research\\test_oi_full_history.py:356: frozen OI dataset not on this machine",
+  "SKIPPED [1] tests\\unit\\research\\test_oi_full_history.py:365: frozen OI dataset not on this machine",
+  "1404 passed, 6 skipped, 78 warnings in 121.39s (0:02:01)",
+  "[hermetic] stripping host env prefixes: ('EXCHANGE_', 'POC01_', 'CAMPAIGN_', 'TRADING_')",
+  "[hermetic] running: C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m pytest -p no:cacheprovider -q"
+ ],
+ "stderr_tail": [],
+ "status": "PASS",
+ "H6_BACKTESTS": 0,
+ "H6_EXECUTIONS": 0,
+ "PERFORMANCE_OBSERVED": false
+}
