@@ -1,10 +1,10 @@
 {
  "artifact": "H6_V4_PRE_PREREG_GATES",
  "checkpoint": "H6-V4-AUTHORITY-CONTRACT-AND-RUNTIME-BINDING-REPAIR-01",
- "timestamp_utc": "2026-09-13T10:33:58Z",
+ "timestamp_utc": "2026-09-13T13:36:43Z",
  "python_executable": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
  "repo_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-v4-repair",
- "git_commit": "d7b6bef602639372a079afe419b6cc889f6c7b9e",
+ "git_commit": "7166b4698279eb7b74666c562b6d7504ffe5ffb0",
  "data_root": "C:/Users/GVLLFR0035/Downloads/bot freebuff/data",
  "module_path_authority": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-v4-repair\\src",
  "gates": [
@@ -49,7 +49,7 @@
    "status": "PASS",
    "stdout_tail": [
     ".................................                                        [100%]",
-    "33 passed in 6.13s"
+    "33 passed in 5.49s"
    ],
    "stderr_tail": []
   },
@@ -60,7 +60,7 @@
    "status": "PASS",
    "stdout_tail": [
     ".............                                                            [100%]",
-    "13 passed in 8.60s"
+    "13 passed in 5.11s"
    ],
    "stderr_tail": []
   },
@@ -71,7 +71,7 @@
    "status": "PASS",
    "stdout_tail": [
     ".........................                                                [100%]",
-    "25 passed, 1 deselected in 14.01s"
+    "25 passed, 1 deselected in 11.26s"
    ],
    "stderr_tail": []
   },
@@ -82,7 +82,7 @@
    "status": "PASS",
    "stdout_tail": [
     "................                                                         [100%]",
-    "16 passed in 4.38s"
+    "16 passed in 5.12s"
    ],
    "stderr_tail": []
   },
@@ -93,7 +93,7 @@
    "status": "PASS",
    "stdout_tail": [
     ".......                                                                  [100%]",
-    "7 passed in 5.77s"
+    "7 passed in 5.76s"
    ],
    "stderr_tail": []
   },
@@ -104,7 +104,7 @@
    "status": "PASS",
    "stdout_tail": [
     "..                                                                       [100%]",
-    "2 passed in 55.89s"
+    "2 passed in 61.79s (0:01:01)"
    ],
    "stderr_tail": []
   },
@@ -115,7 +115,7 @@
    "status": "PASS",
    "stdout_tail": [
     ".............                                                            [100%]",
-    "13 passed in 5.80s"
+    "13 passed in 5.71s"
    ],
    "stderr_tail": []
   },
@@ -128,7 +128,7 @@
     ".....................s                                                   [100%]",
     "=========================== short test summary info ===========================",
     "SKIPPED [1] tests\\unit\\research\\test_data_admission.py:328: ingestion not run in this environment",
-    "21 passed, 1 skipped in 4.90s"
+    "21 passed, 1 skipped in 4.91s"
    ],
    "stderr_tail": []
   },
@@ -182,34 +182,68 @@
   },
   {
    "gate": "DATASET_DETERMINISM",
-   "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe scripts/prove_h6_v3_dataset_determinism.py --data-root C:/Users/GVLLFR0035/Downloads/bot freebuff/data",
+   "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe scripts/verify_h6_v4_clean_worktree_determinism.py",
    "returncode": 0,
    "status": "PASS",
    "stdout_tail": [
-    "  500/1745",
-    "  1000/1745",
-    "  1500/1745",
-    "[SOLUSDT] normalizing 1745 days -> C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\h6v3_det_6jqrn8eb\\B...",
-    "  500/1745",
-    "  1000/1745",
-    "  1500/1745",
-    "{",
-    "  \"quality_status\": \"PASS_WITH_EXPLICIT_GAPS\",",
-    "  \"totals\": {",
-    "    \"files\": 5691,",
-    "    \"valid_days\": 5596,",
-    "    \"invalid_days\": 95,",
-    "    \"rows_valid\": 1611648,",
-    "    \"valid_days_in_common_window\": 5202,",
-    "    \"valid_days_in_common_window_all_symbols\": 1732",
+    "    \"commit_matches_clean_worktree\": false,",
+    "    \"data_root_matches_resolved\": true,",
+    "    \"determinism_status\": \"PASS\",",
+    "    \"ledger_bytes_A_equals_B\": true,",
+    "    \"fingerprint_A_equals_B\": true,",
+    "    \"fingerprint_A_equals_committed\": true,",
+    "    \"fingerprint_commits_to_actual_bytes\": true,",
+    "    \"fingerprint_A\": \"16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99\",",
+    "    \"mutation_status\": \"PASS\",",
+    "    \"mutation_changed_fingerprint\": true,",
+    "    \"forensic_status\": \"PASS\",",
+    "    \"official_checksum_match\": true,",
+    "    \"renormalized_byte_identical_to_canonical\": true,",
+    "    \"status\": \"PASS\"",
     "  },",
-    "  \"OI_FULL_HISTORY_DATASET_SHA256_V2\": \"16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99\"",
-    "}",
-    "[2/3] Mutation sensitivity (verifier TEMP copy, one normalized file mutated)...",
-    "[3/3] BTC 2024-06-05 forensic (official raw -> normalize -> compare canonical)...",
-    "{",
-    "  \"status\": \"PASS\",",
-    "  \"duration_seconds\": 388.2",
+    "  \"cross_check\": {",
+    "    \"durable_committed_authority_fingerprint\": \"16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99\",",
+    "    \"durable_fingerprint_equals_local_recomputation\": true",
+    "  },",
+    "  \"local_recomputation_status\": \"PASS\",",
+    "  \"reuse_status\": \"PASS\",",
+    "  \"cross_check_status\": \"PASS\",",
+    "  \"DATASET_DETERMINISM\": \"PASS\",",
+    "  \"evidence_policy\": \"full A/B re-normalization + mutation sensitivity + BTC forensic are REUSED from the durable standalone proof bound to this exact commit; the canonical authority fingerprint is RECOMPUTED here from actual bytes through the shipped resolver\"",
+    "}"
+   ],
+   "stderr_tail": []
+  },
+  {
+   "gate": "PIT_DYNAMIC",
+   "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe scripts/verify_h6_v4_pit_dynamic.py",
+   "returncode": 0,
+   "status": "PASS",
+   "stdout_tail": [
+    "  \"decisions_eligible\": 28,",
+    "  \"max_rolling_changes\": 409,",
+    "  \"max_abs_robust_z_oi\": 3.4980455422927696,",
+    "  \"distinct_delta_oi_values\": 28,",
+    "  \"qualifying_signal_count\": 3,",
+    "  \"current_hour_snapshot_count_histogram\": {",
+    "    \"12\": 28",
+    "  },",
+    "  \"checks\": {",
+    "    \"no_exceptions_on_real_data\": true,",
+    "    \"scan_produced_decisions\": true,",
+    "    \"non_vacuous_eligible_decisions\": true,",
+    "    \"non_vacuous_rolling_window\": true,",
+    "    \"non_vacuous_dispersion\": true,",
+    "    \"non_vacuous_varying_deltas\": true,",
+    "    \"non_vacuous_qualifying_signal\": true,",
+    "    \"future_invisibility_with_real_future_tail\": true,",
+    "    \"future_mutation_invariance\": true,",
+    "    \"past_mutation_sensitivity\": true,",
+    "    \"boundary_observation_excluded_on_real_data\": true,",
+    "    \"boundary_observation_present\": true,",
+    "    \"hour_snapshots_within_contract\": true",
+    "  },",
+    "  \"PIT_DYNAMIC\": \"PASS\"",
     "}"
    ],
    "stderr_tail": []
@@ -247,8 +281,8 @@
    "stderr_tail": []
   }
  ],
- "gate_count": 14,
- "passed": 14,
+ "gate_count": 15,
+ "passed": 15,
  "failed_gates": [],
  "ALL_PRE_PREREG_GATES_PASS": true,
  "H6_BACKTESTS": 0,

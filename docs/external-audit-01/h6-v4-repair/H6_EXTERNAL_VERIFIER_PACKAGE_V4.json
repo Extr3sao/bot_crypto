@@ -47,8 +47,16 @@
   "dashboard_repeat_20": "docs/external-audit-01/h6-v4-repair/DASHBOARD_REPEAT_20_RESULT.json",
   "full_hermetic_1": "docs/external-audit-01/h6-v4-repair/FULL_HERMETIC_RESULT_1.json",
   "full_hermetic_2": "docs/external-audit-01/h6-v4-repair/FULL_HERMETIC_RESULT_2.json",
-  "clean_worktree_self_verification": "docs/external-audit-01/h6-v4-repair/H6_V4_CLEAN_WORKTREE_SELF_VERIFICATION.json"
+  "clean_worktree_self_verification": "docs/external-audit-01/h6-v4-repair/H6_V4_CLEAN_WORKTREE_SELF_VERIFICATION.json",
+  "pit_dynamic": "docs/external-audit-01/h6-v4-repair/H6_V4_PIT_DYNAMIC.json",
+  "dataset_determinism_gate": "docs/external-audit-01/h6-v4-repair/H6_V4_CLEAN_WORKTREE_DETERMINISM.json",
+  "dataset_determinism_durable_proof": "docs/external-audit-01/h6-v4-repair/DATASET_DETERMINISM_V3_RESULT.json",
+  "data_authority_refresh": "docs/external-audit-01/h6-v4-repair/H6_DATA_AUTHORITY_CHECK.json",
+  "price_overlap_refresh": "docs/external-audit-01/h6-v4-repair/PRICE_OVERLAP_V3_RESULT.json",
+  "consistency_audit_refresh": "docs/external-audit-01/h6-v4-repair/H6_V3_CONSISTENCY_AUDIT.json"
  },
+ "evidence_run_commit": "7166b46",
+ "evidence_reuse_note": "DATASET_DETERMINISM is reused, not re-derived: the full A/B proof re-normalizes 5,691 raw provider files twice (~2.5 h) and its result cannot depend on the executing worktree. The gate validates the durable proof under an explicit binding (proof commit must be an ancestor of HEAD and the normalizer / data-root resolver bytes unchanged) and separately re-executes the layout-sensitive half by resolving the shared data root and recomputing the authority fingerprint from actual bytes. PIT_DYNAMIC is NOT reused from V3: V4 changed the completed-hour aggregation, so it was re-executed against real canonical observations.",
  "verifier_contract_hard_requirements": [
   "Run the independent verifier from a DIFFERENT context/agent than the builder.",
   "Establish PYTHON_IMPORT_AUTHORITY before trusting any project-module result: a bare import inside a worktree can resolve to the main checkout.",
