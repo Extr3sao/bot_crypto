@@ -1,0 +1,712 @@
+{
+  "verifier_type": "INDEPENDENT_SEMANTICS_AND_CONTAMINATION_V3",
+  "timestamp_utc": "2026-09-13T07:21:20Z",
+  "audited_target_commit": "a5487164803fb601f87f2cd4c865929c30da274e",
+  "economics": {
+    "H6_BACKTESTS": 0,
+    "H6_EXECUTIONS": 0,
+    "PERFORMANCE_OBSERVED": false
+  },
+  "V2_to_V3_economic_semantic_drift": {
+    "method": "every V2 top-level economic field compared to the same key inside V3.economics; no hand-written name mapping",
+    "v2_economic_field_count": 24,
+    "v2_spec": "docs/external-audit-01/oi-full-history-02/H6_SPEC_V2.json",
+    "v3_spec": "docs/external-audit-01/oi-full-history-03/H6_SPEC_V3.json",
+    "v2_spec_sha256": "221cfa1d6eb3dae30948e9605f258075c0cd69e8f38187da4959c3e696b8b000",
+    "v3_spec_sha256": "cd354e0603a4b8ee754d38a2a6e3a2689c06e683b732ab34bec03e631c50eeea",
+    "fields_compared_identical": [
+      "assets",
+      "common_window_utc",
+      "decision_timeframe",
+      "oi_field_whitelist",
+      "feature_transformations",
+      "rolling_windows",
+      "threshold_rule",
+      "direction_semantics",
+      "entry_timing",
+      "exit_timing",
+      "primary_holding_horizon",
+      "decision_spacing",
+      "cost_model",
+      "funding_accounting",
+      "minimum_N",
+      "robustness_gates",
+      "orthogonality_gates",
+      "insufficient_sample_policy",
+      "pass_fail_semantics",
+      "experiment_invalidation"
+    ],
+    "fields_differing": [],
+    "v2_fields_absent_from_v3_economics": [
+      {
+        "v2_field": "stop_invalidation",
+        "v2_value": "NONE in the primary H6 discovery test (no ATR stop, no signal-flip exit; trade management belongs to a later preregistered experiment)",
+        "present_elsewhere_in_v3_spec_textually": false
+      },
+      {
+        "v2_field": "cooldown",
+        "v2_value": "NONE required: fixed 1h non-overlapping per-asset outcome definition (entry at next hour open, exit at that hour's close); secondary horizons are NOT computed and MAY NOT influence PASS/FAIL",
+        "present_elsewhere_in_v3_spec_textually": false
+      },
+      {
+        "v2_field": "statistical_gates",
+        "v2_value": {
+          "P_Sharp_greater_0_min": 0.9,
+          "permutation_p_max": 0.05,
+          "sharpe_ci_excludes_zero": true,
+          "permutation": "sign-flip permutation on hourly trade returns, 10,000 draws, fixed seed 20260911"
+        },
+        "present_elsewhere_in_v3_spec_textually": false
+      },
+      {
+        "v2_field": "pit_rules",
+        "v2_value": {
+          "oi": "oi_time <= decision_time (V2 causal: oi_state_at / decision_eligibility_at_v2; no final-day validity gate; ledger forensic only)",
+          "price": "decision hour uses only the completed bucket's OHLC",
+          "features": "z-score windows strictly trailing; no centered windows; no backfill; no interpolation from future data",
+          "future_mutation": "DECISION_ELIGIBILITY_AT_T, FEATURE_STATE_AT_T and SIGNAL_INPUT_AT_T must be byte-identical under mutations strictly after T (FUTURE_SAME_DAY_GAP_MUTATION test, non-vacuous baseline); PAST_GAP_BEFORE_T may change eligibility; FUTURE_GAP_AFTER_T must not; tested in PIT_CAUSALITY_V2_REPORT",
+          "archive_validity_role": "day-level ledger is forensic EVIDENCE only; eligibility is causal per decision time (PIT-CAUSALITY-REPAIR-01)"
+        },
+        "present_elsewhere_in_v3_spec_textually": false
+      }
+    ],
+    "v3_claim": {
+      "artifact": "docs/external-audit-01/oi-full-history-02/H6_SPEC_V2.json",
+      "retune": "NONE (spec 33/34)",
+      "spec_sha256_of_carried_block": "221cfa1d6eb3dae30948e9605f258075c0cd69e8f38187da4959c3e696b8b000"
+    },
+    "declared_carried_block_sha256": "221cfa1d6eb3dae30948e9605f258075c0cd69e8f38187da4959c3e696b8b000",
+    "declared_retune": "NONE (spec 33/34)",
+    "carried_block_hash_candidates": {
+      "sha256(canonical_json(V3.economics))": "f5073ed5ebd6b0792c61da08108ec74f6bdc5d69534ae61b06b980f79f2f794c",
+      "sha256(canonical_json(V2 spec))": "e6834c2b7ac20b5232dc7661b8d5d37e43c4e9a80f65786c75f6eab3eb328e6c",
+      "sha256(V2 spec raw bytes)": "221cfa1d6eb3dae30948e9605f258075c0cd69e8f38187da4959c3e696b8b000",
+      "sha256(V3 spec raw bytes)": "cd354e0603a4b8ee754d38a2a6e3a2689c06e683b732ab34bec03e631c50eeea"
+    },
+    "declared_hash_reproduced_by": [
+      "sha256(V2 spec raw bytes)"
+    ],
+    "declared_hash_reproducible": true,
+    "runtime_loader_required_spec_keys": [
+      "assets",
+      "common_window_utc",
+      "cooldown",
+      "cost_model",
+      "decision_timeframe",
+      "direction_semantics",
+      "entry_timing",
+      "exit_timing",
+      "feature_transformations",
+      "funding_accounting",
+      "hypothesis_id",
+      "insufficient_sample_policy",
+      "mechanism",
+      "oi_field_whitelist",
+      "orthogonality_gates",
+      "pass_fail_semantics",
+      "pit_rules",
+      "rolling_windows",
+      "statistical_gates",
+      "stop_invalidation",
+      "threshold_rule"
+    ],
+    "required_keys_absent_from_v3_economics": [
+      "stop_invalidation",
+      "cooldown",
+      "statistical_gates",
+      "pit_rules"
+    ],
+    "dropped_fields_that_are_substantively_missing": [
+      "stop_invalidation",
+      "cooldown",
+      "statistical_gates",
+      "pit_rules"
+    ],
+    "dropped_fields_relocated_elsewhere_in_v3": [],
+    "verdict_note": "PASS requires BOTH (a) zero carried fields changed in value and (b) zero fields that the runtime contract loader requires to be absent from the V3 economics block. Carried fields that changed are reported in 'fields_differing'; carried-away fields are reported in 'v2_fields_absent_from_v3_economics'."
+  },
+  "V2_TO_V3_ECONOMIC_SEMANTIC_DRIFT": "FAIL",
+  "control_plane_v1_bindings": {
+    "bindings": [
+      {
+        "path": "scripts/download_oi_full_history.py",
+        "line": 27,
+        "token": "oi-full-history-01\u2026",
+        "text": "OUT_DIR = REPO / \"docs\" / \"external-audit-01\" / \"oi-full-history-01\""
+      },
+      {
+        "path": "scripts/normalize_oi_full_history.py",
+        "line": 32,
+        "token": "oi-full-history-01\u2026",
+        "text": "EVID = REPO / \"docs\" / \"external-audit-01\" / \"oi-full-history-01\""
+      },
+      {
+        "path": "scripts/run_h6_exactly_once.py",
+        "line": 22,
+        "token": "oi-full-history-01\u2026",
+        "text": "EXTERNAL_VERIFIER_REPORT_PATH = ROOT / \"docs/external-audit-01/oi-full-history-01/H6_EXTERNAL_VERIFIER_REPORT.json\""
+      },
+      {
+        "path": "scripts/verify_h6_prereg.py",
+        "line": 8,
+        "token": "oi-full-history-01\u2026",
+        "text": "Emits: docs/external-audit-01/oi-full-history-01/H6_SELF_VERIFICATION.json"
+      },
+      {
+        "path": "scripts/verify_h6_prereg.py",
+        "line": 21,
+        "token": "oi-full-history-01\u2026",
+        "text": "DIR = REPO / \"docs\" / \"external-audit-01\" / \"oi-full-history-01\""
+      },
+      {
+        "path": "src/trading_bot/research/h6/contamination_scan.py",
+        "line": 34,
+        "token": "oi-full-history-01\u2026",
+        "text": "Path(\"docs/external-audit-01/oi-full-history-01\"),"
+      },
+      {
+        "path": "src/trading_bot/research/h6/contracts.py",
+        "line": 15,
+        "token": "f514fecf42b52d2e1c2946ca\u2026",
+        "text": "SPEC_SHA256 = \"f514fecf42b52d2e1c2946cac9dee94b2570d485cb236b9a6c663f46f5bbf148\""
+      },
+      {
+        "path": "src/trading_bot/research/h6/execution_harness.py",
+        "line": 18,
+        "token": "e683e04e5df39d0f2f5feb60\u2026",
+        "text": "PREREG_COMMIT = \"e683e04e5df39d0f2f5feb6097664536b93cc636\""
+      },
+      {
+        "path": "src/trading_bot/research/h6/execution_harness.py",
+        "line": 19,
+        "token": "f514fecf42b52d2e1c2946ca\u2026",
+        "text": "SPEC_SHA256 = \"f514fecf42b52d2e1c2946cac9dee94b2570d485cb236b9a6c663f46f5bbf148\""
+      },
+      {
+        "path": "src/trading_bot/research/h6/execution_harness.py",
+        "line": 20,
+        "token": "345334c3107860a5adcc753f\u2026",
+        "text": "MANIFEST_SHA256 = \"345334c3107860a5adcc753f5b34976d2b4df9061de34a94507d2bd8f58752dc\""
+      },
+      {
+        "path": "src/trading_bot/research/h6/external_verifier_report.py",
+        "line": 8,
+        "token": "oi-full-history-01\u2026",
+        "text": "\"docs/external-audit-01/oi-full-history-01/H6_EXTERNAL_VERIFIER_REPORT.json\""
+      },
+      {
+        "path": "src/trading_bot/research/h6/feature_engine.py",
+        "line": 24,
+        "token": "f514fecf42b52d2e1c2946ca\u2026",
+        "text": "SPEC_SHA256 = \"f514fecf42b52d2e1c2946cac9dee94b2570d485cb236b9a6c663f46f5bbf148\""
+      },
+      {
+        "path": "src/trading_bot/research/h6/frozen_contract_snapshot.py",
+        "line": 16,
+        "token": "oi-full-history-01\u2026",
+        "text": "SPEC_PATH = Path(\"docs/external-audit-01/oi-full-history-01/H6_SPEC.json\")"
+      },
+      {
+        "path": "src/trading_bot/research/h6/frozen_contract_snapshot.py",
+        "line": 18,
+        "token": "oi-full-history-01\u2026",
+        "text": "\"docs/external-audit-01/oi-full-history-01/H6_MANIFEST.json\""
+      },
+      {
+        "path": "src/trading_bot/research/h6/frozen_contract_snapshot.py",
+        "line": 22,
+        "token": "f514fecf42b52d2e1c2946ca\u2026",
+        "text": "\"f514fecf42b52d2e1c2946cac9dee94b2570d485cb236b9a6c663f46f5bbf148\""
+      },
+      {
+        "path": "src/trading_bot/research/h6/frozen_contract_snapshot.py",
+        "line": 25,
+        "token": "345334c3107860a5adcc753f\u2026",
+        "text": "\"345334c3107860a5adcc753f5b34976d2b4df9061de34a94507d2bd8f58752dc\""
+      },
+      {
+        "path": "src/trading_bot/research/h6/gate_config.py",
+        "line": 10,
+        "token": "f514fecf42b52d2e1c2946ca\u2026",
+        "text": "SPEC_SHA256 = \"f514fecf42b52d2e1c2946cac9dee94b2570d485cb236b9a6c663f46f5bbf148\""
+      },
+      {
+        "path": "src/trading_bot/research/h6/gate_config.py",
+        "line": 11,
+        "token": "345334c3107860a5adcc753f\u2026",
+        "text": "MANIFEST_SHA256 = \"345334c3107860a5adcc753f5b34976d2b4df9061de34a94507d2bd8f58752dc\""
+      }
+    ],
+    "binding_count": 18,
+    "distinct_files": [
+      "scripts/download_oi_full_history.py",
+      "scripts/normalize_oi_full_history.py",
+      "scripts/run_h6_exactly_once.py",
+      "scripts/verify_h6_prereg.py",
+      "src/trading_bot/research/h6/contamination_scan.py",
+      "src/trading_bot/research/h6/contracts.py",
+      "src/trading_bot/research/h6/execution_harness.py",
+      "src/trading_bot/research/h6/external_verifier_report.py",
+      "src/trading_bot/research/h6/feature_engine.py",
+      "src/trading_bot/research/h6/frozen_contract_snapshot.py",
+      "src/trading_bot/research/h6/gate_config.py"
+    ],
+    "permutation_seed_and_draws": {
+      "v2_spec_value": "sign-flip permutation on hourly trade returns, 10,000 draws, fixed seed 20260911",
+      "present_in_v3_authority": false,
+      "present_in_gate_config_py": false
+    }
+  },
+  "CONTROL_PLANE_V1_BINDING": "FAIL",
+  "performance_contamination": {
+    "scanned": [
+      "docs/external-audit-01/oi-full-history-01/H6_EXTERNAL_VERIFIER_PACKAGE.json",
+      "docs/external-audit-01/oi-full-history-01/H6_EXTERNAL_VERIFIER_PACKAGE.md",
+      "docs/external-audit-01/oi-full-history-01/H6_EXTERNAL_VERIFIER_PROMPT.md",
+      "docs/external-audit-01/oi-full-history-01/H6_FAILED_MEMORY_COLLISION_REVIEW.md",
+      "docs/external-audit-01/oi-full-history-01/H6_FEATURE_AUTHORITY_WHITELIST.json",
+      "docs/external-audit-01/oi-full-history-01/H6_MANIFEST.json",
+      "docs/external-audit-01/oi-full-history-01/H6_MECHANISM_EVIDENCE.md",
+      "docs/external-audit-01/oi-full-history-01/H6_PREREG_COMMIT_RECORD.json",
+      "docs/external-audit-01/oi-full-history-01/H6_PREREG_CONSISTENCY_AUDIT.json",
+      "docs/external-audit-01/oi-full-history-01/H6_PREREG_CONSISTENCY_AUDIT.md",
+      "docs/external-audit-01/oi-full-history-01/H6_SELECTION_RATIONALE.md",
+      "docs/external-audit-01/oi-full-history-01/H6_SELF_VERIFICATION.json",
+      "docs/external-audit-01/oi-full-history-01/H6_SPEC.json",
+      "docs/external-audit-01/oi-full-history-02/H6_EXTERNAL_DEFECT_REGRESSION_MATRIX_V2.json",
+      "docs/external-audit-01/oi-full-history-02/H6_EXTERNAL_VERIFIER_PACKAGE_V2.json",
+      "docs/external-audit-01/oi-full-history-02/H6_EXTERNAL_VERIFIER_PACKAGE_V2.md",
+      "docs/external-audit-01/oi-full-history-02/H6_EXTERNAL_VERIFIER_PROMPT_V2.md",
+      "docs/external-audit-01/oi-full-history-02/H6_FAILED_MEMORY_COLLISION_REVIEW_V2.md",
+      "docs/external-audit-01/oi-full-history-02/H6_FEATURE_AUTHORITY_WHITELIST_V2.json",
+      "docs/external-audit-01/oi-full-history-02/H6_MANIFEST_V2.json",
+      "docs/external-audit-01/oi-full-history-02/H6_MECHANISM_EVIDENCE_V2.md",
+      "docs/external-audit-01/oi-full-history-02/H6_PREREG_COMMIT_RECORD_V2.json",
+      "docs/external-audit-01/oi-full-history-02/H6_PREREG_CONSISTENCY_AUDIT_V2.json",
+      "docs/external-audit-01/oi-full-history-02/H6_PREREG_CONSISTENCY_AUDIT_V2.md",
+      "docs/external-audit-01/oi-full-history-02/H6_PREREG_REPAIR_DEFECT_REGISTER.json",
+      "docs/external-audit-01/oi-full-history-02/H6_PREREG_REPAIR_DEFECT_REGISTER.md",
+      "docs/external-audit-01/oi-full-history-02/H6_PREREG_V1_EXTERNAL_FAILURE_RECORD.json",
+      "docs/external-audit-01/oi-full-history-02/H6_SELECTION_RATIONALE_V2.md",
+      "docs/external-audit-01/oi-full-history-02/H6_SELF_VERIFICATION_V2.json",
+      "docs/external-audit-01/oi-full-history-02/H6_SPEC_V2.json",
+      "docs/external-audit-01/oi-full-history-03/DASHBOARD_REPEAT_20_RESULT.json",
+      "docs/external-audit-01/oi-full-history-03/DATASET_DETERMINISM_V3_RESULT.json",
+      "docs/external-audit-01/oi-full-history-03/DATA_AUTHORITY_RESULT.json",
+      "docs/external-audit-01/oi-full-history-03/FULL_HERMETIC_RESULT_1.json",
+      "docs/external-audit-01/oi-full-history-03/FULL_HERMETIC_RESULT_2.json",
+      "docs/external-audit-01/oi-full-history-03/H6_DATA_AUTHORITY_CHECK.json",
+      "docs/external-audit-01/oi-full-history-03/H6_DATA_AUTHORITY_V3.json",
+      "docs/external-audit-01/oi-full-history-03/H6_EXTERNAL_VERIFIER_PACKAGE_V3.json",
+      "docs/external-audit-01/oi-full-history-03/H6_EXTERNAL_VERIFIER_PROMPT_V3.md",
+      "docs/external-audit-01/oi-full-history-03/H6_FAILED_MEMORY_COLLISION_REVIEW_V3.md",
+      "docs/external-audit-01/oi-full-history-03/H6_FEATURE_AUTHORITY_WHITELIST_V3.json",
+      "docs/external-audit-01/oi-full-history-03/H6_MANIFEST_V3.json",
+      "docs/external-audit-01/oi-full-history-03/H6_MECHANISM_EVIDENCE_V3.md",
+      "docs/external-audit-01/oi-full-history-03/H6_SELECTION_RATIONALE_V3.md",
+      "docs/external-audit-01/oi-full-history-03/H6_SHADOW_ISOLATION_REPORT.json",
+      "docs/external-audit-01/oi-full-history-03/H6_SHADOW_ISOLATION_REPORT.md",
+      "docs/external-audit-01/oi-full-history-03/H6_SPEC_V3.json",
+      "docs/external-audit-01/oi-full-history-03/H6_V2_EXTERNAL_FAILURE_RECORD.json",
+      "docs/external-audit-01/oi-full-history-03/H6_V2_EXTERNAL_FAILURE_RECORD.md",
+      "docs/external-audit-01/oi-full-history-03/H6_V3_CONSISTENCY_AUDIT.json",
+      "docs/external-audit-01/oi-full-history-03/H6_V3_DEFECT_REGRESSION_MATRIX.json",
+      "docs/external-audit-01/oi-full-history-03/H6_V3_POST_COMMIT_RECORD.json",
+      "docs/external-audit-01/oi-full-history-03/H6_V3_REPAIR_DEFECT_REGISTER.json",
+      "docs/external-audit-01/oi-full-history-03/H6_V3_REPAIR_DEFECT_REGISTER.md",
+      "docs/external-audit-01/oi-full-history-03/H6_V3_VERIFIER_ENVIRONMENT_CHECK.json",
+      "docs/external-audit-01/oi-full-history-03/PIT_DYNAMIC_RESULT.json",
+      "docs/external-audit-01/oi-full-history-03/PIT_STATIC_AND_ISOLATION_RESULT.json",
+      "docs/external-audit-01/oi-full-history-03/PRICE_OVERLAP_V3_RESULT.json",
+      "docs/external-audit-01/oi-full-history-03/SHADOW_MATURITY_AUTHORITY_V2.json",
+      "docs/external-audit-01/oi-full-history-03/SHADOW_MATURITY_AUTHORITY_V2.md",
+      "docs/external-audit-01/oi-full-history-03/SHADOW_RESOLUTION_REPORT_V2.json",
+      "docs/external-audit-01/oi-full-history-03/SHADOW_RESOLUTION_REPORT_V2.md",
+      "docs/external-audit-01/oi-full-history-03/SHADOW_V2_INVALIDATION_RECORD.json",
+      "docs/external-audit-01/oi-full-history-03/SHADOW_V2_INVALIDATION_RECORD.md",
+      "src/trading_bot/research/h6/__init__.py",
+      "src/trading_bot/research/h6/assertions.py",
+      "src/trading_bot/research/h6/conf_lock.py",
+      "src/trading_bot/research/h6/confirmation_state.py",
+      "src/trading_bot/research/h6/contamination_scan.py",
+      "src/trading_bot/research/h6/contracts.py",
+      "src/trading_bot/research/h6/cost.py",
+      "src/trading_bot/research/h6/drift_guard.py",
+      "src/trading_bot/research/h6/eligibility.py",
+      "src/trading_bot/research/h6/execution_harness.py",
+      "src/trading_bot/research/h6/execution_ledger.py",
+      "src/trading_bot/research/h6/external_verification.py",
+      "src/trading_bot/research/h6/external_verifier_report.py",
+      "src/trading_bot/research/h6/feature_engine.py",
+      "src/trading_bot/research/h6/frozen_contract_snapshot.py",
+      "src/trading_bot/research/h6/funding.py",
+      "src/trading_bot/research/h6/gate_config.py",
+      "src/trading_bot/research/h6/hash_validator.py",
+      "src/trading_bot/research/h6/result_schema.py",
+      "src/trading_bot/research/h6/whitelist.py"
+    ],
+    "hits": [
+      {
+        "path": "docs/external-audit-01/oi-full-history-01/H6_EXTERNAL_VERIFIER_PROMPT.md",
+        "token": "sharpe",
+        "count": 2
+      },
+      {
+        "path": "docs/external-audit-01/oi-full-history-01/H6_EXTERNAL_VERIFIER_PROMPT.md",
+        "token": "pnl",
+        "count": 1
+      },
+      {
+        "path": "docs/external-audit-01/oi-full-history-01/H6_MANIFEST.json",
+        "token": "sharpe",
+        "count": 1
+      },
+      {
+        "path": "docs/external-audit-01/oi-full-history-01/H6_MANIFEST.json",
+        "token": "pnl",
+        "count": 1
+      },
+      {
+        "path": "docs/external-audit-01/oi-full-history-01/H6_SELECTION_RATIONALE.md",
+        "token": "sharpe",
+        "count": 2
+      },
+      {
+        "path": "docs/external-audit-01/oi-full-history-01/H6_SELECTION_RATIONALE.md",
+        "token": "expectancy",
+        "count": 1
+      },
+      {
+        "path": "docs/external-audit-01/oi-full-history-01/H6_SPEC.json",
+        "token": "sharpe",
+        "count": 3
+      },
+      {
+        "path": "docs/external-audit-01/oi-full-history-01/H6_SPEC.json",
+        "token": "pnl",
+        "count": 2
+      },
+      {
+        "path": "docs/external-audit-01/oi-full-history-01/H6_SPEC.json",
+        "token": "expectancy",
+        "count": 3
+      },
+      {
+        "path": "docs/external-audit-01/oi-full-history-02/H6_EXTERNAL_VERIFIER_PROMPT_V2.md",
+        "token": "sharpe",
+        "count": 2
+      },
+      {
+        "path": "docs/external-audit-01/oi-full-history-02/H6_FAILED_MEMORY_COLLISION_REVIEW_V2.md",
+        "token": "p&l",
+        "count": 1
+      },
+      {
+        "path": "docs/external-audit-01/oi-full-history-02/H6_MANIFEST_V2.json",
+        "token": "sharpe",
+        "count": 1
+      },
+      {
+        "path": "docs/external-audit-01/oi-full-history-02/H6_MANIFEST_V2.json",
+        "token": "pnl",
+        "count": 1
+      },
+      {
+        "path": "docs/external-audit-01/oi-full-history-02/H6_SELECTION_RATIONALE_V2.md",
+        "token": "sharpe",
+        "count": 2
+      },
+      {
+        "path": "docs/external-audit-01/oi-full-history-02/H6_SELECTION_RATIONALE_V2.md",
+        "token": "expectancy",
+        "count": 1
+      },
+      {
+        "path": "docs/external-audit-01/oi-full-history-02/H6_SPEC_V2.json",
+        "token": "sharpe",
+        "count": 3
+      },
+      {
+        "path": "docs/external-audit-01/oi-full-history-02/H6_SPEC_V2.json",
+        "token": "pnl",
+        "count": 2
+      },
+      {
+        "path": "docs/external-audit-01/oi-full-history-02/H6_SPEC_V2.json",
+        "token": "expectancy",
+        "count": 3
+      },
+      {
+        "path": "docs/external-audit-01/oi-full-history-03/H6_EXTERNAL_VERIFIER_PROMPT_V3.md",
+        "token": "sharpe",
+        "count": 1
+      },
+      {
+        "path": "docs/external-audit-01/oi-full-history-03/H6_EXTERNAL_VERIFIER_PROMPT_V3.md",
+        "token": "pnl",
+        "count": 1
+      },
+      {
+        "path": "docs/external-audit-01/oi-full-history-03/H6_SELECTION_RATIONALE_V3.md",
+        "token": "sharpe",
+        "count": 2
+      },
+      {
+        "path": "docs/external-audit-01/oi-full-history-03/H6_SELECTION_RATIONALE_V3.md",
+        "token": "expectancy",
+        "count": 1
+      },
+      {
+        "path": "docs/external-audit-01/oi-full-history-03/H6_SPEC_V3.json",
+        "token": "sharpe",
+        "count": 2
+      },
+      {
+        "path": "docs/external-audit-01/oi-full-history-03/H6_SPEC_V3.json",
+        "token": "pnl",
+        "count": 2
+      },
+      {
+        "path": "docs/external-audit-01/oi-full-history-03/H6_SPEC_V3.json",
+        "token": "expectancy",
+        "count": 3
+      },
+      {
+        "path": "src/trading_bot/research/h6/contamination_scan.py",
+        "token": "sharpe",
+        "count": 2
+      },
+      {
+        "path": "src/trading_bot/research/h6/contamination_scan.py",
+        "token": "pnl",
+        "count": 2
+      },
+      {
+        "path": "src/trading_bot/research/h6/contamination_scan.py",
+        "token": "win_rate",
+        "count": 1
+      },
+      {
+        "path": "src/trading_bot/research/h6/contamination_scan.py",
+        "token": "expectancy",
+        "count": 2
+      },
+      {
+        "path": "src/trading_bot/research/h6/contracts.py",
+        "token": "sharpe",
+        "count": 1
+      },
+      {
+        "path": "src/trading_bot/research/h6/contracts.py",
+        "token": "pnl",
+        "count": 1
+      },
+      {
+        "path": "src/trading_bot/research/h6/contracts.py",
+        "token": "expectancy",
+        "count": 1
+      },
+      {
+        "path": "src/trading_bot/research/h6/cost.py",
+        "token": "net_return",
+        "count": 2
+      },
+      {
+        "path": "src/trading_bot/research/h6/frozen_contract_snapshot.py",
+        "token": "sharpe",
+        "count": 3
+      },
+      {
+        "path": "src/trading_bot/research/h6/frozen_contract_snapshot.py",
+        "token": "pnl",
+        "count": 3
+      },
+      {
+        "path": "src/trading_bot/research/h6/gate_config.py",
+        "token": "sharpe",
+        "count": 2
+      },
+      {
+        "path": "src/trading_bot/research/h6/gate_config.py",
+        "token": "pnl",
+        "count": 2
+      },
+      {
+        "path": "src/trading_bot/research/h6/result_schema.py",
+        "token": "sharpe",
+        "count": 12
+      },
+      {
+        "path": "src/trading_bot/research/h6/result_schema.py",
+        "token": "expectancy",
+        "count": 8
+      }
+    ],
+    "hits_in_docstring_or_comment_only": [],
+    "token_totals": {
+      "sharpe": 41,
+      "pnl": 18,
+      "expectancy": 23,
+      "p&l": 1,
+      "win_rate": 1,
+      "net_return": 2
+    },
+    "PERFORMANCE_OBSERVED_declared": {
+      "V2_spec": false,
+      "V3_spec_status_at_prereg": 0,
+      "V3_spec_governance": {
+        "H6_BACKTESTS": 0,
+        "H6_CONFIRMATION_DATA_DEPENDENCY": "NONE",
+        "H6_CONFIRMATION_PERFORMANCE_DEPENDENCY": "NONE",
+        "H6_CONFIRMATION_RESULT_DEPENDENCY": "NONE",
+        "H6_EXECUTIONS": 0,
+        "H6_SHADOW_DATA_DEPENDENCY": "NONE",
+        "PERFORMANCE_OBSERVED": false,
+        "PRE_LEDGER_CONFIRMATION_HISTORY": "NOT_INDEPENDENTLY_PROVEN (LIMITATION_EXPLICIT_NON_BLOCKING for V3: V3 decisions depend on no prior confirmation results)",
+        "status_at_prereg": "PENDING_EXTERNAL_VERIFICATION_V3"
+      }
+    },
+    "measured_performance_metrics_found": []
+  },
+  "PERFORMANCE_CONTAMINATION": "PASS",
+  "h5_immutability": {
+    "files_present_at_audited_commit": [
+      "docs/external-audit-01/h5-orderflow-imbalance-01/ALPHA_DATA_EXPANSION_PLAN.md",
+      "docs/external-audit-01/h5-orderflow-imbalance-01/DEF_H5_GOV_001_POST_EXECUTION_PREREG_MUTATION.md",
+      "docs/external-audit-01/h5-orderflow-imbalance-01/DEF_H5_GOV_002_SELF_FINGERPRINT_MISMATCH.md",
+      "docs/external-audit-01/h5-orderflow-imbalance-01/DEF_H5_ORTHO_001_INVALID_PEARSON_CORRELATION.md",
+      "docs/external-audit-01/h5-orderflow-imbalance-01/FINAL_REPORT.md",
+      "docs/external-audit-01/h5-orderflow-imbalance-01/FINAL_REPORT_H5_DISCOVERY_01.md",
+      "docs/external-audit-01/h5-orderflow-imbalance-01/H5_EXECUTION_MARKER.json",
+      "docs/external-audit-01/h5-orderflow-imbalance-01/H5_EXECUTION_RECORD.json",
+      "docs/external-audit-01/h5-orderflow-imbalance-01/H5_IMPLEMENTATION_POST_EXECUTION_STATUS.json",
+      "docs/external-audit-01/h5-orderflow-imbalance-01/H5_IMPLEMENTATION_VERIFICATION.json",
+      "docs/external-audit-01/h5-orderflow-imbalance-01/H5_MANIFEST.json",
+      "docs/external-audit-01/h5-orderflow-imbalance-01/H5_MANIFEST_CONTEXT_SNAPSHOT_NON_AUTHORITATIVE.json",
+      "docs/external-audit-01/h5-orderflow-imbalance-01/H5_MANIFEST_POST_EXECUTION_CONTAMINATED.json",
+      "docs/external-audit-01/h5-orderflow-imbalance-01/H5_ORTHOGONALITY_AUTHORITY_FINAL.json",
+      "docs/external-audit-01/h5-orderflow-imbalance-01/H5_ORTHOGONALITY_AUTHORITY_FINAL.md",
+      "docs/external-audit-01/h5-orderflow-imbalance-01/H5_ORTHOGONALITY_RECONCILIATION.md",
+      "docs/external-audit-01/h5-orderflow-imbalance-01/H5_POST_EXECUTION_ANNOTATIONS.json",
+      "docs/external-audit-01/h5-orderflow-imbalance-01/H5_PREREG_RESTORATION_BLOCKED_REPORT.json",
+      "docs/external-audit-01/h5-orderflow-imbalance-01/H5_PREREG_RESTORATION_REPORT.json",
+      "docs/external-audit-01/h5-orderflow-imbalance-01/H5_RESULT.json",
+      "docs/external-audit-01/h5-orderflow-imbalance-01/H5_SELECTION_RATIONALE.md",
+      "docs/external-audit-01/h5-orderflow-imbalance-01/H5_SPEC.json",
+      "docs/external-audit-01/h5-orderflow-imbalance-01/RUN_REPORT.json",
+      "docs/external-audit-01/h5-orderflow-imbalance-01/RUN_REPORT.md",
+      "docs/external-audit-01/h5-orderflow-imbalance-01/TRACK_B_EXECUTION_ATTEMPT_RECONCILIATION.md",
+      "docs/external-audit-01/h5-orderflow-imbalance-01/TRACK_D_H5_FINAL_RESULT_CONFIRMATION.md",
+      "docs/external-audit-01/h5-orderflow-imbalance-01/evidence/EXECUTED_ORTHOGONALITY_DISASSEMBLY.txt",
+      "docs/external-audit-01/h5-orderflow-imbalance-01/evidence/H5_EXECUTION_RECORD.PRIOR_RUN_v1.json",
+      "docs/external-audit-01/h5-orderflow-imbalance-01/evidence/H5_MANIFEST_GEN3_WRONG_RESTORE_DFD89A28.json",
+      "docs/external-audit-01/h5-orderflow-imbalance-01/evidence/H5_MANIFEST_PREREG_C426B35.json",
+      "docs/external-audit-01/h5-orderflow-imbalance-01/evidence/H5_POST_EXECUTION_ANNOTATIONS.PRIOR_RUN_v1.json",
+      "docs/external-audit-01/h5-orderflow-imbalance-01/evidence/PEARSON_VERIFIER_SELFTEST.json",
+      "docs/external-audit-01/h5-orderflow-imbalance-01/execution_ledger/H5-ORDERFLOW-IMBALANCE-CONTINUATION-01.lock",
+      "docs/external-audit-01/h5-orderflow-imbalance-01/execution_ledger/research_execution_ledger.jsonl"
+    ],
+    "files_changed_between_base_and_audited": [],
+    "H5_prereg_artifacts_touched_by_v3_repair": [],
+    "H5_IMMUTABILITY": "PASS",
+    "H5_MANIFEST_present": true,
+    "H5_MANIFEST_keys": [
+      "checkpoint",
+      "manifest_version",
+      "created_utc",
+      "strategy_id",
+      "spec_path",
+      "selection_record_path",
+      "prereg",
+      "state_at_prereg",
+      "next_checkpoint_contract"
+    ]
+  },
+  "skip_audit": {
+    "test_files_scanned": [
+      "tests/unit/research/test_confirmation_ledger_lock.py",
+      "tests/unit/research/test_h6_confirmation_isolation.py",
+      "tests/unit/research/test_h6_v3_test_isolation.py",
+      "tests/unit/research/test_h6_whitelist_bypass.py",
+      "tests/unit/research/test_h6_whitelist_static_scan.py",
+      "tests/unit/research/test_hash_validator.py",
+      "tests/unit/research/test_oi_full_history.py",
+      "tests/unit/research/test_oi_full_history_v2_pit.py",
+      "tests/unit/shadow/test_integration.py",
+      "tests/unit/shadow/test_resolver.py",
+      "tests/unit/shadow/test_router.py",
+      "tests/unit/shadow/test_shadow.py",
+      "tests/unit/shadow/test_shadow_maturity_48h.py"
+    ],
+    "skip_markers_found": [
+      {
+        "path": "tests/unit/research/test_h6_v3_test_isolation.py",
+        "line": 84,
+        "text": "pytest.skip(\"AUTHORITY_UNREACHABLE: canonical V2 data root not found (portable resolution failed)\")"
+      },
+      {
+        "path": "tests/unit/research/test_h6_v3_test_isolation.py",
+        "line": 100,
+        "text": "pytest.skip(\"AUTHORITY_UNREACHABLE: canonical V2 data root not found (portable resolution failed)\")"
+      },
+      {
+        "path": "tests/unit/research/test_oi_full_history.py",
+        "line": 73,
+        "text": "pytest.skip(\"raw sample not present on this machine\")"
+      },
+      {
+        "path": "tests/unit/research/test_oi_full_history.py",
+        "line": 289,
+        "text": "@pytest.mark.skipif(not (REPO / \"docs/external-audit-01/oi-full-history-01/H6_SPEC.json\").exists(), reason=\"H6 spec not present\")"
+      },
+      {
+        "path": "tests/unit/research/test_oi_full_history.py",
+        "line": 342,
+        "text": "@pytest.mark.skipif(not _is_frozen_dataset_present(), reason=\"frozen OI dataset not on this machine\")"
+      },
+      {
+        "path": "tests/unit/research/test_oi_full_history.py",
+        "line": 386,
+        "text": "@pytest.mark.skipif(not (PRICE_AUTHORITY_DIR / \"BTCUSDT_1h.jsonl\").exists(), reason=\"price authority not present\")"
+      }
+    ],
+    "SKIP_AUDIT": "REVIEW_REQUIRED"
+  },
+  "defect_regression_matrix": {
+    "register_path": "docs/external-audit-01/oi-full-history-03/H6_V3_REPAIR_DEFECT_REGISTER.json",
+    "matrix_path": "docs/external-audit-01/oi-full-history-03/H6_V3_DEFECT_REGRESSION_MATRIX.json",
+    "register_defect_count_estimate": 8,
+    "matrix_entry_count_estimate": 16,
+    "ids_in_register": [
+      "EXT-CONF-002",
+      "EXT-DASHBOARD-002",
+      "EXT-FEATURE-WHITELIST-001",
+      "EXT-HERMETIC-002",
+      "EXT-MANIFEST-HASH-001",
+      "EXT-PORTABLE-DATA-001",
+      "EXT-PRICE-LIMIT-001",
+      "EXT-SHADOW-002"
+    ],
+    "ids_in_matrix": [
+      "EXT-CONF-001",
+      "EXT-CONF-002",
+      "EXT-CONS-001",
+      "EXT-CONS-002",
+      "EXT-CONS-004",
+      "EXT-DASHBOARD-002",
+      "EXT-DATA-001",
+      "EXT-FEATURE-WHITELIST-001",
+      "EXT-HERMETIC-002",
+      "EXT-MANIFEST-HASH-001",
+      "EXT-PIT-001",
+      "EXT-PORTABLE-DATA-001",
+      "EXT-PRICE-001",
+      "EXT-PRICE-LIMIT-001",
+      "EXT-SHADOW-002"
+    ],
+    "ids_in_register_missing_from_matrix": [],
+    "matrix_covers_register": true,
+    "verifier_note": "Presence and coverage are checked here. Independently re-running each defect's reproduction is done per-defect in the defect regression gate."
+  },
+  "DEFECT_REGRESSION_MATRIX_PRESENCE": "PASS"
+}
