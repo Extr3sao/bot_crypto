@@ -4,7 +4,7 @@
   "audited_target_commit": "a5487164803fb601f87f2cd4c865929c30da274e",
   "prereg_commit": "9f1d844312419575d6b635a7356111050fd9b93a",
   "base_commit": "0941082fc875a66287d2b09159112963141bcf27",
-  "phase": "PIT_HARNESS_COMPLETE",
+  "phase": "CONFIRMATION_SHADOW_COMPLETE",
   "completed_gates": [
     "VERIFIER_ENVIRONMENT",
     "GIT_AUTHORITY",
@@ -24,7 +24,13 @@
     "H5_IMMUTABILITY",
     "SKIP_AUDIT",
     "DEFECT_REGRESSION_MATRIX_PRESENCE",
-    "DYNAMIC_PIT_NON_VACUOUS_HARNESS"
+    "DYNAMIC_PIT_NON_VACUOUS_HARNESS",
+    "CONFIRMATION_LEDGER",
+    "CONFIRMATION_LOCK",
+    "CONFIRMATION_H6_FIREWALL",
+    "SHADOW_INVALIDATION",
+    "SHADOW_MATURITY_AUTHORITY",
+    "SHADOW_H6_FIREWALL"
   ],
   "failed_gates": [
     "WHITELIST_ADVERSARIAL_ATTACKS",
@@ -48,12 +54,12 @@
     "DYNAMIC_PIT_NON_VACUOUS_HARNESS": "PASS",
     "PRICE_CONTINUITY": "PENDING",
     "PRICE_FULL_OVERLAP": "PENDING",
-    "CONFIRMATION_LEDGER": "PENDING",
-    "CONFIRMATION_LOCK": "PENDING",
-    "CONFIRMATION_H6_FIREWALL": "PENDING",
-    "SHADOW_INVALIDATION": "PENDING",
-    "SHADOW_MATURITY_AUTHORITY": "PENDING",
-    "SHADOW_H6_FIREWALL": "PENDING",
+    "CONFIRMATION_LEDGER": "PASS",
+    "CONFIRMATION_LOCK": "PASS",
+    "CONFIRMATION_H6_FIREWALL": "PASS",
+    "SHADOW_INVALIDATION": "PASS",
+    "SHADOW_MATURITY_AUTHORITY": "PASS",
+    "SHADOW_H6_FIREWALL": "PASS",
     "V2_TO_V3_ECONOMIC_SEMANTIC_DRIFT": "FAIL",
     "CONTROL_PLANE_V1_BINDING": "FAIL",
     "PERFORMANCE_CONTAMINATION": "PASS",
@@ -132,8 +138,25 @@
     "docs/external-audit-01/h6-external-verification-v3/verifier_semantics_gates.py",
     "docs/external-audit-01/h6-external-verification-v3/VERIFIER_EVIDENCE_pit_nonvacuous.json",
     "docs/external-audit-01/h6-external-verification-v3/VERIFIER_EVIDENCE_pit_nonvacuous.md",
-    "docs/external-audit-01/h6-external-verification-v3/verifier_pit_nonvacuous.py"
+    "docs/external-audit-01/h6-external-verification-v3/verifier_pit_nonvacuous.py",
+    "docs/external-audit-01/h6-external-verification-v3/VERIFIER_EVIDENCE_confirmation_shadow.json",
+    "docs/external-audit-01/h6-external-verification-v3/VERIFIER_EVIDENCE_confirmation_shadow.md",
+    "docs/external-audit-01/h6-external-verification-v3/verifier_confirmation_shadow.py"
   ],
+  "gate_results_confirmation_shadow": {
+    "adversarial_lock_cases": 12,
+    "adversarial_lock_cases_passing": 12,
+    "ledger_derived_not_hardcoded": true,
+    "real_ledger_line_count": 1,
+    "real_ledger_sha256": "188290908fe4765c0197f7fc27c0572a19d7b2d34a82741cc04c223bb18e5add",
+    "lock_expired_at_audit_time": false,
+    "truncation_detected": false,
+    "h6_runtime_modules_reading_confirmation_data": 0,
+    "h6_runtime_modules_reading_shadow_data": 0,
+    "shadow_48h_deltas_verified": "11/11",
+    "shadow_earliest_maturity": "2026-09-11T21:15:00+00:00",
+    "shadow_earliest_claim_invalidated_not_reasserted": true
+  },
   "verifier_commits": [
     "1a58e03 [H6-V3-VERIFIER] independent evidence: git authority, python import authority, test target, data authority",
     "second commit: whitelist adversarial attacks, runtime reachability, cross-artifact consistency"
@@ -207,6 +230,29 @@
       "title": "Carried-block hash label imprecise; 33/34 accounting not reproducible",
       "detail": "declared spec_sha256_of_carried_block = sha256 of the WHOLE H6_SPEC_V2.json (independently reproduced). Observed carry: 20 of 24 comparable economic fields.",
       "status": "OPEN_INFORMATIONAL"
+    },
+    {
+      "id": "FIND-CONF-01",
+      "gate": "CONFIRMATION_LOCK",
+      "severity": "MEDIUM",
+      "title": "Confirmation ledger truncation is not detected",
+      "detail": "An ABSENT ledger fails closed (raises ConfirmationLockViolation, source=missing_manifest) but a ledger file present with ZERO lines is accepted as a valid not-consumed locked state. The ledger is a plain JSONL with no hash chain, signature or entry-count pin, so 'append-only' is a convention; gate control reduces to write access to one relative-path file.",
+      "status": "OPEN_UNREPAIRED"
+    },
+    {
+      "id": "FIND-CONF-02",
+      "gate": "CONFIRMATION_LOCK",
+      "severity": "LOW",
+      "title": "CONFIRMATION_LEDGER_PATH is relative and CWD-dependent",
+      "status": "OPEN_UNREPAIRED"
+    },
+    {
+      "id": "FIND-CONF-03",
+      "gate": "CONFIRMATION_LEDGER",
+      "severity": "LOW",
+      "title": "Rows lacking the target confirmation_id are filtered before validation",
+      "detail": "confirmation_state() filters by confirmation_id BEFORE validate_event, so malformed or foreign rows are silently ignored and ledger corruption produces no error. Does not open the lock (demonstrated).",
+      "status": "OPEN_UNREPAIRED"
     },
     {
       "id": "FIND-PIT-01",
@@ -298,9 +344,9 @@
     "H6_EXECUTIONS": 0,
     "PERFORMANCE_OBSERVED": false
   },
-  "last_command": "PYTHONPATH=<verifier>/src python docs/external-audit-01/h6-external-verification-v3/verifier_pit_nonvacuous.py --out docs/external-audit-01/h6-external-verification-v3/VERIFIER_EVIDENCE_pit_nonvacuous.json",
-  "next_command": "CONFIRMATION_LEDGER + CONFIRMATION_LOCK + CONFIRMATION_H6_FIREWALL + SHADOW_INVALIDATION + SHADOW_MATURITY_AUTHORITY + SHADOW_H6_FIREWALL + PRICE_CONTINUITY + PRICE_FULL_OVERLAP: PYTHONPATH=<verifier>/src python docs/external-audit-01/h6-external-verification-v3/verifier_confirmation_shadow.py --out docs/external-audit-01/h6-external-verification-v3/VERIFIER_EVIDENCE_confirmation_shadow.json ; then DASHBOARD_20X, FULL_HERMETIC, A_B_DETERMINISM",
+  "last_command": "PYTHONPATH=<verifier>/src python docs/external-audit-01/h6-external-verification-v3/verifier_confirmation_shadow.py --out docs/external-audit-01/h6-external-verification-v3/VERIFIER_EVIDENCE_confirmation_shadow.json",
+  "next_command": "PRICE_CONTINUITY + PRICE_FULL_OVERLAP: verify PRICE_1H_AUTHORITY_V2_MANIFEST.json against the actual 1h kline authority (41880 expected hours per asset, common window 2021-12-01..2026-09-10) and recompute the price authority sha256 e1c2462a… ; then DASHBOARD_20X, FULL_HERMETIC, A_B_DETERMINISM",
   "final_verdict_preview": "FAIL. Five gates have failed with unrepaired defects (WHITELIST_ADVERSARIAL_ATTACKS, WHITELIST_RUNTIME_REACHABILITY, CROSS_ARTIFACT_CONSISTENCY, V2_TO_V3_ECONOMIC_SEMANTIC_DRIFT, CONTROL_PLANE_V1_BINDING). Data-plane and PIT gates all PASS. Remaining gates still OPEN.",
-  "remaining_open_gates": ["PRICE_CONTINUITY", "PRICE_FULL_OVERLAP", "CONFIRMATION_LEDGER", "CONFIRMATION_LOCK", "CONFIRMATION_H6_FIREWALL", "SHADOW_INVALIDATION", "SHADOW_MATURITY_AUTHORITY", "SHADOW_H6_FIREWALL", "DASHBOARD_20X", "FULL_HERMETIC", "SKIP_AUDIT_DEEP", "A_B_DETERMINISM"],
+  "remaining_open_gates": ["PRICE_CONTINUITY", "PRICE_FULL_OVERLAP", "DASHBOARD_20X", "FULL_HERMETIC", "SKIP_AUDIT_DEEP", "A_B_DETERMINISM", "DEFECT_REGRESSION_RERUN"],
   "timestamp": "2026-09-13T00:00:00Z"
 }

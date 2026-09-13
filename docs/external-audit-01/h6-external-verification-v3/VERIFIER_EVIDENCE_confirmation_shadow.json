@@ -1,0 +1,295 @@
+{
+  "verifier_type": "INDEPENDENT_CONFIRMATION_SHADOW_V3",
+  "timestamp_utc": "2026-09-13T07:27:50Z",
+  "audited_target_commit": "a5487164803fb601f87f2cd4c865929c30da274e",
+  "economics": {
+    "H6_BACKTESTS": 0,
+    "H6_EXECUTIONS": 0,
+    "PERFORMANCE_OBSERVED": false
+  },
+  "confirmation_lock": {
+    "cases": [
+      {
+        "case": "absent_ledger_fails_closed",
+        "ledger_lines": 0,
+        "derived_state": {
+          "state_valid": true,
+          "consumed": false,
+          "execution_count": 0,
+          "error": null
+        },
+        "lock_status_source": "missing_manifest",
+        "lock_status_consumed": "UNKNOWN",
+        "lock_status_executions": "UNKNOWN",
+        "assert_confirmation_locked_raised": "CONF-EDGE-002-001 ledger missing at C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\v3_conf_7_vr5lr0\\CONFIRMATION_LEDGER_V2.jsonl; cannot verify lock \u2014 EXT-CONF-002 repair requires ledger-backed authority",
+        "expected": "RAISE",
+        "result": "PASS"
+      },
+      {
+        "case": "empty_ledger_is_treated_as_valid_locked",
+        "ledger_lines": 0,
+        "derived_state": {
+          "state_valid": true,
+          "consumed": false,
+          "execution_count": 0,
+          "error": null
+        },
+        "lock_status_source": "confirmation_ledger_v2",
+        "lock_status_consumed": false,
+        "lock_status_executions": 0,
+        "assert_confirmation_locked_raised": null,
+        "expected": "NO RAISE",
+        "result": "PASS"
+      },
+      {
+        "case": "created_plus_lock_check_stays_locked",
+        "ledger_lines": 2,
+        "derived_state": {
+          "state_valid": true,
+          "consumed": false,
+          "execution_count": 0,
+          "error": null
+        },
+        "lock_status_source": "confirmation_ledger_v2",
+        "lock_status_consumed": false,
+        "lock_status_executions": 0,
+        "assert_confirmation_locked_raised": null,
+        "expected": "NO RAISE",
+        "result": "PASS"
+      },
+      {
+        "case": "CONSUMED_event_breaks_lock",
+        "ledger_lines": 2,
+        "derived_state": {
+          "state_valid": true,
+          "consumed": true,
+          "execution_count": 0,
+          "error": null
+        },
+        "lock_status_source": "confirmation_ledger_v2",
+        "lock_status_consumed": true,
+        "lock_status_executions": 0,
+        "assert_confirmation_locked_raised": "CONF-EDGE-002-001 consumed=True; expected false",
+        "expected": "RAISE",
+        "result": "PASS"
+      },
+      {
+        "case": "STARTED_event_breaks_lock",
+        "ledger_lines": 2,
+        "derived_state": {
+          "state_valid": true,
+          "consumed": false,
+          "execution_count": 1,
+          "error": null
+        },
+        "lock_status_source": "confirmation_ledger_v2",
+        "lock_status_consumed": false,
+        "lock_status_executions": 1,
+        "assert_confirmation_locked_raised": "CONF-EDGE-002-001 executions=1; expected 0",
+        "expected": "RAISE",
+        "result": "PASS"
+      },
+      {
+        "case": "invalid_event_type_breaks_lock",
+        "ledger_lines": 2,
+        "derived_state": {
+          "state_valid": false,
+          "consumed": false,
+          "execution_count": 0,
+          "error": "invalid event_type BOGUS_EVENT"
+        },
+        "lock_status_source": "confirmation_ledger_v2_invalid",
+        "lock_status_consumed": "UNKNOWN",
+        "lock_status_executions": "UNKNOWN",
+        "assert_confirmation_locked_raised": "CONF-EDGE-002-001 ledger invalid: invalid event_type BOGUS_EVENT",
+        "expected": "RAISE",
+        "result": "PASS"
+      },
+      {
+        "case": "other_confirmation_id_isolated",
+        "ledger_lines": 1,
+        "derived_state": {
+          "state_valid": true,
+          "consumed": false,
+          "execution_count": 0,
+          "error": null
+        },
+        "lock_status_source": "confirmation_ledger_v2",
+        "lock_status_consumed": false,
+        "lock_status_executions": 0,
+        "assert_confirmation_locked_raised": null,
+        "expected": "NO RAISE",
+        "result": "PASS"
+      },
+      {
+        "case": "ledger_order_independent_distinct_attempts",
+        "ledger_lines": 2,
+        "derived_state": {
+          "state_valid": true,
+          "consumed": false,
+          "execution_count": 0,
+          "error": null
+        },
+        "lock_status_source": "confirmation_ledger_v2",
+        "lock_status_consumed": false,
+        "lock_status_executions": 0,
+        "assert_confirmation_locked_raised": null,
+        "expected": "NO RAISE",
+        "result": "PASS"
+      },
+      {
+        "case": "malformed_row_without_confirmation_id_is_ignored",
+        "ledger_lines": 2,
+        "derived_state": {
+          "state_valid": true,
+          "consumed": false,
+          "execution_count": 0,
+          "error": null
+        },
+        "lock_status_source": "confirmation_ledger_v2",
+        "lock_status_consumed": false,
+        "lock_status_executions": 0,
+        "assert_confirmation_locked_raised": null,
+        "expected": "NO RAISE",
+        "result": "PASS"
+      },
+      {
+        "case": "malformed_row_with_correct_confirmation_id_breaks_lock",
+        "ledger_lines": 2,
+        "derived_state": {
+          "state_valid": false,
+          "consumed": false,
+          "execution_count": 0,
+          "error": "missing field spec"
+        },
+        "lock_status_source": "confirmation_ledger_v2_invalid",
+        "lock_status_consumed": "UNKNOWN",
+        "lock_status_executions": "UNKNOWN",
+        "assert_confirmation_locked_raised": "CONF-EDGE-002-001 ledger invalid: missing field spec",
+        "expected": "RAISE",
+        "result": "PASS"
+      },
+      {
+        "case": "duplicate_consumed_breaks_lock",
+        "ledger_lines": 2,
+        "derived_state": {
+          "state_valid": false,
+          "consumed": true,
+          "execution_count": 0,
+          "error": "duplicate CONSUMED"
+        },
+        "lock_status_source": "confirmation_ledger_v2_invalid",
+        "lock_status_consumed": "UNKNOWN",
+        "lock_status_executions": "UNKNOWN",
+        "assert_confirmation_locked_raised": "CONF-EDGE-002-001 ledger invalid: duplicate CONSUMED",
+        "expected": "RAISE",
+        "result": "PASS"
+      },
+      {
+        "case": "started_after_consumed_breaks_lock",
+        "ledger_lines": 2,
+        "derived_state": {
+          "state_valid": false,
+          "consumed": true,
+          "execution_count": 1,
+          "error": "STARTED after CONSUMED"
+        },
+        "lock_status_source": "confirmation_ledger_v2_invalid",
+        "lock_status_consumed": "UNKNOWN",
+        "lock_status_executions": "UNKNOWN",
+        "assert_confirmation_locked_raised": "CONF-EDGE-002-001 ledger invalid: STARTED after CONSUMED",
+        "expected": "RAISE",
+        "result": "PASS"
+      }
+    ],
+    "constants": {
+      "CONFIRMATION_ID": "CONF-EDGE-002-001",
+      "CONFIRMATION_LOCK_UNTIL": "2026-09-22T00:00:00+00:00",
+      "lock_expired_at_audit_time": false,
+      "ledger_path": "docs\\external-audit-01\\oi-full-history-02\\CONFIRMATION_LEDGER_V2.jsonl",
+      "ledger_path_is_relative": true,
+      "ledger_path_is_cwd_dependent": true,
+      "legacy_manifest_path": "docs\\external-audit-01\\confirmations\\CONF-EDGE-002-001.json"
+    },
+    "ledger_derived_not_hardcoded": true,
+    "cases_failing_expectation": [],
+    "tamper_evidence": {
+      "absent_ledger_raises": true,
+      "empty_ledger_raises": false,
+      "truncation_detected": false,
+      "finding": "An ABSENT ledger fails closed, but a ledger that EXISTS and has been truncated to zero lines is accepted as a valid, not-consumed, locked state. Nothing in the ledger is hash-chained, signed, or count-pinned, so the 'append-only' property is a convention rather than an enforced guarantee."
+    },
+    "real_ledger": {
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-external-verifier-v3\\docs\\external-audit-01\\oi-full-history-02\\CONFIRMATION_LEDGER_V2.jsonl",
+      "exists": true,
+      "sha256": "188290908fe4765c0197f7fc27c0572a19d7b2d34a82741cc04c223bb18e5add",
+      "line_count": 1
+    }
+  },
+  "shadow": {
+    "invalidation": {
+      "verdict": "INVALIDATED",
+      "reason": "maturity timestamps equalled capture timestamps (maturity_time == decision_time) despite frozen 48h rule; zero horizon violates mature-only invariant",
+      "invalidated_artifact": "reports/poc02-r2-direction-arbitration-01/shadow/SHADOW_RESOLUTION_LEDGER.jsonl (builder-claimed 11/11 PROFITABLE_REJECT)",
+      "previous_claim": {
+        "total_captures": 11,
+        "mature_captures": 11,
+        "resolved_captures": 11,
+        "outcome": "11/11 PROFITABLE_REJECT",
+        "maturity_range_claimed": "2026-09-09T21:15:00Z..2026-09-10T11:25:00Z",
+        "counterfactual_report": "reports/poc02-r2-direction-arbitration-01/shadow/SHADOW_COUNTERFACTUAL_REPORT.json"
+      },
+      "post_invalidation_resolution_report": {
+        "checkpoint": "H6-V3-REPAIR-AND-PORTABLE-VERIFICATION-AUTHORITY-01",
+        "supersedes_invalid_artifact": "reports/poc02-r2-direction-arbitration-01/shadow/SHADOW_RESOLUTION_LEDGER.jsonl",
+        "superseding_artifact": "docs/external-audit-01/oi-full-history-03/SHADOW_RESOLUTION_LEDGER_V2.jsonl",
+        "disposition": "Old ledger preserved as invalid evidence; do not silently overwrite. Superseding V2 ledger re-derives resolutions only after correct 48h maturity using frozen strategy/Shadow rules; unverifiable market paths are marked AMBIGUOUS_FIRST_TOUCH when both TP and SL occur within same coarse bar",
+        "status": "AWAITING_REDERIVATION",
+        "reason_awaiting": "Correct maturity horizon not yet reached vs builder's resolved time, and no frozen intraday market path for first-touch derivation is verifiable in this checkpoint without H6 execution; no new R computed; old 11 entries all have maturity == decision (0h) and are invalid",
+        "maturity_authority": "docs/external-audit-01/oi-full-history-03/SHADOW_MATURITY_AUTHORITY_V2.json (48h)",
+        "resolution_rules": {
+          "entry": "plan.entry_reference per capture, verified against price authority V2 1h bars where separable",
+          "direction": "plan direction (LONG/SHORT) frozen per capture",
+          "TP_SL": "plan.take_profit / plan.stop_loss per capture; invalidation preregistered_v1",
+          "horizon": "48h from capture; maturity cap applies; beyond-cap truncated",
+          "first_touch": "if both TP and SL occur within same coarse bar and order cannot be known -> AMBIGUOUS_FIRST_TOUCH, not winner",
+          "costs": "COST_BPS per capture (preregistered_v1; re-cost under 10 bps for consistency check is diagnostic only)"
+        },
+        "sample_note": "N=11 remains INSUFFICIENT_SAMPLE for any Risk change regardless of outcome",
+        "h6_shadow_isolation": "NONE \u2014 H6 does not consume Shadow outcomes; see H6_SHADOW_ISOLATION_REPORT"
+      },
+      "invalidated_claim_still_asserted_anywhere": false,
+      "invalidated_claim_still_asserted": false
+    },
+    "maturity": {
+      "protocol_version": "SHADOW-48H-MATURE-ONLY-V1",
+      "horizon_hours": 48,
+      "captures_total": 11,
+      "captures_parsed": 11,
+      "all_deltas_equal_48h": true,
+      "bad_captures": [],
+      "earliest_maturity": "2026-09-11T21:15:00+00:00",
+      "all_matured_as_of_now": true,
+      "now_utc": "2026-09-13T07:27:52.496230+00:00"
+    }
+  },
+  "firewalls": {
+    "declared_H6_CONFIRMATION_DATA_DEPENDENCY": "NONE",
+    "declared_H6_SHADOW_DATA_DEPENDENCY": "NONE",
+    "h6_modules_referencing_confirmation_authority": [
+      "conf_lock.py",
+      "confirmation_state.py"
+    ],
+    "h6_modules_importing_shadow": [],
+    "h6_modules_referencing_shadow_authority": [],
+    "h6_runtime_modules_reading_confirmation_data": [],
+    "h6_runtime_modules_reading_shadow_data": [],
+    "note": "conf_lock.py / confirmation_state.py live INSIDE the h6 package but are a governance lock, not a data dependency; no H6 feature/signal module reads confirmation or shadow data."
+  },
+  "CONFIRMATION_LEDGER": "PASS",
+  "CONFIRMATION_LOCK": "PASS",
+  "CONFIRMATION_H6_FIREWALL": "PASS",
+  "SHADOW_H6_FIREWALL": "PASS",
+  "SHADOW_INVALIDATION": "PASS",
+  "SHADOW_MATURITY_AUTHORITY": "PASS"
+}
