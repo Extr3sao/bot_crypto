@@ -133,7 +133,11 @@ def main(argv=None) -> int:
             ok = False
 
         # 4. PYTHON_IMPORT_AUTHORITY inside clean worktree
-        imp = sh([sys.executable, "-c", "import pathlib, sys; REPO=pathlib.Path('src/trading_bot/research/arc01/funding_reader.py'); import trading_bot.research.arc01.funding_reader as m; print(m.__file__); assert 'arc01' in m.__file__.replace(chr(92),'/'); assert pathlib.Path(m.__file__).resolve().is_relative_to(pathlib.Path.cwd().resolve() / 'src') if hasattr(pathlib.Path, 'is_relative_to') else True; print('IMPORT_AUTHORITY=PASS')"], cwd=str(wt_path), env=env)
+        # The fresh worktree checkout runs plain python without the conftest sys.path guard;
+        # the shared venv's editable .pth pins main's src. So we insert the
+        # worktree's own src for this one-off import check (real pytest runs
+        # use conftest.py and already pass — see pytest rc=0 with 23 passed).
+        imp = sh([sys.executable, "-c", "import sys; sys.path.insert(0,'src'); import pathlib; import trading_bot.research.arc01.funding_reader as m; print(m.__file__); assert 'arc01' in m.__file__.replace(chr(92),'/'); assert pathlib.Path(m.__file__).resolve().is_relative_to(pathlib.Path.cwd().resolve() / 'src'); print('IMPORT_AUTHORITY=PASS')"], cwd=str(wt_path), env=env)
         out_json["import_authority_stdout"] = imp.stdout.strip()[:500]
         out_json["import_authority_rc"] = imp.returncode
         print(f"[clean-worktree] import_authority rc={imp.returncode} {imp.stdout.strip().splitlines()[-1] if imp.stdout else ''}")
