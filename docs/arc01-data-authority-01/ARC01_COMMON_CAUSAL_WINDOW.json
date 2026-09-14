@@ -1,0 +1,34 @@
+{
+  "checkpoint": "ARC-01-COMMON-CAUSAL-WINDOW-01",
+  "funding_common_end_ms": 1789401600000,
+  "funding_common_end_utc": "2026-09-14T16:00:00Z",
+  "funding_common_start_ms": 1600012800004,
+  "funding_common_start_utc": "2020-09-13T16:00:00.004000Z",
+  "funding_per_symbol": {
+    "BTCUSDT": {
+      "first": "2020-01-01T00:00:00Z",
+      "last": "2026-09-14T16:00:00Z",
+      "rows": 7347
+    },
+    "ETHUSDT": {
+      "first": "2020-01-01T00:00:00Z",
+      "last": "2026-09-14T16:00:00Z",
+      "rows": 7347
+    },
+    "SOLUSDT": {
+      "first": "2020-09-13T16:00:00.004000Z",
+      "last": "2026-09-14T16:00:00Z",
+      "rows": 6652
+    }
+  },
+  "intersection_determined_at_utc": "2026-09-14T17:29:28.008759Z",
+  "note": "FUNDING full authority 2020-01..2026-09; OI+price frozen common window is 2021-12-01..2026-09-10; ARC-01 downstream must intersect funding with OI/price common window (later of the starts). No returns observed.",
+  "oi_common_research_window_utc": [
+    "2021-12-01T00:00:00Z",
+    "2026-09-10T23:55:00Z"
+  ],
+  "price_common_window_utc": [
+    "2021-12-01T00:00:00Z",
+    "2026-09-10T23:00:00Z"
+  ]
+}

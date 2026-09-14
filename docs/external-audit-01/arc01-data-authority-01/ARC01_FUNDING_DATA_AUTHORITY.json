@@ -1,0 +1,135 @@
+{
+  "base_commit": "e7f470d",
+  "canonical_rows_sha256": "34f736b1efdaebcf81c2e7824f776706385f27aee1c564f3dc39f8d1fe993452",
+  "checkpoint": "ARC-01-FUNDING-AUTHORITY-01",
+  "common_causal_window": {
+    "checkpoint": "ARC-01-COMMON-CAUSAL-WINDOW-01",
+    "funding_common_end_ms": 1789401600000,
+    "funding_common_end_utc": "2026-09-14T16:00:00Z",
+    "funding_common_start_ms": 1600012800004,
+    "funding_common_start_utc": "2020-09-13T16:00:00.004000Z",
+    "funding_per_symbol": {
+      "BTCUSDT": {
+        "first": "2020-01-01T00:00:00Z",
+        "last": "2026-09-14T16:00:00Z",
+        "rows": 7347
+      },
+      "ETHUSDT": {
+        "first": "2020-01-01T00:00:00Z",
+        "last": "2026-09-14T16:00:00Z",
+        "rows": 7347
+      },
+      "SOLUSDT": {
+        "first": "2020-09-13T16:00:00.004000Z",
+        "last": "2026-09-14T16:00:00Z",
+        "rows": 6652
+      }
+    },
+    "intersection_determined_at_utc": "2026-09-14T17:03:22.114000Z",
+    "note": "FUNDING full authority 2020-01..2026-09; OI+price frozen common window is 2021-12-01..2026-09-10; ARC-01 downstream must intersect funding with OI/price common window (later of the starts). No returns observed.",
+    "oi_common_research_window_utc": [
+      "2021-12-01T00:00:00Z",
+      "2026-09-10T23:55:00Z"
+    ],
+    "price_common_window_utc": [
+      "2021-12-01T00:00:00Z",
+      "2026-09-10T23:00:00Z"
+    ]
+  },
+  "dataset_sha256": "5f4845f5062e68353ef421b9687bf728a56693951e2f74e17221a8e3373b62ec",
+  "economics": {
+    "ARC01_BACKTESTS": 0,
+    "ARC01_EXECUTIONS": 0,
+    "ARC01_PERFORMANCE_OBSERVED": false,
+    "FALSE_SUCCESS": 0
+  },
+  "evidence": {
+    "manifest": "docs/arc01-data-authority-01/ARC01_FUNDING_MANIFEST.json",
+    "partitions_evidence": [
+      "docs/arc01-data-authority-01/BTCUSDT_funding.jsonl",
+      "docs/arc01-data-authority-01/ETHUSDT_funding.jsonl",
+      "docs/arc01-data-authority-01/SOLUSDT_funding.jsonl"
+    ],
+    "quality_ledger": "docs/arc01-data-authority-01/ARC01_FUNDING_QUALITY_LEDGER.jsonl",
+    "raw_ledger": "docs/arc01-data-authority-01/ARC01_FUNDING_RAW_LEDGER.jsonl",
+    "reader": "src/trading_bot/research/arc01/funding_reader.py",
+    "verifier": "scripts/verify_arc01_data_authority.py"
+  },
+  "funding_units_contract": "FUNDING-UNITS-CANONICAL-V1",
+  "generated_at_utc": "2026-09-14T17:05:22.157043Z",
+  "head_commit": "e7f470d8ea075e6d71d4f6be17c4b4452f1ede09",
+  "per_asset": {
+    "BTCUSDT": {
+      "classification": "VALID",
+      "first_funding_time_utc": "2020-01-01T00:00:00Z",
+      "last_funding_time_utc": "2026-09-14T16:00:00Z",
+      "partition": "data/processed/arc01_funding/BTCUSDT_funding.jsonl",
+      "partition_sha256": "700b0c4c7e5ffa9dbe82cd84e98be9f505bce6f1792d33d0eae88d07a7585855",
+      "quality": {
+        "duplicates_conflicting": 0,
+        "interval_distribution_hours": {
+          "8": 7347
+        },
+        "malformed_rows": 0,
+        "missing_expected_settlements": 0,
+        "monotonic": true,
+        "non_finite": 0,
+        "provider_schedule_changes": 0,
+        "unexpected_settlements": 0
+      },
+      "rows": 7347,
+      "status": "PASS",
+      "symbol": "BTCUSDT"
+    },
+    "ETHUSDT": {
+      "classification": "VALID",
+      "first_funding_time_utc": "2020-01-01T00:00:00Z",
+      "last_funding_time_utc": "2026-09-14T16:00:00Z",
+      "partition": "data/processed/arc01_funding/ETHUSDT_funding.jsonl",
+      "partition_sha256": "2edf501ea69807bbf67cdd519e53de18c8dea25ea8bdf009beb88ef2e2693943",
+      "quality": {
+        "duplicates_conflicting": 0,
+        "interval_distribution_hours": {
+          "8": 7347
+        },
+        "malformed_rows": 0,
+        "missing_expected_settlements": 0,
+        "monotonic": true,
+        "non_finite": 0,
+        "provider_schedule_changes": 0,
+        "unexpected_settlements": 0
+      },
+      "rows": 7347,
+      "status": "PASS",
+      "symbol": "ETHUSDT"
+    },
+    "SOLUSDT": {
+      "classification": "VALID",
+      "first_funding_time_utc": "2020-09-13T16:00:00.004000Z",
+      "last_funding_time_utc": "2026-09-14T16:00:00Z",
+      "partition": "data/processed/arc01_funding/SOLUSDT_funding.jsonl",
+      "partition_sha256": "6b16d13f5115f906f9ceb4f5a418f7a541c37609e780cfbad0d52ed565808f85",
+      "quality": {
+        "duplicates_conflicting": 0,
+        "interval_distribution_hours": {
+          "2": 99,
+          "4": 2,
+          "8": 6551
+        },
+        "malformed_rows": 0,
+        "missing_expected_settlements": 0,
+        "monotonic": true,
+        "non_finite": 0,
+        "provider_schedule_changes": 101,
+        "unexpected_settlements": 0
+      },
+      "rows": 6652,
+      "status": "PASS",
+      "symbol": "SOLUSDT"
+    }
+  },
+  "pit_invariant": "data_time <= decision_time; funding_time_ms == availability_time_ms == settlement_time_ms; future funding never visible at T",
+  "pit_status": "PASS",
+  "quality_overall": "PASS",
+  "verdict": "PASS"
+}

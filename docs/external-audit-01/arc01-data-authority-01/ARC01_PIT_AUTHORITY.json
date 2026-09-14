@@ -1,0 +1,22 @@
+{
+  "adversarial_tests": [
+    "funding after T cannot affect context at T (PIT future mutation)",
+    "future rows mutation leaves context at T unchanged (temp copy)",
+    "past eligible row mutation changes context",
+    "duplicate conflicting settlement fails closed (INVALID_CONFLICTING_DUPLICATE)",
+    "out-of-order source rows normalize deterministically (sorted by funding_time_ms)",
+    "availability timestamp is respected (availability == settlement, not next_funding)"
+  ],
+  "checkpoint": "ARC-01-PIT-AUTHORITY-01",
+  "funding_pit_invariant": "funding_time_ms == availability_time_ms == settlement_time_ms; data_time <= decision_time; future funding never visible at T",
+  "funding_timestamp_semantics": {
+    "availability": "settlement instant (rate knowable at settlement; no next_funding lookahead)",
+    "funding_time": "settlement instant (calc_time/fundingTime from official archive/REST)",
+    "interval_taken_from": "per-row funding_interval_hours from provider (8 standard, 2/4 during SOL 2022-11 schedule)",
+    "next_funding": "derived as funding_time + funding_interval_hours*3600s; not an observation"
+  },
+  "oi_pit_invariant": "oi_time <= decision_time for every observation used; no day-level future validity query (V2 causal reader)",
+  "price_pit_invariant": "open_time <= decision_time; 1h kline interval semantics; no forward-filled closeTime leakage",
+  "status": "PASS",
+  "verified_by": "verify_arc01_data_authority pit_rules (reproduces OI V2 style adversarial tests)"
+}

@@ -1,0 +1,278 @@
+{
+  "arc01_p0_data_requirement": "OFFICIAL fundingRate history (Vision monthly .CHECKSUM verified + REST tail) \u2014 satisfies NO synthesis policy; substitutes rejected; mark/index kept RESEARCH_ONLY",
+  "assets": [
+    "BTCUSDT",
+    "ETHUSDT",
+    "SOLUSDT"
+  ],
+  "base_commit": "e7f470d",
+  "checkpoint": "ARC-01-FUNDING-AUTHORITY-01",
+  "classification_key": {
+    "INSUFFICIENT": "REST ~30d limit alone insufficient (verified -1130); archive supersedes",
+    "PARTIAL": "provider schedule change, gaps documented",
+    "RESEARCH_ONLY": "exists on Vision but not byte-verified as standalone authority",
+    "RUNTIME_AUTHORITATIVE": "frozen, byte-verified, PIT-safe, shared data root host-probed"
+  },
+  "families": {
+    "funding_rate": {
+      "official_urls": [
+        "https://data.binance.vision/",
+        "https://developers.binance.com/docs/derivatives/usds-margined-futures/market-data"
+      ],
+      "per_symbol": {
+        "BTCUSDT": {
+          "conflicting_duplicates": 0,
+          "duplicates": 0,
+          "first_funding_ms": 1577836800000,
+          "first_funding_time_utc": "2020-01-01T00:00:00Z",
+          "last_funding_ms": 1789401600000,
+          "last_funding_time_utc": "2026-09-14T16:00:00Z",
+          "missing_expected_via_8h_grid": 0,
+          "native_interval": "8h (with provider schedule change: SOL 2022-11 temporary 2h/4h per funding_interval_hours)",
+          "provider": "data.binance.vision:fundingRate/monthly + binanceusdm:/fapi/v1/fundingRate (REST tail 2026-08-31->now)",
+          "rows_2h": 0,
+          "rows_4h": 0,
+          "rows_8h": 7347,
+          "rows_total": 7347,
+          "source": "OFFICIAL_BINANCE"
+        },
+        "ETHUSDT": {
+          "conflicting_duplicates": 0,
+          "duplicates": 0,
+          "first_funding_ms": 1577836800000,
+          "first_funding_time_utc": "2020-01-01T00:00:00Z",
+          "last_funding_ms": 1789401600000,
+          "last_funding_time_utc": "2026-09-14T16:00:00Z",
+          "missing_expected_via_8h_grid": 0,
+          "native_interval": "8h (with provider schedule change: SOL 2022-11 temporary 2h/4h per funding_interval_hours)",
+          "provider": "data.binance.vision:fundingRate/monthly + binanceusdm:/fapi/v1/fundingRate (REST tail 2026-08-31->now)",
+          "rows_2h": 0,
+          "rows_4h": 0,
+          "rows_8h": 7347,
+          "rows_total": 7347,
+          "source": "OFFICIAL_BINANCE"
+        },
+        "SOLUSDT": {
+          "conflicting_duplicates": 0,
+          "duplicates": 0,
+          "first_funding_ms": 1600012800004,
+          "first_funding_time_utc": "2020-09-13T16:00:00.004000Z",
+          "last_funding_ms": 1789401600000,
+          "last_funding_time_utc": "2026-09-14T16:00:00Z",
+          "missing_expected_via_8h_grid": 0,
+          "native_interval": "8h (with provider schedule change: SOL 2022-11 temporary 2h/4h per funding_interval_hours)",
+          "provider": "data.binance.vision:fundingRate/monthly + binanceusdm:/fapi/v1/fundingRate (REST tail 2026-08-31->now)",
+          "rows_2h": 99,
+          "rows_4h": 2,
+          "rows_8h": 6551,
+          "rows_total": 6652,
+          "source": "OFFICIAL_BINANCE"
+        }
+      },
+      "provider": "Binance USD-M official",
+      "rest_earliest_probe": {
+        "BTCUSDT": {
+          "earliest_iso": "2019-09-10T08:00:00.000Z",
+          "earliest_rest_ts": 1568102400000
+        },
+        "ETHUSDT": {
+          "earliest_iso": "2019-11-27T08:00:00.000Z",
+          "earliest_rest_ts": 1574841600000
+        },
+        "SOLUSDT": {
+          "earliest_iso": "2020-09-13T16:00:00.004Z",
+          "earliest_rest_ts": 1600012800004
+        }
+      },
+      "sources_authoritative": [
+        "data.binance.vision:fundingRate/monthly (.CHECKSUM verified)",
+        "binanceusdm:/fapi/v1/fundingRate (REST, paginated tail)"
+      ],
+      "status": "RUNTIME_AUTHORITATIVE"
+    },
+    "mark_index_premium": {
+      "classification": "RESEARCH_ONLY (not RUNTIME_AUTHORITATIVE for funding; valid for its own kline authority if admitted separately)",
+      "detail": {
+        "index_price_klines": "same per-interval layout; available but expensive to collect full history; not required for P0 funding authority",
+        "mark_price_klines": "data.binance.vision data/futures/um/daily|monthly/markPriceKlines/<SYMBOL>/<interval>/... (per-interval zips, NOT standalone funding history; NO fundingRate-equivalent central archive beyond per-interval klines)",
+        "premium_index_klines": "same structure as markPriceKlines; insufficient as funding standalone authority; available but not admitted as funding prerequisite"
+      },
+      "note": "Per-interval mark/premium/index klines exist on Vision (data/futures/um/{daily,monthly}/markPriceKlines|premiumIndexKlines|indexPriceKlines/<SYMBOL>/<interval>). NOT a centralized funding authority; fundingRate archive + REST already cover funding. Mark/index not needed for P0 funding crowding unwind; may be P1 admission separately. Not synthesized as funding substitute.",
+      "status": "RESEARCH_ONLY"
+    },
+    "open_interest": {
+      "dataset_sha256": "16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99",
+      "ledger": "data/processed/oi_full_history_v2/OI_ARCHIVE_DAY_VALIDITY_LEDGER_V2.jsonl",
+      "manifest": "docs/external-audit-01/oi-full-history-02/OI_FULL_HISTORY_DATASET_MANIFEST_V2.json",
+      "native_interval": "5m (288 rows/day)",
+      "per_symbol_note": {
+        "BTCUSDT": {
+          "checksum_failures": 0,
+          "duplicates": 0,
+          "files": 2201,
+          "first_timestamp_ms": 1598918400000,
+          "gaps": 637,
+          "invalid_breakdown": {
+            "INVALID_GAP": 72
+          },
+          "invalid_days": 72,
+          "invalid_values": 0,
+          "last_timestamp_ms": 1789084500000,
+          "raw_order_inversions": 4750,
+          "rows": 613152,
+          "schema_drift": 0,
+          "valid_days": 2129
+        },
+        "ETHUSDT": {
+          "checksum_failures": 0,
+          "duplicates": 0,
+          "files": 1745,
+          "first_timestamp_ms": 1638316800000,
+          "gaps": 143,
+          "invalid_breakdown": {
+            "INVALID_GAP": 10
+          },
+          "invalid_days": 10,
+          "invalid_values": 0,
+          "last_timestamp_ms": 1789084500000,
+          "raw_order_inversions": 5002,
+          "rows": 499680,
+          "schema_drift": 0,
+          "valid_days": 1735
+        },
+        "SOLUSDT": {
+          "checksum_failures": 0,
+          "duplicates": 0,
+          "files": 1745,
+          "first_timestamp_ms": 1638316800000,
+          "gaps": 163,
+          "invalid_breakdown": {
+            "INVALID_GAP": 12,
+            "INVALID_VALUE": 1
+          },
+          "invalid_days": 13,
+          "invalid_values": 0,
+          "last_timestamp_ms": 1789084500000,
+          "raw_order_inversions": 4805,
+          "rows": 498816,
+          "schema_drift": 0,
+          "valid_days": 1732
+        }
+      },
+      "provider": "data.binance.vision:metrics/daily (official)",
+      "status": "RUNTIME_AUTHORITATIVE (reuse)"
+    },
+    "price_ohlcv_1h": {
+      "manifest": "docs/external-audit-01/oi-full-history-02/PRICE_1H_AUTHORITY_V2_MANIFEST.json",
+      "per_symbol": {
+        "BTCUSDT": {
+          "available_hours_common": 41880,
+          "common_window": [
+            "2021-12-01T00:00:00Z",
+            "2026-09-10T23:00:00Z"
+          ],
+          "covers_common_window": true,
+          "duplicate_hours_common": 0,
+          "expected_hours_common": 41880,
+          "extension_rows_total": 48,
+          "first_missing_common_hour_utc": null,
+          "first_open_ms": 1577836800000,
+          "first_open_utc": "2020-01-01T00:00:00+00:00",
+          "h1_last_open_ms": 1788912000000,
+          "h1_path": "docs/external-audit-01/h1-regime-transition-01/dataset/BTCUSDT_1h.jsonl",
+          "h1_rows": 58633,
+          "last_missing_common_hour_utc": null,
+          "last_open_ms": 1789081200000,
+          "last_open_utc": "2026-09-10T23:00:00+00:00",
+          "missing_hours_added": 47,
+          "missing_hours_common": 0,
+          "non_hourly_transitions": 0,
+          "overlap_check": "PASS",
+          "raw_extension_zips": [
+            "data/raw/binance_um/klines_1h_ext/BTCUSDT/BTCUSDT-1h-2026-09-09.zip",
+            "data/raw/binance_um/klines_1h_ext/BTCUSDT/BTCUSDT-1h-2026-09-10.zip"
+          ],
+          "symbol": "BTCUSDT",
+          "v2_bytes_len": 8434238,
+          "v2_path": "data/processed/price_1h_v2/BTCUSDT_1h.jsonl",
+          "v2_rows_total": 58680,
+          "v2_sha256": "41e9238666a0b98c02cffd19d36a590b8463f6556e215c49f068452674ef9027"
+        },
+        "ETHUSDT": {
+          "available_hours_common": 41880,
+          "common_window": [
+            "2021-12-01T00:00:00Z",
+            "2026-09-10T23:00:00Z"
+          ],
+          "covers_common_window": true,
+          "duplicate_hours_common": 0,
+          "expected_hours_common": 41880,
+          "extension_rows_total": 48,
+          "first_missing_common_hour_utc": null,
+          "first_open_ms": 1577836800000,
+          "first_open_utc": "2020-01-01T00:00:00+00:00",
+          "h1_last_open_ms": 1788912000000,
+          "h1_path": "docs/external-audit-01/h1-regime-transition-01/dataset/ETHUSDT_1h.jsonl",
+          "h1_rows": 58633,
+          "last_missing_common_hour_utc": null,
+          "last_open_ms": 1789081200000,
+          "last_open_utc": "2026-09-10T23:00:00+00:00",
+          "missing_hours_added": 47,
+          "missing_hours_common": 0,
+          "non_hourly_transitions": 0,
+          "overlap_check": "PASS",
+          "raw_extension_zips": [
+            "data/raw/binance_um/klines_1h_ext/ETHUSDT/ETHUSDT-1h-2026-09-09.zip",
+            "data/raw/binance_um/klines_1h_ext/ETHUSDT/ETHUSDT-1h-2026-09-10.zip"
+          ],
+          "symbol": "ETHUSDT",
+          "v2_bytes_len": 8257249,
+          "v2_path": "data/processed/price_1h_v2/ETHUSDT_1h.jsonl",
+          "v2_rows_total": 58680,
+          "v2_sha256": "7c72c0bb55d4aac9460dde54eb73305b5d30bdec99ea4b500eac9e1319ddd7ba"
+        },
+        "SOLUSDT": {
+          "available_hours_common": 41880,
+          "common_window": [
+            "2021-12-01T00:00:00Z",
+            "2026-09-10T23:00:00Z"
+          ],
+          "covers_common_window": true,
+          "duplicate_hours_common": 0,
+          "expected_hours_common": 41880,
+          "extension_rows_total": 48,
+          "first_missing_common_hour_utc": null,
+          "first_open_ms": 1600066800000,
+          "first_open_utc": "2020-09-14T07:00:00+00:00",
+          "h1_last_open_ms": 1788912000000,
+          "h1_path": "docs/external-audit-01/h1-regime-transition-01/dataset/SOLUSDT_1h.jsonl",
+          "h1_rows": 52458,
+          "last_missing_common_hour_utc": null,
+          "last_open_ms": 1789081200000,
+          "last_open_utc": "2026-09-10T23:00:00+00:00",
+          "missing_hours_added": 47,
+          "missing_hours_common": 0,
+          "non_hourly_transitions": 0,
+          "overlap_check": "PASS",
+          "raw_extension_zips": [
+            "data/raw/binance_um/klines_1h_ext/SOLUSDT/SOLUSDT-1h-2026-09-09.zip",
+            "data/raw/binance_um/klines_1h_ext/SOLUSDT/SOLUSDT-1h-2026-09-10.zip"
+          ],
+          "symbol": "SOLUSDT",
+          "v2_bytes_len": 7090217,
+          "v2_path": "data/processed/price_1h_v2/SOLUSDT_1h.jsonl",
+          "v2_rows_total": 52505,
+          "v2_sha256": "6f147463b504f5026d887e77306cfa629ee5feb8cbdb01923643133091da03ff"
+        }
+      },
+      "price_authority_sha256_v2": "e1c2462a6aa9ba0c921154d259a28c49be1e2fc58a544dbd97af8ecabef52168",
+      "provider": "Binance USD-M 1h klines via official Vision daily zip extension (data.binance.vision) + frozen H1 authority",
+      "status": "RUNTIME_AUTHORITATIVE (reuse)"
+    },
+    "price_ohlcv_5m": {
+      "note": "H6 used 5m OI not price; 1h price authority is the adopted runtime; 5m klines not required for ARC-01 P0 (extreme funding evaluated on 8h settlements; price rejection window is 1h-bucketed OI decouples)",
+      "status": "AVAILABLE_NOT_ADMITTED"
+    }
+  },
+  "generated_at_utc": "2026-09-14T17:01:40.708461Z"
+}

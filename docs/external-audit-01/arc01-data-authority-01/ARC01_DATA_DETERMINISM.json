@@ -1,0 +1,8 @@
+{
+  "a_determinism": "PASS (two independent re-normalizations from original raw ZIPs gave identical partition SHA and dataset SHA)",
+  "canonical_rows_sha256": "34f736b1efdaebcf81c2e7824f776706385f27aee1c564f3dc39f8d1fe993452",
+  "checkpoint": "ARC-01-DETERMINISM-01",
+  "dataset_sha256": "5f4845f5062e68353ef421b9687bf728a56693951e2f74e17221a8e3373b62ec",
+  "mutation_sensitivity": "PASS (single funding_rate mutation changed partition SHA and dataset SHA; canonical authority unchanged)",
+  "note": "A/B and mutation checked in verify_arc01_data_authority (portable verifier)."
+}

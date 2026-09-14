@@ -1,0 +1,48 @@
+{
+  "authority_chain": "RAW PROVIDER BYTES -> normalized partitions -> partition SHA256 -> deterministic manifest -> DATASET SHA256",
+  "canonical_rows_sha256": "34f736b1efdaebcf81c2e7824f776706385f27aee1c564f3dc39f8d1fe993452",
+  "checkpoint": "ARC-01-FUNDING-AUTHORITY-01",
+  "dataset_sha256": "5f4845f5062e68353ef421b9687bf728a56693951e2f74e17221a8e3373b62ec",
+  "funding_units_contract": "FUNDING-UNITS-CANONICAL-V1",
+  "normalizer_commit": "e7f470d8ea075e6d71d4f6be17c4b4452f1ede09",
+  "normalizer_version": "1.0.0",
+  "note": "No absolute machine-specific paths in logical identity; partitions are logical data/processed/arc01_funding/*.jsonl; evidence snapshots committed under docs/arc01-data-authority-01/ for portability.",
+  "partition_sha256": {
+    "BTCUSDT": "700b0c4c7e5ffa9dbe82cd84e98be9f505bce6f1792d33d0eae88d07a7585855",
+    "ETHUSDT": "2edf501ea69807bbf67cdd519e53de18c8dea25ea8bdf009beb88ef2e2693943",
+    "SOLUSDT": "6b16d13f5115f906f9ceb4f5a418f7a541c37609e780cfbad0d52ed565808f85"
+  },
+  "partitions": {
+    "BTCUSDT": "data/processed/arc01_funding/BTCUSDT_funding.jsonl",
+    "ETHUSDT": "data/processed/arc01_funding/ETHUSDT_funding.jsonl",
+    "SOLUSDT": "data/processed/arc01_funding/SOLUSDT_funding.jsonl"
+  },
+  "per_symbol_fingerprint": {
+    "BTCUSDT": {
+      "first_funding_time_utc": "2020-01-01T00:00:00Z",
+      "last_funding_time_utc": "2026-09-14T16:00:00Z",
+      "partition_sha256": "700b0c4c7e5ffa9dbe82cd84e98be9f505bce6f1792d33d0eae88d07a7585855",
+      "rows": 7347
+    },
+    "ETHUSDT": {
+      "first_funding_time_utc": "2020-01-01T00:00:00Z",
+      "last_funding_time_utc": "2026-09-14T16:00:00Z",
+      "partition_sha256": "2edf501ea69807bbf67cdd519e53de18c8dea25ea8bdf009beb88ef2e2693943",
+      "rows": 7347
+    },
+    "SOLUSDT": {
+      "first_funding_time_utc": "2020-09-13T16:00:00.004000Z",
+      "last_funding_time_utc": "2026-09-14T16:00:00Z",
+      "partition_sha256": "6b16d13f5115f906f9ceb4f5a418f7a541c37609e780cfbad0d52ed565808f85",
+      "rows": 6652
+    }
+  },
+  "pit_invariant": "data_time <= decision_time; funding_time_ms == availability_time_ms == settlement_time_ms; future funding never visible at T",
+  "quality_overall": "PASS",
+  "rows_total": 21346,
+  "schema_version": "1.0.0",
+  "source_official": [
+    "data.binance.vision:fundingRate/monthly (official archive, .CHECKSUM verified)",
+    "binanceusdm:/fapi/v1/fundingRate (official REST, tail after 2026-08-31 16:00 UTC)"
+  ]
+}

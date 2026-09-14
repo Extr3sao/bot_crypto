@@ -1,0 +1,7 @@
+{
+  "canonical_unchanged": true,
+  "checkpoint": "ARC-01-MUTATION-SENSITIVITY-01",
+  "evidence": "verify_arc01_data_authority mutation block (partition SHA and dataset SHA both change; re-hash of original partition still matches manifest)",
+  "mutated_dataset_sha_must_differ": true,
+  "status": "PASS"
+}

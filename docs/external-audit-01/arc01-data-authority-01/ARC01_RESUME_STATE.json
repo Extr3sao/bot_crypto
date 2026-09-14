@@ -1,0 +1,66 @@
+{
+  "base_commit": "e7f470d",
+  "branch": "research/arc01-data-authority-01",
+  "canonical_rows_sha256": "34f736b1efdaebcf81c2e7824f776706385f27aee1c564f3dc39f8d1fe993452",
+  "checkpoint": "ARC-01-FUNDING-AUTHORITY-01",
+  "common_causal_window": {
+    "checkpoint": "ARC-01-COMMON-CAUSAL-WINDOW-01",
+    "funding_common_end_ms": 1789401600000,
+    "funding_common_end_utc": "2026-09-14T16:00:00Z",
+    "funding_common_start_ms": 1600012800004,
+    "funding_common_start_utc": "2020-09-13T16:00:00.004000Z",
+    "funding_per_symbol": {
+      "BTCUSDT": {
+        "first": "2020-01-01T00:00:00Z",
+        "last": "2026-09-14T16:00:00Z",
+        "rows": 7347
+      },
+      "ETHUSDT": {
+        "first": "2020-01-01T00:00:00Z",
+        "last": "2026-09-14T16:00:00Z",
+        "rows": 7347
+      },
+      "SOLUSDT": {
+        "first": "2020-09-13T16:00:00.004000Z",
+        "last": "2026-09-14T16:00:00Z",
+        "rows": 6652
+      }
+    },
+    "intersection_determined_at_utc": "2026-09-14T17:03:22.114000Z",
+    "note": "FUNDING full authority 2020-01..2026-09; OI+price frozen common window is 2021-12-01..2026-09-10; ARC-01 downstream must intersect funding with OI/price common window (later of the starts). No returns observed.",
+    "oi_common_research_window_utc": [
+      "2021-12-01T00:00:00Z",
+      "2026-09-10T23:55:00Z"
+    ],
+    "price_common_window_utc": [
+      "2021-12-01T00:00:00Z",
+      "2026-09-10T23:00:00Z"
+    ]
+  },
+  "dataset_sha256": "5f4845f5062e68353ef421b9687bf728a56693951e2f74e17221a8e3373b62ec",
+  "funding_source": [
+    "data.binance.vision:fundingRate/monthly (official archive, .CHECKSUM verified)",
+    "binanceusdm:/fapi/v1/fundingRate (official REST, tail after 2026-08-31 16:00 UTC)"
+  ],
+  "head_commit": "e7f470d8ea075e6d71d4f6be17c4b4452f1ede09",
+  "next_command": "python scripts/verify_arc01_data_authority.py && pytest tests/unit/test_arc01_funding_authority.py -q && <clean-worktree harness> && git commit",
+  "normalized_partitions": {
+    "BTCUSDT": "data/processed/arc01_funding/BTCUSDT_funding.jsonl",
+    "ETHUSDT": "data/processed/arc01_funding/ETHUSDT_funding.jsonl",
+    "SOLUSDT": "data/processed/arc01_funding/SOLUSDT_funding.jsonl"
+  },
+  "oi_reuse_status": "REUSABLE",
+  "partition_sha256": {
+    "BTCUSDT": "700b0c4c7e5ffa9dbe82cd84e98be9f505bce6f1792d33d0eae88d07a7585855",
+    "ETHUSDT": "2edf501ea69807bbf67cdd519e53de18c8dea25ea8bdf009beb88ef2e2693943",
+    "SOLUSDT": "6b16d13f5115f906f9ceb4f5a418f7a541c37609e780cfbad0d52ed565808f85"
+  },
+  "pit_status": "PASS",
+  "portability_note": "verifier is read-only and portable via --data-root; no hard-coded C:/Users/... in logical partition identity (fixed for evidence manifest at this commit)",
+  "price_reuse_status": "REUSABLE",
+  "quality_status": "PASS",
+  "raw_files": 232,
+  "remaining_gate": "CLEAN_WORKTREE_VERIFICATION + FOUNDATION_COMMIT",
+  "status": "COMPLETE_PENDING_CLEAN_WORKTREE_AND_COMMIT",
+  "updated_at_utc": "2026-09-14T17:05:22.176460Z"
+}

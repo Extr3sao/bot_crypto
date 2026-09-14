@@ -1,0 +1,53 @@
+{
+  "asset_coverage": {
+    "BTCUSDT": {
+      "first_ms": 1598918400000,
+      "last_ms": 1789084500000,
+      "rows": 613152,
+      "valid_days": 2129
+    },
+    "ETHUSDT": {
+      "first_ms": 1638316800000,
+      "last_ms": 1789084500000,
+      "rows": 499680,
+      "valid_days": 1735
+    },
+    "SOLUSDT": {
+      "first_ms": 1638316800000,
+      "last_ms": 1789084500000,
+      "rows": 498816,
+      "valid_days": 1732
+    }
+  },
+  "checkpoint": "ARC-01-OI-REUSE-01",
+  "classification": "REUSABLE",
+  "coverage": {
+    "common_research_window_utc": [
+      "2021-12-01T00:00:00Z",
+      "2026-09-10T23:55:00Z"
+    ],
+    "note": "BTCUSDT 2020-09-01..2021-11-30 preserved but excluded from H6 by default (pre_common_auxiliary_data); common window is 2021-12-01..2026-09-10",
+    "totals": {
+      "files": 5691,
+      "invalid_days": 95,
+      "rows_valid": 1611648,
+      "valid_days": 5596,
+      "valid_days_in_common_window": 5202,
+      "valid_days_in_common_window_all_symbols": 1732
+    }
+  },
+  "fingerprint": "16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99",
+  "ledger_sha256": "bb2b43c27a88bf9fe3ec22573903a61007f046ddc1256b5caa3e788cba15e714",
+  "manifest_sha256": "bdf3088caa08120784964f44e5fa5e81f0a1b6bacee99282a012f3a5dc08ef89",
+  "pit_semantics": {
+    "adversarial_coverage": "V2 PIT tests prove future mutation does not affect eligibility at T (test_oi_full_history_v2_pit.py)",
+    "invariant": "oi_time <= decision_time for every observation used; no day-level future validity query (V2 causal reader)",
+    "reader": "src/trading_bot/research/oi_dataset_v2.py:oi_state_at / decision_eligibility_at_v2 (PIT-true, timestamp-scoped)"
+  },
+  "quality_status": "PASS_WITH_EXPLICIT_GAPS",
+  "reason": "Frozen H6 OI authority is byte-verified (Vision daily metrics .CHECKSUM), causal PIT-safe V2, and funding tails already extend beyond its end (funding 2026-09-14 >= OI 2026-09-10). No rewrite needed; ARC-01 will intersect funding+OI common windows downstream. Validated by H6 V2 gates (2074 passing); ledger has explicit gaps but quality PASS_WITH_EXPLICIT_GAPS.",
+  "unit_semantics": {
+    "sum_open_interest": "BASE_ASSET_UNITS",
+    "sum_open_interest_value": "USDT_NOTIONAL"
+  }
+}
