@@ -28,6 +28,27 @@ def _commit() -> str:
     return out.stdout.strip() if out.returncode == 0 else "UNKNOWN"
 
 
+def _default_data_root() -> str:
+    env = os.environ.get("TRADING_AGENTIC_DATA_ROOT")
+    if env:
+        return env
+    for cand in (REPO / "data", REPO.parents[1] / "data"):
+        try:
+            if (cand / "processed" / "oi_full_history_v2").is_dir() or (
+                cand / "raw" / "binance_um" / "metrics"
+            ).is_dir():
+                return str(cand.resolve())
+        except Exception:
+            continue
+    for cand in (REPO / "data", REPO.parents[1] / "data"):
+        try:
+            if cand.is_dir():
+                return str(cand.resolve())
+        except Exception:
+            continue
+    return str((REPO / "data").resolve())
+
+
 def _env(*, hermetic: bool = False) -> dict:
     e = dict(os.environ)
     e["PYTHONPATH"] = str(SRC)
@@ -36,9 +57,7 @@ def _env(*, hermetic: bool = False) -> dict:
     # Re-verification outputs stay in this checkpoint's evidence dir.
     e["H6_EVIDENCE_DIR"] = str(OUT)
     if not hermetic:
-        e["TRADING_AGENTIC_DATA_ROOT"] = e.get(
-            "TRADING_AGENTIC_DATA_ROOT", "C:/Users/GVLLFR0035/Downloads/bot freebuff/data"
-        )
+        e["TRADING_AGENTIC_DATA_ROOT"] = e.get("TRADING_AGENTIC_DATA_ROOT") or _default_data_root()
     return e
 
 

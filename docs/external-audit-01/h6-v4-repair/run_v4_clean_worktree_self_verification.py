@@ -50,7 +50,28 @@ def _rel_to_main(path: Path) -> str:
     except ValueError:
         return str(path).replace("\\", "/")
 NT = "tests/unit/research"
-DATA_ROOT = "C:/Users/GVLLFR0035/Downloads/bot freebuff/data"
+
+
+def _default_data_root() -> str:
+    env = os.environ.get("TRADING_AGENTIC_DATA_ROOT")
+    if env:
+        return env
+    main = _main_repo_root()
+    for cand in (main / "data", REPO / "data"):
+        try:
+            if (cand / "processed" / "oi_full_history_v2").is_dir() or (
+                cand / "raw" / "binance_um" / "metrics"
+            ).is_dir():
+                return str(cand.resolve())
+        except Exception:
+            continue
+    for cand in (main / "data", REPO / "data"):
+        if cand.is_dir():
+            return str(cand.resolve())
+    return str((main / "data").resolve())
+
+
+DATA_ROOT = _default_data_root()
 
 
 def git(*args: str, cwd: Path = REPO) -> subprocess.CompletedProcess:

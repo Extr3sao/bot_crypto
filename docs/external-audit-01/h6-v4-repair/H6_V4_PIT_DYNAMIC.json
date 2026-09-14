@@ -35,7 +35,7 @@
       "decision_eligible": true,
       "robust_z_oi": 1.4930093782592309,
       "direction": "LONG",
-      "elapsed_s": 21.44,
+      "elapsed_s": 23.14,
       "frozen_window_enforced": true,
       "equals_trailing_slice": true
     },
@@ -49,7 +49,7 @@
       "decision_eligible": true,
       "robust_z_oi": -0.2634312589679403,
       "direction": "NO_TRADE",
-      "elapsed_s": 18.56,
+      "elapsed_s": 20.02,
       "frozen_window_enforced": true,
       "equals_trailing_slice": true
     }

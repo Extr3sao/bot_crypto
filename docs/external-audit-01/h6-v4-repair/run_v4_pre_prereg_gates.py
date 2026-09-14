@@ -28,10 +28,31 @@ REPORT = OUT / "H6_V4_PRE_PREREG_GATES.json"
 SRC = REPO / "src"
 NT = "tests/unit/research"
 
+def _default_data_root() -> str:
+    env = os.environ.get("TRADING_AGENTIC_DATA_ROOT")
+    if env:
+        return env
+    # Prefer the data root that actually contains the authority dataset; REPO/data exists
+    # as an empty scaffold in every worktree checkout, so is_dir() alone is the wrong test.
+    for cand in (REPO / "data", REPO.parents[1] / "data"):
+        try:
+            if (cand / "processed" / "oi_full_history_v2").is_dir() or (
+                cand / "raw" / "binance_um" / "metrics"
+            ).is_dir():
+                return str(cand.resolve())
+        except Exception:
+            continue
+    for cand in (REPO / "data", REPO.parents[1] / "data"):
+        try:
+            if cand.is_dir():
+                return str(cand.resolve())
+        except Exception:
+            continue
+    return str((REPO / "data").resolve())
+
+
 # Shared authoritative data root (READ ONLY; never written to by this run).
-DATA_ROOT = os.environ.get(
-    "TRADING_AGENTIC_DATA_ROOT", "C:/Users/GVLLFR0035/Downloads/bot freebuff/data"
-)
+DATA_ROOT = _default_data_root()
 
 PY = sys.executable
 

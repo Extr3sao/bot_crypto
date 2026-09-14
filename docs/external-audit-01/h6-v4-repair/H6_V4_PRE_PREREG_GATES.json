@@ -1,11 +1,11 @@
 {
  "artifact": "H6_V4_PRE_PREREG_GATES",
  "checkpoint": "H6-V4-AUTHORITY-CONTRACT-AND-RUNTIME-BINDING-REPAIR-01",
- "timestamp_utc": "2026-09-13T14:04:18Z",
+ "timestamp_utc": "2026-09-14T09:55:55Z",
  "python_executable": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
  "repo_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-v4-repair",
- "git_commit": "814db85c5158ae26ed4d8471643a955cdad80c6f",
- "data_root": "C:/Users/GVLLFR0035/Downloads/bot freebuff/data",
+ "git_commit": "5503b9c1f126c402b29992b162b4c989db296ed6",
+ "data_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data",
  "module_path_authority": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-v4-repair\\src",
  "gates": [
   {
@@ -49,7 +49,7 @@
    "status": "PASS",
    "stdout_tail": [
     ".................................                                        [100%]",
-    "33 passed in 5.47s"
+    "33 passed in 5.94s"
    ],
    "stderr_tail": []
   },
@@ -60,7 +60,7 @@
    "status": "PASS",
    "stdout_tail": [
     ".............                                                            [100%]",
-    "13 passed in 5.02s"
+    "13 passed in 5.26s"
    ],
    "stderr_tail": []
   },
@@ -71,7 +71,7 @@
    "status": "PASS",
    "stdout_tail": [
     ".........................                                                [100%]",
-    "25 passed, 1 deselected in 11.39s"
+    "25 passed, 1 deselected in 13.00s"
    ],
    "stderr_tail": []
   },
@@ -82,7 +82,7 @@
    "status": "PASS",
    "stdout_tail": [
     "................                                                         [100%]",
-    "16 passed in 5.23s"
+    "16 passed in 5.65s"
    ],
    "stderr_tail": []
   },
@@ -93,7 +93,7 @@
    "status": "PASS",
    "stdout_tail": [
     ".......                                                                  [100%]",
-    "7 passed in 4.65s"
+    "7 passed in 5.30s"
    ],
    "stderr_tail": []
   },
@@ -104,7 +104,7 @@
    "status": "PASS",
    "stdout_tail": [
     "..                                                                       [100%]",
-    "2 passed in 56.32s"
+    "2 passed in 69.86s (0:01:09)"
    ],
    "stderr_tail": []
   },
@@ -115,7 +115,7 @@
    "status": "PASS",
    "stdout_tail": [
     ".............                                                            [100%]",
-    "13 passed in 4.79s"
+    "13 passed in 6.86s"
    ],
    "stderr_tail": []
   },
@@ -128,7 +128,7 @@
     ".....................s                                                   [100%]",
     "=========================== short test summary info ===========================",
     "SKIPPED [1] tests\\unit\\research\\test_data_admission.py:328: ingestion not run in this environment",
-    "21 passed, 1 skipped in 4.04s"
+    "21 passed, 1 skipped in 5.40s"
    ],
    "stderr_tail": []
   },
@@ -149,7 +149,7 @@
   },
   {
    "gate": "DATA_AUTHORITY",
-   "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe scripts/verify_h6_data_authority.py --data-root C:/Users/GVLLFR0035/Downloads/bot freebuff/data",
+   "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe scripts/verify_h6_data_authority.py --data-root C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data",
    "returncode": 0,
    "status": "PASS",
    "stdout_tail": [
@@ -220,15 +220,15 @@
    "returncode": 0,
    "status": "PASS",
    "stdout_tail": [
-    "  \"decisions_eligible\": 28,",
-    "  \"max_rolling_changes\": 406,",
-    "  \"max_abs_robust_z_oi\": 3.491167258936239,",
-    "  \"distinct_delta_oi_values\": 28,",
     "  \"qualifying_signal_count\": 3,",
     "  \"current_hour_snapshot_count_histogram\": {",
     "    \"12\": 28",
     "  },",
     "  \"checks\": {",
+    "    \"runtime_entry_point_no_errors\": true,",
+    "    \"runtime_entry_point_frozen_window\": true,",
+    "    \"runtime_entry_point_equals_trailing_slice\": true,",
+    "    \"runtime_entry_point_resolves_the_data_root\": true,",
     "    \"no_exceptions_on_real_data\": true,",
     "    \"scan_produced_decisions\": true,",
     "    \"non_vacuous_eligible_decisions\": true,",
@@ -250,7 +250,7 @@
   },
   {
    "gate": "PRICE_AUTHORITY_OVERLAP",
-   "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe scripts/verify_price_overlap_v3.py --data-root C:/Users/GVLLFR0035/Downloads/bot freebuff/data",
+   "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe scripts/verify_price_overlap_v3.py --data-root C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data",
    "returncode": 0,
    "status": "PASS",
    "stdout_tail": [
