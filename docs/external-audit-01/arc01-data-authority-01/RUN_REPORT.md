@@ -1,7 +1,7 @@
 # RUN_REPORT — ARC-01 FUNDING / CROWDING DATA AUTHORITY 01
 
-Generated: 2026-09-14T17:07:12.359962Z
-Base: `e7f470d`  HEAD: `e7f470d8ea07`  Branch: `research/arc01-data-authority-01`
+Generated: 2026-09-14T17:40:56.592352Z
+Base: `e7f470d`  HEAD: `1c5ac8cdb9d2`  Branch: `research/arc01-data-authority-01`
 Verdict: **PASS**  Economics: `ARC01_BACKTESTS=0` `ARC01_EXECUTIONS=0` `PERFORMANCE_OBSERVED=false`
 
 ## Funding source (official only)

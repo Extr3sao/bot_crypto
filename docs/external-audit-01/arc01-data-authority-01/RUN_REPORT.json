@@ -31,7 +31,7 @@
         "rows": 6652
       }
     },
-    "intersection_determined_at_utc": "2026-09-14T17:06:19.544764Z",
+    "intersection_determined_at_utc": "2026-09-14T17:40:23.811091Z",
     "note": "FUNDING full authority 2020-01..2026-09; OI+price frozen common window is 2021-12-01..2026-09-10; ARC-01 downstream must intersect funding with OI/price common window (later of the starts). No returns observed.",
     "oi_common_research_window_utc": [
       "2021-12-01T00:00:00Z",
@@ -62,8 +62,8 @@
     "data.binance.vision:fundingRate/monthly (official archive, .CHECKSUM verified)",
     "binanceusdm:/fapi/v1/fundingRate (official REST, tail after 2026-08-31 16:00 UTC)"
   ],
-  "generated_at_utc": "2026-09-14T17:07:12.359962Z",
-  "head_commit": "e7f470d8ea075e6d71d4f6be17c4b4452f1ede09",
+  "generated_at_utc": "2026-09-14T17:40:56.592352Z",
+  "head_commit": "1c5ac8cdb9d255309e8a5d12cb2f76f2d18a18db",
   "limitations": [
     "PROVIDER_SCHEDULE_CHANGE (SOL 2022-11 2h/4h) distinguished from data error; downstream must use funding_time_ms interval field",
     "Mark/index authorities not unified \u2014 admitted separately if ever required (RESEARCH_ONLY)",
@@ -132,7 +132,19 @@
   "source_registry": "docs/arc01-data-authority-01/ARC01_SOURCE_REGISTRY.md",
   "verdict": "PASS",
   "verifier": {
-    "checks": {},
+    "checks": {
+      "ab_determinism": "PASS",
+      "common_causal_window": "PASS",
+      "dataset_fingerprint": "PASS",
+      "inventory": "PASS",
+      "manifest": "PASS",
+      "mutation_sensitivity": "PASS",
+      "partitions_and_quality": "PASS",
+      "pit_rules": "PASS",
+      "raw_checksums": "PASS",
+      "raw_ledger": "PASS",
+      "timestamp_semantics": "PASS"
+    },
     "portable_data_root": "--data-root <ROOT>",
     "script": "scripts/verify_arc01_data_authority.py",
     "verdict": "PASS"

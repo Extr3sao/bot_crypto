@@ -21,7 +21,7 @@
       "rows": 6652
     }
   },
-  "intersection_determined_at_utc": "2026-09-14T17:29:28.008759Z",
+  "intersection_determined_at_utc": "2026-09-14T17:40:55.895765Z",
   "note": "FUNDING full authority 2020-01..2026-09; OI+price frozen common window is 2021-12-01..2026-09-10; ARC-01 downstream must intersect funding with OI/price common window (later of the starts). No returns observed.",
   "oi_common_research_window_utc": [
     "2021-12-01T00:00:00Z",
