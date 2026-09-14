@@ -1,4 +1,5 @@
 {
+  "authority_commit": "6e42dd9d4c19800925fd555999686d1e2b4ef47e",
   "base_commit": "e7f470d",
   "branch": "research/arc01-data-authority-01",
   "candidate_design": {
@@ -63,7 +64,7 @@
     "binanceusdm:/fapi/v1/fundingRate (official REST, tail after 2026-08-31 16:00 UTC)"
   ],
   "generated_at_utc": "2026-09-14T17:40:56.592352Z",
-  "head_commit": "70858c1c0ba510b9907aef5ed6ac528ec117b1de",
+  "generated_from_commit": "1df95c18355bcac1f3cb2e5d297c3fd5cedb3695",
   "limitations": [
     "PROVIDER_SCHEDULE_CHANGE (SOL 2022-11 2h/4h) distinguished from data error; downstream must use funding_time_ms interval field",
     "Mark/index authorities not unified \u2014 admitted separately if ever required (RESEARCH_ONLY)",
@@ -112,6 +113,7 @@
   },
   "pit_invariant": "data_time <= decision_time; funding_time_ms == availability_time_ms == settlement_time_ms; future funding never visible at T",
   "pit_status": "PASS",
+  "pointer_semantics": "authority_commit = dataset authority (6e42dd9); generated_from_commit = HEAD at generation; report_commit null (no circular self-reference)",
   "portability": {
     "evidence_snapshots": [
       "docs/arc01-data-authority-01/BTCUSDT_funding.jsonl",
@@ -128,6 +130,7 @@
     "vision_checks_verified": 232,
     "vision_monthly_verified_zips": 232
   },
+  "report_commit": null,
   "rows_total": 21346,
   "source_registry": "docs/arc01-data-authority-01/ARC01_SOURCE_REGISTRY.md",
   "verdict": "PASS",
