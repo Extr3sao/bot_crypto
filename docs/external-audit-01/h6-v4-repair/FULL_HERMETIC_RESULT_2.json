@@ -3,7 +3,7 @@
  "checkpoint": "H6-V4-AUTHORITY-CONTRACT-AND-RUNTIME-BINDING-REPAIR-01",
  "proof": "FULL_HERMETIC_RESULT_2",
  "command": "python scripts/run_regression_hermetic.py -p no:cacheprovider -q (host env stripped)",
- "commit": "5503b9c1f126c402b29992b162b4c989db296ed6",
+ "commit": "d24e427d22b436b069dc15deb94de8bbaaf1ddcd",
  "python_executable": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
  "module_authority": {
   "trading_bot": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-v4-repair\\src\\trading_bot\\__init__.py",
@@ -19,8 +19,8 @@
   "platform": "win32",
   "tz": "UTC"
  },
- "started_utc": "2026-09-13T15:52:23.145292+00:00",
- "duration_s": 20696.83,
+ "started_utc": "2026-09-14T12:23:19.280127+00:00",
+ "duration_s": 343.02,
  "exit_code": 0,
  "passed": 1418,
  "failed": 0,
@@ -51,11 +51,14 @@
   "SKIPPED [1] tests\\unit\\research\\test_oi_full_history.py:351: frozen OI dataset not on this machine",
   "SKIPPED [1] tests\\unit\\research\\test_oi_full_history.py:356: frozen OI dataset not on this machine",
   "SKIPPED [1] tests\\unit\\research\\test_oi_full_history.py:365: frozen OI dataset not on this machine",
-  "1418 passed, 6 skipped, 78 warnings in 20704.67s (5:45:04)",
+  "1418 passed, 6 skipped, 78 warnings in 331.75s (0:05:31)",
   "[hermetic] stripping host env prefixes: ('EXCHANGE_', 'POC01_', 'CAMPAIGN_', 'TRADING_')",
   "[hermetic] running: C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m pytest -p no:cacheprovider -q"
  ],
- "stderr_tail": [],
+ "stderr_tail": [
+  "----------------------------------------",
+  "----------------------------------------"
+ ],
  "status": "PASS",
  "H6_BACKTESTS": 0,
  "H6_EXECUTIONS": 0,

@@ -1,10 +1,10 @@
 {
  "artifact": "H6_V4_PRE_PREREG_GATES",
  "checkpoint": "H6-V4-AUTHORITY-CONTRACT-AND-RUNTIME-BINDING-REPAIR-01",
- "timestamp_utc": "2026-09-14T09:55:55Z",
+ "timestamp_utc": "2026-09-14T12:09:37Z",
  "python_executable": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
  "repo_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-v4-repair",
- "git_commit": "5503b9c1f126c402b29992b162b4c989db296ed6",
+ "git_commit": "d24e427d22b436b069dc15deb94de8bbaaf1ddcd",
  "data_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data",
  "module_path_authority": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-v4-repair\\src",
  "gates": [
@@ -49,7 +49,7 @@
    "status": "PASS",
    "stdout_tail": [
     ".................................                                        [100%]",
-    "33 passed in 5.94s"
+    "33 passed in 6.07s"
    ],
    "stderr_tail": []
   },
@@ -60,7 +60,7 @@
    "status": "PASS",
    "stdout_tail": [
     ".............                                                            [100%]",
-    "13 passed in 5.26s"
+    "13 passed in 5.29s"
    ],
    "stderr_tail": []
   },
@@ -71,7 +71,7 @@
    "status": "PASS",
    "stdout_tail": [
     ".........................                                                [100%]",
-    "25 passed, 1 deselected in 13.00s"
+    "25 passed, 1 deselected in 11.49s"
    ],
    "stderr_tail": []
   },
@@ -82,7 +82,7 @@
    "status": "PASS",
    "stdout_tail": [
     "................                                                         [100%]",
-    "16 passed in 5.65s"
+    "16 passed in 5.36s"
    ],
    "stderr_tail": []
   },
@@ -93,7 +93,7 @@
    "status": "PASS",
    "stdout_tail": [
     ".......                                                                  [100%]",
-    "7 passed in 5.30s"
+    "7 passed in 4.94s"
    ],
    "stderr_tail": []
   },
@@ -104,7 +104,7 @@
    "status": "PASS",
    "stdout_tail": [
     "..                                                                       [100%]",
-    "2 passed in 69.86s (0:01:09)"
+    "2 passed in 70.37s (0:01:10)"
    ],
    "stderr_tail": []
   },
@@ -115,7 +115,7 @@
    "status": "PASS",
    "stdout_tail": [
     ".............                                                            [100%]",
-    "13 passed in 6.86s"
+    "13 passed in 7.87s"
    ],
    "stderr_tail": []
   },
@@ -128,7 +128,7 @@
     ".....................s                                                   [100%]",
     "=========================== short test summary info ===========================",
     "SKIPPED [1] tests\\unit\\research\\test_data_admission.py:328: ingestion not run in this environment",
-    "21 passed, 1 skipped in 5.40s"
+    "21 passed, 1 skipped in 5.18s"
    ],
    "stderr_tail": []
   },

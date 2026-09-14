@@ -18,7 +18,14 @@
   "H6_BACKTESTS": 0,
   "H6_EXECUTIONS": 0,
   "PERFORMANCE_OBSERVED": false,
-  "do_not_compute": ["PnL", "Sharpe from H6 outcomes", "profit factor", "expectancy", "win rate", "future returns"]
+  "do_not_compute": [
+   "PnL",
+   "Sharpe from H6 outcomes",
+   "profit factor",
+   "expectancy",
+   "win rate",
+   "future returns"
+  ]
  },
  "frozen_artifacts": {
   "spec": "docs/external-audit-01/h6-v4-repair/H6_SPEC_V4.json",
@@ -55,8 +62,8 @@
   "price_overlap_refresh": "docs/external-audit-01/h6-v4-repair/PRICE_OVERLAP_V3_RESULT.json",
   "consistency_audit_refresh": "docs/external-audit-01/h6-v4-repair/H6_V3_CONSISTENCY_AUDIT.json"
  },
- "evidence_run_commit": "7166b46",
- "evidence_reuse_note": "DATASET_DETERMINISM is reused, not re-derived: the full A/B proof re-normalizes 5,691 raw provider files twice (~2.5 h) and its result cannot depend on the executing worktree. The gate validates the durable proof under an explicit binding (proof commit must be an ancestor of HEAD and the normalizer / data-root resolver bytes unchanged) and separately re-executes the layout-sensitive half by resolving the shared data root and recomputing the authority fingerprint from actual bytes. PIT_DYNAMIC is NOT reused from V3: V4 changed the completed-hour aggregation, so it was re-executed against real canonical observations.",
+ "evidence_run_commit": "d24e427d22b436b069dc15deb94de8bbaaf1ddcd",
+ "evidence_reuse_note": "DATASET_DETERMINISM is reused, not re-derived: the full A/B proof re-normalizes 5,691 raw provider files twice (~2.5 h) and its result cannot depend on the executing worktree. The gate validates the durable proof under an explicit binding (proof commit must be an ancestor of HEAD and the normalizer / data-root resolver bytes unchanged) and separately re-executes the layout-sensitive half by resolving the shared data root and recomputing the authority fingerprint from actual bytes. PIT_DYNAMIC is NOT reused from V3: V4 changed the completed-hour aggregation, so it was re-executed against real canonical observations. Portable-data now resolved via shipped resolver; fresh PRE_PREREG, full-verification and clean-worktree runs at d24e427 all PASS with portable layout (no stale evidence reuse for data-dependent gates).",
  "verifier_contract_hard_requirements": [
   "Run the independent verifier from a DIFFERENT context/agent than the builder.",
   "Establish PYTHON_IMPORT_AUTHORITY before trusting any project-module result: a bare import inside a worktree can resolve to the main checkout.",
@@ -77,6 +84,13 @@
    "id": "BUILDER_CONTEXT_SELF_VERIFICATION",
    "status": "LIMITATION_EXPLICIT_NON_BLOCKING",
    "detail": "All V4 verification in this package is BUILDER_SELF_VERIFICATION_V4, produced in the same context as the builder. It does not satisfy INDEPENDENT_EXTERNAL_VERIFICATION_V4."
+  },
+  {
+   "id": "HARNESS_PORTABILITY_HOST_PREFIX",
+   "status": "REPAIRED_IN_V4_15_PORTABLE_RESOLVER_NON_BLOCKING",
+   "detail": "The host-absolute fallback in the three builder harnesses was removed; verifier must probe for the authoritative layout on the host. No effect on src/runtime."
   }
- ]
+ ],
+ "evidence_run_commit_short": "d24e427",
+ "harness_portability_fix": "[H6-V4-15] three harnesses now resolve TRADING_AGENTIC_DATA_ROOT portably (env > probe for processed/oi_full_history_v2 or raw/binance_um/metrics > fallback); zero hardcoded host path remains"
 }

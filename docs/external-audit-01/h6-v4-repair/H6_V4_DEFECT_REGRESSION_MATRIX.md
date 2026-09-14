@@ -6,7 +6,7 @@
 H6_EXECUTIONS        = 0
 H6_BACKTESTS         = 0
 PERFORMANCE_OBSERVED = false
-rows                 = 30
+rows                 = 31
 ```
 
 | ID | Gen | Root cause | Repair | Runtime reachability | Status |
@@ -41,6 +41,7 @@ rows                 = 30
 | `V4-SELF-WINDOW-001` | V4 | The feature engine enforced only the rolling-observation MINIMUM (336) and never the window LENGTH, and build_feature_state derived its hour range from len(observations)//12+2. prepare_decision_from_data_root passes the whole causal store, so median/MAD -- and therefore robust_z and the signal -- were a function of how much history existed rather than of the preregistered 720-hour window. | The engine applies the frozen trailing window to the series it receives (hist[-length_hours:], matching V2's hist[-ROBUST_Z_WINDOW_HOURS:]) and reads both window values from the bound frozen spec. The hour range is clipped to the history that exists and only the two hours a decision consumes are materialised, so a full-store caller no longer amplifies cost by dataset length (375k obs -> 720 window, ~21 s). | RUNTIME (feature_engine.compute_feature_state, preparation.build_feature_state) | REPAIRED_IN_V4_PENDING_INDEPENDENT_VERIFICATION |
 | `V4-SELF-DATAROOT-001` | V4 | prepare_decision_from_data_root forwarded its argument to a reader that returns no rows for a directory lacking the symbol shards, so passing the authority-documented data root produced a well-formed NO_TRADE decision built from ZERO observations. | Explicit store resolution from the documented root shapes (data root, repo root, or the store itself) with structural validation; an unresolvable root or a store without shards for the symbol raises instead of returning an empty answer. | RUNTIME (preparation.prepare_decision_from_data_root) | REPAIRED_IN_V4_PENDING_INDEPENDENT_VERIFICATION |
 | `V4-SELF-CLEANWT-001` | V4 | The clean-worktree self-verification nested its worktree one level deeper than the canonical layout, so the shared data-root fallback looked too shallow, the frozen dataset appeared absent and a data-dependent test failed; the reporter then assumed the nested layout and crashed after every gate had passed, losing the evidence file. | Ancestor-walking data-root resolution from [H6-V4-06], the verification worktree created at the canonical depth under the main checkout, and a layout-independent path reporter. | HARNESS | REPAIRED_IN_V4_PENDING_INDEPENDENT_VERIFICATION |
+| `V4-SELF-HARNESS-PORTABILITY-001` | V4 | Three builder-analysis harnesses (run_v4_pre_prereg_gates.py, run_v4_full_verification.py, run_v4_clean_worktree_self_verification.py) hardcoded TRADING_AGENTIC_DATA_ROOT to the builder's absolute host path. On a fresh clone or nested worktree the fallback resolved to the empty repo/data scaffold, so DATA_AUTHORITY passed vacuously while PIT/dynamic and overlap probed the wrong shard layout and reused stale evidence. | Deterministic host-portable resolution in [H6-V4-15]: honour env when set, otherwise probe repo/data and repo.parents[1]/data for the authoritative processed/oi_full_history_v2 or raw/binance_um/metrics layout before falling back. No hardcoded host prefix remains; main-worktree and clean-worktree reruns now produce identical data contracts. | HARNESS / EVIDENCE | REPAIRED_IN_V4_PENDING_INDEPENDENT_VERIFICATION |
 
 ## Test / evidence index
 
@@ -73,7 +74,8 @@ rows                 = 30
 * `V3-FEATURE-002` — test: `trading_bot/tests/unit/research/test_h6_v4_hour_aggregation.py::test_thirteen_including_t_excludes_t_deterministically, ::test_snapshot_exactly_t_is_classified_into_the_next_hour, ::test_conflicting_duplicate_timestamp_fails_closed`; evidence: `H6_V4_HOUR_AGGREGATION_RESULT.json`
 * `V4-SELF-WINDOW-001` — test: `trading_bot/tests/unit/research/test_h6_v4_rolling_window_contract.py (7 tests: cap, trailing equality, ancient-history invariance, no fabricated padding)`; evidence: `H6_V4_PIT_DYNAMIC.json (runtime_entry_point: 720 changes on 375,697 observations, equals trailing slice)`
 * `V4-SELF-DATAROOT-001` — test: `trading_bot/tests/unit/research/test_h6_v4_data_root_resolution.py (7 tests incl. unresolvable root and shard-less target raising)`; evidence: `H6_V4_PIT_DYNAMIC.json (runtime_entry_point_resolves_the_data_root)`
-* `V4-SELF-CLEANWT-001` — test: `docs/external-audit-01/h6-v4-repair/run_v4_clean_worktree_self_verification.py (14/14 gates from a fresh checkout)`; evidence: `H6_V4_CLEAN_WORKTREE_SELF_VERIFICATION.json`
+* `V4-SELF-CLEANWT-001` — test: `docs/external-audit-01/h6-v4-repair/run_v4_clean_worktree_self_verification.py (15/15 gates from a fresh checkout)`; evidence: `H6_V4_CLEAN_WORKTREE_SELF_VERIFICATION.json`
+* `V4-SELF-HARNESS-PORTABILITY-001` — test: `docs/external-audit-01/h6-v4-repair/H6_V4_PRE_PREREG_GATES.json (15/15 DATA_AUTHORITY / DATASET_DETERMINISM / PIT_DYNAMIC / PRICE_AUTHORITY_OVERLAP at the portable rerun)`; evidence: `commit d24e427 portable harnesses; fresh PRE_PREREG, full-verification and clean-worktree evidence at the final commit`
 
 > Builder self-verification only. `REPAIRED_IN_V4_PENDING_INDEPENDENT_VERIFICATION`
 > is not a certification. Independent verification is

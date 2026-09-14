@@ -270,9 +270,29 @@ ROWS = [
          "created at the canonical depth under the main checkout, and a layout-independent "
          "path reporter."
      ),
-     "test": "docs/external-audit-01/h6-v4-repair/run_v4_clean_worktree_self_verification.py (14/14 gates from a fresh checkout)",
+     "test": "docs/external-audit-01/h6-v4-repair/run_v4_clean_worktree_self_verification.py (15/15 gates from a fresh checkout)",
      "runtime_reachability": "HARNESS",
      "evidence": "H6_V4_CLEAN_WORKTREE_SELF_VERIFICATION.json",
+     "status": R4},
+    {"defect_id": "V4-SELF-HARNESS-PORTABILITY-001", "generation": "V4",
+     "root_cause": (
+         "Three builder-analysis harnesses (run_v4_pre_prereg_gates.py, "
+         "run_v4_full_verification.py, run_v4_clean_worktree_self_verification.py) "
+         "hardcoded TRADING_AGENTIC_DATA_ROOT to the builder's absolute host path. "
+         "On a fresh clone or nested worktree the fallback resolved to the empty "
+         "repo/data scaffold, so DATA_AUTHORITY passed vacuously while PIT/dynamic "
+         "and overlap probed the wrong shard layout and reused stale evidence."
+     ),
+     "repair": (
+         "Deterministic host-portable resolution in [H6-V4-15]: honour env when set, "
+         "otherwise probe repo/data and repo.parents[1]/data for the authoritative "
+         "processed/oi_full_history_v2 or raw/binance_um/metrics layout before "
+         "falling back. No hardcoded host prefix remains; main-worktree and "
+         "clean-worktree reruns now produce identical data contracts."
+     ),
+     "test": "docs/external-audit-01/h6-v4-repair/H6_V4_PRE_PREREG_GATES.json (15/15 DATA_AUTHORITY / DATASET_DETERMINISM / PIT_DYNAMIC / PRICE_AUTHORITY_OVERLAP at the portable rerun)",
+     "runtime_reachability": "HARNESS / EVIDENCE",
+     "evidence": "commit d24e427 portable harnesses; fresh PRE_PREREG, full-verification and clean-worktree evidence at the final commit",
      "status": R4},
 ]
 

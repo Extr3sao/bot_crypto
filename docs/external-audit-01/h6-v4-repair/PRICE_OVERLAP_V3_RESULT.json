@@ -2,14 +2,14 @@
   "checkpoint": "H6-V3-REPAIR",
   "proof": "PRICE_OVERLAP_V3_FULL",
   "command": "python scripts/verify_price_overlap_v3.py [--data-root <path>]",
-  "commit": "5503b9c1f126c402b29992b162b4c989db296ed6",
+  "commit": "d24e427d22b436b069dc15deb94de8bbaaf1ddcd",
   "data_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data",
   "environment": {
     "python": "3.11.15",
     "platform": "win32"
   },
-  "started_utc": "2026-09-14T09:55:54.726434+00:00",
-  "ended_utc": "2026-09-14T09:55:54.726434+00:00",
+  "started_utc": "2026-09-14T12:32:06.934267+00:00",
+  "ended_utc": "2026-09-14T12:32:06.934267+00:00",
   "exit_code": 0,
   "per_asset": {
     "BTCUSDT": {

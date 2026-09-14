@@ -2,7 +2,7 @@
  "artifact": "H6_V4_DASHBOARD_REPEAT_20",
  "checkpoint": "H6-V4-AUTHORITY-CONTRACT-AND-RUNTIME-BINDING-REPAIR-01",
  "test": "tests/unit/paper_dashboard/test_server.py::test_non_get_methods_are_405",
- "commit": "5503b9c1f126c402b29992b162b4c989db296ed6",
+ "commit": "d24e427d22b436b069dc15deb94de8bbaaf1ddcd",
  "python_executable": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
  "module_authority": {
   "trading_bot": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.worktrees\\h6-v4-repair\\src\\trading_bot\\__init__.py",
@@ -18,207 +18,207 @@
   "platform": "win32",
   "tz": "UTC"
  },
- "started_utc": "2026-09-13T15:48:42.074154+00:00",
- "total_duration_s": 44.71,
+ "started_utc": "2026-09-14T12:14:25.085639+00:00",
+ "total_duration_s": 92.79,
  "runs": [
   {
    "run": 1,
    "exit_code": 0,
    "pass": true,
-   "duration_s": 2.65,
+   "duration_s": 5.46,
    "tail": [
     ".                                                                        [100%]",
-    "1 passed in 1.00s"
+    "1 passed in 1.96s"
    ]
   },
   {
    "run": 2,
    "exit_code": 0,
    "pass": true,
-   "duration_s": 1.96,
+   "duration_s": 4.95,
    "tail": [
     ".                                                                        [100%]",
-    "1 passed in 0.88s"
+    "1 passed in 1.60s"
    ]
   },
   {
    "run": 3,
    "exit_code": 0,
    "pass": true,
-   "duration_s": 1.87,
+   "duration_s": 4.95,
    "tail": [
     ".                                                                        [100%]",
-    "1 passed in 0.85s"
+    "1 passed in 1.72s"
    ]
   },
   {
    "run": 4,
    "exit_code": 0,
    "pass": true,
-   "duration_s": 1.88,
+   "duration_s": 4.93,
    "tail": [
     ".                                                                        [100%]",
-    "1 passed in 0.89s"
+    "1 passed in 1.87s"
    ]
   },
   {
    "run": 5,
    "exit_code": 0,
    "pass": true,
-   "duration_s": 2.03,
+   "duration_s": 5.33,
    "tail": [
     ".                                                                        [100%]",
-    "1 passed in 0.92s"
+    "1 passed in 1.90s"
    ]
   },
   {
    "run": 6,
    "exit_code": 0,
    "pass": true,
-   "duration_s": 1.93,
+   "duration_s": 5.59,
    "tail": [
     ".                                                                        [100%]",
-    "1 passed in 0.88s"
+    "1 passed in 1.78s"
    ]
   },
   {
    "run": 7,
    "exit_code": 0,
    "pass": true,
-   "duration_s": 1.98,
+   "duration_s": 4.27,
    "tail": [
     ".                                                                        [100%]",
-    "1 passed in 0.89s"
+    "1 passed in 1.62s"
    ]
   },
   {
    "run": 8,
    "exit_code": 0,
    "pass": true,
-   "duration_s": 1.95,
+   "duration_s": 4.55,
    "tail": [
     ".                                                                        [100%]",
-    "1 passed in 0.88s"
+    "1 passed in 1.68s"
    ]
   },
   {
    "run": 9,
    "exit_code": 0,
    "pass": true,
-   "duration_s": 1.88,
+   "duration_s": 5.2,
    "tail": [
     ".                                                                        [100%]",
-    "1 passed in 0.87s"
+    "1 passed in 1.88s"
    ]
   },
   {
    "run": 10,
    "exit_code": 0,
    "pass": true,
-   "duration_s": 2.02,
+   "duration_s": 4.94,
    "tail": [
     ".                                                                        [100%]",
-    "1 passed in 0.93s"
+    "1 passed in 1.76s"
    ]
   },
   {
    "run": 11,
    "exit_code": 0,
    "pass": true,
-   "duration_s": 2.26,
+   "duration_s": 4.56,
    "tail": [
     ".                                                                        [100%]",
-    "1 passed in 0.95s"
+    "1 passed in 1.58s"
    ]
   },
   {
    "run": 12,
    "exit_code": 0,
    "pass": true,
-   "duration_s": 2.49,
+   "duration_s": 3.96,
    "tail": [
     ".                                                                        [100%]",
-    "1 passed in 0.97s"
+    "1 passed in 1.43s"
    ]
   },
   {
    "run": 13,
    "exit_code": 0,
    "pass": true,
-   "duration_s": 2.45,
+   "duration_s": 3.24,
    "tail": [
     ".                                                                        [100%]",
-    "1 passed in 0.99s"
+    "1 passed in 1.22s"
    ]
   },
   {
    "run": 14,
    "exit_code": 0,
    "pass": true,
-   "duration_s": 2.47,
+   "duration_s": 3.28,
    "tail": [
     ".                                                                        [100%]",
-    "1 passed in 1.03s"
+    "1 passed in 1.21s"
    ]
   },
   {
    "run": 15,
    "exit_code": 0,
    "pass": true,
-   "duration_s": 2.47,
+   "duration_s": 3.37,
    "tail": [
     ".                                                                        [100%]",
-    "1 passed in 1.03s"
+    "1 passed in 1.24s"
    ]
   },
   {
    "run": 16,
    "exit_code": 0,
    "pass": true,
-   "duration_s": 2.31,
+   "duration_s": 3.37,
    "tail": [
     ".                                                                        [100%]",
-    "1 passed in 0.98s"
+    "1 passed in 1.27s"
    ]
   },
   {
    "run": 17,
    "exit_code": 0,
    "pass": true,
-   "duration_s": 2.09,
+   "duration_s": 3.3,
    "tail": [
     ".                                                                        [100%]",
-    "1 passed in 0.92s"
+    "1 passed in 1.24s"
    ]
   },
   {
    "run": 18,
    "exit_code": 0,
    "pass": true,
-   "duration_s": 1.95,
+   "duration_s": 3.14,
    "tail": [
     ".                                                                        [100%]",
-    "1 passed in 0.90s"
+    "1 passed in 1.25s"
    ]
   },
   {
    "run": 19,
    "exit_code": 0,
    "pass": true,
-   "duration_s": 2.04,
+   "duration_s": 4.05,
    "tail": [
     ".                                                                        [100%]",
-    "1 passed in 0.88s"
+    "1 passed in 1.62s"
    ]
   },
   {
    "run": 20,
    "exit_code": 0,
    "pass": true,
-   "duration_s": 1.84,
+   "duration_s": 3.86,
    "tail": [
     ".                                                                        [100%]",
-    "1 passed in 0.91s"
+    "1 passed in 1.38s"
    ]
   }
  ],
