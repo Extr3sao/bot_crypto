@@ -1,0 +1,171 @@
+{
+  "schema": "ARC03_RUN_REPORT/1.0.0",
+  "checkpoint": "ARC03-PREREG-001",
+  "hypothesis_id": "ARC-03-PARTICIPATION-SHOCK-REVERSAL-01",
+  "FINAL_STATUS": "PENDING_INDEPENDENT_PREREG_VERIFICATION",
+  "builder": "deepseek-v4-flash (DeepSeek)",
+  "builder_verifier_separation": {
+    "builder_may_do": "BUILDER_CROSSCHECK",
+    "builder_may_not_claim": "INDEPENDENT_VERIFICATION",
+    "final_state": "PENDING_INDEPENDENT_PREREG_VERIFICATION"
+  },
+  "self_reference_policy": {
+    "authority_commit": "8668a3174234255b1b1f27a7bf04b8f022af68bb",
+    "generated_from_commit": "8668a3174234255b1b1f27a7bf04b8f022af68bb",
+    "prereg_commit": null,
+    "report_commit": null,
+    "note": "a commit cannot embed its own SHA; the prereg commit SHA is recorded by a subsequent pointer commit (ARC03-PREREG-002) and in the final response"
+  },
+  "worktree": {
+    "path": ".research/arc03-participation-reversal-01",
+    "branch": "research/arc03-participation-reversal-01",
+    "base_selection": "docs/arc03-data-authority-01/ARC03_BASE_SELECTION.json",
+    "data_authority_head_commit": "8668a3174234255b1b1f27a7bf04b8f022af68bb",
+    "data_authority_checkpoints": [
+      "ARC03-DATA-001 establish participation-shock data authority",
+      "ARC03-DATA-002 resolve raw bytes against the data root and bind the authority commit",
+      "ARC03-DATA-003 record portable data-authority verification evidence",
+      "ARC03-DATA-004 prove data authority from a clean throwaway worktree"
+    ]
+  },
+  "data_authority": {
+    "family": "binance_usdm_klines_5m",
+    "interval": "5m",
+    "source": "official data.binance.vision USD-M monthly archives (CHECKSUM verified) + official daily archives for the SOLUSDT 2022-02/2022-04 gaps",
+    "dataset_sha256": "1a6ad11712ce436ce9d413d6b53162d66996778cd98643ef7c3eb746a54745ef",
+    "raw_files_sha256": "abfe8caee35ff441d71127430a8547eba98e54a7a722681db908565b720996a9",
+    "partition_sha256": {
+      "BTCUSDT": "eb75ab97881fd941c05d1b188778f1a832ab404c59f5991eff12ead779e4ab02",
+      "ETHUSDT": "24c886902760b2e2c873df7721c12098e65b768762f55e2144d990deac04c211",
+      "SOLUSDT": "d872bc7dc8a52eb697962516fbd24a636483acd43e524cdbbf09985d2720f548"
+    },
+    "admitted_rows": {"BTCUSDT": 701280, "ETHUSDT": 701280, "SOLUSDT": 627180},
+    "funding_authority": {
+      "classification": "REUSABLE (byte-identical reuse of the certified ARC-01 funding authority)",
+      "dataset_sha256": "5f4845f5062e68353ef421b9687bf728a56693951e2f74e17221a8e3373b62ec",
+      "partition_sha256": {
+        "BTCUSDT": "700b0c4c7e5ffa9dbe82cd84e98be9f505bce6f1792d33d0eae88d07a7585855",
+        "ETHUSDT": "2edf501ea69807bbf67cdd519e53de18c8dea25ea8bdf009beb88ef2e2693943",
+        "SOLUSDT": "6b16d13f5115f906f9ceb4f5a418f7a541c37609e780cfbad0d52ed565808f85"
+      },
+      "role": "CASHFLOW LEG ONLY - funding is never an ARC-03 signal input",
+      "evidence": "docs/arc03-data-authority-01/ARC03_FUNDING_REUSE_ASSESSMENT.json"
+    },
+    "reuse_audit": {
+      "artifact": "docs/arc03-data-authority-01/ARC03_EXISTING_DATA_REUSE_ASSESSMENT.json",
+      "conclusion": "no existing authority is reusable: every committed kline authority is 1h or coarser and per-trade coverage is a handful of recent days; ARC-03 therefore acquired its own official 5m bytes",
+      "duplicate_dataset_created": false
+    }
+  },
+  "common_causal_window": {
+    "start_ms": 1600066800000,
+    "end_ms": 1788220500000,
+    "start_utc": "2020-09-14T07:00:00Z",
+    "end_utc": "2026-08-31T23:55:00Z",
+    "bound_semantics": "CLOSED interval on 5m bar-OPEN times",
+    "derivation_basis": "provider availability and common coverage only - never returns"
+  },
+  "frozen_economics": {
+    "participation_field": "volume (base units, provider kline field 5)",
+    "participation_shock": "v(t) > max{v(t - 86400000*j) : j = 1..30}; all 30 same-5m-slot references required, else fail closed",
+    "excursion_record": "high-low > max{range(same 30 references)} (strict)",
+    "exhaustion": "body>0 and (high-close) > range/2 -> SHORT; body<0 and (close-low) > range/2 -> LONG (strict)",
+    "price_context": "NONE (OHLC is the definition, not an added filter)",
+    "decision_cadence": "one decision per completed 5m bar per asset, at the bar's close_time_ms",
+    "entry": "OPEN of the first 5m bar with open_time_ms > decision_time_ms",
+    "exit": "OPEN of the bar at entry_open_time_ms + 3600000",
+    "holding": "exactly 12 bars = 60 minutes (single primary horizon)",
+    "stop": "NONE",
+    "cooldown": "NONE",
+    "overlap_policy": "SKIP while a position is open; no queue, no pyramiding; assets independent; max one position per asset",
+    "cost_model": {"primary_round_trip_bps": 10, "scenarios_bps": [0, 10, 20, 40], "same_trade_set": true},
+    "funding_cashflow": "sum over certified settlements in (entry_time, exit_time] of (-direction_sign * funding_rate); settlement count is never assumed",
+    "accounting_identity": "NET = GROSS + FUNDING - COST",
+    "kill_rule": "ONE PREREGISTRATION -> ONE PRIMARY DISCOVERY; any critical gate failure => ARC03 = DISCOVERY_FAIL (terminal, no retuning)"
+  },
+  "frozen_artifact_hashes": {
+    "ARC03_SPEC_V1.json": "a69edabb2931b3897cc0bcabdb7c203009ace742af1a729e47f7cb058a407a2d",
+    "ARC03_MANIFEST_V1.json": "3b022693fde0a4e362329a009125292410bb1ba3d0e2b3f8571b795a15b1d1a3",
+    "note": "the authoritative digest set is ARC03_MANIFEST_V1.json.frozen_economic_artifacts; scripts/verify_arc03_prereg.py proves drift = 0 against it"
+  },
+  "pre_freeze_gates": {
+    "SPEC_COMPLETE": "PASS",
+    "DATA_AUTHORITY_BINDING": "PASS",
+    "PIT_CONTRACT": "PASS",
+    "CONTROL_PLAN": "PASS",
+    "STATISTICAL_GATES": "PASS",
+    "ROBUSTNESS_PLAN": "PASS",
+    "NO_ECONOMIC_OBSERVATION": "PASS",
+    "JSON_VALIDATION": "PASS",
+    "CONTRADICTIONS_FOUND": 0,
+    "FALSE_SUCCESS": 0
+  },
+  "verification_evidence": {
+    "data_authority": {
+      "A_B_DETERMINISM": "PASS",
+      "MUTATION_SENSITIVITY": "PASS",
+      "PIT": "PASS",
+      "portable_verifier": "PASS (fails closed without a data root)",
+      "clean_worktree_data_verification": "PASS",
+      "artifacts": [
+        "docs/arc03-data-authority-01/ARC03_DATA_DETERMINISM.json",
+        "docs/arc03-data-authority-01/ARC03_MUTATION_SENSITIVITY.json",
+        "docs/arc03-data-authority-01/ARC03_PIT_INDEPENDENT_TESTS.json",
+        "docs/arc03-data-authority-01/ARC03_PORTABLE_DATA_VERIFICATION.json",
+        "docs/arc03-data-authority-01/ARC03_CLEAN_WORKTREE_VERIFICATION.json"
+      ]
+    },
+    "prereg": {
+      "spec_validator": "scripts/validate_arc03_spec.py -> ARC03_SPEC_COMPLETE = PASS (11 checks, 0 failures)",
+      "portable_prereg_verifier": "scripts/verify_arc03_prereg.py -> PASS with a certified data root; FAIL_CLOSED (exit 2) with a wrong one",
+      "unit_tests": "tests/unit/research/test_arc03_prereg.py -> 28 passed (synthetic fixtures + real-authority identity checks)",
+      "POST_FREEZE_ARTIFACT_DRIFT": 0
+    }
+  },
+  "definition_of_done": {
+    "ARC03_SPEC_COMPLETE": "PASS",
+    "DATA_AUTHORITY": "PASS",
+    "PIT": "PASS",
+    "A_B_DETERMINISM": "PASS",
+    "MUTATION_SENSITIVITY": "PASS",
+    "PORTABLE_VERIFIER": "PASS",
+    "CLEAN_WORKTREE_DATA_VERIFICATION": "PASS",
+    "ECONOMIC_PARAMETERS_FROZEN": true,
+    "STATISTICAL_GATES_FROZEN": true,
+    "CONTROL_PLAN_FROZEN": true,
+    "ROBUSTNESS_PLAN_FROZEN": true,
+    "KILL_RULE_FROZEN": true,
+    "PREREG_COMMIT_CREATED": true,
+    "POST_FREEZE_ARTIFACT_DRIFT": 0,
+    "WORKING_TREE_CLEAN": true,
+    "ARC03_BACKTESTS": 0,
+    "ARC03_EXECUTIONS": 0,
+    "ARC03_PERFORMANCE_OBSERVED": false,
+    "FALSE_SUCCESS": 0
+  },
+  "defects": [
+    {
+      "id": "DEF-ARC03-PREREG-001",
+      "severity": "NON_BLOCKING",
+      "kind": "DOCUMENTATION",
+      "detail": "ARC03_SPEC_V1.json marks the participation field as 'v' (the short partition key) while the provider kline field is index 5 (base volume). The mapping is stated in ARC03_DATA_AUTHORITY.json.field_admission and in the reader; no economic ambiguity results.",
+      "resolved": true
+    }
+  ],
+  "limitations": [
+    "The rule is parameter-free; the only length-like constant is the 30-day same-slot reference, frozen ex ante and probed only by the robustness plan.",
+    "The common window starts at SOLUSDT's admission (2020-09-14); earlier BTC/ETH history is out of scope.",
+    "SOLUSDT 2022-02 and 2022-04 provider gaps were filled from official daily archives (disclosed in the data quality ledger).",
+    "The last 60 minutes of the window yields no trades (frozen forward-data guard).",
+    "Funding cashflow is charged on the entry notional (frozen O(1e-4) simplification).",
+    "No critical gate covers drawdown; drawdown is a diagnostic only.",
+    "The H5 collision check required by the ARU kill rule is staged immediately after discovery because evaluating it requires economic observation.",
+    "N is a discovery-time unknown; INSUFFICIENT_SAMPLE is a possible terminal outcome.",
+    "Two HIGH residual risks are disclosed in ARC03_FAILED_MEMORY_COLLISION_REVIEW.md: the 5m cost hurdle (#1) and the secular-uptrend short-fade (#10)."
+  ],
+  "ARC03_BACKTESTS": 0,
+  "ARC03_EXECUTIONS": 0,
+  "ARC03_PERFORMANCE_OBSERVED": false,
+  "FALSE_SUCCESS": 0,
+  "NEXT": "ARC03_INDEPENDENT_PREREG_VERIFICATION"
+}

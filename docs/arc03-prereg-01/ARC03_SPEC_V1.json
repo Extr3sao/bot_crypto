@@ -1,0 +1,418 @@
+{
+  "schema": "ARC03_SPEC/1.0.0",
+  "spec_version": 1,
+  "hypothesis_id": "ARC-03-PARTICIPATION-SHOCK-REVERSAL-01",
+  "checkpoint": "ARC03-PREREG-001",
+  "status_at_prereg": "PREREGISTERED_NOT_EXECUTED",
+  "preregistered_utc": "2026-09-15",
+  "builder": "deepseek-v4-flash (DeepSeek)",
+  "builder_verifier_separation": {
+    "builder": "DeepSeek",
+    "builder_may_do": "BUILDER_CROSSCHECK",
+    "builder_may_not_claim": "INDEPENDENT_VERIFICATION",
+    "final_state": "PENDING_INDEPENDENT_PREREG_VERIFICATION"
+  },
+  "economics": {
+    "ARC03_BACKTESTS": 0,
+    "ARC03_EXECUTIONS": 0,
+    "ARC03_PERFORMANCE_OBSERVED": false,
+    "FALSE_SUCCESS": 0
+  },
+  "authority_chain": {
+    "ARU_candidate_registry": "docs/alpha-research-universe-01/05_ALPHA_MECHANISM_CANDIDATES.json#ARC-03",
+    "ARU_research_queue": "docs/alpha-research-universe-01/09_NEXT_RESEARCH_QUEUE.json#rank-3",
+    "ARU_collision_matrix": "docs/alpha-research-universe-01/04_FAILED_MEMORY_COLLISION_MATRIX.json#ARC-03",
+    "failed_research_memory": "docs/external-audit-01/FAILED_RESEARCH_MEMORY.md",
+    "mechanism_authority": "docs/arc03-data-authority-01/ARC03_MECHANISM_AUTHORITY.md",
+    "data_authority": "docs/arc03-data-authority-01/ARC03_DATA_AUTHORITY.json"
+  },
+
+  "market": {
+    "venue": "Binance",
+    "segment": "USD-M futures (USDT-margined perpetual)",
+    "instrument_type": "perpetual_swap",
+    "quote_currency": "USDT",
+    "assets": ["BTCUSDT", "ETHUSDT", "SOLUSDT"],
+    "asset_selection_rule": "All three assets of the frozen ARC universe are traded. No asset may be removed using outcome information after execution begins.",
+    "funding_schedule": "provider-native per certified funding row (BTCUSDT/ETHUSDT 8h nominal at 00:00/08:00/16:00 UTC; SOLUSDT 2022-11 historic 2h/4h rows honoured from funding_interval_hours, never assumed 8h)"
+  },
+
+  "data_authority": {
+    "authority_commit": "8668a3174234255b1b1f27a7bf04b8f022af68bb",
+    "family": "binance_usdm_klines_5m",
+    "interval": "5m",
+    "bar_ms": 300000,
+    "dataset_sha256": "1a6ad11712ce436ce9d413d6b53162d66996778cd98643ef7c3eb746a54745ef",
+    "raw_files_sha256": "abfe8caee35ff441d71127430a8547eba98e54a7a722681db908565b720996a9",
+    "partition_sha256": {
+      "BTCUSDT": "eb75ab97881fd941c05d1b188778f1a832ab404c59f5991eff12ead779e4ab02",
+      "ETHUSDT": "24c886902760b2e2c873df7721c12098e65b768762f55e2144d990deac04c211",
+      "SOLUSDT": "d872bc7dc8a52eb697962516fbd24a636483acd43e524cdbbf09985d2720f548"
+    },
+    "asset_fingerprint_sha256": {
+      "BTCUSDT": "f0a1a23636ffe2578199ea9ea49ca7ec71e6678bf3e1dd554812d6a349ff2ddb",
+      "ETHUSDT": "e0b0dfb2c3655952567012a9fbcad838240e3c0cad278823afd604dc9348fbd2",
+      "SOLUSDT": "b2117ee640db2bcaeda7f6f6bd0b5d1472758952d0cf45c9fca3a2ccbe8d1641"
+    },
+    "normalized_root": "data/processed/arc03_klines_5m/{ASSET}.jsonl",
+    "raw_root": "data/raw/binance_um/arc03/{ASSET}/{YYYY-MM}/",
+    "reader": "src/trading_bot/research/arc03/arc03_authority.py",
+    "reader_fields_read": ["t", "ct", "o", "h", "l", "c", "v"],
+    "reader_fields_unused": {
+      "qv": "OPTIONAL_RESEARCH_ONLY (quote volume) - not read by the signal",
+      "n": "OPTIONAL_RESEARCH_ONLY (trade count) - not read by the signal",
+      "tb": "OPTIONAL_RESEARCH_ONLY (taker buy base volume) - H5 territory, deliberately never read",
+      "tq": "OPTIONAL_RESEARCH_ONLY (taker buy quote volume) - deliberately never read"
+    },
+    "unadmitted_fields_forbidden": [
+      "taker_buy_base_volume_as_signal",
+      "taker_buy_quote_volume_as_signal",
+      "number_of_trades_as_signal",
+      "quote_volume_as_signal",
+      "provider_field_12_ignore",
+      "any_open_interest_field",
+      "any_funding_field_as_signal",
+      "any_cross_asset_or_index_field",
+      "any_liquidation_feed",
+      "any_orderbook_depth",
+      "okx_bybit_or_third_party_reconstruction"
+    ],
+    "signal_uses_only": ["base_unit_volume", "open", "high", "low", "close"],
+    "funding_authority": {
+      "classification": "RUNTIME_AUTHORITATIVE (reuse, byte-verified)",
+      "role": "CASHFLOW LEG ONLY - never a signal input",
+      "root": "data/processed/arc03_funding/{ASSET}_funding.jsonl",
+      "reader": "src/trading_bot/research/arc03/arc03_funding.py",
+      "reused_from": "ARC-01 data authority (independently verified)",
+      "arc01_funding_dataset_sha256": "5f4845f5062e68353ef421b9687bf728a56693951e2f74e17221a8e3373b62ec",
+      "partition_sha256": {
+        "BTCUSDT": "700b0c4c7e5ffa9dbe82cd84e98be9f505bce6f1792d33d0eae88d07a7585855",
+        "ETHUSDT": "2edf501ea69807bbf67cdd519e53de18c8dea25ea8bdf009beb88ef2e2693943",
+        "SOLUSDT": "6b16d13f5115f906f9ceb4f5a418f7a541c37609e780cfbad0d52ed565808f85"
+      },
+      "identity_proof": "ARC03_FUNDING_REUSE_ASSESSMENT.json - the ARC-03 funding partitions are byte-identical (SHA256 equality) to the certified ARC-01 partitions, so reuse is proved rather than asserted",
+      "timestamp_semantics": "funding_time_ms == availability_time_ms == settlement_time_ms; funding is knowable exactly at settlement; next_funding_time_ms is derived and IS NOT an observation",
+      "interval_field": "funding_interval_hours (read per row)",
+      "quality": "PASS (0 missing settlements, 0 conflicting duplicates, 0 non-finite, strictly monotonic)"
+    }
+  },
+
+  "common_window": {
+    "derivation": "INTERSECTION of the admitted 5m participation partitions of all three assets on 5m bar-OPEN times (latest first open, earliest last open)",
+    "start_utc": "2020-09-14T07:00:00Z",
+    "start_ms": 1600066800000,
+    "end_utc": "2026-08-31T23:55:00Z",
+    "end_ms": 1788220500000,
+    "bound_semantics": "CLOSED interval on 5m bar-OPEN times: bar_open_time_ms in [start_ms, end_ms]. A bar spans [open_time_ms, close_time_ms].",
+    "per_asset_first_open_ms": {"BTCUSDT": 1577836800000, "ETHUSDT": 1577836800000, "SOLUSDT": 1600066800000},
+    "per_asset_last_open_ms": {"BTCUSDT": 1788220500000, "ETHUSDT": 1788220500000, "SOLUSDT": 1788220500000},
+    "no_observation_outside_window": true,
+    "engineering_closure_required": {
+      "signal_at_the_final_bars": "A decision whose exit anchor (entry_open_time_ms + 12 * 300000) would exceed end_ms is NOT emitted (NO_SIGNAL / INSUFFICIENT_FORWARD_PRICE_DATA). The last 60 minutes of the window therefore produce no trades; this is a deliberate, frozen truncation guard, not a data defect."
+    }
+  },
+
+  "decision_cadence": {
+    "cadence": "ONE decision per COMPLETED 5m bar, per asset (the signal is a property of a single completed 5m bar)",
+    "decision_time_definition": "decision_time_ms = close_time_ms of the signal bar (provider field 6, epoch ms) - the bar is never read before it closes",
+    "informational_justification": "every signal component (volume record, range record, exhaustion geometry) is a property of exactly one 5m bar, so the bar's close is the first instant at which the complete signal is knowable. Evaluating on a coarser grid would skip signal bars without new information; evaluating on a finer grid is impossible because the provider cadence is 5m.",
+    "eligible_participation_window": "only COMPLETED bars: bar_close_time_ms <= decision_time_ms; the forming bar is invisible",
+    "eligible_reference_window": "the 30 same-5m-slot daily references {decision_bar_open_time_ms - 86400000*j : j = 1..30}, each trivially satisfying data_time <= decision_time_ms",
+    "decision_must_lie_in_common_window": "the signal bar's open_time_ms in [start_ms, end_ms] and its close_time_ms <= end_ms",
+    "runtime_defaults": "NONE: no hidden default cadence, no calendar fallback; the cadence is exactly the set of completed 5m bars of each asset's admitted partition"
+  },
+
+  "participation_shock": {
+    "name": "SAME_SLOT_DAILY_PARTICIPATION_RECORD",
+    "type": "SAME_TIME_OF_DAY_RECORD (100th percentile of a 30-sample same-slot reference set)",
+    "field": "v",
+    "field_definition": "base-unit traded volume of the completed 5m bar (provider kline field 5)",
+    "rationale": "the ARU fixes the test shape as 'fixed abnormal-volume percentile'. Comparing a 5m bar against the SAME 5m time-of-day slot on each of the previous 30 calendar days removes the dominant source of spurious 'abnormal' crypto volume (the intraday activity cycle), so a record is genuinely abnormal rather than merely seasonal. Requiring strictly more than ALL 30 references is the 100th percentile of the seasonality-controlled reference set - an event, not a level - and is parameter-free: no scale estimator, no z-score, no smoothing constant is chosen.",
+    "lookback": {
+      "type": "SAME_SLOT_DAILY_TRAILING",
+      "length_days": 30,
+      "reference_slots": "decision_bar_open_time_ms - 86400000 * j for j = 1..30 (same 5m time-of-day slot, same calendar day offset)",
+      "day_ms": 86400000,
+      "strictly_trailing": true,
+      "centered_or_forward_windows": "FORBIDDEN",
+      "no_backfill_no_interpolation": true,
+      "no_location_scale_estimator": "NONE required - the rule is an order statistic of the reference set, not a standardized deviation"
+    },
+    "minimum_observations": 30,
+    "minimum_observations_detail": "ALL 30 same-slot references must be present. A single missing reference fails the decision closed with REFERENCE_HISTORY_INCOMPLETE; no partial-window admission, no synthesis, no shrinkage toward a shorter window.",
+    "threshold": {
+      "type": "STRICT_MAXIMUM_OF_REFERENCE_SET",
+      "statistic": "max(reference volumes)",
+      "inequality": "STRICT_GREATER_THAN (v(t) > max(v(refs)))",
+      "unit": "base-asset volume",
+      "explicit": true,
+      "magnitude_gate": "NONE (the record IS the extreme; no additional percentage floor is invented)"
+    },
+    "participation_shock_definition": "PARTICIPATION_SHOCK(t) <=> v(t) > max{ v(t - 86400000*j) : j = 1..30 }",
+    "zero_scale_behavior": "NOT APPLICABLE - this rule has no scale parameter. The degenerate case is instead: if the reference maximum is 0 (a fully dead reference set) then no bar can record a strict participation record, and the decision fails closed with NO_PARTICIPATION_SHOCK.",
+    "non_finite_behavior": "a non-finite volume or reference volume fails the decision closed; the data authority already rejects non-finite rows, so this is a defence in depth"
+  },
+
+  "reversal_condition": {
+    "name": "DISPROPORTIONATE_EXCURSION_WITH_MAJORITY_RETRACEMENT",
+    "components": ["EXCURSION_RECORD", "EXHAUSTION"],
+    "why_this_identifies_transient_and_not_informational_participation": "persistent information moves price and KEEPS it. The condition therefore has two parts: (1) the bar's own excursion must itself be a record against the same 30 same-slot references, so the price response was disproportionate to normal behaviour, and (2) the bar must close against its own push having given back strictly more than half of that excursion, so the flow was absorbed rather than followed. If the information were persistent, the second test would filter the bar out. Neither component reads any future data.",
+    "excursion_record": {
+      "definition": "range(t) = high(t) - low(t) > max{ high(t - 86400000*j) - low(t - 86400000*j) : j = 1..30 }",
+      "reference_set": "the SAME 30 same-5m-slot references as the participation shock (one reference set, used twice)",
+      "inequality": "STRICT_GREATER_THAN",
+      "rationale": "the ARU sentence is 'liquidity-taker overshoot after abnormal participation'. The overshoot is the excursion; requiring it to be a same-slot record is what makes it disproportionate rather than merely present.",
+      "minimum_observations": 30
+    },
+    "exhaustion": {
+      "body_definition": "body = close(t) - open(t)",
+      "up_push_rejected": "body(t) > 0 AND (high(t) - close(t)) > range(t) / 2",
+      "down_push_rejected": "body(t) < 0 AND (close(t) - low(t)) > range(t) / 2",
+      "retracement_fraction_definition": "for body > 0: wick_fraction = (high - close) / range; for body < 0: wick_fraction = (close - low) / range",
+      "threshold": 0.5,
+      "inequality": "STRICT_GREATER_THAN (exactly half is NOT exhaustion)",
+      "rationale": "strict majority retracement of the excursion is the minimal, scale-free statement of 'the push failed to hold'. 0.5 is the mechanism's natural boundary (more than half given back), not a tuned parameter.",
+      "degenerate_behavior": "range(t) <= 0 OR body(t) == 0 => NO_EXHAUSTION (fail closed)",
+      "direction_semantics": "contrarian to the rejected push: up-push rejected => SHORT; down-push rejected => LONG",
+      "directional_semantics_frozen_before_observation": true
+    }
+  },
+
+  "price_context": {
+    "PRICE_CONTEXT": "NONE",
+    "clarification": "OHLC is not an extra 'filter' here: open/high/low/close ARE the frozen definition of the excursion and the exhaustion retracement. No additional price filter is applied on top of the definition.",
+    "required_price_features": ["open", "high", "low", "close"],
+    "required_price_features_role": "definitional_only",
+    "explicitly_absent": [
+      "trend filter",
+      "momentum filter",
+      "volatility/ATR filter",
+      "breakout level",
+      "moving averages",
+      "RSI",
+      "candle-pattern names",
+      "higher-timeframe regime label",
+      "any cross-asset or index input",
+      "any open-interest input",
+      "any funding input as a signal"
+    ],
+    "justification": "the hypothesis is a participation-shock reversal claim whose signal is fully determined by the signal bar and its 30 same-slot references. Adding a price state filter would import the OHLCV-family information the FAILED_RESEARCH_MEMORY record already refutes, turn ARC-03 into a generic mean-reversion hybrid, and add an unforced selection surface. No filter was added to make the hypothesis look more selective."
+  },
+
+  "signal_rules": {
+    "SHORT_RULE": "PARTICIPATION_SHOCK(t) AND EXCURSION_RECORD(t) AND body(t) > 0 AND (high(t) - close(t)) > range(t)/2  => SHORT",
+    "LONG_RULE": "PARTICIPATION_SHOCK(t) AND EXCURSION_RECORD(t) AND body(t) < 0 AND (close(t) - low(t)) > range(t)/2  => LONG",
+    "NO_SIGNAL_RULE": "every decision that is not exactly one of the two rules above is NO_SIGNAL; NO_SIGNAL is a first-class outcome, is counted and reported in the decision funnel, and is never re-interpreted as a trade",
+    "direction_semantics": "CONTRARIAN to the rejected push (the aggressive side that failed to hold the extreme is offside)",
+    "mutual_exclusivity": "body(t) > 0 and body(t) < 0 are mutually exclusive, so at most one direction rule can match",
+    "no_discretionary_interpretation": true,
+    "deterministic_no_signal_precedence": [
+      "OUTSIDE_COMMON_WINDOW",
+      "REFERENCE_HISTORY_INCOMPLETE",
+      "NO_PARTICIPATION_SHOCK",
+      "NO_EXCURSION_RECORD",
+      "NO_EXHAUSTION",
+      "POSITION_ALREADY_OPEN",
+      "INSUFFICIENT_FORWARD_PRICE_DATA"
+    ],
+    "reason_code_rule": "the FIRST satisfied reason in the frozen order above is recorded for the decision; a signal is emitted only when NO reason applies. Multiple simultaneous failures therefore resolve deterministically.",
+    "insufficient_history": "fewer than 30 same-slot reference observations present => NO_SIGNAL / REFERENCE_HISTORY_INCOMPLETE",
+    "zero_or_degenerate_scale": "not applicable (no scale estimator); a zero reference maximum yields NO_PARTICIPATION_SHOCK",
+    "participation_not_extreme": "v(t) <= max(reference volumes) => NO_SIGNAL / NO_PARTICIPATION_SHOCK",
+    "no_excursion_record": "range(t) <= max(reference ranges) => NO_SIGNAL / NO_EXCURSION_RECORD",
+    "no_exhaustion": "range(t) <= 0, or body(t) == 0, or the retracement is not strictly more than half of the range => NO_SIGNAL / NO_EXHAUSTION",
+    "conflicting_conditions": "there are no conflicting conditions by construction; if the frozen precedence finds no reason but no direction rule matches, the decision is NO_SIGNAL / NO_EXHAUSTION (fail-closed, never a trade)",
+    "stale_data": "the rule reads only the signal bar and its trailing same-slot references, all of which are completed bars; there is no staleness window to violate. A missing reference is handled as missing_data.",
+    "missing_data": "any required input absent => NO_SIGNAL (fail-closed); NO interpolation, NO forward-fill, NO synthetic substitution"
+  },
+
+  "entry": {
+    "anchor": "NEXT 5M BAR OPEN",
+    "definition": "the first 5m bar with bar_open_time_ms > decision_time_ms; entry_price = that bar's open; entry_time_ms = that bar's open_time_ms",
+    "causality": "entry_time_ms > decision_time_ms >= every data_time used; SAME-BAR ENTRY AND SAME-BAR LOOK-AHEAD ARE FORBIDDEN",
+    "worked_example": "decision_time_ms = close of bar opening at T (T + 299999). The first bar with open_time > decision_time is the bar opening at T + 300000, so entry is at the OPEN of the NEXT 5m bar. Entry at the signal bar itself is impossible by construction.",
+    "no_decision_on_incomplete_bar": "only completed bars (bar_close_time_ms <= decision_time_ms) inform the decision; the entry bar itself is never read for the decision",
+    "fills": "single deterministic fill at the bar OPEN price of the entry bar; no intrabar fill model, no slippage model beyond the frozen cost model",
+    "entry_bar_must_be_inside_window": "entry bar_open_time_ms in [start_ms, end_ms]"
+  },
+
+  "exit": {
+    "anchor": "5M BAR OPEN AT entry_open_time_ms + 12 * 300000",
+    "definition": "exit bar has bar_open_time_ms = entry_bar_open_time_ms + 3600000; exit_price = that bar's open; exit_time_ms = that bar's open_time_ms",
+    "holding_period": {
+      "PRIMARY_HOLDING_PERIOD": "exactly 60 minutes",
+      "holding_bars": 12,
+      "holding_ms": 3600000,
+      "alternate_primary_horizons": "NONE (multiple primary horizons are forbidden; alternatives belong to the frozen robustness plan only)",
+      "selection_basis": "the mechanism is short-horizon flow absorption: the participants who failed to hold the extreme must be given the chance to be stopped/trapped, but the effect is by construction transient. One hour spans 12 completed 5m bars, i.e. a horizon long enough for the reversion to express itself and short enough that the signal is not contaminated by the next regime; it is the coarsest horizon that the 5m decision cadence supports without re-labeling the hypothesis as a trend trade. Chosen from the participation/exhaustion mechanism and the 5m cadence, NOT from returns.",
+      "crosses_funding_settlements": true
+    },
+    "exit_is_unconditional": true,
+    "early_exit": "NONE",
+    "signal_invalidation_exit": "NONE",
+    "take_profit": "NONE",
+    "stop_loss": "NONE (see position_policies.STOP)",
+    "insufficient_forward_price_data": "if the exit bar's open time would exceed end_ms, or the partition has no bar at exactly entry_open_time_ms + 3600000, the candidate signal is NOT emitted (NO_SIGNAL / INSUFFICIENT_FORWARD_PRICE_DATA). Positions are never truncated, marked at an ad-hoc price, or dropped ex post."
+  },
+
+  "position_policies": {
+    "STOP": "NONE",
+    "COOLDOWN": "NONE",
+    "OVERLAPPING_SIGNAL_POLICY": "SKIP (a new signal for an asset already holding an open position is DISCARDED, not queued and not pyramided)",
+    "SAME_ASSET_REENTRY_POLICY": "re-entry is allowed only after the previous position's exit_time_ms has been reached; the earliest possible re-entry is the next signal whose entry_time_ms >= the previous exit_time_ms",
+    "MULTI_ASSET_SIMULTANEOUS_POLICY": "assets are INDEPENDENT and may hold simultaneous positions; at most ONE concurrent position per asset and at most THREE concurrent positions overall (one per asset); no cross-asset netting, no cross-asset risk overlay at discovery time",
+    "position_sizing": "equal notional per position in return space: each trade is evaluated as a UNIT-notional return (no compounding, no volatility targeting, no leverage overlay); portfolio aggregation is the equal-weighted mean of trade returns",
+    "no_runtime_defaults": true
+  },
+
+  "return_definition": {
+    "direction_sign": "+1 for LONG, -1 for SHORT",
+    "gross_trade_return": "direction_sign * (exit_price / entry_price - 1)",
+    "funding_cashflow_return": "sum over certified funding settlements with entry_time_ms < funding_time_ms <= exit_time_ms of (-direction_sign * funding_rate)",
+    "cost_return": "COST_BPS / 10000 applied once per round trip",
+    "net_trade_return": "gross_trade_return + funding_cashflow_return - cost_return",
+    "net_trade_return_ex_funding": "gross_trade_return - cost_return",
+    "accounting_identity": "NET = GROSS + FUNDING - COST",
+    "reporting_requirement": "BOTH net_trade_return and net_trade_return_ex_funding must be reported per trade and in aggregate; the two must never be conflated"
+  },
+
+  "cost_model": {
+    "PRIMARY_ROUND_TRIP_COST_BPS": 10,
+    "definition": "10 bps is the TOTAL modeled round-trip trading friction (single canonical number; not decomposed into per-side fees/slippage)",
+    "cost_sensitivities_bps": [0, 10, 20, 40],
+    "sensitivity_role": "FROZEN evaluation scenarios / diagnostics, NOT optimization choices; the primary critical gates are evaluated at 10 bps",
+    "frozen_before_discovery": true,
+    "gross_reporting_required": true,
+    "purpose": "distinguish NO_GROSS_EDGE from EDGE_KILLED_BY_COSTS",
+    "same_trade_set_required": "the cost scenarios MUST NOT regenerate signals; all four scenarios are re-priced on the IDENTICAL trade set",
+    "funding_cashflow_is_not_a_cost": "funding cashflow is a separate real flow (see funding_cashflow_accounting) and is never netted into the 10 bps cost number"
+  },
+
+  "funding_cashflow_accounting": {
+    "signal_information_vs_execution_cashflow": "SEPARATED BY CONSTRUCTION: ARC-03 never reads a funding rate as a signal",
+    "signal_use": "NONE - funding is not a signal input for ARC-03",
+    "execution_use": "funding is used ONLY as CASHFLOW: certified settlements with entry_time_ms < funding_time_ms <= exit_time_ms",
+    "crosses_settlement": "YES - the frozen 60-minute holding period can and does straddle provider settlements (BTCUSDT/ETHUSDT settle every 8h, SOLUSDT ran a 2h/4h schedule in 2022-11). Roughly one in eight BTC/ETH entries of uniformly distributed phase contains a settlement, so deterministic accounting is required rather than optional.",
+    "cashflow_rule": "for each certified settlement in (entry_time_ms, exit_time_ms]: cashflow_return = -direction_sign * funding_rate",
+    "settlement_count_is_never_assumed": "the accounting iterates the ACTUAL certified settlements in the window and never assumes a fixed count such as 9 (an ARC-01 documentation defect this prereg deliberately avoids)",
+    "sign_convention": "LONG (direction_sign = +1) PAYS funding when funding_rate > 0 and RECEIVES when funding_rate < 0; SHORT (direction_sign = -1) RECEIVES when funding_rate > 0 and PAYS when funding_rate < 0 (Binance USD-M semantics)",
+    "boundary_semantics": "a settlement exactly at entry_time_ms is NOT charged (already in the entry price); a settlement exactly at exit_time_ms IS charged",
+    "notional_basis": "constant unit notional fixed at entry (funding applied to the entry notional, no intra-hold notional compounding)",
+    "notional_basis_limitation": "funding is charged on the real mark-to-market notional in production; using the entry notional is a deliberate, frozen, second-order simplification. Because settlement sizes are ~1e-4 of notional and at most one settlement falls inside a 60-minute hold, the relative deviation is O(1e-4) of the price leg.",
+    "no_synthesis": "the cashflow uses the SAME certified funding authority rows as any other consumer, read at their settlement instants; no reconstructed, interpolated or third-party funding series is allowed",
+    "no_double_counting": true,
+    "ex_funding_gate_independence": "G3 is computed from gross_trade_return - cost_return and therefore contains ZERO funding contribution; the freeze verifies that ARC-03 cannot pass merely by mechanically collecting funding carry"
+  },
+
+  "pit_rules": {
+    "bar_close_time_le_decision_time": true,
+    "reference_slots_le_decision_time": true,
+    "entry_time_strictly_after_decision_time": true,
+    "exit_anchor_causal": true,
+    "completed_windows_only": true,
+    "future_mutation_invariance": true,
+    "past_eligible_mutation_detectable": true,
+    "conflicting_duplicates_fail_closed": true,
+    "stale_missing_fails_closed": true,
+    "archive_validity_not_retroactive": true,
+    "contract_file": "docs/arc03-prereg-01/ARC03_PIT_CONTRACT.json",
+    "authority_file": "docs/arc03-data-authority-01/ARC03_PIT_AUTHORITY.json",
+    "status": "PASS"
+  },
+
+  "sample_rules": {
+    "minimum_reference_observations": 30,
+    "minimum_trades_total": 120,
+    "minimum_trades_per_asset": 40,
+    "insufficient_sample_policy": "if total eligible trades < 120, or any asset has < 40, the outcome is INSUFFICIENT_SAMPLE (terminal FAIL-class; no window extension, no threshold relaxation, no asset reselection to chase N)",
+    "minimum_N_chosen_before_results": true,
+    "no_filtering": "no trade may be silently dropped; the decision funnel accounts for every evaluated decision"
+  },
+
+  "controls": {
+    "control_plan_file": "docs/arc03-prereg-01/ARC03_CONTROL_PLAN.json",
+    "frozen": true,
+    "controls_are_not_alternate_strategies": true,
+    "controls_cannot_be_promoted": true,
+    "controls_cannot_change_primary_trade_set": true,
+    "control_passes_all_critical_gates_consequence": "MECHANISM_NOT_IDENTIFIED => ARC03 = DISCOVERY_FAIL (terminal). No retuning of the primary based on control results is permitted."
+  },
+
+  "statistical_gates": {
+    "gates_file": "docs/arc03-prereg-01/ARC03_STATISTICAL_GATES.json",
+    "frozen": true,
+    "primary_cost_bps": 10,
+    "no_single_metric_sufficient": true,
+    "all_conventions_explicitly_bound": true
+  },
+
+  "robustness_plan": {
+    "plan_file": "docs/arc03-prereg-01/ARC03_ROBUSTNESS_PLAN.json",
+    "frozen": true,
+    "executed_now": false,
+    "runs_only_if_primary_discovery_passes": true,
+    "primary_parameters_immutable": true,
+    "robustness_cannot_select_a_better_parameter_set": true
+  },
+
+  "orthogonality": {
+    "comparators": [
+      "H5_ORDERFLOW_IMBALANCE",
+      "H6_OI_CONFIRMED_CONTINUATION",
+      "ARC-01_FUNDING_CROWDING_UNWIND",
+      "ARC-02_BTC_TO_ALT_LEAD_LAG",
+      "H1_REGIME_TRANSITION",
+      "H3_BTC_ETH_RELATIVE_VALUE"
+    ],
+    "aru_collision_class": {"H1": "LOW", "H3": "LOW", "H5": "MEDIUM", "H6": "LOW"},
+    "aru_kill_rule": "net<=0 or collision with H5",
+    "stage_ordering": "PRIMARY DISCOVERY FIRST. Orthogonality is a later authorized promotion/robustness stage and is NOT executed at primary discovery. Primary discovery remains performance-blind.",
+    "max_abs_daily_pnl_correlation": 0.5,
+    "max_trade_time_jaccard_overlap": 0.5,
+    "structural_orthogonality_already_frozen": "ARC-03 is AGAINST the failing push on 5m bars using base-unit volume only; H5 is WITH the aggressive flow on 1h bars using taker-side order-flow imbalance, so the two are opposite-signed on any shared window and never read the same field.",
+    "rule": "ARC-03 parameters, direction and thresholds MUST NOT be altered in response to an orthogonality or performance result; failing the H5 collision check is a FAIL-class outcome for ARC-03 (per the ARU kill rule), not a redesign prompt",
+    "post_hoc_lead_rule": "any sub-population that looks profitable while the primary fails is POST_HOC_LEAD_ONLY: it may never be promoted, and re-testing it requires a NEW_HYPOTHESIS_ID and a NEW_PREREGISTRATION"
+  },
+
+  "kill_rule": {
+    "ONE_PREREGISTRATION_ONE_PRIMARY_DISCOVERY": true,
+    "on_critical_gate_failure": "ARC03 = DISCOVERY_FAIL (terminal)",
+    "on_control_passing_all_gates": "ARC03 = DISCOVERY_FAIL (mechanism not identified)",
+    "forbidden_after_failure": [
+      "threshold retuning",
+      "lookback retuning",
+      "holding-period retuning",
+      "asset deletion",
+      "rerun under the same hypothesis_id"
+    ],
+    "future_variant_requires": ["NEW_HYPOTHESIS_ID", "NEW_PREREGISTRATION"]
+  },
+
+  "forbidden_until_discovery_authorized": [
+    "economic backtest on real data",
+    "signal generation on real data for economic purposes",
+    "computing returns, PnL, Sharpe, Sortino, profit factor, expectancy or win rate on real data",
+    "parameter sweep",
+    "threshold optimization",
+    "lookback optimization",
+    "holding-period optimization",
+    "best-regime selection",
+    "performance-by-asset inspection",
+    "signal-return correlation",
+    "future outcome labelling",
+    "reading any metric that could influence an economic parameter choice"
+  ],
+
+  "experiment_invalidation": "spec/manifest hash drift, dataset fingerprint drift, data-authority drift, cadence drift, or ANY economic execution before this prereg commit is independently verified => experiment invalid",
+  "limitations": [
+    "The rule is parameter-free by construction, so there is no threshold/lookback/scale to tune - the principal remaining specification risk is the 30-day same-slot reference length, which is frozen ex ante from the seasonality argument and tested only in the frozen robustness plan (never used to move the primary).",
+    "Common window starts 2020-09-14 (SOLUSDT admission), so the earlier BTCUSDT/ETHUSDT history is deliberately outside the evaluated window.",
+    "SOLUSDT 2022-02 and 2022-04 have provider archive gaps that were filled from official daily archives; the affected months are disclosed in ARC03_DATA_QUALITY_LEDGER.jsonl.",
+    "The last 60 minutes of the common window yields no trades (frozen forward-data guard).",
+    "Funding cashflow is charged on the entry notional (frozen O(1e-4) simplification).",
+    "A 60-minute hold produces many short-lived positions; the primary gates use equal-weighted trade aggregation with no portfolio-level risk overlay at discovery time.",
+    "No critical gate covers drawdown; drawdown is a diagnostic output only (see ARC03_PREREGISTRATION.md, 'Limitations').",
+    "N is a discovery-time unknown; INSUFFICIENT_SAMPLE is a possible terminal outcome.",
+    "The H5 collision check required by the ARU kill rule cannot be evaluated at the primary discovery stage without contaminating it, so it is frozen as an immediately following authorized gate rather than a discovery gate."
+  ]
+}

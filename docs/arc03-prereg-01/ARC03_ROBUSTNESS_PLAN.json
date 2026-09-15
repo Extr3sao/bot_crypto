@@ -1,0 +1,105 @@
+{
+  "schema": "ARC03_ROBUSTNESS_PLAN/1.0.0",
+  "checkpoint": "ARC03-PREREG-001",
+  "hypothesis_id": "ARC-03-PARTICIPATION-SHOCK-REVERSAL-01",
+  "frozen": true,
+  "frozen_before_discovery": true,
+  "executed_now": false,
+  "precondition": "runs ONLY if the primary discovery returns DISCOVERY_PASS (all critical gates pass and no control satisfies all gates)",
+  "primary_parameters_immutable": true,
+
+  "hard_rules": {
+    "robustness_cannot_select_a_better_parameter_set": true,
+    "the_primary_is_always_30_days_and_12_bars": true,
+    "no_cell_of_any_neighbourhood_may_replace_the_primary": true,
+    "no_variant_may_be_promoted_from_robustness": true,
+    "a_passing_neighbourhood_cell_while_the_primary_fails_is": "POST_HOC_LEAD_ONLY - it may never be promoted and requires a NEW_HYPOTHESIS_ID and a NEW_PREREGISTRATION to be tested as anything other than a robustness diagnostic",
+    "robustness_results_cannot_reopen_the_primary_gates": true,
+    "no_new_statistical_gate_may_be_introduced_at_robustness": true,
+    "all_neighbourhood_cells_are_reported_in_full": "including failing cells; no cherry-picking"
+  },
+
+  "neighbourhoods": {
+    "participation_reference_length_days": {
+      "primary": 30,
+      "grid": [10, 20, 30, 60],
+      "role": "stability diagnostic only",
+      "rationale": "the 30-day same-slot reference is the only length-like constant in the hypothesis; the grid probes whether the result is an artifact of exactly 30 days. It may not be used to pick a different reference length."
+    },
+    "holding_bars": {
+      "primary": 12,
+      "grid": [6, 12, 24, 36],
+      "holding_minutes": [30, 60, 120, 180],
+      "role": "stability diagnostic only",
+      "rationale": "the mechanism asserts a transient reversal; the grid probes whether the effect is confined to a narrow horizon. It may not be used to pick a different holding period."
+    },
+    "cost_curve_bps": {
+      "scenarios": [0, 10, 20, 40],
+      "primary": 10,
+      "role": "diagnostic; already reported at discovery via G11",
+      "trade_set": "IDENTICAL to the primary; cost scenarios never regenerate signals"
+    }
+  },
+
+  "stability_analyses": [
+    {
+      "id": "R1_TIME_SPLITS",
+      "definition": "mean net return by (a) chronological halves, (b) chronological quartiles, (c) UTC calendar year",
+      "convention": "identical equal-count chronology to ARC03_STATISTICAL_GATES.json.temporal_split; the calendar-year split is calendar-based and reported additionally",
+      "pass_interest": "sign consistency, not a new threshold"
+    },
+    {
+      "id": "R2_ASSET_SPLITS",
+      "definition": "per-asset mean net return plus a leave-one-asset-out portfolio for each of BTCUSDT, ETHUSDT, SOLUSDT",
+      "convention": "equal-weighted mean of the remaining assets' trade returns",
+      "pass_interest": "no single asset may be solely responsible for a passing result; note this is a diagnostic, not a gate (G9 is the frozen gate)"
+    },
+    {
+      "id": "R3_REGIME_SPLITS",
+      "definition": "terciles of the causal 30-day trailing realized volatility measured strictly BEFORE the decision: for signal bar t, vol_ref(t) = sum over j = 1..30 of (high(t - 86400000*j) - low(t - 86400000*j)); terciles computed on the pooled pre-decision distribution of vol_ref",
+      "causality": "vol_ref uses only bars strictly older than the signal bar, so no future information enters the regime label",
+      "pass_interest": "sign consistency across terciles"
+    },
+    {
+      "id": "R4_CONCENTRATION",
+      "definition": "asset / month / single-trade concentration shares recomputed on the neighbourhood cells and on the leave-one-out portfolios",
+      "convention": "identical to ARC03_STATISTICAL_GATES.json.concentration_attribution (UTC entry-month attribution)"
+    },
+    {
+      "id": "R5_PARAMETER_STABILITY_SURFACE",
+      "definition": "the full 4 (reference days) x 4 (holding bars) x 4 (cost) surface reported as a complete matrix plus the 4 x 4 matrix at the primary cost",
+      "reporting_requirement": "the ENTIRE surface is persisted, seeds and conventions included, so no cell can be selectively quoted",
+      "interpretation_rule": "the surface informs confidence in the frozen primary; it can never redefine it"
+    },
+    {
+      "id": "R6_LEAVE_ONE_OUT",
+      "definition": "recompute the primary result with each single asset removed and with each single calendar year removed",
+      "purpose": "expose dependence on one asset or one era",
+      "promotion_rule": "FORBIDDEN - a leave-one-out result may never become the production hypothesis"
+    }
+  ],
+
+  "oos": {
+    "status": "NOT_FROZEN_HERE",
+    "reason": "the ARC-03 dataset is a single certified 5m authority over one common causal window; a held-out out-of-sample period cannot be frozen without splitting the discovery window, which would change the primary trade set. The out-of-sample requirement is therefore deferred to the authorized ARC03_ROBUSTNESS_OOS_01 stage, where a walk-forward protocol must be frozen BEFORE execution and all primary parameters remain at their frozen values.",
+    "forbidden": "no OOS protocol may be designed after observing the primary result in a way that selects the split, the parameters or the assets"
+  },
+
+  "orthogonality_stage": {
+    "stage": "ARC03_ROBUSTNESS_OOS_01 (authorized only after DISCOVERY_PASS)",
+    "comparators": ["H5_ORDERFLOW_IMBALANCE", "H6_OI_CONFIRMED_CONTINUATION", "ARC-01_FUNDING_CROWDING_UNWIND", "ARC-02_BTC_TO_ALT_LEAD_LAG"],
+    "metric": "max |correlation of daily net PnL| and max trade-time Jaccard overlap",
+    "thresholds": {"max_abs_daily_pnl_correlation": 0.5, "max_trade_time_jaccard_overlap": 0.5},
+    "aru_kill_rule_binding": "the ARU kill rule names a collision with H5 explicitly; failing the H5 check is a FAIL-class outcome for ARC-03, not a redesign prompt",
+    "arc03_parameters_must_remain_frozen": true
+  },
+
+  "reporting_artifacts_when_executed": [
+    "ARC03_ROBUSTNESS_RESULT.json",
+    "ARC03_ROBUSTNESS_RESULT.md",
+    "ARC03_PARAMETER_SURFACE.json",
+    "ARC03_OOS_PROTOCOL.json"
+  ],
+
+  "CRITICAL_ROBUSTNESS_SPEC_INCOMPLETENESS": false
+}

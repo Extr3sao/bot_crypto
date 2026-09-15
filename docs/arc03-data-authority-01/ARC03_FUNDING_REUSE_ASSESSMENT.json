@@ -1,0 +1,85 @@
+{
+  "schema": "ARC03_FUNDING_REUSE_ASSESSMENT/1.0.0",
+  "checkpoint": "ARC03-DATA-005",
+  "question": "ARC-03's frozen 60-minute holding period can straddle a provider funding settlement, so a deterministic funding CASHFLOW leg is required. Does the repository already hold a certified authority for it, and is it reusable without re-downloading or re-deriving anything?",
+  "answer": "YES - the independently verified ARC-01 funding authority is reused byte-for-byte. No funding bytes were downloaded or re-derived for ARC-03.",
+
+  "why_funding_is_required": {
+    "holding_period_minutes": 60,
+    "btc_eth_settlement_spacing_hours": 8,
+    "sol_settlement_spacing": "8h nominal with a documented 2h/4h regime during 2022",
+    "consequence": "roughly one in eight entries of uniformly distributed phase contains at least one settlement inside (entry_time, exit_time]; ignoring the flow would systematically misstate net performance for those trades",
+    "role": "CASHFLOW LEG ONLY - funding is never an ARC-03 signal input"
+  },
+
+  "reused_authority": {
+    "source_worktree": ".research/arc01-data-authority-01",
+    "source_root": "data/processed/arc01_funding",
+    "source_manifest": "ARC01_FUNDING_MANIFEST.json",
+    "source_authority_status": "independently verified (ARC01-PREREG-VERIFY-001) and executed against (ARC01_PRIMARY_DISCOVERY_01)",
+    "arc01_funding_dataset_sha256": "5f4845f5062e68353ef421b9687bf728a56693951e2f74e17221a8e3373b62ec",
+    "arc01_partition_sha256": {
+      "BTCUSDT": "700b0c4c7e5ffa9dbe82cd84e98be9f505bce6f1792d33d0eae88d07a7585855",
+      "ETHUSDT": "2edf501ea69807bbf67cdd519e53de18c8dea25ea8bdf009beb88ef2e2693943",
+      "SOLUSDT": "6b16d13f5115f906f9ceb4f5a418f7a541c37609e780cfbad0d52ed565808f85"
+    }
+  },
+
+  "arc03_destination": {
+    "root": "data/processed/arc03_funding",
+    "reader": "src/trading_bot/research/arc03/arc03_funding.py"
+  },
+
+  "identity_proof": {
+    "method": "SHA256 equality between the ARC-01 certified partitions and the ARC-03 partitions, recomputed in this worktree; no builder summary is trusted",
+    "observed_partition_sha256": {
+      "BTCUSDT": "700b0c4c7e5ffa9dbe82cd84e98be9f505bce6f1792d33d0eae88d07a7585855",
+      "ETHUSDT": "2edf501ea69807bbf67cdd519e53de18c8dea25ea8bdf009beb88ef2e2693943",
+      "SOLUSDT": "6b16d13f5115f906f9ceb4f5a418f7a541c37609e780cfbad0d52ed565808f85"
+    },
+    "byte_identity": true,
+    "recomputed_by_reader": "load_funding().matches_arc01_authority is asserted True for all three symbols as part of the data authority verification",
+    "classification": "REUSABLE",
+    "duplicate_dataset_created": false,
+    "reason": "a byte-identical copy of a certified authority, carrying an explicit provenance pointer and a recomputable identity check, is reuse. No new provider bytes were fetched and no alternative funding series was reconstructed."
+  },
+
+  "field_admission": {
+    "funding_time_ms": "REQUIRED (settlement instant)",
+    "availability_time_ms": "REQUIRED (informativeness anchor; == funding_time_ms)",
+    "settlement_time_ms": "REQUIRED (== funding_time_ms)",
+    "funding_rate": "REQUIRED (the cashflow rate)",
+    "funding_interval_hours": "REQUIRED (per-row cadence; a fixed 8h cadence is never assumed)",
+    "next_funding_time_ms": "REJECTED (derived provider field, not an observation)",
+    "rate_type": "PROVENANCE",
+    "funding_cap_floor": "UNADMITTED (not needed; no adjustment is applied to the certified rate)"
+  },
+
+  "quality": {
+    "missing_settlements": 0,
+    "conflicting_duplicates": 0,
+    "non_finite_values": 0,
+    "monotonic": true,
+    "rows": {"BTCUSDT": 7347, "ETHUSDT": 7347, "SOLUSDT": 6652},
+    "coverage_utc": ["2020-01-01T00:00:00Z", "2026-09-14T16:00:00Z"],
+    "covers_arc03_common_window": true
+  },
+
+  "boundary_semantics": {
+    "rule": "settlements with entry_time_ms < funding_time_ms <= exit_time_ms are charged",
+    "entry_instant_settlement": "NOT charged (already inside the entry price)",
+    "exit_instant_settlement": "charged",
+    "settlement_count_never_assumed": "the accounting iterates the actual certified rows in the window; no fixed count is hardcoded"
+  },
+
+  "sign_convention_verification": {
+    "binance_usdm_semantics": "funding_rate > 0 => LONG pays, SHORT receives",
+    "frozen_formula": "funding_cashflow_return = sum(-direction_sign * funding_rate)",
+    "derived_check": "LONG (direction_sign = +1) accrues -rate; SHORT (direction_sign = -1) accrues +rate",
+    "reconciliation_test": "a synthetic single-settlement trade at a positive rate yields a negative LONG leg and a positive SHORT leg of equal magnitude (verified in the prereg unit tests)"
+  },
+
+  "REUSE_VERDICT": "REUSABLE",
+  "ARC03_FUNDING_AUTHORITY": "PASS",
+  "ARC03_DATA_AUTHORITY_WITH_FUNDING": "PASS"
+}

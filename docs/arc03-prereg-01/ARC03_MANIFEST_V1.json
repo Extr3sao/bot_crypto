@@ -1,0 +1,161 @@
+{
+  "bound_data_authority_artifacts": {
+    "docs/arc03-data-authority-01/ARC03_CLEAN_WORKTREE_VERIFICATION.json": "5285b562e007c95f64fef033de5c3b661bcfbbab6b251d8cb1aa59ecdd50eb44",
+    "docs/arc03-data-authority-01/ARC03_COMMON_CAUSAL_WINDOW.json": "0a4f9ea59fe709056dbee68a8ac2d692c6235c6c7d8dce39b502da0d77a5e7c8",
+    "docs/arc03-data-authority-01/ARC03_DATASET_FINGERPRINT.json": "310a3716db5e575736e5816a83fa16cccffb98f1ce09184a7b5caa9ef6328b35",
+    "docs/arc03-data-authority-01/ARC03_DATA_AUTHORITY.json": "7eefec4f0e192ce5822efc636b4bc215d0aa318db1dd39a474a4a06857ea3a52",
+    "docs/arc03-data-authority-01/ARC03_DATA_DETERMINISM.json": "d4f9ffad916ec3d8d27be7efe4d2bc2a3af1789955556e8cbab23d967b83154a",
+    "docs/arc03-data-authority-01/ARC03_DATA_MANIFEST.json": "1a2d517310d20723bed709e9b71c2b3c41b6337728273de2483dead63abc8d6c",
+    "docs/arc03-data-authority-01/ARC03_EXISTING_DATA_REUSE_ASSESSMENT.json": "1e756c57001b6a6625d645b7c066edcb200da9fd04b3ea7d7bcb725a03e79e8f",
+    "docs/arc03-data-authority-01/ARC03_FUNDING_REUSE_ASSESSMENT.json": "5fcedf66c8f0b63c9c9f473c9a84414bb5420301616d8113bd99b1fe7c4cdb95",
+    "docs/arc03-data-authority-01/ARC03_MECHANISM_AUTHORITY.md": "6d473c3cc3c8db34979b094673dcd62d28733e8d705ff879626d6819b03fd4b3",
+    "docs/arc03-data-authority-01/ARC03_MUTATION_SENSITIVITY.json": "6111b7cc639cae6c0cb9e2d414e5f79da6dfe39b537be609649ca40bdfc6cf21",
+    "docs/arc03-data-authority-01/ARC03_PIT_AUTHORITY.json": "fda8da4f7e01505cb9c07df427a9c332ad9c49e1c747a510557faec8f39cb5f8",
+    "docs/arc03-data-authority-01/ARC03_PIT_INDEPENDENT_TESTS.json": "b6411ffe3ebac0d0dc62eccb1d62a8d12d745423625fbe1c9c58e1aa03072a7b",
+    "docs/arc03-data-authority-01/ARC03_PORTABLE_DATA_VERIFICATION.json": "607b900dcf3c676312c54a845ea69e17234d8ffd65ef9c4c6988a22dea81d0ed"
+  },
+  "bound_implementation": {
+    "src/trading_bot/research/arc03/arc03_authority.py": "23f241f4ccc94d38d8bbbd4946e7fc1fcd023e1e0bf3ecb22f53064eb5de8eca",
+    "src/trading_bot/research/arc03/arc03_funding.py": "433f3ed803e494f9bf9ea8ad37c1b7394252cac01bb6183cce3dc6260d01e92b",
+    "src/trading_bot/research/arc03/arc03_normalize.py": "216eedb5c80ba66ff6062da310c238a6b7bbcba399c6b1d60a72dd0f3a531de5",
+    "src/trading_bot/research/arc03/arc03_pit.py": "54ad993f5d433845275138e0e36001c703426fb3103d06d868de187968fd1a80",
+    "src/trading_bot/research/arc03/arc03_prereg_reference.py": "cf2069f48d6a876908eaadb4470d46eb5c43228251d55321b18701530ea62cdb"
+  },
+  "builder": "deepseek-v4-flash (DeepSeek)",
+  "builder_verifier_separation": {
+    "builder": "DeepSeek",
+    "builder_may_do": "BUILDER_CROSSCHECK",
+    "builder_may_not_claim": "INDEPENDENT_VERIFICATION",
+    "final_state": "PENDING_INDEPENDENT_PREREG_VERIFICATION"
+  },
+  "checkpoint": "ARC03-PREREG-001",
+  "common_window": {
+    "bound_semantics": "CLOSED interval on 5m bar-OPEN times: bar_open_time_ms in [start_ms, end_ms]",
+    "end_ms": 1788220500000,
+    "end_utc": "2026-08-31T23:55:00Z",
+    "start_ms": 1600066800000,
+    "start_utc": "2020-09-14T07:00:00Z"
+  },
+  "controls": [
+    "DIRECTION_CONTROL",
+    "TIMING_CONTROL",
+    "PARTICIPATION_CONTROL",
+    "NULL_CONTROL"
+  ],
+  "data_authority": {
+    "authority_commit": "8668a3174234255b1b1f27a7bf04b8f022af68bb",
+    "dataset_sha256": "1a6ad11712ce436ce9d413d6b53162d66996778cd98643ef7c3eb746a54745ef",
+    "family": "binance_usdm_klines_5m",
+    "funding_authority_dataset_sha256": "5f4845f5062e68353ef421b9687bf728a56693951e2f74e17221a8e3373b62ec",
+    "funding_partition_sha256": {
+      "BTCUSDT": "700b0c4c7e5ffa9dbe82cd84e98be9f505bce6f1792d33d0eae88d07a7585855",
+      "ETHUSDT": "2edf501ea69807bbf67cdd519e53de18c8dea25ea8bdf009beb88ef2e2693943",
+      "SOLUSDT": "6b16d13f5115f906f9ceb4f5a418f7a541c37609e780cfbad0d52ed565808f85"
+    },
+    "partition_sha256": {
+      "BTCUSDT": "eb75ab97881fd941c05d1b188778f1a832ab404c59f5991eff12ead779e4ab02",
+      "ETHUSDT": "24c886902760b2e2c873df7721c12098e65b768762f55e2144d990deac04c211",
+      "SOLUSDT": "d872bc7dc8a52eb697962516fbd24a636483acd43e524cdbbf09985d2720f548"
+    }
+  },
+  "economics_guard": {
+    "ARC03_BACKTESTS": 0,
+    "ARC03_EXECUTIONS": 0,
+    "ARC03_PERFORMANCE_OBSERVED": false,
+    "FALSE_SUCCESS": 0
+  },
+  "frozen_artifact_count": 8,
+  "frozen_economic_artifacts": {
+    "docs/arc03-prereg-01/ARC03_CONTROL_PLAN.json": "4423e48ebb1760d863fa7fff127f6dc708eefcd5ba9034ad39303a27ef16f84f",
+    "docs/arc03-prereg-01/ARC03_FAILED_MEMORY_COLLISION_REVIEW.md": "07ca4be4137df462e7ac084b852ee04663c1f1c9b6315971197c8bfe5a1cb8f4",
+    "docs/arc03-prereg-01/ARC03_PIT_CONTRACT.json": "fc7e1d6a4eeff974b0fda26695ef9f1db66020ee6ea6c9497c07dadc7ef28df7",
+    "docs/arc03-prereg-01/ARC03_PREREGISTRATION.md": "33876aa3f4591b0453d51fea43a566b2b0c8a554332fba3d749d78d4c356ed5e",
+    "docs/arc03-prereg-01/ARC03_ROBUSTNESS_PLAN.json": "39aeccd90662312c9a5ffe6d194abdc9afd7c7f8b7630db6e7bcb98672d4b03e",
+    "docs/arc03-prereg-01/ARC03_SELECTION_RATIONALE.md": "a3c80b08c169b2b79a319cb0532a9d6c6226671d7ddb3e1a518961c0c48b4b99",
+    "docs/arc03-prereg-01/ARC03_SPEC_V1.json": "a69edabb2931b3897cc0bcabdb7c203009ace742af1a729e47f7cb058a407a2d",
+    "docs/arc03-prereg-01/ARC03_STATISTICAL_GATES.json": "81e3df671dbd19aac38a2cbd16e5c45a4b6a9db8518d67f91b41b58d7b310326"
+  },
+  "gate_thresholds": {
+    "G10_CONCENTRATION": "max_asset_share <= 0.60 AND max_month_share <= 0.40 AND max_single_trade_share <= 0.25",
+    "G11_COST_SENSITIVITY": "mean_20bps > 0.0 (strict) AND mean_40bps >= 0.0",
+    "G1_SAMPLE": "N >= 120 AND min(N_BTC, N_ETH, N_SOL) >= 40",
+    "G2_NET_EXPECTANCY": "> 0.0 (strict)",
+    "G3_NET_EXPECTANCY_EX_FUNDING": "> 0.0 (strict)",
+    "G4_PROFIT_FACTOR": ">= 1.15",
+    "G5_SHARPE": ">= 0.50",
+    "G6_BOOTSTRAP": "ci_lower > 0.0 (strict)",
+    "G7_PERMUTATION": "p_value <= 0.05",
+    "G8_TEMPORAL_STABILITY": "both halves > 0.0 AND >= 3 of 4 quartiles > 0.0",
+    "G9_ASSET_STABILITY": ">= 2 of the 3 assets have mean > 0.0 (strict)"
+  },
+  "gates": [
+    "G1_SAMPLE",
+    "G2_NET_EXPECTANCY",
+    "G3_NET_EXPECTANCY_EX_FUNDING",
+    "G4_PROFIT_FACTOR",
+    "G5_SHARPE",
+    "G6_BOOTSTRAP",
+    "G7_PERMUTATION",
+    "G8_TEMPORAL_STABILITY",
+    "G9_ASSET_STABILITY",
+    "G10_CONCENTRATION",
+    "G11_COST_SENSITIVITY"
+  ],
+  "hypothesis_id": "ARC-03-PARTICIPATION-SHOCK-REVERSAL-01",
+  "post_freeze_immutability": {
+    "drift_check": "scripts/verify_arc03_prereg.py proves POST_FREEZE_ARTIFACT_DRIFT = 0 by re-digesting every frozen artifact",
+    "rule": "these artifacts are immutable after the prereg commit; any byte change invalidates the experiment"
+  },
+  "robustness_neighbourhoods": {
+    "cost_curve_bps": {
+      "primary": 10,
+      "role": "diagnostic; already reported at discovery via G11",
+      "scenarios": [
+        0,
+        10,
+        20,
+        40
+      ],
+      "trade_set": "IDENTICAL to the primary; cost scenarios never regenerate signals"
+    },
+    "holding_bars": {
+      "grid": [
+        6,
+        12,
+        24,
+        36
+      ],
+      "holding_minutes": [
+        30,
+        60,
+        120,
+        180
+      ],
+      "primary": 12,
+      "rationale": "the mechanism asserts a transient reversal; the grid probes whether the effect is confined to a narrow horizon. It may not be used to pick a different holding period.",
+      "role": "stability diagnostic only"
+    },
+    "participation_reference_length_days": {
+      "grid": [
+        10,
+        20,
+        30,
+        60
+      ],
+      "primary": 30,
+      "rationale": "the 30-day same-slot reference is the only length-like constant in the hypothesis; the grid probes whether the result is an artifact of exactly 30 days. It may not be used to pick a different reference length.",
+      "role": "stability diagnostic only"
+    }
+  },
+  "schema": "ARC03_MANIFEST/1.0.0",
+  "self_reference_policy": {
+    "authority_commit": "8668a3174234255b1b1f27a7bf04b8f022af68bb",
+    "generated_from_commit": "8668a3174234255b1b1f27a7bf04b8f022af68bb",
+    "prereg_commit": null,
+    "prereg_commit_note": "the prereg commit cannot contain its own SHA; it is recorded by a later pointer commit",
+    "report_commit": null,
+    "report_commit_note": "same circularity; the pointer commit carries the prereg SHA"
+  },
+  "spec_complete_verdict": "PASS",
+  "status": "PREREGISTERED_NOT_EXECUTED"
+}

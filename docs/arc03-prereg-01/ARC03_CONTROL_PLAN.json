@@ -1,0 +1,82 @@
+{
+  "schema": "ARC03_CONTROL_PLAN/1.0.0",
+  "checkpoint": "ARC03-PREREG-001",
+  "hypothesis_id": "ARC-03-PARTICIPATION-SHOCK-REVERSAL-01",
+  "frozen": true,
+  "frozen_before_discovery": true,
+  "purpose": "Attempt to falsify the mechanism claim before the primary result is trusted. Controls are executed as PART OF THE SAME authorized experiment, are NOT alternate strategies, and are NEVER promotable.",
+  "global_rules": {
+    "controls_execute_inside_the_single_authorized_experiment": true,
+    "controls_change_primary_thresholds": false,
+    "controls_change_primary_trade_set": false,
+    "controls_supply_fallback_trades": false,
+    "controls_are_isolated_experimental_comparators": true,
+    "gate_set_applied_to_controls": "the IDENTICAL G1-G11 gate set and the identical estimator conventions (ARC03_STATISTICAL_GATES.json)",
+    "control_evaluation_conventions": "every control is evaluated on ITS OWN trade set with the SAME cost model (primary 10 bps), the SAME 0/10/20/40 bps scenarios, and the SAME frozen seeds",
+    "if_any_required_control_satisfies_ALL_critical_gates": "MECHANISM_NOT_IDENTIFIED => FINAL_STATUS = DISCOVERY_FAIL (terminal). No retuning of the primary based on control results is permitted.",
+    "a_control_that_fails_at_least_one_critical_gate": "does NOT falsify the mechanism and does not affect the primary verdict",
+    "controls_are_reported_even_if_primary_fails": true
+  },
+
+  "controls": [
+    {
+      "id": "DIRECTION_CONTROL",
+      "name": "reversed direction",
+      "falsification_question": "Is the contrarian direction load-bearing, or would trading WITH the failed push also appear to work?",
+      "executable_definition": "Take the PRIMARY signal set unchanged (same signal bars, same entry times, same exit times). Set direction = with-the-push: an up-push signal becomes LONG instead of SHORT, a down-push signal becomes SHORT instead of LONG. Same costs, same funding accounting, same gates.",
+      "changes": ["direction sign only"],
+      "unchanged": ["signal bars", "entry anchors", "exit anchors", "cost model", "funding accounting", "gate set"],
+      "expected_falsification": "should fail; if the reversed direction satisfies all critical gates the reversal claim is not identified and the ARU mechanism ('urgent liquidity takers pay') is refuted",
+      "promotable": false
+    },
+    {
+      "id": "TIMING_CONTROL",
+      "name": "displaced entry (destroyed causal alignment)",
+      "falsification_question": "Is the edge specific to the immediate aftermath of the shock bar, or is it a generic time-of-day / slow drift effect that any displaced entry would capture?",
+      "executable_definition": "Take the PRIMARY signal set unchanged. Displace the entry by exactly +HOLDING_BARS = +12 bars (60 minutes) relative to the primary entry: entry_time_control = primary_entry_time_ms + 3600000; exit_time_control = entry_time_control + 3600000 (the same 12-bar hold). The rule, the signal bars and the thresholds are untouched; only the shock-to-holding-window alignment is destroyed.",
+      "symmetric_negative_displacement": "NOT ADMITTED: advancing the entry by -12 bars would place the entry before the decision instant and therefore violate the PIT contract. The control is deliberately one-sided; this is a causal limitation, not a design choice that can be revisited post hoc.",
+      "changes": ["entry/exit anchors (+60 minutes)"],
+      "unchanged": ["signal bars", "direction", "holding length (12 bars)", "cost model", "funding accounting", "gate set"],
+      "expected_falsification": "should fail; if the displaced entry satisfies all critical gates the effect is not tied to the shock aftermath",
+      "promotable": false
+    },
+    {
+      "id": "PARTICIPATION_CONTROL",
+      "name": "participation component removed",
+      "falsification_question": "Does the abnormal-PARTICIPATION condition add anything, or is this merely a range/exhaustion reversal pattern?",
+      "executable_definition": "Re-generate the signal set with the participation-shock condition REMOVED: a signal requires ONLY EXCURSION_RECORD(t) AND EXHAUSTION(t) (range record against the same 30 same-slot references, plus strict majority retracement). The volume record is neither required nor consulted. Direction, entry, exit, holding, costs, funding accounting and the gate set are identical to the primary.",
+      "removed_component": "PARTICIPATION_SHOCK (v(t) > max(reference volumes))",
+      "retained_components": ["EXCURSION_RECORD", "EXHAUSTION"],
+      "note_on_trade_set": "this control necessarily produces a DIFFERENT (larger) trade set; it is an isolated experimental comparator, never a modification of the primary signal set, and its trades can never be merged into or substituted for the primary trade set",
+      "expected_falsification": "should fail; if the participation-free variant satisfies all critical gates then participation is not the identifying component and ARC-03 collapses into a generic mean-reversion claim",
+      "promotable": false
+    },
+    {
+      "id": "NULL_CONTROL",
+      "name": "deterministic sign-flip null",
+      "falsification_question": "Would a purely mechanical sign artifact of this trade set satisfy the frozen gate set?",
+      "executable_definition": "Take the PRIMARY realized net trade returns at PRIMARY_COST_BPS in the frozen emission order. Using rng = random.Random(20260915), for each trade in order compute flipped_i = net_return_i * (+1 if rng.random() < 0.5 else -1). Evaluate the FULL critical gate set (including the bootstrap and permutation gates, which use their own frozen seeds) on the flipped series.",
+      "seed": 20260915,
+      "rng": "Python stdlib random.Random(seed)",
+      "changes": ["the sign of each realized net trade return"],
+      "unchanged": ["trade count", "trade timestamps", "magnitudes", "cost model", "gate set"],
+      "expected_falsification": "should fail; if the flipped series satisfies all critical gates the gate set is not discriminating and no ARC-03 result could be trusted",
+      "promotable": false
+    }
+  ],
+
+  "control_coverage": {
+    "direction": "DIRECTION_CONTROL",
+    "timing": "TIMING_CONTROL",
+    "component_removal": "PARTICIPATION_CONTROL",
+    "null_artifact": "NULL_CONTROL"
+  },
+
+  "reporting": {
+    "per_control_required_fields": ["control_id", "trade_count", "mean_net_return_10bps", "mean_net_return_ex_funding", "profit_factor", "sharpe", "bootstrap_ci_lower", "permutation_p", "halves", "quartiles", "per_asset_means", "concentration_shares", "mean_net_return_20bps", "mean_net_return_40bps", "per_gate_pass_fail", "satisfies_ALL_critical_gates"],
+    "any_control_passes_all_gates": false,
+    "controls_are_not_promotable_under_any_circumstance": true
+  },
+
+  "CRITICAL_CONTROL_SPEC_INCOMPLETENESS": false
+}

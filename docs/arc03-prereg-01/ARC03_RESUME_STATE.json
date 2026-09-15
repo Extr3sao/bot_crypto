@@ -1,0 +1,82 @@
+{
+  "schema": "ARC03_RESUME_STATE/1.0.0",
+  "program": "TRADING AGENTIC PORTABLE",
+  "current_arc": "ARC-03",
+  "hypothesis_id": "ARC-03-PARTICIPATION-SHOCK-REVERSAL-01",
+  "phase": "PREREGISTRATION",
+  "checkpoint": "ARC03-PREREG-001",
+  "FINAL_STATUS": "PENDING_INDEPENDENT_PREREG_VERIFICATION",
+  "NEXT": "ARC03_INDEPENDENT_PREREG_VERIFICATION",
+  "worktree": ".research/arc03-participation-reversal-01",
+  "branch": "research/arc03-participation-reversal-01",
+  "commits": {
+    "base_commit": "367f58f1c8a45a4f56459f4564baf2e73ac494ef",
+    "data_authority_commit": "8668a3174234255b1b1f27a7bf04b8f022af68bb",
+    "data_authority_checkpoints": [
+      "ARC03-DATA-001 establish participation-shock data authority",
+      "ARC03-DATA-002 resolve raw bytes against the data root and bind the authority commit",
+      "ARC03-DATA-003 record portable data-authority verification evidence",
+      "ARC03-DATA-004 prove data authority from a clean throwaway worktree"
+    ],
+    "prereg_commit": null,
+    "prereg_commit_label": "[ARC03-PREREG-001] freeze participation-shock reversal discovery",
+    "prereg_commit_note": "a commit cannot embed its own SHA; the pointer commit ARC03-PREREG-002 records it",
+    "independent_verifier_commit": null
+  },
+  "frozen_hashes": {
+    "spec_sha256": "a69edabb2931b3897cc0bcabdb7c203009ace742af1a729e47f7cb058a407a2d",
+    "manifest_sha256": "3b022693fde0a4e362329a009125292410bb1ba3d0e2b3f8571b795a15b1d1a3"
+  },
+  "data_authority": {
+    "dataset_sha256": "1a6ad11712ce436ce9d413d6b53162d66996778cd98643ef7c3eb746a54745ef",
+    "partition_sha256": {
+      "BTCUSDT": "eb75ab97881fd941c05d1b188778f1a832ab404c59f5991eff12ead779e4ab02",
+      "ETHUSDT": "24c886902760b2e2c873df7721c12098e65b768762f55e2144d990deac04c211",
+      "SOLUSDT": "d872bc7dc8a52eb697962516fbd24a636483acd43e524cdbbf09985d2720f548"
+    },
+    "funding_reuse_dataset_sha256": "5f4845f5062e68353ef421b9687bf728a56693951e2f74e17221a8e3373b62ec",
+    "common_causal_window_ms": [1600066800000, 1788220500000]
+  },
+  "status_matrix": {
+    "DATA_AUTHORITY": "PASS",
+    "PIT": "PASS",
+    "A_B_DETERMINISM": "PASS",
+    "MUTATION_SENSITIVITY": "PASS",
+    "PORTABLE_VERIFIER": "PASS",
+    "CLEAN_WORKTREE_DATA_VERIFICATION": "PASS",
+    "SPEC_COMPLETE": "PASS",
+    "ECONOMIC_PARAMETERS_FROZEN": true,
+    "STATISTICAL_GATES_FROZEN": true,
+    "CONTROL_PLAN_FROZEN": true,
+    "ROBUSTNESS_PLAN_FROZEN": true,
+    "KILL_RULE_FROZEN": true,
+    "PREREG_COMMIT_CREATED": true,
+    "POST_FREEZE_ARTIFACT_DRIFT": 0,
+    "WORKING_TREE_CLEAN": true,
+    "ARC03_BACKTESTS": 0,
+    "ARC03_EXECUTIONS": 0,
+    "ARC03_PERFORMANCE_OBSERVED": false,
+    "FALSE_SUCCESS": 0
+  },
+  "immutable_failed_memory": {
+    "ARC01_PRIMARY_DISCOVERY_01": {
+      "FINAL": "DISCOVERY_FAIL",
+      "ARC01_STATE": "KILLED_FOR_THIS_HYPOTHESIS_ID",
+      "RESULT_COMMIT": "70c2849534f2119b84a73238009d13f967398436",
+      "reason": "positive net expectancy was explained by funding carry; ex-funding price expectancy negative; multiple critical gates failed",
+      "BTC_positive_subcell": "POST_HOC_LEAD_ONLY - do not adopt, do not retest as ARC-01"
+    }
+  },
+  "resume_instructions": {
+    "do_not": [
+      "retune ARC-03 parameters",
+      "modify the frozen prereg artifacts",
+      "modify the data authority",
+      "run any economic backtest before independent prereg verification",
+      "claim independent verification from the builder context"
+    ],
+    "next_action": "hand this worktree, the spec SHA and the manifest SHA to a FRESH independent verification context; only after PASS_INDEPENDENT_PREREG_VERIFICATION may ARC03_PRIMARY_DISCOVERY_01 be authorized",
+    "after_discovery_pass": "ARC03_ROBUSTNESS_OOS_01 (includes the frozen H5 orthogonality check)",
+    "after_discovery_fail": "ARC03 = DISCOVERY_FAIL (terminal); move to the next orthogonal hypothesis"
+  }
+}

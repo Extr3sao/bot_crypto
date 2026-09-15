@@ -1,0 +1,209 @@
+{
+  "authority_commit": "8668a3174234255b1b1f27a7bf04b8f022af68bb",
+  "bound_data_authority_artifacts": {
+    "docs/arc03-data-authority-01/ARC03_CLEAN_WORKTREE_VERIFICATION.json": "5285b562e007c95f64fef033de5c3b661bcfbbab6b251d8cb1aa59ecdd50eb44",
+    "docs/arc03-data-authority-01/ARC03_COMMON_CAUSAL_WINDOW.json": "0a4f9ea59fe709056dbee68a8ac2d692c6235c6c7d8dce39b502da0d77a5e7c8",
+    "docs/arc03-data-authority-01/ARC03_DATASET_FINGERPRINT.json": "310a3716db5e575736e5816a83fa16cccffb98f1ce09184a7b5caa9ef6328b35",
+    "docs/arc03-data-authority-01/ARC03_DATA_AUTHORITY.json": "7eefec4f0e192ce5822efc636b4bc215d0aa318db1dd39a474a4a06857ea3a52",
+    "docs/arc03-data-authority-01/ARC03_DATA_DETERMINISM.json": "d4f9ffad916ec3d8d27be7efe4d2bc2a3af1789955556e8cbab23d967b83154a",
+    "docs/arc03-data-authority-01/ARC03_DATA_MANIFEST.json": "1a2d517310d20723bed709e9b71c2b3c41b6337728273de2483dead63abc8d6c",
+    "docs/arc03-data-authority-01/ARC03_EXISTING_DATA_REUSE_ASSESSMENT.json": "1e756c57001b6a6625d645b7c066edcb200da9fd04b3ea7d7bcb725a03e79e8f",
+    "docs/arc03-data-authority-01/ARC03_FUNDING_REUSE_ASSESSMENT.json": "5fcedf66c8f0b63c9c9f473c9a84414bb5420301616d8113bd99b1fe7c4cdb95",
+    "docs/arc03-data-authority-01/ARC03_MECHANISM_AUTHORITY.md": "6d473c3cc3c8db34979b094673dcd62d28733e8d705ff879626d6819b03fd4b3",
+    "docs/arc03-data-authority-01/ARC03_MUTATION_SENSITIVITY.json": "6111b7cc639cae6c0cb9e2d414e5f79da6dfe39b537be609649ca40bdfc6cf21",
+    "docs/arc03-data-authority-01/ARC03_PIT_AUTHORITY.json": "fda8da4f7e01505cb9c07df427a9c332ad9c49e1c747a510557faec8f39cb5f8",
+    "docs/arc03-data-authority-01/ARC03_PIT_INDEPENDENT_TESTS.json": "b6411ffe3ebac0d0dc62eccb1d62a8d12d745423625fbe1c9c58e1aa03072a7b",
+    "docs/arc03-data-authority-01/ARC03_PORTABLE_DATA_VERIFICATION.json": "607b900dcf3c676312c54a845ea69e17234d8ffd65ef9c4c6988a22dea81d0ed"
+  },
+  "bound_implementation": {
+    "src/trading_bot/research/arc03/arc03_authority.py": "23f241f4ccc94d38d8bbbd4946e7fc1fcd023e1e0bf3ecb22f53064eb5de8eca",
+    "src/trading_bot/research/arc03/arc03_funding.py": "433f3ed803e494f9bf9ea8ad37c1b7394252cac01bb6183cce3dc6260d01e92b",
+    "src/trading_bot/research/arc03/arc03_normalize.py": "216eedb5c80ba66ff6062da310c238a6b7bbcba399c6b1d60a72dd0f3a531de5",
+    "src/trading_bot/research/arc03/arc03_pit.py": "54ad993f5d433845275138e0e36001c703426fb3103d06d868de187968fd1a80",
+    "src/trading_bot/research/arc03/arc03_prereg_reference.py": "cf2069f48d6a876908eaadb4470d46eb5c43228251d55321b18701530ea62cdb"
+  },
+  "builder": "deepseek-v4-flash (DeepSeek)",
+  "builder_crosscheck_only": true,
+  "builder_may_not_claim": "INDEPENDENT_VERIFICATION",
+  "checkpoint": "ARC03-PREREG-001",
+  "control_summary": [
+    {
+      "definition_present": true,
+      "id": "DIRECTION_CONTROL",
+      "promotable": false
+    },
+    {
+      "definition_present": true,
+      "id": "TIMING_CONTROL",
+      "promotable": false
+    },
+    {
+      "definition_present": true,
+      "id": "PARTICIPATION_CONTROL",
+      "promotable": false
+    },
+    {
+      "definition_present": true,
+      "id": "NULL_CONTROL",
+      "promotable": false
+    }
+  ],
+  "data_authority_binding": {
+    "BTC_PARTITION_SHA": "eb75ab97881fd941c05d1b188778f1a832ab404c59f5991eff12ead779e4ab02",
+    "ETH_PARTITION_SHA": "24c886902760b2e2c873df7721c12098e65b768762f55e2144d990deac04c211",
+    "SOL_PARTITION_SHA": "d872bc7dc8a52eb697962516fbd24a636483acd43e524cdbbf09985d2720f548",
+    "authority_commit": "8668a3174234255b1b1f27a7bf04b8f022af68bb",
+    "dataset_sha256": "1a6ad11712ce436ce9d413d6b53162d66996778cd98643ef7c3eb746a54745ef",
+    "funding_partition_sha256": {
+      "BTCUSDT": "700b0c4c7e5ffa9dbe82cd84e98be9f505bce6f1792d33d0eae88d07a7585855",
+      "ETHUSDT": "2edf501ea69807bbf67cdd519e53de18c8dea25ea8bdf009beb88ef2e2693943",
+      "SOLUSDT": "6b16d13f5115f906f9ceb4f5a418f7a541c37609e780cfbad0d52ed565808f85"
+    },
+    "funding_reuse_dataset_sha256": "5f4845f5062e68353ef421b9687bf728a56693951e2f74e17221a8e3373b62ec"
+  },
+  "economics": {
+    "ARC03_BACKTESTS": 0,
+    "ARC03_EXECUTIONS": 0,
+    "ARC03_PERFORMANCE_OBSERVED": false,
+    "FALSE_SUCCESS": 0
+  },
+  "final_state": "PENDING_INDEPENDENT_PREREG_VERIFICATION",
+  "frozen_economic_artifacts": {
+    "docs/arc03-prereg-01/ARC03_CONTROL_PLAN.json": "4423e48ebb1760d863fa7fff127f6dc708eefcd5ba9034ad39303a27ef16f84f",
+    "docs/arc03-prereg-01/ARC03_FAILED_MEMORY_COLLISION_REVIEW.md": "07ca4be4137df462e7ac084b852ee04663c1f1c9b6315971197c8bfe5a1cb8f4",
+    "docs/arc03-prereg-01/ARC03_PIT_CONTRACT.json": "fc7e1d6a4eeff974b0fda26695ef9f1db66020ee6ea6c9497c07dadc7ef28df7",
+    "docs/arc03-prereg-01/ARC03_PREREGISTRATION.md": "33876aa3f4591b0453d51fea43a566b2b0c8a554332fba3d749d78d4c356ed5e",
+    "docs/arc03-prereg-01/ARC03_ROBUSTNESS_PLAN.json": "39aeccd90662312c9a5ffe6d194abdc9afd7c7f8b7630db6e7bcb98672d4b03e",
+    "docs/arc03-prereg-01/ARC03_SELECTION_RATIONALE.md": "a3c80b08c169b2b79a319cb0532a9d6c6226671d7ddb3e1a518961c0c48b4b99",
+    "docs/arc03-prereg-01/ARC03_SPEC_V1.json": "a69edabb2931b3897cc0bcabdb7c203009ace742af1a729e47f7cb058a407a2d",
+    "docs/arc03-prereg-01/ARC03_STATISTICAL_GATES.json": "81e3df671dbd19aac38a2cbd16e5c45a4b6a9db8518d67f91b41b58d7b310326"
+  },
+  "gate_summary": [
+    {
+      "critical": true,
+      "id": "G1_SAMPLE",
+      "threshold": "N >= 120 AND min(N_BTC, N_ETH, N_SOL) >= 40"
+    },
+    {
+      "critical": true,
+      "id": "G2_NET_EXPECTANCY",
+      "threshold": "> 0.0 (strict)"
+    },
+    {
+      "critical": true,
+      "id": "G3_NET_EXPECTANCY_EX_FUNDING",
+      "threshold": "> 0.0 (strict)"
+    },
+    {
+      "critical": true,
+      "id": "G4_PROFIT_FACTOR",
+      "threshold": ">= 1.15"
+    },
+    {
+      "critical": true,
+      "id": "G5_SHARPE",
+      "threshold": ">= 0.50"
+    },
+    {
+      "critical": true,
+      "id": "G6_BOOTSTRAP",
+      "threshold": "ci_lower > 0.0 (strict)"
+    },
+    {
+      "critical": true,
+      "id": "G7_PERMUTATION",
+      "threshold": "p_value <= 0.05"
+    },
+    {
+      "critical": true,
+      "id": "G8_TEMPORAL_STABILITY",
+      "threshold": "both halves > 0.0 AND >= 3 of 4 quartiles > 0.0"
+    },
+    {
+      "critical": true,
+      "id": "G9_ASSET_STABILITY",
+      "threshold": ">= 2 of the 3 assets have mean > 0.0 (strict)"
+    },
+    {
+      "critical": true,
+      "id": "G10_CONCENTRATION",
+      "threshold": "max_asset_share <= 0.60 AND max_month_share <= 0.40 AND max_single_trade_share <= 0.25"
+    },
+    {
+      "critical": true,
+      "id": "G11_COST_SENSITIVITY",
+      "threshold": "mean_20bps > 0.0 (strict) AND mean_40bps >= 0.0"
+    }
+  ],
+  "generated_from_commit": "8668a3174234255b1b1f27a7bf04b8f022af68bb",
+  "hypothesis_id": "ARC-03-PARTICIPATION-SHOCK-REVERSAL-01",
+  "kill_rule": {
+    "ONE_PREREGISTRATION_ONE_PRIMARY_DISCOVERY": true,
+    "forbidden_after_failure": [
+      "threshold retuning",
+      "lookback retuning",
+      "holding-period retuning",
+      "asset deletion",
+      "rerun under the same hypothesis_id"
+    ],
+    "future_variant_requires": [
+      "NEW_HYPOTHESIS_ID",
+      "NEW_PREREGISTRATION"
+    ],
+    "on_control_passing_all_gates": "ARC03 = DISCOVERY_FAIL (mechanism not identified)",
+    "on_critical_gate_failure": "ARC03 = DISCOVERY_FAIL (terminal)"
+  },
+  "manifest_path": "docs/arc03-prereg-01/ARC03_MANIFEST_V1.json",
+  "manifest_sha256": "3b022693fde0a4e362329a009125292410bb1ba3d0e2b3f8571b795a15b1d1a3",
+  "next": "ARC03_INDEPENDENT_PREREG_VERIFICATION",
+  "pre_freeze_gates": {
+    "CONTRADICTIONS_FOUND": 0,
+    "CONTROL_PLAN": "PASS",
+    "DATA_AUTHORITY_BINDING": "PASS",
+    "FALSE_SUCCESS": 0,
+    "JSON_VALIDATION": "PASS",
+    "NO_ECONOMIC_OBSERVATION": "PASS",
+    "PIT_CONTRACT": "PASS",
+    "ROBUSTNESS_PLAN": "PASS",
+    "SPEC_COMPLETE": "PASS",
+    "STATISTICAL_GATES": "PASS"
+  },
+  "prereg_commit": null,
+  "report_commit": null,
+  "requested_independent_verification": [
+    "recompute the spec and manifest SHA256 from the prereg commit",
+    "recompute the dataset fingerprint and all three partition digests from the shared data",
+    "re-prove the funding reuse identity against the certified ARC-01 partitions",
+    "audit that every gate is reproducible from the frozen spec alone",
+    "audit that no control can change the primary trade set",
+    "audit that robustness cannot select a replacement parameter set",
+    "audit that no economic quantity was observed before this prereg commit",
+    "confirm the PIT contract is non-vacuous"
+  ],
+  "schema": "ARC03_PREREG_VERIFICATION_PACKAGE/1.0.0",
+  "spec_completeness": {
+    "ARC03_SPEC_COMPLETE": "PASS",
+    "checks_executed": [
+      "spec_parsed",
+      "required_fields_present",
+      "no_runtime_defaults",
+      "no_signal_precedence",
+      "critical_relations",
+      "gates_complete",
+      "controls_complete",
+      "kill_rule_frozen",
+      "statistic_bindings",
+      "cross_artifact_consistency",
+      "economics_guard"
+    ],
+    "failure_count": 0,
+    "failures": [],
+    "required_control_count": 4,
+    "required_field_count": 157,
+    "required_gate_count": 11,
+    "schema": "ARC03_SPEC_COMPLETENESS/1.0.0",
+    "spec": "docs/arc03-prereg-01/ARC03_SPEC_V1.json"
+  },
+  "spec_path": "docs/arc03-prereg-01/ARC03_SPEC_V1.json",
+  "spec_sha256": "a69edabb2931b3897cc0bcabdb7c203009ace742af1a729e47f7cb058a407a2d"
+}
