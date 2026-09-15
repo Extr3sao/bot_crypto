@@ -1,0 +1,53 @@
+{
+  "schema": "ARC01_FUNDING_ACCOUNTING_AUDIT/1.0.0",
+  "prereg_commit": "fa15fb4f300815f56bf14e503d1a147cb73f27a6",
+  "independently_derived": true,
+  "information_vs_cashflow_separation": {
+    "information_window": "funding settlements with funding_time_ms <= decision_time_ms",
+    "cashflow_window": "certified settlements with entry_time_ms < funding_time_ms <= exit_time_ms",
+    "disjoint": true,
+    "proof": "decision_time_ms < entry_time_ms < cashflow_window_start; the information set is strictly earlier than the holding window, so no settlement can serve both purposes",
+    "independently_verified": "WINDOWS_DISJOINT (info_max <= T < entry < cashflow_min)"
+  },
+  "sign_semantics_binance_usdm": {
+    "frozen_rule": "cashflow_return = -direction_sign * funding_rate, direction_sign = +1 (LONG) / -1 (SHORT)",
+    "synthetic_derivation": {
+      "funding_rate_positive_0.0003": {"LONG": "-0.0003 (longs pay)", "SHORT": "+0.0003 (shorts receive)"},
+      "funding_rate_negative_(-0.0001)": {"LONG": "+0.0001 (longs receive)", "SHORT": "-0.0001 (shorts pay)"}
+    },
+    "matches_binance_usdm_semantics": true,
+    "wrong_sign": false,
+    "independently_verified": "CASHFLOW_SIGN_BINANCE_USDM"
+  },
+  "settlement_enumeration": {
+    "rule": "for each certified settlement in (entry_time, exit_time]",
+    "hardcoded_count": false,
+    "reference_implementation": "src/trading_bot/research/arc01/prereg_reference.py:funding_cashflow_return(direction_sign, settlement_rates) sums over the provided ACTUAL settlement list",
+    "no_synthesis": "uses the same certified authority rows read at their settlement instants",
+    "no_double_counting": true,
+    "72h_settlement_count_is_not_uniform": true,
+    "empirical_settlements_per_exact_72h_window": {
+      "BTCUSDT": {"8": 2251, "9": 5088},
+      "ETHUSDT": {"8": 2251, "9": 5088},
+      "SOLUSDT": {"8": 2073, "9": 4463, "10-34": 45, "35": 31, "36": 34}
+    },
+    "note": "the variation is driven by (a) SOL's historical 2h/4h provider schedule and (b) millisecond provider jitter at the exact exit anchor boundary; the executable rule consumes the actual list, so this is handled correctly",
+    "classification": "PASS"
+  },
+  "notional_basis": {
+    "frozen": "constant unit notional fixed at entry; funding applied to the entry notional",
+    "disclosed_as_limitation": true,
+    "prose_precision_issue": "the limitation text says funding is 'applied 9 times'; for SOL's 2h regime it can be applied up to ~36 times, so the stated O(1e-4) deviation magnitude is understated for that sub-period",
+    "classification": "NON_BLOCKING_DOCUMENTATION_DEFECT"
+  },
+  "ex_funding_gate_independence": {
+    "gate": "G3_NET_EXPECTANCY_EX_FUNDING",
+    "return_identity": "NET = GROSS_PRICE_LEG + FUNDING_CASHFLOW - COST",
+    "ex_funding_definition": "the same trade set measured with the FUNDING_CASHFLOW term removed",
+    "independent_of_cashflow": true,
+    "purpose": "prevents ARC-01 from passing merely because contrarian positions mechanically collect funding (carry-only edge)",
+    "carry_only_result_would_fail": true,
+    "classification": "PASS"
+  },
+  "verdict": "PASS"
+}

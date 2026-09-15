@@ -1,0 +1,53 @@
+{
+  "arc01_commits": [
+    "fa15fb4 [ARC01-PREREG-001] freeze funding crowding unwind discovery",
+    "367f58f [ARC01-DATA-008] reconcile authority and report commit semantics",
+    "1df95c1 [ARC01-DATA-007] align pointers to foundation HEAD 70858c1",
+    "70858c1 [ARC01-DATA-006] align pointers to current foundation HEAD 5736116",
+    "5736116 [ARC01-DATA-005] align resume and run report to foundation HEAD",
+    "d40d082 [ARC01-DATA-004] finalize resume state to foundation head",
+    "4bf20ce [ARC01-DATA-003] rerun portable verification and finalize run report",
+    "1c5ac8c [ARC01-DATA-002] fix clean-worktree import authority probe",
+    "6e42dd9 [ARC01-DATA-001] establish funding/crowding data authority"
+  ],
+  "backtests": 0,
+  "econ_token_hits_in_arc01_code": {
+    "scripts/verify_arc01_prereg.py": {
+      "expectancy": 8,
+      "max_drawdown": 1,
+      "pnl": 5,
+      "profit_factor": 3,
+      "sharpe": 6,
+      "sortino": 2,
+      "win_rate": 1
+    },
+    "src/trading_bot/research/arc01/prereg_reference.py": {}
+  },
+  "econ_tokens_in_code_context": "forbidden-vocabulary deny list + gate names only; no computation",
+  "executions": 0,
+  "non_authority_arc01_commits": [],
+  "performance_observed": false,
+  "prereg_commit_added_files": [
+    "context/retrieval-log.md",
+    "docs/arc01-prereg-01/ARC01_CONTROL_PLAN.json",
+    "docs/arc01-prereg-01/ARC01_FAILED_MEMORY_COLLISION_REVIEW.md",
+    "docs/arc01-prereg-01/ARC01_MANIFEST_V1.json",
+    "docs/arc01-prereg-01/ARC01_MECHANISM_EVIDENCE.md",
+    "docs/arc01-prereg-01/ARC01_PIT_CONTRACT.json",
+    "docs/arc01-prereg-01/ARC01_PREREGISTRATION.md",
+    "docs/arc01-prereg-01/ARC01_PREREG_VERIFICATION_PACKAGE.json",
+    "docs/arc01-prereg-01/ARC01_ROBUSTNESS_PLAN.json",
+    "docs/arc01-prereg-01/ARC01_SELECTION_RATIONALE.md",
+    "docs/arc01-prereg-01/ARC01_SPEC_V1.json",
+    "docs/arc01-prereg-01/ARC01_STATISTICAL_GATES.json",
+    "docs/arc01-prereg-01/RUN_REPORT.json",
+    "docs/arc01-prereg-01/RUN_REPORT.md",
+    "scripts/verify_arc01_prereg.py",
+    "src/trading_bot/research/arc01/prereg_reference.py",
+    "tests/unit/research/test_arc01_preregistration.py"
+  ],
+  "prereg_commit_economic_named_files": [],
+  "schema": "ARC01_PERFORMANCE_CONTAMINATION_SCAN/1.0.0",
+  "tracked_arc01_economic_artifacts": [],
+  "verdict": "NO_PRE_PREREG_ECONOMIC_OBSERVATION"
+}

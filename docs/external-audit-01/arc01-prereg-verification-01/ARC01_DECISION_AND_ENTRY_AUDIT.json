@@ -1,0 +1,100 @@
+{
+  "schema": "ARC01_DECISION_AND_ENTRY_AUDIT/1.0.0",
+  "prereg_commit": "fa15fb4f300815f56bf14e503d1a147cb73f27a6",
+  "independently_tested": true,
+  "evidence_harness": "docs/external-audit-01/arc01-prereg-verification-01/verifier_independent_tests.py",
+  "decision_cadence": {
+    "frozen": "ONE primary decision per certified FUNDING SETTLEMENT INSTANT, per asset (event-driven)",
+    "authority_read": "the frozen funding authority rows themselves (funding_time_ms) -- not a synthetic 8h grid",
+    "provider_schedule_changes_handled": true,
+    "structural_check_on_certified_authority": {
+      "BTCUSDT": {"declared_interval_hours": {"8": 7347}, "rows": 7347},
+      "ETHUSDT": {"declared_interval_hours": {"8": 7347}, "rows": 7347},
+      "SOLUSDT": {"declared_interval_hours": {"8": 6551, "2": 99, "4": 2}, "rows": 6652}
+    },
+    "interpretation": "The cadence is derived from the certified settlement instants, so SOL's historical 2h/4h rows are consumed as first-class decisions. No decision is fabricated and none is skipped.",
+    "classification": "PASS"
+  },
+  "entry_semantics": {
+    "frozen_anchor": "first completed-authority 1h bar OPEN strictly AFTER decision_time",
+    "exact_hour_settlement": "T aligned to an hour boundary -> the bar with bar_open_time == T is NOT strictly after T, so entry is at T + 1h bar open",
+    "sub_second_jitter_settlement": "provider settlements carry millisecond jitter (e.g. HH:00:00.004); entry is still the next hour bar open, identical to the aligned case",
+    "same_bar_entry_rejected": true,
+    "same_bar_lookahead": false,
+    "independently_verified": [
+      "ENTRY_EXACT_HOUR_SETTLEMENT",
+      "ENTRY_JITTERED_SETTLEMENT",
+      "SAME_BAR_ENTRY_REJECTED"
+    ],
+    "classification": "PASS"
+  },
+  "exit_semantics": {
+    "frozen_anchor": "1h bar OPEN at entry_bar_open_time + 259200000 ms (72h)",
+    "unconditional": true,
+    "stop_loss": "NONE",
+    "take_profit": "NONE",
+    "signal_invalidation_exit": "NONE",
+    "positions_never_truncated": true,
+    "forward_price_guard": "if the exit bar open would exceed the common window end, the signal is NOT emitted (NO_SIGNAL / INSUFFICIENT_FORWARD_PRICE_DATA)",
+    "forward_guard_is_structural_censoring_only": true,
+    "forward_guard_leaks_no_future_price_information": "the guard consults only the availability of the exit ANCHOR clock (whether a complete outcome can be evaluated), never any price level",
+    "classification": "PASS"
+  },
+  "holding_period": {
+    "PRIMARY_HOLDING_PERIOD": "exactly 72 clock hours",
+    "holding_bars": 72,
+    "alternate_primary_horizons": "NONE",
+    "selection_basis_is_mechanism": true,
+    "prose_vs_executable": {
+      "prose_claim": "spec prose (exit.holding_period.selection_basis, funding_cashflow_accounting.crosses_settlement, notional_basis_limitation) states '72h spans 9 consecutive 8h settlements' / 'at least 9' / 'applied 9 times'",
+      "executable_rule": "cashflow iterates every certified settlement in (entry_time, exit_time]; no fixed count is hardcoded",
+      "discrepancy_is_real": true,
+      "classification": "NON_BLOCKING_DOCUMENTATION_DEFECT",
+      "detail": "For SOL in the historical 2h regime a 72h hold contains up to ~36 settlements; for 8h assets the boundary-jitter can admit 8 rather than 9. The prose count is therefore factually imprecise, but the executable accounting is correct. Recorded explicitly; not silently reconciled."
+    }
+  },
+  "no_signal_precedence": {
+    "frozen_order": [
+      "OUTSIDE_COMMON_WINDOW",
+      "INSUFFICIENT_FUNDING_HISTORY",
+      "SCALE_NONPOSITIVE",
+      "FUNDING_NOT_EXTREME",
+      "OI_MISSING_OR_STALE",
+      "OI_REFERENCE_MISSING_OR_STALE",
+      "OI_REFERENCE_INVALID",
+      "OI_NOT_EXPANDING",
+      "POSITION_ALREADY_OPEN",
+      "INSUFFICIENT_FORWARD_PRICE_DATA"
+    ],
+    "deterministic_first_match": true,
+    "simultaneous_failures_resolve_to_first_reason": true,
+    "independently_verified": [
+      "PRECEDENCE_FIRST_MATCH",
+      "PRECEDENCE_INSUFFICIENT_HISTORY_FIRST",
+      "PRECEDENCE_OI_STALE_AFTER_FUNDING",
+      "PRECEDENCE_POSITION_ALREADY_OPEN",
+      "PRECEDENCE_FORWARD_GUARD_LAST"
+    ],
+    "classification": "PASS"
+  },
+  "signal_direction": {
+    "LONG": "z <= -2.0 AND OI expanding",
+    "SHORT": "z >= +2.0 AND OI expanding",
+    "contrarian_to_crowding": true,
+    "momentum_misread": false,
+    "boundaries_inclusive": true,
+    "independently_verified": ["DIRECTION_CONTRARIAN_SEMANTICS", "BOUNDARY_INCLUSIVE_POS", "BOUNDARY_INCLUSIVE_NEG"],
+    "classification": "PASS"
+  },
+  "common_window": {
+    "start_ms": 1638316800000,
+    "start_utc": "2021-12-01T00:00:00Z",
+    "end_ms": 1789081200000,
+    "end_utc": "2026-09-10T23:00:00Z",
+    "bound_semantics": "CLOSED interval on 1h bar-OPEN times (bar_open_time in [start_ms, end_ms])",
+    "source": "docs/arc01-prereg-01/ARC01_SPEC_V1.json derived from ARC01_COMMON_CAUSAL_WINDOW.json (funding+OI+price intersection), not dates alone",
+    "final_72h_yields_no_trades": true,
+    "classification": "PASS"
+  },
+  "verdict": "PASS_WITH_DOCUMENTED_NON_BLOCKING_LIMITATION"
+}

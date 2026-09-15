@@ -1,0 +1,42 @@
+{
+  "schema": "ARC01_ROBUSTNESS_AUDIT/1.0.0",
+  "prereg_commit": "fa15fb4f300815f56bf14e503d1a147cb73f27a6",
+  "artifact_audited": "docs/arc01-prereg-01/ARC01_ROBUSTNESS_PLAN.json",
+  "artifact_sha256": "f368d28690cf57466b0f8c94ab7b988c3e31fef812abcae2a99161faa913acf5",
+  "executed_now": false,
+  "execution_condition": "runs ONLY if the primary discovery satisfies ALL critical gates",
+  "primary_parameters_immutable": true,
+  "primary_parameters_frozen": {
+    "funding_lookback": "60d",
+    "funding_min_observations": 90,
+    "scale": "1.4826 * MAD with sample-stdev (ddof=1) fallback",
+    "funding_thresholds": [-2.0, 2.0],
+    "oi_expansion_window": "24h",
+    "oi_confirmation": "strictly > 0, no magnitude gate",
+    "price_context": "NONE",
+    "entry": "next 1h bar OPEN strictly after decision_time",
+    "holding": "72h",
+    "primary_cost_bps_round_trip": 10,
+    "assets": ["BTCUSDT", "ETHUSDT", "SOLUSDT"]
+  },
+  "neighbourhood": {
+    "funding_lookback": ["30d", "60d", "90d"],
+    "funding_threshold": [1.5, 2.0, 2.5],
+    "oi_expansion_window": ["12h", "24h", "48h"],
+    "holding_period": ["24h", "48h", "72h", "120h"],
+    "cell_role": "DIAGNOSTIC ONLY",
+    "may_become_new_primary": false,
+    "best_cell_may_be_reported_as_arc01_result": false,
+    "stability_requirement": "one-factor-at-a-time sign-of-net-expectancy only; >= 60% positive else PARAMETER_FRAGILITY"
+  },
+  "forbidden_during_robustness": [
+    "promoting a neighbourhood cell",
+    "re-running the primary with modified parameters",
+    "reporting any sub-cell as ARC-01's result",
+    "using robustness outcomes to reset the preregistration"
+  ],
+  "retune_permitted": false,
+  "critical_overfitting_defect": false,
+  "independently_confirmed": "no clause permits selecting the best neighbour; R5 states the primary parameters are NOT changed and the neighbour best cell must never be reported as the ARC-01 result",
+  "verdict": "PASS"
+}

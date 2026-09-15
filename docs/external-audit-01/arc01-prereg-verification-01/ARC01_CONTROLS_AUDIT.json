@@ -1,0 +1,64 @@
+{
+  "schema": "ARC01_CONTROLS_AUDIT/1.0.0",
+  "prereg_commit": "fa15fb4f300815f56bf14e503d1a147cb73f27a6",
+  "artifact_audited": "docs/arc01-prereg-01/ARC01_CONTROL_PLAN.json",
+  "artifact_sha256": "78a4a38ec0ca55ef28e645c7ab8a686a99dac9f93958d3f4cf14f4b7b528f849",
+  "controls": [
+    {
+      "id": "DIRECTION_CONTROL",
+      "definition_frozen": true,
+      "deterministic": true,
+      "definition": "identical signal instants/eligibility, direction reversed (direction_sign * -1); funding cashflow re-evaluated with reversed sign",
+      "required_outcome": "MUST NOT satisfy all critical gates",
+      "pass_consequence_frozen": true,
+      "pass_consequence": "ARC01 = DISCOVERY_FAIL (mechanism not identified)"
+    },
+    {
+      "id": "TIMING_CONTROL",
+      "definition_frozen": true,
+      "deterministic": true,
+      "definition": "two frozen variants: decision_time shifted by +8h and by -8h; each shifted decision uses only data <= its own shifted T",
+      "required_outcome": "NEITHER variant may satisfy all critical gates",
+      "pass_consequence_frozen": "COVERED_BY_GENERAL_RULE",
+      "pass_consequence": "the control plan's evaluation_rule states generally that ANY control satisfying all critical gates falsifies mechanism identification => ARC01 = DISCOVERY_FAIL; the gates fail_semantics enumeration lists only DIRECTION/OI/NULL",
+      "documentation_defect": "gates fail_semantics omits TIMING_CONTROL from the explicit enumeration",
+      "classification": "NON_BLOCKING_DOCUMENTATION_DEFECT (operative consequence unambiguous via the general rule; no contradiction)"
+    },
+    {
+      "id": "OI_CONTROL",
+      "definition_frozen": true,
+      "deterministic": true,
+      "definition": "OI confirmation leg removed; trade every extreme-funding decision with identical entry/exit/cost/funding rules",
+      "required_outcome": "MUST NOT satisfy all critical gates",
+      "pass_consequence_frozen": true,
+      "pass_consequence": "ARC01 = DISCOVERY_FAIL (funding-only family already refuted as standalone edge, FAILED_RESEARCH_MEMORY #8)"
+    },
+    {
+      "id": "NULL_CONTROL",
+      "definition_frozen": true,
+      "deterministic": true,
+      "definition": "same signal instants, direction replaced by deterministic SHA256(seed:asset:decision_time_ms) parity, NULL_SEED = 20260915",
+      "pass_consequence_frozen": true,
+      "pass_consequence": "ARC01 = DISCOVERY_FAIL (mechanical artefact, e.g. zero-cost carry harvesting)"
+    }
+  ],
+  "control_regression_semantics": {
+    "frozen": true,
+    "rule": "if a control satisfies ALL critical gates => ARC01 = DISCOVERY_FAIL (mechanism not identified)",
+    "undefined_consequence_cases": [],
+    "classification": "PASS_WITH_DOCUMENTED_MINOR_OMISSION"
+  },
+  "isolation": {
+    "controls_change_primary_trade_set": false,
+    "controls_change_primary_thresholds": false,
+    "controls_supply_fallback_trades": false,
+    "controls_promotable": false,
+    "controls_are_alternate_strategies": false,
+    "no_parameter_reuse_across_controls": true
+  },
+  "independently_verified": [
+    "NULL_CONTROL_DETERMINISTIC (deterministic=True, asset-sensitive=True)",
+    "DIFFERENTIAL_VS_BUILDER_REFERENCE (400 randomized fixtures, 0 mismatches)"
+  ],
+  "verdict": "PASS"
+}

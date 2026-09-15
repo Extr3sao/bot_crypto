@@ -1,0 +1,22 @@
+{
+  "schema": "ARC01_ORTHOGONALITY_AUDIT/1.0.0",
+  "prereg_commit": "fa15fb4f300815f56bf14e503d1a147cb73f27a6",
+  "frozen_orthogonality": {
+    "comparators": ["H5_ORDERFLOW_IMBALANCE", "H6_OI_CONFIRMED_CONTINUATION", "ARC-02_BTC_TO_ALT_LEAD_LAG"],
+    "assessment_stage": "later authorized experiment (NOT executed at prereg)",
+    "max_abs_daily_pnl_correlation": 0.5,
+    "max_trade_time_jaccard_overlap": 0.5,
+    "rule": "ARC-01 parameters, direction and thresholds MUST NOT be altered in response to an orthogonality or performance result; a failing orthogonality gate is a FAIL-class outcome for ARC-01, not a redesign prompt"
+  },
+  "contradiction_attack": {
+    "alleged_inconsistency": "the builder summary says the daily PnL correlation to H5/H6/ARC-02 is 'computed ... before reading ARC-01 economics', which appears to require constructing ARC-01 economic outcomes first",
+    "frozen_spec_text": "assessment_stage = 'later authorized experiment (NOT executed at prereg)'",
+    "resolution": "The frozen contract orders: (1) primary discovery produces the ARC-01 trade/PnL series as a mechanical byproduct; (2) orthogonality and interpretation of ARC-01's economics occur only at the later authorized checkpoint, AFTER primary discovery and only if primary PASSES; (3) ARC-01 parameters never change in response to that comparison. Under this ordering, 'before reading economics' means before INTERPRETING/PROMOTING the economics, not before computing the PnL series.",
+    "does_orthogonality_require_pnl_before_economics_permitted": false,
+    "primary_discovery_first": true,
+    "arc01_parameters_unchanged": true,
+    "classification": "NON_BLOCKING (documentation ambiguity in the builder summary prose; the frozen spec is consistent)"
+  },
+  "no_retune_from_orthogonality": true,
+  "verdict": "PASS"
+}

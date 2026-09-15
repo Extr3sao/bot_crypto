@@ -1,0 +1,69 @@
+{
+  "schema": "ARC01_INDEPENDENT_PREREG_VERIFICATION/1.0.0",
+  "FINAL_VERDICT": "PASS_INDEPENDENT_PREREG_VERIFICATION",
+  "target_prereg_commit": "fa15fb4f300815f56bf14e503d1a147cb73f27a6",
+  "verifier_worktree": ".research/arc01-prereg-verifier-01",
+  "verifier_branch": "audit/arc01-prereg-verification-01",
+  "verifier_role": "INDEPENDENT (did not design or freeze ARC-01); READ-ONLY; no builder artifact repaired",
+  "gates": {
+    "GIT_AUTHORITY": "PASS",
+    "DATA_AUTHORITY_BINDING": "PASS",
+    "PERFORMANCE_CONTAMINATION": "PASS",
+    "SPEC_COMPLETENESS": "PASS",
+    "NO_HIDDEN_ECONOMIC_DEFAULTS": "PASS",
+    "DECISION_CADENCE": "PASS",
+    "ENTRY_EXIT_SEMANTICS": "PASS",
+    "FUNDING_CASHFLOW": "PASS",
+    "EX_FUNDING_GATE": "PASS",
+    "PIT": "PASS",
+    "NO_SIGNAL_PRECEDENCE": "PASS",
+    "STATISTICAL_GATES_REPRODUCIBLE": "PASS",
+    "CONTROLS": "PASS",
+    "ROBUSTNESS_NO_RETUNE": "PASS",
+    "ORTHOGONALITY_CONTRACT": "PASS",
+    "REUSED_OI_PRICE_AUTHORITY": "PASS"
+  },
+  "FALSE_SUCCESS": 0,
+  "ARC01_BACKTESTS": 0,
+  "ARC01_EXECUTIONS": 0,
+  "ARC01_PERFORMANCE_OBSERVED": false,
+  "economics_executed_by_verifier": false,
+  "drawdown_gate_assessment": {
+    "classification": "ACCEPTABLE_DISCOVERY_LIMITATION",
+    "detail": "No drawdown threshold was preregistered for ARC-01; the builder explicitly disclosed max drawdown as diagnostic-only. ARC-01 is a DISCOVERY prereg (not a live-promotion gate); the frozen critical gates already include cost sensitivity, temporal/asset stability and concentration controls, and the promotion decision remains subject to the project's separate live-trading release gate. Absence of a DD gate therefore does not block discovery. It is recorded as a limitation and cannot be promoted to a gate post hoc."
+  },
+  "the_72h_9_settlement_attack": {
+    "verdict": "NON_BLOCKING_DOCUMENTATION_DEFECT",
+    "detail": "The frozen EXECUTABLE accounting iterates every certified settlement in (entry_time, exit_time] and hardcodes no count; '9 settlements' / 'at least 9' appear only in explanatory prose and a disclosed limitation note. Empirically BTC/ETH admit 8 or 9 settlements per 72h (millisecond boundary jitter) and SOL's historical 2h/4h schedule admits up to ~36. The prose is imprecise; the execution rule is correct."
+  },
+  "critical_defects": [],
+  "non_blocking_limitations": [
+    "ARC01_MANIFEST/SPEC prose states '72h = 9 settlements' / 'at least 9' / 'applied 9 times'; executable accounting correctly uses actual certified settlements.",
+    "ARC-01_GATES fail_semantics enumerates DIRECTION/OI/NULL controls but omits TIMING_CONTROL from the explicit list; the control plan's general evaluation_rule covers all controls.",
+    "Spec does not bind the statistical estimator module by hash; exact reproduction of G5/G6/G7 requires the pre-existing project standard src/trading_bot/backtesting/stat_validation.py conventions (ddof=1; percentile bootstrap index; one-sided sign-flip).",
+    "G10 calendar-month attribution (entry vs exit instant) is not disambiguated.",
+    "PIT contract over-claims that ANY eligible mutation must move the robust state (a single out-of-window-as-center point need not move a median/MAD state); recorded as a documentation over-claim, not an execution defect.",
+    "No drawdown gate preregistered (diagnostic only, disclosed).",
+    "Reused OI/price partitions are bound via certified manifest records; the verifier re-hashed the actual shared data and confirmed equality. The builder worktree lacked the local OI V2 dataset (environmental absence), which is not a dependency failure.",
+    "The builder (= DeepSeek) performed a crosscheck only and does not claim independence."
+  ],
+  "evidence_artifacts": [
+    "ARC01_GIT_AUTHORITY.json",
+    "ARC01_DATA_BINDING_VERIFICATION.json",
+    "ARC01_PERFORMANCE_CONTAMINATION_SCAN.json",
+    "ARC01_SPEC_COMPLETENESS_AUDIT.json",
+    "ARC01_DECISION_AND_ENTRY_AUDIT.json",
+    "ARC01_FUNDING_ACCOUNTING_AUDIT.json",
+    "ARC01_PIT_INDEPENDENT_TEST.json",
+    "ARC01_STATISTICAL_GATES_AUDIT.json",
+    "ARC01_CONTROLS_AUDIT.json",
+    "ARC01_ROBUSTNESS_AUDIT.json",
+    "ARC01_ORTHOGONALITY_AUDIT.json",
+    "ARC01_REUSED_OI_PRICE_AUTHORITY_AUDIT.json",
+    "verifier_independent_tests.py",
+    "independent_test_results.json",
+    "build_verifier_artifacts.py",
+    "VERIFIER_PROGRESS.json"
+  ],
+  "NEXT": "ARC01_PRIMARY_DISCOVERY_01"
+}

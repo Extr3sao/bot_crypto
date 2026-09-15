@@ -1,0 +1,160 @@
+{
+  "schema": "ARC01_STATISTICAL_GATES_AUDIT/1.0.0",
+  "prereg_commit": "fa15fb4f300815f56bf14e503d1a147cb73f27a6",
+  "artifact_audited": "docs/arc01-prereg-01/ARC01_STATISTICAL_GATES.json",
+  "artifact_sha256": "f18d3b1ee5d625b9a4c2df028c3ac96e5c07134233e6d59fe889c60cb25a7b69",
+  "artifact_sha256_recomputed_by_verifier": true,
+  "audit_question": "Can each critical gate be reproduced deterministically from the frozen prereg (plus pre-existing project authority)?",
+  "gates": [
+    {
+      "id": "G1_SAMPLE",
+      "formula_frozen": true,
+      "threshold_frozen": true,
+      "reproducible": "DETERMINISTIC",
+      "residual_ambiguity": null,
+      "classification": "PASS"
+    },
+    {
+      "id": "G2_NET_EXPECTANCY",
+      "formula_frozen": true,
+      "threshold_frozen": true,
+      "reproducible": "DETERMINISTIC",
+      "residual_ambiguity": null,
+      "classification": "PASS"
+    },
+    {
+      "id": "G3_NET_EXPECTANCY_EX_FUNDING",
+      "formula_frozen": true,
+      "threshold_frozen": true,
+      "reproducible": "DETERMINISTIC",
+      "residual_ambiguity": null,
+      "note": "funding-cashflow leg is separately frozen and subtracted; independence verified in ARC01_FUNDING_ACCOUNTING_AUDIT.json",
+      "classification": "PASS"
+    },
+    {
+      "id": "G4_PROFIT_FACTOR",
+      "formula_frozen": true,
+      "threshold_frozen": true,
+      "reproducible": "DETERMINISTIC",
+      "residual_ambiguity": null,
+      "classification": "PASS"
+    },
+    {
+      "id": "G5_SHARPE",
+      "formula_frozen": true,
+      "formula": "per-trade Sharpe * sqrt(trades_per_year); trades_per_year = N / (window_days/365)",
+      "threshold_frozen": true,
+      "reproducible": "REPRODUCIBLE_WITH_PRE_EXISTING_PROJECT_AUTHORITY",
+      "residual_ambiguity": [
+        "the sample standard deviation convention (ddof) inside 'per-trade Sharpe' is not restated in the gates file",
+        "'window_days' is not explicitly disambiguated (common-window span vs trade span)"
+      ],
+      "authority_evidence": {
+        "module": "src/trading_bot/backtesting/stat_validation.py",
+        "present_at_data_authority_commit_6e42dd9": true,
+        "present_at_head_367f58f": true,
+        "predates_prereg_commit": true,
+        "convention": "_sharpe uses ddof = 1 (n-1) and annualizes by mean/std * sqrt(periods_per_year); with periods_per_year = trades_per_year this is exactly the frozen G5 formula"
+      },
+      "boundary_sensitivity": "ddof = 1 vs 0 shifts the statistic by ~sqrt(N/(N-1)) ~ 0.4% at the frozen minimum N = 120; only a result inside ~[0.498, 0.502] could be moved across the 0.50 threshold",
+      "classification": "PASS_NON_BLOCKING_CONVENTION"
+    },
+    {
+      "id": "G6_SHARPE_UNCERTAINTY",
+      "formula_frozen": "bootstrap 95% CI lower bound of the MEAN net trade return (statistic stated explicitly, not implied)",
+      "threshold_frozen": true,
+      "reproducible": "REPRODUCIBLE_WITH_PRE_EXISTING_PROJECT_AUTHORITY",
+      "stated": {
+        "resampling_unit": "i.i.d. trade",
+        "replacement": "true (bootstrap)",
+        "resamples": 10000,
+        "seed": 20260915,
+        "statistic": "mean net trade return",
+        "confidence": 0.95,
+        "cross_check": "equivalently P(mean > 0) reported alongside"
+      },
+      "residual_ambiguity": ["percentile index convention (floor(alpha*R) vs interpolation)"],
+      "authority_evidence": {
+        "module": "src/trading_bot/backtesting/stat_validation.py:bootstrap_sharpe_ci",
+        "convention": "percentile method with lower_idx = floor(0.025 * R); seeded random.Random(seed)"
+      },
+      "boundary_sensitivity": "percentile vs interpolation differ by < one order statistic at R=10000; the operative criterion (CI lower > 0) is additionally cross-checked by the frozen P(mean > 0) formulation",
+      "classification": "PASS_NON_BLOCKING_CONVENTION"
+    },
+    {
+      "id": "G7_PERMUTATION",
+      "formula_frozen": "sign-flip permutation p-value of the MEAN net trade return (statistic stated explicitly)",
+      "threshold_frozen": true,
+      "reproducible": "REPRODUCIBLE_WITH_PRE_EXISTING_PROJECT_AUTHORITY",
+      "stated": {
+        "transform": "sign-flip of realized trade returns",
+        "statistic": "mean net trade return",
+        "draws": 10000,
+        "seed": 20260915,
+        "threshold": "p <= 0.05"
+      },
+      "residual_ambiguity": ["one-sided vs two-sided p-value definition"],
+      "authority_evidence": {
+        "module": "src/trading_bot/backtesting/stat_validation.py:permutation_significance",
+        "convention": "one-sided upper tail: exceed counts null statistics >= observed; p_value = exceed / permutations; alpha = 0.05",
+        "project_precedent": "docs/external-audit-01/oi-full-history-02/H6_SPEC_V2.json specifies its own permutation gate with identical granularity ('sign-flip permutation on hourly trade returns, 10,000 draws, fixed seed 20260911') and was accepted as a frozen prereg in this repository; ARC-01 is at least as specific"
+      },
+      "boundary_sensitivity": "sidedness is a ~2x factor, resolved to one-sided by the pre-existing project module and by the directional (positive-expectancy) hypothesis; the < vs <= boundary at exactly p = 0.05 is a single-draw band at 10,000 draws",
+      "classification": "PASS_NON_BLOCKING_CONVENTION"
+    },
+    {
+      "id": "G8_TEMPORAL_STABILITY",
+      "formula_frozen": "net expectancy by chronological halves and quartiles",
+      "threshold_frozen": true,
+      "reproducible": "DETERMINISTIC",
+      "residual_ambiguity": ["the note states splits are computed on the TRADE TIMELINE (equal-count), which is the operative clarification over the phrase 'of the common window'"],
+      "authority_evidence": {
+        "note_text": "split boundaries are computed on the trade timeline, chronological, frozen before discovery"
+      },
+      "classification": "PASS_NOTE_RESOLVED"
+    },
+    {
+      "id": "G9_ASSET_STABILITY",
+      "formula_frozen": true,
+      "threshold_frozen": true,
+      "reproducible": "DETERMINISTIC",
+      "residual_ambiguity": null,
+      "classification": "PASS"
+    },
+    {
+      "id": "G10_CONCENTRATION",
+      "formula_frozen": true,
+      "threshold_frozen": true,
+      "reproducible": "DETERMINISTIC",
+      "residual_ambiguity": ["a trade's calendar-month attribution (entry-instant vs exit-instant) is not stated"],
+      "denominator_behavior_when_total_le_zero": "explicitly defined (share only computed when total_net_PnL > 0); total <= 0 already implies G2 failure",
+      "single_trade_share_definition": "component_net_PnL / total_net_PnL; max over trades (negative components cannot be the max)",
+      "boundary_sensitivity": "month attribution affects only trades whose entry and exit fall in different calendar months, and only matters if a month share sits within one trade of the 40% bound",
+      "classification": "PASS_NON_BLOCKING_CONVENTION"
+    },
+    {
+      "id": "G11_COST_SENSITIVITY",
+      "formula_frozen": true,
+      "threshold_frozen": true,
+      "reproducible": "DETERMINISTIC",
+      "residual_ambiguity": null,
+      "classification": "PASS"
+    }
+  ],
+  "ex_funding_gate_independence": {
+    "gate": "G3_NET_EXPECTANCY_EX_FUNDING",
+    "verified": true,
+    "detail": "the return definition freezes NET = GROSS_PRICE_LEG + FUNDING_CASHFLOW - COST; the ex-funding statistic removes the FUNDING_CASHFLOW term and is therefore an independent quantity; see ARC01_FUNDING_ACCOUNTING_AUDIT.json",
+    "classification": "PASS"
+  },
+  "verdict": {
+    "statistical_gates_reproducible": "PASS",
+    "classification": "SPEC_COMPLETE_WITH_PRE_EXISTING_PROJECT_AUTHORITY",
+    "CRITICAL_SPEC_INCOMPLETENESS": false,
+    "reason": "Every critical gate freezes its metric, threshold, statistic, resample/draw count and seed. The only unstated items are standard estimator conventions that the repository's sole, pre-prereg statistical implementation pins (ddof=1; percentile bootstrap index; one-sided sign-flip), and the project's own accepted H6 prereg used identical granularity. No gate semantics are outcome-ambiguous outside narrow or project-convention-resolved bands.",
+    "non_blocking_limitations": [
+      "The prereg does not bind the statistical module by hash; exact bit-for-bit reproduction of G5/G6/G7 requires using src/trading_bot/backtesting/stat_validation.py conventions.",
+      "G10 calendar-month attribution (entry vs exit) is not disambiguated."
+    ]
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "schema": "ARC01_REUSED_OI_PRICE_AUTHORITY_AUDIT/1.0.0",
+  "prereg_commit": "fa15fb4f300815f56bf14e503d1a147cb73f27a6",
+  "independently_rehashed_from_actual_shared_data": true,
+  "oi_authority": {
+    "reader": "src/trading_bot/research/oi_dataset_v2.py:oi_state_at_ms (PIT causal, timestamp-scoped)",
+    "source_root": "data/processed/oi_full_history_v2 (main repository)",
+    "recomputed": {
+      "dataset_fingerprint": "16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99",
+      "ledger_sha256": "bb2b43c27a88bf9fe3ec22573903a61007f046ddc1256b5caa3e788cba15e714",
+      "manifest_sha256": "bdf3088caa08120784964f44e5fa5e81f0a1b6bacee99282a012f3a5dc08ef89"
+    },
+    "all_match_certified": true
+  },
+  "price_authority": {
+    "source_root": "data/processed/price_1h_v2 (main repository) + docs/external-audit-01/oi-full-history-02/PRICE_1H_AUTHORITY_V2_MANIFEST.json",
+    "recomputed_per_asset_sha256": {
+      "BTCUSDT": "41e9238666a0b98c02cffd19d36a590b8463f6556e215c49f068452674ef9027",
+      "ETHUSDT": "7c72c0bb55d4aac9460dde54eb73305b5d30bdec99ea4b500eac9e1319ddd7ba",
+      "SOLUSDT": "6f147463b504f5026d887e77306cfa629ee5feb8cbdb01923643133091da03ff"
+    },
+    "all_match_certified": true
+  },
+  "funding_authority": {
+    "source_root": ".research/arc01-data-authority-01/data/processed/arc01_funding",
+    "recomputed_partition_sha256": {
+      "BTCUSDT": "700b0c4c7e5ffa9dbe82cd84e98be9f505bce6f1792d33d0eae88d07a7585855",
+      "ETHUSDT": "2edf501ea69807bbf67cdd519e53de18c8dea25ea8bdf009beb88ef2e2693943",
+      "SOLUSDT": "6b16d13f5115f906f9ceb4f5a418f7a541c37609e780cfbad0d52ed565808f85"
+    },
+    "all_match_certified": true
+  },
+  "builder_environment_failure_assessment": {
+    "test": "tests/.../test_oi_full_history_v2_pit.py::test_2024_06_05_contamination_never_reaches_canonical",
+    "builder_label": "unrelated environmental failure (local data/processed/oi_full_history_v2 absent in the builder worktree)",
+    "independent_finding": "the OI V2 dataset is NOT present in the builder worktree but IS present in the main repository data root, and every OI/price authority digest required by ARC-01 reproduces byte-for-byte from that shared data",
+    "is_arc01_dependency_satisfied": true,
+    "classification": "EXPECTED_ENVIRONMENT_DATA_ABSENCE",
+    "not_a_critical_unverified_dependency": true,
+    "residual_risk": "the reused partitions are bound via certified manifest records; the independent verifier re-hashed the actual data and confirmed equality"
+  },
+  "verdict": "PASS"
+}

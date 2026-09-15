@@ -1,0 +1,48 @@
+{
+  "data_authority_commit": "6e42dd9d4c19800925fd555999686d1e2b4ef47e",
+  "data_authority_commit_exists": true,
+  "expected_manifest_sha256": "d698e3d830651988c98359734ebb848efa8fa7bff4103bb44f58fb82b885df5e",
+  "expected_spec_sha256": "89b8590ccde0d90ae35dfe5f91d9dad706622a8004d77ef54c35c72c9cc0b313",
+  "manifest_blob": {
+    "blob_oid": "8d9665f77aeb7ea078ee799fe82a1465a2429f96",
+    "object_type": "blob",
+    "path": "docs/arc01-prereg-01/ARC01_MANIFEST_V1.json"
+  },
+  "manifest_sha256": "d698e3d830651988c98359734ebb848efa8fa7bff4103bb44f58fb82b885df5e",
+  "manifest_sha_match": true,
+  "note": "verifier worktree created from the exact prereg commit; no builder untracked files consumed",
+  "post_freeze_mutation_required_to_interpret_economics": false,
+  "prereg_commit_exists": true,
+  "prereg_commit_file_set": [
+    "context/retrieval-log.md",
+    "docs/arc01-prereg-01/ARC01_CONTROL_PLAN.json",
+    "docs/arc01-prereg-01/ARC01_FAILED_MEMORY_COLLISION_REVIEW.md",
+    "docs/arc01-prereg-01/ARC01_MANIFEST_V1.json",
+    "docs/arc01-prereg-01/ARC01_MECHANISM_EVIDENCE.md",
+    "docs/arc01-prereg-01/ARC01_PIT_CONTRACT.json",
+    "docs/arc01-prereg-01/ARC01_PREREGISTRATION.md",
+    "docs/arc01-prereg-01/ARC01_PREREG_VERIFICATION_PACKAGE.json",
+    "docs/arc01-prereg-01/ARC01_ROBUSTNESS_PLAN.json",
+    "docs/arc01-prereg-01/ARC01_SELECTION_RATIONALE.md",
+    "docs/arc01-prereg-01/ARC01_SPEC_V1.json",
+    "docs/arc01-prereg-01/ARC01_STATISTICAL_GATES.json",
+    "docs/arc01-prereg-01/RUN_REPORT.json",
+    "docs/arc01-prereg-01/RUN_REPORT.md",
+    "scripts/verify_arc01_prereg.py",
+    "src/trading_bot/research/arc01/prereg_reference.py",
+    "tests/unit/research/test_arc01_preregistration.py"
+  ],
+  "prereg_commit_head_at_worktree_creation": true,
+  "prereg_is_descendant_of_data_authority": true,
+  "schema": "ARC01_GIT_AUTHORITY/1.0.0",
+  "spec_blob": {
+    "blob_oid": "ba9bee98c1fc1a99b289f1c11340d41583a50bcf",
+    "object_type": "blob",
+    "path": "docs/arc01-prereg-01/ARC01_SPEC_V1.json"
+  },
+  "spec_sha256": "89b8590ccde0d90ae35dfe5f91d9dad706622a8004d77ef54c35c72c9cc0b313",
+  "spec_sha_match": true,
+  "target_prereg_commit": "fa15fb4f300815f56bf14e503d1a147cb73f27a6",
+  "verifier_branch": "audit/arc01-prereg-verification-01",
+  "verifier_worktree": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc01-prereg-verifier-01"
+}

@@ -1,0 +1,84 @@
+{
+  "all_bindings_reproduced": true,
+  "expected": {
+    "dataset_sha256": "5f4845f5062e68353ef421b9687bf728a56693951e2f74e17221a8e3373b62ec",
+    "oi": {
+      "ledger_sha256": "bb2b43c27a88bf9fe3ec22573903a61007f046ddc1256b5caa3e788cba15e714",
+      "manifest_sha256": "bdf3088caa08120784964f44e5fa5e81f0a1b6bacee99282a012f3a5dc08ef89",
+      "oi_full_history_dataset_sha256_v2": "16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99"
+    },
+    "partition_sha256": {
+      "BTCUSDT": "700b0c4c7e5ffa9dbe82cd84e98be9f505bce6f1792d33d0eae88d07a7585855",
+      "ETHUSDT": "2edf501ea69807bbf67cdd519e53de18c8dea25ea8bdf009beb88ef2e2693943",
+      "SOLUSDT": "6b16d13f5115f906f9ceb4f5a418f7a541c37609e780cfbad0d52ed565808f85"
+    },
+    "price_fingerprint": "e1c2462a6aa9ba0c921154d259a28c49be1e2fc58a544dbd97af8ecabef52168",
+    "price_per_asset": {
+      "BTCUSDT": "41e9238666a0b98c02cffd19d36a590b8463f6556e215c49f068452674ef9027",
+      "ETHUSDT": "7c72c0bb55d4aac9460dde54eb73305b5d30bdec99ea4b500eac9e1319ddd7ba",
+      "SOLUSDT": "6f147463b504f5026d887e77306cfa629ee5feb8cbdb01923643133091da03ff"
+    }
+  },
+  "funding": {
+    "dataset_sha256_match": true,
+    "declared_dataset_sha256": "5f4845f5062e68353ef421b9687bf728a56693951e2f74e17221a8e3373b62ec",
+    "partitions": {
+      "BTCUSDT": {
+        "expected_sha256": "700b0c4c7e5ffa9dbe82cd84e98be9f505bce6f1792d33d0eae88d07a7585855",
+        "match": true,
+        "present": true,
+        "rows": 7347,
+        "sha256": "700b0c4c7e5ffa9dbe82cd84e98be9f505bce6f1792d33d0eae88d07a7585855"
+      },
+      "ETHUSDT": {
+        "expected_sha256": "2edf501ea69807bbf67cdd519e53de18c8dea25ea8bdf009beb88ef2e2693943",
+        "match": true,
+        "present": true,
+        "rows": 7347,
+        "sha256": "2edf501ea69807bbf67cdd519e53de18c8dea25ea8bdf009beb88ef2e2693943"
+      },
+      "SOLUSDT": {
+        "expected_sha256": "6b16d13f5115f906f9ceb4f5a418f7a541c37609e780cfbad0d52ed565808f85",
+        "match": true,
+        "present": true,
+        "rows": 6652,
+        "sha256": "6b16d13f5115f906f9ceb4f5a418f7a541c37609e780cfbad0d52ed565808f85"
+      }
+    }
+  },
+  "oi": {
+    "declared_fingerprint": "16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99",
+    "declared_manifest_sha256": "bdf3088caa08120784964f44e5fa5e81f0a1b6bacee99282a012f3a5dc08ef89",
+    "fingerprint_match": true,
+    "ledger_match": true,
+    "ledger_sha256_rederived_from_bytes": true,
+    "manifest_match": true,
+    "present": true,
+    "quality_status": "PASS_WITH_EXPLICIT_GAPS",
+    "recomputed_fingerprint": "16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99",
+    "recomputed_ledger_sha256": "bb2b43c27a88bf9fe3ec22573903a61007f046ddc1256b5caa3e788cba15e714"
+  },
+  "price": {
+    "declared_fingerprint": null,
+    "expected_fingerprint": "e1c2462a6aa9ba0c921154d259a28c49be1e2fc58a544dbd97af8ecabef52168",
+    "manifest_present": true,
+    "per_asset": {
+      "BTCUSDT": {
+        "match": true,
+        "present": true,
+        "sha256": "41e9238666a0b98c02cffd19d36a590b8463f6556e215c49f068452674ef9027"
+      },
+      "ETHUSDT": {
+        "match": true,
+        "present": true,
+        "sha256": "7c72c0bb55d4aac9460dde54eb73305b5d30bdec99ea4b500eac9e1319ddd7ba"
+      },
+      "SOLUSDT": {
+        "match": true,
+        "present": true,
+        "sha256": "6f147463b504f5026d887e77306cfa629ee5feb8cbdb01923643133091da03ff"
+      }
+    }
+  },
+  "schema": "ARC01_DATA_BINDING_VERIFICATION/1.0.0"
+}

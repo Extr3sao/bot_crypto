@@ -1,0 +1,152 @@
+{
+  "schema": "ARC01_PIT_INDEPENDENT_TEST/1.0.0",
+  "checks_total": 36,
+  "checks_passed": 36,
+  "checks": {
+    "BASELINE_NON_VACUOUS": {
+      "pass": true,
+      "detail": "status=OK emitted=False reason=FUNDING_NOT_EXTREME (state recomputable)"
+    },
+    "FUTURE_MUTATION_AFTER_T_INVARIANT": {
+      "pass": true,
+      "detail": "signal identical after injecting t>T rows: True"
+    },
+    "EXTREME_FIXTURE_REACHES_OI_STAGE": {
+      "pass": true,
+      "detail": "clean extreme fixture emits SHORT (contrarian to +funding); z=66.100"
+    },
+    "OI_AFTER_T_REJECTED": {
+      "pass": true,
+      "detail": "oi_now.timestamp>T -> OI_MISSING_OR_STALE"
+    },
+    "PAST_WINDOW_MUTATION_DETECTED": {
+      "pass": true,
+      "detail": "z changed 1.041217929046566 -> -3.4360953445864384 (no caching)"
+    },
+    "CURRENT_SETTLEMENT_MUTATION_ALWAYS_MOVES_Z": {
+      "pass": true,
+      "detail": "z changed 1.041217929046566 -> 5.5924376286187325"
+    },
+    "SINGLE_POINT_ROBUSTNESS_INSENSITIVITY_DOCUMENTED": {
+      "pass": true,
+      "detail": "one out-of-window point mutated -> z unchanged: the PIT contract's 'any eligible mutation must move the state' claim is an OVER-CLAIM under robust estimators (recorded as documentation defect, not an execution defect)"
+    },
+    "OLDER_THAN_LOOKBACK_MUTATION_INVARIANT": {
+      "pass": true,
+      "detail": "outside 60d window -> state unchanged"
+    },
+    "BOUNDARY_INCLUSIVE_POS": {
+      "pass": true,
+      "detail": "z=+2.0 -> SHORT, z=2.0-eps -> None"
+    },
+    "BOUNDARY_INCLUSIVE_NEG": {
+      "pass": true,
+      "detail": "z=-2.0 -> LONG, z=-2.0+eps -> None"
+    },
+    "MAD0_DEGENERATE_FAILS_CLOSED": {
+      "pass": true,
+      "detail": "degenerate window -> SCALE_NONPOSITIVE"
+    },
+    "MAD0_STDEV_FALLBACK_USED": {
+      "pass": true,
+      "detail": "fallback=True scale=1.8257418583505536e-05 status=OK"
+    },
+    "INSUFFICIENT_HISTORY_FAILS_CLOSED": {
+      "pass": true,
+      "detail": "89 obs < 90 -> INSUFFICIENT_FUNDING_HISTORY"
+    },
+    "OI_NOW_STALE_FAILS_CLOSED": {
+      "pass": true,
+      "detail": "601s stale -> OI_MISSING_OR_STALE"
+    },
+    "OI_NOW_600s_ACCEPTED": {
+      "pass": true,
+      "detail": "exactly 600s stale -> accepted (bound is <=600s)"
+    },
+    "OI_REF_STALE_FAILS_CLOSED": {
+      "pass": true,
+      "detail": "reference stale -> OI_REFERENCE_MISSING_OR_STALE"
+    },
+    "OI_REF_NONPOSITIVE_FAILS_CLOSED": {
+      "pass": true,
+      "detail": "ref<=0 -> OI_REFERENCE_INVALID"
+    },
+    "OI_NEUTRAL_NOT_CONFIRMING": {
+      "pass": true,
+      "detail": "oi_change==0 -> not expanding"
+    },
+    "OI_CONTRACTION_NOT_CONFIRMING": {
+      "pass": true,
+      "detail": "oi_change<0 -> not expanding"
+    },
+    "PRECEDENCE_FIRST_MATCH": {
+      "pass": true,
+      "detail": "4 simultaneous failures -> first frozen reason = OUTSIDE_COMMON_WINDOW"
+    },
+    "PRECEDENCE_INSUFFICIENT_HISTORY_FIRST": {
+      "pass": true,
+      "detail": "-> INSUFFICIENT_FUNDING_HISTORY"
+    },
+    "PRECEDENCE_OI_STALE_AFTER_FUNDING": {
+      "pass": true,
+      "detail": "extreme funding + missing OI -> OI_MISSING_OR_STALE"
+    },
+    "PRECEDENCE_POSITION_ALREADY_OPEN": {
+      "pass": true,
+      "detail": "-> POSITION_ALREADY_OPEN"
+    },
+    "PRECEDENCE_FORWARD_GUARD_LAST": {
+      "pass": true,
+      "detail": "-> INSUFFICIENT_FORWARD_PRICE_DATA"
+    },
+    "DIRECTION_CONTRARIAN_SEMANTICS": {
+      "pass": true,
+      "detail": "+extreme funding -> SHORT (short the crowd), -extreme funding -> LONG (long the crowd); not momentum"
+    },
+    "ENTRY_EXACT_HOUR_SETTLEMENT": {
+      "pass": true,
+      "detail": "T=1699999200000 (exact hour) -> entry bar open T+1h=1700002800000 (NOT same bar)"
+    },
+    "ENTRY_JITTERED_SETTLEMENT": {
+      "pass": true,
+      "detail": "T=1699999200002 (+2ms jitter) -> entry bar open T+1h; same result as aligned"
+    },
+    "SAME_BAR_ENTRY_REJECTED": {
+      "pass": true,
+      "detail": "entry_bar <= decision_time raises (PIT violation rejected)"
+    },
+    "FORWARD_GUARD_SUPPRESSES": {
+      "pass": true,
+      "detail": "T=end_ms, extreme+expanding, exit anchor beyond end_ms -> INSUFFICIENT_FORWARD_PRICE_DATA (no truncated position)"
+    },
+    "CASHFLOW_SIGN_BINANCE_USDM": {
+      "pass": true,
+      "detail": "LONG pays on +funding (-0.00030000000000000003), SHORT receives (0.00030000000000000003), LONG receives on -funding (0.0001)"
+    },
+    "WINDOWS_DISJOINT": {
+      "pass": true,
+      "detail": "info_max=1788973200000 <= T=1788998400002 < entry=1789002000000 < cashflow_min=1789030800000; 9 settlements in the frozen 72h hold"
+    },
+    "HOLD_SPANS_AT_LEAST_9_SETTLEMENTS_8H": {
+      "pass": true,
+      "detail": "72h hold crosses 9 nominal 8h settlements in the (entry, exit] cashflow window"
+    },
+    "NULL_CONTROL_DETERMINISTIC": {
+      "pass": true,
+      "detail": "deterministic=True; asset-sensitive=True"
+    },
+    "DIFFERENTIAL_VS_BUILDER_REFERENCE": {
+      "pass": true,
+      "detail": "400 randomized fixtures, mismatches=0"
+    },
+    "TRANSFORM_DIFFERENTIALS": {
+      "pass": true,
+      "detail": "cashflow=True null=True exit_anchor=True"
+    },
+    "PRICE_CONTEXT_NONE_IN_CODE": {
+      "pass": true,
+      "detail": "no price/indicator token in the decision functions (found=[])"
+    }
+  },
+  "note": "fixture-level and structural only; no economic quantity computed"
+}

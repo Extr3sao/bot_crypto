@@ -1,0 +1,32 @@
+{
+  "hidden_runtime_defaults": [],
+  "missing_fields": [],
+  "present_count": 23,
+  "required_fields": [
+    "hypothesis_id",
+    "economics",
+    "market",
+    "data_authority",
+    "common_window",
+    "decision_cadence",
+    "funding_transform",
+    "oi_transform",
+    "price_context",
+    "signal_rules",
+    "entry",
+    "exit",
+    "position_policies",
+    "return_definition",
+    "cost_model",
+    "funding_cashflow_accounting",
+    "pit_rules",
+    "sample_rules",
+    "controls",
+    "statistical_gates",
+    "robustness_plan",
+    "orthogonality",
+    "kill_rule"
+  ],
+  "schema": "ARC01_SPEC_COMPLETENESS_AUDIT/1.0.0",
+  "spec_complete": true
+}

@@ -1,0 +1,31 @@
+{
+  "schema": "ARC01_VERIFIER_PROGRESS/1.0.0",
+  "stage": "COMPLETE",
+  "target_prereg_commit": "fa15fb4f300815f56bf14e503d1a147cb73f27a6",
+  "FINAL_VERDICT": "PASS_INDEPENDENT_PREREG_VERIFICATION",
+  "stages_done": [
+    "git_authority",
+    "data_binding",
+    "performance_contamination",
+    "spec_completeness",
+    "decision_cadence",
+    "entry_exit_semantics",
+    "funding_accounting",
+    "ex_funding_gate",
+    "pit_independent_battery",
+    "no_signal_precedence",
+    "statistical_gates_reproducibility",
+    "controls",
+    "robustness",
+    "orthogonality",
+    "drawdown_assessment",
+    "reused_oi_price_authority",
+    "builder_environment_failure"
+  ],
+  "builder_artifacts_modified": false,
+  "economics_executed": false,
+  "backtests": 0,
+  "FALSE_SUCCESS": 0,
+  "critical_defects": [],
+  "NEXT": "ARC01_PRIMARY_DISCOVERY_01"
+}

@@ -1,0 +1,154 @@
+{
+  "builder_artifacts_modified": false,
+  "checks": {
+    "BASELINE_NON_VACUOUS": {
+      "detail": "status=OK emitted=False reason=FUNDING_NOT_EXTREME (state recomputable)",
+      "pass": true
+    },
+    "BOUNDARY_INCLUSIVE_NEG": {
+      "detail": "z=-2.0 -> LONG, z=-2.0+eps -> None",
+      "pass": true
+    },
+    "BOUNDARY_INCLUSIVE_POS": {
+      "detail": "z=+2.0 -> SHORT, z=2.0-eps -> None",
+      "pass": true
+    },
+    "CASHFLOW_SIGN_BINANCE_USDM": {
+      "detail": "LONG pays on +funding (-0.00030000000000000003), SHORT receives (0.00030000000000000003), LONG receives on -funding (0.0001)",
+      "pass": true
+    },
+    "CURRENT_SETTLEMENT_MUTATION_ALWAYS_MOVES_Z": {
+      "detail": "z changed 1.041217929046566 -> 5.5924376286187325",
+      "pass": true
+    },
+    "DIFFERENTIAL_VS_BUILDER_REFERENCE": {
+      "detail": "400 randomized fixtures, mismatches=0",
+      "pass": true
+    },
+    "DIRECTION_CONTRARIAN_SEMANTICS": {
+      "detail": "+extreme funding -> SHORT (short the crowd), -extreme funding -> LONG (long the crowd); not momentum",
+      "pass": true
+    },
+    "ENTRY_EXACT_HOUR_SETTLEMENT": {
+      "detail": "T=1699999200000 (exact hour) -> entry bar open T+1h=1700002800000 (NOT same bar)",
+      "pass": true
+    },
+    "ENTRY_JITTERED_SETTLEMENT": {
+      "detail": "T=1699999200002 (+2ms jitter) -> entry bar open T+1h; same result as aligned",
+      "pass": true
+    },
+    "EXTREME_FIXTURE_REACHES_OI_STAGE": {
+      "detail": "clean extreme fixture emits SHORT (contrarian to +funding); z=66.100",
+      "pass": true
+    },
+    "FORWARD_GUARD_SUPPRESSES": {
+      "detail": "T=end_ms, extreme+expanding, exit anchor beyond end_ms -> INSUFFICIENT_FORWARD_PRICE_DATA (no truncated position)",
+      "pass": true
+    },
+    "FUTURE_MUTATION_AFTER_T_INVARIANT": {
+      "detail": "signal identical after injecting t>T rows: True",
+      "pass": true
+    },
+    "HOLD_SPANS_AT_LEAST_9_SETTLEMENTS_8H": {
+      "detail": "72h hold crosses 9 nominal 8h settlements in the (entry, exit] cashflow window",
+      "pass": true
+    },
+    "INSUFFICIENT_HISTORY_FAILS_CLOSED": {
+      "detail": "89 obs < 90 -> INSUFFICIENT_FUNDING_HISTORY",
+      "pass": true
+    },
+    "MAD0_DEGENERATE_FAILS_CLOSED": {
+      "detail": "degenerate window -> SCALE_NONPOSITIVE",
+      "pass": true
+    },
+    "MAD0_STDEV_FALLBACK_USED": {
+      "detail": "fallback=True scale=1.8257418583505536e-05 status=OK",
+      "pass": true
+    },
+    "NULL_CONTROL_DETERMINISTIC": {
+      "detail": "deterministic=True; asset-sensitive=True",
+      "pass": true
+    },
+    "OI_AFTER_T_REJECTED": {
+      "detail": "oi_now.timestamp>T -> OI_MISSING_OR_STALE",
+      "pass": true
+    },
+    "OI_CONTRACTION_NOT_CONFIRMING": {
+      "detail": "oi_change<0 -> not expanding",
+      "pass": true
+    },
+    "OI_NEUTRAL_NOT_CONFIRMING": {
+      "detail": "oi_change==0 -> not expanding",
+      "pass": true
+    },
+    "OI_NOW_600s_ACCEPTED": {
+      "detail": "exactly 600s stale -> accepted (bound is <=600s)",
+      "pass": true
+    },
+    "OI_NOW_STALE_FAILS_CLOSED": {
+      "detail": "601s stale -> OI_MISSING_OR_STALE",
+      "pass": true
+    },
+    "OI_REF_NONPOSITIVE_FAILS_CLOSED": {
+      "detail": "ref<=0 -> OI_REFERENCE_INVALID",
+      "pass": true
+    },
+    "OI_REF_STALE_FAILS_CLOSED": {
+      "detail": "reference stale -> OI_REFERENCE_MISSING_OR_STALE",
+      "pass": true
+    },
+    "OLDER_THAN_LOOKBACK_MUTATION_INVARIANT": {
+      "detail": "outside 60d window -> state unchanged",
+      "pass": true
+    },
+    "PAST_WINDOW_MUTATION_DETECTED": {
+      "detail": "z changed 1.041217929046566 -> -3.4360953445864384 (no caching)",
+      "pass": true
+    },
+    "PRECEDENCE_FIRST_MATCH": {
+      "detail": "4 simultaneous failures -> first frozen reason = OUTSIDE_COMMON_WINDOW",
+      "pass": true
+    },
+    "PRECEDENCE_FORWARD_GUARD_LAST": {
+      "detail": "-> INSUFFICIENT_FORWARD_PRICE_DATA",
+      "pass": true
+    },
+    "PRECEDENCE_INSUFFICIENT_HISTORY_FIRST": {
+      "detail": "-> INSUFFICIENT_FUNDING_HISTORY",
+      "pass": true
+    },
+    "PRECEDENCE_OI_STALE_AFTER_FUNDING": {
+      "detail": "extreme funding + missing OI -> OI_MISSING_OR_STALE",
+      "pass": true
+    },
+    "PRECEDENCE_POSITION_ALREADY_OPEN": {
+      "detail": "-> POSITION_ALREADY_OPEN",
+      "pass": true
+    },
+    "PRICE_CONTEXT_NONE_IN_CODE": {
+      "detail": "no price/indicator token in the decision functions (found=[])",
+      "pass": true
+    },
+    "SAME_BAR_ENTRY_REJECTED": {
+      "detail": "entry_bar <= decision_time raises (PIT violation rejected)",
+      "pass": true
+    },
+    "SINGLE_POINT_ROBUSTNESS_INSENSITIVITY_DOCUMENTED": {
+      "detail": "one out-of-window point mutated -> z unchanged: the PIT contract's 'any eligible mutation must move the state' claim is an OVER-CLAIM under robust estimators (recorded as documentation defect, not an execution defect)",
+      "pass": true
+    },
+    "TRANSFORM_DIFFERENTIALS": {
+      "detail": "cashflow=True null=True exit_anchor=True",
+      "pass": true
+    },
+    "WINDOWS_DISJOINT": {
+      "detail": "info_max=1788973200000 <= T=1788998400002 < entry=1789002000000 < cashflow_min=1789030800000; 9 settlements in the frozen 72h hold",
+      "pass": true
+    }
+  },
+  "checks_passed": 36,
+  "checks_total": 36,
+  "harness": "verifier_independent_tests.py",
+  "note": "fixture-level and structural only; no economic quantity computed",
+  "schema": "ARC01_PIT_INDEPENDENT_TEST/1.0.0"
+}
