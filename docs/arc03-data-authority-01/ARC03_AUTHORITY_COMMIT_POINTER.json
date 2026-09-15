@@ -1,0 +1,116 @@
+{
+  "arc03_backtests": 0,
+  "arc03_executions": 0,
+  "arc03_performance_observed": false,
+  "artifact_blobs": {
+    "ARC03_BASE_SELECTION.json": {
+      "blob_oid": "a52cba15267c0c971d5867600430063136734e03",
+      "present_at_authority_commit": true,
+      "sha256": null
+    },
+    "ARC03_COMMON_CAUSAL_WINDOW.json": {
+      "blob_oid": "92d0483bccd45c86e1a27e6f61b45b540d38084c",
+      "present_at_authority_commit": true,
+      "sha256": null
+    },
+    "ARC03_DATASET_FINGERPRINT.json": {
+      "blob_oid": "89cffe533a9e5478aa923308aa71b9dbca65d2dc",
+      "present_at_authority_commit": true,
+      "sha256": null
+    },
+    "ARC03_DATA_AUTHORITY.json": {
+      "blob_oid": "5d5f6237f1b8aff1b65d2f66aee3e6e68c516c14",
+      "present_at_authority_commit": true,
+      "sha256": null
+    },
+    "ARC03_DATA_DETERMINISM.json": {
+      "blob_oid": "4b88048d384d0c2e480b0724887e1262d48fc3cd",
+      "present_at_authority_commit": true,
+      "sha256": null
+    },
+    "ARC03_DATA_INVENTORY.json": {
+      "blob_oid": "62e9cf2a051a7104606c29a8c778737d5c30f945",
+      "present_at_authority_commit": true,
+      "sha256": null
+    },
+    "ARC03_DATA_MANIFEST.json": {
+      "blob_oid": "0a7b99af037837792215b58b038ca8b702844570",
+      "present_at_authority_commit": true,
+      "sha256": null
+    },
+    "ARC03_DATA_QUALITY_LEDGER.jsonl": {
+      "blob_oid": "172056cfdd004ad271cf4184be8f09a18196a67c",
+      "present_at_authority_commit": true,
+      "sha256": null
+    },
+    "ARC03_EXISTING_DATA_REUSE_ASSESSMENT.json": {
+      "blob_oid": "ea2f3711bbd1b1b1e84cd915b04e90832c7f2e49",
+      "present_at_authority_commit": true,
+      "sha256": null
+    },
+    "ARC03_MECHANISM_AUTHORITY.md": {
+      "blob_oid": "d3b8b9c9b05a51fcb42c381012c2d551564eb591",
+      "present_at_authority_commit": true,
+      "sha256": null
+    },
+    "ARC03_MUTATION_SENSITIVITY.json": {
+      "blob_oid": "fee4f6699c9960a7aed5f1f3f92b819bd7f17b38",
+      "present_at_authority_commit": true,
+      "sha256": null
+    },
+    "ARC03_PIT_AUTHORITY.json": {
+      "blob_oid": "35f318b7f0ec9af55b7e01d54993c94e3c33bfda",
+      "present_at_authority_commit": true,
+      "sha256": null
+    },
+    "ARC03_PIT_INDEPENDENT_TESTS.json": {
+      "blob_oid": "7e2f3ab592e7fb8aaa6cc474546462d5dadd846b",
+      "present_at_authority_commit": true,
+      "sha256": null
+    },
+    "ARC03_PROVIDER_COVERAGE.json": {
+      "blob_oid": "e7c5fe2da9fb0bd963a8b7253b3f95716c1bdf9c",
+      "present_at_authority_commit": true,
+      "sha256": null
+    },
+    "ARC03_PROVIDER_COVERAGE_SUPPLEMENT.json": {
+      "blob_oid": "2225ee5ec52909aacbf7a54aff1d97ae8745566e",
+      "present_at_authority_commit": true,
+      "sha256": null
+    },
+    "ARC03_RAW_LEDGER.jsonl": {
+      "blob_oid": "86d80dbdb9f5336c342b41db900d962fa1fd083d",
+      "present_at_authority_commit": true,
+      "sha256": null
+    },
+    "ARC03_SOURCE_REGISTRY.md": {
+      "blob_oid": "31d0c66d830cf3b86d0486add37bd100d62e162a",
+      "present_at_authority_commit": true,
+      "sha256": null
+    }
+  },
+  "assets": [
+    "BTCUSDT",
+    "ETHUSDT",
+    "SOLUSDT"
+  ],
+  "authority_commit": "33b7b4f620300f05a6240b924cb812201dc22542",
+  "authority_commit_subject": "[ARC03-DATA-001] establish participation-shock data authority",
+  "checkpoint": "ARC03-DATA-002",
+  "family": "binance_usdm_klines_5m",
+  "frozen_identity": {
+    "daily_supplements_sha256": "9ff3d412a750348760015430b517d02d845878e218c5f20c8a3fb514ef772e80",
+    "dataset_sha256": "1a6ad11712ce436ce9d413d6b53162d66996778cd98643ef7c3eb746a54745ef",
+    "normalizer_version": "1.0.0",
+    "partition_sha256": {
+      "BTCUSDT": "eb75ab97881fd941c05d1b188778f1a832ab404c59f5991eff12ead779e4ab02",
+      "ETHUSDT": "24c886902760b2e2c873df7721c12098e65b768762f55e2144d990deac04c211",
+      "SOLUSDT": "d872bc7dc8a52eb697962516fbd24a636483acd43e524cdbbf09985d2720f548"
+    },
+    "raw_files_sha256": "abfe8caee35ff441d71127430a8547eba98e54a7a722681db908565b720996a9",
+    "schema_version": "1.0.0"
+  },
+  "generated_from_commit": "367f58f1c8a45a4f56459f4564baf2e73ac494ef",
+  "note": "ARCO3_DATA_MANIFEST.json deliberately records authority_commit = null and report_commit = null: a commit cannot contain its own SHA. This pointer carries the commit identity without altering the frozen dataset digest.",
+  "report_commit": null
+}

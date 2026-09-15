@@ -143,12 +143,14 @@ def main(argv: list[str] | None = None) -> int:
     ]
 
     # --------------------------------------------------------- raw ledger / checksums
+    # Raw archives are part of the DATA ROOT (not of the audited commit): the audited
+    # commit carries the authority artifacts, the data root carries the bytes they bind.
     bad_raw: list[dict[str, Any]] = []
     for e in ledger:
         if e.get("status") != "VERIFIED":
             continue
         rel = e.get("raw_path")
-        p = target / rel if rel else None
+        p = data_root / rel if rel else None
         if p is None or not p.exists():
             bad_raw.append({"raw_path": rel, "error": "MISSING"})
             continue
@@ -241,7 +243,7 @@ def main(argv: list[str] | None = None) -> int:
     bad_sup: list[dict[str, Any]] = []
     for s in supplements:
         d = s["date"]
-        p = target / DAILY_RAW_RELPATH / s["symbol"] / d / f"{s['symbol']}-5m-{d}.zip"
+        p = data_root / DAILY_RAW_RELPATH / s["symbol"] / d / f"{s['symbol']}-5m-{d}.zip"
         if not p.exists():
             bad_sup.append({"symbol": s["symbol"], "date": d, "error": "MISSING"})
             continue
@@ -284,6 +286,7 @@ def main(argv: list[str] | None = None) -> int:
     rep.add("PIT_BATTERY", passed == len(checks), {"passed": passed, "total": len(checks)})
 
     # --------------------------------------------------------- clean worktree
+    report_rel = str(REL / "ARC03_PORTABLE_DATA_VERIFICATION.json").replace("\\", "/")
     try:
         out = subprocess.run(
             ["git", "-C", str(target), "status", "--porcelain"],
@@ -292,7 +295,11 @@ def main(argv: list[str] | None = None) -> int:
             timeout=60,
             check=False,
         )
-        porcelain = [l for l in out.stdout.splitlines() if l.strip()]
+        # the verifier's own report is excluded, otherwise writing evidence could never
+        # coexist with a clean-worktree claim
+        porcelain = [
+            l for l in out.stdout.splitlines() if l.strip() and report_rel not in l.replace("\\", "/")
+        ]
         head = subprocess.run(
             ["git", "-C", str(target), "rev-parse", "HEAD"],
             capture_output=True,
@@ -302,7 +309,11 @@ def main(argv: list[str] | None = None) -> int:
         ).stdout.strip()
     except Exception as exc:  # noqa: BLE001
         porcelain, head = [f"git-unavailable:{exc}"], None
-    rep.add("CLEAN_WORKTREE", not porcelain, {"dirty_entries": porcelain[:20], "head": head})
+    rep.add(
+        "CLEAN_WORKTREE",
+        not porcelain,
+        {"dirty_entries": porcelain[:20], "head": head, "ignored_for_this_check": [report_rel]},
+    )
 
     verdict = "PASS" if rep.ok else "FAIL"
     report = {
