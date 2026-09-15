@@ -1,0 +1,52 @@
+{
+  "schema": "ARC01_ROBUSTNESS_PLAN/1.0.0",
+  "hypothesis_id": "ARC-01-FUNDING-CROWDING-UNWIND-01",
+  "checkpoint": "ARC01-PREREG-001",
+  "status": "FROZEN",
+  "executed_now": false,
+  "execution_condition": "runs ONLY if the primary discovery satisfies ALL critical gates; if the primary fails, none of these analyses may be run, reported as leads, or used to justify a retest",
+  "primary_parameters_immutable": "the primary hypothesis parameters (60d funding lookback, min 90 obs, median/1.4826*MAD, thresholds +/-2.0, strict 24h OI expansion, NONE price context, next-bar-open entry, 72h hold, 10 bps primary cost, 3 assets) are immutable; robustness results can only qualify or falsify the frozen claim, never redefine it",
+  "robustness_analyses": [
+    {
+      "id": "R1_TIME_SPLITS",
+      "definition": "chronological halves, thirds and quartiles of the common window; plus a 3-fold expanding walk-forward (evaluate fold k using only decisions before fold k's start for any threshold-free bookkeeping; all signal parameters stay frozen)",
+      "reporting": "net expectancy, PF and N per split",
+      "requirement": "no requirement relaxes the primary gates; any split that is uniformly negative is reported as an explicit instability"
+    },
+    {
+      "id": "R2_ASSET_SPLITS",
+      "definition": "per-asset results and all leave-one-asset-out pooled results",
+      "reporting": "N, net expectancy, PF, ex-funding expectancy",
+      "requirement": "the pooled PASS must not depend entirely on a single asset"
+    },
+    {
+      "id": "R3_REGIME_SPLITS",
+      "definition": "frozen regime definitions computed without peeking at ARC-01 results: (a) funding-regime terciles by trailing 60d median |funding|, (b) volatility terciles by trailing 30d realized volatility of 1h log returns, (c) calendar-year splits. Tercile edges are computed once on the frozen window.",
+      "reporting": "net expectancy and N per regime cell",
+      "requirement": "any regime cell with N < 40 is reported as INSUFFICIENT_SAMPLE, never as a lead"
+    },
+    {
+      "id": "R4_COST_SENSITIVITY",
+      "definition": "the frozen 0/10/20/40 bps scenarios, reported as a monotone cost curve with the trade set held IDENTICAL across scenarios",
+      "requirement": "the curve must be monotone and the 10 bps conclusion must be reproducible from the same trade set (NET = GROSS + FUNDING_CASHFLOW - COST)"
+    },
+    {
+      "id": "R5_PARAMETER_NEIGHBOURHOOD",
+      "definition": "one-factor-at-a-time neighbourhood of the PRIMARY parameters, evaluated for stability of the SIGN of net expectancy only: funding lookback {30d, 60d, 90d}; funding threshold {1.5, 2.0, 2.5}; OI expansion window {12h, 24h, 48h}; holding period {24h, 48h, 72h, 120h}",
+      "requirement": ">= 60% of neighbourhood cells must keep a POSITIVE sign of net expectancy at 10 bps; a sign reversal in a MAJORITY of cells is reported as PARAMETER_FRAGILITY",
+      "hard_constraint": "these cells are DIAGNOSTIC ONLY; the primary parameters are NOT changed, no cell may become the new primary, and the neighbour best cell must never be reported as the ARC-01 result"
+    },
+    {
+      "id": "R6_CONCENTRATION",
+      "definition": "concentration by asset, calendar month, calendar year and single trade; plus leave-one-trade-out and leave-one-month-out re-estimation",
+      "requirement": "primary concentration gates must still hold after the worst single-month removal"
+    },
+    {
+      "id": "R7_SIGNAL_COUNT_STABILITY",
+      "definition": "NO_SIGNAL reason-code histogram over time, and the count of decisions surviving each eligibility stage",
+      "requirement": "report only; a collapse of signal density in a sub-period must be disclosed as an explicit coverage limitation"
+    }
+  ],
+  "forbidden_during_robustness": ["promoting a neighbourhood cell", "re-running the primary with modified parameters", "reporting any sub-cell as ARC-01's result", "using robustness outcomes to reset the preregistration"],
+  "output_location": "docs/arc01-prereg-01/robustness/ (created only at the later authorized checkpoint)"
+}

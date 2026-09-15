@@ -1,0 +1,62 @@
+{
+  "schema": "ARC01_CONTROL_PLAN/1.0.0",
+  "hypothesis_id": "ARC-01-FUNDING-CROWDING-UNWIND-01",
+  "checkpoint": "ARC01-PREREG-001",
+  "status": "FROZEN",
+  "purpose": "falsification controls frozen BEFORE discovery; each control must defeat the frozen critical gates. Controls are NOT alternate strategies and CANNOT be promoted, selected on, or used to reset ARC-01 parameters.",
+  "evaluation_rule": "each control is evaluated on exactly the same window, assets, cost model and gates as the primary discovery; a control that also satisfies ALL critical gates falsifies identification of the claimed mechanism",
+  "gates_reference": "docs/arc01-prereg-01/ARC01_STATISTICAL_GATES.json",
+  "controls": [
+    {
+      "id": "DIRECTION_CONTROL",
+      "name": "REVERSED_CONTRARIAN_DIRECTION",
+      "definition": "identical signal instants and eligibility, but the trade direction is REVERSED: SHORT where the primary rule says LONG and vice versa (equivalently direction_sign multiplied by -1)",
+      "falsification_target": "if trading WITH the crowded side (funding-extreme continuation) also passes all critical gates, the contrarian-unwind claim is not identified and ARC01 = DISCOVERY_FAIL",
+      "required_outcome": "MUST NOT satisfy all critical gates",
+      "note": "funding cashflow is re-evaluated with the reversed sign, so the control is also the carry-direction control"
+    },
+    {
+      "id": "TIMING_CONTROL",
+      "name": "TEMPORAL_SHIFT_DESTROYING_CAUSAL_ALIGNMENT",
+      "definition": "two variants, both frozen: (a) decision_time shifted by +8h, (b) decision_time shifted by -8h, i.e. the funding extreme is evaluated against OI/price context that is one settlement out of alignment with it, while every PIT rule is still respected (the shifted decision uses only data <= its own shifted T)",
+      "falsification_target": "if the mis-aligned variants pass, the observed effect would be attributable to a generic time-of-day/funding-cycle artefact rather than to the extreme-funding+crowding alignment",
+      "required_outcome": "NEITHER variant may satisfy all critical gates",
+      "implementation_note": "the shifted decisions are evaluated at the shifted instant's own eligible funding/OI/price state; no re-use of the primary decision's state is permitted"
+    },
+    {
+      "id": "OI_CONTROL",
+      "name": "FUNDING_ONLY_NO_CROWDING_CONFIRMATION",
+      "definition": "the OI confirmation leg is removed: trade every extreme-funding decision that passes the funding transform (z >= +2.0 => SHORT, z <= -2.0 => LONG), with identical entry/exit/cost/funding-cashflow rules",
+      "falsification_target": "if funding alone passes all critical gates, the crowding confirmation is NOT load-bearing: the composite is indistinguishable from the funding-only family already refuted as a standalone edge (FAILED_RESEARCH_MEMORY #8), so ARC01 = DISCOVERY_FAIL",
+      "required_outcome": "MUST NOT satisfy all critical gates"
+    },
+    {
+      "id": "NULL_CONTROL",
+      "name": "DETERMINISTIC_DIRECTION_NULL",
+      "definition": "identical signal instants (same eligibility filter), but the direction is replaced by a deterministic pseudo-random direction drawn from a frozen hash: direction = LONG if SHA256(f'{NULL_SEED}:{asset}:{decision_time_ms}') first byte is even, else SHORT, with NULL_SEED = 20260915; funding cashflow follows the null direction",
+      "falsification_target": "quantifies the expected outcome of the same holding/cost/cashflow machinery under a direction-less null; a passing null would indicate a mechanical artefact (e.g. zero-cost carry harvesting) rather than a directional edge",
+      "required_outcome": "MUST NOT satisfy all critical gates",
+      "determinism": "reproducible from the frozen seed; no runtime RNG"
+    }
+  ],
+  "secondary_diagnostics": [
+    {
+      "id": "NO_SIGNAL_LEDGER",
+      "definition": "the full reason-code histogram of NO_SIGNAL decisions (frozen precedence order)",
+      "role": "transparency only; cannot change PASS/FAIL"
+    },
+    {
+      "id": "EXPECTANCY_EX_FUNDING_CASHFLOW",
+      "definition": "the primary trade set re-measured with funding cashflow removed",
+      "role": "separates the unwind leg from the carry leg; also a CRITICAL gate in its own right (see statistical gates)"
+    },
+    {
+      "id": "GROSS_VS_NET_DECOMPOSITION",
+      "definition": "gross, funding-cashflow, cost and net components reported per asset and pooled",
+      "role": "distinguishes NO_GROSS_EDGE from EDGE_KILLED_BY_COSTS"
+    }
+  ],
+  "controls_are_not_alternate_strategies": true,
+  "controls_cannot_be_promoted": true,
+  "no_parameter_reuse_across_controls": "a control outcome may never be used to adjust ARC-01 thresholds, lookbacks, holding period, assets or cadence"
+}

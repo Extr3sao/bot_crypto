@@ -1,0 +1,121 @@
+{
+  "schema": "ARC01_PREREG_RUN_REPORT/1.0.0",
+  "checkpoint": "ARC01-PREREG-001",
+  "hypothesis_id": "ARC-01-FUNDING-CROWDING-UNWIND-01",
+  "task": "complete and freeze the ARC-01 preregistration (deterministic, falsifiable) with zero performance observation",
+  "branch": "research/arc01-data-authority-01",
+  "authority_commit": "6e42dd9d4c19800925fd555999686d1e2b4ef47e",
+  "generated_from_commit": "367f58f1c8a45a4f56459f4564baf2e73ac494ef",
+  "report_commit": null,
+  "prereg_commit": null,
+  "prereg_commit_tag": "[ARC01-PREREG-001] freeze funding crowding unwind discovery",
+  "pointer_semantics": "authority_commit = dataset authority; generated_from_commit = HEAD at generation; report_commit = null and prereg_commit = null (no circular self-reference) — PREREG_COMMIT is resolved externally from the commit tag",
+
+  "artifacts": {
+    "spec": "docs/arc01-prereg-01/ARC01_SPEC_V1.json",
+    "manifest": "docs/arc01-prereg-01/ARC01_MANIFEST_V1.json",
+    "preregistration": "docs/arc01-prereg-01/ARC01_PREREGISTRATION.md",
+    "mechanism_evidence": "docs/arc01-prereg-01/ARC01_MECHANISM_EVIDENCE.md",
+    "selection_rationale": "docs/arc01-prereg-01/ARC01_SELECTION_RATIONALE.md",
+    "pit_contract": "docs/arc01-prereg-01/ARC01_PIT_CONTRACT.json",
+    "control_plan": "docs/arc01-prereg-01/ARC01_CONTROL_PLAN.json",
+    "statistical_gates": "docs/arc01-prereg-01/ARC01_STATISTICAL_GATES.json",
+    "robustness_plan": "docs/arc01-prereg-01/ARC01_ROBUSTNESS_PLAN.json",
+    "failed_memory_collision_review": "docs/arc01-prereg-01/ARC01_FAILED_MEMORY_COLLISION_REVIEW.md",
+    "verification_package": "docs/arc01-prereg-01/ARC01_PREREG_VERIFICATION_PACKAGE.json",
+    "run_report_json": "docs/arc01-prereg-01/RUN_REPORT.json",
+    "run_report_md": "docs/arc01-prereg-01/RUN_REPORT.md",
+    "validator": "scripts/verify_arc01_prereg.py",
+    "reference_functions": "src/trading_bot/research/arc01/prereg_reference.py",
+    "tests": "tests/unit/research/test_arc01_preregistration.py"
+  },
+
+  "frozen_parameters": {
+    "assets": ["BTCUSDT", "ETHUSDT", "SOLUSDT"],
+    "market": "Binance USD-M USDT-margined perpetual",
+    "common_window_utc": ["2021-12-01T00:00:00Z", "2026-09-10T23:00:00Z"],
+    "decision_cadence": "one decision per certified funding settlement instant per asset",
+    "funding_transform": "robust z over trailing 60d closed window, min 90 obs, median location, 1.4826*MAD scale, MAD=0 -> sample stdev -> else NO_SIGNAL",
+    "funding_threshold": "z >= +2.0 -> SHORT, z <= -2.0 -> LONG (inclusive)",
+    "oi_confirmation": "oi_change_24h (same 5m slot vs 24h earlier, staleness <= 600s) STRICTLY > 0",
+    "price_context": "NONE",
+    "entry": "first 1h bar OPEN strictly after decision_time",
+    "exit": "1h bar OPEN 72h after entry bar open, unconditional",
+    "holding_period": "72h (9 settlements)",
+    "stop": "NONE",
+    "cooldown": "NONE",
+    "overlap_policy": "SKIP same-asset while open; independent per-asset; max 3 concurrent",
+    "cost_model": "10 bps primary round trip total; sensitivities 0/10/20/40 bps",
+    "funding_cashflow": "applied for settlements in (entry_time, exit_time]; information window ends at decision_time",
+    "controls": ["DIRECTION_CONTROL", "TIMING_CONTROL", "OI_CONTROL", "NULL_CONTROL"],
+    "critical_gates": 11,
+    "robustness_analyses": ["R1_TIME_SPLITS", "R2_ASSET_SPLITS", "R3_REGIME_SPLITS", "R4_COST_SENSITIVITY", "R5_PARAMETER_NEIGHBOURHOOD", "R6_CONCENTRATION", "R7_SIGNAL_COUNT_STABILITY"],
+    "kill_rule": "one preregistration -> one primary discovery; failure terminal"
+  },
+
+  "gates": {
+    "ARC01_SPEC_COMPLETE": "PASS",
+    "DATA_AUTHORITY_BOUND": "PASS",
+    "ECONOMIC_PARAMETERS_FROZEN": true,
+    "PIT_CONTRACT": "PASS",
+    "CONTROL_PLAN_FROZEN": true,
+    "STATISTICAL_GATES_FROZEN": true,
+    "ROBUSTNESS_PLAN_FROZEN": true,
+    "KILL_RULE_FROZEN": true,
+    "JSON_VALIDATION": "PASS",
+    "NO_ECONOMIC_OBSERVATION": "PASS",
+    "CONTRADICTIONS_FOUND": 0,
+    "FALSE_SUCCESS": 0
+  },
+
+  "verifier": {
+    "script": "scripts/verify_arc01_prereg.py",
+    "role": "BUILDER_CROSSCHECK (NOT independent verification)",
+    "portable": true,
+    "read_only": true,
+    "uses_real_data_for": ["data hash bindings only"],
+    "uses_synthetic_fixtures_for": ["PIT adversarial tests", "rule-semantics tests (threshold inclusivity, MAD==0, staleness, precedence, forward guard, cashflow sign/disjointness, null control determinism)"],
+    "no_performance_computation": true
+  },
+
+  "economics": {
+    "ARC01_BACKTESTS": 0,
+    "ARC01_EXECUTIONS": 0,
+    "ARC01_PERFORMANCE_OBSERVED": false,
+    "FALSE_SUCCESS": 0
+  },
+
+  "no_peek_compliance": {
+    "future_returns_inspected": false,
+    "pnl_inspected": false,
+    "sharpe_inspected": false,
+    "sortino_inspected": false,
+    "profit_factor_inspected": false,
+    "expectancy_inspected": false,
+    "win_rate_inspected": false,
+    "trade_outcomes_inspected": false,
+    "performance_by_asset_inspected": false,
+    "parameter_sweep_run": false,
+    "threshold_optimization_run": false,
+    "lookback_optimization_run": false,
+    "holding_period_optimization_run": false,
+    "best_regime_selection_run": false,
+    "note": "Only data structure, cadence, hashes and mechanism literature were consulted. No signal set was generated on real data."
+  },
+
+  "limitations": [
+    "Common window starts 2021-12-01 (OI/price bound)",
+    "Final ~72h of the window emits no trades (frozen forward-data guard)",
+    "Funding cashflow charged on entry notional (O(1e-4) simplification)",
+    "OI gaps fail closed to NO_SIGNAL; INSUFFICIENT_SAMPLE is a possible terminal outcome",
+    "PRICE_CONTEXT = NONE narrows the ARU candidate sketch (documented, pre-observation)",
+    "No drawdown gate pre-specified (diagnostic only, disclosed)",
+    "Binding granularity: funding partition SHA256 is recomputed in this worktree; reused OI/price partitions live in the shared main data root and are bound to their certified manifest records instead of being re-hashed in place (the independent verifier must re-hash them)",
+    "Pre-existing environmental failure unrelated to this checkpoint: tests/unit/research/test_oi_full_history_v2_pit.py::test_2024_06_05_contamination_never_reaches_canonical fails because data/processed/oi_full_history_v2 is absent from this worktree (it lives in the main data root); every ARC-01 prereg artifact is additive and no existing module was modified"
+  ],
+
+  "defects": [],
+  "false_success": 0,
+  "final_state": "PENDING_INDEPENDENT_PREREG_VERIFICATION",
+  "next": "ARC01_INDEPENDENT_PREREG_VERIFICATION"
+}

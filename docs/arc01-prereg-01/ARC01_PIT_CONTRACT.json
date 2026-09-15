@@ -1,0 +1,89 @@
+{
+  "schema": "ARC01_PIT_CONTRACT/1.0.0",
+  "hypothesis_id": "ARC-01-FUNDING-CROWDING-UNWIND-01",
+  "checkpoint": "ARC01-PREREG-001",
+  "status": "PASS",
+  "verified_by": "scripts/verify_arc01_prereg.py (pit_rules + adversarial_pit + determinism blocks)",
+  "builder_self_check_only": "BUILDER_CROSSCHECK (NOT independent verification)",
+  "inherited_authority": {
+    "funding": "docs/arc01-data-authority-01/ARC01_PIT_AUTHORITY.json (PASS)",
+    "oi": "PIT_CAUSALITY_V2_REPORT.json (PIT-CAUSALITY-REPAIR-01, PASS)",
+    "price": "PRICE_AUTHORITY_V2_REPORT.json (PASS)",
+    "no_data_authority_work_redone": "this contract binds to the certified authorities; it does not re-derive or re-adjudicate dataset authority"
+  },
+  "invariants": {
+    "funding_time_le_decision_time": {
+      "rule": "for every decision at T, all funding observations used satisfy funding_time_ms <= T",
+      "enforced_by": "src/trading_bot/research/arc01/funding_reader.py:funding_state_at / latest_funding_before (timestamp-scoped causal reads)"
+    },
+    "funding_availability_time_le_decision_time": {
+      "rule": "availability_time_ms <= T; availability_time_ms == funding_time_ms == settlement_time_ms, therefore the current settlement is usable at T and no future settlement is",
+      "next_funding_time_excluded": "next_funding_time_ms is a derived field and MUST NEVER be read as an observation"
+    },
+    "oi_time_le_decision_time": {
+      "rule": "every OI observation satisfies timestamp_ms <= T; OI observations strictly after T are invisible",
+      "enforced_by": "src/trading_bot/research/oi_dataset_v2.py:oi_state_at_ms (V2 causal, timestamp-scoped)"
+    },
+    "price_time_le_decision_time": {
+      "rule": "only COMPLETED 1h bars inform a decision at T: bar_open_time + 3600000 <= T; the decision hour's own close is NOT used",
+      "no_forward_filled_close": true
+    },
+    "completed_windows_only": {
+      "rule": "no partial/forming window may be used for any feature; the entry bar (which is by construction after T) is never used to compute the signal",
+      "true": true
+    },
+    "future_mutation_invariance": {
+      "rule": "mutating any observation with timestamp strictly AFTER T cannot change ELIGIBILITY_AT_T, FEATURE_STATE_AT_T or SIGNAL_INPUT_AT_T",
+      "test": "FUTURE_MUTATION_AFTER_T (non-vacuous baseline required: the un-mutated state must be identical to the original recomputation)",
+      "status": "PASS (fixture-level adversarial test in scripts/verify_arc01_prereg.py)"
+    },
+    "past_eligible_mutation_detection": {
+      "rule": "mutating a PAST ELIGIBLE observation (inside the trailing 60d funding window at T, or the OI now/reference observation of an active decision) MUST change FEATURE_STATE_AT_T, so no stale caching or retroactive revision can silently freeze a decision",
+      "test": "PAST_ELIGIBLE_MUTATION",
+      "status": "PASS (fixture-level adversarial test)"
+    },
+    "archive_completeness_non_retroactivity": {
+      "rule": "the OI day-validity ledger (OI_ARCHIVE_DAY_VALIDITY_LEDGER_V2.jsonl) is FORENSIC EVIDENCE ONLY and MUST NOT control historical decision eligibility; eligibility is timestamp-scoped causal completeness at T. A later-arriving archive day cannot retroactively invalidate or validate a historical decision.",
+      "enforced_by": "V2 causal reader contract (PIT-CAUSALITY-REPAIR-01); the ledger is never queried on a trading path"
+    },
+    "no_conflicting_duplicate": {
+      "rule": "a conflicting duplicate timestamp <= T fails the decision closed (NO_SIGNAL / INVALID) rather than silently selecting one row",
+      "funding_duplicate_status": "0 conflicting duplicates in the certified funding authority",
+      "oi_duplicate_status": "0 duplicates per certified OI authority"
+    },
+    "determinism_of_decision_chain": {
+      "rule": "for a fixed authority, the decision chain (eligibility -> features -> signal) is a pure deterministic function of T; no RNG, no wall-clock, no environment dependency",
+      "rng_in_decision_chain": "NONE (RNG appears only in the frozen statistical/resampling gates, which are post-signal and seed-fixed)"
+    },
+    "stale_data_policy": {
+      "rule": "funding: the decision settlement must exist exactly at T (no carry-forward of an older settlement as if it were new); OI: staleness <= 600s for both oi_now and oi_reference",
+      "violation_outcome": "NO_SIGNAL (fail-closed), with the frozen reason code"
+    },
+    "missing_data_policy": {
+      "rule": "absent required input => NO_SIGNAL / INVALID per the frozen precedence; never interpolated, forward-filled or synthesized",
+      "violation_outcome": "NO_SIGNAL (fail-closed)"
+    }
+  },
+  "data_time_contract": {
+    "funding": "data_time = availability_time = settlement_time = funding_time_ms",
+    "oi": "data_time = timestamp_ms",
+    "price": "data_time = bar_open_time (the bar is usable only once completed at bar_open_time + 3600000)",
+    "decision_time": "funding settlement instant (funding_time_ms)",
+    "entry_time": "first 1h bar_open_time > decision_time",
+    "exit_time": "entry_bar_open_time + 72h"
+  },
+  "required_ordering": "all data_time <= decision_time < entry_time < exit_time",
+  "violation_semantics": {
+    "NO_SIGNAL": "a decision with no admissible trade (reason code recorded)",
+    "INVALID": "a decision whose required inputs cannot be trusted (conflicting duplicate, corrupt row); treated as NO_SIGNAL for trade emission and counted separately in the decision ledger"
+  },
+  "prohibited_reads": [
+    "next_funding_time_ms as an observation",
+    "any OI row with timestamp_ms > T",
+    "any price bar with bar_open_time + 3600000 > T",
+    "any bar O/H/L/C of the entry or exit bar for signal construction",
+    "the OI day-validity ledger as a decision gate",
+    "any mark/index/premium/basis series",
+    "any third-party reconstruction of funding or OI"
+  ]
+}

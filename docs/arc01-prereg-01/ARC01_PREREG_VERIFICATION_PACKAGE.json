@@ -1,0 +1,121 @@
+{
+  "schema": "ARC01_PREREG_VERIFICATION_PACKAGE/1.0.0",
+  "checkpoint": "ARC01-PREREG-001",
+  "hypothesis_id": "ARC-01-FUNDING-CROWDING-UNWIND-01",
+  "status": "FROZEN_PENDING_INDEPENDENT_VERIFICATION",
+  "final_state": "PENDING_INDEPENDENT_PREREG_VERIFICATION",
+  "builder": "deepseek-v4-flash (DeepSeek)",
+  "self_hash_recorded": false,
+  "builder_crosscheck_only": {
+    "what_this_package_is": "a BUILDER_CROSSCHECK produced by the same agent that authored the preregistration",
+    "what_this_package_is_not": "INDEPENDENT_VERIFICATION",
+    "required_next": "ARC01_INDEPENDENT_PREREG_VERIFICATION by an agent that did not author the preregistration"
+  },
+
+  "prereg_commit": null,
+  "prereg_commit_semantics": "resolved externally as git rev-parse HEAD of the commit whose message starts with '[ARC01-PREREG-001]' on branch research/arc01-data-authority-01; deliberately not embedded to avoid a self-referencing commit loop",
+  "authority_commit": "6e42dd9d4c19800925fd555999686d1e2b4ef47e",
+  "generated_from_commit": "367f58f1c8a45a4f56459f4564baf2e73ac494ef",
+  "report_commit": null,
+
+  "artifact_sha256": {
+    "ARC01_SPEC_V1.json": "89b8590ccde0d90ae35dfe5f91d9dad706622a8004d77ef54c35c72c9cc0b313",
+    "ARC01_PIT_CONTRACT.json": "2a9a9e3f3a1c1409da4cca06d2be8fbea4a8e9f84dc2d232cc4c48cf87481902",
+    "ARC01_CONTROL_PLAN.json": "78a4a38ec0ca55ef28e645c7ab8a686a99dac9f93958d3f4cf14f4b7b528f849",
+    "ARC01_STATISTICAL_GATES.json": "f18d3b1ee5d625b9a4c2df028c3ac96e5c07134233e6d59fe889c60cb25a7b69",
+    "ARC01_ROBUSTNESS_PLAN.json": "f368d28690cf57466b0f8c94ab7b988c3e31fef812abcae2a99161faa913acf5",
+    "ARC01_PREREGISTRATION.md": "8d17ebf8537e76ca8d2b5e8ce72c9515a8d4cc5b910d4330cea80dff11e16e6c",
+    "ARC01_MECHANISM_EVIDENCE.md": "5e0fad2f25944bc22900fdbb17043d6525d896ffa40f3216e3c88b3e83415188",
+    "ARC01_SELECTION_RATIONALE.md": "3faa76905a006c14ff7d3ccb2fee7f9cad11594b8a13d07e794bb56a0d900b20",
+    "ARC01_FAILED_MEMORY_COLLISION_REVIEW.md": "a0ac8cc8974f4466f37cdb58406b9bb4a4ac88e149a61f46d682aba035776a19",
+    "ARC01_MANIFEST_V1.json": "d698e3d830651988c98359734ebb848efa8fa7bff4103bb44f58fb82b885df5e",
+    "RUN_REPORT.json": "456cf5fa18d91cc5c14b871327d9eb0b1bfc7dc5f10df40f743e5fc3465bc1f6",
+    "RUN_REPORT.md": "28b2155193aeecad8d1777b91e61e51813986eea42bc87c9a1f5cbbb44ff5048"
+  },
+  "tooling_sha256": {
+    "scripts/verify_arc01_prereg.py": "d8133b949e9145a4a542a4aab5ddc43ba05d1500aa7e174aece67662a8d4c030",
+    "src/trading_bot/research/arc01/prereg_reference.py": "1732d37e3aef27d54f9ea28844c6e708e6fc3868137bdd020a1f86b26e3473cd",
+    "tests/unit/research/test_arc01_preregistration.py": "587afbd88e76fde39ed816fc803b0359200a688011c2500b0136fb095db41610"
+  },
+
+  "data_authority_binding": {
+    "DATA_AUTHORITY_COMMIT": "6e42dd9d4c19800925fd555999686d1e2b4ef47e",
+    "DATASET_SHA256": "5f4845f5062e68353ef421b9687bf728a56693951e2f74e17221a8e3373b62ec",
+    "BTC_PARTITION_SHA": "700b0c4c7e5ffa9dbe82cd84e98be9f505bce6f1792d33d0eae88d07a7585855",
+    "ETH_PARTITION_SHA": "2edf501ea69807bbf67cdd519e53de18c8dea25ea8bdf009beb88ef2e2693943",
+    "SOL_PARTITION_SHA": "6b16d13f5115f906f9ceb4f5a418f7a541c37609e780cfbad0d52ed565808f85",
+    "OI_FULL_HISTORY_DATASET_SHA256_V2": "16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99",
+    "PRICE_AUTHORITY_SHA256_V2": "e1c2462a6aa9ba0c921154d259a28c49be1e2fc58a544dbd97af8ecabef52168",
+    "binding_status": "PASS"
+  },
+
+  "reproduction_instructions": [
+    "python scripts/verify_arc01_prereg.py            # full validator, exit 0 iff all gates pass",
+    "python scripts/verify_arc01_prereg.py --json     # machine-readable gate report",
+    "python scripts/verify_arc01_prereg.py --emit-hashes   # recompute artifact/tooling hashes",
+    "python -m pytest tests/unit/research/test_arc01_preregistration.py -q",
+    "git status --porcelain   # must be empty after PREREG_COMMIT (POST_FREEZE_ARTIFACT_DRIFT = 0)"
+  ],
+
+  "frozen_gate_expectations": {
+    "ARC01_SPEC_COMPLETE": "PASS",
+    "DATA_AUTHORITY_BINDING": "PASS",
+    "PIT_CONTRACT": "PASS",
+    "CONTROL_PLAN": "PASS",
+    "STATISTICAL_GATES": "PASS",
+    "ROBUSTNESS_PLAN": "PASS",
+    "NO_ECONOMIC_OBSERVATION": "PASS",
+    "JSON_VALIDATION": "PASS",
+    "CONTRADICTIONS_FOUND": 0,
+    "FALSE_SUCCESS": 0
+  },
+
+  "final_verification_run": {
+    "command": "python scripts/verify_arc01_prereg.py",
+    "gates_total": 36,
+    "gates_failed": 0,
+    "gates_failed_names": [],
+    "CONTRADICTIONS_FOUND": 0,
+    "FALSE_SUCCESS": 0,
+    "verdict": "PASS",
+    "ARC01_SPEC_COMPLETE": "PASS",
+    "required_fields_checked": 115,
+    "tests": "tests/unit/research/test_arc01_preregistration.py (all tests pass)",
+    "populated_after_final_run": true,
+    "note": "Gates re-verified after hash population; the package does not hash itself (self_hash_recorded=false) so this block is not part of any commitment."
+  },
+
+  "what_an_independent_verifier_must_check": [
+    "Recompute every artifact hash and compare with ARC01_MANIFEST_V1.json + this package; assert POST_FREEZE_ARTIFACT_DRIFT = 0.",
+    "Re-derive the data bindings (authority commit, dataset SHA, three funding partition SHAs, OI dataset SHA, price authority SHA) from the certified authority artifacts and from the raw partition bytes.",
+    "Independently re-implement the funding robust-z transform and the OI 24h expansion rule from the spec text only, and diff against src/trading_bot/research/arc01/prereg_reference.py (no shared code).",
+    "Adversarially test the PIT contract with its own fixtures: future-mutation invariance, past-eligible mutation detectability, archive-completeness non-retroactivity, inclusive threshold boundary, MAD-zero fail-closed, staleness fail-closed, forward-data guard.",
+    "Confirm that PRICE_CONTEXT = NONE is implemented as declared (no price feature reaches the signal), and that price is read only at the entry/exit anchors.",
+    "Confirm the funding information window and the funding cashflow window are disjoint for every emitted trade, i.e. no double counting.",
+    "Confirm the four controls exist, are deterministic and can never be promoted.",
+    "Confirm no economic quantity was observed: ARC01_BACKTESTS = 0, ARC01_EXECUTIONS = 0, ARC01_PERFORMANCE_OBSERVED = false, and that no artifact contains a numeric performance value.",
+    "Confirm the kill rule and post-freeze immutability statements are present and non-negotiable.",
+    "Confirm the commit contains exactly the frozen artifacts plus tooling and that the worktree is clean afterwards."
+  ],
+
+  "open_limitations": [
+    "Common window starts 2021-12-01 (OI/price bound): the 2020-2021 funding history is outside the evaluated window.",
+    "The final ~72h of the common window emits no trades (frozen forward-data guard).",
+    "Funding cashflow is charged on the entry notional (frozen O(1e-4) simplification); the mark-price authority is not admitted.",
+    "OI authority has documented invalid days; gaps fail closed to NO_SIGNAL, which can only be assessed at discovery and may make INSUFFICIENT_SAMPLE a terminal outcome.",
+    "PRICE_CONTEXT = NONE narrows the ARU candidate sketch (price-rejection leg removed); documented and justified pre-observation.",
+    "The DIRECTION/OI/TIMING/NULL controls detect mis-specification, not every alternative mechanism; the ex-funding-cashflow gate exists because the carry leg is systematically favourable to a contrarian funding entry.",
+    "No drawdown gate was pre-specified for ARC-01; drawdown is diagnostic only. This is stated explicitly rather than hidden, and cannot be converted into a gate after the fact.",
+    "Binding granularity: the three funding partitions are present in this worktree and their SHA256 IS recomputed by the validator; the reused OI/price partitions live in the shared main data root (data/processed/oi_full_history_v2, data/processed/price_1h_v2) and are therefore bound to their certified manifest records plus the per-asset digests recorded in those manifests. The independent verifier MUST re-hash the OI/price partitions from the shared data root.",
+    "Pre-existing environmental failure unrelated to this checkpoint: tests/unit/research/test_oi_full_history_v2_pit.py::test_2024_06_05_contamination_never_reaches_canonical fails in this worktree because data/processed/oi_full_history_v2 is absent locally. Every artifact added by this checkpoint is additive; no existing module was modified."
+  ],
+
+  "economics": {
+    "ARC01_BACKTESTS": 0,
+    "ARC01_EXECUTIONS": 0,
+    "ARC01_PERFORMANCE_OBSERVED": false,
+    "FALSE_SUCCESS": 0
+  },
+
+  "next_checkpoint": "ARC01_INDEPENDENT_PREREG_VERIFICATION"
+}

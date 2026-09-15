@@ -1,0 +1,89 @@
+{
+  "schema": "ARC01_MANIFEST/1.0.0",
+  "checkpoint": "ARC01-PREREG-001",
+  "hypothesis_id": "ARC-01-FUNDING-CROWDING-UNWIND-01",
+  "preregistration_version": 1,
+  "status": "FROZEN_PENDING_INDEPENDENT_VERIFICATION",
+  "final_state": "PENDING_INDEPENDENT_PREREG_VERIFICATION",
+  "builder": "deepseek-v4-flash (DeepSeek)",
+  "builder_role": "ARC-01 prereg BUILDER",
+  "builder_may_do": "BUILDER_CROSSCHECK",
+  "builder_may_not_claim": "INDEPENDENT_VERIFICATION",
+
+  "pointer_semantics": {
+    "authority_commit": "dataset authority commit of the frozen funding/OI/price foundation (6e42dd9d4c19800925fd555999686d1e2b4ef47e)",
+    "generated_from_commit": "git HEAD of research/arc01-data-authority-01 at artifact generation time (pre-freeze parent); recorded as a short SHA",
+    "report_commit": null,
+    "manifest_self_hash_recorded": false,
+    "self_reference_policy": "No artifact records its own hash or the SHA of the commit that contains it; PREREG_COMMIT is resolved externally as the SHA of the commit whose message is '[ARC01-PREREG-001] freeze funding crowding unwind discovery'. This avoids a commit loop that exists only to embed its own SHA.",
+    "generated_from_commit_value": "367f58f1c8a45a4f56459f4564baf2e73ac494ef"
+  },
+
+  "commit_tag": "[ARC01-PREREG-001] freeze funding crowding unwind discovery",
+  "prereg_commit": null,
+  "prereg_commit_resolution": "git rev-parse HEAD of the commit whose message starts with '[ARC01-PREREG-001]' on branch research/arc01-data-authority-01",
+
+  "data_authority_binding": {
+    "DATA_AUTHORITY_COMMIT": "6e42dd9d4c19800925fd555999686d1e2b4ef47e",
+    "DATASET_SHA256": "5f4845f5062e68353ef421b9687bf728a56693951e2f74e17221a8e3373b62ec",
+    "CANONICAL_ROWS_SHA256": "34f736b1efdaebcf81c2e7824f776706385f27aee1c564f3dc39f8d1fe993452",
+    "BTC_PARTITION_SHA": "700b0c4c7e5ffa9dbe82cd84e98be9f505bce6f1792d33d0eae88d07a7585855",
+    "ETH_PARTITION_SHA": "2edf501ea69807bbf67cdd519e53de18c8dea25ea8bdf009beb88ef2e2693943",
+    "SOL_PARTITION_SHA": "6b16d13f5115f906f9ceb4f5a418f7a541c37609e780cfbad0d52ed565808f85",
+    "OI_FULL_HISTORY_DATASET_SHA256_V2": "16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99",
+    "PRICE_AUTHORITY_SHA256_V2": "e1c2462a6aa9ba0c921154d259a28c49be1e2fc58a544dbd97af8ecabef52168",
+    "binding_status": "PASS"
+  },
+
+  "frozen_summary": {
+    "assets": ["BTCUSDT", "ETHUSDT", "SOLUSDT"],
+    "market": "Binance USD-M USDT-margined perpetual",
+    "common_window_utc": ["2021-12-01T00:00:00Z", "2026-09-10T23:00:00Z"],
+    "decision_cadence": "one decision per certified funding settlement instant per asset",
+    "funding_extreme": "robust z >= +2.0 (short) / <= -2.0 (long), trailing 60d closed window, min 90 obs, median location, 1.4826*MAD scale, MAD=0 -> sample stdev -> else NO_SIGNAL",
+    "oi_confirmation": "oi_change_24h = last eligible sum_open_interest / value 24h earlier - 1 must be STRICTLY > 0",
+    "price_context": "NONE (execution anchor only)",
+    "entry": "first 1h bar OPEN strictly after decision_time",
+    "exit": "1h bar OPEN 72h after entry bar open, unconditional",
+    "stop": "NONE",
+    "cooldown": "NONE",
+    "overlap": "SKIP same-asset signals while open; independent per-asset positions, max 3 concurrent",
+    "cost_model": "10 bps primary round trip total; sensitivities 0/10/20/40 bps",
+    "funding_cashflow": "APPLIED for settlements in (entry_time, exit_time]; information window ends at decision_time",
+    "pit": "PASS",
+    "controls": ["DIRECTION_CONTROL", "TIMING_CONTROL", "OI_CONTROL", "NULL_CONTROL"],
+    "critical_gates": 11,
+    "robustness_analyses": 7,
+    "kill_rule": "one preregistration -> one primary discovery; failure is terminal (DISCOVERY_FAIL)"
+  },
+
+  "manifest_self_hash_recorded": false,
+  "artifact_sha256": {
+    "ARC01_SPEC_V1.json": "89b8590ccde0d90ae35dfe5f91d9dad706622a8004d77ef54c35c72c9cc0b313",
+    "ARC01_PIT_CONTRACT.json": "2a9a9e3f3a1c1409da4cca06d2be8fbea4a8e9f84dc2d232cc4c48cf87481902",
+    "ARC01_CONTROL_PLAN.json": "78a4a38ec0ca55ef28e645c7ab8a686a99dac9f93958d3f4cf14f4b7b528f849",
+    "ARC01_STATISTICAL_GATES.json": "f18d3b1ee5d625b9a4c2df028c3ac96e5c07134233e6d59fe889c60cb25a7b69",
+    "ARC01_ROBUSTNESS_PLAN.json": "f368d28690cf57466b0f8c94ab7b988c3e31fef812abcae2a99161faa913acf5",
+    "ARC01_PREREGISTRATION.md": "8d17ebf8537e76ca8d2b5e8ce72c9515a8d4cc5b910d4330cea80dff11e16e6c",
+    "ARC01_MECHANISM_EVIDENCE.md": "5e0fad2f25944bc22900fdbb17043d6525d896ffa40f3216e3c88b3e83415188",
+    "ARC01_SELECTION_RATIONALE.md": "3faa76905a006c14ff7d3ccb2fee7f9cad11594b8a13d07e794bb56a0d900b20",
+    "ARC01_FAILED_MEMORY_COLLISION_REVIEW.md": "a0ac8cc8974f4466f37cdb58406b9bb4a4ac88e149a61f46d682aba035776a19"
+  },
+  "tooling": [
+    "scripts/verify_arc01_prereg.py",
+    "src/trading_bot/research/arc01/prereg_reference.py",
+    "tests/unit/research/test_arc01_preregistration.py"
+  ],
+
+  "working_artifacts_not_frozen": ["ARC01_PREREG_VERIFICATION_PACKAGE.json", "ARC01_MANIFEST_V1.json", "RUN_REPORT.json", "RUN_REPORT.md"],
+
+  "economics": {
+    "ARC01_BACKTESTS": 0,
+    "ARC01_EXECUTIONS": 0,
+    "ARC01_PERFORMANCE_OBSERVED": false,
+    "FALSE_SUCCESS": 0
+  },
+
+  "immutability": "After PREREG_COMMIT the nine frozen content artifacts are immutable. Any change requires a new preregistration (new hypothesis id), never an edit of this one.",
+  "next_checkpoint": "ARC01_INDEPENDENT_PREREG_VERIFICATION"
+}

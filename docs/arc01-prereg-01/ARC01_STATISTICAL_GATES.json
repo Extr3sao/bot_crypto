@@ -1,0 +1,99 @@
+{
+  "schema": "ARC01_STATISTICAL_GATES/1.0.0",
+  "hypothesis_id": "ARC-01-FUNDING-CROWDING-UNWIND-01",
+  "checkpoint": "ARC01-PREREG-001",
+  "status": "FROZEN_BEFORE_DISCOVERY",
+  "primary_cost_bps": 10,
+  "no_single_metric_sufficient": true,
+  "pass_requirement": "PASS requires ALL critical gates below to be satisfied simultaneously; any unmet critical gate => DISCOVERY_FAIL (terminal)",
+  "critical_gates": [
+    {
+      "id": "G1_SAMPLE",
+      "metric": "eligible_trades_total / eligible_trades_per_asset",
+      "requirement": "total >= 120 AND every asset >= 40",
+      "insufficient_outcome": "INSUFFICIENT_SAMPLE (terminal FAIL-class, no window extension, no relaxation)"
+    },
+    {
+      "id": "G2_NET_EXPECTANCY",
+      "metric": "mean(net_trade_return) at 10 bps RT",
+      "requirement": "> 0",
+      "note": "net includes funding cashflow"
+    },
+    {
+      "id": "G3_NET_EXPECTANCY_EX_FUNDING",
+      "metric": "mean(net_trade_return_ex_funding) at 10 bps RT",
+      "requirement": "> 0",
+      "rationale": "the declared mechanism is a crowding UNWIND, not a carry harvest; an edge that exists only through collected funding would be a different (already refuted, FAILED_RESEARCH_MEMORY #8) family"
+    },
+    {
+      "id": "G4_PROFIT_FACTOR",
+      "metric": "net profit factor = sum(positive net trade returns) / abs(sum(negative net trade returns))",
+      "requirement": ">= 1.15"
+    },
+    {
+      "id": "G5_SHARPE",
+      "metric": "annualized net Sharpe from the trade series (per-trade Sharpe * sqrt(trades_per_year), trades_per_year = N / (window_days/365))",
+      "requirement": ">= 0.50"
+    },
+    {
+      "id": "G6_SHARPE_UNCERTAINTY",
+      "metric": "bootstrap 95% CI lower bound of the mean net trade return",
+      "method": "i.i.d. trade bootstrap, 10,000 resamples, frozen seed 20260915",
+      "requirement": "CI lower bound > 0 (equivalently P(mean > 0) reported alongside)"
+    },
+    {
+      "id": "G7_PERMUTATION",
+      "metric": "permutation p-value of the mean net trade return",
+      "method": "sign-flip permutation on the realized trade returns, 10,000 draws, frozen seed 20260915",
+      "requirement": "p <= 0.05"
+    },
+    {
+      "id": "G8_TEMPORAL_STABILITY",
+      "metric": "net expectancy by chronological halves and quartiles of the common window",
+      "requirement": "both halves > 0 AND at least 3 of 4 quartiles > 0",
+      "note": "split boundaries are computed on the trade timeline, chronological, frozen before discovery"
+    },
+    {
+      "id": "G9_ASSET_STABILITY",
+      "metric": "net expectancy per asset",
+      "requirement": "at least 2 of 3 assets > 0"
+    },
+    {
+      "id": "G10_CONCENTRATION",
+      "metric": "shares of total net PnL",
+      "requirement": "max asset share <= 60% AND max calendar-month share <= 40% AND max single-trade share <= 25%",
+      "note": "a share is computed as component_net_PnL / total_net_PnL only when total_net_PnL > 0"
+    },
+    {
+      "id": "G11_COST_SENSITIVITY",
+      "metric": "mean net trade return at frozen cost scenarios",
+      "requirement": "> 0 at 20 bps AND >= 0 at 40 bps",
+      "note": "0 bps is reported as a diagnostic only and is never a gate"
+    }
+  ],
+  "frozen_evaluation_scenarios": [
+    {"cost_bps_round_trip": 0, "role": "diagnostic (gross)"},
+    {"cost_bps_round_trip": 10, "role": "PRIMARY gates"},
+    {"cost_bps_round_trip": 20, "role": "critical cost-sensitivity gate + robustness"},
+    {"cost_bps_round_trip": 40, "role": "critical cost-sensitivity gate + robustness"}
+  ],
+  "reporting_requirements": [
+    "N total and per asset",
+    "NO_SIGNAL count and reason-code histogram",
+    "gross / funding-cashflow / cost / net decomposition, pooled and per asset",
+    "expectancy with and without funding cashflow",
+    "Sharpe, PF, expectancy, win rate, permutation p, bootstrap CI",
+    "halves/quartiles/asset tables",
+    "concentration shares",
+    "cost sensitivity curve"
+  ],
+  "metrics_that_are_reported_but_not_gating": ["win rate", "mean holding period", "max drawdown (diagnostic only, no DD gate was pre-specified for ARC-01)", "trade count per calendar month"],
+  "fail_semantics": {
+    "any_critical_gate_unmet": "ARC01 = DISCOVERY_FAIL (terminal)",
+    "insufficient_sample": "ARC01 = DISCOVERY_INSUFFICIENT_SAMPLE (terminal, FAIL-class)",
+    "control_regression": "if DIRECTION_CONTROL, OI_CONTROL or NULL_CONTROL satisfies all critical gates => ARC01 = DISCOVERY_FAIL (mechanism not identified)",
+    "post_hoc_subcells": "POST_HOC_LEAD_ONLY; never promoted; DO_NOT_RETEST_WITHOUT_NEW_EX_ANTE_HYPOTHESIS"
+  },
+  "kill_rule_link": "docs/arc01-prereg-01/ARC01_SPEC_V1.json:kill_rule",
+  "immutability": "these gates are frozen by PREREG_COMMIT and may never be relaxed, re-scoped or re-weighted after any economic execution"
+}
