@@ -1,0 +1,764 @@
+{
+  "ANY_CONTROL_PASSES_ALL_GATES": false,
+  "control_gates": {
+    "DIRECTION_CONTROL": {
+      "ALL_CRITICAL_GATES_PASS": false,
+      "G10_CONCENTRATION": {
+        "asset_shares": {},
+        "max_asset_share": null,
+        "max_month_share": null,
+        "max_single_trade_share": null,
+        "month_shares": {},
+        "pass": false,
+        "requirement": "max asset <= 60% AND max month <= 40% AND max single trade <= 25%",
+        "total_net_pnl": -1.1094708901521122
+      },
+      "G11_COST_SENSITIVITY": {
+        "mean_0bps": -0.002197322450006087,
+        "mean_20bps": -0.004197322450006088,
+        "mean_40bps": -0.006197322450006092,
+        "pass": false,
+        "requirement": "> 0 at 20bps AND >= 0 at 40bps"
+      },
+      "G1_SAMPLE": {
+        "pass": true,
+        "requirement": ">= 120 total AND >= 40 per asset",
+        "trades_per_asset": {
+          "BTCUSDT": 103,
+          "ETHUSDT": 111,
+          "SOLUSDT": 133
+        },
+        "trades_total": 347
+      },
+      "G2_NET_EXPECTANCY": {
+        "pass": false,
+        "requirement": "> 0",
+        "value": -0.003197322450006087
+      },
+      "G3_NET_EXPECTANCY_EX_FUNDING": {
+        "pass": false,
+        "requirement": "> 0",
+        "value": -0.0017017150148475866
+      },
+      "G4_PROFIT_FACTOR": {
+        "pass": false,
+        "requirement": ">= 1.15",
+        "value": 0.8783270171108597
+      },
+      "G5_SHARPE": {
+        "pass": false,
+        "requirement": ">= 0.5",
+        "trades_per_year": 72.58166189111748,
+        "value": -0.3864907572822478,
+        "value_replicated_independently": -0.3864907572822478,
+        "window_days": 1745.0
+      },
+      "G6_BOOTSTRAP_CI": {
+        "ci_lower": -0.010634101545691802,
+        "ci_upper": 0.004285038898561401,
+        "pass": false,
+        "prob_mean_positive": 0.2045,
+        "requirement": "95% CI lower bound of mean net return > 0",
+        "resamples": 10000,
+        "seed": 20260915
+      },
+      "G7_PERMUTATION": {
+        "draws": 10000,
+        "p_value": 0.7989,
+        "pass": false,
+        "requirement": "p <= 0.05",
+        "seed": 20260915
+      },
+      "G8_TEMPORAL_STABILITY": {
+        "bucket_sizes_half": [
+          173,
+          174
+        ],
+        "bucket_sizes_quartile": [
+          86,
+          87,
+          87,
+          87
+        ],
+        "half_expectancies": [
+          -0.007185568318168244,
+          0.0007680024648907712
+        ],
+        "pass": false,
+        "quartile_expectancies": [
+          0.0032383999793428315,
+          -0.017489720888121722,
+          0.005759253398423617,
+          -0.004223248468642076
+        ],
+        "quartiles_positive": 2,
+        "requirement": "both halves > 0 AND >= 3/4 quartiles > 0"
+      },
+      "G9_ASSET_STABILITY": {
+        "pass": false,
+        "per_asset_expectancy": {
+          "BTCUSDT": -0.007503696213756981,
+          "ETHUSDT": 0.003755652986692434,
+          "SOLUSDT": -0.005665170388406043
+        },
+        "positive_assets": 1,
+        "requirement": ">= 2 of 3 assets > 0"
+      },
+      "failed_gates": [
+        "G2_NET_EXPECTANCY",
+        "G3_NET_EXPECTANCY_EX_FUNDING",
+        "G4_PROFIT_FACTOR",
+        "G5_SHARPE",
+        "G6_BOOTSTRAP_CI",
+        "G7_PERMUTATION",
+        "G8_TEMPORAL_STABILITY",
+        "G9_ASSET_STABILITY",
+        "G10_CONCENTRATION",
+        "G11_COST_SENSITIVITY"
+      ]
+    },
+    "NULL_CONTROL": {
+      "ALL_CRITICAL_GATES_PASS": false,
+      "G10_CONCENTRATION": {
+        "asset_shares": {},
+        "max_asset_share": null,
+        "max_month_share": null,
+        "max_single_trade_share": null,
+        "month_shares": {},
+        "pass": false,
+        "requirement": "max asset <= 60% AND max month <= 40% AND max single trade <= 25%",
+        "total_net_pnl": -1.119980725734018
+      },
+      "G11_COST_SENSITIVITY": {
+        "mean_0bps": -0.002227610160616766,
+        "mean_20bps": -0.004227610160616765,
+        "mean_40bps": -0.006227610160616763,
+        "pass": false,
+        "requirement": "> 0 at 20bps AND >= 0 at 40bps"
+      },
+      "G1_SAMPLE": {
+        "pass": true,
+        "requirement": ">= 120 total AND >= 40 per asset",
+        "trades_per_asset": {
+          "BTCUSDT": 103,
+          "ETHUSDT": 111,
+          "SOLUSDT": 133
+        },
+        "trades_total": 347
+      },
+      "G2_NET_EXPECTANCY": {
+        "pass": false,
+        "requirement": "> 0",
+        "value": -0.0032276101606167665
+      },
+      "G3_NET_EXPECTANCY_EX_FUNDING": {
+        "pass": false,
+        "requirement": "> 0",
+        "value": -0.0037780755784842
+      },
+      "G4_PROFIT_FACTOR": {
+        "pass": false,
+        "requirement": ">= 1.15",
+        "value": 0.8772659896375068
+      },
+      "G5_SHARPE": {
+        "pass": false,
+        "requirement": ">= 0.5",
+        "trades_per_year": 72.58166189111748,
+        "value": -0.3901571993539864,
+        "value_replicated_independently": -0.3901571993539864,
+        "window_days": 1745.0
+      },
+      "G6_BOOTSTRAP_CI": {
+        "ci_lower": -0.0106293967043173,
+        "ci_upper": 0.004164524029938689,
+        "pass": false,
+        "prob_mean_positive": 0.1891,
+        "requirement": "95% CI lower bound of mean net return > 0",
+        "resamples": 10000,
+        "seed": 20260915
+      },
+      "G7_PERMUTATION": {
+        "draws": 10000,
+        "p_value": 0.8062,
+        "pass": false,
+        "requirement": "p <= 0.05",
+        "seed": 20260915
+      },
+      "G8_TEMPORAL_STABILITY": {
+        "bucket_sizes_half": [
+          173,
+          174
+        ],
+        "bucket_sizes_quartile": [
+          86,
+          87,
+          87,
+          87
+        ],
+        "half_expectancies": [
+          -0.0025058276813379014,
+          -0.003945244464727361
+        ],
+        "pass": false,
+        "quartile_expectancies": [
+          0.005917296989286613,
+          -0.010832134827012712,
+          0.0038967194652314097,
+          -0.011787208394686133
+        ],
+        "quartiles_positive": 2,
+        "requirement": "both halves > 0 AND >= 3/4 quartiles > 0"
+      },
+      "G9_ASSET_STABILITY": {
+        "pass": false,
+        "per_asset_expectancy": {
+          "BTCUSDT": -0.00022220669230254273,
+          "ETHUSDT": 0.002410914867366909,
+          "SOLUSDT": -0.010260939749658516
+        },
+        "positive_assets": 1,
+        "requirement": ">= 2 of 3 assets > 0"
+      },
+      "failed_gates": [
+        "G2_NET_EXPECTANCY",
+        "G3_NET_EXPECTANCY_EX_FUNDING",
+        "G4_PROFIT_FACTOR",
+        "G5_SHARPE",
+        "G6_BOOTSTRAP_CI",
+        "G7_PERMUTATION",
+        "G8_TEMPORAL_STABILITY",
+        "G9_ASSET_STABILITY",
+        "G10_CONCENTRATION",
+        "G11_COST_SENSITIVITY"
+      ]
+    },
+    "OI_CONTROL": {
+      "ALL_CRITICAL_GATES_PASS": false,
+      "G10_CONCENTRATION": {
+        "asset_shares": {},
+        "max_asset_share": null,
+        "max_month_share": null,
+        "max_single_trade_share": null,
+        "month_shares": {},
+        "pass": false,
+        "requirement": "max asset <= 60% AND max month <= 40% AND max single trade <= 25%",
+        "total_net_pnl": -0.47080390331344163
+      },
+      "G11_COST_SENSITIVITY": {
+        "mean_0bps": -3.846275721625194e-06,
+        "mean_20bps": -0.002003846275721624,
+        "mean_40bps": -0.0040038462757216245,
+        "pass": false,
+        "requirement": "> 0 at 20bps AND >= 0 at 40bps"
+      },
+      "G1_SAMPLE": {
+        "pass": true,
+        "requirement": ">= 120 total AND >= 40 per asset",
+        "trades_per_asset": {
+          "BTCUSDT": 142,
+          "ETHUSDT": 149,
+          "SOLUSDT": 178
+        },
+        "trades_total": 469
+      },
+      "G2_NET_EXPECTANCY": {
+        "pass": false,
+        "requirement": "> 0",
+        "value": -0.001003846275721624
+      },
+      "G3_NET_EXPECTANCY_EX_FUNDING": {
+        "pass": false,
+        "requirement": "> 0",
+        "value": -0.0023077874057855895
+      },
+      "G4_PROFIT_FACTOR": {
+        "pass": false,
+        "requirement": ">= 1.15",
+        "value": 0.9585093116634832
+      },
+      "G5_SHARPE": {
+        "pass": false,
+        "requirement": ">= 0.5",
+        "trades_per_year": 98.10028653295129,
+        "value": -0.14649614586943105,
+        "value_replicated_independently": -0.14649614586943105,
+        "window_days": 1745.0
+      },
+      "G6_BOOTSTRAP_CI": {
+        "ci_lower": -0.007134075099726404,
+        "ci_upper": 0.005083558994526581,
+        "pass": false,
+        "prob_mean_positive": 0.375,
+        "requirement": "95% CI lower bound of mean net return > 0",
+        "resamples": 10000,
+        "seed": 20260915
+      },
+      "G7_PERMUTATION": {
+        "draws": 10000,
+        "p_value": 0.6326,
+        "pass": false,
+        "requirement": "p <= 0.05",
+        "seed": 20260915
+      },
+      "G8_TEMPORAL_STABILITY": {
+        "bucket_sizes_half": [
+          234,
+          235
+        ],
+        "bucket_sizes_quartile": [
+          117,
+          117,
+          117,
+          118
+        ],
+        "half_expectancies": [
+          0.0022599944604071707,
+          -0.004253798327866896
+        ],
+        "pass": false,
+        "quartile_expectancies": [
+          -0.006357713514870385,
+          0.010877702435684724,
+          -0.004997390068271561,
+          -0.0035165082123809143
+        ],
+        "quartiles_positive": 1,
+        "requirement": "both halves > 0 AND >= 3/4 quartiles > 0"
+      },
+      "G9_ASSET_STABILITY": {
+        "pass": false,
+        "per_asset_expectancy": {
+          "BTCUSDT": -0.001492957448571651,
+          "ETHUSDT": -0.0038408130433648206,
+          "SOLUSDT": 0.0017611078530623114
+        },
+        "positive_assets": 1,
+        "requirement": ">= 2 of 3 assets > 0"
+      },
+      "failed_gates": [
+        "G2_NET_EXPECTANCY",
+        "G3_NET_EXPECTANCY_EX_FUNDING",
+        "G4_PROFIT_FACTOR",
+        "G5_SHARPE",
+        "G6_BOOTSTRAP_CI",
+        "G7_PERMUTATION",
+        "G8_TEMPORAL_STABILITY",
+        "G9_ASSET_STABILITY",
+        "G10_CONCENTRATION",
+        "G11_COST_SENSITIVITY"
+      ]
+    },
+    "TIMING_CONTROL_MINUS_8H": {
+      "ALL_CRITICAL_GATES_PASS": false,
+      "G10_CONCENTRATION": {
+        "asset_shares": {
+          "BTCUSDT": -0.02654214166778588,
+          "ETHUSDT": -0.6996276399804036,
+          "SOLUSDT": 1.7261697816481905
+        },
+        "max_asset_share": 1.7261697816481905,
+        "max_month_share": 0.5722202444392492,
+        "max_single_trade_share": 0.4701191015757627,
+        "month_shares": {
+          "2022-01": 0.10489760946671081,
+          "2022-02": 0.012207038707159163,
+          "2022-04": -0.20821600128126597,
+          "2022-05": 0.18636017254865095,
+          "2022-06": 0.46125363297595834,
+          "2022-08": 0.1167531886548084,
+          "2022-09": 0.24927454819602926,
+          "2022-11": 0.2915182603192397,
+          "2022-12": 0.023316782674181268,
+          "2023-01": 0.056129437140201265,
+          "2023-02": 0.01507462837938901,
+          "2023-03": 0.022676971320664357,
+          "2023-04": 0.10365757279046854,
+          "2023-05": -0.10568548202722376,
+          "2023-06": 0.08938754686046549,
+          "2023-07": 0.5722202444392492,
+          "2023-08": -0.28152720406371706,
+          "2023-09": 0.10540651544551528,
+          "2023-10": -0.1568795377302152,
+          "2023-11": 0.13511624674413417,
+          "2023-12": -0.03645622883193261,
+          "2024-01": 0.11892191954627347,
+          "2024-02": -0.45141045124636836,
+          "2024-03": -0.2197972039673066,
+          "2024-04": 0.2318893994206344,
+          "2024-05": -0.031772080851076585,
+          "2024-06": -0.07370455194252362,
+          "2024-07": -0.06739789905661761,
+          "2024-08": -0.3184624551229042,
+          "2024-09": 0.0028564427385488426,
+          "2024-10": -0.01807178098342426,
+          "2024-11": -0.1914050130505736,
+          "2024-12": 0.019339776233447663,
+          "2025-01": 0.021146861614094268,
+          "2025-02": -0.44319409071888627,
+          "2025-03": 0.04427707522756746,
+          "2025-04": 0.24434805153891834,
+          "2025-05": -0.039032132327799195,
+          "2025-09": 0.28575746475204916,
+          "2025-10": -0.00011625832403692698,
+          "2025-11": -0.04721998744387973,
+          "2025-12": 0.017492186747827432,
+          "2026-02": 0.07288403650180339,
+          "2026-03": 0.015016094566159596,
+          "2026-04": 0.020149938908978923,
+          "2026-05": -0.021821454531962676,
+          "2026-06": 0.08635513302750865,
+          "2026-08": -0.013514963984921887
+        },
+        "pass": false,
+        "requirement": "max asset <= 60% AND max month <= 40% AND max single trade <= 25%",
+        "total_net_pnl": 0.632488364070713
+      },
+      "G11_COST_SENSITIVITY": {
+        "mean_0bps": 0.0041467082789587726,
+        "mean_20bps": 0.002146708278958771,
+        "mean_40bps": 0.00014670827895877113,
+        "pass": true,
+        "requirement": "> 0 at 20bps AND >= 0 at 40bps"
+      },
+      "G1_SAMPLE": {
+        "pass": true,
+        "requirement": ">= 120 total AND >= 40 per asset",
+        "trades_per_asset": {
+          "BTCUSDT": 63,
+          "ETHUSDT": 61,
+          "SOLUSDT": 77
+        },
+        "trades_total": 201
+      },
+      "G2_NET_EXPECTANCY": {
+        "pass": true,
+        "requirement": "> 0",
+        "value": 0.003146708278958771
+      },
+      "G3_NET_EXPECTANCY_EX_FUNDING": {
+        "pass": true,
+        "requirement": "> 0",
+        "value": 0.0014645029058244457
+      },
+      "G4_PROFIT_FACTOR": {
+        "pass": false,
+        "requirement": ">= 1.15",
+        "value": 1.1417304610483683
+      },
+      "G5_SHARPE": {
+        "pass": false,
+        "requirement": ">= 0.5",
+        "trades_per_year": 42.04297994269341,
+        "value": 0.3011581157627822,
+        "value_replicated_independently": 0.3011581157627822,
+        "window_days": 1745.0
+      },
+      "G6_BOOTSTRAP_CI": {
+        "ci_lower": -0.006456384001716093,
+        "ci_upper": 0.012449518697712868,
+        "pass": false,
+        "prob_mean_positive": 0.7448,
+        "requirement": "95% CI lower bound of mean net return > 0",
+        "resamples": 10000,
+        "seed": 20260915
+      },
+      "G7_PERMUTATION": {
+        "draws": 10000,
+        "p_value": 0.2532,
+        "pass": false,
+        "requirement": "p <= 0.05",
+        "seed": 20260915
+      },
+      "G8_TEMPORAL_STABILITY": {
+        "bucket_sizes_half": [
+          100,
+          101
+        ],
+        "bucket_sizes_quartile": [
+          50,
+          50,
+          50,
+          51
+        ],
+        "half_expectancies": [
+          0.0068295578213958584,
+          -0.000499677406622503
+        ],
+        "pass": false,
+        "quartile_expectancies": [
+          0.02482089488050846,
+          -0.011161779237716732,
+          -0.004809283875011416,
+          0.0037254269741509366
+        ],
+        "quartiles_positive": 2,
+        "requirement": "both halves > 0 AND >= 3/4 quartiles > 0"
+      },
+      "G9_ASSET_STABILITY": {
+        "pass": false,
+        "per_asset_expectancy": {
+          "BTCUSDT": -0.00026646977400620627,
+          "ETHUSDT": -0.0072542023191780195,
+          "SOLUSDT": 0.014178990926012516
+        },
+        "positive_assets": 1,
+        "requirement": ">= 2 of 3 assets > 0"
+      },
+      "failed_gates": [
+        "G4_PROFIT_FACTOR",
+        "G5_SHARPE",
+        "G6_BOOTSTRAP_CI",
+        "G7_PERMUTATION",
+        "G8_TEMPORAL_STABILITY",
+        "G9_ASSET_STABILITY",
+        "G10_CONCENTRATION"
+      ]
+    },
+    "TIMING_CONTROL_PLUS_8H": {
+      "ALL_CRITICAL_GATES_PASS": false,
+      "G10_CONCENTRATION": {
+        "asset_shares": {},
+        "max_asset_share": null,
+        "max_month_share": null,
+        "max_single_trade_share": null,
+        "month_shares": {},
+        "pass": false,
+        "requirement": "max asset <= 60% AND max month <= 40% AND max single trade <= 25%",
+        "total_net_pnl": -0.20805761717133334
+      },
+      "G11_COST_SENSITIVITY": {
+        "mean_0bps": -0.00011260757845632921,
+        "mean_20bps": -0.0021126075784563274,
+        "mean_40bps": -0.004112607578456328,
+        "pass": false,
+        "requirement": "> 0 at 20bps AND >= 0 at 40bps"
+      },
+      "G1_SAMPLE": {
+        "pass": true,
+        "requirement": ">= 120 total AND >= 40 per asset",
+        "trades_per_asset": {
+          "BTCUSDT": 59,
+          "ETHUSDT": 55,
+          "SOLUSDT": 73
+        },
+        "trades_total": 187
+      },
+      "G2_NET_EXPECTANCY": {
+        "pass": false,
+        "requirement": "> 0",
+        "value": -0.001112607578456328
+      },
+      "G3_NET_EXPECTANCY_EX_FUNDING": {
+        "pass": false,
+        "requirement": "> 0",
+        "value": -0.002228664904659538
+      },
+      "G4_PROFIT_FACTOR": {
+        "pass": false,
+        "requirement": ">= 1.15",
+        "value": 0.9571468596000239
+      },
+      "G5_SHARPE": {
+        "pass": false,
+        "requirement": ">= 0.5",
+        "trades_per_year": 39.11461318051576,
+        "value": -0.09864680095444889,
+        "value_replicated_independently": -0.09864680095444889,
+        "window_days": 1745.0
+      },
+      "G6_BOOTSTRAP_CI": {
+        "ci_lower": -0.011244428642982682,
+        "ci_upper": 0.009032253733921912,
+        "pass": false,
+        "prob_mean_positive": 0.4258,
+        "requirement": "95% CI lower bound of mean net return > 0",
+        "resamples": 10000,
+        "seed": 20260915
+      },
+      "G7_PERMUTATION": {
+        "draws": 10000,
+        "p_value": 0.5804,
+        "pass": false,
+        "requirement": "p <= 0.05",
+        "seed": 20260915
+      },
+      "G8_TEMPORAL_STABILITY": {
+        "bucket_sizes_half": [
+          93,
+          94
+        ],
+        "bucket_sizes_quartile": [
+          46,
+          47,
+          47,
+          47
+        ],
+        "half_expectancies": [
+          0.004307376588325444,
+          -0.006474932339208507
+        ],
+        "pass": false,
+        "quartile_expectancies": [
+          0.022528105145199012,
+          -0.013525676892869962,
+          -0.010492495325164304,
+          -0.0024573693532527097
+        ],
+        "quartiles_positive": 1,
+        "requirement": "both halves > 0 AND >= 3/4 quartiles > 0"
+      },
+      "G9_ASSET_STABILITY": {
+        "pass": true,
+        "per_asset_expectancy": {
+          "BTCUSDT": 0.002844303373969441,
+          "ETHUSDT": -0.015111824988443812,
+          "SOLUSDT": 0.006236696686696974
+        },
+        "positive_assets": 2,
+        "requirement": ">= 2 of 3 assets > 0"
+      },
+      "failed_gates": [
+        "G2_NET_EXPECTANCY",
+        "G3_NET_EXPECTANCY_EX_FUNDING",
+        "G4_PROFIT_FACTOR",
+        "G5_SHARPE",
+        "G6_BOOTSTRAP_CI",
+        "G7_PERMUTATION",
+        "G8_TEMPORAL_STABILITY",
+        "G10_CONCENTRATION",
+        "G11_COST_SENSITIVITY"
+      ]
+    }
+  },
+  "controls": {
+    "ANY_CONTROL_PASSES_ALL_GATES": false,
+    "DIRECTION_CONTROL": {
+      "all_critical_gates_pass": false,
+      "bootstrap_ci_lower": -0.010634101545691802,
+      "consequence": "falsifies nothing (fails as required)",
+      "failed_gates": [
+        "G2_NET_EXPECTANCY",
+        "G3_NET_EXPECTANCY_EX_FUNDING",
+        "G4_PROFIT_FACTOR",
+        "G5_SHARPE",
+        "G6_BOOTSTRAP_CI",
+        "G7_PERMUTATION",
+        "G8_TEMPORAL_STABILITY",
+        "G9_ASSET_STABILITY",
+        "G10_CONCENTRATION",
+        "G11_COST_SENSITIVITY"
+      ],
+      "kind": "direction",
+      "n": 347,
+      "net_expectancy_10bps": -0.003197322450006087,
+      "net_expectancy_ex_funding_10bps": -0.0017017150148475866,
+      "permutation_p": 0.7989,
+      "profit_factor": 0.8783270171108597,
+      "sharpe": -0.3864907572822478
+    },
+    "NULL_CONTROL": {
+      "all_critical_gates_pass": false,
+      "bootstrap_ci_lower": -0.0106293967043173,
+      "consequence": "falsifies nothing (fails as required)",
+      "failed_gates": [
+        "G2_NET_EXPECTANCY",
+        "G3_NET_EXPECTANCY_EX_FUNDING",
+        "G4_PROFIT_FACTOR",
+        "G5_SHARPE",
+        "G6_BOOTSTRAP_CI",
+        "G7_PERMUTATION",
+        "G8_TEMPORAL_STABILITY",
+        "G9_ASSET_STABILITY",
+        "G10_CONCENTRATION",
+        "G11_COST_SENSITIVITY"
+      ],
+      "kind": "null",
+      "n": 347,
+      "net_expectancy_10bps": -0.0032276101606167665,
+      "net_expectancy_ex_funding_10bps": -0.0037780755784842,
+      "permutation_p": 0.8062,
+      "profit_factor": 0.8772659896375068,
+      "sharpe": -0.3901571993539864
+    },
+    "OI_CONTROL": {
+      "all_critical_gates_pass": false,
+      "bootstrap_ci_lower": -0.007134075099726404,
+      "consequence": "falsifies nothing (fails as required)",
+      "failed_gates": [
+        "G2_NET_EXPECTANCY",
+        "G3_NET_EXPECTANCY_EX_FUNDING",
+        "G4_PROFIT_FACTOR",
+        "G5_SHARPE",
+        "G6_BOOTSTRAP_CI",
+        "G7_PERMUTATION",
+        "G8_TEMPORAL_STABILITY",
+        "G9_ASSET_STABILITY",
+        "G10_CONCENTRATION",
+        "G11_COST_SENSITIVITY"
+      ],
+      "kind": "oi_absent",
+      "n": 469,
+      "net_expectancy_10bps": -0.001003846275721624,
+      "net_expectancy_ex_funding_10bps": -0.0023077874057855895,
+      "permutation_p": 0.6326,
+      "profit_factor": 0.9585093116634832,
+      "sharpe": -0.14649614586943105
+    },
+    "TIMING_CONTROL": {
+      "all_critical_gates_pass": false,
+      "requirement": "NEITHER variant may satisfy all critical gates",
+      "variants": [
+        "TIMING_CONTROL_PLUS_8H",
+        "TIMING_CONTROL_MINUS_8H"
+      ]
+    },
+    "TIMING_CONTROL_MINUS_8H": {
+      "all_critical_gates_pass": false,
+      "bootstrap_ci_lower": -0.006456384001716093,
+      "consequence": "falsifies nothing (fails as required)",
+      "failed_gates": [
+        "G4_PROFIT_FACTOR",
+        "G5_SHARPE",
+        "G6_BOOTSTRAP_CI",
+        "G7_PERMUTATION",
+        "G8_TEMPORAL_STABILITY",
+        "G9_ASSET_STABILITY",
+        "G10_CONCENTRATION"
+      ],
+      "kind": "timing",
+      "n": 201,
+      "net_expectancy_10bps": 0.003146708278958771,
+      "net_expectancy_ex_funding_10bps": 0.0014645029058244457,
+      "permutation_p": 0.2532,
+      "profit_factor": 1.1417304610483683,
+      "sharpe": 0.3011581157627822
+    },
+    "TIMING_CONTROL_PLUS_8H": {
+      "all_critical_gates_pass": false,
+      "bootstrap_ci_lower": -0.011244428642982682,
+      "consequence": "falsifies nothing (fails as required)",
+      "failed_gates": [
+        "G2_NET_EXPECTANCY",
+        "G3_NET_EXPECTANCY_EX_FUNDING",
+        "G4_PROFIT_FACTOR",
+        "G5_SHARPE",
+        "G6_BOOTSTRAP_CI",
+        "G7_PERMUTATION",
+        "G8_TEMPORAL_STABILITY",
+        "G10_CONCENTRATION",
+        "G11_COST_SENSITIVITY"
+      ],
+      "kind": "timing",
+      "n": 187,
+      "net_expectancy_10bps": -0.001112607578456328,
+      "net_expectancy_ex_funding_10bps": -0.002228664904659538,
+      "permutation_p": 0.5804,
+      "profit_factor": 0.9571468596000239,
+      "sharpe": -0.09864680095444889
+    }
+  },
+  "evaluation_rule": "each control uses the same window/assets/cost model/critical gates as the primary discovery",
+  "experiment_id": "ARC01_PRIMARY_DISCOVERY_01",
+  "falsification_rule": "ANY required control satisfying ALL critical gates forces DISCOVERY_FAIL"
+}

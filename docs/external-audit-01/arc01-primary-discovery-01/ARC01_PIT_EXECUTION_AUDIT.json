@@ -1,0 +1,9 @@
+{
+  "experiment_id": "ARC01_PRIMARY_DISCOVERY_01",
+  "future_mutation_invariant": 40,
+  "future_mutation_sample": 40,
+  "status": "PASS",
+  "trades_audited": 347,
+  "violation_count": 0,
+  "violations": []
+}

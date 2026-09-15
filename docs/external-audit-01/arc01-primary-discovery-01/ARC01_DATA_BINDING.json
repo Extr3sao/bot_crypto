@@ -1,0 +1,112 @@
+{
+  "DATASET_SHA256": "5f4845f5062e68353ef421b9687bf728a56693951e2f74e17221a8e3373b62ec",
+  "DATA_AUTHORITY_COMMIT": "6e42dd9d4c19800925fd555999686d1e2b4ef47e",
+  "DATA_AUTHORITY_DRIFT": 0,
+  "data_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data",
+  "dataset_sha256_recomputed": "5f4845f5062e68353ef421b9687bf728a56693951e2f74e17221a8e3373b62ec",
+  "experiment_id": "ARC01_PRIMARY_DISCOVERY_01",
+  "funding": {
+    "canonical_rows_sha256_expected": "34f736b1efdaebcf81c2e7824f776706385f27aee1c564f3dc39f8d1fe993452",
+    "canonical_rows_sha256_recomputed": "34f736b1efdaebcf81c2e7824f776706385f27aee1c564f3dc39f8d1fe993452",
+    "dataset_sha256_expected": "5f4845f5062e68353ef421b9687bf728a56693951e2f74e17221a8e3373b62ec",
+    "dataset_sha256_recomputed": "5f4845f5062e68353ef421b9687bf728a56693951e2f74e17221a8e3373b62ec",
+    "derivation": "dataset_sha256 = sha256(canonical_json({schema_version, normalizer_version, normalizer_commit, partitions[{symbol,partition_sha256,rows}], funding_units_contract, pit_invariant})) per scripts/normalize_arc01_funding.py",
+    "per_symbol": {
+      "BTCUSDT": {
+        "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc01-primary-discovery-01\\docs\\arc01-data-authority-01\\BTCUSDT_funding.jsonl",
+        "rows": 7347,
+        "rows_expected": 7347,
+        "sha256_expected": "700b0c4c7e5ffa9dbe82cd84e98be9f505bce6f1792d33d0eae88d07a7585855",
+        "sha256_recomputed": "700b0c4c7e5ffa9dbe82cd84e98be9f505bce6f1792d33d0eae88d07a7585855"
+      },
+      "ETHUSDT": {
+        "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc01-primary-discovery-01\\docs\\arc01-data-authority-01\\ETHUSDT_funding.jsonl",
+        "rows": 7347,
+        "rows_expected": 7347,
+        "sha256_expected": "2edf501ea69807bbf67cdd519e53de18c8dea25ea8bdf009beb88ef2e2693943",
+        "sha256_recomputed": "2edf501ea69807bbf67cdd519e53de18c8dea25ea8bdf009beb88ef2e2693943"
+      },
+      "SOLUSDT": {
+        "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc01-primary-discovery-01\\docs\\arc01-data-authority-01\\SOLUSDT_funding.jsonl",
+        "rows": 6652,
+        "rows_expected": 6652,
+        "sha256_expected": "6b16d13f5115f906f9ceb4f5a418f7a541c37609e780cfbad0d52ed565808f85",
+        "sha256_recomputed": "6b16d13f5115f906f9ceb4f5a418f7a541c37609e780cfbad0d52ed565808f85"
+      }
+    },
+    "source": "docs/arc01-data-authority-01 (committed evidence snapshot)",
+    "status": "PASS"
+  },
+  "import_authority": {
+    "modules_outside_worktree": [],
+    "resolved_modules": {
+      "arc01_authority": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc01-primary-discovery-01\\src\\trading_bot\\research\\arc01\\arc01_authority.py",
+      "arc01_discovery": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc01-primary-discovery-01\\src\\trading_bot\\research\\arc01\\arc01_discovery.py",
+      "prereg_reference": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc01-primary-discovery-01\\src\\trading_bot\\research\\arc01\\prereg_reference.py",
+      "stat_validation": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc01-primary-discovery-01\\src\\trading_bot\\backtesting\\stat_validation.py",
+      "trading_bot": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc01-primary-discovery-01\\src\\trading_bot\\__init__.py"
+    },
+    "src_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc01-primary-discovery-01\\src",
+    "stat_validation_sha256": "9e0b6954c2d7f4b89b9215533e5dc48fd37a5e6a07c12829dffd3cbe017c858f",
+    "status": "PASS",
+    "worktree": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc01-primary-discovery-01"
+  },
+  "oi": {
+    "committed_manifest_cross_check": true,
+    "derivation": "OI_FULL_HISTORY_DATASET_SHA256_V2 = sha256(canonical_json({schema_version,normalizer_version,files[{symbol,day,raw_source_sha256,normalized_sha256,rows,dataset_fingerprint,classification}]})) per scripts/normalize_oi_full_history_v2.py",
+    "ledger_path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc01-primary-discovery-01\\docs\\external-audit-01\\oi-full-history-02\\OI_ARCHIVE_DAY_VALIDITY_LEDGER_V2.jsonl",
+    "ledger_sha256": "bb2b43c27a88bf9fe3ec22573903a61007f046ddc1256b5caa3e788cba15e714",
+    "oi_dataset_sha256_expected": "16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99",
+    "oi_dataset_sha256_recomputed": "16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99",
+    "status": "PASS"
+  },
+  "oi_loaded": {
+    "BTCUSDT": {
+      "rows": 499968,
+      "unverified_days": [],
+      "verified_days": 1736
+    },
+    "ETHUSDT": {
+      "rows": 499680,
+      "unverified_days": [],
+      "verified_days": 1735
+    },
+    "SOLUSDT": {
+      "rows": 498816,
+      "unverified_days": [],
+      "verified_days": 1732
+    }
+  },
+  "prereg": {
+    "PREREG_DRIFT": 0,
+    "manifest_sha256_expected": "d698e3d830651988c98359734ebb848efa8fa7bff4103bb44f58fb82b885df5e",
+    "manifest_sha256_recomputed": "d698e3d830651988c98359734ebb848efa8fa7bff4103bb44f58fb82b885df5e",
+    "prereg_commit": "fa15fb4f300815f56bf14e503d1a147cb73f27a6",
+    "spec_sha256_expected": "89b8590ccde0d90ae35dfe5f91d9dad706622a8004d77ef54c35c72c9cc0b313",
+    "spec_sha256_recomputed": "89b8590ccde0d90ae35dfe5f91d9dad706622a8004d77ef54c35c72c9cc0b313"
+  },
+  "price": {
+    "data_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data",
+    "derivation": "PRICE_AUTHORITY_SHA256_V2 = sha256(canonical_json(sorted {symbol: sha256(file_bytes)})) per scripts/build_price_authority_v2.py",
+    "per_asset": {
+      "BTCUSDT": {
+        "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\processed\\price_1h_v2\\BTCUSDT_1h.jsonl",
+        "sha256_expected": "41e9238666a0b98c02cffd19d36a590b8463f6556e215c49f068452674ef9027",
+        "sha256_recomputed": "41e9238666a0b98c02cffd19d36a590b8463f6556e215c49f068452674ef9027"
+      },
+      "ETHUSDT": {
+        "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\processed\\price_1h_v2\\ETHUSDT_1h.jsonl",
+        "sha256_expected": "7c72c0bb55d4aac9460dde54eb73305b5d30bdec99ea4b500eac9e1319ddd7ba",
+        "sha256_recomputed": "7c72c0bb55d4aac9460dde54eb73305b5d30bdec99ea4b500eac9e1319ddd7ba"
+      },
+      "SOLUSDT": {
+        "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\processed\\price_1h_v2\\SOLUSDT_1h.jsonl",
+        "sha256_expected": "6f147463b504f5026d887e77306cfa629ee5feb8cbdb01923643133091da03ff",
+        "sha256_recomputed": "6f147463b504f5026d887e77306cfa629ee5feb8cbdb01923643133091da03ff"
+      }
+    },
+    "price_authority_sha256_expected": "e1c2462a6aa9ba0c921154d259a28c49be1e2fc58a544dbd97af8ecabef52168",
+    "price_authority_sha256_recomputed": "e1c2462a6aa9ba0c921154d259a28c49be1e2fc58a544dbd97af8ecabef52168",
+    "status": "PASS"
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "ACCOUNTING_RECONCILIATION": "PASS",
+  "TRADE_LEDGER_RECONCILIATION": "PASS",
+  "asset_counts": {
+    "BTCUSDT": 103,
+    "ETHUSDT": 111,
+    "SOLUSDT": 133
+  },
+  "checks": {
+    "asset_counts_sum_to_total": true,
+    "asset_direction_counts_agree": true,
+    "cost_scenario_max_abs_error": 0.0,
+    "cost_scenarios_use_identical_trade_set": true,
+    "direction_counts_sum_to_total": true,
+    "funding_cashflow_max_abs_error": 0.0,
+    "funding_mismatch_examples": [],
+    "funding_settlement_mismatch_count": 0,
+    "funding_settlements_match_certified_authority": true,
+    "information_window_disjoint_from_cashflow_window": true,
+    "net_decomposition_max_abs_error": 0.0,
+    "net_decomposition_reconciles_exactly": true,
+    "selected_signals_eq_executed_plus_skipped": true,
+    "settlements_applied_range": [
+      9,
+      36
+    ],
+    "trade_count_matches_ledger_rows": true
+  },
+  "experiment_id": "ARC01_PRIMARY_DISCOVERY_01",
+  "failed_checks": [],
+  "funnel": {
+    "executed_trades": 347,
+    "forward_price_unavailable": 1,
+    "funding_not_extreme": 13891,
+    "funding_settlements_evaluated": 15780,
+    "insufficient_funding_history": 0,
+    "long_signals": 260,
+    "oi_missing_or_stale": 3,
+    "oi_not_expanding": 957,
+    "oi_reference_invalid": 2,
+    "oi_reference_missing_or_stale": 5,
+    "outside_window": 0,
+    "position_already_open": 574,
+    "scale_nonpositive": 0,
+    "short_signals": 87
+  }
+}
