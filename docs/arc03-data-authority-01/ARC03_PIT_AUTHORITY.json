@@ -1,0 +1,21 @@
+{
+  "checkpoint": "ARC03-DATA-001",
+  "contract": {
+    "archive_validity_not_retroactive": "later archive admission cannot alter a decision evaluated at an earlier T",
+    "completed_bars_only": "a bar is readable only once its provider close_time has passed; the forming bar is invisible",
+    "conflicting_duplicates_fail_closed": "a month containing a conflicting duplicate is withheld whole; a partition with a duplicate slot raises",
+    "data_time_le_decision_time": "every 5m bar used by a decision satisfies bar_close_time_ms <= decision_time_ms",
+    "decision_instant": "decision_time_ms = close_time of the signal bar (provider field 6, epoch ms)",
+    "exact_duplicates": "byte-identical duplicate rows collapse deterministically (one kept)",
+    "future_mutation_invariance": "bars with open_time > decision_time cannot change any feature, reason code or emitted direction",
+    "missing_stale_fails_closed": "fewer than 30 complete reference observations -> REFERENCE_HISTORY_INCOMPLETE (NO_SIGNAL)",
+    "past_eligible_mutation_detectable": "mutating a reference bar changes participation_shock/excursion_record",
+    "provider_schema_change": "a header row (from 2022-01; SOLUSDT 2022-03 excepted) is detected by exact match and skipped",
+    "reference_observations": "the 30 same 5m-slot daily references satisfy data_time <= decision_time trivially (t - 86400000*j)"
+  },
+  "evidence": "ARC03_PIT_INDEPENDENT_TESTS.json",
+  "no_future_field_admitted": [
+    "ignore (provider field 12) is never read",
+    "close_time is read only as the bar's own completion anchor, never as a forward observation"
+  ]
+}

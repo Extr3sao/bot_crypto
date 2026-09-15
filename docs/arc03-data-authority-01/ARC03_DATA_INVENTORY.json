@@ -1,0 +1,77 @@
+{
+  "canonical_arc03_authority": {
+    "daily_supplement_root": "data/raw/binance_um/arc03_daily",
+    "family": "binance_usdm_klines_5m",
+    "interval": "5m",
+    "per_symbol": {
+      "BTCUSDT": {
+        "admitted_months": 80,
+        "admitted_rows": 701280,
+        "daily_supplemented_months": [],
+        "first_open_ms": 1577836800000,
+        "internal_cadence_breaks_admitted": 0,
+        "last_open_ms": 1788220500000,
+        "withheld_months": []
+      },
+      "ETHUSDT": {
+        "admitted_months": 80,
+        "admitted_rows": 701280,
+        "daily_supplemented_months": [],
+        "first_open_ms": 1577836800000,
+        "internal_cadence_breaks_admitted": 0,
+        "last_open_ms": 1788220500000,
+        "withheld_months": []
+      },
+      "SOLUSDT": {
+        "admitted_months": 72,
+        "admitted_rows": 627180,
+        "daily_supplemented_months": [
+          "2022-02",
+          "2022-04"
+        ],
+        "first_open_ms": 1600066800000,
+        "internal_cadence_breaks_admitted": 0,
+        "last_open_ms": 1788220500000,
+        "withheld_months": []
+      }
+    },
+    "processed": "data/processed/arc03_klines_5m/{BTCUSDT,ETHUSDT,SOLUSDT}.jsonl",
+    "raw_root": "data/raw/binance_um/arc03",
+    "schema": [
+      "t",
+      "ct",
+      "o",
+      "h",
+      "l",
+      "c",
+      "v",
+      "qv",
+      "n",
+      "tb",
+      "tq",
+      "sym",
+      "ms"
+    ]
+  },
+  "checkpoint": "ARC03-DATA-001",
+  "not_admitted": [
+    "open_interest (H6 territory)",
+    "funding rate / mark price (ARC-01 territory)",
+    "aggTrades / order book depth as a primary input (out of the frozen ARC-03 data requirement)"
+  ],
+  "provider_field_admission": {
+    "close": "REQUIRED (body / exhaustion input)",
+    "close_time": "REQUIRED (PIT completion anchor)",
+    "count": "OPTIONAL_RESEARCH_ONLY (number of trades; not used by the frozen primary)",
+    "high": "REQUIRED (excursion input)",
+    "ignore": "REJECTED (provider ignore column, never read)",
+    "low": "REQUIRED (excursion input)",
+    "open": "REQUIRED (price displacement input)",
+    "open_time": "REQUIRED (bar open time, epoch ms UTC)",
+    "quote_volume": "OPTIONAL_RESEARCH_ONLY (dollar participation; not used by the frozen primary)",
+    "taker_buy_quote_volume": "OPTIONAL_RESEARCH_ONLY (aggressor-side dollar volume; not used)",
+    "taker_buy_volume": "OPTIONAL_RESEARCH_ONLY (aggressor-side base volume; H5 territory, explicitly NOT used by ARC-03)",
+    "volume": "REQUIRED (ARC-03 participation field, base units)"
+  },
+  "purpose": "candidate participation inputs for ARC-03, classified before any economic observation"
+}

@@ -1,0 +1,27 @@
+{
+  "A_B_DETERMINISM": "PASS",
+  "method": "independent re-parser over the same raw provider bytes",
+  "per_symbol": {
+    "BTCUSDT": {
+      "authority_partition_sha256": "eb75ab97881fd941c05d1b188778f1a832ab404c59f5991eff12ead779e4ab02",
+      "bytes_equal": true,
+      "independent_reparse_sha256": "eb75ab97881fd941c05d1b188778f1a832ab404c59f5991eff12ead779e4ab02",
+      "second_run_matches": true,
+      "second_run_sha256": "eb75ab97881fd941c05d1b188778f1a832ab404c59f5991eff12ead779e4ab02"
+    },
+    "ETHUSDT": {
+      "authority_partition_sha256": "24c886902760b2e2c873df7721c12098e65b768762f55e2144d990deac04c211",
+      "bytes_equal": true,
+      "independent_reparse_sha256": "24c886902760b2e2c873df7721c12098e65b768762f55e2144d990deac04c211",
+      "second_run_matches": true,
+      "second_run_sha256": "24c886902760b2e2c873df7721c12098e65b768762f55e2144d990deac04c211"
+    },
+    "SOLUSDT": {
+      "authority_partition_sha256": "d872bc7dc8a52eb697962516fbd24a636483acd43e524cdbbf09985d2720f548",
+      "bytes_equal": true,
+      "independent_reparse_sha256": "d872bc7dc8a52eb697962516fbd24a636483acd43e524cdbbf09985d2720f548",
+      "second_run_matches": true,
+      "second_run_sha256": "d872bc7dc8a52eb697962516fbd24a636483acd43e524cdbbf09985d2720f548"
+    }
+  }
+}

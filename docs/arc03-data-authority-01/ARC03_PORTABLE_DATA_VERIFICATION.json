@@ -1,0 +1,125 @@
+{
+  "audited_target": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc03-participation-reversal-01",
+  "checks": [
+    {
+      "check": "PYTHON_IMPORT_AUTHORITY",
+      "detail": {
+        "audited_target": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc03-participation-reversal-01",
+        "module": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc03-participation-reversal-01\\src\\trading_bot\\research\\arc03\\arc03_authority.py"
+      },
+      "pass": true
+    },
+    {
+      "check": "TEST_TARGET_EQUALS_AUDITED",
+      "detail": {
+        "conftest_guard": true,
+        "src_present": true
+      },
+      "pass": true
+    },
+    {
+      "check": "TARGET_ARTIFACTS_PRESENT",
+      "detail": {
+        "missing": []
+      },
+      "pass": true
+    },
+    {
+      "check": "RAW_LEDGER_VERIFIED",
+      "detail": {
+        "failures": [],
+        "total_entries": 237,
+        "verified_entries": 237
+      },
+      "pass": true
+    },
+    {
+      "check": "PARTITION_SHA256_MATCH",
+      "detail": {
+        "mismatches": {},
+        "observed": {
+          "BTCUSDT": {
+            "first": 1577836800000,
+            "last": 1788220500000,
+            "rows": 701280
+          },
+          "ETHUSDT": {
+            "first": 1577836800000,
+            "last": 1788220500000,
+            "rows": 701280
+          },
+          "SOLUSDT": {
+            "first": 1600066800000,
+            "last": 1788220500000,
+            "rows": 627180
+          }
+        }
+      },
+      "pass": true
+    },
+    {
+      "check": "DATASET_SHA256_MATCH",
+      "detail": {
+        "recomputed": "1a6ad11712ce436ce9d413d6b53162d66996778cd98643ef7c3eb746a54745ef",
+        "recorded": "1a6ad11712ce436ce9d413d6b53162d66996778cd98643ef7c3eb746a54745ef"
+      },
+      "pass": true
+    },
+    {
+      "check": "SUPPLEMENT_SHA256_MATCH",
+      "detail": {
+        "failures": [],
+        "supplements": 5
+      },
+      "pass": true
+    },
+    {
+      "check": "COMMON_WINDOW_MATCH",
+      "detail": {
+        "observed": [
+          1600066800000,
+          1788220500000
+        ],
+        "recorded": [
+          1600066800000,
+          1788220500000
+        ]
+      },
+      "pass": true
+    },
+    {
+      "check": "PIT_BATTERY",
+      "detail": {
+        "passed": 28,
+        "total": 28
+      },
+      "pass": true
+    },
+    {
+      "check": "CLEAN_WORKTREE",
+      "detail": {
+        "dirty_entries": [
+          "?? docs/arc03-data-authority-01/",
+          "?? scripts/build_arc03_data_authority.py",
+          "?? scripts/collect_arc03_reuse_assessment.py",
+          "?? scripts/download_arc03_klines.py",
+          "?? scripts/verify_arc03_data_authority.py",
+          "?? src/trading_bot/research/arc03/"
+        ],
+        "head": "367f58f1c8a45a4f56459f4564baf2e73ac494ef"
+      },
+      "pass": false
+    }
+  ],
+  "checks_passed": 9,
+  "checks_total": 10,
+  "data_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc03-participation-reversal-01",
+  "data_root_is_audited_target": true,
+  "failed_checks": [
+    "CLEAN_WORKTREE"
+  ],
+  "git_head": "367f58f1c8a45a4f56459f4564baf2e73ac494ef",
+  "read_only": true,
+  "verdict": "FAIL",
+  "verifier": "verify_arc03_data_authority.py"
+}

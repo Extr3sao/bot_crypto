@@ -1,0 +1,26 @@
+{
+  "asset_fingerprint_sha256": {
+    "BTCUSDT": "f0a1a23636ffe2578199ea9ea49ca7ec71e6678bf3e1dd554812d6a349ff2ddb",
+    "ETHUSDT": "e0b0dfb2c3655952567012a9fbcad838240e3c0cad278823afd604dc9348fbd2",
+    "SOLUSDT": "b2117ee640db2bcaeda7f6f6bd0b5d1472758952d0cf45c9fca3a2ccbe8d1641"
+  },
+  "assets": [
+    "BTCUSDT",
+    "ETHUSDT",
+    "SOLUSDT"
+  ],
+  "bar_ms": 300000,
+  "checkpoint": "ARC03-DATA-001",
+  "dataset_sha256": "1a6ad11712ce436ce9d413d6b53162d66996778cd98643ef7c3eb746a54745ef",
+  "dataset_sha256_method": "sha256(canonical_json({schema_version, normalizer_version, interval, files[{symbol,month,raw_sha256,normalized_rows,classification}], daily_supplements[{symbol,date,raw_sha256,for_month}]})) over all months of all symbols sorted by (symbol, month) and all daily supplement archives sorted by (symbol, date)",
+  "family": "binance_usdm_klines_5m",
+  "interval": "5m",
+  "normalizer_version": "1.0.0",
+  "partition_sha256": {
+    "BTCUSDT": "eb75ab97881fd941c05d1b188778f1a832ab404c59f5991eff12ead779e4ab02",
+    "ETHUSDT": "24c886902760b2e2c873df7721c12098e65b768762f55e2144d990deac04c211",
+    "SOLUSDT": "d872bc7dc8a52eb697962516fbd24a636483acd43e524cdbbf09985d2720f548"
+  },
+  "raw_files_sha256": "abfe8caee35ff441d71127430a8547eba98e54a7a722681db908565b720996a9",
+  "schema_version": "1.0.0"
+}

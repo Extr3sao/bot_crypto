@@ -1,0 +1,12 @@
+{
+  "CANONICAL_AUTHORITY_UNCHANGED": true,
+  "MUTATED_SHA_DIFFERS": true,
+  "MUTATION_SENSITIVITY": "PASS",
+  "baseline_month_classification": "VALID",
+  "baseline_subset_partition_sha256": "4f81116a89bed007dece7760004fcf65b8e4e6cb815b0b390837d66f3f36a241",
+  "method": "single-value byte mutation of one raw archived row inside a copied single-month raw tree",
+  "mutated_differs_from_baseline_row_count": false,
+  "mutated_month_classification": "VALID",
+  "mutated_partition_sha256": "30cd57986f9dece1aa833723777f29413372fddd40fad3d16d427558eb2274da",
+  "victim": "BTCUSDT/2023-05 (field 5 = volume of the first data row, +0.5)"
+}

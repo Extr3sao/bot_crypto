@@ -1,0 +1,76 @@
+{
+  "assets": [
+    "BTCUSDT",
+    "ETHUSDT",
+    "SOLUSDT"
+  ],
+  "checkpoint": "ARC03-DATA-001",
+  "common_causal_window": {
+    "bound_semantics": "CLOSED interval on 5m bar-OPEN times: bar_open_time_ms in [start_ms, end_ms]",
+    "checkpoint": "ARC03-DATA-001",
+    "decision_eligibility_semantics": "a decision requires the signal bar to be complete (bar_close_time_ms <= decision_time_ms) and 30 complete same-slot daily reference bars and 12 forward bars, all inside the admitted partitions",
+    "derivation": "max(first admitted bar open) .. min(last admitted bar open) across the three assets",
+    "end_ms": 1788220500000,
+    "end_utc": "2026-08-31T23:55:00Z",
+    "per_asset_first_open_ms": {
+      "BTCUSDT": 1577836800000,
+      "ETHUSDT": 1577836800000,
+      "SOLUSDT": 1600066800000
+    },
+    "per_asset_last_open_ms": {
+      "BTCUSDT": 1788220500000,
+      "ETHUSDT": 1788220500000,
+      "SOLUSDT": 1788220500000
+    },
+    "start_ms": 1600066800000,
+    "start_utc": "2020-09-14T07:00:00Z",
+    "window_span_days_inclusive": 2177.7083333333335
+  },
+  "data_quality_status": "PASS",
+  "dataset_sha256": "1a6ad11712ce436ce9d413d6b53162d66996778cd98643ef7c3eb746a54745ef",
+  "determinism": "PASS",
+  "family": "binance_usdm_klines_5m",
+  "field_admission": {
+    "c": "REQUIRED (close)",
+    "ct": "REQUIRED (bar close time, epoch ms UTC)",
+    "h": "REQUIRED (high)",
+    "l": "REQUIRED (low)",
+    "ms": "PROVENANCE (source month partition)",
+    "n": "OPTIONAL_RESEARCH_ONLY (number of trades)",
+    "o": "REQUIRED (open)",
+    "qv": "OPTIONAL_RESEARCH_ONLY (quote volume)",
+    "sym": "PROVENANCE",
+    "t": "REQUIRED (bar open time, epoch ms UTC)",
+    "tb": "OPTIONAL_RESEARCH_ONLY (taker buy base volume) \u2014 H5 territory, not used by ARC-03",
+    "tq": "OPTIONAL_RESEARCH_ONLY (taker buy quote volume)",
+    "v": "REQUIRED (base-unit traded volume) \u2014 the ARC-03 participation field"
+  },
+  "interval": "5m",
+  "market": "Binance USD-M perpetual futures",
+  "mutation_sensitivity": "PASS",
+  "normalized_schema": [
+    "t",
+    "ct",
+    "o",
+    "h",
+    "l",
+    "c",
+    "v",
+    "qv",
+    "n",
+    "tb",
+    "tq",
+    "sym",
+    "ms"
+  ],
+  "partition_sha256": {
+    "BTCUSDT": "eb75ab97881fd941c05d1b188778f1a832ab404c59f5991eff12ead779e4ab02",
+    "ETHUSDT": "24c886902760b2e2c873df7721c12098e65b768762f55e2144d990deac04c211",
+    "SOLUSDT": "d872bc7dc8a52eb697962516fbd24a636483acd43e524cdbbf09985d2720f548"
+  },
+  "pit": "ARC03_PIT_AUTHORITY.json",
+  "pit_tests": "PASS",
+  "processed_root": "data/processed/arc03_klines_5m",
+  "raw_root": "data/raw/binance_um/arc03",
+  "source": "SOURCE_BINANCE_VISION_USDM_MONTHLY_KLINES (official data.binance.vision archive)"
+}

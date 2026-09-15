@@ -1,0 +1,263 @@
+{
+  "REUSABLE_FIELDS_FOUND": false,
+  "assessment_sha256": "fd1b95c87f5b634fb596da01d879ab7aa9fcccee7ad9943f55a033d4a83432e0",
+  "candidates": [
+    {
+      "cadence": "1h",
+      "candidate": "data/processed/price_1h_v2/BTCUSDT_1h.jsonl",
+      "exists": false,
+      "family": "binance_usdm_klines_1h (ARC-01 V2 authority)",
+      "field_classification": {
+        "close": "NOT_REUSABLE",
+        "count": "NOT_REUSABLE",
+        "high": "NOT_REUSABLE",
+        "low": "NOT_REUSABLE",
+        "open": "NOT_REUSABLE",
+        "quote_volume": "NOT_REUSABLE",
+        "taker_buy_quote_volume": "NOT_REUSABLE",
+        "taker_buy_volume": "NOT_REUSABLE",
+        "volume": "NOT_REUSABLE"
+      },
+      "fields": {
+        "close": "PRESENT",
+        "count": "PRESENT",
+        "high": "PRESENT",
+        "low": "PRESENT",
+        "open": "PRESENT",
+        "quote_volume": "PRESENT",
+        "taker_buy_quote_volume": "PRESENT",
+        "taker_buy_volume": "PRESENT",
+        "volume": "PRESENT"
+      },
+      "first_row_shape_ok": false,
+      "reason": "wrong cadence: ARC-03's frozen decision timeframe is the 5m bar and the participation shock is defined against same-5m-slot daily references. 1h bars cannot be disaggregated (volume is not additive across the missing 5m slots and the exhaustion geometry is lost), so no participation field of this authority can serve the frozen definition.",
+      "rows": 0,
+      "schema_inspected": "12-element provider array [openTime,open,high,low,close,volume,closeTime,quote_volume,count,taker_buy_volume,taker_buy_quote_volume,ignore]",
+      "sha256": "",
+      "verdict": "NOT_REUSABLE"
+    },
+    {
+      "cadence": "1h",
+      "candidate": "data/processed/price_1h_v2/ETHUSDT_1h.jsonl",
+      "exists": false,
+      "family": "binance_usdm_klines_1h (ARC-01 V2 authority)",
+      "field_classification": {
+        "close": "NOT_REUSABLE",
+        "count": "NOT_REUSABLE",
+        "high": "NOT_REUSABLE",
+        "low": "NOT_REUSABLE",
+        "open": "NOT_REUSABLE",
+        "quote_volume": "NOT_REUSABLE",
+        "taker_buy_quote_volume": "NOT_REUSABLE",
+        "taker_buy_volume": "NOT_REUSABLE",
+        "volume": "NOT_REUSABLE"
+      },
+      "fields": {
+        "close": "PRESENT",
+        "count": "PRESENT",
+        "high": "PRESENT",
+        "low": "PRESENT",
+        "open": "PRESENT",
+        "quote_volume": "PRESENT",
+        "taker_buy_quote_volume": "PRESENT",
+        "taker_buy_volume": "PRESENT",
+        "volume": "PRESENT"
+      },
+      "first_row_shape_ok": false,
+      "reason": "wrong cadence: ARC-03's frozen decision timeframe is the 5m bar and the participation shock is defined against same-5m-slot daily references. 1h bars cannot be disaggregated (volume is not additive across the missing 5m slots and the exhaustion geometry is lost), so no participation field of this authority can serve the frozen definition.",
+      "rows": 0,
+      "schema_inspected": "12-element provider array [openTime,open,high,low,close,volume,closeTime,quote_volume,count,taker_buy_volume,taker_buy_quote_volume,ignore]",
+      "sha256": "",
+      "verdict": "NOT_REUSABLE"
+    },
+    {
+      "cadence": "1h",
+      "candidate": "data/processed/price_1h_v2/SOLUSDT_1h.jsonl",
+      "exists": false,
+      "family": "binance_usdm_klines_1h (ARC-01 V2 authority)",
+      "field_classification": {
+        "close": "NOT_REUSABLE",
+        "count": "NOT_REUSABLE",
+        "high": "NOT_REUSABLE",
+        "low": "NOT_REUSABLE",
+        "open": "NOT_REUSABLE",
+        "quote_volume": "NOT_REUSABLE",
+        "taker_buy_quote_volume": "NOT_REUSABLE",
+        "taker_buy_volume": "NOT_REUSABLE",
+        "volume": "NOT_REUSABLE"
+      },
+      "fields": {
+        "close": "PRESENT",
+        "count": "PRESENT",
+        "high": "PRESENT",
+        "low": "PRESENT",
+        "open": "PRESENT",
+        "quote_volume": "PRESENT",
+        "taker_buy_quote_volume": "PRESENT",
+        "taker_buy_volume": "PRESENT",
+        "volume": "PRESENT"
+      },
+      "first_row_shape_ok": false,
+      "reason": "wrong cadence: ARC-03's frozen decision timeframe is the 5m bar and the participation shock is defined against same-5m-slot daily references. 1h bars cannot be disaggregated (volume is not additive across the missing 5m slots and the exhaustion geometry is lost), so no participation field of this authority can serve the frozen definition.",
+      "rows": 0,
+      "schema_inspected": "12-element provider array [openTime,open,high,low,close,volume,closeTime,quote_volume,count,taker_buy_volume,taker_buy_quote_volume,ignore]",
+      "sha256": "",
+      "verdict": "NOT_REUSABLE"
+    },
+    {
+      "cadence": "1h",
+      "candidate": "docs/external-audit-01/h1-regime-transition-01/dataset/BTCUSDT_1h.jsonl",
+      "exists": true,
+      "family": "committed frozen 12-field klines (H1 regime-transition dataset, reused by H5)",
+      "field_classification": {
+        "close": "NOT_REUSABLE",
+        "count": "NOT_REUSABLE",
+        "high": "NOT_REUSABLE",
+        "low": "NOT_REUSABLE",
+        "open": "NOT_REUSABLE",
+        "quote_volume": "NOT_REUSABLE",
+        "taker_buy_quote_volume": "NOT_REUSABLE",
+        "taker_buy_volume": "NOT_REUSABLE",
+        "volume": "NOT_REUSABLE"
+      },
+      "fields": {
+        "close": "PRESENT",
+        "count": "PRESENT",
+        "high": "PRESENT",
+        "low": "PRESENT",
+        "open": "PRESENT",
+        "quote_volume": "PRESENT",
+        "taker_buy_quote_volume": "PRESENT",
+        "taker_buy_volume": "PRESENT",
+        "volume": "PRESENT"
+      },
+      "reason": "same cadence limitation as price_1h_v2; also a cross-branch committed copy, not a 5m authority",
+      "rows": 58633,
+      "sha256": "52a79db49893251d74c61bbda0a02948dffcce8b54f486d58ba2af1bb3595f4b",
+      "verdict": "NOT_REUSABLE"
+    },
+    {
+      "cadence": "1h",
+      "candidate": "docs/external-audit-01/h1-regime-transition-01/dataset/ETHUSDT_1h.jsonl",
+      "exists": true,
+      "family": "committed frozen 12-field klines (H1 regime-transition dataset, reused by H5)",
+      "field_classification": {
+        "close": "NOT_REUSABLE",
+        "count": "NOT_REUSABLE",
+        "high": "NOT_REUSABLE",
+        "low": "NOT_REUSABLE",
+        "open": "NOT_REUSABLE",
+        "quote_volume": "NOT_REUSABLE",
+        "taker_buy_quote_volume": "NOT_REUSABLE",
+        "taker_buy_volume": "NOT_REUSABLE",
+        "volume": "NOT_REUSABLE"
+      },
+      "fields": {
+        "close": "PRESENT",
+        "count": "PRESENT",
+        "high": "PRESENT",
+        "low": "PRESENT",
+        "open": "PRESENT",
+        "quote_volume": "PRESENT",
+        "taker_buy_quote_volume": "PRESENT",
+        "taker_buy_volume": "PRESENT",
+        "volume": "PRESENT"
+      },
+      "reason": "same cadence limitation as price_1h_v2; also a cross-branch committed copy, not a 5m authority",
+      "rows": 58633,
+      "sha256": "2a91389142f9377fc172bbc944003160a0ba3b9de41593a013b9369851684088",
+      "verdict": "NOT_REUSABLE"
+    },
+    {
+      "cadence": "1h",
+      "candidate": "docs/external-audit-01/h1-regime-transition-01/dataset/SOLUSDT_1h.jsonl",
+      "exists": true,
+      "family": "committed frozen 12-field klines (H1 regime-transition dataset, reused by H5)",
+      "field_classification": {
+        "close": "NOT_REUSABLE",
+        "count": "NOT_REUSABLE",
+        "high": "NOT_REUSABLE",
+        "low": "NOT_REUSABLE",
+        "open": "NOT_REUSABLE",
+        "quote_volume": "NOT_REUSABLE",
+        "taker_buy_quote_volume": "NOT_REUSABLE",
+        "taker_buy_volume": "NOT_REUSABLE",
+        "volume": "NOT_REUSABLE"
+      },
+      "fields": {
+        "close": "PRESENT",
+        "count": "PRESENT",
+        "high": "PRESENT",
+        "low": "PRESENT",
+        "open": "PRESENT",
+        "quote_volume": "PRESENT",
+        "taker_buy_quote_volume": "PRESENT",
+        "taker_buy_volume": "PRESENT",
+        "volume": "PRESENT"
+      },
+      "reason": "same cadence limitation as price_1h_v2; also a cross-branch committed copy, not a 5m authority",
+      "rows": 52458,
+      "sha256": "1628c4fa7ac2818ec0524e7c133c7eb65ae5ae5f3d13b28539508a38775af62e",
+      "verdict": "NOT_REUSABLE"
+    },
+    {
+      "cadence": "per trade (irregular)",
+      "candidate": "data/processed/trade_flow/",
+      "date_range": null,
+      "distinct_dates": 0,
+      "exists": false,
+      "family": "raw Binance USD-M aggTrades samples (per-trade)",
+      "field_classification": {
+        "close": "NOT_REUSABLE",
+        "count": "NOT_REUSABLE",
+        "high": "NOT_REUSABLE",
+        "low": "NOT_REUSABLE",
+        "open": "NOT_REUSABLE",
+        "quote_volume": "NOT_REUSABLE",
+        "taker_buy_quote_volume": "NOT_REUSABLE",
+        "taker_buy_volume": "NOT_REUSABLE",
+        "volume": "NOT_REUSABLE"
+      },
+      "fields": {
+        "close": "DERIVABLE",
+        "count": "DERIVABLE",
+        "high": "DERIVABLE",
+        "low": "DERIVABLE",
+        "open": "DERIVABLE",
+        "quote_volume": "DERIVABLE",
+        "taker_buy_quote_volume": "DERIVABLE",
+        "taker_buy_volume": "DERIVABLE",
+        "volume": "DERIVABLE"
+      },
+      "files": 0,
+      "manifest_sha256": "",
+      "reason": "coverage: only 0 distinct days (n/a .. n/a) versus the ~6-year common causal window ARC-03 requires. Codes are CHECKSUM-verified official bytes, but the sample cannot support a multi-year study.",
+      "verdict": "NOT_REUSABLE"
+    },
+    {
+      "cadence": "varies (>=1h in every committed reader)",
+      "candidate": "src/trading_bot/backtesting",
+      "exists": true,
+      "family": "research/backtesting kline readers",
+      "field_classification": {},
+      "fields": {},
+      "reason": "backtesting engine reads 1h/4h/1d klines; no committed 5m participation authority found anywhere in the repository",
+      "verdict": "NOT_REUSABLE"
+    },
+    {
+      "cadence": "varies (>=1h in every committed reader)",
+      "candidate": "src/trading_bot/research",
+      "exists": true,
+      "family": "research/backtesting kline readers",
+      "field_classification": {},
+      "fields": {},
+      "reason": "research feature modules; no committed 5m participation authority found anywhere in the repository",
+      "verdict": "NOT_REUSABLE"
+    }
+  ],
+  "checkpoint": "ARC03-DATA-001",
+  "conclusion": "NO existing authority is reusable. Every committed kline authority in the repository is 1h or coarser (ARC-01 V2 price authority, H1/H5 committed dataset) and per-trade coverage (trade_flow) spans only a handful of recent days. The repository contains no 5m participation authority, so ARC-03 must acquire its own official 5m bytes (only the `volume` field is REQUIRED beyond OHLC, and OHLC is re-derived from the same official 5m bytes rather than spliced from a different cadence).",
+  "method": "inspect the actual frozen bytes/schema of every candidate authority in the shared data root and in docs/",
+  "no_duplicate_dataset_created_for_cadences_already_certified": true,
+  "question": "does an existing certified authority already carry the 5m participation fields ARC-03 needs?"
+}

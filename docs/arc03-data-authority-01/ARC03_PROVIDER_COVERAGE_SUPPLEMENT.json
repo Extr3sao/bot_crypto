@@ -1,0 +1,142 @@
+{
+  "method": "parse each monthly archive; for months classified INVALID_GAP, compute the per-day 5m slot shortfall and retrieve exactly those daily archives (CHECKSUM-verified)",
+  "per_symbol": {
+    "BTCUSDT": {
+      "daily_archives_retrieved": 0,
+      "daily_archives_verified": 0,
+      "gap_months": [],
+      "retrieval": []
+    },
+    "ETHUSDT": {
+      "daily_archives_retrieved": 0,
+      "daily_archives_verified": 0,
+      "gap_months": [],
+      "retrieval": []
+    },
+    "SOLUSDT": {
+      "daily_archives_retrieved": 5,
+      "daily_archives_verified": 5,
+      "gap_months": [
+        {
+          "missing_days": [
+            "2022-02-26",
+            "2022-02-27",
+            "2022-02-28"
+          ],
+          "missing_slots": {
+            "2022-02-26": 288,
+            "2022-02-27": 288,
+            "2022-02-28": 288
+          },
+          "month": "2022-02"
+        },
+        {
+          "missing_days": [
+            "2022-04-01",
+            "2022-04-02"
+          ],
+          "missing_slots": {
+            "2022-04-01": 288,
+            "2022-04-02": 288
+          },
+          "month": "2022-04"
+        }
+      ],
+      "retrieval": [
+        {
+          "checksum_match": true,
+          "date": "2022-02-26",
+          "granularity": "daily",
+          "provider_checksum_sha256": "2f6b1961ec408be134961dd25326bc014cb133a3c72149ca4c448ca6904fc50a",
+          "provider_checksum_sidecar": true,
+          "purpose": "coverage_gap_supplement",
+          "raw_path": "data/raw/binance_um/arc03_daily/SOLUSDT/2022-02-26/SOLUSDT-5m-2022-02-26.zip",
+          "retrieved_utc": "2026-09-15T13:14:07Z",
+          "sha256": "2f6b1961ec408be134961dd25326bc014cb133a3c72149ca4c448ca6904fc50a",
+          "size_bytes": 10675,
+          "source": "data.binance.vision:futures/um/daily/klines",
+          "status": "VERIFIED",
+          "supplement_for_month": "2022-02",
+          "symbol": "SOLUSDT",
+          "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/5m/SOLUSDT-5m-2022-02-26.zip",
+          "verified": true
+        },
+        {
+          "checksum_match": true,
+          "date": "2022-02-27",
+          "granularity": "daily",
+          "provider_checksum_sha256": "64a1adea118e645704457e590ae4ee0e1cbef604cd91c2ab70107f5ca0be16eb",
+          "provider_checksum_sidecar": true,
+          "purpose": "coverage_gap_supplement",
+          "raw_path": "data/raw/binance_um/arc03_daily/SOLUSDT/2022-02-27/SOLUSDT-5m-2022-02-27.zip",
+          "retrieved_utc": "2026-09-15T13:14:07Z",
+          "sha256": "64a1adea118e645704457e590ae4ee0e1cbef604cd91c2ab70107f5ca0be16eb",
+          "size_bytes": 10883,
+          "source": "data.binance.vision:futures/um/daily/klines",
+          "status": "VERIFIED",
+          "supplement_for_month": "2022-02",
+          "symbol": "SOLUSDT",
+          "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/5m/SOLUSDT-5m-2022-02-27.zip",
+          "verified": true
+        },
+        {
+          "checksum_match": true,
+          "date": "2022-02-28",
+          "granularity": "daily",
+          "provider_checksum_sha256": "4eecf1f32ae71720e6f207a441101f5ddf168874056a241f2bffbce8271f650f",
+          "provider_checksum_sidecar": true,
+          "purpose": "coverage_gap_supplement",
+          "raw_path": "data/raw/binance_um/arc03_daily/SOLUSDT/2022-02-28/SOLUSDT-5m-2022-02-28.zip",
+          "retrieved_utc": "2026-09-15T13:14:07Z",
+          "sha256": "4eecf1f32ae71720e6f207a441101f5ddf168874056a241f2bffbce8271f650f",
+          "size_bytes": 11117,
+          "source": "data.binance.vision:futures/um/daily/klines",
+          "status": "VERIFIED",
+          "supplement_for_month": "2022-02",
+          "symbol": "SOLUSDT",
+          "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/5m/SOLUSDT-5m-2022-02-28.zip",
+          "verified": true
+        },
+        {
+          "checksum_match": true,
+          "date": "2022-04-01",
+          "granularity": "daily",
+          "provider_checksum_sha256": "265c3e6bb76a3c517287862583b76c76339feccfea9070eaa6f4d326c893ea46",
+          "provider_checksum_sidecar": true,
+          "purpose": "coverage_gap_supplement",
+          "raw_path": "data/raw/binance_um/arc03_daily/SOLUSDT/2022-04-01/SOLUSDT-5m-2022-04-01.zip",
+          "retrieved_utc": "2026-09-15T13:14:07Z",
+          "sha256": "265c3e6bb76a3c517287862583b76c76339feccfea9070eaa6f4d326c893ea46",
+          "size_bytes": 11429,
+          "source": "data.binance.vision:futures/um/daily/klines",
+          "status": "VERIFIED",
+          "supplement_for_month": "2022-04",
+          "symbol": "SOLUSDT",
+          "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/5m/SOLUSDT-5m-2022-04-01.zip",
+          "verified": true
+        },
+        {
+          "checksum_match": true,
+          "date": "2022-04-02",
+          "granularity": "daily",
+          "provider_checksum_sha256": "6cee5e5b5b3173519be867c5245c8d26f32604f18277aa0a27003c1526698353",
+          "provider_checksum_sidecar": true,
+          "purpose": "coverage_gap_supplement",
+          "raw_path": "data/raw/binance_um/arc03_daily/SOLUSDT/2022-04-02/SOLUSDT-5m-2022-04-02.zip",
+          "retrieved_utc": "2026-09-15T13:14:07Z",
+          "sha256": "6cee5e5b5b3173519be867c5245c8d26f32604f18277aa0a27003c1526698353",
+          "size_bytes": 11212,
+          "source": "data.binance.vision:futures/um/daily/klines",
+          "status": "VERIFIED",
+          "supplement_for_month": "2022-04",
+          "symbol": "SOLUSDT",
+          "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/5m/SOLUSDT-5m-2022-04-02.zip",
+          "verified": true
+        }
+      ]
+    }
+  },
+  "raw_ledger_appended": 2,
+  "source": "https://data.binance.vision (official Binance public archive)",
+  "unverified": 0
+}

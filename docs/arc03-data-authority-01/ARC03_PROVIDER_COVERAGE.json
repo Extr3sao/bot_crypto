@@ -1,0 +1,36 @@
+{
+  "family": "futures/um/monthly/klines",
+  "interval": "5m",
+  "per_symbol": {
+    "BTCUSDT": {
+      "available_months": 80,
+      "content_length_bytes_total": 32232205,
+      "first_available_month": "2020-01",
+      "internally_missing_months": [],
+      "last_available_month": "2026-08"
+    },
+    "ETHUSDT": {
+      "available_months": 80,
+      "content_length_bytes_total": 32196615,
+      "first_available_month": "2020-01",
+      "internally_missing_months": [],
+      "last_available_month": "2026-08"
+    },
+    "SOLUSDT": {
+      "available_months": 72,
+      "content_length_bytes_total": 24786106,
+      "first_available_month": "2020-09",
+      "internally_missing_months": [],
+      "last_available_month": "2026-08"
+    }
+  },
+  "probe_end_month": "2026-09",
+  "probe_method": "HTTP HEAD per symbol/month; availability only (no data content inspected)",
+  "probe_start_month": "2019-01",
+  "source": "https://data.binance.vision (official Binance public archive)",
+  "symbols": [
+    "BTCUSDT",
+    "ETHUSDT",
+    "SOLUSDT"
+  ]
+}
