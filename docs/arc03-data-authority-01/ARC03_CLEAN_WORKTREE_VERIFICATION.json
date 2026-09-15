@@ -1,0 +1,31 @@
+{
+  "A_no_data_root": {
+    "exit_code": 2,
+    "expected": "FAIL_CLOSED exit 2",
+    "output": "{\n  \"verdict\": \"FAIL_CLOSED\",\n  \"reason\": \"partition digests do not reproduce\",\n  \"mismatches\": {\n    \"BTCUSDT\": \"MISSING\",\n    \"ETHUSDT\": \"MISSING\",\n    \"SOLUSDT\": \"MISSING\"\n  }\n}",
+    "pass": true,
+    "verdict": "FAIL_CLOSED"
+  },
+  "B_certified_data_root": {
+    "exit_code": 0,
+    "expected": "PASS exit 0",
+    "output": "{\n  \"verdict\": \"PASS\",\n  \"failed\": []\n}",
+    "pass": true,
+    "verdict": "PASS"
+  },
+  "CLEAN_WORKTREE_DATA_VERIFICATION": "PASS",
+  "C_unit_tests_from_clean_worktree": {
+    "exit_code": 0,
+    "output": "..                                               [100%]\n=========================== short test summary info ===========================\nSKIPPED [1] tests\\unit\\research\\test_arc03_data_authority.py:362: ARC-03 partitions not materialised in this checkout (gitignored data root)\nSKIPPED [1] tests\\unit\\research\\test_arc03_data_authority.py:383: ARC-03 partitions not materialised in this checkout (gitignored data root)\nSKIPPED [1] tests\\unit\\research\\test_arc03_data_authority.py:396: ARC-03 partitions not materialised in this checkout (gitignored data root)\n23 passed, 3 skipped in 335.57s (0:05:35)",
+    "pass": true
+  },
+  "PYTHON_IMPORT_AUTHORITY": "PASS (verified by the verifier from the throwaway worktree)",
+  "TEST_TARGET_EQUALS_AUDITED_TARGET": "PASS (unit tests executed from the throwaway worktree)",
+  "checkpoint": "ARC03-DATA-004",
+  "method": "throwaway worktree at the data-authority commit; read-only verification",
+  "scratch_worktree": ".research/arc03-clean-verify-scratch",
+  "target_commit": "80e4ff51fae6796e5cd11434c669bdfe6d9cb735",
+  "worktree_clean_after": true,
+  "worktree_clean_before": true,
+  "worktree_head": "80e4ff51fae6796e5cd11434c669bdfe6d9cb735"
+}
