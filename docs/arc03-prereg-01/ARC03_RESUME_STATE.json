@@ -18,9 +18,10 @@
       "ARC03-DATA-003 record portable data-authority verification evidence",
       "ARC03-DATA-004 prove data authority from a clean throwaway worktree"
     ],
-    "prereg_commit": null,
+    "prereg_commit": "8ebf8a181a3cfaf03737ef585f8906d28f8d419f",
     "prereg_commit_label": "[ARC03-PREREG-001] freeze participation-shock reversal discovery",
-    "prereg_commit_note": "a commit cannot embed its own SHA; the pointer commit ARC03-PREREG-002 records it",
+    "prereg_commit_note": "resolved after the commit and recorded by the pointer commit [ARC03-PREREG-002]; the prereg commit itself carries prereg_commit = null because a commit cannot embed its own SHA",
+    "pointer_commit_label": "[ARC03-PREREG-002] record the prereg commit SHA and post-freeze drift evidence",
     "independent_verifier_commit": null
   },
   "frozen_hashes": {

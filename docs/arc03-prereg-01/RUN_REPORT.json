@@ -12,9 +12,9 @@
   "self_reference_policy": {
     "authority_commit": "8668a3174234255b1b1f27a7bf04b8f022af68bb",
     "generated_from_commit": "8668a3174234255b1b1f27a7bf04b8f022af68bb",
-    "prereg_commit": null,
+    "prereg_commit": "8ebf8a181a3cfaf03737ef585f8906d28f8d419f",
     "report_commit": null,
-    "note": "a commit cannot embed its own SHA; the prereg commit SHA is recorded by a subsequent pointer commit (ARC03-PREREG-002) and in the final response"
+    "note": "the prereg commit itself carries prereg_commit = null (a commit cannot embed its own SHA); the resolved SHA is recorded here and in ARC03_PREREG_COMMIT_POINTER.json by the pointer commit [ARC03-PREREG-002]"
   },
   "worktree": {
     "path": ".research/arc03-participation-reversal-01",

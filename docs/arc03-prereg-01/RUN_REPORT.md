@@ -19,7 +19,8 @@
 | base selection | `docs/arc03-data-authority-01/ARC03_BASE_SELECTION.json` |
 | spec | `ARC03_SPEC_V1.json` — SHA256 `a69edabb2931b3897cc0bcabdb7c203009ace742af1a729e47f7cb058a407a2d` |
 | manifest | `ARC03_MANIFEST_V1.json` — SHA256 `3b022693fde0a4e362329a009125292410bb1ba3d0e2b3f8571b795a15b1d1a3` |
-| self-reference | `prereg_commit = null`, `report_commit = null` (a commit cannot embed its own SHA; recorded by the pointer commit `ARC03-PREREG-002`) |
+| prereg commit | `8ebf8a181a3cfaf03737ef585f8906d28f8d419f` (`[ARC03-PREREG-001] freeze participation-shock reversal discovery`) |
+| self-reference | the prereg commit carries `prereg_commit = null` and `report_commit = null` (a commit cannot embed its own SHA); the resolved SHA is recorded by the pointer commit `[ARC03-PREREG-002]` in `ARC03_PREREG_COMMIT_POINTER.json` |
 
 Base selection required the frozen Alpha Research Universe, the current research/data
 utilities, and *not* the ARC-01 execution branch, the ARC-02 worktree, the verifier-only

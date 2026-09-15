@@ -1,0 +1,83 @@
+{
+  "schema": "ARC03_PREREG_COMMIT_POINTER/1.0.0",
+  "purpose": "Record the ARC-03 prereg commit SHA and the post-freeze immutability evidence. A commit cannot embed its own SHA, so this pointer is written after [ARC03-PREREG-001] and carries it; the pointers own SHA is deliberately not recorded (no commit loop).",
+  "checkpoint": "ARC03-PREREG-002",
+  "hypothesis_id": "ARC-03-PARTICIPATION-SHOCK-REVERSAL-01",
+
+  "commits": {
+    "base_commit": "367f58f1c8a45a4f56459f4564baf2e73ac494ef",
+    "data_authority_commit": "8668a3174234255b1b1f27a7bf04b8f022af68bb",
+    "data_authority_checkpoint_commits": {
+      "ARC03-DATA-001": "33b7b4f620300f05a6240b924cb812201dc22542",
+      "ARC03-DATA-004": "8668a3174234255b1b1f27a7bf04b8f022af68bb"
+    },
+    "prereg_commit": "8ebf8a181a3cfaf03737ef585f8906d28f8d419f",
+    "prereg_commit_label": "[ARC03-PREREG-001] freeze participation-shock reversal discovery",
+    "pointer_commit": null,
+    "pointer_commit_note": "self-reference would be circular; this file records only the prereg commit",
+    "generated_from_commit": "8ebf8a181a3cfaf03737ef585f8906d28f8d419f",
+    "report_commit": null,
+    "independent_verifier_commit": null
+  },
+
+  "frozen_hashes": {
+    "spec_path": "docs/arc03-prereg-01/ARC03_SPEC_V1.json",
+    "spec_sha256": "a69edabb2931b3897cc0bcabdb7c203009ace742af1a729e47f7cb058a407a2d",
+    "manifest_path": "docs/arc03-prereg-01/ARC03_MANIFEST_V1.json",
+    "manifest_sha256": "3b022693fde0a4e362329a009125292410bb1ba3d0e2b3f8571b795a15b1d1a3",
+    "package_path": "docs/arc03-prereg-01/ARC03_PREREG_VERIFICATION_PACKAGE.json"
+  },
+
+  "post_freeze_verification": {
+    "method": "detached throwaway worktree created at the prereg commit; the portable verifier was run FROM that worktree, so the tested tree is provably the frozen tree",
+    "worktree": ".research/arc03-prereg-verify-scratch (created detached at the prereg commit, removed after the check)",
+    "worktree_head": "8ebf8a181a3cfaf03737ef585f8906d28f8d419f",
+    "worktree_clean_before": true,
+    "worktree_clean_after": true,
+    "A_no_data_root": {"exit_code": 0, "verdict": "PASS", "SPEC_COMPLETE": "PASS", "POST_FREEZE_ARTIFACT_DRIFT": 0},
+    "B_certified_data_root": {
+      "exit_code": 0,
+      "verdict": "PASS",
+      "SPEC_COMPLETE": "PASS",
+      "POST_FREEZE_ARTIFACT_DRIFT": 0,
+      "frozen_artifacts_checked": 8,
+      "participation_partition_binding": "MATCH",
+      "funding_partition_binding": "MATCH"
+    },
+    "C_wrong_data_root": {"exit_code": 2, "verdict": "FAIL_CLOSED"},
+    "unit_tests_from_the_frozen_worktree": {"passed": 26, "skipped": 2, "skipped_reason": "the gitignored data root is not materialised in a fresh checkout"},
+    "checks_executed": [
+      "frozen_artifact_digests",
+      "manifest_and_spec_digests",
+      "bound_implementation",
+      "bound_data_authority_artifacts",
+      "spec_completeness",
+      "economics_guard",
+      "portable_data_binding"
+    ],
+    "POST_FREEZE_ARTIFACT_DRIFT": 0,
+    "SPEC_COMPLETE": "PASS",
+    "WORKING_TREE_CLEAN": true
+  },
+
+  "frozen_economic_set": [
+    "docs/arc03-prereg-01/ARC03_SPEC_V1.json",
+    "docs/arc03-prereg-01/ARC03_STATISTICAL_GATES.json",
+    "docs/arc03-prereg-01/ARC03_CONTROL_PLAN.json",
+    "docs/arc03-prereg-01/ARC03_ROBUSTNESS_PLAN.json",
+    "docs/arc03-prereg-01/ARC03_PIT_CONTRACT.json",
+    "docs/arc03-prereg-01/ARC03_PREREGISTRATION.md",
+    "docs/arc03-prereg-01/ARC03_SELECTION_RATIONALE.md",
+    "docs/arc03-prereg-01/ARC03_FAILED_MEMORY_COLLISION_REVIEW.md"
+  ],
+  "immutability_rule": "after the prereg commit these eight artifacts are immutable; any byte change invalidates the experiment. The report-only artifacts (RUN_REPORT, ARC03_RESUME_STATE, this pointer) and the verification package are NOT part of the frozen economic set; they may quote the frozen hashes but are excluded from the drift check.",
+
+  "economics": {
+    "ARC03_BACKTESTS": 0,
+    "ARC03_EXECUTIONS": 0,
+    "ARC03_PERFORMANCE_OBSERVED": false,
+    "FALSE_SUCCESS": 0
+  },
+  "final_state": "PENDING_INDEPENDENT_PREREG_VERIFICATION",
+  "NEXT": "ARC03_INDEPENDENT_PREREG_VERIFICATION"
+}
