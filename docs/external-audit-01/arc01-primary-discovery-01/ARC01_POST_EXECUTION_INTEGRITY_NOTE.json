@@ -1,0 +1,51 @@
+{
+  "classification": "NON_BLOCKING_REPORTING_DEFECT",
+  "defect_id": "DEF-ARC01-EXEC-REPORT-001",
+  "discovered_by": "post-execution artifact-integrity verification (recomputed sha256 of every emitted artifact vs RUN_REPORT.json:artifact_sha256)",
+  "experiment_id": "ARC01_PRIMARY_DISCOVERY_01",
+  "false_success": 0,
+  "impact": "Only the digest basis of the emitted JSON artifacts. No economic content is affected: no trade, decision, gate, control, ledger state, reconciliation or verdict changes. Content-preservation is proven by parsed-JSON equality before/after normalization.",
+  "non_repair_disclosure": "The frozen implementation (EXECUTION_IMPLEMENTATION_COMMIT 063c1de) was deliberately NOT modified after the result became visible, per the mission rule forbidding post-result implementation mutation. The defect is recorded here rather than silently fixed in the frozen code; a future run (under a NEW_HYPOTHESIS_ID) should write with newline='\n'.",
+  "repair": "Byte-level CRLF->LF normalization of the emitted JSON artifacts so the digests recorded at execution time verify byte-exactly. The single authorized economic experiment was NOT re-executed (reruns are forbidden by the frozen kill rule); no economic quantity was recomputed or edited.",
+  "repo_line_ending_policy": {
+    "consequence": "the normalized LF bytes are stable across checkouts, so the recorded digests remain reproducible",
+    "core.autocrlf": "false",
+    "gitattributes": "absent"
+  },
+  "root_cause": "scripts/run_arc01_primary_discovery.py::write_json serialized with json.dumps(...)+'\n' and digested that LF string, but wrote it with Path.write_text(text, encoding='utf-8') WITHOUT newline='\n'; on Windows the text layer translated every '\n' to '\r\n', so the bytes on disk differed from the bytes that were digested (CRLF vs LF). write_jsonl was unaffected because it opens with newline='\n'.",
+  "schema": "ARC01_POST_EXECUTION_INTEGRITY_NOTE/1.0.0",
+  "unaffected_evidence": {
+    "ARC01_TRADE_LEDGER.jsonl": "already LF (written with newline='\n'); its recorded digest verified before this repair",
+    "gates_and_verdict": "read back from the persisted artifacts; unchanged"
+  },
+  "verification": {
+    "all_recorded_digests_now_verify": true,
+    "matches_recorded_digest": {
+      "ARC01_ACCOUNTING_RECONCILIATION.json": true,
+      "ARC01_CONTROL_RESULTS.json": true,
+      "ARC01_DATA_BINDING.json": true,
+      "ARC01_DECISION_FUNNEL.json": true,
+      "ARC01_PIT_EXECUTION_AUDIT.json": true,
+      "ARC01_PRIMARY_DISCOVERY_RESULT.json": true,
+      "ARC01_STATISTICAL_GATES_RESULT.json": true
+    },
+    "sha256_after_normalization": {
+      "ARC01_ACCOUNTING_RECONCILIATION.json": "516305e6d61b810faf650e3525633aa3bf9dd00afbdecabb5ce0755e8807f7c6",
+      "ARC01_CONTROL_RESULTS.json": "1a1c2ffb8b6c02b3295519d0067f5833ef610c3a1122377b318d4b5d56c819c2",
+      "ARC01_DATA_BINDING.json": "4c95ff671826fcfc16830ad812101f391ff98a93ec6c1f1b863bc5520701341e",
+      "ARC01_DECISION_FUNNEL.json": "2bb3ac1d051365b9dc2dc5513869f4bb830a0b922887ef3640f20bfd95bd3ba5",
+      "ARC01_PIT_EXECUTION_AUDIT.json": "4d13183c74c9201be0b355ccb49b639d664acc27496309b382c577876e8aa970",
+      "ARC01_PRIMARY_DISCOVERY_RESULT.json": "2c19a77248177d15ddd5e8923c054929f6c5bddd9efde6cd8d9c2d53396effc7",
+      "ARC01_STATISTICAL_GATES_RESULT.json": "1e8b26e00e51cb0df744f21330c4d535b3c798cb9b2e98cadc3078c75b2ffe0d"
+    },
+    "sha256_before_normalization": {
+      "ARC01_ACCOUNTING_RECONCILIATION.json": "29dd6cc682f53c0fa619e9d766989ab7fa31377731c6c2762f333a9a199fc2e5",
+      "ARC01_CONTROL_RESULTS.json": "1458dc21cde01fff93626ca6546b807a6ba1128a8d80eaa6a02aab1c07f433e6",
+      "ARC01_DATA_BINDING.json": "f28d8779f50303c9f83aff131defb8cc8b051bbaf80d6f149f9494fb7cee3a5b",
+      "ARC01_DECISION_FUNNEL.json": "6f555a01d71dee81456575d99c433ef1e0383e498e1983e97ed456812a0e3be3",
+      "ARC01_PIT_EXECUTION_AUDIT.json": "d4db40b3674d881244b9b96773d36eab0967bd25a0a93e8c8a041ec8957d49ec",
+      "ARC01_PRIMARY_DISCOVERY_RESULT.json": "41d41a8daacc06c0ac6cfcb91b4899ca2a3fa8dd9920702be01cf3b24ddc9bb7",
+      "ARC01_STATISTICAL_GATES_RESULT.json": "4f4c23aa921ba20ef4273ace5f120a188899434d33deecbac03101cf3bf97600"
+    }
+  }
+}
