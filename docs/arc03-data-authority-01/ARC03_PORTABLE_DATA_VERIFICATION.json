@@ -98,28 +98,22 @@
     {
       "check": "CLEAN_WORKTREE",
       "detail": {
-        "dirty_entries": [
-          "?? docs/arc03-data-authority-01/",
-          "?? scripts/build_arc03_data_authority.py",
-          "?? scripts/collect_arc03_reuse_assessment.py",
-          "?? scripts/download_arc03_klines.py",
-          "?? scripts/verify_arc03_data_authority.py",
-          "?? src/trading_bot/research/arc03/"
-        ],
-        "head": "367f58f1c8a45a4f56459f4564baf2e73ac494ef"
+        "dirty_entries": [],
+        "head": "64e579f11e2120d46bad5df991b87d3404989935",
+        "ignored_for_this_check": [
+          "docs/arc03-data-authority-01/ARC03_PORTABLE_DATA_VERIFICATION.json"
+        ]
       },
-      "pass": false
+      "pass": true
     }
   ],
-  "checks_passed": 9,
+  "checks_passed": 10,
   "checks_total": 10,
   "data_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc03-participation-reversal-01",
   "data_root_is_audited_target": true,
-  "failed_checks": [
-    "CLEAN_WORKTREE"
-  ],
-  "git_head": "367f58f1c8a45a4f56459f4564baf2e73ac494ef",
+  "failed_checks": [],
+  "git_head": "64e579f11e2120d46bad5df991b87d3404989935",
   "read_only": true,
-  "verdict": "FAIL",
+  "verdict": "PASS",
   "verifier": "verify_arc03_data_authority.py"
 }
