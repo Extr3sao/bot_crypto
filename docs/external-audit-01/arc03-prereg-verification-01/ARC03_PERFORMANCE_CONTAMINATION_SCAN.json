@@ -1,0 +1,1790 @@
+{
+  "PERFORMANCE_CONTAMINATION": "PASS",
+  "all_arc03_commits_are_data_or_prereg": true,
+  "allowed_hit_count": 250,
+  "arc03_artifact_files_scanned": 100,
+  "arc03_commits": [
+    "8ebf8a1 [ARC03-PREREG-001] freeze participation-shock reversal discovery",
+    "8668a31 [ARC03-DATA-004] prove data authority from a clean throwaway worktree",
+    "80e4ff5 [ARC03-DATA-003] record portable data-authority verification evidence",
+    "64e579f [ARC03-DATA-002] resolve raw bytes against the data root and bind the authority commit",
+    "33b7b4f [ARC03-DATA-001] establish participation-shock data authority"
+  ],
+  "classification_taxonomy": {
+    "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT": "frozen gate id/threshold, spec field name, prohibition or disclosure prose - naming a metric the discovery will compute is not observing it",
+    "ALLOWED_VOCABULARY_ONLY": "token appears without an observation-like number",
+    "POSSIBLE_OBSERVED_ECONOMIC_VALUE": "forbidden: a reported ARC-03 economic outcome"
+  },
+  "commits_outside_DATA_OR_PREREG": [],
+  "economics_declaration_worktree": {
+    "ARC03_BACKTESTS": 0,
+    "ARC03_EXECUTIONS": 0,
+    "ARC03_PERFORMANCE_OBSERVED": false,
+    "FALSE_SUCCESS": 0
+  },
+  "failed_research_memory_mentions_arc03": false,
+  "failed_research_memory_note": "docs/external-audit-01/FAILED_RESEARCH_MEMORY.md is a pre-existing record of OTHER hypotheses (legacy momentum, H1/H3/H5, ARC-01) and is deliberately OUT of ARC-03 scan scope; the scan instead asserts it carries no ARC-03 record",
+  "forbidden_observed_value_hit_count": 0,
+  "forbidden_observed_value_hits": [],
+  "method": "repo-relative scan of every ARC-03 artifact/source/script (verifier outputs excluded) for forbidden-result vocabulary, with each hit CLASSIFIED as an allowed gate/disclaimer context or a possible observed economic value; git-history scan on the ARC-03 range; added-path result-file scan; economic-declaration cross-check.",
+  "no_arc03_execution_ledger_exists": true,
+  "no_arc03_prereg_discovery_execution": true,
+  "no_result_like_file_added": true,
+  "primary_discovery_stage_named_only_as_next": true,
+  "result_like_files_added": [],
+  "schema": "ARC03_PERFORMANCE_CONTAMINATION_SCAN/2.0.0",
+  "test_files_scanned": 100,
+  "vocabulary_hit_count": 250,
+  "vocabulary_hits": [
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "docs/arc03-data-authority-01/ARC03_AUTHORITY_COMMIT_POINTER.json",
+      "line": 2,
+      "text": "\"arc03_backtests\": 0,",
+      "token": "backtest"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "docs/arc03-data-authority-01/ARC03_BASE_SELECTION.json",
+      "line": 530,
+      "text": "\"subject\": \"docs(backtest): add 1.0 = break-even anchor to profit_factor bullet\"",
+      "token": "profit_factor"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "docs/arc03-data-authority-01/ARC03_BASE_SELECTION.json",
+      "line": 1062,
+      "text": "\"subject\": \"docs(backtest): add 1.0 = break-even anchor to profit_factor bullet\"",
+      "token": "profit_factor"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "docs/arc03-data-authority-01/ARC03_BASE_SELECTION.json",
+      "line": 334,
+      "text": "\"subject\": \"docs(context): refresh post-TSK-104 F2 SQ-MERGE > backtest (PR #3)\"",
+      "token": "backtest"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "docs/arc03-data-authority-01/ARC03_BASE_SELECTION.json",
+      "line": 529,
+      "text": "\"ref\": \"feature/tsk-104-backtest-engine\",",
+      "token": "backtest"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "docs/arc03-data-authority-01/ARC03_BASE_SELECTION.json",
+      "line": 530,
+      "text": "\"subject\": \"docs(backtest): add 1.0 = break-even anchor to profit_factor bullet\"",
+      "token": "backtest"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "docs/arc03-data-authority-01/ARC03_BASE_SELECTION.json",
+      "line": 544,
+      "text": "\"subject\": \"docs(context): refresh post-TSK-104 F2 SQ-MERGE > backtest (PR #3)\"",
+      "token": "backtest"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "docs/arc03-data-authority-01/ARC03_BASE_SELECTION.json",
+      "line": 558,
+      "text": "\"subject\": \"docs(context): refresh post-TSK-104 F2 SQ-MERGE > backtest (PR #3)\"",
+      "token": "backtest"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "docs/arc03-data-authority-01/ARC03_BASE_SELECTION.json",
+      "line": 572,
+      "text": "\"subject\": \"docs(context): refresh post-TSK-104 F2 SQ-MERGE > backtest (PR #3)\"",
+      "token": "backtest"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "docs/arc03-data-authority-01/ARC03_BASE_SELECTION.json",
+      "line": 1061,
+      "text": "\"ref\": \"origin/feature/tsk-104-backtest-engine\",",
+      "token": "backtest"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "docs/arc03-data-authority-01/ARC03_BASE_SELECTION.json",
+      "line": 1062,
+      "text": "\"subject\": \"docs(backtest): add 1.0 = break-even anchor to profit_factor bullet\"",
+      "token": "backtest"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "docs/arc03-data-authority-01/ARC03_EXISTING_DATA_REUSE_ASSESSMENT.json",
+      "line": 239,
+      "text": "\"candidate\": \"src/trading_bot/backtesting\",",
+      "token": "backtest"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "docs/arc03-data-authority-01/ARC03_EXISTING_DATA_REUSE_ASSESSMENT.json",
+      "line": 241,
+      "text": "\"family\": \"research/backtesting kline readers\",",
+      "token": "backtest"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "docs/arc03-data-authority-01/ARC03_EXISTING_DATA_REUSE_ASSESSMENT.json",
+      "line": 244,
+      "text": "\"reason\": \"backtesting engine reads 1h/4h/1d klines; no committed 5m participation authority found anywhere in the repository\",",
+      "token": "backtest"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "docs/arc03-data-authority-01/ARC03_EXISTING_DATA_REUSE_ASSESSMENT.json",
+      "line": 251,
+      "text": "\"family\": \"research/backtesting kline readers\",",
+      "token": "backtest"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "docs/arc03-data-authority-01/ARC03_MECHANISM_AUTHORITY.md",
+      "line": 8,
+      "text": "> **No economic quantity has been observed.** No returns, no PnL, no signal-return",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "docs/arc03-data-authority-01/ARC03_MECHANISM_AUTHORITY.md",
+      "line": 64,
+      "text": "* **Kill rule (frozen ARU claim):** the hypothesis dies if net expectancy is non-positive",
+      "token": "expectancy"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "docs/arc03-data-authority-01/ARC03_MECHANISM_AUTHORITY.md",
+      "line": 9,
+      "text": "> statistics, no threshold search. `ARC03_BACKTESTS = 0`, `ARC03_EXECUTIONS = 0`,",
+      "token": "backtest"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "docs/arc03-data-authority-01/ARC03_MECHANISM_AUTHORITY.md",
+      "line": 8,
+      "text": "> **No economic quantity has been observed.** No returns, no PnL, no signal-return",
+      "token": "signal-return"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "docs/arc03-prereg-01/ARC03_CONTROL_PLAN.json",
+      "line": 76,
+      "text": "\"per_control_required_fields\": [\"control_id\", \"trade_count\", \"mean_net_return_10bps\", \"mean_net_return_ex_funding\", \"profit_factor\", \"sharpe\", \"bootstrap_ci_lower\", \"permutation_p\", \"halves\", \"quartil",
+      "token": "sharpe"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "docs/arc03-prereg-01/ARC03_CONTROL_PLAN.json",
+      "line": 76,
+      "text": "\"per_control_required_fields\": [\"control_id\", \"trade_count\", \"mean_net_return_10bps\", \"mean_net_return_ex_funding\", \"profit_factor\", \"sharpe\", \"bootstrap_ci_lower\", \"permutation_p\", \"halves\", \"quartil",
+      "token": "profit_factor"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "docs/arc03-prereg-01/ARC03_FAILED_MEMORY_COLLISION_REVIEW.md",
+      "line": 46,
+      "text": "| 12 | **H5 order-flow imbalance** \u2014 `DISCOVERY_FAIL`, `TERMINAL`; positive expectancy but `p = 0.1838`, `P(Sharpe>0) = 0.8285`, halves `[1,\u22121]`, redundancy 0.916 with ROC(24) momentum proxy. Lesson: ",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "docs/arc03-prereg-01/ARC03_FAILED_MEMORY_COLLISION_REVIEW.md",
+      "line": 46,
+      "text": "| 12 | **H5 order-flow imbalance** \u2014 `DISCOVERY_FAIL`, `TERMINAL`; positive expectancy but `p = 0.1838`, `P(Sharpe>0) = 0.8285`, halves `[1,\u22121]`, redundancy 0.916 with ROC(24) momentum proxy. Lesson: ",
+      "token": "sharpe"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "docs/arc03-prereg-01/ARC03_FAILED_MEMORY_COLLISION_REVIEW.md",
+      "line": 35,
+      "text": "| 1 | **Legacy momentum/trend, 5m cells** \u2014 all cells `NOT_SIGNIFICANT`; **\u201ca 5m-entry hypothesis must clear \u2265 0.12% per-trade cost hurdle by design (fewer, larger-edge trades)\u201d** | **HIGH \u2014 the princ",
+      "token": "expectancy"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "docs/arc03-prereg-01/ARC03_FAILED_MEMORY_COLLISION_REVIEW.md",
+      "line": 46,
+      "text": "| 12 | **H5 order-flow imbalance** \u2014 `DISCOVERY_FAIL`, `TERMINAL`; positive expectancy but `p = 0.1838`, `P(Sharpe>0) = 0.8285`, halves `[1,\u22121]`, redundancy 0.916 with ROC(24) momentum proxy. Lesson: ",
+      "token": "expectancy"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "docs/arc03-prereg-01/ARC03_FAILED_MEMORY_COLLISION_REVIEW.md",
+      "line": 56,
+      "text": "| reason | positive net expectancy was explained by funding carry; ex-funding price expectancy negative; multiple critical gates failed |",
+      "token": "expectancy"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "docs/arc03-prereg-01/ARC03_FAILED_MEMORY_COLLISION_REVIEW.md",
+      "line": 7,
+      "text": "> `ARC03_BACKTESTS = 0` \u00b7 `ARC03_EXECUTIONS = 0` \u00b7 `ARC03_PERFORMANCE_OBSERVED = false`",
+      "token": "backtest"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "docs/arc03-prereg-01/ARC03_MANIFEST_V1.json",
+      "line": 85,
+      "text": "\"G5_SHARPE\": \">= 0.50\",",
+      "token": "sharpe"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "docs/arc03-prereg-01/ARC03_MANIFEST_V1.json",
+      "line": 96,
+      "text": "\"G5_SHARPE\",",
+      "token": "sharpe"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "docs/arc03-prereg-01/ARC03_MANIFEST_V1.json",
+      "line": 84,
+      "text": "\"G4_PROFIT_FACTOR\": \">= 1.15\",",
+      "token": "profit_factor"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "docs/arc03-prereg-01/ARC03_MANIFEST_V1.json",
+      "line": 95,
+      "text": "\"G4_PROFIT_FACTOR\",",
+      "token": "profit_factor"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "docs/arc03-prereg-01/ARC03_MANIFEST_V1.json",
+      "line": 82,
+      "text": "\"G2_NET_EXPECTANCY\": \"> 0.0 (strict)\",",
+      "token": "expectancy"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "docs/arc03-prereg-01/ARC03_MANIFEST_V1.json",
+      "line": 83,
+      "text": "\"G3_NET_EXPECTANCY_EX_FUNDING\": \"> 0.0 (strict)\",",
+      "token": "expectancy"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "docs/arc03-prereg-01/ARC03_MANIFEST_V1.json",
+      "line": 93,
+      "text": "\"G2_NET_EXPECTANCY\",",
+      "token": "expectancy"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "docs/arc03-prereg-01/ARC03_MANIFEST_V1.json",
+      "line": 94,
+      "text": "\"G3_NET_EXPECTANCY_EX_FUNDING\",",
+      "token": "expectancy"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "docs/arc03-prereg-01/ARC03_MANIFEST_V1.json",
+      "line": 62,
+      "text": "\"ARC03_BACKTESTS\": 0,",
+      "token": "backtest"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "docs/arc03-prereg-01/ARC03_PREREG_VERIFICATION_PACKAGE.json",
+      "line": 104,
+      "text": "\"id\": \"G5_SHARPE\",",
+      "token": "sharpe"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "docs/arc03-prereg-01/ARC03_PREREG_VERIFICATION_PACKAGE.json",
+      "line": 99,
+      "text": "\"id\": \"G4_PROFIT_FACTOR\",",
+      "token": "profit_factor"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "docs/arc03-prereg-01/ARC03_PREREG_VERIFICATION_PACKAGE.json",
+      "line": 89,
+      "text": "\"id\": \"G2_NET_EXPECTANCY\",",
+      "token": "expectancy"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "docs/arc03-prereg-01/ARC03_PREREG_VERIFICATION_PACKAGE.json",
+      "line": 94,
+      "text": "\"id\": \"G3_NET_EXPECTANCY_EX_FUNDING\",",
+      "token": "expectancy"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "docs/arc03-prereg-01/ARC03_PREREG_VERIFICATION_PACKAGE.json",
+      "line": 65,
+      "text": "\"ARC03_BACKTESTS\": 0,",
+      "token": "backtest"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "docs/arc03-prereg-01/ARC03_PREREGISTRATION.md",
+      "line": 156,
+      "text": "`DISCOVERY_PASS`) with frozen thresholds (`|daily PnL correlation| \u2264 0.5`, trade-time",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "docs/arc03-prereg-01/ARC03_PREREGISTRATION.md",
+      "line": 100,
+      "text": "`G3` ex-funding expectancy `> 0` \u00b7 `G4` profit factor `\u2265 1.15` \u00b7 `G5` annualized Sharpe",
+      "token": "sharpe"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "docs/arc03-prereg-01/ARC03_PREREGISTRATION.md",
+      "line": 100,
+      "text": "`G3` ex-funding expectancy `> 0` \u00b7 `G4` profit factor `\u2265 1.15` \u00b7 `G5` annualized Sharpe",
+      "token": "profit factor"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "docs/arc03-prereg-01/ARC03_PREREGISTRATION.md",
+      "line": 99,
+      "text": "`G1` sample (`N \u2265 120`, each asset `\u2265 40`) \u00b7 `G2` net expectancy `> 0` @10 bps \u00b7",
+      "token": "expectancy"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "docs/arc03-prereg-01/ARC03_PREREGISTRATION.md",
+      "line": 100,
+      "text": "`G3` ex-funding expectancy `> 0` \u00b7 `G4` profit factor `\u2265 1.15` \u00b7 `G5` annualized Sharpe",
+      "token": "expectancy"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "docs/arc03-prereg-01/ARC03_PREREGISTRATION.md",
+      "line": 184,
+      "text": "| reason | positive net expectancy was explained by funding carry; ex-funding price expectancy negative; multiple critical gates failed |",
+      "token": "expectancy"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "docs/arc03-prereg-01/ARC03_PREREGISTRATION.md",
+      "line": 6,
+      "text": "> `ARC03_BACKTESTS = 0`",
+      "token": "backtest"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "docs/arc03-prereg-01/ARC03_PREREGISTRATION.md",
+      "line": 229,
+      "text": "ARC03_BACKTESTS = 0   ARC03_EXECUTIONS = 0   ARC03_PERFORMANCE_OBSERVED = false",
+      "token": "backtest"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "docs/arc03-prereg-01/ARC03_RESUME_STATE.json",
+      "line": 66,
+      "text": "\"reason\": \"positive net expectancy was explained by funding carry; ex-funding price expectancy negative; multiple critical gates failed\",",
+      "token": "expectancy"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "docs/arc03-prereg-01/ARC03_RESUME_STATE.json",
+      "line": 56,
+      "text": "\"ARC03_BACKTESTS\": 0,",
+      "token": "backtest"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "docs/arc03-prereg-01/ARC03_RESUME_STATE.json",
+      "line": 75,
+      "text": "\"run any economic backtest before independent prereg verification\",",
+      "token": "backtest"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "docs/arc03-prereg-01/ARC03_ROBUSTNESS_PLAN.json",
+      "line": 91,
+      "text": "\"metric\": \"max |correlation of daily net PnL| and max trade-time Jaccard overlap\",",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "docs/arc03-prereg-01/ARC03_ROBUSTNESS_PLAN.json",
+      "line": 92,
+      "text": "\"thresholds\": {\"max_abs_daily_pnl_correlation\": 0.5, \"max_trade_time_jaccard_overlap\": 0.5},",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "docs/arc03-prereg-01/ARC03_SELECTION_RATIONALE.md",
+      "line": 5,
+      "text": "> **No return, PnL, Sharpe, profit factor, expectancy, win rate, threshold search, lookback",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "docs/arc03-prereg-01/ARC03_SELECTION_RATIONALE.md",
+      "line": 5,
+      "text": "> **No return, PnL, Sharpe, profit factor, expectancy, win rate, threshold search, lookback",
+      "token": "sharpe"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "docs/arc03-prereg-01/ARC03_SELECTION_RATIONALE.md",
+      "line": 5,
+      "text": "> **No return, PnL, Sharpe, profit factor, expectancy, win rate, threshold search, lookback",
+      "token": "profit factor"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "docs/arc03-prereg-01/ARC03_SELECTION_RATIONALE.md",
+      "line": 5,
+      "text": "> **No return, PnL, Sharpe, profit factor, expectancy, win rate, threshold search, lookback",
+      "token": "expectancy"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "docs/arc03-prereg-01/ARC03_SELECTION_RATIONALE.md",
+      "line": 5,
+      "text": "> **No return, PnL, Sharpe, profit factor, expectancy, win rate, threshold search, lookback",
+      "token": "win rate"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "docs/arc03-prereg-01/ARC03_SELECTION_RATIONALE.md",
+      "line": 8,
+      "text": "`ARC03_BACKTESTS = 0` \u00b7 `ARC03_EXECUTIONS = 0` \u00b7 `ARC03_PERFORMANCE_OBSERVED = false`",
+      "token": "backtest"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "docs/arc03-prereg-01/ARC03_SPEC_V1.json",
+      "line": 370,
+      "text": "\"max_abs_daily_pnl_correlation\": 0.5,",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "docs/arc03-prereg-01/ARC03_SPEC_V1.json",
+      "line": 394,
+      "text": "\"computing returns, PnL, Sharpe, Sortino, profit factor, expectancy or win rate on real data\",",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "docs/arc03-prereg-01/ARC03_SPEC_V1.json",
+      "line": 394,
+      "text": "\"computing returns, PnL, Sharpe, Sortino, profit factor, expectancy or win rate on real data\",",
+      "token": "sharpe"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "docs/arc03-prereg-01/ARC03_SPEC_V1.json",
+      "line": 394,
+      "text": "\"computing returns, PnL, Sharpe, Sortino, profit factor, expectancy or win rate on real data\",",
+      "token": "sortino"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "docs/arc03-prereg-01/ARC03_SPEC_V1.json",
+      "line": 394,
+      "text": "\"computing returns, PnL, Sharpe, Sortino, profit factor, expectancy or win rate on real data\",",
+      "token": "profit factor"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "docs/arc03-prereg-01/ARC03_SPEC_V1.json",
+      "line": 394,
+      "text": "\"computing returns, PnL, Sharpe, Sortino, profit factor, expectancy or win rate on real data\",",
+      "token": "expectancy"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "docs/arc03-prereg-01/ARC03_SPEC_V1.json",
+      "line": 394,
+      "text": "\"computing returns, PnL, Sharpe, Sortino, profit factor, expectancy or win rate on real data\",",
+      "token": "win rate"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "docs/arc03-prereg-01/ARC03_SPEC_V1.json",
+      "line": 16,
+      "text": "\"ARC03_BACKTESTS\": 0,",
+      "token": "backtest"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "docs/arc03-prereg-01/ARC03_SPEC_V1.json",
+      "line": 392,
+      "text": "\"economic backtest on real data\",",
+      "token": "backtest"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "docs/arc03-prereg-01/ARC03_SPEC_V1.json",
+      "line": 395,
+      "text": "\"parameter sweep\",",
+      "token": "parameter sweep"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "docs/arc03-prereg-01/ARC03_SPEC_V1.json",
+      "line": 401,
+      "text": "\"signal-return correlation\",",
+      "token": "signal-return"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "docs/arc03-prereg-01/ARC03_STATISTICAL_GATES.json",
+      "line": 75,
+      "text": "\"denominator\": \"total_net = sum of net_trade_return over all trades at PRIMARY_COST_BPS (unit-notional, so the sum of returns is PnL in notional units)\",",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "docs/arc03-prereg-01/ARC03_STATISTICAL_GATES.json",
+      "line": 17,
+      "text": "\"sharpe\": {",
+      "token": "sharpe"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "docs/arc03-prereg-01/ARC03_STATISTICAL_GATES.json",
+      "line": 18,
+      "text": "\"definition\": \"annualized_sharpe = ( mean(net_returns) / sample_std(net_returns, ddof=1) ) * sqrt(trades_per_year)\",",
+      "token": "sharpe"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "docs/arc03-prereg-01/ARC03_STATISTICAL_GATES.json",
+      "line": 19,
+      "text": "\"per_trade_sharpe\": \"mean(net_returns) / sample_std(net_returns, ddof=1)\",",
+      "token": "sharpe"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "docs/arc03-prereg-01/ARC03_STATISTICAL_GATES.json",
+      "line": 24,
+      "text": "\"zero_variance_behavior\": \"if sample_std(net_returns, ddof=1) == 0.0 then annualized_sharpe = 0.0 and G5 FAILS (fail closed; no astronomic fabricated statistic)\",",
+      "token": "sharpe"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "docs/arc03-prereg-01/ARC03_STATISTICAL_GATES.json",
+      "line": 25,
+      "text": "\"n_lt_2_behavior\": \"if N < 2 then annualized_sharpe = 0.0 and G5 FAILS\",",
+      "token": "sharpe"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "docs/arc03-prereg-01/ARC03_STATISTICAL_GATES.json",
+      "line": 26,
+      "text": "\"project_corroboration\": \"src/trading_bot/backtesting/stat_validation.py:_sharpe uses ddof=1 and mean/std*sqrt(periods_per_year); with periods_per_year = trades_per_year this is identical\"",
+      "token": "sharpe"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "docs/arc03-prereg-01/ARC03_STATISTICAL_GATES.json",
+      "line": 42,
+      "text": "\"project_corroboration\": \"src/trading_bot/backtesting/stat_validation.py:bootstrap_sharpe_ci uses random.Random(seed) and lower_idx = floor(alpha*R) on the sorted statistics\"",
+      "token": "sharpe"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "docs/arc03-prereg-01/ARC03_STATISTICAL_GATES.json",
+      "line": 48,
+      "text": "\"statistic_is_not_sharpe\": \"The permutation statistic is deliberately the MEAN net trade return, not the Sharpe ratio. This is stated because the pre-existing project module happens to permute the Sha",
+      "token": "sharpe"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "docs/arc03-prereg-01/ARC03_STATISTICAL_GATES.json",
+      "line": 122,
+      "text": "\"id\": \"G5_SHARPE\",",
+      "token": "sharpe"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "docs/arc03-prereg-01/ARC03_STATISTICAL_GATES.json",
+      "line": 123,
+      "text": "\"name\": \"annualized Sharpe\",",
+      "token": "sharpe"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "docs/arc03-prereg-01/ARC03_STATISTICAL_GATES.json",
+      "line": 124,
+      "text": "\"metric\": \"annualized net Sharpe (see convention_bindings.sharpe)\",",
+      "token": "sharpe"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "docs/arc03-prereg-01/ARC03_STATISTICAL_GATES.json",
+      "line": 116,
+      "text": "\"name\": \"profit factor\",",
+      "token": "profit factor"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "docs/arc03-prereg-01/ARC03_STATISTICAL_GATES.json",
+      "line": 117,
+      "text": "\"metric\": \"net profit factor at PRIMARY_COST_BPS\",",
+      "token": "profit factor"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "docs/arc03-prereg-01/ARC03_STATISTICAL_GATES.json",
+      "line": 59,
+      "text": "\"profit_factor\": {",
+      "token": "profit_factor"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "docs/arc03-prereg-01/ARC03_STATISTICAL_GATES.json",
+      "line": 115,
+      "text": "\"id\": \"G4_PROFIT_FACTOR\",",
+      "token": "profit_factor"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "docs/arc03-prereg-01/ARC03_STATISTICAL_GATES.json",
+      "line": 52,
+      "text": "\"sidedness\": \"ONE-SIDED UPPER TAIL (the hypothesis is directional: positive net expectancy)\",",
+      "token": "expectancy"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "docs/arc03-prereg-01/ARC03_STATISTICAL_GATES.json",
+      "line": 97,
+      "text": "\"id\": \"G2_NET_EXPECTANCY\",",
+      "token": "expectancy"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "docs/arc03-prereg-01/ARC03_STATISTICAL_GATES.json",
+      "line": 98,
+      "text": "\"name\": \"net expectancy after costs\",",
+      "token": "expectancy"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "docs/arc03-prereg-01/ARC03_STATISTICAL_GATES.json",
+      "line": 105,
+      "text": "\"id\": \"G3_NET_EXPECTANCY_EX_FUNDING\",",
+      "token": "expectancy"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "docs/arc03-prereg-01/ARC03_STATISTICAL_GATES.json",
+      "line": 106,
+      "text": "\"name\": \"ex-funding expectancy\",",
+      "token": "expectancy"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "docs/arc03-prereg-01/ARC03_STATISTICAL_GATES.json",
+      "line": 9,
+      "text": "\"notes\": \"ARC-01 was accepted only because its estimator conventions could be back-solved from a pre-existing repository module. ARC-03 does NOT rely on that: every convention below is stated in full ",
+      "token": "backtest"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "docs/arc03-prereg-01/ARC03_STATISTICAL_GATES.json",
+      "line": 26,
+      "text": "\"project_corroboration\": \"src/trading_bot/backtesting/stat_validation.py:_sharpe uses ddof=1 and mean/std*sqrt(periods_per_year); with periods_per_year = trades_per_year this is identical\"",
+      "token": "backtest"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "docs/arc03-prereg-01/ARC03_STATISTICAL_GATES.json",
+      "line": 42,
+      "text": "\"project_corroboration\": \"src/trading_bot/backtesting/stat_validation.py:bootstrap_sharpe_ci uses random.Random(seed) and lower_idx = floor(alpha*R) on the sorted statistics\"",
+      "token": "backtest"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "docs/arc03-prereg-01/ARC03_STATISTICAL_GATES.json",
+      "line": 100,
+      "text": "\"formula\": \"mean(net_trade_return_10bps)\",",
+      "token": "net_trade_return_10bps"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "docs/arc03-prereg-01/RUN_REPORT.json",
+      "line": 141,
+      "text": "\"ARC03_BACKTESTS\": 0,",
+      "token": "backtest"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "docs/arc03-prereg-01/RUN_REPORT.json",
+      "line": 166,
+      "text": "\"ARC03_BACKTESTS\": 0,",
+      "token": "backtest"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "docs/arc03-prereg-01/RUN_REPORT.md",
+      "line": 80,
+      "text": "`G5` Sharpe \u00b7 `G6` bootstrap \u00b7 `G7` permutation \u00b7 `G8` temporal stability \u00b7 `G9` asset",
+      "token": "sharpe"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "docs/arc03-prereg-01/RUN_REPORT.md",
+      "line": 79,
+      "text": "`G1` sample \u00b7 `G2` net expectancy \u00b7 `G3` ex-funding expectancy \u00b7 `G4` profit factor \u00b7",
+      "token": "profit factor"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "docs/arc03-prereg-01/RUN_REPORT.md",
+      "line": 79,
+      "text": "`G1` sample \u00b7 `G2` net expectancy \u00b7 `G3` ex-funding expectancy \u00b7 `G4` profit factor \u00b7",
+      "token": "expectancy"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "docs/arc03-prereg-01/RUN_REPORT.md",
+      "line": 7,
+      "text": "> `ARC03_BACKTESTS = 0` \u00b7 `ARC03_EXECUTIONS = 0` \u00b7 `ARC03_PERFORMANCE_OBSERVED = false` \u00b7",
+      "token": "backtest"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/build_arc01_reports.py",
+      "line": 38,
+      "text": "\"economics\": {\"ARC01_BACKTESTS\": 0, \"ARC01_EXECUTIONS\": 0, \"ARC01_PERFORMANCE_OBSERVED\": False, \"FALSE_SUCCESS\": 0},",
+      "token": "backtest"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/build_arc01_reports.py",
+      "line": 80,
+      "text": "md.append(f\"Verdict: **{report['verdict']}**  Economics: `ARC01_BACKTESTS=0` `ARC01_EXECUTIONS=0` `PERFORMANCE_OBSERVED=false`\")",
+      "token": "backtest"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "scripts/build_arc03_data_authority.py",
+      "line": 23,
+      "text": "No economic quantity is computed anywhere in this file: no returns, no PnL, no",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/build_arc03_prereg_manifest.py",
+      "line": 129,
+      "text": "\"ARC03_BACKTESTS\": 0,",
+      "token": "backtest"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "scripts/carry_funding_deep_01.py",
+      "line": 175,
+      "text": "sharpe = round(mean / sd * (365 ** 0.5), 6)  # daily\u2192annualized approx",
+      "token": "sharpe"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "scripts/carry_funding_deep_01.py",
+      "line": 182,
+      "text": "\"sharpe_annualized\": sharpe,",
+      "token": "sharpe"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/carry_funding_deep_01.py",
+      "line": 181,
+      "text": "\"profit_factor\": pf,",
+      "token": "profit_factor"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/carry_funding_deep_01.py",
+      "line": 235,
+      "text": "and (core[\"profit_factor\"] or 0) > 1.0",
+      "token": "profit_factor"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/carry_funding_deep_01.py",
+      "line": 180,
+      "text": "\"net_expectancy_per_trade\": round(mean, 8),",
+      "token": "expectancy"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/carry_funding_deep_01.py",
+      "line": 234,
+      "text": "core[\"net_expectancy_per_trade\"] > 0",
+      "token": "expectancy"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/carry_funding_deep_01.py",
+      "line": 183,
+      "text": "\"win_rate\": round(wins / len(returns), 4),",
+      "token": "win_rate"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "scripts/cert/run_cert_probes.py",
+      "line": 64,
+      "text": "forbidden_classes = [c for c in classes if any(k in c.lower() for k in (\"riskmanager\", \"broker\", \"accounting\", \"pnlengine\"))]",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "scripts/cert/run_cert_probes.py",
+      "line": 65,
+      "text": "pnl_sites = [n.lineno for n in ast.walk(tree) if isinstance(n, ast.FunctionDef) and \"pnl\" in n.name.lower()]",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/cert/run_cert_probes.py",
+      "line": 70,
+      "text": "pnl_computing_functions=pnl_sites,",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/cert/run_cert_probes.py",
+      "line": 114,
+      "text": "\"dp01_10_11_canonical_pnl\",",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/cert/run_cert_probes.py",
+      "line": 116,
+      "text": "realized_pnl=payload[\"realized_pnl\"],",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/cert/run_cert_probes.py",
+      "line": 117,
+      "text": "closed_event_pnls=[e.get(\"pnl\") for e in closed_events],",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/cert/run_cert_probes.py",
+      "line": 118,
+      "text": "realized_equals_event_sum=abs(payload[\"realized_pnl\"] - sum(float(e.get(\"pnl\", 0)) for e in closed_events)) < 1e-9,",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/cert/run_cert_probes.py",
+      "line": 119,
+      "text": "pnl_source=\"PaperBroker fills -> broker.check_positions -> risk.record_trade_result\",",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/cert/run_cert_probes.py",
+      "line": 168,
+      "text": "realized_pnl=payload[\"realized_pnl\"],",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/cert/run_cert_probes.py",
+      "line": 169,
+      "text": "unrealized_pnl=payload[\"unrealized_pnl\"],",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/cert/run_cert_probes.py",
+      "line": 315,
+      "text": "status_has_visibility_keys=all(k in status_payload for k in (\"decisions\", \"funnel\", \"realized_pnl\", \"risk_accepts\", \"risk_rejects\", \"no_trade\")),",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/cert/run_cert_probes.py",
+      "line": 382,
+      "text": "realized_pnl=payload[\"realized_pnl\"],",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/collect_arc03_reuse_assessment.py",
+      "line": 218,
+      "text": "(\"src/trading_bot/backtesting\", \"backtesting engine reads 1h/4h/1d klines\"),",
+      "token": "backtest"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/collect_arc03_reuse_assessment.py",
+      "line": 225,
+      "text": "\"family\": \"research/backtesting kline readers\",",
+      "token": "backtest"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/cost_sensitivity_audit_01.py",
+      "line": 6,
+      "text": "1. reproducibility of the economic trade set (N + gross expectancy),",
+      "token": "expectancy"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/cost_sensitivity_audit_01.py",
+      "line": 115,
+      "text": "\"gross_expectancy_R\": gross_mean,",
+      "token": "expectancy"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/cost_sensitivity_audit_01.py",
+      "line": 117,
+      "text": "\"net_expectancy_R\": sum(net) / n,",
+      "token": "expectancy"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/cost_sensitivity_audit_01.py",
+      "line": 123,
+      "text": "table[i + 1][\"net_expectancy_R\"] <= table[i][\"net_expectancy_R\"] + 1e-12",
+      "token": "expectancy"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/cost_sensitivity_audit_01.py",
+      "line": 127,
+      "text": "abs(row[\"net_expectancy_R\"] - (row[\"gross_expectancy_R\"] - row[\"cost_per_trade_R\"])) <= 1e-12",
+      "token": "expectancy"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "scripts/cost_sensitivity_audit_01.py",
+      "line": 159,
+      "text": "\"gross_expectancy_R_recomputed\": gross_mean,",
+      "token": "expectancy"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/cost_sensitivity_audit_01.py",
+      "line": 160,
+      "text": "\"gross_expectancy_R_reported\": reported[\"gross_expectancy_R\"],",
+      "token": "expectancy"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/cost_sensitivity_audit_01.py",
+      "line": 161,
+      "text": "\"gross_reproducible\": abs(gross_mean - reported[\"gross_expectancy_R\"]) < 1e-12,",
+      "token": "expectancy"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/emit_arc03_authority_pointer.py",
+      "line": 92,
+      "text": "\"arc03_backtests\": 0,",
+      "token": "backtest"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/h1_regime_transition_discovery.py",
+      "line": 255,
+      "text": "sens = {str(b): compute_trade_metrics(all_trades, cost_bps=b)[\"net_expectancy_R\"] for b in (5.0, 20.0)}",
+      "token": "expectancy"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/h3_relative_value_discovery.py",
+      "line": 193,
+      "text": "def daily_pnl(trs) -> dict[int, float]:",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/h3_relative_value_discovery.py",
+      "line": 210,
+      "text": "corr_proxy = corr(daily_pnl(trades), daily_pnl(proxy_btc))",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/h3_relative_value_discovery.py",
+      "line": 211,
+      "text": "corr_h1 = corr(daily_pnl(trades), daily_pnl(h1_btc_trades))",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "scripts/h3_relative_value_discovery.py",
+      "line": 296,
+      "text": "\"daily_pnl_correlation_vs_legacy_proxy\": corr_proxy,",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "scripts/h3_relative_value_discovery.py",
+      "line": 298,
+      "text": "\"daily_pnl_correlation_vs_H1_BTC_replay\": corr_h1,",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/h3_relative_value_discovery.py",
+      "line": 216,
+      "text": "sens_prereg = {str(b): summarize(trades, cost_side_bps=b)[\"net_expectancy_R\"] for b in (2.5, 5.0, 10.0)}",
+      "token": "expectancy"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/h3_relative_value_discovery.py",
+      "line": 224,
+      "text": "\"gross_expectancy_R\": float(np.mean([t.gross_r for t in trades])) if trades else 0.0,",
+      "token": "expectancy"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/h3_relative_value_discovery.py",
+      "line": 226,
+      "text": "\"net_expectancy_R\": float(np.mean(net)) if net else 0.0,",
+      "token": "expectancy"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/h3_relative_value_discovery.py",
+      "line": 230,
+      "text": "nets = [row[\"net_expectancy_R\"] for row in engine_table]",
+      "token": "expectancy"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/h3_relative_value_discovery.py",
+      "line": 287,
+      "text": "abs(r[\"net_expectancy_R\"] - (r[\"gross_expectancy_R\"] - r[\"cost_per_trade_R\"])) <= 1e-12",
+      "token": "expectancy"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/h3_relative_value_discovery.py",
+      "line": 321,
+      "text": "k: {\"N\": len(v), \"net_expectancy_R\": float(np.mean(v))}",
+      "token": "expectancy"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/h5_implementation_verifier.py",
+      "line": 198,
+      "text": "\"P_SHARPE_MIN==0.90\": eng.P_SHARPE_MIN == 0.90,",
+      "token": "sharpe"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "scripts/h5_run_exactly_once.py",
+      "line": 206,
+      "text": "# Daily PnL correlation",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "scripts/h5_run_exactly_once.py",
+      "line": 228,
+      "text": "\"daily_pnl_correlation\": corr,",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "scripts/h5_run_exactly_once.py",
+      "line": 258,
+      "text": "\"daily_pnl_correlation\": corr,",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "scripts/h5_run_exactly_once.py",
+      "line": 482,
+      "text": "\"daily_pnl_correlation\": corr,",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "scripts/h5_run_exactly_once.py",
+      "line": 513,
+      "text": "\"daily_pnl_correlation\": corr,",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/h5_run_exactly_once.py",
+      "line": 42,
+      "text": "bootstrap_sharpe,",
+      "token": "sharpe"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/h5_run_exactly_once.py",
+      "line": 47,
+      "text": "sharpe,",
+      "token": "sharpe"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/h5_run_exactly_once.py",
+      "line": 339,
+      "text": "# Bootstrap Sharpe",
+      "token": "sharpe"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/h5_run_exactly_once.py",
+      "line": 342,
+      "text": "s, lo, hi, p_gt0 = bootstrap_sharpe(net_rs)",
+      "token": "sharpe"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/h5_run_exactly_once.py",
+      "line": 402,
+      "text": "\"Sharpe\": summary.get(\"Sharpe\", 0.0),",
+      "token": "sharpe"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/h5_run_exactly_once.py",
+      "line": 403,
+      "text": "\"Sharpe_CI95\": summary.get(\"Sharpe_CI95\", [0.0, 0.0]),",
+      "token": "sharpe"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/h5_run_exactly_once.py",
+      "line": 404,
+      "text": "\"P_Sharpe_gt_0\": summary.get(\"P_Sharpe_gt_0\", 0.0),",
+      "token": "sharpe"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/h5_run_exactly_once.py",
+      "line": 580,
+      "text": "print(f\"Sharpe: {result['metrics']['Sharpe']:.4f}\")",
+      "token": "sharpe"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/h5_run_exactly_once.py",
+      "line": 581,
+      "text": "print(f\"P(Sharpe>0): {result['metrics']['P_Sharpe_gt_0']:.4f}\")",
+      "token": "sharpe"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/h5_run_exactly_once.py",
+      "line": 46,
+      "text": "profit_factor,",
+      "token": "profit_factor"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/h5_run_exactly_once.py",
+      "line": 336,
+      "text": "\"PF_net\": profit_factor(net_r) if net_r else 0.0,",
+      "token": "profit_factor"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/h5_run_exactly_once.py",
+      "line": 335,
+      "text": "\"net_expectancy_R\": float(np.mean(net_r)) if net_r else 0.0,",
+      "token": "expectancy"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/h5_run_exactly_once.py",
+      "line": 367,
+      "text": "\"gross_expectancy_R\": float(np.mean([t.gross_r for t in asset_trades])) if asset_trades else 0.0,",
+      "token": "expectancy"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/h5_run_exactly_once.py",
+      "line": 368,
+      "text": "\"net_expectancy_R\": float(np.mean([t.net_r for t in asset_trades])) if asset_trades else 0.0,",
+      "token": "expectancy"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/h5_run_exactly_once.py",
+      "line": 374,
+      "text": "\"net_expectancy_R\": float(np.mean([t.net_r for t in dt])) if dt else 0.0,",
+      "token": "expectancy"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/h5_run_exactly_once.py",
+      "line": 398,
+      "text": "\"gross_expectancy_R\": summary.get(\"gross_expectancy_R\", 0.0),",
+      "token": "expectancy"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/h5_run_exactly_once.py",
+      "line": 399,
+      "text": "\"net_expectancy_R\": summary.get(\"net_expectancy_R\", 0.0),",
+      "token": "expectancy"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/h5_run_exactly_once.py",
+      "line": 578,
+      "text": "print(f\"Net expectancy R: {result['metrics']['net_expectancy_R']:.4f}\")",
+      "token": "expectancy"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/h5_run_exactly_once.py",
+      "line": 413,
+      "text": "\"win_rate\": summary.get(\"win_rate\", 0.0),",
+      "token": "win_rate"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/h6_v2_consistency_audit.py",
+      "line": 104,
+      "text": "check(\"H6_BACKTESTS\", 0, spec[\"H6_BACKTESTS\"])",
+      "token": "backtest"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/launch_poc02_r2_daily.py",
+      "line": 383,
+      "text": "key, {\"captures\": 0, \"resolved\": 0, \"wins\": 0, \"losses\": 0, \"net_pnl\": 0.0}",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/launch_poc02_r2_daily.py",
+      "line": 404,
+      "text": "pnl = float(getattr(t, \"net_pnl\", getattr(t, \"pnl\", 0.0)) or 0.0)",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/launch_poc02_r2_daily.py",
+      "line": 405,
+      "text": "bucket[\"net_pnl\"] += pnl",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/launch_poc02_r2_daily.py",
+      "line": 406,
+      "text": "if pnl > 0:",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/launch_poc02_r2_daily.py",
+      "line": 408,
+      "text": "elif pnl < 0:",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/launch_poc02_r2_daily.py",
+      "line": 413,
+      "text": "bucket[\"net_pnl\"] / total, 6",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/launch_poc02_r2_daily.py",
+      "line": 416,
+      "text": "float(getattr(t, \"net_pnl\", getattr(t, \"pnl\", 0.0)) or 0.0)",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/launch_poc02_r2_daily.py",
+      "line": 418,
+      "text": "if float(getattr(t, \"net_pnl\", getattr(t, \"pnl\", 0.0)) or 0.0) > 0",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/launch_poc02_r2_daily.py",
+      "line": 422,
+      "text": "float(getattr(t, \"net_pnl\", getattr(t, \"pnl\", 0.0)) or 0.0)",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/launch_poc02_r2_daily.py",
+      "line": 424,
+      "text": "if float(getattr(t, \"net_pnl\", getattr(t, \"pnl\", 0.0)) or 0.0) < 0",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/launch_poc02_r2_daily.py",
+      "line": 427,
+      "text": "bucket[\"profit_factor\"] = round(gross_win / gross_loss, 6) if gross_loss else None",
+      "token": "profit_factor"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/launch_poc02_r2_daily.py",
+      "line": 412,
+      "text": "bucket[\"expectancy\"] = round(",
+      "token": "expectancy"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "scripts/poc02_observation.py",
+      "line": 108,
+      "text": "\"label\": \"SHADOW \u2014 counterfactual, EXCLUDED from paper PnL and frequency\",",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "scripts/poc02_observation.py",
+      "line": 136,
+      "text": "\"SHADOW &bull; COUNTERFACTUAL &bull; EXCLUDED FROM PAPER PnL/FREQUENCY</span>\"",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/poc02_observation.py",
+      "line": 188,
+      "text": "count toward paper PnL or trade frequency.</p>",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/poc02_r2_dashboard.py",
+      "line": 138,
+      "text": "# PnL y operaciones desde la atribuci\u00f3n (campa\u00f1a)",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/poc02_r2_dashboard.py",
+      "line": 141,
+      "text": "net_pnl = round(sum(float(r.get(\"net_pnl\", 0.0) or 0.0) for r in paper_close), 2)",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/poc02_r2_dashboard.py",
+      "line": 183,
+      "text": "strategies.setdefault(sid, {\"operations\": 0, \"pnl\": 0.0})",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/poc02_r2_dashboard.py",
+      "line": 185,
+      "text": "strategies[sid][\"pnl\"] = round(strategies[sid][\"pnl\"] + float(r.get(\"net_pnl\", 0.0) or 0.0), 2)",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/poc02_r2_dashboard.py",
+      "line": 227,
+      "text": "\"net_pnl\": net_pnl,",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/poc02_r2_dashboard.py",
+      "line": 274,
+      "text": "pnl = float(t.get(\"net_pnl\", t.get(\"pnl\", 0.0)) or 0.0)",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/poc02_r2_dashboard.py",
+      "line": 275,
+      "text": "net += pnl",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/poc02_r2_dashboard.py",
+      "line": 276,
+      "text": "if pnl > 0:",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/poc02_r2_dashboard.py",
+      "line": 278,
+      "text": "elif pnl < 0:",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/poc02_r2_dashboard.py",
+      "line": 285,
+      "text": "\"net_pnl\": round(net, 2),",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/poc02_r2_dashboard.py",
+      "line": 422,
+      "text": "pnl_cls = \"positive\" if st[\"pnl\"] > 0 else (\"negative\" if st[\"pnl\"] < 0 else \"muted\")",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/poc02_r2_dashboard.py",
+      "line": 425,
+      "text": "f\"<td class='{pnl_cls}'>{st['pnl']:.2f} USDT</td><td>{enough}</td>\"",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/poc02_r2_dashboard.py",
+      "line": 454,
+      "text": "pnl = s[\"net_pnl\"]",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/poc02_r2_dashboard.py",
+      "line": 455,
+      "text": "pnl_display = f\"{pnl:.2f} USDT\" if s[\"paper_closes_total\"] else \"Sin operaciones cerradas todav\u00eda\"",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/poc02_r2_dashboard.py",
+      "line": 456,
+      "text": "pnl_cls = \"positive\" if pnl > 0 else (\"negative\" if pnl < 0 else \"muted\")",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/poc02_r2_dashboard.py",
+      "line": 505,
+      "text": "<div class=\"card\">Resultado de operaciones cerradas<b class=\"{pnl_cls}\">{pnl_display}</b></div>",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/run_discovery_batch02.py",
+      "line": 61,
+      "text": "min_sharpe=0.0,",
+      "token": "sharpe"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/run_discovery_batch02.py",
+      "line": 62,
+      "text": "min_expectancy=0.0,",
+      "token": "expectancy"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/select_arc03_base.py",
+      "line": 36,
+      "text": "ARC01_EXEC = \"docs/external-audit-01/arc01-primary-discovery-01/ARC01_PRIMARY_DISCOVERY_RESULT.json\"",
+      "token": "discovery_result"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "scripts/validate_arc03_spec.py",
+      "line": 218,
+      "text": "\"orthogonality.max_abs_daily_pnl_correlation\",",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "scripts/validate_arc03_spec.py",
+      "line": 235,
+      "text": "\"G5_SHARPE\",",
+      "token": "sharpe"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/validate_arc03_spec.py",
+      "line": 249,
+      "text": "\"convention_bindings.sharpe.definition\",",
+      "token": "sharpe"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/validate_arc03_spec.py",
+      "line": 250,
+      "text": "\"convention_bindings.sharpe.annualization_factor\",",
+      "token": "sharpe"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/validate_arc03_spec.py",
+      "line": 251,
+      "text": "\"convention_bindings.sharpe.trades_per_year\",",
+      "token": "sharpe"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/validate_arc03_spec.py",
+      "line": 252,
+      "text": "\"convention_bindings.sharpe.window_span_days\",",
+      "token": "sharpe"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/validate_arc03_spec.py",
+      "line": 253,
+      "text": "\"convention_bindings.sharpe.zero_variance_behavior\",",
+      "token": "sharpe"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/validate_arc03_spec.py",
+      "line": 439,
+      "text": "for required in (\"sharpe\", \"bootstrap\", \"permutation\", \"temporal_split\", \"concentration_attribution\", \"profit_factor\"):",
+      "token": "sharpe"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "scripts/validate_arc03_spec.py",
+      "line": 234,
+      "text": "\"G4_PROFIT_FACTOR\",",
+      "token": "profit_factor"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/validate_arc03_spec.py",
+      "line": 274,
+      "text": "\"convention_bindings.profit_factor.definition\",",
+      "token": "profit_factor"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/validate_arc03_spec.py",
+      "line": 275,
+      "text": "\"convention_bindings.profit_factor.zero_loss_behavior\",",
+      "token": "profit_factor"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/validate_arc03_spec.py",
+      "line": 439,
+      "text": "for required in (\"sharpe\", \"bootstrap\", \"permutation\", \"temporal_split\", \"concentration_attribution\", \"profit_factor\"):",
+      "token": "profit_factor"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "scripts/validate_arc03_spec.py",
+      "line": 232,
+      "text": "\"G2_NET_EXPECTANCY\",",
+      "token": "expectancy"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "scripts/validate_arc03_spec.py",
+      "line": 233,
+      "text": "\"G3_NET_EXPECTANCY_EX_FUNDING\",",
+      "token": "expectancy"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/validate_arc03_spec.py",
+      "line": 62,
+      "text": "\"economics.ARC03_BACKTESTS\",",
+      "token": "backtest"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/validate_arc03_spec.py",
+      "line": 471,
+      "text": "if dig(spec, \"economics.ARC03_BACKTESTS\") != 0:",
+      "token": "backtest"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/validate_arc03_spec.py",
+      "line": 472,
+      "text": "failures.append({\"check\": \"backtests_not_zero\"})",
+      "token": "backtest"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/validate_demo_paper_01.py",
+      "line": 55,
+      "text": "_check(\"reconciliation_and_pnl\", payload.get(\"closed_trades\", 0) >= 1 and \"realized_pnl\" in payload),",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/verify_arc03_prereg.py",
+      "line": 129,
+      "text": "if guard.get(\"ARC03_BACKTESTS\") != 0 or guard.get(\"ARC03_EXECUTIONS\") != 0:",
+      "token": "backtest"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/verify_h6_prereg.py",
+      "line": 120,
+      "text": "spec[\"orthogonality_gates\"][\"H5_PNL_CORRELATION\"].startswith(\"NOT_EVALUABLE_FROM_PERSISTED_EVIDENCE\"))",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "scripts/verify_h6_prereg.py",
+      "line": 160,
+      "text": "forbidden_keys = (\"result\", \"returns\", \"sharpe_realized\", \"expectancy_realized\", \"trades\", \"equity\", \"pnl\")",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "scripts/verify_h6_prereg.py",
+      "line": 127,
+      "text": "and spec[\"statistical_gates\"][\"sharpe_ci_excludes_zero\"] is True)",
+      "token": "sharpe"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "scripts/verify_h6_prereg.py",
+      "line": 160,
+      "text": "forbidden_keys = (\"result\", \"returns\", \"sharpe_realized\", \"expectancy_realized\", \"trades\", \"equity\", \"pnl\")",
+      "token": "sharpe"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/verify_h6_prereg.py",
+      "line": 130,
+      "text": "\"halves consistency: sign of net expectancy must agree across first/second half of the common window\",",
+      "token": "expectancy"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/verify_h6_prereg.py",
+      "line": 131,
+      "text": "\"thirds consistency: at least 2 of 3 thirds positive net expectancy\",",
+      "token": "expectancy"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "scripts/verify_h6_prereg.py",
+      "line": 160,
+      "text": "forbidden_keys = (\"result\", \"returns\", \"sharpe_realized\", \"expectancy_realized\", \"trades\", \"equity\", \"pnl\")",
+      "token": "expectancy"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/verify_h6_prereg.py",
+      "line": 157,
+      "text": "check(results, \"no_execution_counters\", _zero(spec[\"H6_EXECUTIONS\"]) and _zero(spec[\"H6_BACKTESTS\"])",
+      "token": "backtest"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/verify_h6_prereg.py",
+      "line": 159,
+      "text": "and man[\"H6_BACKTESTS\"] == 0 and man[\"PERFORMANCE_OBSERVED\"] is False)",
+      "token": "backtest"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "scripts/verify_h6_prereg.py",
+      "line": 164,
+      "text": "check(results, \"no_sweep_language\", \"NO parameter sweep\" in json.dumps(spec) and \"NO_PARAMETER_SWEEP\" in json.dumps(man))",
+      "token": "parameter sweep"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/verify_l5_independent.py",
+      "line": 279,
+      "text": "lifecycle_ok = opened >= 1 and closed >= 1 and r2.execution_summary.realized_pnl != 0.0",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "scripts/verify_l5_independent.py",
+      "line": 283,
+      "text": "f\"cycle1 opened={opened}, cycle2 closed={closed}, realized_pnl={r2.execution_summary.realized_pnl:.2f}\",",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "src/trading_bot/research/arc03/arc03_authority.py",
+      "line": 80,
+      "text": "MAX_ABS_DAILY_PNL_CORRELATION: float = 0.50",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "src/trading_bot/research/arc03/arc03_authority.py",
+      "line": 313,
+      "text": "\"MAX_ABS_DAILY_PNL_CORRELATION\",",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "src/trading_bot/research/arc03/arc03_authority.py",
+      "line": 79,
+      "text": "G5_MIN_SHARPE: float = 0.50",
+      "token": "sharpe"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "src/trading_bot/research/arc03/arc03_authority.py",
+      "line": 308,
+      "text": "\"G5_MIN_SHARPE\",",
+      "token": "sharpe"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "src/trading_bot/research/arc03/arc03_authority.py",
+      "line": 78,
+      "text": "G4_MIN_PROFIT_FACTOR: float = 1.15",
+      "token": "profit_factor"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "src/trading_bot/research/arc03/arc03_authority.py",
+      "line": 307,
+      "text": "\"G4_MIN_PROFIT_FACTOR\",",
+      "token": "profit_factor"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "tests/unit/research/test_arc03_data_authority.py",
+      "line": 6,
+      "text": "No economic quantity is computed: no returns, no PnL, no signal-return statistics.",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "tests/unit/research/test_arc03_data_authority.py",
+      "line": 6,
+      "text": "No economic quantity is computed: no returns, no PnL, no signal-return statistics.",
+      "token": "signal-return"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "tests/unit/research/test_arc03_prereg.py",
+      "line": 7,
+      "text": "No real economic quantity is computed in this file: no return on real data, no PnL, no",
+      "token": "pnl"
+    },
+    {
+      "classification": "ALLOWED_VOCABULARY_ONLY",
+      "file": "tests/unit/research/test_arc03_prereg.py",
+      "line": 409,
+      "text": "assert spec[\"economics\"][\"ARC03_BACKTESTS\"] == 0",
+      "token": "backtest"
+    },
+    {
+      "classification": "ALLOWED_GATE_OR_DISCLAIMER_CONTEXT",
+      "file": "tests/unit/research/test_arc03_prereg.py",
+      "line": 8,
+      "text": "signal-return statistics.",
+      "token": "signal-return"
+    }
+  ]
+}

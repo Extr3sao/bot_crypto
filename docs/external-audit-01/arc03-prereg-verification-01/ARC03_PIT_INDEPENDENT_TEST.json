@@ -1,0 +1,194 @@
+{
+  "CURRENT_BAR_INCOMPLETENESS": true,
+  "ENTRY_CAUSALITY": true,
+  "EXIT_ARITHMETIC": true,
+  "FUNDING_SIGNS": true,
+  "FUTURE_MUTATION_INVARIANCE": true,
+  "NO_SIGNAL_PRECEDENCE": true,
+  "PIT_INDEPENDENT": "PASS",
+  "REFERENCE_MUTATION_SENSITIVITY": true,
+  "adversarial_battery": {
+    "PIT_INDEPENDENT": "PASS",
+    "passed": 28,
+    "tests": [
+      {
+        "detail": "SHORT",
+        "pass": true,
+        "test": "up_push_rejected_is_SHORT"
+      },
+      {
+        "detail": "LONG",
+        "pass": true,
+        "test": "down_push_rejected_is_LONG"
+      },
+      {
+        "detail": null,
+        "pass": true,
+        "test": "direction_mutually_exclusive"
+      },
+      {
+        "detail": "NO_PARTICIPATION_SHOCK",
+        "pass": true,
+        "test": "volume_tie_is_not_a_record"
+      },
+      {
+        "detail": "NO_EXCURSION_RECORD",
+        "pass": true,
+        "test": "range_tie_is_not_a_record"
+      },
+      {
+        "detail": "NO_EXHAUSTION",
+        "pass": true,
+        "test": "exactly_half_retracement_is_not_exhaustion"
+      },
+      {
+        "detail": "NO_EXHAUSTION",
+        "pass": true,
+        "test": "zero_body_is_NO_EXHAUSTION"
+      },
+      {
+        "detail": "NO_EXCURSION_RECORD",
+        "pass": true,
+        "test": "zero_range_fails_closed"
+      },
+      {
+        "detail": {
+          "present": 29,
+          "reason": "REFERENCE_HISTORY_INCOMPLETE"
+        },
+        "pass": true,
+        "test": "missing_reference_fails_closed"
+      },
+      {
+        "detail": null,
+        "pass": true,
+        "test": "references_are_same_slot_daily"
+      },
+      {
+        "detail": 30,
+        "pass": true,
+        "test": "same_slot_reference_set_size_is_30"
+      },
+      {
+        "detail": [
+          "SHORT",
+          "SHORT"
+        ],
+        "pass": true,
+        "test": "future_mutation_invariance"
+      },
+      {
+        "detail": {
+          "after": "NO_PARTICIPATION_SHOCK",
+          "before": null,
+          "shock": false
+        },
+        "pass": true,
+        "test": "reference_mutation_changes_state"
+      },
+      {
+        "detail": null,
+        "pass": true,
+        "test": "incomplete_current_bar_invisible"
+      },
+      {
+        "detail": "load_partition raises on duplicate slots (verified by builder tests + code inspection)",
+        "pass": true,
+        "test": "duplicate_slot_fails_closed"
+      },
+      {
+        "detail": 1602622500000,
+        "pass": true,
+        "test": "entry_is_next_bar_open"
+      },
+      {
+        "detail": null,
+        "pass": true,
+        "test": "entry_strictly_after_decision"
+      },
+      {
+        "detail": null,
+        "pass": true,
+        "test": "exit_is_entry_plus_12_bars"
+      },
+      {
+        "detail": null,
+        "pass": true,
+        "test": "holding_is_12_bars_60_minutes"
+      },
+      {
+        "detail": null,
+        "pass": true,
+        "test": "funding_excludes_entry_instant"
+      },
+      {
+        "detail": null,
+        "pass": true,
+        "test": "funding_includes_exit_instant"
+      },
+      {
+        "detail": null,
+        "pass": true,
+        "test": "funding_zero_settlements_is_zero"
+      },
+      {
+        "detail": -0.001,
+        "pass": true,
+        "test": "positive_funding_LONG_pays"
+      },
+      {
+        "detail": 0.001,
+        "pass": true,
+        "test": "positive_funding_SHORT_receives"
+      },
+      {
+        "detail": 0.001,
+        "pass": true,
+        "test": "negative_funding_LONG_receives"
+      },
+      {
+        "detail": -0.001,
+        "pass": true,
+        "test": "negative_funding_SHORT_pays"
+      },
+      {
+        "detail": null,
+        "pass": true,
+        "test": "funding_zero_settlements_not_an_error"
+      },
+      {
+        "detail": "REFERENCE_HISTORY_INCOMPLETE",
+        "pass": true,
+        "test": "precedence_reference_before_shock"
+      }
+    ],
+    "total": 28
+  },
+  "method": "verifier-owned reimplementation of the frozen rule + verifier-owned adversarial fixtures",
+  "own_rule_bars_compared": 23837,
+  "own_rule_mismatch_count": 0,
+  "own_rule_vs_builder_on_real_data": [
+    {
+      "bars_compared": 7954,
+      "mismatch_count": 0,
+      "mismatches": [],
+      "signals_found": null,
+      "symbol": "BTCUSDT"
+    },
+    {
+      "bars_compared": 7954,
+      "mismatch_count": 0,
+      "mismatches": [],
+      "signals_found": null,
+      "symbol": "ETHUSDT"
+    },
+    {
+      "bars_compared": 7929,
+      "mismatch_count": 0,
+      "mismatches": [],
+      "signals_found": null,
+      "symbol": "SOLUSDT"
+    }
+  ],
+  "schema": "ARC03_PIT_INDEPENDENT_TEST/1.0.0"
+}

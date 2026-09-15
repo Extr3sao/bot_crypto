@@ -1,0 +1,25 @@
+{
+  "CLEAN_WORKTREE_VERIFICATION": "PASS",
+  "cache_only_entries": [],
+  "checks": {
+    "CLEAN_AT_START": "PASS",
+    "DATA_BINDING_FROM_CLEAN_WORKTREE": "PASS",
+    "PIT_INDEPENDENT_FROM_CLEAN_WORKTREE": "PASS",
+    "PREREG_CONTRACT_TESTS": "PASS",
+    "PYTHON_IMPORT_AUTHORITY": "PASS",
+    "TARGET_COMMIT_MATERIALISED": "PASS",
+    "TEST_TARGET_EQUALS_AUDITED_TARGET": "PASS"
+  },
+  "data_binding_tail": "   \"SOLUSDT\": 627180\n  },\n  \"NO_SYNTHETIC_MARKET_ROWS\": true,\n  \"common_window\": {\n    \"start_ms\": 1600066800000,\n    \"end_ms\": 1788220500000,\n    \"per_asset_first\": {\n      \"BTCUSDT\": 1577836800000,\n      \"ETHUSDT\": 1577836800000,\n      \"SOLUSDT\": 1600066800000\n    },\n    \"per_asset_last\": {\n      \"BTCUSDT\": 1788220500000,\n      \"ETHUSDT\": 1788220500000,\n      \"SOLUSDT\": 1788220500000\n    }\n  }\n}",
+  "head": "8ebf8a181a3cfaf03737ef585f8906d28f8d419f",
+  "import_authority_output": "{\"tb\": \"C:\\\\Users\\\\GVLLFR0035\\\\Downloads\\\\bot freebuff\\\\.research\\\\arc03-verifier-clean-scratch\\\\src\\\\trading_bot\\\\__init__.py\", \"arc03_authority\": \"C:\\\\Users\\\\GVLLFR0035\\\\Downloads\\\\bot freebuff\\\\.research\\\\arc03-verifier-clean-scratch\\\\src\\\\trading_bot\\\\research\\\\arc03\\\\arc03_authority.py\", \"arc03_funding\": \"C:\\\\Users\\\\GVLLFR0035\\\\Downloads\\\\bot freebuff\\\\.research\\\\arc03-verifier-clean-scratch\\\\src\\\\trading_bot\\\\research\\\\arc03\\\\arc03_funding.py\"}",
+  "pit_tail": "{\n  \"PIT_INDEPENDENT\": \"PASS\",\n  \"battery\": \"28/28\",\n  \"own_rule_bars_compared\": 23837,\n  \"own_rule_mismatches\": 0,\n  \"funding_signs\": true\n}",
+  "porcelain_after_checks": "",
+  "prereg_tests_tail": "........................ss..                                             [100%]\n=========================== short test summary info ===========================\nSKIPPED [1] tests\\unit\\research\\test_arc03_prereg.py:370: funding partitions not materialised in this checkout\nSKIPPED [1] tests\\unit\\research\\test_arc03_prereg.py:383: ARC-03 partitions not materialised in this checkout\n26 passed, 2 skipped in 7.96s",
+  "schema": "ARC03_CLEAN_WORKTREE_VERIFICATION/1.0.0",
+  "scratch_worktree": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc03-verifier-clean-scratch",
+  "substantive_changes_after_checks": [],
+  "target_commit": "8ebf8a181a3cfaf03737ef585f8906d28f8d419f",
+  "worktree_clean_at_start": true,
+  "worktree_still_clean_after_checks": true
+}

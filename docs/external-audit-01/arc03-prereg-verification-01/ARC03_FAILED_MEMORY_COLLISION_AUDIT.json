@@ -1,0 +1,57 @@
+{
+  "FAILED_MEMORY_COLLISION": "PASS",
+  "aru_declared_collision": {
+    "H1": "LOW",
+    "H3": "LOW",
+    "H5": "MEDIUM",
+    "H6": "LOW"
+  },
+  "aru_kill_rule": "net<=0 or collision with H5",
+  "checks": {
+    "arc01_recorded_immutable": true,
+    "cadence_differs_from_H5": true,
+    "direction_opposite_to_H5": true,
+    "h5_collision_staged_after_discovery": true,
+    "high_residual_risks_disclosed": true,
+    "no_cross_asset_input": true,
+    "no_funding_input_to_signal": true,
+    "no_oi_input_to_signal": true,
+    "no_taker_field_used": true,
+    "repackaging_detected_false": true
+  },
+  "failures": [],
+  "prior_hypothesis_verdicts": {
+    "10_H1_regime_transition_SHORT_ON_SHOCK": "HIGH residual risk - DISCLOSED; secular uptrend is adverse for any short-fade and no regime immunity is claimed",
+    "11_H3_relative_value": "MEDIUM - exhaustion is a distinct mechanism from a z-extreme",
+    "12_H5_orderflow": "MEDIUM (ARU-declared) - opposite sign, disjoint field, G1 >=120, frozen orthogonality gate staged after discovery",
+    "1_legacy_momentum_5m_cost_hurdle": "HIGH residual risk - DISCLOSED, not hidden; mitigated only by G2/G3/G11 and the event-conditioned rule",
+    "2_legacy_trend": "LOW - G1 requires >=120 trades",
+    "3_legacy_breakout": "LOW - no level/breakout exists",
+    "4_legacy_mean_reversion": "MEDIUM - mitigated by the mandatory participation condition + PARTICIPATION_CONTROL",
+    "5_legacy_volatility": "LOW - range is not a tradable state",
+    "6_volatility_structure": "LOW - full-history window",
+    "7_cross_sectional": "NONE - single asset, no ranking",
+    "8_carry_funding": "LOW - funding is never a signal input and G3 removes it",
+    "9_session_time": "LOW - time-of-day is used to REMOVE seasonality"
+  },
+  "residual_risks_are_prior_risk_disclosures_not_arc03_tuning": true,
+  "schema": "ARC03_FAILED_MEMORY_COLLISION_AUDIT/1.0.0",
+  "structural_field_disjointness": {
+    "reader_fields_read": [
+      "c",
+      "ct",
+      "h",
+      "l",
+      "o",
+      "t",
+      "v"
+    ],
+    "signal_uses_only": [
+      "base_unit_volume",
+      "close",
+      "high",
+      "low",
+      "open"
+    ]
+  }
+}

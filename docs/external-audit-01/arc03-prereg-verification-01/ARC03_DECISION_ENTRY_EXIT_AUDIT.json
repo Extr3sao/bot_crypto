@@ -1,0 +1,59 @@
+{
+  "DECISION_CADENCE": "PASS",
+  "ENTRY_SEMANTICS": "PASS",
+  "EXIT_HOLDING": "PASS",
+  "evidence": [
+    {
+      "bars_sampled": 4008,
+      "close_time_equals_open_plus_299999": true,
+      "entry_is_first_bar_after_decision": 4008,
+      "exit_bar_absent_or_beyond_tail": 0,
+      "exit_bar_present_at_entry_plus_3600000": 4008,
+      "extra_bar_skipped_occurrences": 0,
+      "same_bar_entry_occurrences": 0,
+      "symbol": "BTCUSDT"
+    },
+    {
+      "bars_sampled": 4008,
+      "close_time_equals_open_plus_299999": true,
+      "entry_is_first_bar_after_decision": 4008,
+      "exit_bar_absent_or_beyond_tail": 0,
+      "exit_bar_present_at_entry_plus_3600000": 4008,
+      "extra_bar_skipped_occurrences": 0,
+      "same_bar_entry_occurrences": 0,
+      "symbol": "ETHUSDT"
+    },
+    {
+      "bars_sampled": 4021,
+      "close_time_equals_open_plus_299999": true,
+      "entry_is_first_bar_after_decision": 4021,
+      "exit_bar_absent_or_beyond_tail": 0,
+      "exit_bar_present_at_entry_plus_3600000": 4021,
+      "extra_bar_skipped_occurrences": 0,
+      "same_bar_entry_occurrences": 0,
+      "symbol": "SOLUSDT"
+    },
+    {
+      "check": "forward_guard",
+      "last_tradeable_entry_ms": 1788216900000,
+      "semantics": "a decision is dropped with INSUFFICIENT_FORWARD_PRICE_DATA when entry_open+3,600,000 exceeds the window end or has no bar; this is clock-only censoring (does the exit bar EXIST), never an outcome test",
+      "window_end_ms": 1788220500000
+    }
+  ],
+  "failures": [],
+  "frozen": {
+    "decision_time": "close_time_ms of the signal bar (provider field 6)",
+    "entry": "OPEN of the first 5m bar with open_time_ms > decision_time_ms",
+    "exit": "OPEN of the bar at entry_open_time_ms + 3,600,000 (12 bars)",
+    "holding": "exactly 12 bars = 60 minutes"
+  },
+  "schema": "ARC03_DECISION_ENTRY_EXIT_AUDIT/1.0.0",
+  "worked_example": {
+    "entry": "12:05 open",
+    "exit": "13:05 open",
+    "first_bar_with_open_time_after_close": "12:05:00.000",
+    "same_bar_entry": "impossible: the signal bar open (12:00) is not > its own close_time (12:04:59.999)",
+    "signal_bar_close_time": "12:04:59.999",
+    "signal_bar_open": "12:00:00.000"
+  }
+}

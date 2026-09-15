@@ -1,0 +1,100 @@
+{
+  "DAILY_FILL_AUTHORITY": "PASS",
+  "NO_SYNTHETIC_MARKET_ROWS": true,
+  "failures": [],
+  "fills": [
+    {
+      "contiguous_288": true,
+      "date": "2022-02-26",
+      "first_ts": 1645833600000,
+      "last_ts": 1645919700000,
+      "on_grid": true,
+      "provider_checksum_match": true,
+      "provider_checksum_sha256": "2f6b1961ec408be134961dd25326bc014cb133a3c72149ca4c448ca6904fc50a",
+      "raw_sha256": "2f6b1961ec408be134961dd25326bc014cb133a3c72149ca4c448ca6904fc50a",
+      "rows": 288
+    },
+    {
+      "contiguous_288": true,
+      "date": "2022-02-27",
+      "first_ts": 1645920000000,
+      "last_ts": 1646006100000,
+      "on_grid": true,
+      "provider_checksum_match": true,
+      "provider_checksum_sha256": "64a1adea118e645704457e590ae4ee0e1cbef604cd91c2ab70107f5ca0be16eb",
+      "raw_sha256": "64a1adea118e645704457e590ae4ee0e1cbef604cd91c2ab70107f5ca0be16eb",
+      "rows": 288
+    },
+    {
+      "contiguous_288": true,
+      "date": "2022-02-28",
+      "first_ts": 1646006400000,
+      "last_ts": 1646092500000,
+      "on_grid": true,
+      "provider_checksum_match": true,
+      "provider_checksum_sha256": "4eecf1f32ae71720e6f207a441101f5ddf168874056a241f2bffbce8271f650f",
+      "raw_sha256": "4eecf1f32ae71720e6f207a441101f5ddf168874056a241f2bffbce8271f650f",
+      "rows": 288
+    },
+    {
+      "contiguous_288": true,
+      "date": "2022-04-01",
+      "first_ts": 1648771200000,
+      "last_ts": 1648857300000,
+      "on_grid": true,
+      "provider_checksum_match": true,
+      "provider_checksum_sha256": "265c3e6bb76a3c517287862583b76c76339feccfea9070eaa6f4d326c893ea46",
+      "raw_sha256": "265c3e6bb76a3c517287862583b76c76339feccfea9070eaa6f4d326c893ea46",
+      "rows": 288
+    },
+    {
+      "contiguous_288": true,
+      "date": "2022-04-02",
+      "first_ts": 1648857600000,
+      "last_ts": 1648943700000,
+      "on_grid": true,
+      "provider_checksum_match": true,
+      "provider_checksum_sha256": "6cee5e5b5b3173519be867c5245c8d26f32604f18277aa0a27003c1526698353",
+      "raw_sha256": "6cee5e5b5b3173519be867c5245c8d26f32604f18277aa0a27003c1526698353",
+      "rows": 288
+    }
+  ],
+  "fills_required_by_independent_derivation": [
+    "2022-02-26",
+    "2022-02-27",
+    "2022-02-28",
+    "2022-04-01",
+    "2022-04-02"
+  ],
+  "fills_used": [
+    "2022-02-26",
+    "2022-02-27",
+    "2022-02-28",
+    "2022-04-01",
+    "2022-04-02"
+  ],
+  "independently_derived_shortfalls": [
+    {
+      "month": "2022-02",
+      "monthly_rows": 7200,
+      "verifier_shortfalls": {
+        "2022-02-26": 288,
+        "2022-02-27": 288,
+        "2022-02-28": 288
+      }
+    },
+    {
+      "month": "2022-04",
+      "monthly_rows": 8064,
+      "verifier_shortfalls": {
+        "2022-04-01": 288,
+        "2022-04-02": 288
+      }
+    }
+  ],
+  "neighbouring_months_complete": true,
+  "no_interpolation_or_forward_fill": "each filled day is a CHECKSUM-verified official daily archive of the SAME provider with exactly 288 contiguous on-grid rows; the union of monthly+filled rows was proved equal to the union of the official sources (see ARC03_DATA_BINDING_VERIFICATION.json.synthetic_row_audit)",
+  "other_months_with_shortfall": [],
+  "schema": "ARC03_DAILY_FILL_AUDIT/1.0.0",
+  "why_required": "the SOLUSDT 2022-02 and 2022-04 MONTHLY archives were internally incomplete (2022-02 truncated from 2022-02-25T23:55Z; 2022-04 starting 2022-04-03T00:00Z)"
+}

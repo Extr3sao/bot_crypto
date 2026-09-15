@@ -1,0 +1,109 @@
+{
+  "GIT_AUTHORITY": "PASS",
+  "HEAD_parent": "8668a3174234255b1b1f27a7bf04b8f022af68bb",
+  "POST_FREEZE_ARTIFACT_DRIFT": 0,
+  "TARGET_COMMIT": "8ebf8a181a3cfaf03737ef585f8906d28f8d419f",
+  "commits": {
+    "ARC03_DATA_AUTHORITY_COMMIT": "8668a3174234255b1b1f27a7bf04b8f022af68bb",
+    "ARC03_POINTER_COMMIT": "13b3e3e3619bcc76d2eebaaffdc64430713ae8fe",
+    "ARC03_PREREG_COMMIT": "8ebf8a181a3cfaf03737ef585f8906d28f8d419f",
+    "BASE_COMMIT": "367f58f1c8a45a4f56459f4564baf2e73ac494ef"
+  },
+  "drift_vs_manifest": {
+    "ARC03_CONTROL_PLAN.json": false,
+    "ARC03_FAILED_MEMORY_COLLISION_REVIEW.md": false,
+    "ARC03_PIT_CONTRACT.json": false,
+    "ARC03_PREREGISTRATION.md": false,
+    "ARC03_ROBUSTNESS_PLAN.json": false,
+    "ARC03_SELECTION_RATIONALE.md": false,
+    "ARC03_SPEC_V1.json": false,
+    "ARC03_STATISTICAL_GATES.json": false
+  },
+  "frozen_artifacts": {
+    "ARC03_CONTROL_PLAN.json": {
+      "git_blob": "730a799ac03ec209c4e7ba16a48205daa426a44f",
+      "sha256": "4423e48ebb1760d863fa7fff127f6dc708eefcd5ba9034ad39303a27ef16f84f",
+      "sha256_from_blob": "4423e48ebb1760d863fa7fff127f6dc708eefcd5ba9034ad39303a27ef16f84f"
+    },
+    "ARC03_FAILED_MEMORY_COLLISION_REVIEW.md": {
+      "git_blob": "0fb86b1380b5e44eb305d5697d94ac2fd8801642",
+      "sha256": "07ca4be4137df462e7ac084b852ee04663c1f1c9b6315971197c8bfe5a1cb8f4",
+      "sha256_from_blob": "07ca4be4137df462e7ac084b852ee04663c1f1c9b6315971197c8bfe5a1cb8f4"
+    },
+    "ARC03_PIT_CONTRACT.json": {
+      "git_blob": "b69997a77256783d67b6f8c06110303e07c1c694",
+      "sha256": "fc7e1d6a4eeff974b0fda26695ef9f1db66020ee6ea6c9497c07dadc7ef28df7",
+      "sha256_from_blob": "fc7e1d6a4eeff974b0fda26695ef9f1db66020ee6ea6c9497c07dadc7ef28df7"
+    },
+    "ARC03_PREREGISTRATION.md": {
+      "git_blob": "96699613cda5f877fb5ef05afc4eea912207910b",
+      "sha256": "33876aa3f4591b0453d51fea43a566b2b0c8a554332fba3d749d78d4c356ed5e",
+      "sha256_from_blob": "33876aa3f4591b0453d51fea43a566b2b0c8a554332fba3d749d78d4c356ed5e"
+    },
+    "ARC03_ROBUSTNESS_PLAN.json": {
+      "git_blob": "e9fe3b13d98c1855f7925e4f6e45855c2cf3daf1",
+      "sha256": "39aeccd90662312c9a5ffe6d194abdc9afd7c7f8b7630db6e7bcb98672d4b03e",
+      "sha256_from_blob": "39aeccd90662312c9a5ffe6d194abdc9afd7c7f8b7630db6e7bcb98672d4b03e"
+    },
+    "ARC03_SELECTION_RATIONALE.md": {
+      "git_blob": "dcf3ed49febdeebc4a275e995ab350a3d51bfa96",
+      "sha256": "a3c80b08c169b2b79a319cb0532a9d6c6226671d7ddb3e1a518961c0c48b4b99",
+      "sha256_from_blob": "a3c80b08c169b2b79a319cb0532a9d6c6226671d7ddb3e1a518961c0c48b4b99"
+    },
+    "ARC03_SPEC_V1.json": {
+      "git_blob": "31fcda6a5fa027c5a92fdb57e6286e5c95316c2b",
+      "sha256": "a69edabb2931b3897cc0bcabdb7c203009ace742af1a729e47f7cb058a407a2d",
+      "sha256_from_blob": "a69edabb2931b3897cc0bcabdb7c203009ace742af1a729e47f7cb058a407a2d"
+    },
+    "ARC03_STATISTICAL_GATES.json": {
+      "git_blob": "0bde40c86a82071cc0771c1528c93f8c37c59c35",
+      "sha256": "81e3df671dbd19aac38a2cbd16e5c45a4b6a9db8518d67f91b41b58d7b310326",
+      "sha256_from_blob": "81e3df671dbd19aac38a2cbd16e5c45a4b6a9db8518d67f91b41b58d7b310326"
+    }
+  },
+  "gate_checks": {
+    "POST_FREEZE_ARTIFACT_DRIFT_zero": true,
+    "blob_sha_equals_worktree_sha": true,
+    "manifest_hash_matches": true,
+    "pointer_commit_metadata_only": true,
+    "spec_hash_matches": true,
+    "target_commit_is_prereg_commit": true,
+    "verifier_outputs_are_the_only_changes": true,
+    "worktree_clean_at_start": true
+  },
+  "git_status_porcelain": "?? docs/external-audit-01/arc03-prereg-verification-01/",
+  "line_ending_stability": {
+    "core_autocrlf": "false",
+    "gitattributes_present": false
+  },
+  "manifest_sha256": "3b022693fde0a4e362329a009125292410bb1ba3d0e2b3f8571b795a15b1d1a3",
+  "manifest_sha256_expected": "3b022693fde0a4e362329a009125292410bb1ba3d0e2b3f8571b795a15b1d1a3",
+  "note": "PORTER COMMIT IS METADATA ONLY",
+  "pointer_commit_scope": {
+    "assessment": "PORTER COMMIT IS METADATA ONLY - it adds ARC03_PREREG_COMMIT_POINTER.json and edits RUN_REPORT.json/md and ARC03_RESUME_STATE.json, none of which are in the frozen economic set",
+    "files_changed": [
+      "A\tdocs/arc03-prereg-01/ARC03_PREREG_COMMIT_POINTER.json",
+      "M\tdocs/arc03-prereg-01/ARC03_RESUME_STATE.json",
+      "M\tdocs/arc03-prereg-01/RUN_REPORT.json",
+      "M\tdocs/arc03-prereg-01/RUN_REPORT.md"
+    ],
+    "parent": "8ebf8a181a3cfaf03737ef585f8906d28f8d419f",
+    "touches_frozen_economic_artifact": false
+  },
+  "schema": "ARC03_GIT_AUTHORITY/1.0.0",
+  "spec_sha256": "a69edabb2931b3897cc0bcabdb7c203009ace742af1a729e47f7cb058a407a2d",
+  "spec_sha256_expected": "a69edabb2931b3897cc0bcabdb7c203009ace742af1a729e47f7cb058a407a2d",
+  "target_commit_is_prereg_commit": true,
+  "verifier_branch": "audit/arc03-prereg-verification-01",
+  "verifier_outputs_are_the_only_changes": true,
+  "verifier_worktree": ".research/arc03-prereg-verifier-01",
+  "worktree_clean": false,
+  "worktree_clean_at_start": true,
+  "worktree_state_when_audit_ran": {
+    "interpretation": "the only untracked/modified paths are the VERIFIER'S OWN output artifacts, written after the clean materialisation; no builder artifact is modified",
+    "modified": [],
+    "untracked_verifier_outputs": [
+      "docs/external-audit-01/arc03-prereg-verification-01/"
+    ]
+  }
+}

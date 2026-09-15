@@ -1,0 +1,109 @@
+{
+  "PORTABILITY": "PASS",
+  "PYTHON_IMPORT_AUTHORITY": "PASS",
+  "all_arc03_modules_in_worktree": true,
+  "arc03_module_files": {
+    "arc03_authority": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc03-prereg-verifier-01\\src\\trading_bot\\research\\arc03\\arc03_authority.py",
+    "arc03_funding": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc03-prereg-verifier-01\\src\\trading_bot\\research\\arc03\\arc03_funding.py",
+    "arc03_normalize": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc03-prereg-verifier-01\\src\\trading_bot\\research\\arc03\\arc03_normalize.py",
+    "arc03_pit": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc03-prereg-verifier-01\\src\\trading_bot\\research\\arc03\\arc03_pit.py",
+    "arc03_prereg_reference": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc03-prereg-verifier-01\\src\\trading_bot\\research\\arc03\\arc03_prereg_reference.py"
+  },
+  "cwd": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc03-prereg-verifier-01",
+  "documentation_paths_note": "base-selection and portable-data-verification evidence intentionally record the audited target path; they are audit documentation, not frozen logical identity, and are out of scope",
+  "empty_root_fails_closed": true,
+  "explicit_certified_root_passes": true,
+  "frozen_identity_is_path_independent": true,
+  "frozen_identity_scope": [
+    "src/trading_bot/research/arc03/",
+    "docs/arc03-data-authority-01/ARC03_DATASET_FINGERPRINT.json",
+    "docs/arc03-data-authority-01/ARC03_DATA_MANIFEST.json",
+    "docs/arc03-data-authority-01/ARC03_DATA_AUTHORITY.json",
+    "docs/arc03-data-authority-01/ARC03_DATA_DETERMINISM.json",
+    "docs/arc03-data-authority-01/ARC03_COMMON_CAUSAL_WINDOW.json",
+    "docs/arc03-data-authority-01/ARC03_PIT_AUTHORITY.json",
+    "docs/arc03-prereg-01/ARC03_SPEC_V1.json",
+    "docs/arc03-prereg-01/ARC03_MANIFEST_V1.json",
+    "docs/arc03-prereg-01/ARC03_PIT_CONTRACT.json",
+    "scripts/build_arc03_data_authority.py",
+    "scripts/validate_arc03_spec.py"
+  ],
+  "git_commit": "8ebf8a181a3cfaf03737ef585f8906d28f8d419f",
+  "identity_scope_files_scanned": [
+    "docs/arc03-data-authority-01/ARC03_COMMON_CAUSAL_WINDOW.json",
+    "docs/arc03-data-authority-01/ARC03_DATA_AUTHORITY.json",
+    "docs/arc03-data-authority-01/ARC03_DATA_DETERMINISM.json",
+    "docs/arc03-data-authority-01/ARC03_DATA_MANIFEST.json",
+    "docs/arc03-data-authority-01/ARC03_DATASET_FINGERPRINT.json",
+    "docs/arc03-data-authority-01/ARC03_PIT_AUTHORITY.json",
+    "docs/arc03-prereg-01/ARC03_MANIFEST_V1.json",
+    "docs/arc03-prereg-01/ARC03_PIT_CONTRACT.json",
+    "docs/arc03-prereg-01/ARC03_SPEC_V1.json",
+    "scripts/build_arc03_data_authority.py",
+    "scripts/validate_arc03_spec.py",
+    "src/trading_bot/research/arc03/arc03_authority.py",
+    "src/trading_bot/research/arc03/arc03_funding.py",
+    "src/trading_bot/research/arc03/arc03_normalize.py",
+    "src/trading_bot/research/arc03/arc03_pit.py",
+    "src/trading_bot/research/arc03/arc03_prereg_reference.py",
+    "src/trading_bot/research/arc03/arc03_synthetic.py"
+  ],
+  "machine_specific_absolute_path_hit_count": 0,
+  "machine_specific_absolute_path_hits": [],
+  "python_executable": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+  "ran_from_verifier_worktree_different_cwd": true,
+  "runs": {
+    "empty_root": {
+      "cmd": [
+        "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+        "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc03-prereg-verifier-01\\docs\\external-audit-01\\arc03-prereg-verification-01\\verifier_independent_data_binding.py",
+        "--out",
+        "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc03-prereg-verifier-01\\docs\\external-audit-01\\arc03-prereg-verification-01\\.portability-empty_root.json",
+        "--data-root",
+        "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\tmpq7xpa_0p"
+      ],
+      "returncode": 2,
+      "stderr_tail": "",
+      "verdict": "FAIL_CLOSED"
+    },
+    "explicit_certified_root": {
+      "cmd": [
+        "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+        "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc03-prereg-verifier-01\\docs\\external-audit-01\\arc03-prereg-verification-01\\verifier_independent_data_binding.py",
+        "--out",
+        "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc03-prereg-verifier-01\\docs\\external-audit-01\\arc03-prereg-verification-01\\.portability-explicit_certified_root.json",
+        "--data-root",
+        "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc03-participation-reversal-01"
+      ],
+      "returncode": 0,
+      "stderr_tail": "",
+      "verdict": "PASS"
+    },
+    "wrong_nonempty_root": {
+      "cmd": [
+        "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+        "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc03-prereg-verifier-01\\docs\\external-audit-01\\arc03-prereg-verification-01\\verifier_independent_data_binding.py",
+        "--out",
+        "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc03-prereg-verifier-01\\docs\\external-audit-01\\arc03-prereg-verification-01\\.portability-wrong_nonempty_root.json",
+        "--data-root",
+        "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc03-prereg-verifier-01"
+      ],
+      "returncode": 2,
+      "stderr_tail": "",
+      "verdict": "FAIL_CLOSED"
+    }
+  },
+  "schema": "ARC03_PORTABILITY_IMPORT_AUTHORITY/1.0.0",
+  "sys_path_first_entries": [
+    "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc03-prereg-verifier-01\\src",
+    "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc03-prereg-verifier-01\\docs\\external-audit-01\\arc03-prereg-verification-01",
+    "C:\\Users\\GVLLFR0035\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\\python311.zip",
+    "C:\\Users\\GVLLFR0035\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\\DLLs",
+    "C:\\Users\\GVLLFR0035\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\\Lib",
+    "C:\\Users\\GVLLFR0035\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none"
+  ],
+  "trading_bot_file": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc03-prereg-verifier-01\\src\\trading_bot\\__init__.py",
+  "trading_bot_in_worktree": true,
+  "worktree": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc03-prereg-verifier-01",
+  "wrong_nonempty_root_fails_closed": true
+}

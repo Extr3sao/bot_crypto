@@ -1,0 +1,137 @@
+{
+  "A_B_DETERMINISM": "PASS",
+  "DATA_BINDING": "PASS",
+  "NO_SYNTHETIC_MARKET_ROWS": true,
+  "classification_mismatches": [],
+  "common_window": {
+    "end_ms": 1788220500000,
+    "per_asset_first": {
+      "BTCUSDT": 1577836800000,
+      "ETHUSDT": 1577836800000,
+      "SOLUSDT": 1600066800000
+    },
+    "per_asset_last": {
+      "BTCUSDT": 1788220500000,
+      "ETHUSDT": 1788220500000,
+      "SOLUSDT": 1788220500000
+    },
+    "start_ms": 1600066800000
+  },
+  "daily_supplements": [
+    {
+      "date": "2022-02-26",
+      "for_month": "2022-02",
+      "raw_sha256": "2f6b1961ec408be134961dd25326bc014cb133a3c72149ca4c448ca6904fc50a",
+      "symbol": "SOLUSDT"
+    },
+    {
+      "date": "2022-02-27",
+      "for_month": "2022-02",
+      "raw_sha256": "64a1adea118e645704457e590ae4ee0e1cbef604cd91c2ab70107f5ca0be16eb",
+      "symbol": "SOLUSDT"
+    },
+    {
+      "date": "2022-02-28",
+      "for_month": "2022-02",
+      "raw_sha256": "4eecf1f32ae71720e6f207a441101f5ddf168874056a241f2bffbce8271f650f",
+      "symbol": "SOLUSDT"
+    },
+    {
+      "date": "2022-04-01",
+      "for_month": "2022-04",
+      "raw_sha256": "265c3e6bb76a3c517287862583b76c76339feccfea9070eaa6f4d326c893ea46",
+      "symbol": "SOLUSDT"
+    },
+    {
+      "date": "2022-04-02",
+      "for_month": "2022-04",
+      "raw_sha256": "6cee5e5b5b3173519be867c5245c8d26f32604f18277aa0a27003c1526698353",
+      "symbol": "SOLUSDT"
+    }
+  ],
+  "daily_supplements_sha256": "9ff3d412a750348760015430b517d02d845878e218c5f20c8a3fb514ef772e80",
+  "data_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc03-participation-reversal-01",
+  "dataset_sha256_expected": "1a6ad11712ce436ce9d413d6b53162d66996778cd98643ef7c3eb746a54745ef",
+  "dataset_sha256_reading_A_admitted_rows": "792c5ee7691ab4cbdb2be63b87c7a4a202d797bc7010f0670afdf702494944d3",
+  "dataset_sha256_reading_B_ledger_rows_field": "1a6ad11712ce436ce9d413d6b53162d66996778cd98643ef7c3eb746a54745ef",
+  "dataset_sha256_recomputed": "1a6ad11712ce436ce9d413d6b53162d66996778cd98643ef7c3eb746a54745ef",
+  "dataset_sha256_reproduced_under": "READING_B_ledger_rows_field",
+  "failures": [],
+  "method": "verifier-owned parser; does NOT call the builder normalizer",
+  "normalized_rows_field_ambiguity": [
+    {
+      "admitted_rows_reading_a": 8064,
+      "ledger_rows_field_reading_b": 7200,
+      "month": "2022-02",
+      "supplement_rows": 864,
+      "symbol": "SOLUSDT"
+    },
+    {
+      "admitted_rows_reading_a": 8640,
+      "ledger_rows_field_reading_b": 8064,
+      "month": "2022-04",
+      "supplement_rows": 576,
+      "symbol": "SOLUSDT"
+    }
+  ],
+  "normalized_rows_field_defect": {
+    "data_impact": "NONE - partition bytes, raw digests, row counts, window and no-synthetic-rows all reproduce exactly; no economic parameter reads this field or the digest",
+    "id": "DEF-ARC03-DATA-FP-001",
+    "masking_risk": "NONE - the digest remains sensitive to any raw or row change through raw_sha256 / normalized_rows",
+    "remediation": "in a future authority version rename the field to `monthly_archive_rows` (or fill it with the admitted count and re-freeze)",
+    "severity": "NON_BLOCKING_DOCUMENTATION",
+    "statement": "the fingerprint method names the per-month field `normalized_rows`, and the implementation fills it with the ledger's `rows` field, which for the two VALID_WITH_DAILY_SUPPLEMENT months (SOLUSDT 2022-02, 2022-04) is the MONTHLY-ARCHIVE row count BEFORE the daily supplement, not the admitted row count. The digest is therefore reproducible only under that reading."
+  },
+  "partition_prefixes": {
+    "BTCUSDT": "eb75ab97...",
+    "ETHUSDT": "24c88690...",
+    "SOLUSDT": "d872bc7d..."
+  },
+  "partition_sha256_recomputed": {
+    "BTCUSDT": "eb75ab97881fd941c05d1b188778f1a832ab404c59f5991eff12ead779e4ab02",
+    "ETHUSDT": "24c886902760b2e2c873df7721c12098e65b768762f55e2144d990deac04c211",
+    "SOLUSDT": "d872bc7dc8a52eb697962516fbd24a636483acd43e524cdbbf09985d2720f548"
+  },
+  "provider_checksum_misses": [],
+  "raw_archives": 232,
+  "raw_files_sha256": "abfe8caee35ff441d71127430a8547eba98e54a7a722681db908565b720996a9",
+  "row_counts": {
+    "BTCUSDT": 701280,
+    "ETHUSDT": 701280,
+    "SOLUSDT": 627180
+  },
+  "schema": "ARC03_DATA_BINDING_VERIFICATION/1.0.0",
+  "synthetic_row_audit": {
+    "SOLUSDT/2022-02": {
+      "monthly_rows": 7200,
+      "shortfall_map": {
+        "2022-02-26": 288,
+        "2022-02-27": 288,
+        "2022-02-28": 288
+      },
+      "supplement_days": [
+        "2022-02-26",
+        "2022-02-27",
+        "2022-02-28"
+      ],
+      "supplement_rows": 864,
+      "union_equals_official_union": true,
+      "union_rows": 8064
+    },
+    "SOLUSDT/2022-04": {
+      "monthly_rows": 8064,
+      "shortfall_map": {
+        "2022-04-01": 288,
+        "2022-04-02": 288
+      },
+      "supplement_days": [
+        "2022-04-01",
+        "2022-04-02"
+      ],
+      "supplement_rows": 576,
+      "union_equals_official_union": true,
+      "union_rows": 8640
+    }
+  },
+  "withheld_months": {}
+}

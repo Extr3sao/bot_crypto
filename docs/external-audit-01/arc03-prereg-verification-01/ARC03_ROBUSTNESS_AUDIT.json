@@ -1,0 +1,55 @@
+{
+  "ROBUSTNESS_NO_RETUNE": "PASS",
+  "executed_now": false,
+  "failures": [],
+  "neighbourhoods": {
+    "cost_curve_bps": {
+      "primary": 10,
+      "role": "diagnostic; already reported at discovery via G11",
+      "scenarios": [
+        0,
+        10,
+        20,
+        40
+      ],
+      "trade_set": "IDENTICAL to the primary; cost scenarios never regenerate signals"
+    },
+    "holding_bars": {
+      "grid": [
+        6,
+        12,
+        24,
+        36
+      ],
+      "holding_minutes": [
+        30,
+        60,
+        120,
+        180
+      ],
+      "primary": 12,
+      "rationale": "the mechanism asserts a transient reversal; the grid probes whether the effect is confined to a narrow horizon. It may not be used to pick a different holding period.",
+      "role": "stability diagnostic only"
+    },
+    "participation_reference_length_days": {
+      "grid": [
+        10,
+        20,
+        30,
+        60
+      ],
+      "primary": 30,
+      "rationale": "the 30-day same-slot reference is the only length-like constant in the hypothesis; the grid probes whether the result is an artifact of exactly 30 days. It may not be used to pick a different reference length.",
+      "role": "stability diagnostic only"
+    }
+  },
+  "oos_deferred_with_reason": "the ARC-03 dataset is a single certified 5m authority over one common causal window; a held-out out-of-sample period cannot be frozen without splitting the discovery window, which would change the primary trade set. The out-of-sample requirement is therefore deferred to the authorized ARC03_ROBUSTNESS_OOS_01 stage, where a walk-forward protocol must be frozen BEFORE execution and all primary parameters remain at their frozen values.",
+  "post_hoc_rule": "POST_HOC_LEAD_ONLY - it may never be promoted and requires a NEW_HYPOTHESIS_ID and a NEW_PREREGISTRATION to be tested as anything other than a robustness diagnostic",
+  "precondition": "runs ONLY if the primary discovery returns DISCOVERY_PASS (all critical gates pass and no control satisfies all gates)",
+  "primary": {
+    "cost_bps": 10,
+    "holding_bars": 12,
+    "participation_reference_days": 30
+  },
+  "schema": "ARC03_ROBUSTNESS_AUDIT/1.0.0"
+}

@@ -1,0 +1,86 @@
+{
+  "PROVIDER_FIELD_MAPPING": "PASS",
+  "attack": "prove that normalized field `v` is the intended BASE-UNIT completed-bar volume, not a look-alike",
+  "evidence": [
+    {
+      "conclusion": "field 5 is BASE-UNIT volume and field 7 is QUOTE (USDT) volume: the ratio quote/base equals the bar VWAP and lies inside [low, high] for essentially every row, and is nowhere near 1.0 (which it would be if both were quote). field 9 is a base-unit subset of field 5.",
+      "count_is_nonnegative_integer_fraction": 1.0,
+      "median_quote_over_base": 27212.6424,
+      "quote_over_base_in_bar_range_fraction": 1.0,
+      "quote_over_base_near_one_fraction": 0.0,
+      "rows_checked": 1218,
+      "symbol": "BTCUSDT",
+      "taker_buy_base_le_total_base_fraction": 1.0
+    },
+    {
+      "conclusion": "field 5 is BASE-UNIT volume and field 7 is QUOTE (USDT) volume: the ratio quote/base equals the bar VWAP and lies inside [low, high] for essentially every row, and is nowhere near 1.0 (which it would be if both were quote). field 9 is a base-unit subset of field 5.",
+      "count_is_nonnegative_integer_fraction": 1.0,
+      "median_quote_over_base": 1829.6967,
+      "quote_over_base_in_bar_range_fraction": 1.0,
+      "quote_over_base_near_one_fraction": 0.0,
+      "rows_checked": 1218,
+      "symbol": "ETHUSDT",
+      "taker_buy_base_le_total_base_fraction": 1.0
+    },
+    {
+      "conclusion": "field 5 is BASE-UNIT volume and field 7 is QUOTE (USDT) volume: the ratio quote/base equals the bar VWAP and lies inside [low, high] for essentially every row, and is nowhere near 1.0 (which it would be if both were quote). field 9 is a base-unit subset of field 5.",
+      "count_is_nonnegative_integer_fraction": 1.0,
+      "median_quote_over_base": 19.465,
+      "quote_over_base_in_bar_range_fraction": 1.0,
+      "quote_over_base_near_one_fraction": 0.0,
+      "rows_checked": 1219,
+      "symbol": "SOLUSDT",
+      "taker_buy_base_le_total_base_fraction": 1.0
+    }
+  ],
+  "failures": [],
+  "normalized_field_semantics": {
+    "c": "provider 4",
+    "ct": "provider 6",
+    "h": "provider 2",
+    "l": "provider 3",
+    "ms": "month provenance",
+    "n": "provider 8",
+    "o": "provider 1",
+    "qv": "provider 7",
+    "sym": "partition provenance",
+    "t": "provider 0",
+    "tb": "provider 9",
+    "tq": "provider 10",
+    "v": "provider 5 (base volume)"
+  },
+  "normalized_v_equals_provider_index_5": true,
+  "normalized_v_equals_provider_index_5_rows_checked": 2770,
+  "numeric_proof": {
+    "discriminator": "quote_volume/volume equals the bar VWAP inside [low, high]",
+    "if_field5_were_quote": "the ratio would be ~1.0 for every row; observed near-one fraction is 0"
+  },
+  "provider_field_map": {
+    "provider_0": "open_time (epoch ms, UTC)",
+    "provider_1": "open",
+    "provider_10": "taker_buy_quote_volume (USDT)",
+    "provider_11": "ignore (never read)",
+    "provider_2": "high",
+    "provider_3": "low",
+    "provider_4": "close",
+    "provider_5": "volume (BASE units) <- the ARC-03 participation field",
+    "provider_6": "close_time (epoch ms) = open_time + 299999",
+    "provider_7": "quote_volume (USDT)",
+    "provider_8": "count (integer, number of trades)",
+    "provider_9": "taker_buy_volume (BASE units)"
+  },
+  "schema": "ARC03_PROVIDER_FIELD_MAPPING_AUDIT/1.0.0",
+  "spec_binding": {
+    "mapping_is_explicit": "docs/arc03-data-authority-01/ARC03_DATA_AUTHORITY.json.field_admission",
+    "spec_field": "v",
+    "spec_reader_fields_read": [
+      "t",
+      "ct",
+      "o",
+      "h",
+      "l",
+      "c",
+      "v"
+    ]
+  }
+}

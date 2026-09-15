@@ -1,0 +1,229 @@
+{
+  "STATISTICAL_GATES_REPRODUCIBLE": "PASS",
+  "arc01_ambiguity_avoided": [
+    "Arc-01 left ddof, window span, bootstrap index formula, permutation sidedness/statistic and month attribution implicit and resolved them from a pre-existing module; ARC-03 states all of them in the gates file."
+  ],
+  "checks": [
+    {
+      "detail": null,
+      "frozen": true,
+      "requirement": "G1 metric+threshold"
+    },
+    {
+      "detail": null,
+      "frozen": true,
+      "requirement": "G2 net expectancy > 0"
+    },
+    {
+      "detail": null,
+      "frozen": true,
+      "requirement": "G3 ex-funding with zero funding contribution"
+    },
+    {
+      "detail": null,
+      "frozen": true,
+      "requirement": "G4 profit factor semantics + zero-loss behavior"
+    },
+    {
+      "detail": null,
+      "frozen": true,
+      "requirement": "G4 threshold"
+    },
+    {
+      "detail": null,
+      "frozen": true,
+      "requirement": "G5 sharpe return series = net trade returns at 10bps"
+    },
+    {
+      "detail": null,
+      "frozen": true,
+      "requirement": "G5 ddof explicit"
+    },
+    {
+      "detail": null,
+      "frozen": true,
+      "requirement": "G5 annualization explicit"
+    },
+    {
+      "detail": null,
+      "frozen": true,
+      "requirement": "G5 FIXED window span (not trade-derived)"
+    },
+    {
+      "detail": null,
+      "frozen": true,
+      "requirement": "G5 zero-variance fail-closed"
+    },
+    {
+      "detail": null,
+      "frozen": true,
+      "requirement": "G6 statistic explicit"
+    },
+    {
+      "detail": null,
+      "frozen": true,
+      "requirement": "G6 resampling unit explicit"
+    },
+    {
+      "detail": null,
+      "frozen": true,
+      "requirement": "G6 replacement explicit"
+    },
+    {
+      "detail": null,
+      "frozen": true,
+      "requirement": "G6 draws"
+    },
+    {
+      "detail": null,
+      "frozen": true,
+      "requirement": "G6 seed"
+    },
+    {
+      "detail": null,
+      "frozen": true,
+      "requirement": "G6 CI construction + index formula"
+    },
+    {
+      "detail": null,
+      "frozen": true,
+      "requirement": "G6 degenerate guard"
+    },
+    {
+      "detail": null,
+      "frozen": true,
+      "requirement": "G7 statistic explicit (mean net return)"
+    },
+    {
+      "detail": null,
+      "frozen": true,
+      "requirement": "G7 statistic-is-not-sharpe stated"
+    },
+    {
+      "detail": null,
+      "frozen": true,
+      "requirement": "G7 null transform"
+    },
+    {
+      "detail": null,
+      "frozen": true,
+      "requirement": "G7 sidedness"
+    },
+    {
+      "detail": null,
+      "frozen": true,
+      "requirement": "G7 p-value formula"
+    },
+    {
+      "detail": null,
+      "frozen": true,
+      "requirement": "G7 no +1 correction"
+    },
+    {
+      "detail": null,
+      "frozen": true,
+      "requirement": "G7 draws"
+    },
+    {
+      "detail": null,
+      "frozen": true,
+      "requirement": "G7 seed"
+    },
+    {
+      "detail": null,
+      "frozen": true,
+      "requirement": "G7 degenerate guard"
+    },
+    {
+      "detail": null,
+      "frozen": true,
+      "requirement": "G8 equal-count boundaries explicit"
+    },
+    {
+      "detail": null,
+      "frozen": true,
+      "requirement": "G8 split basis equal-count trade timeline"
+    },
+    {
+      "detail": null,
+      "frozen": true,
+      "requirement": "G8 empty-group handling"
+    },
+    {
+      "detail": null,
+      "frozen": true,
+      "requirement": "G9 asset stability"
+    },
+    {
+      "detail": null,
+      "frozen": true,
+      "requirement": "G10 asset attribution"
+    },
+    {
+      "detail": null,
+      "frozen": true,
+      "requirement": "G10 month attribution = UTC ENTRY month"
+    },
+    {
+      "detail": null,
+      "frozen": true,
+      "requirement": "G10 denominator <=0 behavior"
+    },
+    {
+      "detail": null,
+      "frozen": true,
+      "requirement": "G10 negative contributors can never be the max"
+    },
+    {
+      "detail": null,
+      "frozen": true,
+      "requirement": "G10 single-trade share definition"
+    },
+    {
+      "detail": null,
+      "frozen": true,
+      "requirement": "G11 both cost points"
+    },
+    {
+      "detail": null,
+      "frozen": true,
+      "requirement": "no single metric sufficient"
+    },
+    {
+      "detail": null,
+      "frozen": true,
+      "requirement": "all critical gates required"
+    },
+    {
+      "detail": null,
+      "frozen": true,
+      "requirement": "CRITICAL_SPEC_INCOMPLETENESS false"
+    },
+    {
+      "detail": null,
+      "frozen": true,
+      "requirement": "sample unit = trade, equal weighted"
+    }
+  ],
+  "conventions_bound_explicitly": [
+    "aggregation",
+    "bootstrap",
+    "concentration_attribution",
+    "permutation",
+    "profit_factor",
+    "sample_standard_deviation",
+    "sharpe",
+    "temporal_split"
+  ],
+  "critical_gate_count": 11,
+  "failures": [],
+  "gate_count": 11,
+  "project_module_dependency": {
+    "module": "src/trading_bot/backtesting/stat_validation.py",
+    "present_before_prereg": true,
+    "role": "corroboration only - the gates file does not depend on it for any definition"
+  },
+  "question": "Can each critical gate be reproduced deterministically from the FROZEN prereg alone?",
+  "residual_ambiguity": [],
+  "schema": "ARC03_STATISTICAL_GATES_AUDIT/1.0.0"
+}

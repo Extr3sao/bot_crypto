@@ -1,0 +1,22 @@
+{
+  "MUTATION_SENSITIVITY": "PASS",
+  "identity_rewrite": {
+    "IDENTICAL": true,
+    "sha256": "d872bc7dc8a52eb697962516fbd24a636483acd43e524cdbbf09985d2720f548"
+  },
+  "method": "TEMP copies only; the certified raw archive and the canonical partition were re-hashed after the test and are unchanged",
+  "normalized_mutation": {
+    "MUTATED_PARTITION_SHA_DIFFERS": true,
+    "canonical_partition_unchanged_after_test": true,
+    "mutated_partition_sha256": "dff35a6660619748b61dd813b523fc51e6413c112c20cc8a5f8b2b90e0b7fceb",
+    "original_partition_sha256": "d872bc7dc8a52eb697962516fbd24a636483acd43e524cdbbf09985d2720f548"
+  },
+  "raw_mutation": {
+    "MUTATED_DATASET_SHA_DIFFERS": true,
+    "canonical_raw_unchanged_after_test": true,
+    "mutated_dataset_sha256": "a859b061c04c4bff6ea596c902fa902c68c4ad5be6d424261777c0faebbe4523",
+    "mutated_raw_sha256": "9b90850f3870eefb680f6504ec3584dd6f94669fd8c0d953278a1658fbaa8336",
+    "original_dataset_sha256": "1a6ad11712ce436ce9d413d6b53162d66996778cd98643ef7c3eb746a54745ef",
+    "original_raw_sha256": "0054f032805e0e903cb2c73212a5d271dc2c1cd6fba4a74729587b8ad08c27fb"
+  }
+}

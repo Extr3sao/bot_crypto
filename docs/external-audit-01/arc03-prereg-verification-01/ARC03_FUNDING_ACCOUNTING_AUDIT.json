@@ -1,0 +1,99 @@
+{
+  "FUNDING_ACCOUNTING": "PASS",
+  "byte_reuse_vs_certified_arc01_authority": {
+    "BTCUSDT": {
+      "arc01_certified_sha256": "700b0c4c7e5ffa9dbe82cd84e98be9f505bce6f1792d33d0eae88d07a7585855",
+      "arc03_sha256": "700b0c4c7e5ffa9dbe82cd84e98be9f505bce6f1792d33d0eae88d07a7585855",
+      "byte_identical_to_arc01": true
+    },
+    "ETHUSDT": {
+      "arc01_certified_sha256": "2edf501ea69807bbf67cdd519e53de18c8dea25ea8bdf009beb88ef2e2693943",
+      "arc03_sha256": "2edf501ea69807bbf67cdd519e53de18c8dea25ea8bdf009beb88ef2e2693943",
+      "byte_identical_to_arc01": true
+    },
+    "SOLUSDT": {
+      "arc01_certified_sha256": "6b16d13f5115f906f9ceb4f5a418f7a541c37609e780cfbad0d52ed565808f85",
+      "arc03_sha256": "6b16d13f5115f906f9ceb4f5a418f7a541c37609e780cfbad0d52ed565808f85",
+      "byte_identical_to_arc01": true
+    }
+  },
+  "ex_funding_gate_independence": {
+    "G3_formula": "mean(gross_trade_return - cost_return)",
+    "funding_contribution": 0,
+    "spec": "G3 is computed from gross_trade_return - cost_return and therefore contains ZERO funding contribution; the freeze verifies that ARC-03 cannot pass merely by mechanically collecting funding carry"
+  },
+  "failures": [],
+  "interval_hour_histogram": {
+    "BTCUSDT": {
+      "8": 7347
+    },
+    "ETHUSDT": {
+      "8": 7347
+    },
+    "SOLUSDT": {
+      "2": 99,
+      "4": 2,
+      "8": 6551
+    }
+  },
+  "never_assumes_8h": "the cashflow iterates actual certified rows; the interval histogram shows the provider's own cadence is read per row",
+  "partition_sha256_matches_spec": {
+    "BTCUSDT": true,
+    "ETHUSDT": true,
+    "SOLUSDT": true
+  },
+  "role": "CASHFLOW LEG ONLY - funding is never an ARC-03 signal input",
+  "schema": "ARC03_FUNDING_ACCOUNTING_AUDIT/1.0.0",
+  "settlement_count_never_hardcoded": {
+    "arc01_defect_avoided": "ARC-01's '9 settlements' prose imprecision is not repeated: ARC-03 has no settlement-count constant anywhere",
+    "spec_statement": "the accounting iterates the ACTUAL certified settlements in the window and never assumes a fixed count such as 9 (an ARC-01 documentation defect this prereg deliberately avoids)"
+  },
+  "settlement_window_semantics": {
+    "BTCUSDT": {
+      "fraction_with_a_settlement": 0.1247,
+      "interval_hours": {
+        "8": 7347
+      },
+      "max_settlements_in_one_60min_window": 1,
+      "sampled_60min_windows": 62717,
+      "windows_containing_a_settlement": 7818,
+      "windows_with_zero_settlements": 54899
+    },
+    "ETHUSDT": {
+      "fraction_with_a_settlement": 0.1247,
+      "interval_hours": {
+        "8": 7347
+      },
+      "max_settlements_in_one_60min_window": 1,
+      "sampled_60min_windows": 62717,
+      "windows_containing_a_settlement": 7818,
+      "windows_with_zero_settlements": 54899
+    },
+    "SOLUSDT": {
+      "fraction_with_a_settlement": 0.1261,
+      "interval_hours": {
+        "2": 99,
+        "4": 2,
+        "8": 6551
+      },
+      "max_settlements_in_one_60min_window": 1,
+      "sampled_60min_windows": 62717,
+      "windows_containing_a_settlement": 7909,
+      "windows_with_zero_settlements": 54808
+    }
+  },
+  "sign_proof": {
+    "LONG_negative_rate": "positive => receives",
+    "LONG_positive_rate": "-1 * (+1) = negative => the LONG leg pays",
+    "SHORT_negative_rate": "negative => pays",
+    "SHORT_positive_rate": "-1 * (-1) = positive => the SHORT leg receives",
+    "binance_usdm_semantics": "funding_rate > 0 => LONG pays the SHORT",
+    "frozen_formula": "funding_cashflow_return = sum(-direction_sign * funding_rate) over (entry, exit]",
+    "verified_in": "verifier_independent_pit.py battery (4 sign tests) and the builder's prereg unit tests"
+  },
+  "signal_input_check": {
+    "grep_signal_path_for_funding": "the signal path is src/trading_bot/research/arc03/arc03_authority.py; funding lives in arc03_funding.py and is imported by nothing in the signal path",
+    "spec_signal_use": "NONE - funding is not a signal input for ARC-03"
+  },
+  "zero_settlement_is_valid_zero": "a 60-minute hold frequently contains no settlement; the accounting returns 0.0 and 0 settlements, not an error"
+}

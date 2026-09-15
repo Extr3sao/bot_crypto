@@ -1,0 +1,56 @@
+{
+  "REFERENCE_WINDOW": "PASS",
+  "attacks": {
+    ">= instead of strict >": "verified strict in the PIT battery (tie -> NO_PARTICIPATION_SHOCK)",
+    "DST / local time": "all reference slots are exact multiples of 86,400,000 ms from a UTC 5m bar open; no local-time conversion exists in the reader",
+    "current_day": "excluded by construction (j starts at 1)",
+    "duplicate same-slot observations": "impossible: partitions have unique strictly monotonic bar opens",
+    "missing reference silently dropped": "not dropped - a missing slot yields REFERENCE_HISTORY_INCOMPLETE (fail closed)",
+    "off_by_one_day (j = 0..29)": "would place the CURRENT bar inside the reference set; measured 0 occurrences",
+    "rolling 30*288 bars": "rejected: the same-slot set differs from a rolling 30-bar window, so the implementation is not a rolling-window lookback"
+  },
+  "evidence": [
+    {
+      "all_opens_on_5m_grid": true,
+      "bars_sampled": 2973,
+      "complete_reference_sets": 2973,
+      "current_bar_in_reference_set": 0,
+      "first_bar_open_ms": 1577836800000,
+      "incomplete_reference_sets": 0,
+      "internal_cadence_breaks": 0,
+      "monotonic_strict": true,
+      "same_slot_set_differs_from_rolling_30_bars": 2973,
+      "slots_are_exact_day_multiples_utc": true,
+      "symbol": "BTCUSDT"
+    },
+    {
+      "all_opens_on_5m_grid": true,
+      "bars_sampled": 2973,
+      "complete_reference_sets": 2973,
+      "current_bar_in_reference_set": 0,
+      "first_bar_open_ms": 1577836800000,
+      "incomplete_reference_sets": 0,
+      "internal_cadence_breaks": 0,
+      "monotonic_strict": true,
+      "same_slot_set_differs_from_rolling_30_bars": 2973,
+      "slots_are_exact_day_multiples_utc": true,
+      "symbol": "ETHUSDT"
+    },
+    {
+      "all_opens_on_5m_grid": true,
+      "bars_sampled": 2960,
+      "complete_reference_sets": 2960,
+      "current_bar_in_reference_set": 0,
+      "first_bar_open_ms": 1600066800000,
+      "incomplete_reference_sets": 0,
+      "internal_cadence_breaks": 0,
+      "monotonic_strict": true,
+      "same_slot_set_differs_from_rolling_30_bars": 2960,
+      "slots_are_exact_day_multiples_utc": true,
+      "symbol": "SOLUSDT"
+    }
+  ],
+  "failures": [],
+  "frozen_rule": "refs = {decision_bar_open_time_ms - 86400000 * j : j = 1..30}; ALL 30 must be present",
+  "schema": "ARC03_REFERENCE_WINDOW_AUDIT/1.0.0"
+}

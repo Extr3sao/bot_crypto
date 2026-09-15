@@ -1,0 +1,61 @@
+{
+  "FINAL_VERDICT": "PASS_INDEPENDENT_PREREG_VERIFICATION",
+  "economics_guard": {
+    "ARC03_BACKTESTS": 0,
+    "ARC03_EXECUTIONS": 0,
+    "ARC03_PERFORMANCE_OBSERVED": false,
+    "FALSE_SUCCESS": 0
+  },
+  "independent_gates": {
+    "ALL_ARC03_COMMITS_ARE_DATA_OR_PREREG": true,
+    "FORBIDDEN_OBSERVED_VALUE_HITS_ZERO": true,
+    "FROZEN_IDENTITY_PATH_INDEPENDENT": true,
+    "MANIFEST_SHA_MATCHES": true,
+    "NO_ARC03_RESULT_FILE_ADDED": true,
+    "POST_FREEZE_ARTIFACT_DRIFT_ZERO": true,
+    "SPEC_SHA_MATCHES": true,
+    "WRONG_DATA_ROOT_FAILS_CLOSED": true
+  },
+  "next": "ARC03_PRIMARY_DISCOVERY_01",
+  "schema": "VERIFIER_PROGRESS/1.0.0",
+  "stage": "ARC03_INDEPENDENT_PREREG_VERIFICATION",
+  "status": "COMPLETE",
+  "steps": [
+    "independent detached worktree at the frozen prereg commit (clean)",
+    "git authority + spec/manifest SHA recomputation + post-freeze drift",
+    "performance contamination scan with hit classification",
+    "independent data-binding re-derivation (raw -> partitions -> manifest -> dataset)",
+    "provider field-mapping proof (field 5 = base-unit volume)",
+    "SOL daily-fill authority audit (no synthetic market rows)",
+    "30 same-slot daily reference window audit",
+    "decision cadence / entry causality / 12-bar exit audit",
+    "funding cashflow audit (window, sign, byte reuse, no assumed 8h)",
+    "control semantics audit (all four controls, fail semantics)",
+    "G1..G11 statistical gate reproducibility audit",
+    "robustness no-retune audit",
+    "failed-memory collision audit",
+    "independent PIT adversarial battery (verifier fixtures)",
+    "mutation sensitivity on TEMP copies",
+    "portability + import authority + wrong-root fail-closed",
+    "clean-worktree re-verification from a throwaway checkout",
+    "final verdict assembly"
+  ],
+  "verdicts": {
+    "CLEAN_WORKTREE_VERIFICATION": "PASS",
+    "CONTROLS": "PASS",
+    "DAILY_FILL_AUTHORITY": "PASS",
+    "DATA_AUTHORITY_BINDING": "PASS",
+    "DECISION_ENTRY_EXIT": "PASS",
+    "FAILED_MEMORY_COLLISION": "PASS",
+    "FUNDING_ACCOUNTING": "PASS",
+    "GIT_AUTHORITY": "PASS",
+    "MUTATION_SENSITIVITY": "PASS",
+    "PERFORMANCE_CONTAMINATION": "PASS",
+    "PIT_INDEPENDENT": "PASS",
+    "PORTABILITY_AND_IMPORT_AUTHORITY": "PASS",
+    "PROVIDER_FIELD_MAPPING": "PASS",
+    "REFERENCE_WINDOW": "PASS",
+    "ROBUSTNESS_NO_RETUNE": "PASS",
+    "STATISTICAL_GATES_REPRODUCIBLE": "PASS"
+  }
+}

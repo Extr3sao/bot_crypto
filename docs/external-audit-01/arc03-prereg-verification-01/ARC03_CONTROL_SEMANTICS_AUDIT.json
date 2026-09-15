@@ -1,0 +1,68 @@
+{
+  "CONTROLS": "PASS",
+  "controls_frozen": [
+    "DIRECTION_CONTROL",
+    "NULL_CONTROL",
+    "PARTICIPATION_CONTROL",
+    "TIMING_CONTROL"
+  ],
+  "fail_semantics": {
+    "applies_to_all_required_controls_including_TIMING": true,
+    "arc01_gap_avoided": "ARC-01 omitted TIMING_CONTROL from its gate fail_semantics enumeration; ARC-03 states a general rule AND enumerates all four controls",
+    "controls_cannot_change_primary_thresholds": true,
+    "controls_cannot_supply_fallback_trades": true,
+    "rule": "MECHANISM_NOT_IDENTIFIED => FINAL_STATUS = DISCOVERY_FAIL (terminal). No retuning of the primary based on control results is permitted.",
+    "spec_consequence": "MECHANISM_NOT_IDENTIFIED => ARC03 = DISCOVERY_FAIL (terminal). No retuning of the primary based on control results is permitted."
+  },
+  "failures": [],
+  "gate_set_applied_to_controls": "identical G1..G11 and identical estimator conventions",
+  "per_control": [
+    {
+      "answers": {
+        "alters_decision_time": "NO - the signal bars and thresholds are unchanged",
+        "alters_entry_time": "YES - displaced by +12 bars (+60 minutes) from the primary entry",
+        "alters_funding_window": "YES - necessarily, because the entry/exit instants move; the SAME frozen cashflow rule is applied to the displaced window",
+        "alters_holding_time": "NO - still exactly 12 bars from the (displaced) entry",
+        "alters_signal_eligibility": "NO - the primary signal set is reused unchanged",
+        "frozen_definition_present": true,
+        "one_sided_by_causality": "the symmetric -12-bar displacement is NOT admitted because it would place the entry before the decision instant (PIT violation)",
+        "requires_post_result_discretion": "NO - the displacement is a fixed +HOLDING_BARS"
+      },
+      "control": "TIMING_CONTROL",
+      "raw_definition": "Take the PRIMARY signal set unchanged. Displace the entry by exactly +HOLDING_BARS = +12 bars (60 minutes) relative to the primary entry: entry_time_control = primary_entry_time_ms + 3600000; exit_time_control = entry_time_control + 3600000 (the same 12-bar hold). The rule, the signal bars and the thresholds are untouched; only the shock-to-holding-window alignment is destroyed."
+    },
+    {
+      "control": "DIRECTION_CONTROL",
+      "raw_definition": "Take the PRIMARY signal set unchanged (same signal bars, same entry times, same exit times). Set direction = with-the-push: an up-push signal becomes LONG instead of SHORT, a down-push signal becomes SHORT instead of LONG. Same costs, same funding accounting, same gates.",
+      "regenerates_signal_set": false,
+      "reverses_direction_only": true,
+      "same_decision_timestamps": true,
+      "same_eligibility": true,
+      "same_entry_exit": true
+    },
+    {
+      "changes_other_conditions": false,
+      "control": "PARTICIPATION_CONTROL",
+      "entry_exit_cost_funding_identical": true,
+      "keeps": [
+        "EXCURSION_RECORD",
+        "EXHAUSTION"
+      ],
+      "produces_different_trade_set": true,
+      "raw_definition": "Re-generate the signal set with the participation-shock condition REMOVED: a signal requires ONLY EXCURSION_RECORD(t) AND EXHAUSTION(t) (range record against the same 30 same-slot references, plus strict majority retracement). The volume record is neither required nor consulted. Direction, entry, exit, holding, costs, funding accounting and the gate set are identical to the primary.",
+      "removes": "PARTICIPATION_SHOCK (v(t) > max(reference volumes))"
+    },
+    {
+      "control": "NULL_CONTROL",
+      "deterministic": true,
+      "direction_mapping": "per trade in frozen emission order: flipped = net * (+1 if rng.random() < 0.5 else -1)",
+      "eligibility_set": "the primary realized net trade returns at 10 bps, unchanged in count and timestamps",
+      "platform_dependent_python_hash_used": false,
+      "raw_definition": "Take the PRIMARY realized net trade returns at PRIMARY_COST_BPS in the frozen emission order. Using rng = random.Random(20260915), for each trade in order compute flipped_i = net_return_i * (+1 if rng.random() < 0.5 else -1). Evaluate the FULL critical gate set (including the bootstrap and permutation gates, which use their own frozen seeds) on the flipped series.",
+      "rng": "Python stdlib random.Random(seed)",
+      "seed": 20260915
+    }
+  ],
+  "required_controls_present": true,
+  "schema": "ARC03_CONTROL_SEMANTICS_AUDIT/1.0.0"
+}

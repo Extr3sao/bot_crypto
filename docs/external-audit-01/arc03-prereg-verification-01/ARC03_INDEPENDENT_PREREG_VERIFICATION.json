@@ -1,0 +1,220 @@
+{
+  "BUILDER": "DeepSeek (did not perform this verification)",
+  "CRITICAL_DEFECTS": [],
+  "DRAWDOWN_GATE_ASSESSMENT": {
+    "classification": "ACCEPTABLE_DISCOVERY_LIMITATION",
+    "why": "no drawdown threshold was frozen; the prereg discloses drawdown as a diagnostic-only output. For a PRE-discovery falsification contract this is acceptable because the discovery verdict is already gated on eleven criteria including net expectancy, ex-funding expectancy, profit factor, uncertainty, permutation significance, temporal and asset stability, concentration and cost sensitivity. Promotion (robustness/OOS/paper) remains governed by the frozen later stages, where a drawdown gate must be fixed BEFORE any promotion decision - not invented after seeing a result."
+  },
+  "FINAL_VERDICT": "PASS_INDEPENDENT_PREREG_VERIFICATION",
+  "INDEPENDENCE": "EXTERNAL_INDEPENDENT_VERIFICATION",
+  "NEXT": "ARC03_PRIMARY_DISCOVERY_01",
+  "NON_BLOCKING_LIMITATIONS": [
+    "A stale branch/worktree codex/arc03-independent-prereg-verification exists at the builder's pointer commit 13b3e3e and contains NO verifier evidence; it is a label only. The authoritative independent verification is this worktree at the frozen prereg commit.",
+    "'parameter-free' is terminology: ARC-03 removes the z-score scale and magnitude thresholds, but structural constants remain explicitly frozen (30 same-slot reference days, strict > record semantics, a majority retracement threshold, 12-bar hold, 10 bps primary cost). NON_BLOCKING_TERMINOLOGY_LIMITATION.",
+    "The certified data root is a gitignored directory under the builder worktree; the frozen logical identity is path-independent (verified: zero machine-specific absolute paths in the identity chain).",
+    "Builder-disclosed and independently relevant residual risks remain: the 5m cost hurdle recorded in failed-research memory #1, and the secular-uptrend adverse regime for any short-fade (memory #10). Both are DISCLOSED prior risk, not data-driven tuning.",
+    "Funding cashflow uses entry notional (builder-disclosed simplification, O(1e-4) second-order effect); the verifier confirmed the settlement window, sign convention and byte reuse.",
+    "Trade count N is unknown before discovery, so INSUFFICIENT_SAMPLE remains a valid terminal discovery failure; no minimum-N reduction is permitted post-hoc."
+  ],
+  "REPORT_COMMIT": null,
+  "VERIFIER": "fresh independent context",
+  "VERIFIER_BRANCH": "audit/arc03-prereg-verification-01",
+  "VERIFIER_WORKTREE": ".research/arc03-prereg-verifier-01",
+  "arc03_base_commit": "367f58f1c8a45a4f56459f4564baf2e73ac494ef",
+  "arc03_data_authority_commit": "8668a3174234255b1b1f27a7bf04b8f022af68bb",
+  "arc03_prereg_commit": "8ebf8a181a3cfaf03737ef585f8906d28f8d419f",
+  "audit_artifacts": [
+    "ARC03_CLEAN_WORKTREE_VERIFICATION.json",
+    "ARC03_CONTROL_SEMANTICS_AUDIT.json",
+    "ARC03_DAILY_FILL_AUDIT.json",
+    "ARC03_DATA_BINDING_VERIFICATION.json",
+    "ARC03_DECISION_ENTRY_EXIT_AUDIT.json",
+    "ARC03_FAILED_MEMORY_COLLISION_AUDIT.json",
+    "ARC03_FUNDING_ACCOUNTING_AUDIT.json",
+    "ARC03_GIT_AUTHORITY.json",
+    "ARC03_MUTATION_SENSITIVITY.json",
+    "ARC03_PERFORMANCE_CONTAMINATION_SCAN.json",
+    "ARC03_PIT_INDEPENDENT_TEST.json",
+    "ARC03_PORTABILITY_IMPORT_AUTHORITY.json",
+    "ARC03_PROVIDER_FIELD_MAPPING_AUDIT.json",
+    "ARC03_REFERENCE_WINDOW_AUDIT.json",
+    "ARC03_ROBUSTNESS_AUDIT.json",
+    "ARC03_STATISTICAL_GATES_AUDIT.json"
+  ],
+  "authority_commit": "8ebf8a181a3cfaf03737ef585f8906d28f8d419f",
+  "economics_guard": {
+    "ARC03_BACKTESTS": 0,
+    "ARC03_EXECUTIONS": 0,
+    "ARC03_PERFORMANCE_OBSERVED": false,
+    "FALSE_SUCCESS": 0
+  },
+  "failures": [],
+  "frozen_identity_hashes": {
+    "DATASET_SHA256": "1a6ad11712ce436ce9d413d6b53162d66996778cd98643ef7c3eb746a54745ef",
+    "MANIFEST_SHA256": "3b022693fde0a4e362329a009125292410bb1ba3d0e2b3f8571b795a15b1d1a3",
+    "SPEC_SHA256": "a69edabb2931b3897cc0bcabdb7c203009ace742af1a729e47f7cb058a407a2d"
+  },
+  "gate_results": {
+    "A_B_DETERMINISM": "PASS",
+    "CLEAN_WORKTREE_VERIFICATION": "PASS",
+    "CONTROLS": "PASS",
+    "COST_MODEL": "PASS",
+    "DAILY_FILL_AUTHORITY": "PASS",
+    "DATA_BINDING": "PASS",
+    "DECISION_CADENCE": "PASS",
+    "ENTRY_EXIT": "PASS",
+    "EXCURSION_RECORD": "PASS",
+    "EXHAUSTION": "PASS",
+    "FALSE_SUCCESS": 0,
+    "FUNDING_ACCOUNTING": "PASS",
+    "GIT_AUTHORITY": "PASS",
+    "MUTATION_SENSITIVITY": "PASS",
+    "NO_SIGNAL_PRECEDENCE": "PASS",
+    "PARTICIPATION_SHOCK": "PASS",
+    "PERFORMANCE_CONTAMINATION": "PASS",
+    "PIT_INDEPENDENT": "PASS",
+    "PORTABILITY": "PASS",
+    "POSITION_POLICY": "PASS",
+    "POST_FREEZE_ARTIFACT_DRIFT": 0,
+    "PROVIDER_FIELD_MAPPING": "PASS",
+    "PYTHON_IMPORT_AUTHORITY": "PASS",
+    "ROBUSTNESS_NO_RETUNE": "PASS",
+    "SPEC_COMPLETENESS": "PASS",
+    "STATISTICAL_GATES_REPRODUCIBLE": "PASS"
+  },
+  "generated_from_commit": "8ebf8a181a3cfaf03737ef585f8906d28f8d419f",
+  "generated_from_commit_role": "the frozen prereg commit this verification is ABOUT; report_commit is null because a commit cannot embed its own SHA",
+  "independent_gates": {
+    "ALL_ARC03_COMMITS_ARE_DATA_OR_PREREG": true,
+    "FORBIDDEN_OBSERVED_VALUE_HITS_ZERO": true,
+    "FROZEN_IDENTITY_PATH_INDEPENDENT": true,
+    "MANIFEST_SHA_MATCHES": true,
+    "NO_ARC03_RESULT_FILE_ADDED": true,
+    "POST_FREEZE_ARTIFACT_DRIFT_ZERO": true,
+    "SPEC_SHA_MATCHES": true,
+    "WRONG_DATA_ROOT_FAILS_CLOSED": true
+  },
+  "schema": "ARC03_INDEPENDENT_PREREG_VERIFICATION/1.0.0",
+  "verdict_details": {
+    "CLEAN_WORKTREE_VERIFICATION": {
+      "audit_file": "ARC03_CLEAN_WORKTREE_VERIFICATION.json",
+      "fields": {
+        "CLEAN_WORKTREE_VERIFICATION": "PASS"
+      }
+    },
+    "CONTROLS": {
+      "audit_file": "ARC03_CONTROL_SEMANTICS_AUDIT.json",
+      "fields": {
+        "CONTROLS": "PASS"
+      }
+    },
+    "DAILY_FILL_AUTHORITY": {
+      "audit_file": "ARC03_DAILY_FILL_AUDIT.json",
+      "fields": {
+        "DAILY_FILL_AUTHORITY": "PASS"
+      }
+    },
+    "DATA_AUTHORITY_BINDING": {
+      "audit_file": "ARC03_DATA_BINDING_VERIFICATION.json",
+      "fields": {
+        "A_B_DETERMINISM": "PASS",
+        "DATA_BINDING": "PASS"
+      }
+    },
+    "DECISION_ENTRY_EXIT": {
+      "audit_file": "ARC03_DECISION_ENTRY_EXIT_AUDIT.json",
+      "fields": {
+        "DECISION_CADENCE": "PASS",
+        "ENTRY_SEMANTICS": "PASS",
+        "EXIT_HOLDING": "PASS"
+      }
+    },
+    "FAILED_MEMORY_COLLISION": {
+      "audit_file": "ARC03_FAILED_MEMORY_COLLISION_AUDIT.json",
+      "fields": {
+        "FAILED_MEMORY_COLLISION": "PASS"
+      }
+    },
+    "FUNDING_ACCOUNTING": {
+      "audit_file": "ARC03_FUNDING_ACCOUNTING_AUDIT.json",
+      "fields": {
+        "FUNDING_ACCOUNTING": "PASS"
+      }
+    },
+    "GIT_AUTHORITY": {
+      "audit_file": "ARC03_GIT_AUTHORITY.json",
+      "fields": {
+        "GIT_AUTHORITY": "PASS",
+        "POST_FREEZE_ARTIFACT_DRIFT": 0
+      }
+    },
+    "MUTATION_SENSITIVITY": {
+      "audit_file": "ARC03_MUTATION_SENSITIVITY.json",
+      "fields": {
+        "MUTATION_SENSITIVITY": "PASS"
+      }
+    },
+    "PERFORMANCE_CONTAMINATION": {
+      "audit_file": "ARC03_PERFORMANCE_CONTAMINATION_SCAN.json",
+      "fields": {
+        "PERFORMANCE_CONTAMINATION": "PASS",
+        "forbidden_observed_value_hit_count": 0
+      }
+    },
+    "PIT_INDEPENDENT": {
+      "audit_file": "ARC03_PIT_INDEPENDENT_TEST.json",
+      "fields": {
+        "PIT_INDEPENDENT": "PASS"
+      }
+    },
+    "PORTABILITY_AND_IMPORT_AUTHORITY": {
+      "audit_file": "ARC03_PORTABILITY_IMPORT_AUTHORITY.json",
+      "fields": {
+        "PORTABILITY": "PASS",
+        "PYTHON_IMPORT_AUTHORITY": "PASS"
+      }
+    },
+    "PROVIDER_FIELD_MAPPING": {
+      "audit_file": "ARC03_PROVIDER_FIELD_MAPPING_AUDIT.json",
+      "fields": {
+        "PROVIDER_FIELD_MAPPING": "PASS"
+      }
+    },
+    "REFERENCE_WINDOW": {
+      "audit_file": "ARC03_REFERENCE_WINDOW_AUDIT.json",
+      "fields": {
+        "REFERENCE_WINDOW": "PASS"
+      }
+    },
+    "ROBUSTNESS_NO_RETUNE": {
+      "audit_file": "ARC03_ROBUSTNESS_AUDIT.json",
+      "fields": {
+        "ROBUSTNESS_NO_RETUNE": "PASS"
+      }
+    },
+    "STATISTICAL_GATES_REPRODUCIBLE": {
+      "audit_file": "ARC03_STATISTICAL_GATES_AUDIT.json",
+      "fields": {
+        "STATISTICAL_GATES_REPRODUCIBLE": "PASS"
+      }
+    }
+  },
+  "verdicts": {
+    "CLEAN_WORKTREE_VERIFICATION": "PASS",
+    "CONTROLS": "PASS",
+    "DAILY_FILL_AUTHORITY": "PASS",
+    "DATA_AUTHORITY_BINDING": "PASS",
+    "DECISION_ENTRY_EXIT": "PASS",
+    "FAILED_MEMORY_COLLISION": "PASS",
+    "FUNDING_ACCOUNTING": "PASS",
+    "GIT_AUTHORITY": "PASS",
+    "MUTATION_SENSITIVITY": "PASS",
+    "PERFORMANCE_CONTAMINATION": "PASS",
+    "PIT_INDEPENDENT": "PASS",
+    "PORTABILITY_AND_IMPORT_AUTHORITY": "PASS",
+    "PROVIDER_FIELD_MAPPING": "PASS",
+    "REFERENCE_WINDOW": "PASS",
+    "ROBUSTNESS_NO_RETUNE": "PASS",
+    "STATISTICAL_GATES_REPRODUCIBLE": "PASS"
+  }
+}
