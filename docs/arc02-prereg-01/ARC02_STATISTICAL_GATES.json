@@ -1,0 +1,111 @@
+{
+  "schema": "ARC02_STATISTICAL_GATES/1.0.0",
+  "checkpoint": "ARC02-PREREG-001",
+  "hypothesis_id": "ARC-02-BTC-ALT-LEAD-LAG-01",
+  "frozen": true,
+  "frozen_before_discovery": true,
+  "primary_cost_bps": 10,
+  "no_single_metric_sufficient": true,
+  "notes": "ARC-02 uses the improved ARC-03 gate standard. Every estimator convention is stated in full in this file so the whole gate set is reproducible from the frozen spec alone; no runtime default, library convention or implementation-defined tie-break participates.",
+
+  "convention_bindings": {
+    "sample_standard_deviation": {"definition": "sqrt( sum((x_i - mean(x))^2) / (n - 1) )", "ddof": 1, "explicit": true},
+    "sharpe": {
+      "definition": "annualized_sharpe = ( mean(net_returns) / sample_std(net_returns, ddof=1) ) * sqrt(trades_per_year)",
+      "per_trade_sharpe": "mean(net_returns) / sample_std(net_returns, ddof=1)",
+      "annualization_factor": "sqrt(trades_per_year)",
+      "trades_per_year": "N / (window_span_days / 365.0)",
+      "window_span_days": "(common_window.end_ms - common_window.start_ms + 300000) / 86400000 = 2177.7083333333335 (a FROZEN CONSTANT of this prereg, not a realized trade span)",
+      "zero_variance_behavior": "if sample_std(net_returns, ddof=1) == 0.0 then annualized_sharpe = 0.0 and G5 FAILS (fail closed)",
+      "n_lt_2_behavior": "if N < 2 then annualized_sharpe = 0.0 and G5 FAILS",
+      "project_corroboration": "src/trading_bot/backtesting/stat_validation.py:_sharpe uses ddof=1 and mean/std*sqrt(periods_per_year); with periods_per_year = trades_per_year this is identical"
+    },
+    "bootstrap": {
+      "statistic": "mean net trade return at PRIMARY_COST_BPS (the same statistic as G2)",
+      "resampling_unit": "i.i.d. TRADE (one net-return observation per trade); not blocks, not daily aggregation",
+      "sampling": "with replacement (true bootstrap), each resample of exactly N draws",
+      "construction": "for each of R resamples draw N indices i_k = rng.randrange(N) in sequence and compute the mean of net_returns[i_k]; sort the R statistics ascending",
+      "resamples_R": 10000,
+      "seed": 20260915,
+      "rng": "Python stdlib random.Random(seed)",
+      "confidence": 0.95,
+      "confidence_interval_construction": "percentile method: lower_idx = max(0, floor(0.025 * R)); ci_lower = sorted_stats[lower_idx]",
+      "gate_rule": "ci_lower > 0.0 (strict)",
+      "cross_check_reported": "P(bootstrap mean > 0) = (#{statistic > 0}) / R, informational only",
+      "degenerate_guard": "if all trade returns are identical the bootstrap is degenerate: ci_lower = 0.0 and G6 FAILS",
+      "overlapping_trades_note": "trades are treated as exchangeable observations. Overlap is bounded by the frozen SKIP policy (at most one open position per follower, 1-bar holds), so cross-sectional dependence is limited to the two followers; the follower dimension is separately examined by G9 and by the frozen robustness plan. No block bootstrap is used and none may be substituted ex post."
+    },
+    "permutation": {
+      "null_hypothesis": "the net trade returns are symmetrically distributed about zero (no directional edge)",
+      "transform": "independent random SIGN FLIP per trade: flipped_i = net_return_i * (+1 if rng.random() < 0.5 else -1)",
+      "statistic": "mean of the flipped net trade returns (deliberately the MEAN, the same functional as G2/G6, not the Sharpe ratio)",
+      "draws": 10000,
+      "seed": 20260915,
+      "rng": "Python stdlib random.Random(seed)",
+      "sidedness": "ONE-SIDED UPPER TAIL (the hypothesis is directional: positive net expectancy)",
+      "p_value_formula": "p_value = (number of null statistics >= observed mean net trade return) / draws",
+      "no_plus_one_correction": "exceed/draws with no additive continuity correction",
+      "threshold": "p_value <= 0.05",
+      "degenerate_guard": "if all trade returns are identical then p_value = 1.0 and G7 FAILS"
+    },
+    "profit_factor": {
+      "definition": "gross_profit / gross_loss where gross_profit = sum of net_trade_return over trades with net_trade_return > 0 and gross_loss = -sum of net_trade_return over trades with net_trade_return < 0",
+      "zero_loss_behavior": "if gross_loss == 0 and gross_profit > 0 then PF = +infinity and G4 PASSES; if gross_loss == 0 and gross_profit == 0 then G4 FAILS",
+      "cost_basis": "net trade returns at PRIMARY_COST_BPS",
+      "breakeven_reference": "PF = 1.0 is breakeven; the frozen threshold is strictly above it"
+    },
+    "temporal_split": {
+      "ordering": "trades sorted by entry_time_ms ascending; ties broken by the frozen emission order (follower order ETHUSDT, SOLUSDT, then decision_time_ms, then leader bar open time)",
+      "half_boundaries": "[0, floor(N/2)) and [floor(N/2), N)",
+      "quartile_boundaries": "boundaries at floor(k*N/4) for k = 0,1,2,3,4; quartile k = trades[floor((k-1)*N/4) : floor(k*N/4)]",
+      "split_basis": "EQUAL-COUNT chronological split of the TRADE TIMELINE (not a calendar split of the window)",
+      "halves_rule": "both half means > 0.0 (strict)",
+      "quartiles_rule": ">= 3 of the 4 quartile means > 0.0 (strict); with N < 4 the quartile test is not evaluable and G8 FAILS",
+      "empty_group_behavior": "an empty group is not evaluable and G8 FAILS"
+    },
+    "concentration_attribution": {
+      "denominator": "total_net = sum of net_trade_return over all trades at PRIMARY_COST_BPS (unit-notional, so the sum of returns is PnL in notional units)",
+      "denominator_le_zero_behavior": "if total_net <= 0 the shares are undefined and G10 FAILS (fail closed); total_net <= 0 already implies G2 failure",
+      "max_follower_share": "max over the two followers of (sum of that follower's net returns) / total_net",
+      "max_calendar_month_share": "each trade is attributed to the UTC calendar month of its ENTRY time (entry_time_ms); max over months of (month net sum) / total_net",
+      "max_single_trade_share": "max over trades of net_trade_return / total_net",
+      "thresholds": {"max_follower_share": 0.70, "max_calendar_month_share": 0.40, "max_single_trade_share": 0.25},
+      "inequality": "each share <= its threshold",
+      "follower_threshold_rationale": "with exactly TWO traded followers the equal split is 0.50, so ARC-03's three-asset 0.60 bar is not mechanically transferable. 0.70 admits a legitimate 60/40 split while refusing an apparent edge that is in substance one follower (>= 70% of total net). The number is fixed here, before any economics, from the 2-follower structure alone."
+    },
+    "aggregation": "all aggregate statistics are EQUAL-WEIGHTED over trades (unit notional per trade); no compounding, no volatility targeting, no portfolio overlay"
+  },
+
+  "gates": [
+    {"id": "G1_SAMPLE", "name": "sample sufficiency", "metric": "eligible executed trade count", "formula": "N = number of executed trades; per-follower counts N_ETH, N_SOL", "threshold": "N >= 120 AND min(N_ETH, N_SOL) >= 40", "on_failure": "INSUFFICIENT_SAMPLE (terminal FAIL-class)", "critical": true},
+    {"id": "G2_NET_EXPECTANCY", "name": "net expectancy after costs", "metric": "mean net trade return at PRIMARY_COST_BPS", "formula": "mean(net_trade_return_10bps)", "threshold": "> 0.0 (strict)", "critical": true},
+    {"id": "G3_NET_EXPECTANCY_EX_FUNDING", "name": "ex-funding expectancy", "metric": "mean of (gross_trade_return - cost_return) at PRIMARY_COST_BPS", "formula": "mean(gross_trade_return_10bps - cost_return_10bps)", "threshold": "> 0.0 (strict)", "funding_contribution": "ZERO by construction", "purpose": "ARC-02 must not pass by mechanically collecting funding carry; the price leg must carry the edge on its own", "critical": true},
+    {"id": "G4_PROFIT_FACTOR", "name": "profit factor", "metric": "net profit factor at PRIMARY_COST_BPS", "threshold": ">= 1.15", "critical": true},
+    {"id": "G5_SHARPE", "name": "annualized Sharpe", "metric": "annualized net Sharpe (see convention_bindings.sharpe)", "threshold": ">= 0.50", "critical": true},
+    {"id": "G6_BOOTSTRAP", "name": "bootstrap uncertainty", "metric": "95% percentile-bootstrap confidence interval of the mean net trade return", "threshold": "ci_lower > 0.0 (strict)", "draws": 10000, "seed": 20260915, "critical": true},
+    {"id": "G7_PERMUTATION", "name": "permutation significance", "metric": "one-sided sign-flip permutation p-value of the mean net trade return", "threshold": "p_value <= 0.05", "draws": 10000, "seed": 20260915, "critical": true},
+    {"id": "G8_TEMPORAL_STABILITY", "name": "temporal stability", "metric": "mean net trade return by chronological half and by chronological quartile", "threshold": "both halves > 0.0 AND >= 3 of 4 quartiles > 0.0", "critical": true},
+    {"id": "G9_FOLLOWER_STABILITY", "name": "follower stability", "metric": "per-follower mean net trade return at PRIMARY_COST_BPS over ETHUSDT and SOLUSDT", "threshold": "BOTH followers have mean > 0.0 (strict)", "critical": true, "rationale": "ARC-01/ARC-03 froze a >= 2-of-3 rule for a THREE-traded-asset experiment. ARC-02 trades exactly TWO followers under one leader, so the logically correct stability requirement is that BOTH followers are positive: with two assets a majority rule is degenerate (1-of-2 would admit a single-asset effect, which the ARU kill rule explicitly forbids). The rule is fixed before any economics."},
+    {"id": "G10_CONCENTRATION", "name": "concentration", "metric": "max follower share, max UTC-entry-month share, max single-trade share of total net return", "threshold": "max_follower_share <= 0.70 AND max_month_share <= 0.40 AND max_single_trade_share <= 0.25", "critical": true},
+    {"id": "G11_COST_SENSITIVITY", "name": "cost sensitivity", "metric": "mean net trade return at 20 bps and at 40 bps on the IDENTICAL trade set", "threshold": "mean_20bps > 0.0 (strict) AND mean_40bps >= 0.0", "critical": true}
+  ],
+
+  "all_critical_gates_required_for_pass": true,
+  "pass_condition": "G1 AND G2 AND G3 AND G4 AND G5 AND G6 AND G7 AND G8 AND G9 AND G10 AND G11 AND (no control satisfies all critical gates)",
+  "fail_condition": "any critical gate fails, OR the sample is insufficient, OR any required control satisfies all critical gates",
+
+  "controls_interaction": {
+    "control_plan_file": "docs/arc02-prereg-01/ARC02_CONTROL_PLAN.json",
+    "rule": "controls are evaluated with the SAME gate set on their own trade sets; a control that satisfies ALL critical gates means the mechanism is not identified and the primary result is DISCOVERY_FAIL",
+    "controls_never_change_primary": true
+  },
+
+  "non_gates": {
+    "drawdown": "diagnostic output only; not a critical discovery gate and no drawdown threshold may be invented after seeing a result",
+    "gross_only_statistics": "reported for diagnosis only",
+    "post_hoc_cohorts": "any cohort, follower, month, regime or threshold split not listed above is POST_HOC_LEAD_ONLY and cannot become a gate or a promotion"
+  },
+
+  "determinism_statement": "Every gate above is a pure function of (frozen trade set, frozen cost scenarios, frozen seeds). No gate depends on a runtime default, an unstated estimator, or an implementation-defined tie-break.",
+  "CRITICAL_SPEC_INCOMPLETENESS": false
+}

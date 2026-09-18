@@ -1,0 +1,85 @@
+{
+  "schema": "ARC02_RUN_REPORT/1.0.0",
+  "checkpoint": "ARC02-PREREG-001",
+  "hypothesis_id": "ARC-02-BTC-ALT-LEAD-LAG-01",
+  "builder": "deepseek-v4-flash (DeepSeek)",
+  "builder_role": "BUILDER",
+  "FINAL_STATUS": "PENDING_INDEPENDENT_PREREG_VERIFICATION",
+  "REALITY_CHECK_STATE": "ARC02_PREREG_FROZEN",
+  "WORKTREE": ".research/arc02-candidate-design-01",
+  "BRANCH": "research/arc02-candidate-design-01",
+  "BASE_COMMIT": "e7f470d8ea075e6d71d4f6be17c4b4452f1ede09",
+
+  "reality_check": {
+    "prior_committed_arc02_definition": false,
+    "prior_definition_class": "DRAFT_ONLY",
+    "prior_draft_data": "2024-only (dataset 2a91ed2699594fb39f388676da2f75b4486668c6625eeabb7d615da0d949ceed) -> SUPERSEDED",
+    "economics_already_observed": false,
+    "contradictions_found": 0,
+    "second_primary_discovery_created": false,
+    "protected_areas_modified": [],
+    "unrelated_worktrees_merged": []
+  },
+
+  "data_authority": {
+    "strategy": "REUSE_FIRST",
+    "downloads_performed": 0,
+    "credentials_used": "none",
+    "external_cost": "none",
+    "reused_authority": "ARC-03 5m Binance USD-M kline authority (ARC03-DATA-001)",
+    "reuse_proof": "partition SHA256 equality for all three symbols",
+    "dataset_sha256": "03f227d0ae18efdc8e3d84831283c4e3f7a333bf0fea8b944f55a9144cc164d5",
+    "partition_sha256": {
+      "BTCUSDT": "05b093a5fdaf693f761327c1ee3128fec587d62c4354afeea84f734321d76d80",
+      "ETHUSDT": "0072b6cb14b561dc2402901dad9009f5a9cc9f989164a175dece096b98d96638",
+      "SOLUSDT": "b5be57d09c54ae59491b2d987d385c3738f4b6187f8d93be07221af4d0170019"
+    },
+    "rows": {"BTCUSDT": 701280, "ETHUSDT": 701280, "SOLUSDT": 627180},
+    "common_causal_window_ms": [1600066800000, 1788220500000],
+    "common_causal_window_utc": ["2020-09-14T07:00:00Z", "2026-08-31T23:55:00Z"],
+    "raw_ledger_entries_verified": 237,
+    "window_selection_basis": "provider availability + common coverage + PIT validity + resource limits (NOT economics)"
+  },
+
+  "verification": {
+    "A_B_DETERMINISM": "PASS",
+    "MUTATION_SENSITIVITY": "PASS",
+    "PIT": "PASS",
+    "PIT_BATTERY": "39/39",
+    "PORTABILITY": "PASS",
+    "PYTHON_IMPORT_AUTHORITY": "PASS",
+    "TEST_TARGET_EQUALS_AUDITED": "PASS",
+    "SPEC_VALIDATION": "PASS (16/16)",
+    "WRONG_ROOT_FAILS_CLOSED": "PASS",
+    "EMPTY_ROOT_FAILS_CLOSED": "PASS",
+    "CLEAN_WORKTREE_VERIFICATION": "PASS",
+    "POST_FREEZE_ARTIFACT_DRIFT": 0
+  },
+
+  "economics": {"ARC02_BACKTESTS": 0, "ARC02_EXECUTIONS": 0, "ARC02_PERFORMANCE_OBSERVED": false, "FALSE_SUCCESS": 0},
+
+  "deviations_from_draft": [
+    "minimum_observations 144 -> 288 (all references required, fail closed)",
+    "exit anchor: signal bar close -> open of the bar 5 minutes after entry (open-anchored clock arithmetic)",
+    "funding: EXCLUDED_WITH_LIMITATION -> frozen and charged as a cashflow leg",
+    "controls: prose list -> four executable deterministic controls"
+  ],
+
+  "defects": [],
+  "builder_internal_defects_found_and_fixed": [
+    "one PIT check was mis-specified (asserted fail-closed for a slot that legitimately carries a later signal) and was replaced",
+    "the mutation-sensitivity step originally did not read the mutated file; fixed before the authority artifacts were produced"
+  ],
+  "limitations": [
+    "prior ARC-02 definition was DRAFT_ONLY; frozen values re-frozen with deviations recorded",
+    "first 289 slots of the window produce no decisions (fail-closed leader history)",
+    "last two slots produce no trades (frozen forward guard)",
+    "funding cashflow on the entry notional (frozen O(1e-4) simplification)",
+    "no drawdown gate (diagnostic only)",
+    "N is a discovery-time unknown; INSUFFICIENT_SAMPLE is a possible terminal outcome",
+    "H3 collision class MEDIUM: documented, not resolved; mandatory orthogonality comparator at the later authorized stage"
+  ],
+
+  "NEXT": "ARC02_INDEPENDENT_PREREG_VERIFICATION",
+  "DO_NOT_ASK_WHETHER_TO_CONTINUE": true
+}

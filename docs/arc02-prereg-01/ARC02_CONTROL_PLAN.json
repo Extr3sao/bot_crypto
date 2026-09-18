@@ -1,0 +1,96 @@
+{
+  "schema": "ARC02_CONTROL_PLAN/1.0.0",
+  "checkpoint": "ARC02-PREREG-001",
+  "hypothesis_id": "ARC-02-BTC-ALT-LEAD-LAG-01",
+  "frozen": true,
+  "frozen_before_discovery": true,
+  "purpose": "Attempt to falsify the mechanism claim before the primary result is trusted. Controls execute as PART OF THE SAME authorized experiment, are NOT alternate strategies, and are NEVER promotable.",
+
+  "global_rules": {
+    "controls_execute_inside_the_single_authorized_experiment": true,
+    "controls_change_primary_thresholds": false,
+    "controls_change_primary_trade_set": false,
+    "controls_supply_fallback_trades": false,
+    "controls_are_isolated_experimental_comparators": true,
+    "gate_set_applied_to_controls": "the IDENTICAL G1-G11 gate set and the identical estimator conventions (ARC02_STATISTICAL_GATES.json)",
+    "control_evaluation_conventions": "each control is evaluated on ITS OWN trade set with the SAME cost model (primary 10 bps), the SAME 0/10/20/40 bps scenarios and the SAME frozen seeds",
+    "if_any_required_control_satisfies_ALL_critical_gates": "MECHANISM_NOT_IDENTIFIED => FINAL_STATUS = DISCOVERY_FAIL (terminal). No retuning of the primary based on control results is permitted.",
+    "a_control_that_fails_at_least_one_critical_gate": "does NOT falsify the mechanism and does not affect the primary verdict",
+    "controls_are_reported_even_if_primary_fails": true,
+    "controls_never_become_strategies": true
+  },
+
+  "controls": [
+    {
+      "id": "DIRECTION_CONTROL",
+      "name": "reversed follower direction",
+      "falsification_question": "Is follower continuation load-bearing, or would trading the follower AGAINST the underreaction also appear to work (i.e. is the signal merely a mean-reversion artifact)?",
+      "executable_definition": "Take the PRIMARY signal set unchanged (same signal bars, same entry times, same exit times, same followers). Reverse ONLY the direction sign on the follower: a long-signal becomes SHORT and a short-signal becomes LONG. Same costs, same funding accounting, same gate set.",
+      "changes": ["follower direction sign only"],
+      "unchanged": ["signal bars", "leader bar", "follower selection", "entry anchors", "exit anchors", "holding length", "cost model", "funding accounting", "gate set"],
+      "expected_falsification": "should fail; if the reversed direction satisfies all critical gates the continuation claim is not identified and the underreaction-to-continuation mechanism is refuted",
+      "promotable": false
+    },
+    {
+      "id": "TIMING_CONTROL",
+      "name": "displaced entry (destroyed shock alignment)",
+      "falsification_question": "Is the edge specific to the immediate aftermath of the shock bar, or is it a slow drift the follower would deliver at any displaced entry?",
+      "executable_definition": "Take the PRIMARY signal set unchanged. Displace the entry by exactly +TIMING_CONTROL_OFFSET_BARS = +1 bar (+5 minutes) relative to the primary entry: entry_time_control = primary_entry_time_ms + 300000; exit_time_control = entry_time_control + 300000 (the same 1-bar hold). The rule, the signal bars, the thresholds and the follower are untouched; only the shock-to-holding-window alignment is destroyed.",
+      "symmetric_negative_displacement": "NOT ADMITTED: advancing the entry by -1 bar would place the entry at or before the decision instant and violate the PIT contract. The control is deliberately one-sided; this is a causal limitation, not a revisitable design choice.",
+      "changes": ["entry/exit anchors (+5 minutes)"],
+      "unchanged": ["signal bars", "direction", "holding length (1 bar)", "cost model", "funding accounting", "gate set"],
+      "expected_falsification": "should fail; if the displaced entry satisfies all critical gates the effect is not tied to the shock aftermath",
+      "promotable": false
+    },
+    {
+      "id": "LEADER_CONTROL",
+      "name": "BTC leader information destroyed",
+      "falsification_question": "Does the contemporaneous BTC move carry the identifying information, or would any stale/misaligned BTC move plus the follower's own underreaction suffice?",
+      "executable_definition": "Replace the leader driver series by the SAME series displaced by exactly LEADER_CONTROL_LAG_BARS = 288 bars (24 hours): driver_return_control(t) = ln(close_btc(t - 288*BAR_MS) / close_btc(t - 289*BAR_MS)) and scale_control(t) = median(|driver returns at t - (288+j)*BAR_MS| for j = 1..288). The shock statistic, the threshold, the same-sign rule, the underreaction ratio, the follower, the entry/exit anchors, the holding length, the costs, the funding accounting and the gate set are ALL identical to the primary. The leader's CONTEMPORANEOUS information is destroyed; every read remains strictly past and every follower execution semantic is untouched. The substitution is fully deterministic (no randomness, no hash()).",
+      "changes": ["leader driver series displaced by 288 bars (24h)"],
+      "unchanged": ["signal cadence", "threshold", "underreaction ratio", "follower selection", "entry/exit anchors", "holding length", "cost model", "funding accounting", "gate set"],
+      "causality_note": "the lagged reads are strictly older than the primary reads, so the control cannot read anything the primary could not",
+      "expected_falsification": "should fail; if the stale-leader variant satisfies all critical gates the BTC leader carries no identifying information and ARC-02 collapses into a follower-only continuation claim",
+      "promotable": false
+    },
+    {
+      "id": "NULL_CONTROL",
+      "name": "deterministic sign-flip null",
+      "falsification_question": "Would a purely mechanical sign artifact of this trade set satisfy the frozen gate set?",
+      "executable_definition": "Take the PRIMARY realized net trade returns at PRIMARY_COST_BPS in the frozen emission order. Using rng = random.Random(20260915), for each trade in order compute flipped_i = net_return_i * (+1 if rng.random() < 0.5 else -1). Evaluate the FULL critical gate set (including the bootstrap and permutation gates, which use their own frozen seeds) on the flipped series.",
+      "seed": 20260915,
+      "rng": "Python stdlib random.Random(seed)",
+      "no_python_hash": "Python hash() is explicitly forbidden (process-salted, not reproducible)",
+      "changes": ["the sign of each realized net trade return"],
+      "unchanged": ["trade count", "trade timestamps", "magnitudes", "cost model", "gate set"],
+      "expected_falsification": "should fail; if the flipped series satisfies all critical gates the gate set is not discriminating and no ARC-02 result could be trusted",
+      "promotable": false
+    }
+  ],
+
+  "control_coverage": {
+    "direction": "DIRECTION_CONTROL",
+    "timing": "TIMING_CONTROL",
+    "leader_information": "LEADER_CONTROL",
+    "null_artifact": "NULL_CONTROL"
+  },
+
+  "reporting": {
+    "per_control_required_fields": ["control_id", "trade_count", "mean_net_return_10bps", "mean_net_return_ex_funding", "profit_factor", "sharpe", "bootstrap_ci_lower", "permutation_p", "halves", "quartiles", "per_follower_means", "concentration_shares", "mean_net_return_20bps", "mean_net_return_40bps", "per_gate_pass_fail", "satisfies_ALL_critical_gates"],
+    "any_control_passes_all_gates": false,
+    "controls_are_not_promotable_under_any_circumstance": true
+  },
+
+  "structural_control_evidence_available_before_execution": {
+    "file": "docs/arc02-data-authority-01/ARC02_PIT_INDEPENDENT_TESTS.json",
+    "checks": [
+      "LEADER_CONTROL_DESTROYS_CONTEMPORANEOUS_LEADER_INFORMATION",
+      "LEADER_CONTROL_IS_NOT_IDENTICAL_TO_PRIMARY_ON_THIS_FIXTURE",
+      "LEADER_CONTROL_READS_ONLY_STRICTLY_PAST_LEADER_BARS",
+      "TIMING_CONTROL_OFFSET_IS_CAUSAL_AND_FROZEN"
+    ],
+    "scope": "these checks prove the controls are executable, deterministic and causal. They contain NO economic information and do not execute any control economically."
+  },
+
+  "CRITICAL_CONTROL_SPEC_INCOMPLETENESS": false
+}

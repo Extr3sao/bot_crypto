@@ -1,0 +1,124 @@
+{
+  "schema": "ARC02_PREREG_VERIFICATION_PACKAGE/1.0.0",
+  "checkpoint": "ARC02-PREREG-001",
+  "hypothesis_id": "ARC-02-BTC-ALT-LEAD-LAG-01",
+  "state": "PENDING_INDEPENDENT_PREREG_VERIFICATION",
+  "builder": "deepseek-v4-flash (DeepSeek)",
+  "builder_role": "BUILDER (never the independent verifier)",
+  "builder_claim": "BUILDER_CROSSCHECK only. This package contains NO economic result, because none was produced.",
+  "economics": {"ARC02_BACKTESTS": 0, "ARC02_EXECUTIONS": 0, "ARC02_PERFORMANCE_OBSERVED": false, "FALSE_SUCCESS": 0},
+
+  "what_the_verifier_must_check": [
+    "the frozen artifact digests equal ARC02_MANIFEST_V1.json (post-freeze artifact drift = 0)",
+    "the dataset digest and partition digests are reproduced from the on-disk projection partitions",
+    "the reused ARC-03 source partitions reproduce their certified digests (reuse by content identity)",
+    "the common causal window equals the observed intersection of the three partitions",
+    "the PIT battery passes when re-run from a clean checkout, and the PIT contract clauses are non-vacuous",
+    "the spec validator returns SPEC_COMPLETE / DATA_AUTHORITY_BINDING / PIT / CONTROLS_COMPLETE / STATISTICAL_GATES_REPRODUCIBLE / ROBUSTNESS_PLAN / NO_ECONOMIC_OBSERVATION = PASS",
+    "no economic artifact was written after the prereg commit (drift = 0)",
+    "the builder ran no economic execution: ARC02_BACKTESTS = 0, ARC02_EXECUTIONS = 0, ARC02_PERFORMANCE_OBSERVED = false"
+  ],
+
+  "how_to_verify": {
+    "1_prereg_worktree": "git worktree add --detach <DIR> <PREREG_COMMIT>",
+    "2_data_root": "export ARC02_DATA_ROOT=<absolute path of the certified ARC-02 data root holding data/processed/arc02_klines_5m, data/processed/arc03_klines_5m and data/raw/binance_um/arc03*)",
+    "3_portable_verifier": "python scripts/verify_arc02_data_authority.py --target <DIR> --data-root $ARC02_DATA_ROOT",
+    "4_validator": "python scripts/validate_arc02_spec.py",
+    "5_drift": "python scripts/build_arc02_prereg_manifest.py --check",
+    "6_tests": "python -m pytest tests/unit/research/test_arc02_prereg.py tests/unit/research/test_arc02_data_authority.py -q"
+  },
+
+  "expected_verifier_outcomes": {
+    "CLEAN_WORKTREE_VERIFICATION": "PASS",
+    "PYTHON_IMPORT_AUTHORITY": "PASS (module resolves inside the audited target)",
+    "TEST_TARGET_EQUALS_AUDITED": "PASS",
+    "A_B_DETERMINISM": "PASS",
+    "MUTATION_SENSITIVITY": "PASS",
+    "PORTABILITY": "PASS (explicit root ok; wrong root FAIL_CLOSED; empty root FAIL_CLOSED)",
+    "POST_FREEZE_ARTIFACT_DRIFT": 0,
+    "SPEC_COMPLETE": "PASS",
+    "DATA_AUTHORITY_BINDING": "PASS",
+    "PIT": "PASS",
+    "CONTROLS_COMPLETE": "PASS",
+    "STATISTICAL_GATES_REPRODUCIBLE": "PASS",
+    "ROBUSTNESS_PLAN": "PASS",
+    "NO_ECONOMIC_OBSERVATION": "PASS",
+    "CONTRADICTIONS_FOUND": 0,
+    "FALSE_SUCCESS": 0
+  },
+
+  "adversarial_attacks_the_verifier_should_attempt": [
+    "run the PIT battery with the evaluated bar moved to the LAST bar of the fixture (it must become vacuous and must be rejected as evidence)",
+    "attempt to read volume / taker-buy / open-interest / funding as a signal through the ARC-02 reader (must be impossible: the projection does not carry the fields)",
+    "attempt a partial-window shock (fewer than 288 references) and confirm LEADER_HISTORY_INCOMPLETE",
+    "attempt equality at the shock threshold (z == 3.0) and at the underreaction ratio (|r_f| == 0.5|r_btc|) and confirm both are rejected (strict inequalities)",
+    "attempt a same-bar entry and an entry at or before the decision instant (must be impossible)",
+    "attempt to obtain the data from a wrong or empty data root (must fail closed)",
+    "attempt to import trading_bot from the main checkout while running this worktree's tests (the conftest guard must win)",
+    "attempt to find any economic number (PnL, Sharpe, expectancy, win rate) in the frozen artifacts (there must be none)"
+  ],
+
+  "known_limitations_to_verify_rather_than_assume": [
+    "the prior ARC-02 definition was DRAFT_ONLY: the frozen values are re-frozen, with the deviations recorded in the spec's prior_definition_classification",
+    "the first 289 slots of the common window produce no decisions (fail-closed leader history)",
+    "the last two slots produce no trades (frozen forward-data guard)",
+    "funding cashflow uses the entry notional (frozen O(1e-4) simplification)",
+    "no critical gate covers drawdown",
+    "the H3 collision class is MEDIUM and is documented, not resolved; H3 is a mandatory orthogonality comparator at the later authorized stage"
+  ],
+
+  "artifact_index": {
+    "prereg": [
+      "docs/arc02-prereg-01/ARC02_SPEC_V1.json",
+      "docs/arc02-prereg-01/ARC02_MANIFEST_V1.json",
+      "docs/arc02-prereg-01/ARC02_PREREGISTRATION.md",
+      "docs/arc02-prereg-01/ARC02_MECHANISM_AUTHORITY.md",
+      "docs/arc02-prereg-01/ARC02_SELECTION_RATIONALE.md",
+      "docs/arc02-prereg-01/ARC02_PIT_CONTRACT.json",
+      "docs/arc02-prereg-01/ARC02_CONTROL_PLAN.json",
+      "docs/arc02-prereg-01/ARC02_STATISTICAL_GATES.json",
+      "docs/arc02-prereg-01/ARC02_ROBUSTNESS_PLAN.json",
+      "docs/arc02-prereg-01/ARC02_FAILED_MEMORY_COLLISION_REVIEW.md",
+      "docs/arc02-prereg-01/ARC02_SPEC_VALIDATION.json",
+      "docs/arc02-prereg-01/ARC02_RESUME_STATE.json",
+      "docs/arc02-prereg-01/RUN_REPORT.json",
+      "docs/arc02-prereg-01/RUN_REPORT.md"
+    ],
+    "data_authority": [
+      "docs/arc02-data-authority-01/ARC02_DATA_INVENTORY.json",
+      "docs/arc02-data-authority-01/ARC02_SOURCE_REGISTRY.md",
+      "docs/arc02-data-authority-01/ARC02_RAW_LEDGER.jsonl",
+      "docs/arc02-data-authority-01/ARC02_DATA_QUALITY_LEDGER.jsonl",
+      "docs/arc02-data-authority-01/ARC02_DATA_MANIFEST.json",
+      "docs/arc02-data-authority-01/ARC02_DATA_AUTHORITY.json",
+      "docs/arc02-data-authority-01/ARC02_DATASET_FINGERPRINT.json",
+      "docs/arc02-data-authority-01/ARC02_COMMON_CAUSAL_WINDOW.json",
+      "docs/arc02-data-authority-01/ARC02_DATA_DETERMINISM.json",
+      "docs/arc02-data-authority-01/ARC02_MUTATION_SENSITIVITY.json",
+      "docs/arc02-data-authority-01/ARC02_PIT_AUTHORITY.json",
+      "docs/arc02-data-authority-01/ARC02_PIT_INDEPENDENT_TESTS.json",
+      "docs/arc02-data-authority-01/ARC02_REUSE_ASSESSMENT.json",
+      "docs/arc02-data-authority-01/ARC02_PORTABLE_DATA_VERIFICATION.json"
+    ],
+    "code": [
+      "src/trading_bot/research/arc02/arc02_authority.py",
+      "src/trading_bot/research/arc02/arc02_normalize.py",
+      "src/trading_bot/research/arc02/arc02_funding.py",
+      "src/trading_bot/research/arc02/arc02_pit.py",
+      "scripts/build_arc02_data_authority.py",
+      "scripts/build_arc02_prereg_manifest.py",
+      "scripts/validate_arc02_spec.py",
+      "scripts/verify_arc02_data_authority.py",
+      "tests/unit/research/test_arc02_prereg.py",
+      "tests/unit/research/test_arc02_data_authority.py"
+    ]
+  },
+
+  "not_in_this_package": [
+    "any economic result",
+    "any control economic result",
+    "any robustness execution",
+    "any parameter sweep",
+    "any promotion or live-trading artifact"
+  ]
+}

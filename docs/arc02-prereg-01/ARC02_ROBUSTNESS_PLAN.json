@@ -1,0 +1,43 @@
+{
+  "schema": "ARC02_ROBUSTNESS_PLAN/1.0.0",
+  "checkpoint": "ARC02-PREREG-001",
+  "hypothesis_id": "ARC-02-BTC-ALT-LEAD-LAG-01",
+  "frozen": true,
+  "frozen_before_discovery": true,
+  "executed_now": false,
+  "runs_only_if_primary_discovery_passes": true,
+  "primary_parameters_immutable": true,
+  "robustness_cannot_select_a_better_parameter_set": true,
+  "no_economic_execution_during_preregistration": true,
+  "rule": "Every cell below is fixed EX ANTE. A robustness cell can only characterise the primary result; it can NEVER replace the primary cell, cannot be promoted, and cannot be used to re-open the primary after a failure. Any cell that looks profitable while the primary fails is POST_HOC_LEAD_ONLY.",
+
+  "analyses": [
+    {"id": "R1_TIME_SPLITS", "definition": "the primary trade set split into chronological halves and quartiles (same split semantics as G8), reported per split", "primary_unchanged": true},
+    {"id": "R2_FOLLOWER_SPLITS", "definition": "the primary trade set reported separately for ETHUSDT and SOLUSDT (same per-follower semantics as G9)", "primary_unchanged": true},
+    {"id": "R3_MARKET_REGIMES", "definition": "the primary trade set attributed to UTC calendar quarters and to trend/volatility terciles computed from the leader's own trailing 288-bar realised volatility. The regime label is a POST-HOC attribution of the primary trades, never a signal filter.", "regime_label_is_not_a_signal_input": true},
+    {"id": "R4_COST_CURVE", "definition": "mean net trade return at 0/10/20/40 bps on the IDENTICAL primary trade set (a superset of G11's two points)", "primary_unchanged": true},
+    {"id": "R5_SHOCK_LOOKBACK_NEIGHBOURS", "definition": "the SAME rule re-evaluated with trailing scale lookbacks {144, 288, 576, 864} bars, reported as a neighbourhood around the frozen 288", "reporting_only": true},
+    {"id": "R6_SHOCK_THRESHOLD_NEIGHBOURS", "definition": "the SAME rule re-evaluated with |z| thresholds {2.5, 3.0, 3.5, 4.0}, reported as a neighbourhood around the frozen 3.0", "reporting_only": true},
+    {"id": "R7_UNDERREACTION_RATIO_NEIGHBOURS", "definition": "the SAME rule re-evaluated with underreaction ratios {0.33, 0.50, 0.67, 0.80}, reported as a neighbourhood around the frozen 0.50", "reporting_only": true},
+    {"id": "R8_HOLDING_PERIOD_NEIGHBOURS", "definition": "the SAME rule re-evaluated with holding periods {1, 3, 6, 12} bars (5/15/30/60 minutes), reported as a neighbourhood around the frozen 1", "reporting_only": true},
+    {"id": "R9_LEAVE_ONE_FOLLOWER_OUT", "definition": "the primary trade set restricted to ETHUSDT only and to SOLUSDT only, reported as two single-follower views", "reporting_only": true},
+    {"id": "R10_WALK_FORWARD_OOS", "definition": "an expanding-window walk-forward over chronological folds of the SAME frozen parameters (no refitting of any parameter, no refitting surface of any kind), reporting out-of-sample mean net return per fold", "no_parameter_is_refit": true},
+    {"id": "R11_CONCENTRATION_ANALYSIS", "definition": "the concentration shares of G10 reported per quarter and per follower, plus the largest contributing trade list", "reporting_only": true}
+  ],
+
+  "forbidden_in_robustness": [
+    "selecting a replacement primary cell",
+    "threshold optimization",
+    "lookback optimization",
+    "holding-period optimization",
+    "underreaction-ratio optimization",
+    "asset deletion",
+    "cost reduction",
+    "regime-filtered promotion",
+    "any parameter refit inside walk-forward"
+  ],
+
+  "kill_rule_interaction": "a robustness cell that is negative does NOT by itself kill ARC-02 (only a critical primary gate failure does), but a robustness cell can never rescue a failed primary either. A future variant requires a NEW_HYPOTHESIS_ID and a NEW_PREREGISTRATION.",
+
+  "CRITICAL_ROBUSTNESS_SPEC_INCOMPLETENESS": false
+}

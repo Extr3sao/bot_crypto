@@ -1,0 +1,77 @@
+{
+  "schema": "ARC02_RESUME_STATE/1.0.0",
+  "hypothesis_id": "ARC-02-BTC-ALT-LEAD-LAG-01",
+  "checkpoint": "ARC02-PREREG-001",
+  "FINAL_STATUS": "PENDING_INDEPENDENT_PREREG_VERIFICATION",
+  "REALITY_CHECK_STATE": "ARC02_PREREG_FROZEN",
+  "WORKTREE": ".research/arc02-candidate-design-01",
+  "BRANCH": "research/arc02-candidate-design-01",
+  "BASE_COMMIT": "e7f470d8ea075e6d71d4f6be17c4b4452f1ede09",
+  "DATA_AUTHORITY_COMMIT": "recorded in ARC02_PREREG_COMMIT_POINTER.json",
+  "PREREG_COMMIT": "recorded in ARC02_PREREG_COMMIT_POINTER.json",
+
+  "dataset_sha256": "03f227d0ae18efdc8e3d84831283c4e3f7a333bf0fea8b944f55a9144cc164d5",
+  "partition_sha256": {
+    "BTCUSDT": "05b093a5fdaf693f761327c1ee3128fec587d62c4354afeea84f734321d76d80",
+    "ETHUSDT": "0072b6cb14b561dc2402901dad9009f5a9cc9f989164a175dece096b98d96638",
+    "SOLUSDT": "b5be57d09c54ae59491b2d987d385c3738f4b6187f8d93be07221af4d0170019"
+  },
+  "source_authority_dataset_sha256": "1a6ad11712ce436ce9d413d6b53162d66996778cd98643ef7c3eb746a54745ef",
+  "common_causal_window": {"start_ms": 1600066800000, "end_ms": 1788220500000},
+
+  "frozen_definitions": {
+    "decision_timeframe": "5m",
+    "btc_shock": "|median-standardised completed BTC 5m log return| > 3.0, trailing 288-bar median absolute return scale, all 288 references required, no location estimator, strict inequality",
+    "follower_underreaction": "same sign as the BTC return AND |r_f| < 0.5 * |r_btc| (strict)",
+    "long_rule": "BTC positive shock + positive follower underreaction => LONG follower",
+    "short_rule": "BTC negative shock + negative follower underreaction => SHORT follower",
+    "no_signal_rule": "everything else, with the frozen first-satisfied precedence; opposite-sign follower is never a reversal trade",
+    "entry": "open of the next 5m follower bar strictly after the decision instant",
+    "exit": "open of the follower bar 5 minutes after entry (1-bar hold)",
+    "stop": "NONE",
+    "cooldown": "NONE",
+    "overlap": "SKIP; re-entry only at/after the previous exit; at most one position per follower and two overall; BTC never traded"
+  },
+  "gate_set": "G1..G11 in docs/arc02-prereg-01/ARC02_STATISTICAL_GATES.json (G9 adapted to a 2-follower BOTH-positive rule; G10 follower share <= 0.70)",
+  "control_plan": "DIRECTION_CONTROL, TIMING_CONTROL (+1 bar), LEADER_CONTROL (leader series displaced 288 bars), NULL_CONTROL (seeded sign flip)",
+  "robustness_plan": "R1..R11 frozen, NOT executed",
+  "kill_rule": "one preregistration -> one primary discovery; any critical gate failure or a control passing all gates => ARC02 = DISCOVERY_FAIL (terminal)",
+
+  "verification_evidence": {
+    "A_B_DETERMINISM": "PASS",
+    "MUTATION_SENSITIVITY": "PASS",
+    "PIT": "PASS",
+    "PORTABILITY": "PASS",
+    "PYTHON_IMPORT_AUTHORITY": "PASS",
+    "CLEAN_WORKTREE_VERIFICATION": "PASS",
+    "SPEC_VALIDATION": "PASS (docs/arc02-prereg-01/ARC02_SPEC_VALIDATION.json)",
+    "PORTABLE_DATA_VERIFICATION": "docs/arc02-data-authority-01/ARC02_PORTABLE_DATA_VERIFICATION.json",
+    "POST_FREEZE_ARTIFACT_DRIFT": 0
+  },
+
+  "economics": {"ARC02_BACKTESTS": 0, "ARC02_EXECUTIONS": 0, "ARC02_PERFORMANCE_OBSERVED": false, "FALSE_SUCCESS": 0},
+
+  "protected_areas_untouched": [
+    "H1", "H3", "H5", "H6", "ARC-01", "ARC-03",
+    "Risk", "PaperBroker", "StrategyRouter", "Critic", "MetaRanker", "Shadow", "Confirmation", "live runtime"
+  ],
+  "no_unrelated_worktree_merged": true,
+
+  "defects": [],
+  "limitations": [
+    "prior ARC-02 definition was DRAFT_ONLY; frozen values re-frozen with deviations recorded",
+    "first 289 slots of the window produce no decisions (fail-closed leader history)",
+    "last two slots produce no trades (frozen forward guard)",
+    "funding cashflow on the entry notional",
+    "no drawdown gate",
+    "H3 collision class MEDIUM documented, not resolved"
+  ],
+
+  "NEXT": "ARC02_INDEPENDENT_PREREG_VERIFICATION",
+  "DO_NOT": [
+    "run economics before independent verification",
+    "retune any primary parameter under this hypothesis id",
+    "promote any sub-population",
+    "edit a frozen economic artifact"
+  ]
+}

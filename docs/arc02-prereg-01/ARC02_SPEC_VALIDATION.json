@@ -1,0 +1,204 @@
+{
+  "CONTRADICTIONS_FOUND": 0,
+  "CONTROLS_COMPLETE": "PASS",
+  "DATA_AUTHORITY_BINDING": "PASS",
+  "FALSE_SUCCESS": 0,
+  "NO_ECONOMIC_OBSERVATION": "PASS",
+  "PIT": "PASS",
+  "ROBUSTNESS_PLAN": "PASS",
+  "SPEC_COMPLETE": "PASS",
+  "STATISTICAL_GATES_REPRODUCIBLE": "PASS",
+  "checkpoint": "ARC02-PREREG-001",
+  "checks": [
+    {
+      "check": "SPEC_COMPLETE",
+      "detail": {
+        "missing_btc_shock": [],
+        "missing_entry_exit": [],
+        "missing_market": [],
+        "missing_positions": [],
+        "missing_top_level": [],
+        "missing_underreaction": []
+      },
+      "pass": true
+    },
+    {
+      "check": "NO_RUNTIME_DEFAULTS_IN_SPEC",
+      "detail": {
+        "runtime_defaults": "NONE: no hidden default cadence, no calendar fallback"
+      },
+      "pass": true
+    },
+    {
+      "check": "NO_SIGNAL_PRECEDENCE_MATCHES_IMPLEMENTATION",
+      "detail": {
+        "code": [
+          "OUTSIDE_COMMON_WINDOW",
+          "BAR_ALIGNMENT_FAILURE",
+          "LEADER_HISTORY_INCOMPLETE",
+          "LEADER_SCALE_ZERO",
+          "NO_BTC_SHOCK",
+          "FOLLOWER_BAR_MISSING",
+          "FOLLOWER_NO_SAME_SIGN_RESPONSE",
+          "FOLLOWER_NOT_UNDERREACTING",
+          "POSITION_ALREADY_OPEN",
+          "INSUFFICIENT_FORWARD_PRICE_DATA"
+        ],
+        "spec": [
+          "OUTSIDE_COMMON_WINDOW",
+          "BAR_ALIGNMENT_FAILURE",
+          "LEADER_HISTORY_INCOMPLETE",
+          "LEADER_SCALE_ZERO",
+          "NO_BTC_SHOCK",
+          "FOLLOWER_BAR_MISSING",
+          "FOLLOWER_NO_SAME_SIGN_RESPONSE",
+          "FOLLOWER_NOT_UNDERREACTING",
+          "POSITION_ALREADY_OPEN",
+          "INSUFFICIENT_FORWARD_PRICE_DATA"
+        ]
+      },
+      "pass": true
+    },
+    {
+      "check": "CRITICAL_RELATIONS_CODE_EQUALS_SPEC",
+      "detail": {
+        "mismatched": {}
+      },
+      "pass": true
+    },
+    {
+      "check": "STATISTICAL_GATES_REPRODUCIBLE",
+      "detail": {
+        "conv_detail_ok": true,
+        "conventions_ok": true,
+        "gate_ids": [
+          "G1_SAMPLE",
+          "G2_NET_EXPECTANCY",
+          "G3_NET_EXPECTANCY_EX_FUNDING",
+          "G4_PROFIT_FACTOR",
+          "G5_SHARPE",
+          "G6_BOOTSTRAP",
+          "G7_PERMUTATION",
+          "G8_TEMPORAL_STABILITY",
+          "G9_FOLLOWER_STABILITY",
+          "G10_CONCENTRATION",
+          "G11_COST_SENSITIVITY"
+        ]
+      },
+      "pass": true
+    },
+    {
+      "check": "CONTROLS_COMPLETE",
+      "detail": {
+        "control_ids": [
+          "DIRECTION_CONTROL",
+          "TIMING_CONTROL",
+          "LEADER_CONTROL",
+          "NULL_CONTROL"
+        ]
+      },
+      "pass": true
+    },
+    {
+      "check": "LEADER_CONTROL_IS_DETERMINISTIC_AND_DESTROYS_LEADER_INFORMATION",
+      "detail": {
+        "definition": "Replace the leader driver series by the SAME series displaced by exactly LEADER_CONTROL_LAG_BARS = 288 bars (24 hours): driver_return_control(t) = ln(close_btc("
+      },
+      "pass": true
+    },
+    {
+      "check": "NULL_CONTROL_FORBIDS_PYTHON_HASH",
+      "detail": {
+        "no_python_hash": "Python hash() is explicitly forbidden (process-salted, not reproducible)"
+      },
+      "pass": true
+    },
+    {
+      "check": "PIT",
+      "detail": {
+        "battery": "39/39",
+        "clauses": 15
+      },
+      "pass": true
+    },
+    {
+      "check": "DATA_AUTHORITY_BINDING",
+      "detail": {
+        "dataset_sha256": "03f227d0ae18efdc8e3d84831283c4e3f7a333bf0fea8b944f55a9144cc164d5",
+        "partitions_on_disk_match": true
+      },
+      "pass": true
+    },
+    {
+      "check": "ROBUSTNESS_PLAN",
+      "detail": {
+        "analyses": [
+          "R1_TIME_SPLITS",
+          "R2_FOLLOWER_SPLITS",
+          "R3_MARKET_REGIMES",
+          "R4_COST_CURVE",
+          "R5_SHOCK_LOOKBACK_NEIGHBOURS",
+          "R6_SHOCK_THRESHOLD_NEIGHBOURS",
+          "R7_UNDERREACTION_RATIO_NEIGHBOURS",
+          "R8_HOLDING_PERIOD_NEIGHBOURS",
+          "R9_LEAVE_ONE_FOLLOWER_OUT",
+          "R10_WALK_FORWARD_OOS",
+          "R11_CONCENTRATION_ANALYSIS"
+        ]
+      },
+      "pass": true
+    },
+    {
+      "check": "NO_ECONOMIC_OBSERVATION",
+      "detail": {
+        "economic_key_leaks": {},
+        "guards_ok": true
+      },
+      "pass": true
+    },
+    {
+      "check": "KILL_RULE_FROZEN",
+      "detail": {
+        "forbidden": [
+          "threshold retune",
+          "lookback retune",
+          "underreaction-ratio retune",
+          "holding retune",
+          "asset deletion",
+          "cost reduction",
+          "second economic attempt under the same hypothesis_id"
+        ]
+      },
+      "pass": true
+    },
+    {
+      "check": "NO_CRITICAL_SPEC_INCOMPLETENESS",
+      "detail": {
+        "controls": false,
+        "gates": false,
+        "robustness": false,
+        "spec": false
+      },
+      "pass": true
+    },
+    {
+      "check": "CONTRADICTIONS_FOUND",
+      "detail": {
+        "contradictions_found": 0,
+        "prior_committed_definition": false
+      },
+      "pass": true
+    },
+    {
+      "check": "PIT_BATTERY_REPRODUCIBLE_FROM_SCRATCH",
+      "detail": null,
+      "pass": true
+    }
+  ],
+  "checks_passed": 16,
+  "checks_total": 16,
+  "failed_checks": [],
+  "hypothesis_id": "ARC-02-BTC-ALT-LEAD-LAG-01",
+  "validator": "validate_arc02_spec.py",
+  "verdict": "PASS"
+}

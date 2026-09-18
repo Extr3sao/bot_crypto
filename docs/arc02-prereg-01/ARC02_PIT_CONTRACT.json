@@ -1,0 +1,42 @@
+{
+  "schema": "ARC02_PIT_CONTRACT/1.0.0",
+  "checkpoint": "ARC02-PREREG-001",
+  "hypothesis_id": "ARC-02-BTC-ALT-LEAD-LAG-01",
+  "status": "PASS",
+  "authority": "docs/arc02-data-authority-01/ARC02_PIT_AUTHORITY.json",
+  "independent_test_evidence": "docs/arc02-data-authority-01/ARC02_PIT_INDEPENDENT_TESTS.json",
+  "principle": "Every quantity a decision reads must have been observable at or before the decision instant, and no future mutation may change a historical decision.",
+
+  "time_semantics": {
+    "bar_open_time_ms": "provider kline field 0 (epoch ms, UTC), the bar's start, carried in the projection as `t`",
+    "bar_close_time_ms": "provider kline field 6 (epoch ms, UTC), the bar's end, carried as `ct`",
+    "bar_span": "[bar_open_time_ms, bar_close_time_ms]; for 5m bars close = open + 299999 ms",
+    "decision_time_ms": "max(close_time of the leader bar at slot t, close_time of the follower bar at slot t) - the first instant at which the complete ARC-02 signal is knowable",
+    "entry_time_ms": "the open_time_ms of the entry bar (leader and follower slots are aligned on the same 5m grid)",
+    "exit_time_ms": "the open_time_ms of the exit bar (= entry_time_ms + 300000)",
+    "funding_time_ms": "the settlement instant of a certified funding row (== availability_time_ms == settlement_time_ms)"
+  },
+
+  "clauses": [
+    {"id": "PIT-1", "name": "btc_current_bar_completed", "statement": "The leader bar read by a decision satisfies bar_close_time_ms <= decision_time_ms.", "enforcement": "the decision is taken at the bar's close; the forming bar is invisible", "testable": true},
+    {"id": "PIT-2", "name": "follower_current_bar_completed", "statement": "The follower bar read by a decision satisfies bar_close_time_ms <= decision_time_ms.", "enforcement": "decision_time_ms is the MAXIMUM of the two close times, so neither bar can be read before it closes", "testable": true, "test": "DECISION_TIME_IS_MAX_OF_BOTH_COMPLETED_BAR_CLOSES"},
+    {"id": "PIT-3", "name": "btc_lookback_contains_only_bars_at_or_before_decision", "statement": "The 288 trailing leader return references are formed from bars whose close times are all <= decision_time_ms.", "enforcement": "references are t - j*300000 for j = 1..288, each closing at least 5 minutes before the decision", "testable": true, "test": "ALL_REFERENCE_OBSERVATIONS_AT_OR_BEFORE_DECISION"},
+    {"id": "PIT-4", "name": "follower_response_contains_no_future_bar", "statement": "The follower response is the log return of the SAME completed slot as the leader bar; no later follower bar is consulted.", "enforcement": "r_f(t) uses only follower bars at t and t-300000", "testable": true},
+    {"id": "PIT-5", "name": "entry_strictly_after_decision", "statement": "entry_time_ms > decision_time_ms; same-bar entry is impossible.", "enforcement": "entry is the OPEN of the first follower bar with open_time_ms > decision_time_ms", "testable": true, "test": "ENTRY_IS_STRICTLY_AFTER_DECISION_TIME and SAME_BAR_ENTRY_FORBIDDEN"},
+    {"id": "PIT-6", "name": "exit_anchor_causal", "statement": "The exit bar is identified by clock arithmetic only (entry_time_ms + 300000); no forward price or outcome information enters signal eligibility.", "enforcement": "the only forward question asked is 'does the exit bar exist inside the admitted partition'; the exit PRICE is never inspected to decide whether to trade", "testable": true, "test": "EXIT_IS_ONE_BAR_OPEN_AFTER_ENTRY"},
+    {"id": "PIT-7", "name": "funding_window_disjoint_from_signal_window", "statement": "Funding settlements are read only within (entry_time_ms, exit_time_ms], which is strictly after decision_time_ms; funding is never a signal input.", "enforcement": "the funding module is not importable from the signal evaluation path; the signal record contains no funding field", "testable": true, "test": "FUNDING_IS_NOT_READ_BY_THE_SIGNAL_PATH"},
+    {"id": "PIT-8", "name": "future_mutation_invariance", "statement": "Mutating any bar with bar_open_time_ms > decision_time_ms leaves the emitted direction, the reason code and the feature values at decision_time_ms unchanged.", "enforcement": "the evaluation reads a bounded, purely trailing window", "testable": true, "test": "FUTURE_MUTATION_AFTER_T_CHANGES_NOTHING and LATER_BARS_ABSENT_DOES_NOT_CHANGE_DECISION"},
+    {"id": "PIT-9", "name": "past_eligible_mutation_detectable", "statement": "Mutating an eligible reference bar (inside the 288-bar trailing set) or the driver basis can change the shock statistic and the emitted direction.", "enforcement": "the battery is non-vacuous: a test that could not change anything would prove nothing", "testable": true, "test": "PAST_ELIGIBLE_REFERENCE_MUTATION_CHANGES_STATE and PAST_ELIGIBLE_DRIVER_MUTATION_CHANGES_STATE"},
+    {"id": "PIT-10", "name": "missing_btc_bar_fails_closed", "statement": "A missing leader bar (current slot, driver basis, or any of the 288 references) fails the decision closed with LEADER_HISTORY_INCOMPLETE / BAR_ALIGNMENT_FAILURE.", "enforcement": "no interpolation, no forward-fill, no synthesis, no partial-window admission", "testable": true},
+    {"id": "PIT-11", "name": "missing_follower_bar_fails_closed", "statement": "A missing follower bar fails the decision closed with FOLLOWER_BAR_MISSING.", "enforcement": "same", "testable": true},
+    {"id": "PIT-12", "name": "conflicting_duplicates_fail_closed", "statement": "A partition containing a duplicate bar-open slot raises CONFLICTING_OR_DUPLICATE_SLOT and fails closed rather than picking a winner.", "enforcement": "load_partition() raises; the authority has zero duplicates by construction", "testable": true},
+    {"id": "PIT-13", "name": "future_htf_or_context_invisible", "statement": "No higher-timeframe label, regime label, cross-asset index, open-interest value, order-book value or funding value is readable by the signal.", "enforcement": "the projection carries only t/ct/o/c; the evaluation reads only completed close prices", "testable": true, "test": "PROJECTION_DROPS_EVERY_ORDER_FLOW_AND_RANGE_FIELD"},
+    {"id": "PIT-14", "name": "forward_price_guard_is_clock_only_censoring", "statement": "A decision whose entry bar or exit bar would fall outside the admitted partition or beyond end_ms is dropped with NO_SIGNAL / INSUFFICIENT_FORWARD_PRICE_DATA. This is structural clock censoring over whether a complete outcome can exist - no knowledge of the outcome itself.", "enforcement": "the last two 5m slots of the common window therefore emit no trades", "testable": true},
+    {"id": "PIT-15", "name": "no_unadmitted_field", "statement": "No field other than open, close (and close_time as the completion anchor) is read by the signal.", "enforcement": "the projection physically omits h/l/v/qv/n/tb/tq", "testable": true}
+  ],
+
+  "fail_closed_policy": "any violation of a clause above is a NO_SIGNAL (fail closed) at the decision level, and an INFRASTRUCTURE_FAIL at the execution level if it arises from a broken authority rather than from missing data",
+  "future_mutation_cannot_alter_signal_at_T": true,
+  "past_eligible_mutation_is_detectable": true,
+  "violation_classification": "a PIT violation recorded during execution is INFRASTRUCTURE_FAIL, never a strategy failure"
+}

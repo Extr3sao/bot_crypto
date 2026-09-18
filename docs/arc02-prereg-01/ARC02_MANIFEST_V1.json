@@ -1,0 +1,174 @@
+{
+  "checkpoint": "ARC02-PREREG-001",
+  "data_binding": {
+    "authority_role": "ARC02_PROJECTION_OF_REUSED_ARC03_AUTHORITY",
+    "common_window": [
+      1600066800000,
+      1788220500000
+    ],
+    "dataset_sha256": "03f227d0ae18efdc8e3d84831283c4e3f7a333bf0fea8b944f55a9144cc164d5",
+    "partition_sha256": {
+      "BTCUSDT": "05b093a5fdaf693f761327c1ee3128fec587d62c4354afeea84f734321d76d80",
+      "ETHUSDT": "0072b6cb14b561dc2402901dad9009f5a9cc9f989164a175dece096b98d96638",
+      "SOLUSDT": "b5be57d09c54ae59491b2d987d385c3738f4b6187f8d93be07221af4d0170019"
+    },
+    "source_authority_dataset_sha256": "1a6ad11712ce436ce9d413d6b53162d66996778cd98643ef7c3eb746a54745ef"
+  },
+  "economics_guards_at_freeze": {
+    "ARC02_BACKTESTS": 0,
+    "ARC02_EXECUTIONS": 0,
+    "ARC02_PERFORMANCE_OBSERVED": false,
+    "FALSE_SUCCESS": 0
+  },
+  "freeze_rules": {
+    "drift_detection": "recompute the frozen_economic_artifacts digests and compare to this manifest; any mismatch is POST_FREEZE_ARTIFACT_DRIFT > 0 and invalidates the experiment",
+    "no_economic_artifact_may_change_after_this_manifest": true,
+    "no_runtime_default_may_define_economic_behaviour": true
+  },
+  "frozen_economic_aggregate_sha256": "8dc4d0ad394b7978a48775ad30a8df388813e3957ce8e59417fa8efb07dcfcb4",
+  "frozen_economic_artifacts": {
+    "docs/arc02-data-authority-01/ARC02_COMMON_CAUSAL_WINDOW.json": {
+      "sha256": "34e12335be71fa3b4fa9b5aa5653da532319e43af19275a05c3cda17cb00a837",
+      "size_bytes": 1377
+    },
+    "docs/arc02-data-authority-01/ARC02_DATASET_FINGERPRINT.json": {
+      "sha256": "33038f46800a6ab1a7d504394d31d92fd31ed06964b022bd2cbdf0c77a698525",
+      "size_bytes": 1552
+    },
+    "docs/arc02-data-authority-01/ARC02_DATA_AUTHORITY.json": {
+      "sha256": "225bc32a95068a2eab40c39b04bb7c5f9d13a26280b4bfc1f8e0233fc4117fdc",
+      "size_bytes": 8336
+    },
+    "docs/arc02-data-authority-01/ARC02_DATA_MANIFEST.json": {
+      "sha256": "f59f8eb0b465e1fee3a708a39004369bfe9a05bac13a3cfd5c32eb530bb67ee8",
+      "size_bytes": 5048
+    },
+    "docs/arc02-data-authority-01/ARC02_PIT_AUTHORITY.json": {
+      "sha256": "1a2173dd36a436012d76268c67d1f56a8fc70e049fd00f80b0fa8a9f6f3ee03e",
+      "size_bytes": 1360
+    },
+    "docs/arc02-data-authority-01/ARC02_PIT_INDEPENDENT_TESTS.json": {
+      "sha256": "195004c7c996e7d739b3016e11ccb3ee1fc54e2e0ba593c39d64e9502bbc6030",
+      "size_bytes": 6716
+    },
+    "docs/arc02-prereg-01/ARC02_CONTROL_PLAN.json": {
+      "sha256": "ac00a3f39fd287ccae6c2351fb52ca9520c2b6c408e858a5b2d483fe2dc50fbc",
+      "size_bytes": 7996
+    },
+    "docs/arc02-prereg-01/ARC02_FAILED_MEMORY_COLLISION_REVIEW.md": {
+      "sha256": "d93935ac714c71cf70d22e7f94fb77b5844612990d3f13b20de2e9c46e4a9e88",
+      "size_bytes": 9267
+    },
+    "docs/arc02-prereg-01/ARC02_MECHANISM_AUTHORITY.md": {
+      "sha256": "c8d85f0848367a4a18cf56b2c6f38d8e42140dabbcaed60f51aa3472ff5512d6",
+      "size_bytes": 5615
+    },
+    "docs/arc02-prereg-01/ARC02_PIT_CONTRACT.json": {
+      "sha256": "3d1394ccf57bf0512ee414c617f7ba93ee18662709a4eca0c1225ec4b492ddd6",
+      "size_bytes": 7235
+    },
+    "docs/arc02-prereg-01/ARC02_PREREGISTRATION.md": {
+      "sha256": "06330df79efff80d757d1059b277695ee53edde20c64862657c53aa12de0390e",
+      "size_bytes": 8416
+    },
+    "docs/arc02-prereg-01/ARC02_ROBUSTNESS_PLAN.json": {
+      "sha256": "743247945af959103c230119d0a9227eb2fef383a51266f5b6b13f126e94b480",
+      "size_bytes": 3842
+    },
+    "docs/arc02-prereg-01/ARC02_SELECTION_RATIONALE.md": {
+      "sha256": "b8dd55e74584d8be77da65f7530358ca189eca2fa31a1a83ade5de4ecf11bbc1",
+      "size_bytes": 8553
+    },
+    "docs/arc02-prereg-01/ARC02_SPEC_V1.json": {
+      "sha256": "ef5d76196943b7498f2ed70757e0405acc2a07a4c80a66b71eaba548950afc40",
+      "size_bytes": 30694
+    },
+    "docs/arc02-prereg-01/ARC02_STATISTICAL_GATES.json": {
+      "sha256": "cf9c2b5feebc2977878a177371aa8407f987f0d5b778c2fea2bcdadb2a2d3bd9",
+      "size_bytes": 11225
+    },
+    "src/trading_bot/research/arc02/arc02_authority.py": {
+      "sha256": "c40bdd1d193b07f192d0bfcbf8372b5e2fe31546415ac94321eb8ec70981151a",
+      "size_bytes": 15743
+    },
+    "src/trading_bot/research/arc02/arc02_funding.py": {
+      "sha256": "175a48cf40936b7a2c5035852e4ed1fff5ad119c0b8a2d9b1d00a14384c77583",
+      "size_bytes": 5290
+    },
+    "src/trading_bot/research/arc02/arc02_normalize.py": {
+      "sha256": "d29277a3bb154fdd05f517467a932d68c558e37e2e698e1bb1f81e21e976551d",
+      "size_bytes": 11319
+    },
+    "src/trading_bot/research/arc02/arc02_pit.py": {
+      "sha256": "13b33b444f15ed6d04ab8b1bfa06e48d3b4997be225027cdd86e4904497fb4d1",
+      "size_bytes": 19962
+    }
+  },
+  "hypothesis_id": "ARC-02-BTC-ALT-LEAD-LAG-01",
+  "post_freeze_mutable_bookkeeping_artifacts": {
+    "docs/arc02-data-authority-01/ARC02_DATA_DETERMINISM.json": {
+      "sha256": "2f1ffe28c18b6e353e33f0dc4011ce6818c1409214c0f9919f2de49d73cf64c6",
+      "size_bytes": 939
+    },
+    "docs/arc02-data-authority-01/ARC02_DATA_INVENTORY.json": {
+      "sha256": "98764c759697d64da4680f23ca18c8a91706de54ae7974e66d1032eb0cc57e5b",
+      "size_bytes": 2787
+    },
+    "docs/arc02-data-authority-01/ARC02_DATA_QUALITY_LEDGER.jsonl": {
+      "sha256": "3a45d17c987d517925c319ccd91ff8a19332e990b9a0cbc522c28f951463f71a",
+      "size_bytes": 242460
+    },
+    "docs/arc02-data-authority-01/ARC02_MUTATION_SENSITIVITY.json": {
+      "sha256": "34a066a742f0ccb292e2f5ec3351958e2949f8aeb891371747d4da07ea164874",
+      "size_bytes": 692
+    },
+    "docs/arc02-data-authority-01/ARC02_PORTABLE_DATA_VERIFICATION.json": {
+      "sha256": "fa63d5c3ad80507cc8d7af8f5e74dde625d0748a3a41757bf6399a0bd3a2cdf5",
+      "size_bytes": 5535
+    },
+    "docs/arc02-data-authority-01/ARC02_RAW_LEDGER.jsonl": {
+      "sha256": "38853ff41419553993249a6b61d7bf0c4dbc6fb507dea68f74e54212829528f5",
+      "size_bytes": 76803
+    },
+    "docs/arc02-data-authority-01/ARC02_REUSE_ASSESSMENT.json": {
+      "sha256": "4fda11975ff98c9662a31ca459819ddea7ae29ed278d81f885c536d4df7ea3bb",
+      "size_bytes": 1826
+    },
+    "docs/arc02-data-authority-01/ARC02_SOURCE_REGISTRY.md": {
+      "sha256": "c6b59182f4c545d765214a30890d15694134a52c9340e6f0c4c79117a0ed59dd",
+      "size_bytes": 2817
+    },
+    "docs/arc02-prereg-01/ARC02_MANIFEST_V1.json": {
+      "sha256": "b0001d3b40bd40aea749f62d9b4fc40f6e2ac557b5d2e99e50c39df8b589e01f",
+      "size_bytes": 7219
+    },
+    "docs/arc02-prereg-01/ARC02_PREREG_COMMIT_POINTER.json": {
+      "sha256": null,
+      "size_bytes": null
+    },
+    "docs/arc02-prereg-01/ARC02_PREREG_VERIFICATION_PACKAGE.json": {
+      "sha256": "ed5391f1a0ea7805442ddb9eae9d896f912b134cdccc6f9b103c8c251cf35ea5",
+      "size_bytes": 7093
+    },
+    "docs/arc02-prereg-01/ARC02_RESUME_STATE.json": {
+      "sha256": "a11e7a9e899bba1da68b5304bf902002ec3251fbd82edda1dc49e6f770a8c5a2",
+      "size_bytes": 4095
+    },
+    "docs/arc02-prereg-01/RUN_REPORT.json": {
+      "sha256": "72305ef836bdd328ea2ce61a0b25d4d875de453b602d4a85499ddc745f29ee62",
+      "size_bytes": 3933
+    },
+    "docs/arc02-prereg-01/RUN_REPORT.md": {
+      "sha256": "c5262782edd903e153027f8fb32e1e03778fdb014389a2d736a80cb5cc490940",
+      "size_bytes": 5051
+    }
+  },
+  "preregistered_utc": "2026-09-19",
+  "schema": "ARC02_MANIFEST/1.0.0",
+  "spec_digest_reference": {
+    "ARC02_SPEC_V1.json": "ef5d76196943b7498f2ed70757e0405acc2a07a4c80a66b71eaba548950afc40",
+    "CRITICAL_SPEC_INCOMPLETENESS": false,
+    "spec_version": 1
+  },
+  "status": "FROZEN_PENDING_INDEPENDENT_PREREG_VERIFICATION"
+}
