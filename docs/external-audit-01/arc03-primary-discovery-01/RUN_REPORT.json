@@ -1,0 +1,323 @@
+{
+  "artifacts": [
+    "ARC03_ACCOUNTING_RECONCILIATION.json",
+    "ARC03_CONTROL_RESULTS.json",
+    "ARC03_DATA_BINDING_EXECUTION.json",
+    "ARC03_DECISION_FUNNEL.json",
+    "ARC03_PIT_EXECUTION_AUDIT.json",
+    "ARC03_PRIMARY_DISCOVERY_RESULT.json",
+    "ARC03_PRIMARY_DISCOVERY_RESULT.md",
+    "ARC03_STATISTICAL_GATES_RESULT.json",
+    "ARC03_TRADE_LEDGER.jsonl",
+    "EXPERIMENT_LEDGER.jsonl"
+  ],
+  "binding": {
+    "audited_target": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc03-primary-discovery-01",
+    "common_window_match": true,
+    "common_window_recomputed": {
+      "bound_semantics": "CLOSED interval on 5m bar-OPEN times: bar_open_time_ms in [start_ms, end_ms]",
+      "derivation": "max(first admitted bar open) .. min(last admitted bar open) across the three assets",
+      "end_ms": 1788220500000,
+      "per_asset_first_open_ms": {
+        "BTCUSDT": 1577836800000,
+        "ETHUSDT": 1577836800000,
+        "SOLUSDT": 1600066800000
+      },
+      "per_asset_last_open_ms": {
+        "BTCUSDT": 1788220500000,
+        "ETHUSDT": 1788220500000,
+        "SOLUSDT": 1788220500000
+      },
+      "start_ms": 1600066800000,
+      "window_span_days_inclusive": 2177.7083333333335
+    },
+    "data_binding": {
+      "dataset_match": true,
+      "dataset_sha256_expected": "1a6ad11712ce436ce9d413d6b53162d66996778cd98643ef7c3eb746a54745ef",
+      "dataset_sha256_recomputed": "1a6ad11712ce436ce9d413d6b53162d66996778cd98643ef7c3eb746a54745ef",
+      "dataset_sha256_recorded": "1a6ad11712ce436ce9d413d6b53162d66996778cd98643ef7c3eb746a54745ef",
+      "funding_match": true,
+      "funding_partition_sha256_expected_arc01": {
+        "BTCUSDT": "700b0c4c7e5ffa9dbe82cd84e98be9f505bce6f1792d33d0eae88d07a7585855",
+        "ETHUSDT": "2edf501ea69807bbf67cdd519e53de18c8dea25ea8bdf009beb88ef2e2693943",
+        "SOLUSDT": "6b16d13f5115f906f9ceb4f5a418f7a541c37609e780cfbad0d52ed565808f85"
+      },
+      "funding_partition_sha256_observed": {
+        "BTCUSDT": "700b0c4c7e5ffa9dbe82cd84e98be9f505bce6f1792d33d0eae88d07a7585855",
+        "ETHUSDT": "2edf501ea69807bbf67cdd519e53de18c8dea25ea8bdf009beb88ef2e2693943",
+        "SOLUSDT": "6b16d13f5115f906f9ceb4f5a418f7a541c37609e780cfbad0d52ed565808f85"
+      },
+      "partition_match": true,
+      "partition_meta": {
+        "BTCUSDT": {
+          "bytes": 148681285,
+          "sha256": "eb75ab97881fd941c05d1b188778f1a832ab404c59f5991eff12ead779e4ab02"
+        },
+        "ETHUSDT": {
+          "bytes": 146529986,
+          "sha256": "24c886902760b2e2c873df7721c12098e65b768762f55e2144d990deac04c211"
+        },
+        "SOLUSDT": {
+          "bytes": 127560282,
+          "sha256": "d872bc7dc8a52eb697962516fbd24a636483acd43e524cdbbf09985d2720f548"
+        }
+      },
+      "partition_sha256_observed": {
+        "BTCUSDT": "eb75ab97881fd941c05d1b188778f1a832ab404c59f5991eff12ead779e4ab02",
+        "ETHUSDT": "24c886902760b2e2c873df7721c12098e65b768762f55e2144d990deac04c211",
+        "SOLUSDT": "d872bc7dc8a52eb697962516fbd24a636483acd43e524cdbbf09985d2720f548"
+      },
+      "partition_sha256_recorded": {
+        "BTCUSDT": "eb75ab97881fd941c05d1b188778f1a832ab404c59f5991eff12ead779e4ab02",
+        "ETHUSDT": "24c886902760b2e2c873df7721c12098e65b768762f55e2144d990deac04c211",
+        "SOLUSDT": "d872bc7dc8a52eb697962516fbd24a636483acd43e524cdbbf09985d2720f548"
+      }
+    },
+    "data_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc03-participation-reversal-01",
+    "data_root_is_audited_target": false,
+    "experiment_id": "ARC03_PRIMARY_DISCOVERY_01",
+    "frozen_constants": {
+      "assets": [
+        "BTCUSDT",
+        "ETHUSDT",
+        "SOLUSDT"
+      ],
+      "assets_match": true,
+      "common_window_ms_expected": [
+        1600066800000,
+        1788220500000
+      ],
+      "cost_scenarios_bps": [
+        0,
+        10,
+        20,
+        40
+      ],
+      "holding_ms": 3600000,
+      "primary_cost_bps": 10
+    },
+    "prereg_binding": {
+      "manifest_match": true,
+      "manifest_path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc03-primary-discovery-01\\docs\\arc03-prereg-01\\ARC03_MANIFEST_V1.json",
+      "manifest_sha256": "3b022693fde0a4e362329a009125292410bb1ba3d0e2b3f8571b795a15b1d1a3",
+      "manifest_sha256_expected": "3b022693fde0a4e362329a009125292410bb1ba3d0e2b3f8571b795a15b1d1a3",
+      "spec_match": true,
+      "spec_path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc03-primary-discovery-01\\docs\\arc03-prereg-01\\ARC03_SPEC_V1.json",
+      "spec_sha256": "a69edabb2931b3897cc0bcabdb7c203009ace742af1a729e47f7cb058a407a2d",
+      "spec_sha256_expected": "a69edabb2931b3897cc0bcabdb7c203009ace742af1a729e47f7cb058a407a2d"
+    },
+    "python_import_authority": {
+      "authority_import_lives_in_target": true,
+      "module": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc03-primary-discovery-01\\src\\trading_bot\\research\\arc03\\arc03_authority.py"
+    },
+    "schema": "ARC03_DATA_BINDING_EXECUTION/1.0.0",
+    "verdict": "PASS"
+  },
+  "controls": {
+    "DIRECTION_CONTROL": {
+      "failed_gates": [
+        "G2_NET_EXPECTANCY",
+        "G3_NET_EXPECTANCY_EX_FUNDING",
+        "G4_PROFIT_FACTOR",
+        "G5_SHARPE",
+        "G6_BOOTSTRAP",
+        "G7_PERMUTATION",
+        "G8_TEMPORAL_STABILITY",
+        "G9_ASSET_STABILITY",
+        "G10_CONCENTRATION",
+        "G11_COST_SENSITIVITY"
+      ],
+      "satisfies_ALL_critical_gates": false,
+      "trade_count": 4854
+    },
+    "NULL_CONTROL": {
+      "failed_gates": [
+        "G4_PROFIT_FACTOR",
+        "G6_BOOTSTRAP"
+      ],
+      "satisfies_ALL_critical_gates": false,
+      "trade_count": 4854
+    },
+    "PARTICIPATION_CONTROL": {
+      "failed_gates": [
+        "G2_NET_EXPECTANCY",
+        "G3_NET_EXPECTANCY_EX_FUNDING",
+        "G4_PROFIT_FACTOR",
+        "G5_SHARPE",
+        "G6_BOOTSTRAP",
+        "G7_PERMUTATION",
+        "G8_TEMPORAL_STABILITY",
+        "G9_ASSET_STABILITY",
+        "G10_CONCENTRATION",
+        "G11_COST_SENSITIVITY"
+      ],
+      "satisfies_ALL_critical_gates": false,
+      "trade_count": 7054
+    },
+    "TIMING_CONTROL": {
+      "failed_gates": [
+        "G2_NET_EXPECTANCY",
+        "G3_NET_EXPECTANCY_EX_FUNDING",
+        "G4_PROFIT_FACTOR",
+        "G5_SHARPE",
+        "G6_BOOTSTRAP",
+        "G7_PERMUTATION",
+        "G8_TEMPORAL_STABILITY",
+        "G9_ASSET_STABILITY",
+        "G10_CONCENTRATION",
+        "G11_COST_SENSITIVITY"
+      ],
+      "satisfies_ALL_critical_gates": false,
+      "trade_count": 4854
+    }
+  },
+  "counts": {
+    "decisions_evaluated": 1881540,
+    "signals_long": 2747,
+    "signals_short": 2107,
+    "trades_by_asset": {
+      "BTCUSDT": 1619,
+      "ETHUSDT": 1824,
+      "SOLUSDT": 1411
+    },
+    "trades_total": 4854
+  },
+  "exactly_once": {
+    "economic_experiments": 1,
+    "states": [
+      "REGISTERED",
+      "STARTED",
+      "COMPLETED"
+    ]
+  },
+  "execution_implementation_commit": "b8b0d7001658e9e52f4dc7eb1ff4ed33d2896139",
+  "experiment_id": "ARC03_PRIMARY_DISCOVERY_01",
+  "final_status": "DISCOVERY_FAIL",
+  "gates": {
+    "G10_CONCENTRATION": {
+      "metric": {
+        "total_net": -1.836911117435134
+      },
+      "passed": false,
+      "threshold": "asset <= 0.60 AND month <= 0.40 AND single trade <= 0.25"
+    },
+    "G11_COST_SENSITIVITY": {
+      "metric": {
+        "mean_net_20bps": -0.001378432451057918,
+        "mean_net_40bps": -0.003378432451057918
+      },
+      "passed": false,
+      "threshold": "mean_20bps > 0 AND mean_40bps >= 0"
+    },
+    "G1_SAMPLE": {
+      "metric": {
+        "n_total": 4854,
+        "per_asset": {
+          "BTCUSDT": 1619,
+          "ETHUSDT": 1824,
+          "SOLUSDT": 1411
+        }
+      },
+      "passed": true,
+      "threshold": "N >= 120 AND min per-asset >= 40"
+    },
+    "G2_NET_EXPECTANCY": {
+      "metric": -0.000378432451057918,
+      "passed": false,
+      "threshold": "> 0.0"
+    },
+    "G3_NET_EXPECTANCY_EX_FUNDING": {
+      "metric": -0.0003673508029326605,
+      "passed": false,
+      "threshold": "> 0.0"
+    },
+    "G4_PROFIT_FACTOR": {
+      "metric": 0.9263268359766048,
+      "passed": false,
+      "threshold": ">= 1.15"
+    },
+    "G5_SHARPE": {
+      "metric": -0.6379589378625888,
+      "passed": false,
+      "threshold": ">= 0.50"
+    },
+    "G6_BOOTSTRAP": {
+      "metric": -0.0008571896313294774,
+      "passed": false,
+      "threshold": "ci_lower > 0.0"
+    },
+    "G7_PERMUTATION": {
+      "metric": 0.9362,
+      "passed": false,
+      "threshold": "p <= 0.05"
+    },
+    "G8_TEMPORAL_STABILITY": {
+      "metric": {
+        "halves": [
+          -0.00011491573172520459,
+          -0.0006419491703906313
+        ],
+        "quartiles": [
+          -0.00013362675082029783,
+          -9.622012533117816e-05,
+          -0.0004911519791638124,
+          -0.0007926221464681696
+        ]
+      },
+      "passed": false,
+      "threshold": "both halves > 0 AND >= 3 of 4 quartiles > 0"
+    },
+    "G9_ASSET_STABILITY": {
+      "metric": {
+        "BTCUSDT": -0.0005908030485562758,
+        "ETHUSDT": -0.0006658981687946969,
+        "SOLUSDT": 0.00023685136644862085
+      },
+      "passed": false,
+      "threshold": ">= 2 of 3 assets mean net > 0"
+    }
+  },
+  "generated_from_commit": "b8b0d7001658e9e52f4dc7eb1ff4ed33d2896139",
+  "metrics": {
+    "asset_stability": {
+      "BTCUSDT": -0.0005908030485562758,
+      "ETHUSDT": -0.0006658981687946969,
+      "SOLUSDT": 0.00023685136644862085
+    },
+    "bootstrap_ci_lower": -0.0008571896313294774,
+    "concentration": {
+      "total_net": -1.836911117435134
+    },
+    "cost_sensitivity": {
+      "mean_20bps": -0.001378432451057918,
+      "mean_40bps": -0.003378432451057918
+    },
+    "net_expectancy_10bps": -0.000378432451057918,
+    "net_expectancy_ex_funding_10bps": -0.0003673508029326605,
+    "permutation_p": 0.9362,
+    "profit_factor": 0.9263268359766048,
+    "sharpe": -0.6379589378625888,
+    "temporal_stability": {
+      "halves": [
+        -0.00011491573172520459,
+        -0.0006419491703906313
+      ],
+      "quartiles": [
+        -0.00013362675082029783,
+        -9.622012533117816e-05,
+        -0.0004911519791638124,
+        -0.0007926221464681696
+      ]
+    }
+  },
+  "reason": "CRITICAL_GATE_FAILURE",
+  "reconciliation": {
+    "accounting": "PASS",
+    "identical_trade_ids_across_cost_scenarios": true,
+    "pit_execution_audit": "PASS",
+    "trade_ledger": "PASS"
+  },
+  "result_commit": null,
+  "resumed_run": true,
+  "schema": "ARC03_RUN_REPORT/1.0.0"
+}

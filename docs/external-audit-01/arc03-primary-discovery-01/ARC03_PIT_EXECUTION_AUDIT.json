@@ -1,0 +1,271 @@
+{
+  "adversarial_battery_result": "PASS",
+  "execution_checks": {
+    "adversarial_battery": {
+      "checks": [
+        {
+          "check": "BASELINE_REJECTED_UP_PUSH_YIELDS_SHORT",
+          "detail": {
+            "reason": null,
+            "result": "SHORT",
+            "wick_fraction": 0.5199999999999989
+          },
+          "pass": true
+        },
+        {
+          "check": "DECISION_TIME_IS_BAR_CLOSE_TIME",
+          "detail": {
+            "bar_close_ms": 1703313299999,
+            "decision_time_ms": 1703313299999
+          },
+          "pass": true
+        },
+        {
+          "check": "DECISION_BAR_IS_NOT_LAST_BAR_OF_PARTITION",
+          "detail": {
+            "future_bars": 475,
+            "pos": 11044,
+            "rows": 11520
+          },
+          "pass": true
+        },
+        {
+          "check": "ALL_REFERENCE_OBSERVATIONS_AT_OR_BEFORE_T",
+          "detail": null,
+          "pass": true
+        },
+        {
+          "check": "REJECTED_DOWN_PUSH_YIELDS_LONG",
+          "detail": {
+            "reason": null,
+            "result": "LONG"
+          },
+          "pass": true
+        },
+        {
+          "check": "FUTURE_MUTATION_AFTER_T_CHANGES_NOTHING",
+          "detail": {
+            "participation_shock": true,
+            "result": "SHORT"
+          },
+          "pass": true
+        },
+        {
+          "check": "PAST_ELIGIBLE_VOLUME_MUTATION_CHANGES_STATE",
+          "detail": {
+            "reference_volume_max": 999999.0
+          },
+          "pass": true
+        },
+        {
+          "check": "PAST_ELIGIBLE_RANGE_MUTATION_CHANGES_STATE",
+          "detail": {
+            "reference_range_max": 400.5
+          },
+          "pass": true
+        },
+        {
+          "check": "MISSING_REFERENCE_OBSERVATION_FAILS_CLOSED",
+          "detail": {
+            "present": 29,
+            "reference_missing": 1
+          },
+          "pass": true
+        },
+        {
+          "check": "INCOMPLETE_CURRENT_BAR_INVISIBLE",
+          "detail": {
+            "bar_index": 11519,
+            "last_visible_index": 11518
+          },
+          "pass": true
+        },
+        {
+          "check": "COMPLETED_BAR_VISIBLE_AT_ITS_OWN_CLOSE",
+          "detail": {
+            "index": 11519
+          },
+          "pass": true
+        },
+        {
+          "check": "FUTURE_BARS_INVISIBLE_TO_COMPLETED_LOOKUP",
+          "detail": null,
+          "pass": true
+        },
+        {
+          "check": "ENTRY_IS_STRICTLY_AFTER_DECISION_TIME",
+          "detail": {
+            "decision_ms": 1703313299999,
+            "entry_open_ms": 1703313300000
+          },
+          "pass": true
+        },
+        {
+          "check": "SAME_BAR_ENTRY_FORBIDDEN",
+          "detail": {
+            "decision_index": 11044,
+            "next_index": 11045
+          },
+          "pass": true
+        },
+        {
+          "check": "EQUAL_VOLUME_IS_NOT_A_SHOCK",
+          "detail": {
+            "reference_volume_max": 1000.0,
+            "volume": 1000.0
+          },
+          "pass": true
+        },
+        {
+          "check": "EXACTLY_HALF_RETRACEMENT_IS_NOT_EXHAUSTION",
+          "detail": {
+            "close": 100.25,
+            "range": 2.5,
+            "wick_fraction": 0.5
+          },
+          "pass": true
+        },
+        {
+          "check": "ZERO_RANGE_BAR_YIELDS_NO_EXHAUSTION",
+          "detail": {
+            "reason": "NO_EXCURSION_RECORD"
+          },
+          "pass": true
+        },
+        {
+          "check": "NO_SIGNAL_PRECEDENCE_FROZEN_AND_TOTAL",
+          "detail": [
+            "OUTSIDE_COMMON_WINDOW",
+            "REFERENCE_HISTORY_INCOMPLETE",
+            "NO_PARTICIPATION_SHOCK",
+            "NO_EXCURSION_RECORD",
+            "NO_EXHAUSTION",
+            "POSITION_ALREADY_OPEN",
+            "INSUFFICIENT_FORWARD_PRICE_DATA"
+          ],
+          "pass": true
+        },
+        {
+          "check": "EXACT_DUPLICATE_ROWS_COLLAPSE_DETERMINISTICALLY",
+          "detail": {
+            "collapsed": 1,
+            "rows": 8928
+          },
+          "pass": true
+        },
+        {
+          "check": "CONFLICTING_DUPLICATE_FAILS_CLOSED",
+          "detail": {
+            "classification": "INVALID_CONFLICTING_DUPLICATE",
+            "written": 0
+          },
+          "pass": true
+        },
+        {
+          "check": "PROVIDER_HEADER_SCHEMA_CHANGE_HANDLED",
+          "detail": {
+            "rows": 8928
+          },
+          "pass": true
+        },
+        {
+          "check": "MALFORMED_ROW_FAILS_MONTH_CLOSED",
+          "detail": {
+            "classification": "INVALID_VALUE"
+          },
+          "pass": true
+        },
+        {
+          "check": "FIELD_COUNT_DRIFT_FAILS_MONTH_CLOSED",
+          "detail": {
+            "classification": "INVALID_VALUE",
+            "schema_field_mismatch": 1
+          },
+          "pass": true
+        },
+        {
+          "check": "INTERNAL_GAP_FAILS_MONTH_CLOSED",
+          "detail": {
+            "classifications": {
+              "2024-01": "VALID",
+              "2024-02": "INVALID_GAP"
+            },
+            "written_rows": 8928
+          },
+          "pass": true
+        },
+        {
+          "check": "LEADING_TRUNCATED_FIRST_MONTH_ADMITTED",
+          "detail": {
+            "classification_2024_03_mid_month_stop": "INVALID_GAP"
+          },
+          "pass": true
+        },
+        {
+          "check": "VALID_INITIAL_PARTIAL_REQUIRES_RUN_TO_MONTH_END",
+          "detail": {
+            "classification": "VALID_INITIAL_PARTIAL",
+            "written_rows": 100
+          },
+          "pass": true
+        },
+        {
+          "check": "READER_FAILS_CLOSED_ON_DUPLICATE_SLOT",
+          "detail": null,
+          "pass": true
+        },
+        {
+          "check": "LATER_ARCHIVE_VALIDITY_NOT_RETROACTIVE",
+          "detail": {
+            "result": "SHORT"
+          },
+          "pass": true
+        }
+      ],
+      "checks_passed": 28,
+      "checks_total": 28,
+      "result": "PASS"
+    },
+    "all_references_at_least_24h_older": {
+      "n": 4854,
+      "violations": 0
+    },
+    "decision_time_is_bar_close": {
+      "n": 4854,
+      "violations": 0
+    },
+    "entry_strictly_after_decision": {
+      "n": 4854,
+      "violations": 0
+    },
+    "exit_bar_within_window": {
+      "n": 4854,
+      "violations": 0
+    },
+    "exit_is_entry_plus_60_minutes": {
+      "n": 4854,
+      "violations": 0
+    },
+    "funding_is_not_a_signal_input": {
+      "funding_module_imported_by_signal_path": true,
+      "note": "the signal path reads only (open, high, low, close, base volume) and the 30 same-slot references; funding is consumed only after a trade is emitted"
+    },
+    "future_mutation_invariance_sampled": {
+      "sampled": 200,
+      "violations": 0
+    },
+    "no_two_trades_overlap_per_asset": {
+      "n": 4854,
+      "violations": 0
+    },
+    "signal_and_entry_bars_inside_window": {
+      "n": 4854,
+      "violations": 0
+    }
+  },
+  "experiment_id": "ARC03_PRIMARY_DISCOVERY_01",
+  "pit_contract": "docs\\arc03-prereg-01\\ARC03_PIT_CONTRACT.json",
+  "schema": "ARC03_PIT_EXECUTION_AUDIT/1.0.0",
+  "total_execution_violations": 0,
+  "verdict": "PASS"
+}

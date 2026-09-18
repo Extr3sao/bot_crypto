@@ -1,0 +1,3 @@
+{"data_authority_commit": "8668a3174234255b1b1f27a7bf04b8f022af68bb", "data_binding_verdict": "PASS", "experiment_id": "ARC03_PRIMARY_DISCOVERY_01", "independent_verifier_commit": "2dfe96c88fd66953d3fee148415e2e837c1bd2c7", "prereg_commit": "8ebf8a181a3cfaf03737ef585f8906d28f8d419f", "state": "REGISTERED"}
+{"experiment_id": "ARC03_PRIMARY_DISCOVERY_01", "resumed": false, "state": "STARTED"}
+{"accounting_reconciliation": "PASS", "economic_experiments": 1, "experiment_id": "ARC03_PRIMARY_DISCOVERY_01", "final_status": "DISCOVERY_FAIL", "pit_execution_audit": "PASS", "state": "COMPLETED", "trade_ledger_reconciliation": "PASS", "trades": 4854}

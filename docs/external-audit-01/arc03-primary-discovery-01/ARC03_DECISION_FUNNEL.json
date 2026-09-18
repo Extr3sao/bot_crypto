@@ -1,0 +1,95 @@
+{
+  "assets": [
+    "BTCUSDT",
+    "ETHUSDT",
+    "SOLUSDT"
+  ],
+  "bars_outside_common_window": 148200,
+  "common_window_ms": [
+    1600066800000,
+    1788220500000
+  ],
+  "decisions_evaluated": 1881540,
+  "executed_trades": 4854,
+  "experiment_id": "ARC03_PRIMARY_DISCOVERY_01",
+  "no_signal_precedence": [
+    "OUTSIDE_COMMON_WINDOW",
+    "REFERENCE_HISTORY_INCOMPLETE",
+    "NO_PARTICIPATION_SHOCK",
+    "NO_EXCURSION_RECORD",
+    "NO_EXHAUSTION",
+    "POSITION_ALREADY_OPEN",
+    "INSUFFICIENT_FORWARD_PRICE_DATA"
+  ],
+  "no_silent_filtering": "every evaluated decision is accounted for by exactly one reason or one trade",
+  "participation_control_funnel": {
+    "decisions_evaluated": 1881540,
+    "executed_trades": 7054,
+    "reason_counts": {
+      "INSUFFICIENT_FORWARD_PRICE_DATA": 0,
+      "NO_EXCURSION_RECORD": 1802475,
+      "NO_EXHAUSTION": 60925,
+      "OUTSIDE_COMMON_WINDOW": 148200,
+      "POSITION_ALREADY_OPEN": 2446,
+      "REFERENCE_HISTORY_INCOMPLETE": 8640
+    }
+  },
+  "per_asset_signals": {
+    "BTCUSDT": {
+      "long": 873,
+      "short": 746
+    },
+    "ETHUSDT": {
+      "long": 1090,
+      "short": 734
+    },
+    "SOLUSDT": {
+      "long": 784,
+      "short": 627
+    }
+  },
+  "reason_counts": {
+    "INSUFFICIENT_FORWARD_PRICE_DATA": 0,
+    "NO_EXCURSION_RECORD": 25424,
+    "NO_EXHAUSTION": 31940,
+    "NO_PARTICIPATION_SHOCK": 1809262,
+    "OUTSIDE_COMMON_WINDOW": 148200,
+    "POSITION_ALREADY_OPEN": 1420,
+    "REFERENCE_HISTORY_INCOMPLETE": 8640
+  },
+  "reconciliation": {
+    "asset_counts_sum_to_total": true,
+    "bars_examined_total": 2029740,
+    "bars_outside_common_window": 148200,
+    "decisions_evaluated": 1881540,
+    "evaluated_equals_rejected_plus_executed": true,
+    "executed": 4854,
+    "explicitly_rejected": 1876686,
+    "full_accounting_identity": true,
+    "funnel": {
+      "INSUFFICIENT_FORWARD_PRICE_DATA": 0,
+      "NO_EXCURSION_RECORD": 25424,
+      "NO_EXHAUSTION": 31940,
+      "NO_PARTICIPATION_SHOCK": 1809262,
+      "OUTSIDE_COMMON_WINDOW": 148200,
+      "POSITION_ALREADY_OPEN": 1420,
+      "REFERENCE_HISTORY_INCOMPLETE": 8640
+    },
+    "identical_trade_ids_across_cost_scenarios": true,
+    "ledger_rows": 4854,
+    "ledger_rows_equal_trades": true,
+    "long_count": 2747,
+    "long_plus_short_equals_total": true,
+    "per_asset_counts": {
+      "BTCUSDT": 1619,
+      "ETHUSDT": 1824,
+      "SOLUSDT": 1411
+    },
+    "short_count": 2107,
+    "trade_ids_identical": true,
+    "verdict": "PASS"
+  },
+  "schema": "ARC03_DECISION_FUNNEL/1.0.0",
+  "signals_long": 2747,
+  "signals_short": 2107
+}

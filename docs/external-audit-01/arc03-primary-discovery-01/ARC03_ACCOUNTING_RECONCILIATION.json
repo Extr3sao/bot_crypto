@@ -1,0 +1,19 @@
+{
+  "checks": 24270,
+  "ex_funding_has_zero_funding_contribution": true,
+  "experiment_id": "ARC03_PRIMARY_DISCOVERY_01",
+  "funding_settlement_distribution": {
+    "0": 4271,
+    "1": 583,
+    "2": 0,
+    "more": 0
+  },
+  "independent_funding_rederivation": {
+    "mismatch_count": 0,
+    "mismatches": []
+  },
+  "schema": "ARC03_ACCOUNTING_RECONCILIATION/1.0.0",
+  "tolerance": 1e-12,
+  "verdict": "PASS",
+  "violations": []
+}

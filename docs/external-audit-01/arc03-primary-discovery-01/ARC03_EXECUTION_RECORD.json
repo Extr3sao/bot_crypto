@@ -1,0 +1,134 @@
+{
+  "_authority": "EXPERIMENT_LEDGER.jsonl (append-only, durable experiment ledger). This file is a persisted summary artifact; on any conflict the ledger rows win.",
+  "schema": "ARC03_EXECUTION_RECORD/1.0.0",
+  "checkpoint": "ARC03-PRIMARY-DISCOVERY-01",
+  "experiment_id": "ARC03_PRIMARY_DISCOVERY_01",
+  "hypothesis_id": "ARC-03-PARTICIPATION-SHOCK-REVERSAL-01",
+  "generated_by": "buffy-agent (Freebuff)",
+  "execution_worktree": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc03-primary-discovery-01",
+  "execution_branch": "research/arc03-primary-discovery-01",
+  "prereg_commit": "8ebf8a181a3cfaf03737ef585f8906d28f8d419f",
+  "independent_verifier_commit": "2dfe96c88fd66953d3fee148415e2e837c1bd2c7",
+  "data_authority_commit": "8668a3174234255b1b1f27a7bf04b8f022af68bb",
+  "execution_implementation_commit": "b8b0d7001658e9e52f4dc7eb1ff4ed33d2896139",
+  "generated_from_commit": "b8b0d7001658e9e52f4dc7eb1ff4ed33d2896139",
+  "result_commit": null,
+  "git_head_at_result_write": "b8b0d7001658e9e52f4dc7eb1ff4ed33d2896139",
+  "ledger_path": "docs/external-audit-01/arc03-primary-discovery-01/EXPERIMENT_LEDGER.jsonl",
+  "ledger_rows": 3,
+  "ledger_states": [
+    "REGISTERED",
+    "STARTED",
+    "COMPLETED"
+  ],
+  "counts": {
+    "economic_experiment_ids": 1,
+    "execution_attempts": 2,
+    "completed_economic_executions": 1,
+    "failed_or_superseded_attempts": 1,
+    "evaluation_attempts_completed": 1
+  },
+  "attempts": [
+    {
+      "attempt_index": 1,
+      "state": "INTERRUPTED",
+      "stage_reached": "data binding PASS + certified partitions loaded + frozen reference emission in progress",
+      "result_computed": false,
+      "result_observed": false,
+      "identity_consumed": false,
+      "artifacts_written": [
+        "ARC03_DATA_BINDING_EXECUTION.json",
+        "EXPERIMENT_LEDGER.jsonl (REGISTERED, STARTED)"
+      ],
+      "evidence": "ARC03_DATA_BINDING_EXECUTION.json mtime 2026-09-17 20:39 local; ledger contained no COMPLETED row; no trade ledger, no gate value and no aggregate metric existed",
+      "note": "Process terminated by a host/session interruption while the frozen emission was still running. No trade set, no PnL, no metric and no gate value was produced or inspected (mission §36)."
+    },
+    {
+      "attempt_index": 2,
+      "state": "COMPLETED",
+      "resumed_from_attempt_index": 1,
+      "result_computed": true,
+      "result_observed_after_durable_completion": true,
+      "final_status": "DISCOVERY_FAIL",
+      "note": "Mission §2: a technical interruption may RESUME; it must NOT create a second economic experiment. The resume path re-asserted that no previous COMPLETED economic execution existed, did not append a second REGISTERED or STARTED row, and appended exactly one COMPLETED row."
+    }
+  ],
+  "exactly_once": {
+    "certification": "PASS",
+    "semantics": "MISSION §2 exactly-once semantics: one experiment identity and one completed economic execution. A technical interruption of the same identity may resume; only a second COMPLETED economic execution would be FALSE_SUCCESS.",
+    "economic_experiments": 1,
+    "authority": "EXPERIMENT_LEDGER.jsonl COMPLETED row carries economic_experiments = 1; the row count of COMPLETED economic executions is 1.",
+    "duplicate_completed_execution": false,
+    "preconditions_reasserted_on_resume": [
+      "no previous COMPLETED economic execution existed (asserted before STARTED/resume)",
+      "python import authority resolves inside the audited target",
+      "data binding, prereg binding and common window re-proven from bytes before emission"
+    ]
+  },
+  "separated_verdicts": {
+    "ECONOMIC_VERDICT": "DISCOVERY_FAIL",
+    "EXACTLY_ONCE_CERTIFICATION": "PASS",
+    "INFRASTRUCTURE_VERIFICATION": "PASS",
+    "FALSE_SUCCESS": 0,
+    "note": "Following the H3 governance correction (docs/external-audit-01/H3_EXACTLY_ONCE_SEMANTICS_CORRECTION.md) and the H5 execution-record convention, execution/reporting findings are stated separately from the economic verdict instead of being folded into it or used to repair it."
+  },
+  "artifact_defects": [
+    {
+      "id": "DEF_ARC03_PD01_REPORT_001",
+      "severity": "REPORTING_ONLY",
+      "status": "DISCLOSED_NOT_REPAIRED",
+      "description": "The archival artifacts publish a pre-COMPLETED echo of the exactly-once counter. The executor writes RESULT.json (and the two rendered .md reports derived from it) before appending the COMPLETED ledger row, so the same file that declares FINAL_STATUS=DISCOVERY_FAIL and economic_execution=COMPLETED also publishes the stale count 0 with states [REGISTERED, STARTED].",
+      "affected_fields": [
+        "ARC03_PRIMARY_DISCOVERY_RESULT.json :: exactly_once.economic_experiments (0)",
+        "ARC03_PRIMARY_DISCOVERY_RESULT.json :: exactly_once.states ([\"REGISTERED\",\"STARTED\"])",
+        "ARC03_PRIMARY_DISCOVERY_RESULT.md :: ECONOMIC_EXPERIMENTS: 0",
+        "RUN_REPORT.md :: ECONOMIC_EXPERIMENTS = 0"
+      ],
+      "value_published_in_affected_artifacts": 0,
+      "authoritative_value": 1,
+      "authority": "EXPERIMENT_LEDGER.jsonl COMPLETED row (economic_experiments = 1) and RUN_REPORT.json (exactly_once.economic_experiments = 1, states [REGISTERED, STARTED, COMPLETED])",
+      "why_it_is_reporting_only": "The write ORDER of the executor is correct for durability and the economic result is unaffected: it occurs strictly after gate evaluation, controls, PIT audit, accounting and the trade-ledger write, and it touches no economic input, output, gate, control or reconciliation. The durable ledger and RUN_REPORT.json carry the correct value.",
+      "why_it_was_not_repaired": "MISSION §3/§39: no implementation modification or artifact repair after real outcomes become visible, and no rerun. All artifacts are preserved byte-identical; the correction lives in this record.",
+      "impact_on_verdict": "none — the defect cannot manufacture a PASS, and both the published and the authoritative value support the same DISCOVERY_FAIL verdict"
+    },
+    {
+      "id": "DEF_ARC03_PD01_REPORT_002",
+      "severity": "COSMETIC",
+      "status": "DISCLOSED_NOT_REPAIRED",
+      "description": "RUN_REPORT.json :: artifacts[] lists the directory listing taken before RUN_REPORT.json and RUN_REPORT.md are written, so those two files are absent from their own listing.",
+      "impact_on_verdict": "none",
+      "authoritative_listing": "the 12 mission §40 artifacts plus this execution record are present in this directory"
+    }
+  ],
+  "preserved_artifact_sha256": {
+    "ARC03_ACCOUNTING_RECONCILIATION.json": "35d11b92bc47dfe5d70944d80e46df52a3cc1dc5fb163731192602d26205dc82",
+    "ARC03_CONTROL_RESULTS.json": "37f472413f71efd726d0660750fc9ffa4c2f54d057660c2c331a826708323524",
+    "ARC03_DATA_BINDING_EXECUTION.json": "710c26eec7aa97b955a7aec6b11e38eb89b2469aaba08c312a4ad3efc0a6613d",
+    "ARC03_DECISION_FUNNEL.json": "6990b50e9681693f4403a511fb1c4ac9cbb721157f96b11ad17a755a581d05ed",
+    "ARC03_PIT_EXECUTION_AUDIT.json": "83725328f2ca396dc091edf5f5988eda04550a5954720840722349e8fecdbfd8",
+    "ARC03_PRIMARY_DISCOVERY_RESULT.json": "812fbdc3a4c7452a72fb61b7bd4a38561e45221236797f3ca2d48dc36c4a665b",
+    "ARC03_PRIMARY_DISCOVERY_RESULT.md": "b3e70c90d903db959b7ec8d57f3a482593179bb3a52310b1f1e245fb6efbf71c",
+    "ARC03_STATISTICAL_GATES_RESULT.json": "de18a603c561a0af825d94496062438e530a3c27c4f7bd3083c949db2a202539",
+    "ARC03_TRADE_LEDGER.jsonl": "4687f6210fcbd534a4265eb7af78946d541069a7d59759fdcb508b8dbe1e4acf",
+    "EXPERIMENT_LEDGER.jsonl": "91c2c74ba3b06bcd23a19c92d3cbaf4bfefee752b038cc45cc780facd475cc18",
+    "RUN_REPORT.json": "ffbc5f51c9ebe2ebfdf159bfd957ba2a806eeeb187adc8585d371d0e045f0e31",
+    "RUN_REPORT.md": "dd38fcf9185e0c4061612f5d000811b66d059d1a4ab69afa01bee930c03c2220"
+  },
+  "post_result_integrity": {
+    "implementation_bytes_changed_after_freeze": false,
+    "economics_rerun": false,
+    "artifact_repaired_or_rewritten": false,
+    "partial_result_accepted": false,
+    "checks": [
+      "git HEAD == execution_implementation_commit at result write (no post-freeze implementation modification)",
+      "git status clean apart from this untracked result directory",
+      "one COMPLETED ledger row; no second REGISTERED/STARTED economic experiment",
+      "gates, controls, costs and funding were evaluated once, on one frozen trade set"
+    ]
+  },
+  "limitations": [
+    "EXECUTION_ATTEMPTS = 2 because attempt 1 was interrupted mid-emission by the host; only attempt 2 reached evaluation output. No result from attempt 1 was ever computed or observed.",
+    "The verdict is an IN-SAMPLE primary discovery verdict on the frozen common window; it carries no out-of-sample or robustness claim (mission §29/§30).",
+    "This hypothesis is now spent: any variant requires a NEW_HYPOTHESIS_ID and a NEW_PREREGISTRATION (mission §38)."
+  ]
+}

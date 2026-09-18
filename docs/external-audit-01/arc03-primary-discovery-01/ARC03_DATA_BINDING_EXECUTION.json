@@ -1,0 +1,102 @@
+{
+  "audited_target": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc03-primary-discovery-01",
+  "common_window_match": true,
+  "common_window_recomputed": {
+    "bound_semantics": "CLOSED interval on 5m bar-OPEN times: bar_open_time_ms in [start_ms, end_ms]",
+    "derivation": "max(first admitted bar open) .. min(last admitted bar open) across the three assets",
+    "end_ms": 1788220500000,
+    "per_asset_first_open_ms": {
+      "BTCUSDT": 1577836800000,
+      "ETHUSDT": 1577836800000,
+      "SOLUSDT": 1600066800000
+    },
+    "per_asset_last_open_ms": {
+      "BTCUSDT": 1788220500000,
+      "ETHUSDT": 1788220500000,
+      "SOLUSDT": 1788220500000
+    },
+    "start_ms": 1600066800000,
+    "window_span_days_inclusive": 2177.7083333333335
+  },
+  "data_binding": {
+    "dataset_match": true,
+    "dataset_sha256_expected": "1a6ad11712ce436ce9d413d6b53162d66996778cd98643ef7c3eb746a54745ef",
+    "dataset_sha256_recomputed": "1a6ad11712ce436ce9d413d6b53162d66996778cd98643ef7c3eb746a54745ef",
+    "dataset_sha256_recorded": "1a6ad11712ce436ce9d413d6b53162d66996778cd98643ef7c3eb746a54745ef",
+    "funding_match": true,
+    "funding_partition_sha256_expected_arc01": {
+      "BTCUSDT": "700b0c4c7e5ffa9dbe82cd84e98be9f505bce6f1792d33d0eae88d07a7585855",
+      "ETHUSDT": "2edf501ea69807bbf67cdd519e53de18c8dea25ea8bdf009beb88ef2e2693943",
+      "SOLUSDT": "6b16d13f5115f906f9ceb4f5a418f7a541c37609e780cfbad0d52ed565808f85"
+    },
+    "funding_partition_sha256_observed": {
+      "BTCUSDT": "700b0c4c7e5ffa9dbe82cd84e98be9f505bce6f1792d33d0eae88d07a7585855",
+      "ETHUSDT": "2edf501ea69807bbf67cdd519e53de18c8dea25ea8bdf009beb88ef2e2693943",
+      "SOLUSDT": "6b16d13f5115f906f9ceb4f5a418f7a541c37609e780cfbad0d52ed565808f85"
+    },
+    "partition_match": true,
+    "partition_meta": {
+      "BTCUSDT": {
+        "bytes": 148681285,
+        "sha256": "eb75ab97881fd941c05d1b188778f1a832ab404c59f5991eff12ead779e4ab02"
+      },
+      "ETHUSDT": {
+        "bytes": 146529986,
+        "sha256": "24c886902760b2e2c873df7721c12098e65b768762f55e2144d990deac04c211"
+      },
+      "SOLUSDT": {
+        "bytes": 127560282,
+        "sha256": "d872bc7dc8a52eb697962516fbd24a636483acd43e524cdbbf09985d2720f548"
+      }
+    },
+    "partition_sha256_observed": {
+      "BTCUSDT": "eb75ab97881fd941c05d1b188778f1a832ab404c59f5991eff12ead779e4ab02",
+      "ETHUSDT": "24c886902760b2e2c873df7721c12098e65b768762f55e2144d990deac04c211",
+      "SOLUSDT": "d872bc7dc8a52eb697962516fbd24a636483acd43e524cdbbf09985d2720f548"
+    },
+    "partition_sha256_recorded": {
+      "BTCUSDT": "eb75ab97881fd941c05d1b188778f1a832ab404c59f5991eff12ead779e4ab02",
+      "ETHUSDT": "24c886902760b2e2c873df7721c12098e65b768762f55e2144d990deac04c211",
+      "SOLUSDT": "d872bc7dc8a52eb697962516fbd24a636483acd43e524cdbbf09985d2720f548"
+    }
+  },
+  "data_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc03-participation-reversal-01",
+  "data_root_is_audited_target": false,
+  "experiment_id": "ARC03_PRIMARY_DISCOVERY_01",
+  "frozen_constants": {
+    "assets": [
+      "BTCUSDT",
+      "ETHUSDT",
+      "SOLUSDT"
+    ],
+    "assets_match": true,
+    "common_window_ms_expected": [
+      1600066800000,
+      1788220500000
+    ],
+    "cost_scenarios_bps": [
+      0,
+      10,
+      20,
+      40
+    ],
+    "holding_ms": 3600000,
+    "primary_cost_bps": 10
+  },
+  "prereg_binding": {
+    "manifest_match": true,
+    "manifest_path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc03-primary-discovery-01\\docs\\arc03-prereg-01\\ARC03_MANIFEST_V1.json",
+    "manifest_sha256": "3b022693fde0a4e362329a009125292410bb1ba3d0e2b3f8571b795a15b1d1a3",
+    "manifest_sha256_expected": "3b022693fde0a4e362329a009125292410bb1ba3d0e2b3f8571b795a15b1d1a3",
+    "spec_match": true,
+    "spec_path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc03-primary-discovery-01\\docs\\arc03-prereg-01\\ARC03_SPEC_V1.json",
+    "spec_sha256": "a69edabb2931b3897cc0bcabdb7c203009ace742af1a729e47f7cb058a407a2d",
+    "spec_sha256_expected": "a69edabb2931b3897cc0bcabdb7c203009ace742af1a729e47f7cb058a407a2d"
+  },
+  "python_import_authority": {
+    "authority_import_lives_in_target": true,
+    "module": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc03-primary-discovery-01\\src\\trading_bot\\research\\arc03\\arc03_authority.py"
+  },
+  "schema": "ARC03_DATA_BINDING_EXECUTION/1.0.0",
+  "verdict": "PASS"
+}
