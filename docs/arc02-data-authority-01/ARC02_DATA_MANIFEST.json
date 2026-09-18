@@ -1,0 +1,140 @@
+{
+  "authority_role": "ARC02_PROJECTION_OF_REUSED_ARC03_AUTHORITY",
+  "bar_ms": 300000,
+  "checkpoint": "ARC02-DATA-001",
+  "dataset_sha256": "03f227d0ae18efdc8e3d84831283c4e3f7a333bf0fea8b944f55a9144cc164d5",
+  "dataset_sha256_method": "sha256(canonical_json({schema_version, projection_version, interval, projected_fields, dropped_fields, source_authority_dataset_sha256, reuse_semantics, files[{symbol,source_partition_sha256,projection_sha256,rows,first_open_ms,last_open_ms}]})) over all symbols sorted by symbol. No machine-specific absolute path participates in identity.",
+  "family": "binance_usdm_klines_5m",
+  "interval": "5m",
+  "partition_sha256": {
+    "BTCUSDT": "05b093a5fdaf693f761327c1ee3128fec587d62c4354afeea84f734321d76d80",
+    "ETHUSDT": "0072b6cb14b561dc2402901dad9009f5a9cc9f989164a175dece096b98d96638",
+    "SOLUSDT": "b5be57d09c54ae59491b2d987d385c3738f4b6187f8d93be07221af4d0170019"
+  },
+  "partitions": {
+    "BTCUSDT": "data/processed/arc02_klines_5m/BTCUSDT.jsonl",
+    "ETHUSDT": "data/processed/arc02_klines_5m/ETHUSDT.jsonl",
+    "SOLUSDT": "data/processed/arc02_klines_5m/SOLUSDT.jsonl"
+  },
+  "per_symbol": {
+    "BTCUSDT": {
+      "close_time_monotonic": true,
+      "close_time_violations": 0,
+      "completed_bar_semantics": true,
+      "dropped_fields": [
+        "h",
+        "l",
+        "v",
+        "qv",
+        "n",
+        "tb",
+        "tq"
+      ],
+      "duplicate_open_slots": 0,
+      "first_open_ms": 1577836800000,
+      "internal_cadence_breaks": 0,
+      "last_open_ms": 1788220500000,
+      "monotonic_open_time": true,
+      "non_finite_values": 0,
+      "non_positive_prices": 0,
+      "off_grid_slots": 0,
+      "projected_fields": [
+        "t",
+        "ct",
+        "o",
+        "c"
+      ],
+      "projection_path": "data/processed/arc02_klines_5m/BTCUSDT.jsonl",
+      "projection_sha256": "05b093a5fdaf693f761327c1ee3128fec587d62c4354afeea84f734321d76d80",
+      "projection_size_bytes": 70110514,
+      "rows": 701280,
+      "source_partition_sha256": "eb75ab97881fd941c05d1b188778f1a832ab404c59f5991eff12ead779e4ab02",
+      "symbol": "BTCUSDT"
+    },
+    "ETHUSDT": {
+      "close_time_monotonic": true,
+      "close_time_violations": 0,
+      "completed_bar_semantics": true,
+      "dropped_fields": [
+        "h",
+        "l",
+        "v",
+        "qv",
+        "n",
+        "tb",
+        "tq"
+      ],
+      "duplicate_open_slots": 0,
+      "first_open_ms": 1577836800000,
+      "internal_cadence_breaks": 0,
+      "last_open_ms": 1788220500000,
+      "monotonic_open_time": true,
+      "non_finite_values": 0,
+      "non_positive_prices": 0,
+      "off_grid_slots": 0,
+      "projected_fields": [
+        "t",
+        "ct",
+        "o",
+        "c"
+      ],
+      "projection_path": "data/processed/arc02_klines_5m/ETHUSDT.jsonl",
+      "projection_sha256": "0072b6cb14b561dc2402901dad9009f5a9cc9f989164a175dece096b98d96638",
+      "projection_size_bytes": 68508243,
+      "rows": 701280,
+      "source_partition_sha256": "24c886902760b2e2c873df7721c12098e65b768762f55e2144d990deac04c211",
+      "symbol": "ETHUSDT"
+    },
+    "SOLUSDT": {
+      "close_time_monotonic": true,
+      "close_time_violations": 0,
+      "completed_bar_semantics": true,
+      "dropped_fields": [
+        "h",
+        "l",
+        "v",
+        "qv",
+        "n",
+        "tb",
+        "tq"
+      ],
+      "duplicate_open_slots": 0,
+      "first_open_ms": 1600066800000,
+      "internal_cadence_breaks": 0,
+      "last_open_ms": 1788220500000,
+      "monotonic_open_time": true,
+      "non_finite_values": 0,
+      "non_positive_prices": 0,
+      "off_grid_slots": 0,
+      "projected_fields": [
+        "t",
+        "ct",
+        "o",
+        "c"
+      ],
+      "projection_path": "data/processed/arc02_klines_5m/SOLUSDT.jsonl",
+      "projection_sha256": "b5be57d09c54ae59491b2d987d385c3738f4b6187f8d93be07221af4d0170019",
+      "projection_size_bytes": 61913875,
+      "rows": 627180,
+      "source_partition_sha256": "d872bc7dc8a52eb697962516fbd24a636483acd43e524cdbbf09985d2720f548",
+      "symbol": "SOLUSDT"
+    }
+  },
+  "projection_version": "1.0.0",
+  "quality_status": "PASS",
+  "schema_version": "1.0.0",
+  "source_authority": {
+    "daily_root": "data/raw/binance_um/arc03_daily/{SYMBOL}/{YYYY-MM-DD}/",
+    "dataset_sha256": "1a6ad11712ce436ce9d413d6b53162d66996778cd98643ef7c3eb746a54745ef",
+    "partition_sha256": {
+      "BTCUSDT": "eb75ab97881fd941c05d1b188778f1a832ab404c59f5991eff12ead779e4ab02",
+      "ETHUSDT": "24c886902760b2e2c873df7721c12098e65b768762f55e2144d990deac04c211",
+      "SOLUSDT": "d872bc7dc8a52eb697962516fbd24a636483acd43e524cdbbf09985d2720f548"
+    },
+    "processed_root": "data/processed/arc03_klines_5m/{SYMBOL}.jsonl",
+    "provider": "Binance (official public market-data archive, data.binance.vision)",
+    "raw_files_sha256": "abfe8caee35ff441d71127430a8547eba98e54a7a722681db908565b720996a9",
+    "raw_root": "data/raw/binance_um/arc03/{SYMBOL}/{YYYY-MM}/",
+    "reused_from": "ARC-03 data authority (ARC03-DATA-001, independently verified)"
+  }
+}

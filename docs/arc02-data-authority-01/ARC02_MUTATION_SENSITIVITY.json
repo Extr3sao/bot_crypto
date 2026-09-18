@@ -1,0 +1,11 @@
+{
+  "MUTATION_SENSITIVITY": "PASS",
+  "canonical_authority_untouched": true,
+  "canonical_partition_sha256_on_disk": "05b093a5fdaf693f761327c1ee3128fec587d62c4354afeea84f734321d76d80",
+  "checkpoint": "ARC02-DATA-001",
+  "fingerprint_changed": true,
+  "method": "mutated input was written to a temporary root; the canonical authority was re-read afterwards and its digest is unchanged",
+  "mutated_dataset_sha256": "04aee50487b688e94ae7038d3588ea0538f76f38201f296b7c86412b2b724ec3",
+  "mutation": "one admitted close value in a TEMP copy of the BTCUSDT projection was multiplied by 1.0000001",
+  "original_dataset_sha256": "03f227d0ae18efdc8e3d84831283c4e3f7a333bf0fea8b944f55a9144cc164d5"
+}

@@ -1,0 +1,300 @@
+{
+  "battery": "ARC02_PIT_ADVERSARIAL",
+  "checks": [
+    {
+      "check": "BASELINE_POSITIVE_SHOCK_PLUS_POSITIVE_UNDERREACTION_YIELDS_LONG",
+      "detail": {
+        "ratio": 0.25,
+        "reason": null,
+        "result": "LONG",
+        "z": 4.0
+      },
+      "pass": true
+    },
+    {
+      "check": "DECISION_TIME_IS_MAX_OF_BOTH_COMPLETED_BAR_CLOSES",
+      "detail": {
+        "decision_time_ms": 1702700099999
+      },
+      "pass": true
+    },
+    {
+      "check": "DECISION_BAR_IS_NOT_LAST_BAR_OF_PARTITION",
+      "detail": {
+        "future_leader_bars": 2519
+      },
+      "pass": true
+    },
+    {
+      "check": "ALL_REFERENCE_OBSERVATIONS_AT_OR_BEFORE_DECISION",
+      "detail": null,
+      "pass": true
+    },
+    {
+      "check": "NEGATIVE_SHOCK_PLUS_NEGATIVE_UNDERREACTION_YIELDS_SHORT",
+      "detail": {
+        "reason": null,
+        "result": "SHORT"
+      },
+      "pass": true
+    },
+    {
+      "check": "OPPOSITE_SIGN_FOLLOWER_YIELDS_NO_SIGNAL",
+      "detail": {
+        "reason": "FOLLOWER_NO_SAME_SIGN_RESPONSE"
+      },
+      "pass": true
+    },
+    {
+      "check": "ZERO_FOLLOWER_RETURN_FAILS_CLOSED",
+      "detail": {
+        "follower_return": 0.0,
+        "reason": "FOLLOWER_NO_SAME_SIGN_RESPONSE"
+      },
+      "pass": true
+    },
+    {
+      "check": "PROPORTIONAL_FOLLOWER_RESPONSE_YIELDS_NO_SIGNAL",
+      "detail": {
+        "ratio": 0.75
+      },
+      "pass": true
+    },
+    {
+      "check": "EXACTLY_THRESHOLD_SHOCK_STATISTIC_IS_NOT_A_SHOCK",
+      "detail": {
+        "z": 3.0
+      },
+      "pass": true
+    },
+    {
+      "check": "SHOCK_STATISTIC_JUST_ABOVE_THRESHOLD_IS_A_SHOCK",
+      "detail": {
+        "z": 3.000000018033688
+      },
+      "pass": true
+    },
+    {
+      "check": "EXACTLY_HALF_FOLLOWER_RESPONSE_IS_NOT_UNDERREACTION",
+      "detail": {
+        "ratio": 0.5
+      },
+      "pass": true
+    },
+    {
+      "check": "FOLLOWER_RESPONSE_JUST_ABOVE_HALF_IS_NOT_UNDERREACTION",
+      "detail": {
+        "ratio": 0.5000000090168439
+      },
+      "pass": true
+    },
+    {
+      "check": "ZERO_LEADER_SCALE_FAILS_CLOSED",
+      "detail": {
+        "scale": 0.0
+      },
+      "pass": true
+    },
+    {
+      "check": "MISSING_LEADER_REFERENCE_FAILS_CLOSED",
+      "detail": {
+        "reason": "LEADER_HISTORY_INCOMPLETE"
+      },
+      "pass": true
+    },
+    {
+      "check": "MISSING_FOLLOWER_BAR_FAILS_CLOSED",
+      "detail": {
+        "reason": "FOLLOWER_BAR_MISSING"
+      },
+      "pass": true
+    },
+    {
+      "check": "LEADER_BAR_ABSENT_AT_DECISION_SLOT_FAILS_CLOSED",
+      "detail": {
+        "reason": "BAR_ALIGNMENT_FAILURE"
+      },
+      "pass": true
+    },
+    {
+      "check": "SLOT_OUTSIDE_EVERY_PARTITION_FAILS_CLOSED",
+      "detail": {
+        "reason": "BAR_ALIGNMENT_FAILURE"
+      },
+      "pass": true
+    },
+    {
+      "check": "FUTURE_MUTATION_AFTER_T_CHANGES_NOTHING",
+      "detail": {
+        "result": "LONG"
+      },
+      "pass": true
+    },
+    {
+      "check": "LATER_BARS_ABSENT_DOES_NOT_CHANGE_DECISION",
+      "detail": {
+        "result": "LONG"
+      },
+      "pass": true
+    },
+    {
+      "check": "PAST_ELIGIBLE_REFERENCE_MUTATION_CHANGES_STATE",
+      "detail": {
+        "scale_after": 1.0,
+        "scale_before": 0.6931471805599453
+      },
+      "pass": true
+    },
+    {
+      "check": "PAST_ELIGIBLE_DRIVER_MUTATION_CHANGES_STATE",
+      "detail": {
+        "z": 4.000000009016844
+      },
+      "pass": true
+    },
+    {
+      "check": "INCOMPLETE_CURRENT_BAR_INVISIBLE",
+      "detail": {
+        "bar_index": 11519,
+        "last_visible_index": 11518
+      },
+      "pass": true
+    },
+    {
+      "check": "COMPLETED_BAR_VISIBLE_AT_ITS_OWN_CLOSE",
+      "detail": null,
+      "pass": true
+    },
+    {
+      "check": "BAR_CLOSE_TIME_IS_OPEN_PLUS_299999",
+      "detail": {
+        "close": 1703455799999,
+        "open": 1703455500000
+      },
+      "pass": true
+    },
+    {
+      "check": "ENTRY_IS_STRICTLY_AFTER_DECISION_TIME",
+      "detail": {
+        "entry_open_ms": 1702700100000
+      },
+      "pass": true
+    },
+    {
+      "check": "SAME_BAR_ENTRY_FORBIDDEN",
+      "detail": {
+        "entry_open_ms": 1702700100000
+      },
+      "pass": true
+    },
+    {
+      "check": "EXIT_IS_ONE_BAR_OPEN_AFTER_ENTRY",
+      "detail": {
+        "entry_open_ms": 1702700100000,
+        "exit_open_ms": 1702700400000
+      },
+      "pass": true
+    },
+    {
+      "check": "TIMING_CONTROL_OFFSET_IS_CAUSAL_AND_FROZEN",
+      "detail": {
+        "control_entry_open_ms": 1702700400000
+      },
+      "pass": true
+    },
+    {
+      "check": "LEADER_CONTROL_DESTROYS_CONTEMPORANEOUS_LEADER_INFORMATION",
+      "detail": {
+        "control_reason": "NO_BTC_SHOCK",
+        "control_result": "NO_SIGNAL"
+      },
+      "pass": true
+    },
+    {
+      "check": "LEADER_CONTROL_IS_NOT_IDENTICAL_TO_PRIMARY_ON_THIS_FIXTURE",
+      "detail": {
+        "control_z": 1.0,
+        "primary_z": 4.0
+      },
+      "pass": true
+    },
+    {
+      "check": "LEADER_CONTROL_READS_ONLY_STRICTLY_PAST_LEADER_BARS",
+      "detail": null,
+      "pass": true
+    },
+    {
+      "check": "NO_SIGNAL_PRECEDENCE_FROZEN_AND_TOTAL",
+      "detail": [
+        "OUTSIDE_COMMON_WINDOW",
+        "BAR_ALIGNMENT_FAILURE",
+        "LEADER_HISTORY_INCOMPLETE",
+        "LEADER_SCALE_ZERO",
+        "NO_BTC_SHOCK",
+        "FOLLOWER_BAR_MISSING",
+        "FOLLOWER_NO_SAME_SIGN_RESPONSE",
+        "FOLLOWER_NOT_UNDERREACTING",
+        "POSITION_ALREADY_OPEN",
+        "INSUFFICIENT_FORWARD_PRICE_DATA"
+      ],
+      "pass": true
+    },
+    {
+      "check": "PROJECTION_DROPS_EVERY_ORDER_FLOW_AND_RANGE_FIELD",
+      "detail": {
+        "keys": [
+          "c",
+          "ct",
+          "ms",
+          "o",
+          "sym",
+          "t"
+        ]
+      },
+      "pass": true
+    },
+    {
+      "check": "READER_FAILS_CLOSED_ON_DUPLICATE_SLOT",
+      "detail": null,
+      "pass": true
+    },
+    {
+      "check": "FUNDING_SETTLEMENT_AT_ENTRY_NOT_CHARGED_AND_AT_EXIT_CHARGED",
+      "detail": {
+        "charged": [
+          1500,
+          2000
+        ]
+      },
+      "pass": true
+    },
+    {
+      "check": "FUNDING_CASHFLOW_SIGN_CONVENTION",
+      "detail": {
+        "long": -0.0002,
+        "short": 0.0002
+      },
+      "pass": true
+    },
+    {
+      "check": "FUNDING_IS_NOT_READ_BY_THE_SIGNAL_PATH",
+      "detail": null,
+      "pass": true
+    },
+    {
+      "check": "FUNDING_READER_FAILS_CLOSED_ON_NON_MONOTONIC_SETTLEMENTS",
+      "detail": null,
+      "pass": true
+    },
+    {
+      "check": "EVEN_COUNT_MEDIAN_IS_MEAN_OF_CENTRAL_TWO",
+      "detail": {
+        "scale": 0.6931471805599453
+      },
+      "pass": true
+    }
+  ],
+  "checks_passed": 39,
+  "checks_total": 39,
+  "result": "PASS"
+}

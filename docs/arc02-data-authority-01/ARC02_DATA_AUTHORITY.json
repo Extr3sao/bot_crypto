@@ -1,0 +1,174 @@
+{
+  "assets": [
+    "BTCUSDT",
+    "ETHUSDT",
+    "SOLUSDT"
+  ],
+  "authority_role": "ARC02_PROJECTION_OF_REUSED_ARC03_AUTHORITY",
+  "bar_ms": 300000,
+  "checkpoint": "ARC02-DATA-001",
+  "common_causal_window": {
+    "bound_semantics": "CLOSED interval on 5m bar-OPEN times: bar_open_time_ms in [start_ms, end_ms]",
+    "checkpoint": "ARC02-DATA-001",
+    "decision_eligibility_semantics": "a decision at aligned slot t requires: leader bars t-BAR_MS and t (completed), the 288 trailing leader return references t-289*BAR_MS..t-2*BAR_MS, the follower bars t-BAR_MS and t (completed), and the follower entry bar t+BAR_MS plus the follower exit bar t+2*BAR_MS inside the admitted partitions",
+    "derivation": "INTERSECTION of the admitted ARC-02 projection partitions of all three assets on 5m bar-OPEN times (max of first opens, min of last opens)",
+    "end_ms": 1788220500000,
+    "engineering_closure_required": "a decision whose entry bar (t+BAR_MS) or exit bar (t+2*BAR_MS) would exceed end_ms is NOT emitted (NO_SIGNAL / INSUFFICIENT_FORWARD_PRICE_DATA). The last two 5m slots of the window therefore produce no trades; this is a frozen clock-censoring guard, not a data defect.",
+    "no_observation_outside_window": true,
+    "per_asset_first_open_ms": {
+      "BTCUSDT": 1577836800000,
+      "ETHUSDT": 1577836800000,
+      "SOLUSDT": 1600066800000
+    },
+    "per_asset_last_open_ms": {
+      "BTCUSDT": 1788220500000,
+      "ETHUSDT": 1788220500000,
+      "SOLUSDT": 1788220500000
+    },
+    "span_constant_matches_prereg": true,
+    "start_ms": 1600066800000,
+    "window_span_days_inclusive": 2177.7083333333335
+  },
+  "data_quality_status": "PASS",
+  "dataset_sha256": "03f227d0ae18efdc8e3d84831283c4e3f7a333bf0fea8b944f55a9144cc164d5",
+  "dataset_sha256_method": "sha256(canonical_json({schema_version, projection_version, interval, projected_fields, dropped_fields, source_authority_dataset_sha256, reuse_semantics, files[{symbol,source_partition_sha256,projection_sha256,rows,first_open_ms,last_open_ms}]})) over all symbols sorted by symbol. No machine-specific absolute path participates in identity.",
+  "determinism": "PASS",
+  "family": "binance_usdm_klines_5m",
+  "field_admission": {
+    "any_cross_asset_or_index_field": "NOT_ADMITTED",
+    "any_funding_field_as_signal": "NOT_ADMITTED",
+    "any_open_interest_field": "NOT_ADMITTED",
+    "c": "REQUIRED (close) - the log-return basis",
+    "ct": "REQUIRED (bar close time, epoch ms UTC) - the completed-bar anchor",
+    "h": "NOT_ADMITTED (range/excursion is not part of this mechanism)",
+    "l": "NOT_ADMITTED",
+    "n": "NOT_ADMITTED",
+    "o": "REQUIRED (open) - entry and exit price anchor",
+    "qv": "NOT_ADMITTED",
+    "t": "REQUIRED (bar open time, epoch ms UTC) - decision/slot identity",
+    "tb": "NOT_ADMITTED (H5 order-flow territory)",
+    "tq": "NOT_ADMITTED",
+    "v": "NOT_ADMITTED (projection drops it; volume is the ARC-03 participation field)"
+  },
+  "followers": [
+    "ETHUSDT",
+    "SOLUSDT"
+  ],
+  "funding_authority": {
+    "arc01_funding_dataset_sha256": "5f4845f5062e68353ef421b9687bf728a56693951e2f74e17221a8e3373b62ec",
+    "classification": "RUNTIME_AUTHORITATIVE (reuse, byte-verified)",
+    "holding_period_crosses_settlements": true,
+    "partitions": [
+      {
+        "certified_arc01_partition_sha256": "700b0c4c7e5ffa9dbe82cd84e98be9f505bce6f1792d33d0eae88d07a7585855",
+        "funding_partition_sha256": "700b0c4c7e5ffa9dbe82cd84e98be9f505bce6f1792d33d0eae88d07a7585855",
+        "identity": "BYTE_IDENTICAL",
+        "role": "CASHFLOW LEG ONLY - never a signal input",
+        "symbol": "BTCUSDT"
+      },
+      {
+        "certified_arc01_partition_sha256": "2edf501ea69807bbf67cdd519e53de18c8dea25ea8bdf009beb88ef2e2693943",
+        "funding_partition_sha256": "2edf501ea69807bbf67cdd519e53de18c8dea25ea8bdf009beb88ef2e2693943",
+        "identity": "BYTE_IDENTICAL",
+        "role": "CASHFLOW LEG ONLY - never a signal input",
+        "symbol": "ETHUSDT"
+      },
+      {
+        "certified_arc01_partition_sha256": "6b16d13f5115f906f9ceb4f5a418f7a541c37609e780cfbad0d52ed565808f85",
+        "funding_partition_sha256": "6b16d13f5115f906f9ceb4f5a418f7a541c37609e780cfbad0d52ed565808f85",
+        "identity": "BYTE_IDENTICAL",
+        "role": "CASHFLOW LEG ONLY - never a signal input",
+        "symbol": "SOLUSDT"
+      }
+    ],
+    "reason": "the frozen holding period is 5 minutes; BTCUSDT/ETHUSDT settle every 8h (one settlement per 480 five-minute slots) and SOLUSDT ran a 2h/4h schedule in 2022-11, so a hold can and does contain a settlement. Funding cashflow is therefore frozen rather than omitted.",
+    "reused_from": "ARC-01 funding authority via the certified ARC-03 funding root",
+    "role": "CASHFLOW LEG ONLY - never a signal input",
+    "root": "data/processed/arc03_funding/{ASSET}_funding.jsonl"
+  },
+  "hypothesis_id": "ARC-02-BTC-ALT-LEAD-LAG-01",
+  "interval": "5m",
+  "leader": "BTCUSDT",
+  "market": "Binance USD-M perpetual futures",
+  "mutation_sensitivity": "PASS",
+  "no_machine_specific_path_in_identity": true,
+  "normalizer": "src/trading_bot/research/arc02/arc02_normalize.py",
+  "partition_sha256": {
+    "BTCUSDT": "05b093a5fdaf693f761327c1ee3128fec587d62c4354afeea84f734321d76d80",
+    "ETHUSDT": "0072b6cb14b561dc2402901dad9009f5a9cc9f989164a175dece096b98d96638",
+    "SOLUSDT": "b5be57d09c54ae59491b2d987d385c3738f4b6187f8d93be07221af4d0170019"
+  },
+  "pit": "ARC02_PIT_AUTHORITY.json",
+  "pit_tests": "ARC02_PIT_INDEPENDENT_TESTS.json",
+  "projection": {
+    "dropped_fields": [
+      "h",
+      "l",
+      "v",
+      "qv",
+      "n",
+      "tb",
+      "tq"
+    ],
+    "processed_root": "data/processed/arc02_klines_5m/{SYMBOL}.jsonl",
+    "projected_fields": [
+      "t",
+      "ct",
+      "o",
+      "c"
+    ],
+    "rationale": "the lead-lag rule reads completed 5m closes (leader/follower log returns) and 5m opens (entry/exit anchors) only. Volume, quote volume, trade count and taker-buy fields are absent from the ARC-02 projection, so ARC-02 cannot structurally read the H5 order-flow family or the ARC-03 participation field.",
+    "record_schema": [
+      "t",
+      "ct",
+      "o",
+      "c",
+      "sym",
+      "ms"
+    ],
+    "values_are_provider_strings": true
+  },
+  "raw_ledger_entries": 237,
+  "reader": "src/trading_bot/research/arc02/arc02_authority.py",
+  "reuse": {
+    "classification": "REUSABLE",
+    "credentials": "none",
+    "daily_root": "data/raw/binance_um/arc03_daily/{SYMBOL}/{YYYY-MM-DD}/",
+    "download_required": false,
+    "external_cost": "none",
+    "partitions": [
+      {
+        "certified_arc03_partition_sha256": "eb75ab97881fd941c05d1b188778f1a832ab404c59f5991eff12ead779e4ab02",
+        "identity": "BYTE_IDENTICAL",
+        "size_bytes": 148681285,
+        "source_partition_sha256": "eb75ab97881fd941c05d1b188778f1a832ab404c59f5991eff12ead779e4ab02",
+        "symbol": "BTCUSDT"
+      },
+      {
+        "certified_arc03_partition_sha256": "24c886902760b2e2c873df7721c12098e65b768762f55e2144d990deac04c211",
+        "identity": "BYTE_IDENTICAL",
+        "size_bytes": 146529986,
+        "source_partition_sha256": "24c886902760b2e2c873df7721c12098e65b768762f55e2144d990deac04c211",
+        "symbol": "ETHUSDT"
+      },
+      {
+        "certified_arc03_partition_sha256": "d872bc7dc8a52eb697962516fbd24a636483acd43e524cdbbf09985d2720f548",
+        "identity": "BYTE_IDENTICAL",
+        "size_bytes": 127560282,
+        "source_partition_sha256": "d872bc7dc8a52eb697962516fbd24a636483acd43e524cdbbf09985d2720f548",
+        "symbol": "SOLUSDT"
+      }
+    ],
+    "processed_root": "data/processed/arc03_klines_5m/{SYMBOL}.jsonl",
+    "raw_root": "data/raw/binance_um/arc03/{SYMBOL}/{YYYY-MM}/",
+    "reused_from": "ARC-03 data authority ARC03-DATA-001 (independently verified)",
+    "source_dataset_sha256": "1a6ad11712ce436ce9d413d6b53162d66996778cd98643ef7c3eb746a54745ef",
+    "source_partition_sha256": {
+      "BTCUSDT": "eb75ab97881fd941c05d1b188778f1a832ab404c59f5991eff12ead779e4ab02",
+      "ETHUSDT": "24c886902760b2e2c873df7721c12098e65b768762f55e2144d990deac04c211",
+      "SOLUSDT": "d872bc7dc8a52eb697962516fbd24a636483acd43e524cdbbf09985d2720f548"
+    },
+    "status": "REUSABLE (byte-identical)"
+  },
+  "source": "SOURCE_BINANCE_VISION_USDM_MONTHLY_KLINES (official data.binance.vision archive), reused from ARC-03"
+}

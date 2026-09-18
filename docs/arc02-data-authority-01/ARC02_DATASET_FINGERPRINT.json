@@ -1,0 +1,32 @@
+{
+  "asset_partition_sha256": {
+    "BTCUSDT": "05b093a5fdaf693f761327c1ee3128fec587d62c4354afeea84f734321d76d80",
+    "ETHUSDT": "0072b6cb14b561dc2402901dad9009f5a9cc9f989164a175dece096b98d96638",
+    "SOLUSDT": "b5be57d09c54ae59491b2d987d385c3738f4b6187f8d93be07221af4d0170019"
+  },
+  "assets": [
+    "BTCUSDT",
+    "ETHUSDT",
+    "SOLUSDT"
+  ],
+  "bar_ms": 300000,
+  "checkpoint": "ARC02-DATA-001",
+  "dataset_sha256": "03f227d0ae18efdc8e3d84831283c4e3f7a333bf0fea8b944f55a9144cc164d5",
+  "dataset_sha256_method": "sha256(canonical_json({schema_version, projection_version, interval, projected_fields, dropped_fields, source_authority_dataset_sha256, reuse_semantics, files[{symbol,source_partition_sha256,projection_sha256,rows,first_open_ms,last_open_ms}]})) over all symbols sorted by symbol. No machine-specific absolute path participates in identity.",
+  "family": "binance_usdm_klines_5m",
+  "interval": "5m",
+  "partition_sha256": {
+    "BTCUSDT": "05b093a5fdaf693f761327c1ee3128fec587d62c4354afeea84f734321d76d80",
+    "ETHUSDT": "0072b6cb14b561dc2402901dad9009f5a9cc9f989164a175dece096b98d96638",
+    "SOLUSDT": "b5be57d09c54ae59491b2d987d385c3738f4b6187f8d93be07221af4d0170019"
+  },
+  "projection_version": "1.0.0",
+  "row_counts": {
+    "BTCUSDT": 701280,
+    "ETHUSDT": 701280,
+    "SOLUSDT": 627180
+  },
+  "schema_version": "1.0.0",
+  "source_authority_dataset_sha256": "1a6ad11712ce436ce9d413d6b53162d66996778cd98643ef7c3eb746a54745ef",
+  "source_raw_files_sha256": "abfe8caee35ff441d71127430a8547eba98e54a7a722681db908565b720996a9"
+}

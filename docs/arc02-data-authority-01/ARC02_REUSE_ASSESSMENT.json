@@ -1,0 +1,30 @@
+{
+  "candidates": [
+    {
+      "authority": "ARC-03 5m Binance USD-M kline authority (ARC03-DATA-001)",
+      "classification": "REUSABLE",
+      "coverage": "BTCUSDT/ETHUSDT from 2020-01-01, SOLUSDT from 2020-09-14, all to 2026-08-31",
+      "decision": "reused (no download). ARC-02 consumes a strict field projection.",
+      "identity_proof": "partition SHA256 equality for all three symbols",
+      "pit_semantics": "completed-bar, provider close_time anchor; independently verified PIT battery (28/28)",
+      "schema": "t,ct,o,h,l,c,v,qv,n,tb,tq,sym,ms"
+    },
+    {
+      "authority": "ARC-02 2024 monthly draft inventories (docs/arc02-candidate-design-01, data/raw/binance_usdm/arc02, data/processed/arc02_ohlcv_5m)",
+      "classification": "REUSABLE_WITH_LIMITATION",
+      "coverage": "2024-01..2024-12 only",
+      "decision": "SUPERSEDED for authority purposes: a convenient 2024-only window must not be used when a broader official authority exists and can be reused without contamination. The draft is retained as research provenance only and is NOT part of the ARC-02 authority chain.",
+      "pit_semantics": "UTC open-time CSV, no close-time anchor column beyond close_time_utc; DRAFT",
+      "schema": "open_time_utc,open,high,low,close,volume,close_time_utc"
+    },
+    {
+      "authority": "binance_um / price_1h_v2 / OI / trade-flow processed families",
+      "classification": "NOT_REUSABLE",
+      "coverage": "mixed, non-5m or non-price",
+      "decision": "different cadence, different family or non-price content; not admitted for ARC-02"
+    }
+  ],
+  "checkpoint": "ARC02-DATA-001",
+  "conclusion": "FULL_COMMON_CAUSAL_HISTORY obtained purely by reuse; zero downloads, zero credentials, zero cost.",
+  "method": "reuse-before-download audit of every existing price authority in the repository"
+}

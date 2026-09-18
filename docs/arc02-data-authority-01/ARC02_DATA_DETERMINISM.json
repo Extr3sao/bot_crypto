@@ -1,0 +1,19 @@
+{
+  "A_B_DETERMINISM": "PASS",
+  "checkpoint": "ARC02-DATA-001",
+  "method": "the projection is a pure function of the reused source bytes; no environment, locale, clock or path input participates",
+  "path_independence": "run B wrote to a different absolute output root and produced the identical digest",
+  "run_A": {
+    "dataset_sha256": "03f227d0ae18efdc8e3d84831283c4e3f7a333bf0fea8b944f55a9144cc164d5",
+    "process": "in-process (canonical root)"
+  },
+  "run_B": {
+    "dataset_sha256": "03f227d0ae18efdc8e3d84831283c4e3f7a333bf0fea8b944f55a9144cc164d5",
+    "partition_sha256": {
+      "BTCUSDT": "05b093a5fdaf693f761327c1ee3128fec587d62c4354afeea84f734321d76d80",
+      "ETHUSDT": "0072b6cb14b561dc2402901dad9009f5a9cc9f989164a175dece096b98d96638",
+      "SOLUSDT": "b5be57d09c54ae59491b2d987d385c3738f4b6187f8d93be07221af4d0170019"
+    },
+    "process": "independent subprocess (fresh interpreter, temporary output root)"
+  }
+}

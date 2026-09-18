@@ -1,0 +1,45 @@
+{
+  "authority_chain": {
+    "dataset_sha256": "03f227d0ae18efdc8e3d84831283c4e3f7a333bf0fea8b944f55a9144cc164d5",
+    "manifest": "ARC02_DATA_MANIFEST.json",
+    "normalized": "data/processed/arc03_klines_5m/{SYMBOL}.jsonl, reused byte-identically",
+    "partition_sha256": {
+      "BTCUSDT": "05b093a5fdaf693f761327c1ee3128fec587d62c4354afeea84f734321d76d80",
+      "ETHUSDT": "0072b6cb14b561dc2402901dad9009f5a9cc9f989164a175dece096b98d96638",
+      "SOLUSDT": "b5be57d09c54ae59491b2d987d385c3738f4b6187f8d93be07221af4d0170019"
+    },
+    "projection": "data/processed/arc02_klines_5m/{SYMBOL}.jsonl, produced by this checkpoint",
+    "raw": "data/raw/binance_um/arc03 (+ arc03_daily supplements), reused"
+  },
+  "checkpoint": "ARC02-DATA-001",
+  "contradictions_found": 0,
+  "data_root_semantics": {
+    "absolute_required": true,
+    "default_root": "the in-tree repository root",
+    "empty_root": "FAIL_CLOSED (zero partitions)",
+    "explicit_root_env": "ARC02_DATA_ROOT",
+    "identity_is_content_based": "no machine-specific absolute path participates in dataset identity",
+    "wrong_root": "FAIL_CLOSED (missing projection partitions)"
+  },
+  "economics": {
+    "ARC02_BACKTESTS": 0,
+    "ARC02_EXECUTIONS": 0,
+    "ARC02_PERFORMANCE_OBSERVED": false
+  },
+  "existing_arc02_artifacts_seen": {
+    "data/processed/arc02_ohlcv_5m/**": "2024 CSV draft -> SUPERSEDED, not in the authority chain",
+    "data/raw/binance_usdm/arc02/**": "2024 monthly zips (draft) -> SUPERSEDED, not in the authority chain",
+    "docs/arc02-candidate-design-01/07_ARC02_PIT_CONTRACT.md": "DRAFT narrative -> SUPERSEDED by ARC02_PIT_CONTRACT.json",
+    "docs/arc02-candidate-design-01/ARC02_DATA_MANIFEST_V1.json": "dataset_sha256 2a91ed2699594fb39f388676da2f75b4486668c6625eeabb7d615da0d949ceed, 2024-only, 2024 month partitions -> SUPERSEDED (narrower window)",
+    "docs/arc02-candidate-design-01/ARC02_DATA_QUALITY_LEDGER_2024_V1.jsonl": "2024-only -> SUPERSEDED",
+    "docs/arc02-candidate-design-01/ARC02_DRAFT_MANIFEST.json": "DRAFT_NOT_FROZEN -> SUPERSEDED",
+    "docs/arc02-candidate-design-01/ARC02_DRAFT_SPEC.json": "DRAFT_NOT_PREREGISTERED (uncommitted) -> SUPERSEDED",
+    "docs/arc02-candidate-design-01/FINAL_REPORT.md": "records BLOCKED_ARC02_DATA_AUTHORITY -> now resolved"
+  },
+  "prior_committed_arc02_authority": {
+    "consequence": "the historical candidate definition is DRAFT_ONLY, so no committed economic definition exists to preserve; the frozen definitions are selected from the mechanism and the project's estimator conventions and are recorded with their deviations from the draft",
+    "evidence": "no commit in any ref mentions ARC02/ARC-02 (git log --all --grep, case-insensitive)",
+    "found": false
+  },
+  "reality_check_state": "ARC02_DATA_AUTHORITY_COMPLETE"
+}

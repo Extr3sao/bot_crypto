@@ -1,0 +1,35 @@
+{
+  "checkpoint": "ARC02-DATA-001",
+  "contract": "docs/arc02-prereg-01/ARC02_PIT_CONTRACT.json",
+  "data_quality": {
+    "completed_bar_semantics": "close_time == open_time + 299999",
+    "conflicting_duplicates": 0,
+    "data_time_le_decision_time": true,
+    "duplicates": 0,
+    "five_minute_grid": true,
+    "gaps": 0,
+    "malformed_rows": 0,
+    "non_finite_values": 0,
+    "provider_schema_change": "handled upstream by the reused ARC-03 normalizer (header present from 2022-01)",
+    "symbol_identity": "explicit per partition",
+    "timestamps_monotonic": true,
+    "timezone": "UTC (epoch ms)"
+  },
+  "hypothesis_id": "ARC-02-BTC-ALT-LEAD-LAG-01",
+  "independent_tests": "ARC02_PIT_INDEPENDENT_TESTS.json",
+  "properties": {
+    "btc_current_bar_completed": true,
+    "btc_lookback_contains_only_bars_at_or_before_decision": true,
+    "conflicting_duplicate_fails_closed": true,
+    "eligible_past_mutation_changes_features": true,
+    "entry_strictly_after_decision": true,
+    "follower_current_bar_completed": true,
+    "follower_response_contains_no_future_bar": true,
+    "funding_not_reachable_from_the_signal_path": true,
+    "future_htf_or_context_invisible": true,
+    "future_mutation_after_T_leaves_signal_unchanged": true,
+    "missing_btc_bar_fails_closed": true,
+    "missing_follower_bar_fails_closed": true
+  },
+  "status": "PASS"
+}

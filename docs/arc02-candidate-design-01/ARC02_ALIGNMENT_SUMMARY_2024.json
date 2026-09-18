@@ -1,0 +1,8 @@
+{
+  "expected_buckets": 105408,
+  "aligned_complete_buckets": 105408,
+  "missing_btc": 0,
+  "missing_eth": 0,
+  "missing_sol": 0,
+  "coverage": 1.0
+}
