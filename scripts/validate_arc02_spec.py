@@ -233,12 +233,29 @@ def main() -> int:
         and mutation["MUTATION_SENSITIVITY"] == "PASS"
         and manifest["per_symbol"] is not None
     )
-    on_disk = {s: N.sha256_file(A.resolve_partition_dir() / f"{s}.jsonl") for s in manifest["partition_sha256"]}
-    binding_ok = binding_ok and on_disk == manifest["partition_sha256"]
+    part_dir = A.resolve_partition_dir()
+    partitions_present = part_dir.is_dir() and all((part_dir / f"{s}.jsonl").exists() for s in manifest["partition_sha256"])
+    if partitions_present:
+        on_disk = {s: N.sha256_file(part_dir / f"{s}.jsonl") for s in manifest["partition_sha256"]}
+        partitions_match = on_disk == manifest["partition_sha256"]
+    else:
+        on_disk = {}
+        partitions_match = False
+    binding_ok = binding_ok and partitions_match
     add(
         "DATA_AUTHORITY_BINDING",
         binding_ok,
-        {"dataset_sha256": spec["data_authority"]["dataset_sha256"], "partitions_on_disk_match": on_disk == manifest["partition_sha256"]},
+        {
+            "dataset_sha256": spec["data_authority"]["dataset_sha256"],
+            "data_root": str(part_dir.parent.parent),
+            "partitions_present": partitions_present,
+            "partitions_on_disk_match": partitions_match,
+            "fail_closed_note": (
+                None
+                if partitions_present
+                else "FAIL_CLOSED: the certified data root is not resolvable; set ARC02_DATA_ROOT to an absolute path holding data/processed/arc02_klines_5m"
+            ),
+        },
     )
 
     # -------------------------------------------------------- ROBUSTNESS_PLAN

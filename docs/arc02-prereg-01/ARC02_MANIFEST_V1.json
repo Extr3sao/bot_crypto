@@ -111,8 +111,8 @@
       "size_bytes": 939
     },
     "docs/arc02-data-authority-01/ARC02_DATA_INVENTORY.json": {
-      "sha256": "98764c759697d64da4680f23ca18c8a91706de54ae7974e66d1032eb0cc57e5b",
-      "size_bytes": 2787
+      "sha256": "9d0a82682e5b733a7f89f70bda72cccb61afab09bb558c7b4e9cfef846f7883a",
+      "size_bytes": 3061
     },
     "docs/arc02-data-authority-01/ARC02_DATA_QUALITY_LEDGER.jsonl": {
       "sha256": "3a45d17c987d517925c319ccd91ff8a19332e990b9a0cbc522c28f951463f71a",
@@ -139,24 +139,24 @@
       "size_bytes": 2817
     },
     "docs/arc02-prereg-01/ARC02_MANIFEST_V1.json": {
-      "sha256": "b0001d3b40bd40aea749f62d9b4fc40f6e2ac557b5d2e99e50c39df8b589e01f",
-      "size_bytes": 7219
+      "sha256": "9a7499813bde088ebde517e77bf9089148d0c4c875d1d719fd4f8c0754827e88",
+      "size_bytes": 7529
     },
     "docs/arc02-prereg-01/ARC02_PREREG_COMMIT_POINTER.json": {
-      "sha256": null,
-      "size_bytes": null
+      "sha256": "6e72f3412039a0c950122ca7944f896f7160b4f29856707ad8436da6a3449086",
+      "size_bytes": 1730
     },
     "docs/arc02-prereg-01/ARC02_PREREG_VERIFICATION_PACKAGE.json": {
-      "sha256": "ed5391f1a0ea7805442ddb9eae9d896f912b134cdccc6f9b103c8c251cf35ea5",
-      "size_bytes": 7093
+      "sha256": "8d6c0046d1917dc80793db4fdcfdc392478ed01455b82a2f790863c274086b78",
+      "size_bytes": 7849
     },
     "docs/arc02-prereg-01/ARC02_RESUME_STATE.json": {
-      "sha256": "a11e7a9e899bba1da68b5304bf902002ec3251fbd82edda1dc49e6f770a8c5a2",
-      "size_bytes": 4095
+      "sha256": "c3e55016166e94022d86c3796160d2ef84c33d52335b549fe008c4b2f1d3b056",
+      "size_bytes": 4271
     },
     "docs/arc02-prereg-01/RUN_REPORT.json": {
-      "sha256": "72305ef836bdd328ea2ce61a0b25d4d875de453b602d4a85499ddc745f29ee62",
-      "size_bytes": 3933
+      "sha256": "3df3eb2dc7b8efee63de855c1097279c4dee105ce133e71bf50b6b18033b515e",
+      "size_bytes": 4171
     },
     "docs/arc02-prereg-01/RUN_REPORT.md": {
       "sha256": "c5262782edd903e153027f8fb32e1e03778fdb014389a2d736a80cb5cc490940",

@@ -5,6 +5,11 @@
 * **builder:** deepseek-v4-flash (DeepSeek) — **BUILDER, not independent verifier**
 * **FINAL_STATUS:** `PENDING_INDEPENDENT_PREREG_VERIFICATION`
 * **REALITY_CHECK_STATE:** `ARC02_PREREG_FROZEN`
+* **BASE_COMMIT:** `e7f470d`
+* **DATA_AUTHORITY_COMMIT:** `31cb53a`
+* **PREREG_COMMIT:** `3ebf5f5`
+* **SPEC_HASH:** `ef5d7619…afc40`
+* **MANIFEST_HASH:** `62b1a8d5…1ff8b`
 
 ## 1. Reality check (from repository evidence, not summaries)
 

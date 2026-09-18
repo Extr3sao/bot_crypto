@@ -124,8 +124,11 @@
     {
       "check": "DATA_AUTHORITY_BINDING",
       "detail": {
+        "data_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc02-candidate-design-01\\data",
         "dataset_sha256": "03f227d0ae18efdc8e3d84831283c4e3f7a333bf0fea8b944f55a9144cc164d5",
-        "partitions_on_disk_match": true
+        "fail_closed_note": null,
+        "partitions_on_disk_match": true,
+        "partitions_present": true
       },
       "pass": true
     },

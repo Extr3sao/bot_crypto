@@ -41,5 +41,7 @@
     "evidence": "no commit in any ref mentions ARC02/ARC-02 (git log --all --grep, case-insensitive)",
     "found": false
   },
-  "reality_check_state": "ARC02_DATA_AUTHORITY_COMPLETE"
+  "reality_check_state": "ARC02_DATA_AUTHORITY_COMPLETE",
+  "final_reality_check_state_after_builder_phase": "ARC02_PREREG_FROZEN",
+  "economics_already_observed_check": "ARC02_ECONOMICS_ALREADY_OBSERVED = false (no ARC-02 execution or economic artifact exists anywhere in the repository); no second primary discovery was created"
 }

@@ -7,8 +7,8 @@
   "WORKTREE": ".research/arc02-candidate-design-01",
   "BRANCH": "research/arc02-candidate-design-01",
   "BASE_COMMIT": "e7f470d8ea075e6d71d4f6be17c4b4452f1ede09",
-  "DATA_AUTHORITY_COMMIT": "recorded in ARC02_PREREG_COMMIT_POINTER.json",
-  "PREREG_COMMIT": "recorded in ARC02_PREREG_COMMIT_POINTER.json",
+  "DATA_AUTHORITY_COMMIT": "31cb53a",
+  "PREREG_COMMIT": "3ebf5f5",
 
   "dataset_sha256": "03f227d0ae18efdc8e3d84831283c4e3f7a333bf0fea8b944f55a9144cc164d5",
   "partition_sha256": {
@@ -36,6 +36,10 @@
   "control_plan": "DIRECTION_CONTROL, TIMING_CONTROL (+1 bar), LEADER_CONTROL (leader series displaced 288 bars), NULL_CONTROL (seeded sign flip)",
   "robustness_plan": "R1..R11 frozen, NOT executed",
   "kill_rule": "one preregistration -> one primary discovery; any critical gate failure or a control passing all gates => ARC02 = DISCOVERY_FAIL (terminal)",
+
+  "SPEC_HASH": "ef5d76196943b7498f2ed70757e0405acc2a07a4c80a66b71eaba548950afc40",
+  "MANIFEST_HASH": "62b1a8d59fe38770938f77604651a834d3ba7674d28e782f744bbf960e51ff8b",
+  "clean_worktree_at": ".worktrees/arc02-prereg-verify (detached at 3ebf5f5)",
 
   "verification_evidence": {
     "A_B_DETERMINISM": "PASS",

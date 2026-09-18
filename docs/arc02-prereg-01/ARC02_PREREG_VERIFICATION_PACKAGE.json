@@ -19,9 +19,15 @@
     "the builder ran no economic execution: ARC02_BACKTESTS = 0, ARC02_EXECUTIONS = 0, ARC02_PERFORMANCE_OBSERVED = false"
   ],
 
+  "commits": {"BASE_COMMIT": "e7f470d8ea075e6d71d4f6be17c4b4452f1ede09", "DATA_AUTHORITY_COMMIT": "31cb53a", "PREREG_COMMIT": "3ebf5f5"},
+  "SPEC_HASH": "ef5d76196943b7498f2ed70757e0405acc2a07a4c80a66b71eaba548950afc40",
+  "MANIFEST_HASH": "62b1a8d59fe38770938f77604651a834d3ba7674d28e782f744bbf960e51ff8b",
+  "clean_worktree_verification": "PASS 14/14 in .worktrees/arc02-prereg-verify detached at 3ebf5f5 - docs/arc02-data-authority-01/ARC02_CLEAN_WORKTREE_VERIFICATION.json",
+
   "how_to_verify": {
-    "1_prereg_worktree": "git worktree add --detach <DIR> <PREREG_COMMIT>",
+    "1_prereg_worktree": "git worktree add --detach <DIR> 3ebf5f5",
     "2_data_root": "export ARC02_DATA_ROOT=<absolute path of the certified ARC-02 data root holding data/processed/arc02_klines_5m, data/processed/arc03_klines_5m and data/raw/binance_um/arc03*)",
+    "2b_note": "without an explicit ARC02_DATA_ROOT the verifier and validator FAIL CLOSED with an explicit reason; they never silently fall back to another checkout's data",
     "3_portable_verifier": "python scripts/verify_arc02_data_authority.py --target <DIR> --data-root $ARC02_DATA_ROOT",
     "4_validator": "python scripts/validate_arc02_spec.py",
     "5_drift": "python scripts/build_arc02_prereg_manifest.py --check",

@@ -1,0 +1,63 @@
+{
+  "schema": "ARC02_PREREG_DRIFT_EVIDENCE/1.0.0",
+  "checkpoint": "ARC02-PREREG-002",
+  "hypothesis_id": "ARC-02-BTC-ALT-LEAD-LAG-01",
+  "PREREG_COMMIT": "3ebf5f5",
+  "DATA_AUTHORITY_COMMIT": "31cb53a",
+  "POST_FREEZE_ARTIFACT_DRIFT": 0,
+  "drift_basis": "sha256 of every frozen economic artifact recomputed and compared against ARC02_MANIFEST_V1.json",
+  "frozen_economic_aggregate_sha256": "8dc4d0ad394b7978a48775ad30a8df388813e3957ce8e59417fa8efb07dcfcb4",
+  "recomputed_aggregate_sha256": "8dc4d0ad394b7978a48775ad30a8df388813e3957ce8e59417fa8efb07dcfcb4",
+  "drifted_artifacts": [],
+  "SPEC_HASH": "ef5d76196943b7498f2ed70757e0405acc2a07a4c80a66b71eaba548950afc40",
+  "MANIFEST_HASH": "62b1a8d59fe38770938f77604651a834d3ba7674d28e782f744bbf960e51ff8b",
+
+  "clean_worktree_verification": {
+    "worktree": ".worktrees/arc02-prereg-verify",
+    "detached_at": "3ebf5f5",
+    "data_root": "explicit absolute external certified root (ARC02_DATA_ROOT)",
+    "verifier": "scripts/verify_arc02_data_authority.py",
+    "result": "PASS 14/14",
+    "evidence": "docs/arc02-data-authority-01/ARC02_CLEAN_WORKTREE_VERIFICATION.json",
+    "checks": {
+      "TARGET_ARTIFACTS_PRESENT": "PASS",
+      "PYTHON_IMPORT_AUTHORITY": "PASS",
+      "TEST_TARGET_EQUALS_AUDITED": "PASS",
+      "REUSE_IDENTITY_MATCH": "PASS",
+      "PARTITION_SHA256_MATCH": "PASS",
+      "DATASET_SHA256_MATCH": "PASS",
+      "COMMON_WINDOW_MATCH": "PASS",
+      "RAW_LEDGER_VERIFIED": "PASS",
+      "FUNDING_REUSE_MATCH": "PASS",
+      "PIT_BATTERY": "PASS",
+      "DATA_ROOT_EXPLICIT": "PASS",
+      "WRONG_ROOT_FAILS_CLOSED": "PASS",
+      "EMPTY_ROOT_FAILS_CLOSED": "PASS",
+      "CLEAN_WORKTREE": "PASS"
+    },
+    "spec_validator_in_clean_worktree": "16/16 PASS with the explicit data root set",
+    "unit_tests_in_clean_worktree": "43 passed (4 data-backed tests skip automatically when the data root is not supplied)",
+    "manifest_drift_check_in_clean_worktree": "POST_FREEZE_ARTIFACT_DRIFT = 0 (aggregate reproduced)"
+  },
+
+  "alternative_working_directory_check": {
+    "performed": true,
+    "detail": "the verifier, validator, drift check and tests were run with the working directory set to the worktree root, and the portable verifier additionally accepts an explicit --target so it can be run from the main checkout or any other cwd"
+  },
+
+  "builder_side_repairs_after_freeze_disclosed": [
+    {
+      "artifact": "scripts/validate_arc02_spec.py",
+      "nature": "ROBUSTNESS ONLY - no economic semantics",
+      "issue": "when the certified data root was not resolvable the validator raised instead of failing closed with an explicit reason",
+      "fix": "the data-root probe now detects absent partitions and reports DATA_AUTHORITY_BINDING = FAIL with an explicit fail-closed reason and no traceback",
+      "economic_effect": "none: the validator is a verification tool, is NOT a member of the frozen economic artifact set, and the frozen aggregate digest is unchanged (drift = 0)",
+      "verified": "with the data root present the validator still returns 16/16 PASS; with a wrong root it returns FAIL instead of raising"
+    }
+  ],
+
+  "immutability_statement": "No frozen economic artifact (spec, gates, control plan, PIT contract, robustness plan, mechanism/rationale/collision documents, preregistration document, data-authority documents, or any src/trading_bot/research/arc02 module) was modified after 3ebf5f5. Post-freeze write activity is limited to bookkeeping artifacts declared MUTABLE_AFTER_FREEZE in ARC02_MANIFEST_V1.json.",
+
+  "economics": {"ARC02_BACKTESTS": 0, "ARC02_EXECUTIONS": 0, "ARC02_PERFORMANCE_OBSERVED": false, "FALSE_SUCCESS": 0},
+  "NEXT": "ARC02_INDEPENDENT_PREREG_VERIFICATION"
+}
