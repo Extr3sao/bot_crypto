@@ -1,0 +1,8 @@
+{
+  "verdict": "PASS",
+  "comparators": ["H1","H3","H5","H6","ARC-01","ARC-03"],
+  "arc03_known_result": "8e3ebdaeb3193a20b120c382eaa59e9ba88d7231",
+  "arc02_parameter_selection_from_arc03_result": false,
+  "arc02_not_relative_value": true,
+  "arc02_not_mean_reversion": true
+}

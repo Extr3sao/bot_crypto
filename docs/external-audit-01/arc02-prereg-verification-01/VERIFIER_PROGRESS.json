@@ -1,0 +1,10 @@
+{
+  "schema": "ARC02_VERIFIER_PROGRESS/1.0.0",
+  "verifier": "audit/arc02-prereg-verification-01",
+  "target_prereg_commit": "3ebf5f54bba84300663a9de7f6b05c5b583bc9c6",
+  "phase": "TERMINAL_CRITICAL_DEFECT",
+  "economic_execution": false,
+  "critical_defect": "PYTHON_IMPORT_AUTHORITY",
+  "next": "ARC02_PREREG_V2_REPAIR_ONLY",
+  "false_success": 0
+}

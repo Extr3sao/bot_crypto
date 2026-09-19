@@ -1,0 +1,9 @@
+{
+  "verdict": "CONDITIONAL_PASS",
+  "decision": "both aligned completed bars; max close time",
+  "entry": "next follower bar open strictly after decision time",
+  "exit": "open exactly one 5m bar after entry",
+  "overlap": "skip same-follower overlap; independent ETH/SOL concurrency",
+  "funding_boundary": "entry < settlement <= exit",
+  "limitation": "Independent reference execution timing battery was blocked by import authority."
+}

@@ -1,0 +1,10 @@
+{
+  "verdict": "CONDITIONAL_PASS",
+  "start_ms": 1600066800000,
+  "end_ms": 1788220500000,
+  "start_utc": "2020-09-14T07:00:00Z",
+  "end_utc": "2026-08-31T23:55:00Z",
+  "derivation": "intersection of BTCUSDT, ETHUSDT and SOLUSDT admitted 5m bar-open coverage",
+  "performance_inputs_used": false,
+  "limitation": "Independent reimplementation was not accepted after import-authority failure."
+}

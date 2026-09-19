@@ -1,0 +1,8 @@
+{
+  "verdict": "BLOCKED",
+  "frozen_definition": "same non-zero sign and abs(follower_return) < 0.5 * abs(btc_return)",
+  "ETH_SOL_independent_semantics": true,
+  "boundary_semantics_explicit": true,
+  "independent_fixture_battery": "NOT_COMPLETED",
+  "blocker": "PYTHON_IMPORT_AUTHORITY FAIL"
+}

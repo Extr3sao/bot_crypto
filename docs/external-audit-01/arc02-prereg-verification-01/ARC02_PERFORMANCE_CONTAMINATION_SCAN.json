@@ -1,0 +1,10 @@
+{
+  "verdict": "PASS",
+  "ARC02_BACKTESTS": 0,
+  "ARC02_EXECUTIONS": 0,
+  "ARC02_PERFORMANCE_OBSERVED": false,
+  "FALSE_SUCCESS": 0,
+  "searched_terms": ["PnL","returns","expectancy","Sharpe","profit factor","win rate","parameter sweep","future-return correlation","performance-ranked"],
+  "arc02_economic_results_found": false,
+  "failed_memory_other_hypotheses": "present only as immutable collision context; not treated as ARC-02 outcomes"
+}

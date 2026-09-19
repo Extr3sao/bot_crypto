@@ -1,0 +1,8 @@
+{
+  "verdict": "CONDITIONAL_PASS",
+  "controls": ["DIRECTION_CONTROL","TIMING_CONTROL","LEADER_CONTROL","NULL_CONTROL"],
+  "same_trade_set_requirements_explicit": true,
+  "control_fail_semantics_explicit": true,
+  "control_economic_execution": false,
+  "limitation": "No economic control execution was permitted; independent structural replay was blocked by import authority."
+}

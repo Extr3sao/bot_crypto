@@ -1,0 +1,8 @@
+{
+  "verdict": "BLOCKED",
+  "frozen_definition": "ln(close_t/close_t-1) divided by median absolute strictly trailing 288 returns; absolute statistic strictly greater than 3.0",
+  "synthetic_independent_reference": "NOT_COMPLETED",
+  "builder_vs_independent_mismatches": "NOT_ASSESSED",
+  "blocker": "PYTHON_IMPORT_AUTHORITY FAIL",
+  "economic_data_used": false
+}

@@ -1,0 +1,8 @@
+{
+  "verdict": "CONDITIONAL_PASS",
+  "gate_count": 11,
+  "all_critical": true,
+  "conventions_explicit": ["ddof","annualization","bootstrap unit/replacement/draws/seed/CI","permutation transform/draws/seed/tail/p-value","temporal splits","follower stability","concentration","cost sensitivity"],
+  "economic_gate_evaluation": "FORBIDDEN_AND_NOT_RUN",
+  "limitation": "Independent executable replay was blocked by import authority."
+}

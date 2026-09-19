@@ -1,0 +1,11 @@
+{
+  "verdict": "FAIL",
+  "worktree": "C:/Users/GVLLFR0035/Downloads/bot freebuff/.research/arc02-prereg-verifier-01",
+  "head": "3ebf5f54bba84300663a9de7f6b05c5b583bc9c6",
+  "git_status_clean_at_start": true,
+  "explicit_data_root_verification": "PASS 14/14",
+  "wrong_root_fail_closed": true,
+  "empty_root_fail_closed": true,
+  "python_import_authority": "FAIL",
+  "clean_worktree_verification": "FAIL because TEST_TARGET != AUDITED_TARGET"
+}

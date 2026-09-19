@@ -1,0 +1,8 @@
+{
+  "verdict": "FAIL",
+  "PIT_INDEPENDENT": "FAIL_CLOSED_NOT_ACCEPTED",
+  "builder_structural_battery": "39/39 reported; not accepted as independent",
+  "independent_battery": "NOT_COMPLETED",
+  "critical_reason": "wrong Python checkout import target",
+  "economic_data_used": false
+}

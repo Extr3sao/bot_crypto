@@ -1,0 +1,8 @@
+{
+  "verdict": "PASS",
+  "frozen": true,
+  "executed": false,
+  "primary_parameters_immutable": true,
+  "no_retune": true,
+  "economic_execution": false
+}

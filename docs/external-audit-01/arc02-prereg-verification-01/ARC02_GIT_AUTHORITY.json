@@ -1,0 +1,11 @@
+{
+  "verdict": "PASS",
+  "PREREG_COMMIT": "3ebf5f54bba84300663a9de7f6b05c5b583bc9c6",
+  "DATA_AUTHORITY_COMMIT": "31cb53ab01a87c5bd888428511869d0a06664d99",
+  "parent_verified": true,
+  "spec_sha256": "ef5d76196943b7498f2ed70757e0405acc2a07a4c80a66b71eaba548950afc40",
+  "manifest_sha256": "9a7499813bde088ebde517e77bf9089148d0c4c875d1d719fd4f8c0754827e88",
+  "frozen_economic_aggregate_sha256": "8dc4d0ad394b7978a48775ad30a8df388813e3957ce8e59417fa8efb07dcfcb4",
+  "post_freeze_artifact_drift": 0,
+  "note": "Hashes independently recomputed from the prereg commit; later 9837209 bookkeeping changes were not used as the audited target."
+}

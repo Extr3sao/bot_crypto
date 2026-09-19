@@ -1,0 +1,11 @@
+{
+  "verdict": "FAIL",
+  "python_executable": "C:/Users/GVLLFR0035/Downloads/bot freebuff/.venv/Scripts/python.exe",
+  "cwd": "C:/Users/GVLLFR0035/Downloads/bot freebuff/.research/arc02-prereg-verifier-01",
+  "git_head": "3ebf5f54bba84300663a9de7f6b05c5b583bc9c6",
+  "trading_bot_file": "C:/Users/GVLLFR0035/Downloads/bot freebuff/src/trading_bot/__init__.py",
+  "audited_target_prefix": "C:/Users/GVLLFR0035/Downloads/bot freebuff/.research/arc02-prereg-verifier-01",
+  "test_target_equals_audited_target": false,
+  "critical_defect": "editable environment resolves trading_bot from the main checkout rather than the verifier worktree; ARC-02 imports therefore are not authoritative",
+  "required_action": "ARC02_PREREG_V2_REPAIR_ONLY"
+}

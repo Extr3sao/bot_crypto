@@ -1,0 +1,9 @@
+{
+  "verdict": "CONDITIONAL_PASS",
+  "mechanism_family": "BTC_SHOCK + FOLLOWER_UNDERREACTION -> FOLLOWER_CONTINUATION",
+  "leader": "BTCUSDT",
+  "followers": ["ETHUSDT","SOLUSDT"],
+  "frozen_fields_present": ["return_definition","lookback","minimum_observations","location_estimator","scale_estimator","threshold","inequality","zero_scale_behavior","same_sign_rule","underreaction_ratio","underreaction_inequality","zero_follower_return_behavior","opposite_sign_behavior","missing_bar_behavior"],
+  "critical_spec_incompleteness": false,
+  "limitation": "Builder implementation comparison was not accepted as independent after import-authority failure."
+}

@@ -1,0 +1,11 @@
+{
+  "verdict": "CONDITIONAL_PASS",
+  "explicit_data_root": "C:/Users/GVLLFR0035/Downloads/bot freebuff/.research/arc02-candidate-design-01",
+  "partition_sha256": "PASS",
+  "dataset_sha256": "PASS",
+  "source_reuse_byte_identity": "PASS",
+  "raw_ledger": "PASS",
+  "funding_reuse": "PASS",
+  "dataset_sha256_value": "03f227d0ae18efdc8e3d84831283c4e3f7a333bf0fea8b944f55a9144cc164d5",
+  "limitation": "Reconciliation used the frozen portable verifier; independent acceptance is blocked by the import-authority defect."
+}
