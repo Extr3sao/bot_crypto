@@ -1,0 +1,34 @@
+{
+  "EDITABLE_PTH_ATTACK": "PASS",
+  "PRELOADED_WRONG_MODULE_ATTACK": "PASS",
+  "PYTHON_IMPORT_AUTHORITY": "PASS",
+  "TEST_TARGET_AUDITED_TARGET": "PASS",
+  "artifact": "ARC02_V3_IMPORT_AUTHORITY",
+  "builder_role": "BUILDER_CROSSCHECK_NOT_INDEPENDENT_VERIFICATION",
+  "contamination_present": {
+    "PYTHONPATH_main_src": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src",
+    "editable_pth_path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Lib\\site-packages\\__editable__.crypto_scalping_agentic_bot-0.1.0.pth",
+    "editable_pth_points_at_main_src": true
+  },
+  "critical_module_files": [
+    "C:/Users/GVLLFR0035/Downloads/bot freebuff/.research/arc02-prereg-v3-repair-01/src/trading_bot/research/arc02/arc02_authority.py",
+    "C:/Users/GVLLFR0035/Downloads/bot freebuff/.research/arc02-prereg-v3-repair-01/src/trading_bot/research/arc02/arc02_normalize.py",
+    "C:/Users/GVLLFR0035/Downloads/bot freebuff/.research/arc02-prereg-v3-repair-01/src/trading_bot/research/arc02/arc02_pit.py"
+  ],
+  "cwd_used": "C:\\Users\\GVLLFR0035",
+  "data_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc02-candidate-design-01",
+  "git_head": "6df96c66ac4ea2fe5413cf896befc1ce997cd6e5",
+  "preloaded_wrong_module_result": {
+    "error": "PRELOADED_WRONG_FIRST_PARTY_MODULE: 1 module(s) of package 'trading_bot' were already imported from outside C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc02-prereg-v3-repair-01\\src (e.g. trading_bot). Fail-closed per contract: wrong first-party imports are an error, never silently replaced",
+    "result": "FAIL_CLOSED"
+  },
+  "python_executable": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+  "resolved_package_root": "C:/Users/GVLLFR0035/Downloads/bot freebuff/.research/arc02-prereg-v3-repair-01/src/trading_bot/__init__.py",
+  "runtime_bootstrap_returncode": 0,
+  "runtime_bootstrap_stderr_tail": null,
+  "sys_path_removed": [
+    "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src"
+  ],
+  "target_commit": "6df96c66ac4ea2fe5413cf896befc1ce997cd6e5",
+  "target_root": "C:/Users/GVLLFR0035/Downloads/bot freebuff/.research/arc02-prereg-v3-repair-01"
+}

@@ -1,0 +1,22 @@
+{
+  "SUBPROCESS_IMPORT_AUTHORITY": "PASS",
+  "artifact": "ARC02_V3_SUBPROCESS_AUTHORITY",
+  "builder_role": "BUILDER_CROSSCHECK_NOT_INDEPENDENT_VERIFICATION",
+  "case_parent_contaminated_child_preload_fails_closed": {
+    "FAIL_CLOSED": true,
+    "result": "FAIL_CLOSED",
+    "returncode": 0
+  },
+  "case_parent_contaminated_child_target": {
+    "SUBPROCESS_IMPORT_AUTHORITY": "PASS",
+    "package_file": "C:/Users/GVLLFR0035/Downloads/bot freebuff/.research/arc02-prereg-v3-repair-01/src/trading_bot/__init__.py",
+    "package_within_target": true,
+    "post_import_file": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc02-prereg-v3-repair-01\\src\\trading_bot\\__init__.py",
+    "returncode": 0
+  },
+  "child_authority_channel": {
+    "ARC02_EXPECTED_COMMIT": "6df96c66ac4ea2fe5413cf896befc1ce997cd6e5",
+    "ARC02_TARGET_ROOT": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc02-prereg-v3-repair-01"
+  },
+  "parent_env_pythonpath": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src"
+}

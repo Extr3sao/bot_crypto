@@ -1,0 +1,128 @@
+{
+  "DEFECT_REPRODUCED": true,
+  "F1_plain_python_contaminated": {
+    "child_cwd": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc02-prereg-v3-repair-01",
+    "child_pythonpath": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src",
+    "env_pythonpath": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src",
+    "resolves_to_main_checkout": true,
+    "returncode": 0,
+    "sys_path": [
+      "",
+      "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src",
+      "C:\\Users\\GVLLFR0035\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\\python311.zip",
+      "C:\\Users\\GVLLFR0035\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\\DLLs",
+      "C:\\Users\\GVLLFR0035\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\\Lib",
+      "C:\\Users\\GVLLFR0035\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none",
+      "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv",
+      "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Lib\\site-packages"
+    ],
+    "trading_bot_file": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\__init__.py"
+  },
+  "F1b_plain_python_contaminated_arbitrary_cwd": {
+    "child_cwd": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp",
+    "child_pythonpath": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src",
+    "resolves_to_main_checkout": true,
+    "returncode": 0,
+    "sys_path": [
+      "",
+      "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src",
+      "C:\\Users\\GVLLFR0035\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\\python311.zip",
+      "C:\\Users\\GVLLFR0035\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\\DLLs",
+      "C:\\Users\\GVLLFR0035\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\\Lib",
+      "C:\\Users\\GVLLFR0035\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none",
+      "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv",
+      "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Lib\\site-packages"
+    ],
+    "trading_bot_file": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\__init__.py"
+  },
+  "F2_v2_bootstrap_silent_replace": {
+    "bootstrap_result": "PASS",
+    "critical_module_files": [
+      "C:/Users/GVLLFR0035/Downloads/bot freebuff/.research/arc02-prereg-v3-repair-01/src/trading_bot/research/arc02/arc02_authority.py",
+      "C:/Users/GVLLFR0035/Downloads/bot freebuff/.research/arc02-prereg-v3-repair-01/src/trading_bot/research/arc02/arc02_normalize.py",
+      "C:/Users/GVLLFR0035/Downloads/bot freebuff/.research/arc02-prereg-v3-repair-01/src/trading_bot/research/arc02/arc02_pit.py"
+    ],
+    "package_file": "C:/Users/GVLLFR0035/Downloads/bot freebuff/.research/arc02-prereg-v3-repair-01/src/trading_bot/__init__.py",
+    "post_bootstrap_trading_bot_file": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc02-prereg-v3-repair-01\\src\\trading_bot\\__init__.py",
+    "preloaded_is_main": true,
+    "preloaded_trading_bot_file": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\__init__.py",
+    "returncode": 0,
+    "silently_replaced_wrong_preload": true,
+    "sys_path_after": [
+      "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc02-prereg-v3-repair-01\\src",
+      "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc02-prereg-v3-repair-01",
+      "",
+      "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src",
+      "C:\\Users\\GVLLFR0035\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\\python311.zip",
+      "C:\\Users\\GVLLFR0035\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\\DLLs",
+      "C:\\Users\\GVLLFR0035\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\\Lib",
+      "C:\\Users\\GVLLFR0035\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none",
+      "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv",
+      "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Lib\\site-packages"
+    ]
+  },
+  "F3_v2_path_identity_comparison": {
+    "package_file_emitted": "C:/Users/GVLLFR0035/Downloads/bot freebuff/.research/arc02-prereg-v3-repair-01/src/trading_bot/__init__.py",
+    "returncode": 0,
+    "separator_of_emitted": false,
+    "separator_of_resolved_target": true,
+    "target_root_resolved": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc02-prereg-v3-repair-01",
+    "v2_style_startswith": false,
+    "v3_style_pathlib_is_relative_to": true
+  },
+  "artifact": "ARC02_V3_IMPORT_DEFECT_REPRODUCTION",
+  "authority": {
+    "v2_recorded": {
+      "PYTHON_IMPORT_AUTHORITY": "FAIL",
+      "V2_CONTAMINATION_DEFENCE": "FAIL"
+    },
+    "v2_verdict": "FAIL_INDEPENDENT_PREREG_VERIFICATION_V2",
+    "v2_verifier_evidence_commit": "00063237de21e3ed9273d84293f129f75003f126"
+  },
+  "environment": {
+    "base_commit_under_repair": "6df96c66ac4ea2fe5413cf896befc1ce997cd6e5",
+    "pth_files": [
+      {
+        "content_head": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\n",
+        "injects_first_party": true,
+        "kind": "editable",
+        "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Lib\\site-packages\\__editable__.crypto_scalping_agentic_bot-0.1.0.pth"
+      },
+      {
+        "content_head": "import _virtualenv",
+        "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Lib\\site-packages\\_virtualenv.pth"
+      },
+      {
+        "content_head": "import sys; exec('import os\\n\\nif os.getenv(\"COVERAGE_PROCESS_START\") or os.getenv(\"COVERAGE_PROCESS_CONFIG\"):\\n try:\\n  import coverage\\n except:\\n  pass\\n else:\\n  coverage.process_startup(slug=\"pth\")')\n",
+        "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Lib\\site-packages\\a1_coverage.pth"
+      },
+      {
+        "content_head": "import os; var = 'SETUPTOOLS_USE_DISTUTILS'; enabled = os.environ.get(var, 'local') == 'local'; enabled and __import__('_distutils_hack').add_shim(); \n",
+        "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Lib\\site-packages\\distutils-precedence.pth"
+      }
+    ],
+    "python_executable": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+    "pythonpath_env_at_parent": null,
+    "repro_cwd": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc02-prereg-v3-repair-01",
+    "site_packages": [
+      "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Lib\\site-packages"
+    ],
+    "sys_path_parent": [
+      "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc02-prereg-v3-repair-01\\scripts",
+      "C:\\Users\\GVLLFR0035\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\\python311.zip",
+      "C:\\Users\\GVLLFR0035\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\\DLLs",
+      "C:\\Users\\GVLLFR0035\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\\Lib",
+      "C:\\Users\\GVLLFR0035\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none",
+      "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv",
+      "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Lib\\site-packages",
+      "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src"
+    ],
+    "user_site_packages": "C:\\Users\\GVLLFR0035\\AppData\\Roaming\\Python\\Python311\\site-packages"
+  },
+  "notes": [
+    "F1+F1b reproduce the committed V2 verifier observation: plain python under ambient contamination imports trading_bot from the MAIN checkout.",
+    "F2 demonstrates the V2 mechanism silently REPLACES an already-imported wrong first-party module and continues as PASS.",
+    "F3 demonstrates the V2 path-identity comparison defect: the V2 evidence emitter canonicalizes to forward slashes while V2 helper recomputation used naive startswith against Path.resolve() text (backslashes on Windows), so an equivalent TARGET path recomputes as outside-target. This matches the committed verifier contradiction authority_package_within_target=false with a target-resident authority_package_file."
+  ],
+  "prerepair": true
+}

@@ -1,0 +1,36 @@
+{
+  "PORTABILITY": "PASS",
+  "ambient_contamination": {
+    "PYTHONPATH": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src",
+    "editable_pth": true
+  },
+  "artifact": "ARC02_V3_PORTABILITY",
+  "builder_role": "BUILDER_CROSSCHECK_NOT_INDEPENDENT_VERIFICATION",
+  "cases": {
+    "cwd_c_root": {
+      "PASS": true,
+      "cwd": "C:\\",
+      "package_within_target": true,
+      "returncode": 0
+    },
+    "cwd_home": {
+      "PASS": true,
+      "cwd": "C:\\Users\\GVLLFR0035",
+      "package_within_target": true,
+      "returncode": 0
+    },
+    "cwd_temp": {
+      "PASS": true,
+      "cwd": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp",
+      "package_within_target": true,
+      "returncode": 0
+    },
+    "fresh_v3_tree": {
+      "PASS": true,
+      "git_head": "6df96c66ac4ea2fe5413cf896befc1ce997cd6e5",
+      "package_within_target": true,
+      "returncode": 0,
+      "root": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\tmpf1vsyb56\\fresh-v3-copy"
+    }
+  }
+}

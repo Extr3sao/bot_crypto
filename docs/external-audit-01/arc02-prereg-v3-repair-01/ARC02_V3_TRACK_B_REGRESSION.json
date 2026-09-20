@@ -1,0 +1,19 @@
+{
+  "TRACK_B_REGRESSION": "PASS",
+  "artifact": "ARC02_V3_TRACK_B_REGRESSION",
+  "builder_role": "BUILDER_CROSSCHECK_NOT_INDEPENDENT_VERIFICATION",
+  "components": [
+    "StrategyFailureDiagnostics",
+    "HypothesisGenerator",
+    "ResearchBudget",
+    "ExternalStrategyIntake",
+    "MarketIntelligenceProvider"
+  ],
+  "output_tail": "....................                                                     [100%]\n20 passed in 2.56s\n",
+  "returncode": 0,
+  "scope": "existing Track B components only - no expansion, no new capability",
+  "test_files": [
+    "tests/unit/research/test_discovery_view.py",
+    "tests/unit/research/test_discovery_execution.py"
+  ]
+}

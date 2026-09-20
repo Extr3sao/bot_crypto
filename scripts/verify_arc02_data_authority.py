@@ -71,6 +71,9 @@ def main() -> int:
     target = pathlib.Path(args.target).resolve()
     data_root = pathlib.Path(args.data_root).resolve() if args.data_root else target
     docs = target / "docs" / "arc02-data-authority-01"
+    expected_commit = os.environ.get("ARC02_EXPECTED_COMMIT") or subprocess.check_output(
+        ["git", "rev-parse", "HEAD"], cwd=str(target), text=True
+    ).strip()
     rep = Report(target, data_root)
 
     # --------------------------------------------------------------- artifacts first
@@ -92,7 +95,7 @@ def main() -> int:
     missing = [n for n in required if not (docs / n).exists()]
     rep.add("TARGET_ARTIFACTS_PRESENT", not missing, {"missing": missing, "target": str(target)}, fail_closed=bool(missing))
     if missing:
-        return _emit(rep, args.out, fail_closed=True)
+        return _emit(rep, args.out, fail_closed=True, override={"TARGET_ARTIFACTS_PRESENT": False})
 
     manifest = json.loads((docs / "ARC02_DATA_MANIFEST.json").read_text(encoding="utf-8"))
     authority = json.loads((docs / "ARC02_DATA_AUTHORITY.json").read_text(encoding="utf-8"))
@@ -100,19 +103,51 @@ def main() -> int:
     pit_doc = json.loads((docs / "ARC02_PIT_INDEPENDENT_TESTS.json").read_text(encoding="utf-8"))
 
     # ----------------------------------------------------------- import authority
+    # V3: establish authority via the standalone bootstrap BEFORE importing the
+    # first-party package. The bootstrap derives the target from script location
+    # (or --target) and fails closed on contamination, wrong commit or any
+    # first-party module resolving outside the audited target.
+    import importlib.util as _ilu
+
+    _boot_path = REPO / "scripts" / "arc02_import_bootstrap.py"
+    _spec = _ilu.spec_from_file_location("_arc02_v3_bootstrap", _boot_path)
+    if _spec is None or _spec.loader is None:
+        return _emit(
+            rep,
+            args.out,
+            fail_closed=True,
+            override={"PYTHON_IMPORT_AUTHORITY": False, "bootstrap": f"missing: {_boot_path}"},
+        )
+    _boot = _ilu.module_from_spec(_spec)
+    _spec.loader.exec_module(_boot)
+    try:
+        _ev = _boot.bootstrap_arc02(target_root=pathlib.Path(target), expected_commit=expected_commit)
+    except Exception as exc:
+        return _emit(
+            rep,
+            args.out,
+            fail_closed=True,
+            override={"PYTHON_IMPORT_AUTHORITY": False, "bootstrap_error": f"{type(exc).__name__}: {exc}"},
+        )
+    _d = _ev.to_dict()
+    rep.add(
+        "PYTHON_IMPORT_AUTHORITY",
+        bool(_d["package_within_target"]) and bool(_d["critical_all_within_target"]),
+        {
+            "package_file": _d["package_file"],
+            "critical_module_files": _d["critical_module_files"],
+            "git_head": _d["git_head"],
+            "sys_path_removed": _d["sys_path_removed"],
+        },
+        fail_closed=True,
+    )
+
     from trading_bot.research.arc02 import arc02_authority as A
     from trading_bot.research.arc02 import arc02_funding as F
     from trading_bot.research.arc02 import arc02_normalize as N
     from trading_bot.research.arc02 import arc02_pit as PIT
-
-    module_path = pathlib.Path(A.__file__).resolve()
-    rep.add(
-        "PYTHON_IMPORT_AUTHORITY",
-        target in module_path.parents,
-        {"module": str(module_path), "audited_target": str(target)},
-    )
     conftest = target / "conftest.py"
-    guard_ok = conftest.exists() and "sys.path.insert" in conftest.read_text(encoding="utf-8") and "src" in conftest.read_text(encoding="utf-8")
+    guard_ok = conftest.exists() and "PYTEST_AUTHORITY_FAIL_CLOSED" in conftest.read_text(encoding="utf-8") and "src" in conftest.read_text(encoding="utf-8")
     rep.add(
         "TEST_TARGET_EQUALS_AUDITED",
         guard_ok and (target / "src" / "trading_bot" / "research" / "arc02" / "arc02_authority.py").exists(),
@@ -296,7 +331,13 @@ def _empty_root_refused(N: Any, A: Any) -> bool:
         return False
 
 
-def _emit(rep: Report, out: str | None, *, fail_closed: bool) -> int:
+def _emit(
+    rep: Report,
+    out: str | None,
+    *,
+    fail_closed: bool,
+    override: dict[str, Any] | None = None,
+) -> int:
     payload = {
         "verifier": "verify_arc02_data_authority.py",
         "read_only": True,
@@ -309,6 +350,9 @@ def _emit(rep: Report, out: str | None, *, fail_closed: bool) -> int:
         "verdict": rep.verdict(),
         "checks": rep.checks,
     }
+    if override:
+        for key, value in override.items():
+            payload[key] = value
     text = json.dumps(payload, indent=2, sort_keys=True) + "\n"
     if out:
         pathlib.Path(out).write_bytes(text.encode("utf-8"))

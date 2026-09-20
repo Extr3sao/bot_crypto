@@ -1,0 +1,17 @@
+{
+  "pointer_type": "ARC02_PREREG_V3_REPAIR",
+  "worktree": "C:/Users/GVLLFR0035/Downloads/bot freebuff/.research/arc02-prereg-v3-repair-01",
+  "branch": "repair/arc02-prereg-v3-repair-01",
+  "base_v2_commit": "6df96c66ac4ea2fe5413cf896befc1ce997cd6e5",
+  "v2_verifier_evidence_commit": "00063237de21e3ed9273d84293f129f75003f126",
+  "v2_effective_verdict": "FAIL_INDEPENDENT_PREREG_VERIFICATION_V2",
+  "v3_prereg_commit": "PENDING_COMMIT",
+  "report": "docs/external-audit-01/arc02-prereg-v3-repair-01/RUN_REPORT.json",
+  "builder_gates": "docs/external-audit-01/arc02-prereg-v3-repair-01/ARC02_V3_BUILDER_CROSSCHECK_GATES.json",
+  "economic_diff_count": 0,
+  "arc02_backtests": 0,
+  "arc02_executions": 0,
+  "arc02_performance_observed": false,
+  "status": "PENDING_INDEPENDENT_PREREG_VERIFICATION_V3",
+  "next": "ARC02_INDEPENDENT_PREREG_VERIFICATION_V3"
+}

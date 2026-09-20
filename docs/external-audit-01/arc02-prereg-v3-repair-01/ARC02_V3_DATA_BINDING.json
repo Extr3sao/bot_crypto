@@ -1,0 +1,224 @@
+{
+  "DATA_BINDING": "PASS",
+  "EMPTY_DATA_ROOT_FAIL_CLOSED": "PASS",
+  "PIT_TARGET_AUTHORITY": "PASS",
+  "WRONG_DATA_ROOT_FAIL_CLOSED": "PASS",
+  "artifact": "ARC02_V3_DATA_BINDING",
+  "audited_target": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc02-prereg-v3-repair-01",
+  "builder_role": "BUILDER_CROSSCHECK_NOT_INDEPENDENT_VERIFICATION",
+  "certified_explicit_data_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc02-candidate-design-01",
+  "checks": {
+    "CLEAN_WORKTREE": true,
+    "COMMON_WINDOW_MATCH": true,
+    "DATASET_SHA256_MATCH": true,
+    "DATA_ROOT_EXPLICIT": true,
+    "EMPTY_ROOT_FAILS_CLOSED": true,
+    "FUNDING_REUSE_MATCH": true,
+    "PARTITION_SHA256_MATCH": true,
+    "PIT_BATTERY": true,
+    "PYTHON_IMPORT_AUTHORITY": true,
+    "RAW_LEDGER_VERIFIED": true,
+    "REUSE_IDENTITY_MATCH": true,
+    "TARGET_ARTIFACTS_PRESENT": true,
+    "TEST_TARGET_EQUALS_AUDITED": true,
+    "WRONG_ROOT_FAILS_CLOSED": true
+  },
+  "checks_failed": [],
+  "full_report": {
+    "audited_target": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc02-prereg-v3-repair-01",
+    "checks": [
+      {
+        "check": "TARGET_ARTIFACTS_PRESENT",
+        "detail": {
+          "missing": [],
+          "target": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc02-prereg-v3-repair-01"
+        },
+        "fail_closed": false,
+        "pass": true
+      },
+      {
+        "check": "PYTHON_IMPORT_AUTHORITY",
+        "detail": {
+          "critical_module_files": [
+            "C:/Users/GVLLFR0035/Downloads/bot freebuff/.research/arc02-prereg-v3-repair-01/src/trading_bot/research/arc02/arc02_authority.py",
+            "C:/Users/GVLLFR0035/Downloads/bot freebuff/.research/arc02-prereg-v3-repair-01/src/trading_bot/research/arc02/arc02_normalize.py",
+            "C:/Users/GVLLFR0035/Downloads/bot freebuff/.research/arc02-prereg-v3-repair-01/src/trading_bot/research/arc02/arc02_pit.py"
+          ],
+          "git_head": "6df96c66ac4ea2fe5413cf896befc1ce997cd6e5",
+          "package_file": "C:/Users/GVLLFR0035/Downloads/bot freebuff/.research/arc02-prereg-v3-repair-01/src/trading_bot/__init__.py",
+          "sys_path_removed": [
+            "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src"
+          ]
+        },
+        "fail_closed": true,
+        "pass": true
+      },
+      {
+        "check": "TEST_TARGET_EQUALS_AUDITED",
+        "detail": {
+          "conftest_guard": true,
+          "src_present": true
+        },
+        "fail_closed": false,
+        "pass": true
+      },
+      {
+        "check": "REUSE_IDENTITY_MATCH",
+        "detail": {
+          "rows": [
+            {
+              "match": true,
+              "observed": "eb75ab97881fd941c05d1b188778f1a832ab404c59f5991eff12ead779e4ab02",
+              "recorded": "eb75ab97881fd941c05d1b188778f1a832ab404c59f5991eff12ead779e4ab02",
+              "symbol": "BTCUSDT"
+            },
+            {
+              "match": true,
+              "observed": "24c886902760b2e2c873df7721c12098e65b768762f55e2144d990deac04c211",
+              "recorded": "24c886902760b2e2c873df7721c12098e65b768762f55e2144d990deac04c211",
+              "symbol": "ETHUSDT"
+            },
+            {
+              "match": true,
+              "observed": "d872bc7dc8a52eb697962516fbd24a636483acd43e524cdbbf09985d2720f548",
+              "recorded": "d872bc7dc8a52eb697962516fbd24a636483acd43e524cdbbf09985d2720f548",
+              "symbol": "SOLUSDT"
+            }
+          ],
+          "source_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc02-candidate-design-01\\data\\processed\\arc03_klines_5m"
+        },
+        "fail_closed": false,
+        "pass": true
+      },
+      {
+        "check": "PARTITION_SHA256_MATCH",
+        "detail": {
+          "observed": {
+            "BTCUSDT": "05b093a5fdaf693f761327c1ee3128fec587d62c4354afeea84f734321d76d80",
+            "ETHUSDT": "0072b6cb14b561dc2402901dad9009f5a9cc9f989164a175dece096b98d96638",
+            "SOLUSDT": "b5be57d09c54ae59491b2d987d385c3738f4b6187f8d93be07221af4d0170019"
+          },
+          "recorded": {
+            "BTCUSDT": "05b093a5fdaf693f761327c1ee3128fec587d62c4354afeea84f734321d76d80",
+            "ETHUSDT": "0072b6cb14b561dc2402901dad9009f5a9cc9f989164a175dece096b98d96638",
+            "SOLUSDT": "b5be57d09c54ae59491b2d987d385c3738f4b6187f8d93be07221af4d0170019"
+          }
+        },
+        "fail_closed": false,
+        "pass": true
+      },
+      {
+        "check": "DATASET_SHA256_MATCH",
+        "detail": {
+          "recomputed": "03f227d0ae18efdc8e3d84831283c4e3f7a333bf0fea8b944f55a9144cc164d5",
+          "recorded": "03f227d0ae18efdc8e3d84831283c4e3f7a333bf0fea8b944f55a9144cc164d5"
+        },
+        "fail_closed": false,
+        "pass": true
+      },
+      {
+        "check": "COMMON_WINDOW_MATCH",
+        "detail": {
+          "observed": [
+            1600066800000,
+            1788220500000
+          ],
+          "recorded": [
+            1600066800000,
+            1788220500000
+          ]
+        },
+        "fail_closed": false,
+        "pass": true
+      },
+      {
+        "check": "RAW_LEDGER_VERIFIED",
+        "detail": {
+          "failures": [],
+          "total_entries": 237
+        },
+        "fail_closed": false,
+        "pass": true
+      },
+      {
+        "check": "FUNDING_REUSE_MATCH",
+        "detail": {
+          "rows": [
+            {
+              "match": true,
+              "observed": "700b0c4c7e5ffa9dbe82cd84e98be9f505bce6f1792d33d0eae88d07a7585855",
+              "symbol": "BTCUSDT"
+            },
+            {
+              "match": true,
+              "observed": "2edf501ea69807bbf67cdd519e53de18c8dea25ea8bdf009beb88ef2e2693943",
+              "symbol": "ETHUSDT"
+            },
+            {
+              "match": true,
+              "observed": "6b16d13f5115f906f9ceb4f5a418f7a541c37609e780cfbad0d52ed565808f85",
+              "symbol": "SOLUSDT"
+            }
+          ]
+        },
+        "fail_closed": false,
+        "pass": true
+      },
+      {
+        "check": "PIT_BATTERY",
+        "detail": {
+          "passed": 39,
+          "total": 39
+        },
+        "fail_closed": false,
+        "pass": true
+      },
+      {
+        "check": "DATA_ROOT_EXPLICIT",
+        "detail": {
+          "data_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc02-candidate-design-01",
+          "data_root_is_audited_target": false,
+          "is_absolute": true,
+          "partitions_found": [
+            "BTCUSDT.jsonl",
+            "ETHUSDT.jsonl",
+            "SOLUSDT.jsonl"
+          ]
+        },
+        "fail_closed": true,
+        "pass": true
+      },
+      {
+        "check": "WRONG_ROOT_FAILS_CLOSED",
+        "detail": null,
+        "fail_closed": false,
+        "pass": true
+      },
+      {
+        "check": "EMPTY_ROOT_FAILS_CLOSED",
+        "detail": null,
+        "fail_closed": false,
+        "pass": true
+      },
+      {
+        "check": "CLEAN_WORKTREE",
+        "detail": {
+          "skipped": true
+        },
+        "fail_closed": false,
+        "pass": true
+      }
+    ],
+    "checks_passed": 14,
+    "checks_total": 14,
+    "data_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc02-candidate-design-01",
+    "data_root_is_audited_target": false,
+    "failed_checks": [],
+    "read_only": true,
+    "verdict": "PASS",
+    "verifier": "verify_arc02_data_authority.py"
+  },
+  "stderr_tail": null,
+  "verdict": "PASS",
+  "verifier_returncode": 0
+}
