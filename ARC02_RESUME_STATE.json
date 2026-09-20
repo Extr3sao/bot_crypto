@@ -1,0 +1,16 @@
+{
+  "session": "ARC02_PREREG_V2_REPAIR_01",
+  "worktree": "C:/Users/GVLLFR0035/Downloads/bot freebuff/.research/arc02-prereg-v2-repair-01",
+  "branch": "repair/arc02-prereg-v2-repair-01",
+  "base_commit": "3ebf5f54bba84300663a9de7f6b05c5b583bc9c6",
+  "v2_repair_commit": "PENDING_COMMIT",
+  "track_a_completed": true,
+  "track_b_in_progress": false,
+  "economic_diff_count": 0,
+  "backtests": 0,
+  "executions": 0,
+  "performance_observed": false,
+  "false_success": 0,
+  "status": "PENDING_INDEPENDENT_PREREG_VERIFICATION_V2",
+  "next": "ARC02_INDEPENDENT_PREREG_VERIFICATION_V2"
+}

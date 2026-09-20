@@ -1,23 +1,34 @@
-"""Worktree-authoritative sys.path guard (same pattern as the ARC-03 and H6-V4 worktrees).
-
-The shared virtualenv ships an editable install whose .pth pins the MAIN
-repository's ``src`` directory. Without this guard ``import trading_bot`` in the
-.research worktree resolves to the main checkout, not this worktree's
-``src/trading_bot/research/arc02`` — tests and authority scripts would silently
-observe the wrong tree.
-
-This conftest guarantees THIS checkout's ``src`` takes precedence for all pytest
-runs in this worktree. In the main repo it is a no-op (same path).
-"""
-
+"""Fail-closed pytest authority guard for this checkout."""
 from __future__ import annotations
 
+import importlib.util
+import os
+import subprocess
 import sys
 from pathlib import Path
 
-_SRC = str((Path(__file__).resolve().parent / "src").resolve())
+ROOT = Path(__file__).resolve().parent
+SRC = ROOT / "src"
+if str(SRC) in sys.path:
+    sys.path.remove(str(SRC))
+sys.path.insert(0, str(SRC))
 
-if sys.path and Path(sys.path[0]).resolve() != Path(_SRC).resolve():
-    if _SRC in sys.path:
-        sys.path.remove(_SRC)
-    sys.path.insert(0, _SRC)
+_helper = SRC / "trading_bot" / "research" / "import_authority.py"
+_spec = importlib.util.spec_from_file_location("_pytest_checkout_import_authority", _helper)
+if _spec is None or _spec.loader is None:
+    raise RuntimeError(f"missing import authority contract: {_helper}")
+_module = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(_module)
+_expected = os.environ.get("ARC02_EXPECTED_COMMIT") or subprocess.check_output(
+    ["git", "rev-parse", "HEAD"], cwd=ROOT, text=True
+).strip()
+_module.CheckoutImportAuthority(
+    target_root=ROOT,
+    expected_commit=_expected,
+    package_name="trading_bot",
+    critical_modules=(
+        "trading_bot.research.arc02.arc02_authority",
+        "trading_bot.research.arc02.arc02_normalize",
+        "trading_bot.research.arc02.arc02_pit",
+    ),
+).assert_authority()

@@ -1,0 +1,28 @@
+{
+  "checkpoint": "ARC02_V1_V2_SEMANTIC_DIFF",
+  "base_commit": "3ebf5f54bba84300663a9de7f6b05c5b583bc9c6",
+  "v1_prereg_commit": "3ebf5f54bba84300663a9de7f6b05c5b583bc9c6",
+  "v2_repair_commit": "PENDING_COMMIT",
+  "diff_classification": {
+    "ECONOMIC": [],
+    "GOVERNANCE": [
+      "checkout import authority contract",
+      "pytest authority guard",
+      "script bootstrap authority",
+      "adversarial authority tests and evidence"
+    ],
+    "REPORTING": [
+      "ARC02_PREREG_V2_REPAIR_REPORT.md/json",
+      "ARC02_IMPORT_AUTHORITY.json",
+      "ARC02_TEST_TARGET_AUTHORITY.json",
+      "ARC02_ROOT_FAIL_CLOSED.json",
+      "ARC02_PORTABILITY_V2.json",
+      "ARC02_V1_V2_SEMANTIC_DIFF.json",
+      "ARC02_IMPORT_CONTAMINATION_REPRODUCTION.json"
+    ],
+    "TOOLING": []
+  },
+  "economic_diff_count": 0,
+  "frozen_arc02_economic_semantics_unchanged": true,
+  "note": "V2 only adds import authority, governance evidence and reports. No ARC-02 economic semantics were changed."
+}

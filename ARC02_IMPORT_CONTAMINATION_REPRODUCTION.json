@@ -1,0 +1,12 @@
+{
+  "cwd": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc02-prereg-v2-repair-01",
+  "defect_reproduced": true,
+  "expected_commit": "3ebf5f54bba84300663a9de7f6b05c5b583bc9c6",
+  "main_src": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src",
+  "resolves_to_main": true,
+  "resolves_to_worktree": false,
+  "sys_path_has_main_src": true,
+  "sys_path_has_worktree_src": false,
+  "trading_bot_file": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\__init__.py",
+  "worktree_src": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc02-prereg-v2-repair-01\\src"
+}

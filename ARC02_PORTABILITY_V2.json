@@ -1,0 +1,34 @@
+{
+  "clean_detached_tree": {
+    "cwd": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\tmpvs7x22u8\\arc02-clean",
+    "ok": true,
+    "returncode": 0,
+    "stderr_tail": null,
+    "stdout": "",
+    "target_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc02-prereg-v2-repair-01"
+  },
+  "clean_detached_tree_cwd_root": {
+    "cwd": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\tmpvs7x22u8\\arc02-clean",
+    "ok": true,
+    "returncode": 0,
+    "stderr_tail": null,
+    "stdout": "",
+    "target_root": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\tmpvs7x22u8\\arc02-clean"
+  },
+  "cwd_different": {
+    "cwd": "C:\\Users\\GVLLFR0035",
+    "ok": true,
+    "returncode": 0,
+    "stderr_tail": null,
+    "stdout": "",
+    "target_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc02-prereg-v2-repair-01"
+  },
+  "cwd_temp": {
+    "cwd": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp",
+    "ok": true,
+    "returncode": 0,
+    "stderr_tail": null,
+    "stdout": "",
+    "target_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc02-prereg-v2-repair-01"
+  }
+}

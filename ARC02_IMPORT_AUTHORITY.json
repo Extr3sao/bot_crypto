@@ -1,0 +1,9 @@
+{
+  "cwd": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc02-prereg-v2-repair-01",
+  "expected_commit": "3ebf5f54bba84300663a9de7f6b05c5b583bc9c6",
+  "pytest_authority_pass": false,
+  "pytest_returncode": 5,
+  "pytest_stderr_tail": null,
+  "pytest_stdout": "no tests collected in 0.69s",
+  "pythonpath_main_src": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src"
+}

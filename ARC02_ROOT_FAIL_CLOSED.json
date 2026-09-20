@@ -1,0 +1,14 @@
+{
+  "empty_root": {
+    "expected_fail": true,
+    "returncode": 0,
+    "stderr_tail": null,
+    "stdout": "EXPECTED_FAIL FileNotFoundError [Errno 2] No such file or directory: 'C:\\\\Users\\\\GVLLFR0035\\\\AppData\\\\Local\\\\Temp\\\\tmpbdjo8a6c\\\\empty\\\\src\\\\trading_bot\\\\research\\\\import_authority.py'"
+  },
+  "wrong_root": {
+    "expected_fail": true,
+    "returncode": 0,
+    "stderr_tail": null,
+    "stdout": "EXPECTED_FAIL FileNotFoundError [Errno 2] No such file or directory: 'C:\\\\Users\\\\GVLLFR0035\\\\AppData\\\\Local\\\\Temp\\\\tmpbdjo8a6c\\\\wrong\\\\src\\\\trading_bot\\\\research\\\\import_authority.py'"
+  }
+}

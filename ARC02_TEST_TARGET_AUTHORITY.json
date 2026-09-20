@@ -1,0 +1,29 @@
+{
+  "authority_after_bootstrap_under_contamination": {
+    "bootstrap_mods_within_target": [
+      true,
+      true,
+      true
+    ],
+    "bootstrap_pkg_within_target": true,
+    "bootstrap_returncode": 0,
+    "bootstrap_stderr_tail": null,
+    "head": "3ebf5f54bba84300663a9de7f6b05c5b583bc9c6",
+    "mods": [
+      "C:/Users/GVLLFR0035/Downloads/bot freebuff/.research/arc02-prereg-v2-repair-01/src/trading_bot/research/arc02/arc02_authority.py",
+      "C:/Users/GVLLFR0035/Downloads/bot freebuff/.research/arc02-prereg-v2-repair-01/src/trading_bot/research/arc02/arc02_normalize.py",
+      "C:/Users/GVLLFR0035/Downloads/bot freebuff/.research/arc02-prereg-v2-repair-01/src/trading_bot/research/arc02/arc02_pit.py"
+    ],
+    "pkg": "C:/Users/GVLLFR0035/Downloads/bot freebuff/.research/arc02-prereg-v2-repair-01/src/trading_bot/__init__.py",
+    "wrong_commit_error_tail": null,
+    "wrong_commit_output": "EXPECTED_FAIL ImportAuthorityError git HEAD mismatch: expected 0000000000000000000000000000000000000000, observed 3ebf5f54bba84300663a9de7f6b05c5b583bc9c6",
+    "wrong_commit_returncode": 0
+  },
+  "defect_reproduction_before_bootstrap": {
+    "cwd": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc02-prereg-v2-repair-01",
+    "expected_commit": "3ebf5f54bba84300663a9de7f6b05c5b583bc9c6",
+    "resolves_to_main_before_bootstrap": true,
+    "resolves_to_worktree_before_bootstrap": false,
+    "trading_bot_file": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\__init__.py"
+  }
+}
