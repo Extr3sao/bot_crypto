@@ -17,7 +17,7 @@
   ],
   "cwd_used": "C:\\Users\\GVLLFR0035",
   "data_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc02-candidate-design-01",
-  "git_head": "6df96c66ac4ea2fe5413cf896befc1ce997cd6e5",
+  "git_head": "66e1892ad848ebe0ba06386a603a2aa74a99ec7b",
   "preloaded_wrong_module_result": {
     "error": "PRELOADED_WRONG_FIRST_PARTY_MODULE: 1 module(s) of package 'trading_bot' were already imported from outside C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc02-prereg-v3-repair-01\\src (e.g. trading_bot). Fail-closed per contract: wrong first-party imports are an error, never silently replaced",
     "result": "FAIL_CLOSED"
@@ -29,6 +29,6 @@
   "sys_path_removed": [
     "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src"
   ],
-  "target_commit": "6df96c66ac4ea2fe5413cf896befc1ce997cd6e5",
+  "target_commit": "66e1892ad848ebe0ba06386a603a2aa74a99ec7b",
   "target_root": "C:/Users/GVLLFR0035/Downloads/bot freebuff/.research/arc02-prereg-v3-repair-01"
 }

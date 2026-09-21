@@ -26,14 +26,34 @@ The committed V2 audit records a hard contradiction:
 * `authority_package_within_target` = `false`  ← file is *inside* the target, yet judged outside
 
 Mechanism: the V2 evidence emitter canonicalized paths to **forward-slash text**
-(`_normal_path` replaces `\` with `/`), while the V2 helper scripts recomputed
-containment with **naive text prefix tests**
-(`str(pkg).startswith(str(target_root.resolve()))` — backslashes on Windows).
-Two textual forms of the *same* directory therefore compare as different, and a
-target-resident file recomputes as "outside target".
+(`_normal_path` replaces `\` with `/`), while containment was recomputed with
+**ad-hoc text prefix tests**. Two textual forms of the *same* directory therefore
+compare as different, and a target-resident file recomputes as "outside target".
 
-Reproduced pre-repair (F3 in `ARC02_V3_IMPORT_DEFECT_REPRODUCTION.json`):
-`v2_style_startswith = false` while
+The V2 repair's own committed helper used such a test
+(`scripts/arc02_authority_check_fresh.py:19`:
+`str(pkg).startswith(str(target_root))`) — it happened to be masked because that
+helper re-ran `Path(...).resolve()` on the emitted text first, which
+re-normalizes the separators. The *evidence format itself*, however, stayed
+non-canonical, so any independent recomputation that consumes the emitted text
+directly is separator-dependent.
+
+Empirically discriminated on the exact V2-emitted path (target-resident file,
+emitted as `.../src/trading_bot/__init__.py`):
+
+| variant | comparison | result |
+|---------|------------|--------|
+| A | raw emitted text vs resolved target text (prefix) | **false** ← matches the committed verifier contradiction |
+| B | V2 committed helper style (both sides re-resolved, prefix) | true |
+| C | `pathlib.is_relative_to` | true |
+| D | V3 `within()` (pathlib only) | true |
+| E | V3 `norm()` on both sides, then prefix | true |
+
+So variant A — the only variant that reproduces the committed
+`authority_package_within_target = false` — is exactly the naive-text-prefix
+class the work order §7 lists as "package already imported before path
+correction" / non-canonical identity. Reproduced pre-repair (F3 in
+`ARC02_V3_IMPORT_DEFECT_REPRODUCTION.json`): `v2_style_startswith = false` while
 `v3_style_pathlib_is_relative_to = true` for the identical emitted path.
 
 Consequence: V2's PASS could not be *re-derivable* by an independent verifier.
@@ -108,7 +128,7 @@ The V2 repair failed independently for five compounding mechanism reasons:
 
 | #  | Mechanism (from work order §7 list)                                  | V2 behavior                                   |
 |----|----------------------------------------------------------------------|-----------------------------------------------|
-| RC-1 | path identity not canonical (comparison-level defect)               | emitter `/` vs recomputation `\`; PASS not re-derivable |
+| RC-1 | path identity not canonical (comparison-level defect)               | emitted `/` vs prefix-test `\` → `within_target=false`; PASS not re-derivable |
 | RC-2 | package already imported before path correction → silent replace    | purge + reimport, PASS; contract says FAIL    |
 | RC-3 | sys.path mutation leaves contamination in place (ordering authority)| main `src` still in `sys.path` after repair   |
 | RC-4 | pytest guard validates too late; tautological test                  | session-start check only; no real assertion   |

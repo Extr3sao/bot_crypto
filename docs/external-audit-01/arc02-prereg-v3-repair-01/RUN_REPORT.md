@@ -97,3 +97,46 @@ PIT_TARGET_AUTHORITY, TRACK_B_REGRESSION (20 passed), ECONOMIC_DIFF_COUNT = 0.
 
 FINAL_STATUS: PENDING_INDEPENDENT_PREREG_VERIFICATION_V3
 NEXT: ARC02_INDEPENDENT_PREREG_VERIFICATION_V3
+
+## Binding to V3_PREREG_COMMIT
+
+- `V3_PREREG_COMMIT` = `66e1892ad848ebe0ba06386a603a2aa74a99ec7b`
+- Every V3 builder evidence artifact in this directory is bound to that commit
+  (`git_head` / `target_commit` / `expected_commit` = `66e1892…`), so the
+  evidence is re-derivable from the committed state rather than only from the
+  pre-commit working tree.
+- `CLEAN_WORKTREE_BUILDER_CROSSCHECK` = `PASS` — validated in a brand-new
+  **detached** worktree created at `V3_PREREG_COMMIT` with the contaminated
+  environment intentionally present (editable `.pth` + `PYTHONPATH` = main
+  `src`); `PLAIN_PYTHON_AUTHORITY`, `PYTEST_AUTHORITY_FRESH`,
+  `SUBPROCESS_AUTHORITY_FRESH`, `DATA_BINDING_FRESH` all PASS. The temporary
+  worktree was removed after the run
+  (`ARC02_V3_POST_COMMIT_VALIDATION.json`).
+- `POST_FREEZE_ARTIFACT_DRIFT` = `0` (SPEC/MANIFEST hashes recomputed on the
+  fresh detached tree).
+- Working tree left clean: `git status --porcelain` empty.
+
+## Defects and limitations (builder-side)
+
+- DEFECTS: none open. The V2 defects (RC-1…RC-5) are each reproduced pre-repair
+  and covered by an asserting test in
+  `tests/unit/research/test_arc02_import_authority_v3.py`.
+- LIMITATIONS:
+  - Builder crosscheck is **not** independent verification; V3 still requires
+    `ARC02_INDEPENDENT_PREREG_VERIFICATION_V3`.
+  - Authority is proven only for the process/entrypoint set exercised here
+    (plain python, pytest, subprocess, PIT verifier, data verifier, portable
+    verifier, clean-worktree validation). A future entrypoint that imports
+    `trading_bot` without invoking the bootstrap is outside this guarantee.
+  - Subprocess authority requires the child to call `bootstrap_arc02()` before
+    importing first-party code or to receive
+    `ARC02_TARGET_ROOT`/`ARC02_EXPECTED_COMMIT`; the contract is enforced in
+    the shipped scripts and tests, not by the interpreter itself.
+  - The certified data root is a sibling research worktree
+    (`.research/arc02-candidate-design-01`); the data verifier is executed with
+    `--skip-git` against the audited target, so dataset identity is bound by
+    hash rather than by data-root git HEAD.
+  - The main checkout's own untracked files (e.g. `his.zip`, `docs/audit/*`,
+    `.agentic-backup/`) are pre-existing and untouched by this work package.
+  - No ARC-02 economics were run: `ARC02_BACKTESTS = 0`,
+    `ARC02_EXECUTIONS = 0`, `ARC02_PERFORMANCE_OBSERVED = false`.

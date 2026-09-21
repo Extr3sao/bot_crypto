@@ -27,10 +27,10 @@
     },
     "fresh_v3_tree": {
       "PASS": true,
-      "git_head": "6df96c66ac4ea2fe5413cf896befc1ce997cd6e5",
+      "git_head": "66e1892ad848ebe0ba06386a603a2aa74a99ec7b",
       "package_within_target": true,
       "returncode": 0,
-      "root": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\tmpf1vsyb56\\fresh-v3-copy"
+      "root": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\tmpjfvavvk5\\fresh-v3-copy"
     }
   }
 }

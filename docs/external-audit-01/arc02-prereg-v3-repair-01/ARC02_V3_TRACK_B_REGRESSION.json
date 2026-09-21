@@ -9,7 +9,7 @@
     "ExternalStrategyIntake",
     "MarketIntelligenceProvider"
   ],
-  "output_tail": "....................                                                     [100%]\n20 passed in 2.56s\n",
+  "output_tail": "....................                                                     [100%]\n20 passed in 10.12s\n",
   "returncode": 0,
   "scope": "existing Track B components only - no expansion, no new capability",
   "test_files": [

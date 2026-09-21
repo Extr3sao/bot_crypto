@@ -3,7 +3,9 @@
   "worktree": "C:/Users/GVLLFR0035/Downloads/bot freebuff/.research/arc02-prereg-v3-repair-01",
   "branch": "repair/arc02-prereg-v3-repair-01",
   "base_v2_commit": "6df96c66ac4ea2fe5413cf896befc1ce997cd6e5",
-  "expected_commit": "6df96c66ac4ea2fe5413cf896befc1ce997cd6e5",
+  "v3_prereg_commit": "66e1892ad848ebe0ba06386a603a2aa74a99ec7b",
+  "expected_commit": "66e1892ad848ebe0ba06386a603a2aa74a99ec7b",
+  "evidence_artifacts_bound_to_commit": true,
   "v2_verifier_evidence_commit": "00063237de21e3ed9273d84293f129f75003f126",
   "v2_verdict_overridden_by_evidence": "FAIL_INDEPENDENT_PREREG_VERIFICATION_V2",
   "v2_recorded": {
@@ -61,7 +63,17 @@
   "arc02_performance_observed": false,
   "discovery_tests_passed": 20,
   "false_success": 0,
+  "clean_worktree_builder_crosscheck": "PASS",
+  "post_freeze_artifact_drift": 0,
+  "post_commit_validation_artifact": "docs/external-audit-01/arc02-prereg-v3-repair-01/ARC02_V3_POST_COMMIT_VALIDATION.json",
+  "post_commit_validation_gates": {
+    "PLAIN_PYTHON_AUTHORITY": "PASS",
+    "PYTEST_AUTHORITY_FRESH": "PASS",
+    "SUBPROCESS_AUTHORITY_FRESH": "PASS",
+    "DATA_BINDING_FRESH": "PASS",
+    "POST_FREEZE_ARTIFACT_DRIFT": 0
+  },
   "status": "PENDING_INDEPENDENT_PREREG_VERIFICATION_V3",
   "next": "ARC02_INDEPENDENT_PREREG_VERIFICATION_V3",
-  "note": "CLEAN_WORKTREE_BUILDER_CROSSCHECK and POST_FREEZE_ARTIFACT_DRIFT are finalized post-commit (see ARC02_V3_POST_COMMIT_VALIDATION.json)."
+  "note": "CLEAN_WORKTREE_BUILDER_CROSSCHECK and POST_FREEZE_ARTIFACT_DRIFT were finalized post-commit in a brand-new detached worktree at v3_prereg_commit (see ARC02_V3_POST_COMMIT_VALIDATION.json). Builder crosscheck is NOT independent verification."
 }

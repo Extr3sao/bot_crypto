@@ -5,10 +5,10 @@
   "builder_role": "BUILDER_CROSSCHECK_NOT_INDEPENDENT_VERIFICATION",
   "cwd": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.research\\arc02-prereg-v3-repair-01",
   "env_pythonpath": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src",
-  "expected_commit": "6df96c66ac4ea2fe5413cf896befc1ce997cd6e5",
+  "expected_commit": "66e1892ad848ebe0ba06386a603a2aa74a99ec7b",
   "pytest_invocation": "python -m pytest tests/unit/research/test_arc02_import_authority_v3.py tests/unit/research/test_arc02_prereg.py tests/unit/research/test_arc02_data_authority.py -q",
-  "pytest_output_tail": "..........................................................ssss           [100%]\n=========================== short test summary info ===========================\nSKIPPED [1] tests\\unit\\research\\test_arc02_data_authority.py:149: reused ARC-02 partitions not present in this data root\nSKIPPED [1] tests\\unit\\research\\test_arc02_data_authority.py:156: reused ARC-02 partitions not present in this data root\nSKIPPED [1] tests\\unit\\research\\test_arc02_data_authority.py:163: reused ARC-02 partitions not present in this data root\nSKIPPED [1] tests\\unit\\research\\test_arc02_data_authority.py:172: reused ARC-02 partitions not present in this data root\n58 passed, 4 skipped in 29.17s\n",
+  "pytest_output_tail": "..........................................................ssss           [100%]\n=========================== short test summary info ===========================\nSKIPPED [1] tests\\unit\\research\\test_arc02_data_authority.py:149: reused ARC-02 partitions not present in this data root\nSKIPPED [1] tests\\unit\\research\\test_arc02_data_authority.py:156: reused ARC-02 partitions not present in this data root\nSKIPPED [1] tests\\unit\\research\\test_arc02_data_authority.py:163: reused ARC-02 partitions not present in this data root\nSKIPPED [1] tests\\unit\\research\\test_arc02_data_authority.py:172: reused ARC-02 partitions not present in this data root\n58 passed, 4 skipped in 109.99s (0:01:49)\n",
   "pytest_returncode": 0,
-  "wrong_commit_probe_output_head": "PYTEST_AUTHORITY_FAIL_CLOSED: git HEAD mismatch: expected 0000000000000000000000000000000000000000, observed 6df96c66ac4ea2fe5413cf896befc1ce997cd6e5\n",
+  "wrong_commit_probe_output_head": "PYTEST_AUTHORITY_FAIL_CLOSED: git HEAD mismatch: expected 0000000000000000000000000000000000000000, observed 66e1892ad848ebe0ba06386a603a2aa74a99ec7b\n",
   "wrong_commit_probe_returncode": 1
 }

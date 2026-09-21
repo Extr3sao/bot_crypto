@@ -1,0 +1,52 @@
+{
+  "CLEAN_WORKTREE_BUILDER_CROSSCHECK": "PASS",
+  "data_binding_fresh": {
+    "PASS": true,
+    "PIT_BATTERY": true,
+    "PYTHON_IMPORT_AUTHORITY": true,
+    "returncode": 0,
+    "verdict": "PASS"
+  },
+  "failed_gates": [],
+  "gates": {
+    "DATA_BINDING_FRESH": "PASS",
+    "PLAIN_PYTHON_AUTHORITY": "PASS",
+    "POST_FREEZE_ARTIFACT_DRIFT": 0,
+    "PYTEST_AUTHORITY_FRESH": "PASS",
+    "SUBPROCESS_AUTHORITY_FRESH": "PASS"
+  },
+  "plain_python_authority": {
+    "PASS": true,
+    "critical_all_within_target": true,
+    "package_file": "C:/Users/GVLLFR0035/AppData/Local/Temp/arc02-v3-fresh-jrhq1mhc/arc02-v3-fresh-wt/src/trading_bot/__init__.py",
+    "package_within_target": true,
+    "returncode": 0,
+    "target_root": "C:/Users/GVLLFR0035/AppData/Local/Temp/arc02-v3-fresh-jrhq1mhc/arc02-v3-fresh-wt"
+  },
+  "post_freeze_artifact_drift": {
+    "POST_FREEZE_ARTIFACT_DRIFT": 0,
+    "artifacts": {
+      "docs/arc02-prereg-01/ARC02_MANIFEST_V1.json": {
+        "sha256": "9a7499813bde088ebde517e77bf9089148d0c4c875d1d719fd4f8c0754827e88"
+      },
+      "docs/arc02-prereg-01/ARC02_SPEC_V1.json": {
+        "sha256": "ef5d76196943b7498f2ed70757e0405acc2a07a4c80a66b71eaba548950afc40"
+      }
+    },
+    "required": {
+      "MANIFEST": "9a7499813bde088ebde517e77bf9089148d0c4c875d1d719fd4f8c0754827e88",
+      "SPEC": "ef5d76196943b7498f2ed70757e0405acc2a07a4c80a66b71eaba548950afc40"
+    }
+  },
+  "pytest_authority_fresh": {
+    "PASS": true,
+    "output_tail": ".......................................                                  [100%]\n39 passed in 126.06s (0:02:06)\n",
+    "returncode": 0
+  },
+  "subprocess_authority_fresh": {
+    "PASS": true,
+    "package_within_target": true,
+    "returncode": 0
+  },
+  "v3_prereg_commit": "66e1892ad848ebe0ba06386a603a2aa74a99ec7b"
+}
