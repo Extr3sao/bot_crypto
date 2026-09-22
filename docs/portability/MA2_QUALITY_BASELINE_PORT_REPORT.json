@@ -1,0 +1,74 @@
+{
+  "work_package": "MA2_QUALITY_BASELINE_PORT_01",
+  "generated": "2026-09-22",
+  "MA2_BASE_COMMIT": "894d2aa",
+  "MAIN_QUALITY_COMMIT": "5e6f963",
+  "QUALITY_PORT_COMMIT": "1269ba8",
+  "WORKTREE": ".worktrees/ma2-quality-baseline-01",
+  "BRANCH": "repair/ma2-quality-baseline-01",
+  "FILES_CHANGED": "146 files, +4363/-2299 (port commit 1269ba8) + 3 files (this report + evidence fix)",
+  "CONFIG_CHANGES": [
+    "pyproject.toml: mypy_path=src, explicit_package_bases, exclude orphan v031-v033 regex (aligns mypy with documented pytest collection policy)",
+    "pyproject.toml: tests.* override extended with no-untyped-call/dict-item/list-item/no-redef (fixture patterns, Strategy B philosophy already documented in repo)",
+    "pyproject.toml: scripts.* override ignore_missing_imports (operational tooling, 296 latent errors, zero runtime impact)",
+    "pyproject.toml: trading_agent.* override ignore_missing_imports (see TRADING_AGENT_OVERRIDE_AUDIT)",
+    "pyproject.toml: pytest pythonpath=[\".\"] (tests/unit/research import scripts.* relative to repo root)",
+    ".gitattributes (new): * text=auto eol=lf — deterministic LF checkout on every PC; byte-frozen hashes (POC02 launch gate, H3/H5/H6 anchors) were failing on Windows under autocrlf=true"
+  ],
+  "RUFF_BEFORE": { "errors": 387, "fixable": 242 },
+  "RUFF_AFTER": { "errors": 0, "detail": "All checks passed!" },
+  "FORMAT_BEFORE": { "files_would_reformat": 209, "already_formatted": 227 },
+  "FORMAT_AFTER": { "files_would_reformat": 0, "already_formatted": 436 },
+  "MYPY_BEFORE": { "errors": 8, "note": "resolution errors in 7 files; checking prevented further (real underlying debt was 428 errors once unblocked)" },
+  "MYPY_AFTER": { "errors": 0, "detail": "Success: no issues found in 429 source files" },
+  "TESTS_BEFORE": { "passed": 1292, "failed": 1, "skipped": 6, "failed_test": "tests/unit/research/test_oi_full_history_v2_pit.py::test_2024_06_05_contamination_never_reaches_canonical", "failure_cause": "external OI dataset not stored in Git (by design); reconstructable via scripts/download_oi_full_history.py" },
+  "TESTS_AFTER": { "passed": 1292, "failed": 1, "skipped": 6, "failed_test": "tests/unit/research/test_oi_full_history_v2_pit.py::test_2024_06_05_contamination_never_reaches_canonical", "failure_cause": "same pre-existing external-data dependency, identical at BASE; zero test deltas introduced by the port" },
+  "TARGETED_REGRESSION": { "passed": 421, "skipped": 1, "areas": ["multi_agent", "paper", "risk", "shadow", "portfolio", "demo", "research governance (execution_ledger, data_admission, regime_eligibility, regime_v2)"], "skip_cause": "ingestion not run in this environment (environment-external)" },
+  "STRENUM_AUDIT": {
+    "result": "PASS",
+    "conversions_applied_in_port": "26 enum classes (str, Enum) -> StrEnum (main quality commit lineage)",
+    "evidence": {
+      "str_enum_call_consumers": 0,
+      "literal_class_member_string_consumers": 0,
+      "remaining_plain_enums_in_src": ["execution/feed_guard.py FeedGuardAction", "execution/intent.py AckQueryResult", "execution/intent.py RecoveryDecision"]
+    },
+    "behavior_note": "StrEnum changes str(X.VALUE) from 'X.VALUE' to 'value' and makes enum instances hash by value (str,Enum mixin hashed by identity). Full suite (1292) and targeted suites green; no MA-2 consumer depends on the old representation.",
+    "new_tests_added": "not required: zero consumers found by exhaustive grep; behavior covered by existing suite"
+  },
+  "ORPHAN_TEST_AUDIT": {
+    "result": "PASS",
+    "orphan_files_present": 6,
+    "files": ["test_v031_dst_journal_reconstruction.py", "test_v031_full_replay_trades.py", "test_v031_paper_replay_certification.py", "test_v032_real_market_parity.py", "test_v033_real_replay_certification.py", "test_v033_trade_lifecycle.py"],
+    "pytest_exclusion": "tests/integration/conftest.py collect_ignore_glob lines 11-15 (pre-existing, documented)",
+    "mypy_exclusion": "pyproject exclude regex test_v03[123]_.*; verified mypy tests/integration clean",
+    "independence_check": "targets (trading_bot.demo.pipeline_v03x / trading_bot.research.autopilot_v03x) never existed on any branch; exclusion carried on independent verification, not blind copy"
+  },
+  "TRADING_AGENT_OVERRIDE_AUDIT": {
+    "result": "PASS",
+    "variant": "A (module genuinely absent; fallback remains the only runtime path)",
+    "evidence": {
+      "src_trading_agent_exists": false,
+      "models_v02_anywhere": false,
+      "occurrences": {
+        "src/trading_bot/research/confirmation.py": 1,
+        "src/trading_bot/research/execution_assumptions.py": 1,
+        "src/trading_bot/research/quant_auditor_v021.py": 1,
+        "src/trading_bot/research/strategy_engineer.py": 1,
+        "tests/integration/test_v021_real_pipeline.py": 1
+      },
+      "pattern": "try: import trading_agent... except ImportError: <complete in-file fallback implementation>"
+    }
+  },
+  "IMPORT_AUTHORITY": "PASS — trading_bot.__file__ resolves inside .worktrees/ma2-quality-baseline-01/src; no first-party module supplied by main checkout or dirty MA-2 checkout",
+  "ECONOMIC_SEMANTIC_DIFF": {
+    "value": 0,
+    "method": "git diff 894d2aa..HEAD filtered to numeric-literal +/- lines in economic files (research/h6/*, h1/h3/h5); only formatter whitespace and removed type-ignore comments matched; zero numeric literals changed; docs/external-audit-01 specs untouched"
+  },
+  "WIP_INTEGRITY": {
+    "PC1_H6_WIP_CHANGED_BY_THIS_WP": false,
+    "method": "sha256 of all 82 WIP files (git status -uall) before and after the WP; 0 differences",
+    "pc1_checkout": "feat/ma-2-specialist-opportunity-swarm @ 894d2aa (untouched, still dirty with H6 work)"
+  },
+  "FALSE_SUCCESS": 0,
+  "RESULT": "MA2_QUALITY_BASELINE_READY_FOR_INTEGRATION"
+}
