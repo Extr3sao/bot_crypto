@@ -98,6 +98,15 @@ disallow_untyped_defs = true
 no_implicit_optional = true
 plugins = ["pydantic.mypy"]
 
+# Src-layout authority: resolve modules from src/ only (no src.* pseudo-modules,
+# no duplicate trading_bot.backtesting.types). Aligns mypy file discovery with
+# the documented pytest collection policy: orphaned v031-v033 integration tests
+# import modules never committed to this repo and are excluded (see
+# tests/integration/conftest.py and docs/PAPER_L5_CERTIFICATION.md).
+mypy_path = "src"
+explicit_package_bases = true
+exclude = ['test_v03[123]_.*\.py$']
+
 # Strategy B (TSK-200): per-module overrides using separate [[tool.mypy.overrides]]
 # tables (mypy warns on bundled module lists). Tests.* + paper.* stubs get a broad
 # relaxation because mock/fixture patterns legitimately trigger these error codes.
@@ -120,6 +129,10 @@ disable_error_code = [
     "type-arg",         # generic unwrap in tests
     "assignment",       # mock variable rebinding
     "no-any-return",    # mock returns are explicitly Any
+    "no-untyped-call",  # untyped helpers/fixtures called from typed test funcs
+    "dict-item",        # fixture dict-building with mixed value types
+    "list-item",        # fixture lists with Optional entries
+    "no-redef",         # fixture-local redefinitions
 ]
 [[tool.mypy.overrides]]
 module = "src.trading_bot.paper.*"
@@ -181,3 +194,10 @@ dev = [
   "safety>=3.0.0",
   "anyio>=4.3.0",
 ]  # fmt: skip
+
+# trading_agent.* never existed in this repository (elegant-degradation imports
+# in src/trading_bot/research/* always use their in-file fallbacks; the module
+# was never committed on any branch). Treat as optional dependency.
+[[tool.mypy.overrides]]
+module = "trading_agent.*"
+ignore_missing_imports = true

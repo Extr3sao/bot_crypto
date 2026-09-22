@@ -53,10 +53,16 @@ def verify_hash_chain(events: list[dict[str, Any]]) -> tuple[bool, str]:
         actual_hash = event.get("event_hash", "")
 
         if actual_hash != expected_hash:
-            return False, f"Hash mismatch at event {i}: expected {expected_hash[:16]}..., got {actual_hash[:16]}..."
+            return (
+                False,
+                f"Hash mismatch at event {i}: expected {expected_hash[:16]}..., got {actual_hash[:16]}...",
+            )
 
         if event.get("previous_hash", "") != previous_hash:
-            return False, f"Chain break at event {i}: expected previous_hash {previous_hash[:16]}..., got {event.get('previous_hash', '')[:16]}..."
+            return (
+                False,
+                f"Chain break at event {i}: expected previous_hash {previous_hash[:16]}..., got {event.get('previous_hash', '')[:16]}...",
+            )
 
         previous_hash = actual_hash
 

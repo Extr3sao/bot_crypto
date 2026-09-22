@@ -8,8 +8,6 @@ from __future__ import annotations
 
 import datetime
 import json
-import math
-import tempfile
 from pathlib import Path
 
 import pytest
@@ -18,19 +16,14 @@ from trading_bot.backtesting.engine import BacktestEngine
 from trading_bot.backtesting.types import OHLCV, Order
 from trading_bot.research.canonical_accounting import (
     CanonicalAccountingCalculator,
-    CanonicalPortfolioPnL,
     SlippageSemantics,
 )
-from trading_bot.research.evidence import EvidenceClass, EvidenceRecord
+from trading_bot.research.evidence import EvidenceClass
 from trading_bot.research.gates import (
     AccountingIntegrityGate,
-    AccountingIntegrityResult,
-    GateCheck,
     GateResult,
     MarketEvidenceGate,
-    MarketEvidenceResult,
     ResearchQualificationGate,
-    ResearchQualificationResult,
 )
 from trading_bot.research.market_provenance import MarketDataProvenance
 
@@ -111,21 +104,23 @@ def _fetch_binance_klines(
     end_ms: int,
 ) -> list[dict]:
     """Fetch klines from Binance public API. No credentials needed."""
-    import urllib.request
     import urllib.parse
+    import urllib.request
 
     base_url = "https://api.binance.com/api/v3/klines"
     all_klines = []
     current_start = start_ms
 
     while current_start < end_ms:
-        params = urllib.parse.urlencode({
-            "symbol": symbol,
-            "interval": interval,
-            "startTime": current_start,
-            "endTime": end_ms,
-            "limit": 1000,
-        })
+        params = urllib.parse.urlencode(
+            {
+                "symbol": symbol,
+                "interval": interval,
+                "startTime": current_start,
+                "endTime": end_ms,
+                "limit": 1000,
+            }
+        )
         url = f"{base_url}?{params}"
         try:
             req = urllib.request.Request(url)
@@ -147,7 +142,7 @@ def _klines_to_bars(klines: list[dict]) -> list[list]:
     """Convert Binance klines to [timestamp, open, high, low, close, volume]."""
     return [
         [
-            k[0],         # open_time (ms)
+            k[0],  # open_time (ms)
             float(k[1]),  # open
             float(k[2]),  # high
             float(k[3]),  # low
@@ -173,8 +168,8 @@ class TestV024RealMarketQualification:
         """
         # 1. Fetch real market data
         try:
-            end_dt = datetime.datetime(2026, 8, 27, tzinfo=datetime.timezone.utc)
-            start_dt = datetime.datetime(2026, 8, 13, tzinfo=datetime.timezone.utc)
+            end_dt = datetime.datetime(2026, 8, 27, tzinfo=datetime.UTC)
+            start_dt = datetime.datetime(2026, 8, 13, tzinfo=datetime.UTC)
             start_ms = int(start_dt.timestamp() * 1000)
             end_ms = int(end_dt.timestamp() * 1000)
 
@@ -204,7 +199,7 @@ class TestV024RealMarketQualification:
             timeframe="5m",
             source=source,
             retrieval_method="public_api",
-            retrieved_at=int(datetime.datetime.now(datetime.timezone.utc).timestamp() * 1000),
+            retrieved_at=int(datetime.datetime.now(datetime.UTC).timestamp() * 1000),
             start=start_ms,
             end=end_ms,
             bars=len(bars),
@@ -224,8 +219,13 @@ class TestV024RealMarketQualification:
                 for b in self._bars:
                     if start_ms <= b[0] <= end_ms:
                         yield OHLCV(
-                            symbol=symbol, timestamp=b[0], open=b[1],
-                            high=b[2], low=b[3], close=b[4], volume=b[5],
+                            symbol=symbol,
+                            timestamp=b[0],
+                            open=b[1],
+                            high=b[2],
+                            low=b[3],
+                            close=b[4],
+                            volume=b[5],
                         )
 
         source_obj = ListSource(bars)
@@ -233,14 +233,12 @@ class TestV024RealMarketQualification:
         engine = BacktestEngine(
             source=source_obj,
             strategy=strategy,
-            commission=0.001,      # 10 bps
+            commission=0.001,  # 10 bps
             slippage_bps=5.0,
             initial_capital=10_000.0,
         )
 
-        result = engine.run(
-            symbol="BTCUSDT", start=start_dt, end=end_dt, timeframe="5m"
-        )
+        result = engine.run(symbol="BTCUSDT", start=start_dt, end=end_dt, timeframe="5m")
 
         assert len(result.trades) > 0, "Strategy should produce trades on real data"
 
@@ -252,8 +250,7 @@ class TestV024RealMarketQualification:
         )
 
         trade_pnls = [
-            calc.compute_trade_pnl(t, f"QUAL-T{i:04d}")
-            for i, t in enumerate(result.trades)
+            calc.compute_trade_pnl(t, f"QUAL-T{i:04d}") for i, t in enumerate(result.trades)
         ]
 
         portfolio = calc.compute_portfolio_pnl(
@@ -261,7 +258,9 @@ class TestV024RealMarketQualification:
         )
 
         metrics = calc.compute_canonical_metrics(
-            result.trades, result.initial_capital, result.final_equity,
+            result.trades,
+            result.initial_capital,
+            result.final_equity,
             equity_curve=result.equity_curve,
         )
 
@@ -287,6 +286,7 @@ class TestV024RealMarketQualification:
         # Save trades
         if trade_pnls:
             import csv
+
             trades_path = run_dir / "trades_canonical.csv"
             with trades_path.open("w", newline="", encoding="utf-8") as f:
                 writer = csv.DictWriter(f, fieldnames=list(trade_pnls[0].to_dict().keys()))
@@ -298,20 +298,20 @@ class TestV024RealMarketQualification:
         # All trades should reconcile
         for tp in trade_pnls:
             assert tp.reconciled, (
-                f"Trade {tp.trade_id} failed reconciliation: "
-                f"error={tp.reconciliation_error:.6f}"
+                f"Trade {tp.trade_id} failed reconciliation: error={tp.reconciliation_error:.6f}"
             )
 
         # Canonical equation: gross = net + fees
         reconstructed_gross = portfolio.total_net_pnl + portfolio.total_fees
-        assert reconstructed_gross == pytest.approx(
-            portfolio.total_gross_price_move, abs=0.10
-        ), "Canonical accounting equation violated"
+        assert reconstructed_gross == pytest.approx(portfolio.total_gross_price_move, abs=0.10), (
+            "Canonical accounting equation violated"
+        )
 
         # 8. Run gates
         acc_gate = AccountingIntegrityGate(tolerance=10.0)
         acc_result = acc_gate.evaluate(
-            trade_pnls, portfolio,
+            trade_pnls,
+            portfolio,
             configured_commission_bps=10.0,
             configured_slippage_bps=5.0,
         )
@@ -338,17 +338,13 @@ class TestV024RealMarketQualification:
 
         # 9. Assertions
         # Accounting integrity should pass
-        assert acc_result.trade_reconciliation == GateResult.PASS, (
-            f"Trade reconciliation failed"
-        )
+        assert acc_result.trade_reconciliation == GateResult.PASS, "Trade reconciliation failed"
 
         # Market evidence should pass
-        assert ev_result.passed, (
-            f"Market evidence gate failed: {ev_result.checks}"
-        )
+        assert ev_result.passed, f"Market evidence gate failed: {ev_result.checks}"
 
         # Print summary
-        print(f"\n=== V0.2.4 REAL MARKET QUALIFICATION ===")
+        print("\n=== V0.2.4 REAL MARKET QUALIFICATION ===")
         print(f"Dataset: {exchange}/BTCUSDT 5m")
         print(f"Period: {start_dt.date()} to {end_dt.date()}")
         print(f"Bars: {len(bars)}")
@@ -364,23 +360,29 @@ class TestV024RealMarketQualification:
         print(f"Max DD: {metrics['max_drawdown_pct']:.2%}")
         print(f"Accounting gate: {'PASS' if acc_result.passed else 'FAIL'}")
         print(f"Evidence gate: {'PASS' if ev_result.passed else 'FAIL'}")
-        print(f"Qualification: {'FULLY_QUALIFIED' if qual_result.fully_qualified else 'NOT_QUALIFIED'}")
-        print(f"========================================\n")
+        print(
+            f"Qualification: {'FULLY_QUALIFIED' if qual_result.fully_qualified else 'NOT_QUALIFIED'}"
+        )
+        print("========================================\n")
 
         # Save qualification result
         (run_dir / "qualification.json").write_text(
-            json.dumps({
-                "fully_qualified": qual_result.fully_qualified,
-                "accounting_passed": acc_result.passed,
-                "evidence_passed": ev_result.passed,
-                "trade_reconciliation": acc_result.trade_reconciliation.value,
-                "portfolio_reconciliation": acc_result.portfolio_reconciliation.value,
-                "equity_reconciliation": acc_result.equity_reconciliation.value,
-                "fee_reconciliation": acc_result.fee_reconciliation.value,
-                "evidence_class": evidence_class.value,
-                "metrics": metrics,
-                "portfolio": portfolio.to_dict(),
-            }, indent=2, default=str),
+            json.dumps(
+                {
+                    "fully_qualified": qual_result.fully_qualified,
+                    "accounting_passed": acc_result.passed,
+                    "evidence_passed": ev_result.passed,
+                    "trade_reconciliation": acc_result.trade_reconciliation.value,
+                    "portfolio_reconciliation": acc_result.portfolio_reconciliation.value,
+                    "equity_reconciliation": acc_result.equity_reconciliation.value,
+                    "fee_reconciliation": acc_result.fee_reconciliation.value,
+                    "evidence_class": evidence_class.value,
+                    "metrics": metrics,
+                    "portfolio": portfolio.to_dict(),
+                },
+                indent=2,
+                default=str,
+            ),
             encoding="utf-8",
         )
 
@@ -389,67 +391,95 @@ class TestV024RealMarketQualification:
         import random
 
         random.seed(99)
-        base_ts = int(
-            datetime.datetime(2026, 8, 13, 0, 0, tzinfo=datetime.timezone.utc).timestamp()
-            * 1000
-        )
+        base_ts = int(datetime.datetime(2026, 8, 13, 0, 0, tzinfo=datetime.UTC).timestamp() * 1000)
         bars = []
         price = 42000.0
         for i in range(500):
             ts = base_ts + i * 300000
             h = price * (1 + random.uniform(0.0005, 0.005))
-            l = price * (1 - random.uniform(0.0005, 0.005))
-            c = random.uniform(l, h)
+            low = price * (1 - random.uniform(0.0005, 0.005))
+            c = random.uniform(low, h)
             o = price
-            bars.append([ts, o, h, l, c, random.uniform(100, 500)])
+            bars.append([ts, o, h, low, c, random.uniform(100, 500)])
             price = c
 
         class ListSource:
             def __init__(self, b):
                 self._bars = b
+
             def iter_candles(self, symbol, start_ms, end_ms):
                 for b in self._bars:
                     if start_ms <= b[0] <= end_ms:
-                        yield OHLCV(symbol=symbol, timestamp=b[0], open=b[1],
-                                   high=b[2], low=b[3], close=b[4], volume=b[5])
+                        yield OHLCV(
+                            symbol=symbol,
+                            timestamp=b[0],
+                            open=b[1],
+                            high=b[2],
+                            low=b[3],
+                            close=b[4],
+                            volume=b[5],
+                        )
 
         class QS:
             name = "eq_test"
+
             def __init__(self):
-                self._bar = 0; self._eb = 0
+                self._bar = 0
+                self._eb = 0
+
             def on_candle(self, ctx, candle):
                 self._bar += 1
                 if ctx.position_qty > 0:
                     if self._bar - self._eb >= 10:
-                        return Order(id="E", symbol=ctx.symbol, side="sell",
-                                    qty=ctx.position_qty, type="market",
-                                    timestamp=candle.timestamp)
+                        return Order(
+                            id="E",
+                            symbol=ctx.symbol,
+                            side="sell",
+                            qty=ctx.position_qty,
+                            type="market",
+                            timestamp=candle.timestamp,
+                        )
                     if ctx.position_avg_price > 0:
                         drop = (ctx.position_avg_price - candle.close) / ctx.position_avg_price
                         if drop > 0.01:
-                            return Order(id="S", symbol=ctx.symbol, side="sell",
-                                        qty=ctx.position_qty, type="market",
-                                        timestamp=candle.timestamp)
+                            return Order(
+                                id="S",
+                                symbol=ctx.symbol,
+                                side="sell",
+                                qty=ctx.position_qty,
+                                type="market",
+                                timestamp=candle.timestamp,
+                            )
                 else:
                     if ctx.equity > 100 and candle.volume > 0 and self._bar % 15 == 0:
-                        risk = ctx.equity * 0.0025; sd = candle.close * 0.01
+                        risk = ctx.equity * 0.0025
+                        sd = candle.close * 0.01
                         qty = risk / sd if sd > 0 else 0
                         notional = qty * candle.close
                         if notional <= ctx.equity * 0.50 and notional > 0:
                             self._eb = self._bar
-                            return Order(id="B", symbol=ctx.symbol, side="buy",
-                                        qty=qty, type="market", timestamp=candle.timestamp)
+                            return Order(
+                                id="B",
+                                symbol=ctx.symbol,
+                                side="buy",
+                                qty=qty,
+                                type="market",
+                                timestamp=candle.timestamp,
+                            )
                 return None
 
-        src = ListSource(bars); st = QS()
-        eng = BacktestEngine(source=src, strategy=st, commission=0.001,
-                           slippage_bps=5.0, initial_capital=10000)
-        s = datetime.datetime(2026, 8, 13, 0, 0, tzinfo=datetime.timezone.utc)
-        e = datetime.datetime(2026, 8, 27, 0, 0, tzinfo=datetime.timezone.utc)
+        src = ListSource(bars)
+        st = QS()
+        eng = BacktestEngine(
+            source=src, strategy=st, commission=0.001, slippage_bps=5.0, initial_capital=10000
+        )
+        s = datetime.datetime(2026, 8, 13, 0, 0, tzinfo=datetime.UTC)
+        e = datetime.datetime(2026, 8, 27, 0, 0, tzinfo=datetime.UTC)
         r = eng.run(symbol="BTCUSDT", start=s, end=e, timeframe="5m")
 
         calc = CanonicalAccountingCalculator(
-            commission_rate=0.001, slippage_bps=5.0,
+            commission_rate=0.001,
+            slippage_bps=5.0,
             slippage_mode=SlippageSemantics.EMBEDDED_IN_FILL,
         )
         portfolio = calc.compute_portfolio_pnl(r.trades, r.initial_capital, r.final_equity)

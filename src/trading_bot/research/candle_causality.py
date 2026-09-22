@@ -141,18 +141,14 @@ class CandleCausalityEnforcer:
         """Run all causality checks."""
         checks: list[CausalityCheck] = []
 
-        checks.append(self.validate_signal_candle(
-            signal_timestamp, candle_timestamp, candle_completed
-        ))
+        checks.append(
+            self.validate_signal_candle(signal_timestamp, candle_timestamp, candle_completed)
+        )
 
         if htf_candle_timestamp is not None:
-            checks.append(self.validate_htf_causality(
-                signal_timestamp, htf_candle_timestamp
-            ))
+            checks.append(self.validate_htf_causality(signal_timestamp, htf_candle_timestamp))
 
-        checks.append(self.validate_no_future_data(
-            current_bar_index=0, total_bars=1
-        ))
+        checks.append(self.validate_no_future_data(current_bar_index=0, total_bars=1))
 
         passed = all(c.passed for c in checks)
 

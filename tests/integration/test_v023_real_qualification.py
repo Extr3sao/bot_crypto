@@ -8,37 +8,29 @@ import json
 import tempfile
 from pathlib import Path
 
-import pytest
-
-from trading_bot.backtesting.engine import BacktestEngine
 from trading_bot.backtesting.types import OHLCV, Order
 from trading_bot.research.backtest_evidence import (
     RealBacktestEvidenceAdapter,
-    RealBacktestResult,
-)
-from trading_bot.research.evidence import EvidenceClass, EvidenceRecord
-from trading_bot.research.historical_data import (
-    DataQualityGate,
-    HistoricalDataset,
-    compute_dataset_checksum,
-)
-from trading_bot.research.cost_integrity import (
-    CostSanityGate,
-    FeeInvariantCalculator,
-    TurnoverCalculator,
-)
-from trading_bot.research.equity_reconstruction import (
-    EquityReconstructor,
-    ExposureSanityChecker,
-    TradeRiskChecker,
 )
 from trading_bot.research.calendar import (
     CalendarCompletenessChecker,
     HistoricalConfirmationSimulator,
 )
-from trading_bot.research.quant_auditor_v021 import QuantAuditorV021
+from trading_bot.research.cost_integrity import (
+    CostSanityGate,
+    TurnoverCalculator,
+)
+from trading_bot.research.equity_reconstruction import (
+    ExposureSanityChecker,
+)
+from trading_bot.research.evidence import EvidenceClass
+from trading_bot.research.historical_data import (
+    DataQualityGate,
+    HistoricalDataset,
+    compute_dataset_checksum,
+)
 from trading_bot.research.market_provenance import MarketDataProvenance
-from trading_bot.research.confirmation import ConfirmationProtocol, FrozenCandidate
+from trading_bot.research.quant_auditor_v021 import QuantAuditorV021
 
 
 # ---------------------------------------------------------------------------
@@ -122,6 +114,7 @@ class QualificationStrategy:
 def _make_realistic_bars(n: int = 2000, start_ts: int = 1_700_000_000_000) -> list[dict]:
     """Generate realistic BTC-like bars with proper OHLC invariants."""
     import random
+
     random.seed(42)
     bars = []
     price = 42_000.0
@@ -135,14 +128,16 @@ def _make_realistic_bars(n: int = 2000, start_ts: int = 1_700_000_000_000) -> li
         high_p = max(open_p, close_p) * (1 + abs(random.gauss(0, 0.0003)))
         low_p = min(open_p, close_p) * (1 - abs(random.gauss(0, 0.0003)))
         vol = random.uniform(100, 1000)
-        bars.append({
-            "timestamp": ts,
-            "open": round(open_p, 2),
-            "high": round(high_p, 2),
-            "low": round(low_p, 2),
-            "close": round(close_p, 2),
-            "volume": round(vol, 2),
-        })
+        bars.append(
+            {
+                "timestamp": ts,
+                "open": round(open_p, 2),
+                "high": round(high_p, 2),
+                "low": round(low_p, 2),
+                "close": round(close_p, 2),
+                "volume": round(vol, 2),
+            }
+        )
         price = close_p
     return bars
 
@@ -150,13 +145,18 @@ def _make_realistic_bars(n: int = 2000, start_ts: int = 1_700_000_000_000) -> li
 class _ListSource:
     def __init__(self, bars):
         self._bars = bars
+
     def iter_candles(self, symbol, start_ms, end_ms):
         for b in self._bars:
             if start_ms <= b["timestamp"] <= end_ms:
                 yield OHLCV(
-                    symbol=symbol, timestamp=b["timestamp"],
-                    open=b["open"], high=b["high"], low=b["low"],
-                    close=b["close"], volume=b["volume"],
+                    symbol=symbol,
+                    timestamp=b["timestamp"],
+                    open=b["open"],
+                    high=b["high"],
+                    low=b["low"],
+                    close=b["close"],
+                    volume=b["volume"],
                 )
 
 
@@ -179,7 +179,7 @@ class TestV023RealQualification:
         # === 3. CALENDAR COMPLETENESS ===
         cal = CalendarCompletenessChecker()
         cal_analysis = cal.analyze(bars, "5m")
-        eval_bars = cal.get_evaluation_bars(bars, "5m")
+        cal.get_evaluation_bars(bars, "5m")
         assert cal_analysis.evaluation_days > 0
 
         # === 4. DATASET ===
@@ -248,13 +248,17 @@ class TestV023RealQualification:
             fee_rate_bps=10.0,
             slippage_bps=5.0,
         )
-        assert cost_result.passed, f"Cost sanity failed: {[c.check_id for c in cost_result.failed_checks]}"
+        assert cost_result.passed, (
+            f"Cost sanity failed: {[c.check_id for c in cost_result.failed_checks]}"
+        )
 
         # === 8. EXPOSURE SANITY ===
         exposure_checker = ExposureSanityChecker(max_exposure_pct=0.50)
         for t in result.trades:
             snap = exposure_checker.check_trade(t.notional, 10_000)
-            assert snap.within_limit, f"Exposure exceeded: {snap.exposure_pct:.2%} > {snap.max_exposure_pct:.2%}"
+            assert snap.within_limit, (
+                f"Exposure exceeded: {snap.exposure_pct:.2%} > {snap.max_exposure_pct:.2%}"
+            )
 
         # === 9. EQUITY RECONSTRUCTION ===
         # Engine tracks: equity -= entry_commission at buy, equity += trade.pnl at sell
@@ -280,7 +284,9 @@ class TestV023RealQualification:
         # PnL reconstruction should still pass.
         pnl_checks = [c for c in audit.checks if c.check_id != "evidence_class"]
         pnl_passed = all(c.status == "PASS" for c in pnl_checks)
-        assert pnl_passed, f"PnL audit failed: {[c.check_id for c in pnl_checks if c.status != 'PASS']}"
+        assert pnl_passed, (
+            f"PnL audit failed: {[c.check_id for c in pnl_checks if c.status != 'PASS']}"
+        )
 
         # === 11. HISTORICAL CONFIRMATION SIMULATION ===
         sim = HistoricalConfirmationSimulator()
@@ -306,7 +312,11 @@ class TestV023RealQualification:
 
             # Write equity reconstruction
             equity_path = Path(tmpdir) / "equity_reconstruction.csv"
-            from trading_bot.research.equity_reconstruction import EquityReconstruction, EquityReconstructor
+            from trading_bot.research.equity_reconstruction import (
+                EquityReconstruction,
+                EquityReconstructor,
+            )
+
             recon = EquityReconstructor()
             recon.write_csv(
                 EquityReconstruction(
@@ -321,13 +331,19 @@ class TestV023RealQualification:
 
             # Write cost evidence
             cost_path = Path(tmpdir) / "cost_evidence.json"
-            cost_path.write_text(json.dumps({
-                "total_fees": result.total_fees,
-                "total_slippage": result.total_slippage,
-                "total_turnover": turnover_report.total_turnover,
-                "fees_bps": turnover_report.fees_as_bps_of_turnover,
-                "reconciled": turnover_report.fees_reconciled,
-            }, indent=2), encoding="utf-8")
+            cost_path.write_text(
+                json.dumps(
+                    {
+                        "total_fees": result.total_fees,
+                        "total_slippage": result.total_slippage,
+                        "total_turnover": turnover_report.total_turnover,
+                        "fees_bps": turnover_report.fees_as_bps_of_turnover,
+                        "reconciled": turnover_report.fees_reconciled,
+                    },
+                    indent=2,
+                ),
+                encoding="utf-8",
+            )
 
             # Write provenance
             prov_path = Path(tmpdir) / "provenance.json"
@@ -343,7 +359,7 @@ class TestV023RealQualification:
         n = result.n_trades
         net_return = (result.engine_final_equity - 10_000) / 10_000
 
-        print(f"\n=== V0.2.3 QUALIFICATION RUN ===")
+        print("\n=== V0.2.3 QUALIFICATION RUN ===")
         print(f"  Dataset: {len(bars)} bars, {cal_analysis.complete_days} complete days")
         print(f"  Evaluation days: {cal_analysis.evaluation_days}")
         print(f"  Trades: {n}")
@@ -356,7 +372,9 @@ class TestV023RealQualification:
         print(f"  Turnover: {turnover_report.total_turnover:.0f}")
         print(f"  Fees bps: {turnover_report.fees_as_bps_of_turnover:.1f}")
         print(f"  Cost sanity: {'PASS' if cost_result.passed else 'FAIL'}")
-        print(f"  Equity reconciled: manual={manual_ending:.2f}, engine={result.engine_final_equity:.2f}")
+        print(
+            f"  Equity reconciled: manual={manual_ending:.2f}, engine={result.engine_final_equity:.2f}"
+        )
         print(f"  Evidence: {dataset.evidence_class.value}")
         print(f"  Audit: {audit.verdict}")
 

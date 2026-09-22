@@ -9,39 +9,33 @@ Candles are OHLCV historicals (fixture), not synthetic metrics.
 """
 
 import datetime
-import json
 import tempfile
 from pathlib import Path
 
-import pytest
-
-from trading_bot.backtesting.engine import BacktestEngine
 from trading_bot.backtesting.types import OHLCV, Order
 from trading_bot.research.backtest_evidence import (
     RealBacktestEvidenceAdapter,
-    RealBacktestResult,
-    TradeRecord,
 )
-from trading_bot.research.evidence import EvidenceClass, EvidenceRecord
+from trading_bot.research.candle_causality import CandleCausalityEnforcer
+from trading_bot.research.confirmation import (
+    CampaignQueue,
+    ConfirmationProtocol,
+    FrozenCandidate,
+)
+from trading_bot.research.evidence import EvidenceClass
+from trading_bot.research.execution_assumptions import ExecutionAssumptions
 from trading_bot.research.historical_data import (
     DataQualityGate,
     HistoricalDataset,
     compute_dataset_checksum,
 )
+from trading_bot.research.qualification import OperationalQualificationGate
 from trading_bot.research.quant_auditor_v021 import QuantAuditorV021
-from trading_bot.research.candle_causality import CandleCausalityEnforcer
-from trading_bot.research.confirmation import (
-    ConfirmationProtocol,
-    FrozenCandidate,
-    CampaignQueue,
-)
 from trading_bot.research.strategy_engineer import (
     Proposal,
     RealStrategyEngineer,
 )
 from trading_bot.research.strategy_sandbox import StrategySandbox
-from trading_bot.research.execution_assumptions import ExecutionAssumptions
-from trading_bot.research.qualification import OperationalQualificationGate
 
 
 # ---------------------------------------------------------------------------
@@ -99,7 +93,11 @@ class RealEmaCrossoverStrategy:
                 risk_budget_usdt = ctx.equity * self._risk_pct
                 # Stop at 1% from entry → qty = risk_budget / (entry * stop_distance_pct)
                 stop_distance_pct = 0.01  # 1% stop
-                qty = risk_budget_usdt / (candle.close * stop_distance_pct) if candle.close > 0 else 0.0
+                qty = (
+                    risk_budget_usdt / (candle.close * stop_distance_pct)
+                    if candle.close > 0
+                    else 0.0
+                )
                 # Cap at max notional = 50% of equity
                 max_notional = ctx.equity * 0.5
                 if qty * candle.close > max_notional:
@@ -131,6 +129,7 @@ def generate_historical_fixture_bars(
     OHLC invariant enforced: high >= max(open, close), low <= min(open, close).
     """
     import random
+
     random.seed(42)  # Deterministic
 
     bars = []
@@ -148,14 +147,16 @@ def generate_historical_fixture_bars(
         # Low must be <= min(open, close)
         low_intra = min(open_price, close_price) * (1 - abs(random.gauss(0, 0.0003)))
         volume = random.uniform(100, 1000)
-        bars.append({
-            "timestamp": ts,
-            "open": round(open_price, 2),
-            "high": round(high_intra, 2),
-            "low": round(low_intra, 2),
-            "close": round(close_price, 2),
-            "volume": round(volume, 2),
-        })
+        bars.append(
+            {
+                "timestamp": ts,
+                "open": round(open_price, 2),
+                "high": round(high_intra, 2),
+                "low": round(low_intra, 2),
+                "close": round(close_price, 2),
+                "volume": round(volume, 2),
+            }
+        )
         price = close_price  # Next bar opens near last close
     return bars
 
@@ -225,12 +226,8 @@ class TestV021RealPipeline:
             initial_capital=10_000.0,
         )
 
-        start_dt = datetime.datetime.fromtimestamp(
-            bars[0]["timestamp"] / 1000.0, tz=datetime.UTC
-        )
-        end_dt = datetime.datetime.fromtimestamp(
-            bars[-1]["timestamp"] / 1000.0, tz=datetime.UTC
-        )
+        start_dt = datetime.datetime.fromtimestamp(bars[0]["timestamp"] / 1000.0, tz=datetime.UTC)
+        end_dt = datetime.datetime.fromtimestamp(bars[-1]["timestamp"] / 1000.0, tz=datetime.UTC)
 
         result = adapter.run(
             strategy=strategy,
@@ -273,6 +270,7 @@ class TestV021RealPipeline:
 
             # Verify trades.csv has real data
             import csv
+
             with paths["trades_csv"].open() as f:
                 reader = csv.DictReader(f)
                 rows = list(reader)
@@ -310,6 +308,7 @@ class TestV021RealPipeline:
             from trading_agent.core.models_v02 import DatasetWindow
         except ImportError:
             from dataclasses import dataclass as _dc
+
             @_dc(frozen=True, slots=True)
             class DatasetWindow:
                 window_id: str = ""
@@ -318,16 +317,27 @@ class TestV021RealPipeline:
                 start_ts: int = 0
                 end_ts: int = 0
                 candle_count: int = 0
+
                 def overlaps(self, other):
-                    if self.symbol != other.symbol: return False
+                    if self.symbol != other.symbol:
+                        return False
                     return self.start_ts < other.end_ts and other.start_ts < self.end_ts
+
         d1 = DatasetWindow(
-            window_id="W1", symbol="BTC/USDT", timeframe="5m",
-            start_ts=1000, end_ts=2000, candle_count=10,
+            window_id="W1",
+            symbol="BTC/USDT",
+            timeframe="5m",
+            start_ts=1000,
+            end_ts=2000,
+            candle_count=10,
         )
         d2 = DatasetWindow(
-            window_id="W2", symbol="BTC/USDT", timeframe="5m",
-            start_ts=3000, end_ts=4000, candle_count=10,
+            window_id="W2",
+            symbol="BTC/USDT",
+            timeframe="5m",
+            start_ts=3000,
+            end_ts=4000,
+            candle_count=10,
         )
         result_conf = proto.run_confirmation(frozen, frozen, d1, d2)
         assert result_conf.hash_match is True
@@ -361,7 +371,7 @@ class TestV021RealPipeline:
         )
         assert oq_result.engine_qualified is True
 
-        print(f"\n=== V0.2.1 Integration Test PASSED ===")
+        print("\n=== V0.2.1 Integration Test PASSED ===")
         print(f"  Trades: {result.n_trades}")
         print(f"  Net PnL: {result.net_pnl:.2f}")
         print(f"  Win Rate: {result.win_rate:.2%}")

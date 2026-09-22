@@ -60,13 +60,13 @@ class EquityReconstruction:
     reconciled: bool = False
 
     def __post_init__(self) -> None:
-        reconstructed = self.starting_equity + self.total_realized_pnl - self.total_fees - self.total_slippage
+        reconstructed = (
+            self.starting_equity + self.total_realized_pnl - self.total_fees - self.total_slippage
+        )
         object.__setattr__(self, "reconstructed_ending", reconstructed)
         diff = abs(self.ending_equity - reconstructed)
         object.__setattr__(self, "difference", diff)
-        object.__setattr__(self, "reconciled",
-            diff < max(0.01, abs(reconstructed) * 0.001)
-        )
+        object.__setattr__(self, "reconciled", diff < max(0.01, abs(reconstructed) * 0.001))
 
 
 class ExposureSanityChecker:

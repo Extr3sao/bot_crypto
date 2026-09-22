@@ -20,11 +20,11 @@ Evidence Classes:
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from enum import Enum
+from enum import StrEnum
 from typing import Any
 
 
-class EvidenceClass(str, Enum):
+class EvidenceClass(StrEnum):
     """Classification of evidence source quality.
 
     V0.2.1 §2: Reports must show evidence_class.
@@ -146,7 +146,9 @@ def validate_report_claims(
                     claim=claim,
                     valid=valid,
                     evidence_class=evidence.evidence_class,
-                    reason="" if valid else f"Evidence class {evidence.evidence_class.value} insufficient for claim '{claim}'",
+                    reason=""
+                    if valid
+                    else f"Evidence class {evidence.evidence_class.value} insufficient for claim '{claim}'",
                 )
             )
         else:

@@ -84,6 +84,7 @@ class StartupReconciler:
                     try:
                         # Record as closed with reason
                         from trading_bot.paper.broker import ClosedTrade
+
                         fake_close = ClosedTrade(
                             symbol=symbol,
                             side=trade.get("side", "buy"),

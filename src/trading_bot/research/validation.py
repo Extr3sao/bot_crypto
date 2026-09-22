@@ -40,10 +40,10 @@ from .types import (
 # ---------------------------------------------------------------------------
 
 TestingPhase = Literal[
-    "DESCRIPTIVE",    # exploration without hypotheses
-    "EXPLORATORY",    # pattern search, not yet preregistered
+    "DESCRIPTIVE",  # exploration without hypotheses
+    "EXPLORATORY",  # pattern search, not yet preregistered
     "PREREGISTERED",  # frozen code+config+data before seeing results
-    "CONFIRMATORY",   # validation on disjoint window, no retuning
+    "CONFIRMATORY",  # validation on disjoint window, no retuning
 ]
 
 
@@ -67,15 +67,17 @@ class TestingDisciplineLabel:
     retuning_detected: bool = False  # if True between discovery/confirmation -> INVALIDATED
 
     def __post_init__(self) -> None:
-        if self.phase in ("PREREGISTERED", "CONFIRMATORY") and not self.preregistered_before_results:
+        if (
+            self.phase in ("PREREGISTERED", "CONFIRMATORY")
+            and not self.preregistered_before_results
+        ):
             raise ValueError(
                 f"{self.phase} phase requires preregistered_before_results=True "
                 f"(P13: must freeze before seeing results)"
             )
         if self.phase in ("PREREGISTERED", "CONFIRMATORY") and not self.hypothesis_frozen:
             raise ValueError(
-                f"{self.phase} phase requires hypothesis_frozen=True "
-                f"(P13: must freeze hypothesis)"
+                f"{self.phase} phase requires hypothesis_frozen=True (P13: must freeze hypothesis)"
             )
         if self.retuning_detected and self.phase in ("PREREGISTERED", "CONFIRMATORY"):
             raise ValueError(
@@ -193,44 +195,54 @@ class ValidationPipeline:
         gate_results: list[GateResult] = []
 
         # Gate: minimum trades
-        gate_results.append(GateResult(
-            gate_name="min_trades",
-            passed=metrics.total_trades >= gates.min_trades,
-            actual=metrics.total_trades,
-            threshold=gates.min_trades,
-        ))
+        gate_results.append(
+            GateResult(
+                gate_name="min_trades",
+                passed=metrics.total_trades >= gates.min_trades,
+                actual=metrics.total_trades,
+                threshold=gates.min_trades,
+            )
+        )
 
         # Gate: minimum net expected R
-        gate_results.append(GateResult(
-            gate_name="min_net_exp_r",
-            passed=metrics.net_exp_r >= gates.min_net_exp_r,
-            actual=metrics.net_exp_r,
-            threshold=gates.min_net_exp_r,
-        ))
+        gate_results.append(
+            GateResult(
+                gate_name="min_net_exp_r",
+                passed=metrics.net_exp_r >= gates.min_net_exp_r,
+                actual=metrics.net_exp_r,
+                threshold=gates.min_net_exp_r,
+            )
+        )
 
         # Gate: minimum net profit factor
-        gate_results.append(GateResult(
-            gate_name="min_net_pf",
-            passed=metrics.net_pf >= gates.min_net_pf,
-            actual=metrics.net_pf,
-            threshold=gates.min_net_pf,
-        ))
+        gate_results.append(
+            GateResult(
+                gate_name="min_net_pf",
+                passed=metrics.net_pf >= gates.min_net_pf,
+                actual=metrics.net_pf,
+                threshold=gates.min_net_pf,
+            )
+        )
 
         # Gate: positive net PnL
-        gate_results.append(GateResult(
-            gate_name="positive_net_pnl",
-            passed=metrics.net_pnl > gates.min_net_pnl,
-            actual=metrics.net_pnl,
-            threshold=gates.min_net_pnl,
-        ))
+        gate_results.append(
+            GateResult(
+                gate_name="positive_net_pnl",
+                passed=metrics.net_pnl > gates.min_net_pnl,
+                actual=metrics.net_pnl,
+                threshold=gates.min_net_pnl,
+            )
+        )
 
         # Gate: max drawdown
-        gate_results.append(GateResult(
-            gate_name="max_drawdown",
-            passed=metrics.max_drawdown <= gates.max_drawdown_pct / 100,
-            actual=metrics.max_drawdown,
-            threshold=gates.max_drawdown_pct / 100,
-        ))
+        gate_results.append(
+            GateResult(
+                gate_name="max_drawdown",
+                passed=metrics.max_drawdown <= gates.max_drawdown_pct / 100,
+                actual=metrics.max_drawdown,
+                threshold=gates.max_drawdown_pct / 100,
+            )
+        )
 
         all_passed = all(g.passed for g in gate_results)
         passed_count = sum(1 for g in gate_results if g.passed)
@@ -248,17 +260,22 @@ class ValidationPipeline:
 
         # Record consumed period (P11)
         self._registry.record_consumed_period(
-            experiment_id, window.symbol, window.timeframe,
-            window.start_ts, window.end_ts,
+            experiment_id,
+            window.symbol,
+            window.timeframe,
+            window.start_ts,
+            window.end_ts,
         )
 
         if all_passed:
-            self._log.info("validation.discovery_passed",
-                           experiment_id=experiment_id, gates=passed_count)
+            self._log.info(
+                "validation.discovery_passed", experiment_id=experiment_id, gates=passed_count
+            )
         else:
             failed = [g.gate_name for g in gate_results if not g.passed]
-            self._log.info("validation.discovery_failed",
-                           experiment_id=experiment_id, failed_gates=failed)
+            self._log.info(
+                "validation.discovery_failed", experiment_id=experiment_id, failed_gates=failed
+            )
 
         return report
 
@@ -275,40 +292,50 @@ class ValidationPipeline:
         gates = self._confirmation_gates
         gate_results: list[GateResult] = []
 
-        gate_results.append(GateResult(
-            gate_name="min_confirm_trades",
-            passed=metrics.total_trades >= gates.min_confirm_trades,
-            actual=metrics.total_trades,
-            threshold=gates.min_confirm_trades,
-        ))
+        gate_results.append(
+            GateResult(
+                gate_name="min_confirm_trades",
+                passed=metrics.total_trades >= gates.min_confirm_trades,
+                actual=metrics.total_trades,
+                threshold=gates.min_confirm_trades,
+            )
+        )
 
-        gate_results.append(GateResult(
-            gate_name="min_confirm_net_exp_r",
-            passed=metrics.net_exp_r >= gates.min_confirm_net_exp_r,
-            actual=metrics.net_exp_r,
-            threshold=gates.min_confirm_net_exp_r,
-        ))
+        gate_results.append(
+            GateResult(
+                gate_name="min_confirm_net_exp_r",
+                passed=metrics.net_exp_r >= gates.min_confirm_net_exp_r,
+                actual=metrics.net_exp_r,
+                threshold=gates.min_confirm_net_exp_r,
+            )
+        )
 
-        gate_results.append(GateResult(
-            gate_name="min_confirm_net_pf",
-            passed=metrics.net_pf >= gates.min_confirm_net_pf,
-            actual=metrics.net_pf,
-            threshold=gates.min_confirm_net_pf,
-        ))
+        gate_results.append(
+            GateResult(
+                gate_name="min_confirm_net_pf",
+                passed=metrics.net_pf >= gates.min_confirm_net_pf,
+                actual=metrics.net_pf,
+                threshold=gates.min_confirm_net_pf,
+            )
+        )
 
-        gate_results.append(GateResult(
-            gate_name="positive_confirm_pnl",
-            passed=metrics.net_pnl > gates.min_confirm_pnl,
-            actual=metrics.net_pnl,
-            threshold=gates.min_confirm_pnl,
-        ))
+        gate_results.append(
+            GateResult(
+                gate_name="positive_confirm_pnl",
+                passed=metrics.net_pnl > gates.min_confirm_pnl,
+                actual=metrics.net_pnl,
+                threshold=gates.min_confirm_pnl,
+            )
+        )
 
-        gate_results.append(GateResult(
-            gate_name="max_confirm_dd",
-            passed=metrics.max_drawdown <= gates.max_confirm_dd_pct / 100,
-            actual=metrics.max_drawdown,
-            threshold=gates.max_confirm_dd_pct / 100,
-        ))
+        gate_results.append(
+            GateResult(
+                gate_name="max_confirm_dd",
+                passed=metrics.max_drawdown <= gates.max_confirm_dd_pct / 100,
+                actual=metrics.max_drawdown,
+                threshold=gates.max_confirm_dd_pct / 100,
+            )
+        )
 
         all_passed = all(g.passed for g in gate_results)
         passed_count = sum(1 for g in gate_results if g.passed)
@@ -326,8 +353,11 @@ class ValidationPipeline:
 
         # Record consumed period (P11)
         self._registry.record_consumed_period(
-            experiment_id, window.symbol, window.timeframe,
-            window.start_ts, window.end_ts,
+            experiment_id,
+            window.symbol,
+            window.timeframe,
+            window.start_ts,
+            window.end_ts,
         )
 
         return report
@@ -361,20 +391,24 @@ class ValidationPipeline:
 
         # Validate discovery
         discovery_report = self.validate_discovery(
-            discovery_experiment_id, discovery_window, discovery_metrics,
+            discovery_experiment_id,
+            discovery_window,
+            discovery_metrics,
         )
 
         # Update experiment status
         if discovery_report.all_passed:
             self._registry.update_status(
-                discovery_experiment_id, "CANDIDATE",
+                discovery_experiment_id,
+                "CANDIDATE",
                 results=discovery_metrics,
                 decision="discovery passed",
             )
         else:
             failed = [g.gate_name for g in discovery_report.gate_results if not g.passed]
             self._registry.update_status(
-                discovery_experiment_id, "REJECTED",
+                discovery_experiment_id,
+                "REJECTED",
                 results=discovery_metrics,
                 decision=f"discovery failed: {', '.join(failed)}",
             )
@@ -391,24 +425,29 @@ class ValidationPipeline:
 
         # Confirm candidate (P10: freeze exact candidate, no retuning)
         self._registry.update_status(
-            confirmation_experiment_id, "CONFIRMING",
+            confirmation_experiment_id,
+            "CONFIRMING",
         )
 
         # Validate confirmation
         confirmation_report = self.validate_confirmation(
-            confirmation_experiment_id, confirmation_window, confirmation_metrics,
+            confirmation_experiment_id,
+            confirmation_window,
+            confirmation_metrics,
         )
 
         if confirmation_report.all_passed:
             self._registry.update_status(
-                confirmation_experiment_id, "CONFIRMED",
+                confirmation_experiment_id,
+                "CONFIRMED",
                 results=confirmation_metrics,
                 decision="confirmation passed",
             )
         else:
             failed = [g.gate_name for g in confirmation_report.gate_results if not g.passed]
             self._registry.update_status(
-                confirmation_experiment_id, "REJECTED",
+                confirmation_experiment_id,
+                "REJECTED",
                 results=confirmation_metrics,
                 decision=f"confirmation failed: {', '.join(failed)}",
             )

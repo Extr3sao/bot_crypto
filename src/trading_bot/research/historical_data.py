@@ -105,8 +105,7 @@ class DataQualityResult:
         if not self.passed:
             failed = [c.check_id for c in self.failed_checks]
             raise ValueError(
-                f"Data quality gate FAIL_CLOSED for {self.dataset_id}: "
-                f"failed checks: {failed}"
+                f"Data quality gate FAIL_CLOSED for {self.dataset_id}: failed checks: {failed}"
             )
 
 
@@ -142,7 +141,9 @@ class DataQualityGate:
             return DataQualityResult(
                 dataset_id=dataset_id,
                 passed=False,
-                checks=[QualityCheck(check_id="empty_dataset", passed=False, message="No bars provided")],
+                checks=[
+                    QualityCheck(check_id="empty_dataset", passed=False, message="No bars provided")
+                ],
             )
 
         # 1. Timestamps monotonic
@@ -192,7 +193,7 @@ class DataQualityGate:
                 return QualityCheck(
                     check_id="monotonic_timestamps",
                     passed=False,
-                    message=f"Non-monotonic at index {i}: {bars[i-1]['timestamp']} >= {bars[i]['timestamp']}",
+                    message=f"Non-monotonic at index {i}: {bars[i - 1]['timestamp']} >= {bars[i]['timestamp']}",
                 )
         return QualityCheck(check_id="monotonic_timestamps", passed=True)
 
@@ -213,12 +214,12 @@ class DataQualityGate:
     def _check_invalid_ohlc(self, bars: list[dict[str, Any]]) -> QualityCheck:
         """Check OHLC validity: high >= low, high >= open/close, low <= open/close."""
         for i, bar in enumerate(bars):
-            o, h, l, c = bar["open"], bar["high"], bar["low"], bar["close"]
-            if h < l:
+            o, h, low, c = bar["open"], bar["high"], bar["low"], bar["close"]
+            if h < low:
                 return QualityCheck(
                     check_id="valid_ohlc",
                     passed=False,
-                    message=f"high < low at index {i}: high={h}, low={l}",
+                    message=f"high < low at index {i}: high={h}, low={low}",
                 )
             if h < o or h < c:
                 return QualityCheck(
@@ -226,11 +227,11 @@ class DataQualityGate:
                     passed=False,
                     message=f"high < open/close at index {i}: high={h}, open={o}, close={c}",
                 )
-            if l > o or l > c:
+            if low > o or low > c:
                 return QualityCheck(
                     check_id="valid_ohlc",
                     passed=False,
-                    message=f"low > open/close at index {i}: low={l}, open={o}, close={c}",
+                    message=f"low > open/close at index {i}: low={low}, open={o}, close={c}",
                 )
         return QualityCheck(check_id="valid_ohlc", passed=True)
 
@@ -245,13 +246,15 @@ class DataQualityGate:
                 )
         return QualityCheck(check_id="non_negative_volume", passed=True)
 
-    def _check_missing_bars(
-        self, bars: list[dict[str, Any]], timeframe: str
-    ) -> QualityCheck:
+    def _check_missing_bars(self, bars: list[dict[str, Any]], timeframe: str) -> QualityCheck:
         """Check for gaps in timestamps based on expected timeframe."""
         interval_ms = _timeframe_to_ms(timeframe)
         if interval_ms <= 0:
-            return QualityCheck(check_id="gap_detection", passed=True, message="Unknown timeframe, skipping gap check")
+            return QualityCheck(
+                check_id="gap_detection",
+                passed=True,
+                message="Unknown timeframe, skipping gap check",
+            )
 
         gaps: list[int] = []
         for i in range(1, len(bars)):

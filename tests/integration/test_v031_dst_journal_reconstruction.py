@@ -7,9 +7,7 @@ Tests:
 - Append-only audit detects tampering
 """
 
-import pytest
-from datetime import datetime, timezone, timedelta
-from zoneinfo import ZoneInfo
+from datetime import UTC, datetime
 from uuid import uuid4
 
 from src.trading_bot.paper.risk_guards import DailyLossGuard
@@ -47,13 +45,17 @@ class TestJournalReconstruction:
 
         reg = SignalRegistry()
         alpha_id = uuid4()
-        ts = datetime(2026, 8, 20, 12, 0, tzinfo=timezone.utc)
+        ts = datetime(2026, 8, 20, 12, 0, tzinfo=UTC)
         sig_id = uuid4()
 
         # CREATE
         reg.create(
-            signal_id=sig_id, alpha_id=alpha_id, symbol="BTC/USDT",
-            direction="buy", timeframe="5m", setup_id="setup_recon",
+            signal_id=sig_id,
+            alpha_id=alpha_id,
+            symbol="BTC/USDT",
+            direction="buy",
+            timeframe="5m",
+            setup_id="setup_recon",
             source_bar_timestamp=ts,
         )
         assert reg.get(sig_id).state == SignalState.GENERATED
@@ -76,12 +78,16 @@ class TestJournalReconstruction:
 
         reg = SignalRegistry()
         alpha_id = uuid4()
-        ts = datetime(2026, 8, 20, 12, 0, tzinfo=timezone.utc)
+        ts = datetime(2026, 8, 20, 12, 0, tzinfo=UTC)
         sig_id = uuid4()
 
         reg.create(
-            signal_id=sig_id, alpha_id=alpha_id, symbol="ETH/USDT",
-            direction="sell", timeframe="5m", setup_id="setup_chain",
+            signal_id=sig_id,
+            alpha_id=alpha_id,
+            symbol="ETH/USDT",
+            direction="sell",
+            timeframe="5m",
+            setup_id="setup_chain",
             source_bar_timestamp=ts,
         )
 
@@ -98,13 +104,17 @@ class TestJournalReconstruction:
 
         reg = SignalRegistry()
         alpha_id = uuid4()
-        ts = datetime(2026, 8, 20, 12, 0, tzinfo=timezone.utc)
+        ts = datetime(2026, 8, 20, 12, 0, tzinfo=UTC)
 
         # Create 3 signals
         for i in range(3):
             reg.create(
-                signal_id=uuid4(), alpha_id=alpha_id, symbol="BTC/USDT",
-                direction="buy", timeframe="5m", setup_id=f"setup_{i}",
+                signal_id=uuid4(),
+                alpha_id=alpha_id,
+                symbol="BTC/USDT",
+                direction="buy",
+                timeframe="5m",
+                setup_id=f"setup_{i}",
                 source_bar_timestamp=ts,
             )
 
@@ -122,13 +132,17 @@ class TestAppendOnlyAudit:
 
         reg = SignalRegistry()
         alpha_id = uuid4()
-        ts = datetime(2026, 8, 20, 12, 0, tzinfo=timezone.utc)
+        ts = datetime(2026, 8, 20, 12, 0, tzinfo=UTC)
 
         for i in range(5):
             sig_id = uuid4()
             reg.create(
-                signal_id=sig_id, alpha_id=alpha_id, symbol="BTC/USDT",
-                direction="buy", timeframe="5m", setup_id=f"audit_{i}",
+                signal_id=sig_id,
+                alpha_id=alpha_id,
+                symbol="BTC/USDT",
+                direction="buy",
+                timeframe="5m",
+                setup_id=f"audit_{i}",
                 source_bar_timestamp=ts,
             )
             entry = reg.get(sig_id)
@@ -142,19 +156,27 @@ class TestAppendOnlyAudit:
 
         reg = SignalRegistry()
         alpha_id = uuid4()
-        ts = datetime(2026, 8, 20, 12, 0, tzinfo=timezone.utc)
+        ts = datetime(2026, 8, 20, 12, 0, tzinfo=UTC)
 
         first_id = uuid4()
         dup_id = uuid4()
 
         reg.create(
-            signal_id=first_id, alpha_id=alpha_id, symbol="BTC/USDT",
-            direction="buy", timeframe="5m", setup_id="first",
+            signal_id=first_id,
+            alpha_id=alpha_id,
+            symbol="BTC/USDT",
+            direction="buy",
+            timeframe="5m",
+            setup_id="first",
             source_bar_timestamp=ts,
         )
         reg.create(
-            signal_id=dup_id, alpha_id=alpha_id, symbol="BTC/USDT",
-            direction="buy", timeframe="5m", setup_id="dup",
+            signal_id=dup_id,
+            alpha_id=alpha_id,
+            symbol="BTC/USDT",
+            direction="buy",
+            timeframe="5m",
+            setup_id="dup",
             source_bar_timestamp=ts,
         )
 

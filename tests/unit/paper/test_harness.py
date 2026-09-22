@@ -6,13 +6,13 @@ from pathlib import Path
 
 import pytest
 import structlog
-from trading_bot.paper.types import PaperBacktestExpectation
 
 from trading_bot.backtesting import BacktestResult, EquityPoint, Fill, Trade
 from trading_bot.config.runtime import TradingMode
 from trading_bot.config.settings import Settings
 from trading_bot.market_data.fake import build_demo_fetcher, build_demo_settings
 from trading_bot.paper import PaperBroker, PaperSessionRunner, PaperSnapshotArchive
+from trading_bot.paper.types import PaperBacktestExpectation
 from trading_bot.scanner import UniverseScanner, build_filter_set_per_mode
 
 

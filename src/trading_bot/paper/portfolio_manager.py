@@ -5,7 +5,6 @@ V0.3 requires portfolio-level risk management for paper trading.
 
 from __future__ import annotations
 
-import time
 from dataclasses import dataclass, field
 from typing import Any
 
@@ -143,7 +142,7 @@ class PortfolioManager:
                 risk_per_trade_pct=self._risk_per_trade,
                 max_exposure_pct=self._max_exposure,
                 within_limits=False,
-                rejection_reason=f"Total exposure would exceed limit",
+                rejection_reason="Total exposure would exceed limit",
             )
 
         return PositionSize(
@@ -169,7 +168,7 @@ class PortfolioManager:
 
     def close_position(self, symbol: str, pnl: float) -> None:
         """Record a position closure."""
-        notional = self._positions.pop(symbol, 0.0)
+        self._positions.pop(symbol, 0.0)
         self._capital += pnl
         self._daily_pnl += pnl
 

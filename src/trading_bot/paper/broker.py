@@ -364,9 +364,7 @@ class PaperBroker:
 
             trade = self._close_position(symbol, trigger_price, exit_reason)
             closed.append(trade)
-            self._risk_events.append(
-                f"{symbol}:{exit_reason} at {trigger_price:.2f} (ohlc)"
-            )
+            self._risk_events.append(f"{symbol}:{exit_reason} at {trigger_price:.2f} (ohlc)")
 
         return closed
 

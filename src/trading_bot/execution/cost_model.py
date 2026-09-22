@@ -82,9 +82,7 @@ class ExecutionCostModel:
         """Compute exit commission in USDT."""
         return notional_usdt * self.bps_to_decimal(self._commission_bps)
 
-    def entry_slippage_price(
-        self, reference_price: float, side: str
-    ) -> float:
+    def entry_slippage_price(self, reference_price: float, side: str) -> float:
         """Compute entry fill price with slippage.
 
         For buy: slippage makes the price HIGHER (worse fill).
@@ -95,9 +93,7 @@ class ExecutionCostModel:
             return reference_price * (1.0 + mult)
         return reference_price * (1.0 - mult)
 
-    def exit_slippage_price(
-        self, reference_price: float, side: str
-    ) -> float:
+    def exit_slippage_price(self, reference_price: float, side: str) -> float:
         """Compute exit fill price with slippage.
 
         For buy exit (sell): slippage makes the price LOWER (worse fill).
@@ -156,11 +152,7 @@ class ExecutionCostModel:
 
         # Total cost
         total_cost_usdt = entry_fee + exit_fee + entry_slippage + exit_slippage
-        total_cost_bps = (
-            (total_cost_usdt / notional_usdt * 10_000.0)
-            if notional_usdt > 0
-            else 0.0
-        )
+        total_cost_bps = (total_cost_usdt / notional_usdt * 10_000.0) if notional_usdt > 0 else 0.0
 
         # Net PnL
         net_pnl = gross_pnl - total_cost_usdt
@@ -207,12 +199,12 @@ class ExecutionCostModel:
         net_rr = net_reward / net_loss if net_loss > 0 else 0.0
 
         return {
-            "gross_rr": round(target_distance_usdt / stop_distance_usdt, 4) if stop_distance_usdt > 0 else 0.0,
+            "gross_rr": round(target_distance_usdt / stop_distance_usdt, 4)
+            if stop_distance_usdt > 0
+            else 0.0,
             "net_rr": round(net_rr, 4),
-            "cost_fraction_of_target": round(
-                total_cost / target_distance_usdt, 4
-            ) if target_distance_usdt > 0 else 1.0,
-            "total_cost_bps": round(
-                total_cost / notional * 10_000.0, 2
-            ),
+            "cost_fraction_of_target": round(total_cost / target_distance_usdt, 4)
+            if target_distance_usdt > 0
+            else 1.0,
+            "total_cost_bps": round(total_cost / notional * 10_000.0, 2),
         }

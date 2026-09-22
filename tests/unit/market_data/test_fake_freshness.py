@@ -17,6 +17,7 @@ Contract enforced here:
 
 FAIL BEFORE FIX (baseline): newest timestamp is Nov 2023, ~3 years stale.
 """
+
 from __future__ import annotations
 
 import itertools

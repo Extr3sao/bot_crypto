@@ -43,12 +43,15 @@ class AssetAgent(Protocol):
     def required_inputs(self) -> list[str]: ...
 
     def build_context(
-        self, candles: Sequence[OHLCV], timestamp: int, *, data_fingerprint: str = "", dataset_id: str = ""
+        self,
+        candles: Sequence[OHLCV],
+        timestamp: int,
+        *,
+        data_fingerprint: str = "",
+        dataset_id: str = "",
     ) -> AssetContext: ...
 
-    def validate_context(
-        self, context: AssetContext, *, now_ts: int | None = None
-    ) -> None: ...
+    def validate_context(self, context: AssetContext, *, now_ts: int | None = None) -> None: ...
 
 
 class BaseCryptoAssetAgent:
@@ -67,9 +70,7 @@ class BaseCryptoAssetAgent:
         return ["ohlcv"]
 
     # -- point-in-time slicing --------------------------------------------
-    def slice_window(
-        self, candles: Sequence[OHLCV], timestamp: int
-    ) -> list[OHLCV]:
+    def slice_window(self, candles: Sequence[OHLCV], timestamp: int) -> list[OHLCV]:
         """This asset's bars with timestamp <= ``timestamp``, newest-last.
 
         Filters by symbol first (asset isolation: other assets' bars never
@@ -79,14 +80,12 @@ class BaseCryptoAssetAgent:
         mandatory features (fail closed, N4).
         """
         past = [
-            c for c in candles
-            if c.timestamp <= timestamp
-            and c.symbol.split("/")[0].upper() == self.asset_id
+            c
+            for c in candles
+            if c.timestamp <= timestamp and c.symbol.split("/")[0].upper() == self.asset_id
         ]
         if not past:
-            raise AssetContextError(
-                f"no bars at or before ts {timestamp} for {self.asset_id}"
-            )
+            raise AssetContextError(f"no bars at or before ts {timestamp} for {self.asset_id}")
         past.sort(key=lambda c: c.timestamp)
         window = past[-FEATURE_WINDOW_BARS:]
         if len(window) < 22:
@@ -116,7 +115,12 @@ class BaseCryptoAssetAgent:
 
     # -- context assembly ---------------------------------------------------
     def build_context(
-        self, candles: Sequence[OHLCV], timestamp: int, *, data_fingerprint: str = "", dataset_id: str = ""
+        self,
+        candles: Sequence[OHLCV],
+        timestamp: int,
+        *,
+        data_fingerprint: str = "",
+        dataset_id: str = "",
     ) -> AssetContext:
         window = self.slice_window(candles, timestamp)
         shared = compute_shared(window)
@@ -136,8 +140,10 @@ class BaseCryptoAssetAgent:
         trend_direction = (shared.trend or {}).get("direction")
         trend_direction = str(trend_direction) if trend_direction is not None else None
         vol_state = (
-            "high" if regime == "HIGH_VOLATILITY"
-            else "low" if regime == "LOW_VOLATILITY"
+            "high"
+            if regime == "HIGH_VOLATILITY"
+            else "low"
+            if regime == "LOW_VOLATILITY"
             else "normal"
         )
         liq = shared.liquidity
@@ -172,7 +178,5 @@ class BaseCryptoAssetAgent:
             bar_count=len(window),
         )
 
-    def validate_context(
-        self, context: AssetContext, *, now_ts: int | None = None
-    ) -> None:
+    def validate_context(self, context: AssetContext, *, now_ts: int | None = None) -> None:
         context.validate(now_ts=now_ts)

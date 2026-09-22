@@ -69,7 +69,9 @@ class ReportGenerator:
         ts_str = time.strftime("%Y%m%d_%H%M%S", time.gmtime(now / 1000))
 
         # MASTER_STATUS.json
-        master_status = self._build_master_status(metrics, metadata, trades, blocked_events, daily_metrics)
+        master_status = self._build_master_status(
+            metrics, metadata, trades, blocked_events, daily_metrics
+        )
         master_path = self._output_dir / f"MASTER_STATUS_{ts_str}.json"
         master_path.write_text(json.dumps(master_status, indent=2, default=str), encoding="utf-8")
 
@@ -163,13 +165,28 @@ class ReportGenerator:
     def _write_trades_csv(self, path: Path, trades: list[dict[str, Any]]) -> None:
         """Write TRADES.csv."""
         if not trades:
-            path.write_text("symbol,direction,family,entry_price,exit_price,quantity,notional_usdt,gross_pnl,commission,slippage,net_pnl,entry_timestamp,exit_timestamp,bars_held,exit_reason\n", encoding="utf-8")
+            path.write_text(
+                "symbol,direction,family,entry_price,exit_price,quantity,notional_usdt,gross_pnl,commission,slippage,net_pnl,entry_timestamp,exit_timestamp,bars_held,exit_reason\n",
+                encoding="utf-8",
+            )
             return
 
         fieldnames = [
-            "symbol", "direction", "family", "entry_price", "exit_price",
-            "quantity", "notional_usdt", "gross_pnl", "commission", "slippage",
-            "net_pnl", "entry_timestamp", "exit_timestamp", "bars_held", "exit_reason",
+            "symbol",
+            "direction",
+            "family",
+            "entry_price",
+            "exit_price",
+            "quantity",
+            "notional_usdt",
+            "gross_pnl",
+            "commission",
+            "slippage",
+            "net_pnl",
+            "entry_timestamp",
+            "exit_timestamp",
+            "bars_held",
+            "exit_reason",
         ]
 
         with open(path, "w", newline="", encoding="utf-8") as f:
@@ -194,12 +211,21 @@ class ReportGenerator:
     def _write_daily_csv(self, path: Path, daily: list[dict[str, Any]]) -> None:
         """Write DAILY_METRICS.csv."""
         if not daily:
-            path.write_text("date,trades,winning,losing,gross_pnl,net_pnl,commission,max_drawdown\n", encoding="utf-8")
+            path.write_text(
+                "date,trades,winning,losing,gross_pnl,net_pnl,commission,max_drawdown\n",
+                encoding="utf-8",
+            )
             return
 
         fieldnames = [
-            "date", "trades", "winning", "losing",
-            "gross_pnl", "net_pnl", "commission", "max_drawdown",
+            "date",
+            "trades",
+            "winning",
+            "losing",
+            "gross_pnl",
+            "net_pnl",
+            "commission",
+            "max_drawdown",
         ]
         with open(path, "w", newline="", encoding="utf-8") as f:
             writer = csv.DictWriter(f, fieldnames=fieldnames, extrasaction="ignore")
@@ -308,6 +334,7 @@ class ReportBundle:
 def _metrics_to_dict(m: PerformanceMetrics) -> dict[str, Any]:
     """Serialize PerformanceMetrics to dict."""
     import dataclasses
+
     return {f.name: getattr(m, f.name) for f in dataclasses.fields(m)}
 
 

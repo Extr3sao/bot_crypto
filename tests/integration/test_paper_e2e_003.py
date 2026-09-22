@@ -20,6 +20,7 @@ a signal is legitimately produced, so the FULL chain must execute:
 Determinism: fixed candle epoch + injected ``now_fn`` (no wall-clock race);
 LIVE=false, no credentials, no external exchange.
 """
+
 from __future__ import annotations
 
 import asyncio
@@ -129,9 +130,7 @@ def _runner(settings, broker, engine, source):
         broker=broker,
         cycle_engine=engine,
         cycle_history_reader=FetcherBarReader(source),
-        now_fn=lambda: datetime.datetime.fromtimestamp(
-            decision_ts / 1000, tz=datetime.UTC
-        ),
+        now_fn=lambda: datetime.datetime.fromtimestamp(decision_ts / 1000, tz=datetime.UTC),
     )
 
 
@@ -165,15 +164,19 @@ def test_full_chain_rejects_falling_market_via_family() -> None:
     """SHORT path of the runtime family also flows through the full chain."""
     settings = _settings()
     broker = PaperBroker(equity=10_000.0)
-    fall = [OHLCV(
-        symbol=s,
-        timestamp=TS0 + i * BAR_MS,
-        open=200.0 - i,
-        high=200.0 - i + 1.0,
-        low=200.0 - i - 1.0,
-        close=200.0 - i - 0.5,
-        volume=1_000.0,
-    ) for s in ("BTC/USDT",) for i in range(100)]
+    fall = [
+        OHLCV(
+            symbol=s,
+            timestamp=TS0 + i * BAR_MS,
+            open=200.0 - i,
+            high=200.0 - i + 1.0,
+            low=200.0 - i - 1.0,
+            close=200.0 - i - 0.5,
+            volume=1_000.0,
+        )
+        for s in ("BTC/USDT",)
+        for i in range(100)
+    ]
     source = _RisingSource({"BTC/USDT": fall})
     runner = _runner(settings, broker, _engine(settings, broker), source)
     result = asyncio.run(runner.run_session())

@@ -83,9 +83,7 @@ class EmaCrossoverStrategy:
         ema_slow_history = _history_series(indicators.get("ema_slow_history", []))
         crossover_window = indicators.get("crossover_window", 3)
 
-        def _had_cross(
-            window_fast: list[Any], window_slow: list[Any], direction: str
-        ) -> bool:
+        def _had_cross(window_fast: list[Any], window_slow: list[Any], direction: str) -> bool:
             """Check if a crossover happened within the window of last N bars.
 
             LONG cross: any bar where prev_fast <= prev_slow AND current fast > slow
@@ -130,10 +128,14 @@ class EmaCrossoverStrategy:
         candle_body = last_candle.close - last_candle.open
         candle_range = last_candle.high - last_candle.low
         body_pct = (abs(candle_body) / candle_range * 100) if candle_range > 0 else 0
-        candle_direction = "alcista" if candle_body > 0 else "bajista" if candle_body < 0 else "neutra"
+        candle_direction = (
+            "alcista" if candle_body > 0 else "bajista" if candle_body < 0 else "neutra"
+        )
 
         # Volume context
-        recent_volumes = [c.volume for c in candles[-20:]] if len(candles) >= 20 else [c.volume for c in candles]
+        recent_volumes = (
+            [c.volume for c in candles[-20:]] if len(candles) >= 20 else [c.volume for c in candles]
+        )
         avg_volume = sum(recent_volumes) / len(recent_volumes) if recent_volumes else 0
         volume_ratio = (last_candle.volume / avg_volume) if avg_volume > 0 else 1.0
 
@@ -160,21 +162,28 @@ class EmaCrossoverStrategy:
             if has_history and ema_fast_history and ema_slow_history:
                 pf = ema_fast_history[0]
                 ps = ema_slow_history[0]
-                if pf is not None and ps is not None and isinstance(pf, (int, float)) and isinstance(ps, (int, float)):
+                if (
+                    pf is not None
+                    and ps is not None
+                    and isinstance(pf, (int, float))
+                    and isinstance(ps, (int, float))
+                ):
                     explanation_parts.append(
                         f"  - Antes (1 bar): EMA rapida ({pf:.2f}) {'>' if pf > ps else '<'} EMA lenta ({ps:.2f})"
                     )
-            explanation_parts.extend([
-                f"VENTANA: {crossover_window} bars para detectar cruce",
-                f"CONFIRMACIÓN RSI: {rsi:.1f} > umbral {rsi_long_threshold:.0f} ({rsi_zone(rsi)})",
-                f"VOLATILIDAD ATR: {atr:.2f} ({atr/current_price*100:.3f}% del precio)",
-                f"STOP LOSS: ${sl_price:.2f} (-{sl_pct:.2f}% = {sl_mult}xATR)",
-                f"TAKE PROFIT: ${tp_price:.2f} (+{tp_pct:.2f}% = {tp_mult}xATR)",
-                f"RELACIÓN RIESGO/BENEFICIO: 1:{tp_mult/sl_mult:.1f}",
-                f"CONTEXTO VELA: {candle_direction} (cuerpo {body_pct:.0f}% del rango)",
-                f"VOLUMEN: ratio {volume_ratio:.2f}xvs-media (media={avg_volume:.0f})",
-                f"CONFIANZA: {confidence:.1%}",
-            ])
+            explanation_parts.extend(
+                [
+                    f"VENTANA: {crossover_window} bars para detectar cruce",
+                    f"CONFIRMACIÓN RSI: {rsi:.1f} > umbral {rsi_long_threshold:.0f} ({rsi_zone(rsi)})",
+                    f"VOLATILIDAD ATR: {atr:.2f} ({atr / current_price * 100:.3f}% del precio)",
+                    f"STOP LOSS: ${sl_price:.2f} (-{sl_pct:.2f}% = {sl_mult}xATR)",
+                    f"TAKE PROFIT: ${tp_price:.2f} (+{tp_pct:.2f}% = {tp_mult}xATR)",
+                    f"RELACIÓN RIESGO/BENEFICIO: 1:{tp_mult / sl_mult:.1f}",
+                    f"CONTEXTO VELA: {candle_direction} (cuerpo {body_pct:.0f}% del rango)",
+                    f"VOLUMEN: ratio {volume_ratio:.2f}xvs-media (media={avg_volume:.0f})",
+                    f"CONFIANZA: {confidence:.1%}",
+                ]
+            )
 
             return Signal(
                 symbol=symbol,
@@ -230,21 +239,28 @@ class EmaCrossoverStrategy:
             if has_history and ema_fast_history and ema_slow_history:
                 pf = ema_fast_history[0]
                 ps = ema_slow_history[0]
-                if pf is not None and ps is not None and isinstance(pf, (int, float)) and isinstance(ps, (int, float)):
+                if (
+                    pf is not None
+                    and ps is not None
+                    and isinstance(pf, (int, float))
+                    and isinstance(ps, (int, float))
+                ):
                     explanation_parts.append(
                         f"  - Antes (1 bar): EMA rapida ({pf:.2f}) {'>' if pf > ps else '<'} EMA lenta ({ps:.2f})"
                     )
-            explanation_parts.extend([
-                f"VENTANA: {crossover_window} bars para detectar cruce",
-                f"CONFIRMACIÓN RSI: {rsi:.1f} < umbral {rsi_short_threshold:.0f} ({rsi_zone(rsi)})",
-                f"VOLATILIDAD ATR: {atr:.2f} ({atr/current_price*100:.3f}% del precio)",
-                f"STOP LOSS: ${sl_price_short:.2f} (+{sl_pct:.2f}% = {sl_mult}xATR)",
-                f"TAKE PROFIT: ${tp_price_short:.2f} (-{tp_pct:.2f}% = {tp_mult}xATR)",
-                f"RELACIÓN RIESGO/BENEFICIO: 1:{tp_mult/sl_mult:.1f}",
-                f"CONTEXTO VELA: {candle_direction} (cuerpo {body_pct:.0f}% del rango)",
-                f"VOLUMEN: ratio {volume_ratio:.2f}xvs-media (media={avg_volume:.0f})",
-                f"CONFIANZA: {confidence:.1%}",
-            ])
+            explanation_parts.extend(
+                [
+                    f"VENTANA: {crossover_window} bars para detectar cruce",
+                    f"CONFIRMACIÓN RSI: {rsi:.1f} < umbral {rsi_short_threshold:.0f} ({rsi_zone(rsi)})",
+                    f"VOLATILIDAD ATR: {atr:.2f} ({atr / current_price * 100:.3f}% del precio)",
+                    f"STOP LOSS: ${sl_price_short:.2f} (+{sl_pct:.2f}% = {sl_mult}xATR)",
+                    f"TAKE PROFIT: ${tp_price_short:.2f} (-{tp_pct:.2f}% = {tp_mult}xATR)",
+                    f"RELACIÓN RIESGO/BENEFICIO: 1:{tp_mult / sl_mult:.1f}",
+                    f"CONTEXTO VELA: {candle_direction} (cuerpo {body_pct:.0f}% del rango)",
+                    f"VOLUMEN: ratio {volume_ratio:.2f}xvs-media (media={avg_volume:.0f})",
+                    f"CONFIANZA: {confidence:.1%}",
+                ]
+            )
 
             return Signal(
                 symbol=symbol,

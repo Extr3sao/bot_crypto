@@ -78,6 +78,7 @@ class CalendarCompletenessChecker:
     def __init__(self, timezone: str = "UTC") -> None:
         self._timezone = timezone
         self._log = structlog.get_logger("calendar_completeness")
+        self._tz: datetime.tzinfo
         try:
             self._tz = ZoneInfo(timezone)
         except (KeyError, ValueError):
@@ -86,14 +87,18 @@ class CalendarCompletenessChecker:
     def _bars_per_day(self, timeframe: str) -> int:
         """Expected bars per standard 24h day for a timeframe."""
         mapping = {
-            "1m": 1440, "3m": 480, "5m": 288, "15m": 96,
-            "30m": 48, "1h": 24, "4h": 6, "1d": 1,
+            "1m": 1440,
+            "3m": 480,
+            "5m": 288,
+            "15m": 96,
+            "30m": 48,
+            "1h": 24,
+            "4h": 6,
+            "1d": 1,
         }
         return mapping.get(timeframe, 288)
 
-    def _expected_bars_for_day(
-        self, day_str: str, timeframe: str = "5m"
-    ) -> int:
+    def _expected_bars_for_day(self, day_str: str, timeframe: str = "5m") -> int:
         """Compute expected bars for a specific calendar day, accounting for DST.
 
         For a timezone with DST:
@@ -113,7 +118,7 @@ class CalendarCompletenessChecker:
             duration_hours = (utc_end - utc_start).total_seconds() / 3600.0
             # expected bars = duration_hours * bars_per_hour
             bars_per_hour = standard_per_day / 24.0
-            expected = int(round(duration_hours * bars_per_hour))
+            expected = round(duration_hours * bars_per_hour)
             return max(1, expected)
         except (ValueError, KeyError):
             return standard_per_day
@@ -149,8 +154,12 @@ class CalendarCompletenessChecker:
         """
         if not bars:
             return CalendarAnalysis(
-                total_days=0, complete_days=0, partial_days=0,
-                evaluation_days=0, total_bars=0, expected_bars_per_day=0,
+                total_days=0,
+                complete_days=0,
+                partial_days=0,
+                evaluation_days=0,
+                total_bars=0,
+                expected_bars_per_day=0,
             )
 
         expected_per_day = self._bars_per_day(timeframe)
@@ -160,9 +169,9 @@ class CalendarCompletenessChecker:
         daily_counts: dict[str, list[int]] = {}
         for bar in bars:
             # Get timestamp: dict uses 'timestamp', OHLCV dataclass has 'timestamp' or 'open_time'
-            if hasattr(bar, 'open_time'):
+            if hasattr(bar, "open_time"):
                 ts = bar.open_time
-            elif hasattr(bar, 'timestamp'):
+            elif hasattr(bar, "timestamp"):
                 ts = bar.timestamp
             elif isinstance(bar, dict):
                 ts = bar.get("timestamp", 0)
@@ -206,14 +215,16 @@ class CalendarCompletenessChecker:
             else:
                 partial_days += 1
 
-            day_objects.append(CalendarDay(
-                date=day,
-                bar_count=count,
-                expected_bars=expected_for_day,
-                is_complete=is_complete,
-                is_evaluation=is_evaluation,
-                is_dst_transition=is_dst,
-            ))
+            day_objects.append(
+                CalendarDay(
+                    date=day,
+                    bar_count=count,
+                    expected_bars=expected_for_day,
+                    is_complete=is_complete,
+                    is_evaluation=is_evaluation,
+                    is_dst_transition=is_dst,
+                )
+            )
 
         evaluation_days = sum(1 for d in day_objects if d.is_evaluation)
 
@@ -238,16 +249,13 @@ class CalendarCompletenessChecker:
         # Get evaluation day strings
         eval_dates = {d.date for d in analysis.days if d.is_evaluation}
 
-        return [
-            bar for bar in bars
-            if self._bar_date(bar) in eval_dates
-        ]
+        return [bar for bar in bars if self._bar_date(bar) in eval_dates]
 
-    def _bar_date(self, bar) -> str:
+    def _bar_date(self, bar: Any) -> str:
         """Get calendar date string from bar timestamp."""
-        if hasattr(bar, 'open_time'):
+        if hasattr(bar, "open_time"):
             ts = bar.open_time
-        elif hasattr(bar, 'timestamp'):
+        elif hasattr(bar, "timestamp"):
             ts = bar.timestamp
         elif isinstance(bar, dict):
             ts = bar.get("timestamp", 0)
@@ -323,8 +331,12 @@ class HistoricalConfirmationSimulator:
             confirmation_window_id="W-CONFIRMATION-SIM",
             discovery_start=bars[0]["timestamp"],
             discovery_end=bars[disc_end - 1]["timestamp"] if disc_end > 0 else bars[0]["timestamp"],
-            confirmation_start=bars[conf_start]["timestamp"] if conf_start < n else bars[-1]["timestamp"],
-            confirmation_end=bars[conf_end - 1]["timestamp"] if conf_end > 0 else bars[-1]["timestamp"],
+            confirmation_start=bars[conf_start]["timestamp"]
+            if conf_start < n
+            else bars[-1]["timestamp"],
+            confirmation_end=bars[conf_end - 1]["timestamp"]
+            if conf_end > 0
+            else bars[-1]["timestamp"],
             discovery_bars=disc_end,
             confirmation_bars=conf_end - conf_start,
             labels={

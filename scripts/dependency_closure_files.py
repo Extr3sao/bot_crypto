@@ -61,7 +61,7 @@ def imports_of(path: Path) -> tuple[set[str], set[str], set[str]]:
         return static, typing_only, dynamic
 
     def in_type_checking(node: ast.stmt) -> bool:
-        for parent in ast.walk(tree):  # cheap: find If whose test is TYPE_CHECK
+        for _parent in ast.walk(tree):  # cheap: find If whose test is TYPE_CHECK
             pass
         return False
 
@@ -110,7 +110,8 @@ def main() -> None:
     tracked = tracked_files()
     universe = on_disk_py()  # files that physically exist in src/ (this tree)
     roots = sorted(
-        f for f in tracked
+        f
+        for f in tracked
         if (f.startswith("src/") or f.startswith("scripts/") or f.startswith("tests/"))
         and f.endswith(".py")
     )

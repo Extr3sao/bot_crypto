@@ -70,7 +70,7 @@ def volatility_atr(candles: Sequence[OHLCV], period: int = 14) -> float | None:
     if len(candles) < period + 1:
         return None
     trs = []
-    for prev, cur in zip(candles[-(period + 1):-1], candles[-period:], strict=False):
+    for prev, cur in zip(candles[-(period + 1) : -1], candles[-period:], strict=False):
         tr = max(
             cur.high - cur.low,
             abs(cur.high - prev.close),
@@ -84,7 +84,9 @@ def volatility_atr(candles: Sequence[OHLCV], period: int = 14) -> float | None:
     return atr / close
 
 
-def trend_state(candles: Sequence[OHLCV], fast: int = 9, slow: int = 21) -> dict[str, float | str] | None:
+def trend_state(
+    candles: Sequence[OHLCV], fast: int = 9, slow: int = 21
+) -> dict[str, float | str] | None:
     """EMA(fast) vs EMA(slope-adjusted slow) trend classification.
 
     Returns {"direction": "up"|"down"|"flat", "spread": float} where spread
@@ -114,7 +116,10 @@ def momentum_rsi(candles: Sequence[OHLCV], period: int = 14) -> float | None:
     """Classic Wilder RSI on the last ``period`` deltas."""
     if len(candles) < period + 1:
         return None
-    deltas = [b.close - a.close for a, b in zip(candles[-(period + 1):-1], candles[-period:], strict=False)]
+    deltas = [
+        b.close - a.close
+        for a, b in zip(candles[-(period + 1) : -1], candles[-period:], strict=False)
+    ]
     gains = [d for d in deltas if d > 0]
     losses = [-d for d in deltas if d < 0]
     avg_gain = sum(gains) / period

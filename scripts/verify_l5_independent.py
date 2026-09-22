@@ -56,7 +56,9 @@ class ShapeFamily:
 
     family_name = "ema_crossover"
 
-    def generate(self, candles: Any, indicators: Any, features: Any = None, **kw: Any) -> list[AlphaSignal]:
+    def generate(
+        self, candles: Any, indicators: Any, features: Any = None, **kw: Any
+    ) -> list[AlphaSignal]:
         if len(candles) < 30:
             return []
         rising = candles[-1].close > candles[0].close
@@ -78,7 +80,9 @@ class ShapeFamily:
 class BoomFamily:
     family_name = "ema_crossover"
 
-    def generate(self, candles: Any, indicators: Any, features: Any = None, **kw: Any) -> list[AlphaSignal]:
+    def generate(
+        self, candles: Any, indicators: Any, features: Any = None, **kw: Any
+    ) -> list[AlphaSignal]:
         raise RuntimeError("strategy exploded")
 
 
@@ -90,7 +94,9 @@ def settings() -> Any:
     )
 
 
-def engine(st: Any, broker: Any, family: Any = None, risk: Any = None, idem: Any = None) -> PaperCycleEngine:
+def engine(
+    st: Any, broker: Any, family: Any = None, risk: Any = None, idem: Any = None
+) -> PaperCycleEngine:
     return PaperCycleEngine(
         asset_registry=CryptoAssetAgentRegistry(),
         router=StrategyRouter(),
@@ -128,7 +134,9 @@ def make_runner(st: Any, broker: Any, eng: Any, src: Any, session_ts: int) -> An
     from trading_bot.scanner.mode_filters import build_filter_set_per_mode
     from trading_bot.scanner.scanner import UniverseScanner
 
-    scan_st = st.model_copy(update={"risk": st.risk.model_copy(update={"kill_switch_enabled": False})})
+    scan_st = st.model_copy(
+        update={"risk": st.risk.model_copy(update={"kill_switch_enabled": False})}
+    )
     scanner = UniverseScanner(
         source=src,
         registry_per_mode=build_filter_set_per_mode(scan_st),
@@ -192,33 +200,51 @@ eng1 = PaperCycleEngine(
     broker=PaperBroker(equity=10_000.0),
     indicator_fn=lambda candles: {},
 )
-zero_orders(eng1.run_cycle_sync({"BTC/USDT": bars("BTC/USDT", 100, True)}, {"BTC/USDT": TS0 + 99 * BAR_MS}), "no strategy")
+zero_orders(
+    eng1.run_cycle_sync({"BTC/USDT": bars("BTC/USDT", 100, True)}, {"BTC/USDT": TS0 + 99 * BAR_MS}),
+    "no strategy",
+)
+
 
 # 2. router exception — boom reader fails inside build_context
 class BoomReader:
-    async def get_ohlcv(self, symbol: str, *, as_of_timestamp_ms: int, lookback_bars: int) -> list[OHLCV]:
+    async def get_ohlcv(
+        self, symbol: str, *, as_of_timestamp_ms: int, lookback_bars: int
+    ) -> list[OHLCV]:
         raise RuntimeError("reader down")
 
 
 # router exception: boom family raises inside generate
-zero_orders(engine(st, PaperBroker(equity=10_000.0), family=BoomFamily()).run_cycle_sync(
-    {"BTC/USDT": bars("BTC/USDT", 100, True)}, {"BTC/USDT": TS0 + 99 * BAR_MS}
-), "strategy exception")
+zero_orders(
+    engine(st, PaperBroker(equity=10_000.0), family=BoomFamily()).run_cycle_sync(
+        {"BTC/USDT": bars("BTC/USDT", 100, True)}, {"BTC/USDT": TS0 + 99 * BAR_MS}
+    ),
+    "strategy exception",
+)
 
 # 3. invalid signal: entry_reference <= 0 via direction-mismatch guard
-zero_orders(engine(st, PaperBroker(equity=10_000.0)).run_cycle_sync(
-    {"BTC/USDT": bars("BTC/USDT", 100, True)}, {"BTC/USDT": TS0 + 99 * BAR_MS + 3 * BAR_MS}
-) if False else engine(st, PaperBroker(equity=10_000.0)).run_cycle_sync(
-    {"BTC/USDT": []}, {"BTC/USDT": TS0 + 99 * BAR_MS}
-), "invalid/empty context")
+zero_orders(
+    engine(st, PaperBroker(equity=10_000.0)).run_cycle_sync(
+        {"BTC/USDT": bars("BTC/USDT", 100, True)}, {"BTC/USDT": TS0 + 99 * BAR_MS + 3 * BAR_MS}
+    )
+    if False
+    else engine(st, PaperBroker(equity=10_000.0)).run_cycle_sync(
+        {"BTC/USDT": []}, {"BTC/USDT": TS0 + 99 * BAR_MS}
+    ),
+    "invalid/empty context",
+)
 
 # 4. risk rejection — daily limit exhausted
 rm = RiskManager(risk=st.risk, equity=10_000.0)
 for _ in range(10):
     rm.record_trade_result(-300.0)
-zero_orders(engine(st, PaperBroker(equity=10_000.0), risk=rm).run_cycle_sync(
-    {"BTC/USDT": bars("BTC/USDT", 100, True)}, {"BTC/USDT": TS0 + 99 * BAR_MS}
-), "risk rejection (daily loss)")
+zero_orders(
+    engine(st, PaperBroker(equity=10_000.0), risk=rm).run_cycle_sync(
+        {"BTC/USDT": bars("BTC/USDT", 100, True)}, {"BTC/USDT": TS0 + 99 * BAR_MS}
+    ),
+    "risk rejection (daily loss)",
+)
+
 
 # 5. risk exception
 class BoomRisk(RiskManager):
@@ -226,9 +252,12 @@ class BoomRisk(RiskManager):
         raise RuntimeError("risk engine down")
 
 
-zero_orders(engine(st, PaperBroker(equity=10_000.0), risk=BoomRisk(risk=st.risk, equity=10_000.0)).run_cycle_sync(
-    {"BTC/USDT": bars("BTC/USDT", 100, True)}, {"BTC/USDT": TS0 + 99 * BAR_MS}
-), "risk exception")
+zero_orders(
+    engine(
+        st, PaperBroker(equity=10_000.0), risk=BoomRisk(risk=st.risk, equity=10_000.0)
+    ).run_cycle_sync({"BTC/USDT": bars("BTC/USDT", 100, True)}, {"BTC/USDT": TS0 + 99 * BAR_MS}),
+    "risk exception",
+)
 
 # 6. duplicate intent
 idem = IdempotencyGuard()
@@ -238,14 +267,20 @@ c1 = e2.run_cycle_sync({"BTC/USDT": bars("BTC/USDT", 100, True)}, {"BTC/USDT": T
 c2 = e2.run_cycle_sync({"BTC/USDT": bars("BTC/USDT", 100, True)}, {"BTC/USDT": TS0 + 99 * BAR_MS})
 record(
     "GATE-L5-08 idempotency",
-    "PASS" if (c1.orders_created == 1 and c2.orders_created == 0 and c2.duplicate_intents >= 1) else "FAIL",
+    "PASS"
+    if (c1.orders_created == 1 and c2.orders_created == 0 and c2.duplicate_intents >= 1)
+    else "FAIL",
     f"intent1 orders={c1.orders_created}, intent2 orders={c2.orders_created}, duplicates={c2.duplicate_intents}",
 )
 
 # 7. stale data / empty history
-zero_orders(engine(st, PaperBroker(equity=10_000.0)).run_cycle_sync(
-    {"BTC/USDT": bars("BTC/USDT", 100, True)}, {"BTC/USDT": TS0 + 500 * BAR_MS}
-), "stale data (no bar at decision ts)")
+zero_orders(
+    engine(st, PaperBroker(equity=10_000.0)).run_cycle_sync(
+        {"BTC/USDT": bars("BTC/USDT", 100, True)}, {"BTC/USDT": TS0 + 500 * BAR_MS}
+    ),
+    "stale data (no bar at decision ts)",
+)
+
 
 # 8. broker error
 class BoomBroker(PaperBroker):
@@ -253,17 +288,29 @@ class BoomBroker(PaperBroker):
         raise RuntimeError("broker down")
 
 
-zero_orders(engine(st, PaperBroker(equity=10_000.0)).__class__ and (
-    PaperCycleEngine(
-        asset_registry=CryptoAssetAgentRegistry(),
-        router=StrategyRouter(),
-        strategy_map={"ema_crossover": {"family": "ema_crossover", "regimes": [], "direction": "BOTH", "enabled": True, "status": "CONFIRMED"}},
-        families={"ema_crossover": ShapeFamily()},
-        risk_manager=RiskManager(risk=st.risk, equity=10_000.0),
-        broker=BoomBroker(equity=10_000.0),
-        indicator_fn=lambda candles: {},
-    ).run_cycle_sync({"BTC/USDT": bars("BTC/USDT", 100, True)}, {"BTC/USDT": TS0 + 99 * BAR_MS})
-), "broker exception")
+zero_orders(
+    engine(st, PaperBroker(equity=10_000.0)).__class__
+    and (
+        PaperCycleEngine(
+            asset_registry=CryptoAssetAgentRegistry(),
+            router=StrategyRouter(),
+            strategy_map={
+                "ema_crossover": {
+                    "family": "ema_crossover",
+                    "regimes": [],
+                    "direction": "BOTH",
+                    "enabled": True,
+                    "status": "CONFIRMED",
+                }
+            },
+            families={"ema_crossover": ShapeFamily()},
+            risk_manager=RiskManager(risk=st.risk, equity=10_000.0),
+            broker=BoomBroker(equity=10_000.0),
+            indicator_fn=lambda candles: {},
+        ).run_cycle_sync({"BTC/USDT": bars("BTC/USDT", 100, True)}, {"BTC/USDT": TS0 + 99 * BAR_MS})
+    ),
+    "broker exception",
+)
 
 print("=== GATE-L5-10 lifecycle through real runner ===")
 st = settings()
@@ -299,7 +346,9 @@ r = subprocess.run(
 record(
     "GATE-L5-17 paper-only",
     "PASS" if r.returncode == 1 else "FAIL",
-    "grep of canonical cycle modules for exchange/credential refs: no matches" if r.returncode == 1 else r.stdout[:200],
+    "grep of canonical cycle modules for exchange/credential refs: no matches"
+    if r.returncode == 1
+    else r.stdout[:200],
 )
 
 print()

@@ -62,15 +62,18 @@ class MarketDataProvenance:
     def assert_operational(self) -> None:
         """Raise if provenance doesn't support HISTORICAL_MARKET_REAL."""
         required = [
-            self.exchange, self.market_type, self.symbol,
-            self.timeframe, self.source, self.retrieval_method,
+            self.exchange,
+            self.market_type,
+            self.symbol,
+            self.timeframe,
+            self.source,
+            self.retrieval_method,
             self.checksum,
         ]
         missing = [f for f in required if not f]
         if missing:
             raise ValueError(
-                f"Provenance incomplete for HISTORICAL_MARKET_REAL: "
-                f"missing fields: {missing}"
+                f"Provenance incomplete for HISTORICAL_MARKET_REAL: missing fields: {missing}"
             )
         if self.bars <= 0:
             raise ValueError(f"Provenance bars must be > 0, got {self.bars}")
@@ -107,13 +110,15 @@ class BinancePublicOHLCV:
             current_start = start_ms
 
             while current_start < end_ms:
-                params = urllib.parse.urlencode({
-                    "symbol": symbol.replace("/", ""),
-                    "interval": interval,
-                    "startTime": current_start,
-                    "endTime": end_ms,
-                    "limit": limit,
-                })
+                params = urllib.parse.urlencode(
+                    {
+                        "symbol": symbol.replace("/", ""),
+                        "interval": interval,
+                        "startTime": current_start,
+                        "endTime": end_ms,
+                        "limit": limit,
+                    }
+                )
                 url = f"{self.BASE_URL}/api/v3/klines?{params}"
 
                 req = urllib.request.Request(url)
@@ -222,6 +227,7 @@ class BybitPublicOHLCV:
     """
 
     BASE_URL = "https://api.bybit.com"
+    _log = structlog.get_logger("bybit_public_ohlcv")
 
     def fetch_klines(
         self,
@@ -244,14 +250,16 @@ class BybitPublicOHLCV:
             current_start = start_ms
 
             while current_start < end_ms:
-                params = urllib.parse.urlencode({
-                    "category": "spot",
-                    "symbol": symbol.replace("/", ""),
-                    "interval": bybit_interval,
-                    "start": current_start,
-                    "end": end_ms,
-                    "limit": limit,
-                })
+                params = urllib.parse.urlencode(
+                    {
+                        "category": "spot",
+                        "symbol": symbol.replace("/", ""),
+                        "interval": bybit_interval,
+                        "start": current_start,
+                        "end": end_ms,
+                        "limit": limit,
+                    }
+                )
                 url = f"{self.BASE_URL}/v5/market/kline?{params}"
 
                 req = urllib.request.Request(url)

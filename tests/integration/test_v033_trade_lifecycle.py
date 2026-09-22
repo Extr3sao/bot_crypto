@@ -9,26 +9,21 @@ BAR → SIGNAL → PORTFOLIO ACCEPT → RISK APPROVE → ORDER → ENTRY FILL
 Includes scenarios for: LONG TP, LONG SL, SHORT TP, SHORT SL,
 SL+TP same candle (intrabar ambiguity), fees, slippage.
 """
+
 from __future__ import annotations
 
 import uuid
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Any
 
-import pytest
-
+from src.trading_bot.paper.agents import RiskDecision
 from src.trading_bot.paper.execution_agent import (
-    PaperExecutionAgent,
-    PaperBrokerAdapter,
     ExecutionBrokerType,
-    ExecutionOrder,
-    ExecutionFill,
-    ExecutionResult,
     ExitReason,
     IntrabarPolicy,
+    PaperBrokerAdapter,
+    PaperExecutionAgent,
 )
-from src.trading_bot.paper.agents import RiskDecision, OpenPosition
 from src.trading_bot.paper.signal_types import SignalCandidate, SignalDirection
 
 
@@ -297,7 +292,7 @@ class TestIntrabarAmbiguity:
             timestamp=entry_ts + 300_000,
             open=50_200.0,
             high=51_200.0,  # above target → TP hit
-            low=49_300.0,   # below stop → SL hit
+            low=49_300.0,  # below stop → SL hit
             close=50_500.0,
         )
 
@@ -444,7 +439,7 @@ class TestNoExitWhenNotTriggered:
             timestamp=entry_ts + 300_000,
             open=50_100.0,
             high=50_500.0,  # below TP
-            low=49_800.0,   # above SL
+            low=49_800.0,  # above SL
             close=50_200.0,
         )
 

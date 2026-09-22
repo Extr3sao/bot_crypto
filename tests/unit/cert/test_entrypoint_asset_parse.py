@@ -17,6 +17,7 @@ so per-character splitting is impossible.
 FAIL BEFORE FIX (baseline): ``parse_assets`` does not exist and the
 universe is built from characters.
 """
+
 from __future__ import annotations
 
 import argparse

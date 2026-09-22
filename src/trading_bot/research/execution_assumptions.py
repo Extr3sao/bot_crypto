@@ -21,8 +21,9 @@ try:
     from trading_agent.core.models_v02 import sha256_hex
 except ImportError:
     import hashlib
+
     def sha256_hex(data: str) -> str:
-        return hashlib.sha256(data.encode('utf-8')).hexdigest()
+        return hashlib.sha256(data.encode("utf-8")).hexdigest()
 
 
 @dataclass(frozen=True, slots=True)
@@ -76,7 +77,7 @@ class ExecutionAssumptions:
     def hash(self) -> str:
         """Compute deterministic hash of all assumptions."""
         data = json.dumps(asdict(self), sort_keys=True, default=str)
-        return sha256_hex(data)
+        return str(sha256_hex(data))
 
     def to_dict(self) -> dict[str, Any]:
         """Serialize for JSON output."""

@@ -235,8 +235,9 @@ class MarginalPortfolioAnalyzer:
         overlap = 0
         for ta in trades_a:
             for tb in trades_b:
-                if (ta.get("symbol") == tb.get("symbol") and
-                        ta.get("direction") == tb.get("direction")):
+                if ta.get("symbol") == tb.get("symbol") and ta.get("direction") == tb.get(
+                    "direction"
+                ):
                     # Check time overlap (entry within 1 bar of each other)
                     t_a = ta.get("entry_timestamp", 0)
                     t_b = tb.get("entry_timestamp", 0)
@@ -254,7 +255,7 @@ class MarginalPortfolioAnalyzer:
         overlaps: list[SignalOverlap] = []
 
         for i, fam_a in enumerate(families):
-            for fam_b in families[i + 1:]:
+            for fam_b in families[i + 1 :]:
                 sigs_a = signals_by_family[fam_a]
                 sigs_b = signals_by_family[fam_b]
 
@@ -263,14 +264,16 @@ class MarginalPortfolioAnalyzer:
                 set_b = {(s.symbol, s.direction) for s in sigs_b}
                 common = set_a & set_b
 
-                overlaps.append(SignalOverlap(
-                    family_a=fam_a,
-                    family_b=fam_b,
-                    overlapping_symbols=len(common),
-                    overlapping_directions=len(common),
-                    total_signals_a=len(sigs_a),
-                    total_signals_b=len(sigs_b),
-                ))
+                overlaps.append(
+                    SignalOverlap(
+                        family_a=fam_a,
+                        family_b=fam_b,
+                        overlapping_symbols=len(common),
+                        overlapping_directions=len(common),
+                        total_signals_a=len(sigs_a),
+                        total_signals_b=len(sigs_b),
+                    )
+                )
 
         return overlaps
 

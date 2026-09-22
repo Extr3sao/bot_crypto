@@ -238,8 +238,16 @@ class CrossSectionalEngine:
             short_window = window[-short_lookback:]
             long_window = window[-long_lookback:]
 
-            short_return = (short_window[-1].close - short_window[0].open) / short_window[0].open if short_window[0].open > 0 else 0.0
-            long_return = (long_window[-1].close - long_window[0].open) / long_window[0].open if long_window[0].open > 0 else 0.0
+            short_return = (
+                (short_window[-1].close - short_window[0].open) / short_window[0].open
+                if short_window[0].open > 0
+                else 0.0
+            )
+            long_return = (
+                (long_window[-1].close - long_window[0].open) / long_window[0].open
+                if long_window[0].open > 0
+                else 0.0
+            )
 
             if abs(long_return) > 1e-10:
                 result[symbol] = short_return / long_return
@@ -265,12 +273,14 @@ class CrossSectionalEngine:
             start_price = candles[0].open
             end_price = candles[-1].close
             momentum = (end_price - start_price) / start_price if start_price > 0 else 0.0
-            metrics.append(AssetMetric(
-                symbol=symbol,
-                timestamp=timestamp,
-                metric_name="momentum",
-                value=momentum,
-            ))
+            metrics.append(
+                AssetMetric(
+                    symbol=symbol,
+                    timestamp=timestamp,
+                    metric_name="momentum",
+                    value=momentum,
+                )
+            )
         return metrics
 
     def _compute_returns(
@@ -285,12 +295,14 @@ class CrossSectionalEngine:
                 continue
             c = candles[-1]
             ret = (c.close - c.open) / c.open if c.open > 0 else 0.0
-            metrics.append(AssetMetric(
-                symbol=symbol,
-                timestamp=timestamp,
-                metric_name="returns",
-                value=ret,
-            ))
+            metrics.append(
+                AssetMetric(
+                    symbol=symbol,
+                    timestamp=timestamp,
+                    metric_name="returns",
+                    value=ret,
+                )
+            )
         return metrics
 
     def _compute_volatility(
@@ -311,13 +323,15 @@ class CrossSectionalEngine:
                 continue
             mean = sum(returns) / len(returns)
             variance = sum((r - mean) ** 2 for r in returns) / (len(returns) - 1)
-            vol = variance ** 0.5
-            metrics.append(AssetMetric(
-                symbol=symbol,
-                timestamp=timestamp,
-                metric_name="volatility",
-                value=vol,
-            ))
+            vol = variance**0.5
+            metrics.append(
+                AssetMetric(
+                    symbol=symbol,
+                    timestamp=timestamp,
+                    metric_name="volatility",
+                    value=vol,
+                )
+            )
         return metrics
 
     def _compute_volume_ratio(
@@ -333,12 +347,14 @@ class CrossSectionalEngine:
             avg_vol = sum(c.volume for c in candles[:-1]) / max(1, len(candles) - 1)
             latest_vol = candles[-1].volume
             ratio = latest_vol / avg_vol if avg_vol > 0 else 1.0
-            metrics.append(AssetMetric(
-                symbol=symbol,
-                timestamp=timestamp,
-                metric_name="volume_ratio",
-                value=ratio,
-            ))
+            metrics.append(
+                AssetMetric(
+                    symbol=symbol,
+                    timestamp=timestamp,
+                    metric_name="volume_ratio",
+                    value=ratio,
+                )
+            )
         return metrics
 
     # ------------------------------------------------------------------
@@ -362,7 +378,7 @@ class CrossSectionalEngine:
         if abs(mean) < 1e-10:
             return 0.0
         variance = sum((v - mean) ** 2 for v in values) / (len(values) - 1)
-        result: float = (variance ** 0.5) / abs(mean)
+        result: float = (variance**0.5) / abs(mean)
         return result
 
 

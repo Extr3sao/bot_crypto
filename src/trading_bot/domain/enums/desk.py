@@ -2,12 +2,13 @@
 
 from __future__ import annotations
 
-from enum import Enum, unique
+from enum import StrEnum, unique
 
 
 @unique
-class DeskState(str, Enum):
+class DeskState(StrEnum):
     """Desk lifecycle states (RFC §5 C1)."""
+
     IDEA = "idea"
     EVIDENCE_PENDING = "evidence_pending"
     EVIDENCE_READY = "evidence_ready"
@@ -30,11 +31,12 @@ class DeskState(str, Enum):
 
 
 @unique
-class DeskTransition(str, Enum):
+class DeskTransition(StrEnum):
     """Valid desk state transitions (RFC §5 C1).
 
     Only these transitions are legal. All others must raise an error.
     """
+
     IDEA_TO_EVIDENCE_PENDING = "idea→evidence_pending"
     EVIDENCE_PENDING_TO_EVIDENCE_READY = "evidence_pending→evidence_ready"
     EVIDENCE_PENDING_TO_VOID = "evidence_pending→void"

@@ -14,6 +14,7 @@ Contract under test (from the family source):
 - indicators are self-computed when none are provided;
 - explicit indicator values are honored when provided.
 """
+
 from __future__ import annotations
 
 import pytest

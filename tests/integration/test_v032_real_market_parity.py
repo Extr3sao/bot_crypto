@@ -13,15 +13,12 @@ from __future__ import annotations
 
 import hashlib
 import json
-import math
-import uuid
-from datetime import datetime, timedelta
+from datetime import datetime
 from pathlib import Path
-from uuid import UUID, uuid4
+from uuid import uuid4
 
 import pytest
-
-from src.trading_bot.backtesting.types import OHLCV as BacktestOHLCV
+from src.trading_bot.paper.agents import PortfolioAgent, RiskAgent
 from src.trading_bot.paper.alpha_registry import AlphaRegistry
 from src.trading_bot.paper.canonical_strategy import (
     CanonicalStrategyConfig,
@@ -29,17 +26,15 @@ from src.trading_bot.paper.canonical_strategy import (
 )
 from src.trading_bot.paper.execution_agent import (
     ExecutionBrokerType,
-    ExecutionFill,
-    ExecutionOrder,
-    ExecutionResult,
     PaperBrokerAdapter,
     PaperExecutionAgent,
 )
 from src.trading_bot.paper.market_scanner_agent import MarketScannerAgent
 from src.trading_bot.paper.replay_mode import PaperReplayMode
 from src.trading_bot.paper.signal_registry import SignalRegistry
-from src.trading_bot.paper.signal_types import MarketSnapshot, SignalCandidate
-from src.trading_bot.paper.agents import PortfolioAgent, RiskAgent
+from src.trading_bot.paper.signal_types import MarketSnapshot
+
+from src.trading_bot.backtesting.types import OHLCV as BacktestOHLCV
 
 # ── Path to real market data ──
 DATASET_DIR = Path("research/datasets/BTCUSDT-5m-14d")
@@ -50,25 +45,27 @@ CHECKSUM_FILE = DATASET_DIR / "checksum.sha256"
 
 def _load_real_ohlcv() -> list[BacktestOHLCV]:
     """Load real BTCUSDT 5m OHLCV from certified HISTORICAL_MARKET_REAL dataset."""
-    with open(OHLCV_FILE, "r") as f:
+    with open(OHLCV_FILE) as f:
         raw = json.load(f)
     bars = []
     for row in raw:
-        bars.append(BacktestOHLCV(
-            symbol="BTCUSDT",
-            timestamp=row["timestamp"],
-            open=row["open"],
-            high=row["high"],
-            low=row["low"],
-            close=row["close"],
-            volume=row["volume"],
-        ))
+        bars.append(
+            BacktestOHLCV(
+                symbol="BTCUSDT",
+                timestamp=row["timestamp"],
+                open=row["open"],
+                high=row["high"],
+                low=row["low"],
+                close=row["close"],
+                volume=row["volume"],
+            )
+        )
     return bars
 
 
 def _verify_dataset_integrity() -> dict:
     """Verify dataset checksum and provenance."""
-    with open(METADATA_FILE, "r") as f:
+    with open(METADATA_FILE) as f:
         metadata = json.load(f)
     assert metadata["evidence_class"] == "HISTORICAL_MARKET_REAL", (
         f"Expected HISTORICAL_MARKET_REAL, got {metadata['evidence_class']}"
@@ -108,9 +105,7 @@ class BacktestCanonicalAdapter:
         from src.trading_bot.backtesting.types import Order
 
         # Build snapshot with history up to this bar
-        snapshot = MarketSnapshot(
-            datetime.utcfromtimestamp(candle.timestamp / 1000.0)
-        )
+        snapshot = MarketSnapshot(datetime.utcfromtimestamp(candle.timestamp / 1000.0))
         # Need to accumulate bars — use a simple list
         if not hasattr(self, "_bar_history"):
             self._bar_history: dict[str, list] = {}
@@ -238,7 +233,7 @@ class TestV032RealMarketCertification:
         ev = CanonicalStrategyEvaluator(alpha_id=self.alpha_id, config=self.config)
         found_signal = False
         for i in range(50, len(self.all_bars)):
-            subset = self.all_bars[:i + 1]
+            subset = self.all_bars[: i + 1]
             ts = datetime.utcfromtimestamp(subset[-1].timestamp / 1000.0)
             snap = MarketSnapshot(ts)
             snap.add_ohlcv("BTCUSDT", subset)
@@ -290,15 +285,8 @@ class TestV032RealMarketCertification:
 
         if result.paper_trades > 0:
             # Check broker accounting
-            initial = 10_000.0
-            current_equity = self.broker.equity
-            open_notional = sum(
-                p.quantity * p.entry_price
-                for p in self.broker.open_positions.values()
-            )
-            closed_pnl = sum(
-                t.get("net_pnl", 0.0) for t in self.broker.closed_positions
-            )
+            sum(p.quantity * p.entry_price for p in self.broker.open_positions.values())
+            sum(t.get("net_pnl", 0.0) for t in self.broker.closed_positions)
 
             # Equity = initial - open_notional_cost + closed_pnl
             # (simplified: broker tracks equity directly)
@@ -324,7 +312,7 @@ class TestV032RealMarketCertification:
         risk_blocked = result.risk_blocked
         risk_approved = result.risk_approved
         # Total = signals that reached risk = risk_approved + risk_blocked
-        total_at_risk = risk_approved + risk_blocked
+        risk_approved + risk_blocked
         # All approved signals should have valid risk (no invariant violations)
 
     def test_backtest_canonical_adapter_produces_same_signals(self):
@@ -340,6 +328,7 @@ class TestV032RealMarketCertification:
         class ListSource:
             def __init__(self, bars):
                 self._bars = bars
+
             def iter_candles(self, symbol, start_ms, end_ms):
                 for b in self._bars:
                     if start_ms <= b.timestamp <= end_ms:
@@ -371,27 +360,25 @@ class TestV032RealMarketCertification:
         )
 
         # Compare signal-level: re-run canonical evaluator on each bar
-        paper_evaluator = CanonicalStrategyEvaluator(
-            alpha_id=self.alpha_id, config=self.config
-        )
+        paper_evaluator = CanonicalStrategyEvaluator(alpha_id=self.alpha_id, config=self.config)
         paper_signals = []
         for i in range(len(self.all_bars)):
-            partial = self.all_bars[:i + 1]
+            partial = self.all_bars[: i + 1]
             if len(partial) < self.config.slow_ema_period + self.config.crossover_window + 2:
                 continue
-            snap = MarketSnapshot(
-                datetime.utcfromtimestamp(partial[-1].timestamp / 1000.0)
-            )
+            snap = MarketSnapshot(datetime.utcfromtimestamp(partial[-1].timestamp / 1000.0))
             snap.add_ohlcv("BTCUSDT", partial)
             sigs = paper_evaluator.evaluate(snap)
             for s in sigs:
-                paper_signals.append({
-                    "bar_index": i,
-                    "direction": s.direction.value,
-                    "entry": s.entry_reference,
-                    "stop": s.stop,
-                    "target": s.target,
-                })
+                paper_signals.append(
+                    {
+                        "bar_index": i,
+                        "direction": s.direction.value,
+                        "entry": s.entry_reference,
+                        "stop": s.stop,
+                        "target": s.target,
+                    }
+                )
 
         # Paper evaluator should produce signals
         assert len(paper_signals) > 0, "Paper canonical evaluator produced 0 signals"
@@ -430,10 +417,14 @@ class TestV032RealMarketCertification:
 
         # Signal evidence
         executed = self.signal_registry.list_by_state(
-            __import__("trading_bot.paper.signal_registry", fromlist=["SignalState"]).SignalState.EXECUTED
+            __import__(
+                "trading_bot.paper.signal_registry", fromlist=["SignalState"]
+            ).SignalState.EXECUTED
         )
         approved = self.signal_registry.list_by_state(
-            __import__("trading_bot.paper.signal_registry", fromlist=["SignalState"]).SignalState.APPROVED
+            __import__(
+                "trading_bot.paper.signal_registry", fromlist=["SignalState"]
+            ).SignalState.APPROVED
         )
         assert len(executed) + len(approved) > 0, "No signals reached execution or approval"
         assert result.paper_trades > 0, f"Paper trades: {result.paper_trades}"

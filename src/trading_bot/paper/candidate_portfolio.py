@@ -104,25 +104,33 @@ def build_portfolio(
     for cand in ranked:
         key = (cand.asset, cand.strategy_id, cand.direction)
         if key in seen:
-            portfolio.rejected.append({
-                "candidate": cand.to_dict(), "reason": "duplicate_candidate",
-            })
+            portfolio.rejected.append(
+                {
+                    "candidate": cand.to_dict(),
+                    "reason": "duplicate_candidate",
+                }
+            )
             continue
         seen.add(key)
 
         group = cand.correlation_group or cand.asset
         count = group_counts.get(group, 0)
         if count >= max_per_correlation_group:
-            portfolio.rejected.append({
-                "candidate": cand.to_dict(),
-                "reason": f"correlation_group_limit:{group}",
-            })
+            portfolio.rejected.append(
+                {
+                    "candidate": cand.to_dict(),
+                    "reason": f"correlation_group_limit:{group}",
+                }
+            )
             continue
 
         if len(portfolio.candidates) >= max_candidates:
-            portfolio.rejected.append({
-                "candidate": cand.to_dict(), "reason": "portfolio_size_cap",
-            })
+            portfolio.rejected.append(
+                {
+                    "candidate": cand.to_dict(),
+                    "reason": "portfolio_size_cap",
+                }
+            )
             continue
 
         group_counts[group] = count + 1

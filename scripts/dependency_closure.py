@@ -70,16 +70,20 @@ def parse_imports(path: Path) -> tuple[set[str], set[str]]:
                 fname = node.func.id
             if fname in {"import_module", "__import__", "importlib_import_module"}:
                 for arg in node.args:
-                    if isinstance(arg, ast.Constant) and isinstance(arg.value, str):
-                        if arg.value.startswith("trading_bot"):
-                            dynamic.add(arg.value)
+                    if (
+                        isinstance(arg, ast.Constant)
+                        and isinstance(arg.value, str)
+                        and arg.value.startswith("trading_bot")
+                    ):
+                        dynamic.add(arg.value)
     return static, dynamic
 
 
 def main() -> None:
     tracked = tracked_files()
     roots_py = sorted(
-        f for f in tracked
+        f
+        for f in tracked
         if (f.startswith("src/") or f.startswith("scripts/") or f.startswith("tests/"))
         and f.endswith(".py")
     )
@@ -116,7 +120,7 @@ def main() -> None:
                 dynamic_missing.add(mod)
 
     # classify
-    already = sorted(m for m in transitive if module_to_paths(m)[0] in tracked)
+    sorted(m for m in transitive if module_to_paths(m)[0] in tracked)
     print("\n=== DIRECT_REQUIRED_MODULES (unique, from all files incl. transitive) ===")
     print(f"{len(direct)}")
     print("\n=== TRANSITIVE_REQUIRED_MODULES (resolved) ===")

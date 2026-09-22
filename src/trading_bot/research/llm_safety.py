@@ -121,7 +121,9 @@ class LLMSafetyGuard:
         self._log = structlog.get_logger("llm_safety")
         self._request_log: list[LLMRequestLog] = []
 
-    def check(self, operation: LLMOperation, context: dict[str, Any] | None = None) -> LLMAuthorization:
+    def check(
+        self, operation: LLMOperation, context: dict[str, Any] | None = None
+    ) -> LLMAuthorization:
         """Check if an LLM operation is authorized.
 
         Args:
@@ -157,13 +159,15 @@ class LLMSafetyGuard:
             )
 
         # Log the request
-        self._request_log.append(LLMRequestLog(
-            operation=operation,
-            allowed=auth.allowed,
-            reason=auth.reason,
-            timestamp=now,
-            context=context or {},
-        ))
+        self._request_log.append(
+            LLMRequestLog(
+                operation=operation,
+                allowed=auth.allowed,
+                reason=auth.reason,
+                timestamp=now,
+                context=context or {},
+            )
+        )
 
         if auth.allowed:
             self._log.info("llm_safety.allowed", operation=operation)
@@ -172,7 +176,9 @@ class LLMSafetyGuard:
 
         return auth
 
-    def assert_allowed(self, operation: LLMOperation, context: dict[str, Any] | None = None) -> None:
+    def assert_allowed(
+        self, operation: LLMOperation, context: dict[str, Any] | None = None
+    ) -> None:
         """Check and raise if operation is not allowed.
 
         Use this for hard enforcement.

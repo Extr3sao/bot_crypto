@@ -2,12 +2,13 @@
 
 from __future__ import annotations
 
-from enum import Enum, unique
+from enum import StrEnum, unique
 
 
 @unique
-class SystemHealthStatus(str, Enum):
+class SystemHealthStatus(StrEnum):
     """System health classification."""
+
     HEALTHY = "healthy"
     DEGRADED = "degraded"
     PAUSED = "paused"
@@ -15,8 +16,9 @@ class SystemHealthStatus(str, Enum):
 
 
 @unique
-class FaultType(str, Enum):
+class FaultType(StrEnum):
     """Fault classification."""
+
     SYSTEM_FAULT = "system_fault"
     ALPHA_FAULT = "alpha_fault"
     MARKET_DATA_FAULT = "market_data_fault"

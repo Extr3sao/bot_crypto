@@ -32,7 +32,7 @@ except ImportError:
     AuditCheckStatus = Literal["PASS", "FAIL", "SKIP", "WARNING"]
 
     @dataclass(frozen=True, slots=True)
-    class AuditCheck:
+    class AuditCheck:  # type: ignore[no-redef]
         check_id: str = ""
         category: str = ""
         status: AuditCheckStatus = "PASS"
@@ -41,38 +41,46 @@ except ImportError:
         observed: str = ""
         expected: str = ""
         evidence_path: str = ""
+
         @property
         def is_blocking(self) -> bool:
             return self.status == "FAIL" and self.severity in ("ERROR", "CRITICAL")
+
         @property
         def check(self) -> str:
             return self.check_id
+
         @property
         def passed(self) -> bool:
             return self.status == "PASS"
 
     @dataclass(frozen=True, slots=True)
-    class AuditResultV02:
+    class AuditResultV02:  # type: ignore[no-redef]
         audit_id: str = field(default_factory=lambda: new_id("AUD"))
         experiment_id: str = ""
         window_id: str = ""
         verdict: Literal["PASS", "FAIL", "INCONCLUSIVE"] = "INCONCLUSIVE"
-        checks: list = field(default_factory=list)
+        checks: list[AuditCheck] = field(default_factory=list)
         completed_at: float = field(default_factory=lambda: __import__("time").time())
+
         @property
-        def failed_checks(self) -> list:
+        def failed_checks(self) -> list[AuditCheck]:
             return [c for c in self.checks if c.status == "FAIL"]
+
         @property
-        def blocking_checks(self) -> list:
+        def blocking_checks(self) -> list[AuditCheck]:
             return [c for c in self.checks if c.is_blocking]
+
         @property
         def failed_count(self) -> int:
             return len(self.failed_checks)
+
         @property
         def passed_count(self) -> int:
             return sum(1 for c in self.checks if c.status == "PASS")
+
         @property
-        def findings(self) -> list:
+        def findings(self) -> list[AuditCheck]:
             return self.checks
 
 
@@ -144,25 +152,29 @@ class QuantAuditorV021:
 
         # 1. Reconstruct PnL from trades
         recon = self._reconstruct_from_trades(backtest_result.trades)
-        checks.append(AuditCheck(
-            check_id="pnl_reconstruction",
-            category="PNL",
-            status="PASS" if recon.n >= 0 else "FAIL",
-            description="PnL reconstructed from individual trades",
-            observed=f"n={recon.n}, net_pnl={recon.net_pnl:.6f}",
-        ))
+        checks.append(
+            AuditCheck(
+                check_id="pnl_reconstruction",
+                category="PNL",
+                status="PASS" if recon.n >= 0 else "FAIL",
+                description="PnL reconstructed from individual trades",
+                observed=f"n={recon.n}, net_pnl={recon.net_pnl:.6f}",
+            )
+        )
 
         # 2. PnL reconciliation
         reconciliation = self._reconcile_pnl(backtest_result, recon)
-        checks.append(AuditCheck(
-            check_id="pnl_reconciliation",
-            category="PNL",
-            status="PASS" if reconciliation.reconciled else "FAIL",
-            severity="CRITICAL" if not reconciliation.reconciled else "INFO",
-            description=f"PnL reconciliation: engine={reconciliation.engine_net_pnl:.6f}, auditor={reconciliation.auditor_net_pnl:.6f}",
-            observed=f"diff={reconciliation.difference:.10f}, tolerance={reconciliation.tolerance}",
-            expected=f"diff <= {reconciliation.tolerance}",
-        ))
+        checks.append(
+            AuditCheck(
+                check_id="pnl_reconciliation",
+                category="PNL",
+                status="PASS" if reconciliation.reconciled else "FAIL",
+                severity="CRITICAL" if not reconciliation.reconciled else "INFO",
+                description=f"PnL reconciliation: engine={reconciliation.engine_net_pnl:.6f}, auditor={reconciliation.auditor_net_pnl:.6f}",
+                observed=f"diff={reconciliation.difference:.10f}, tolerance={reconciliation.tolerance}",
+                expected=f"diff <= {reconciliation.tolerance}",
+            )
+        )
 
         # 3. Metrics reconstruction
         metrics_check = self._validate_metrics(backtest_result, recon)
@@ -190,14 +202,18 @@ class QuantAuditorV021:
         ev_check = AuditCheck(
             check_id="evidence_class",
             category="DATA",
-            status="PASS" if (
+            status="PASS"
+            if (
                 backtest_result.evidence is not None
                 and backtest_result.evidence.evidence_class.is_operational
-            ) else "FAIL",
-            severity="ERROR" if (
+            )
+            else "FAIL",
+            severity="ERROR"
+            if (
                 backtest_result.evidence is None
                 or not backtest_result.evidence.evidence_class.is_operational
-            ) else "INFO",
+            )
+            else "INFO",
             description=f"Evidence class: {backtest_result.evidence.evidence_class.value if backtest_result.evidence else 'NONE'}",
         )
         checks.append(ev_check)
@@ -212,9 +228,7 @@ class QuantAuditorV021:
             checks=checks,
         )
 
-    def _reconstruct_from_trades(
-        self, trades: list[TradeRecord]
-    ) -> ReconstructedMetrics:
+    def _reconstruct_from_trades(self, trades: list[TradeRecord]) -> ReconstructedMetrics:
         """Reconstruct all metrics from individual trade records.
 
         V0.2.1 §7: Independent PnL reconstruction.
@@ -322,8 +336,14 @@ class QuantAuditorV021:
 
         if not daily_counts:
             return {
-                "avg": 0.0, "median": 0.0, "min": 0, "max": 0,
-                "zero_days": 0, "pct_ge_1": 0.0, "pct_ge_2": 0.0, "pct_ge_3": 0.0,
+                "avg": 0.0,
+                "median": 0.0,
+                "min": 0,
+                "max": 0,
+                "zero_days": 0,
+                "pct_ge_1": 0.0,
+                "pct_ge_2": 0.0,
+                "pct_ge_3": 0.0,
             }
 
         counts = list(daily_counts.values())
@@ -395,7 +415,8 @@ class QuantAuditorV021:
             category="PNL",
             status="PASS" if passed else "FAIL",
             severity="CRITICAL" if not passed else "INFO",
-            description="Independent metrics reconstruction" + (f": {', '.join(mismatches)}" if mismatches else ""),
+            description="Independent metrics reconstruction"
+            + (f": {', '.join(mismatches)}" if mismatches else ""),
             observed=f"engine_trades={result.n_trades}, auditor_trades={recon.n}",
             expected="All metrics match within tolerance",
         )
