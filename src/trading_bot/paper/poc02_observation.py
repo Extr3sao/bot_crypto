@@ -234,23 +234,15 @@ def frequency_kpis(perf_rows: list[dict[str, Any]]) -> dict[str, Any]:
         "COMPLETED_VALID_DAYS": completed_valid_days,
         "DAYS_GE_3": days_ge_3,
         "PERCENT_DAYS_GE_3": (
-            round(100.0 * days_ge_3 / completed_valid_days, 2)
-            if completed_valid_days
-            else None
+            round(100.0 * days_ge_3 / completed_valid_days, 2) if completed_valid_days else None
         ),
         "TOTAL_TRADES": total_trades,
         "TRADES_PER_VALID_DAY": (
-            round(total_trades / completed_valid_days, 4)
-            if completed_valid_days
-            else None
+            round(total_trades / completed_valid_days, 4) if completed_valid_days else None
         ),
-        "MEDIAN_TRADES_PER_VALID_DAY": (
-            statistics.median(per_day) if per_day else None
-        ),
+        "MEDIAN_TRADES_PER_VALID_DAY": (statistics.median(per_day) if per_day else None),
         "TARGET_TRADES_PER_VALID_DAY": FREQUENCY_TARGET_TRADES_PER_DAY,
-        "denominator_note": (
-            "partial/invalid days excluded; zero-trade valid days retained"
-        ),
+        "denominator_note": ("partial/invalid days excluded; zero-trade valid days retained"),
         "target_lowered": False,
     }
 
@@ -338,9 +330,7 @@ def strategy_contribution(
         asset = str(row.get("asset") or "?")
         if stage in ("SELECTED", "AGENT_REJECT", "RISK_REJECT", "PAPER_OPEN"):
             entry["proposals"] += 1
-            entry["regime_distribution"][regime] = (
-                entry["regime_distribution"].get(regime, 0) + 1
-            )
+            entry["regime_distribution"][regime] = entry["regime_distribution"].get(regime, 0) + 1
             entry["assets"].add(asset)
         if stage == "SELECTED":
             entry["selected"] += 1
@@ -484,9 +474,7 @@ def shadow_risk_analysis(campaign_dir: Path) -> dict[str, Any]:
     by_strategy = conditioned.by_condition("risk_rejection_reason", "strategy_id")
     by_asset = conditioned.by_condition("risk_rejection_reason", "asset")
     by_health = conditioned.by_condition("risk_rejection_reason", "strategy_health_state")
-    reason_counts: Counter[str] = Counter(
-        c.risk_rejection_reason for c in hook.captures.captures
-    )
+    reason_counts: Counter[str] = Counter(c.risk_rejection_reason for c in hook.captures.captures)
     return {
         "captures_total": len(hook.captures.captures),
         "resolved_total": len(hook.outcomes.trades),
@@ -532,9 +520,7 @@ def risk_value_test(campaign_dir: Path) -> dict[str, Any]:
     )
     resolved = hook.outcomes.trades
     attribution = load_attribution_ledger(Path(campaign_dir))
-    paper_closes = [
-        a for a in attribution if a.get("stage") == "PAPER_CLOSE"
-    ]
+    paper_closes = [a for a in attribution if a.get("stage") == "PAPER_CLOSE"]
     paper_net = [float(a.get("net_pnl", 0.0)) for a in paper_closes]
     shadow_net = [t.net_pnl for t in resolved]
 
@@ -559,8 +545,10 @@ def risk_value_test(campaign_dir: Path) -> dict[str, Any]:
         pe, se = paper_stats["expectancy_net"], shadow_stats["expectancy_net"]
         comparison = {
             "paper_expectancy_vs_shadow": (
-                "PAPER_HIGHER" if (pe or 0) > (se or 0)
-                else "SHADOW_HIGHER" if (se or 0) > (pe or 0)
+                "PAPER_HIGHER"
+                if (pe or 0) > (se or 0)
+                else "SHADOW_HIGHER"
+                if (se or 0) > (pe or 0)
                 else "EQUAL"
             ),
             "risk_improves_expectancy": (pe or 0) > (se or 0),
@@ -576,7 +564,8 @@ def risk_value_test(campaign_dir: Path) -> dict[str, Any]:
         "sufficient_sample": sufficient,
         "comparison": comparison,
         "status": (
-            "EVIDENCE_SUFFICIENT_FOR_COMPARISON" if sufficient
+            "EVIDENCE_SUFFICIENT_FOR_COMPARISON"
+            if sufficient
             else "INSUFFICIENT_SAMPLE — no interpretation, no Risk change"
         ),
         "automatic_risk_change": False,
@@ -644,10 +633,16 @@ def regime_coverage_map(
         }
     return {
         "regimes": cells,
-        "WELL_COVERED_REGIMES": [r for r, c in cells.items() if c["classification"] == "WELL_COVERED"],
-        "UNDER_COVERED_REGIMES": [r for r, c in cells.items() if c["classification"] == "UNDER_COVERED"],
+        "WELL_COVERED_REGIMES": [
+            r for r, c in cells.items() if c["classification"] == "WELL_COVERED"
+        ],
+        "UNDER_COVERED_REGIMES": [
+            r for r, c in cells.items() if c["classification"] == "UNDER_COVERED"
+        ],
         "NO_EDGE_REGIMES": [r for r, c in cells.items() if c["classification"] == "NO_EDGE"],
-        "INSUFFICIENT_EVIDENCE": [r for r, c in cells.items() if c["classification"] == "INSUFFICIENT_EVIDENCE"],
+        "INSUFFICIENT_EVIDENCE": [
+            r for r, c in cells.items() if c["classification"] == "INSUFFICIENT_EVIDENCE"
+        ],
         "next_research_input_note": (
             "research targets come from regimes with observed market movement "
             "but ≈0 proposals (NO_SIGNAL_REGIME) or NO_EDGE — evidence first, "
@@ -705,9 +700,7 @@ def analyze_campaign(campaign_dir: Path) -> dict[str, Any]:
     attribution = load_attribution_ledger(campaign_dir)
     state_path = campaign_dir / "POC02_CAMPAIGN_STATE.json"
     campaign_state = (
-        json.loads(state_path.read_text(encoding="utf-8"))
-        if state_path.exists()
-        else {}
+        json.loads(state_path.read_text(encoding="utf-8")) if state_path.exists() else {}
     )
     perf = daily_performance_rows(campaign_dir)
     state = {
@@ -738,9 +731,7 @@ def analyze_campaign(campaign_dir: Path) -> dict[str, Any]:
             "q5_regimes_without_strategies": (
                 "see regime_coverage_map UNDER_COVERED/NO_EDGE/NO_SIGNAL_REGIME"
             ),
-            "q6_frequency_trajectory": (
-                "see frequency_kpis; target ≥3 trades/valid-day unchanged"
-            ),
+            "q6_frequency_trajectory": ("see frequency_kpis; target ≥3 trades/valid-day unchanged"),
         },
     }
     return state

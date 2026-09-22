@@ -57,6 +57,7 @@ def _sha256_hex(payload: str = "") -> str:
     """Return a valid SHA-256 hex digest."""
     return hashlib.sha256(payload.encode()).hexdigest()
 
+
 TRACE = TraceContext(
     run_id="ma2-validator",
     trace_id="ma2-validator-trace",
@@ -100,7 +101,9 @@ def _candles_accelerating(asset: str = "SOL", count: int = 80) -> list[OHLCV]:
     for i in range(count):
         ts = start + i * 300_000
         price *= 1.002
-        out.append(OHLCV(f"{asset}/USDT", ts, price * 0.998, price * 1.002, price * 0.996, price, 100.0))
+        out.append(
+            OHLCV(f"{asset}/USDT", ts, price * 0.998, price * 1.002, price * 0.996, price, 100.0)
+        )
     return out
 
 
@@ -113,7 +116,12 @@ def _check(name: str, passed: bool, detail: str = "") -> None:
 
 
 def _validate_execution_boundary() -> None:
-    forbidden_prefixes = ("trading_bot.paper", "trading_bot.risk", "trading_bot.execution", "trading_bot.config")
+    forbidden_prefixes = (
+        "trading_bot.paper",
+        "trading_bot.risk",
+        "trading_bot.execution",
+        "trading_bot.config",
+    )
     target_files = [
         _root / "src" / "trading_bot" / "multi_agent" / "specialists.py",
         _root / "src" / "trading_bot" / "multi_agent" / "opportunity.py",
@@ -131,8 +139,11 @@ def _validate_execution_boundary() -> None:
                 mod = node.module
             if mod and any(mod.startswith(p) for p in forbidden_prefixes):
                 import_violations.append(f"{path.name}:{mod}")
-    _check("no_execution_imports", len(import_violations) == 0,
-           f"{len(import_violations)} violations" if import_violations else "clean")
+    _check(
+        "no_execution_imports",
+        len(import_violations) == 0,
+        f"{len(import_violations)} violations" if import_violations else "clean",
+    )
 
 
 def validate() -> bool:
@@ -145,8 +156,11 @@ def validate() -> bool:
     evaluation = expert.evaluate(sol_ctx, sol_candles, trace=TRACE)
 
     has_proposals = len(evaluation.proposals) > 0
-    _check("proposal_provenance", has_proposals,
-           f"{len(evaluation.proposals)} proposals from {evaluation.agent_id}")
+    _check(
+        "proposal_provenance",
+        has_proposals,
+        f"{len(evaluation.proposals)} proposals from {evaluation.agent_id}",
+    )
 
     if has_proposals:
         for p in evaluation.proposals:
@@ -154,17 +168,19 @@ def validate() -> bool:
             assert p.trace_id == TRACE.trace_id
 
     # --- 2. Evidence binding ---
-    all_evidence_bound = all(
-        len(p.evidence_refs) > 0 for p in evaluation.proposals
-    ) if evaluation.proposals else False
+    all_evidence_bound = (
+        all(len(p.evidence_refs) > 0 for p in evaluation.proposals)
+        if evaluation.proposals
+        else False
+    )
     _check("evidence_binding", all_evidence_bound, "all proposals have evidence refs")
 
     evidence_by_id = {e.evidence_id: e for e in evaluation.evidence}
-    evidence_matches = all(
-        ref in evidence_by_id
-        for p in evaluation.proposals
-        for ref in p.evidence_refs
-    ) if evaluation.proposals else False
+    evidence_matches = (
+        all(ref in evidence_by_id for p in evaluation.proposals for ref in p.evidence_refs)
+        if evaluation.proposals
+        else False
+    )
     _check("evidence_matching", evidence_matches, "all refs resolve to registered evidence")
 
     # --- 3. Deduplication ---
@@ -203,19 +219,39 @@ def validate() -> bool:
         board2.add_evidence(ev)
 
     long_p = TradeProposal(
-        schema_version="ma-2-v1", proposal_id="p-long", run_id=TRACE.run_id,
-        trace_id=TRACE.trace_id, asset="SOL", direction=TradeDirection.LONG,
-        strategy="momentum", timeframe="5m", regime="TREND_UP",
-        evidence_refs=("ev-long",), invalidation="stop", confidence=0.8,
-        data_time=ts, created_at=ts, expires_at=ts + timedelta(minutes=15),
+        schema_version="ma-2-v1",
+        proposal_id="p-long",
+        run_id=TRACE.run_id,
+        trace_id=TRACE.trace_id,
+        asset="SOL",
+        direction=TradeDirection.LONG,
+        strategy="momentum",
+        timeframe="5m",
+        regime="TREND_UP",
+        evidence_refs=("ev-long",),
+        invalidation="stop",
+        confidence=0.8,
+        data_time=ts,
+        created_at=ts,
+        expires_at=ts + timedelta(minutes=15),
         trace=TRACE,
     )
     short_p = TradeProposal(
-        schema_version="ma-2-v1", proposal_id="p-short", run_id=TRACE.run_id,
-        trace_id=TRACE.trace_id, asset="SOL", direction=TradeDirection.SHORT,
-        strategy="mean_reversion", timeframe="5m", regime="TREND_UP",
-        evidence_refs=("ev-short",), invalidation="stop", confidence=0.7,
-        data_time=ts, created_at=ts, expires_at=ts + timedelta(minutes=15),
+        schema_version="ma-2-v1",
+        proposal_id="p-short",
+        run_id=TRACE.run_id,
+        trace_id=TRACE.trace_id,
+        asset="SOL",
+        direction=TradeDirection.SHORT,
+        strategy="mean_reversion",
+        timeframe="5m",
+        regime="TREND_UP",
+        evidence_refs=("ev-short",),
+        invalidation="stop",
+        confidence=0.7,
+        data_time=ts,
+        created_at=ts,
+        expires_at=ts + timedelta(minutes=15),
         trace=TRACE,
     )
     board2.add(long_p, source_agent_id="test", source_agent_version="1.0.0")
@@ -226,7 +262,11 @@ def validate() -> bool:
 
     ranked = board2.rank()
     conflicted_items = [r for r in ranked if r.conflict_status == "CONFLICTED"]
-    _check("conflict_marking", len(conflicted_items) == 2, f"{len(conflicted_items)} conflicted rankings")
+    _check(
+        "conflict_marking",
+        len(conflicted_items) == 2,
+        f"{len(conflicted_items)} conflicted rankings",
+    )
 
     # --- 5. Ranking determinism ---
     ranked_1 = board2.rank()
@@ -240,13 +280,20 @@ def validate() -> bool:
     all_caps_ok = True
     for manifest in manifests:
         perms = cap_reg.permissions_for(manifest.agent_id, manifest.agent_version)
-        for forbidden_cap in (AgentCapability.EXECUTE, AgentCapability.PRODUCTION_ACTION,
-                          AgentCapability.RISK_OVERRIDE, AgentCapability.DIRECT_BROKER_ACCESS):
+        for forbidden_cap in (
+            AgentCapability.EXECUTE,
+            AgentCapability.PRODUCTION_ACTION,
+            AgentCapability.RISK_OVERRIDE,
+            AgentCapability.DIRECT_BROKER_ACCESS,
+        ):
             if forbidden_cap in perms:
                 all_caps_ok = False
                 details[f"capability_violation_{manifest.agent_id}"] = forbidden_cap.value
-    _check("execution_capability_zero", all_caps_ok,
-           f"{len(manifests)} agents verified, no forbidden capabilities")
+    _check(
+        "execution_capability_zero",
+        all_caps_ok,
+        f"{len(manifests)} agents verified, no forbidden capabilities",
+    )
 
     # --- 7. Stale/expiry enforcement ---
     board3 = OpportunityBoard(run_id=TRACE.run_id, now=VALIDATION_CLOCK)

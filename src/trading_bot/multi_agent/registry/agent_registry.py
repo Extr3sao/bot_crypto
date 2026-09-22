@@ -8,9 +8,13 @@ from .errors import DuplicateAgentVersionError, InvalidLifecycleTransitionError,
 
 _ALLOWED_TRANSITIONS: dict[AgentLifecycleState, frozenset[AgentLifecycleState]] = {
     AgentLifecycleState.DRAFT: frozenset({AgentLifecycleState.PROBATION}),
-    AgentLifecycleState.PROBATION: frozenset({AgentLifecycleState.ENABLED, AgentLifecycleState.DISABLED, AgentLifecycleState.RETIRED}),
+    AgentLifecycleState.PROBATION: frozenset(
+        {AgentLifecycleState.ENABLED, AgentLifecycleState.DISABLED, AgentLifecycleState.RETIRED}
+    ),
     AgentLifecycleState.ENABLED: frozenset({AgentLifecycleState.DISABLED}),
-    AgentLifecycleState.DISABLED: frozenset({AgentLifecycleState.PROBATION, AgentLifecycleState.RETIRED}),
+    AgentLifecycleState.DISABLED: frozenset(
+        {AgentLifecycleState.PROBATION, AgentLifecycleState.RETIRED}
+    ),
     AgentLifecycleState.RETIRED: frozenset(),
 }
 

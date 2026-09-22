@@ -166,7 +166,10 @@ def fixture_rows() -> list[dict]:
 
 
 def main() -> int:
-    report: dict[str, object] = {"verifier": "scripts/h5_implementation_verifier.py", "tolerance": TOL}
+    report: dict[str, object] = {
+        "verifier": "scripts/h5_implementation_verifier.py",
+        "tolerance": TOL,
+    }
 
     # -- spec integrity (verifier loads the COMMITTED artifact) --
     spec_bytes = SPEC_PATH.read_bytes()
@@ -183,16 +186,16 @@ def main() -> int:
     cooldown = int(spec["direction_rules"]["cooldown_bars"])
     rt_bps = float(spec["cost_model"]["round_trip_bps"])
     checks = {
-        "Z_ENTRY==2.5": eng.Z_ENTRY == z_thr,
-        "P_GATE==1.5": eng.P_GATE == p_thr,
-        "LOOKBACK==336": eng.LOOKBACK_BARS == lookback,
-        "HOLD_BARS==spec": eng.HOLD_BARS == hold,
-        "COOLDOWN==spec": eng.COOLDOWN_BARS == cooldown,
-        "COST_RT_BPS==spec": eng.COST_RT_BPS == rt_bps,
+        "Z_ENTRY==2.5": z_thr == eng.Z_ENTRY,
+        "P_GATE==1.5": p_thr == eng.P_GATE,
+        "LOOKBACK==336": lookback == eng.LOOKBACK_BARS,
+        "HOLD_BARS==spec": hold == eng.HOLD_BARS,
+        "COOLDOWN==spec": cooldown == eng.COOLDOWN_BARS,
+        "COST_RT_BPS==spec": rt_bps == eng.COST_RT_BPS,
         "ATR_PERIOD==14": eng.ATR_PERIOD == 14,
-        "MIN_TOTAL==30": eng.MIN_TOTAL_TRADES == int(spec["minimum_n"]["total_trades"]),
-        "MIN_DIRECTION==15": eng.MIN_DIRECTION_CELL == int(spec["minimum_n"]["direction_cell"]),
-        "MIN_ASSET==10": eng.MIN_ASSET_CELL == int(spec["minimum_n"]["asset_cell"]),
+        "MIN_TOTAL==30": int(spec["minimum_n"]["total_trades"]) == eng.MIN_TOTAL_TRADES,
+        "MIN_DIRECTION==15": int(spec["minimum_n"]["direction_cell"]) == eng.MIN_DIRECTION_CELL,
+        "MIN_ASSET==10": int(spec["minimum_n"]["asset_cell"]) == eng.MIN_ASSET_CELL,
         "SEED==20260910": eng.SEED == 20260910,
         "PF_NET_MIN==1.15": eng.PF_NET_MIN == 1.15,
         "P_SHARPE_MIN==0.90": eng.P_SHARPE_MIN == 0.90,
@@ -214,9 +217,7 @@ def main() -> int:
     ref = ref_trades(rows)
     import numpy as np
 
-    feat = eng.compute_features(
-        np.asarray(vol), np.asarray(ntr), np.asarray(tbv)
-    )
+    feat = eng.compute_features(np.asarray(vol), np.asarray(ntr), np.asarray(tbv))
     got, skipped, blocked = eng.simulate_h5(
         np.asarray(ts, dtype=np.int64),
         np.asarray(op),
@@ -230,14 +231,22 @@ def main() -> int:
         feat=feat,
     )
     fields = (
-        "decision_index", "direction", "entry_index", "entry_price",
-        "stop_price", "exit_index", "exit_price", "gross_r", "cost_r", "net_r",
+        "decision_index",
+        "direction",
+        "entry_index",
+        "entry_price",
+        "stop_price",
+        "exit_index",
+        "exit_price",
+        "gross_r",
+        "cost_r",
+        "net_r",
     )
     mismatches: list[str] = []
     if len(ref) != len(got):
         mismatches.append(f"trade count: ref={len(ref)} engine={len(got)}")
     else:
-        for a, b in zip(ref, got):
+        for a, b in zip(ref, got, strict=False):
             for f in fields:
                 va, vb = a[f], getattr(b, f)
                 if isinstance(va, float):
@@ -262,9 +271,7 @@ def main() -> int:
         if rf is None:
             spot.append(not (math.isfinite(zf) and math.isfinite(pf)))
         else:
-            spot.append(
-                abs(rf[0] - float(zf)) <= TOL and abs(rf[1] - float(pf)) <= TOL
-            )
+            spot.append(abs(rf[0] - float(zf)) <= TOL and abs(rf[1] - float(pf)) <= TOL)
     report["feature_spot_checks_ok"] = all(spot)
 
     all_ok = (
@@ -279,7 +286,21 @@ def main() -> int:
     (OUT / "H5_IMPLEMENTATION_VERIFICATION.json").write_text(
         json.dumps(report, indent=2), encoding="utf-8"
     )
-    print(json.dumps({k: report[k] for k in ("spec_sha_matches_prereg", "fixture_trades_ref", "fixture_trades_engine", "fixture_mismatch_count", "feature_spot_checks_ok", "VERDICT")}))
+    print(
+        json.dumps(
+            {
+                k: report[k]
+                for k in (
+                    "spec_sha_matches_prereg",
+                    "fixture_trades_ref",
+                    "fixture_trades_engine",
+                    "fixture_mismatch_count",
+                    "feature_spot_checks_ok",
+                    "VERDICT",
+                )
+            }
+        )
+    )
     return 0 if all_ok else 1
 
 

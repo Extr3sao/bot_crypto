@@ -651,7 +651,10 @@ class CCXTExchangeConnector(ExchangeConnector):
         """
         request_id = str(uuid.uuid4())
         log = self._log.bind(
-            req_id=request_id, op="fetch_order_query", symbol=symbol, client_order_id=client_order_id
+            req_id=request_id,
+            op="fetch_order_query",
+            symbol=symbol,
+            client_order_id=client_order_id,
         )
 
         @self._retry_decorator

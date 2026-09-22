@@ -29,13 +29,14 @@ OUT_DIR = ROOT / "docs" / "external-audit-01" / "cost-sensitivity-audit-01"
 ASSETS = ("BTCUSDT", "ETHUSDT", "SOLUSDT")
 SCENARIOS_BPS = (0.0, 5.0, 10.0, 20.0)
 
+import importlib.util  # noqa: E402 - sys.path bootstrap must precede imports
+
 from trading_bot.research.h1_regime_transition import (  # noqa: E402
     derive_states,
     detect_transitions,
     simulate_h1,
     simulate_proxy,
 )
-import importlib.util
 
 _spec_path = ROOT / "scripts" / "h1_regime_transition_discovery.py"
 _spec = importlib.util.spec_from_file_location("h1_runner", _spec_path)
@@ -75,7 +76,9 @@ def main() -> int:
     for sym in ASSETS:
         rows = [
             json.loads(line)
-            for line in (H1_DIR / "dataset" / f"{sym}_1h.jsonl").read_text(encoding="utf-8").splitlines()
+            for line in (H1_DIR / "dataset" / f"{sym}_1h.jsonl")
+            .read_text(encoding="utf-8")
+            .splitlines()
             if line.strip()
         ]
         row_counts[sym] = len(rows)
@@ -104,7 +107,7 @@ def main() -> int:
     table = []
     for bps in SCENARIOS_BPS:
         costs = [(bps / 10_000.0) / t.risk_frac for t in all_trades]
-        net = [t.gross_r - c for t, c in zip(all_trades, costs)]
+        net = [t.gross_r - c for t, c in zip(all_trades, costs, strict=False)]
         table.append(
             {
                 "cost_bps": bps,
@@ -124,7 +127,8 @@ def main() -> int:
         for i in range(len(table) - 1)
     )
     identity_ok = all(
-        abs(row["net_expectancy_R"] - (row["gross_expectancy_R"] - row["cost_per_trade_R"])) <= 1e-12
+        abs(row["net_expectancy_R"] - (row["gross_expectancy_R"] - row["cost_per_trade_R"]))
+        <= 1e-12
         for row in table
     )
 
@@ -136,10 +140,12 @@ def main() -> int:
     legacy_repro = {
         "5.0_reported": result_json["slippage_sensitivity_net_R"]["5.0"],
         "5.0_recomputed_legacy": legacy_value(5.0),
-        "5.0_match": abs(legacy_value(5.0) - result_json["slippage_sensitivity_net_R"]["5.0"]) < 1e-12,
+        "5.0_match": abs(legacy_value(5.0) - result_json["slippage_sensitivity_net_R"]["5.0"])
+        < 1e-12,
         "20.0_reported": result_json["slippage_sensitivity_net_R"]["20.0"],
         "20.0_recomputed_legacy": legacy_value(20.0),
-        "20.0_match": abs(legacy_value(20.0) - result_json["slippage_sensitivity_net_R"]["20.0"]) < 1e-12,
+        "20.0_match": abs(legacy_value(20.0) - result_json["slippage_sensitivity_net_R"]["20.0"])
+        < 1e-12,
     }
 
     out = {
@@ -174,8 +180,22 @@ def main() -> int:
         "runtime_seconds": round(time.time() - t0, 1),
     }
     OUT_DIR.mkdir(parents=True, exist_ok=True)
-    (OUT_DIR / "COST_SENSITIVITY_AUDIT.json").write_text(json.dumps(out, indent=2), encoding="utf-8")
-    print(json.dumps({k: out[k] for k in ("monotonicity_table", "monotonicity_invariant", "legacy_defect_reproduction")}, indent=2))
+    (OUT_DIR / "COST_SENSITIVITY_AUDIT.json").write_text(
+        json.dumps(out, indent=2), encoding="utf-8"
+    )
+    print(
+        json.dumps(
+            {
+                k: out[k]
+                for k in (
+                    "monotonicity_table",
+                    "monotonicity_invariant",
+                    "legacy_defect_reproduction",
+                )
+            },
+            indent=2,
+        )
+    )
     print(f"AUDIT WRITTEN: {OUT_DIR / 'COST_SENSITIVITY_AUDIT.json'} ({out['runtime_seconds']}s)")
     return 0
 

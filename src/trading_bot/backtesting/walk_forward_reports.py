@@ -27,6 +27,7 @@ import math
 import statistics
 from collections.abc import Iterable
 from dataclasses import dataclass
+from typing import Any
 
 from .reports import FoldReport
 
@@ -186,7 +187,7 @@ def render_walk_forward_aggregate_markdown(report: WalkForwardAggregateReport) -
 
 def build_walk_forward_aggregate_payload(
     report: WalkForwardAggregateReport,
-) -> dict[str, object]:
+) -> dict[str, Any]:
     """Build a JSON-serializable payload for the aggregate report.
 
     Pine contract: every key is present and the structure is deterministic;
@@ -199,7 +200,7 @@ def build_walk_forward_aggregate_payload(
     return _dataclass_to_dict(report)
 
 
-def _dataclass_to_dict(obj: object) -> dict[str, object]:
+def _dataclass_to_dict(obj: object) -> dict[str, Any]:
     """Serialize a dataclass to a dict, recursing into nested dataclasses.
 
     Pine contract:
@@ -219,7 +220,7 @@ def _dataclass_to_dict(obj: object) -> dict[str, object]:
     """
     if not dataclasses.is_dataclass(obj) or isinstance(obj, type):
         raise TypeError(f"_dataclass_to_dict requires a dataclass instance, got {type(obj)}")
-    result: dict[str, object] = {}
+    result: dict[str, Any] = {}
     for field in dataclasses.fields(obj):
         value = getattr(obj, field.name)
         if dataclasses.is_dataclass(value) and not isinstance(value, type):

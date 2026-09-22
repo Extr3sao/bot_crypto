@@ -117,7 +117,12 @@ def test_a1_submit_raising_enters_ack_unknown_never_retries_blindly() -> None:
 def test_a1_feed_block_forbids_submission() -> None:
     gateway = ExecutionGateway()
     venue = FakeVenue()
-    stale = FeedFreshness(feed_id="ohlcv-btc", last_update_ts=1_000.0, observed_at_ts=1_100.0, max_staleness_seconds=30.0)
+    stale = FeedFreshness(
+        feed_id="ohlcv-btc",
+        last_update_ts=1_000.0,
+        observed_at_ts=1_100.0,
+        max_staleness_seconds=30.0,
+    )
     verdict = gateway.evaluate_feeds((stale,))
     assert verdict.action is FeedGuardAction.BLOCK_NEW_ENTRIES
     with pytest.raises(ExecutionReliabilityError):
@@ -211,10 +216,7 @@ def test_a3_partial_out_of_order_fills_position_once_each() -> None:
     b = gateway.apply_fill(intent, venue_fill_id="F-1", quantity=0.006, price=60_000.0)
     dup = gateway.apply_fill(intent, venue_fill_id="F-2", quantity=0.004, price=60_100.0)
     assert a.applied and b.applied and dup.duplicate
-    position = sum(
-        app.position_delta
-        for app in (a, b, dup)
-    )
+    position = sum(app.position_delta for app in (a, b, dup))
     assert position == pytest.approx(0.010)  # 0.004 + 0.006 applied exactly once
 
 
@@ -269,7 +271,9 @@ def test_a4_startup_reconcile_adopts_without_resubmit() -> None:
     with pytest.raises(TimeoutError):
         gateway.submit(intent, venue)  # interrupted run
     # Restart: reconciliation finds the venue still holds the order.
-    receipt = gateway.reconcile(intent, venue_holds_order=True, venue_order_id=venue.orders.get(cloid))
+    receipt = gateway.reconcile(
+        intent, venue_holds_order=True, venue_order_id=venue.orders.get(cloid)
+    )
     assert receipt.journal_state is ExecutionState.ACCEPTED
     assert venue.submit_calls == []  # restart never resubmits
 
@@ -313,4 +317,6 @@ def test_fill_during_cancel_pending_transitions_to_partial() -> None:
     gateway.request_cancel(intent, venue)
     app = gateway.apply_fill(intent, venue_fill_id="F-9", quantity=0.01, price=60_000.0)
     assert app.applied
-    assert gateway.journal.current_state(compute_intent_id(intent)) is ExecutionState.PARTIALLY_FILLED
+    assert (
+        gateway.journal.current_state(compute_intent_id(intent)) is ExecutionState.PARTIALLY_FILLED
+    )

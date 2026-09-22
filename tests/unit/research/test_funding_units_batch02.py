@@ -26,17 +26,15 @@ from trading_bot.research.discovery_batch02_spec import (
     SLIPPAGE_BPS,
     batch02_eval_fingerprint,
     carry_funding_v2_signals,
-    cross_sectional_v2_signals,
     verify_batch01_spec_unchanged,
-    volatility_structure_v2_signals,
 )
 from trading_bot.research.discovery_execution import (
     DISCOVERY_EVAL_SPECS as BATCH01_EVAL_SPECS,
 )
 from trading_bot.research.funding_units import (
+    annualized_rate,
     canon_funding_interval_s,
     canon_rate_per_period,
-    annualized_rate,
     contract_fingerprint,
     funding_pnl,
 )
@@ -45,14 +43,15 @@ from trading_bot.research.funding_units import (
 # --------------------------------------------------------------------------
 # helpers
 # --------------------------------------------------------------------------
-def _candle(ts_ms: float, o: float, h: float, low: float, c: float,
-            vol: float = 100.0) -> OHLCV:
-    return OHLCV(symbol="X/USDT:USDT", timestamp=int(ts_ms), open=o, high=h,
-                 low=low, close=c, volume=vol)
+def _candle(ts_ms: float, o: float, h: float, low: float, c: float, vol: float = 100.0) -> OHLCV:
+    return OHLCV(
+        symbol="X/USDT:USDT", timestamp=int(ts_ms), open=o, high=h, low=low, close=c, volume=vol
+    )
 
 
-def _trend_candles(n: int, start: float = 100.0, step: float = 0.05,
-                   hour_ms: int = 3_600_000) -> list[OHLCV]:
+def _trend_candles(
+    n: int, start: float = 100.0, step: float = 0.05, hour_ms: int = 3_600_000
+) -> list[OHLCV]:
     out = []
     p = start
     for i in range(n):
@@ -103,8 +102,7 @@ class TestFundingUnits:
 
     def test_annualization_frozen_365d(self):
         # 0.0001 per 8h -> 0.0001 * (365*24*3600 / 28800) = 0.01095
-        assert annualized_rate(0.0001, 28800) == pytest.approx(
-            0.0001 * (365 * 24 * 3600) / 28800)
+        assert annualized_rate(0.0001, 28800) == pytest.approx(0.0001 * (365 * 24 * 3600) / 28800)
 
     def test_funding_pnl_long_pays_positive(self):
         assert funding_pnl("LONG", 10_000.0, 0.0001) == pytest.approx(-1.0)
@@ -132,19 +130,16 @@ class TestFundingUnits:
 # --------------------------------------------------------------------------
 # carry_funding_v2 signal semantics (C5)
 # --------------------------------------------------------------------------
-def _funding_map(start_ms: int, n_intervals: int, rate: float,
-                 interval_s: int = 28800) -> dict[int, float]:
+def _funding_map(
+    start_ms: int, n_intervals: int, rate: float, interval_s: int = 28800
+) -> dict[int, float]:
     """Settlement-ms-keyed funding map (canonical batch-02 contract)."""
-    return {
-        start_ms + i * interval_s * 1000: rate
-        for i in range(n_intervals)
-    }
+    return {start_ms + i * interval_s * 1000: rate for i in range(n_intervals)}
 
 
 class TestCarryFundingV2:
     @staticmethod
-    def _settlements(funding: dict[int, float], start_ms: int,
-                     end_ms: int) -> int:
+    def _settlements(funding: dict[int, float], start_ms: int, end_ms: int) -> int:
         return sum(1 for t in funding if start_ms <= t <= end_ms)
 
     def test_positive_funding_yields_short_and_short_receives(self):
@@ -157,11 +152,10 @@ class TestCarryFundingV2:
         for t in res.trades:
             n_set = self._settlements(funding, t.entry_ts, t.exit_ts)
             assert t.net_return == pytest.approx(
-                t.gross_return - 2 * COST_RATE - 2 * SLIPPAGE_BPS / 10_000.0
-                + n_set * 0.0001, abs=1e-9)
-        assert any(
-            self._settlements(funding, t.entry_ts, t.exit_ts) > 0
-            for t in res.trades)
+                t.gross_return - 2 * COST_RATE - 2 * SLIPPAGE_BPS / 10_000.0 + n_set * 0.0001,
+                abs=1e-9,
+            )
+        assert any(self._settlements(funding, t.entry_ts, t.exit_ts) > 0 for t in res.trades)
 
     def test_negative_funding_yields_long_and_long_receives(self):
         # TRUE CARRY: negative funding -> LONG (receives |rate|)
@@ -173,8 +167,9 @@ class TestCarryFundingV2:
         for t in res.trades:
             n_set = self._settlements(funding, t.entry_ts, t.exit_ts)
             assert t.net_return == pytest.approx(
-                t.gross_return - 2 * COST_RATE - 2 * SLIPPAGE_BPS / 10_000.0
-                + n_set * 0.0001, abs=1e-9)
+                t.gross_return - 2 * COST_RATE - 2 * SLIPPAGE_BPS / 10_000.0 + n_set * 0.0001,
+                abs=1e-9,
+            )
 
     def test_zero_funding_never_trades(self):
         candles = _trend_candles(120)
@@ -222,6 +217,7 @@ class TestPreregistrationIntegrity:
 
     def test_retune_detection_fails_hard(self):
         from trading_bot.research import discovery_batch02_spec as spec
+
         saved = dict(spec.BATCH02_EVAL_SPECS["volatility_structure_v2"])
         try:
             mutated = dict(saved)
@@ -234,7 +230,10 @@ class TestPreregistrationIntegrity:
 
     def test_candidate_set_exact(self):
         assert set(BATCH02_EVAL_SPECS) == {
-            "volatility_structure_v2", "cross_sectional_v2", "carry_funding_v2"}
+            "volatility_structure_v2",
+            "cross_sectional_v2",
+            "carry_funding_v2",
+        }
 
 
 # --------------------------------------------------------------------------
@@ -249,10 +248,7 @@ class TestFundingDataAuthority:
         from trading_bot.research.funding_data import fetch_funding_history
 
         t0 = 1_700_000_000_000
-        rows = [
-            {"timestamp": t0 + i * 28_800_000, "fundingRate": 0.0001}
-            for i in range(4)
-        ]
+        rows = [{"timestamp": t0 + i * 28_800_000, "fundingRate": 0.0001} for i in range(4)]
         fake_ccxt = mock.MagicMock()
         fake_ex = mock.MagicMock()
         fake_ex.fetch_funding_rate_history.return_value = rows

@@ -8,12 +8,20 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any
 
-ALLOWED_TERMINAL_RESULTS = frozenset({
-    "DISCOVERY_PASS",
-    "DISCOVERY_FAIL",
-    "INSUFFICIENT_SAMPLE",
-    "EXECUTION_FAILED",
-})
+from trading_bot.research.h6.contracts import DATASET_SHA256, SPEC_SHA256
+
+# contracts.py freezes SPEC + DATASET hashes; the manifest hash is stamped at
+# manifest-freeze time and is NOT frozen at this checkpoint (do not invent it).
+_MANIFEST_SHA256_PLACEHOLDER = "pending"
+
+ALLOWED_TERMINAL_RESULTS = frozenset(
+    {
+        "DISCOVERY_PASS",
+        "DISCOVERY_FAIL",
+        "INSUFFICIENT_SAMPLE",
+        "EXECUTION_FAILED",
+    }
+)
 
 
 @dataclass(frozen=True, slots=True)
@@ -74,7 +82,7 @@ def build_schema_placeholder() -> H6ResultSchema:
         experiment_id=1,
         attempt_id="pending",
         spec_sha256=SPEC_SHA256,
-        manifest_sha256=MANIFEST_SHA256,
+        manifest_sha256=_MANIFEST_SHA256_PLACEHOLDER,
         dataset_sha256=DATASET_SHA256,
         N=0,
         gross_expectancy=None,

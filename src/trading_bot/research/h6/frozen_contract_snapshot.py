@@ -14,19 +14,11 @@ from pathlib import Path
 from typing import Any
 
 SPEC_PATH = Path("docs/external-audit-01/oi-full-history-01/H6_SPEC.json")
-MANIFEST_PATH = Path(
-    "docs/external-audit-01/oi-full-history-01/H6_MANIFEST.json"
-)
+MANIFEST_PATH = Path("docs/external-audit-01/oi-full-history-01/H6_MANIFEST.json")
 
-EXPECTED_SPEC_SHA256 = (
-    "f514fecf42b52d2e1c2946cac9dee94b2570d485cb236b9a6c663f46f5bbf148"
-)
-EXPECTED_MANIFEST_SHA256 = (
-    "345334c3107860a5adcc753f5b34976d2b4df9061de34a94507d2bd8f58752dc"
-)
-EXPECTED_DATASET_SHA256 = (
-    "16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99"
-)
+EXPECTED_SPEC_SHA256 = "f514fecf42b52d2e1c2946cac9dee94b2570d485cb236b9a6c663f46f5bbf148"
+EXPECTED_MANIFEST_SHA256 = "345334c3107860a5adcc753f5b34976d2b4df9061de34a94507d2bd8f58752dc"
+EXPECTED_DATASET_SHA256 = "16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99"
 
 
 @dataclass(frozen=True, slots=True)
@@ -91,14 +83,11 @@ def load_frozen_h6_snapshot() -> FrozenH6Config:
     spec_sha = _sha256(SPEC_PATH)
     manifest_sha = _sha256(MANIFEST_PATH)
     dataset_sha = _sha256(
-        Path(
-            "data/processed/oi_full_history/"
-            "OI_FULL_HISTORY_DATASET_MANIFEST.json"
-        )
+        Path("data/processed/oi_full_history/OI_FULL_HISTORY_DATASET_MANIFEST.json")
     )
 
     spec = json.loads(SPEC_PATH.read_text(encoding="utf-8"))
-    manifest = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
+    json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
 
     if spec_sha != EXPECTED_SPEC_SHA256:
         msg = f"H6 spec SHA256 drift: {spec_sha=}"
@@ -124,72 +113,47 @@ def load_frozen_h6_snapshot() -> FrozenH6Config:
         "common_window_start": spec["common_window_utc"]["start"],
         "common_window_end": spec["common_window_utc"]["end"],
         "decision_bucket": spec["decision_timeframe"]["bucket"],
-        "decision_time_semantics": spec["decision_timeframe"][
-            "decision_time"
+        "decision_time_semantics": spec["decision_timeframe"]["decision_time"],
+        "primary_holding_horizon_hours": spec["decision_timeframe"][
+            "primary_holding_horizon_hours"
         ],
-        "primary_holding_horizon_hours": spec[
-            "decision_timeframe"
-        ]["primary_holding_horizon_hours"],
         "entry_timing": spec["entry_timing"],
         "exit_timing": spec["exit_timing"],
         "stop_invalidation": spec["stop_invalidation"],
         "cooldown": spec["cooldown"],
         "oi_field_whitelist": tuple(spec["oi_field_whitelist"]),
-        "rolling_window_length_hours": spec["rolling_windows"]["z_oi"][
-            "length_hours"
-        ],
-        "rolling_min_observations": spec["rolling_windows"]["z_oi"][
-            "min_observations"
-        ],
+        "rolling_window_length_hours": spec["rolling_windows"]["z_oi"]["length_hours"],
+        "rolling_min_observations": spec["rolling_windows"]["z_oi"]["min_observations"],
         "rolling_center": spec["rolling_windows"]["z_oi"]["center"],
         "rolling_scale_factor": scale_factor,
-        "threshold_expansion_z": spec["threshold_rule"][
-            "expansion_condition"
-        ].split("+")[-1].strip().rstrip(")"),
-        "contraction_uses": spec["threshold_rule"][
-            "contraction_condition"
-        ],
+        "threshold_expansion_z": spec["threshold_rule"]["expansion_condition"]
+        .split("+")[-1]
+        .strip()
+        .rstrip(")"),
+        "contraction_uses": spec["threshold_rule"]["contraction_condition"],
         "mad_zero_semantics": spec["threshold_rule"]["neutral_or_insufficient"],
-        "price_direction_rule": spec["direction_semantics"]["LONG"].split(
-            "AND"
-        )[0].strip(),
-        "cost_total_round_trip_bps": spec["cost_model"][
-            "BASE_TOTAL_ROUND_TRIP_COST_BPS"
+        "price_direction_rule": spec["direction_semantics"]["LONG"].split("AND")[0].strip(),
+        "cost_total_round_trip_bps": spec["cost_model"]["BASE_TOTAL_ROUND_TRIP_COST_BPS"],
+        "cost_sensitivity_bps": tuple(spec["cost_model"]["COST_SENSITIVITY_BPS"]),
+        "funding_policy": spec["funding_accounting"]["FUNDING_DISCOVERY_ACCOUNTING"],
+        "funding_materiality_gate_before_promotion": spec["funding_accounting"][
+            "funding_materiality_gate_before_promotion"
         ],
-        "cost_sensitivity_bps": tuple(spec["cost_model"][
-            "COST_SENSITIVITY_BPS"
-        ]),
-        "funding_policy": spec["funding_accounting"][
-            "FUNDING_DISCOVERY_ACCOUNTING"
-        ],
-        "funding_materiality_gate_before_promotion": spec[
-            "funding_accounting"
-        ]["funding_materiality_gate_before_promotion"],
         "minimum_per_asset_trades": spec["minimum_N"]["per_asset_trades"],
         "minimum_pooled_trades": spec["minimum_N"]["pooled_trades"],
-        "p_sharp_gt_0_min": spec["statistical_gates"][
-            "P_Sharp_greater_0_min"
-        ],
+        "p_sharp_gt_0_min": spec["statistical_gates"]["P_Sharp_greater_0_min"],
         "permutation_p_max": spec["statistical_gates"]["permutation_p_max"],
-        "sharpe_ci_excludes_zero": spec["statistical_gates"][
-            "sharpe_ci_excludes_zero"
-        ],
-        "permutation_seed": spec["statistical_gates"]["permutation"][
-            "fixed seed 20260911"
-        ]
-        if "fixed seed 20260911" in spec["statistical_gates"]["permutation"]
-        else 20260911,
-        "permutation_draws": int(
-            spec["statistical_gates"]["permutation"]
-            .get("draws", 10000)
-            .split()[0]
+        "sharpe_ci_excludes_zero": spec["statistical_gates"]["sharpe_ci_excludes_zero"],
+        "permutation_seed": spec["statistical_gates"]["permutation"].get(
+            "fixed seed 20260911", 20260911
         ),
-        "orthogonality_max_abs_daily_correlation": spec[
-            "orthogonality_gates"
-        ]["MAX_ABS_DAILY_CORRELATION_TO_MOMENTUM_PROXY"],
-        "h5_pnl_correlation": spec["orthogonality_gates"][
-            "H5_PNL_CORRELATION"
+        "permutation_draws": int(
+            spec["statistical_gates"]["permutation"].get("draws", 10000).split()[0]
+        ),
+        "orthogonality_max_abs_daily_correlation": spec["orthogonality_gates"][
+            "MAX_ABS_DAILY_CORRELATION_TO_MOMENTUM_PROXY"
         ],
+        "h5_pnl_correlation": spec["orthogonality_gates"]["H5_PNL_CORRELATION"],
         "pit_oi_rule": spec["pit_rules"]["oi"],
         "pit_price_rule": spec["pit_rules"]["price"],
         "pit_future_mutation_rule": spec["pit_rules"]["future_mutation"],
@@ -198,9 +162,7 @@ def load_frozen_h6_snapshot() -> FrozenH6Config:
         ]["ARCHIVE_DAY_VALIDITY"],
         "insufficient_sample_policy": spec["insufficient_sample_policy"],
         "pass_requires": tuple(
-            spec["pass_fail_semantics"]["PASS_requires"]
-            .replace("ALL of: ", "")
-            .split(", ")
+            spec["pass_fail_semantics"]["PASS_requires"].replace("ALL of: ", "").split(", ")
         ),
         "fail_is_terminal": spec["pass_fail_semantics"]["FAIL_is_terminal"],
         "spec_sha256": spec_sha,

@@ -14,7 +14,7 @@ No vn.py import. No live I/O: the suite drives whatever port it is given.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Protocol
+from typing import Any, Protocol
 
 from trading_bot.execution.gateway import ExecutionGateway
 from trading_bot.execution.intent import AckQueryResult, TradeIntent
@@ -24,11 +24,11 @@ class ConformanceAdapter(Protocol):
     """Full contract an adapter must satisfy for conformance V1."""
 
     def adapter_id(self) -> str: ...
-    def instrument_metadata(self, symbol: str) -> dict[str, object]: ...
+    def instrument_metadata(self, symbol: str) -> dict[str, Any]: ...
     def account_snapshot(self) -> dict[str, float]: ...
     def positions(self) -> dict[str, float]: ...
     def open_orders(self) -> list[str]: ...
-    def fills(self) -> list[dict[str, object]]: ...
+    def fills(self) -> list[dict[str, Any]]: ...
     def submit(self, intent: TradeIntent, client_order_id: str) -> str: ...
     def query(self, client_order_id: str) -> AckQueryResult: ...
     def venue_order_id_of(self, client_order_id: str) -> str | None: ...
@@ -66,7 +66,9 @@ class ExchangeAdapterConformanceSuite:
         del intent_id  # identity is exercised via gateway.client_order_id below
 
         # identity
-        self._check("identity_stable", adapter.adapter_id() == adapter.adapter_id(), adapter.adapter_id())
+        self._check(
+            "identity_stable", adapter.adapter_id() == adapter.adapter_id(), adapter.adapter_id()
+        )
         # metadata
         meta = adapter.instrument_metadata("BTC/USDT")
         self._check("metadata_available", bool(meta), str(sorted(meta.keys())))
@@ -97,7 +99,11 @@ class ExchangeAdapterConformanceSuite:
             f"{again!r} vs {venue_order_id!r}",
         )
         # cancel
-        self._check("cancel_confirmed", adapter.cancel(cloid) in ("CANCELLED", "CANCEL_PENDING"), adapter.cancel(cloid))
+        self._check(
+            "cancel_confirmed",
+            adapter.cancel(cloid) in ("CANCELLED", "CANCEL_PENDING"),
+            adapter.cancel(cloid),
+        )
         # timeout ambiguity: query remains authoritative after cancel
         self._check(
             "query_after_cancel_definitive",
@@ -126,7 +132,8 @@ class ExchangeAdapterConformanceSuite:
         receipt = gateway.submit(intent, adapter)
         self._check(
             "gateway_round_trip_idempotent",
-            receipt.venue_order_id == venue_order_id and adapter.query(cloid) is AckQueryResult.FOUND,
+            receipt.venue_order_id == venue_order_id
+            and adapter.query(cloid) is AckQueryResult.FOUND,
             f"{receipt.detail} | venue_ref={receipt.venue_order_id!r}",
         )
         passed = all(c.passed for c in self._results)

@@ -71,14 +71,13 @@ def _write_receipts(path: Path, day: str, n: int) -> None:
             "utc_day": day,
             "receipt_sha256": f"hash-{day}-{i}",
         }
-        (rdir / f"RECEIPT_{day}_{i:03d}.json").write_text(
-            json.dumps(payload), encoding="utf-8"
-        )
+        (rdir / f"RECEIPT_{day}_{i:03d}.json").write_text(json.dumps(payload), encoding="utf-8")
 
 
 # --------------------------------------------------------------------------
 # §11 — OPEN day contributes ZERO
 # --------------------------------------------------------------------------
+
 
 def test_open_day_coverage_contribution_is_zero(tmp_path: Path) -> None:
     clock = lambda: datetime(2026, 9, 9, 16, 45, tzinfo=UTC)  # noqa: E731
@@ -103,6 +102,7 @@ def test_open_day_coverage_contribution_is_zero(tmp_path: Path) -> None:
 # §12 — UTC boundary (injected clock, no local time)
 # --------------------------------------------------------------------------
 
+
 def test_utc_boundary_235959_cannot_finalize_000000_can(tmp_path: Path) -> None:
     auth = _mk(tmp_path, lambda: datetime(2026, 9, 9, 23, 59, 59, tzinfo=UTC))
     _write_bucket(tmp_path, "2026-09-09", cycles=3, minutes=60)
@@ -123,15 +123,14 @@ def test_boundary_is_pure_utc_not_local(tmp_path: Path) -> None:
     _write_bucket(tmp_path, "2026-09-09", cycles=1, minutes=1)
     assert auth.finalize_day("2026-09-09")["DAY_NOT_CLOSED"] is True
     # and a UTC-equal instant from a different tz construction is identical
-    auth._clock = lambda: datetime.fromisoformat(
-        "2026-09-10T00:00:00+00:00"
-    )
+    auth._clock = lambda: datetime.fromisoformat("2026-09-10T00:00:00+00:00")
     assert auth.finalize_day("2026-09-09")["finalized"] is True
 
 
 # --------------------------------------------------------------------------
 # §3/§4 — valid closed counted, invalid closed not, zero denominator
 # --------------------------------------------------------------------------
+
 
 def test_closed_valid_day_counts_and_invalid_does_not(tmp_path: Path) -> None:
     auth = _mk(tmp_path, lambda: datetime(2026, 9, 11, tzinfo=UTC))
@@ -194,6 +193,7 @@ def test_pending_validation_day_not_counted_until_finalized(tmp_path: Path) -> N
 # §13 — multiple cycles same day
 # --------------------------------------------------------------------------
 
+
 def test_five_cycles_same_day_single_bucket(tmp_path: Path) -> None:
     auth = _mk(tmp_path, lambda: datetime(2026, 9, 9, 18, tzinfo=UTC))
     # 5 successful cycles append to ONE bucket (amendments, not duplicates)
@@ -220,7 +220,11 @@ def test_five_cycles_same_day_single_bucket(tmp_path: Path) -> None:
     assert chain["receipt_count"] == 5
     assert chain["canonical_latest"] == "RECEIPT_2026-09-09_005.json"
     assert [c["is_amendment"] for c in chain["chain"]] == [
-        False, True, True, True, True,
+        False,
+        True,
+        True,
+        True,
+        True,
     ]
     # before close: contribution 0
     cov0 = auth.campaign_coverage(
@@ -242,6 +246,7 @@ def test_five_cycles_same_day_single_bucket(tmp_path: Path) -> None:
 # --------------------------------------------------------------------------
 # §8/§14 — double finalization, retry/restart
 # --------------------------------------------------------------------------
+
 
 def test_double_finalization_is_idempotent(tmp_path: Path) -> None:
     auth = _mk(tmp_path, lambda: datetime(2026, 9, 10, 1, tzinfo=UTC))
@@ -301,6 +306,7 @@ def test_partial_artifacts_are_invalid_not_valid(tmp_path: Path) -> None:
 # DEF-R2-003 — the numeric coverage contract is ENFORCED, and corrections
 # to an already-finalized day go through the explicit amendment path
 # --------------------------------------------------------------------------
+
 
 def test_coverage_below_minimum_invalidates_day(tmp_path: Path) -> None:
     """GOV-01/GOV-05: >= 0.80 is binding — a 0.0028 day can never be VALID."""
@@ -371,6 +377,7 @@ def test_amend_day_rejects_unfinalized_day(tmp_path: Path) -> None:
 # §5 — provisional metrics never feed authority
 # --------------------------------------------------------------------------
 
+
 def test_provisional_metrics_labeled_and_separate(tmp_path: Path) -> None:
     auth = _mk(tmp_path, lambda: datetime(2026, 9, 9, 18, tzinfo=UTC))
     _write_bucket(tmp_path, "2026-09-09", cycles=7, minutes=5)
@@ -390,6 +397,7 @@ def test_provisional_metrics_labeled_and_separate(tmp_path: Path) -> None:
 # --------------------------------------------------------------------------
 # §9 — amendment chain integrity
 # --------------------------------------------------------------------------
+
 
 def test_amendment_chain_links_hashes(tmp_path: Path) -> None:
     auth = _mk(tmp_path, lambda: datetime(2026, 9, 9, 19, tzinfo=UTC))

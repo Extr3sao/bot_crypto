@@ -18,7 +18,7 @@ import hashlib
 import io
 import json
 import zipfile
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[1]
@@ -29,8 +29,8 @@ EVID_V2 = REPO / "docs" / "external-audit-01" / "oi-full-history-02"
 
 SYMBOLS = ("BTCUSDT", "ETHUSDT", "SOLUSDT")
 # Common window hours: 2021-12-01 00:00 through 2026-09-10 23:00 inclusive => 41880 hours
-COMMON_HOURS_START_MS = int(datetime(2021, 12, 1, tzinfo=timezone.utc).timestamp() * 1000)
-COMMON_HOURS_END_MS = int(datetime(2026, 9, 10, 23, 0, 0, tzinfo=timezone.utc).timestamp() * 1000)
+COMMON_HOURS_START_MS = int(datetime(2021, 12, 1, tzinfo=UTC).timestamp() * 1000)
+COMMON_HOURS_END_MS = int(datetime(2026, 9, 10, 23, 0, 0, tzinfo=UTC).timestamp() * 1000)
 EXPECTED_HOURS = (COMMON_HOURS_END_MS - COMMON_HOURS_START_MS) // 3_600_000 + 1  # 41880
 
 
@@ -102,7 +102,9 @@ def build_for_symbol(sym: str) -> dict:
     # Compare economic fields: open, high, low, close, volume, quote_volume etc (string numerics -> float compare)
     for idx, name in [(1, "open"), (2, "high"), (3, "low"), (4, "close"), (5, "volume")]:
         if float(h1_overlap[idx]) != float(ext_overlap[idx]):
-            raise RuntimeError(f"PRICE_AUTHORITY_CONFLICT {sym} overlap {name}: H1={h1_overlap[idx]} ext={ext_overlap[idx]}")
+            raise RuntimeError(
+                f"PRICE_AUTHORITY_CONFLICT {sym} overlap {name}: H1={h1_overlap[idx]} ext={ext_overlap[idx]}"
+            )
     # Full 12-field equality (allow int vs string for count? compare float/string canonical)
     # We require that the JSON serialization of the 12-field matches economically
 
@@ -114,11 +116,16 @@ def build_for_symbol(sym: str) -> dict:
     v2_rows.sort(key=lambda r: int(r[0]))
 
     # Verify continuity: exactly EXPECTED_HOURS common window hours present, no duplicates, hourly cadence
-    common_opens = [int(r[0]) for r in v2_rows if COMMON_HOURS_START_MS <= int(r[0]) <= COMMON_HOURS_END_MS]
+    common_opens = [
+        int(r[0]) for r in v2_rows if COMMON_HOURS_START_MS <= int(r[0]) <= COMMON_HOURS_END_MS
+    ]
     expected_opens = list(range(COMMON_HOURS_START_MS, COMMON_HOURS_END_MS + 1, 3_600_000))
     missing = sorted(set(expected_opens) - set(common_opens))
     duplicate_count = len(common_opens) - len(set(common_opens))
-    non_hourly = sum(b - a != 3_600_000 for a, b in zip(sorted(set(common_opens)), sorted(set(common_opens))[1:]))
+    non_hourly = sum(
+        b - a != 3_600_000
+        for a, b in zip(sorted(set(common_opens)), sorted(set(common_opens))[1:], strict=False)
+    )
 
     OUT_V2.mkdir(parents=True, exist_ok=True)
     out_path = OUT_V2 / f"{sym}_1h.jsonl"
@@ -131,24 +138,44 @@ def build_for_symbol(sym: str) -> dict:
         "h1_path": str(h1_path.relative_to(REPO)).replace("\\", "/"),
         "h1_rows": len(h1_rows),
         "h1_last_open_ms": last_h1_open,
-        "raw_extension_zips": [str((RAW_KLINES / sym / f"{sym}-1h-{d}.zip").relative_to(REPO)).replace("\\", "/") for d in ("2026-09-09", "2026-09-10")],
+        "raw_extension_zips": [
+            str((RAW_KLINES / sym / f"{sym}-1h-{d}.zip").relative_to(REPO)).replace("\\", "/")
+            for d in ("2026-09-09", "2026-09-10")
+        ],
         "extension_rows_total": len(ext_rows),
         "missing_hours_added": len(missing_rows),
-        "v2_path": str(out_path.relative_to(REPO)).replace("\\", "/") if out_path.is_relative_to(REPO) else str(out_path),
+        "v2_path": str(out_path.relative_to(REPO)).replace("\\", "/")
+        if out_path.is_relative_to(REPO)
+        else str(out_path),
         "v2_rows_total": len(v2_rows),
-        "common_window": [datetime.fromtimestamp(COMMON_HOURS_START_MS / 1000, tz=timezone.utc).isoformat().replace("+00:00", "Z"), datetime.fromtimestamp(COMMON_HOURS_END_MS / 1000, tz=timezone.utc).isoformat().replace("+00:00", "Z")],
+        "common_window": [
+            datetime.fromtimestamp(COMMON_HOURS_START_MS / 1000, tz=UTC)
+            .isoformat()
+            .replace("+00:00", "Z"),
+            datetime.fromtimestamp(COMMON_HOURS_END_MS / 1000, tz=UTC)
+            .isoformat()
+            .replace("+00:00", "Z"),
+        ],
         "expected_hours_common": EXPECTED_HOURS,
         "available_hours_common": len(common_opens),
         "missing_hours_common": len(missing),
         "duplicate_hours_common": duplicate_count,
         "non_hourly_transitions": non_hourly,
-        "first_missing_common_hour_utc": datetime.fromtimestamp(missing[0] / 1000, tz=timezone.utc).isoformat().replace("+00:00", "Z") if missing else None,
-        "last_missing_common_hour_utc": datetime.fromtimestamp(missing[-1] / 1000, tz=timezone.utc).isoformat().replace("+00:00", "Z") if missing else None,
+        "first_missing_common_hour_utc": datetime.fromtimestamp(missing[0] / 1000, tz=UTC)
+        .isoformat()
+        .replace("+00:00", "Z")
+        if missing
+        else None,
+        "last_missing_common_hour_utc": datetime.fromtimestamp(missing[-1] / 1000, tz=UTC)
+        .isoformat()
+        .replace("+00:00", "Z")
+        if missing
+        else None,
         "covers_common_window": len(missing) == 0 and duplicate_count == 0 and non_hourly == 0,
         "first_open_ms": int(v2_rows[0][0]),
         "last_open_ms": int(v2_rows[-1][0]),
-        "first_open_utc": datetime.fromtimestamp(int(v2_rows[0][0]) / 1000, tz=timezone.utc).isoformat(),
-        "last_open_utc": datetime.fromtimestamp(int(v2_rows[-1][0]) / 1000, tz=timezone.utc).isoformat(),
+        "first_open_utc": datetime.fromtimestamp(int(v2_rows[0][0]) / 1000, tz=UTC).isoformat(),
+        "last_open_utc": datetime.fromtimestamp(int(v2_rows[-1][0]) / 1000, tz=UTC).isoformat(),
         "overlap_check": "PASS",
         "v2_sha256": _sha256(v2_bytes),
         "v2_bytes_len": len(v2_bytes),
@@ -162,12 +189,23 @@ def main() -> int:
 
     all_cover = all(r["covers_common_window"] for r in results.values())
     # Compute aggregate PRICE_AUTHORITY_SHA256_V2 as canonical hash over per-asset v2 sha256 sorted
-    agg = json.dumps({sym: results[sym]["v2_sha256"] for sym in sorted(SYMBOLS)}, sort_keys=True, separators=(",", ":")).encode()
+    agg = json.dumps(
+        {sym: results[sym]["v2_sha256"] for sym in sorted(SYMBOLS)},
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode()
     price_sha = _sha256(agg)
 
     manifest = {
         "checkpoint": "PRICE-AUTHORITY-REPAIR-01",
-        "common_window_utc": [datetime.fromtimestamp(COMMON_HOURS_START_MS / 1000, tz=timezone.utc).isoformat().replace("+00:00", "Z"), datetime.fromtimestamp(COMMON_HOURS_END_MS / 1000, tz=timezone.utc).isoformat().replace("+00:00", "Z")],
+        "common_window_utc": [
+            datetime.fromtimestamp(COMMON_HOURS_START_MS / 1000, tz=UTC)
+            .isoformat()
+            .replace("+00:00", "Z"),
+            datetime.fromtimestamp(COMMON_HOURS_END_MS / 1000, tz=UTC)
+            .isoformat()
+            .replace("+00:00", "Z"),
+        ],
         "expected_hours_per_asset": EXPECTED_HOURS,
         "assets": list(SYMBOLS),
         "source_official": "Binance USDM 1h klines via official data.binance.vision daily zip archives (data/raw/binance_um/klines_1h_ext/) + frozen H1 1h klines (cb3de4f)",
@@ -183,14 +221,27 @@ def main() -> int:
         return 2
 
     EVID_V2.mkdir(parents=True, exist_ok=True)
-    (EVID_V2 / "PRICE_1H_AUTHORITY_V2_MANIFEST.json").write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    (EVID_V2 / "PRICE_1H_AUTHORITY_V2_MANIFEST.json").write_text(
+        json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    )
     # Also copy V2 price files into evidence dir for frozen authority
     for sym in SYMBOLS:
         src = OUT_V2 / f"{sym}_1h.jsonl"
         dst = EVID_V2 / f"{sym}_1h_v2.jsonl"
         dst.write_bytes(src.read_bytes())
 
-    print(json.dumps({"PRICE_AUTHORITY_SHA256_V2": price_sha, "per_asset": {k: {"covers": v["covers_common_window"], "v2_rows": v["v2_rows_total"]} for k, v in results.items()}}, indent=2))
+    print(
+        json.dumps(
+            {
+                "PRICE_AUTHORITY_SHA256_V2": price_sha,
+                "per_asset": {
+                    k: {"covers": v["covers_common_window"], "v2_rows": v["v2_rows_total"]}
+                    for k, v in results.items()
+                },
+            },
+            indent=2,
+        )
+    )
     return 0
 
 

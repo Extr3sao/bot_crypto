@@ -9,12 +9,11 @@ skipped otherwise so the suite stays hermetic on clean checkouts).
 
 from __future__ import annotations
 
-import csv as _csv_mod
 import hashlib
 import json
 import subprocess
 import zipfile
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 import pytest
@@ -31,14 +30,15 @@ from scripts.normalize_oi_full_history import (
 from trading_bot.research.oi_dataset import (
     decision_eligibility_at,
     load_ledger,
-    oi_hourly_decision_state,
     oi_state_at,
     valid_days_for,
 )
 
 REPO = Path(__file__).resolve().parents[3]
 FROZEN_LEDGER = REPO / "data" / "processed" / "oi_full_history" / "OI_DAY_VALIDITY_LEDGER.jsonl"
-FROZEN_MANIFEST = REPO / "data" / "processed" / "oi_full_history" / "OI_FULL_HISTORY_DATASET_MANIFEST.json"
+FROZEN_MANIFEST = (
+    REPO / "data" / "processed" / "oi_full_history" / "OI_FULL_HISTORY_DATASET_MANIFEST.json"
+)
 FROZEN_DATASET_SHA256 = "16779b7d2eff0dc9e56015c444c2dbe7b67ef083e6cf1877a024a6de74098d99"
 PRICE_AUTHORITY_DIR = REPO / "docs" / "external-audit-01" / "h1-regime-transition-01" / "dataset"
 
@@ -56,6 +56,7 @@ def _git_diff_empty(path: str, against: str) -> bool:
 
 # ---------- Track B: contract semantics ----------
 
+
 def test_schema_versions_frozen() -> None:
     assert SCHEMA_VERSION == "2.0.1"
     assert EXPECTED_INTERVAL_SECONDS == 300
@@ -64,21 +65,25 @@ def test_schema_versions_frozen() -> None:
 
 def test_provider_string_timestamp_conversion() -> None:
     """Provider create_time 'YYYY-MM-DD HH:MM:SS' maps to the 5m UTC grid."""
-    import hashlib
-    import io
     import csv as _csv
+    import io
 
-    raw = REPO / "data" / "raw" / "binance_um" / "metrics" / "BTCUSDT" / "BTCUSDT-metrics-2020-09-01.zip"
+    raw = (
+        REPO
+        / "data"
+        / "raw"
+        / "binance_um"
+        / "metrics"
+        / "BTCUSDT"
+        / "BTCUSDT-metrics-2020-09-01.zip"
+    )
     if not raw.exists():
         pytest.skip("raw sample not present on this machine")
-    with zipfile.ZipFile(raw) as zf:
-        with zf.open(zf.namelist()[0]) as fh:
-            rows = list(_csv.DictReader(io.TextIOWrapper(fh, encoding="utf-8")))
+    with zipfile.ZipFile(raw) as zf, zf.open(zf.namelist()[0]) as fh:
+        rows = list(_csv.DictReader(io.TextIOWrapper(fh, encoding="utf-8")))
     first = rows[0]
     ts = int(
-        datetime.strptime(first["create_time"], "%Y-%m-%d %H:%M:%S")
-        .replace(tzinfo=timezone.utc)
-        .timestamp()
+        datetime.strptime(first["create_time"], "%Y-%m-%d %H:%M:%S").replace(tzinfo=UTC).timestamp()
         * 1000
     )
     assert ts % (EXPECTED_INTERVAL_SECONDS * 1000) == 0
@@ -94,8 +99,15 @@ def test_field_whitelist_excludes_ratio_fields() -> None:
         "sum_taker_long_short_vol_ratio",
     }
     assert not (ALLOWED_PROVIDER_FIELDS & forbidden)
-    wl = json.loads((REPO / "docs/external-audit-01/oi-full-history-01/H6_FEATURE_AUTHORITY_WHITELIST.json").read_text())
-    assert {f["field"] for f in wl["ALLOWED_FIELDS"]} >= {"sum_open_interest", "sum_open_interest_value"}
+    wl = json.loads(
+        (
+            REPO / "docs/external-audit-01/oi-full-history-01/H6_FEATURE_AUTHORITY_WHITELIST.json"
+        ).read_text()
+    )
+    assert {f["field"] for f in wl["ALLOWED_FIELDS"]} >= {
+        "sum_open_interest",
+        "sum_open_interest_value",
+    }
 
 
 def test_common_window_frozen() -> None:
@@ -107,30 +119,47 @@ def test_common_window_frozen() -> None:
 
 # ---------- Track E: valid-day contract ----------
 
-def _make_metrics_zip(tmp: Path, day: str, symbol: str, rows: list[tuple[str, str, str, str]] | None = None,
-                      duplicate: bool = False, conflicting: bool = False, drop_last: bool = False) -> Path:
+
+def _make_metrics_zip(
+    tmp: Path,
+    day: str,
+    symbol: str,
+    rows: list[tuple[str, str, str, str]] | None = None,
+    duplicate: bool = False,
+    conflicting: bool = False,
+    drop_last: bool = False,
+) -> Path:
     import csv as _csv
     import io
 
-    base = datetime.strptime(day, "%Y-%m-%d").replace(tzinfo=timezone.utc)
+    base = datetime.strptime(day, "%Y-%m-%d").replace(tzinfo=UTC)
     if rows is None:
         rows = []
         for i in range(EXPECTED_ROWS_PER_DAY):
             ts = base.timestamp() + i * 300
-            t = datetime.fromtimestamp(ts, tz=timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
+            t = datetime.fromtimestamp(ts, tz=UTC).strftime("%Y-%m-%d %H:%M:%S")
             oi = 100.0 + i
             rows.append((t, symbol, f"{oi}", f"{oi * 50}"))
         if duplicate:
             rows = rows + rows  # provider-era artifact: every row exactly twice
         if conflicting:
-            rows = rows + [(rows[-1][0], symbol, "999.0", "49950.0")]
+            rows = [*rows, (rows[-1][0], symbol, "999.0", "49950.0")]
         if drop_last:
             rows = rows[:-1]
     buf = io.StringIO()
     w = _csv.writer(buf)
-    w.writerow(["create_time", "symbol", "sum_open_interest", "sum_open_interest_value",
-                "count_toptrader_long_short_ratio", "sum_toptrader_long_short_ratio",
-                "count_long_short_ratio", "sum_taker_long_short_vol_ratio"])
+    w.writerow(
+        [
+            "create_time",
+            "symbol",
+            "sum_open_interest",
+            "sum_open_interest_value",
+            "count_toptrader_long_short_ratio",
+            "sum_toptrader_long_short_ratio",
+            "count_long_short_ratio",
+            "sum_taker_long_short_vol_ratio",
+        ]
+    )
     for r in rows:
         w.writerow(r)
     zdir = tmp / symbol
@@ -188,6 +217,7 @@ def test_missing_file_is_source_missing(tmp_path: Path) -> None:
 
 # ---------- Track J: PIT + future mutation ----------
 
+
 def test_pit_cutoff_and_future_mutation(tmp_path: Path) -> None:
     from scripts.normalize_oi_full_history import _grid_for_day
 
@@ -232,6 +262,7 @@ def test_hourly_decision_state_is_causal() -> None:
 
 # ---------- P0-B: DECISION_ELIGIBILITY_AT_T causality ----------
 
+
 def _make_synthetic_history(tmp_path: Path, days: list[str]) -> tuple[Path, Path]:
     """Two full valid days of OI in a temp raw dir + processed ledger/artifacts."""
     out_dir = tmp_path / "out"
@@ -241,7 +272,9 @@ def _make_synthetic_history(tmp_path: Path, days: list[str]) -> tuple[Path, Path
         entries.append(process_file("BTCUSDT", d, raw_dir=tmp_path, out_dir=out_dir))
         assert entries[-1]["classification"] == "VALID"
     ledger_path = tmp_path / "ledger.jsonl"
-    ledger_path.write_text("".join(json.dumps(e, sort_keys=True) + "\n" for e in entries), encoding="utf-8")
+    ledger_path.write_text(
+        "".join(json.dumps(e, sort_keys=True) + "\n" for e in entries), encoding="utf-8"
+    )
     return ledger_path, out_dir
 
 
@@ -260,7 +293,9 @@ def test_future_gap_after_T_cannot_change_state(tmp_path: Path) -> None:
     _make_metrics_zip(tmp_path, day3, "BTCUSDT", drop_last=True)
     e3 = process_file("BTCUSDT", day3, raw_dir=tmp_path, out_dir=out_dir)
     ledger.append(e3)
-    ledger_path.write_text("".join(json.dumps(e, sort_keys=True) + "\n" for e in ledger), encoding="utf-8")
+    ledger_path.write_text(
+        "".join(json.dumps(e, sort_keys=True) + "\n" for e in ledger), encoding="utf-8"
+    )
 
     after = decision_eligibility_at(T, ledger, "BTCUSDT", out_dir)
     assert json.dumps(after, sort_keys=True) == json.dumps(before, sort_keys=True)
@@ -276,7 +311,9 @@ def test_past_gap_before_T_may_change_state(tmp_path: Path) -> None:
     bad = dict(ledger[0])
     bad["classification"] = "INVALID_GAP"
     ledger[0] = bad
-    ledger_path.write_text("".join(json.dumps(e, sort_keys=True) + "\n" for e in ledger), encoding="utf-8")
+    ledger_path.write_text(
+        "".join(json.dumps(e, sort_keys=True) + "\n" for e in ledger), encoding="utf-8"
+    )
     after = decision_eligibility_at(T, ledger, "BTCUSDT", out_dir)
     # only history-based checks may move; current-hour completeness must not
     assert after["checks"]["current_hour_complete"] == before["checks"]["current_hour_complete"]
@@ -286,9 +323,17 @@ def test_past_gap_before_T_may_change_state(tmp_path: Path) -> None:
 
 # ---------- H6 prereg contract mirrors (skipif spec not present) ----------
 
-@pytest.mark.skipif(not (REPO / "docs/external-audit-01/oi-full-history-01/H6_SPEC.json").exists(), reason="H6 spec not present")
+
+@pytest.mark.skipif(
+    not (REPO / "docs/external-audit-01/oi-full-history-01/H6_SPEC.json").exists(),
+    reason="H6 spec not present",
+)
 class TestH6PreregContract:
-    SPEC = json.loads((REPO / "docs/external-audit-01/oi-full-history-01/H6_SPEC.json").read_text(encoding="utf-8"))
+    SPEC = json.loads(
+        (REPO / "docs/external-audit-01/oi-full-history-01/H6_SPEC.json").read_text(
+            encoding="utf-8"
+        )
+    )
 
     def test_no_execution_yet(self) -> None:
         assert self.SPEC["H6_EXECUTIONS"] == 0
@@ -339,7 +384,10 @@ class TestH6PreregContract:
 
 # ---------- frozen anchors (run where the dataset exists) ----------
 
-@pytest.mark.skipif(not _is_frozen_dataset_present(), reason="frozen OI dataset not on this machine")
+
+@pytest.mark.skipif(
+    not _is_frozen_dataset_present(), reason="frozen OI dataset not on this machine"
+)
 class TestFrozenAnchors:
     def test_dataset_fingerprint_matches_freeze(self) -> None:
         m = json.loads(FROZEN_MANIFEST.read_text(encoding="utf-8"))
@@ -358,7 +406,8 @@ class TestFrozenAnchors:
         bad = [
             e
             for e in ledger
-            if e["classification"] == "VALID" and int(e.get("rows_within_pit", 0)) != int(e.get("rows", 0))  # type: ignore[arg-type]
+            if e["classification"] == "VALID"
+            and int(e.get("rows_within_pit", 0)) != int(e.get("rows", 0))  # type: ignore[arg-type]
         ]
         assert not bad
 
@@ -370,6 +419,7 @@ class TestFrozenAnchors:
 
 # ---------- Track H: frozen price authority ----------
 
+
 def test_frozen_1h_price_authority_unchanged() -> None:
     """The committed H1 1h dataset must remain byte-identical to its frozen commit.
 
@@ -380,22 +430,33 @@ def test_frozen_1h_price_authority_unchanged() -> None:
     assert _git_diff_empty(rel, "cb3de4f"), "frozen price authority was modified"
     rows = (REPO / rel).read_text(encoding="utf-8").splitlines()
     assert len(rows) == 58633
-    assert int(json.loads(rows[-1])[0]) == 1788912000000  # 2026-09-10T00:00Z bucket (covers window end)
+    assert (
+        int(json.loads(rows[-1])[0]) == 1788912000000
+    )  # 2026-09-10T00:00Z bucket (covers window end)
 
 
-@pytest.mark.skipif(not (PRICE_AUTHORITY_DIR / "BTCUSDT_1h.jsonl").exists(), reason="price authority not present")
+@pytest.mark.skipif(
+    not (PRICE_AUTHORITY_DIR / "BTCUSDT_1h.jsonl").exists(), reason="price authority not present"
+)
 def test_price_extension_not_required() -> None:
     """Track H conclusion: frozen authority covers the full window; no extension."""
     ext = REPO / "data" / "processed" / "price_1h_ext"
-    assert not ext.exists(), "extension was built although frozen authority already covers the window"
+    assert not ext.exists(), (
+        "extension was built although frozen authority already covers the window"
+    )
 
 
 # ---------- Track C: H5 anchors remain untouched ----------
 
+
 def test_h5_frozen_anchors_unchanged() -> None:
     import hashlib
 
-    r = hashlib.sha256((REPO / "docs/external-audit-01/h5-orderflow-imbalance-01/H5_RESULT.json").read_bytes()).hexdigest()
+    r = hashlib.sha256(
+        (REPO / "docs/external-audit-01/h5-orderflow-imbalance-01/H5_RESULT.json").read_bytes()
+    ).hexdigest()
     assert r == "2427310dbed8445b1e39b1feaba7a8289918ab79a258f66b065da7cf2b7fe60f"
-    m = hashlib.sha256((REPO / "docs/external-audit-01/h5-orderflow-imbalance-01/H5_MANIFEST.json").read_bytes()).hexdigest()
+    m = hashlib.sha256(
+        (REPO / "docs/external-audit-01/h5-orderflow-imbalance-01/H5_MANIFEST.json").read_bytes()
+    ).hexdigest()
     assert m == "29ececb759aff059282a0324b3b94b4bcd13b35b51060c6c742f2eaa48db0a86"

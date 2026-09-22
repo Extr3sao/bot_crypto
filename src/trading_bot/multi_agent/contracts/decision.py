@@ -175,9 +175,7 @@ class RejectedAlternative(BaseModel):
 
     @field_validator("rejection_reasons")
     @classmethod
-    def _require_reasons(
-        cls, value: tuple[DecisionReason, ...]
-    ) -> tuple[DecisionReason, ...]:
+    def _require_reasons(cls, value: tuple[DecisionReason, ...]) -> tuple[DecisionReason, ...]:
         if not value:
             raise ValueError("rejected alternatives require at least one typed reason")
         return value
@@ -260,7 +258,9 @@ class DecisionPackage(BaseModel):
             "decision_time": self.decision_time.isoformat(),
             "candidate_set": [self._candidate_dict(c) for c in self.candidate_set],
             "selected_candidate_id": self.selected_candidate_id,
-            "rejected_alternatives": [a.model_dump(mode="json") for a in self.rejected_alternatives],
+            "rejected_alternatives": [
+                a.model_dump(mode="json") for a in self.rejected_alternatives
+            ],
             "outcome": self.outcome.value,
             "decision_reasons": [reason.value for reason in self.decision_reasons],
             "evidence_refs": list(self.evidence_refs),

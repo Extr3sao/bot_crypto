@@ -119,9 +119,7 @@ class TerminalProposalResolver:
                 original = revision.original_proposal_id
                 revised = revision.revised_proposal_id
                 if revised not in proposals:
-                    raise DecisionError(
-                        f"revision references unknown proposal: {revised}"
-                    )
+                    raise DecisionError(f"revision references unknown proposal: {revised}")
                 existing = edges.get(original)
                 if existing is not None and existing != revised:
                     # A branch: two children claim the same original.
@@ -221,11 +219,7 @@ def _debate_facts(reports: Sequence[DebateReport], root: str) -> DebateFacts:
     answered: set[str] = set()
     for revision in report.revisions:
         answered.update(revision.triggering_critique_ids)
-    challenges = [
-        critique
-        for critique in report.critiques
-        if critique.stance.value == "CHALLENGE"
-    ]
+    challenges = [critique for critique in report.critiques if critique.stance.value == "CHALLENGE"]
     standing = [c for c in challenges if c.critique_id not in answered]
     materiality = (
         round(sum(c.materiality for c in standing) / len(standing), 6) if standing else 0.0
@@ -282,8 +276,7 @@ class DecisionEngine:
         # Sibling artifact: snapshot proposals are the same TradeProposal
         # class via the OpportunityBoard path — enforce the identical rule.
         if any(
-            opportunity.proposal.run_id != self.run_id
-            for opportunity in snapshot.opportunities
+            opportunity.proposal.run_id != self.run_id for opportunity in snapshot.opportunities
         ):
             raise DecisionError("board proposal run does not match engine run")
         # DEF-MA4-001: a foreign-run DebateReport must never influence
@@ -293,8 +286,7 @@ class DecisionEngine:
         # Sibling artifact: AssetAssessment feeds the MetaRanker regime fit
         # and always carries a trace — foreign-run assessments rejected too.
         if assessments is not None and any(
-            assessment.trace.run_id != self.run_id
-            for assessment in assessments.values()
+            assessment.trace.run_id != self.run_id for assessment in assessments.values()
         ):
             raise DecisionError("assessment run does not match engine run")
 
@@ -304,15 +296,12 @@ class DecisionEngine:
         resolution = self._resolver.resolve(reports, proposals)
         reports_sorted = tuple(sorted(reports, key=lambda item: item.debate_id))
         conflicted_ids = {
-            proposal_id
-            for conflict in snapshot.conflicts
-            for proposal_id in conflict.proposal_ids
+            proposal_id for conflict in snapshot.conflicts for proposal_id in conflict.proposal_ids
         }
 
         # -- MA-4U: canonical iteration order (sorted terminal ids) ----------
         board_opportunities = {
-            opportunity.proposal.proposal_id: opportunity
-            for opportunity in snapshot.opportunities
+            opportunity.proposal.proposal_id: opportunity for opportunity in snapshot.opportunities
         }
         terminal_ids = sorted(resolution.terminal_by_root)
 
@@ -364,11 +353,13 @@ class DecisionEngine:
                 else 0.0
             )
             breakdown = DecisionScoreBreakdown(
-                final_score=round(
-                    max(0.0, min(1.0, meta_scores[root] - counter_materiality)), 6
-                ),
+                final_score=round(max(0.0, min(1.0, meta_scores[root] - counter_materiality)), 6),
                 components=(
-                    ("meta_ranker_score", meta_scores[root], ScoreComponentSource.META_RANKER.value),
+                    (
+                        "meta_ranker_score",
+                        meta_scores[root],
+                        ScoreComponentSource.META_RANKER.value,
+                    ),
                     (
                         "counter_evidence_materiality",
                         counter_materiality,
@@ -376,9 +367,7 @@ class DecisionEngine:
                     ),
                 ),
             )
-            supporting = tuple(
-                sorted({*final_proposal.evidence_refs, *facts.supporting_refs})
-            )
+            supporting = tuple(sorted({*final_proposal.evidence_refs, *facts.supporting_refs}))
             counter = tuple(sorted(set(facts.counter_refs)))
             candidates.append(
                 DecisionCandidate(
@@ -425,7 +414,10 @@ class DecisionEngine:
             outcome = DecisionOutcome.SELECTED
             decision_reasons = (DecisionReason.HIGHEST_ADMISSIBLE_SCORE,)
             events.append(
-                (DecisionEventType.DECISION_SELECTED.value, json.dumps({"proposal_id": selected_id}))
+                (
+                    DecisionEventType.DECISION_SELECTED.value,
+                    json.dumps({"proposal_id": selected_id}),
+                )
             )
         else:
             winner = None
@@ -440,9 +432,7 @@ class DecisionEngine:
         evidence_refs = tuple(
             sorted({ref for c in candidates for ref in c.supporting_evidence_refs})
         )
-        counter_refs = tuple(
-            sorted({ref for c in candidates for ref in c.counter_evidence_refs})
-        )
+        counter_refs = tuple(sorted({ref for c in candidates for ref in c.counter_evidence_refs}))
         unresolved = tuple(
             sorted(
                 c.debate_id
@@ -467,13 +457,9 @@ class DecisionEngine:
             decision_id=decision_id,
             run_id=self.run_id,
             decision_time=now,
-            candidate_set=tuple(
-                sorted(candidates, key=lambda c: c.final_proposal_id)
-            ),
+            candidate_set=tuple(sorted(candidates, key=lambda c: c.final_proposal_id)),
             selected_candidate_id=selected_id,
-            rejected_alternatives=tuple(
-                sorted(alternatives, key=lambda a: a.final_proposal_id)
-            ),
+            rejected_alternatives=tuple(sorted(alternatives, key=lambda a: a.final_proposal_id)),
             outcome=outcome,
             decision_reasons=decision_reasons,
             evidence_refs=evidence_refs,
@@ -569,7 +555,9 @@ class DecisionEngine:
                 DecisionEligibility.INELIGIBLE_UNRESOLVED_CONFLICT,
                 (DecisionReason.UNRESOLVED_CONFLICT,),
             )
-        lineage_conflicted = any(pid in conflicted_ids for pid in self._lineage_members(resolution, root))
+        lineage_conflicted = any(
+            pid in conflicted_ids for pid in self._lineage_members(resolution, root)
+        )
         if lineage_conflicted and facts.outcome is None:
             # A directional conflict exists on the board but no debate ever
             # covered this lineage: fail closed rather than pick a side.
@@ -590,9 +578,7 @@ class DecisionEngine:
             if selected_id is not None and candidate.final_proposal_id == selected_id:
                 continue
             if candidate.eligibility is DecisionEligibility.ELIGIBLE:
-                reasons: tuple[DecisionReason, ...] = (
-                    DecisionReason.LOWER_RANKED_ALTERNATIVE,
-                )
+                reasons: tuple[DecisionReason, ...] = (DecisionReason.LOWER_RANKED_ALTERNATIVE,)
                 summary = "eligible but outranked by the highest admissible score"
             else:
                 reasons = candidate.rejection_reasons
@@ -720,9 +706,7 @@ class DecisionPackageVerifier:
             )
 
         non_selected = {
-            c.final_proposal_id
-            for c in package.candidate_set
-            if c.final_proposal_id != selected
+            c.final_proposal_id for c in package.candidate_set if c.final_proposal_id != selected
         }
         rejected_ids = {a.final_proposal_id for a in package.rejected_alternatives}
         record(
@@ -738,11 +722,11 @@ class DecisionPackageVerifier:
             reasons_ok = reasons_ok and DecisionReason.HIGHEST_ADMISSIBLE_SCORE in (
                 package.decision_reasons
             )
-        record("decision_reasons_valid", reasons_ok, str([r.value for r in package.decision_reasons]))
-
-        trace_ok = package.trace is None or (
-            package.trace.run_id == package.run_id
+        record(
+            "decision_reasons_valid", reasons_ok, str([r.value for r in package.decision_reasons])
         )
+
+        trace_ok = package.trace is None or (package.trace.run_id == package.run_id)
         record("trace_complete", trace_ok, f"run_id={package.run_id}")
 
         # -- CP-MA-004.3: authoritative debate-derived blockers --------------
@@ -772,18 +756,11 @@ class DecisionPackageVerifier:
                     blockers.append("INSUFFICIENT_EVIDENCE")
             if snapshot is not None and resolution is not None:
                 conflicted_ids = {
-                    pid
-                    for conflict in snapshot.conflicts
-                    for pid in conflict.proposal_ids
+                    pid for conflict in snapshot.conflicts for pid in conflict.proposal_ids
                 }
-                lineage_members = (
-                    tuple(
-                        pid
-                        for pid, lineage in resolution.lineage_of.items()
-                        if lineage == root
-                    )
-                    or (root,)
-                )
+                lineage_members = tuple(
+                    pid for pid, lineage in resolution.lineage_of.items() if lineage == root
+                ) or (root,)
                 if any(pid in conflicted_ids for pid in lineage_members) and report is None:
                     blockers.append("BOARD_CONFLICT_WITHOUT_DEBATE")
             blocker_detail = (
@@ -800,14 +777,13 @@ class DecisionPackageVerifier:
             meta_component = breakdown.component("meta_ranker_score")
             counter_component = breakdown.component("counter_evidence_materiality")
             names = [name for name, _, _ in breakdown.components]
-            sources = {
-                name: source
-                for name, _, source in breakdown.components
-            }
+            sources = {name: source for name, _, source in breakdown.components}
             recomputed = round(
                 max(0.0, min(1.0, (meta_component or 0.0) - (counter_component or 0.0))), 6
             )
-            provenance_ok = sources.get("meta_ranker_score") == ScoreComponentSource.META_RANKER.value and (
+            provenance_ok = sources.get(
+                "meta_ranker_score"
+            ) == ScoreComponentSource.META_RANKER.value and (
                 "counter_evidence_materiality" not in sources
                 or sources["counter_evidence_materiality"] == ScoreComponentSource.DEBATE.value
             )
@@ -905,9 +881,7 @@ class DecisionPackageVerifier:
             else:
                 proposal_authority = frozenset(final.evidence_refs)
                 candidate_refs = frozenset(selected_candidate.supporting_evidence_refs)
-                duplicates = len(selected_candidate.supporting_evidence_refs) != len(
-                    candidate_refs
-                )
+                duplicates = len(selected_candidate.supporting_evidence_refs) != len(candidate_refs)
                 unknown = sorted(candidate_refs - set(evidence_registry))
                 foreign = sorted(
                     ref
@@ -978,7 +952,9 @@ class DecisionPackageVerifier:
                 expected = resolution.terminal_by_root.get(root, root)
                 if root in resolution.invalid_roots or candidate.final_proposal_id != expected:
                     lineage_ok = False
-                    lineage_detail = f"candidate {root}: final={candidate.final_proposal_id} terminal={expected}"
+                    lineage_detail = (
+                        f"candidate {root}: final={candidate.final_proposal_id} terminal={expected}"
+                    )
                     break
             if lineage_ok:
                 lineage_detail = f"roots={len(resolution.terminal_by_root)} all terminal-bound"

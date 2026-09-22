@@ -180,9 +180,7 @@ class OpportunityBoard:
         current = now or self.now
         snapshot = self.snapshot()
         conflicted = {
-            proposal_id
-            for conflict in snapshot.conflicts
-            for proposal_id in conflict.proposal_ids
+            proposal_id for conflict in snapshot.conflicts for proposal_id in conflict.proposal_ids
         }
         ranker = MetaRanker()
         ranked = [
@@ -192,8 +190,7 @@ class OpportunityBoard:
                 conflicted=opportunity.proposal.proposal_id in conflicted,
             )
             for opportunity in snapshot.opportunities
-            if opportunity.proposal.expires_at is None
-            or current < opportunity.proposal.expires_at
+            if opportunity.proposal.expires_at is None or current < opportunity.proposal.expires_at
         ]
         ranked.sort(key=lambda item: (-item.score, item.proposal_id))
         return tuple(

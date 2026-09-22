@@ -39,7 +39,9 @@ R2_PREFIX = "poc02-1788988"  # first R2-attributed run (campaign_id switch)
 def load_jsonl(path: Path) -> list[dict]:
     if not path.exists():
         return []
-    return [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
+    return [
+        json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip()
+    ]
 
 
 def main() -> int:
@@ -62,9 +64,7 @@ def main() -> int:
     raw_rejects = sum(int(r.get("state", {}).get("risk_rejects", 0) or 0) for r in r2_cycles)
     raw_opens = sum(int(r.get("state", {}).get("paper_trades", 0) or 0) for r in r2_cycles)
     broker_calls = sum(int(r.get("state", {}).get("broker_calls", 0) or 0) for r in r2_cycles)
-    err_events = sum(
-        len(r.get("state", {}).get("errors", []) or []) for r in r2_cycles
-    )
+    err_events = sum(len(r.get("state", {}).get("errors", []) or []) for r in r2_cycles)
 
     # -- accepted candidates: SELECTED attribution rows that reached Risk ------
     #    (a SELECTED row whose run had risk_accepts>0; receipt evidence binds them)
@@ -160,7 +160,11 @@ def main() -> int:
         # pre-repair runs: classify from immutable run evidence
         for i in range(st["risk_accepts"]):
             if st["errors"]:
-                d, src, detail = "EXECUTION_FAILED", "RUN_EVIDENCE(DEF-R2-001)", st["errors"][min(i, len(st["errors"]) - 1)]
+                d, src, detail = (
+                    "EXECUTION_FAILED",
+                    "RUN_EVIDENCE(DEF-R2-001)",
+                    st["errors"][min(i, len(st["errors"]) - 1)],
+                )
             elif open_rows and i < len(open_rows):
                 d, src, detail = "PAPER_OPENED", "RUN_EVIDENCE(PAPER_OPEN_ROW)", None
             elif st["broker_calls"] > 0:
@@ -246,7 +250,9 @@ def main() -> int:
                 "pre-enforcement cross-process duplicates exist (PaperBroker is "
                 "in-memory per process); enforcement armed via R2_INTENT_LEDGER "
                 "from 2026-09-10T06:58Z — post-arm cycles show max=1"
-            ) if max_orders_per_intent > 1 else "enforced: economic orders <= 1 per intent",
+            )
+            if max_orders_per_intent > 1
+            else "enforced: economic orders <= 1 per intent",
             "enforcement": "R2_INTENT_LEDGER.jsonl (R2 composition only)",
         },
         "A4_defect": {

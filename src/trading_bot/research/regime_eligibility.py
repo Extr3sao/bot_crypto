@@ -22,6 +22,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from enum import StrEnum
+from typing import Any
 
 from trading_bot.research.regime_v2 import MarketRegimeState
 
@@ -88,7 +89,7 @@ class StrategyRegimeEligibility:
     status: EligibilityStatus
     basis: str  # which pre-declared rule produced the status
 
-    def to_dict(self) -> dict[str, object]:
+    def to_dict(self) -> dict[str, Any]:
         return {
             "strategy_id": self.strategy_id,
             "version": self.version,
@@ -130,18 +131,30 @@ def _status_for_metrics(
     """Deterministic status rules (fail-closed, RE-03)."""
     if metrics.n >= t.min_eligible_n:
         if metrics.health_state in t.quarantine_states:
-            return EligibilityStatus.NOT_ELIGIBLE, f"health_state={metrics.health_state} overrides metrics"
+            return (
+                EligibilityStatus.NOT_ELIGIBLE,
+                f"health_state={metrics.health_state} overrides metrics",
+            )
         if (
             metrics.expectancy >= t.min_expectancy
             and metrics.profit_factor >= t.min_profit_factor
             and metrics.drawdown <= t.max_drawdown
         ):
             if metrics.admission_evidence:
-                return EligibilityStatus.ELIGIBLE, f"n>={t.min_eligible_n} and metrics pass and admission evidence present"
-            return EligibilityStatus.SHADOW_ONLY, f"n>={t.min_eligible_n} and metrics pass but no admission evidence"
+                return (
+                    EligibilityStatus.ELIGIBLE,
+                    f"n>={t.min_eligible_n} and metrics pass and admission evidence present",
+                )
+            return (
+                EligibilityStatus.SHADOW_ONLY,
+                f"n>={t.min_eligible_n} and metrics pass but no admission evidence",
+            )
         return EligibilityStatus.NOT_ELIGIBLE, f"n>={t.min_eligible_n} but metrics fail thresholds"
     if metrics.n >= t.min_shadow_n:
-        return EligibilityStatus.SHADOW_ONLY, f"{t.min_shadow_n} <= n < {t.min_eligible_n} -> shadow only"
+        return (
+            EligibilityStatus.SHADOW_ONLY,
+            f"{t.min_shadow_n} <= n < {t.min_eligible_n} -> shadow only",
+        )
     return EligibilityStatus.INSUFFICIENT_EVIDENCE, f"n={metrics.n} < {t.min_shadow_n}"
 
 
@@ -183,7 +196,16 @@ def evaluate_regime_eligibility(
             basis=f"level={level.value}: {basis}",
         )
     # No level had any data at all: fail closed on the exact signature.
-    empty = EligibilityMetrics(n=0, expectancy=0.0, profit_factor=0.0, sharpe=0.0, drawdown=0.0, cost_adjusted_expectancy=0.0, health_state="UNKNOWN", admission_evidence=False)
+    empty = EligibilityMetrics(
+        n=0,
+        expectancy=0.0,
+        profit_factor=0.0,
+        sharpe=0.0,
+        drawdown=0.0,
+        cost_adjusted_expectancy=0.0,
+        health_state="UNKNOWN",
+        admission_evidence=False,
+    )
     return StrategyRegimeEligibility(
         strategy_id=strategy_id,
         version=version,

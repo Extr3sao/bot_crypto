@@ -106,12 +106,8 @@ def test_unobserved_window_is_not_mislabeled() -> None:
 
 def test_regime_table_concentration() -> None:
     windows = [
-        classify_window(
-            window_id="a", activity={"market_scans": 1}, regime="RANGE"
-        ),
-        classify_window(
-            window_id="b", activity={"market_scans": 1}, regime="RANGE"
-        ),
+        classify_window(window_id="a", activity={"market_scans": 1}, regime="RANGE"),
+        classify_window(window_id="b", activity={"market_scans": 1}, regime="RANGE"),
         classify_window(
             window_id="c",
             activity={
@@ -146,18 +142,81 @@ def test_activity_with_zero_scans_and_proposals_neither_nor() -> None:
 @pytest.mark.parametrize(
     ("activity", "expected"),
     [
-        ({"market_scans": 1, "trade_proposals": 1, "selected_decisions": 1, "risk_accepts": 1, "executed_paper_trades": 1}, BottleneckState.NONE),
+        (
+            {
+                "market_scans": 1,
+                "trade_proposals": 1,
+                "selected_decisions": 1,
+                "risk_accepts": 1,
+                "executed_paper_trades": 1,
+            },
+            BottleneckState.NONE,
+        ),
         ({"market_scans": 1, "trade_proposals": 0}, BottleneckState.NO_SIGNAL),
-        ({"market_scans": 1, "trade_proposals": 1, "selected_decisions": 0}, BottleneckState.AGENT_FILTER),
-        ({"market_scans": 1, "trade_proposals": 1, "selected_decisions": 1, "verifier_rejects": 1}, BottleneckState.VERIFIER_FILTER),
+        (
+            {"market_scans": 1, "trade_proposals": 1, "selected_decisions": 0},
+            BottleneckState.AGENT_FILTER,
+        ),
+        (
+            {
+                "market_scans": 1,
+                "trade_proposals": 1,
+                "selected_decisions": 1,
+                "verifier_rejects": 1,
+            },
+            BottleneckState.VERIFIER_FILTER,
+        ),
         # POC02-OBSERVATION taxonomy §5: rejections without a persisted
         # reason split are OTHER_RISK — labeling them RISK_COOLDOWN without
         # evidence was an inference, now forbidden.
-        ({"market_scans": 1, "trade_proposals": 1, "selected_decisions": 1, "risk_rejects": 1}, BottleneckState.OTHER_RISK),
-        ({"market_scans": 1, "trade_proposals": 1, "selected_decisions": 1, "risk_rejects": 2, "risk_rejects_by_reason": {"CONSECUTIVE_LOSS_COOLDOWN": 2}}, BottleneckState.RISK_COOLDOWN),
-        ({"market_scans": 1, "trade_proposals": 1, "selected_decisions": 1, "risk_rejects": 2, "risk_rejects_by_reason": {"MAX_POSITIONS": 1, "MAX_TOTAL_EXPOSURE": 1}}, BottleneckState.RISK_POSITIONS),
-        ({"market_scans": 1, "trade_proposals": 1, "selected_decisions": 1, "risk_rejects": 1, "risk_rejects_by_reason": {"OTHER": 1}}, BottleneckState.OTHER_RISK),
-        ({"market_scans": 1, "trade_proposals": 1, "selected_decisions": 1, "risk_rejects": 3, "risk_rejects_by_reason": {"CONSECUTIVE_LOSS_COOLDOWN": 1, "MAX_POSITIONS": 1, "OTHER": 1}}, BottleneckState.OTHER_RISK),
+        (
+            {"market_scans": 1, "trade_proposals": 1, "selected_decisions": 1, "risk_rejects": 1},
+            BottleneckState.OTHER_RISK,
+        ),
+        (
+            {
+                "market_scans": 1,
+                "trade_proposals": 1,
+                "selected_decisions": 1,
+                "risk_rejects": 2,
+                "risk_rejects_by_reason": {"CONSECUTIVE_LOSS_COOLDOWN": 2},
+            },
+            BottleneckState.RISK_COOLDOWN,
+        ),
+        (
+            {
+                "market_scans": 1,
+                "trade_proposals": 1,
+                "selected_decisions": 1,
+                "risk_rejects": 2,
+                "risk_rejects_by_reason": {"MAX_POSITIONS": 1, "MAX_TOTAL_EXPOSURE": 1},
+            },
+            BottleneckState.RISK_POSITIONS,
+        ),
+        (
+            {
+                "market_scans": 1,
+                "trade_proposals": 1,
+                "selected_decisions": 1,
+                "risk_rejects": 1,
+                "risk_rejects_by_reason": {"OTHER": 1},
+            },
+            BottleneckState.OTHER_RISK,
+        ),
+        (
+            {
+                "market_scans": 1,
+                "trade_proposals": 1,
+                "selected_decisions": 1,
+                "risk_rejects": 3,
+                "risk_rejects_by_reason": {
+                    "CONSECUTIVE_LOSS_COOLDOWN": 1,
+                    "MAX_POSITIONS": 1,
+                    "OTHER": 1,
+                },
+            },
+            BottleneckState.OTHER_RISK,
+        ),
     ],
 )
 def test_classification_matrix(activity: dict, expected: str) -> None:

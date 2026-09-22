@@ -9,13 +9,14 @@ only — never the real economic run).
 
 from __future__ import annotations
 
+import itertools
+
 import numpy as np
 import pytest
 
 from trading_bot.research.execution_ledger import ResearchExecutionLedger
 from trading_bot.research.h5_orderflow import (
     ATR_PERIOD,
-    COOLDOWN_BARS,
     COST_RT_BPS,
     HOLD_BARS,
     LOOKBACK_BARS,
@@ -86,7 +87,11 @@ def test_zofi_and_participation_trailing_window():
     bars = _rng_bars(LOOKBACK_BARS + 60)
     rng = np.random.default_rng(5)
     # varied flow so the trailing window has non-degenerate std
-    share = 0.5 + 0.4 * np.sin(np.arange(bars["volume"].shape[0]) / 17.0) + 0.05 * rng.standard_normal(bars["volume"].shape[0])
+    share = (
+        0.5
+        + 0.4 * np.sin(np.arange(bars["volume"].shape[0]) / 17.0)
+        + 0.05 * rng.standard_normal(bars["volume"].shape[0])
+    )
     bars["taker_buy"] = np.clip(bars["volume"] * share, 0.0, bars["volume"])
     feat = compute_features(bars["volume"], bars["ntrades"], bars["taker_buy"])
     t = LOOKBACK_BARS + 40
@@ -116,8 +121,15 @@ def test_entry_uses_next_bar_open_and_frozen_thresholds():
     t = LOOKBACK_BARS + 5
     _dislocate(bars, t, side=+1)  # OFI = +1 -> LONG
     trades, skipped, _ = simulate_h5(
-        bars["ts"], bars["op"], bars["hi"], bars["lo"], bars["cl"],
-        bars["volume"], bars["ntrades"], bars["taker_buy"], "TEST",
+        bars["ts"],
+        bars["op"],
+        bars["hi"],
+        bars["lo"],
+        bars["cl"],
+        bars["volume"],
+        bars["ntrades"],
+        bars["taker_buy"],
+        "TEST",
     )
     hits = [tr for tr in trades if tr.decision_index == t]
     assert len(hits) == 1
@@ -135,8 +147,15 @@ def test_short_direction_from_negative_flow():
     t = LOOKBACK_BARS + 5
     _dislocate(bars, t, side=-1)  # OFI = -1 -> SHORT
     trades, _, _ = simulate_h5(
-        bars["ts"], bars["op"], bars["hi"], bars["lo"], bars["cl"],
-        bars["volume"], bars["ntrades"], bars["taker_buy"], "TEST",
+        bars["ts"],
+        bars["op"],
+        bars["hi"],
+        bars["lo"],
+        bars["cl"],
+        bars["volume"],
+        bars["ntrades"],
+        bars["taker_buy"],
+        "TEST",
     )
     hits = [tr for tr in trades if tr.decision_index == t]
     assert len(hits) == 1 and hits[0].direction == "SHORT"
@@ -149,10 +168,17 @@ def test_time_exit_and_stop_pessimistic_convention():
     t = LOOKBACK_BARS + 5
     _dislocate(bars, t, side=+1)
     trades, _, _ = simulate_h5(
-        bars["ts"], bars["op"], bars["hi"], bars["lo"], bars["cl"],
-        bars["volume"], bars["ntrades"], bars["taker_buy"], "TEST",
+        bars["ts"],
+        bars["op"],
+        bars["hi"],
+        bars["lo"],
+        bars["cl"],
+        bars["volume"],
+        bars["ntrades"],
+        bars["taker_buy"],
+        "TEST",
     )
-    tr = [x for x in trades if x.decision_index == t][0]
+    tr = next(x for x in trades if x.decision_index == t)
     if tr.exit_index == t + HOLD_BARS:
         # no stop touched: time exit at close of bar t+12
         assert tr.exit_price == pytest.approx(bars["cl"][t + HOLD_BARS])
@@ -167,9 +193,16 @@ def test_incomplete_tail_skipped_and_counted():
     n = LOOKBACK_BARS + HOLD_BARS - 2  # cannot complete the frozen horizon
     bars = _rng_bars(n)
     _dislocate(bars, n - 2, side=+1)  # decision bar with impossible horizon
-    trades, skipped, _ = simulate_h5(
-        bars["ts"], bars["op"], bars["hi"], bars["lo"], bars["cl"],
-        bars["volume"], bars["ntrades"], bars["taker_buy"], "TEST",
+    trades, _skipped, _ = simulate_h5(
+        bars["ts"],
+        bars["op"],
+        bars["hi"],
+        bars["lo"],
+        bars["cl"],
+        bars["volume"],
+        bars["ntrades"],
+        bars["taker_buy"],
+        "TEST",
     )
     assert all(tr.exit_index <= n - 1 for tr in trades)
     assert all(tr.decision_index != n - 2 for tr in trades)  # skipped, not traded
@@ -211,8 +244,16 @@ def test_future_mutation_byte_identical_up_to_T():
         assert np.array_equal(f1[k][: T + 1], f2[k][: T + 1], equal_nan=True), k
     # full pipeline: features are the ONLY trade-decision input up to T
     sim1, _, _ = simulate_h5(
-        bars["ts"], bars["op"], bars["hi"], bars["lo"], bars["cl"],
-        bars["volume"], bars["ntrades"], bars["taker_buy"], "TEST", feat=f1,
+        bars["ts"],
+        bars["op"],
+        bars["hi"],
+        bars["lo"],
+        bars["cl"],
+        bars["volume"],
+        bars["ntrades"],
+        bars["taker_buy"],
+        "TEST",
+        feat=f1,
     )
     # mutate OHLC after T as well; decisions <= T must not move
     hi2, lo2, cl2, op2 = bars["hi"].copy(), bars["lo"].copy(), bars["cl"].copy(), bars["op"].copy()
@@ -221,7 +262,16 @@ def test_future_mutation_byte_identical_up_to_T():
     cl2[T + 1 :] *= 1.1
     op2[T + 1 :] *= 1.1
     sim2, _, _ = simulate_h5(
-        bars["ts"], op2, hi2, lo2, cl2, v2, nt2, tb2, "TEST", feat=f2,
+        bars["ts"],
+        op2,
+        hi2,
+        lo2,
+        cl2,
+        v2,
+        nt2,
+        tb2,
+        "TEST",
+        feat=f2,
     )
     fields = ("decision_index", "decision_ts", "direction", "entry_index", "zofi", "part")
     d1 = [tuple(getattr(x, f) for f in fields) for x in sim1 if x.decision_index <= T]
@@ -240,14 +290,21 @@ def test_cost_scenarios_absolute_monotone_identical_trade_set():
     for k, t in enumerate(range(LOOKBACK_BARS, LOOKBACK_BARS + 800 - HOLD_BARS - 2, 97)):
         _dislocate(bars, t, side=+1 if k % 2 == 0 else -1)
     trades, _, _ = simulate_h5(
-        bars["ts"], bars["op"], bars["hi"], bars["lo"], bars["cl"],
-        bars["volume"], bars["ntrades"], bars["taker_buy"], "TEST",
+        bars["ts"],
+        bars["op"],
+        bars["hi"],
+        bars["lo"],
+        bars["cl"],
+        bars["volume"],
+        bars["ntrades"],
+        bars["taker_buy"],
+        "TEST",
     )
     assert len(trades) >= 5, "fixture must generate trades"
     table = []
     for bps in (0.0, 5.0, 10.0, 20.0, 40.0):
         net = cost_scenario_net_r(trades, bps)
-        cost = [t.gross_r - r for t, r in zip(trades, net)]
+        cost = [t.gross_r - r for t, r in zip(trades, net, strict=False)]
         table.append(
             {
                 "bps": bps,
@@ -260,15 +317,13 @@ def test_cost_scenarios_absolute_monotone_identical_trade_set():
         assert all(c >= 0.0 for c in cost), f"negative cost at {bps} bps"
         if bps > 0:
             # net == gross - (bps/10000)/risk_frac exactly (absolute anchoring)
-            expect = float(
-                np.mean([t.gross_r - (bps / 10_000.0) / t.risk_frac for t in trades])
-            )
+            expect = float(np.mean([t.gross_r - (bps / 10_000.0) / t.risk_frac for t in trades]))
             assert table[-1]["net"] == pytest.approx(expect, abs=1e-12)
     # 0 bps == gross exactly
     assert table[0]["net"] == pytest.approx(table[0]["gross"], abs=1e-12)
     assert table[0]["cost"] == pytest.approx(0.0, abs=1e-15)
     # monotone non-increasing
-    for a, b in zip(table, table[1:]):
+    for a, b in itertools.pairwise(table):
         assert b["net"] <= a["net"] + 1e-12
     # trade set identical (pure recomputation over the same frozen list)
     assert all(row["N"] == table[0]["N"] for row in table)
@@ -308,21 +363,43 @@ def test_summarize_shape_and_frozen_seed_path():
     for k, t in enumerate(range(LOOKBACK_BARS, LOOKBACK_BARS + 600 - HOLD_BARS - 2, 97)):
         _dislocate(bars, t, side=+1 if k % 2 == 0 else -1)
     trades, _, _ = simulate_h5(
-        bars["ts"], bars["op"], bars["hi"], bars["lo"], bars["cl"],
-        bars["volume"], bars["ntrades"], bars["taker_buy"], "TEST",
+        bars["ts"],
+        bars["op"],
+        bars["hi"],
+        bars["lo"],
+        bars["cl"],
+        bars["volume"],
+        bars["ntrades"],
+        bars["taker_buy"],
+        "TEST",
     )
     assert trades
     m = summarize(trades)
     assert m["N"] == len(trades)
     for k in (
-        "gross_expectancy_R", "net_expectancy_R", "PF_gross", "PF_net", "Sharpe",
-        "Sharpe_CI95", "P_Sharpe_gt_0", "permutation_p", "wins", "losses",
-        "max_drawdown_R", "MC_DD95_R", "cost_drag_R", "halves", "thirds",
-        "walk_forward_last_third_net_R", "mean_holding_bars",
+        "gross_expectancy_R",
+        "net_expectancy_R",
+        "PF_gross",
+        "PF_net",
+        "Sharpe",
+        "Sharpe_CI95",
+        "P_Sharpe_gt_0",
+        "permutation_p",
+        "wins",
+        "losses",
+        "max_drawdown_R",
+        "MC_DD95_R",
+        "cost_drag_R",
+        "halves",
+        "thirds",
+        "walk_forward_last_third_net_R",
+        "mean_holding_bars",
     ):
         assert k in m
-    assert m["cost_drag_R"] == pytest.approx(m["gross_expectancy_R"] - m["net_expectancy_R"])
-    assert m["mean_holding_bars"] <= HOLD_BARS
+    assert m["cost_drag_R"] == pytest.approx(
+        float(m["gross_expectancy_R"]) - float(m["net_expectancy_R"])
+    )
+    assert float(m["mean_holding_bars"]) <= HOLD_BARS
 
 
 # ---------------------------------------------------------------------------
@@ -336,12 +413,12 @@ def test_ledger_started_before_evaluation_and_crash_recovery(tmp_path):
     # attempt 1: crash AFTER start_attempt (durably persisted), before results
     verdict = led.acquire()
     assert verdict == "ACQUIRED"
-    rec1 = led.start_attempt(
-        spec_sha256="deadbeef", dataset_sha256="cafe", prereg_commit="c426b35"
+    rec1 = led.start_attempt(spec_sha256="deadbeef", dataset_sha256="cafe", prereg_commit="c426b35")
+    ledger_lines = (
+        tmp_path.joinpath("research_execution_ledger.jsonl")
+        .read_text(encoding="utf-8")
+        .splitlines()
     )
-    ledger_lines = tmp_path.joinpath("research_execution_ledger.jsonl").read_text(
-        encoding="utf-8"
-    ).splitlines()
     assert ledger_lines, "STARTED must be on disk before any economic work"
     assert "STARTED" in ledger_lines[-1]
     led.finish_failed(rec1.attempt_id, "injected crash after STARTED")

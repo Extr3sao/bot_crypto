@@ -94,9 +94,7 @@ class RejectReasonAnalysis:
                 max_drawdown_sum=max_dd,
                 strategy_distribution=_counts(t.strategy_id for t in trades),
                 regime_distribution=_counts(t.regime_signature for t in trades),
-                health_state_distribution=_counts(
-                    t.strategy_health_state for t in trades
-                ),
+                health_state_distribution=_counts(t.strategy_health_state for t in trades),
             )
         return metrics
 

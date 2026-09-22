@@ -12,7 +12,7 @@ import csv
 import hashlib
 import io
 import zipfile
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 from trading_bot.research.data_contracts import (
@@ -65,7 +65,7 @@ def verify_official_checksum(zip_path: Path) -> None:
         raise ValueError(f"CHECKSUM MISMATCH for {zip_path.name}: {actual} != {expected}")
 
 
-def _open_single_csv(zip_path: Path) -> tuple[csv.DictReader, zipfile.ZipFile]:
+def _open_single_csv(zip_path: Path) -> tuple[csv.DictReader[str], zipfile.ZipFile]:
     zf = zipfile.ZipFile(zip_path)
     names = zf.namelist()
     if len(names) != 1 or not names[0].endswith(".csv"):
@@ -124,7 +124,7 @@ def read_metrics_zip(zip_path: Path, symbol: str) -> list[OpenInterestRecord]:
         for row in reader:
             ts = (
                 datetime.strptime(row["create_time"], "%Y-%m-%d %H:%M:%S")
-                .replace(tzinfo=timezone.utc)
+                .replace(tzinfo=UTC)
                 .timestamp()
             )
             records.append(
@@ -134,7 +134,8 @@ def read_metrics_zip(zip_path: Path, symbol: str) -> list[OpenInterestRecord]:
                     symbol=symbol,
                     timestamp_ms=int(ts * 1000),
                     open_interest_contracts=float(row["sum_open_interest"]),
-                    open_interest_value=float(row["sum_open_interest_value"]),                        period="5m",
+                    open_interest_value=float(row["sum_open_interest_value"]),
+                    period="5m",
                     source="binance_public_data_futures_metrics",
                     source_file=f"data/raw/binance_um/metrics/{symbol}/{zip_path.name}",
                     source_sha256=digest,

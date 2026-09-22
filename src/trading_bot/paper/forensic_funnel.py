@@ -199,9 +199,7 @@ def attribute_losses(
         buckets["NO_PAPER_FILL"] = risk_accepts - paper
         notes.append("risk-accepted candidates did not all become paper trades")
     else:
-        bottleneck = (
-            FunnelGates.PAPER if paper > 0 else FunnelGates.PROPOSAL
-        )
+        bottleneck = FunnelGates.PAPER if paper > 0 else FunnelGates.PROPOSAL
         buckets["NO_SIGNAL"] = buckets.get("NO_SIGNAL", 0)
         if scans == 0:
             notes.append("no scans recorded for the day")

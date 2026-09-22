@@ -178,9 +178,7 @@ def _conflict_debate() -> tuple[DebateSession, AgentBus]:
     )
     evidence = {
         "ev:long": _evidence("ev:long", "strategy-expert-momentum", "p:long"),
-        "ev:short": _evidence(
-            "ev:short", "strategy-expert-mean_reversion", "p:short"
-        ),
+        "ev:short": _evidence("ev:short", "strategy-expert-mean_reversion", "p:short"),
     }
     bus = _bus()
     session = DebateSession(
@@ -224,9 +222,7 @@ def _snapshot_with(proposal_ids: tuple[str, ...]) -> OpportunitySnapshot:
     board = OpportunityBoard(run_id=TRACE.run_id, now=VALIDATION_CLOCK)
     for pid in proposal_ids:
         direction, strategy, ev_id, owner = specs[pid]
-        board.add_evidence(
-            _evidence(ev_id, owner, pid)
-        )
+        board.add_evidence(_evidence(ev_id, owner, pid))
         board.add(
             _proposal(
                 pid,
@@ -246,10 +242,7 @@ def _check(name: str, passed: bool, detail: str = "") -> None:
     if detail:
         details[name] = detail
     symbol = "[OK]" if passed else "[!!]"
-    print(
-        f"  {symbol} MA3-{name}: {PASS if passed else FAIL}"
-        f"{f' ({detail})' if detail else ''}"
-    )
+    print(f"  {symbol} MA3-{name}: {PASS if passed else FAIL}{f' ({detail})' if detail else ''}")
 
 
 def validate() -> bool:
@@ -285,9 +278,7 @@ def validate() -> bool:
         _clean_snapshot(),
         positions={"p:long": long_pos},
         regime_by_asset={"SOL": "TREND_UP"},
-        evidence_registry={
-            "ev:long": _evidence("ev:long", "strategy-expert-momentum", "p:long")
-        },
+        evidence_registry={"ev:long": _evidence("ev:long", "strategy-expert-momentum", "p:long")},
     )
     conflict_routed = (
         route.decision.value == "DEBATE_REQUIRED"
@@ -303,17 +294,11 @@ def validate() -> bool:
     # --- 2. Challenge exists (structured, bus-carried) ---
     session, bus = _conflict_debate()
     report = session.run()
-    challenges = [
-        c for c in report.critiques if c.stance is CritiqueStance.CHALLENGE
-    ]
+    challenges = [c for c in report.critiques if c.stance is CritiqueStance.CHALLENGE]
     critique_messages = [
-        m
-        for m in bus.accepted_messages
-        if m.message_type is AgentMessageType.CRITIQUE
+        m for m in bus.accepted_messages if m.message_type is AgentMessageType.CRITIQUE
     ]
-    structured = all(
-        dict(m.payload).get("critique_id") is not None for m in critique_messages
-    )
+    structured = all(dict(m.payload).get("critique_id") is not None for m in critique_messages)
     _check(
         "challenge_exists",
         len(challenges) > 0 and len(critique_messages) > 0 and structured,
@@ -324,14 +309,9 @@ def validate() -> bool:
     counter_critiques = [
         c
         for c in report.critiques
-        if c.critic_agent_id == "critic-counter-signal"
-        and c.stance is CritiqueStance.CHALLENGE
+        if c.critic_agent_id == "critic-counter-signal" and c.stance is CritiqueStance.CHALLENGE
     ]
-    counter_refs = {
-        ref
-        for c in counter_critiques
-        for ref in c.counter_evidence_refs
-    }
+    counter_refs = {ref for c in counter_critiques for ref in c.counter_evidence_refs}
     counter_survives = (
         len(counter_critiques) >= 1
         and len(counter_refs) > 0
@@ -363,14 +343,10 @@ def validate() -> bool:
     )
     report2 = session2.run()
     request_messages = [
-        m
-        for m in bus2.accepted_messages
-        if m.message_type is AgentMessageType.EVIDENCE_REQUEST
+        m for m in bus2.accepted_messages if m.message_type is AgentMessageType.EVIDENCE_REQUEST
     ]
     response_messages = [
-        m
-        for m in bus2.accepted_messages
-        if m.message_type is AgentMessageType.EVIDENCE_RESPONSE
+        m for m in bus2.accepted_messages if m.message_type is AgentMessageType.EVIDENCE_RESPONSE
     ]
     no_invention = (
         # No evidence item may enter the ledger from the missing-evidence
@@ -413,9 +389,7 @@ def validate() -> bool:
         positions=[_position(reg_p, "strategy-expert-momentum")],
         proposals={"p:rev": reg_p},
         regime_by_asset={"SOL": "TREND_UP"},
-        evidence_registry={
-            "ev:rev": _evidence("ev:rev", "strategy-expert-momentum", "p:rev")
-        },
+        evidence_registry={"ev:rev": _evidence("ev:rev", "strategy-expert-momentum", "p:rev")},
         max_rounds=MAX_DEBATE_ROUNDS,
     )
     report3 = session3.run()
@@ -428,10 +402,7 @@ def validate() -> bool:
         and original.confidence == 0.86  # original object never mutated
         and original.proposal_id == "p:rev"
         and "p:rev" in report3.proposal_ids  # original remains auditable
-        and session3.revised_proposals[
-            report3.revisions[0].revised_proposal_id
-        ].confidence
-        < 0.86
+        and session3.revised_proposals[report3.revisions[0].revised_proposal_id].confidence < 0.86
         and report3.outcome is DebateOutcome.REVISED
     )
     _check(
@@ -447,14 +418,10 @@ def validate() -> bool:
     shared = _evidence("ev:shared", "strategy-expert-momentum", "p:x")
     for agent in ("critic-evidence", "critic-regime", "critic-counter-signal"):
         ledger.add(shared, agent)
-    dedup_ok = (
-        ledger.unique_count() == 1
-        and dict(ledger.attribution())[shared.evidence_id]
-        == (
-            "critic-counter-signal",
-            "critic-evidence",
-            "critic-regime",
-        )
+    dedup_ok = ledger.unique_count() == 1 and dict(ledger.attribution())[shared.evidence_id] == (
+        "critic-counter-signal",
+        "critic-evidence",
+        "critic-regime",
     )
     _check(
         "evidence_not_double_counted",
@@ -465,10 +432,9 @@ def validate() -> bool:
     # --- 7. Loop terminates (no-new-evidence anti-loop) ---
     session4, _ = _conflict_debate()
     report4 = session4.run()
-    loop_ok = (
-        report4.round_count <= MAX_DEBATE_ROUNDS
-        and report4.termination_reason
-        in (DebateTerminationReason.NO_NEW_EVIDENCE, DebateTerminationReason.MAX_ROUNDS)
+    loop_ok = report4.round_count <= MAX_DEBATE_ROUNDS and report4.termination_reason in (
+        DebateTerminationReason.NO_NEW_EVIDENCE,
+        DebateTerminationReason.MAX_ROUNDS,
     )
     _check(
         "loop_terminates",
@@ -555,9 +521,7 @@ def validate() -> bool:
         ):
             if forbidden_cap in perms:
                 caps_ok = False
-                details[f"capability_violation_{manifest.agent_id}"] = (
-                    forbidden_cap.value
-                )
+                details[f"capability_violation_{manifest.agent_id}"] = forbidden_cap.value
         for action in (
             ForbiddenAction.PLACE_LIVE_ORDER,
             ForbiddenAction.CHANGE_RISK_LIMIT,
@@ -608,9 +572,7 @@ def validate() -> bool:
         "results": results,
         "details": details,
     }
-    REPORT_PATH.write_text(
-        json.dumps(report_payload, indent=2, default=str), encoding="utf-8"
-    )
+    REPORT_PATH.write_text(json.dumps(report_payload, indent=2, default=str), encoding="utf-8")
     print(f"Report written to {REPORT_PATH}")
 
     return failed == 0

@@ -221,12 +221,19 @@ def _conflict_snapshot() -> OpportunitySnapshot:
     board.add_evidence(long_ev)
     board.add_evidence(short_ev)
     board.add(
-        _proposal("p:long", direction=TradeDirection.LONG, strategy="momentum", evidence_id="ev:conf-long"),
+        _proposal(
+            "p:long", direction=TradeDirection.LONG, strategy="momentum", evidence_id="ev:conf-long"
+        ),
         source_agent_id="strategy-expert-momentum",
         source_agent_version="1.0.0",
     )
     board.add(
-        _proposal("p:short", direction=TradeDirection.SHORT, strategy="mean_reversion", evidence_id="ev:conf-short"),
+        _proposal(
+            "p:short",
+            direction=TradeDirection.SHORT,
+            strategy="mean_reversion",
+            evidence_id="ev:conf-short",
+        ),
         source_agent_id="strategy-expert-mean_reversion",
         source_agent_version="1.0.0",
     )
@@ -264,7 +271,9 @@ def test_router_clean_proposal_is_no_debate() -> None:
         snapshot,
         positions={"p:clean": _position(p, "strategy-expert-momentum")},
         regime_by_asset={"SOL": "TREND_UP"},
-        evidence_registry={"ev:p:clean": _evidence("ev:p:clean", "strategy-expert-momentum", claim="p:clean")},
+        evidence_registry={
+            "ev:p:clean": _evidence("ev:p:clean", "strategy-expert-momentum", claim="p:clean")
+        },
     )
     assert route.decision is DebateRouterDecision.NO_DEBATE
     assert route.reasons == ()
@@ -390,9 +399,7 @@ def test_evidence_critic_flags_stale_evidence() -> None:
     p = _proposal("p:1", evidence_id="ev:1")
     record = EvidenceCritic().critique(
         _position(p, "strategy-expert-momentum"),
-        DebateContext(
-            positions=(), evidence={"ev:1": evidence}, regime_by_asset={}, clock=CLOCK
-        ),
+        DebateContext(positions=(), evidence={"ev:1": evidence}, regime_by_asset={}, clock=CLOCK),
         TRACE,
     )
     assert record.stance is CritiqueStance.CHALLENGE
@@ -403,9 +410,7 @@ def test_regime_critic_flags_incoherent_direction() -> None:
     p = _proposal("p:1", direction=TradeDirection.SHORT, strategy="momentum")
     record = RegimeCritic().critique(
         _position(p, "strategy-expert-momentum"),
-        DebateContext(
-            positions=(), evidence={}, regime_by_asset={"SOL": "TREND_UP"}, clock=CLOCK
-        ),
+        DebateContext(positions=(), evidence={}, regime_by_asset={"SOL": "TREND_UP"}, clock=CLOCK),
         TRACE,
     )
     assert record.stance is CritiqueStance.CHALLENGE
@@ -497,9 +502,7 @@ def test_evidence_request_response_cycle_through_bus() -> None:
     # the critic must demand the missing item and the owner answers with the
     # evidence it actually holds (never fabricated).
     proposal = _proposal("p:1", evidence_id="ev:have")
-    proposal = proposal.model_copy(
-        update={"evidence_refs": ("ev:have", "ev:missing")}
-    )
+    proposal = proposal.model_copy(update={"evidence_refs": ("ev:have", "ev:missing")})
     session = _session(
         bus,
         proposals=[proposal],
@@ -662,8 +665,18 @@ def test_same_evidence_referenced_by_many_agents_counts_once() -> None:
     session = _session(
         bus,
         proposals=[
-            _proposal("p:long", direction=TradeDirection.LONG, strategy="momentum", evidence_id="ev:shared"),
-            _proposal("p:short", direction=TradeDirection.SHORT, strategy="mean_reversion", evidence_id="ev:shared"),
+            _proposal(
+                "p:long",
+                direction=TradeDirection.LONG,
+                strategy="momentum",
+                evidence_id="ev:shared",
+            ),
+            _proposal(
+                "p:short",
+                direction=TradeDirection.SHORT,
+                strategy="mean_reversion",
+                evidence_id="ev:shared",
+            ),
         ],
         evidence=[shared],
     )
@@ -759,14 +772,27 @@ def test_full_trace_reconstruction_from_swarm_to_report() -> None:
 
     def ctx(asset, returns):
         return AssetContext(
-            asset=asset, timestamp=TS, market_regime="TREND_UP", trend_state="up",
-            volatility_state="normal", liquidity_state="deep",
-            momentum_features={"returns": returns, "trend": {"direction": "up", "spread": 0.015}, "rsi": 65.0},
-            volatility_features={"atr_norm": 0.01}, volume_features={"surge": 1.2},
+            asset=asset,
+            timestamp=TS,
+            market_regime="TREND_UP",
+            trend_state="up",
+            volatility_state="normal",
+            liquidity_state="deep",
+            momentum_features={
+                "returns": returns,
+                "trend": {"direction": "up", "spread": 0.015},
+                "rsi": 65.0,
+            },
+            volatility_features={"atr_norm": 0.01},
+            volume_features={"surge": 1.2},
             data_quality={"bars_in_window": 120, "newest_bar_ts": TS},
-            data_fingerprint="a" * 64, dataset_id="ma3", agent_version="base-crypto-v1",
+            data_fingerprint="a" * 64,
+            dataset_id="ma3",
+            agent_version="base-crypto-v1",
             regime_method_version="asset-agent-regime-v1",
-            window_start_ts=TS - 119 * 300_000, window_end_ts=TS, bar_count=120,
+            window_start_ts=TS - 119 * 300_000,
+            window_end_ts=TS,
+            bar_count=120,
         )
 
     def candles(asset, drift):
@@ -774,7 +800,17 @@ def test_full_trace_reconstruction_from_swarm_to_report() -> None:
         start = TS - 79 * 300_000
         for i in range(80):
             price *= 1.0 + drift
-            out.append(OHLCV(f"{asset}/USDT", start + i * 300_000, price * 0.998, price * 1.002, price * 0.996, price, 100.0))
+            out.append(
+                OHLCV(
+                    f"{asset}/USDT",
+                    start + i * 300_000,
+                    price * 0.998,
+                    price * 1.002,
+                    price * 0.996,
+                    price,
+                    100.0,
+                )
+            )
         return out
 
     reg = AgentRegistry()
@@ -817,16 +853,20 @@ def test_full_trace_reconstruction_from_swarm_to_report() -> None:
         snapshot,
         positions=positions,
         regime_by_asset={"SOL": "TREND_UP", "ETH": "TREND_UP"},
-        evidence_registry={ref: item for item in board._evidence.values() for ref in [item.evidence_id]},
+        evidence_registry={
+            ref: item for item in board._evidence.values() for ref in [item.evidence_id]
+        },
     )
     evidence_registry = dict(board._evidence)
     session = DebateSession(
         debate_id="debate:trace",
         bus=bus,
-        positions=[positions[pid] for pid in sorted(positions)] or [_position(_proposal("p:x"), "strategy-expert-momentum")],
+        positions=[positions[pid] for pid in sorted(positions)]
+        or [_position(_proposal("p:x"), "strategy-expert-momentum")],
         proposals=proposals,
         regime_by_asset={"SOL": "TREND_UP", "ETH": "TREND_UP"},
-        evidence_registry=evidence_registry or {"ev:p:x": _evidence("ev:p:x", "strategy-expert-momentum", claim="p:x")},
+        evidence_registry=evidence_registry
+        or {"ev:p:x": _evidence("ev:p:x", "strategy-expert-momentum", claim="p:x")},
     )
     report = session.run()
     chain = [
@@ -846,7 +886,9 @@ def test_full_trace_reconstruction_from_swarm_to_report() -> None:
     assert report.trace is not None and report.trace.trace_id == TRACE.trace_id
     for critique in report.critiques:
         assert critique.trace.run_id == TRACE.run_id
-        message = [m for m in bus.accepted_messages if m.message_id == f"critique:{critique.critique_id}"]
+        message = [
+            m for m in bus.accepted_messages if m.message_id == f"critique:{critique.critique_id}"
+        ]
         assert message, "every critique must be reconstructible from a bus message"
 
 
@@ -871,7 +913,9 @@ def test_debate_sources_have_no_wall_clock() -> None:
     import pathlib
 
     for module in ("debate.py", "swarm.py", "opportunity.py", "bus.py", "specialists.py"):
-        tree = ast.parse(pathlib.Path(f"src/trading_bot/multi_agent/{module}").read_text(encoding="utf-8"))
+        tree = ast.parse(
+            pathlib.Path(f"src/trading_bot/multi_agent/{module}").read_text(encoding="utf-8")
+        )
         for node in ast.walk(tree):
             if (
                 isinstance(node, ast.Call)
@@ -982,7 +1026,9 @@ def test_malformed_participants_rejected_and_debate_state_clean() -> None:
                 evidence_refs=(),
                 created_at=CLOCK,
                 data_time=CLOCK,
-                trace=TraceContext(run_id="other-run", trace_id="other-trace", correlation_id="c", causation_id="c"),
+                trace=TraceContext(
+                    run_id="other-run", trace_id="other-trace", correlation_id="c", causation_id="c"
+                ),
             )
         )
     assert len(bus.accepted_messages) == before
@@ -1011,14 +1057,27 @@ def test_malformed_participants_rejected_and_debate_state_clean() -> None:
 def test_malformed_stale_context_fails_closed_in_swarm() -> None:
     def ctx(ts: int) -> AssetContext:
         return AssetContext(
-            asset="SOL", timestamp=ts, market_regime="TREND_UP", trend_state="up",
-            volatility_state="normal", liquidity_state="deep",
-            momentum_features={"returns": 0.06, "trend": {"direction": "up", "spread": 0.015}, "rsi": 65.0},
-            volatility_features={"atr_norm": 0.01}, volume_features={"surge": 1.2},
+            asset="SOL",
+            timestamp=ts,
+            market_regime="TREND_UP",
+            trend_state="up",
+            volatility_state="normal",
+            liquidity_state="deep",
+            momentum_features={
+                "returns": 0.06,
+                "trend": {"direction": "up", "spread": 0.015},
+                "rsi": 65.0,
+            },
+            volatility_features={"atr_norm": 0.01},
+            volume_features={"surge": 1.2},
             data_quality={"bars_in_window": 120, "newest_bar_ts": ts},
-            data_fingerprint="a" * 64, dataset_id="ma3", agent_version="base-crypto-v1",
+            data_fingerprint="a" * 64,
+            dataset_id="ma3",
+            agent_version="base-crypto-v1",
             regime_method_version="asset-agent-regime-v1",
-            window_start_ts=ts - 119 * 300_000, window_end_ts=ts, bar_count=120,
+            window_start_ts=ts - 119 * 300_000,
+            window_end_ts=ts,
+            bar_count=120,
         )
 
     with pytest.raises(AssetContextError, match="stale"):
@@ -1053,7 +1112,9 @@ def test_debate_module_imports_no_execution() -> None:
     import ast
     import pathlib
 
-    tree = ast.parse(pathlib.Path("src/trading_bot/multi_agent/debate.py").read_text(encoding="utf-8"))
+    tree = ast.parse(
+        pathlib.Path("src/trading_bot/multi_agent/debate.py").read_text(encoding="utf-8")
+    )
     for node in ast.walk(tree):
         module = None
         if isinstance(node, ast.Import):
@@ -1061,7 +1122,9 @@ def test_debate_module_imports_no_execution() -> None:
         elif isinstance(node, ast.ImportFrom) and node.module:
             module = node.module
         if module:
-            assert not module.startswith(("trading_bot.paper", "trading_bot.risk", "trading_bot.execution")), module
+            assert not module.startswith(
+                ("trading_bot.paper", "trading_bot.risk", "trading_bot.execution")
+            ), module
 
 
 # ---------------------------------------------------------------------------
@@ -1076,7 +1139,9 @@ def test_session_rejects_invalid_configuration() -> None:
     with pytest.raises(DebateError):
         DebateSession(debate_id="d", bus=bus, positions=[], max_rounds=2)
     with pytest.raises(DebateError):
-        DebateSession(debate_id="d", bus=bus, positions=[_position(_proposal("p:1"), "s")], max_rounds=0)
+        DebateSession(
+            debate_id="d", bus=bus, positions=[_position(_proposal("p:1"), "s")], max_rounds=0
+        )
 
 
 def test_report_blocked_until_terminated() -> None:

@@ -6,13 +6,12 @@ independently editable defaults.
 
 from __future__ import annotations
 
-from trading_bot.research.h6.contracts import SPEC_SHA256, DATASET_SHA256
-from trading_bot.research.h6.cost import COST_TOTAL_ROUND_TRIP_BPS, COST_SENSITIVITY_BPS
+from trading_bot.research.h6.contracts import DATASET_SHA256, SPEC_SHA256
+from trading_bot.research.h6.cost import COST_SENSITIVITY_BPS, COST_TOTAL_ROUND_TRIP_BPS
 from trading_bot.research.h6.funding import (
     FUNDING_DISCOVERY_ACCOUNTING,
     FUNDING_MATERIALITY_GATE_BEFORE_PROMOTION,
 )
-
 
 EXPECTED_COST_TOTAL_ROUND_TRIP_BPS = 10
 EXPECTED_COST_SENSITIVITY_BPS = (0, 10, 20, 40)
@@ -54,9 +53,7 @@ def assert_runtime_matches_frozen_spec() -> None:
     problems: list[str] = []
     for name, (runtime, expected) in checks.items():
         if runtime != expected:
-            problems.append(
-                f"{name}: runtime={runtime!r} expected={expected!r}"
-            )
+            problems.append(f"{name}: runtime={runtime!r} expected={expected!r}")
 
     if problems:
         raise RuntimeError("H6_SPEC_DRIFT: " + "; ".join(problems))

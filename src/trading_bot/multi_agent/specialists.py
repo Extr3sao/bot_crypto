@@ -210,9 +210,7 @@ class AssetExpert(_BaseSpecialist):
     ) -> AssetAssessment:
         context.validate(now_ts=now_ts)
         if context.asset != self.asset:
-            raise ValueError(
-                f"{self.asset} asset expert cannot evaluate {context.asset} context"
-            )
+            raise ValueError(f"{self.asset} asset expert cannot evaluate {context.asset} context")
         trend = context.trend_value or {}
         spread = abs(float(trend.get("spread", 0.0) or 0.0))
         trend_quality = _bounded(spread / 0.02)
@@ -349,18 +347,21 @@ class StrategyExpert(_BaseSpecialist):
         timeframe: str,
     ) -> tuple[TradeProposal, AgentEvidence]:
         direction = TradeDirection(signal.direction)
-        proposal_id = "proposal:" + _canonical_hash(
-            {
-                "asset": context.asset,
-                "direction": direction.value,
-                "strategy": self.strategy,
-                "timeframe": timeframe,
-                "regime": context.market_regime or "UNKNOWN",
-                "data_time": signal.timestamp,
-                "entry_reference": signal.entry_reference,
-                "structural_stop": signal.structural_stop,
-            }
-        )[:24]
+        proposal_id = (
+            "proposal:"
+            + _canonical_hash(
+                {
+                    "asset": context.asset,
+                    "direction": direction.value,
+                    "strategy": self.strategy,
+                    "timeframe": timeframe,
+                    "regime": context.market_regime or "UNKNOWN",
+                    "data_time": signal.timestamp,
+                    "entry_reference": signal.entry_reference,
+                    "structural_stop": signal.structural_stop,
+                }
+            )[:24]
+        )
         created_at = _timestamp(signal.timestamp)
         artifact_trace = _trace_payload(trace, proposal_id)
         evidence = _evidence(
@@ -400,7 +401,9 @@ class StrategyExpert(_BaseSpecialist):
                 f"{self.strategy} structural invalidation at {signal.structural_stop:.8f}"
             ),
             confidence=_bounded(
-                0.5 + (context.returns_value or 0.0) * (1.0 if direction is TradeDirection.LONG else -1.0)
+                0.5
+                + (context.returns_value or 0.0)
+                * (1.0 if direction is TradeDirection.LONG else -1.0)
             ),
             data_time=created_at,
             created_at=created_at,

@@ -9,9 +9,9 @@ the decision time.
 
 from __future__ import annotations
 
+from collections.abc import Sequence
 from dataclasses import dataclass
 from datetime import datetime, timedelta
-from typing import Iterable, Sequence
 
 from trading_bot.research.h6.contracts import (
     H6FeatureState,

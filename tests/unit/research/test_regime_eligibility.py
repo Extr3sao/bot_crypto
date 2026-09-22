@@ -194,12 +194,23 @@ def test_no_opportunistic_merging_same_chain_different_data() -> None:
     # through the SAME fixed chain; results depend only on (chain, data).
     regime = _regime()
     a = evaluate_regime_eligibility(
-        strategy_id="a", version="v1", asset="SOL", timeframe="5m", regime=regime,
+        strategy_id="a",
+        version="v1",
+        asset="SOL",
+        timeframe="5m",
+        regime=regime,
         metrics_by_level={SignatureLevel.EXACT: _metrics(n=35)},
     )
     b = evaluate_regime_eligibility(
-        strategy_id="b", version="v1", asset="SOL", timeframe="5m", regime=regime,
-        metrics_by_level={SignatureLevel.EXACT: _metrics(n=5), SignatureLevel.STRUCTURE: _metrics(n=35)},
+        strategy_id="b",
+        version="v1",
+        asset="SOL",
+        timeframe="5m",
+        regime=regime,
+        metrics_by_level={
+            SignatureLevel.EXACT: _metrics(n=5),
+            SignatureLevel.STRUCTURE: _metrics(n=35),
+        },
     )
     assert a.signature_level is SignatureLevel.EXACT
     assert b.signature_level is SignatureLevel.STRUCTURE
@@ -210,7 +221,11 @@ def test_no_opportunistic_merging_same_chain_different_data() -> None:
 def test_custom_thresholds() -> None:
     thresholds = EligibilityThresholds(min_eligible_n=5, min_shadow_n=2)
     result = evaluate_regime_eligibility(
-        strategy_id="m", version="v1", asset="SOL", timeframe="5m", regime=_regime(),
+        strategy_id="m",
+        version="v1",
+        asset="SOL",
+        timeframe="5m",
+        regime=_regime(),
         metrics_by_level={SignatureLevel.EXACT: _metrics(n=6)},
         thresholds=thresholds,
     )

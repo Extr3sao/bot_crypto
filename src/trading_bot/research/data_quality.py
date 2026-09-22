@@ -14,7 +14,7 @@ from __future__ import annotations
 import hashlib
 import json
 from collections.abc import Sequence
-from typing import TypeVar
+from typing import Any, TypeVar
 
 from trading_bot.research.data_contracts import (
     OpenInterestRecord,
@@ -55,7 +55,7 @@ def enforce_pit_cutoff(
 # ---------------------------------------------------------------------------
 
 
-def check_time_ordering(times_ms: Sequence[int]) -> list[str]:
+def check_time_ordering(times_ms: Sequence[int]) -> list[int]:
     """Non-strict monotonicity violations (indices of out-of-order records)."""
     return [i for i in range(1, len(times_ms)) if times_ms[i] < times_ms[i - 1]]
 
@@ -104,24 +104,20 @@ def check_stale_tail(times_ms: Sequence[int], now_ms: int, max_age_ms: int) -> b
 def normalize_trade_flow(
     records: Sequence[TradeFlowRecord],
     decision_time_ms: int,
-) -> dict[str, object]:
+) -> dict[str, Any]:
     """Deterministic normalized state for trade flow.
 
     Sorts by (trade_time_ms, agg_trade_id); enforces agg_trade_id uniqueness;
     reports ordering violations; excludes future records via PIT cutoff.
     """
-    errors: dict[str, object] = {}
-    allowed, future = enforce_pit_cutoff(
-        records, lambda r: r.trade_time_ms, decision_time_ms
-    )
+    errors: dict[str, Any] = {}
+    allowed, future = enforce_pit_cutoff(records, lambda r: r.trade_time_ms, decision_time_ms)
     if future:
         errors["FUTURE_RECORDS"] = [r.agg_trade_id for r in future]
 
     ordered = sorted(allowed, key=lambda r: (r.trade_time_ms, r.agg_trade_id))
     order_violations = [
-        i
-        for i in range(1, len(ordered))
-        if ordered[i].trade_time_ms < ordered[i - 1].trade_time_ms
+        i for i in range(1, len(ordered)) if ordered[i].trade_time_ms < ordered[i - 1].trade_time_ms
     ]
     if order_violations:
         errors["ORDER_VIOLATIONS"] = order_violations
@@ -158,7 +154,7 @@ def normalize_open_interest(
     records: Sequence[OpenInterestRecord],
     decision_time_ms: int,
     expected_interval_ms: int = 300_000,
-) -> dict[str, object]:
+) -> dict[str, Any]:
     """Deterministic normalized state for open interest.
 
     Native provider cadence is 5m (288 complete rows per UTC day; official
@@ -168,10 +164,8 @@ def normalize_open_interest(
     interpolation or backfill. Provider files are not guaranteed row-sorted;
     canonical state is produced after a deterministic sort.
     """
-    errors: dict[str, object] = {}
-    allowed, future = enforce_pit_cutoff(
-        records, lambda r: r.timestamp_ms, decision_time_ms
-    )
+    errors: dict[str, Any] = {}
+    allowed, future = enforce_pit_cutoff(records, lambda r: r.timestamp_ms, decision_time_ms)
     if future:
         errors["FUTURE_RECORDS"] = [r.timestamp_ms for r in future]
 
@@ -214,7 +208,7 @@ def _canonical_json(payload: object) -> bytes:
     return json.dumps(payload, sort_keys=True, separators=(",", ":")).encode()
 
 
-def dataset_fingerprint(payload: dict[str, object]) -> str:
+def dataset_fingerprint(payload: dict[str, Any]) -> str:
     """Stable canonical fingerprint: same inputs -> same hash, any dict order."""
     return hashlib.sha256(_canonical_json(payload)).hexdigest()
 

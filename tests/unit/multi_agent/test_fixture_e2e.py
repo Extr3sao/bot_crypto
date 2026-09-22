@@ -62,7 +62,9 @@ def test_fixture_agents_communicate_only_through_bus_and_blackboard() -> None:
     )
     side_effects = {"risk": 0, "broker": 0, "live": 0}
     received: list[tuple[str, str]] = []
-    bus.register_handler("strategy", lambda message: received.append(("strategy", message.message_id)))
+    bus.register_handler(
+        "strategy", lambda message: received.append(("strategy", message.message_id))
+    )
     bus.register_handler("critic", lambda message: received.append(("critic", message.message_id)))
 
     evidence = AgentEvidence(
@@ -87,7 +89,9 @@ def test_fixture_agents_communicate_only_through_bus_and_blackboard() -> None:
         started_at=NOW,
     )
 
-    def message(message_id: str, sender: str, receiver: str, kind: AgentMessageType) -> AgentMessage:
+    def message(
+        message_id: str, sender: str, receiver: str, kind: AgentMessageType
+    ) -> AgentMessage:
         return AgentMessage(
             schema_version="ma-1-v1",
             message_id=message_id,

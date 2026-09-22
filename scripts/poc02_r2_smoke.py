@@ -177,7 +177,9 @@ def run_one_window(
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--assets", default="BTC,ETH,SOL")
-    parser.add_argument("--fixture", action="store_true", help="deterministic fixture instead of public bars")
+    parser.add_argument(
+        "--fixture", action="store_true", help="deterministic fixture instead of public bars"
+    )
     parser.add_argument("--out", default=str(ROOT / "reports" / "poc02-r2-smoke"))
     args = parser.parse_args()
 
@@ -188,7 +190,9 @@ def main() -> int:
     )
     if settings.runtime.mode is not TradingMode.PAPER or settings.risk.live_trading_enabled:
         raise SystemExit("smoke safety gate failed: PAPER mode required")
-    risk = RiskManager(risk=settings.risk.model_copy(update={"max_open_positions": 1}), equity=10_000.0)
+    risk = RiskManager(
+        risk=settings.risk.model_copy(update={"max_open_positions": 1}), equity=10_000.0
+    )
     windows: list[dict[str, Any]] = []
 
     if args.fixture:
@@ -208,12 +212,7 @@ def main() -> int:
 
     reached_risk = sum(1 for w in windows if w["reached_risk"])
     risk_accepts = sum(1 for w in windows if w["risk_verdict"] == "ACCEPT")
-    natural_none = sum(
-        1
-        for w in windows
-        for g in w["groups"]
-        if g["selected_direction"] == "NONE"
-    )
+    natural_none = sum(1 for w in windows for g in w["groups"] if g["selected_direction"] == "NONE")
     report = {
         "checkpoint": "MA-DIRECTION-ARBITRATION-AND-POC02-REPAIR-01",
         "track": "F",
@@ -236,9 +235,22 @@ def main() -> int:
     out_dir.mkdir(parents=True, exist_ok=True)
     out_path = out_dir / f"R2_SMOKE_{run_id}.json"
     out_path.write_text(json.dumps(report, indent=2, sort_keys=True, default=str), encoding="utf-8")
-    print(json.dumps({k: report[k] for k in (
-        "run_id", "source", "NATURAL_WINDOWS", "NATURAL_CASES_TO_RISK",
-        "RISK_ACCEPTS", "ARBITRATION_NONE_GROUPS")}, indent=1))
+    print(
+        json.dumps(
+            {
+                k: report[k]
+                for k in (
+                    "run_id",
+                    "source",
+                    "NATURAL_WINDOWS",
+                    "NATURAL_CASES_TO_RISK",
+                    "RISK_ACCEPTS",
+                    "ARBITRATION_NONE_GROUPS",
+                )
+            },
+            indent=1,
+        )
+    )
     print(f"written: {out_path}")
     return 0
 

@@ -48,8 +48,18 @@ def _curl(url: str, dest: Path) -> None:
     dest.parent.mkdir(parents=True, exist_ok=True)
     tmp = dest.with_suffix(dest.suffix + ".part")
     cmd = [
-        "curl", "-sS", "--fail", "--max-time", "60", "--retry", str(RETRIES),
-        "--retry-delay", "2", "-o", str(tmp), url,
+        "curl",
+        "-sS",
+        "--fail",
+        "--max-time",
+        "60",
+        "--retry",
+        str(RETRIES),
+        "--retry-delay",
+        "2",
+        "-o",
+        str(tmp),
+        url,
     ]
     for attempt in range(1, RETRIES + 1):
         r = subprocess.run(cmd, capture_output=True, text=True)
@@ -96,8 +106,9 @@ def process_day(symbol: str, day: str) -> dict[str, object]:
             _, ok, _ = verify_one(zip_path)
         except RuntimeError:
             ok = False
-    outcome.update(status="OK" if ok else "CHECKSUM_FAIL", downloaded=True,
-                   checksum="PASS" if ok else "FAIL")
+    outcome.update(
+        status="OK" if ok else "CHECKSUM_FAIL", downloaded=True, checksum="PASS" if ok else "FAIL"
+    )
     return outcome
 
 
@@ -121,9 +132,11 @@ def main(argv: list[str] | None = None) -> int:
                 if res["status"] not in ("OK", "ALREADY_VERIFIED"):
                     print(f"  !! {res['file']}: {res['status']}", flush=True)
                 if i % 250 == 0:
-                    print(f"  {i}/{len(days)} ({time.time()-t0:.0f}s)", flush=True)
+                    print(f"  {i}/{len(days)} ({time.time() - t0:.0f}s)", flush=True)
         dt = time.time() - t0
-        ok = sum(1 for r in results if r["symbol"] == sym and r["status"] in ("OK", "ALREADY_VERIFIED"))
+        ok = sum(
+            1 for r in results if r["symbol"] == sym and r["status"] in ("OK", "ALREADY_VERIFIED")
+        )
         print(f"[{sym}] done: {ok}/{len(days)} verified in {dt:.0f}s", flush=True)
 
     summary = {
@@ -152,7 +165,9 @@ def main(argv: list[str] | None = None) -> int:
     out = OUT_DIR / "DOWNLOAD_SUMMARY.json"
     out.write_text(json.dumps(summary, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     print(f"summary -> {out}")
-    return 0 if (summary["files_checksum_fail"] == 0 and summary["files_download_failed"] == 0) else 1
+    return (
+        0 if (summary["files_checksum_fail"] == 0 and summary["files_download_failed"] == 0) else 1
+    )
 
 
 if __name__ == "__main__":

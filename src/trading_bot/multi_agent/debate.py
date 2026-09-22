@@ -131,9 +131,7 @@ class DebateRouter:
         reasons: set[DebateRouteReason] = set()
 
         conflicting = {
-            proposal_id
-            for conflict in snapshot.conflicts
-            for proposal_id in conflict.proposal_ids
+            proposal_id for conflict in snapshot.conflicts for proposal_id in conflict.proposal_ids
         }
         if conflicting:
             debated.extend(sorted(conflicting))
@@ -261,17 +259,20 @@ class BaseCritic:
     ) -> CritiqueRecord:
         refs = tuple(sorted(set(evidence_refs)))
         counter = tuple(sorted(set(counter_evidence_refs)))
-        critique_id = "critique:" + _canonical_hash(
-            {
-                "critic": self.agent_id,
-                "proposal_id": position.proposal_id,
-                "stance": stance.value,
-                "claim": claim,
-                "evidence_refs": refs,
-                "counter_evidence_refs": counter,
-                "requested_action": requested_action.value,
-            }
-        )[:24]
+        critique_id = (
+            "critique:"
+            + _canonical_hash(
+                {
+                    "critic": self.agent_id,
+                    "proposal_id": position.proposal_id,
+                    "stance": stance.value,
+                    "claim": claim,
+                    "evidence_refs": refs,
+                    "counter_evidence_refs": counter,
+                    "requested_action": requested_action.value,
+                }
+            )[:24]
+        )
         return CritiqueRecord(
             schema_version=DEBATE_SCHEMA_VERSION,
             critique_id=critique_id,
@@ -325,9 +326,7 @@ class EvidenceCritic(BaseCritic):
                 clock=context.clock,
                 trace=trace,
             )
-        unavailable = [
-            ref for ref in refs if not context.evidence[ref].is_valid_at(context.clock)
-        ]
+        unavailable = [ref for ref in refs if not context.evidence[ref].is_valid_at(context.clock)]
         if unavailable:
             return self._record(
                 position=position,
@@ -358,8 +357,7 @@ class EvidenceCritic(BaseCritic):
                 trace=trace,
             )
         supported = any(
-            context.lineage_of(position.proposal_id)
-            & set(context.evidence[ref].claim_refs)
+            context.lineage_of(position.proposal_id) & set(context.evidence[ref].claim_refs)
             for ref in refs
         )
         if not supported:
@@ -496,9 +494,7 @@ class CounterSignalCritic(BaseCritic):
             key=lambda item: item.proposal_id,
         )
         if opposing:
-            counter_refs = tuple(
-                sorted(ref for item in opposing for ref in item.evidence_refs)
-            )
+            counter_refs = tuple(sorted(ref for item in opposing for ref in item.evidence_refs))
             return self._record(
                 position=position,
                 stance=CritiqueStance.CHALLENGE,
@@ -662,12 +658,16 @@ class DebateSession:
         if critics is not None and not critics:
             raise DebateError("debate requires at least one critic")
         active_critics: tuple[BaseCritic, ...] = tuple(
-            critics if critics is not None else (EvidenceCritic(), RegimeCritic(), CounterSignalCritic())
+            critics
+            if critics is not None
+            else (EvidenceCritic(), RegimeCritic(), CounterSignalCritic())
         )
         owner_ids = {position.owner_agent_id for position in positions}
         critic_ids = {critic.agent_id for critic in active_critics}
         if not critic_ids - owner_ids:
-            raise DebateError("builder/critic separation violated: proposal owner is the only critic")
+            raise DebateError(
+                "builder/critic separation violated: proposal owner is the only critic"
+            )
         self.debate_id = debate_id
         self.bus = bus
         self.max_rounds = max_rounds
@@ -782,9 +782,7 @@ class DebateSession:
     def run(self) -> DebateReport:
         deadline = self.bus.now() + self.timeout if self.timeout is not None else None
         self._record_event(DebateEventType.DEBATE_STARTED, {"debate_id": self.debate_id})
-        current: dict[str, DebatePosition] = {
-            item.proposal_id: item for item in self._positions
-        }
+        current: dict[str, DebatePosition] = {item.proposal_id: item for item in self._positions}
         revised_from: dict[str, str] = {}
 
         while self.round < self.max_rounds and self.status is DebateStatus.ACTIVE:
@@ -793,9 +791,7 @@ class DebateSession:
                 break
             self.round += 1
             evidence_before = self._ledger.unique_count()
-            claims_before = {
-                _canonical_hash(critique.claim) for critique in self._critiques
-            }
+            claims_before = {_canonical_hash(critique.claim) for critique in self._critiques}
             round_context = DebateContext(
                 positions=tuple(current[pid] for pid in sorted(current)),
                 evidence=self._evidence_registry,
@@ -876,9 +872,7 @@ class DebateSession:
                 original = self._proposals.get(original_id)
                 if rev_position is None or original is None:
                     continue
-                revised = self.revision_factory(
-                    original, triggers[0], self.bus.now()
-                )
+                revised = self.revision_factory(original, triggers[0], self.bus.now())
                 if revised is None:
                     continue
                 if revised.run_id != self._trace.run_id:
@@ -888,9 +882,7 @@ class DebateSession:
                     schema_version=DEBATE_SCHEMA_VERSION,
                     original_proposal_id=original.proposal_id,
                     revised_proposal_id=revised.proposal_id,
-                    triggering_critique_ids=tuple(
-                        critique.critique_id for critique in triggers
-                    ),
+                    triggering_critique_ids=tuple(critique.critique_id for critique in triggers),
                     revision_reason=triggers[0].claim,
                     trace=self._trace,
                     created_at=self.bus.now(),
@@ -945,9 +937,7 @@ class DebateSession:
                 self._terminate(DebateTerminationReason.MAX_ROUNDS, DebateStatus.MAX_ROUNDS)
                 break
             if not material_round and self.round > 1:
-                self._terminate(
-                    DebateTerminationReason.NO_NEW_EVIDENCE, DebateStatus.COMPLETED
-                )
+                self._terminate(DebateTerminationReason.NO_NEW_EVIDENCE, DebateStatus.COMPLETED)
                 break
             if not owner_requested:
                 # Challenges stand but nobody was asked to act; give owners a
@@ -1158,9 +1148,7 @@ class DebateSession:
         return supplied, response_message
 
     def _owner_fallback(self, proposal_id: str) -> str:
-        position = next(
-            (item for item in self._positions if item.proposal_id == proposal_id), None
-        )
+        position = next((item for item in self._positions if item.proposal_id == proposal_id), None)
         if position is None:
             raise DebateError(f"unknown position: {proposal_id}")
         return position.owner_agent_id

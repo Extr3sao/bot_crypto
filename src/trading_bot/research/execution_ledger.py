@@ -27,10 +27,12 @@ Core invariants (unit-tested):
 
 from __future__ import annotations
 
+import contextlib
 import json
 import os
 from dataclasses import asdict, dataclass
 from pathlib import Path
+from typing import Any
 
 STATES = ("STARTED", "COMPLETED", "FAILED", "ABORTED")
 
@@ -41,7 +43,7 @@ LOCK_SUFFIX = ".lock"
 def _utcnow_iso() -> str:
     import datetime
 
-    return datetime.datetime.now(datetime.timezone.utc).isoformat()
+    return datetime.datetime.now(datetime.UTC).isoformat()
 
 
 def _sha256_file(path: Path) -> str:
@@ -75,6 +77,7 @@ class ResearchExecutionLedger:
     """Append-only JSONL ledger + atomic lock for economic execution authority."""
 
     def __init__(self, ledger_dir: Path, experiment_id: str, *, concurrent: bool = False) -> None:
+        self._fh: object | None = None
         self.dir = Path(ledger_dir)
         self.dir.mkdir(parents=True, exist_ok=True)
         self.experiment_id = experiment_id
@@ -94,7 +97,9 @@ class ResearchExecutionLedger:
         lock) or 'ALREADY_CONSUMED' (experiment already COMPLETED).
         """
         records = self._read_all()
-        if any(r["experiment_id"] == self.experiment_id and r["state"] == "COMPLETED" for r in records):
+        if any(
+            r["experiment_id"] == self.experiment_id and r["state"] == "COMPLETED" for r in records
+        ):
             return "ALREADY_CONSUMED"
         if self.concurrent:
             if self._lock_held:
@@ -106,14 +111,14 @@ class ResearchExecutionLedger:
         # The WHOLE acquire body is failure-atomic: ANY OSError while taking
         # or writing the lock (including Windows same-process write denial)
         # means authority is held elsewhere -> ALREADY_RUNNING.
-        fh = open(self.lock_path, "a+")
+        fh = open(self.lock_path, "a+")  # noqa: SIM115 - lock held for process lifetime (see comment above)
         try:
             try:
                 fh.seek(0)
                 try:
                     import msvcrt
 
-                    msvcrt.locking(fh.fileno(), msvcrt.LK_NBLCK, 1)
+                    msvcrt.locking(fh.fileno(), msvcrt.LK_NBLCK, 1)  # type: ignore[attr-defined]  # msvcrt stubs lack locking/LK_*
                 except ImportError:
                     import fcntl
 
@@ -123,16 +128,12 @@ class ResearchExecutionLedger:
                 fh.write(_utcnow_iso())
                 fh.flush()
             except OSError:
-                try:
+                with contextlib.suppress(Exception):
                     fh.close()
-                except Exception:  # noqa: BLE001 - best-effort close
-                    pass
                 return "ALREADY_RUNNING"
-        except Exception:  # noqa: BLE001 - never grant authority on unknown errors
-            try:
+        except Exception:
+            with contextlib.suppress(Exception):
                 fh.close()
-            except Exception:  # noqa: BLE001
-                pass
             return "ALREADY_RUNNING"
         self._fh = fh
         self._lock_held = True
@@ -146,7 +147,7 @@ class ResearchExecutionLedger:
                 try:
                     import msvcrt
 
-                    msvcrt.locking(fh.fileno(), msvcrt.LK_UNLCK, 1)
+                    msvcrt.locking(fh.fileno(), msvcrt.LK_UNLCK, 1)  # type: ignore[attr-defined]  # msvcrt stubs lack locking/LK_*
                 except ImportError:
                     import fcntl
 
@@ -161,13 +162,13 @@ class ResearchExecutionLedger:
     # Append-only records
     # ------------------------------------------------------------------
 
-    def _append(self, record: dict[str, object]) -> None:
+    def _append(self, record: dict[str, Any]) -> None:
         with self.ledger_path.open("a", encoding="utf-8") as fh:
             fh.write(json.dumps(record, sort_keys=True) + "\n")
             fh.flush()
             os.fsync(fh.fileno())  # durable confirmation
 
-    def _read_all(self) -> list[dict[str, object]]:
+    def _read_all(self) -> list[dict[str, Any]]:
         if not self.ledger_path.exists():
             return []
         return [
@@ -188,7 +189,9 @@ class ResearchExecutionLedger:
     ) -> LedgerRecord:
         """Persist a STARTED record and fsync it. MUST precede all economic work."""
         records = self._read_all()
-        distinct_attempts = {r["attempt_id"] for r in records if r["experiment_id"] == self.experiment_id}
+        distinct_attempts = {
+            r["attempt_id"] for r in records if r["experiment_id"] == self.experiment_id
+        }
         attempt_index = len(distinct_attempts) + 1
         rec = LedgerRecord(
             experiment_id=self.experiment_id,
@@ -240,7 +243,7 @@ class ResearchExecutionLedger:
             }
         )
 
-    def _get(self, attempt_id: str) -> dict[str, object]:
+    def _get(self, attempt_id: str) -> dict[str, Any]:
         matches = [r for r in self._read_all() if r.get("attempt_id") == attempt_id]
         if not matches:
             raise KeyError(f"attempt {attempt_id} not found")
@@ -250,13 +253,13 @@ class ResearchExecutionLedger:
     # Queries (forensics)
     # ------------------------------------------------------------------
 
-    def experiment_summary(self) -> dict[str, object]:
+    def experiment_summary(self) -> dict[str, Any]:
         """Forensic summary: one entry per attempt (latest event = its state)."""
         records = [r for r in self._read_all() if r["experiment_id"] == self.experiment_id]
-        latest_by_attempt: dict[str, dict[str, object]] = {}
+        latest_by_attempt: dict[str, dict[str, Any]] = {}
         for r in records:  # file order == append order
             latest_by_attempt[str(r["attempt_id"])] = r
-        attempts = sorted(latest_by_attempt.values(), key=lambda r: int(r["attempt_index"]))  # type: ignore[arg-type]
+        attempts = sorted(latest_by_attempt.values(), key=lambda r: int(r["attempt_index"]))
         return {
             "experiment_id": self.experiment_id,
             "execution_attempts": len(attempts),

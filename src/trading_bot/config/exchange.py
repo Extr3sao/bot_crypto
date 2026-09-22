@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import Any
+
 from pydantic import BaseModel, Field
 
 _ACCOUNT_TYPE_RE = r"^(spot|margin)$"
@@ -58,7 +60,7 @@ class Exchange(BaseModel):
     )
     default_type: str = Field("spot", pattern=_DEFAULT_TYPE_RE)
     rate_limit_ms: int = Field(250, ge=50)
-    options: dict[str, object] = Field(default_factory=dict)
+    options: dict[str, Any] = Field(default_factory=dict)
     timeouts: ExchangeTimeouts = Field(default_factory=lambda: ExchangeTimeouts())
     retries: ExchangeRetries = Field(default_factory=lambda: ExchangeRetries())
     time_in_force_default: str = Field("GTC", pattern=_TIME_IN_FORCE_RE)

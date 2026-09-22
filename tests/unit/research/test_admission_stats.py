@@ -28,7 +28,9 @@ def test_single_p_value_cannot_promote() -> None:
     # impossible prob-Sharpe gate (1.1 > max 1.0) the evidence fails even
     # though the p-value gate passes -> promotion is multi-gate.
     gates = StatEvidenceGates(require_ci_excludes_zero=False, min_prob_sharpe_positive=1.1)
-    evidence = compute_stat_evidence(_positive(seed=11), gates=gates, resamples=400, permutations=400)
+    evidence = compute_stat_evidence(
+        _positive(seed=11), gates=gates, resamples=400, permutations=400
+    )
     assert evidence.permutation_p_value == 0.0  # p-value gate trivially passes
     assert not evidence.gates_passed
     assert "prob_sharpe_positive_below_gate" in evidence.failed_gates
@@ -55,6 +57,10 @@ def test_zero_variance_fails_closed_no_promotion() -> None:
 
 
 def test_gate_thresholds_configurable() -> None:
-    gates = StatEvidenceGates(min_prob_sharpe_positive=0.5, max_permutation_p_value=0.9, require_ci_excludes_zero=False)
-    evidence = compute_stat_evidence(_positive(seed=11), gates=gates, resamples=300, permutations=300)
+    gates = StatEvidenceGates(
+        min_prob_sharpe_positive=0.5, max_permutation_p_value=0.9, require_ci_excludes_zero=False
+    )
+    evidence = compute_stat_evidence(
+        _positive(seed=11), gates=gates, resamples=300, permutations=300
+    )
     assert evidence.gates_passed

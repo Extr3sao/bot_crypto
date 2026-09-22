@@ -276,7 +276,9 @@ class DirectionArbiter:
         long_score = scores[SELECTED_LONG].score
         short_score = scores[SELECTED_SHORT].score
         if long_score < self.min_direction_score and short_score < self.min_direction_score:
-            return self._resolved(group, proposals, selected=SELECTED_NONE, reason=REASON_BELOW_FLOOR)
+            return self._resolved(
+                group, proposals, selected=SELECTED_NONE, reason=REASON_BELOW_FLOOR
+            )
         if long_score == short_score:
             return self._resolved(group, proposals, selected=SELECTED_NONE, reason=REASON_SCORE_TIE)
         winner = SELECTED_LONG if long_score > short_score else SELECTED_SHORT
@@ -300,20 +302,14 @@ class DirectionArbiter:
         reason: str,
     ) -> OpportunityGroup:
         losing_ref = (
-            group.short_candidate_ref
-            if selected == SELECTED_LONG
-            else group.long_candidate_ref
+            group.short_candidate_ref if selected == SELECTED_LONG else group.long_candidate_ref
         )
         counter: tuple[str, ...] = ()
         if losing_ref is not None:
             loser = proposals.get(losing_ref)
             counter = tuple(sorted(loser.evidence_refs)) if loser is not None else ()
         winner_score = next(
-            (
-                item.score
-                for item in group.direction_scores
-                if item.direction == selected
-            ),
+            (item.score for item in group.direction_scores if item.direction == selected),
             0.0,
         )
         updated = OpportunityGroup(
@@ -364,9 +360,21 @@ class DirectionArbiter:
         )
         identity = {
             "run_id": run_id,
-            "asset": long_proposal.asset if long_proposal else short_proposal.asset if short_proposal else None,
-            "strategy": long_proposal.strategy if long_proposal else short_proposal.strategy if short_proposal else None,
-            "timeframe": long_proposal.timeframe if long_proposal else short_proposal.timeframe if short_proposal else None,
+            "asset": long_proposal.asset
+            if long_proposal
+            else short_proposal.asset
+            if short_proposal
+            else None,
+            "strategy": long_proposal.strategy
+            if long_proposal
+            else short_proposal.strategy
+            if short_proposal
+            else None,
+            "timeframe": long_proposal.timeframe
+            if long_proposal
+            else short_proposal.timeframe
+            if short_proposal
+            else None,
             "decision_time": decision_time.isoformat(),
             "long_ref": long_proposal.proposal_id if long_proposal else None,
             "short_ref": short_proposal.proposal_id if short_proposal else None,
@@ -399,7 +407,9 @@ class DirectionArbiter:
         source_agent_id_by_ref: Mapping[str, str] | None,
     ) -> DirectionScore:
         """Score one side with the MA-4 MetaRanker over strategy evidence."""
-        evidence = evidence_registry.get(proposal.evidence_refs[0]) if proposal.evidence_refs else None
+        evidence = (
+            evidence_registry.get(proposal.evidence_refs[0]) if proposal.evidence_refs else None
+        )
         source_agent_id = (
             (source_agent_id_by_ref or {}).get(proposal.proposal_id)
             or getattr(evidence, "producer_agent_id", None)
@@ -429,9 +439,7 @@ class DirectionArbiter:
         if proposal.run_id != run_id:
             raise ArbitrationError("candidate run does not match group run")
         if proposal.direction not in (TradeDirection.LONG, TradeDirection.SHORT):
-            raise ArbitrationError(
-                f"candidate direction not arbitable: {proposal.direction.value}"
-            )
+            raise ArbitrationError(f"candidate direction not arbitable: {proposal.direction.value}")
         if not proposal.evidence_refs:
             raise ArbitrationError("candidate requires evidence")
         if proposal.data_time > proposal.created_at:
@@ -522,12 +530,8 @@ class OpportunityGroupVerifier:
         record("candidate_binding", not binding_bad, f"violations={binding_bad}")
 
         # No stripping: both sides that existed must still be recorded.
-        present_long = any(
-            item.direction == SELECTED_LONG for item in group.direction_scores
-        )
-        present_short = any(
-            item.direction == SELECTED_SHORT for item in group.direction_scores
-        )
+        present_long = any(item.direction == SELECTED_LONG for item in group.direction_scores)
+        present_short = any(item.direction == SELECTED_SHORT for item in group.direction_scores)
         stripping = (
             (group.long_candidate_ref is not None and not present_long)
             or (group.short_candidate_ref is not None and not present_short)
@@ -604,8 +608,7 @@ class OpportunityGroupVerifier:
             if loser is not None:
                 expected_counter = tuple(sorted(loser.evidence_refs))
         counter_ok = (
-            group.selected_direction == SELECTED_NONE
-            or group.counter_evidence == expected_counter
+            group.selected_direction == SELECTED_NONE or group.counter_evidence == expected_counter
         )
         record(
             "counter_evidence_integrity",

@@ -23,7 +23,7 @@ def ledger_dir(tmp_path: Path) -> Path:
 
 
 def _read_lines(p: Path) -> list[dict]:
-    return [json.loads(l) for l in p.read_text(encoding="utf-8").splitlines() if l.strip()]
+    return [json.loads(line) for line in p.read_text(encoding="utf-8").splitlines() if line.strip()]
 
 
 def test_started_record_persisted_before_economic_work(ledger_dir: Path) -> None:
@@ -78,7 +78,7 @@ def test_recovery_new_attempt_id_failed_preserved(ledger_dir: Path) -> None:
     assert a2.attempt_id != a1.attempt_id
     assert a2.attempt_index == 2
     result = ledger_dir / "result.json"
-    result.write_text("{\"ok\": true}", encoding="utf-8")
+    result.write_text('{"ok": true}', encoding="utf-8")
     ledger2.finish_completed(a2.attempt_id, result)
     s = ledger2.experiment_summary()
     assert s["execution_attempts"] == 2
@@ -103,9 +103,9 @@ def test_concurrent_second_process_blocked(ledger_dir: Path) -> None:
 
 def test_already_consumed_after_completion(ledger_dir: Path) -> None:
     rl = RunnerLedger(ledger_dir, "EXP-DONE")
-    attempt = rl.begin(spec_sha256="s", dataset_sha256="d", prereg_commit="c")
+    rl.begin(spec_sha256="s", dataset_sha256="d", prereg_commit="c")
     result = ledger_dir / "result.json"
-    result.write_text("{\"ok\": true}", encoding="utf-8")
+    result.write_text('{"ok": true}', encoding="utf-8")
     rl.complete(result)
     # a fresh process finds the experiment consumed
     l2 = ResearchExecutionLedger(ledger_dir, "EXP-DONE")

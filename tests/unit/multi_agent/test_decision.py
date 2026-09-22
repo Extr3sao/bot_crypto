@@ -146,7 +146,9 @@ def _proposal(
     )
 
 
-def _assessment(asset: str = "SOL", regime: str = "TREND_UP", confidence: float = 0.9) -> AssetAssessment:
+def _assessment(
+    asset: str = "SOL", regime: str = "TREND_UP", confidence: float = 0.9
+) -> AssetAssessment:
     return AssetAssessment(
         asset=asset,
         timestamp=TS,
@@ -190,7 +192,9 @@ def _run_debate(
     registry: dict[str, AgentEvidence] = {}
     for proposal in proposals:
         for ref in proposal.evidence_refs:
-            registry.setdefault(ref, _evidence(ref, owners[proposal.proposal_id], claim=proposal.proposal_id))
+            registry.setdefault(
+                ref, _evidence(ref, owners[proposal.proposal_id], claim=proposal.proposal_id)
+            )
     positions = [_position(p, owners[p.proposal_id]) for p in proposals]
     session = DebateSession(
         debate_id=f"debate:{'-'.join(p.proposal_id for p in proposals)}",
@@ -470,15 +474,21 @@ def _verification_meta(artifact_id: str):
 class TestFirstDecisionE2E:
     def test_three_candidates_selected_rejected_reasons(self) -> None:
         sol = _proposal("p:sol", confidence=0.91, asset="SOL", strategy="momentum")
-        btc = _proposal(
-            "p:btc", confidence=0.83, asset="BTC", strategy="breakout"
-        )
+        btc = _proposal("p:btc", confidence=0.83, asset="BTC", strategy="breakout")
         eth = _proposal("p:eth", confidence=0.79, asset="ETH", strategy="trend")
         proposals = {p.proposal_id: p for p in (sol, btc, eth)}
         registry = {
-            **{ref: _evidence(ref, "strategy-expert-momentum", claim="c") for ref in sol.evidence_refs},
-            **{ref: _evidence(ref, "strategy-expert-breakout", claim="c") for ref in btc.evidence_refs},
-            **{ref: _evidence(ref, "strategy-expert-trend", claim="c") for ref in eth.evidence_refs},
+            **{
+                ref: _evidence(ref, "strategy-expert-momentum", claim="c")
+                for ref in sol.evidence_refs
+            },
+            **{
+                ref: _evidence(ref, "strategy-expert-breakout", claim="c")
+                for ref in btc.evidence_refs
+            },
+            **{
+                ref: _evidence(ref, "strategy-expert-trend", claim="c") for ref in eth.evidence_refs
+            },
         }
         report_sol = _report_supported(("p:sol",))
         report_eth = DebateReport(
@@ -515,14 +525,8 @@ class TestFirstDecisionE2E:
         assert package.selected_candidate_id == "p:sol"
         rejected = {a.final_proposal_id: a for a in package.rejected_alternatives}
         assert set(rejected) == {"p:btc", "p:eth"}
-        assert (
-            rejected["p:btc"].rejection_reasons
-            == (DecisionReason.LOWER_RANKED_ALTERNATIVE,)
-        )
-        assert (
-            rejected["p:eth"].rejection_reasons
-            == (DecisionReason.INSUFFICIENT_EVIDENCE,)
-        )
+        assert rejected["p:btc"].rejection_reasons == (DecisionReason.LOWER_RANKED_ALTERNATIVE,)
+        assert rejected["p:eth"].rejection_reasons == (DecisionReason.INSUFFICIENT_EVIDENCE,)
         # All three preserved in the candidate set.
         assert {c.final_proposal_id for c in package.candidate_set} == {
             "p:sol",
@@ -551,8 +555,7 @@ class TestFirstDecisionE2E:
         assert candidate.material_dissent is False
         assert candidate.revision_lineage == ("p:sol",)
         breakdown = dict(
-            (name, (value, source))
-            for name, value, source in candidate.score_breakdown.components
+            (name, (value, source)) for name, value, source in candidate.score_breakdown.components
         )
         assert breakdown["meta_ranker_score"][1] == ScoreComponentSource.META_RANKER.value
         assert candidate.supporting_evidence_refs
@@ -632,7 +635,9 @@ class TestEligibilityEngine:
             data_time=CLOCK - timedelta(minutes=2),
             expires_at=CLOCK - timedelta(minutes=1),
         )
-        registry = {ref: _evidence(ref, "strategy-expert-momentum") for ref in expired.evidence_refs}
+        registry = {
+            ref: _evidence(ref, "strategy-expert-momentum") for ref in expired.evidence_refs
+        }
         package = _make_engine().decide(
             snapshot=OpportunitySnapshot(opportunities=(), conflicts=()),
             proposals={"p:x": expired},
@@ -672,7 +677,9 @@ class TestEligibilityEngine:
 
     def test_future_evidence_available_at_rejected(self) -> None:
         p = _proposal("p:ef")
-        evidence = _evidence("ev:p:ef", "strategy-expert-momentum", observed=CLOCK + timedelta(hours=1))
+        evidence = _evidence(
+            "ev:p:ef", "strategy-expert-momentum", observed=CLOCK + timedelta(hours=1)
+        )
         package = _make_engine().decide(
             snapshot=OpportunitySnapshot(opportunities=(), conflicts=()),
             proposals={"p:ef": p},
@@ -751,18 +758,22 @@ class TestScoringProvenance:
         )
         candidate = package.candidate_set[0]
         # Recompute the canonical MetaRanker V1 score directly and compare.
-        expected = MetaRanker().score(
-            __import__(
-                "trading_bot.multi_agent.opportunity", fromlist=["Opportunity"]
-            ).Opportunity(
-                proposal=p,
-                evidence_refs=p.evidence_refs,
-                source_agent_id="unknown",
-                source_agent_version="0",
-            ),
-            assessment=assessment,
-            conflicted=False,
-        ).score
+        expected = (
+            MetaRanker()
+            .score(
+                __import__(
+                    "trading_bot.multi_agent.opportunity", fromlist=["Opportunity"]
+                ).Opportunity(
+                    proposal=p,
+                    evidence_refs=p.evidence_refs,
+                    source_agent_id="unknown",
+                    source_agent_version="0",
+                ),
+                assessment=assessment,
+                conflicted=False,
+            )
+            .score
+        )
         meta_component = candidate.score_breakdown.component("meta_ranker_score")
         assert meta_component == pytest.approx(expected)
         assert candidate.meta_score == pytest.approx(expected)
@@ -817,14 +828,10 @@ class TestScoringProvenance:
             reports=[report],
             now=CLOCK,
         )
-        candidate = next(
-            c for c in package.candidate_set if c.final_proposal_id == "p:pen:r-1"
-        )
+        candidate = next(c for c in package.candidate_set if c.final_proposal_id == "p:pen:r-1")
         assert candidate.score_breakdown.component("counter_evidence_materiality") == 0.2
         assert candidate.meta_score - 0.2 == pytest.approx(candidate.decision_score)
-        sources = {
-            name: source for name, _, source in candidate.score_breakdown.components
-        }
+        sources = {name: source for name, _, source in candidate.score_breakdown.components}
         assert sources["counter_evidence_materiality"] == ScoreComponentSource.DEBATE.value
         assert candidate.material_dissent is True
         assert "critic-counter-signal" in candidate.challenged_by
@@ -833,9 +840,7 @@ class TestScoringProvenance:
         """Revision lowers confidence → lower MetaRanker score; the debate
         component must not also penalize an answered challenge."""
         original = _proposal("p:rev", confidence=0.9)
-        revised = original.model_copy(
-            update={"proposal_id": "p:rev2", "confidence": 0.7}
-        )
+        revised = original.model_copy(update={"proposal_id": "p:rev2", "confidence": 0.7})
         registry = {
             ref: _evidence(ref, "strategy-expert-momentum")
             for ref in (*original.evidence_refs, *revised.evidence_refs)
@@ -961,13 +966,14 @@ def _report_with_revisions_and_answered_challenge(
 class TestUnresolvedConflict:
     def test_unresolved_long_short_blocks_both_sides(self) -> None:
         long_p = _proposal("p:long", direction=TradeDirection.LONG, strategy="momentum")
-        short_p = _proposal(
-            "p:short", direction=TradeDirection.SHORT, strategy="mean_reversion"
-        )
+        short_p = _proposal("p:short", direction=TradeDirection.SHORT, strategy="mean_reversion")
         proposals = {"p:long": long_p, "p:short": short_p}
         registry = {
             ref: _evidence(ref, owner, claim="c")
-            for p, owner in ((long_p, "strategy-expert-momentum"), (short_p, "strategy-expert-mean_reversion"))
+            for p, owner in (
+                (long_p, "strategy-expert-momentum"),
+                (short_p, "strategy-expert-mean_reversion"),
+            )
             for ref in p.evidence_refs
         }
         report_long = DebateReport(
@@ -1054,9 +1060,7 @@ class TestUnresolvedConflict:
 class TestRevisionChangesWinner:
     def test_revision_demotes_original_and_btc_wins(self) -> None:
         sol = _proposal("p:sol", confidence=0.9)
-        sol_revised = sol.model_copy(
-            update={"proposal_id": "p:sol:r-1", "confidence": 0.7}
-        )
+        sol_revised = sol.model_copy(update={"proposal_id": "p:sol:r-1", "confidence": 0.7})
         btc = _proposal("p:btc", asset="BTC", strategy="breakout", confidence=0.84)
         proposals = {"p:sol": sol, "p:sol:r-1": sol_revised, "p:btc": btc}
         registry = {
@@ -1101,11 +1105,15 @@ class TestRevisionChangesWinner:
 
 class TestNoTradeMatrix:
     def _decide(self, proposals: list[TradeProposal], registry=None, reports=()) -> DecisionPackage:
-        reg = registry if registry is not None else {
-            ref: _evidence(ref, "strategy-expert-momentum")
-            for p in proposals
-            for ref in p.evidence_refs
-        }
+        reg = (
+            registry
+            if registry is not None
+            else {
+                ref: _evidence(ref, "strategy-expert-momentum")
+                for p in proposals
+                for ref in p.evidence_refs
+            }
+        )
         return _make_engine().decide(
             snapshot=OpportunitySnapshot(opportunities=(), conflicts=()),
             proposals={p.proposal_id: p for p in proposals},
@@ -1335,7 +1343,9 @@ class TestDecisionVerifier:
         _, registry, reports = _three_candidates()
         result = DecisionPackageVerifier().verify(
             package,
-            proposals={c.final_proposal_id: _proposal(c.final_proposal_id) for c in package.candidate_set},
+            proposals={
+                c.final_proposal_id: _proposal(c.final_proposal_id) for c in package.candidate_set
+            },
             evidence_registry=registry,
             reports=reports,
             now=late,
@@ -1441,7 +1451,9 @@ class TestCrossRunIsolation:
                 snapshot=self._board(p),
                 proposals={p.proposal_id: p},
                 evidence_registry={
-                    "ev:p:sol": _evidence_run("ev:p:sol", run_id=self.RUN_B, trace=_trace_for(self.RUN_B))
+                    "ev:p:sol": _evidence_run(
+                        "ev:p:sol", run_id=self.RUN_B, trace=_trace_for(self.RUN_B)
+                    )
                 },
                 now=CLOCK,
             )
@@ -1454,7 +1466,9 @@ class TestCrossRunIsolation:
             self._current_engine().decide(
                 snapshot=self._board(p),
                 proposals={p.proposal_id: p},
-                evidence_registry={"ev:p:sol": _evidence_run("ev:p:sol", run_id=self.RUN_A, trace=TRACE)},
+                evidence_registry={
+                    "ev:p:sol": _evidence_run("ev:p:sol", run_id=self.RUN_A, trace=TRACE)
+                },
                 reports=[foreign],
                 now=CLOCK,
             )
@@ -1465,7 +1479,9 @@ class TestCrossRunIsolation:
             snapshot=self._board(),
             proposals={p.proposal_id: p},
             evidence_registry={
-                "ev:p:sol": _evidence_run("ev:p:sol", run_id=self.RUN_B, trace=_trace_for(self.RUN_B))
+                "ev:p:sol": _evidence_run(
+                    "ev:p:sol", run_id=self.RUN_B, trace=_trace_for(self.RUN_B)
+                )
             },
             now=CLOCK,
         )
@@ -1476,9 +1492,9 @@ class TestCrossRunIsolation:
     def test_matrix_D_forged_trace_foreign_evidence_rejected(self) -> None:
         """DEF-MA4-002 regression: matching trace_id never grants run authority."""
         p = _proposal_run("p:sol", run_id=self.RUN_A, trace=TRACE)
-        forged = _evidence_run("ev:p:sol", run_id=self.RUN_B, trace=_trace_for(self.RUN_B)).model_copy(
-            update={"trace": TRACE}
-        )
+        forged = _evidence_run(
+            "ev:p:sol", run_id=self.RUN_B, trace=_trace_for(self.RUN_B)
+        ).model_copy(update={"trace": TRACE})
         package = self._current_engine().decide(
             snapshot=self._board(),
             proposals={p.proposal_id: p},
@@ -1566,7 +1582,9 @@ class TestCrossRunIsolation:
             self._current_engine().decide(
                 snapshot=self._board(p_foreign),
                 proposals={"p:ok": p_ok},
-                evidence_registry={"ev:p:ok": _evidence_run("ev:p:ok", run_id=self.RUN_A, trace=TRACE)},
+                evidence_registry={
+                    "ev:p:ok": _evidence_run("ev:p:ok", run_id=self.RUN_A, trace=TRACE)
+                },
                 now=CLOCK,
             )
 
@@ -1579,7 +1597,9 @@ class TestCrossRunIsolation:
             self._current_engine().decide(
                 snapshot=self._board(p),
                 proposals={p.proposal_id: p},
-                evidence_registry={"ev:p:sol": _evidence_run("ev:p:sol", run_id=self.RUN_A, trace=TRACE)},
+                evidence_registry={
+                    "ev:p:sol": _evidence_run("ev:p:sol", run_id=self.RUN_A, trace=TRACE)
+                },
                 assessments={"SOL": foreign},
                 now=CLOCK,
             )
@@ -1610,7 +1630,8 @@ class TestCrossRunIsolation:
         )
         assert not result.passed
         assert any(
-            name == "run_authority_evidence" and status == "FAIL" for name, status, _ in result.checks
+            name == "run_authority_evidence" and status == "FAIL"
+            for name, status, _ in result.checks
         )
 
     def test_verifier_rejects_foreign_run_report(self) -> None:
@@ -1637,7 +1658,8 @@ class TestCrossRunIsolation:
         )
         assert not result.passed
         assert any(
-            name == "run_authority_proposals" and status == "FAIL" for name, status, _ in result.checks
+            name == "run_authority_proposals" and status == "FAIL"
+            for name, status, _ in result.checks
         )
 
     def test_verifier_rejects_reports_registry_foreign_run(self) -> None:
@@ -1673,7 +1695,9 @@ class TestCrossRunIsolation:
             for _ in range(3)
         ]
         assert (
-            packages[0].model_dump_json() == packages[1].model_dump_json() == packages[2].model_dump_json()
+            packages[0].model_dump_json()
+            == packages[1].model_dump_json()
+            == packages[2].model_dump_json()
         )
 
         foreign = reports[0].model_copy(update={"run_id": self.RUN_B})
@@ -1697,7 +1721,9 @@ class TestCrossRunIsolation:
         verifier = DecisionPackageVerifier()
 
         def _verify(pkg, reg):
-            return verifier.verify(pkg, proposals=proposals, evidence_registry=reg, reports=reports, now=CLOCK)
+            return verifier.verify(
+                pkg, proposals=proposals, evidence_registry=reg, reports=reports, now=CLOCK
+            )
 
         # Full strip x3 (CERT-MA4-001-RETRY-001 vector).
         stripped = package.model_copy(
@@ -1802,7 +1828,8 @@ class TestSelectedEvidenceBinding:
         result = self._verify(tampered, proposals, registry, reports)
         assert not result.passed
         assert any(
-            name == "selected_evidence_binding" and status == "FAIL" for name, status, _ in result.checks
+            name == "selected_evidence_binding" and status == "FAIL"
+            for name, status, _ in result.checks
         )
 
     def test_selected_candidate_partial_evidence_rejected(self) -> None:
@@ -1810,9 +1837,7 @@ class TestSelectedEvidenceBinding:
         selected = self._selected(package)
         assert len(selected.supporting_evidence_refs) >= 1
         partial = tuple(
-            c.model_copy(
-                update={"supporting_evidence_refs": c.supporting_evidence_refs[:-1]}
-            )
+            c.model_copy(update={"supporting_evidence_refs": c.supporting_evidence_refs[:-1]})
             if c.final_proposal_id == package.selected_candidate_id
             else c
             for c in package.candidate_set
@@ -1825,9 +1850,7 @@ class TestSelectedEvidenceBinding:
         """Swapped ref is registered, current-run, trace-consistent - and still
         rejected because it is not evidence committed by the terminal proposal."""
         package, proposals, registry, reports = self._decided()
-        extra = _evidence_run(
-            "ev:valid-but-uncommitted", run_id=self.RUN_A, trace=TRACE
-        )
+        extra = _evidence_run("ev:valid-but-uncommitted", run_id=self.RUN_A, trace=TRACE)
         registry = {**registry, "ev:valid-but-uncommitted": extra}
         swapped = tuple(
             c.model_copy(
@@ -1905,15 +1928,15 @@ class TestSelectedEvidenceBinding:
             update={
                 "selected_candidate_id": "p1",
                 "candidate_set": tuple(
-                    c.model_copy(update={"final_proposal_id": "p1"})
-                    for c in package.candidate_set
+                    c.model_copy(update={"final_proposal_id": "p1"}) for c in package.candidate_set
                 ),
             }
         )
         result = self._verify(ancestor, {"p1": p1, "p2": p2}, registry, [report])
         assert not result.passed
         assert any(
-            name == "final_proposal_binding" and status == "FAIL" for name, status, _ in result.checks
+            name == "final_proposal_binding" and status == "FAIL"
+            for name, status, _ in result.checks
         )
 
     def test_rejected_candidate_audit_allows_incomplete_refs(self) -> None:
@@ -1923,9 +1946,7 @@ class TestSelectedEvidenceBinding:
         rejected_ids = {c.final_proposal_id for c in package.candidate_set} - {
             package.selected_candidate_id
         }
-        target = next(
-            c for c in package.candidate_set if c.final_proposal_id in rejected_ids
-        )
+        target = next(c for c in package.candidate_set if c.final_proposal_id in rejected_ids)
         subset = target.supporting_evidence_refs[:-1] or ()
         tampered = package.model_copy(
             update={
@@ -1960,27 +1981,21 @@ class TestSelectedEvidenceBinding:
         selected = self._selected(package)
         assert len(selected.supporting_evidence_refs) == 2
         # Clean control verifies with canonical set equality.
-        assert self._verify(
-            package, {"p:multi": p}, registry, ()
-        ).passed
+        assert self._verify(package, {"p:multi": p}, registry, ()).passed
         # Input-order permutation of the same identities must also verify.
         permuted = package.model_copy(
             update={
                 "candidate_set": tuple(
                     c.model_copy(
                         update={
-                            "supporting_evidence_refs": tuple(
-                                reversed(c.supporting_evidence_refs)
-                            )
+                            "supporting_evidence_refs": tuple(reversed(c.supporting_evidence_refs))
                         }
                     )
                     for c in package.candidate_set
                 )
             }
         )
-        assert self._verify(
-            permuted, {"p:multi": p}, registry, ()
-        ).passed
+        assert self._verify(permuted, {"p:multi": p}, registry, ()).passed
 
     def test_binding_consistency_with_scores(self) -> None:
         """Score binding audit: meta component == meta_score and final ==
@@ -2020,8 +2035,16 @@ class TestAuthoritativeDebateBlockers:
 
     def _unresolved_package(self) -> tuple:
         """Honest SOL LONG vs SOL SHORT with UNRESOLVED debate -> NO_TRADE."""
-        p_l = _proposal("p:l", direction=TradeDirection.LONG, asset="SOL", strategy="momentum", confidence=0.95)
-        p_s = _proposal("p:s", direction=TradeDirection.SHORT, asset="SOL", strategy="mean_reversion", confidence=0.90)
+        p_l = _proposal(
+            "p:l", direction=TradeDirection.LONG, asset="SOL", strategy="momentum", confidence=0.95
+        )
+        p_s = _proposal(
+            "p:s",
+            direction=TradeDirection.SHORT,
+            asset="SOL",
+            strategy="mean_reversion",
+            confidence=0.90,
+        )
         report = DebateReport(
             schema_version=SCHEMA,
             debate_id="debate:unresolved",
@@ -2159,7 +2182,12 @@ class TestAuthoritativeDebateBlockers:
 
         snapshot = OpportunitySnapshot(
             opportunities=(
-                Opportunity(proposal=p2, evidence_refs=("ev:p2",), source_agent_id="s", source_agent_version="1"),
+                Opportunity(
+                    proposal=p2,
+                    evidence_refs=("ev:p2",),
+                    source_agent_id="s",
+                    source_agent_version="1",
+                ),
             ),
             conflicts=(
                 ConflictCase(
@@ -2220,7 +2248,13 @@ class TestAuthoritativeDebateBlockers:
         """Board-conflict-without-debate blocker re-derived from the snapshot:
         deleting the package-side conflict marker cannot resurrect a selection."""
         p_a = _proposal("p:a", direction=TradeDirection.LONG, asset="SOL", confidence=0.95)
-        p_b = _proposal("p:b", direction=TradeDirection.SHORT, asset="SOL", strategy="mean_reversion", confidence=0.90)
+        p_b = _proposal(
+            "p:b",
+            direction=TradeDirection.SHORT,
+            asset="SOL",
+            strategy="mean_reversion",
+            confidence=0.90,
+        )
         from trading_bot.multi_agent.opportunity import ConflictCase
 
         snapshot = OpportunitySnapshot(
@@ -2269,7 +2303,11 @@ class TestAuthoritativeDebateBlockers:
         honest_results = [
             json.dumps(
                 verifier.verify(
-                    valid_pkg, proposals=v_proposals, evidence_registry=v_registry, reports=v_reports, now=CLOCK
+                    valid_pkg,
+                    proposals=v_proposals,
+                    evidence_registry=v_registry,
+                    reports=v_reports,
+                    now=CLOCK,
                 ).to_dict(),
                 sort_keys=True,
             )
@@ -2281,7 +2319,11 @@ class TestAuthoritativeDebateBlockers:
         t15_results = [
             json.dumps(
                 verifier.verify(
-                    t15, proposals=v_proposals, evidence_registry=v_registry, reports=v_reports, now=CLOCK
+                    t15,
+                    proposals=v_proposals,
+                    evidence_registry=v_registry,
+                    reports=v_reports,
+                    now=CLOCK,
                 ).to_dict(),
                 sort_keys=True,
             )
@@ -2294,7 +2336,11 @@ class TestAuthoritativeDebateBlockers:
         t16_results = [
             json.dumps(
                 verifier.verify(
-                    t16, proposals=i_proposals, evidence_registry=i_registry, reports=i_reports, now=CLOCK
+                    t16,
+                    proposals=i_proposals,
+                    evidence_registry=i_registry,
+                    reports=i_reports,
+                    now=CLOCK,
                 ).to_dict(),
                 sort_keys=True,
             )
@@ -2349,7 +2395,9 @@ class TestBoundaryAndTemporal:
             DecisionEngine(run_id="different-run").decide(
                 snapshot=OpportunitySnapshot(opportunities=(), conflicts=()),
                 proposals={"p:foreign": p},
-                evidence_registry={ref: _evidence(ref, "strategy-expert-momentum") for ref in p.evidence_refs},
+                evidence_registry={
+                    ref: _evidence(ref, "strategy-expert-momentum") for ref in p.evidence_refs
+                },
                 now=CLOCK,
             )
 

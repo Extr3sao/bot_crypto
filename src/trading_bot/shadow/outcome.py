@@ -158,14 +158,10 @@ class ShadowOutcomeEngine:
         # Plan geometry must be consistent for the direction (fail closed).
         if capture.direction == "LONG":
             if not (capture.stop_loss < entry <= capture.take_profit):
-                raise ValueError(
-                    "LONG plan must satisfy stop_loss < entry <= take_profit"
-                )
+                raise ValueError("LONG plan must satisfy stop_loss < entry <= take_profit")
         else:  # SHORT
             if not (capture.take_profit < entry <= capture.stop_loss):
-                raise ValueError(
-                    "SHORT plan must satisfy take_profit < entry <= stop_loss"
-                )
+                raise ValueError("SHORT plan must satisfy take_profit < entry <= stop_loss")
 
         decision_dt = _parse_utc(capture.decision_time)
 
@@ -197,7 +193,9 @@ class ShadowOutcomeEngine:
 
         if exit_bar is not None:
             exit_ref = (
-                capture.stop_loss if outcome is ShadowTradeOutcome.STOP_LOSS_HIT else capture.take_profit
+                capture.stop_loss
+                if outcome is ShadowTradeOutcome.STOP_LOSS_HIT
+                else capture.take_profit
             )
         else:
             exit_ref = usable[-1].close if usable else entry
@@ -276,9 +274,7 @@ class ShadowOutcomeLedger:
 
     def record(self, trade: ShadowTrade) -> None:
         if trade.shadow_candidate_id in self._ids:
-            raise ValueError(
-                f"duplicate shadow trade: {trade.shadow_candidate_id}"
-            )
+            raise ValueError(f"duplicate shadow trade: {trade.shadow_candidate_id}")
         self._ids.add(trade.shadow_candidate_id)
         self._trades.append(trade)
 
@@ -291,9 +287,7 @@ class ShadowOutcomeLedger:
     # -- durability ---------------------------------------------------------
 
     def to_jsonl(self) -> str:
-        return "".join(
-            json.dumps(t.to_dict(), separators=(",", ":")) + "\n" for t in self._trades
-        )
+        return "".join(json.dumps(t.to_dict(), separators=(",", ":")) + "\n" for t in self._trades)
 
     def save(self, path: Path | str) -> None:
         Path(path).write_text(self.to_jsonl(), encoding="utf-8")

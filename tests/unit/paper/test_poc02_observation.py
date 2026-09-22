@@ -94,9 +94,7 @@ def _write_campaign(
             json.dumps(finalizations), encoding="utf-8"
         )
     if state:
-        (tmp_path / "POC02_CAMPAIGN_STATE.json").write_text(
-            json.dumps(state), encoding="utf-8"
-        )
+        (tmp_path / "POC02_CAMPAIGN_STATE.json").write_text(json.dumps(state), encoding="utf-8")
     return tmp_path
 
 
@@ -139,8 +137,18 @@ def test_frequency_kpis_exclude_partial_and_invalid_days() -> None:
     perf = [
         {"FINALIZED": True, "DAY_COUNTS_FOR_COVERAGE": True, "trades": 4, "trades_ge_3": True},
         {"FINALIZED": True, "DAY_COUNTS_FOR_COVERAGE": True, "trades": 0, "trades_ge_3": False},
-        {"FINALIZED": True, "DAY_COUNTS_FOR_COVERAGE": False, "trades": 99, "trades_ge_3": True},  # invalid
-        {"FINALIZED": False, "DAY_COUNTS_FOR_COVERAGE": False, "trades": 50, "trades_ge_3": True},  # open day
+        {
+            "FINALIZED": True,
+            "DAY_COUNTS_FOR_COVERAGE": False,
+            "trades": 99,
+            "trades_ge_3": True,
+        },  # invalid
+        {
+            "FINALIZED": False,
+            "DAY_COUNTS_FOR_COVERAGE": False,
+            "trades": 50,
+            "trades_ge_3": True,
+        },  # open day
     ]
     kpis = frequency_kpis(perf)
     assert kpis["COMPLETED_VALID_DAYS"] == 2
@@ -154,7 +162,9 @@ def test_frequency_kpis_exclude_partial_and_invalid_days() -> None:
 
 
 def test_frequency_kpis_zero_valid_days() -> None:
-    kpis = frequency_kpis([{"FINALIZED": False, "DAY_COUNTS_FOR_COVERAGE": False, "trades": 1, "trades_ge_3": False}])
+    kpis = frequency_kpis(
+        [{"FINALIZED": False, "DAY_COUNTS_FOR_COVERAGE": False, "trades": 1, "trades_ge_3": False}]
+    )
     assert kpis["COMPLETED_VALID_DAYS"] == 0
     assert kpis["TRADES_PER_VALID_DAY"] is None
     assert kpis["PERCENT_DAYS_GE_3"] is None
@@ -167,12 +177,50 @@ def test_frequency_kpis_zero_valid_days() -> None:
 
 def test_strategy_contribution_counts_and_pnl_mapping() -> None:
     attribution = [
-        {"written_at": "2026-09-09T10:00:00+00:00", "stage": "AGENT_REJECT", "strategy_id": "Momentum", "regime": "R1", "asset": "BTC"},
-        {"written_at": "2026-09-09T10:00:01+00:00", "stage": "AGENT_REJECT", "strategy_id": "Trend", "regime": "R1", "asset": "BTC"},
-        {"written_at": "2026-09-09T10:00:02+00:00", "stage": "SELECTED", "strategy_id": "Momentum", "regime": "R1", "asset": "BTC"},
-        {"written_at": "2026-09-09T10:00:03+00:00", "stage": "RISK_REJECT", "strategy_id": "Momentum", "regime": "R1", "asset": "BTC", "risk_reason": "x"},
-        {"written_at": "2026-09-09T10:00:04+00:00", "stage": "PAPER_OPEN", "strategy_id": "Trend", "regime": "R1", "asset": "BTC", "symbol": "BTC/USDT"},
-        {"written_at": "2026-09-09T10:05:00+00:00", "stage": "PAPER_CLOSE", "symbol": "BTC/USDT", "net_pnl": 12.5, "gross_pnl": 15.0},
+        {
+            "written_at": "2026-09-09T10:00:00+00:00",
+            "stage": "AGENT_REJECT",
+            "strategy_id": "Momentum",
+            "regime": "R1",
+            "asset": "BTC",
+        },
+        {
+            "written_at": "2026-09-09T10:00:01+00:00",
+            "stage": "AGENT_REJECT",
+            "strategy_id": "Trend",
+            "regime": "R1",
+            "asset": "BTC",
+        },
+        {
+            "written_at": "2026-09-09T10:00:02+00:00",
+            "stage": "SELECTED",
+            "strategy_id": "Momentum",
+            "regime": "R1",
+            "asset": "BTC",
+        },
+        {
+            "written_at": "2026-09-09T10:00:03+00:00",
+            "stage": "RISK_REJECT",
+            "strategy_id": "Momentum",
+            "regime": "R1",
+            "asset": "BTC",
+            "risk_reason": "x",
+        },
+        {
+            "written_at": "2026-09-09T10:00:04+00:00",
+            "stage": "PAPER_OPEN",
+            "strategy_id": "Trend",
+            "regime": "R1",
+            "asset": "BTC",
+            "symbol": "BTC/USDT",
+        },
+        {
+            "written_at": "2026-09-09T10:05:00+00:00",
+            "stage": "PAPER_CLOSE",
+            "symbol": "BTC/USDT",
+            "net_pnl": 12.5,
+            "gross_pnl": 15.0,
+        },
     ]
     result = strategy_contribution([], attribution)
     momentum = result["strategies"]["Momentum"]
@@ -193,9 +241,29 @@ def test_strategy_contribution_counts_and_pnl_mapping() -> None:
 
 def test_agent_filter_rates_conditioned() -> None:
     attribution = [
-        {"written_at": "2026-09-09T10:00:00+00:00", "stage": "AGENT_REJECT", "strategy_id": "Momentum", "regime": "R1", "asset": "BTC", "decision_reasons": ["UNRESOLVED_CONFLICT"]},
-        {"written_at": "2026-09-09T10:00:01+00:00", "stage": "SELECTED", "strategy_id": "Trend", "regime": "R1", "asset": "BTC"},
-        {"written_at": "2026-09-09T10:00:02+00:00", "stage": "AGENT_REJECT", "strategy_id": "Momentum", "regime": "R2", "asset": "ETH", "decision_reasons": ["INSUFFICIENT_EVIDENCE"]},
+        {
+            "written_at": "2026-09-09T10:00:00+00:00",
+            "stage": "AGENT_REJECT",
+            "strategy_id": "Momentum",
+            "regime": "R1",
+            "asset": "BTC",
+            "decision_reasons": ["UNRESOLVED_CONFLICT"],
+        },
+        {
+            "written_at": "2026-09-09T10:00:01+00:00",
+            "stage": "SELECTED",
+            "strategy_id": "Trend",
+            "regime": "R1",
+            "asset": "BTC",
+        },
+        {
+            "written_at": "2026-09-09T10:00:02+00:00",
+            "stage": "AGENT_REJECT",
+            "strategy_id": "Momentum",
+            "regime": "R2",
+            "asset": "ETH",
+            "decision_reasons": ["INSUFFICIENT_EVIDENCE"],
+        },
     ]
     result = agent_filter_analysis([], attribution)
     assert result["AGENT_FILTER_RATE"] == 0.6667
@@ -217,25 +285,60 @@ def test_agent_filter_zero_denominator() -> None:
 
 
 def test_regime_coverage_map_classifications() -> None:
-    cycle_rows = [
-        _cycle_row("2026-09-09", f"r{i}", "NO_SIGNAL", "NO_SIGNAL_REGIME_X")
-        for i in range(6)
-    ] + [
-        # 20 observed windows for the well-covered regime
-        _cycle_row("2026-09-09", "g", "NONE", "GOOD") for _i in range(20)
-    ] + [
-        # 6 observed windows for the no-edge regime
-        _cycle_row("2026-09-09", "s", "AGENT_FILTER", "STUCK") for _i in range(6)
-    ]
+    cycle_rows = (
+        [_cycle_row("2026-09-09", f"r{i}", "NO_SIGNAL", "NO_SIGNAL_REGIME_X") for i in range(6)]
+        + [
+            # 20 observed windows for the well-covered regime
+            _cycle_row("2026-09-09", "g", "NONE", "GOOD")
+            for _i in range(20)
+        ]
+        + [
+            # 6 observed windows for the no-edge regime
+            _cycle_row("2026-09-09", "s", "AGENT_FILTER", "STUCK")
+            for _i in range(6)
+        ]
+    )
     attribution = []
     # a well-covered regime: many windows + 2 strategies with progress
     for _i in range(20):
-        attribution.append({"written_at": "2026-09-09T10:00:00+00:00", "stage": "SELECTED", "strategy_id": "Momentum", "regime": "GOOD", "asset": "BTC"})
-        attribution.append({"written_at": "2026-09-09T10:00:00+00:00", "stage": "SELECTED", "strategy_id": "Trend", "regime": "GOOD", "asset": "BTC"})
+        attribution.append(
+            {
+                "written_at": "2026-09-09T10:00:00+00:00",
+                "stage": "SELECTED",
+                "strategy_id": "Momentum",
+                "regime": "GOOD",
+                "asset": "BTC",
+            }
+        )
+        attribution.append(
+            {
+                "written_at": "2026-09-09T10:00:00+00:00",
+                "stage": "SELECTED",
+                "strategy_id": "Trend",
+                "regime": "GOOD",
+                "asset": "BTC",
+            }
+        )
     # a no-edge regime: proposals but zero progress
     for _i in range(6):
-        attribution.append({"written_at": "2026-09-09T10:00:00+00:00", "stage": "AGENT_REJECT", "strategy_id": "Momentum", "regime": "STUCK", "asset": "BTC"})
-    attribution.append({"written_at": "2026-09-09T10:00:00+00:00", "stage": "SELECTED", "strategy_id": "Solo", "regime": "SOLO", "asset": "BTC"})
+        attribution.append(
+            {
+                "written_at": "2026-09-09T10:00:00+00:00",
+                "stage": "AGENT_REJECT",
+                "strategy_id": "Momentum",
+                "regime": "STUCK",
+                "asset": "BTC",
+            }
+        )
+    attribution.append(
+        {
+            "written_at": "2026-09-09T10:00:00+00:00",
+            "stage": "SELECTED",
+            "strategy_id": "Solo",
+            "regime": "SOLO",
+            "asset": "BTC",
+        }
+    )
     result = regime_coverage_map(cycle_rows, attribution)
     assert result["regimes"]["NO_SIGNAL_REGIME_X"]["classification"] == "NO_SIGNAL_REGIME"
     assert result["regimes"]["GOOD"]["classification"] == "WELL_COVERED"
@@ -274,9 +377,25 @@ def test_daily_performance_keeps_zero_trade_days(tmp_path: Path) -> None:
         _cycle_row("2026-09-09", "r1", "AGENT_FILTER", "R1", decisions=[{"verifier": "VERIFIED"}]),
     ]
     coverage = {
-        "2026-09-09": {"utc_day": "2026-09-09", "observed_cycles": 1, "observed_minutes": 60, "expected_minutes": 1440, "coverage_ratio": 0.0417, "day_validity": "PENDING", "runtime_downtime_minutes": 1380, "provider_downtime_minutes": 0},
+        "2026-09-09": {
+            "utc_day": "2026-09-09",
+            "observed_cycles": 1,
+            "observed_minutes": 60,
+            "expected_minutes": 1440,
+            "coverage_ratio": 0.0417,
+            "day_validity": "PENDING",
+            "runtime_downtime_minutes": 1380,
+            "provider_downtime_minutes": 0,
+        },
     }
-    finalizations = {"2026-09-09": {"validity": "VALID", "finalized_at_utc": "2026-09-10T00:00:01+00:00", "finalization_count": 1, "reason_codes": ["CONTRACT_SATISFIED"]}}
+    finalizations = {
+        "2026-09-09": {
+            "validity": "VALID",
+            "finalized_at_utc": "2026-09-10T00:00:01+00:00",
+            "finalization_count": 1,
+            "reason_codes": ["CONTRACT_SATISFIED"],
+        }
+    }
     _write_campaign(tmp_path, cycle_rows, [], coverage=coverage, finalizations=finalizations)
     rows = daily_performance_rows(tmp_path)
     assert len(rows) == 1
@@ -291,10 +410,32 @@ def test_daily_performance_keeps_zero_trade_days(tmp_path: Path) -> None:
 
 def test_daily_performance_pnl_attribution(tmp_path: Path) -> None:
     attribution = [
-        {"written_at": "2026-09-09T10:00:00+00:00", "stage": "PAPER_OPEN", "symbol": "BTC/USDT", "strategy_id": "Trend"},
-        {"written_at": "2026-09-09T10:10:00+00:00", "stage": "PAPER_CLOSE", "symbol": "BTC/USDT", "net_pnl": -3.0, "gross_pnl": -2.0},
-        {"written_at": "2026-09-09T11:00:00+00:00", "stage": "PAPER_OPEN", "symbol": "ETH/USDT", "strategy_id": "Trend"},
-        {"written_at": "2026-09-09T11:10:00+00:00", "stage": "PAPER_CLOSE", "symbol": "ETH/USDT", "net_pnl": 5.0, "gross_pnl": 6.0},
+        {
+            "written_at": "2026-09-09T10:00:00+00:00",
+            "stage": "PAPER_OPEN",
+            "symbol": "BTC/USDT",
+            "strategy_id": "Trend",
+        },
+        {
+            "written_at": "2026-09-09T10:10:00+00:00",
+            "stage": "PAPER_CLOSE",
+            "symbol": "BTC/USDT",
+            "net_pnl": -3.0,
+            "gross_pnl": -2.0,
+        },
+        {
+            "written_at": "2026-09-09T11:00:00+00:00",
+            "stage": "PAPER_OPEN",
+            "symbol": "ETH/USDT",
+            "strategy_id": "Trend",
+        },
+        {
+            "written_at": "2026-09-09T11:10:00+00:00",
+            "stage": "PAPER_CLOSE",
+            "symbol": "ETH/USDT",
+            "net_pnl": 5.0,
+            "gross_pnl": 6.0,
+        },
     ]
     _write_campaign(
         tmp_path,

@@ -242,23 +242,26 @@ def health_view_payload(
     """Frontend payload: row views + evidence matrix, strictly read-only."""
     matrix = build_health_matrix(rows, regimes=regimes, min_evidence_n=min_evidence_n)
     return {
-        "rows": [HealthRowView(
-            strategy=r.strategy,
-            asset=r.asset,
-            timeframe=r.timeframe,
-            regime=r.regime,
-            health_state=r.health_state,
-            sample_n=r.sample_size,
-            rolling_expectancy=r.rolling_expectancy,
-            baseline_expectancy=r.baseline_expectancy,
-            rolling_sharpe=r.rolling_sharpe,
-            baseline_sharpe=r.baseline_sharpe,
-            profit_factor=r.profit_factor,
-            drawdown=r.drawdown,
-            last_transition=r.last_transition,
-            transition_reason=r.reason,
-            next_action=r.next_gate,
-        ).to_dict() for r in rows],
+        "rows": [
+            HealthRowView(
+                strategy=r.strategy,
+                asset=r.asset,
+                timeframe=r.timeframe,
+                regime=r.regime,
+                health_state=r.health_state,
+                sample_n=r.sample_size,
+                rolling_expectancy=r.rolling_expectancy,
+                baseline_expectancy=r.baseline_expectancy,
+                rolling_sharpe=r.rolling_sharpe,
+                baseline_sharpe=r.baseline_sharpe,
+                profit_factor=r.profit_factor,
+                drawdown=r.drawdown,
+                last_transition=r.last_transition,
+                transition_reason=r.reason,
+                next_action=r.next_gate,
+            ).to_dict()
+            for r in rows
+        ],
         "regime_matrix": matrix.to_dict(),
         "read_only": True,
     }

@@ -135,9 +135,7 @@ class FrequencyKpis:
 
 def compute_frequency_kpis(days: list[ObservationDay]) -> FrequencyKpis:
     """KPIs over FINALIZED + COUNTED + VALID days only (zero-trade days count)."""
-    valid = [
-        d for d in days if d.finalized and d.counted and d.valid
-    ]
+    valid = [d for d in days if d.finalized and d.counted and d.valid]
     completed = len(valid)
     days_ge_3 = sum(1 for d in valid if d.trades >= 3)
     total_trades = sum(d.trades for d in valid)
@@ -185,9 +183,17 @@ def build_daily_table(
                     valid=False,
                     validity_reason="preregistered burn-in day; excluded from all KPIs",
                     coverage=_coverage_for(date, 0.0, downtime_min, outages, 0),
-                    scans=0, proposals=0, selected=0, risk_accepts=0, risk_rejects=0,
-                    paper_opens=0, paper_closes=0, trades=0, realized_pnl=0.0,
-                    trades_ge_3=False, provider_failures=0,
+                    scans=0,
+                    proposals=0,
+                    selected=0,
+                    risk_accepts=0,
+                    risk_rejects=0,
+                    paper_opens=0,
+                    paper_closes=0,
+                    trades=0,
+                    realized_pnl=0.0,
+                    trades_ge_3=False,
+                    provider_failures=0,
                     runtime_downtime_minutes=downtime_min,
                 )
             )
@@ -234,9 +240,17 @@ def build_daily_table(
                     valid=False,
                     validity_reason=partial_day_reason,
                     coverage=_coverage_for(date, 0.0, downtime_min, outages, 0),
-                    scans=0, proposals=0, selected=0, risk_accepts=0, risk_rejects=0,
-                    paper_opens=0, paper_closes=0, trades=0, realized_pnl=0.0,
-                    trades_ge_3=False, provider_failures=0,
+                    scans=0,
+                    proposals=0,
+                    selected=0,
+                    risk_accepts=0,
+                    risk_rejects=0,
+                    paper_opens=0,
+                    paper_closes=0,
+                    trades=0,
+                    realized_pnl=0.0,
+                    trades_ge_3=False,
+                    provider_failures=0,
                     runtime_downtime_minutes=downtime_min,
                 )
             )

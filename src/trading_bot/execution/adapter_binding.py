@@ -106,9 +106,7 @@ class GatewayDrivenVenue:
         - any transport/unknown failure -> UNCERTAIN (never guess)
         """
         try:
-            payload = self._connector.fetch_order_query(
-                client_order_id, self._default_symbol
-            )
+            payload = self._connector.fetch_order_query(client_order_id, self._default_symbol)
         except Exception:
             return AckQueryResult.UNCERTAIN
         if payload is None:
@@ -117,9 +115,7 @@ class GatewayDrivenVenue:
 
     def venue_order_id_of(self, client_order_id: str) -> str | None:
         try:
-            payload = self._connector.fetch_order_query(
-                client_order_id, self._default_symbol
-            )
+            payload = self._connector.fetch_order_query(client_order_id, self._default_symbol)
         except Exception:
             return None
         if not payload:
@@ -175,7 +171,7 @@ class _ConformanceBinding:
     def adapter_id(self) -> str:
         return self._id
 
-    def instrument_metadata(self, symbol: str) -> dict[str, object]:
+    def instrument_metadata(self, symbol: str) -> dict[str, Any]:
         return {"symbol": symbol, "venue": self._id}
 
     def account_snapshot(self) -> dict[str, float]:
@@ -194,7 +190,7 @@ class _ConformanceBinding:
     def open_orders(self) -> list[str]:
         return []
 
-    def fills(self) -> list[dict[str, object]]:
+    def fills(self) -> list[dict[str, Any]]:
         return [dict(f) for f in self._venue.recent_fills()]
 
     def submit(self, intent: TradeIntent, client_order_id: str) -> str:

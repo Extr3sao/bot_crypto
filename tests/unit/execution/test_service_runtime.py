@@ -51,9 +51,7 @@ class FakeVenue:
     def query(self, client_order_id: str) -> AckQueryResult:
         if self.query_should_raise:
             raise OSError("query failed")
-        return (
-            AckQueryResult.FOUND if client_order_id in self.orders else AckQueryResult.ABSENT
-        )
+        return AckQueryResult.FOUND if client_order_id in self.orders else AckQueryResult.ABSENT
 
     def venue_order_id_of(self, client_order_id: str) -> str | None:
         return self.orders.get(client_order_id)
@@ -165,9 +163,7 @@ class TestJournalMountAndAck:
         # Two transport attempts (first raised pre-accept) but exactly ONE
         # economic order exists venue-side (ECONOMIC_ORDERS_PER_INTENT == 1).
         assert len(venue.orders) == 1
-        assert service.gateway.submit_gate.economic_order_count(
-            service.intent_id(intent)
-        ) == 1
+        assert service.gateway.submit_gate.economic_order_count(service.intent_id(intent)) == 1
 
     def test_ack_unknown_uncertain_blocks(self) -> None:
         service = ExecutionService()
@@ -259,9 +255,7 @@ class TestRestartRecovery:
 
     def test_startup_ready_is_fail_closed(self, tmp_path: Path) -> None:
         rebooted = ExecutionService.from_path(tmp_path / "journal.jsonl")
-        report = rebooted.startup_reconcile(
-            (), venue_open_client_order_ids=set()
-        )
+        report = rebooted.startup_reconcile((), venue_open_client_order_ids=set())
         assert not report.ready
         assert set(report.missing) == {
             "instrument_metadata",
@@ -363,9 +357,7 @@ class TestRuntimeAdversarialE2E:
         )
         # authoritative reconciliation decides: venue still holds -> adopt back
         service.reconcile_intent(intent, venue_holds_order=True)
-        assert service.journal.current_state(service.intent_id(intent)) is (
-            ExecutionState.ACCEPTED
-        )
+        assert service.journal.current_state(service.intent_id(intent)) is (ExecutionState.ACCEPTED)
 
     def test_e2e_orphan_venue_order(self, tmp_path: Path) -> None:
         path = tmp_path / "journal.jsonl"
@@ -393,9 +385,7 @@ class TestRuntimeAdversarialE2E:
         assert service.journal.current_state(service.intent_id(intent)) is (
             ExecutionState.CANCELLED
         )
-        assert service.gateway.submit_gate.economic_order_count(
-            service.intent_id(intent)
-        ) == 1
+        assert service.gateway.submit_gate.economic_order_count(service.intent_id(intent)) == 1
 
 
 class TestGatewayReceiptShape:

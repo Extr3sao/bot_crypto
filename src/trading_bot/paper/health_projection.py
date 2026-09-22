@@ -10,6 +10,7 @@ runtime can evolve against a stable schema.
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import Any
 
 from trading_bot.strategies.health import (
     HealthIdentity,
@@ -40,7 +41,7 @@ class HealthProjectionRow:
     reason: str
     next_gate: str
 
-    def to_dict(self) -> dict[str, object]:
+    def to_dict(self) -> dict[str, Any]:
         return {
             "strategy": self.strategy,
             "version": self.version,
@@ -114,11 +115,18 @@ def project_health_row(
 
 def project_health_table(
     rows: tuple[tuple[HealthIdentity, StrategyHealthSnapshot, StrategyHealthState, str, str], ...],
-) -> tuple[dict[str, object], ...]:
+) -> tuple[dict[str, Any], ...]:
     """Project many cells; pure, deterministic ordering by (strategy, asset, timeframe, regime)."""
     projected = [
         project_health_row(identity, snapshot, state, last_transition=last, reason=reason).to_dict()
         for identity, snapshot, state, last, reason in rows
     ]
-    projected.sort(key=lambda row: (str(row["strategy"]), str(row["asset"]), str(row["timeframe"]), str(row["regime"])))
+    projected.sort(
+        key=lambda row: (
+            str(row["strategy"]),
+            str(row["asset"]),
+            str(row["timeframe"]),
+            str(row["regime"]),
+        )
+    )
     return tuple(projected)

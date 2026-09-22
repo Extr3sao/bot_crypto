@@ -150,7 +150,13 @@ def derive_market_regime_state(candles: tuple[OHLCV, ...]) -> MarketRegimeState:
     else:
         direction = TrendDirection.NEUTRAL
     peak = max(bull, bear)
-    strength = TrendStrength.STRONG if peak >= 0.75 else TrendStrength.MEDIUM if peak >= 0.5 else TrendStrength.WEAK
+    strength = (
+        TrendStrength.STRONG
+        if peak >= 0.75
+        else TrendStrength.MEDIUM
+        if peak >= 0.5
+        else TrendStrength.WEAK
+    )
 
     # volatility from HIGH_VOL/LOW_VOL confidence
     high_vol = confidence.get("HIGH_VOL", 0.0)
@@ -196,7 +202,9 @@ def derive_market_regime_state(candles: tuple[OHLCV, ...]) -> MarketRegimeState:
 
 def regime_transition(prev: MarketRegimeState, curr: MarketRegimeState) -> RegimeTransition:
     """Build the attribution transition between two consecutive states."""
-    return RegimeTransition(from_key=prev.key(), to_key=curr.key(), from_ts=prev.bar_ts, to_ts=curr.bar_ts)
+    return RegimeTransition(
+        from_key=prev.key(), to_key=curr.key(), from_ts=prev.bar_ts, to_ts=curr.bar_ts
+    )
 
 
 def regime_transition_label(prev: MarketRegimeState, curr: MarketRegimeState) -> str:

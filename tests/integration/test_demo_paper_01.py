@@ -11,7 +11,15 @@ from trading_bot.demo.paper_multi_agent import (
 from trading_bot.multi_agent.decision import DecisionEngine
 
 
-def _selected_fixture() -> tuple[object, dict[str, object], dict[str, object], tuple[object, ...], object, dict[str, float], datetime]:
+def _selected_fixture() -> tuple[
+    object,
+    dict[str, object],
+    dict[str, object],
+    tuple[object, ...],
+    object,
+    dict[str, float],
+    datetime,
+]:
     now = datetime.fromtimestamp(1_786_010_740_000 / 1000, tz=UTC)
     bars = __import__("trading_bot.demo.paper_multi_agent", fromlist=["_bars"])._bars(
         "SOL", timestamp=1_786_010_680_000, shape="down"

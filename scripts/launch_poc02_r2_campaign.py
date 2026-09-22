@@ -105,12 +105,16 @@ def evaluate_launch_gates() -> dict[str, Any]:
         detail["arbitration_error"] = f"{type(exc).__name__}: {exc}"
 
     # 4. provider authority explicit
-    gates["provider_authority_explicit"] = set(PROVIDER_AUTHORITY) >= {
-        "MARKET_DATA_PROVIDER",
-        "EXECUTION_MODE",
-        "EXECUTION_VENUE_MODEL",
-        "DIRECTION_ARBITRATION",
-    } and PROVIDER_AUTHORITY["EXECUTION_MODE"] == "PAPER"
+    gates["provider_authority_explicit"] = (
+        set(PROVIDER_AUTHORITY)
+        >= {
+            "MARKET_DATA_PROVIDER",
+            "EXECUTION_MODE",
+            "EXECUTION_VENUE_MODEL",
+            "DIRECTION_ARBITRATION",
+        }
+        and PROVIDER_AUTHORITY["EXECUTION_MODE"] == "PAPER"
+    )
 
     # 5. coverage contract preregistered in committed manifest
     manifest_text = MANIFEST_PATH.read_text(encoding="utf-8")
@@ -119,8 +123,18 @@ def evaluate_launch_gates() -> dict[str, Any]:
     # 6. shadow surface importable
     try:
         ShadowCaptureHook(
-            captures_path=ROOT / "data" / "storage" / "shadow" / "poc02-r2" / "shadow_captures.jsonl",
-            outcomes_path=ROOT / "data" / "storage" / "shadow" / "poc02-r2" / "shadow_outcomes.jsonl",
+            captures_path=ROOT
+            / "data"
+            / "storage"
+            / "shadow"
+            / "poc02-r2"
+            / "shadow_captures.jsonl",
+            outcomes_path=ROOT
+            / "data"
+            / "storage"
+            / "shadow"
+            / "poc02-r2"
+            / "shadow_outcomes.jsonl",
         )
         gates["shadow_surface_importable"] = True
     except Exception as exc:

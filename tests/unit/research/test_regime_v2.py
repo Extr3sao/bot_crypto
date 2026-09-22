@@ -123,10 +123,30 @@ def test_transition_stable_when_state_unchanged() -> None:
 
 
 def test_regime_cell_status_thresholds() -> None:
-    assert classify_regime_cell(strategy_id="m", asset="SOL", timeframe="5m", regime_key="BULL|TREND", n=35).status == "ELIGIBLE"
-    assert classify_regime_cell(strategy_id="m", asset="SOL", timeframe="5m", regime_key="BULL|TREND", n=15).status == "SHADOW_ONLY"
-    assert classify_regime_cell(strategy_id="m", asset="SOL", timeframe="5m", regime_key="BULL|TREND", n=3).status == "INSUFFICIENT_SAMPLE"
-    assert classify_regime_cell(strategy_id="m", asset="SOL", timeframe="5m", regime_key="BULL|TREND", n=0).status == "NOT_ELIGIBLE"
+    assert (
+        classify_regime_cell(
+            strategy_id="m", asset="SOL", timeframe="5m", regime_key="BULL|TREND", n=35
+        ).status
+        == "ELIGIBLE"
+    )
+    assert (
+        classify_regime_cell(
+            strategy_id="m", asset="SOL", timeframe="5m", regime_key="BULL|TREND", n=15
+        ).status
+        == "SHADOW_ONLY"
+    )
+    assert (
+        classify_regime_cell(
+            strategy_id="m", asset="SOL", timeframe="5m", regime_key="BULL|TREND", n=3
+        ).status
+        == "INSUFFICIENT_SAMPLE"
+    )
+    assert (
+        classify_regime_cell(
+            strategy_id="m", asset="SOL", timeframe="5m", regime_key="BULL|TREND", n=0
+        ).status
+        == "NOT_ELIGIBLE"
+    )
 
 
 def test_state_key_and_dict() -> None:

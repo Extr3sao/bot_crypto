@@ -30,7 +30,9 @@ class CorrelationState(StrEnum):
     FUSED = "FUSED"
 
 
-def aligned_pit_returns(ts: tuple[int, ...], prices: tuple[float, ...]) -> tuple[tuple[int, float], ...]:
+def aligned_pit_returns(
+    ts: tuple[int, ...], prices: tuple[float, ...]
+) -> tuple[tuple[int, float], ...]:
     """Aligned PIT returns from (timestamp, price) observations.
 
     Returns are computed only between CONSECUTIVE aligned observations of the
@@ -153,7 +155,11 @@ class DynamicCorrelationEngine:
         states: list[tuple[int, CorrelationState]] = []
         for t, corr in smoothed:
             density = 1.0 if abs(corr) >= self._config.edge_threshold else 0.0
-            if self._state is CorrelationState.NORMAL and density >= 1.0 and corr >= self._config.fuse_enter:
+            if (
+                self._state is CorrelationState.NORMAL
+                and density >= 1.0
+                and corr >= self._config.fuse_enter
+            ):
                 self._state = CorrelationState.FUSED
             elif self._state is CorrelationState.FUSED and corr < self._config.fuse_exit:
                 self._state = CorrelationState.NORMAL

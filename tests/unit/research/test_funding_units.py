@@ -13,10 +13,10 @@ from trading_bot.research.funding_units import (
     funding_pnl,
 )
 
-
 # --------------------------------------------------------------------------
 # sign correctness (LONG/SHORT) — DB2-06
 # --------------------------------------------------------------------------
+
 
 def test_positive_funding_long_pays() -> None:
     # 1bp per interval on 10k notional -> long pays 1.0 quote per settlement.
@@ -53,6 +53,7 @@ def test_invalid_side_rejected() -> None:
 # unit canonicalization (bps vs percent vs decimal)
 # --------------------------------------------------------------------------
 
+
 def test_canon_rate_decimal_passthrough() -> None:
     assert canon_rate_per_period(0.0001, source_unit="decimal_per_interval") == 0.0001
 
@@ -77,6 +78,7 @@ def test_canon_rate_unknown_unit_fails_closed() -> None:
 # --------------------------------------------------------------------------
 # interval canonicalization (8h vs other; never assumed)
 # --------------------------------------------------------------------------
+
 
 def test_canon_interval_seconds_and_durations() -> None:
     assert canon_funding_interval_s(28_800) == 28_800
@@ -103,6 +105,7 @@ def test_canon_interval_invalid_fails_closed() -> None:
 # derived annualization (never an input)
 # --------------------------------------------------------------------------
 
+
 def test_annualization_8h_vs_1h() -> None:
     # 1bp per 8h -> 3 intervals/day -> 0.0001 * (365*86400/28800) = 0.1095
     assert abs(annualized_rate(0.0001, 28_800) - 0.1095) < 1e-9
@@ -118,6 +121,7 @@ def test_annualization_invalid_interval_rejected() -> None:
 # --------------------------------------------------------------------------
 # contract identity (fingerprint)
 # --------------------------------------------------------------------------
+
 
 def test_contract_fingerprint_stable_and_deterministic() -> None:
     fp = contract_fingerprint()

@@ -6,10 +6,8 @@ Builder self-tests do NOT convert PENDING -> PASS.
 from __future__ import annotations
 
 from enum import StrEnum
-from pathlib import Path
 
 from trading_bot.research.h6.external_verifier_report import (
-    REPORT_PATH,
     external_report_exists,
     read_external_verdict,
 )

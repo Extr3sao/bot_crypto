@@ -64,8 +64,13 @@ def test_single_bad_window_does_not_degrade_hysteresis() -> None:
     tracker = StrategyHealthTracker()
     bad = _snapshot(expectancy=-0.2, pf=0.5, win_rate=0.2)
     state1, p1 = tracker.evaluate(bad, window_index=0)
-    assert state1 is StrategyHealthState.INSUFFICIENT_EVIDENCE  # first clean->monitoring? no: bad window
-    assert p1["proposed_state"] == StrategyHealthState.INSUFFICIENT_EVIDENCE.value or state1 is not StrategyHealthState.DEGRADED
+    assert (
+        state1 is StrategyHealthState.INSUFFICIENT_EVIDENCE
+    )  # first clean->monitoring? no: bad window
+    assert (
+        p1["proposed_state"] == StrategyHealthState.INSUFFICIENT_EVIDENCE.value
+        or state1 is not StrategyHealthState.DEGRADED
+    )
     # Second bad window in a row after a monitoring state would degrade, but
     # from INSUFFICIENT_EVIDENCE the first sufficient windows route to MONITORING
     # only when clean. With two consecutive bad windows the tracker proposes DEGRADED.
@@ -119,7 +124,9 @@ def test_quarantine_requires_governance_and_recovery_requires_research() -> None
     state, noop = tracker.evaluate(_snapshot(), window_index=3)
     assert state is StrategyHealthState.QUARANTINED
     assert "revalidation required" in noop["reason"]
-    recovery = tracker.propose_revalidation_recovery(_identity(), research_artifact="RSCH-001", window_index=4)
+    recovery = tracker.propose_revalidation_recovery(
+        _identity(), research_artifact="RSCH-001", window_index=4
+    )
     assert recovery["proposed_state"] == StrategyHealthState.MONITORING.value
     assert "RSCH-001" in recovery["reason"]
 
@@ -227,7 +234,9 @@ def test_verifier_accepts_valid_transition() -> None:
 
 
 def test_health_thresholds_configurable() -> None:
-    tracker = StrategyHealthTracker(HealthThresholds(min_sample_size=2, degraded_consecutive_windows=1))
+    tracker = StrategyHealthTracker(
+        HealthThresholds(min_sample_size=2, degraded_consecutive_windows=1)
+    )
     state, _ = tracker.evaluate(_snapshot(sample_size=2), window_index=0)
     assert state is StrategyHealthState.MONITORING
 

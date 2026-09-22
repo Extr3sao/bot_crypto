@@ -63,13 +63,13 @@ __all__ = [
 # --------------------------------------------------------------------------
 # Frozen canonical protocol values (identical to batch-01 execution)
 # --------------------------------------------------------------------------
-COST_RATE = 0.0004          # commission per side (4 bps)
-SLIPPAGE_BPS = 2.0          # slippage per side (bps)
-MIN_SAMPLE = 15             # harness MIN_SAMPLE (binding constraint in batch-01)
+COST_RATE = 0.0004  # commission per side (4 bps)
+SLIPPAGE_BPS = 2.0  # slippage per side (bps)
+MIN_SAMPLE = 15  # harness MIN_SAMPLE (binding constraint in batch-01)
 
 # Deeper preregistered window (C2): 1h candles, ~2 years back from launch.
 DEEPER_1H_BARS = 17520
-DEEPER_5M_BARS = 1500       # higher-resolution cells stay bounded (prereg)
+DEEPER_5M_BARS = 1500  # higher-resolution cells stay bounded (prereg)
 
 
 # --------------------------------------------------------------------------
@@ -193,12 +193,10 @@ def verify_batch01_spec_unchanged() -> dict[str, str]:
         spec_v1 = _batch01(v1)
         for field in ("entry_rule", "stop_rule", "exit_rule"):
             if spec_v2[field] != spec_v1[field]:
-                raise AssertionError(
-                    f"RETUNE DETECTED: {v2}.{field} differs from batch-01")
+                raise AssertionError(f"RETUNE DETECTED: {v2}.{field} differs from batch-01")
         for k, v in _batch01_params(v1).items():
             if spec_v2.get(k) != v:
-                raise AssertionError(
-                    f"RETUNE DETECTED: {v2}.{k} differs from batch-01")
+                raise AssertionError(f"RETUNE DETECTED: {v2}.{k} differs from batch-01")
         mirrored[v2] = v1
     return mirrored
 
@@ -354,18 +352,13 @@ def carry_funding_v2_signals(
         # funding (pnl = -N*r) => accrual sign -1; SHORT receives => +1.
         # Negative rates flip the signs automatically.
         sign = -1.0 if held_direction[0] == "LONG" else 1.0
-        return sum(
-            sign * r for t, r in funding_by_ms.items() if lo <= t <= hi
-        )
+        return sum(sign * r for t, r in funding_by_ms.items() if lo <= t <= hi)
 
     held_direction = ["LONG"]
 
     def direction_at(i: int) -> str | None:
         t_end = candles[i].timestamp
-        rates = [
-            r for t, r in funding_by_ms.items()
-            if t_end - window_ms <= t <= t_end
-        ]
+        rates = [r for t, r in funding_by_ms.items() if t_end - window_ms <= t <= t_end]
         if len(rates) < min_obs:
             return None
         mean = sum(rates) / len(rates)
@@ -468,7 +461,7 @@ def _simulate_top1_rotation(
     selected asset; adverse-first structural stop; non-overlapping holds.
     Ranking is PIT (uses only bars <= decision bar)."""
     min_len = min(len(v) for v in by_asset.values())
-    align = {a: v[len(v) - min_len:] for a, v in by_asset.items()}
+    align = {a: v[len(v) - min_len :] for a, v in by_asset.items()}
     trades: list[TradeOutcome] = []
     i = 0
     slip = slippage_bps / 10_000.0

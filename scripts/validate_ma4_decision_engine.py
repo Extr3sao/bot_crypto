@@ -142,7 +142,12 @@ def _proposal(
 
 
 def _registry_for(proposals: list[TradeProposal]) -> dict[str, AgentEvidence]:
-    producers = {"momentum": "strategy-expert-momentum", "breakout": "strategy-expert-breakout", "trend": "strategy-expert-trend", "mean_reversion": "strategy-expert-mean_reversion"}
+    producers = {
+        "momentum": "strategy-expert-momentum",
+        "breakout": "strategy-expert-breakout",
+        "trend": "strategy-expert-trend",
+        "mean_reversion": "strategy-expert-mean_reversion",
+    }
     return {
         ref: _evidence(ref, producers.get(p.strategy, "strategy-expert-momentum"))
         for p in proposals
@@ -158,9 +163,7 @@ def _report(
     revisions: tuple[ProposalRevision, ...] = (),
     debate_id: str = "debate:v",
 ) -> DebateReport:
-    counter = tuple(
-        sorted({ref for c in critiques for ref in c.counter_evidence_refs})
-    )
+    counter = tuple(sorted({ref for c in critiques for ref in c.counter_evidence_refs}))
     return DebateReport(
         schema_version=SCHEMA,
         debate_id=debate_id,
@@ -252,12 +255,13 @@ def check_best_admissible_selected() -> None:
     eth = _proposal("p:eth", asset="ETH", strategy="trend", confidence=0.79)
     package = _decide(
         [sol, btc, eth],
-        reports=[_report(("p:sol",), outcome=DebateOutcome.SUPPORTED, critiques=(_support("p:sol"),))],
+        reports=[
+            _report(("p:sol",), outcome=DebateOutcome.SUPPORTED, critiques=(_support("p:sol"),))
+        ],
     )
     check(
         "best_admissible_candidate_selected",
-        package.outcome is DecisionOutcome.SELECTED
-        and package.selected_candidate_id == "p:sol",
+        package.outcome is DecisionOutcome.SELECTED and package.selected_candidate_id == "p:sol",
         f"selected={package.selected_candidate_id}",
     )
 
@@ -301,7 +305,9 @@ def check_insufficient_evidence_blocks() -> None:
 
 def check_unresolved_conflict_blocks() -> None:
     long_p = _proposal("p:long", confidence=0.95)
-    short_p = _proposal("p:short", strategy="mean_reversion", direction=TradeDirection.SHORT, confidence=0.9)
+    short_p = _proposal(
+        "p:short", strategy="mean_reversion", direction=TradeDirection.SHORT, confidence=0.9
+    )
     report = _report(
         ("p:long", "p:short"),
         outcome=DebateOutcome.UNRESOLVED,
@@ -368,7 +374,9 @@ def check_rejected_alternatives_retained() -> None:
     btc = _proposal("p:btc", asset="BTC", strategy="breakout", confidence=0.83)
     package = _decide(
         [sol, btc],
-        reports=[_report(("p:sol",), outcome=DebateOutcome.SUPPORTED, critiques=(_support("p:sol"),))],
+        reports=[
+            _report(("p:sol",), outcome=DebateOutcome.SUPPORTED, critiques=(_support("p:sol"),))
+        ],
     )
     rejected = {a.final_proposal_id: a for a in package.rejected_alternatives}
     check(
@@ -411,8 +419,7 @@ def check_replay_determinism() -> None:
     btc = _proposal("p:btc", asset="BTC", strategy="breakout", confidence=0.83)
     reports = [_report(("p:sol",), outcome=DebateOutcome.SUPPORTED, critiques=(_support("p:sol"),))]
     payloads = [
-        json.dumps(_decide([sol, btc], reports=reports).to_dict(), sort_keys=True)
-        for _ in range(3)
+        json.dumps(_decide([sol, btc], reports=reports).to_dict(), sort_keys=True) for _ in range(3)
     ]
     check(
         "decision_replay_deterministic",
@@ -422,7 +429,12 @@ def check_replay_determinism() -> None:
 
 def check_independent_verification() -> None:
     sol = _proposal("p:sol", confidence=0.91)
-    package = _decide([sol], reports=[_report(("p:sol",), outcome=DebateOutcome.SUPPORTED, critiques=(_support("p:sol"),))])
+    package = _decide(
+        [sol],
+        reports=[
+            _report(("p:sol",), outcome=DebateOutcome.SUPPORTED, critiques=(_support("p:sol"),))
+        ],
+    )
     meta = package.verification_metadata
     separation = (
         meta.builder_agent_id == DECISION_ENGINE_ID
@@ -436,7 +448,9 @@ def check_independent_verification() -> None:
         now=CLOCK + timedelta(minutes=1),
     )
     # Tampering must be caught.
-    tampered = package.model_copy(update={"outcome": DecisionOutcome.NO_TRADE, "selected_candidate_id": None})
+    tampered = package.model_copy(
+        update={"outcome": DecisionOutcome.NO_TRADE, "selected_candidate_id": None}
+    )
     tamper_result = DecisionPackageVerifier().verify(
         tampered,
         proposals={"p:sol": sol},
@@ -506,7 +520,12 @@ def check_dynamic_boundary() -> None:
     import builtins
 
     saved_builtins_import = builtins.__import__
-    blocked = ("trading_bot.paper", "trading_bot.execution", "trading_bot.broker", "trading_bot.risk")
+    blocked = (
+        "trading_bot.paper",
+        "trading_bot.execution",
+        "trading_bot.broker",
+        "trading_bot.risk",
+    )
 
     def guard(
         name: str,
@@ -523,7 +542,12 @@ def check_dynamic_boundary() -> None:
     builtins.__import__ = guard
     try:
         sol = _proposal("p:sol", confidence=0.91)
-        package = _decide([sol], reports=[_report(("p:sol",), outcome=DebateOutcome.SUPPORTED, critiques=(_support("p:sol"),))])
+        package = _decide(
+            [sol],
+            reports=[
+                _report(("p:sol",), outcome=DebateOutcome.SUPPORTED, critiques=(_support("p:sol"),))
+            ],
+        )
         verifier_result = DecisionPackageVerifier().verify(
             package,
             proposals={"p:sol": sol},
@@ -574,9 +598,7 @@ def check_foreign_evidence_forged_trace_rejected() -> None:
     registry = _registry_for([sol])
 
     # Case B: foreign run + forged current trace (the original defect vector).
-    forged = registry["ev:p:sol"].model_copy(
-        update={"run_id": FOREIGN_RUN, "trace": TRACE}
-    )
+    forged = registry["ev:p:sol"].model_copy(update={"run_id": FOREIGN_RUN, "trace": TRACE})
     package = engine.decide(
         snapshot=OpportunitySnapshot(opportunities=(), conflicts=()),
         proposals={"p:sol": sol},
@@ -662,7 +684,11 @@ def check_sibling_cross_run_contamination() -> None:
             snapshot=OpportunitySnapshot(opportunities=(), conflicts=()),
             proposals={"p:sol": sol},
             evidence_registry=registry,
-            assessments={"SOL": dataclasses_replace(assessment, trace=TRACE.model_copy(update={"run_id": FOREIGN_RUN}))},
+            assessments={
+                "SOL": dataclasses_replace(
+                    assessment, trace=TRACE.model_copy(update={"run_id": FOREIGN_RUN})
+                )
+            },
             now=CLOCK,
         )
         ok = False
@@ -745,9 +771,7 @@ def check_selected_evidence_authority_binding() -> None:
         return package.model_copy(
             update={
                 "candidate_set": tuple(
-                    c.model_copy(update=update)
-                    if c.final_proposal_id == selected_id
-                    else c
+                    c.model_copy(update=update) if c.final_proposal_id == selected_id else c
                     for c in package.candidate_set
                 )
             }
@@ -768,17 +792,15 @@ def check_selected_evidence_authority_binding() -> None:
     multi_package = _decide([multi], reports=[])
     multi_selected = multi_package.selected_candidate_id
     assert multi_selected is not None
-    multi_partial = (
-        multi_package.model_copy(
-            update={
-                "candidate_set": tuple(
-                    c.model_copy(update={"supporting_evidence_refs": ("ev:multi-a",)})
-                    if c.final_proposal_id == multi_selected
-                    else c
-                    for c in multi_package.candidate_set
-                )
-            }
-        )
+    multi_partial = multi_package.model_copy(
+        update={
+            "candidate_set": tuple(
+                c.model_copy(update={"supporting_evidence_refs": ("ev:multi-a",)})
+                if c.final_proposal_id == multi_selected
+                else c
+                for c in multi_package.candidate_set
+            )
+        }
     )
     partial = verifier.verify(
         multi_partial,
@@ -795,7 +817,10 @@ def check_selected_evidence_authority_binding() -> None:
         now=CLOCK,
     ).verdict.value
 
-    swap_registry = {**registry, "ev:uncommitted": _evidence("ev:uncommitted", "strategy-expert-breakout")}
+    swap_registry = {
+        **registry,
+        "ev:uncommitted": _evidence("ev:uncommitted", "strategy-expert-breakout"),
+    }
     swapped = verdict(
         retarget(package, supporting_evidence_refs=("ev:uncommitted",)), swap_registry
     )

@@ -34,9 +34,7 @@ class AgentManifest(BaseModel):
             raise ValueError("created_at must be timezone-aware")
         return value
 
-    @field_validator(
-        "input_contracts", "output_contracts", "allowed_tools", mode="before"
-    )
+    @field_validator("input_contracts", "output_contracts", "allowed_tools", mode="before")
     @classmethod
     def _reject_empty_names(cls, value: object) -> object:
         if isinstance(value, (tuple, list)) and any(not item for item in value):

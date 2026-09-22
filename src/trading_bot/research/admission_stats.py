@@ -16,6 +16,7 @@ promotion oracle:
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import Any
 
 from trading_bot.backtesting.stat_validation import (
     SharpeCI,
@@ -46,7 +47,7 @@ class StatEvidence:
     gates_passed: bool
     failed_gates: tuple[str, ...]
 
-    def to_dict(self) -> dict[str, object]:
+    def to_dict(self) -> dict[str, Any]:
         return {
             "n": self.n,
             "sharpe_estimate": self.sharpe_estimate,

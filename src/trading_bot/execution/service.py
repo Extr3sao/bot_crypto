@@ -191,9 +191,7 @@ class ExecutionService:
     ) -> GatewayReceipt:
         """Resolve ACK_UNKNOWN: ADOPT / CONTROLLED_RETRY (same identity) / BLOCK."""
         self._intents[self.intent_id(intent)] = intent
-        return self.gateway.resolve_ack_unknown(
-            intent, venue, query_result=query_result
-        )
+        return self.gateway.resolve_ack_unknown(intent, venue, query_result=query_result)
 
     # -- fills ----------------------------------------------------------------
     def apply_fill(

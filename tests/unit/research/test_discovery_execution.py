@@ -20,6 +20,7 @@ from trading_bot.research.legacy_retro import LegacyRetroHarness, LegacyRetroPro
 # helpers
 # --------------------------------------------------------------------------
 
+
 def _candles(n: int, start_ms: int = 1_700_000_000_000, drift: float = 0.0) -> list[OHLCV]:
     out: list[OHLCV] = []
     price = 100.0
@@ -79,6 +80,7 @@ class _FakeFetcher:
 # C1 — preregistration fingerprints
 # --------------------------------------------------------------------------
 
+
 def test_eval_specs_cover_all_six_categories() -> None:
     assert set(DISCOVERY_EVAL_SPECS) == {
         "carry_funding",
@@ -100,6 +102,7 @@ def test_eval_fingerprints_deterministic_and_distinct() -> None:
 # --------------------------------------------------------------------------
 # C5 — result states & honest accounting
 # --------------------------------------------------------------------------
+
 
 def test_flat_series_yields_insufficient_sample_not_pass() -> None:
     report = execute_discovery_batch(
@@ -158,6 +161,7 @@ def test_cell_metrics_are_valid_json_with_cost_model() -> None:
 # C6 — frequency evidence recorded, never tuned
 # --------------------------------------------------------------------------
 
+
 def test_frequency_fields_present() -> None:
     report = execute_discovery_batch(
         fetcher=_FakeFetcher(),
@@ -179,6 +183,7 @@ def test_frequency_fields_present() -> None:
 # --------------------------------------------------------------------------
 # PIT discipline: decision at bar t must not see bar t+1
 # --------------------------------------------------------------------------
+
 
 def test_no_future_leak_step_change() -> None:
     # 300 flat bars then a single huge spike: any strategy trading BEFORE the

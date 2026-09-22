@@ -19,6 +19,7 @@ beyond the declared data boundary).
 from __future__ import annotations
 
 import hashlib
+import itertools
 import json
 import time
 from dataclasses import dataclass
@@ -38,15 +39,15 @@ SECONDS_PER_YEAR = 365 * 24 * 3600
 class FundingDataset:
     """Immutable, fingerprinted set of REAL funding observations."""
 
-    provider: str                       # e.g. "binanceusdm-public-ccxt"
-    symbol: str                         # e.g. "BTC/USDT:USDT"
-    rates_by_ms: dict[int, float]       # settlement ms -> decimal per interval
-    interval_s: int                     # observed settlement interval
+    provider: str  # e.g. "binanceusdm-public-ccxt"
+    symbol: str  # e.g. "BTC/USDT:USDT"
+    rates_by_ms: dict[int, float]  # settlement ms -> decimal per interval
+    interval_s: int  # observed settlement interval
     first_funding_ms: int | None
     last_funding_ms: int | None
     n_observations: int
     fetched_at_ms: int
-    source_unit: str                    # provenance of raw unit normalization
+    source_unit: str  # provenance of raw unit normalization
     freshness_note: str
     window_start_ms: int | None = None  # preregistered window (PIT bound)
     window_end_ms: int | None = None
@@ -108,13 +109,12 @@ def fetch_funding_history(
     import ccxt  # deferred: research dependency (venv)
 
     start_ms = max(int(window_start_ms), int(window_end_ms) - max_lookback_ms)
-    exchange = getattr(ccxt, "binanceusdm")({"enableRateLimit": True})
+    exchange = ccxt.binanceusdm({"enableRateLimit": True})
     try:
-        rows: list[list[Any]] = []
+        rows: list[dict[str, Any]] = []
         since = start_ms
         while since < window_end_ms:
-            page = exchange.fetch_funding_rate_history(
-                symbol, since=since, limit=1000)
+            page = exchange.fetch_funding_rate_history(symbol, since=since, limit=1000)
             if not page:
                 break
             rows.extend(page)
@@ -132,15 +132,14 @@ def fetch_funding_history(
             raw = float(row["fundingRate"])
             rate = canon_rate_per_period(raw, source_unit=source_unit)
             if t in rates and rates[t] != rate:
-                raise ValueError(
-                    f"CONFLICTING_FUNDING_OBSERVATIONS:{symbol}:{t}")
+                raise ValueError(f"CONFLICTING_FUNDING_OBSERVATIONS:{symbol}:{t}")
             rates[t] = rate
             if first_ms is None or t < first_ms:
                 first_ms = t
             if last_ms is None or t > last_ms:
                 last_ms = t
         ordered = sorted(rates)
-        for a, b in zip(ordered, ordered[1:]):
+        for a, b in itertools.pairwise(ordered):
             # timestamps are already epoch ms: the spacing in ms is (b - a).
             # (A prior draft multiplied by 3_600_000 here — the exact
             # hour-vs-ms unit confusion DEF-DISCOVERY-001 records.)
@@ -152,7 +151,8 @@ def fetch_funding_history(
         )  # spacings are epoch-ms deltas; interval_s is SECONDS
         span_days = (
             (last_ms - first_ms) / 86_400_000.0
-            if first_ms is not None and last_ms is not None else 0.0
+            if first_ms is not None and last_ms is not None
+            else 0.0
         )
         freshness = (
             f"span_days={span_days:.2f} "

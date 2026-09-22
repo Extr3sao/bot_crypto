@@ -145,8 +145,7 @@ class ConditionedShadowMetrics:
                 "profit_factor": (gross_win / gross_loss) if gross_loss > 0 else None,
                 "max_drawdown": max_dd,
                 "r_multiples_mean": (
-                    sum(t.r_multiple for t in trades if t.r_multiple is not None)
-                    / max(resolved, 1)
+                    sum(t.r_multiple for t in trades if t.r_multiple is not None) / max(resolved, 1)
                 )
                 if resolved
                 else None,
@@ -165,9 +164,7 @@ class ShadowCounters:
         trades = self._hook.outcomes.trades
         by_reason: dict[str, int] = {}
         for c in captures:
-            by_reason[c.risk_rejection_reason] = (
-                by_reason.get(c.risk_rejection_reason, 0) + 1
-            )
+            by_reason[c.risk_rejection_reason] = by_reason.get(c.risk_rejection_reason, 0) + 1
         return {
             "captures_total": len(captures),
             "resolved_total": len(trades),

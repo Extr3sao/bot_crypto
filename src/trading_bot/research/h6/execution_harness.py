@@ -7,7 +7,7 @@ H6_EXTERNAL_VERIFICATION_REQUIRED and does NOT run economic code.
 
 from __future__ import annotations
 
-from pathlib import Path
+from typing import Any, cast
 
 from trading_bot.research.h6.external_verifier_report import (
     REPORT_PATH,
@@ -29,7 +29,7 @@ class H6PreregMismatch(Exception):
     """Raised when external verifier report does not match frozen artifacts."""
 
 
-def _verify_external_report(report: dict) -> None:
+def _verify_external_report(report: dict[str, Any]) -> None:
     verdict = read_external_verdict()
     if verdict != "PASS":
         raise H6ExternalVerificationRequired(
@@ -57,12 +57,13 @@ def can_execute_h6() -> bool:
         return False
 
 
-def _read_external_report() -> dict:
+def _read_external_report() -> dict[str, Any]:
     import json
-    return json.loads(REPORT_PATH.read_text(encoding="utf-8"))
+
+    return cast("dict[str, Any]", json.loads(REPORT_PATH.read_text(encoding="utf-8")))
 
 
-def run_h6_dry_run() -> dict:
+def run_h6_dry_run() -> dict[str, Any]:
     """Dry-run only. Raises H6ExternalVerificationRequired if gated off."""
     if not can_execute_h6():
         raise H6ExternalVerificationRequired(

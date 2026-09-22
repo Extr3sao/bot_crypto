@@ -76,7 +76,8 @@ class TestValidDaySemantics:
             current_utc_day="2026-09-08",
             finalized_days={
                 "2026-09-07": _day_payload(
-                    trades=0, valid=False,
+                    trades=0,
+                    valid=False,
                     validity_reason="day-invalidating outage",
                 ),
             },
@@ -145,7 +146,8 @@ class TestCoverageAccounting:
             current_utc_day="2026-09-08",
             finalized_days={
                 "2026-09-07": _day_payload(
-                    trades=0, valid=True,
+                    trades=0,
+                    valid=True,
                     validity_reason="finalized; outage did not invalidate day",
                 ),
             },
@@ -181,8 +183,13 @@ class TestTableShape:
             current_utc_day="2026-09-07",
             finalized_days={
                 "2026-09-07": _day_payload(
-                    trades=4, risk_rejects=2, paper_opens=4, paper_closes=2,
-                    realized_pnl=12.5, proposals=7, selected=4,
+                    trades=4,
+                    risk_rejects=2,
+                    paper_opens=4,
+                    paper_closes=2,
+                    realized_pnl=12.5,
+                    proposals=7,
+                    selected=4,
                 ),
             },
             outage_intervals={},
@@ -190,8 +197,15 @@ class TestTableShape:
         row: ObservationDay = days[0]
         payload = row.to_dict()
         for key in (
-            "date", "status", "counted", "finalized", "valid", "validity_reason",
-            "coverage", "activity", "runtime_downtime_minutes",
+            "date",
+            "status",
+            "counted",
+            "finalized",
+            "valid",
+            "validity_reason",
+            "coverage",
+            "activity",
+            "runtime_downtime_minutes",
         ):
             assert key in payload
         assert row.trades_ge_3 is True

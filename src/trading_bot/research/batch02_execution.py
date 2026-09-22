@@ -60,7 +60,9 @@ __all__ = [
 
 _PREREG_PATH = (
     Path(__file__).resolve().parents[3]
-    / "docs" / "external-audit-01" / "DISCOVERY_BATCH_02_PREREGISTRATION.json"
+    / "docs"
+    / "external-audit-01"
+    / "DISCOVERY_BATCH_02_PREREGISTRATION.json"
 )
 BATCH02_PREREG_JSON = "DISCOVERY_BATCH_02_PREREGISTRATION.json"
 
@@ -133,9 +135,7 @@ def execute_batch02(
         "eval_spec_fingerprints": {
             cat: batch02_eval_fingerprint(cat) for cat in BATCH02_EVAL_SPECS
         },
-        "windows": {
-            tf: {"end_utc_exclusive_ms": window_end_by_tf[tf]} for tf in timeframes
-        },
+        "windows": {tf: {"end_utc_exclusive_ms": window_end_by_tf[tf]} for tf in timeframes},
     }
     report = DiscoveryReport(
         batch="DISCOVERY-BATCH-02",
@@ -208,9 +208,7 @@ def execute_batch02(
             )
         )
         freq_opps[category] = freq_opps.get(category, 0) + n
-        freq_days.setdefault(category, set()).update(
-            t.entry_ts // 86_400_000 for t in trades
-        )
+        freq_days.setdefault(category, set()).update(t.entry_ts // 86_400_000 for t in trades)
 
     for (asset, tf), candles in sorted(candles_by_key.items()):
         # volatility_structure_v2 — SAME signal as Batch 01, deeper window
@@ -228,9 +226,12 @@ def execute_batch02(
         }
         if len(by_ms) < 2:
             _emit(
-                "carry_funding_v2", asset, tf, candles, [],
-                {"insufficient_data": "no real funding observations in window",
-                 **carry_note},
+                "carry_funding_v2",
+                asset,
+                tf,
+                candles,
+                [],
+                {"insufficient_data": "no real funding observations in window", **carry_note},
             )
             continue
         carry = carry_funding_v2_signals(
@@ -241,16 +242,20 @@ def execute_batch02(
             funding_interval_s=interval_s,
         )
         _emit(
-            "carry_funding_v2", asset, tf, candles, carry.trades,
-            {"direction_rule": "SHORT when mean funding > 0 (true carry); "
-             "LONG when < 0", **carry_note},
+            "carry_funding_v2",
+            asset,
+            tf,
+            candles,
+            carry.trades,
+            {
+                "direction_rule": "SHORT when mean funding > 0 (true carry); LONG when < 0",
+                **carry_note,
+            },
         )
 
     # cross_sectional_v2 per timeframe + preregistered redundancy protocol
     for tf in timeframes:
-        series = {
-            a: candles_by_key[(a, tf)] for a in assets if (a, tf) in candles_by_key
-        }
+        series = {a: candles_by_key[(a, tf)] for a in assets if (a, tf) in candles_by_key}
         universe_key = "+".join(assets)
         if len(series) < 2 or len(series) != len(assets):
             report.cells.append(
@@ -281,7 +286,7 @@ def execute_batch02(
 
     report.frequency = {
         "note": "Track E: raw frequency here; incremental/NO_SIGNAL overlap "
-                "analyzed in the batch report",
+        "analyzed in the batch report",
         "opportunities_by_category": freq_opps,
         "days_with_opportunity_by_category": {k: len(v) for k, v in freq_days.items()},
     }
@@ -293,14 +298,11 @@ def _redundancy_evidence(
 ) -> dict[str, Any]:
     """C4 redundancy protocol: persistence, turnover, momentum correlation."""
     min_len = min(len(v) for v in series.values())
-    align = {a: v[len(v) - min_len:] for a, v in series.items()}
+    align = {a: v[len(v) - min_len :] for a, v in series.items()}
     lookback = 24
     leaders: list[str] = []
     for i in range(lookback, min_len):
-        rets = {
-            a: align[a][i].close / align[a][i - lookback].close - 1.0
-            for a in align
-        }
+        rets = {a: align[a][i].close / align[a][i - lookback].close - 1.0 for a in align}
         leaders.append(max(rets, key=lambda a: rets[a]))
     if len(leaders) < 2:
         return {"redundancy": "INSUFFICIENT_DATA"}
@@ -313,9 +315,7 @@ def _redundancy_evidence(
         held = leaders[i - lookback]
         strat_ret.append(align[held][i].close / align[held][i - 1].close - 1.0)
         mom_ret.append(
-            statistics.mean(
-                align[a][i].close / align[a][i - 1].close - 1.0 for a in align
-            )
+            statistics.mean(align[a][i].close / align[a][i - 1].close - 1.0 for a in align)
         )
     corr = _pearson(strat_ret, mom_ret)
     redundant = corr is not None and corr > 0.8 and persistence < 0.6
@@ -323,9 +323,7 @@ def _redundancy_evidence(
         "redundancy": {
             "leader_persistence": round(persistence, 4),
             "turnover_per_100_bars": round(turnover_per_100, 3),
-            "momentum_family_correlation": (
-                round(corr, 4) if corr is not None else None
-            ),
+            "momentum_family_correlation": (round(corr, 4) if corr is not None else None),
             "verdict": "REDUNDANT_CANDIDATE" if redundant else "DISTINCT_EVIDENCE",
         }
     }

@@ -112,9 +112,7 @@ class LegacyRetroProtocol:
                 "frozen_at_utc": self.frozen_at_utc,
                 "assets": list(self.assets),
                 "timeframes": list(self.timeframes),
-                "applicability": {
-                    k: list(v) for k, v in sorted(self.applicability.items())
-                },
+                "applicability": {k: list(v) for k, v in sorted(self.applicability.items())},
                 "directions": list(self.directions),
                 "commission_rate": self.commission_rate,
                 "slippage_bps": self.slippage_bps,
@@ -128,9 +126,7 @@ class LegacyRetroProtocol:
                 "use_purged_cv": self.use_purged_cv,
                 "holdout_fraction": self.holdout_fraction,
                 "holdout_policy": self.holdout_policy,
-                "acceptance_thresholds": dict(
-                    sorted(self.acceptance_thresholds.items())
-                ),
+                "acceptance_thresholds": dict(sorted(self.acceptance_thresholds.items())),
             },
             sort_keys=True,
             separators=(",", ":"),
@@ -315,9 +311,7 @@ class LegacyRetroHarness:
                 "asset not in preregistered applicability for strategy",
             )
         if timeframe not in protocol.timeframes:
-            return _verdict(
-                CellStatus.NOT_APPLICABLE, "timeframe not in preregistered set"
-            )
+            return _verdict(CellStatus.NOT_APPLICABLE, "timeframe not in preregistered set")
         if regime_binding not in {"exact", "declared_fallback"}:
             return _verdict(
                 CellStatus.NOT_APPLICABLE,
@@ -328,8 +322,7 @@ class LegacyRetroHarness:
         if len(returns) < protocol.min_trades_per_cell:
             return _verdict(
                 CellStatus.INSUFFICIENT_SAMPLE,
-                f"n={len(returns)} < preregistered minimum "
-                f"{protocol.min_trades_per_cell}",
+                f"n={len(returns)} < preregistered minimum {protocol.min_trades_per_cell}",
             )
 
         metrics = _cell_metrics_from_returns(
@@ -342,9 +335,7 @@ class LegacyRetroHarness:
         gates = {
             "expectancy": metrics.expectancy >= protocol.min_expectancy,
             "sharpe": metrics.sharpe >= protocol.min_sharpe,
-            "ci_excludes_negative": (
-                metrics.sharpe_ci_high > 0 and metrics.prob_sharpe_gt0 >= 0.5
-            ),
+            "ci_excludes_negative": (metrics.sharpe_ci_high > 0 and metrics.prob_sharpe_gt0 >= 0.5),
             "significance": metrics.permutation_pvalue < protocol.max_pvalue,
         }
         passed = all(gates.values())

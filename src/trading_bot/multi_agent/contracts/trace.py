@@ -29,7 +29,10 @@ class VerificationMetadata(BaseModel):
 
     @model_validator(mode="after")
     def _enforce_separation(self) -> VerificationMetadata:
-        if self.independent_verification_required and self.builder_agent_id == self.verifier_agent_id:
+        if (
+            self.independent_verification_required
+            and self.builder_agent_id == self.verifier_agent_id
+        ):
             raise ValueError("builder_agent_id and verifier_agent_id must differ")
         return self
 

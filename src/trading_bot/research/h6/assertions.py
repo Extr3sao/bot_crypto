@@ -6,10 +6,10 @@ guards. They must agree with the frozen spec, not with prompt memory.
 
 from __future__ import annotations
 
-from trading_bot.research.h6.contracts import SPEC_SHA256, DATASET_SHA256
+from trading_bot.research.h6.contracts import DATASET_SHA256, SPEC_SHA256
 from trading_bot.research.h6.drift_guard import (
-    EXPECTED_SPEC_SHA256,
     EXPECTED_DATASET_SHA256,
+    EXPECTED_SPEC_SHA256,
 )
 
 

@@ -13,7 +13,7 @@ from __future__ import annotations
 
 import hashlib
 import json
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
 from trading_bot.research.data_contracts import SCHEMA_VERSION
@@ -54,7 +54,7 @@ def _write_jsonl(path: Path, rows: list[dict[str, object]]) -> str:
 
 
 def _day_end_ms(day: str) -> int:
-    dt = datetime.strptime(day, "%Y-%m-%d").replace(tzinfo=timezone.utc) + timedelta(days=1)
+    dt = datetime.strptime(day, "%Y-%m-%d").replace(tzinfo=UTC) + timedelta(days=1)
     return int(dt.timestamp() * 1000)
 
 
@@ -158,7 +158,9 @@ def ingest_family(
             manifest["files"] = merged
         except (json.JSONDecodeError, OSError):
             pass
-    manifest["files"] = sorted(manifest["files"], key=lambda f: (str(f.get("symbol")), str(f.get("day"))))
+    manifest["files"] = sorted(
+        manifest["files"], key=lambda f: (str(f.get("symbol")), str(f.get("day")))
+    )
     manifest_path.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n")
     return manifest
 
@@ -168,15 +170,13 @@ def _normalizer_commit() -> str:
     try:
         import subprocess
 
-        return (
-            subprocess.run(
-                ["git", "rev-parse", "HEAD"],
-                capture_output=True,
-                text=True,
-                check=True,
-                cwd=REPO,
-            ).stdout.strip()
-        )
+        return subprocess.run(
+            ["git", "rev-parse", "HEAD"],
+            capture_output=True,
+            text=True,
+            check=True,
+            cwd=REPO,
+        ).stdout.strip()
     except Exception:
         return "-"
 
@@ -186,16 +186,16 @@ def main(argv: list[str] | None = None) -> int:
 
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--family", choices=("trade_flow", "open_interest", "both"), default="both")
-    parser.add_argument("--symbol", choices=SYMBOLS, default=None, help="restrict to one symbol (staged runs)")
+    parser.add_argument(
+        "--symbol", choices=SYMBOLS, default=None, help="restrict to one symbol (staged runs)"
+    )
     args = parser.parse_args(argv)
 
     NORMALIZED.mkdir(parents=True, exist_ok=True)
     (NORMALIZED / "trade_flow").mkdir(exist_ok=True)
     (NORMALIZED / "open_interest").mkdir(exist_ok=True)
     commit = _normalizer_commit()
-    families = (
-        ("trade_flow", "open_interest") if args.family == "both" else (args.family,)
-    )
+    families = ("trade_flow", "open_interest") if args.family == "both" else (args.family,)
     ingested: dict[str, dict[str, object]] = {}
     for fam in families:
         ingested[fam] = ingest_family(fam, normalizer_commit=commit, only_symbol=args.symbol)
@@ -224,7 +224,9 @@ def main(argv: list[str] | None = None) -> int:
             continue
         mfiles: list[dict[str, object]] = mdata.get("files", [])
         summary[f"{fam_key}_files"] = len(mfiles)
-        summary[f"{fam_key}_quality_error_files"] = sum(1 for f in mfiles if f.get("quality_errors"))
+        summary[f"{fam_key}_quality_error_files"] = sum(
+            1 for f in mfiles if f.get("quality_errors")
+        )
         summary[f"{fam_key}_rows"] = sum(int(f.get("rows_within_pit", 0)) for f in mfiles)
     (NORMALIZED / "INGESTION_SUMMARY.json").write_text(
         json.dumps(summary, indent=2, sort_keys=True) + "\n"

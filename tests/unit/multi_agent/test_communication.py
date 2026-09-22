@@ -128,7 +128,9 @@ def test_bus_direct_route_publish_subscription_and_traceable_blackboard() -> Non
     bus, blackboard = _runtime()
     delivered: list[str] = []
     bus.register_handler("critic", lambda message: delivered.append(message.message_id))
-    bus.subscribe("observer", "market_state", lambda message: delivered.append(f"sub:{message.message_id}"))
+    bus.subscribe(
+        "observer", "market_state", lambda message: delivered.append(f"sub:{message.message_id}")
+    )
 
     accepted = bus.direct_route(_message("m-1"))
 
@@ -233,14 +235,17 @@ def test_blackboard_rejects_unbound_evidence_and_is_append_only() -> None:
     )
     artifact.value["mutable"].append("outside")  # type: ignore[index]
     assert blackboard.get("artifact-1").value == {"mutable": []}
-    assert blackboard.publish(
-        artifact_id="artifact-1",
-        topic="decision_state",
-        producer="strategy",
-        timestamp=NOW,
-        trace=TRACE,
-        value={"mutable": []},
-    ).version == artifact.version
+    assert (
+        blackboard.publish(
+            artifact_id="artifact-1",
+            topic="decision_state",
+            producer="strategy",
+            timestamp=NOW,
+            trace=TRACE,
+            value={"mutable": []},
+        ).version
+        == artifact.version
+    )
 
 
 def test_session_completes_and_replays_same_state() -> None:
@@ -254,9 +259,21 @@ def test_session_completes_and_replays_same_state() -> None:
         started_at=NOW,
     )
     bus.register_evidence(_evidence())
-    session.send(_message("proposal", message_type=AgentMessageType.PROPOSAL, evidence_refs=("ev-1",)))
-    session.send(_message("proposal", message_type=AgentMessageType.PROPOSAL, evidence_refs=("ev-1",)))
-    session.send(_message("critique", sender="critic", receiver="strategy", message_type=AgentMessageType.CRITIQUE, evidence_refs=("ev-1",)))
+    session.send(
+        _message("proposal", message_type=AgentMessageType.PROPOSAL, evidence_refs=("ev-1",))
+    )
+    session.send(
+        _message("proposal", message_type=AgentMessageType.PROPOSAL, evidence_refs=("ev-1",))
+    )
+    session.send(
+        _message(
+            "critique",
+            sender="critic",
+            receiver="strategy",
+            message_type=AgentMessageType.CRITIQUE,
+            evidence_refs=("ev-1",),
+        )
+    )
     session.complete("fixture dialogue completed")
     replay = CommunicationReplay.replay(session, bus.accepted_messages)
     rebuilt = CommunicationReplay.replay_with_blackboard(session, bus.accepted_messages)

@@ -24,9 +24,7 @@ from trading_bot.shadow.outcome import ShadowBar
 __all__ = ["resolve_pending_shadow_captures"]
 
 
-def _fetch_public_bars_binanceusdm(
-    symbol: str, start_ms: int, end_ms: int
-) -> list[OHLCV]:
+def _fetch_public_bars_binanceusdm(symbol: str, start_ms: int, end_ms: int) -> list[OHLCV]:
     """Fetch public binanceusdm 5m bars in [start_ms, end_ms]."""
     import ccxt
 
@@ -36,9 +34,7 @@ def _fetch_public_bars_binanceusdm(
         since = start_ms
         # paginate 1500-bar windows to cover the full horizon
         while since < end_ms:
-            chunk = exchange.fetch_ohlcv(
-                symbol, timeframe="5m", since=since, limit=1500
-            )
+            chunk = exchange.fetch_ohlcv(symbol, timeframe="5m", since=since, limit=1500)
             if not chunk:
                 break
             rows.extend(chunk)
@@ -83,11 +79,7 @@ def resolve_pending_shadow_captures(
     )
     now = now or datetime.now(UTC)
     already_resolved = {t.decision_id for t in hook.outcomes.trades}
-    pending = [
-        c
-        for c in hook.captures.captures
-        if c.decision_id not in already_resolved
-    ]
+    pending = [c for c in hook.captures.captures if c.decision_id not in already_resolved]
     summary: dict[str, Any] = {
         "captures_total": len(hook.captures.captures),
         "already_resolved": len(already_resolved),
@@ -103,9 +95,7 @@ def resolve_pending_shadow_captures(
     resolved_ids = set(already_resolved)
     for capture in pending:
         try:
-            decision_dt = datetime.fromisoformat(
-                capture.decision_time.replace("Z", "+00:00")
-            )
+            decision_dt = datetime.fromisoformat(capture.decision_time.replace("Z", "+00:00"))
         except ValueError as exc:
             summary["errors"].append(f"{capture.decision_id}: {exc}")
             continue
@@ -118,13 +108,9 @@ def resolve_pending_shadow_captures(
             summary["kept_pending"] += 1  # horizon not yet reachable
             continue
         try:
-            bars = _fetch_public_bars_binanceusdm(
-                capture.asset, start_ms, end_ms
-            )
+            bars = _fetch_public_bars_binanceusdm(capture.asset, start_ms, end_ms)
         except Exception as exc:  # provider error: loud, capture stays PENDING
-            summary["errors"].append(
-                f"{capture.decision_id}: {type(exc).__name__}: {exc}"
-            )
+            summary["errors"].append(f"{capture.decision_id}: {type(exc).__name__}: {exc}")
             continue
         if not bars:
             summary["skipped_insufficient_bars"] += 1

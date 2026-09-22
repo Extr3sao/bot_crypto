@@ -19,12 +19,12 @@ but trading paths MUST use the V2 causal versions.
 
 from __future__ import annotations
 
-import hashlib
 import json
 import os
-from datetime import datetime, timezone
+from collections.abc import Iterator
+from datetime import UTC, datetime
 from pathlib import Path
-from typing import Iterator
+from typing import Any
 
 # ---- V2 canonical roots ----
 REPO = Path(__file__).resolve().parents[3]
@@ -68,12 +68,12 @@ def _guard_not_canonical_under_pytest(out_dir: Path | None = None) -> None:
 
 
 def _grid_for_day(day: str) -> list[int]:
-    base = int(datetime.strptime(day, "%Y-%m-%d").replace(tzinfo=timezone.utc).timestamp() * 1000)
+    base = int(datetime.strptime(day, "%Y-%m-%d").replace(tzinfo=UTC).timestamp() * 1000)
     return [base + i * 300 * 1000 for i in range(EXPECTED_ROWS_PER_DAY)]
 
 
-def load_ledger_v2(ledger_path: Path = OI_V2_LEDGER_DEFAULT) -> list[dict[str, object]]:
-    entries: list[dict[str, object]] = []
+def load_ledger_v2(ledger_path: Path = OI_V2_LEDGER_DEFAULT) -> list[dict[str, Any]]:
+    entries: list[dict[str, Any]] = []
     with ledger_path.open("r", encoding="utf-8") as fh:
         for line in fh:
             line = line.strip()
@@ -96,14 +96,13 @@ def _scan_normalized_rows_v2(data_dir: Path, symbol: str) -> Iterator[Path]:
     if not sym_dir.exists():
         return
         yield  # make generator
-    for p in sorted(sym_dir.glob(f"{symbol}-oi-5m-*.jsonl")):
-        yield p
+    yield from sorted(sym_dir.glob(f"{symbol}-oi-5m-*.jsonl"))
 
 
 def iter_oi_rows_v2(
     data_dir: Path,
     symbol: str,
-) -> Iterator[dict[str, object]]:
+) -> Iterator[dict[str, Any]]:
     """Yield normalized OI rows for symbol from the filesystem (sorted by timestamp).
 
     PIT invariant: the caller must filter by timestamp_ms <= cutoff themselves;
@@ -112,18 +111,18 @@ def iter_oi_rows_v2(
     shard, so they contribute no rows (same as V1 valid-only set, but without
     consulting final-day validity predictively).
     """
-    rows: list[dict[str, object]] = []
+    rows: list[dict[str, Any]] = []
     for shard in _scan_normalized_rows_v2(data_dir, symbol):
         with shard.open("r", encoding="utf-8") as fh:
             for line in fh:
                 line = line.strip()
                 if line:
                     rows.append(json.loads(line))
-    rows.sort(key=lambda r: int(r["timestamp_ms"]))  # type: ignore[arg-type]
+    rows.sort(key=lambda r: int(r["timestamp_ms"]))
     # Detect conflicting duplicates in normalized output (fail-closed): if two rows share timestamp_ms
-    seen: dict[int, dict[str, object]] = {}
+    seen: dict[int, dict[str, Any]] = {}
     for r in rows:
-        ts = int(r["timestamp_ms"])  # type: ignore[arg-type]
+        ts = int(r["timestamp_ms"])
         if ts in seen:
             # If payload differs, this indicates a conflicting duplicate that bypassed normalization check
             # (e.g., manually tampered file). Upstream eligibility must fail-closed.
@@ -137,12 +136,10 @@ def iter_oi_rows_v2(
         yield r
 
 
-def _causal_rows_v2(
-    data_dir: Path, symbol: str, cutoff_ms: int
-) -> list[dict[str, object]]:
+def _causal_rows_v2(data_dir: Path, symbol: str, cutoff_ms: int) -> list[dict[str, Any]]:
     """All OI observations with timestamp_ms <= cutoff_ms (strictly causal)."""
-    rows = [r for r in iter_oi_rows_v2(data_dir, symbol) if int(r["timestamp_ms"]) <= cutoff_ms]  # type: ignore[arg-type]
-    rows.sort(key=lambda r: int(r["timestamp_ms"]))  # type: ignore[arg-type]
+    rows = [r for r in iter_oi_rows_v2(data_dir, symbol) if int(r["timestamp_ms"]) <= cutoff_ms]
+    rows.sort(key=lambda r: int(r["timestamp_ms"]))
     return rows
 
 
@@ -153,7 +150,7 @@ def oi_state_at(
     source: str | None = None,
     *,
     data_dir: Path = OI_V2_DIR_DEFAULT,
-) -> list[dict[str, object]]:
+) -> list[dict[str, Any]]:
     """V2 causal OI state: only records with record_time <= decision_time.
 
     This is the canonical V2 API suggested in the repair spec. It MUST NOT
@@ -168,7 +165,7 @@ def oi_state_at_ms(
     cutoff_ms: int,
     symbol: str,
     data_dir: Path = OI_V2_DIR_DEFAULT,
-) -> list[dict[str, object]]:
+) -> list[dict[str, Any]]:
     """Ms-variant of oi_state_at (causal)."""
     return _causal_rows_v2(data_dir, symbol, cutoff_ms)
 
@@ -181,32 +178,38 @@ def oi_hourly_decision_state_v2(
     decision_time_ms: int,
     symbol: str,
     data_dir: Path = OI_V2_DIR_DEFAULT,
-) -> dict[str, object]:
+) -> dict[str, Any]:
     """OI state causally available at decision_time_ms (1h buckets), no day-validity gate."""
     rows = oi_state_at_ms(decision_time_ms, symbol, data_dir)
     if not rows:
         return {"symbol": symbol, "decision_time_ms": decision_time_ms, "available": False}
     last = rows[-1]
     bucket = hour_bucket_ms(decision_time_ms)
-    in_hour = sum(1 for r in rows if bucket <= int(r["timestamp_ms"]) <= decision_time_ms)  # type: ignore[arg-type]
+    in_hour = sum(1 for r in rows if bucket <= int(r["timestamp_ms"]) <= decision_time_ms)
     return {
         "symbol": symbol,
         "decision_time_ms": decision_time_ms,
         "available": True,
-        "last_oi_time_ms": last["timestamp_ms"],  # type: ignore[arg-type]
-        "sum_open_interest": last["sum_open_interest"],  # type: ignore[arg-type]
-        "sum_open_interest_value": last["sum_open_interest_value"],  # type: ignore[arg-type]
+        "last_oi_time_ms": last["timestamp_ms"],
+        "sum_open_interest": last["sum_open_interest"],
+        "sum_open_interest_value": last["sum_open_interest_value"],
         "observations_in_decision_hour": in_hour,
-        "stale_seconds": (decision_time_ms - int(last["timestamp_ms"])) / 1000.0,  # type: ignore[arg-type]
+        "stale_seconds": (decision_time_ms - int(last["timestamp_ms"])) / 1000.0,
     }
 
 
 # ---- V2 eligibility (causal, no day-level future validity) ----
 
 
-def _snapshots_in_window_v2(data_dir: Path, symbol: str, start_ms: int, end_ms_exclusive: int) -> list[int]:
+def _snapshots_in_window_v2(
+    data_dir: Path, symbol: str, start_ms: int, end_ms_exclusive: int
+) -> list[int]:
     """Distinct 5m timestamps in [start_ms, end_ms) causally (end is the decision boundary)."""
-    ts_set = {int(r["timestamp_ms"]) for r in iter_oi_rows_v2(data_dir, symbol) if start_ms <= int(r["timestamp_ms"]) < end_ms_exclusive}  # type: ignore[arg-type]
+    ts_set = {
+        int(r["timestamp_ms"])
+        for r in iter_oi_rows_v2(data_dir, symbol)
+        if start_ms <= int(r["timestamp_ms"]) < end_ms_exclusive
+    }
     return sorted(ts_set)
 
 
@@ -214,18 +217,18 @@ def _detect_conflicting_duplicates_v2(data_dir: Path, symbol: str, cutoff_ms: in
     """Return True if any conflicting duplicate (same ts, different payload) exists with ts <= cutoff_ms."""
     seen: dict[int, tuple[float, float]] = {}
     for r in iter_oi_rows_v2(data_dir, symbol):
-        ts = int(r["timestamp_ms"])  # type: ignore[arg-type]
+        ts = int(r["timestamp_ms"])
         if ts > cutoff_ms:
             # Sorted iteration; future rows are after cutoff
             continue
-        payload = (float(r["sum_open_interest"]), float(r["sum_open_interest_value"]))  # type: ignore[arg-type]
+        payload = (float(r["sum_open_interest"]), float(r["sum_open_interest_value"]))
         if ts in seen and seen[ts] != payload:
             return True
         seen[ts] = payload
     return False
 
 
-def _hourly_changes_v2(data_dir: Path, symbol: str, cutoff_ms: int) -> list[dict[str, object]]:
+def _hourly_changes_v2(data_dir: Path, symbol: str, cutoff_ms: int) -> list[dict[str, Any]]:
     """Causal hourly OI changes with timestamp <= cutoff_ms.
 
     One entry per completed hour with exactly SNAPSHOTS_PER_HOUR distinct snapshots
@@ -233,33 +236,40 @@ def _hourly_changes_v2(data_dir: Path, symbol: str, cutoff_ms: int) -> list[dict
     """
     # Use causal rows only up to cutoff_ms, then aggregate
     rows = _causal_rows_v2(data_dir, symbol, cutoff_ms)
-    by_hour: dict[int, list[dict[str, object]]] = {}
+    by_hour: dict[int, list[dict[str, Any]]] = {}
     for r in rows:
-        bucket = hour_bucket_ms(int(r["timestamp_ms"])) + HOUR_MS  # hour_end_ms  # type: ignore[arg-type]
+        bucket = hour_bucket_ms(int(r["timestamp_ms"])) + HOUR_MS  # hour_end_ms
         by_hour.setdefault(bucket, []).append(r)
-    out: list[dict[str, object]] = []
+    out: list[dict[str, Any]] = []
     for hour_end in sorted(by_hour):
         cur = by_hour[hour_end]
         # Need distinct timestamps
-        cur_ts = {int(r["timestamp_ms"]) for r in cur}  # type: ignore[arg-type]
+        cur_ts = {int(r["timestamp_ms"]) for r in cur}
         # Only consider completed hours strictly < cutoff? The current hour is [decision_time-1h, decision_time)
         # For historical rolling we need ALL completed hours strictly before decision_time; but also the current hour itself counts as a change when both it and prior exist.
         # So we keep current if it is <= cutoff_ms hour boundary?
         # The caller decides the cutoff. We simply build all that are fully within causal rows.
         prev = by_hour.get(hour_end - HOUR_MS, [])
-        prev_ts_set = {int(r["timestamp_ms"]) for r in prev}  # type: ignore[arg-type]
+        prev_ts_set = {int(r["timestamp_ms"]) for r in prev}
         if len(cur_ts) != SNAPSHOTS_PER_HOUR or len(prev_ts_set) != SNAPSHOTS_PER_HOUR:
             continue
         # Use last snapshot per hour (max ts within hour)
-        cur_sorted = sorted(cur, key=lambda r: int(r["timestamp_ms"]))  # type: ignore[arg-type]
-        prev_sorted = sorted(prev, key=lambda r: int(r["timestamp_ms"]))  # type: ignore[arg-type]
-        out.append({"hour_end_ms": hour_end, "delta_oi": float(cur_sorted[-1]["sum_open_interest"]) - float(prev_sorted[-1]["sum_open_interest"]), "n_snapshots": len(cur_ts)})  # type: ignore[arg-type]
+        cur_sorted = sorted(cur, key=lambda r: int(r["timestamp_ms"]))
+        prev_sorted = sorted(prev, key=lambda r: int(r["timestamp_ms"]))
+        out.append(
+            {
+                "hour_end_ms": hour_end,
+                "delta_oi": float(cur_sorted[-1]["sum_open_interest"])
+                - float(prev_sorted[-1]["sum_open_interest"]),
+                "n_snapshots": len(cur_ts),
+            }
+        )
     # Only keep changes where hour_end <= cutoff_ms (current hour included if valid)
-    return [c for c in out if int(c["hour_end_ms"]) <= cutoff_ms]  # type: ignore[arg-type]
+    return [c for c in out if int(c["hour_end_ms"]) <= cutoff_ms]
 
 
-def _robust_z_change(changes: list[dict[str, object]], decision_time_ms: int) -> dict[str, object]:
-    hist = [float(c["delta_oi"]) for c in changes if int(c["hour_end_ms"]) <= decision_time_ms]  # type: ignore[arg-type]
+def _robust_z_change(changes: list[dict[str, Any]], decision_time_ms: int) -> dict[str, Any]:
+    hist = [float(c["delta_oi"]) for c in changes if int(c["hour_end_ms"]) <= decision_time_ms]
     # Need trailing 720 strictly BEFORE current? Align with V1: window 720 + current excluded for median/MAD
     hist_window = hist[-ROBUST_Z_WINDOW_HOURS:] if len(hist) >= ROBUST_Z_WINDOW_HOURS else hist
     if len(hist_window) < ROBUST_Z_MIN_OBSERVATIONS:
@@ -291,7 +301,7 @@ def decision_eligibility_at_v2(
     decision_time_ms: int,
     symbol: str,
     data_dir: Path = OI_V2_DIR_DEFAULT,
-) -> dict[str, object]:
+) -> dict[str, Any]:
     """Causal decision eligibility at T — V2 PIT-true version.
 
     Conditions (only timestamp-scoped; no day-validity future gate):
@@ -308,16 +318,35 @@ def decision_eligibility_at_v2(
     cur_ts = _snapshots_in_window_v2(data_dir, symbol, hour_start, decision_time_ms)
     checks: dict[str, bool] = {"current_hour_complete": len(cur_ts) == SNAPSHOTS_PER_HOUR}
     if not checks["current_hour_complete"]:
-        return {"decision_time_ms": decision_time_ms, "symbol": symbol, "eligible": False, "reason": "CURRENT_HOUR_OI_INCOMPLETE", "checks": checks, "n_current_snapshots": len(cur_ts)}
+        return {
+            "decision_time_ms": decision_time_ms,
+            "symbol": symbol,
+            "eligible": False,
+            "reason": "CURRENT_HOUR_OI_INCOMPLETE",
+            "checks": checks,
+            "n_current_snapshots": len(cur_ts),
+        }
     prev_ts = _snapshots_in_window_v2(data_dir, symbol, hour_start - HOUR_MS, hour_start)
     checks["previous_hour_reference"] = len(prev_ts) == SNAPSHOTS_PER_HOUR
     if not checks["previous_hour_reference"]:
-        return {"decision_time_ms": decision_time_ms, "symbol": symbol, "eligible": False, "reason": "PREVIOUS_HOUR_OI_INCOMPLETE", "checks": checks}
+        return {
+            "decision_time_ms": decision_time_ms,
+            "symbol": symbol,
+            "eligible": False,
+            "reason": "PREVIOUS_HOUR_OI_INCOMPLETE",
+            "checks": checks,
+        }
     # Conflicting duplicate <= T must invalidate
     has_conflict = _detect_conflicting_duplicates_v2(data_dir, symbol, decision_time_ms)
     checks["no_conflicting_duplicate"] = not has_conflict
     if has_conflict:
-        return {"decision_time_ms": decision_time_ms, "symbol": symbol, "eligible": False, "reason": "CONFLICTING_DUPLICATE", "checks": checks}
+        return {
+            "decision_time_ms": decision_time_ms,
+            "symbol": symbol,
+            "eligible": False,
+            "reason": "CONFLICTING_DUPLICATE",
+            "checks": checks,
+        }
     changes = _hourly_changes_v2(data_dir, symbol, decision_time_ms)
     robust = _robust_z_change(changes, decision_time_ms)
     # Rolling history sufficient if robust is OK or MAD_ZERO (which still proves observations existed)
@@ -330,7 +359,9 @@ def decision_eligibility_at_v2(
         "decision_time_ms": decision_time_ms,
         "symbol": symbol,
         "eligible": eligible,
-        "reason": "ELIGIBLE" if eligible else "INELIGIBLE_" + next(k for k, v in checks.items() if not v).upper(),
+        "reason": "ELIGIBLE"
+        if eligible
+        else "INELIGIBLE_" + next(k for k, v in checks.items() if not v).upper(),
         "checks": checks,
         "n_current_snapshots": len(cur_ts),
         "last_oi_age_seconds": last_age,
@@ -340,15 +371,15 @@ def decision_eligibility_at_v2(
 
 
 def utc_iso(ts_ms: int) -> str:
-    from datetime import datetime, timezone
+    from datetime import datetime
 
-    return datetime.fromtimestamp(ts_ms / 1000, tz=timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    return datetime.fromtimestamp(ts_ms / 1000, tz=UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
 # ---- V2 forensic helpers ----
 
 
-def validate_ledger_v2_semantics(ledger_path: Path = OI_V2_LEDGER_DEFAULT) -> dict[str, object]:
+def validate_ledger_v2_semantics(ledger_path: Path = OI_V2_LEDGER_DEFAULT) -> dict[str, Any]:
     """Validate that V2 ledger carries forensic-only semantics."""
     ledger = load_ledger_v2(ledger_path)
     valid_statuses = {
@@ -365,4 +396,11 @@ def validate_ledger_v2_semantics(ledger_path: Path = OI_V2_LEDGER_DEFAULT) -> di
     }
     statuses = {str(e.get("classification")) for e in ledger}
     unknown = statuses - valid_statuses
-    return {"ledger_path": str(ledger_path), "entries": len(ledger), "statuses": sorted(statuses), "unknown_statuses": sorted(unknown), "forensic_only": True, "decision_gate": "MUST_NOT_GATE_TRADING_ELIGIBILITY"}
+    return {
+        "ledger_path": str(ledger_path),
+        "entries": len(ledger),
+        "statuses": sorted(statuses),
+        "unknown_statuses": sorted(unknown),
+        "forensic_only": True,
+        "decision_gate": "MUST_NOT_GATE_TRADING_ELIGIBILITY",
+    }

@@ -53,9 +53,7 @@ class FakeCcxtTransport:
         if self.fail_before_accept:
             raise ccxt.RequestTimeout("connection died before venue accepted")
         if self.fail_submit_after_accept:
-            self.orders.setdefault(
-                cid, self._order(cid, symbol, side, amount, price)
-            )
+            self.orders.setdefault(cid, self._order(cid, symbol, side, amount, price))
             raise ccxt.RequestTimeout("accepted then connection died")
         self.orders[cid] = self._order(cid, symbol, side, amount, price)
         return self.orders[cid]
@@ -229,15 +227,21 @@ class TestRealPathAckRecovery:
 
 
 class TestRealPathFillsAndRestart:
-    def test_duplicate_fill_applied_once(self, connector: tuple[CCXTExchangeConnector, FakeCcxtTransport]) -> None:
+    def test_duplicate_fill_applied_once(
+        self, connector: tuple[CCXTExchangeConnector, FakeCcxtTransport]
+    ) -> None:
         conn, _transport = connector
         venue = GatewayDrivenVenue(conn, default_symbol="BTC/USDT")
         gateway = ExecutionGateway()
         intent = _intent()
         receipt = gateway.submit(intent, venue)
         assert receipt.journal_state is ExecutionState.ACCEPTED
-        app1 = gateway.apply_fill(intent, venue_fill_id="F-1", quantity=0.01, price=60_000.0, fee=0.6)
-        app2 = gateway.apply_fill(intent, venue_fill_id="F-1", quantity=0.01, price=60_000.0, fee=0.6)
+        app1 = gateway.apply_fill(
+            intent, venue_fill_id="F-1", quantity=0.01, price=60_000.0, fee=0.6
+        )
+        app2 = gateway.apply_fill(
+            intent, venue_fill_id="F-1", quantity=0.01, price=60_000.0, fee=0.6
+        )
         assert app1.applied is True
         assert app2.applied is False  # duplicate: exactly-once
         assert app1.position_delta == pytest.approx(0.01)
@@ -255,9 +259,7 @@ class TestRealPathFillsAndRestart:
         # Restart: a fresh service replays the durable journal and observes
         # the same FSM state (no second economic order is ever submitted).
         reborn = ExecutionService.from_path(journal_path)
-        assert reborn.journal.current_state(service.intent_id(intent)) is (
-            ExecutionState.ACCEPTED
-        )
+        assert reborn.journal.current_state(service.intent_id(intent)) is (ExecutionState.ACCEPTED)
         assert len(transport.orders) == 1
 
 

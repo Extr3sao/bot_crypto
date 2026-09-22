@@ -118,10 +118,19 @@ def campaign_snapshot(campaign_id: str = ACTIVE_CAMPAIGN) -> dict:
         day_row = by_day.setdefault(day, {"day": day, "trades": 0, "proposals": 0, "selected": 0})
         f = r.get("proposal_funnel", {})
         for key in (
-            "MARKET_SCANS", "PROPOSALS", "OPPORTUNITY_GROUPS", "DIRECTION_LONG_SELECTED",
-            "DIRECTION_SHORT_SELECTED", "DIRECTION_NONE", "SELECTED", "NO_TRADE",
-            "VERIFIER_VERIFIED", "VERIFIER_REJECTED",
-            "PAPER_CLOSE", "AGENT_REJECT", "DEBATES",
+            "MARKET_SCANS",
+            "PROPOSALS",
+            "OPPORTUNITY_GROUPS",
+            "DIRECTION_LONG_SELECTED",
+            "DIRECTION_SHORT_SELECTED",
+            "DIRECTION_NONE",
+            "SELECTED",
+            "NO_TRADE",
+            "VERIFIER_VERIFIED",
+            "VERIFIER_REJECTED",
+            "PAPER_CLOSE",
+            "AGENT_REJECT",
+            "DEBATES",
         ):
             funnel[key] = funnel.get(key, 0) + int(f.get(key, 0) or 0)
         day_row["trades"] += int(f.get("PAPER_OPEN", 0) or 0)  # legacy receipt days
@@ -131,9 +140,9 @@ def campaign_snapshot(campaign_id: str = ACTIVE_CAMPAIGN) -> dict:
         for key in ("groups_total", "long_selected", "short_selected", "none_selected"):
             arbitration[key] = arbitration.get(key, 0) + int(arb.get(key, 0) or 0)
         for reason, n in (arb.get("selection_reasons") or {}).items():
-            arbitration["selection_reasons"][reason] = (
-                arbitration["selection_reasons"].get(reason, 0) + int(n)
-            )
+            arbitration["selection_reasons"][reason] = arbitration["selection_reasons"].get(
+                reason, 0
+            ) + int(n)
 
     # PnL y operaciones desde la atribución (campaña)
     paper_open = [r for r in attribution if r.get("stage") == "PAPER_OPEN"]
@@ -171,9 +180,7 @@ def campaign_snapshot(campaign_id: str = ACTIVE_CAMPAIGN) -> dict:
     )
 
     rejection_rate = (
-        round(risk_reject / (risk_reject + risk_accept), 4)
-        if (risk_reject + risk_accept)
-        else None
+        round(risk_reject / (risk_reject + risk_accept), 4) if (risk_reject + risk_accept) else None
     )
 
     # estrategia (semántica de fuente aclarada — DEF-FE-STRAT-001)
@@ -182,7 +189,9 @@ def campaign_snapshot(campaign_id: str = ACTIVE_CAMPAIGN) -> dict:
         sid = "momentum"  # la composición R2 actual genera familia momentum (eco)
         strategies.setdefault(sid, {"operations": 0, "pnl": 0.0})
         strategies[sid]["operations"] += 1
-        strategies[sid]["pnl"] = round(strategies[sid]["pnl"] + float(r.get("net_pnl", 0.0) or 0.0), 2)
+        strategies[sid]["pnl"] = round(
+            strategies[sid]["pnl"] + float(r.get("net_pnl", 0.0) or 0.0), 2
+        )
 
     # bottleneck dominante
     bottleneck_totals: dict[str, int] = {}
@@ -193,7 +202,9 @@ def campaign_snapshot(campaign_id: str = ACTIVE_CAMPAIGN) -> dict:
             continue
         for key, n in (r.get("bottleneck_state", {}).get("totals_canonical", {})).items():
             bottleneck_totals[key] = bottleneck_totals.get(key, 0) + int(n)
-    dominant = max(bottleneck_totals, key=lambda k: bottleneck_totals[k]) if bottleneck_totals else None
+    dominant = (
+        max(bottleneck_totals, key=lambda k: bottleneck_totals[k]) if bottleneck_totals else None
+    )
 
     # frescura (heartbeat)
     heartbeat = state.get("heartbeat_utc")
@@ -210,7 +221,8 @@ def campaign_snapshot(campaign_id: str = ACTIVE_CAMPAIGN) -> dict:
     today = datetime.now(UTC).strftime("%Y-%m-%d")
     today_row = next((r for r in coverage_rows if r.get("utc_day") == today), {})
     valid_days = [
-        r for r in coverage_rows
+        r
+        for r in coverage_rows
         if r.get("day_validity") == "VALID" or r.get("coverage_ratio", 0) >= 0.8
     ]
 
@@ -225,7 +237,8 @@ def campaign_snapshot(campaign_id: str = ACTIVE_CAMPAIGN) -> dict:
         "stale": stale,
         "equity_display": None,  # se rellena abajo con el broker cuando exista
         "net_pnl": net_pnl,
-        "trades_today": int(today_row.get("observed_cycles", 0) or 0) and funnel.get("PAPER_OPEN", 0),
+        "trades_today": int(today_row.get("observed_cycles", 0) or 0)
+        and funnel.get("PAPER_OPEN", 0),
         "paper_opens_total": len(paper_open),
         "paper_closes_total": len(paper_close),
         "risk_accept": risk_accept,
@@ -241,7 +254,16 @@ def campaign_snapshot(campaign_id: str = ACTIVE_CAMPAIGN) -> dict:
         "coverage_today_ratio": today_row.get("coverage_ratio"),
         "valid_days": len(valid_days),
         "coverage_rows": [
-            {k: r.get(k) for k in ("utc_day", "observed_cycles", "observed_minutes", "coverage_ratio", "day_validity")}
+            {
+                k: r.get(k)
+                for k in (
+                    "utc_day",
+                    "observed_cycles",
+                    "observed_minutes",
+                    "coverage_ratio",
+                    "day_validity",
+                )
+            }
             for r in coverage_rows
         ],
         "daily": sorted(by_day.values(), key=lambda d: d["day"]),
@@ -384,10 +406,14 @@ def _render_home(campaign_id: str) -> bytes:
         ("Intentos de ejecución", s["execution_attempts"]),
         ("Operaciones", s["paper_opens_total"]),
     ]
-    funnel_html = '<div class="funnel">' + '<span class="arrow">&rarr;</span>'.join(
-        f'<div class="step"><div class="muted">{label}</div><b>{n}</b></div>'
-        for label, n in steps
-    ) + "</div>"
+    funnel_html = (
+        '<div class="funnel">'
+        + '<span class="arrow">&rarr;</span>'.join(
+            f'<div class="step"><div class="muted">{label}</div><b>{n}</b></div>'
+            for label, n in steps
+        )
+        + "</div>"
+    )
     gap = s["risk_accept"] - s["paper_opens_total"]
     if gap > 0:
         motivo = []
@@ -430,16 +456,22 @@ def _render_home(campaign_id: str) -> bytes:
         strat_rows = "<tr><td colspan='6' class='muted'>Sin operaciones todavía: la muestra aún no permite evaluar estrategias</td></tr>"
 
     # informes humanos
-    report_rows = "".join(
-        f"<tr><td>{day}</td><td>Informe diario</td><td>{d['trades']} operaciones</td></tr>"
-        for day, d in [(x["day"], x) for x in s["daily"]]
-    ) or "<tr><td colspan='3' class='muted'>Aún no hay informes diarios cerrados</td></tr>"
+    report_rows = (
+        "".join(
+            f"<tr><td>{day}</td><td>Informe diario</td><td>{d['trades']} operaciones</td></tr>"
+            for day, d in [(x["day"], x) for x in s["daily"]]
+        )
+        or "<tr><td colspan='3' class='muted'>Aún no hay informes diarios cerrados</td></tr>"
+    )
 
-    cov_rows = "".join(
-        f"<tr><td>{r.get('utc_day')}</td><td>{r.get('observed_cycles')}</td>"
-        f"<td>{r.get('coverage_ratio')}</td><td>{r.get('day_validity')}</td></tr>"
-        for r in s["coverage_rows"]
-    ) or "<tr><td colspan='4' class='muted'>Sin cobertura registrada</td></tr>"
+    cov_rows = (
+        "".join(
+            f"<tr><td>{r.get('utc_day')}</td><td>{r.get('observed_cycles')}</td>"
+            f"<td>{r.get('coverage_ratio')}</td><td>{r.get('day_validity')}</td></tr>"
+            for r in s["coverage_rows"]
+        )
+        or "<tr><td colspan='4' class='muted'>Sin cobertura registrada</td></tr>"
+    )
 
     campaigns_html = (
         f'<option value="{ACTIVE_CAMPAIGN}" {"selected" if s["is_active"] else ""}>'
@@ -452,7 +484,9 @@ def _render_home(campaign_id: str) -> bytes:
         )
 
     pnl = s["net_pnl"]
-    pnl_display = f"{pnl:.2f} USDT" if s["paper_closes_total"] else "Sin operaciones cerradas todavía"
+    pnl_display = (
+        f"{pnl:.2f} USDT" if s["paper_closes_total"] else "Sin operaciones cerradas todavía"
+    )
     pnl_cls = "positive" if pnl > 0 else ("negative" if pnl < 0 else "muted")
     rej = s["rejection_rate"]
     rej_display = f"{rej * 100:.1f} %" if rej is not None else "Aún no hay datos suficientes"
@@ -470,7 +504,8 @@ def _render_home(campaign_id: str) -> bytes:
     }
     bottleneck_display = (
         bottleneck_es.get(s["dominant_bottleneck"], s["dominant_bottleneck"])
-        if s["dominant_bottleneck"] else "Sin datos todavía"
+        if s["dominant_bottleneck"]
+        else "Sin datos todavía"
     )
 
     arb_row = (
@@ -622,7 +657,9 @@ def main() -> int:
     args = parser.parse_args()
     server = ThreadingHTTPServer((args.host, args.port), Handler)
     server.daemon_threads = True
-    print(f"[panel-es] Panel de solo lectura (ES) en http://{args.host}:{args.port} — Ctrl+C para salir")
+    print(
+        f"[panel-es] Panel de solo lectura (ES) en http://{args.host}:{args.port} — Ctrl+C para salir"
+    )
     try:
         server.serve_forever()
     except KeyboardInterrupt:

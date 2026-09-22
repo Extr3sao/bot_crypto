@@ -17,38 +17,35 @@ Protocol (from H5_SPEC.json execution_protocol):
 DO NOT tune H5 after observing any performance.
 """
 
-
 from __future__ import annotations
 
 import hashlib
 import json
 import os
 import sys
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 # Ensure src is on the path for imports
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from trading_bot.research.execution_ledger import RunnerLedger
-from trading_bot.research.h5_orderflow import (
-    classify,
-    compute_features,
-    simulate_h5,
-    summarize,
+from trading_bot.research.execution_ledger import (  # noqa: E402 - sys.path bootstrap must precede imports
+    RunnerLedger,
 )
-from trading_bot.research.h1_regime_transition import (
+from trading_bot.research.h1_regime_transition import (  # noqa: E402 - sys.path bootstrap must precede imports
     bootstrap_sharpe,
     max_drawdown_r,
     mc_dd95,
     permutation_p,
     profit_factor,
-    sharpe,
-    split_sign,
-    orthogonality as h1_orthogonality,
     simulate_proxy,
-    legacy_proxy_signal,
+)
+from trading_bot.research.h5_orderflow import (  # noqa: E402 - sys.path bootstrap must precede imports
+    classify,
+    compute_features,
+    simulate_h5,
+    summarize,
 )
 
 # ---- frozen constants (mirrored from H5_SPEC.json) ----
@@ -56,14 +53,16 @@ EXPERIMENT_ID = "H5-ORDERFLOW-IMBALANCE-CONTINUATION-01"
 PREREG_COMMIT = "c426b35"
 SPEC_SHA256 = "c743fba4a2a589dc1c3a15c7cd48b1b6ddf80255b8a157ea4f7ef19cc2f81023"
 PROTOCOL_SHA256 = hashlib.sha256(
-    json.dumps({
-        "acquire": "atomic lock",
-        "started_before_evaluation": True,
-        "fsync": True,
-        "marker_before_result": True,
-        "exactly_once_ledger": True,
-    }, sort_keys=True
-).encode()
+    json.dumps(
+        {
+            "acquire": "atomic lock",
+            "started_before_evaluation": True,
+            "fsync": True,
+            "marker_before_result": True,
+            "exactly_once_ledger": True,
+        },
+        sort_keys=True,
+    ).encode()
 ).hexdigest()
 
 DATASET_DIR = ROOT / "docs" / "external-audit-01" / "h1-regime-transition-01" / "dataset"
@@ -80,7 +79,7 @@ def load_asset_data(asset: str) -> dict[str, list]:
     """Load frozen kline data for one asset from JSONL."""
     path = DATASET_DIR / f"{asset}_1h.jsonl"
     rows = []
-    with open(path, "r", encoding="utf-8") as f:
+    with open(path, encoding="utf-8") as f:
         for line in f:
             if line.strip():
                 rows.append(json.loads(line))
@@ -170,7 +169,7 @@ def validate_data(data: dict[str, list], asset: str) -> list[str]:
         errors.append(f"{asset}: duplicate timestamps")
 
     # no future timestamps (relative to now)
-    now_ms = int(datetime.now(timezone.utc).timestamp() * 1000)
+    now_ms = int(datetime.now(UTC).timestamp() * 1000)
     if np.any(ts > now_ms):
         errors.append(f"{asset}: future timestamps detected")
 
@@ -299,11 +298,20 @@ def run_h5_evaluation() -> dict:
 
         print(f"  Simulating {asset}...")
         trades, skipped, blocked = simulate_h5(
-            data["ts"], data["op"], data["hi"], data["lo"], data["cl"],
-            data["volume"], data["ntrades"], data["taker_buy"],
-            asset, feat=feat,
+            data["ts"],
+            data["op"],
+            data["hi"],
+            data["lo"],
+            data["cl"],
+            data["volume"],
+            data["ntrades"],
+            data["taker_buy"],
+            asset,
+            feat=feat,
         )
-        print(f"  {asset}: {len(trades)} trades, {skipped} skipped (incomplete), {blocked} blocked (cooldown)")
+        print(
+            f"  {asset}: {len(trades)} trades, {skipped} skipped (incomplete), {blocked} blocked (cooldown)"
+        )
 
         all_trades.extend(trades)
         per_asset_results[asset] = {
@@ -329,24 +337,25 @@ def run_h5_evaluation() -> dict:
         for t in all_trades:
             scale = bps / 10.0  # COST_RT_BPS = 10
             net_r.append(t.gross_r - t.cost_r * scale)
-        cost_table.append({
-            "bps": bps,
-            "N": len(net_r),
-            "net_expectancy_R": float(np.mean(net_r)) if net_r else 0.0,
-            "PF_net": profit_factor(net_r) if net_r else 0.0,
-        })
+        cost_table.append(
+            {
+                "bps": bps,
+                "N": len(net_r),
+                "net_expectancy_R": float(np.mean(net_r)) if net_r else 0.0,
+                "PF_net": profit_factor(net_r) if net_r else 0.0,
+            }
+        )
 
     # Bootstrap Sharpe
     net_rs = [t.net_r for t in all_trades]
     if len(net_rs) >= 2:
-        s, lo, hi, p_gt0 = bootstrap_sharpe(net_rs)
+        _s, _lo, _hi, _p_gt0 = bootstrap_sharpe(net_rs)
         perm_p = permutation_p(net_rs)
-        mdd = max_drawdown_r(net_rs)
+        max_drawdown_r(net_rs)
         mc_dd95_val = mc_dd95(net_rs)
     else:
-        s, lo, hi, p_gt0 = 0.0, 0.0, 0.0, 0.0
+        _s, _lo, _hi, _p_gt0 = 0.0, 0.0, 0.0, 0.0
         perm_p = 1.0
-        mdd = 0.0
         mc_dd95_val = 0.0
 
     # Direction and asset cells
@@ -364,8 +373,12 @@ def run_h5_evaluation() -> dict:
         asset_trades = [t for t in all_trades if t.asset == asset]
         diagnostics[asset] = {
             "N": len(asset_trades),
-            "gross_expectancy_R": float(np.mean([t.gross_r for t in asset_trades])) if asset_trades else 0.0,
-            "net_expectancy_R": float(np.mean([t.net_r for t in asset_trades])) if asset_trades else 0.0,
+            "gross_expectancy_R": float(np.mean([t.gross_r for t in asset_trades]))
+            if asset_trades
+            else 0.0,
+            "net_expectancy_R": float(np.mean([t.net_r for t in asset_trades]))
+            if asset_trades
+            else 0.0,
         }
         for direction in ["LONG", "SHORT"]:
             dt = [t for t in asset_trades if t.direction == direction]
@@ -380,7 +393,7 @@ def run_h5_evaluation() -> dict:
         "result_class": result_class,
         "prereg_commit": PREREG_COMMIT,
         "spec_sha256": SPEC_SHA256,
-        "timestamp_utc": datetime.now(timezone.utc).isoformat(),
+        "timestamp_utc": datetime.now(UTC).isoformat(),
         # Data
         "assets": ASSETS,
         "data_fingerprints": data_fingerprints,
@@ -430,13 +443,18 @@ def run_h5_evaluation() -> dict:
         rows = load_asset_data(asset)
         data = parse_klines(rows)
         import numpy as np
-        from trading_bot.research.h1_regime_transition import simulate_proxy
-        proxy_trades, _ = simulate_proxy.__wrapped__(  # Access wrapped function
-            None,  # candles not needed for this call pattern
-            asset,
-        ) if False else ([], 0)  # Placeholder - need proper OHLCV tuple
+
+        _proxy_trades, _ = (
+            simulate_proxy.__wrapped__(  # Access wrapped function
+                None,  # candles not needed for this call pattern
+                asset,
+            )
+            if False
+            else ([], 0)
+        )  # Placeholder - need proper OHLCV tuple
         # Actually, let's compute proxy trades properly
         from trading_bot.market_data.types import OHLCV
+
         candles = tuple(
             OHLCV(
                 symbol=asset,
@@ -449,8 +467,9 @@ def run_h5_evaluation() -> dict:
             )
             for i in range(len(data["ts"]))
         )
-        from trading_bot.research.h1_regime_transition import simulate_proxy
-        asset_proxy = simulate_proxy(candles, asset)
+        from trading_bot.research.h1_regime_transition import simulate_proxy as h1_simulate_proxy
+
+        asset_proxy = h1_simulate_proxy(candles, asset)
         proxy_trades_all.extend(asset_proxy)
 
     # Compute H5 vs proxy orthogonality
@@ -473,6 +492,7 @@ def run_h5_evaluation() -> dict:
         corr = None
         if len(common) >= 30:
             import numpy as np
+
             xs = np.array([d_h5[d] for d in common])
             ys = np.array([d_proxy[d] for d in common])
             corr = float(np.corrcoef(xs, ys)[0, 1])  # proper Pearson correlation
@@ -499,11 +519,15 @@ def run_h5_evaluation() -> dict:
             overlap_ratio = overlap / len(all_trades)
 
             d_h5 = {t.exit_ts // 86_400_000: t.net_r for t in all_trades}
-            d_h3 = {t.get("exit_ts", t.get("exit_ts", 0)) // 86_400_000: t.get("net_r", 0.0) for t in h3_trades}
+            d_h3 = {
+                t.get("exit_ts", t.get("exit_ts", 0)) // 86_400_000: t.get("net_r", 0.0)
+                for t in h3_trades
+            }
             common = sorted(set(d_h5) & set(d_h3))
             corr = None
             if len(common) >= 30:
                 import numpy as np
+
                 xs = np.array([d_h5[d] for d in common])
                 ys = np.array([d_h3[d] for d in common])
                 corr = float(np.corrcoef(xs, ys)[0, 1])
@@ -520,12 +544,12 @@ def run_h5_evaluation() -> dict:
 
 def main() -> int:
     """Main entry point - runs H5 exactly once through the ledger."""
-    print(f"\n{'='*70}")
-    print(f"H5-ORDERFLOW-IMBALANCE-CONTINUATION-01")
-    print(f"Exactly-Once Economic Execution")
+    print(f"\n{'=' * 70}")
+    print("H5-ORDERFLOW-IMBALANCE-CONTINUATION-01")
+    print("Exactly-Once Economic Execution")
     print(f"Prereg commit: {PREREG_COMMIT}")
     print(f"Spec SHA256: {SPEC_SHA256}")
-    print(f"{'='*70}\n")
+    print(f"{'=' * 70}\n")
 
     # Ensure output directory exists
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -549,9 +573,7 @@ def main() -> int:
         return 1
 
     # Compute code commit hash
-    code_commit = hashlib.sha256(
-        Path(__file__).read_bytes()
-    ).hexdigest()[:16]
+    code_commit = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()[:16]
 
     try:
         # ---- Economic work begins HERE (after STARTED is durable) ----
@@ -564,15 +586,13 @@ def main() -> int:
         for asset in ASSETS:
             path = DATASET_DIR / f"{asset}_1h.jsonl"
             ds_fp_parts.append(f"{asset}={hashlib.sha256(path.read_bytes()).hexdigest()[:16]}")
-        dataset_sha256 = hashlib.sha256(
-            "|".join(ds_fp_parts).encode()
-        ).hexdigest()
+        dataset_sha256 = hashlib.sha256("|".join(ds_fp_parts).encode()).hexdigest()
 
         # Update result with code commit and dataset fingerprint
         result["code_commit"] = code_commit
         result["dataset_sha256"] = dataset_sha256
 
-        print(f"\n--- Result ---")
+        print("\n--- Result ---")
         print(f"Result class: {result['result_class']}")
         print(f"Total trades: {result['total_trades']}")
         print(f"Net expectancy R: {result['metrics']['net_expectancy_R']:.4f}")
@@ -584,12 +604,12 @@ def main() -> int:
         print(f"MC DD95: {result['metrics']['MC_DD95_R']:.4f}")
 
         # Write marker FIRST (exactly-once protocol)
-        print(f"\nWriting execution marker...")
+        print("\nWriting execution marker...")
         marker = {
             "experiment_id": EXPERIMENT_ID,
             "attempt_id": attempt_id,
             "started_at": result.get("_started_at", ""),
-            "completed_at": datetime.now(timezone.utc).isoformat(),
+            "completed_at": datetime.now(UTC).isoformat(),
             "result_class": result["result_class"],
             "total_trades": result["total_trades"],
             "marker_version": "1.0.0",
@@ -601,7 +621,7 @@ def main() -> int:
         print(f"  Written: {MARKER_PATH}")
 
         # Write result SECOND
-        print(f"Writing result...")
+        print("Writing result...")
         result_json = json.dumps(result, indent=2, sort_keys=True)
         with open(RESULT_PATH, "w", encoding="utf-8") as f:
             f.write(result_json)
@@ -614,20 +634,21 @@ def main() -> int:
         print(f"  Written: {RESULT_PATH}")
 
         # Finish in ledger
-        print(f"Finishing ledger entry...")
+        print("Finishing ledger entry...")
         runner.complete(RESULT_PATH)
         print(f"  Completed: {attempt_id}")
 
-        print(f"\n{'='*70}")
-        print(f"H5 EXECUTION COMPLETE")
+        print(f"\n{'=' * 70}")
+        print("H5 EXECUTION COMPLETE")
         print(f"Result: {result['result_class']}")
-        print(f"{'='*70}\n")
+        print(f"{'=' * 70}\n")
 
         return 0
 
     except Exception as e:
         print(f"\nERROR during economic evaluation: {e}")
         import traceback
+
         traceback.print_exc()
 
         # Record failure in ledger

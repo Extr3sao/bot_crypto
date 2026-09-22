@@ -7,9 +7,8 @@ is performed here. Synthetic tests only.
 
 from __future__ import annotations
 
+from collections.abc import Sequence
 from dataclasses import dataclass
-from decimal import Decimal
-from typing import Sequence
 
 COST_TOTAL_ROUND_TRIP_BPS = 10
 COST_SENSITIVITY_BPS: Sequence[int] = (0, 10, 20, 40)

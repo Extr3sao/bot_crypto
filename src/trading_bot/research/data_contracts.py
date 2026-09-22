@@ -28,7 +28,7 @@ stay contracts, value stays USDT notional.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from enum import Enum
+from enum import StrEnum
 
 SCHEMA_VERSION = "1.0.0"
 
@@ -41,7 +41,7 @@ OPEN_INTEREST_EXPECTED_INTERVAL_MS = 300_000
 OPEN_INTEREST_ROWS_PER_COMPLETE_UTC_DAY = 288
 
 
-class TakerSide(str, Enum):
+class TakerSide(StrEnum):
     """Aggressive side derived EXPLICITLY from is_buyer_maker (no inference)."""
 
     TAKER_BUY = "TAKER_BUY"

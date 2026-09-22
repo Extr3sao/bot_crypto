@@ -62,7 +62,7 @@ def _proposal(
 ) -> TradeProposal:
     created = created_at or NOW
     data = data_time or created
-    pid = f"proposal:{direction}:{strategy}:{asset}:{int(data.timestamp()*1000)}:{confidence}"
+    pid = f"proposal:{direction}:{strategy}:{asset}:{int(data.timestamp() * 1000)}:{confidence}"
     evidence = make_evidence(
         evidence_id=f"evidence:{pid}",
         run_id=run_id,
@@ -110,8 +110,8 @@ def _registry(*proposals: TradeProposal) -> dict[str, object]:
                 observed_at=proposal.data_time,
                 available_at=proposal.data_time,
                 trace=_trace(proposal.proposal_id)
-        if proposal.run_id == RUN
-        else _foreign_trace(proposal.proposal_id),
+                if proposal.run_id == RUN
+                else _foreign_trace(proposal.proposal_id),
                 payload={"proposal": proposal.proposal_id},
             )
             registry[ref] = evidence
@@ -314,11 +314,12 @@ def test_forged_direction_score_rejected_by_verifier() -> None:
     )
     forged = replace(resolved, direction_scores=forged_scores)
     verifier = OpportunityGroupVerifier()
-    verdict = verifier.verify(
-        forged, proposals=by_id, evidence_registry=registry, now=NOW
-    )
+    verdict = verifier.verify(forged, proposals=by_id, evidence_registry=registry, now=NOW)
     assert verdict.verdict is GroupVerificationStatus.REJECTED
-    assert any(name == "direction_score_integrity" and status == "FAIL" for name, status, _ in verdict.checks)
+    assert any(
+        name == "direction_score_integrity" and status == "FAIL"
+        for name, status, _ in verdict.checks
+    )
 
 
 def test_cross_run_candidate_rejected() -> None:

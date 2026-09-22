@@ -110,9 +110,7 @@ def bybit_connector(
 
 def test_bybit_conformance_through_real_call_path(bybit_connector) -> None:
     conn, _ = bybit_connector
-    adapter = connector_conformance_adapter(
-        conn, adapter_id="bybit", default_symbol="BTC/USDT"
-    )
+    adapter = connector_conformance_adapter(conn, adapter_id="bybit", default_symbol="BTC/USDT")
     suite = ExchangeAdapterConformanceSuite()
     passed, checks = suite.run(adapter)
     failures = {c.name: c.detail for c in checks if not c.passed}

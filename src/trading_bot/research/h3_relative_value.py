@@ -33,8 +33,10 @@ Frozen mechanics (do not modify without a NEW preregistration):
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import Any
 
 import numpy as np
+from numpy.typing import NDArray
 
 from trading_bot.research.h1_regime_transition import (  # frozen stat primitives
     bootstrap_sharpe,
@@ -42,7 +44,6 @@ from trading_bot.research.h1_regime_transition import (  # frozen stat primitive
     mc_dd95,
     permutation_p,
     profit_factor,
-    sharpe,
     split_sign,
 )
 
@@ -97,7 +98,7 @@ class H3Trade:
 # ---------------------------------------------------------------------------
 
 
-def _rolling_sum(x: np.ndarray, w: int) -> np.ndarray:
+def _rolling_sum(x: NDArray[np.float64], w: int) -> NDArray[np.float64]:
     """out[i] = sum(x[i-w+1 .. i]); out[:w-1] = nan."""
     c = np.concatenate(([0.0], np.cumsum(x)))
     out = np.full(x.shape[0], np.nan)
@@ -105,7 +106,9 @@ def _rolling_sum(x: np.ndarray, w: int) -> np.ndarray:
     return out
 
 
-def compute_features(close_a: np.ndarray, close_b: np.ndarray) -> dict[str, np.ndarray]:
+def compute_features(
+    close_a: NDArray[np.float64], close_b: NDArray[np.float64]
+) -> dict[str, NDArray[np.float64]]:
     """PIT trailing features for every bar t (nan where the window is incomplete).
 
     beta over the trailing LOOKBACK_BARS return observations; mean/std of the
@@ -162,12 +165,12 @@ def compute_features(close_a: np.ndarray, close_b: np.ndarray) -> dict[str, np.n
 
 
 def simulate_pair(
-    timestamps: np.ndarray,
-    open_a: np.ndarray,
-    close_a: np.ndarray,
-    open_b: np.ndarray,
-    close_b: np.ndarray,
-    feat: dict[str, np.ndarray],
+    timestamps: NDArray[Any],
+    open_a: NDArray[np.float64],
+    close_a: NDArray[np.float64],
+    open_b: NDArray[np.float64],
+    close_b: NDArray[np.float64],
+    feat: dict[str, NDArray[np.float64]],
     regime_labels: dict[int, str] | None = None,
 ) -> tuple[list[H3Trade], int]:
     """Frozen pair simulation. Returns (trades, blocked_by_cooldown_count)."""
@@ -233,7 +236,9 @@ def simulate_pair(
                 cost_r=float(cost_r),
                 net_r=float(gross_r - cost_r),
                 gross_exposure=1.0 + abs(beta),
-                net_dollar_exposure=abs(beta) - 1.0 if direction == "SPREAD_SHORT" else 1.0 - abs(beta),
+                net_dollar_exposure=abs(beta) - 1.0
+                if direction == "SPREAD_SHORT"
+                else 1.0 - abs(beta),
                 regime_at_entry=(regime_labels or {}).get(t, ""),
             )
         )
@@ -258,7 +263,7 @@ def cost_scenario_net_r(trades: list[H3Trade], cost_side_bps: float) -> list[flo
     return [t.gross_r - t.cost_r * scale for t in trades]
 
 
-def summarize(trades: list[H3Trade], cost_side_bps: float = COST_SIDE_BPS) -> dict[str, object]:
+def summarize(trades: list[H3Trade], cost_side_bps: float = COST_SIDE_BPS) -> dict[str, Any]:
     """B1 metrics at an absolute per-side cost scenario (frozen formulas)."""
     gross = [t.gross_r for t in trades]
     net = cost_scenario_net_r(trades, cost_side_bps)
@@ -285,7 +290,7 @@ def summarize(trades: list[H3Trade], cost_side_bps: float = COST_SIDE_BPS) -> di
         "halves": split_sign(net, 2),
         "thirds": split_sign(net, 3),
         "walk_forward_last_third_net_R": (
-            float(np.mean(net[2 * (len(net) // 3):])) if len(net) >= 3 else 0.0
+            float(np.mean(net[2 * (len(net) // 3) :])) if len(net) >= 3 else 0.0
         ),
         "mean_holding_bars": float(np.mean(hold)) if hold else 0.0,
     }
@@ -308,7 +313,9 @@ def neutrality(trades: list[H3Trade]) -> dict[str, float]:
         }
     gross = [t.gross_exposure for t in trades]
     net_abs = [abs(t.net_dollar_exposure) for t in trades]
-    beta_abs = [abs(t.beta**2 - 1.0) for t in trades]  # w_A*1 + w_B*beta_ETH = beta^2-1 (conservative second-order term)
+    beta_abs = [
+        abs(t.beta**2 - 1.0) for t in trades
+    ]  # w_A*1 + w_B*beta_ETH = beta^2-1 (conservative second-order term)
     return {
         "MEAN_GROSS_EXPOSURE": float(np.mean(gross)),
         "MEAN_ABS_NET_EXPOSURE": float(np.mean(net_abs)),
@@ -318,21 +325,21 @@ def neutrality(trades: list[H3Trade]) -> dict[str, float]:
     }
 
 
-def classify(metrics: dict[str, object], n_direction_cells: list[int]) -> ResultClass:
+def classify(metrics: dict[str, Any], n_direction_cells: list[int]) -> ResultClass:
     """Frozen B4 classification (pure function of metrics)."""
-    n = int(metrics.get("N", 0))  # type: ignore[arg-type]
+    n = int(metrics.get("N", 0))
     if n < MIN_TOTAL_TRADES or any(c < MIN_DIRECTION_CELL for c in n_direction_cells):
         return "INSUFFICIENT_SAMPLE"
     halves = metrics["halves"]
     thirds = metrics["thirds"]
     assert isinstance(halves, list) and isinstance(thirds, list)
     pass_all = (
-        float(metrics["net_expectancy_R"]) > 0.0  # type: ignore[arg-type]
-        and float(metrics["PF_net"]) > PF_NET_MIN  # type: ignore[arg-type]
-        and float(metrics["P_Sharpe_gt_0"]) >= P_SHARPE_MIN  # type: ignore[arg-type]
-        and float(metrics["permutation_p"]) <= PERM_P_MAX  # type: ignore[arg-type]
+        float(metrics["net_expectancy_R"]) > 0.0
+        and float(metrics["PF_net"]) > PF_NET_MIN
+        and float(metrics["P_Sharpe_gt_0"]) >= P_SHARPE_MIN
+        and float(metrics["permutation_p"]) <= PERM_P_MAX
         and all(s == halves[0] for s in halves)
         and all(s == thirds[0] for s in thirds)
-        and float(metrics["walk_forward_last_third_net_R"]) > 0.0  # type: ignore[arg-type]
+        and float(metrics["walk_forward_last_third_net_R"]) > 0.0
     )
     return "DISCOVERY_PASS" if pass_all else "DISCOVERY_FAIL"

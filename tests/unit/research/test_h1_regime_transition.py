@@ -45,7 +45,9 @@ from trading_bot.research.regime_v2 import (
 )
 
 
-def _candles(closes: list[float], start_ts: int = 1_700_000_000_000, vol_mult: float = 1.001) -> tuple[OHLCV, ...]:
+def _candles(
+    closes: list[float], start_ts: int = 1_700_000_000_000, vol_mult: float = 1.001
+) -> tuple[OHLCV, ...]:
     out: list[OHLCV] = []
     prev = closes[0]
     for i, close in enumerate(closes):
@@ -126,7 +128,9 @@ def test_direction_bull_breakout_maps_long() -> None:
 def test_direction_otherwise_no_trade() -> None:
     assert direction_for(_state()) is None
     # BEAR breakout is NOT tradeable (rule never broadened into generic trend)
-    assert direction_for(_state(trend=TrendDirection.BEAR, structure=MarketStructure.BREAKOUT)) is None
+    assert (
+        direction_for(_state(trend=TrendDirection.BEAR, structure=MarketStructure.BREAKOUT)) is None
+    )
     # BULL trending (not breakout) is NOT tradeable
     assert direction_for(_state(trend=TrendDirection.BULL, structure=MarketStructure.TREND)) is None
 
@@ -317,16 +321,17 @@ def test_cost_sensitivity_absolute_cost_monotone_non_increasing() -> None:
     trades = [_mk_trade(0.3) for _ in range(30)]  # risk_frac=0.01, gross=0.4
     nets: dict[float, float] = {}
     for bps in (0.0, 5.0, 10.0, 20.0):
-            m = compute_trade_metrics(trades, cost_bps=bps)
-            nets[bps] = float(m["net_expectancy_R"])  # type: ignore[arg-type]
-            assert nets[bps] <= float(m["gross_expectancy_R"]) + 1e-12  # type: ignore[arg-type]
+        m = compute_trade_metrics(trades, cost_bps=bps)
+        nets[bps] = float(m["net_expectancy_R"])  # type: ignore[arg-type]
+        assert nets[bps] <= float(m["gross_expectancy_R"]) + 1e-12  # type: ignore[arg-type]
     assert nets[0.0] >= nets[5.0] >= nets[10.0] >= nets[20.0]
     # exact absolute-cost arithmetic: 5 bps -> 0.05 R/trade, 20 bps -> 0.20 R/trade
     assert nets[5.0] == pytest.approx(nets[0.0] - 0.05, abs=1e-12)
     assert nets[20.0] == pytest.approx(nets[0.0] - 0.20, abs=1e-12)
     # default path == absolute formula at the 10 bps baseline
     assert nets[10.0] == pytest.approx(
-        float(compute_trade_metrics(trades)["net_expectancy_R"]), abs=1e-12  # type: ignore[arg-type]
+        float(compute_trade_metrics(trades)["net_expectancy_R"]),
+        abs=1e-12,  # type: ignore[arg-type]
     )
 
 

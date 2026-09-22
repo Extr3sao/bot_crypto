@@ -99,7 +99,11 @@ def fetch_klines(symbol: str) -> list[list]:
     cache = CACHE_DIR / f"{symbol}_1h.jsonl"
     rows: list[list] = []
     if cache.exists():
-        rows = [json.loads(line) for line in cache.read_text(encoding="utf-8").splitlines() if line.strip()]
+        rows = [
+            json.loads(line)
+            for line in cache.read_text(encoding="utf-8").splitlines()
+            if line.strip()
+        ]
         if rows and int(rows[-1][0]) + 3_600_000 >= WINDOW_END_MS:
             return rows  # complete cached window
         if rows:
@@ -188,7 +192,11 @@ def write_marker(spec_sha: str, dataset_sha: str, row_counts: dict[str, int]) ->
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--replay", action="store_true", help="deterministic verification replay (not a 2nd experiment)")
+    parser.add_argument(
+        "--replay",
+        action="store_true",
+        help="deterministic verification replay (not a 2nd experiment)",
+    )
     args = parser.parse_args()
 
     if RESULT.exists() and not args.replay:
@@ -214,7 +222,9 @@ def main() -> int:
         rows = fetch_klines(sym)
         row_counts[sym] = len(rows)
         evaluations[sym] = evaluate_asset(sym, rows)
-        print(f"{sym}: {len(rows)} bars, {len(evaluations[sym].transitions)} transitions, {len(evaluations[sym].trades)} H1 trades")
+        print(
+            f"{sym}: {len(rows)} bars, {len(evaluations[sym].transitions)} transitions, {len(evaluations[sym].trades)} H1 trades"
+        )
     dataset_blob = json.dumps(row_counts, sort_keys=True).encode()
     dataset_sha = hashlib.sha256(dataset_blob).hexdigest()
 
@@ -245,14 +255,20 @@ def main() -> int:
         sel = [t for t in all_trades if t.direction == d]
         by_direction[d] = compute_trade_metrics(sel)
     labels = sorted({t.transition_label for t in all_trades})
-    by_label = {lb: compute_trade_metrics([t for t in all_trades if t.transition_label == lb]) for lb in labels}
+    by_label = {
+        lb: compute_trade_metrics([t for t in all_trades if t.transition_label == lb])
+        for lb in labels
+    }
 
     result_class = classify(metrics)
     orth = orthogonality(all_trades, all_proxy)
     freq = frequency_value(all_events, all_trades, all_proxy, total_days)
 
     # slippage sensitivity (frozen 5/20 bps RT)
-    sens = {str(b): compute_trade_metrics(all_trades, cost_bps=b)["net_expectancy_R"] for b in (5.0, 20.0)}
+    sens = {
+        str(b): compute_trade_metrics(all_trades, cost_bps=b)["net_expectancy_R"]
+        for b in (5.0, 20.0)
+    }
 
     result = {
         "checkpoint": "H1-REGIME-TRANSITION-DISCOVERY-01",
@@ -297,7 +313,11 @@ def main() -> int:
             for k in existing
             if k not in ("runtime_seconds", "technical_replay", "execution_commit")
         }
-        core_new = {k: result[k] for k in result if k not in ("runtime_seconds", "technical_replay", "execution_commit")}
+        core_new = {
+            k: result[k]
+            for k in result
+            if k not in ("runtime_seconds", "technical_replay", "execution_commit")
+        }
         if core_existing != core_new:
             print("REPLAY MISMATCH: results differ from economic run — refusing to overwrite")
             return 3

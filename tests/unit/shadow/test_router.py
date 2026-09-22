@@ -86,6 +86,7 @@ def _trade(**over: Any) -> ShadowTrade:
 # Router flow
 # --------------------------------------------------------------------------
 
+
 def test_accept_routes_without_capture(tmp_path) -> None:
     router = RiskGateRouter(_hook(tmp_path))
     d = router.decide(verdict="ACCEPT", reason=None, ctx=_reject_ctx())
@@ -141,6 +142,7 @@ def test_router_end_to_end_capture_then_pit_resolution(tmp_path) -> None:
 # Conditioned metrics (B2/D1)
 # --------------------------------------------------------------------------
 
+
 def test_conditioned_metrics_by_reason_and_regime() -> None:
     t1 = _trade()
     t2 = _trade(
@@ -172,7 +174,16 @@ def test_conditioned_metrics_handles_still_open() -> None:
     st = __import__(
         "trading_bot.shadow.outcome", fromlist=["ShadowTradeOutcome"]
     ).ShadowTradeOutcome
-    t_open = _trade(shadow_candidate_id="sc-3", decision_id="d-3", outcome=st.STILL_OPEN, exit_price=None, exit_time=None, r_multiple=None, net_pnl=0.0, gross_pnl=0.0)
+    t_open = _trade(
+        shadow_candidate_id="sc-3",
+        decision_id="d-3",
+        outcome=st.STILL_OPEN,
+        exit_price=None,
+        exit_time=None,
+        r_multiple=None,
+        net_pnl=0.0,
+        gross_pnl=0.0,
+    )
     m = ConditionedShadowMetrics([t_open])
     row = m.by_condition("strategy_health_state")[("HEALTHY",)]
     assert row["resolved"] == 0
@@ -182,6 +193,7 @@ def test_conditioned_metrics_handles_still_open() -> None:
 # --------------------------------------------------------------------------
 # Counters (read-only projection)
 # --------------------------------------------------------------------------
+
 
 def test_shadow_counters_projection(tmp_path) -> None:
     hook = _hook(tmp_path)
@@ -199,6 +211,7 @@ def test_shadow_counters_projection(tmp_path) -> None:
 # --------------------------------------------------------------------------
 # Isolation surface
 # --------------------------------------------------------------------------
+
 
 def test_router_module_imports_only_shadow_surface() -> None:
     """AST check: the router may not import PaperBroker/portfolio/risk."""

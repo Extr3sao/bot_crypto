@@ -41,20 +41,42 @@ def validate(report_dir: Path) -> tuple[bool, tuple[tuple[str, str, str], ...]]:
         _check("live_disabled", payload.get("live_disabled") is True),
         _check("ma2_proposals_reached", payload.get("trade_proposals", 0) >= 1),
         _check("ma3_debate_reached", payload.get("debates", 0) >= 1),
-        _check("ma4_packages_created", any("package" in item for item in payload.get("decisions", []))),
+        _check(
+            "ma4_packages_created", any("package" in item for item in payload.get("decisions", []))
+        ),
         _check(
             "verifier_invoked",
-            any(item.get("verifier_version") == "decision-package-verifier-v3" for item in payload.get("decisions", [])),
+            any(
+                item.get("verifier_version") == "decision-package-verifier-v3"
+                for item in payload.get("decisions", [])
+            ),
         ),
         _check("no_trade_observable", payload.get("no_trade", 0) >= 1),
         _check("selected_reaches_adapter", payload.get("decisions_selected", 0) >= 1),
         _check("risk_reject_no_broker_side_effect", payload.get("risk_rejects", 0) >= 1),
-        _check("risk_accept_reaches_paper", payload.get("risk_accepts", 0) >= 1 and payload.get("paper_trades", 0) >= 1),
+        _check(
+            "risk_accept_reaches_paper",
+            payload.get("risk_accepts", 0) >= 1 and payload.get("paper_trades", 0) >= 1,
+        ),
         _check("real_broker_calls_zero", payload.get("real_broker_calls") == 0),
         _check("private_exchange_calls_zero", payload.get("private_exchange_calls") == 0),
-        _check("reconciliation_and_pnl", payload.get("closed_trades", 0) >= 1 and "realized_pnl" in payload),
-        _check("decision_trace_reconstructible", all(event.get("run_id") == payload.get("run_id") for event in payload.get("events", []))),
-        _check("run_authority", all(event.get("trace_id") == payload.get("trace_id") for event in payload.get("events", []))),
+        _check(
+            "reconciliation_and_pnl",
+            payload.get("closed_trades", 0) >= 1 and "realized_pnl" in payload,
+        ),
+        _check(
+            "decision_trace_reconstructible",
+            all(
+                event.get("run_id") == payload.get("run_id") for event in payload.get("events", [])
+            ),
+        ),
+        _check(
+            "run_authority",
+            all(
+                event.get("trace_id") == payload.get("trace_id")
+                for event in payload.get("events", [])
+            ),
+        ),
         _check("false_success_zero", payload.get("false_success") == 0),
     ]
     return all(status == "PASS" for _, status, _ in checks), tuple(checks)

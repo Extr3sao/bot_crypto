@@ -37,8 +37,10 @@ Frozen mechanics (do not modify without a NEW preregistration):
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import Any, cast
 
 import numpy as np
+from numpy.typing import NDArray
 
 from trading_bot.research.h1_regime_transition import (  # frozen stat primitives
     bootstrap_sharpe,
@@ -46,7 +48,6 @@ from trading_bot.research.h1_regime_transition import (  # frozen stat primitive
     mc_dd95,
     permutation_p,
     profit_factor,
-    sharpe,
     split_sign,
 )
 
@@ -102,7 +103,7 @@ def close_time(ts_ms: int) -> int:
     return ts_ms + _SHIFT_SECONDS - 1
 
 
-def _rolling_sum(x: np.ndarray, w: int) -> np.ndarray:
+def _rolling_sum(x: NDArray[np.float64], w: int) -> NDArray[np.float64]:
     """out[i] = sum(x[i-w+1 .. i]); out[:w-1] = nan."""
     c = np.concatenate(([0.0], np.nancumsum(x)))
     out = np.full(x.shape[0], np.nan)
@@ -111,8 +112,8 @@ def _rolling_sum(x: np.ndarray, w: int) -> np.ndarray:
 
 
 def compute_features(
-    volume: np.ndarray, ntrades: np.ndarray, taker_buy: np.ndarray
-) -> dict[str, np.ndarray]:
+    volume: NDArray[np.float64], ntrades: NDArray[np.float64], taker_buy: NDArray[np.float64]
+) -> dict[str, NDArray[np.float64]]:
     """PIT trailing features for every bar t (nan where invalid).
 
     OFI uses only bar t; zOFI and participation use only the trailing
@@ -148,7 +149,9 @@ def compute_features(
     }
 
 
-def atr14(hi: np.ndarray, lo: np.ndarray, cl: np.ndarray, end: int) -> float:
+def atr14(
+    hi: NDArray[np.float64], lo: NDArray[np.float64], cl: NDArray[np.float64], end: int
+) -> float:
     """Simple mean true range over bars ``end-13 .. end`` (frozen H1 convention)."""
     s = end - ATR_PERIOD + 1
     trs: list[float] = []
@@ -164,16 +167,16 @@ def atr14(hi: np.ndarray, lo: np.ndarray, cl: np.ndarray, end: int) -> float:
 
 
 def simulate_h5(
-    ts: np.ndarray,
-    op: np.ndarray,
-    hi: np.ndarray,
-    lo: np.ndarray,
-    cl: np.ndarray,
-    volume: np.ndarray,
-    ntrades: np.ndarray,
-    taker_buy: np.ndarray,
+    ts: NDArray[Any],
+    op: NDArray[np.float64],
+    hi: NDArray[np.float64],
+    lo: NDArray[np.float64],
+    cl: NDArray[np.float64],
+    volume: NDArray[np.float64],
+    ntrades: NDArray[np.float64],
+    taker_buy: NDArray[np.float64],
     asset: str,
-    feat: dict[str, np.ndarray] | None = None,
+    feat: dict[str, NDArray[np.float64]] | None = None,
     regime_labels: dict[int, str] | None = None,
 ) -> tuple[list[H5Trade], int, int]:
     """Frozen H5 simulation. Returns (trades, skipped_incomplete, blocked_by_cooldown)."""
@@ -259,7 +262,7 @@ def cost_scenario_net_r(trades: list[H5Trade], cost_bps: float) -> list[float]:
     return [t.gross_r - t.cost_r * scale for t in trades]
 
 
-def summarize(trades: list[H5Trade]) -> dict[str, object]:
+def summarize(trades: list[H5Trade]) -> dict[str, Any]:
     """B1 metrics at the frozen base cost (absolute 10 bps RT)."""
     gross = [t.gross_r for t in trades]
     net = [t.net_r for t in trades]
@@ -286,32 +289,32 @@ def summarize(trades: list[H5Trade]) -> dict[str, object]:
         "halves": split_sign(net, 2),
         "thirds": split_sign(net, 3),
         "walk_forward_last_third_net_R": (
-            float(np.mean(net[2 * (len(net) // 3):])) if len(net) >= 3 else 0.0
+            float(np.mean(net[2 * (len(net) // 3) :])) if len(net) >= 3 else 0.0
         ),
         "mean_holding_bars": float(np.mean(hold)) if hold else 0.0,
     }
 
 
 def classify(
-    metrics: dict[str, object], n_direction_cells: list[int], n_asset_cells: list[int]
+    metrics: dict[str, Any], n_direction_cells: list[int], n_asset_cells: list[int]
 ) -> ResultClass:
     """Frozen B4 classification (pure function of metrics)."""
-    n = int(metrics.get("N", 0))  # type: ignore[arg-type]
+    n = int(metrics.get("N", 0))
     if (
         n < MIN_TOTAL_TRADES
         or any(c < MIN_DIRECTION_CELL for c in n_direction_cells)
         or any(c < MIN_ASSET_CELL for c in n_asset_cells)
     ):
         return "INSUFFICIENT_SAMPLE"
-    halves = metrics["halves"]  # type: ignore[index]
-    thirds = metrics["thirds"]  # type: ignore[index]
+    halves = cast(Any, metrics["halves"])
+    thirds = cast(Any, metrics["thirds"])
     gates = {
-        "net_expectancy_R>0": float(metrics["net_expectancy_R"]) > 0.0,  # type: ignore[arg-type]
-        "PF_net>1.15": float(metrics["PF_net"]) > PF_NET_MIN,  # type: ignore[arg-type]
-        "P_Sharpe_gt_0>=0.90": float(metrics["P_Sharpe_gt_0"]) >= P_SHARPE_MIN,  # type: ignore[arg-type]
-        "permutation_p<=0.05": float(metrics["permutation_p"]) <= PERM_P_MAX,  # type: ignore[arg-type]
-        "halves_uniform_positive": all(h == 1 for h in halves),  # type: ignore[union-attr]
-        "thirds_uniform_positive": all(h == 1 for h in thirds),  # type: ignore[union-attr]
-        "walk_forward>0": float(metrics["walk_forward_last_third_net_R"]) > 0.0,  # type: ignore[arg-type]
+        "net_expectancy_R>0": float(metrics["net_expectancy_R"]) > 0.0,
+        "PF_net>1.15": float(metrics["PF_net"]) > PF_NET_MIN,
+        "P_Sharpe_gt_0>=0.90": float(metrics["P_Sharpe_gt_0"]) >= P_SHARPE_MIN,
+        "permutation_p<=0.05": float(metrics["permutation_p"]) <= PERM_P_MAX,
+        "halves_uniform_positive": all(h == 1 for h in halves),
+        "thirds_uniform_positive": all(h == 1 for h in thirds),
+        "walk_forward>0": float(metrics["walk_forward_last_third_net_R"]) > 0.0,
     }
     return "DISCOVERY_PASS" if all(gates.values()) else "DISCOVERY_FAIL"

@@ -60,7 +60,11 @@ def verify_dataset() -> tuple[list[dict], dict]:
     fp = json.loads(FINGERPRINT.read_text(encoding="utf-8"))
     if not fp["fingerprint_sha256"].startswith(FUNDING_FINGERPRINT_EXPECTED_PREFIX):
         raise SystemExit("funding fingerprint drift — refusing to run (CF-01)")
-    rows = [json.loads(line) for line in DATASET.read_text(encoding="utf-8").splitlines() if line.strip()]
+    rows = [
+        json.loads(line)
+        for line in DATASET.read_text(encoding="utf-8").splitlines()
+        if line.strip()
+    ]
     if len(rows) != fp["rows"]:
         raise SystemExit("dataset row count drift — refusing to run (CF-01)")
     return rows, fp
@@ -172,7 +176,7 @@ def main() -> int:
         gross_loss = abs(sum(r for r in returns if r < 0))
         pf = round(gross_win / gross_loss, 6) if gross_loss else None
         sd = statistics.stdev(returns) or 1e-12
-        sharpe = round(mean / sd * (365 ** 0.5), 6)  # daily→annualized approx
+        sharpe = round(mean / sd * (365**0.5), 6)  # daily→annualized approx
         wins = sum(1 for r in returns if r > 0)
         losses = sum(1 for r in returns if r < 0)
         return {
@@ -200,9 +204,7 @@ def main() -> int:
             "chunk_means": [round(statistics.mean(c), 8) for c in chunks],
         }
 
-    chronological = [
-        t for t in extreme
-    ]
+    chronological = [t for t in extreme]
     chronological.sort(key=lambda t: t["funding_time_ms"])
     core_returns = []
     for t in chronological:
@@ -262,7 +264,22 @@ def main() -> int:
         "evaluated_at_utc": datetime.now(UTC).isoformat(),
     }
     (OUT / "D3_RESULT.json").write_text(json.dumps(report, indent=2, sort_keys=True))
-    print(json.dumps({k: report[k] for k in ("CORE", "halves", "thirds", "permutation_p_value", "CARRY_RESULT", "PAPER_PROMOTIONS")}, indent=1))
+    print(
+        json.dumps(
+            {
+                k: report[k]
+                for k in (
+                    "CORE",
+                    "halves",
+                    "thirds",
+                    "permutation_p_value",
+                    "CARRY_RESULT",
+                    "PAPER_PROMOTIONS",
+                )
+            },
+            indent=1,
+        )
+    )
     return 0
 
 

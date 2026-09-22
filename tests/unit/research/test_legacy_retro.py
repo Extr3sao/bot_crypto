@@ -12,10 +12,50 @@ from trading_bot.research.legacy_retro import (
     protocol_fingerprint,
 )
 
-TRENDY = [0.010, 0.006, 0.004, 0.008, 0.003, 0.012, 0.005, 0.007, 0.004, 0.009,
-          0.006, 0.003, 0.010, 0.005, 0.008, 0.004, 0.006, 0.011, 0.004, 0.007]
-CHOPPY = [0.002, -0.001, -0.004, 0.001, -0.002, 0.003, -0.001, -0.003, 0.002, -0.001,
-          -0.002, 0.001, -0.003, 0.002, -0.001, 0.001, -0.002, 0.000, 0.002, -0.001]
+TRENDY = [
+    0.010,
+    0.006,
+    0.004,
+    0.008,
+    0.003,
+    0.012,
+    0.005,
+    0.007,
+    0.004,
+    0.009,
+    0.006,
+    0.003,
+    0.010,
+    0.005,
+    0.008,
+    0.004,
+    0.006,
+    0.011,
+    0.004,
+    0.007,
+]
+CHOPPY = [
+    0.002,
+    -0.001,
+    -0.004,
+    0.001,
+    -0.002,
+    0.003,
+    -0.001,
+    -0.003,
+    0.002,
+    -0.001,
+    -0.002,
+    0.001,
+    -0.003,
+    0.002,
+    -0.001,
+    0.001,
+    -0.002,
+    0.000,
+    0.002,
+    -0.001,
+]
 
 
 def _protocol(**overrides: object) -> LegacyRetroProtocol:
@@ -125,9 +165,7 @@ class TestMatrixEvaluation:
         assert v.metrics is None
 
     def test_not_applicable_when_not_preregistered(self) -> None:
-        harness = LegacyRetroHarness(
-            _protocol(applicability={"momentum": ("BTC", "ETH", "SOL")})
-        )
+        harness = LegacyRetroHarness(_protocol(applicability={"momentum": ("BTC", "ETH", "SOL")}))
         v = harness.evaluate_cell(
             strategy_id="trend",
             asset="BTC",
@@ -180,8 +218,7 @@ class TestMatrixEvaluation:
     def test_matrix_over_five_strategies(self) -> None:
         harness = LegacyRetroHarness(_protocol())
         rows = [
-            {"strategy_id": s, "asset": a, "timeframe": tf, "regime": r,
-             "regime_binding": "exact"}
+            {"strategy_id": s, "asset": a, "timeframe": tf, "regime": r, "regime_binding": "exact"}
             for s in LEGACY_STRATEGIES
             for a in ("BTC", "ETH", "SOL")
             for tf in ("5m",)
@@ -201,16 +238,25 @@ class TestHealthBaselines:
     def test_baselines_only_from_valid_cells(self) -> None:
         harness = LegacyRetroHarness(_protocol())
         good = harness.evaluate_cell(
-            strategy_id="momentum", asset="BTC", timeframe="5m",
-            regime="TREND", trade_returns=TRENDY,
+            strategy_id="momentum",
+            asset="BTC",
+            timeframe="5m",
+            regime="TREND",
+            trade_returns=TRENDY,
         )
         bad = harness.evaluate_cell(
-            strategy_id="momentum", asset="ETH", timeframe="5m",
-            regime="RANGE", trade_returns=CHOPPY,
+            strategy_id="momentum",
+            asset="ETH",
+            timeframe="5m",
+            regime="RANGE",
+            trade_returns=CHOPPY,
         )
         insufficient = harness.evaluate_cell(
-            strategy_id="trend", asset="SOL", timeframe="1h",
-            regime="TREND", trade_returns=TRENDY[:5],
+            strategy_id="trend",
+            asset="SOL",
+            timeframe="1h",
+            regime="TREND",
+            trade_returns=TRENDY[:5],
         )
         baselines = harness.baselines_from_valid_cells(
             [good, bad, insufficient],
@@ -231,8 +277,11 @@ class TestHealthBaselines:
         # POC01 partial-day data (1 scan, 0 trades) can never produce one.
         harness = LegacyRetroHarness(_protocol(min_trades_per_cell=15))
         v = harness.evaluate_cell(
-            strategy_id="volatility", asset="BTC", timeframe="5m",
-            regime="HIGH_VOL", trade_returns=[],
+            strategy_id="volatility",
+            asset="BTC",
+            timeframe="5m",
+            regime="HIGH_VOL",
+            trade_returns=[],
         )
         assert v.status == CellStatus.INSUFFICIENT_SAMPLE
         assert harness.baselines_from_valid_cells([v]) == []

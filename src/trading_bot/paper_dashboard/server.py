@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import contextlib
 import json
 import threading
 import time
@@ -208,26 +209,18 @@ class PaperDashboardServer:
     def stop(self) -> None:
         self._stop.set()
         if self._server:
-            try:
+            with contextlib.suppress(Exception):
                 self._server.shutdown()
-            except Exception:
-                pass
-            try:
+            with contextlib.suppress(Exception):
                 self._server.server_close()
-            except Exception:
-                pass
             self._server = None
         if self._thread is not None:
-            try:
+            with contextlib.suppress(Exception):
                 self._thread.join(timeout=2.0)
-            except Exception:
-                pass
             self._thread = None
         # Reset stop event so a new start() on same instance (if any) begins clean
-        try:
+        with contextlib.suppress(Exception):
             self._stop.clear()
-        except Exception:
-            pass
 
     def _refresh(self) -> None:
         try:

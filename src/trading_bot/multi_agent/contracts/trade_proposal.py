@@ -54,12 +54,14 @@ class TradeProposal(BaseModel):
             raise ValueError("data_time cannot be later than created_at")
         if self.expires_at is not None and self.expires_at < self.created_at:
             raise ValueError("expires_at cannot be earlier than created_at")
-        if (
-            self.trace is not None
-            and (self.trace.run_id != self.run_id or self.trace.trace_id != self.trace_id)
+        if self.trace is not None and (
+            self.trace.run_id != self.run_id or self.trace.trace_id != self.trace_id
         ):
             raise ValueError("proposal trace identifiers must match proposal identifiers")
-        if self.direction is TradeDirection.NO_TRADE and self.status is TradeProposalStatus.APPROVED_FOR_RISK_REVIEW:
+        if (
+            self.direction is TradeDirection.NO_TRADE
+            and self.status is TradeProposalStatus.APPROVED_FOR_RISK_REVIEW
+        ):
             raise ValueError("NO_TRADE cannot be approved for risk review")
         return self
 

@@ -94,7 +94,6 @@ class BinanceUsdmWindowedFetcher:
         limit: int,
         end_ms: int | None = None,
     ):
-        import ccxt
 
         step_ms = 3_600_000 if timeframe == "1h" else 300_000
         end = int(end_ms or self._ex.milliseconds())
@@ -106,9 +105,7 @@ class BinanceUsdmWindowedFetcher:
         cursor = window_start
         while cursor < end:
             page_limit = min(1000, limit - len(out))
-            rows = self._fetch_with_backoff(
-                symbol, timeframe, since=cursor, limit=page_limit
-            )
+            rows = self._fetch_with_backoff(symbol, timeframe, since=cursor, limit=page_limit)
             if not rows:
                 break
             appended = 0
@@ -146,13 +143,11 @@ class BinanceUsdmWindowedFetcher:
         import ccxt
 
         delays = (10.0, 30.0)
-        for attempt, delay in enumerate((0.0,) + delays):
+        for attempt, delay in enumerate((0.0, *delays)):
             if delay:
                 time.sleep(delay)
             try:
-                return self._ex.fetch_ohlcv(
-                    symbol, timeframe=timeframe, since=since, limit=limit
-                )
+                return self._ex.fetch_ohlcv(symbol, timeframe=timeframe, since=since, limit=limit)
             except ccxt.DDoSProtection:
                 if attempt == len(delays):
                     raise
@@ -205,10 +200,7 @@ def main() -> int:
             ds = funding_fetcher(symbol)
             self._ds = ds
             funding_meta[symbol] = ds.to_meta()
-            return [
-                {"timestamp": t, "fundingRate": r}
-                for t, r in sorted(ds.rates_by_ms.items())
-            ]
+            return [{"timestamp": t, "fundingRate": r} for t, r in sorted(ds.rates_by_ms.items())]
 
     report = execute_batch02(
         fetcher=fetcher,
@@ -231,9 +223,7 @@ def main() -> int:
         "frozen_protocol_fingerprint": protocol.fingerprint,
         "batch01_spec_verification": b01,
         "executed_at_utc": started.isoformat(),
-        "window_end_utc": datetime.fromtimestamp(
-            end_ms_by_tf["1h"] / 1000, tz=UTC
-        ).isoformat(),
+        "window_end_utc": datetime.fromtimestamp(end_ms_by_tf["1h"] / 1000, tz=UTC).isoformat(),
         "window_bars": {"1h": DEEPER_1H_BARS, "5m": DEEPER_5M_BARS},
         "funding_provenance": funding_meta,
         "dataset_fingerprint": report.dataset_fingerprint,

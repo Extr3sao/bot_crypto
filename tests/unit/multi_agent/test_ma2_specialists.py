@@ -67,7 +67,9 @@ def candles(asset: str = "BTC", count: int = 80) -> list[OHLCV]:
     for index in range(count):
         ts = start + index * 300_000
         price += 0.3
-        result.append(OHLCV(f"{asset}/USDT", ts, price - 0.2, price + 0.4, price - 0.4, price, 100.0))
+        result.append(
+            OHLCV(f"{asset}/USDT", ts, price - 0.2, price + 0.4, price - 0.4, price, 100.0)
+        )
     return result
 
 
@@ -87,7 +89,9 @@ def _signal_candles(asset: str = "SOL", count: int = 80) -> list[OHLCV]:
             price += 0.05
         else:
             price += 0.5
-        result.append(OHLCV(f"{asset}/USDT", ts, price - 0.2, price + 0.4, price - 0.4, price, 100.0))
+        result.append(
+            OHLCV(f"{asset}/USDT", ts, price - 0.2, price + 0.4, price - 0.4, price, 100.0)
+        )
     return result
 
 
@@ -97,7 +101,10 @@ def test_asset_experts_share_contract_and_produce_traceable_assessments() -> Non
     assert [item.asset for item in assessments] == ["BTC", "SOL", "ETH"]
     assert all(item.evidence_refs for item in assessments)
     assert all(item.trace.trace_id == TRACE.trace_id for item in assessments)
-    assert all(item.manifest.capabilities == frozenset({AgentCapability.READ, AgentCapability.WRITE}) for item in experts)
+    assert all(
+        item.manifest.capabilities == frozenset({AgentCapability.READ, AgentCapability.WRITE})
+        for item in experts
+    )
 
 
 def test_strategy_expert_wraps_canonical_family_and_no_proposal_is_valid() -> None:
@@ -148,8 +155,12 @@ def test_board_deduplicates_semantically_identical_proposals() -> None:
     board = OpportunityBoard(run_id=TRACE.run_id, now=proposal.created_at)
     board.add_evidence(evidence)
     duplicate = proposal.model_copy(update={"proposal_id": "different-id"})
-    first = board.add(proposal, source_agent_id=expert.manifest.agent_id, source_agent_version="1.0.0")
-    second = board.add(duplicate, source_agent_id=expert.manifest.agent_id, source_agent_version="1.0.0")
+    first = board.add(
+        proposal, source_agent_id=expert.manifest.agent_id, source_agent_version="1.0.0"
+    )
+    second = board.add(
+        duplicate, source_agent_id=expert.manifest.agent_id, source_agent_version="1.0.0"
+    )
     assert first == second
     assert board.snapshot().proposal_ids() == (proposal.proposal_id,)
 
@@ -165,7 +176,9 @@ def test_board_rejects_missing_evidence_and_expires_proposals() -> None:
     board.add_evidence(result.evidence[0])
     board.add(proposal, source_agent_id=expert.manifest.agent_id, source_agent_version="1.0.0")
     assert proposal.expires_at is not None
-    assert board.expire_stale(now=proposal.expires_at + timedelta(microseconds=1)) == (proposal.proposal_id,)
+    assert board.expire_stale(now=proposal.expires_at + timedelta(microseconds=1)) == (
+        proposal.proposal_id,
+    )
     assert board.rank() == ()
 
 
@@ -181,7 +194,11 @@ def test_meta_ranker_is_inspectable_and_conflict_status_is_explicit() -> None:
     assert len(ranked) == 1
     assert isinstance(MetaRanker(), MetaRanker)
     assert dict(ranked[0].score_components).keys() == {
-        "proposal_confidence", "evidence_quality", "asset_assessment",
-        "freshness", "regime_fit", "strategy_applicability",
+        "proposal_confidence",
+        "evidence_quality",
+        "asset_assessment",
+        "freshness",
+        "regime_fit",
+        "strategy_applicability",
     }
     assert ranked[0].conflict_status == "CLEAR"

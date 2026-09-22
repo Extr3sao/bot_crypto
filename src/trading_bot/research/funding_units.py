@@ -86,8 +86,7 @@ def canon_rate_per_period(raw: float, *, source_unit: str) -> float:
     Unknown units fail closed (no guessing).
     """
     if source_unit not in _VALID_SOURCE_UNITS:
-        raise ValueError(
-            f"UNKNOWN_FUNDING_SOURCE_UNIT:{source_unit}")
+        raise ValueError(f"UNKNOWN_FUNDING_SOURCE_UNIT:{source_unit}")
     v = float(raw)
     if v != v or v in (float("inf"), float("-inf")):
         raise ValueError("NON_FINITE_FUNDING_RATE")
@@ -98,8 +97,7 @@ def canon_rate_per_period(raw: float, *, source_unit: str) -> float:
     return v
 
 
-def canon_funding_interval_s(raw: int | str | None, *,
-                             default_s: int | None = None) -> int:
+def canon_funding_interval_s(raw: int | str | None, *, default_s: int | None = None) -> int:
     """Normalize the funding interval to seconds.
 
     ``raw`` may be seconds (int) or an ISO-like "8h"/"4h"/"1h" duration.
@@ -132,8 +130,7 @@ def annualized_rate(per_interval_decimal: float, interval_s: int) -> float:
     return float(per_interval_decimal) * (SECONDS_PER_YEAR / interval_s)
 
 
-def funding_pnl(position_side: str, notional: float,
-                rate_per_interval: float) -> float:
+def funding_pnl(position_side: str, notional: float, rate_per_interval: float) -> float:
     """Signed funding PnL for one settlement, in quote currency.
 
     LONG pays positive funding; SHORT receives it.  Negative rates flip

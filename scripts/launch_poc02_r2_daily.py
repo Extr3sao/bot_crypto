@@ -50,9 +50,11 @@ COVERAGE_MIN = 0.80
 MINUTES_PER_DAY = 1440
 SHADOW_HORIZON_HOURS = 48
 START_UTC = "2026-09-09T20:39:22+00:00"
-END_UTC = (datetime.fromisoformat(START_UTC) + timedelta(days=DURATION_COUNTED_DAYS)).replace(
-    microsecond=0
-).isoformat()
+END_UTC = (
+    (datetime.fromisoformat(START_UTC) + timedelta(days=DURATION_COUNTED_DAYS))
+    .replace(microsecond=0)
+    .isoformat()
+)
 CONFIRMATION_END = datetime(2026, 9, 22, tzinfo=UTC)
 
 POC01_BASE_COMMIT = "61d9bbd"
@@ -86,7 +88,10 @@ def _git(*args: str) -> str:
 
 def poc01_invariant() -> dict:
     changed = _git(
-        "diff", f"{POC01_BASE_COMMIT}..HEAD", "--name-only", "--",
+        "diff",
+        f"{POC01_BASE_COMMIT}..HEAD",
+        "--name-only",
+        "--",
         "reports/paper-observation-01/",
     ).splitlines()
     return {
@@ -116,9 +121,7 @@ def frozen_poc02_invariant() -> dict:
     ]
     live_changed = [
         p
-        for p in _git(
-            "status", "--short", "--", "reports/poc02-paper-clean-01/"
-        ).splitlines()
+        for p in _git("status", "--short", "--", "reports/poc02-paper-clean-01/").splitlines()
         if p.strip() and not p.strip().startswith("??")
     ]
     return {
@@ -132,6 +135,7 @@ def frozen_poc02_invariant() -> dict:
 # --------------------------------------------------------------------------
 # §1 — pre-cycle gates
 # --------------------------------------------------------------------------
+
 
 def pre_cycle_gates(now: datetime) -> dict:
     checks: dict[str, bool] = {}
@@ -160,6 +164,7 @@ def pre_cycle_gates(now: datetime) -> dict:
 # --------------------------------------------------------------------------
 # §2 — daily idempotency
 # --------------------------------------------------------------------------
+
 
 def daily_idempotency(day: str) -> dict:
     rows: dict[str, dict] = {}
@@ -213,9 +218,7 @@ def aggregate_bottlenecks(cycle_rows: list[dict]) -> dict:
                 dominant_canonical, dominant_n = state, totals[state]
     return {
         "totals_canonical": totals,
-        "totals_checkpoint_categories": {
-            map_bottleneck(k): v for k, v in sorted(totals.items())
-        },
+        "totals_checkpoint_categories": {map_bottleneck(k): v for k, v in sorted(totals.items())},
         "dominant_bottleneck": dominant_canonical,
         "dominant_checkpoint_category": map_bottleneck(dominant_canonical),
         "by_regime": by_regime,
@@ -226,6 +229,7 @@ def aggregate_bottlenecks(cycle_rows: list[dict]) -> dict:
 # --------------------------------------------------------------------------
 # A1/A2 — R2 funnel + arbitration telemetry (from persisted attribution rows)
 # --------------------------------------------------------------------------
+
 
 def aggregate_r2_funnel(cycle_rows: list[dict]) -> dict:
     agg = {
@@ -270,9 +274,7 @@ def aggregate_r2_funnel(cycle_rows: list[dict]) -> dict:
         # the authoritative runtime state counters. The attribution-stage add
         # below covers only stages without a state counter (AGENT_REJECT);
         # adding both double-counted (receipt 004: PAPER_OPEN=2 for 1 open).
-        for stage, key in (
-            ("AGENT_REJECT", "AGENT_REJECT"),
-        ):
+        for stage, key in (("AGENT_REJECT", "AGENT_REJECT"),):
             agg[key] += int(s.get(f"attribution_{stage}", 0) or 0)
         for group in row.get("arbitration", {}).get("groups", []):
             agg["OPPORTUNITY_GROUPS"] += 1
@@ -339,6 +341,7 @@ def arbitration_telemetry(cycle_rows: list[dict]) -> dict:
 # --------------------------------------------------------------------------
 # §7/§8 — shadow maturity
 # --------------------------------------------------------------------------
+
 
 def shadow_maturity(shadow, now: datetime) -> dict:
     horizon = timedelta(hours=SHADOW_HORIZON_HOURS)
@@ -409,9 +412,7 @@ def shadow_by_reason(shadow) -> dict:
                 bucket["losses"] += 1
     for bucket in out.values():
         total = bucket["wins"] + bucket["losses"]
-        bucket["expectancy"] = round(
-            bucket["net_pnl"] / total, 6
-        ) if total else None
+        bucket["expectancy"] = round(bucket["net_pnl"] / total, 6) if total else None
         gross_win = sum(
             float(getattr(t, "net_pnl", getattr(t, "pnl", 0.0)) or 0.0)
             for t in shadow.outcomes.trades
@@ -431,6 +432,7 @@ def shadow_by_reason(shadow) -> dict:
 # --------------------------------------------------------------------------
 # daily operation
 # --------------------------------------------------------------------------
+
 
 def finalize_previous_days(day_auth: DayStateAuthority, today: str) -> list[dict]:
     results: list[dict] = []
@@ -462,13 +464,12 @@ def run_daily(cycles: int, dry_run: bool = False) -> int:
     # DEF-R2-002 (telemetry): the authority must read the R2 coverage ledger —
     # the default POC02 filename made every prior-R2 day invisible to the
     # finalizer (2026-09-09 stayed PENDING after close).
-    day_auth = DayStateAuthority(
-        CAMPAIGN_DIR, coverage_filename=COVERAGE_LEDGER.name
-    )
+    day_auth = DayStateAuthority(CAMPAIGN_DIR, coverage_filename=COVERAGE_LEDGER.name)
     prior_finalizations = finalize_previous_days(day_auth, day)
     idem = daily_idempotency(day)
     idempotency_status = (
-        "AMEND_EXISTING_DAY_BUCKET" if idem["HAS_VALID_COVERAGE_ROW_FOR_UTC_DAY"]
+        "AMEND_EXISTING_DAY_BUCKET"
+        if idem["HAS_VALID_COVERAGE_ROW_FOR_UTC_DAY"]
         else "CREATE_DAY_BUCKET"
     )
 
@@ -484,8 +485,11 @@ def run_daily(cycles: int, dry_run: bool = False) -> int:
     # the campaign_id recorded in evidence rows is the R2 campaign.
     state_persisted = _load_json(CAMPAIGN_STATE)
     for key in (
-        "cycles_total", "live_calls", "real_broker_calls",
-        "private_exchange_calls", "shadow_paperbroker_calls",
+        "cycles_total",
+        "live_calls",
+        "real_broker_calls",
+        "private_exchange_calls",
+        "shadow_paperbroker_calls",
     ):
         state_persisted.setdefault(key, 0)
 
@@ -593,9 +597,7 @@ def run_daily(cycles: int, dry_run: bool = False) -> int:
     state_persisted["status"] = "ACTIVE"
     state_persisted["campaign_id"] = CAMPAIGN_ID
     state_persisted["last_run_ids"] = run_ids
-    CAMPAIGN_STATE.write_text(
-        json.dumps(state_persisted, indent=2, default=str), encoding="utf-8"
-    )
+    CAMPAIGN_STATE.write_text(json.dumps(state_persisted, indent=2, default=str), encoding="utf-8")
 
     cov = day_auth.campaign_coverage(window_start=START_UTC, window_end=END_UTC)
     provisional = day_auth.provisional_metrics(current_day=day)
@@ -650,8 +652,14 @@ def _arbitration_counts(run_id: str) -> dict:
     """Read arbitration outcomes the cycle published via telemetry files."""
     path = CAMPAIGN_DIR / "cycles" / f"POC02_TELEMETRY_{run_id}.json"
     if not path.exists():
-        return {"groups_total": 0, "long_selected": 0, "short_selected": 0, "none_selected": 0,
-                "selection_reasons": {}, "signals": 0}
+        return {
+            "groups_total": 0,
+            "long_selected": 0,
+            "short_selected": 0,
+            "none_selected": 0,
+            "selection_reasons": {},
+            "signals": 0,
+        }
     data = json.loads(path.read_text(encoding="utf-8"))
     arb = data.get("arbitration", {})
     reasons: dict[str, int] = {}
@@ -660,9 +668,15 @@ def _arbitration_counts(run_id: str) -> dict:
         reasons[reason] = reasons.get(reason, 0) + 1
     return {
         "groups_total": len(arb.get("groups", [])),
-        "long_selected": sum(1 for g in arb.get("groups", []) if g.get("selected_direction") == "LONG"),
-        "short_selected": sum(1 for g in arb.get("groups", []) if g.get("selected_direction") == "SHORT"),
-        "none_selected": sum(1 for g in arb.get("groups", []) if g.get("selected_direction") == "NONE"),
+        "long_selected": sum(
+            1 for g in arb.get("groups", []) if g.get("selected_direction") == "LONG"
+        ),
+        "short_selected": sum(
+            1 for g in arb.get("groups", []) if g.get("selected_direction") == "SHORT"
+        ),
+        "none_selected": sum(
+            1 for g in arb.get("groups", []) if g.get("selected_direction") == "NONE"
+        ),
         "selection_reasons": reasons,
         "signals": int(arb.get("signals", 0) or 0),
     }

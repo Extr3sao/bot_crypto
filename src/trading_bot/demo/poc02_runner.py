@@ -59,8 +59,7 @@ __all__ = [
 
 POC02_CAMPAIGN_ID = "POC-02-paper-clean-01"
 POC02_MANIFEST_PATH = (
-    Path(__file__).resolve().parents[3]
-    / "docs" / "external-audit-01" / "POC02_MANIFEST.md"
+    Path(__file__).resolve().parents[3] / "docs" / "external-audit-01" / "POC02_MANIFEST.md"
 )
 POC02_MANIFEST_SHA256 = "895a9374c13901ccf68d9cdca4671a91691ff5a97bf67df4d34503177567e035"
 
@@ -80,9 +79,7 @@ def evaluate_launch_gates(manifest_sha256: str | None = None) -> dict[str, Any]:
     passed even when the disk hash diverged).
     """
     try:
-        disk_manifest_sha256 = hashlib.sha256(
-            POC02_MANIFEST_PATH.read_bytes()
-        ).hexdigest()
+        disk_manifest_sha256 = hashlib.sha256(POC02_MANIFEST_PATH.read_bytes()).hexdigest()
     except OSError:
         disk_manifest_sha256 = ""
     gates: dict[str, bool] = {
@@ -91,7 +88,8 @@ def evaluate_launch_gates(manifest_sha256: str | None = None) -> dict[str, Any]:
             and (manifest_sha256 in (None, POC02_MANIFEST_SHA256))
         ),
         "campaign_id_new": POC02_CAMPAIGN_ID != "POC-01-paper-observation-01",
-        "provider_authority_explicit": set(PROVIDER_AUTHORITY) == {
+        "provider_authority_explicit": set(PROVIDER_AUTHORITY)
+        == {
             "MARKET_DATA_PROVIDER",
             "EXECUTION_MODE",
             "EXECUTION_VENUE_MODEL",
@@ -301,9 +299,7 @@ class Poc02Bundle:
         # A2/A3 intent ledger exists only in the R2 composition — the frozen
         # POC02 output directories must gain no new artifacts.
         self.intent_ledger: PaperIntentLedger | None = (
-            PaperIntentLedger(self.output_dir / "R2_INTENT_LEDGER.jsonl")
-            if arbitrate
-            else None
+            PaperIntentLedger(self.output_dir / "R2_INTENT_LEDGER.jsonl") if arbitrate else None
         )
 
         shadow_path = Path(shadow_dir) / "shadow_captures.jsonl"
@@ -369,9 +365,7 @@ class Poc02Bundle:
             "trace_id": f"{run_id}:{package.decision_id}",
             "run_id": run_id,
             "asset": f"{candidate.asset}/USDT",
-            "direction": (
-                "LONG" if candidate.direction is TradeDirection.LONG else "SHORT"
-            ),
+            "direction": ("LONG" if candidate.direction is TradeDirection.LONG else "SHORT"),
             "strategy_id": candidate.candidate.strategy_id,
             "strategy_version": "1",
             "timeframe": "5m",
@@ -497,9 +491,7 @@ class Poc02Bundle:
                     groups = getattr(board, "arbitration_groups", ())
                     self._last_arbitration = {
                         "groups": [g.to_dict() for g in groups],
-                        "signals": sum(
-                            1 for g in groups for item in g.direction_scores
-                        ),
+                        "signals": sum(1 for g in groups for item in g.direction_scores),
                     }
                 state.funnel.append(
                     {
@@ -550,15 +542,16 @@ class Poc02Bundle:
                         "executed_paper_trades": delta["paper"],
                         "risk_rejects_by_reason": {
                             "CONSECUTIVE_LOSS_COOLDOWN": sum(
-                                1 for r in self._risk_reasons_this_cycle
+                                1
+                                for r in self._risk_reasons_this_cycle
                                 if r == "consecutive_loss_cooldown"
                             ),
                             "MAX_POSITIONS": sum(
-                                1 for r in self._risk_reasons_this_cycle
-                                if r == "max_positions"
+                                1 for r in self._risk_reasons_this_cycle if r == "max_positions"
                             ),
                             "OTHER": sum(
-                                1 for r in self._risk_reasons_this_cycle
+                                1
+                                for r in self._risk_reasons_this_cycle
                                 if r not in {"consecutive_loss_cooldown", "max_positions"}
                             ),
                         },
@@ -744,9 +737,7 @@ class Poc02Bundle:
                     "run_id": run_id,
                     "asset": candidate.asset,
                     "direction": (
-                        "LONG"
-                        if candidate.direction is TradeDirection.LONG
-                        else "SHORT"
+                        "LONG" if candidate.direction is TradeDirection.LONG else "SHORT"
                     ),
                     "strategy_id": candidate.candidate.strategy_id,
                     "regime": candidate.candidate.regime or "UNCLASSIFIED",
@@ -756,7 +747,9 @@ class Poc02Bundle:
             )
             return
         state.risk_accepts += 1
-        decision = self.router.decide(verdict="ACCEPT", reason=None, ctx={"decision_id": package.decision_id})
+        decision = self.router.decide(
+            verdict="ACCEPT", reason=None, ctx={"decision_id": package.decision_id}
+        )
         assert decision.verdict == "ACCEPT"
         # Signal is a frozen+slots dataclass (no __dict__): derive the
         # risk-approved signal via dataclasses.replace, never attribute copy.
@@ -780,18 +773,15 @@ class Poc02Bundle:
                     "run_id": run_id,
                     "asset": candidate.asset,
                     "direction": (
-                        "LONG"
-                        if candidate.direction is TradeDirection.LONG
-                        else "SHORT"
+                        "LONG" if candidate.direction is TradeDirection.LONG else "SHORT"
                     ),
                     "strategy_id": candidate.candidate.strategy_id,
                     "regime": candidate.candidate.regime or "UNCLASSIFIED",
                     "proposal_id": package.selected_candidate_id,
                     "risk_verdict": "ACCEPT",
                     "risk_timestamp": datetime.now(UTC).isoformat(),
-                    "paper_execution_attempted": disposition not in (
-                        "CANCELLED_BY_EXPLICIT_POST_RISK_GATE"
-                    ),
+                    "paper_execution_attempted": disposition
+                    not in ("CANCELLED_BY_EXPLICIT_POST_RISK_GATE"),
                     "final_disposition": disposition,
                     "disposition_detail": detail,
                 }
@@ -823,9 +813,7 @@ class Poc02Bundle:
             result = self.broker.execute_signal(approved_signal)
         except Exception as exc:  # execution defect is loud AND terminally classified
             state.broker_calls += 1
-            state.errors.append(
-                f"{candidate.asset}: {type(exc).__name__}: {exc}"
-            )
+            state.errors.append(f"{candidate.asset}: {type(exc).__name__}: {exc}")
             state.emit(
                 "paper.execution_failed",
                 asset=candidate.asset,
@@ -848,9 +836,7 @@ class Poc02Bundle:
                     "run_id": run_id,
                     "asset": candidate.asset,
                     "direction": (
-                        "LONG"
-                        if candidate.direction is TradeDirection.LONG
-                        else "SHORT"
+                        "LONG" if candidate.direction is TradeDirection.LONG else "SHORT"
                     ),
                     "strategy_id": candidate.candidate.strategy_id,
                     "regime": candidate.candidate.regime or "UNCLASSIFIED",
@@ -942,4 +928,6 @@ class Poc02Bundle:
         if self._last_arbitration is not None:
             telemetry["arbitration"] = self._last_arbitration
         path = self.output_dir / f"POC02_TELEMETRY_{run_id}.json"
-        path.write_text(json.dumps(telemetry, indent=2, sort_keys=True, default=str), encoding="utf-8")
+        path.write_text(
+            json.dumps(telemetry, indent=2, sort_keys=True, default=str), encoding="utf-8"
+        )

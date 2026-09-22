@@ -23,7 +23,7 @@ import json
 import math
 import subprocess
 import zipfile
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[1]
@@ -32,6 +32,7 @@ OUT = REPO / "data" / "processed" / "oi_full_history"
 EVID = REPO / "docs" / "external-audit-01" / "oi-full-history-01"
 # TEST ISOLATION HARDENING (OI-DATASET-REFREEZE-02): canonical data roots must never be written by tests
 import os as _os  # noqa: E402
+
 _CANONICAL_DATA_ROOTS_V1 = [
     (REPO / "data" / "processed" / "oi_full_history").resolve(),
     (REPO / "data" / "processed" / "oi_full_history_v2").resolve(),
@@ -56,6 +57,7 @@ def _guard_not_canonical_under_pytest(out_dir: Path) -> None:
             raise
         except Exception:
             continue
+
 
 SYMBOLS = ("BTCUSDT", "ETHUSDT", "SOLUSDT")
 RANGES: dict[str, tuple[str, str]] = {
@@ -90,7 +92,7 @@ def _normalizer_commit() -> str:
 
 
 def _grid_for_day(day: str) -> list[int]:
-    base = int(datetime.strptime(day, "%Y-%m-%d").replace(tzinfo=timezone.utc).timestamp() * 1000)
+    base = int(datetime.strptime(day, "%Y-%m-%d").replace(tzinfo=UTC).timestamp() * 1000)
     return [base + i * EXPECTED_INTERVAL_SECONDS * 1000 for i in range(EXPECTED_ROWS_PER_DAY)]
 
 
@@ -121,7 +123,9 @@ def process_file(
     expected = sidecar.read_text(encoding="utf-8", errors="replace").strip().split()[0]
     raw_sha = _sha256_file(zip_path)
     if raw_sha != expected:
-        entry.update(classification="INVALID_CHECKSUM", checksum="FAIL", raw_source_sha256=raw_sha, rows=0)
+        entry.update(
+            classification="INVALID_CHECKSUM", checksum="FAIL", raw_source_sha256=raw_sha, rows=0
+        )
         return entry
     entry["checksum"] = "PASS"
     entry["raw_source_sha256"] = raw_sha
@@ -150,7 +154,7 @@ def process_file(
                         # provider format (all eras): "YYYY-MM-DD HH:MM:SS" UTC
                         ts = int(
                             datetime.strptime(ts_str, "%Y-%m-%d %H:%M:%S")
-                            .replace(tzinfo=timezone.utc)
+                            .replace(tzinfo=UTC)
                             .timestamp()
                             * 1000
                         )
@@ -176,7 +180,13 @@ def process_file(
                         conflicting_duplicates += 1
                         continue
                     seen_payloads[ts] = payload
-                    rows.append({"timestamp_ms": ts, "sum_open_interest": oi, "sum_open_interest_value": oiv})
+                    rows.append(
+                        {
+                            "timestamp_ms": ts,
+                            "sum_open_interest": oi,
+                            "sum_open_interest_value": oiv,
+                        }
+                    )
     except (zipfile.BadZipFile, UnicodeDecodeError, KeyError) as e:
         entry.update(classification="INVALID_SCHEMA", error=str(e)[:120], rows=0)
         return entry
@@ -194,7 +204,7 @@ def process_file(
     dups = 0
     deduped: list[dict[str, object]] = []
     for r in rows:
-        ts = int(r["timestamp_ms"])  # type: ignore[arg-type]
+        ts = int(r["timestamp_ms"])
         if ts in seen:
             dups += 1
             continue
@@ -209,7 +219,7 @@ def process_file(
 
     # PIT classification (decision cutoff = end of UTC day)
     day_end_ms = max(grid) + EXPECTED_INTERVAL_SECONDS * 1000
-    future_rows = sum(1 for r in deduped if int(r["timestamp_ms"]) >= day_end_ms)  # type: ignore[arg-type]
+    future_rows = sum(1 for r in deduped if int(r["timestamp_ms"]) >= day_end_ms)
 
     # classification per Valid-Day Contract (v2.0.1: exact duplicate rows collapsed)
     if future_rows:
@@ -234,8 +244,8 @@ def process_file(
         off_grid=len(off_grid),
         invalid_values=invalid_values,
         rows_within_pit=len(deduped) - future_rows,
-        first_timestamp_ms=int(deduped[0]["timestamp_ms"]) if deduped else None,  # type: ignore[arg-type]
-        last_timestamp_ms=int(deduped[-1]["timestamp_ms"]) if deduped else None,  # type: ignore[arg-type]
+        first_timestamp_ms=int(deduped[0]["timestamp_ms"]) if deduped else None,
+        last_timestamp_ms=int(deduped[-1]["timestamp_ms"]) if deduped else None,
     )
 
     # normalized artifact + per-file fingerprint (only VALID days get artifacts)
@@ -313,21 +323,28 @@ def main(argv: list[str] | None = None) -> int:
                 for cls in sorted({str(e["classification"]) for e in invalid})
             },
             "rows": sum(int(e.get("rows", 0)) for e in valid),
-            "first_timestamp_ms": min((int(e["first_timestamp_ms"]) for e in valid if e.get("first_timestamp_ms")), default=None),  # type: ignore[arg-type]
-            "last_timestamp_ms": max((int(e["last_timestamp_ms"]) for e in valid if e.get("last_timestamp_ms")), default=None),  # type: ignore[arg-type]
-            "gaps": sum(int(e.get("missing_intervals", 0)) for e in entries),  # type: ignore[arg-type]
-            "duplicates": sum(int(e.get("duplicates", 0)) for e in entries),  # type: ignore[arg-type]
-            "checksum_failures": sum(1 for e in entries if e["classification"] == "INVALID_CHECKSUM"),
+            "first_timestamp_ms": min(
+                (int(e["first_timestamp_ms"]) for e in valid if e.get("first_timestamp_ms")),
+                default=None,
+            ),
+            "last_timestamp_ms": max(
+                (int(e["last_timestamp_ms"]) for e in valid if e.get("last_timestamp_ms")),
+                default=None,
+            ),
+            "gaps": sum(int(e.get("missing_intervals", 0)) for e in entries),
+            "duplicates": sum(int(e.get("duplicates", 0)) for e in entries),
+            "checksum_failures": sum(
+                1 for e in entries if e["classification"] == "INVALID_CHECKSUM"
+            ),
             "schema_drift": sum(1 for e in entries if e["classification"] == "INVALID_SCHEMA"),
-            "invalid_values": sum(int(e.get("invalid_values", 0)) for e in entries),  # type: ignore[arg-type]
-            "raw_order_inversions": sum(int(e.get("raw_order_inversions", 0)) for e in entries),  # type: ignore[arg-type]
+            "invalid_values": sum(int(e.get("invalid_values", 0)) for e in entries),
+            "raw_order_inversions": sum(int(e.get("raw_order_inversions", 0)) for e in entries),
         }
 
-    total_valid = sum(int(v["valid_days"]) for v in per_symbol.values())  # type: ignore[arg-type]
-    total_invalid = sum(int(v["invalid_days"]) for v in per_symbol.values())  # type: ignore[arg-type]
+    total_valid = sum(int(v["valid_days"]) for v in per_symbol.values())
+    total_invalid = sum(int(v["invalid_days"]) for v in per_symbol.values())
     hard_fail = any(
-        per_symbol[s]["checksum_failures"] or per_symbol[s]["schema_drift"]  # type: ignore[arg-type]
-        for s in SYMBOLS
+        per_symbol[s]["checksum_failures"] or per_symbol[s]["schema_drift"] for s in SYMBOLS
     )
     if hard_fail:
         quality = "FAIL"
@@ -336,13 +353,13 @@ def main(argv: list[str] | None = None) -> int:
     else:
         quality = "PASS"
 
-    common_start_ms = int(datetime(2021, 12, 1, tzinfo=timezone.utc).timestamp() * 1000)
-    common_end_ms = int(datetime(2026, 9, 10, 23, 55, tzinfo=timezone.utc).timestamp() * 1000)
+    common_start_ms = int(datetime(2021, 12, 1, tzinfo=UTC).timestamp() * 1000)
+    int(datetime(2026, 9, 10, 23, 55, tzinfo=UTC).timestamp() * 1000)
     common_valid = sum(
         1
         for e in ledger
         if e["classification"] == "VALID"
-        and int(datetime.strptime(str(e["day"]), "%Y-%m-%d").replace(tzinfo=timezone.utc).timestamp() * 1000)  # type: ignore[arg-type]
+        and int(datetime.strptime(str(e["day"]), "%Y-%m-%d").replace(tzinfo=UTC).timestamp() * 1000)
         >= common_start_ms
     )
 
@@ -363,7 +380,10 @@ def main(argv: list[str] | None = None) -> int:
             "count_long_short_ratio",
             "sum_taker_long_short_vol_ratio",
         ],
-        "unit_semantics": {"sum_open_interest": "BASE_ASSET_UNITS", "sum_open_interest_value": "USDT_NOTIONAL"},
+        "unit_semantics": {
+            "sum_open_interest": "BASE_ASSET_UNITS",
+            "sum_open_interest_value": "USDT_NOTIONAL",
+        },
         "common_research_window_utc": list(COMMON_WINDOW),
         "USE_COMMON_WINDOW": True,
         "pre_common_auxiliary_data": "BTCUSDT 2020-09-01..2021-11-30 preserved, excluded from H6 by default",
@@ -372,7 +392,7 @@ def main(argv: list[str] | None = None) -> int:
             "files": len(ledger),
             "valid_days": total_valid,
             "invalid_days": total_invalid,
-            "rows_valid": sum(int(v["rows"]) for v in per_symbol.values()),  # type: ignore[arg-type]
+            "rows_valid": sum(int(v["rows"]) for v in per_symbol.values()),
             "valid_days_in_common_window": common_valid,
         },
         "per_symbol": per_symbol,
@@ -385,7 +405,18 @@ def main(argv: list[str] | None = None) -> int:
             "schema_version": SCHEMA_VERSION,
             "normalizer_version": NORMALIZER_VERSION,
             "files": [
-                {k: e.get(k) for k in ("symbol", "day", "raw_source_sha256", "normalized_sha256", "rows", "dataset_fingerprint", "classification")}
+                {
+                    k: e.get(k)
+                    for k in (
+                        "symbol",
+                        "day",
+                        "raw_source_sha256",
+                        "normalized_sha256",
+                        "rows",
+                        "dataset_fingerprint",
+                        "classification",
+                    )
+                }
                 for e in sorted(ledger, key=lambda e: (str(e["symbol"]), str(e["day"])))
             ],
         },
@@ -399,7 +430,15 @@ def main(argv: list[str] | None = None) -> int:
     ev = EVID / "OI_FULL_HISTORY_DATASET_MANIFEST.json"
     ev.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
-    print(json.dumps({k: manifest[k] for k in ("quality_status", "totals", "OI_FULL_HISTORY_DATASET_SHA256")}, indent=2))
+    print(
+        json.dumps(
+            {
+                k: manifest[k]
+                for k in ("quality_status", "totals", "OI_FULL_HISTORY_DATASET_SHA256")
+            },
+            indent=2,
+        )
+    )
     return 0
 
 

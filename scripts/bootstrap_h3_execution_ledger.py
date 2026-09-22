@@ -72,7 +72,15 @@ def main() -> int:
 
     final = ResearchExecutionLedger(LEDGER_DIR, EXPERIMENT_ID).experiment_summary()
     (LEDGER_DIR / "SUMMARY.json").write_text(json.dumps(final, indent=2), encoding="utf-8")
-    print(json.dumps({k: final[k] for k in ("execution_attempts", "completed_executions", "failed_attempts")}, indent=2))
+    print(
+        json.dumps(
+            {
+                k: final[k]
+                for k in ("execution_attempts", "completed_executions", "failed_attempts")
+            },
+            indent=2,
+        )
+    )
     return 0
 
 

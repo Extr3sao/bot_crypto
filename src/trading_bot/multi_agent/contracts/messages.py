@@ -77,9 +77,8 @@ class AgentMessage(BaseModel):
             raise ValueError("data_time cannot be later than created_at")
         if self.expires_at is not None and self.expires_at < self.created_at:
             raise ValueError("expires_at cannot be earlier than created_at")
-        if (
-            self.trace is not None
-            and (self.trace.run_id != self.run_id or self.trace.trace_id != self.trace_id)
+        if self.trace is not None and (
+            self.trace.run_id != self.run_id or self.trace.trace_id != self.trace_id
         ):
             raise ValueError("message trace identifiers must match message identifiers")
         return self

@@ -336,9 +336,8 @@ def _context(asset: str, bars: list[OHLCV], now: datetime, trace: TraceContext) 
         asset,
         bars,
         timestamp,
-        data_fingerprint="sha256:" + sha256(
-            json.dumps([bar.timestamp for bar in bars]).encode()
-        ).hexdigest()[:32],
+        data_fingerprint="sha256:"
+        + sha256(json.dumps([bar.timestamp for bar in bars]).encode()).hexdigest()[:32],
         dataset_id="DEMO_FIXTURE",
     )
     context.validate(now_ts=timestamp)
@@ -644,7 +643,9 @@ def _write_reports(state: DemoState, output_dir: Path) -> DemoRun:
     payload["commit"] = DEMO_COMMIT
     payload["execution_authority"] = "PaperBroker"
     payload["accounting_authority"] = "PaperBroker/PaperExecutionSummary"
-    report_json.write_text(json.dumps(payload, indent=2, sort_keys=True, default=str), encoding="utf-8")
+    report_json.write_text(
+        json.dumps(payload, indent=2, sort_keys=True, default=str), encoding="utf-8"
+    )
     md = [
         "# DEMO-PAPER-01 Run Report",
         "",
@@ -659,12 +660,30 @@ def _write_reports(state: DemoState, output_dir: Path) -> DemoRun:
         "",
     ]
     for key in (
-        "market_scans", "asset_assessments", "strategy_evaluations", "trade_proposals",
-        "debates", "decisions_selected", "decisions_rejected", "no_trade",
-        "risk_accepts", "risk_rejects", "paper_trades", "closed_trades",
+        "market_scans",
+        "asset_assessments",
+        "strategy_evaluations",
+        "trade_proposals",
+        "debates",
+        "decisions_selected",
+        "decisions_rejected",
+        "no_trade",
+        "risk_accepts",
+        "risk_rejects",
+        "paper_trades",
+        "closed_trades",
     ):
         md.append(f"- {key}: {payload[key]}")
-    md.extend(["", "## Safety", "", "- Real broker calls: 0", "- Private exchange calls: 0", "- FALSE_SUCCESS: 0"])
+    md.extend(
+        [
+            "",
+            "## Safety",
+            "",
+            "- Real broker calls: 0",
+            "- Private exchange calls: 0",
+            "- FALSE_SUCCESS: 0",
+        ]
+    )
     report_markdown.write_text("\n".join(md) + "\n", encoding="utf-8")
     return DemoRun(state=state, report_json=report_json, report_markdown=report_markdown)
 
@@ -973,7 +992,9 @@ Se actualiza solo cada 3s.</p>
             self._thread.join(timeout=2.0)
 
 
-def create_dashboard_server(state: DemoState, *, host: str = "127.0.0.1", port: int = 8765) -> DashboardServer:
+def create_dashboard_server(
+    state: DemoState, *, host: str = "127.0.0.1", port: int = 8765
+) -> DashboardServer:
     return DashboardServer(state, host=host, port=port)
 
 
@@ -1000,7 +1021,9 @@ def main(argv: list[str] | None = None) -> int:
         result, _ = run_campaign_observation(
             provider=args.provider,
             assets=args.assets,
-            output_dir=args.output_dir if args.output_dir != "reports/demo-paper-01" else "reports/paper-observation-01",
+            output_dir=args.output_dir
+            if args.output_dir != "reports/demo-paper-01"
+            else "reports/paper-observation-01",
             cycles=args.cycles,
             campaign=args.campaign,
             resume=args.resume,
@@ -1013,7 +1036,9 @@ def main(argv: list[str] | None = None) -> int:
             if args.output_dir == "reports/demo-paper-01":
                 status_path = Path("reports/paper-observation-01") / "DASHBOARD_STATUS.json"
             status_path.parent.mkdir(parents=True, exist_ok=True)
-            status_path.write_text(json.dumps(result.state.to_dict(), indent=2, default=str), encoding="utf-8")
+            status_path.write_text(
+                json.dumps(result.state.to_dict(), indent=2, default=str), encoding="utf-8"
+            )
             print("=" * 60)
             print("TRADING AGENTIC PORTABLE - PAPER MODE (LIVE DISABLED)")
             print(f"Campaign: {args.campaign}")
@@ -1174,7 +1199,7 @@ def _load_durable_campaign_state(
         payload["campaign_id"] = campaign_id
     return DurableCampaignState(
         campaign_id=str(payload.get("campaign_id") or campaign_id),
-        current_run=str(payload.get("current_run") or f"run-{int(time.time()*1000)}"),
+        current_run=str(payload.get("current_run") or f"run-{int(time.time() * 1000)}"),
         provider=str(payload.get("provider") or provider),
         assets=tuple(payload.get("assets") or ("BTC", "ETH", "SOL")),
         current_run_session=payload.get("current_run_session"),
@@ -1203,7 +1228,9 @@ def _save_durable_campaign_state(output_dir: Path | str, state: DurableCampaignS
     path.write_text(json.dumps(state.to_dict(), indent=2, default=str), encoding="utf-8")
 
 
-def _write_daily_campaign_reports(output_dir: Path | str, *, state: DemoState, campaign_id: str) -> None:
+def _write_daily_campaign_reports(
+    output_dir: Path | str, *, state: DemoState, campaign_id: str
+) -> None:
     day_dir = Path(output_dir) / datetime.now(UTC).strftime("%Y-%m-%d")
     day_dir.mkdir(parents=True, exist_ok=True)
     payload = {
@@ -1232,34 +1259,39 @@ def _write_daily_campaign_reports(output_dir: Path | str, *, state: DemoState, c
             "average_trades_per_day": float(state.paper_trades),
         },
     }
-    (day_dir / "DAILY_REPORT.json").write_text(json.dumps(payload, indent=2, default=str), encoding="utf-8")
+    (day_dir / "DAILY_REPORT.json").write_text(
+        json.dumps(payload, indent=2, default=str), encoding="utf-8"
+    )
     (day_dir / "DAILY_REPORT.md").write_text(
-        "\n".join([
-            "# Daily Paper Observation Report",
-            "",
-            f"- Campaign ID: `{campaign_id}`",
-            f"- Date: `{payload['date']}`",
-            f"- Executed paper trades: {state.paper_trades}",
-            f"- Selected decisions: {state.decisions_selected}",
-            f"- NO_TRADE: {state.no_trade}",
-            f"- Risk accepts: {state.risk_accepts}",
-            f"- Risk rejects: {state.risk_rejects}",
-            f"- Realized PnL: {state.realized_pnl}",
-            f"- Unrealized PnL: {state.unrealized_pnl}",
-            "",
-            "## Funnel",
-            "- market_scans",
-            "- asset_assessments",
-            "- strategy_evaluations",
-            "- trade_proposals",
-            "- debates",
-            "- decisions_selected",
-            "- decisions_rejected",
-            "- no_trade",
-            "- risk_accepts",
-            "- risk_rejects",
-            "- paper_trades",
-        ]) + "\n",
+        "\n".join(
+            [
+                "# Daily Paper Observation Report",
+                "",
+                f"- Campaign ID: `{campaign_id}`",
+                f"- Date: `{payload['date']}`",
+                f"- Executed paper trades: {state.paper_trades}",
+                f"- Selected decisions: {state.decisions_selected}",
+                f"- NO_TRADE: {state.no_trade}",
+                f"- Risk accepts: {state.risk_accepts}",
+                f"- Risk rejects: {state.risk_rejects}",
+                f"- Realized PnL: {state.realized_pnl}",
+                f"- Unrealized PnL: {state.unrealized_pnl}",
+                "",
+                "## Funnel",
+                "- market_scans",
+                "- asset_assessments",
+                "- strategy_evaluations",
+                "- trade_proposals",
+                "- debates",
+                "- decisions_selected",
+                "- decisions_rejected",
+                "- no_trade",
+                "- risk_accepts",
+                "- risk_rejects",
+                "- paper_trades",
+            ]
+        )
+        + "\n",
         encoding="utf-8",
     )
 
@@ -1278,29 +1310,34 @@ def _write_campaign_report(output_dir: Path | str, *, state: DemoState, campaign
         "false_success": 0,
         "summary": state.to_dict(),
     }
-    (out / "CAMPAIGN_REPORT.json").write_text(json.dumps(payload, indent=2, default=str), encoding="utf-8")
+    (out / "CAMPAIGN_REPORT.json").write_text(
+        json.dumps(payload, indent=2, default=str), encoding="utf-8"
+    )
     (out / "CAMPAIGN_REPORT.md").write_text(
-        "\n".join([
-            "# Paper Observation Campaign Report",
-            "",
-            f"- Campaign ID: `{campaign_id}`",
-            "- Environment: PAPER",
-            "- Market data: REAL PUBLIC MARKET DATA",
-            "- LIVE DISABLED: true",
-            "- Real broker calls: 0",
-            "- Private exchange calls: 0",
-            "- Live calls: 0",
-            "- FALSE_SUCCESS: 0",
-            "",
-            "## Summary",
-            f"- Executed paper trades: {state.paper_trades}",
-            f"- Selected decisions: {state.decisions_selected}",
-            f"- NO_TRADE: {state.no_trade}",
-            f"- Risk accepts: {state.risk_accepts}",
-            f"- Risk rejects: {state.risk_rejects}",
-            f"- Realized PnL: {state.realized_pnl}",
-            f"- Unrealized PnL: {state.unrealized_pnl}",
-        ]) + "\n",
+        "\n".join(
+            [
+                "# Paper Observation Campaign Report",
+                "",
+                f"- Campaign ID: `{campaign_id}`",
+                "- Environment: PAPER",
+                "- Market data: REAL PUBLIC MARKET DATA",
+                "- LIVE DISABLED: true",
+                "- Real broker calls: 0",
+                "- Private exchange calls: 0",
+                "- Live calls: 0",
+                "- FALSE_SUCCESS: 0",
+                "",
+                "## Summary",
+                f"- Executed paper trades: {state.paper_trades}",
+                f"- Selected decisions: {state.decisions_selected}",
+                f"- NO_TRADE: {state.no_trade}",
+                f"- Risk accepts: {state.risk_accepts}",
+                f"- Risk rejects: {state.risk_rejects}",
+                f"- Realized PnL: {state.realized_pnl}",
+                f"- Unrealized PnL: {state.unrealized_pnl}",
+            ]
+        )
+        + "\n",
         encoding="utf-8",
     )
 
@@ -1318,7 +1355,9 @@ def _maybe_persist_campaign_state(
     durable.provider = provider
     durable.current_run = state.run_id
     durable.last_processed_market_timestamp = 0
-    durable.last_successful_decision_cycle = max(durable.last_successful_decision_cycle, state.cycles)
+    durable.last_successful_decision_cycle = max(
+        durable.last_successful_decision_cycle, state.cycles
+    )
     durable.live_calls = state.live_calls
     durable.real_broker_calls = 0
     durable.private_exchange_calls = 0

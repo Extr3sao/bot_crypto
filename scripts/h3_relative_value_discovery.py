@@ -40,19 +40,20 @@ PREREG_COMMIT = "83b3acde3dc4c45f9680ab9be2f0a72eeeddeb41"
 ASSETS = ("BTCUSDT", "ETHUSDT")
 
 from trading_bot.research.h1_regime_transition import (  # noqa: E402
-    detect_transitions,
     derive_states,
-    orthogonality as h1_orthogonality_primitives,
+    detect_transitions,
     simulate_h1,
     simulate_proxy,
 )
 from trading_bot.research.h3_relative_value import (  # noqa: E402
     COST_SIDE_BPS,
-    classify as h3_classify,
     compute_features,
     neutrality,
     simulate_pair,
     summarize,
+)
+from trading_bot.research.h3_relative_value import (  # noqa: E402 - sys.path bootstrap must precede imports
+    classify as h3_classify,
 )
 
 ENGINE_REF = "src/trading_bot/research/h3_relative_value.py"
@@ -76,7 +77,14 @@ def load_bars(symbol: str) -> tuple[np.ndarray, ...]:
     return ts, op, hi, lo, cl
 
 
-def sync_audit(ts_a: np.ndarray, hi_a: np.ndarray, lo_a: np.ndarray, ts_b: np.ndarray, hi_b: np.ndarray, lo_b: np.ndarray) -> dict[str, object]:
+def sync_audit(
+    ts_a: np.ndarray,
+    hi_a: np.ndarray,
+    lo_a: np.ndarray,
+    ts_b: np.ndarray,
+    hi_b: np.ndarray,
+    lo_b: np.ndarray,
+) -> dict[str, object]:
     """Track F: exact timestamp synchronization over the frozen window."""
     sa, sb = set(ts_a.tolist()), set(ts_b.tolist())
     common_ts = np.array(sorted(sa & sb), dtype=np.int64)
@@ -87,8 +95,8 @@ def sync_audit(ts_a: np.ndarray, hi_a: np.ndarray, lo_a: np.ndarray, ts_b: np.nd
         "BTC_ROWS": int(ts_a.shape[0]),
         "ETH_ROWS": int(ts_b.shape[0]),
         "COMMON_ROWS": int(common_ts.shape[0]),
-        "MISSING_BTC_ROWS": int(len(sb - sa)),
-        "MISSING_ETH_ROWS": int(len(sa - sb)),
+        "MISSING_BTC_ROWS": len(sb - sa),
+        "MISSING_ETH_ROWS": len(sa - sb),
         "MISALIGNED_ROWS": int(ts_a.shape[0] + ts_b.shape[0] - 2 * common_ts.shape[0]),
         "STALE_ROWS": stale,
         "timestamps_identical_sequences": bool(np.array_equal(ts_a, ts_b)),
@@ -114,7 +122,17 @@ def future_mutation_test(ts, op_a, cl_a, op_b, cl_b) -> dict[str, object]:
     ts_arr = ts
     t1, _ = simulate_pair(ts_arr, op_a, cl_a, op_b, cl_b, feat1)
     t2, _ = simulate_pair(ts_arr, op_a2, cl_a2, op_b2, cl_b2, feat2)
-    entry_fields = ("decision_index", "decision_ts", "direction", "entry_index", "entry_ts", "beta", "spread_std", "entry_z", "gross_exposure")
+    entry_fields = (
+        "decision_index",
+        "decision_ts",
+        "direction",
+        "entry_index",
+        "entry_ts",
+        "beta",
+        "spread_std",
+        "entry_z",
+        "gross_exposure",
+    )
     d1 = [tuple(getattr(x, f) for f in entry_fields) for x in t1 if x.decision_index <= T]
     d2 = [tuple(getattr(x, f) for f in entry_fields) for x in t2 if x.decision_index <= T]
     return {
@@ -163,7 +181,15 @@ def main() -> int:
         if line.strip()
     ]
     bars_btc = tuple(
-        OHLCV(symbol="BTCUSDT", timestamp=int(r[0]), open=float(r[1]), high=float(r[2]), low=float(r[3]), close=float(r[4]), volume=float(r[5]))
+        OHLCV(
+            symbol="BTCUSDT",
+            timestamp=int(r[0]),
+            open=float(r[1]),
+            high=float(r[2]),
+            low=float(r[3]),
+            close=float(r[4]),
+            volume=float(r[5]),
+        )
         for r in btc_rows
     )
     states = derive_states(bars_btc, "BTCUSDT")
@@ -171,10 +197,12 @@ def main() -> int:
 
     # ---- frozen economic simulation (single economic execution) ----
     feat = compute_features(cl_a, cl_b)
-    trades, blocked = simulate_pair(ts_a, op_a, cl_a, op_b, cl_b, feat, regime_labels)
+    trades, _blocked = simulate_pair(ts_a, op_a, cl_a, op_b, cl_b, feat, regime_labels)
 
     # ---- orthogonality replays (deterministic, technical) ----
-    h1_btc_trades, _, _ = simulate_h1(bars_btc, detect_transitions(bars_btc, states, "BTCUSDT"), "BTCUSDT")
+    h1_btc_trades, _, _ = simulate_h1(
+        bars_btc, detect_transitions(bars_btc, states, "BTCUSDT"), "BTCUSDT"
+    )
     proxy_btc = simulate_proxy(bars_btc, "BTCUSDT")
     h3_entries = [t.entry_index for t in trades]
     proxy_entries = [t.entry_index for t in proxy_btc]
@@ -213,7 +241,9 @@ def main() -> int:
 
     # ---- metrics: base case + preregistered sensitivity + engine table ----
     base = summarize(trades, cost_side_bps=COST_SIDE_BPS)
-    sens_prereg = {str(b): summarize(trades, cost_side_bps=b)["net_expectancy_R"] for b in (2.5, 5.0, 10.0)}
+    sens_prereg = {
+        str(b): summarize(trades, cost_side_bps=b)["net_expectancy_R"] for b in (2.5, 5.0, 10.0)
+    }
     engine_table = []
     for bps in (0.0, 5.0, 10.0, 20.0, 40.0):
         net = [t.gross_r - t.cost_r * (bps / COST_SIDE_BPS) for t in trades]
@@ -221,8 +251,14 @@ def main() -> int:
             {
                 "per_side_bps": bps,
                 "N": len(net),
-                "gross_expectancy_R": float(np.mean([t.gross_r for t in trades])) if trades else 0.0,
-                "cost_per_trade_R": float(np.mean([x.cost_r * (bps / COST_SIDE_BPS) for x in trades])) if trades else 0.0,
+                "gross_expectancy_R": float(np.mean([t.gross_r for t in trades]))
+                if trades
+                else 0.0,
+                "cost_per_trade_R": float(
+                    np.mean([x.cost_r * (bps / COST_SIDE_BPS) for x in trades])
+                )
+                if trades
+                else 0.0,
                 "net_expectancy_R": float(np.mean(net)) if net else 0.0,
                 "net_total_R": float(np.sum(net)) if net else 0.0,
             }
@@ -234,13 +270,14 @@ def main() -> int:
     ident_ok = all(row["N"] == engine_table[0]["N"] for row in engine_table)
 
     by_dir = {
-        d: summarize([t for t in trades if t.direction == d]) for d in ("SPREAD_SHORT", "SPREAD_LONG")
+        d: summarize([t for t in trades if t.direction == d])
+        for d in ("SPREAD_SHORT", "SPREAD_LONG")
     }
     dir_cells = [by_dir[d].get("N", 0) for d in ("SPREAD_SHORT", "SPREAD_LONG")]
     result_class = "REDUNDANT_CANDIDATE" if redundant else h3_classify(base, dir_cells)
     neutral = neutrality(trades)
 
-    total_days = (int(ts_a[-1]) - int(ts_a[0])) / 86_400_000
+    (int(ts_a[-1]) - int(ts_a[0])) / 86_400_000
     result = {
         "checkpoint": "H3-PREREG-VERIFICATION-AND-DISCOVERY-01",
         "strategy_id": "H3-RELVAL-BTCETH-BETANEUTRAL-SPREAD-01",
@@ -284,7 +321,8 @@ def main() -> int:
             "monotone_non_increasing": mono_ok,
             "trade_set_identical_across_scenarios": ident_ok,
             "net_equals_gross_minus_cost": all(
-                abs(r["net_expectancy_R"] - (r["gross_expectancy_R"] - r["cost_per_trade_R"])) <= 1e-12
+                abs(r["net_expectancy_R"] - (r["gross_expectancy_R"] - r["cost_per_trade_R"]))
+                <= 1e-12
                 for r in engine_table
             ),
             "absolute_semantics": "net(bps) = gross - cost_r*(bps/5); linear, anchored 0 bps = gross (DEF-RESEARCH-COST-001 cannot recur)",
@@ -304,7 +342,7 @@ def main() -> int:
         "accounting": {
             "h3_trades": len(trades),
             "regime_labels_recorded": sum(1 for t in trades if t.regime_at_entry),
-            "direction_cells": dict(zip(("SPREAD_SHORT", "SPREAD_LONG"), dir_cells)),
+            "direction_cells": dict(zip(("SPREAD_SHORT", "SPREAD_LONG"), dir_cells, strict=False)),
             "paper_promotions": 0,
             "confirmation_usage": "none",
             "live_calls": 0,

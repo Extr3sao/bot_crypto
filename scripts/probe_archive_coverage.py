@@ -21,7 +21,9 @@ from pathlib import Path
 BASE = "https://s3-ap-northeast-1.amazonaws.com/data.binance.vision"
 NS = {"s3": "http://s3.amazonaws.com/doc/2006-03-01/"}
 REPO = Path(__file__).resolve().parents[1]
-OUT = REPO / "docs" / "external-audit-01" / "data-admission-01" / "DATA_ARCHIVE_COVERAGE_MATRIX.json"
+OUT = (
+    REPO / "docs" / "external-audit-01" / "data-admission-01" / "DATA_ARCHIVE_COVERAGE_MATRIX.json"
+)
 SYMBOLS = ("BTCUSDT", "ETHUSDT", "SOLUSDT")
 RETRIEVAL_UTC = "2026-09-11"
 
@@ -31,9 +33,8 @@ def list_keys(prefix: str, timeout: int = 30) -> list[dict[str, object]]:
     out: list[dict[str, object]] = []
     marker = ""
     while True:
-        url = (
-            f"{BASE}?delimiter=/&max-keys=1000&prefix={prefix}"
-            + (f"&marker={marker}" if marker else "")
+        url = f"{BASE}?delimiter=/&max-keys=1000&prefix={prefix}" + (
+            f"&marker={marker}" if marker else ""
         )
         with urllib.request.urlopen(url, timeout=timeout) as resp:
             root = ET.fromstring(resp.read())
@@ -67,7 +68,11 @@ def coverage(kind: str, cadence: str, symbol: str, family_prefix: str) -> dict[s
     entries = list_keys(prefix)
     all_zips = [e for e in entries if str(e["key"]).endswith(".zip")]
     # dated archives only; bucket also hosts non-dated spark part-*.zip chunks
-    zips = [e for e in all_zips if re.search(r"\d{4}-\d{2}(-\d{2})?\.zip$", str(e["key"]).rsplit("/", 1)[-1])]
+    zips = [
+        e
+        for e in all_zips
+        if re.search(r"\d{4}-\d{2}(-\d{2})?\.zip$", str(e["key"]).rsplit("/", 1)[-1])
+    ]
     non_dated_part_files = len(all_zips) - len(zips)
     checksums = {str(e["key"]) for e in entries if str(e["key"]).endswith(".zip.CHECKSUM")}
     dates = sorted({date_from_key(str(e["key"]), cadence) for e in zips})
@@ -78,10 +83,7 @@ def coverage(kind: str, cadence: str, symbol: str, family_prefix: str) -> dict[s
         if cadence == "daily":
             d0 = date.fromisoformat(dates[0])
             d1 = date.fromisoformat(dates[-1])
-            expected = {
-                (d0 + timedelta(days=i)).isoformat()
-                for i in range((d1 - d0).days + 1)
-            }
+            expected = {(d0 + timedelta(days=i)).isoformat() for i in range((d1 - d0).days + 1)}
         else:
             y0, m0 = int(dates[0][:4]), int(dates[0][5:7])
             y1, m1 = int(dates[-1][:4]), int(dates[-1][5:7])
@@ -99,8 +101,12 @@ def coverage(kind: str, cadence: str, symbol: str, family_prefix: str) -> dict[s
         "last_available": dates[-1] if dates else None,
         "zip_files": len(zips),
         "non_dated_part_files": non_dated_part_files,
-        "checksum_files": sum(1 for k in checksums if k[:-len(".CHECKSUM")] + ".zip" in {str(e["key"]) for e in zips}),
-        "checksum_coverage": "FULL" if zips and len(checksums) >= len(zips) else ("PARTIAL" if checksums else "NONE"),
+        "checksum_files": sum(
+            1 for k in checksums if k[: -len(".CHECKSUM")] + ".zip" in {str(e["key"]) for e in zips}
+        ),
+        "checksum_coverage": "FULL"
+        if zips and len(checksums) >= len(zips)
+        else ("PARTIAL" if checksums else "NONE"),
         "missing_dates_or_months": missing[:50],
         "missing_count": len(missing),
         "compressed_bytes_total": size_sum,

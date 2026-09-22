@@ -38,7 +38,9 @@ from trading_bot.research.source_readers import (
 )
 
 
-def _tf(agg_id: int, t_ms: int, *, price: float = 100.0, qty: float = 1.0, buyer_maker: bool = False) -> TradeFlowRecord:
+def _tf(
+    agg_id: int, t_ms: int, *, price: float = 100.0, qty: float = 1.0, buyer_maker: bool = False
+) -> TradeFlowRecord:
     return TradeFlowRecord(
         exchange="binance",
         market="usdm_futures",
@@ -101,7 +103,12 @@ def test_trade_flow_record_invalid_values_flagged() -> None:
     errors = bad.__class__ and __import__(
         "trading_bot.research.data_contracts", fromlist=["validate_trade_flow_record"]
     ).validate_trade_flow_record(bad)
-    assert set(errors) == {"price_not_positive", "quantity_not_positive", "first_trade_id_gt_last_trade_id", "negative_trade_time"}
+    assert set(errors) == {
+        "price_not_positive",
+        "quantity_not_positive",
+        "first_trade_id_gt_last_trade_id",
+        "negative_trade_time",
+    }
 
 
 # ---------------------------------------------------------------------------
@@ -113,7 +120,9 @@ def test_normalize_trade_flow_sorts_and_flags_duplicates() -> None:
     recs = [_tf(2, 1000), _tf(1, 1000), _tf(3, 500)]
     stats = normalize_trade_flow(recs, decision_time_ms=2000)
     assert stats["rows_within_pit"] == 3
-    assert stats["errors"] == {}  # sorting fixes presentation order; times non-decreasing after sort
+    assert (
+        stats["errors"] == {}
+    )  # sorting fixes presentation order; times non-decreasing after sort
 
 
 def test_normalize_trade_flow_duplicate_ids_detected() -> None:
@@ -182,7 +191,7 @@ def test_future_mutation_does_not_change_state_at_or_before_T() -> None:
 
 def test_future_mutation_oi_state_stable() -> None:
     a = [_oi(0), _oi(300_000)]
-    b = a + [_oi(10**9)]
+    b = [*a, _oi(10**9)]
     sa = normalize_open_interest(a, decision_time_ms=10**8)
     sb = normalize_open_interest(b, decision_time_ms=10**8)
     assert sa["rows_within_pit"] == sb["rows_within_pit"] == 2
@@ -198,12 +207,20 @@ def test_fingerprint_stable_regardless_of_input_order() -> None:
     recs_a = [_tf(1, 1000), _tf(2, 2000)]
     recs_b = [_tf(2, 2000), _tf(1, 1000)]
     fa = fingerprint_trade_flow(
-        recs_a, asset="BTCUSDT", time_range_ms=(1000, 2000), schema_version=SCHEMA_VERSION,
-        normalizer_version=NORMALIZER_VERSION, source_file_hashes=["h"],
+        recs_a,
+        asset="BTCUSDT",
+        time_range_ms=(1000, 2000),
+        schema_version=SCHEMA_VERSION,
+        normalizer_version=NORMALIZER_VERSION,
+        source_file_hashes=["h"],
     )
     fb = fingerprint_trade_flow(
-        recs_b, asset="BTCUSDT", time_range_ms=(1000, 2000), schema_version=SCHEMA_VERSION,
-        normalizer_version=NORMALIZER_VERSION, source_file_hashes=["h"],
+        recs_b,
+        asset="BTCUSDT",
+        time_range_ms=(1000, 2000),
+        schema_version=SCHEMA_VERSION,
+        normalizer_version=NORMALIZER_VERSION,
+        source_file_hashes=["h"],
     )
     assert fa == fb
 
@@ -212,12 +229,20 @@ def test_fingerprint_changes_on_one_byte_source_change() -> None:
     recs_a = [_tf(1, 1000, price=100.0)]
     recs_b = [_tf(1, 1000, price=100.1)]
     fa = fingerprint_trade_flow(
-        recs_a, asset="BTCUSDT", time_range_ms=(1000, 1000), schema_version=SCHEMA_VERSION,
-        normalizer_version=NORMALIZER_VERSION, source_file_hashes=["h"],
+        recs_a,
+        asset="BTCUSDT",
+        time_range_ms=(1000, 1000),
+        schema_version=SCHEMA_VERSION,
+        normalizer_version=NORMALIZER_VERSION,
+        source_file_hashes=["h"],
     )
     fb = fingerprint_trade_flow(
-        recs_b, asset="BTCUSDT", time_range_ms=(1000, 1000), schema_version=SCHEMA_VERSION,
-        normalizer_version=NORMALIZER_VERSION, source_file_hashes=["h"],
+        recs_b,
+        asset="BTCUSDT",
+        time_range_ms=(1000, 1000),
+        schema_version=SCHEMA_VERSION,
+        normalizer_version=NORMALIZER_VERSION,
+        source_file_hashes=["h"],
     )
     assert fa != fb
 
@@ -231,7 +256,12 @@ def test_dataset_fingerprint_canonical_and_stable() -> None:
 
 def test_oi_fingerprint_changes_on_source_hash_change() -> None:
     recs = [_oi(0), _oi(300_000)]
-    common = dict(asset="BTCUSDT", time_range_ms=(0, 300_000), schema_version=SCHEMA_VERSION, normalizer_version=NORMALIZER_VERSION)
+    common = dict(
+        asset="BTCUSDT",
+        time_range_ms=(0, 300_000),
+        schema_version=SCHEMA_VERSION,
+        normalizer_version=NORMALIZER_VERSION,
+    )
     f1 = fingerprint_open_interest(recs, source_file_hashes=["old"], **common)
     f2 = fingerprint_open_interest(recs, source_file_hashes=["new"], **common)
     assert f1 != f2

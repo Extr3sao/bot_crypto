@@ -13,7 +13,9 @@ from trading_bot.portfolio.correlation import (
 )
 
 
-def _series(corr: float, n: int, *, start_ts: int = 0, step: int = 60_000) -> tuple[tuple[int, float], tuple[tuple[int, float], ...]]:
+def _series(
+    corr: float, n: int, *, start_ts: int = 0, step: int = 60_000
+) -> tuple[tuple[tuple[int, float], ...], tuple[tuple[int, float], ...]]:
     """Two return series with approximately the requested correlation."""
     rng_a = [((i * 37) % 11 - 5) / 50 for i in range(n)]
     rng_b = [corr * a + (1 - abs(corr)) * (((i * 53) % 13 - 6) / 60) for i, a in enumerate(rng_a)]
@@ -76,7 +78,11 @@ def test_hysteresis_enter_and_exit() -> None:
         b_vals.append(w)  # independent-ish
     a = tuple(zip(ts, a_vals, strict=True))
     b = tuple(zip(ts, b_vals, strict=True))
-    engine = DynamicCorrelationEngine(FusionConfig(window=30, smoothing_span=3, fuse_enter=0.85, fuse_exit=0.4, edge_threshold=0.7))
+    engine = DynamicCorrelationEngine(
+        FusionConfig(
+            window=30, smoothing_span=3, fuse_enter=0.85, fuse_exit=0.4, edge_threshold=0.7
+        )
+    )
     states, _smoothed = engine.evaluate_series(a, b)
     values = [s.value for _, s in states]
     assert "FUSED" in values  # entered fused
@@ -84,7 +90,9 @@ def test_hysteresis_enter_and_exit() -> None:
 
 
 def test_hysteresis_no_flapping_in_band() -> None:
-    engine = DynamicCorrelationEngine(FusionConfig(window=10, smoothing_span=1, fuse_enter=0.9, fuse_exit=0.5, edge_threshold=0.8))
+    engine = DynamicCorrelationEngine(
+        FusionConfig(window=10, smoothing_span=1, fuse_enter=0.9, fuse_exit=0.5, edge_threshold=0.8)
+    )
     # Directly probe the state machine with a synthetic correlation stream
     # inside the hysteresis band [0.5, 0.9]: state must stay put.
     n = 40

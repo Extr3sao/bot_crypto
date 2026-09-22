@@ -60,6 +60,7 @@ __all__ = [
 # C1 — preregistered evaluation specs (fingerprinted BEFORE execution)
 # --------------------------------------------------------------------------
 
+
 def _spec(
     category: str,
     entry: str,
@@ -141,6 +142,7 @@ def discovery_eval_fingerprint(category: str) -> str:
 # Signal generators (PIT: decision at bar t uses candles[.. t])
 # --------------------------------------------------------------------------
 
+
 def _atr(candles: Sequence[OHLCV], end: int, period: int = 14) -> float | None:
     if end < period + 1:
         return None
@@ -157,7 +159,7 @@ def _volume_z(candles: Sequence[OHLCV], end: int, window: int = 60) -> float | N
     vols = [c.volume for c in candles[end - window : end]]
     mean = sum(vols) / window
     var = sum((v - mean) ** 2 for v in vols) / window
-    sd = var ** 0.5
+    sd = var**0.5
     if sd <= 0:
         return None
     return float((candles[end].volume - mean) / sd)
@@ -254,9 +256,7 @@ def _carry_signals(
     def accrual(start_idx: int, current_idx: int, entry: float) -> float:
         start_ms = candles[start_idx].timestamp
         cur_ms = candles[current_idx].timestamp
-        return sum(
-            r for t, r in funding_by_hour.items() if start_ms <= t <= cur_ms
-        )
+        return sum(r for t, r in funding_by_hour.items() if start_ms <= t <= cur_ms)
 
     def direction_at(i: int) -> str | None:
         if i < funding_window:
@@ -296,10 +296,7 @@ def _cross_sectional_signals(
         if i < lookback:
             i += 1
             continue
-        rets = {
-            a: (v[i].close / v[i - lookback].close - 1.0)
-            for a, v in align.items()
-        }
+        rets = {a: (v[i].close / v[i - lookback].close - 1.0) for a, v in align.items()}
         best = max(rets, key=lambda a: rets[a])
         spread = rets[best] - sorted(rets.values())[1]
         if spread <= 0:
@@ -321,10 +318,7 @@ def _cross_sectional_signals(
             inverted = (
                 j >= lookback
                 and (c.close / align[best][j - lookback].close - 1.0)
-                < sorted(
-                    (v[j].close / v[j - lookback].close - 1.0)
-                    for v in align.values()
-                )[1]
+                < sorted((v[j].close / v[j - lookback].close - 1.0) for v in align.values())[1]
             )
             exit_price = stop if stop_hit else c.close
             if stop_hit:
@@ -466,6 +460,7 @@ def _transition_defense_signals(
 # Execution
 # --------------------------------------------------------------------------
 
+
 @dataclass(frozen=True, slots=True)
 class DiscoveryCell:
     category: str
@@ -512,7 +507,9 @@ class DiscoveryReport:
             "result_states": {
                 "DISCOVERY_PASS": sum(1 for c in self.cells if c.status == "DISCOVERY_PASS"),
                 "DISCOVERY_FAIL": sum(1 for c in self.cells if c.status == "DISCOVERY_FAIL"),
-                "INSUFFICIENT_SAMPLE": sum(1 for c in self.cells if c.status == "INSUFFICIENT_SAMPLE"),
+                "INSUFFICIENT_SAMPLE": sum(
+                    1 for c in self.cells if c.status == "INSUFFICIENT_SAMPLE"
+                ),
                 "NOT_APPLICABLE": sum(1 for c in self.cells if c.status == "NOT_APPLICABLE"),
             },
         }
@@ -548,22 +545,17 @@ def execute_discovery_batch(
     window_meta: dict[str, str] = {}
     for asset in assets:
         for tf in timeframes:
-            bars = (
-                window_bars[tf] if isinstance(window_bars, dict) else window_bars
-            )
+            bars = window_bars[tf] if isinstance(window_bars, dict) else window_bars
             fetched = fetcher.fetch_ohlcv(symbols[asset], tf, bars)
             candles = fetched if fetched is not None else []
             if len(candles) < 120:
                 continue
             candles_by_key[(asset, tf)] = candles
             window_meta[f"{asset}:{tf}"] = (
-                f"n={len(candles)} "
-                f"first={candles[0].timestamp} last={candles[-1].timestamp}"
+                f"n={len(candles)} first={candles[0].timestamp} last={candles[-1].timestamp}"
             )
 
-    dataset_fp = _fingerprint_candles(
-        [c for cs in candles_by_key.values() for c in cs]
-    )
+    dataset_fp = _fingerprint_candles([c for cs in candles_by_key.values() for c in cs])
     engine = RegimeEngine()
     report = DiscoveryReport(
         batch=batch,
@@ -615,9 +607,7 @@ def execute_discovery_batch(
         )
         freq_opps[category] = freq_opps.get(category, 0) + result.opportunities
         for t in result.trades:
-            freq_days.setdefault(category, set()).add(
-                t.entry_ts // 86_400_000
-            )
+            freq_days.setdefault(category, set()).add(t.entry_ts // 86_400_000)
 
     def _emit_not_applicable(
         category: str, asset: str, tf: str, *, reason: str, prereg: dict[str, Any]
@@ -642,11 +632,7 @@ def execute_discovery_batch(
     for (asset, tf), candles in sorted(candles_by_key.items()):
         common: dict[str, Any] = dict(cost_rate=commission_rate, slippage_bps=slippage_bps)
 
-        funding = (
-            funding_fetcher(symbols[asset])
-            if funding_fetcher is not None
-            else {}
-        )
+        funding = funding_fetcher(symbols[asset]) if funding_fetcher is not None else {}
         _emit(
             "carry_funding",
             asset,
@@ -691,11 +677,7 @@ def execute_discovery_batch(
 
     # cross-sectional runs once per timeframe on the aligned universe
     for tf in timeframes:
-        series = {
-            a: candles_by_key[(a, tf)]
-            for a in assets
-            if (a, tf) in candles_by_key
-        }
+        series = {a: candles_by_key[(a, tf)] for a in assets if (a, tf) in candles_by_key}
         if len(series) < 2 or len(series) != len(assets):
             # NOT_APPLICABLE is an honest cell: rotation needs >=2 assets.
             _emit_not_applicable(
@@ -711,20 +693,14 @@ def execute_discovery_batch(
             "|".join(assets),
             tf,
             series[assets[0]],
-            _cross_sectional_signals(
-                series, cost_rate=commission_rate, slippage_bps=slippage_bps
-            ),
+            _cross_sectional_signals(series, cost_rate=commission_rate, slippage_bps=slippage_bps),
         )
 
-    days_per_batch = max(
-        (len(v) for v in freq_days.values()), default=0
-    )
+    days_per_batch = max((len(v) for v in freq_days.values()), default=0)
     report.frequency = {
         "note": "C6: natural frequency evidence; thresholds were NOT tuned",
         "opportunities_by_category": freq_opps,
-        "days_with_opportunity_by_category": {
-            k: len(v) for k, v in freq_days.items()
-        },
+        "days_with_opportunity_by_category": {k: len(v) for k, v in freq_days.items()},
         "observation_days": days_per_batch,
         "opportunities_per_day": {
             k: (round(v / days_per_batch, 3) if days_per_batch else 0.0)

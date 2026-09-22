@@ -64,9 +64,15 @@ class DiscoveryCellView:
                 "best_observed_pf": best_pf,
             },
             "status": (
-                "DISCOVERY_PASS" if passes else (
-                    "EVIDENCE_NEGATIVE" if fails and not insufficient and not not_applicable else (
-                        "INSUFFICIENT_SAMPLE" if insufficient or not_applicable else "INSUFFICIENT_EVIDENCE"
+                "DISCOVERY_PASS"
+                if passes
+                else (
+                    "EVIDENCE_NEGATIVE"
+                    if fails and not insufficient and not not_applicable
+                    else (
+                        "INSUFFICIENT_SAMPLE"
+                        if insufficient or not_applicable
+                        else "INSUFFICIENT_EVIDENCE"
                     )
                 )
             ),
@@ -95,8 +101,7 @@ def build_discovery_lab_view(
         "preregistration": report.get("preregistration", {}),
         "dataset_fingerprint": report.get("dataset_fingerprint"),
         "candidates": [
-            DiscoveryCellView(cat, by_category.get(cat, [])).to_dict()
-            for cat in categories
+            DiscoveryCellView(cat, by_category.get(cat, [])).to_dict() for cat in categories
         ],
     }
 
@@ -104,7 +109,9 @@ def build_discovery_lab_view(
 class LegacyMatrixCell:
     """Evidence-backed legacy matrix cell (RESEARCH surface)."""
 
-    def __init__(self, strategy: str, cell: Mapping[str, Any] | None, *, reason: str | None = None) -> None:
+    def __init__(
+        self, strategy: str, cell: Mapping[str, Any] | None, *, reason: str | None = None
+    ) -> None:
         self.strategy = strategy
         self._cell = dict(cell) if cell else None
         self._reason = reason
@@ -148,10 +155,7 @@ def build_legacy_matrix(
     return {
         "surface": "RESEARCH",
         "protocol_fingerprint": results.get("protocol_fingerprint"),
-        "matrix": [
-            {"strategy": s, "cells": cs}
-            for s, cs in sorted(rows.items())
-        ],
+        "matrix": [{"strategy": s, "cells": cs} for s, cs in sorted(rows.items())],
     }
 
 

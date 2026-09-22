@@ -45,9 +45,7 @@ POC02_CAMPAIGN_ID = "POC-02-paper-clean-01"
 
 def _write_json(path: Path, payload: dict) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(
-        json.dumps(payload, indent=2, sort_keys=True, default=str), encoding="utf-8"
-    )
+    path.write_text(json.dumps(payload, indent=2, sort_keys=True, default=str), encoding="utf-8")
 
 
 # --------------------------------------------------------------------------
@@ -81,8 +79,7 @@ def write_status(campaign_dir: Path) -> Path:
             "RUNTIME_STALE": staleness["RUNTIME_STALE"],
             "age_minutes": staleness.get("age_minutes"),
             "note": (
-                "RUNTIME_STALE surfaces stale heartbeats; old data is never "
-                "presented as current"
+                "RUNTIME_STALE surfaces stale heartbeats; old data is never presented as current"
             )
             if staleness["RUNTIME_STALE"]
             else "heartbeat fresh",
@@ -148,9 +145,7 @@ def write_status(campaign_dir: Path) -> Path:
         for r in analysis["daily_performance"]
     )
     freq_rows = "".join(
-        f"<tr><td>{k}</td><td>{v}</td></tr>"
-        for k, v in freq.items()
-        if not isinstance(v, dict)
+        f"<tr><td>{k}</td><td>{v}</td></tr>" for k, v in freq.items() if not isinstance(v, dict)
     )
     regime_rows = "".join(
         f"<tr><td>{r}</td><td>{c['windows']}</td><td>{c['proposals']}</td>"
@@ -164,7 +159,7 @@ h1{{font-size:1.25rem}}h2{{font-size:1.05rem;margin-top:1.4rem}}
 table{{border-collapse:collapse}}td,th{{border:1px solid #333;padding:.3rem .6rem;font-size:.85rem}}
 .badge{{padding:.2rem .6rem;border-radius:4px;color:#fff}}</style></head><body>
 <h1>POC02 OBSERVATION STATUS {paper_badge} {shadow_badge} {stale_badge}</h1>
-<p>Campaign <b>{POC02_CAMPAIGN_ID}</b> &middot; heartbeat {staleness.get('heartbeat_utc', 'n/a')}
+<p>Campaign <b>{POC02_CAMPAIGN_ID}</b> &middot; heartbeat {staleness.get("heartbeat_utc", "n/a")}
 &middot; written {now.isoformat()}</p>
 
 <h2>Daily coverage (PAPER runtime)</h2>
@@ -180,7 +175,7 @@ table{{border-collapse:collapse}}td,th{{border:1px solid #333;padding:.3rem .6re
 <table><tr><th>regime</th><th>windows</th><th>proposals</th><th>strategies</th><th>class</th></tr>{regime_rows}</table>
 
 <h2>Shadow (§9/§10) — counterfactual only</h2>
-<p>captures {shadow['captures_total']} &middot; resolved {shadow['resolved_total']} &middot;
+<p>captures {shadow["captures_total"]} &middot; resolved {shadow["resolved_total"]} &middot;
 isolation SHADOW_PAPERBROKER_CALLS=0</p>
 
 <p style="color:#85929e">READ-ONLY surface: no controls, no orders, no risk or execution
@@ -230,9 +225,7 @@ def run_daily(campaign_dir: Path) -> dict:
 
     bottlenecks = bottleneck_distribution(cycle_rows)
     matrix = regime_bottleneck_matrix(cycle_rows)
-    staleness = runtime_staleness(
-        _load_state(campaign_dir)
-    )
+    staleness = runtime_staleness(_load_state(campaign_dir))
     report = {
         "artifact": "POC02_DAILY_OBSERVATION_REPORT",
         "campaign_id": POC02_CAMPAIGN_ID,
@@ -270,9 +263,13 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--daily", action="store_true", help="write daily observation report")
     parser.add_argument("--status", action="store_true", help="write read-only STATUS surfaces")
-    parser.add_argument("--resolve-shadow", action="store_true", help="PIT-resolve pending shadow captures")
     parser.add_argument(
-        "--campaign-dir", type=Path, default=CAMPAIGN_DIR,
+        "--resolve-shadow", action="store_true", help="PIT-resolve pending shadow captures"
+    )
+    parser.add_argument(
+        "--campaign-dir",
+        type=Path,
+        default=CAMPAIGN_DIR,
         help="campaign directory (default: reports/poc02-paper-clean-01)",
     )
     args = parser.parse_args(argv)

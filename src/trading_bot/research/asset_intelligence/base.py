@@ -15,7 +15,7 @@ slices internally — this is what guarantees no lookahead: nothing past
 from __future__ import annotations
 
 from collections.abc import Sequence
-from typing import Protocol
+from typing import Any, Protocol
 
 from trading_bot.market_data.types import OHLCV
 
@@ -125,8 +125,8 @@ class BaseCryptoAssetAgent:
         window = self.slice_window(candles, timestamp)
         shared = compute_shared(window)
 
-        momentum: dict[str, object] = {}
-        volatility: dict[str, object] = {}
+        momentum: dict[str, Any] = {}
+        volatility: dict[str, Any] = {}
         if shared.returns is not None:
             momentum["returns"] = shared.returns
         if shared.trend is not None:

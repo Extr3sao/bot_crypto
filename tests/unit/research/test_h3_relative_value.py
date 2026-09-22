@@ -13,7 +13,6 @@ import pytest
 from trading_bot.research.h3_relative_value import (
     COST_SIDE_BPS,
     HOLD_BARS,
-    LOOKBACK_BARS,
     WARMUP,
     compute_features,
     cost_scenario_net_r,
@@ -55,10 +54,14 @@ def test_absolute_cost_monotone_and_trade_set_identical() -> None:
         net = cost_scenario_net_r(trades, bps)
         nets[bps] = float(np.mean(net))
         assert len(net) == len(trades)  # identical trade set
-        assert all(c >= -1e-12 for c in (t.gross_r - x for t, x in zip(trades, net)))  # COST >= 0
+        assert all(
+            c >= -1e-12 for c in (t.gross_r - x for t, x in zip(trades, net, strict=False))
+        )  # COST >= 0
     assert nets[0.0] >= nets[5.0] >= nets[10.0] >= nets[20.0] >= nets[40.0]
     # linear absolute semantics: cost grows exactly with bps
-    assert (nets[0.0] - nets[10.0]) == pytest.approx((nets[0.0] - nets[20.0]) / 2, rel=1e-9, abs=1e-12)
+    assert (nets[0.0] - nets[10.0]) == pytest.approx(
+        (nets[0.0] - nets[20.0]) / 2, rel=1e-9, abs=1e-12
+    )
 
 
 def test_multileg_cost_arithmetic() -> None:
@@ -78,16 +81,14 @@ def test_multileg_cost_arithmetic() -> None:
 def test_pit_features_trailing_only() -> None:
     n = 1200
     _, _, _, cl_b = _pair_prices(n)
-    op_a, cl_a, _, _ = _pair_prices(n)
+    _op_a, cl_a, _, _ = _pair_prices(n)
     feat1 = compute_features(cl_a, cl_b)
     # change ONE observation far in the past: only later features may move
     cl_a2 = cl_a.copy()
     k = 500
     cl_a2[k] *= 1.2
     feat2 = compute_features(cl_a2, cl_b)
-    same_before = bool(
-        np.array_equal(feat1["z"][: k + 1], feat2["z"][: k + 1], equal_nan=True)
-    )
+    same_before = bool(np.array_equal(feat1["z"][: k + 1], feat2["z"][: k + 1], equal_nan=True))
     assert same_before
 
 
@@ -146,5 +147,35 @@ def test_neutrality_accounting_and_classify_gates() -> None:
     assert neu["MEAN_ABS_NET_EXPOSURE"] >= 0.0
     m = summarize(trades)
     assert m["N"] == len(trades)
-    assert m["halves"] in ([1, 1], [-1, -1], [1, -1], [-1, 1], [0, 1], [1, 0], [0, -1], [-1, 0], [0, 0])
-    assert m["thirds"] in ([1, 1, 1], [-1, -1, -1], [1, 1, -1], [1, -1, 1], [-1, 1, 1], [1, -1, -1], [-1, 1, -1], [-1, -1, 1], [0, 0, 0], [1, 0, 0], [0, 1, 0], [0, 0, 1], [0, 0, -1], [0, -1, 0], [-1, 0, 0], [1, 0, -1], [-1, 0, 1], [0, 1, -1], [0, -1, 1])
+    assert m["halves"] in (
+        [1, 1],
+        [-1, -1],
+        [1, -1],
+        [-1, 1],
+        [0, 1],
+        [1, 0],
+        [0, -1],
+        [-1, 0],
+        [0, 0],
+    )
+    assert m["thirds"] in (
+        [1, 1, 1],
+        [-1, -1, -1],
+        [1, 1, -1],
+        [1, -1, 1],
+        [-1, 1, 1],
+        [1, -1, -1],
+        [-1, 1, -1],
+        [-1, -1, 1],
+        [0, 0, 0],
+        [1, 0, 0],
+        [0, 1, 0],
+        [0, 0, 1],
+        [0, 0, -1],
+        [0, -1, 0],
+        [-1, 0, 0],
+        [1, 0, -1],
+        [-1, 0, 1],
+        [0, 1, -1],
+        [0, -1, 1],
+    )

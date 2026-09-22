@@ -43,7 +43,9 @@ def _bars(symbol: str, n: int = 60) -> list:
 
 def _bundle(tmp_path, monkeypatch) -> Poc02Bundle:
     monkeypatch.setattr(
-        runner_mod, "_fetch_public_bars", lambda assets, limit=120: {a: _bars(f"{a}/USDT") for a in assets}
+        runner_mod,
+        "_fetch_public_bars",
+        lambda assets, limit=120: {a: _bars(f"{a}/USDT") for a in assets},
     )
     return Poc02Bundle(output_dir=tmp_path / "poc02", shadow_dir=tmp_path / "poc02" / "shadow")
 
@@ -51,6 +53,7 @@ def _bundle(tmp_path, monkeypatch) -> Poc02Bundle:
 # --------------------------------------------------------------------------
 # Launch gates (preregistered, unchanged)
 # --------------------------------------------------------------------------
+
 
 def test_launch_gates_all_pass_with_committed_manifest_sha() -> None:
     g = evaluate_launch_gates(POC02_MANIFEST_SHA256)
@@ -83,6 +86,7 @@ def test_new_campaign_identity_and_provider_authority() -> None:
 # Runtime cycle on synthetic bars
 # --------------------------------------------------------------------------
 
+
 def test_full_cycle_runs_paper_only(tmp_path, monkeypatch) -> None:
     bundle = _bundle(tmp_path, monkeypatch)
     summary = bundle.run_cycle(assets=("BTC",))
@@ -114,7 +118,11 @@ def test_risk_reject_routes_to_shadow_capture(tmp_path, monkeypatch) -> None:
     bundle = _bundle(tmp_path, monkeypatch)
 
     def _reject(signal: Any) -> RiskCheck:
-        return RiskCheck(approved=False, reason="Consecutive loss cooldown (3 losses)", blocked_by="consecutive_loss_cooldown")
+        return RiskCheck(
+            approved=False,
+            reason="Consecutive loss cooldown (3 losses)",
+            blocked_by="consecutive_loss_cooldown",
+        )
 
     bundle.risk.check_signal = _reject  # type: ignore[method-assign]
     summary = bundle.run_cycle(assets=("BTC",))
@@ -281,8 +289,8 @@ def test_duplicate_economic_intent_executed_exactly_once(tmp_path, monkeypatch) 
     ]
     assert len(dup) == second["state"]["risk_accepts"]
     ledger = (
-        tmp_path / "poc02" / "R2_INTENT_LEDGER.jsonl"
-    ).read_text(encoding="utf-8").splitlines()
+        (tmp_path / "poc02" / "R2_INTENT_LEDGER.jsonl").read_text(encoding="utf-8").splitlines()
+    )
     executed = [json.loads(entry) for entry in ledger if entry.strip()]
     assert len([e for e in executed if e["event"] == "INTENT_EXECUTED"]) == 1
 

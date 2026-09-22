@@ -30,9 +30,27 @@ def _identical(n: int = 60, *, start_ts: int = 0) -> tuple[tuple[int, float], ..
 
 def _positions() -> tuple[PositionExposure, ...]:
     return (
-        PositionExposure(symbol="BTC/USDT", strategy_id="momentum", strategy_family="momentum", direction="long", notional_usdt=1_000.0),
-        PositionExposure(symbol="ETH/USDT", strategy_id="trend", strategy_family="trend", direction="long", notional_usdt=800.0),
-        PositionExposure(symbol="SOL/USDT", strategy_id="breakout", strategy_family="breakout", direction="short", notional_usdt=600.0),
+        PositionExposure(
+            symbol="BTC/USDT",
+            strategy_id="momentum",
+            strategy_family="momentum",
+            direction="long",
+            notional_usdt=1_000.0,
+        ),
+        PositionExposure(
+            symbol="ETH/USDT",
+            strategy_id="trend",
+            strategy_family="trend",
+            direction="long",
+            notional_usdt=800.0,
+        ),
+        PositionExposure(
+            symbol="SOL/USDT",
+            strategy_id="breakout",
+            strategy_family="breakout",
+            direction="short",
+            notional_usdt=600.0,
+        ),
     )
 
 
@@ -41,7 +59,11 @@ def test_gross_net_long_short_exposure() -> None:
         portfolio_id="p1",
         timestamp=1.0,
         positions=_positions(),
-        returns_by_asset={"BTC/USDT": _identical(), "ETH/USDT": _identical(), "SOL/USDT": _identical()},
+        returns_by_asset={
+            "BTC/USDT": _identical(),
+            "ETH/USDT": _identical(),
+            "SOL/USDT": _identical(),
+        },
     )
     assert snapshot.gross_exposure == pytest.approx(2_400.0)
     assert snapshot.long_exposure == pytest.approx(1_800.0)
@@ -54,7 +76,11 @@ def test_exposure_by_asset_strategy_family_and_concentration() -> None:
         portfolio_id="p1",
         timestamp=1.0,
         positions=_positions(),
-        returns_by_asset={"BTC/USDT": _identical(), "ETH/USDT": _identical(), "SOL/USDT": _identical()},
+        returns_by_asset={
+            "BTC/USDT": _identical(),
+            "ETH/USDT": _identical(),
+            "SOL/USDT": _identical(),
+        },
     )
     assert snapshot.exposure_by_asset["BTC/USDT"] == 1_000.0
     assert snapshot.exposure_by_strategy["momentum"] == 1_000.0
@@ -72,8 +98,12 @@ def test_fused_cluster_collapses_effective_independent_risk() -> None:
     }
     # Force SOL to be a different series: use alternating pattern.
     ts = tuple(i * 60_000 for i in range(60))
-    returns["SOL/USDT"] = tuple(zip(ts, [((i * 71 + 13) % 17 - 8) / 40 for i in range(60)], strict=True))
-    clusters = build_correlation_clusters(returns, {"BTC/USDT": 1_000.0, "ETH/USDT": 800.0, "SOL/USDT": 600.0})
+    returns["SOL/USDT"] = tuple(
+        zip(ts, [((i * 71 + 13) % 17 - 8) / 40 for i in range(60)], strict=True)
+    )
+    clusters = build_correlation_clusters(
+        returns, {"BTC/USDT": 1_000.0, "ETH/USDT": 800.0, "SOL/USDT": 600.0}
+    )
     btc_eth = next(c for c in clusters if "BTC/USDT" in c.assets and "ETH/USDT" in c.assets)
     assert btc_eth.correlation_state is CorrelationState.FUSED
     assert btc_eth.physical_positions == 2
@@ -121,14 +151,18 @@ def test_future_mutation_does_not_change_past_clusters() -> None:
     returns_before = {"BTC/USDT": _identical(), "ETH/USDT": _identical()}
     exposures = {"BTC/USDT": 100.0, "ETH/USDT": 100.0}
     clusters_before = build_correlation_clusters(returns_before, exposures)
+
     # Mutate ALL future observations.
     def mutate(series: tuple[tuple[int, float], ...]) -> tuple[tuple[int, float], ...]:
         return tuple((t, v * 7 + 3) if t > cut else (t, v) for t, v in series)
+
     returns_after = {"BTC/USDT": mutate(_identical()), "ETH/USDT": mutate(_identical())}
     clusters_after = build_correlation_clusters(returns_after, exposures)
     # Past-decision equivalence: cluster membership and state identical.
     assert [c.assets for c in clusters_before] == [c.assets for c in clusters_after]
-    assert [c.correlation_state for c in clusters_before] == [c.correlation_state for c in clusters_after]
+    assert [c.correlation_state for c in clusters_before] == [
+        c.correlation_state for c in clusters_after
+    ]
 
 
 def test_marginal_value_flags_correlated_exposure() -> None:
@@ -136,16 +170,36 @@ def test_marginal_value_flags_correlated_exposure() -> None:
         portfolio_id="p1",
         timestamp=1.0,
         positions=(
-            PositionExposure(symbol="BTC/USDT", strategy_id="momentum", strategy_family="momentum", direction="long", notional_usdt=1_000.0),
+            PositionExposure(
+                symbol="BTC/USDT",
+                strategy_id="momentum",
+                strategy_family="momentum",
+                direction="long",
+                notional_usdt=1_000.0,
+            ),
         ),
         returns_by_asset={"BTC/USDT": _identical(), "ETH/USDT": _identical()},
     )
-    candidate = PositionExposure(symbol="ETH/USDT", strategy_id="trend", strategy_family="trend", direction="long", notional_usdt=500.0)
+    candidate = PositionExposure(
+        symbol="ETH/USDT",
+        strategy_id="trend",
+        strategy_family="trend",
+        direction="long",
+        notional_usdt=500.0,
+    )
     sig_series = tuple((i * 60_000, 1.0 if i % 2 else -1.0) for i in range(20))
     existing = {"momentum": tuple((i * 60_000, 1.0 if i % 2 else -1.0) for i in range(20))}
-    mpv = compute_marginal_portfolio_value(snapshot, candidate, {"BTC/USDT": _identical(), "ETH/USDT": _identical()}, sig_series, existing)
+    mpv = compute_marginal_portfolio_value(
+        snapshot,
+        candidate,
+        {"BTC/USDT": _identical(), "ETH/USDT": _identical()},
+        sig_series,
+        existing,
+    )
     assert mpv.incremental_exposure_usdt == 500.0
-    assert mpv.incremental_correlated_exposure_usdt == 500.0  # ETH sits in the FUSED BTC+ETH cluster
+    assert (
+        mpv.incremental_correlated_exposure_usdt == 500.0
+    )  # ETH sits in the FUSED BTC+ETH cluster
     assert mpv.incremental_signal_diversity == pytest.approx(0.0)  # identical signals
     assert mpv.incremental_opportunity == 0.0  # asset already exposed
 
@@ -155,14 +209,32 @@ def test_marginal_value_diverse_candidate() -> None:
         portfolio_id="p1",
         timestamp=1.0,
         positions=(
-            PositionExposure(symbol="BTC/USDT", strategy_id="momentum", strategy_family="momentum", direction="long", notional_usdt=1_000.0),
+            PositionExposure(
+                symbol="BTC/USDT",
+                strategy_id="momentum",
+                strategy_family="momentum",
+                direction="long",
+                notional_usdt=1_000.0,
+            ),
         ),
         returns_by_asset={"BTC/USDT": _identical(), "ETH/USDT": _identical()},
     )
-    candidate = PositionExposure(symbol="BTC/USDT", strategy_id="alpha_new", strategy_family="other", direction="short", notional_usdt=300.0)
+    candidate = PositionExposure(
+        symbol="BTC/USDT",
+        strategy_id="alpha_new",
+        strategy_family="other",
+        direction="short",
+        notional_usdt=300.0,
+    )
     sig_series = tuple((i * 60_000, 1.0 if i % 3 else -1.0) for i in range(20))
     existing = {"momentum": tuple((i * 60_000, 1.0 if i % 2 else -1.0) for i in range(20))}
-    mpv = compute_marginal_portfolio_value(snapshot, candidate, {"BTC/USDT": _identical(), "ETH/USDT": _identical()}, sig_series, existing)
+    mpv = compute_marginal_portfolio_value(
+        snapshot,
+        candidate,
+        {"BTC/USDT": _identical(), "ETH/USDT": _identical()},
+        sig_series,
+        existing,
+    )
     assert mpv.incremental_signal_diversity > 0.0
     # Context only: no decision field exists.
     assert not hasattr(mpv, "decision")
@@ -190,7 +262,11 @@ def test_projection_is_read_only_with_warnings() -> None:
         portfolio_id="p1",
         timestamp=1.0,
         positions=_positions(),
-        returns_by_asset={"BTC/USDT": _identical(), "ETH/USDT": _identical(), "SOL/USDT": _identical()},
+        returns_by_asset={
+            "BTC/USDT": _identical(),
+            "ETH/USDT": _identical(),
+            "SOL/USDT": _identical(),
+        },
         strategy_health_summary={"trend": "DEGRADED", "momentum": "MONITORING"},
     )
     proj = project_portfolio(snapshot)

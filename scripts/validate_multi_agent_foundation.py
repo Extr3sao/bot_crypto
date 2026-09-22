@@ -97,9 +97,13 @@ def run() -> dict[str, object]:
     agent_registry.place_in_probation(manifest.agent_id, manifest.agent_version)
 
     capability_registry = CapabilityRegistry()
-    capability_registry.register_agent(agent_registry.get_version(manifest.agent_id, manifest.agent_version))
+    capability_registry.register_agent(
+        agent_registry.get_version(manifest.agent_id, manifest.agent_version)
+    )
     capability_registry.grant(manifest.agent_id, manifest.agent_version, AgentCapability.READ)
-    capability_registry.assert_allowed(manifest.agent_id, manifest.agent_version, AgentCapability.READ)
+    capability_registry.assert_allowed(
+        manifest.agent_id, manifest.agent_version, AgentCapability.READ
+    )
     try:
         capability_registry.assert_allowed(
             manifest.agent_id, manifest.agent_version, AgentCapability.PRODUCTION_ACTION

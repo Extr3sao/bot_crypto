@@ -108,9 +108,7 @@ def test_message_validates_identity_confidence_and_point_in_time() -> None:
     assert message.model_dump()["message_type"] == AgentMessageType.OBSERVATION
     for confidence in (-0.01, 1.01):
         with pytest.raises(ValidationError):
-            AgentMessage(
-                **{**message.model_dump(), "confidence": confidence}
-            )
+            AgentMessage(**{**message.model_dump(), "confidence": confidence})
     with pytest.raises(ValidationError):
         AgentMessage(**{**message.model_dump(), "sender": "risk-critic"})
     with pytest.raises(ValidationError):

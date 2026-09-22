@@ -105,9 +105,13 @@ def _git(*args: str) -> str:
 # §13 — POC01 invariant
 # --------------------------------------------------------------------------
 
+
 def poc01_invariant() -> dict:
     changed = _git(
-        "diff", f"{POC01_BASE_COMMIT}..HEAD", "--name-only", "--",
+        "diff",
+        f"{POC01_BASE_COMMIT}..HEAD",
+        "--name-only",
+        "--",
         "reports/paper-observation-01/",
     ).splitlines()
     return {
@@ -121,6 +125,7 @@ def poc01_invariant() -> dict:
 # §1 — pre-cycle gates
 # --------------------------------------------------------------------------
 
+
 def pre_cycle_gates(now: datetime) -> dict:
     lr = _load_json(LAUNCH_RECORD)
     start = lr.get("start_utc")
@@ -129,20 +134,14 @@ def pre_cycle_gates(now: datetime) -> dict:
     checks["campaign_id_exact"] = lr.get("campaign_id") == POC02_CAMPAIGN_ID
     try:
         checks["date_in_window"] = bool(
-            start
-            and end
-            and datetime.fromisoformat(start)
-            <= now
-            < datetime.fromisoformat(end)
+            start and end and datetime.fromisoformat(start) <= now < datetime.fromisoformat(end)
         )
     except ValueError:
         checks["date_in_window"] = False
     gates = evaluate_launch_gates()
     checks["launch_gates_pass"] = gates["launch_authorized"]
     checks["poc01_untouched"] = poc01_invariant()["POC01_RUNTIME_CHANGED"] == 0
-    checks["confirmation_window_open"] = now.date() < datetime(
-        2026, 9, 22, tzinfo=UTC
-    ).date()
+    checks["confirmation_window_open"] = now.date() < datetime(2026, 9, 22, tzinfo=UTC).date()
     failed = [k for k, v in checks.items() if not v]
     return {
         "passed": not failed,
@@ -155,6 +154,7 @@ def pre_cycle_gates(now: datetime) -> dict:
 # --------------------------------------------------------------------------
 # §2 — daily idempotency
 # --------------------------------------------------------------------------
+
 
 def daily_idempotency(day: str) -> dict:
     rows: dict[str, dict] = {}
@@ -212,9 +212,7 @@ def aggregate_bottlenecks(cycle_rows: list[dict]) -> dict:
                 dominant_canonical, dominant_n = state, totals[state]
     return {
         "totals_canonical": totals,
-        "totals_checkpoint_categories": {
-            map_bottleneck(k): v for k, v in sorted(totals.items())
-        },
+        "totals_checkpoint_categories": {map_bottleneck(k): v for k, v in sorted(totals.items())},
         "dominant_bottleneck": dominant_canonical,
         "dominant_checkpoint_category": map_bottleneck(dominant_canonical),
         "by_regime": by_regime,
@@ -226,6 +224,7 @@ def aggregate_bottlenecks(cycle_rows: list[dict]) -> dict:
 # --------------------------------------------------------------------------
 # §6 — proposal funnel
 # --------------------------------------------------------------------------
+
 
 def aggregate_funnel(cycle_rows: list[dict]) -> dict:
     """Daily funnel from recorded DemoState counters (no inference)."""
@@ -259,12 +258,8 @@ def aggregate_funnel(cycle_rows: list[dict]) -> dict:
         "counts": agg,
         "conversions": {
             "proposals_per_scan": conv(agg["trade_proposals"], agg["market_scans"]),
-            "selected_per_proposal": conv(
-                agg["decisions_selected"], agg["trade_proposals"]
-            ),
-            "risk_survivors_per_selected": conv(
-                agg["risk_accepts"], agg["decisions_selected"]
-            ),
+            "selected_per_proposal": conv(agg["decisions_selected"], agg["trade_proposals"]),
+            "risk_survivors_per_selected": conv(agg["risk_accepts"], agg["decisions_selected"]),
             "paper_per_risk_accept": conv(agg["paper_trades"], agg["risk_accepts"]),
             "paper_per_scan": conv(agg["paper_trades"], agg["market_scans"]),
         },
@@ -279,20 +274,17 @@ def aggregate_funnel(cycle_rows: list[dict]) -> dict:
 # §7/§8 — shadow maturity
 # --------------------------------------------------------------------------
 
+
 def shadow_maturity(bundle: Poc02Bundle, now: datetime) -> dict:
     horizon = timedelta(hours=SHADOW_HORIZON_HOURS)
     pending = matured = invalid = 0
     for cap in bundle.shadow.captures.captures:
         try:
-            decided = datetime.fromisoformat(
-                cap.decision_time.replace("Z", "+00:00")
-            )
+            decided = datetime.fromisoformat(cap.decision_time.replace("Z", "+00:00"))
         except (ValueError, AttributeError):
             invalid += 1
             continue
-        resolved_ids = {
-            getattr(t, "decision_id", None) for t in bundle.shadow.outcomes.trades
-        }
+        resolved_ids = {getattr(t, "decision_id", None) for t in bundle.shadow.outcomes.trades}
         if getattr(cap, "decision_id", None) in resolved_ids:
             matured += 1
         elif now - decided >= horizon:
@@ -317,6 +309,7 @@ def shadow_maturity(bundle: Poc02Bundle, now: datetime) -> dict:
 # §3 — market-data authority block
 # --------------------------------------------------------------------------
 
+
 def market_data_authority(bundle: Poc02Bundle, requested_at: datetime) -> dict:
     from trading_bot.demo.poc02_runner import _PROVIDER_DOWNGRADES
 
@@ -327,7 +320,7 @@ def market_data_authority(bundle: Poc02Bundle, requested_at: datetime) -> dict:
             continue
         span_minutes = (bars[-1].timestamp - bars[0].timestamp) / 60_000
         expected = span_minutes / 5 + 1
-        gaps = max(int(round(expected - len(bars))), 0)
+        gaps = max(round(expected - len(bars)), 0)
         assets[asset] = {
             "symbol": bars[0].symbol,
             "interval": "5m",
@@ -337,13 +330,12 @@ def market_data_authority(bundle: Poc02Bundle, requested_at: datetime) -> dict:
             "freshness_lag_minutes": round(
                 (requested_at.timestamp() * 1000 - bars[-1].timestamp) / 60_000, 2
             ),
-            "expected_rows_in_span": int(round(expected)),
+            "expected_rows_in_span": round(expected),
             "gap_count": gaps,
             "gap_diagnostics": "OK" if gaps == 0 else f"{gaps} missing 5m bars",
             "bars_sha256": _sha256_bytes(
                 json.dumps(
-                    [[b.timestamp, b.open, b.high, b.low, b.close, b.volume]
-                     for b in bars],
+                    [[b.timestamp, b.open, b.high, b.low, b.close, b.volume] for b in bars],
                     separators=(",", ":"),
                 ).encode("utf-8")
             ),
@@ -371,6 +363,7 @@ def market_data_authority(bundle: Poc02Bundle, requested_at: datetime) -> dict:
 # §9 — coverage summary
 # --------------------------------------------------------------------------
 
+
 def coverage_summary(now: datetime) -> dict:
     rows: dict[str, dict] = {}
     if COVERAGE_LEDGER.exists():
@@ -386,9 +379,7 @@ def coverage_summary(now: datetime) -> dict:
         for i in range((end - start).days + 1)
         if (start + timedelta(days=i)) <= now
     )
-    valid_observed = [
-        d for d in eligible_days if rows.get(d, {}).get("observed_minutes", 0) > 0
-    ]
+    valid_observed = [d for d in eligible_days if rows.get(d, {}).get("observed_minutes", 0) > 0]
     observed_minutes = sum(rows.get(d, {}).get("observed_minutes", 0) for d in eligible_days)
     return {
         "ELIGIBLE_DAYS": len(eligible_days),
@@ -410,6 +401,7 @@ def coverage_summary(now: datetime) -> dict:
 # §10 — zero-trade-day classification
 # --------------------------------------------------------------------------
 
+
 def zero_trade_classification(funnel: dict, bottlenecks: dict) -> dict:
     counts = funnel["counts"]
     if counts["paper_trades"] > 0:
@@ -428,9 +420,7 @@ def zero_trade_classification(funnel: dict, bottlenecks: dict) -> dict:
         "zero_trade_day": True,
         "cause": cause,
         "is_campaign_failure": False,
-        "dominant_checkpoint_category": bottlenecks.get(
-            "dominant_checkpoint_category"
-        ),
+        "dominant_checkpoint_category": bottlenecks.get("dominant_checkpoint_category"),
     }
 
 
@@ -438,9 +428,8 @@ def zero_trade_classification(funnel: dict, bottlenecks: dict) -> dict:
 # §16 — immutable daily evidence receipt
 # --------------------------------------------------------------------------
 
-def write_reconciliation_receipt(
-    now: datetime, day: str, launch_record: dict, commit: str
-) -> str:
+
+def write_reconciliation_receipt(now: datetime, day: str, launch_record: dict, commit: str) -> str:
     """§10 — append-only reconciliation of the CURRENT day bucket.
 
     Declares DAY_CLOSED=false, DAY_VALIDITY=PENDING,
@@ -522,9 +511,7 @@ def write_receipt(
         "bottleneck_state": bottlenecks,
         "shadow": shadow,
         "paper_executions": funnel["counts"]["paper_trades"],
-        "coverage_status": {
-            k: v for k, v in coverage_day.items() if k != "observed_minute_keys"
-        },
+        "coverage_status": {k: v for k, v in coverage_day.items() if k != "observed_minute_keys"},
         "governance_negatives": negatives,
         "poc01_invariant": poc01_invariant(),
         "artifact_hashes": {
@@ -554,6 +541,7 @@ def write_receipt(
 # --------------------------------------------------------------------------
 # daily operation
 # --------------------------------------------------------------------------
+
 
 def finalize_previous_days(day_auth, today: str) -> list[dict]:
     """Finalize every OPEN/PENDING prior bucket whose UTC boundary passed.
@@ -590,13 +578,19 @@ def run_daily(cycles: int) -> int:
     # §1 pre-cycle gates — fail closed
     gates = pre_cycle_gates(now)
     if not gates["passed"]:
-        print(json.dumps({"PRE_CYCLE_GATES": "FAIL", "PRIOR_FINALIZATIONS": prior_finalizations, **gates}, indent=2))
+        print(
+            json.dumps(
+                {"PRE_CYCLE_GATES": "FAIL", "PRIOR_FINALIZATIONS": prior_finalizations, **gates},
+                indent=2,
+            )
+        )
         return 2
 
     # §2 daily idempotency
     idem = daily_idempotency(day)
     idempotency_status = (
-        "AMEND_EXISTING_DAY_BUCKET" if idem["HAS_VALID_COVERAGE_ROW_FOR_UTC_DAY"]
+        "AMEND_EXISTING_DAY_BUCKET"
+        if idem["HAS_VALID_COVERAGE_ROW_FOR_UTC_DAY"]
         else "CREATE_DAY_BUCKET"
     )
 
@@ -613,8 +607,12 @@ def run_daily(cycles: int) -> int:
     )
     state_persisted = _load_json(CAMPAIGN_STATE)
     for key in (
-        "cycles_total", "provider_errors_total", "live_calls",
-        "real_broker_calls", "private_exchange_calls", "shadow_paperbroker_calls",
+        "cycles_total",
+        "provider_errors_total",
+        "live_calls",
+        "real_broker_calls",
+        "private_exchange_calls",
+        "shadow_paperbroker_calls",
     ):
         state_persisted.setdefault(key, 0)
 
@@ -728,22 +726,16 @@ def run_daily(cycles: int) -> int:
     state_persisted["shadow_resolved_total"] = shadow["resolved_total"]
     state_persisted["real_broker_calls"] = bundle.real_broker_calls
     state_persisted["private_exchange_calls"] = bundle.private_exchange_calls
-    state_persisted["live_calls"] = max(
-        int(state_persisted["live_calls"]), bundle.live_calls
-    )
+    state_persisted["live_calls"] = max(int(state_persisted["live_calls"]), bundle.live_calls)
     state_persisted["heartbeat_utc"] = now.isoformat()
     state_persisted["status"] = "ACTIVE"
     state_persisted["coverage_today"] = coverage_day
     state_persisted["last_run_ids"] = run_ids
-    CAMPAIGN_STATE.write_text(
-        json.dumps(state_persisted, indent=2, default=str), encoding="utf-8"
-    )
+    CAMPAIGN_STATE.write_text(json.dumps(state_persisted, indent=2, default=str), encoding="utf-8")
 
     # §9 coverage AUTHORITY (closed days only) + §10 zero-trade classification
     day_st = day_auth.day_state(day)  # during the day: OPEN, contribution 0
-    cov = day_auth.campaign_coverage(
-        window_start=lr["start_utc"], window_end=lr["end_utc"]
-    )
+    cov = day_auth.campaign_coverage(window_start=lr["start_utc"], window_end=lr["end_utc"])
     provisional = day_auth.provisional_metrics(current_day=day)
     amendment_chain = day_auth.amendment_chain(day)
     zero = zero_trade_classification(funnel, bottlenecks)
@@ -764,9 +756,7 @@ def run_daily(cycles: int) -> int:
         "SHADOW_PENDING": shadow["PENDING"],
         "SHADOW_MATURED": shadow["MATURED"],
         "DOMINANT_BOTTLENECK": bottlenecks["dominant_bottleneck"],
-        "DOMINANT_BOTTLENECK_CHECKPOINT_CATEGORY": bottlenecks[
-            "dominant_checkpoint_category"
-        ],
+        "DOMINANT_BOTTLENECK_CHECKPOINT_CATEGORY": bottlenecks["dominant_checkpoint_category"],
         "ZERO_TRADE_DAY": zero,
         "DAY_BUCKET_EXISTS": day_st.day_bucket_exists,
         "DAY_HAS_VALID_EVIDENCE": day_st.day_has_valid_evidence,
@@ -801,11 +791,13 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--cycles", type=int, default=1)
     parser.add_argument(
-        "--daily", action="store_true",
+        "--daily",
+        action="store_true",
         help="operational daily run: gates, idempotency, receipt, summary",
     )
-    parser.add_argument("--dry-run", action="store_true",
-                        help="evaluate launch gates only; no cycle runs")
+    parser.add_argument(
+        "--dry-run", action="store_true", help="evaluate launch gates only; no cycle runs"
+    )
     args = parser.parse_args(argv)
 
     if args.daily:
@@ -822,24 +814,40 @@ def main(argv: list[str] | None = None) -> int:
         LAUNCH_RECORD.parent.mkdir(parents=True, exist_ok=True)
         LAUNCH_RECORD.write_text(json.dumps(record, indent=2), encoding="utf-8")
     if args.dry_run:
-        print(json.dumps({"launch_authorized": record["launch_authorized"],
-                          "start_utc": record["start_utc"],
-                          "end_utc": record["end_utc"]}, indent=2))
+        print(
+            json.dumps(
+                {
+                    "launch_authorized": record["launch_authorized"],
+                    "start_utc": record["start_utc"],
+                    "end_utc": record["end_utc"],
+                },
+                indent=2,
+            )
+        )
         return 0
     bundle = Poc02Bundle(
         output_dir=CAMPAIGN_DIR / "cycles",
         shadow_dir=CAMPAIGN_DIR / "shadow",
     )
     result = bundle.run_cycle()
-    print(json.dumps({"run_id": result["run_id"],
-                      "state": result["state"],
-                      "bottlenecks": result["bottlenecks"]}, indent=2, default=str))
+    print(
+        json.dumps(
+            {
+                "run_id": result["run_id"],
+                "state": result["state"],
+                "bottlenecks": result["bottlenecks"],
+            },
+            indent=2,
+            default=str,
+        )
+    )
     return 0
 
 
 # --------------------------------------------------------------------------
 # launch-record builder (unchanged semantics from the launch checkpoint)
 # --------------------------------------------------------------------------
+
 
 def build_launch_record() -> dict:
     now = datetime.now(UTC).replace(microsecond=0)
@@ -852,10 +860,7 @@ def build_launch_record() -> dict:
             "evaluated_at_utc": now.isoformat(),
         }
     prev = _load_json(LAUNCH_RECORD)
-    if prev.get("start_utc"):
-        start_iso = prev["start_utc"]
-    else:
-        start_iso = now.isoformat()
+    start_iso = prev["start_utc"] if prev.get("start_utc") else now.isoformat()
     end_iso = prev.get("end_utc") or (
         (datetime.fromisoformat(start_iso) + timedelta(days=DURATION_COUNTED_DAYS))
         .replace(microsecond=0)
@@ -876,9 +881,8 @@ def build_launch_record() -> dict:
     )
     shadow_captures = CAMPAIGN_DIR / "shadow" / "shadow_captures.jsonl"
     shadow_outcomes = CAMPAIGN_DIR / "shadow" / "shadow_outcomes.jsonl"
-    shadow_separate = (
-        shadow_captures.parent != POC01_DIR
-        and not str(shadow_captures).startswith(str(POC01_DIR))
+    shadow_separate = shadow_captures.parent != POC01_DIR and not str(shadow_captures).startswith(
+        str(POC01_DIR)
     )
     bundle_probe.assert_safety()
     live_plumbing_zero = (

@@ -90,7 +90,9 @@ class Blackboard:
                 or existing.producer != producer
                 or existing.evidence_refs != supplied_refs
             ):
-                raise ValueError(f"artifact ID already exists with different content: {artifact_id}")
+                raise ValueError(
+                    f"artifact ID already exists with different content: {artifact_id}"
+                )
             return deepcopy(existing)
 
         if len(set(supplied_refs)) != len(supplied_refs):

@@ -53,14 +53,21 @@ class TestRecording:
 class TestClassification:
     def test_good_candidate_blocked_by_risk(self) -> None:
         ledger, idx = _ledger_with_reject()
-        updated = ledger.attach_shadow(idx, ShadowOutcome(expectancy=0.05, profit_factor=1.6, sample_size=40))
+        updated = ledger.attach_shadow(
+            idx, ShadowOutcome(expectancy=0.05, profit_factor=1.6, sample_size=40)
+        )
         assert ledger.classify_index(idx) is RejectClassification.GOOD_CANDIDATE_BLOCKED_BY_RISK
         assert updated.shadow is not None
 
     def test_low_quality_correctly_blocked(self) -> None:
         ledger, idx = _ledger_with_reject()
-        ledger.attach_shadow(idx, ShadowOutcome(expectancy=-0.02, profit_factor=0.7, sample_size=40))
-        assert ledger.classify_index(idx) is RejectClassification.LOW_QUALITY_CANDIDATE_CORRECTLY_BLOCKED
+        ledger.attach_shadow(
+            idx, ShadowOutcome(expectancy=-0.02, profit_factor=0.7, sample_size=40)
+        )
+        assert (
+            ledger.classify_index(idx)
+            is RejectClassification.LOW_QUALITY_CANDIDATE_CORRECTLY_BLOCKED
+        )
 
     def test_small_shadow_sample_stays_unclassified(self) -> None:
         ledger, idx = _ledger_with_reject()
@@ -70,7 +77,10 @@ class TestClassification:
     def test_breakeven_shadow_is_correctly_blocked(self) -> None:
         ledger, idx = _ledger_with_reject()
         ledger.attach_shadow(idx, ShadowOutcome(expectancy=0.0, profit_factor=1.0, sample_size=30))
-        assert ledger.classify_index(idx) is RejectClassification.LOW_QUALITY_CANDIDATE_CORRECTLY_BLOCKED
+        assert (
+            ledger.classify_index(idx)
+            is RejectClassification.LOW_QUALITY_CANDIDATE_CORRECTLY_BLOCKED
+        )
 
 
 class TestGuards:

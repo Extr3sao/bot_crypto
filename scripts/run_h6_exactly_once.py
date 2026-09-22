@@ -14,12 +14,15 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from trading_bot.research.h6.execution_harness import (
+from trading_bot.research.h6.execution_harness import (  # noqa: E402 - sys.path bootstrap must precede imports
     H6ExternalVerificationRequired,
     run_h6_dry_run,
 )
 
-EXTERNAL_VERIFIER_REPORT_PATH = ROOT / "docs/external-audit-01/oi-full-history-01/H6_EXTERNAL_VERIFIER_REPORT.json"
+EXTERNAL_VERIFIER_REPORT_PATH = (
+    ROOT / "docs/external-audit-01/oi-full-history-01/H6_EXTERNAL_VERIFIER_REPORT.json"
+)
+
 
 def main() -> None:
     if not EXTERNAL_VERIFIER_REPORT_PATH.exists():
@@ -33,6 +36,7 @@ def main() -> None:
         raise SystemExit(2) from exc
     print("H6 dry-run gate outcome:", outcome)
     raise SystemExit(0)
+
 
 if __name__ == "__main__":
     main()

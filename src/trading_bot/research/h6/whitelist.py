@@ -8,27 +8,34 @@ fields.
 
 from __future__ import annotations
 
+from collections.abc import Iterable, Mapping
 from dataclasses import dataclass
-from typing import Any, Iterable, Mapping
+from typing import Any
 
-ALLOWED_H6_FIELDS = frozenset({
-    "sum_open_interest",
-    "sum_open_interest_value",
-    "price_open_high_low_close_volume_1h",
-})
+ALLOWED_H6_FIELDS = frozenset(
+    {
+        "sum_open_interest",
+        "sum_open_interest_value",
+        "price_open_high_low_close_volume_1h",
+    }
+)
 
 # V2 docs variant expects ALLOWED_OI_FIELDS for evidence checks
-ALLOWED_OI_FIELDS = frozenset({
-    "sum_open_interest",
-    "sum_open_interest_value",
-})
+ALLOWED_OI_FIELDS = frozenset(
+    {
+        "sum_open_interest",
+        "sum_open_interest_value",
+    }
+)
 
-FORBIDDEN_H6_FIELDS = frozenset({
-    "count_toptrader_long_short_ratio",
-    "sum_toptrader_long_short_ratio",
-    "count_long_short_ratio",
-    "sum_taker_long_short_vol_ratio",
-})
+FORBIDDEN_H6_FIELDS = frozenset(
+    {
+        "count_toptrader_long_short_ratio",
+        "sum_toptrader_long_short_ratio",
+        "count_long_short_ratio",
+        "sum_taker_long_short_vol_ratio",
+    }
+)
 
 
 def is_field_allowed(field: str) -> bool:
@@ -38,11 +45,14 @@ def is_field_allowed(field: str) -> bool:
 def assert_field_allowed(field: str) -> None:
     if field in FORBIDDEN_H6_FIELDS:
         raise H6ForbiddenFeatureAccess(f"forbidden H6 feature access: {field}")
-    if field not in ALLOWED_H6_FIELDS and field not in ALLOWED_OI_FIELDS:
+    if (
+        field not in ALLOWED_H6_FIELDS
+        and field not in ALLOWED_OI_FIELDS
+        and field not in {"timestamp_ms", "unit_semantics", "source_file", "source_sha256"}
+    ):
         # Unknown non-forbidden fields are still disallowed unless explicitly whitelisted
         # (fail-closed: only whitelisted OI+price fields may be used)
-        if field not in {"timestamp_ms", "unit_semantics", "source_file", "source_sha256"}:
-            raise H6ForbiddenFeatureAccess(f"non-whitelisted field: {field}")
+        raise H6ForbiddenFeatureAccess(f"non-whitelisted field: {field}")
 
 
 class H6ForbiddenFeatureAccess(Exception):
@@ -57,18 +67,14 @@ class H6FieldAccess:
 
     def get(self, key: str, default: Any = None) -> Any:
         if key in FORBIDDEN_H6_FIELDS:
-            raise H6ForbiddenFeatureAccess(
-                f"forbidden H6 feature access: {key}"
-            )
+            raise H6ForbiddenFeatureAccess(f"forbidden H6 feature access: {key}")
         if key not in ALLOWED_H6_FIELDS and key not in self.data:
             return default
         return self.data.get(key, default)
 
     def __getitem__(self, key: str) -> Any:
         if key in FORBIDDEN_H6_FIELDS:
-            raise H6ForbiddenFeatureAccess(
-                f"forbidden H6 feature access: {key}"
-            )
+            raise H6ForbiddenFeatureAccess(f"forbidden H6 feature access: {key}")
         return self.data[key]
 
     def allowed_keys(self) -> frozenset[str]:

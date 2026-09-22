@@ -189,15 +189,19 @@ def build_correlation_clusters(
     for root in sorted(groups):
         members = tuple(sorted(groups[root]))
         internal_corrs = [
-            abs(pair_corr[(a, b)])
-            for (a, b) in pair_state
-            if a in members and b in members
+            abs(pair_corr[(a, b)]) for (a, b) in pair_state if a in members and b in members
         ]
         mean_abs = sum(internal_corrs) / len(internal_corrs) if internal_corrs else 0.0
         # Cluster correlation state: FUSED if any internal pair fused.
-        state = CorrelationState.FUSED if any(
-            s is CorrelationState.FUSED for (a, b), s in pair_state.items() if a in members and b in members
-        ) else CorrelationState.NORMAL
+        state = (
+            CorrelationState.FUSED
+            if any(
+                s is CorrelationState.FUSED
+                for (a, b), s in pair_state.items()
+                if a in members and b in members
+            )
+            else CorrelationState.NORMAL
+        )
         total = sum(abs(exposures_by_asset.get(a, 0.0)) for a in members)
         physical = sum(1 for a in members if exposures_by_asset.get(a, 0.0) != 0.0)
         effective = 1.0 if physical > 0 else 0.0
@@ -211,7 +215,9 @@ def build_correlation_clusters(
                 physical_positions=physical,
                 # FUSED cluster behaves as ONE independent risk; NORMAL cluster
                 # members retain their own independence.
-                effective_independent_positions=effective if state is CorrelationState.FUSED else float(physical),
+                effective_independent_positions=effective
+                if state is CorrelationState.FUSED
+                else float(physical),
             )
         )
     return tuple(clusters)
@@ -243,7 +249,9 @@ def build_snapshot(
         by_strategy[p.strategy_id] = by_strategy.get(p.strategy_id, 0.0) + p.notional_usdt
         by_family[p.strategy_family] = by_family.get(p.strategy_family, 0.0) + p.notional_usdt
 
-    exposures_by_asset = {a: by_asset.get(a, 0.0) for a in sorted(set(by_asset) | set(returns_by_asset))}
+    exposures_by_asset = {
+        a: by_asset.get(a, 0.0) for a in sorted(set(by_asset) | set(returns_by_asset))
+    }
     clusters = build_correlation_clusters(returns_by_asset, exposures_by_asset, engine=engine)
     by_cluster = {c.cluster_id: c.total_exposure_usdt for c in clusters}
 
@@ -265,7 +273,9 @@ def build_snapshot(
         concentration_by_strategy=conc_strategy,
         portfolio_drawdown=portfolio_drawdown,
         dynamic_correlation_state=(
-            CorrelationState.FUSED if any(c.correlation_state is CorrelationState.FUSED for c in clusters) else CorrelationState.NORMAL
+            CorrelationState.FUSED
+            if any(c.correlation_state is CorrelationState.FUSED for c in clusters)
+            else CorrelationState.NORMAL
         ),
         market_regime=market_regime,
         strategy_health_summary=dict(strategy_health_summary or {}),
@@ -293,7 +303,10 @@ def compute_marginal_portfolio_value(
     # Correlated exposure: candidate's exposure that sits inside already-FUSED clusters.
     incremental_correlated = 0.0
     for cluster in snapshot.clusters:
-        if candidate.symbol in cluster.assets and cluster.correlation_state is CorrelationState.FUSED:
+        if (
+            candidate.symbol in cluster.assets
+            and cluster.correlation_state is CorrelationState.FUSED
+        ):
             incremental_correlated = incremental_exposure
             break
 
@@ -305,7 +318,9 @@ def compute_marginal_portfolio_value(
         common = sorted(set(cand_map) & set(other_map))
         if not common:
             continue
-        agree = sum(1 for t in common if (cand_map[t] > 0) == (other_map[t] > 0) and cand_map[t] != 0)
+        agree = sum(
+            1 for t in common if (cand_map[t] > 0) == (other_map[t] > 0) and cand_map[t] != 0
+        )
         overlap = agree / len(common)
         max_overlap = max(max_overlap, overlap)
     incremental_diversity = 1.0 - max_overlap
@@ -314,20 +329,24 @@ def compute_marginal_portfolio_value(
     # existing exposure; a candidate inside an already-exposed FUSED cluster
     # adds no NEW opportunity (its risk is already represented).
     candidate_cluster = next((c for c in snapshot.clusters if candidate.symbol in c.assets), None)
-    if candidate_cluster is not None and candidate_cluster.correlation_state is CorrelationState.FUSED:
+    if (
+        candidate_cluster is not None
+        and candidate_cluster.correlation_state is CorrelationState.FUSED
+    ):
         incremental_opportunity = 0.0 if candidate_cluster.total_exposure_usdt > 0.0 else 1.0
     else:
-        incremental_opportunity = 0.0 if snapshot.exposure_by_asset.get(candidate.symbol, 0.0) != 0.0 else 1.0
+        incremental_opportunity = (
+            0.0 if snapshot.exposure_by_asset.get(candidate.symbol, 0.0) != 0.0 else 1.0
+        )
 
     # Risk concentration delta: candidate joined to the largest post-add cluster.
     post_gross = snapshot.gross_exposure + incremental_exposure
-    largest_after = max(
-        (c.total_exposure_usdt for c in snapshot.clusters), default=0.0
+    largest_after = max((c.total_exposure_usdt for c in snapshot.clusters), default=0.0)
+    candidate_cluster_exposure = (
+        incremental_correlated if incremental_correlated else incremental_exposure
     )
-    candidate_cluster_exposure = incremental_correlated if incremental_correlated else incremental_exposure
-    incremental_concentration = (
-        (largest_after + candidate_cluster_exposure) / post_gross
-        - (largest_after / snapshot.gross_exposure if snapshot.gross_exposure > 0 else 0.0)
+    incremental_concentration = (largest_after + candidate_cluster_exposure) / post_gross - (
+        largest_after / snapshot.gross_exposure if snapshot.gross_exposure > 0 else 0.0
     )
 
     return MarginalPortfolioValue(
@@ -388,7 +407,9 @@ def measure_strategy_correlation(
                 overlap_days += hi - lo
     total_days = sum(a1 - a0 for a0, a1 in open_intervals_a) or 1
     trade_time_overlap = min(1.0, overlap_days / total_days)
-    dd_overlap = (len(drawdown_days_a & drawdown_days_b) / len(drawdown_days_a)) if drawdown_days_a else 0.0
+    dd_overlap = (
+        (len(drawdown_days_a & drawdown_days_b) / len(drawdown_days_a)) if drawdown_days_a else 0.0
+    )
     # Classification labels the DOMINANT driver; the numbers stay separate.
     if trade_time_overlap >= 0.5:
         classification = "SIGNAL_OVERLAP"
@@ -421,7 +442,9 @@ def project_portfolio(snapshot: PortfolioIntelligenceSnapshot) -> dict[str, Any]
         for c in snapshot.clusters
     ]
     health_warnings = [
-        f"{s}: {state}" for s, state in sorted(snapshot.strategy_health_summary.items()) if state in ("DEGRADED", "QUARANTINED", "RETIRED")
+        f"{s}: {state}"
+        for s, state in sorted(snapshot.strategy_health_summary.items())
+        if state in ("DEGRADED", "QUARANTINED", "RETIRED")
     ]
     return {
         "portfolio_id": snapshot.portfolio_id,

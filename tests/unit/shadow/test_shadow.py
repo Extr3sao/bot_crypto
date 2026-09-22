@@ -189,14 +189,26 @@ class TestOutcomeEngine:
 class TestRejectMetrics:
     def _ledger_with_trades(self) -> ShadowOutcomeLedger:
         eng = ShadowOutcomeEngine()
-        cap_win = _capture(decision_id="decision:win", take_profit=104.0, stop_loss=98.0,
-                           risk_rejection_reason="MAX_POSITIONS")
-        cap_loss = _capture(decision_id="decision:loss", take_profit=101.0, stop_loss=98.0,
-                            risk_rejection_reason="CONSECUTIVE_LOSS_COOLDOWN",
-                            strategy_health_state="MONITORING")
+        cap_win = _capture(
+            decision_id="decision:win",
+            take_profit=104.0,
+            stop_loss=98.0,
+            risk_rejection_reason="MAX_POSITIONS",
+        )
+        cap_loss = _capture(
+            decision_id="decision:loss",
+            take_profit=101.0,
+            stop_loss=98.0,
+            risk_rejection_reason="CONSECUTIVE_LOSS_COOLDOWN",
+            strategy_health_state="MONITORING",
+        )
         ledger = ShadowOutcomeLedger()
-        ledger.record(eng.resolve(cap_win, [ShadowBar("2026-09-01T00:05:00+00:00", 104.5, 99.0, 104.0)]))
-        ledger.record(eng.resolve(cap_loss, [ShadowBar("2026-09-01T00:05:00+00:00", 100.5, 97.5, 98.2)]))
+        ledger.record(
+            eng.resolve(cap_win, [ShadowBar("2026-09-01T00:05:00+00:00", 104.5, 99.0, 104.0)])
+        )
+        ledger.record(
+            eng.resolve(cap_loss, [ShadowBar("2026-09-01T00:05:00+00:00", 100.5, 97.5, 98.2)])
+        )
         return ledger
 
     def test_metrics_by_reason(self) -> None:

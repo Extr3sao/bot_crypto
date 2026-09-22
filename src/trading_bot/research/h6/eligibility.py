@@ -6,17 +6,19 @@ must not alter eligibility at T.
 
 from __future__ import annotations
 
+from collections.abc import Iterable, Sequence
 from datetime import datetime, timedelta
-from typing import Iterable, Sequence
 
 from trading_bot.research.h6.feature_engine import (
-    CompletedHourOI,
-    ObservedOI,
+    CompletedHourOI as CompletedHourOI,
+)
+from trading_bot.research.h6.feature_engine import (
+    ObservedOI as ObservedOI,
 )
 
 
 def build_completed_hour_oi(
-    snapshots: Iterable[ObservOI],
+    snapshots: Iterable[ObservedOI],
     *,
     hour_close_time: datetime,
 ) -> CompletedHourOI:
@@ -24,8 +26,8 @@ def build_completed_hour_oi(
 
     Snapshots must satisfy `snapshot.oi_time <= hour_close_time`.
     """
-    ts_to_use = _hour_close_boundaries(hour_close_time)
-    within = [s for s in snapshots if ts_to_use.start <= s.oi_time <= ts_to_use.end]
+    window_start, window_end = _hour_close_boundaries(hour_close_time)
+    within = [s for s in snapshots if window_start <= s.oi_time <= window_end]
     distinct = _distinct_by_time(within)
     if len(distinct) == 0:
         return CompletedHourOI(
@@ -46,8 +48,8 @@ def _hour_close_boundaries(hour_close_time: datetime) -> tuple[datetime, datetim
     return start, hour_close_time
 
 
-def _distinct_by_time(snapshots: Iterable[ObservOI]) -> list[ObservOI]:
-    seen: dict[datetime, ObservOI] = {}
+def _distinct_by_time(snapshots: Iterable[ObservedOI]) -> list[ObservedOI]:
+    seen: dict[datetime, ObservedOI] = {}
     for s in snapshots:
         seen[s.oi_time] = s
     return list(seen.values())

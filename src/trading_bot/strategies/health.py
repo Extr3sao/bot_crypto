@@ -11,6 +11,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from enum import StrEnum
+from typing import Any
 
 from trading_bot.execution.intent import ExecutionReliabilityError
 
@@ -36,13 +37,39 @@ class StrategyHealthState(StrEnum):
 # MONITORING (never straight to HEALTHY). RETIRED is terminal and reachable
 # from any non-terminal state as a GOVERNANCE action (never organic).
 _ALLOWED_HEALTH_TRANSITIONS: dict[StrategyHealthState, frozenset[StrategyHealthState]] = {
-    StrategyHealthState.HEALTHY: frozenset({StrategyHealthState.MONITORING, StrategyHealthState.DEGRADED, StrategyHealthState.RETIRED}),
-    StrategyHealthState.MONITORING: frozenset({StrategyHealthState.HEALTHY, StrategyHealthState.DEGRADED, StrategyHealthState.QUARANTINED, StrategyHealthState.RETIRED}),
-    StrategyHealthState.DEGRADED: frozenset({StrategyHealthState.MONITORING, StrategyHealthState.QUARANTINED, StrategyHealthState.RETIRED}),
-    StrategyHealthState.QUARANTINED: frozenset({StrategyHealthState.MONITORING, StrategyHealthState.RETIRED}),
+    StrategyHealthState.HEALTHY: frozenset(
+        {StrategyHealthState.MONITORING, StrategyHealthState.DEGRADED, StrategyHealthState.RETIRED}
+    ),
+    StrategyHealthState.MONITORING: frozenset(
+        {
+            StrategyHealthState.HEALTHY,
+            StrategyHealthState.DEGRADED,
+            StrategyHealthState.QUARANTINED,
+            StrategyHealthState.RETIRED,
+        }
+    ),
+    StrategyHealthState.DEGRADED: frozenset(
+        {
+            StrategyHealthState.MONITORING,
+            StrategyHealthState.QUARANTINED,
+            StrategyHealthState.RETIRED,
+        }
+    ),
+    StrategyHealthState.QUARANTINED: frozenset(
+        {StrategyHealthState.MONITORING, StrategyHealthState.RETIRED}
+    ),
     StrategyHealthState.RETIRED: frozenset(),
-    StrategyHealthState.LEGACY_PAPER_BASELINE: frozenset({StrategyHealthState.MONITORING, StrategyHealthState.RETIRED}),
-    StrategyHealthState.INSUFFICIENT_EVIDENCE: frozenset({StrategyHealthState.HEALTHY, StrategyHealthState.MONITORING, StrategyHealthState.DEGRADED, StrategyHealthState.RETIRED}),
+    StrategyHealthState.LEGACY_PAPER_BASELINE: frozenset(
+        {StrategyHealthState.MONITORING, StrategyHealthState.RETIRED}
+    ),
+    StrategyHealthState.INSUFFICIENT_EVIDENCE: frozenset(
+        {
+            StrategyHealthState.HEALTHY,
+            StrategyHealthState.MONITORING,
+            StrategyHealthState.DEGRADED,
+            StrategyHealthState.RETIRED,
+        }
+    ),
 }
 
 
@@ -78,7 +105,7 @@ class StrategyHealthSnapshot:
     trade_frequency: float  # trades per day over the window
     cost_degradation: float  # realized cost bps vs assumed cost bps (>=0 worse)
 
-    def to_dict(self) -> dict[str, object]:
+    def to_dict(self) -> dict[str, Any]:
         return {
             "identity": self.identity.key(),
             "sample_size": self.sample_size,
@@ -193,10 +220,10 @@ class StrategyHealthTracker:
             cell.degraded_streak = 0
 
         # Enter DEGRADED only after N consecutive degraded windows.
-        if (
-            cell.degraded_streak >= t.degraded_consecutive_windows
-            and cell.current
-            not in (StrategyHealthState.DEGRADED, StrategyHealthState.QUARANTINED, StrategyHealthState.RETIRED)
+        if cell.degraded_streak >= t.degraded_consecutive_windows and cell.current not in (
+            StrategyHealthState.DEGRADED,
+            StrategyHealthState.QUARANTINED,
+            StrategyHealthState.RETIRED,
         ):
             proposal = self._propose_transition(
                 cell,
@@ -239,12 +266,18 @@ class StrategyHealthTracker:
             "window_index": str(window_index),
         }
 
-    def propose_quarantine(self, identity: HealthIdentity, *, reason: str, window_index: int) -> dict[str, str]:
+    def propose_quarantine(
+        self, identity: HealthIdentity, *, reason: str, window_index: int
+    ) -> dict[str, str]:
         """Governance-initiated quarantine proposal (from DEGRADED or MONITORING)."""
         cell = self._cells.setdefault(identity.key(), HealthCellState())
-        return self._propose_transition(cell, identity.key(), StrategyHealthState.QUARANTINED, reason, window_index)
+        return self._propose_transition(
+            cell, identity.key(), StrategyHealthState.QUARANTINED, reason, window_index
+        )
 
-    def propose_revalidation_recovery(self, identity: HealthIdentity, *, research_artifact: str, window_index: int) -> dict[str, str]:
+    def propose_revalidation_recovery(
+        self, identity: HealthIdentity, *, research_artifact: str, window_index: int
+    ) -> dict[str, str]:
         """QUARANTINED recovery requires a research artifact; lands in MONITORING."""
         cell = self._cells.setdefault(identity.key(), HealthCellState())
         if cell.current is not StrategyHealthState.QUARANTINED:
@@ -260,9 +293,13 @@ class StrategyHealthTracker:
         )
         return proposal
 
-    def propose_retirement(self, identity: HealthIdentity, *, reason: str, window_index: int) -> dict[str, str]:
+    def propose_retirement(
+        self, identity: HealthIdentity, *, reason: str, window_index: int
+    ) -> dict[str, str]:
         cell = self._cells.setdefault(identity.key(), HealthCellState())
-        return self._propose_transition(cell, identity.key(), StrategyHealthState.RETIRED, reason, window_index)
+        return self._propose_transition(
+            cell, identity.key(), StrategyHealthState.RETIRED, reason, window_index
+        )
 
     @property
     def proposals(self) -> tuple[dict[str, str], ...]:
@@ -359,7 +396,9 @@ class StrategyHealthVerifier:
         if snapshot.identity.regime != regime_binding:
             failures.append("regime_binding_mismatch")
         # hysteresis: critical transitions must cite consecutive windows
-        if proposal["proposed_state"] == StrategyHealthState.DEGRADED.value and "consecutive" not in proposal.get("reason", ""):
+        if proposal[
+            "proposed_state"
+        ] == StrategyHealthState.DEGRADED.value and "consecutive" not in proposal.get("reason", ""):
             failures.append("hysteresis_not_cited")
         # transition legality
         if prior_state is not None:

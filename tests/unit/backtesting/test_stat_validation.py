@@ -94,7 +94,10 @@ def test_seed_reproducibility_bit_identical() -> None:
     )
     perm_first = permutation_significance(returns, permutations=300, seed=99)
     perm_second = permutation_significance(returns, permutations=300, seed=99)
-    assert (perm_first.p_value, perm_first.null_mean_sharpe) == (perm_second.p_value, perm_second.null_mean_sharpe)
+    assert (perm_first.p_value, perm_first.null_mean_sharpe) == (
+        perm_second.p_value,
+        perm_second.null_mean_sharpe,
+    )
 
 
 def test_different_seed_gives_different_resamples_same_estimate() -> None:

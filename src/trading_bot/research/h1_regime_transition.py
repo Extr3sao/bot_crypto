@@ -33,7 +33,7 @@ import math
 import random
 import statistics
 from dataclasses import dataclass, field
-from typing import Literal
+from typing import Any, Literal
 
 from trading_bot.market_data.types import OHLCV
 from trading_bot.research.regime_v2 import (
@@ -108,12 +108,21 @@ def _qualifies(prev: MarketRegimeState, curr: MarketRegimeState) -> bool:
     """Frozen qualifying-transition identity (A2)."""
     if prev.key() == curr.key():
         return False
-    vol_up = prev.volatility in (VolatilityLevel.NORMAL, VolatilityLevel.LOW) and curr.volatility in (
+    vol_up = prev.volatility in (
+        VolatilityLevel.NORMAL,
+        VolatilityLevel.LOW,
+    ) and curr.volatility in (
         VolatilityLevel.HIGH,
         VolatilityLevel.EXTREME,
     )
-    stress_up = prev.stress is StressLevel.NORMAL and curr.stress in (StressLevel.CORRECTION, StressLevel.SHOCK)
-    to_transition = prev.market_structure.value in ("TREND", "RANGE") and curr.market_structure.value == "TRANSITION"
+    stress_up = prev.stress is StressLevel.NORMAL and curr.stress in (
+        StressLevel.CORRECTION,
+        StressLevel.SHOCK,
+    )
+    to_transition = (
+        prev.market_structure.value in ("TREND", "RANGE")
+        and curr.market_structure.value == "TRANSITION"
+    )
     return vol_up or stress_up or to_transition
 
 
@@ -290,9 +299,7 @@ def simulate_h1(
             skipped_open += 1
             continue
         atr = atr14(candles[ev.index - ATR_PERIOD + 1 : ev.index + 1])
-        trade = _simulate(
-            candles, asset, ev.direction, entry_index, atr, "H1", ev.label
-        )
+        trade = _simulate(candles, asset, ev.direction, entry_index, atr, "H1", ev.label)
         if trade is None:
             skipped_incomplete += 1
             continue
@@ -431,7 +438,7 @@ def split_sign(rs: list[float], parts: int) -> list[int]:
     return out
 
 
-def compute_trade_metrics(trades: list[Trade], cost_bps: float = COST_RT_BPS) -> dict[str, object]:
+def compute_trade_metrics(trades: list[Trade], cost_bps: float = COST_RT_BPS) -> dict[str, Any]:
     """B1 metrics over a trade list (net R recomputable at sensitivity bps).
 
     DEF-RESEARCH-COST-001 repair: the applied cost is ALWAYS the absolute
@@ -467,27 +474,27 @@ def compute_trade_metrics(trades: list[Trade], cost_bps: float = COST_RT_BPS) ->
         "halves": split_sign(net, 2),
         "thirds": split_sign(net, 3),
         "walk_forward_last_third_net_R": (
-            statistics.mean(net[2 * (len(net) // 3):]) if len(net) >= 3 else 0.0
+            statistics.mean(net[2 * (len(net) // 3) :]) if len(net) >= 3 else 0.0
         ),
     }
 
 
-def classify(metrics: dict[str, object]) -> ResultClass:
+def classify(metrics: dict[str, Any]) -> ResultClass:
     """Frozen acceptance thresholds (B4). Pure function of metrics."""
-    n = int(metrics.get("N", 0))  # type: ignore[arg-type]
+    n = int(metrics.get("N", 0))
     if n < MIN_TOTAL_TRADES:
         return "INSUFFICIENT_SAMPLE"
     halves = metrics["halves"]
     thirds = metrics["thirds"]
     assert isinstance(halves, list) and isinstance(thirds, list)
     pass_all = (
-        float(metrics["net_expectancy_R"]) > 0.0  # type: ignore[arg-type]
-        and float(metrics["PF_net"]) > PF_NET_MIN  # type: ignore[arg-type]
-        and float(metrics["P_Sharpe_gt_0"]) >= P_SHARPE_MIN  # type: ignore[arg-type]
-        and float(metrics["permutation_p"]) <= PERM_P_MAX  # type: ignore[arg-type]
+        float(metrics["net_expectancy_R"]) > 0.0
+        and float(metrics["PF_net"]) > PF_NET_MIN
+        and float(metrics["P_Sharpe_gt_0"]) >= P_SHARPE_MIN
+        and float(metrics["permutation_p"]) <= PERM_P_MAX
         and all(s == halves[0] for s in halves)
         and all(s == thirds[0] for s in thirds)
-        and float(metrics["walk_forward_last_third_net_R"]) > 0.0  # type: ignore[arg-type]
+        and float(metrics["walk_forward_last_third_net_R"]) > 0.0
     )
     return "DISCOVERY_PASS" if pass_all else "DISCOVERY_FAIL"
 
@@ -497,7 +504,7 @@ def classify(metrics: dict[str, object]) -> ResultClass:
 # ---------------------------------------------------------------------------
 
 
-def orthogonality(h1_trades: list[Trade], proxy_trades: list[Trade]) -> dict[str, object]:
+def orthogonality(h1_trades: list[Trade], proxy_trades: list[Trade]) -> dict[str, Any]:
     """Frozen B2 comparison vs the legacy ROC proxy."""
     if not h1_trades:
         return {"overlap_trade_time": 0.0, "redundant": False, "note": "no H1 trades"}
@@ -527,7 +534,9 @@ def orthogonality(h1_trades: list[Trade], proxy_trades: list[Trade]) -> dict[str
         sx = math.sqrt(sum((a - mx) ** 2 for a in xs))
         sy = math.sqrt(sum((b - my) ** 2 for b in ys))
         corr = cov / (sx * sy) if sx > 0 and sy > 0 else 0.0
-    redundant = overlap_trade_time > REDUNDANT_OVERLAP and corr is not None and corr > REDUNDANT_CORR
+    redundant = (
+        overlap_trade_time > REDUNDANT_OVERLAP and corr is not None and corr > REDUNDANT_CORR
+    )
     return {
         "overlap_trade_time": overlap_trade_time,
         "pnl_correlation_daily": corr,
@@ -548,11 +557,15 @@ def frequency_value(
     raw = len(events) / total_days
     qualifying = sum(1 for e in events if e.tradeable) / total_days
     proxy_entries = [t.entry_index for t in proxy_trades]
-    incremental = sum(
-        1
-        for e in events
-        if e.tradeable and not any(abs(e.index - p) <= PROXY_OVERLAP_BARS for p in proxy_entries)
-    ) / total_days
+    incremental = (
+        sum(
+            1
+            for e in events
+            if e.tradeable
+            and not any(abs(e.index - p) <= PROXY_OVERLAP_BARS for p in proxy_entries)
+        )
+        / total_days
+    )
     return {
         "raw_opportunities_per_day": raw,
         "qualifying_opportunities_per_day": qualifying,

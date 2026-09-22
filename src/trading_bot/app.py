@@ -21,7 +21,7 @@ from html import escape
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from threading import Lock, Thread
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 from uuid import uuid4
 
 from pydantic import ValidationError
@@ -69,8 +69,8 @@ class RuntimeState:
     last_pairs_active: int = 0
     last_pairs_inactive: int = 0
     last_scanner_errors: int = 0
-    last_summary: list[dict[str, object]] = field(default_factory=list)
-    last_live_event: dict[str, object] | None = None
+    last_summary: list[dict[str, Any]] = field(default_factory=list)
+    last_live_event: dict[str, Any] | None = None
     live_orders_sent: int = 0
 
 
@@ -78,7 +78,7 @@ class RuntimeState:
 class LiveExecutionState:
     orders_sent: int = 0
     traded_symbols: dict[str, float] = field(default_factory=dict)
-    last_event: dict[str, object] | None = None
+    last_event: dict[str, Any] | None = None
 
 
 def _utc_now_iso() -> str:
@@ -735,7 +735,7 @@ def _maybe_execute_live_trade(
     trade_quote_usdt: float,
     max_live_orders: int,
     symbol_cooldown_seconds: int,
-) -> dict[str, object]:
+) -> dict[str, Any]:
     min_notional_buffer = 1.02
     now_ts = time.time()
 
@@ -839,7 +839,7 @@ def _close_stale_futures_positions(
     client: BitunixFuturesClient,
     execution: LiveExecutionState,
     desired_directions: dict[str, str] | None = None,
-) -> dict[str, object] | None:
+) -> dict[str, Any] | None:
     positions = client.get_pending_positions()
     for position in positions:
         if position.qty <= 0:
@@ -889,7 +889,7 @@ def _maybe_execute_live_futures_trade(
     trade_quote_usdt: float,
     max_live_orders: int,
     symbol_cooldown_seconds: int,
-) -> dict[str, object]:
+) -> dict[str, Any]:
     now_ts = time.time()
 
     if settings.runtime.mode != TradingMode.LIVE:

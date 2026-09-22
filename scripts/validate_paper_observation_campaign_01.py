@@ -22,24 +22,46 @@ def validate(report_dir: Path) -> tuple[bool, tuple[tuple[str, str, str], ...]]:
     campaign_dir.mkdir(parents=True, exist_ok=True)
     state_path = campaign_dir / "CAMPAIGN_STATE.json"
     report_json = campaign_dir / "CAMPAIGN_REPORT.json"
-    daily_json = next((campaign_dir / date for date in sorted(p.name for p in campaign_dir.iterdir() if p.is_dir()) if (campaign_dir / date / "DAILY_REPORT.json").exists()), None)
+    daily_json = next(
+        (
+            campaign_dir / date
+            for date in sorted(p.name for p in campaign_dir.iterdir() if p.is_dir())
+            if (campaign_dir / date / "DAILY_REPORT.json").exists()
+        ),
+        None,
+    )
     daily_report = daily_json / "DAILY_REPORT.json" if daily_json is not None else None
 
     checks = [
         _check("campaign_state_written", state_path.exists(), str(state_path)),
         _check("campaign_report_written", report_json.exists(), str(report_json)),
-        _check("daily_report_written", daily_report is not None and daily_report.exists(), str(daily_report)),
+        _check(
+            "daily_report_written",
+            daily_report is not None and daily_report.exists(),
+            str(daily_report),
+        ),
     ]
 
     if state_path.exists():
         payload = json.loads(state_path.read_text(encoding="utf-8"))
         checks.extend(
             [
-                _check("campaign_id_present", bool(payload.get("campaign_id")), payload.get("campaign_id") or ""),
-                _check("candidate_ids_unique", len(payload.get("decision_ids", [])) == len(set(payload.get("decision_ids", [])))),
+                _check(
+                    "campaign_id_present",
+                    bool(payload.get("campaign_id")),
+                    payload.get("campaign_id") or "",
+                ),
+                _check(
+                    "candidate_ids_unique",
+                    len(payload.get("decision_ids", []))
+                    == len(set(payload.get("decision_ids", []))),
+                ),
                 _check("live_calls_zero", int(payload.get("live_calls") or 0) == 0),
                 _check("real_broker_calls_zero", int(payload.get("real_broker_calls") or 0) == 0),
-                _check("private_exchange_calls_zero", int(payload.get("private_exchange_calls") or 0) == 0),
+                _check(
+                    "private_exchange_calls_zero",
+                    int(payload.get("private_exchange_calls") or 0) == 0,
+                ),
                 _check("false_success_zero", int(payload.get("false_success") or 0) == 0),
             ]
         )

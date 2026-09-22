@@ -39,10 +39,11 @@ days may be valid, governance negatives required).
 from __future__ import annotations
 
 import json
+from collections.abc import Callable
 from dataclasses import dataclass, field
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 __all__ = [
     "COVERAGE_MIN",
@@ -106,7 +107,7 @@ class DayStateAuthority:
         self,
         campaign_dir: Path | str,
         *,
-        clock=None,
+        clock: Callable[[], datetime] | None = None,
         coverage_filename: str = "POC02_COVERAGE_DAILY.jsonl",
     ) -> None:
         self._dir = Path(campaign_dir)
@@ -117,8 +118,8 @@ class DayStateAuthority:
 
     # -- persistence ---------------------------------------------------------
 
-    def _load_coverage_rows(self) -> dict[str, dict]:
-        rows: dict[str, dict] = {}
+    def _load_coverage_rows(self) -> dict[str, dict[str, Any]]:
+        rows: dict[str, dict[str, Any]] = {}
         if self._coverage_path.exists():
             for line in self._coverage_path.read_text(encoding="utf-8").splitlines():
                 if line.strip():
@@ -126,12 +127,15 @@ class DayStateAuthority:
                     rows[r["utc_day"]] = r
         return rows
 
-    def _load_finalizations(self) -> dict[str, dict]:
+    def _load_finalizations(self) -> dict[str, dict[str, Any]]:
         if self._finalization_path.exists():
-            return json.loads(self._finalization_path.read_text(encoding="utf-8"))
+            return cast(
+                "dict[str, dict[str, Any]]",
+                json.loads(self._finalization_path.read_text(encoding="utf-8")),
+            )
         return {}
 
-    def _save_finalizations(self, fin: dict[str, dict]) -> None:
+    def _save_finalizations(self, fin: dict[str, dict[str, Any]]) -> None:
         self._finalization_path.write_text(
             json.dumps(fin, indent=2, sort_keys=True), encoding="utf-8"
         )
@@ -225,14 +229,12 @@ class DayStateAuthority:
 
     def _is_closed(self, day: str, now: datetime) -> bool:
         """§6/§12: day D closes at D+1 00:00:00 UTC (pure UTC math)."""
-        boundary = (
-            datetime.strptime(day, "%Y-%m-%d").replace(tzinfo=UTC) + timedelta(days=1)
-        )
+        boundary = datetime.strptime(day, "%Y-%m-%d").replace(tzinfo=UTC) + timedelta(days=1)
         return now >= boundary
 
     # -- finalizer (§6/§7/§8) ------------------------------------------------
 
-    def finalize_day(self, day: str) -> dict:
+    def finalize_day(self, day: str) -> dict[str, Any]:
         """Idempotent day finalizer. Early calls NEVER finalize."""
         now = self._clock()
         if not self._is_closed(day, now):
@@ -309,17 +311,12 @@ class DayStateAuthority:
         # 1440-minute denominator exactly as the manifests preregister
         # ("runtime cadence x 1440 min"); no launch-day/burn-in exception
         # exists in any R2 manifest, so none is invented here.
-        if (
-            st.observed_minutes > 0
-            and st.observed_minutes / MINUTES_PER_DAY < VALIDITY_MIN_RATIO
-        ):
+        if st.observed_minutes > 0 and st.observed_minutes / MINUTES_PER_DAY < VALIDITY_MIN_RATIO:
             reasons.append("COVERAGE_BELOW_MINIMUM")
         ok = not reasons
-        return (VALID if ok else INVALID), tuple(
-            reasons if not ok else ("CONTRACT_SATISFIED",)
-        )
+        return (VALID if ok else INVALID), tuple(reasons if not ok else ("CONTRACT_SATISFIED",))
 
-    def amend_day(self, day: str, *, reason_code: str, detail: dict) -> dict:
+    def amend_day(self, day: str, *, reason_code: str, detail: dict[str, Any]) -> dict[str, Any]:
         """§9 — formally correct an already-finalized day.
 
         The original finalization record is preserved verbatim in the
@@ -366,7 +363,7 @@ class DayStateAuthority:
 
     # -- coverage (§3/§4) ----------------------------------------------------
 
-    def campaign_coverage(self, *, window_start: str, window_end: str) -> dict:
+    def campaign_coverage(self, *, window_start: str, window_end: str) -> dict[str, Any]:
         """Authoritative coverage from CLOSED days only (§4)."""
         now = self._clock()
         start = datetime.fromisoformat(window_start)
@@ -413,7 +410,7 @@ class DayStateAuthority:
 
     # -- provisional (§5) ----------------------------------------------------
 
-    def provisional_metrics(self, *, current_day: str | None = None) -> dict:
+    def provisional_metrics(self, *, current_day: str | None = None) -> dict[str, Any]:
         """OBSERVATIONAL ONLY — must never feed coverage/certification."""
         rows = self._load_coverage_rows()
         day = current_day or self._clock().strftime("%Y-%m-%d")
@@ -428,9 +425,9 @@ class DayStateAuthority:
 
     # -- amendment chain (§9) ------------------------------------------------
 
-    def amendment_chain(self, day: str) -> dict:
+    def amendment_chain(self, day: str) -> dict[str, Any]:
         receipts = sorted(self._receipts_dir.glob(f"RECEIPT_{day}_*.json"))
-        chain: list[dict] = []
+        chain: list[dict[str, Any]] = []
         prev_hash: str | None = None
         for i, p in enumerate(receipts, start=1):
             try:

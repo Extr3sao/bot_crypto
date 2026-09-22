@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Literal
+from typing import Any, Literal
 
 TradeDirection = Literal["LONG", "SHORT"]
 TradeCaseStatus = Literal[
@@ -77,7 +77,7 @@ class ChartSnapshot:
     path: str
     status: SnapshotStatus
     captured_at: int | None
-    overlays: dict[str, object]
+    overlays: dict[str, Any]
 
 
 @dataclass(frozen=True, slots=True)

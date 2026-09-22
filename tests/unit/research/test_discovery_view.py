@@ -120,9 +120,7 @@ def test_shadow_counters_surface() -> None:
 
     from trading_bot.shadow.integration import ShadowCaptureHook
 
-    hook = ShadowCaptureHook(
-        captures_path="unused/captures.jsonl", outcomes_path=None
-    )
+    hook = ShadowCaptureHook(captures_path="unused/captures.jsonl", outcomes_path=None)
     counters = ShadowCounters(hook).snapshot()
     assert counters["captures_total"] == 0
     assert counters["paper_contamination"] == 0

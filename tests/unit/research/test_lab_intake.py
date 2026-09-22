@@ -88,7 +88,9 @@ class TestIntakeContract:
 
     def test_incomplete_spec_fail_closed(self) -> None:
         lab = StrategyLabIntake()
-        decision, _ = lab.submit(_idea(), {"entry_rule": "x"}, admitted_at_utc="2026-09-09T00:00:00Z")
+        decision, _ = lab.submit(
+            _idea(), {"entry_rule": "x"}, admitted_at_utc="2026-09-09T00:00:00Z"
+        )
         assert decision is IntakeDecision.REJECTED_INCOMPLETE_SPEC
 
     def test_unknown_category_or_regime_fail_closed(self) -> None:

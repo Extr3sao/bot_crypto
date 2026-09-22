@@ -8,8 +8,7 @@ record is created in this checkpoint.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import datetime, timezone
-from typing import Any
+from datetime import UTC, datetime
 
 
 @dataclass(frozen=True, slots=True)
@@ -33,7 +32,7 @@ class H6ExecutionLedger:
     def record_started(self, attempt_id: str) -> H6ExecutionAttempt:
         if attempt_id in self._attempts:
             raise ValueError(f"duplicate STARTED: {attempt_id}")
-        started_at = datetime.now(timezone.utc)
+        started_at = datetime.now(UTC)
         attempt = H6ExecutionAttempt(
             attempt_id=attempt_id,
             started_at=started_at,

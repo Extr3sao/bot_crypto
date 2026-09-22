@@ -177,7 +177,9 @@ def _simulate_trades(
             continue
         sig = signals[0]
         entry_bar = candles[i + 1]
-        entry_price = entry_bar.open * (1 + slip) if sig.direction == "LONG" else entry_bar.open * (1 - slip)
+        entry_price = (
+            entry_bar.open * (1 + slip) if sig.direction == "LONG" else entry_bar.open * (1 - slip)
+        )
         stop = sig.structural_stop
         # Adverse-first walk from the entry bar itself.
         exit_price: float | None = None
@@ -256,8 +258,12 @@ def _metrics_payload(trades: list[TradeOutcome]) -> dict[str, Any]:
         peak = max(peak, equity)
         if peak > 0:
             max_dd = max(max_dd, (peak - equity) / peak)
-    ci = bootstrap_sharpe_ci(nets, resamples=BOOTSTRAP_RESAMPLES, confidence=0.90, seed=STAT_SEED, periods_per_year=1)
-    perm = permutation_significance(nets, permutations=PERMUTATION_ROUNDS, seed=STAT_SEED, periods_per_year=1)
+    ci = bootstrap_sharpe_ci(
+        nets, resamples=BOOTSTRAP_RESAMPLES, confidence=0.90, seed=STAT_SEED, periods_per_year=1
+    )
+    perm = permutation_significance(
+        nets, permutations=PERMUTATION_ROUNDS, seed=STAT_SEED, periods_per_year=1
+    )
     return {
         "n": len(nets),
         "gross_expectancy": mean_gross,
@@ -303,9 +309,7 @@ class RetroExecutor:
         window_meta: dict[str, str] = {}
         for asset, symbol in symbols.items():
             for tf in proto.timeframes:
-                bars = (
-                    window_bars[tf] if isinstance(window_bars, dict) else window_bars
-                )
+                bars = window_bars[tf] if isinstance(window_bars, dict) else window_bars
                 fetched: list[OHLCV] | None = self._fetcher.fetch_ohlcv(symbol, tf, bars)
                 candles = fetched if fetched is not None else []
                 if len(candles) < 120:
@@ -316,9 +320,7 @@ class RetroExecutor:
                     f"..{datetime.fromtimestamp(candles[-1].timestamp / 1000, tz=UTC).isoformat()}"
                     f" n={len(candles)}"
                 )
-        dataset_fp = _fingerprint_candles(
-            [c for cs in candles_by_key.values() for c in cs]
-        )
+        dataset_fp = _fingerprint_candles([c for cs in candles_by_key.values() for c in cs])
         engine = RegimeEngine()
 
         cells: list[CellResult] = []
@@ -398,7 +400,10 @@ class RetroExecutor:
             elif any(s == CellStatus.VALIDATED_CELL for s in statuses):
                 proposed[sid] = (
                     "LEGACY_VALIDATION_PASS"
-                    if all(s in (CellStatus.VALIDATED_CELL, CellStatus.INSUFFICIENT_SAMPLE) for s in statuses)
+                    if all(
+                        s in (CellStatus.VALIDATED_CELL, CellStatus.INSUFFICIENT_SAMPLE)
+                        for s in statuses
+                    )
                     else "LEGACY_VALIDATION_PARTIAL"
                 )
             elif all(s == CellStatus.INSUFFICIENT_SAMPLE for s in statuses):

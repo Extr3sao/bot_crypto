@@ -14,7 +14,6 @@ DATA-ONLY: no signals, no performance metrics, no alpha artifacts.
 
 from __future__ import annotations
 
-import copy
 import json
 from pathlib import Path
 
@@ -29,7 +28,10 @@ from trading_bot.research.source_readers import read_metrics_zip
 REPO = Path(__file__).resolve().parents[1]
 RAW = REPO / "data" / "raw" / "binance_um" / "metrics" / "BTCUSDT"
 OUT = (
-    REPO / "docs" / "external-audit-01" / "data-admission-01"
+    REPO
+    / "docs"
+    / "external-audit-01"
+    / "data-admission-01"
     / "FINGERPRINT_DETERMINISM_REPORT.json"
 )
 
@@ -46,7 +48,7 @@ def main() -> None:
     records = load_real_records()
 
     # Run A
-    stats_a = normalize_open_interest(records, decision_time_ms=2 ** 62)
+    stats_a = normalize_open_interest(records, decision_time_ms=2**62)
     fp_a = fingerprint_open_interest(
         records,
         asset="BTCUSDT",
@@ -58,7 +60,7 @@ def main() -> None:
 
     # Run B: independent re-read + re-normalization
     records_b = load_real_records()
-    stats_b = normalize_open_interest(records_b, decision_time_ms=2 ** 62)
+    stats_b = normalize_open_interest(records_b, decision_time_ms=2**62)
     fp_b = fingerprint_open_interest(
         records_b,
         asset="BTCUSDT",
@@ -78,7 +80,7 @@ def main() -> None:
     records_c[target_idx] = dataclasses.replace(
         target, open_interest_contracts=original_value + 1.0
     )
-    stats_c = normalize_open_interest(records_c, decision_time_ms=2 ** 62)
+    stats_c = normalize_open_interest(records_c, decision_time_ms=2**62)
     fp_c = fingerprint_open_interest(
         records_c,
         asset="BTCUSDT",
@@ -90,7 +92,7 @@ def main() -> None:
 
     # Run D: same records, shuffled input order -> fingerprint must not change
     records_d = list(reversed(records))
-    stats_d = normalize_open_interest(records_d, decision_time_ms=2 ** 62)
+    stats_d = normalize_open_interest(records_d, decision_time_ms=2**62)
     fp_d = fingerprint_open_interest(
         records_d,
         asset="BTCUSDT",
@@ -126,12 +128,20 @@ def main() -> None:
     }
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    print(json.dumps({k: report[k] for k in (
-        "determinism_A_equals_B",
-        "sensitivity_C_differs_from_A",
-        "order_independence_D_equals_A",
-        "conclusion",
-    )}, indent=2))
+    print(
+        json.dumps(
+            {
+                k: report[k]
+                for k in (
+                    "determinism_A_equals_B",
+                    "sensitivity_C_differs_from_A",
+                    "order_independence_D_equals_A",
+                    "conclusion",
+                )
+            },
+            indent=2,
+        )
+    )
 
 
 if __name__ == "__main__":
