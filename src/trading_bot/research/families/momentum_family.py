@@ -81,40 +81,44 @@ class MomentumFamily:
             custom={"momentum": momentum},
             atr=atr,
             atr_pct=(atr / current_price * 100) if current_price > 0 else None,
-            structural_stop_width=(
-                (atr * ATR_STOP_MULT) / current_price * 100
-            ) if current_price > 0 else None,
+            structural_stop_width=((atr * ATR_STOP_MULT) / current_price * 100)
+            if current_price > 0
+            else None,
         )
 
         signals: list[AlphaSignal] = []
 
         if histogram > 0 and momentum > MOMENTUM_THRESHOLD:
             stop = current_price - atr * ATR_STOP_MULT
-            signals.append(AlphaSignal(
-                family=self.family_name,
-                symbol=symbol,
-                timestamp=timestamp,
-                direction="LONG",
-                entry_reference=current_price,
-                structural_stop=max(stop, 0.01),
-                timeframe=str(kwargs.get("timeframe", "5m")),
-                features=feat,
-                effective_stop=stop,
-            ))
+            signals.append(
+                AlphaSignal(
+                    family=self.family_name,
+                    symbol=symbol,
+                    timestamp=timestamp,
+                    direction="LONG",
+                    entry_reference=current_price,
+                    structural_stop=max(stop, 0.01),
+                    timeframe=str(kwargs.get("timeframe", "5m")),
+                    features=feat,
+                    effective_stop=stop,
+                )
+            )
 
         if histogram < 0 and momentum < -MOMENTUM_THRESHOLD:
             stop = current_price + atr * ATR_STOP_MULT
-            signals.append(AlphaSignal(
-                family=self.family_name,
-                symbol=symbol,
-                timestamp=timestamp,
-                direction="SHORT",
-                entry_reference=current_price,
-                structural_stop=stop,
-                timeframe=str(kwargs.get("timeframe", "5m")),
-                features=feat,
-                effective_stop=stop,
-            ))
+            signals.append(
+                AlphaSignal(
+                    family=self.family_name,
+                    symbol=symbol,
+                    timestamp=timestamp,
+                    direction="SHORT",
+                    entry_reference=current_price,
+                    structural_stop=stop,
+                    timeframe=str(kwargs.get("timeframe", "5m")),
+                    features=feat,
+                    effective_stop=stop,
+                )
+            )
 
         return signals
 

@@ -106,8 +106,14 @@ class BlockedEventStore:
         now = int(time.time() * 1000)
         rows = [
             (
-                e.signal_family, e.symbol, e.timestamp,
-                e.direction, e.reason, e.details, run_id, now,
+                e.signal_family,
+                e.symbol,
+                e.timestamp,
+                e.direction,
+                e.reason,
+                e.details,
+                run_id,
+                now,
             )
             for e in events
         ]
@@ -203,9 +209,7 @@ class BlockedEventStore:
                 (run_id,),
             ).fetchone()
         else:
-            row = self._conn.execute(
-                "SELECT COUNT(*) as cnt FROM blocked_events"
-            ).fetchone()
+            row = self._conn.execute("SELECT COUNT(*) as cnt FROM blocked_events").fetchone()
         return row["cnt"] if row else 0
 
     def close(self) -> None:

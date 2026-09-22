@@ -127,8 +127,8 @@ class StabilityAnalyzer:
         third_size = n // 3
         return [
             _period_from_trades("first_third", trades[:third_size]),
-            _period_from_trades("middle_third", trades[third_size:2 * third_size]),
-            _period_from_trades("last_third", trades[2 * third_size:]),
+            _period_from_trades("middle_third", trades[third_size : 2 * third_size]),
+            _period_from_trades("last_third", trades[2 * third_size :]),
         ]
 
     def _compute_monthly(self, trades: list[dict[str, Any]]) -> list[PeriodMetrics]:
@@ -154,9 +154,18 @@ def _period_from_trades(label: str, trades: list[dict[str, Any]]) -> PeriodMetri
     """Compute PeriodMetrics from a list of trades."""
     if not trades:
         return PeriodMetrics(
-            period_label=label, start_ts=0, end_ts=0, trades=0,
-            gross_pnl=0, net_pnl=0, gross_exp_r=0, net_exp_r=0,
-            net_pf=0, max_drawdown=0, winning_trades=0, losing_trades=0,
+            period_label=label,
+            start_ts=0,
+            end_ts=0,
+            trades=0,
+            gross_pnl=0,
+            net_pnl=0,
+            gross_exp_r=0,
+            net_exp_r=0,
+            net_pf=0,
+            max_drawdown=0,
+            winning_trades=0,
+            losing_trades=0,
         )
 
     start_ts = min(t.get("entry_timestamp", 0) for t in trades)
@@ -169,8 +178,10 @@ def _period_from_trades(label: str, trades: list[dict[str, Any]]) -> PeriodMetri
     # Simple PF calculation
     gross_wins = sum(t.get("gross_pnl", 0) for t in trades if t.get("gross_pnl", 0) > 0)
     gross_losses = sum(t.get("gross_pnl", 0) for t in trades if t.get("gross_pnl", 0) < 0)
-    net_pf = gross_wins / abs(gross_losses) if gross_losses != 0 else (
-        float("inf") if gross_wins > 0 else 0.0
+    net_pf = (
+        gross_wins / abs(gross_losses)
+        if gross_losses != 0
+        else (float("inf") if gross_wins > 0 else 0.0)
     )
 
     return PeriodMetrics(
@@ -206,11 +217,13 @@ def _compute_agg_metrics(trades: list[dict[str, Any]]) -> PerformanceMetrics:
     net_wins = sum(t.get("net_pnl", 0) for t in trades if t.get("net_pnl", 0) > 0)
     net_losses = sum(t.get("net_pnl", 0) for t in trades if t.get("net_pnl", 0) < 0)
 
-    gross_pf = gross_wins / abs(gross_losses) if gross_losses != 0 else (
-        float("inf") if gross_wins > 0 else 0.0
+    gross_pf = (
+        gross_wins / abs(gross_losses)
+        if gross_losses != 0
+        else (float("inf") if gross_wins > 0 else 0.0)
     )
-    net_pf = net_wins / abs(net_losses) if net_losses != 0 else (
-        float("inf") if net_wins > 0 else 0.0
+    net_pf = (
+        net_wins / abs(net_losses) if net_losses != 0 else (float("inf") if net_wins > 0 else 0.0)
     )
 
     return PerformanceMetrics(
@@ -252,6 +265,7 @@ def _period_to_dict(p: PeriodMetrics) -> dict[str, Any]:
 def _metrics_to_dict(m: PerformanceMetrics) -> dict[str, Any]:
     """Serialize PerformanceMetrics to dict."""
     import dataclasses
+
     return {f.name: getattr(m, f.name) for f in dataclasses.fields(m)}
 
 

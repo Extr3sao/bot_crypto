@@ -289,39 +289,39 @@ class TradeJournal:
                 except (json.JSONDecodeError, TypeError):
                     meta = {}
                 indicators = {
-                    str(k): float(v)
-                    for k, v in meta.items()
-                    if isinstance(v, (int, float))
+                    str(k): float(v) for k, v in meta.items() if isinstance(v, (int, float))
                 }
                 closed = row["closed_at"] is not None
-                decisions.append({
-                    "decision_id": row["trade_id"],
-                    "trade_id": row["trade_id"],
-                    "kind": "trade",
-                    "status": "closed" if closed else "open",
-                    "symbol": row["symbol"],
-                    "side": row["side"],
-                    "strategy": row["strategy"],
-                    "timeframe": row["timeframe"],
-                    "confidence": row["confidence"],
-                    "entry_price": row["entry_price"],
-                    "quantity": row["quantity"],
-                    "sl_pct": row["sl_pct"],
-                    "tp_pct": row["tp_pct"],
-                    "pnl_net": row["pnl_net"],
-                    "exit_reason": row["exit_reason"],
-                    "opened_at": row["opened_at"],
-                    "closed_at": row["closed_at"],
-                    "reason": None,
-                    "blocked_by": None,
-                    "entry_reason": meta.get("entry_reason"),
-                    "explanation": meta.get("explanation"),
-                    "risk_reward_ratio": meta.get("risk_reward_ratio"),
-                    "sl_price": meta.get("sl_price"),
-                    "tp_price": meta.get("tp_price"),
-                    "candle_direction": meta.get("candle_direction"),
-                    "indicators": indicators,
-                })
+                decisions.append(
+                    {
+                        "decision_id": row["trade_id"],
+                        "trade_id": row["trade_id"],
+                        "kind": "trade",
+                        "status": "closed" if closed else "open",
+                        "symbol": row["symbol"],
+                        "side": row["side"],
+                        "strategy": row["strategy"],
+                        "timeframe": row["timeframe"],
+                        "confidence": row["confidence"],
+                        "entry_price": row["entry_price"],
+                        "quantity": row["quantity"],
+                        "sl_pct": row["sl_pct"],
+                        "tp_pct": row["tp_pct"],
+                        "pnl_net": row["pnl_net"],
+                        "exit_reason": row["exit_reason"],
+                        "opened_at": row["opened_at"],
+                        "closed_at": row["closed_at"],
+                        "reason": None,
+                        "blocked_by": None,
+                        "entry_reason": meta.get("entry_reason"),
+                        "explanation": meta.get("explanation"),
+                        "risk_reward_ratio": meta.get("risk_reward_ratio"),
+                        "sl_price": meta.get("sl_price"),
+                        "tp_price": meta.get("tp_price"),
+                        "candle_direction": meta.get("candle_direction"),
+                        "indicators": indicators,
+                    }
+                )
 
         if include_blocked:
             rows = self._conn.execute(
@@ -338,38 +338,38 @@ class TradeJournal:
                 except (json.JSONDecodeError, TypeError):
                     meta = {}
                 indicators = {
-                    str(k): float(v)
-                    for k, v in meta.items()
-                    if isinstance(v, (int, float))
+                    str(k): float(v) for k, v in meta.items() if isinstance(v, (int, float))
                 }
-                decisions.append({
-                    "decision_id": row["decision_id"],
-                    "trade_id": row["decision_id"],
-                    "kind": "blocked",
-                    "status": "blocked",
-                    "symbol": row["symbol"],
-                    "side": row["side"],
-                    "strategy": row["strategy"],
-                    "timeframe": row["timeframe"],
-                    "confidence": row["confidence"],
-                    "entry_price": row["price"],
-                    "quantity": None,
-                    "sl_pct": None,
-                    "tp_pct": None,
-                    "pnl_net": None,
-                    "exit_reason": None,
-                    "opened_at": row["rejected_at"],
-                    "closed_at": None,
-                    "reason": row["reason"],
-                    "blocked_by": row["blocked_by"],
-                    "entry_reason": meta.get("entry_reason"),
-                    "explanation": meta.get("explanation"),
-                    "risk_reward_ratio": meta.get("risk_reward_ratio"),
-                    "sl_price": meta.get("sl_price"),
-                    "tp_price": meta.get("tp_price"),
-                    "candle_direction": meta.get("candle_direction"),
-                    "indicators": indicators,
-                })
+                decisions.append(
+                    {
+                        "decision_id": row["decision_id"],
+                        "trade_id": row["decision_id"],
+                        "kind": "blocked",
+                        "status": "blocked",
+                        "symbol": row["symbol"],
+                        "side": row["side"],
+                        "strategy": row["strategy"],
+                        "timeframe": row["timeframe"],
+                        "confidence": row["confidence"],
+                        "entry_price": row["price"],
+                        "quantity": None,
+                        "sl_pct": None,
+                        "tp_pct": None,
+                        "pnl_net": None,
+                        "exit_reason": None,
+                        "opened_at": row["rejected_at"],
+                        "closed_at": None,
+                        "reason": row["reason"],
+                        "blocked_by": row["blocked_by"],
+                        "entry_reason": meta.get("entry_reason"),
+                        "explanation": meta.get("explanation"),
+                        "risk_reward_ratio": meta.get("risk_reward_ratio"),
+                        "sl_price": meta.get("sl_price"),
+                        "tp_price": meta.get("tp_price"),
+                        "candle_direction": meta.get("candle_direction"),
+                        "indicators": indicators,
+                    }
+                )
 
         if reason:
             decisions = [d for d in decisions if d.get("entry_reason") == reason]
@@ -414,22 +414,28 @@ class TradeJournal:
         """
         groups: dict[str, dict[str, Any]] = {}
         total: dict[str, float] = {
-            "count": 0.0, "wins": 0.0, "losses": 0.0, "breakeven": 0.0,
+            "count": 0.0,
+            "wins": 0.0,
+            "losses": 0.0,
+            "breakeven": 0.0,
             "total_pnl": 0.0,
         }
 
         for row in rows:
             label = key_fn(row)
             pnl = float(row["pnl_net"] or 0.0)
-            g = groups.setdefault(label, {
-                label_key: label,
-                "count": 0,
-                "wins": 0,
-                "losses": 0,
-                "breakeven": 0,
-                "total_pnl": 0.0,
-                "symbols": set(),
-            })
+            g = groups.setdefault(
+                label,
+                {
+                    label_key: label,
+                    "count": 0,
+                    "wins": 0,
+                    "losses": 0,
+                    "breakeven": 0,
+                    "total_pnl": 0.0,
+                    "symbols": set(),
+                },
+            )
             g["count"] += 1
             g["total_pnl"] += pnl
             g["symbols"].add(row["symbol"])
@@ -475,14 +481,16 @@ class TradeJournal:
             for g in group_list:
                 if g["count"] >= min_trades_for_alert and g["win_rate"] < win_rate_threshold:
                     g["alert"] = True
-                    alerts.append({
-                        label_key: g[label_key],
-                        "count": g["count"],
-                        "wins": g["wins"],
-                        "losses": g["losses"],
-                        "win_rate": g["win_rate"],
-                        "total_pnl": g["total_pnl"],
-                    })
+                    alerts.append(
+                        {
+                            label_key: g[label_key],
+                            "count": g["count"],
+                            "wins": g["wins"],
+                            "losses": g["losses"],
+                            "win_rate": g["win_rate"],
+                            "total_pnl": g["total_pnl"],
+                        }
+                    )
             if (
                 overall["count"] >= min_trades_for_alert
                 and overall["win_rate"] < win_rate_threshold

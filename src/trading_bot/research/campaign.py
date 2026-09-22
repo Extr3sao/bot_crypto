@@ -130,19 +130,23 @@ class CampaignController:
 
         # Validate
         report = self.pipeline.validate_discovery(
-            exp_id, discovery_window, discovery_metrics,
+            exp_id,
+            discovery_window,
+            discovery_metrics,
         )
 
         if report.all_passed:
             self.registry.update_status(
-                exp_id, "CANDIDATE",
+                exp_id,
+                "CANDIDATE",
                 results=discovery_metrics,
                 decision="discovery passed",
             )
         else:
             failed = [g.gate_name for g in report.gate_results if not g.passed]
             self.registry.update_status(
-                exp_id, "REJECTED",
+                exp_id,
+                "REJECTED",
                 results=discovery_metrics,
                 decision=f"discovery failed: {', '.join(failed)}",
             )
@@ -175,19 +179,23 @@ class CampaignController:
         )
 
         report = self.pipeline.validate_confirmation(
-            exp_id, confirmation_window, confirmation_metrics,
+            exp_id,
+            confirmation_window,
+            confirmation_metrics,
         )
 
         if report.all_passed:
             self.registry.update_status(
-                exp_id, "CONFIRMED",
+                exp_id,
+                "CONFIRMED",
                 results=confirmation_metrics,
                 decision="confirmation passed",
             )
         else:
             failed = [g.gate_name for g in report.gate_results if not g.passed]
             self.registry.update_status(
-                exp_id, "REJECTED",
+                exp_id,
+                "REJECTED",
                 results=confirmation_metrics,
                 decision=f"confirmation failed: {', '.join(failed)}",
             )

@@ -4,62 +4,60 @@ V0.3.3 Phase 7-9: Real Historical Replay, Frequency, Accounting Reconciliation.
 Uses BTCUSDT-5m-14d HISTORICAL_MARKET_REAL data.
 Tests SL/TP exits, realized vs unrealized PnL, frequency metrics, reconciliation.
 """
+
 from __future__ import annotations
 
 import json
-import os
 import uuid
-from dataclasses import dataclass
-from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
 from zoneinfo import ZoneInfo
 
 import pytest
-
-from src.trading_bot.paper.execution_agent import (
-    PaperExecutionAgent,
-    PaperBrokerAdapter,
-    ExecutionBrokerType,
-    ExitReason,
-    IntrabarPolicy,
-)
 from src.trading_bot.paper.agents import PortfolioAgent, RiskAgent
-from src.trading_bot.paper.market_scanner_agent import MarketScannerAgent
-from src.trading_bot.paper.signal_registry import SignalRegistry
-from src.trading_bot.paper.alpha_registry import AlphaRegistry
-from src.trading_bot.paper.replay_mode import PaperReplayMode, ReplayResult
 from src.trading_bot.paper.canonical_strategy import (
     CanonicalStrategyConfig,
     CanonicalStrategyEvaluator,
 )
-from src.trading_bot.backtesting.types import OHLCV as BacktestOHLCV
+from src.trading_bot.paper.execution_agent import (
+    ExecutionBrokerType,
+    ExitReason,
+    IntrabarPolicy,
+    PaperBrokerAdapter,
+    PaperExecutionAgent,
+)
+from src.trading_bot.paper.market_scanner_agent import MarketScannerAgent
+from src.trading_bot.paper.replay_mode import PaperReplayMode, ReplayResult
+from src.trading_bot.paper.signal_registry import SignalRegistry
 
+from src.trading_bot.backtesting.types import OHLCV as BacktestOHLCV
 
 # ---------------------------------------------------------------------------
 # Dataset loader
 # ---------------------------------------------------------------------------
 DATASET_DIR = Path(__file__).parent.parent.parent / "research" / "datasets" / "BTCUSDT-5m-14d"
 
+
 def load_real_dataset(max_bars: int = 0) -> list[BacktestOHLCV]:
     """Load real Binance BTCUSDT 5m dataset."""
     ohlcv_path = DATASET_DIR / "ohlcv.json"
     assert ohlcv_path.exists(), f"Dataset not found: {ohlcv_path}"
 
-    with open(ohlcv_path, "r", encoding="utf-8") as f:
+    with open(ohlcv_path, encoding="utf-8") as f:
         data = json.load(f)
 
     bars = []
     for row in data:
-        bars.append(BacktestOHLCV(
-            symbol="BTCUSDT",
-            timestamp=int(row["timestamp"]),
-            open=float(row["open"]),
-            high=float(row["high"]),
-            low=float(row["low"]),
-            close=float(row["close"]),
-            volume=float(row.get("volume", 100.0)),
-        ))
+        bars.append(
+            BacktestOHLCV(
+                symbol="BTCUSDT",
+                timestamp=int(row["timestamp"]),
+                open=float(row["open"]),
+                high=float(row["high"]),
+                low=float(row["low"]),
+                close=float(row["close"]),
+                volume=float(row.get("volume", 100.0)),
+            )
+        )
 
     if max_bars > 0:
         bars = bars[:max_bars]
@@ -70,6 +68,7 @@ def load_real_dataset(max_bars: int = 0) -> list[BacktestOHLCV]:
 def compute_dataset_checksum(bars: list[BacktestOHLCV]) -> str:
     """Deterministic checksum for dataset."""
     import hashlib
+
     h = hashlib.sha256()
     for b in bars:
         h.update(f"{b.timestamp},{b.open},{b.high},{b.low},{b.close}".encode())
@@ -133,7 +132,7 @@ class TestV033RealHistoricalReplay:
         assert len(bars) >= 1000, f"Expected >=1000 bars, got {len(bars)}"
 
         checksum = compute_dataset_checksum(bars)
-        replay, broker, execution, alpha_id = build_paper_pipeline(equity=10_000.0)
+        replay, broker, _execution, alpha_id = build_paper_pipeline(equity=10_000.0)
 
         # Group by symbol
         bars_by_symbol = {"BTCUSDT": bars}
@@ -152,8 +151,8 @@ class TestV033RealHistoricalReplay:
         closed = broker.get_closed_positions()
         open_pos = broker.get_open_positions()
 
-        print(f"\n=== V0.3.3 REAL REPLAY ===")
-        print(f"Dataset: BTCUSDT-5m-14d")
+        print("\n=== V0.3.3 REAL REPLAY ===")
+        print("Dataset: BTCUSDT-5m-14d")
         print(f"Checksum: {checksum[:16]}...")
         print(f"Bars: {len(bars)}")
         print(f"Bars processed: {result.bars_processed}")
@@ -171,7 +170,7 @@ class TestV033RealHistoricalReplay:
 
         # Accounting
         summary = broker.get_accounting_summary()
-        print(f"\n=== ACCOUNTING ===")
+        print("\n=== ACCOUNTING ===")
         for k, v in summary.items():
             print(f"  {k}: {v:.2f}" if isinstance(v, float) else f"  {k}: {v}")
 
@@ -185,10 +184,10 @@ class TestV033RealHistoricalReplay:
 
     def test_frequency_metrics(self):
         bars = load_real_dataset()
-        replay, broker, execution, alpha_id = build_paper_pipeline(equity=10_000.0)
+        replay, broker, _execution, alpha_id = build_paper_pipeline(equity=10_000.0)
 
         bars_by_symbol = {"BTCUSDT": bars}
-        result = replay.replay(
+        replay.replay(
             bars_by_symbol=bars_by_symbol,
             enabled_alpha_ids=[alpha_id],
         )
@@ -200,7 +199,7 @@ class TestV033RealHistoricalReplay:
             last_prices=last_prices,
         )
 
-        closed = broker.get_closed_positions()
+        broker.get_closed_positions()
         exit_fills = broker.exit_fills
 
         if len(exit_fills) == 0:
@@ -229,7 +228,7 @@ class TestV033RealHistoricalReplay:
         days_ge_3 = sum(1 for c in counts if c >= 3)
         pct_ge_3 = (days_ge_3 / max(total_days, 1)) * 100
 
-        print(f"\n=== FREQUENCY (Europe/Madrid) ===")
+        print("\n=== FREQUENCY (Europe/Madrid) ===")
         print(f"  Total trades: {total_trades}")
         print(f"  Trading days: {total_days}")
         print(f"  Avg/day: {avg:.2f}")
@@ -244,8 +243,8 @@ class TestV033RealHistoricalReplay:
     def test_frequency_isolation(self):
         """target_trades_per_day must NOT influence scanner/risk/entry."""
         import inspect
-        from src.trading_bot.paper import market_scanner_agent
-        from src.trading_bot.paper import agents
+
+        from src.trading_bot.paper import agents, market_scanner_agent
 
         # Check scanner source
         scanner_src = inspect.getsource(market_scanner_agent)
@@ -262,7 +261,7 @@ class TestV033RealHistoricalReplay:
     def test_risk_violations_zero(self):
         """No risk violations during real replay."""
         bars = load_real_dataset(max_bars=2000)
-        replay, broker, execution, alpha_id = build_paper_pipeline(equity=10_000.0)
+        replay, _broker, _execution, alpha_id = build_paper_pipeline(equity=10_000.0)
 
         result = replay.replay(
             bars_by_symbol={"BTCUSDT": bars},
@@ -276,9 +275,9 @@ class TestV033RealHistoricalReplay:
     def test_duplicate_signals_zero(self):
         """No duplicate executed signals."""
         bars = load_real_dataset(max_bars=2000)
-        replay, broker, execution, alpha_id = build_paper_pipeline(equity=10_000.0)
+        replay, _broker, execution, alpha_id = build_paper_pipeline(equity=10_000.0)
 
-        result = replay.replay(
+        replay.replay(
             bars_by_symbol={"BTCUSDT": bars},
             enabled_alpha_ids=[alpha_id],
         )
@@ -289,9 +288,9 @@ class TestV033RealHistoricalReplay:
     def test_accounting_reconciliation_real(self):
         """StartingEquity + RealizedNetPnL + UnrealizedPnL ≈ EndingEquity on real data."""
         bars = load_real_dataset()
-        replay, broker, execution, alpha_id = build_paper_pipeline(equity=10_000.0)
+        replay, broker, _execution, alpha_id = build_paper_pipeline(equity=10_000.0)
 
-        result = replay.replay(
+        replay.replay(
             bars_by_symbol={"BTCUSDT": bars},
             enabled_alpha_ids=[alpha_id],
         )
@@ -309,7 +308,7 @@ class TestV033RealHistoricalReplay:
         actual = summary["EndingEquity"]
         delta = abs(expected - actual)
 
-        print(f"\n=== RECONCILIATION ===")
+        print("\n=== RECONCILIATION ===")
         print(f"  Starting: {summary['StartingEquity']:.2f}")
         print(f"  RealizedNet: {summary['RealizedNetPnL']:.2f}")
         print(f"  ExpectedEnding: {expected:.2f}")
@@ -336,7 +335,7 @@ class TestV033RealHistoricalReplay:
         bars = load_real_dataset(max_bars=2000)
         replay, broker, execution, alpha_id = build_paper_pipeline(equity=10_000.0)
 
-        result = replay.replay(
+        replay.replay(
             bars_by_symbol={"BTCUSDT": bars},
             enabled_alpha_ids=[alpha_id],
         )
@@ -357,9 +356,9 @@ class TestV033RealHistoricalReplay:
     def test_supervisor_health(self):
         """Supervisor can observe all health dimensions."""
         from src.trading_bot.paper.supervisor_agent import (
+            HealthReport,
             SupervisorAgent,
             SystemHealthStatus,
-            HealthReport,
         )
 
         supervisor = SupervisorAgent()
@@ -375,9 +374,9 @@ class TestV033RealHistoricalReplay:
     def test_position_reconciliation(self):
         """Broker journal and portfolio state stay in sync."""
         bars = load_real_dataset(max_bars=2000)
-        replay, broker, execution, alpha_id = build_paper_pipeline(equity=10_000.0)
+        replay, broker, _execution, alpha_id = build_paper_pipeline(equity=10_000.0)
 
-        result = replay.replay(
+        replay.replay(
             bars_by_symbol={"BTCUSDT": bars},
             enabled_alpha_ids=[alpha_id],
         )

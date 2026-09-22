@@ -2,15 +2,16 @@
 
 from __future__ import annotations
 
-from enum import Enum, unique
+from enum import StrEnum, unique
 
 
 @unique
-class KillSwitchState(str, Enum):
+class KillSwitchState(StrEnum):
     """5-state kill switch (RFC §16).
 
     NORMAL → NO_NEW_RISK → PROTECTION_ONLY → READ_ONLY → HALTED
     """
+
     NORMAL = "normal"
     NO_NEW_RISK = "no_new_risk"
     PROTECTION_ONLY = "protection_only"
@@ -19,8 +20,9 @@ class KillSwitchState(str, Enum):
 
 
 @unique
-class KillSwitchAction(str, Enum):
+class KillSwitchAction(StrEnum):
     """What triggered the kill switch."""
+
     USER = "user"
     DAILY_LOSS = "daily_loss"
     POLICY_VIOLATION = "policy_violation"
@@ -34,14 +36,21 @@ class KillSwitchAction(str, Enum):
 # Allowed actions per kill switch state
 KILL_SWITCH_ALLOWED_ACTIONS: dict[KillSwitchState, set[str]] = {
     KillSwitchState.NORMAL: {
-        "open_new_position", "modify_position", "close_position",
-        "send_order", "cancel_order", "read_data",
+        "open_new_position",
+        "modify_position",
+        "close_position",
+        "send_order",
+        "cancel_order",
+        "read_data",
     },
     KillSwitchState.NO_NEW_RISK: {
-        "close_position", "cancel_order", "read_data",
+        "close_position",
+        "cancel_order",
+        "read_data",
     },
     KillSwitchState.PROTECTION_ONLY: {
-        "close_position", "read_data",
+        "close_position",
+        "read_data",
     },
     KillSwitchState.READ_ONLY: {
         "read_data",

@@ -64,7 +64,7 @@ class BreakoutFamily:
             return []
 
         # Donchian channel from the PREVIOUS 20 bars (excluding current)
-        window = candles[-(DONCHIAN_PERIOD + 1):-1]
+        window = candles[-(DONCHIAN_PERIOD + 1) : -1]
         channel_high = max(c.high for c in window)
         channel_low = min(c.low for c in window)
 
@@ -76,9 +76,9 @@ class BreakoutFamily:
             volume_ratio=vol_rel,
             atr=atr,
             atr_pct=(atr / current_price * 100) if current_price > 0 else None,
-            structural_stop_width=(
-                (atr * ATR_STOP_MULT) / current_price * 100
-            ) if current_price > 0 else None,
+            structural_stop_width=((atr * ATR_STOP_MULT) / current_price * 100)
+            if current_price > 0
+            else None,
             custom={
                 "channel_high": channel_high,
                 "channel_low": channel_low,
@@ -90,32 +90,36 @@ class BreakoutFamily:
         # Upside breakout: close above previous high, volume confirmed
         if current_price > channel_high and vol_rel >= VOLUME_CONFIRM:
             stop = current_price - atr * ATR_STOP_MULT
-            signals.append(AlphaSignal(
-                family=self.family_name,
-                symbol=symbol,
-                timestamp=timestamp,
-                direction="LONG",
-                entry_reference=current_price,
-                structural_stop=max(stop, 0.01),
-                timeframe=str(kwargs.get("timeframe", "5m")),
-                features=feat,
-                effective_stop=stop,
-            ))
+            signals.append(
+                AlphaSignal(
+                    family=self.family_name,
+                    symbol=symbol,
+                    timestamp=timestamp,
+                    direction="LONG",
+                    entry_reference=current_price,
+                    structural_stop=max(stop, 0.01),
+                    timeframe=str(kwargs.get("timeframe", "5m")),
+                    features=feat,
+                    effective_stop=stop,
+                )
+            )
 
         # Downside breakout: close below previous low, volume confirmed
         if current_price < channel_low and vol_rel >= VOLUME_CONFIRM:
             stop = current_price + atr * ATR_STOP_MULT
-            signals.append(AlphaSignal(
-                family=self.family_name,
-                symbol=symbol,
-                timestamp=timestamp,
-                direction="SHORT",
-                entry_reference=current_price,
-                structural_stop=stop,
-                timeframe=str(kwargs.get("timeframe", "5m")),
-                features=feat,
-                effective_stop=stop,
-            ))
+            signals.append(
+                AlphaSignal(
+                    family=self.family_name,
+                    symbol=symbol,
+                    timestamp=timestamp,
+                    direction="SHORT",
+                    entry_reference=current_price,
+                    structural_stop=stop,
+                    timeframe=str(kwargs.get("timeframe", "5m")),
+                    features=feat,
+                    effective_stop=stop,
+                )
+            )
 
         return signals
 

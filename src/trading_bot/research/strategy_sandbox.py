@@ -13,7 +13,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Literal
+from typing import ClassVar, Literal
 
 import structlog
 
@@ -40,7 +40,7 @@ class StrategySandbox:
     V0.2.1 only writes to RESEARCH_STRATEGIES.
     """
 
-    ZONE_PATHS: dict[StrategyZone, Path] = {
+    ZONE_PATHS: ClassVar[dict[StrategyZone, Path]] = {
         "LIVE": Path("strategies/live"),
         "PAPER": Path("strategies/paper"),
         "RESEARCH": Path("strategies/research"),
@@ -78,13 +78,16 @@ class StrategySandbox:
     def validate_no_live_write(self, file_path: Path) -> bool:
         """Validate that a file path is not in live/paper zones."""
         path_str = str(file_path).replace("\\", "/")
-        for zone in ["LIVE", "PAPER"]:
-            zone_str = str(self.ZONE_PATHS[zone]).replace("\\", "/")
+        for zone_name, zone_path in (
+            ("LIVE", self.ZONE_PATHS["LIVE"]),
+            ("PAPER", self.ZONE_PATHS["PAPER"]),
+        ):
+            zone_str = str(zone_path).replace("\\", "/")
             if zone_str in path_str:
                 self._log.error(
                     "sandbox.live_write_attempt",
                     path=str(file_path),
-                    zone=zone,
+                    zone=zone_name,
                 )
                 return False
         return True

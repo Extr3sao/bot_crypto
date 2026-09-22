@@ -17,6 +17,7 @@ exit 0 with a dead decision cycle).
 
 FAIL BEFORE FIX (baseline): the real smoke exits 0 with contexts_built=0.
 """
+
 from __future__ import annotations
 
 import json
@@ -59,7 +60,10 @@ def test_exit_zero_without_contexts_is_not_strategy_path_verified() -> None:
 
 def test_partial_cycle_never_passes() -> None:
     """Each mandatory counter is independently required."""
-    base = {"mode": "paper", "cycle": {"contexts_built": 1, "router_invocations": 1, "strategy_invocations": 1}}
+    base = {
+        "mode": "paper",
+        "cycle": {"contexts_built": 1, "router_invocations": 1, "strategy_invocations": 1},
+    }
     assert decision_path_verified(base) is True
     for key in ("contexts_built", "router_invocations", "strategy_invocations"):
         broken = {**base, "cycle": {**base["cycle"], key: 0}}
@@ -74,10 +78,14 @@ def test_canonical_smoke_exercises_decision_path() -> None:
     cmd = [
         sys.executable,
         str(_REPO_ROOT / "scripts" / "start_paper_trading.py"),
-        "--assets", "BTC,ETH,SOL",
-        "--provider", "fake",
-        "--max-cycles", "1",
-        "--interval", "0",
+        "--assets",
+        "BTC,ETH,SOL",
+        "--provider",
+        "fake",
+        "--max-cycles",
+        "1",
+        "--interval",
+        "0",
     ]
     proc = subprocess.run(
         cmd,
@@ -88,7 +96,9 @@ def test_canonical_smoke_exercises_decision_path() -> None:
         timeout=180,
     )
     stdout = proc.stdout
-    assert proc.returncode == 0, f"smoke exit {proc.returncode}: {stdout[-2000:]}\n{proc.stderr[-2000:]}"
+    assert proc.returncode == 0, (
+        f"smoke exit {proc.returncode}: {stdout[-2000:]}\n{proc.stderr[-2000:]}"
+    )
 
     marker = "Paper trading loop stopped."
     assert marker in stdout, "entrypoint did not complete; no status emitted"

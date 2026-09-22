@@ -14,13 +14,12 @@ from typing import Any, Literal
 
 import structlog
 
-
 StrategyStatus = Literal[
-    "PENDING",      # Not yet validated
-    "READY",        # Validated and ready for paper
-    "ACTIVE",       # Currently trading
-    "SUSPENDED",    # Temporarily disabled
-    "DEPRECATED",   # No longer used
+    "PENDING",  # Not yet validated
+    "READY",  # Validated and ready for paper
+    "ACTIVE",  # Currently trading
+    "SUSPENDED",  # Temporarily disabled
+    "DEPRECATED",  # No longer used
 ]
 
 

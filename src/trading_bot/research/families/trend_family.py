@@ -57,10 +57,7 @@ class TrendFamily:
         atr = indicators.get("atr")
 
         vals = [ema_fast, ema_mid, ema_slow, ema_slow_prev, atr]
-        if not all(
-            isinstance(v, (int, float))
-            for v in vals
-        ):
+        if not all(isinstance(v, (int, float)) for v in vals):
             return []
 
         # mypy: the guard above narrows every element to a number; re-binding
@@ -86,9 +83,9 @@ class TrendFamily:
             ema_slope=slope,
             atr=atr,
             atr_pct=(atr / current_price * 100) if current_price > 0 else None,
-            structural_stop_width=(
-                (atr * ATR_STOP_MULT) / current_price * 100
-            ) if current_price > 0 else None,
+            structural_stop_width=((atr * ATR_STOP_MULT) / current_price * 100)
+            if current_price > 0
+            else None,
         )
 
         signals: list[AlphaSignal] = []
@@ -96,32 +93,36 @@ class TrendFamily:
         # Bullish ribbon: fully stacked + meaningful upward slope
         if ema_fast > ema_mid > ema_slow and slope > SLOPE_THRESHOLD:
             stop = current_price - atr * ATR_STOP_MULT
-            signals.append(AlphaSignal(
-                family=self.family_name,
-                symbol=symbol,
-                timestamp=timestamp,
-                direction="LONG",
-                entry_reference=current_price,
-                structural_stop=max(stop, 0.01),
-                timeframe=str(kwargs.get("timeframe", "5m")),
-                features=feat,
-                effective_stop=stop,
-            ))
+            signals.append(
+                AlphaSignal(
+                    family=self.family_name,
+                    symbol=symbol,
+                    timestamp=timestamp,
+                    direction="LONG",
+                    entry_reference=current_price,
+                    structural_stop=max(stop, 0.01),
+                    timeframe=str(kwargs.get("timeframe", "5m")),
+                    features=feat,
+                    effective_stop=stop,
+                )
+            )
 
         # Bearish ribbon: fully inverted + meaningful downward slope
         if ema_fast < ema_mid < ema_slow and slope < -SLOPE_THRESHOLD:
             stop = current_price + atr * ATR_STOP_MULT
-            signals.append(AlphaSignal(
-                family=self.family_name,
-                symbol=symbol,
-                timestamp=timestamp,
-                direction="SHORT",
-                entry_reference=current_price,
-                structural_stop=stop,
-                timeframe=str(kwargs.get("timeframe", "5m")),
-                features=feat,
-                effective_stop=stop,
-            ))
+            signals.append(
+                AlphaSignal(
+                    family=self.family_name,
+                    symbol=symbol,
+                    timestamp=timestamp,
+                    direction="SHORT",
+                    entry_reference=current_price,
+                    structural_stop=stop,
+                    timeframe=str(kwargs.get("timeframe", "5m")),
+                    features=feat,
+                    effective_stop=stop,
+                )
+            )
 
         return signals
 

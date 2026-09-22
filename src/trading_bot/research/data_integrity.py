@@ -134,7 +134,9 @@ class DataIntegrityChecker:
 
         # 6. Completeness (if bounds provided)
         if expected_start_ts is not None and expected_end_ts is not None:
-            checks.append(self._check_completeness(candles, timeframe, expected_start_ts, expected_end_ts))
+            checks.append(
+                self._check_completeness(candles, timeframe, expected_start_ts, expected_end_ts)
+            )
 
         report = IntegrityReport(
             symbol=symbol,
@@ -253,11 +255,7 @@ class DataIntegrityChecker:
             check_name="warmup",
             passed=enough,
             issue_count=0 if enough else 1,
-            details=(
-                f"Have {len(candles)}, need {warmup_candles}"
-                if not enough
-                else ""
-            ),
+            details=(f"Have {len(candles)}, need {warmup_candles}" if not enough else ""),
         )
 
     def _check_completeness(

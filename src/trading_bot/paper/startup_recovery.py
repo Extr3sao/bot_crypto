@@ -20,7 +20,7 @@ from __future__ import annotations
 import json
 import time
 from dataclasses import asdict, dataclass, field
-from enum import Enum
+from enum import StrEnum
 from pathlib import Path
 from typing import Any
 
@@ -31,7 +31,7 @@ from trading_bot.execution.cost_model import ExecutionCostModel
 logger = structlog.get_logger("startup_recovery")
 
 
-class RecoveryAction(str, Enum):
+class RecoveryAction(StrEnum):
     RESTORE_FROM_JOURNAL = "RESTORE_FROM_JOURNAL"
     ORPHAN_RECONCILIATION_CLOSE = "ORPHAN_RECONCILIATION_CLOSE"
     MATCHED = "MATCHED"

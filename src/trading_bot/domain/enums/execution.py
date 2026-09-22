@@ -2,12 +2,13 @@
 
 from __future__ import annotations
 
-from enum import Enum, unique
+from enum import StrEnum, unique
 
 
 @unique
-class ExecutionMode(str, Enum):
+class ExecutionMode(StrEnum):
     """Trading execution mode (RFC §11)."""
+
     RESEARCH = "research"
     TESTNET = "testnet"
     MAINNET = "mainnet"
@@ -17,8 +18,9 @@ class ExecutionMode(str, Enum):
 
 
 @unique
-class OrderStatus(str, Enum):
+class OrderStatus(StrEnum):
     """Order status after submission."""
+
     PENDING = "pending"
     SENT = "sent"
     ACKNOWLEDGED = "acknowledged"
@@ -32,8 +34,9 @@ class OrderStatus(str, Enum):
 
 
 @unique
-class FillStatus(str, Enum):
+class FillStatus(StrEnum):
     """Fill status."""
+
     FILLED = "filled"
     PARTIAL = "partial"
     REJECTED = "rejected"

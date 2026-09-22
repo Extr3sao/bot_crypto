@@ -15,12 +15,12 @@ from typing import Any, Literal
 import structlog
 
 KillReason = Literal[
-    "MANUAL",           # Manual trigger
-    "DRAWDOWN",         # Excessive drawdown
-    "DAILY_LOSS",       # Daily loss limit
-    "CONSECUTIVE_LOSS", # Consecutive losses
-    "SYSTEM_ERROR",     # System error
-    "CONFIG_CHANGE",    # Configuration change
+    "MANUAL",  # Manual trigger
+    "DRAWDOWN",  # Excessive drawdown
+    "DAILY_LOSS",  # Daily loss limit
+    "CONSECUTIVE_LOSS",  # Consecutive losses
+    "SYSTEM_ERROR",  # System error
+    "CONFIG_CHANGE",  # Configuration change
 ]
 
 
@@ -134,14 +134,20 @@ class KillSwitch:
         # Check drawdown
         drawdown = self._compute_drawdown(equity)
         if drawdown >= self._max_drawdown:
-            self.activate("DRAWDOWN", f"Drawdown {drawdown:.2%} >= {self._max_drawdown:.2%}", equity)
+            self.activate(
+                "DRAWDOWN", f"Drawdown {drawdown:.2%} >= {self._max_drawdown:.2%}", equity
+            )
             return True
 
         # Check daily loss
         if self._daily_start_equity > 0:
             daily_loss = (self._daily_start_equity - equity) / self._daily_start_equity
             if daily_loss >= self._max_daily_loss:
-                self.activate("DAILY_LOSS", f"Daily loss {daily_loss:.2%} >= {self._max_daily_loss:.2%}", equity)
+                self.activate(
+                    "DAILY_LOSS",
+                    f"Daily loss {daily_loss:.2%} >= {self._max_daily_loss:.2%}",
+                    equity,
+                )
                 return True
 
         return False

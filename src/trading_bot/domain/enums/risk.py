@@ -2,20 +2,22 @@
 
 from __future__ import annotations
 
-from enum import Enum, unique
+from enum import StrEnum, unique
 
 
 @unique
-class RiskDecision(str, Enum):
+class RiskDecision(StrEnum):
     """Risk engine decision."""
+
     PASS = "PASS"
     REJECT = "REJECT"
     UNAVAILABLE = "UNAVAILABLE"
 
 
 @unique
-class RiskBlockReason(str, Enum):
+class RiskBlockReason(StrEnum):
     """Reasons to block a trade on risk."""
+
     RISK_BUDGET_EXCEEDED = "risk_budget_exceeded"
     DAILY_LOSS_LOCK = "daily_loss_lock"
     DRAWDOWN_LOCK = "drawdown_lock"
@@ -38,8 +40,9 @@ class RiskBlockReason(str, Enum):
 
 
 @unique
-class RiskPolicyViolation(str, Enum):
+class RiskPolicyViolation(StrEnum):
     """Types of risk policy violations."""
+
     STALE_SNAPSHOT = "stale_snapshot"
     NAN_VALUE = "nan_value"
     INFINITY_VALUE = "infinity_value"

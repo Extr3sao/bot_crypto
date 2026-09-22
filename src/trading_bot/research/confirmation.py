@@ -34,14 +34,16 @@ except ImportError:
 
     def sha256_hex(data: str) -> str:
         import hashlib
-        return hashlib.sha256(data.encode('utf-8')).hexdigest()
+
+        return hashlib.sha256(data.encode("utf-8")).hexdigest()
 
     def new_id(prefix: str = "") -> str:
         import uuid
+
         uid = uuid.uuid4().hex[:12]
         return f"{prefix}-{uid}" if prefix else uid
 
-    CampaignStatus = str  # type: ignore
+    CampaignStatus = str
 
     @dataclass(frozen=True, slots=True)
     class CandidateManifest:  # type: ignore
@@ -50,18 +52,20 @@ except ImportError:
         mechanism: str = ""
         strategy_name: str = ""
         strategy_version: str = ""
-        entry_rules: dict = field(default_factory=dict)
-        exit_rules: dict = field(default_factory=dict)
-        stop_rules: dict = field(default_factory=dict)
+        entry_rules: dict[str, Any] = field(default_factory=dict)
+        exit_rules: dict[str, Any] = field(default_factory=dict)
+        stop_rules: dict[str, Any] = field(default_factory=dict)
         code_hash: str = ""
         config_hash: str = ""
         bundle_hash_val: str = ""
-        dataset_policy: dict = field(default_factory=dict)
+        dataset_policy: dict[str, Any] = field(default_factory=dict)
         status: str = "DRAFT"
+
         def compute_bundle_hash(self) -> str:
-            return sha256_hex(f"{self.code_hash}:{self.config_hash}")
+            return str(sha256_hex(f"{self.code_hash}:{self.config_hash}"))
+
         def verify_integrity(self) -> bool:
-            return self.bundle_hash_val == self.compute_bundle_hash()
+            return bool(self.bundle_hash_val == self.compute_bundle_hash())
 
     @dataclass(frozen=True, slots=True)
     class DatasetWindow:  # type: ignore
@@ -71,10 +75,11 @@ except ImportError:
         start_ts: int = 0
         end_ts: int = 0
         candle_count: int = 0
+
         def overlaps(self, other: DatasetWindow) -> bool:
             if self.symbol != other.symbol:
                 return False
-            return self.start_ts < other.end_ts and other.start_ts < self.end_ts
+            return bool(self.start_ts < other.end_ts and other.start_ts < self.end_ts)
 
 
 # ---------------------------------------------------------------------------
@@ -128,7 +133,7 @@ class FrozenCandidate:
             self.timeframe,
             self.execution_assumptions_hash,
         ]
-        return sha256_hex(":".join(parts))
+        return str(sha256_hex(":".join(parts)))
 
     def verify_exact_match(self, other: FrozenCandidate) -> bool:
         """Verify two candidates are identical (V0.2.1 §18)."""
@@ -288,7 +293,10 @@ class ConfirmationProtocol:
                 mismatches.append("universe")
             if frozen.timeframe != confirmation_candidate.timeframe:
                 mismatches.append("timeframe")
-            if frozen.execution_assumptions_hash != confirmation_candidate.execution_assumptions_hash:
+            if (
+                frozen.execution_assumptions_hash
+                != confirmation_candidate.execution_assumptions_hash
+            ):
                 mismatches.append("execution_assumptions")
 
             msg = f"NOT_CONFIRMATION_INVALIDATED: Mismatched fields: {', '.join(mismatches)}"
@@ -328,9 +336,7 @@ class ConfirmationProtocol:
             )
 
         # Step 2: Validate exact candidate
-        hash_ok, hash_msg = self.validate_exact_candidate(
-            frozen_candidate, confirmation_candidate
-        )
+        hash_ok, hash_msg = self.validate_exact_candidate(frozen_candidate, confirmation_candidate)
         if not hash_ok:
             return ConfirmationResult(
                 confirmation_id=confirmation_id,

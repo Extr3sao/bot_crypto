@@ -37,13 +37,13 @@ Adapter MUST:     net_pnl = trade.pnl + entry_commission_on_this_trade
 from __future__ import annotations
 
 from dataclasses import dataclass
-from enum import Enum
+from enum import StrEnum
 from typing import Any
 
 import structlog
 
 
-class AccountingMode(str, Enum):
+class AccountingMode(StrEnum):
     """Explicit accounting mode — never mix.
 
     V0.2.4 §3: One single source of truth.
@@ -56,7 +56,7 @@ class AccountingMode(str, Enum):
     CANONICAL = "CANONICAL"
 
 
-class SlippageSemantics(str, Enum):
+class SlippageSemantics(StrEnum):
     """Slippage mode — never both.
 
     V0.2.4 §7: slippage semantics.
@@ -224,7 +224,11 @@ class CanonicalAccountingCalculator:
         total_fees = entry_fee + exit_fee
 
         # Slippage informational cost (0 when embedded in fills)
-        slippage_cost = 0.0 if self._slippage_mode == SlippageSemantics.EMBEDDED_IN_FILL else (entry.slippage + exit_.slippage) * qty
+        slippage_cost = (
+            0.0
+            if self._slippage_mode == SlippageSemantics.EMBEDDED_IN_FILL
+            else (entry.slippage + exit_.slippage) * qty
+        )
 
         # Canonical net PnL
         net_pnl = execution_pnl - total_fees
@@ -367,14 +371,9 @@ class CanonicalAccountingCalculator:
 
         V0.2.4 §7: CanonicalPerformanceCalculator.
         """
-        portfolio = self.compute_portfolio_pnl(
-            engine_trades, initial_capital, engine_final_equity
-        )
+        portfolio = self.compute_portfolio_pnl(engine_trades, initial_capital, engine_final_equity)
 
-        trade_pnls = [
-            self.compute_trade_pnl(t, f"T{i:04d}")
-            for i, t in enumerate(engine_trades)
-        ]
+        trade_pnls = [self.compute_trade_pnl(t, f"T{i:04d}") for i, t in enumerate(engine_trades)]
         n = len(trade_pnls)
         if n == 0:
             return {
@@ -410,7 +409,9 @@ class CanonicalAccountingCalculator:
         net_pf = (
             gross_profit / gross_loss
             if gross_loss > 0
-            else float("inf") if gross_profit > 0 else 0.0
+            else float("inf")
+            if gross_profit > 0
+            else 0.0
         )
 
         # GrossPF (from gross_price_move before fees)
@@ -419,7 +420,9 @@ class CanonicalAccountingCalculator:
         gross_pf = (
             gross_wins / gross_losses
             if gross_losses > 0
-            else float("inf") if gross_wins > 0 else 0.0
+            else float("inf")
+            if gross_wins > 0
+            else 0.0
         )
 
         avg_win = sum(tp.net_pnl for tp in wins) / len(wins) if wins else 0.0

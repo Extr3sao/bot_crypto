@@ -74,18 +74,21 @@ class AdmissionController:
 
         # Daily trade limit
         if self._state.trades_today >= self._risk.max_trades_per_day:
-            return self._block(signal, "DAILY_TRADE_LIMIT",
-                               f"Daily limit {self._risk.max_trades_per_day} reached")
+            return self._block(
+                signal, "DAILY_TRADE_LIMIT", f"Daily limit {self._risk.max_trades_per_day} reached"
+            )
 
         # Max open positions
         if len(self._state.open_positions) >= self._risk.max_open_positions:
-            return self._block(signal, "MAX_OPEN",
-                               f"Max {self._risk.max_open_positions} positions open")
+            return self._block(
+                signal, "MAX_OPEN", f"Max {self._risk.max_open_positions} positions open"
+            )
 
         # Position already open on same symbol (check BEFORE direction)
         if signal.symbol in self._state.open_positions:
-            return self._block(signal, "POSITION_ALREADY_OPEN",
-                               f"Position already open on {signal.symbol}")
+            return self._block(
+                signal, "POSITION_ALREADY_OPEN", f"Position already open on {signal.symbol}"
+            )
 
         # Max same-direction positions
         same_dir_count = sum(
@@ -93,20 +96,27 @@ class AdmissionController:
         )
         max_per_dir = max(1, self._risk.max_open_positions // 2)
         if same_dir_count >= max_per_dir:
-            return self._block(signal, "MAX_DIRECTION",
-                               f"Max {max_per_dir} {signal.direction} positions")
+            return self._block(
+                signal, "MAX_DIRECTION", f"Max {max_per_dir} {signal.direction} positions"
+            )
 
         # Daily loss limit
         if self._state.daily_pnl < 0:
             loss_pct = abs(self._state.daily_pnl) / self._equity * 100
             if loss_pct >= self._risk.max_daily_loss_pct:
-                return self._block(signal, "DAILY_LOSS_LIMIT",
-                                   f"Daily loss {loss_pct:.1f}% >= {self._risk.max_daily_loss_pct}%")
+                return self._block(
+                    signal,
+                    "DAILY_LOSS_LIMIT",
+                    f"Daily loss {loss_pct:.1f}% >= {self._risk.max_daily_loss_pct}%",
+                )
 
         # Consecutive losses cooldown
         if self._state.consecutive_losses >= self._risk.max_consecutive_losses:
-            return self._block(signal, "COOLDOWN",
-                               f"Consecutive loss cooldown ({self._state.consecutive_losses} losses)")
+            return self._block(
+                signal,
+                "COOLDOWN",
+                f"Consecutive loss cooldown ({self._state.consecutive_losses} losses)",
+            )
 
         # Admission passed
         rank = self._compute_rank(signal)
@@ -144,7 +154,10 @@ class AdmissionController:
         self._state.trades_today = 0
 
     def _block(
-        self, signal: AlphaSignal, reason: BlockedReason, details: str,
+        self,
+        signal: AlphaSignal,
+        reason: BlockedReason,
+        details: str,
     ) -> AdmissionResult:
         """Create a blocked event and return denied result."""
         event = BlockedEvent(

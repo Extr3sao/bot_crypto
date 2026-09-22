@@ -210,10 +210,14 @@ class PortfolioBacktestEngine:
                 pos.bars_held += 1
 
                 # Check stop loss
-                if (pos.direction == "LONG" and candle.low <= pos.stop_loss) or (pos.direction == "SHORT" and candle.high >= pos.stop_loss):
+                if (pos.direction == "LONG" and candle.low <= pos.stop_loss) or (
+                    pos.direction == "SHORT" and candle.high >= pos.stop_loss
+                ):
                     symbols_to_close.append((symbol, "stop_loss"))
                 # Check take profit
-                elif (pos.direction == "LONG" and candle.high >= pos.take_profit) or (pos.direction == "SHORT" and candle.low <= pos.take_profit):
+                elif (pos.direction == "LONG" and candle.high >= pos.take_profit) or (
+                    pos.direction == "SHORT" and candle.low <= pos.take_profit
+                ):
                     symbols_to_close.append((symbol, "take_profit"))
 
             # Close positions that hit SL/TP
@@ -244,12 +248,14 @@ class PortfolioBacktestEngine:
                 peak_equity = mtm_equity
             drawdown = (peak_equity - mtm_equity) / peak_equity if peak_equity > 0 else 0.0
 
-            equity_curve.append(PortfolioEquityPoint(
-                timestamp=ts,
-                equity=mtm_equity,
-                drawdown_pct=drawdown,
-                open_positions=len(positions),
-            ))
+            equity_curve.append(
+                PortfolioEquityPoint(
+                    timestamp=ts,
+                    equity=mtm_equity,
+                    drawdown_pct=drawdown,
+                    open_positions=len(positions),
+                )
+            )
 
             # 3. Generate signals from all families
             for symbol in candles_by_symbol:
@@ -280,7 +286,9 @@ class PortfolioBacktestEngine:
 
                     # 5. Position sizing
                     notional = self._compute_position_size(
-                        equity, signal, mtm_equity,
+                        equity,
+                        signal,
+                        mtm_equity,
                     )
                     if notional <= 0:
                         continue
@@ -309,7 +317,9 @@ class PortfolioBacktestEngine:
         for symbol, pos in list(positions.items()):
             last_candle = candle_index.get((symbol, sorted_timestamps[-1]))
             if last_candle:
-                trade = self._close_position(pos, last_candle.close, sorted_timestamps[-1], "end_of_data")
+                trade = self._close_position(
+                    pos, last_candle.close, sorted_timestamps[-1], "end_of_data"
+                )
                 trades.append(trade)
                 equity += trade.net_pnl
 
@@ -326,7 +336,10 @@ class PortfolioBacktestEngine:
         )
 
     def _get_lookback(
-        self, candles: list[OHLCV], current_ts: int, window: int = 50,
+        self,
+        candles: list[OHLCV],
+        current_ts: int,
+        window: int = 50,
     ) -> list[OHLCV]:
         """Get the last N candles up to and including current timestamp."""
         result = [c for c in candles if c.timestamp <= current_ts]
@@ -351,7 +364,10 @@ class PortfolioBacktestEngine:
         return signal.entry_reference * 0.98
 
     def _compute_position_size(
-        self, equity: float, signal: AlphaSignal, mtm_equity: float,
+        self,
+        equity: float,
+        signal: AlphaSignal,
+        mtm_equity: float,
     ) -> float:
         """Compute position size from risk parameters."""
         risk_amount = mtm_equity * (self._config.risk_per_trade_pct / 100.0)
@@ -365,7 +381,11 @@ class PortfolioBacktestEngine:
         return min(notional, max_notional)
 
     def _close_position(
-        self, pos: PortfolioPosition, exit_price: float, ts: int, reason: str,
+        self,
+        pos: PortfolioPosition,
+        exit_price: float,
+        ts: int,
+        reason: str,
     ) -> PortfolioTrade:
         """Close a position and compute PnL."""
         slippage = self._slippage.calculate(
@@ -432,9 +452,7 @@ class PortfolioBacktestEngine:
         # Daily coverage
         if equity_curve:
             days = len(set(ep.timestamp // 86_400_000 for ep in equity_curve))
-            days_with_trades = len(set(
-                t.entry_timestamp // 86_400_000 for t in trades
-            ))
+            days_with_trades = len(set(t.entry_timestamp // 86_400_000 for t in trades))
             coverage = days_with_trades / days if days > 0 else 0.0
         else:
             coverage = 0.0

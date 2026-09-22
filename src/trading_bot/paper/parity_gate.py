@@ -12,17 +12,17 @@ PASS requires:
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from enum import Enum
+from enum import StrEnum
 from typing import Any
 
 
-class ParityVerdict(str, Enum):
+class ParityVerdict(StrEnum):
     PASS = "PASS"
     FAIL = "FAIL"
     NOT_APPLICABLE = "NOT_APPLICABLE"
 
 
-class ParityDifferenceType(str, Enum):
+class ParityDifferenceType(StrEnum):
     MATCH = "MATCH"
     EXPECTED_DIFFERENCE = "EXPECTED_DIFFERENCE"
     UNEXPLAINED_DIFFERENCE = "UNEXPLAINED_DIFFERENCE"
@@ -31,6 +31,7 @@ class ParityDifferenceType(str, Enum):
 @dataclass(frozen=True)
 class ParityDifference:
     """Single parity difference."""
+
     category: str  # "signal", "execution", "accounting"
     description: str
     difference_type: ParityDifferenceType
@@ -41,6 +42,7 @@ class ParityDifference:
 @dataclass
 class ParityReport:
     """Full parity report."""
+
     strategy_hash_backtest: str = ""
     strategy_hash_paper: str = ""
     strategy_hash_match: bool = False
@@ -111,8 +113,8 @@ class FullExecutionParityGate:
         dataset_hash_paper: str,
         assumptions_hash_bt: str,
         assumptions_hash_paper: str,
-        signals_bt: list[dict] | None = None,
-        signals_paper: list[dict] | None = None,
+        signals_bt: list[dict[str, Any]] | None = None,
+        signals_paper: list[dict[str, Any]] | None = None,
     ) -> ParityReport:
         """Run full parity check."""
         report = ParityReport()
@@ -135,34 +137,32 @@ class FullExecutionParityGate:
             report.signal_count_backtest = len(signals_bt)
             report.signal_count_paper = len(signals_paper)
 
-            bt_set = {
-                (s.get("direction"), round(s.get("entry", 0), 2))
-                for s in signals_bt
-            }
-            paper_set = {
-                (s.get("direction"), round(s.get("entry", 0), 2))
-                for s in signals_paper
-            }
+            bt_set = {(s.get("direction"), round(s.get("entry", 0), 2)) for s in signals_bt}
+            paper_set = {(s.get("direction"), round(s.get("entry", 0), 2)) for s in signals_paper}
             report.signal_matches = len(bt_set & paper_set)
 
             unexplained = 0
             for sig in signals_bt:
                 key = (sig.get("direction"), round(sig.get("entry", 0), 2))
                 if key not in paper_set:
-                    report.signal_differences.append(ParityDifference(
-                        category="signal",
-                        description=f"Signal in backtest but not paper: {key}",
-                        difference_type=ParityDifferenceType.UNEXPLAINED_DIFFERENCE,
-                    ))
+                    report.signal_differences.append(
+                        ParityDifference(
+                            category="signal",
+                            description=f"Signal in backtest but not paper: {key}",
+                            difference_type=ParityDifferenceType.UNEXPLAINED_DIFFERENCE,
+                        )
+                    )
                     unexplained += 1
             for sig in signals_paper:
                 key = (sig.get("direction"), round(sig.get("entry", 0), 2))
                 if key not in bt_set:
-                    report.signal_differences.append(ParityDifference(
-                        category="signal",
-                        description=f"Signal in paper but not backtest: {key}",
-                        difference_type=ParityDifferenceType.UNEXPLAINED_DIFFERENCE,
-                    ))
+                    report.signal_differences.append(
+                        ParityDifference(
+                            category="signal",
+                            description=f"Signal in paper but not backtest: {key}",
+                            difference_type=ParityDifferenceType.UNEXPLAINED_DIFFERENCE,
+                        )
+                    )
                     unexplained += 1
             report.unexplained_differences += unexplained
 
@@ -171,7 +171,7 @@ class FullExecutionParityGate:
 
 __all__ = [
     "FullExecutionParityGate",
+    "ParityDifferenceType",
     "ParityReport",
     "ParityVerdict",
-    "ParityDifferenceType",
 ]

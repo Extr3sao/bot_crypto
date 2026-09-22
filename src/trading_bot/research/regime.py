@@ -287,7 +287,9 @@ class RegimeEngine:
         ranging_threshold = self._config.adx_ranging_threshold
 
         if adx > trending_threshold:
-            conf = min(1.0, (adx - ranging_threshold) / (trending_threshold - ranging_threshold + 1))
+            conf = min(
+                1.0, (adx - ranging_threshold) / (trending_threshold - ranging_threshold + 1)
+            )
             return conf, 0.0
         elif adx < ranging_threshold:
             conf = min(1.0, (ranging_threshold - adx) / ranging_threshold + 0.3)

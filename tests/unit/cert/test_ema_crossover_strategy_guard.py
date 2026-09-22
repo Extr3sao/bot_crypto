@@ -159,7 +159,9 @@ def test_short_crossover_with_history_produces_sell() -> None:
     strat = EmaCrossoverStrategy()
     signal = strat.evaluate(
         _candles(close=99.0),
-        _indicators(fast=15.0, slow=25.0, fast_history=[20.0, 15.0], slow_history=[18.0, 25.0], rsi=40.0),
+        _indicators(
+            fast=15.0, slow=25.0, fast_history=[20.0, 15.0], slow_history=[18.0, 25.0], rsi=40.0
+        ),
         _cfg(),
     )
     assert signal is not None

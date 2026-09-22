@@ -11,29 +11,27 @@ Certifies:
 import csv
 import json
 import math
-import tempfile
-from datetime import datetime, timezone
-from pathlib import Path
+from datetime import UTC, datetime
 from uuid import uuid4
 
-import pytest
-
-from src.trading_bot.backtesting.types import OHLCV
-from src.trading_bot.paper.signal_types import MarketSnapshot, SignalCandidate, SignalDirection
-from src.trading_bot.paper.signal_registry import SignalRegistry, SignalState
-from src.trading_bot.paper.market_scanner_agent import MarketScannerAgent
 from src.trading_bot.paper.agents import PortfolioAgent, RiskAgent
 from src.trading_bot.paper.execution_agent import (
-    PaperExecutionAgent, PaperBrokerAdapter, ExecutionBrokerType,
+    ExecutionBrokerType,
+    PaperBrokerAdapter,
+    PaperExecutionAgent,
 )
+from src.trading_bot.paper.market_scanner_agent import MarketScannerAgent
 from src.trading_bot.paper.replay_mode import PaperReplayMode, ReplayResult
+from src.trading_bot.paper.signal_registry import SignalRegistry, SignalState
 from src.trading_bot.paper.strategy_evaluator import TrueCrossEvaluator
+
+from src.trading_bot.backtesting.types import OHLCV
 
 
 def _make_btc_bars(n_bars: int = 576, symbol: str = "BTC/USDT") -> list[OHLCV]:
     """Generate 5m BTC/USDT bars with oscillating price action that triggers EMA crossovers."""
     bars = []
-    base_ts = int(datetime(2026, 8, 15, 0, 0, tzinfo=timezone.utc).timestamp() * 1000)
+    base_ts = int(datetime(2026, 8, 15, 0, 0, tzinfo=UTC).timestamp() * 1000)
     price = 60000.0
 
     for i in range(n_bars):
@@ -48,15 +46,17 @@ def _make_btc_bars(n_bars: int = 576, symbol: str = "BTC/USDT") -> list[OHLCV]:
         low = price - abs(math.sin(i / 8.0) * 50)
         open_p = price - 10
 
-        bars.append(OHLCV(
-            symbol=symbol,
-            timestamp=ts_ms,
-            open=open_p,
-            high=max(open_p, high, price),
-            low=min(open_p, low, price),
-            close=price,
-            volume=1000,
-        ))
+        bars.append(
+            OHLCV(
+                symbol=symbol,
+                timestamp=ts_ms,
+                open=open_p,
+                high=max(open_p, high, price),
+                low=min(open_p, low, price),
+                close=price,
+                volume=1000,
+            )
+        )
 
     return bars
 
@@ -148,32 +148,42 @@ class TestFullPaperReplayWithTrades:
         signals_path = evidence_dir / "signals.csv"
         with open(signals_path, "w", newline="") as f:
             writer = csv.writer(f)
-            writer.writerow(["signal_id", "alpha_id", "symbol", "direction", "source_bar", "status"])
+            writer.writerow(
+                ["signal_id", "alpha_id", "symbol", "direction", "source_bar", "status"]
+            )
             for sig_id, entry in signal_reg._signals.items():
-                writer.writerow([
-                    str(sig_id),
-                    str(entry.alpha_id),
-                    entry.symbol,
-                    entry.direction,
-                    entry.source_bar_timestamp.isoformat() if entry.source_bar_timestamp else "",
-                    entry.state.value,
-                ])
+                writer.writerow(
+                    [
+                        str(sig_id),
+                        str(entry.alpha_id),
+                        entry.symbol,
+                        entry.direction,
+                        entry.source_bar_timestamp.isoformat()
+                        if entry.source_bar_timestamp
+                        else "",
+                        entry.state.value,
+                    ]
+                )
 
         # Summary JSON
         summary_path = evidence_dir / "summary.json"
         with open(summary_path, "w") as f:
-            json.dump({
-                "run_id": result.run_id,
-                "bars_processed": result.bars_processed,
-                "signals_emitted": result.signals_emitted,
-                "portfolio_accepted": result.portfolio_accepted,
-                "portfolio_rejected": result.portfolio_rejected,
-                "risk_approved": result.risk_approved,
-                "risk_blocked": result.risk_blocked,
-                "paper_trades": result.paper_trades,
-                "live_orders": result.live_orders,
-                "processing_errors": result.processing_errors,
-            }, f, indent=2)
+            json.dump(
+                {
+                    "run_id": result.run_id,
+                    "bars_processed": result.bars_processed,
+                    "signals_emitted": result.signals_emitted,
+                    "portfolio_accepted": result.portfolio_accepted,
+                    "portfolio_rejected": result.portfolio_rejected,
+                    "risk_approved": result.risk_approved,
+                    "risk_blocked": result.risk_blocked,
+                    "paper_trades": result.paper_trades,
+                    "live_orders": result.live_orders,
+                    "processing_errors": result.processing_errors,
+                },
+                f,
+                indent=2,
+            )
 
         assert signals_path.exists()
         assert summary_path.exists()
@@ -207,7 +217,7 @@ class TestFullPaperReplayWithTrades:
             equity=10000.0,
         )
 
-        result = replay.replay(
+        replay.replay(
             bars_by_symbol={"BTC/USDT": bars},
             enabled_alpha_ids=[alpha_id],
         )
@@ -220,7 +230,9 @@ class TestFullPaperReplayWithTrades:
                 # Source bar must be one of the actual bars
                 # (allowing some tolerance for datetime conversion)
                 found = any(abs(t - src_ts_ms) < 1000 for t in bar_timestamps)
-                assert found, f"Signal {sig_id} references non-existent bar {entry.source_bar_timestamp}"
+                assert found, (
+                    f"Signal {sig_id} references non-existent bar {entry.source_bar_timestamp}"
+                )
 
     def test_signal_idempotency(self):
         """Same signal_id cannot produce two executions."""
@@ -245,14 +257,15 @@ class TestFullPaperReplayWithTrades:
             equity=10000.0,
         )
 
-        result = replay.replay(
+        replay.replay(
             bars_by_symbol={"BTC/USDT": bars},
             enabled_alpha_ids=[alpha_id],
         )
 
         # No signal should be in EXECUTED state more than once per signal_id
         executed_ids = [
-            sig_id for sig_id, entry in signal_reg._signals.items()
+            sig_id
+            for sig_id, entry in signal_reg._signals.items()
             if entry.state == SignalState.EXECUTED
         ]
         assert len(executed_ids) == len(set(executed_ids))
@@ -305,7 +318,7 @@ class TestFullPaperReplayWithTrades:
             equity=10000.0,
         )
 
-        result = replay.replay(
+        replay.replay(
             bars_by_symbol={},
             enabled_alpha_ids=[],
         )
@@ -335,12 +348,12 @@ class TestFullPaperReplayWithTrades:
             equity=10000.0,
         )
 
-        result = replay.replay(
+        replay.replay(
             bars_by_symbol={"BTC/USDT": bars},
             enabled_alpha_ids=[alpha_id],
         )
 
-        for sig_id, entry in signal_reg._signals.items():
+        for _sig_id, entry in signal_reg._signals.items():
             assert entry.alpha_id == alpha_id
             assert entry.symbol == "BTC/USDT"
             assert entry.source_bar_timestamp is not None

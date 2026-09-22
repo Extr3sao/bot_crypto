@@ -103,7 +103,7 @@ def test_every_tracked_module_imports_under_declared_environment() -> None:
             continue
         if rel.endswith("__init__.py"):
             continue  # exercised transitively by every submodule import
-        modules.append(rel[len("src/"):-3].replace("/", "."))
+        modules.append(rel[len("src/") : -3].replace("/", "."))
 
     failures: list[str] = []
     for mod in sorted(set(modules)):
@@ -115,6 +115,5 @@ def test_every_tracked_module_imports_under_declared_environment() -> None:
     assert not failures, (
         "Tracked module(s) fail to import under the declared environment "
         "(dependency closure is NOT tracked/complete — a clean checkout "
-        "cannot reproduce this tree):\n  "
-        + "\n  ".join(failures)
+        "cannot reproduce this tree):\n  " + "\n  ".join(failures)
     )

@@ -54,8 +54,13 @@ class CryptoAssetAgentRegistry:
         return sorted(self._agents)
 
     def build_context(
-        self, asset_id: str, candles: Sequence[OHLCV], timestamp: int,
-        *, data_fingerprint: str = "", dataset_id: str = "",
+        self,
+        asset_id: str,
+        candles: Sequence[OHLCV],
+        timestamp: int,
+        *,
+        data_fingerprint: str = "",
+        dataset_id: str = "",
     ) -> AssetContext:
         """Resolve the agent and build a validated context in one step."""
         agent = self.resolve(asset_id)

@@ -61,9 +61,7 @@ def _ruff() -> str | None:
     found = shutil.which("ruff")
     if found:
         return found
-    exe = Path(sys.executable).with_name(
-        "ruff.exe" if sys.platform == "win32" else "ruff"
-    )
+    exe = Path(sys.executable).with_name("ruff.exe" if sys.platform == "win32" else "ruff")
     return str(exe) if exe.is_file() else None
 
 

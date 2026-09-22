@@ -32,9 +32,11 @@ class FeeRecord:
     fee_difference: float = 0.0
 
     def __post_init__(self) -> None:
-        object.__setattr__(self, "fee_difference",
-            abs(self.expected_entry_fee - self.stored_entry_fee) +
-            abs(self.expected_exit_fee - self.stored_exit_fee)
+        object.__setattr__(
+            self,
+            "fee_difference",
+            abs(self.expected_entry_fee - self.stored_entry_fee)
+            + abs(self.expected_exit_fee - self.stored_exit_fee),
         )
 
 
@@ -70,8 +72,8 @@ class TurnoverReport:
 
     def __post_init__(self) -> None:
         if self.total_turnover > 0:
-            object.__setattr__(self, "fees_as_bps_of_turnover",
-                self.total_fees / self.total_turnover * 10_000
+            object.__setattr__(
+                self, "fees_as_bps_of_turnover", self.total_fees / self.total_turnover * 10_000
             )
 
 
@@ -144,8 +146,9 @@ class FeeInvariantCalculator:
 
     def validate_fee_record(self, record: FeeRecord, tolerance: float = 1e-6) -> CostCheck:
         """Validate a single fee record."""
-        diff = abs(record.expected_entry_fee - record.stored_entry_fee) + \
-               abs(record.expected_exit_fee - record.stored_exit_fee)
+        diff = abs(record.expected_entry_fee - record.stored_entry_fee) + abs(
+            record.expected_exit_fee - record.stored_exit_fee
+        )
         passed = diff <= tolerance
         return CostCheck(
             check_id="fee_invariant",
@@ -202,7 +205,8 @@ class SlippageValidator:
                 expected_slippage_bps=slippage_bps,
                 stored_slippage_bps=(actual_entry_bps + actual_exit_bps) / 2,
                 slippage_mode="EMBEDDED",
-                expected_slippage_usdt=expected_entry_slip * quantity + expected_exit_slip * quantity,
+                expected_slippage_usdt=expected_entry_slip * quantity
+                + expected_exit_slip * quantity,
                 stored_slippage_usdt=actual_entry_slip * quantity + actual_exit_slip * quantity,
             )
         else:
@@ -292,7 +296,7 @@ class CostSanityGate:
 
         for trade in trades:
             # Support both engine Trade objects and TradeRecord objects
-            if hasattr(trade, 'entry_fill'):
+            if hasattr(trade, "entry_fill"):
                 entry = trade.entry_fill
                 exit_ = trade.exit_fill
                 notional = entry.fill_price * entry.qty_filled
@@ -300,7 +304,7 @@ class CostSanityGate:
                 exit_fee = exit_.commission
                 entry_slip = entry.slippage
                 exit_slip = exit_.slippage
-            elif hasattr(trade, 'entry_price'):
+            elif hasattr(trade, "entry_price"):
                 # TradeRecord
                 notional = trade.notional
                 entry_fee = trade.fees / 2  # Approximate split
@@ -321,11 +325,13 @@ class CostSanityGate:
                 excessive_fees = True
 
         # 1. No negative fees
-        checks.append(CostCheck(
-            check_id="no_negative_fees",
-            passed=not negative_fees,
-            severity="CRITICAL",
-        ))
+        checks.append(
+            CostCheck(
+                check_id="no_negative_fees",
+                passed=not negative_fees,
+                severity="CRITICAL",
+            )
+        )
 
         # 2. Fees compatible with turnover
         # turnover = entry_notional + exit_notional (both sides)
@@ -335,42 +341,52 @@ class CostSanityGate:
         if total_turnover > 0:
             actual_fee_bps = FeeInvariantCalculator.decimal_to_bps(total_fees / total_turnover)
             fee_compatible = abs(actual_fee_bps - fee_rate_bps) < fee_rate_bps  # Allow 1x tolerance
-            checks.append(CostCheck(
-                check_id="fees_compatible_turnover",
-                passed=fee_compatible,
-                actual=f"{actual_fee_bps:.1f} bps",
-                expected=f"~{fee_rate_bps:.1f} bps",
-            ))
+            checks.append(
+                CostCheck(
+                    check_id="fees_compatible_turnover",
+                    passed=fee_compatible,
+                    actual=f"{actual_fee_bps:.1f} bps",
+                    expected=f"~{fee_rate_bps:.1f} bps",
+                )
+            )
         else:
-            checks.append(CostCheck(
-                check_id="fees_compatible_turnover",
-                passed=True,
-                message="No turnover",
-            ))
+            checks.append(
+                CostCheck(
+                    check_id="fees_compatible_turnover",
+                    passed=True,
+                    message="No turnover",
+                )
+            )
 
         # 3. Fees not excessive
-        checks.append(CostCheck(
-            check_id="fees_not_excessive",
-            passed=not excessive_fees,
-            actual=f"max fee rate = {self._max_fee_bps} bps",
-        ))
+        checks.append(
+            CostCheck(
+                check_id="fees_not_excessive",
+                passed=not excessive_fees,
+                actual=f"max fee rate = {self._max_fee_bps} bps",
+            )
+        )
 
         # 4. Slippage non-negative
-        checks.append(CostCheck(
-            check_id="slippage_non_negative",
-            passed=total_slippage >= 0,
-        ))
+        checks.append(
+            CostCheck(
+                check_id="slippage_non_negative",
+                passed=total_slippage >= 0,
+            )
+        )
 
         # 5. Slippage compatible with configured bps
         if total_turnover > 0:
             actual_slip_bps = FeeInvariantCalculator.decimal_to_bps(total_slippage / total_turnover)
             slip_compatible = actual_slip_bps <= self._max_slippage_bps
-            checks.append(CostCheck(
-                check_id="slippage_compatible",
-                passed=slip_compatible,
-                actual=f"{actual_slip_bps:.1f} bps",
-                expected=f"<= {self._max_slippage_bps} bps",
-            ))
+            checks.append(
+                CostCheck(
+                    check_id="slippage_compatible",
+                    passed=slip_compatible,
+                    actual=f"{actual_slip_bps:.1f} bps",
+                    expected=f"<= {self._max_slippage_bps} bps",
+                )
+            )
 
         passed = all(c.passed for c in checks)
 

@@ -127,10 +127,18 @@ class ExperimentRegistry:
                 code_hash, config_hash, data_hash, status, parent_experiment)
                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'PREREGISTERED', ?)""",
             (
-                experiment_id, strategy_version, hypothesis,
-                json.dumps(rules), json.dumps(parameters),
-                dataset_start, dataset_end, now,
-                code_hash, config_hash, data_hash, parent_experiment,
+                experiment_id,
+                strategy_version,
+                hypothesis,
+                json.dumps(rules),
+                json.dumps(parameters),
+                dataset_start,
+                dataset_end,
+                now,
+                code_hash,
+                config_hash,
+                data_hash,
+                parent_experiment,
             ),
         )
         self._conn.commit()
@@ -180,7 +188,11 @@ class ExperimentRegistry:
         return self.get(experiment_id)  # type: ignore[return-value]
 
     def verify_hash(
-        self, experiment_id: str, code_hash: str, config_hash: str, data_hash: str,
+        self,
+        experiment_id: str,
+        code_hash: str,
+        config_hash: str,
+        data_hash: str,
     ) -> bool:
         """Verify that stored hashes match provided hashes (P9).
 
@@ -190,11 +202,12 @@ class ExperimentRegistry:
         if record is None:
             return False
 
-        if (record.code_hash != code_hash or
-                record.config_hash != config_hash or
-                record.data_hash != data_hash):
-            self.update_status(experiment_id, "INVALIDATED",
-                               decision="INVALIDATED_HASH_CHANGED")
+        if (
+            record.code_hash != code_hash
+            or record.config_hash != config_hash
+            or record.data_hash != data_hash
+        ):
+            self.update_status(experiment_id, "INVALIDATED", decision="INVALIDATED_HASH_CHANGED")
             self._log.warning("registry.hash_mismatch", experiment_id=experiment_id)
             return False
         return True
@@ -226,7 +239,8 @@ class ExperimentRegistry:
 
         # Hashes match — accept results
         return self.update_status(
-            experiment_id, "RUNNING",
+            experiment_id,
+            "RUNNING",
             results=results,
             decision=decision or "executed_with_verified_hashes",
         )
@@ -254,7 +268,11 @@ class ExperimentRegistry:
         self._conn.commit()
 
     def is_consumed(
-        self, symbol: str, timeframe: str, start_ts: int, end_ts: int,
+        self,
+        symbol: str,
+        timeframe: str,
+        start_ts: int,
+        end_ts: int,
     ) -> bool:
         """Check if any part of a window overlaps with consumed periods (P11)."""
         row = self._conn.execute(
@@ -278,7 +296,8 @@ class ExperimentRegistry:
     # ------------------------------------------------------------------
 
     def list_experiments(
-        self, status: ExperimentStatus | None = None,
+        self,
+        status: ExperimentStatus | None = None,
     ) -> list[ExperimentRecord]:
         """List experiments, optionally filtered by status."""
         if status:
@@ -328,7 +347,9 @@ class ExperimentRegistry:
             data_hash=row["data_hash"],
             status=row["status"],
             executed_at=row["executed_at"],
-            results=_dict_to_metrics(json.loads(row["results_json"])) if row["results_json"] else None,
+            results=_dict_to_metrics(json.loads(row["results_json"]))
+            if row["results_json"]
+            else None,
             decision=row["decision"] or "",
             parent_experiment=row["parent_experiment"],
         )
@@ -337,6 +358,7 @@ class ExperimentRegistry:
 def _metrics_to_dict(m: PerformanceMetrics) -> dict[str, Any]:
     """Serialize PerformanceMetrics to dict."""
     import dataclasses
+
     return {f.name: getattr(m, f.name) for f in dataclasses.fields(m)}
 
 

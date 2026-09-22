@@ -96,13 +96,14 @@ class TradeValidator:
                         f"BUY but pnl={trade.pnl:.4f} is very negative "
                         f"despite exit > entry ({trade.exit_price:.4f} > {trade.entry_price:.4f})"
                     )
-            elif trade.exit_price < trade.entry_price:
+            elif trade.exit_price < trade.entry_price and trade.pnl > abs(
+                trade.entry_price * trade.quantity * 0.1
+            ):
                 # Exit lower than entry -> should be a loss
-                if trade.pnl > abs(trade.entry_price * trade.quantity * 0.1):
-                    issues.append(
-                        f"BUY but pnl={trade.pnl:.4f} is very positive "
-                        f"despite exit < entry ({trade.exit_price:.4f} < {trade.entry_price:.4f})"
-                    )
+                issues.append(
+                    f"BUY but pnl={trade.pnl:.4f} is very positive "
+                    f"despite exit < entry ({trade.exit_price:.4f} < {trade.entry_price:.4f})"
+                )
         elif trade.side == "sell":
             if trade.exit_price < trade.entry_price:
                 # Exit lower than entry -> should be profitable for short
@@ -111,23 +112,21 @@ class TradeValidator:
                         f"SELL but pnl={trade.pnl:.4f} is very negative "
                         f"despite exit < entry ({trade.exit_price:.4f} < {trade.entry_price:.4f})"
                     )
-            elif trade.exit_price > trade.entry_price:
+            elif trade.exit_price > trade.entry_price and trade.pnl > abs(
+                trade.entry_price * trade.quantity * 0.1
+            ):
                 # Exit higher than entry -> should be a loss for short
-                if trade.pnl > abs(trade.entry_price * trade.quantity * 0.1):
-                    issues.append(
-                        f"SELL but pnl={trade.pnl:.4f} is very positive "
-                        f"despite exit > entry ({trade.exit_price:.4f} > {trade.entry_price:.4f})"
-                    )
+                issues.append(
+                    f"SELL but pnl={trade.pnl:.4f} is very positive "
+                    f"despite exit > entry ({trade.exit_price:.4f} > {trade.entry_price:.4f})"
+                )
 
         # Determine severity
         severity = "ok"
         valid = True
         if issues:
             # Check if any issue is critical (price/quantity <= 0)
-            critical = any(
-                "<= 0" in issue or "deviates" in issue
-                for issue in issues
-            )
+            critical = any("<= 0" in issue or "deviates" in issue for issue in issues)
             if critical:
                 severity = "invalid"
                 valid = False
@@ -143,15 +142,17 @@ class TradeValidator:
 
         # Quarantine invalid trades
         if not valid:
-            self._quarantined.append({
-                "trade_id": trade_id,
-                "symbol": trade.symbol,
-                "side": trade.side,
-                "entry_price": trade.entry_price,
-                "exit_price": trade.exit_price,
-                "pnl": trade.pnl,
-                "issues": issues,
-            })
+            self._quarantined.append(
+                {
+                    "trade_id": trade_id,
+                    "symbol": trade.symbol,
+                    "side": trade.side,
+                    "entry_price": trade.entry_price,
+                    "exit_price": trade.exit_price,
+                    "pnl": trade.pnl,
+                    "issues": issues,
+                }
+            )
             self._log.warning(
                 "trade.quarantined",
                 trade_id=trade_id,
@@ -189,7 +190,5 @@ class TradeValidator:
         total = len(self._quarantined)
         return {
             "quarantined_count": total,
-            "quarantined_trades": [
-                q["trade_id"] for q in self._quarantined
-            ],
+            "quarantined_trades": [q["trade_id"] for q in self._quarantined],
         }

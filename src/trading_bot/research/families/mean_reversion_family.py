@@ -76,10 +76,12 @@ class MeanReversionFamily:
         feat = FeaturesBag(
             atr=atr,
             atr_pct=(atr / current_price * 100) if current_price > 0 else None,
-            distance_to_ema=(current_price - bb["middle"]) / bb["middle"] if bb["middle"] > 0 else None,
-            structural_stop_width=(
-                (atr * ATR_STOP_MULT) / current_price * 100
-            ) if current_price > 0 else None,
+            distance_to_ema=(current_price - bb["middle"]) / bb["middle"]
+            if bb["middle"] > 0
+            else None,
+            structural_stop_width=((atr * ATR_STOP_MULT) / current_price * 100)
+            if current_price > 0
+            else None,
         )
 
         signals: list[AlphaSignal] = []
@@ -87,32 +89,36 @@ class MeanReversionFamily:
         # LONG: prev bar below lower band, current bar back above lower band
         if prev_price < lower and current_price > lower:
             stop = lower - atr * ATR_STOP_MULT
-            signals.append(AlphaSignal(
-                family=self.family_name,
-                symbol=symbol,
-                timestamp=timestamp,
-                direction="LONG",
-                entry_reference=current_price,
-                structural_stop=max(stop, 0.01),
-                timeframe=str(kwargs.get("timeframe", "5m")),
-                features=feat,
-                effective_stop=stop,
-            ))
+            signals.append(
+                AlphaSignal(
+                    family=self.family_name,
+                    symbol=symbol,
+                    timestamp=timestamp,
+                    direction="LONG",
+                    entry_reference=current_price,
+                    structural_stop=max(stop, 0.01),
+                    timeframe=str(kwargs.get("timeframe", "5m")),
+                    features=feat,
+                    effective_stop=stop,
+                )
+            )
 
         # SHORT: prev bar above upper band, current bar back below upper band
         if prev_price > upper and current_price < upper:
             stop = upper + atr * ATR_STOP_MULT
-            signals.append(AlphaSignal(
-                family=self.family_name,
-                symbol=symbol,
-                timestamp=timestamp,
-                direction="SHORT",
-                entry_reference=current_price,
-                structural_stop=stop,
-                timeframe=str(kwargs.get("timeframe", "5m")),
-                features=feat,
-                effective_stop=stop,
-            ))
+            signals.append(
+                AlphaSignal(
+                    family=self.family_name,
+                    symbol=symbol,
+                    timestamp=timestamp,
+                    direction="SHORT",
+                    entry_reference=current_price,
+                    structural_stop=stop,
+                    timeframe=str(kwargs.get("timeframe", "5m")),
+                    features=feat,
+                    effective_stop=stop,
+                )
+            )
 
         return signals
 

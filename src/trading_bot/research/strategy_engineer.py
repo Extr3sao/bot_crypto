@@ -20,7 +20,7 @@ import sys
 import tempfile
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any
+from typing import Any, ClassVar
 
 import structlog
 
@@ -31,31 +31,38 @@ try:
 except ImportError:
     import hashlib
     import uuid
+
     def sha256_hex(data: str) -> str:
-        return hashlib.sha256(data.encode('utf-8')).hexdigest()
+        return hashlib.sha256(data.encode("utf-8")).hexdigest()
+
     def bundle_hash(code_hash: str, config_hash: str) -> str:
-        return sha256_hex(f"{code_hash}:{config_hash}")
+        return str(sha256_hex(f"{code_hash}:{config_hash}"))
+
     def new_id(prefix: str = "") -> str:
         uid = uuid.uuid4().hex[:12]
         return f"{prefix}-{uid}" if prefix else uid
+
     from dataclasses import dataclass, field
+
     @dataclass(frozen=True, slots=True)
-    class CandidateManifest:
+    class CandidateManifest:  # type: ignore[no-redef]
         experiment_id: str = ""
         hypothesis: str = ""
         mechanism: str = ""
         strategy_name: str = ""
         strategy_version: str = ""
-        entry_rules: dict = field(default_factory=dict)
-        exit_rules: dict = field(default_factory=dict)
-        stop_rules: dict = field(default_factory=dict)
+        entry_rules: dict[str, Any] = field(default_factory=dict)
+        exit_rules: dict[str, Any] = field(default_factory=dict)
+        stop_rules: dict[str, Any] = field(default_factory=dict)
         code_hash: str = ""
         config_hash: str = ""
         bundle_hash_val: str = ""
-        dataset_policy: dict = field(default_factory=dict)
+        dataset_policy: dict[str, Any] = field(default_factory=dict)
         status: str = "DRAFT"
+
         def compute_bundle_hash(self) -> str:
-            return sha256_hex(f"{self.code_hash}:{self.config_hash}")
+            return str(sha256_hex(f"{self.code_hash}:{self.config_hash}"))
+
         def verify_integrity(self) -> bool:
             return self.bundle_hash_val == self.compute_bundle_hash()
 
@@ -124,19 +131,29 @@ class RealStrategyEngineer:
     """
 
     # Forbidden imports for research strategy code
-    FORBIDDEN_IMPORTS = {
-        "ccxt", "binance", "bybit", "okx", "kraken",
-        "requests", "urllib3", "httpx", "aiohttp",
-        "subprocess", "os.system",
-        "trading_bot.execution", "trading_bot.paper",
-        "trading_bot.portfolio", "trading_bot.web",
+    FORBIDDEN_IMPORTS: ClassVar[set[str]] = {
+        "ccxt",
+        "binance",
+        "bybit",
+        "okx",
+        "kraken",
+        "requests",
+        "urllib3",
+        "httpx",
+        "aiohttp",
+        "subprocess",
+        "os.system",
+        "trading_bot.execution",
+        "trading_bot.paper",
+        "trading_bot.portfolio",
+        "trading_bot.web",
     }
 
     # Forbidden top-level names
-    FORBIDDEN_BUILTINS = {"exec", "eval", "compile", "__import__"}
+    FORBIDDEN_BUILTINS: ClassVar[set[str]] = {"exec", "eval", "compile", "__import__"}
 
     # Allowed base classes for generated strategy
-    ALLOWED_BASES = {"BaseResearchStrategy"}
+    ALLOWED_BASES: ClassVar[set[str]] = {"BaseResearchStrategy"}
 
     # Output directory for generated research strategies
     RESEARCH_DIR = Path("research/generated")
@@ -252,11 +269,7 @@ class RealStrategyEngineer:
             # Find the strategy class
             for attr_name in dir(module):
                 attr = getattr(module, attr_name)
-                if (
-                    isinstance(attr, type)
-                    and hasattr(attr, "on_candle")
-                    and hasattr(attr, "name")
-                ):
+                if isinstance(attr, type) and hasattr(attr, "on_candle") and hasattr(attr, "name"):
                     self._log.info("strategy_engineer.imported", class_name=attr_name)
                     return attr
 
@@ -306,21 +319,27 @@ class RealStrategyEngineer:
                 if node.module and node.module in self.FORBIDDEN_IMPORTS:
                     forbidden_imports.append(node.module)
                 if node.module and any(
-                    node.module.startswith(fw) for fw in ["trading_bot.execution", "trading_bot.paper"]
+                    node.module.startswith(fw)
+                    for fw in ["trading_bot.execution", "trading_bot.paper"]
                 ):
                     forbidden_broker = True
 
             # Check for file writes
-            if isinstance(node, ast.Call):
-                func = node.func
-                if isinstance(func, ast.Attribute):
-                    if func.attr in ("open", "write", "writelines"):
-                        if isinstance(func.value, ast.Name) and func.value.id == "open":
-                            # Only flag if it looks like a write mode
-                            for arg in node.args:
-                                if isinstance(arg, ast.Constant) and isinstance(arg.value, str):
-                                    if "w" in arg.value:
-                                        forbidden_writes = True
+            if (
+                isinstance(node, ast.Call)
+                and isinstance(node.func, ast.Attribute)
+                and node.func.attr in ("open", "write", "writelines")
+                and isinstance(node.func.value, ast.Name)
+                and node.func.value.id == "open"
+            ):
+                # Only flag if it looks like a write mode
+                for arg in node.args:
+                    if (
+                        isinstance(arg, ast.Constant)
+                        and isinstance(arg.value, str)
+                        and "w" in arg.value
+                    ):
+                        forbidden_writes = True
 
             # Check for forbidden builtins
             if isinstance(node, ast.Name) and node.id in self.FORBIDDEN_BUILTINS:
@@ -329,10 +348,16 @@ class RealStrategyEngineer:
 
         # 3. Check for network-related calls
         for node in ast.walk(tree):
-            if isinstance(node, ast.Attribute):
-                if node.attr in ("get", "post", "put", "delete", "request", "fetch"):
-                    # Could be network call — flag if on known modules
-                    pass
+            if isinstance(node, ast.Attribute) and node.attr in (
+                "get",
+                "post",
+                "put",
+                "delete",
+                "request",
+                "fetch",
+            ):
+                # Could be network call — flag if on known modules
+                pass
 
         valid = (
             compile_ok
@@ -369,7 +394,7 @@ class RealStrategyEngineer:
         """Convert rules dict to Python code string."""
         lines = []
         for key, value in rules.items():
-            if isinstance(value, (int, float, str, bool)) or isinstance(value, dict):
+            if isinstance(value, (int, float, str, bool, dict)):
                 lines.append(f"    {key} = {value!r}")
         return "\n".join(lines) if lines else "    pass"
 
@@ -393,28 +418,26 @@ class RealStrategyEngineer:
                     indicators.add("volume")
         return sorted(indicators)
 
-    def _render_strategy_code(
-        self, spec: CandidateSpecification, proposal: Proposal
-    ) -> str:
+    def _render_strategy_code(self, spec: CandidateSpecification, proposal: Proposal) -> str:
         """Render executable strategy code from specification.
 
         Uses deterministic template — no LLM required.
         """
-        params_str = ", ".join(
-            f"{k}={v!r}" for k, v in spec.parameters.items()
-        )
+        params_str = ", ".join(f"{k}={v!r}" for k, v in spec.parameters.items())
         # Build a proper dict literal for self._params
         if spec.parameters:
-            params_dict_literal = "{" + ", ".join(
-                f'"{k}": {v!r}' for k, v in spec.parameters.items()
-            ) + "}"  # e.g. {"period": 20}
+            params_dict_literal = (
+                "{" + ", ".join(f'"{k}": {v!r}' for k, v in spec.parameters.items()) + "}"
+            )  # e.g. {"period": 20}
         else:
             params_dict_literal = "{}"
         entry_indicators = self._extract_indicator_access(spec.entry_logic, proposal)
         exit_indicators = self._extract_indicator_access(spec.exit_logic, proposal)
         all_indicators = sorted(set(entry_indicators + exit_indicators))
 
-        indicator_params = ", ".join(f"{ind}: float = 0.0" for ind in all_indicators) if all_indicators else ""        # Build class name
+        ", ".join(
+            f"{ind}: float = 0.0" for ind in all_indicators
+        ) if all_indicators else ""  # Build class name
         class_name = spec.strategy_name.replace("_", " ").title().replace(" ", "") + "Strategy"
 
         code = f'"""Generated Research Strategy: {spec.strategy_name}\n\nAuto-generated by RealStrategyEngineer V0.2.1.\nHypothesis: {proposal.hypothesis}\nMechanism: {proposal.mechanism}\n\nThis is a RESEARCH-ONLY strategy. It CANNOT access live trading,\npaper trading, or any exchange connections.\n"""\n\nfrom __future__ import annotations\n\n\nclass BaseResearchStrategy:\n    """Base class for all generated research strategies."""\n\n    @property\n    def name(self) -> str:\n        return "{spec.strategy_name}"\n\n    def on_candle(self, ctx, candle):\n        """Override in subclass."""\n        raise NotImplementedError\n\n\nclass {class_name}(BaseResearchStrategy):\n    """Generated strategy: {spec.strategy_name}\n\n    Parameters: {params_str}\n    """\n\n    def __init__(self{", " + params_str if params_str else ""}):\n        self._params = {params_dict_literal}\n        self._position = 0.0\n        self._entry_price = 0.0\n        self._entry_fill_commission = 0.0\n\n    @property\n    def name(self) -> str:\n        return "{spec.strategy_name}"\n\n    def on_candle(self, ctx, candle):\n        """Process candle and return Order or None."""\n        from trading_bot.backtesting.types import Order\n        import time as _time\n\n        current_price = candle.close\n        equity = ctx.equity\n        position_qty = ctx.position_qty\n\n        # Entry logic\n        if position_qty == 0.0:\n            if self._should_enter(candle, ctx):\n                qty = self._compute_qty(equity, current_price)\n                if qty > 0:\n                    return Order(\n                        id=f"GEN-{{int(_time.time()*1000)}}",\n                        symbol=ctx.symbol,\n                        side="buy",\n                        qty=qty,\n                        type="market",\n                        timestamp=candle.timestamp,\n                    )\n\n        # Exit logic\n        elif position_qty > 0.0:\n            if self._should_exit(candle, ctx):\n                return Order(\n                    id=f"GEN-{{int(_time.time()*1000)}}",\n                    symbol=ctx.symbol,\n                    side="sell",\n                    qty=position_qty,\n                    type="market",\n                    timestamp=candle.timestamp,\n                )\n\n        return None\n\n    def _should_enter(self, candle, ctx) -> bool:\n        """Evaluate entry conditions."""\n        return False\n\n    def _should_exit(self, candle, ctx) -> bool:\n        """Evaluate exit conditions."""\n        return False\n\n    def _compute_qty(self, equity: float, price: float) -> float:\n        """Compute position quantity."""\n        risk_pct = self._params.get("risk_per_trade_pct", 0.0025)\n        risk_amount = equity * risk_pct\n        qty = risk_amount / price if price > 0 else 0.0\n        return qty\n'
@@ -447,7 +470,8 @@ class RealStrategyEngineer:
 def _candidate_manifest_replace(manifest: CandidateManifest, **kwargs: Any) -> CandidateManifest:
     """Replace fields on a frozen dataclass by reconstructing."""
     from dataclasses import fields
-    field_map = {f.name: f for f in fields(manifest)}
+
+    {f.name: f for f in fields(manifest)}
     init_kwargs = {}
     for f in fields(manifest):
         if f.name in kwargs:

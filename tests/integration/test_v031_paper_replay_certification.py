@@ -13,41 +13,50 @@ Certifies:
 - Frequency isolation
 """
 
-import pytest
 import json
-import tempfile
 import math
-from datetime import datetime, timezone
+import tempfile
+from datetime import UTC, datetime
 from pathlib import Path
-from uuid import UUID, uuid4
-from typing import List
+from typing import Any, ClassVar
+from uuid import uuid4
 
-from src.trading_bot.backtesting.types import OHLCV
-from src.trading_bot.paper.signal_types import (
-    MarketSnapshot, SignalCandidate, SignalDirection,
-)
-from src.trading_bot.paper.signal_registry import SignalRegistry, SignalState
-from src.trading_bot.paper.market_scanner_agent import MarketScannerAgent
+import pytest
 from src.trading_bot.paper.agents import PortfolioAgent, RiskAgent
+from src.trading_bot.paper.alpha_registry import (
+    AlphaDirection,
+    AlphaFamily,
+    AlphaRegistry,
+)
 from src.trading_bot.paper.execution_agent import (
-    PaperExecutionAgent, PaperBrokerAdapter, ExecutionBrokerType,
+    ExecutionBrokerType,
+    PaperBrokerAdapter,
+    PaperExecutionAgent,
+)
+from src.trading_bot.paper.market_scanner_agent import MarketScannerAgent
+from src.trading_bot.paper.replay_mode import PaperReplayMode, ReplayResult
+from src.trading_bot.paper.restart_recovery import RestartRecoverySystem
+from src.trading_bot.paper.signal_registry import SignalRegistry, SignalState
+from src.trading_bot.paper.signal_types import (
+    MarketSnapshot,
+    SignalCandidate,
+    SignalDirection,
 )
 from src.trading_bot.paper.supervisor_agent import (
-    SupervisorAgent, SystemHealthStatus, FaultType,
-)
-from src.trading_bot.paper.restart_recovery import RestartRecoverySystem
-from src.trading_bot.paper.replay_mode import PaperReplayMode, ReplayResult
-from src.trading_bot.paper.alpha_registry import (
-    AlphaRegistry, AlphaFamily, AlphaDirection,
+    FaultType,
+    SupervisorAgent,
+    SystemHealthStatus,
 )
 
+from src.trading_bot.backtesting.types import OHLCV
 
 # ─── Fixtures ───
 
-def _make_realistic_bars(n_bars: int = 288, symbol: str = "BTC/USDT") -> List[OHLCV]:
+
+def _make_realistic_bars(n_bars: int = 288, symbol: str = "BTC/USDT") -> list[OHLCV]:
     """Generate realistic 5m OHLCV bars (24h = 288 bars)."""
     bars = []
-    base_ts = int(datetime(2026, 8, 20, 0, 0, tzinfo=timezone.utc).timestamp() * 1000)
+    base_ts = int(datetime(2026, 8, 20, 0, 0, tzinfo=UTC).timestamp() * 1000)
     price = 60000.0
 
     for i in range(n_bars):
@@ -59,20 +68,23 @@ def _make_realistic_bars(n_bars: int = 288, symbol: str = "BTC/USDT") -> List[OH
         open_p = price + drift * 0.005
         close = price - drift * 0.003
 
-        bars.append(OHLCV(
-            symbol=symbol,
-            timestamp=ts_ms,
-            open=open_p,
-            high=max(open_p, high, close),
-            low=min(open_p, low, close),
-            close=close,
-            volume=1000 + abs(drift) * 10,
-        ))
+        bars.append(
+            OHLCV(
+                symbol=symbol,
+                timestamp=ts_ms,
+                open=open_p,
+                high=max(open_p, high, close),
+                low=min(open_p, low, close),
+                close=close,
+                volume=1000 + abs(drift) * 10,
+            )
+        )
 
     return bars
 
 
 # ─── Test 1: Full Paper Replay Pipeline ───
+
 
 class TestFullPaperReplayPipeline:
     """Certifies: market → signal → portfolio → risk → execution → journal → supervisor."""
@@ -121,8 +133,8 @@ class TestFullPaperReplayPipeline:
         alpha_id = uuid4()
 
         # Create mock evaluator that emits signals
-        ts = datetime.fromtimestamp(bars[10].timestamp / 1000, tz=timezone.utc)
-        sig = SignalCandidate(
+        ts = datetime.fromtimestamp(bars[10].timestamp / 1000, tz=UTC)
+        SignalCandidate(
             signal_id=uuid4(),
             setup_id="setup_001",
             alpha_id=alpha_id,
@@ -144,25 +156,28 @@ class TestFullPaperReplayPipeline:
         def mock_evaluator(snapshot: MarketSnapshot):
             # Return a new signal referencing the PREVIOUS bar (already closed)
             from datetime import timedelta
+
             prev_bar_ts = snapshot.timestamp - timedelta(minutes=5)
-            return [SignalCandidate(
-                signal_id=uuid4(),
-                setup_id=f"setup_{uuid4().hex[:8]}",
-                alpha_id=alpha_id,
-                family="infrastructure_control",
-                version="v031",
-                symbol="BTC/USDT",
-                timeframe="5m",
-                direction=SignalDirection.BUY,
-                signal_timestamp=prev_bar_ts,
-                source_bar_timestamp=prev_bar_ts,
-                entry_reference=bars[10].close,
-                stop=bars[10].close * 0.98,
-                target=bars[10].close * 1.04,
-                planned_risk=25.0,
-                planned_rr=2.0,
-                planned_net_rr=1.8,
-            )]
+            return [
+                SignalCandidate(
+                    signal_id=uuid4(),
+                    setup_id=f"setup_{uuid4().hex[:8]}",
+                    alpha_id=alpha_id,
+                    family="infrastructure_control",
+                    version="v031",
+                    symbol="BTC/USDT",
+                    timeframe="5m",
+                    direction=SignalDirection.BUY,
+                    signal_timestamp=prev_bar_ts,
+                    source_bar_timestamp=prev_bar_ts,
+                    entry_reference=bars[10].close,
+                    stop=bars[10].close * 0.98,
+                    target=bars[10].close * 1.04,
+                    planned_risk=25.0,
+                    planned_rr=2.0,
+                    planned_net_rr=1.8,
+                )
+            ]
 
         scanner.register_alpha(alpha_id, mock_evaluator)
 
@@ -186,6 +201,7 @@ class TestFullPaperReplayPipeline:
 
 # ─── Test 2: No Lookahead ───
 
+
 class TestNoLookahead:
     """Market snapshot must only contain data up to current clock."""
 
@@ -195,8 +211,8 @@ class TestNoLookahead:
         now_idx = 50
         current_ts = bars[now_idx].timestamp
 
-        snapshot = MarketSnapshot(datetime.fromtimestamp(current_ts / 1000, tz=timezone.utc))
-        for bar in bars[:now_idx + 1]:
+        snapshot = MarketSnapshot(datetime.fromtimestamp(current_ts / 1000, tz=UTC))
+        for bar in bars[: now_idx + 1]:
             if bar.timestamp <= current_ts:
                 snapshot.add_ohlcv(bar.symbol, [bar])
 
@@ -208,7 +224,7 @@ class TestNoLookahead:
         scanner = MarketScannerAgent(signal_reg)
 
         current_ts = _make_realistic_bars(100)[50].timestamp
-        current_dt = datetime.fromtimestamp(current_ts / 1000, tz=timezone.utc)
+        current_dt = datetime.fromtimestamp(current_ts / 1000, tz=UTC)
 
         snapshot = MarketSnapshot(current_dt)
         results = scanner.scan(snapshot, [])
@@ -217,6 +233,7 @@ class TestNoLookahead:
 
 # ─── Test 3: Signal Idempotency ───
 
+
 class TestSignalIdempotency:
     """Same signal_id cannot be executed twice."""
 
@@ -224,7 +241,7 @@ class TestSignalIdempotency:
         """Executing same signal twice raises error."""
         signal_reg = SignalRegistry()
         alpha_id = uuid4()
-        ts = datetime(2026, 8, 20, 12, 0, tzinfo=timezone.utc)
+        ts = datetime(2026, 8, 20, 12, 0, tzinfo=UTC)
 
         sig_id = uuid4()
         signal_reg.create(
@@ -256,13 +273,14 @@ class TestSignalIdempotency:
 
 # ─── Test 4: Causation Chain ───
 
+
 class TestCausationChain:
     """Every trade must be traceable: bar → signal → decision → order → trade."""
 
     def test_causation_chain_complete(self):
         """Signal has all required traceability fields."""
         alpha_id = uuid4()
-        ts = datetime(2026, 8, 20, 12, 0, tzinfo=timezone.utc)
+        ts = datetime(2026, 8, 20, 12, 0, tzinfo=UTC)
 
         sig = SignalCandidate(
             signal_id=uuid4(),
@@ -293,7 +311,7 @@ class TestCausationChain:
         """SignalRegistry tracks full state chain with causation."""
         signal_reg = SignalRegistry()
         alpha_id = uuid4()
-        ts = datetime(2026, 8, 20, 12, 0, tzinfo=timezone.utc)
+        ts = datetime(2026, 8, 20, 12, 0, tzinfo=UTC)
 
         sig_id = uuid4()
         signal_reg.create(
@@ -318,6 +336,7 @@ class TestCausationChain:
 
 # ─── Test 5: Restart Recovery ───
 
+
 class TestRestartRecovery:
     """State persistence and recovery across restarts."""
 
@@ -328,7 +347,8 @@ class TestRestartRecovery:
 
             class MockBroker:
                 equity = 10000.0
-                _positions = []
+                _positions: ClassVar[list[Any]] = []
+
                 def get_open_positions(self):
                     return self._positions
 
@@ -401,44 +421,54 @@ class TestRestartRecovery:
 
 # ─── Test 6: Fault Injection ───
 
+
 class TestFaultInjection:
     """System handles faults correctly."""
 
     def test_market_data_fault_triggers_pause(self):
         supervisor = SupervisorAgent()
-        report = supervisor.audit_system({
-            "market_data_age_sec": 300.0,
-            "positions_count": 0,
-        })
+        report = supervisor.audit_system(
+            {
+                "market_data_age_sec": 300.0,
+                "positions_count": 0,
+            }
+        )
         assert report.status in (SystemHealthStatus.DEGRADED, SystemHealthStatus.PAUSED)
 
     def test_risk_fault_detected(self):
         supervisor = SupervisorAgent()
-        report = supervisor.audit_system({
-            "risk_invariants_violated": True,
-            "positions_count": 0,
-        })
+        report = supervisor.audit_system(
+            {
+                "risk_invariants_violated": True,
+                "positions_count": 0,
+            }
+        )
         assert any(f[0] == FaultType.RISK_FAULT for f in report.faults)
 
     def test_reconciliation_fault_triggers_pause(self):
         supervisor = SupervisorAgent()
-        report = supervisor.audit_system({
-            "position_reconciliation_fail": True,
-            "positions_count": 0,
-        })
+        report = supervisor.audit_system(
+            {
+                "position_reconciliation_fail": True,
+                "positions_count": 0,
+            }
+        )
         assert report.status in (SystemHealthStatus.DEGRADED, SystemHealthStatus.PAUSED)
 
     def test_health_healthy_when_no_faults(self):
         supervisor = SupervisorAgent()
-        report = supervisor.audit_system({
-            "market_data_age_sec": 2.0,
-            "positions_count": 0,
-        })
+        report = supervisor.audit_system(
+            {
+                "market_data_age_sec": 2.0,
+                "positions_count": 0,
+            }
+        )
         assert report.status == SystemHealthStatus.HEALTHY
         assert len(report.faults) == 0
 
 
 # ─── Test 7: Live Boundary Audit ───
+
 
 class TestLiveBoundaryAudit:
     """Structurally impossible to reach live broker from paper agent."""
@@ -458,6 +488,7 @@ class TestLiveBoundaryAudit:
 
 # ─── Test 8: Position Reconciliation ───
 
+
 class TestPositionReconciliation:
     def test_empty_broker_no_positions(self):
         broker = PaperBrokerAdapter(initial_equity=10000.0, commission_bps=5, slippage_bps=2)
@@ -470,16 +501,21 @@ class TestPositionReconciliation:
 
 # ─── Test 9: Journal Reconstruction ───
 
+
 class TestJournalReconstruction:
     def test_signal_registry_state_tracking(self):
         reg = SignalRegistry()
         alpha_id = uuid4()
-        ts = datetime(2026, 8, 20, 12, 0, tzinfo=timezone.utc)
+        ts = datetime(2026, 8, 20, 12, 0, tzinfo=UTC)
 
         sig_id = uuid4()
         reg.create(
-            signal_id=sig_id, alpha_id=alpha_id, symbol="BTC/USDT",
-            direction="buy", timeframe="5m", setup_id="setup_journal",
+            signal_id=sig_id,
+            alpha_id=alpha_id,
+            symbol="BTC/USDT",
+            direction="buy",
+            timeframe="5m",
+            setup_id="setup_journal",
             source_bar_timestamp=ts,
         )
 
@@ -492,19 +528,27 @@ class TestJournalReconstruction:
     def test_duplicate_detection(self):
         reg = SignalRegistry()
         alpha_id = uuid4()
-        ts = datetime(2026, 8, 20, 12, 0, tzinfo=timezone.utc)
+        ts = datetime(2026, 8, 20, 12, 0, tzinfo=UTC)
 
         first_id = uuid4()
         dup_id = uuid4()
 
         reg.create(
-            signal_id=first_id, alpha_id=alpha_id, symbol="BTC/USDT",
-            direction="buy", timeframe="5m", setup_id="setup_first",
+            signal_id=first_id,
+            alpha_id=alpha_id,
+            symbol="BTC/USDT",
+            direction="buy",
+            timeframe="5m",
+            setup_id="setup_first",
             source_bar_timestamp=ts,
         )
         reg.create(
-            signal_id=dup_id, alpha_id=alpha_id, symbol="BTC/USDT",
-            direction="buy", timeframe="5m", setup_id="setup_dup",
+            signal_id=dup_id,
+            alpha_id=alpha_id,
+            symbol="BTC/USDT",
+            direction="buy",
+            timeframe="5m",
+            setup_id="setup_dup",
             source_bar_timestamp=ts,
         )
 
@@ -513,6 +557,7 @@ class TestJournalReconstruction:
 
 
 # ─── Test 10: Execution Parity ───
+
 
 class TestExecutionParity:
     def test_same_config_same_result(self):
@@ -524,19 +569,23 @@ class TestExecutionParity:
 
 # ─── Test 11: Frequency Isolation ───
 
+
 class TestFrequencyIsolation:
     def test_scanner_independent_of_frequency(self):
         import inspect
+
         source = inspect.getsource(MarketScannerAgent)
         assert "target_trades_per_day" not in source
 
     def test_risk_independent_of_frequency(self):
         import inspect
+
         source = inspect.getsource(RiskAgent)
         assert "target_trades_per_day" not in source
 
 
 # ─── Test 12: Alpha Registry Control ───
+
 
 class TestAlphaRegistryControl:
     def test_infrastructure_control_exclude_flag(self):
@@ -553,7 +602,7 @@ class TestAlphaRegistryControl:
 
     def test_exclude_from_alpha_flag(self):
         registry = AlphaRegistry()
-        entry = registry.register(
+        registry.register(
             family=AlphaFamily.INFRASTRUCTURE_CONTROL,
             version="v031",
             direction=AlphaDirection.LONG,

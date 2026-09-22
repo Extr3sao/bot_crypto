@@ -243,21 +243,24 @@ class RealBacktestEvidenceAdapter:
 
         # Convert engine trades to TradeRecords
         trades = self._convert_trades(
-            result.trades, symbol, strategy.name if hasattr(strategy, "name") else "unknown",
-            experiment_id, timeframe,
+            result.trades,
+            symbol,
+            strategy.name if hasattr(strategy, "name") else "unknown",
+            experiment_id,
+            timeframe,
         )
 
         # Compute ALL metrics from real trades
-        computed = self._compute_from_trades(
-            trades, result.equity_curve, start, end, timeframe
-        )
+        computed = self._compute_from_trades(trades, result.equity_curve, start, end, timeframe)
 
         # Build daily metrics
         daily = self._compute_daily_metrics(trades)
 
         # Build evidence record
         evidence = EvidenceRecord(
-            evidence_class=dataset.evidence_class if dataset else EvidenceClass.HISTORICAL_MARKET_REAL,
+            evidence_class=dataset.evidence_class
+            if dataset
+            else EvidenceClass.HISTORICAL_MARKET_REAL,
             source=f"BacktestEngine:{self._commission}:{self._slippage_bps}bps",
             dataset_id=dataset.dataset_id if dataset else "",
             checksum=dataset.checksum if dataset else "",
@@ -417,7 +420,9 @@ class RealBacktestEvidenceAdapter:
         gross_pf = (
             gross_win_sum / gross_loss_sum
             if gross_loss_sum > 0
-            else float("inf") if gross_win_sum > 0 else 0.0
+            else float("inf")
+            if gross_win_sum > 0
+            else 0.0
         )
 
         net_win_sum = sum(t.net_pnl for t in wins) if wins else 0.0
@@ -425,12 +430,12 @@ class RealBacktestEvidenceAdapter:
         net_pf = (
             net_win_sum / net_loss_sum
             if net_loss_sum > 0
-            else float("inf") if net_win_sum > 0 else 0.0
+            else float("inf")
+            if net_win_sum > 0
+            else 0.0
         )
 
-        gross_expectancy = (
-            (win_rate * avg_win) - ((1 - win_rate) * avg_loss)
-        )
+        gross_expectancy = (win_rate * avg_win) - ((1 - win_rate) * avg_loss)
         net_expectancy = net_pnl / n if n > 0 else 0.0
 
         # Max drawdown from equity curve
@@ -557,15 +562,28 @@ class RealBacktestEvidenceAdapter:
         # daily_metrics.csv
         daily_path = output_dir / "daily_metrics.csv"
         with daily_path.open("w", newline="", encoding="utf-8") as f:
-            writer = csv.writer(f)
-            writer.writerow(["calendar_date", "executed_trades", "gross_pnl", "net_pnl", "wins", "losses"])
+            daily_writer = csv.writer(f)
+            daily_writer.writerow(
+                ["calendar_date", "executed_trades", "gross_pnl", "net_pnl", "wins", "losses"]
+            )
             for dm in result.daily_metrics:
-                writer.writerow([dm.calendar_date, dm.executed_trades, dm.gross_pnl, dm.net_pnl, dm.wins, dm.losses])
+                daily_writer.writerow(
+                    [
+                        dm.calendar_date,
+                        dm.executed_trades,
+                        dm.gross_pnl,
+                        dm.net_pnl,
+                        dm.wins,
+                        dm.losses,
+                    ]
+                )
         paths["daily_metrics_csv"] = daily_path
 
         # metrics.json
         metrics_path = output_dir / "metrics.json"
-        metrics_path.write_text(json.dumps(result.to_dict(), indent=2, default=str), encoding="utf-8")
+        metrics_path.write_text(
+            json.dumps(result.to_dict(), indent=2, default=str), encoding="utf-8"
+        )
         paths["metrics_json"] = metrics_path
 
         # run_metadata.json

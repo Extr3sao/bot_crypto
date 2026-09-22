@@ -127,11 +127,14 @@ def test_guard_raises_when_external_var_selects_live(monkeypatch: pytest.MonkeyP
             guard_hermetic()
         except (RuntimeError, ValidationError) as exc:
             # expected: loud failure of one of the two allowed kinds
-            assert "HERMETIC_CERT_ENV_VIOLATION" in str(exc) or "ValidationError" in type(exc).__name__
+            assert (
+                "HERMETIC_CERT_ENV_VIOLATION" in str(exc) or "ValidationError" in type(exc).__name__
+            )
         else:
             raise AssertionError(
                 f"guard silently accepted {var}=x — certification could "
-                "inherit a live-selecting/credential variable")
+                "inherit a live-selecting/credential variable"
+            )
         monkeypatch.delenv(var, raising=False)
 
 

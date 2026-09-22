@@ -61,6 +61,7 @@ class FeaturesBag:
     def to_dict(self) -> dict[str, Any]:
         """Serialize to dict for storage/analysis."""
         import dataclasses
+
         result: dict[str, Any] = {}
         for f in dataclasses.fields(self):
             v = getattr(self, f.name)
@@ -250,11 +251,15 @@ class PerformanceMetrics:
         net_exp_r = self.net_pnl / self.risk_per_trade if self.risk_per_trade > 0 else 0.0
 
         # Profit factors
-        gross_pf = self.gross_win_sum / abs(self.gross_loss_sum) if self.gross_loss_sum != 0 else (
-            float("inf") if self.gross_win_sum > 0 else 0.0
+        gross_pf = (
+            self.gross_win_sum / abs(self.gross_loss_sum)
+            if self.gross_loss_sum != 0
+            else (float("inf") if self.gross_win_sum > 0 else 0.0)
         )
-        net_pf = self.net_win_sum / abs(self.net_loss_sum) if self.net_loss_sum != 0 else (
-            float("inf") if self.net_win_sum > 0 else 0.0
+        net_pf = (
+            self.net_win_sum / abs(self.net_loss_sum)
+            if self.net_loss_sum != 0
+            else (float("inf") if self.net_win_sum > 0 else 0.0)
         )
 
         # Economic quality
@@ -262,7 +267,9 @@ class PerformanceMetrics:
         cost_to_edge = (
             fee_exp_r / abs(gross_exp_r)
             if gross_exp_r != 0
-            else float("inf") if fee_exp_r > 0 else 0.0
+            else float("inf")
+            if fee_exp_r > 0
+            else 0.0
         )
 
         # Turnover

@@ -12,7 +12,6 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from datetime import datetime
-from typing import Optional
 
 from trading_bot.domain.enums.kill_switch import (
     KillSwitchAction,
@@ -37,8 +36,8 @@ class KillSwitch:
     _history: list[tuple[KillSwitchState, KillSwitchState, KillSwitchAction, datetime]] = field(
         default_factory=list
     )
-    _activated_at: Optional[datetime] = None
-    _activation_reason: Optional[str] = None
+    _activated_at: datetime | None = None
+    _activation_reason: str | None = None
 
     @property
     def state(self) -> KillSwitchState:
@@ -51,7 +50,7 @@ class KillSwitch:
     def activate(
         self,
         action: KillSwitchAction,
-        target: Optional[KillSwitchState] = None,
+        target: KillSwitchState | None = None,
         reason: str = "",
     ) -> None:
         """Activate kill switch.
@@ -91,7 +90,9 @@ class KillSwitch:
         self._state = KillSwitchState.NORMAL
         self._activated_at = None
         self._activation_reason = None
-        self._history.append((previous, KillSwitchState.NORMAL, KillSwitchAction.USER, datetime.utcnow()))
+        self._history.append(
+            (previous, KillSwitchState.NORMAL, KillSwitchAction.USER, datetime.utcnow())
+        )
         return True
 
     def reset(self) -> None:
@@ -100,12 +101,16 @@ class KillSwitch:
         self._state = KillSwitchState.NORMAL
         self._activated_at = None
         self._activation_reason = None
-        self._history.append((previous, KillSwitchState.NORMAL, KillSwitchAction.MANUAL, datetime.utcnow()))
+        self._history.append(
+            (previous, KillSwitchState.NORMAL, KillSwitchAction.MANUAL, datetime.utcnow())
+        )
 
     def is_action_allowed(self, action: str) -> bool:
         """Check if an action is allowed under current state."""
         return is_action_allowed(self._state, action)
 
-    def get_history(self) -> list[tuple[KillSwitchState, KillSwitchState, KillSwitchAction, datetime]]:
+    def get_history(
+        self,
+    ) -> list[tuple[KillSwitchState, KillSwitchState, KillSwitchAction, datetime]]:
         """Get activation history."""
         return list(self._history)

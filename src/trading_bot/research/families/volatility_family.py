@@ -116,32 +116,36 @@ class VolatilityFamily:
         # Release upward: close above Bollinger upper band
         if current_price > bb_upper:
             stop = keltner["lower"]
-            signals.append(AlphaSignal(
-                family=self.family_name,
-                symbol=symbol,
-                timestamp=timestamp,
-                direction="LONG",
-                entry_reference=current_price,
-                structural_stop=max(stop, 0.01),
-                timeframe=str(kwargs.get("timeframe", "5m")),
-                features=feat,
-                effective_stop=stop,
-            ))
+            signals.append(
+                AlphaSignal(
+                    family=self.family_name,
+                    symbol=symbol,
+                    timestamp=timestamp,
+                    direction="LONG",
+                    entry_reference=current_price,
+                    structural_stop=max(stop, 0.01),
+                    timeframe=str(kwargs.get("timeframe", "5m")),
+                    features=feat,
+                    effective_stop=stop,
+                )
+            )
 
         # Release downward: close below Bollinger lower band
         if current_price < bb_lower:
             stop = keltner["upper"]
-            signals.append(AlphaSignal(
-                family=self.family_name,
-                symbol=symbol,
-                timestamp=timestamp,
-                direction="SHORT",
-                entry_reference=current_price,
-                structural_stop=stop,
-                timeframe=str(kwargs.get("timeframe", "5m")),
-                features=feat,
-                effective_stop=stop,
-            ))
+            signals.append(
+                AlphaSignal(
+                    family=self.family_name,
+                    symbol=symbol,
+                    timestamp=timestamp,
+                    direction="SHORT",
+                    entry_reference=current_price,
+                    structural_stop=stop,
+                    timeframe=str(kwargs.get("timeframe", "5m")),
+                    features=feat,
+                    effective_stop=stop,
+                )
+            )
 
         return signals
 

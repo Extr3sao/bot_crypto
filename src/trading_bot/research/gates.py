@@ -8,7 +8,7 @@ V0.2.4 §31: ResearchQualificationGate — full qualification with all sub-gates
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from enum import Enum
+from enum import StrEnum
 from typing import Any
 
 import structlog
@@ -18,7 +18,7 @@ from .evidence import EvidenceClass
 from .market_provenance import MarketDataProvenance
 
 
-class GateResult(str, Enum):
+class GateResult(StrEnum):
     """Gate pass/fail result."""
 
     PASS = "PASS"
@@ -102,9 +102,7 @@ class ResearchQualificationResult:
     accounting_integrity: AccountingIntegrityResult = field(
         default_factory=AccountingIntegrityResult
     )
-    market_evidence: MarketEvidenceResult = field(
-        default_factory=MarketEvidenceResult
-    )
+    market_evidence: MarketEvidenceResult = field(default_factory=MarketEvidenceResult)
     engine_operational: GateResult = GateResult.FAIL
     risk_integrity: GateResult = GateResult.FAIL
     methodology: GateResult = GateResult.FAIL
@@ -171,9 +169,7 @@ class AccountingIntegrityGate:
 
         # 1. Trade reconciliation: all trades must reconcile
         all_trades_reconciled = all(tp.reconciled for tp in trade_pnls)
-        max_error = max(
-            (tp.reconciliation_error for tp in trade_pnls), default=0.0
-        )
+        max_error = max((tp.reconciliation_error for tp in trade_pnls), default=0.0)
         trade_result = GateResult.PASS if all_trades_reconciled else GateResult.FAIL
         checks.append(
             GateCheck(
@@ -186,9 +182,7 @@ class AccountingIntegrityGate:
         )
 
         # 2. Portfolio reconciliation: sum(net_pnl) ≈ engine_delta
-        portfolio_result = (
-            GateResult.PASS if portfolio_pnl.equity_reconciled else GateResult.FAIL
-        )
+        portfolio_result = GateResult.PASS if portfolio_pnl.equity_reconciled else GateResult.FAIL
         checks.append(
             GateCheck(
                 check_id="portfolio_reconciliation",
@@ -200,9 +194,7 @@ class AccountingIntegrityGate:
         )
 
         # 3. Equity reconciliation: starting + net = final
-        reconstructed_equity = (
-            portfolio_pnl.initial_capital + portfolio_pnl.total_net_pnl
-        )
+        reconstructed_equity = portfolio_pnl.initial_capital + portfolio_pnl.total_net_pnl
         equity_error = abs(portfolio_pnl.engine_final_equity - reconstructed_equity)
         equity_result = (
             GateResult.PASS
@@ -259,7 +251,9 @@ class AccountingIntegrityGate:
         )
 
         # 6. Turnover semantics: turnover = sum(notional both sides)
-        turnover_result = GateResult.PASS if total_turnover > 0 or len(trade_pnls) == 0 else GateResult.FAIL
+        turnover_result = (
+            GateResult.PASS if total_turnover > 0 or len(trade_pnls) == 0 else GateResult.FAIL
+        )
         checks.append(
             GateCheck(
                 check_id="turnover_semantics",

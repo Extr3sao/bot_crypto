@@ -2,26 +2,29 @@
 
 from __future__ import annotations
 
-from enum import Enum, unique
+from enum import StrEnum, unique
 
 
 @unique
-class TradeDirection(str, Enum):
+class TradeDirection(StrEnum):
     """Direction of a trade position."""
+
     LONG = "LONG"
     SHORT = "SHORT"
 
 
 @unique
-class OrderSide(str, Enum):
+class OrderSide(StrEnum):
     """Side of an order."""
+
     BUY = "BUY"
     SELL = "SELL"
 
 
 @unique
-class OrderType(str, Enum):
+class OrderType(StrEnum):
     """Type of order."""
+
     MARKET = "MARKET"
     LIMIT = "LIMIT"
     STOP_MARKET = "STOP_MARKET"
@@ -32,8 +35,9 @@ class OrderType(str, Enum):
 
 
 @unique
-class ExitReason(str, Enum):
+class ExitReason(StrEnum):
     """Reason for position exit."""
+
     STOP_LOSS = "stop_loss"
     TAKE_PROFIT = "take_profit"
     SIGNAL = "signal"

@@ -2,19 +2,21 @@
 
 from __future__ import annotations
 
-from enum import Enum, unique
+from enum import StrEnum, unique
 
 
 @unique
-class SignalDirection(str, Enum):
+class SignalDirection(StrEnum):
     """Direction of a trade signal."""
+
     BUY = "buy"
     SELL = "sell"
 
 
 @unique
-class SignalState(str, Enum):
+class SignalState(StrEnum):
     """Lifecycle state of a signal."""
+
     CANDIDATE = "candidate"
     REGISTERED = "registered"
     APPROVED = "approved"
