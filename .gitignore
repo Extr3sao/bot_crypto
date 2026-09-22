@@ -101,3 +101,15 @@ docker-data/
 # patrón fijo la convención permanente.
 # ============================================================
 commit_msg*.txt
+
+# ============================================================
+# Worktrees físicos, snapshots y backups del agente —
+# NO publicar jamás: son carpetas físicas del PC local, cada
+# una apunta a una rama del MISMO repositorio (git worktree).
+# Las ramas se publican; estas carpetas NO.
+# ============================================================
+.worktrees/
+.research/
+.agentic-backup/
+.freebuff/
+his.zip
