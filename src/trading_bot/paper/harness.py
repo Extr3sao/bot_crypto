@@ -371,9 +371,7 @@ class PaperSessionRunner:
         missing = [s for s in self._broker.positions if s not in prices]
         unrealized = self._broker.unrealized_pnl(prices)
         mtm = equity + unrealized
-        gross = sum(
-            p.notional_usdt for p in self._broker.positions.values()
-        )
+        gross = sum(p.notional_usdt for p in self._broker.positions.values())
         return {
             "status": "MTM_INCOMPLETE" if missing else "MTM_OK",
             "missing_prices": missing,
