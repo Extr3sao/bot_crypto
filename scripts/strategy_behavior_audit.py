@@ -37,12 +37,7 @@ def analyze(events: list[dict[str, Any]], state: dict[str, Any] | None) -> dict[
     risk_accepted = 0
     risk_rejected = 0
     signals = 0
-    intent_keys: set[tuple[str, str, str, int]] = set()
-    intent_total = 0
-    # candle identity: symbol -> set of bar timestamps that produced signals
-    signal_bars: dict[str, set[int]] = defaultdict(set)
-    strategy_signals: Counter[str] = Counter()
-    strategies_in_rejections: Counter[str] = Counter()
+    intent_keys: set[str] = set()
     latencies: list[int] = []
 
     for e in events:
@@ -59,8 +54,7 @@ def analyze(events: list[dict[str, Any]], state: dict[str, Any] | None) -> dict[
             reason_counter[stage] += 1
             rid = str(r.get("reason", ""))
             if "duplicate_intent:PAPER-" in rid:
-                intent_total += 1
-                intent_keys.add((rid.split("PAPER-")[1][:12], stage, reason, 0))
+                intent_keys.add(rid.split("PAPER-")[1][:16])
 
     # per-symbol unique signal bars from the last portfolio snapshot is not
     # enough — use strategy provenance from state closed trades:
@@ -95,6 +89,7 @@ def analyze(events: list[dict[str, Any]], state: dict[str, Any] | None) -> dict[
         "risk_accepted": risk_accepted,
         "risk_rejected": risk_rejected,
         "duplicate_intents": duplicate_intents_from_counters,
+        "unique_intent_ids_suppressed": len(intent_keys),
         "stage_reasons": dict(stage_counter.most_common()),
         "stage_totals": dict(reason_counter.most_common()),
         "latency_ms_median": sorted(latencies)[len(latencies) // 2] if latencies else 0,
