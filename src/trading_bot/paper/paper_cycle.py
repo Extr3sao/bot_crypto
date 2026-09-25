@@ -78,6 +78,7 @@ class CycleStageCounts:
     signals_generated: int = 0
     strategy_errors: int = 0
     adapter_errors: int = 0
+    bar_close_skips: int = 0
     duplicate_intents: int = 0
     risk_accepted: int = 0
     risk_rejected: int = 0
@@ -97,6 +98,7 @@ class CycleStageCounts:
             "signals_generated": self.signals_generated,
             "strategy_errors": self.strategy_errors,
             "adapter_errors": self.adapter_errors,
+            "bar_close_skips": self.bar_close_skips,
             "duplicate_intents": self.duplicate_intents,
             "risk_accepted": self.risk_accepted,
             "risk_rejected": self.risk_rejected,
@@ -138,6 +140,19 @@ class PaperCycleEngine:
     Dependencies are canonical components only. No strategy selection
     happens here: the StrategyRouter decides, families generate, the
     SignalAdapter converts, risk approves, the broker executes.
+
+    BAR_CLOSE gate (BURN-IN-V2): ema_crossover and the other committed
+    families are pure functions of the PIT bar window (verified audit:
+    same closed candles + unchanged risk state ⇒ same alphas). When the
+    relevant state has NOT changed since the last evaluation for the same
+    latest-closed-candle, the strategy stage is skipped and the cycle
+    records ``bar_close_skips`` — Risk only sees meaningful proposals.
+    Relevant state = risk counters that can flip a decision (kill switch,
+    cooldown, daily loss, trade count) plus portfolio occupancy (open
+    positions change the broker same-side outcome) and cycle freshness
+    (a NEW snapshot timestamp means new market data may have arrived).
+    The execution idempotency layer is untouched and remains the final
+    safety barrier.
     """
 
     def __init__(
@@ -160,6 +175,12 @@ class PaperCycleEngine:
         self._broker = broker
         self._indicator_fn = indicator_fn
         self._idempotency = idempotency or IdempotencyGuard()
+        # BAR_CLOSE gate state (BURN-IN-V2): per symbol, the (bar_ts, state
+        # version) already evaluated. State version bumps when anything that
+        # could legitimately change a decision happens (risk counters,
+        # portfolio occupancy, kill switch, reconciliation restore).
+        self._bar_gate: dict[str, tuple[int, int, tuple[float, int, int, float, bool]]] = {}
+        self._state_version = 0
 
     @property
     def idempotency(self) -> IdempotencyGuard:
@@ -173,6 +194,60 @@ class PaperCycleEngine:
     def pending_intents(self) -> list[str]:
         """Snapshot of the intent ledger (durable persistence, GAP-R1)."""
         return sorted(self._idempotency.sent_cloids)
+
+    # -- BAR_CLOSE gate (BURN-IN-V2) ------------------------------------------
+
+    def bump_state_version(self, reason: str) -> None:
+        """Force re-evaluation for all symbols (legitimate state change).
+
+        Called by the runner when something that can legitimately change a
+        decision happens between cycles: a position closed (portfolio
+        changed), risk counters moved (cooldown expiry, daily reset,
+        kill-switch flip), reconciliation restored state, or a manual
+        reset. The gate must never mask these.
+        """
+        self._state_version += 1
+        self._log_state_bump(reason)
+
+    def _log_state_bump(self, reason: str) -> None:
+        import structlog
+
+        structlog.get_logger("paper_cycle").info(
+            "paper.bar_gate.state_bumped", reason=reason, version=self._state_version
+        )
+
+    def _bar_gate_allows(self, symbol: str, bars: list[OHLCV]) -> bool:
+        """True when strategy evaluation is REQUIRED for this symbol.
+
+        Skip only when ALL hold:
+        - same latest-closed-candle timestamp as the last evaluation;
+        - unchanged relevant state version (risk/portfolio/kill switch);
+        - the risk engine's snapshot is unchanged since that evaluation
+          (equity, open-position count, trades_today, daily pnl).
+
+        Anything else (new candle, state bump, restored book, counter
+        movement) ⇒ evaluate. Fail-open: unknown symbol ⇒ evaluate.
+        """
+        if not bars:
+            return True
+        latest_bar_ts = bars[-1].timestamp
+        risk_sig = self._risk_signature()
+        key = (latest_bar_ts, self._state_version, risk_sig)
+        if self._bar_gate.get(symbol) == key:
+            return False
+        self._bar_gate[symbol] = key
+        return True
+
+    def _risk_signature(self) -> tuple[float, int, int, float, bool]:
+        """Fingerprint of risk state that can flip a decision."""
+        r = self._risk
+        return (
+            round(float(getattr(r, "equity", 0.0)), 6),
+            len(getattr(r, "open_positions", {}) or {}),
+            int(getattr(r, "trades_today", 0)),
+            round(float(getattr(r, "daily_pnl", 0.0)), 6),
+            bool(getattr(r, "kill_switch_active", False)),
+        )
 
     def run_cycle_sync(
         self,
@@ -220,6 +295,14 @@ class PaperCycleEngine:
             if decision.is_no_trade or not decision.strategy_id:
                 counts.router_no_trade += 1
                 _reject(counts, symbol, "router", f"NO_TRADE:{decision.no_trade_reason}")
+                continue
+
+            # -- BAR_CLOSE gate: skip redundant same-bar evaluation --------
+            # AFTER routing (router+context stay observable every cycle) but
+            # BEFORE family generation/risk/broker (where churn lives).
+            if not self._bar_gate_allows(symbol, bars):
+                counts.bar_close_skips += 1
+                _reject(counts, symbol, "bar_gate", "same_bar_unchanged_state")
                 continue
 
             family = self._families.get(decision.family or "")

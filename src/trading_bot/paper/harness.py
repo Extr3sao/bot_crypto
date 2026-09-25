@@ -419,7 +419,12 @@ class PaperSessionRunner:
         # DEF-101: feed only the reconcile delta — never the full ledger
         # (re-feeding double-counted trades_today/daily_pnl cumulatively
         # until the daily trade limit vetoed every new intent).
-        for trade in getattr(execution_summary, "new_closed_trades", []) or []:
+        new_trades = getattr(execution_summary, "new_closed_trades", []) or []
+        if new_trades and engine is not None and hasattr(engine, "bump_state_version"):
+            # Portfolio changed (positions closed) → legitimate re-evaluation
+            # reason for the BAR_CLOSE gate (BURN-IN-V2).
+            engine.bump_state_version(f"positions_closed:{len(new_trades)}")
+        for trade in new_trades:
             try:
                 risk.record_trade_result(float(trade.pnl))
             except (TypeError, ValueError) as exc:

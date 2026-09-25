@@ -236,12 +236,21 @@ def test_duplicate_intent_exactly_one_execution() -> None:
     bars = _bars("BTC/USDT")
     ts = TS0 + 59 * 60_000
     counts1 = engine.run_cycle_sync({"BTC/USDT": list(bars)}, {"BTC/USDT": ts})
-    counts2 = engine.run_cycle_sync({"BTC/USDT": list(bars)}, {"BTC/USDT": ts})
     assert counts1.orders_created == 1
+    # BURN-IN-V2 bar-close gate: same bar + unchanged risk state ⇒ skipped
+    # BEFORE generating a duplicate submission (no wasted risk/broker work).
+    counts2 = engine.run_cycle_sync({"BTC/USDT": list(bars)}, {"BTC/USDT": ts})
     assert counts2.orders_created == 0
-    assert counts2.duplicate_intents == 1
-    # Note: engine reuses the same broker across calls here; total fills == 1
+    assert counts2.bar_close_skips == 1
+    assert counts2.duplicate_intents == 0
     assert guard.active_count == 1
+    # With a LEGITIMATE re-evaluation reason (state bumped), the cycle runs
+    # again, reaches the execution boundary, and idempotency collapses it:
+    engine.bump_state_version("test")
+    counts3 = engine.run_cycle_sync({"BTC/USDT": list(bars)}, {"BTC/USDT": ts})
+    assert counts3.orders_created == 0
+    assert counts3.duplicate_intents == 1
+    assert guard.active_count == 1  # exactly-once held through the gate
 
 
 def test_broker_none_result_counts_but_no_idempotency() -> None:
