@@ -68,11 +68,11 @@ def evaluate(fam: str, base: dict[str, Any], x2: dict[str, Any]) -> dict[str, An
 def main() -> None:
     rows: dict[str, dict[str, Any]] = {}
     # ema_crossover: committed baseline (docs/EMA_CROSSOVER_PERFORMANCE_BASELINE.json)
-    ema = json.load(open(os.path.join(DOCS, "EMA_CROSSOVER_PERFORMANCE_BASELINE.json"), encoding="utf-8"))
+    with open(os.path.join(DOCS, "EMA_CROSSOVER_PERFORMANCE_BASELINE.json"), encoding="utf-8") as fh:
+        ema = json.load(fh)
     tot = ema["totals"]
     oos = ema["splits"]["oos_W7"]
     dev = ema["splits"]["development_W1_W4"]
-    x2_net = tot["net"] * 2 - tot["gross"] * 0  # conservative: fees double, gross constant
     rows["ema_crossover"] = {
         "family": "ema_crossover",
         "status": "REJECT",
@@ -96,7 +96,8 @@ def main() -> None:
         path = os.path.join(OUTDIR, f"MULTI_FAMILY_RESULTS_{suffix}.json")
         if not fam or not os.path.exists(path):
             continue
-        data = json.load(open(path, encoding="utf-8"))
+        with open(path, encoding="utf-8") as fh:
+            data = json.load(fh)
         r = data[fam]
         rows[fam] = evaluate(fam, r["BASE"], r["2X_COST"])
 

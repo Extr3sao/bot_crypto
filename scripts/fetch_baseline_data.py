@@ -13,6 +13,7 @@ import json
 import os
 import time
 import urllib.request
+from typing import Any
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, "..", "reports", "strategy-baseline", "data")
@@ -33,8 +34,8 @@ WINDOWS: list[tuple[str, int, int, str]] = [
 ]
 
 
-def fetch_klines(symbol: str, start: int, end: int) -> list[list]:
-    rows: list[list] = []
+def fetch_klines(symbol: str, start: int, end: int) -> list[list[Any]]:
+    rows: list[list[Any]] = []
     cursor = start
     while cursor < end:
         url = (
@@ -64,7 +65,7 @@ def fetch_klines(symbol: str, start: int, end: int) -> list[list]:
 def main() -> None:
     os.makedirs(OUT, exist_ok=True)
     for sym in SYMBOLS:
-        for name, start, end, tag in WINDOWS:
+        for name, start, end, _tag in WINDOWS:
             path = os.path.join(OUT, f"{sym}_{name}.json")
             if os.path.exists(path):
                 continue

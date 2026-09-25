@@ -73,7 +73,7 @@ def rsi_series(closes: list[float], period: int = 14) -> list[float | None]:
     return out
 
 
-def atr_series(c: list[dict], period: int = 14) -> list[float | None]:
+def atr_series(c: list[dict[str, Any]], period: int = 14) -> list[float | None]:
     out: list[float | None] = [None] * len(c)
     if len(c) < period + 1:
         return out
@@ -98,7 +98,7 @@ def day_key(ts_ms: int) -> int:
     return ts_ms // 86_400_000
 
 
-def simulate(symbol: str, bars: list[dict], equity: float) -> tuple[dict[str, Any], float]:
+def simulate(symbol: str, bars: list[dict[str, Any]], equity: float) -> tuple[dict[str, Any], float]:
     closes = [b["close"] for b in bars]
     e9 = ema_series(closes, 9)
     e21 = ema_series(closes, 21)
@@ -119,26 +119,28 @@ def simulate(symbol: str, bars: list[dict], equity: float) -> tuple[dict[str, An
 
     def close_pos(price: float, ts: int, reason: str) -> None:
         nonlocal eq, pos, consec_losses
-        exit_fill = price * (1 - SLIP) if pos["side"] == "buy" else price * (1 + SLIP)
-        gross = (exit_fill - pos["entry"]) * pos["qty"] * (1 if pos["side"] == "buy" else -1)
-        fees = pos["notional"] * FEES + abs(exit_fill * pos["qty"]) * FEES
+        p = pos
+        assert p is not None
+        exit_fill = price * (1 - SLIP) if p["side"] == "buy" else price * (1 + SLIP)
+        gross = (exit_fill - p["entry"]) * p["qty"] * (1 if p["side"] == "buy" else -1)
+        fees = p["notional"] * FEES + abs(exit_fill * p["qty"]) * FEES
         net = gross - fees
         eq += net
         win = net > 0
         consec_losses = 0 if win else consec_losses + 1
         trades.append({
-            "asset": symbol, "entry_ts": pos["entry_ts"], "exit_ts": ts,
-            "side": pos["side"], "entry": pos["entry"], "exit": exit_fill,
-            "notional": pos["notional"], "gross": round(gross, 4),
+            "asset": symbol, "entry_ts": p["entry_ts"], "exit_ts": ts,
+            "side": p["side"], "entry": p["entry"], "exit": exit_fill,
+            "notional": p["notional"], "gross": round(gross, 4),
             "fees": round(fees, 4), "net": round(net, 4), "reason": reason,
-            "duration_min": round((ts - pos["entry_ts"]) / 60_000, 1),
-            "ret_pct": round(gross / pos["notional"] * 100.0, 4),
+            "duration_min": round((ts - p["entry_ts"]) / 60_000, 1),
+            "ret_pct": round(gross / p["notional"] * 100.0, 4),
         })
         pos = None
 
     for i in range(WARMUP, len(bars)):
         b = bars[i]
-        ts, o, h, l, cl = b["ts"], b["open"], b["high"], b["low"], b["close"]
+        ts, _o, h, low_, cl = b["ts"], b["open"], b["high"], b["low"], b["close"]
         # ---- day rollover / risk reset
         d = day_key(ts)
         if d != cur_day:
@@ -148,8 +150,8 @@ def simulate(symbol: str, bars: list[dict], equity: float) -> tuple[dict[str, An
             daily_locked = False
         # ---- intra-bar SL/TP on the OPEN position (uses current bar H/L)
         if pos is not None:
-            sl_hit = l <= pos["sl"] if pos["side"] == "buy" else h >= pos["sl"]
-            tp_hit = h >= pos["tp"] if pos["side"] == "buy" else l <= pos["tp"]
+            sl_hit = low_ <= pos["sl"] if pos["side"] == "buy" else h >= pos["sl"]
+            tp_hit = h >= pos["tp"] if pos["side"] == "buy" else low_ <= pos["tp"]
             if sl_hit and tp_hit:
                 close_pos(pos["sl"], ts, "stop_loss")  # stop_first
             elif sl_hit:
@@ -199,7 +201,7 @@ def simulate(symbol: str, bars: list[dict], equity: float) -> tuple[dict[str, An
     }, eq
 
 
-def aggregate(trades: list[dict]) -> dict[str, Any]:
+def aggregate(trades: list[dict[str, Any]]) -> dict[str, Any]:
     nets = [t["net"] for t in trades]
     wins = [n for n in nets if n > 0]
     losses = [n for n in nets if n <= 0]
@@ -233,7 +235,8 @@ def main() -> None:
     for f in files:
         base = os.path.basename(f)[:-5]
         sym, window = base.split("_", 1)
-        bars = json.load(open(f, encoding="utf-8"))
+        with open(f, encoding="utf-8") as fh:
+            bars = json.load(fh)
         if len(bars) < WARMUP + 100:
             continue
         res, equity = simulate(sym.replace("USDT", "/USDT"), bars, equity)
@@ -247,11 +250,13 @@ def main() -> None:
 
     n = len(all_trades)
     # DEVELOPMENT (W1-W4) / VALIDATION (W5-W6) / OOS (W7) by window order
-    def split(tr: list[dict]) -> tuple[list[dict], list[dict], list[dict]]:
+    def split(
+        tr: list[dict[str, Any]],
+    ) -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]]]:
         dev = [t for t in tr if t["window"].startswith(("W1", "W2", "W3", "W4"))]
         val = [t for t in tr if t["window"].startswith(("W5", "W6"))]
-        oos = [t for t in tr if t["window"].startswith("W7")]
-        return dev, val, oos
+        out_sample = [t for t in tr if t["window"].startswith("W7")]
+        return dev, val, out_sample
 
     dev, val, oos = split(all_trades)
     out = {

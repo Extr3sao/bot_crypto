@@ -68,12 +68,12 @@ def day_key(ts_ms: int) -> int:
     return ts_ms // 86_400_000
 
 
-def to_ohlcv(bars: list[dict]) -> list[OHLCV]:
+def to_ohlcv(bars: list[dict[str, Any]]) -> list[OHLCV]:
     return [OHLCV(symbol="X", timestamp=b["ts"], open=b["open"], high=b["high"],
                   low=b["low"], close=b["close"], volume=b["volume"]) for b in bars]
 
 
-def simulate_family(fam_id: str, symbol: str, bars: list[dict], cost_mult: float,
+def simulate_family(fam_id: str, symbol: str, bars: list[dict[str, Any]], cost_mult: float,
                     slip_mult: float) -> dict[str, Any]:
     fam = FAMILIES[fam_id]
     min_bars = MIN_BARS[fam_id]
@@ -94,30 +94,30 @@ def simulate_family(fam_id: str, symbol: str, bars: list[dict], cost_mult: float
 
     def close(price: float, ts: int, reason: str) -> None:
         nonlocal eq, pos, consec
-        fill = price * (1 - slip) if pos["side"] == "buy" else price * (1 + slip)
-        gross = (fill - pos["entry"]) * pos["qty"] * (1 if pos["side"] == "buy" else -1)
-        f = pos["notional"] * fees + abs(fill * pos["qty"]) * fees
+        pp = pos
+        assert pp is not None
+        fill = price * (1 - slip) if pp["side"] == "buy" else price * (1 + slip)
+        gross = (fill - pp["entry"]) * pp["qty"] * (1 if pp["side"] == "buy" else -1)
+        f = pp["notional"] * fees + abs(fill * pp["qty"]) * fees
         net = gross - f
         eq += net
         consec = 0 if net > 0 else consec + 1
         trades.append({"window": bars[0]["ts"], "asset": symbol, "net": round(net, 4),
                        "gross": round(gross, 4), "fees": round(f, 4), "reason": reason,
-                       "entry_ts": pos["entry_ts"], "exit_ts": ts,
-                       "duration_min": round((ts - pos["entry_ts"]) / 60_000, 1)})
+                       "entry_ts": pp["entry_ts"], "exit_ts": ts,
+                       "duration_min": round((ts - pp["entry_ts"]) / 60_000, 1)})
         pos = None
 
     for i in range(max(START_EVAL, min_bars + 1), len(bars)):
         b = bars[i]
-        ts, o, h, l, cl = b["ts"], b["open"], b["high"], b["low"], b["close"]
+        ts, _o, h, low_, cl = b["ts"], b["open"], b["high"], b["low"], b["close"]
         d = day_key(ts)
         if d != cur_day:
             cur_day, trades_today, daily_start, locked = d, 0, eq, False
         if pos is not None:
-            sl_hit = l <= pos["sl"] if pos["side"] == "buy" else h >= pos["sl"]
-            tp_hit = h >= pos["tp"] if pos["side"] == "buy" else l <= pos["tp"]
-            if sl_hit and tp_hit:
-                close(pos["sl"], ts, "stop_loss")
-            elif sl_hit:
+            sl_hit = low_ <= pos["sl"] if pos["side"] == "buy" else h >= pos["sl"]
+            tp_hit = h >= pos["tp"] if pos["side"] == "buy" else low_ <= pos["tp"]
+            if (sl_hit and tp_hit) or sl_hit:
                 close(pos["sl"], ts, "stop_loss")
             elif tp_hit:
                 close(pos["tp"], ts, "take_profit")
@@ -127,7 +127,7 @@ def simulate_family(fam_id: str, symbol: str, bars: list[dict], cost_mult: float
         if len(pit) >= min_bars:
             ohlcv = to_ohlcv(pit)
             try:
-                indicators = fam._compute_indicators(ohlcv)  # type: ignore[attr-defined]
+                indicators = fam._compute_indicators(ohlcv)
                 alphas = fam.generate(ohlcv, indicators, None)
             except Exception:
                 alphas = []
@@ -139,10 +139,9 @@ def simulate_family(fam_id: str, symbol: str, bars: list[dict], cost_mult: float
                 entry_ref = float(alpha.entry_reference)
                 stop = float(getattr(alpha, "effective_stop", 0.0) or 0.0) or float(
                     getattr(alpha, "structural_stop", 0.0) or 0.0)
-                if 0 < stop < entry_ref:
-                    sl_pct = abs(entry_ref - stop) / entry_ref * 100.0
-                else:
-                    sl_pct = 1.0  # adapter default (SHORT structural stops sit above price)
+                # adapter default when the structural stop is not below price
+                # (SHORT stops sit ABOVE price -> flat 1% default, runtime quirk)
+                sl_pct = abs(entry_ref - stop) / entry_ref * 100.0 if 0 < stop < entry_ref else 1.0
                 if sl_pct <= 0:
                     sl_pct = 1.0
                 notional = min(MAX_NOTIONAL, max(MIN_NOTIONAL, eq * (RISK_PCT / 100.0) / (sl_pct / 100.0)))
@@ -214,7 +213,8 @@ def main() -> None:
             for f in files:
                 base = os.path.basename(f)[:-5]
                 sym, window = base.split("_", 1)
-                bars = json.load(open(f, encoding="utf-8"))
+                with open(f, encoding="utf-8") as fh:
+                    bars = json.load(fh)
                 res = simulate_family(fam_id, sym.replace("USDT", "/USDT"), bars, cm, sm)
                 for t in res["trades"]:
                     t["window"] = window

@@ -15,10 +15,12 @@ from __future__ import annotations
 import glob
 import json
 import os
+import sys
 from statistics import mean
 from typing import Any
 
-import strategy_baseline_backtest as bt
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import strategy_baseline_backtest as bt  # type: ignore[import-not-found]
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 DATA = os.path.join(HERE, "..", "reports", "strategy-baseline", "data")
@@ -44,12 +46,8 @@ def run_variant(name: str, overrides: dict[str, Any]) -> dict[str, Any]:
     for f in sorted(glob.glob(os.path.join(DATA, "*.json"))):
         base = os.path.basename(f)[:-5]
         sym, window = base.split("_", 1)
-        bars = json.load(open(f, encoding="utf-8"))
-        closes = [b["close"] for b in bars]
-        e_fast = bt.ema_series(closes, fast)
-        e_slow = bt.ema_series(closes, slow)
-        # temporarily swap the module-level series by simulating with the
-        # default 9/21 path replaced through monkeypatched ema windows
+        with open(f, encoding="utf-8") as fh:
+            bars = json.load(fh)
         res, equity = _simulate_with(fast, slow, sym.replace("USDT", "/USDT"), bars, equity)
         per_window[window] = per_window.get(window, 0.0) + sum(t["net"] for t in res["trades"])
         all_trades.extend(res["trades"])
@@ -58,7 +56,7 @@ def run_variant(name: str, overrides: dict[str, Any]) -> dict[str, Any]:
             "final_equity": round(equity, 2)}
 
 
-def _simulate_with(fast: int, slow: int, symbol: str, bars: list[dict], equity: float):
+def _simulate_with(fast: int, slow: int, symbol: str, bars: list[dict[str, Any]], equity: float) -> tuple[dict[str, Any], float]:
     """Re-implements bt.simulate but with configurable EMA windows (minimal
     duplication; the rest of the contract is shared via bt constants)."""
     closes = [b["close"] for b in bars]
@@ -80,30 +78,30 @@ def _simulate_with(fast: int, slow: int, symbol: str, bars: list[dict], equity: 
 
     def close_pos(price: float, ts: int, reason: str) -> None:
         nonlocal eq, pos, consec_losses
-        exit_fill = price * (1 - bt.SLIP) if pos["side"] == "buy" else price * (1 + bt.SLIP)
-        gross = (exit_fill - pos["entry"]) * pos["qty"] * (1 if pos["side"] == "buy" else -1)
-        fees = pos["notional"] * bt.FEES + abs(exit_fill * pos["qty"]) * bt.FEES
+        pp = pos
+        assert pp is not None
+        exit_fill = price * (1 - bt.SLIP) if pp["side"] == "buy" else price * (1 + bt.SLIP)
+        gross = (exit_fill - pp["entry"]) * pp["qty"] * (1 if pp["side"] == "buy" else -1)
+        fees = pp["notional"] * bt.FEES + abs(exit_fill * pp["qty"]) * bt.FEES
         net = gross - fees
         eq += net
         consec_losses = 0 if net > 0 else consec_losses + 1
-        trades.append({"asset": symbol, "window": bars[0]["ts"], "entry_ts": pos["entry_ts"],
+        trades.append({"asset": symbol, "window": bars[0]["ts"], "entry_ts": pp["entry_ts"],
                        "exit_ts": ts, "net": round(net, 4), "gross": round(gross, 4),
                        "fees": round(fees, 4), "reason": reason,
-                       "duration_min": round((ts - pos["entry_ts"]) / 60_000, 1)})
+                       "duration_min": round((ts - pp["entry_ts"]) / 60_000, 1)})
         pos = None
 
     for i in range(bt.WARMUP, len(bars)):
         b = bars[i]
-        ts, h, l, cl = b["ts"], b["high"], b["low"], b["close"]
+        ts, h, low_, cl = b["ts"], b["high"], b["low"], b["close"]
         d = bt.day_key(ts)
         if d != cur_day:
             cur_day, trades_today, daily_start, daily_locked = d, 0, eq, False
         if pos is not None:
-            sl_hit = l <= pos["sl"] if pos["side"] == "buy" else h >= pos["sl"]
-            tp_hit = h >= pos["tp"] if pos["side"] == "buy" else l <= pos["tp"]
-            if sl_hit and tp_hit:
-                close_pos(pos["sl"], ts, "stop_loss")
-            elif sl_hit:
+            sl_hit = low_ <= pos["sl"] if pos["side"] == "buy" else h >= pos["sl"]
+            tp_hit = h >= pos["tp"] if pos["side"] == "buy" else low_ <= pos["tp"]
+            if (sl_hit and tp_hit) or sl_hit:
                 close_pos(pos["sl"], ts, "stop_loss")
             elif tp_hit:
                 close_pos(pos["tp"], ts, "take_profit")
@@ -136,10 +134,12 @@ def regime_attribution() -> dict[str, Any]:
     """Classify each window by BTC return/vol; aggregate trades per regime."""
     btc_files = {os.path.basename(f)[:-5].split("_", 1)[1]: f
                  for f in glob.glob(os.path.join(DATA, "BTCUSDT_*.json"))}
-    base = json.load(open(os.path.join(OUTDIR, "BASELINE_RESULTS.json"), encoding="utf-8"))
+    with open(os.path.join(OUTDIR, "BASELINE_RESULTS.json"), encoding="utf-8") as fh:
+        base = json.load(fh)
     regimes: dict[str, dict[str, Any]] = {}
     for window, f in sorted(btc_files.items()):
-        bars = json.load(open(f, encoding="utf-8"))
+        with open(f, encoding="utf-8") as fh:
+            bars = json.load(fh)
         ret = (bars[-1]["close"] / bars[0]["close"] - 1) * 100.0
         atr = [v for v in bt.atr_series(bars) if v is not None]
         vol = mean([a / b["close"] * 100.0 for a, b in zip(atr, bars[15:], strict=False)]) if atr else 0.0
