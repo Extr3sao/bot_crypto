@@ -6,8 +6,10 @@
 RUNTIME_CODE_VERIFIED_COMMIT = b1f427ec5daeed7cc9fe054d4b841a4952bc8f15
   (last commit touching src/ scripts/ tests/ config/ in this phase)
 VERIFICATION AT TREE HEAD   = verifier 11/11 + porcelain 0 re-executed in the
-  fresh worktree at every docs-only successor of b1f427e (f6626b6, 3570fd7,
-  e458477; last one = git rev-parse HEAD at record time)
+  fresh worktree at f6626b6, 3570fd7, e458477, and 448c38b (final HEAD =
+  git rev-parse HEAD at record time; worktrees code-identical to b1f427e,
+  `git ls-tree` diff of src/scripts/tests/config proven EMPTY; cleanup
+  worktree removed after the run — fresh-checkout procedure is repeatable)
 ```
 
 Fixed-point / self-consistency clause (terminates the hash-chase): this

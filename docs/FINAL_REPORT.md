@@ -3,9 +3,9 @@
 ```text
 PHASE: RUNTIME_HARDENING + STARTUP_RECONCILIATION + RECERTIFICATION + REAL-DATA PAPER
 HEAD BEFORE: c4a1e02
-VERIFIED_COMMIT: runtime-code commit b1f427e (+ docs-only successors, diff
-  proven empty for src/ scripts/ tests/ config/); verifier 11/11 re-executed
-  in the fresh worktree at f6626b6, 3570fd7 and at final HEAD e458477
+VERIFIED_COMMIT: runtime-code commit b1f427e (+ docs-only successors, code
+  trees proven identical via git ls-tree diff); verifier 11/11 re-executed in
+  the fresh worktree at f6626b6, 3570fd7, e458477 and at final HEAD 448c38b
   (= git rev-parse HEAD; see docs/INDEPENDENT_RECERTIFICATION.md coverage rule)
 BRANCH: main
 COMMITS (phase):
