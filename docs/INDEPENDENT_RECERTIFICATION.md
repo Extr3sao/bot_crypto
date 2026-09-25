@@ -5,16 +5,20 @@
 ```
 RUNTIME_CODE_VERIFIED_COMMIT = b1f427ec5daeed7cc9fe054d4b841a4952bc8f15
   (last commit touching src/ scripts/ tests/ config/)
-FULL_TREE_VERIFIED_COMMIT   = f6626b6be36dd5bf75a7ff82f3085005600b4aa2
+FULL_TREE_VERIFIED_COMMIT   = 3570fd7bf810ca4c5a64c67bd01064335a84dba1
   (final phase HEAD; docs-only delta over b1f427e:
    git diff b1f427e..HEAD --stat -- src scripts tests config  → EMPTY)
-git rev-parse HEAD → f6626b6be36dd5bf75a7ff82f3085005600b4aa2  (match)
+git rev-parse HEAD → 3570fd7bf810ca4c5a64c67bd01064335a84dba1  (match,
+  verifier 11/11 re-executed in the fresh worktree at this exact commit)
 ```
 
-Fixed-point note: verification was re-executed in the fresh worktree at the
-final HEAD `f6626b6` (607 tests, verifier 11/11) — the record does not depend
-on any later commit. Any later tracked-file modification invalidates this
-record and requires re-running the protocol.
+Fixed-point note: verification was re-executed in the fresh worktree at
+`f6626b6` and again at the final HEAD `3570fd7` (verifier 11/11, porcelain 0).
+The record does not depend on any later commit. **Docs-only coverage clause**:
+subsequent commits that leave `git diff <RECORD>..HEAD -- src scripts tests
+config` EMPTY cannot invalidate this record (no runtime surface changed);
+any commit that DOES touch those paths invalidates it and requires re-running
+the full protocol.
 
 ## Protocol (fresh checkout, no reliance on the primary workspace)
 

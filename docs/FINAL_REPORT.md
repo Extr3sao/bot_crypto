@@ -3,16 +3,17 @@
 ```text
 PHASE: RUNTIME_HARDENING + STARTUP_RECONCILIATION + RECERTIFICATION + REAL-DATA PAPER
 HEAD BEFORE: c4a1e02
-VERIFIED_COMMIT: f6626b6be36dd5bf75a7ff82f3085005600b4aa2 (= git rev-parse HEAD;
+VERIFIED_COMMIT: 3570fd7bf810ca4c5a64c67bd01064335a84dba1 (= git rev-parse HEAD;
   runtime-code commit = b1f427e; delta after it is docs-only, diff proven empty
-  for src/ scripts/ tests/ config/; fresh-worktree verifier re-run at f6626b6)
+  for src/ scripts/ tests/ config/; fresh-worktree verifier re-run at f6626b6
+  AND at 3570fd7)
 BRANCH: main
 COMMITS (phase):
   daf54af feat(paper): durable state + startup reconciliation V4 + closed-candle gate
   c21a44a fix(paper): risk engine sees restored exposure (PORTFOLIO-CONTEXT-01)
   eb0468e feat(paper): provider-output sanitization + failure-policy tests (§14)
   b1f427e chore(config): realdata profile (binance testnet, read-only)
-  f6626b6 docs(paper): hardening deliverables (contract, matrix, recert, runs)
+  f6626b6 + 3570fd7 docs(paper): hardening deliverables + recert fixed-point
 WORKTREE_STATUS: clean (porcelain = 0); reports/runs captures gitignored by policy
 
 RUNTIME ENTRYPOINT: scripts/start_paper_trading.py (PAPER-only)
