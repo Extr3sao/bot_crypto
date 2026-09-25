@@ -343,6 +343,14 @@ class PaperSessionRunner:
                 self._log.warning("paper.cycle.risk_record_failed", error=str(exc))
 
     def _sync_risk_equity(self) -> None:
+        """Sync the risk engine with the REAL paper book (equity + positions).
+
+        PORTFOLIO-CONTEXT-01: exposure-dependent decisions must see the
+        portfolio state at decision time. Without the position map below,
+        ``max_open_positions`` and the exposure clamp would operate on an
+        empty book while the broker actually holds positions (zero-
+        exposure assumption — forbidden after a restart).
+        """
         broker = self._broker
         engine = self._cycle_engine
         if broker is None or engine is None:
@@ -352,6 +360,15 @@ class PaperSessionRunner:
             try:
                 risk.equity = float(broker.equity)
                 risk.peak_equity = max(risk.peak_equity, risk.equity)
+                risk.open_positions = {
+                    symbol: {
+                        "notional_usdt": float(p.notional_usdt),
+                        "side": str(p.side),
+                        "entry_price": float(p.entry_price),
+                        "quantity": float(p.quantity),
+                    }
+                    for symbol, p in broker.positions.items()
+                }
             except (TypeError, ValueError):
                 self._log.warning("paper.cycle.risk_equity_sync_failed")
 

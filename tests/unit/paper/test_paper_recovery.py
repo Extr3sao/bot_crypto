@@ -35,6 +35,7 @@ import pytest
 from trading_bot.execution.idempotency import IdempotencyGuard
 from trading_bot.market_data.types import OHLCV
 from trading_bot.paper.broker import PaperBroker
+from trading_bot.paper.harness import PaperSessionRunner
 from trading_bot.paper.paper_cycle import PaperCycleEngine
 from trading_bot.paper.paper_state_store import PaperStateStore
 from trading_bot.paper.reconciliation_v4 import (
@@ -450,6 +451,71 @@ def test_duplicate_broker_callback_is_suppressed(tmp_path) -> None:
 # ---------------------------------------------------------------------------
 # H: closed trade persisted -> equity reconstructs exactly
 # ---------------------------------------------------------------------------
+
+
+def test_restored_exposure_reaches_risk_before_new_decision(tmp_path) -> None:
+    """PORTFOLIO-CONTEXT-01: never 'restart -> empty portfolio -> risk
+    assumes zero exposure'. After reconciliation the risk engine must see
+    the restored open positions BEFORE evaluating any new signal (max-open
+    and exposure-clamp gates operate on the real book)."""
+    store = PaperStateStore(tmp_path / "state.json")
+    broker1 = PaperBroker(equity=10_000.0)
+    risk1 = RiskManager(risk=_risk_settings(), equity=10_000.0)
+    guard1 = IdempotencyGuard()
+    engine1 = _build_engine(broker1, risk=risk1, guard=guard1)
+    bars = _bars("BTC/USDT")
+    ts = TS0 + 59 * 60_000
+    c1 = engine1.run_cycle_sync({"BTC/USDT": list(bars)}, {"BTC/USDT": ts})
+    assert c1.orders_created == 1
+
+    _extract(store, "run-EXP", broker1, risk1, guard1)
+
+    broker2 = PaperBroker(equity=10_000.0)
+    risk2 = RiskManager(risk=_risk_settings(), equity=10_000.0)
+    guard2 = IdempotencyGuard()
+    report = _reconcile(store, broker2, risk2, guard2)
+    assert report.status == ReconciliationStatusV4.RECOVERED
+
+    # Simulate the runner's pre-cycle sync on the restored book:
+    probe = _SyncProbe(broker2, risk2)
+    PaperSessionRunner._sync_risk_equity(probe)
+    assert risk2.open_positions, "risk must see restored exposure"
+    assert next(iter(risk2.open_positions.values()))["notional_usdt"] > 0
+
+    # With the restored exposure visible, a max_open_positions=0 policy
+    # hard-vetoes instead of trading blind over a hidden position:
+    tight_settings = _risk_settings().model_copy(update={"max_open_positions": 0})
+    tight = RiskManager(risk=tight_settings, equity=broker2.equity)
+    tight.open_positions = dict(risk2.open_positions)
+    from trading_bot.strategies.types import Signal
+
+    sig = Signal(
+        symbol="ETH/USDT",
+        side="buy",
+        strategy_name="x",
+        timeframe="5m",
+        confidence=0.9,
+        price=100.0,
+    )
+    check = tight.check_signal(sig)
+    assert not check.approved and check.blocked_by == "max_positions"
+
+
+class _SyncProbe:
+    """Attribute stand-in for the runner's _sync_risk_equity helper."""
+
+    def __init__(self, broker: PaperBroker, risk: RiskManager) -> None:
+        self._broker = broker
+        self._cycle_engine = _EngineProbe(risk)
+
+
+class _EngineProbe:
+    def __init__(self, risk: RiskManager) -> None:
+        self._risk = risk
+
+    @property
+    def risk_manager(self) -> RiskManager:
+        return self._risk
 
 
 def test_closed_trade_reconstruction_across_restart(tmp_path) -> None:
