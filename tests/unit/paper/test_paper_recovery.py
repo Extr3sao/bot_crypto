@@ -614,3 +614,75 @@ def test_reconcile_session_feeds_only_delta_to_risk() -> None:
     assert risk.trades_today == 1  # NOT 6 (double-count regression)
     assert risk.daily_pnl == pytest.approx(s2.new_closed_trades[0].pnl)
     assert isinstance(sN, PaperExecutionSummary)
+
+
+# ---------------------------------------------------------------------------
+# DEF-205 (burn-in V2): zero/non-positive prices must NEVER close positions
+# ---------------------------------------------------------------------------
+
+
+def test_zero_price_never_closes_position() -> None:
+    """DEF-205 regression: the scanner emits inactive snapshots with
+    last_price=0.0. Honoring that as a mark price closed a live BTC position
+    at price 0 (-100% notional) and tripped the Daily loss limit cascade.
+    Fail-closed: price <= 0 must behave like a missing price (skip)."""
+    from trading_bot.strategies.types import Signal
+
+    broker = PaperBroker(equity=10_000.0)
+    sig = Signal(
+        symbol="BTC/USDT",
+        side="buy",
+        strategy_name="t",
+        timeframe="5m",
+        confidence=0.9,
+        price=84_000.0,
+        metadata={"notional_usdt": 500.0},
+    )
+    broker.execute_signal(sig)
+    equity_before = broker.equity
+
+    # Zero price: skip (no close), exactly like a missing price.
+    assert broker.check_positions({"BTC/USDT": 0.0}) == []
+    assert len(broker.positions) == 1
+    assert broker.equity == pytest.approx(equity_before)
+
+    # Negative price: also rejected.
+    assert broker.check_positions({"BTC/USDT": -1.0}) == []
+    assert len(broker.positions) == 1
+
+    # A genuinely low-but-valid price still closes (SL) — fail-closed must
+    # not suppress legitimate exits. (Exit price carries the broker's
+    # slippage: fill = trigger * (1 - slippage_bps/1e4) for a buy close.)
+    closed = broker.check_positions({"BTC/USDT": 80_000.0})
+    assert len(closed) == 1
+    assert closed[0].exit_price == pytest.approx(80_000.0 * 0.9999)
+    assert closed[0].exit_reason == "stop_loss"
+
+
+def test_reconcile_session_with_zero_price_snapshot_keeps_position() -> None:
+    """End-to-end DEF-205 path: an inactive snapshot (last_price=0.0) flowing
+    through reconcile_session must not close the position nor move equity."""
+    from trading_bot.strategies.types import Signal
+
+    broker = PaperBroker(equity=10_000.0)
+    risk = RiskManager(risk=_risk_settings(), equity=10_000.0)
+    sig = Signal(
+        symbol="BTC/USDT",
+        side="buy",
+        strategy_name="t",
+        timeframe="5m",
+        confidence=0.9,
+        price=84_000.0,
+        metadata={"notional_usdt": 500.0},
+    )
+    broker.execute_signal(sig)
+    equity_after_open = broker.equity
+
+    class _DeadSnap:
+        symbol = "BTC/USDT"
+        last_price = 0.0
+
+    summary = broker.reconcile_session("dead", [_DeadSnap()], risk)
+    assert len(summary.new_closed_trades) == 0
+    assert len(broker.positions) == 1
+    assert broker.equity == pytest.approx(equity_after_open)

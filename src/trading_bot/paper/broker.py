@@ -311,6 +311,13 @@ class PaperBroker:
         Uses only the close price. For OHLC-based checking, use
         ``check_positions_ohlc`` instead.
 
+        Fail-closed (DEF-205): prices <= 0 are NEVER valid mark prices.
+        An inactive scanner snapshot carries ``last_price=0.0``; honoring
+        it would close positions at price zero (observed in
+        PAPER-BURN-IN-V2: BTC position closed at 0 → -100% notional loss
+        and a cascading Daily loss limit lockout). Such prices are
+        skipped exactly like missing ones.
+
         Returns list of closed trades (if any SL/TP triggered).
         """
         closed: list[ClosedTrade] = []
@@ -319,7 +326,7 @@ class PaperBroker:
             if symbol not in self._positions:
                 continue
             price = prices.get(symbol)
-            if price is None:
+            if price is None or price <= 0:
                 continue
             pos = self._positions[symbol]
             exit_reason = pos.check_exit(price)
