@@ -170,6 +170,10 @@ class PaperCycleEngine:
         """Public accessor used by the runner to sync broker equity."""
         return self._risk
 
+    def pending_intents(self) -> list[str]:
+        """Snapshot of the intent ledger (durable persistence, GAP-R1)."""
+        return sorted(self._idempotency.sent_cloids)
+
     def run_cycle_sync(
         self,
         history: dict[str, list[OHLCV]],

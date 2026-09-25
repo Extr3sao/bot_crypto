@@ -238,6 +238,43 @@ class RiskManager:
         self.trades_today = 0
         self.consecutive_losses = 0
 
+    def restore_state(
+        self,
+        *,
+        daily_pnl: float,
+        weekly_pnl: float,
+        trades_today: int,
+        consecutive_losses: int,
+        peak_equity: float,
+        open_positions: dict[str, Any],
+        kill_switch_active: bool,
+    ) -> None:
+        """Restore counters from durable state (GAP-R1 hardening).
+
+        MUST be called before the first ``check_signal`` after a restart so
+        daily-loss/drawdown/cooldown limits see pre-restart exposure.
+        Deterministic field assignment — no policy decisions here.
+        """
+        self.daily_pnl = float(daily_pnl)
+        self.weekly_pnl = float(weekly_pnl)
+        self.trades_today = int(trades_today)
+        self.consecutive_losses = int(consecutive_losses)
+        self.peak_equity = float(peak_equity)
+        self.open_positions = dict(open_positions)
+        self._kill_switch_active = bool(kill_switch_active)
+
+    def extract_state(self) -> dict[str, Any]:
+        """JSON-safe counter snapshot for the durable store."""
+        return {
+            "daily_pnl": self.daily_pnl,
+            "weekly_pnl": self.weekly_pnl,
+            "trades_today": self.trades_today,
+            "consecutive_losses": self.consecutive_losses,
+            "peak_equity": self.peak_equity,
+            "open_positions": {},
+            "kill_switch_active": self._kill_switch_active,
+        }
+
     def snapshot(self) -> dict[str, Any]:
         """Read-only snapshot of risk state."""
         drawdown_pct = (

@@ -17,6 +17,7 @@ import argparse
 import asyncio
 import json
 import sys
+import time
 from collections.abc import Callable, Sequence
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
@@ -59,6 +60,22 @@ def parse_args() -> argparse.Namespace:
         help="Data provider: fake (demo, no credentials) or ccxt (read-only)",
     )
     parser.add_argument("--config-dir", default="config", help="Config directory (default config)")
+    parser.add_argument(
+        "--state-path",
+        default=None,
+        help=(
+            "Durable paper-state file (default data/storage/paper_state.json; "
+            "PAPER_STATE_PATH env overrides for tests)"
+        ),
+    )
+    parser.add_argument(
+        "--fresh",
+        action="store_true",
+        help=(
+            "Rotate any existing durable state before starting (explicit fresh "
+            "book). Default is fail-closed recovery of the persisted book."
+        ),
+    )
     return parser.parse_args()
 
 
@@ -157,6 +174,29 @@ def _default_indicators(candles: Sequence[OHLCV]) -> dict[str, Any]:
     return out
 
 
+def _default_state_path() -> Path:
+    import os
+
+    env_path = os.environ.get("PAPER_STATE_PATH", "")
+    if env_path:
+        return Path(env_path)
+    return Path("data/storage/paper_state.json")
+
+
+def _rotate_state(path: Path) -> None:
+    """Explicit fresh-book request: back up the existing state, never delete.
+
+    The previous book stays on disk as ``<name>.<ts>.bak`` so no economic
+    history is silently destroyed ( destruction requires a human action).
+    """
+    if not path.exists():
+        return
+    stamp = int(time.time_ns() // 1_000_000)
+    backup = path.with_name(f"{path.name}.{stamp}.bak")
+    path.replace(backup)
+    print(f"[startup] --fresh: previous state rotated to {backup}")
+
+
 def build_cycle_engine(settings: Settings, broker: PaperBroker) -> PaperCycleEngine:
     """Compose the canonical decision cycle (CP-PO-002, FASE 7B-8B).
     Uses ONLY canonical components: CryptoAssetAgentRegistry (context),
@@ -236,29 +276,70 @@ async def main() -> int:
         return 1
 
     from trading_bot.paper.broker import PaperBroker
+    from trading_bot.paper.paper_runtime_state import save_session_state
+    from trading_bot.paper.paper_state_store import PaperStateStore
+    from trading_bot.paper.reconciliation_v4 import StartupReconcilerV4
     from trading_bot.paper.snapshot_history import FetcherBarReader
+
+    state_path = Path(args.state_path) if args.state_path else _default_state_path()
+    if args.fresh:
+        _rotate_state(state_path)
 
     scanner_factory, data_source = build_scanner_factory(settings, args.provider)
     broker = PaperBroker(equity=args.balance)
     cycle_engine = build_cycle_engine(settings, broker)
-
-    orchestrator = PaperOrchestrator(
-        settings=settings,
-        scanner_factory=scanner_factory,
+    store = PaperStateStore(state_path)
+    reconciler = StartupReconcilerV4(
+        store=store,
         broker=broker,
-        max_sessions=args.max_cycles,
-        interval_seconds=args.interval,
-        cycle_engine=cycle_engine,
-        cycle_history_reader=FetcherBarReader(data_source),
+        risk_manager=cycle_engine.risk_manager,
+        idempotency=cycle_engine.idempotency,
     )
+    report = reconciler.reconcile()
+    print("[startup] reconciliation=" + report.status)
+    if report.status in ("RECOVERED", "FATAL", "MISMATCH"):
+        print(json.dumps(report.to_dict(), ensure_ascii=False, indent=2, default=str))
+    if report.status == "FATAL":
+        print(
+            "Refusing to start: durable paper state is unreadable/corrupt "
+            "(fail closed). Inspect the .corrupt backup and resolve manually.",
+            file=sys.stderr,
+        )
+        return 1
+
+    async def _run_with_persistence() -> dict[str, Any]:
+        orchestrator = PaperOrchestrator(
+            settings=settings,
+            scanner_factory=scanner_factory,
+            broker=broker,
+            max_sessions=args.max_cycles,
+            interval_seconds=args.interval,
+            cycle_engine=cycle_engine,
+            cycle_history_reader=FetcherBarReader(data_source, timeframe=args.timeframe),
+            state_store=store,
+        )
+        try:
+            await orchestrator.run()
+        finally:
+            # Final durable snapshot (belt and braces: the runner already
+            # persists after every session; this covers interval-timer deaths).
+            save_session_state(
+                store=store,
+                run_id=report.restored_run_id or "",
+                broker=broker,
+                risk=cycle_engine.risk_manager,
+                idempotency=cycle_engine.idempotency,
+            )
+            print("[startup] paper state saved to " + str(store.path))
+        return orchestrator.status()
 
     print(
         f"Starting PAPER trading loop — assets={assets} timeframe={args.timeframe} "
         f"interval={args.interval}s provider={args.provider} balance={args.balance}"
     )
-    await orchestrator.run()
+    status = await _run_with_persistence()
     print("Paper trading loop stopped.")
-    print(json.dumps(orchestrator.status(), ensure_ascii=False, indent=2, default=str))
+    print(json.dumps(status, ensure_ascii=False, indent=2, default=str))
     return 0
 
 

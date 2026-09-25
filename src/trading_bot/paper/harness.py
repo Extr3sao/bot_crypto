@@ -125,6 +125,8 @@ class PaperSessionRunner:
         cycle_engine: PaperCycleEngine | RouteOnlyEngine | None = None,
         cycle_history_reader: Any | None = None,  # HistoricalBarReader
         history_lookback_bars: int = 120,
+        # -- GAP-R1 durable state (optional; default off) --------------------
+        state_store: Any | None = None,
     ) -> None:
         self._scanner = scanner
         self._settings = settings
@@ -136,6 +138,7 @@ class PaperSessionRunner:
         self._cycle_engine = cycle_engine
         self._history_reader = cycle_history_reader
         self._history_lookback = history_lookback_bars
+        self._state_store = state_store
         self._log = structlog.get_logger(self.__class__.__module__)
 
     async def run_session(self) -> PaperSessionResult:
@@ -184,6 +187,20 @@ class PaperSessionRunner:
                 risk_events=execution_summary.risk_events,
             )
             self._record_closed_trades_in_risk(execution_summary)
+
+        if self._state_store is not None and self._broker is not None:
+            # Durable post-session snapshot (crash window = one session).
+            from trading_bot.paper.paper_runtime_state import save_session_state
+
+            engine: Any = self._cycle_engine
+            save_session_state(
+                store=self._state_store,
+                run_id=session_id,
+                broker=self._broker,
+                risk=getattr(engine, "risk_manager", None),
+                idempotency=getattr(engine, "idempotency", None),
+            )
+            log.info("paper.state.saved")
         metrics = build_session_metrics(snapshots, counters, execution_summary)
         report_markdown_path: Path | None = None
         report_json_path: Path | None = None

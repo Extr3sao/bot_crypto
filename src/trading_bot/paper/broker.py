@@ -65,6 +65,20 @@ class PaperPosition:
             return (current_price - self.entry_price) * self.quantity
         return (self.entry_price - current_price) * self.quantity
 
+    def to_row(self) -> dict[str, Any]:
+        """JSON-safe row for the durable state store (GAP-R1)."""
+        return {
+            "symbol": self.symbol,
+            "side": self.side,
+            "entry_price": self.entry_price,
+            "quantity": self.quantity,
+            "notional_usdt": self.notional_usdt,
+            "stop_loss_pct": self.stop_loss_pct,
+            "take_profit_pct": self.take_profit_pct,
+            "opened_at": self.opened_at,
+            "entry_commission": self.entry_commission,
+        }
+
     def check_exit(self, current_price: float) -> str | None:
         """Check if SL or TP is hit. Returns 'stop_loss' | 'take_profit' | None."""
         if self.side == "buy":
@@ -132,6 +146,11 @@ class PaperBroker:
     @property
     def positions(self) -> dict[str, PaperPosition]:
         return dict(self._positions)
+
+    @property
+    def closed_trades(self) -> list[ClosedTrade]:
+        """Read-only view of realized trades (observability/recovery)."""
+        return list(self._closed_trades)
 
     def __enter__(self) -> PaperBroker:
         return self
@@ -420,6 +439,71 @@ class PaperBroker:
             ending_equity=self._equity,
             risk_events=tuple(self._risk_events),
         )
+
+    # -- durable state (GAP-R1) ----------------------------------------------
+
+    def extract_state(self) -> dict[str, Any]:
+        """JSON-safe economic state for the durable store."""
+        return {
+            "equity": self._equity,
+            "initial_equity": self._initial_equity,
+            "fills_opened": self._fills_opened,
+            "fills_closed": self._fills_closed,
+        }
+
+    def closed_trades_rows(self) -> list[dict[str, Any]]:
+        """Realized trades as JSON-safe rows (true-net PnL records)."""
+        return [
+            {
+                "symbol": t.symbol,
+                "side": t.side,
+                "entry_price": t.entry_price,
+                "exit_price": t.exit_price,
+                "quantity": t.quantity,
+                "pnl": t.pnl,
+                "exit_reason": t.exit_reason,
+                "opened_at": t.opened_at,
+                "closed_at": t.closed_at,
+            }
+            for t in self._closed_trades
+        ]
+
+    def restore(
+        self,
+        *,
+        equity: float,
+        initial_equity: float,
+        fills_opened: int,
+        fills_closed: int,
+        open_positions: list[PaperPosition],
+        closed_trades: list[dict[str, Any]],
+    ) -> None:
+        """Replace the in-memory book with the persisted one (deterministic).
+
+        Callers must pass rows produced by ``closed_trades_rows`` (or an
+        identical shape). No validation here beyond types: the equity
+        identity check belongs to the reconciler (fail closed).
+        """
+        self._equity = float(equity)
+        self._initial_equity = float(initial_equity)
+        self._fills_opened = int(fills_opened)
+        self._fills_closed = int(fills_closed)
+        self._positions = {p.symbol: p for p in open_positions}
+        self._closed_trades = [ClosedTrade(**row) for row in closed_trades]
+
+    def replace_position(self, position: PaperPosition) -> None:
+        """Upsert one position (crash-recovery of the fill boundary)."""
+        self._positions[position.symbol] = position
+
+    def register_external_fill(self) -> None:
+        """Count an externally-materialized fill (reconciliation bookkeeping)."""
+        self._fills_opened += 1
+
+    def apply_pnl(self, pnl: float) -> None:
+        """Apply a realized PnL to equity without creating a trade row
+        (used only by recovery paths; normal trading always goes through
+        ``_close_position`` so the closed-trade ledger stays complete)."""
+        self._equity += float(pnl)
 
 
 __all__ = ["BrokerOrderError", "ClosedTrade", "PaperBroker", "PaperPosition"]

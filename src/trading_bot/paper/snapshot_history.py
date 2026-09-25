@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from typing import Any, Protocol
 
+from trading_bot.market_data.candle_filter import filter_completed_candles
 from trading_bot.market_data.types import OHLCV
 
 __all__ = ["FetcherBarReader", "HistoricalBarReader"]
@@ -45,10 +46,19 @@ class FetcherBarReader:
     Reuses the exact protocol ``UniverseScanner`` already consumes, so the
     paper cycle reads through the same market-data path as the scanner
     (same connector, same fake source in tests, same quota).
+
+    REAL-DATA-01 hardening: the reader now applies the canonical V3
+    closed-candle filter (``candle_filter``) with the caller-provided
+    decision timestamp, so an OPEN (forming) candle can never leak into
+    the decision window on live providers. The deterministic fake provider
+    is unaffected (its bars are stamped closed relative to ``now``).
     """
 
-    def __init__(self, fetcher: Any) -> None:  # MarketDataSource (structural)
+    def __init__(
+        self, fetcher: Any, *, timeframe: str = "5m"
+    ) -> None:  # MarketDataSource (structural)
         self._fetcher = fetcher
+        self._timeframe = timeframe
 
     async def get_ohlcv(
         self,
@@ -60,5 +70,13 @@ class FetcherBarReader:
         # ``known_count`` caps the fetch server-side so bars stamped after
         # the decision timestamp cannot be returned at all.
         bars = await self._fetcher.fetch_recent(symbol, limit=max(int(lookback_bars), 1))
+        # Fail-closed candle policy: drop the forming candle using the
+        # decision timestamp as 'current time' (deterministic; wall-clock
+        # independent). PIT trim still happens downstream (defence in depth).
+        completed = filter_completed_candles(
+            list(bars),
+            self._timeframe,
+            current_time=as_of_timestamp_ms / 1000.0,
+        )
         del as_of_timestamp_ms  # trimming happens in snapshot_context (PIT)
-        return list(bars)
+        return list(completed)

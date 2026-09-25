@@ -72,7 +72,15 @@ def test_partial_cycle_never_passes() -> None:
 
 def test_canonical_smoke_exercises_decision_path() -> None:
     """Run the REAL entrypoint (hermetic fake provider) and prove the
-    decision layer executed: contexts, router and runtime strategy calls."""
+    decision layer executed: contexts, router and runtime strategy calls.
+
+    Hermetic wrt durable paper state too: the subprocess writes its state
+    file to a private temp dir (PAPER_STATE_PATH), never to the host's
+    data/storage (GAP-R1 hardening must not make certification depend on
+    residual host state).
+    """
+    import tempfile
+
     env = dict(os.environ)
     env["CERT_HERMETIC"] = "1"
     cmd = [
@@ -87,14 +95,16 @@ def test_canonical_smoke_exercises_decision_path() -> None:
         "--interval",
         "0",
     ]
-    proc = subprocess.run(
-        cmd,
-        cwd=str(_REPO_ROOT),
-        env=env,
-        capture_output=True,
-        text=True,
-        timeout=180,
-    )
+    with tempfile.TemporaryDirectory() as tmp:
+        env["PAPER_STATE_PATH"] = str(Path(tmp) / "paper_state.json")
+        proc = subprocess.run(
+            cmd,
+            cwd=str(_REPO_ROOT),
+            env=env,
+            capture_output=True,
+            text=True,
+            timeout=180,
+        )
     stdout = proc.stdout
     assert proc.returncode == 0, (
         f"smoke exit {proc.returncode}: {stdout[-2000:]}\n{proc.stderr[-2000:]}"
