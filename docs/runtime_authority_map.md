@@ -1,0 +1,62 @@
+# Runtime Authority Map
+
+> Audited on: HEAD `5e6f963` (main, clean worktree, porcelain = 0). Date: 2026-09-25.
+> Method: import-following from entrypoints + execution evidence (verifier 11/11, paper run, pytest 582).
+> Reachability is demonstrated, not assumed: a class existing on disk does NOT imply reachability.
+
+## Runtime entrypoints (demonstrated)
+
+| Entrypoint | Path | Reachability evidence |
+| --- | --- | --- |
+| Paper loop (canonical) | `scripts/start_paper_trading.py` | Executed in this audit: DEMO-PAPER-01, exit 0, session + cycle counters emitted |
+| Independent verifier | `scripts/verify_l5_independent.py` | Executed in this audit: 11/11 PASS on clean HEAD |
+| CLI `trading-bot` | `src/trading_bot/app.py::main` | `config-check` + `scan --demo` executed; `--mode live` exists but is env-gated (out of scope of paper phase) |
+
+## Canonical paper pipeline (RUNTIME_AUTHORITATIVE)
+
+| Stage | Implementation | Runtime reachable | Authoritative | Tested | Real execution evidence | Gap |
+| --- | --- | --- | --- | --- | --- | --- |
+| Orchestration loop | `paper/paper_orchestrator.py` (PaperOrchestrator) | YES | YES (single authority, ADR-documented) | unit + e2e-001 | DEMO-PAPER-01: 2 sessions, gates re-checked each session | none |
+| Session runner | `paper/harness.py` (PaperSessionRunner) | YES | YES | unit + e2e-002/003 | DEMO-PAPER-01 + verifier runs | none |
+| Market scan | `scanner/scanner.py` (UniverseScanner) | YES | YES | 39 BDD + unit | DEMO-PAPER-01 (3 snapshots, 0 errors) | none |
+| PIT history read | `paper/snapshot_history.py` (FetcherBarReader) | YES | YES | verifier GATE-L5-09 (future-bar rejection) | verifier 11/11 on clean HEAD | none |
+| PIT trim (defence in depth) | `paper/snapshot_context.py::trim_to_pit` | YES | YES | unit + verifier | verifier | none |
+| Context/agent | `research/asset_intelligence/` (CryptoAssetAgentRegistry, BaseCryptoAssetAgent) | YES | YES (single classifier, no second regime source) | unit/research + verifier | verifier: contexts_built=3, context_errors=0 | none |
+| Regime | inside `BaseCryptoAssetAgent.build_context` (point-in-time) | YES | YES | unit | verifier | none |
+| Router | `research/strategy_router.py` (StrategyRouter) | YES | YES (single router, ADR_STRATEGY_ROUTER_CONVERGENCE) | unit + e2e | verifier + DEMO-PAPER-01 (router_invocations=3) | none |
+| Alpha families | `research/families/*.py` (6 families) | YES | YES (only families wired in entrypoint map) | unit | verifier: 3 alphas generated; DEMO-PAPER-01: 0 alphas (flat synthetic data → NO_TRADE, fail-closed) | none |
+| Signal adapter | `paper/signal_adapter.py` | YES | YES (single conversion point) | unit + e2e | verifier (alphas → signals) | none |
+| Candidate consolidation | `paper/candidate_portfolio.py` (build_portfolio) | YES | YES | unit + e2e | verifier | none |
+| Risk engine | `risk/manager.py` (RiskManager) — deterministic | YES | YES (single sizing authority; broker does NOT size) | unit + e2e + verifier negative matrix | verifier: risk reject → 0 orders | none (hard-veto proven) |
+| Idempotency | `execution/idempotency.py` (IdempotencyGuard) | YES | YES (neutral, reused) | verifier GATE-L5-08 + e2e | verifier: duplicate intent → exactly 1 execution | none |
+| Execution (paper) | `paper/broker.py` (PaperBroker) — the ONLY execution boundary | YES | YES | unit + e2e + verifier | verifier GATE-L5-10: open → reconcile → SL/TP close → realized PnL | none |
+| In-session reconciliation | `broker.reconcile_session` (SL/TP + summary + equity invariant) | YES | YES | e2e-002 + verifier | verifier: lifecycle + equity identity | none |
+| Session reporting | `paper/reporting.py` + `paper/archive.py` | YES | YES | unit | DEMO-PAPER-01: report.json/md written | none |
+| Orchestrator status | `PaperOrchestrator.status()` (JSON) | YES | YES | unit | DEMO-PAPER-01 output | none |
+| Risk feedback loop | `harness._record_closed_trades_in_risk` → `RiskManager.record_trade_result` | YES | YES | e2e + verifier | verifier: consecutive_losses incremented | none |
+
+## Legacy / superseded (classified, NOT authoritative)
+
+| Component | Path | Classification | Notes |
+| --- | --- | --- | --- |
+| StartupReconciler (broker-vs-journal) | `paper/reconciliation.py` | **ORPHAN** (runtime-unreachable) | No import in any runtime path; zero tests. V3 successor exists (`startup_recovery.py`, also orphan). Policy CLOSE_ORPHANED with `pnl=0` breakeven-fill violates V3 anti-fake-PnL rule — flagged in gap analysis, not adopted |
+| Startup recovery V3 | `paper/startup_recovery.py` | ORPHAN | RESTORE_FROM_JOURNAL/ORPHAN_RECONCILIATION_CLOSE policy is the desired semantics; never wired. See gap analysis GAP-R1 |
+| KillSwitch V2 (5-state) | `paper/kill_switch_v2.py` | **LEGACY** (superseded by ADR_PAPER_LEGACY_CONVERGENCE) | Canonical runtime uses RiskManager kill switch + broker kill_switch; v2 not reachable |
+| StrategySelector | `paper/strategy_selector.py` | **LEGACY** | Router is canonical (ADR) |
+| Parity gate | `paper/parity_gate.py` | ORPHAN | design-only, no runtime caller, no tests |
+| PortfolioManager (paper) | `paper/portfolio_manager.py` | ORPHAN | superseded by PaperBroker equity accounting |
+| Paper trade journal | `paper/trade_journal.py` | ORPHAN | observability journal (`observability/journal.py`) is the wired one via reporting/reconciliation paths |
+| `paper/validation.py` | `paper/validation.py` | ORPHAN | no runtime caller found |
+| CLI live paths (`app.py run --mode live`, place-order, Bitunix futures) | `app.py`, `market_data/bitunix*.py`, `execution/live_gate.py` | RUNTIME_REACHABLE (via CLI) | LIVE-capable, env-gated, **out of scope** for paper phase; audited only for accidental reachability from paper path (none: grep clean) |
+
+## Research-only (not paper-runtime)
+
+`research/` beyond the components above (qualification, gates, campaign, cross_sectional, canonical_accounting, portfolio_backtest, quant_auditor_v021, strategy_engineer, marginal, stability, confirmation, cost_integrity, data_integrity, market_provenance, calendar, historical_data, admission, equity_reconstruction, backtest_evidence, code_path, llm_safety, router_gates, strategy_sandbox): RESEARCH_ONLY — used by research/certification campaigns, not by the paper loop. `research/event_store.py` (BlockedEventStore): TEST_ONLY/ORPHAN in paper runtime.
+
+`backtesting/` engine + walk-forward: TEST_ONLY + research tooling (TSK-104 done, coverage 97.69%); not part of the paper decision loop.
+
+## Explicit NON-goals found and rejected in this audit
+
+- No second orchestrator, second router, or second sizing path exists (grep + import audit).
+- No exchange/credential import in the canonical paper cycle modules (verifier GATE-L5-17).
+- `agent_id/capability/permissions` registries, `AgentMessage` contracts, debate/critic loops, blackboard shared state, memory stores, DecisionTrace objects, `replay(run_id)` API: **ABSENT** from the codebase — classified as NOT IMPLEMENTED (not LEGACY). See gap analysis; do not confuse VNext naming with code.
