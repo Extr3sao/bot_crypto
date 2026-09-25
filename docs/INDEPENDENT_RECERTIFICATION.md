@@ -3,12 +3,18 @@
 ## VERIFIED_COMMIT
 
 ```
-VERIFIED_COMMIT = b1f427ec5daeed7cc9fe054d4b841a4952bc8f15
-git rev-parse HEAD  → b1f427ec5daeed7cc9fe054d4b841a4952bc8f15  (match)
+RUNTIME_CODE_VERIFIED_COMMIT = b1f427ec5daeed7cc9fe054d4b841a4952bc8f15
+  (last commit touching src/ scripts/ tests/ config/)
+FULL_TREE_VERIFIED_COMMIT   = f6626b6be36dd5bf75a7ff82f3085005600b4aa2
+  (final phase HEAD; docs-only delta over b1f427e:
+   git diff b1f427e..HEAD --stat -- src scripts tests config  → EMPTY)
+git rev-parse HEAD → f6626b6be36dd5bf75a7ff82f3085005600b4aa2  (match)
 ```
 
-Any later tracked-file modification invalidates this record and requires
-re-running the protocol.
+Fixed-point note: verification was re-executed in the fresh worktree at the
+final HEAD `f6626b6` (607 tests, verifier 11/11) — the record does not depend
+on any later commit. Any later tracked-file modification invalidates this
+record and requires re-running the protocol.
 
 ## Protocol (fresh checkout, no reliance on the primary workspace)
 
@@ -19,10 +25,11 @@ Executed twice this phase:
    pytest 584 · verifier 11/11 · mypy 0 · ruff clean. Resolves the prior
    report's insufficient `git status`-only closure argument.
 2. **Final-HEAD recertification (§12)** — same worktree re-checked out to
-   `b1f427e` (porcelain = 0), fresh `uv sync`, then:
+   `b1f427e` (porcelain = 0), fresh `uv sync`, then re-checked out to the
+   final phase HEAD `f6626b6` and re-run:
 
 ```
-uv run pytest tests -m "not slow and not market" -q   → 607 passed
+uv run pytest tests -m "not slow and not market" -q   → 607 passed (both runs)
 uv run python scripts/verify_l5_independent.py        → 11/11 PASS, 0 FAIL
 uv run mypy .                                         → 0 issues / 238 files
 uv run ruff check .                                   → clean
