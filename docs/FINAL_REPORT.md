@@ -3,9 +3,11 @@
 ```text
 PHASE: PAPER_OPERATIONAL_VERIFICATION (DEMO-PAPER-01 + runtime reality audit)
 BASELINE_COMMIT: 5e6f963
-FINAL_COMMIT: <this repository state: 5e6f963 + audit docs + defect fixes>
+FINAL_COMMIT: da45b5b (fix DEF-3/DEF-4) + 564f7e6 (audit docs)
 BRANCH: main
-WORKTREE_STATUS: clean at baseline (porcelain=0); audit artifacts committed on top
+WORKTREE_STATUS: clean at baseline (porcelain=0); phase artifacts committed
+  (working tree clean after final commit; reports/runs + session logs are
+  gitignored capture artifacts by policy)
 
 RUNTIME_ENTRYPOINT: scripts/start_paper_trading.py (PAPER-only; refuses non-paper)
 RUNTIME_AUTHORITY: single canonical cycle — PaperOrchestrator → PaperSessionRunner
