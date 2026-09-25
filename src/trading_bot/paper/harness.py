@@ -416,7 +416,10 @@ class PaperSessionRunner:
         risk = getattr(engine, "risk_manager", None)
         if risk is None or not hasattr(risk, "record_trade_result"):
             return
-        for trade in getattr(execution_summary, "closed_trades", []) or []:
+        # DEF-101: feed only the reconcile delta — never the full ledger
+        # (re-feeding double-counted trades_today/daily_pnl cumulatively
+        # until the daily trade limit vetoed every new intent).
+        for trade in getattr(execution_summary, "new_closed_trades", []) or []:
             try:
                 risk.record_trade_result(float(trade.pnl))
             except (TypeError, ValueError) as exc:

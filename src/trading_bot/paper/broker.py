@@ -136,6 +136,12 @@ class PaperBroker:
         self._closed_trades: list[ClosedTrade] = []
         self._fills_opened = 0
         self._fills_closed = 0
+        # BURN-IN-V1 DEF-101: count of closed trades already reported to the
+        # risk engine. reconcile_session reports ONLY the delta each call,
+        # so the runner never re-feeds historical PnL into RiskManager
+        # (a cumulative double-count that inflated trades_today/daily_pnl
+        # until the daily trade limit vetoed everything).
+        self._risk_reported_closed = 0
         self._risk_events: list[str] = []
         self._log = structlog.get_logger("paper_broker")
 
@@ -419,6 +425,10 @@ class PaperBroker:
         """Reconcile: check positions against latest snapshot prices.
 
         This is called by PaperSessionRunner after the scanner run.
+        Returns the FULL ledger (observability/reporting), but the
+        ``new_closed_trades`` field carries only the delta since the last
+        call — the runner feeds THAT to RiskManager (DEF-101: re-feeding
+        the whole ledger double-counted PnL and trade counts).
         """
         # Build price map from snapshots
         prices: dict[str, float] = {}
@@ -431,10 +441,15 @@ class PaperBroker:
         # Check positions
         self.check_positions(prices)
 
+        new_closed = tuple(self._closed_trades[self._risk_reported_closed :])
+        # Advance the report cursor: the caller feeds exactly this delta to
+        # the risk engine, so the next reconcile must not re-report it.
+        self._risk_reported_closed = len(self._closed_trades)
         return PaperExecutionSummary(
             fills_opened=self._fills_opened,
             fills_closed=self._fills_closed,
             closed_trades=tuple(self._closed_trades),
+            new_closed_trades=new_closed,
             realized_pnl=sum(t.pnl for t in self._closed_trades),
             ending_equity=self._equity,
             risk_events=tuple(self._risk_events),
@@ -490,6 +505,10 @@ class PaperBroker:
         self._fills_closed = int(fills_closed)
         self._positions = {p.symbol: p for p in open_positions}
         self._closed_trades = [ClosedTrade(**row) for row in closed_trades]
+        # Restored history was ALREADY accounted by Risk before the crash
+        # (counters travel in risk_state) — mark it as reported so the next
+        # reconcile_session does not re-feed it (DEF-101).
+        self._risk_reported_closed = len(self._closed_trades)
 
     def replace_position(self, position: PaperPosition) -> None:
         """Upsert one position (crash-recovery of the fill boundary)."""

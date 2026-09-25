@@ -551,3 +551,66 @@ def test_closed_trade_reconstruction_across_restart(tmp_path) -> None:
     assert broker2.equity == pytest.approx(broker1.equity)
     assert len(broker2.closed_trades) == 1
     assert broker2.closed_trades[0].pnl == pytest.approx(broker1.closed_trades[0].pnl)
+    # DEF-101: restored ledger is pre-reported to risk — the next reconcile
+    # delta must be EMPTY (no historical re-feed after restart).
+    assert broker2._risk_reported_closed == 1
+
+
+# ---------------------------------------------------------------------------
+# DEF-101 (burn-in): reconcile delta must not re-feed the full ledger
+# ---------------------------------------------------------------------------
+
+
+def test_reconcile_session_feeds_only_delta_to_risk() -> None:
+    """The runner calls reconcile_session every session and forwards the
+    reported trades to RiskManager. If reconcile returned the FULL ledger
+    every time, Risk would double-count trades_today/daily_pnl cumulatively
+    (observed live: trades_today=278 with 4 fills; daily limit vetoed 764
+    intents). Regression: repeated reconciles must yield an EMPTY delta
+    unless a NEW close happened, and the runner must consume that delta."""
+    from trading_bot.paper.types import PaperExecutionSummary
+    from trading_bot.strategies.types import Signal
+
+    broker = PaperBroker(equity=10_000.0)
+    risk = RiskManager(risk=_risk_settings(), equity=10_000.0)
+
+    class _Snap:
+        symbol = "SOL/USDT"
+        last_price = 100.0
+
+    # Session 1: open a position via a risk-sized signal.
+    sig = Signal(
+        symbol="SOL/USDT",
+        side="buy",
+        strategy_name="t",
+        timeframe="5m",
+        confidence=0.9,
+        price=100.0,
+        metadata={"notional_usdt": 500.0},
+    )
+    broker.execute_signal(sig)
+    s1 = broker.reconcile_session("s1", [_Snap()], risk)
+    assert len(s1.new_closed_trades) == 0  # nothing closed yet
+
+    # Session 2: the position hits take-profit -> ONE close.
+    tp_snap = _Snap
+    tp_snap.last_price = sig.price * 1.03  # > TP (2%)
+    s2 = broker.reconcile_session("s2", [tp_snap()], risk)
+    assert len(s2.new_closed_trades) == 1
+    from trading_bot.paper.harness import PaperSessionRunner
+
+    probe = _SyncProbe(broker, risk)
+    PaperSessionRunner._record_closed_trades_in_risk(probe, s2)
+    assert risk.trades_today == 1
+    assert risk.daily_pnl == pytest.approx(s2.new_closed_trades[0].pnl)
+
+    # Session 3..N: NO new closes -> delta EMPTY -> risk counters untouched
+    # (the full ledger is still present for observability).
+    for i in range(5):
+        sN = broker.reconcile_session(f"sN{i}", [_Snap()], risk)
+        assert len(sN.closed_trades) == 1  # full ledger for observability
+        assert len(sN.new_closed_trades) == 0  # delta empty
+        PaperSessionRunner._record_closed_trades_in_risk(probe, sN)
+    assert risk.trades_today == 1  # NOT 6 (double-count regression)
+    assert risk.daily_pnl == pytest.approx(s2.new_closed_trades[0].pnl)
+    assert isinstance(sN, PaperExecutionSummary)
