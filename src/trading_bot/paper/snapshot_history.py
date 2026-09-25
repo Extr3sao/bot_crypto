@@ -70,13 +70,41 @@ class FetcherBarReader:
         # ``known_count`` caps the fetch server-side so bars stamped after
         # the decision timestamp cannot be returned at all.
         bars = await self._fetcher.fetch_recent(symbol, limit=max(int(lookback_bars), 1))
+        sanitized = _sanitize_bars(list(bars))
         # Fail-closed candle policy: drop the forming candle using the
         # decision timestamp as 'current time' (deterministic; wall-clock
         # independent). PIT trim still happens downstream (defence in depth).
         completed = filter_completed_candles(
-            list(bars),
+            sanitized,
             self._timeframe,
             current_time=as_of_timestamp_ms / 1000.0,
         )
         del as_of_timestamp_ms  # trimming happens in snapshot_context (PIT)
         return list(completed)
+
+
+def _sanitize_bars(bars: list[OHLCV]) -> list[OHLCV]:
+    """Deterministic provider-output sanitization (REAL-DATA-01 policy).
+
+    Policy per failure mode (docs/REAL_DATA_PAPER_RUN.md):
+
+    - invalid timestamps (<= 0)            -> REJECT bar
+    - duplicate timestamps                 -> keep FIRST occurrence, REJECT rest
+    - out-of-order arrival                 -> REORDER ascending (context also
+                                              sorts; defense in depth)
+
+    Partial responses are NOT padded: downstream the AssetContext fails
+    closed on insufficient history ("need >= 22 bars"), and empty output
+    surfaces as a context error (observable NO_TRADE, never a silent pass).
+    """
+    seen: set[int] = set()
+    kept: list[OHLCV] = []
+    for bar in bars:
+        if bar.timestamp <= 0:
+            continue
+        if bar.timestamp in seen:
+            continue
+        seen.add(bar.timestamp)
+        kept.append(bar)
+    kept.sort(key=lambda b: b.timestamp)
+    return kept
