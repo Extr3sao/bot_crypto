@@ -333,6 +333,7 @@ class PaperSessionRunner:
                 "state_file_bytes": (
                     self._burnin_state_size() if self._state_store is not None else None
                 ),
+                "mtm": self._mtm_snapshot(list(result.snapshots)),
             }
             self._burnin_events_path.parent.mkdir(parents=True, exist_ok=True)
             with open(self._burnin_events_path, "a", encoding="utf-8") as fh:
@@ -348,6 +349,42 @@ class PaperSessionRunner:
             return os.path.getsize(self._state_store.path)
         except Exception:
             return None
+
+    def _mtm_snapshot(self, snapshots: list[Any]) -> dict[str, Any]:
+        """Mark-to-market telemetry for this cycle (BURN-IN-V2 §10).
+
+        Prices come ONLY from this cycle's scanner snapshots (which are
+        built from closed candles at or before the decision timestamp —
+        PIT-valid by construction). A position without a snapshot price is
+        reported as MTM_INCOMPLETE, never guessed.
+        """
+        if self._broker is None:
+            return {"status": "MTM_NA"}
+        prices: dict[str, float] = {}
+        for snap in snapshots:
+            symbol = str(getattr(snap, "symbol", "") or "")
+            price = getattr(snap, "last_price", None)
+            if symbol and price is not None and float(price) > 0:
+                prices[symbol] = float(price)
+        equity = float(self._broker.equity)
+        realized = equity - float(self._broker.extract_state().get("initial_equity", equity))
+        missing = [s for s in self._broker.positions if s not in prices]
+        unrealized = self._broker.unrealized_pnl(prices)
+        mtm = equity + unrealized
+        gross = sum(
+            p.notional_usdt for p in self._broker.positions.values()
+        )
+        return {
+            "status": "MTM_INCOMPLETE" if missing else "MTM_OK",
+            "missing_prices": missing,
+            "cash_realized_equity": round(equity, 6),
+            "realized_pnl": round(realized, 6),
+            "unrealized_pnl": round(unrealized, 6),
+            "equity_mtm": round(mtm, 6),
+            "gross_exposure": round(gross, 6),
+            "open_positions": len(self._broker.positions),
+            "prices_used": {s: round(p, 8) for s, p in prices.items()},
+        }
 
     # -- CP-PO-002: canonical decision cycle ---------------------------------
 
