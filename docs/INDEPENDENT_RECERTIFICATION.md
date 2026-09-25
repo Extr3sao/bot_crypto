@@ -4,21 +4,18 @@
 
 ```
 RUNTIME_CODE_VERIFIED_COMMIT = b1f427ec5daeed7cc9fe054d4b841a4952bc8f15
-  (last commit touching src/ scripts/ tests/ config/)
-FULL_TREE_VERIFIED_COMMIT   = 3570fd7bf810ca4c5a64c67bd01064335a84dba1
-  (final phase HEAD; docs-only delta over b1f427e:
-   git diff b1f427e..HEAD --stat -- src scripts tests config  → EMPTY)
-git rev-parse HEAD → 3570fd7bf810ca4c5a64c67bd01064335a84dba1  (match,
-  verifier 11/11 re-executed in the fresh worktree at this exact commit)
+  (last commit touching src/ scripts/ tests/ config/ in this phase)
+VERIFICATION AT TREE HEAD   = verifier 11/11 + porcelain 0 re-executed in the
+  fresh worktree at every docs-only successor of b1f427e (f6626b6, 3570fd7,
+  e458477; last one = git rev-parse HEAD at record time)
 ```
 
-Fixed-point note: verification was re-executed in the fresh worktree at
-`f6626b6` and again at the final HEAD `3570fd7` (verifier 11/11, porcelain 0).
-The record does not depend on any later commit. **Docs-only coverage clause**:
-subsequent commits that leave `git diff <RECORD>..HEAD -- src scripts tests
-config` EMPTY cannot invalidate this record (no runtime surface changed);
-any commit that DOES touch those paths invalidates it and requires re-running
-the full protocol.
+Fixed-point / self-consistency clause (terminates the hash-chase): this
+record names the RUNTIME commit, not a tree hash that the record itself
+would invalidate by existing. **Coverage rule**: any HEAD whose
+`git diff b1f427e..HEAD -- src scripts tests config` is EMPTY remains
+covered by this record (no runtime surface changed); any commit touching
+those paths invalidates it and requires re-running the full protocol.
 
 ## Protocol (fresh checkout, no reliance on the primary workspace)
 

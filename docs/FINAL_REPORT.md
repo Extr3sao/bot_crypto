@@ -3,10 +3,10 @@
 ```text
 PHASE: RUNTIME_HARDENING + STARTUP_RECONCILIATION + RECERTIFICATION + REAL-DATA PAPER
 HEAD BEFORE: c4a1e02
-VERIFIED_COMMIT: 3570fd7bf810ca4c5a64c67bd01064335a84dba1 (= git rev-parse HEAD;
-  runtime-code commit = b1f427e; delta after it is docs-only, diff proven empty
-  for src/ scripts/ tests/ config/; fresh-worktree verifier re-run at f6626b6
-  AND at 3570fd7)
+VERIFIED_COMMIT: runtime-code commit b1f427e (+ docs-only successors, diff
+  proven empty for src/ scripts/ tests/ config/); verifier 11/11 re-executed
+  in the fresh worktree at f6626b6, 3570fd7 and at final HEAD e458477
+  (= git rev-parse HEAD; see docs/INDEPENDENT_RECERTIFICATION.md coverage rule)
 BRANCH: main
 COMMITS (phase):
   daf54af feat(paper): durable state + startup reconciliation V4 + closed-candle gate
