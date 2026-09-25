@@ -12,6 +12,8 @@ Engine-level matrix:
 - duplicate intent → exactly one execution total
 - kill switch engaged → zero execution
 - broker result None → counted, no idempotency registration
+- broker exception → zero orders, reason recorded (fail closed)
+- signal without risk-approved notional → BrokerOrderError ⇒ 0 orders
 """
 
 from __future__ import annotations
@@ -259,6 +261,45 @@ def test_broker_none_result_counts_but_no_idempotency() -> None:
     assert c2.orders_created == 0
     assert c2.duplicate_intents == 0
     assert any(r["stage"] == "broker" for r in c2.rejections)
+
+
+def test_broker_exception_zero_orders() -> None:
+    class BoomBroker(PaperBroker):
+        def execute_signal(self, signal: Any) -> Any:
+            raise RuntimeError("broker down")
+
+    broker = BoomBroker(equity=10_000.0)
+    engine = _engine(broker=broker)
+    counts = engine.run_cycle_sync({"BTC/USDT": _bars("BTC/USDT")}, {"BTC/USDT": TS0 + 59 * 60_000})
+    assert counts.orders_created == 0
+    assert counts.broker_errors == 1
+    assert any(r["stage"] == "broker" for r in counts.rejections)
+
+
+def test_broker_rejects_signal_without_risk_notional() -> None:
+    """DEF-3: the broker never invents sizing (no silent 1%-equity fallback)."""
+    broker = PaperBroker(equity=10_000.0)
+    from trading_bot.paper.broker import BrokerOrderError
+    from trading_bot.strategies.types import Signal
+
+    sig = Signal(
+        symbol="BTC/USDT",
+        side="buy",
+        strategy_name="unsized",
+        timeframe="5m",
+        confidence=0.9,
+        price=100.0,
+        metadata={},  # no notional_usdt → pipeline integrity failure
+    )
+    try:
+        broker.execute_signal(sig)
+    except BrokerOrderError:
+        pass
+    else:
+        raise AssertionError("expected BrokerOrderError for missing notional_usdt")
+    # No position was created and no equity moved (fail loud, zero side effects).
+    assert broker.positions == {}
+    assert broker.equity == 10_000.0
 
 
 def test_pit_trim_excludes_future_bars() -> None:

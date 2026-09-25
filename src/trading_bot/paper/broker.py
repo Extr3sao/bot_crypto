@@ -2,6 +2,13 @@
 
 Replaces the TSK-105 stub with a real paper-trade simulator.
 No real orders, no exchange connection, no credentials.
+
+Fail-loud contract (DEF-3, paper operational phase): an order without a
+risk-approved ``notional_usdt`` raises ``BrokerOrderError`` — the broker
+never invents sizing, and silent fallbacks are forbidden on the decision
+path. Exceptions raised here are caught by ``PaperCycleEngine`` (stage
+``broker``, reason recorded, zero orders) or propagate to the session
+runner, which fails the session explicitly.
 """
 
 from __future__ import annotations
@@ -15,6 +22,16 @@ import structlog
 from trading_bot.strategies.types import Signal
 
 from .types import PaperExecutionSummary
+
+
+class BrokerOrderError(Exception):
+    """Raised when an order cannot be constructed deterministically.
+
+    The paper broker NEVER invents sizing: if a signal arrives without the
+    risk-approved ``notional_usdt`` metadata, this is a pipeline integrity
+    failure (Risk must have sized the order) — fail loud, never fall back to
+    a silent equity percentage.
+    """
 
 
 @dataclass(frozen=True, slots=True)
@@ -154,11 +171,17 @@ class PaperBroker:
         else:
             fill_price = signal.price / slippage_mult
 
-        # Compute quantity from position size in metadata
-        notional = signal.metadata.get("notional_usdt", 0.0)
+        # Compute quantity from position size in metadata.
+        # Risk authority invariant: execute_signal is only reachable with a
+        # risk-approved size; a missing/invalid notional means the signal
+        # bypassed the RiskManager rebuild — reject loudly instead of
+        # silently sizing at an arbitrary equity fraction (false success).
+        notional = float(signal.metadata.get("notional_usdt", 0.0) or 0.0)
         if notional <= 0:
-            # Fallback: use 1% of equity
-            notional = self._equity * 0.01
+            raise BrokerOrderError(
+                f"signal for {symbol} lacks risk-approved notional_usdt metadata "
+                "(pipeline integrity: order must be sized by RiskManager)"
+            )
 
         quantity = notional / fill_price
         commission = notional * (self._commission_bps / 10_000.0)
@@ -399,4 +422,4 @@ class PaperBroker:
         )
 
 
-__all__ = ["ClosedTrade", "PaperBroker", "PaperPosition"]
+__all__ = ["BrokerOrderError", "ClosedTrade", "PaperBroker", "PaperPosition"]
