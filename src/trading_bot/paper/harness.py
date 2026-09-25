@@ -127,6 +127,8 @@ class PaperSessionRunner:
         history_lookback_bars: int = 120,
         # -- GAP-R1 durable state (optional; default off) --------------------
         state_store: Any | None = None,
+        # -- BURN-IN-V1 observability (optional; default off) -----------------
+        burnin_events_path: Path | str | None = None,
     ) -> None:
         self._scanner = scanner
         self._settings = settings
@@ -139,6 +141,9 @@ class PaperSessionRunner:
         self._history_reader = cycle_history_reader
         self._history_lookback = history_lookback_bars
         self._state_store = state_store
+        self._burnin_events_path = (
+            Path(burnin_events_path) if burnin_events_path is not None else None
+        )
         self._log = structlog.get_logger(self.__class__.__module__)
 
     async def run_session(self) -> PaperSessionResult:
@@ -201,6 +206,7 @@ class PaperSessionRunner:
                 idempotency=getattr(engine, "idempotency", None),
             )
             log.info("paper.state.saved")
+
         metrics = build_session_metrics(snapshots, counters, execution_summary)
         report_markdown_path: Path | None = None
         report_json_path: Path | None = None
@@ -222,6 +228,9 @@ class PaperSessionRunner:
             execution_summary=execution_summary,
             cycle_counts=cycle_counts,
         )
+
+        # BURN-IN-V1: per-cycle structured event (best-effort, never fatal).
+        self._write_burnin_event(result)
 
         if self._settings.runtime.reports.paper_report:
             report_markdown_path, report_json_path = write_session_report(
@@ -268,6 +277,77 @@ class PaperSessionRunner:
             report_json_path=None if report_json_path is None else str(report_json_path),
         )
         return result
+
+    # -- burn-in observability (BURN-IN-V1) -----------------------------------
+
+    def _write_burnin_event(self, result: PaperSessionResult) -> None:
+        """Append one JSONL event per session (minimum reusable instrumentation).
+
+        Best-effort: observability must never break the trading loop. Schema
+        (docs/PAPER_BURN_IN_V1_RUN_REPORT.md): type/ts/cycle_id/latency/
+        health (HEALTHY|DEGRADED)/metrics/cycle stage counts (rejections =
+        NO_TRADE + veto reasons)/portfolio rows/pnl/data_health/state bytes.
+        """
+        if self._burnin_events_path is None:
+            return
+        try:
+            import json
+            from datetime import UTC, datetime
+
+            summary = result.execution_summary
+            cycle_counts = result.cycle_counts
+            portfolio: dict[str, Any] = {}
+            if self._broker is not None:
+                portfolio = {s: p.to_row() for s, p in self._broker.positions.items()}
+            now_ms = int(datetime.now(UTC).timestamp() * 1000)
+            degraded = bool(
+                cycle_counts is not None
+                and (cycle_counts.context_errors or cycle_counts.adapter_errors)
+            )
+            event: dict[str, Any] = {
+                "type": "paper.session",
+                "ts_ms": now_ms,
+                "cycle_id": result.session_id,
+                "started_at_ms": int(result.started_at.timestamp() * 1000),
+                "ended_at_ms": int(result.ended_at.timestamp() * 1000),
+                "latency_ms": result.duration_ms,
+                "health": "DEGRADED" if degraded else "HEALTHY",
+                "metrics": result.metrics.to_dict(),
+                "cycle": cycle_counts.to_dict() if cycle_counts is not None else None,
+                "no_trade_and_veto_reasons": [
+                    str(r.get("reason", ""))
+                    for r in (cycle_counts.rejections if cycle_counts is not None else [])
+                ],
+                "portfolio": portfolio,
+                "pnl": {
+                    "realized": float(summary.realized_pnl) if summary is not None else 0.0,
+                    "ending_equity": (
+                        float(summary.ending_equity) if summary is not None else None
+                    ),
+                },
+                "data_health": {
+                    "snapshots": result.metrics.total_snapshots,
+                    "active": result.metrics.active_snapshots,
+                    "scanner_errors": result.metrics.scanner_errors,
+                },
+                "state_file_bytes": (
+                    self._burnin_state_size() if self._state_store is not None else None
+                ),
+            }
+            self._burnin_events_path.parent.mkdir(parents=True, exist_ok=True)
+            with open(self._burnin_events_path, "a", encoding="utf-8") as fh:
+                fh.write(json.dumps(event, ensure_ascii=False, default=str) + "\n")
+        except Exception as exc:  # observability must never kill the loop
+            self._log.warning("paper.burnin.event_write_failed", error=str(exc))
+
+    def _burnin_state_size(self) -> int | None:
+        try:
+            import os
+
+            assert self._state_store is not None
+            return os.path.getsize(self._state_store.path)
+        except Exception:
+            return None
 
     # -- CP-PO-002: canonical decision cycle ---------------------------------
 

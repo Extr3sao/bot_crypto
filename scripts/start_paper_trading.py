@@ -76,6 +76,11 @@ def parse_args() -> argparse.Namespace:
             "book). Default is fail-closed recovery of the persisted book."
         ),
     )
+    parser.add_argument(
+        "--burnin-events",
+        default=None,
+        help="Append one JSONL event per session to this path (burn-in observability).",
+    )
     return parser.parse_args()
 
 
@@ -317,6 +322,7 @@ async def main() -> int:
             cycle_engine=cycle_engine,
             cycle_history_reader=FetcherBarReader(data_source, timeframe=args.timeframe),
             state_store=store,
+            burnin_events_path=args.burnin_events,
         )
         try:
             await orchestrator.run()
