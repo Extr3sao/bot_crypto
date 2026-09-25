@@ -78,9 +78,7 @@ def analyze(events: list[dict[str, Any]], state: dict[str, Any] | None) -> dict[
 
     return {
         "cycles": cycles,
-        "uptime_minutes": round(
-            (events[-1]["ts_ms"] - events[0]["ts_ms"]) / 60000.0, 1
-        )
+        "uptime_minutes": round((events[-1]["ts_ms"] - events[0]["ts_ms"]) / 60000.0, 1)
         if events
         else 0.0,
         "evaluations": evaluations,
@@ -99,8 +97,7 @@ def analyze(events: list[dict[str, Any]], state: dict[str, Any] | None) -> dict[
             "initial_equity": initial,
             "realized_net": round(equity - initial, 4),
             "open_positions": [
-                {"symbol": p.get("symbol"), "strategy": p.get("strategy_name")}
-                for p in positions
+                {"symbol": p.get("symbol"), "strategy": p.get("strategy_name")} for p in positions
             ],
             "closed_trades": len(closed),
             "trades_by_strategy": dict(strategy_trades),
