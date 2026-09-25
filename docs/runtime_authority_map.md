@@ -31,6 +31,10 @@
 | Idempotency | `execution/idempotency.py` (IdempotencyGuard) | YES | YES (neutral, reused) | verifier GATE-L5-08 + e2e | verifier: duplicate intent → exactly 1 execution | none |
 | Execution (paper) | `paper/broker.py` (PaperBroker) — the ONLY execution boundary | YES | YES | unit + e2e + verifier | verifier GATE-L5-10: open → reconcile → SL/TP close → realized PnL | none |
 | In-session reconciliation | `broker.reconcile_session` (SL/TP + summary + equity invariant) | YES | YES | e2e-002 + verifier | verifier: lifecycle + equity identity | none |
+| Durable state store (GAP-R1) | `paper/paper_state_store.py` (atomic JSON, corrupt ⇒ fail closed) | YES | YES | `test_paper_recovery.py` (9 crash cases) | RUN-C: restart → RECOVERED on real book | none |
+| Startup reconciliation V4 | `paper/reconciliation_v4.py` (StartupReconcilerV4) | YES (wired in `start_paper_trading.py`) | YES | crash matrix + RUN-C live | restart real-data run: 3 positions + 3 intents + equity identity restored | none |
+| Session state snapshot | `paper/paper_runtime_state.py` (save per session) | YES | YES | crash matrix | `paper.state.saved` events in all runs | none |
+| Closed-candle gate + provider sanitization | `paper/snapshot_history.py` (V3 filter + dedup/sort/reject) | YES | YES | `test_provider_failures.py` (13 policy cases) | REAL-DATA-PIT-CAPTURE: forming candle excluded on binance testnet | none |
 | Session reporting | `paper/reporting.py` + `paper/archive.py` | YES | YES | unit | DEMO-PAPER-01: report.json/md written | none |
 | Orchestrator status | `PaperOrchestrator.status()` (JSON) | YES | YES | unit | DEMO-PAPER-01 output | none |
 | Risk feedback loop | `harness._record_closed_trades_in_risk` → `RiskManager.record_trade_result` | YES | YES | e2e + verifier | verifier: consecutive_losses incremented | none |
@@ -39,7 +43,7 @@
 
 | Component | Path | Classification | Notes |
 | --- | --- | --- | --- |
-| StartupReconciler (broker-vs-journal) | `paper/reconciliation.py` | **ORPHAN** (runtime-unreachable) | No import in any runtime path; zero tests. V3 successor exists (`startup_recovery.py`, also orphan). Policy CLOSE_ORPHANED with `pnl=0` breakeven-fill violates V3 anti-fake-PnL rule — flagged in gap analysis, not adopted |
+| StartupReconciler V1 (broker-vs-journal) | `paper/reconciliation.py` | **ORPHAN** | Superseded by V4 (`reconciliation_v4.py`, RUNTIME_AUTHORITATIVE via entrypoint). V1's `pnl=0` breakeven-fill anti-pattern retires with it (deletion in a later cleanup phase) |
 | Startup recovery V3 | `paper/startup_recovery.py` | ORPHAN | RESTORE_FROM_JOURNAL/ORPHAN_RECONCILIATION_CLOSE policy is the desired semantics; never wired. See gap analysis GAP-R1 |
 | KillSwitch V2 (5-state) | `paper/kill_switch_v2.py` | **LEGACY** (superseded by ADR_PAPER_LEGACY_CONVERGENCE) | Canonical runtime uses RiskManager kill switch + broker kill_switch; v2 not reachable |
 | StrategySelector | `paper/strategy_selector.py` | **LEGACY** | Router is canonical (ADR) |

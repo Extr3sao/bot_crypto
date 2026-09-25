@@ -1,99 +1,95 @@
-# FINAL_REPORT — PAPER_OPERATIONAL phase
+# FINAL_REPORT — RUNTIME HARDENING phase (PAPER_RUNTIME_HARDENED_VERIFIED)
 
 ```text
-PHASE: PAPER_OPERATIONAL_VERIFICATION (DEMO-PAPER-01 + runtime reality audit)
-BASELINE_COMMIT: 5e6f963
-FINAL_COMMIT: da45b5b (fix DEF-3/DEF-4) + 564f7e6 (audit docs)
+PHASE: RUNTIME_HARDENING + STARTUP_RECONCILIATION + RECERTIFICATION + REAL-DATA PAPER
+HEAD BEFORE: c4a1e02
+VERIFIED_COMMIT: b1f427ec5daeed7cc9fe054d4b841a4952bc8f15 (= git rev-parse HEAD)
 BRANCH: main
-WORKTREE_STATUS: clean at baseline (porcelain=0); phase artifacts committed
-  (working tree clean after final commit; reports/runs + session logs are
-  gitignored capture artifacts by policy)
+COMMITS (phase):
+  daf54af feat(paper): durable state + startup reconciliation V4 + closed-candle gate
+  c21a44a fix(paper): risk engine sees restored exposure (PORTFOLIO-CONTEXT-01)
+  eb0468e feat(paper): provider-output sanitization + failure-policy tests (§14)
+  b1f427e chore(config): realdata profile (binance testnet, read-only)
+WORKTREE_STATUS: clean (porcelain = 0); reports/runs captures gitignored by policy
 
-RUNTIME_ENTRYPOINT: scripts/start_paper_trading.py (PAPER-only; refuses non-paper)
-RUNTIME_AUTHORITY: single canonical cycle — PaperOrchestrator → PaperSessionRunner
-  → UniverseScanner → FetcherBarReader(PIT) → CryptoAssetAgentRegistry →
-  StrategyRouter → AlphaFamily → SignalAdapter → CandidatePortfolio →
-  RiskManager → PaperBroker → reconcile_session → reporting
-RUNTIME_REACHABILITY: demonstrated by execution (DEMO-PAPER-01 exit 0 + verifier
-  11/11 PASS on this HEAD) — see docs/runtime_authority_map.md
+RUNTIME ENTRYPOINT: scripts/start_paper_trading.py (PAPER-only)
+REAL-DATA PROVIDER: Binance testnet spot via existing CCXT hub (read-only,
+  no credentials; config/realdata profile, CL-4 no-fallback)
+PAPER COMMAND: uv run python scripts/start_paper_trading.py --assets BTC,ETH,SOL
+  --timeframe 5m --max-cycles 2 --provider ccxt --interval 0
+  --config-dir config/realdata --state-path <path> [--fresh]
 
-IMPLEMENTED:
-- DEF-3 explicit BrokerOrderError on missing risk-approved sizing metadata
-  (no silent 1%-equity fallback; pipeline integrity enforced at the broker)
-- DEF-4 engine-level adversarial tests: broker exception ⇒ 0 orders with
-  recorded reason; unsized signal ⇒ BrokerOrderError, zero side effects
-- docs: runtime_authority_map, CURRENT_RUNTIME_AUDIT, GAP_ANALYSIS,
-  EXTERNAL_DELTA_2026 (+source registry), RUN_REPORT(.md/.json), RFC-PO-002,
-  verifier-run transcript
+STARTUP RECONCILIATION: IMPLEMENTED + EXECUTED — StartupReconcilerV4 wired;
+  statuses CONSISTENT/RECOVERED/MISMATCH/FATAL; equity identity enforced;
+  corrupt file fail-closed with .corrupt backup (docs/STARTUP_RECONCILIATION_CONTRACT.md)
+PROCESS RESUME: durable snapshot per session (crash window ≤ 1 session);
+  restart → RECOVERED proven live (RUN-C) and in 10 crash-matrix tests
+EXECUTION IDEMPOTENCY: exactly-once via durable intent ledger (pre-broker-call
+  registration) + engine/broker duplicate gates; live-suppressed 6+2+3 dups
+UNKNOWN ORDER RECOVERY: ledger marks sent-before-fill ⇒ retry suppressed
+  (fail closed); materialization only from durable position rows (tested)
+PORTFOLIO RECOVERY: broker book + risk counters + exposure map restored
+  BEFORE next decision; live veto "Max open positions reached (3)" on
+  restored book; zero-exposure assumption impossible (tested)
+DECISION TRACE RECOVERY: chain (intent→order→fill→position→closed-trade)
+  reconstructable from durable rows keyed by cloid/symbol; full
+  snapshot→strategy→signal→proposal→decision→risk→intent→order→fill→outcome
+  replay-by-run_id API remains DEFERRED P2 (recorded)
 
-UNCHANGED (deliberately): pipeline architecture, router, families, risk policy
-  values, idempotency, PIT machinery, CLI live paths (out of scope)
-
-REJECTED_CHANGES:
-- Interpretation B (agent verifier between Decision and Risk) — RFC-PO-002
-- Wiring orphan reconciliation V1 as-is (fake pnl=0 close) — GAP-R1 wants V3
-- Adding agents/AgentMessage/blackboard without measured gap — §18
-- Any LIVE-path change — out of phase scope
+TEMPORAL INTEGRITY: PASS — sanitizer→closed-candle(V3)→trim→context validation
+  (4 layers); real-feed PIT capture PASS; 13 provider-failure policy tests;
+  timeout/network errors propagate (never silent NO_TRADE)
+REAL-DATA PAPER: PASS — REAL-DATA-PAPER-01 + RUN-B/C/D on Binance testnet,
+  read-only, no credentials; forming candle excluded (PIT capture file)
+RISK BYPASS: NOT FOUND — single execute_signal call-site post-approval;
+  veto paths incl. restored-exposure max-open veto (live evidence)
+BUILDER/VERIFIER INDEPENDENCE: PROCESS_INDEPENDENCE = PASS (fresh worktree,
+  fresh venv, raw outputs, read-only verifier);
+  BUILDER_VERIFIER_ROLE_INDEPENDENCE = PARTIAL (same actor session authored
+  commits and ran verification; verifier script itself from a prior session,
+  unmodified). PARTIAL not upgraded — full PASS needs an external verifier actor
+FRESH CHECKOUT VALIDATION: PASS — ../tap_recert worktree at c4a1e02 (584/11-of-11)
+  and at b1f427e (607 tests, verifier 11/11, mypy 0/238, ruff clean, porcelain 0)
 
 TESTS:
-- unit: full unit scope pass (incl. 2 new broker adversarial tests)
-- integration: paper e2e 001/002/003 pass (v031-v033 orphaned = documented policy)
-- runtime: verifier scripts/verify_l5_independent.py 11/11 PASS on clean HEAD,
-  re-executed after fixes
-- e2e: DEMO-PAPER-01 end-to-end through the real entrypoint, exit 0,
-  re-executed after fixes
-- paper: DEMO-PAPER-01 (NO_TRADE leg) + verifier lifecycle (TRADE leg)
-- adversarial: future-bar PIT, stale data, risk rejection/exception, broker
-  failure, unsized signal, duplicate intent, invalid context, empty history —
-  all 0 orders
-- total: 584 passed, 0 failed, 0 skipped (after fixes); ruff+mypy clean
+- unit:        full unit scope green (crash matrix 10 + provider policy 13 new)
+- contract:    provider failure policy pinned (test_provider_failures.py)
+- integration: paper e2e 001/002/003 green
+- runtime:     verifier 11/11 on clean HEAD (primary + fresh worktree)
+- e2e:         RUN-A..RUN-E through the real entrypoint, exit 0 each
+- adversarial: crash boundaries A–H, unknown outcome, duplicate callback,
+               equity tampering, corrupt file, exposure visibility, forming/
+               future/stale/duplicate/out-of-order/invalid provider data
+- total:       607 passed, 0 failed, 0 skipped (myPy 0/238, ruff clean)
 
-RUNTIME_VALIDATION: PASS (single canonical path; no silent fallbacks remain on
-  the decision path; live_access surface = 0 in paper modules)
-PAPER_VALIDATION: PASS at PAPER_OPERATIONAL level (2 sessions NO_TRADE with
-  reasons + TRADE leg with full lifecycle and equity identity)
+RUN-A: deterministic NO_TRADE (fake) — fail-closed strategy stage, reasons recorded
+RUN-B: TRADE lifecycle (real data, fresh book) — 3 orders cycle 1; duplicates suppressed after
+RUN-C: crash+restart+reconciliation (real book) — RECOVERED; post-restart zero re-execution;
+       restored-exposure hard veto live
+RUN-D: duplicate/retry intent (real data) — cycle 1: 2 orders; cycle 2: 2 dups, 0 orders
+RUN-E: REAL-DATA-PAPER-01 — real feed, paper path, state persisted, PIT capture PASS
 
-DATA_TEMPORAL_INTEGRITY: PASS (3× PIT enforcement; future/stale adversarial
-  executed; no other dated inputs in path; HTF N/A — no HTF consumer)
-MULTI_AGENT_STATUS: no agentic layer in decision path (deterministic); asset
-  intelligence agents = feature builders; DO_NOT_ADOPT more without gap (§18)
-DECISION_ENGINE_STATUS: deterministic router+cycle, fail-closed, reasons recorded
-VERIFIER_STATUS: phase-level independent harness; 11/11 on clean HEAD;
-  RFC-PO-002 fixes its architectural position
-RISK_STATUS: deterministic, single authority, hard veto proven; bypass NOT FOUND
-EXECUTION_STATUS: PaperBroker-only, idempotent boundary, slippage/fees deterministic
-RECONCILIATION_STATUS: in-session PASS; startup = ORPHAN → GAP-R1 (P1)
-REPLAY_STATUS: deterministic components replayable (fingerprints + fixed data);
-  run_id replay API deferred P2
-
-FALSE_SUCCESS: 0 (every claim maps to an executed command on this HEAD; DEF-3
-  found, fixed and re-verified; two initial audit hypotheses DISPROVED and
-  recorded as corrections instead of speculative fixes; defects not hidden)
-DEFECTS: DEF-3/DEF-4 fixed this session; DEF-5 recorded (orphan module)
+FALSE_SUCCESS: 0 — every claim maps to an executed command/test on VERIFIED_COMMIT;
+  one earlier closure-proof method (git-status-only) self-corrected to fresh-checkout
+  protocol; RUN-E pre-fix observation re-anchored to final-HEAD run (both recorded)
+DEFECTS FIXED: zero-persistence restart (GAP-R1), forming-candle leak on real feeds,
+  risk zero-exposure assumption after restart, duplicate-retry across restart
+DEFECTS OPEN: none on phase scope; deferred recorded (replay API P2; MISMATCH
+  auto-repair deliberately absent; V1/V3 orphan modules awaiting cleanup phase)
 BLOCKERS: none for this phase
 
-EXTERNAL_PATTERNS_EVALUATED: PIT-01, MEMORY-TIME-01, FAIL-CLOSED-01, RESUME-01,
-  BUDGET-01, PORTFOLIO-CONTEXT-01 (+ agent-registry family)
-ADOPTED: none new (PIT-01/FAIL-CLOSED-01/PORTFOLIO-CONTEXT-01 already satisfied)
-DEFERRED: MEMORY-TIME-01, BUDGET-01 (preconditions recorded), RESUME-01 process
-  half (=GAP-R1), replay API (P2)
-REJECTED: agent-registry/AgentMessage/blackboard/debate adoption now
+EVIDENCE FILES:
+  docs/STARTUP_RECONCILIATION_CONTRACT.md   docs/CRASH_RECOVERY_MATRIX.md
+  docs/INDEPENDENT_RECERTIFICATION.md       docs/REAL_DATA_PAPER_RUN.md
+  docs/RUN_REPORT.md (+json)                docs/runtime_authority_map.md (updated)
+  docs/PAPER_OPERATIONAL_GAP_ANALYSIS.md    (GAP-R1/R5 closed)
+  reports/runs/* (raw stdout + PIT capture) tests/unit/paper/{test_paper_recovery,
+  test_provider_failures}.py
 
-EVIDENCE: docs/PAPER_L5_INDEPENDENT_VALIDATION_RUN_2026-09-25.md,
-  reports/runs/DEMO-PAPER-01-stdout.log, docs/RUN_REPORT.md(+json block),
-  docs/runtime_authority_map.md, docs/CURRENT_RUNTIME_AUDIT.md
-RUN_IDS: DEMO-PAPER-01 (+ verifier deterministic suite, 11 gates)
+FINAL STATUS: PAPER_RUNTIME_HARDENED_VERIFIED
+NOT: LIVE_READY / PRODUCTION_READY / PROFITABLE / CERTIFIED_FOR_CAPITAL
 
-ARCHITECTURE_STATUS: stable, single-path, fail-closed; no second orchestrator/
-  router/sizing path (audited)
-RFC_STATUS: RFC-PO-002 ACCEPTED (design, zero code); no other RFC warranted
-
-PAPER_OPERATIONAL_STATUS: PAPER_OPERATIONAL_VERIFIED
-NEXT_PHASE: GAP-R1 (startup reconciliation V3, P1) → repeat verifier on every
-  head → research evals per OpenPM checklist → only then consider agent-layer
-  experiments under RFC-PO-002 constraints
+NEXT PHASE (gate met): MULTI_AGENT_RUNTIME_INTEGRATION gap analysis — decide
+  which agentic capabilities are runtime-reachable and measure incremental
+  value against THIS deterministic baseline (CONTROL) before any adoption.
 ```
-
-Certification ceiling: `PAPER_OPERATIONAL_VERIFIED` (this phase). NOT
-`PRODUCTION_READY`, NOT live-trading authorization. The `live` CLI paths remain
-blocked behind explicit env gates exactly as before.

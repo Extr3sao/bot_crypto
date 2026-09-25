@@ -4,10 +4,20 @@
 
 ## GAP-R1 — Startup reconciliation is runtime-unreachable (ORPHAN)
 
-- **CLAIM**: broker-vs-journal startup alignment exists only as dead code; a resumed paper session cannot guarantee position consistency.
-- **SOURCE**: `src/trading_bot/paper/reconciliation.py` (StartupReconciler, policy CLOSE_ORPHANED with `pnl=0` breakeven fill), `src/trading_bot/paper/startup_recovery.py` (V3: RESTORE_FROM_JOURNAL / fee-aware conservative close, explicitly forbids fake `pnl=0`).
+> **RESOLVED (hardening phase, commit `daf54af` + `c21a44a`)**: durable
+> state store + StartupReconcilerV4 wired into the paper entrypoint;
+> RESTORE_EXACTLY policy with equity-identity check, fail-closed corrupt
+> file handling, intent-ledger exactly-once across restarts, risk exposure
+> sync. Contract: `docs/STARTUP_RECONCILIATION_CONTRACT.md`; evidence:
+> `tests/unit/paper/test_paper_recovery.py` (10 cases) + live RUN-C on
+> Binance testnet. V1/V3 orphan modules remain on disk (retire in cleanup).
+
+Original finding (for the record):
+
+- **CLAIM**: broker-vs-journal startup alignment existed only as dead code; a resumed paper session could not guarantee position consistency.
+- **SOURCE**: `src/trading_bot/paper/reconciliation.py` (V1, CLOSE_ORPHANED with `pnl=0` breakeven fill), `src/trading_bot/paper/startup_recovery.py` (V3: RESTORE_FROM_JOURNAL / fee-aware conservative close).
 - **EVIDENCE**: zero imports in runtime or tests (grep `from trading_bot.paper.reconciliation import` → none; `startup_recovery` → none).
-- **DECISION**: ADOPT P1 as its own work package: wire the V3 policy into `start_paper_trading.py` (before the loop), add unit tests (restore path, orphan-close path, mismatch path), delete/retire the V1 module. NOT implemented this session to keep work packages atomic; in-session reconciliation (the hot path) is already authoritative and executed.
+- **DECISION**: superseded by the V4 implementation above (durable-state restore instead of journal-restore; V1's fake-`pnl=0` policy rejected).
 
 ## GAP-R2 — Independent verifier: pre-execution agent-critic layer (design)
 
@@ -29,22 +39,21 @@
 - **EVIDENCE**: the canonical decision path contains ZERO LLM/agent calls (verifier GATE-L5-17: no network/LLM/credential surface). Deterministic components terminate by construction (single pass per symbol).
 - **DECISION**: DEFER — becomes ADOPT_P0 the day an LLM phase enters the decision path. The budget contract is recorded here as a precondition of that adoption.
 
-## GAP-R5 — RESUME-01 idempotent checkpoint resume — partially covered
+## GAP-R5 — RESUME-01 idempotent checkpoint resume — RESOLVED (hardening phase)
 
-- **CLAIM**: interrupt+resume must not duplicate side effects.
-- **EVIDENCE**: covered for the execution boundary by `IdempotencyGuard` + stable `intent_cloid` (verifier GATE-L5-08: duplicate intent → exactly one execution). NOT covered for sessions/processes: a restarted orchestrator re-scans and may re-propose the same intent in a later cycle only if the same (symbol, strategy, direction, bar) recurs — the guard already collapses that; broker additionally refuses same-symbol same-side duplicates. Open remainder = GAP-R1 (journal restore on restart), which is the only true resume hole.
-- **DECISION**: NO additional work beyond GAP-R1 for the current runtime shape.
+- **EVIDENCE NOW**: execution boundary idempotent (verifier GATE-L5-08) AND process restart idempotent — the durable intent ledger restores `sent_cloids` before the first post-restart cycle; crash-before-fill retries are suppressed (unknown outcome fails closed); live proof on real data: RUN-B/RUN-D duplicate suppression, RUN-C post-restart zero re-execution.
+- **DECISION**: closed by the same work package as GAP-R1 (V4).
 
 ## External pattern adoption matrix (EXTERNAL_DELTA_2026 summary)
 
 | Pattern | Project today | Verdict |
 | --- | --- | --- |
-| PIT-01 point-in-time everywhere | Enforced 3× on the only dated path (bars); no other dated inputs exist | ALREADY_SATISFIED (executed evidence) |
+| PIT-01 point-in-time everywhere | Enforced 4× on the only dated path (sanitizer → closed-candle filter → trim → context validation); forming candles excluded on REAL data (PIT capture) | HARDENED (executed evidence, real feed) |
 | MEMORY-TIME-01 | No memory inputs | DEFER + guardrail (GAP-R3) |
 | FAIL-CLOSED-01 ambiguous output | No LLM outputs to parse; deterministic components raise → reject+record | ALREADY_SATISFIED by construction |
-| RESUME-01 | Execution boundary idempotent; process resume = GAP-R1 | PARTIAL → GAP-R1 P1 |
+| RESUME-01 | Execution boundary + process restart idempotent (durable intent ledger) | RESOLVED (`daf54af`; RUN-C/D) |
 | BUDGET-01 | No agent phases | DEFER (GAP-R4) |
-| PORTFOLIO-CONTEXT-01 | Risk consumes live broker equity/positions each check (`equity` synced from broker; exposure computed from `open_positions`) | ALREADY_SATISFIED for the executed path (single-cycle portfolio) |
+| PORTFOLIO-CONTEXT-01 | Risk consumes restored/live broker equity AND position map each cycle | HARDENED (`c21a44a`; live veto on restored exposure) |
 | Agent registry/AgentMessage/blackboard/debate | Absent | DO_NOT_ADOPT now (no measured gap; §18 forbids adding agents without one) |
 | Replay by run_id | Deterministic engine + fingerprints + verifier; no run_id replay API | DEFER P2 (recorded, not promised) |
 
