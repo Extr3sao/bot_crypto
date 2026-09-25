@@ -47,6 +47,9 @@ class PaperPosition:
     take_profit_pct: float
     opened_at: float = field(default_factory=time.time)
     entry_commission: float = 0.0  # tracked for true-net PnL at close
+    # AUDIT-V1 provenance: originating strategy (travels to ClosedTrade for
+    # PnL-by-strategy attribution).
+    strategy_name: str = ""
 
     @property
     def stop_loss_price(self) -> float:
@@ -77,6 +80,7 @@ class PaperPosition:
             "take_profit_pct": self.take_profit_pct,
             "opened_at": self.opened_at,
             "entry_commission": self.entry_commission,
+            "strategy_name": self.strategy_name,
         }
 
     def check_exit(self, current_price: float) -> str | None:
@@ -107,6 +111,7 @@ class ClosedTrade:
     exit_reason: str  # stop_loss / take_profit / signal
     opened_at: float
     closed_at: float
+    strategy_name: str = ""  # AUDIT-V1 provenance
 
 
 class PaperBroker:
@@ -223,6 +228,7 @@ class PaperBroker:
             stop_loss_pct=sl_pct,
             take_profit_pct=tp_pct,
             entry_commission=commission,
+            strategy_name=str(signal.strategy_name or ""),
         )
 
         self._positions[symbol] = position
@@ -279,6 +285,7 @@ class PaperBroker:
             exit_reason=reason,
             opened_at=pos.opened_at,
             closed_at=time.time(),
+            strategy_name=pos.strategy_name,
         )
 
         self._closed_trades.append(trade)
@@ -455,6 +462,26 @@ class PaperBroker:
             risk_events=tuple(self._risk_events),
         )
 
+    # -- mark-to-market (AUDIT-V1 §13) ----------------------------------------
+
+    def unrealized_pnl(self, prices: dict[str, float]) -> float:
+        """Sum unrealized PnL over open positions at valid PIT prices.
+
+        Positions without a price in ``prices`` are skipped (never guessed):
+        the caller passes the latest closed-candle closes per symbol.
+        """
+        total = 0.0
+        for symbol, pos in self._positions.items():
+            price = prices.get(symbol)
+            if price is None or price <= 0:
+                continue
+            total += pos.unrealized_pnl(price)
+        return total
+
+    def mark_to_market_equity(self, prices: dict[str, float]) -> float:
+        """cash + realized + unrealized (authoritative equity + open PnL)."""
+        return self._equity + self.unrealized_pnl(prices)
+
     # -- durable state (GAP-R1) ----------------------------------------------
 
     def extract_state(self) -> dict[str, Any]:
@@ -479,6 +506,7 @@ class PaperBroker:
                 "exit_reason": t.exit_reason,
                 "opened_at": t.opened_at,
                 "closed_at": t.closed_at,
+                "strategy_name": t.strategy_name,
             }
             for t in self._closed_trades
         ]
