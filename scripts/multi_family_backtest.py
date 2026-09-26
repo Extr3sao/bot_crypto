@@ -236,7 +236,9 @@ TRADE_COLS = ["scenario", "window", "asset", "side", "entry_ts", "exit_ts", "dur
 
 
 def dump_trades_csv(fam_id: str, rows: list[dict[str, Any]]) -> None:
-    path = os.path.join(OUTDIR, f"TRADES_{fam_id}.csv")
+    ds_tf = os.environ.get("DATASET_TF", "5m")
+    tf_sfx = "" if ds_tf == "5m" else f"_{ds_tf}"
+    path = os.path.join(OUTDIR, f"TRADES_{fam_id}{tf_sfx}.csv")
     with open(path, "w", newline="", encoding="utf-8") as fh:
         w = csv.DictWriter(fh, fieldnames=TRADE_COLS)
         w.writeheader()
@@ -245,7 +247,13 @@ def dump_trades_csv(fam_id: str, rows: list[dict[str, Any]]) -> None:
 
 
 def main() -> None:
-    files = sorted(glob.glob(os.path.join(DATA, "*.json")))
+    ds_tf = os.environ.get("DATASET_TF", "5m")
+    suffix = "" if ds_tf == "5m" else f"_5m_{ds_tf}"
+    if ds_tf != "5m":
+        M_TF_MIN = float(ds_tf.rstrip("m"))
+        globals()["TF_MIN"] = M_TF_MIN
+    files = sorted(f for f in glob.glob(os.path.join(DATA, f"*{suffix}.json"))
+                   if suffix or "_5m_" not in os.path.basename(f))  # default = 5m baseline only
     scenarios = {"BASE": (1.0, 1.0), "2X_COST": (2.0, 1.0), "STRESSED_SLIPPAGE": (1.0, 5.0),
                  "ZERO_COST": (0.0, 0.0)}
     dump = os.environ.get("DUMP_TRADES", "") == "1"
@@ -297,10 +305,11 @@ def main() -> None:
             dump_trades_csv(fam_id, dump_rows)
             print(f"-> TRADES_{fam_id}.csv", flush=True)
     os.makedirs(OUTDIR, exist_ok=True)
-    suffix = f"_{fam_filter}" if fam_filter else ""
-    with open(os.path.join(OUTDIR, f"MULTI_FAMILY_RESULTS{suffix}.json"), "w", encoding="utf-8") as fh:
+    fam_sfx = f"_{fam_filter}" if fam_filter else ""
+    tf_sfx = "" if ds_tf == "5m" else f"_{ds_tf}"
+    with open(os.path.join(OUTDIR, f"MULTI_FAMILY_RESULTS{fam_sfx}{tf_sfx}.json"), "w", encoding="utf-8") as fh:
         json.dump(results, fh, indent=2)
-    print(f"-> MULTI_FAMILY_RESULTS{suffix}.json")
+    print(f"-> MULTI_FAMILY_RESULTS{fam_sfx}{tf_sfx}.json")
 
 
 if __name__ == "__main__":
