@@ -103,7 +103,7 @@ plugins = ["pydantic.mypy"]
 # the documented pytest collection policy: orphaned v031-v033 integration tests
 # import modules never committed to this repo and are excluded (see
 # tests/integration/conftest.py and docs/PAPER_L5_CERTIFICATION.md).
-mypy_path = "src"
+mypy_path = ["src", "scripts"]
 explicit_package_bases = true
 exclude = ['test_v03[123]_.*\.py$']
 

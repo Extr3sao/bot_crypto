@@ -20,7 +20,7 @@ from statistics import mean
 from typing import Any
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import strategy_baseline_backtest as bt  # type: ignore[import-not-found]
+import strategy_baseline_backtest as bt
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 DATA = os.path.join(HERE, "..", "reports", "strategy-baseline", "data")
