@@ -1,13 +1,38 @@
 # PAPER_BURN_IN_V2_FINAL — veredicto y decisión de roadmap
 
-> INTERIM: sellado con la evidencia a ~6.5h de un run que continúa hasta su
-> deadline de 12h (~03:09). La certificación final del escalón se regenera
-> al cierre del loop con la evidencia completa (close_v2.py → RUN_SUMMARY).
+> CERRADO 2026-09-26 07:51:40 RDT: el loop v3 alcanzó su deadline ("12h target
+> reached — stopping", seg=116, exit=0). Resumen final regenerado con
+> close_v2.py → RUN_SUMMARY.json (evidencia completa, 6004 ciclos).
+
+## 0. Certificación del escalón (cierre formal)
+
+- **V2_12H_WALL_REACHED — ACTUAL_RUNTIME 9.29h** (NO certifica V2_12H_STABLE):
+  el wall-clock del run fue 17.69h (25-09 14:10 → 26-09 07:51) pero el host
+  estuvo suspendido 8.40h (23:27 → 07:51); el runtime real es 9.286h.
+- El loop paró solo por deadline (no defecto). La reanudación tras la
+  suspensión de 8.4h demuestra crash-recovery real: reconciliación RECOVERED,
+  0 MISMATCH/FATAL, 0 duplicaciones económicas.
+- 6004/6004 ciclos completados: 6003 HEALTHY + 1 DEGRADED (primer ciclo
+  post-suspensión: 3 context_errors transitorios "insufficient history",
+  siguiente ciclo HEALTHY). healthy_rate 99.98%.
+- 133 restarts RECOVERED; bar-close gate 95.35% reducción de evaluaciones;
+  MTM 6004/6004 OK; scanner_errors 0.
+- Economics as-run (19 trades): net −524.55 (PF 0.05, DD 5.35%) — dominado
+  por el trade DEF-205 (−500.50 a precio 0). Ex-DEF-205 (18 trades): net
+  −24.05, PF 0.54, DD 0.30%, WR 44.4%. Consistente con el veredicto de
+  estrategia: sin edge, runtime sano.
+- DEF-205 validación post-fix (commit 51957e4, runner 20:15): 0 cierres a
+  precio 0 desde el fix. La ventana post-reset-UTC (02:00) quedó consumida
+  por la suspensión (23:27→07:51): 0 cierres nuevos post-fix — validación
+  de ausencia de recurrencia, no de trading activo.
+- Correcciones de tooling de cierre (no runtime): divisor ms→h de gaps
+  (3.6e9→3.6e6) y renombrado temporal_violations→context_errors_transitional
+  en close_v2.py; RUN_SUMMARY.json regenerado.
 
 ## 1. Veredicto ENGINEERING HEALTH — SANO
 
-- 4400+ ciclos 100% HEALTHY, 0 errores, 0 violaciones temporales
-- 76+ restarts RECOVERED, 0 MISMATCH/FATAL, 0 duplicaciones económicas
+- 6004 ciclos (99.98% HEALTHY; 1 DEGRADED transitorio post-suspensión)
+- 133 restarts RECOVERED, 0 MISMATCH/FATAL, 0 duplicaciones económicas
 - Bar-close gate: 95% churn eliminado, decisiones únicas preservadas
 - MTM 100% disponible (PIT), reconciliación de identidad intacta
 - El runtime sobrevivió colisión real de procesos (DEF-201) sin pérdida

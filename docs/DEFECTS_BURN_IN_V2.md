@@ -46,7 +46,19 @@ ausente (skip), nunca como mark price. Nunca suprime salidas legítimas
 **Tests**: 2 regresiones nuevas (zero/negative skip + reconcile end-to-end
 con snapshot muerto). Suite: 610 passed.
 
-**Validación runtime**: el runner post-fix arrancó 20:15 (> commit 19:57).
-El trade con exit=0 es historia inmutable; 0 cierres a precio 0 desde el
-fix. Validación completa de trading post-fix pendiente del reset diario UTC
-(02:00 local) que libera el lockout — dentro de la ventana del run.
+**Validación runtime (cierre)**: el runner post-fix arrancó 20:15 (> commit
+19:57). El trade con exit=0 es historia inmutable; 0 cierres a precio 0
+desde el fix en 9.29h de runtime. La ventana post-reset-UTC (02:00 local)
+quedó consumida por la suspensión del host (23:27→07:51): 0 cierres nuevos
+totales post-fix — validación de ausencia de recurrencia, no de trading
+activo post-reset. Estado: FIXED, sin recurrencia observada.
+
+## DEF-206b — BURNIN_TOOLING · P3 · FIXED (cierre)
+
+Dos errores en `close_v2.py` detectados al cierre formal: (1) divisor
+ms→h de gaps era 3.6e9 en vez de 3.6e6 — reportaba 0.008h por un gap real
+de 8.40h (suspensión del host 23:27→07:51); (2) el campo
+`temporal_violations` etiquetaba `context_errors` (3 transitorios post-
+suspensión, 0 violaciones temporales reales). Ambos corregidos; ventana
+ACTUAL_RUNTIME recalcada: 17.685h wall − 8.399h gaps = **9.286h reales**.
+RUN_SUMMARY.json regenerado. No afecta al runtime de trading.
