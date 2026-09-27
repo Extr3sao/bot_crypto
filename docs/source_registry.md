@@ -115,6 +115,71 @@
 | RELIABILITY | HIGH |
 | DECISION | Colector read-only respeta rate limit; sin credenciales. |
 
+### SRC-09 — Bybit spot trading fee schedule
+| campo | valor |
+| --- | --- |
+| SOURCE_ID | SRC-09 |
+| URL | https://www.bybit.com/en/help-center/article/Trading-Fee-Structure |
+| SOURCE_TYPE | official exchange help center |
+| DATE | consultada 2026-09-27 |
+| PRODUCT | Bybit Spot (crypto-crypto) |
+| CLAIM | VIP0: **maker 0.1000% / taker 0.1000%** (10 bps/lado); VIP1 taker 0.0800%. Perp: maker 0.02% / taker 0.055%. |
+| EVIDENCE | Tabla oficial "VIP 0 · 0.1000% · 0.1000%"; página de fee-rate con perp maker 0.0400% / taker 0.1000% (promoción). |
+| RELIABILITY | HIGH |
+| DECISION | En VENUE_EXECUTION_MATRIX_V1: mismo fee spot que Binance a VIP0; RESEARCH_CANDIDATE, no adoptado. |
+
+### SRC-10 — OKX spot trading fee schedule
+| campo | valor |
+| --- | --- |
+| SOURCE_ID | SRC-10 |
+| URL | https://www.okx.com/en-us/fees |
+| SOURCE_TYPE | official exchange fee page |
+| DATE | consultada 2026-09-27 |
+| PRODUCT | OKX Spot |
+| CLAIM | Tier base (Lv1, < 500 OKB): **maker 0.08% / taker 0.10%** (8 / 10 bps). Perp 0.02% / 0.05%. |
+| EVIDENCE | FAQ oficial "Trader A (Maker fee: 0.08%; Taker fee: 0.1%)"; página de fees por tiers. |
+| RELIABILITY | HIGH |
+| DECISION | Maker 8 bps → ejecución pasiva ahorra 2 bps frente a Binance. RESEARCH_CANDIDATE, no adoptado. |
+
+### SRC-11 — MEXC spot trading fee schedule
+| campo | valor |
+| --- | --- |
+| SOURCE_ID | SRC-11 |
+| URL | https://www.mexc.com/support/article/mexc-0-fee-spot-trading-faq-264764306934491136 |
+| SOURCE_TYPE | official exchange support article |
+| DATE | consultada 2026-09-27 |
+| PRODUCT | MEXC Spot |
+| CLAIM | Spot estándar: **maker 0% / taker 0.05%** (0 / 5 bps). Programa 0-fee: "All Spot trading pairs on MEXC are eligible for 0% maker and 0% taker fees". |
+| EVIDENCE | FAQ oficial 0-fee spot; schedule publicado 0%/0.05% confirmado por múltiples páginas de comparación, pero el **fee que decide el modelo (5 bps taker) viene del artículo oficial**. |
+| RELIABILITY | HIGH para 0%/0.05%; el programa 0%/0% se marca POSSIBLE (campaña, puede excluir pares/regiones) |
+| DECISION | Único spot investigado que baja el fee taker a la mitad. Se reporta 0%/0.05% como base y el programa 0-fee como POSSIBLE, nunca CONFIRMED. RESEARCH_CANDIDATE. |
+
+### SRC-12 — Kraken Pro spot fee schedule
+| campo | valor |
+| --- | --- |
+| SOURCE_ID | SRC-12 |
+| URL | https://www.kraken.com/features/fee-schedule |
+| SOURCE_TYPE | official exchange fee page |
+| DATE | consultada 2026-09-27 |
+| PRODUCT | Kraken Pro Spot |
+| CLAIM | Tier inicial (< 10,000 USD 30d): **maker ~0.25% / taker ~0.40%** (25 / 40 bps). Cambio de tiers desde 2026-07-09 basado en volumen spot **o** activos en plataforma. |
+| EVIDENCE | Página oficial de fee schedule por tiers; soporte oficial con la nota de cambio de tiers de julio 2026. |
+| RELIABILITY | MEDIUM (el tier exacto depende de AoP; se usa el más conservador) |
+| DECISION | Acceso regulatorio (US/EU) pero fee prohibitivo para intradía. RESEARCH_CANDIDATE, no adoptado. |
+
+### SRC-13 — Binance bulk aggTrades CSV timestamp unit
+| campo | valor |
+| --- | --- |
+| SOURCE_ID | SRC-13 |
+| URL | https://data.binance.vision/data/spot/daily/aggTrades/BTCUSDT/BTCUSDT-aggTrades-2026-09-24.zip |
+| SOURCE_TYPE | official bulk data repository (verificación empírica directa) |
+| DATE | verificada 2026-09-27 |
+| PRODUCT | Binance Spot daily aggTrades |
+| CLAIM | La columna `timestamp` del CSV viene en **MICROSEGUNDOS**, no en milisegundos. Esquema de 8 columnas sin cabecera: `aggTradeId, price, qty, firstTradeId, lastTradeId, timestamp, isBuyerMaker, isBestMatch`. |
+| EVIDENCE | Valor observado en los 42 archivos: p. ej. `1783814400000000` = 2026-07-12T00:00:00Z en µs (en ms sería `1783814400000`). Asumir ms produce **62,000 buckets/día** en lugar de 1,440 (agrupación por print). Verificado también que ningún archivo mezcla unidades. |
+| RELIABILITY | HIGH (medido directamente sobre el dato) |
+| DECISION | El fetcher detecta la unidad (`_to_ms`, umbral 1e14), la registra en el manifest (`source_timestamp_unit`) y **falla en cerrado** ante unidades mezcladas. Defecto `DEFECT-AG-01`, corregido, con test de regresión. |
+
 ## Claims -> Decision (resumen §51)
 
 | CLAIM | SOURCE | EVIDENCE | DECISION |
@@ -125,3 +190,9 @@
 | Funding/premium histórico completo | SRC-05 | 624 funding, 59,905 premium | M-04/M-05 testeables |
 | OI/basis solo 30d | SRC-06 | 400 en now-60d | M-06/M-07 LIMITED_HISTORY |
 | Order book sin histórico | SRC-07 | sin endpoint | M-02 LIVE_ONLY, forward required |
+| Bybit Spot VIP0 = 10/10 bps | SRC-09 | tabla oficial | RESEARCH_CANDIDATE, no adoptado |
+| OKX Spot Lv1 = 8/10 bps | SRC-10 | FAQ oficial | maker ahorra 2 bps; no adoptado |
+| MEXC Spot = 0/5 bps | SRC-11 | artículo oficial | único spot con fee a la mitad; POSSIBLE, no CONFIRMED |
+| Kraken Pro tier base = 25/40 bps | SRC-12 | fee schedule oficial | prohibitivo intradía; no adoptado |
+| aggTrades CSV en microsegundos | SRC-13 | 42 archivos medidos | detección de unidad + fail-closed (DEFECT-AG-01) |
+| Binance Spot VIP0 maker == taker (10/10) | SRC-01 | página oficial | "hacerse maker" no ahorra fee; MAKER EDGE GATE = FAIL |
