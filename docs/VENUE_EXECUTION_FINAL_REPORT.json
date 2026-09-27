@@ -1,0 +1,101 @@
+{
+  "head": "325892de65677c61ddf7040fb779f9e328fa0b8e",
+  "phase_0_status": "VERIFIED",
+  "phase_7_status": "VERIFIED",
+  "failures": [],
+  "aggTrades_results": [
+    {
+      "candidate": "A-01",
+      "n": 4420,
+      "gross_bps": 0.4809,
+      "net_bps": -23.3097,
+      "classification": "COST_KILLED",
+      "filters": {
+        "filter1_gross_positive_dev": true,
+        "filter2_cost_survival": false,
+        "filter3_all_splits_positive": false,
+        "filter4_stress_1p25x": false,
+        "filter4_stress_1p5x": false
+      }
+    },
+    {
+      "candidate": "A-02",
+      "n": 5943,
+      "gross_bps": 0.0313,
+      "net_bps": -23.7593,
+      "classification": "COST_KILLED",
+      "filters": {
+        "filter1_gross_positive_dev": true,
+        "filter2_cost_survival": false,
+        "filter3_all_splits_positive": false,
+        "filter4_stress_1p25x": false,
+        "filter4_stress_1p5x": false
+      }
+    },
+    {
+      "candidate": "A-03",
+      "n": 2563,
+      "gross_bps": 0.6141,
+      "net_bps": -23.1765,
+      "classification": "COST_KILLED",
+      "filters": {
+        "filter1_gross_positive_dev": true,
+        "filter2_cost_survival": false,
+        "filter3_all_splits_positive": false,
+        "filter4_stress_1p25x": false,
+        "filter4_stress_1p5x": false
+      }
+    },
+    {
+      "candidate": "A-04",
+      "n": 0,
+      "gross_bps": 0.0,
+      "net_bps": 0.0,
+      "classification": "INSUFFICIENT_DATA",
+      "filters": {
+        "filter1_gross_positive_dev": false,
+        "filter2_cost_survival": false,
+        "filter3_all_splits_positive": false,
+        "filter4_stress_1p25x": false,
+        "filter4_stress_1p5x": false
+      }
+    },
+    {
+      "candidate": "A-05",
+      "n": 279,
+      "gross_bps": -6.2534,
+      "net_bps": -30.044,
+      "classification": "NO_GROSS_EDGE",
+      "filters": {
+        "filter1_gross_positive_dev": false,
+        "filter2_cost_survival": false,
+        "filter3_all_splits_positive": false,
+        "filter4_stress_1p25x": false,
+        "filter4_stress_1p5x": false
+      }
+    },
+    {
+      "candidate": "A-06",
+      "n": 12012,
+      "gross_bps": 0.5526,
+      "net_bps": -23.2379,
+      "classification": "COST_KILLED",
+      "filters": {
+        "filter1_gross_positive_dev": true,
+        "filter2_cost_survival": false,
+        "filter3_all_splits_positive": false,
+        "filter4_stress_1p25x": false,
+        "filter4_stress_1p5x": false
+      }
+    }
+  ],
+  "cost_model": {
+    "admission_scenario": "BINANCE_SPOT_STANDARD_TAKER",
+    "admission_rt_cost_bps": 23.7906,
+    "context_scenario": "MEXC_SPOT_TAKER",
+    "context_rt_cost_bps": 17.7906
+  },
+  "paper_candidates": [],
+  "false_success": 0,
+  "final_status": "VENUE_EXECUTION_RESEARCH_VERIFIED_NO_CANDIDATE"
+}
