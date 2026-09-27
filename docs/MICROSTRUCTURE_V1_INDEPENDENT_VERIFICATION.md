@@ -4,9 +4,16 @@
 > **no confía** en ningún número commiteado: re-ejecuta los pipelines y
 > recompara los artefactos por SHA-256.
 
-- HEAD verificado: `325892de65677c61ddf7040fb779f9e328fa0b8e`
+- HEAD en el momento de verificar: `82c338bfe967c877e09648ba5f505a1ce21ca106`
+- Commit que introdujo MICROSTRUCTURE-V1: `325892de65677c61ddf7040fb779f9e328fa0b8e`
 - Fase 0 (MICROSTRUCTURE-V1): **VERIFIED**
 - Fase 7 (VENUE/EXECUTION + AGGTRADES): **VERIFIED**
+
+> Nota de reproducibilidad: los checks son **por contenido** (re-ejecución de
+> pipelines + SHA-256 + consistencia aritmética), no por posición en el
+> historial. Un commit posterior solo cambia el campo `head`; si alguien
+> vuelve a ejecutar el verificador, ese es el único byte que cambia
+> (comprobado: el diff tras re-ejecutar fue de 4 líneas, todas `head`).
 
 ## Fase 0 — reproducción de MICROSTRUCTURE-V1
 

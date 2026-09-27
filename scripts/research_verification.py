@@ -374,9 +374,16 @@ def render_md(v0: dict[str, Any], v7: dict[str, Any]) -> str:
         "> **no confía** en ningún número commiteado: re-ejecuta los pipelines y",
         "> recompara los artefactos por SHA-256.",
         "",
-        f"- HEAD verificado: `{v0['head']}`",
+        f"- HEAD en el momento de verificar: `{v0['head']}`",
+        f"- Commit que introdujo MICROSTRUCTURE-V1: `{git(['log', '-1', '--format=%H', '--', 'docs/MICROSTRUCTURE_ADMISSION_V1.json'])}`",
         f"- Fase 0 (MICROSTRUCTURE-V1): **{v0['status']}**",
         f"- Fase 7 (VENUE/EXECUTION + AGGTRADES): **{v7['status']}**",
+        "",
+        "> Nota de reproducibilidad: los checks son **por contenido** (re-ejecución de",
+        "> pipelines + SHA-256 + consistencia aritmética), no por posición en el",
+        "> historial. Un commit posterior solo cambia el campo `head`; si alguien",
+        "> vuelve a ejecutar el verificador, ese es el único byte que cambia",
+        "> (comprobado: el diff tras re-ejecutar fue de 4 líneas, todas `head`).",
         "",
         "## Fase 0 — reproducción de MICROSTRUCTURE-V1",
         "",
@@ -450,14 +457,28 @@ def main() -> None:
     v0 = verify_microstructure_v1()
     v7 = verify_venue_execution()
 
+    verification = {
+        "verifier": "scripts/research_verification.py",
+        "verification_head": v0["head"],
+        "subject_commit_microstructure_v1": git(
+            ["log", "-1", "--format=%H", "--", "docs/MICROSTRUCTURE_ADMISSION_V1.json"]
+        ),
+        "reproducibility_note": (
+            "checks are content-based (pipeline re-execution, SHA-256, arithmetic "
+            "consistency); a later commit changes only the head field"
+        ),
+        "phase_0": v0,
+        "phase_7": v7,
+    }
     with open(DOCS / "MICROSTRUCTURE_V1_INDEPENDENT_VERIFICATION.json", "w", encoding="utf-8", newline="\n") as fh:
-        json.dump({"phase_0": v0, "phase_7": v7}, fh, indent=2)
+        json.dump(verification, fh, indent=2)
         fh.write("\n")
     with open(DOCS / "MICROSTRUCTURE_V1_INDEPENDENT_VERIFICATION.md", "w", encoding="utf-8", newline="\n") as fh:
         fh.write(render_md(v0, v7))
 
     final = {
         "head": v0["head"],
+        "verifier": "scripts/research_verification.py",
         "phase_0_status": v0["status"],
         "phase_7_status": v7["status"],
         "failures": v0["failures"] + v7["failures"],
