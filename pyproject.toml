@@ -10,6 +10,11 @@ authors = [{ name = "Crypto Scalping Agentic Bot Contributors" }]
 # Estas dependencias se confirmarán y ajustarán en Fase 1.
 # La decisión completa está documentada en docs/architecture.md.
 dependencies = [
+  # aiohttp: cliente HTTP/WebSocket asincrono. Ya venia como dependencia
+  # transitiva de ccxt; se declara explicitamente porque el colector forward de
+  # microestructura (DISCOVERY PLANE) lo usa como transporte WebSocket. Sin
+  # WebSocket no hay captura sin perdidas de aggTrade/bookTicker (§5, §11).
+  "aiohttp>=3.9.0,<4.0.0",
   "ccxt>=4.0.0,<5.0.0",
   "pandas>=2.1.0",
   # numpy<2.1: pin a versiones con stubs compatibles con Python 3.11.
