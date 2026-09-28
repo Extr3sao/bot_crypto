@@ -166,3 +166,75 @@ RESEARCH`** — el runtime de decision esta demostrado; lo que falta es una sena
 cuyo egde bruto supere el coste, y eso es una pregunta de investigacion, no de
 runtime. No se propone ninguna integracion de candidato porque no existe ningun
 candidato que integrar.
+
+### 8.1 Resultado del verificador independiente (worktree limpio del HEAD final)
+
+```text
+worktree:  /tmp/verifier-head  (detached HEAD 1496b41 — commit final)
+imports:   trading_bot resuelve desde el worktree, nunca desde el checkout de trabajo
+script:    fuera del repositorio auditado (no forma parte del arbol bajo auditoria)
+```
+
+```text
+PASS  A1 imports resolve from the worktree
+PASS  A2 bar availability is the close
+PASS  A3 enums present
+PASS  B1 an unproduced PASS is NOT_EVALUATED
+PASS  B2 a veto demands a reason
+PASS  B3 an evaluated review must name its rule
+PASS  B4 one risk engine only (self._risk)
+PASS  B5 no shadow-only risk engine
+PASS  B6 the runtime builds exactly one RiskManager call path
+PASS  B7 RISK_VETO maps to NO_TRADE_RISK
+PASS  C1 net == gross - cost is enforced by the contract
+PASS  C2 positive gross below cost cannot be PAPER
+PASS  D1 reference <= decision < outcome
+PASS  D2 future_price_time_ms is the outcome instant
+PASS  D3 outcome_key is decision+horizon
+PASS  D4 an open-stamped outcome is rejected
+PASS  E1 a forming bar is not consumed
+PASS  F1 replay statuses are honest
+PASS  G1 the real run used real market data
+PASS  G2 no orders were created
+PASS  G3 no production actions
+PASS  G4 trace chain intact  [hash chain intact]
+PASS  G5 >= 9 asset-cycle evaluations  [12]
+PASS  G6 at least one resolved outcome
+PASS  G7 risk is observable  [approved=12 vetoed=0]
+PASS  G8 bucket identity holds
+PASS  G9 replay evidence present
+PASS  G10 replay did not read market data
+PASS  G11 PARTIAL covers unresolved horizons
+PASS  G12 replay statuses are in the allowed set
+PASS  G13 every NO_TRADE row carries a kind
+PASS  G14 no row mixes a kind with a failure
+PASS  G15 outcomes respect the temporal contract  [n=6]
+PASS  G16 outcome keys are unique
+PASS  G17 cost model recorded per decision
+PASS  G18 SHADOW never created an order
+
+VERIFIER RESULT: PASS (36/36)
+```
+
+Chequeos ejecutados **en el mismo worktree limpio** (venv principal, `PYTHONPATH`
+fijado al worktree):
+
+```text
+ruff check .   -> All checks passed!
+mypy .         -> Success: no issues found in 295 source files
+pytest -q      -> 823 passed
+```
+
+### 8.2 Equivalencia entre el commit del run y el commit final
+
+```text
+git diff --stat ddaf14d..1496b41 -- src/ config/ scripts/   ->  (vacio)
+git diff --stat ddaf14d..1496b41                            ->  solo docs/ + 1 archivo de test
+```
+
+El codigo de runtime, los contratos, el ledger de admision y el entrypoint son
+**byte-identicos** entre el commit en el que se ejecuto el run real 004 (`ddaf14d`) y
+el HEAD final (`1496b41`). Lo unico anadido despues es documentacion y un test que
+afirma la identidad de evidencia con campos estructurados; por tanto el run real sigue
+siendo evidencia valida del HEAD final, y ademas la suite completa se ha vuelto a
+ejecutar sobre `1496b41` (seccion 8.1 y gates finales).
