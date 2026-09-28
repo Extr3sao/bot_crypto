@@ -1,6 +1,6 @@
 # MICROSTRUCTURE_V2_INDEPENDENT_VERIFICATION
 
-Verificador: `scripts/research_verification.py` — HEAD `3896f4ecaa19489c4e16251ce90d2391cf15e456`.
+Verificador: `scripts/research_verification.py` — HEAD `3964888dd37e98f961acdad8cfedbc735a9acdcf`.
 Alcance: `MICROSTRUCTURE-EDGE & FORWARD-DATA V1 (V2 artifacts)`.
 
 ```text
@@ -11,7 +11,7 @@ FAILURES: 0
 
 | check | esperado | observado | pass |
 | --- | --- | --- | :-: |
-| V2 artifacts reproduce byte-for-byte on re-run | identical SHA-256 for all five artifacts | {'identical': True, 'exit_code': 0, 'artifacts': 5} | PASS |
+| V2 artifacts reproduce byte-for-byte on re-run | identical content hash for all five artifacts | {'content_identical': True, 'raw_bytes_identical': True, 'exit_code': 0, 'artifacts': 5, 'note': 'raw bytes differ when the checkout materialised CRLF (core.autocrlf); the content hash is the authoritative comparison'} | PASS |
 | per-asset V4 cost re-derived from the raw forward capture | rebuilt round-trip == committed round-trip for every asset | all three assets match exactly | PASS |
 | cost components sum to the reported round trip | 0 inconsistencies; maker labelled EXECUTION_DEPENDENT | consistent | PASS |
 | independent 5m aggregation matches the exchange kline volume | {'bars': 288, 'volume_equal': True} | {'bars': 288, 'agg_volume': 21997.1605, 'kline_volume': 21997.1605} | PASS |

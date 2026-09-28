@@ -1,14 +1,16 @@
 {
   "scope": "MICROSTRUCTURE-EDGE & FORWARD-DATA V1 (V2 artifacts)",
-  "head": "3896f4ecaa19489c4e16251ce90d2391cf15e456",
+  "head": "3964888dd37e98f961acdad8cfedbc735a9acdcf",
   "checks": [
     {
       "check": "V2 artifacts reproduce byte-for-byte on re-run",
-      "expected": "identical SHA-256 for all five artifacts",
+      "expected": "identical content hash for all five artifacts",
       "observed": {
-        "identical": true,
+        "content_identical": true,
+        "raw_bytes_identical": true,
         "exit_code": 0,
-        "artifacts": 5
+        "artifacts": 5,
+        "note": "raw bytes differ when the checkout materialised CRLF (core.autocrlf); the content hash is the authoritative comparison"
       },
       "pass": true,
       "note": ""
