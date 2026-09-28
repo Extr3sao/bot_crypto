@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import ast
 import asyncio
+import contextlib
 import json
 import socket
 import time
@@ -796,3 +797,70 @@ def test_repeated_reconciliation_failures_fail_the_collector(tmp_path: Path) -> 
     assert collector._evaluate_state(10_000) != "FAILED"
     collector.resnapshots_failed = BOOK_IRRECOVERABLE_FAILURES
     assert collector._evaluate_state(10_000) == "FAILED"
+
+
+def test_the_disk_budget_stops_the_capture_gracefully(tmp_path: Path) -> None:
+    """§8 — the guard stops, seals and finalises instead of filling the volume."""
+    collector = _collector(tmp_path, max_total_bytes=1, maintenance_seconds=0.01)
+    _trade(collector, 1, receive_time=1_000)
+
+    async def _scenario() -> None:
+        task = asyncio.create_task(collector._maintenance_loop())
+        for _ in range(500):
+            if collector._stopping:
+                break
+            await asyncio.sleep(0.01)
+        task.cancel()
+        with contextlib.suppress(asyncio.CancelledError):
+            await task
+
+    asyncio.run(_scenario())
+    assert collector._stopping is True
+    assert collector.stopped_on_disk_budget is True
+    lifecycle = [row for row in _rows(collector) if row.get("event_type") == "lifecycle"]
+    assert any(
+        isinstance(row.get("detail"), dict) and row["detail"].get("kind") == "DISK_LIMIT_REACHED"
+        for row in lifecycle
+    )
+    manifest = collector.finalise()
+    assert manifest.stopped_on_disk_budget is True
+    assert manifest.max_total_bytes == 1
+    # A guard that left a half-written file behind would be worse than no guard.
+    assert manifest.fingerprints
+    assert all(entry.partial_tail is False for entry in manifest.fingerprints)
+
+
+def test_a_live_id_jump_is_recovered_and_the_gap_records_its_lifecycle(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """§2, §11 — a measured hole is closed, and both phases are on disk."""
+    collector = _collector(tmp_path)
+    _fake_index(collector, monkeypatch, last_id=110)
+
+    async def _scenario() -> None:
+        _trade(collector, 100)
+        _trade(collector, 110, trade_time=1_100)  # 101..109 were never seen live
+        tasks = list(collector._backfill_tasks.values())
+        assert tasks
+        await asyncio.gather(*tasks)
+
+    asyncio.run(_scenario())
+    gap = next(g for g in collector.gaps if g.reason == "AGG_TRADE_ID_JUMP")
+    assert gap.status == "RECOVERED_COMPLETE"
+    assert gap.recovered is True
+    assert gap.data_lost is False
+    assert gap.recovered_events == 9
+    assert gap.remaining_missing == 0
+
+    ids = [int(row["exchange_event_id"]) for row in _trades(collector)]
+    # Physical order is process order: the live 110 landed before the repaired
+    # 101..109. Logical order is by id, and that is what a consumer must sort on.
+    assert ids.index(110) < ids.index(101)
+    assert sorted(ids) == list(range(100, 111))
+
+    phases = [
+        row["detail"]["phase"]
+        for row in _rows(collector)
+        if row.get("event_type") == "gap" and row["detail"]["gap_id"] == gap.gap_id
+    ]
+    assert phases == ["GAP_DETECTED", "RECOVERY_RESOLVED"]

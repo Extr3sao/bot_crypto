@@ -9,6 +9,7 @@ statement.
 
 from __future__ import annotations
 
+import gzip
 from collections import defaultdict
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -709,11 +710,40 @@ def build_readiness(report: dict[str, Any], manifest: dict[str, Any]) -> dict[st
     }
 
 
+def _measure_segment_sizes(root: Path) -> tuple[int, int, int]:
+    """Measure stored vs uncompressed bytes straight off disk (§9, §43).
+
+    The collector reports what it wrote; this measures what is actually there, so
+    the GB/day estimate rests on the files rather than on a self-report.
+    """
+    stored = 0
+    uncompressed = 0
+    segments = 0
+    for path in sorted(root.rglob("*.jsonl.gz")) + sorted(root.rglob("*.jsonl")):
+        segments += 1
+        stored += path.stat().st_size
+        if path.suffix == ".gz":
+            try:
+                with gzip.open(path, "rb") as handle:
+                    uncompressed += len(handle.read())
+            except (EOFError, OSError, gzip.BadGzipFile):
+                # The open segment's final member may still be mid-write.
+                continue
+        else:
+            uncompressed += path.stat().st_size
+    return stored, uncompressed, segments
+
+
 def build_resource_report(root: Path | str, run_id: str | None = None) -> dict[str, Any]:
     """§42 — the collector's measured cost, so it can be bounded against PAPER."""
     base = Path(root)
     resolved, manifest = load_run(base, run_id)
     rows, _ = ForwardReplay(base, resolved).load_rows()
+    duration = float(manifest.get("duration_seconds") or 0.0)
+    stored_bytes, uncompressed_bytes, segment_count = _measure_segment_sizes(base / "segments")
+    hours = max(1e-9, duration / 3600.0)
+    raw_gb_per_hour = uncompressed_bytes / hours / 1e9
+    stored_gb_per_hour = stored_bytes / hours / 1e9
     heartbeats = [row for row in rows if row.get("event_type") == EventType.HEARTBEAT.value]
     memory_series = [
         float(hb["detail"]["memory_mb"])
@@ -729,6 +759,29 @@ def build_resource_report(root: Path | str, run_id: str | None = None) -> dict[s
         "report_version": REPORT_VERSION,
         "run_id": resolved,
         "duration_seconds": manifest.get("duration_seconds"),
+        "footprint": {
+            "measured_from": "segments on disk (decompressed vs stored)",
+            "segments": segment_count,
+            "stored_bytes": stored_bytes,
+            "uncompressed_bytes": uncompressed_bytes,
+            "compression_ratio": (
+                round(uncompressed_bytes / stored_bytes, 3) if stored_bytes else None
+            ),
+            "raw_gb_per_hour": round(raw_gb_per_hour, 4),
+            "stored_gb_per_hour": round(stored_gb_per_hour, 4),
+            "raw_gb_per_day": round(raw_gb_per_hour * 24, 3),
+            "stored_gb_per_day": round(stored_gb_per_hour * 24, 3),
+            "retention_note": (
+                "raw forward data is never deleted in this phase; a continuous capture "
+                "needs either a larger volume or an explicit raw-short / aggregate-long "
+                "retention policy before it can run for weeks"
+            ),
+        },
+        "disk_guard": {
+            "max_total_bytes": manifest.get("max_total_bytes"),
+            "enabled": manifest.get("max_total_bytes") is not None,
+            "stopped_on_budget": bool(manifest.get("stopped_on_disk_budget")),
+        },
         "resources": manifest.get("resources", {}),
         "heartbeats": len(heartbeats),
         "memory_mb_series": {

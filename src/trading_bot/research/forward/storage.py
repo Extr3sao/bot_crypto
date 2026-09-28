@@ -698,7 +698,12 @@ class RunManifest:
     reconnects: int = 0
     resnapshots: int = 0
     bytes_written: int = 0
+    uncompressed_bytes_written: int = 0
     disk_bytes_per_hour: float = 0.0
+    #: §8/§9 — the disk budget the capture ran under, and whether it was hit. A
+    #: guard nobody can audit from the manifest is not a guard.
+    max_total_bytes: int | None = None
+    stopped_on_disk_budget: bool = False
     fingerprints: list[SegmentFingerprint] = field(default_factory=list)
     resources: dict[str, Any] = field(default_factory=dict)
     book_health: dict[str, Any] = field(default_factory=dict)

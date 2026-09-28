@@ -168,6 +168,8 @@ class CollectorConfig:
     streams: tuple[str, ...] = ("agg_trade", "depth", "book_ticker")
     #: Stop gracefully before filling the volume (§43). ``None`` disables it.
     max_total_bytes: int | None = None
+    #: Cadence of the maintenance loop (rotation + resume-state save).
+    maintenance_seconds: float = 5.0
 
     def resolved_run_id(self) -> str:
         if self.run_id:
@@ -297,6 +299,7 @@ class ForwardCollector:
         self.backfill_gaps_closed = 0
         self.backfill_partial = 0
         self.backfill_deferred = 0
+        self.stopped_on_disk_budget = False
         self._backfill_tasks: dict[str, asyncio.Task[None]] = {}
         self._resume_backfills: list[tuple[GapRecord, Market, str, int]] = []
         self._gap_seq = 0
@@ -1745,7 +1748,7 @@ class ForwardCollector:
     async def _maintenance_loop(self) -> None:
         """Rotate segments and checkpoint resume state on a fixed cadence."""
         while not self._stopping:
-            await asyncio.sleep(5.0)
+            await asyncio.sleep(self.config.maintenance_seconds)
             if self._stopping:
                 return
             try:
@@ -1777,6 +1780,7 @@ class ForwardCollector:
                             },
                         )
                     )
+                    self.stopped_on_disk_budget = True
                     self.stop()
                     return
             self._save_state()
@@ -1787,6 +1791,7 @@ class ForwardCollector:
         fingerprints = self.writer.fingerprints()
         ended = _now_ms()
         bytes_written = sum(f.bytes for f in fingerprints)
+        uncompressed_bytes = self.writer.total_bytes
         elapsed_hours = max(1e-9, (ended - self._started_ms) / 3600_000.0)
         # Best-effort final disk measurement on top of the last heartbeat sample.
         self.resources.sample(directory_bytes(self.root), self.network_bytes)
@@ -1885,7 +1890,10 @@ class ForwardCollector:
             reconnects=self.reconnects,
             resnapshots=self.resnapshots,
             bytes_written=bytes_written,
+            uncompressed_bytes_written=uncompressed_bytes,
             disk_bytes_per_hour=round(bytes_written / elapsed_hours, 2),
+            max_total_bytes=self.config.max_total_bytes,
+            stopped_on_disk_budget=self.stopped_on_disk_budget,
             fingerprints=fingerprints,
             resources=summary.as_dict(),
             book_health={
