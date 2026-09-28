@@ -60,6 +60,9 @@ def build(repo_root: Path = REPO_ROOT) -> dict[str, Any]:
     diagnostics: dict[str, Any] = v3.get("family_5m_diagnostic_zero_cost", {})
     admissions: dict[str, Any] = matrix.get("admissions", {})
     paper_candidates = set(matrix.get("paper_candidates", []))
+    # The sample window every gross-edge number below was measured on. Carried
+    # into each entry so the value can never be read as a timeless truth.
+    period = str((v3.get("dataset") or {}).get("windows") or "unspecified")
 
     # Per-timeframe zero-cost gross edge from the D-01 hypothesis evidence.
     timeframe_evidence: dict[str, dict[str, float]] = {}
@@ -112,6 +115,10 @@ def build(repo_root: Path = REPO_ROOT) -> dict[str, Any]:
                         "size unproven (recorded as sample_trades=0)"
                     )
                 ),
+                "evidence_class": "HISTORICAL_ESTIMATE",
+                "period": period,
+                "timeframe": timeframe,
+                "status": status,
             },
             "source_doc": V3_RESULTS.as_posix(),
             "rationale": rationale,
@@ -173,6 +180,7 @@ def build(repo_root: Path = REPO_ROOT) -> dict[str, Any]:
             {"path": ADMISSION_MATRIX.as_posix(), "sha256": _sha256(repo_root / ADMISSION_MATRIX)},
         ],
         "_admission_cost_model": "COST_MODEL_V3 (evaluated live per cycle; never stored here)",
+        "_period": period,
         "strategies": strategies,
     }
 

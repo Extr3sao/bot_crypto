@@ -34,6 +34,7 @@ from .contracts import (
     VerifierVerdict,
 )
 from .costs import COST_MODEL_VERSION, CostEngine
+from .pit import closed_bar_slice
 
 __all__ = ["VERIFIER_VERSION", "IndependentVerifier", "VerificationRequest"]
 
@@ -101,7 +102,12 @@ class IndependentVerifier:
     # -- individual checks --------------------------------------------------
 
     def _check_pit_slice(self, request: VerificationRequest) -> VerificationCheck:
-        expected = [b.timestamp for b in request.raw_history if b.timestamp <= request.decision_time_ms]
+        # The PIT slice is by bar CLOSE: a bar that had not closed by the
+        # decision time carries future information and must not be consumed.
+        expected = [
+            b.timestamp
+            for b in closed_bar_slice(request.raw_history, request.decision_time_ms)
+        ]
         used = [b.timestamp for b in request.used_bars]
         if used and used != expected:
             return VerificationCheck(
@@ -157,7 +163,7 @@ class IndependentVerifier:
                 return VerificationCheck(
                     "paper_requires_proposal",
                     False,
-                    "TRADE_PAPER without a deterministic risk review",
+                    "TRADE_PAPER without a deterministic risk review that actually ran",
                 )
             return VerificationCheck("paper_requires_proposal", True, "proposal + risk review present")
         return VerificationCheck(

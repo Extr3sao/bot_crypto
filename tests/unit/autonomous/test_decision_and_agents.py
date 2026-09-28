@@ -54,7 +54,11 @@ def _request(
         admission=entry,
         proposal=proposal,
         verification=VerificationResult(decision_id="d-1", verdict=verification),
-        risk=RiskReview(verdict=risk, notional_usdt=notional),
+        risk=RiskReview(
+            verdict=risk,
+            reason="test_risk_veto" if risk is RiskVerdict.VETO else "",
+            notional_usdt=notional,
+        ),
         shadow_evaluation_enabled=shadow_enabled,
     )
 

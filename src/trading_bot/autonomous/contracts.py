@@ -42,11 +42,15 @@ __all__ = [
     "DecisionMode",
     "DecisionTrace",
     "EdgeEvidence",
+    "NoTradeKind",
     "OutcomeRecord",
     "OutcomeStatus",
+    "ReplayStatus",
     "ReviewType",
     "RiskReview",
+    "RiskState",
     "RiskVerdict",
+    "RuntimeFailureKind",
     "ShadowTradeDecision",
     "StrategyPerformance",
     "TradeProposal",
@@ -118,10 +122,63 @@ class RiskVerdict(StrEnum):
     NOT_APPLICABLE = "NOT_APPLICABLE"
 
 
+class RiskState(StrEnum):
+    """Observable risk outcome for ONE decision (§12).
+
+    These are the states a trace may carry. ``NOT_EVALUATED`` exists so that a
+    verdict nobody actually produced can never be read as a pass: a PASS that
+    did not come from a real ``RiskManager.check_signal`` run is reported as
+    ``NOT_EVALUATED``, never as ``APPROVED``.
+    """
+
+    APPROVED = "APPROVED"
+    VETOED = "VETOED"
+    NOT_APPLICABLE = "NOT_APPLICABLE"
+    NOT_EVALUATED = "NOT_EVALUATED"
+
+
+class NoTradeKind(StrEnum):
+    """Why a NO_TRADE happened — the four honest NO_TRADE classes (§4).
+
+    An operational failure (provider outage, adapter error, internal error) is
+    NOT one of these: see ``RuntimeFailureKind``. Mixing the two would turn an
+    incident into a fake trading decision.
+    """
+
+    NO_TRADE_STRATEGIC = "NO_TRADE_STRATEGIC"
+    NO_TRADE_RISK = "NO_TRADE_RISK"
+    NO_TRADE_DATA = "NO_TRADE_DATA"
+    NO_TRADE_CONFLICT = "NO_TRADE_CONFLICT"
+
+
+class RuntimeFailureKind(StrEnum):
+    """Operational failures. Never a decision, never a measurable hypothesis."""
+
+    PROVIDER_FAILURE = "PROVIDER_FAILURE"
+    INVALID_DATA = "INVALID_DATA"
+    ADAPTER_FAILURE = "ADAPTER_FAILURE"
+    INTERNAL_ERROR = "INTERNAL_ERROR"
+
+
 class OutcomeStatus(StrEnum):
     RESOLVED = "RESOLVED"
     PENDING_OUTCOME = "PENDING_OUTCOME"
     NOT_APPLICABLE = "NOT_APPLICABLE"
+
+
+class ReplayStatus(StrEnum):
+    """Honest replay coverage for one decision (§17).
+
+    ``FULL``          every artefact the decision produced is reconstructed,
+                      including its resolved outcome;
+    ``PARTIAL``       the decision is fully reconstructed but its horizon has
+                      not closed yet (no outcome exists to replay);
+    ``NOT_AVAILABLE`` at least one invariant failed, or the record is absent.
+    """
+
+    FULL = "FULL"
+    PARTIAL = "PARTIAL"
+    NOT_AVAILABLE = "NOT_AVAILABLE"
 
 
 #: Admission statuses that authorise PAPER execution.
@@ -341,7 +398,13 @@ class CostBreakdown:
 
 @dataclass(frozen=True, slots=True)
 class EdgeEvidence:
-    """Provenance of the expected gross edge (never invented in-cycle)."""
+    """Provenance of the expected gross edge (never invented in-cycle).
+
+    A HISTORICAL_ESTIMATE is a research measurement, not a promise: it carries
+    its source, the sample it was measured on, the period it covers, the
+    timeframe it belongs to and the status it earned. It is used ONLY as the
+    prior of a candidate — never as a universal statement about future return.
+    """
 
     source_doc: str
     metric: str
@@ -349,12 +412,20 @@ class EdgeEvidence:
     knowledge: str
     sample_trades: int
     note: str = ""
+    evidence_class: str = "HISTORICAL_ESTIMATE"
+    period: str = ""
+    timeframe: str = ""
+    status: str = ""
 
     def __post_init__(self) -> None:
         if not self.source_doc:
             raise ValueError("edge evidence must name its source document")
         if not self.metric:
             raise ValueError("edge evidence must name its metric")
+
+    @property
+    def is_historical_estimate(self) -> bool:
+        return self.evidence_class == "HISTORICAL_ESTIMATE"
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -364,6 +435,10 @@ class EdgeEvidence:
             "knowledge": self.knowledge,
             "sample_trades": self.sample_trades,
             "note": self.note,
+            "evidence_class": self.evidence_class,
+            "period": self.period,
+            "timeframe": self.timeframe,
+            "status": self.status,
         }
 
 
@@ -515,19 +590,72 @@ class VerificationResult:
 
 @dataclass(frozen=True, slots=True)
 class RiskReview:
-    """Deterministic risk review result recorded in the trace (§12)."""
+    """Deterministic risk review result recorded in the trace (§12).
+
+    ``advisory=True`` marks a review the runtime ran on a decision that can NOT
+    produce an order (SHADOW / NO_TRADE with a proposal): the SAME
+    ``RiskManager.check_signal`` is consulted, so the trace says what risk would
+    have said, but the verdict is informative only and can never authorise or
+    block anything. The DecisionEngine refuses to accept an advisory review on an
+    order-authorising packet, so an advisory verdict can never be mistaken for a
+    gate.
+    """
 
     verdict: RiskVerdict
     reason: str = ""
     notional_usdt: float | None = None
     source: str = "RiskManager.check_signal"
+    advisory: bool = False
+    #: True only when ``RiskManager.check_signal`` actually ran for this packet.
+    #: A verdict that was never produced can never be reported as a pass.
+    evaluated: bool = False
+    #: The risk rule that decided the verdict (e.g. ``kill_switch``,
+    #: ``position_sizing``, ``max_drawdown``). Empty when not evaluated.
+    rule: str = ""
+    #: The exact inputs handed to the engine, so the verdict is reproducible.
+    inputs: dict[str, Any] = field(default_factory=dict)
+
+    def __post_init__(self) -> None:
+        if self.evaluated:
+            if self.verdict is RiskVerdict.NOT_APPLICABLE:
+                raise ValueError("an evaluated risk review cannot be NOT_APPLICABLE")
+            if not self.rule:
+                raise ValueError("an evaluated risk review must name the rule it applied")
+        if self.verdict is RiskVerdict.VETO and not self.reason:
+            raise ValueError("a risk veto must state its reason")
+
+    @property
+    def state(self) -> RiskState:
+        """The observable state — never a fake PASS (§12)."""
+        if self.verdict is RiskVerdict.VETO:
+            return RiskState.VETOED
+        if not self.evaluated:
+            return (
+                RiskState.NOT_APPLICABLE
+                if self.verdict is RiskVerdict.NOT_APPLICABLE
+                else RiskState.NOT_EVALUATED
+            )
+        return RiskState.APPROVED  # PASS / ADJUST produced by a real run
+
+    @property
+    def binding(self) -> bool:
+        """A binding review may gate an order; an advisory one cannot (§12)."""
+        return not self.advisory
 
     def to_dict(self) -> dict[str, Any]:
         return {
             "verdict": self.verdict.value,
+            "state": self.state.value,
+            "risk_evaluated": self.evaluated,
+            "risk_result": self.state.value,
+            "risk_rule": self.rule,
+            "risk_reason": self.reason,
+            "risk_inputs": self.inputs,
             "reason": self.reason,
             "notional_usdt": self.notional_usdt,
             "source": self.source,
+            "advisory": self.advisory,
+            "binding": self.binding,
         }
 
 
@@ -622,6 +750,10 @@ class DecisionTrace:
     cost_model_version: str
     order_created: bool
     orders_created: int
+    #: One of ``NoTradeKind`` when the decision was a NO_TRADE. ``None`` for
+    #: TRADE_PAPER / SHADOW_TRADE. An operational failure is NOT a NO_TRADE
+    #: and is reported through ``errors`` instead (§4).
+    no_trade_kind: str | None = None
     errors: tuple[str, ...] = ()
     sequence: int = 0
     prev_hash: str = ""
@@ -638,6 +770,18 @@ class DecisionTrace:
             raise ValueError("point-in-time violation: decision_time_ms < market_time_ms")
         if self.mode is DecisionMode.SHADOW_TRADE and not self.shadow:
             raise ValueError("SHADOW_TRADE trace must carry the shadow decision contract")
+        if self.no_trade_kind is not None:
+            if self.mode is not DecisionMode.NO_TRADE:
+                raise ValueError("only a NO_TRADE trace may carry a no_trade_kind")
+            if self.no_trade_kind not in {k.value for k in NoTradeKind}:
+                raise ValueError(f"unknown no_trade_kind {self.no_trade_kind!r}")
+            if (
+                self.no_trade_kind == NoTradeKind.NO_TRADE_DATA.value
+                and self.proposal is not None
+            ):
+                # A DATA no-decision means there was nothing usable to reason
+                # about: it cannot carry a trade proposal.
+                raise ValueError("a NO_TRADE_DATA decision cannot carry a trade proposal")
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -664,6 +808,7 @@ class DecisionTrace:
             "cost_model_version": self.cost_model_version,
             "order_created": self.order_created,
             "orders_created": self.orders_created,
+            "no_trade_kind": self.no_trade_kind,
             "errors": list(self.errors),
             "sequence": self.sequence,
             "prev_hash": self.prev_hash,
@@ -693,8 +838,19 @@ class DecisionTrace:
 class OutcomeRecord:
     """Post-decision evaluation of one decision (§6).
 
-    ``outcome_time_ms`` is ALWAYS strictly greater than ``decision_time_ms``:
-    a decision is never evaluated by information it could already see.
+    Temporal contract (hard, validated):
+
+        reference_price_time_ms <= decision_time_ms < outcome_time_ms
+
+    ``reference_price_time_ms`` is when the entry reference became OBSERVABLE
+    (the close of the bar it was read from) and ``outcome_time_ms`` — also
+    exposed as ``future_price_time_ms`` — is the close of the bar that carries
+    the horizon's outcome. A bar is never used before it closes, so the
+    outcome can never contain information the decision could already see.
+
+    ``outcome_key`` (``<decision_id>@<horizon>``) is the stable identity used
+    to make PENDING → RESOLVED idempotent: the same decision and horizon can
+    only ever produce one outcome.
     """
 
     run_id: str
@@ -719,6 +875,8 @@ class OutcomeRecord:
     data_complete: bool = True
     status: OutcomeStatus = OutcomeStatus.RESOLVED
     bars_observed: int = 0
+    market_time_ms: int = 0
+    reference_price_time_ms: int = 0
     schema_version: str = OUTCOME_SCHEMA_VERSION
     created_at_ms: int = 0
 
@@ -728,6 +886,16 @@ class OutcomeRecord:
                 "anti-lookahead: outcome_time_ms must be > decision_time_ms "
                 f"({self.outcome_time_ms} <= {self.decision_time_ms})"
             )
+        if self.reference_price_time_ms > self.decision_time_ms:
+            raise ValueError(
+                "anti-lookahead: reference_price_time_ms must be <= decision_time_ms "
+                f"({self.reference_price_time_ms} > {self.decision_time_ms})"
+            )
+        if self.market_time_ms > self.decision_time_ms:
+            raise ValueError(
+                "anti-lookahead: market_time_ms must be <= decision_time_ms "
+                f"({self.market_time_ms} > {self.decision_time_ms})"
+            )
         if self.entry_reference <= 0 or self.outcome_price <= 0:
             raise ValueError("prices must be > 0")
 
@@ -735,17 +903,31 @@ class OutcomeRecord:
     def is_paper_result(self) -> bool:
         return self.mode is DecisionMode.TRADE_PAPER
 
+    @property
+    def future_price_time_ms(self) -> int:
+        """Alias of ``outcome_time_ms``: when the future price was observable."""
+        return self.outcome_time_ms
+
+    @property
+    def outcome_key(self) -> str:
+        """Stable idempotency key: one decision + one horizon ⇒ one outcome."""
+        return f"{self.decision_id}@{self.horizon_minutes:g}m"
+
     def to_dict(self) -> dict[str, Any]:
         return {
             "run_id": self.run_id,
             "decision_id": self.decision_id,
+            "outcome_key": self.outcome_key,
             "asset": self.asset,
             "symbol": self.symbol,
             "strategy_id": self.strategy_id,
             "mode": self.mode.value,
             "direction": self.direction,
             "decision_time_ms": self.decision_time_ms,
+            "market_time_ms": self.market_time_ms,
             "outcome_time_ms": self.outcome_time_ms,
+            "future_price_time_ms": self.future_price_time_ms,
+            "reference_price_time_ms": self.reference_price_time_ms,
             "horizon_minutes": self.horizon_minutes,
             "entry_reference": self.entry_reference,
             "outcome_price": self.outcome_price,
@@ -768,6 +950,9 @@ class OutcomeRecord:
         data = dict(payload)
         data["mode"] = DecisionMode(data["mode"])
         data["status"] = OutcomeStatus(data["status"])
+        # Derived on read: never trusted from the persisted payload.
+        data.pop("outcome_key", None)
+        data.pop("future_price_time_ms", None)
         return cls(**data)
 
 

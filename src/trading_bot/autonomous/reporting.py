@@ -67,8 +67,17 @@ def render_markdown_report(summary: RunSummary) -> str:
                 lines.append(f"Expected net:   {row.expected_net_edge_bps:.2f} bps")
             lines.append(f"Decision: {row.mode.value}")
             lines.append(f"Reason: {row.classification} ({row.reason})")
+            if row.no_trade_kind is not None:
+                lines.append(f"NO_TRADE kind: {row.no_trade_kind}")
+            if row.failure_kind is not None:
+                lines.append(f"Runtime failure: {row.failure_kind} (not a NO_TRADE decision)")
             lines.append(f"Verifier: {row.verifier_verdict}")
-            lines.append(f"Risk: {row.risk_verdict}")
+            lines.append(
+                f"Risk: {row.risk_verdict} (state={row.risk_state}, "
+                f"evaluated={'YES' if row.risk_evaluated else 'NO'}"
+                + (f", rule={row.risk_rule}" if row.risk_rule else "")
+                + ")"
+            )
             lines.append(f"DecisionTrace persisted: {'YES' if row.trace_persisted else 'NO'}")
             lines.append(f"Order created: {'YES' if row.order_created else 'NO'}")
             lines.append("```")
@@ -81,9 +90,49 @@ def render_markdown_report(summary: RunSummary) -> str:
     for key, value in totals.items():
         lines.append(f"| {key} | {value} |")
     lines.append("")
+    lines.append(
+        "`no_trades` counts NO_TRADE DECISIONS only; an operational failure "
+        "(`runtime_failures`) is an incident, never a trading decision, and is "
+        "never counted as a NO_TRADE hypothesis."
+    )
+    lines.append("")
     lines.append(f"Trace chain: `{json.dumps(summary.chain, sort_keys=True)}`")
     lines.append("")
     lines.append(f"Production actions: {summary.production_actions}")
+    lines.append("")
+
+    lines.append("## Deterministic risk (one review per decision that carried a proposal)")
+    lines.append("")
+    for state in ("APPROVED", "VETOED", "NOT_APPLICABLE", "NOT_EVALUATED"):
+        lines.append(f"- {state}: {totals.get(f'risk_{state}', 0)}")
+    lines.append("")
+    lines.append(
+        "An ADVISORY review (SHADOW / NO_TRADE) is informative only: it can "
+        "neither authorise nor block an order. `NOT_EVALUATED` is never a PASS."
+    )
+    lines.append("")
+
+    lines.append("## Replay (from the persisted trace only)")
+    lines.append("")
+    lines.append(f"Attempted: {summary.replay.get('attempted', 0)}")
+    lines.append(f"Reconstructed OK: {summary.replay.get('ok', 0)}")
+    lines.append(f"Failed: {summary.replay.get('failed', 0)}")
+    lines.append(f"By status: {json.dumps(summary.replay.get('statuses', {}), sort_keys=True)}")
+    lines.append(f"Market data accessed: {summary.replay.get('market_data_accessed', False)}")
+    lines.append("")
+    lines.append(
+        "`PARTIAL` means the decision was fully reconstructed but its horizon "
+        "had not closed, so there is no outcome to replay yet."
+    )
+    lines.append("")
+
+    lines.append(f"## Outcomes pending at end of run ({len(summary.pending_decision_ids)})")
+    lines.append("")
+    if summary.pending_decision_ids:
+        for decision_id in summary.pending_decision_ids:
+            lines.append(f"- {decision_id}")
+    else:
+        lines.append("- none")
     lines.append("")
 
     if summary.outcomes:
@@ -103,7 +152,12 @@ def render_markdown_report(summary: RunSummary) -> str:
         lines.append("")
 
     if summary.performance:
-        lines.append("## Strategy performance (experience learning)")
+        lines.append("## Strategy performance (experience learning — INSUFFICIENT_SAMPLE)")
+        lines.append("")
+        lines.append(
+            "These cells are realised observation, not validated edge: an "
+            "`n=1` cell says nothing about future profitability."
+        )
         lines.append("")
         lines.append(
             "| strategy | asset | regime | n | shadow n | paper n | no-trade n | gross bps "

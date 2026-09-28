@@ -13,6 +13,7 @@
     }
   ],
   "_admission_cost_model": "COST_MODEL_V3 (evaluated live per cycle; never stored here)",
+  "_period": "W1-W7 2026-03-01..2026-09-24",
   "strategies": {
     "breakout@5m": {
       "family": "breakout",
@@ -25,7 +26,11 @@
         "value_bps": -0.11,
         "knowledge": "ESTIMATED",
         "sample_trades": 2426,
-        "note": "zero-cost research diagnostic (no execution cost applied); used ONLY as the expected gross edge of a research candidate"
+        "note": "zero-cost research diagnostic (no execution cost applied); used ONLY as the expected gross edge of a research candidate",
+        "evidence_class": "HISTORICAL_ESTIMATE",
+        "period": "W1-W7 2026-03-01..2026-09-24",
+        "timeframe": "5m",
+        "status": "NO_GROSS_EDGE"
       },
       "source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
       "rationale": "research classification NO_GROSS_EDGE; gross -0.11 bps/trade over 2426 trades; admission checks failed: ['c2_net_positive', 'c3_pf_gt1', 'c4_oos_positive', 'c7_survives_2x']; oos net -138.81",
@@ -43,7 +48,11 @@
         "value_bps": -4.56,
         "knowledge": "ESTIMATED",
         "sample_trades": 1725,
-        "note": "zero-cost research diagnostic (no execution cost applied); used ONLY as the expected gross edge of a research candidate"
+        "note": "zero-cost research diagnostic (no execution cost applied); used ONLY as the expected gross edge of a research candidate",
+        "evidence_class": "HISTORICAL_ESTIMATE",
+        "period": "W1-W7 2026-03-01..2026-09-24",
+        "timeframe": "5m",
+        "status": "NO_GROSS_EDGE"
       },
       "source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
       "rationale": "research classification NO_GROSS_EDGE; gross -4.56 bps/trade over 1725 trades; admission checks failed: ['c2_net_positive', 'c3_pf_gt1', 'c4_oos_positive', 'c7_survives_2x']; oos net -144.38",
@@ -61,7 +70,11 @@
         "value_bps": 1.49,
         "knowledge": "ESTIMATED",
         "sample_trades": 3190,
-        "note": "zero-cost research diagnostic (no execution cost applied); used ONLY as the expected gross edge of a research candidate"
+        "note": "zero-cost research diagnostic (no execution cost applied); used ONLY as the expected gross edge of a research candidate",
+        "evidence_class": "HISTORICAL_ESTIMATE",
+        "period": "W1-W7 2026-03-01..2026-09-24",
+        "timeframe": "5m",
+        "status": "COST_KILLED"
       },
       "source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
       "rationale": "research classification COST_KILLED; gross 1.49 bps/trade over 3190 trades; admission checks failed: ['c2_net_positive', 'c3_pf_gt1', 'c4_oos_positive', 'c7_survives_2x']; oos net -169.88",
@@ -79,7 +92,11 @@
         "value_bps": -1.88,
         "knowledge": "ESTIMATED",
         "sample_trades": 2526,
-        "note": "zero-cost research diagnostic (no execution cost applied); used ONLY as the expected gross edge of a research candidate"
+        "note": "zero-cost research diagnostic (no execution cost applied); used ONLY as the expected gross edge of a research candidate",
+        "evidence_class": "HISTORICAL_ESTIMATE",
+        "period": "W1-W7 2026-03-01..2026-09-24",
+        "timeframe": "5m",
+        "status": "NO_GROSS_EDGE"
       },
       "source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
       "rationale": "research classification NO_GROSS_EDGE; gross -1.88 bps/trade over 2526 trades; admission checks failed: ['c2_net_positive', 'c3_pf_gt1', 'c4_oos_positive', 'c7_survives_2x']; oos net -205.41",
@@ -97,7 +114,11 @@
         "value_bps": -1.65,
         "knowledge": "ESTIMATED",
         "sample_trades": 1291,
-        "note": "zero-cost research diagnostic (no execution cost applied); used ONLY as the expected gross edge of a research candidate"
+        "note": "zero-cost research diagnostic (no execution cost applied); used ONLY as the expected gross edge of a research candidate",
+        "evidence_class": "HISTORICAL_ESTIMATE",
+        "period": "W1-W7 2026-03-01..2026-09-24",
+        "timeframe": "5m",
+        "status": "NO_GROSS_EDGE"
       },
       "source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
       "rationale": "research classification NO_GROSS_EDGE; gross -1.65 bps/trade over 1291 trades; admission checks failed: ['c2_net_positive', 'c3_pf_gt1', 'c4_oos_positive', 'c7_survives_2x']; oos net -17.35",
@@ -115,7 +136,11 @@
         "value_bps": -4.73,
         "knowledge": "ESTIMATED",
         "sample_trades": 520,
-        "note": "zero-cost research diagnostic (no execution cost applied); used ONLY as the expected gross edge of a research candidate"
+        "note": "zero-cost research diagnostic (no execution cost applied); used ONLY as the expected gross edge of a research candidate",
+        "evidence_class": "HISTORICAL_ESTIMATE",
+        "period": "W1-W7 2026-03-01..2026-09-24",
+        "timeframe": "5m",
+        "status": "NO_GROSS_EDGE"
       },
       "source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
       "rationale": "research classification NO_GROSS_EDGE; gross -4.73 bps/trade over 520 trades; admission checks failed: ['c2_net_positive', 'c3_pf_gt1', 'c4_oos_positive', 'c7_survives_2x']; oos net -52.11",
@@ -133,7 +158,11 @@
         "value_bps": -1.82,
         "knowledge": "ESTIMATED",
         "sample_trades": 0,
-        "note": "zero-cost research diagnostic (no execution cost applied); used ONLY as the expected gross edge of a research candidate; trade count not published for this timeframe -> sample size unproven (recorded as sample_trades=0)"
+        "note": "zero-cost research diagnostic (no execution cost applied); used ONLY as the expected gross edge of a research candidate; trade count not published for this timeframe -> sample size unproven (recorded as sample_trades=0)",
+        "evidence_class": "HISTORICAL_ESTIMATE",
+        "period": "W1-W7 2026-03-01..2026-09-24",
+        "timeframe": "15m",
+        "status": "NO_GROSS_EDGE"
       },
       "source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
       "rationale": "D-01 timeframe evidence (verdict REJECT_COST_KILLED): zero-cost gross -1.82 bps/trade at 15m; trade count not published in this artifact -> sample size unproven",
@@ -151,7 +180,11 @@
         "value_bps": -1.12,
         "knowledge": "ESTIMATED",
         "sample_trades": 0,
-        "note": "zero-cost research diagnostic (no execution cost applied); used ONLY as the expected gross edge of a research candidate; trade count not published for this timeframe -> sample size unproven (recorded as sample_trades=0)"
+        "note": "zero-cost research diagnostic (no execution cost applied); used ONLY as the expected gross edge of a research candidate; trade count not published for this timeframe -> sample size unproven (recorded as sample_trades=0)",
+        "evidence_class": "HISTORICAL_ESTIMATE",
+        "period": "W1-W7 2026-03-01..2026-09-24",
+        "timeframe": "15m",
+        "status": "NO_GROSS_EDGE"
       },
       "source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
       "rationale": "D-01 timeframe evidence (verdict REJECT_COST_KILLED): zero-cost gross -1.12 bps/trade at 15m; trade count not published in this artifact -> sample size unproven",
@@ -169,7 +202,11 @@
         "value_bps": 2.71,
         "knowledge": "ESTIMATED",
         "sample_trades": 0,
-        "note": "zero-cost research diagnostic (no execution cost applied); used ONLY as the expected gross edge of a research candidate; trade count not published for this timeframe -> sample size unproven (recorded as sample_trades=0)"
+        "note": "zero-cost research diagnostic (no execution cost applied); used ONLY as the expected gross edge of a research candidate; trade count not published for this timeframe -> sample size unproven (recorded as sample_trades=0)",
+        "evidence_class": "HISTORICAL_ESTIMATE",
+        "period": "W1-W7 2026-03-01..2026-09-24",
+        "timeframe": "15m",
+        "status": "COST_KILLED"
       },
       "source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
       "rationale": "D-01 timeframe evidence (verdict REJECT_COST_KILLED): zero-cost gross 2.71 bps/trade at 15m; trade count not published in this artifact -> sample size unproven",
@@ -187,7 +224,11 @@
         "value_bps": -3.97,
         "knowledge": "ESTIMATED",
         "sample_trades": 0,
-        "note": "zero-cost research diagnostic (no execution cost applied); used ONLY as the expected gross edge of a research candidate; trade count not published for this timeframe -> sample size unproven (recorded as sample_trades=0)"
+        "note": "zero-cost research diagnostic (no execution cost applied); used ONLY as the expected gross edge of a research candidate; trade count not published for this timeframe -> sample size unproven (recorded as sample_trades=0)",
+        "evidence_class": "HISTORICAL_ESTIMATE",
+        "period": "W1-W7 2026-03-01..2026-09-24",
+        "timeframe": "15m",
+        "status": "NO_GROSS_EDGE"
       },
       "source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
       "rationale": "D-01 timeframe evidence (verdict REJECT_COST_KILLED): zero-cost gross -3.97 bps/trade at 15m; trade count not published in this artifact -> sample size unproven",
@@ -205,7 +246,11 @@
         "value_bps": 1.28,
         "knowledge": "ESTIMATED",
         "sample_trades": 0,
-        "note": "zero-cost research diagnostic (no execution cost applied); used ONLY as the expected gross edge of a research candidate; trade count not published for this timeframe -> sample size unproven (recorded as sample_trades=0)"
+        "note": "zero-cost research diagnostic (no execution cost applied); used ONLY as the expected gross edge of a research candidate; trade count not published for this timeframe -> sample size unproven (recorded as sample_trades=0)",
+        "evidence_class": "HISTORICAL_ESTIMATE",
+        "period": "W1-W7 2026-03-01..2026-09-24",
+        "timeframe": "15m",
+        "status": "COST_KILLED"
       },
       "source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
       "rationale": "D-01 timeframe evidence (verdict REJECT_COST_KILLED): zero-cost gross 1.28 bps/trade at 15m; trade count not published in this artifact -> sample size unproven",
@@ -223,7 +268,11 @@
         "value_bps": -7.06,
         "knowledge": "ESTIMATED",
         "sample_trades": 0,
-        "note": "zero-cost research diagnostic (no execution cost applied); used ONLY as the expected gross edge of a research candidate; trade count not published for this timeframe -> sample size unproven (recorded as sample_trades=0)"
+        "note": "zero-cost research diagnostic (no execution cost applied); used ONLY as the expected gross edge of a research candidate; trade count not published for this timeframe -> sample size unproven (recorded as sample_trades=0)",
+        "evidence_class": "HISTORICAL_ESTIMATE",
+        "period": "W1-W7 2026-03-01..2026-09-24",
+        "timeframe": "15m",
+        "status": "NO_GROSS_EDGE"
       },
       "source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
       "rationale": "D-01 timeframe evidence (verdict REJECT_COST_KILLED): zero-cost gross -7.06 bps/trade at 15m; trade count not published in this artifact -> sample size unproven",
@@ -241,7 +290,11 @@
         "value_bps": -0.22,
         "knowledge": "ESTIMATED",
         "sample_trades": 0,
-        "note": "zero-cost research diagnostic (no execution cost applied); used ONLY as the expected gross edge of a research candidate; trade count not published for this timeframe -> sample size unproven (recorded as sample_trades=0)"
+        "note": "zero-cost research diagnostic (no execution cost applied); used ONLY as the expected gross edge of a research candidate; trade count not published for this timeframe -> sample size unproven (recorded as sample_trades=0)",
+        "evidence_class": "HISTORICAL_ESTIMATE",
+        "period": "W1-W7 2026-03-01..2026-09-24",
+        "timeframe": "1h",
+        "status": "NO_GROSS_EDGE"
       },
       "source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
       "rationale": "D-01 timeframe evidence (verdict REJECT_COST_KILLED): zero-cost gross -0.22 bps/trade at 1h; trade count not published in this artifact -> sample size unproven",
@@ -259,7 +312,11 @@
         "value_bps": -0.96,
         "knowledge": "ESTIMATED",
         "sample_trades": 0,
-        "note": "zero-cost research diagnostic (no execution cost applied); used ONLY as the expected gross edge of a research candidate; trade count not published for this timeframe -> sample size unproven (recorded as sample_trades=0)"
+        "note": "zero-cost research diagnostic (no execution cost applied); used ONLY as the expected gross edge of a research candidate; trade count not published for this timeframe -> sample size unproven (recorded as sample_trades=0)",
+        "evidence_class": "HISTORICAL_ESTIMATE",
+        "period": "W1-W7 2026-03-01..2026-09-24",
+        "timeframe": "1h",
+        "status": "NO_GROSS_EDGE"
       },
       "source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
       "rationale": "D-01 timeframe evidence (verdict REJECT_COST_KILLED): zero-cost gross -0.96 bps/trade at 1h; trade count not published in this artifact -> sample size unproven",
@@ -277,7 +334,11 @@
         "value_bps": -2.23,
         "knowledge": "ESTIMATED",
         "sample_trades": 0,
-        "note": "zero-cost research diagnostic (no execution cost applied); used ONLY as the expected gross edge of a research candidate; trade count not published for this timeframe -> sample size unproven (recorded as sample_trades=0)"
+        "note": "zero-cost research diagnostic (no execution cost applied); used ONLY as the expected gross edge of a research candidate; trade count not published for this timeframe -> sample size unproven (recorded as sample_trades=0)",
+        "evidence_class": "HISTORICAL_ESTIMATE",
+        "period": "W1-W7 2026-03-01..2026-09-24",
+        "timeframe": "1h",
+        "status": "NO_GROSS_EDGE"
       },
       "source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
       "rationale": "D-01 timeframe evidence (verdict REJECT_COST_KILLED): zero-cost gross -2.23 bps/trade at 1h; trade count not published in this artifact -> sample size unproven",
@@ -295,7 +356,11 @@
         "value_bps": -2.33,
         "knowledge": "ESTIMATED",
         "sample_trades": 0,
-        "note": "zero-cost research diagnostic (no execution cost applied); used ONLY as the expected gross edge of a research candidate; trade count not published for this timeframe -> sample size unproven (recorded as sample_trades=0)"
+        "note": "zero-cost research diagnostic (no execution cost applied); used ONLY as the expected gross edge of a research candidate; trade count not published for this timeframe -> sample size unproven (recorded as sample_trades=0)",
+        "evidence_class": "HISTORICAL_ESTIMATE",
+        "period": "W1-W7 2026-03-01..2026-09-24",
+        "timeframe": "1h",
+        "status": "NO_GROSS_EDGE"
       },
       "source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
       "rationale": "D-01 timeframe evidence (verdict REJECT_COST_KILLED): zero-cost gross -2.33 bps/trade at 1h; trade count not published in this artifact -> sample size unproven",
@@ -313,7 +378,11 @@
         "value_bps": -1.25,
         "knowledge": "ESTIMATED",
         "sample_trades": 0,
-        "note": "zero-cost research diagnostic (no execution cost applied); used ONLY as the expected gross edge of a research candidate; trade count not published for this timeframe -> sample size unproven (recorded as sample_trades=0)"
+        "note": "zero-cost research diagnostic (no execution cost applied); used ONLY as the expected gross edge of a research candidate; trade count not published for this timeframe -> sample size unproven (recorded as sample_trades=0)",
+        "evidence_class": "HISTORICAL_ESTIMATE",
+        "period": "W1-W7 2026-03-01..2026-09-24",
+        "timeframe": "1h",
+        "status": "NO_GROSS_EDGE"
       },
       "source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
       "rationale": "D-01 timeframe evidence (verdict REJECT_COST_KILLED): zero-cost gross -1.25 bps/trade at 1h; trade count not published in this artifact -> sample size unproven",
@@ -331,7 +400,11 @@
         "value_bps": 6.28,
         "knowledge": "ESTIMATED",
         "sample_trades": 0,
-        "note": "zero-cost research diagnostic (no execution cost applied); used ONLY as the expected gross edge of a research candidate; trade count not published for this timeframe -> sample size unproven (recorded as sample_trades=0)"
+        "note": "zero-cost research diagnostic (no execution cost applied); used ONLY as the expected gross edge of a research candidate; trade count not published for this timeframe -> sample size unproven (recorded as sample_trades=0)",
+        "evidence_class": "HISTORICAL_ESTIMATE",
+        "period": "W1-W7 2026-03-01..2026-09-24",
+        "timeframe": "1h",
+        "status": "COST_KILLED"
       },
       "source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
       "rationale": "D-01 timeframe evidence (verdict REJECT_COST_KILLED): zero-cost gross 6.28 bps/trade at 1h; trade count not published in this artifact -> sample size unproven",
@@ -349,7 +422,11 @@
         "value_bps": -1.79,
         "knowledge": "ESTIMATED",
         "sample_trades": 0,
-        "note": "zero-cost research diagnostic (no execution cost applied); used ONLY as the expected gross edge of a research candidate; trade count not published for this timeframe -> sample size unproven (recorded as sample_trades=0)"
+        "note": "zero-cost research diagnostic (no execution cost applied); used ONLY as the expected gross edge of a research candidate; trade count not published for this timeframe -> sample size unproven (recorded as sample_trades=0)",
+        "evidence_class": "HISTORICAL_ESTIMATE",
+        "period": "W1-W7 2026-03-01..2026-09-24",
+        "timeframe": "30m",
+        "status": "NO_GROSS_EDGE"
       },
       "source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
       "rationale": "D-01 timeframe evidence (verdict REJECT_COST_KILLED): zero-cost gross -1.79 bps/trade at 30m; trade count not published in this artifact -> sample size unproven",
@@ -367,7 +444,11 @@
         "value_bps": -0.73,
         "knowledge": "ESTIMATED",
         "sample_trades": 0,
-        "note": "zero-cost research diagnostic (no execution cost applied); used ONLY as the expected gross edge of a research candidate; trade count not published for this timeframe -> sample size unproven (recorded as sample_trades=0)"
+        "note": "zero-cost research diagnostic (no execution cost applied); used ONLY as the expected gross edge of a research candidate; trade count not published for this timeframe -> sample size unproven (recorded as sample_trades=0)",
+        "evidence_class": "HISTORICAL_ESTIMATE",
+        "period": "W1-W7 2026-03-01..2026-09-24",
+        "timeframe": "30m",
+        "status": "NO_GROSS_EDGE"
       },
       "source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
       "rationale": "D-01 timeframe evidence (verdict REJECT_COST_KILLED): zero-cost gross -0.73 bps/trade at 30m; trade count not published in this artifact -> sample size unproven",
@@ -385,7 +466,11 @@
         "value_bps": 5.47,
         "knowledge": "ESTIMATED",
         "sample_trades": 0,
-        "note": "zero-cost research diagnostic (no execution cost applied); used ONLY as the expected gross edge of a research candidate; trade count not published for this timeframe -> sample size unproven (recorded as sample_trades=0)"
+        "note": "zero-cost research diagnostic (no execution cost applied); used ONLY as the expected gross edge of a research candidate; trade count not published for this timeframe -> sample size unproven (recorded as sample_trades=0)",
+        "evidence_class": "HISTORICAL_ESTIMATE",
+        "period": "W1-W7 2026-03-01..2026-09-24",
+        "timeframe": "30m",
+        "status": "COST_KILLED"
       },
       "source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
       "rationale": "D-01 timeframe evidence (verdict REJECT_COST_KILLED): zero-cost gross 5.47 bps/trade at 30m; trade count not published in this artifact -> sample size unproven",
@@ -403,7 +488,11 @@
         "value_bps": -2.61,
         "knowledge": "ESTIMATED",
         "sample_trades": 0,
-        "note": "zero-cost research diagnostic (no execution cost applied); used ONLY as the expected gross edge of a research candidate; trade count not published for this timeframe -> sample size unproven (recorded as sample_trades=0)"
+        "note": "zero-cost research diagnostic (no execution cost applied); used ONLY as the expected gross edge of a research candidate; trade count not published for this timeframe -> sample size unproven (recorded as sample_trades=0)",
+        "evidence_class": "HISTORICAL_ESTIMATE",
+        "period": "W1-W7 2026-03-01..2026-09-24",
+        "timeframe": "30m",
+        "status": "NO_GROSS_EDGE"
       },
       "source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
       "rationale": "D-01 timeframe evidence (verdict REJECT_COST_KILLED): zero-cost gross -2.61 bps/trade at 30m; trade count not published in this artifact -> sample size unproven",
@@ -421,7 +510,11 @@
         "value_bps": 2.21,
         "knowledge": "ESTIMATED",
         "sample_trades": 0,
-        "note": "zero-cost research diagnostic (no execution cost applied); used ONLY as the expected gross edge of a research candidate; trade count not published for this timeframe -> sample size unproven (recorded as sample_trades=0)"
+        "note": "zero-cost research diagnostic (no execution cost applied); used ONLY as the expected gross edge of a research candidate; trade count not published for this timeframe -> sample size unproven (recorded as sample_trades=0)",
+        "evidence_class": "HISTORICAL_ESTIMATE",
+        "period": "W1-W7 2026-03-01..2026-09-24",
+        "timeframe": "30m",
+        "status": "COST_KILLED"
       },
       "source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
       "rationale": "D-01 timeframe evidence (verdict REJECT_COST_KILLED): zero-cost gross 2.21 bps/trade at 30m; trade count not published in this artifact -> sample size unproven",
@@ -439,7 +532,11 @@
         "value_bps": 8.91,
         "knowledge": "ESTIMATED",
         "sample_trades": 0,
-        "note": "zero-cost research diagnostic (no execution cost applied); used ONLY as the expected gross edge of a research candidate; trade count not published for this timeframe -> sample size unproven (recorded as sample_trades=0)"
+        "note": "zero-cost research diagnostic (no execution cost applied); used ONLY as the expected gross edge of a research candidate; trade count not published for this timeframe -> sample size unproven (recorded as sample_trades=0)",
+        "evidence_class": "HISTORICAL_ESTIMATE",
+        "period": "W1-W7 2026-03-01..2026-09-24",
+        "timeframe": "30m",
+        "status": "COST_KILLED"
       },
       "source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
       "rationale": "D-01 timeframe evidence (verdict REJECT_COST_KILLED): zero-cost gross 8.91 bps/trade at 30m; trade count not published in this artifact -> sample size unproven",

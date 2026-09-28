@@ -316,8 +316,9 @@ class _EvolvingScanner:
         self.counters: Any = None
 
     async def run(self) -> list[FakeSnapshot]:
+        # The newest bar has CLOSED at this instant (never a forming bar).
         return [
-            FakeSnapshot(symbol="BTC/USDT", timestamp=self._state.last_ts()),
+            FakeSnapshot(symbol="BTC/USDT", timestamp=self._state.last_ts() + BAR_MS),
         ]
 
 
@@ -405,6 +406,92 @@ def test_multi_cycle_resolves_outcome_and_updates_performance(tmp_path: Path) ->
     replay = runtime.trace_store.replay(outcomes[0].decision_id)
     assert replay.ok
     assert replay.outcome is not None
+
+
+class _AdvancingReader:
+    """Reader that appends one closed bar per call (time passing between cycles)."""
+
+    def __init__(self, state: _EvolvingState) -> None:
+        self._state = state
+
+    async def get_ohlcv(
+        self, symbol: str, *, as_of_timestamp_ms: int, lookback_bars: int
+    ) -> list[OHLCV]:
+        self._state.advance()
+        window = [
+            b for b in self._state.history.get(symbol, []) if b.timestamp <= as_of_timestamp_ms
+        ]
+        return window[-lookback_bars:]
+
+
+def test_pending_outcomes_are_counted_once_per_decision(tmp_path: Path) -> None:
+    """A decision stays pending across cycles: the total must not double count."""
+    from trading_bot.autonomous.runtime import AutonomousPaperRuntime
+    from trading_bot.config.runtime import TradingMode
+    from trading_bot.paper.broker import PaperBroker
+
+    from .helpers import risk_manager
+
+    class _Settings:
+        class runtime:
+            mode = TradingMode.PAPER
+            exchange_id = "fake"
+
+        class risk:
+            kill_switch_enabled = True
+
+    state = _EvolvingState(n=130)
+    runtime = AutonomousPaperRuntime(
+        settings=_Settings(),
+        scanner_factory=lambda: _EvolvingScanner(state),
+        history_reader=_AdvancingReader(state),
+        broker=PaperBroker(equity=10_000.0),
+        risk_manager=risk_manager(),
+        families={"ema_crossover": StaticFamily()},
+        strategy_map={
+            "ema_crossover@5m": {
+                "family": "ema_crossover",
+                "regimes": [],
+                "direction": "BOTH",
+                "enabled": True,
+                "status": "RESEARCH_ONLY",
+                "priority": 0.0,
+            }
+        },
+        ledger=make_ledger(gross_bps=4.0),
+        run_dir=tmp_path,
+        assets=("BTC",),
+        timeframe="5m",
+        horizon_minutes=5.0,
+    )
+    summary = asyncio.run(runtime.run(cycles=3))
+    totals = summary.totals()
+    assert totals["traces_persisted"] == 3
+    # Every decision formed a hypothesis, so every decision is either resolved
+    # or still pending — never both, never neither.
+    assert totals["outcomes_resolved"] + totals["outcomes_pending"] == 3
+    assert totals["outcomes_pending"] == len(summary.pending_decision_ids)
+    assert totals["outcomes_resolved"] >= 1
+
+    # Replay is evidenced on the real run, from the traces alone.
+    assert summary.replay["attempted"] == 3
+    assert summary.replay["ok"] == 3
+    assert summary.replay["failed"] == 0
+    assert summary.replay["market_data_accessed"] is False
+    # Honest coverage: every decision is accounted for by exactly one status.
+    statuses = summary.replay["statuses"]
+    assert sum(statuses.values()) == 3
+    assert set(statuses) <= {"FULL", "PARTIAL", "NOT_AVAILABLE"}
+    # A resolved outcome is required before a replay may claim FULL.
+    assert statuses.get("FULL", 0) == totals["outcomes_resolved"]
+    # Every asset-cycle evaluation lands in exactly one honest bucket.
+    assert (
+        totals["paper_trades"]
+        + totals["shadow_trades"]
+        + totals["no_trades"]
+        + totals["runtime_failures"]
+        == totals["asset_cycle_evaluations"]
+    )
 
 
 def test_ledger_payload_defaults_are_fail_closed() -> None:

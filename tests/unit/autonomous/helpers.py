@@ -171,7 +171,9 @@ def ledger_payload(
     trades: int = 1500,
     timeframe: str = "5m",
 ) -> dict[str, Any]:
+    """One-entry ledger payload with full HISTORICAL_ESTIMATE provenance."""
     return {
+        "_period": "unit-test-window",
         "strategies": {
             strategy_id: {
                 "family": family,
@@ -185,6 +187,10 @@ def ledger_payload(
                     "knowledge": "ESTIMATED",
                     "sample_trades": trades,
                     "note": "unit-test evidence",
+                    "evidence_class": "HISTORICAL_ESTIMATE",
+                    "period": "unit-test-window",
+                    "timeframe": timeframe,
+                    "status": status,
                 },
                 "source_doc": "docs/TEST_EVIDENCE.json",
                 "rationale": f"test ledger entry ({status})",
@@ -269,8 +275,12 @@ def make_runtime(
     if history is None:
         history = {f"{a}/USDT": bars(f"{a}/USDT", 80) for a in assets}
     if snapshots is None:
+        # The scanner snapshot is taken when the newest bar has CLOSED, so the
+        # fixture matches real data (a forming bar is never handed to a decision).
         snapshots = [
-            FakeSnapshot(symbol=f"{a}/USDT", timestamp=history[f"{a}/USDT"][-1].timestamp)
+            FakeSnapshot(
+                symbol=f"{a}/USDT", timestamp=history[f"{a}/USDT"][-1].timestamp + BAR_MS
+            )
             for a in assets
         ]
 

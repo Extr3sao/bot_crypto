@@ -38,7 +38,6 @@ import structlog
 from trading_bot.execution.idempotency import IdempotencyGuard
 from trading_bot.market_data.types import OHLCV
 from trading_bot.paper.signal_adapter import AdapterError, alpha_signal_to_signal
-from trading_bot.paper.snapshot_context import trim_to_pit
 from trading_bot.research.asset_intelligence.registry import CryptoAssetAgentRegistry
 from trading_bot.research.strategy_router import RouterGates, StrategyRouter
 
@@ -50,9 +49,12 @@ from .contracts import (
     DecisionMode,
     DecisionTrace,
     EdgeEvidence,
+    NoTradeKind,
     OutcomeStatus,
     RiskReview,
+    RiskState,
     RiskVerdict,
+    RuntimeFailureKind,
     TradeProposal,
     VerificationResult,
     VerifierVerdict,
@@ -61,6 +63,7 @@ from .costs import COST_MODEL_VERSION, CostEngine
 from .decision import DecisionEngine, DecisionRequest
 from .experience import StrategyPerformanceStore
 from .outcomes import OutcomeEvaluator
+from .pit import closed_bar_slice, infer_bar_interval_ms
 from .trace import DecisionTraceStore
 from .verifier import IndependentVerifier, VerificationRequest
 
@@ -112,6 +115,14 @@ class AssetCycleReport:
     decision_id: str
     trace_persisted: bool
     order_created: bool
+    #: Honest NO_TRADE class (None when this row is not a NO_TRADE decision).
+    no_trade_kind: str | None = None
+    #: Operational failure kind — never a NO_TRADE decision, never a hypothesis.
+    failure_kind: str | None = None
+    #: Observability of the deterministic risk review (`RiskState`).
+    risk_state: str = RiskState.NOT_APPLICABLE.value
+    risk_evaluated: bool = False
+    risk_rule: str = ""
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -125,11 +136,16 @@ class AssetCycleReport:
             "mode": self.mode.value,
             "reason": self.reason,
             "classification": self.classification,
+            "no_trade_kind": self.no_trade_kind,
+            "failure_kind": self.failure_kind,
             "expected_gross_edge_bps": self.expected_gross_edge_bps,
             "expected_cost_bps": self.expected_cost_bps,
             "expected_net_edge_bps": self.expected_net_edge_bps,
             "verifier_verdict": self.verifier_verdict,
             "risk_verdict": self.risk_verdict,
+            "risk_state": self.risk_state,
+            "risk_evaluated": self.risk_evaluated,
+            "risk_rule": self.risk_rule,
             "decision_id": self.decision_id,
             "trace_persisted": self.trace_persisted,
             "order_created": self.order_created,
@@ -153,6 +169,9 @@ class CycleReport:
     performance_updates: int
     broker_fills_closed: int
     errors: tuple[str, ...] = ()
+    no_trade_kinds: dict[str, int] = field(default_factory=dict)
+    risk_states: dict[str, int] = field(default_factory=dict)
+    runtime_failures: int = 0
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -164,6 +183,9 @@ class CycleReport:
             "paper_trades": self.paper_trades,
             "shadow_trades": self.shadow_trades,
             "no_trades": self.no_trades,
+            "no_trade_kinds": dict(self.no_trade_kinds),
+            "risk_states": dict(self.risk_states),
+            "runtime_failures": self.runtime_failures,
             "orders_created": self.orders_created,
             "traces_persisted": self.traces_persisted,
             "outcomes_resolved": self.outcomes_resolved,
@@ -192,21 +214,38 @@ class RunSummary:
     outcomes: list[dict[str, Any]] = field(default_factory=list)
     performance: list[dict[str, Any]] = field(default_factory=list)
     chain: dict[str, Any] = field(default_factory=dict)
+    #: Decisions that formed a hypothesis but whose horizon is still unobserved
+    #: when the run ended. DISTINCT by decision_id: a decision remains pending
+    #: across cycles, so summing per-cycle counters would overstate it.
+    pending_decision_ids: tuple[str, ...] = ()
+    #: Aggregate of replaying every persisted decision from the trace alone.
+    replay: dict[str, Any] = field(default_factory=dict)
     errors: list[str] = field(default_factory=list)
     production_actions: int = 0
 
     def totals(self) -> dict[str, int]:
-        return {
+        kinds: dict[str, int] = {kind.value: 0 for kind in NoTradeKind}
+        states: dict[str, int] = {state.value: 0 for state in RiskState}
+        for cycle in self.cycle_reports:
+            for name, count in cycle.no_trade_kinds.items():
+                kinds[name] = kinds.get(name, 0) + count
+            for name, count in cycle.risk_states.items():
+                states[name] = states.get(name, 0) + count
+        totals = {
             "asset_cycle_evaluations": sum(len(c.assets) for c in self.cycle_reports),
             "paper_trades": sum(c.paper_trades for c in self.cycle_reports),
             "shadow_trades": sum(c.shadow_trades for c in self.cycle_reports),
             "no_trades": sum(c.no_trades for c in self.cycle_reports),
+            "runtime_failures": sum(c.runtime_failures for c in self.cycle_reports),
             "orders_created": sum(c.orders_created for c in self.cycle_reports),
             "traces_persisted": sum(c.traces_persisted for c in self.cycle_reports),
             "outcomes_resolved": sum(c.outcomes_resolved for c in self.cycle_reports),
-            "outcomes_pending": sum(c.outcomes_pending for c in self.cycle_reports),
+            "outcomes_pending": len(set(self.pending_decision_ids)),
             "performance_updates": sum(c.performance_updates for c in self.cycle_reports),
         }
+        totals.update({f"no_trade_{key}": value for key, value in kinds.items()})
+        totals.update({f"risk_{key}": value for key, value in states.items()})
+        return totals
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -224,8 +263,10 @@ class RunSummary:
             "cycles_detail": [c.to_dict() for c in self.cycle_reports],
             "executions": self.executions,
             "outcomes": self.outcomes,
+            "pending_decision_ids": list(self.pending_decision_ids),
             "performance": self.performance,
             "trace_chain": self.chain,
+            "replay": self.replay,
             "errors": self.errors,
             "production_actions": self.production_actions,
         }
@@ -352,9 +393,57 @@ class AutonomousPaperRuntime:
         summary.ended_at_ms = self._now()
         summary.executions = list(self._executions)
         summary.outcomes = [o.to_dict() for o in self._trace_store.read_outcomes()]
+        summary.pending_decision_ids = self._pending_decision_ids()
         summary.performance = [p.to_dict() for p in self._performance.all_cells()]
         summary.chain = self._trace_store.verify_chain().to_dict()
+        summary.replay = self._replay_all()
         return summary
+
+    def _pending_decision_ids(self) -> tuple[str, ...]:
+        """Decisions that formed a hypothesis and still have no outcome."""
+        resolved = {o.decision_id for o in self._trace_store.read_outcomes()}
+        pending = {
+            t.decision_id for t in self._trace_store.read() if t.proposal is not None
+        } - resolved
+        return tuple(sorted(pending))
+
+    def _replay_all(self) -> dict[str, Any]:
+        """Replay every persisted decision from the trace alone (§17).
+
+        Runs at the end of every bounded run so REPLAY is evidenced on real
+        data instead of only in tests. No market data is consulted. The status
+        of every decision is reported (FULL / PARTIAL / NOT_AVAILABLE) so a
+        partial replay can never be presented as a full one.
+        """
+        attempted = 0
+        failures: list[dict[str, Any]] = []
+        statuses: dict[str, int] = {}
+        for trace in self._trace_store.read():
+            attempted += 1
+            try:
+                result = self._trace_store.replay(trace.decision_id)
+            except KeyError as exc:  # pragma: no cover - defensive
+                failures.append({"decision_id": trace.decision_id, "error": str(exc)})
+                statuses["NOT_AVAILABLE"] = statuses.get("NOT_AVAILABLE", 0) + 1
+                continue
+            status = result.status.value
+            statuses[status] = statuses.get(status, 0) + 1
+            if not result.ok:
+                failures.append(
+                    {
+                        "decision_id": trace.decision_id,
+                        "status": status,
+                        "failed_checks": [c.name for c in result.checks if not c.passed],
+                    }
+                )
+        return {
+            "attempted": attempted,
+            "ok": attempted - len(failures),
+            "failed": len(failures),
+            "statuses": statuses,
+            "failures": failures,
+            "market_data_accessed": False,
+        }
 
     async def run_cycle(self, *, cycle: int) -> CycleReport:
         """One full cycle: ingest once, then decide deterministically."""
@@ -386,7 +475,11 @@ class AutonomousPaperRuntime:
             raw_history[symbol] = bars
             decision_ts = min(snap_ts, sessions_started_ms) or snap_ts
             decisions_ts[symbol] = decision_ts
-            used_bars[symbol] = trim_to_pit(bars, decision_ts)
+            # PIT slice by bar CLOSE: a bar opened just before the decision but
+            # still forming is future information and must not be used.
+            used_bars[symbol] = closed_bar_slice(
+                bars, decision_ts, interval_ms=infer_bar_interval_ms(bars)
+            )
 
         assets: list[AssetCycleReport] = []
         for asset in self._assets:
@@ -408,6 +501,17 @@ class AutonomousPaperRuntime:
             raw_history, decisions_ts, session_started_ms=sessions_started_ms
         )
 
+        # A row with an operational failure is NOT a NO_TRADE decision: it is
+        # counted separately so an outage can never be read as "we decided not
+        # to trade" (§4).
+        kinds: dict[str, int] = {}
+        for asset_row in assets:
+            if asset_row.no_trade_kind is not None:
+                kinds[asset_row.no_trade_kind] = kinds.get(asset_row.no_trade_kind, 0) + 1
+        states: dict[str, int] = {}
+        for asset_row in assets:
+            states[asset_row.risk_state] = states.get(asset_row.risk_state, 0) + 1
+
         return CycleReport(
             cycle=cycle,
             session_id=session_id,
@@ -416,7 +520,7 @@ class AutonomousPaperRuntime:
             assets=tuple(assets),
             paper_trades=sum(1 for a in assets if a.mode is DecisionMode.TRADE_PAPER),
             shadow_trades=sum(1 for a in assets if a.mode is DecisionMode.SHADOW_TRADE),
-            no_trades=sum(1 for a in assets if a.mode is DecisionMode.NO_TRADE),
+            no_trades=sum(1 for a in assets if a.no_trade_kind is not None),
             orders_created=sum(1 for a in assets if a.order_created),
             traces_persisted=sum(1 for a in assets if a.trace_persisted),
             outcomes_resolved=resolved,
@@ -424,6 +528,9 @@ class AutonomousPaperRuntime:
             performance_updates=updates,
             broker_fills_closed=fills_closed,
             errors=tuple(errors),
+            no_trade_kinds=kinds,
+            risk_states=states,
+            runtime_failures=sum(1 for a in assets if a.failure_kind is not None),
         )
 
     # -- one asset ----------------------------------------------------------
@@ -473,6 +580,7 @@ class AutonomousPaperRuntime:
                 classification="NO_MARKET_DATA",
                 market_context=market_context,
                 strategies_considered=strategies_considered,
+                no_trade_kind=NoTradeKind.NO_TRADE_DATA.value,
             )
 
         context: Any | None = None
@@ -486,6 +594,10 @@ class AutonomousPaperRuntime:
             errors.append(f"{symbol}: context_error {context_error}")
 
         if context is None:
+            # A provider outage is an INCIDENT, not a trading decision: it is
+            # reported as a runtime failure and excluded from the NO_TRADE
+            # hypothesis counts. Anything else is a genuine data no-decision.
+            failure = self._failure_kind(errors, symbol)
             return self._terminal(
                 session_id=session_id,
                 decision_id=decision_id,
@@ -498,6 +610,10 @@ class AutonomousPaperRuntime:
                 classification="CONTEXT_ERROR",
                 market_context=market_context,
                 strategies_considered=strategies_considered,
+                no_trade_kind=(
+                    None if failure is not None else NoTradeKind.NO_TRADE_DATA.value
+                ),
+                failure_kind=failure,
             )
 
         regime = getattr(context, "market_regime", None)
@@ -568,6 +684,7 @@ class AutonomousPaperRuntime:
             selected = (best_id, best_alpha, best_routed)
 
         if selected is None:
+            failure = self._failure_kind(errors, symbol)
             return self._terminal(
                 session_id=session_id,
                 decision_id=decision_id,
@@ -583,6 +700,10 @@ class AutonomousPaperRuntime:
                 asset_context=_safe_context(context),
                 regime=regime,
                 considered_rows=considered_rows,
+                no_trade_kind=(
+                    None if failure is not None else NoTradeKind.NO_TRADE_STRATEGIC.value
+                ),
+                failure_kind=failure,
             )
 
         routed_strategy_id, alpha, routed = selected
@@ -618,6 +739,7 @@ class AutonomousPaperRuntime:
                 regime=regime,
                 strategy_selected=routed_strategy_id,
                 considered_rows=considered_rows,
+                no_trade_kind=NoTradeKind.NO_TRADE_STRATEGIC.value,
             )
 
         reviews = self._agents.review(
@@ -668,10 +790,10 @@ class AutonomousPaperRuntime:
 
         risk_review = self._risk_review(
             intent=intent,
-            admission=admission,
             alpha=alpha,
             proposal=proposal,
             decision_id=decision_id,
+            symbol=symbol,
         )
         verification = self._verifier.verify(
             VerificationRequest(
@@ -686,8 +808,7 @@ class AutonomousPaperRuntime:
                 context_fingerprint=getattr(context, "data_fingerprint", fingerprint),
                 proposal=proposal,
                 cost_inputs=self._cost_inputs(snap),
-                risk_reviewed=risk_review.verdict
-                in (RiskVerdict.PASS, RiskVerdict.ADJUST, RiskVerdict.VETO),
+                risk_reviewed=risk_review.evaluated,
                 orders_created=0,
                 shadow_marked=intent.is_shadow,
             )
@@ -726,6 +847,7 @@ class AutonomousPaperRuntime:
         elif final.order_authorised:
             raise AssertionError("only TRADE_PAPER may authorise an order")
 
+        final_kind = final.no_trade_kind
         trace = self._persist_trace(
             session_id=session_id,
             decision_id=decision_id,
@@ -735,6 +857,7 @@ class AutonomousPaperRuntime:
             decision_time_ms=decision_time_ms,
             decision=final,
             classification=final.classification,
+            no_trade_kind=None if final_kind is None else final_kind.value,
             regime=regime,
             market_context=market_context,
             asset_context=_safe_context(context),
@@ -769,6 +892,10 @@ class AutonomousPaperRuntime:
             decision_id=decision_id,
             trace_persisted=trace is not None,
             order_created=order_created,
+            no_trade_kind=None if final_kind is None else final_kind.value,
+            risk_state=risk_review.state.value,
+            risk_evaluated=risk_review.evaluated,
+            risk_rule=risk_review.rule,
         )
 
     # -- helpers ------------------------------------------------------------
@@ -898,6 +1025,10 @@ class AutonomousPaperRuntime:
                 knowledge=evidence.knowledge,
                 sample_trades=evidence.sample_trades,
                 note=evidence.note,
+                evidence_class=evidence.evidence_class,
+                period=evidence.period,
+                timeframe=evidence.timeframe,
+                status=evidence.status,
             ),
             admission_status=entry.status,
             regime=regime,
@@ -913,48 +1044,121 @@ class AutonomousPaperRuntime:
         )
         return proposal
 
+    @staticmethod
+    def _failure_kind(errors: list[str], symbol: str) -> str | None:
+        """Operational failure recorded for ``symbol``, if any (§4).
+
+        A provider outage or an exploding strategy is an incident: it must not
+        be filed as a NO_TRADE decision, because no decision was taken.
+        """
+        prefix = f"{symbol}: "
+        for error in errors:
+            if not error.startswith(prefix):
+                continue
+            remainder = error[len(prefix) :]
+            if remainder.startswith("history_error"):
+                return RuntimeFailureKind.PROVIDER_FAILURE.value
+            if remainder.startswith("strategy_error"):
+                return RuntimeFailureKind.INTERNAL_ERROR.value
+            if remainder.startswith("broker_error"):
+                return RuntimeFailureKind.INTERNAL_ERROR.value
+            if remainder.startswith("adapter_error"):
+                return RuntimeFailureKind.ADAPTER_FAILURE.value
+            if remainder.startswith("invalid_data"):
+                return RuntimeFailureKind.INVALID_DATA.value
+        return None
+
     def _risk_review(
         self,
         *,
         intent: Any,
-        admission: Any,
         alpha: Any,
         proposal: TradeProposal,
         decision_id: str,
+        symbol: str,
     ) -> RiskReview:
-        """Run the deterministic risk engine ONLY when an order could follow.
+        """Run the deterministic risk engine for EVERY packet with a proposal.
 
-        SHADOW and NO_TRADE never reach the broker, so risk is not applicable
-        for them; a PAPER intent must pass or be adjusted by RiskManager.
+        The SAME canonical ``RiskManager.check_signal`` used by the PAPER path
+        is consulted — never a second, shadow-specific risk engine. What
+        changes with the mode is only the BINDINGNESS of the verdict:
+
+        * ``TRADE_PAPER``  → binding; PASS/ADJUST is required to authorise;
+        * ``SHADOW_TRADE`` → advisory; it can neither authorise nor block;
+        * ``NO_TRADE``     → advisory; recorded so risk stays observable even
+          when no trade happens (§12).
+
+        ``evaluated`` is True only when the engine really ran, so a verdict
+        nobody produced can never be reported as an approval.
         """
-        if intent.mode is not DecisionMode.TRADE_PAPER:
-            return RiskReview(
-                verdict=RiskVerdict.NOT_APPLICABLE,
-                reason=f"no order requested for {intent.mode.value}",
-                source="RiskManager.not_invoked",
-            )
-        if not self._ledger.is_paper_admitted(proposal.strategy_id):
+        binding = intent.mode is DecisionMode.TRADE_PAPER
+        inputs: dict[str, Any] = {
+            "decision_id": decision_id,
+            "symbol": symbol,
+            "strategy_id": proposal.strategy_id,
+            "side": "buy" if proposal.direction == "LONG" else "sell",
+            "entry_reference": proposal.entry_reference,
+            "horizon_minutes": proposal.horizon_minutes,
+            "requested_mode": intent.mode.value,
+            "advisory": not binding,
+            "kill_switch_enabled": bool(
+                getattr(getattr(self._risk, "risk", None), "kill_switch_enabled", False)
+            ),
+            "equity": float(getattr(self._risk, "equity", 0.0) or 0.0),
+            "open_positions": len(getattr(self._risk, "open_positions", {}) or {}),
+            "trades_today": int(getattr(self._risk, "trades_today", 0) or 0),
+            "consecutive_losses": int(getattr(self._risk, "consecutive_losses", 0) or 0),
+        }
+        if binding and not self._ledger.is_paper_admitted(proposal.strategy_id):
             return RiskReview(
                 verdict=RiskVerdict.VETO,
                 reason=f"strategy {proposal.strategy_id} is not admitted for PAPER",
+                rule="admission_ledger",
+                inputs=inputs,
             )
         try:
             signal = alpha_signal_to_signal(alpha)
         except AdapterError as exc:
-            return RiskReview(verdict=RiskVerdict.VETO, reason=f"adapter_error:{exc}")
+            return RiskReview(
+                verdict=RiskVerdict.VETO,
+                reason=f"adapter_error:{exc}",
+                advisory=not binding,
+                rule="signal_adapter",
+                inputs=inputs,
+            )
         check = self._risk.check_signal(signal)
-        if not check.approved or check.position_size is None:
+        inputs["blocked_by"] = check.blocked_by
+        if not check.approved:
             return RiskReview(
                 verdict=RiskVerdict.VETO,
                 reason=check.reason or "risk_rejected",
+                advisory=not binding,
+                evaluated=True,
+                rule=check.blocked_by or "risk_check",
+                inputs=inputs,
             )
         size = check.position_size
-        if proposal.expected_cost_bps > 0 and size.notional_usdt <= 0:
-            return RiskReview(verdict=RiskVerdict.VETO, reason="risk_produced_zero_notional")
+        if size is None or size.notional_usdt <= 0:
+            return RiskReview(
+                verdict=RiskVerdict.VETO,
+                reason="risk_produced_no_position_size",
+                advisory=not binding,
+                evaluated=True,
+                rule="position_sizing",
+                inputs=inputs,
+            )
+        inputs["notional_usdt"] = float(size.notional_usdt)
+        inputs["quantity"] = float(size.quantity)
+        inputs["stop_loss_pct"] = float(size.stop_loss_pct)
+        inputs["take_profit_pct"] = float(size.take_profit_pct)
         return RiskReview(
             verdict=RiskVerdict.PASS,
             reason="risk_approved",
             notional_usdt=float(size.notional_usdt),
+            advisory=not binding,
+            evaluated=True,
+            rule="all_limits_pass",
+            inputs=inputs,
         )
 
     def _execute_paper(
@@ -1039,8 +1243,15 @@ class AutonomousPaperRuntime:
         strategy_selected: str | None = None,
         considered_rows: list[dict[str, Any]] | None = None,
         router_trace: tuple[str, ...] = (),
+        no_trade_kind: str | None = None,
+        failure_kind: str | None = None,
     ) -> AssetCycleReport:
         """Terminal NO_TRADE with a persisted trace (every decision is recorded)."""
+        risk_review = RiskReview(
+            verdict=RiskVerdict.NOT_APPLICABLE,
+            reason="no proposal: nothing to review",
+            source="RiskManager.not_invoked",
+        )
         trace = self._persist_trace(
             session_id=session_id,
             decision_id=decision_id,
@@ -1050,6 +1261,7 @@ class AutonomousPaperRuntime:
             decision_time_ms=decision_time_ms,
             decision=_TerminalDecision(mode=mode, reason=reason, classification=classification),
             classification=classification,
+            no_trade_kind=no_trade_kind,
             regime=regime,
             market_context=market_context,
             asset_context=asset_context or {},
@@ -1061,7 +1273,7 @@ class AutonomousPaperRuntime:
                 failures=(),
                 verifier_version=self._verifier.version,
             ),
-            risk_review=RiskReview(verdict=RiskVerdict.NOT_APPLICABLE, reason="no proposal"),
+            risk_review=risk_review,
             strategies_considered=strategies_considered,
             strategy_selected=strategy_selected,
             considered_rows=considered_rows,
@@ -1089,6 +1301,11 @@ class AutonomousPaperRuntime:
             decision_id=decision_id,
             trace_persisted=trace is not None,
             order_created=False,
+            no_trade_kind=no_trade_kind,
+            failure_kind=failure_kind,
+            risk_state=risk_review.state.value,
+            risk_evaluated=risk_review.evaluated,
+            risk_rule=risk_review.rule,
         )
 
     def _persist_trace(
@@ -1102,6 +1319,7 @@ class AutonomousPaperRuntime:
         decision_time_ms: int,
         decision: Any,
         classification: str,
+        no_trade_kind: str | None,
         regime: str | None,
         market_context: dict[str, Any],
         asset_context: dict[str, Any],
@@ -1157,6 +1375,7 @@ class AutonomousPaperRuntime:
             cost_model_version=COST_MODEL_VERSION,
             order_created=order_created,
             orders_created=orders_created,
+            no_trade_kind=no_trade_kind,
             errors=errors,
             created_at_ms=self._now(),
         )
@@ -1203,7 +1422,9 @@ class AutonomousPaperRuntime:
         session_started_ms: int,
     ) -> tuple[int, int, int]:
         """Resolve any decision whose horizon is now observable, then learn."""
-        resolved_ids = {o.decision_id for o in self._trace_store.read_outcomes()}
+        existing = self._trace_store.read_outcomes()
+        resolved_ids = {o.decision_id for o in existing}
+        seen_keys = {o.outcome_key for o in existing}
         traces = self._trace_store.read()
         bars_by_symbol: dict[str, list[OHLCV]] = {
             symbol: list(bars) for symbol, bars in raw_history.items()
@@ -1227,7 +1448,10 @@ class AutonomousPaperRuntime:
             record = evaluation.record
             if record is None:
                 continue
+            if record.outcome_key in seen_keys:
+                continue  # idempotent: decision + horizon ⇒ exactly one outcome
             self._trace_store.append_outcome(record)
+            seen_keys.add(record.outcome_key)
             resolved += 1
             cell = self._performance.update_from_outcome(record, timeframe=self._timeframe)
             self._log.info(

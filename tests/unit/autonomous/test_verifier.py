@@ -52,7 +52,9 @@ def _expected_cost(**overrides: Any) -> float:
 
 def _request(**overrides: Any) -> VerificationRequest:
     ledger = overrides.pop("ledger", None) or make_ledger()
-    decision_time = TS0 + 9 * BAR_MS
+    # The decision time is the CLOSE of the 10th bar: every bar in the slice
+    # has finished forming, which is what the PIT slice rule requires.
+    decision_time = TS0 + 10 * BAR_MS
     cost_inputs = overrides.pop("cost_inputs", _cost_inputs())
     cost_bps = overrides.pop("cost_bps", _expected_cost())
     gross = overrides.pop("gross", 4.0)

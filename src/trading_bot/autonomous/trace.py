@@ -25,6 +25,7 @@ from .contracts import (
     DecisionMode,
     DecisionTrace,
     OutcomeRecord,
+    ReplayStatus,
     TradeProposal,
     VerificationCheck,
 )
@@ -82,12 +83,20 @@ class ReplayResult:
     def ok(self) -> bool:
         return all(c.passed for c in self.checks)
 
+    @property
+    def status(self) -> ReplayStatus:
+        """Honest replay coverage (never claim FULL without the outcome)."""
+        if not self.ok:
+            return ReplayStatus.NOT_AVAILABLE
+        return ReplayStatus.FULL if self.outcome is not None else ReplayStatus.PARTIAL
+
     def to_dict(self) -> dict[str, Any]:
         return {
             "decision_id": self.decision_id,
             "run_id": self.run_id,
             "mode": self.mode.value,
             "ok": self.ok,
+            "status": self.status.value,
             "checks": [c.to_dict() for c in self.checks],
             "reconstruction": self.reconstruction,
             "outcome": None if self.outcome is None else self.outcome.to_dict(),
@@ -148,9 +157,26 @@ class DecisionTraceStore:
         return sealed
 
     def append_outcome(self, outcome: OutcomeRecord) -> OutcomeRecord:
+        """Append one outcome, IDEMPOTENT on ``decision_id + horizon``.
+
+        Reprocessing the same decision, horizon and market data must not create
+        a second outcome: the stored record wins and is returned unchanged.
+        """
+        existing = {o.outcome_key: o for o in self.read_outcomes()}
+        duplicate = existing.get(outcome.outcome_key)
+        if duplicate is not None:
+            return duplicate
         with open(self._outcome_path, "a", encoding="utf-8") as fh:
             fh.write(canonical_json(outcome.to_dict()) + "\n")
         return outcome
+
+    def outcome_keys(self) -> set[str]:
+        """Stable identities (``decision_id@horizon``) already persisted."""
+        return {o.outcome_key for o in self.read_outcomes()}
+
+    def resolved_decision_ids(self) -> set[str]:
+        """Decision ids that already have an outcome (never re-resolved)."""
+        return {o.decision_id for o in self.read_outcomes()}
 
     # -- reads --------------------------------------------------------------
 
@@ -263,13 +289,22 @@ class DecisionTraceStore:
             "asset_context": trace.asset_context,
             "regime": trace.regime,
             "strategies_considered": [dict(s) for s in trace.strategies_considered],
+            "candidate": None if trace.proposal is None else trace.proposal.get("strategy_id"),
+            "timeframe": None if trace.proposal is None else trace.proposal.get("timeframe"),
             "proposal": trace.proposal,
+            "cost_estimate": None if trace.proposal is None else trace.proposal.get("cost"),
             "agent_messages": [dict(m) for m in trace.agent_messages],
             "evidence": list(trace.evidence),
             "counter_evidence": list(trace.counter_evidence),
-            "decision": {"mode": trace.mode.value, "reason": trace.reason, "classification": trace.classification},
+            "decision": {
+                "mode": trace.mode.value,
+                "reason": trace.reason,
+                "classification": trace.classification,
+                "no_trade_kind": trace.no_trade_kind,
+            },
             "verification": trace.verification,
             "risk": trace.risk,
+            "shadow": trace.shadow,
             "execution_mode": trace.mode.value,
             "order_created": trace.order_created,
             "cost_model_version": trace.cost_model_version,

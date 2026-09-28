@@ -7,7 +7,12 @@ from typing import Any
 
 import pytest
 
-from trading_bot.autonomous.contracts import DecisionMode, OutcomeRecord, OutcomeStatus
+from trading_bot.autonomous.contracts import (
+    DecisionMode,
+    OutcomeRecord,
+    OutcomeStatus,
+    ReplayStatus,
+)
 from trading_bot.autonomous.experience import (
     MAX_PRIORITY_ADJUSTMENT,
     MIN_SAMPLES_FOR_ADJUSTMENT,
@@ -100,6 +105,49 @@ def test_replay_reports_missing_decision(tmp_path: Path) -> None:
         store.replay("nope")
 
 
+def test_replay_status_is_partial_without_an_outcome(tmp_path: Path) -> None:
+    """The decision is fully rebuilt, but its horizon has not closed yet."""
+    store = DecisionTraceStore(tmp_path)
+    store.append(_shadow_trace("d-1"))
+    replay = store.replay("d-1")
+    assert replay.ok
+    assert replay.status is ReplayStatus.PARTIAL
+    assert replay.to_dict()["status"] == "PARTIAL"
+    # The reconstruction names the candidate, its cost estimate and the risk
+    # review — a partial replay is still an honest, complete reconstruction.
+    assert replay.reconstruction["candidate"] == "ema_crossover@5m"
+    assert replay.reconstruction["cost_estimate"] is not None
+    assert replay.reconstruction["risk"] is not None
+    assert replay.reconstruction["shadow"] is not None
+
+
+def test_replay_status_is_full_once_the_outcome_exists(tmp_path: Path) -> None:
+    store = DecisionTraceStore(tmp_path)
+    trace = store.append(_shadow_trace("d-1"))
+    record = OutcomeEvaluator().evaluate(
+        trace=trace, bars=bars("BTC/USDT", 6, rising=True)
+    ).record
+    assert record is not None
+    store.append_outcome(record)
+    replay = store.replay("d-1")
+    assert replay.ok
+    assert replay.status is ReplayStatus.FULL
+    assert replay.reconstruction["outcome"] is not None
+
+
+def test_replay_status_is_not_available_when_an_invariant_fails(tmp_path: Path) -> None:
+    """A tampered record must never be reported as a successful replay."""
+    store = DecisionTraceStore(tmp_path)
+    store.append(_shadow_trace("d-1"))
+    lines = store.trace_path.read_text(encoding="utf-8").splitlines()
+    lines[0] = lines[0].replace('"reason":"gross below cost"', '"reason":"forged"')
+    store.trace_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    replay = store.replay("d-1")
+    assert not replay.ok
+    assert replay.status is ReplayStatus.NOT_AVAILABLE
+    assert "trace_hash" in [c.name for c in replay.checks if not c.passed]
+
+
 def test_trace_hash_is_order_insensitive_but_content_sensitive() -> None:
     payload = {"a": 1, "b": [2, 3]}
     assert trace_hash(payload) == trace_hash({"b": [2, 3], "a": 1})
@@ -156,6 +204,24 @@ def test_outcome_resolves_and_respects_direction() -> None:
     assert record.mfe_bps >= record.gross_return_bps - 1e-9
 
 
+def test_outcome_instant_is_the_close_of_the_bar_not_its_open() -> None:
+    """A bar yields information when it CLOSES: the outcome is priced there."""
+    evaluator = OutcomeEvaluator()
+    series = bars("BTC/USDT", 3, rising=True)
+    evaluation = evaluator.evaluate(trace=_trace_for_outcome(), bars=series)
+    assert evaluation.status is OutcomeStatus.RESOLVED
+    record = evaluation.record
+    assert record is not None
+    # The bar opened at the decision time is the one that SPANS the 5m
+    # horizon: its close is the first observation at or after the target.
+    assert record.outcome_price == series[0].close
+    assert record.outcome_time_ms == series[0].timestamp + BAR_MS
+    assert record.outcome_time_ms == TS0 + BAR_MS
+    # It is the CLOSE, never the OPEN of that bar.
+    assert record.outcome_time_ms != series[0].timestamp
+    assert record.reference_price_time_ms <= record.decision_time_ms
+
+
 def test_short_direction_inverts_the_sign() -> None:
     evaluator = OutcomeEvaluator()
     trace = _trace_for_outcome(
@@ -178,10 +244,12 @@ def test_short_direction_inverts_the_sign() -> None:
 
 def test_future_bars_are_never_used_for_a_past_decision() -> None:
     evaluator = OutcomeEvaluator()
-    # Bars at or before the decision time must not produce an outcome.
+    # A single bar stamped at the decision time has not closed yet: nothing to
+    # observe, so the outcome must stay PENDING rather than be invented.
     series = [b for b in bars("BTC/USDT", 6, rising=True) if b.timestamp <= TS0]
     evaluation = evaluator.evaluate(trace=_trace_for_outcome(), bars=series)
     assert evaluation.status is OutcomeStatus.PENDING_OUTCOME
+    assert evaluation.record is None
 
 
 def test_no_proposal_means_not_applicable() -> None:

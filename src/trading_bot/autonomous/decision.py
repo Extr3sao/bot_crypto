@@ -28,6 +28,7 @@ from .contracts import (
     AdmissionStatus,
     AgentMessage,
     DecisionMode,
+    NoTradeKind,
     ReviewType,
     RiskReview,
     RiskVerdict,
@@ -36,7 +37,15 @@ from .contracts import (
     VerificationResult,
 )
 
-__all__ = ["DECISION_ENGINE_VERSION", "DecisionEngine", "DecisionRequest", "DecisionResult"]
+__all__ = [
+    "CLASSIFICATIONS",
+    "DECISION_ENGINE_VERSION",
+    "NO_TRADE_KINDS",
+    "DecisionEngine",
+    "DecisionRequest",
+    "DecisionResult",
+    "no_trade_kind_for",
+]
 
 DECISION_ENGINE_VERSION = "decision-engine-v1"
 
@@ -55,6 +64,49 @@ CLASSIFICATIONS = (
     "UNKNOWN_STRATEGY",
     "VERIFIER_FAIL",
 )
+
+#: Classifications that mean "this is not a trading decision today" — the
+#: strategy itself is the reason, so the record stays a measurable
+#: NO_TRADE_STRATEGIC hypothesis.
+_STRATEGIC_CLASSIFICATIONS: frozenset[str] = frozenset(
+    {
+        "COST_KILLED",
+        "NO_ALPHA",
+        "NO_GROSS_EDGE",
+        "NO_PROPOSAL",
+        "NOT_ADMITTED",
+        "UNKNOWN_STRATEGY",
+    }
+)
+
+#: Classifications whose cause is the DATA, not the strategy.
+_DATA_CLASSIFICATIONS: frozenset[str] = frozenset({"CONTEXT_ERROR", "NO_MARKET_DATA"})
+
+#: Classifications where two independent reviewers disagreed with the packet.
+_CONFLICT_CLASSIFICATIONS: frozenset[str] = frozenset({"AGENT_VETO", "VERIFIER_FAIL"})
+
+#: Every classification a NO_TRADE may carry (see ``no_trade_kind_for``).
+NO_TRADE_KINDS: frozenset[str] = (
+    _STRATEGIC_CLASSIFICATIONS | _DATA_CLASSIFICATIONS | _CONFLICT_CLASSIFICATIONS | {"RISK_VETO"}
+)
+
+
+def no_trade_kind_for(classification: str) -> NoTradeKind:
+    """Map a NO_TRADE classification onto its honest kind (§4).
+
+    Risk, data and conflict are separated from the strategic ("the edge does
+    not survive cost") class so a reader can never confuse "we chose not to
+    trade" with "we could not decide".
+    """
+    if classification == "RISK_VETO":
+        return NoTradeKind.NO_TRADE_RISK
+    if classification in _CONFLICT_CLASSIFICATIONS:
+        return NoTradeKind.NO_TRADE_CONFLICT
+    if classification in _DATA_CLASSIFICATIONS:
+        return NoTradeKind.NO_TRADE_DATA
+    if classification in _STRATEGIC_CLASSIFICATIONS:
+        return NoTradeKind.NO_TRADE_STRATEGIC
+    raise ValueError(f"classification {classification!r} is not a NO_TRADE classification")
 
 
 @dataclass(frozen=True, slots=True)
@@ -92,11 +144,20 @@ class DecisionResult:
     def is_no_trade(self) -> bool:
         return self.mode is DecisionMode.NO_TRADE
 
+    @property
+    def no_trade_kind(self) -> NoTradeKind | None:
+        """The honest kind of a NO_TRADE; ``None`` for every other mode."""
+        if self.mode is not DecisionMode.NO_TRADE:
+            return None
+        return no_trade_kind_for(self.classification)
+
     def to_dict(self) -> dict[str, Any]:
+        kind = self.no_trade_kind
         return {
             "mode": self.mode.value,
             "reason": self.reason,
             "classification": self.classification,
+            "no_trade_kind": None if kind is None else kind.value,
             "order_authorised": self.order_authorised,
             "shadow": None if self.shadow is None else self.shadow.to_dict(),
             "notional_usdt": self.notional_usdt,
@@ -160,6 +221,7 @@ class DecisionEngine:
         )
 
     def decide(self, request: DecisionRequest) -> DecisionResult:
+        self._reject_advisory_risk_on_an_order(request)
         vetoes = [m for m in request.agent_messages if m.review_type is ReviewType.VETO]
         if vetoes:
             agents = ",".join(m.agent_id for m in vetoes)
@@ -173,7 +235,9 @@ class DecisionEngine:
             return self._no_trade(
                 f"strategy_unknown_to_ledger:{request.proposal.strategy_id}", "UNKNOWN_STRATEGY"
             )
-        if request.risk.verdict is RiskVerdict.VETO:
+        # Only a BINDING risk veto blocks. An advisory verdict (recorded for a
+        # decision that cannot order) never changes the outcome.
+        if request.risk.verdict is RiskVerdict.VETO and not request.risk.advisory:
             return self._no_trade(f"risk_veto:{request.risk.reason}", "RISK_VETO")
 
         proposal = request.proposal
@@ -224,6 +288,28 @@ class DecisionEngine:
         )
 
     # -- helpers ------------------------------------------------------------
+
+    @staticmethod
+    def _reject_advisory_risk_on_an_order(request: DecisionRequest) -> None:
+        """Fail closed if an advisory review could sit on an authorising packet.
+
+        An advisory review is only ever legal where no order can follow. If the
+        packet is order-authorising (positive net edge on an admitted candidate)
+        the review MUST be binding, otherwise the risk gate would be bypassable
+        by simply marking it advisory.
+        """
+        proposal = request.proposal
+        if not request.risk.advisory or proposal is None:
+            return
+        order_authorising = (
+            request.admission.admitted_for_paper
+            and proposal.expected_gross_edge_bps > 0
+            and proposal.expected_net_edge_bps > 0
+        )
+        if order_authorising:
+            raise ValueError(
+                "advisory risk review cannot accompany an order-authorising packet"
+            )
 
     def _no_trade(self, reason: str, classification: str) -> DecisionResult:
         if classification not in CLASSIFICATIONS:
