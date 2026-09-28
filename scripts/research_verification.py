@@ -52,6 +52,19 @@ def sha256_file(path: Path) -> str:
     return h.hexdigest()
 
 
+def sha256_normalized(path: Path) -> str:
+    """SHA-256 of the file's *content*, independent of checkout line endings.
+
+    This repository has ``core.autocrlf=true``, so a fresh checkout materialises
+    the artifacts with CRLF while the generators write LF. Comparing raw bytes
+    would report a divergence that does not exist in the content (DEF-V2-1, found
+    by running this verifier in a fresh worktree).
+    """
+    with open(path, "rb") as fh:
+        data = fh.read()
+    return hashlib.sha256(data.replace(b"\r\n", b"\n")).hexdigest()
+
+
 def load_module(name: str, rel: str) -> Any:
     spec = importlib.util.spec_from_file_location(name, ROOT / rel)
     assert spec is not None and spec.loader is not None
@@ -526,15 +539,29 @@ def verify_microstructure_edge_v2() -> dict[str, Any]:
         if not ok:
             failures.append(name)
 
-    # 1. reproduce the committed V2 artifacts by re-running the driver
-    before = {p: sha256_file(ROOT / p) for p in V2_ARTIFACTS if (ROOT / p).exists()}
+    # 1. reproduce the committed V2 artifacts by re-running the driver.
+    #    Content is compared, not bytes: the checkout may have CRLF while the
+    #    generators write LF (see sha256_normalized).
+    raw_before = {p: sha256_file(ROOT / p) for p in V2_ARTIFACTS if (ROOT / p).exists()}
+    norm_before = {p: sha256_normalized(ROOT / p) for p in V2_ARTIFACTS if (ROOT / p).exists()}
     rc, log = run_script("scripts/microstructure_edge_v2.py")
-    after = {p: sha256_file(ROOT / p) for p in V2_ARTIFACTS if (ROOT / p).exists()}
+    raw_after = {p: sha256_file(ROOT / p) for p in V2_ARTIFACTS if (ROOT / p).exists()}
+    norm_after = {p: sha256_normalized(ROOT / p) for p in V2_ARTIFACTS if (ROOT / p).exists()}
+    content_identical = norm_before == norm_after and bool(norm_before)
     record(
         "V2 artifacts reproduce byte-for-byte on re-run",
-        "identical SHA-256 for all five artifacts",
-        {"identical": before == after and bool(before), "exit_code": rc, "artifacts": len(after)},
-        before == after and bool(before) and rc == 0,
+        "identical content hash for all five artifacts",
+        {
+            "content_identical": content_identical,
+            "raw_bytes_identical": raw_before == raw_after,
+            "exit_code": rc,
+            "artifacts": len(norm_after),
+            "note": (
+                "raw bytes differ when the checkout materialised CRLF (core.autocrlf); "
+                "the content hash is the authoritative comparison"
+            ),
+        },
+        content_identical and rc == 0,
         note=log[-300:] if rc != 0 else "",
     )
 
