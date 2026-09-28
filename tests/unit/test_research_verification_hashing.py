@@ -49,17 +49,28 @@ def test_normalized_hash_still_detects_real_content_change(tmp_path: Path) -> No
 
 
 def test_committed_v2_artifact_survives_a_crlf_checkout(tmp_path: Path) -> None:
-    """A CRLF-materialised copy of a real artifact must hash as the same content."""
+    """A CRLF-materialised copy of a real artifact must hash as the same content.
+
+    The comparison starts from the artifact's *content* (CRLF normalised away)
+    rather than from the on-disk bytes, because in a checkout with
+    ``core.autocrlf=true`` the on-disk bytes are already CRLF and re-applying the
+    conversion would produce ``\\r\\r\\n`` — the mistake this test exists to
+    prevent, found by running it in a fresh worktree.
+    """
     verifier = _load_verifier()
     artifact = ROOT / "docs" / "EXECUTION_COST_MODEL_V4.json"
     assert artifact.exists(), "the V2 cost artifact must be committed"
-    original_bytes = artifact.read_bytes()
-    as_json = json.loads(original_bytes.decode("utf-8"))
+    content = artifact.read_bytes().replace(b"\r\n", b"\n")
+    as_json = json.loads(content.decode("utf-8"))
     assert "assets" in as_json and "maker_gate" in as_json
 
-    crlf_copy = tmp_path / artifact.name
-    crlf_copy.write_bytes(original_bytes.replace(b"\n", b"\r\n"))
-    assert verifier.sha256_file(crlf_copy) != verifier.sha256_file(artifact)
+    lf_copy = tmp_path / f"lf-{artifact.name}"
+    crlf_copy = tmp_path / f"crlf-{artifact.name}"
+    lf_copy.write_bytes(content)
+    crlf_copy.write_bytes(content.replace(b"\n", b"\r\n"))
+    assert b"\r\n" in crlf_copy.read_bytes()
+    assert verifier.sha256_file(lf_copy) != verifier.sha256_file(crlf_copy)
+    assert verifier.sha256_normalized(lf_copy) == verifier.sha256_normalized(crlf_copy)
     assert verifier.sha256_normalized(crlf_copy) == verifier.sha256_normalized(artifact)
 
 
