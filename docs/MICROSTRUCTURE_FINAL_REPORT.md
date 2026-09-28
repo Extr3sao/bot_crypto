@@ -1,123 +1,164 @@
-# MICROSTRUCTURE_FINAL_REPORT — EXECUTION-COST & MICROSTRUCTURE-EDGE-V1
+# MICROSTRUCTURE_FINAL_REPORT — MICROSTRUCTURE-EDGE & FORWARD-DATA V1 / V2
 
-Fecha: 2026-09-26. HEAD base: `5b4051e`.
+Fecha: 2026-09-28. HEAD base de la fase: `3896f4e` (runtime verificado,
+`SHADOW_DECISION_RUNTIME_VERIFIED`).
+
+> Este documento **actualiza** el informe de `MICROSTRUCTURE-FINAL-V1`
+> (2026-09-26). La sección histórica de V1 se conserva al final; el veredicto de
+> esta fase la amplía, no la contradice.
 
 ## 1. Veredicto
 
 ```text
-FINAL STATUS: MICROSTRUCTURE_V1_NO_EDGE_FOUND
+FINAL STATUS: MICROSTRUCTURE_NO_EDGE_FOUND
 PAPER CANDIDATES: 0
 FALSE_SUCCESS: 0
 ```
 
-Calificación honesta: el no-edge aplica a las hipótesis **históricamente
-testeables**. La dimensión order book (M-02) y el OI más allá de 30 días **no
-son testeables hoy** y quedan explícitamente fuera del veredicto (§63): no se
-declara resultado sobre datos que no existen.
+La frase completa: **no hay edge explotable en las hipótesis históricamente
+testeables**, ahora incluidas cuatro que V1 no había medido (M-02 flow impulse,
+M-07 OI x precio, M-09 lead/lag de flujo, M-10 flow cross-sectional). Las dos
+dimensiones que quedan vivas **no son resolubles con histórico** y se declaran
+como tales, sin inventar resultados sobre datos que no existen.
 
-## 2. Los dos hallazgos estructurales
+## 2. Qué se hizo (ejecución real, no documental)
 
-### Hallazgo A — el coste es el doble de lo asumido (Phase A)
+1. **Pre-registro** antes de ejecutar: `docs/MICROSTRUCTURE_HYPOTHESES_V2.md`
+   (reglas, horizontes, umbrales, asignación de coste, escalera de filtros).
+2. **Código nuevo**, con tests: panel cross-asset PIT
+   (`flow_panel.py`: agregación minuto→5m, panel de reloj común, lead/lag que
+   rechaza `lag < 0`, flow impulse, cuadrantes OI, estadística tie-aware) y
+   **`cost_model_v4.py`** (coste por activo con spread y volatilidad medidos,
+   componiendo V3 sin duplicar su aritmética).
+3. **Captura forward real** (`microstructure_collector.py`, 102.4 s,
+   read-only): 11,346 registros, 0 duplicados, 0 desorden.
+4. **Experimentos** (`scripts/microstructure_edge_v2.py`) sobre 4,032 slices de
+   reloj común (14 días reales de aggTrades), sin huecos en el panel.
+5. **Verificación externa de la agregación**: el volumen agregado coincide
+   **exactamente** con el volumen de klines reales (ratio 1.0 en 288 barras por
+   activo).
+6. **Verificación independiente** de los artefactos
+   (`docs/MICROSTRUCTURE_V2_INDEPENDENT_VERIFICATION.md`), y gates
+   ruff/mypy/pytest sobre el HEAD final.
 
-| item | valor |
-| --- | --- |
-| venue/producto | Binance **Spot** (VIP0 retail), runtime read-only |
-| modelo previo | 12 bps RT (fee 5 bps/lado) |
-| fee oficial real | **10 bps/lado** (20 bps RT) |
-| spread observado | BTC 0.001, ETH 0.04, SOL 0.83 bps |
-| **coste realista** | **~23.5 bps RT** |
-| `COST_MODEL_STATUS` | **OPTIMISTIC** |
-| required edge (×1.5) | **35.25 bps** |
+## 3. Resultado económico
 
-Reevaluación de V3: techo OHLCV +8.91 bps < 12 (modelo viejo) << 23.5 (real)
--> `OHLCV_CURRENT_FAMILIES_NOT_EXECUTION_VIABLE`. No se reescribieron
-resultados.
+Coste real por activo (`EXECUTION_COST_MODEL_V4`, 1,000 USD, market/market):
 
-Maker no rescata: a VIP0 el maker Spot es **también 10 bps**. `MAKER EDGE GATE
-= FAIL`.
+| activo | RT coste | requerido 1.5x |
+| --- | ---: | ---: |
+| BTC | 23.500 bps | 35.250 bps |
+| ETH | 23.761 bps | 35.641 bps |
+| SOL | 24.687 bps | 37.030 bps |
 
-### Hallazgo B — no aparece información nueva suficiente (Phase B)
-
-Features testeables en histórico completo: order flow (klines taker), funding,
-premium. Max gross tradeable **+2.36 bps** (`flow_imbalance_z`, h5). Todos los
-demás ≤ 0 o negativo. Clasificación:
-
-```text
-COST_KILLED 3 | NO_GROSS_EDGE 5 | LIMITED_HISTORY 3 | EXECUTION_MODEL_REQUIRED 1
-PAPER_CANDIDATE 0
-```
-
-## 3. Qué es testeable y qué no
-
-| dimensión | estado | resultado |
-| --- | --- | --- |
-| order flow agregado (M-01) | DATA_SUFFICIENT | COST_KILLED (gross +2.36) |
-| flow breakout (M-03) | DATA_SUFFICIENT | COST_KILLED (gross +0.94) |
-| funding extremes (M-04) | DATA_SUFFICIENT | NO_GROSS_EDGE (OOS negativo) |
-| premium/basis (M-05) | DATA_SUFFICIENT | NO_GROSS_EDGE |
-| OI+price (M-06) | LIMITED_HISTORY (30d) | NO_GROSS_EDGE |
-| funding+OI (M-07) | LIMITED_HISTORY (30d) | no testeable DEV/VAL |
-| BTC lead/lag (M-08) | DATA_SUFFICIENT | NO_GROSS_EDGE (≈0) |
-| **book imbalance (M-02)** | **LIVE_ONLY** | **EXECUTION_MODEL_REQUIRED** |
-
-## 4. Integridad y disciplina
-
-- PIT: `available_at <= decision_time` en toda alineación
-  (`bisect_right` sobre available_at).
-- Gaps de klines: 0. Duplicados/orden: limpios.
-- 46 tests nuevos (cost model, features, integrity, adversarial fail-closed).
-- `ruff` limpio; `mypy` 0 issues (263 ficheros); `pytest` 655 pasan
-  (1 guard de dependency-closure que exige módulos git-tracked: se satisface
-  al commitear).
-- ZERO_COST nunca usado en admission.
-- No se tocó el core runtime (§50): RiskManager/PaperBroker/Portfolio/
-  StartupReconciler/StrategyRouter intactos.
-- No se fabricó libro histórico desde OHLCV (§16).
-
-## 5. Decisión sobre spot y derivados (§58-59)
+Mejor gross edge medido en la fase: **+6.43 bps** (M-02-ETH, DEV, n=168).
 
 ```text
-SPOT_INTRADAY_COST_BLOCKED      (taker intradía, retail VIP0, majors)
-DERIVATIVES_NO_EVIDENCE         (direccional; carry market-neutral = línea aparte)
+déficit mínimo frente a break-even ........... 17.07 bps
+déficit mínimo frente a required (1.5x) ...... 28.82 bps
+peso de la tarifa en la barrera .............. 85.1%  (20.0 de 23.5 bps)
 ```
 
-## 6. Próxima fase recomendada (§69 — exactamente una)
+Dónde está el dinero del problema: **no** en el spread (0.001–0.84 bps) ni en
+elegir activo (1.19 bps de diferencia BTC↔SOL), sino en la tarifa taker VIP0.
+Y aun eliminando la tarifa, la señal no llega: con coste cero el máximo gross es
++6.43 bps.
 
-El hallazgo dominante es el **económico**, no el informativo: a este venue y
-nivel de fee, ninguna señal intradía puede cubrir el coste. Por eso la fase
-con mayor retorno esperado es comparar venue/producto de forma factual antes
-de seguir buscando señales.
+## 4. Hipótesis nuevas: qué se midió y qué se rechazó
+
+| hipótesis | n | gross DEV | net DEV | clasificación |
+| --- | :-: | ---: | ---: | --- |
+| M-02 flow impulse (BTC/ETH/SOL) | 131–168 | +1.40 / **+6.43** / +5.12 | −22.1 / −17.3 / −19.6 | `COST_KILLED` x3 |
+| M-07 OI x precio | ~130 por celda (sólo OOS) | — | — | `LIMITED_HISTORY` x3 |
+| M-09 BTC flow → ETH/SOL | 3,948 | +0.61 / +0.52 | −23.2 / −24.2 | `COST_KILLED` x2 |
+| M-10 cross-sectional flow | 3,962 | +0.01 … +0.41 | −23.5 … −24.6 | `COST_KILLED` x2, `NO_INFORMATION` x2 |
+
+Dos hallazgos honestos que merecen quedar escritos:
+
+* **M-09 es la estructura más limpia jamás medida aquí**: lead/lag de flujo BTC
+  con IC +0.027, n≈3,950 y monotonicidad **+1.0** en ETH. Sigue siendo 40x
+  demasiado pequeña (top−bottom +3.67 bps frente a 23.5 bps de coste) y su signo
+  se invierte en OOS.
+* **M-02-SOL parece estable y no lo es**: gross positivo en DEV, VAL y OOS
+  (+5.1 / +7.3 / +16.4) pero **6/14 días positivos**, con dos días
+  (`2026-03-12` +49.6 bps, `2026-07-12` +48.1 bps) aportando casi todo. Es
+  exactamente el patrón que un análisis por splits habría promocionado por
+  error; el control a nivel de día lo desmonta.
+* **M-07**: el cuadrante `precio baja + OI sube` da media positiva en los tres
+  activos (+6.27 / +5.13 / +5.12 bps, n≈130, sólo OOS). `OBSERVED`,
+  `INSUFFICIENT_SAMPLE`: no hay DEV donde elegir, así que la regla pre-registrada
+  no se evalúa.
+
+## 5. Integridad y disciplina
+
+* PIT: reloj de decisión = **cierre** de barra; `available_at(feature) <=
+  decision_time`; lead/lag con verificación por par y `lag < 0` prohibido por
+  construcción ⇒ `future_leaks_detected = 0`.
+* Panel: 4,032 slices, 288/día, **0 huecos**, 0 duplicados; buckets incompletos
+  o fuera de la rejilla UTC se descartan (fail closed).
+* Coste: un spread sin observaciones no se modela como cero
+  (`AssetMarketInput` lanza excepción). `ZERO_COST` sólo diagnóstico.
+* Dirección congelada desde DEV; ninguna regla se re-optimizó tras ver
+  resultados; ninguna celda M-07 se eligió con OOS.
+* **No se tocó el core runtime** (`RiskManager`, `PaperBroker`,
+  `StartupReconciler`, hashing de `DecisionTrace`, contratos de outcome, replay,
+  PIT): todo el trabajo vive en el DISCOVERY PLANE.
+
+## 6. Entregables de esta fase
+
+Docs: `MICROSTRUCTURE_HYPOTHESES_V2.md`, `EXECUTION_COST_MODEL_V4.md`,
+`MICROSTRUCTURE_EXPERIMENT_REGISTRY_V2.md`,
+`MICROSTRUCTURE_INFORMATION_CONTENT_V2.md`, `MICROSTRUCTURE_RESULTS_V2.md`,
+`MICROSTRUCTURE_ADMISSION_V2.md`, `MICROSTRUCTURE_FINAL_REPORT.md` (este),
+`MARKET_MICROSTRUCTURE_DATA_AUDIT.md` (actualizado),
+`MICROSTRUCTURE_V2_INDEPENDENT_VERIFICATION.md`.
+Máquina: `EXECUTION_COST_MODEL_V4.json`, `MICROSTRUCTURE_DATA_AUDIT_V2.json`,
+`MICROSTRUCTURE_EXPERIMENT_REGISTRY_V2.json`,
+`MICROSTRUCTURE_INFORMATION_CONTENT_V2.json`, `MICROSTRUCTURE_RESULTS_V2.json`,
+`MICROSTRUCTURE_ADMISSION_V2.json`.
+Código: `src/trading_bot/research/microstructure/{flow_panel,cost_model_v4}.py`,
+`scripts/microstructure_edge_v2.py`, tests en
+`tests/unit/microstructure/test_{flow_panel,cost_model_v4}.py`.
+Artefactos de ejecución: `reports/microstructure-v2/{forward/,COLLECTION_REPORT.json,*.json}`.
+
+## 7. Próxima fase recomendada (exactamente una)
 
 ```text
-NEXT RECOMMENDED PHASE: VENUE-AND-EXECUTION-RESEARCH-V1   (opción D)
+NEXT RECOMMENDED PHASE: MICROSTRUCTURE-FORWARD-COLLECTION-V1
 ```
 
-Justificación: `SPOT_INTRADAY_COST_BLOCKED`. Alternativas descartadas para
-este paso: `MICROSTRUCTURE-PAPER-INTEGRATION-V1` (no hay candidata),
-`ALPHA-DISCOVERY-V4` (cazar más señales contra una barrera de 23.5 bps tiene
-bajo retorno esperado sin resolver antes el venue).
+Motivo: las dos únicas dimensiones que no están cerradas por datos son M-03
+(book imbalance) y M-07 (OI con DEV/VAL reales), y **ninguna** puede resolverse
+con histórico —el libro no existe y el OI se retiene ~31 días. Es la única vía
+donde medir información nueva sigue siendo posible sin relajar el coste, y el
+colector ya está implementado y validado (read-only, sin credenciales). Las
+alternativas quedan descartadas por evidencia: `PAPER-CANDIDATE-INTEGRATION` no
+tiene candidata que integrar; `EXECUTION-COST-MODEL-V2` ya se hizo (V3/V4) y el
+hallazgo no es de fidelidad del modelo sino de magnitud de tarifa; `ALPHA-DISCOVERY-V4`
+sobre OHLCV ya está agotada por V3+V1+V2.
 
-Dato pendiente para una fase de datos: la dimensión order book sólo puede
-avanzar con `MICROSTRUCTURE-FORWARD-COLLECTION-V1` (colector ya implementado,
-read-only, DISCOVERY PLANE).
+Requisito duro para que esa fase pueda concluir algo: captura **continua** por
+WebSocket (`@aggTrade`, `@depth` con reconciliación diff) y no sólo REST
+polling, porque el propio manifiesto de esta fase midió un hueco de prints en
+REST en ráfaga (BTCUSDT, `worst_step = 25`).
 
-## 7. Entregables
+---
 
-Docs: `EXECUTION_COST_REALITY_AUDIT.md`, `COST_MODEL_V2.md`,
-`MARKET_MICROSTRUCTURE_DATA_AUDIT.md`, `MICROSTRUCTURE_HYPOTHESES_V1.md`,
-`MICROSTRUCTURE_EXPERIMENTS_V1.md`, `MICROSTRUCTURE_RESULTS_V1.md`,
-`MICROSTRUCTURE_ADMISSION_V1.md`, `MICROSTRUCTURE_FINAL_REPORT.md`,
-`source_registry.md`.
-Machine-readable: `COST_MODEL_V2.json`, `MARKET_MICROSTRUCTURE_DATA_AUDIT.json`,
-`MICROSTRUCTURE_RESULTS_V1.json`, `MICROSTRUCTURE_ADMISSION_V1.json`.
-Código: `src/trading_bot/research/microstructure/*`,
-`scripts/{fetch_microstructure_data,microstructure_experiments,microstructure_admission,microstructure_collector}.py`,
-`tests/unit/microstructure/*`.
+## 8. Sección histórica — V1 (2026-09-26, HEAD `5b4051e`)
 
-## 8. Regla final
+```text
+V1 FINAL STATUS: MICROSTRUCTURE_V1_NO_EDGE_FOUND
+PAPER CANDIDATES: 0
+```
 
-El hallazgo de V3 fue `OHLCV EDGE <= EXECUTION COST`. La respuesta no fue
-"más indicadores": fue auditar la economía real de ejecución y buscar
-información nueva. Resultado: la economía real es **peor** de lo asumido
-(23.5 vs 12 bps) y la información nueva testeable **no la cubre**. La decisión
-correcta es `DO_NOT_ADOPT` y reorientar a venue/ejecución.
+* Hallazgo A: el coste real es ~23.5 bps RT (fee 10 bps/lado a VIP0), no los
+  12 bps asumidos; `COST_MODEL_STATUS = OPTIMISTIC`; maker VIP0 = taker ⇒
+  `MAKER EDGE GATE = FAIL`.
+* Hallazgo B: techo de información testeable +2.36 bps (`flow_imbalance_z`) ⇒
+  `COST_KILLED 3 | NO_GROSS_EDGE 5 | LIMITED_HISTORY 3 |
+  EXECUTION_MODEL_REQUIRED 1`.
+* M-02 (book) y OI > 30d: no testeables; no se declaró resultado sobre datos
+  inexistentes.
+* Decisión: `SPOT_INTRADAY_COST_BLOCKED`, `DERIVATIVES_NO_EVIDENCE`.
+* Próxima fase propuesta entonces: `VENUE-AND-EXECUTION-RESEARCH-V1` (ejecutada,
+  ver `VENUE_EXECUTION_FINAL_REPORT.md`).

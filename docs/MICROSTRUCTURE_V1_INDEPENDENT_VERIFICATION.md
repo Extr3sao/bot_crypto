@@ -4,7 +4,7 @@
 > **no confía** en ningún número commiteado: re-ejecuta los pipelines y
 > recompara los artefactos por SHA-256.
 
-- HEAD en el momento de verificar: `82c338bfe967c877e09648ba5f505a1ce21ca106`
+- HEAD en el momento de verificar: `3896f4ecaa19489c4e16251ce90d2391cf15e456`
 - Commit que introdujo MICROSTRUCTURE-V1: `325892de65677c61ddf7040fb779f9e328fa0b8e`
 - Fase 0 (MICROSTRUCTURE-V1): **VERIFIED**
 - Fase 7 (VENUE/EXECUTION + AGGTRADES): **VERIFIED**

@@ -113,3 +113,65 @@ Total: **11 features** (< presupuesto 10-20, §20).
 - **Order book: no histórico → forward collection requerido.**
 - **OI/basis: 30d → limitado**, no permite DEV/VAL/OOS.
 - No se fabricó ninguna microstructure series (§16).
+
+---
+
+## 9. ACTUALIZACIÓN V2 — MICROSTRUCTURE-EDGE & FORWARD-DATA V1 (2026-09-28)
+
+> Máquina: `docs/MICROSTRUCTURE_DATA_AUDIT_V2.json` (registro de fuentes,
+> evidencia de captura forward y calidad del panel, todo medido).
+
+### 9.1 Fuentes sondeadas de nuevo (hechos, no supuestos)
+
+| source_id | fuente | profundidad real | clasificación |
+| --- | --- | --- | --- |
+| SRC-04 | aggTrades bulk spot | histórico completo (muestra 14d) | `HISTORICAL_USABLE` |
+| SRC-01 | klines 5m | 59,905 barras | `HISTORICAL_USABLE` |
+| SRC-02 | fundingRate | 624 puntos | `HISTORICAL_USABLE` |
+| SRC-03 | premiumIndexKlines | 59,905 puntos | `HISTORICAL_USABLE` |
+| SRC-05 | basis | ~30 días | `LIMITED_HISTORY` |
+| SRC-06 | openInterestHist 5m | 8,928 puntos (~31 días) | `LIMITED_HISTORY` |
+| SRC-07 | bookTicker / depth | **sin histórico** | `FORWARD_ONLY` |
+| SRC-13 | liquidaciones (`allForceOrders`) | **HTTP 404** en sondeo real | `UNUSABLE_VIA_THIS_ENDPOINT` |
+
+La liquidación **no** se da por disponible: se sondeó el endpoint público el
+2026-09-28 (con y sin ventana de 7 días) y devolvió 404. Queda registrado como
+hueco de datos, no como resultado.
+
+### 9.2 Captura forward ejecutada en esta fase
+
+`FORWARD-COLLECTOR-V1`, modo continuo, 102.4 s, read-only, sin credenciales:
+
+| métrica | valor |
+| --- | --- |
+| registros | 11,346 |
+| `bookTicker` / `depth` / `aggTrade` / `premiumIndex` | 111 / 111 / 11,100 / 24 |
+| por símbolo | 3,782 BTC / 3,782 ETH / 3,782 SOL |
+| duplicados / desorden | 0 / 0 |
+| SHA-256 | `010475859288580555e96bf63a58ede3723a7a9193581da780314b5a21a95498` |
+
+Sirve para **medir spread por activo** (OBSERVED, 37 observaciones por símbolo)
+y para validar la estructura forward. **No** sirve como modelo de fill ni como
+sustituto de histórico. Limitaciones medidas y declaradas: 1 hueco de
+`aggTrade` en BTCUSDT (REST polling se salta prints en ráfaga,
+`worst_step = 25`), 1 periodo stale por símbolo en `premiumIndex` (15.2-15.3 s
+> umbral de 15 s), 0 regresiones de secuencia en `depth`.
+
+### 9.3 Calidad del panel histórico usado en V2
+
+4,032 slices de reloj común (288/día × 14 días), **0 huecos**, 0 duplicados, 0
+desorden. Verificación externa de la agregación minuto→5m: el volumen agregado
+coincide **exactamente** con el volumen de klines reales (ratio 1.0 en 288
+barras por activo).
+
+### 9.4 Huecos de datos que limitan la fase
+
+1. **Order book histórico** inexistente ⇒ M-03 sigue `FORWARD_COLLECTION_REQUIRED`.
+2. **OI ~31 días** ⇒ M-07 sin DEV/VAL; medido y clasificado `LIMITED_HISTORY`.
+3. **Liquidaciones** sin endpoint accesible ⇒ `UNUSABLE_VIA_THIS_ENDPOINT`.
+4. **Muestra aggTrades de 14 días discontinuos** ⇒ conclusiones sobre esta
+   muestra, no sobre 7 meses.
+
+Gates fail-closed añadidos en esta fase: campo ausente, minuto duplicado,
+barra fuera de la rejilla UTC y spread sin observaciones ⇒ excepción, nunca
+valor por defecto.

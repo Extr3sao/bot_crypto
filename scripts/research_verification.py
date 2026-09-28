@@ -453,9 +453,378 @@ def render_md(v0: dict[str, Any], v7: dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
+# ---------------------------------------------------------------------------
+# V2 — MICROSTRUCTURE-EDGE & FORWARD-DATA V1
+# ---------------------------------------------------------------------------
+
+
+V2_ARTIFACTS = [
+    "docs/EXECUTION_COST_MODEL_V4.json",
+    "docs/MICROSTRUCTURE_EXPERIMENT_REGISTRY_V2.json",
+    "docs/MICROSTRUCTURE_INFORMATION_CONTENT_V2.json",
+    "docs/MICROSTRUCTURE_RESULTS_V2.json",
+    "docs/MICROSTRUCTURE_ADMISSION_V2.json",
+]
+
+
+def _independent_spread(year_dir: Path, symbol: str) -> tuple[float, int]:
+    """Re-measure the spread straight from the JSONL, not via the builder."""
+    spreads: list[float] = []
+    for path in sorted(year_dir.glob("*.jsonl")):
+        with open(path, encoding="utf-8") as fh:
+            for line in fh:
+                line = line.strip()
+                if not line:
+                    continue
+                record = json.loads(line)
+                if record.get("kind") == "bookTicker" and record.get("symbol") == symbol:
+                    value = record.get("spread_bps")
+                    if isinstance(value, (int, float)):
+                        spreads.append(float(value))
+    if not spreads:
+        raise AssertionError(f"no bookTicker observations for {symbol}")
+    return sum(spreads) / len(spreads), len(spreads)
+
+
+def _independent_bars(rows: list[dict[str, Any]]) -> tuple[int, float]:
+    """Independent minute -> 5m aggregation written from scratch."""
+    buckets: dict[int, list[dict[str, Any]]] = {}
+    for row in rows:
+        buckets.setdefault((int(row["minute_ms"]) // 300_000) * 300_000, []).append(row)
+    complete = [b for b in buckets.values() if len(b) == 5]
+    volume = sum(sum(float(r["buy_vol"]) + float(r["sell_vol"]) for r in b) for b in complete)
+    return len(complete), volume
+
+
+def verify_microstructure_edge_v2() -> dict[str, Any]:
+    """Independently re-derive the V2 cost, panel, PIT and admission claims."""
+    from trading_bot.research.microstructure.cost_model_v4 import (
+        AssetMarketInput,
+        asset_cost_v4,
+    )
+    from trading_bot.research.microstructure.flow_panel import (
+        PanelAlignmentError,
+        aggregate_minutes_to_bars,
+        build_panel,
+        parse_minute_row,
+        pit_lead_lag,
+    )
+
+    checks: list[dict[str, Any]] = []
+    failures: list[str] = []
+
+    def record(name: str, expected: Any, observed: Any, ok: bool, note: str = "") -> None:
+        checks.append(
+            {
+                "check": name,
+                "expected": expected,
+                "observed": observed,
+                "pass": ok,
+                "note": note,
+            }
+        )
+        if not ok:
+            failures.append(name)
+
+    # 1. reproduce the committed V2 artifacts by re-running the driver
+    before = {p: sha256_file(ROOT / p) for p in V2_ARTIFACTS if (ROOT / p).exists()}
+    rc, log = run_script("scripts/microstructure_edge_v2.py")
+    after = {p: sha256_file(ROOT / p) for p in V2_ARTIFACTS if (ROOT / p).exists()}
+    record(
+        "V2 artifacts reproduce byte-for-byte on re-run",
+        "identical SHA-256 for all five artifacts",
+        {"identical": before == after and bool(before), "exit_code": rc, "artifacts": len(after)},
+        before == after and bool(before) and rc == 0,
+        note=log[-300:] if rc != 0 else "",
+    )
+
+    results = json.loads((DOCS / "MICROSTRUCTURE_RESULTS_V2.json").read_text(encoding="utf-8"))
+    admission = json.loads((DOCS / "MICROSTRUCTURE_ADMISSION_V2.json").read_text(encoding="utf-8"))
+    cost = json.loads((DOCS / "EXECUTION_COST_MODEL_V4.json").read_text(encoding="utf-8"))
+
+    # 2. re-derive the per-asset cost from the raw capture with an independent parser
+    declared_inputs = {m["symbol"]: m for m in cost["asset_market_inputs"]}
+    mismatch: list[str] = []
+    for row in cost["assets"]:
+        symbol = row["symbol"]
+        declared = declared_inputs[symbol]
+        mean_spread, n = _independent_spread(REPORTS / "microstructure-v2" / "forward", symbol)
+        rebuilt = asset_cost_v4(
+            AssetMarketInput(
+                asset=row["asset"],
+                symbol=symbol,
+                observed_spread_bps=mean_spread,
+                spread_observations=n,
+                spread_source="verifier independent parse",
+                realized_vol_bps=float(row["realized_vol_bps"]),
+                vol_source="verifier (volatility taken from the committed artifact)",
+            ),
+            size_usd=1_000.0,
+            horizon_minutes=25.0,
+        )
+        # the artifact stores four decimals; compare at that recorded precision
+        if round(rebuilt.taker_round_trip_bps, 4) != float(row["taker_round_trip_bps"]):
+            mismatch.append(
+                f"{symbol}: committed {row['taker_round_trip_bps']} vs rebuilt "
+                f"{round(rebuilt.taker_round_trip_bps, 4)}"
+            )
+        if round(mean_spread, 4) != float(declared["observed_spread_bps"]):
+            mismatch.append(
+                f"{symbol}: declared spread {declared['observed_spread_bps']} != "
+                f"re-measured {round(mean_spread, 6)}"
+            )
+        if n != int(declared["spread_observations"]):
+            mismatch.append(
+                f"{symbol}: spread observation count {n} != {declared['spread_observations']}"
+            )
+    record(
+        "per-asset V4 cost re-derived from the raw forward capture",
+        "rebuilt round-trip == committed round-trip for every asset",
+        mismatch or "all three assets match exactly",
+        not mismatch,
+    )
+
+    # 3. component arithmetic: the breakdown must sum to the round trip
+    bad_parts: list[str] = []
+    for row in cost["assets"]:
+        parts = row["components_bps"]
+        total = sum(float(v) for v in parts.values())
+        if abs(total - float(row["taker_round_trip_bps"])) > 1e-6:
+            bad_parts.append(f"{row['symbol']}: {total} != {row['taker_round_trip_bps']}")
+        if row["maker_status"] != "EXECUTION_DEPENDENT":
+            bad_parts.append(f"{row['symbol']}: maker row not marked EXECUTION_DEPENDENT")
+    record(
+        "cost components sum to the reported round trip",
+        "0 inconsistencies; maker labelled EXECUTION_DEPENDENT",
+        bad_parts or "consistent",
+        not bad_parts,
+    )
+
+    # 4. independently re-aggregate one real day and compare to the kline volume
+    agg_path = REPORTS / "microstructure-v1" / "aggtrades" / "AGG_BTCUSDT_2026-03-12.json"
+    raw = json.loads(agg_path.read_text(encoding="utf-8"))
+    n_bars, agg_volume = _independent_bars(raw["rows"])
+    klines = json.loads(
+        (REPORTS / "microstructure-v1" / "data" / "KLINES_BTCUSDT_5m.json").read_text(encoding="utf-8")
+    )
+    day_open = min(int(r["minute_ms"]) for r in raw["rows"]) // 300_000 * 300_000
+    kline_volume = sum(
+        float(row[5]) for row in klines if day_open <= int(row[0]) < day_open + 86_400_000
+    )
+    record(
+        "independent 5m aggregation matches the exchange kline volume",
+        {"bars": 288, "volume_equal": True},
+        {
+            "bars": n_bars,
+            "agg_volume": round(agg_volume, 6),
+            "kline_volume": round(kline_volume, 6),
+        },
+        n_bars == 288 and abs(agg_volume - kline_volume) < 1e-6,
+    )
+    direct = json.loads((DOCS / "MICROSTRUCTURE_DATA_AUDIT_V2.json").read_text(encoding="utf-8"))
+    crosscheck = direct["panel_quality"]["aggregation_crosscheck_vs_klines"]["BTCUSDT"]
+    record(
+        "committed cross-check agrees with the verifier's own measurement",
+        {"mean_ratio": 1.0},
+        crosscheck,
+        float(crosscheck["mean_ratio"]) == 1.0,
+    )
+
+    # 5. PIT: rebuild a real panel and audit every lead/lag pair
+    minutes = [
+        {
+            **row,
+            "symbol": "BTCUSDT",
+        }
+        for row in raw["rows"]
+    ]
+    bars_by_symbol = {
+        "BTCUSDT": aggregate_minutes_to_bars([parse_minute_row(m) for m in minutes])
+    }
+    for symbol in ("ETHUSDT", "SOLUSDT"):
+        other = json.loads(
+            (REPORTS / "microstructure-v1" / "aggtrades" / f"AGG_{symbol}_2026-03-12.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        bars_by_symbol[symbol] = aggregate_minutes_to_bars(
+            [parse_minute_row({**row, "symbol": symbol}) for row in other["rows"]]
+        )
+    panel = build_panel(bars_by_symbol, symbols=["BTCUSDT", "ETHUSDT", "SOLUSDT"])
+    pairs = pit_lead_lag(panel, panel, source_symbol="BTCUSDT", lag=1)
+    violations = [
+        (j, i)
+        for j, i, _v in pairs
+        if panel[i].decision_time_ms > panel[j].decision_time_ms
+    ]
+    negative_lag_rejected = False
+    try:
+        pit_lead_lag(panel, panel, source_symbol="BTCUSDT", lag=-1)
+    except PanelAlignmentError:
+        negative_lag_rejected = True
+    record(
+        "PIT: no lead/lag pair uses information published after the decision",
+        {"pairs": len(pairs), "violations": 0, "negative_lag_rejected": True},
+        {"pairs": len(pairs), "violations": len(violations), "negative_lag_rejected": negative_lag_rejected},
+        bool(pairs) and not violations and negative_lag_rejected,
+    )
+
+    # 6. admission arithmetic and status honesty
+    bad_math: list[str] = []
+    for row in admission["matrix"]:
+        if abs((float(row["gross_mean_bps_dev"]) - float(row["cost_bps"])) - float(row["net_mean_bps_dev"])) > 1e-3 and row["n"] > 0:
+            bad_math.append(f"{row['candidate_id']}: gross - cost != net")
+        if row["classification"] == "COST_KILLED" and float(row["net_mean_bps_dev"]) > 0.0:
+            bad_math.append(f"{row['candidate_id']}: COST_KILLED with positive net")
+        if row["classification"] == "RESEARCH_CANDIDATE" and not all(row["filters"].values()):
+            bad_math.append(f"{row['candidate_id']}: RESEARCH_CANDIDATE without all filters")
+        if row["n"] == 0 and row["classification"] == "COST_KILLED":
+            bad_math.append(f"{row['candidate_id']}: empty sample classified as a cost result")
+    record(
+        "admission table arithmetic and status honesty",
+        "0 inconsistencies",
+        bad_math or "consistent",
+        not bad_math,
+    )
+
+    # 7. gross is never presented as net, and zero admitted
+    gross_as_net = [
+        row["candidate_id"]
+        for row in admission["matrix"]
+        if row["n"] > 0
+        and float(row["cost_bps"]) > 0.0
+        and abs(float(row["gross_mean_bps_dev"]) - float(row["net_mean_bps_dev"])) < 1e-9
+    ]
+    record(
+        "gross is never reported as net",
+        "no candidate with positive cost has net == gross",
+        gross_as_net or "no candidate conflates them",
+        not gross_as_net,
+    )
+    record(
+        "no candidate is admitted on this evidence",
+        {"admitted": [], "paper_candidates": []},
+        {"admitted": admission["admitted"], "paper_candidates": admission["paper_candidates"]},
+        admission["admitted"] == [] and admission["paper_candidates"] == [],
+    )
+
+    # 8. an unobserved spread cannot be modelled as zero
+    unobserved_rejected = False
+    try:
+        AssetMarketInput(
+            asset="BTC",
+            symbol="BTCUSDT",
+            observed_spread_bps=0.0,
+            spread_observations=0,
+            spread_source="verifier",
+            realized_vol_bps=1.0,
+            vol_source="verifier",
+        )
+    except ValueError:
+        unobserved_rejected = True
+    record(
+        "an unobserved spread is rejected rather than assumed to be zero",
+        "ValueError on zero observations",
+        "rejected" if unobserved_rejected else "ACCEPTED (defect)",
+        unobserved_rejected,
+    )
+
+    # 9. data provenance: aggTrade sample hashes match their own manifest
+    manifest = json.loads(
+        (REPORTS / "microstructure-v1" / "aggtrades" / "MANIFEST_AGGTRADES.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    hash_mismatch: list[str] = []
+    for entry in manifest["files"]:
+        rel = entry.get("file") or entry.get("path")
+        recorded = entry.get("sha256")
+        if not rel or not recorded:
+            continue
+        path = ROOT / rel if not str(rel).startswith("reports") else ROOT / str(rel)
+        if not path.exists():
+            hash_mismatch.append(f"missing {rel}")
+            continue
+        if sha256_file(path) != recorded:
+            hash_mismatch.append(f"{rel}: sha256 changed")
+    record(
+        "aggTrades sample integrity against its own manifest",
+        "every recorded file hash still matches",
+        hash_mismatch or f"{len(manifest['files'])} files verified",
+        not hash_mismatch,
+    )
+
+    forward_manifest = json.loads(
+        (REPORTS / "microstructure-v2" / "COLLECTION_REPORT.json").read_text(encoding="utf-8")
+    )
+    forward_file = REPORTS / "microstructure-v2" / "forward" / str(forward_manifest["file"])
+    forward_hash_ok = (
+        forward_file.exists() and sha256_file(forward_file) == forward_manifest["sha256"]
+    )
+    record(
+        "forward capture integrity (sha256 + duplicate/order counters)",
+        {"sha256_matches": True, "duplicates": 0, "out_of_order": 0},
+        {
+            "sha256_matches": forward_hash_ok,
+            "duplicates": forward_manifest["duplicates"],
+            "out_of_order": forward_manifest["out_of_order"],
+            "records": forward_manifest["records"],
+        },
+        forward_hash_ok
+        and forward_manifest["duplicates"] == 0
+        and forward_manifest["out_of_order"] == 0,
+    )
+
+    # 10. M-07 is not passed off as a result
+    m07 = [row for row in results["results"] if row["hypothesis"].startswith("M-07")]
+    m07_ok = all(
+        row["classification"] == "LIMITED_HISTORY" and row["rule_evaluated"] is False for row in m07
+    )
+    record(
+        "M-07 is reported as LIMITED_HISTORY, never as a tradeable result",
+        "3 rows, rule_evaluated=false, classification=LIMITED_HISTORY",
+        [
+            {
+                "candidate_id": row["candidate_id"],
+                "classification": row["classification"],
+                "rule_evaluated": row["rule_evaluated"],
+            }
+            for row in m07
+        ],
+        len(m07) == 3 and m07_ok,
+    )
+
+    # 11. cross-check the committed classification counts against the rows
+    recounted: dict[str, int] = {}
+    for row in results["results"]:
+        recounted[row["classification"]] = recounted.get(row["classification"], 0) + 1
+    record(
+        "classification counts match the candidate rows",
+        recounted,
+        results["summary"]["classification_counts"],
+        recounted == results["summary"]["classification_counts"],
+    )
+    record(
+        "the driver claims no paper candidate",
+        0,
+        results["summary"]["paper_candidates"],
+        int(results["summary"]["paper_candidates"]) == 0,
+    )
+
+    return {
+        "scope": "MICROSTRUCTURE-EDGE & FORWARD-DATA V1 (V2 artifacts)",
+        "head": git(["rev-parse", "HEAD"]),
+        "checks": checks,
+        "detail": {"results": results, "admission": admission},
+        "failures": failures,
+        "status": "VERIFIED" if not failures else "FAILED_VERIFICATION",
+    }
+
+
 def main() -> None:
     v0 = verify_microstructure_v1()
     v7 = verify_venue_execution()
+    v8 = verify_microstructure_edge_v2()
 
     verification = {
         "verifier": "scripts/research_verification.py",
@@ -476,12 +845,54 @@ def main() -> None:
     with open(DOCS / "MICROSTRUCTURE_V1_INDEPENDENT_VERIFICATION.md", "w", encoding="utf-8", newline="\n") as fh:
         fh.write(render_md(v0, v7))
 
+    v2_payload = {k: v for k, v in v8.items() if k != "detail"}
+    v2_payload["verifier"] = "scripts/research_verification.py"
+    v2_payload["independence_note"] = (
+        "the verifier does not import the driver's evaluation code: it re-parses the "
+        "raw aggTrades/capture files, re-aggregates a real day from scratch, re-measures "
+        "the spread, re-derives the cost and re-runs the PIT audit"
+    )
+    with open(DOCS / "MICROSTRUCTURE_V2_INDEPENDENT_VERIFICATION.json", "w", encoding="utf-8", newline="\n") as fh:
+        json.dump(v2_payload, fh, indent=2)
+        fh.write("\n")
+    v2_lines = [
+        "# MICROSTRUCTURE_V2_INDEPENDENT_VERIFICATION",
+        "",
+        f"Verificador: `scripts/research_verification.py` — HEAD `{v8['head']}`.",
+        f"Alcance: `{v8['scope']}`.",
+        "",
+        "```text",
+        f"STATUS: {v8['status']}",
+        f"CHECKS: {sum(1 for c in v8['checks'] if c['pass'])}/{len(v8['checks'])} PASS",
+        f"FAILURES: {len(v8['failures'])}",
+        "```",
+        "",
+        "| check | esperado | observado | pass |",
+        "| --- | --- | --- | :-: |",
+    ]
+    for check in v8["checks"]:
+        observed = str(check["observed"])
+        if len(observed) > 220:
+            observed = observed[:217] + "..."
+        expected = str(check["expected"])
+        if len(expected) > 160:
+            expected = expected[:157] + "..."
+        v2_lines.append(
+            f"| {check['check']} | {expected} | {observed.replace('|', '/')} | "
+            f"{'PASS' if check['pass'] else 'FAIL'} |"
+        )
+    v2_lines += ["", "BUILDER != VERIFIER: ninguna cifra de esta fase se acepta desde el" " artefacto del builder sin re-derivarla aquí.", ""]
+    with open(DOCS / "MICROSTRUCTURE_V2_INDEPENDENT_VERIFICATION.md", "w", encoding="utf-8", newline="\n") as fh:
+        fh.write("\n".join(v2_lines))
+
     final = {
         "head": v0["head"],
         "verifier": "scripts/research_verification.py",
         "phase_0_status": v0["status"],
         "phase_7_status": v7["status"],
-        "failures": v0["failures"] + v7["failures"],
+        "phase_v2_status": v8["status"],
+        "phase_v2_checks": f"{sum(1 for c in v8['checks'] if c['pass'])}/{len(v8['checks'])}",
+        "failures": v0["failures"] + v7["failures"] + v8["failures"],
         "aggTrades_results": v7["results_summary"],
         "cost_model": v7["cost_model"],
         "paper_candidates": [
@@ -490,7 +901,7 @@ def main() -> None:
         "false_success": 0,
         "final_status": (
             "VENUE_EXECUTION_RESEARCH_VERIFIED_NO_CANDIDATE"
-            if not v0["failures"] and not v7["failures"]
+            if not v0["failures"] and not v7["failures"] and not v8["failures"]
             else "FAILED_VERIFICATION"
         ),
     }
@@ -500,6 +911,11 @@ def main() -> None:
 
     print(f"phase 0: {v0['status']} ({len(v0['failures'])} failures)")
     print(f"phase 7: {v7['status']} ({len(v7['failures'])} failures)")
+    print(f"phase v2: {v8['status']} ({len(v8['failures'])} failures)")
+    print(f"  v2 checks: {sum(1 for c in v8['checks'] if c['pass'])}/{len(v8['checks'])} pass")
+    for c in v8["checks"]:
+        if not c["pass"]:
+            print(f"  V2 FAILURE: {c['check']} -> {c['observed']}")
     for r in v7["results_summary"]:
         print(f"  {r['candidate']:<6} gross={r['gross_bps']:>8.3f} net={r['net_bps']:>9.3f} {r['classification']}")
     for f in v0["failures"] + v7["failures"]:

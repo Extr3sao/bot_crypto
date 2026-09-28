@@ -1,0 +1,180 @@
+{
+  "scope": "MICROSTRUCTURE-EDGE & FORWARD-DATA V1 (V2 artifacts)",
+  "head": "3896f4ecaa19489c4e16251ce90d2391cf15e456",
+  "checks": [
+    {
+      "check": "V2 artifacts reproduce byte-for-byte on re-run",
+      "expected": "identical SHA-256 for all five artifacts",
+      "observed": {
+        "identical": true,
+        "exit_code": 0,
+        "artifacts": 5
+      },
+      "pass": true,
+      "note": ""
+    },
+    {
+      "check": "per-asset V4 cost re-derived from the raw forward capture",
+      "expected": "rebuilt round-trip == committed round-trip for every asset",
+      "observed": "all three assets match exactly",
+      "pass": true,
+      "note": ""
+    },
+    {
+      "check": "cost components sum to the reported round trip",
+      "expected": "0 inconsistencies; maker labelled EXECUTION_DEPENDENT",
+      "observed": "consistent",
+      "pass": true,
+      "note": ""
+    },
+    {
+      "check": "independent 5m aggregation matches the exchange kline volume",
+      "expected": {
+        "bars": 288,
+        "volume_equal": true
+      },
+      "observed": {
+        "bars": 288,
+        "agg_volume": 21997.1605,
+        "kline_volume": 21997.1605
+      },
+      "pass": true,
+      "note": ""
+    },
+    {
+      "check": "committed cross-check agrees with the verifier's own measurement",
+      "expected": {
+        "mean_ratio": 1.0
+      },
+      "observed": {
+        "bars_compared": 288,
+        "mean_ratio": 1.0,
+        "min_ratio": 1.0,
+        "max_ratio": 1.0
+      },
+      "pass": true,
+      "note": ""
+    },
+    {
+      "check": "PIT: no lead/lag pair uses information published after the decision",
+      "expected": {
+        "pairs": 287,
+        "violations": 0,
+        "negative_lag_rejected": true
+      },
+      "observed": {
+        "pairs": 287,
+        "violations": 0,
+        "negative_lag_rejected": true
+      },
+      "pass": true,
+      "note": ""
+    },
+    {
+      "check": "admission table arithmetic and status honesty",
+      "expected": "0 inconsistencies",
+      "observed": "consistent",
+      "pass": true,
+      "note": ""
+    },
+    {
+      "check": "gross is never reported as net",
+      "expected": "no candidate with positive cost has net == gross",
+      "observed": "no candidate conflates them",
+      "pass": true,
+      "note": ""
+    },
+    {
+      "check": "no candidate is admitted on this evidence",
+      "expected": {
+        "admitted": [],
+        "paper_candidates": []
+      },
+      "observed": {
+        "admitted": [],
+        "paper_candidates": []
+      },
+      "pass": true,
+      "note": ""
+    },
+    {
+      "check": "an unobserved spread is rejected rather than assumed to be zero",
+      "expected": "ValueError on zero observations",
+      "observed": "rejected",
+      "pass": true,
+      "note": ""
+    },
+    {
+      "check": "aggTrades sample integrity against its own manifest",
+      "expected": "every recorded file hash still matches",
+      "observed": "42 files verified",
+      "pass": true,
+      "note": ""
+    },
+    {
+      "check": "forward capture integrity (sha256 + duplicate/order counters)",
+      "expected": {
+        "sha256_matches": true,
+        "duplicates": 0,
+        "out_of_order": 0
+      },
+      "observed": {
+        "sha256_matches": true,
+        "duplicates": 0,
+        "out_of_order": 0,
+        "records": 11346
+      },
+      "pass": true,
+      "note": ""
+    },
+    {
+      "check": "M-07 is reported as LIMITED_HISTORY, never as a tradeable result",
+      "expected": "3 rows, rule_evaluated=false, classification=LIMITED_HISTORY",
+      "observed": [
+        {
+          "candidate_id": "M-07-BTC",
+          "classification": "LIMITED_HISTORY",
+          "rule_evaluated": false
+        },
+        {
+          "candidate_id": "M-07-ETH",
+          "classification": "LIMITED_HISTORY",
+          "rule_evaluated": false
+        },
+        {
+          "candidate_id": "M-07-SOL",
+          "classification": "LIMITED_HISTORY",
+          "rule_evaluated": false
+        }
+      ],
+      "pass": true,
+      "note": ""
+    },
+    {
+      "check": "classification counts match the candidate rows",
+      "expected": {
+        "COST_KILLED": 7,
+        "LIMITED_HISTORY": 3,
+        "NO_INFORMATION": 2
+      },
+      "observed": {
+        "COST_KILLED": 7,
+        "LIMITED_HISTORY": 3,
+        "NO_INFORMATION": 2
+      },
+      "pass": true,
+      "note": ""
+    },
+    {
+      "check": "the driver claims no paper candidate",
+      "expected": 0,
+      "observed": 0,
+      "pass": true,
+      "note": ""
+    }
+  ],
+  "failures": [],
+  "status": "VERIFIED",
+  "verifier": "scripts/research_verification.py",
+  "independence_note": "the verifier does not import the driver's evaluation code: it re-parses the raw aggTrades/capture files, re-aggregates a real day from scratch, re-measures the spread, re-derives the cost and re-runs the PIT audit"
+}

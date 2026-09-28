@@ -1,8 +1,10 @@
 {
-  "head": "82c338bfe967c877e09648ba5f505a1ce21ca106",
+  "head": "3896f4ecaa19489c4e16251ce90d2391cf15e456",
   "verifier": "scripts/research_verification.py",
   "phase_0_status": "VERIFIED",
   "phase_7_status": "VERIFIED",
+  "phase_v2_status": "VERIFIED",
+  "phase_v2_checks": "15/15",
   "failures": [],
   "aggTrades_results": [
     {

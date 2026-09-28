@@ -1,0 +1,93 @@
+{
+  "model": "MICROSTRUCTURE_EXPERIMENT_REGISTRY_V2",
+  "hypotheses_doc": "docs/MICROSTRUCTURE_HYPOTHESES_V2.md",
+  "admission_safety_multiple": 1.5,
+  "experiments": [
+    {
+      "hypothesis_id": "M-02",
+      "status": "NEWLY_TESTED",
+      "primary_horizon_bars": 5,
+      "context_horizons": [
+        1,
+        15
+      ],
+      "classification": [
+        "COST_KILLED",
+        "COST_KILLED",
+        "COST_KILLED"
+      ]
+    },
+    {
+      "hypothesis_id": "M-07",
+      "status": "NEWLY_TESTED",
+      "primary_horizon_bars": 15,
+      "context_horizons": [
+        5,
+        30
+      ],
+      "classification": [
+        "LIMITED_HISTORY",
+        "LIMITED_HISTORY",
+        "LIMITED_HISTORY"
+      ]
+    },
+    {
+      "hypothesis_id": "M-09",
+      "status": "NEWLY_TESTED",
+      "primary_horizon_bars": 5,
+      "context_horizons": [
+        1,
+        15
+      ],
+      "classification": [
+        "COST_KILLED",
+        "COST_KILLED"
+      ]
+    },
+    {
+      "hypothesis_id": "M-10",
+      "status": "NEWLY_TESTED",
+      "primary_horizon_bars": 5,
+      "context_horizons": [
+        1,
+        15
+      ],
+      "classification": [
+        "COST_KILLED",
+        "COST_KILLED",
+        "NO_INFORMATION",
+        "NO_INFORMATION"
+      ]
+    },
+    {
+      "hypothesis_id": "M-01",
+      "status": "PREVIOUSLY_TESTED",
+      "evidence": "docs/MICROSTRUCTURE_RESULTS_V1.json (flow_imbalance_z)"
+    },
+    {
+      "hypothesis_id": "M-03",
+      "status": "NOT_TESTABLE",
+      "evidence": "no historical book: LIVE_ONLY (SRC-07)"
+    },
+    {
+      "hypothesis_id": "M-04",
+      "status": "PREVIOUSLY_TESTED",
+      "evidence": "docs/AGGTRADES_RESULTS_V1.json (A-03)"
+    },
+    {
+      "hypothesis_id": "M-05",
+      "status": "PREVIOUSLY_TESTED",
+      "evidence": "docs/MICROSTRUCTURE_RESULTS_V1.json (funding_z)"
+    },
+    {
+      "hypothesis_id": "M-06",
+      "status": "PREVIOUSLY_TESTED",
+      "evidence": "docs/MICROSTRUCTURE_RESULTS_V1.json (premium_z)"
+    },
+    {
+      "hypothesis_id": "M-08",
+      "status": "PREVIOUSLY_TESTED",
+      "evidence": "docs/MICROSTRUCTURE_RESULTS_V1.json (S-07)"
+    }
+  ]
+}
