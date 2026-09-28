@@ -177,6 +177,36 @@ def test_evidence_identity_is_timeframe_aware(tmp_path: Any) -> None:
     assert row.classification == "NO_ALPHA"
 
 
+def test_the_evidence_identity_names_strategy_asset_timeframe_and_cost_model(
+    tmp_path: Any,
+) -> None:
+    """Evidence identity = strategy | asset | timeframe | regime | cost model.
+
+    The identity is carried by STRUCTURED fields (never a formatted string),
+    so a reader cannot join two different identities by accident.
+    """
+    runtime, _scanner, _broker = make_runtime(
+        run_dir=tmp_path,
+        ledger=make_ledger(gross_bps=4.0),
+        families={"ema_crossover": StaticFamily()},
+        timeframe="5m",
+    )
+    _run(runtime, cycles=1)
+    trace = runtime.trace_store.read()[0]
+    proposal = trace.proposal
+    assert proposal["strategy_id"] == "ema_crossover@5m"
+    assert proposal["asset"] == "BTC"
+    assert proposal["timeframe"] == "5m"
+    assert proposal["regime"] == trace.regime
+    assert proposal["cost"]["cost_model_version"] == "COST_MODEL_V3"
+    assert trace.cost_model_version == "COST_MODEL_V3"
+    # And the same identity is what the performance cell is keyed by.
+    cell = runtime.performance_store.get(
+        strategy_id="ema_crossover@5m", asset="BTC", regime=trace.regime or "UNKNOWN", timeframe="5m"
+    )
+    assert cell is None  # nothing resolved yet: no cell is invented
+
+
 def test_expected_edge_carries_historical_estimate_provenance(tmp_path: Any) -> None:
     """The prior edge is a HISTORICAL_ESTIMATE with source/sample/period/status."""
     runtime, _scanner, _broker = make_runtime(

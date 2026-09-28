@@ -118,3 +118,36 @@
 | DEF-AUTO-5 | `paper/reconciliation.py`, `paper/startup_recovery.py`, `research/admission.py`, `feedback/evaluator.py` remain orphan | LOW | zero importers (grep) |
 | DEF-AUTO-6 | `RouterGates(require_confirmed=False)` in the autonomous composition | ACCEPTED by design | the router must be able to *select* research candidates so they can be observed in SHADOW; PAPER authority moved to the ledger + verifier + DecisionEngine (defence in depth, three independent gates) |
 | — | LLM/agent reasoning layer | NOT REQUIRED | no credentials in this environment; the deterministic review layer is replayable, which an LLM layer would not be |
+
+## 5. UPDATE — RISK-IN-SHADOW + BAR-CLOSE AVAILABILITY (this phase)
+
+> Audited on: HEAD `ddaf14d`. Method: same authority ranking; the runtime,
+> verifier, outcome evaluator and ledger generator were re-read, and the
+> behaviour was re-derived from the tests that exercise it.
+
+### 5.1 Authority changes
+
+| Item | Before | Now | Evidence |
+| --- | --- | --- | --- |
+| deterministic risk in SHADOW / NO_TRADE | not invoked (`NOT_APPLICABLE` always) | **the same canonical `RiskManager.check_signal` is invoked for every decision that carries a proposal**, recorded as `advisory=true` | `test_shadow_decision_is_risk_reviewed_advisory`, `test_admitted_and_unadmitted_paths_share_one_risk_engine` |
+| availability instant for a bar | bar OPEN timestamp | **bar CLOSE** (`pit.availability_ms`) for the consumed PIT slice, the verifier slice check and the outcome | `test_the_forming_bar_is_not_usable_at_the_decision_time`, `test_outcome_instant_is_the_close_of_the_bar_not_its_open` |
+| outcome identity | decision id only | **`OutcomeKey = decision_id + horizon`**, idempotent append | `test_appending_the_same_outcome_twice_creates_one_record` |
+| replay coverage | boolean ok | honest **FULL / PARTIAL / NOT_AVAILABLE** | `test_replay_status_is_partial_without_an_outcome` |
+| edge prior provenance | source + metric + sample + knowledge | + **`evidence_class=HISTORICAL_ESTIMATE`, `period`, `timeframe`, `status`** | `test_expected_edge_carries_historical_estimate_provenance` |
+
+New module: `autonomous/pit.py` (bar-close availability). New enums:
+`RiskState`, `NoTradeKind`, `RuntimeFailureKind`, `ReplayStatus`.
+
+### 5.2 Defect found and fixed in this phase
+
+| ID | Observation | Root cause | Fix | Test |
+| --- | --- | --- | --- | --- |
+| DEF-AUTO-7 | the 5m outcome for a decision at instant `T` was priced with the close of the bar opened at `T + 5m`, i.e. the price of `T + 10m`, and its `outcome_time_ms` was that bar's OPEN | the evaluator selected the first bar with `timestamp > decision_time` and stamped the outcome with `bar.timestamp` | the evaluator now selects the first bar whose CLOSE reaches the horizon and stamps the outcome with that CLOSE; `reference_price_time_ms` (also a close) was added so the whole record satisfies `reference_price_time <= decision_time < future_price_time` | `test_outcome_instant_is_the_close_of_the_bar_not_its_open`, `test_outcome_contract_temporal_ordering` |
+| DEF-AUTO-8 | a provider outage surfaced as a `NO_TRADE` row, indistinguishable from a real decision not to trade | the terminal path only carried `classification` | rows now carry `no_trade_kind` (STRATEGIC/RISK/DATA/CONFLICT) OR `failure_kind`, never both; `totals.no_trades` excludes operational failures, which are counted in `totals.runtime_failures` | `test_a_provider_outage_is_a_runtime_failure_not_a_no_trade` |
+| DEF-AUTO-9 | a `RiskReview(verdict=PASS)` that no engine produced could be read as an approval | `RiskReview` had no notion of "was it actually run" | `evaluated` + `rule` are mandatory for an evaluated review; `state` degrades an unevaluated PASS to `NOT_EVALUATED` | `test_a_pass_nobody_produced_is_not_evaluated_never_approved` |
+
+### 5.3 Still open
+
+DEF-AUTO-2, DEF-AUTO-3, DEF-AUTO-4, DEF-AUTO-5 remain open and unchanged; they are
+outside this phase's scope (evidence gathering for a future edge phase, not runtime
+correctness).
