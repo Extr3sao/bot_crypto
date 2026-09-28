@@ -23,7 +23,6 @@ from typing import Any
 from trading_bot.market_data.types import OHLCV
 
 from .contracts import (
-    DecisionMode,
     DecisionTrace,
     OutcomeRecord,
     OutcomeStatus,
@@ -159,14 +158,20 @@ class OutcomeEvaluator:
         already_resolved: set[str] | None = None,
         created_at_ms: int = 0,
     ) -> list[OutcomeEvaluation]:
-        """Evaluate every evaluable, not-yet-resolved decision."""
+        """Evaluate every evaluable, not-yet-resolved decision.
+
+        A NO_TRADE decision that carries a proposal is a MEASURABLE PREDICTION
+        too: evaluating it is how the ledger's expected edge is calibrated (and
+        falsified) without pretending anything was traded. Its sample is kept
+        under its own mode so it can never be read as an execution result.
+        """
         resolved = already_resolved or set()
         evaluations: list[OutcomeEvaluation] = []
         for trace in traces:
             if trace.decision_id in resolved:
                 continue
-            if trace.mode is DecisionMode.NO_TRADE:
-                continue  # nothing to evaluate: no hypothetical position was taken
+            if trace.proposal is None:
+                continue  # no hypothesis was formed: nothing to evaluate
             bars = bars_by_symbol.get(trace.symbol)
             if bars is None:
                 evaluations.append(

@@ -64,3 +64,57 @@
 - No second orchestrator, second router, or second sizing path exists (grep + import audit).
 - No exchange/credential import in the canonical paper cycle modules (verifier GATE-L5-17).
 - `agent_id/capability/permissions` registries, `AgentMessage` contracts, debate/critic loops, blackboard shared state, memory stores, DecisionTrace objects, `replay(run_id)` API: **ABSENT** from the codebase — classified as NOT IMPLEMENTED (not LEGACY). See gap analysis; do not confuse VNext naming with code.
+
+---
+
+# UPDATE — AUTONOMOUS-PAPER-RUNTIME-V1
+
+> Audited on: HEAD `65b3821` (+ this phase). Method: the same authority ranking,
+> but every classification below was re-derived by reading the code and by
+> grepping the actual importers in `src/`, `scripts/` and `tests/`.
+> The section above is kept verbatim: it is the record of the previous audit.
+
+## 1. New authoritative entrypoint
+
+| Entrypoint | Path | What it actually runs |
+| --- | --- | --- |
+| Autonomous PAPER/SHADOW loop | `scripts/autonomous_paper.py` | scanner (read-only public data) → PIT reader → context → router (per candidate) → families → `TradeProposal` → agent reviews → `IndependentVerifier` → `DecisionEngine` → deterministic `RiskManager` → `PaperBroker` (only for TRADE_PAPER) → `DecisionTrace` → reconcile → `OutcomeEvaluator` → `StrategyPerformanceStore`. ONE_SHOT (`--cycles 1`) or bounded loop. Refuses to start unless `runtime.mode == paper`. |
+
+`scripts/start_paper_trading.py` remains authoritative for the legacy paper loop and is **untouched** this phase.
+
+## 2. Components added and wired (all RUNTIME_AUTHORITATIVE)
+
+| Component | Path | Role | Evidence of reachability |
+| --- | --- | --- | --- |
+| `AdmissionLedger` | `autonomous/admission_ledger.py` | only authority for "may this strategy run PAPER" | called by the runtime per candidate; `AdmissionLedger.load` in the entrypoint |
+| `TradeProposal` / `ShadowTradeDecision` / `DecisionTrace` / `OutcomeRecord` / `StrategyPerformance` | `autonomous/contracts.py` | frozen contracts with structural invariants | constructed by the runtime; validated by tests |
+| `AgentRegistry` (+5 specialists) | `autonomous/agents.py` | structured deterministic reviews | invoked every candidate; agent ids printed by the entrypoint |
+| `CostEngine` | `autonomous/costs.py` | COST_MODEL_V3 evaluated with the OBSERVED spread | called per proposal; version recorded in every trace |
+| `DecisionEngine` | `autonomous/decision.py` | `intend` + `decide` → TRADE_PAPER / SHADOW_TRADE / NO_TRADE | called twice per candidate (intent, then final) |
+| `IndependentVerifier` | `autonomous/verifier.py` | re-derives PIT slice, cost, arithmetic, admission, shadow purity | called for every proposal; verdict recorded in the trace |
+| `DecisionTraceStore` (+ replay) | `autonomous/trace.py` | append-only hash-chained ledger | written every cycle; `verify_chain()` in the run report |
+| `OutcomeEvaluator` | `autonomous/outcomes.py` | PIT-safe outcome + MFE/MAE, else PENDING_OUTCOME | called at the end of every cycle |
+| `StrategyPerformanceStore` | `autonomous/experience.py` | outcome-driven memory (selection only) | updated on every resolved outcome |
+| `AutonomousPaperRuntime` | `autonomous/runtime.py` | the cycle/loop itself | entrypoint `await runtime.run(...)` |
+| run report writer | `autonomous/reporting.py` | `RUN_REPORT.{md,json}` from one object | written at the end of every run |
+
+## 3. Re-classified by this audit
+
+| Component | Previous | Now | Reason |
+| --- | --- | --- | --- |
+| `research/admission.py` (`AdmissionController`) | RESEARCH_ONLY | **DEAD_CODE** | zero importers in `src/` + `scripts/` (grep). Name collision: it gates *signals*, not *strategies* |
+| `feedback/evaluator.py` | (unclassified) | IMPLEMENTED_NOT_WIRED | imported only by `feedback/__init__.py` + its own test |
+| `paper/reconciliation.py`, `paper/startup_recovery.py` | ORPHAN | ORPHAN (confirmed) | the only grep hits were prefix matches of `reconciliation_v4` in the entrypoints |
+| `paper/validation.py` | ORPHAN | PARTIAL / TEST_ONLY | one importer: `tests/unit/cert/test_canonical_core_lint_guard.py` |
+| legacy `strategy_map` in `start_paper_trading.build_cycle_engine` | RUNTIME_AUTHORITATIVE | RUNTIME_AUTHORITATIVE but **not admission-gated** | it still writes `status="CONFIRMED"` for all six families (DEF-AUTO-4) |
+
+## 4. Still missing / defects (evidence-backed)
+
+| ID | Item | Severity | Evidence |
+| --- | --- | --- | --- |
+| DEF-AUTO-2 | Universe not pre-validated against `CryptoAssetAgentRegistry` | LOW-MEDIUM | real run: BNB/XRP/ADA/DOGE/AVAX produce `CONTEXT_ERROR: no AssetAgent registered for asset: <X>` every cycle instead of a fail-fast startup message |
+| DEF-AUTO-3 | `RouterGates.require_fresh_context` is a fixed 15-minute wall-clock lag | MEDIUM | a 30m run makes every candidate `stale_context` (the last closed 30m bar is ≥15 min old by construction). Effective timeframe ceiling ≈ 5m-15m |
+| DEF-AUTO-4 | `start_paper_trading.py` still marks every family `status="CONFIRMED"` | MEDIUM (integrity) | that map is not admission-gated; the autonomous entrypoint uses the ledger instead |
+| DEF-AUTO-5 | `paper/reconciliation.py`, `paper/startup_recovery.py`, `research/admission.py`, `feedback/evaluator.py` remain orphan | LOW | zero importers (grep) |
+| DEF-AUTO-6 | `RouterGates(require_confirmed=False)` in the autonomous composition | ACCEPTED by design | the router must be able to *select* research candidates so they can be observed in SHADOW; PAPER authority moved to the ledger + verifier + DecisionEngine (defence in depth, three independent gates) |
+| — | LLM/agent reasoning layer | NOT REQUIRED | no credentials in this environment; the deterministic review layer is replayable, which an LLM layer would not be |

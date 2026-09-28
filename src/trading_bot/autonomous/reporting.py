@@ -106,16 +106,19 @@ def render_markdown_report(summary: RunSummary) -> str:
         lines.append("## Strategy performance (experience learning)")
         lines.append("")
         lines.append(
-            "| strategy | asset | regime | n | shadow n | paper n | gross bps | net bps "
-            "| hit rate | PF | max DD bps | recent net bps |"
+            "| strategy | asset | regime | n | shadow n | paper n | no-trade n | gross bps "
+            "| net bps | hit rate | PF | max DD bps | recent net bps |"
         )
-        lines.append("| --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |")
+        lines.append(
+            "| --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |"
+        )
         for cell in summary.performance:
             pf = cell["profit_factor"]
             lines.append(
                 f"| {cell['strategy_id']} | {cell['asset']} | {cell['regime']} "
                 f"| {cell['sample_size']} | {cell['shadow_sample_size']} "
-                f"| {cell['paper_sample_size']} | {cell['gross_expectancy_bps']:.4f} "
+                f"| {cell['paper_sample_size']} | {cell['no_trade_sample_size']} "
+                f"| {cell['gross_expectancy_bps']:.4f} "
                 f"| {cell['net_expectancy_bps']:.4f} | {cell['hit_rate']:.4f} "
                 f"| {'n/a' if pf is None else f'{pf:.4f}'} | {cell['max_drawdown_bps']:.4f} "
                 f"| {cell['recent_net_expectancy_bps']:.4f} |"

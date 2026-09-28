@@ -189,6 +189,59 @@ def test_no_proposal_means_not_applicable() -> None:
     assert evaluation.status is OutcomeStatus.NOT_APPLICABLE
 
 
+def test_no_trade_hypothesis_is_evaluated_as_calibration(tmp_path: Path) -> None:
+    """A rejected proposal is still a measurable prediction (calibration)."""
+    trace = _trace(
+        decision_id="d-nt",
+        market_time_ms=TS0,
+        decision_time_ms=TS0,
+        mode=DecisionMode.NO_TRADE,
+        classification="NO_GROSS_EDGE",
+        proposal=_proposal(
+            market_time_ms=TS0,
+            decision_time_ms=TS0,
+            horizon_minutes=5.0,
+            entry_reference=100.0,
+            expected_gross_edge_bps=-4.56,
+            expected_cost_bps=21.0,
+            expected_net_edge_bps=-25.56,
+        ).to_dict(),
+    )
+    evaluations = OutcomeEvaluator().resolve_pending(
+        traces=[trace], bars_by_symbol={"BTC/USDT": bars("BTC/USDT", 6, rising=True)}
+    )
+    assert len(evaluations) == 1
+    record = evaluations[0].record
+    assert record is not None
+    assert record.mode is DecisionMode.NO_TRADE
+
+    store = StrategyPerformanceStore(tmp_path / "performance.json")
+    cell = store.update_from_outcome(record)
+    assert cell.sample_size == 1
+    assert cell.no_trade_sample_size == 1
+    assert cell.shadow_sample_size == 0
+    assert cell.paper_sample_size == 0
+    # Calibration samples cannot reorder selection on their own.
+    assert (
+        store.selection_priority(
+            strategy_id=record.strategy_id,
+            asset="BTC",
+            regime="UNKNOWN",
+            timeframe="5m",
+        )
+        == 0.0
+    )
+
+
+def test_resolve_pending_skips_traces_without_a_hypothesis() -> None:
+    """No proposal ⇒ no prediction ⇒ nothing to evaluate (not a fake PENDING)."""
+    evaluations = OutcomeEvaluator().resolve_pending(
+        traces=[_trace(decision_id="d-np")],
+        bars_by_symbol={"BTC/USDT": bars("BTC/USDT", 6)},
+    )
+    assert evaluations == []
+
+
 # -- experience -------------------------------------------------------------
 
 
@@ -228,6 +281,7 @@ def test_performance_store_aggregates_and_is_idempotent(tmp_path: Path) -> None:
     assert cell.profit_factor == pytest.approx(30.0 / 9.0)
     assert cell.shadow_sample_size == 4
     assert cell.paper_sample_size == 0
+    assert cell.no_trade_sample_size == 0
 
 
 def test_performance_store_persists_across_restarts(tmp_path: Path) -> None:

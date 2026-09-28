@@ -96,6 +96,10 @@ class StrategyPerformanceStore:
         self._path = Path(path)
         self._cells: dict[str, dict[str, Any]] = {}
         self._seen_decisions: set[str] = set()
+        # Net expectancy measured ONLY over decisions that reached an
+        # executable observation (PAPER or SHADOW) — the only samples that may
+        # reorder selection. Rejected-proposal samples are calibration data.
+        self._executable_net: dict[str, float | None] = {}
         self.load()
 
     # -- persistence --------------------------------------------------------
@@ -221,6 +225,9 @@ class StrategyPerformanceStore:
     ) -> StrategyPerformance:
         rows = sorted(rows, key=lambda s: s.timestamp_ms)
         sample_size = len(rows)
+        # Expectancy is measured over EVERY evaluation of the hypothesis
+        # (shadow, paper and the calibration samples of rejected proposals):
+        # it answers "would this signal have worked?", not "did we trade?"
         gross = sum(s.gross_bps for s in rows) / sample_size
         net = sum(s.net_bps for s in rows) / sample_size
         wins = [s.net_bps for s in rows if s.net_bps > 0]
@@ -240,8 +247,19 @@ class StrategyPerformanceStore:
 
         recent_rows = rows[-RECENT_WINDOW:]
         recent = sum(s.net_bps for s in recent_rows) / len(recent_rows)
+        executable_rows = [
+            s
+            for s in rows
+            if s.mode in (DecisionMode.TRADE_PAPER.value, DecisionMode.SHADOW_TRADE.value)
+        ]
+        self._executable_net[(_cell_key(strategy_id, asset, regime, timeframe))] = (
+            sum(s.net_bps for s in executable_rows) / len(executable_rows)
+            if executable_rows
+            else None
+        )
         paper_rows = [s for s in rows if s.mode == DecisionMode.TRADE_PAPER.value]
         shadow_rows = [s for s in rows if s.mode == DecisionMode.SHADOW_TRADE.value]
+        no_trade_rows = [s for s in rows if s.mode == DecisionMode.NO_TRADE.value]
 
         return StrategyPerformance(
             strategy_id=strategy_id,
@@ -251,6 +269,7 @@ class StrategyPerformanceStore:
             sample_size=sample_size,
             shadow_sample_size=len(shadow_rows),
             paper_sample_size=len(paper_rows),
+            no_trade_sample_size=len(no_trade_rows),
             gross_expectancy_bps=gross,
             net_expectancy_bps=net,
             hit_rate=hit_rate,
@@ -281,8 +300,14 @@ class StrategyPerformanceStore:
         )
         if cell is None or cell.sample_size < MIN_SAMPLES_FOR_ADJUSTMENT:
             return 0.0
+        executable = cell.shadow_sample_size + cell.paper_sample_size
+        if executable < MIN_SAMPLES_FOR_ADJUSTMENT:
+            return 0.0
+        net = self._executable_net.get(
+            _cell_key(strategy_id, asset, regime, timeframe), cell.net_expectancy_bps
+        )
         # 10 bps of realised net expectancy maps to the full adjustment.
-        raw = cell.net_expectancy_bps / 10.0
+        raw = (net if net is not None else 0.0) / 10.0
         return round(max(-MAX_PRIORITY_ADJUSTMENT, min(MAX_PRIORITY_ADJUSTMENT, raw)), 6)
 
     def all_cells(self) -> list[StrategyPerformance]:

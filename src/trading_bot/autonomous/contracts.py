@@ -786,6 +786,7 @@ class StrategyPerformance:
     sample_size: int
     shadow_sample_size: int
     paper_sample_size: int
+    no_trade_sample_size: int
     gross_expectancy_bps: float
     net_expectancy_bps: float
     hit_rate: float
@@ -810,6 +811,7 @@ class StrategyPerformance:
             "sample_size": self.sample_size,
             "shadow_sample_size": self.shadow_sample_size,
             "paper_sample_size": self.paper_sample_size,
+            "no_trade_sample_size": self.no_trade_sample_size,
             "gross_expectancy_bps": round(self.gross_expectancy_bps, 8),
             "net_expectancy_bps": round(self.net_expectancy_bps, 8),
             "hit_rate": round(self.hit_rate, 8),
