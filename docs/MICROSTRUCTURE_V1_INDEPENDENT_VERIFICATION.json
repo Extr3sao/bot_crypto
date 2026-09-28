@@ -1,11 +1,11 @@
 {
   "verifier": "scripts/research_verification.py",
-  "verification_head": "3964888dd37e98f961acdad8cfedbc735a9acdcf",
+  "verification_head": "ffc13e6670554fcc2d1b1ce2f3569da855c23091",
   "subject_commit_microstructure_v1": "325892de65677c61ddf7040fb779f9e328fa0b8e",
   "reproducibility_note": "checks are content-based (pipeline re-execution, SHA-256, arithmetic consistency); a later commit changes only the head field",
   "phase_0": {
     "scope": "MICROSTRUCTURE-V1 (commit 325892d)",
-    "head": "3964888dd37e98f961acdad8cfedbc735a9acdcf",
+    "head": "ffc13e6670554fcc2d1b1ce2f3569da855c23091",
     "checks": [
       {
         "check": "MICROSTRUCTURE-V1 artifacts reproduce byte-for-byte",
@@ -65,7 +65,7 @@
   },
   "phase_7": {
     "scope": "VENUE-AND-EXECUTION-RESEARCH-V1 + AGGTRADES-MICROSTRUCTURE-V1",
-    "head": "3964888dd37e98f961acdad8cfedbc735a9acdcf",
+    "head": "ffc13e6670554fcc2d1b1ce2f3569da855c23091",
     "checks": [
       {
         "check": "docs/COST_MODEL_V3.json regenerates identically",
