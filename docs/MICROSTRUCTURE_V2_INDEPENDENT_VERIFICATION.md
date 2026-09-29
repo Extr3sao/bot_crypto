@@ -1,6 +1,6 @@
 # MICROSTRUCTURE_V2_INDEPENDENT_VERIFICATION
 
-Verificador: `scripts/research_verification.py` — HEAD `ffc13e6670554fcc2d1b1ce2f3569da855c23091`.
+Verificador: `scripts/research_verification.py` — HEAD `8740ca5be7d68b7d1c0023aacfe0746559d9ced4`.
 Alcance: `MICROSTRUCTURE-EDGE & FORWARD-DATA V1 (V2 artifacts)`.
 
 ```text

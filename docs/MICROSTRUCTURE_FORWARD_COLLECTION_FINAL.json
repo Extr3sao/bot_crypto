@@ -1,0 +1,823 @@
+{
+  "actual_duration_seconds": 3783.341,
+  "assets": [
+    "BTCUSDT",
+    "ETHUSDT",
+    "SOLUSDT"
+  ],
+  "backfill_failures": 0,
+  "backfill_gaps_closed": 36,
+  "backfill_partial": 0,
+  "books": {
+    "perp/BTCUSDT": {
+      "checkpoints": 118,
+      "counters": {
+        "applied": 22254,
+        "buffered": 0,
+        "crossed_book_events": 0,
+        "duplicates": 147,
+        "gaps": 14,
+        "invalidations": 2,
+        "malformed": 0,
+        "out_of_order": 0,
+        "resnapshots": 76,
+        "snapshot_mismatches": 0
+      },
+      "crossed_book_events": 0,
+      "final_ask_levels": 1652,
+      "final_bid_levels": 1811,
+      "final_health": "STALE",
+      "final_last_update_id": 11681560488914,
+      "health_tally": {
+        "HEALTHY": 114,
+        "RECOVERING": 2,
+        "STALE": 2
+      },
+      "healthy": 114,
+      "invalid": 0,
+      "invalidations": 2,
+      "recovering": 2,
+      "resnapshots": 76,
+      "sequence_gaps": 14,
+      "snapshot_mismatches": 0,
+      "stale": 2,
+      "usable_ratio": 0.966102
+    },
+    "perp/ETHUSDT": {
+      "checkpoints": 118,
+      "counters": {
+        "applied": 22195,
+        "buffered": 1,
+        "crossed_book_events": 0,
+        "duplicates": 153,
+        "gaps": 14,
+        "invalidations": 3,
+        "malformed": 0,
+        "out_of_order": 0,
+        "resnapshots": 76,
+        "snapshot_mismatches": 1
+      },
+      "crossed_book_events": 0,
+      "final_ask_levels": 1586,
+      "final_bid_levels": 1789,
+      "final_health": "STALE",
+      "final_last_update_id": 11681560499691,
+      "health_tally": {
+        "HEALTHY": 111,
+        "INVALID": 1,
+        "RECOVERING": 3,
+        "STALE": 3
+      },
+      "healthy": 111,
+      "invalid": 1,
+      "invalidations": 3,
+      "recovering": 3,
+      "resnapshots": 76,
+      "sequence_gaps": 14,
+      "snapshot_mismatches": 1,
+      "stale": 3,
+      "usable_ratio": 0.940678
+    },
+    "perp/SOLUSDT": {
+      "checkpoints": 118,
+      "counters": {
+        "applied": 21522,
+        "buffered": 41,
+        "crossed_book_events": 0,
+        "duplicates": 205,
+        "gaps": 24,
+        "invalidations": 8,
+        "malformed": 0,
+        "out_of_order": 0,
+        "resnapshots": 81,
+        "snapshot_mismatches": 5
+      },
+      "crossed_book_events": 0,
+      "final_ask_levels": 1003,
+      "final_bid_levels": 1079,
+      "final_health": "STALE",
+      "final_last_update_id": 11681560495354,
+      "health_tally": {
+        "HEALTHY": 110,
+        "INVALID": 1,
+        "RECOVERING": 4,
+        "STALE": 3
+      },
+      "healthy": 110,
+      "invalid": 1,
+      "invalidations": 8,
+      "recovering": 4,
+      "resnapshots": 81,
+      "sequence_gaps": 24,
+      "snapshot_mismatches": 5,
+      "stale": 3,
+      "usable_ratio": 0.932203
+    },
+    "spot/BTCUSDT": {
+      "checkpoints": 118,
+      "counters": {
+        "applied": 31709,
+        "buffered": 1,
+        "crossed_book_events": 0,
+        "duplicates": 16,
+        "gaps": 1,
+        "invalidations": 0,
+        "malformed": 0,
+        "out_of_order": 0,
+        "resnapshots": 7,
+        "snapshot_mismatches": 1
+      },
+      "crossed_book_events": 0,
+      "final_ask_levels": 1633,
+      "final_bid_levels": 1160,
+      "final_health": "STALE",
+      "final_last_update_id": 100780821699,
+      "health_tally": {
+        "HEALTHY": 114,
+        "STALE": 4
+      },
+      "healthy": 114,
+      "invalid": 0,
+      "invalidations": 0,
+      "recovering": 0,
+      "resnapshots": 7,
+      "sequence_gaps": 1,
+      "snapshot_mismatches": 1,
+      "stale": 4,
+      "usable_ratio": 0.966102
+    },
+    "spot/ETHUSDT": {
+      "checkpoints": 118,
+      "counters": {
+        "applied": 31694,
+        "buffered": 0,
+        "crossed_book_events": 0,
+        "duplicates": 17,
+        "gaps": 1,
+        "invalidations": 0,
+        "malformed": 0,
+        "out_of_order": 0,
+        "resnapshots": 7,
+        "snapshot_mismatches": 0
+      },
+      "crossed_book_events": 0,
+      "final_ask_levels": 1619,
+      "final_bid_levels": 1535,
+      "final_health": "STALE",
+      "final_last_update_id": 81545966713,
+      "health_tally": {
+        "HEALTHY": 114,
+        "STALE": 4
+      },
+      "healthy": 114,
+      "invalid": 0,
+      "invalidations": 0,
+      "recovering": 0,
+      "resnapshots": 7,
+      "sequence_gaps": 1,
+      "snapshot_mismatches": 0,
+      "stale": 4,
+      "usable_ratio": 0.966102
+    },
+    "spot/SOLUSDT": {
+      "checkpoints": 118,
+      "counters": {
+        "applied": 30192,
+        "buffered": 0,
+        "crossed_book_events": 0,
+        "duplicates": 16,
+        "gaps": 2,
+        "invalidations": 0,
+        "malformed": 0,
+        "out_of_order": 0,
+        "resnapshots": 7,
+        "snapshot_mismatches": 0
+      },
+      "crossed_book_events": 0,
+      "final_ask_levels": 1050,
+      "final_bid_levels": 1014,
+      "final_health": "STALE",
+      "final_last_update_id": 30198204730,
+      "health_tally": {
+        "HEALTHY": 114,
+        "STALE": 4
+      },
+      "healthy": 114,
+      "invalid": 0,
+      "invalidations": 0,
+      "recovering": 0,
+      "resnapshots": 7,
+      "sequence_gaps": 2,
+      "snapshot_mismatches": 0,
+      "stale": 4,
+      "usable_ratio": 0.966102
+    }
+  },
+  "capture_code_classification": "CAPTURE_CODE_EQUIVALENT",
+  "capture_code_equivalent": true,
+  "collector_resources": {
+    "cpu_utilisation": 0.748637,
+    "memory_mb_final": 281.55859375,
+    "memory_mb_max": 281.55859375,
+    "network_bytes_per_hour": 1230742098.88
+  },
+  "collector_version": "FORWARD-WS-COLLECTOR-V1",
+  "continuity": "INCOMPLETE_DATA",
+  "contract_version": "FORWARD-DATA-CONTRACT-V1",
+  "data_lost_gap_seconds": 1.755,
+  "dedup_after_backfill": 0,
+  "degraded_episodes": 132,
+  "degraded_seconds": 146.65,
+  "disconnects": null,
+  "disk_guard": {
+    "armed": true,
+    "controlled_test_clean_exit": true,
+    "controlled_test_tripped": true,
+    "note": "with --duration the process stays alive until the duration expires, but the socket receive loops poll the same stop flag, so no further row is written after the trip. The recommended continuous invocation still omits --duration: there is no reason to hold the process open after the guard has fired.",
+    "stopped_on_disk_budget": false
+  },
+  "duplicate_rows_on_disk": 0,
+  "duplicates": 554,
+  "ended_at": "2026-09-28T16:43:11.151000+00:00",
+  "episodes_returning_to_healthy": 132,
+  "events": {
+    "agg_trade": 124232,
+    "book_checkpoint": 708,
+    "book_ticker": 5194953,
+    "depth_diff": 160219,
+    "funding": 174,
+    "mark_price": 174,
+    "open_interest": 174
+  },
+  "evidence_files": [
+    "docs\\FORWARD_DATA_ARCHITECTURE.md",
+    "docs\\FORWARD_DATA_CONTRACT.json",
+    "docs\\FORWARD_DATA_CONTRACT.md",
+    "docs\\FORWARD_DATA_DAILY_REPORT.json",
+    "docs\\FORWARD_DATA_DISK_GUARD.json",
+    "docs\\FORWARD_DATA_EVIDENCE.json",
+    "docs\\FORWARD_DATA_KLINE_CROSSCHECK.json",
+    "docs\\FORWARD_DATA_PAPER_COEXISTENCE.json",
+    "docs\\FORWARD_DATA_QUALITY_REPORT.json",
+    "docs\\FORWARD_DATA_QUALITY_REPORT.md",
+    "docs\\FORWARD_DATA_REPLAY_VALIDATION.json",
+    "docs\\FORWARD_DATA_REPLAY_VALIDATION.md",
+    "docs\\FORWARD_DATA_RESOURCE_REPORT.json",
+    "docs\\FORWARD_DATA_RESOURCE_REPORT.md",
+    "docs\\FORWARD_DATA_STREAMING_MEMORY.json",
+    "docs\\MICROSTRUCTURE_FORWARD_COLLECTION_FINAL.json",
+    "docs\\MICROSTRUCTURE_FORWARD_COLLECTION_INDEPENDENT_VERIFICATION.json",
+    "docs\\MICROSTRUCTURE_FORWARD_COLLECTION_INDEPENDENT_VERIFICATION.md",
+    "docs\\MICROSTRUCTURE_FORWARD_COLLECTION_V1.md",
+    "reports\\microstructure-forward\\manifest\\forward-1790610007-9d07f3df.json",
+    "reports\\microstructure-forward\\quality_gates.json",
+    "reports\\microstructure-forward\\writer_code_equivalence.json"
+  ],
+  "failed_seconds": 0.0,
+  "false_success_guard": {
+    "notes": [
+      "PASS is invalid if the hour was not actually captured",
+      "PASS is invalid if REST recovery is presented as WebSocket",
+      "PASS is invalid if gaps are ignored or duplicates hidden",
+      "PASS is invalid if a book is invalid and called healthy",
+      "PASS is invalid if replay uses the network or materialises the dataset",
+      "PASS is invalid if memory grows with the row count",
+      "PASS is invalid if capacity is insufficient but 24/7 ready is claimed",
+      "PASS is invalid if one hour of data is used to claim a strategy edge"
+    ],
+    "violations": []
+  },
+  "final_status": "MICROSTRUCTURE_FORWARD_DATA_VERIFIED",
+  "final_status_basis": "capture duration >= target, offline replay reproduces the features, and the independent verifier passed",
+  "final_status_vocabulary": [
+    "MICROSTRUCTURE_FORWARD_DATA_VERIFIED",
+    "MICROSTRUCTURE_FORWARD_DATA_PARTIAL",
+    "MICROSTRUCTURE_FORWARD_DATA_FAILED"
+  ],
+  "gaps_accounting_is_complete": true,
+  "gaps_by_reason": {
+    "AGG_TRADE_ID_JUMP": 18,
+    "DEPTH_SEQUENCE_BREAK": 56,
+    "WS_DISCONNECT": 729
+  },
+  "gaps_by_status": {
+    "RECOVERED_COMPLETE": 36,
+    "UNRECOVERABLE": 767
+  },
+  "gaps_detected": 803,
+  "gaps_recovered_complete": 36,
+  "gaps_recovered_partial": 0,
+  "gaps_unrecovered": 767,
+  "gaps_with_loss": 524,
+  "healthy_fraction": 0.96123796,
+  "healthy_seconds": 3636.691,
+  "independent_verifier": {
+    "checks": 27,
+    "checks_failed": [],
+    "head": "8740ca5be7d68b7d1c0023aacfe0746559d9ced4",
+    "status": "VERIFIED",
+    "verifier": "scripts/research_verification.py"
+  },
+  "kind": "MICROSTRUCTURE_FORWARD_COLLECTION_FINAL",
+  "kline_crosscheck": {
+    "buckets_compared": 75,
+    "buckets_excluded": 0,
+    "median_ratio": 1.0,
+    "worst_ratio_deviation": 0.0
+  },
+  "latency_ms": {
+    "max": 91857,
+    "p50": 3435.0,
+    "p95": 32011.0,
+    "p99": 62308.0,
+    "samples": 3805824
+  },
+  "loss_estimate_semantics": {
+    "id_steps_that_are_a_sequence_span_only": 159109856,
+    "id_steps_that_are_an_event_count": 0,
+    "lost_wall_clock_seconds": 1.755,
+    "note": "only agg_trade ids name discrete events; for depth_diff an id step is a position in a sequence, and the affected book was invalidated and resnapshotted rather than asked to account for a count of missing updates",
+    "per_stream": {
+      "agg_trade": {
+        "gaps": 144,
+        "id_steps": 0,
+        "id_steps_are_an_event_count": true,
+        "seconds": 0.261
+      },
+      "book_ticker": {
+        "gaps": 162,
+        "id_steps": 0,
+        "id_steps_are_an_event_count": false,
+        "seconds": 0.747
+      },
+      "depth_diff": {
+        "gaps": 218,
+        "id_steps": 159109856,
+        "id_steps_are_an_event_count": false,
+        "seconds": 0.747
+      }
+    }
+  },
+  "markets": [
+    "spot",
+    "perp"
+  ],
+  "official_capture_commit": "7fb9429e765dbf0d520e6a58df3dabacc05dbbde",
+  "out_of_order": 645,
+  "paper_coexistence": {
+    "cycle_seconds_delta": -0.528,
+    "cycles_with_collector": 18,
+    "cycles_without_collector": 18,
+    "isolation": {
+      "collector_can_change_a_decision": false,
+      "collector_reconnects_during_paper": 6,
+      "paper_orders_created_with_collector": 0,
+      "paper_runtime_failures_with_collector": 0,
+      "separate_processes": true,
+      "shared_mutable_state": false
+    },
+    "orders_created_with_collector": 0,
+    "runtime_failures_with_collector": 0
+  },
+  "partial_tails": 0,
+  "provider_stream_status": {
+    "perp/BTCUSDT/agg_trade": {
+      "events": 0,
+      "lossless": true,
+      "transport": "ws",
+      "verdict": "NO_DATA"
+    },
+    "perp/BTCUSDT/book_checkpoint": {
+      "events": 118,
+      "lossless": false,
+      "transport": "ws",
+      "verdict": "OBSERVED"
+    },
+    "perp/BTCUSDT/book_ticker": {
+      "events": 1461422,
+      "lossless": true,
+      "transport": "ws",
+      "verdict": "OBSERVED"
+    },
+    "perp/BTCUSDT/depth_diff": {
+      "events": 22415,
+      "lossless": true,
+      "transport": "ws",
+      "verdict": "OBSERVED"
+    },
+    "perp/BTCUSDT/depth_snapshot": {
+      "events": 76,
+      "lossless": false,
+      "transport": "rest_backfill",
+      "verdict": "OBSERVED"
+    },
+    "perp/BTCUSDT/funding": {
+      "events": 58,
+      "lossless": false,
+      "transport": "rest_poll",
+      "verdict": "OBSERVED"
+    },
+    "perp/BTCUSDT/mark_price": {
+      "events": 58,
+      "lossless": false,
+      "transport": "rest_poll",
+      "verdict": "OBSERVED"
+    },
+    "perp/BTCUSDT/open_interest": {
+      "events": 58,
+      "lossless": false,
+      "transport": "rest_poll",
+      "verdict": "OBSERVED"
+    },
+    "perp/ETHUSDT/agg_trade": {
+      "events": 0,
+      "lossless": true,
+      "transport": "ws",
+      "verdict": "NO_DATA"
+    },
+    "perp/ETHUSDT/book_checkpoint": {
+      "events": 118,
+      "lossless": false,
+      "transport": "ws",
+      "verdict": "OBSERVED"
+    },
+    "perp/ETHUSDT/book_ticker": {
+      "events": 1484031,
+      "lossless": true,
+      "transport": "ws",
+      "verdict": "OBSERVED"
+    },
+    "perp/ETHUSDT/depth_diff": {
+      "events": 22363,
+      "lossless": true,
+      "transport": "ws",
+      "verdict": "OBSERVED"
+    },
+    "perp/ETHUSDT/depth_snapshot": {
+      "events": 76,
+      "lossless": false,
+      "transport": "rest_backfill",
+      "verdict": "OBSERVED"
+    },
+    "perp/ETHUSDT/funding": {
+      "events": 58,
+      "lossless": false,
+      "transport": "rest_poll",
+      "verdict": "OBSERVED"
+    },
+    "perp/ETHUSDT/mark_price": {
+      "events": 58,
+      "lossless": false,
+      "transport": "rest_poll",
+      "verdict": "OBSERVED"
+    },
+    "perp/ETHUSDT/open_interest": {
+      "events": 58,
+      "lossless": false,
+      "transport": "rest_poll",
+      "verdict": "OBSERVED"
+    },
+    "perp/SOLUSDT/agg_trade": {
+      "events": 0,
+      "lossless": true,
+      "transport": "ws",
+      "verdict": "NO_DATA"
+    },
+    "perp/SOLUSDT/book_checkpoint": {
+      "events": 118,
+      "lossless": false,
+      "transport": "ws",
+      "verdict": "OBSERVED"
+    },
+    "perp/SOLUSDT/book_ticker": {
+      "events": 590436,
+      "lossless": true,
+      "transport": "ws",
+      "verdict": "OBSERVED"
+    },
+    "perp/SOLUSDT/depth_diff": {
+      "events": 21792,
+      "lossless": true,
+      "transport": "ws",
+      "verdict": "OBSERVED"
+    },
+    "perp/SOLUSDT/depth_snapshot": {
+      "events": 81,
+      "lossless": false,
+      "transport": "rest_backfill",
+      "verdict": "OBSERVED"
+    },
+    "perp/SOLUSDT/funding": {
+      "events": 58,
+      "lossless": false,
+      "transport": "rest_poll",
+      "verdict": "OBSERVED"
+    },
+    "perp/SOLUSDT/mark_price": {
+      "events": 58,
+      "lossless": false,
+      "transport": "rest_poll",
+      "verdict": "OBSERVED"
+    },
+    "perp/SOLUSDT/open_interest": {
+      "events": 58,
+      "lossless": false,
+      "transport": "rest_poll",
+      "verdict": "OBSERVED"
+    },
+    "spot/BTCUSDT/agg_trade": {
+      "events": 61471,
+      "lossless": true,
+      "transport": "ws",
+      "verdict": "OBSERVED"
+    },
+    "spot/BTCUSDT/book_checkpoint": {
+      "events": 118,
+      "lossless": false,
+      "transport": "ws",
+      "verdict": "OBSERVED"
+    },
+    "spot/BTCUSDT/book_ticker": {
+      "events": 807077,
+      "lossless": true,
+      "transport": "ws",
+      "verdict": "OBSERVED"
+    },
+    "spot/BTCUSDT/depth_diff": {
+      "events": 31727,
+      "lossless": true,
+      "transport": "ws",
+      "verdict": "OBSERVED"
+    },
+    "spot/BTCUSDT/depth_snapshot": {
+      "events": 7,
+      "lossless": false,
+      "transport": "rest_backfill",
+      "verdict": "OBSERVED"
+    },
+    "spot/ETHUSDT/agg_trade": {
+      "events": 50659,
+      "lossless": true,
+      "transport": "ws",
+      "verdict": "OBSERVED"
+    },
+    "spot/ETHUSDT/book_checkpoint": {
+      "events": 118,
+      "lossless": false,
+      "transport": "ws",
+      "verdict": "OBSERVED"
+    },
+    "spot/ETHUSDT/book_ticker": {
+      "events": 638023,
+      "lossless": true,
+      "transport": "ws",
+      "verdict": "OBSERVED"
+    },
+    "spot/ETHUSDT/depth_diff": {
+      "events": 31712,
+      "lossless": true,
+      "transport": "ws",
+      "verdict": "OBSERVED"
+    },
+    "spot/ETHUSDT/depth_snapshot": {
+      "events": 7,
+      "lossless": false,
+      "transport": "rest_backfill",
+      "verdict": "OBSERVED"
+    },
+    "spot/GLOBAL/gap": {
+      "events": 839,
+      "lossless": false,
+      "transport": "ws",
+      "verdict": "OBSERVED"
+    },
+    "spot/GLOBAL/heartbeat": {
+      "events": 58,
+      "lossless": false,
+      "transport": "ws",
+      "verdict": "OBSERVED"
+    },
+    "spot/GLOBAL/lifecycle": {
+      "events": 166,
+      "lossless": false,
+      "transport": "ws",
+      "verdict": "OBSERVED"
+    },
+    "spot/GLOBAL/violation": {
+      "events": 0,
+      "lossless": false,
+      "transport": "ws",
+      "verdict": "NO_DATA"
+    },
+    "spot/SOLUSDT/agg_trade": {
+      "events": 12102,
+      "lossless": true,
+      "transport": "ws",
+      "verdict": "OBSERVED"
+    },
+    "spot/SOLUSDT/book_checkpoint": {
+      "events": 118,
+      "lossless": false,
+      "transport": "ws",
+      "verdict": "OBSERVED"
+    },
+    "spot/SOLUSDT/book_ticker": {
+      "events": 213964,
+      "lossless": true,
+      "transport": "ws",
+      "verdict": "OBSERVED"
+    },
+    "spot/SOLUSDT/depth_diff": {
+      "events": 30210,
+      "lossless": true,
+      "transport": "ws",
+      "verdict": "OBSERVED"
+    },
+    "spot/SOLUSDT/depth_snapshot": {
+      "events": 7,
+      "lossless": false,
+      "transport": "rest_backfill",
+      "verdict": "OBSERVED"
+    }
+  },
+  "providers": [
+    "binance"
+  ],
+  "quality_gates": {
+    "all_pass": true,
+    "gates": {
+      "mypy": {
+        "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m mypy src scripts",
+        "elapsed_seconds": 0.563,
+        "exit_code": 0,
+        "stderr_tail": [],
+        "summary_lines": [
+          "Success: no issues found in 232 source files"
+        ]
+      },
+      "pytest": {
+        "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m pytest -q",
+        "elapsed_seconds": 65.328,
+        "exit_code": 0,
+        "stderr_tail": [],
+        "summary_lines": [
+          "  C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Lib\\site-packages\\_pytest\\fixtures.py:1986: PytestRemovedIn10Warning: Passing baseid to FixtureDef is deprecated. Pass node instead for fixture scoping.",
+          "    fixture_def = FixtureDef(",
+          "-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html",
+          "1013 passed, 78 warnings in 64.33s (0:01:04)"
+        ]
+      },
+      "ruff": {
+        "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m ruff check src scripts tests",
+        "elapsed_seconds": 0.109,
+        "exit_code": 0,
+        "stderr_tail": [],
+        "summary_lines": [
+          "All checks passed!"
+        ]
+      }
+    },
+    "head": "8740ca5be7d68b7d1c0023aacfe0746559d9ced4",
+    "kind": "FORWARD_QUALITY_GATES",
+    "tests_passed": 1013
+  },
+  "readiness": {
+    "M-03": {
+      "available": {
+        "book_checkpoints": 708,
+        "book_update_events": 160219,
+        "books_ending_healthy": [],
+        "books_healthy_at_a_checkpoint": [
+          "perp/BTCUSDT",
+          "perp/ETHUSDT",
+          "perp/SOLUSDT",
+          "spot/BTCUSDT",
+          "spot/ETHUSDT",
+          "spot/SOLUSDT"
+        ],
+        "capture_minutes": 63.056,
+        "healthy_checkpoint_ratio": {
+          "perp/BTCUSDT": 0.966102,
+          "perp/ETHUSDT": 0.940678,
+          "perp/SOLUSDT": 0.932203,
+          "spot/BTCUSDT": 0.966102,
+          "spot/ETHUSDT": 0.966102,
+          "spot/SOLUSDT": 0.966102
+        },
+        "sequence_gaps": 56
+      },
+      "blocking": [
+        "56 order-book sequence gap(s) recorded in this run",
+        "sample is 63.1 min; 24 h of clean capture is the minimum to begin"
+      ],
+      "name": "order book imbalance",
+      "phase_readiness": "TECHNICALLY_READY_NEEDS_HISTORY",
+      "requires": "forward book samples, valid book sequence, enough observations",
+      "verdict": "COLLECTING"
+    },
+    "M-07": {
+      "available": {
+        "historical_complement": "~31 days of 5m open interest exist historically and end before this capture; the two are not contiguous, so this capture does not extend them",
+        "open_interest_samples": 174,
+        "open_interest_span_days": 0.041
+      },
+      "blocking": [
+        "forward open interest spans 0.041 day(s); 6 day(s) are needed for a DEV/VAL/OOS split"
+      ],
+      "name": "open interest x price",
+      "phase_readiness": "TECHNICALLY_READY_NEEDS_HISTORY",
+      "requires": "enough OI history for DEV, VAL and OOS",
+      "verdict": "COLLECTING"
+    },
+    "required_minimums": {
+      "m03_capture_minutes": 1440,
+      "m07_span_days": 6
+    },
+    "vocabulary": {
+      "phase_readiness": "RESEARCH_READY | TECHNICALLY_READY_NEEDS_HISTORY | NOT_READY — the second means the pipeline captures what the hypothesis needs and only time is missing, which must never be read as the first",
+      "verdict": "READY_FOR_RESEARCH | COLLECTING | NOT_READY"
+    }
+  },
+  "ready_for_continuous_collection": false,
+  "ready_for_continuous_collection_reasons": {
+    "independent_verifier": "VERIFIED",
+    "storage_capacity": "STORAGE_CAPACITY_BLOCKER",
+    "streaming_bounded": true,
+    "writer_dead_state_p1": "open: StreamStats.network_delays grows per event and is never read"
+  },
+  "reconnects": 81,
+  "replay": {
+    "aggregation_digest": "d14ef058e29279a68cebc33e1b0f1104452ef7753f467777af6b2c2a0092e54b",
+    "book_match": true,
+    "deterministic": true,
+    "event_count_match": true,
+    "feature_match": true,
+    "fingerprints_match": true,
+    "internet_access": false,
+    "offline_guard": "socket.socket / socket.create_connection / socket.getaddrinfo were replaced with raisers for the duration of this run",
+    "ok": true,
+    "partial_tails": 0,
+    "recorded_aggregation_digest": "d14ef058e29279a68cebc33e1b0f1104452ef7753f467777af6b2c2a0092e54b",
+    "rows": 5481951,
+    "trade_sequence_ok": true
+  },
+  "resnapshots": 254,
+  "resnapshots_failed": 0,
+  "rest_backfilled_events": 15969,
+  "rows": 5481951,
+  "run_id": "forward-1790610007-9d07f3df",
+  "schema_version": "forward-event-v1",
+  "segments": 78,
+  "started_at": "2026-09-28T15:40:07.810000+00:00",
+  "storage": {
+    "capacity_days_at_observed_rate": 0.263,
+    "capacity_hours_at_observed_rate": 6.301,
+    "compressed_gb_per_hour": 0.3582,
+    "compression_ratio": 17.514,
+    "estimated_compressed_gb_per_day": 8.598,
+    "free_disk_at_capture_start_bytes": null,
+    "free_disk_at_capture_start_reconstruction": 2633828523,
+    "free_disk_now_bytes": 2257350656,
+    "raw_equivalent_gb_per_hour": 6.2741,
+    "verdict": "STORAGE_CAPACITY_BLOCKER"
+  },
+  "streaming_memory": {
+    "bounded": true,
+    "materialised_equivalent_mb": 109660.9,
+    "rows_measured": 5481951,
+    "stages": [
+      {
+        "elapsed_seconds": 243.072,
+        "rows": 5481951,
+        "rss_growth_from_baseline_mb": 19.961,
+        "stage": "replay"
+      },
+      {
+        "elapsed_seconds": 1328.526,
+        "rows": 5481951,
+        "rss_growth_from_baseline_mb": 42.633,
+        "stage": "aggregation"
+      },
+      {
+        "elapsed_seconds": 273.815,
+        "rows": 5481951,
+        "rss_growth_from_baseline_mb": 26.188,
+        "stage": "quality"
+      },
+      {
+        "elapsed_seconds": 256.629,
+        "rows": 0,
+        "rss_growth_from_baseline_mb": 18.871,
+        "stage": "daily"
+      },
+      {
+        "elapsed_seconds": 279.11,
+        "rows": 5481951,
+        "rss_growth_from_baseline_mb": 24.859,
+        "stage": "verifier"
+      }
+    ],
+    "worst_rss_growth_mb": 42.633
+  },
+  "target_duration_seconds": 3600.0
+}
