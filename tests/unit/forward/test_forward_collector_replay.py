@@ -571,7 +571,14 @@ def test_quality_report_never_claims_a_higher_frequency_source_than_reality(
 
 
 #: §24 — the commit that produced the certified capture.
-CERTIFIED_CAPTURE_COMMIT = "7b14297"
+#:
+#: Re-certified for the honesty fixes in ``f406a45`` (a FAILED capture may no
+#: longer claim continuity, and the collector's machine-readable output no longer
+#: depends on the console code page). Those two edits touched a capture-critical
+#: path, so they needed a new capture rather than a quiet pin bump: the run is
+#: ``paper-lab-cert-01``, 719.05 s, 89/89 segments sealed, 0 partial tails, replay
+#: ok with 89/89 fingerprints and no network access.
+CERTIFIED_CAPTURE_COMMIT = "f406a45"
 
 #: Paths whose bytes must match that commit, because they are what the capture
 #: executed. ``storage.py`` is deliberately absent: it gained one streaming reader
@@ -595,6 +602,11 @@ def test_the_capture_code_still_matches_the_certified_commit() -> None:
     captured dataset and the tree that claims to explain it, so it has to be a
     deliberate decision (a new capture, or an explicit re-certification) instead
     of a side effect of adding a flag.
+
+    This guard fired for real while the honesty fixes above were being verified:
+    the suite went to ``1201 passed, 1 failed`` and the failure was this test. The
+    resolution was the re-certification capture named in
+    ``CERTIFIED_CAPTURE_COMMIT``, not a relaxation of the check.
     """
     import subprocess
 
