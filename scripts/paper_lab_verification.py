@@ -1399,7 +1399,10 @@ def check_storage_tiers_and_data_root() -> dict[str, Any]:
         and tiers["TIER 1"].kind == LOSSY
         and str(config.root) == "D:\\capture-root"
         and retention_root.get("dry_run") is True
-        and str(retention_root.get("root")) == str(alt_root)
+        # ``tempfile`` hands back the 8.3 short form on Windows (``GVLLFR~1``)
+        # while the driver resolves its root to the long form. Both name the same
+        # directory, so compare what they resolve to rather than their spelling.
+        and Path(str(retention_root.get("root"))).resolve() == alt_root.resolve()
     )
     return {
         "id": "STORAGE_TIERS_AND_DATA_ROOT",
