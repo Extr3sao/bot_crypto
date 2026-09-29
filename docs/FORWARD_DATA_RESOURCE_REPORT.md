@@ -34,16 +34,17 @@ prove capture integrity, not to manage a data lake.
 
 | Quantity | Value |
 | --- | --- |
-| Free disk now | 6,603,862,016 bytes (6.604 GB) |
-| Free disk at capture start | 6,980,339,883 bytes (6.980 GB) — **reconstruction** |
+| Free disk now | 2,257,350,656 bytes (2.257 GB) |
+| Free disk at capture start | 2,633,828,523 bytes (2.634 GB) — **reconstruction** |
 | Reconstruction basis | free-now plus the bytes this capture wrote |
-| Capacity at the observed rate | **18.435 hours = 0.768 days** |
+| Capacity at the observed rate | **6.301 hours = 0.263 days** |
 | Verdict | **`STORAGE_CAPACITY_BLOCKER`** |
 
 Honesty note carried in the artifact: free disk was **not** sampled at capture
 time, so the start figure is a reconstruction from bytes written and is labelled
-as one rather than presented as a measurement. The host sits at ~97.5% disk
-utilisation.
+as one rather than presented as a measurement. The host sits at ~99% disk
+utilisation, so the figure moves between measurements and the artifact is the
+source of truth.
 
 At the observed compressed rate the available volume holds **under a day** of
 this capture. `STORAGE_CAPACITY_BLOCKER` therefore applies, and
@@ -198,7 +199,7 @@ the CPU/RAM co-sampling noted as not performed rather than implied.
 
 Ordered by immediacy:
 
-1. **Disk.** 8.6 GB/day compressed against ~6.6 GB free. Either a larger volume,
+1. **Disk.** 8.6 GB/day compressed against ~2.26 GB free. Either a larger volume,
    or an explicit raw-short / aggregate-long retention policy, before any 24/7
    run. This is why `READY_FOR_CONTINUOUS_COLLECTION = FALSE`.
 2. **The writer dead state** in §5, before the process runs for days.

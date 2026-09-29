@@ -20,14 +20,14 @@
     "stopped_on_disk_budget": false
   },
   "storage_capacity": {
-    "free_disk_now_bytes": 5241720832,
-    "free_disk_now_gb": 5.242,
+    "free_disk_now_bytes": 2257350656,
+    "free_disk_now_gb": 2.257,
     "free_disk_at_capture_start_bytes": null,
-    "free_disk_at_capture_start_reconstruction": 5618198699,
+    "free_disk_at_capture_start_reconstruction": 2633828523,
     "reconstruction_note": "free disk was not sampled at capture time; the start figure is free-now plus the bytes this capture wrote, which is a reconstruction and is labelled as one",
     "stored_gb_per_day_at_observed_rate": 8.598,
-    "capacity_hours_at_observed_rate": 14.632,
-    "capacity_days_at_observed_rate": 0.61,
+    "capacity_hours_at_observed_rate": 6.301,
+    "capacity_days_at_observed_rate": 0.263,
     "thresholds": {
       "acceptable_days": 7.0,
       "tight_days": 1.0

@@ -510,6 +510,17 @@ def _row_order(row: dict[str, Any]) -> tuple[int, int]:
 # ------------------------------------------------- independent book reconstruction
 
 
+#: The health labels that mean "this state is coherent": the book may be old, but
+#: its contents are the result of an unbroken chain.
+COHERENT_HEALTH = ("HEALTHY", "STALE")
+
+#: The health labels under which the collector itself refuses to feed features
+#: from the book (``detail.feature_usable`` is false). A rebuild from a live chain
+#: is not evidence about such a book, so those checkpoints are classified and
+#: traced rather than graded as equal or unequal.
+UNUSABLE_HEALTH = ("INVALID", "RECOVERING")
+
+
 class _BookState:
     """One book, rebuilt by the verifier's own implementation."""
 
@@ -517,11 +528,17 @@ class _BookState:
         "asks",
         "bids",
         "checkpoints",
+        "declared_unusable",
+        "health_tally",
         "healthy_while_chain_broken",
         "last_id",
         "live",
         "matches",
         "mismatches",
+        "unusable_difference_examples",
+        "unusable_differences",
+        "unusable_open",
+        "unusable_windows",
         "unverifiable",
     )
 
@@ -535,6 +552,12 @@ class _BookState:
         self.unverifiable = 0
         self.mismatches: list[dict[str, Any]] = []
         self.healthy_while_chain_broken = 0
+        self.declared_unusable = 0
+        self.health_tally: dict[str, int] = {}
+        self.unusable_differences = 0
+        self.unusable_difference_examples: list[dict[str, Any]] = []
+        self.unusable_windows: list[dict[str, Any]] = []
+        self.unusable_open: dict[str, Any] | None = None
 
 
 class BookRebuilder:
@@ -543,6 +566,14 @@ class BookRebuilder:
     This is deliberately *not* the collector's algorithm restated: it walks a
     snapshot forward and refuses to evaluate a checkpoint whose chain is broken,
     requiring that the collector also declined to call such a book HEALTHY.
+
+    A checkpoint the *collector* declared unusable is a different case again. The
+    collector refuses to feed features from an INVALID/RECOVERING book, so its
+    persisted fields are the record of a state it has already disowned: comparing
+    them with a live rebuild produces a difference that means nothing. Those
+    checkpoints are counted, their differences recorded, and the state is held to
+    the §8 obligation instead — it must end, and an INVALID book must come back
+    through a snapshot fresher than the one it discarded.
 
     Rows are consumed one at a time and never retained. A book's state depends
     only on its own rows and the order among them is preserved by the global
@@ -572,6 +603,15 @@ class BookRebuilder:
             state.asks = _levels(row.get("asks"))
             state.last_id = int(snapshot_id)
             state.live = False
+            # §8: a book the collector declared INVALID must come back through a
+            # snapshot that is *newer* than the state it discarded. A snapshot at
+            # or below that id would put the same stale state back.
+            for window in state.unusable_windows:
+                if window["health"] != "INVALID" or window["fresh_snapshot_after"]:
+                    continue
+                discarded = window["last_update_id"]
+                if discarded is None or int(snapshot_id) > discarded:
+                    window["fresh_snapshot_after"] = True
             return
 
         if kind == "depth_diff":
@@ -605,7 +645,29 @@ class BookRebuilder:
             return
 
         state.checkpoints += 1
-        health = (row.get("detail") or {}).get("health")
+        detail = row.get("detail") or {}
+        health = detail.get("health")
+        tallied = str(health)
+        state.health_tally[tallied] = state.health_tally.get(tallied, 0) + 1
+        declared_unusable = health in UNUSABLE_HEALTH
+        if declared_unusable:
+            if state.unusable_open is None or state.unusable_open["health"] != health:
+                state.unusable_open = {
+                    "health": health,
+                    "at_ms": row.get("receive_time"),
+                    "last_update_id": (row.get("sequence") or {}).get("last"),
+                    "fresh_snapshot_after": False,
+                    "closed": False,
+                    "next_health": None,
+                }
+                state.unusable_windows.append(state.unusable_open)
+        elif state.unusable_open is not None:
+            # Any coherent label ends the window: the state the collector refused
+            # to trust must not be the state it later called coherent.
+            state.unusable_open["closed"] = True
+            state.unusable_open["next_health"] = health
+            state.unusable_open = None
+
         if not state.live:
             # The collector must not have claimed health here either.
             if health == "HEALTHY":
@@ -616,9 +678,25 @@ class BookRebuilder:
             state.bids,
             state.asks,
             state.last_id,
-            int((row.get("detail") or {}).get("depth_n") or 10),
+            int(detail.get("depth_n") or 10),
         )
         differences = _compare(row, rebuilt)
+        if declared_unusable:
+            # The collector declared this state unusable, so a difference here is
+            # expected rather than a defect; it is counted and exemplified so the
+            # number is visible instead of being laundered into a pass.
+            state.declared_unusable += 1
+            if differences:
+                state.unusable_differences += 1
+                if len(state.unusable_difference_examples) < 3:
+                    state.unusable_difference_examples.append(
+                        {
+                            "at_ms": row.get("receive_time"),
+                            "health": health,
+                            "differences": differences[:4],
+                        }
+                    )
+            return
         if differences:
             state.mismatches.append(
                 {"at_ms": row.get("receive_time"), "differences": differences}
@@ -630,12 +708,32 @@ class BookRebuilder:
         return {
             key: {
                 "checkpoints": state.checkpoints,
+                "health_tally": dict(sorted(state.health_tally.items())),
                 "matches": state.matches,
                 "unverifiable": state.unverifiable,
+                "declared_unusable": state.declared_unusable,
+                "not_usable_differences": state.unusable_differences,
+                "not_usable_difference_examples": state.unusable_difference_examples,
                 "mismatches": len(state.mismatches),
                 "mismatch_examples": state.mismatches[:3],
                 "healthy_while_chain_broken": state.healthy_while_chain_broken,
-                "ok": not state.mismatches and state.healthy_while_chain_broken == 0,
+                "unusable_windows": [dict(window) for window in state.unusable_windows],
+                "invalid_without_fresh_snapshot": [
+                    window
+                    for window in state.unusable_windows
+                    if window["health"] == "INVALID" and not window["fresh_snapshot_after"]
+                ],
+                "unusable_windows_still_open": sum(
+                    1 for window in state.unusable_windows if not window["closed"]
+                ),
+                "ok": not state.mismatches
+                and state.healthy_while_chain_broken == 0
+                and all(window["closed"] for window in state.unusable_windows)
+                and all(
+                    window["fresh_snapshot_after"]
+                    for window in state.unusable_windows
+                    if window["health"] == "INVALID"
+                ),
             }
             for key, state in sorted(self._books.items())
         }
@@ -951,16 +1049,33 @@ def verify_forward_collection() -> dict[str, Any]:
     )
 
     # 7. The book, rebuilt by a second implementation while the rows streamed.
+    #    Three classifications, because a persisted checkpoint is one of three
+    #    things: a state the collector declared coherent (compared, and it must
+    #    match), a state the collector itself declared unusable (traced, not
+    #    graded — a rebuild from a live chain says nothing about it), or a state
+    #    the verifier could not evaluate because *its* chain was broken (§8).
     book = evidence.books.summary()
+    classified = {
+        key: entry["matches"] + entry["unverifiable"] + entry["declared_unusable"]
+        for key, entry in book.items()
+    }
     record(
         "every book checkpoint is reproducible by an independent implementation",
-        "checkpoints match; no HEALTHY claim on a broken chain",
+        "coherent checkpoints (HEALTHY/STALE) match; unusable ones (INVALID/RECOVERING)"
+        " are classified and every INVALID state is followed by a fresher snapshot;"
+        " no HEALTHY claim on a broken chain; every checkpoint accounted for",
         {
             "books": book,
             "book_rows_streamed": evidence.books.rows_fed,
             "rows_retained_for_reconstruction": 0,
+            "checkpoints_classified": classified,
+            "unclassified_checkpoints": {
+                key: entry["checkpoints"] - classified[key] for key, entry in book.items()
+            },
         },
-        bool(book) and all(entry["ok"] for entry in book.values()),
+        bool(book)
+        and all(entry["ok"] for entry in book.values())
+        and all(classified[key] == entry["checkpoints"] for key, entry in book.items()),
     )
 
     # 8. Continuity is claimed only when nothing was actually lost (§27).
