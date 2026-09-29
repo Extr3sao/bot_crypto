@@ -151,3 +151,48 @@ New module: `autonomous/pit.py` (bar-close availability). New enums:
 DEF-AUTO-2, DEF-AUTO-3, DEF-AUTO-4, DEF-AUTO-5 remain open and unchanged; they are
 outside this phase's scope (evidence gathering for a future edge phase, not runtime
 correctness).
+
+## 6. UPDATE — FORWARD MICROSTRUCTURE COLLECTOR (RESEARCH_ONLY)
+
+> Audited on: HEAD of the `MICROSTRUCTURE-FORWARD-COLLECTION-V1` phase. Method:
+> import-closure analysis (`ast`) over the new package plus a static scan for
+> credentials and order endpoints, both executed as tests; the trading-plane
+> files were not modified, which the independent verifier checks against the
+> phase base `faf3992`.
+
+### 6.1 Authority classification
+
+| Item | Path | Plane | Runtime reachable | Authoritative | Notes |
+| --- | --- | --- | --- | --- | --- |
+| Forward collector CLI | `scripts/forward_collector.py` | **DISCOVERY / RESEARCH_ONLY** | NO | NO | never invoked by any trading entrypoint; no importers outside its own tests |
+| Forward research package | `src/trading_bot/research/forward/` | **DISCOVERY / RESEARCH_ONLY** | NO | NO | imports only `trading_bot.research.forward.*` (verified) |
+
+No row of the canonical paper pipeline changes classification. The collector
+writes append-only files under `reports/microstructure-forward/` and holds no
+reference to any runtime object.
+
+### 6.2 Why it cannot reach the trading path
+
+| Property | How it is enforced | Where |
+| --- | --- | --- |
+| does not import the trading runtime | `ast` import scan asserts no module from `risk`, `paper`, `execution`, `autonomous`, `portfolio`, `strategies`, `scanner`, `backtesting`, `feedback`, `market_structure` | `tests/unit/forward/test_forward_collector_replay.py` |
+| cannot place an order | the source contains no order endpoint and no credential token; endpoints are asserted to be public market-data constants | same test module |
+| shares no mutable state | output is append-only JSONL/gzip files; the collector holds no trading object | `collector.py` |
+| did not modify the trading core | verifier compares the phase diff against the protected prefixes and `config/risk.yaml` | `scripts/forward_collection_verification.py` |
+
+### 6.3 Coexistence with PAPER
+
+```text
+PAPER RUNTIME  ----------------------->  decisions / traces / outcomes / ledger
+      |                                        (unchanged code, unchanged config)
+      |
+PUBLIC MARKET DATA
+      |
+FORWARD COLLECTOR  ------------------>  reports/microstructure-forward/**
+      RESEARCH_ONLY                       (append-only, no shared state)
+```
+
+The two processes are independent OS processes with disjoint outputs. Measured
+collector cost while running alongside the runtime: see
+`docs/FORWARD_DATA_RESOURCE_REPORT.md`. `NO_TRADE` remains a valid runtime
+outcome and this phase does not generate any trade.

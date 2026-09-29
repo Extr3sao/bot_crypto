@@ -180,6 +180,86 @@
 | RELIABILITY | HIGH (medido directamente sobre el dato) |
 | DECISION | El fetcher detecta la unidad (`_to_ms`, umbral 1e14), la registra en el manifest (`source_timestamp_unit`) y **falla en cerrado** ante unidades mezcladas. Defecto `DEFECT-AG-01`, corregido, con test de regresión. |
 
+### SRC-14 — Binance Spot public WebSocket market streams
+| campo | valor |
+| --- | --- |
+| SOURCE_ID | SRC-14 |
+| URL | `wss://stream.binance.com:9443/stream?streams=<a>/<b>/...` |
+| SOURCE_TYPE | public market data WebSocket (verificación empírica directa en esta fase) |
+| DATE | usada 2026-09-28 (captura `MICROSTRUCTURE-FORWARD-COLLECTION-V1`) |
+| PRODUCT | Binance Spot |
+| CLAIM | Los streams `<symbol>@aggTrade`, `<symbol>@depth@100ms` y `<symbol>@bookTicker` están **operativos y secuenciados**: `aggTrade` trae el id `a` (estrictamente +1), `depthUpdate` trae `U`/`u` (y **no** trae `pu`, que es exclusivo de USDⓈ-M), y `bookTicker` de spot **no publica ningún timestamp de evento** (solo `u`). |
+| EVIDENCE | Captura oficial de esta fase (63.06 min, 3 símbolos, conexión combinada): la cadena de ids de `aggTrade` es **contigua y sin duplicados** — 5,481,951 filas replayadas, 15,969 filas restauradas del índice público, 0 violaciones, `resolved_hi == live_head` (ver `docs/FORWARD_DATA_REPLAY_VALIDATION.md`). El entorno sí cerró el socket de spot 6 veces en la hora (18 gaps `WS_DISCONNECT`, uno por símbolo y episodio): los huecos de `aggTrade` se cerraron **todos** desde el índice público (`RECOVERED_COMPLETE`, 195–1,947 trades por episodio), y los de `depth`/`bookTicker` no costaron datos porque el libro descarta su estado y resnapshotea. Ejemplo de `depthUpdate` de spot: `{"e":"depthUpdate","E":…,"s":"BTCUSDT","U":100770669108,"u":100770669183,…}` (sin `pu`). |
+| RELIABILITY | HIGH (medido directamente sobre el stream) |
+| DECISION | El colector forward usa WS como transporte principal y declara `bookTicker` de spot sin event time **explícitamente** (`detail.event_time_available=false`), en lugar de inventarlo. |
+
+### SRC-15 — Binance USDⓈ-M public WebSocket market streams (disponibilidad parcial)
+| campo | valor |
+| --- | --- |
+| SOURCE_ID | SRC-15 |
+| URL | `wss://fstream.binance.com/stream?streams=<a>/<b>/...` |
+| SOURCE_TYPE | public market data WebSocket (verificación empírica directa en esta fase) |
+| DATE | usada 2026-09-28 |
+| PRODUCT | Binance USDⓈ-M Perpetual Futures |
+| CLAIM | En este entorno `depth@100ms` y `bookTicker` **sí** entregan datos (y `depthUpdate` incluye `pu`, permitiendo la cadena de secuencia más fuerte), pero `@aggTrade` y `@markPrice@1s` **entregan CERO mensajes**. Además la conexión es inestable: el servidor la cierra periódicamente. |
+| EVIDENCE | Sondas independientes: `@aggTrade` en URL simple durante 30 s -> 0 mensajes; `@markPrice@1s` durante 8 s -> 0 mensajes; conexión combinada de 20 s -> solo `depth` (195) y `bookTicker` (13,201). En la captura real de la fase, el 100% de las desconexiones registradas ocurrieron en `perp` (motivo `websocket CLOSED`), 0 en `spot`. |
+| RELIABILITY | HIGH para la observación (medida); la causa es ambiental, no del exchange |
+| DECISION | El colector **se suscribe igualmente** a `perp@aggTrade` y registra el veredicto `NO_DATA` en `provider_stream_status`. **No** sustituye el stream ausente por sondeo REST presentado como lossless (§5, §55): el flujo de trades del perpetuo queda declarado como no capturado. |
+
+### SRC-16 — Binance public aggregate-trade index (REST, read-only)
+| campo | valor |
+| --- | --- |
+| SOURCE_ID | SRC-16 |
+| URL | `GET https://api.binance.com/api/v3/aggTrades?symbol=&fromId=&limit=` y `GET https://fapi.binance.com/fapi/v1/aggTrades?…` |
+| SOURCE_TYPE | public market data REST (read-only, sin claves) |
+| DATE | usada 2026-09-28 (reparación de huecos de la captura forward) |
+| PRODUCT | Binance Spot y USDⓈ-M |
+| CLAIM | El índice de aggregate trades es **direccionable por id**: `fromId = ultimo_id_visto + 1` devuelve exactamente los trades que un corte de WebSocket se llevó, en orden ascendente de `a`, y `limit` acota la página (1000). Por tanto un hueco de trades es **recuperable**, a diferencia de un hueco de diffs de libro. |
+| EVIDENCE | Uso real en la captura oficial: cada `WS_DISCONNECT` y cada `AGG_TRADE_ID_JUMP` del stream de trades dispara un recorrido del índice; los eventos restaurados se escriben con `detail.origin=agg_trade_backfill` y el hueco pasa a `RECOVERED_COMPLETE`/`RECOVERED_PARTIAL` con `recovered_events` y `remaining_missing`. Comprobado por tests adversariales (paginación, fallo HTTP, presupuesto de páginas agotado, reentrada prohibida). |
+| RELIABILITY | HIGH (ids verificables + identidad `(market, symbol, id)` sin duplicados en disco) |
+| DECISION | Se usa **solo** para cerrar huecos de trades ya detectados, nunca como fuente primaria (`transport` de la fila sigue siendo `ws`; la procedencia va en `detail.origin`). El presupuesto de páginas acota el coste y clasifica el hueco como parcial cuando no alcanza. |
+
+### SRC-17 — Binance public klines (REST, validación cruzada)
+| campo | valor |
+| --- | --- |
+| SOURCE_ID | SRC-17 |
+| URL | `GET https://api.binance.com/api/v3/klines?symbol=&interval=1m&startTime=&endTime=` |
+| SOURCE_TYPE | public market data REST (read-only) |
+| DATE | usada 2026-09-28 |
+| PRODUCT | Binance Spot |
+| CLAIM | Sirve como **control externo** del volumen capturado: el volumen de una vela 1m debe coincidir con la suma de `quantity` de los aggTrades capturados en ese mismo minuto. Es un endpoint sin relación con el camino WebSocket del colector, así que un acuerdo no se puede explicar por un error compartido. |
+| EVIDENCE | `scripts/forward_kline_crosscheck.py` sobre la captura oficial; artefacto `docs/FORWARD_DATA_KLINE_CROSSCHECK.json` (buckets comparados, ratio por bucket, excluidos por solapar pérdida declarada). El verificador independiente **recalcula** la aritmética de los ratios desde los pares almacenados. |
+| RELIABILITY | MEDIUM-HIGH (dato de terceros, mismo venue; se usa como control, no como fuente del dataset) |
+| DECISION | Validación de calidad de datos de una muestra reproducible, **nunca** medición de edge. Los buckets que solapan un hueco con pérdida se excluyen y se cuentan. |
+
+### SRC-18 — Matriz de capacidad observada por stream (captura oficial `forward-1790610007-9d07f3df`)
+
+> Vocabulario exigido por la fase: **AVAILABLE** / **UNAVAILABLE_IN_CURRENT_ENVIRONMENT** /
+> **ALTERNATIVE_SOURCE_AVAILABLE**. La clasificación sale del propio manifest
+> (`provider_stream_status`), que se escribe a partir de lo que llegó, no de lo que se esperaba.
+> Una capacidad ausente se declara; **no** se sustituye por otra cosa presentada como si fuera el
+> mismo stream.
+
+| stream | fuente | clasificación | evidencia en la captura |
+| --- | --- | --- | --- |
+| `spot@aggTrade` | WS | **AVAILABLE** | 124,232 filas, cadena de ids verificada (+36 huecos cerrados por índice REST) |
+| `spot@depth@100ms` | WS | **AVAILABLE** | 92,649 diffs, `U`/`u` secuenciados |
+| `spot@bookTicker` | WS | **AVAILABLE** (sin `event_time` publicado) | 1,659,064 filas; `detail.event_time_available=false` |
+| `perp@depth@100ms` (incl. `pu`) | WS | **AVAILABLE** pero **inestable** | 66,570 diffs; 81 desconexiones del socket de `perp` |
+| `perp@bookTicker` | WS | **AVAILABLE** pero **inestable** | 3,535,889 filas |
+| `perp@aggTrade` | WS | **UNAVAILABLE_IN_CURRENT_ENVIRONMENT** | veredicto `NO_DATA`, 0 eventos en 63.06 min pese a estar suscrito |
+| `perp@markPrice@1s` | WS | **UNAVAILABLE_IN_CURRENT_ENVIRONMENT** | veredicto `NO_DATA`, 0 eventos (el `mark_price` capturado viene de `rest_poll`) |
+| `perp` funding / OI / premium | REST poll | **ALTERNATIVE_SOURCE_AVAILABLE** (usada) | `/fapi/v1/fundingRate`, `/fapi/v1/openInterest`, `/fapi/v1/premiumIndex` cada 60 s: 58 muestras por símbolo |
+| `perp@markPrice` vía `rest_poll` | REST poll | **ALTERNATIVE_SOURCE_AVAILABLE** (usada) | 58 muestras por símbolo, etiquetadas `rest_poll`, nunca `ws` |
+| snapshot de libro | REST | **ALTERNATIVE_SOURCE_AVAILABLE** (usado y necesario) | 254 snapshots `rest_backfill` (los diffs por sí solos no pueden construir un libro) |
+| índice de aggTrades para reparar huecos | REST | **ALTERNATIVE_SOURCE_AVAILABLE** (usada) | 15,969 filas `detail.origin=agg_trade_backfill`, 36 huecos `RECOVERED_COMPLETE` |
+| `perp/agg_trade` como fuente del flujo agresor del perpetuo | — | **UNAVAILABLE_IN_CURRENT_ENVIRONMENT** | declarado `NO_DATA`; **no** se rellena con sondeo REST ni con klines (sería otro stream, no este) |
+
+**Consecuencia declarada:** la matriz de datos prevista (spot + perp, 3 activos) queda **completa en spot**
+(aggTrade, libro, bookTicker) e **incompleta en el flujo de trades del perpetuo**. Esto limita cualquier
+investigación que necesite el flujo agresor del perpetuo, y **no** invalida la captura de spot, que es
+íntegra y está validada contra las klines del propio venue (SRC-17).
+
 ## Claims -> Decision (resumen §51)
 
 | CLAIM | SOURCE | EVIDENCE | DECISION |
@@ -196,3 +276,8 @@
 | Kraken Pro tier base = 25/40 bps | SRC-12 | fee schedule oficial | prohibitivo intradía; no adoptado |
 | aggTrades CSV en microsegundos | SRC-13 | 42 archivos medidos | detección de unidad + fail-closed (DEFECT-AG-01) |
 | Binance Spot VIP0 maker == taker (10/10) | SRC-01 | página oficial | "hacerse maker" no ahorra fee; MAKER EDGE GATE = FAIL |
+| Spot WS aggTrade/depth/bookTicker operativos y secuenciados | SRC-14 | captura real 2026-09-28 | WS-first es viable; bookTicker spot sin event time (documentado) |
+| USDⓈ-M WS aggTrade/markPrice entregan 0 mensajes aquí | SRC-15 | sondas + captura real | stream declarado `NO_DATA`; NO se sustituye por REST |
+| El índice de aggTrades es direccionable por id | SRC-16 | uso real + tests | los huecos de trades se reparan y se marcan; los de libro solo se declaran |
+| Las klines públicas reproducen el volumen capturado | SRC-17 | cross-check de la captura oficial | validación de calidad de datos, no de edge |
+| Matriz de capacidad por stream | SRC-18 | `provider_stream_status` de la captura oficial | perp aggTrade/markPrice `UNAVAILABLE_IN_CURRENT_ENVIRONMENT`; spot completo; no se sustituye nada |

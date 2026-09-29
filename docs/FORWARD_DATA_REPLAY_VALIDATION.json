@@ -1,0 +1,259 @@
+{
+  "version": "FORWARD-REPLAY-V1",
+  "run_id": "forward-1790610007-9d07f3df",
+  "root": "reports\\microstructure-forward",
+  "segments": 78,
+  "rows": 5481951,
+  "partial_tails": 0,
+  "internet_access": false,
+  "event_counts": {
+    "spot/GLOBAL/lifecycle": 166,
+    "perp/BTCUSDT/open_interest": 58,
+    "perp/BTCUSDT/mark_price": 58,
+    "perp/BTCUSDT/funding": 58,
+    "perp/ETHUSDT/open_interest": 58,
+    "perp/ETHUSDT/book_ticker": 1484031,
+    "perp/BTCUSDT/book_ticker": 1461422,
+    "perp/SOLUSDT/book_ticker": 590436,
+    "spot/ETHUSDT/book_ticker": 638023,
+    "spot/SOLUSDT/book_ticker": 213964,
+    "spot/BTCUSDT/book_ticker": 807077,
+    "spot/BTCUSDT/depth_diff": 31727,
+    "perp/ETHUSDT/mark_price": 58,
+    "perp/ETHUSDT/funding": 58,
+    "perp/SOLUSDT/depth_snapshot": 81,
+    "perp/BTCUSDT/depth_snapshot": 76,
+    "perp/ETHUSDT/depth_snapshot": 76,
+    "spot/SOLUSDT/depth_snapshot": 7,
+    "spot/ETHUSDT/depth_snapshot": 7,
+    "spot/ETHUSDT/depth_diff": 31712,
+    "spot/SOLUSDT/agg_trade": 12102,
+    "perp/SOLUSDT/open_interest": 58,
+    "spot/BTCUSDT/depth_snapshot": 7,
+    "perp/BTCUSDT/depth_diff": 22415,
+    "perp/SOLUSDT/depth_diff": 21792,
+    "perp/ETHUSDT/depth_diff": 22363,
+    "spot/SOLUSDT/depth_diff": 30210,
+    "spot/BTCUSDT/agg_trade": 61471,
+    "spot/ETHUSDT/agg_trade": 50659,
+    "perp/SOLUSDT/mark_price": 58,
+    "perp/SOLUSDT/funding": 58,
+    "spot/GLOBAL/gap": 839,
+    "spot/BTCUSDT/book_checkpoint": 118,
+    "spot/ETHUSDT/book_checkpoint": 118,
+    "spot/SOLUSDT/book_checkpoint": 118,
+    "perp/BTCUSDT/book_checkpoint": 118,
+    "perp/ETHUSDT/book_checkpoint": 118,
+    "perp/SOLUSDT/book_checkpoint": 118,
+    "spot/GLOBAL/heartbeat": 58
+  },
+  "manifest_event_counts": {
+    "perp/BTCUSDT/agg_trade": 0,
+    "perp/BTCUSDT/book_checkpoint": 118,
+    "perp/BTCUSDT/book_ticker": 1461422,
+    "perp/BTCUSDT/depth_diff": 22415,
+    "perp/BTCUSDT/depth_snapshot": 76,
+    "perp/BTCUSDT/funding": 58,
+    "perp/BTCUSDT/mark_price": 58,
+    "perp/BTCUSDT/open_interest": 58,
+    "perp/ETHUSDT/agg_trade": 0,
+    "perp/ETHUSDT/book_checkpoint": 118,
+    "perp/ETHUSDT/book_ticker": 1484031,
+    "perp/ETHUSDT/depth_diff": 22363,
+    "perp/ETHUSDT/depth_snapshot": 76,
+    "perp/ETHUSDT/funding": 58,
+    "perp/ETHUSDT/mark_price": 58,
+    "perp/ETHUSDT/open_interest": 58,
+    "perp/SOLUSDT/agg_trade": 0,
+    "perp/SOLUSDT/book_checkpoint": 118,
+    "perp/SOLUSDT/book_ticker": 590436,
+    "perp/SOLUSDT/depth_diff": 21792,
+    "perp/SOLUSDT/depth_snapshot": 81,
+    "perp/SOLUSDT/funding": 58,
+    "perp/SOLUSDT/mark_price": 58,
+    "perp/SOLUSDT/open_interest": 58,
+    "spot/BTCUSDT/agg_trade": 61471,
+    "spot/BTCUSDT/book_checkpoint": 118,
+    "spot/BTCUSDT/book_ticker": 807077,
+    "spot/BTCUSDT/depth_diff": 31727,
+    "spot/BTCUSDT/depth_snapshot": 7,
+    "spot/ETHUSDT/agg_trade": 50659,
+    "spot/ETHUSDT/book_checkpoint": 118,
+    "spot/ETHUSDT/book_ticker": 638023,
+    "spot/ETHUSDT/depth_diff": 31712,
+    "spot/ETHUSDT/depth_snapshot": 7,
+    "spot/GLOBAL/gap": 839,
+    "spot/GLOBAL/heartbeat": 58,
+    "spot/GLOBAL/lifecycle": 166,
+    "spot/SOLUSDT/agg_trade": 12102,
+    "spot/SOLUSDT/book_checkpoint": 118,
+    "spot/SOLUSDT/book_ticker": 213964,
+    "spot/SOLUSDT/depth_diff": 30210,
+    "spot/SOLUSDT/depth_snapshot": 7
+  },
+  "event_count_match": true,
+  "event_count_differences": [],
+  "trade_sequence_ok": true,
+  "trade_sequence_violations": [],
+  "repaired_trade_rows": 15969,
+  "trade_sequence_violation_count": 0,
+  "trade_unresolved_holes": 0,
+  "trade_hole_tracker_saturated": false,
+  "books": [
+    {
+      "market": "spot",
+      "symbol": "BTCUSDT",
+      "checkpoints": 118,
+      "matches": 118,
+      "ok": true,
+      "mismatch_count": 0,
+      "mismatches": [],
+      "dispositions": {
+        "APPLIED": 31709,
+        "BUFFERED": 1,
+        "DUPLICATE": 16,
+        "GAP": 1
+      },
+      "snapshot_outcomes": {
+        "AWAITING_DIFF": 7
+      }
+    },
+    {
+      "market": "perp",
+      "symbol": "SOLUSDT",
+      "checkpoints": 118,
+      "matches": 118,
+      "ok": true,
+      "mismatch_count": 0,
+      "mismatches": [],
+      "dispositions": {
+        "APPLIED": 21522,
+        "BUFFERED": 41,
+        "DUPLICATE": 205,
+        "GAP": 24
+      },
+      "snapshot_outcomes": {
+        "AWAITING_DIFF": 81
+      }
+    },
+    {
+      "market": "perp",
+      "symbol": "BTCUSDT",
+      "checkpoints": 118,
+      "matches": 118,
+      "ok": true,
+      "mismatch_count": 0,
+      "mismatches": [],
+      "dispositions": {
+        "APPLIED": 22254,
+        "DUPLICATE": 147,
+        "GAP": 14
+      },
+      "snapshot_outcomes": {
+        "AWAITING_DIFF": 76
+      }
+    },
+    {
+      "market": "perp",
+      "symbol": "ETHUSDT",
+      "checkpoints": 118,
+      "matches": 118,
+      "ok": true,
+      "mismatch_count": 0,
+      "mismatches": [],
+      "dispositions": {
+        "APPLIED": 22195,
+        "BUFFERED": 1,
+        "DUPLICATE": 153,
+        "GAP": 14
+      },
+      "snapshot_outcomes": {
+        "AWAITING_DIFF": 76
+      }
+    },
+    {
+      "market": "spot",
+      "symbol": "SOLUSDT",
+      "checkpoints": 118,
+      "matches": 118,
+      "ok": true,
+      "mismatch_count": 0,
+      "mismatches": [],
+      "dispositions": {
+        "APPLIED": 30192,
+        "DUPLICATE": 16,
+        "GAP": 2
+      },
+      "snapshot_outcomes": {
+        "AWAITING_DIFF": 7
+      }
+    },
+    {
+      "market": "spot",
+      "symbol": "ETHUSDT",
+      "checkpoints": 118,
+      "matches": 118,
+      "ok": true,
+      "mismatch_count": 0,
+      "mismatches": [],
+      "dispositions": {
+        "APPLIED": 31694,
+        "DUPLICATE": 17,
+        "GAP": 1
+      },
+      "snapshot_outcomes": {
+        "AWAITING_DIFF": 7
+      }
+    }
+  ],
+  "book_match": true,
+  "fingerprint_checks": 78,
+  "fingerprint_matches": 78,
+  "fingerprint_mismatches": [],
+  "fingerprints_match": true,
+  "aggregation_digest": "d14ef058e29279a68cebc33e1b0f1104452ef7753f467777af6b2c2a0092e54b",
+  "recorded_aggregation_digest": "d14ef058e29279a68cebc33e1b0f1104452ef7753f467777af6b2c2a0092e54b",
+  "feature_match": true,
+  "deterministic": true,
+  "second_pass_digest": "d14ef058e29279a68cebc33e1b0f1104452ef7753f467777af6b2c2a0092e54b",
+  "trade_chains": {
+    "spot/BTCUSDT": {
+      "live_head": 4076035325,
+      "resolved_hi": 4076035325,
+      "unresolved_holes": 0,
+      "saturated": false
+    },
+    "spot/ETHUSDT": {
+      "live_head": 2091152838,
+      "resolved_hi": 2091152838,
+      "unresolved_holes": 0,
+      "saturated": false
+    },
+    "spot/SOLUSDT": {
+      "live_head": 675665605,
+      "resolved_hi": 675665605,
+      "unresolved_holes": 0,
+      "saturated": false
+    }
+  },
+  "series": {
+    "perp/BTCUSDT": {
+      "samples": 174,
+      "max_ts": 1790613553000,
+      "regressions": 0
+    },
+    "perp/ETHUSDT": {
+      "samples": 174,
+      "max_ts": 1790613554000,
+      "regressions": 0
+    },
+    "perp/SOLUSDT": {
+      "samples": 174,
+      "max_ts": 1790613554000,
+      "regressions": 0
+    }
+  },
+  "errors": [],
+  "ok": true,
+  "offline_guard": "socket.socket / socket.create_connection / socket.getaddrinfo were replaced with raisers for the duration of this run"
+}

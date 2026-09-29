@@ -1,0 +1,41 @@
+{
+  "kind": "FORWARD_DATA_PAPER_COEXISTENCE",
+  "method": "the same PAPER smoke (6 cycles x 20s, BTC/ETH/SOL, 5m, config/realdata, ccxt) executed twice: once with a forward capture live, once with no collector running",
+  "with_collector": {
+    "run_id": "coexist-with_collector-3d283003",
+    "asset_cycle_evaluations": 18,
+    "orders_created": 0,
+    "paper_trades": 0,
+    "runtime_failures": 0,
+    "traces_persisted": 18,
+    "no_trades": 18,
+    "risk_APPROVED": 10,
+    "elapsed_seconds": 131.954,
+    "cycle_seconds": 21.992,
+    "collector_run_id": "forward-1790610007-9d07f3df",
+    "collector_events_during": 253119
+  },
+  "without_collector": {
+    "run_id": "coexist-without_collector-d722b4f0",
+    "asset_cycle_evaluations": 18,
+    "orders_created": 0,
+    "paper_trades": 0,
+    "runtime_failures": 0,
+    "traces_persisted": 18,
+    "no_trades": 18,
+    "risk_APPROVED": 18,
+    "elapsed_seconds": 135.119,
+    "cycle_seconds": 22.52
+  },
+  "collector_events_during": 253119,
+  "cycle_seconds_delta": -0.528,
+  "isolation": {
+    "separate_processes": true,
+    "shared_mutable_state": false,
+    "collector_can_change_a_decision": false,
+    "paper_orders_created_with_collector": 0,
+    "paper_runtime_failures_with_collector": 0,
+    "collector_reconnects_during_paper": 6
+  },
+  "note": "NO_TRADE remains a valid outcome; the measurement is about whether the two processes interfere, not about whether PAPER trades"
+}

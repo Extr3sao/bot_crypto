@@ -22,8 +22,11 @@ with the manifest, so a byte changed after the fact is detected.
 
 from __future__ import annotations
 
+import contextlib
 import hashlib
+import heapq
 import json
+from collections.abc import Iterable, Iterator
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Any
@@ -32,7 +35,13 @@ from trading_bot.research.forward.aggregation import (
     DatasetAggregation,
     aggregate_dataset,
 )
-from trading_bot.research.forward.contract import EventType, Market, RawEvent, parse_event
+from trading_bot.research.forward.contract import (
+    BACKFILL_ORIGIN,
+    EventType,
+    Market,
+    RawEvent,
+    parse_event,
+)
 from trading_bot.research.forward.orderbook import (
     BookStateError,
     BookSyncer,
@@ -44,6 +53,7 @@ from trading_bot.research.forward.storage import (
     StorageError,
     fingerprint_segment,
     iter_segment_records,
+    iter_segment_rows,
     load_json,
     load_manifest,
 )
@@ -57,6 +67,151 @@ __all__ = [
 ]
 
 REPLAY_VERSION = "FORWARD-REPLAY-V1"
+
+
+def _row_order(row: dict[str, Any]) -> tuple[int, int]:
+    """The collector's own ordering: processing order, then receive time."""
+    return int(row.get("write_seq") or 0), int(row.get("receive_time") or 0)
+
+
+#: How many open holes the trade-chain tracker will hold. A capture with more
+#: unexplained holes than this is not a capture any more, and the tracker says so
+#: through ``trade_hole_tracker_saturated`` instead of growing without bound.
+_MAX_TRACKED_HOLES = 10_000
+
+
+class _TradeChain:
+    """The reconstructed aggregate-trade id chain of one market/symbol.
+
+    Write order is *not* id order for trades, and pretending it is makes a
+    legitimate recovery look like a broken chain. A row restored from the public
+    index (``detail.origin == agg_trade_backfill``) is written when the index
+    answers: a hole found *behind* the live stream is filled after the live row
+    that revealed it, and a hole opened by a socket outage is walked *forward*
+    from the last known id to the head of the index, i.e. past the newest live id
+    at that moment. The live rows for those ids arrive later and are suppressed by
+    the collector's id window, so the persisted set still holds each logical trade
+    exactly once.
+
+    What must hold, and what this class checks, is an id-space property:
+
+    * the *live* chain is strictly increasing — a live row that regresses is
+      corruption, never a repair;
+    * an id is accounted for at most once. ``resolved_hi`` is the highest id below
+      which every id is explained: it was persisted (live or repaired), or it sits
+      inside a tracked hole — a region the live chain skipped, which a repair may
+      legitimately fill in later;
+    * a repaired row that lands on an already-explained id is a duplicate, i.e. a
+      fabrication or a failed dedup, and is a violation.
+
+    Memory is bounded by the number of *open* holes at any moment, not by the
+    number of rows: a filled hole is consumed as it is filled.
+    """
+
+    __slots__ = ("holes", "live_head", "resolved_hi", "saturated")
+
+    def __init__(self) -> None:
+        #: Highest id seen on the live WS stream; only ever rises.
+        self.live_head: int | None = None
+        #: Highest id below which the chain is fully accounted for.
+        self.resolved_hi: int | None = None
+        #: Sorted, disjoint ``[lo, hi]`` regions the live chain skipped and no
+        #: persisted row has explained yet.
+        self.holes: list[list[int]] = []
+        self.saturated = False
+
+    # ------------------------------------------------------------------ holes
+    def _add_hole(self, lo: int, hi: int) -> None:
+        if hi < lo:
+            return
+        if len(self.holes) >= _MAX_TRACKED_HOLES:
+            self.saturated = True
+            return
+        self.holes.append([lo, hi])
+        self.holes.sort(key=lambda interval: interval[0])
+
+    def _consume(self, trade_id: int) -> bool:
+        """Explain ``trade_id`` by an open hole. True when a hole contained it."""
+        for index, (lo, hi) in enumerate(self.holes):
+            if lo > trade_id:
+                break
+            if trade_id > hi:
+                continue
+            if lo == hi:
+                self.holes.pop(index)
+            elif trade_id == lo:
+                self.holes[index] = [lo + 1, hi]
+            elif trade_id == hi:
+                self.holes[index] = [lo, hi - 1]
+            else:
+                self.holes[index] = [lo, trade_id - 1]
+                self.holes.insert(index + 1, [trade_id + 1, hi])
+            return True
+        return False
+
+    # ------------------------------------------------------------------ ingest
+    def on_live(self, trade_id: int) -> str | None:
+        """Account for a live WS aggregate trade, returning a violation if any."""
+        head = self.live_head
+        if head is not None and trade_id <= head:
+            return f"aggTrade id {trade_id} not > previous {head}"
+        self.live_head = trade_id
+        resolved = self.resolved_hi
+        if resolved is None:
+            self.resolved_hi = trade_id
+            return None
+        if trade_id <= resolved:
+            # Presented again on the live chain after a repair already covered it:
+            # the id is explained either way, and the collector suppresses the
+            # duplicate row, so this is the dedup path rather than a violation.
+            self._consume(trade_id)
+            return None
+        self._add_hole(resolved + 1, trade_id - 1)
+        self.resolved_hi = trade_id
+        return None
+
+    def on_repaired(self, trade_id: int) -> str | None:
+        """Account for a row restored from the public index."""
+        resolved = self.resolved_hi
+        if resolved is None:
+            self.resolved_hi = trade_id
+            return None
+        if trade_id <= resolved:
+            if self._consume(trade_id):
+                return None
+            return (
+                f"repaired aggTrade id {trade_id} collides with an id the chain "
+                f"already accounted for below {resolved}"
+            )
+        if trade_id > resolved + 1:
+            # The public index itself skipped ids: those ids are left as an open
+            # hole and stay visible as such instead of being silently accepted.
+            self._add_hole(resolved + 1, trade_id - 1)
+        self.resolved_hi = trade_id
+        return None
+
+    def as_dict(self) -> dict[str, Any]:
+        return {
+            "live_head": self.live_head,
+            "resolved_hi": self.resolved_hi,
+            "unresolved_holes": len(self.holes),
+            "saturated": self.saturated,
+        }
+
+
+def _segment_stream(path: Path) -> tuple[Iterator[dict[str, Any]], list[int]]:
+    """Lazy row iterator for one segment plus a box holding its partial flag."""
+    truncated = [0]
+
+    def _rows() -> Iterator[dict[str, Any]]:
+        for row, partial in iter_segment_rows(path):
+            if partial:
+                truncated[0] = 1
+                continue
+            if row is not None:
+                yield row
+
+    return _rows(), truncated
 
 
 def aggregation_digest(aggregation: DatasetAggregation) -> str:
@@ -112,6 +267,18 @@ class ReplayVerification:
     event_count_differences: list[dict[str, Any]] = field(default_factory=list)
     trade_sequence_ok: bool = False
     trade_sequence_violations: list[str] = field(default_factory=list)
+    #: Rows restored from the public trade index. Reported separately because they
+    #: are legitimately out of id order in write order, and a reader must be able
+    #: to tell them from a corrupted chain.
+    repaired_trade_rows: int = 0
+    #: ``trade_sequence_violations`` is capped for the artifact, so the number of
+    #: violations is carried separately: a truncated list must never read as "few".
+    trade_sequence_violation_count: int = 0
+    #: Ids the live chain skipped that no persisted row explained. They are
+    #: residual holes, reconciled against the manifest's gap records by the
+    #: independent verifier; they are not silently presumed lost.
+    trade_unresolved_holes: int = 0
+    trade_hole_tracker_saturated: bool = False
     books: list[BookComparison] = field(default_factory=list)
     book_match: bool = False
     fingerprint_checks: int = 0
@@ -123,12 +290,19 @@ class ReplayVerification:
     feature_match: bool | None = None
     deterministic: bool = False
     second_pass_digest: str = ""
+    #: Per market/symbol chain state: live head, explained frontier, open holes.
+    trade_chains: dict[str, dict[str, Any]] = field(default_factory=dict)
     series: dict[str, dict[str, Any]] = field(default_factory=dict)
     errors: list[str] = field(default_factory=list)
 
     def as_dict(self) -> dict[str, Any]:
         payload = asdict(self)
         payload["books"] = [b.as_dict() for b in self.books]
+        # The artifact carries its own verdict. Without it a reader has to
+        # re-implement ``ok`` from seven fields to know whether the replay that
+        # produced this file passed, and a consumer that guesses will guess right
+        # until the day it matters.
+        payload["ok"] = self.ok
         return payload
 
     @property
@@ -182,6 +356,9 @@ class ForwardReplay:
         ``write_seq`` is the ordering authority because it is the *processing*
         order, which is what the live book state depended on. Sorting by
         timestamp instead would silently reinterpret ties.
+
+        This materialises the whole run, so it is for small datasets and tests;
+        analysis of a real capture must use :meth:`iter_rows`.
         """
         rows: list[dict[str, Any]] = []
         partial_tails = 0
@@ -190,13 +367,45 @@ class ForwardReplay:
             if partial:
                 partial_tails += 1
             rows.extend(segment_rows)
-        rows.sort(
-            key=lambda r: (
-                int(r.get("write_seq") or 0),
-                int(r.get("receive_time") or 0),
-            )
-        )
+        rows.sort(key=_row_order)
         return rows, partial_tails
+
+    def iter_rows(self) -> Iterator[tuple[dict[str, Any], int]]:
+        """Stream every persisted row in write order, with bounded memory.
+
+        A forward hour of a busy stream is one segment of ~10^6 rows, so the
+        analysis path may never hold a run in memory. Each segment is already in
+        write order, so the global order is a k-way merge over the open
+        segments, and at any moment only one row per segment is resident.
+
+        Yields ``(row, partial_tails)`` where the counter is the running number
+        of segments that ended in a truncated tail — visible, never swallowed.
+        """
+        partial_tails = 0
+        streams: list[Iterator[dict[str, Any]]] = []
+        handles: list[Any] = []
+        for path in self.segment_files():
+            iterator, counter = _segment_stream(path)
+            streams.append(iterator)
+            handles.append(counter)
+        try:
+            for row in heapq.merge(*streams, key=_row_order) if streams else ():
+                partial_tails = sum(handle[0] for handle in handles)
+                yield row, partial_tails
+        finally:
+            for stream in streams:
+                close = getattr(stream, "close", None)
+                if callable(close):
+                    with contextlib.suppress(Exception):
+                        close()
+
+    def iter_events(self) -> Iterator[RawEvent]:
+        """Stream parsed events in write order, skipping rows that do not parse."""
+        for row, _ in self.iter_rows():
+            try:
+                yield parse_event(row)
+            except Exception:
+                continue
 
     # ------------------------------------------------------------------- replay
     def _policy(self, market: str) -> SequencePolicy:
@@ -207,21 +416,32 @@ class ForwardReplay:
         )
 
     def _reconstruct(
-        self, rows: list[dict[str, Any]]
+        self, rows: Iterable[dict[str, Any]], repaired: list[int]
     ) -> tuple[
-        list[RawEvent],
+        int,
         dict[str, int],
         list[BookComparison],
         list[str],
         dict[str, dict[str, Any]],
+        dict[str, Any],
     ]:
-        events: list[RawEvent] = []
+        """Walk the rows once, keeping only counters and bounded aggregates.
+
+        Nothing here scales with the number of rows: a capture of days must be
+        replayable in constant memory, so the row itself is the only thing
+        resident at any moment (§34).
+        """
+        row_count = 0
         counts: dict[str, int] = {}
         books: dict[str, BookSyncer] = {}
         comparisons: dict[str, BookComparison] = {}
         violations: list[str] = []
         series: dict[str, dict[str, Any]] = {}
-        last_trade_id: dict[str, int] = {}
+        #: The aggregate-trade chain per market/symbol, checked in id space. A
+        #: repaired row is written when the public index answers, i.e. after the
+        #: live stream has already moved on, so write order is not id order for
+        #: those rows; the chain that must be monotone is the live one.
+        chains: dict[str, _TradeChain] = {}
 
         for row in rows:
             try:
@@ -229,19 +449,23 @@ class ForwardReplay:
             except Exception as exc:
                 violations.append(f"unreadable row: {exc}")
                 continue
-            events.append(event)
+            row_count += 1
             key = f"{event.market.value}/{event.symbol}/{event.event_type.value}"
             counts[key] = counts.get(key, 0) + 1
 
             if event.event_type is EventType.AGG_TRADE:
                 symbol_key = f"{event.market.value}/{event.symbol}"
                 trade_id = int(event.exchange_event_id or 0)
-                previous = last_trade_id.get(symbol_key)
-                if previous is not None and trade_id <= previous:
-                    violations.append(
-                        f"{symbol_key}: aggTrade id {trade_id} not > previous {previous}"
-                    )
-                last_trade_id[symbol_key] = trade_id
+                detail = row.get("detail")
+                is_repaired = isinstance(detail, dict) and detail.get("origin") == BACKFILL_ORIGIN
+                chain = chains.setdefault(symbol_key, _TradeChain())
+                if is_repaired:
+                    repaired[0] += 1
+                    problem = chain.on_repaired(trade_id)
+                else:
+                    problem = chain.on_live(trade_id)
+                if problem is not None:
+                    violations.append(f"{symbol_key}: {problem}")
             elif event.event_type in (
                 EventType.OPEN_INTEREST,
                 EventType.FUNDING,
@@ -339,11 +563,27 @@ class ForwardReplay:
                         )
                     else:
                         comparison.matches += 1
-        return events, counts, list(comparisons.values()), violations, series
+        trade_state = {
+            "unresolved_holes": sum(len(chain.holes) for chain in chains.values()),
+            "saturated": any(chain.saturated for chain in chains.values()),
+            "chains": {key: chain.as_dict() for key, chain in sorted(chains.items())},
+        }
+        return row_count, counts, list(comparisons.values()), violations, series, trade_state
 
     def replay(self) -> ReplayVerification:
-        rows, partial_tails = self.load_rows()
-        events, counts, comparisons, violations, series = self._reconstruct(rows)
+        partial_box = [0]
+        repaired_box = [0]
+
+        def _rows() -> Iterator[dict[str, Any]]:
+            for row, partial in self.iter_rows():
+                partial_box[0] = partial
+                yield row
+
+        rows_seen, counts, comparisons, violations, series, trade_state = self._reconstruct(
+            _rows(), repaired_box
+        )
+        partial_tails = partial_box[0]
+        repaired_rows = repaired_box[0]
 
         manifest_counts = {
             f"{s['market']}/{s['symbol']}/{s['event_type']}": int(s["events"])
@@ -398,23 +638,44 @@ class ForwardReplay:
                 continue
             matches += 1
 
+        # §32 — the digest has to be a function of the persisted bytes alone. It was
+        # seeded here with the manifest's stream counters, while the report built the
+        # digest it records by letting the aggregator tally the rows itself, so the
+        # two digests carried different ``event_counts`` and could never agree: the
+        # check reported a feature mismatch that was only the two call sites
+        # disagreeing about an input. Both sides now tally the rows. The manifest is
+        # still reconciled against that tally through ``event_count_match``, so
+        # nothing that used to be checked stopped being checked.
         loss_windows, window = self.capture_bounds_from_manifest()
         aggregation = aggregate_dataset(
-            events, run_id=self.run_id, loss_windows=loss_windows, window=window
+            self.iter_events,
+            run_id=self.run_id,
+            loss_windows=loss_windows,
+            window=window,
         )
         digest = aggregation_digest(aggregation)
         recorded = self._load_recorded_aggregation()
         recorded_digest = recorded.get("digest") if recorded else None
 
-        second_rows, _ = self.load_rows()
-        _, second_counts, second_comparisons, _, _ = self._reconstruct(second_rows)
+        # A second, independent pass over the same bytes: same counters, same
+        # book comparisons, same aggregation digest, or the replay is not
+        # deterministic and the dataset is not evidence.
+        second_repaired_box = [0]
+        _, second_counts, second_comparisons, _, _, second_trade_state = self._reconstruct(
+            (row for row, _ in self.iter_rows()), second_repaired_box
+        )
         second_aggregation = aggregate_dataset(
-            events, run_id=self.run_id, loss_windows=loss_windows, window=window
+            self.iter_events,
+            run_id=self.run_id,
+            loss_windows=loss_windows,
+            window=window,
         )
         second_digest = aggregation_digest(second_aggregation)
         deterministic = (
             second_digest == digest
             and second_counts == counts
+            and second_repaired_box[0] == repaired_rows
+            and second_trade_state == trade_state
             and json.dumps([c.as_dict() for c in second_comparisons], sort_keys=True)
             == json.dumps([c.as_dict() for c in comparisons], sort_keys=True)
             and second_digest == aggregation_digest(second_aggregation)
@@ -424,7 +685,7 @@ class ForwardReplay:
             run_id=self.run_id,
             root=str(self.root),
             segments=len(self.segment_files()),
-            rows=len(rows),
+            rows=rows_seen,
             partial_tails=partial_tails,
             internet_access=False,
             event_counts=counts,
@@ -433,6 +694,11 @@ class ForwardReplay:
             event_count_differences=differences,
             trade_sequence_ok=not violations,
             trade_sequence_violations=violations[:50],
+            trade_sequence_violation_count=len(violations),
+            repaired_trade_rows=repaired_rows,
+            trade_unresolved_holes=int(trade_state["unresolved_holes"]),
+            trade_hole_tracker_saturated=bool(trade_state["saturated"]),
+            trade_chains={str(k): dict(v) for k, v in trade_state["chains"].items()},
             books=comparisons,
             book_match=all(c.ok for c in comparisons),
             fingerprint_checks=checks,

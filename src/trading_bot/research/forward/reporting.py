@@ -10,20 +10,24 @@ statement.
 from __future__ import annotations
 
 import gzip
+import shutil
 from collections import defaultdict
+from collections.abc import Iterable, Iterator
 from dataclasses import dataclass, field
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any, Final
 
 from trading_bot.research.forward.aggregation import DatasetAggregation, aggregate_dataset
-from trading_bot.research.forward.contract import BACKFILL_ORIGIN, EventType, parse_event
+from trading_bot.research.forward.contract import BACKFILL_ORIGIN, EventType
 from trading_bot.research.forward.orderbook import BookHealth
 from trading_bot.research.forward.replay import (
     ForwardReplay,
+    ReplayVerification,
     aggregation_digest,
     replay_microstructure_dataset,
 )
-from trading_bot.research.forward.resources import percentile
+from trading_bot.research.forward.resources import percentile, percentile_from_histogram
 from trading_bot.research.forward.storage import (
     CONTINUITY_CONTINUOUS,
     StorageError,
@@ -38,6 +42,7 @@ __all__ = [
     "build_book_report",
     "build_contract_document",
     "build_daily_report",
+    "build_health_accounting",
     "build_quality_report",
     "build_readiness",
     "build_resource_report",
@@ -47,6 +52,11 @@ __all__ = [
 ]
 
 REPORT_VERSION: Final[str] = "FORWARD-REPORT-V1"
+
+#: §14: below this many days of headroom the volume cannot carry 24/7 collection.
+STORAGE_ACCEPTABLE_DAYS: Final[float] = 7.0
+#: Between a week and a day of headroom the capture can run, but not unattended.
+STORAGE_TIGHT_DAYS: Final[float] = 1.0
 
 #: Sample needed before M-03 (order-book imbalance) can be researched at all.
 M03_REQUIRED_MINUTES: Final[int] = 24 * 60
@@ -297,15 +307,25 @@ def load_run(root: Path | str, run_id: str | None = None) -> tuple[str, dict[str
 def build_aggregation(
     root: Path | str, run_id: str | None = None
 ) -> tuple[str, DatasetAggregation]:
-    """Rebuild the full raw -> 1m -> 5m/15m/30m aggregation from persisted rows."""
+    """Rebuild the full raw -> 1m -> 5m/15m/30m aggregation from persisted rows.
+
+    The aggregation is given a callable source, not a list: an hour of forward
+    capture is millions of rows, so holding them here would make the report
+    unrunnable on exactly the capture it exists to describe. Each accumulator
+    re-reads the run instead, trading I/O for memory (§34).
+    """
     base = Path(root)
     resolved, _manifest = load_run(base, run_id)
     replay = ForwardReplay(base, resolved)
-    rows, _ = replay.load_rows()
-    events = [parse_event(row) for row in rows]
     loss_windows, window = replay.capture_bounds_from_manifest()
+    # ``counts`` is left to the aggregator: the manifest counts only the streams it
+    # models, while the digest must cover every persisted row type (heartbeats,
+    # lifecycle, gaps), so the aggregator tallies by streaming one more pass.
     aggregation = aggregate_dataset(
-        events, run_id=resolved, loss_windows=loss_windows, window=window
+        replay.iter_events,
+        run_id=resolved,
+        loss_windows=loss_windows,
+        window=window,
     )
     return resolved, aggregation
 
@@ -336,7 +356,11 @@ def save_aggregation(root: Path | str, run_id: str, aggregation: DatasetAggregat
 class _StreamScan:
     events: int = 0
     with_event_time: int = 0
-    delays: list[int] = field(default_factory=list)
+    #: Delay distribution as value -> count. One entry per event would grow with
+    #: the capture and make the report unrunnable on the run it describes, and
+    #: every event type here has few distinct millisecond delays, so the exact
+    #: distribution costs almost nothing (§34).
+    delay_counts: dict[int, int] = field(default_factory=dict)
     process_before_receive: int = 0
     event_after_receive: int = 0
     duplicate_ids: int = 0
@@ -346,8 +370,47 @@ class _StreamScan:
     last_receive: int | None = None
 
 
-def _scan_rows(rows: list[dict[str, Any]]) -> dict[str, _StreamScan]:
-    scans: dict[str, _StreamScan] = defaultdict(_StreamScan)
+#: The lifecycle kinds the health accounting reads. Kept to the transport
+#: transitions: they are the only rows that record how long a socket was *down*
+#: rather than how much a stream lost.
+_HEALTH_LIFECYCLE_KINDS: Final[frozenset[str]] = frozenset(
+    {"WS_CONNECTED", "WS_DISCONNECTED", "DISK_LIMIT_REACHED", "STORAGE_FAILURE"}
+)
+
+
+@dataclass(slots=True)
+class _RowScan:
+    """Everything the quality report needs, from one streaming pass (§34)."""
+
+    scans: dict[str, _StreamScan] = field(default_factory=lambda: defaultdict(_StreamScan))
+    checkpoints: dict[str, list[dict[str, Any]]] = field(
+        default_factory=lambda: defaultdict(list)
+    )
+    #: Transport transitions only: one per connect/disconnect, so bounded.
+    lifecycle: list[dict[str, Any]] = field(default_factory=list)
+
+
+def _stream_rows(replay: ForwardReplay) -> tuple[Iterator[dict[str, Any]], list[int]]:
+    """Stream a run's rows, exposing the running partial-tail count in a box."""
+    box = [0]
+
+    def _rows() -> Iterator[dict[str, Any]]:
+        for row, partial in replay.iter_rows():
+            box[0] = partial
+            yield row
+
+    return _rows(), box
+
+
+def _scan_rows(rows: Iterable[dict[str, Any]]) -> _RowScan:
+    """One streaming pass over the rows, keeping only bounded aggregates.
+
+    Nothing here grows with the number of rows: a capture of days must be
+    analysable in constant memory, so counters and the checkpoint list are the
+    only things retained.
+    """
+    result = _RowScan()
+    scans = result.scans
     seen_ids: dict[str, int] = {}
     for row in rows:
         key = f"{row.get('market')}/{row.get('symbol')}/{row.get('event_type')}"
@@ -375,7 +438,8 @@ def _scan_rows(rows: list[dict[str, Any]]) -> dict[str, _StreamScan]:
         if isinstance(event_time, int):
             scan.with_event_time += 1
             if not backfilled:
-                scan.delays.append(receive - event_time)
+                delay = receive - event_time
+                scan.delay_counts[delay] = scan.delay_counts.get(delay, 0) + 1
             if event_time > receive:
                 scan.event_after_receive += 1
         if row.get("event_type") == EventType.AGG_TRADE.value:
@@ -390,17 +454,34 @@ def _scan_rows(rows: list[dict[str, Any]]) -> dict[str, _StreamScan]:
                     elif identifier < previous:
                         scan.out_of_order_ids += 1
                 seen_ids[id_key] = max(identifier, previous if previous is not None else identifier)
-    return scans
+        elif row.get("event_type") == EventType.BOOK_CHECKPOINT.value:
+            detail = row.get("detail")
+            if isinstance(detail, dict):
+                result.checkpoints[f"{row.get('market')}/{row.get('symbol')}"].append(detail)
+        elif row.get("event_type") == EventType.LIFECYCLE.value:
+            detail = row.get("detail")
+            kind = detail.get("kind") if isinstance(detail, dict) else None
+            if kind in _HEALTH_LIFECYCLE_KINDS:
+                result.lifecycle.append(
+                    {
+                        "kind": kind,
+                        "market": (detail or {}).get("market", row.get("market")),
+                        "receive_time": receive,
+                        "reason": (detail or {}).get("reason"),
+                    }
+                )
+    return result
 
 
-def build_book_report(rows: list[dict[str, Any]], manifest: dict[str, Any]) -> dict[str, Any]:
-    """§45 — everything a consumer must know before trusting a book."""
-    checkpoints: dict[str, list[dict[str, Any]]] = defaultdict(list)
-    for row in rows:
-        if row.get("event_type") != EventType.BOOK_CHECKPOINT.value:
-            continue
-        detail = row.get("detail") or {}
-        checkpoints[f"{row.get('market')}/{row.get('symbol')}"].append(detail)
+def build_book_report(
+    checkpoints: dict[str, list[dict[str, Any]]], manifest: dict[str, Any]
+) -> dict[str, Any]:
+    """§45 — everything a consumer must know before trusting a book.
+
+    Takes the checkpoints already collected by the single scan pass: there is one
+    checkpoint per interval per book, so the list stays bounded on a capture of
+    any length (§34).
+    """
     book: dict[str, Any] = {}
     for key, entries in sorted(checkpoints.items()):
         tally: dict[str, int] = defaultdict(int)
@@ -443,18 +524,317 @@ def build_book_report(rows: list[dict[str, Any]], manifest: dict[str, Any]) -> d
     return book
 
 
+def _iso_to_ms(value: Any) -> int | None:
+    """Parse the manifest's ISO-8601 UTC stamps into epoch milliseconds."""
+    if not isinstance(value, str) or not value:
+        return None
+    try:
+        parsed = datetime.fromisoformat(value)
+    except ValueError:
+        return None
+    if parsed.tzinfo is None:
+        parsed = parsed.replace(tzinfo=UTC)
+    return int(parsed.timestamp() * 1000)
+
+
+def _merge_windows(windows: list[tuple[int, int]]) -> list[list[int]]:
+    """Half-open union of the windows in which some stream was actually losing."""
+    merged: list[list[int]] = []
+    for start, end in sorted(windows):
+        if merged and start <= merged[-1][1]:
+            merged[-1][1] = max(merged[-1][1], end)
+        else:
+            merged.append([start, end])
+    return merged
+
+
+def build_reconnect_accounting(
+    lifecycle: Iterable[dict[str, Any]], ended_ms: int | None
+) -> dict[str, Any]:
+    """§6 — how long each socket was actually *down*, not just how much was lost.
+
+    A gap record spans ``last_seen -> detected``: that is what a stream swallowed,
+    not the downtime. The interval between a socket being detected as down and
+    being established again is only visible in the persisted lifecycle rows, so
+    it is derived here rather than assumed away. Without it the health accounting
+    would quietly call the whole reconnect a healthy second.
+    """
+    by_market: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for entry in lifecycle:
+        by_market[str(entry.get("market"))].append(entry)
+
+    intervals: list[tuple[str, int, int]] = []
+    still_down: list[dict[str, Any]] = []
+    for market, entries in sorted(by_market.items()):
+        down_at: int | None = None
+        for entry in sorted(entries, key=lambda item: int(item["receive_time"])):
+            kind = entry.get("kind")
+            if kind == "WS_DISCONNECTED":
+                down_at = int(entry["receive_time"])
+            elif kind == "WS_CONNECTED" and down_at is not None:
+                intervals.append((market, down_at, int(entry["receive_time"])))
+                down_at = None
+        if down_at is not None:
+            still_down.append({"market": market, "down_at_ms": down_at})
+            if ended_ms is not None:
+                intervals.append((market, down_at, ended_ms))
+
+    durations = [end - start for _market, start, end in intervals]
+    per_market: dict[str, Any] = {}
+    for market in sorted({entry[0] for entry in intervals}):
+        subset = [(start, end) for name, start, end in intervals if name == market]
+        per_market[market] = {
+            "cycles": len(subset),
+            "downtime_seconds": round(sum(end - start for start, end in subset) / 1000.0, 3),
+            "longest_ms": max((end - start for start, end in subset), default=0),
+        }
+    return {
+        "method": "read-side from the persisted WS_DISCONNECTED -> WS_CONNECTED lifecycle rows",
+        "cycles": len(intervals),
+        "downtime_seconds_total": round(sum(durations) / 1000.0, 3),
+        "downtime_ms_min": min(durations) if durations else None,
+        "downtime_ms_p50": percentile([float(value) for value in durations], 0.50),
+        "downtime_ms_max": max(durations) if durations else None,
+        "per_market": per_market,
+        "still_down_at_end": still_down,
+        "intervals": [[start, end] for _market, start, end in intervals],
+    }
+
+
+def build_health_accounting(
+    manifest: dict[str, Any],
+    lifecycle: Iterable[dict[str, Any]] | None = None,
+) -> dict[str, Any]:
+    """§6 — HEALTHY / DEGRADED / FAILED seconds, derived from the run's record.
+
+    Two views are reported, because they answer different questions.
+
+    ``collector_state`` is the writer's own state timeline. The writer is
+    deliberately *sticky*: a recorded gap is never erased, so the state does not
+    return to HEALTHY once the hour has seen one. On its own that would read as
+    an hour of failure, so it is reported next to the live view, never instead
+    of it.
+
+    ``live`` is derived read-side from the gap windows. A millisecond is
+    DEGRADED when it falls inside a window in which some stream actually lost
+    data, and HEALTHY otherwise, so a recoverable disconnect shows up as
+    DEGRADED -> reconnect -> HEALTHY. FAILED is reserved for a run that could
+    not work around a condition, which is the writer's own fatal record rather
+    than a busy socket.
+    """
+    started_ms = _iso_to_ms(manifest.get("started_at"))
+    ended_ms = _iso_to_ms(manifest.get("ended_at"))
+    if started_ms is None or ended_ms is None:
+        duration_ms = int(float(manifest.get("duration_seconds") or 0.0) * 1000)
+    else:
+        duration_ms = max(0, ended_ms - started_ms)
+
+    all_gaps = list(manifest.get("gaps", []))
+    loss_gaps = [gap for gap in all_gaps if gap.get("data_lost")]
+    # Any recorded window is a degradation, whether or not the hole was later
+    # closed: a recoverable disconnect is still a disconnect (§6). Whether it
+    # returned to HEALTHY is a question about what came *after* the window.
+    windows = [(int(gap["start_ms"]), int(gap["end_ms"])) for gap in all_gaps]
+    instantaneous = [gap for gap in loss_gaps if int(gap["end_ms"]) <= int(gap["start_ms"])]
+    reconnect = build_reconnect_accounting(lifecycle or [], ended_ms)
+    # The socket-level downtime is real degraded time even when no stream can
+    # attribute lost ids to it, so both sources feed the union.
+    windows.extend((int(start), int(end)) for start, end in reconnect["intervals"])
+    positive = [(start, end) for start, end in windows if end > start]
+    merged = _merge_windows(positive)
+    degraded_ms = sum(end - start for start, end in merged)
+    fatal = (manifest.get("integrity") or {}).get("failures")
+    failed_ms = duration_ms if fatal else 0
+    healthy_ms = max(0, duration_ms - degraded_ms - failed_ms)
+
+    episodes: list[dict[str, Any]] = []
+    for start, end in merged:
+        inside = [
+            gap
+            for gap in all_gaps
+            if int(gap["start_ms"]) <= end and int(gap["end_ms"]) >= start
+        ]
+        recovered = [g for g in inside if g.get("recovered")]
+        partial = [g for g in inside if not g.get("recovered") and g.get("recovered_events")]
+        lost = [
+            g
+            for g in inside
+            if g.get("data_lost") and not g.get("recovered") and not g.get("recovered_events")
+        ]
+        # A disconnect episode is not "recovered" unless every hole inside it was
+        # filled: a recoverable stream and an unrecoverable one landing in the
+        # same window are still not the same event (§4).
+        if lost and (recovered or partial):
+            outcome = "PARTIAL_LOSS"
+        elif lost:
+            outcome = "PERMANENT_LOSS"
+        elif recovered or partial:
+            outcome = "RECOVERED"
+        else:
+            outcome = "NO_DATA_LOST"
+        episodes.append(
+            {
+                "start_ms": start,
+                "end_ms": end,
+                "duration_ms": end - start,
+                "returned_to_healthy": (end < ended_ms) if ended_ms is not None else None,
+                "outcome": outcome,
+                "gaps": len(inside),
+                "gaps_recovered": len(recovered),
+                "gaps_recovered_partial": len(partial),
+                "gaps_with_permanent_loss": len(lost),
+                "gaps_with_no_data_loss": len(inside) - len(recovered) - len(partial) - len(lost),
+                "reasons": sorted({str(g.get("reason")) for g in inside}),
+                "streams": sorted(
+                    {
+                        f"{g.get('market')}/{g.get('symbol')}/{g.get('event_type')}"
+                        for g in inside
+                    }
+                ),
+            }
+        )
+
+    transitions = list(manifest.get("degradation_events", []))
+    state_seconds: dict[str, int] = defaultdict(int)
+    current = "HEALTHY"
+    if started_ms is not None:
+        cursor: int = started_ms
+        for entry in transitions:
+            at = int(entry.get("at_ms") or started_ms)
+            state_seconds[current] += max(0, at - cursor)
+            current = str(entry.get("to") or current)
+            cursor = at
+        if ended_ms is not None:
+            state_seconds[current] += max(0, ended_ms - cursor)
+
+    def _seconds(milliseconds: int) -> float:
+        return round(milliseconds / 1000.0, 3)
+
+    def _fraction(milliseconds: int) -> float:
+        return round(milliseconds / duration_ms, 8) if duration_ms else 0.0
+
+    return {
+        "method": (
+            "derived read-side from the manifest's gap windows; the writer's own "
+            "state timeline is reported separately because it is sticky"
+        ),
+        "capture_seconds": _seconds(duration_ms),
+        "live": {
+            "healthy_seconds": _seconds(healthy_ms),
+            "degraded_seconds": _seconds(degraded_ms),
+            "failed_seconds": _seconds(failed_ms),
+            "healthy_fraction": _fraction(healthy_ms),
+            "degraded_fraction": _fraction(degraded_ms),
+            "failed_fraction": _fraction(failed_ms),
+            "degraded_episodes": len(merged),
+            "episodes_returning_to_healthy": sum(
+                1 for entry in episodes if entry["returned_to_healthy"]
+            ),
+            "episodes_with_permanent_loss": sum(
+                1 for entry in episodes if entry["outcome"] == "PERMANENT_LOSS"
+            ),
+            "episodes_with_partial_loss": sum(
+                1 for entry in episodes if entry["outcome"] == "PARTIAL_LOSS"
+            ),
+            "episodes_with_no_data_loss": sum(
+                1 for entry in episodes if entry["outcome"] == "NO_DATA_LOST"
+            ),
+            "longest_degraded_ms": max((end - start for start, end in merged), default=0),
+            "instantaneous_loss_events": len(instantaneous),
+            "instantaneous_loss_note": (
+                "a zero-length window still lost the ids it names: those holes carry "
+                "no wall-clock duration but are counted as instantaneous loss events"
+            ),
+        },
+        "collector_state": {
+            "timeline": transitions,
+            "seconds_by_state": {
+                state: _seconds(milliseconds)
+                for state, milliseconds in sorted(state_seconds.items())
+            },
+            "sticky": True,
+            "sticky_note": (
+                "the writer never erases a recorded gap, so DEGRADED is monotone: "
+                "a recoverable disconnect moves the state to DEGRADED and leaves it "
+                "there. The live view above is the one that shows the recovery."
+            ),
+        },
+        "episodes": episodes,
+        "reconnect_downtime": {
+            key: value for key, value in reconnect.items() if key != "intervals"
+        },
+        "degraded_window_sources": (
+            "union of per-stream gap windows, the reconnect downtime derived from "
+            "the lifecycle rows, and the writer's fatal record"
+        ),
+        "failed_run": bool(fatal),
+    }
+
+
+#: Streams whose ids name discrete events, so an id step is an event count. The
+#: book streams are deliberately absent: an update id is a sequence position, and
+#: a span of skipped positions is not the number of updates that were skipped.
+ID_STEP_IS_AN_EVENT_COUNT = ("agg_trade",)
+
+
+def _loss_estimate_semantics(gaps: list[dict[str, Any]]) -> dict[str, Any]:
+    """Read the writer's own loss estimate for what it can and cannot mean.
+
+    ``estimated_lost_events`` is what the writer derived from the id space it was
+    holding. For aggregate trades one id is one trade, so it is a count. For depth
+    updates it is a span of sequence numbers, and a span is not a number of missing
+    events: on a real hour it dwarfs the row count, so summing it across streams
+    would produce a loss figure larger than the capture that contains it. The
+    physical quantity the capture really lost is the wall-clock time in which no
+    stream delivered anything, so both are reported side by side rather than the
+    estimate being presented alone.
+    """
+    by_stream: dict[str, dict[str, Any]] = {}
+    for gap in gaps:
+        if not gap.get("data_lost"):
+            continue
+        event_type = str(gap.get("event_type") or "unknown")
+        slot = by_stream.setdefault(event_type, {"gaps": 0, "id_steps": 0, "seconds": 0.0})
+        slot["gaps"] += 1
+        slot["id_steps"] += int(gap.get("estimated_lost_events") or 0)
+        slot["seconds"] = round(slot["seconds"] + float(gap.get("duration_ms") or 0) / 1000.0, 6)
+    for event_type, slot in by_stream.items():
+        slot["id_steps_are_an_event_count"] = event_type in ID_STEP_IS_AN_EVENT_COUNT
+    counted = sum(
+        slot["id_steps"] for slot in by_stream.values() if slot["id_steps_are_an_event_count"]
+    )
+    spanned = sum(
+        slot["id_steps"] for slot in by_stream.values() if not slot["id_steps_are_an_event_count"]
+    )
+    return {
+        "per_stream": dict(sorted(by_stream.items())),
+        "id_steps_that_are_an_event_count": counted,
+        "id_steps_that_are_a_sequence_span_only": spanned,
+        "lost_wall_clock_seconds": round(
+            sum(slot["seconds"] for slot in by_stream.values()), 6
+        ),
+        "note": (
+            "only agg_trade ids name discrete events; for depth_diff an id step is a "
+            "position in a sequence, and the affected book was invalidated and "
+            "resnapshotted rather than asked to account for a count of missing updates"
+        ),
+    }
+
+
 def build_quality_report(root: Path | str, run_id: str | None = None) -> dict[str, Any]:
     """§44/§45 — per-stream event, loss, latency and book quality."""
     base = Path(root)
     resolved, manifest = load_run(base, run_id)
-    rows, partial_tails = ForwardReplay(base, resolved).load_rows()
-    scans = _scan_rows(rows)
+    rows, partial_box = _stream_rows(ForwardReplay(base, resolved))
+    scan_result = _scan_rows(rows)
+    scans = scan_result.scans
+    partial_tails = partial_box[0]
 
     streams: dict[str, Any] = {}
     for stream in manifest.get("streams", []):
         key = f"{stream['market']}/{stream['symbol']}/{stream['event_type']}"
         scan = scans.get(key, _StreamScan())
-        delays = scan.delays
+        delays = scan.delay_counts
         duration_s = max(
             1e-9,
             ((stream["last_receive_time"] or 0) - (stream["first_receive_time"] or 0)) / 1000.0,
@@ -484,23 +864,33 @@ def build_quality_report(root: Path | str, run_id: str | None = None) -> dict[st
                 round(scan.with_event_time / scan.events, 6) if scan.events else 0.0
             ),
             "event_latency_ms": {
-                "p50": percentile([float(d) for d in delays], 0.50),
-                "p95": percentile([float(d) for d in delays], 0.95),
-                "p99": percentile([float(d) for d in delays], 0.99),
+                "p50": percentile_from_histogram(delays, 0.50),
+                "p95": percentile_from_histogram(delays, 0.95),
+                "p99": percentile_from_histogram(delays, 0.99),
                 "max": max(delays) if delays else None,
                 "min": min(delays) if delays else None,
-                "samples": len(delays),
+                "samples": sum(delays.values()),
             },
             "process_before_receive": scan.process_before_receive,
             "event_after_receive": scan.event_after_receive,
         }
 
-    all_delays = [float(d) for scan in scans.values() for d in scan.delays]
+    all_delays: dict[int, int] = defaultdict(int)
+    for scan in scans.values():
+        for value, count in scan.delay_counts.items():
+            all_delays[value] += count
     gaps = manifest.get("gaps", [])
     by_reason: dict[str, int] = defaultdict(int)
     for gap in gaps:
         by_reason[str(gap["reason"])] += 1
     integrity = manifest.get("integrity", {})
+    # A gap whose window was empty is neither recovered nor lost: nothing was
+    # ever in it. Counting it with the real holes would overstate the damage, so
+    # the three cases are tallied separately and the arithmetic is kept visible.
+    gaps_empty = sum(
+        1 for gap in gaps if not gap.get("data_lost") and not gap.get("recovered_events")
+    )
+    gaps_with_loss = sum(1 for gap in gaps if gap.get("data_lost"))
     report = {
         "report_version": REPORT_VERSION,
         "run_id": resolved,
@@ -522,7 +912,8 @@ def build_quality_report(root: Path | str, run_id: str | None = None) -> dict[st
         "streams": streams,
         "totals": {
             "events": sum(s["events"] for s in streams.values()),
-            "rows_on_disk": len(rows),
+            # Counted during the same streaming pass, never by materialising it.
+            "rows_on_disk": sum(scan.events for scan in scans.values()),
             "segments": len(manifest.get("fingerprints", [])),
             "bytes_on_disk": sum(int(f["bytes"]) for f in manifest.get("fingerprints", [])),
             "partial_tails": partial_tails,
@@ -555,6 +946,15 @@ def build_quality_report(root: Path | str, run_id: str | None = None) -> dict[st
             "sequence_gaps": integrity.get("sequence_gaps", 0),
             "gaps_total": len(gaps),
             "gaps_data_lost": integrity.get("data_lost_gaps", 0),
+            "gaps_with_loss": gaps_with_loss,
+            "gaps_empty_window": gaps_empty,
+            "gaps_accounted": gaps_with_loss + gaps_empty,
+            "gaps_accounting_is_complete": (
+                gaps_with_loss
+                + gaps_empty
+                + sum(1 for gap in gaps if not gap.get("data_lost") and gap.get("recovered_events"))
+                == len(gaps)
+            ),
             "gaps_recovered": integrity.get("recovered_gaps", 0),
             "gaps_by_status": integrity.get("gaps_by_status", {}),
             "backfilled_events": integrity.get("backfilled_events", 0),
@@ -564,6 +964,7 @@ def build_quality_report(root: Path | str, run_id: str | None = None) -> dict[st
             "backfill_deferred": integrity.get("backfill_deferred", 0),
             "remaining_missing_events": integrity.get("remaining_missing_events", 0),
             "data_lost_gap_seconds": integrity.get("data_lost_gap_seconds", 0.0),
+            "estimate_semantics": _loss_estimate_semantics(gaps),
             "gaps_by_reason": dict(sorted(by_reason.items())),
             "malformed": integrity.get("malformed", 0),
             "clock_violations": integrity.get("clock_violations", 0),
@@ -573,11 +974,11 @@ def build_quality_report(root: Path | str, run_id: str | None = None) -> dict[st
             "resnapshots_failed": integrity.get("resnapshots_failed", 0),
         },
         "event_latency_ms": {
-            "p50": percentile(all_delays, 0.50),
-            "p95": percentile(all_delays, 0.95),
-            "p99": percentile(all_delays, 0.99),
+            "p50": percentile_from_histogram(all_delays, 0.50),
+            "p95": percentile_from_histogram(all_delays, 0.95),
+            "p99": percentile_from_histogram(all_delays, 0.99),
             "max": max(all_delays) if all_delays else None,
-            "samples": len(all_delays),
+            "samples": sum(all_delays.values()),
             "note": (
                 "live delivery only; recovered rows are counted in "
                 "loss.backfilled_events instead of being described as latency"
@@ -590,7 +991,7 @@ def build_quality_report(root: Path | str, run_id: str | None = None) -> dict[st
                 "aggregate is reported as the processing_delay_ms distribution"
             ),
         },
-        "books": build_book_report(rows, manifest),
+        "books": build_book_report(scan_result.checkpoints, manifest),
         "fingerprints": {
             "segments": len(manifest.get("fingerprints", [])),
             "sealed": sum(1 for f in manifest.get("fingerprints", []) if f["sealed"]),
@@ -615,6 +1016,7 @@ def build_quality_report(root: Path | str, run_id: str | None = None) -> dict[st
             "permits_continuity_claim": manifest.get("continuity") == CONTINUITY_CONTINUOUS,
         },
     }
+    report["health"] = build_health_accounting(manifest, scan_result.lifecycle)
     report["readiness"] = build_readiness(report, manifest)
     return report
 
@@ -626,9 +1028,17 @@ def build_readiness(report: dict[str, Any], manifest: dict[str, Any]) -> dict[st
     depth_gaps = sum(
         s["sequence_gaps"] for k, s in report["streams"].items() if k.endswith("/depth_diff")
     )
+    # §9 — a book is usable when a checkpoint *observed* it HEALTHY, which is a
+    # property of the run; ending the capture HEALTHY is a property of its last few
+    # seconds. The writer's health is sticky, so a capture that stops shortly after
+    # a reconnect ends STALE even though 110 of 118 checkpoints were HEALTHY. Both
+    # are reported, and only the first can gate a phase that consumes samples.
     healthy_books = [
         key for key, entry in books.items() if entry.get("final_health") == BookHealth.HEALTHY.value
     ]
+    healthy_books_at_checkpoint = sorted(
+        key for key, entry in books.items() if int(entry.get("healthy", 0)) > 0
+    )
     crossed = sum(int(entry.get("crossed_book_events", 0)) for entry in books.values())
     duration_minutes = float(report["capture"]["duration_seconds"] or 0.0) / 60.0
     oi_events = totals["open_interest_events"]
@@ -651,8 +1061,8 @@ def build_readiness(report: dict[str, Any], manifest: dict[str, Any]) -> dict[st
         m03_blocking.append(f"{depth_gaps} order-book sequence gap(s) recorded in this run")
     if crossed:
         m03_blocking.append(f"{crossed} crossed-book event(s) recorded")
-    if not healthy_books:
-        m03_blocking.append("no book reached HEALTHY")
+    if not healthy_books_at_checkpoint:
+        m03_blocking.append("no book was observed HEALTHY at any checkpoint")
     if duration_minutes < M03_REQUIRED_MINUTES:
         m03_blocking.append(
             f"sample is {duration_minutes:.1f} min; "
@@ -673,17 +1083,28 @@ def build_readiness(report: dict[str, Any], manifest: dict[str, Any]) -> dict[st
             return "NOT_READY"
         return "READY_FOR_RESEARCH" if not blocking else "COLLECTING"
 
+    def phase_vocabulary(infrastructure_ok: bool, blocking: list[str]) -> str:
+        """§21/§22 vocabulary: infrastructure vs sample are different problems."""
+        if not infrastructure_ok:
+            return "NOT_READY"
+        return "TECHNICALLY_READY_NEEDS_HISTORY" if blocking else "RESEARCH_READY"
+
+    m03_infrastructure = totals["book_update_events"] > 0 and bool(healthy_books_at_checkpoint)
+    m07_infrastructure = oi_events > 0
     return {
         "M-03": {
             "name": "order book imbalance",
-            "verdict": verdict(
-                m03_blocking, totals["book_update_events"] > 0 and bool(healthy_books)
-            ),
+            "verdict": verdict(m03_blocking, m03_infrastructure),
+            "phase_readiness": phase_vocabulary(m03_infrastructure, m03_blocking),
             "blocking": m03_blocking,
             "available": {
                 "book_update_events": totals["book_update_events"],
                 "book_checkpoints": totals["book_checkpoint_events"],
-                "healthy_books": sorted(healthy_books),
+                "books_healthy_at_a_checkpoint": healthy_books_at_checkpoint,
+                "books_ending_healthy": sorted(healthy_books),
+                "healthy_checkpoint_ratio": {
+                    key: entry.get("usable_ratio") for key, entry in sorted(books.items())
+                },
                 "sequence_gaps": depth_gaps,
                 "capture_minutes": round(duration_minutes, 3),
             },
@@ -691,7 +1112,8 @@ def build_readiness(report: dict[str, Any], manifest: dict[str, Any]) -> dict[st
         },
         "M-07": {
             "name": "open interest x price",
-            "verdict": verdict(m07_blocking, oi_events > 0),
+            "verdict": verdict(m07_blocking, m07_infrastructure),
+            "phase_readiness": phase_vocabulary(m07_infrastructure, m07_blocking),
             "blocking": m07_blocking,
             "available": {
                 "open_interest_samples": oi_events,
@@ -706,6 +1128,14 @@ def build_readiness(report: dict[str, Any], manifest: dict[str, Any]) -> dict[st
         "required_minimums": {
             "m03_capture_minutes": M03_REQUIRED_MINUTES,
             "m07_span_days": M07_REQUIRED_DAYS,
+        },
+        "vocabulary": {
+            "verdict": "READY_FOR_RESEARCH | COLLECTING | NOT_READY",
+            "phase_readiness": (
+                "RESEARCH_READY | TECHNICALLY_READY_NEEDS_HISTORY | NOT_READY — the "
+                "second means the pipeline captures what the hypothesis needs and only "
+                "time is missing, which must never be read as the first"
+            ),
         },
     }
 
@@ -723,9 +1153,15 @@ def _measure_segment_sizes(root: Path) -> tuple[int, int, int]:
         segments += 1
         stored += path.stat().st_size
         if path.suffix == ".gz":
+            # Counted in blocks rather than with ``read()``: the measurement must
+            # not itself need the whole segment resident.
             try:
                 with gzip.open(path, "rb") as handle:
-                    uncompressed += len(handle.read())
+                    while True:
+                        block = handle.read(4 * 1024 * 1024)
+                        if not block:
+                            break
+                        uncompressed += len(block)
             except (EOFError, OSError, gzip.BadGzipFile):
                 # The open segment's final member may still be mid-write.
                 continue
@@ -734,17 +1170,90 @@ def _measure_segment_sizes(root: Path) -> tuple[int, int, int]:
     return stored, uncompressed, segments
 
 
+def _free_disk_bytes(path: Path) -> int | None:
+    """Free bytes on the volume holding ``path``, or ``None`` when untellable."""
+    probe = path
+    while not probe.exists() and probe != probe.parent:
+        probe = probe.parent
+    try:
+        return int(shutil.disk_usage(probe).free)
+    except OSError:  # pragma: no cover - platform dependent
+        return None
+
+
+def _storage_capacity(
+    base: Path, stored_bytes: int, stored_gb_per_hour: float
+) -> dict[str, Any]:
+    """§14 — can this volume actually carry continuous collection?
+
+    The free-disk figure is read at report time, i.e. *after* the capture, so the
+    start-of-capture figure is reconstructed from it rather than claimed: the
+    collector is the only writer of its own bytes, so subtracting them is sound,
+    but it is still labelled a reconstruction. The collector itself never
+    sampled free disk, because that would have meant touching frozen writer code
+    for a number that can be recovered afterwards.
+    """
+    free_now = _free_disk_bytes(base)
+    per_day_gb = stored_gb_per_hour * 24.0
+    per_hour_bytes = stored_gb_per_hour * 1e9
+    capacity_hours = (
+        round(free_now / per_hour_bytes, 3)
+        if free_now is not None and per_hour_bytes > 0
+        else None
+    )
+    capacity_days = round(capacity_hours / 24.0, 3) if capacity_hours is not None else None
+    if capacity_days is None:
+        verdict = "UNKNOWN"
+    elif capacity_days >= STORAGE_ACCEPTABLE_DAYS:
+        verdict = "STORAGE_CAPACITY_OK"
+    elif capacity_days >= STORAGE_TIGHT_DAYS:
+        verdict = "STORAGE_CAPACITY_TIGHT"
+    else:
+        verdict = "STORAGE_CAPACITY_BLOCKER"
+    return {
+        "free_disk_now_bytes": free_now,
+        "free_disk_now_gb": round(free_now / 1e9, 3) if free_now is not None else None,
+        "free_disk_at_capture_start_bytes": None,
+        "free_disk_at_capture_start_reconstruction": (
+            free_now + stored_bytes if free_now is not None else None
+        ),
+        "reconstruction_note": (
+            "free disk was not sampled at capture time; the start figure is "
+            "free-now plus the bytes this capture wrote, which is a reconstruction "
+            "and is labelled as one"
+        ),
+        "stored_gb_per_day_at_observed_rate": round(per_day_gb, 3),
+        "capacity_hours_at_observed_rate": capacity_hours,
+        "capacity_days_at_observed_rate": capacity_days,
+        "thresholds": {
+            "acceptable_days": STORAGE_ACCEPTABLE_DAYS,
+            "tight_days": STORAGE_TIGHT_DAYS,
+        },
+        "verdict": verdict,
+        "verdict_meaning": (
+            "STORAGE_CAPACITY_OK carries a week of headroom; TIGHT fits the week "
+            "but needs attention; BLOCKER means under a day, so 24/7 collection "
+            "must not be claimed on this volume"
+        ),
+    }
+
+
 def build_resource_report(root: Path | str, run_id: str | None = None) -> dict[str, Any]:
     """§42 — the collector's measured cost, so it can be bounded against PAPER."""
     base = Path(root)
     resolved, manifest = load_run(base, run_id)
-    rows, _ = ForwardReplay(base, resolved).load_rows()
+    # Only the heartbeats are needed, and there is one per cadence, so the run is
+    # streamed and nothing else is retained.
+    heartbeats = [
+        row
+        for row, _ in ForwardReplay(base, resolved).iter_rows()
+        if row.get("event_type") == EventType.HEARTBEAT.value
+    ]
     duration = float(manifest.get("duration_seconds") or 0.0)
     stored_bytes, uncompressed_bytes, segment_count = _measure_segment_sizes(base / "segments")
     hours = max(1e-9, duration / 3600.0)
     raw_gb_per_hour = uncompressed_bytes / hours / 1e9
     stored_gb_per_hour = stored_bytes / hours / 1e9
-    heartbeats = [row for row in rows if row.get("event_type") == EventType.HEARTBEAT.value]
     memory_series = [
         float(hb["detail"]["memory_mb"])
         for hb in heartbeats
@@ -780,8 +1289,9 @@ def build_resource_report(root: Path | str, run_id: str | None = None) -> dict[s
         "disk_guard": {
             "max_total_bytes": manifest.get("max_total_bytes"),
             "enabled": manifest.get("max_total_bytes") is not None,
-            "stopped_on_budget": bool(manifest.get("stopped_on_disk_budget")),
+            "stopped_on_disk_budget": bool(manifest.get("stopped_on_disk_budget")),
         },
+        "storage_capacity": _storage_capacity(base, stored_bytes, stored_gb_per_hour),
         "resources": manifest.get("resources", {}),
         "heartbeats": len(heartbeats),
         "memory_mb_series": {
@@ -810,12 +1320,23 @@ def build_resource_report(root: Path | str, run_id: str | None = None) -> dict[s
     }
 
 
-def build_daily_report(root: Path | str, run_id: str | None = None) -> dict[str, Any]:
-    """§48 — the compact daily artifact: coverage, quality, gaps, hashes, health."""
+def build_daily_report(
+    root: Path | str,
+    run_id: str | None = None,
+    *,
+    quality: dict[str, Any] | None = None,
+    resource: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    """§48 — the compact daily artifact: coverage, quality, gaps, hashes, health.
+
+    ``quality`` and ``resource`` may be supplied by the caller so one run is not
+    parsed twice; on a multi-hour capture that is the difference between minutes
+    and another full scan.
+    """
     base = Path(root)
     resolved, manifest = load_run(base, run_id)
-    quality = build_quality_report(base, resolved)
-    resource = build_resource_report(base, resolved)
+    quality = quality or build_quality_report(base, resolved)
+    resource = resource or build_resource_report(base, resolved)
     return {
         "report_version": REPORT_VERSION,
         "kind": "FORWARD_DATA_DAILY_REPORT",
@@ -868,16 +1389,33 @@ def build_daily_report(root: Path | str, run_id: str | None = None) -> dict[str,
 
 
 def write_machine_readable_reports(
-    root: Path | str, out_dir: Path | str, run_id: str | None = None
+    root: Path | str,
+    out_dir: Path | str,
+    run_id: str | None = None,
+    *,
+    quality: dict[str, Any] | None = None,
+    resource: dict[str, Any] | None = None,
+    daily: dict[str, Any] | None = None,
+    replay: ReplayVerification | None = None,
 ) -> dict[str, Path]:
-    """Write the JSON artifacts that later phases must be able to cite."""
+    """Write the JSON artifacts that later phases must be able to cite.
+
+    Each section is a streaming pass over the capture, and this used to rebuild
+    every one of them even when its caller had just built it: on an hour of data
+    that was two extra full scans of the dataset to write a file. Anything handed
+    in is used as given, so a caller that already holds a section pays for it once.
+    """
     base = Path(root)
     resolved, manifest = load_run(base, run_id)
     target = Path(out_dir)
-    quality = build_quality_report(base, resolved)
-    resource = build_resource_report(base, resolved)
-    daily = build_daily_report(base, resolved)
-    replay = replay_microstructure_dataset(base, resolved)
+    if quality is None:
+        quality = build_quality_report(base, resolved)
+    if resource is None:
+        resource = build_resource_report(base, resolved)
+    if daily is None:
+        daily = build_daily_report(base, resolved, quality=quality, resource=resource)
+    if replay is None:
+        replay = replay_microstructure_dataset(base, resolved)
     files = {
         "quality": target / "FORWARD_DATA_QUALITY_REPORT.json",
         "contract": target / "FORWARD_DATA_CONTRACT.json",
@@ -903,6 +1441,7 @@ def write_machine_readable_reports(
             "loss": quality["loss"],
             "event_latency_ms": quality["event_latency_ms"],
             "books": quality["books"],
+            "health": quality["health"],
             "fingerprints": quality["fingerprints"],
             "readiness": quality["readiness"],
             "cases": quality["cases"],

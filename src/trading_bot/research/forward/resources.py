@@ -23,6 +23,7 @@ __all__ = [
     "ResourceSampler",
     "ResourceSummary",
     "percentile",
+    "percentile_from_histogram",
     "process_cpu_seconds",
     "process_memory_mb",
 ]
@@ -103,6 +104,37 @@ def percentile(values: list[float], fraction: float) -> float | None:
     upper = min(lower + 1, len(ordered) - 1)
     weight = rank - lower
     return ordered[lower] * (1.0 - weight) + ordered[upper] * weight
+
+
+def percentile_from_histogram(counts: dict[int, int], fraction: float) -> float | None:
+    """Nearest-rank percentile over a ``value -> count`` mapping, with interpolation.
+
+    Same answer as :func:`percentile` over the materialised list, but memory
+    scales with the number of *distinct* values rather than with the number of
+    samples. A forward capture produces millions of delays and only a handful of
+    distinct millisecond values per stream, so this is the difference between a
+    report that runs and one that does not (§34).
+    """
+    total = sum(counts.values())
+    if total == 0:
+        return None
+    values = sorted(counts)
+    if total == 1:
+        return float(values[0])
+
+    def at(index: int) -> float:
+        seen = 0
+        for value in values:
+            seen += counts[value]
+            if seen > index:
+                return float(value)
+        return float(values[-1])
+
+    rank = fraction * (total - 1)
+    lower = int(rank)
+    upper = min(lower + 1, total - 1)
+    weight = rank - lower
+    return at(lower) * (1.0 - weight) + at(upper) * weight
 
 
 @dataclass(frozen=True, slots=True)

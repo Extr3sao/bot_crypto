@@ -266,7 +266,10 @@ def verify_venue_execution() -> dict[str, Any]:
             continue
         with open(p, encoding="utf-8") as fh:
             obj = json.load(fh)
-        if hashlib.sha256(json.dumps(obj, sort_keys=True).encode()).hexdigest() != f["derived_sha256"]:
+        if (
+            hashlib.sha256(json.dumps(obj, sort_keys=True).encode()).hexdigest()
+            != f["derived_sha256"]
+        ):
             mismatched.append(f"{p.name}: derived hash mismatch")
     checks.append(
         {
@@ -314,7 +317,9 @@ def verify_venue_execution() -> dict[str, Any]:
         failures.append("gross/net inconsistency")
 
     # 5. no candidate was promoted without passing every pre-registered filter
-    promoted = [r["candidate_id"] for r in res["results"] if r["classification"] == "PAPER_CANDIDATE"]
+    promoted = [
+        r["candidate_id"] for r in res["results"] if r["classification"] == "PAPER_CANDIDATE"
+    ]
     classifier_ok = all(
         (r["classification"] != "PAPER_CANDIDATE" or all(r["filters"].values()))
         for r in res["results"]
@@ -408,7 +413,9 @@ def render_md(v0: dict[str, Any], v7: dict[str, Any]) -> str:
         obs_s = json.dumps(obs, ensure_ascii=True) if not isinstance(obs, str) else obs
         if len(obs_s) > 120:
             obs_s = obs_s[:117] + "..."
-        lines.append(f"| {c['check']} | {c['expected']} | {obs_s} | {'PASS' if c['pass'] else 'FAIL'} |")
+        lines.append(
+            f"| {c['check']} | {c['expected']} | {obs_s} | {'PASS' if c['pass'] else 'FAIL'} |"
+        )
     lines += [
         "",
         "Artefactos verificados por hash (tras re-ejecución):",
@@ -430,7 +437,9 @@ def render_md(v0: dict[str, Any], v7: dict[str, Any]) -> str:
         obs_s = json.dumps(obs, ensure_ascii=True) if not isinstance(obs, str) else obs
         if len(obs_s) > 120:
             obs_s = obs_s[:117] + "..."
-        lines.append(f"| {c['check']} | {c['expected']} | {obs_s} | {'PASS' if c['pass'] else 'FAIL'} |")
+        lines.append(
+            f"| {c['check']} | {c['expected']} | {obs_s} | {'PASS' if c['pass'] else 'FAIL'} |"
+        )
     lines += [
         "",
         "### Resultados aggTrades re-verificados",
@@ -632,7 +641,9 @@ def verify_microstructure_edge_v2() -> dict[str, Any]:
     raw = json.loads(agg_path.read_text(encoding="utf-8"))
     n_bars, agg_volume = _independent_bars(raw["rows"])
     klines = json.loads(
-        (REPORTS / "microstructure-v1" / "data" / "KLINES_BTCUSDT_5m.json").read_text(encoding="utf-8")
+        (REPORTS / "microstructure-v1" / "data" / "KLINES_BTCUSDT_5m.json").read_text(
+            encoding="utf-8"
+        )
     )
     day_open = min(int(r["minute_ms"]) for r in raw["rows"]) // 300_000 * 300_000
     kline_volume = sum(
@@ -665,14 +676,12 @@ def verify_microstructure_edge_v2() -> dict[str, Any]:
         }
         for row in raw["rows"]
     ]
-    bars_by_symbol = {
-        "BTCUSDT": aggregate_minutes_to_bars([parse_minute_row(m) for m in minutes])
-    }
+    bars_by_symbol = {"BTCUSDT": aggregate_minutes_to_bars([parse_minute_row(m) for m in minutes])}
     for symbol in ("ETHUSDT", "SOLUSDT"):
         other = json.loads(
-            (REPORTS / "microstructure-v1" / "aggtrades" / f"AGG_{symbol}_2026-03-12.json").read_text(
-                encoding="utf-8"
-            )
+            (
+                REPORTS / "microstructure-v1" / "aggtrades" / f"AGG_{symbol}_2026-03-12.json"
+            ).read_text(encoding="utf-8")
         )
         bars_by_symbol[symbol] = aggregate_minutes_to_bars(
             [parse_minute_row({**row, "symbol": symbol}) for row in other["rows"]]
@@ -680,9 +689,7 @@ def verify_microstructure_edge_v2() -> dict[str, Any]:
     panel = build_panel(bars_by_symbol, symbols=["BTCUSDT", "ETHUSDT", "SOLUSDT"])
     pairs = pit_lead_lag(panel, panel, source_symbol="BTCUSDT", lag=1)
     violations = [
-        (j, i)
-        for j, i, _v in pairs
-        if panel[i].decision_time_ms > panel[j].decision_time_ms
+        (j, i) for j, i, _v in pairs if panel[i].decision_time_ms > panel[j].decision_time_ms
     ]
     negative_lag_rejected = False
     try:
@@ -692,14 +699,25 @@ def verify_microstructure_edge_v2() -> dict[str, Any]:
     record(
         "PIT: no lead/lag pair uses information published after the decision",
         {"pairs": len(pairs), "violations": 0, "negative_lag_rejected": True},
-        {"pairs": len(pairs), "violations": len(violations), "negative_lag_rejected": negative_lag_rejected},
+        {
+            "pairs": len(pairs),
+            "violations": len(violations),
+            "negative_lag_rejected": negative_lag_rejected,
+        },
         bool(pairs) and not violations and negative_lag_rejected,
     )
 
     # 6. admission arithmetic and status honesty
     bad_math: list[str] = []
     for row in admission["matrix"]:
-        if abs((float(row["gross_mean_bps_dev"]) - float(row["cost_bps"])) - float(row["net_mean_bps_dev"])) > 1e-3 and row["n"] > 0:
+        if (
+            abs(
+                (float(row["gross_mean_bps_dev"]) - float(row["cost_bps"]))
+                - float(row["net_mean_bps_dev"])
+            )
+            > 1e-3
+            and row["n"] > 0
+        ):
             bad_math.append(f"{row['candidate_id']}: gross - cost != net")
         if row["classification"] == "COST_KILLED" and float(row["net_mean_bps_dev"]) > 0.0:
             bad_math.append(f"{row['candidate_id']}: COST_KILLED with positive net")
@@ -849,9 +867,15 @@ def verify_microstructure_edge_v2() -> dict[str, Any]:
 
 
 def main() -> None:
+    from forward_collection_verification import (
+        render_forward_md,
+        verify_forward_collection,
+    )
+
     v0 = verify_microstructure_v1()
     v7 = verify_venue_execution()
     v8 = verify_microstructure_edge_v2()
+    v9 = verify_forward_collection()
 
     verification = {
         "verifier": "scripts/research_verification.py",
@@ -866,10 +890,17 @@ def main() -> None:
         "phase_0": v0,
         "phase_7": v7,
     }
-    with open(DOCS / "MICROSTRUCTURE_V1_INDEPENDENT_VERIFICATION.json", "w", encoding="utf-8", newline="\n") as fh:
+    with open(
+        DOCS / "MICROSTRUCTURE_V1_INDEPENDENT_VERIFICATION.json",
+        "w",
+        encoding="utf-8",
+        newline="\n",
+    ) as fh:
         json.dump(verification, fh, indent=2)
         fh.write("\n")
-    with open(DOCS / "MICROSTRUCTURE_V1_INDEPENDENT_VERIFICATION.md", "w", encoding="utf-8", newline="\n") as fh:
+    with open(
+        DOCS / "MICROSTRUCTURE_V1_INDEPENDENT_VERIFICATION.md", "w", encoding="utf-8", newline="\n"
+    ) as fh:
         fh.write(render_md(v0, v7))
 
     v2_payload = {k: v for k, v in v8.items() if k != "detail"}
@@ -879,7 +910,12 @@ def main() -> None:
         "raw aggTrades/capture files, re-aggregates a real day from scratch, re-measures "
         "the spread, re-derives the cost and re-runs the PIT audit"
     )
-    with open(DOCS / "MICROSTRUCTURE_V2_INDEPENDENT_VERIFICATION.json", "w", encoding="utf-8", newline="\n") as fh:
+    with open(
+        DOCS / "MICROSTRUCTURE_V2_INDEPENDENT_VERIFICATION.json",
+        "w",
+        encoding="utf-8",
+        newline="\n",
+    ) as fh:
         json.dump(v2_payload, fh, indent=2)
         fh.write("\n")
     v2_lines = [
@@ -908,9 +944,55 @@ def main() -> None:
             f"| {check['check']} | {expected} | {observed.replace('|', '/')} | "
             f"{'PASS' if check['pass'] else 'FAIL'} |"
         )
-    v2_lines += ["", "BUILDER != VERIFIER: ninguna cifra de esta fase se acepta desde el" " artefacto del builder sin re-derivarla aquí.", ""]
-    with open(DOCS / "MICROSTRUCTURE_V2_INDEPENDENT_VERIFICATION.md", "w", encoding="utf-8", newline="\n") as fh:
+    v2_lines += [
+        "",
+        "BUILDER != VERIFIER: ninguna cifra de esta fase se acepta desde el"
+        " artefacto del builder sin re-derivarla aquí.",
+        "",
+    ]
+    with open(
+        DOCS / "MICROSTRUCTURE_V2_INDEPENDENT_VERIFICATION.md", "w", encoding="utf-8", newline="\n"
+    ) as fh:
         fh.write("\n".join(v2_lines))
+
+    forward_payload = {k: v for k, v in v9.items() if k != "detail"}
+    forward_payload["verifier"] = "scripts/research_verification.py"
+    forward_payload["independence_note"] = (
+        "the verifier rebuilds the order book with a second implementation, recomputes every "
+        "segment fingerprint from raw bytes, re-derives the aggregate-trade id chain and the "
+        "timestamp invariant from the rows, and re-runs replay with sockets disabled"
+    )
+    with open(
+        DOCS / "MICROSTRUCTURE_FORWARD_COLLECTION_INDEPENDENT_VERIFICATION.json",
+        "w",
+        encoding="utf-8",
+        newline="\n",
+    ) as fh:
+        json.dump(forward_payload, fh, indent=2)
+        fh.write("\n")
+    with open(
+        DOCS / "MICROSTRUCTURE_FORWARD_COLLECTION_INDEPENDENT_VERIFICATION.md",
+        "w",
+        encoding="utf-8",
+        newline="\n",
+    ) as fh:
+        fh.write(render_forward_md(v9))
+
+    # The closing summary cites the writer-equivalence verdict, so the verifier
+    # publishes that verdict as a standalone artifact instead of leaving it
+    # embedded in a check row.
+    equivalence = (v9.get("detail") or {}).get("writer_equivalence")
+    if equivalence:
+        with open(
+            REPORTS
+            / "microstructure-forward"
+            / "writer_code_equivalence.json",
+            "w",
+            encoding="utf-8",
+            newline="\n",
+        ) as fh:
+            json.dump(equivalence, fh, indent=2)
+            fh.write("\n")
 
     final = {
         "head": v0["head"],
@@ -919,11 +1001,16 @@ def main() -> None:
         "phase_7_status": v7["status"],
         "phase_v2_status": v8["status"],
         "phase_v2_checks": f"{sum(1 for c in v8['checks'] if c['pass'])}/{len(v8['checks'])}",
-        "failures": v0["failures"] + v7["failures"] + v8["failures"],
+        "phase_forward_status": v9["status"],
+        "phase_forward_checks": f"{sum(1 for c in v9['checks'] if c['pass'])}/{len(v9['checks'])}",
+        "forward_collection_verified": not v9["failures"],
+        "failures": v0["failures"] + v7["failures"] + v8["failures"] + v9["failures"],
         "aggTrades_results": v7["results_summary"],
         "cost_model": v7["cost_model"],
         "paper_candidates": [
-            r["candidate"] for r in v7["results_summary"] if r["classification"] == "PAPER_CANDIDATE"
+            r["candidate"]
+            for r in v7["results_summary"]
+            if r["classification"] == "PAPER_CANDIDATE"
         ],
         "false_success": 0,
         "final_status": (
@@ -932,7 +1019,9 @@ def main() -> None:
             else "FAILED_VERIFICATION"
         ),
     }
-    with open(DOCS / "VENUE_EXECUTION_FINAL_REPORT.json", "w", encoding="utf-8", newline="\n") as fh:
+    with open(
+        DOCS / "VENUE_EXECUTION_FINAL_REPORT.json", "w", encoding="utf-8", newline="\n"
+    ) as fh:
         json.dump(final, fh, indent=2)
         fh.write("\n")
 
@@ -940,12 +1029,19 @@ def main() -> None:
     print(f"phase 7: {v7['status']} ({len(v7['failures'])} failures)")
     print(f"phase v2: {v8['status']} ({len(v8['failures'])} failures)")
     print(f"  v2 checks: {sum(1 for c in v8['checks'] if c['pass'])}/{len(v8['checks'])} pass")
+    print(f"phase forward: {v9['status']} ({len(v9['failures'])} failures)")
+    print(f"  forward checks: {sum(1 for c in v9['checks'] if c['pass'])}/{len(v9['checks'])} pass")
     for c in v8["checks"]:
         if not c["pass"]:
             print(f"  V2 FAILURE: {c['check']} -> {c['observed']}")
+    for c in v9["checks"]:
+        if not c["pass"]:
+            print(f"  FORWARD FAILURE: {c['check']} -> {c['observed']}")
     for r in v7["results_summary"]:
-        print(f"  {r['candidate']:<6} gross={r['gross_bps']:>8.3f} net={r['net_bps']:>9.3f} {r['classification']}")
-    for f in v0["failures"] + v7["failures"]:
+        print(
+            f"  {r['candidate']:<6} gross={r['gross_bps']:>8.3f} net={r['net_bps']:>9.3f} {r['classification']}"
+        )
+    for f in v0["failures"] + v7["failures"] + v8["failures"] + v9["failures"]:
         print(f"  FAILURE: {f}")
 
 

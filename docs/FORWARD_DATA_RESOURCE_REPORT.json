@@ -1,0 +1,81 @@
+{
+  "report_version": "FORWARD-REPORT-V1",
+  "run_id": "forward-1790610007-9d07f3df",
+  "duration_seconds": 3783.341,
+  "footprint": {
+    "measured_from": "segments on disk (decompressed vs stored)",
+    "segments": 78,
+    "stored_bytes": 376477867,
+    "uncompressed_bytes": 6593584165,
+    "compression_ratio": 17.514,
+    "raw_gb_per_hour": 6.2741,
+    "stored_gb_per_hour": 0.3582,
+    "raw_gb_per_day": 150.577,
+    "stored_gb_per_day": 8.598,
+    "retention_note": "raw forward data is never deleted in this phase; a continuous capture needs either a larger volume or an explicit raw-short / aggregate-long retention policy before it can run for weeks"
+  },
+  "disk_guard": {
+    "max_total_bytes": 1200000000,
+    "enabled": true,
+    "stopped_on_disk_budget": false
+  },
+  "storage_capacity": {
+    "free_disk_now_bytes": 5241720832,
+    "free_disk_now_gb": 5.242,
+    "free_disk_at_capture_start_bytes": null,
+    "free_disk_at_capture_start_reconstruction": 5618198699,
+    "reconstruction_note": "free disk was not sampled at capture time; the start figure is free-now plus the bytes this capture wrote, which is a reconstruction and is labelled as one",
+    "stored_gb_per_day_at_observed_rate": 8.598,
+    "capacity_hours_at_observed_rate": 14.632,
+    "capacity_days_at_observed_rate": 0.61,
+    "thresholds": {
+      "acceptable_days": 7.0,
+      "tight_days": 1.0
+    },
+    "verdict": "STORAGE_CAPACITY_BLOCKER",
+    "verdict_meaning": "STORAGE_CAPACITY_OK carries a week of headroom; TIGHT fits the week but needs attention; BLOCKER means under a day, so 24/7 collection must not be claimed on this volume"
+  },
+  "resources": {
+    "memory_measurement": "process working set / max RSS via stdlib",
+    "cpu_measurement": "time.process_time() delta over wall-clock delta",
+    "disk_measurement": "sum of segment file sizes on disk, measured at sample time",
+    "network_measurement": "sum of decoded WebSocket/HTTP payload bytes",
+    "samples": 59,
+    "duration_seconds": 3783.42,
+    "cpu_seconds": 2832.406,
+    "cpu_utilisation": 0.748637,
+    "memory_mb_max": 281.55859375,
+    "memory_mb_final": 281.55859375,
+    "memory_available": true,
+    "disk_bytes": 376480457,
+    "disk_bytes_per_hour": 358228747.66,
+    "network_bytes": 1293448253,
+    "network_bytes_per_hour": 1230742098.88
+  },
+  "heartbeats": 58,
+  "memory_mb_series": {
+    "samples": 58,
+    "max": 267.828125,
+    "p95": 263.3623046875
+  },
+  "events_per_second_series": {
+    "samples": 58,
+    "p50": 1480.1615000000002,
+    "p95": 1636.959475,
+    "max": 1966.253
+  },
+  "state_history": [
+    {
+      "at_ms": 1790610067858,
+      "from": "HEALTHY",
+      "to": "DEGRADED"
+    }
+  ],
+  "isolation": {
+    "process_separate_from_paper_runtime": true,
+    "shared_mutable_state_with_trading_runtime": false,
+    "opens_orders_or_private_endpoints": false,
+    "imports_trading_decision_modules": false,
+    "note": "the collector writes append-only JSONL under reports/microstructure-forward/ and touches no trading module; it cannot change a decision, a risk check or an execution path"
+  }
+}

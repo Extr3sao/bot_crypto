@@ -32,6 +32,7 @@ import gzip
 import hashlib
 import json
 import os
+from collections.abc import Iterator
 from dataclasses import asdict, dataclass, field, replace
 from datetime import UTC, datetime
 from pathlib import Path
@@ -61,6 +62,7 @@ __all__ = [
     "format_utc",
     "is_compressed_segment",
     "iter_segment_records",
+    "iter_segment_rows",
     "load_json",
     "load_manifest",
     "load_resume_state",
@@ -307,6 +309,39 @@ def read_segment(path: Path, *, strict: bool = False) -> tuple[list[RawEvent], b
     finally:
         handle.close()
     return events, partial_tail
+
+
+def iter_segment_rows(path: Path) -> Iterator[tuple[dict[str, Any] | None, bool]]:
+    """Yield a segment's rows one at a time, so memory stays bounded (§34).
+
+    A forward hour of one busy stream is a single segment of ~10^6 rows, so any
+    reader that materialises a segment cannot analyse a real capture. This is
+    the streaming counterpart of :func:`iter_segment_records`: each item is
+    ``(row, partial_tail)`` and the flag only ever becomes true on the final
+    item, when a truncated tail or a live gzip member was reached.
+    """
+    handle = _open_segment_text(path)
+    try:
+        for line in handle:
+            stripped = line.strip()
+            if not stripped:
+                continue
+            try:
+                payload = json.loads(stripped)
+            except json.JSONDecodeError:
+                yield None, True
+                return
+            if not isinstance(payload, dict):
+                yield None, True
+                return
+            yield payload, False
+    except (EOFError, gzip.BadGzipFile, OSError):
+        # A truncated final member is a partial tail, not a reason to discard
+        # the complete members (or rows) before it.
+        yield None, True
+        return
+    finally:
+        handle.close()
 
 
 def iter_segment_records(path: Path) -> tuple[list[dict[str, Any]], bool]:

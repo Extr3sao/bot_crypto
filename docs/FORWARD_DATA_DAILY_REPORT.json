@@ -1,0 +1,248 @@
+{
+  "report_version": "FORWARD-REPORT-V1",
+  "kind": "FORWARD_DATA_DAILY_REPORT",
+  "run_id": "forward-1790610007-9d07f3df",
+  "generated_from": "manifest + persisted segments (offline)",
+  "coverage": {
+    "started_at": "2026-09-28T15:40:07.810000+00:00",
+    "ended_at": "2026-09-28T16:43:11.151000+00:00",
+    "duration_seconds": 3783.341,
+    "continuity": "INCOMPLETE_DATA",
+    "streams_with_data": [
+      "perp/BTCUSDT/book_checkpoint",
+      "perp/BTCUSDT/book_ticker",
+      "perp/BTCUSDT/depth_diff",
+      "perp/BTCUSDT/depth_snapshot",
+      "perp/BTCUSDT/funding",
+      "perp/BTCUSDT/mark_price",
+      "perp/BTCUSDT/open_interest",
+      "perp/ETHUSDT/book_checkpoint",
+      "perp/ETHUSDT/book_ticker",
+      "perp/ETHUSDT/depth_diff",
+      "perp/ETHUSDT/depth_snapshot",
+      "perp/ETHUSDT/funding",
+      "perp/ETHUSDT/mark_price",
+      "perp/ETHUSDT/open_interest",
+      "perp/SOLUSDT/book_checkpoint",
+      "perp/SOLUSDT/book_ticker",
+      "perp/SOLUSDT/depth_diff",
+      "perp/SOLUSDT/depth_snapshot",
+      "perp/SOLUSDT/funding",
+      "perp/SOLUSDT/mark_price",
+      "perp/SOLUSDT/open_interest",
+      "spot/BTCUSDT/agg_trade",
+      "spot/BTCUSDT/book_checkpoint",
+      "spot/BTCUSDT/book_ticker",
+      "spot/BTCUSDT/depth_diff",
+      "spot/BTCUSDT/depth_snapshot",
+      "spot/ETHUSDT/agg_trade",
+      "spot/ETHUSDT/book_checkpoint",
+      "spot/ETHUSDT/book_ticker",
+      "spot/ETHUSDT/depth_diff",
+      "spot/ETHUSDT/depth_snapshot",
+      "spot/GLOBAL/gap",
+      "spot/GLOBAL/heartbeat",
+      "spot/GLOBAL/lifecycle",
+      "spot/SOLUSDT/agg_trade",
+      "spot/SOLUSDT/book_checkpoint",
+      "spot/SOLUSDT/book_ticker",
+      "spot/SOLUSDT/depth_diff",
+      "spot/SOLUSDT/depth_snapshot"
+    ],
+    "streams_without_data": [
+      "perp/BTCUSDT/agg_trade",
+      "perp/ETHUSDT/agg_trade",
+      "perp/SOLUSDT/agg_trade"
+    ]
+  },
+  "quality": {
+    "events": 5481951,
+    "duplicates": 554,
+    "out_of_order": 645,
+    "sequence_gaps": 74,
+    "gaps_total": 803,
+    "gaps_data_lost": 524,
+    "event_latency_ms": {
+      "p50": 3435.0,
+      "p95": 32011.0,
+      "p99": 62308.0,
+      "max": 91857,
+      "samples": 3805824,
+      "note": "live delivery only; recovered rows are counted in loss.backfilled_events instead of being described as latency"
+    },
+    "books": {
+      "perp/BTCUSDT": {
+        "final_health": "STALE",
+        "usable_ratio": 0.966102
+      },
+      "perp/ETHUSDT": {
+        "final_health": "STALE",
+        "usable_ratio": 0.940678
+      },
+      "perp/SOLUSDT": {
+        "final_health": "STALE",
+        "usable_ratio": 0.932203
+      },
+      "spot/BTCUSDT": {
+        "final_health": "STALE",
+        "usable_ratio": 0.966102
+      },
+      "spot/ETHUSDT": {
+        "final_health": "STALE",
+        "usable_ratio": 0.966102
+      },
+      "spot/SOLUSDT": {
+        "final_health": "STALE",
+        "usable_ratio": 0.966102
+      }
+    }
+  },
+  "files": {
+    "segments": 78,
+    "rows": 5481951,
+    "bytes": 376477867,
+    "hashes": {
+      "segments/binance/perp/BTCUSDT/book_checkpoint/2026-09-28/150000.jsonl.gz": "01d94ebb81ab2842e767683d43e516db067932139a2768f8ae4558fbf868eb5b",
+      "segments/binance/perp/BTCUSDT/book_checkpoint/2026-09-28/160000.jsonl.gz": "94b9ea55181d509a5f5c2b77b2a321cb8eaa57d7d799d678b31ccd2b00f9fbe1",
+      "segments/binance/perp/BTCUSDT/book_ticker/2026-09-28/150000.jsonl.gz": "bf26961c38a9468ef92588d85b3ccddf9a5a0680404a41c91175b90df6b2a558",
+      "segments/binance/perp/BTCUSDT/book_ticker/2026-09-28/160000.jsonl.gz": "a34b6f1517269cedcad8ce8f7fcb197aa61153f98d555af701791f4e1972e34f",
+      "segments/binance/perp/BTCUSDT/depth_diff/2026-09-28/150000.jsonl.gz": "da7206de172008f5bab96e26e45e14eef87be2f0e4fd18acf98ce5b9b73eead8",
+      "segments/binance/perp/BTCUSDT/depth_diff/2026-09-28/160000.jsonl.gz": "e7213b623d2f27f7a2c2b6ec666c1cb716a053d252cb0229d47ac41fba1788ec",
+      "segments/binance/perp/BTCUSDT/depth_snapshot/2026-09-28/150000.jsonl.gz": "9361d8e1f3f1af247e0137868158261c9ddfe4d022805ecea82f677974c75583",
+      "segments/binance/perp/BTCUSDT/depth_snapshot/2026-09-28/160000.jsonl.gz": "a192c56515aff65097391558463120e61da4a3db631064a97c1693aca3758dc3",
+      "segments/binance/perp/BTCUSDT/funding/2026-09-28/150000.jsonl.gz": "512a48d05f1438f732891e7ca7ba5f0e827f85d4ccab9b70693177210ae20e46",
+      "segments/binance/perp/BTCUSDT/funding/2026-09-28/160000.jsonl.gz": "0141d9522854bc569050b8d238e138156e1cc770bc77dc0dbaa02b7b42911190",
+      "segments/binance/perp/BTCUSDT/mark_price/2026-09-28/150000.jsonl.gz": "c2fb167876fd64643c7c3a99eb333343f440e62ad0a88d4280d9b5831631898e",
+      "segments/binance/perp/BTCUSDT/mark_price/2026-09-28/160000.jsonl.gz": "fa2da6ec538349297d3e08ea7cf646fcc7143af49f8196e59390478c75375f16",
+      "segments/binance/perp/BTCUSDT/open_interest/2026-09-28/150000.jsonl.gz": "9c971275bb615f2376d6db6a7f00841ea56af3397b4791af8303967b047ba34b",
+      "segments/binance/perp/BTCUSDT/open_interest/2026-09-28/160000.jsonl.gz": "f6ca03d259de6847a31c1f0a657f5aa3783e12a6f5716b6c11a65cca971242d7",
+      "segments/binance/perp/ETHUSDT/book_checkpoint/2026-09-28/150000.jsonl.gz": "0d0bb62b29b8f978958da08aea83e31160a37f26af11d9b2451ddd737251e493",
+      "segments/binance/perp/ETHUSDT/book_checkpoint/2026-09-28/160000.jsonl.gz": "a77f7793b1d674861b173128d6ad341603b7fd56960109d9d4a5ac889f307f4d",
+      "segments/binance/perp/ETHUSDT/book_ticker/2026-09-28/150000.jsonl.gz": "093e0e414f0e09fd016f032535aab00c5a6478e08ce11946245350b658580007",
+      "segments/binance/perp/ETHUSDT/book_ticker/2026-09-28/160000.jsonl.gz": "ae9c212c9a1a085c98f827fb4e440a87f85fe4559b5fb64ab66946f268fec8e5",
+      "segments/binance/perp/ETHUSDT/depth_diff/2026-09-28/150000.jsonl.gz": "316558eb32a3fa2656dc51f85b28140efba6bd0195f4b04e294ea7bcb0cc5ca4",
+      "segments/binance/perp/ETHUSDT/depth_diff/2026-09-28/160000.jsonl.gz": "d60e3dcdd1ef7ac19700fadc17889d9bb0e29f41acc745cddd9f26429ca9e279",
+      "segments/binance/perp/ETHUSDT/depth_snapshot/2026-09-28/150000.jsonl.gz": "a82ce988bd2f4436ed229ac18e08c4c2da9cf59d287245d0451b0c4a31914376",
+      "segments/binance/perp/ETHUSDT/depth_snapshot/2026-09-28/160000.jsonl.gz": "d84e12ced7b2104b5f48d963bd696384543e0261afcc3ca93a30fe9cc60455fa",
+      "segments/binance/perp/ETHUSDT/funding/2026-09-28/150000.jsonl.gz": "216f366812d90c58698fdb48c28ea7dfa8b142698b3f6419ac664635f2f3428a",
+      "segments/binance/perp/ETHUSDT/funding/2026-09-28/160000.jsonl.gz": "b9793b1ea054eca4edbb904c9e368ae76f514dcbc3fef0cc78cfee6fd0a25327",
+      "segments/binance/perp/ETHUSDT/mark_price/2026-09-28/150000.jsonl.gz": "0f4588fb54d38d34309655f894d522d880eacb55207deef24f397f281094108e",
+      "segments/binance/perp/ETHUSDT/mark_price/2026-09-28/160000.jsonl.gz": "a8be250c3367ebaccd8e8ec10abc676164beb2165729042bfef065acc3b3595c",
+      "segments/binance/perp/ETHUSDT/open_interest/2026-09-28/150000.jsonl.gz": "affecdd773864743cb377fb0abf497976ef985943a09cdb93fec2a929228a2c3",
+      "segments/binance/perp/ETHUSDT/open_interest/2026-09-28/160000.jsonl.gz": "16a400105275c177f3692b5f022aeea3ce764eea694e7db3769d98dc8a7553ce",
+      "segments/binance/perp/SOLUSDT/book_checkpoint/2026-09-28/150000.jsonl.gz": "4e5222e6b2b2e8a80fc0c827d3c0743059f1fd02d452c37b9edca91ce50bb1fc",
+      "segments/binance/perp/SOLUSDT/book_checkpoint/2026-09-28/160000.jsonl.gz": "79f419b862d7cf3c5091af55d0028b5bacf8340fef3ca35487e0e0e73b182631",
+      "segments/binance/perp/SOLUSDT/book_ticker/2026-09-28/150000.jsonl.gz": "75e5c82cf882464926d3867c335368e18ea7ba54ef4e0a6234e8126c803c9bc1",
+      "segments/binance/perp/SOLUSDT/book_ticker/2026-09-28/160000.jsonl.gz": "878eda7b5c9bdb9001f2c1f86c86e8e535572de480e545e00430aa84eaaea2bf",
+      "segments/binance/perp/SOLUSDT/depth_diff/2026-09-28/150000.jsonl.gz": "2610acdc282d5adb3063a6d0ea493bdea12fdabb23750785cc4df324951bec7b",
+      "segments/binance/perp/SOLUSDT/depth_diff/2026-09-28/160000.jsonl.gz": "0bf947abc005bc1e89f226a7be349668f2ae898bbc7044dc31200ac62d79fcc7",
+      "segments/binance/perp/SOLUSDT/depth_snapshot/2026-09-28/150000.jsonl.gz": "622193950049f23c365d388d3028e1a1a04aa6aa177dd2dfe1ae923a09901354",
+      "segments/binance/perp/SOLUSDT/depth_snapshot/2026-09-28/160000.jsonl.gz": "d032f4d1985959dcdd77a4f2f6771bb8056bc89b959d03ab0be6372e3650c5d8",
+      "segments/binance/perp/SOLUSDT/funding/2026-09-28/150000.jsonl.gz": "c54025d401de0108a83565c0d24d175e9871b3fb1b6603a9de43b7fb55c920a3",
+      "segments/binance/perp/SOLUSDT/funding/2026-09-28/160000.jsonl.gz": "859a86ea93827434fef7500304498580656b47f8b2790a6b7d462d259c52a332",
+      "segments/binance/perp/SOLUSDT/mark_price/2026-09-28/150000.jsonl.gz": "f1d2a96de6a44d1f3d8a4376b33a9a08408b25a54000ae059e99584ba255be1a",
+      "segments/binance/perp/SOLUSDT/mark_price/2026-09-28/160000.jsonl.gz": "ce5f360205e9d587b43bb6da094de423260d06e0ce89c6e189ee6bb25792e6a8",
+      "segments/binance/perp/SOLUSDT/open_interest/2026-09-28/150000.jsonl.gz": "d5046db121a8f982f8fece4f0b528e79eb0572b3296362267f325a56777b4217",
+      "segments/binance/perp/SOLUSDT/open_interest/2026-09-28/160000.jsonl.gz": "2c23d2e715a43632195d0987aed05bdf0bb74bbc4f067bd130f8401c0ecc6013",
+      "segments/binance/spot/BTCUSDT/agg_trade/2026-09-28/150000.jsonl.gz": "5d0c3bb8463b84f0ec02cda9f4a1fd8d371cad67c8c28f658e80087188fd24fa",
+      "segments/binance/spot/BTCUSDT/agg_trade/2026-09-28/160000.jsonl.gz": "1464cddaf330caa9e63b8f1e45fa0258b15b6bba20694bfe43ac30136717d08c",
+      "segments/binance/spot/BTCUSDT/book_checkpoint/2026-09-28/150000.jsonl.gz": "f25d72b8272e9652e8c3a3cad79976542981136afb47ed9745cf0905d01e7fe0",
+      "segments/binance/spot/BTCUSDT/book_checkpoint/2026-09-28/160000.jsonl.gz": "7a6aae3eecab09ebacc5a063d19a783471f3911ad5e3651944f8e70d395e0fed",
+      "segments/binance/spot/BTCUSDT/book_ticker/2026-09-28/150000.jsonl.gz": "40308812679da5b6c9c8cd9693c91d549e864f39260e6b8c7bbc011bb0001dd6",
+      "segments/binance/spot/BTCUSDT/book_ticker/2026-09-28/160000.jsonl.gz": "6f360576168746557d0f39cba118ac6ed6e92282c91d0ba66a1c12703d09221d",
+      "segments/binance/spot/BTCUSDT/depth_diff/2026-09-28/150000.jsonl.gz": "3fd9f91aba769d5c055d7627fa6bcf96a93bcbd49907ecdd94a681641d321f10",
+      "segments/binance/spot/BTCUSDT/depth_diff/2026-09-28/160000.jsonl.gz": "2f37a67f2cbb816b8c5af94878c974adf6c061407752c4ca87e948494e55741c",
+      "segments/binance/spot/BTCUSDT/depth_snapshot/2026-09-28/150000.jsonl.gz": "b646d5313eceb69b9a4558f8d865dac7cdd857675829789888093968996b4978",
+      "segments/binance/spot/BTCUSDT/depth_snapshot/2026-09-28/160000.jsonl.gz": "86072f9261af7c80ec119363fa0a74411518d253687866cdb9b6fa6bff20fa98",
+      "segments/binance/spot/ETHUSDT/agg_trade/2026-09-28/150000.jsonl.gz": "5861d4431f13043d247ab71ecb999a237917e11199a6de9d0e91e3592600e398",
+      "segments/binance/spot/ETHUSDT/agg_trade/2026-09-28/160000.jsonl.gz": "88cf11d220f7db5914454037d9cc02545f7788cba7acb2b7642099d2ef91f0c0",
+      "segments/binance/spot/ETHUSDT/book_checkpoint/2026-09-28/150000.jsonl.gz": "c39cfb4116a59941387b4622c445abcbf7ad9fadaac67d77aba9c381e99ce56a",
+      "segments/binance/spot/ETHUSDT/book_checkpoint/2026-09-28/160000.jsonl.gz": "f195ab2d771d9c4cdba3456286354af755d5410ac4da9d448a7b19a4f9929b93",
+      "segments/binance/spot/ETHUSDT/book_ticker/2026-09-28/150000.jsonl.gz": "21538691b3ad20234ea9d9e5bb98e889c0c552bf5774d857b839d18ad7eb0703",
+      "segments/binance/spot/ETHUSDT/book_ticker/2026-09-28/160000.jsonl.gz": "3a755e3ad6a12f77bb1b063261085adaa8ce8b8b5002baa51293302efc697ff9",
+      "segments/binance/spot/ETHUSDT/depth_diff/2026-09-28/150000.jsonl.gz": "84ab38de0dd326adaeb48123a8e6174c08a802ac90ea95c727cf512d2d0ae448",
+      "segments/binance/spot/ETHUSDT/depth_diff/2026-09-28/160000.jsonl.gz": "484cb6ee2df26ae44ddf5b0d726d3cee65dc45b1342568eb52d8ae25211085d9",
+      "segments/binance/spot/ETHUSDT/depth_snapshot/2026-09-28/150000.jsonl.gz": "317539bd30c63bc9a1da2a7b0971a0825e1915052b1c785ce8a33c6fb71a871f",
+      "segments/binance/spot/ETHUSDT/depth_snapshot/2026-09-28/160000.jsonl.gz": "1ed895bd62dc74f2453a6d4395e0cc4e96a62c2128457eacfa28837c38cd5027",
+      "segments/binance/spot/SOLUSDT/agg_trade/2026-09-28/150000.jsonl.gz": "c8468921172a1580932d57fa9c6daf192629fadd805274e2268c3c46b839f8f9",
+      "segments/binance/spot/SOLUSDT/agg_trade/2026-09-28/160000.jsonl.gz": "435ae6baaf515e1df5904fed4577e8f03872ff4f165ef22fb87788757ab0186c",
+      "segments/binance/spot/SOLUSDT/book_checkpoint/2026-09-28/150000.jsonl.gz": "b3e9281b142709142004ce1118c610f1ab2e1b2cf4001a22af4b5f13f76a6d63",
+      "segments/binance/spot/SOLUSDT/book_checkpoint/2026-09-28/160000.jsonl.gz": "692856745f4879cd4e1fa2b41952fe05e4a108a7a1806f49afcfe854f8711699",
+      "segments/binance/spot/SOLUSDT/book_ticker/2026-09-28/150000.jsonl.gz": "8ce4c50d90f363992e2bbadc83ed265510688f54cb3aabd0e13f3ffda9db507d",
+      "segments/binance/spot/SOLUSDT/book_ticker/2026-09-28/160000.jsonl.gz": "00e9b3e6afe6b4f9072094a0a614d0c7f7cd07baed9454ec7132e2f96a199457",
+      "segments/binance/spot/SOLUSDT/depth_diff/2026-09-28/150000.jsonl.gz": "1fe1921d3ff0d70427bb0478e44b9769c92ef73fbcb871e30f7352550d245179",
+      "segments/binance/spot/SOLUSDT/depth_diff/2026-09-28/160000.jsonl.gz": "834e5c23bec46c6d0ae6ce5700cca01182614e39c13eb8d7d2f70c5b09e1a599",
+      "segments/binance/spot/SOLUSDT/depth_snapshot/2026-09-28/150000.jsonl.gz": "280668bca69b300965ca9bcff8a4026813347a0b893bd6fa0627bfd9f339e4b8",
+      "segments/binance/spot/SOLUSDT/depth_snapshot/2026-09-28/160000.jsonl.gz": "56a119bd969a8c8b8f6d2c7f0ac1464291bb4aaf227604cd4cc9e7b0891bc1de",
+      "segments/binance/spot/_GLOBAL/gap/2026-09-28/150000.jsonl.gz": "fa313c644219cc6d49f6e47e76f90297475aad70ff299858c28db94407b147cb",
+      "segments/binance/spot/_GLOBAL/gap/2026-09-28/160000.jsonl.gz": "eddb1cebfb7b71d080d37b2785e8151bd0c39b61d0004bff5f43a471e89fc14a",
+      "segments/binance/spot/_GLOBAL/heartbeat/2026-09-28/150000.jsonl.gz": "b826ef8885cfce81ee77eab355596787ee081b6cd14d19c58a3f1bfa9a5aae10",
+      "segments/binance/spot/_GLOBAL/heartbeat/2026-09-28/160000.jsonl.gz": "a27d79d14968bec7b4a043cb45c1fc7359d23ae1fe1881d650f084f11665824d",
+      "segments/binance/spot/_GLOBAL/lifecycle/2026-09-28/150000.jsonl.gz": "93194251f5bd1aa99b08dea42099efb22246505fcbb0d8d00ddb2d5e3c4b9416",
+      "segments/binance/spot/_GLOBAL/lifecycle/2026-09-28/160000.jsonl.gz": "efdd9406ac8aa21cc3d08297638017d1fd860aca7f7fe4c7384b1960ef8ce733"
+    }
+  },
+  "resource_health": {
+    "cpu_utilisation": 0.748637,
+    "memory_mb_max": 281.55859375,
+    "disk_bytes_per_hour": 358228747.66,
+    "state": "DEGRADED"
+  },
+  "readiness": {
+    "M-03": {
+      "name": "order book imbalance",
+      "verdict": "COLLECTING",
+      "phase_readiness": "TECHNICALLY_READY_NEEDS_HISTORY",
+      "blocking": [
+        "56 order-book sequence gap(s) recorded in this run",
+        "sample is 63.1 min; 24 h of clean capture is the minimum to begin"
+      ],
+      "available": {
+        "book_update_events": 160219,
+        "book_checkpoints": 708,
+        "books_healthy_at_a_checkpoint": [
+          "perp/BTCUSDT",
+          "perp/ETHUSDT",
+          "perp/SOLUSDT",
+          "spot/BTCUSDT",
+          "spot/ETHUSDT",
+          "spot/SOLUSDT"
+        ],
+        "books_ending_healthy": [],
+        "healthy_checkpoint_ratio": {
+          "perp/BTCUSDT": 0.966102,
+          "perp/ETHUSDT": 0.940678,
+          "perp/SOLUSDT": 0.932203,
+          "spot/BTCUSDT": 0.966102,
+          "spot/ETHUSDT": 0.966102,
+          "spot/SOLUSDT": 0.966102
+        },
+        "sequence_gaps": 56,
+        "capture_minutes": 63.056
+      },
+      "requires": "forward book samples, valid book sequence, enough observations"
+    },
+    "M-07": {
+      "name": "open interest x price",
+      "verdict": "COLLECTING",
+      "phase_readiness": "TECHNICALLY_READY_NEEDS_HISTORY",
+      "blocking": [
+        "forward open interest spans 0.041 day(s); 6 day(s) are needed for a DEV/VAL/OOS split"
+      ],
+      "available": {
+        "open_interest_samples": 174,
+        "open_interest_span_days": 0.041,
+        "historical_complement": "~31 days of 5m open interest exist historically and end before this capture; the two are not contiguous, so this capture does not extend them"
+      },
+      "requires": "enough OI history for DEV, VAL and OOS"
+    },
+    "required_minimums": {
+      "m03_capture_minutes": 1440,
+      "m07_span_days": 6
+    },
+    "vocabulary": {
+      "verdict": "READY_FOR_RESEARCH | COLLECTING | NOT_READY",
+      "phase_readiness": "RESEARCH_READY | TECHNICALLY_READY_NEEDS_HISTORY | NOT_READY — the second means the pipeline captures what the hypothesis needs and only time is missing, which must never be read as the first"
+    }
+  }
+}

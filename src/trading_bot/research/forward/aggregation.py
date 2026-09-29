@@ -19,6 +19,7 @@ children are complete, and its ``available_at_ms`` is its own close.
 from __future__ import annotations
 
 from collections import defaultdict
+from collections.abc import Callable, Iterable
 from dataclasses import asdict, dataclass, field
 from decimal import Decimal
 from typing import Any, Final
@@ -147,7 +148,7 @@ def _key(market: str, symbol: str) -> str:
 
 
 def aggregate_events(
-    events: list[RawEvent],
+    events: Iterable[RawEvent],
     interval_minutes: int = BASE_TIMEFRAME_MINUTES,
     *,
     loss_windows: dict[str, list[tuple[int, int]]] | None = None,
@@ -311,7 +312,7 @@ def aggregate_events(
 
 
 def aggregate_book_checkpoints(
-    events: list[RawEvent],
+    events: Iterable[RawEvent],
     interval_minutes: int = BASE_TIMEFRAME_MINUTES,
     *,
     loss_windows: dict[str, list[tuple[int, int]]] | None = None,
@@ -484,23 +485,41 @@ def roll_up(buckets: list[BucketAggregate], higher_minutes: int) -> list[BucketA
 
 
 def aggregate_dataset(
-    events: list[RawEvent],
+    events: list[RawEvent] | Callable[[], Iterable[RawEvent]],
     *,
     run_id: str = "",
     intervals: tuple[int, ...] = (BASE_TIMEFRAME_MINUTES, *HIGHER_TIMEFRAMES_MINUTES),
     loss_windows: dict[str, list[tuple[int, int]]] | None = None,
     window: dict[str, tuple[int, int]] | None = None,
+    counts: dict[str, int] | None = None,
 ) -> DatasetAggregation:
-    """Full raw -> 1m -> 5m/15m/30m pipeline over an in-memory event list."""
+    """Full raw -> 1m -> 5m/15m/30m pipeline.
+
+    ``events`` may be a list, or a callable that produces a fresh iterable. The
+    callable form exists because an hour of forward capture is millions of rows:
+    the three accumulators below each need their own pass, and re-reading the
+    data is far cheaper than holding it (the accumulator itself only scales with
+    streams x minutes).
+    """
+    source: Callable[[], Iterable[RawEvent]]
+    if callable(events):
+        source = events
+    else:
+        captured: list[RawEvent] = list(events)
+        source = lambda: captured  # noqa: E731 - a trivial replayable source
     base = aggregate_events(
-        events, BASE_TIMEFRAME_MINUTES, loss_windows=loss_windows, window=window
+        source(), BASE_TIMEFRAME_MINUTES, loss_windows=loss_windows, window=window
     )
     books = aggregate_book_checkpoints(
-        events, BASE_TIMEFRAME_MINUTES, loss_windows=loss_windows, window=window
+        source(), BASE_TIMEFRAME_MINUTES, loss_windows=loss_windows, window=window
     )
-    counts: dict[str, int] = defaultdict(int)
-    for event in events:
-        counts[event.event_type.value] += 1
+    if counts is None:
+        # Callers that already counted the rows (the replay does) pass them in,
+        # which saves a whole pass over the dataset.
+        tally: dict[str, int] = defaultdict(int)
+        for event in source():
+            tally[event.event_type.value] += 1
+        counts = dict(tally)
     result = DatasetAggregation(
         run_id=run_id,
         intervals_minutes=tuple(intervals),
