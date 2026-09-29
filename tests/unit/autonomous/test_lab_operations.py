@@ -284,6 +284,38 @@ def test_every_child_that_must_finalise_is_stopped_by_a_file(lab_launcher: Any) 
     )
 
 
+def test_a_restart_tells_the_collector_it_owns_the_root(
+    tmp_path: Path, lab_launcher: Any
+) -> None:
+    """Without ``--resume`` the writer refuses its own past and the capture dies.
+
+    Leg 2 of the first Stop/restart pair reused the run id without it and wrote
+    198 unrecoverable gaps while every child exited 0 — a capture that stopped
+    being able to write and never said so.
+    """
+    namespace = _launcher_namespace(forward_root=str(tmp_path / "forward"))
+    run_dir = Path("reports/paper-lab/lab-test")
+    stop_files = lab_launcher.child_stop_files(namespace, "lab-test", run_dir)
+    first = {
+        spec.name: spec
+        for spec in lab_launcher.build_specs(namespace, "lab-test", run_dir, stop_files)
+    }
+    assert "--resume" not in first["collector"].command
+
+    state = tmp_path / "forward" / "state"
+    state.mkdir(parents=True)
+    (state / "lab-test.json").write_text("{}", encoding="utf-8")
+
+    again = {
+        spec.name: spec
+        for spec in lab_launcher.build_specs(namespace, "lab-test", run_dir, stop_files)
+    }
+    assert "--resume" in again["collector"].command
+    # Only the collector owns capture state; PAPER resumes through its own store.
+    assert "--resume" not in again["paper"].command
+    assert "--resume" not in again["retention"].command
+
+
 def test_the_stop_reason_is_read_from_the_evidence(
     tmp_path: Path, lab_launcher: Any
 ) -> None:

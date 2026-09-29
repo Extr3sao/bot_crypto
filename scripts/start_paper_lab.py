@@ -100,6 +100,20 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
+def collector_resumes(forward_root: Path, run_id: str) -> bool:
+    """True when this run id already owns a capture root: a restart, not a start.
+
+    A segment's path is a pure function of the window it covers, so the writer
+    refuses to append to a window another capture wrote — deliberately, because
+    that would fuse two captures into one fingerprint. A restart that does not
+    say ``--resume`` therefore stops being able to write the moment it reaches a
+    minute it already captured, and only the manifest, read later, would show a
+    capture that died of its own past. Saying it here is what makes "restart the
+    lab with the same run id" mean "continue the capture" (§51).
+    """
+    return (forward_root / "state" / f"{run_id}.json").exists()
+
+
 def child_stop_files(args: argparse.Namespace, run_id: str, run_dir: Path) -> dict[str, Path]:
     """Where each child is asked to stop, so it can finalise instead of dying.
 
@@ -126,6 +140,7 @@ def build_specs(
     python = sys.executable
     paper_run_root = REPO_ROOT / args.paper_root
     forward_root = (REPO_ROOT / args.forward_root).resolve()
+    resume = collector_resumes(forward_root, run_id)
     return [
         ManagedProcess(
             name="paper",
@@ -169,6 +184,7 @@ def build_specs(
                 str(forward_root),
                 "--run-id",
                 run_id,
+                *(["--resume"] if resume else []),
                 "--rotation-seconds",
                 str(args.rotation_seconds),
                 "--heartbeat-seconds",
@@ -275,6 +291,9 @@ def main() -> int:
             "delete_when_free_below": args.delete_when_free_below,
             "deletion_enabled": args.delete_when_free_below > 0,
         },
+        "collector_resume": collector_resumes(
+            (REPO_ROOT / args.forward_root).resolve(), run_id
+        ),
         "graceful_stop": {
             "stop_grace_seconds": args.stop_grace_seconds,
             "stop_files": {name: str(path) for name, path in stop_files.items()},

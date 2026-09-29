@@ -106,9 +106,13 @@ uv run python scripts/start_paper_lab.py --run-id <el-mismo-run-id>
   `paper_state.json`; las decisiones económicas ya emitidas no se duplican
   (`IdempotencyGuard`).
 * **Colector**: `state/<run-id>.json` guarda `last_agg_trade_id`, `gap_seq` y
-  contadores; un reinicio con el mismo `--run-id` continúa sin cortar la cadena
-  de ids. Los segmentos a medio escribir quedan marcados como *partial tail* y el
-  manifiesto los declara.
+  contadores. El launcher añade `--resume` **solo** cuando ese estado ya existe
+  (`collector_resume` en `LAB_PLAN.json`): sin él, el writer se niega a escribir
+  en una ventana que ya capturó otro proceso —la ruta de un segmento es función
+  de la ventana que cubre— y el run muere de su propio pasado con cada stream en
+  gap mientras los hijos salen 0. Con `--resume` la cadena de ids continúa y la
+  ventana de indisponibilidad se registra como gap `COLLECTOR_RESTART`, no se
+  oculta.
 * **Retention**: es idempotente; un corte entre el agregado y el marcador se
   repara en la siguiente pasada.
 
