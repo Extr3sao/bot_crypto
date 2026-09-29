@@ -266,6 +266,7 @@
     "docs\\FORWARD_DATA_RESOURCE_REPORT.md",
     "docs\\FORWARD_DATA_STREAMING_MEMORY.json",
     "docs\\MICROSTRUCTURE_FORWARD_COLLECTION_FINAL.json",
+    "docs\\MICROSTRUCTURE_FORWARD_COLLECTION_FINAL.md",
     "docs\\MICROSTRUCTURE_FORWARD_COLLECTION_INDEPENDENT_VERIFICATION.json",
     "docs\\MICROSTRUCTURE_FORWARD_COLLECTION_INDEPENDENT_VERIFICATION.md",
     "docs\\MICROSTRUCTURE_FORWARD_COLLECTION_V1.md",
@@ -314,7 +315,7 @@
   "independent_verifier": {
     "checks": 27,
     "checks_failed": [],
-    "head": "8740ca5be7d68b7d1c0023aacfe0746559d9ced4",
+    "head": "6ee84e93fab442787c54b4f217b43a36b656fae7",
     "status": "VERIFIED",
     "verifier": "scripts/research_verification.py"
   },
@@ -648,7 +649,7 @@
     "gates": {
       "mypy": {
         "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m mypy src scripts",
-        "elapsed_seconds": 0.563,
+        "elapsed_seconds": 0.484,
         "exit_code": 0,
         "stderr_tail": [],
         "summary_lines": [
@@ -657,19 +658,19 @@
       },
       "pytest": {
         "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m pytest -q",
-        "elapsed_seconds": 65.328,
+        "elapsed_seconds": 101.203,
         "exit_code": 0,
         "stderr_tail": [],
         "summary_lines": [
           "  C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Lib\\site-packages\\_pytest\\fixtures.py:1986: PytestRemovedIn10Warning: Passing baseid to FixtureDef is deprecated. Pass node instead for fixture scoping.",
           "    fixture_def = FixtureDef(",
           "-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html",
-          "1013 passed, 78 warnings in 64.33s (0:01:04)"
+          "1013 passed, 78 warnings in 100.05s (0:01:40)"
         ]
       },
       "ruff": {
         "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m ruff check src scripts tests",
-        "elapsed_seconds": 0.109,
+        "elapsed_seconds": 0.11,
         "exit_code": 0,
         "stderr_tail": [],
         "summary_lines": [
@@ -677,7 +678,7 @@
         ]
       }
     },
-    "head": "8740ca5be7d68b7d1c0023aacfe0746559d9ced4",
+    "head": "6ee84e93fab442787c54b4f217b43a36b656fae7",
     "kind": "FORWARD_QUALITY_GATES",
     "tests_passed": 1013
   },

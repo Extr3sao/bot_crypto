@@ -1,13 +1,13 @@
 {
   "scope": "MICROSTRUCTURE-FORWARD-COLLECTION-V1 (forward dataset)",
-  "head": "8740ca5be7d68b7d1c0023aacfe0746559d9ced4",
+  "head": "6ee84e93fab442787c54b4f217b43a36b656fae7",
   "environment": {
-    "source_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff",
+    "source_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.verify-forward-worktree",
     "capture_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\microstructure-forward",
-    "capture_root_is_inside_source_root": true,
-    "collector_module_file": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\forward\\collector.py",
+    "capture_root_is_inside_source_root": false,
+    "collector_module_file": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.verify-forward-worktree\\src\\trading_bot\\research\\forward\\collector.py",
     "collector_module_is_inside_source_root": true,
-    "git_toplevel": "C:/Users/GVLLFR0035/Downloads/bot freebuff",
+    "git_toplevel": "C:/Users/GVLLFR0035/Downloads/bot freebuff/.verify-forward-worktree",
     "python": "3.11.15"
   },
   "checks": [
@@ -16,14 +16,14 @@
       "expected": "no forbidden import, no unresolved module, no module outside the repository",
       "observed": {
         "modules": {
-          "trading_bot.research.forward.aggregation": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\forward\\aggregation.py",
-          "trading_bot.research.forward.collector": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\forward\\collector.py",
-          "trading_bot.research.forward.contract": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\forward\\contract.py",
-          "trading_bot.research.forward.orderbook": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\forward\\orderbook.py",
-          "trading_bot.research.forward.replay": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\forward\\replay.py",
-          "trading_bot.research.forward.reporting": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\forward\\reporting.py",
-          "trading_bot.research.forward.resources": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\forward\\resources.py",
-          "trading_bot.research.forward.storage": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\forward\\storage.py"
+          "trading_bot.research.forward.aggregation": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.verify-forward-worktree\\src\\trading_bot\\research\\forward\\aggregation.py",
+          "trading_bot.research.forward.collector": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.verify-forward-worktree\\src\\trading_bot\\research\\forward\\collector.py",
+          "trading_bot.research.forward.contract": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.verify-forward-worktree\\src\\trading_bot\\research\\forward\\contract.py",
+          "trading_bot.research.forward.orderbook": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.verify-forward-worktree\\src\\trading_bot\\research\\forward\\orderbook.py",
+          "trading_bot.research.forward.replay": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.verify-forward-worktree\\src\\trading_bot\\research\\forward\\replay.py",
+          "trading_bot.research.forward.reporting": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.verify-forward-worktree\\src\\trading_bot\\research\\forward\\reporting.py",
+          "trading_bot.research.forward.resources": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.verify-forward-worktree\\src\\trading_bot\\research\\forward\\resources.py",
+          "trading_bot.research.forward.storage": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.verify-forward-worktree\\src\\trading_bot\\research\\forward\\storage.py"
         },
         "problems": [],
         "unresolved": [],
@@ -444,8 +444,8 @@
       "expected": "no file under the protected prefixes changed",
       "observed": {
         "base": "faf39927b153da2e7e6c1ef532ddd031da00e7c7",
-        "head": "8740ca5be7d68b7d1c0023aacfe0746559d9ced4",
-        "changed_files": 41,
+        "head": "6ee84e93fab442787c54b4f217b43a36b656fae7",
+        "changed_files": 50,
         "protected_files_changed": [],
         "changed_prefixes": [
           "docs",
@@ -463,7 +463,7 @@
       "check": "no artifact claims a strategy outcome and the final status is one of three",
       "expected": "status in ['MICROSTRUCTURE_FORWARD_DATA_VERIFIED', 'MICROSTRUCTURE_FORWARD_DATA_PARTIAL', 'MICROSTRUCTURE_FORWARD_DATA_FAILED']; no profitability vocabulary",
       "observed": {
-        "final_status": "MICROSTRUCTURE_FORWARD_DATA_PARTIAL",
+        "final_status": "MICROSTRUCTURE_FORWARD_DATA_VERIFIED",
         "artifacts_present": [
           "FORWARD_DATA_QUALITY_REPORT.json",
           "FORWARD_DATA_REPLAY_VALIDATION.json",
@@ -809,7 +809,7 @@
       "expected": "collector, book, contract and CLI identical; any storage delta unreachable from the names the writer imports",
       "observed": {
         "capture_commit": "7fb9429e765dbf0d520e6a58df3dabacc05dbbde",
-        "head": "8740ca5be7d68b7d1c0023aacfe0746559d9ced4",
+        "head": "6ee84e93fab442787c54b4f217b43a36b656fae7",
         "numstat": {
           "src/trading_bot/research/forward/collector.py": "unchanged",
           "src/trading_bot/research/forward/orderbook.py": "unchanged",
@@ -907,5 +907,5 @@
   "failures": [],
   "status": "VERIFIED",
   "verifier": "scripts/research_verification.py",
-  "independence_note": "the verifier rebuilds the order book with a second implementation, recomputes every segment fingerprint from raw bytes, re-derives the aggregate-trade id chain and the timestamp invariant from the rows, and re-runs replay with sockets disabled"
+  "independence_note": "run from a fresh git worktree checked out at the final HEAD; the code under test resolved inside that worktree, the captured bytes were read from an explicit root"
 }
