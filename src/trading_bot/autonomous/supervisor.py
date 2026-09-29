@@ -19,6 +19,12 @@ The rules that matter:
   the collector must keep running, and the system says ``DEGRADED``.
 * **The heartbeat is combined and honest** (§30): process states, restart
   counts, disk and memory, plus whatever the children published.
+* **A stop is asked for before it is imposed** (§51). On Windows a supervisor's
+  ``terminate()`` is ``TerminateProcess``: the child never runs its cleanup, so
+  a capture died with unsealed segments and no manifest while the PAPER loop's
+  stop file was never consulted. Every child that benefits from finalising
+  publishes a stop file, the supervisor writes it first and only escalates to
+  ``terminate()``/``kill()`` once the grace period has passed.
 """
 
 from __future__ import annotations
@@ -96,6 +102,10 @@ class ManagedProcess:
     env: dict[str, str] = field(default_factory=dict)
     #: A process the supervisor starts once and does not restart (maintenance).
     restart_on_exit: bool = True
+    #: The file this child watches to stop *itself*: seal its segments, write its
+    #: manifest, flush its state, exit 0. ``None`` means the child has no cleanup
+    #: to run and will be terminated directly.
+    stop_file: Path | None = None
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -105,6 +115,7 @@ class ManagedProcess:
             "critical": self.critical,
             "max_restarts": self.max_restarts,
             "restart_on_exit": self.restart_on_exit,
+            "stop_file": str(self.stop_file) if self.stop_file is not None else None,
         }
 
 
@@ -135,6 +146,9 @@ class ProcessRuntime:
 
     def start(self, log_path: Path, *, restart: bool = False) -> None:
         log_path.parent.mkdir(parents=True, exist_ok=True)
+        # A stop file left behind by a previous run of the same run id would stop
+        # this child the moment it started, so it is cleared before it is spawned.
+        self.clear_stop_file()
         env = {**os.environ, **self.spec.env}
         handle = log_path.open("ab")
         self._process = subprocess.Popen(
@@ -189,6 +203,45 @@ class ProcessRuntime:
         self.next_restart_at = now + delay
         self.state = ProcessState.RESTARTING
         return delay
+
+    def request_graceful_stop(self) -> Path | None:
+        """Ask the child to finalise itself by writing the file it polls.
+
+        Returns the file that was written, or ``None`` when the child has no
+        cooperative stop. This is phase one of ``Supervisor.stop_all``: the same
+        operator gesture (a STOP file) works for every child, on every platform.
+        """
+        stop_file = self.spec.stop_file
+        if stop_file is None:
+            return None
+        stop_file.parent.mkdir(parents=True, exist_ok=True)
+        stamp = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+        stop_file.write_text(f"stop requested at {stamp}\n", encoding="utf-8")
+        return stop_file
+
+    def clear_stop_file(self) -> None:
+        """Remove our own stop file so a restart is not stopped by its past."""
+        if self.spec.stop_file is not None:
+            self.spec.stop_file.unlink(missing_ok=True)
+
+    def wait_for_exit(self, timeout: float) -> bool:
+        """True when the child exited on its own inside ``timeout`` seconds."""
+        process = self._process
+        if process is None:
+            return True
+        try:
+            process.wait(timeout=timeout)
+        except subprocess.TimeoutExpired:
+            return False
+        except (OSError, ValueError):  # pragma: no cover - handle already gone
+            return False
+        return True
+
+    @property
+    def is_alive(self) -> bool:
+        """Whether the child process is still running, without changing state."""
+        process = self._process
+        return process is not None and process.poll() is None
 
     def stop(self, *, timeout: float = 10.0, hard: bool = False) -> None:
         process = self._process
@@ -287,7 +340,28 @@ class Supervisor:
             runtime.start(self.log_path(runtime.spec.name))
         return self.status()
 
-    def stop_all(self, *, timeout: float = 10.0) -> dict[str, Any]:
+    def stop_all(self, *, timeout: float = 10.0, grace_seconds: float = 0.0) -> dict[str, Any]:
+        """Stop every child by asking first and insisting only if it must.
+
+        Phase 1 writes the stop file of every child that has one. Phase 2 waits
+        out the grace period for those children to seal their segments, write
+        their manifest and flush their state. Phase 3 escalates to
+        ``terminate()`` and, if the child still refuses, ``kill()``.
+
+        Skipping phase 1 is what left a stopped discovery capture with partial
+        tails and no manifest: on Windows ``terminate()`` is a hard kill, so the
+        collector never reached ``finalise()``.
+        """
+        requested = {
+            runtime.spec.name: runtime.request_graceful_stop() for runtime in self.processes
+        }
+        asked = [runtime for runtime in self.processes if requested[runtime.spec.name] is not None]
+        if asked and grace_seconds > 0:
+            deadline = time.monotonic() + grace_seconds
+            while time.monotonic() < deadline:
+                if all(not runtime.is_alive for runtime in asked):
+                    break
+                time.sleep(min(0.25, max(0.0, deadline - time.monotonic())))
         for runtime in self.processes:
             runtime.stop(timeout=timeout)
         return self.status()
@@ -408,6 +482,7 @@ class Supervisor:
         stop_requested: Any,
         on_event: Any = None,
         max_seconds: float | None = None,
+        stop_grace_seconds: float = 0.0,
     ) -> dict[str, Any]:
         """Poll the children until ``stop_requested()`` says otherwise.
 
@@ -430,6 +505,6 @@ class Supervisor:
                 self.write_heartbeat()
                 next_heartbeat = now + self.heartbeat_seconds
             time.sleep(min(1.0, self.heartbeat_seconds))
-        self.stop_all()
+        self.stop_all(grace_seconds=stop_grace_seconds)
         self.write_heartbeat()
         return self.status()

@@ -170,6 +170,10 @@ class CollectorConfig:
     streams: tuple[str, ...] = ("agg_trade", "depth", "book_ticker")
     #: Stop gracefully before filling the volume (§43). ``None`` disables it.
     max_total_bytes: int | None = None
+    #: The file whose appearance asks this capture to stop *gracefully*: seal the
+    #: open segment, write the manifest, exit 0. It exists because a supervisor's
+    #: ``terminate()`` on Windows is a hard kill that skips all of that (§51).
+    stop_file: Path | None = None
     #: Cadence of the maintenance loop (rotation + resume-state save).
     maintenance_seconds: float = 5.0
 
@@ -312,6 +316,7 @@ class ForwardCollector:
         self._tasks: list[asyncio.Task[None]] = []
         self._resnap_tasks: dict[str, asyncio.Task[None]] = {}
         self._stopping = False
+        self._stop_reason: str | None = None
         self._fatal: str | None = None
         self._started_wall = time.time()
         self._started_ms = _now_ms()
@@ -1686,6 +1691,7 @@ class ForwardCollector:
             ),
             "last_agg_trade_id": dict(self.last_agg_trade_id),
             "gap_seq": self._gap_seq,
+            "stop_reason": self._stop_reason,
             "events": self.writer.total_rows,
             "reconnects": self.reconnects,
             "resnapshots": self.resnapshots,
@@ -1737,11 +1743,7 @@ class ForwardCollector:
             self._tasks.append(asyncio.create_task(self._heartbeat_loop()))
             self._tasks.append(asyncio.create_task(self._maintenance_loop()))
             try:
-                if self.config.duration_seconds is not None:
-                    await asyncio.sleep(self.config.duration_seconds)
-                else:
-                    while not self._stopping:
-                        await asyncio.sleep(1.0)
+                await self._wait_until_stopped()
             except asyncio.CancelledError:
                 pass
             finally:
@@ -1755,8 +1757,47 @@ class ForwardCollector:
                 )
         return self.finalise()
 
-    def stop(self) -> None:
+    def stop(self, reason: str = "signal") -> None:
+        """Ask the run loop to stop after it has sealed what it has written.
+
+        The reason is kept because a capture that was stopped by the disk guard
+        and a capture that was stopped by an operator are different findings, and
+        the manifest is where that is read from.
+        """
+        if self._stop_reason is None:
+            self._stop_reason = reason
         self._stopping = True
+
+    @property
+    def stop_reason(self) -> str | None:
+        """Why the run ended, as published in the manifest (``None`` while live)."""
+        return self._stop_reason
+
+    def _stop_file_present(self) -> bool:
+        path = self.config.stop_file
+        return path is not None and Path(path).exists()
+
+    async def _wait_until_stopped(self) -> None:
+        """Wait for the duration, the operator's signal, or the stop file.
+
+        The stop file is the portable half: a supervisor on Windows cannot send
+        SIGTERM, so a file it can write is the only way to ask for a stop that
+        still seals the segments and writes the manifest (§51).
+        """
+        loop = asyncio.get_running_loop()
+        deadline = (
+            None
+            if self.config.duration_seconds is None
+            else loop.time() + self.config.duration_seconds
+        )
+        while not self._stopping:
+            if deadline is not None and loop.time() >= deadline:
+                self._stop_reason = self._stop_reason or "duration reached"
+                return
+            if self._stop_file_present():
+                self.stop("stop file")
+                return
+            await asyncio.sleep(1.0)
 
     async def _maintenance_loop(self) -> None:
         """Rotate segments and checkpoint resume state on a fixed cadence."""
@@ -1774,7 +1815,7 @@ class ForwardCollector:
                         detail={"kind": "STORAGE_FAILURE", "reason": self._fatal},
                     )
                 )
-                self.stop()
+                self.stop("storage failure")
                 return
             if self.config.max_total_bytes is not None:
                 used = directory_bytes(self.root)
@@ -1794,7 +1835,7 @@ class ForwardCollector:
                         )
                     )
                     self.stopped_on_disk_budget = True
-                    self.stop()
+                    self.stop("disk budget")
                     return
             self._save_state()
 
@@ -1908,6 +1949,7 @@ class ForwardCollector:
             disk_bytes_per_hour=round(bytes_written / elapsed_hours, 2),
             max_total_bytes=self.config.max_total_bytes,
             stopped_on_disk_budget=self.stopped_on_disk_budget,
+            stop_reason=self._stop_reason,
             fingerprints=fingerprints,
             resources=summary.as_dict(),
             book_health={

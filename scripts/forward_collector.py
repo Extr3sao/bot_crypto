@@ -115,6 +115,14 @@ def build_parser() -> argparse.ArgumentParser:
         help="stop gracefully once the dataset reaches this size (disk safety valve)",
     )
     parser.add_argument(
+        "--stop-file",
+        default=None,
+        help=(
+            "path whose appearance stops the capture gracefully (seal + manifest); "
+            "the portable stop a supervisor can ask for"
+        ),
+    )
+    parser.add_argument(
         "--drop-raw",
         action="store_true",
         help="omit the verbatim exchange payload (RAW FIRST is on by default)",
@@ -157,6 +165,7 @@ def _config_from_args(args: argparse.Namespace) -> CollectorConfig:
         stale_after_ms=args.stale_after_ms,
         streams=_parse_streams(args.streams),
         max_total_bytes=args.max_total_bytes,
+        stop_file=Path(args.stop_file) if args.stop_file else None,
         run_id=args.run_id,
         resume=args.resume,
     )
@@ -178,6 +187,10 @@ def mode_run(args: argparse.Namespace) -> int:
     print(
         f"  capture: duration={config.duration_seconds}s rotation={config.rotation_seconds}s "
         f"heartbeat={config.heartbeat_seconds}s checkpoint={config.checkpoint_seconds}s",
+        file=sys.stderr,
+    )
+    print(
+        f"  graceful stop: {config.stop_file if config.stop_file else 'signal only'}",
         file=sys.stderr,
     )
     manifest = asyncio.run(collector.run())

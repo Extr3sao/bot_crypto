@@ -71,6 +71,51 @@ def _collector(tmp_path: Path, **overrides: Any) -> ForwardCollector:
     return ForwardCollector(CollectorConfig(**options))
 
 
+# ------------------------------------------------------- graceful stop (§51)
+
+
+def test_a_stop_file_ends_the_wait_without_a_signal(tmp_path: Path) -> None:
+    """The portable stop: a file, because Windows cannot deliver SIGTERM."""
+    stop_file = tmp_path / "STOP"
+    collector = _collector(tmp_path / "capture", stop_file=stop_file)
+
+    async def scenario() -> None:
+        waiting = asyncio.create_task(collector._wait_until_stopped())
+        await asyncio.sleep(0.05)
+        assert not waiting.done()
+        stop_file.write_text("stop requested\n", encoding="utf-8")
+        await asyncio.wait_for(waiting, timeout=10.0)
+
+    asyncio.run(scenario())
+    assert collector.stop_reason == "stop file"
+    assert collector._stop_file_present() is True
+
+
+def test_the_reason_a_capture_ended_is_recorded(tmp_path: Path) -> None:
+    """A capture stopped by its duration must not claim it was stopped by an operator."""
+    collector = _collector(tmp_path / "capture", duration_seconds=0.05)
+    asyncio.run(collector._wait_until_stopped())
+    assert collector.stop_reason == "duration reached"
+
+
+def test_a_first_reason_wins_and_no_stop_file_means_no_request(tmp_path: Path) -> None:
+    collector = _collector(tmp_path / "capture")
+    assert collector.stop_reason is None
+    assert collector._stop_file_present() is False
+    collector.stop("disk budget")
+    collector.stop("signal")
+    assert collector.stop_reason == "disk budget"
+
+
+def test_the_manifest_carries_the_stop_reason(tmp_path: Path) -> None:
+    """The manifest is where the operator reads why the capture ended."""
+    collector = _collector(tmp_path / "capture", stop_file=tmp_path / "STOP")
+    collector.stop("stop file")
+    payload = collector.finalise().as_dict()
+    assert payload["stop_reason"] == "stop file"
+    assert payload["stopped_on_disk_budget"] is False
+
+
 def _rows(collector: ForwardCollector) -> list[dict[str, Any]]:
     rows, _ = ForwardReplay(collector.root, collector.run_id).load_rows()
     return rows

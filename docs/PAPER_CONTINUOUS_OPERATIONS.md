@@ -46,6 +46,8 @@ queda `DEGRADED`, no `FAILED` (`§16`).
 --raw-hot-hours 2           # ventana caliente de RAW antes de compactar
 --delete-when-free-below N  # 0 = compactar sin borrar nunca (por defecto)
 --collector-max-bytes N     # guarda de disco del colector (última barrera)
+--sealed-grace-seconds N    # cuánto debe reposar un segmento sellado antes de compactar
+--stop-grace-seconds N      # cuánto puede tardar un hijo en finalizarse antes del kill
 --dry-run                   # imprime el plan y no arranca nada
 ```
 
@@ -74,12 +76,23 @@ uv run python scripts/start_paper_lab.py --stop reports/paper-lab/<run-id>
 
 Qué hace la parada, en orden:
 
-1. el loop PAPER termina **el ciclo en curso** y persiste su estado;
-2. el colector deja de ingerir, cierra el writer y sella los segmentos;
-3. `retention` no vuelve a correr;
-4. el supervisor hace `terminate()` a cada hijo y, si no responde, `kill()`;
-5. se escriben `SYSTEM_HEARTBEAT.json`, `LAB_RUN_REPORT.{json,md}` y
+1. el supervisor **pide** a cada hijo que se detenga escribiendo su archivo de
+   parada (ver §6) y espera `--stop-grace-seconds`;
+2. el loop PAPER termina **el ciclo en curso** y persiste su estado;
+3. el colector deja de ingerir, cierra el writer, sella los segmentos y escribe
+   `manifest/<run-id>.json` con `stop_reason` y *partial tails* = 0;
+4. `retention` y `strategy_lab` terminan la pasada en curso y salen 0;
+5. solo entonces el supervisor escala a `terminate()` y, si el hijo no responde,
+   a `kill()`;
+6. se escriben `SYSTEM_HEARTBEAT.json`, `LAB_RUN_REPORT.{json,md}` y
    `SYSTEM_DAILY_REPORT.{json,md}`.
+
+El paso 1 existe porque en Windows `terminate()` es `TerminateProcess`: un
+kill duro que no deja al hijo ejecutar su cierre. Por eso la parada se *pide*
+con un archivo y el kill es la última barrera, no la primera. Si un hijo agota
+su gracia y muere por kill, `LAB_RUN_REPORT.json` lo dice con `exit_code` ≠ 0 y
+el veredicto `SAFE_STOP_AND_RESTART` no puede pasar en falso: sin manifiesto no
+hay *partial tails* = 0 que citar.
 
 ---
 
@@ -145,7 +158,15 @@ PAPER RUN          reports/autonomous-paper/<run-id>/               (traces, out
 SUPERVISOR RUN     reports/paper-lab/<run-id>/                      (plan, logs, heartbeat, informes)
 BROKER STATE       reports/paper-lab/<run-id>/paper_state.json
 ADMISSION LEDGER   config/strategy_admission.json                   (autoridad de admisión)
+STOP PAPER         reports/autonomous-paper/<run-id>/STOP            (el mismo que ya vigila PAPER)
+STOP COLLECTOR     reports/microstructure-forward-lab/state/<run-id>.stop
+STOP RETENTION     reports/paper-lab/<run-id>/STOP.retention
+STOP STRATEGY LAB  reports/paper-lab/<run-id>/STOP.strategy_lab
 ```
+
+Los cuatro archivos de parada los escribe el supervisor; cada hijo nace con el
+suyo borrado (`start` limpia el archivo antes de lanzar el proceso), de modo que
+un reinicio con el mismo `--run-id` nunca hereda la parada anterior.
 
 Nada en `reports/` se borra nunca por política de retención (`§6`): sólo los
 segmentos RAW, y sólo tras comprobar que el agregado existe, re-hashea al hash

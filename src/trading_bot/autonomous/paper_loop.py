@@ -36,12 +36,36 @@ __all__ = [
     "StopController",
     "build_daily_report",
     "render_daily_report_markdown",
+    "wait_for_stop_file",
     "write_daily_report",
 ]
 
 PAPER_HEARTBEAT_SCHEMA_VERSION: Final[str] = "paper-heartbeat-v1"
 PAPER_DAILY_REPORT_SCHEMA_VERSION: Final[str] = "paper-daily-report-v1"
 STOP_FILE_NAME: Final[str] = "STOP"
+
+
+def wait_for_stop_file(
+    stop_file: Path | None,
+    seconds: float,
+    *,
+    chunk_seconds: float = 1.0,
+) -> bool:
+    """Sleep ``seconds`` in short slices, waking early when the stop file appears.
+
+    A long-lived worker has to notice a supervisor's stop request without
+    finishing a five-minute nap first, and it has to notice it *portably*: on
+    Windows the supervisor cannot send a signal, so the file is the only channel.
+    ``True`` means stop now; ``False`` means the sleep ran out.
+    """
+    deadline = time.monotonic() + max(0.0, seconds)
+    while True:
+        if stop_file is not None and stop_file.exists():
+            return True
+        remaining = deadline - time.monotonic()
+        if remaining <= 0:
+            return False
+        time.sleep(min(chunk_seconds, remaining))
 
 
 def _iso(ms: int) -> str:

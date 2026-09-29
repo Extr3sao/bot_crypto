@@ -81,6 +81,15 @@ def parse_args() -> argparse.Namespace:
         help="how long a sealed segment must be quiet before it may be compacted",
     )
     parser.add_argument(
+        "--stop-grace-seconds",
+        type=float,
+        default=120.0,
+        help=(
+            "how long a child may take to finalise itself after being asked to "
+            "stop, before the supervisor kills it (§51)"
+        ),
+    )
+    parser.add_argument(
         "--delete-when-free-below",
         type=int,
         default=0,
@@ -91,7 +100,29 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def build_specs(args: argparse.Namespace, run_id: str, lab_dir: Path) -> list[ManagedProcess]:
+def child_stop_files(args: argparse.Namespace, run_id: str, run_dir: Path) -> dict[str, Path]:
+    """Where each child is asked to stop, so it can finalise instead of dying.
+
+    A supervisor's ``terminate()`` on Windows is a hard kill: no sealing, no
+    manifest, half-written segments. Every child that has cleanup to run is
+    therefore stopped through a file it polls, and this is the one place that
+    says which file belongs to which child (§51).
+    """
+    forward_root = (REPO_ROOT / args.forward_root).resolve()
+    return {
+        # PAPER already watches STOP inside its own run directory.
+        "paper": (REPO_ROOT / args.paper_root).resolve() / run_id / STOP_FILE_NAME,
+        # The collector watches a file next to the resume state it writes.
+        "collector": forward_root / "state" / f"{run_id}.stop",
+        # Maintenance workers ask between passes.
+        "retention": run_dir / f"{STOP_FILE_NAME}.retention",
+        "strategy_lab": run_dir / f"{STOP_FILE_NAME}.strategy_lab",
+    }
+
+
+def build_specs(
+    args: argparse.Namespace, run_id: str, lab_dir: Path, stop_files: dict[str, Path]
+) -> list[ManagedProcess]:
     python = sys.executable
     paper_run_root = REPO_ROOT / args.paper_root
     forward_root = (REPO_ROOT / args.forward_root).resolve()
@@ -121,6 +152,7 @@ def build_specs(args: argparse.Namespace, run_id: str, lab_dir: Path) -> list[Ma
             critical=True,
             max_restarts=3,
             env={"PYTHONUNBUFFERED": "1"},
+            stop_file=stop_files["paper"],
         ),
         ManagedProcess(
             name="collector",
@@ -143,11 +175,14 @@ def build_specs(args: argparse.Namespace, run_id: str, lab_dir: Path) -> list[Ma
                 "60",
                 "--max-total-bytes",
                 str(args.collector_max_bytes),
+                "--stop-file",
+                str(stop_files["collector"]),
             ],
             cwd=REPO_ROOT,
             critical=True,
             max_restarts=3,
             env={"PYTHONUNBUFFERED": "1"},
+            stop_file=stop_files["collector"],
         ),
         ManagedProcess(
             name="retention",
@@ -169,11 +204,14 @@ def build_specs(args: argparse.Namespace, run_id: str, lab_dir: Path) -> list[Ma
                 "--loop",
                 "--interval",
                 "300",
+                "--stop-file",
+                str(stop_files["retention"]),
             ],
             cwd=REPO_ROOT,
             critical=False,
             max_restarts=2,
             env={"PYTHONUNBUFFERED": "1"},
+            stop_file=stop_files["retention"],
         ),
         ManagedProcess(
             name="strategy_lab",
@@ -191,11 +229,14 @@ def build_specs(args: argparse.Namespace, run_id: str, lab_dir: Path) -> list[Ma
                 "--loop",
                 "--interval",
                 "900",
+                "--stop-file",
+                str(stop_files["strategy_lab"]),
             ],
             cwd=REPO_ROOT,
             critical=False,
             max_restarts=2,
             env={"PYTHONUNBUFFERED": "1"},
+            stop_file=stop_files["strategy_lab"],
         ),
     ]
 
@@ -215,7 +256,8 @@ def main() -> int:
 
     run_id = args.run_id or f"paper-lab-{time.strftime('%Y%m%d-%H%M%S', time.gmtime())}"
     run_dir = lab_dir / run_id
-    specs = build_specs(args, run_id, run_dir)
+    stop_files = child_stop_files(args, run_id, run_dir)
+    specs = build_specs(args, run_id, run_dir, stop_files)
 
     plan = {
         "run_id": run_id,
@@ -232,6 +274,14 @@ def main() -> int:
             "sealed_grace_seconds": args.sealed_grace_seconds,
             "delete_when_free_below": args.delete_when_free_below,
             "deletion_enabled": args.delete_when_free_below > 0,
+        },
+        "graceful_stop": {
+            "stop_grace_seconds": args.stop_grace_seconds,
+            "stop_files": {name: str(path) for name, path in stop_files.items()},
+            "method": (
+                "the supervisor writes each child's stop file, waits for it to seal and "
+                "finalise, and only then terminates the ones that did not exit"
+            ),
         },
         "no_live_path": (
             "children are read-only market data plus the PAPER broker; no child "
@@ -270,6 +320,7 @@ def main() -> int:
     print(f"[lab] free disk   : {disk_free_bytes(REPO_ROOT) / 1e9:.3f} GB")
     print(f"[lab] duration    : {'until stopped' if not args.duration_hours else f'{args.duration_hours} h'}")
     print(f"[lab] stop with   : Ctrl-C, or write STOP into {run_dir}")
+    print(f"[lab] graceful    : {args.stop_grace_seconds:.0f}s to finalise before a kill")
     for spec in specs:
         print(f"[lab]   {spec.name:<13} critical={spec.critical} :: {' '.join(spec.command[:3])} ...")
 
@@ -286,6 +337,7 @@ def main() -> int:
             stop_requested=lambda: stop.stopped,
             on_event=on_event,
             max_seconds=(args.duration_hours * 3600.0) if args.duration_hours else None,
+            stop_grace_seconds=args.stop_grace_seconds,
         )
     finally:
         final = supervisor.status()

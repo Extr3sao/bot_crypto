@@ -27,6 +27,7 @@ from typing import Any
 REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT / "src"))
 
+from trading_bot.autonomous.paper_loop import wait_for_stop_file  # noqa: E402
 from trading_bot.research.forward.retention import (  # noqa: E402
     RetentionPolicy,
     apply_retention,
@@ -57,6 +58,11 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--interval", type=float, default=600.0)
     parser.add_argument("--max-iterations", type=int, default=0, help="0 = until stopped")
+    parser.add_argument(
+        "--stop-file",
+        default=None,
+        help="path whose appearance stops the worker gracefully between passes (§51)",
+    )
     parser.add_argument(
         "--report",
         default=None,
@@ -182,6 +188,7 @@ def _manifest_gaps(root: Path, run_id: str) -> list[dict[str, Any]]:
 def main() -> int:
     args = parse_args()
     root = (REPO_ROOT / args.root).resolve()
+    stop_file = Path(args.stop_file).expanduser() if args.stop_file else None
     run_id = ""
     # Under --loop this is a long-lived worker, so a capture that has not created
     # its root yet is a reason to wait rather than to exit. Exiting here used to
@@ -197,7 +204,9 @@ def main() -> int:
             print("[retention] no capture to maintain under the root; nothing to do")
             return 0
         print(f"[retention] waiting for a capture under {root}")
-        time.sleep(max(1.0, min(args.interval, 60.0)))
+        if wait_for_stop_file(stop_file, min(args.interval, 60.0)):
+            print("[retention] stop requested while waiting for a capture")
+            return 0
     report_path = (
         Path(args.report)
         if args.report
@@ -228,7 +237,9 @@ def main() -> int:
         iterations += 1
         if not args.loop or (args.max_iterations and iterations >= args.max_iterations):
             break
-        time.sleep(max(1.0, args.interval))
+        if wait_for_stop_file(stop_file, args.interval):
+            print("[retention] stop requested; report is current")
+            break
     print(f"[retention] report: {report_path}")
     return 0
 

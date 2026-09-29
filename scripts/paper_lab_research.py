@@ -33,6 +33,7 @@ from typing import Any
 REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT / "src"))
 
+from trading_bot.autonomous.paper_loop import wait_for_stop_file  # noqa: E402
 from trading_bot.research.forward.storage import sha256_file  # noqa: E402
 
 DEFAULT_LAB_ROOT = Path("reports/paper-lab")
@@ -49,6 +50,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--loop", action="store_true")
     parser.add_argument("--interval", type=float, default=900.0)
     parser.add_argument("--max-iterations", type=int, default=0, help="0 = until stopped")
+    parser.add_argument(
+        "--stop-file",
+        default=None,
+        help="path whose appearance stops the worker gracefully between passes (§51)",
+    )
     return parser.parse_args()
 
 
@@ -218,6 +224,7 @@ def main() -> int:
     run_dir = (REPO_ROOT / args.run_root).resolve()
     run_dir.mkdir(parents=True, exist_ok=True)
     report_path = run_dir / "STRATEGY_LAB_REPORT.json"
+    stop_file = Path(args.stop_file).expanduser() if args.stop_file else None
     iterations = 0
     while True:
         report = build_report(args)
@@ -241,7 +248,9 @@ def main() -> int:
         iterations += 1
         if not args.loop or (args.max_iterations and iterations >= args.max_iterations):
             break
-        time.sleep(max(1.0, args.interval))
+        if wait_for_stop_file(stop_file, args.interval):
+            print("[lab] stop requested; report is current")
+            break
     print(f"[lab] report: {report_path}")
     return 0
 

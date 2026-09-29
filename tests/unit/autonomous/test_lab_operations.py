@@ -209,30 +209,40 @@ def test_deletion_is_disabled_unless_a_threshold_is_given(
 # --------------------------------------------------- one-command start/stop (§50)
 
 
+def _launcher_namespace(**overrides: Any) -> argparse.Namespace:
+    """The launcher's arguments, so the plan is asserted rather than assumed."""
+    values: dict[str, Any] = {
+        "run_id": "lab-test",
+        "lab_root": "reports/paper-lab",
+        "forward_root": "reports/microstructure-forward-lab",
+        "paper_root": "reports/autonomous-paper",
+        "assets": "BTC,ETH,SOL",
+        "symbols": "BTCUSDT,ETHUSDT,SOLUSDT",
+        "timeframe": "5m",
+        "paper_interval": 60.0,
+        "provider": "ccxt",
+        "rotation_seconds": 900,
+        "heartbeat_seconds": 30.0,
+        "duration_hours": 0.0,
+        "collector_max_bytes": 1_100_000_000,
+        "raw_hot_hours": 2.0,
+        "sealed_grace_seconds": 1800,
+        "stop_grace_seconds": 120.0,
+        "delete_when_free_below": 0,
+        "stop": None,
+        "dry_run": True,
+    }
+    values.update(overrides)
+    return argparse.Namespace(**values)
+
+
 def test_the_launcher_plans_paper_and_collector_as_isolated_critical_children(
     lab_launcher: Any,
 ) -> None:
-    namespace = argparse.Namespace(
-        run_id="lab-test",
-        lab_root="reports/paper-lab",
-        forward_root="reports/microstructure-forward-lab",
-        paper_root="reports/autonomous-paper",
-        assets="BTC,ETH,SOL",
-        symbols="BTCUSDT,ETHUSDT,SOLUSDT",
-        timeframe="5m",
-        paper_interval=60.0,
-        provider="ccxt",
-        rotation_seconds=900,
-        heartbeat_seconds=30.0,
-        duration_hours=0.0,
-        collector_max_bytes=1_100_000_000,
-        raw_hot_hours=2.0,
-        sealed_grace_seconds=1800,
-        delete_when_free_below=0,
-        stop=None,
-        dry_run=True,
-    )
-    specs = lab_launcher.build_specs(namespace, "lab-test", Path("reports/paper-lab/lab-test"))
+    namespace = _launcher_namespace()
+    run_dir = Path("reports/paper-lab/lab-test")
+    stop_files = lab_launcher.child_stop_files(namespace, "lab-test", run_dir)
+    specs = lab_launcher.build_specs(namespace, "lab-test", run_dir, stop_files)
     by_name = {spec.name: spec for spec in specs}
 
     assert {"paper", "collector"} <= set(by_name)
@@ -246,6 +256,32 @@ def test_the_launcher_plans_paper_and_collector_as_isolated_critical_children(
     # The PAPER child is the PAPER entrypoint, so there is no live path to reach.
     assert "autonomous_paper.py" in " ".join(by_name["paper"].command)
     assert "--provider" in by_name["paper"].command
+
+
+def test_every_child_that_must_finalise_is_stopped_by_a_file(lab_launcher: Any) -> None:
+    """§51 — a supervisor's terminate() is a hard kill; the file is the ask."""
+    namespace = _launcher_namespace()
+    run_dir = Path("reports/paper-lab/lab-test")
+    stop_files = lab_launcher.child_stop_files(namespace, "lab-test", run_dir)
+    specs = lab_launcher.build_specs(namespace, "lab-test", run_dir, stop_files)
+    by_name = {spec.name: spec for spec in specs}
+
+    assert set(stop_files) == {"paper", "collector", "retention", "strategy_lab"}
+    for name, spec in by_name.items():
+        assert spec.stop_file == stop_files[name], name
+    # Every distinct child gets its own file: one file cannot stop two children
+    # and still tell the operator which one was asked first.
+    assert len(set(stop_files.values())) == len(stop_files)
+    # PAPER already watches STOP in its own run directory, and the collector's
+    # file lives beside the resume state it writes.
+    assert stop_files["paper"].name == "STOP"
+    assert stop_files["collector"].suffix == ".stop"
+    # The collector can only honour a stop file if it was told where it is.
+    collector_command = by_name["collector"].command
+    assert "--stop-file" in collector_command
+    assert collector_command[collector_command.index("--stop-file") + 1] == str(
+        stop_files["collector"]
+    )
 
 
 def test_the_stop_reason_is_read_from_the_evidence(
@@ -615,7 +651,11 @@ def test_retention_waits_for_a_capture_that_starts_late(
         ],
     )
     assert retention_driver.main() == 0
-    assert waits["n"] == 1, "it should wait exactly once before the capture appeared"
+    # The count is not the claim: the worker now waits in short slices so it can
+    # notice a stop file, and this fake sleep returns instantly while the real
+    # clock barely moves, so one wait is many slices. The claim is that it waited
+    # instead of exiting on an empty pass — and then used the capture it found.
+    assert waits["n"] >= 1, "it should wait before the capture appeared"
     report = json.loads((tmp_path / "RETENTION_REPORT.json").read_text(encoding="utf-8"))
     assert report["run_id"] == "late-run"
     assert report["dry_run"] is True

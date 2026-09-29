@@ -890,6 +890,10 @@ class RunManifest:
     #: guard nobody can audit from the manifest is not a guard.
     max_total_bytes: int | None = None
     stopped_on_disk_budget: bool = False
+    #: §51 — why the capture ended: ``duration reached``, ``stop file``,
+    #: ``disk budget``, ``storage failure`` or ``signal``. A stop that has to be
+    #: inferred from the absence of a manifest is what this field replaces.
+    stop_reason: str | None = None
     fingerprints: list[SegmentFingerprint] = field(default_factory=list)
     resources: dict[str, Any] = field(default_factory=dict)
     book_health: dict[str, Any] = field(default_factory=dict)

@@ -23,6 +23,16 @@ from trading_bot.autonomous.supervisor import (
 RUNNING_CHILD = "import time, sys; time.sleep(60); sys.exit(0)"
 FAILING_CHILD = "raise SystemExit(3)"
 ONESHOT_CHILD = "import sys; sys.exit(0)"
+#: A child that can only be stopped by the file it polls: it seals "output" and
+#: exits 0 — exactly what the collector does with its manifest (§51).
+GRACEFUL_CHILD = (
+    "import pathlib, sys, time;"
+    " stop = pathlib.Path(sys.argv[1]); out = pathlib.Path(sys.argv[2]);"
+    "\nwhile not stop.exists():\n    time.sleep(0.05)\n"
+    "out.write_text('sealed=1\\n', encoding='utf-8'); sys.exit(0)"
+)
+#: A child that ignores the stop file, to prove the escalation still exists.
+DEAF_CHILD = "import time; time.sleep(60)"
 
 
 def _spec(
@@ -34,10 +44,12 @@ def _spec(
     window: float = 900.0,
     backoff: tuple[float, ...] = (0.05, 0.1, 0.2),
     restart_on_exit: bool = True,
+    args: tuple[str, ...] = (),
+    stop_file: Path | None = None,
 ) -> ManagedProcess:
     return ManagedProcess(
         name=name,
-        command=[sys.executable, "-c", code],
+        command=[sys.executable, "-c", code, *args],
         cwd=Path.cwd(),
         critical=critical,
         max_restarts=max_restarts,
@@ -45,6 +57,7 @@ def _spec(
         backoff_seconds=backoff,
         env={},
         restart_on_exit=restart_on_exit,
+        stop_file=stop_file,
     )
 
 
@@ -278,3 +291,75 @@ def test_a_supervisor_with_nothing_to_run_is_refused(tmp_path: Path) -> None:
 
 def test_disk_free_bytes_is_a_real_measurement() -> None:
     assert disk_free_bytes(Path.cwd()) > 0
+
+
+# ------------------------------------------------------------ graceful stop (§51)
+
+
+def test_stop_all_asks_before_it_kills(tmp_path: Path) -> None:
+    """The child must be given the chance to seal and finalise, not killed."""
+    stop_file = tmp_path / "STOP"
+    sealed = tmp_path / "sealed.txt"
+    spec = _spec("collector", GRACEFUL_CHILD, args=(str(stop_file), str(sealed)), stop_file=stop_file)
+    supervisor = _supervisor(tmp_path, [spec])
+    supervisor.start_all()
+    assert not sealed.exists()
+
+    supervisor.stop_all(grace_seconds=15.0)
+
+    runtime = supervisor.get("collector")
+    assert sealed.exists(), "the child was killed before it could finalise"
+    assert runtime.exit_code == 0
+    assert runtime.state is ProcessState.STOPPED
+    assert stop_file.exists()
+
+
+def test_a_child_that_ignores_the_stop_file_is_terminated(tmp_path: Path) -> None:
+    """Asking first must not mean waiting forever."""
+    stop_file = tmp_path / "STOP"
+    spec = _spec("paper", DEAF_CHILD, args=(), stop_file=stop_file)
+    supervisor = _supervisor(tmp_path, [spec])
+    supervisor.start_all()
+    started = time.monotonic()
+
+    supervisor.stop_all(grace_seconds=0.5, timeout=5.0)
+
+    runtime = supervisor.get("paper")
+    assert time.monotonic() - started < 20.0
+    assert not runtime.is_alive
+    assert runtime.state is ProcessState.STOPPED
+    assert runtime.exit_code != 0
+
+
+def test_a_stale_stop_file_cannot_stop_a_fresh_start(tmp_path: Path) -> None:
+    """Restarting with the same run id must not inherit the last stop."""
+    stop_file = tmp_path / "STOP"
+    stop_file.write_text("stop requested earlier\n", encoding="utf-8")
+    spec = _spec(
+        "collector", GRACEFUL_CHILD, args=(str(stop_file), str(tmp_path / "sealed.txt")), stop_file=stop_file
+    )
+    supervisor = _supervisor(tmp_path, [spec])
+    supervisor.start_all()
+    try:
+        assert not stop_file.exists()
+        runtime = supervisor.get("collector")
+        assert runtime.state is ProcessState.RUNNING
+        assert runtime.is_alive
+    finally:
+        supervisor.stop_all(grace_seconds=1.0)
+
+
+def test_supervise_forever_applies_the_stop_grace(tmp_path: Path) -> None:
+    """The bounded run stops through the same polite path as an operator stop."""
+    stop_file = tmp_path / "STOP"
+    sealed = tmp_path / "sealed.txt"
+    spec = _spec("collector", GRACEFUL_CHILD, args=(str(stop_file), str(sealed)), stop_file=stop_file)
+    supervisor = _supervisor(tmp_path, [spec])
+    supervisor.start_all()
+
+    final = supervisor.supervise_forever(
+        stop_requested=lambda: False, max_seconds=0.2, stop_grace_seconds=15.0
+    )
+
+    assert sealed.exists()
+    assert final["processes"]["collector"]["exit_code"] == 0
