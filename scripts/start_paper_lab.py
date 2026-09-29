@@ -238,15 +238,17 @@ def main() -> int:
         json.dumps(plan, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
     )
 
+    paper_run_root = (REPO_ROOT / args.paper_root).resolve()
     supervisor = Supervisor.build(
         run_dir,
         specs,
         heartbeat_seconds=args.heartbeat_seconds,
         child_heartbeats={
-            "paper": run_dir / "heartbeat.json",
-            # The collector publishes its live state (events, gaps, reconnects)
-            # while it runs, and replaces it atomically; the manifest only exists
-            # once the capture has finalised.
+            # PAPER writes its heartbeat inside its own run directory (which is
+            # named after the lab run); the collector publishes its live state
+            # while it runs and replaces it atomically, because the manifest only
+            # exists once the capture has finalised.
+            "paper": paper_run_root / run_id / "heartbeat.json",
             "collector": (REPO_ROOT / args.forward_root).resolve() / "state" / f"{run_id}.json",
         },
     )

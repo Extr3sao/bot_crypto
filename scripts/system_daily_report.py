@@ -90,8 +90,13 @@ def newest_child(root: Path) -> Path | None:
     return max(children, key=lambda path: path.stat().st_mtime)
 
 
-def collect_paper(paper_run_dir: Path | None, root: Path) -> dict[str, Any]:
+def collect_paper(
+    paper_run_dir: Path | None, root: Path, run_id: str | None = None
+) -> dict[str, Any]:
     """Everything the PAPER plane knows, including "it never started"."""
+    if paper_run_dir is None and run_id:
+        named = root / run_id
+        paper_run_dir = named if named.exists() else None
     run_dir = paper_run_dir or newest_child(root)
     if run_dir is None:
         return {
@@ -286,7 +291,7 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
             "final_state": (lab_run or {}).get("final_state"),
             "supervisor_events": (lab_run or {}).get("supervisor_events", []),
         },
-        "paper": collect_paper(paper_run_dir, paper_root),
+        "paper": collect_paper(paper_run_dir, paper_root, lab_run_dir.name),
         "forward_data": collect_forward(
             forward_root, args.forward_run_id, heartbeat_path=forward_heartbeat
         ),
