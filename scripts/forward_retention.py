@@ -182,13 +182,22 @@ def _manifest_gaps(root: Path, run_id: str) -> list[dict[str, Any]]:
 def main() -> int:
     args = parse_args()
     root = (REPO_ROOT / args.root).resolve()
-    if not root.exists():
-        print(f"[retention] {root} does not exist yet; nothing to do")
-        return 0
-    run_id = args.run_id or latest_run_id(root)
-    if not run_id:
-        print("[retention] no run id found under the root; nothing to do")
-        return 0
+    run_id = ""
+    # Under --loop this is a long-lived worker, so a capture that has not created
+    # its root yet is a reason to wait rather than to exit. Exiting here used to
+    # lose the compaction worker for the whole run on the very first pass, which
+    # is exactly when a small volume needs it.
+    while not run_id:
+        root = (REPO_ROOT / args.root).resolve()
+        candidate = (args.run_id or latest_run_id(root)) if root.exists() else None
+        run_id = str(candidate) if candidate else ""
+        if run_id:
+            break
+        if not args.loop:
+            print("[retention] no capture to maintain under the root; nothing to do")
+            return 0
+        print(f"[retention] waiting for a capture under {root}")
+        time.sleep(max(1.0, min(args.interval, 60.0)))
     report_path = (
         Path(args.report)
         if args.report

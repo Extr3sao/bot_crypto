@@ -186,6 +186,14 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
         "ledger": ledger.source_path,
         "registry": registry.as_dict(),
         "registry_counts": counts,
+        # The full histogram, so a lifecycle count of zero can never be read as
+        # "there are no strategies": most of this ledger is classified with the
+        # research verdicts (NO_GROSS_EDGE / COST_KILLED), not with REJECTED.
+        "status_histogram": {key: value for key, value in sorted(counts.items())},
+        "strategies_total": len(registry.records),
+        "strategies_not_paper_executable": sum(
+            1 for record in registry.records.values() if not record.admitted_for_paper
+        ),
         "lifecycle": {
             "REJECTED": counts.get("REJECTED", 0),
             "RESEARCH_REQUIRED": counts.get("RESEARCH_REQUIRED", 0),
@@ -224,6 +232,11 @@ def main() -> int:
             f"PAPER_ACTIVE={lifecycle['PAPER_ACTIVE']} "
             f"PAPER_RETIRED={lifecycle['PAPER_RETIRED']} "
             f"checks_ok={report['all_checks_ok']}"
+        )
+        print(
+            f"[lab] strategies={report['strategies_total']} "
+            f"not_paper_executable={report['strategies_not_paper_executable']} "
+            f"histogram={report['status_histogram']}"
         )
         iterations += 1
         if not args.loop or (args.max_iterations and iterations >= args.max_iterations):

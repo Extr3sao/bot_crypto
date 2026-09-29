@@ -96,7 +96,15 @@ def collect_paper(
     """Everything the PAPER plane knows, including "it never started"."""
     if paper_run_dir is None and run_id:
         named = root / run_id
-        paper_run_dir = named if named.exists() else None
+        if not named.exists():
+            # Never fold an unrelated older run into today's report: naming the
+            # run is a claim that this run produced the numbers.
+            return {
+                "present": False,
+                "reason": f"no PAPER run directory at {named}",
+                "daily_report": None,
+            }
+        paper_run_dir = named
     run_dir = paper_run_dir or newest_child(root)
     if run_dir is None:
         return {

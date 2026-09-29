@@ -470,6 +470,35 @@ def test_the_system_report_writes_both_renditions(
     assert stem.with_suffix(".md").read_text(encoding="utf-8").startswith("# SYSTEM DAILY REPORT")
 
 
+def test_the_strategy_lab_reports_the_whole_status_histogram(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """A lifecycle count of zero must not hide twenty-four non-executable strategies."""
+    lab = _load_script("paper_lab_research")
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        [
+            "paper_lab_research.py",
+            "--ledger",
+            "config/strategy_admission.json",
+            "--forward-root",
+            "reports/microstructure-forward-lab",
+            "--timeframe",
+            "5m",
+        ],
+    )
+    report = lab.build_report(lab.parse_args())
+    assert report["strategies_total"] == 24
+    assert report["strategies_not_paper_executable"] == 24
+    assert report["paper_executable"] == []
+    histogram = report["status_histogram"]
+    assert histogram["NO_GROSS_EDGE"] == 17
+    assert histogram["COST_KILLED"] == 7
+    for admitted in ("PAPER_CANDIDATE", "PAPER_ACTIVE", "PAPER_RETIRED"):
+        assert histogram[admitted] == 0
+
+
 def test_latency_percentiles_come_from_the_read_side_quality_report(
     tmp_path: Path, system_report: Any
 ) -> None:
@@ -524,3 +553,46 @@ def test_a_missing_root_is_not_an_error(retention_driver: Any, monkeypatch: pyte
         ["forward_retention.py", "--root", "reports/definitely-not-a-real-root"],
     )
     assert retention_driver.main() == 0
+
+
+def test_retention_waits_for_a_capture_that_starts_late(
+    tmp_path: Path, retention_driver: Any, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """A long-lived compaction worker must outlive its capture's first write.
+
+    The collector creates its root after the retention child starts, so exiting
+    on the first empty pass would silently drop compaction for the whole run.
+    """
+    root = tmp_path / "forward-lab"
+    waits = {"n": 0}
+
+    def fake_sleep(_seconds: float) -> None:
+        waits["n"] += 1
+        (root / "state").mkdir(parents=True, exist_ok=True)
+        (root / "state" / "late-run.json").write_text(
+            json.dumps({"run_id": "late-run", "events": 1}), encoding="utf-8"
+        )
+
+    monkeypatch.setattr(retention_driver.time, "sleep", fake_sleep)
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        [
+            "forward_retention.py",
+            "--root",
+            str(root),
+            "--loop",
+            "--interval",
+            "1",
+            "--max-iterations",
+            "1",
+            "--dry-run",
+            "--report",
+            str(tmp_path / "RETENTION_REPORT.json"),
+        ],
+    )
+    assert retention_driver.main() == 0
+    assert waits["n"] == 1, "it should wait exactly once before the capture appeared"
+    report = json.loads((tmp_path / "RETENTION_REPORT.json").read_text(encoding="utf-8"))
+    assert report["run_id"] == "late-run"
+    assert report["dry_run"] is True
