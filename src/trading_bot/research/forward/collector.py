@@ -38,6 +38,7 @@ from __future__ import annotations
 import asyncio
 import contextlib
 import json
+import shutil
 import signal
 import time
 import uuid
@@ -73,6 +74,11 @@ from trading_bot.research.forward.orderbook import (
     SequencePolicy,
     SnapshotOutcome,
     parse_depth_levels,
+)
+from trading_bot.research.forward.outcome import (
+    FAILURE_STORAGE,
+    CaptureOutcome,
+    classify_capture,
 )
 from trading_bot.research.forward.resources import ResourceSampler, directory_bytes
 from trading_bot.research.forward.storage import (
@@ -170,6 +176,10 @@ class CollectorConfig:
     streams: tuple[str, ...] = ("agg_trade", "depth", "book_ticker")
     #: Stop gracefully before filling the volume (§43). ``None`` disables it.
     max_total_bytes: int | None = None
+    #: §20 — stop *before* the volume is full. Where ``max_total_bytes`` bounds
+    #: the dataset this capture owns, this bounds the whole filesystem: the last
+    #: barrier for a host shared with everything else. ``None`` disables it.
+    min_free_bytes: int | None = None
     #: The file whose appearance asks this capture to stop *gracefully*: seal the
     #: open segment, write the manifest, exit 0. It exists because a supervisor's
     #: ``terminate()`` on Windows is a hard kill that skips all of that (§51).
@@ -240,6 +250,19 @@ def provider_stream_status(stats: dict[str, StreamStats]) -> dict[str, Any]:
 
 def _now_ms() -> int:
     return int(time.time() * 1000)
+
+
+def _disk_free_bytes(path: Path) -> int:
+    """Free bytes on the volume holding ``path``; ``0`` if the host won't say.
+
+    The disk guard must never be the thing that crashes a capture: an unreadable
+    free-space figure is reported as zero-but-unknown rather than raised, and the
+    dataset-size guard still applies when this cannot be measured.
+    """
+    try:
+        return shutil.disk_usage(path if Path(path).exists() else Path.cwd()).free
+    except OSError:  # pragma: no cover - platform dependent
+        return 0
 
 
 class _IdWindow:
@@ -318,6 +341,10 @@ class ForwardCollector:
         self._stopping = False
         self._stop_reason: str | None = None
         self._fatal: str | None = None
+        #: §2 — what kind of terminal failure, so the exit code can say which.
+        self._fatal_kind: str | None = None
+        self.write_failures = 0
+        self.stopped_on_min_free = False
         self._started_wall = time.time()
         self._started_ms = _now_ms()
         self.resources = ResourceSampler()
@@ -401,8 +428,49 @@ class ForwardCollector:
 
     # ----------------------------------------------------------------- writing
     def _write(self, event: RawEvent) -> None:
-        self.writer.write(event)
+        """Persist one event, and treat a refusal to persist it as terminal.
+
+        §2/§3 — a writer that cannot write is the one failure the collector may
+        not swallow: everything after it is unaccounted for. The first failure is
+        recorded, the run is asked to stop and finalise, and the manifest and the
+        process exit code both carry FAILED. Swallowing it here is exactly how a
+        capture with a dead writer used to exit 0.
+        """
+        try:
+            self.writer.write(event)
+        except Exception as exc:
+            self.write_failures += 1
+            self._record_fatal(
+                FAILURE_STORAGE,
+                f"{type(exc).__name__}: {exc}",
+                stop_reason="storage failure",
+            )
+            return
         self._stat(event).observe(event)
+
+    def _record_fatal(self, kind: str, reason: str, *, stop_reason: str) -> None:
+        """Record the first terminal failure and ask the run to finalise (§2).
+
+        Only the first one is kept: the later ones are consequences, and a
+        manifest whose failure reason is the tenth symptom of the first cause is
+        a manifest nobody can diagnose from.
+        """
+        if self._fatal is not None:
+            return
+        self._fatal = f"{reason}" if not kind else f"{kind}: {reason}"
+        self._fatal_kind = kind
+        with contextlib.suppress(Exception):
+            self._global_write(
+                self._global_event(
+                    EventType.VIOLATION,
+                    detail={"kind": kind, "reason": reason, "terminal": True},
+                )
+            )
+        self.stop(stop_reason)
+
+    def _global_write(self, event: RawEvent) -> None:
+        """Write a diagnostics-only event, never letting it mask the real fault."""
+        self.writer.write(event)
 
     def _emit(self, event: RawEvent) -> None:
         """Validate the temporal guarantee, then persist (§10)."""
@@ -1544,9 +1612,14 @@ class ForwardCollector:
                 "resolution_ratio": LATENCY_STEP,
             },
             "disk_bytes": disk_bytes,
+            "disk_free_bytes": _disk_free_bytes(self.root),
             "memory_mb": sample.memory_mb,
             "cpu_seconds": round(sample.cpu_seconds, 3),
             "network_bytes": self.network_bytes,
+            # §2 — the live view of the exit contract, so an operator watching
+            # the heartbeat sees a failed writer before the process is gone.
+            "write_failures": self.write_failures,
+            "fatal_failure": self._fatal,
         }
         self.heartbeats.append(heartbeat)
         self._write(
@@ -1808,15 +1881,34 @@ class ForwardCollector:
             try:
                 self.writer.rotate(_now_ms())
             except Exception as exc:
-                self._fatal = f"storage failure: {type(exc).__name__}: {exc}"
-                self._write(
-                    self._global_event(
-                        EventType.VIOLATION,
-                        detail={"kind": "STORAGE_FAILURE", "reason": self._fatal},
-                    )
+                self._record_fatal(
+                    FAILURE_STORAGE,
+                    f"{type(exc).__name__}: {exc}",
+                    stop_reason="storage failure",
                 )
-                self.stop("storage failure")
                 return
+            if self.config.min_free_bytes is not None:
+                free = _disk_free_bytes(self.root)
+                if free < self.config.min_free_bytes:
+                    with contextlib.suppress(Exception):
+                        self._global_write(
+                            self._global_event(
+                                EventType.LIFECYCLE,
+                                detail={
+                                    "kind": "MIN_FREE_BYTES_REACHED",
+                                    "free_bytes": free,
+                                    "floor_bytes": self.config.min_free_bytes,
+                                    "note": (
+                                        "stopping gracefully before the volume is "
+                                        "full; the manifest and fingerprints are "
+                                        "still written"
+                                    ),
+                                },
+                            )
+                        )
+                    self.stopped_on_min_free = True
+                    self.stop("disk guard")
+                    return
             if self.config.max_total_bytes is not None:
                 used = directory_bytes(self.root)
                 if used >= self.config.max_total_bytes:
@@ -1912,6 +2004,29 @@ class ForwardCollector:
                 )
             )
 
+        book_health = {
+            key: {
+                "health": syncer.health(ended).value,
+                "counters": syncer.counters.as_dict(),
+                "last_update_id": syncer.book.last_update_id,
+                "bid_levels": syncer.book.bid_levels(),
+                "ask_levels": syncer.book.ask_levels(),
+            }
+            for key, syncer in sorted(self.books.items())
+        }
+        # §2 — the verdict, derived from what the run recorded, before it is
+        # written down. The manifest and the process exit code are the same
+        # answer through two channels, so neither can disagree with the other.
+        outcome: CaptureOutcome = classify_capture(
+            stop_reason=self._stop_reason,
+            fatal_kind=self._fatal_kind,
+            fatal_reason=self._fatal,
+            clock_violations=self.clock_violations,
+            book_failed_streams=tuple(
+                key for key, state in book_health.items() if state["health"] == "FAILED"
+            ),
+        )
+
         # §27 — continuity is a claim about missing data, not about how tidy the
         # run was. A hole that the public index let us walk forward is closed, so
         # only genuinely unrecovered loss makes the dataset incomplete.
@@ -1949,20 +2064,16 @@ class ForwardCollector:
             disk_bytes_per_hour=round(bytes_written / elapsed_hours, 2),
             max_total_bytes=self.config.max_total_bytes,
             stopped_on_disk_budget=self.stopped_on_disk_budget,
+            stopped_on_min_free=self.stopped_on_min_free,
             stop_reason=self._stop_reason,
+            status=outcome.status.value,
+            failure_kind=outcome.kind,
+            failure_reason=outcome.reason,
             fingerprints=fingerprints,
             resources=summary.as_dict(),
-            book_health={
-                key: {
-                    "health": syncer.health(ended).value,
-                    "counters": syncer.counters.as_dict(),
-                    "last_update_id": syncer.book.last_update_id,
-                    "bid_levels": syncer.book.bid_levels(),
-                    "ask_levels": syncer.book.ask_levels(),
-                }
-                for key, syncer in sorted(self.books.items())
-            },
+            book_health=book_health,
             integrity={
+                "write_failures": self.write_failures,
                 "duplicates": sum(e.duplicates for e in self.stats.values()),
                 "out_of_order": sum(e.out_of_order for e in self.stats.values()),
                 "sequence_gaps": sum(e.sequence_gaps for e in self.stats.values()),

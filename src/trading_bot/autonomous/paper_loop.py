@@ -21,8 +21,9 @@ from __future__ import annotations
 import json
 import os
 import signal
+import sys
 import time
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any, Final
@@ -31,10 +32,12 @@ __all__ = [
     "PAPER_DAILY_REPORT_SCHEMA_VERSION",
     "PAPER_HEARTBEAT_SCHEMA_VERSION",
     "STOP_FILE_NAME",
+    "ArtifactWriteFailures",
     "HeartbeatWriter",
     "PaperHeartbeat",
     "StopController",
     "build_daily_report",
+    "durable_write",
     "render_daily_report_markdown",
     "wait_for_stop_file",
     "write_daily_report",
@@ -43,6 +46,47 @@ __all__ = [
 PAPER_HEARTBEAT_SCHEMA_VERSION: Final[str] = "paper-heartbeat-v1"
 PAPER_DAILY_REPORT_SCHEMA_VERSION: Final[str] = "paper-daily-report-v1"
 STOP_FILE_NAME: Final[str] = "STOP"
+
+
+@dataclass(slots=True)
+class ArtifactWriteFailures:
+    """Storage failures the PAPER loop survived, in the order they happened (§22).
+
+    PAPER is a decision process; its reports, traces and heartbeats are evidence,
+    not its purpose. On a host where a research capture and PAPER share a volume,
+    the capture filling it must degrade PAPER's evidence — never stop PAPER, and
+    never leave an operator without a reason.
+    """
+
+    failures: list[str] = field(default_factory=list)
+
+    def record(self, what: str, exc: BaseException) -> str:
+        message = f"{what}: {type(exc).__name__}: {exc}"
+        self.failures.append(message)
+        return message
+
+    @property
+    def count(self) -> int:
+        return len(self.failures)
+
+    def recent(self, limit: int = 5) -> tuple[str, ...]:
+        return tuple(self.failures[-limit:])
+
+
+def durable_write(write: Any, *, what: str, failures: ArtifactWriteFailures) -> Any:
+    """Run an artifact write; a storage failure is recorded, never fatal.
+
+    Returns whatever the write returned, or ``None`` when it could not complete.
+    Only ``OSError`` is treated this way, because a full disk is an operational
+    condition (``ENOSPC``), while a bug in our own serialisation is not: those must
+    still surface.
+    """
+    try:
+        return write()
+    except OSError as exc:
+        message = failures.record(what, exc)
+        print(f"[paper] {message}", file=sys.stderr)
+        return None
 
 
 def wait_for_stop_file(
@@ -94,6 +138,11 @@ class PaperHeartbeat:
     uptime_seconds: float
     state_age_seconds: float | None
     paper_candidates: tuple[str, ...] = ()
+    #: §22 — artifact writes that failed. PAPER keeps deciding when the disk is
+    #: full: it is not a storage service, and a research volume filling up must
+    #: never take the PAPER loop down with it.
+    storage_failures: int = 0
+    storage_errors: tuple[str, ...] = ()
     mode: str = "PAPER"
     timestamp_iso: str = ""
     schema_version: str = PAPER_HEARTBEAT_SCHEMA_VERSION
@@ -168,6 +217,8 @@ class PaperHeartbeat:
             "uptime_seconds": self.uptime_seconds,
             "state_age_seconds": self.state_age_seconds,
             "paper_candidates": list(self.paper_candidates),
+            "storage_failures": self.storage_failures,
+            "storage_errors": list(self.storage_errors[-5:]),
         }
 
 
@@ -192,6 +243,8 @@ class HeartbeatWriter:
     def write(self, heartbeat: PaperHeartbeat) -> None:
         self.run_dir.mkdir(parents=True, exist_ok=True)
         payload = heartbeat.to_dict()
+        if heartbeat.storage_failures:
+            payload["storage_failures"] = heartbeat.storage_failures
         line = json.dumps(payload, ensure_ascii=False, sort_keys=False)
         with self.log_path.open("a", encoding="utf-8", newline="\n") as handle:
             handle.write(line + "\n")

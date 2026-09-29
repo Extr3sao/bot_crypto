@@ -35,6 +35,7 @@ import json
 import os
 import sys
 import time
+from dataclasses import replace
 from pathlib import Path
 from typing import Any
 
@@ -256,10 +257,12 @@ async def main() -> int:
 
     from trading_bot.autonomous.admission_ledger import AdmissionLedger
     from trading_bot.autonomous.paper_loop import (
+        ArtifactWriteFailures,
         HeartbeatWriter,
         PaperHeartbeat,
         StopController,
         build_daily_report,
+        durable_write,
         write_daily_report,
     )
     from trading_bot.autonomous.reporting import write_run_report
@@ -391,6 +394,9 @@ async def main() -> int:
     cycle_reports: list[Any] = []
     cycle_errors: list[str] = []
     stop_reason: str | None = None
+    #: §22 — evidence writes that failed. PAPER keeps deciding: a research volume
+    #: filling up degrades what we can prove about the run, not the run itself.
+    storage_failures = ArtifactWriteFailures()
     next_daily_report_at = time.monotonic() + max(1.0, args.daily_report_seconds)
     cycle = 0
     summary: Any = None
@@ -410,15 +416,23 @@ async def main() -> int:
                 message = f"cycle {cycle}: {type(exc).__name__}: {exc}"
                 cycle_errors.append(message)
                 print(f"[run] {message}", file=sys.stderr)
-                heartbeat.write(
-                    PaperHeartbeat.from_cycle(
-                        run_id=run_id,
-                        cycle=cycle,
-                        report=None,
-                        started_at_ms=started_at_ms,
-                        timeframe=args.timeframe,
-                        paper_candidates=registry.paper_candidates(args.timeframe),
-                    )
+                failed_beat = PaperHeartbeat.from_cycle(
+                    run_id=run_id,
+                    cycle=cycle,
+                    report=None,
+                    started_at_ms=started_at_ms,
+                    timeframe=args.timeframe,
+                    paper_candidates=registry.paper_candidates(args.timeframe),
+                )
+                failed_beat = replace(
+                    failed_beat,
+                    storage_failures=storage_failures.count,
+                    storage_errors=storage_failures.recent(),
+                )
+                durable_write(
+                    lambda beat=failed_beat: heartbeat.write(beat),
+                    what="heartbeat",
+                    failures=storage_failures,
                 )
             else:
                 cycle_reports.append(cycle_report)
@@ -431,15 +445,30 @@ async def main() -> int:
                     paper_candidates=registry.paper_candidates(args.timeframe),
                     state_age_seconds=state_age_seconds(),
                 )
-                heartbeat.write(hb)
+                hb = replace(
+                    hb,
+                    storage_failures=storage_failures.count,
+                    storage_errors=storage_failures.recent(),
+                )
+                durable_write(
+                    lambda beat=hb: heartbeat.write(beat),
+                    what="heartbeat",
+                    failures=storage_failures,
+                )
                 print(
                     f"[cycle {cycle}] decisions={hb.decisions} no_trade={hb.no_trade} "
                     f"shadow={hb.shadow_trades} paper={hb.paper_trades} "
                     f"failures={hb.runtime_failures} strategies={hb.strategies_evaluated}"
                 )
             if time.monotonic() >= next_daily_report_at:
-                _write_daily(cycle_reports, cycle_errors, runtime, registry, started_at_ms,
-                             run_id, args, stop, write_daily_report, build_daily_report)
+                durable_write(
+                    lambda: _write_daily(
+                        cycle_reports, cycle_errors, runtime, registry, started_at_ms,
+                        run_id, args, stop, write_daily_report, build_daily_report,
+                    ),
+                    what="daily report",
+                    failures=storage_failures,
+                )
                 next_daily_report_at = time.monotonic() + max(1.0, args.daily_report_seconds)
             if not args.continuous and cycle >= args.cycles:
                 break
@@ -459,13 +488,22 @@ async def main() -> int:
             print(f"[run] paper state saved to {store.path}")
         except Exception as exc:  # never hide the run result behind a save error
             print(f"[run] state save failed: {type(exc).__name__}: {exc}", file=sys.stderr)
-        daily = _write_daily(
-            cycle_reports, cycle_errors, runtime, registry, started_at_ms, run_id, args,
-            stop, write_daily_report, build_daily_report,
+        daily = durable_write(
+            lambda: _write_daily(
+                cycle_reports, cycle_errors, runtime, registry, started_at_ms, run_id, args,
+                stop, write_daily_report, build_daily_report,
+            ),
+            what="final daily report",
+            failures=storage_failures,
         )
 
     assert summary is not None, "the run loop must produce a summary"
-    md_path, json_path = write_run_report(summary, run_dir)
+    # The run report is the run's own evidence, so it is requested the same way: a
+    # full disk must not turn a completed run into a process that died.
+    reported = durable_write(
+        lambda: write_run_report(summary, run_dir), what="run report", failures=storage_failures
+    )
+    md_path, json_path = reported if reported is not None else (None, None)
     print(json.dumps(summary.totals(), indent=2))
     print(f"[run] stop reason: {stop_reason or 'completed'}")
     print(f"[run] report: {md_path}")
@@ -473,17 +511,29 @@ async def main() -> int:
     print(f"[run] traces: {runtime.trace_store.trace_path}")
     print(f"[run] heartbeat: {heartbeat.current_path} ({heartbeat.written} beats)")
     print(f"[run] daily report: {daily[1] if daily else 'not written'}")
-    write_run_descriptor(
-        run_dir,
-        {
-            "run_id": run_id,
-            "pid": os.getpid(),
-            "state": "STOPPED",
-            "stop_reason": stop_reason or "completed",
-            "cycles": len(cycle_reports),
-            "totals": summary.totals(),
-            "ended_at_ms": int(time.time() * 1000),
-        },
+    if storage_failures.count:
+        print(
+            f"[run] storage failures: {storage_failures.count} "
+            f"(the run continued; see {heartbeat.current_path})",
+            file=sys.stderr,
+        )
+    durable_write(
+        lambda: write_run_descriptor(
+            run_dir,
+            {
+                "run_id": run_id,
+                "pid": os.getpid(),
+                "state": "STOPPED",
+                "stop_reason": stop_reason or "completed",
+                "cycles": len(cycle_reports),
+                "totals": summary.totals(),
+                "storage_failures": storage_failures.count,
+                "storage_errors": list(storage_failures.recent()),
+                "ended_at_ms": int(time.time() * 1000),
+            },
+        ),
+        what="run descriptor",
+        failures=storage_failures,
     )
     return 0
 

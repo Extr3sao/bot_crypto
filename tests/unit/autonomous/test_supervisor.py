@@ -327,8 +327,13 @@ def test_a_child_that_ignores_the_stop_file_is_terminated(tmp_path: Path) -> Non
     runtime = supervisor.get("paper")
     assert time.monotonic() - started < 20.0
     assert not runtime.is_alive
-    assert runtime.state is ProcessState.STOPPED
+    # §2/§57 — being killed because it ignored the stop is a failure, not a
+    # tidy stop: whatever it was supposed to seal may be incomplete.
+    assert runtime.state is ProcessState.FAILED
+    assert runtime.forced_stop is True
     assert runtime.exit_code != 0
+    assert supervisor.status()["stop_report"]["escalated"] == ["paper"]
+    assert supervisor.status()["stop_report"]["verdict"] == "FAILED"
 
 
 def test_a_stale_stop_file_cannot_stop_a_fresh_start(tmp_path: Path) -> None:

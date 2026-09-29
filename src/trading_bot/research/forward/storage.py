@@ -46,6 +46,12 @@ from trading_bot.research.forward.contract import (
     Transport,
     parse_event,
 )
+from trading_bot.research.forward.outcome import (
+    FAILURE_STORAGE,
+    CaptureOutcome,
+    CaptureStatus,
+    classify_capture,
+)
 from trading_bot.research.forward.resources import percentile_from_histogram
 
 __all__ = [
@@ -72,6 +78,7 @@ __all__ = [
     "load_json",
     "load_manifest",
     "load_resume_state",
+    "manifest_outcome",
     "merge_latency_histograms",
     "read_segment",
     "rotation_bucket_start",
@@ -890,10 +897,19 @@ class RunManifest:
     #: guard nobody can audit from the manifest is not a guard.
     max_total_bytes: int | None = None
     stopped_on_disk_budget: bool = False
+    #: §20 — whether the host-free-space guard is what ended the run. Both guard
+    #: stops are CONTROLLED_STOP, and both say which guard fired.
+    stopped_on_min_free: bool = False
     #: §51 — why the capture ended: ``duration reached``, ``stop file``,
     #: ``disk budget``, ``storage failure`` or ``signal``. A stop that has to be
     #: inferred from the absence of a manifest is what this field replaces.
     stop_reason: str | None = None
+    #: §2 — COMPLETE | CONTROLLED_STOP | FAILED. The same verdict the process
+    #: exit code carries, so an operator reading either sees the same thing.
+    status: str = "COMPLETE"
+    #: §2/§3 — why it failed, when it did. ``None`` on a clean or controlled end.
+    failure_kind: str | None = None
+    failure_reason: str | None = None
     fingerprints: list[SegmentFingerprint] = field(default_factory=list)
     resources: dict[str, Any] = field(default_factory=dict)
     book_health: dict[str, Any] = field(default_factory=dict)
@@ -905,7 +921,22 @@ class RunManifest:
         payload = asdict(self)
         # Gaps carry a derived ``duration_ms`` that ``asdict`` cannot see.
         payload["gaps"] = [gap.as_dict() for gap in self.gaps]
+        payload["exit_code"] = self.outcome().exit_code
         return payload
+
+    def outcome(self) -> CaptureOutcome:
+        """The run's verdict, read back from what the run recorded (§2)."""
+        return CaptureOutcome(
+            status=CaptureStatus(self.status),
+            kind=self.failure_kind,
+            reason=self.failure_reason,
+            stop_reason=self.stop_reason,
+        )
+
+    @property
+    def exit_code(self) -> int:
+        """What the process that wrote this manifest must exit with."""
+        return self.outcome().exit_code
 
     def save(self, root: Path) -> Path:
         path = Path(root) / "manifest" / f"{self.run_id}.json"
@@ -921,6 +952,38 @@ def load_manifest(path: Path) -> dict[str, Any]:
         if key not in payload:
             raise StorageError(f"{path}: manifest missing required key {key!r}")
     return payload
+
+
+def manifest_outcome(payload: dict[str, Any]) -> CaptureOutcome:
+    """Read a manifest's verdict, including manifests written before §2 existed.
+
+    §52 — a verifier may only read artifacts that were produced under test. An
+    older manifest has no ``status``, so its outcome is derived from the fields
+    it does have (``integrity.failures``, ``stop_reason``) through the same
+    classifier the writer uses: no second opinion, one policy.
+    """
+    if payload.get("status"):
+        return CaptureOutcome(
+            status=CaptureStatus(str(payload["status"])),
+            kind=payload.get("failure_kind"),
+            reason=payload.get("failure_reason"),
+            stop_reason=payload.get("stop_reason"),
+        )
+    integrity = payload.get("integrity") or {}
+    failures = integrity.get("failures")
+    clock_violations = int(integrity.get("clock_violations") or 0)
+    book_failed = tuple(
+        key
+        for key, state in (payload.get("book_health") or {}).items()
+        if isinstance(state, dict) and state.get("health") == "FAILED"
+    )
+    return classify_capture(
+        stop_reason=payload.get("stop_reason"),
+        fatal_kind=FAILURE_STORAGE if failures else None,
+        fatal_reason=str(failures) if failures else None,
+        clock_violations=clock_violations,
+        book_failed_streams=book_failed,
+    )
 
 
 # ---------------------------------------------------------------------- resume

@@ -28,10 +28,12 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT / "src"))
 
 from trading_bot.autonomous.paper_loop import wait_for_stop_file  # noqa: E402
+from trading_bot.research.forward.preservation import PreservationPolicy  # noqa: E402
 from trading_bot.research.forward.retention import (  # noqa: E402
     RetentionPolicy,
     apply_retention,
     plan_retention,
+    tier_plan,
 )
 from trading_bot.research.forward.storage import latest_run_id  # noqa: E402
 
@@ -39,6 +41,11 @@ from trading_bot.research.forward.storage import latest_run_id  # noqa: E402
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--root", default="reports/microstructure-forward-lab")
+    parser.add_argument(
+        "--data-root",
+        default=None,
+        help=("§16 — alias for --root, so the policy can be pointed at another volume"),
+    )
     parser.add_argument("--run-id", default=None, help="default: the newest run in --root")
     parser.add_argument("--rotation-seconds", type=int, default=900)
     parser.add_argument("--raw-hot-hours", type=float, default=2.0)
@@ -68,7 +75,43 @@ def parse_args() -> argparse.Namespace:
         default=None,
         help="JSON report path (default <root>/reports/RETENTION_REPORT.json)",
     )
+    parser.add_argument(
+        "--no-preserve-m03",
+        action="store_true",
+        help="do not require M-03 to survive compaction before raw is deleted",
+    )
+    parser.add_argument(
+        "--no-preserve-m07",
+        action="store_true",
+        help="do not require M-07 to survive compaction before raw is deleted",
+    )
+    parser.add_argument(
+        "--m03-min-resolution-minutes",
+        type=int,
+        default=1,
+        help=(
+            "resolution M-03 must be measurable at after deletion; 0 asks for "
+            "quote-level microstructure, which no compact tier preserves, so raw "
+            "is retained"
+        ),
+    )
+    parser.add_argument(
+        "--m07-min-resolution-minutes",
+        type=int,
+        default=1,
+        help="resolution M-07 must be measurable at after deletion",
+    )
     return parser.parse_args()
+
+
+def _preservation(args: argparse.Namespace) -> PreservationPolicy:
+    """Defaults are the safe ones, so a partial namespace still preserves data."""
+    return PreservationPolicy(
+        require_m03=not getattr(args, "no_preserve_m03", False),
+        require_m07=not getattr(args, "no_preserve_m07", False),
+        m03_min_resolution_minutes=int(getattr(args, "m03_min_resolution_minutes", 1)),
+        m07_min_resolution_minutes=int(getattr(args, "m07_min_resolution_minutes", 1)),
+    )
 
 
 def _policy(args: argparse.Namespace) -> RetentionPolicy:
@@ -120,6 +163,8 @@ def dry_run_once(args: argparse.Namespace, run_id: str, root: Path) -> dict[str,
         "would_compact_bytes": would_compact_bytes,
         "would_delete_segments": len(plan.deletable),
         "would_reclaim_bytes": deletable_bytes,
+        "tiers": [spec.as_dict() for spec in tier_plan(policy)],
+        "preservation_policy": _preservation(args).as_dict(),
         "would_skip": plan.skipped[:50],
         "deletable": [
             {"path": path.relative_to(root).as_posix(), "lineage_id": why}
@@ -139,18 +184,22 @@ def run_once(args: argparse.Namespace, run_id: str, root: Path) -> dict[str, Any
     free = shutil.disk_usage(root if root.exists() else REPO_ROOT).free
     allow_delete = args.delete_when_free_below > 0 and free < args.delete_when_free_below
     plan = plan_retention(root, policy, run_id)
+    preservation = _preservation(args)
     outcome = apply_retention(
         root,
         policy,
         run_id,
         allow_delete=allow_delete,
         gaps=_manifest_gaps(root, run_id),
+        preservation=preservation,
     )
     report = {
         "timestamp_ms": int(time.time() * 1000),
         "root": str(root.relative_to(REPO_ROOT)) if root.is_relative_to(REPO_ROOT) else str(root),
         "run_id": run_id,
         "policy": policy.as_dict(),
+        "tiers": [spec.as_dict() for spec in tier_plan(policy)],
+        "preservation_policy": preservation.as_dict(),
         "free_bytes": free,
         "delete_threshold_bytes": args.delete_when_free_below,
         "deletion_enabled": allow_delete,
@@ -187,6 +236,8 @@ def _manifest_gaps(root: Path, run_id: str) -> list[dict[str, Any]]:
 
 def main() -> int:
     args = parse_args()
+    if args.data_root:
+        args.root = args.data_root
     root = (REPO_ROOT / args.root).resolve()
     stop_file = Path(args.stop_file).expanduser() if args.stop_file else None
     run_id = ""

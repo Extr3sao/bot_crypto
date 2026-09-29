@@ -33,12 +33,15 @@ from typing import Any
 REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT / "src"))
 
+from trading_bot.autonomous.observability import latest_lab_run  # noqa: E402
 from trading_bot.autonomous.paper_loop import STOP_FILE_NAME, StopController  # noqa: E402
 from trading_bot.autonomous.supervisor import (  # noqa: E402
+    DiskThresholds,
     ManagedProcess,
     Supervisor,
     disk_free_bytes,
 )
+from trading_bot.research.forward.outcome import EXIT_FAILED  # noqa: E402
 
 DEFAULT_LAB_ROOT = Path("reports/paper-lab")
 DEFAULT_FORWARD_ROOT = Path("reports/microstructure-forward-lab")
@@ -53,6 +56,14 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--run-id", default=None)
     parser.add_argument("--lab-root", default=str(DEFAULT_LAB_ROOT))
     parser.add_argument("--forward-root", default=str(DEFAULT_FORWARD_ROOT))
+    parser.add_argument(
+        "--data-root",
+        default=None,
+        help=(
+            "§16 — where capture data lives. Alias for --forward-root: point it at "
+            "another volume and the collector, retention, lineage and reports follow"
+        ),
+    )
     parser.add_argument("--paper-root", default=str(DEFAULT_PAPER_ROOT))
     parser.add_argument("--assets", default="BTC,ETH,SOL")
     parser.add_argument("--symbols", default="BTCUSDT,ETHUSDT,SOLUSDT")
@@ -96,8 +107,33 @@ def parse_args() -> argparse.Namespace:
         help="0 = compact but never delete; bytes = delete proven raw under this much free disk",
     )
     parser.add_argument("--stop", default=None, help="write STOP into this run dir and exit")
+    parser.add_argument(
+        "--restart",
+        action="store_true",
+        help=(
+            "stop the named (or newest) run cleanly, wait for its children to exit, "
+            "then start again with the same run id and --resume (§28)"
+        ),
+    )
+    parser.add_argument(
+        "--status",
+        action="store_true",
+        help="print the operator status of the lab and exit (§26)",
+    )
+    parser.add_argument("--disk-warning-gb", type=float, default=1.5)
+    parser.add_argument("--disk-critical-gb", type=float, default=0.8)
+    parser.add_argument("--disk-stop-gb", type=float, default=0.3)
     parser.add_argument("--dry-run", action="store_true", help="print the plan and exit")
     return parser.parse_args()
+
+
+def disk_thresholds(args: argparse.Namespace) -> DiskThresholds:
+    """§20 — the levels, declared on the command line instead of hardcoded."""
+    return DiskThresholds(
+        warning_bytes=int(args.disk_warning_gb * 1e9),
+        critical_bytes=int(args.disk_critical_gb * 1e9),
+        stop_bytes=int(args.disk_stop_gb * 1e9),
+    )
 
 
 def collector_resumes(forward_root: Path, run_id: str) -> bool:
@@ -180,7 +216,7 @@ def build_specs(
                 args.symbols,
                 "--markets",
                 "spot,perp",
-                "--out",
+                "--data-root",
                 str(forward_root),
                 "--run-id",
                 run_id,
@@ -199,6 +235,12 @@ def build_specs(
             max_restarts=3,
             env={"PYTHONUNBUFFERED": "1"},
             stop_file=stop_files["collector"],
+            # §2/§3 — the capture's own failure exit code, so the supervisor's
+            # report quotes the contract instead of assuming "1".
+            failure_exit_code=EXIT_FAILED,
+            # §22 — the capture is what fills the volume, so it is the child the
+            # storage guard stops. PAPER is not.
+            stop_on_storage_guard=True,
         ),
         ManagedProcess(
             name="retention",
@@ -257,16 +299,79 @@ def build_specs(
     ]
 
 
+def print_status(args: argparse.Namespace) -> int:
+    """§26 — one command that answers "what is happening right now"."""
+    command = [
+        sys.executable,
+        str(REPO_ROOT / "scripts" / "paper_lab_status.py"),
+        "--lab-root",
+        str(args.lab_root),
+        "--paper-root",
+        str(args.paper_root),
+    ]
+    if args.run_id:
+        command += ["--run-id", args.run_id]
+    completed = subprocess.run(command, cwd=str(REPO_ROOT), check=False)
+    return completed.returncode
+
+
+def stop_lab(run_dir: Path) -> None:
+    """Ask a running lab to stop, the same way an operator would (§27)."""
+    run_dir.mkdir(parents=True, exist_ok=True)
+    (run_dir / STOP_FILE_NAME).write_text(
+        f"stop requested at {time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())}\n",
+        encoding="utf-8",
+    )
+
+
+def wait_for_stop(run_dir: Path, *, timeout: float) -> dict[str, Any]:
+    """Wait until the supervisor has recorded that its children are done (§28).
+
+    Read from the heartbeat rather than from the process table: the heartbeat is
+    what the restart is allowed to leave behind, and a stale one means the lab is
+    gone whether or not a PID still exists.
+    """
+    deadline = time.monotonic() + timeout
+    last: dict[str, Any] = {}
+    while time.monotonic() < deadline:
+        try:
+            last = json.loads((run_dir / "SYSTEM_HEARTBEAT.json").read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            last = {}
+        processes = last.get("processes") or {}
+        if processes and all(
+            entry.get("state") != "RUNNING" for entry in processes.values()
+        ):
+            return last
+        time.sleep(1.0)
+    return last
+
+
 def main() -> int:
     args = parse_args()
+    if args.data_root:
+        args.forward_root = args.data_root
+    if args.status:
+        return print_status(args)
     lab_dir = (REPO_ROOT / args.lab_root).resolve()
-    if args.stop:
-        target = (REPO_ROOT / args.stop).resolve() if not Path(args.stop).is_absolute() else Path(args.stop)
-        target.mkdir(parents=True, exist_ok=True)
-        (target / STOP_FILE_NAME).write_text(
-            f"stop requested at {time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())}\n",
-            encoding="utf-8",
+    if args.restart:
+        target = (
+            lab_dir / args.run_id
+            if args.run_id
+            else (latest_lab_run(lab_dir) or lab_dir / "paper-lab-unknown")
         )
+        print(f"[lab] restart requested for {target}")
+        stop_lab(target)
+        heartbeat = wait_for_stop(target, timeout=args.stop_grace_seconds + 60.0)
+        print(f"[lab] previous run settled: {heartbeat.get('state') or 'no heartbeat'}")
+        args.run_id = target.name
+    if args.stop:
+        target = (
+            Path(args.stop)
+            if Path(args.stop).is_absolute()
+            else (REPO_ROOT / args.stop).resolve()
+        )
+        stop_lab(target)
         print(f"[lab] STOP written to {target / STOP_FILE_NAME}")
         return 0
 
@@ -290,6 +395,17 @@ def main() -> int:
             "sealed_grace_seconds": args.sealed_grace_seconds,
             "delete_when_free_below": args.delete_when_free_below,
             "deletion_enabled": args.delete_when_free_below > 0,
+            "preservation": (
+                "raw is deleted only after M-03 and M-07 are shown to survive "
+                "compaction at the preregistered resolution"
+            ),
+        },
+        "disk": {
+            "thresholds": disk_thresholds(args).as_dict(),
+            "storage_guard": (
+                "at the STOP level the collector is asked to stop gracefully; PAPER "
+                "is not touched"
+            ),
         },
         "collector_resume": collector_resumes(
             (REPO_ROOT / args.forward_root).resolve(), run_id
@@ -321,6 +437,7 @@ def main() -> int:
         run_dir,
         specs,
         heartbeat_seconds=args.heartbeat_seconds,
+        disk_thresholds=disk_thresholds(args),
         child_heartbeats={
             # PAPER writes its heartbeat inside its own run directory (which is
             # named after the lab run); the collector publishes its live state
@@ -351,6 +468,8 @@ def main() -> int:
         events.append(event)
         print(f"[supervisor] {event}")
 
+    supervisor_error: str | None = None
+    interrupted = False
     try:
         final = supervisor.supervise_forever(
             stop_requested=lambda: stop.stopped,
@@ -358,10 +477,27 @@ def main() -> int:
             max_seconds=(args.duration_hours * 3600.0) if args.duration_hours else None,
             stop_grace_seconds=args.stop_grace_seconds,
         )
+    except BaseException as exc:  # the report must survive the crash too
+        # A supervisor that dies must still leave evidence: an unexplained dead
+        # lab is worse than a lab that says why it died.
+        interrupted = isinstance(exc, KeyboardInterrupt)
+        supervisor_error = (
+            None if interrupted else f"{type(exc).__name__}: {exc}"
+        )
+        if supervisor_error:
+            events.append({"event": "SUPERVISOR_ERROR", "reason": supervisor_error})
+            print(f"[lab] supervisor error: {supervisor_error}", file=sys.stderr)
+        final = {}
     finally:
-        final = supervisor.status()
+        final = {**supervisor.status(), **final}
 
     state = final.get("state")
+    stop_report = final.get("stop_report") or {}
+    failed_on_stop = [
+        name
+        for name in stop_report.get("failed_children", [])
+        + stop_report.get("escalated", [])
+    ]
 
     report = {
         "schema_version": "paper-lab-run-report-v1",
@@ -378,7 +514,20 @@ def main() -> int:
         "final_state": state,
         "processes": final.get("processes", {}),
         "supervisor_events": events,
+        "supervisor_error": supervisor_error,
+        "stop_report": stop_report,
         "disk_free_bytes": disk_free_bytes(REPO_ROOT),
+        "disk": final.get("disk"),
+        "configuration": {
+            "collector_max_bytes": args.collector_max_bytes,
+            "raw_hot_hours": args.raw_hot_hours,
+            "delete_when_free_below": args.delete_when_free_below,
+            "rotation_seconds": args.rotation_seconds,
+            "sealed_grace_seconds": args.sealed_grace_seconds,
+            "disk_thresholds": disk_thresholds(args).as_dict(),
+            "forward_root": args.forward_root,
+            "data_root_is_forward_root": True,
+        },
         "plan": plan,
     }
     report_path = run_dir / "LAB_RUN_REPORT.json"
@@ -386,10 +535,36 @@ def main() -> int:
     md_path = run_dir / "LAB_RUN_REPORT.md"
     md_path.write_text(render_report(report), encoding="utf-8")
     write_system_daily_report(args, run_dir)
+    # §24 — the operational snapshot is evidence, not a scrollback buffer.
+    snapshot = {
+        "schema_version": "paper-lab-run-snapshot-v1",
+        "run_id": run_id,
+        "captured_at_ms": int(time.time() * 1000),
+        "duration_seconds": report["duration_seconds"],
+        "stop_reason": report["stop_reason"],
+        "final_state": state,
+        "processes": final.get("processes", {}),
+        "stop_report": stop_report,
+        "supervisor_error": supervisor_error,
+        "interrupted": interrupted,
+        "disk": final.get("disk"),
+        "supervisor_events": events,
+    }
+    snapshot_path = run_dir / "LAB_RUN_SNAPSHOT.json"
+    snapshot_path.write_text(
+        json.dumps(snapshot, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
+    )
     print(f"[lab] final state : {state}")
     print(f"[lab] report      : {report_path}")
     print(f"[lab] report      : {md_path}")
-    return 0 if state in ("HEALTHY", "DEGRADED") else 1
+    print(f"[lab] snapshot    : {snapshot_path}")
+    if stop_report:
+        print(f"[lab] stop verdict: {stop_report.get('verdict')} {failed_on_stop or ''}")
+    if interrupted:
+        return 130
+    if supervisor_error or state == "FAILED" or failed_on_stop:
+        return 1
+    return 0
 
 
 def resolve_stop_reason(

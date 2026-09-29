@@ -50,6 +50,12 @@ from trading_bot.research.forward.aggregation import (
     aggregate_dataset,
 )
 from trading_bot.research.forward.contract import RawEvent, parse_event
+from trading_bot.research.forward.preservation import (
+    PRESERVED,
+    PreservationPolicy,
+    PreservationReport,
+    preservation_for_window,
+)
 from trading_bot.research.forward.storage import (
     StorageError,
     iter_segment_rows,
@@ -62,6 +68,9 @@ __all__ = [
     "COMPACTION_MARKED",
     "COMPACTION_ROOT",
     "LINEAGE_ROOT",
+    "LOSSLESS",
+    "LOSSY",
+    "PRESERVATION_ROOT",
     "RAW_ROOT",
     "REPORT_ROOT",
     "RETENTION_POLICY_VERSION",
@@ -70,11 +79,13 @@ __all__ = [
     "RetentionPlan",
     "RetentionPolicy",
     "SourceSegment",
+    "TierSpec",
     "apply_retention",
     "capacity_report",
     "compact_window",
     "lineage_id_for",
     "plan_retention",
+    "tier_plan",
     "verify_sealed_segment",
 ]
 
@@ -87,8 +98,96 @@ AGGREGATED_ROOT: Final[str] = "aggregated"
 LINEAGE_ROOT: Final[str] = "lineage"
 COMPACTION_ROOT: Final[str] = "compaction"
 REPORT_ROOT: Final[str] = "reports"
+PRESERVATION_ROOT: Final[str] = "preservation"
 
 COMPACTION_MARKED: Final[str] = "COMPACTED"
+
+LOSSLESS: Final[str] = "LOSSLESS"
+LOSSY: Final[str] = "LOSSY"
+
+
+#: §9/§10 — the tiers, what each one is, and whether it can rebuild the tier
+#: below it. "Compact" is not one thing: a tier that keeps every row (gzip is
+#: lossless) and a tier that keeps per-minute means are not interchangeable, and
+#: calling both "compressed" is how a lossy step gets mistaken for a safe one.
+@dataclass(frozen=True, slots=True)
+class TierSpec:
+    tier: str
+    layer: str
+    kind: str
+    resolution: str
+    retention: str
+    serves: tuple[str, ...]
+    measured_share_of_bytes: float | None = None
+
+    def as_dict(self) -> dict[str, Any]:
+        return {
+            "tier": self.tier,
+            "layer": self.layer,
+            "kind": self.kind,
+            "resolution": self.resolution,
+            "retention": self.retention,
+            "serves": list(self.serves),
+            "measured_share_of_bytes": self.measured_share_of_bytes,
+        }
+
+
+def tier_plan(policy: RetentionPolicy) -> tuple[TierSpec, ...]:
+    """The retention tiers as one auditable table (§9, §10, §14).
+
+    ``measured_share_of_bytes`` comes from the certification capture, where the
+    quote streams (``book_ticker``) were ~70 % of written bytes while ``depth_diff``
+    ~27 %, while trades, open interest and checkpoints together were under 2 %.
+    That is the fact the policy is built on: the expensive part of this capture is
+    also the part that cannot be regenerated.
+    """
+    return (
+        TierSpec(
+            tier="TIER 0",
+            layer=RAW_ROOT,
+            kind=LOSSLESS,
+            resolution="every event",
+            retention=f"{policy.raw_hot_hours} h behind the writer, then compacted",
+            serves=(
+                "replay",
+                "M-03 at quote level",
+                "any hypothesis not yet preregistered",
+            ),
+            measured_share_of_bytes=1.0,
+        ),
+        TierSpec(
+            tier="TIER 1",
+            layer=AGGREGATED_ROOT,
+            kind=LOSSY,
+            resolution=(
+                f"{BASE_TIMEFRAME_MINUTES} m buckets + "
+                + "/".join(str(m) for m in HIGHER_TIMEFRAMES_MINUTES)
+                + " m roll-ups"
+            ),
+            retention="indefinite (the long-term record)",
+            serves=("M-03 at 1/5 m", "M-07 at 5/15/30 m"),
+            # Measured, not assumed: 37.21 MB of raw segments compacted to 0.08 MB
+            # of aggregates on the head-certification capture (0.2 %), with
+            # lineage adding ~8 KB per compacted window.
+            measured_share_of_bytes=0.0022,
+        ),
+        TierSpec(
+            tier="TIER 2",
+            layer=LINEAGE_ROOT,
+            kind=LOSSLESS,
+            resolution="one record per compacted window",
+            retention="indefinite",
+            serves=("auditability of every deletion",),
+        ),
+        TierSpec(
+            tier="TIER 3",
+            layer=REPORT_ROOT,
+            kind=LOSSY,
+            resolution="per run",
+            retention="indefinite",
+            serves=("quality", "readiness", "capacity"),
+        ),
+    )
 
 
 def _now_ms() -> int:
@@ -685,6 +784,9 @@ class RetentionRun:
     deleted: list[str] = field(default_factory=list)
     refused: list[dict[str, Any]] = field(default_factory=list)
     freed_bytes: int = 0
+    #: §11/§12 — the preservation verdict for every window a deletion was
+    #: considered for. A deletion nobody can show was safe is not a policy.
+    preservation: list[dict[str, Any]] = field(default_factory=list)
 
     def as_dict(self) -> dict[str, Any]:
         return {
@@ -692,6 +794,7 @@ class RetentionRun:
             "deleted_segments": self.deleted,
             "refused": self.refused[:50],
             "freed_bytes": self.freed_bytes,
+            "preservation": self.preservation,
         }
 
 
@@ -703,6 +806,7 @@ def apply_retention(
     allow_delete: bool = False,
     gaps: Iterable[dict[str, Any]] | None = None,
     now_ms: int | None = None,
+    preservation: PreservationPolicy | None = None,
 ) -> RetentionRun:
     """Compact what is due and, only with ``allow_delete``, remove proven raw.
 
@@ -734,9 +838,25 @@ def apply_retention(
     for entry in refreshed.skipped:
         if str(entry.get("reason", "")).startswith("aggregate "):
             run.refused.append(entry)
+    # §12 — the raw rows of a window are still on disk here, which is the only
+    # moment at which the preservation question can be answered: derive the
+    # hypothesis from raw, derive it from the compact artifact, compare, and only
+    # then decide. Answered once per window, and written down beside the lineage.
+    window_files: dict[int, list[Path]] = {}
+    preservation_seen: dict[int, PreservationReport] = {}
+    if preservation is not None:
+        for candidate in _iter_raw_segments(base):
+            try:
+                candidate_start, _candidate_end = _window_of(
+                    candidate.relative_to(base).as_posix(), policy.rotation_seconds
+                )
+            except StorageError:  # pragma: no cover - already reported by the plan
+                continue
+            window_files.setdefault(candidate_start, []).append(candidate)
+
     for path, lineage_id in refreshed.deletable:
         relative = path.relative_to(base).as_posix()
-        window_start, _window_end = _window_of(relative, policy.rotation_seconds)
+        window_start, window_end = _window_of(relative, policy.rotation_seconds)
         record = _load_lineage(base, run_id, window_start)
         if record is None or record.lineage_id != lineage_id:
             run.refused.append({"path": relative, "reason": "no matching lineage"})
@@ -745,6 +865,36 @@ def apply_retention(
         if not ok:
             run.refused.append({"path": str(path), "reason": f"aggregate {reason}"})
             continue
+        if preservation is not None:
+            report = preservation_seen.get(window_start)
+            if report is None:
+                report = preservation_for_window(
+                    base,
+                    run_id,
+                    window_start,
+                    sorted(window_files.get(window_start, [])),
+                    policy=preservation,
+                )
+                preservation_seen[window_start] = report
+                run.preservation.append(report.as_dict())
+                save_json(
+                    base / PRESERVATION_ROOT / run_id / f"{window_start}.json",
+                    report.as_dict(),
+                )
+            if not report.deletion_allowed:
+                run.refused.append(
+                    {
+                        "path": relative,
+                        "window_start_ms": window_start,
+                        "window_end_ms": window_end,
+                        "reason": ", ".join(
+                            f"{name}: {verdict}" for name, verdict in report.verdicts.items()
+                            if verdict != PRESERVED
+                        )
+                        or "preservation refused deletion",
+                    }
+                )
+                continue
         size = path.stat().st_size
         try:
             path.unlink()

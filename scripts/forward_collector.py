@@ -36,6 +36,11 @@ from trading_bot.research.forward.collector import (
     ForwardCollector,
 )
 from trading_bot.research.forward.contract import Market
+from trading_bot.research.forward.outcome import (
+    EXIT_FAILED,
+    FAILURE_MANIFEST,
+    CaptureStatus,
+)
 from trading_bot.research.forward.replay import replay_microstructure_dataset
 from trading_bot.research.forward.reporting import (
     REPORT_VERSION,
@@ -89,6 +94,15 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--symbols", default="BTCUSDT,ETHUSDT,SOLUSDT")
     parser.add_argument("--markets", default="spot,perp")
     parser.add_argument("--out", default=DEFAULT_ROOT)
+    parser.add_argument(
+        "--data-root",
+        default=None,
+        help=(
+            "§16 — where segments, manifests, lineage and reports live. Overrides "
+            "--out so a capture can be pointed at another volume without moving "
+            "the code; the resume state and stop file follow the same root"
+        ),
+    )
     parser.add_argument("--docs-dir", default="docs")
     parser.add_argument("--run-id", default=None)
     parser.add_argument("--resume", action="store_true")
@@ -113,6 +127,15 @@ def build_parser() -> argparse.ArgumentParser:
         type=int,
         default=None,
         help="stop gracefully once the dataset reaches this size (disk safety valve)",
+    )
+    parser.add_argument(
+        "--min-free-bytes",
+        type=int,
+        default=None,
+        help=(
+            "stop gracefully once the *filesystem* has less than this much free "
+            "space; the last barrier on a host that is shared with everything else"
+        ),
     )
     parser.add_argument(
         "--stop-file",
@@ -150,7 +173,7 @@ def _config_from_args(args: argparse.Namespace) -> CollectorConfig:
     return CollectorConfig(
         symbols=_parse_symbols(args.symbols),
         markets=_parse_markets(args.markets),
-        root=Path(args.out),
+        root=Path(args.data_root or args.out),
         rotation_seconds=rotation,
         duration_seconds=duration,
         heartbeat_seconds=heartbeat,
@@ -165,6 +188,7 @@ def _config_from_args(args: argparse.Namespace) -> CollectorConfig:
         stale_after_ms=args.stale_after_ms,
         streams=_parse_streams(args.streams),
         max_total_bytes=args.max_total_bytes,
+        min_free_bytes=args.min_free_bytes,
         stop_file=Path(args.stop_file) if args.stop_file else None,
         run_id=args.run_id,
         resume=args.resume,
@@ -176,6 +200,14 @@ def _json(payload: object) -> str:
 
 
 def mode_run(args: argparse.Namespace) -> int:
+    """Run a capture and exit with the verdict the manifest carries (§2).
+
+    ``0`` means the capture ended cleanly (its duration, an operator's stop, or
+    a disk guard) with every segment sealed and accounted for. ``2`` means it
+    FAILED. The distinction exists because exit codes are what a supervisor and
+    a wrapper script read; a capture whose writer died must never look like a
+    capture that finished.
+    """
     config = _config_from_args(args)
     collector = ForwardCollector(config)
     print(
@@ -193,13 +225,41 @@ def mode_run(args: argparse.Namespace) -> int:
         f"  graceful stop: {config.stop_file if config.stop_file else 'signal only'}",
         file=sys.stderr,
     )
-    manifest = asyncio.run(collector.run())
+    try:
+        manifest = asyncio.run(collector.run())
+    except Exception as exc:
+        # The manifest could not be written at all, so the only honest channel
+        # left is this line and the exit code. Both say FAILED.
+        failure = {
+            "run_id": collector.run_id,
+            "root": str(collector.root),
+            "status": CaptureStatus.FAILED.value,
+            "failure_kind": FAILURE_MANIFEST,
+            "failure_reason": f"{type(exc).__name__}: {exc}",
+            "stop_reason": collector.stop_reason,
+            "exit_code": EXIT_FAILED,
+        }
+        print(_json(failure))
+        print(
+            f"forward collector: FAILED — the run could not finalise "
+            f"({type(exc).__name__}: {exc}); no manifest was written",
+            file=sys.stderr,
+        )
+        return EXIT_FAILED
     print(_json(manifest.as_dict()))
+    outcome = manifest.outcome()
     print(
         f"manifest -> {collector.root / 'manifest' / (collector.run_id + '.json')}",
         file=sys.stderr,
     )
-    return 0
+    print(f"forward collector: {outcome.describe()}", file=sys.stderr)
+    if outcome.failed:
+        print(
+            "forward collector: FAILED — refusing to exit 0; the supervisor must "
+            "see this as a crash, not a completed capture",
+            file=sys.stderr,
+        )
+    return outcome.exit_code
 
 
 def mode_replay(args: argparse.Namespace) -> int:
