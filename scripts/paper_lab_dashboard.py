@@ -413,10 +413,10 @@ def make_handler(args: argparse.Namespace) -> type[BaseHTTPRequestHandler]:
                 "application/json; charset=utf-8",
             )
 
-        do_POST = _refuse  # type: ignore[assignment]
-        do_PUT = _refuse  # type: ignore[assignment]
-        do_DELETE = _refuse  # type: ignore[assignment]
-        do_PATCH = _refuse  # type: ignore[assignment]
+        do_POST = _refuse
+        do_PUT = _refuse
+        do_DELETE = _refuse
+        do_PATCH = _refuse
 
         def log_message(self, format: str, *args: Any) -> None:
             print(f"[dashboard] {self.address_string()} {format % args}", file=sys.stderr)

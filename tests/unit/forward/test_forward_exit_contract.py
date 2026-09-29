@@ -56,7 +56,6 @@ from trading_bot.research.forward.outcome import (
 from trading_bot.research.forward.storage import (
     RunManifest,
     manifest_outcome,
-    save_json,
 )
 
 _REPO_ROOT = Path(__file__).resolve().parents[3]
