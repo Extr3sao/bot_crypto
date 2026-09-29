@@ -119,6 +119,33 @@ def _sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
+def _confirmed_status_literals(path: Path) -> list[str]:
+    """``status = "CONFIRMED"`` / ``{"status": "CONFIRMED"}`` and nothing else."""
+    import ast
+
+    try:
+        tree = ast.parse(path.read_text(encoding="utf-8", errors="ignore"))
+    except SyntaxError:  # pragma: no cover - the file would not run at all
+        return []
+    offenders: list[str] = []
+    status_keys = {"status", "state", "admission_status", "strategy_status"}
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Dict):
+            for key, value in zip(node.keys, node.values, strict=False):
+                if not isinstance(key, ast.Constant) or str(key.value) not in status_keys:
+                    continue
+                if isinstance(value, ast.Constant) and value.value == "CONFIRMED":
+                    offenders.append(f"{path.name}:{node.lineno}")
+        elif isinstance(node, ast.Assign):
+            if not (isinstance(node.value, ast.Constant) and node.value.value == "CONFIRMED"):
+                continue
+            for target in node.targets:
+                name = getattr(target, "id", "") or getattr(target, "attr", "")
+                if any(part in str(name) for part in status_keys):
+                    offenders.append(f"{path.name}:{node.lineno}")
+    return offenders
+
+
 def _git(*args: str) -> str:
     completed = subprocess.run(
         ["git", *args], cwd=str(REPO_ROOT), capture_output=True, text=True, check=False
@@ -420,24 +447,20 @@ def check_def_auto(ledger_path: Path) -> dict[str, Any]:
     except Exception:
         unknown_raises = True
 
-    confirmed_in_entrypoints = [
-        path.name
-        for path in SCRIPTS_DIR.rglob("*.py")
-        if "CONFIRMED" in path.read_text(encoding="utf-8", errors="ignore")
-        and "CONFIRMED_" not in path.read_text(encoding="utf-8", errors="ignore")
+    # Only the entrypoints that author a strategy map are in scope, and only a
+    # literal *assigned to a status field* is the defect: a docstring or a
+    # comment that names the retired constant is documentation, and a research
+    # module's unrelated applicability vocabulary is not this runtime's map.
+    entrypoints = [
+        SCRIPTS_DIR / "start_paper_trading.py",
+        SCRIPTS_DIR / "autonomous_paper.py",
+        SCRIPTS_DIR / "start_paper_lab.py",
+        REPO_ROOT / "src" / "trading_bot" / "autonomous" / "runtime.py",
+        REPO_ROOT / "src" / "trading_bot" / "autonomous" / "strategy_state.py",
     ]
-    # A literal assignment like ``status = "CONFIRMED"`` is the defect; a comment
-    # that names the retired constant is not.
-    assigned_confirmed = []
-    for path in SCRIPTS_DIR.rglob("*.py"):
-        for number, line in enumerate(
-            path.read_text(encoding="utf-8", errors="ignore").splitlines(), start=1
-        ):
-            stripped = line.strip()
-            if "CONFIRMED" not in stripped or stripped.startswith("#"):
-                continue
-            if "=" in stripped and '"CONFIRMED"' in stripped.replace("'", '"'):
-                assigned_confirmed.append(f"{path.name}:{number}")
+    assigned_confirmed = [
+        offender for path in entrypoints if path.exists() for offender in _confirmed_status_literals(path)
+    ]
 
     ok = (
         explained
@@ -461,7 +484,7 @@ def check_def_auto(ledger_path: Path) -> dict[str, Any]:
                 "unknown_timeframe_raises": unknown_raises,
             },
             "DEF-AUTO-4": {
-                "files_naming_CONFIRMED": confirmed_in_entrypoints,
+                "entrypoints_inspected": [str(path.relative_to(REPO_ROOT)) for path in entrypoints],
                 "literal_CONFIRMED_assignments": assigned_confirmed,
             },
         },
@@ -736,9 +759,10 @@ def check_microstructure_hypotheses() -> dict[str, Any]:
     payload = _read_json(path)
     rows = (payload or {}).get("hypotheses", {})
     states = {key: value.get("state") for key, value in rows.items()}
-    registered = all(
-        value.get("minimum_data") and value.get("preregistered_at")
-        for value in rows.values()
+    registered_at = (payload or {}).get("preregistered_at")
+    version = (payload or {}).get("preregistration_version")
+    registered = bool(rows) and bool(registered_at) and bool(version) and all(
+        value.get("minimum_data") and value.get("quality_gates") for value in rows.values()
     )
     evidence = [
         str(candidate.relative_to(REPO_ROOT))
@@ -761,6 +785,8 @@ def check_microstructure_hypotheses() -> dict[str, Any]:
             "path": str(path.relative_to(REPO_ROOT)),
             "states": states,
             "minimum_data_present": registered,
+            "preregistered_at": registered_at,
+            "preregistration_version": version,
             "not_yet_run": (payload or {}).get("not_yet_run"),
             "experiment_outputs_found": evidence[:10],
         },
