@@ -196,10 +196,37 @@ def check_isolation() -> dict[str, Any]:
     }
 
 
+def _rel(path: Path) -> str:
+    """A path for the report, relative to this repo when it is inside it.
+
+    The verifier is normally pointed at capture roots inside the repo doing the
+    work, but it has to stay useful from a throwaway worktree, where those roots
+    live somewhere else. ``relative_to`` raises in exactly that case, and the
+    check would then be reported as failed for a reason that has nothing to do
+    with the system under test — an un-actionable false negative in the one tool
+    that exists to catch false positives.
+    """
+    try:
+        return str(path.relative_to(REPO_ROOT))
+    except ValueError:
+        return str(path)
+
+
+def _named(name: str, fn: Any) -> Any:
+    """Give a closure a name, so a check that crashes is still identified.
+
+    ``__name__`` of a lambda is ``"<lambda>"``, and the guard below reports that
+    name when a check raises. A crashed check whose id is ``<lambda>`` turns a
+    real finding into a mystery, which is the opposite of what a verifier is for.
+    """
+    fn.__name__ = name
+    return fn
+
+
 def check_p1_bounded_telemetry() -> dict[str, Any]:
     """The unbounded per-event list is gone and memory does not grow with events."""
     source_offenders = [
-        str(path.relative_to(REPO_ROOT))
+        _rel(path)
         for path in FORWARD_DIR.rglob("*.py")
         if "network_delays" in path.read_text(encoding="utf-8", errors="ignore")
     ]
@@ -332,7 +359,7 @@ def check_storage_capacity(capture_root: Path) -> dict[str, Any]:
         "id": "STORAGE_CAPACITY_POLICY",
         "ok": bool(ok),
         "detail": {
-            "manifest": str(manifests[-1].relative_to(REPO_ROOT)),
+            "manifest": _rel(manifests[-1]),
             "measured_compressed_bytes_per_day": compressed_per_day,
             "measured_compressed_gb_per_day": round(compressed_per_day / 1e9, 3),
             "policy": policy.as_dict(),
@@ -402,7 +429,7 @@ def check_strategy_gate(ledger_path: Path) -> dict[str, Any]:
         "id": "STRATEGY_ADMISSION_GATE",
         "ok": ok,
         "detail": {
-            "ledger": str(ledger_path.relative_to(REPO_ROOT)),
+            "ledger": _rel(ledger_path),
             "lifecycle_counts": counts,
             "paper_executable_on_5m": executable,
             "live_names_in_vocabulary": sorted(live_names),
@@ -500,7 +527,7 @@ def check_def_auto(ledger_path: Path) -> dict[str, Any]:
                 "unknown_timeframe_raises": unknown_raises,
             },
             "DEF-AUTO-4": {
-                "entrypoints_inspected": [str(path.relative_to(REPO_ROOT)) for path in entrypoints],
+                "entrypoints_inspected": [_rel(path) for path in entrypoints],
                 "literal_CONFIRMED_assignments": assigned_confirmed,
             },
         },
@@ -736,7 +763,7 @@ def check_final_head_executed(
         if commit and head.startswith(commit):
             stamped_with_head.append(
                 {
-                    "manifest": str(path.relative_to(REPO_ROOT)),
+                    "manifest": _rel(path),
                     "commit": commit,
                     "duration_seconds": payload.get("duration_seconds"),
                 }
@@ -774,7 +801,7 @@ def check_final_head_executed(
         "ok": bool(ok),
         "detail": {
             "verified_head": head,
-            "integrated_run_manifest": str(integrated_path.relative_to(REPO_ROOT))
+            "integrated_run_manifest": _rel(integrated_path)
             if integrated_path
             else None,
             "integrated_run_commit": integrated_commit,
@@ -782,7 +809,7 @@ def check_final_head_executed(
             "captures_stamped_with_head": stamped_with_head,
             "runtime_paths_changed_since_integrated_run": changed_since_integrated,
             "runtime_surface": list(RUNTIME_PATHS),
-            "writer_certification_manifest": str(cert_path.relative_to(REPO_ROOT))
+            "writer_certification_manifest": _rel(cert_path)
             if cert_path
             else None,
             "writer_certification_commit": cert_commit,
@@ -812,10 +839,10 @@ def check_microstructure_hypotheses() -> dict[str, Any]:
         value.get("minimum_data") and value.get("quality_gates") for value in rows.values()
     )
     evidence = [
-        str(candidate.relative_to(REPO_ROOT))
+        _rel(candidate)
         for candidate in (REPO_ROOT / "reports").rglob("*M-03*")
     ] + [
-        str(candidate.relative_to(REPO_ROOT))
+        _rel(candidate)
         for candidate in (REPO_ROOT / "reports").rglob("*M-07*")
     ]
     ok = (
@@ -829,7 +856,7 @@ def check_microstructure_hypotheses() -> dict[str, Any]:
         "id": "M03_M07_PREREGISTERED",
         "ok": ok,
         "detail": {
-            "path": str(path.relative_to(REPO_ROOT)),
+            "path": _rel(path),
             "states": states,
             "minimum_data_present": registered,
             "preregistered_at": registered_at,
@@ -1184,9 +1211,18 @@ def check_disk_levels() -> dict[str, Any]:
     telemetry.observe(5_000_000_000, now=0.0)
     telemetry.observe(3_000_000_000, now=7_200.0)
     payload = telemetry.as_dict()
+    # 3 GB free against a 2 GB warning threshold is NORMAL. This check used to
+    # demand WARNING there, which the ladder can never produce, so it could never
+    # pass - it was asserting a level rather than testing the operator's
+    # thresholds. What matters is that the level tracks those thresholds in both
+    # directions, and that the rate is measured rather than assumed.
+    above_threshold = payload["level"] == DiskLevel.NORMAL.value
+    telemetry.observe(1_900_000_000, now=7_260.0)
+    below_threshold = telemetry.level is DiskLevel.WARNING
     ok = (
         not wrong
-        and payload["level"] == DiskLevel.WARNING.value
+        and above_threshold
+        and below_threshold
         and payload["samples"] == 2
         and payload["estimated_hours_remaining"] is not None
         and set(payload["thresholds"]) >= {"warning_bytes", "critical_bytes", "stop_bytes"}
@@ -1194,7 +1230,14 @@ def check_disk_levels() -> dict[str, Any]:
     return {
         "id": "DISK_LEVELS_AND_RATE",
         "ok": ok,
-        "detail": {"wrong_levels": wrong, "telemetry": payload},
+        "detail": {
+            "wrong_levels": wrong,
+            "crossing": {
+                "normal_above_warning_threshold": above_threshold,
+                "warning_below_warning_threshold": below_threshold,
+            },
+            "telemetry": payload,
+        },
         "claim": (
             "free space is reported with its measured rate and the hours it leaves, at "
             "thresholds the operator sets rather than thresholds hardcoded in a report"
@@ -1279,7 +1322,12 @@ def check_operator_surface() -> dict[str, Any]:
         and payload.get("live_control") is False
         and controls.get("read_only") is True
         and controls.get("mutating_endpoints") == []
-        and "LIVE" not in page.replace("LIVE control", "live-control")
+        # The page *names* LIVE in order to say there is none, so forbidding the
+        # substring forbade the dashboard from being honest about it. What has to
+        # be absent is any affordance: no form, no button, nothing to press.
+        and "no live control" in page.lower()
+        and "<form" not in page.lower()
+        and "<button" not in page.lower()
     )
     return {
         "id": "OPERATOR_SURFACE_READ_ONLY",
@@ -1318,7 +1366,15 @@ def check_storage_tiers_and_data_root() -> dict[str, Any]:
     )
     config = collector._config_from_args(parsed)
     retention = load_script("forward_retention")
-    retention_args = retention.parse_args(["--data-root", "D:/capture-root"])
+    # ``forward_retention.parse_args`` reads ``sys.argv``, and the retention driver
+    # is one of the frozen runtime paths, so this check injects argv instead of
+    # asking the driver to grow a parameter for the verifier's benefit.
+    argv = sys.argv[:]
+    sys.argv = ["forward_retention.py", "--data-root", "D:/capture-root"]
+    try:
+        retention_args = retention.parse_args()
+    finally:
+        sys.argv = argv
     ok = (
         tiers.get("TIER 0") is not None
         and tiers["TIER 0"].kind == LOSSLESS
@@ -1400,21 +1456,33 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
     for fn in (
         check_isolation,
         check_p1_bounded_telemetry,
-        lambda: check_retention_safety(capture_root, forward_root),
-        lambda: check_storage_capacity(capture_root),
-        lambda: check_strategy_gate(ledger_path),
-        lambda: check_def_auto(ledger_path),
+        _named(
+            "RETENTION_LINEAGE_AND_ORDER",
+            lambda: check_retention_safety(capture_root, forward_root),
+        ),
+        _named("STORAGE_CAPACITY_POLICY", lambda: check_storage_capacity(capture_root)),
+        _named("STRATEGY_ADMISSION_GATE", lambda: check_strategy_gate(ledger_path)),
+        _named("DEF_AUTO_2_3_4", lambda: check_def_auto(ledger_path)),
         check_no_live_path,
         check_supervisor_isolation,
-        lambda: check_safe_stop_and_restart(lab_run_dir, paper_root, forward_root),
-        lambda: check_final_head_executed(capture_root, forward_root, lab_run_dir, args),
+        _named(
+            "SAFE_STOP_AND_RESTART",
+            lambda: check_safe_stop_and_restart(lab_run_dir, paper_root, forward_root),
+        ),
+        _named(
+            "FINAL_HEAD_EXECUTED",
+            lambda: check_final_head_executed(capture_root, forward_root, lab_run_dir, args),
+        ),
         check_microstructure_hypotheses,
         check_disk_levels,
         check_operator_surface,
         check_storage_tiers_and_data_root,
-        lambda: check_collector_exit_contract(tmp_path),
-        lambda: check_supervisor_failure_propagation(tmp_path),
-        lambda: check_preservation_gate(tmp_path),
+        _named("COLLECTOR_EXIT_CONTRACT", lambda: check_collector_exit_contract(tmp_path)),
+        _named(
+            "SUPERVISOR_FAILURE_PROPAGATION",
+            lambda: check_supervisor_failure_propagation(tmp_path),
+        ),
+        _named("M03_M07_DATA_PRESERVATION", lambda: check_preservation_gate(tmp_path)),
     ):
         _guard(fn)
     if not args.skip_tests:
