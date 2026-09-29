@@ -291,13 +291,19 @@ def main() -> int:
         final = supervisor.status()
 
     state = final.get("state")
+
     report = {
         "schema_version": "paper-lab-run-report-v1",
         "run_id": run_id,
         "started_at_ms": supervisor.started_at_ms,
         "ended_at_ms": int(time.time() * 1000),
         "duration_seconds": round(time.time() - supervisor.started_at_ms / 1000, 3),
-        "stop_reason": stop.reason or ("duration reached" if args.duration_hours else "STOP file"),
+        "configured_duration_hours": args.duration_hours,
+        "stop_reason": resolve_stop_reason(
+            reason=stop.reason,
+            stop_file=run_dir / STOP_FILE_NAME,
+            configured_duration_hours=args.duration_hours,
+        ),
         "final_state": state,
         "processes": final.get("processes", {}),
         "supervisor_events": events,
@@ -313,6 +319,27 @@ def main() -> int:
     print(f"[lab] report      : {report_path}")
     print(f"[lab] report      : {md_path}")
     return 0 if state in ("HEALTHY", "DEGRADED") else 1
+
+
+def resolve_stop_reason(
+    *,
+    reason: str | None,
+    stop_file: Path,
+    configured_duration_hours: float,
+) -> str:
+    """Which exit this was, checked against the evidence rather than assumed.
+
+    A STOP file is honoured by the loop the same way the operator's Ctrl-C is, so
+    a duration-limited run that was stopped early must not be reported as having
+    reached its duration.
+    """
+    if reason:
+        return reason
+    if stop_file.exists():
+        return "STOP file"
+    if configured_duration_hours:
+        return "duration reached"
+    return "STOP file"
 
 
 def write_system_daily_report(args: argparse.Namespace, run_dir: Path) -> None:

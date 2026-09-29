@@ -248,6 +248,29 @@ def test_the_launcher_plans_paper_and_collector_as_isolated_critical_children(
     assert "--provider" in by_name["paper"].command
 
 
+def test_the_stop_reason_is_read_from_the_evidence(
+    tmp_path: Path, lab_launcher: Any
+) -> None:
+    """A duration-limited run stopped early must not be reported as completed."""
+    stop_file = tmp_path / "STOP"
+    # A signal beats everything: the handler knew why it stopped.
+    assert lab_launcher.resolve_stop_reason(
+        reason="signal 2", stop_file=stop_file, configured_duration_hours=2.0
+    ) == "signal 2"
+    # A STOP file on a 2 h run is a STOP file, not a reached duration.
+    stop_file.write_text("stop\n", encoding="utf-8")
+    assert lab_launcher.resolve_stop_reason(
+        reason=None, stop_file=stop_file, configured_duration_hours=2.0
+    ) == "STOP file"
+    stop_file.unlink()
+    assert lab_launcher.resolve_stop_reason(
+        reason=None, stop_file=stop_file, configured_duration_hours=2.0
+    ) == "duration reached"
+    assert lab_launcher.resolve_stop_reason(
+        reason=None, stop_file=stop_file, configured_duration_hours=0.0
+    ) == "STOP file"
+
+
 def test_one_command_writes_the_stop_file(
     tmp_path: Path, lab_launcher: Any, monkeypatch: pytest.MonkeyPatch
 ) -> None:

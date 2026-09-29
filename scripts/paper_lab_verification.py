@@ -54,6 +54,19 @@ sys.path.insert(0, str(REPO_ROOT / "src"))
 FORWARD_DIR = REPO_ROOT / "src" / "trading_bot" / "research" / "forward"
 SCRIPTS_DIR = REPO_ROOT / "scripts"
 
+#: §25 — the surface whose behaviour must be the behaviour that was executed. The
+#: verifier itself, its tests and the documentation are deliberately not in here:
+#: adding a check or a paragraph cannot change what the runtime did.
+RUNTIME_PATHS: tuple[str, ...] = (
+    "src/trading_bot",
+    "scripts/autonomous_paper.py",
+    "scripts/forward_collector.py",
+    "scripts/forward_retention.py",
+    "scripts/paper_lab_research.py",
+    "scripts/start_paper_lab.py",
+    "scripts/system_daily_report.py",
+)
+
 P1_MEMORY_PROBE = """
 import sys, tracemalloc
 from trading_bot.research.forward.storage import LatencyHistogram
@@ -711,8 +724,32 @@ def check_final_head_executed(
         REPO_ROOT / args.paper_root / lab_run_dir.name / "PAPER_RUN.json"
     )
 
+    # Every capture under the lab roots, so a short post-run smoke at the final
+    # HEAD counts as evidence that the final HEAD was executed.
+    stamped_with_head: list[dict[str, Any]] = []
+    for path in sorted(forward_root.parent.glob("microstructure-forward-lab*/manifest/*.json")):
+        payload = _read_json(path) or {}
+        commit = str(payload.get("commit") or "")
+        if commit and head.startswith(commit):
+            stamped_with_head.append(
+                {
+                    "manifest": str(path.relative_to(REPO_ROOT)),
+                    "commit": commit,
+                    "duration_seconds": payload.get("duration_seconds"),
+                }
+            )
+
     integrated_commit = (integrated or {}).get("commit") or ""
     integrated_matches = bool(integrated_commit) and head.startswith(integrated_commit)
+    # §25: the integrated run may predate the final HEAD only if nothing on the
+    # runtime surface changed in between, in which case a smoke at the final HEAD
+    # has to exist as its own evidence.
+    changed_since_integrated: list[str] = []
+    if integrated_commit and not integrated_matches:
+        changed = _git(
+            "diff", "--name-only", integrated_commit, head, "--", *RUNTIME_PATHS
+        )
+        changed_since_integrated = [line for line in changed.splitlines() if line.strip()]
 
     cert_commit = (certification or {}).get("commit") or ""
     writer_changed_since_certification: list[str] = []
@@ -720,10 +757,13 @@ def check_final_head_executed(
         changed = _git("diff", "--name-only", cert_commit, head, "--", "src/trading_bot/research/forward")
         writer_changed_since_certification = [line for line in changed.splitlines() if line.strip()]
 
+    head_matches_integrated = integrated_matches or (
+        bool(stamped_with_head) and not changed_since_integrated
+    )
     ok = (
         bool(head)
         and not status
-        and integrated_matches
+        and head_matches_integrated
         and not writer_changed_since_certification
     )
     return {
@@ -736,6 +776,9 @@ def check_final_head_executed(
             else None,
             "integrated_run_commit": integrated_commit,
             "integrated_run_commit_matches_head": integrated_matches,
+            "captures_stamped_with_head": stamped_with_head,
+            "runtime_paths_changed_since_integrated_run": changed_since_integrated,
+            "runtime_surface": list(RUNTIME_PATHS),
             "writer_certification_manifest": str(cert_path.relative_to(REPO_ROOT))
             if cert_path
             else None,
@@ -744,12 +787,13 @@ def check_final_head_executed(
             "paper_run_stamp": (paper_descriptor or {}).get("commit"),
             "working_tree": status or "clean",
             "note": (
-                "the integrated run's manifest records the commit it ran on and must "
-                "match HEAD; a certification capture may predate HEAD only when no "
-                "writer-side module changed in between"
+                "the integrated run's manifest must record HEAD, or a later smoke "
+                "stamped with HEAD must exist with no runtime module changed in "
+                "between (brief §25); a certification capture may predate HEAD only "
+                "when no writer-side module changed"
             ),
         },
-        "claim": "the certified HEAD is the HEAD that produced the integrated evidence",
+        "claim": "the certified HEAD is the HEAD that produced the runtime evidence",
     }
 
 
