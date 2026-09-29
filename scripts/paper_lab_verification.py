@@ -1365,23 +1365,41 @@ def check_storage_tiers_and_data_root() -> dict[str, Any]:
         ["--mode", "run", "--out", "reports/ignored", "--data-root", "D:/capture-root"]
     )
     config = collector._config_from_args(parsed)
-    retention = load_script("forward_retention")
-    # ``forward_retention.parse_args`` reads ``sys.argv``, and the retention driver
-    # is one of the frozen runtime paths, so this check injects argv instead of
-    # asking the driver to grow a parameter for the verifier's benefit.
-    argv = sys.argv[:]
-    sys.argv = ["forward_retention.py", "--data-root", "D:/capture-root"]
-    try:
-        retention_args = retention.parse_args()
-    finally:
-        sys.argv = argv
+    # The retention driver is one of the frozen runtime paths, and it applies
+    # ``--data-root`` over ``--root`` inside ``main()`` rather than in
+    # ``parse_args``. So the claim is proven where it actually happens: run the
+    # real driver against a throwaway volume and see where it writes. A parsed
+    # namespace would only show that the flag is accepted, not that it moves
+    # anything, and asserting the precedence twice would test nothing at all.
+    with tempfile.TemporaryDirectory(prefix="retention-volume-") as scratch:
+        alt_root = Path(scratch) / "alt-volume"
+        (alt_root / "manifest").mkdir(parents=True)
+        moved_report = alt_root / "reports" / "RETENTION_REPORT.json"
+        completed = subprocess.run(
+            [
+                sys.executable,
+                str(SCRIPTS_DIR / "forward_retention.py"),
+                "--data-root",
+                str(alt_root),
+                "--run-id",
+                "alt-run",
+                "--dry-run",
+            ],
+            cwd=str(REPO_ROOT),
+            capture_output=True,
+            text=True,
+            timeout=300,
+            check=False,
+        )
+        retention_root = _read_json(moved_report) or {}
     ok = (
         tiers.get("TIER 0") is not None
         and tiers["TIER 0"].kind == LOSSLESS
         and tiers.get("TIER 1") is not None
         and tiers["TIER 1"].kind == LOSSY
         and str(config.root) == "D:\\capture-root"
-        and retention_args.root == "D:/capture-root"
+        and retention_root.get("dry_run") is True
+        and str(retention_root.get("root")) == str(alt_root)
     )
     return {
         "id": "STORAGE_TIERS_AND_DATA_ROOT",
@@ -1389,7 +1407,9 @@ def check_storage_tiers_and_data_root() -> dict[str, Any]:
         "detail": {
             "tiers": [spec.as_dict() for spec in tiers.values()],
             "collector_root_with_data_root": str(config.root),
-            "retention_root_with_data_root": retention_args.root,
+            "retention_root_with_data_root": retention_root.get("root"),
+            "retention_driver_exit_code": completed.returncode,
+            "retention_driver_stdout": (completed.stdout or "").strip().splitlines()[-2:],
         },
         "claim": (
             "the tiers say which are lossless and which are lossy, and both the capture "
