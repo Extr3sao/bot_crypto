@@ -80,6 +80,7 @@ from trading_bot.research.forward.storage import (
     CONTINUITY_INCOMPLETE,
     DEFAULT_ROOT,
     GAP_STATUSES,
+    LATENCY_STEP,
     GapRecord,
     RunManifest,
     SegmentWriter,
@@ -87,6 +88,7 @@ from trading_bot.research.forward.storage import (
     StreamStats,
     format_utc,
     load_resume_state,
+    merge_latency_histograms,
     save_resume_state,
     stream_key_from_path,
 )
@@ -1508,6 +1510,10 @@ class ForwardCollector:
         }
         state = self._evaluate_state(now)
         self._note_state_change(state)
+        # §2 — the writer's own latency telemetry, aggregated from the bounded
+        # per-stream histograms. No samples are materialised, so a heartbeat
+        # every minute stays flat in memory for the life of the capture.
+        merged_latency = merge_latency_histograms(entry.latency for entry in self.stats.values())
         heartbeat = {
             "timestamp": now,
             "timestamp_iso": format_utc(now),
@@ -1525,6 +1531,13 @@ class ForwardCollector:
             "reconnects": self.reconnects,
             "resnapshots": self.resnapshots,
             "clock_violations": self.clock_violations,
+            "network_delay_ms": {
+                "p50": merged_latency.quantile(0.50),
+                "p95": merged_latency.quantile(0.95),
+                "p99": merged_latency.quantile(0.99),
+                "samples": merged_latency.samples,
+                "resolution_ratio": LATENCY_STEP,
+            },
             "disk_bytes": disk_bytes,
             "memory_mb": sample.memory_mb,
             "cpu_seconds": round(sample.cpu_seconds, 3),
@@ -1854,6 +1867,7 @@ class ForwardCollector:
                         if entry.event_type == EventType.DEPTH_DIFF.value
                         else 0
                     ),
+                    network_delay_ms=entry.latency.as_dict(),
                 )
             )
 

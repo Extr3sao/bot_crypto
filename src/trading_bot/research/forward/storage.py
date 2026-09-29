@@ -32,18 +32,21 @@ import gzip
 import hashlib
 import json
 import os
-from collections.abc import Iterator
+from bisect import bisect_left
+from collections.abc import Iterable, Iterator
 from dataclasses import asdict, dataclass, field, replace
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any, Final
 
 from trading_bot.research.forward.contract import (
+    BACKFILL_ORIGIN,
     EventType,
     RawEvent,
     Transport,
     parse_event,
 )
+from trading_bot.research.forward.resources import percentile_from_histogram
 
 __all__ = [
     "CONTINUITY_CONTINUOUS",
@@ -53,7 +56,10 @@ __all__ = [
     "GAP_RECOVERED_PARTIAL",
     "GAP_STATUSES",
     "GAP_UNRECOVERABLE",
+    "LATENCY_LADDER_MS",
+    "LATENCY_STEP",
     "GapRecord",
+    "LatencyHistogram",
     "RunManifest",
     "SegmentFingerprint",
     "SegmentWriter",
@@ -66,6 +72,7 @@ __all__ = [
     "load_json",
     "load_manifest",
     "load_resume_state",
+    "merge_latency_histograms",
     "read_segment",
     "rotation_bucket_start",
     "save_json",
@@ -627,6 +634,145 @@ _GLOBAL_EVENTS: Final[frozenset[EventType]] = frozenset(
 
 
 # --------------------------------------------------------------------- statistics
+#: Latency histogram geometry (§2). The per-stream latency state used to be a
+#: ``list[int]`` that grew by one entry per observed event and was never read: an
+#: unbounded writer-side allocation that made continuous operation impossible.
+#: It is replaced by a *fixed* geometric ladder, so the writer keeps a constant
+#: number of counters per stream no matter how many events arrive, while still
+#: answering p50/p95/p99 to within one ladder step.
+LATENCY_STEP: Final[float] = 1.05
+LATENCY_CEILING_MS: Final[int] = 600_000
+
+
+def _latency_ladder() -> tuple[int, ...]:
+    values: list[int] = []
+    current = 1.0
+    while current < LATENCY_CEILING_MS:
+        value = round(current)
+        if not values or value > values[-1]:
+            values.append(value)
+        current *= LATENCY_STEP
+    if not values or values[-1] < LATENCY_CEILING_MS:
+        values.append(LATENCY_CEILING_MS)
+    return tuple(values)
+
+
+#: Upper bound (inclusive) of each strictly positive latency bucket, ascending.
+LATENCY_LADDER_MS: Final[tuple[int, ...]] = _latency_ladder()
+
+#: Bucket 0 absorbs every non-positive delay; one bucket per ladder rung follows;
+#: the trailing bucket is the overflow (delays above the ceiling).
+LATENCY_BUCKETS: Final[int] = len(LATENCY_LADDER_MS) + 2
+
+
+def _is_backfilled(event: RawEvent) -> bool:
+    """A recovered row's delay is the width of an outage, not network latency."""
+    detail = event.detail
+    return isinstance(detail, dict) and detail.get("origin") == BACKFILL_ORIGIN
+
+
+@dataclass(slots=True)
+class LatencyHistogram:
+    """Bounded-memory latency distribution (§2, P1).
+
+    Memory is ``LATENCY_BUCKETS`` integer counters *by construction* — it does not
+    depend on how many events were observed. Bucket 0 holds non-positive delays
+    (venue clock ahead of ours), then one bucket per ladder rung, then an overflow
+    bucket. Quantiles are nearest-rank over the rungs and are bucket upper bounds,
+    i.e. accurate to within :data:`LATENCY_STEP`.
+    """
+
+    counts: list[int] = field(default_factory=lambda: [0] * LATENCY_BUCKETS)
+    samples: int = 0
+    total_ms: int = 0
+    min_ms: int | None = None
+    max_ms: int | None = None
+
+    def __post_init__(self) -> None:
+        if len(self.counts) != LATENCY_BUCKETS:
+            raise StorageError(
+                f"latency histogram must hold exactly {LATENCY_BUCKETS} buckets, "
+                f"got {len(self.counts)}"
+            )
+
+    def observe(self, delay_ms: int) -> None:
+        self.counts[self._bucket(delay_ms)] += 1
+        self.samples += 1
+        self.total_ms += delay_ms
+        if self.min_ms is None or delay_ms < self.min_ms:
+            self.min_ms = delay_ms
+        if self.max_ms is None or delay_ms > self.max_ms:
+            self.max_ms = delay_ms
+
+    @staticmethod
+    def _bucket(delay_ms: int) -> int:
+        if delay_ms <= 0:
+            return 0
+        return bisect_left(LATENCY_LADDER_MS, delay_ms) + 1
+
+    def _upper_bound(self, index: int) -> float:
+        if index == 0:
+            return 0.0
+        if index > len(LATENCY_LADDER_MS):
+            # Reporting the observed maximum keeps the overflow bucket honest
+            # instead of pretending its bound is the ceiling it exceeded.
+            return float(self.max_ms) if self.max_ms is not None else float(LATENCY_CEILING_MS)
+        return float(LATENCY_LADDER_MS[index - 1])
+
+    def distribution(self) -> dict[int, int]:
+        """Sparse ``upper bound -> count`` view; keys are bucket bounds, not samples."""
+        out: dict[int, int] = {}
+        for index, count in enumerate(self.counts):
+            if count:
+                bound = int(self._upper_bound(index))
+                out[bound] = out.get(bound, 0) + count
+        return out
+
+    def merge_from(self, other: LatencyHistogram) -> None:
+        """Fold another histogram in without materialising any sample (§2)."""
+        if len(other.counts) != len(self.counts):
+            raise StorageError("cannot merge latency histograms of different geometry")
+        for index, count in enumerate(other.counts):
+            self.counts[index] += count
+        self.samples += other.samples
+        self.total_ms += other.total_ms
+        if other.min_ms is not None and (self.min_ms is None or other.min_ms < self.min_ms):
+            self.min_ms = other.min_ms
+        if other.max_ms is not None and (self.max_ms is None or other.max_ms > self.max_ms):
+            self.max_ms = other.max_ms
+
+    def quantile(self, fraction: float) -> float | None:
+        """Nearest-rank percentile over the buckets, using the report's own semantics."""
+        return percentile_from_histogram(self.distribution(), fraction)
+
+    def as_dict(self) -> dict[str, Any]:
+        return {
+            "samples": self.samples,
+            "min_ms": self.min_ms,
+            "max_ms": self.max_ms,
+            "mean_ms": round(self.total_ms / self.samples, 3) if self.samples else None,
+            "p50_ms": self.quantile(0.50),
+            "p95_ms": self.quantile(0.95),
+            "p99_ms": self.quantile(0.99),
+            "buckets": len(self.counts),
+            "resolution_ratio": LATENCY_STEP,
+            "counts": {str(key): value for key, value in sorted(self.distribution().items())},
+            "note": (
+                "fixed geometric histogram: memory is constant in the number of "
+                f"events; quantiles are bucket upper bounds (<= {int((LATENCY_STEP - 1) * 100)}% "
+                "step); recovered (backfilled) rows are excluded"
+            ),
+        }
+
+
+def merge_latency_histograms(histograms: Iterable[LatencyHistogram]) -> LatencyHistogram:
+    """Fold many stream histograms into one telemetry line, in bounded memory."""
+    merged = LatencyHistogram()
+    for histogram in histograms:
+        merged.merge_from(histogram)
+    return merged
+
+
 @dataclass(slots=True)
 class StreamStats:
     """Per-(market, symbol, event_type) counters feeding the manifest."""
@@ -645,7 +791,8 @@ class StreamStats:
     out_of_order: int = 0
     sequence_gaps: int = 0
     malformed: int = 0
-    network_delays: list[int] = field(default_factory=list)
+    #: §2 — was an unbounded ``list[int]``; now a fixed-size histogram.
+    latency: LatencyHistogram = field(default_factory=LatencyHistogram)
     clock_violations: int = 0
 
     def observe(self, event: RawEvent) -> None:
@@ -655,8 +802,8 @@ class StreamStats:
         self.first_event_time = _min_opt(self.first_event_time, event.exchange_event_time)
         self.last_event_time = _max_opt(self.last_event_time, event.exchange_event_time)
         delay = event.network_delay_ms
-        if delay is not None:
-            self.network_delays.append(delay)
+        if delay is not None and not _is_backfilled(event):
+            self.latency.observe(delay)
 
     def as_dict(self) -> dict[str, Any]:
         return {
@@ -675,6 +822,7 @@ class StreamStats:
             "sequence_gaps": self.sequence_gaps,
             "malformed": self.malformed,
             "clock_violations": self.clock_violations,
+            "network_delay_ms": self.latency.as_dict(),
         }
 
 
@@ -700,6 +848,9 @@ class StreamManifest:
     malformed: int
     reconnects: int
     resnapshots: int
+    #: §2 — writer-side latency telemetry at the final HEAD: bounded histogram
+    #: summary (p50/p95/p99, samples, resolution) instead of a per-event list.
+    network_delay_ms: dict[str, Any] | None = None
 
     def as_dict(self) -> dict[str, Any]:
         return asdict(self)
