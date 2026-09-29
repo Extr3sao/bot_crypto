@@ -167,7 +167,7 @@ def _iter_rows(paths: list[Path]) -> Any:
 
 def derive_m03_from_raw(
     paths: list[Path], *, interval_minutes: int = BASE_INTERVAL_MINUTES
-) -> dict[str, dict[int, dict[str, Any]]]:
+) -> dict[str, Any]:
     """M-03's book series and trade flow, computed from the raw rows themselves.
 
     Deliberately a second implementation: it never calls the aggregation module,
@@ -219,13 +219,13 @@ def derive_m03_from_raw(
             for opened, cell in sorted(cells.items())
         }
     out_trades: dict[str, dict[int, dict[str, Any]]] = {}
-    for key, cells in trades.items():
+    for key, trade_cells in trades.items():
         out_trades[key] = {
             opened: {
-                "taker_imbalance": _imbalance(cell),
-                "trade_count": cell.trades,
+                "taker_imbalance": _imbalance(trade_cell),
+                "trade_count": trade_cell.trades,
             }
-            for opened, cell in sorted(cells.items())
+            for opened, trade_cell in sorted(trade_cells.items())
         }
     return {"book": out_book, "trades": out_trades}
 
@@ -302,7 +302,7 @@ def _load_aggregation(root: Path, run_id: str, window_start_ms: int) -> dict[str
 
 def derive_m03_from_aggregate(
     aggregation: dict[str, Any], *, interval_minutes: int = BASE_INTERVAL_MINUTES
-) -> dict[str, dict[int, dict[str, Any]]]:
+) -> dict[str, Any]:
     """M-03's series as the compact tier actually stores it."""
     book: dict[str, dict[int, dict[str, Any]]] = {}
     for key, buckets in (aggregation.get("book") or {}).items():
@@ -478,6 +478,19 @@ M07_FIELDS: Final[tuple[str, ...]] = (
 )
 
 
+def _split_m03(
+    derived: dict[str, Any],
+) -> tuple[dict[str, dict[int, dict[str, Any]]], dict[str, dict[int, dict[str, Any]]]]:
+    """The two series M-03 is made of, with the shape they actually have.
+
+    The derivation returns one envelope so a caller cannot confuse the two halves;
+    this puts the concrete types back on them for the comparison.
+    """
+    book: dict[str, dict[int, dict[str, Any]]] = dict(derived.get("book") or {})
+    trades: dict[str, dict[int, dict[str, Any]]] = dict(derived.get("trades") or {})
+    return book, trades
+
+
 def preservation_for_window(
     root: Path | str,
     run_id: str,
@@ -500,14 +513,14 @@ def preservation_for_window(
 
     if policy.require_m03:
         resolution = policy.m03_min_resolution_minutes
-        raw = derive_m03_from_raw(raw_paths, interval_minutes=max(1, resolution))
-        compact = derive_m03_from_aggregate(
-            aggregation, interval_minutes=max(1, resolution)
+        raw_book, raw_flow = _split_m03(
+            derive_m03_from_raw(raw_paths, interval_minutes=max(1, resolution))
         )
-        book = compare_features("M-03 book series", raw["book"], compact["book"], M03_BOOK_FIELDS)
-        flow = compare_features(
-            "M-03 trade flow", raw["trades"], compact["trades"], M03_TRADE_FIELDS
+        compact_book, compact_flow = _split_m03(
+            derive_m03_from_aggregate(aggregation, interval_minutes=max(1, resolution))
         )
+        book = compare_features("M-03 book series", raw_book, compact_book, M03_BOOK_FIELDS)
+        flow = compare_features("M-03 trade flow", raw_flow, compact_flow, M03_TRADE_FIELDS)
         report.comparisons.extend([book, flow])
         if book.compared == 0 and flow.compared == 0:
             # Nothing to compare is not the same as everything matching: a window

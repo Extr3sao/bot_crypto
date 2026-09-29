@@ -19,6 +19,7 @@ import importlib.util
 import json
 import sys
 import time
+from functools import lru_cache
 from pathlib import Path
 from typing import Any
 
@@ -210,30 +211,26 @@ def test_deletion_is_disabled_unless_a_threshold_is_given(
 
 
 def _launcher_namespace(**overrides: Any) -> argparse.Namespace:
-    """The launcher's arguments, so the plan is asserted rather than assumed."""
+    """The launcher's arguments, built from the launcher's own parser.
+
+    Taken from ``parse_args`` rather than hand-written, so a new option the
+    launcher grows reaches this fixture automatically instead of making the test
+    pass on a namespace the program can never actually receive.
+    """
+    args = launcher_defaults()
     values: dict[str, Any] = {
+        **vars(args),
         "run_id": "lab-test",
-        "lab_root": "reports/paper-lab",
-        "forward_root": "reports/microstructure-forward-lab",
-        "paper_root": "reports/autonomous-paper",
-        "assets": "BTC,ETH,SOL",
-        "symbols": "BTCUSDT,ETHUSDT,SOLUSDT",
-        "timeframe": "5m",
-        "paper_interval": 60.0,
-        "provider": "ccxt",
-        "rotation_seconds": 900,
-        "heartbeat_seconds": 30.0,
-        "duration_hours": 0.0,
-        "collector_max_bytes": 1_100_000_000,
-        "raw_hot_hours": 2.0,
-        "sealed_grace_seconds": 1800,
-        "stop_grace_seconds": 120.0,
-        "delete_when_free_below": 0,
-        "stop": None,
         "dry_run": True,
     }
     values.update(overrides)
     return argparse.Namespace(**values)
+
+
+@lru_cache(maxsize=1)
+def launcher_defaults() -> argparse.Namespace:
+    """The parsed default namespace of the real launcher CLI."""
+    return _load_script("start_paper_lab").parse_args([])
 
 
 def test_the_launcher_plans_paper_and_collector_as_isolated_critical_children(

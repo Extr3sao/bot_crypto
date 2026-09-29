@@ -51,7 +51,7 @@ DEFAULT_PAPER_ROOT = Path("reports/autonomous-paper")
 DEFAULT_COLLECTOR_MAX_BYTES = 1_100_000_000
 
 
-def parse_args() -> argparse.Namespace:
+def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--run-id", default=None)
     parser.add_argument("--lab-root", default=str(DEFAULT_LAB_ROOT))
@@ -124,7 +124,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--disk-critical-gb", type=float, default=0.8)
     parser.add_argument("--disk-stop-gb", type=float, default=0.3)
     parser.add_argument("--dry-run", action="store_true", help="print the plan and exit")
-    return parser.parse_args()
+    return parser.parse_args(argv)
 
 
 def disk_thresholds(args: argparse.Namespace) -> DiskThresholds:
