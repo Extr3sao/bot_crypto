@@ -73,17 +73,18 @@ def preflight_universe(
     is never silently treated as a failure either. The layers that *can* be
     checked offline are hard requirements.
     """
-    configured_list = tuple(dict.fromkeys(str(a).upper() for a in configured))
-    agents = frozenset(str(a).upper() for a in asset_agents)
+    def _norm(asset: object) -> str:
+        return str(asset).strip().upper()
+
+    configured_list = tuple(dict.fromkeys(_norm(a) for a in configured if _norm(a)))
+    agents = frozenset(_norm(a) for a in asset_agents)
     strategies = (
-        None
-        if strategy_assets is None
-        else frozenset(str(a).upper() for a in strategy_assets)
+        None if strategy_assets is None else frozenset(_norm(a) for a in strategy_assets)
     )
     providers = (
         None
         if provider_supported is None
-        else frozenset(str(a).upper() for a in provider_supported)
+        else frozenset(_norm(a) for a in provider_supported)
     )
 
     reasons: dict[str, str] = {}
