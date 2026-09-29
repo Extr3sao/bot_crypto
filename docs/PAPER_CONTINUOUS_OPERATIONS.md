@@ -48,6 +48,12 @@ queda `DEGRADED`, no `FAILED` (`§16`).
 --collector-max-bytes N     # guarda de disco del colector (última barrera)
 --sealed-grace-seconds N    # cuánto debe reposar un segmento sellado antes de compactar
 --stop-grace-seconds N      # cuánto puede tardar un hijo en finalizarse antes del kill
+--data-root D:/capture      # dónde vive la captura (alias de --forward-root)
+--disk-warning-gb 1.5       # nivel WARNING
+--disk-critical-gb 0.8      # nivel CRITICAL
+--disk-stop-gb 0.3          # nivel STOP: el colector para, PAPER no se toca
+--status                    # estado de operador y salir
+--restart                   # parar el run en curso y arrancarlo otra vez
 --dry-run                   # imprime el plan y no arranca nada
 ```
 
@@ -67,6 +73,12 @@ información que se va a ejecutar.
 Tres formas equivalentes; las tres vacían estado y finalizan manifiestos (`§51`):
 
 ```bash
+# 0) el comando de parada del propio launcher (el que se documenta como oficial)
+uv run python scripts/start_paper_lab.py --stop reports/paper-lab/<run-id>
+
+# y para volver a arrancar el mismo laboratorio, continuando la captura
+uv run python scripts/start_paper_lab.py --restart --run-id <run-id>
+
 # 1) Ctrl-C en la terminal del supervisor
 # 2) un archivo STOP en el directorio del run
 printf 'stop\n' > reports/paper-lab/<run-id>/STOP
@@ -121,6 +133,15 @@ uv run python scripts/start_paper_lab.py --run-id <el-mismo-run-id>
 ## 4. Inspección
 
 ```bash
+# ¿está pasando algo? (lo que un operador pregunta de verdad)
+uv run python scripts/paper_lab_status.py
+uv run python scripts/paper_lab_status.py --run-id <run-id> --json
+uv run python scripts/paper_lab_status.py --snapshot          # CURRENT_RUN_SNAPSHOT.json
+uv run python scripts/paper_lab_status.py --exit-code-if-not-running   # para un monitor
+
+# o en el navegador, sólo lectura, sólo loopback
+uv run python scripts/paper_lab_dashboard.py                  # http://127.0.0.1:8787
+
 # ¿está sano el conjunto?
 cat reports/paper-lab/<run-id>/SYSTEM_HEARTBEAT.json
 
@@ -146,7 +167,15 @@ uv run python scripts/system_daily_report.py --lab-run-dir reports/paper-lab/<ru
 `SYSTEM_HEARTBEAT.json` incluye: estado del sistema (`HEALTHY`/`DEGRADED`/`FAILED`),
 estado y PID de cada proceso, número de reinicios, disco libre, memoria, y el
 contenido del heartbeat de cada hijo (último ciclo PAPER, eventos/gaps/reconexiones
-del colector).
+del colector). Añade además `disk` (nivel `NORMAL/WARNING/CRITICAL/STOP`, umbrales
+en vigor, GB/día observados y horas estimadas que quedan),
+`heartbeat_write_failures`, `storage_guard_stopped` y `stop_report` (el veredicto
+del último paro: hijos que fallaron o que hubo que matar).
+
+El panel de estado separa los veredictos en vez de fundirlos en una luz verde:
+`PAPER_READY`, `COLLECTOR_READY`, `STORAGE_READY`, `STRATEGY_LAB_READY`
+(y `RESEARCH_READY`). Que el colector esté bloqueado por disco mientras PAPER
+sigue decidiendo es un estado soportado (§22), no una contradicción.
 
 ---
 
@@ -202,3 +231,31 @@ escribe el evento `DISK_LIMIT_REACHED`, sella y para **limpiamente** (manifiesto
 completo, sin pérdida silenciosa). Antes de llegar ahí, el sistema intenta
 rotación → compresión → compactación/retención. El borrado de RAW es *demand
 driven*: sólo con `--delete-when-free-below` y disco por debajo de ese umbral.
+
+Hay dos barreras más, añadidas tras llenar el volumen dos veces en operación real:
+
+* `--min-free-bytes` en el colector: si el **sistema de ficheros** baja de ese
+  suelo, para como parada controlada (`stopped_on_min_free: true`, salida 0). El
+  launcher lo fija por encima del umbral `STOP` del supervisor.
+* **guarda de almacenamiento** en el supervisor: al nivel `STOP` (configurable con
+  `--disk-stop-gb`, por defecto 0,3 GB) pide al colector que pare de forma
+  ordenada y **no toca PAPER**, que no depende del volumen de investigación. No
+  reinicia la captura dentro de un disco lleno.
+
+Un fallo de escritura deja de ser silencioso en los dos lados: la captura publica
+`COMPLETE`/`CONTROLLED_STOP`/`FAILED` en el manifiesto **y** en el código de
+salida (0/0/2), PAPER cuenta `storage_failures` en su heartbeat y sigue
+decidiendo, y el supervisor sobrevive a su propio heartbeat
+(`heartbeat_write_failures`).
+
+### Disco en otro volumen
+
+```bash
+uv run python scripts/start_paper_lab.py --data-root D:/trading-capture ...
+uv run python scripts/forward_collector.py --data-root D:/trading-capture --mode run ...
+uv run python scripts/forward_retention.py --data-root D:/trading-capture --run-id <id> --loop
+```
+
+`--data-root` es la raíz de segmentos, manifiestos, linaje, registros de
+preservación, estado de reanudación y archivo de parada: mover la captura no
+pierde su rastro de auditoría.

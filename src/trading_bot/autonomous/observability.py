@@ -113,11 +113,17 @@ def process_alive(pid: int | None) -> bool | None:
 
 
 def _age_seconds(stamp_ms: Any, *, now_ms: int) -> float | None:
+    """Seconds since a timestamp, clamped at zero.
+
+    A child that writes its heartbeat *while* this is being assembled produces a
+    stamp a moment in the future; reporting a negative age would be a confusing
+    way to say "current".
+    """
     try:
         value = int(stamp_ms)
     except (TypeError, ValueError):
         return None
-    return round((now_ms - value) / 1000.0, 3)
+    return round(max(0.0, (now_ms - value) / 1000.0), 3)
 
 
 def _plan_forward_root(plan: dict[str, Any]) -> Path | None:
