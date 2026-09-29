@@ -227,6 +227,10 @@ def build_specs(
                 "60",
                 "--max-total-bytes",
                 str(args.collector_max_bytes),
+                # §20 — the host-free-space barrier, above the supervisor's STOP
+                # level, so the capture stops before the level has to be acted on.
+                "--min-free-bytes",
+                str(int(args.disk_stop_gb * 1e9) + 100_000_000),
                 "--stop-file",
                 str(stop_files["collector"]),
             ],

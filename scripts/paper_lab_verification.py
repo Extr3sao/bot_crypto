@@ -35,6 +35,8 @@ from __future__ import annotations
 
 import argparse
 import asyncio
+import contextlib
+import gzip
 import hashlib
 import importlib.util
 import json
@@ -43,6 +45,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import threading
 import time
 import types
 from pathlib import Path
@@ -838,6 +841,507 @@ def check_microstructure_hypotheses() -> dict[str, Any]:
     }
 
 
+# --------------------------------------------------------------- ops hardening
+# Every check below starts a real process or writes its own fixture. None of them
+# reads a verdict produced by the lab's own scripts: a builder's summary is not
+# evidence about the builder.
+
+
+def _blocked_probe_root(tmp_path: Path) -> Path:
+    """A capture root that cannot be created, standing in for a full volume."""
+    path = tmp_path / "blocked-root"
+    path.write_text("a regular file, so no directory can be made here\n", encoding="utf-8")
+    return path
+
+
+def check_collector_exit_contract(tmp_path: Path) -> dict[str, Any]:
+    """§2-§4 — a capture that cannot persist must exit non-zero, observed live."""
+    from trading_bot.research.forward.outcome import (
+        EXIT_COMPLETE,
+        EXIT_FAILED,
+        FAILURE_STORAGE,
+        CaptureStatus,
+        classify_capture,
+    )
+
+    probe_root = _blocked_probe_root(tmp_path)
+    completed = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPTS_DIR / "forward_collector.py"),
+            "--mode",
+            "run",
+            "--symbols",
+            "BTCUSDT",
+            "--markets",
+            "spot",
+            "--out",
+            str(probe_root),
+            "--run-id",
+            "verifier-probe",
+            "--duration",
+            "3",
+        ],
+        cwd=str(REPO_ROOT),
+        capture_output=True,
+        text=True,
+        timeout=180,
+        env={**os.environ, "PYTHONPATH": str(REPO_ROOT / "src")},
+        check=False,
+    )
+    parsed: dict[str, Any] | None = None
+    with contextlib.suppress(ValueError):
+        parsed = json.loads((completed.stdout or "").strip() or "null")
+    if not isinstance(parsed, dict):
+        parsed = None
+
+    mismatches: list[str] = []
+    for reason, (status, code) in {
+        "duration reached": (CaptureStatus.COMPLETE, EXIT_COMPLETE),
+        "stop file": (CaptureStatus.CONTROLLED_STOP, EXIT_COMPLETE),
+        "signal": (CaptureStatus.CONTROLLED_STOP, EXIT_COMPLETE),
+        "disk budget": (CaptureStatus.CONTROLLED_STOP, EXIT_COMPLETE),
+        "disk guard": (CaptureStatus.CONTROLLED_STOP, EXIT_COMPLETE),
+    }.items():
+        result = classify_capture(stop_reason=reason)
+        if result.status is not status or result.exit_code != code:
+            mismatches.append(f"{reason}: {result.status}/{result.exit_code}")
+    for kwargs, expected_kind in (
+        ({"fatal_kind": FAILURE_STORAGE, "fatal_reason": "ENOSPC"}, FAILURE_STORAGE),
+        ({"clock_violations": 1}, "TIMESTAMP_INVARIANT"),
+        ({"book_failed_streams": ("perp/BTCUSDT",)}, "BOOK_UNRECOVERABLE"),
+    ):
+        result = classify_capture(stop_reason="storage failure", **kwargs)
+        if result.status is not CaptureStatus.FAILED or result.exit_code != EXIT_FAILED:
+            mismatches.append(f"{expected_kind}: not FAILED/{EXIT_FAILED}")
+        if result.kind != expected_kind:
+            mismatches.append(f"{expected_kind}: kind is {result.kind}")
+    ok = (
+        completed.returncode == EXIT_FAILED
+        and parsed is not None
+        and parsed.get("status") == "FAILED"
+        and parsed.get("exit_code") == EXIT_FAILED
+        and not mismatches
+    )
+    return {
+        "id": "COLLECTOR_EXIT_CONTRACT",
+        "ok": ok,
+        "detail": {
+            "probe_root": str(probe_root),
+            "probe_exit_code": completed.returncode,
+            "probe_payload": parsed,
+            "probe_stderr_tail": (completed.stderr or "").strip().splitlines()[-1:],
+            "policy_mismatches": mismatches,
+            "expected_failure_exit_code": EXIT_FAILED,
+            "note": "0 means complete or a controlled stop; 2 means the capture failed",
+        },
+        "claim": (
+            "a capture whose storage cannot be created exits non-zero and says FAILED, so "
+            "a supervisor can never mistake it for a completed run"
+        ),
+    }
+
+
+def check_supervisor_failure_propagation(tmp_path: Path) -> dict[str, Any]:
+    """§3 — a non-zero collector exit is a crash, and PAPER does not share its fate."""
+    from trading_bot.autonomous.supervisor import (
+        ManagedProcess,
+        ProcessState,
+        Supervisor,
+    )
+
+    run_dir = tmp_path / "propagation"
+    run_dir.mkdir(parents=True, exist_ok=True)
+
+    def spec(name: str, code: str) -> ManagedProcess:
+        return ManagedProcess(
+            name=name,
+            command=[sys.executable, "-c", code],
+            cwd=Path.cwd(),
+            max_restarts=1,
+            backoff_seconds=(0.05,),
+        )
+
+    supervisor = Supervisor.build(
+        run_dir,
+        [spec("paper", "import time; time.sleep(30)"), spec("collector", "raise SystemExit(2)")],
+        heartbeat_seconds=0.05,
+    )
+    events: list[dict[str, Any]] = []
+    try:
+        supervisor.start_all()
+        deadline = time.monotonic() + 20.0
+        while time.monotonic() < deadline:
+            events.extend(supervisor.poll_once())
+            if supervisor.get("collector").state is ProcessState.FAILED:
+                break
+            time.sleep(0.05)
+        exits = [event for event in events if event["event"] == "EXIT"]
+        ok = (
+            bool(exits)
+            and exits[0]["outcome"] == "FAILED"
+            and exits[0]["exit_code"] == 2
+            and any(event["event"] == "RESTART_SCHEDULED" for event in events)
+            and supervisor.get("collector").state is ProcessState.FAILED
+            and supervisor.get("paper").state is ProcessState.RUNNING
+        )
+        detail: dict[str, Any] = {
+            "events": [event["event"] for event in events],
+            "collector_state": supervisor.get("collector").state.value,
+            "paper_state": supervisor.get("paper").state.value,
+            "collector_exit": supervisor.get("collector").exit_code,
+        }
+    finally:
+        supervisor.stop_all()
+    return {
+        "id": "SUPERVISOR_FAILURE_PROPAGATION",
+        "ok": ok,
+        "detail": detail,
+        "claim": (
+            "exit 2 is restarted with backoff and then given up on loudly, while PAPER "
+            "keeps running in its own process"
+        ),
+    }
+
+
+def check_preservation_gate(tmp_path: Path) -> dict[str, Any]:
+    """§12/§13 — the verifier writes its own raw sample, compacts it, and compares."""
+    from trading_bot.research.forward.contract import (
+        EventType,
+        Market,
+        RawEvent,
+        SequenceRange,
+        Transport,
+    )
+    from trading_bot.research.forward.preservation import (
+        M03,
+        M07,
+        PRESERVED,
+        PreservationPolicy,
+        preservation_for_window,
+    )
+    from trading_bot.research.forward.retention import (
+        RAW_ROOT,
+        RetentionPolicy,
+        compact_window,
+    )
+    from trading_bot.research.forward.storage import SegmentWriter
+
+    root = tmp_path / "preservation"
+    root.mkdir(parents=True, exist_ok=True)
+    rotation = 60
+    window_start = (1_800_000_000_000 // (rotation * 1000)) * (rotation * 1000)
+    run_id = "verifier-preservation"
+    writer = SegmentWriter(root, rotation_seconds=rotation, run_id=run_id)
+    try:
+        for minute in range(6):
+            stamp = window_start + minute * 9_000
+            writer.write(
+                RawEvent(
+                    event_type=EventType.BOOK_CHECKPOINT,
+                    symbol="BTCUSDT",
+                    market=Market.SPOT,
+                    stream="book_checkpoint",
+                    transport=Transport.WS,
+                    run_id=run_id,
+                    exchange_event_time=stamp,
+                    receive_time=stamp,
+                    process_time=stamp + 1,
+                    sequence=SequenceRange(last=stamp),
+                    bid="100.0",
+                    ask="100.1",
+                    bid_qty="3",
+                    ask_qty="4",
+                    detail={
+                        "health": "HEALTHY",
+                        "depth_n": 10,
+                        "mid": "100.05",
+                        "spread_bps": f"0.02{minute}",
+                        "depth_imbalance": f"0.{minute}7",
+                        "microprice": f"100.0{minute}",
+                    },
+                )
+            )
+            writer.write(
+                RawEvent(
+                    event_type=EventType.AGG_TRADE,
+                    symbol="BTCUSDT",
+                    market=Market.SPOT,
+                    stream="btcusdt@aggTrade",
+                    transport=Transport.WS,
+                    run_id=run_id,
+                    exchange_event_id=str(minute),
+                    exchange_event_time=stamp + 500,
+                    receive_time=stamp + 520,
+                    process_time=stamp + 521,
+                    sequence=SequenceRange(first=minute, last=minute),
+                    price="100.0",
+                    quantity="0.5",
+                    aggressor_side="buy" if minute % 2 else "sell",
+                )
+            )
+        writer.write(
+            RawEvent(
+                event_type=EventType.OPEN_INTEREST,
+                symbol="BTCUSDT",
+                market=Market.PERP,
+                stream="openInterest",
+                transport=Transport.REST_POLL,
+                run_id=run_id,
+                exchange_event_time=window_start + 10_000,
+                receive_time=window_start + 10_050,
+                process_time=window_start + 10_051,
+                open_interest="4321.0",
+            )
+        )
+    finally:
+        writer.close()
+
+    policy = RetentionPolicy(rotation_seconds=rotation, raw_hot_hours=0.0, sealed_grace_seconds=0)
+    files = sorted((root / RAW_ROOT).rglob("*.jsonl.gz"))
+    compact_window(
+        root,
+        policy,
+        run_id,
+        window_start,
+        window_start + rotation * 1000,
+        files,
+        now_ms=window_start + 3_600_000,
+    )
+    report = preservation_for_window(root, run_id, window_start, files, policy=PreservationPolicy())
+
+    aggregate = sorted((root / "aggregated" / run_id).glob("*.json.gz"))[0]
+    with gzip.open(aggregate, "rt", encoding="utf-8") as handle:
+        envelope = json.load(handle)
+    key = next(iter(envelope["aggregation"]["book"]))
+    envelope["aggregation"]["book"][key][0]["spread_bps_mean"] = "999.99"
+    with gzip.open(aggregate, "wt", encoding="utf-8") as handle:
+        json.dump(envelope, handle)
+    tampered = preservation_for_window(root, run_id, window_start, files, policy=PreservationPolicy())
+    sub_minute = preservation_for_window(
+        root,
+        run_id,
+        window_start,
+        files,
+        policy=PreservationPolicy(m03_min_resolution_minutes=0),
+    )
+    ok = (
+        report.verdicts.get(M03) == PRESERVED
+        and report.verdicts.get(M07) == PRESERVED
+        and report.deletion_allowed
+        and tampered.verdicts.get(M03) == "RAW_NOT_DELETABLE_FOR_M03"
+        and not tampered.deletion_allowed
+        and sub_minute.verdicts.get(M03) == "RAW_NOT_DELETABLE_FOR_M03"
+        and not sub_minute.deletion_allowed
+    )
+    return {
+        "id": "M03_M07_DATA_PRESERVATION",
+        "ok": ok,
+        "detail": {
+            "preserved": report.verdicts,
+            "preserved_allows_deletion": report.deletion_allowed,
+            "comparisons": [
+                {"feature": item.feature, "compared": item.compared}
+                for item in report.comparisons
+            ],
+            "tampered_verdict": tampered.verdicts,
+            "sub_minute_verdict": sub_minute.verdicts,
+            "not_covered_without_raw_quotes": report.as_dict()[
+                "not_covered_without_raw_quotes"
+            ],
+        },
+        "claim": (
+            "the preregistered M-03/M-07 series survive compaction at their preregistered "
+            "resolution, and a compact tier that no longer matches the raw refuses the "
+            "deletion by name"
+        ),
+    }
+
+
+def check_disk_levels() -> dict[str, Any]:
+    """§19/§20 — the levels are real, configurable, and published with the rate."""
+    from trading_bot.autonomous.supervisor import (
+        DiskLevel,
+        DiskTelemetry,
+        DiskThresholds,
+    )
+
+    thresholds = DiskThresholds(
+        warning_bytes=2_000_000_000, critical_bytes=1_000_000_000, stop_bytes=500_000_000
+    )
+    cases = {
+        DiskLevel.NORMAL: 5_000_000_000,
+        DiskLevel.WARNING: 1_500_000_000,
+        DiskLevel.CRITICAL: 700_000_000,
+        DiskLevel.STOP: 100_000_000,
+    }
+    wrong = {
+        level.value: thresholds.level_for(free).value
+        for level, free in cases.items()
+        if thresholds.level_for(free) is not level
+    }
+    telemetry = DiskTelemetry(thresholds=thresholds)
+    telemetry.observe(5_000_000_000, now=0.0)
+    telemetry.observe(3_000_000_000, now=7_200.0)
+    payload = telemetry.as_dict()
+    ok = (
+        not wrong
+        and payload["level"] == DiskLevel.WARNING.value
+        and payload["samples"] == 2
+        and payload["estimated_hours_remaining"] is not None
+        and set(payload["thresholds"]) >= {"warning_bytes", "critical_bytes", "stop_bytes"}
+    )
+    return {
+        "id": "DISK_LEVELS_AND_RATE",
+        "ok": ok,
+        "detail": {"wrong_levels": wrong, "telemetry": payload},
+        "claim": (
+            "free space is reported with its measured rate and the hours it leaves, at "
+            "thresholds the operator sets rather than thresholds hardcoded in a report"
+        ),
+    }
+
+
+def check_operator_surface() -> dict[str, Any]:
+    """§26/§53/§57 — status command, read-only dashboard, loopback only."""
+    import urllib.error
+    import urllib.request
+
+    status_run = subprocess.run(
+        [sys.executable, str(SCRIPTS_DIR / "paper_lab_status.py"), "--json"],
+        cwd=str(REPO_ROOT),
+        capture_output=True,
+        text=True,
+        timeout=180,
+        check=False,
+    )
+    status_payload: dict[str, Any] | None = None
+    with contextlib.suppress(ValueError):
+        status_payload = json.loads(status_run.stdout or "null")
+    if not isinstance(status_payload, dict):
+        status_payload = None
+
+    dashboard = load_script("paper_lab_dashboard")
+    args = dashboard.parse_args(["--once"])
+    payload = dashboard.status_payload(args)
+    page = dashboard.render_page(payload)
+    try:
+        dashboard.resolve_host("0.0.0.0")
+        refused_remote = False
+    except SystemExit:
+        refused_remote = True
+    handler = dashboard.make_handler(args)
+    post_is_refused = getattr(handler, "do_POST", None) is getattr(handler, "_refuse", None)
+
+    server = dashboard.ThreadingHTTPServer(("127.0.0.1", 0), handler)
+    port = server.server_address[1]
+    thread = threading.Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    responses: dict[str, int] = {}
+    try:
+        for path in ("/api/status", "/healthz", "/nope"):
+            try:
+                with urllib.request.urlopen(
+                    f"http://127.0.0.1:{port}{path}", timeout=30
+                ) as response:
+                    responses[path] = response.status
+            except urllib.error.HTTPError as error:
+                responses[path] = error.code
+        request = urllib.request.Request(
+            f"http://127.0.0.1:{port}/api/status", data=b"{}", method="POST"
+        )
+        try:
+            with urllib.request.urlopen(request, timeout=30) as response:
+                responses["POST /api/status"] = response.status
+        except urllib.error.HTTPError as error:
+            responses["POST /api/status"] = error.code
+    finally:
+        server.shutdown()
+        server.server_close()
+
+    controls = payload.get("controls") or {}
+    flags = set(status_payload.get("readiness_flags") or {}) if status_payload else set()
+    ok = (
+        status_payload is not None
+        and status_payload.get("schema_version") == "paper-lab-status-v1"
+        and flags >= {
+            "PAPER_READY",
+            "COLLECTOR_READY",
+            "STORAGE_READY",
+            "STRATEGY_LAB_READY",
+        }
+        and refused_remote
+        and post_is_refused
+        and responses.get("/api/status") == 200
+        and responses.get("/healthz") == 200
+        and responses.get("/nope") == 404
+        and responses.get("POST /api/status") == 405
+        and payload.get("live_control") is False
+        and controls.get("read_only") is True
+        and controls.get("mutating_endpoints") == []
+        and "LIVE" not in page.replace("LIVE control", "live-control")
+    )
+    return {
+        "id": "OPERATOR_SURFACE_READ_ONLY",
+        "ok": bool(ok),
+        "detail": {
+            "status_schema": (status_payload or {}).get("schema_version"),
+            "status_flags": sorted(flags),
+            "status_exit_code": status_run.returncode,
+            "remote_bind_refused": refused_remote,
+            "post_is_refused": post_is_refused,
+            "http": responses,
+            "live_control": payload.get("live_control"),
+            "mutating_endpoints": controls.get("mutating_endpoints"),
+        },
+        "claim": (
+            "one status command reports the independent readiness verdicts; the dashboard "
+            "is loopback-only, read-only, and offers no endpoint that could start, stop or "
+            "change anything — and no LIVE control, because there is no LIVE path"
+        ),
+    }
+
+
+def check_storage_tiers_and_data_root() -> dict[str, Any]:
+    """§9/§10/§16 — tiers labelled honestly, and a movable data root."""
+    from trading_bot.research.forward.retention import (
+        LOSSLESS,
+        LOSSY,
+        RetentionPolicy,
+        tier_plan,
+    )
+
+    tiers = {spec.tier: spec for spec in tier_plan(RetentionPolicy())}
+    collector = load_script("forward_collector")
+    parsed = collector.build_parser().parse_args(
+        ["--mode", "run", "--out", "reports/ignored", "--data-root", "D:/capture-root"]
+    )
+    config = collector._config_from_args(parsed)
+    retention = load_script("forward_retention")
+    retention_args = retention.parse_args(["--data-root", "D:/capture-root"])
+    ok = (
+        tiers.get("TIER 0") is not None
+        and tiers["TIER 0"].kind == LOSSLESS
+        and tiers.get("TIER 1") is not None
+        and tiers["TIER 1"].kind == LOSSY
+        and str(config.root) == "D:\\capture-root"
+        and retention_args.root == "D:/capture-root"
+    )
+    return {
+        "id": "STORAGE_TIERS_AND_DATA_ROOT",
+        "ok": ok,
+        "detail": {
+            "tiers": [spec.as_dict() for spec in tiers.values()],
+            "collector_root_with_data_root": str(config.root),
+            "retention_root_with_data_root": retention_args.root,
+        },
+        "claim": (
+            "the tiers say which are lossless and which are lossy, and both the capture "
+            "and the retention policy can be pointed at another volume"
+        ),
+    }
+
+
 def check_phase_tests() -> dict[str, Any]:
     """Re-run the phase's own test modules with this worktree's src first."""
     modules = [
@@ -876,6 +1380,9 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
     ledger_path = REPO_ROOT / args.ledger
 
     checks: list[dict[str, Any]] = []
+    # The fixtures these checks need are written and removed by the verifier itself.
+    scratch = tempfile.TemporaryDirectory(prefix="paper-lab-verify-")
+    tmp_path = Path(scratch.name)
 
     def _guard(fn: Any) -> None:
         try:
@@ -902,6 +1409,12 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         lambda: check_safe_stop_and_restart(lab_run_dir, paper_root, forward_root),
         lambda: check_final_head_executed(capture_root, forward_root, lab_run_dir, args),
         check_microstructure_hypotheses,
+        check_disk_levels,
+        check_operator_surface,
+        check_storage_tiers_and_data_root,
+        lambda: check_collector_exit_contract(tmp_path),
+        lambda: check_supervisor_failure_propagation(tmp_path),
+        lambda: check_preservation_gate(tmp_path),
     ):
         _guard(fn)
     if not args.skip_tests:

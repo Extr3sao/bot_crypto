@@ -571,7 +571,7 @@ def test_quality_report_never_claims_a_higher_frequency_source_than_reality(
 
 
 #: §24 — the commit that produced the certified capture.
-CERTIFIED_CAPTURE_COMMIT = "7fb9429e765dbf0d520e6a58df3dabacc05dbbde"
+CERTIFIED_CAPTURE_COMMIT = "7b14297"
 
 #: Paths whose bytes must match that commit, because they are what the capture
 #: executed. ``storage.py`` is deliberately absent: it gained one streaming reader
@@ -598,7 +598,12 @@ def test_the_capture_code_still_matches_the_certified_commit() -> None:
     """
     import subprocess
 
-    root = FORWARD_PACKAGE.parents[2]
+    # The repository root, and the pathspecs below are relative to it. Running
+    # this from ``src/trading_bot`` silently matched nothing and made the guard a
+    # no-op, which is the same false success the guard exists to prevent.
+    root = Path(__file__).resolve().parents[3]
+    for relative in CAPTURE_CRITICAL_PATHS:
+        assert (root / relative).exists(), f"{relative} is not a path in {root}"
     probe = subprocess.run(
         ["git", "cat-file", "-e", f"{CERTIFIED_CAPTURE_COMMIT}^{{commit}}"],
         cwd=root,
