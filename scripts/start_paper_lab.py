@@ -75,6 +75,12 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--raw-hot-hours", type=float, default=2.0)
     parser.add_argument(
+        "--sealed-grace-seconds",
+        type=int,
+        default=1800,
+        help="how long a sealed segment must be quiet before it may be compacted",
+    )
+    parser.add_argument(
         "--delete-when-free-below",
         type=int,
         default=0,
@@ -156,6 +162,8 @@ def build_specs(args: argparse.Namespace, run_id: str, lab_dir: Path) -> list[Ma
                 str(args.rotation_seconds),
                 "--raw-hot-hours",
                 str(args.raw_hot_hours),
+                "--sealed-grace-seconds",
+                str(args.sealed_grace_seconds),
                 "--delete-when-free-below",
                 str(args.delete_when_free_below),
                 "--loop",
@@ -221,6 +229,7 @@ def main() -> int:
         ),
         "retention": {
             "raw_hot_hours": args.raw_hot_hours,
+            "sealed_grace_seconds": args.sealed_grace_seconds,
             "delete_when_free_below": args.delete_when_free_below,
             "deletion_enabled": args.delete_when_free_below > 0,
         },

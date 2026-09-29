@@ -227,6 +227,7 @@ def test_the_launcher_plans_paper_and_collector_as_isolated_critical_children(
         duration_hours=0.0,
         collector_max_bytes=1_100_000_000,
         raw_hot_hours=2.0,
+        sealed_grace_seconds=1800,
         delete_when_free_below=0,
         stop=None,
         dry_run=True,
