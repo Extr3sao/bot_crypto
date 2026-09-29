@@ -30,6 +30,7 @@ sys.path.insert(0, str(REPO_ROOT / "src"))
 
 from trading_bot.autonomous.observability import (  # noqa: E402
     STATUS_SCHEMA,
+    allow_tolerant_console_output,
     build_status,
     latest_lab_run,
     status_summary,
@@ -76,6 +77,9 @@ def thresholds_from_args(args: argparse.Namespace) -> DiskThresholds:
 
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv)
+    # A log line or a stop report's note can carry a character this code page
+    # cannot print; degrading it is right, dying on it is not (§26).
+    allow_tolerant_console_output()
     status = build_status(
         lab_root=REPO / args.lab_root,
         run_id=args.run_id,
@@ -106,7 +110,12 @@ def main(argv: list[str] | None = None) -> int:
         )
         print(f"[status] payload: {target}")
     if args.json:
-        print(json.dumps(status, indent=2, ensure_ascii=False))
+        # ``--json`` exists to be piped into another tool, so it must not depend
+        # on the console code page: a redirected stdout on Windows is cp1252, and
+        # emitting U+2014 as a raw 0x97 byte makes the payload unparseable for
+        # whatever reads it. Escaping non-ASCII keeps the bytes pure ASCII, and
+        # the JSON means exactly the same thing.
+        print(json.dumps(status, indent=2, ensure_ascii=True))
     else:
         print(status_summary(status))
     if args.exit_code_if_not_running:

@@ -2032,9 +2032,17 @@ class ForwardCollector:
         # only genuinely unrecovered loss makes the dataset incomplete.
         data_lost_gaps = [g for g in self.gaps if g.data_lost]
         recovery_events = [g for g in self.gaps if g.recovered]
+        # §2/§57 — a FAILED run cannot claim continuity either. ``reporting``
+        # turns this flag into ``permits_continuity_claim`` and
+        # ``continuity_continuous``, so a capture whose writer died must not be
+        # able to licence a continuity claim downstream just because the rows it
+        # never wrote also never produced a gap record.
         continuity = (
             CONTINUITY_INCOMPLETE
-            if data_lost_gaps or self.clock_violations or self.resnapshots_failed
+            if outcome.failed
+            or data_lost_gaps
+            or self.clock_violations
+            or self.resnapshots_failed
             else CONTINUITY_CONTINUOUS
         )
         manifest = RunManifest(

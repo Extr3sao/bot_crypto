@@ -54,6 +54,8 @@ from trading_bot.research.forward.outcome import (
     exit_code_for_status,
 )
 from trading_bot.research.forward.storage import (
+    CONTINUITY_CONTINUOUS,
+    CONTINUITY_INCOMPLETE,
     RunManifest,
     manifest_outcome,
 )
@@ -295,6 +297,43 @@ def test_the_manifest_of_a_failed_capture_says_failed_and_the_process_must_fail(
     assert stored["failure_kind"] == FAILURE_STORAGE
     assert stored["exit_code"] == EXIT_FAILED
     assert stored["integrity"]["write_failures"] == 1
+
+
+def test_a_failed_capture_cannot_claim_continuous_data(tmp_path: Path) -> None:
+    """§57 — a dead writer must not licence a continuity claim downstream.
+
+    ``reporting`` reads the manifest's continuity as ``permits_continuity_claim``
+    and ``continuity_continuous``, so a capture that FAILED must report its
+    dataset as incomplete. The rows it never wrote never produced a gap record
+    either, so continuity derived from gaps alone would call a dead capture
+    continuous — which is the exact shape of a false success.
+    """
+    collector = _collector(tmp_path / "capture")
+    collector.writer = _FailingWriter()  # type: ignore[assignment]
+    collector._write(_trade())
+
+    manifest = collector.finalise()
+
+    assert manifest.status == CaptureStatus.FAILED.value
+    assert manifest.continuity == CONTINUITY_INCOMPLETE
+    stored = json.loads(
+        (tmp_path / "capture" / "manifest" / f"{collector.run_id}.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert stored["continuity"] == CONTINUITY_INCOMPLETE
+
+
+def test_a_clean_capture_still_claims_continuous_data(tmp_path: Path) -> None:
+    """The honesty fix must not downgrade a capture that really was continuous."""
+    collector = _collector(tmp_path / "capture")
+    collector._write(_trade())
+    collector.stop("stop file")
+
+    manifest = collector.finalise()
+
+    assert manifest.status == CaptureStatus.CONTROLLED_STOP.value
+    assert manifest.continuity == CONTINUITY_CONTINUOUS
 
 
 def test_a_clean_capture_still_exits_zero(tmp_path: Path) -> None:

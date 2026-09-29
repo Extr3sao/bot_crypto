@@ -17,10 +17,12 @@ Three claims close that:
 from __future__ import annotations
 
 import json
+import os
 import sys
 import time
 from dataclasses import replace
 from pathlib import Path
+from typing import Any
 
 import pytest
 
@@ -331,3 +333,177 @@ def test_a_sleeping_child_is_still_alive_to_the_supervisor(tmp_path: Path) -> No
         assert supervisor.get("paper").is_alive
     finally:
         supervisor.stop_all()
+
+
+# ------------------------------------------------- the rest of the §6 inject list
+
+
+def test_the_disk_level_ladder_is_complete_and_monotone() -> None:
+    """§6/§20 — every level a bounded volume passes through is reachable.
+
+    The guard behaviour is keyed off these levels, so a level that can never be
+    returned (or a boundary that overlaps) is a guard that never fires.
+    """
+    thresholds = DiskThresholds(
+        warning_bytes=1_500_000_000,
+        critical_bytes=800_000_000,
+        stop_bytes=300_000_000,
+    )
+
+    assert thresholds.level_for(10_000_000_000) is DiskLevel.NORMAL
+    assert thresholds.level_for(1_500_000_000) is DiskLevel.WARNING
+    assert thresholds.level_for(1_499_999_999) is DiskLevel.WARNING
+    assert thresholds.level_for(800_000_000) is DiskLevel.CRITICAL
+    assert thresholds.level_for(799_999_999) is DiskLevel.CRITICAL
+    assert thresholds.level_for(300_000_000) is DiskLevel.STOP
+    assert thresholds.level_for(0) is DiskLevel.STOP
+
+    # The ladder only ever gets more urgent as space runs out.
+    order = [DiskLevel.NORMAL, DiskLevel.WARNING, DiskLevel.CRITICAL, DiskLevel.STOP]
+    seen = [thresholds.level_for(free) for free in (2_000_000_000, 1_000_000_000, 400_000_000, 1)]
+    assert seen == order
+
+
+def test_a_reused_pid_is_not_reported_as_the_run_still_being_alive() -> None:
+    """§6/§26 — a PID is not a heartbeat.
+
+    The operator console must not call a lab healthy because some number is
+    still in the process table, and it must not invent a death when it simply
+    cannot look.
+    """
+    from trading_bot.autonomous.observability import process_alive
+
+    # A PID far above anything this host allocates: nothing can be there.
+    assert process_alive(999_999_999) is False
+    # No PID at all is "unknown", which is different from "dead".
+    assert process_alive(None) is None
+    # Our own live process is the positive control.
+    assert process_alive(os.getpid()) is True
+
+
+def test_a_dead_collector_is_not_reported_as_ready() -> None:
+    """§57 — readiness must not contradict the verdicts next to it.
+
+    A capture that dies on its *first* write never saves a state file, so a
+    readiness check keyed off ``fatal_failure`` alone said "COLLECTOR_READY:
+    yes" while the supervisor had already given up on the collector with a
+    crash loop. That is a false success: the operator console is the one place
+    it must not happen.
+    """
+    from trading_bot.autonomous.observability import _readiness_flags
+
+    def payload(**collector: Any) -> dict[str, Any]:
+        return {
+            "children": {"collector": {"state": ProcessState.RUNNING.value}},
+            "disk": {"level": DiskLevel.NORMAL.value},
+            "paper": {"available": True},
+            "collector": {"available": True, "fatal_failure": None, "manifest": None, **collector},
+            "strategy_lab": {"available": True, "all_checks_ok": True},
+            "readiness": {"M-03": {"verdict": "COLLECTING"}, "M-07": {"verdict": "COLLECTING"}},
+            "errors": [],
+        }
+
+    # The honest baseline: a healthy, running collector with no verdict against it.
+    assert _readiness_flags(payload())["COLLECTOR_READY"] is True
+
+    # A manifest that says FAILED is a verdict, even when the state file is missing.
+    failed_manifest = payload(manifest={"status": "FAILED", "failure_kind": "STORAGE_WRITE_FAILURE"})
+    assert _readiness_flags(failed_manifest)["COLLECTOR_READY"] is False
+
+    # And so is a supervisor that has declared the child FAILED.
+    crashed = payload()
+    crashed["children"]["collector"]["state"] = ProcessState.FAILED.value
+    assert _readiness_flags(crashed)["COLLECTOR_READY"] is False
+
+
+def test_the_status_screen_never_prints_a_missing_measurement_as_none() -> None:
+    """§19 — "unknown" is a fact; "~None h" is a rendering bug."""
+    from trading_bot.autonomous.observability import status_summary
+
+    status = {
+        "run_id": "run-x",
+        "mode": "PAPER",
+        "generated_at_iso": "2026-09-29T00:00:00Z",
+        "run_dir": "/tmp/run-x",
+        "system": {"state": "DEGRADED", "running": False, "heartbeat_age_seconds": 12.0},
+        "disk": {
+            "free_gb": 12.3,
+            "level": DiskLevel.NORMAL.value,
+            "consumption_gb_per_day": None,
+            "estimated_hours_remaining": None,
+            "guidance": "no action",
+        },
+    }
+
+    rendered = status_summary(status)
+
+    assert "survival unknown" in rendered
+    assert "=None" not in rendered
+    assert "Nones" not in rendered
+
+    # When a rate was measured it is shown, in the units it was measured in.
+    status["disk"].update({"consumption_gb_per_day": 3.2, "estimated_hours_remaining": 3.84})
+    measured = status_summary(status)
+    assert "3.84 h at 3.2 GB/day" in measured
+    assert "=None" not in measured
+
+    # A plane with nothing to say is spelled "?", not "None", and a missing
+    # measurement never grows a unit suffix ("state_age=Nones").
+    assert "cycles=?" in measured
+    assert "state_age=?" in measured
+    assert "?s" not in measured
+
+
+def test_a_child_log_written_in_the_console_code_page_is_not_mangled(tmp_path: Path) -> None:
+    """§26/§57 — reading a log must not invent characters a console cannot print.
+
+    A child's stdout is a redirected handle, so on Windows its log is written in
+    the console code page while the same child's JSON artifacts are UTF-8. Reading
+    that log as UTF-8 with ``errors="replace"`` injected U+FFFD into the status
+    payload, and a cp1252 console then raised ``UnicodeEncodeError`` — the
+    operator's own status command died with a traceback.
+    """
+    from trading_bot.autonomous.observability import _last_log_error
+
+    run_dir = tmp_path / "run"
+    logs = run_dir / "logs"
+    logs.mkdir(parents=True)
+    # 0x97 is the cp1252 em dash and is not valid UTF-8, exactly like the real log.
+    (logs / "collector.log").write_bytes(
+        b"forward collector: FAILED \x97 refusing to exit 0\n"
+    )
+
+    found = _last_log_error(run_dir, "collector")
+
+    assert found is not None
+    assert "\ufffd" not in found["line"]
+    assert "\x97" not in found["line"]
+    assert "refusing to exit 0" in found["line"]
+    # And the payload it lands in is safe for a console that cannot print it.
+    assert json.dumps(found, ensure_ascii=True).isascii()
+
+
+def test_a_missing_or_corrupt_manifest_is_absent_not_an_empty_capture(tmp_path: Path) -> None:
+    """§6/§57 — unreadable evidence is not evidence.
+
+    A capture whose manifest never got written must read as "no manifest on
+    disk", never as a manifest full of zeros that looks like a clean short run.
+    """
+    from trading_bot.autonomous import observability
+
+    forward = tmp_path / "forward"
+    (forward / "state").mkdir(parents=True)
+    (forward / "state" / "run-x.json").write_text(
+        json.dumps({"events": 12, "gaps": 0, "reconnects": 0, "resnapshots": 0}),
+        encoding="utf-8",
+    )
+
+    missing = observability._collector_status(forward, "run-x", now_ms=1_800_000_000_000)
+    assert missing["manifest"] is None
+    # The state file is still read: absence of a manifest is not absence of a run.
+    assert missing["events"] == 12
+
+    (forward / "manifest").mkdir()
+    (forward / "manifest" / "run-x.json").write_text("{not json", encoding="utf-8")
+    corrupt = observability._collector_status(forward, "run-x", now_ms=1_800_000_000_000)
+    assert corrupt["manifest"] is None

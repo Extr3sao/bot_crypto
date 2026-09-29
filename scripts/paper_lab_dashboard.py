@@ -35,7 +35,10 @@ from typing import Any
 REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT / "src"))
 
-from trading_bot.autonomous.observability import build_status  # noqa: E402
+from trading_bot.autonomous.observability import (  # noqa: E402
+    allow_tolerant_console_output,
+    build_status,
+)
 from trading_bot.autonomous.supervisor import DiskThresholds  # noqa: E402
 
 REPO = REPO_ROOT
@@ -435,6 +438,7 @@ def resolve_host(host: str) -> str:
 
 
 def main(argv: list[str] | None = None) -> int:
+    allow_tolerant_console_output()
     args = parse_args(argv)
     resolve_host(args.host)
     if args.once:

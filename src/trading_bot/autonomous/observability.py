@@ -18,6 +18,7 @@ lab, which is what makes it safe to run it from a dashboard.
 
 from __future__ import annotations
 
+import contextlib
 import json
 import os
 import subprocess
@@ -38,6 +39,7 @@ from trading_bot.autonomous.supervisor import (
 
 __all__ = [
     "STATUS_SCHEMA",
+    "allow_tolerant_console_output",
     "build_status",
     "latest_lab_run",
     "read_json",
@@ -140,13 +142,49 @@ def _plan_forward_root(plan: dict[str, Any]) -> Path | None:
     return None
 
 
+def _read_log_text(path: Path) -> str:
+    """Read a child's log without inventing characters and without raising.
+
+    A child's log is *not* reliably one encoding: its stdout is a redirected
+    file handle, which on Windows uses the console code page, while the JSON
+    artifacts the same child writes are UTF-8. Reading a cp1252 log as UTF-8
+    with ``errors="replace"`` puts U+FFFD into the payload — a character nobody
+    asked for and one a cp1252 console cannot print, so the operator's own
+    status command dies with a ``UnicodeEncodeError``. Try the encodings the
+    child could actually have used, strictly, and only then degrade.
+    """
+    raw = path.read_bytes()
+    for encoding in ("utf-8", "cp1252"):
+        try:
+            return raw.decode(encoding)
+        except UnicodeDecodeError:
+            continue
+    return raw.decode("utf-8", errors="replace")
+
+
+def allow_tolerant_console_output() -> None:
+    """§26 — the operator console must not be able to turn into a traceback.
+
+    These payloads legitimately carry non-ASCII (a stop report's note cites the
+    operations manual, and a log line is whatever the child printed). A code
+    page that cannot represent one character must degrade that character, not
+    kill the one command an operator reaches for mid-incident.
+    """
+    for stream in (sys.stdout, sys.stderr):
+        reconfigure = getattr(stream, "reconfigure", None)
+        if reconfigure is None:  # pragma: no cover - not a TextIOWrapper
+            continue
+        with contextlib.suppress(Exception):
+            reconfigure(errors="replace")
+
+
 def _last_log_error(run_dir: Path, name: str) -> dict[str, Any] | None:
     """The last line of a child's log that looks like a failure, if any."""
     path = run_dir / "logs" / f"{name}.log"
     if not path.exists():
         return None
     try:
-        tail = path.read_text(encoding="utf-8", errors="replace").splitlines()[-400:]
+        tail = _read_log_text(path).splitlines()[-400:]
     except OSError:  # pragma: no cover - the file vanished under us
         return None
     markers = ("Traceback", "ERROR", "Error:", "refusing", "FAILED", "exception")
@@ -519,7 +557,18 @@ def _readiness_flags(payload: dict[str, Any]) -> dict[str, Any]:
     paper_ready = bool(paper.get("available")) and not payload.get("errors") and (
         children.get("paper", {}).get("state") in (ProcessState.RUNNING.value, "STOPPED")
     )
-    collector_ready = bool(collector.get("available")) and collector.get("fatal_failure") is None
+    # §57 — readiness has to come from the verdicts that actually exist. A
+    # capture that dies on its *first* write never saves a state file, so keying
+    # this off `fatal_failure` alone reported "COLLECTOR_READY: yes" next to a
+    # supervisor that had already given up on the collector with a crash loop.
+    collector_child = children.get("collector") or {}
+    collector_manifest = collector.get("manifest") or {}
+    collector_ready = (
+        bool(collector.get("available"))
+        and collector.get("fatal_failure") is None
+        and collector_manifest.get("status") != "FAILED"
+        and collector_child.get("state") != ProcessState.FAILED.value
+    )
     storage_ready = disk.get("level") in (DiskLevel.NORMAL.value, DiskLevel.WARNING.value)
     lab_ready = bool(lab.get("available")) and lab.get("all_checks_ok") is not False
     return {
@@ -546,8 +595,27 @@ def _readiness_flags(payload: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def _show(value: Any) -> str:
+    """Render a possibly-absent measurement as a fact, not as the word "None".
+
+    An operator reading "cycles=None ... state_age=Nones" has to work out whether
+    the harness forgot to fill a field or the plane really has nothing to report.
+    Absent is spelled "?"; everything else is itself.
+    """
+    return "?" if value is None else str(value)
+
+
 def status_summary(status: dict[str, Any]) -> str:
     """A one-screen text rendering, for the CLI and for an operator's log."""
+    disk = status.get("disk") or {}
+    hours = disk.get("estimated_hours_remaining")
+    rate = disk.get("consumption_gb_per_day")
+    if rate is None:
+        # §19 — "unknown" is a fact; "~None h" is a rendering bug an operator
+        # has to decode at the worst possible moment.
+        survival = "survival unknown: no retention rate measured yet"
+    else:
+        survival = f"~{hours} h at {rate} GB/day"
     lines = [
         f"PAPER LAB STATUS — {status.get('run_id') or 'no run'}  ({status.get('mode')})",
         f"  generated     : {status.get('generated_at_iso')}",
@@ -555,38 +623,44 @@ def status_summary(status: dict[str, Any]) -> str:
         f"running={status.get('system', {}).get('running')} "
         f"heartbeat_age={status.get('system', {}).get('heartbeat_age_seconds')}s",
         f"  run dir       : {status.get('run_dir')}",
-        f"  disk          : {status.get('disk', {}).get('free_gb')} GB free "
-        f"[{status.get('disk', {}).get('level')}] "
-        f"~{status.get('disk', {}).get('estimated_hours_remaining')} h at the observed rate",
-        f"  guidance      : {status.get('disk', {}).get('guidance')}",
+        f"  disk          : {disk.get('free_gb')} GB free [{disk.get('level')}] {survival}",
+        f"  guidance      : {disk.get('guidance')}",
     ]
     for name, child in (status.get("children") or {}).items():
         lines.append(
-            f"  child {name:<13} {child.get('state')} pid={child.get('pid')} "
-            f"alive={child.get('alive')} restarts={child.get('restarts')} "
-            f"exit={child.get('exit_code')} error={child.get('last_error')}"
+            f"  child {name:<13} {_show(child.get('state'))} pid={_show(child.get('pid'))} "
+            f"alive={_show(child.get('alive'))} restarts={_show(child.get('restarts'))} "
+            f"exit={_show(child.get('exit_code'))} error={_show(child.get('last_error'))}"
         )
     paper = status.get("paper") or {}
     lines.append(
-        f"  paper         : cycles={paper.get('cycle')} decisions={paper.get('decisions')} "
-        f"no_trade={paper.get('no_trade')} trades={paper.get('paper_trades')} "
-        f"failures={paper.get('runtime_failures')} candidates={paper.get('paper_candidates')}"
+        f"  paper         : cycles={_show(paper.get('cycle'))} "
+        f"decisions={_show(paper.get('decisions'))} "
+        f"no_trade={_show(paper.get('no_trade'))} trades={_show(paper.get('paper_trades'))} "
+        f"failures={_show(paper.get('runtime_failures'))} "
+        f"candidates={_show(paper.get('paper_candidates'))}"
     )
     collector = status.get("collector") or {}
+    age = collector.get("state_age_seconds")
+    # A unit suffix belongs to a measurement, not to its absence.
+    state_age = "?" if age is None else f"{age}s"
     lines.append(
-        f"  collector     : events={collector.get('events')} gaps={collector.get('gaps')} "
-        f"reconnects={collector.get('reconnects')} "
-        f"segments={collector.get('segments_on_disk')} "
-        f"({collector.get('segment_gb')} GB) state_age={collector.get('state_age_seconds')}s"
+        f"  collector     : events={_show(collector.get('events'))} "
+        f"gaps={_show(collector.get('gaps'))} "
+        f"reconnects={_show(collector.get('reconnects'))} "
+        f"segments={_show(collector.get('segments_on_disk'))} "
+        f"({_show(collector.get('segment_gb'))} GB) "
+        f"state_age={state_age}"
     )
     lab = status.get("strategy_lab") or {}
     lines.append(
-        f"  strategy lab  : strategies={lab.get('strategies_total')} "
-        f"admitted={lab.get('admitted_for_paper')} histogram={lab.get('status_histogram')}"
+        f"  strategy lab  : strategies={_show(lab.get('strategies_total'))} "
+        f"admitted={_show(lab.get('admitted_for_paper'))} "
+        f"histogram={_show(lab.get('status_histogram'))}"
     )
     for name in ("M-03", "M-07"):
         entry = (status.get("readiness") or {}).get(name) or {}
-        lines.append(f"  {name}          : {entry.get('verdict')} / {entry.get('state')}")
+        lines.append(f"  {name}          : {_show(entry.get('verdict'))} / {_show(entry.get('state'))}")
     flags = status.get("readiness_flags") or {}
     lines.append(
         "  ready         : "

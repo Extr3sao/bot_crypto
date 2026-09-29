@@ -196,7 +196,16 @@ def _config_from_args(args: argparse.Namespace) -> CollectorConfig:
 
 
 def _json(payload: object) -> str:
-    return json.dumps(payload, ensure_ascii=False, indent=2, default=str)
+    """Machine-readable output that does not depend on the console code page.
+
+    ``--mode run``/``replay``/``report`` all print JSON meant to be read by
+    another process. A redirected stdout on Windows is cp1252, so emitting a
+    non-ASCII character raw makes the payload unparseable for whatever reads it
+    (this was observed: byte 0x97 in the report's JSON). Escaping non-ASCII keeps
+    the bytes pure ASCII and the JSON means exactly the same thing. The manifest
+    written to disk is unaffected: it goes through ``RunManifest.save``.
+    """
+    return json.dumps(payload, ensure_ascii=True, indent=2, default=str)
 
 
 def mode_run(args: argparse.Namespace) -> int:
