@@ -39,6 +39,8 @@ __all__ = [
     "default_ledger_path",
 ]
 
+LEDGER_SCHEMA_VERSION = "strategy-admission-ledger-v1"
+
 DEFAULT_ADMISSION_LEDGER_PATH = "config/strategy_admission.json"
 
 
@@ -50,9 +52,18 @@ def default_ledger_path(repo_root: Path | str | None = None) -> Path:
 class AdmissionLedger:
     """Immutable, fail-closed view over the committed admission ledger."""
 
-    def __init__(self, entries: dict[str, AdmissionEntry], *, source_path: str = "") -> None:
+    def __init__(
+        self,
+        entries: dict[str, AdmissionEntry],
+        *,
+        source_path: str = "",
+        sources: tuple[dict[str, str], ...] = (),
+        schema_version: str = LEDGER_SCHEMA_VERSION,
+    ) -> None:
         self._entries = dict(entries)
         self._source_path = source_path
+        self._sources = sources
+        self._schema_version = schema_version
 
     # -- construction -------------------------------------------------------
 
@@ -66,7 +77,18 @@ class AdmissionLedger:
             if strategy_id.startswith("_"):
                 continue  # provenance keys
             entries[strategy_id] = AdmissionEntry.from_dict({**item, "strategy_id": strategy_id})
-        return cls(entries, source_path=source_path)
+        sources_raw = payload.get("_sources", [])
+        sources = tuple(
+            {"path": str(item.get("path", "")), "sha256": str(item.get("sha256", ""))}
+            for item in sources_raw
+            if isinstance(item, dict)
+        )
+        return cls(
+            entries,
+            source_path=source_path,
+            sources=sources,
+            schema_version=str(payload.get("_schema_version", LEDGER_SCHEMA_VERSION)),
+        )
 
     @classmethod
     def load(cls, path: Path | str) -> AdmissionLedger:
@@ -84,6 +106,41 @@ class AdmissionLedger:
     @property
     def source_path(self) -> str:
         return self._source_path
+
+    @property
+    def sources(self) -> tuple[dict[str, str], ...]:
+        """The research artifacts this ledger was built from, with their hashes."""
+        return self._sources
+
+    @property
+    def schema_version(self) -> str:
+        return self._schema_version
+
+    def entries(self) -> dict[str, AdmissionEntry]:
+        """Every known entry, keyed by ``<family>@<timeframe>``."""
+        return dict(self._entries)
+
+    def evidence_ids(self, strategy_id: str) -> tuple[str, ...]:
+        """Stable references to the artifacts a verdict rests on (§36).
+
+        The entry names the document its verdict came from and the ledger names
+        the hash of every source it was generated from, so the pair is enough to
+        re-derive the claim from a clean checkout.
+        """
+        entry = self._entries.get(strategy_id)
+        ids: list[str] = []
+        if entry is not None:
+            evidence = entry.edge_evidence
+            document = (evidence.source_doc if evidence is not None else None) or entry.source_doc
+            if document:
+                ids.append(str(document))
+        for source in self._sources:
+            path = source.get("path", "")
+            digest = source.get("sha256", "")
+            if not path:
+                continue
+            ids.append(f"{path}#sha256:{digest[:16]}" if digest else path)
+        return tuple(dict.fromkeys(ids))
 
     def strategy_ids(self) -> list[str]:
         return sorted(self._entries)

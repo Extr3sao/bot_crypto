@@ -265,7 +265,8 @@ def make_runtime(
                 "regimes": [],
                 "direction": "BOTH",
                 "enabled": True,
-                "status": "CONFIRMED" if entry.admitted_for_paper else "RESEARCH_ONLY",
+                # §17 — the real lifecycle state; ``CONFIRMED`` is retired.
+                "status": entry.status.value,
                 "priority": 0.0,
             }
             for strategy_id, entry in ledger.entries_for_timeframe(timeframe).items()

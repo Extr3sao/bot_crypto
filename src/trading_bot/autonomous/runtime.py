@@ -382,15 +382,52 @@ class AutonomousPaperRuntime:
                 summary.errors.append(f"cycle {index}: {type(exc).__name__}: {exc}")
                 self._log.error("autonomous.cycle.failed", cycle=index, error=str(exc))
                 continue
+            # Per-cycle errors are folded in by ``finalize_summary``; keeping them
+            # out of ``errors`` here would be needed only if two code paths
+            # produced the summary, and that is exactly what we removed.
             summary.cycle_reports.append(report)
-            summary.errors.extend(report.errors)
             self._log.info("autonomous.cycle.completed", **report.to_dict())
             if interval_seconds > 0 and index < cycles:
                 import asyncio
 
                 await asyncio.sleep(interval_seconds)
 
-        summary.ended_at_ms = self._now()
+        return self.finalize_summary(
+            run_id=run_id,
+            started_at_ms=started,
+            cycle_reports=summary.cycle_reports,
+            errors=summary.errors,
+        )
+
+    def finalize_summary(
+        self,
+        *,
+        run_id: str,
+        started_at_ms: int,
+        cycle_reports: list[CycleReport],
+        errors: list[str] | None = None,
+    ) -> RunSummary:
+        """Close a run from the cycles it actually completed (§13, §48).
+
+        ``run()`` uses this, and so does a continuous loop that drives
+        ``run_cycle`` itself: a report written by a different code path from the
+        one that produced the cycles would not be evidence of anything.
+        """
+        summary = RunSummary(
+            run_id=run_id,
+            environment=self._environment,
+            commit=_git_commit(),
+            mode=getattr(self._settings.runtime.mode, "value", str(self._settings.runtime.mode)),
+            assets=self._assets,
+            timeframe=self._timeframe,
+            cycles=len(cycle_reports),
+            started_at_ms=started_at_ms,
+            ended_at_ms=self._now(),
+        )
+        summary.cycle_reports.extend(cycle_reports)
+        summary.errors.extend(errors or [])
+        for report in cycle_reports:
+            summary.errors.extend(report.errors)
         summary.executions = list(self._executions)
         summary.outcomes = [o.to_dict() for o in self._trace_store.read_outcomes()]
         summary.pending_decision_ids = self._pending_decision_ids()
@@ -618,7 +655,11 @@ class AutonomousPaperRuntime:
 
         regime = getattr(context, "market_regime", None)
         strategy_map = self._strategy_map_for(asset=asset, regime=regime)
-        router = StrategyRouter(gates=RouterGates(require_confirmed=False))
+        # §38/DEF-AUTO-3 — the freshness gate is budgeted from THIS run's
+        # timeframe, so a 30m context is not judged by a 15-minute rule.
+        router = StrategyRouter(
+            gates=RouterGates(require_confirmed=False, timeframe=self._timeframe)
+        )
 
         # The router is consulted PER CANDIDATE, in the ranked order derived
         # from the admission ledger (measured gross edge) plus bounded
@@ -930,7 +971,11 @@ class AutonomousPaperRuntime:
                     strategy_id,
                     {
                         **spec,
-                        "status": "CONFIRMED" if entry.admitted_for_paper else "RESEARCH_ONLY",
+                        # §17/§19 — the lifecycle state the ledger holds. This
+                        # used to be a literal "CONFIRMED"/"RESEARCH_ONLY" pair,
+                        # which meant the router read a string the ledger never
+                        # said (DEF-AUTO-4).
+                        "status": entry.status.value,
                         "priority": priority,
                     },
                 )

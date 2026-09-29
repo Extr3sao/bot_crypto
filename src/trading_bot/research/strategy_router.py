@@ -16,11 +16,24 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any
 
+# The gate contract itself lives in ``router_gates``: one definition, so the
+# freshness rule cannot drift between two copies. Re-exported here because this
+# module is the public import site for ``RouterGates``.
+from .router_gates import RouterGates
+
 __all__ = [
+    "PAPER_EXECUTABLE_STATUS_NAMES",
     "RouterDecision",
     "RouterGates",
     "StrategyRouter",
 ]
+
+#: §17/§19 — the lifecycle states that authorise PAPER execution. Kept as a
+#: local constant (rather than importing the autonomous package) so the research
+#: router keeps its dependency direction: it may not import the runtime.
+PAPER_EXECUTABLE_STATUS_NAMES: frozenset[str] = frozenset(
+    {"PAPER_CANDIDATE", "PAPER_ACTIVE"}
+)
 
 
 @dataclass(frozen=True, slots=True)
@@ -57,27 +70,6 @@ class RouterDecision:
         }
 
 
-@dataclass(frozen=True, slots=True)
-class RouterGates:
-    """Gates a strategy must pass before the router selects it.
-
-    Defaults are conservative: the router would rather return NO_TRADE
-    than force a trade.
-    """
-
-    # Strategy must be confirmed by research (status CONFIRMED)
-    require_confirmed: bool = True
-
-    # Strategy must be enabled for the current regime
-    require_regime_match: bool = True
-
-    # Minimum data quality score (0.0 - 1.0) from AssetContext
-    min_data_quality: float = 0.5
-
-    # Context must not be stale (validated by AssetAgent)
-    require_fresh_context: bool = True
-
-
 class StrategyRouter:
     """Pure resolver: AssetContext + Regime + AssetStrategyRegimeMap → strategy.
 
@@ -102,10 +94,10 @@ class StrategyRouter:
             "strategy_id": {
                 "family": "momentum",
                 "regimes": ["TREND_UP", "TREND_DOWN"],
-                "direction": "LONG",       # or "SHORT" or "BOTH"
-                "enabled": True,
-                "status": "CONFIRMED",     # from research pipeline
-                "priority": 0.5,           # optional tie-breaker
+            "direction": "LONG",       # or "SHORT" or "BOTH"
+            "enabled": True,
+            "status": "PAPER_ACTIVE",  # the strategy's lifecycle state (§17)
+            "priority": 0.5,           # optional tie-breaker
             },
             ...
         }
@@ -158,11 +150,21 @@ class StrategyRouter:
                 trace.append(f"{sid}: disabled")
                 continue
 
-            # Gate: confirmed status
+            # Gate: research confirmation.
+            #
+            # DEF-AUTO-4: this used to compare against a literal "CONFIRMED",
+            # which the legacy entrypoints stamped on every family whether or
+            # not research had admitted it. The gate now accepts only the
+            # lifecycle states that authorise PAPER execution, taken from the
+            # contract, so a strategy can never be selected because somebody
+            # wrote the right string in a map (§17, §19).
             if self.gates.require_confirmed:
-                status = entry.get("status", "PENDING")
-                if status != "CONFIRMED":
-                    trace.append(f"{sid}: status={status}, need CONFIRMED")
+                status = str(entry.get("status", "PENDING"))
+                if status not in PAPER_EXECUTABLE_STATUS_NAMES:
+                    trace.append(
+                        f"{sid}: status={status}, need one of "
+                        f"{sorted(PAPER_EXECUTABLE_STATUS_NAMES)}"
+                    )
                     continue
 
             # Gate: regime match
@@ -207,15 +209,17 @@ class StrategyRouter:
     # -- helpers -----------------------------------------------------------
 
     def _is_stale(self, context: Any) -> bool:
-        """Check context staleness via bar_count / window_end_ts."""
+        """Check context staleness via bar_count / window_end_ts.
+
+        The budget comes from the gates, which derive it from the timeframe the
+        strategies run on (§38, DEF-AUTO-3) instead of a fixed 15 minutes.
+        """
         end_ts = getattr(context, "window_end_ts", 0)
         newest = getattr(context, "timestamp", 0)
         if not end_ts or not newest:
             return True
-        # Stale if the context window ends too far behind the timestamp
-        from .router_gates import STALE_THRESHOLD_MS
-
-        return (newest - end_ts) > STALE_THRESHOLD_MS
+        # Stale if the context window ends too far behind the timestamp.
+        return (newest - end_ts) > self.gates.stale_after_ms()
 
     def _data_quality(self, context: Any) -> float:
         """Derive a 0.0-1.0 quality score from AssetContext."""

@@ -129,7 +129,7 @@ def _engine(
                 "regimes": [],
                 "direction": "BOTH",
                 "enabled": True,
-                "status": "CONFIRMED",
+                "status": "PAPER_ACTIVE",
                 "priority": 0.0,
             }
         }
@@ -198,7 +198,7 @@ def test_direction_mismatch_zero_orders() -> None:
                 "regimes": [],
                 "direction": "SHORT",
                 "enabled": True,
-                "status": "CONFIRMED",
+                "status": "PAPER_ACTIVE",
             }
         }
     )

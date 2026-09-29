@@ -32,7 +32,10 @@ from typing import Any
 __all__ = [
     "DECISION_CONTRACT_VERSION",
     "OUTCOME_SCHEMA_VERSION",
+    "PAPER_AUTHORISING_STATUSES",
+    "PAPER_PROMOTABLE_STATUSES",
     "PERFORMANCE_SCHEMA_VERSION",
+    "SHADOW_ELIGIBLE_STATUSES",
     "TRACE_SCHEMA_VERSION",
     "AdmissionEntry",
     "AdmissionStatus",
@@ -97,13 +100,25 @@ class ReviewType(StrEnum):
 
 
 class AdmissionStatus(StrEnum):
-    """Formal admission verdict for one strategy (research → paper)."""
+    """Formal lifecycle state of one strategy (research → paper → archive) (§17).
 
+    The operational states are ``RESEARCH_REQUIRED`` / ``PAPER_CANDIDATE`` /
+    ``PAPER_ACTIVE`` / ``PAPER_RETIRED`` / ``REJECTED``; the remaining values are
+    the research verdicts that justify them. There is deliberately no ``LIVE``
+    member and no transition that creates one: PAPER can never promote itself,
+    and the vocabulary cannot even name the state it would have to reach.
+    """
+
+    # -- operational lifecycle -------------------------------------------------
+    RESEARCH_REQUIRED = "RESEARCH_REQUIRED"
     PAPER_CANDIDATE = "PAPER_CANDIDATE"
+    PAPER_ACTIVE = "PAPER_ACTIVE"
+    PAPER_RETIRED = "PAPER_RETIRED"
+    REJECTED = "REJECTED"
+    # -- research verdicts (why the lifecycle looks the way it does) -----------
     RESEARCH_CANDIDATE = "RESEARCH_CANDIDATE"
     COST_KILLED = "COST_KILLED"
     NO_GROSS_EDGE = "NO_GROSS_EDGE"
-    REJECTED = "REJECTED"
     UNKNOWN = "UNKNOWN"
 
 
@@ -182,7 +197,16 @@ class ReplayStatus(StrEnum):
 
 
 #: Admission statuses that authorise PAPER execution.
+#:
+#: ``PAPER_CANDIDATE`` is the state a strategy is *admitted* in and
+#: ``PAPER_ACTIVE`` is the state it runs in, so both authorise PAPER. Nothing
+#: else does: a research verdict, however promising, cannot trade.
 PAPER_AUTHORISING_STATUSES: frozenset[AdmissionStatus] = frozenset(
+    {AdmissionStatus.PAPER_CANDIDATE, AdmissionStatus.PAPER_ACTIVE}
+)
+
+#: §17 — the only status a strategy may be *promoted to* by an explicit record.
+PAPER_PROMOTABLE_STATUSES: frozenset[AdmissionStatus] = frozenset(
     {AdmissionStatus.PAPER_CANDIDATE}
 )
 
@@ -191,9 +215,11 @@ SHADOW_ELIGIBLE_STATUSES: frozenset[AdmissionStatus] = frozenset(
     {
         AdmissionStatus.PAPER_CANDIDATE,
         AdmissionStatus.RESEARCH_CANDIDATE,
+        AdmissionStatus.RESEARCH_REQUIRED,
         AdmissionStatus.COST_KILLED,
         AdmissionStatus.NO_GROSS_EDGE,
         AdmissionStatus.REJECTED,
+        AdmissionStatus.PAPER_RETIRED,
     }
 )
 
@@ -216,7 +242,8 @@ class AdmissionEntry:
     def __post_init__(self) -> None:
         if self.admitted_for_paper and self.status not in PAPER_AUTHORISING_STATUSES:
             raise ValueError(
-                f"{self.strategy_id}: admitted_for_paper requires PAPER_CANDIDATE "
+                f"{self.strategy_id}: admitted_for_paper requires one of "
+                f"{sorted(s.value for s in PAPER_AUTHORISING_STATUSES)} "
                 f"(got {self.status.value})"
             )
         if self.admitted_for_paper and self.edge_evidence is None:
@@ -227,6 +254,17 @@ class AdmissionEntry:
             self.expected_gross_edge_bps is None or self.expected_gross_edge_bps <= 0
         ):
             raise ValueError(f"{self.strategy_id}: PAPER admission requires positive gross edge")
+        # §17 — the lifecycle itself is an invariant, not a convention: an active
+        # strategy must be admitted, and a retired one must not be trading.
+        if self.status is AdmissionStatus.PAPER_ACTIVE and not self.admitted_for_paper:
+            raise ValueError(
+                f"{self.strategy_id}: PAPER_ACTIVE requires admitted_for_paper=True "
+                "(a strategy cannot be active without an admission)"
+            )
+        if self.status is AdmissionStatus.PAPER_RETIRED and self.admitted_for_paper:
+            raise ValueError(
+                f"{self.strategy_id}: PAPER_RETIRED cannot be admitted for paper"
+            )
 
     @property
     def shadow_eligible(self) -> bool:

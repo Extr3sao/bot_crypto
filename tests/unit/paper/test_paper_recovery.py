@@ -129,7 +129,7 @@ def _build_engine(
                 "regimes": [],
                 "direction": "BOTH",
                 "enabled": True,
-                "status": "CONFIRMED",
+                "status": "PAPER_ACTIVE",
                 "priority": 0.0,
             }
         },

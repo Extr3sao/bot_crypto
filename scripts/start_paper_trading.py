@@ -69,6 +69,14 @@ def parse_args() -> argparse.Namespace:
         ),
     )
     parser.add_argument(
+        "--ledger",
+        default=None,
+        help=(
+            "Admission ledger (default config/strategy_admission.json; "
+            "ADMISSION_LEDGER_PATH env overrides for tests)"
+        ),
+    )
+    parser.add_argument(
         "--fresh",
         action="store_true",
         help=(
@@ -188,6 +196,16 @@ def _default_state_path() -> Path:
     return Path("data/storage/paper_state.json")
 
 
+def _default_ledger_path() -> Path:
+    """Committed admission ledger: the launcher's authority (DEF-AUTO-4)."""
+    import os
+
+    env_path = os.environ.get("ADMISSION_LEDGER_PATH", "")
+    if env_path:
+        return Path(env_path)
+    return Path(__file__).resolve().parents[1] / "config" / "strategy_admission.json"
+
+
 def _rotate_state(path: Path) -> None:
     """Explicit fresh-book request: back up the existing state, never delete.
 
@@ -202,14 +220,31 @@ def _rotate_state(path: Path) -> None:
     print(f"[startup] --fresh: previous state rotated to {backup}")
 
 
-def build_cycle_engine(settings: Settings, broker: PaperBroker) -> PaperCycleEngine:
+def build_cycle_engine(
+    settings: Settings,
+    broker: PaperBroker,
+    *,
+    assets: Sequence[str] = ("BTC", "ETH", "SOL"),
+    timeframe: str = "5m",
+    ledger_path: Path | str | None = None,
+) -> PaperCycleEngine:
     """Compose the canonical decision cycle (CP-PO-002, FASE 7B-8B).
+
     Uses ONLY canonical components: CryptoAssetAgentRegistry (context),
     StrategyRouter (routing - the single router), the six committed
     AlphaFamilies (generation), signal_adapter (conversion),
     CandidatePortfolio (consolidation), RiskManager (risk) and the shared
     PaperBroker (execution). No strategy logic lives here.
+
+    DEF-AUTO-4: this used to hand the router a map that declared every family
+    ``CONFIRMED``, which made the router's confirmation gate a formality and
+    let a family that research had rejected trade paper money. The map is now
+    built from the admission ledger, and the router keeps ``require_confirmed``
+    on, so the gate and the ledger say the same thing. The ledger is read fail
+    closed: a missing or unreadable ledger stops the launcher.
     """
+    from trading_bot.autonomous.admission_ledger import AdmissionLedger
+    from trading_bot.autonomous.strategy_state import StrategyRegistry
     from trading_bot.execution.idempotency import IdempotencyGuard
     from trading_bot.paper.paper_cycle import PaperCycleEngine
     from trading_bot.research.asset_intelligence.registry import CryptoAssetAgentRegistry
@@ -221,12 +256,10 @@ def build_cycle_engine(settings: Settings, broker: PaperBroker) -> PaperCycleEng
         TrendFamily,
         VolatilityFamily,
     )
+    from trading_bot.research.router_gates import RouterGates
     from trading_bot.research.strategy_router import StrategyRouter
     from trading_bot.risk.manager import RiskManager
 
-    # Default paper map: one preregistered entry per canonical family.
-    # Deterministic (dict order = score tie-break; EMA baseline first).
-    # Regime list empty = eligible in any regime (router base score).
     family_classes = {
         "ema_crossover": EmaCrossoverFamily,
         "momentum": MomentumFamily,
@@ -236,21 +269,17 @@ def build_cycle_engine(settings: Settings, broker: PaperBroker) -> PaperCycleEng
         "volatility": VolatilityFamily,
     }
     families = {name: cls() for name, cls in family_classes.items()}
-    strategy_map = {
-        name: {
-            "family": name,
-            "regimes": [],
-            "direction": "BOTH",
-            "enabled": True,
-            "status": "CONFIRMED",
-            "priority": 0.0,
-        }
-        for name in family_classes
-    }
+
+    ledger = AdmissionLedger.load(ledger_path or _default_ledger_path())
+    registry = StrategyRegistry.from_ledger(ledger, assets=list(assets))
+    for line in registry.describe(timeframe):
+        print(line)
+    strategy_map = registry.strategy_map(timeframe)
 
     return PaperCycleEngine(
         asset_registry=CryptoAssetAgentRegistry(),
-        router=StrategyRouter(),
+        # §38/DEF-AUTO-3 — freshness budgeted from the timeframe, not a constant.
+        router=StrategyRouter(gates=RouterGates(timeframe=timeframe)),
         strategy_map=strategy_map,
         families=families,
         risk_manager=RiskManager(risk=settings.risk, equity=broker.equity),
@@ -292,7 +321,13 @@ async def main() -> int:
 
     scanner_factory, data_source = build_scanner_factory(settings, args.provider)
     broker = PaperBroker(equity=args.balance)
-    cycle_engine = build_cycle_engine(settings, broker)
+    cycle_engine = build_cycle_engine(
+        settings,
+        broker,
+        assets=assets,
+        timeframe=args.timeframe,
+        ledger_path=Path(args.ledger) if args.ledger else _default_ledger_path(),
+    )
     store = PaperStateStore(state_path)
     reconciler = StartupReconcilerV4(
         store=store,
