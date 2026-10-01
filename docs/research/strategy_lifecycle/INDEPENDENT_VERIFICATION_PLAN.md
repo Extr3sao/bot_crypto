@@ -6,9 +6,10 @@ a separate verifier. Until then the verdict ceiling is
 Windows and `.venv/Scripts/python.exe` (CPython 3.11).
 
 ```
-REVIEWED SHA : 9ead27faa2ba727c85d2bc5597361d2d6d9084ef
-BASELINE SHA : d4d4dfaec56a4d529185da4e60b8331b6c36b56a
-GATE         : STRAT-GATE0-004 (GATE 0 re-audit + defect closure)
+REVIEWED SHA : bd9253d9c67339d4887f2f663314a826be4c4eda
+BASELINE SHA : b0302d25b3cdd7962cacb121b9ff4a2b5d4565d6
+GATE         : STRAT-ROUTER-005 (WP-STRAT-07 lifecycle-aware router runtime integration)
+PRIOR GATE   : STRAT-GATE0-004 (GATE 0 re-audit + defect closure), END b0302d2
 ```
 
 ## Claims to verify (carried from prior gates)
@@ -41,6 +42,18 @@ GATE         : STRAT-GATE0-004 (GATE 0 re-audit + defect closure)
 | C19 | Campaign `paper-lab-continuous-03` is NOT active | `tasklist //FI "IMAGENAME eq python.exe"` + read `reports/paper-lab/paper-lab-continuous-03/MONITOR.jsonl` tail | no campaign python; last row stale |
 | C20 | Source-ingestion batch 2 is intact | `cd reports/source-ingestion && sha256sum -c <(grep -v relative_path MANIFEST.sha256.tsv \| awk -F'\t' '{print $3"  "$1}')` | 142/142 OK |
 
+## Claims added by WP-STRAT-07 (STRAT-ROUTER-005)
+
+| # | Claim | Command | Expected output |
+|---|---|---|---|
+| C21 | LEGACY is the default and changes nothing | `pytest tests/unit/autonomous/test_routing_modes.py -k legacy` | pass; no comparisons written |
+| C22 | SHADOW records a comparison and never affects execution | `pytest tests/unit/autonomous/test_routing_modes.py -k shadow` | legacy still trades; JSONL written |
+| C23 | LIFECYCLE gates; a non-ACTIVE strategy cannot execute | `pytest tests/unit/autonomous/test_routing_modes.py -k blocks_a_non_active` | 0 paper trades; refusal named |
+| C24 | only PAPER_ACTIVE maps to the one routable state | `pytest tests/unit/strategy_lifecycle/test_runtime_bridge.py -k only_paper_active` | pass |
+| C25 | a bridge failure fails CLOSED in LIFECYCLE | `pytest tests/unit/autonomous/test_routing_modes.py -k fails_closed` | 0 paper trades |
+| C26 | portfolio arbitration can only reduce | `pytest tests/unit/autonomous/test_routing_modes.py -k portfolio` | one drop, named |
+| C27 | the runtime can now import the lifecycle plane | `grep -rln "strategy_lifecycle" src/trading_bot/autonomous` | `runtime.py` |
+
 ## Runtime path (reachability)
 
 - `RiskManager.check_signal` ← `AutonomousRuntime._risk_review` and
@@ -48,10 +61,17 @@ GATE         : STRAT-GATE0-004 (GATE 0 re-audit + defect closure)
   `AutonomousRuntime._sync_risk_positions()` at the top of `run_cycle` **and
   after every fill** (C18).
 - `StrategyRouter.route` is on the hot path (`runtime.py:668`, `paper_cycle.py`).
-- `StrategyRouter.select_eligible_strategies` and the whole `strategy_lifecycle/**`
-  plane are **reachable but NOT called by the hot PAPER loop**. Verifying
-  "runtime reachability" of the dynamic plane therefore means: importable and
-  callable on a real context, and **explicitly not yet hot-wired** (WP-STRAT-07).
+- As of `STRAT-ROUTER-005`, `strategy_lifecycle.runtime_bridge` and
+  `StrategyRouter.select_eligible_strategies` **are called from the hot PAPER
+  loop** (`runtime.py::_evaluate_asset`), under an explicit mode. The default is
+  `LEGACY` (unchanged); `SHADOW` records only; `LIFECYCLE` gates execution.
+- The registry / health monitor / lifecycle controller / pods are **still not
+  driven by the runtime loop** (a supplied `lifecycle_ecosystem` can supply
+  lifecycle states, but no promotion happens in the loop). That remains a
+  further, separate step.
+- Verifying "runtime reachability" now means: `grep -rln "strategy_lifecycle"
+  src/trading_bot/autonomous` returns `runtime.py`, and the real
+  `run_cycle` path is exercised by `tests/unit/autonomous/test_routing_modes.py`.
 
 ## Negative tests a verifier MUST run (must FAIL to promote/execute)
 
