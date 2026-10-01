@@ -87,6 +87,7 @@ def _demo() -> dict[str, Any]:
     # Champion/challenger fixture.
     champ = ChallengerEvaluation("momentum", 200, 12.0, 1.6, 60.0, window_net_bps=(40.0, 40.0, 40.0))
     chal = ChallengerEvaluation("trend", 200, 18.0, 1.9, 80.0, window_net_bps=(60.0, 60.0, 60.0))
+    assert eco.champion is not None
     comparison = eco.champion.compare(
         context=ContextKey("momentum", "BTC", "5m", "TREND_UP"),
         champion=champ,

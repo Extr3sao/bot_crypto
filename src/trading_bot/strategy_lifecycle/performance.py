@@ -11,8 +11,8 @@ timestamps never reorder aggregates. No wall-clock is consulted for values.
 
 from __future__ import annotations
 
-from collections.abc import Iterable
 import bisect
+from collections.abc import Iterable
 from dataclasses import dataclass, field
 from enum import StrEnum
 from typing import Any, Final
