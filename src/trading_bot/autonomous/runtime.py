@@ -492,6 +492,14 @@ class AutonomousPaperRuntime:
         snapshots = await scanner.run()
         snap_by_symbol = {str(getattr(s, "symbol", "")): s for s in snapshots}
 
+        # DEF-RISK-EXPOSURE-001 / DEF-RISK-INERT-002 — hand the live paper book to
+        # the risk engine BEFORE any decision. The autonomous runtime reconciles
+        # with the broker directly and never called ``add_position``, so
+        # ``RiskManager.open_positions`` stayed empty and both the
+        # ``max_open_positions`` gate and the per-asset exposure clamp were
+        # inert. The broker is the single source of truth for open positions.
+        self._sync_risk_positions()
+
         raw_history: dict[str, list[OHLCV]] = {}
         used_bars: dict[str, list[OHLCV]] = {}
         decisions_ts: dict[str, int] = {}
@@ -1050,7 +1058,13 @@ class AutonomousPaperRuntime:
             asset=asset,
             symbol=symbol,
             strategy_id=strategy_id,
-            strategy_version=str(entry.timeframe),
+            # DEF-PROV-001: this used to carry ``str(entry.timeframe)`` (e.g.
+            # "5m") — a timeframe is NOT a strategy version, and the value
+            # travelled into every ShadowTradeDecision and persisted trace, so
+            # "which version of this strategy produced this" was unanswerable.
+            # Use the same ``<family>@<timeframe>`` convention the registry
+            # assigns, so the trace, the registry and the ledger name one thing.
+            strategy_version=f"{entry.family}@{entry.timeframe}",
             family=str(getattr(alpha, "family", strategy_id)),
             direction=direction,
             timeframe=str(getattr(alpha, "timeframe", self._timeframe)),
@@ -1443,6 +1457,16 @@ class AutonomousPaperRuntime:
         }
 
     # -- post-cycle stages ---------------------------------------------------
+
+    def _sync_risk_positions(self) -> None:
+        """Adopt the broker's open book into the risk engine (fail-safe)."""
+        try:
+            positions = dict(getattr(self._broker, "positions", {}) or {})
+        except Exception:  # pragma: no cover - defensive: a broken book sync
+            return  # must never abort a cycle; exposure is then measured as 0
+        sync = getattr(self._risk, "sync_open_positions", None)
+        if callable(sync):
+            sync(positions)
 
     def _reconcile(self, session_id: str, snapshots: list[Any], errors: list[str]) -> int:
         """Reconcile the paper book and feed the delta into the risk engine."""
