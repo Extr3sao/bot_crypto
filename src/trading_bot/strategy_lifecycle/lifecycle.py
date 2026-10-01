@@ -197,6 +197,14 @@ class StrategyLifecycleController:
         self, inputs: ControllerInputs, evidence: list[str]
     ) -> tuple[bool, list[str]]:
         p = self.policy
+        # Fail closed (DEF-VERIFY-002): a strategy the health monitor has called
+        # DEGRADED/CRITICAL must not be promoted on a numeric cell alone. The
+        # health verdict is a first-class refusal, checked before any metric.
+        if inputs.health.health_state in (HealthState.DEGRADED, HealthState.CRITICAL):
+            evidence.append(
+                f"promotion refused: health is {inputs.health.health_state.value}"
+            )
+            return False, [RationaleCode.HEALTH_DEGRADED.value]
         medium = inputs.cells.get("medium")
         if medium is None or medium.sample_count < p.minimum_samples:
             evidence.append(

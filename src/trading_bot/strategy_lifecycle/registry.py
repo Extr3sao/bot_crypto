@@ -12,9 +12,11 @@ from dataclasses import dataclass, field
 from typing import Any, Final
 
 from .contracts import (
+    REGISTRATION_ENTRY_STATES,
     HealthState,
     LifecycleDecision,
     LifecycleState,
+    LifecycleStateError,
     StrategyDescriptor,
     StrategyEvent,
     StrategyEventType,
@@ -74,6 +76,16 @@ class _HistoryEntry:
             "evidence": list(self.evidence),
         }
 
+    @classmethod
+    def from_dict(cls, data: dict[str, Any]) -> _HistoryEntry:
+        return cls(
+            from_state=LifecycleState(data["from_state"]),
+            to_state=LifecycleState(data["to_state"]),
+            timestamp_ms=int(data["timestamp_ms"]),
+            reason_codes=tuple(data.get("reason_codes", ())),
+            evidence=tuple(data.get("evidence", ())),
+        )
+
 
 @dataclass(slots=True)
 class DynamicStrategyRegistry:
@@ -100,10 +112,29 @@ class DynamicStrategyRegistry:
         Re-registering the same version without a state change is idempotent.
         A new state must go through :meth:`apply`, never through a silent
         re-register: registering does not promote.
+
+        Fail closed (DEF-VERIFY-001): a strategy may only be *created* in a
+        non-authorising entry state (:data:`REGISTRATION_ENTRY_STATES`).
+        Registration is the one boundary the promotion gate never re-checks, so
+        accepting a descriptor that already claims ``ACTIVE``/``ELIGIBLE`` /
+        an active-lineage state would let a strategy skip the whole evidence
+        pipeline. Unknown/invalid/missing state is refused, never defaulted.
         """
         sid = descriptor.strategy_id
         previous = self._descriptors.get(sid)
         if previous is None:
+            state = descriptor.lifecycle_state
+            if not isinstance(state, LifecycleState):
+                raise LifecycleStateError(
+                    f"{sid}: register() requires a valid LifecycleState, got {state!r}"
+                )
+            if state not in REGISTRATION_ENTRY_STATES:
+                raise LifecycleStateError(
+                    f"{sid}: register() may not create a strategy in "
+                    f"{state.value}; allowed entry states are "
+                    f"{sorted(s.value for s in REGISTRATION_ENTRY_STATES)} "
+                    "(use apply() to promote)"
+                )
             self._descriptors[sid] = descriptor
             self._versions.setdefault(sid, []).append(descriptor)
             self._history.setdefault(sid, [])
@@ -330,6 +361,53 @@ class DynamicStrategyRegistry:
             "events": self.events(),
             "churn": self.churn(),
         }
+
+    # -- persistence (§2/§3) -------------------------------------------------
+
+    def to_state(self) -> dict[str, Any]:
+        """Materialised authoritative state: descriptors + append-only log."""
+        return {
+            "schema_version": self.schema_version,
+            "descriptors": [self._descriptors[sid].to_dict() for sid in self.strategy_ids()],
+            "versions": {
+                sid: [d.to_dict() for d in self._versions.get(sid, [])]
+                for sid in self.strategy_ids()
+            },
+            "history": {
+                sid: [h.to_dict() for h in self._history.get(sid, [])]
+                for sid in self.strategy_ids()
+            },
+            "events": self.events(),
+            "churn": {sid: dict(self._churn.get(sid, {})) for sid in self.strategy_ids()},
+            "state_since": {k: int(v) for k, v in self._state_since.items()},
+            "degraded_streak": {k: int(v) for k, v in self._degraded_streak.items()},
+            "recovery_streak": {k: int(v) for k, v in self._recovery_streak.items()},
+            "last_activation_ms": {k: int(v) for k, v in self._last_activation_ms.items()},
+            "last_demotion_ms": {k: int(v) for k, v in self._last_demotion_ms.items()},
+            "eligible_since_ms": {k: int(v) for k, v in self._eligible_since_ms.items()},
+        }
+
+    @classmethod
+    def from_state(cls, payload: dict[str, Any]) -> DynamicStrategyRegistry:
+        """Rebuild from a persisted state. Missing/invalid fields raise."""
+        reg = cls()
+        for raw in payload["descriptors"]:
+            desc = StrategyDescriptor.from_dict(raw)
+            reg._descriptors[desc.strategy_id] = desc
+        for sid, versions in (payload.get("versions") or {}).items():
+            reg._versions[sid] = [StrategyDescriptor.from_dict(v) for v in versions]
+        for sid, hist in (payload.get("history") or {}).items():
+            reg._history[sid] = [_HistoryEntry.from_dict(h) for h in hist]
+        reg._events = [StrategyEvent.from_dict(e) for e in payload.get("events", [])]
+        reg._churn = {sid: {k: int(v) for k, v in c.items()} for sid, c in (payload.get("churn") or {}).items()}
+        reg._state_since = {k: int(v) for k, v in (payload.get("state_since") or {}).items()}
+        reg._degraded_streak = {k: int(v) for k, v in (payload.get("degraded_streak") or {}).items()}
+        reg._recovery_streak = {k: int(v) for k, v in (payload.get("recovery_streak") or {}).items()}
+        reg._last_activation_ms = {k: int(v) for k, v in (payload.get("last_activation_ms") or {}).items()}
+        reg._last_demotion_ms = {k: int(v) for k, v in (payload.get("last_demotion_ms") or {}).items()}
+        reg._eligible_since_ms = {k: int(v) for k, v in (payload.get("eligible_since_ms") or {}).items()}
+        reg.schema_version = payload.get("schema_version", REGISTRY_SCHEMA_VERSION)
+        return reg
 
 
 def _replace_state(

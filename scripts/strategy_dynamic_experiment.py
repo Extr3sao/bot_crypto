@@ -24,6 +24,7 @@ import json
 import sys
 from collections import defaultdict
 from dataclasses import dataclass
+from datetime import UTC, datetime
 from pathlib import Path
 from statistics import mean
 from typing import Any
@@ -34,10 +35,15 @@ sys.path.insert(0, str(REPO / "scripts"))
 
 import multi_family_backtest as hb  # noqa: E402
 
+from trading_bot.research.experiment_evidence import (  # noqa: E402
+    build_manifest,
+    fingerprint_files,
+    make_run_id,
+    write_run,
+)
 from trading_bot.strategy_lifecycle.config import (  # noqa: E402
     HealthPolicy,
     LifecyclePolicy,
-    RollingWindows,
 )
 from trading_bot.strategy_lifecycle.contracts import (  # noqa: E402
     ContextKey,
@@ -47,7 +53,9 @@ from trading_bot.strategy_lifecycle.contracts import (  # noqa: E402
 from trading_bot.strategy_lifecycle.ecosystem import DynamicStrategyEcosystem  # noqa: E402
 from trading_bot.strategy_lifecycle.performance import PerformanceObservation  # noqa: E402
 
+EXPERIMENT_ID = "EXP-STRAT-DYNAMIC-001"
 OUTDIR = REPO / "reports" / "strategy-dynamic"
+DATA_DIR = REPO / "reports" / "strategy-baseline" / "data"
 ASSET = "BTCUSDT"
 WINDOWS = {
     "DEV": ["BTCUSDT_W1_2026-03.json", "BTCUSDT_W2_2026-04.json", "BTCUSDT_W3_2026-05.json", "BTCUSDT_W4_2026-06.json"],
@@ -55,6 +63,8 @@ WINDOWS = {
     "OOS_LOCKED": ["BTCUSDT_W7_2026-09.json"],
 }
 FAMILIES = ["ema_crossover", "momentum", "breakout", "trend", "mean_reversion", "volatility"]
+#: The experiment is fully deterministic; the seed is recorded for provenance.
+SEED = 0
 
 # Preregistered lifecycle policy for the experiment. It is deliberately stricter
 # than a "last N trades" rule and identical for every family and window.
@@ -80,10 +90,10 @@ EXPERIMENT_POLICY = LifecyclePolicy(
     eligibility_dwell_ms=0,
     demotion_quiet_ms=0,
 )
-EXPERIMENT_HEALTH = HealthPolicy(
-    windows=RollingWindows(short=20, medium=50, long=120),
-    min_samples=20,
-)
+# Windows are owned by the performance store (DEF-VERIFY-004); the health policy
+# carries only thresholds, so this no longer claims a window configuration it
+# does not control.
+EXPERIMENT_HEALTH = HealthPolicy(min_samples=20)
 
 
 def _regime(bars: list[dict[str, Any]], i: int, lookback: int = 100) -> str:
@@ -286,6 +296,7 @@ def _commit() -> str:
 
 def main() -> int:
     OUTDIR.mkdir(parents=True, exist_ok=True)
+    started_at = datetime.now(UTC).isoformat()
     streams, bar_counts = _run_family_streams()
     static_family = _static_family(streams)
 
@@ -371,16 +382,65 @@ def main() -> int:
         },
     }
 
-    (OUTDIR / "EXP-STRAT-DYNAMIC-001.json").write_text(
+    run_id = make_run_id(EXPERIMENT_ID, commit_sha=_commit())
+    result["run_id"] = run_id
+    result["verdict"] = verdict
+
+    # Authoritative, immutable evidence lives under the run directory (§8).
+    dataset_files = [
+        DATA_DIR / f
+        for f in [*WINDOWS["DEV"], *WINDOWS["VALIDATION"], *WINDOWS["OOS_LOCKED"]]
+    ]
+    manifest = build_manifest(
+        experiment_id=EXPERIMENT_ID,
+        run_id=run_id,
+        script_path=Path(__file__),
+        repo=REPO,
+        config={
+            "windows": WINDOWS,
+            "families": FAMILIES,
+            "seed": SEED,
+            "economics": result["economics"],
+        },
+        dataset_fingerprint=fingerprint_files(dataset_files),
+        seed=SEED,
+        started_at=started_at,
+        completed_at=datetime.now(UTC).isoformat(),
+        result=result,
+        decision=verdict,
+    )
+    markdown = _report_markdown(result)
+    stdout_text = (
+        json.dumps({k: result[k]["DEV"] for k in ("static", "dynamic")}, indent=2)
+        + "\ndecision: "
+        + json.dumps(result["decision"], indent=2)
+        + f"\nFINAL_DECISION={verdict}\n"
+    )
+    run_dir = write_run(
+        reports_root=OUTDIR,
+        experiment_id=EXPERIMENT_ID,
+        manifest=manifest,
+        result=result,
+        stdout_text=stdout_text,
+        report_markdown=markdown,
+    )
+    # Top-level files are human-readable pointers, explicitly NON-EVIDENCE; the
+    # authoritative artifact is the immutable run directory above.
+    result["evidence_status"] = "POINTER / NON-EVIDENCE"
+    result["authoritative_run_dir"] = run_dir.relative_to(REPO).as_posix()
+    (OUTDIR / f"{EXPERIMENT_ID}.json").write_text(
         json.dumps(result, indent=2), encoding="utf-8"
     )
-    _write_md(result)
-    print(json.dumps({k: result[k]["DEV"] for k in ("static", "dynamic")}, indent=2))
-    print("decision:", json.dumps(result["decision"], indent=2))
+    (OUTDIR / f"{EXPERIMENT_ID}.md").write_text(markdown, encoding="utf-8")
+    # A bare, ambiguous exp.log must never linger as if it were current evidence.
+    stale_log = OUTDIR / "exp.log"
+    if stale_log.exists():
+        stale_log.unlink()
+    print(stdout_text)
     return 0
 
 
-def _write_md(result: dict[str, Any]) -> None:
+def _report_markdown(result: dict[str, Any]) -> str:
     lines = [
         "# EXP-STRAT-DYNAMIC-001 — static router vs dynamic ecosystem",
         "",
@@ -418,7 +478,7 @@ def _write_md(result: dict[str, Any]) -> None:
         f"- {result['decision']['note']}",
         "",
     ]
-    (OUTDIR / "EXP-STRAT-DYNAMIC-001.md").write_text("\n".join(lines), encoding="utf-8")
+    return "\n".join(lines)
 
 
 if __name__ == "__main__":

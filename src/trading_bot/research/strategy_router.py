@@ -86,6 +86,7 @@ ROUTER_VERDICTS: frozenset[str] = frozenset(
         "REGIME_MISMATCH",
         "RISK_CONFLICT",
         "PORTFOLIO_CONFLICT",
+        "UNKNOWN_STRATEGY",
     }
 )
 
@@ -396,7 +397,16 @@ class StrategyRouter:
             return "PORTFOLIO_CONFLICT", "rejected by portfolio arbitration"
 
         state = None
-        if lifecycle is not None and sid in lifecycle:
+        if lifecycle is not None:
+            if sid not in lifecycle:
+                # Fail closed (DEF-VERIFY-003): the lifecycle plane is in play
+                # but carries no verdict for this strategy. Absence of evidence
+                # is NOT eligibility — never fall through to the permissive
+                # legacy path just because the id is missing from the map.
+                return (
+                    "UNKNOWN_STRATEGY",
+                    "no lifecycle entry for this strategy (fail closed)",
+                )
             state = str(lifecycle[sid]).upper()
         if state is not None:
             if state == "ACTIVE":
@@ -426,6 +436,10 @@ class StrategyRouter:
             if allowed and current_regime not in allowed:
                 return "REGIME_MISMATCH", f"regime {current_regime} not in {allowed}"
 
+        if health is not None and sid not in health:
+            # Fail closed: a supplied health plane with no verdict for this
+            # strategy must never be read as "assumed healthy".
+            return "INSUFFICIENT_EVIDENCE", "no health verdict for this strategy"
         if health is not None and sid in health:
             hs = str(health[sid]).upper()
             if hs in ("DEGRADED", "CRITICAL"):

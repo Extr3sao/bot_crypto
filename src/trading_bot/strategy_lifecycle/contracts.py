@@ -27,6 +27,7 @@ __all__ = [
     "CONTRACTS_SCHEMA_VERSION",
     "EVIDENCE_REQUIRED_EDGES",
     "FORBIDDEN_EXECUTION_MODES",
+    "REGISTRATION_ENTRY_STATES",
     "STATE_TRANSITIONS",
     "ContextKey",
     "ExecutionMode",
@@ -190,6 +191,26 @@ EVIDENCE_REQUIRED_EDGES: Final[frozenset[tuple[LifecycleState, LifecycleState]]]
     )
 )
 
+#: The only lifecycle states a strategy may be *registered* at (DEF-VERIFY-001).
+#:
+#: Registration is the one boundary the promotion gate never re-checks, so it
+#: must not be able to create a strategy that has already skipped the pipeline:
+#: a descriptor supplied straight as ``ACTIVE``/``ELIGIBLE``/``DEGRADED``/
+#: ``THROTTLED``/``PAUSED`` would carry routing authority or an active-lineage
+#: recovery path that no evidence ever earned. These entry states are all
+#: pre-activation: ``DISCOVERED``/``CANDIDATE``/``VALIDATING``/``PAPER`` do not
+#: route, and ``SHADOW`` only reaches ``ELIGIBLE`` through the evidence-gated
+#: ``(SHADOW, ELIGIBLE)`` edge. Anything else is refused at registration.
+REGISTRATION_ENTRY_STATES: Final[frozenset[LifecycleState]] = frozenset(
+    {
+        LifecycleState.DISCOVERED,
+        LifecycleState.CANDIDATE,
+        LifecycleState.VALIDATING,
+        LifecycleState.PAPER,
+        LifecycleState.SHADOW,
+    }
+)
+
 
 def _assert_no_live_reachable() -> None:
     """Fail closed at import time if a state named LIVE ever appears (§21)."""
@@ -285,6 +306,22 @@ class ContextKey:
     @staticmethod
     def cell_prefix(strategy_id: str, asset: str) -> tuple[str, str]:
         return (strategy_id, asset)
+
+    @classmethod
+    def from_dict(cls, data: dict[str, Any]) -> ContextKey:
+        return cls(
+            strategy_id=data["strategy_id"],
+            asset=data["asset"],
+            timeframe=data["timeframe"],
+            regime=data["regime"],
+        )
+
+    @classmethod
+    def from_str(cls, value: str) -> ContextKey:
+        parts = value.split("|")
+        if len(parts) != 4:
+            raise ValueError(f"not a context key: {value!r}")
+        return cls(strategy_id=parts[0], asset=parts[1], timeframe=parts[2], regime=parts[3])
 
 
 # --------------------------------------------------------------------------- #
@@ -384,6 +421,21 @@ class StrategyEvent:
             "schema_version": self.schema_version,
         }
 
+    @classmethod
+    def from_dict(cls, data: dict[str, Any]) -> StrategyEvent:
+        """Rebuild exactly; a missing/invalid field raises (fail-closed)."""
+        return cls(
+            event_type=StrategyEventType(data["event_type"]),
+            strategy_id=data["strategy_id"],
+            timestamp_ms=int(data["timestamp_ms"]),
+            from_state=None if data.get("from_state") is None else LifecycleState(data["from_state"]),
+            to_state=None if data.get("to_state") is None else LifecycleState(data["to_state"]),
+            reason_codes=tuple(data.get("reason_codes", ())),
+            evidence=tuple(data.get("evidence", ())),
+            details=dict(data.get("details", {})),
+            schema_version=data.get("schema_version", CONTRACTS_SCHEMA_VERSION),
+        )
+
 
 # --------------------------------------------------------------------------- #
 # Descriptor (§4)
@@ -423,6 +475,28 @@ class StrategyDescriptor:
     @property
     def key(self) -> str:
         return f"{self.strategy_id}@{self.strategy_version}"
+
+    @classmethod
+    def from_dict(cls, data: dict[str, Any]) -> StrategyDescriptor:
+        """Rebuild exactly; a missing mandatory field raises (fail-closed)."""
+        return cls(
+            strategy_id=data["strategy_id"],
+            strategy_version=data["strategy_version"],
+            family=data["family"],
+            assets=tuple(data["assets"]),
+            timeframes=tuple(data["timeframes"]),
+            supported_regimes=tuple(data["supported_regimes"]),
+            runtime_implementation=data["runtime_implementation"],
+            deterministic=bool(data.get("deterministic", True)),
+            lifecycle_state=LifecycleState(data["lifecycle_state"]),
+            permissions=tuple(data.get("permissions", ())),
+            validation_status=data.get("validation_status", "UNVALIDATED"),
+            validation_evidence=tuple(data.get("validation_evidence", ())),
+            provenance=dict(data.get("provenance", {})),
+            created_at_ms=int(data.get("created_at_ms", 0)),
+            updated_at_ms=int(data.get("updated_at_ms", 0)),
+            schema_version=data.get("schema_version", CONTRACTS_SCHEMA_VERSION),
+        )
 
     def supports(self, asset: str, timeframe: str, regime: str | None) -> bool:
         if asset.upper() not in {a.upper() for a in self.assets}:

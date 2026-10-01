@@ -55,6 +55,31 @@ def test_register_is_idempotent_and_does_not_promote() -> None:
     assert reg.state_of("mom") is LifecycleState.SHADOW
 
 
+def test_register_cannot_create_a_strategy_in_an_authorising_state() -> None:
+    """DEF-VERIFY-001: register() must not mint an already-promoted strategy."""
+    reg = DynamicStrategyRegistry()
+    for state in (
+        LifecycleState.ACTIVE,
+        LifecycleState.ELIGIBLE,
+        LifecycleState.DEGRADED,
+        LifecycleState.THROTTLED,
+        LifecycleState.PAUSED,
+        LifecycleState.RETIRED,
+    ):
+        with pytest.raises(LifecycleStateError):
+            reg.register(descriptor(f"sneaky-{state.value}", state=state))
+    assert reg.strategy_ids() == []
+
+
+def test_register_accepts_only_non_authorising_entry_states() -> None:
+    from trading_bot.strategy_lifecycle.contracts import REGISTRATION_ENTRY_STATES
+
+    reg = DynamicStrategyRegistry()
+    for state in REGISTRATION_ENTRY_STATES:
+        reg.register(descriptor(f"ok-{state.value}", state=state))
+        assert reg.state_of(f"ok-{state.value}") is state
+
+
 def test_events_are_append_only() -> None:
     reg = _reg()
     events = reg.events()
@@ -126,14 +151,34 @@ def test_activation_and_churn_are_counted() -> None:
 
 def test_paused_reactivation_counts() -> None:
     reg = DynamicStrategyRegistry()
-    reg.register(descriptor("mom", state=LifecycleState.PAUSED))
+    # Registration cannot start PAUSED (DEF-VERIFY-001); reach it honestly.
+    reg.register(descriptor("mom", state=LifecycleState.SHADOW))
+    reg.apply(_decision(LifecycleState.SHADOW, LifecycleState.PAUSED))
     reg.apply(_decision(LifecycleState.PAUSED, LifecycleState.SHADOW))
     assert reg.churn("mom")["reactivations"] == 1
 
 
 def test_by_state_and_active_ids() -> None:
     reg = DynamicStrategyRegistry()
-    reg.register(descriptor("a", state=LifecycleState.ACTIVE))
     reg.register(descriptor("b", state=LifecycleState.SHADOW))
+    reg.register(descriptor("a", state=LifecycleState.SHADOW))
+    # An ACTIVE strategy is reached only through the evidence-gated edges.
+    reg.apply(
+        _decision(
+            LifecycleState.SHADOW,
+            LifecycleState.ELIGIBLE,
+            promotion=_promo(LifecycleState.SHADOW, LifecycleState.ELIGIBLE, sid="a"),
+            sid="a",
+        )
+    )
+    reg.apply(
+        _decision(
+            LifecycleState.ELIGIBLE,
+            LifecycleState.ACTIVE,
+            promotion=_promo(LifecycleState.ELIGIBLE, LifecycleState.ACTIVE, sid="a"),
+            sid="a",
+            ts=2000,
+        )
+    )
     assert reg.active_ids() == ["a"]
     assert reg.by_state(LifecycleState.SHADOW) == ["b"]

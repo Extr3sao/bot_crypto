@@ -81,13 +81,72 @@ def latest_lab_run(lab_root: Path | str) -> Path | None:
     return max(candidates, key=lambda path: path.stat().st_mtime)
 
 
-def process_alive(pid: int | None) -> bool | None:
+def process_image(pid: int | None) -> str | None:
+    """Best-effort executable image name for a live PID, lower-cased.
+
+    ``None`` means the probe could not answer (dead PID, unreadable tables, an
+    unsupported platform). This is the identity half of liveness: a PID that
+    exists is not the same thing as *this child* existing — Windows reuses PIDs,
+    so ``svchost.exe`` can legitimately own a number a stopped child once had.
+    """
+    if pid is None or pid <= 0:
+        return None
+    if sys.platform.startswith("win"):
+        try:
+            completed = subprocess.run(
+                ["tasklist", "/FI", f"PID eq {pid}", "/FO", "CSV", "/NH"],
+                capture_output=True,
+                text=True,
+                timeout=10,
+                check=False,
+            )
+        except (OSError, subprocess.SubprocessError):  # pragma: no cover - platform
+            return None
+        text = (completed.stdout or "").strip()
+        if not text:
+            return None
+        # A real tasklist row starts with a quoted image name; the "no tasks"
+        # line is a localized INFO string and does not (locale-independent).
+        line = text.splitlines()[0].strip()
+        if not line.startswith('"'):
+            return None
+        parts = line.split('"')
+        return parts[1].lower() if len(parts) > 1 and parts[1] else None
+    try:
+        comm = Path(f"/proc/{pid}/comm").read_text(encoding="utf-8").strip()
+    except OSError:  # pragma: no cover - platform dependent
+        return None
+    return comm.lower() or None
+
+
+def _image_matches(expected: str | None, actual: str | None) -> bool | None:
+    """``None`` when identity cannot be established (never claim a mismatch)."""
+    if not expected or actual is None:
+        return None
+    return expected.lower() == actual.lower()
+
+
+def pid_reused(pid: int | None, *, expected_image: str | None) -> bool:
+    """True when the live PID now belongs to a different program than expected."""
+    if pid is None or not expected_image:
+        return False
+    if process_alive(pid) is not True:
+        return False
+    return _image_matches(expected_image, process_image(pid)) is False
+
+
+def process_alive(pid: int | None, *, expected_image: str | None = None) -> bool | None:
     """Best-effort liveness for a PID. ``None`` means "could not be determined".
 
     ``os.kill(pid, 0)`` does not exist on Windows, so the platform probe is used
     and a failure to probe is reported as unknown rather than as death: inferring
     a crash from our own inability to look would be the worst possible error in an
     operator console.
+
+    When ``expected_image`` is supplied, a PID that exists but is running a
+    *different* executable is reported as not alive (PID reuse, DEF-PID-REUSE-001)
+    rather than as a healthy child. If the image cannot be read, the PID is left
+    as alive/unknown — we never invent death from our own blindness.
     """
     if pid is None:
         return None
@@ -102,16 +161,21 @@ def process_alive(pid: int | None) -> bool | None:
             )
         except (OSError, subprocess.SubprocessError):  # pragma: no cover - platform
             return None
-        return str(pid) in (completed.stdout or "")
-    try:
-        os.kill(pid, 0)
-    except ProcessLookupError:
+        exists: bool | None = str(pid) in (completed.stdout or "")
+    else:
+        try:
+            os.kill(pid, 0)
+        except ProcessLookupError:
+            exists = False
+        except PermissionError:  # pragma: no cover - another user's process
+            exists = True
+        except OSError:  # pragma: no cover - platform dependent
+            return None
+        else:
+            exists = True
+    if not exists:
         return False
-    except PermissionError:  # pragma: no cover - another user's process
-        return True
-    except OSError:  # pragma: no cover - platform dependent
-        return None
-    return True
+    return _image_matches(expected_image, process_image(pid)) is not False
 
 
 def _age_seconds(stamp_ms: Any, *, now_ms: int) -> float | None:
@@ -410,10 +474,20 @@ def build_status(
     resolved_run_id = run_dir.name
     paper_hb = _paper_heartbeat(Path(paper_root), resolved_run_id, now_ms=now)
 
+    # The plan declares each child's executable; using it as the expected image
+    # is what turns "a PID with this number exists" into "this child exists"
+    # (DEF-PID-REUSE-001). Without it, a recycled PID (svchost.exe) reads alive.
+    expected_images: dict[str, str] = {}
+    for entry in plan.get("processes") or []:
+        command = entry.get("command") or []
+        if command:
+            expected_images[str(entry.get("name"))] = Path(str(command[0])).name.lower()
+
     children: dict[str, Any] = {}
     for name, runtime in (heartbeat.get("processes") or {}).items():
         pid = runtime.get("pid")
-        alive = process_alive(pid)
+        expected_image = expected_images.get(name)
+        alive = process_alive(pid, expected_image=expected_image)
         last_error = runtime.get("failure_reason") or _last_log_error(run_dir, name)
         stop_file = (plan.get("graceful_stop") or {}).get("stop_files", {}).get(name)
         if stop_file is None:
@@ -426,6 +500,8 @@ def build_status(
             "critical": runtime.get("critical"),
             "pid": pid,
             "alive": alive,
+            "pid_reused": pid_reused(pid, expected_image=expected_image),
+            "expected_image": expected_image,
             "uptime_seconds": runtime.get("uptime_seconds"),
             "restarts": runtime.get("restarts"),
             "exit_code": runtime.get("exit_code"),
