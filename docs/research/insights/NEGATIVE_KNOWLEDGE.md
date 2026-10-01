@@ -1,0 +1,35 @@
+# NEGATIVE KNOWLEDGE
+
+| ID | SOURCE | DO NOT DO | WHY / FAILURE MODE | PROJECT ACTION |
+|---|---|---|---|---|
+| NEG-001 | SRC-BOOK-001 pp. 31-38 | Infer that because many traders lose, taking the opposite side yields the complement win rate. | Population profitability does not map to per-trade directional accuracy; source gives no valid derivation. | REJECT |
+| NEG-002 | SRC-BOOK-001 p. 92 | Adopt a universal 3% breakout filter. | Asset/timeframe/volatility dependence; threshold may be nonstationary. | EXPERIMENT only |
+| NEG-003 | SRC-BOOK-001 pp. 125-126 | Copy 1-5-15 / 1-15-45 exposure percentages into Risk. | External threshold is not project evidence; intraday expansion can dramatically increase risk. | REJECT as default; validate separately |
+| NEG-004 | SRC-BOOK-001 pp. 117-122 | Treat 1/9, 3:1 R/R, Fibonacci 38/50 as universal truths. | No in-book robustness/OOS evidence. | Candidate parameters only |
+| NEG-005 | SRC-BOOK-001 pp. 39-40 | Treat put/call 1.1 / 0.7 as timeless cutoffs. | Market structure and options activity change; absolute levels may drift. | Compare fixed vs normalized/quantile variants |
+| NEG-006 | SRC-BOOK-001 pp. 111-113 | Treat “85%” MACD divergence outcome as validated. | No methodology/sample/costs/OOS shown. | Ignore claimed rate; independently test |
+| NEG-007 | SRC-BOOK-001 pp. 128-129 | Assume an opposite derivative creates a perfect zero-risk hedge. | Basis risk, contract mismatch, funding, slippage, gaps and sizing error remain. | Formal hedge-risk spec |
+| NEG-008 | SRC-BOOK-001 pp. 41-52 | Treat technical analysis as dogma or past-pattern repetition as guaranteed. | Source is opinion/teaching narrative, not empirical proof. | Require controlled evidence |
+| NEG-009 | SRC-BOOK-001 pp. 133-150 | Learn from hindsight-perfect textbook charts without right-edge testing. | Selection/right-edge bias. | PIT-safe historical replay; blind evaluation |
+| NEG-010 | SRC-BOOK-001 pp. 152-154 | Reward a winning trade that violated the authorized plan. | Outcome can positively reinforce unsafe process. | Separate process-quality from PnL |
+| NEG-011 | SRC-NOTE-004 / 013 | Use unconstrained free-form multi-agent chat as the primary decision protocol. | Misalignment, loops, context pollution, groupthink. | REJECT |
+| NEG-012 | SRC-NOTE-013 | Let builder be sole verifier. | False-success/self-certification. | REJECT |
+| NEG-013 | SRC-NOTE-005 / 013 | Use majority vote without evidence/authority weighting. | Shared-model consensus is not independent evidence. | REJECT |
+| NEG-014 | SRC-NOTE-010 / 013 | Let LLM own sizing, risk limits, accounting or execution. | Critical numeric safety must be deterministic/testable. | REJECT |
+| NEG-015 | SRC-NOTE-006 / 013 | Auto-modify critical risk/verification rules from experience memory. | Unsafe self-modification. | REJECT |
+
+
+## V2 Batch 2 additions
+
+| NEG_ID | SOURCE | DO_NOT_DO | PROJECT_RULE |
+|---|---|---|---|
+| NEG-016 | SRC-BOOK-002 | Do not use rhetorical persuasion, looping, tone or rapport to raise agent decision confidence or overcome Risk/Verifier rejection. | Agent acceptance requires evidence and deterministic gates, not persuasion. |
+| NEG-017 | SRC-MANUAL-001 | Do not treat “institutional stop hunting/manipulation” as measured causal truth when only OHLC patterns are observed. | Separate observable pattern from causal hypothesis. |
+| NEG-018 | SRC-MANUAL-001 | Do not label Order Blocks/sweeps/regimes after seeing the reversal and then count them as predictions. | Freeze labels at decision_time and right-edge-test. |
+| NEG-019 | SRC-MANUAL-001 | Do not adopt 61/79 Fibonacci, 5-pip entry, 10-pip stop, session windows, ADR multipliers or target percentages as defaults. | Every number remains SOURCE_THRESHOLD. |
+| NEG-020 | SRC-MANUAL-001 | Do not claim source failure from a test whose entry/exit/regime rules materially differ from the source. | Use TESTED_CONFIGURATION_REJECTED vs SOURCE_HYPOTHESIS_UNRESOLVED. |
+| NEG-021 | SRC-MANUAL-002 | Do not adopt 1%-3% daily loss, 2-point stops, Speed >3000, 6-10 point ranges, 25%-61% pullbacks or other book values into Risk/runtime without project evidence. | Threshold quarantine. |
+| NEG-022 | SRC-MANUAL-002 | Do not implement volatility from chart-axis/display increments. | UI scale is not a portable market feature; derive point-in-time volatility from data. |
+| NEG-023 | SRC-MANUAL-002 | Do not anthropomorphize agent “fear”, “ego”, “hope” or “discipline”. | Translate to stop modification, over-sizing, duplicate signals, horizon changes and conformance violations. |
+| NEG-024 | SRC-MANUAL-002 | Do not treat unsupported claims such as 10% survival, 70% range time or other percentages as project evidence. | Record as unsupported source assertions. |
+| NEG-025 | SRC-CHEATSHEET-001 | Do not infer missing E-1/E-2 semantics, stop, target, asset or setup conditions from a single diagram. | Candidate remains NEEDS_SPEC. |
