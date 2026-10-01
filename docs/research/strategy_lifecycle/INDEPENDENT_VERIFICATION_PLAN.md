@@ -3,36 +3,55 @@
 BUILDER != VERIFIER. This plan is written by the builder; it must be EXECUTED by
 a separate verifier. Until then the verdict ceiling is
 `IMPLEMENTED_WITH_PENDING_VERIFICATION`. Reproduction commands assume Git Bash on
-Windows and `.venv/Scripts/python.exe` (CPython 3.11.15).
+Windows and `.venv/Scripts/python.exe` (CPython 3.11).
 
-## Claims to verify
+```
+REVIEWED SHA : 9ead27faa2ba727c85d2bc5597361d2d6d9084ef
+BASELINE SHA : d4d4dfaec56a4d529185da4e60b8331b6c36b56a
+GATE         : STRAT-GATE0-004 (GATE 0 re-audit + defect closure)
+```
+
+## Claims to verify (carried from prior gates)
 
 | # | Claim | Command | Expected output |
 |---|---|---|---|
-| C1 | Risk P0 fixed: `max_asset_exposure_pct` is enforced | `python -m pytest -q tests/unit/strategy_lifecycle tests/unit/paper tests/unit/autonomous tests/integration` | all pass; probe below |
-| C2 | Per-asset clamp binds | `python -c "<probe>"` (see negative tests) | notional 500→100 when BTC has 900/1000 |
-| C3 | Weekly/daily-dd/cooldown gates live | probe | blocked_by ∈ {weekly_loss_limit, daily_drawdown, consecutive_loss_cooldown} |
-| C4 | `strategy_version` provenance fixed | `grep -n "strategy_version" src/trading_bot/autonomous/runtime.py` | `f"{entry.family}@{entry.timeframe}"`, not `str(entry.timeframe)` |
+| C1 | Risk P0 fixed: `max_asset_exposure_pct` is enforced | `python -m pytest -q tests/unit/strategy_lifecycle tests/unit/paper tests/unit/autonomous tests/unit/risk tests/integration` | all pass; probe below |
+| C2 | Per-asset clamp binds | probe below | notional 500→100 when BTC has 900/1000 |
+| C3 | Weekly/daily-dd/cooldown gates live | `pytest tests/unit/risk/test_risk_regression_matrix.py -q` | blocked_by ∈ {weekly_loss_limit, daily_drawdown, consecutive_loss_cooldown} |
+| C4 | `strategy_version` provenance fixed | `grep -n "strategy_version" src/trading_bot/autonomous/runtime.py` | `f"{entry.family}@{entry.timeframe}"` |
 | C5 | Lifecycle graph closed; PAUSED/CANDIDATE never reach ACTIVE | `python -m pytest -q tests/unit/strategy_lifecycle/test_contracts.py` | pass |
-| C6 | No LIVE reachable | same + `grep -rn "LIVE" src/trading_bot/strategy_lifecycle` | only refusal guards |
-| C7 | Promotion refuses "last N trades" | `pytest .../test_adversarial.py -k five_winning` | pass |
-| C8 | Shadow cannot reach execution | `pytest .../test_pods.py::test_shadow_result_cannot_reach_execution` | pass (ShadowLeakError) |
-| C9 | Router returns many eligible + verdicts | `pytest .../test_router_integration.py` | pass |
-| C10 | Portfolio caps correlated exposure | `pytest .../test_portfolio.py` | pass |
-| C11 | EXP-STRAT-DYNAMIC-001 reproduces | `python scripts/strategy_dynamic_experiment.py` | identical JSON net numbers |
-| C12 | Types/lint clean | `python -m ruff check .` ; `python -m mypy src/trading_bot/strategy_lifecycle scripts/strategy_dynamic_experiment.py` | clean |
-| C13 | Full suite no NEW failures except the known untracked-module guard | `python -m pytest -q -p no:cacheprovider` | see Known defects |
+| C6 | No LIVE reachable | `grep -rn "LIVE" src/trading_bot/strategy_lifecycle` | only refusal guards |
+| C7 | Promotion refuses "last N trades" | `pytest tests/unit/strategy_lifecycle/test_adversarial.py -k five_winning` | pass |
+| C8 | Shadow cannot reach execution | `pytest tests/unit/strategy_lifecycle/test_pods.py::test_shadow_result_cannot_reach_execution` | pass (ShadowLeakError) |
+| C9 | Router returns many eligible + verdicts | `pytest tests/unit/strategy_lifecycle/test_router_integration.py` | pass |
+| C10 | Portfolio caps correlated exposure | `pytest tests/unit/strategy_lifecycle/test_portfolio.py` | pass |
+| C11 | EXP-STRAT-DYNAMIC-001 reproduces | `python scripts/strategy_dynamic_experiment.py` | identical JSON net numbers, `DO_NOT_PROMOTE` |
+| C12 | Types/lint clean | `python -m ruff check .` ; `python -m mypy --strict src/trading_bot/strategy_lifecycle` | clean |
+| C13 | Full suite no NEW failures except the untracked-module guard | `python -m pytest -q` | 1433 passed / 1 failed (dependency-closure guard) |
+
+## Claims added by GATE 0 (STRAT-GATE0-004)
+
+| # | Claim | Command | Expected output |
+|---|---|---|---|
+| C14 | `DEF-VERIFY-006` closed: store memory is bounded | `pytest tests/unit/strategy_lifecycle/test_store_bounds_pit.py -q` | pass; default bound finite and > 250 |
+| C15 | `DEF-VERIFY-007` closed: PIT guard enforced when a decision time is given | same file (`test_future_observation_is_refused...`) | `LifecycleStateError`, no trace recorded |
+| C16 | `DEF-VERIFY-009` closed: an out-of-vocabulary verdict fails loudly | `pytest tests/unit/strategy_lifecycle/test_router_integration.py -k vocabulary` | `ValueError("router emitted an unknown verdict")` |
+| C17 | `DEF-VERIFY-011` closed: `extract_state` carries the real book | `pytest tests/unit/risk/test_risk_regression_matrix.py -k extract_state` | pass; restored book still clamps |
+| C18 | `DEF-VERIFY-012` closed: the book is re-adopted after a fill | `pytest tests/unit/autonomous/test_runtime_integration.py -k resynced` | ≥ 2 sync calls in one cycle |
+| C19 | Campaign `paper-lab-continuous-03` is NOT active | `tasklist //FI "IMAGENAME eq python.exe"` + read `reports/paper-lab/paper-lab-continuous-03/MONITOR.jsonl` tail | no campaign python; last row stale |
+| C20 | Source-ingestion batch 2 is intact | `cd reports/source-ingestion && sha256sum -c <(grep -v relative_path MANIFEST.sha256.tsv \| awk -F'\t' '{print $3"  "$1}')` | 142/142 OK |
 
 ## Runtime path (reachability)
 
-- `RiskManager.check_signal` ← `AutonomousRuntime._risk_review` (`runtime.py:1174`)
-  and `AutonomousRuntime._execute_paper` (`:1233`); positions now synced by
-  `AutonomousRuntime._sync_risk_positions()` at the top of `run_cycle`.
-- `StrategyRouter.select_eligible_strategies` is **reachable but not yet called
-  by the hot PAPER loop**. Verifying "runtime reachability" of the dynamic
-  plane means: it is importable and callable on a real context; wiring it into
-  the hot loop is a separate, explicitly deferred step (no live campaign exists
-  and the change must be independently verified first).
+- `RiskManager.check_signal` ← `AutonomousRuntime._risk_review` and
+  `AutonomousRuntime._execute_paper`; positions synced by
+  `AutonomousRuntime._sync_risk_positions()` at the top of `run_cycle` **and
+  after every fill** (C18).
+- `StrategyRouter.route` is on the hot path (`runtime.py:668`, `paper_cycle.py`).
+- `StrategyRouter.select_eligible_strategies` and the whole `strategy_lifecycle/**`
+  plane are **reachable but NOT called by the hot PAPER loop**. Verifying
+  "runtime reachability" of the dynamic plane therefore means: importable and
+  callable on a real context, and **explicitly not yet hot-wired** (WP-STRAT-07).
 
 ## Negative tests a verifier MUST run (must FAIL to promote/execute)
 
@@ -45,7 +64,7 @@ Windows and `.venv/Scripts/python.exe` (CPython 3.11.15).
 7. correlated BUY cluster capped: `test_correlated_same_asset_buys_are_capped`.
 8. paused + strong shadow → only SHADOW: `test_paused_strong_shadow_still_only_reaches_shadow`.
 9. stale context rejected: `test_stale_context_is_rejected`.
-10. future data rejected: `test_future_data_is_rejected`.
+10. future data rejected: `test_future_data_is_rejected` **and** C15.
 11. shadow → execution: `test_shadow_result_cannot_reach_execution` (expect `ShadowLeakError`).
 12. pod sets leverage: `test_pod_tries_to_set_leverage_is_forbidden`.
 13. LLM proposed state ignored: `test_llm_proposed_state_change_is_ignored`.
@@ -63,15 +82,16 @@ print(rm.check_signal(Signal(symbol='BTC/USDT',side='buy',strategy_name='x',time
 rm.sync_open_positions({'BTC/USDT':{'notional_usdt':900.0}});
 print(rm.check_signal(Signal(symbol='BTC/USDT',side='buy',strategy_name='x',timeframe='5m',confidence=.6,price=100.,stop_loss_pct=.5,take_profit_pct=.75)).position_size.notional_usdt)"
 ```
+
 Expected: `500.0` then `100.0`.
 
 ## Known defects (not hidden)
 
-- `DEF-HTF-PIT-001` (ORPHAN, P2), `DEF-MYPY-STRICT-001` (P2, prior experimental
-  driver), and any residual untracked-module dependency-closure failure are
-  pre-existing and outside this phase.
-- The offline experiment sets `independent_verification_required=False` (no
-  verifier exists in a backtest); the runtime default stays True.
+- `DEF-HTF-PIT-001` (ORPHAN, P3) — escalate to P0 if `research/experimental/*`
+  is tracked.
+- `DEF-MYPY-STRICT-001` (P3) — `scripts/source_candidate_experiment.py:462`.
+- The dependency-closure guard fails while untracked `research/experimental/*`
+  exist; the guard is intentionally NOT disabled.
 
 ## What the verifier should NOT accept
 
@@ -79,3 +99,4 @@ Expected: `500.0` then `100.0`.
 - A PASS where the dynamic plane's shadow results influenced execution.
 - A PASS that declares CERTIFIED/READY/PRODUCTION_READY without this plan being
   executed by a separate agent.
+- A "PASS" that treated the dynamic plane as runtime-reachable: it is not wired.
