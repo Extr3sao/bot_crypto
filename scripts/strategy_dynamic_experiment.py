@@ -315,7 +315,28 @@ def main() -> int:
 
     static_val = total(static_report)
     dynamic_val = total(dynamic_report)
-    improved = dynamic_val > static_val
+    dynamic_trades = sum(
+        dynamic_report[s]["trades"] for s in ("DEV", "VALIDATION")
+    )
+    if dynamic_trades == 0:
+        # An abstaining arm is NOT a winning arm. Zero trades demonstrates no
+        # measurable value; it is reported as DO_NOT_PROMOTE, never as an
+        # improvement over a losing static arm (that would be FALSE_SUCCESS).
+        improved = False
+        verdict = "DO_NOT_PROMOTE"
+        note = (
+            "dynamic arm abstained (0 trades): the preregistered evidence gate was "
+            "not met for any family/regime cell, so no measurable value was "
+            "demonstrated. Reported as DO_NOT_PROMOTE, not as an improvement."
+        )
+    elif dynamic_val > static_val:
+        improved = True
+        verdict = "PROMOTE_CANDIDATE"
+        note = "dynamic DEV+VAL net exceeded static under identical economics"
+    else:
+        improved = False
+        verdict = "DO_NOT_PROMOTE"
+        note = "dynamic DEV+VAL net did not exceed static under identical economics"
     result: dict[str, Any] = {
         "experiment_id": "EXP-STRAT-DYNAMIC-001",
         "commit": _commit(),
@@ -334,8 +355,10 @@ def main() -> int:
         "decision": {
             "dev_val_static_net": static_val,
             "dev_val_dynamic_net": dynamic_val,
+            "dev_val_dynamic_trades": dynamic_trades,
             "dynamic_improved": improved,
-            "verdict": "PROMOTE_CANDIDATE" if improved else "DO_NOT_PROMOTE",
+            "verdict": verdict,
+            "reason": note,
             "oos_locked": True,
             "note": (
                 "OOS (W7) is reported for completeness but was never used to choose, "
@@ -388,8 +411,10 @@ def _write_md(result: dict[str, Any]) -> None:
         "## Decision",
         "",
         f"- DEV+VAL static net: {result['decision']['dev_val_static_net']}",
-        f"- DEV+VAL dynamic net: {result['decision']['dev_val_dynamic_net']}",
+        f"- DEV+VAL dynamic net: {result['decision']['dev_val_dynamic_net']} "
+        f"({result['decision'].get('dev_val_dynamic_trades', 0)} trades)",
         f"- verdict: **{result['decision']['verdict']}**",
+        f"- {result['decision'].get('reason', result['decision']['note'])}",
         f"- {result['decision']['note']}",
         "",
     ]
