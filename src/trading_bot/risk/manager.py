@@ -25,6 +25,17 @@ if TYPE_CHECKING:
     from trading_bot.strategies.types import Signal
 
 
+def _attrs(obj: Any, names: tuple[str, ...]) -> dict[str, Any]:
+    """Read named attributes off a position object (DEF-VERIFY-011 helper)."""
+    out: dict[str, Any] = {}
+    for name in names:
+        try:
+            out[name] = getattr(obj, name)
+        except AttributeError:
+            continue
+    return out
+
+
 @dataclass(frozen=True, slots=True)
 class PositionSize:
     """Computed position size for a signal."""
@@ -396,8 +407,35 @@ class RiskManager:
         self._last_loss_ms = int(last_loss_ms)
         self._kill_switch_active = bool(kill_switch_active)
 
+    def _position_to_row(self, symbol: str, position: Any) -> dict[str, Any]:
+        """JSON-safe projection of one open position for the durable store.
+
+        The engine only ever needs ``notional_usdt`` (for the exposure clamps)
+        and ``asset`` (for the per-asset clamp); those are always emitted. Any
+        other fields present on a dict/object are carried through when they are
+        JSON scalars, so the snapshot is faithful without inventing a schema.
+        """
+        known = ("asset", "symbol", "side", "quantity", "entry_price")
+        row: dict[str, Any] = {
+            "symbol": symbol,
+            "asset": self._position_asset(symbol, position),
+            "notional_usdt": self._position_notional(position),
+        }
+        source = position if isinstance(position, dict) else _attrs(position, known)
+        for name in known:
+            value = source.get(name)
+            if value is not None and isinstance(value, (str, int, float, bool)):
+                row[name] = value
+        return row
+
     def extract_state(self) -> dict[str, Any]:
-        """JSON-safe counter snapshot for the durable store."""
+        """JSON-safe counter snapshot for the durable store.
+
+        DEF-VERIFY-011: ``open_positions`` used to be a hardcoded ``{}``, so a
+        restore through ``restore_state`` always rebuilt an empty book and the
+        max-open-positions gate plus both exposure clamps were blind until the
+        next live re-sync. It now carries the real book as JSON-safe rows.
+        """
         return {
             "daily_pnl": self.daily_pnl,
             "weekly_pnl": self.weekly_pnl,
@@ -406,7 +444,10 @@ class RiskManager:
             "peak_equity": self.peak_equity,
             "day_peak_equity": self.day_peak_equity,
             "last_loss_ms": self._last_loss_ms,
-            "open_positions": {},
+            "open_positions": {
+                symbol: self._position_to_row(symbol, position)
+                for symbol, position in self.open_positions.items()
+            },
             "kill_switch_active": self._kill_switch_active,
         }
 

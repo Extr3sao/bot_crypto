@@ -309,3 +309,41 @@ def test_risk_remains_the_final_veto_after_a_full_book() -> None:
     check = mgr.check_signal(_signal())
     assert not check.approved
     assert check.blocked_by == "position_sizing"
+
+
+# --------------------------------------------------------------------------- #
+# The book survives a state round-trip — DEF-VERIFY-011
+# --------------------------------------------------------------------------- #
+
+def test_extract_state_carries_the_real_open_book() -> None:
+    # DEF-VERIFY-011: extract_state used to hardcode ``open_positions: {}`` so a
+    # restore rebuilt an empty book and the exposure clamps were blind.
+    mgr = _mgr()
+    mgr.sync_open_positions({"BTC/USDT": _pos(1000.0, asset="BTC")})
+    state = mgr.extract_state()
+    assert state["open_positions"], "extract_state dropped the open book"
+    row = state["open_positions"]["BTC/USDT"]
+    assert row["notional_usdt"] == 1000.0
+    assert row["asset"] == "BTC"
+
+
+def test_a_restored_book_still_enforces_the_per_asset_clamp() -> None:
+    source = _mgr()
+    source.sync_open_positions({"BTC/USDT": _pos(1000.0, asset="BTC")})
+    state = source.extract_state()
+
+    restored = _mgr()
+    restored.restore_state(**state)
+    assert set(restored.open_positions) == {"BTC/USDT"}
+    check = restored.check_signal(_signal())
+    assert not check.approved
+    assert check.blocked_by == "position_sizing"
+
+
+def test_an_empty_book_still_extracts_as_empty() -> None:
+    state = _mgr().extract_state()
+    assert state["open_positions"] == {}
+    # round-trips cleanly: a fresh manager restores to an empty book
+    fresh = _mgr()
+    fresh.restore_state(**state)
+    assert fresh.open_positions == {}

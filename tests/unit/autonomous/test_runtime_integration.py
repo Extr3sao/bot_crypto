@@ -123,6 +123,27 @@ def test_admitted_candidate_places_exactly_one_paper_order(tmp_path: Path) -> No
     assert broker_state["equity"] != broker_state["initial_equity"]
 
 
+def test_risk_book_is_resynced_after_a_fill(tmp_path: Path) -> None:
+    # DEF-VERIFY-012: the book used to be synced once per cycle, before the asset
+    # loop, so a position opened by asset 1 was invisible to asset 2 in the SAME
+    # cycle. A fill must re-adopt the broker book immediately.
+    runtime, _scanner, _broker = make_runtime(
+        run_dir=tmp_path, ledger=make_admitted_ledger(gross_bps=50.0)
+    )
+    calls = {"n": 0}
+    original = runtime._sync_risk_positions
+
+    def counting() -> None:
+        calls["n"] += 1
+        original()
+
+    runtime._sync_risk_positions = counting  # type: ignore[method-assign]
+    summary = _run(runtime, cycles=1)
+    assert summary.totals()["paper_trades"] == 1
+    # once at cycle start + once immediately after the fill
+    assert calls["n"] >= 2
+
+
 def test_report_rejects_true_without_a_real_paper_trade(tmp_path: Path) -> None:
     """FALSE_SUCCESS: a no-trade run must never look like an execution."""
     runtime, _scanner, broker = make_runtime(

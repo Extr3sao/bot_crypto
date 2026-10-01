@@ -227,13 +227,23 @@ class StartupReconcilerV4:
         risk_state = dict(state.risk_state)
         if not risk_state:
             return
+        # DEF-VERIFY-011: old snapshots serialised an empty ``open_positions``
+        # in the risk block. The authoritative book is the broker's, persisted
+        # at the top level of the same document, so fall back to it whenever the
+        # risk block carries nothing — the exposure clamps must never restore
+        # blind.
+        book = dict(risk_state.get("open_positions", {}) or {})
+        if not book:
+            book = {
+                str(row.get("symbol")): dict(row) for row in state.open_positions if row.get("symbol")
+            }
         self._risk.restore_state(
             daily_pnl=float(risk_state.get("daily_pnl", 0.0)),
             weekly_pnl=float(risk_state.get("weekly_pnl", 0.0)),
             trades_today=int(risk_state.get("trades_today", 0)),
             consecutive_losses=int(risk_state.get("consecutive_losses", 0)),
             peak_equity=float(risk_state.get("peak_equity", 0.0)),
-            open_positions=dict(risk_state.get("open_positions", {})),
+            open_positions=book,
             kill_switch_active=bool(risk_state.get("kill_switch_active", False)),
         )
         # Equity must reflect the restored book BEFORE any new risk check.

@@ -1281,6 +1281,11 @@ class AutonomousPaperRuntime:
                 "cloid": cloid,
             }
         )
+        # DEF-VERIFY-012: the book was synced once per cycle, before the asset
+        # loop, so a position opened by asset 1 was invisible to asset 2 in the
+        # SAME cycle. Re-adopt the broker book immediately after a fill so every
+        # later decision sees the real exposure (still the broker as authority).
+        self._sync_risk_positions()
         return True
 
     def _terminal(
