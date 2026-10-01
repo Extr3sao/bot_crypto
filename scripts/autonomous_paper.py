@@ -109,6 +109,16 @@ def parse_args() -> argparse.Namespace:
         default=DEFAULT_DAILY_REPORT_SECONDS,
         help="How often to rewrite PAPER_DAILY_REPORT while running continuously.",
     )
+    parser.add_argument(
+        "--strategy-routing-mode",
+        choices=["LEGACY", "SHADOW", "LIFECYCLE"],
+        default="LEGACY",
+        help=(
+            "WP-STRAT-07: LEGACY keeps route() only (default, unchanged); SHADOW "
+            "records the lifecycle-aware selection next to the legacy one; "
+            "LIFECYCLE lets the eligible set gate executable proposals (PAPER only)."
+        ),
+    )
     return parser.parse_args()
 
 
@@ -351,6 +361,7 @@ async def main() -> int:
         shadow_evaluation_enabled=not args.no_shadow,
         environment=environment,
         idempotency=idempotency,
+        routing_mode=args.strategy_routing_mode,
     )
 
     heartbeat = HeartbeatWriter(run_dir=run_dir)

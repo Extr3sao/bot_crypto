@@ -40,6 +40,16 @@ from trading_bot.market_data.types import OHLCV
 from trading_bot.paper.signal_adapter import AdapterError, alpha_signal_to_signal
 from trading_bot.research.asset_intelligence.registry import CryptoAssetAgentRegistry
 from trading_bot.research.strategy_router import RouterGates, StrategyRouter
+from trading_bot.strategy_lifecycle.portfolio import (
+    PortfolioProposal,
+    StrategyPortfolioManager,
+)
+from trading_bot.strategy_lifecycle.runtime_bridge import (
+    LifecycleRoutingAdapter,
+    StrategyRoutingComparison,
+    StrategyRoutingMode,
+    coerce_routing_mode,
+)
 
 from .admission_ledger import AdmissionLedger
 from .agents import AgentRegistry, ReviewInputs, default_agent_registry
@@ -301,6 +311,8 @@ class AutonomousPaperRuntime:
         performance_path: Path | str | None = None,
         idempotency: IdempotencyGuard | None = None,
         now_fn: Callable[[], int] | None = None,
+        routing_mode: StrategyRoutingMode | str = StrategyRoutingMode.LEGACY,
+        lifecycle_ecosystem: Any | None = None,
     ) -> None:
         self._settings = settings
         self._scanner_factory = scanner_factory
@@ -335,6 +347,39 @@ class AutonomousPaperRuntime:
         self._log = structlog.get_logger("autonomous_runtime")
         self._executions: list[dict[str, Any]] = []
 
+        # WP-STRAT-07 — the lifecycle plane is now reachable from the hot loop.
+        # LEGACY is the default and leaves behaviour byte-for-byte unchanged.
+        self._routing_mode = coerce_routing_mode(routing_mode)
+        self._lifecycle_eco = lifecycle_ecosystem
+        override: dict[str, str] = {}
+        if lifecycle_ecosystem is not None:
+            build = getattr(lifecycle_ecosystem, "lifecycle_map", None)
+            if callable(build):
+                try:
+                    override = {str(k): str(v) for k, v in dict(build()).items()}
+                except Exception:  # a broken snapshot must not invent eligibility
+                    override = {}
+        policy_version = "strategy-routing-bridge-v1"
+        if lifecycle_ecosystem is not None:
+            policy_version = str(
+                getattr(lifecycle_ecosystem, "version", policy_version) or policy_version
+            )
+        self._routing_adapter = LifecycleRoutingAdapter(
+            registry_version="admission-ledger",
+            policy_version=policy_version,
+            lifecycle_override=override,
+        )
+        self._routing_comparisons: list[StrategyRoutingComparison] = []
+        self._routing_comparisons_path = run_dir / "routing_comparisons.jsonl"
+        # §12 — portfolio conflict arbitration, fed the REAL risk budgets so it
+        # can only reduce what risk already permits.
+        risk_cfg = getattr(self._risk, "risk", None)
+        self._portfolio = StrategyPortfolioManager(
+            equity=float(getattr(self._risk, "equity", 10_000.0) or 10_000.0),
+            max_asset_exposure_pct=float(getattr(risk_cfg, "max_asset_exposure_pct", 10.0)),
+            max_total_exposure_pct=float(getattr(risk_cfg, "max_total_exposure_pct", 25.0)),
+        )
+
     # -- public API ---------------------------------------------------------
 
     @property
@@ -348,6 +393,23 @@ class AutonomousPaperRuntime:
     @property
     def performance_store(self) -> StrategyPerformanceStore:
         return self._performance
+
+    @property
+    def routing_mode(self) -> StrategyRoutingMode:
+        return self._routing_mode
+
+    @property
+    def routing_comparisons(self) -> tuple[StrategyRoutingComparison, ...]:
+        return tuple(self._routing_comparisons)
+
+    def _persist_routing_comparison(self, comparison: StrategyRoutingComparison) -> None:
+        """Append one comparison row to the run's evidence file (best effort)."""
+        try:
+            self._routing_comparisons_path.parent.mkdir(parents=True, exist_ok=True)
+            with self._routing_comparisons_path.open("a", encoding="utf-8") as handle:
+                handle.write(json.dumps(comparison.to_dict(), sort_keys=True) + "\n")
+        except Exception as exc:  # evidence must never abort a cycle
+            self._log.warning("autonomous.routing_comparison.persist_failed", error=str(exc))
 
     def agent_capabilities(self) -> list[dict[str, Any]]:
         return [c.to_dict() for c in self._agents.capabilities()]
@@ -669,6 +731,37 @@ class AutonomousPaperRuntime:
             gates=RouterGates(require_confirmed=False, timeframe=self._timeframe)
         )
 
+        # WP-STRAT-07 (§4/§5) — the lifecycle-aware plane runs alongside the
+        # legacy router. SHADOW records it only; LIFECYCLE lets the eligible set
+        # gate which strategies may emit an executable proposal. A bridge
+        # failure fails CLOSED in LIFECYCLE mode (no eligible strategy), never
+        # open. The context here is a single, temporally coherent snapshot
+        # (data_time <= decision_time), so there is no cross-plane look-ahead.
+        lifecycle_selection: Any | None = None
+        verdict_by_id: dict[str, str] = {}
+        allowed_ids: frozenset[str] | None = None
+        if self._routing_mode is not StrategyRoutingMode.LEGACY:
+            try:
+                lifecycle_selection, _lifecycle_map = self._routing_adapter.select(
+                    router,
+                    context=context,
+                    regime=regime,
+                    strategy_map=strategy_map,
+                    ledger=self._ledger,
+                )
+                verdict_by_id = {
+                    item.strategy_id: item.verdict for item in lifecycle_selection.routed
+                }
+            except Exception as exc:
+                errors.append(f"{symbol}: routing_bridge_error {type(exc).__name__}: {exc}")
+                lifecycle_selection = None
+            if self._routing_mode is StrategyRoutingMode.LIFECYCLE:
+                allowed_ids = (
+                    frozenset(lifecycle_selection.selected)
+                    if lifecycle_selection is not None
+                    else frozenset()
+                )
+
         # The router is consulted PER CANDIDATE, in the ranked order derived
         # from the admission ledger (measured gross edge) plus bounded
         # experience. First candidate that passes the router gates AND emits a
@@ -687,7 +780,18 @@ class AutonomousPaperRuntime:
                 "router_reason": None,
                 "emitted_alpha": False,
                 "selected": False,
+                "lifecycle_verdict": verdict_by_id.get(strategy_id),
             }
+            if allowed_ids is not None and strategy_id not in allowed_ids:
+                # LIFECYCLE: the lifecycle-aware plane did not select this
+                # strategy, so it may not produce an executable proposal. The
+                # refusal is named, never silently dropped.
+                row["router_status"] = "REJECTED"
+                row["router_reason"] = "lifecycle_excluded:" + verdict_by_id.get(
+                    strategy_id, "NOT_SELECTED"
+                )
+                considered_rows.append(row)
+                continue
             if routed.is_no_trade or not routed.strategy_id:
                 row["router_status"] = "REJECTED"
                 row["router_reason"] = routed.no_trade_reason
@@ -720,6 +824,35 @@ class AutonomousPaperRuntime:
                 (self._ledger.expected_gross_edge_bps(strategy_id) or -999.0, strategy_id, alpha, routed)
             )
 
+        # §12 — portfolio conflict arbitration (LIFECYCLE mode only, §13). It can
+        # ONLY reduce: same-asset / same-direction duplicates and anything that
+        # would breach the real per-asset/total exposure budgets are dropped
+        # before the deterministic winner is chosen. ``expected_net_edge_bps``
+        # carries the ledger's expected gross edge purely as an ordering
+        # tie-break — the manager never sizes; the RiskManager stays the final
+        # authority.
+        portfolio_rejected: dict[str, str] = {}
+        if self._routing_mode is StrategyRoutingMode.LIFECYCLE and len(emitting) > 1:
+            proposals = [
+                PortfolioProposal(
+                    strategy_id=sid,
+                    asset=asset,
+                    direction=str(getattr(routed, "direction", "") or "UNKNOWN"),
+                    notional_usdt=self._size_usd,
+                    expected_net_edge_bps=float(edge),
+                    regime=regime,
+                )
+                for edge, sid, _alpha, routed in emitting
+            ]
+            portfolio_decision = self._portfolio.arbitrate(
+                proposals, timestamp_ms=decision_time_ms
+            )
+            accepted_ids = set(portfolio_decision.accepted_proposals)
+            for _edge, sid, _alpha, _routed in emitting:
+                if sid not in accepted_ids:
+                    portfolio_rejected[sid] = "PORTFOLIO_CONFLICT"
+            emitting = [item for item in emitting if item[1] in accepted_ids]
+
         # Selection rule (deterministic, pre-registered): among the candidates
         # that passed the router AND emitted an alpha, take the one with the
         # highest expected gross edge. Every candidate's outcome is recorded.
@@ -731,6 +864,31 @@ class AutonomousPaperRuntime:
                 if row["strategy_id"] == best_id:
                     row["selected"] = True
             selected = (best_id, best_alpha, best_routed)
+
+        if self._routing_mode is not StrategyRoutingMode.LEGACY:
+            # Record the same-context comparison (§6). In SHADOW mode the legacy
+            # winner is the untouched legacy result; in LIFECYCLE mode it is the
+            # winner within the enforced set.
+            legacy_selected = (selected[0],) if selected is not None else ()
+            try:
+                comparison = self._routing_adapter.compare(
+                    router,
+                    run_id=session_id,
+                    context=context,
+                    regime=regime,
+                    strategy_map=strategy_map,
+                    ledger=self._ledger,
+                    legacy_selected=legacy_selected,
+                    decision_time_ms=decision_time_ms,
+                    asset=asset,
+                    timeframe=self._timeframe,
+                    mode=self._routing_mode,
+                    portfolio_rejected=portfolio_rejected,
+                )
+                self._routing_comparisons.append(comparison)
+                self._persist_routing_comparison(comparison)
+            except Exception as exc:  # evidence must never abort the decision
+                errors.append(f"{symbol}: routing_compare_error {type(exc).__name__}: {exc}")
 
         if selected is None:
             failure = self._failure_kind(errors, symbol)
