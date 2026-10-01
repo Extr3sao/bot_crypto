@@ -70,6 +70,17 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--timeframe", default="5m")
     parser.add_argument("--paper-interval", type=float, default=60.0)
     parser.add_argument("--provider", choices=["ccxt", "fake"], default="ccxt")
+    parser.add_argument(
+        "--routing-mode",
+        dest="routing_mode",
+        choices=["LEGACY", "SHADOW", "LIFECYCLE"],
+        default="LEGACY",
+        help=(
+            "WP-STRAT-07 — forwarded to the PAPER child as --strategy-routing-mode. "
+            "LEGACY is the default (unchanged). SHADOW records the lifecycle-aware "
+            "selection without affecting execution."
+        ),
+    )
     parser.add_argument("--rotation-seconds", type=int, default=900)
     parser.add_argument("--heartbeat-seconds", type=float, default=30.0)
     parser.add_argument(
@@ -198,6 +209,8 @@ def build_specs(
                 str(paper_run_root),
                 "--state-path",
                 str(lab_dir / "paper_state.json"),
+                "--strategy-routing-mode",
+                args.routing_mode,
             ],
             cwd=REPO_ROOT,
             critical=True,
