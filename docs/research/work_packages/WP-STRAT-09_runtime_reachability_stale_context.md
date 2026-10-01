@@ -3,7 +3,7 @@
 - ORIGIN: WP-STRAT-08 §23 (next demonstrated bottleneck).
 - BOTTLENECK CLASS: **runtime reachability** (priority 2 in the §23 ordering;
   priority 1 *correctness* had no demonstrated defect this WP).
-- STATUS: PREPARED (not implemented). Do **not** start by changing any gate.
+- STATUS: IMPLEMENTED + VERIFIED (evidence in `reports/wp-strat-09/`). The gate was **not** changed.
 - EVIDENCE: WP-STRAT-08 SHADOW campaign `paper-strategy-lifecycle-shadow-02`
   (`traces.jsonl` sha256 `b3546f0f9a8596d580920a7ccadb6307e5aa4a66a1593c0c8359b7ae3b39b80f`).
 
@@ -105,3 +105,25 @@ evaluation rate **without weakening the freshness gate**.
 (§23) because it is the only bottleneck demonstrated with real execution
 evidence in WP-STRAT-08, and it must not be silently "fixed" by loosening the
 gate.
+
+---
+
+## 10. Outcome (implementation fill-in)
+
+Approach 1 (cadence alignment) was implemented, plus approach 2 (explicit lag
+observability — the cadence probe reports `newest_bar_lag_ms` and the phase).
+
+- Code: `src/trading_bot/autonomous/cadence.py`; `scripts/autonomous_paper.py`
+  (`--cadence bar-close`, `--bar-close-settlement-seconds`);
+  `scripts/start_paper_lab.py` forwards both.
+- The settlement ceiling derives from `DEFAULT_FRESHNESS_GRACE_BARS`, so a future
+  change to the gate's grace changes the cadence constraint rather than silently
+  disagreeing with it.
+- Evidence: 336 real observations 50 % → **0 %** `stale_context`; live canary
+  (5 cycles) **0/15** with phase ≈ 5 s and lag ≈ 305 s; budget **unchanged**
+  (450 000 ms); 0 PIT / future / duplicate violations; `orders_created = 0`.
+- The gate-semantics question (measure the bar **close**, not the bar **open**) is
+  left **open** as `DEF-FRESH-BUDGET-001` case C — it is a widening and needs a
+  separate governance decision.
+- Next bottleneck (§23): **net edge (cost-adjusted)** — the funnel now terminates
+  on edge/cost, not reachability.
