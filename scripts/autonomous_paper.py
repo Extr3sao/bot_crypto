@@ -42,8 +42,15 @@ from typing import Any
 REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT / "src"))
 
+from trading_bot.autonomous.cadence import (  # noqa: E402
+    CADENCE_BAR_CLOSE,
+    bar_close_ms,
+    seconds_until_next_evaluation,
+    validate_settlement,
+)
 from trading_bot.config.runtime import TradingMode  # noqa: E402
 from trading_bot.config.settings import Settings, load_settings  # noqa: E402
+from trading_bot.research.router_gates import timeframe_ms as timeframe_width_ms  # noqa: E402
 
 DEFAULT_RUN_ROOT = Path("reports/autonomous-paper")
 DEFAULT_STATE_PATH = Path("data/storage/autonomous_paper_state.json")
@@ -65,6 +72,27 @@ def parse_args() -> argparse.Namespace:
         type=float,
         default=0.0,
         help="Seconds between cycles (bounded loop). 0 = back-to-back.",
+    )
+    parser.add_argument(
+        "--cadence",
+        choices=["interval", "bar-close"],
+        default="interval",
+        help=(
+            "WP-STRAT-09 — evaluation cadence. 'interval' (default) keeps the "
+            "free-running sleep; 'bar-close' wakes at each sealed bar's close plus "
+            "the settlement delay so the decision lands inside the existing "
+            "freshness window. The freshness budget is never changed."
+        ),
+    )
+    parser.add_argument(
+        "--bar-close-settlement-seconds",
+        type=float,
+        default=5.0,
+        help=(
+            "Seconds after a bar close to evaluate under --cadence bar-close. Must "
+            "stay below interval * (freshness_grace_bars - 1), which is asserted at "
+            "startup; it is not a freshness-threshold expansion."
+        ),
     )
     parser.add_argument("--balance", type=float, default=10_000.0)
     parser.add_argument(
@@ -401,6 +429,25 @@ async def main() -> int:
             return None
         return round(max(0.0, time.time() - stamp), 3)
 
+    # WP-STRAT-09 — evaluation cadence (§6/§9). 'interval' (default) is unchanged.
+    # 'bar-close' wakes at each sealed bar's close + settlement so the decision
+    # lands inside the existing freshness window; the budget is never touched, and
+    # the settlement ceiling is derived from the gate's own grace constant.
+    cadence_interval_ms = timeframe_width_ms(args.timeframe)
+    if args.cadence == CADENCE_BAR_CLOSE:
+        if cadence_interval_ms is None:
+            raise SystemExit(
+                f"--cadence {CADENCE_BAR_CLOSE} needs a known timeframe, "
+                f"got {args.timeframe!r}"
+            )
+        validate_settlement(cadence_interval_ms, args.bar_close_settlement_seconds)
+    last_bar_close_ms: int | None = None
+    skipped_duplicate_cycles = 0
+    print(
+        f"[run] cadence={args.cadence} timeframe={args.timeframe} "
+        f"settlement={args.bar_close_settlement_seconds}s"
+    )
+
     started_at_ms = int(time.time() * 1000)
     cycle_reports: list[Any] = []
     cycle_errors: list[str] = []
@@ -420,6 +467,27 @@ async def main() -> int:
                 break
             if not args.continuous and cycle >= args.cycles:
                 break
+            if args.cadence == CADENCE_BAR_CLOSE and cadence_interval_ms:
+                # §6/§9 — canonical cadence: wait for the next sealed bar's close
+                # plus the settlement delay BEFORE deciding, so the first cycle is
+                # phase-aligned too. Then guarantee one evaluation per sealed bar:
+                # if wall-clock jitter (or a restart) lands twice in the same bar
+                # window, skip the duplicate instead of deciding on the same bar
+                # twice.
+                await asyncio.sleep(
+                    seconds_until_next_evaluation(
+                        int(time.time() * 1000),
+                        cadence_interval_ms,
+                        args.bar_close_settlement_seconds,
+                    )
+                )
+                current_close = bar_close_ms(
+                    int(time.time() * 1000), cadence_interval_ms
+                )
+                if current_close == last_bar_close_ms:
+                    skipped_duplicate_cycles += 1
+                    continue
+                last_bar_close_ms = current_close
             cycle += 1
             try:
                 cycle_report = await runtime.run_cycle(cycle=cycle)
@@ -483,7 +551,10 @@ async def main() -> int:
                 next_daily_report_at = time.monotonic() + max(1.0, args.daily_report_seconds)
             if not args.continuous and cycle >= args.cycles:
                 break
-            if args.interval > 0:
+            # The bar-close cadence sleeps at the TOP of the next iteration (so
+            # the first cycle is aligned too); only the legacy interval cadence
+            # sleeps here.
+            if args.cadence != CADENCE_BAR_CLOSE and args.interval > 0:
                 await asyncio.sleep(args.interval)
     finally:
         summary = runtime.finalize_summary(
@@ -537,6 +608,9 @@ async def main() -> int:
                 "state": "STOPPED",
                 "stop_reason": stop_reason or "completed",
                 "cycles": len(cycle_reports),
+                "cadence": args.cadence,
+                "bar_close_settlement_seconds": args.bar_close_settlement_seconds,
+                "skipped_duplicate_cycles": skipped_duplicate_cycles,
                 "totals": summary.totals(),
                 "storage_failures": storage_failures.count,
                 "storage_errors": list(storage_failures.recent()),

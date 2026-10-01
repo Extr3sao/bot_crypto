@@ -69,6 +69,24 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--symbols", default="BTCUSDT,ETHUSDT,SOLUSDT")
     parser.add_argument("--timeframe", default="5m")
     parser.add_argument("--paper-interval", type=float, default=60.0)
+    parser.add_argument(
+        "--paper-cadence",
+        dest="paper_cadence",
+        choices=["interval", "bar-close"],
+        default="interval",
+        help=(
+            "WP-STRAT-09 — forwarded to the PAPER child as --cadence. 'interval' is "
+            "the default (unchanged); 'bar-close' aligns each cycle to a sealed "
+            "bar's close without widening the freshness budget."
+        ),
+    )
+    parser.add_argument(
+        "--paper-settlement-seconds",
+        dest="paper_settlement_seconds",
+        type=float,
+        default=5.0,
+        help="WP-STRAT-09 — forwarded as --bar-close-settlement-seconds.",
+    )
     parser.add_argument("--provider", choices=["ccxt", "fake"], default="ccxt")
     parser.add_argument(
         "--routing-mode",
@@ -197,6 +215,10 @@ def build_specs(
                 "--continuous",
                 "--interval",
                 str(args.paper_interval),
+                "--cadence",
+                args.paper_cadence,
+                "--bar-close-settlement-seconds",
+                str(args.paper_settlement_seconds),
                 "--assets",
                 args.assets,
                 "--timeframe",
