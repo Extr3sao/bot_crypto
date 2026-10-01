@@ -355,6 +355,13 @@ class StrategyRouter:
                 risk_blocked=risk_blocked,
                 portfolio_rejected=portfolio_rejected,
             )
+            # DEF-VERIFY-009: ROUTER_VERDICTS is the machine-readable vocabulary
+            # the rest of the system keys off. It used to be dead (nothing read
+            # it), so a typo in any branch would silently become a new verdict
+            # no consumer understands. Assert it here, at the one place every
+            # verdict passes through.
+            if verdict not in ROUTER_VERDICTS:
+                raise ValueError(f"router emitted an unknown verdict: {verdict!r}")
             routed.append(
                 RoutedStrategy(
                     strategy_id=sid,

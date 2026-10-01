@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from types import SimpleNamespace
 
+import pytest
+
 from trading_bot.research.router_gates import RouterGates
 from trading_bot.research.strategy_router import StrategyRouter
 
@@ -111,3 +113,16 @@ def test_selection_trace_is_complete() -> None:
     )
     assert any("context_fresh" in t for t in selection.trace)
     assert any("a: SELECTED" in t for t in selection.trace)
+
+
+def test_a_verdict_outside_the_vocabulary_fails_loudly(monkeypatch) -> None:
+    # DEF-VERIFY-009: ROUTER_VERDICTS is asserted, not decorative — a verdict
+    # no consumer understands must never be emitted silently.
+    router = _router()
+    monkeypatch.setattr(
+        StrategyRouter, "_verdict_for", lambda *a, **k: ("BOGUS", "nope")
+    )
+    with pytest.raises(ValueError, match="unknown verdict"):
+        router.select_eligible_strategies(
+            _ctx(), "TREND_UP", _map("a"), lifecycle={"a": "ACTIVE"}
+        )
