@@ -12,6 +12,7 @@ timestamps never reorder aggregates. No wall-clock is consulted for values.
 from __future__ import annotations
 
 from collections.abc import Iterable
+import bisect
 from dataclasses import dataclass, field
 from enum import StrEnum
 from typing import Any, Final
@@ -173,8 +174,10 @@ class ContextualPerformanceStore:
             observation = _with_sequence(observation, seq)
         key = observation.context
         bucket = self._observations.setdefault(key, [])
-        bucket.append(observation)
-        bucket.sort(key=lambda o: (o.timestamp_ms, o.sequence))
+        # Keep the bucket ordered without re-sorting the whole list on every
+        # insert (that was O(n^2); feeding a long experiment hung). bisect keeps
+        # the invariant with one O(log n) probe and a memmove.
+        bisect.insort(bucket, observation, key=lambda o: (o.timestamp_ms, o.sequence))
         return observation
 
     def record_many(self, observations: Iterable[PerformanceObservation]) -> None:
