@@ -48,6 +48,10 @@ class DynamicStrategyEcosystem:
     version: str = ECOSYSTEM_VERSION
 
     def __post_init__(self) -> None:
+        # DEF-VERIFY-004: windowing is owned by the ContextualPerformanceStore
+        # (single owner). HealthPolicy no longer carries a duplicate, inert
+        # `windows` field, so health resolution cannot silently disagree with
+        # the configured window sizes.
         if self.monitor is None:
             self.monitor = StrategyHealthMonitor(policy=self.health_policy)
         if self.controller is None:

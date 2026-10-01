@@ -72,6 +72,22 @@ class PerformanceObservation:
             "decision_id": self.decision_id,
         }
 
+    @classmethod
+    def from_dict(cls, data: dict[str, Any]) -> PerformanceObservation:
+        context = data.get("context")
+        return cls(
+            context=ContextKey.from_dict(context) if isinstance(context, dict) else ContextKey.from_str(str(context)),
+            timestamp_ms=int(data["timestamp_ms"]),
+            gross_bps=float(data["gross_bps"]),
+            net_bps=float(data["net_bps"]),
+            cost_bps=float(data.get("cost_bps", 0.0)),
+            notional_usdt=float(data.get("notional_usdt", 0.0)),
+            correct=bool(data.get("correct", False)),
+            execution_mode=ExecutionMode(data.get("execution_mode", "SHADOW")),
+            sequence=int(data.get("sequence", 0)),
+            decision_id=str(data.get("decision_id", "")),
+        )
+
 
 def _max_drawdown_bps(net_series: list[float]) -> float:
     """Peak-to-trough of the cumulative net-bps curve, in bps (>= 0)."""
@@ -237,6 +253,33 @@ class ContextualPerformanceStore:
                 str(key): [o.to_dict() for o in obs] for key, obs in self._observations.items()
             },
         }
+
+    # -- persistence (§2/§3) -------------------------------------------------
+
+    def to_state(self) -> dict[str, Any]:
+        return {
+            "schema_version": self.schema_version,
+            "windows": {
+                "short": self.windows.short,
+                "medium": self.windows.medium,
+                "long": self.windows.long,
+            },
+            "sequence": self._sequence,
+            "cells": {
+                str(key): [o.to_dict() for o in obs] for key, obs in self._observations.items()
+            },
+        }
+
+    @classmethod
+    def from_state(cls, payload: dict[str, Any]) -> ContextualPerformanceStore:
+        windows = RollingWindows(**payload["windows"])
+        store = cls(windows=windows)
+        store.schema_version = payload.get("schema_version", PERFORMANCE_STORE_VERSION)
+        store._sequence = int(payload.get("sequence", 0))
+        for raw_key, observations in (payload.get("cells") or {}).items():
+            key = ContextKey.from_str(raw_key)
+            store._observations[key] = [PerformanceObservation.from_dict(o) for o in observations]
+        return store
 
 
 def _with_sequence(obs: PerformanceObservation, seq: int) -> PerformanceObservation:

@@ -9,7 +9,7 @@ it.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Final
 
 __all__ = [
@@ -49,9 +49,15 @@ class RollingWindows:
 
 @dataclass(frozen=True, slots=True)
 class HealthPolicy:
-    """Thresholds for :class:`StrategyHealthMonitor` (§8)."""
+    """Thresholds for :class:`StrategyHealthMonitor` (§8).
 
-    windows: RollingWindows = field(default_factory=RollingWindows)
+    Windows are NOT configured here: the health monitor consumes the cells the
+    :class:`~trading_bot.strategy_lifecycle.performance.ContextualPerformanceStore`
+    produces, and that store is the single owner of window sizes. A separate
+    ``windows`` field here was inert (DEF-VERIFY-004) and has been removed so
+    health resolution cannot silently disagree with the configured windows.
+    """
+
     #: Below this many samples in the working window, health is INSUFFICIENT_DATA
     #: rather than HEALTHY — absence of evidence is never evidence of health.
     min_samples: int = 20

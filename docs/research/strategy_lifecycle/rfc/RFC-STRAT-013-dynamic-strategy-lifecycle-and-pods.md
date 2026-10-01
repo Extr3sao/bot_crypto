@@ -148,3 +148,69 @@ unchanged.
 
 Events (append-only), `STRATEGY_STATUS_REPORT`, `STRATEGY_HEALTH_REPORT`,
 `STRATEGY_REGIME_MATRIX`, `STRATEGY_LIFECYCLE_HISTORY`, `STRATEGY_ACTIVATION_CHURN`.
+
+## PERSISTENCE (GATE STRAT-PERSIST-003)
+
+CONTEXT. The dynamic plane (registry + contextual performance store) is
+in-memory; a restart loses every lifecycle state, observation, event and counter
+(DEF-VERIFY-010).
+
+PROBLEM. Without durability, connecting the plane to the PAPER loop is unsafe:
+recovery cannot be deterministic and a strategy's earned state is lost.
+
+AUTHORITY. One recovery root — the *materialised authoritative state*: registry
+descriptors (identity + current lifecycle state) and raw observations. Health,
+cells, churn and streaks are derived/recomputable; the append-only registry
+history/events are the event log. No second source of truth.
+
+STATE MODEL. Classification is exhaustive (see
+`reports/strategy-lifecycle-persistence/STATE_AUTHORITY_MAP.md`):
+PERSISTENT_AUTHORITATIVE (descriptors, observations, version history, event log,
+cooldown/dwell clocks, hysteresis counters), PERSISTENT_DERIVED (churn, streaks,
+health cache), RECOMPUTABLE (cells, health verdicts), TRANSIENT (pod results,
+arbitration decisions, in-flight decisions).
+
+EVENT CONTRACT. `persistence.event_log` rows carry `event_id, run_id,
+strategy_id, strategy_version, from_state, to_state, reason, evidence_ids,
+timestamp, schema_version, commit_sha`.
+
+PERSISTENCE. `strategy-lifecycle-persistence-v1`. Canonical JSON body + SHA-256
+checksum. Written atomically (temp file + `os.replace`). Schema version unknown
+or newer → refuse; checksum mismatch → refuse; missing mandatory field or invalid
+transition enum → refuse; history chain inconsistent with materialised state →
+refuse. Corrupt state is never defaulted to ACTIVE/ELIGIBLE.
+
+RECOVERY. `restore_ecosystem` validates then rebinds registry/performance/health
+cache; the target is untouched on any refusal. Recovery never calls the router,
+portfolio or risk engine, and never applies a decision — no order and no
+promotion can result from a restart.
+
+REPLAY. `replay_lifecycle(start_state, history)` deterministically reconstructs a
+strategy's state; same event sequence + schema + config → same state; original
+state hash == restored state hash.
+
+MIGRATION. A future schema bump must provide a load path for the previous known
+version (upgrade) or refuse; unknown versions are refused. Migrations must
+preserve the authoritative fields and may recompute derived ones.
+
+HEALTH WINDOWS. `HealthPolicy.windows` (DEF-VERIFY-004) was inert and is
+removed; windowing is owned solely by `ContextualPerformanceStore`, which the
+health monitor consumes. Configuring windows means configuring the store
+(`ContextualPerformanceStore(windows=RollingWindows(...))`). Removing the
+duplicate makes health resolution unable to disagree with the configured
+windows, and — critically — makes a configuration "fix" unable to silently
+change a strategy's promotion outcome (making the field effective flipped
+EXP-STRAT-DYNAMIC-001 from DO_NOT_PROMOTE to PROMOTE_CANDIDATE; that is
+tuning-by-side-effect and is refused).
+
+TESTS. `test_persistence.py`, `test_restart_recovery.py` (real-process E2E),
+`test_health_windows.py`, plus the portability of the STRAT-HARDEN-002
+fail-closed/risk/evidence/PID suites.
+
+ROLLBACK. Delete `persistence.py` and the `to_state/from_state` helpers; the
+in-memory plane is unchanged. The windows binding is one line in
+`DynamicStrategyEcosystem.__post_init__`.
+
+ACCEPTANCE. State persists; restart recovery deterministic; corrupt state fails
+closed; replay deterministic; health windows truthful; 0 introduced failures;
+independent verification PASS.
