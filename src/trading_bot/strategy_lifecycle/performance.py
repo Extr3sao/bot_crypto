@@ -18,9 +18,10 @@ from enum import StrEnum
 from typing import Any, Final
 
 from .config import RollingWindows
-from .contracts import ContextKey, ExecutionMode, PerformanceCell
+from .contracts import ContextKey, ExecutionMode, PerformanceCell, assert_no_future_data
 
 __all__ = [
+    "DEFAULT_MAX_OBSERVATIONS_PER_CELL",
     "PERFORMANCE_STORE_VERSION",
     "ContextualPerformanceStore",
     "PerformanceObservation",
@@ -29,6 +30,13 @@ __all__ = [
 ]
 
 PERFORMANCE_STORE_VERSION: Final[str] = "contextual-performance-store-v1"
+
+#: DEF-VERIFY-006 — per-cell retention bound. The store used to be append-only
+#: with no ceiling, so a long-running (or hot-wired) lifecycle grew without
+#: limit. The bound is generous enough never to truncate a rolling window
+#: (the longest default window is 250) while still bounding memory; a caller may
+#: pass 0/negative to opt back into unbounded retention explicitly.
+DEFAULT_MAX_OBSERVATIONS_PER_CELL: Final[int] = 20_000
 
 
 class PerformanceWindow(StrEnum):
@@ -174,6 +182,7 @@ class ContextualPerformanceStore:
     """Append-only, context-keyed observation store with rolling windows."""
 
     windows: RollingWindows = field(default_factory=RollingWindows)
+    max_observations_per_cell: int = DEFAULT_MAX_OBSERVATIONS_PER_CELL
     _observations: dict[ContextKey, list[PerformanceObservation]] = field(
         default_factory=dict, repr=False
     )
@@ -182,8 +191,26 @@ class ContextualPerformanceStore:
 
     # -- writes -------------------------------------------------------------
 
-    def record(self, observation: PerformanceObservation) -> PerformanceObservation:
-        """Append one observation. Sequence is assigned here so ordering is total."""
+    def record(
+        self,
+        observation: PerformanceObservation,
+        *,
+        decision_time_ms: int | None = None,
+    ) -> PerformanceObservation:
+        """Append one observation. Sequence is assigned here so ordering is total.
+
+        DEF-VERIFY-007: when the caller supplies the decision time, the
+        point-in-time invariant (§25) is ENFORCED — an observation stamped after
+        the decision is refused, not silently re-sorted into the history.
+        DEF-VERIFY-006: the per-cell history is bounded by
+        ``max_observations_per_cell`` so memory cannot grow without limit.
+        """
+        if decision_time_ms is not None:
+            assert_no_future_data(
+                data_time_ms=observation.timestamp_ms,
+                decision_time_ms=decision_time_ms,
+                label="performance_observation",
+            )
         seq = self._sequence
         self._sequence += 1
         if observation.sequence == 0:
@@ -194,11 +221,23 @@ class ContextualPerformanceStore:
         # insert (that was O(n^2); feeding a long experiment hung). bisect keeps
         # the invariant with one O(log n) probe and a memmove.
         bisect.insort(bucket, observation, key=lambda o: (o.timestamp_ms, o.sequence))
+        self._prune(bucket)
         return observation
 
-    def record_many(self, observations: Iterable[PerformanceObservation]) -> None:
+    def _prune(self, bucket: list[PerformanceObservation]) -> None:
+        """Bound a cell's memory (DEF-VERIFY-006). <= 0 means unbounded."""
+        limit = self.max_observations_per_cell
+        if limit > 0 and len(bucket) > limit:
+            del bucket[: len(bucket) - limit]
+
+    def record_many(
+        self,
+        observations: Iterable[PerformanceObservation],
+        *,
+        decision_time_ms: int | None = None,
+    ) -> None:
         for obs in observations:
-            self.record(obs)
+            self.record(obs, decision_time_ms=decision_time_ms)
 
     # -- reads --------------------------------------------------------------
 
@@ -264,6 +303,7 @@ class ContextualPerformanceStore:
                 "medium": self.windows.medium,
                 "long": self.windows.long,
             },
+            "max_observations_per_cell": self.max_observations_per_cell,
             "sequence": self._sequence,
             "cells": {
                 str(key): [o.to_dict() for o in obs] for key, obs in self._observations.items()
@@ -273,7 +313,12 @@ class ContextualPerformanceStore:
     @classmethod
     def from_state(cls, payload: dict[str, Any]) -> ContextualPerformanceStore:
         windows = RollingWindows(**payload["windows"])
-        store = cls(windows=windows)
+        store = cls(
+            windows=windows,
+            max_observations_per_cell=int(
+                payload.get("max_observations_per_cell", DEFAULT_MAX_OBSERVATIONS_PER_CELL)
+            ),
+        )
         store.schema_version = payload.get("schema_version", PERFORMANCE_STORE_VERSION)
         store._sequence = int(payload.get("sequence", 0))
         for raw_key, observations in (payload.get("cells") or {}).items():
