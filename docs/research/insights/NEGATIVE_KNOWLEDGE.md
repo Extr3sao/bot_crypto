@@ -45,3 +45,15 @@
 | NEG-029 | ARP-005 PATH A | Assume that closing a data gap creates an edge. | Extending DEV 122 → 303 days/symbol (adequacy band) only improved the quality of the rejection. | Reinforced |
 | NEG-030 | ARP-005 PATH B | Repair/adopt an unevaluated orphan infra module to unblock an experiment. | The minimal tested replacement unblocked EXP-ARP-009, which then failed on economics, not infrastructure. | REIMPLEMENT_MINIMAL_PATTERN |
 | NEG-031 | ARP-005 §29 / §19 | Paper-shadow a `REJECT_COSTS` experiment (EXP-ARP-007) to compensate for a lack of net edge. | REJECT_COSTS is terminal; a shadow campaign is not positive expectancy. | REJECT |
+
+## ARP-005 alpha-expansion additions
+
+| NEG_ID | SOURCE | DO_NOT_DO | WHY / FAILURE MODE | PROJECT ACTION |
+|---|---|---|---|---|
+| NEG-032 | ARP-005 / EXP-ARP-013 | Treat a long multi-regime gross edge as real without checking single-trade concentration. | 31 DEV episodes, gross +1258 bps, but the SOL Aug-2021 rally is >50 % (0.5049) of positive net. | REJECT_FRAGILE |
+| NEG-033 | ARP-005 / EXP-ARP-014 | Assume clearing DEV + COST proves an edge. | Weekly cross-sectional reversal: DEV net +11.75 bps, break-even 35.31 bps, yet VALIDATION net −1.91 bps over 84 episodes. | REJECT_VALIDATION |
+| NEG-034 | ARP-005 / EXP-ARP-015 | Shorten a frozen ranking window to manufacture a sample for a slow factor. | 60d window + 30d hold over a 3-asset, ~5-year corpus yields only 11 episodes (< 15). | INSUFFICIENT_EVIDENCE |
+| NEG-035 | ARP-005 §2 | Treat "N years downloaded" as data adequacy. | Adequacy is timestamp-correct, gap-audited, duplicate-free, PIT-compatible and fingerprinted history. | Measure per split |
+| NEG-036 | ARP-005 §10/§11 | Rank assets with mismatched/stale bars or let a caller supply unsynchronized series. | A stale or future bar silently changes the cross-sectional rank; every such case must FAIL CLOSED. | Reject at the snapshot contract |
+| NEG-037 | ARP-005 §13/§14 | Canonicalize a candidate because its source count looks incomplete. | The registry is 21 canonical; the 3 unmerged candidates are rejected/blocked and are not new mechanisms. | NO_IMPORT |
+| NEG-038 | ARP-005 §5 | Derive HTF bars from incomplete/partial buckets or interpolate missing hours. | A partial bucket reads a future constituent; an interpolated hour fabricates data. | Drop the bucket |

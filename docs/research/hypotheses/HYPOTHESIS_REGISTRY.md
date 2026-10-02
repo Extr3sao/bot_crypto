@@ -45,3 +45,11 @@
 | H-LIQ-VOID-REV-001 | PROJECT | STRATEGY | BTC/ETH/SOL | 1d | fade a ≥3-day ≥2×ATR void after an origin-band retest | daily OHLCV (extended) | YES | EXP-ARP-012 | EXECUTED | REJECT_VALIDATION (DEV +27.6 / VAL −374.8 bps) |
 | H-DAILY-TSMOM-001 | PROJECT | STRATEGY | BTC/ETH/SOL | 1d | time-series momentum, 30d lookback / 20d hold | daily OHLCV | PARTIAL | EXP-ARP-008 | DATA_SHORT_FOR_HORIZON | deferred (needs ≈830–1230 DEV days) |
 | H-VOLSPIKE-MR-001 | PROJECT | STRATEGY | BTC/ETH/SOL | 1d | long a 2σ daily realized-vol down-spike | daily OHLCV | YES | EXP-ARP-010 | EXECUTED | INSUFFICIENT_EVIDENCE (6 trades; ARP-004) |
+
+## ARP-005 additions (alpha expansion — cross-sectional factors)
+
+| HYPOTHESIS_ID | SOURCE | TYPE | ASSET | TIMEFRAME | MECHANISM | DATA | TESTABLE | EXPERIMENT | STATUS | RESULT |
+|---|---|---|---|---|---|---|---|---|---|---|
+| H-XSEC-MOM-LONG-001 | PROJECT | STRATEGY | BTC/ETH/SOL | 1d | cross-sectional momentum: rotate to the highest 90d trailing-return asset | 1d bars from 1h (2019-2026) | YES | EXP-ARP-013 | EXECUTED | REJECT_FRAGILE (DEV +1258 bps but top1_share 0.5049) |
+| H-XSEC-REV-001 | PROJECT | STRATEGY | BTC/ETH/SOL | 1d | cross-sectional short-horizon reversal: rotate to the worst 7d performer | 1d bars from 1h | YES | EXP-ARP-014 | EXECUTED | REJECT_VALIDATION (DEV net +11.75 / VAL net −1.91 bps) |
+| H-XSEC-LOWVOL-001 | PROJECT | STRATEGY | BTC/ETH/SOL | 1d | cross-sectional low-volatility: rotate to the lowest 60d realized-vol asset | 1d bars from 1h | YES | EXP-ARP-015 | EXECUTED | INSUFFICIENT_EVIDENCE (11 < 15 episodes) |

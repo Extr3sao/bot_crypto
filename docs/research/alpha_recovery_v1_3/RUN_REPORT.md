@@ -3,7 +3,12 @@
 ## Environment
 
 * START_SHA: `d4cd26da3e77ad508e3f50b0cb5a74bdc3815c5f`
-* END_SHA: `c4f82a052b507282fb7321264dca03963588a580`
+* END_SHA: `eae4c27e8254303c30ddf42abebb4ddaecf10716`
+* EXPERIMENT_SHA: `c4f82a052b507282fb7321264dca03963588a580` (results-freezing commit)
+
+> END_SHA reconciled by ARP-005 §0: the actual final ARP-004 commit is the
+> documentation-only stamp `eae4c27…`; the original `c4f82a0…` value is retained
+> above as `EXPERIMENT_SHA`. See `reports/alpha-expansion-v1/ARP004_INTEGRITY.md`.
 * branch: `main`
 * code_hash: `39fd35e638bdde6e1fbcfb59e8e1f582d0792a4ecc28d97181619e3f61c2afa7`
 * config_hash: `6c4dd0be1fc2fff24920c9f9226c7f81f8d3d4dc80671b5a424721da497f7db1`

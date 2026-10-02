@@ -4,8 +4,10 @@
 ARP-004 — COST-COMPATIBLE EDGE CAMPAIGN FINAL
 
 START_SHA:  d4cd26da3e77ad508e3f50b0cb5a74bdc3815c5f
-END_SHA:    c4f82a052b507282fb7321264dca03963588a580
-COMMITS:    c4f82a052b507282fb7321264dca03963588a580
+EXPERIMENT_SHA: c4f82a052b507282fb7321264dca03963588a580
+END_SHA:    eae4c27e8254303c30ddf42abebb4ddaecf10716
+COMMITS:    c4f82a052b507282fb7321264dca03963588a580,
+            eae4c27e8254303c30ddf42abebb4ddaecf10716
 
 EXP-ARP-007:
   DEV:             PASS  (153 trades)
@@ -70,3 +72,16 @@ NEXT AUTHORIZED STEP: (not executed here) obtain additional daily history to rea
          adequacy band, or pre-register a new, distinct hypothesis; any survivor must be
          independently verified before a PAPER SHADOW consideration.
 ```
+
+## END_SHA RECONCILIATION (ARP-005 §0)
+
+This report originally declared `END_SHA = c4f82a0…`. That SHA is the commit that
+*executed* the experiments; a later documentation-only commit `eae4c27…`
+(`ARP-004: stamp END_SHA into the tracked final/run reports`) is the actual final
+commit of the ARP-004 lineage. `git merge-base --is-ancestor c4f82a0 eae4c27`
+confirms `c4f82a0` is an ancestor of `eae4c27`.
+
+The authoritative `END_SHA` is therefore **`eae4c27e8254303c30ddf42abebb4ddaecf10716`**.
+The experiment-results commit is retained above as `EXPERIMENT_SHA`. This is a
+transparent correction, not a silent rewrite: no git object was altered, the
+original `c4f82a0` value remains recorded, and the change is explained here.
