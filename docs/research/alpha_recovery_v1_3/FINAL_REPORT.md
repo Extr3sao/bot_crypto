@@ -4,8 +4,8 @@
 ARP-004 — COST-COMPATIBLE EDGE CAMPAIGN FINAL
 
 START_SHA:  d4cd26da3e77ad508e3f50b0cb5a74bdc3815c5f
-END_SHA:    (stamped after commit)
-COMMITS:    (stamped after commit)
+END_SHA:    c4f82a052b507282fb7321264dca03963588a580
+COMMITS:    c4f82a052b507282fb7321264dca03963588a580
 
 EXP-ARP-007:
   DEV:             PASS  (153 trades)
