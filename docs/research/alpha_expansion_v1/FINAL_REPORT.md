@@ -4,8 +4,8 @@
 ARP-005 — ALPHA EXPANSION FINAL
 
 START_SHA:  f861251544f18f2fb0fdc33e27276fdbcfbd70c6
-END_SHA:    (stamped by the final documentation commit)
-COMMITS:    (recorded on commit)
+END_SHA:    885d191583d3d03b0cc2139f1b375b8c5a211706
+COMMITS:    885d191583d3d03b0cc2139f1b375b8c5a211706 (feat: ARP-005 alpha expansion)
 
 ARP-004 END_SHA RECONCILED: YES
   authoritative = eae4c27e8254303c30ddf42abebb4ddaecf10716 (actual final ARP-004 commit)
