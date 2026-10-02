@@ -4,8 +4,8 @@
 ARP-005 — FINAL
 
 START_SHA:  eae4c27e8254303c30ddf42abebb4ddaecf10716   (ARP-004 final)
-END_SHA:    <ARP-005_END_SHA>                          (stamped after the code+evidence commit)
-COMMITS:    <ARP-005_COMMITS>
+END_SHA:    950a4d055b3ad3d3d8cc5e84653f39bfe19d39ef                          (stamped after the code+evidence commit)
+COMMITS:    950a4d055b3ad3d3d8cc5e84653f39bfe19d39ef
 
 PRIMARY OBJECTIVE: discover whether a strategy candidate exists whose signal
 magnitude can survive realistic trading costs. NOT more trades, NOT paper execution.
