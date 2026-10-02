@@ -1,0 +1,151 @@
+{
+  "by_key": {
+    "BTC": {
+      "avg_duration_min": 1440.0,
+      "avg_loss_usd": -33.9002,
+      "avg_mae_pct": 5.3018,
+      "avg_mfe_pct": 3.1683,
+      "avg_win_usd": 19.5437,
+      "concentration": {
+        "positive_trades": 1,
+        "top10pct_share": 1.0,
+        "top1_share": 1.0,
+        "top5_share": 1.0,
+        "total_positive_net": 19.54
+      },
+      "cost_bps_rt": 23.559,
+      "exit_mix": {
+        "stop": 1,
+        "target": 1
+      },
+      "expectancy_cost_bps": 23.56,
+      "expectancy_gross_bps": -120.005,
+      "expectancy_net_bps": -143.565,
+      "fees_usd": 2.36,
+      "gross_usd": -12.0,
+      "max_drawdown_bps": 678.004,
+      "median_duration_min": 1440.0,
+      "net_usd": -14.36,
+      "payoff": 0.5765,
+      "profit_factor": 0.5765,
+      "sharpe_per_trade": null,
+      "trades": 2,
+      "win_rate": 0.5
+    },
+    "ETH": {
+      "avg_duration_min": 1440.0,
+      "avg_loss_usd": -25.1236,
+      "avg_mae_pct": 6.2868,
+      "avg_mfe_pct": 5.2678,
+      "avg_win_usd": 28.2768,
+      "concentration": {
+        "positive_trades": 1,
+        "top10pct_share": 1.0,
+        "top1_share": 1.0,
+        "top5_share": 1.0,
+        "total_positive_net": 28.28
+      },
+      "cost_bps_rt": 23.559,
+      "exit_mix": {
+        "target": 1,
+        "window_expiry": 1
+      },
+      "expectancy_cost_bps": 23.56,
+      "expectancy_gross_bps": 55.092,
+      "expectancy_net_bps": 31.532,
+      "fees_usd": 2.36,
+      "gross_usd": 5.51,
+      "max_drawdown_bps": 502.472,
+      "median_duration_min": 1440.0,
+      "net_usd": 3.15,
+      "payoff": 1.1255,
+      "profit_factor": 1.1255,
+      "sharpe_per_trade": null,
+      "trades": 2,
+      "win_rate": 0.5
+    },
+    "SOL": {
+      "avg_duration_min": 1440.0,
+      "avg_loss_usd": -48.776,
+      "avg_mae_pct": 7.7624,
+      "avg_mfe_pct": 4.3595,
+      "avg_win_usd": 30.3936,
+      "concentration": {
+        "positive_trades": 1,
+        "top10pct_share": 1.0,
+        "top1_share": 1.0,
+        "top5_share": 1.0,
+        "total_positive_net": 30.39
+      },
+      "cost_bps_rt": 23.559,
+      "exit_mix": {
+        "stop": 1,
+        "target": 1
+      },
+      "expectancy_cost_bps": 23.56,
+      "expectancy_gross_bps": -160.264,
+      "expectancy_net_bps": -183.824,
+      "fees_usd": 2.36,
+      "gross_usd": -16.03,
+      "max_drawdown_bps": 975.52,
+      "median_duration_min": 1440.0,
+      "net_usd": -18.38,
+      "payoff": 0.6231,
+      "profit_factor": 0.6231,
+      "sharpe_per_trade": null,
+      "trades": 2,
+      "win_rate": 0.5
+    }
+  },
+  "capture": {
+    "available_1d_move_bps": 198.3762,
+    "capture_ratio": -0.3784,
+    "caveat": "available move is the mean |1-day move| over all DEV days; a mechanism captures only a fraction and this is descriptive, not evidence of edge.",
+    "measured_gross_bps_per_trade": -75.059
+  },
+  "combined": {
+    "avg_duration_min": 1440.0,
+    "avg_loss_usd": -35.9333,
+    "avg_mae_pct": 6.4504,
+    "avg_mfe_pct": 4.2652,
+    "avg_win_usd": 26.0714,
+    "concentration": {
+      "positive_trades": 3,
+      "top10pct_share": 0.3886,
+      "top1_share": 0.3886,
+      "top5_share": 1.0,
+      "total_positive_net": 78.21
+    },
+    "cost_bps_rt": 23.559,
+    "exit_mix": {
+      "stop": 2,
+      "target": 3,
+      "window_expiry": 1
+    },
+    "expectancy_cost_bps": 23.56,
+    "expectancy_gross_bps": -75.059,
+    "expectancy_net_bps": -98.619,
+    "fees_usd": 7.07,
+    "gross_usd": -22.52,
+    "max_drawdown_bps": 1199.586,
+    "median_duration_min": 1440.0,
+    "net_usd": -29.59,
+    "payoff": 0.7255,
+    "profit_factor": 0.7255,
+    "sharpe_per_trade": null,
+    "trades": 6,
+    "win_rate": 0.5
+  },
+  "verdict": {
+    "checks": {
+      "gross_expectancy_gt_0": false,
+      "not_single_trade_concentrated": true,
+      "sample_sufficient": false
+    },
+    "result": "INSUFFICIENT_EVIDENCE",
+    "thresholds": {
+      "min_trades": 10,
+      "top1_share_max": 0.5
+    }
+  }
+}
