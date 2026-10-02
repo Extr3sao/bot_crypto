@@ -71,6 +71,7 @@ function esc(v){ return String(v==null?'':v).replace(/[&<>"']/g,c=>({'&':'&amp;'
 function cell(v){
   if(v===undefined||v===null||v==='') return '<span class="missing">NOT_AVAILABLE</span>';
   if(typeof v==='boolean') return `<span class="pill ${v?'OK':''}">${v?'true':'false'}</span>`;
+  if(typeof v==='object') return esc(JSON.stringify(v));
   const s=String(v);
   if(['ACTIVE','HEALTHY','OK','FRESH','PAUSED','RETIRED','STALE','DEGRADED','FAILED','UNKNOWN','NOT_AVAILABLE','INSUFFICIENT_DATA','INSUFFICIENT_SAMPLE'].includes(s)) return `<span class="pill ${esc(s)}">${esc(s)}</span>`;
   return esc(s);
@@ -92,6 +93,7 @@ async function render(section){
     if(section==='control'){
       const s = cache.system || await api('/api/system'); cache.system=s;
       const sys=s.system, t=sys.totals;
+      const topo = cache.topology || await api('/api/topology'); cache.topology=topo;
       html = `<div class="grid">
         ${card('RUNTIME',[['state',sys.runtime.state],['run_id',sys.runtime.run_id],['cycles',sys.runtime.cycles],['routing_mode',sys.routing_mode],['execution_mode',sys.execution_mode],['live_trading_enabled',sys.live_trading_enabled],['runtime_failures',sys.runtime.runtime_failures]])}
         ${card('CAMPAIGN',[['campaign',sys.campaign],['commit',sys.commit],['config_hash',sys.config_hash]])}
@@ -99,7 +101,7 @@ async function render(section){
         ${card('RISK ENGINE',[['status',sys.risk_engine.status],['authority',sys.risk_engine.authority],['verdicts',JSON.stringify(sys.risk_engine.verdicts)]])}
         ${card('STRATEGIES',[['total',t.strategies_total],['admitted_for_paper',t.admitted_for_paper],['decisions',t.decisions],['signals',t.signals],['proposals',t.proposals],['paper_trades',t.paper_trades]])}
         ${card('DECISIONS',[['no_trade',t.no_trade],['order_created',t.order_created],['no_trade_kinds',JSON.stringify(t.no_trade_kinds)],['outcomes_resolved',t.outcomes_resolved]])}
-        ${card('AGENTS',[['governance',(cache.topology||await api('/api/topology')).are_strategies_governed_by_independent_agents],['shared_agents',6]])}
+        ${card('AGENTS',[['governance',topo.are_strategies_governed_by_independent_agents],['shared_decision_layer_agents',(topo.shared_agents||[]).length],['strategies_with_dedicated_agent',topo.dedicated_agent_count],['strategies_with_no_agent',topo.no_agent_count]])}
         ${card('GUARDRAILS',[['false_success',sys.false_success],['open_critical_defects',sys.open_critical_defects],['read_only',sys.read_only],['live_control',sys.live_control]])}
       </div>`;
     } else if(section==='strategies'){
