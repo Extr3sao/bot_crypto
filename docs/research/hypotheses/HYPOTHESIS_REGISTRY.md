@@ -35,3 +35,13 @@
 | HYP-032 | SRC-MANUAL-002 | RISK | portfolio | multi-session | drawdown state machine with deleveraging/halt improves capital preservation | portfolio PnL | YES | EXP-033 | PROPOSED |  |
 | HYP-033 | SRC-MANUAL-002 | EXECUTION | multi-asset | order lifecycle | atomic/compensating OCO protection reduces unprotected-position states | execution events | YES | EXP-034 | PROPOSED |  |
 | HYP-034 | SRC-CHEATSHEET-001 | STRATEGY | unknown | 1m/2m | seven visual S/R patterns may encode repeatable microstructure entries | unknown | NO; underspecified | EXP-035 | NEEDS_SPEC |  |
+
+## ARP-005 additions (cost-compatible discovery)
+
+| HYPOTHESIS_ID | SOURCE | TYPE | ASSET | TIMEFRAME | MECHANISM | DATA | TESTABLE | EXPERIMENT | STATUS | RESULT |
+|---|---|---|---|---|---|---|---|---|---|---|
+| H-XSEC-RELSTR-001 | PROJECT | STRATEGY | BTC/ETH/SOL | 1d | cross-sectional trailing-return leadership, rotate on rank loss | synchronized daily bars | YES | EXP-ARP-009 | EXECUTED | INSUFFICIENT_EVIDENCE (17<20 rotations; gross −100.1 bps) |
+| H-VOLEXP-BREAK-001 | PROJECT | STRATEGY | BTC/ETH/SOL | 1d | Donchian-20 breakout gated by ATR-expansion, long | daily OHLCV | YES | EXP-ARP-011 | EXECUTED | INSUFFICIENT_EVIDENCE (2 trades) |
+| H-LIQ-VOID-REV-001 | PROJECT | STRATEGY | BTC/ETH/SOL | 1d | fade a ≥3-day ≥2×ATR void after an origin-band retest | daily OHLCV (extended) | YES | EXP-ARP-012 | EXECUTED | REJECT_VALIDATION (DEV +27.6 / VAL −374.8 bps) |
+| H-DAILY-TSMOM-001 | PROJECT | STRATEGY | BTC/ETH/SOL | 1d | time-series momentum, 30d lookback / 20d hold | daily OHLCV | PARTIAL | EXP-ARP-008 | DATA_SHORT_FOR_HORIZON | deferred (needs ≈830–1230 DEV days) |
+| H-VOLSPIKE-MR-001 | PROJECT | STRATEGY | BTC/ETH/SOL | 1d | long a 2σ daily realized-vol down-spike | daily OHLCV | YES | EXP-ARP-010 | EXECUTED | INSUFFICIENT_EVIDENCE (6 trades; ARP-004) |

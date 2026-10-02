@@ -33,3 +33,15 @@
 | NEG-023 | SRC-MANUAL-002 | Do not anthropomorphize agent “fear”, “ego”, “hope” or “discipline”. | Translate to stop modification, over-sizing, duplicate signals, horizon changes and conformance violations. |
 | NEG-024 | SRC-MANUAL-002 | Do not treat unsupported claims such as 10% survival, 70% range time or other percentages as project evidence. | Record as unsupported source assertions. |
 | NEG-025 | SRC-CHEATSHEET-001 | Do not infer missing E-1/E-2 semantics, stop, target, asset or setup conditions from a single diagram. | Candidate remains NEEDS_SPEC. |
+
+
+## V3 — ARP-005 cost-compatible discovery additions
+
+| NEG_ID | SOURCE | DO_NOT_DO | WHY / FAILURE MODE | PROJECT ACTION |
+|---|---|---|---|---|
+| NEG-026 | ARP-005 / EXP-ARP-009 | Treat a cross-sectional top-1 selection over a fixed 3-asset universe as an adequate test on a ≈4-month daily corpus. | 17 DEV rotations < frozen minimum 20; the frozen `lookback_days=30` was not shortened to grow the sample. | INSUFFICIENT_EVIDENCE |
+| NEG-027 | ARP-005 / EXP-ARP-011 | Relax a Donchian/ATR-expansion gate to manufacture trades. | Only 2 DEV trades in ~122 days; the gates are trigger-starved, not mis-specified. | INSUFFICIENT_EVIDENCE |
+| NEG-028 | ARP-005 / EXP-ARP-012 | Advance a mechanism whose gross/cost ratio is ≈1.17 (break-even 27.6 bps vs 23.6 bps cost). | DEV net +4.05 bps but negative at 1.25× cost; VALIDATION collapsed to −374.8 bps gross over 9 trades. | REJECT_VALIDATION |
+| NEG-029 | ARP-005 PATH A | Assume that closing a data gap creates an edge. | Extending DEV 122 → 303 days/symbol (adequacy band) only improved the quality of the rejection. | Reinforced |
+| NEG-030 | ARP-005 PATH B | Repair/adopt an unevaluated orphan infra module to unblock an experiment. | The minimal tested replacement unblocked EXP-ARP-009, which then failed on economics, not infrastructure. | REIMPLEMENT_MINIMAL_PATTERN |
+| NEG-031 | ARP-005 §29 / §19 | Paper-shadow a `REJECT_COSTS` experiment (EXP-ARP-007) to compensate for a lack of net edge. | REJECT_COSTS is terminal; a shadow campaign is not positive expectancy. | REJECT |
