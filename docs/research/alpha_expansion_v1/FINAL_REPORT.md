@@ -4,8 +4,14 @@
 ARP-005 — ALPHA EXPANSION FINAL
 
 START_SHA:  f861251544f18f2fb0fdc33e27276fdbcfbd70c6
-END_SHA:    885d191583d3d03b0cc2139f1b375b8c5a211706
+END_SHA:    885d191583d3d03b0cc2139f1b375b8c5a211706  (code + tracked evidence)
+STAMP_SHA:  ee1f3507ecead69255bf80313b321b1aa934998c  (END_SHA documentation stamp)
 COMMITS:    885d191583d3d03b0cc2139f1b375b8c5a211706 (feat: ARP-005 alpha expansion)
+            ee1f3507ecead69255bf80313b321b1aa934998c (docs: END_SHA stamp)
+END_SHA NOTE: following the §0 ARP-004 reconciliation rule, END_SHA names the
+            code + tracked-evidence commit; the documentation-only stamp that
+            contains this file is listed separately as STAMP_SHA so the report is
+            never self-referential.
 
 ARP-004 END_SHA RECONCILED: YES
   authoritative = eae4c27e8254303c30ddf42abebb4ddaecf10716 (actual final ARP-004 commit)
