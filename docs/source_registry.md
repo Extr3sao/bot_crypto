@@ -281,3 +281,24 @@ investigación que necesite el flujo agresor del perpetuo, y **no** invalida la 
 | El índice de aggTrades es direccionable por id | SRC-16 | uso real + tests | los huecos de trades se reparan y se marcan; los de libro solo se declaran |
 | Las klines públicas reproducen el volumen capturado | SRC-17 | cross-check de la captura oficial | validación de calidad de datos, no de edge |
 | Matriz de capacidad por stream | SRC-18 | `provider_stream_status` de la captura oficial | perp aggTrade/markPrice `UNAVAILABLE_IN_CURRENT_ENVIRONMENT`; spot completo; no se sustituye nada |
+
+## Fuentes de short borrow (RFC-030 continuation §6)
+
+> Investigación del short leg congelado `BINANCE-MARGIN-SPOT-USDT-SHORT` (`MARGIN_SPOT`).
+> Ventana requerida: **2019-01-01 → 2025-07-01** (2373 días), por activo, ≥ diario, PIT.
+> Detalle completo y decisión por fuente: `reports/rfc030-short-data/SOURCE_REGISTRY.md`.
+
+| SOURCE_ID | provider | tipo | histórico | PIT | availability | rate | limits | decisión |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| SRC-SB-01 | Binance `GET /sapi/v1/margin/interestRateHistory` | API oficial | sí, **retención ~6 meses** (≈0.8 % de 2373 d) | no | **no** | sí | no | REJECT |
+| SRC-SB-02 | Binance `GET /sapi/v1/margin/maxBorrowable` | API oficial | no (valor actual) | solo ahora | actual | no | actual | REJECT |
+| SRC-SB-03 | Binance `GET /sapi/v1/margin/interestHistory` (USER_DATA) | API oficial, cuenta | sí (~6 meses) | específico de cuenta | no | tasa pagada por la cuenta | no | REJECT |
+| SRC-SB-04 | Binance public data | archivo oficial | sí (2017+) | n/a | no | no | no | REJECT (sin serie de borrow) |
+| SRC-SB-05 | CoinGlass Margin Borrow chart | agregador | gráfico, profundidad no publicada | no | no | ambiguo (probable perp funding) | no | REJECT |
+| SRC-SB-06 | QuantConnect Binance Crypto Future Margin Rate | plataforma | desde 2020-08 | no documentado | no | interés de futuros | no | REJECT (producto incorrecto) |
+| SRC-SB-07 | Kaiko / Amberdata / CryptoQuant | proveedor institucional | variable | no documentado | no evidenciado para CEX margin | lending DeFi | no | DEFER |
+| SRC-SB-08 | datasets académicos/archivados | académico | variable | no evidenciado | no evidenciado | no evidenciado | no | DEFER |
+
+**Resultado:** ninguna fuente aporta simultáneamente **availability histórica + rate
+PIT** para Binance `MARGIN_SPOT` en 2019→2025. `ADOPT_P0`/`ADOPT_P1` = ninguno.
+Sustituir funding/futuros por borrow de spot-margin queda prohibido (§11/§23).
