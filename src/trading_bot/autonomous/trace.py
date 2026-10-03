@@ -113,7 +113,26 @@ class DecisionTraceStore:
         self._outcome_path = self._dir / "outcomes.jsonl"
         self._sequence = 0
         self._prev_hash = _GENESIS
+        # Materialized read caches (DEF-TRACE-REPLAY-O-N2). The runtime resolves
+        # pending outcomes every cycle and replays the whole store at
+        # finalization, so a naive ``read()`` reparsed the entire JSONL on every
+        # call — O(n^2) in the run length. The caches are keyed on the file's
+        # (size, mtime_ns): any write (ours or an external tamper) changes that
+        # signature and forces a reparse, so the JSONL stays the source of truth.
+        self._trace_cache: list[DecisionTrace] | None = None
+        self._trace_sig: tuple[int, int] | None = None
+        self._outcome_cache: list[OutcomeRecord] | None = None
+        self._outcome_sig: tuple[int, int] | None = None
         self._load_tail()
+
+    @staticmethod
+    def _signature(path: Path) -> tuple[int, int] | None:
+        """Cheap change-detection key: absent file, or (size, mtime_ns)."""
+        try:
+            stat = path.stat()
+        except FileNotFoundError:
+            return None
+        return (stat.st_size, stat.st_mtime_ns)
 
     # -- paths --------------------------------------------------------------
 
@@ -154,6 +173,11 @@ class DecisionTraceStore:
             fh.write(canonical_json(raw) + "\n")
         self._sequence = int(raw["sequence"])
         self._prev_hash = str(raw["trace_hash"])
+        if self._trace_cache is not None:
+            # Incremental aggregation: extend the materialized view instead of
+            # invalidating it, so per-cycle reads stay O(1) amortized.
+            self._trace_cache.append(sealed)
+            self._trace_sig = self._signature(self._trace_path)
         return sealed
 
     def append_outcome(self, outcome: OutcomeRecord) -> OutcomeRecord:
@@ -168,6 +192,9 @@ class DecisionTraceStore:
             return duplicate
         with open(self._outcome_path, "a", encoding="utf-8") as fh:
             fh.write(canonical_json(outcome.to_dict()) + "\n")
+        if self._outcome_cache is not None:
+            self._outcome_cache.append(outcome)
+            self._outcome_sig = self._signature(self._outcome_path)
         return outcome
 
     def outcome_keys(self) -> set[str]:
@@ -181,21 +208,35 @@ class DecisionTraceStore:
     # -- reads --------------------------------------------------------------
 
     def read(self) -> list[DecisionTrace]:
-        if not self._trace_path.exists():
+        sig = self._signature(self._trace_path)
+        if sig is None:
+            self._trace_cache = []
+            self._trace_sig = None
             return []
+        if self._trace_cache is not None and sig == self._trace_sig:
+            return self._trace_cache
         traces: list[DecisionTrace] = []
         for line in self._trace_path.read_text(encoding="utf-8").splitlines():
             if line.strip():
                 traces.append(DecisionTrace.from_dict(json.loads(line)))
+        self._trace_cache = traces
+        self._trace_sig = sig
         return traces
 
     def read_outcomes(self) -> list[OutcomeRecord]:
-        if not self._outcome_path.exists():
+        sig = self._signature(self._outcome_path)
+        if sig is None:
+            self._outcome_cache = []
+            self._outcome_sig = None
             return []
+        if self._outcome_cache is not None and sig == self._outcome_sig:
+            return self._outcome_cache
         outcomes: list[OutcomeRecord] = []
         for line in self._outcome_path.read_text(encoding="utf-8").splitlines():
             if line.strip():
                 outcomes.append(OutcomeRecord.from_dict(json.loads(line)))
+        self._outcome_cache = outcomes
+        self._outcome_sig = sig
         return outcomes
 
     def get(self, decision_id: str) -> DecisionTrace | None:

@@ -86,6 +86,22 @@ def test_store_resumes_the_chain_after_restart(tmp_path: Path) -> None:
     assert reopened.verify_chain().ok
 
 
+def test_read_cache_reflects_an_external_writer(tmp_path: Path) -> None:
+    """The materialized read cache never hides a concurrent append.
+
+    DEF-TRACE-REPLAY-O-N2 cached ``read()``/``read_outcomes()`` on the file's
+    (size, mtime_ns). A second store on the same run dir must still be visible
+    through the first one's cache: any write changes the signature.
+    """
+    first = DecisionTraceStore(tmp_path)
+    first.append(_shadow_trace("d-1"))
+    assert [t.decision_id for t in first.read()] == ["d-1"]
+    second = DecisionTraceStore(tmp_path)
+    second.append(_shadow_trace("d-2"))
+    # ``first`` already materialized its view; the external append must surface.
+    assert [t.decision_id for t in first.read()] == ["d-1", "d-2"]
+
+
 def test_replay_reconstructs_without_market_access(tmp_path: Path) -> None:
     store = DecisionTraceStore(tmp_path)
     store.append(_shadow_trace("d-1"))
