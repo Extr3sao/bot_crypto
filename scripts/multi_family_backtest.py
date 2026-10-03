@@ -250,7 +250,10 @@ def main() -> None:
     ds_tf = os.environ.get("DATASET_TF", "5m")
     suffix = "" if ds_tf == "5m" else f"_5m_{ds_tf}"
     if ds_tf != "5m":
-        M_TF_MIN = float(ds_tf.rstrip("m"))
+        # minutes per bar for the chosen dataset timeframe ("15m" -> 15, "1h" -> 60)
+        M_TF_MIN = (
+            float(ds_tf[:-1]) * 60.0 if ds_tf.endswith("h") else float(ds_tf.rstrip("m"))
+        )
         globals()["TF_MIN"] = M_TF_MIN
     files = sorted(f for f in glob.glob(os.path.join(DATA, f"*{suffix}.json"))
                    if suffix or "_5m_" not in os.path.basename(f))  # default = 5m baseline only
