@@ -309,14 +309,25 @@ def regime_labels(bundle: Bundle) -> NDArray[Any]:
     return out
 
 
-_REGIME_CACHE: dict[int, NDArray[Any]] = {}
+# Cache maps id(bundle) -> (the bundle's own ts array, labels). Holding the ts
+# array keeps the memory it points at alive so its id cannot be recycled, and the
+# identity re-check makes a reused id recompute instead of returning stale labels.
+# A size cap bounds memory for long-lived research processes.
+_REGIME_CACHE: dict[int, tuple[NDArray[Any], NDArray[Any]]] = {}
+_REGIME_CACHE_CAP = 512
 
 
 def regime_labels_cached(bundle: Bundle) -> NDArray[Any]:
     key = id(bundle)
-    if key not in _REGIME_CACHE:
-        _REGIME_CACHE[key] = regime_labels(bundle)
-    return _REGIME_CACHE[key]
+    ts = bundle.bars.ts
+    ent = _REGIME_CACHE.get(key)
+    if ent is not None and ent[0] is ts:
+        return ent[1]
+    labels = regime_labels(bundle)
+    if len(_REGIME_CACHE) >= _REGIME_CACHE_CAP:
+        _REGIME_CACHE.clear()
+    _REGIME_CACHE[key] = (ts, labels)
+    return labels
 
 
 def shift1(x: NDArray[Any]) -> NDArray[Any]:
