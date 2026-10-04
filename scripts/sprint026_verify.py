@@ -26,6 +26,7 @@ REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO / "scripts"))
 
 import sprint002_lib as L  # noqa: E402
+import sprint026_exec as EX  # noqa: E402
 import sprint026_lib as X  # noqa: E402
 
 OUT = X.EXEC_OUT
@@ -214,12 +215,13 @@ def main() -> None:
     X.write_json(OUT / "RFC026_VERIFICATION.json", result)
     X.write_md(OUT / "RFC026_VERIFICATION.md", _md(result))
 
-    # Patch the final report with the independent verdict.
+    # Patch the final report (.json AND .md) with the independent verdict.
     fj = REPO / "reports" / "RFC026_FINAL_REPORT.json"
     final = json.loads(fj.read_text(encoding="utf-8"))
     final["false_success"] = result["false_success"]
     final["independent_verification"] = "PASS" if result["false_success"] == 0 else "FAIL"
-    X.write_json(fj, final)
+    # Reuse the canonical writer so the .md never diverges from the verified .json.
+    EX.write_final(final)
     print("independent verifier: FALSE_SUCCESS =", result["false_success"],
           "of", result["n_checks"], "checks")
     for c in result["checks"]:
