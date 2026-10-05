@@ -1,0 +1,50 @@
+{
+  "reference_capital_usdt": 200.0,
+  "families_researched": 5,
+  "finalists": [
+    "SC-TREND-001",
+    "SC-DUALMOM-002"
+  ],
+  "P1_SMALL_CAPITAL": "SC-TREND-001",
+  "gates": {
+    "G_SC_PRODUCT": "PASS",
+    "G_SC_CAPITAL": "PASS",
+    "G_SC_REPRO": "PASS",
+    "G_SC_1_DISCOVERY": "PASS",
+    "G_SC_2_VALIDATION": "PASS",
+    "G_SC_3_ROBUSTNESS": "PASS",
+    "G_SC_4_HOLDOUT": "PASS",
+    "PAPER_ELIGIBILITY": "PAPER_CERTIFICATION_ELIGIBLE",
+    "NEXT": "SMALL_CAPITAL_PAPER_CERTIFICATION"
+  },
+  "did_we_achieve_200_usdt_executable_validated_edge": true,
+  "discovery_net_usdt": 81.015786,
+  "validation_net_usdt": 35.99943,
+  "validation_sharpe": 0.5167,
+  "validation_maxdd": -0.07446734,
+  "expected_turnover_annual": 2.096717,
+  "historical_cost_usdt": 3.460181,
+  "minimum_order_compatibility": "PASS",
+  "capital_utilization_at_200": {
+    "mean_weight_error": 1.573e-05,
+    "max_weight_error": 0.00023275,
+    "avg_gross_weight": 0.678368
+  },
+  "illustrative_pnl_at_200_usdt": {
+    "discovery_total_net_usdt": 81.015786,
+    "validation_total_net_usdt": 35.99943,
+    "annual_cost_usdt": 0.4
+  },
+  "SMALL_CAPITAL_EXECUTABLE_VALIDATED_EDGE_COUNT": 1,
+  "PAPER_ELIGIBILITY": "PAPER_CERTIFICATION_ELIGIBLE",
+  "FORWARD_PROFITABLE": 0,
+  "LIVE_PROFITABLE": 0,
+  "FALSE_SUCCESS": 0,
+  "INDEPENDENT_VERIFICATION": "PASS",
+  "NEXT": "SMALL_CAPITAL_PAPER_CERTIFICATION",
+  "reproduction_fidelity": "CLOSE",
+  "reproduction": "PASS",
+  "robustness": "PASS",
+  "holdout": "PASS",
+  "spec_sha256": "512701beb942c1094a520dcc3270358aad9805ee30fc939b0f78f8253a2c3557"
+}
