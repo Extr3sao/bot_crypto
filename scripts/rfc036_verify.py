@@ -207,7 +207,10 @@ def held_series(m: Market, lo: int, hi: int) -> dict[str, Any]:
     prevm: tuple[int, int] | None = None
     last_od: int | None = None
     last_ic: str | None = None
-    last_print: dict[str, int] = {}
+    # RFC-037 reconciliation: a freshly-held contract with no print must be treated
+    # as stale, exactly like the frozen builder (last_print initialised to 0, not
+    # defaulted to the current index).
+    last_print: dict[str, int] = {cid: 0 for cid in m.contracts}
     for i, od in enumerate(m.dates):
         if od < lo or od > hi:
             continue
@@ -416,10 +419,11 @@ def main() -> int:
     def rel(a: float, b: float) -> float:
         return abs(a - b) / abs(b) if b else float("inf")
 
-    # tolerance: the two implementations are independent; discovery matches to
-    # <1e-6 and validation to ~3% (independent window/scale edge effects).
-    disc_ok = rel(disc["net"], float(b_disc.get("net_pnl", 0.0))) < 0.01
-    val_ok = rel(val["net"], float(b_val.get("net_pnl", 0.0))) < 0.05
+    # RFC-037: the RFC-036 3% validation gap was traced to a verifier roll-staleness
+    # bug, now fixed. Tolerance is a fixed numerical bound (1e-5 relative), NOT a
+    # post-hoc widening.
+    disc_ok = rel(disc["net"], float(b_disc.get("net_pnl", 0.0))) < 1e-5
+    val_ok = rel(val["net"], float(b_val.get("net_pnl", 0.0))) < 1e-5
 
     checks = {
         "individual_contracts_reconstructed": all(len(m.contracts) > 0 for m in markets.values()),
