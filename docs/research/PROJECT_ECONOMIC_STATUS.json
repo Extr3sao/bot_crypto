@@ -1,0 +1,31 @@
+{
+  "active_candidates": 0,
+  "as_of_commit": "38b97009deeea83b120b4039b00feca1845db475",
+  "closed_candidate_statuses": {
+    "EXT-TSMOM-001": "INVALIDATED_TRADABILITY",
+    "EXT-TSMOM-002": "REJECTED_HISTORICAL_PLAUSIBILITY",
+    "EXT-TSMOM-003": "REJECTED_VALIDATION",
+    "EXT-XMOM-001": "REJECTED_ROBUSTNESS"
+  },
+  "current_decision": "PAUSE_TRADING_PROJECT",
+  "economic_marker": {
+    "certified_paper_candidate": 0,
+    "executable_holdout_pass": 0,
+    "executable_validated_net_edge": 0,
+    "forward_paper_profitable": 0,
+    "live_profitable": 0,
+    "robust_executable_net_edge": 0,
+    "statistical_historical_effect": 1
+  },
+  "economic_status": "NO_VALIDATED_EXECUTABLE_EDGE",
+  "forward_profitable": 0,
+  "live_profitable": 0,
+  "next_alpha_rfc_allowed": false,
+  "paper_candidates": 0,
+  "paused_reason": "NO STRATEGY HAS DEMONSTRATED EXECUTABLE, VALIDATED, ROBUST, NET POSITIVE EDGE",
+  "platform_status": "RESEARCH_CAPABLE",
+  "profitability_research_status": "PAUSED",
+  "robust_edges": 0,
+  "status_date": "2026-10-05T11:26:52Z",
+  "validated_edges": 0
+}
