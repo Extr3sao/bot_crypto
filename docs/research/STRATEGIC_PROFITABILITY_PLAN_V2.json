@@ -1,0 +1,44 @@
+{
+  "rfc": "RFC-035",
+  "title": "STRATEGIC PROFITABILITY PLAN V2",
+  "phase_1_status": "CLOSED",
+  "phase_2_status": "REENTRY_APPROVED",
+  "platform_status": "RESEARCH_CAPABLE",
+  "economic_status": "NO_VALIDATED_EXECUTABLE_EDGE",
+  "entry_profitability_research_status": "PAUSED",
+  "entry_next_alpha_rfc_allowed": false,
+  "strategy_families_reviewed": 12,
+  "top5": [
+    "MANAGED_FUTURES_TREND",
+    "VALUE_QUALITY",
+    "FUTURES_CURVE_CARRY",
+    "COMMODITY_MOMENTUM",
+    "FX_CARRY"
+  ],
+  "finalists": [
+    "MANAGED_FUTURES_TREND",
+    "VALUE_QUALITY",
+    "FUTURES_CURVE_CARRY"
+  ],
+  "g_reentry": "PASS",
+  "authorized_reproductions": [
+    "MANAGED_FUTURES_TREND",
+    "FUTURES_CURVE_CARRY"
+  ],
+  "p1": "MANAGED_FUTURES_TREND",
+  "p2": "FUTURES_CURVE_CARRY",
+  "next_alpha_rfc_allowed": true,
+  "next_rfc_type": "EXTERNAL_STRATEGY_REPRODUCTION",
+  "kpi": {
+    "executable_validated_edge_count": 0,
+    "robust_edge_count": 0,
+    "paper_candidate_count": 0,
+    "forward_profitable_count": 0,
+    "live_profitable_count": 0,
+    "phase_2_target": 1
+  },
+  "max_implemented_strategies": 2,
+  "max_parameter_variants": 3,
+  "source_commit": "d940b532c09c4bb81ceed7132ace8830b33736ce",
+  "generated_at": "2026-10-05T13:50:03Z"
+}
