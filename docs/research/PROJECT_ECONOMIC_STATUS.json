@@ -27,5 +27,9 @@
   "profitability_research_status": "PAUSED",
   "robust_edges": 0,
   "status_date": "2026-10-05T11:26:52Z",
-  "validated_edges": 0
+  "validated_edges": 0,
+  "superseded_by": "RFC-041",
+  "superseded_decision_id": "BUSINESS-FREEZE-2026-001",
+  "superseded_stale_claim": "as_of_commit = 38b9700 (RFC-033 view)",
+  "superseded_note": "RFC-041 marks this claim SUPERSEDED; history retained, canonical state updated in docs/research/ECONOMIC_STATE.json."
 }

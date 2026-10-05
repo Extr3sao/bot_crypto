@@ -1,3 +1,7 @@
+> SUPERSEDED BY RFC-041 (BUSINESS-FREEZE-2026-001).  This document is retained as
+> history; the current canonical state is docs/research/ECONOMIC_STATE.json and
+> docs/research/FINAL_BUSINESS_DECISION.md.
+
 # PROJECT ECONOMIC STATUS (canonical)
 
 as_of_commit = 38b97009deeea83b120b4039b00feca1845db475

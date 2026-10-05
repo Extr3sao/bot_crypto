@@ -40,5 +40,9 @@
   "max_implemented_strategies": 2,
   "max_parameter_variants": 3,
   "source_commit": "d940b532c09c4bb81ceed7132ace8830b33736ce",
-  "generated_at": "2026-10-05T13:50:03Z"
+  "generated_at": "2026-10-05T13:50:03Z",
+  "superseded_by": "RFC-041",
+  "superseded_decision_id": "BUSINESS-FREEZE-2026-001",
+  "superseded_stale_claim": "next_alpha_rfc_allowed = true",
+  "superseded_note": "RFC-041 marks this claim SUPERSEDED; history retained, canonical state updated in docs/research/ECONOMIC_STATE.json."
 }

@@ -46,5 +46,9 @@
   "reproduction": "PASS",
   "robustness": "PASS",
   "holdout": "PASS",
-  "spec_sha256": "512701beb942c1094a520dcc3270358aad9805ee30fc939b0f78f8253a2c3557"
+  "spec_sha256": "512701beb942c1094a520dcc3270358aad9805ee30fc939b0f78f8253a2c3557",
+  "superseded_by": "RFC-041",
+  "superseded_decision_id": "BUSINESS-FREEZE-2026-001",
+  "superseded_stale_claim": "PAPER_ELIGIBILITY = PAPER_CERTIFICATION_ELIGIBLE",
+  "superseded_note": "RFC-041 marks this claim SUPERSEDED; history retained, canonical state updated in docs/research/ECONOMIC_STATE.json."
 }

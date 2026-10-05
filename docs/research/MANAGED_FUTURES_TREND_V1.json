@@ -3,7 +3,11 @@
   "title": "MANAGED FUTURES TREND FAITHFUL REPRODUCTION (P1)",
   "candidate": "MF-TREND-001",
   "primary_reproduction_source": "S001",
-  "corroborating_sources": ["S002", "S029", "S003"],
+  "corroborating_sources": [
+    "S002",
+    "S029",
+    "S003"
+  ],
   "reproduction_fidelity": "CLOSE",
   "p2_status": "AUTHORIZED_WAITING",
   "data": {
@@ -17,12 +21,44 @@
     "markets": 26,
     "asset_classes": 6,
     "asset_class_markets": {
-      "EQUITY_INDEX": ["sp"],
-      "GOVERNMENT_BOND_RATES": ["ed", "us"],
-      "FX": ["ad", "bp", "cd", "dx", "jy", "sf"],
-      "ENERGY": ["cl", "ho"],
-      "METALS": ["gc", "hg", "pa", "pl", "si"],
-      "AGRICULTURE": ["c", "fc", "jo", "kc", "lh", "o", "pb", "s", "sb", "w"]
+      "EQUITY_INDEX": [
+        "sp"
+      ],
+      "GOVERNMENT_BOND_RATES": [
+        "ed",
+        "us"
+      ],
+      "FX": [
+        "ad",
+        "bp",
+        "cd",
+        "dx",
+        "jy",
+        "sf"
+      ],
+      "ENERGY": [
+        "cl",
+        "ho"
+      ],
+      "METALS": [
+        "gc",
+        "hg",
+        "pa",
+        "pl",
+        "si"
+      ],
+      "AGRICULTURE": [
+        "c",
+        "fc",
+        "jo",
+        "kc",
+        "lh",
+        "o",
+        "pb",
+        "s",
+        "sb",
+        "w"
+      ]
     },
     "sample": "individual contracts ~1959-2000; strategy window 1985-01-01..2000-03-31"
   },
@@ -37,8 +73,14 @@
     "cost_model": "MANAGED_FUTURES_COST_MODEL_V1 (frozen hash before discovery)"
   },
   "splits": {
-    "DISCOVERY": ["1985-01-01", "1993-12-31"],
-    "VALIDATION": ["1994-01-01", "2000-03-31"],
+    "DISCOVERY": [
+      "1985-01-01",
+      "1993-12-31"
+    ],
+    "VALIDATION": [
+      "1994-01-01",
+      "2000-03-31"
+    ],
     "HOLDOUT": "FUTURE_ONLY"
   },
   "gates": {
@@ -52,7 +94,7 @@
   "results": {
     "discovery_net_currency": 17877400.24,
     "discovery_net_annualised_pct": 18.78,
-    "discovery_sharpe_net": 1.10,
+    "discovery_sharpe_net": 1.1,
     "validation_net_currency": 12701700.27,
     "validation_net_annualised_pct": 19.78,
     "validation_sharpe_net": 1.14,
@@ -77,5 +119,9 @@
     "equity-index sleeve is a single market (sp); archive lacks a second liquid equity index",
     "discrete integer contracts need a larger research capital to avoid zeroing high-notional markets",
     "free-archive licence is unclear; used for research only"
-  ]
+  ],
+  "superseded_by": "RFC-041",
+  "superseded_decision_id": "BUSINESS-FREEZE-2026-001",
+  "superseded_stale_claim": "next = PAPER_CANDIDATE_CERTIFICATION",
+  "superseded_note": "RFC-041 marks this claim SUPERSEDED; history retained, canonical state updated in docs/research/ECONOMIC_STATE.json."
 }

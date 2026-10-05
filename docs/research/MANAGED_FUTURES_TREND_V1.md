@@ -1,3 +1,7 @@
+> SUPERSEDED BY RFC-041 (BUSINESS-FREEZE-2026-001).  This document is retained as
+> history; the current canonical state is docs/research/ECONOMIC_STATE.json and
+> docs/research/FINAL_BUSINESS_DECISION.md.
+
 # RFC-036 — MANAGED FUTURES TREND FAITHFUL REPRODUCTION (P1)
 
 CANDIDATE = **MF-TREND-001**
