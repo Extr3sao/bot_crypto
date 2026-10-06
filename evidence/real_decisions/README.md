@@ -13,7 +13,10 @@ evidence/real_decisions/
 ```
 
 Each file is JSON Lines: one self-contained JSON object per line, sorted keys.
-Nothing is ever rewritten or deleted.
+Nothing is ever rewritten or deleted. All three files are created as soon as the
+ledger is opened, so an empty file is simply a chain segment whose records have
+not happened yet (`outcomes.jsonl` and `evaluations.jsonl` are empty until the
+first decision's horizon closes).
 
 ## The chain
 

@@ -50,6 +50,7 @@ from trading_bot.research import decision_outcomes as do
 __all__ = [
     "DECISIONS_FILENAME",
     "EVALUATIONS_FILENAME",
+    "LEDGER_FILENAMES",
     "LEDGER_VERSION",
     "OUTCOMES_FILENAME",
     "RAW_EVIDENCE_DIRNAME",
@@ -65,6 +66,13 @@ DECISIONS_FILENAME = "decisions.jsonl"
 OUTCOMES_FILENAME = "outcomes.jsonl"
 EVALUATIONS_FILENAME = "evaluations.jsonl"
 RAW_EVIDENCE_DIRNAME = "raw_evidence"
+
+#: The three files *are* the ledger; they exist from the moment it is opened.
+LEDGER_FILENAMES: tuple[str, ...] = (
+    DECISIONS_FILENAME,
+    OUTCOMES_FILENAME,
+    EVALUATIONS_FILENAME,
+)
 
 _TOLERANCE = 1e-12
 
@@ -175,6 +183,10 @@ class DecisionLedger:
     def __init__(self, root: Path) -> None:
         self.root = Path(root)
         self.root.mkdir(parents=True, exist_ok=True)
+        # Declare the layout up front: an empty file is the honest state of a
+        # chain segment whose records have not happened yet.
+        for filename in LEDGER_FILENAMES:
+            (self.root / filename).touch(exist_ok=True)
 
     # -- reading ---------------------------------------------------------- #
 

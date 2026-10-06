@@ -251,6 +251,22 @@ def test_decision_entry_refuses_a_foreign_decision_time() -> None:
 # --------------------------------------------------------------------------- #
 
 
+def test_ledger_materialises_its_declared_layout(tmp_path: Path) -> None:
+    root = tmp_path / "real_decisions"
+    ledger = dl.DecisionLedger(root)
+    assert sorted(path.name for path in root.iterdir()) == sorted(dl.LEDGER_FILENAMES)
+    assert dl.LEDGER_FILENAMES == (
+        "decisions.jsonl",
+        "outcomes.jsonl",
+        "evaluations.jsonl",
+    )
+    assert all((root / name).read_text(encoding="utf-8") == "" for name in dl.LEDGER_FILENAMES)
+    assert ledger.verify_chain()["status"] == "INTACT"
+    # opening an existing ledger never truncates what is already there
+    dl.DecisionLedger(root).append_decision(_entry())
+    assert len(dl.DecisionLedger(root).decisions()) == 1
+
+
 def test_ledger_starts_empty_and_appends(tmp_path: Path) -> None:
     ledger = dl.DecisionLedger(tmp_path / "real_decisions")
     assert ledger.decisions() == []
