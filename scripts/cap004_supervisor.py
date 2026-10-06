@@ -1352,6 +1352,15 @@ def _journal_scheduler_event(
 # --------------------------------------------------------------------------- #
 
 
+def verifier_summary(path: Path) -> str:
+    """``PASS 192/192`` / ``FAIL`` / ``NOT_RUN`` read from a verification report."""
+    try:
+        payload = json.loads(Path(path).read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return "NOT_RUN"
+    return f"{payload.get('status')} {payload.get('passed')}/{payload.get('total')}"
+
+
 def status_report(*, now: int) -> dict[str, Any]:
     ledger = dl.DecisionLedger(LEDGER_ROOT)
     if not LEDGER_ROOT.is_dir():
@@ -1403,6 +1412,13 @@ def status_report(*, now: int) -> dict[str, Any]:
         "drift_status": drift["status"],
         "stop_requested": lock.stop_requested(),
         "operations": verify_operations_chain(read_operations(OPS_LEDGER)),
+        "verifiers": {
+            "cap003": verifier_summary(
+                REPO / "reports" / "agentic-campaign-cap003" / "CAP003_VERIFICATION.json"
+            ),
+            "cap004": verifier_summary(CAMPAIGN_REPORT_ROOT / "CAP004_VERIFICATION.json"),
+            "cap004b": verifier_summary(REPORT_ROOT / "CAP004B_VERIFICATION.json"),
+        },
     }
 
 
@@ -1439,10 +1455,13 @@ def _render_status(report: Mapping[str, Any]) -> str:
     for key, value in population.items():
         lines.append(f"| {key} | {value} |")
     operations = report.get("operations") or {}
+    verifiers = report.get("verifiers") or {}
     lines.extend(
         [
             "",
             f"- operations ledger: {operations.get('status')} ({operations.get('events')} events)",
+            f"- verifiers: cap003={verifiers.get('cap003')} cap004={verifiers.get('cap004')} "
+            f"cap004b={verifiers.get('cap004b')}",
             "",
         ]
     )
