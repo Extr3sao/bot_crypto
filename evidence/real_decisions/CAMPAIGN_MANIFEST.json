@@ -65,7 +65,7 @@
     50,
     100
   ],
-  "code_commit": "e65bfe19c5a2ce8d08d53fa48f456e6608c76858",
+  "code_commit": "30345ac123a867e1947147c27b936567f23cf96a",
   "cohorts": {
     "CAP004-REAL-DECISIONS-V1": "decisions sealed by CAP-004 with full campaign provenance",
     "LEGACY_CAP003_PILOT": "the four CAP-003 pilot decisions, adopted as-is because rewriting their provenance would break ledger immutability"
