@@ -78,15 +78,19 @@ __all__ = [
     "RSI_HIGH",
     "RSI_LOW",
     "RSI_PERIOD",
+    "RULE_INPUT_BARS_1D",
+    "RULE_INPUT_BARS_4H",
     "BaselineComparison",
     "DecisionOutcome",
     "DecisionPerformance",
     "HorizonNotMaturedError",
     "OutcomeWindow",
+    "RuleState",
     "analyst_confidence",
     "analyst_payload",
     "build_performance",
     "build_window",
+    "deterministic_rule_state",
     "deterministic_trend_direction",
     "direction_distribution",
     "evaluate_decision",
@@ -133,7 +137,20 @@ PROVIDER_SOURCE = "binance_public_ccxt"
 
 #: Frozen rule identity: ``SMA(200)`` trend + ``MACD(12,26,9)`` momentum + RSI
 #: filter.  No window, threshold or parameter here is ever searched.
-DETERMINISTIC_RULE_VERSION = "DETERMINISTIC_TREND_RULE_V1"
+#:
+#: ``V1_1`` is a *reproducibility* fix, not a semantic change: V1 fed the rule
+#: whatever history the caller happened to download, and an EMA has infinite
+#: memory, so a 500-bar fetch and a 494-bar fetch produced slightly different
+#: MACD values for the same decision time.  The rule now reads a fixed-length
+#: tail, so anyone holding the same bars re-derives the same direction.  It was
+#: frozen before a single candidate had been evaluated (0 outcomes exist), so no
+#: recorded comparison is invalidated by it.
+DETERMINISTIC_RULE_VERSION = "DETERMINISTIC_TREND_RULE_V1_1"
+
+#: Fixed input depth for the rule.  Long enough for MACD(12,26,9) to settle and
+#: for SMA(200) to have history, short enough to be exactly re-derivable.
+RULE_INPUT_BARS_4H = 400
+RULE_INPUT_BARS_1D = 300
 RSI_PERIOD = 14
 MACD_FAST = 12
 MACD_SLOW = 26
@@ -171,6 +188,90 @@ def _ordered(rows: Sequence[OHLCV]) -> list[OHLCV]:
     return sorted(rows, key=lambda row: row.timestamp)
 
 
+@dataclass(frozen=True, slots=True)
+class RuleState:
+    """Comparison B's signal plus the exact bars it was derived from.
+
+    ``inputs_hash`` is the reproducibility anchor: two runs holding the same
+    completed bars must produce the same direction *and* the same hash.
+    """
+
+    direction: str
+    reason: str
+    inputs_hash: str
+    bars_4h: int
+    bars_1d: int
+
+
+def deterministic_rule_state(
+    *,
+    rows_4h: Sequence[OHLCV],
+    daily_rows: Sequence[OHLCV],
+    decision_time: int,
+    bar_seconds: int = 14_400,
+    daily_bar_seconds: int = 86_400,
+) -> RuleState:
+    """Comparison B — the frozen deterministic rule, causal and re-derivable.
+
+    Only bars that had fully closed at ``decision_time`` can contribute, and the
+    rule reads a fixed-length tail of them (``RULE_INPUT_BARS_4H`` /
+    ``RULE_INPUT_BARS_1D``), so a wider download cannot change the answer.
+    """
+    daily_bars = [
+        ab.DailyBar(open_time=_open_time_seconds(row), close=float(row.close))
+        for row in _ordered(daily_rows)
+    ]
+    daily_closes = ab.completed_daily_closes(
+        daily_bars, decision_time=decision_time, bar_seconds=daily_bar_seconds
+    )[-RULE_INPUT_BARS_1D:]
+
+    causal = [
+        row for row in _ordered(rows_4h) if _open_time_seconds(row) + bar_seconds <= decision_time
+    ][-RULE_INPUT_BARS_4H:]
+    inputs_hash = ac.payload_digest(
+        {
+            "version": DETERMINISTIC_RULE_VERSION,
+            "decision_time": decision_time,
+            "bar_seconds": bar_seconds,
+            "daily_bar_seconds": daily_bar_seconds,
+            "bars_4h": [[_open_time_seconds(row), float(row.close)] for row in causal],
+            "daily_closes": [[int(bar.open_time), float(bar.close)] for bar in daily_bars[-RULE_INPUT_BARS_1D:]],
+        }
+    )
+
+    def state(direction: str, reason: str) -> RuleState:
+        return RuleState(
+            direction=direction,
+            reason=reason,
+            inputs_hash=inputs_hash,
+            bars_4h=len(causal),
+            bars_1d=len(daily_closes),
+        )
+
+    if len(daily_closes) < SMA_WINDOW:
+        return state("NO_TRADE", ab.INSUFFICIENT_SMA200_HISTORY)
+    average = sma([float(close) for close in daily_closes], SMA_WINDOW)[-1]
+    if average is None:
+        return state("NO_TRADE", ab.INSUFFICIENT_SMA200_HISTORY)
+    trend_up = daily_closes[-1] > average
+
+    if len(causal) < MACD_SLOW + MACD_SIGNAL_PERIOD - 1:
+        return state("NO_TRADE", REASON_MACD_HISTORY_INSUFFICIENT)
+    macd = MacdIndicator().compute(
+        causal, {"fast": MACD_FAST, "slow": MACD_SLOW, "signal": MACD_SIGNAL_PERIOD}
+    )
+    rsi = RsiIndicator().compute(causal, {"period": RSI_PERIOD})
+    if not RSI_LOW <= rsi <= RSI_HIGH:
+        return state("NO_TRADE", REASON_RSI_EXTREME)
+
+    momentum_up = macd["macd"] > macd["signal"]
+    if trend_up and momentum_up:
+        return state("LONG", "TREND_UP_MACD_LONG")
+    if not trend_up and not momentum_up:
+        return state("SHORT", "TREND_DOWN_MACD_SHORT")
+    return state("NO_TRADE", REASON_SIGNAL_MIXED)
+
+
 def deterministic_trend_direction(
     *,
     rows_4h: Sequence[OHLCV],
@@ -179,44 +280,15 @@ def deterministic_trend_direction(
     bar_seconds: int = 14_400,
     daily_bar_seconds: int = 86_400,
 ) -> tuple[str, str]:
-    """Comparison B — the frozen deterministic rule, causal by construction.
-
-    Returns ``(direction, reason)``.  Only bars that had fully closed at
-    ``decision_time`` can contribute, so a caller cannot introduce look-ahead by
-    handing in a wider slice.
-    """
-    daily_bars = [
-        ab.DailyBar(open_time=_open_time_seconds(row), close=float(row.close))
-        for row in _ordered(daily_rows)
-    ]
-    daily_closes = ab.completed_daily_closes(
-        daily_bars, decision_time=decision_time, bar_seconds=daily_bar_seconds
+    """``(direction, reason)`` for comparison B (CAP-003 API, unchanged)."""
+    rule = deterministic_rule_state(
+        rows_4h=rows_4h,
+        daily_rows=daily_rows,
+        decision_time=decision_time,
+        bar_seconds=bar_seconds,
+        daily_bar_seconds=daily_bar_seconds,
     )
-    if len(daily_closes) < SMA_WINDOW:
-        return "NO_TRADE", ab.INSUFFICIENT_SMA200_HISTORY
-    average = sma([float(close) for close in daily_closes], SMA_WINDOW)[-1]
-    if average is None:
-        return "NO_TRADE", ab.INSUFFICIENT_SMA200_HISTORY
-    trend_up = daily_closes[-1] > average
-
-    causal = [
-        row for row in _ordered(rows_4h) if _open_time_seconds(row) + bar_seconds <= decision_time
-    ]
-    if len(causal) < MACD_SLOW + MACD_SIGNAL_PERIOD - 1:
-        return "NO_TRADE", REASON_MACD_HISTORY_INSUFFICIENT
-    macd = MacdIndicator().compute(
-        causal, {"fast": MACD_FAST, "slow": MACD_SLOW, "signal": MACD_SIGNAL_PERIOD}
-    )
-    rsi = RsiIndicator().compute(causal, {"period": RSI_PERIOD})
-    if not RSI_LOW <= rsi <= RSI_HIGH:
-        return "NO_TRADE", REASON_RSI_EXTREME
-
-    momentum_up = macd["macd"] > macd["signal"]
-    if trend_up and momentum_up:
-        return "LONG", "TREND_UP_MACD_LONG"
-    if not trend_up and not momentum_up:
-        return "SHORT", "TREND_DOWN_MACD_SHORT"
-    return "NO_TRADE", REASON_SIGNAL_MIXED
+    return rule.direction, rule.reason
 
 
 # --------------------------------------------------------------------------- #
@@ -532,6 +604,10 @@ class BaselineComparison:
     net_return: float
     rule_version: str = ""
     reason: str = ""
+    rule_input_hash: str = ""
+
+    def to_dict(self) -> dict[str, Any]:
+        return dict(asdict(self))
 
 
 @dataclass(frozen=True, slots=True)
@@ -555,6 +631,8 @@ class DecisionPerformance:
     direction_correct: bool
     outcome: str
     invalidation_hit: bool | None
+    mfe: float
+    mae: float
     comparisons: tuple[BaselineComparison, ...]
     cost_bps_per_side: float
     round_trip_cost: float
@@ -606,6 +684,7 @@ def _comparison(
     cost_model: ab.CostModel,
     rule_version: str = "",
     reason: str = "",
+    rule_input_hash: str = "",
 ) -> BaselineComparison:
     gross, costs, net = sleeve_outcome(
         direction=direction, entry_price=entry_price, exit_price=exit_price, cost_model=cost_model
@@ -619,6 +698,7 @@ def _comparison(
         net_return=net,
         rule_version=rule_version,
         reason=reason,
+        rule_input_hash=rule_input_hash,
     )
 
 
@@ -644,7 +724,7 @@ def build_performance(
     if outcome.decision_hash != record.decision_hash:
         raise ValueError("outcome does not belong to this decision record")
 
-    rule_direction, rule_reason = deterministic_trend_direction(
+    rule = deterministic_rule_state(
         rows_4h=rows_4h,
         daily_rows=daily_rows,
         decision_time=record.timestamp,
@@ -654,12 +734,13 @@ def build_performance(
     comparisons = (
         _comparison(
             BASELINE_ID_DETERMINISTIC,
-            direction=rule_direction,
+            direction=rule.direction,
             entry_price=outcome.entry_price,
             exit_price=outcome.exit_price,
             cost_model=cost_model,
             rule_version=DETERMINISTIC_RULE_VERSION,
-            reason=rule_reason,
+            reason=rule.reason,
+            rule_input_hash=rule.inputs_hash,
         ),
         _comparison(
             BASELINE_ID_BUY_AND_HOLD,
@@ -689,6 +770,8 @@ def build_performance(
         direction_correct=outcome.direction_correct,
         outcome=outcome.outcome,
         invalidation_hit=outcome.invalidation_hit,
+        mfe=outcome.mfe,
+        mae=outcome.mae,
         comparisons=comparisons,
         cost_bps_per_side=cost_model.fee_bps_per_side
         + cost_model.spread_bps_per_side

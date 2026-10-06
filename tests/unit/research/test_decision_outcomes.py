@@ -440,6 +440,8 @@ def _perf(
         direction_correct=direction_correct if directional else False,
         outcome="WIN" if net_return > 0 else "LOSS",
         invalidation_hit=None,
+        mfe=0.02 if directional else 0.0,
+        mae=-0.01 if directional else 0.0,
         comparisons=(
             do.BaselineComparison(
                 baseline_id=do.BASELINE_ID_DETERMINISTIC,

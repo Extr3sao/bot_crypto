@@ -129,6 +129,7 @@ def _random_comparator(
         "n": len(values),
         "seed": seed,
         "assignment": list(assigned),
+        "assignment_digest": ac.payload_digest(list(assigned)),
         "distribution": do.direction_distribution(assigned),
         "net_returns": values,
         "mean_net_return": _mean(values),

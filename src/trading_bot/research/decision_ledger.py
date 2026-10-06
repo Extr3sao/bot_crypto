@@ -93,6 +93,8 @@ def decision_entry(
     provenance: Mapping[str, Any],
     raw_evidence_path: str = "",
     recorded_at: int | None = None,
+    scheduled_decision_time: int | None = None,
+    actual_execution_time: int | None = None,
 ) -> dict[str, Any]:
     """Assemble the immutable ledger entry for one sealed real decision.
 
@@ -145,6 +147,17 @@ def decision_entry(
         "provenance": dict(provenance),
         "provenance_digest": ap.provenance_digest(provenance),
         "recorded_at": int(time.time()) if recorded_at is None else int(recorded_at),
+        "scheduled_decision_time": (
+            record.timestamp if scheduled_decision_time is None else int(scheduled_decision_time)
+        ),
+        "actual_execution_time": (
+            None if actual_execution_time is None else int(actual_execution_time)
+        ),
+        "delay_seconds": (
+            None
+            if actual_execution_time is None
+            else int(actual_execution_time) - int(record.timestamp)
+        ),
     }
 
 

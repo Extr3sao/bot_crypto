@@ -63,6 +63,13 @@ reports/*
 evidence/real_decisions/raw_evidence/
 
 # ============================================================
+# CAP-004 — estado operativo vivo (cambia en cada ciclo, no es evidencia)
+# El manifiesto, el RAW_EVIDENCE_MANIFEST y los checkpoints SI se versionan.
+# ============================================================
+evidence/real_decisions/heartbeat.json
+evidence/real_decisions/CAMPAIGN_LOCK.json
+
+# ============================================================
 # Notebooks — solo checkpoints
 # ============================================================
 notebooks/.ipynb_checkpoints/
