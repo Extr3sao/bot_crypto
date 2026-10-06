@@ -29,6 +29,7 @@ from dataclasses import asdict, dataclass
 from typing import Any
 
 from trading_bot.research import agentic_contracts as ac
+from trading_bot.research import analyst_provenance as ap
 
 __all__ = [
     "ALLOWED_DECISIONS",
@@ -176,15 +177,24 @@ def seal_analyst_decision(
     snapshot_hash: str,
     raw_data_hash: str,
     critic_output: Any = None,
+    provenance: Mapping[str, Any] | None = None,
 ) -> ac.DecisionRecord:
     """Seal a validated analyst answer *before* the outcome exists.
 
     Refuses to seal anything that violates the frozen schema or smuggles sizing.
+
+    ``provenance`` is optional for CAP-002 compatibility.  CAP-003 always passes
+    it, and the real ledger refuses any decision whose provenance is incomplete,
+    so an unreproducible run can never become a campaign observation.
     """
     problems = validate_analyst_output(payload)
     if problems:
         raise ValueError(f"refusing to seal an invalid analyst answer: {problems}")
-    agent_output = {
+    if provenance is not None:
+        missing = ap.provenance_missing(provenance)
+        if missing:
+            raise ValueError(f"refusing to seal with incomplete provenance: {missing}")
+    agent_output: dict[str, Any] = {
         "analyst": dict(payload),
         "prompt_version": PROMPT_VERSION,
         "prompt_digest": prompt_digest(),
@@ -193,6 +203,9 @@ def seal_analyst_decision(
         "model_id": str(payload.get("model_id", "")),
         "model_configuration": str(payload.get("model_configuration", "")),
     }
+    if provenance is not None:
+        agent_output["provenance"] = dict(provenance)
+        agent_output["provenance_digest"] = ap.provenance_digest(provenance)
     return ac.seal_decision_record(
         timestamp=int(payload["decision_time"]),
         prompt_version=PROMPT_VERSION,

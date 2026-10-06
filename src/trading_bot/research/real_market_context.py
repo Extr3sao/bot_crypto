@@ -44,6 +44,7 @@ from trading_bot.research.small_capital_v1 import sma
 
 __all__ = [
     "BAR_SECONDS",
+    "CAMPAIGN_ASSETS",
     "CONTRACT_INTERVALS",
     "G_REAL_MARKET_CONTEXT",
     "PILOT_ASSETS",
@@ -63,11 +64,22 @@ __all__ = [
 PROVIDER = "binance_public_ccxt"
 REAL_SOURCE_TYPE = "REAL_MARKET_DATA"
 
-#: Pilot universe — deliberately two assets only.
+#: Pilot universe — deliberately two assets only (CAP-002).
 PILOT_ASSETS: tuple[str, ...] = ("BINANCE:BTCUSDT", "BINANCE:ETHUSDT")
+
+#: CAP-003 campaign universe: four liquid pairs, several regimes, still small
+#: enough that each decision is read and argued by a human/LLM analyst.
+CAMPAIGN_ASSETS: tuple[str, ...] = (
+    "BINANCE:BTCUSDT",
+    "BINANCE:ETHUSDT",
+    "BINANCE:SOLUSDT",
+    "BINANCE:XRPUSDT",
+)
 PROVIDER_SYMBOLS: dict[str, str] = {
     "BINANCE:BTCUSDT": "BTC/USDT",
     "BINANCE:ETHUSDT": "ETH/USDT",
+    "BINANCE:SOLUSDT": "SOL/USDT",
+    "BINANCE:XRPUSDT": "XRP/USDT",
 }
 
 #: Contract interval -> (ccxt interval, seconds per bar).

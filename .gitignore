@@ -56,6 +56,13 @@ reports/*
 !reports/.gitkeep
 
 # ============================================================
+# CAP-003 — evidencias OHLCV crudas: locales por tamano.
+# El ledger (evidence/real_decisions/*.jsonl) SI se versiona y
+# fija cada fichero crudo con su sha256.
+# ============================================================
+evidence/real_decisions/raw_evidence/
+
+# ============================================================
 # Notebooks — solo checkpoints
 # ============================================================
 notebooks/.ipynb_checkpoints/
