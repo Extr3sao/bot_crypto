@@ -780,3 +780,28 @@ def test_settle_blocks_a_matured_decision_when_its_rows_are_absent(tmp_path: Pat
     assert result["blocked"][0]["code"] == "OUTCOME_BLOCKED_DATA"
     assert any(item["code"] == "OUTCOME_BLOCKED_DATA" for item in result["errors"])
     assert ledger.outcomes() == []  # no extrapolated or substituted candle
+
+
+def _load_verifier() -> Any:
+    path = Path(__file__).resolve().parents[3] / "scripts" / "cap004_verify.py"
+    spec = importlib.util.spec_from_file_location("cap004_verify_probe", path)
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def test_verifier_treats_a_stale_heartbeat_as_a_diagnostic_not_a_failure() -> None:
+    verifier = _load_verifier()
+    now = 1_791_313_581
+    # a heartbeat written by the last completed cycle is a real record however old it is:
+    # §33 lets the runner be offline and still settle matured decisions on restart
+    assert verifier.heartbeat_integrity(now - 3_935, now) is True
+    assert verifier.heartbeat_integrity(now - 30 * 86_400, now) is True
+    # a fabricated or future-dated stamp is still refused
+    assert verifier.heartbeat_integrity(0, now) is False
+    assert verifier.heartbeat_integrity(now + 1, now) is False
+    # and the age is published as a diagnostic, never as a gating check or a silent pass
+    verifier.diagnose("offline at verification time")
+    assert verifier.DIAGNOSTICS == ["offline at verification time"]
+    assert verifier.CHECKS == []

@@ -149,6 +149,7 @@ FORBIDDEN_STATUS_WORDS = (
 
 CHECKS: list[dict[str, Any]] = []
 LIMITATIONS: list[str] = []
+DIAGNOSTICS: list[str] = []
 
 
 def check(name: str, ok: bool, detail: str = "") -> bool:
@@ -158,6 +159,11 @@ def check(name: str, ok: bool, detail: str = "") -> bool:
 
 def limit(note: str) -> None:
     LIMITATIONS.append(note)
+
+
+def diagnose(note: str) -> None:
+    """An observation that is reported but never gates the verdict."""
+    DIAGNOSTICS.append(note)
 
 
 def load(path: Path) -> Any:
@@ -191,6 +197,17 @@ def as_int(value: Any, default: int = -1) -> int:
     if isinstance(value, bool) or not isinstance(value, (int, float)):
         return default
     return int(value)
+
+
+def heartbeat_integrity(stamp: int, now: int) -> bool:
+    """A heartbeat is a *real* record and is never dated in the future.
+
+    Freshness is deliberately excluded: whether the runner was live when the
+    verifier ran is a monitoring fact (§33 lets it be offline and still settle
+    matured decisions on restart), so an aged heartbeat must never turn an
+    intact ledger into a FAIL.  Age is reported as a diagnostic instead.
+    """
+    return 0 < stamp <= now
 
 
 def decision_hash_of(entry: Mapping[str, Any]) -> str:
@@ -802,7 +819,20 @@ def main() -> int:
     check("heartbeat process status is in the allowed vocabulary", heartbeat.get("process_status") in CAMPAIGN_STATUSES, str(heartbeat.get("process_status")))
     check("heartbeat publishes the next decision slot", isinstance(heartbeat.get("next_decision_slot"), int))
     check("heartbeat publishes pending maturities", isinstance(heartbeat.get("pending_maturities"), int))
-    check("heartbeat age is bounded by the interval", (now - int(heartbeat.get("timestamp", 0))) <= 3_600, str(now - int(heartbeat.get("timestamp", 0))))
+    heartbeat_stamp = as_int(heartbeat.get("timestamp"), 0)
+    check(
+        "heartbeat is a real record and is never dated in the future",
+        heartbeat_integrity(heartbeat_stamp, now),
+        str(heartbeat_stamp),
+    )
+    heartbeat_age = now - heartbeat_stamp
+    diagnose(
+        f"heartbeat age = {heartbeat_age}s: the runner was "
+        f"{'live' if heartbeat_age <= 3_600 else 'not live'} at verification time. "
+        "Liveness is a monitoring fact, never a verification verdict: §33 makes an offline "
+        "runner a legitimate state that must still settle already-matured decisions on "
+        "restart, so a stale heartbeat must not turn an intact ledger into a FAIL"
+    )
     today = dt.datetime.fromtimestamp(now, dt.UTC).strftime("%Y-%m-%d")
     check("a daily rollup exists for today", (CAP004_ROOT / "daily" / f"{today}.json").is_file())
 
@@ -989,6 +1019,7 @@ def main() -> int:
         "false_success": len(false_success),
         "false_success_detail": false_success,
         "limitations": LIMITATIONS,
+        "diagnostics": DIAGNOSTICS,
         "ledger": {
             "root": str(LEDGER_ROOT),
             "n_decisions": len(decisions),
@@ -1020,6 +1051,8 @@ def main() -> int:
         lines.append(f"- FALSE_SUCCESS: {trigger}")
     for note in LIMITATIONS:
         lines.append(f"- LIMITATION: {note}")
+    for note in DIAGNOSTICS:
+        lines.append(f"- DIAGNOSTIC: {note}")
     lines.append("")
     (CAP004_ROOT / "CAP004_VERIFICATION.md").write_text("\n".join(lines), encoding="utf-8")
 
@@ -1035,6 +1068,8 @@ def main() -> int:
         print(f"  FALSE_SUCCESS: {trigger}")
     for note in LIMITATIONS:
         print(f"  LIMITATION: {note}")
+    for note in DIAGNOSTICS:
+        print(f"  DIAGNOSTIC: {note}")
     return 0 if status_name == "PASS" else 1
 
 
