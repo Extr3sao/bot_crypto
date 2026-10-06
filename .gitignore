@@ -68,6 +68,9 @@ evidence/real_decisions/raw_evidence/
 # ============================================================
 evidence/real_decisions/heartbeat.json
 evidence/real_decisions/CAMPAIGN_LOCK.json
+# CAP-004B — the supervisor's operational history is append-only host state
+# (it grows every scheduled run); the campaign ledger remains versioned.
+evidence/real_decisions/operations.jsonl
 
 # ============================================================
 # Notebooks — solo checkpoints
