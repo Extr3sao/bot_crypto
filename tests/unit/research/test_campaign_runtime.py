@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import copy
 import datetime as dt
+import importlib.util
 import json
 from pathlib import Path
 from typing import Any
@@ -725,3 +726,57 @@ def test_stop_flag_is_raiseable_and_clearable(tmp_path: Path) -> None:
     assert lock.stop_requested() is True
     lock.clear_stop()
     assert lock.stop_requested() is False
+
+
+# --------------------------------------------------------------------------- #
+# §32 / §33 — settlement waits for maturity, runs once, survives a restart
+# --------------------------------------------------------------------------- #
+
+
+def _load_runner() -> Any:
+    path = Path(__file__).resolve().parents[3] / "scripts" / "cap004_campaign_runner.py"
+    spec = importlib.util.spec_from_file_location("cap004_runner_probe", path)
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def _rows_by_asset() -> dict[str, dict[str, list[OHLCV]]]:
+    return {"BINANCE:BTCUSDT": {"4h": _rows(), "1D": _rows()}}
+
+
+def test_settle_waits_for_maturity_and_settles_exactly_once(tmp_path: Path) -> None:
+    runner = _load_runner()
+    ledger = dl.DecisionLedger(tmp_path / "real_decisions")
+    ledger.append_decision(_entry())
+
+    early = runner.settle_phase(ledger, rows_by_asset=_rows_by_asset(), now=DT + 86_400 - 1)
+    assert early["settled"] == []
+    assert len(early["pending"]) == 1
+    assert early["pending"][0]["state"] == cs.STATE_PENDING_MATURITY
+    assert ledger.outcomes() == []  # never settled a second before maturity
+
+    # a restart after the horizon closed settles the matured decision
+    matured = runner.settle_phase(ledger, rows_by_asset=_rows_by_asset(), now=DT + 86_400)
+    assert len(matured["settled"]) == 1
+    assert len(ledger.outcomes()) == 1
+    assert len(ledger.evaluations()) == 1
+    assert ledger.verify_chain()["status"] == "INTACT"
+
+    # re-running much later never creates a second outcome
+    again = runner.settle_phase(ledger, rows_by_asset=_rows_by_asset(), now=DT + 9 * 86_400)
+    assert again["settled"] == []
+    assert len(ledger.outcomes()) == 1
+    assert len(ledger.evaluations()) == 1
+
+
+def test_settle_blocks_a_matured_decision_when_its_rows_are_absent(tmp_path: Path) -> None:
+    runner = _load_runner()
+    ledger = dl.DecisionLedger(tmp_path / "real_decisions")
+    ledger.append_decision(_entry())
+    result = runner.settle_phase(ledger, rows_by_asset={}, now=DT + 86_400)
+    assert result["settled"] == []
+    assert result["blocked"][0]["code"] == "OUTCOME_BLOCKED_DATA"
+    assert any(item["code"] == "OUTCOME_BLOCKED_DATA" for item in result["errors"])
+    assert ledger.outcomes() == []  # no extrapolated or substituted candle
