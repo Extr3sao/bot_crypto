@@ -36,6 +36,7 @@ __all__ = [
     "benjamini_hochberg",
     "best_of_n_null",
     "concentration",
+    "cost_frontier",
     "holm",
     "hypothesis_registry_hash",
     "mde_bps",
@@ -101,6 +102,96 @@ def min_gross_hurdle_bps(
             "cost (COST_MODEL_V3 23.790569 bps) + 25% execution uncertainty + "
             "RFC-023 winner's-curse buffer (8.121 bps) + z_{0.975} * sigma_trade / sqrt(n_eff)"
         ),
+    }
+
+
+def cost_frontier(
+    *,
+    gross_bps: float,
+    statistical_bps: float,
+    cost_bps: float = COST_BPS_V3,
+    execution_fraction: float = EXECUTION_UNCERTAINTY_FRACTION,
+    winners_curse_bps: float = WINNERS_CURSE_BUFFER_BPS,
+) -> dict[str, Any]:
+    """How far the certified cost must fall before an observed edge becomes tradeable.
+
+    The question this answers is not "is the alpha significant" but "is the cost the
+    binding constraint".  Two frontiers are reported because they are the two honest
+    readings of the same data:
+
+    * ``net_break_even_cost_bps`` — the cost at which the *raw* average net PnL is
+      zero (``gross - cost``).  Every safety margin is dropped: the most charitable
+      reading available.
+    * ``admission_break_even_cost_bps`` — the cost at which the *frozen admission
+      rule* is exactly met, i.e. ``gross == cost * (1 + f) + w + s``.  Solving for
+      the cost gives ``(gross - w - s) / (1 + f)``.  A **negative** value means no
+      cost level whatsoever admits the cell: the venue would have to *pay* the
+      strategy ``required_rebate_bps`` per round trip.
+
+    ``path_to_viability`` names what could still admit the cell:
+
+    * ``ADMISSIBLE`` — already clears the frozen rule.
+    * ``COST_LIMITED`` — a cost cut alone would suffice; the required cut is
+      ``cost_reduction_needed_fraction``.
+    * ``SAMPLE_TOO_SMALL`` — the cost is *not* the binding constraint; the cell needs
+      a smaller statistical term (more effective observations) because the point
+      estimate does not even cover the non-cost part of the bar.
+    * ``BELOW_SELECTION_BUFFER`` — the point estimate does not clear the winner's
+      curse buffer on its own, so neither cheaper execution nor more data helps.
+
+    The classification is arithmetic and conditional on the point estimate being the
+    true effect.  A cell whose p-value does not survive multiplicity has no true
+    effect to project, and the caller is expected to say so rather than read
+    ``SAMPLE_TOO_SMALL`` as "collect more data".
+    """
+    if cost_bps < 0.0:
+        raise ValueError("cost_bps must be >= 0")
+    if statistical_bps < 0.0:
+        raise ValueError("statistical_bps must be >= 0")
+    if execution_fraction < 0.0:
+        raise ValueError("execution_fraction must be >= 0")
+
+    non_cost = winners_curse_bps + statistical_bps
+    hurdle = cost_bps * (1.0 + execution_fraction) + non_cost
+    break_even = (gross_bps - non_cost) / (1.0 + execution_fraction)
+    required_rebate = max(0.0, -break_even)
+
+    if cost_bps > 0.0:
+        reduction: float | None = 1.0 - break_even / cost_bps
+        net_reduction: float | None = 1.0 - gross_bps / cost_bps
+    else:
+        reduction = None
+        net_reduction = None
+
+    if gross_bps >= hurdle:
+        path = "ADMISSIBLE"
+    elif break_even >= 0.0:
+        path = "COST_LIMITED"
+    elif gross_bps > winners_curse_bps:
+        path = "SAMPLE_TOO_SMALL"
+    else:
+        path = "BELOW_SELECTION_BUFFER"
+
+    return {
+        "gross_bps": round(gross_bps, 6),
+        "cost_bps": round(cost_bps, 6),
+        "execution_fraction": execution_fraction,
+        "winners_curse_buffer_bps": round(winners_curse_bps, 6),
+        "statistical_uncertainty_bps": round(statistical_bps, 6),
+        "hurdle_bps": round(hurdle, 6),
+        "admission_gap_bps": round(gross_bps - hurdle, 6),
+        "admission_break_even_cost_bps": round(break_even, 6),
+        "required_rebate_bps": round(required_rebate, 6),
+        "cost_reduction_needed_fraction": (
+            None if reduction is None else round(reduction, 6)
+        ),
+        "net_break_even_cost_bps": round(gross_bps, 6),
+        "net_cost_reduction_needed_fraction": (
+            None if net_reduction is None else round(net_reduction, 6)
+        ),
+        "admissible_at_zero_cost": gross_bps >= non_cost,
+        "net_positive_at_zero_cost": gross_bps > 0.0,
+        "path_to_viability": path,
     }
 
 

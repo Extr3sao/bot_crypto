@@ -49,6 +49,7 @@ REGISTRY_PATH = REPORT_DIR / "ALPHA001_HYPOTHESIS_REGISTRY.json"
 INVENTORY_PATH = REPORT_DIR / "EXISTING_ALPHA_INVENTORY.json"
 NEGATIVE_PATH = REPORT_DIR / "NEGATIVE_ALPHA_REGISTRY.json"
 DISCOVERY_PATH = REPORT_DIR / "DISCOVERY_RESULTS.json"
+FRONTIER_PATH = REPORT_DIR / "COST_FRONTIER.json"
 OUT_JSON = REPORT_DIR / "ALPHA001_VERIFICATION.json"
 OUT_MD = REPORT_DIR / "ALPHA001_VERIFICATION.md"
 
@@ -293,6 +294,18 @@ def hurdle_bps(n_effective: int) -> float:
         + COST_BPS_V3 * EXECUTION_UNCERTAINTY_FRACTION
         + WINNERS_CURSE_BUFFER_BPS
         + statistical
+    )
+
+
+def admission_break_even_cost_bps(gross_bps: float, statistical_bps: float) -> float:
+    """Own re-derivation of ``cost = (gross - w - s) / (1 + f)``.
+
+    The cost at which the frozen admission rule is exactly met.  A negative value is
+    a *required rebate*: no cost level admits the cell, so the binding constraint is
+    the effect size rather than the fee schedule.
+    """
+    return (gross_bps - WINNERS_CURSE_BUFFER_BPS - statistical_bps) / (
+        1.0 + EXECUTION_UNCERTAINTY_FRACTION
     )
 
 
@@ -826,6 +839,119 @@ def verify_hurdle(verifier: Verifier, artifacts: dict[str, Any]) -> None:
     )
 
 
+def verify_cost_frontier(verifier: Verifier, artifacts: dict[str, Any]) -> None:
+    """Re-derive the cost frontier: is the fee schedule, or the effect size, binding?"""
+    summaries = artifacts["summaries"]
+    statistical = artifacts["hurdle"]["statistical_uncertainty_bps"]
+    cost = artifacts["cost_bps"]
+    non_cost_bar = WINNERS_CURSE_BUFFER_BPS + statistical
+
+    free_execution = [
+        hid
+        for hid in EXPECTED_HYPOTHESES
+        if summaries[hid]["gross_bps"] >= non_cost_bar
+    ]
+    verifier.check(
+        "COST_FRONTIER_NOTHING_SURVIVES_FREE_EXECUTION",
+        not free_execution,
+        f"no cell reaches the non-cost bar {round(non_cost_bar, 6)} bps with cost = 0",
+        free_execution or "none",
+        "removing the entire certified cost still admits no preregistered cell",
+    )
+
+    frontier_cost = max(
+        admission_break_even_cost_bps(summaries[hid]["gross_bps"], statistical)
+        for hid in EXPECTED_HYPOTHESES
+    )
+    verifier.check(
+        "COST_FRONTIER_REQUIRES_A_REBATE",
+        frontier_cost < 0.0,
+        "admission break-even cost < 0 for every cell (a rebate is required)",
+        round(frontier_cost, 6),
+        "a non-negative value would mean cheaper execution could still admit something",
+    )
+
+    best = max(EXPECTED_HYPOTHESES, key=lambda hid: summaries[hid]["gross_bps"])
+    verifier.check(
+        "COST_FRONTIER_NO_NET_POSITIVE_CELL",
+        all(summaries[hid]["gross_bps"] < cost for hid in EXPECTED_HYPOTHESES),
+        f"gross < certified cost {cost} bps for every cell",
+        round(summaries[best]["gross_bps"], 6),
+    )
+
+    # the shipped primitive must agree with this file's own re-derivation
+    mismatched = [
+        hid
+        for hid in EXPECTED_HYPOTHESES
+        if not verifier.close(
+            a1.cost_frontier(
+                gross_bps=summaries[hid]["gross_bps"], statistical_bps=statistical
+            )["admission_break_even_cost_bps"],
+            round(admission_break_even_cost_bps(summaries[hid]["gross_bps"], statistical), 6),
+            1e-6,
+        )
+    ]
+    verifier.check(
+        "COST_FRONTIER_MODULE_AGREES_WITH_REDERIVATION",
+        not mismatched,
+        "cost_frontier() == own (gross - w - s) / (1 + f) for all 12 cells",
+        mismatched or "all agree",
+    )
+
+    if not FRONTIER_PATH.exists():
+        verifier.limitations.append(
+            "The cost-frontier artifact (reports/alpha001/COST_FRONTIER.json) was absent, so only "
+            "the arithmetic above could be verified; the rendered frontier report was not checked."
+        )
+        return
+
+    frontier = load_json(FRONTIER_PATH)
+    declared_cost = {
+        "artifact": frontier["frozen_inputs"]["cost_bps"],
+        "module": a1.COST_BPS_V3,
+        "evidence": cost,
+    }
+    verifier.check(
+        "COST_FRONTIER_NO_COST_MODEL_CHANGE",
+        len(set(declared_cost.values())) == 1
+        and frontier["frozen_inputs"]["cost_model_changed"] is False,
+        f"the frontier reuses the frozen certified cost {cost} bps",
+        declared_cost,
+        "a cost frontier is only meaningful at the cost the campaign actually admitted against",
+    )
+
+    artifact_best = frontier["per_hypothesis"][best]["admission_break_even_cost_bps"]
+    declared = {
+        "frontier": frontier["frontier"]["frontier_admission_cost_bps"],
+        "best_cell": artifact_best,
+    }
+    verifier.check(
+        "COST_FRONTIER_ARTIFACT_MATCHES_REDERIVATION",
+        verifier.close(declared["frontier"], round(frontier_cost, 6), 1e-6)
+        and verifier.close(declared["best_cell"], round(frontier_cost, 6), 1e-6)
+        and frontier["frontier"]["best_hypothesis"] == best
+        and frontier["frontier"]["cells_admissible_at_any_cost"] == 0,
+        round(frontier_cost, 6),
+        declared,
+        "the published frontier must equal this independent re-derivation",
+    )
+
+    shares = frontier["hurdle_decomposition"]["shares"]
+    verifier.check(
+        "COST_FRONTIER_SHARES_SUM_TO_ONE",
+        abs(sum(shares.values()) - 1.0) <= 1e-5,
+        "the four hurdle components account for the whole bar",
+        round(sum(shares.values()), 6),
+    )
+
+    if frontier["closure"]["answer"] == "NO":
+        verifier.limitations.append(
+            "The reported cost frontier is arithmetic, not a market claim: it says how far the "
+            "certified cost would have to fall given the observed point estimates, and it inherits "
+            "every caveat about those estimates being selection artifacts."
+        )
+
+
 def verify_multiplicity(verifier: Verifier, artifacts: dict[str, Any]) -> None:
     rows = artifacts["multiple_testing"]["rows"]
     ids = [row["hypothesis_id"] for row in rows]
@@ -1156,6 +1282,7 @@ def main(argv: list[str] | None = None) -> int:
     verify_information(verifier, artifacts, series)
     verify_economics(verifier, artifacts, series)
     verify_hurdle(verifier, artifacts)
+    verify_cost_frontier(verifier, artifacts)
     verify_multiplicity(verifier, artifacts)
     verify_best_of_n(verifier, artifacts, series)
     verify_concentration_and_stability(verifier, artifacts, series)
@@ -1180,10 +1307,13 @@ def main(argv: list[str] | None = None) -> int:
     verified_files = {
         "src/trading_bot/research/alpha001.py": file_sha256(REPO / "src/trading_bot/research/alpha001.py"),
         "scripts/alpha001_run.py": file_sha256(REPO / "scripts/alpha001_run.py"),
+        "scripts/alpha001_cost_frontier.py": file_sha256(REPO / "scripts/alpha001_cost_frontier.py"),
         "reports/alpha001/ALPHA001_ARTIFACTS.json": file_sha256(ARTIFACTS_PATH),
         "reports/alpha001/ALPHA001_SERIES.json": file_sha256(SERIES_PATH),
         "reports/alpha001/ALPHA001_HYPOTHESIS_REGISTRY.json": file_sha256(REGISTRY_PATH),
     }
+    if FRONTIER_PATH.exists():
+        verified_files["reports/alpha001/COST_FRONTIER.json"] = file_sha256(FRONTIER_PATH)
     result = {
         "campaign": "ALPHA-001",
         "verifier": "scripts/alpha001_verify.py",
