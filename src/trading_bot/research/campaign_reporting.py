@@ -10,9 +10,16 @@ milestones are immutable:
 * **Status** — the campaign dashboard at ``reports/cap004/``: age, every
   population counted separately, checkpoint progress, the next slot, the next
   maturity, the analyst's direction mix, errors and chain status.
+* **Cycle journal** — an append-only, hash-chained stream of *compact* cycle
+  events (CAP-004C).  One event per supervised invocation: counts, deltas, chain
+  and drift status, verifier result, error codes.  It never embeds the campaign
+  state, the ledger records or the daily report: the earlier full-snapshot
+  journal did, which made each cycle's record an order of magnitude larger than
+  the run before it and consumed several GiB per day.
 * **Daily rollup** — per UTC day: decisions sealed, outcomes matured, evaluations
   completed, failures, drift and verification.  Derived from the ledger plus the
-  cycle journal, so it is reproducible rather than remembered.
+  cycle journal, so it is reproducible rather than remembered.  Bounded by
+  construction: it aggregates the day's events instead of embedding them.
 * **Checkpoints** — ``CHECKPOINT_020/050/100`` are written **once per population**.
   Both the file and its markdown mirror carry ``decision_set_hash``; a later run
   that finds a different population under the same checkpoint reports
@@ -22,15 +29,23 @@ Reports live under ``reports/`` (regenerable, gitignored); checkpoints live unde
 ``evidence/real_decisions/checkpoints/`` because they are evidence.  No status
 vocabulary here contains a promotional word.
 
+Storage contract (CAP-004C): every write here is bounded.  The journal grows
+*linearly* with the number of cycles (≈0.7 KiB each), is segmented by size with a
+per-segment digest manifest, and is read back with a hard per-line byte cap so a
+single corrupt or legacy line can never again exhaust memory in the middle of a
+real cycle.  The daily projection is O(1) per cycle, not O(cycles that day).
+
 Research only: no orders, no credentials, no capital.
 """
 
 from __future__ import annotations
 
 import datetime as dt
+import hashlib
 import json
 import os
-from collections.abc import Mapping, Sequence
+from collections import deque
+from collections.abc import Iterator, Mapping, Sequence
 from pathlib import Path
 from typing import Any
 
@@ -41,13 +56,23 @@ from trading_bot.research import decision_outcomes as do
 __all__ = [
     "CHECKPOINT_DIRNAME",
     "CHECKPOINT_JSON_VERSION",
+    "CYCLE_EVENT_KEYS",
+    "CYCLE_GENESIS_HASH",
     "CYCLE_JOURNAL_FILENAME",
+    "CYCLE_JOURNAL_VERSION",
+    "CYCLE_SEGMENT_DIRNAME",
+    "CYCLE_SEGMENT_MAX_BYTES",
+    "DAILY_CYCLE_TAIL",
+    "DAILY_REPORT_VERSION",
     "HEARTBEAT_FILENAME",
+    "MAX_JOURNAL_LINE_BYTES",
     "build_checkpoint_payload",
     "checkpoint_decision_set_hash",
     "checkpoint_decision_set_hash_from_records",
     "checkpoint_dir",
     "checkpoint_md",
+    "cycle_event",
+    "cycle_journal_segments",
     "daily_report",
     "heartbeat_age_seconds",
     "heartbeat_payload",
@@ -55,8 +80,10 @@ __all__ = [
     "read_cycle_journal",
     "read_heartbeat",
     "render_status_md",
+    "rotate_cycle_journal",
     "status_payload",
     "utc_day",
+    "verify_cycle_chain",
     "write_checkpoint",
     "write_cycle_record",
     "write_daily_report",
@@ -67,7 +94,54 @@ __all__ = [
 HEARTBEAT_FILENAME = "heartbeat.json"
 CHECKPOINT_DIRNAME = "checkpoints"
 CYCLE_JOURNAL_FILENAME = "cycles.jsonl"
+CYCLE_SEGMENT_DIRNAME = "cycles_segments"
+CYCLE_JOURNAL_VERSION = "CAP004_CYCLE_EVENT_V1"
+DAILY_REPORT_VERSION = "CAP004_DAILY_PROJECTION_V2"
 CHECKPOINT_JSON_VERSION = "CAMPAIGN_CHECKPOINT_V1"
+
+#: Hard cap on a single journal line.  A line larger than this is skipped and
+#: counted, never materialised: the legacy full-snapshot journal reached GiB per
+#: line and a single ``readlines`` on it aborted a real campaign cycle.
+MAX_JOURNAL_LINE_BYTES = 256 * 1024
+
+#: The active journal is rolled into a numbered segment once it passes this size.
+#: 4 MiB ≈ 6000 cycles ≈ 60 days at the 15-minute cadence.
+CYCLE_SEGMENT_MAX_BYTES = 4 * 1024 * 1024
+
+#: A closed segment is never modified; its digest is recorded in the manifest.
+CYCLE_SEGMENT_MANIFEST = "manifest.json"
+
+#: The compact event is the whole journal contract (CAP-004C §8).
+CYCLE_EVENT_KEYS = (
+    "event_version",
+    "cycle",
+    "campaign_id",
+    "day",
+    "started_at",
+    "started_at_utc",
+    "finished_at",
+    "finished_at_utc",
+    "actions_due",
+    "actions_completed",
+    "sealed_count_delta",
+    "settled_count_delta",
+    "evaluated_count_delta",
+    "population",
+    "chain_status",
+    "drift_status",
+    "verifier_result",
+    "error_codes",
+    "previous_event_hash",
+    "event_hash",
+)
+
+#: Bounded daily projection: the tail is kept for forensics, the day is counted.
+DAILY_CYCLE_TAIL = 8
+DAILY_FAILURES_TAIL = 50
+
+#: Chain seed for the compact cycle journal (the journal is derived, but its
+#: internal chain makes an accidental edit or truncation visible).
+CYCLE_GENESIS_HASH = hashlib.sha256(b"CAP004_CYCLE_EVENT_GENESIS").hexdigest()
 
 
 # --------------------------------------------------------------------------- #
@@ -114,8 +188,13 @@ def heartbeat_payload(
     last_successful_verify: int | None = None,
     errors: Sequence[Mapping[str, Any]] = (),
     modes_completed: Sequence[str] = (),
+    disk: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
-    """The liveness record: what the runner is, and what it is waiting for."""
+    """The liveness record: what the runner is, and what it is waiting for.
+
+    ``disk`` carries the storage state measured *before* this cycle's work, so
+    liveness and headroom are read from the same file.
+    """
     return {
         "campaign_id": campaign_id,
         "campaign_version": campaign_version,
@@ -150,6 +229,9 @@ def heartbeat_payload(
             )
         },
         "errors": [dict(item) for item in errors],
+        "disk": dict(disk) if disk else None,
+        "disk_free_bytes": (disk or {}).get("free_bytes"),
+        "disk_status": (disk or {}).get("status"),
     }
 
 
@@ -172,26 +254,402 @@ def heartbeat_age_seconds(payload: Mapping[str, Any] | None, *, now: int) -> int
 
 
 # --------------------------------------------------------------------------- #
-# §3 — cycle journal
+# §3 — cycle journal: compact, hash-chained, segmented, bounded to read
 # --------------------------------------------------------------------------- #
 
 
-def write_cycle_record(root: Path, record: Mapping[str, Any]) -> None:
-    """Append one cycle to the local journal that the daily rollup reads."""
-    path = Path(root) / CYCLE_JOURNAL_FILENAME
+def _iter_journal_lines(path: Path, *, max_line_bytes: int) -> Iterator[tuple[bytes, bool]]:
+    """Yield ``(line, oversized)`` pairs without ever holding a huge line.
+
+    DEF-CAMPAIGN-STORAGE-001: the reader used to be ``path.read_text()`` plus a
+    ``splitlines()``, so one multi-GiB line (which the old writer produced every
+    cycle) aborted a real settlement cycle with ``MemoryError``.  This generator
+    streams in fixed-size chunks, keeps at most ``max_line_bytes`` in memory, and
+    *discards* the remainder of an oversized line while flagging it.
+    """
+    chunk_size = 1 << 20
+    buffer = bytearray()
+    oversized = False
+    with Path(path).open("rb") as handle:
+        while True:
+            chunk = handle.read(chunk_size)
+            if not chunk:
+                break
+            start = 0
+            while True:
+                cut = chunk.find(b"\n", start)
+                if cut < 0:
+                    if not oversized:
+                        buffer.extend(chunk[start:])
+                        if len(buffer) > max_line_bytes:
+                            oversized = True
+                            buffer.clear()
+                    break
+                piece = chunk[start:cut]
+                if oversized:
+                    yield b"", True
+                    oversized = False
+                    buffer.clear()
+                else:
+                    buffer.extend(piece)
+                    yield bytes(buffer), False
+                    buffer.clear()
+                start = cut + 1
+    if oversized:
+        yield b"", True
+    elif buffer.strip():
+        yield bytes(buffer), False
+
+
+def journal_line_limit(limit: int | None) -> int | None:
+    """Normalise a tail limit (``None`` = keep everything)."""
+    if limit is None:
+        return None
+    return max(int(limit), 0)
+
+
+def cycle_journal_segments(root: Path) -> list[Path]:
+    """Closed segments in chain order (their names are zero-padded sequence IDs)."""
+    directory = Path(root) / CYCLE_SEGMENT_DIRNAME
+    if not directory.is_dir():
+        return []
+    return sorted(entry for entry in directory.glob("cycles-*.jsonl") if entry.is_file())
+
+
+def _read_journal_file(
+    path: Path,
+    *,
+    kept: deque[dict[str, Any]],
+    limit: int | None,
+    stats: dict[str, int],
+    day: str | None = None,
+) -> None:
+    if not path.is_file():
+        return
+    for raw, oversized in _iter_journal_lines(path, max_line_bytes=MAX_JOURNAL_LINE_BYTES):
+        if oversized:
+            stats["oversized_lines"] += 1
+            continue
+        if not raw.strip():
+            continue
+        try:
+            entry = json.loads(raw.decode("utf-8", errors="replace"))
+        except json.JSONDecodeError:
+            stats["unparsable_lines"] += 1
+            continue
+        stats["lines"] += 1
+        if day is not None and str(entry.get("day")) != day:
+            stats["filtered_lines"] += 1
+            continue
+        # ``deque(maxlen=…)`` does the bounding: ``maxlen=0`` keeps nothing and
+        # ``maxlen=None`` keeps everything, with no branch to get wrong here.
+        kept.append(entry)
+
+
+def read_cycle_journal(
+    root: Path, *, limit: int | None = None, day: str | None = None
+) -> list[dict[str, Any]]:
+    """Read the compact cycle journal (closed segments, then the active file).
+
+    ``limit`` keeps only the LAST ``limit`` events and ``day`` keeps only one UTC
+    day; both filter while streaming, so neither scales the memory used with the
+    size of the log on disk.
+    """
+    tail = journal_line_limit(limit)
+    kept: deque[dict[str, Any]] = deque(maxlen=tail)
+    stats = {"lines": 0, "oversized_lines": 0, "unparsable_lines": 0, "filtered_lines": 0}
+    for segment in cycle_journal_segments(root):
+        _read_journal_file(segment, kept=kept, limit=tail, stats=stats, day=day)
+    _read_journal_file(
+        Path(root) / CYCLE_JOURNAL_FILENAME, kept=kept, limit=tail, stats=stats, day=day
+    )
+    return list(kept)
+
+
+def journal_read_diagnostics(
+    root: Path, *, day: str | None = None
+) -> dict[str, int]:
+    """Counters of what a bounded read had to skip (forensics, never silent)."""
+    stats = {"lines": 0, "oversized_lines": 0, "unparsable_lines": 0, "filtered_lines": 0}
+    kept: deque[dict[str, Any]] = deque(maxlen=0)
+    for segment in cycle_journal_segments(root):
+        _read_journal_file(segment, kept=kept, limit=0, stats=stats, day=day)
+    _read_journal_file(
+        Path(root) / CYCLE_JOURNAL_FILENAME, kept=kept, limit=0, stats=stats, day=day
+    )
+    return stats
+
+
+def _last_event(root: Path) -> dict[str, Any] | None:
+    events = read_cycle_journal(root, limit=1)
+    return events[-1] if events else None
+
+
+def _delta(current: Any, previous: Any) -> int | None:
+    if current is None:
+        return None
+    if previous is None:
+        return int(current)
+    return int(current) - int(previous)
+
+
+def _phase_map(record: Mapping[str, Any], key: str) -> Mapping[str, Any]:
+    """A sub-object of a cycle result, or an empty mapping when absent."""
+    value = record.get(key)
+    return value if isinstance(value, Mapping) else {}
+
+
+def _verifier_result(record: Mapping[str, Any]) -> Any:
+    verify = record.get("verify")
+    if not isinstance(verify, Mapping):
+        return "SKIPPED"
+    return {
+        "status": verify.get("status"),
+        "passed": verify.get("passed"),
+        "total": verify.get("total"),
+        "mismatches": verify.get("mismatches"),
+        "false_success": verify.get("false_success"),
+    }
+
+
+def _action_outcomes(record: Mapping[str, Any], mode: str) -> bool | None:
+    """Whether a due action actually ran this cycle (``None`` = not attempted)."""
+    if mode not in (record.get("modes") or []):
+        return None
+    phase = record.get(mode)
+    if not isinstance(phase, Mapping):
+        return None
+    for key in ("sealed", "settled", "evaluated"):
+        value = phase.get(key)
+        if isinstance(value, Sequence) and not isinstance(value, (str, bytes)):
+            return len(value) > 0
+        if isinstance(value, int):
+            return value > 0
+    skipped = phase.get("skipped")
+    if skipped is not None:
+        return False
+    return None
+
+
+def cycle_event(
+    record: Mapping[str, Any],
+    *,
+    previous_hash: str,
+    previous_population: Mapping[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Project a full in-memory cycle result onto the compact journal contract.
+
+    The full result legitimately carries the counters, the heartbeat and the daily
+    rollup for this cycle's own consumers; none of that belongs in the journal,
+    which is an *event* stream.  Everything here is a scalar or a tiny list.
+    """
+    population = dict(record.get("counters") or {})
+    previous = dict(previous_population or {})
+    seal = _phase_map(record, "seal")
+    settle = _phase_map(record, "settle")
+    chain = _phase_map(record, "chain")
+    drift = _phase_map(record, "drift")
+    errors = [dict(item) for item in (record.get("errors") or [])]
+    modes = [str(item) for item in (record.get("modes") or [])]
+    finished = record.get("finished_at")
+    event: dict[str, Any] = {
+        "event_version": CYCLE_JOURNAL_VERSION,
+        "cycle": int(record.get("cycle", 0)),
+        "campaign_id": record.get("campaign_id"),
+        "day": record.get("day"),
+        "started_at": record.get("started_at"),
+        "started_at_utc": record.get("started_at_utc"),
+        "finished_at": finished,
+        "finished_at_utc": (
+            dt.datetime.fromtimestamp(int(finished), dt.UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
+            if finished is not None
+            else None
+        ),
+        "actions_due": modes,
+        "actions_completed": {
+            mode: _action_outcomes(record, mode) for mode in modes
+        },
+        "sealed_count_delta": len(seal.get("sealed") or []),
+        "settled_count_delta": len(settle.get("settled") or []),
+        "evaluated_count_delta": _delta(
+            population.get("evaluated_decisions"), previous.get("evaluated_decisions")
+        ),
+        "population": {
+            key: population.get(key)
+            for key in (
+                "sealed_decisions",
+                "pending_decisions",
+                "matured_decisions",
+                "matured_unsettled",
+                "settled_outcomes",
+                "evaluated_decisions",
+                "verified_evaluations",
+            )
+        },
+        "chain_status": record.get("campaign_status_chain") or (chain.get("status")),
+        "drift_status": drift.get("status"),
+        "verifier_result": _verifier_result(record),
+        "error_codes": [str(item.get("code")) for item in errors],
+        "previous_event_hash": previous_hash,
+    }
+    event["event_hash"] = ac.payload_digest(event)
+    return event
+
+
+def rotate_cycle_journal(root: Path, *, force: bool = False) -> dict[str, Any]:
+    """Roll the active journal into a numbered, hashed segment when it is large.
+
+    Atomic by construction: the active file is renamed (never truncated and never
+    rewritten), so a crash leaves either the old active journal or a complete
+    segment.  The manifest records the segment's own ``event_hash`` range and its
+    SHA-256, which is what makes the chain auditable across files.
+    """
+    root = Path(root)
+    active = root / CYCLE_JOURNAL_FILENAME
+    if not active.is_file():
+        return {"status": "NO_JOURNAL", "path": str(active)}
+    size = active.stat().st_size
+    if not force and size < CYCLE_SEGMENT_MAX_BYTES:
+        return {"status": "NOT_DUE", "bytes": size, "threshold": CYCLE_SEGMENT_MAX_BYTES}
+    if active.stat().st_size == 0:
+        return {"status": "EMPTY", "path": str(active)}
+
+    directory = root / CYCLE_SEGMENT_DIRNAME
+    directory.mkdir(parents=True, exist_ok=True)
+    sequence = len(cycle_journal_segments(root)) + 1
+    target = directory / f"cycles-{sequence:06d}.jsonl"
+    digest = hashlib.sha256()
+    first_cycle: int | None = None
+    last_cycle: int | None = None
+    first_hash: str | None = None
+    last_hash: str | None = None
+    records = 0
+    # Pass 1 — digest and record count, in fixed-size chunks (bounded memory).
+    with active.open("rb") as handle:
+        while True:
+            chunk = handle.read(1 << 20)
+            if not chunk:
+                break
+            digest.update(chunk)
+            records += chunk.count(b"\n")
+    # Pass 2 — the segment's chain range, again line-by-line and bounded.
+    for raw, oversized in _iter_journal_lines(active, max_line_bytes=MAX_JOURNAL_LINE_BYTES):
+        if oversized or not raw.strip():
+            continue
+        try:
+            entry = json.loads(raw.decode("utf-8", errors="replace"))
+        except json.JSONDecodeError:
+            continue
+        first_cycle = int(entry.get("cycle", 0)) if first_cycle is None else first_cycle
+        last_cycle = int(entry.get("cycle", 0))
+        first_hash = first_hash or entry.get("event_hash")
+        last_hash = entry.get("event_hash")
+    os.replace(active, target)
+    manifest_path = directory / CYCLE_SEGMENT_MANIFEST
+    manifest = read_segment_manifest(root)
+    manifest["segments"] = [
+        entry for entry in manifest.get("segments", []) if entry.get("segment") != target.name
+    ] + [
+        {
+            "segment": target.name,
+            "records": records,
+            "bytes": int(target.stat().st_size),
+            "first_cycle": first_cycle,
+            "last_cycle": last_cycle,
+            "first_event_hash": first_hash,
+            "last_event_hash": last_hash,
+            "sha256": digest.hexdigest(),
+        }
+    ]
+    manifest["segments"].sort(key=lambda item: str(item["segment"]))
+    manifest["segment_version"] = CYCLE_JOURNAL_VERSION
+    manifest["segment_max_bytes"] = CYCLE_SEGMENT_MAX_BYTES
+    write_json_atomic(manifest_path, manifest)
+    return {
+        "status": "ROTATED",
+        "segment": str(target),
+        "records": records,
+        "bytes": int(target.stat().st_size),
+        "sha256": digest.hexdigest(),
+    }
+
+
+def read_segment_manifest(root: Path) -> dict[str, Any]:
+    path = Path(root) / CYCLE_SEGMENT_DIRNAME / CYCLE_SEGMENT_MANIFEST
+    if not path.is_file():
+        return {"segment_version": CYCLE_JOURNAL_VERSION, "segments": []}
+    loaded: dict[str, Any] = json.loads(path.read_text(encoding="utf-8"))
+    return loaded
+
+
+def append_journal_line(path: Path, payload: Mapping[str, Any]) -> None:
+    """Append one compact event.  Flush + fsync so a crash cannot lose the tail."""
     path.parent.mkdir(parents=True, exist_ok=True)
-    text = json.dumps(dict(record), sort_keys=True, ensure_ascii=False, default=str)
+    text = json.dumps(dict(payload), sort_keys=True, ensure_ascii=False, default=str)
     with path.open("a", encoding="utf-8") as handle:
         handle.write(text + "\n")
+        handle.flush()
+        os.fsync(handle.fileno())
 
 
-def read_cycle_journal(root: Path) -> list[dict[str, Any]]:
-    path = Path(root) / CYCLE_JOURNAL_FILENAME
-    if not path.is_file():
-        return []
-    return [
-        json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip()
-    ]
+def write_cycle_record(root: Path, record: Mapping[str, Any]) -> dict[str, Any]:
+    """Append one COMPACT cycle event to the journal (never the full result).
+
+    The record handed in is the runner's full in-memory cycle result; it is
+    projected onto :data:`CYCLE_EVENT_KEYS` before it touches the disk.  The hash
+    chain and the size-driven segmentation keep the log auditable and bounded.
+    """
+    root = Path(root)
+    previous = _last_event(root)
+    event = cycle_event(
+        record,
+        previous_hash=str((previous or {}).get("event_hash") or CYCLE_GENESIS_HASH),
+        previous_population=(previous or {}).get("population"),
+    )
+    append_journal_line(root / CYCLE_JOURNAL_FILENAME, event)
+    rotation = rotate_cycle_journal(root)
+    return {"event": event, "rotation": rotation}
+
+
+def verify_cycle_chain(root: Path) -> dict[str, Any]:
+    """Re-derive the journal's own chain, across closed segments and the active file."""
+    previous = CYCLE_GENESIS_HASH
+    events = 0
+    for path in [*cycle_journal_segments(Path(root)), Path(root) / CYCLE_JOURNAL_FILENAME]:
+        if not path.is_file():
+            continue
+        for raw, oversized in _iter_journal_lines(path, max_line_bytes=MAX_JOURNAL_LINE_BYTES):
+            if oversized or not raw.strip():
+                continue
+            try:
+                entry = json.loads(raw.decode("utf-8", errors="replace"))
+            except json.JSONDecodeError:
+                return {
+                    "status": "BROKEN",
+                    "reason": "unparsable journal line",
+                    "file": str(path),
+                    "events": events + 1,
+                }
+            if str(entry.get("previous_event_hash")) != previous:
+                return {
+                    "status": "BROKEN",
+                    "reason": "previous_event_hash does not match the prior event_hash",
+                    "file": str(path),
+                    "cycle": entry.get("cycle"),
+                    "events": events + 1,
+                }
+            body = {key: value for key, value in entry.items() if key != "event_hash"}
+            if str(entry.get("event_hash")) != ac.payload_digest(body):
+                return {
+                    "status": "BROKEN",
+                    "reason": "event_hash does not re-derive from the event body",
+                    "file": str(path),
+                    "cycle": entry.get("cycle"),
+                    "events": events + 1,
+                }
+            previous = str(entry["event_hash"])
+            events += 1
+    return {"status": "INTACT", "events": events, "head": previous}
 
 
 # --------------------------------------------------------------------------- #
@@ -213,6 +671,7 @@ def status_payload(
     next_decision_slot: int | None = None,
     errors: Sequence[Mapping[str, Any]] = (),
     heartbeat: Mapping[str, Any] | None = None,
+    disk: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     """The campaign dashboard payload (requirement: no single denominator)."""
     states = counters.get("decision_states") or []
@@ -289,6 +748,9 @@ def status_payload(
         "economic_state_note": "docs/research/ECONOMIC_STATE.json is never written by the campaign",
         "heartbeat_age_seconds": heartbeat_age_seconds(heartbeat, now=now),
         "errors": [dict(item) for item in errors],
+        "disk_free_bytes": (disk or {}).get("free_bytes"),
+        "disk_status": (disk or {}).get("status"),
+        "storage": dict(disk) if disk else None,
     }
 
 
@@ -381,19 +843,40 @@ def daily_report(
     drift: Mapping[str, Any],
     verification: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
-    """Per UTC day: what was sealed, what matured, what was evaluated, what failed."""
+    """Per UTC day: what was sealed, what matured, what was evaluated, what failed.
+
+    Bounded projection (CAP-004C): the day is *aggregated*, never embedded.  The
+    previous version copied every cycle of the day into ``cycles``, so the file
+    grew quadratically within the day (its own writer was the largest thing it
+    wrote).  A bounded tail plus the failure codes keeps the forensics without the
+    amplification.
+    """
     decisions = ledger.decisions()
     outcomes = ledger.outcomes()
     evaluations = ledger.evaluations()
     day_cycles = [dict(item) for item in cycles if str(item.get("day")) == day]
-    failures = [item for item in day_cycles if item.get("errors")]
+    failures = [
+        {
+            "cycle": item.get("cycle"),
+            "at": item.get("finished_at") or item.get("started_at"),
+            "error_codes": list(item.get("error_codes") or []),
+        }
+        for item in day_cycles
+        if item.get("error_codes")
+    ]
     settled_keys = {(str(item["decision_id"]), str(item["horizon"])) for item in outcomes}
     matured_today = [
         item
         for item in decisions
         if utc_day(int(item["decision_time"]) + do.HORIZON_SECONDS[str(item["horizon"])]) == day
     ]
+    tail = day_cycles[-DAILY_CYCLE_TAIL:]
+    deltas = {
+        "sealed": sum(int(item.get("sealed_count_delta") or 0) for item in day_cycles),
+        "settled": sum(int(item.get("settled_count_delta") or 0) for item in day_cycles),
+    }
     return {
+        "report_version": DAILY_REPORT_VERSION,
         "day": day,
         "decisions_sealed": len(
             [item for item in decisions if utc_day(int(item["decision_time"])) == day]
@@ -412,12 +895,27 @@ def daily_report(
                 if (str(item["decision_id"]), str(item["horizon"])) not in settled_keys
             ]
         ),
-        "cycles": day_cycles,
         "cycle_count": len(day_cycles),
-        "failures": failures,
+        # The projection is written before the cycle that produced it journals its
+        # own event, so it describes the cycles already on record.  The lag is
+        # declared rather than hidden, and it is bounded by exactly one cycle.
+        "projection_lag_cycles": 1,
+        "projection_lag_note": (
+            "cycle_count counts the compact events journaled when this projection was "
+            "written; the running cycle adds its own event immediately afterwards"
+        ),
+        "cycle_deltas": deltas,
+        "cycles_tail": tail,
+        "cycles_omitted": max(0, len(day_cycles) - len(tail)),
+        "failure_count": len(failures),
+        "failures": failures[-DAILY_FAILURES_TAIL:],
         "drift": {"status": drift.get("status"), "drifted": drift.get("drifted")},
         "verification": verification,
         "chain_status": chain.get("status"),
+        "projection_note": (
+            "derived projection: aggregates the compact cycle journal of this UTC day; "
+            "regenerable from reports/cap004 (segments + active journal), never a source of truth"
+        ),
     }
 
 

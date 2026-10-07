@@ -70,6 +70,7 @@ from trading_bot.research import campaign_manifest as cm  # noqa: E402
 from trading_bot.research import campaign_reporting as cr  # noqa: E402
 from trading_bot.research import campaign_state as cs  # noqa: E402
 from trading_bot.research import decision_ledger as dl  # noqa: E402
+from trading_bot.research import disk_space as dsk  # noqa: E402
 from trading_bot.research import market_analyst_v1 as mav  # noqa: E402
 from trading_bot.research import real_market_context as rmc  # noqa: E402
 
@@ -258,8 +259,14 @@ def operation_entry(
     error: str | None,
     previous_hash: str,
     operation_id: str | None = None,
+    disk: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
-    """One operational event, chained to the previous one by hash."""
+    """One operational event, chained to the previous one by hash.
+
+    ``disk`` records the storage state measured before this invocation.  It is
+    operational metadata about the HOST, never an input to any decision, and it is
+    part of the hashed body so a later edit of it breaks the chain.
+    """
     record: dict[str, Any] = {
         "operation_id": operation_id or uuid.uuid4().hex,
         "campaign_id": campaign_id,
@@ -282,6 +289,9 @@ def operation_entry(
         "error": error,
         "previous_hash": previous_hash,
     }
+    if disk is not None:
+        record["disk_free_bytes"] = disk.get("free_bytes")
+        record["disk_status"] = disk.get("status")
     record["event_hash"] = compute_event_hash(record)
     return record
 
@@ -539,6 +549,21 @@ def run_supervised_cycle(
     commit = code_commit if code_commit is not None else git_commit()
     ops_entries = read_operations(ops_path)
     heartbeat = cr.read_heartbeat(ledger_root)
+    # CAP-004C §19/§17: free space is measured BEFORE the cycle and recorded with
+    # it.  CRITICAL refuses NEW decisions; it never blocks the settlement or the
+    # evaluation of decisions that are already sealed, which is preservation work.
+    guard = dsk.DiskSpaceGuard(report_root)
+    new_decision_allowed, disk_gate_code = guard.allows_new_decision()
+    # The forecast comes from the same measured series the cycle uses, and never
+    # across a certified migration boundary (§21/§22).
+    discontinuity = campaign.storage_discontinuities(report_root)
+    disk = guard.report(
+        samples=campaign.growth_samples(campaign.load_storage_samples(report_root)),
+        after=discontinuity,
+    )
+    disk["migration_discontinuity"] = discontinuity
+    disk["new_decision_allowed"] = new_decision_allowed
+    disk["gate_code"] = disk_gate_code
     lock = cl.CampaignLock(
         ledger_root,
         campaign_id=cm.CAMPAIGN_ID,
@@ -564,6 +589,7 @@ def run_supervised_cycle(
             error_type="ALREADY_RUNNING",
             error="another supervisor instance holds the lease",
             operation_id=operation_id,
+            disk=disk,
         )
         result.update({"acquired": False, "status": "ALREADY_RUNNING", "holder": acquisition.get("holder")})
         return result
@@ -649,6 +675,7 @@ def run_supervised_cycle(
         error_type=error_type,
         error=error,
         operation_id=operation_id,
+        disk=disk,
     )
 
     first_settlement = write_first_settlement(
@@ -691,6 +718,7 @@ def run_supervised_cycle(
         errors=[] if not error else [{"code": error_type, "detail": error}],
         last_run=ended_at,
         last_success=entry["ended_at"] if exit_code == 0 else _as_int((heartbeat or {}).get("last_successful_score")),
+        disk=disk,
     )
     cr.write_json_atomic(Path(report_root) / SUPERVISOR_STATUS_FILENAME, status_payload)
 
@@ -830,6 +858,7 @@ def _record_operation(
     error_type: str | None,
     error: str | None,
     operation_id: str | None,
+    disk: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     entry = operation_entry(
         campaign_id=campaign_id,
@@ -850,6 +879,7 @@ def _record_operation(
         error=error,
         previous_hash=last_event_hash(ops_entries),
         operation_id=operation_id,
+        disk=disk,
     )
     append_operation(ops_path, entry)
     return entry
@@ -872,6 +902,7 @@ def _supervisor_status_payload(
     errors: Sequence[Mapping[str, Any]],
     last_run: int | None,
     last_success: int | None,
+    disk: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     maturity_times = [
         int(item["maturity_time"])
@@ -922,6 +953,9 @@ def _supervisor_status_payload(
         "operations": dict(operations),
         "scheduler": dict(task_state),
         "errors": [dict(item) for item in errors],
+        "storage": dict(disk) if disk else None,
+        "disk_free_bytes": (disk or {}).get("free_bytes"),
+        "disk_status": (disk or {}).get("status"),
     }
 
 

@@ -271,7 +271,19 @@ def main() -> int:
         costs = float(entry["costs"])
         net = float(entry["net_return"])
         check(f"net equals gross minus costs ({label})", approx(net, gross - costs))
-        check(f"direction and outcome are separate fields ({label})", entry["decision"] != entry["outcome"])
+        # The label each direction must carry is pinned by the two branches below,
+        # which re-derive it from the frozen rule.  The assertion that used to sit
+        # here (``decision != outcome``) contradicted that rule for the legitimate
+        # NO_TRADE sleeve — the frozen evaluator labels it ``NO_TRADE`` — and went
+        # unnoticed only because the ledger held no outcomes when it was written.
+        check(
+            f"outcome names one of the frozen outcomes ({label})",
+            entry["outcome"] in ("WIN", "LOSS", "FLAT", "NO_TRADE"),
+        )
+        check(
+            f"decision names one of the frozen directions ({label})",
+            entry["decision"] in ("LONG", "SHORT", "NO_TRADE"),
+        )
         if entry["decision"] == "NO_TRADE":
             check(f"NO_TRADE pays exactly zero ({label})", costs == 0.0 and gross == 0.0)
             check(f"NO_TRADE is labelled NO_TRADE ({label})", entry["outcome"] == "NO_TRADE")

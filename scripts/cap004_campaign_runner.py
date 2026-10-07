@@ -42,9 +42,11 @@ import argparse
 import datetime as dt
 import json
 import os
+import shutil
 import subprocess
 import sys
 import time
+from collections.abc import Callable, Mapping, Sequence
 from pathlib import Path
 from typing import Any
 
@@ -62,6 +64,7 @@ from trading_bot.research import campaign_reporting as cr  # noqa: E402
 from trading_bot.research import campaign_state as cs  # noqa: E402
 from trading_bot.research import decision_ledger as dl  # noqa: E402
 from trading_bot.research import decision_outcomes as do  # noqa: E402
+from trading_bot.research import disk_space as dsk  # noqa: E402
 from trading_bot.research import market_analyst_v1 as mav  # noqa: E402
 from trading_bot.research import real_market_context as rmc  # noqa: E402
 
@@ -70,6 +73,18 @@ REPORT_ROOT = REPO / "reports" / "cap004"
 SLOT_DIR = REPORT_ROOT / "slots"
 VERIFIER = REPO / "scripts" / "cap004_verify.py"
 VERIFICATION_JSON = REPORT_ROOT / "CAP004_VERIFICATION.json"
+
+#: CAP-004C storage accounting.  One compact sample per cycle, kept in a small
+#: atomically-replaced file whose length is capped, so measuring the campaign
+#: never becomes part of what has to be measured.
+STORAGE_SAMPLES_FILENAME = "STORAGE_SAMPLES.json"
+STORAGE_SAMPLE_LIMIT = 512
+STORAGE_WALK_MAX_ENTRIES = 20000
+
+#: Written by ``scripts/cap004c_migrate.py`` next to the archive it certifies.  The
+#: runner only READS it: the boundary at which the measured series was redefined by
+#: a certified compaction, so a forecast is never computed across the step.
+MIGRATION_MANIFEST_FILENAME = "STORAGE_MIGRATION_MANIFEST.json"
 
 DEFAULT_INTERVAL_SECONDS = 300
 DEFAULT_STALE_FACTOR = 4
@@ -251,6 +266,13 @@ def seal_phase(
         if result["gate"].get(asset) != "PASS":
             continue
         answer = slot_answer_path(slot, asset)
+        # The analyst is the out-of-band step: the package above IS its prompt, and
+        # the answer legitimately does not exist yet.  A missing answer is a
+        # PENDING slot (already recorded above), never an exception — crashing here
+        # would abort the settlement of decisions that are ALREADY sealed, which
+        # outrank new sealing (CAP-004C §18).
+        if not answer.is_file():
+            continue
         payload = json.loads(answer.read_text(encoding="utf-8"))
         if int(payload.get("decision_time", 0)) != slot:
             result["errors"].append(
@@ -606,6 +628,160 @@ def verify_phase() -> dict[str, Any]:
 # --------------------------------------------------------------------------- #
 
 
+# --------------------------------------------------------------------------- #
+# storage accounting (CAP-004C): measure, then gate — never guess
+# --------------------------------------------------------------------------- #
+
+
+def _tree_bytes(path: Path, *, max_entries: int) -> tuple[int, int, bool]:
+    """(bytes, files, truncated) under ``path``, with a single bounded walk."""
+    total = 0
+    files = 0
+    seen = 0
+    stack = [Path(path)]
+    while stack:
+        current = stack.pop()
+        try:
+            entries = list(os.scandir(current))
+        except OSError:
+            continue
+        for entry in entries:
+            seen += 1
+            if seen > max_entries:
+                return total, files, True
+            try:
+                if entry.is_dir(follow_symlinks=False):
+                    stack.append(Path(entry.path))
+                elif entry.is_file(follow_symlinks=False):
+                    total += entry.stat(follow_symlinks=False).st_size
+                    files += 1
+            except OSError:  # pragma: no cover - a file that vanished mid-walk
+                continue
+    return total, files, False
+
+
+def _run_phase(
+    name: str, fn: Callable[[], dict[str, Any]], errors: list[dict[str, Any]]
+) -> dict[str, Any]:
+    """Run one phase; a phase defect becomes a NAMED, recorded state, never a crash.
+
+    CAP-004C §18 grades the work: preserving the ledger, then settling, then
+    evaluating, then verifying, then sealing something new.  A defect in an earlier
+    phase must therefore not be able to cost the evidence a later phase would have
+    produced.  This is not a silent catch: the failure is appended to the cycle's
+    ``errors`` (and so reaches the heartbeat, the ops ledger and the journal) and
+    the phase reports itself as failed.
+    """
+    try:
+        return fn()
+    except Exception as exc:
+        # Reported by name through the cycle's errors: never swallowed, never silent.
+        code = f"{name.upper()}_PHASE_FAILED"
+        errors.append({"code": code, "detail": repr(exc)})
+        return {"phase_failed": True, "errors": [], "sealed": [], "settled": [], "evaluated": []}
+
+
+def storage_sample(
+    *, report_root: Path, ledger_root: Path, now: int, max_entries: int = STORAGE_WALK_MAX_ENTRIES
+) -> dict[str, Any]:
+    """One measured storage observation: repo bytes, evidence bytes, free space."""
+    cap004_bytes, cap004_files, cap004_truncated = _tree_bytes(
+        report_root, max_entries=max_entries
+    )
+    evidence_bytes, evidence_files, evidence_truncated = _tree_bytes(
+        ledger_root, max_entries=max_entries
+    )
+    usage = shutil.disk_usage(report_root)
+    return {
+        "timestamp": int(now),
+        "utc": utc_iso(now),
+        "day": cr.utc_day(now),
+        "free_bytes": int(usage.free),
+        "total_bytes": int(usage.total),
+        "reports_cap004_bytes": cap004_bytes,
+        "reports_cap004_files": cap004_files,
+        "evidence_bytes": evidence_bytes,
+        "evidence_files": evidence_files,
+        "repo_bytes": cap004_bytes + evidence_bytes,
+        "walk_truncated": bool(cap004_truncated or evidence_truncated),
+    }
+
+
+def load_storage_samples(report_root: Path) -> list[dict[str, Any]]:
+    path = Path(report_root) / STORAGE_SAMPLES_FILENAME
+    if not path.is_file():
+        return []
+    loaded = json.loads(path.read_text(encoding="utf-8"))
+    samples = loaded.get("samples") if isinstance(loaded, dict) else loaded
+    return [dict(item) for item in (samples or [])]
+
+
+def append_storage_sample(report_root: Path, sample: Mapping[str, Any]) -> list[dict[str, Any]]:
+    """Append one sample, keeping only the last ``STORAGE_SAMPLE_LIMIT`` of them."""
+    samples = [*load_storage_samples(report_root), dict(sample)][-STORAGE_SAMPLE_LIMIT:]
+    cr.write_json_atomic(
+        Path(report_root) / STORAGE_SAMPLES_FILENAME,
+        {
+            "version": "CAP004C_STORAGE_SAMPLES_V1",
+            "note": "one sample per cycle; bounded ring buffer, not a ledger",
+            "limit": STORAGE_SAMPLE_LIMIT,
+            "samples": samples,
+        },
+    )
+    return samples
+
+
+def storage_discontinuities(report_root: Path) -> int | None:
+    """The latest certified migration boundary in the campaign's report tree.
+
+    A migration redefines what ``reports/cap004`` contains, so samples taken before
+    it describe a different series: mixing them into one rate would report a
+    compaction as negative growth (and hide the real one).  The boundary is read
+    from the migration's own manifest, never hard-coded.
+    """
+    boundary: int | None = None
+    for path in sorted(Path(report_root).glob(f"archive/*/{MIGRATION_MANIFEST_FILENAME}")):
+        try:
+            payload = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        stamp = payload.get("timestamp") if isinstance(payload, Mapping) else None
+        if isinstance(stamp, int) and (boundary is None or stamp > boundary):
+            boundary = stamp
+    return boundary
+
+
+def growth_samples(samples: Sequence[Mapping[str, Any]]) -> list[dsk.GrowthSample]:
+    """The measured series the forecast is computed from: ``reports/cap004`` bytes."""
+    return [
+        dsk.GrowthSample(
+            timestamp=int(item["timestamp"]),
+            bytes=int(item.get("reports_cap004_bytes") or 0),
+            label="reports/cap004",
+        )
+        for item in samples
+        if "timestamp" in item
+    ]
+
+
+def read_disk_state(report_root: Path) -> dict[str, Any]:
+    path = Path(report_root) / dsk.DISK_STATE_FILENAME
+    if not path.is_file():
+        return {}
+    loaded: dict[str, Any] = json.loads(path.read_text(encoding="utf-8"))
+    return loaded
+
+
+def append_disk_event(report_root: Path, event: Mapping[str, Any]) -> None:
+    """Append a DISK_* transition.  Only transitions are written, so it is bounded."""
+    path = Path(report_root) / dsk.DISK_EVENTS_FILENAME
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("a", encoding="utf-8") as handle:
+        handle.write(json.dumps(dict(event), sort_keys=True, ensure_ascii=False) + "\n")
+        handle.flush()
+        os.fsync(handle.fileno())
+
+
 def run_cycle(
     *,
     modes: tuple[str, ...],
@@ -622,6 +798,50 @@ def run_cycle(
     errors: list[dict[str, Any]] = []
     chain_ok = chain["status"] == "INTACT"
     sealing_allowed = chain_ok and drift["status"] == "NO_DRIFT"
+
+    # Storage gate (CAP-004C §17/§18): measured before any work.  CRITICAL stops
+    # NEW decisions only; settling and evaluating already-sealed decisions is a
+    # preservation activity and keeps the higher priority.
+    guard = dsk.DiskSpaceGuard(REPORT_ROOT)
+    sample = storage_sample(report_root=REPORT_ROOT, ledger_root=LEDGER_ROOT, now=now)
+    samples = append_storage_sample(REPORT_ROOT, sample)
+    previous_disk = read_disk_state(REPORT_ROOT)
+    discontinuity = storage_discontinuities(REPORT_ROOT)
+    disk = guard.report(samples=growth_samples(samples), after=discontinuity)
+    disk["migration_discontinuity"] = discontinuity
+    disk["sample"] = sample
+    disk["previous_status"] = previous_disk.get("status")
+    new_decision_allowed, disk_code = guard.allows_new_decision()
+    if not new_decision_allowed:
+        sealing_allowed = False
+        errors.append(
+            {
+                "code": str(disk_code),
+                "detail": (
+                    f"free space {disk['free_bytes']} bytes is below the critical threshold "
+                    f"{guard.critical_bytes}; sealing paused so existing evidence can be protected"
+                ),
+            }
+        )
+    transition = dsk.transition_event(
+        previous_status=previous_disk.get("status"),
+        status=str(disk["status"]),
+        report=disk,
+        timestamp=now,
+    )
+    if transition is not None:
+        append_disk_event(REPORT_ROOT, transition)
+    cr.write_json_atomic(
+        REPORT_ROOT / dsk.DISK_STATE_FILENAME,
+        {
+            "status": disk["status"],
+            "previous_status": previous_disk.get("status"),
+            "free_bytes": disk["free_bytes"],
+            "timestamp": now,
+            "utc": utc_iso(now),
+            "event": transition,
+        },
+    )
     if not chain_ok:
         errors.append(
             {"code": "INTEGRITY_FAILURE", "detail": "ledger chain does not re-derive", "broken": chain["broken"]}
@@ -633,12 +853,18 @@ def run_cycle(
 
     result: dict[str, Any] = {
         "cycle": cycle,
+        "campaign_id": cm.CAMPAIGN_ID,
         "day": cr.utc_day(now),
         "started_at": now,
         "started_at_utc": utc_iso(now),
         "modes": list(modes),
         "manifest_action": manifest_action,
         "manifest_digest": cm.manifest_digest(manifest),
+        "chain": {"status": chain["status"]},
+        "drift": {"status": drift["status"], "drifted": list(drift["drifted"])},
+        "disk": disk,
+        "storage_sample": sample,
+        "storage_discontinuity": discontinuity,
         "errors": errors,
     }
 
@@ -659,13 +885,17 @@ def run_cycle(
     )
 
     if "seal" in modes:
-        result["seal"] = seal_phase(
-            ledger,
-            manifest=manifest,
-            slot=slot,
-            now=now,
-            sealing_allowed=sealing_allowed,
-            drift=drift,
+        result["seal"] = _run_phase(
+            "seal",
+            lambda: seal_phase(
+                ledger,
+                manifest=manifest,
+                slot=slot,
+                now=now,
+                sealing_allowed=sealing_allowed,
+                drift=drift,
+            ),
+            errors,
         )
         result["errors"].extend(result["seal"]["errors"])
         result["missed_slots"] = missed_slots(ledger, manifest, now=now)
@@ -674,7 +904,9 @@ def run_cycle(
             store["last_seal"] = now
 
     if "settle" in modes and "data_blocked" not in result:
-        result["settle"] = settle_phase(ledger, rows_by_asset=rows_by_asset, now=now)
+        result["settle"] = _run_phase(
+            "settle", lambda: settle_phase(ledger, rows_by_asset=rows_by_asset, now=now), errors
+        )
         result["errors"].extend(result["settle"]["errors"])
         if result["settle"]["settled"]:
             store["last_settle"] = now
@@ -724,6 +956,7 @@ def run_cycle(
         last_successful_verify=store.get("last_verify"),
         errors=result["errors"],
         modes_completed=list(modes),
+        disk=disk,
     )
     cr.write_heartbeat(LEDGER_ROOT, heartbeat)
 
@@ -740,14 +973,16 @@ def run_cycle(
         next_decision_slot=cm.next_decision_slot(now),
         errors=result["errors"],
         heartbeat=heartbeat,
+        disk=disk,
     )
     c1.write_json(REPORT_ROOT / "CAMPAIGN_STATUS.json", status_payload)
     c1.write_md(REPORT_ROOT / "CAMPAIGN_STATUS.md", cr.render_status_md(status_payload, metrics=score["metrics"]))
 
+    # Bounded read: only today's compact events, filtered while streaming.
     daily = cr.daily_report(
         day=cr.utc_day(now),
         ledger=ledger,
-        cycles=cr.read_cycle_journal(REPORT_ROOT),
+        cycles=cr.read_cycle_journal(REPORT_ROOT, day=cr.utc_day(now)),
         chain=score.get("chain") or chain,
         drift=score["drift"],
         verification=None,
@@ -763,7 +998,7 @@ def run_cycle(
         daily = cr.daily_report(
             day=cr.utc_day(now),
             ledger=ledger,
-            cycles=cr.read_cycle_journal(REPORT_ROOT),
+            cycles=cr.read_cycle_journal(REPORT_ROOT, day=cr.utc_day(now)),
             chain=score.get("chain") or chain,
             drift=score["drift"],
             verification=result["verify"],
@@ -775,7 +1010,8 @@ def run_cycle(
     result["heartbeat"] = heartbeat
     result["daily"] = daily
     result["finished_at"] = now_seconds()
-    cr.write_cycle_record(REPORT_ROOT, result)
+    # The journal stores the COMPACT projection of this result, never the result.
+    result["journal"] = cr.write_cycle_record(REPORT_ROOT, result)
     return result
 
 
