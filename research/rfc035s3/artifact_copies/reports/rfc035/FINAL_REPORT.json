@@ -1,0 +1,188 @@
+{
+  "rfc": "RFC-035",
+  "task": "EXTERNAL_PROFITABLE_OPPORTUNITY_DISCOVERY",
+  "phase": "DISCOVERY_AND_SELECTION",
+  "phase_note": "no backtest, no implementation, no parameter search, no asset or timeframe sweep",
+  "source_commit": "7e21f7ca6dbf8816d83f2f8ab15aeb09310b878c",
+  "generated_at_utc": "2026-10-08T00:00:00Z",
+  "baseline": {
+    "md": "reports/rfc035/BASELINE.md",
+    "json": "reports/rfc035/BASELINE.json",
+    "certified_state": {
+      "CAP004C": "STORAGE_STABILIZED",
+      "CAP004B": "RUNNING",
+      "CHAIN": "INTACT",
+      "DRIFT": "NO_DRIFT"
+    }
+  },
+  "governance": {
+    "artifact": "docs/governance/PROFITABILITY_FIRST_FREEZE.md",
+    "status": "ACTIVE",
+    "inherits": "RFC-041 BUSINESS-FREEZE-2026-001 (does not lift it)"
+  },
+  "sources_reviewed": 20,
+  "source_registry": "research/profitability/source_registry.json",
+  "opportunities_identified": 9,
+  "opportunities_rejected": 7,
+  "disposition_counts": {
+    "RESEARCH_HYPOTHESIS_P0": 1,
+    "RESEARCH_HYPOTHESIS_P1": 1,
+    "REPLICATE_P0": 0,
+    "REPLICATE_P1": 0,
+    "WATCH": 1,
+    "INSUFFICIENT_EVIDENCE": 1,
+    "REJECT": 5
+  },
+  "rejection_reasons": {
+    "OPP-0002": "REPLICATE_P1: thousands of events but the direction is negative; a long/cash runtime can only avoid, which is not an edge without a base strategy",
+    "OPP-0003": "WATCH: on-chain labelled flow data is commercial, and a 1-2h effect faces the 23.791 bps cost floor",
+    "OPP-0004": "INSUFFICIENT_EVIDENCE: venues throttle their own public liquidation feeds (S-13); rare events; overlaps the closed volatility-spike family",
+    "OPP-0005": "REJECT: best-evidenced source, but the object is a 10-second boundary return far below the cost floor and its 4-12h channel is order flow, already COST_KILLED internally",
+    "OPP-0006": "REJECT: about 0.58 bps per minute gross against a 23.791 bps round trip",
+    "OPP-0007": "REJECT: closed internal family (A-01..A-06 COST_KILLED, gross +0.03..+0.61 bps)",
+    "OPP-0008": "REJECT: needs perpetual shorts, two-venue collateral and 25M-50M USD minimum capital by the project's own prior review",
+    "OPP-0009": "REJECT: about 7 bps for a mined hour-of-day window; below cost and multiple testing"
+  },
+  "selected_opportunity": {
+    "opportunity_id": "OPP-0001",
+    "rank": "RESEARCH_HYPOTHESIS_P0",
+    "title": "Spot-BTC ETF net-flow continuation (structural creation demand)",
+    "artifact": "research/profitability/opportunities/OPP-0001.json",
+    "evidence_score": 19,
+    "evidence_score_max": 50,
+    "why_this_one": "the only registered opportunity satisfying every clause of the minimum-evidence filter and the only one that is simultaneously not a closed internal family, expressible in a long/cash spot runtime, and larger per trade than the 23.791 bps cost floor",
+    "frozen_selection": {
+      "SELECTION_TIMESTAMP": "2026-10-07T21:20:00Z",
+      "RULE_HASH": "afb82b7079143ade",
+      "SOURCE_BUNDLE_HASH": "34ea7e3866f582fb",
+      "full_hashes_in": "research/profitability/opportunities/OPP-0001.json#frozen_selection"
+    },
+    "rank_before_correction": "REPLICATE_P0"
+  },
+  "primary_source": {
+    "source_id": "S-01",
+    "title": "Spot ETF Flows & Bitcoin Price Trajectory (preliminary statistical investigation)",
+    "author": "David Lawant (FalconX Research)",
+    "date": "2024-10-11",
+    "evidence_level": "AUTHOR_BACKTEST",
+    "read_level": "full_text",
+    "url": "https://www.falconx.io/newsroom/what-can-spot-etf-flows-tell-us-about-the-trajectory-of-bitcoin-prices-a-preliminary-statistical-investigation"
+  },
+  "supporting_evidence": [
+    "S-02 peer-reviewed price discovery in Bitcoin ETF market",
+    "S-03 peer-reviewed ETF/spot price discovery",
+    "S-04 peer-reviewed ETF introduction effect on returns and volatility"
+  ],
+  "what_exactly_is_claimed": "previous-day ETF net inflow coefficient 0.027 on today's BTC return; Granger p=0.00406 (F=8.4767); flow persistence 0.533; orthogonalised impulse response non-negative, peaking near +1.2% around days 3-4",
+  "counter_evidence": [
+    "S-01: correlation only 0.30, unstable (rolling 60-day 0.10-0.50)",
+    "S-01: feedback loop from price to flows",
+    "S-01: 10-month publication sample, stationarity assumed, non-linearity possible",
+    "23.791 bps round trip is a large share of a 1.2% shock response",
+    "flows publish after the US close, so the tradable part is the residual",
+    "buy-side research, no peer review, no cost model"
+  ],
+  "ambiguities": [
+    "no entry/exit rule, threshold, lookback, aggregation or sizing is defined by any source",
+    "per-day PIT publication timestamp is vendor-specific and must be pinned",
+    "level vs change vs normalised difference vs sign is unsettled"
+  ],
+  "replication_risks": [
+    "POWER: about 21 months of ETF history, few independent shocks; RFC-036 may end INSUFFICIENT_SAMPLE",
+    "REVERSE_CAUSALITY: flows may follow price, so the residual predictive part must be separated",
+    "PIT_FIDELITY: one fixed publication timestamp per day",
+    "RULE_INVENTION: the rules are ours and must be frozen and hashed before any measurement",
+    "COST_REALISM: the claim must survive 23.791 bps net"
+  ],
+  "independent_verification": {
+    "artifact": "reports/rfc035/RFC035_VERIFICATION.json",
+    "verifier": "scripts/rfc035_discovery_verify.py",
+    "status": "PASS",
+    "note": "written independently of the registry builder; sets the authority for PASS/FAIL and FALSE_SUCCESS",
+    "checks": 204,
+    "mismatches": 0,
+    "limitations": 2,
+    "limitation_detail": "S-02 and S-04 returned HTTP 403 (paywall/bot-block) during the URL audit; reachability 13/20"
+  },
+  "false_success": 0,
+  "false_success_source": "reports/rfc035/RFC035_VERIFICATION.json (target 0, invalidates PASS if non-zero)",
+  "final_status": "OPEN_NO_REPLICABLE_EXTERNAL_STRATEGY",
+  "verdict_allowed": "EXTERNAL_OPPORTUNITY_WORTH_REPLICATING",
+  "forbidden_claims": [],
+  "forbidden_vocabulary_used": [],
+  "flags": {
+    "G_AGENTIC_EDGE": "NOT_TESTED",
+    "TRADES_AUTHORIZED": 0,
+    "alpha_research_freeze": "ACTIVE",
+    "ALPHA_004": "NOT_OPENED",
+    "CAP004B": "RUNNING",
+    "CAP004C": "STORAGE_STABILIZED"
+  },
+  "next_gate": "CONTINUE_EXTERNAL_SEARCH",
+  "next_gate_candidate": null,
+  "limitations": [
+    "no forward or live evidence exists for any registered opportunity; the registry contains none by construction",
+    "several sources could only be read at abstract/snippet level (paywalled or bot-blocked hosts); this is declared per source",
+    "this RFC cannot and does not establish that OPP-0001 is profitable"
+  ],
+  "repo_gate_note": {
+    "full_suite": "2794 passed",
+    "my_artifacts": "ruff clean, mypy clean, verifier PASS 204/204",
+    "other_threads_findings": [
+      "scripts/cap004d_verify.py",
+      "scripts/cap004d_health_check.py",
+      "tests/unit/research/test_campaign_health.py"
+    ],
+    "statement": "non-zero repo-wide ruff/mypy exits at the time of writing come from another thread's in-flight files, not from RFC-035"
+  },
+  "artifact_name_collision": {
+    "existing_tracked_file": "scripts/rfc035_verify.py (older RFC-035, commit 17d4777, verifies reports/profitability-v2/)",
+    "action": "left byte-identical; this run uses scripts/rfc035_discovery_verify.py",
+    "reason": "overwriting it would have removed another RFC's independent verification capability"
+  },
+  "status_note": "RFC-035 does not reach PASS: PASS requires either a true externally specified strategy with REPLICABLE_ENTRY_EXIT_LOGIC, or an OPP that passes RFC-035E and is promoted into the Strategy Discovery pipeline as a STRATEGY_CANDIDATE. Neither happened: no such strategy was found among the 20 sources, and RFC-035E returned EFFECT_NOT_REPRODUCED.",
+  "classification_correction": {
+    "PREVIOUS_CLASSIFICATION": "REPLICATE_P0",
+    "CORRECTED_CLASSIFICATION": "RESEARCH_HYPOTHESIS_P0 (OPP-0001), RESEARCH_HYPOTHESIS_P1 (OPP-0002)",
+    "REASON": "OPP-0001 and OPP-0002 carried a replication rank while their own records said the entry/exit rules were UNKNOWN; REPLICATE_P0/P1 require REPLICABLE_ENTRY_EXIT_LOGIC, which neither candidate had",
+    "CORRECTED_AT": "2026-10-08T00:00:00Z",
+    "CORRECTED_BY": "RFC-035E",
+    "AFFECTED_ARTIFACTS": [
+      "research/profitability/opportunities/OPP-0001.json",
+      "research/profitability/opportunities/OPP-0001.md",
+      "research/profitability/opportunities/OPP-0002.json",
+      "research/profitability/opportunities/OPP-0002.md",
+      "research/profitability/OPPORTUNITY_REGISTRY.md",
+      "reports/rfc035/FINAL_REPORT.md",
+      "reports/rfc035/FINAL_REPORT.json"
+    ],
+    "NOT_ERASED": "the original rank is preserved in rank_history and in selected_opportunity.rank_before_correction; the frozen selection and its hashes are untouched",
+    "PER_CANDIDATE": [
+      {
+        "opportunity_id": "OPP-0001",
+        "previous": "REPLICATE_P0",
+        "corrected": "RESEARCH_HYPOTHESIS_P0",
+        "status": "RESELECTED_AS_RESEARCH_HYPOTHESIS"
+      },
+      {
+        "opportunity_id": "OPP-0002",
+        "previous": "REPLICATE_P1",
+        "corrected": "RESEARCH_HYPOTHESIS_P1",
+        "status": "NOT_SELECTED_DIRECTION_AND_FIDELITY"
+      }
+    ]
+  },
+  "validation_result": {
+    "rfc": "RFC-035E",
+    "verdict": "EFFECT_NOT_REPRODUCED",
+    "action": "OPP-0001 = REJECT",
+    "artifacts": [
+      "reports/rfc035e/FINAL_REPORT.json",
+      "reports/rfc035e/FINAL_REPORT.md",
+      "reports/rfc035e/SOURCE_REPLICATION.json",
+      "reports/rfc035e/EXTERNAL_EFFECT_OOS.json",
+      "reports/rfc035e/FALSIFICATION_REPORT.json",
+      "reports/rfc035e/INDEPENDENT_VERIFICATION.json"
+    ]
+  }
+}
