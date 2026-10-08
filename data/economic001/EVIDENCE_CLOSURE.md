@@ -1,7 +1,7 @@
 # ECONOMIC-001 — COST EVIDENCE CLOSURE & EXECUTION REALITY
 
-generated_at_utc = 2026-10-08T15:04:39Z (computed, not authored)
-current_head = 2167e58d678449907f0d41634a8aaab48fdc8e7d
+generated_at_utc = 2026-10-08T15:39:55Z (computed, not authored)
+current_head = 8e0a4b5f805d93eedd5218b10657a37652c0fb5d
 false_success = 0
 
 > This gate adds no strategy and opens no campaign. It consolidates the economic evidence,
@@ -132,6 +132,17 @@ Measured now: live best bid/ask spread, observation-path latency, clock skew, de
 
 Realised slippage measured: **False**; fill quality measured: **False**; a simulator was used as a measurement: **False**.
 
+### Forward windows collected since the gate ran (ECO-1, partially closed)
+
+Instrument `scripts/cost_drift_monitor.py` — `data\economic001\COST_DRIFT_HISTORY.jsonl` (`3f920db0d89e6236…`), judged in `data\economic001\COST_DRIFT_STATUS.json`. Verdict **INSUFFICIENT_EVIDENCE** (provisional) over **2** window(s); the assumption holds in every window so far: **True**.
+
+| window | provenance | collected | pooled median spread bps | worst spread bps | walk at 200 USDT bps | depth covers | raw sha256 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 20261008T144202Z | ECONOMIC-001 read-only probe (5 rounds, 30 requests, 32.36 s) | 2026-10-08T14:42:02.940539Z | 0.376374 | 0.890829 | 0.0 | True | `30b981703984…` |
+| 20261008T153205Z | cost_drift_monitor | 2026-10-08T15:32:05Z | 0.433917 | 0.918147 | 0.0 | True | `48e753ffee2f…` |
+
+2 forward window(s) collected without a key, a signature or an order; the verdict is INSUFFICIENT_EVIDENCE (provisional: the declared minimum is not reached).  The comparison is against the frozen model's own terms: 1.0 bps of round-trip spread and 0.25 bps of base impact.  This is forward evidence about the assumption, not about any edge: the modelled spread is the conservative case in every window so far, which clears the assumption without validating any strategy.
+
 ## 5. Economic decision
 
 Rule: movement margin is sufficient at a horizon when the measured median absolute move is at least 5x the toll the strategy would pay to trade it.
@@ -179,13 +190,13 @@ there is no order archive at all: the storage directory holds state journals, no
 
 | field | value |
 | --- | --- |
-| CURRENT_HEAD | 2167e58d678449907f0d41634a8aaab48fdc8e7d |
+| CURRENT_HEAD | 8e0a4b5f805d93eedd5218b10657a37652c0fb5d |
 | FALSE_SUCCESS | 0 |
 | FILES_COMMITTED | 6 files at `0f8292651ce3cd3ae113c0229de1b7487a00f472`; 8 pending in this gate; 35 foreign files excluded |
 | DATASET_HASHES | 12 series hashed (`data/raw/alpha003/price/*.json`) |
 | TIMEFRAME_VERIFICATION | certifiable True, agrees with the verified report True (max delta 0.00%) |
 | COST_MODEL_STATUS | COST_MODEL_V3 reused; historical 23.7906 bps; posterior 23.353553391 bps; rejected candidates recomputed False |
-| READ_ONLY_MARKET_DATA_STATUS | 32.36s window, orders sent 0, credentials 0, complete True |
+| READ_ONLY_MARKET_DATA_STATUS | 32.36s window, orders sent 0, credentials 0, complete True; drift monitor INSUFFICIENT_EVIDENCE over 2 window(s) |
 | ESTIMATED_VS_MEASURED_COSTS | measured pooled spread 0.376374 bps, worst observed 0.890829 bps, vs modelled 1.0 bps (MODEL_CONSERVATIVE / MODEL_CONSERVATIVE) |
 | INDEPENDENT_VERIFICATION | scripts/economic001_closure_verify.py → data/economic001/EVIDENCE_CLOSURE_VERIFICATION.json |
 | OPEN_DEFECTS | 4 recorded |
@@ -199,5 +210,5 @@ This artefact does not license: a new campaign, a new hypothesis or a new strate
 | --- | --- | --- |
 | TD-1 | OPEN_NOT_REPAIRED | repo-wide mypy over another workstream's analyse script |
 | TD-2 | OPEN_NOT_REPAIRED | RFC-035E verifier raises on absent inputs |
-| ECO-1 | OPEN_BOUNDED | the read-only snapshot is one bounded window: spread, latency and depth are measured for a few seconds, not across regimes |
+| ECO-1 | OPEN_PARTIALLY_CLOSED | the gate's own read-only snapshot is one bounded window: spread, latency and depth are measured for a few seconds, not across regimes.  The ST-6 monitor now accumulates further windows (2 collected, verdict INSUFFICIENT_EVIDENCE), which reduces the defect without closing it: windows are still counted in units, not in regimes |
 | ECO-2 | UNKNOWN_NOT_RESOLVABLE_OFFLINE | maker queue position, fill probability, realised slippage, fill quality |

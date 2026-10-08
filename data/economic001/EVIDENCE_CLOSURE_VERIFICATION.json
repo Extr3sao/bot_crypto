@@ -4,13 +4,13 @@
   "builder": "scripts/economic001_closure.py",
   "builder_equals_verifier": false,
   "verified_artifact": "data/economic001/EVIDENCE_CLOSURE.json",
-  "verified_artifact_sha256": "8dee38ccfc6f814be88adce7c0c46fdd5810254e74e9e435a6ac44f244a313b4",
-  "closure_head": "2167e58d678449907f0d41634a8aaab48fdc8e7d",
+  "verified_artifact_sha256": "fe440bafaecc97259a493eba608d71ab757a849e1e862cace64a9b8a23efd7ef",
+  "closure_head": "8e0a4b5f805d93eedd5218b10657a37652c0fb5d",
   "closure_delivery_commit": "0f8292651ce3cd3ae113c0229de1b7487a00f472",
-  "generated_at_utc": "2026-10-08T15:05:03Z",
-  "head": "2167e58d678449907f0d41634a8aaab48fdc8e7d",
-  "checks_total": 194,
-  "checks_passed": 194,
+  "generated_at_utc": "2026-10-08T15:40:38Z",
+  "head": "8e0a4b5f805d93eedd5218b10657a37652c0fb5d",
+  "checks_total": 212,
+  "checks_passed": 212,
   "mismatches": 0,
   "failures": [],
   "false_success": 0,
@@ -21,5 +21,5 @@
     "COST_EVIDENCE_FAILED"
   ],
   "status": "PASS",
-  "method": "deliverable hashes recomputed as bytes and as git blobs and the delivery commit inspected directly; horizon medians recomputed with exhaustive and shifted windows; the one-timeline claim re-joined by open time; the toll recomputed through the library and against the frozen constants; the depth impact recomputed by marginal-level interpolation; governance limits read from the source documents; the absence of an order path re-derived from configuration, RFC invariants and the recorded files"
+  "method": "deliverable hashes recomputed as bytes and as git blobs and the delivery commit inspected directly; horizon medians recomputed with exhaustive and shifted windows; the one-timeline claim re-joined by open time; the toll recomputed through the library and against the frozen constants; the depth impact recomputed by marginal-level interpolation; the forward cost-drift windows re-derived from their raw bytes against the frozen thresholds; governance limits read from the source documents; the absence of an order path re-derived from configuration, RFC invariants and the recorded files"
 }

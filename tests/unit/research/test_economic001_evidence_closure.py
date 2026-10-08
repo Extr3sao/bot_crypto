@@ -471,11 +471,58 @@ def test_the_open_defects_are_declared_rather_than_absorbed(closure: dict) -> No
         assert defect["status"] in (
             "OPEN_NOT_REPAIRED",
             "OPEN_BOUNDED",
+            "OPEN_PARTIALLY_CLOSED",
             "UNKNOWN_NOT_RESOLVABLE_OFFLINE",
         )
         assert defect["scope"]
     bounded = next(defect for defect in defects if defect["id"] == "ECO-1")
     assert "one bounded window" in bounded["scope"]
+    assert bounded["status"] != "OPEN_BOUNDED"  # only while no forward window existed
+    assert "ST-6 monitor" in bounded["scope"]
+
+
+def test_the_closure_adopts_the_forward_drift_evidence(closure: dict) -> None:
+    block = closure["cost_drift_evidence"]
+    status = read_json(REPO / "data" / "economic001" / "COST_DRIFT_STATUS.json")
+    history = [
+        json.loads(line)
+        for line in (REPO / "data" / "economic001" / "COST_DRIFT_HISTORY.jsonl")
+        .read_text(encoding="utf-8")
+        .splitlines()
+        if line.strip()
+    ]
+    assert block["present"] is True
+    assert block["windows"] == status["windows"] == len(history)
+    assert block["verdict"] == status["verdict"]
+    assert block["provisional"] == status["provisional"]
+    assert block["orders_sent"] == 0 and block["credentials_used"] == 0
+    assert [row["window_id"] for row in block["per_window"]] == [
+        row["window_id"] for row in history
+    ]
+    assert block["assumption_holds_in_every_window_so_far"] is all(
+        row["worst_spread_bps"] <= 1.0 for row in history
+    )
+
+
+def test_the_drift_thresholds_are_the_frozen_model_terms(closure: dict, model: dict) -> None:
+    rule = closure["cost_drift_evidence"]["declared_rule"]
+    spec = next(
+        scenario["spec"]
+        for scenario in model["scenarios"]
+        if scenario["spec"]["scenario_id"] == "BINANCE_SPOT_STANDARD_TAKER"
+    )
+    assert rule["modelled_round_trip_spread_bps"] == spec["default_taker_spread_bps"] == 1.0
+    assert rule["modelled_impact_bps"] == model["model_constants"]["base_impact_bps"] == 0.25
+    assert rule["minimum_windows_for_a_stable_verdict"] >= 2
+    assert closure["cost_drift_evidence"]["stop_rule"].startswith("stop collecting")
+
+
+def test_eco1_is_partially_closed_and_says_so(closure: dict) -> None:
+    defect = next(row for row in closure["open_defects"] if row["id"] == "ECO-1")
+    assert defect["status"] == "OPEN_PARTIALLY_CLOSED"
+    assert "cost_drift_monitor" in defect["this_gate"]
+    assert "counted in units, not in regimes" in defect["scope"]
+    assert closure["final_report"]["READ_ONLY_MARKET_DATA_STATUS"]["drift_windows"] >= 1
 
 
 def test_the_verification_artefact_stays_inside_its_own_vocabulary(verification: dict) -> None:

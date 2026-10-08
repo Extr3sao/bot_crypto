@@ -83,6 +83,9 @@ FREEZE = REPO / "docs" / "governance" / "PROFITABILITY_FIRST_FREEZE.md"
 EXCHANGE_CFG = REPO / "config" / "exchange.yaml"
 RUNTIME_CFG = REPO / "config" / "runtime.yaml"
 PRICE_DIR = REPO / "data" / "raw" / "alpha003" / "price"
+DRIFT_HISTORY = REPO / "data" / "economic001" / "COST_DRIFT_HISTORY.jsonl"
+DRIFT_STATUS = REPO / "data" / "economic001" / "COST_DRIFT_STATUS.json"
+DRIFT_RAW_DIR = REPO / "data" / "economic001" / "drift_raw"
 STORAGE = REPO / "data" / "storage"
 REAL_DECISIONS = REPO / "evidence" / "real_decisions"
 
@@ -704,6 +707,82 @@ def _vwap_cost(levels: list[list[float]], notional: float) -> dict[str, Any]:
     }
 
 
+def cost_drift_evidence() -> dict[str, Any]:
+    """The forward windows collected since the gate ran, adopted rather than summarised.
+
+    The gate's own snapshot was a single window and said so; once a monitor accumulates windows, a
+    reader of this closure must be able to see them, and see the threshold rule they are judged
+    against, without trusting this file's prose.
+    """
+    if not DRIFT_HISTORY.exists() or not DRIFT_STATUS.exists():
+        return {
+            "instrument": "scripts/cost_drift_monitor.py",
+            "present": False,
+            "windows": 0,
+            "reading": (
+                "no forward window has been collected yet; the cost premises rest on the single "
+                "read-only snapshot above, which is the ECO-1 defect exactly"
+            ),
+        }
+    rows = [
+        json.loads(line)
+        for line in DRIFT_HISTORY.read_text(encoding="utf-8").splitlines()
+        if line.strip()
+    ]
+    status = _read_json(DRIFT_STATUS)
+    raw_files = (
+        sorted(path.name for path in DRIFT_RAW_DIR.glob("*.json")) if DRIFT_RAW_DIR.exists() else []
+    )
+    assumed_spread = 1.0
+    within = all(row["worst_spread_bps"] <= assumed_spread for row in rows)
+    return {
+        "instrument": "scripts/cost_drift_monitor.py",
+        "present": True,
+        "history_path": str(DRIFT_HISTORY.relative_to(REPO)),
+        "history_sha256": _sha256(DRIFT_HISTORY),
+        "status_path": str(DRIFT_STATUS.relative_to(REPO)),
+        "status_sha256": _sha256(DRIFT_STATUS),
+        "declared_rule": status["declared_rule"],
+        "verdict": status["verdict"],
+        "provisional": status["provisional"],
+        "components": status["components"],
+        "windows": status["windows"],
+        "stop_rule": status["stop_rule"],
+        "per_window": [
+            {
+                "window_id": row["window_id"],
+                "provenance": row.get("provenance"),
+                "collected_at_utc": row["collected_at_utc"],
+                "pooled_median_spread_bps": row["pooled_median_spread_bps"],
+                "worst_spread_bps": row["worst_spread_bps"],
+                "worst_walk_bps_at_account_size": row["worst_walk_bps_at_account_size"],
+                "depth_covers_account_size": row["depth_covers_account_size"],
+                "raw_path": row["raw_path"],
+                "raw_sha256": row["raw_sha256"],
+            }
+            for row in rows
+        ],
+        "raw_windows_kept": len(raw_files),
+        "orders_sent": sum(row["orders_sent"] for row in rows),
+        "credentials_used": sum(row["credentials_used"] for row in rows),
+        "assumption_holds_in_every_window_so_far": within,
+        "reading": (
+            f"{status['windows']} forward window(s) collected without a key, a signature or an "
+            f"order; the verdict is {status['verdict']}"
+            + (
+                " (provisional: the declared minimum is not reached)"
+                if status["provisional"]
+                else ""
+            )
+            + f".  The comparison is against the frozen model's own terms: "
+            f"{assumed_spread} bps of round-trip spread and 0.25 bps of base impact.  This is "
+            "forward evidence about the assumption, not about any edge: the modelled spread is the "
+            "conservative case in every window so far, which clears the assumption without "
+            "validating any strategy."
+        ),
+    }
+
+
 def read_only_execution_reality() -> dict[str, Any]:
     snapshot = _read_json(SNAPSHOT)
     rounds = snapshot["observations"]
@@ -1136,6 +1215,7 @@ def build() -> dict[str, Any]:
         for asset in ASSETS
     }
 
+    drift = cost_drift_evidence()
     open_defects = [
         {
             "id": "TD-1",
@@ -1151,12 +1231,25 @@ def build() -> dict[str, Any]:
         },
         {
             "id": "ECO-1",
-            "status": "OPEN_BOUNDED",
+            "status": "OPEN_PARTIALLY_CLOSED" if drift.get("present") else "OPEN_BOUNDED",
             "scope": (
-                "the read-only snapshot is one bounded window: spread, latency and depth are measured "
-                "for a few seconds, not across regimes"
+                "the gate's own read-only snapshot is one bounded window: spread, latency and depth "
+                "are measured for a few seconds, not across regimes.  The ST-6 monitor now "
+                f"accumulates further windows ({drift.get('windows', 0)} collected, verdict "
+                f"{drift.get('verdict', 'n/a')}), which reduces the defect without closing it: "
+                "windows are still counted in units, not in regimes"
+                if drift.get("present")
+                else (
+                    "the read-only snapshot is one bounded window: spread, latency and depth are "
+                    "measured for a few seconds, not across regimes"
+                )
             ),
-            "this_gate": "declared, not hidden; a forward collection remains the only cure",
+            "this_gate": (
+                "declared, not hidden; the forward instrument is scripts/cost_drift_monitor.py and "
+                "its stop rule is recorded in the drift status artefact"
+                if drift.get("present")
+                else "declared, not hidden; a forward collection remains the only cure"
+            ),
         },
         {
             "id": "ECO-2",
@@ -1181,6 +1274,7 @@ def build() -> dict[str, Any]:
         "horizon_verification": horizons,
         "cost_model_verification": costs,
         "read_only_execution_reality": reality,
+        "cost_drift_evidence": drift,
         "economic_decision": decision,
         "dataset_hashes": dataset_hashes,
         "standing": governance["standing_state"],
@@ -1203,6 +1297,7 @@ def final_report(closure: dict[str, Any]) -> dict[str, Any]:
     horizons = closure["horizon_verification"]
     costs = closure["cost_model_verification"]
     reality = closure["read_only_execution_reality"]
+    drift = closure["cost_drift_evidence"]
     decision = closure["economic_decision"]
     return {
         "CURRENT_HEAD": closure["head_at_run"],
@@ -1242,6 +1337,15 @@ def final_report(closure: dict[str, Any]) -> dict[str, Any]:
             "window_s": reality["collection"]["duration_s"],
             "measured": reality["estimated_vs_measured"]["measured_now"],
             "still_unknown": reality["estimated_vs_measured"]["unknown_and_stated"],
+            "drift_instrument": drift["instrument"],
+            "drift_windows": drift.get("windows", 0),
+            "drift_verdict": drift.get("verdict"),
+            "drift_provisional": drift.get("provisional"),
+            "drift_orders_sent": drift.get("orders_sent", 0),
+            "drift_credentials_used": drift.get("credentials_used", 0),
+            "assumption_holds_in_every_window_so_far": drift.get(
+                "assumption_holds_in_every_window_so_far"
+            ),
         },
         "ESTIMATED_VS_MEASURED_COSTS": {
             "measured_pooled_median_spread_bps": reality["spread"]["pooled_median_full_spread_bps"],
@@ -1289,6 +1393,7 @@ def render_md(closure: dict[str, Any]) -> str:
     horizons = closure["horizon_verification"]
     costs = closure["cost_model_verification"]
     reality = closure["read_only_execution_reality"]
+    drift = closure["cost_drift_evidence"]
     decision = closure["economic_decision"]
     final = closure["final_report"]
 
@@ -1480,6 +1585,37 @@ def render_md(closure: dict[str, Any]) -> str:
         f"measured: **{reality['fill_quality_measured']}**; a simulator was used as a measurement: "
         f"**{reality['simulator_used_as_measurement']}**.",
         "",
+        "### Forward windows collected since the gate ran (ECO-1, partially closed)",
+        "",
+    ]
+    if drift.get("present"):
+        lines += [
+            f"Instrument `{drift['instrument']}` — `{drift['history_path']}` "
+            f"(`{drift['history_sha256'][:16]}…`), judged in `{drift['status_path']}`. "
+            f"Verdict **{drift['verdict']}**"
+            + (" (provisional)" if drift.get("provisional") else "")
+            + f" over **{drift['windows']}** window(s); the assumption holds in every window so "
+            f"far: **{drift['assumption_holds_in_every_window_so_far']}**.",
+            "",
+            "| window | provenance | collected | pooled median spread bps | worst spread bps | walk at 200 "
+            "USDT bps | depth covers | raw sha256 |",
+            "| --- | --- | --- | --- | --- | --- | --- | --- |",
+        ]
+        for row in drift["per_window"]:
+            lines.append(
+                f"| {row['window_id']} | {row['provenance']} | {row['collected_at_utc']} | "
+                f"{row['pooled_median_spread_bps']} | {row['worst_spread_bps']} | "
+                f"{row['worst_walk_bps_at_account_size']} | {row['depth_covers_account_size']} | "
+                f"`{row['raw_sha256'][:12]}…` |"
+            )
+        lines += [
+            "",
+            drift["reading"],
+        ]
+    else:
+        lines.append(drift["reading"])
+    lines += [
+        "",
         "## 5. Economic decision",
         "",
         f"Rule: {decision['rule']}.",
@@ -1539,7 +1675,9 @@ def render_md(closure: dict[str, Any]) -> str:
         f"| READ_ONLY_MARKET_DATA_STATUS | {final['READ_ONLY_MARKET_DATA_STATUS']['window_s']}s window, "
         f"orders sent {final['READ_ONLY_MARKET_DATA_STATUS']['orders_sent']}, credentials "
         f"{final['READ_ONLY_MARKET_DATA_STATUS']['credentials_used']}, complete "
-        f"{final['READ_ONLY_MARKET_DATA_STATUS']['complete']} |",
+        f"{final['READ_ONLY_MARKET_DATA_STATUS']['complete']}; drift monitor "
+        f"{final['READ_ONLY_MARKET_DATA_STATUS']['drift_verdict']} over "
+        f"{final['READ_ONLY_MARKET_DATA_STATUS']['drift_windows']} window(s) |",
         f"| ESTIMATED_VS_MEASURED_COSTS | measured pooled spread "
         f"{final['ESTIMATED_VS_MEASURED_COSTS']['measured_pooled_median_spread_bps']} bps, worst "
         f"observed {final['ESTIMATED_VS_MEASURED_COSTS']['measured_max_spread_bps']} bps, vs modelled "

@@ -569,6 +569,184 @@ def verify_reality(c: Checks, closure: dict[str, Any]) -> None:
     )
 
 
+def verify_drift(c: Checks, closure: dict[str, Any]) -> None:
+    """The forward windows since the gate ran: re-derived here, not taken from the closure's prose."""
+    block = closure["cost_drift_evidence"]
+    if not block.get("present"):
+        c.check(
+            "the closure declares the absence of forward windows rather than implying them",
+            block.get("windows") == 0,
+            block,
+        )
+        return
+
+    history = REPO / block["history_path"]
+    status_path = REPO / block["status_path"]
+    rows = [
+        json.loads(line)
+        for line in history.read_text(encoding="utf-8").splitlines()
+        if line.strip()
+    ]
+    status = read_json(status_path)
+    c.check(
+        "the drift history and status are the hashed files",
+        block["history_sha256"] == sha256(history)
+        and block["status_sha256"] == sha256(status_path),
+        block["history_sha256"],
+    )
+    c.check(
+        "the drift history is append-only",
+        len({row["window_id"] for row in rows}) == len(rows)
+        and [row["collected_at_utc"] for row in rows]
+        == sorted(row["collected_at_utc"] for row in rows),
+        [row["window_id"] for row in rows],
+    )
+    c.check(
+        "every forward window is finite, declared and order-free",
+        all(
+            row["orders_sent"] == 0
+            and row["credentials_used"] == 0
+            and row["budget"]["finite"] is True
+            and row["budget"]["declared_before_collection"] is True
+            for row in rows
+        ),
+        [row["window_id"] for row in rows],
+    )
+
+    model = read_json(COST_MODEL)
+    spec = next(
+        scenario["spec"]
+        for scenario in model["scenarios"]
+        if scenario["spec"]["scenario_id"] == "BINANCE_SPOT_STANDARD_TAKER"
+    )
+    rule = status["declared_rule"]
+    c.check(
+        "the drift thresholds are the frozen model's own terms",
+        rule["modelled_round_trip_spread_bps"] == spec["default_taker_spread_bps"]
+        and rule["modelled_impact_bps"] == model["model_constants"]["base_impact_bps"],
+        rule,
+    )
+
+    rederived: list[dict[str, Any]] = []
+    for row in rows:
+        raw = REPO / row["raw_path"]
+        c.check(
+            f"{row['window_id']}: the raw window is kept and its hash reproduces",
+            raw.exists() and hashlib.sha256(raw.read_bytes()).hexdigest() == row["raw_sha256"],
+            row["raw_path"],
+        )
+        snapshot = read_json(raw)
+        spreads = [
+            book["spread_bps"]
+            for observation in snapshot["observations"]
+            for book in observation["books"].values()
+        ]
+        c.close(
+            f"{row['window_id']}: the pooled median spread in the history reproduces from raw bytes",
+            row["pooled_median_spread_bps"],
+            statistics.median(spreads),
+            1e-6,
+        )
+        c.close(
+            f"{row['window_id']}: the worst spread in the history reproduces from raw bytes",
+            row["worst_spread_bps"],
+            max(spreads),
+            1e-6,
+        )
+        c.check(
+            f"{row['window_id']}: the raw window still proves no order path",
+            snapshot["orders_sent"] == 0
+            and snapshot["credentials_used"] == 0
+            and snapshot["private_endpoints_called"] == [],
+            snapshot["authentication"],
+        )
+        rederived.append(row)
+
+    # The verifier's own application of the declared rule, written from the rule and not from the
+    # monitor's implementation of it.
+    boundary = rule["boundary_multiple"]
+    spread_states = [
+        "WITHIN"
+        if row["worst_spread_bps"] <= rule["modelled_round_trip_spread_bps"]
+        else (
+            "AT_BOUNDARY"
+            if row["pooled_median_spread_bps"] <= rule["modelled_round_trip_spread_bps"]
+            and row["worst_spread_bps"] <= boundary * rule["modelled_round_trip_spread_bps"]
+            else "DRIFT"
+        )
+        for row in rederived
+    ]
+    impact_states = [
+        "WITHIN"
+        if (row["worst_walk_bps_at_account_size"] or 0.0) <= rule["modelled_impact_bps"]
+        else "DRIFT"
+        for row in rederived
+    ]
+    depth_states = ["WITHIN" if row["depth_covers_account_size"] else "DRIFT" for row in rederived]
+
+    def worst_state(states: list[str]) -> str:
+        if "DRIFT" in states:
+            return "DRIFT"
+        return "AT_BOUNDARY" if "AT_BOUNDARY" in states else "WITHIN"
+
+    expected_components = {
+        "spread": worst_state(spread_states),
+        "impact": worst_state(impact_states),
+        "depth": worst_state(depth_states),
+    }
+    if "DRIFT" in expected_components.values():
+        expected_verdict = "DRIFT_WIDER_THAN_MODELLED"
+    elif "AT_BOUNDARY" in expected_components.values():
+        expected_verdict = "AT_THE_MODELLED_BOUNDARY"
+    elif len(rederived) < rule["minimum_windows_for_a_stable_verdict"]:
+        expected_verdict = "INSUFFICIENT_EVIDENCE"
+    else:
+        expected_verdict = "WITHIN_MODELLED_ASSUMPTIONS"
+
+    c.check(
+        "the drift verdict re-derives from the windows, not from the status file's prose",
+        status["verdict"] == expected_verdict
+        and status["components"] == expected_components
+        and block["verdict"] == expected_verdict
+        and block["components"] == expected_components,
+        (status["verdict"], expected_verdict),
+    )
+    c.check(
+        "the verdict is provisional exactly until the declared minimum of windows",
+        status["provisional"] is (len(rederived) < rule["minimum_windows_for_a_stable_verdict"])
+        and block["provisional"] == status["provisional"],
+        status["provisional"],
+    )
+    c.check(
+        "the closure's per-window table is the history itself",
+        [
+            (row["window_id"], row["raw_sha256"], row["worst_spread_bps"])
+            for row in block["per_window"]
+        ]
+        == [(row["window_id"], row["raw_sha256"], row["worst_spread_bps"]) for row in rederived],
+        block["per_window"],
+    )
+    c.check(
+        "the assumption-holds flag follows from the windows",
+        block["assumption_holds_in_every_window_so_far"]
+        is all(
+            row["worst_spread_bps"] <= rule["modelled_round_trip_spread_bps"] for row in rederived
+        ),
+        block["assumption_holds_in_every_window_so_far"],
+    )
+    c.check(
+        "the drift totals carry no order and no credential",
+        block["orders_sent"] == 0 and block["credentials_used"] == 0,
+        (block["orders_sent"], block["credentials_used"]),
+    )
+    eco1 = next(defect for defect in closure["open_defects"] if defect["id"] == "ECO-1")
+    c.check(
+        "ECO-1 is reported as partially closed exactly when windows exist",
+        eco1["status"] == "OPEN_PARTIALLY_CLOSED" and "cost_drift_monitor" in eco1["this_gate"],
+        eco1["status"],
+    )
+
+
 def verify_decision(c: Checks, closure: dict[str, Any]) -> None:
     block = closure["economic_decision"]
     horizons = closure["horizon_verification"]["per_horizon"]
@@ -800,6 +978,7 @@ def main(argv: list[str] | None = None) -> int:
     verify_horizons(c, closure)
     verify_costs(c, closure)
     verify_reality(c, closure)
+    verify_drift(c, closure)
     verify_decision(c, closure)
     verify_governance(c, closure)
     verify_meta(c, closure, text)
@@ -836,8 +1015,9 @@ def main(argv: list[str] | None = None) -> int:
             "inspected directly; horizon medians recomputed with exhaustive and shifted windows; the "
             "one-timeline claim re-joined by open time; the toll recomputed through the library and "
             "against the frozen constants; the depth impact recomputed by marginal-level "
-            "interpolation; governance limits read from the source documents; the absence of an order "
-            "path re-derived from configuration, RFC invariants and the recorded files"
+            "interpolation; the forward cost-drift windows re-derived from their raw bytes against the "
+            "frozen thresholds; governance limits read from the source documents; the absence of an "
+            "order path re-derived from configuration, RFC invariants and the recorded files"
         ),
     }
     out = Path(args.out)

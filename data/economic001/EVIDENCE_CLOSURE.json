@@ -20,7 +20,7 @@
       "operations.jsonl": {
         "order_fields": [],
         "present": true,
-        "records": 129
+        "records": 131
       },
       "outcomes.jsonl": {
         "order_fields": [],
@@ -34,6 +34,65 @@
   "artifact": "ECONOMIC-001_COST_EVIDENCE_CLOSURE",
   "builder": "scripts/economic001_closure.py",
   "builder_equals_verifier": false,
+  "cost_drift_evidence": {
+    "assumption_holds_in_every_window_so_far": true,
+    "components": {
+      "depth": "WITHIN",
+      "impact": "WITHIN",
+      "spread": "WITHIN"
+    },
+    "credentials_used": 0,
+    "declared_rule": {
+      "account_size_usdt": 200.0,
+      "boundary_multiple": 1.5,
+      "minimum_windows_for_a_stable_verdict": 3,
+      "modelled_impact_bps": 0.25,
+      "modelled_round_trip_spread_bps": 1.0,
+      "verdicts": [
+        "WITHIN_MODELLED_ASSUMPTIONS",
+        "AT_THE_MODELLED_BOUNDARY",
+        "DRIFT_WIDER_THAN_MODELLED",
+        "INSUFFICIENT_EVIDENCE"
+      ]
+    },
+    "history_path": "data\\economic001\\COST_DRIFT_HISTORY.jsonl",
+    "history_sha256": "3f920db0d89e62361c8f03ffff4c67fc8b28319d4e32396c61ec1b25f8fdfc1e",
+    "instrument": "scripts/cost_drift_monitor.py",
+    "orders_sent": 0,
+    "per_window": [
+      {
+        "collected_at_utc": "2026-10-08T14:42:02.940539Z",
+        "depth_covers_account_size": true,
+        "pooled_median_spread_bps": 0.376374,
+        "provenance": "ECONOMIC-001 read-only probe (5 rounds, 30 requests, 32.36 s)",
+        "raw_path": "data\\economic001\\READ_ONLY_SNAPSHOT.json",
+        "raw_sha256": "30b98170398435022bfa309962d659038b035e13a78fd40321a09fbceadc230d",
+        "window_id": "20261008T144202Z",
+        "worst_spread_bps": 0.890829,
+        "worst_walk_bps_at_account_size": 0.0
+      },
+      {
+        "collected_at_utc": "2026-10-08T15:32:05Z",
+        "depth_covers_account_size": true,
+        "pooled_median_spread_bps": 0.433917,
+        "provenance": "cost_drift_monitor",
+        "raw_path": "data\\economic001\\drift_raw\\20261008T153205Z.json",
+        "raw_sha256": "48e753ffee2f20983e558e51072ad5f326af161d6e71cca58eccff2c9520c9af",
+        "window_id": "20261008T153205Z",
+        "worst_spread_bps": 0.918147,
+        "worst_walk_bps_at_account_size": 0.0
+      }
+    ],
+    "present": true,
+    "provisional": true,
+    "raw_windows_kept": 1,
+    "reading": "2 forward window(s) collected without a key, a signature or an order; the verdict is INSUFFICIENT_EVIDENCE (provisional: the declared minimum is not reached).  The comparison is against the frozen model's own terms: 1.0 bps of round-trip spread and 0.25 bps of base impact.  This is forward evidence about the assumption, not about any edge: the modelled spread is the conservative case in every window so far, which clears the assumption without validating any strategy.",
+    "status_path": "data\\economic001\\COST_DRIFT_STATUS.json",
+    "status_sha256": "d361c2c0ded6a524f2bac10e63cdb3857160c02ee3a996d0ed9a98131c2f543a",
+    "stop_rule": "stop collecting when the declared budget of windows is reached, when the venue or the public endpoint becomes unavailable, or on the first window whose verdict is DRIFT_WIDER_THAN_MODELLED — a drift that fires ST-6 invalidates the recommended cost profile and is a result, not a failure",
+    "verdict": "INSUFFICIENT_EVIDENCE",
+    "windows": 2
+  },
   "cost_model_verification": {
     "components": [
       {
@@ -347,8 +406,8 @@
   },
   "evidence_preservation": {
     "bytes_match_the_verified_run": true,
-    "current_head": "2167e58d678449907f0d41634a8aaab48fdc8e7d",
-    "current_head_subject": "chore(research): record the ECONOMIC-001 verification against the integration commit",
+    "current_head": "8e0a4b5f805d93eedd5218b10657a37652c0fb5d",
+    "current_head_subject": "feat(research): add the ST-6 cost-drift monitor and its first two windows",
     "deliverable_hashes": {
       "data/rfc046/ECONOMIC_FEASIBILITY.json": {
         "bytes": 32530,
@@ -473,7 +532,7 @@
       "rejected_candidates_recomputed": false,
       "sha256": "2f0e62d2408e6cc544d139bd6d43292698061d4d6ac325f70adab2b781965159"
     },
-    "CURRENT_HEAD": "2167e58d678449907f0d41634a8aaab48fdc8e7d",
+    "CURRENT_HEAD": "8e0a4b5f805d93eedd5218b10657a37652c0fb5d",
     "DATASET_HASHES": {
       "data/raw/alpha003/price/BTCUSDT_15m.json": "60b0630153dc8e879d63c9691712c8e15d06ede0cc2ae815725340e44c4e9d7f",
       "data/raw/alpha003/price/BTCUSDT_1h.json": "93af6a10d27a2ad58e4b1c2beb571d8fd6d5b0d7e07a8ff6e3848d58d33b3467",
@@ -553,9 +612,9 @@
       },
       {
         "id": "ECO-1",
-        "scope": "the read-only snapshot is one bounded window: spread, latency and depth are measured for a few seconds, not across regimes",
-        "status": "OPEN_BOUNDED",
-        "this_gate": "declared, not hidden; a forward collection remains the only cure"
+        "scope": "the gate's own read-only snapshot is one bounded window: spread, latency and depth are measured for a few seconds, not across regimes.  The ST-6 monitor now accumulates further windows (2 collected, verdict INSUFFICIENT_EVIDENCE), which reduces the defect without closing it: windows are still counted in units, not in regimes",
+        "status": "OPEN_PARTIALLY_CLOSED",
+        "this_gate": "declared, not hidden; the forward instrument is scripts/cost_drift_monitor.py and its stop rule is recorded in the drift status artefact"
       },
       {
         "id": "ECO-2",
@@ -565,8 +624,15 @@
       }
     ],
     "READ_ONLY_MARKET_DATA_STATUS": {
+      "assumption_holds_in_every_window_so_far": true,
       "complete": true,
       "credentials_used": 0,
+      "drift_credentials_used": 0,
+      "drift_instrument": "scripts/cost_drift_monitor.py",
+      "drift_orders_sent": 0,
+      "drift_provisional": true,
+      "drift_verdict": "INSUFFICIENT_EVIDENCE",
+      "drift_windows": 2,
       "measured": [
         "live best bid/ask spread",
         "observation-path latency",
@@ -626,8 +692,8 @@
     }
   },
   "gate": "ECONOMIC-001",
-  "generated_at_utc": "2026-10-08T15:04:39Z",
-  "head_at_run": "2167e58d678449907f0d41634a8aaab48fdc8e7d",
+  "generated_at_utc": "2026-10-08T15:39:55Z",
+  "head_at_run": "8e0a4b5f805d93eedd5218b10657a37652c0fb5d",
   "horizon_verification": {
     "all_horizons_agree_with_reported": true,
     "all_horizons_certifiable": true,
@@ -1200,9 +1266,9 @@
     },
     {
       "id": "ECO-1",
-      "scope": "the read-only snapshot is one bounded window: spread, latency and depth are measured for a few seconds, not across regimes",
-      "status": "OPEN_BOUNDED",
-      "this_gate": "declared, not hidden; a forward collection remains the only cure"
+      "scope": "the gate's own read-only snapshot is one bounded window: spread, latency and depth are measured for a few seconds, not across regimes.  The ST-6 monitor now accumulates further windows (2 collected, verdict INSUFFICIENT_EVIDENCE), which reduces the defect without closing it: windows are still counted in units, not in regimes",
+      "status": "OPEN_PARTIALLY_CLOSED",
+      "this_gate": "declared, not hidden; the forward instrument is scripts/cost_drift_monitor.py and its stop rule is recorded in the drift status artefact"
     },
     {
       "id": "ECO-2",
