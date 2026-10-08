@@ -409,6 +409,17 @@ def classify_error(code: str) -> str:
     return "BLOCKING"
 
 
+#: Notices the campaign vocabulary emits for *accounting*, not for action.
+#: ``MISSED_DECISION_SLOT`` reports a past slot that stayed empty past the
+#: seal window; its ``required_action`` is NONE_NO_BACKFILL and the manifest's
+#: late-seal policy forbids filling it, so no recovery exists.  Treating it
+#: as a failure made every scheduled cycle exit 3 (poisoning the Task
+#: Scheduler's LastTaskResult and every downstream health signal) while the
+#: campaign itself was healthy.  The notices stay in the cycle journal for
+#: observability; they never decide the exit code.
+INFORMATIONAL_CYCLE_CODES: frozenset[str] = frozenset({cs.MISSED_DECISION_SLOT})
+
+
 def preflight(*, ledger_root: Path, manifest: Mapping[str, Any] | None) -> dict[str, Any]:
     """Cheap, in-process integrity gate.  Heavy verifiers run on a daily cadence."""
     if manifest is None:
@@ -642,7 +653,11 @@ def run_supervised_cycle(
             scored = "score" in modes
             verification = str((cycle_result.get("verify") or {}).get("status", "SKIPPED"))
             action = "RUN" if (sealed or settled) else "NOOP"
-            failures = [item for item in cycle_result.get("errors") or []]
+            failures = [
+                item
+                for item in cycle_result.get("errors") or []
+                if str(item.get("code", "")) not in INFORMATIONAL_CYCLE_CODES
+            ]
             blocking = [
                 item for item in failures if classify_error(str(item.get("code", ""))) == "BLOCKING"
             ]

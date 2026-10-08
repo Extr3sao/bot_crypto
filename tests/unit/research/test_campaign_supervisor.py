@@ -562,6 +562,55 @@ def test_late_market_data_is_retryable_and_never_a_block(tmp_path: Path) -> None
     assert dl.DecisionLedger(paths["ledger_root"]).outcomes() == []  # nothing substituted
 
 
+def test_informational_missed_slot_notice_is_never_a_cycle_failure(tmp_path: Path) -> None:
+    """CAP-004D finding: MISSED_DECISION_SLOT is accounting, not a failure.
+
+    The notice's required_action is NONE_NO_BACKFILL and the manifest's
+    late-seal policy forbids filling the slot, so there is no action to
+    take; treating it as a blocking failure made every scheduled cycle
+    exit 3 and poisoned the Task Scheduler's LastTaskResult while the
+    campaign was healthy.  It stays in the cycle's error stream for
+    observability but must not decide the exit code.
+    """
+    supervisor = _load_supervisor()
+    paths = _prepare(tmp_path)
+    ledger = dl.DecisionLedger(paths["ledger_root"])
+    ledger.append_decision(_entry())
+
+    base = _fake_cycle(paths["ledger_root"])
+
+    def cycle_with_notice(*, modes: tuple[str, ...], now: int, cycle: int, store: dict[str, Any]) -> Any:
+        result = base(modes=modes, now=now, cycle=cycle, store=store)
+        result["errors"] = [
+            *(result.get("errors") or []),
+            {
+                "code": cs.MISSED_DECISION_SLOT,
+                "asset": "BTC/USDT",
+                "slot": now - 7_200,
+                "slot_utc": "2026-10-06T14:00:00+00:00",
+                "required_action": "NONE_NO_BACKFILL",
+            },
+        ]
+        return result
+
+    result = supervisor.run_supervised_cycle(
+        now=DT,
+        ledger_root=paths["ledger_root"],
+        report_root=paths["report_root"],
+        ops_path=paths["ops_path"],
+        cycle_fn=cycle_with_notice,
+        scheduler_probe=_probe,
+        code_commit=CODE_COMMIT,
+        operation_id="op-missed-notice",
+    )
+    assert result["exit_code"] == 0
+    assert result["action"] == "NOOP"
+    assert result["errors"] == []  # the notice never escalates
+    entry = supervisor.read_operations(paths["ops_path"])[-1]
+    assert entry["exit_code"] == 0
+    assert entry["error_type"] is None
+
+
 def test_a_stop_request_is_graceful_and_leaves_the_ledger_untouched(tmp_path: Path) -> None:
     supervisor = _load_supervisor()
     manifest = _manifest(campaign_start=_utc(2026, 10, 6, 15))
