@@ -2,8 +2,7 @@
 
 - status: **PROPOSED — NOT ACTIVATED**
 - proposed_id: **RFC-046** (RFC-036 stays reserved for exact external replication; RFC-044 and RFC-045 are excluded by the standing next-action policy)
-- proposed_by_artifact: `reports/profitability_gate035/FINAL_REPORT.json`
-- current_head_at_proposal: `aa0abae6715fd75c3cdfb37d7b3e5ca2086cd878`
+- proposed_by_artifact: `reports/profitability_gate035/FINAL_REPORT.json` (that artifact, not this document, records the commit the gate was evaluated at)
 - as_of_utc: 2026-10-08T02:00:00Z
 
 > This document is a **proposal**. It is not a decision, it does not open an RFC, and it does not authorize any work. The programme may start only after an explicit amendment of the master roadmap and of the RFC-043 operating model, both named in §5.
