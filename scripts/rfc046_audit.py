@@ -654,8 +654,10 @@ production readiness.
 def rfc_md_summary() -> str:
     return (
         "`docs/rfc/RFC-046_CONTROLLED_DISCOVERY.md` — a 15-section RFC that preserves the existing authority order, "
-        "resolves the RFC number space, defines `PROFITABILITY_GATE_V1` for the first time (11 requirements, two of "
-        "them tightenings of the pre-registered criteria, none retroactive), fixes the budget at 3 hypotheses x 1 "
+        "resolves the RFC number space, defines `PROFITABILITY_GATE_V1` for the first time (11 requirements: PG-1 "
+        "strengthens the net-expectancy criterion, PG-3 raises the profit factor to 1.10 and PG-7 adds a 1.5x "
+        "cost-stress run alongside the existing 2x one - three stricter than the pre-registered criteria, none "
+        "retroactive), fixes the budget at 3 hypotheses x 1 "
         "candidate with all trials recorded, formalizes the DEV/VAL/OOS partition with mechanical PIT enforcement, "
         "sets the failure policy to `CANDIDATE_REJECTED` / `DISCOVERY_CAMPAIGN_FAILED`, and registers five open "
         "technical-debt incidents. It authorizes nothing until its five amendments are approved."
