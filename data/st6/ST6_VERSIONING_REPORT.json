@@ -8,7 +8,8 @@
     "live_state_unmodified_by_the_replay": true,
     "negative_tests_pass": "ST6_CLOSE_NEGATIVE_TESTS 17/17 detected",
     "no_real_requests_during_the_replay": true,
-    "own_paths_clean_after_commit": true
+    "own_paths_clean_after_commit": true,
+    "recorded_hashes_reproduce_from_committed_blobs": "every digest in implementation_hashes, report_artifacts and snapshot_registry was re-hashed against `git cat-file blob HEAD:<path>` by a separate check; the digests this report records are of the bytes the commit that carries it stores verbatim"
   },
   "ahead_of_origin_main": "205",
   "artifact": "ST6_VERSIONING_REPORT",
@@ -359,23 +360,29 @@
   },
   "commits": [
     {
+      "id": "5178353f27c00671cd478c4e723b546ae97fb43e",
+      "role": "the LF artefact writers and the regenerated artefacts and snapshot",
+      "subject": "fix(research): write the ST-6 artefacts with LF so their recorded hashes travel"
+    },
+    {
+      "id": "f0173f75c7fdebe5a88b5224ae750edf0f0595a4",
+      "role": "the versioning, boundary, replay and verification artefacts",
+      "subject": "docs(research): report the ST-6 close evidence at the correcting commit"
+    },
+    {
       "id": "14514d66dbcdd4236a9d18dcbc79c1d90d9a14a1",
-      "paths": 6,
-      "role": "the launch-mode/provenance correction, the snapshot check semantics and the de-flaked live tests",
-      "subject": "fix(research): record who invoked the ST-6 tick and tell snapshot drift from corruption",
-      "verified_with": "git show --stat HEAD"
+      "role": "the launch-mode record, the snapshot-check semantics and the de-flaked live tests",
+      "subject": "fix(research): record who invoked the ST-6 tick and tell snapshot drift from corruption"
     },
     {
       "id": "8a7afd28209a4186b06616543ef762ed62c5d4f5",
-      "paths": 47,
-      "role": "the implementation, the reports and the first snapshots",
-      "subject": "feat(research): make the ST-6 close terminal, idempotent and independently replayed",
-      "verified_with": "git show --stat 8a7afd2"
+      "role": "the implementation, the first reports and the first snapshots",
+      "subject": "feat(research): make the ST-6 close terminal, idempotent and independently replayed"
     }
   ],
   "convention": "git_blob_sha1 is `git hash-object` for the exact bytes staged, so it identifies the content the commit carries; committed_blob_sha1 is what HEAD actually holds, and the two agree for every implementation path in this report. A commit cannot contain its own id, so the report of a commit is carried by the commit that follows it, and the id is returned in the mission's final response (CURRENT_HEAD).",
-  "current_head": "14514d66dbcdd4236a9d18dcbc79c1d90d9a14a1",
-  "generated_at_utc": "2026-10-08T22:15:46Z",
+  "current_head": "5178353f27c00671cd478c4e723b546ae97fb43e",
+  "generated_at_utc": "2026-10-08T22:26:33Z",
   "governance": {
     "ECO_1": "OPEN",
     "ECO_2": "UNKNOWN_NOT_RESOLVABLE_OFFLINE",
@@ -395,74 +402,58 @@
   "implementation_hashes": [
     {
       "bytes": 122969,
-      "committed_blob_sha1": "142287f750dbb30f4c0e7cb26e12ca88785839b5",
       "git_blob_sha1": "142287f750dbb30f4c0e7cb26e12ca88785839b5",
-      "modified_utc": "2026-10-08T22:09:09Z",
       "path": "scripts/st6_forward_regime.py",
-      "present": true,
+      "reading": "sha256 of the bytes on disk, which are the bytes the commit carries: git normalises the same text to LF, and these files have no CRLF in either place. Reproduce with `git cat-file blob HEAD:scripts/st6_forward_regime.py | sha256sum`.",
       "sha256": "c6fbeb875779e1da2c7882ec476451ab894e9959bc828c450726e6d8bda1fce3"
     },
     {
       "bytes": 20512,
-      "committed_blob_sha1": "2abb44bf0228fc5b1bfc8c6c8fbf6be48adf5eba",
       "git_blob_sha1": "2abb44bf0228fc5b1bfc8c6c8fbf6be48adf5eba",
-      "modified_utc": "2026-10-08T22:09:24Z",
       "path": "scripts/st6_health_check.py",
-      "present": true,
+      "reading": "sha256 of the bytes on disk, which are the bytes the commit carries: git normalises the same text to LF, and these files have no CRLF in either place. Reproduce with `git cat-file blob HEAD:scripts/st6_health_check.py | sha256sum`.",
       "sha256": "5e4450cc96c1400eb8a52d959dc613c7dcdb70c7fe55478a11fc7ced5437cd18"
     },
     {
       "bytes": 29401,
-      "committed_blob_sha1": "8eceb9b2ead559fad37f4c29178bb5332f119484",
       "git_blob_sha1": "8eceb9b2ead559fad37f4c29178bb5332f119484",
-      "modified_utc": "2026-10-08T17:46:55Z",
       "path": "scripts/st6_scheduler_verify.py",
-      "present": true,
+      "reading": "sha256 of the bytes on disk, which are the bytes the commit carries: git normalises the same text to LF, and these files have no CRLF in either place. Reproduce with `git cat-file blob HEAD:scripts/st6_scheduler_verify.py | sha256sum`.",
       "sha256": "b9b44d9b4a6aeabb38bd05928339d991f5a8b11ea1e9864f012d7a985f2a4374"
     },
     {
-      "bytes": 15435,
-      "committed_blob_sha1": "96e065cfb3d5869c1aa12af364232dcb264f314b",
-      "git_blob_sha1": "96e065cfb3d5869c1aa12af364232dcb264f314b",
-      "modified_utc": "2026-10-08T22:01:40Z",
+      "bytes": 15607,
+      "git_blob_sha1": "28b7114be4943cbd24a8afb5e713bde950926716",
       "path": "scripts/st6_state_snapshot.py",
-      "present": true,
-      "sha256": "9b8eb4aefac3f9ccc7b64210ae181e63977c91671885b82ed0bb916ebe410a19"
+      "reading": "sha256 of the bytes on disk, which are the bytes the commit carries: git normalises the same text to LF, and these files have no CRLF in either place. Reproduce with `git cat-file blob HEAD:scripts/st6_state_snapshot.py | sha256sum`.",
+      "sha256": "12ccda26ee1eebd86d16733cb840e1a1ab27583effea77da2ac9d42a0bd0876e"
     },
     {
-      "bytes": 61363,
-      "committed_blob_sha1": "c22204ab89dcfd7b1b8e329cead91533d808bb43",
-      "git_blob_sha1": "c22204ab89dcfd7b1b8e329cead91533d808bb43",
-      "modified_utc": "2026-10-08T21:54:52Z",
+      "bytes": 61686,
+      "git_blob_sha1": "65a072f7b3cbbefb8f5e02234861e22d0b25ecd4",
       "path": "scripts/st6_close_replay.py",
-      "present": true,
-      "sha256": "7a27e2fb519ac9134e797570f686769bf7aec0303c10aff72f5347505cb30384"
+      "reading": "sha256 of the bytes on disk, which are the bytes the commit carries: git normalises the same text to LF, and these files have no CRLF in either place. Reproduce with `git cat-file blob HEAD:scripts/st6_close_replay.py | sha256sum`.",
+      "sha256": "97bbe5ad358148c139a6dbeab1a028ca56bddd6b02b65baa4dab89a7c7c3ca9c"
     },
     {
-      "bytes": 46892,
-      "committed_blob_sha1": "a1e473d6f5db933ed60b61d3e6b90f15fb744c8a",
-      "git_blob_sha1": "a1e473d6f5db933ed60b61d3e6b90f15fb744c8a",
-      "modified_utc": "2026-10-08T21:54:52Z",
+      "bytes": 47018,
+      "git_blob_sha1": "88fd5a99331d8b8465443d0c94cccb422e8d4123",
       "path": "scripts/st6_close_verify.py",
-      "present": true,
-      "sha256": "866bd324acc0e6e85e59f0399718e6bbe1271d94baf8929b04ae20bc55b5423e"
+      "reading": "sha256 of the bytes on disk, which are the bytes the commit carries: git normalises the same text to LF, and these files have no CRLF in either place. Reproduce with `git cat-file blob HEAD:scripts/st6_close_verify.py | sha256sum`.",
+      "sha256": "30976237dba94151c95c4ec889a273cdfb91a9f61ba7c29e7ebe6c5921d18373"
     },
     {
       "bytes": 33335,
-      "committed_blob_sha1": "20a406d2797f4ef9d9c578c0a6eba913f3ad35d4",
       "git_blob_sha1": "20a406d2797f4ef9d9c578c0a6eba913f3ad35d4",
-      "modified_utc": "2026-10-08T22:03:55Z",
       "path": "tests/unit/research/test_st6_scheduler.py",
-      "present": true,
+      "reading": "sha256 of the bytes on disk, which are the bytes the commit carries: git normalises the same text to LF, and these files have no CRLF in either place. Reproduce with `git cat-file blob HEAD:tests/unit/research/test_st6_scheduler.py | sha256sum`.",
       "sha256": "3f52b2ae15c7abdd02c514345a3c76c52a7b211ce79752714cf058f70365c0d5"
     },
     {
       "bytes": 3308,
-      "committed_blob_sha1": "6c13e0e75568feaca1329a226116eed2b18d58ac",
       "git_blob_sha1": "6c13e0e75568feaca1329a226116eed2b18d58ac",
-      "modified_utc": "2026-10-08T17:15:23Z",
       "path": "data/st6/ST6_TASK_DEFINITION.xml",
-      "present": true,
+      "reading": "sha256 of the bytes on disk, which are the bytes the commit carries: git normalises the same text to LF, and these files have no CRLF in either place. Reproduce with `git cat-file blob HEAD:data/st6/ST6_TASK_DEFINITION.xml | sha256sum`.",
       "sha256": "c52ad4dc8ead1c098d9ac8eae1a1ff01d7aca32ca24fbd8be332fe3c8da251a2"
     }
   ],
@@ -517,6 +508,14 @@
       "note": "the health monitor's failure streak (threshold 3) and its 45-minute liveness grace were computed over every run event, including the fixtures, so the verification practice itself could raise a false CRITICAL and could mask a stopped schedule. The streak and the heartbeat are now derived from the non-manual events, with the unrecorded historical rows deliberately still counted."
     },
     {
+      "evidence": "the acceptance check re-hashed every digest in this report against the committed blob and found 3 that did not reproduce; the writers now open with newline=\"\\n\" and the digests are taken from `git cat-file blob HEAD:<path>`",
+      "fixed": true,
+      "fixed_in": "5178353f27c00671cd478c4e723b546ae97fb43e",
+      "id": "ARTEFACT-BYTES-DEPENDED-ON-THE-PLATFORM",
+      "kind": "defect, fixed in this work",
+      "note": "the artefacts had been written through a Windows text-mode write, so they carried CRLF while git stores LF: the recorded sha256 described bytes no other host could reproduce. A hash that only reproduces on the machine that wrote it is not a hash."
+    },
+    {
       "evidence": "before: --check compared every live file with the hash recorded at snapshot time, so it reported FAIL as soon as the tick rewrote its own state (five files had already moved by 22:00Z); after: PASS 17 checks with the drift named and counted separately",
       "fixed": true,
       "fixed_in": "14514d66dbcdd4236a9d18dcbc79c1d90d9a14a1",
@@ -536,44 +535,44 @@
   "origin_main": "5e6f9632e8d9c15dabd60ea92ac68f350ca28c9d",
   "report_artifacts": [
     {
-      "bytes": 13118,
-      "git_blob_sha1_of_these_bytes": "7e6a4c8849ec0ec880dc2756ba0c03c0e082d7ab",
-      "modified_utc": "2026-10-08T22:15:07Z",
+      "bytes": 14205,
+      "git_blob_sha1": "e9f0c72540e4c265922b792449f1d4d9775a7521",
       "path": "data/st6/ST6_PERIOD_BOUNDARY_AUDIT.md",
-      "sha256": "23737327b503e889bf6dd0007872008951d402ae0cd0c67142d7b6046ec1cb4f"
+      "reading": "sha256 of the bytes on disk, which the commit that carries this report stores verbatim (no CRLF to normalise). Reproduce with `git cat-file blob HEAD:data/st6/ST6_PERIOD_BOUNDARY_AUDIT.md | sha256sum`.",
+      "sha256": "c50c275d697b6a35e95f55320f5d460a2124acf7bc3f13a8c14a7e3c8c5101c9"
     },
     {
-      "bytes": 4130,
-      "git_blob_sha1_of_these_bytes": "d5a9544c5fe0dda1eed38445f18dcebbaf8f9cc5",
-      "modified_utc": "2026-10-08T22:11:37Z",
+      "bytes": 4069,
+      "git_blob_sha1": "9e90f02651e9ac0dbf92c8d8bb45238fb81967d6",
       "path": "data/st6/ST6_CLOSE_REPLAY_REPORT.md",
-      "sha256": "dd0f87b5aba9c04610cf0600cfa9433fce7ebb7dc091239e6249ece0e3e53982"
+      "reading": "sha256 of the bytes on disk, which the commit that carries this report stores verbatim (no CRLF to normalise). Reproduce with `git cat-file blob HEAD:data/st6/ST6_CLOSE_REPLAY_REPORT.md | sha256sum`.",
+      "sha256": "518efd9a4a14c4e5dc16264d0473422ad64d252ac53888e9ced921d2df595556"
     },
     {
-      "bytes": 60058,
-      "git_blob_sha1_of_these_bytes": "5a744fe3c2310ef51e8ed91562b5d6108be1691d",
-      "modified_utc": "2026-10-08T22:11:37Z",
+      "bytes": 58857,
+      "git_blob_sha1": "8d105e8630b8c1828e835ad8df0940a279b4059c",
       "path": "data/st6/ST6_CLOSE_REPLAY_REPORT.json",
-      "sha256": "7a43ef030e1231dee615a3518eae40992f39c2180a0cede0dbc0242a5ccb5679"
+      "reading": "sha256 of the bytes on disk, which the commit that carries this report stores verbatim (no CRLF to normalise). Reproduce with `git cat-file blob HEAD:data/st6/ST6_CLOSE_REPLAY_REPORT.json | sha256sum`.",
+      "sha256": "b07d46e84c836edae94a03c7527d82a97da67b5e76dd0902a1aa06f3dbf3632f"
     },
     {
-      "bytes": 11161,
-      "git_blob_sha1_of_these_bytes": "e30264065c88854bdedc0ff004d72563519f4ca7",
-      "modified_utc": "2026-10-08T22:11:55Z",
+      "bytes": 10877,
+      "git_blob_sha1": "344a4d24840f375d687c7fadb909a9ebed3e4718",
       "path": "data/st6/ST6_CLOSE_INDEPENDENT_VERIFICATION.json",
-      "sha256": "229024a6f7862b25980d127f3465ea9f790851196b85e9a81da18faf84cab724"
+      "reading": "sha256 of the bytes on disk, which the commit that carries this report stores verbatim (no CRLF to normalise). Reproduce with `git cat-file blob HEAD:data/st6/ST6_CLOSE_INDEPENDENT_VERIFICATION.json | sha256sum`.",
+      "sha256": "6dc23c73e821c954268f5208b55ec8f252d62e512e78b01d5eee976f7ee7cf7e"
     },
     {
-      "bytes": 16243,
-      "git_blob_sha1_of_these_bytes": "83896aff136168fc1f916c079407ae6162592cf5",
-      "modified_utc": "2026-10-08T22:14:42Z",
+      "bytes": 17760,
+      "git_blob_sha1": "a7b343d0d17c34f84ea0256b1f69aec758111596",
       "path": "data/st6/ST6_VERSIONING_REPORT.md",
-      "sha256": "b014d512cd79842a2fe80a5bd2006dcb40c1de10df3b3578ec43268c1d181a18"
+      "reading": "sha256 of the bytes on disk, which the commit that carries this report stores verbatim (no CRLF to normalise). Reproduce with `git cat-file blob HEAD:data/st6/ST6_VERSIONING_REPORT.md | sha256sum`.",
+      "sha256": "625f6b1e71215586ff38d6eb0274a7439224714fa1f68450974876c34f5f58e8"
     }
   ],
   "report_artifacts_self": {
     "path": "data/st6/ST6_VERSIONING_REPORT.json",
-    "why_absent": "a file cannot carry the hash of its own bytes: the digest would be of the previous write. Its identity is therefore the git blob of the bytes at the commit that carries it (CURRENT_HEAD in the mission's final response) and the sha256 held for it by any later reader, which is verifiable with `git cat-file blob HEAD:data/st6/ST6_VERSIONING_REPORT.json | sha256sum`."
+    "why_absent": "a file cannot carry the hash of its own bytes. Its identity is the git blob of the bytes at the commit that carries it, reported as CURRENT_HEAD in the mission's final response and reproducible with `git cat-file blob HEAD:data/st6/ST6_VERSIONING_REPORT.json | sha256sum`."
   },
   "scheduler_lifecycle": {
     "after_the_close": "every later tick is an idempotent no-op: no sample, no artefact rewrite, no run event; the consolidation stays byte-identical across repetitions and across a simulated restart",
@@ -634,36 +633,55 @@
   },
   "snapshot_registry": [
     {
+      "committed": true,
       "copy_root": "data/st6/snapshots/ST6_LIVE_STATE_20261008T215219Z",
-      "current_head": "fc3b6dce26534ba2af360b17571057eb633629b2",
+      "current_head_recorded": "fc3b6dce26534ba2af360b17571057eb633629b2",
       "generated_at_utc": "2026-10-08T21:52:19Z",
       "live_files_copied": 15,
       "manifest": "data/st6/snapshots/ST6_LIVE_STATE_20261008T215219Z.json",
-      "manifest_sha256": "5439b266d7a76e855b0a69cc78b51fa31c216b041606d3974a58224cea0d00e9",
+      "manifest_git_blob_sha1": "8cd1e37c74c96bbac395f4c2a3004b28192baed9",
+      "manifest_sha256_of_committed_bytes": "bc45e9f61e9295aba112d7fb21e1fc726251a007abb8c85db841e0c25088ed3f",
       "raw_evidence_reproduced": true,
       "snapshot_id": "ST6_LIVE_STATE_20261008T215219Z",
       "windows_index_rows_at_snapshot": 2
     },
     {
+      "committed": true,
       "copy_root": "data/st6/snapshots/ST6_LIVE_STATE_20261008T215222Z",
-      "current_head": "fc3b6dce26534ba2af360b17571057eb633629b2",
+      "current_head_recorded": "fc3b6dce26534ba2af360b17571057eb633629b2",
       "generated_at_utc": "2026-10-08T21:52:23Z",
       "live_files_copied": 15,
       "manifest": "data/st6/snapshots/ST6_LIVE_STATE_20261008T215222Z.json",
-      "manifest_sha256": "a047e83e95a7993eac30aa38f5030c93eae34f0a0ca102b6648fc0375840d583",
+      "manifest_git_blob_sha1": "c60c52221b62638bcdfa8a1da8bdee4fdb98c765",
+      "manifest_sha256_of_committed_bytes": "3ebe405cd8f2da599be10ea24288deb6cbcde1bf1a9a58c2eef563b1d646bf0b",
       "raw_evidence_reproduced": true,
       "snapshot_id": "ST6_LIVE_STATE_20261008T215222Z",
       "windows_index_rows_at_snapshot": 2
     },
     {
+      "committed": true,
       "copy_root": "data/st6/snapshots/ST6_LIVE_STATE_20261008T221134Z",
-      "current_head": "14514d66dbcdd4236a9d18dcbc79c1d90d9a14a1",
+      "current_head_recorded": "14514d66dbcdd4236a9d18dcbc79c1d90d9a14a1",
       "generated_at_utc": "2026-10-08T22:11:35Z",
       "live_files_copied": 15,
       "manifest": "data/st6/snapshots/ST6_LIVE_STATE_20261008T221134Z.json",
-      "manifest_sha256": "c7b64e01a896b0a32b01dc4003cb6cc3463db94d1b5fb42865cf6d7fff35e9f0",
+      "manifest_git_blob_sha1": "75a39d0500ea4f8813cf09c0305861f1e541ce3b",
+      "manifest_sha256_of_committed_bytes": "4bdb24cb9adddefe83e6b010b5fa9e02bd3fce48f5017ff349b46c0fd5f05919",
       "raw_evidence_reproduced": true,
       "snapshot_id": "ST6_LIVE_STATE_20261008T221134Z",
+      "windows_index_rows_at_snapshot": 2
+    },
+    {
+      "committed": true,
+      "copy_root": "data/st6/snapshots/ST6_LIVE_STATE_20261008T222000Z",
+      "current_head_recorded": "f0173f75c7fdebe5a88b5224ae750edf0f0595a4",
+      "generated_at_utc": "2026-10-08T22:20:01Z",
+      "live_files_copied": 15,
+      "manifest": "data/st6/snapshots/ST6_LIVE_STATE_20261008T222000Z.json",
+      "manifest_git_blob_sha1": "dd0e3e61a16d6910e2df114c382987df2256b3da",
+      "manifest_sha256_of_committed_bytes": "9f021f60dd5f076ebb7dce46f81931b3f923401b77d21f54247db3e9983ba5fd",
+      "raw_evidence_reproduced": true,
+      "snapshot_id": "ST6_LIVE_STATE_20261008T222000Z",
       "windows_index_rows_at_snapshot": 2
     }
   ],
@@ -675,10 +693,11 @@
       "false_success": 0,
       "mismatches": 0,
       "negative_tests": {
+        "artifact": "ST6_CLOSE_NEGATIVE_TESTS",
         "failed": 0,
-        "passed": 17,
-        "status": "ST6_CLOSE_NEGATIVE_TESTS"
+        "passed": 17
       },
+      "refused_a_stale_snapshot": "the same verifier returned 18/19 with FALSE_SUCCESS 1 while three programs had changed after the snapshot it was reading; it was not weakened to make the later run pass, the snapshot was retaken in the right order",
       "status": "PASS",
       "verdict": "ST6_CLOSE_VERIFIED"
     },
@@ -703,25 +722,24 @@
     },
     "live_health": {
       "artifact": "data/st6/ST6_HEALTH_STATUS.json",
-      "consecutive_failures": 0,
+      "consecutive_failures": 1,
       "consecutive_failures_over": "non-manual run events only",
       "heartbeat_basis": "LAST_NON_MANUAL_RUN",
       "missed_windows_recorded": 0,
-      "run_events": 142,
+      "run_events": 145,
       "run_events_by_provenance": {
-        "MANUAL": 3,
-        "SCHEDULED": 10,
+        "MANUAL": 4,
+        "SCHEDULED": 12,
         "UNRECORDED": 129
       },
-      "status": "HEALTHY",
+      "status": "WARNING",
       "unaccounted_slots": [],
       "windows_completed": 2
     },
     "live_state_snapshot_check": {
       "checks": 17,
       "live_files_moved_since_the_snapshot": 0,
-      "newest_snapshot": "ST6_LIVE_STATE_20261008T221134Z",
-      "read_at_utc": "2026-10-08T22:13:36Z",
+      "newest_snapshot": "ST6_LIVE_STATE_20261008T222000Z",
       "status": "PASS"
     },
     "scheduler_verifier": {
@@ -738,8 +756,8 @@
         "passed": 22
       },
       "tests/unit/research/test_st6_scheduler.py": {
+        "added_with_this_work": 3,
         "failed": 0,
-        "note": "three added with this work: run-event provenance, the manual-invocation rule, and the snapshot check's drift-versus-corruption separation",
         "passed": 24
       },
       "total_passed": 46

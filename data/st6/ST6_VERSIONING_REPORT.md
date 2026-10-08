@@ -92,9 +92,11 @@ directory that could carry another agent's file.
 
 | commit | subject | paths | role |
 | --- | --- | --- | --- |
-| `8a7afd2` | make the ST-6 close terminal, idempotent and independently replayed | 47 | the implementation, the reports and the first two snapshots |
-| `14514d6` | record who invoked the tick and tell snapshot drift from corruption | 6 | the correction below |
-| the commit that carries this report | this report, the regenerated replay report, the verification and the third snapshot | 9 | reports and the newest snapshot |
+| `8a7afd2` | make the ST-6 close terminal, idempotent and independently replayed | 47 | the implementation, the first reports and the first two snapshots |
+| `14514d6` | record who invoked the tick and tell snapshot drift from corruption | 6 | defects 5–7 below |
+| `f0173f7` | report the ST-6 close evidence at the correcting commit | 22 | the regenerated artefacts and the third snapshot |
+| `5178353` | write the ST-6 artefacts with LF so their recorded hashes travel | 24 | defect 8 below, its regenerated artefacts and the fourth snapshot |
+| the commit that carries this report | this report and the boundary audit it summarises | 2 | reports |
 
 The identity of the content staged (git blob SHA-1, `git hash-object` of the exact bytes, and what
 `HEAD` actually holds — they agree on every row) is:
@@ -104,9 +106,9 @@ The identity of the content staged (git blob SHA-1, `git hash-object` of the exa
 | `scripts/st6_forward_regime.py` | `142287f750dbb30f4c0e7cb26e12ca88785839b5` | 122969 |
 | `scripts/st6_health_check.py` | `2abb44bf0228fc5b1bfc8c6c8fbf6be48adf5eba` | 20512 |
 | `scripts/st6_scheduler_verify.py` | `8eceb9b2ead559fad37f4c29178bb5332f119484` | 29401 |
-| `scripts/st6_state_snapshot.py` | `96e065cfb3d5869c1aa12af364232dcb264f314b` | 15435 |
-| `scripts/st6_close_replay.py` | `c22204ab89dcfd7b1b8e329cead91533d808bb43` | 61363 |
-| `scripts/st6_close_verify.py` | `a1e473d6f5db933ed60b61d3e6b90f15fb744c8a` | 46892 |
+| `scripts/st6_state_snapshot.py` | `28b7114be4943cbd24a8afb5e713bde950926716` | 15607 |
+| `scripts/st6_close_replay.py` | `65a072f7b3cbbefb8f5e02234861e22d0b25ecd4` | 61686 |
+| `scripts/st6_close_verify.py` | `88fd5a99331d8b8465443d0c94cccb422e8d4123` | 47018 |
 | `tests/unit/research/test_st6_scheduler.py` | `20a406d2797f4ef9d9c578c0a6eba913f3ad35d4` | 33335 |
 | `data/st6/ST6_TASK_DEFINITION.xml` | `6c13e0e75568feaca1329a226116eed2b18d58ac` | 3308 |
 
