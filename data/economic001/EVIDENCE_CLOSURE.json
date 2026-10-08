@@ -1,0 +1,1870 @@
+{
+  "absence_of_real_trades": {
+    "any_record_carries_an_order_or_fill_field": false,
+    "exchange_sandbox": true,
+    "no_real_trades": true,
+    "order_archive_files": {
+      "data/storage/.gitkeep": "present",
+      "data/storage/autonomous_diag_state.json": "present",
+      "data/storage/autonomous_paper_state.json": "present",
+      "data/storage/bot.db": "absent",
+      "data/storage/paper_state.json": "present"
+    },
+    "reading": "there is no order archive at all: the storage directory holds state journals, not an order book, and the sealed real-decision records carry no order id and no fill.  Nothing in this programme has been executed against a venue.",
+    "real_decision_records": {
+      "decisions.jsonl": {
+        "order_fields": [],
+        "present": true,
+        "records": 4
+      },
+      "operations.jsonl": {
+        "order_fields": [],
+        "present": true,
+        "records": 129
+      },
+      "outcomes.jsonl": {
+        "order_fields": [],
+        "present": true,
+        "records": 4
+      }
+    },
+    "runtime_live_trading_enabled": false,
+    "trades_authorized": 0
+  },
+  "artifact": "ECONOMIC-001_COST_EVIDENCE_CLOSURE",
+  "builder": "scripts/economic001_closure.py",
+  "builder_equals_verifier": false,
+  "cost_model_verification": {
+    "components": [
+      {
+        "knowledge": "KNOWN",
+        "name": "exchange_fee_entry",
+        "note": "VIP0 (regular user, 30d volume < 1,000,000 USD), pay in quote_asset",
+        "source_id": "SRC-01",
+        "value_bps": 10.0
+      },
+      {
+        "knowledge": "KNOWN",
+        "name": "exchange_fee_exit",
+        "note": "VIP0 (regular user, 30d volume < 1,000,000 USD), pay in quote_asset",
+        "source_id": "SRC-01",
+        "value_bps": 10.0
+      },
+      {
+        "knowledge": "ESTIMATED",
+        "name": "spread",
+        "note": "2 taker leg(s) x half-spread",
+        "source_id": "SRC-07",
+        "value_bps": 1.0
+      },
+      {
+        "knowledge": "ESTIMATED",
+        "name": "slippage",
+        "note": "base 1.0 bps x liq 1.0 x size 1.316 x vol 1.000",
+        "source_id": "MODEL-V3",
+        "value_bps": 2.632456
+      },
+      {
+        "knowledge": "ESTIMATED",
+        "name": "market_impact",
+        "note": "size-driven displacement above the base slippage",
+        "source_id": "MODEL-V3",
+        "value_bps": 0.158114
+      }
+    ],
+    "cost_forensics_admission_toll_bps": 23.7906,
+    "frozen_recorded_toll_at_1000": 23.7906,
+    "historical_evaluation_toll_bps": 23.7906,
+    "historical_toll_unchanged": true,
+    "independent_recomputation": {
+      "at_1000_usd": {
+        "fees_bps": 20.0,
+        "fees_share": 0.840669,
+        "impact_bps": 0.158113883,
+        "slippage_bps": 2.632455532,
+        "spread_bps": 1.0,
+        "stressed_at_1p5x_bps": 35.685854123,
+        "total_bps": 23.790569415
+      },
+      "at_200_usdt": {
+        "fees_bps": 20.0,
+        "fees_share": 0.856401,
+        "impact_bps": 0.070710678,
+        "slippage_bps": 2.282842712,
+        "spread_bps": 1.0,
+        "stressed_at_1p5x_bps": 35.030330086,
+        "total_bps": 23.353553391
+      },
+      "method": "from the frozen constants only: 2 x taker fee, the spread term as published, and 2 x base slippage x (1 + sqrt(size / reference_notional)) plus 2 x base impact x sqrt(size / reference_notional)"
+    },
+    "library_cross_check": {
+      "at_1000_usd": {
+        "knowledge_class": "ESTIMATED",
+        "required_edge_bps_at_1p5x": 35.68585412256314,
+        "round_trip_bps": 23.790569415042093
+      },
+      "at_200_usdt": {
+        "knowledge_class": "ESTIMATED",
+        "required_edge_bps_at_1p5x": 35.03033008588991,
+        "round_trip_bps": 23.353553390593273
+      },
+      "import_error": null,
+      "ran": true
+    },
+    "maker_path": {
+      "admissible": false,
+      "round_trip_bps": 41.25,
+      "why": "no usable fill evidence exists; the execution model is EXECUTION_MODEL_REQUIRED, so the cheaper-looking passive path stays barred"
+    },
+    "model": "COST_MODEL_V3",
+    "model_file": "docs\\COST_MODEL_V3.json",
+    "model_file_sha256": "2f0e62d2408e6cc544d139bd6d43292698061d4d6ac325f70adab2b781965159",
+    "model_matches_recorded_1000": true,
+    "model_matches_recorded_200": true,
+    "non_retroactivity": {
+      "applied": true,
+      "cost_forensics_path": "data\\rfc046\\COST_FORENSICS.json",
+      "cost_forensics_sha256": "230826ad74bbfef4c9ed8b7c65a0480553898bb064678e83a341622300a02ff7",
+      "cost_forensics_unmodified_in_worktree": true,
+      "rejected_candidates_recomputed": false,
+      "rule": "the 23.353553 bps figure is a *posterior* economic evaluation at the account size we actually hold; the rejected strategies were judged against the frozen 23.7906 bps and must not be recalculated against a smaller toll",
+      "run_report_path": "data\\rfc046\\RUN_REPORT.json",
+      "run_report_sha256": "d16e1369253ce2c317822773b921201ae4d6a101fc3838ea268c56359d476af8",
+      "run_report_unmodified_in_worktree": true
+    },
+    "posterior_evaluation_toll_bps": 23.353553391,
+    "reused_not_rebuilt": true,
+    "split": {
+      "estimated_component_names": [
+        "spread",
+        "slippage",
+        "market_impact"
+      ],
+      "estimated_execution_bps": 3.79057,
+      "fees_share_of_total": 0.840669,
+      "known_component_names": [
+        "exchange_fee_entry",
+        "exchange_fee_exit"
+      ],
+      "known_fees_bps": 20.0,
+      "reading": "the exchange fee is a published schedule (KNOWN); spread, slippage and size-driven impact are modelled terms (ESTIMATED) whose constants the frozen model itself labels ASSUMED/ESTIMATED rather than observed.  The fee share is quoted at the frozen 1,000 USD reference; at 200 USDT the same fee is 20 of 23.35 bps, i.e. a larger share of a smaller bill",
+      "recomputed_total_bps_at_1000_usd": 23.79057
+    },
+    "toll_at_1000_usd": 23.7906,
+    "toll_at_200_usdt": 23.353553391
+  },
+  "dataset_hashes": {
+    "data/raw/alpha003/price/BTCUSDT_15m.json": "60b0630153dc8e879d63c9691712c8e15d06ede0cc2ae815725340e44c4e9d7f",
+    "data/raw/alpha003/price/BTCUSDT_1h.json": "93af6a10d27a2ad58e4b1c2beb571d8fd6d5b0d7e07a8ff6e3848d58d33b3467",
+    "data/raw/alpha003/price/BTCUSDT_5m.json": "4413f407bca6ae52d26b1a9498ba2fe2e1ccdd8d0c6639ddf31ecca3e335ab1a",
+    "data/raw/alpha003/price/ETHUSDT_15m.json": "b3b1f02e9a299500b77fc3b8d31a31c3856820daa1c99bba3921d74cec5b943e",
+    "data/raw/alpha003/price/ETHUSDT_1h.json": "99a23e658448c12a20012532f3b49b464314c6b06d1715af1861889ab890488d",
+    "data/raw/alpha003/price/ETHUSDT_5m.json": "56bd6053403a154f0f33a5da56e359d5df558bd997de7374222d6569aef28e1d",
+    "data/raw/alpha003/price/SOLUSDT_15m.json": "d3a637c2f5e98c121f8d197bf8b15229d7ec754d41d59bebf2de2e232a99d0ed",
+    "data/raw/alpha003/price/SOLUSDT_1h.json": "47e39783ea9df716e061952d1a1c2dabf013017855bfcdf0fc3b80b88fdc6522",
+    "data/raw/alpha003/price/SOLUSDT_5m.json": "4e7ce42d55e0100684b2024bc2055435c8b3a7216ac2de316d58f38490c678e7",
+    "data/raw/alpha003/price/XRPUSDT_15m.json": "c27da15d2e8051c925844efade20a2f84cee6903a944530baa25bbd7848dd95c",
+    "data/raw/alpha003/price/XRPUSDT_1h.json": "c54c27608fe4e83d6a184423d2a2f8f736e9210c416d2f4335ff0c05ae7c2ea6",
+    "data/raw/alpha003/price/XRPUSDT_5m.json": "908d6967393ebb53b0151272e545683a0203c7f681f7d1749f9cade5ae177282"
+  },
+  "does_not_license": [
+    "a new campaign, a new hypothesis or a new strategy",
+    "paper or live trading, or any deployment of capital",
+    "any recalculated verdict for a rejected candidate",
+    "any claim that an edge, a profit or a production capability exists"
+  ],
+  "economic_decision": {
+    "families_outside_the_profile_verdicts": {
+      "intraday": {
+        "horizon": "1h",
+        "median_abs_move_bps": 29.381129,
+        "movement_margin_sufficient": false,
+        "multiple_of_frozen_toll": 1.234989,
+        "multiple_of_posterior_toll": 1.258101
+      },
+      "mean_reversion": {
+        "horizon": "4h",
+        "median_abs_move_bps": 60.466783,
+        "movement_margin_sufficient": false,
+        "multiple_of_frozen_toll": 2.541625,
+        "multiple_of_posterior_toll": 2.58919
+      },
+      "scalping": {
+        "horizon": "5m",
+        "median_abs_move_bps": 8.588957,
+        "movement_margin_sufficient": false,
+        "multiple_of_frozen_toll": 0.361023,
+        "multiple_of_posterior_toll": 0.367779
+      }
+    },
+    "families_outside_the_proposed_profile": [
+      "scalping",
+      "intraday",
+      "mean_reversion"
+    ],
+    "it_does_not_authorize": [
+      "a campaign or any new hypothesis",
+      "paper or live trading",
+      "any statement that an edge, a profit or a production capability exists",
+      "recalculating the rejected candidates against the smaller toll"
+    ],
+    "low_turnover_long_horizon_region": {
+      "families": [
+        "momentum",
+        "swing_trading",
+        "trend_following"
+      ],
+      "families_clearing_the_rule": [
+        "momentum",
+        "swing_trading",
+        "trend_following"
+      ],
+      "margin_sufficient": true,
+      "median_multiple_of_posterior_toll": 13.244988
+    },
+    "movement_margin_is_not_alpha": true,
+    "movement_margin_is_not_capturable_edge": true,
+    "new_hypotheses_generated": 0,
+    "new_strategies_recommended": 0,
+    "per_family": {
+      "intraday": {
+        "horizon": "1h",
+        "median_abs_move_bps": 29.381129,
+        "movement_margin_sufficient": false,
+        "multiple_of_frozen_toll": 1.234989,
+        "multiple_of_posterior_toll": 1.258101
+      },
+      "mean_reversion": {
+        "horizon": "4h",
+        "median_abs_move_bps": 60.466783,
+        "movement_margin_sufficient": false,
+        "multiple_of_frozen_toll": 2.541625,
+        "multiple_of_posterior_toll": 2.58919
+      },
+      "momentum": {
+        "horizon": "24h",
+        "median_abs_move_bps": 164.801314,
+        "movement_margin_sufficient": true,
+        "multiple_of_frozen_toll": 6.927161,
+        "multiple_of_posterior_toll": 7.056798
+      },
+      "scalping": {
+        "horizon": "5m",
+        "median_abs_move_bps": 8.588957,
+        "movement_margin_sufficient": false,
+        "multiple_of_frozen_toll": 0.361023,
+        "multiple_of_posterior_toll": 0.367779
+      },
+      "swing_trading": {
+        "horizon": "72h",
+        "median_abs_move_bps": 309.317526,
+        "movement_margin_sufficient": true,
+        "multiple_of_frozen_toll": 13.00167,
+        "multiple_of_posterior_toll": 13.244988
+      },
+      "trend_following": {
+        "horizon": "168h",
+        "median_abs_move_bps": 496.629154,
+        "movement_margin_sufficient": true,
+        "multiple_of_frozen_toll": 20.875016,
+        "multiple_of_posterior_toll": 21.265678
+      }
+    },
+    "previous_scope_recommendation": "VIABLE_COST_PROFILE_IDENTIFIED",
+    "reading": "the long-horizon region clears the toll by a wide margin, so a mechanism there could *pay for itself*; that is an arithmetic statement about the venue's take, not evidence that any mechanism can take the move.  The three tested mechanisms produced no demonstrated gross edge, so the margin stays unclaimed.",
+    "rejected_candidates_preserved": {
+      "CAND-046-001": {
+        "cost_reduction_factor_required": 5.251097,
+        "failed_requirements": [
+          "PG-1",
+          "PG-2",
+          "PG-3",
+          "PG-4",
+          "PG-5",
+          "PG-6",
+          "PG-7",
+          "PG-8"
+        ],
+        "gate_verdict": "CANDIDATE_REJECTED",
+        "gross_expectancy_bps": 4.530596,
+        "mechanism": "forced_flows",
+        "oos_gross_expectancy_bps": -74.590884,
+        "recomputed_here": false,
+        "recorded_net_expectancy_bps": -19.260004,
+        "strategy": "funding_capitulation",
+        "verdict": "COST_DISQUALIFIED",
+        "zero_sample": false
+      },
+      "CAND-046-002": {
+        "cost_reduction_factor_required": null,
+        "failed_requirements": [
+          "PG-1",
+          "PG-2",
+          "PG-3",
+          "PG-4",
+          "PG-5",
+          "PG-6",
+          "PG-7",
+          "PG-8"
+        ],
+        "gate_verdict": "CANDIDATE_REJECTED",
+        "gross_expectancy_bps": -25.45802,
+        "mechanism": "market_microstructure",
+        "oos_gross_expectancy_bps": -8.477294,
+        "recomputed_here": false,
+        "recorded_net_expectancy_bps": -49.24862,
+        "strategy": "settlement_dip",
+        "verdict": "NO_GROSS_EDGE",
+        "zero_sample": false
+      },
+      "CAND-046-003": {
+        "cost_reduction_factor_required": null,
+        "failed_requirements": [
+          "PG-1",
+          "PG-2",
+          "PG-3",
+          "PG-4",
+          "PG-5",
+          "PG-6",
+          "PG-7"
+        ],
+        "gate_verdict": "CANDIDATE_REJECTED",
+        "gross_expectancy_bps": null,
+        "mechanism": "institutional_constraint",
+        "oos_gross_expectancy_bps": null,
+        "recomputed_here": false,
+        "recorded_net_expectancy_bps": null,
+        "strategy": "weekend_rebound",
+        "verdict": "ZERO_SAMPLE",
+        "zero_sample": true
+      }
+    },
+    "rejected_candidates_recomputed": 0,
+    "remaining_question": "whether any mechanism suited to a holding period of about a day and upwards can convert the available movement into net return — a question this gate does not answer and does not recommend answering by opening another campaign",
+    "rule": "movement margin is sufficient at a horizon when the measured median absolute move is at least 5x the toll the strategy would pay to trade it",
+    "scope_verdict": "MOVEMENT_MARGIN_SUFFICIENT_FOR_FURTHER_RESEARCH",
+    "verdict_basis": "the rule is applied to the profile under evaluation, the low-turnover long-horizon region; the short-horizon families are reported alongside and their failure is a finding about them, not a contradiction of this verdict"
+  },
+  "evidence_preservation": {
+    "bytes_match_the_verified_run": true,
+    "current_head": "0f8292651ce3cd3ae113c0229de1b7487a00f472",
+    "current_head_subject": "feat(research): price a 200 USDT cost profile and bound it by horizon",
+    "deliverable_hashes": {
+      "data/rfc046/ECONOMIC_FEASIBILITY.json": {
+        "bytes": 32530,
+        "git_blob_sha256": "0a2ac9ca7d03d2150e7e9c9ee90604d06e4dbfe71b02c72e3faeb4401076d740",
+        "working_tree_sha256": "35a0a0f28b7fca29632f51efa45703e8d7ce871d74a7cbe0857086645a883b73"
+      },
+      "data/rfc046/ECONOMIC_FEASIBILITY.md": {
+        "bytes": 11829,
+        "git_blob_sha256": "55cbbcc63a593d9609629c42dc11b2e8784e804e87da0a3b61dec857795f81be",
+        "working_tree_sha256": "4b9de3fdeb85ba3486c836996e244fd82d652bd825ef98710dad1df6b9922efb"
+      },
+      "data/rfc046/ECONOMIC_FEASIBILITY_VERIFICATION.json": {
+        "bytes": 979,
+        "git_blob_sha256": "e75fbad18107ce1fa469758c567f95a7ae54651fe539b2a5b2a5ecea7d6bfbbb",
+        "working_tree_sha256": "ecf21cd948c617c58c276a6165aa5ab699542c3cb161d6d13d41158f02c2ac0c"
+      },
+      "scripts/rfc046_economic_gate.py": {
+        "bytes": 58239,
+        "git_blob_sha256": "a79c7bde12224be53f3401b959407bc436c362285b056a7c13ecfb445aff9395",
+        "working_tree_sha256": "a79c7bde12224be53f3401b959407bc436c362285b056a7c13ecfb445aff9395"
+      },
+      "scripts/rfc046_economic_gate_verify.py": {
+        "bytes": 35291,
+        "git_blob_sha256": "621a99e832f5fa837f1d8e52a381bb90969c95becf038c6566bf3af7c3c4e366",
+        "working_tree_sha256": "621a99e832f5fa837f1d8e52a381bb90969c95becf038c6566bf3af7c3c4e366"
+      },
+      "tests/unit/research/test_rfc046_economic_gate.py": {
+        "bytes": 17418,
+        "git_blob_sha256": "dc74af62c347d372842bc5da19311dbb4bf7c3c78faab642196f1c464bf3d69b",
+        "working_tree_sha256": "dc74af62c347d372842bc5da19311dbb4bf7c3c78faab642196f1c464bf3d69b"
+      }
+    },
+    "deliverables": [
+      "scripts/rfc046_economic_gate.py",
+      "scripts/rfc046_economic_gate_verify.py",
+      "tests/unit/research/test_rfc046_economic_gate.py",
+      "data/rfc046/ECONOMIC_FEASIBILITY.json",
+      "data/rfc046/ECONOMIC_FEASIBILITY.md",
+      "data/rfc046/ECONOMIC_FEASIBILITY_VERIFICATION.json"
+    ],
+    "deliverables_in_delivery_commit": [
+      "scripts/rfc046_economic_gate.py",
+      "scripts/rfc046_economic_gate_verify.py",
+      "tests/unit/research/test_rfc046_economic_gate.py",
+      "data/rfc046/ECONOMIC_FEASIBILITY.json",
+      "data/rfc046/ECONOMIC_FEASIBILITY.md",
+      "data/rfc046/ECONOMIC_FEASIBILITY_VERIFICATION.json"
+    ],
+    "delivery_commit": "0f8292651ce3cd3ae113c0229de1b7487a00f472",
+    "delivery_subject": "feat(research): price a 200 USDT cost profile and bound it by horizon",
+    "files_committed": 6,
+    "foreign_paths_in_delivery_commit": [],
+    "foreign_paths_left_in_worktree": [
+      "FINAL_REPORT.md",
+      "PAPER_DATA_24H_REPORT.json",
+      "PAPER_DATA_24H_REPORT.md",
+      "RUN_REPORT.json",
+      "RUN_REPORT.md",
+      "data/rfc035e/",
+      "docs/research/experiment_specs/EXP-CAND-001-SOURCE-FAITHFUL-EXIT.md",
+      "docs/research/runtime_reconciliation/",
+      "docs/research/work_packages/WP-CAND-001_ma_pullback.md",
+      "docs/research/work_packages/WP-CAND-002_mtf_alignment.md",
+      "docs/research/work_packages/WP-CAND-003_macd_regime_crossover.md",
+      "docs/research/work_packages/WP-HTF-PIT-001_htf_availability_unit_fix.md",
+      "docs/research/work_packages/WP-IMP-001_process_conformance_rfc.md",
+      "docs/research/work_packages/WP-IMP-002_post_trade_reconstruction.md",
+      "docs/research/work_packages/WP-IMP-004_rule_provenance_rfc.md",
+      "docs/research/work_packages/WP-IMP-005_source_threshold_quarantine.md",
+      "docs/research/work_packages/WP-PAIR-INFRA-001_pair_execution_gap.md",
+      "docs/research/work_packages/WP-RISK-001_exposure_and_stop_audit.md",
+      "docs/research/work_packages/WP-RISK-EXPOSURE-001.md",
+      "docs/source_registry.md",
+      "evidence/real_decisions/evaluations.jsonl",
+      "evidence/real_decisions/outcomes.jsonl",
+      "scripts/cap004c_verify.py",
+      "scripts/rfc035_discovery_verify.py",
+      "scripts/rfc035e_fetch.py",
+      "scripts/rfc035e_reproduce.py",
+      "scripts/rfc035e_verify.py",
+      "scripts/rfc035s2_search.py",
+      "scripts/rfc035s2_verify.py",
+      "scripts/source_candidate_experiment.py",
+      "src/trading_bot/research/experimental/",
+      "tests/unit/research/test_experimental_candidates_pit.py",
+      "tests/unit/research/test_rfc035_opportunity_registry.py",
+      "tests/unit/research/test_rfc035e_effect_reproduction.py",
+      "tests/unit/research/test_rfc035s2_strategy_search.py"
+    ],
+    "line_endings": {
+      "core_autocrlf": "true",
+      "note": "the working tree carries CRLF for the report artefacts and LF for the scripts; git stores LF.  Both hashes are recorded: working_tree_sha256 is what a reader of this checkout verifies, git_blob_sha256 is what the repository stores."
+    },
+    "non_circularity": {
+      "artefact_path": "data/economic001/EVIDENCE_CLOSURE.json",
+      "artefact_present_in_named_commit": false,
+      "holds": true,
+      "named_commit": "0f8292651ce3cd3ae113c0229de1b7487a00f472",
+      "rule": "the commit named by this artefact must not contain this artefact, so the artefact can never describe the commit that carries it"
+    },
+    "pending_in_this_gate": [
+      "scripts/economic001_readonly_probe.py",
+      "scripts/economic001_closure.py",
+      "scripts/economic001_closure_verify.py",
+      "tests/unit/research/test_economic001_evidence_closure.py",
+      "data/economic001/READ_ONLY_SNAPSHOT.json",
+      "data/economic001/EVIDENCE_CLOSURE.json",
+      "data/economic001/EVIDENCE_CLOSURE.md",
+      "data/economic001/EVIDENCE_CLOSURE_VERIFICATION.json"
+    ],
+    "reverification_after_integration": "scripts/economic001_closure_verify.py",
+    "verified_artifact_sha256_recorded_by_verifier": "35a0a0f28b7fca29632f51efa45703e8d7ce871d74a7cbe0857086645a883b73"
+  },
+  "false_success": 0,
+  "final_report": {
+    "COST_MODEL_STATUS": {
+      "estimated_execution_bps": 3.79057,
+      "historical_toll_bps": 23.7906,
+      "known_fees_bps": 20.0,
+      "model": "COST_MODEL_V3",
+      "posterior_toll_bps": 23.353553391,
+      "rejected_candidates_recomputed": false,
+      "sha256": "2f0e62d2408e6cc544d139bd6d43292698061d4d6ac325f70adab2b781965159"
+    },
+    "CURRENT_HEAD": "0f8292651ce3cd3ae113c0229de1b7487a00f472",
+    "DATASET_HASHES": {
+      "data/raw/alpha003/price/BTCUSDT_15m.json": "60b0630153dc8e879d63c9691712c8e15d06ede0cc2ae815725340e44c4e9d7f",
+      "data/raw/alpha003/price/BTCUSDT_1h.json": "93af6a10d27a2ad58e4b1c2beb571d8fd6d5b0d7e07a8ff6e3848d58d33b3467",
+      "data/raw/alpha003/price/BTCUSDT_5m.json": "4413f407bca6ae52d26b1a9498ba2fe2e1ccdd8d0c6639ddf31ecca3e335ab1a",
+      "data/raw/alpha003/price/ETHUSDT_15m.json": "b3b1f02e9a299500b77fc3b8d31a31c3856820daa1c99bba3921d74cec5b943e",
+      "data/raw/alpha003/price/ETHUSDT_1h.json": "99a23e658448c12a20012532f3b49b464314c6b06d1715af1861889ab890488d",
+      "data/raw/alpha003/price/ETHUSDT_5m.json": "56bd6053403a154f0f33a5da56e359d5df558bd997de7374222d6569aef28e1d",
+      "data/raw/alpha003/price/SOLUSDT_15m.json": "d3a637c2f5e98c121f8d197bf8b15229d7ec754d41d59bebf2de2e232a99d0ed",
+      "data/raw/alpha003/price/SOLUSDT_1h.json": "47e39783ea9df716e061952d1a1c2dabf013017855bfcdf0fc3b80b88fdc6522",
+      "data/raw/alpha003/price/SOLUSDT_5m.json": "4e7ce42d55e0100684b2024bc2055435c8b3a7216ac2de316d58f38490c678e7",
+      "data/raw/alpha003/price/XRPUSDT_15m.json": "c27da15d2e8051c925844efade20a2f84cee6903a944530baa25bbd7848dd95c",
+      "data/raw/alpha003/price/XRPUSDT_1h.json": "c54c27608fe4e83d6a184423d2a2f8f736e9210c416d2f4335ff0c05ae7c2ea6",
+      "data/raw/alpha003/price/XRPUSDT_5m.json": "908d6967393ebb53b0151272e545683a0203c7f681f7d1749f9cade5ae177282"
+    },
+    "ESTIMATED_VS_MEASURED_COSTS": {
+      "conservative_spread_verdict": "MODEL_CONSERVATIVE",
+      "depth_impact_estimate_available": true,
+      "fill_quality_measured": false,
+      "measured_max_spread_bps": 0.890829,
+      "measured_pooled_median_spread_bps": 0.376374,
+      "modelled_spread_bps": 1.0,
+      "realized_slippage_measured": false,
+      "spread_verdict": "MODEL_CONSERVATIVE"
+    },
+    "FALSE_SUCCESS": 0,
+    "FILES_COMMITTED": {
+      "count": 6,
+      "delivery_commit": "0f8292651ce3cd3ae113c0229de1b7487a00f472",
+      "foreign_files_excluded": 35,
+      "paths": [
+        "scripts/rfc046_economic_gate.py",
+        "scripts/rfc046_economic_gate_verify.py",
+        "tests/unit/research/test_rfc046_economic_gate.py",
+        "data/rfc046/ECONOMIC_FEASIBILITY.json",
+        "data/rfc046/ECONOMIC_FEASIBILITY.md",
+        "data/rfc046/ECONOMIC_FEASIBILITY_VERIFICATION.json"
+      ],
+      "pending_in_this_gate": [
+        "scripts/economic001_readonly_probe.py",
+        "scripts/economic001_closure.py",
+        "scripts/economic001_closure_verify.py",
+        "tests/unit/research/test_economic001_evidence_closure.py",
+        "data/economic001/READ_ONLY_SNAPSHOT.json",
+        "data/economic001/EVIDENCE_CLOSURE.json",
+        "data/economic001/EVIDENCE_CLOSURE.md",
+        "data/economic001/EVIDENCE_CLOSURE_VERIFICATION.json"
+      ]
+    },
+    "INDEPENDENT_VERIFICATION": {
+      "allowed_verdicts": [
+        "COST_EVIDENCE_VERIFIED",
+        "COST_EVIDENCE_INCOMPLETE",
+        "COST_EVIDENCE_FAILED"
+      ],
+      "artifact": "data/economic001/EVIDENCE_CLOSURE_VERIFICATION.json",
+      "result": "written by the verifier into that artefact: a builder does not grade its own closure, and rebuilding it after verification would change the bytes just verified",
+      "verifier": "scripts/economic001_closure_verify.py"
+    },
+    "NEXT_GATE": {
+      "campaign": "NOT_AUTHORIZED",
+      "note": "this gate names no successor and opens nothing; the next step is the owner's decision, not a new RFC",
+      "recommendation": "MOVEMENT_MARGIN_SUFFICIENT_FOR_FURTHER_RESEARCH",
+      "trades_authorized": 0
+    },
+    "OPEN_DEFECTS": [
+      {
+        "id": "TD-1",
+        "scope": "repo-wide mypy over another workstream's analyse script",
+        "status": "OPEN_NOT_REPAIRED",
+        "this_gate": "not attempted; out of scope and not caused by this evidence"
+      },
+      {
+        "id": "TD-2",
+        "scope": "RFC-035E verifier raises on absent inputs",
+        "status": "OPEN_NOT_REPAIRED",
+        "this_gate": "not attempted; repairing it would edit frozen evidence"
+      },
+      {
+        "id": "ECO-1",
+        "scope": "the read-only snapshot is one bounded window: spread, latency and depth are measured for a few seconds, not across regimes",
+        "status": "OPEN_BOUNDED",
+        "this_gate": "declared, not hidden; a forward collection remains the only cure"
+      },
+      {
+        "id": "ECO-2",
+        "scope": "maker queue position, fill probability, realised slippage, fill quality",
+        "status": "UNKNOWN_NOT_RESOLVABLE_OFFLINE",
+        "this_gate": "kept UNKNOWN rather than estimated by a simulator"
+      }
+    ],
+    "READ_ONLY_MARKET_DATA_STATUS": {
+      "complete": true,
+      "credentials_used": 0,
+      "measured": [
+        "live best bid/ask spread",
+        "observation-path latency",
+        "clock skew",
+        "depth available per side",
+        "depth-based impact estimate per order size"
+      ],
+      "orders_sent": 0,
+      "sha256": "30b98170398435022bfa309962d659038b035e13a78fd40321a09fbceadc230d",
+      "snapshot": "data\\economic001\\READ_ONLY_SNAPSHOT.json",
+      "still_unknown": [
+        "maker queue position",
+        "fill probability",
+        "realised slippage",
+        "fill quality / price improvement",
+        "historical spread for any past period (no endpoint exists)"
+      ],
+      "window_s": 32.36
+    },
+    "STANDING_STATE": {
+      "G_BUSINESS_REENTRY": "NOT_PASS",
+      "campaign_status": "DISCOVERY_CAMPAIGN_FAILED",
+      "campaign_status_from_forensics": "DISCOVERY_CAMPAIGN_FAILED",
+      "exchange_sandbox": true,
+      "false_success": 0,
+      "forensics_live_trading": "DISABLED",
+      "forensics_trades_authorized": 0,
+      "freeze_still_governs": true,
+      "live_trading": false,
+      "live_trading_flag_literal": "false",
+      "next_campaign": "NOT_AUTHORIZED",
+      "profitability_verified": false,
+      "real_orders": "REFUSED_BY_POLICY",
+      "reentry_policy_authorizes_capital": false,
+      "rfc_g_business_reentry": "NOT_PASS",
+      "rfc_live_trading": "DISABLED",
+      "risk_engine": "DETERMINISTIC",
+      "runtime_mode": "paper",
+      "trades_authorized": 0
+    },
+    "TIMEFRAME_VERIFICATION": {
+      "aggregation_mismatches": [],
+      "agree_with_verified_report": true,
+      "certifiable": true,
+      "horizons": [
+        "5m",
+        "15m",
+        "1h",
+        "4h",
+        "8h",
+        "24h",
+        "72h",
+        "168h"
+      ],
+      "max_relative_delta": 0.0,
+      "series_monotonic_and_gapless": true
+    }
+  },
+  "gate": "ECONOMIC-001",
+  "generated_at_utc": "2026-10-08T15:01:23Z",
+  "head_at_run": "0f8292651ce3cd3ae113c0229de1b7487a00f472",
+  "horizon_verification": {
+    "all_horizons_agree_with_reported": true,
+    "all_horizons_certifiable": true,
+    "all_series_monotonic_and_gapless": true,
+    "assets_with_aggregation_mismatch": [],
+    "cross_resolution_aggregation": {
+      "BTCUSDT": {
+        "15m_from_3x5m": {
+          "bar_count_ratio_rest": 0,
+          "max_close_relative_diff": 0.002678516,
+          "max_open_relative_diff": 1.453e-06,
+          "ok": true,
+          "pairs": 70703,
+          "price_mismatch_count": 5,
+          "price_mismatch_examples": [
+            {
+              "close_relative_diff": 0.0,
+              "open_relative_diff": 1.453e-06,
+              "utc": "2024-10-28T16:30:00Z"
+            },
+            {
+              "close_relative_diff": 0.002678516,
+              "open_relative_diff": 0.0,
+              "utc": "2024-10-28T20:15:00Z"
+            },
+            {
+              "close_relative_diff": 0.001766658,
+              "open_relative_diff": 0.0,
+              "utc": "2024-10-28T20:45:00Z"
+            }
+          ],
+          "price_mismatch_rate": 7.0718e-05,
+          "time_key_mismatch_examples": [],
+          "time_key_mismatches": 0,
+          "tolerance": 0.001
+        },
+        "1h_from_12x5m": {
+          "bar_count_ratio_rest": 3,
+          "max_close_relative_diff": 0.001766658,
+          "max_open_relative_diff": 0.0,
+          "ok": true,
+          "pairs": 17675,
+          "price_mismatch_count": 2,
+          "price_mismatch_examples": [
+            {
+              "close_relative_diff": 0.001766658,
+              "open_relative_diff": 0.0,
+              "utc": "2024-10-28T20:00:00Z"
+            },
+            {
+              "close_relative_diff": 0.001722799,
+              "open_relative_diff": 0.0,
+              "utc": "2024-10-28T21:00:00Z"
+            }
+          ],
+          "price_mismatch_rate": 0.000113154,
+          "time_key_mismatch_examples": [],
+          "time_key_mismatches": 0,
+          "tolerance": 0.001
+        }
+      },
+      "ETHUSDT": {
+        "15m_from_3x5m": {
+          "bar_count_ratio_rest": 0,
+          "max_close_relative_diff": 0.000353713,
+          "max_open_relative_diff": 1.1935e-05,
+          "ok": true,
+          "pairs": 70703,
+          "price_mismatch_count": 3,
+          "price_mismatch_examples": [
+            {
+              "close_relative_diff": 0.0,
+              "open_relative_diff": 1.1935e-05,
+              "utc": "2024-10-28T16:30:00Z"
+            },
+            {
+              "close_relative_diff": 0.0,
+              "open_relative_diff": 2.247e-06,
+              "utc": "2025-08-29T06:30:00Z"
+            },
+            {
+              "close_relative_diff": 0.000353713,
+              "open_relative_diff": 0.0,
+              "utc": "2026-10-07T11:30:00Z"
+            }
+          ],
+          "price_mismatch_rate": 4.2431e-05,
+          "time_key_mismatch_examples": [],
+          "time_key_mismatches": 0,
+          "tolerance": 0.001
+        },
+        "1h_from_12x5m": {
+          "bar_count_ratio_rest": 3,
+          "max_close_relative_diff": 0.009741715,
+          "max_open_relative_diff": 0.0,
+          "ok": true,
+          "pairs": 17675,
+          "price_mismatch_count": 2,
+          "price_mismatch_examples": [
+            {
+              "close_relative_diff": 0.000174883,
+              "open_relative_diff": 0.0,
+              "utc": "2024-10-28T20:00:00Z"
+            },
+            {
+              "close_relative_diff": 0.009741715,
+              "open_relative_diff": 0.0,
+              "utc": "2024-10-28T21:00:00Z"
+            }
+          ],
+          "price_mismatch_rate": 0.000113154,
+          "time_key_mismatch_examples": [],
+          "time_key_mismatches": 0,
+          "tolerance": 0.001
+        }
+      },
+      "SOLUSDT": {
+        "15m_from_3x5m": {
+          "bar_count_ratio_rest": 0,
+          "max_close_relative_diff": 0.003235419,
+          "max_open_relative_diff": 5.7274e-05,
+          "ok": true,
+          "pairs": 70703,
+          "price_mismatch_count": 4,
+          "price_mismatch_examples": [
+            {
+              "close_relative_diff": 0.0,
+              "open_relative_diff": 5.7274e-05,
+              "utc": "2024-10-28T16:30:00Z"
+            },
+            {
+              "close_relative_diff": 0.001194539,
+              "open_relative_diff": 0.0,
+              "utc": "2024-10-28T20:15:00Z"
+            },
+            {
+              "close_relative_diff": 0.001359388,
+              "open_relative_diff": 0.0,
+              "utc": "2024-10-28T20:45:00Z"
+            }
+          ],
+          "price_mismatch_rate": 5.6575e-05,
+          "time_key_mismatch_examples": [],
+          "time_key_mismatches": 0,
+          "tolerance": 0.001
+        },
+        "1h_from_12x5m": {
+          "bar_count_ratio_rest": 3,
+          "max_close_relative_diff": 0.005464173,
+          "max_open_relative_diff": 0.0,
+          "ok": true,
+          "pairs": 17675,
+          "price_mismatch_count": 2,
+          "price_mismatch_examples": [
+            {
+              "close_relative_diff": 0.001359388,
+              "open_relative_diff": 0.0,
+              "utc": "2024-10-28T20:00:00Z"
+            },
+            {
+              "close_relative_diff": 0.005464173,
+              "open_relative_diff": 0.0,
+              "utc": "2024-10-28T21:00:00Z"
+            }
+          ],
+          "price_mismatch_rate": 0.000113154,
+          "time_key_mismatch_examples": [],
+          "time_key_mismatches": 0,
+          "tolerance": 0.001
+        }
+      },
+      "XRPUSDT": {
+        "15m_from_3x5m": {
+          "bar_count_ratio_rest": 1,
+          "max_close_relative_diff": 0.000692665,
+          "max_open_relative_diff": 3.4582e-05,
+          "ok": true,
+          "pairs": 70703,
+          "price_mismatch_count": 2,
+          "price_mismatch_examples": [
+            {
+              "close_relative_diff": 0.0,
+              "open_relative_diff": 3.4582e-05,
+              "utc": "2025-08-29T06:30:00Z"
+            },
+            {
+              "close_relative_diff": 0.000692665,
+              "open_relative_diff": 0.0,
+              "utc": "2026-10-07T11:30:00Z"
+            }
+          ],
+          "price_mismatch_rate": 2.8287e-05,
+          "time_key_mismatch_examples": [],
+          "time_key_mismatches": 0,
+          "tolerance": 0.001
+        },
+        "1h_from_12x5m": {
+          "bar_count_ratio_rest": 2,
+          "max_close_relative_diff": 0.003660181,
+          "max_open_relative_diff": 0.0,
+          "ok": true,
+          "pairs": 17675,
+          "price_mismatch_count": 2,
+          "price_mismatch_examples": [
+            {
+              "close_relative_diff": 0.000578927,
+              "open_relative_diff": 0.0,
+              "utc": "2024-10-28T20:00:00Z"
+            },
+            {
+              "close_relative_diff": 0.003660181,
+              "open_relative_diff": 0.0,
+              "utc": "2024-10-28T21:00:00Z"
+            }
+          ],
+          "price_mismatch_rate": 0.000113154,
+          "time_key_mismatch_examples": [],
+          "time_key_mismatches": 0,
+          "tolerance": 0.001
+        }
+      }
+    },
+    "declared_non_overlap": true,
+    "max_relative_delta_vs_reported": 0.0,
+    "method": "each horizon is measured on the *native series of that horizon* (the 15-minute file for 15m, the hourly file for the multi-hour horizons); no short horizon is certified from a longer bar.  The window convention differs from the already-verified report on purpose: aligned, shifted and exhaustive windows are all computed and compared.",
+    "note": "the last bar of every series is the one still forming when the file was fetched, so the aligned comparison against a series fetched minutes later is allowed the handful of exceptions recorded above rather than a claim of bit equality",
+    "per_horizon": {
+      "15m": {
+        "agrees_with_reported": true,
+        "bars_per_window": 1,
+        "exhaustive_window_median_bps": 15.08965,
+        "median_abs_move_bps": 15.08965,
+        "native_series": "15m bars",
+        "non_overlap_proof": "step = 1 bars >= window = 1 bars, so no two windows share a bar; the declared count is floor(available / 1) per asset and equals the windows used",
+        "overlap_declared": false,
+        "p75_abs_move_bps": 29.764365,
+        "p90_abs_move_bps": 52.325839,
+        "relative_delta_vs_reported": 0.0,
+        "reported_median_bps": 15.08965,
+        "resolution_is_sufficient": true,
+        "series_resolution_minutes": 15,
+        "shifted_window_median_bps": 15.089515,
+        "windows": 282808,
+        "windows_are_disjoint": true,
+        "windows_declared_non_overlapping": 282808
+      },
+      "168h": {
+        "agrees_with_reported": true,
+        "bars_per_window": 168,
+        "exhaustive_window_median_bps": 460.34763,
+        "median_abs_move_bps": 496.629154,
+        "native_series": "1h bars",
+        "non_overlap_proof": "step = 168 bars >= window = 168 bars, so no two windows share a bar; the declared count is floor(available / 168) per asset and equals the windows used",
+        "overlap_declared": false,
+        "p75_abs_move_bps": 941.1153,
+        "p90_abs_move_bps": 1491.133347,
+        "relative_delta_vs_reported": 0.0,
+        "reported_median_bps": 496.629154,
+        "resolution_is_sufficient": true,
+        "series_resolution_minutes": 60,
+        "shifted_window_median_bps": 401.325706,
+        "windows": 420,
+        "windows_are_disjoint": true,
+        "windows_declared_non_overlapping": 420
+      },
+      "1h": {
+        "agrees_with_reported": true,
+        "bars_per_window": 1,
+        "exhaustive_window_median_bps": 29.381129,
+        "median_abs_move_bps": 29.381129,
+        "native_series": "1h bars",
+        "non_overlap_proof": "step = 1 bars >= window = 1 bars, so no two windows share a bar; the declared count is floor(available / 1) per asset and equals the windows used",
+        "overlap_declared": false,
+        "p75_abs_move_bps": 59.02357,
+        "p90_abs_move_bps": 105.255011,
+        "relative_delta_vs_reported": 0.0,
+        "reported_median_bps": 29.381129,
+        "resolution_is_sufficient": true,
+        "series_resolution_minutes": 60,
+        "shifted_window_median_bps": 29.380563,
+        "windows": 70700,
+        "windows_are_disjoint": true,
+        "windows_declared_non_overlapping": 70700
+      },
+      "24h": {
+        "agrees_with_reported": true,
+        "bars_per_window": 24,
+        "exhaustive_window_median_bps": 169.211848,
+        "median_abs_move_bps": 164.801314,
+        "native_series": "1h bars",
+        "non_overlap_proof": "step = 24 bars >= window = 24 bars, so no two windows share a bar; the declared count is floor(available / 24) per asset and equals the windows used",
+        "overlap_declared": false,
+        "p75_abs_move_bps": 322.014447,
+        "p90_abs_move_bps": 555.72085,
+        "relative_delta_vs_reported": 0.0,
+        "reported_median_bps": 164.801314,
+        "resolution_is_sufficient": true,
+        "series_resolution_minutes": 60,
+        "shifted_window_median_bps": 166.359931,
+        "windows": 2944,
+        "windows_are_disjoint": true,
+        "windows_declared_non_overlapping": 2944
+      },
+      "4h": {
+        "agrees_with_reported": true,
+        "bars_per_window": 4,
+        "exhaustive_window_median_bps": 59.763016,
+        "median_abs_move_bps": 60.466783,
+        "native_series": "1h bars",
+        "non_overlap_proof": "step = 4 bars >= window = 4 bars, so no two windows share a bar; the declared count is floor(available / 4) per asset and equals the windows used",
+        "overlap_declared": false,
+        "p75_abs_move_bps": 122.415608,
+        "p90_abs_move_bps": 217.628747,
+        "relative_delta_vs_reported": 0.0,
+        "reported_median_bps": 60.466783,
+        "resolution_is_sufficient": true,
+        "series_resolution_minutes": 60,
+        "shifted_window_median_bps": 60.103563,
+        "windows": 17672,
+        "windows_are_disjoint": true,
+        "windows_declared_non_overlapping": 17672
+      },
+      "5m": {
+        "agrees_with_reported": true,
+        "bars_per_window": 1,
+        "exhaustive_window_median_bps": 8.588957,
+        "median_abs_move_bps": 8.588957,
+        "native_series": "5m bars",
+        "non_overlap_proof": "step = 1 bars >= window = 1 bars, so no two windows share a bar; the declared count is floor(available / 1) per asset and equals the windows used",
+        "overlap_declared": false,
+        "p75_abs_move_bps": 17.220544,
+        "p90_abs_move_bps": 30.422037,
+        "relative_delta_vs_reported": 0.0,
+        "reported_median_bps": 8.588957,
+        "resolution_is_sufficient": true,
+        "series_resolution_minutes": 5,
+        "shifted_window_median_bps": 8.588957,
+        "windows": 848433,
+        "windows_are_disjoint": true,
+        "windows_declared_non_overlapping": 848433
+      },
+      "72h": {
+        "agrees_with_reported": true,
+        "bars_per_window": 72,
+        "exhaustive_window_median_bps": 306.642462,
+        "median_abs_move_bps": 309.317526,
+        "native_series": "1h bars",
+        "non_overlap_proof": "step = 72 bars >= window = 72 bars, so no two windows share a bar; the declared count is floor(available / 72) per asset and equals the windows used",
+        "overlap_declared": false,
+        "p75_abs_move_bps": 582.862114,
+        "p90_abs_move_bps": 931.011874,
+        "relative_delta_vs_reported": 0.0,
+        "reported_median_bps": 309.317526,
+        "resolution_is_sufficient": true,
+        "series_resolution_minutes": 60,
+        "shifted_window_median_bps": 285.843064,
+        "windows": 980,
+        "windows_are_disjoint": true,
+        "windows_declared_non_overlapping": 980
+      },
+      "8h": {
+        "agrees_with_reported": true,
+        "bars_per_window": 8,
+        "exhaustive_window_median_bps": 88.981485,
+        "median_abs_move_bps": 89.265721,
+        "native_series": "1h bars",
+        "non_overlap_proof": "step = 8 bars >= window = 8 bars, so no two windows share a bar; the declared count is floor(available / 8) per asset and equals the windows used",
+        "overlap_declared": false,
+        "p75_abs_move_bps": 178.5553,
+        "p90_abs_move_bps": 308.174706,
+        "relative_delta_vs_reported": 0.0,
+        "reported_median_bps": 89.265721,
+        "resolution_is_sufficient": true,
+        "series_resolution_minutes": 60,
+        "shifted_window_median_bps": 86.720039,
+        "windows": 8836,
+        "windows_are_disjoint": true,
+        "windows_declared_non_overlapping": 8836
+      }
+    },
+    "series_integrity": {
+      "15m": {
+        "BTCUSDT": {
+          "aligned_to_utc_grid": true,
+          "bars": 70703,
+          "coverage_end_utc": "2026-10-07T11:30:00Z",
+          "coverage_start_utc": "2024-10-01T00:00:00Z",
+          "duplicate_timestamps": 0,
+          "expected_bars_from_coverage": 70703,
+          "gap_examples": [],
+          "gaps": 0,
+          "interval_ms": 900000,
+          "monotonic": true,
+          "timeframe_minutes": 15,
+          "timezone": "UTC (epoch milliseconds interpreted as UTC; every open time is grid-aligned)"
+        },
+        "ETHUSDT": {
+          "aligned_to_utc_grid": true,
+          "bars": 70703,
+          "coverage_end_utc": "2026-10-07T11:30:00Z",
+          "coverage_start_utc": "2024-10-01T00:00:00Z",
+          "duplicate_timestamps": 0,
+          "expected_bars_from_coverage": 70703,
+          "gap_examples": [],
+          "gaps": 0,
+          "interval_ms": 900000,
+          "monotonic": true,
+          "timeframe_minutes": 15,
+          "timezone": "UTC (epoch milliseconds interpreted as UTC; every open time is grid-aligned)"
+        },
+        "SOLUSDT": {
+          "aligned_to_utc_grid": true,
+          "bars": 70703,
+          "coverage_end_utc": "2026-10-07T11:30:00Z",
+          "coverage_start_utc": "2024-10-01T00:00:00Z",
+          "duplicate_timestamps": 0,
+          "expected_bars_from_coverage": 70703,
+          "gap_examples": [],
+          "gaps": 0,
+          "interval_ms": 900000,
+          "monotonic": true,
+          "timeframe_minutes": 15,
+          "timezone": "UTC (epoch milliseconds interpreted as UTC; every open time is grid-aligned)"
+        },
+        "XRPUSDT": {
+          "aligned_to_utc_grid": true,
+          "bars": 70703,
+          "coverage_end_utc": "2026-10-07T11:30:00Z",
+          "coverage_start_utc": "2024-10-01T00:00:00Z",
+          "duplicate_timestamps": 0,
+          "expected_bars_from_coverage": 70703,
+          "gap_examples": [],
+          "gaps": 0,
+          "interval_ms": 900000,
+          "monotonic": true,
+          "timeframe_minutes": 15,
+          "timezone": "UTC (epoch milliseconds interpreted as UTC; every open time is grid-aligned)"
+        }
+      },
+      "1h": {
+        "BTCUSDT": {
+          "aligned_to_utc_grid": true,
+          "bars": 17676,
+          "coverage_end_utc": "2026-10-07T11:00:00Z",
+          "coverage_start_utc": "2024-10-01T00:00:00Z",
+          "duplicate_timestamps": 0,
+          "expected_bars_from_coverage": 17676,
+          "gap_examples": [],
+          "gaps": 0,
+          "interval_ms": 3600000,
+          "monotonic": true,
+          "timeframe_minutes": 60,
+          "timezone": "UTC (epoch milliseconds interpreted as UTC; every open time is grid-aligned)"
+        },
+        "ETHUSDT": {
+          "aligned_to_utc_grid": true,
+          "bars": 17676,
+          "coverage_end_utc": "2026-10-07T11:00:00Z",
+          "coverage_start_utc": "2024-10-01T00:00:00Z",
+          "duplicate_timestamps": 0,
+          "expected_bars_from_coverage": 17676,
+          "gap_examples": [],
+          "gaps": 0,
+          "interval_ms": 3600000,
+          "monotonic": true,
+          "timeframe_minutes": 60,
+          "timezone": "UTC (epoch milliseconds interpreted as UTC; every open time is grid-aligned)"
+        },
+        "SOLUSDT": {
+          "aligned_to_utc_grid": true,
+          "bars": 17676,
+          "coverage_end_utc": "2026-10-07T11:00:00Z",
+          "coverage_start_utc": "2024-10-01T00:00:00Z",
+          "duplicate_timestamps": 0,
+          "expected_bars_from_coverage": 17676,
+          "gap_examples": [],
+          "gaps": 0,
+          "interval_ms": 3600000,
+          "monotonic": true,
+          "timeframe_minutes": 60,
+          "timezone": "UTC (epoch milliseconds interpreted as UTC; every open time is grid-aligned)"
+        },
+        "XRPUSDT": {
+          "aligned_to_utc_grid": true,
+          "bars": 17676,
+          "coverage_end_utc": "2026-10-07T11:00:00Z",
+          "coverage_start_utc": "2024-10-01T00:00:00Z",
+          "duplicate_timestamps": 0,
+          "expected_bars_from_coverage": 17676,
+          "gap_examples": [],
+          "gaps": 0,
+          "interval_ms": 3600000,
+          "monotonic": true,
+          "timeframe_minutes": 60,
+          "timezone": "UTC (epoch milliseconds interpreted as UTC; every open time is grid-aligned)"
+        }
+      },
+      "5m": {
+        "BTCUSDT": {
+          "aligned_to_utc_grid": true,
+          "bars": 212109,
+          "coverage_end_utc": "2026-10-07T11:40:00Z",
+          "coverage_start_utc": "2024-10-01T00:00:00Z",
+          "duplicate_timestamps": 0,
+          "expected_bars_from_coverage": 212109,
+          "gap_examples": [],
+          "gaps": 0,
+          "interval_ms": 300000,
+          "monotonic": true,
+          "timeframe_minutes": 5,
+          "timezone": "UTC (epoch milliseconds interpreted as UTC; every open time is grid-aligned)"
+        },
+        "ETHUSDT": {
+          "aligned_to_utc_grid": true,
+          "bars": 212109,
+          "coverage_end_utc": "2026-10-07T11:40:00Z",
+          "coverage_start_utc": "2024-10-01T00:00:00Z",
+          "duplicate_timestamps": 0,
+          "expected_bars_from_coverage": 212109,
+          "gap_examples": [],
+          "gaps": 0,
+          "interval_ms": 300000,
+          "monotonic": true,
+          "timeframe_minutes": 5,
+          "timezone": "UTC (epoch milliseconds interpreted as UTC; every open time is grid-aligned)"
+        },
+        "SOLUSDT": {
+          "aligned_to_utc_grid": true,
+          "bars": 212109,
+          "coverage_end_utc": "2026-10-07T11:40:00Z",
+          "coverage_start_utc": "2024-10-01T00:00:00Z",
+          "duplicate_timestamps": 0,
+          "expected_bars_from_coverage": 212109,
+          "gap_examples": [],
+          "gaps": 0,
+          "interval_ms": 300000,
+          "monotonic": true,
+          "timeframe_minutes": 5,
+          "timezone": "UTC (epoch milliseconds interpreted as UTC; every open time is grid-aligned)"
+        },
+        "XRPUSDT": {
+          "aligned_to_utc_grid": true,
+          "bars": 212110,
+          "coverage_end_utc": "2026-10-07T11:45:00Z",
+          "coverage_start_utc": "2024-10-01T00:00:00Z",
+          "duplicate_timestamps": 0,
+          "expected_bars_from_coverage": 212110,
+          "gap_examples": [],
+          "gaps": 0,
+          "interval_ms": 300000,
+          "monotonic": true,
+          "timeframe_minutes": 5,
+          "timezone": "UTC (epoch milliseconds interpreted as UTC; every open time is grid-aligned)"
+        }
+      }
+    }
+  },
+  "open_defects": [
+    {
+      "id": "TD-1",
+      "scope": "repo-wide mypy over another workstream's analyse script",
+      "status": "OPEN_NOT_REPAIRED",
+      "this_gate": "not attempted; out of scope and not caused by this evidence"
+    },
+    {
+      "id": "TD-2",
+      "scope": "RFC-035E verifier raises on absent inputs",
+      "status": "OPEN_NOT_REPAIRED",
+      "this_gate": "not attempted; repairing it would edit frozen evidence"
+    },
+    {
+      "id": "ECO-1",
+      "scope": "the read-only snapshot is one bounded window: spread, latency and depth are measured for a few seconds, not across regimes",
+      "status": "OPEN_BOUNDED",
+      "this_gate": "declared, not hidden; a forward collection remains the only cure"
+    },
+    {
+      "id": "ECO-2",
+      "scope": "maker queue position, fill probability, realised slippage, fill quality",
+      "status": "UNKNOWN_NOT_RESOLVABLE_OFFLINE",
+      "this_gate": "kept UNKNOWN rather than estimated by a simulator"
+    }
+  ],
+  "purpose": "Consolidate and verify the economic viability evidence before any further discovery campaign is even discussed.",
+  "read_only_execution_reality": {
+    "clock_skew": {
+      "median_ms": -255.412,
+      "reading": "local clock minus venue clock after removing half the round trip; every timestamp in this programme is therefore trustworthy to about a third of a second, which matters for latency reasoning and for nothing else",
+      "samples_ms": [
+        -257.498,
+        -255.412,
+        -243.975,
+        -261.674,
+        -245.421
+      ]
+    },
+    "collection": {
+      "authentication": "none — public endpoints only; no API key, no signature, no private call",
+      "budget": {
+        "declared_before_collection": true,
+        "depth_limit": 100,
+        "finite": true,
+        "max_attempts_per_request": 2,
+        "requests_made": 30,
+        "requests_planned": 30,
+        "rounds": 5,
+        "spacing_s": 6.0
+      },
+      "credentials_used": 0,
+      "duration_s": 32.36,
+      "finite_and_documented": true,
+      "orders_sent": 0,
+      "private_endpoints_called": [],
+      "window_finished_utc": "2026-10-08T14:42:02.940539Z",
+      "window_started_utc": "2026-10-08T14:41:30.580644Z"
+    },
+    "depth": {
+      "all_targets_covered": true,
+      "depth_limit": 100,
+      "impact_estimate_bps": {
+        "BTCUSDT": {
+          "100_usdt": {
+            "buy": {
+              "cost_bps": 0.0,
+              "filled": true,
+              "levels_consumed": 1,
+              "tick_slippage_bps": 0.0,
+              "vwap": 82576.01
+            },
+            "sell": {
+              "cost_bps": 0.0,
+              "filled": true,
+              "levels_consumed": 1,
+              "tick_slippage_bps": 0.0,
+              "vwap": 82576.0
+            }
+          },
+          "20000_usdt": {
+            "buy": {
+              "cost_bps": 0.0,
+              "filled": true,
+              "levels_consumed": 1,
+              "tick_slippage_bps": 0.0,
+              "vwap": 82576.01
+            },
+            "sell": {
+              "cost_bps": 0.0,
+              "filled": true,
+              "levels_consumed": 1,
+              "tick_slippage_bps": 0.0,
+              "vwap": 82576.0
+            }
+          },
+          "2000_usdt": {
+            "buy": {
+              "cost_bps": 0.0,
+              "filled": true,
+              "levels_consumed": 1,
+              "tick_slippage_bps": 0.0,
+              "vwap": 82576.01
+            },
+            "sell": {
+              "cost_bps": 0.0,
+              "filled": true,
+              "levels_consumed": 1,
+              "tick_slippage_bps": 0.0,
+              "vwap": 82576.0
+            }
+          },
+          "200_usdt": {
+            "buy": {
+              "cost_bps": 0.0,
+              "filled": true,
+              "levels_consumed": 1,
+              "tick_slippage_bps": 0.0,
+              "vwap": 82576.01
+            },
+            "sell": {
+              "cost_bps": 0.0,
+              "filled": true,
+              "levels_consumed": 1,
+              "tick_slippage_bps": 0.0,
+              "vwap": 82576.0
+            }
+          },
+          "25_usdt": {
+            "buy": {
+              "cost_bps": 0.0,
+              "filled": true,
+              "levels_consumed": 1,
+              "tick_slippage_bps": 0.0,
+              "vwap": 82576.01
+            },
+            "sell": {
+              "cost_bps": 0.0,
+              "filled": true,
+              "levels_consumed": 1,
+              "tick_slippage_bps": 0.0,
+              "vwap": 82576.0
+            }
+          },
+          "500_usdt": {
+            "buy": {
+              "cost_bps": 0.0,
+              "filled": true,
+              "levels_consumed": 1,
+              "tick_slippage_bps": 0.0,
+              "vwap": 82576.01
+            },
+            "sell": {
+              "cost_bps": 0.0,
+              "filled": true,
+              "levels_consumed": 1,
+              "tick_slippage_bps": 0.0,
+              "vwap": 82576.0
+            }
+          },
+          "50_usdt": {
+            "buy": {
+              "cost_bps": 0.0,
+              "filled": true,
+              "levels_consumed": 1,
+              "tick_slippage_bps": 0.0,
+              "vwap": 82576.01
+            },
+            "sell": {
+              "cost_bps": 0.0,
+              "filled": true,
+              "levels_consumed": 1,
+              "tick_slippage_bps": 0.0,
+              "vwap": 82576.0
+            }
+          },
+          "top_level_notional_usdt": 48555.52
+        },
+        "ETHUSDT": {
+          "100_usdt": {
+            "buy": {
+              "cost_bps": 0.0,
+              "filled": true,
+              "levels_consumed": 1,
+              "tick_slippage_bps": 0.0,
+              "vwap": 2529.0
+            },
+            "sell": {
+              "cost_bps": 0.0,
+              "filled": true,
+              "levels_consumed": 1,
+              "tick_slippage_bps": 0.0,
+              "vwap": 2528.99
+            }
+          },
+          "20000_usdt": {
+            "buy": {
+              "cost_bps": 0.0,
+              "filled": true,
+              "levels_consumed": 1,
+              "tick_slippage_bps": 0.0,
+              "vwap": 2529.0
+            },
+            "sell": {
+              "cost_bps": 0.0,
+              "filled": true,
+              "levels_consumed": 1,
+              "tick_slippage_bps": 0.0,
+              "vwap": 2528.99
+            }
+          },
+          "2000_usdt": {
+            "buy": {
+              "cost_bps": 0.0,
+              "filled": true,
+              "levels_consumed": 1,
+              "tick_slippage_bps": 0.0,
+              "vwap": 2529.0
+            },
+            "sell": {
+              "cost_bps": 0.0,
+              "filled": true,
+              "levels_consumed": 1,
+              "tick_slippage_bps": 0.0,
+              "vwap": 2528.99
+            }
+          },
+          "200_usdt": {
+            "buy": {
+              "cost_bps": 0.0,
+              "filled": true,
+              "levels_consumed": 1,
+              "tick_slippage_bps": 0.0,
+              "vwap": 2529.0
+            },
+            "sell": {
+              "cost_bps": 0.0,
+              "filled": true,
+              "levels_consumed": 1,
+              "tick_slippage_bps": 0.0,
+              "vwap": 2528.99
+            }
+          },
+          "25_usdt": {
+            "buy": {
+              "cost_bps": 0.0,
+              "filled": true,
+              "levels_consumed": 1,
+              "tick_slippage_bps": 0.0,
+              "vwap": 2529.0
+            },
+            "sell": {
+              "cost_bps": 0.0,
+              "filled": true,
+              "levels_consumed": 1,
+              "tick_slippage_bps": 0.0,
+              "vwap": 2528.99
+            }
+          },
+          "500_usdt": {
+            "buy": {
+              "cost_bps": 0.0,
+              "filled": true,
+              "levels_consumed": 1,
+              "tick_slippage_bps": 0.0,
+              "vwap": 2529.0
+            },
+            "sell": {
+              "cost_bps": 0.0,
+              "filled": true,
+              "levels_consumed": 1,
+              "tick_slippage_bps": 0.0,
+              "vwap": 2528.99
+            }
+          },
+          "50_usdt": {
+            "buy": {
+              "cost_bps": 0.0,
+              "filled": true,
+              "levels_consumed": 1,
+              "tick_slippage_bps": 0.0,
+              "vwap": 2529.0
+            },
+            "sell": {
+              "cost_bps": 0.0,
+              "filled": true,
+              "levels_consumed": 1,
+              "tick_slippage_bps": 0.0,
+              "vwap": 2528.99
+            }
+          },
+          "top_level_notional_usdt": 43608.81
+        },
+        "SOLUSDT": {
+          "100_usdt": {
+            "buy": {
+              "cost_bps": 0.0,
+              "filled": true,
+              "levels_consumed": 1,
+              "tick_slippage_bps": 0.0,
+              "vwap": 112.32
+            },
+            "sell": {
+              "cost_bps": 0.0,
+              "filled": true,
+              "levels_consumed": 1,
+              "tick_slippage_bps": 0.0,
+              "vwap": 112.31
+            }
+          },
+          "20000_usdt": {
+            "buy": {
+              "cost_bps": 0.16934449490933817,
+              "filled": true,
+              "levels_consumed": 3,
+              "tick_slippage_bps": 0.0,
+              "vwap": 112.32190207736681
+            },
+            "sell": {
+              "cost_bps": 0.0,
+              "filled": true,
+              "levels_consumed": 1,
+              "tick_slippage_bps": 0.0,
+              "vwap": 112.31
+            }
+          },
+          "2000_usdt": {
+            "buy": {
+              "cost_bps": 0.0,
+              "filled": true,
+              "levels_consumed": 1,
+              "tick_slippage_bps": 0.0,
+              "vwap": 112.32
+            },
+            "sell": {
+              "cost_bps": 0.0,
+              "filled": true,
+              "levels_consumed": 1,
+              "tick_slippage_bps": 0.0,
+              "vwap": 112.31
+            }
+          },
+          "200_usdt": {
+            "buy": {
+              "cost_bps": 0.0,
+              "filled": true,
+              "levels_consumed": 1,
+              "tick_slippage_bps": 0.0,
+              "vwap": 112.32
+            },
+            "sell": {
+              "cost_bps": 0.0,
+              "filled": true,
+              "levels_consumed": 1,
+              "tick_slippage_bps": 0.0,
+              "vwap": 112.31
+            }
+          },
+          "25_usdt": {
+            "buy": {
+              "cost_bps": 0.0,
+              "filled": true,
+              "levels_consumed": 1,
+              "tick_slippage_bps": 0.0,
+              "vwap": 112.32
+            },
+            "sell": {
+              "cost_bps": 0.0,
+              "filled": true,
+              "levels_consumed": 1,
+              "tick_slippage_bps": 0.0,
+              "vwap": 112.31
+            }
+          },
+          "500_usdt": {
+            "buy": {
+              "cost_bps": 0.0,
+              "filled": true,
+              "levels_consumed": 1,
+              "tick_slippage_bps": 0.0,
+              "vwap": 112.32
+            },
+            "sell": {
+              "cost_bps": 0.0,
+              "filled": true,
+              "levels_consumed": 1,
+              "tick_slippage_bps": 0.0,
+              "vwap": 112.31
+            }
+          },
+          "50_usdt": {
+            "buy": {
+              "cost_bps": 0.0,
+              "filled": true,
+              "levels_consumed": 1,
+              "tick_slippage_bps": 0.0,
+              "vwap": 112.32
+            },
+            "sell": {
+              "cost_bps": 0.0,
+              "filled": true,
+              "levels_consumed": 1,
+              "tick_slippage_bps": 0.0,
+              "vwap": 112.31
+            }
+          },
+          "top_level_notional_usdt": 18007.37
+        },
+        "XRPUSDT": {
+          "100_usdt": {
+            "buy": {
+              "cost_bps": 0.0,
+              "filled": true,
+              "levels_consumed": 1,
+              "tick_slippage_bps": 0.0,
+              "vwap": 1.4022
+            },
+            "sell": {
+              "cost_bps": 0.0,
+              "filled": true,
+              "levels_consumed": 1,
+              "tick_slippage_bps": 0.0,
+              "vwap": 1.4021
+            }
+          },
+          "20000_usdt": {
+            "buy": {
+              "cost_bps": 0.0,
+              "filled": true,
+              "levels_consumed": 1,
+              "tick_slippage_bps": 0.0,
+              "vwap": 1.4022
+            },
+            "sell": {
+              "cost_bps": 0.0,
+              "filled": true,
+              "levels_consumed": 1,
+              "tick_slippage_bps": 0.0,
+              "vwap": 1.4021
+            }
+          },
+          "2000_usdt": {
+            "buy": {
+              "cost_bps": 0.0,
+              "filled": true,
+              "levels_consumed": 1,
+              "tick_slippage_bps": 0.0,
+              "vwap": 1.4022
+            },
+            "sell": {
+              "cost_bps": 0.0,
+              "filled": true,
+              "levels_consumed": 1,
+              "tick_slippage_bps": 0.0,
+              "vwap": 1.4021
+            }
+          },
+          "200_usdt": {
+            "buy": {
+              "cost_bps": 0.0,
+              "filled": true,
+              "levels_consumed": 1,
+              "tick_slippage_bps": 0.0,
+              "vwap": 1.4022
+            },
+            "sell": {
+              "cost_bps": 0.0,
+              "filled": true,
+              "levels_consumed": 1,
+              "tick_slippage_bps": 0.0,
+              "vwap": 1.4021
+            }
+          },
+          "25_usdt": {
+            "buy": {
+              "cost_bps": 0.0,
+              "filled": true,
+              "levels_consumed": 1,
+              "tick_slippage_bps": 0.0,
+              "vwap": 1.4022
+            },
+            "sell": {
+              "cost_bps": 0.0,
+              "filled": true,
+              "levels_consumed": 1,
+              "tick_slippage_bps": 0.0,
+              "vwap": 1.4021
+            }
+          },
+          "500_usdt": {
+            "buy": {
+              "cost_bps": 0.0,
+              "filled": true,
+              "levels_consumed": 1,
+              "tick_slippage_bps": 0.0,
+              "vwap": 1.4022
+            },
+            "sell": {
+              "cost_bps": 0.0,
+              "filled": true,
+              "levels_consumed": 1,
+              "tick_slippage_bps": 0.0,
+              "vwap": 1.4021
+            }
+          },
+          "50_usdt": {
+            "buy": {
+              "cost_bps": 0.0,
+              "filled": true,
+              "levels_consumed": 1,
+              "tick_slippage_bps": 0.0,
+              "vwap": 1.4022
+            },
+            "sell": {
+              "cost_bps": 0.0,
+              "filled": true,
+              "levels_consumed": 1,
+              "tick_slippage_bps": 0.0,
+              "vwap": 1.4021
+            }
+          },
+          "top_level_notional_usdt": 28077.79
+        }
+      },
+      "levels_sampled": {
+        "BTCUSDT": 100,
+        "ETHUSDT": 100,
+        "SOLUSDT": 100,
+        "XRPUSDT": 100
+      },
+      "reading": "static L2 depth walk at the sampled instant: the market-order cost a taker of that size would face *if the book stayed still*.  The largest measured walk across the four instruments and both sides is 0.000000 bps at the account size and 0.169344 bps at a hundred times the account, i.e. the book absorbs our size inside its best price.  It is a snapshot estimate, not realised slippage: no order was sent and no fill was observed.",
+      "worst_walk_bps_at_100x_size": 0.169344495,
+      "worst_walk_bps_at_account_size": 0.0
+    },
+    "estimated_vs_measured": {
+      "measured_now": [
+        "live best bid/ask spread",
+        "observation-path latency",
+        "clock skew",
+        "depth available per side",
+        "depth-based impact estimate per order size"
+      ],
+      "still_estimated": [
+        "base slippage as a modelling constant: the measured depth walk at account scale is inside one tick, so this term is a conservative penalty rather than a depth effect",
+        "volatility regime scaling",
+        "maker adverse selection and fill probability"
+      ],
+      "unknown_and_stated": [
+        "maker queue position",
+        "fill probability",
+        "realised slippage",
+        "fill quality / price improvement",
+        "historical spread for any past period (no endpoint exists)"
+      ]
+    },
+    "fill_quality_measured": false,
+    "historical_spread": "UNVERIFIABLE_NO_HISTORICAL_ENDPOINT",
+    "maker_queue_position": "UNKNOWN",
+    "observation_latency": {
+      "bookTicker": {
+        "max_ms": 297.421,
+        "median_ms": 276.084,
+        "n": 5,
+        "p95_ms": 297.421
+      },
+      "depth": {
+        "max_ms": 298.504,
+        "median_ms": 276.698,
+        "n": 20,
+        "p95_ms": 292.311
+      },
+      "time": {
+        "max_ms": 298.573,
+        "median_ms": 288.011,
+        "n": 5,
+        "p95_ms": 298.573
+      }
+    },
+    "published_fees": {
+      "applicable_spot_schedule": "SRC-01 Binance Spot VIP0, 10 bps maker / 10 bps taker",
+      "bnb_discount": "POSSIBLE, not confirmed for our account",
+      "maker_route": "inadmissible (no fill evidence)",
+      "payment_asset": "quote asset"
+    },
+    "quote_changes": {
+      "per_symbol": {
+        "BTCUSDT": 4,
+        "ETHUSDT": 4,
+        "SOLUSDT": 3,
+        "XRPUSDT": 1
+      },
+      "reading": "how often the mid moved between consecutive observations of the same bounded window; a coarse proxy for quote volatility, not a signal"
+    },
+    "realized_slippage_measured": false,
+    "simulator_used_as_measurement": false,
+    "snapshot_complete": true,
+    "source": "data\\economic001\\READ_ONLY_SNAPSHOT.json",
+    "source_sha256": "30b98170398435022bfa309962d659038b035e13a78fd40321a09fbceadc230d",
+    "spread": {
+      "caveat": "one bounded window of a few seconds across four instruments is a spot reading, not a regime: it cannot certify a past period and does not replace a forward campaign",
+      "conservative_verdict": "MODEL_CONSERVATIVE",
+      "like_for_like": "the model's spread term is the round-trip cost (2 legs x half-spread), which equals the full bid/ask spread, so the comparison against the measured full spread is like for like",
+      "max_observed_full_spread_bps": 0.890829,
+      "modelled_round_trip_spread_bps": 1.0,
+      "per_symbol": {
+        "BTCUSDT": {
+          "max_full_spread_bps": 0.001211,
+          "median_full_spread_bps": 0.001211,
+          "min_full_spread_bps": 0.001211,
+          "modelled_round_trip_spread_bps": 1.0,
+          "observations": 5,
+          "quote_change_rate": 1.0,
+          "quote_changes": 4,
+          "quote_intervals": 4,
+          "round_trip_spread_cost_bps": 0.001211,
+          "verdict": "MODEL_CONSERVATIVE"
+        },
+        "ETHUSDT": {
+          "max_full_spread_bps": 0.039557,
+          "median_full_spread_bps": 0.03955,
+          "min_full_spread_bps": 0.039541,
+          "modelled_round_trip_spread_bps": 1.0,
+          "observations": 5,
+          "quote_change_rate": 1.0,
+          "quote_changes": 4,
+          "quote_intervals": 4,
+          "round_trip_spread_cost_bps": 0.03955,
+          "verdict": "MODEL_CONSERVATIVE"
+        },
+        "SOLUSDT": {
+          "max_full_spread_bps": 0.890829,
+          "median_full_spread_bps": 0.89075,
+          "min_full_spread_bps": 0.890353,
+          "modelled_round_trip_spread_bps": 1.0,
+          "observations": 5,
+          "quote_change_rate": 0.75,
+          "quote_changes": 3,
+          "quote_intervals": 4,
+          "round_trip_spread_cost_bps": 0.89075,
+          "verdict": "MODEL_CONSERVATIVE"
+        },
+        "XRPUSDT": {
+          "max_full_spread_bps": 0.713445,
+          "median_full_spread_bps": 0.713445,
+          "min_full_spread_bps": 0.71319,
+          "modelled_round_trip_spread_bps": 1.0,
+          "observations": 5,
+          "quote_change_rate": 0.25,
+          "quote_changes": 1,
+          "quote_intervals": 4,
+          "round_trip_spread_cost_bps": 0.713445,
+          "verdict": "MODEL_CONSERVATIVE"
+        }
+      },
+      "pooled_max_full_spread_bps": 0.890829,
+      "pooled_median_full_spread_bps": 0.376374,
+      "pooled_min_full_spread_bps": 0.001211,
+      "verdict": "MODEL_CONSERVATIVE",
+      "worst_symbol_by_median": "SOLUSDT"
+    }
+  },
+  "standing": {
+    "G_BUSINESS_REENTRY": "NOT_PASS",
+    "campaign_status": "DISCOVERY_CAMPAIGN_FAILED",
+    "campaign_status_from_forensics": "DISCOVERY_CAMPAIGN_FAILED",
+    "exchange_sandbox": true,
+    "false_success": 0,
+    "forensics_live_trading": "DISABLED",
+    "forensics_trades_authorized": 0,
+    "freeze_still_governs": true,
+    "live_trading": false,
+    "live_trading_flag_literal": "false",
+    "next_campaign": "NOT_AUTHORIZED",
+    "profitability_verified": false,
+    "real_orders": "REFUSED_BY_POLICY",
+    "reentry_policy_authorizes_capital": false,
+    "rfc_g_business_reentry": "NOT_PASS",
+    "rfc_live_trading": "DISABLED",
+    "risk_engine": "DETERMINISTIC",
+    "runtime_mode": "paper",
+    "trades_authorized": 0
+  }
+}
