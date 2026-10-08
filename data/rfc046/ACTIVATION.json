@@ -5,7 +5,8 @@
   "verifier": "scripts/rfc046_campaign_verify.py",
   "builder": "scripts/rfc046_campaign.py + scripts/rfc046_activate.py",
   "builder_equals_verifier": false,
-  "head": "78bfb871ec62c9f9bc6a2181e28ccc307d5f1b83",
+  "generated_at_utc": "2026-10-08T12:22:35Z",
+  "head": "ad82b13a9bef51883042d04983dce0201d9d468b",
   "document_hashes": {
     "tasks/decisions.md": "38622df9a5ad74dbb9dc81503af452e06581a1148637d640af9102333f31d438",
     "tasks/roadmap.md": "5310f6a423318cdbca8f26c1dcee5feadbc1d38c8b379a43ba679ba3a6c5e974",

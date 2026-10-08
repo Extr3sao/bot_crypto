@@ -23,6 +23,7 @@ import hashlib
 import json
 import subprocess
 import sys
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
@@ -342,6 +343,7 @@ def main() -> int:
         "verifier": "scripts/rfc046_campaign_verify.py",
         "builder": "scripts/rfc046_campaign.py + scripts/rfc046_activate.py",
         "builder_equals_verifier": False,
+        "generated_at_utc": datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "head": head,
         "document_hashes": hashes,
         "spec_hashes": {
