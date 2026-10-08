@@ -374,4 +374,15 @@ def test_the_report_surface_stays_consistent_when_present() -> None:
     assert report["flags"]["discovery"] == "NOT_ACTIVE"
     assert report["roadmap_diff_applied"] == "NONE"
     assert report["next_gate"] == "APPROVAL_REQUIRED"
-    assert report["evaluated_head"] == _git("rev-parse", "HEAD").strip()
+
+    # The report is written at the end of a build, so while a build is running the report on disk can only
+    # describe an earlier commit. The honest invariant is therefore: the recorded commit is real and is an
+    # ancestor of HEAD - never a fabricated hash, never a commit that has not happened yet.
+    recorded = report["evaluated_head"]
+    assert re.fullmatch(r"[0-9a-f]{40}", recorded), recorded
+    exists = subprocess.run(["git", "cat-file", "-e", f"{recorded}^{{commit}}"], cwd=str(REPO),
+                            capture_output=True, check=False)
+    assert exists.returncode == 0, f"{recorded} is not a commit in this repository"
+    ancestor = subprocess.run(["git", "merge-base", "--is-ancestor", recorded, "HEAD"], cwd=str(REPO),
+                              capture_output=True, check=False)
+    assert ancestor.returncode == 0, f"{recorded} is not an ancestor of HEAD; the report predates this history"
