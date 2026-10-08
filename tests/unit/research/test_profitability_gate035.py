@@ -181,7 +181,12 @@ def test_recommendation_is_a_proposal_not_a_decision(report: dict) -> None:
     amendment = report["required_roadmap_amendment"]
     assert amendment["status"] == "PROPOSED_NOT_ACTIVATED"
     assert amendment["proposed_id"] == "RFC-046"
-    assert amendment["reserved"]["RFC-036"] == "exact external replication"
+    # The RFC-035 lineage claimed RFC-036 was reserved for exact replication; the repository shows it was
+    # already used for a managed-futures reproduction, so the amendment must say so rather than inherit it.
+    numbering = amendment["numbering"]
+    assert numbering["RFC-036"].startswith("NOT available")
+    assert "d0efb51" in numbering["RFC-036"]
+    assert numbering["RFC-046"] == "the free number this proposal takes"
     assert len(amendment["required_changes"]) == 4
 
 

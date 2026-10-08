@@ -40,6 +40,7 @@ RESEARCH = REPO / "research" / "profitability"
 OPP_DIR = RESEARCH / "opportunities"
 PROPOSAL = REPO / "docs" / "roadmap" / "PROFITABILITY_DISCOVERY_PROPOSAL.md"
 GATES_PATH = REPO / "data" / "pgate035" / "gates.json"
+RFC036_PATH = REPO / "reports" / "RFC036_FINAL_REPORT.json"
 ROADMAP = REPO / "tasks" / "roadmap.md"
 OPERATING_MODEL = REPO / "docs" / "research" / "PROFITABILITY_OPERATING_MODEL.json"
 FREEZE = REPO / "docs" / "governance" / "PROFITABILITY_FIRST_FREEZE.md"
@@ -124,6 +125,70 @@ def load_gates() -> dict[str, Any]:
 RFC035S3_COMMITS = ("3d75e81", "40d9232", "aa0abae")
 
 
+def rfc036_state(payload: dict[str, Any]) -> dict[str, Any]:
+    """Read what RFC-036 actually is, because the RFC-035 lineage assumes something else.
+
+    The RFC-035 rounds 2 and 3 recorded ``RFC-036 = BLOCKED`` and describe that number as reserved
+    for the exact replication of an RFC-035 candidate. The repository says otherwise: RFC-036 was
+    already used for a managed-futures trend reproduction. This gate reports the two facts and
+    refuses to repeat the reservation as if it were true.
+    """
+    if not payload:
+        return {"status": "UNREADABLE", "path": "reports/RFC036_FINAL_REPORT.json"}
+    text = payload.get("text") or []
+    disc = payload.get("disc") or {}
+    val = payload.get("val") or {}
+
+    def find(prefix: str) -> str | None:
+        for line in text:
+            if line.startswith(prefix):
+                return line.split("=", 1)[1].strip() if "=" in line else None
+        return None
+
+    return {
+        "path": "reports/RFC036_FINAL_REPORT.json",
+        "status": "ALREADY_OPENED_AND_COMPLETE",
+        "title": text[0] if text else None,
+        "candidate": find("CANDIDATE"),
+        "reproduction_fidelity": find("REPRODUCTION FIDELITY"),
+        "gates": payload.get("gates"),
+        "robustness_gate": find("G_MF_3_ROBUSTNESS"),
+        "holdout_gate": find("G_MF_4_HOLDOUT"),
+        "own_net_edge_claim": find("Did we achieve the first EXECUTABLE VALIDATED NET EDGE?"),
+        "next": find("NEXT"),
+        "false_success": (payload.get("false_success") or {}).get("false_success_count"),
+        "introduced_by_commit": "d0efb51",
+        "introduced_on": "2026-10-05",
+        "cost_ratio": {
+            "discovery": {
+                "gross_pnl": disc.get("gross_pnl"),
+                "cost_pnl": disc.get("cost_pnl"),
+                "net_pnl": disc.get("net_pnl"),
+                "cost_share_of_gross": round(disc.get("cost_pnl", 0) / disc.get("gross_pnl", 1), 4),
+            },
+            "validation": {
+                "gross_pnl": val.get("gross_pnl"),
+                "cost_pnl": val.get("cost_pnl"),
+                "net_pnl": val.get("net_pnl"),
+                "cost_share_of_gross": round(val.get("cost_pnl", 0) / val.get("gross_pnl", 1), 4),
+            },
+        },
+        "gate_position": "this gate does NOT validate, promote or endorse RFC-036; it reports that the "
+                         "artifact exists, quotes its own claim verbatim as an unverified claim, and "
+                         "records that its holdout gate is " + str(find("G_MF_4_HOLDOUT")),
+        "reservation_conflict": {
+            "claimed_by": "reports/rfc035/search_round_2 and search_round_3 (RFC-035 = BLOCKED, RFC-036 "
+                          "described as reserved for exact replication) and this gate's own brief",
+            "contradicted_by": "scripts/rfc036_run.py and tests/unit/research/test_rfc036_managed_futures.py, "
+                               "tracked since d0efb51 on 2026-10-05",
+            "roadmap_says": "nothing: tasks/roadmap.md contains no RFC-035/036/044/045/046 reference at all, "
+                            "so no document actually reserves the number",
+            "resolution": "NOT THIS GATE'S TO DECIDE: the conflict is recorded and handed to the amendment "
+                          "in the proposal; this gate reserves no number and reuses none",
+        },
+    }
+
+
 def audit_baseline() -> dict[str, Any]:
     head = git("rev-parse", "HEAD")
     short_log = git("log", "--oneline", "-8").splitlines()
@@ -176,6 +241,7 @@ def audit_baseline() -> dict[str, Any]:
     campaign = load(REPO / "evidence" / "real_decisions" / "CAMPAIGN_MANIFEST.json") or {}
     cap004b = load(REPO / "reports" / "cap004b" / "FINAL_REPORT.json") or {}
     round3_baseline = load(REPO / "reports" / "rfc035" / "search_round_3" / "BASELINE.json") or {}
+    rfc036 = load(RFC036_PATH) or {}
     return {
         "current_head": head,
         "short_log": short_log,
@@ -246,6 +312,7 @@ def audit_baseline() -> dict[str, Any]:
             "first_real_settlement_status": cap004b.get("FIRST_REAL_SETTLEMENT_STATUS"),
             "next_gate": cap004b.get("NEXT_GATE"),
         },
+        "rfc036_actual_state": rfc036_state(rfc036),
         "historical_reproduction": {
             "source_artifact": "reports/rfc035/search_round_3/BASELINE.json",
             "lab_commit": (round3_baseline.get("reproduction") or {}).get("lab_commit"),
@@ -703,8 +770,9 @@ def render_proposal(routes_data: dict[str, Any], cost: dict[str, Any]) -> str:
         "# PROFITABILITY_DISCOVERY_PROPOSAL",
         "",
         "- status: **PROPOSED — NOT ACTIVATED**",
-        "- proposed_id: **RFC-046** (RFC-036 stays reserved for exact external replication; RFC-044 and RFC-045 "
-        "are excluded by the standing next-action policy)",
+        "- proposed_id: **RFC-046** (see §0: RFC-036 is NOT available — it was already used by `d0efb51` for a "
+        "managed-futures trend reproduction, and the RFC-035 lineage's claim that it is reserved for exact "
+        "replication does not match the repository)",
         "- proposed_by_artifact: `reports/profitability_gate035/FINAL_REPORT.json` (that artifact, not "
         "this document, records the commit the gate was evaluated at)",
         f"- as_of_utc: {RETRIEVED_AT}",
@@ -712,6 +780,22 @@ def render_proposal(routes_data: dict[str, Any], cost: dict[str, Any]) -> str:
         "> This document is a **proposal**. It is not a decision, it does not open an RFC, and it does not "
         "authorize any work. The programme may start only after an explicit amendment of the master roadmap and "
         "of the RFC-043 operating model, both named in §5.",
+        "",
+        "## 0. A correction this proposal must carry",
+        "",
+        "RFC-035's rounds 2 and 3 (and this gate's own brief) describe **RFC-036 as reserved for the exact "
+        "replication of an RFC-035 candidate**. That is not what the repository shows: RFC-036 was opened on "
+        "**2026-10-05** in commit `d0efb51` for a *managed-futures trend reproduction*, its scripts and tests "
+        "are tracked, and `tasks/roadmap.md` contains no RFC-016/035/036 reservation at all. The number is "
+        "therefore **occupied**, and this proposal does not reuse it.",
+        "",
+        "The mandated status `RFC-036_REPLICATION = BLOCKED` is still correct, but for a different and honest "
+        "reason: there is **no `REPLICATE_P0` candidate to replicate**, so no replication work can be opened "
+        "from RFC-035 at all. The blocked thing is the replication of an RFC-035 candidate, not the number.",
+        "",
+        "Whoever amends the roadmap should resolve the numbering explicitly: if an RFC-035 candidate ever "
+        "appears, its replication needs a free number chosen at that time. This proposal takes RFC-046 and "
+        "reserves nothing.",
         "",
         "## 1. Why this is being proposed instead of continued search",
         "",
@@ -723,7 +807,8 @@ def render_proposal(routes_data: dict[str, Any], cost: dict[str, Any]) -> str:
         "",
         "## 2. What the proposal is not",
         "",
-        "- it is not an exact replication programme (that is what RFC-036 is reserved for)",
+        "- it is not an exact replication programme: that work is blocked for the separate reason given in §0, "
+        "namely that there is no RFC-035 candidate to replicate, and RFC-036 is already occupied anyway",
         "- it is not a strategy generator, an optimiser or a parameter search",
         "- it does not weaken any acceptance criterion; the business-edge requirement "
         "(NET POSITIVE + BENCHMARK-ADJUSTED VALUE + EXECUTABLE + ROBUST) is unchanged",
@@ -985,7 +1070,26 @@ def render_final(baseline: dict[str, Any], cost: dict[str, Any], causes: dict[st
         "3. `docs/governance/PROFITABILITY_FIRST_FREEZE.md` records that the RFC-035-scoped prohibition lapses;",
         "4. `tasks/decisions.md` records one ADR.",
         "",
-        "Until then the correct action is route A. RFC-036 remains blocked for replication.",
+        "### The RFC-036 numbering conflict, recorded rather than inherited",
+        "",
+        "The RFC-035 lineage (rounds 2 and 3) and this gate's brief describe **RFC-036 as reserved for the "
+        "exact replication of an RFC-035 candidate**. The repository contradicts that, and this gate does not "
+        "repeat the claim.",
+        "",
+        "| fact | evidence |",
+        "| --- | --- |",
+        "| RFC-036 was already opened on 2026-10-05 for a managed-futures trend reproduction | commit "
+        "`d0efb51`; `scripts/rfc036_run.py`, `tests/unit/research/test_rfc036_managed_futures.py` (tracked) |",
+        "| its own artifact claims a validated net edge, with its holdout gate not run | `reports/RFC036_FINAL_REPORT.json` |",
+        "| no document reserves RFC-036 for anything | `tasks/roadmap.md` contains no RFC-035/036/044/045/046 "
+        "reference at all |",
+        "",
+        "`RFC-036_REPLICATION = BLOCKED` is therefore kept, but read honestly: **the blocked thing is the "
+        "replication of an RFC-035 candidate, which does not exist (`REPLICATE_P0 = NONE`), not the RFC "
+        "number.** This gate reserves no number, reuses none, and does not validate, promote or endorse "
+        "RFC-036; the conflict belongs to the amendment.",
+        "",
+        "Until the amendment is made the correct action is route A.",
         "",
         "## 8. Gates measured in this run",
         "",
@@ -1015,6 +1119,7 @@ def final_payload(baseline: dict[str, Any], cost: dict[str, Any], causes: dict[s
                   routes_data: dict[str, Any], defects: dict[str, Any], proposal_path: str,
                   gates: dict[str, Any]) -> dict[str, Any]:
     sup = baseline["opportunities"]["superseded_in_round_3"]
+    r36 = baseline.get("rfc036_actual_state") or {}
     return {
         "gate": "PROFITABILITY-GATE-035",
         "as_of_utc": RETRIEVED_AT,
@@ -1031,6 +1136,7 @@ def final_payload(baseline: dict[str, Any], cost: dict[str, Any], causes: dict[s
             "criteria_lowered": False,
             "artifacts_preserved": True,
         },
+        "rfc_036_actual_state": r36,
         "candidates_accepted": {
             "REPLICATE_P0": 0,
             "superseded_replication_ranks": sup,
@@ -1066,8 +1172,17 @@ def final_payload(baseline: dict[str, Any], cost: dict[str, Any], causes: dict[s
             "proposal_path": proposal_path,
             "status": "PROPOSED_NOT_ACTIVATED",
             "proposed_id": "RFC-046",
-            "reserved": {"RFC-036": "exact external replication", "RFC-044": "used",
-                         "RFC-045": "excluded by the standing next-action policy"},
+            "numbering": {
+                "RFC-036": "NOT available: already used by commit d0efb51 on 2026-10-05 for a managed-futures "
+                           "trend reproduction. The RFC-035 lineage's description of it as reserved for exact "
+                           "replication is not supported by the repository.",
+                "RFC-044": "taken by an earlier programme",
+                "RFC-045": "excluded by the standing next-action policy (no periodic RFC)",
+                "RFC-046": "the free number this proposal takes",
+                "blocked_reason": "RFC-036_REPLICATION = BLOCKED because REPLICATE_P0 = NONE: there is no "
+                                  "RFC-035 candidate to replicate. The number being occupied is a separate "
+                                  "fact, reported rather than relied on.",
+            },
             "required_changes": [
                 "tasks/roadmap.md gains the discovery phase and names RFC-046",
                 "docs/research/PROFITABILITY_OPERATING_MODEL.json amends next_action_policy.trigger",
@@ -1146,7 +1261,7 @@ def render_postmortem(baseline: dict[str, Any], causes: dict[str, Any]) -> str:
     return "\n".join(lines) + "\n"
 
 
-def render_economic(cost: dict[str, Any]) -> str:
+def render_economic(cost: dict[str, Any], r36: dict[str, Any]) -> str:
     lines = [
         "# PROFITABILITY-GATE-035 — ECONOMIC FEASIBILITY",
         "",
@@ -1254,6 +1369,38 @@ def render_economic(cost: dict[str, Any]) -> str:
         "The project has already measured, with its own data, that the family it was pursuing has an edge two "
         "orders of magnitude below the fee. That measurement is the strongest existing evidence about which "
         "families are worth pursuing next, and it points away from intraday microstructure.",
+        "",
+        "## 6b. A cost profile that does work, and why it is not a result of this gate",
+        "",
+        "§06 asks which families could hold enough margin without inventing a return. The repository "
+        "already contains one measured, cost-modelled counter-example to the intraday family, and it is worth "
+        "quoting precisely because it was **not** produced here.",
+        "",
+        "RFC-036 (`reports/RFC036_FINAL_REPORT.json`, introduced by commit `d0efb51` on 2026-10-05) is a "
+        "diversified managed-futures trend reproduction: 26 markets, 6 asset classes, **monthly** rebalance. "
+        "Its own artifact reports:",
+        "",
+        "| window | gross pnl | cost pnl | net pnl | cost share of gross |",
+        "| --- | ---: | ---: | ---: | ---: |",
+    ]
+    for window, block in (("discovery", r36.get("cost_ratio", {}).get("discovery", {})),
+                          ("validation", r36.get("cost_ratio", {}).get("validation", {}))):
+        if not block:
+            continue
+        lines.append(f"| {window} | {block.get('gross_pnl'):.0f} | {block.get('cost_pnl'):.0f} | "
+                     f"{block.get('net_pnl'):.0f} | {block.get('cost_share_of_gross', 0) * 100:.2f}% |")
+    lines += [
+        "",
+        f"The contrast with this gate's own arithmetic is the point: monthly rebalancing pays a small "
+        f"fraction of gross in costs, whereas the {cost['round_trip_bps']} bps spot floor at a daily turnover "
+        "demands about 87% a year before costs. Turnover, not cleverness, is what decides whether a family can "
+        "clear the floor.",
+        "",
+        "**What this gate does not say about RFC-036.** It does not validate it, promote it, or treat its "
+        f"claim as an edge. The artifact states `{r36.get('holdout_gate')}` for its holdout gate and "
+        f"`{r36.get('next')}` as its next step, and its own net-edge statement "
+        f"(`{r36.get('own_net_edge_claim')}`) is quoted here as the artifact's claim, not as a finding of "
+        "this gate. No profitability verdict is transferred from it to anything else.",
         "",
         "## 7. Validity scope",
         "",
@@ -1393,7 +1540,8 @@ def main() -> int:
     proposal_path = write_proposal(routes_data, cost)
 
     (OUT / "SEARCH_POSTMORTEM.md").write_text(render_postmortem(baseline, causes), encoding="utf-8")
-    (OUT / "ECONOMIC_FEASIBILITY.md").write_text(render_economic(cost), encoding="utf-8")
+    (OUT / "ECONOMIC_FEASIBILITY.md").write_text(
+        render_economic(cost, baseline.get("rfc036_actual_state") or {}), encoding="utf-8")
     (OUT / "ALTERNATIVE_PATHS.md").write_text(render_alternatives(routes_data), encoding="utf-8")
     report = final_payload(baseline, cost, causes, routes_data, defects, proposal_path, gates)
     (OUT / "FINAL_REPORT.json").write_text(

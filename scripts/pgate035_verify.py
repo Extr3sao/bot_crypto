@@ -513,8 +513,18 @@ def verify_proposal(src: dict[str, Any]) -> None:
           "PROPOSED" in text and "NOT ACTIVATED" in text, "")
     check("the proposal does not open an RFC", "not a decision" in text or "not a decision" in text.lower(),
           "it must not read as an approved decision")
-    check("the proposal reserves RFC-036 for replication",
-          "RFC-036" in text and "replication" in text.lower(), "")
+    check("the proposal records where RFC-036 actually went",
+          "d0efb51" in text and "managed-futures" in text, "")
+    check("the proposal states that RFC-036 is not available to this proposal",
+          "NOT available" in text, "")
+    # Negative check: the RFC-035 lineage asserted a reservation that the repository contradicts. The
+    # proposal may only quote it in order to correct it, never as a fact it works from.
+    unqualified = [ln for ln in text.splitlines()
+                   if "rfc-036" in ln.lower() and "reserv" in ln.lower()
+                   and not any(token in ln.lower()
+                               for token in ("not", "no document", "nothing", "nunca"))]
+    check("the proposal never asserts an RFC-036 reservation as fact",
+          not unqualified, f"unqualified lines: {unqualified[:2]}")
     check("the proposal does not reuse RFC-036 as its own vehicle", "proposed_id: **RFC-046**" in text, "")
     check("the proposal names the roadmap amendment", "tasks/roadmap.md" in text, "")
     check("the proposal names the operating-model amendment",

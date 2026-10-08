@@ -1,11 +1,19 @@
 # PROFITABILITY_DISCOVERY_PROPOSAL
 
 - status: **PROPOSED — NOT ACTIVATED**
-- proposed_id: **RFC-046** (RFC-036 stays reserved for exact external replication; RFC-044 and RFC-045 are excluded by the standing next-action policy)
+- proposed_id: **RFC-046** (see §0: RFC-036 is NOT available — it was already used by `d0efb51` for a managed-futures trend reproduction, and the RFC-035 lineage's claim that it is reserved for exact replication does not match the repository)
 - proposed_by_artifact: `reports/profitability_gate035/FINAL_REPORT.json` (that artifact, not this document, records the commit the gate was evaluated at)
 - as_of_utc: 2026-10-08T02:00:00Z
 
 > This document is a **proposal**. It is not a decision, it does not open an RFC, and it does not authorize any work. The programme may start only after an explicit amendment of the master roadmap and of the RFC-043 operating model, both named in §5.
+
+## 0. A correction this proposal must carry
+
+RFC-035's rounds 2 and 3 (and this gate's own brief) describe **RFC-036 as reserved for the exact replication of an RFC-035 candidate**. That is not what the repository shows: RFC-036 was opened on **2026-10-05** in commit `d0efb51` for a *managed-futures trend reproduction*, its scripts and tests are tracked, and `tasks/roadmap.md` contains no RFC-016/035/036 reservation at all. The number is therefore **occupied**, and this proposal does not reuse it.
+
+The mandated status `RFC-036_REPLICATION = BLOCKED` is still correct, but for a different and honest reason: there is **no `REPLICATE_P0` candidate to replicate**, so no replication work can be opened from RFC-035 at all. The blocked thing is the replication of an RFC-035 candidate, not the number.
+
+Whoever amends the roadmap should resolve the numbering explicitly: if an RFC-035 candidate ever appears, its replication needs a free number chosen at that time. This proposal takes RFC-046 and reserves nothing.
 
 ## 1. Why this is being proposed instead of continued search
 
@@ -14,7 +22,7 @@ The search was not the problem; the object it was looking for was not in the pla
 
 ## 2. What the proposal is not
 
-- it is not an exact replication programme (that is what RFC-036 is reserved for)
+- it is not an exact replication programme: that work is blocked for the separate reason given in §0, namely that there is no RFC-035 candidate to replicate, and RFC-036 is already occupied anyway
 - it is not a strategy generator, an optimiser or a parameter search
 - it does not weaken any acceptance criterion; the business-edge requirement (NET POSITIVE + BENCHMARK-ADJUSTED VALUE + EXECUTABLE + ROBUST) is unchanged
 - it does not authorize capital, paper trading or live execution; `TRADES_AUTHORIZED` stays 0

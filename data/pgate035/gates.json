@@ -33,7 +33,7 @@
   },
   "independent_verification": {
     "command": "python scripts/pgate035_verify.py",
-    "result": "PASS 313/313 passed, 0 mismatches, false_success=0",
+    "result": "PASS 315/315 passed, 0 mismatches, false_success=0",
     "exit_code": 0
   }
 }
