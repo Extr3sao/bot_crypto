@@ -2756,9 +2756,22 @@
     {
       "round": 3,
       "rfc": "RFC-035S3",
-      "sources": 0,
+      "sources": 11,
+      "new_on_this_build": 0,
       "retrieved_at_utc": "2026-10-08T01:00:00Z",
-      "source_ids": [],
+      "source_ids": [
+        "S3-01",
+        "S3-02",
+        "S3-03",
+        "S3-04",
+        "S3-05",
+        "S3-06",
+        "S3-07",
+        "S3-08",
+        "S3-09",
+        "S3-10",
+        "S3-11"
+      ],
       "replicate_p0_selected": "NONE",
       "final_status": "NO_SUITABLE_EXTERNAL_STRATEGY",
       "note": "append-only: no earlier source, round or disposition was modified"

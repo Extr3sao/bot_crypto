@@ -1609,9 +1609,12 @@ def update_canonical() -> dict[str, Any]:
     rounds.append({
         "round": 3,
         "rfc": "RFC-035S3",
-        "sources": len(added),
+        # the round's own source set, not just the ids appended on this build: a re-run must not
+        # report that round 3 added nothing.
+        "sources": len(SOURCES),
+        "new_on_this_build": len(added),
         "retrieved_at_utc": RETRIEVED_AT,
-        "source_ids": [s["SOURCE_ID"] for s in added],
+        "source_ids": [s["SOURCE_ID"] for s in SOURCES],
         "replicate_p0_selected": "NONE",
         "final_status": "NO_SUITABLE_EXTERNAL_STRATEGY",
         "note": "append-only: no earlier source, round or disposition was modified",
