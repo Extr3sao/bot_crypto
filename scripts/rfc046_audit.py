@@ -66,6 +66,7 @@ RFC046_PATHS: tuple[str, ...] = (
     "scripts/rfc046_audit.py",
     "scripts/rfc046_verify.py",
     "tests/unit/research/test_rfc046_discovery_proposal.py",
+    "data/rfc046/audit.json",
 )
 
 NUMBER_RANGE = range(0, 51)
@@ -112,7 +113,7 @@ def head_grep(pattern: str) -> list[str]:
             continue
         _, _, path = line.partition(":")
         path = path.replace("\\", "/")
-        if path in RFC046_PATHS:
+        if is_this_rfcs_output(path):
             continue
         paths.append(path)
     return sorted(set(paths))
@@ -122,8 +123,19 @@ def head_grep(pattern: str) -> list[str]:
 # collision audit
 # ---------------------------------------------------------------------------
 def is_this_rfcs_output(rel: str) -> bool:
-    """True for artefacts this RFC produced, which must never count as pre-existing occupancy."""
-    return "/rfc046/" in rel or rel.endswith("/rfc046") or rel == "data/rfc046" or rel.startswith("data/rfc046/")
+    """True for artefacts this RFC produced, which must never count as pre-existing occupancy.
+
+    This has to hold both before and after the commit: once these files are tracked, they appear in ``HEAD`` and a
+    naive scan would read RFC-046 as its own predecessor.
+    """
+    if rel in RFC046_PATHS:
+        return True
+    if "/rfc046/" in rel or rel.endswith("/rfc046") or rel == "data/rfc046" or rel.startswith("data/rfc046/"):
+        return True
+    if rel.startswith("docs/rfc/RFC-046_") or rel.startswith("docs/governance/DISCOVERY_"):
+        return True
+    return rel in ("docs/architecture/DISCOVERY_EXECUTION_FLOW.md",
+                   "docs/roadmap/PROFITABILITY_ROADMAP_AMENDMENT.md")
 
 
 def report_artefacts(tag: str) -> list[str]:
@@ -148,6 +160,8 @@ def declared_in_tracked_docs(tag: str) -> list[str]:
     out: list[str] = []
     for rel in head_tree_paths():
         if not rel.startswith("docs/") or not rel.endswith((".md", ".json", ".yaml", ".yml")):
+            continue
+        if is_this_rfcs_output(rel):
             continue
         text = (REPO / rel).read_text(encoding="utf-8", errors="replace")
         if re.search(rf'"rfc"\s*:\s*"RFC-{tag}"', text) or re.search(rf"^#\s+RFC-{tag}\b", text, flags=re.MULTILINE):

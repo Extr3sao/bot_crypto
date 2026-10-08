@@ -103,7 +103,11 @@ def col_paths() -> list[str]:
 
 
 def own_paths() -> set[str]:
-    """Files this RFC adds, plus the RFC-035 lineage that named RFC-046."""
+    """Files this RFC adds, plus the RFC-035 lineage that named RFC-046.
+
+    Once these are committed they are part of HEAD, so the exclusion has to work from the committed state too:
+    otherwise RFC-046 reads as its own predecessor and the spacing audit reports a collision with itself.
+    """
     return {
         "docs/rfc/RFC-046_CONTROLLED_DISCOVERY.md",
         "docs/rfc/RFC-046_CONTROLLED_DISCOVERY.json",
@@ -115,12 +119,20 @@ def own_paths() -> set[str]:
         "scripts/rfc046_audit.py",
         "scripts/rfc046_verify.py",
         "tests/unit/research/test_rfc046_discovery_proposal.py",
+        "data/rfc046/audit.json",
     }
 
 
 def is_this_rfcs_output(rel: str) -> bool:
     """True for artefacts this RFC produced, which must never count as pre-existing occupancy."""
-    return "/rfc046/" in rel or rel.endswith("/rfc046") or rel == "data/rfc046" or rel.startswith("data/rfc046/")
+    if rel in own_paths():
+        return True
+    if "/rfc046/" in rel or rel.endswith("/rfc046") or rel == "data/rfc046" or rel.startswith("data/rfc046/"):
+        return True
+    if rel.startswith("docs/rfc/RFC-046_") or rel.startswith("docs/governance/DISCOVERY_"):
+        return True
+    return rel in ("docs/architecture/DISCOVERY_EXECUTION_FLOW.md",
+                   "docs/roadmap/PROFITABILITY_ROADMAP_AMENDMENT.md")
 
 
 def rewrite_collision() -> dict[str, Any]:
@@ -158,9 +170,8 @@ def rewrite_collision() -> dict[str, Any]:
     mentions: dict[str, list[str]] = {}
     for n in range(51):
         out = git(["grep", "-l", "-E", f"RFC-{n:03d}", "HEAD", "--", "."])
-        mentions[f"{n:03d}"] = sorted(
-            {ln.partition(":")[2].replace("\\", "/") for ln in out.splitlines() if ln.strip()} - excluded
-        )
+        paths = {ln.partition(":")[2].replace("\\", "/") for ln in out.splitlines() if ln.strip()}
+        mentions[f"{n:03d}"] = sorted(p for p in paths if p not in excluded and not is_this_rfcs_output(p))
     return {"occupied": occupied, "asserting_files_045": asserting, "mentions": mentions}
 
 
@@ -279,8 +290,14 @@ def verify_collision(audit: dict[str, Any]) -> None:
     check("the audit records that no RFC registry exists", recorded["registry_exists"] is False, "")
     check("the audit records the path exclusions it used",
           recorded["excluded_paths"] and "excluded_reason" in recorded, "")
-    check("every excluded path is a file this RFC authored",
-          all(p.split("/")[0] in {"docs", "scripts", "tests"} for p in recorded["excluded_paths"]), "")
+    check("every excluded path is either this RFC's own output or the RFC-035 lineage that named it",
+          all(p.startswith(("docs/rfc/RFC-046_", "docs/governance/DISCOVERY_", "data/rfc046/", "scripts/rfc046_",
+                            "tests/unit/research/test_rfc046_"))
+              or p in ("docs/architecture/DISCOVERY_EXECUTION_FLOW.md",
+                       "docs/roadmap/PROFITABILITY_ROADMAP_AMENDMENT.md",
+                       "docs/roadmap/PROFITABILITY_DISCOVERY_PROPOSAL.md")
+              for p in recorded["excluded_paths"]),
+          json.dumps(recorded["excluded_paths"]))
     stale = {k for k in set(occupied_recorded) & set(derived_occupied)
              if not set(occupied_recorded[k].get("artefacts", [])) & set(derived_occupied[k].get("artefacts", []))
              and not set(occupied_recorded[k].get("declared_in_tracked_docs", []))

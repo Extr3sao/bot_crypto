@@ -521,7 +521,8 @@
         "docs/roadmap/PROFITABILITY_DISCOVERY_PROPOSAL.md",
         "scripts/rfc046_audit.py",
         "scripts/rfc046_verify.py",
-        "tests/unit/research/test_rfc046_discovery_proposal.py"
+        "tests/unit/research/test_rfc046_discovery_proposal.py",
+        "data/rfc046/audit.json"
       ],
       "excluded_reason": "files added or authored by this RFC would otherwise pollute the pre-existing audit",
       "namespace_separate": {
