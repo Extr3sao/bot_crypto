@@ -2,8 +2,9 @@
 
 Audit of the declared forward observation period of the ST-6 cost-regime validation and of the
 eligible-window denominator, performed against the state on disk at `9660afab9003001d3a8130b9679c066071548421`
-(verified `HEAD`, 2026-10-08). No history was altered, no count was corrected, and the period was not
-touched: this document derives the contract and declares what does not match it.
+(verified `HEAD`, 2026-10-08) and re-measured at `14514d66dbcdd4236a9d18dcbc79c1d90d9a14a1` when the
+end-of-period close was replayed. No history was altered, no count was corrected, and the period was
+not touched: this document derives the contract and declares what does not match it.
 
 ## 1. The declaration
 
@@ -81,6 +82,24 @@ Two windows against a plan of 84: the period is 1 day into 14. The history is co
 declaration — no window sits outside the plan, no slot holds two windows, and both raw snapshots
 reproduce the hash recorded in the index.
 
+### The live health artefact does not partition the plan (declared, not patched)
+
+At 2026-10-08T21:48Z the live `ST6_HEALTH_STATUS.json` reported `declared_slots_ended = 1` and
+`declared_slots_pending = 82`. The plan is 84, and the two numbers are **not** a partition of it, so a
+reader who adds them up is short by one:
+
+* `declared_slots_ended` counts slots whose end has passed — slot `2026-10-08#4`;
+* `declared_slots_pending` counts slots that are *unobserved* and still to come — 82;
+* the missing term is the slot that is **open right now and already observed**
+  (`2026-10-08#5`), which is in neither list.
+
+The arithmetic is not wrong, it is unnamed: the two counters answer different questions ("what has
+ended" and "what is left to collect"), and nothing in the artefact says so. The minimal correction is
+to name the third term — add `declared_slot_in_progress` (and whether it is observed) so the three
+add up to the declared plan — or to rename the counters. It is a reporting ambiguity only: no window,
+observation, hash, missed record or denominator is affected, so per the mission's rule it is declared
+here and **not** patched while the period is running.
+
 ## 6. Findings: contract versus shipped behaviour
 
 Two **forward-looking** mismatches between the declared contract and the shipped tick were measured
@@ -122,6 +141,51 @@ inconsistency to be declared with a minimal correction while the campaign is lef
 * **Minimal correction (proposed, not applied)**: either honour the flag in a guarded branch
   (`if ended and not args.authorize_extension:` consolidate) or amend the declared text to state
   that the period never extends. The safer behaviour — never extend — is what actually runs.
+
+### F3 — `RUN-LOG-PROVENANCE-IS-DECLARED-MODE` (still open)
+
+* **Contract**: the run log is the campaign's audit trail, so a reader should be able to tell the
+  task's own ticks from a human or a verification invocation.
+* **Shipped behaviour**: every run event now records the launch mode it declares (`SCHEDULED` for the
+  task's command line, `MANUAL` otherwise), but that is a declaration, not an unforgeable origin: the
+  fixtures that emulate the task's command line are recorded exactly as the task would be. The 129
+  events written before the field existed carry no provenance at all (26 deliberate
+  `REFUSED_INVALID_ARGUMENTS`, 24 `ALREADY_RUNNING` and 3 `REPORT_ONLY` of them came from fixtures), so
+  the historical log cannot be separated, only labelled as unrecorded.
+* **Minimal correction (proposed, not applied)**: have the registered task carry a per-installation
+  token in its command line, or reconcile the log against Task Scheduler's own `Last Run Time`.
+  Applying it means changing the installed task, which this work does not need in order to prove the
+  close.
+
+The three defects below were found while producing this evidence. Each of them made the *evidence*
+untrustworthy rather than describing the campaign, so each is **fixed** in `14514d6`, with a unit test
+that fails against the old behaviour:
+
+### F4 — `FIXTURE-REFUSALS-TRIPPED-THE-LIVE-MONITOR` (fixed)
+
+The health monitor computed its failure streak (critical at 3) and its 45-minute liveness heartbeat
+over *every* run event, including the fixtures. Measured before the fix: `consecutive_failures = 2`
+of 3 at 21:48Z — one more verification refusal and the live monitor would have raised a false
+`CRITICAL` — and the heartbeat was refreshed by manual runs, so a stopped schedule could have looked
+alive. The streak and the heartbeat are now derived from the non-manual events only, deliberately
+still counting the unrecorded historical rows, because dropping them could hide a real failure. Live
+reading after the fix: streak 1, `heartbeat_basis = LAST_NON_MANUAL_RUN`.
+
+### F5 — `SNAPSHOT-CHECK-CONFLATED-DRIFT-WITH-CORRUPTION` (fixed)
+
+`--check` compared each live file with the hash recorded when the snapshot was taken, so it failed as
+soon as the tick rewrote its own state — five live files had already moved by 22:00Z. The check now
+answers two questions apart: the snapshot's own bytes, its copied files and the raw evidence as
+*integrity* (a failure when wrong), and the campaign moving on as *drift* (named, hashed, counted, not
+a failure). New negative test: a tampered copy fails, a missing copy fails, a foreign manifest is
+refused before anything is believed, and a moved live file passes as drift.
+
+### F6 — `LIVE-TESTS-RACED-THE-SCHEDULER` (fixed)
+
+Three live tests asserted on the tick's outcome while the 15-minute task held the shared lease, so
+they failed with `ALREADY_RUNNING` whenever the scheduler was mid-collection (observed at 22:03Z:
+3 failed; the identical suite passed 24/24 at 22:08Z). They now wait for a free lease with a bounded
+and loud timeout; a lease that never frees is a failure, not a skip.
 
 ## 7. What this audit does **not** claim
 

@@ -9,7 +9,7 @@
     "missed": 0,
     "observations": 24,
     "raw_snapshots": 2,
-    "runs": 129,
+    "runs": 145,
     "windows": 2
   },
   "denominator": {
@@ -31,7 +31,7 @@
     "stderr_tail": [],
     "stdout_tail": [
       "PASS: close mechanics 10/10 scenarios PASS, 0 FAIL; real state unchanged: True; market requests: 0",
-      "written -> C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\st6-verify-rerun-127u_s_v\\report.json, C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\st6-verify-rerun-127u_s_v\\report.md"
+      "written -> C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\st6-verify-rerun-aygdfe1h\\report.json, C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\st6-verify-rerun-aygdfe1h\\report.md"
     ],
     "verdicts_equal": true
   },
@@ -50,7 +50,7 @@
     "snapshot": [],
     "windows": []
   },
-  "generated_at_utc": "2026-10-08T21:52:22Z",
+  "generated_at_utc": "2026-10-08T22:11:55Z",
   "method": "the verifier re-derives the plan, the window index, the missed accounting, the terminal state, the post-close contract and the drift preservation from the state on disk; it re-verifies the live-state snapshot by re-hashing it; it exercises the replay harness again and compares the close it produces; and it proves its own checks fail on corrupted fixtures before it reports anything",
   "mismatches": 0,
   "negative_tests": {
@@ -266,9 +266,9 @@
   },
   "snapshot_life": {
     "live_files_that_moved_since_the_snapshot": [],
-    "manifest": "data\\st6\\snapshots\\ST6_LIVE_STATE_20261008T215219Z.json",
+    "manifest": "data\\st6\\snapshots\\ST6_LIVE_STATE_20261008T221134Z.json",
     "reading": "live runtime state keeps moving by design: those files are the ones the running tick rewrites, and the snapshot copy is the immutable record of what they held",
-    "snapshot_id": "ST6_LIVE_STATE_20261008T215219Z"
+    "snapshot_id": "ST6_LIVE_STATE_20261008T221134Z"
   },
   "standing_state": {
     "ECO_1": "OPEN",

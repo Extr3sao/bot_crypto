@@ -1,8 +1,10 @@
 # ST-6 — versioning and independent end-of-period replay
 
-Generated 2026-10-08T21:49Z at `9660afab9003001d3a8130b9679c066071548421` (branch `main`,
-verified with `git rev-parse HEAD`). No new campaign, no change to the declared period, no change to
-COST_MODEL_V3, no order, no credential, no touch of CAP-004B/CAP-004D.
+Generated 2026-10-08T22:13Z from the baseline `9660afab9003001d3a8130b9679c066071548421` (branch
+`main`, verified with `git rev-parse HEAD`), now at
+`14514d66dbcdd4236a9d18dcbc79c1d90d9a14a1` after two commits of this work. No new campaign, no change
+to the declared period, no change to COST_MODEL_V3, no order, no credential, no touch of
+CAP-004B/CAP-004D.
 
 ## 01 — Baseline
 
@@ -61,42 +63,55 @@ The window index is therefore **not** committed: it is campaign state that the n
 rewrites, and the current one is not the last one this period will have. Its exact bytes at the
 snapshot instant are inside the snapshot, with their sha256.
 
-Two dated snapshots were produced by `scripts/st6_state_snapshot.py`:
+Three dated snapshots were produced by `scripts/st6_state_snapshot.py`:
 
 * `data/st6/snapshots/ST6_LIVE_STATE_20261008T215219Z.json` — the one the independent verification
-  read;
-* `data/st6/snapshots/ST6_LIVE_STATE_20261008T215222Z.json` — the final picture, taken after the
-  verification, and the one `--check` re-verifies.
+  read at the first commit;
+* `data/st6/snapshots/ST6_LIVE_STATE_20261008T215222Z.json` — the picture taken after that
+  verification;
+* `data/st6/snapshots/ST6_LIVE_STATE_20261008T221134Z.json` — the picture taken at the final commit
+  `14514d6`, and the one `--check` re-verifies.
 
 Each snapshot copies every live file under `data/st6/snapshots/<id>/` and records, for each one, its
 sha256, size, mtime and **git blob hash**, plus a re-hash of every raw window snapshot against the
-hash in the index. `python scripts/st6_state_snapshot.py --check` → **PASS (19 checks)**.
+hash in the index. `python scripts/st6_state_snapshot.py --check` → **PASS (17 checks, 0 live files
+moved)** when it was taken.
 
-## 03 — The commit
+The check used to compare every live file with the hash recorded at snapshot time, so it reported
+`FAIL` as soon as the tick rewrote its own state — which it does every fifteen minutes, by design
+(five live files had already moved by 22:00Z). It now answers two separate questions: whether the
+snapshot still says what it said (its manifest, its copied files, the raw evidence — a failure), and
+whether the campaign has moved on since (drift — named, hashed and counted, never a failure). This
+is what makes it usable for the whole period instead of only for the minute after it ran.
+
+## 03 — The commits
 
 `git add` was called with explicit paths only — never `git add -A`, never `git add .`, never a
-directory that could carry another agent's file. The identity of the content staged (git blob SHA-1,
-`git hash-object` of the exact bytes) is:
+directory that could carry another agent's file.
 
-| path | git blob sha1 | bytes |
+| commit | subject | paths | role |
+| --- | --- | --- | --- |
+| `8a7afd2` | make the ST-6 close terminal, idempotent and independently replayed | 47 | the implementation, the reports and the first two snapshots |
+| `14514d6` | record who invoked the tick and tell snapshot drift from corruption | 6 | the correction below |
+| the commit that carries this report | this report, the regenerated replay report, the verification and the third snapshot | 9 | reports and the newest snapshot |
+
+The identity of the content staged (git blob SHA-1, `git hash-object` of the exact bytes, and what
+`HEAD` actually holds — they agree on every row) is:
+
+| path | git blob sha1 at `14514d6` | bytes |
 | --- | --- | --- |
-| `scripts/st6_forward_regime.py` | `3c3c7092c942ef3613be17f6ead89652431f8ae3` | 121866 |
-| `scripts/st6_health_check.py` | `36ce06959843401ccb42da291d2086218484e4c2` | 18246 |
+| `scripts/st6_forward_regime.py` | `142287f750dbb30f4c0e7cb26e12ca88785839b5` | 122969 |
+| `scripts/st6_health_check.py` | `2abb44bf0228fc5b1bfc8c6c8fbf6be48adf5eba` | 20512 |
 | `scripts/st6_scheduler_verify.py` | `8eceb9b2ead559fad37f4c29178bb5332f119484` | 29401 |
-| `scripts/st6_state_snapshot.py` | `821987eaa8f7db8143c05d2191776f7ce26a1bb6` | 11797 |
-| `scripts/st6_close_replay.py` | `29b2a3cbb4c7ead03356976535fb94c1059d5149` | 61284 |
-| `scripts/st6_close_verify.py` | `26b52211bbeee9bbcb68d17fefbb70ca6f15c970` | 46742 |
-| `tests/unit/research/test_st6_scheduler.py` | `c54a23284067074c30e6165b6778cb646435e972` | 26255 |
+| `scripts/st6_state_snapshot.py` | `96e065cfb3d5869c1aa12af364232dcb264f314b` | 15435 |
+| `scripts/st6_close_replay.py` | `c22204ab89dcfd7b1b8e329cead91533d808bb43` | 61363 |
+| `scripts/st6_close_verify.py` | `a1e473d6f5db933ed60b61d3e6b90f15fb744c8a` | 46892 |
+| `tests/unit/research/test_st6_scheduler.py` | `20a406d2797f4ef9d9c578c0a6eba913f3ad35d4` | 33335 |
 | `data/st6/ST6_TASK_DEFINITION.xml` | `6c13e0e75568feaca1329a226116eed2b18d58ac` | 3308 |
-| `data/st6/raw/20261008T200323Z.json.gz` | `2d42847d6090feaab898a726bdc5d04fd50cc362` | 17904 |
-| `data/st6/ST6_PERIOD_BOUNDARY_AUDIT.md` | `d8c4f72cf89dffc615a0d73aee6f1d215c651bcc` | 8693 |
-| `data/st6/ST6_CLOSE_REPLAY_REPORT.md` | `aaf662e39e3e1bf9e9f05b624ef07be573c446de` | 4130 |
-| `data/st6/ST6_CLOSE_REPLAY_REPORT.json` | `ca63240911a283dbd18769e753714e6ff2c3a809` | 59645 |
-| `data/st6/ST6_CLOSE_INDEPENDENT_VERIFICATION.json` | `71bc6e237810a0a965299a9ff15f749f41bc3aea` | 11161 |
 
-Plus the two snapshot manifests and their 30 copied live files (15 per snapshot,
-`data/st6/snapshots/**`, `git add` by explicit path), for **47 paths** in total. Every one of them
-is listed with its blob hash and sha256 in `ST6_VERSIONING_REPORT.json`.
+Every row of that table is verified against `HEAD` (blob in the tree equals blob of the bytes on
+disk), and `ST6_VERSIONING_REPORT.json` carries the same table with the sha256 of every file as well,
+including the reports, the raw evidence and the three snapshots.
 
 The commit id cannot appear inside the commit that carries this report; it is reported in the
 mission's final response (`CURRENT_HEAD`).
@@ -126,13 +141,14 @@ mission's final response (`CURRENT_HEAD`).
 
 | verification | result |
 | --- | --- |
-| scheduler verifier — live execution through the scheduler, lease, `--due` idempotency, refusal path, closure guard, run log, missed accounting, order-path scan | **PASS 1515/1515**, FALSE_SUCCESS 0 |
+| scheduler verifier — live execution through the scheduler, lease, `--due` idempotency, refusal path, closure guard, run log, missed accounting, order-path scan | **PASS 1710/1710**, 0 mismatches, FALSE_SUCCESS 0 |
 | isolated close replay — 10 scenarios, injected UTC clock, isolated sandbox, market and scheduler forbidden | **PASS 10/10**, 0 FAIL, real state unmoved, 0 real requests, 0 real scheduler calls |
-| independent close verification — a different program from the builder *and* from the harness | **PASS 19/19**, FALSE_SUCCESS 0 |
+| independent close verification — a different program from the builder *and* from the harness | **PASS 19/19**, 0 mismatches, FALSE_SUCCESS 0, verdict `ST6_CLOSE_VERIFIED` |
 | negative fixtures — duplication, tampered hash, missing evidence, order path, foreign closure, supported-over-incomplete-coverage, hidden drift, plan past its end, moved implementation hash, misclassified artefact, hidden failed check, unexplained real change | **PASS 17/17** corruptions detected |
 | determinism — the harness re-run from the same seed state | close sha256 `8610cf46337fb400…` reproduced exactly, byte for byte; every scenario verdict equal. Inside the sandbox the tick records the code identity as a constant (`REPLAY_SANDBOX_NOT_A_COMMIT`), so this proof does not depend on the commit hash — the real head is recorded at the top level of the report |
-| unit suites | 43 passed (`test_st6_scheduler.py`, `test_st6_forward_regime.py`) |
-| live-state snapshot | `--check` PASS (19 checks); every raw hash reproduces |
+| unit suites | **46 passed**, 0 failed (`test_st6_scheduler.py` 24, `test_st6_forward_regime.py` 22); three of them added with this work |
+| live-state snapshot | `--check` PASS (17 checks, 0 live files moved) right after it was taken; every raw hash reproduces |
+| live health after the correction | `WARNING`; run events 140 by provenance `{MANUAL: 3, SCHEDULED: 8, UNRECORDED: 129}`; failure streak 1 computed over non-manual events only (threshold 3); heartbeat basis `LAST_NON_MANUAL_RUN`; 2 windows, 0 unaccounted slots, 0 missed |
 
 The replayed close produced `INSUFFICIENT_REGIME_COVERAGE` (2 of 84 planned windows, 82 missed) with
 the terminal state `PERIOD_CLOSED_NO_FURTHER_COLLECTION`, the drift preserved beside the outcome
@@ -153,6 +169,38 @@ the terminal state `PERIOD_CLOSED_NO_FURTHER_COLLECTION`, the drift preserved be
    declared token is not emitted. Declared, not patched.
 4. **`DUPLICATE-INDEX-ROW`** — the tick consolidates what the index says; duplicate detection belongs
    to the verifier, which is proven to fail on a duplicated row.
+
+Three further defects were found while producing this evidence and are **fixed** in `14514d6`,
+because each one made the evidence itself untrustworthy rather than describing the campaign:
+
+5. **`FIXTURE-REFUSALS-TRIPPED-THE-LIVE-MONITOR`** (fixed). The run log is append-only and shared with
+the fixtures, so the deliberate `REFUSED_INVALID_ARGUMENTS` of a verification run was counted by the
+health monitor as the campaign failing, and a manual run refreshed its 45-minute liveness heartbeat.
+Measured before the fix: `consecutive_failures` **2 of a critical threshold of 3** at
+2026-10-08T21:48Z, with 26 deliberate refusals and 24 lease collisions from fixtures in the live log —
+the next fixture would have raised a false `CRITICAL`. Every run event now records the launch mode it
+declares, and the monitor derives its failure streak and its heartbeat from the non-manual events
+only, deliberately still counting the 129 rows written before the field existed, because dropping
+them could hide a real failure. After the fix the live status reports a streak of 1 and
+`heartbeat_basis = LAST_NON_MANUAL_RUN`.
+6. **`SNAPSHOT-CHECK-CONFLATED-DRIFT-WITH-CORRUPTION`** (fixed). `--check` failed as soon as the tick
+rewrote its own state, i.e. within fifteen minutes of being taken; five live files had already moved
+by 22:00Z. It now verifies the snapshot's own bytes and the raw evidence as *integrity*, and reports
+the campaign moving on as *drift*, named and hashed. Proven by a new negative test: tampering with
+the snapshot copy fails the check, a missing copy fails the check, a manifest that is not ours is
+refused before anything is believed, and a live file that has moved passes as drift.
+7. **`LIVE-TESTS-RACED-THE-SCHEDULER`** (fixed). Three live tests asserted on the tick's outcome
+while the 15-minute task held the shared lease, so they failed with `ALREADY_RUNNING` whenever the
+scheduler was mid-collection (observed at 22:03Z: 3 failed; the same suite passed 24/24 at 22:08Z).
+They now wait for a free lease with a bounded and *loud* timeout, and a lease that never frees is
+reported as a failure rather than skipped past.
+
+8. **`RUN-LOG-PROVENANCE-IS-DECLARED-MODE`** — still open, deliberately. The launch mode is what the
+invocation declares on its command line, not an unforgeable origin, so a fixture that passes
+`--scheduled` is recorded exactly as the task would be, and the 129 rows that predate the field carry
+no provenance at all. Minimal correction: have the registered task carry a per-installation token, or
+reconcile the log against Task Scheduler's own `Last Run Time`. Not applied here: it would mean
+changing the installed task, which this work does not need in order to prove the close.
 
 Also recorded: during the test run that hardened the flakiness of the cadence test, one single-shot
 tick returned status 0 with empty output and no run event (a live tick was sharing the lease at that

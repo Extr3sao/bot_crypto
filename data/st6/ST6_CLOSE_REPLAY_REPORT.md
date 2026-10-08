@@ -1,6 +1,6 @@
 # ST-6 — isolated close replay
 
-Generated 2026-10-08T21:52:18Z at `fc3b6dce26534ba2af360b17571057eb633629b2`.
+Generated 2026-10-08T22:11:37Z at `14514d66dbcdd4236a9d18dcbc79c1d90d9a14a1`.
 
 Inside the sandbox the tick records the code identity as `REPLAY_SANDBOX_NOT_A_COMMIT`:
 a constant on purpose, so the determinism proof does not depend on the commit hash.
@@ -27,7 +27,7 @@ UTC clock. Period `2026-10-08T16:21:20Z` → `2026-10-22T16:21:20Z`; close insta
 
 ## Isolation and non-interference
 
-Sandboxes: `C:\Users\GVLLFR~1\AppData\Local\Temp\st6-close-replay-28j_4i02` (a temporary directory outside the
+Sandboxes: `C:\Users\GVLLFR~1\AppData\Local\Temp\st6-close-replay-p7mr2z5d` (a temporary directory outside the
 repository). Real state unmoved by the replay: **True** (identical bytes before and after: True)
 
 Real market requests: 0. Real scheduler calls: 0. Market attempts refused by the guard: 2. Terminal transitions intercepted: 6.

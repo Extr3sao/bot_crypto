@@ -1,11 +1,12 @@
 {
   "acceptance": {
     "close_replay_pass": "PASS",
-    "commit_valid": "committed with explicit paths; verified with git show --stat",
+    "commit_valid": "two commits, both made with explicit paths only and verified with git show --stat: 8a7afd2 (47 paths) and 14514d6 (6 paths); this report and the newest snapshot are carried by the commit that follows, whose id is reported as CURRENT_HEAD",
     "governance_violations": 0,
     "independent_verification_pass": "PASS",
+    "live_runtime_state_left_uncommitted": true,
     "live_state_unmodified_by_the_replay": true,
-    "negative_tests_pass": "PASS",
+    "negative_tests_pass": "ST6_CLOSE_NEGATIVE_TESTS 17/17 detected",
     "no_real_requests_during_the_replay": true,
     "own_paths_clean_after_commit": true
   },
@@ -356,8 +357,25 @@
       "data/st6/ST6_VERSIONING_REPORT.json"
     ]
   },
-  "convention": "git_blob_sha1 is `git hash-object` for the exact bytes staged, so it identifies the content of the commit that carries them; the commit id itself is reported in the mission's final response, since a report cannot contain the hash of the commit that contains it",
-  "generated_at_utc": "2026-10-08T21:53:19Z",
+  "commits": [
+    {
+      "id": "14514d66dbcdd4236a9d18dcbc79c1d90d9a14a1",
+      "paths": 6,
+      "role": "the launch-mode/provenance correction, the snapshot check semantics and the de-flaked live tests",
+      "subject": "fix(research): record who invoked the ST-6 tick and tell snapshot drift from corruption",
+      "verified_with": "git show --stat HEAD"
+    },
+    {
+      "id": "8a7afd28209a4186b06616543ef762ed62c5d4f5",
+      "paths": 47,
+      "role": "the implementation, the reports and the first snapshots",
+      "subject": "feat(research): make the ST-6 close terminal, idempotent and independently replayed",
+      "verified_with": "git show --stat 8a7afd2"
+    }
+  ],
+  "convention": "git_blob_sha1 is `git hash-object` for the exact bytes staged, so it identifies the content the commit carries; committed_blob_sha1 is what HEAD actually holds, and the two agree for every implementation path in this report. A commit cannot contain its own id, so the report of a commit is carried by the commit that follows it, and the id is returned in the mission's final response (CURRENT_HEAD).",
+  "current_head": "14514d66dbcdd4236a9d18dcbc79c1d90d9a14a1",
+  "generated_at_utc": "2026-10-08T22:15:46Z",
   "governance": {
     "ECO_1": "OPEN",
     "ECO_2": "UNKNOWN_NOT_RESOLVABLE_OFFLINE",
@@ -374,49 +392,198 @@
     "period_modified": false
   },
   "head_before_commit": "9660afab9003001d3a8130b9679c066071548421",
+  "implementation_hashes": [
+    {
+      "bytes": 122969,
+      "committed_blob_sha1": "142287f750dbb30f4c0e7cb26e12ca88785839b5",
+      "git_blob_sha1": "142287f750dbb30f4c0e7cb26e12ca88785839b5",
+      "modified_utc": "2026-10-08T22:09:09Z",
+      "path": "scripts/st6_forward_regime.py",
+      "present": true,
+      "sha256": "c6fbeb875779e1da2c7882ec476451ab894e9959bc828c450726e6d8bda1fce3"
+    },
+    {
+      "bytes": 20512,
+      "committed_blob_sha1": "2abb44bf0228fc5b1bfc8c6c8fbf6be48adf5eba",
+      "git_blob_sha1": "2abb44bf0228fc5b1bfc8c6c8fbf6be48adf5eba",
+      "modified_utc": "2026-10-08T22:09:24Z",
+      "path": "scripts/st6_health_check.py",
+      "present": true,
+      "sha256": "5e4450cc96c1400eb8a52d959dc613c7dcdb70c7fe55478a11fc7ced5437cd18"
+    },
+    {
+      "bytes": 29401,
+      "committed_blob_sha1": "8eceb9b2ead559fad37f4c29178bb5332f119484",
+      "git_blob_sha1": "8eceb9b2ead559fad37f4c29178bb5332f119484",
+      "modified_utc": "2026-10-08T17:46:55Z",
+      "path": "scripts/st6_scheduler_verify.py",
+      "present": true,
+      "sha256": "b9b44d9b4a6aeabb38bd05928339d991f5a8b11ea1e9864f012d7a985f2a4374"
+    },
+    {
+      "bytes": 15435,
+      "committed_blob_sha1": "96e065cfb3d5869c1aa12af364232dcb264f314b",
+      "git_blob_sha1": "96e065cfb3d5869c1aa12af364232dcb264f314b",
+      "modified_utc": "2026-10-08T22:01:40Z",
+      "path": "scripts/st6_state_snapshot.py",
+      "present": true,
+      "sha256": "9b8eb4aefac3f9ccc7b64210ae181e63977c91671885b82ed0bb916ebe410a19"
+    },
+    {
+      "bytes": 61363,
+      "committed_blob_sha1": "c22204ab89dcfd7b1b8e329cead91533d808bb43",
+      "git_blob_sha1": "c22204ab89dcfd7b1b8e329cead91533d808bb43",
+      "modified_utc": "2026-10-08T21:54:52Z",
+      "path": "scripts/st6_close_replay.py",
+      "present": true,
+      "sha256": "7a27e2fb519ac9134e797570f686769bf7aec0303c10aff72f5347505cb30384"
+    },
+    {
+      "bytes": 46892,
+      "committed_blob_sha1": "a1e473d6f5db933ed60b61d3e6b90f15fb744c8a",
+      "git_blob_sha1": "a1e473d6f5db933ed60b61d3e6b90f15fb744c8a",
+      "modified_utc": "2026-10-08T21:54:52Z",
+      "path": "scripts/st6_close_verify.py",
+      "present": true,
+      "sha256": "866bd324acc0e6e85e59f0399718e6bbe1271d94baf8929b04ae20bc55b5423e"
+    },
+    {
+      "bytes": 33335,
+      "committed_blob_sha1": "20a406d2797f4ef9d9c578c0a6eba913f3ad35d4",
+      "git_blob_sha1": "20a406d2797f4ef9d9c578c0a6eba913f3ad35d4",
+      "modified_utc": "2026-10-08T22:03:55Z",
+      "path": "tests/unit/research/test_st6_scheduler.py",
+      "present": true,
+      "sha256": "3f52b2ae15c7abdd02c514345a3c76c52a7b211ce79752714cf058f70365c0d5"
+    },
+    {
+      "bytes": 3308,
+      "committed_blob_sha1": "6c13e0e75568feaca1329a226116eed2b18d58ac",
+      "git_blob_sha1": "6c13e0e75568feaca1329a226116eed2b18d58ac",
+      "modified_utc": "2026-10-08T17:15:23Z",
+      "path": "data/st6/ST6_TASK_DEFINITION.xml",
+      "present": true,
+      "sha256": "c52ad4dc8ead1c098d9ac8eae1a1ff01d7aca32ca24fbd8be332fe3c8da251a2"
+    }
+  ],
   "open_defects": [
     {
       "evidence": "data/st6/ST6_CLOSE_REPLAY_REPORT.json scenario 2",
       "fixed": false,
       "id": "BOUNDARY-SLOT-DUE-RULE",
-      "kind": "declared deviation"
+      "kind": "declared deviation",
+      "note": "the due rule is 'this slot has no window yet', which the 84-window plan does not bound: a tick between 2026-10-22T16:00Z and the close would attempt an undeclared 85th window. Measured, declared, not patched: patching the collection rule mid-period would change the campaign."
     },
     {
       "evidence": "data/st6/ST6_CLOSE_REPLAY_REPORT.json scenario 11",
       "fixed": false,
       "id": "EXTENSION-FLAG-INERT",
-      "kind": "declared deviation"
+      "kind": "declared deviation",
+      "note": "--authorize-extension can neither extend the period nor leave collection alone during it; the safe behaviour (never extend) is what runs."
     },
     {
       "evidence": "data/st6/ST6_CLOSE_REPLAY_REPORT.json scenario 8 (BadGzipFile)",
       "fixed": false,
       "id": "CORRUPT-RAW-BYTES-RAISE",
       "kind": "declared gap",
-      "note": "a tampered hash is classified DATA_QUALITY_FAILED; bytes that are not gzip raise before the classification. Fail-loud, but the declared token is not emitted."
+      "note": "a tampered hash is classified DATA_QUALITY_FAILED; bytes that are not gzip raise before the classification is written. Fail-loud, but the declared token is not emitted."
     },
     {
       "evidence": "data/st6/ST6_CLOSE_INDEPENDENT_VERIFICATION.json negative test 1",
       "fixed": false,
       "id": "DUPLICATE-INDEX-ROW",
       "kind": "separation of duties",
-      "note": "the tick consolidates what the index says; the independent verifier owns duplicate detection and is proven to fail on a duplicated row"
+      "note": "the tick consolidates what the index says; duplicate detection belongs to the independent verifier, which is proven to fail on a duplicated row."
     },
     {
-      "evidence": "recorded in this section of ST6_VERSIONING_REPORT.md; five repeats behaved correctly",
+      "evidence": "recorded in ST6_VERSIONING_REPORT.md; five repeats behaved correctly; not reproduced after the launch-mode change either",
       "fixed": false,
       "id": "UNEXPLAINED-SINGLE-TICK-STATUS-0",
       "kind": "unexplained observation"
+    },
+    {
+      "evidence": "data/st6/ST6_RUNS.jsonl: 129 rows predate the field and carry no provenance; data/st6/ST6_HEALTH_STATUS.json evidence.run_events_by_provenance",
+      "fixed": false,
+      "id": "RUN-LOG-PROVENANCE-IS-DECLARED-MODE",
+      "kind": "mitigated, still open",
+      "note": "the recorded launch mode is what the invocation declares, not an unforgeable origin: a fixture that passes --scheduled is recorded exactly as the task would be. Minimal correction: have the registered task carry a per-installation token, or reconcile the log against Task Scheduler's own Last Run Time. Applied so far: the declared mode is recorded, and the monitor reads it."
+    },
+    {
+      "evidence": "before: data/st6/ST6_HEALTH_STATUS.json at 2026-10-08T21:48:14Z reported consecutive_failures 2 of a critical threshold of 3, driven by verification refusals, and a heartbeat refreshed by manual runs; after: consecutive_failures 1 over non-manual events only, heartbeat_basis LAST_NON_MANUAL_RUN",
+      "fixed": true,
+      "fixed_in": "14514d66dbcdd4236a9d18dcbc79c1d90d9a14a1",
+      "id": "FIXTURE-REFUSALS-TRIPPED-THE-LIVE-MONITOR",
+      "kind": "defect, fixed in this work",
+      "note": "the health monitor's failure streak (threshold 3) and its 45-minute liveness grace were computed over every run event, including the fixtures, so the verification practice itself could raise a false CRITICAL and could mask a stopped schedule. The streak and the heartbeat are now derived from the non-manual events, with the unrecorded historical rows deliberately still counted."
+    },
+    {
+      "evidence": "before: --check compared every live file with the hash recorded at snapshot time, so it reported FAIL as soon as the tick rewrote its own state (five files had already moved by 22:00Z); after: PASS 17 checks with the drift named and counted separately",
+      "fixed": true,
+      "fixed_in": "14514d66dbcdd4236a9d18dcbc79c1d90d9a14a1",
+      "id": "SNAPSHOT-CHECK-CONFLATED-DRIFT-WITH-CORRUPTION",
+      "kind": "defect, fixed in this work",
+      "note": "the point of the snapshot is that the campaign keeps moving; the check now verifies the snapshot's own bytes, the copied files and the raw evidence, and reports live drift as drift."
+    },
+    {
+      "evidence": "observed at 2026-10-08T22:03Z: three live tests failed with ALREADY_RUNNING while the 15-minute task held the lease; the same suite then passed 24/24 at 22:08Z",
+      "fixed": true,
+      "fixed_in": "14514d66dbcdd4236a9d18dcbc79c1d90d9a14a1",
+      "id": "LIVE-TESTS-RACED-THE-SCHEDULER",
+      "kind": "defect, fixed in this work",
+      "note": "the live tests now wait for a free lease, with a bounded and loud timeout, instead of racing the task they are testing. A suite that fails whenever the scheduler ticks is not evidence about the scheduler."
     }
   ],
   "origin_main": "5e6f9632e8d9c15dabd60ea92ac68f350ca28c9d",
+  "report_artifacts": [
+    {
+      "bytes": 13118,
+      "git_blob_sha1_of_these_bytes": "7e6a4c8849ec0ec880dc2756ba0c03c0e082d7ab",
+      "modified_utc": "2026-10-08T22:15:07Z",
+      "path": "data/st6/ST6_PERIOD_BOUNDARY_AUDIT.md",
+      "sha256": "23737327b503e889bf6dd0007872008951d402ae0cd0c67142d7b6046ec1cb4f"
+    },
+    {
+      "bytes": 4130,
+      "git_blob_sha1_of_these_bytes": "d5a9544c5fe0dda1eed38445f18dcebbaf8f9cc5",
+      "modified_utc": "2026-10-08T22:11:37Z",
+      "path": "data/st6/ST6_CLOSE_REPLAY_REPORT.md",
+      "sha256": "dd0f87b5aba9c04610cf0600cfa9433fce7ebb7dc091239e6249ece0e3e53982"
+    },
+    {
+      "bytes": 60058,
+      "git_blob_sha1_of_these_bytes": "5a744fe3c2310ef51e8ed91562b5d6108be1691d",
+      "modified_utc": "2026-10-08T22:11:37Z",
+      "path": "data/st6/ST6_CLOSE_REPLAY_REPORT.json",
+      "sha256": "7a43ef030e1231dee615a3518eae40992f39c2180a0cede0dbc0242a5ccb5679"
+    },
+    {
+      "bytes": 11161,
+      "git_blob_sha1_of_these_bytes": "e30264065c88854bdedc0ff004d72563519f4ca7",
+      "modified_utc": "2026-10-08T22:11:55Z",
+      "path": "data/st6/ST6_CLOSE_INDEPENDENT_VERIFICATION.json",
+      "sha256": "229024a6f7862b25980d127f3465ea9f790851196b85e9a81da18faf84cab724"
+    },
+    {
+      "bytes": 16243,
+      "git_blob_sha1_of_these_bytes": "83896aff136168fc1f916c079407ae6162592cf5",
+      "modified_utc": "2026-10-08T22:14:42Z",
+      "path": "data/st6/ST6_VERSIONING_REPORT.md",
+      "sha256": "b014d512cd79842a2fe80a5bd2006dcb40c1de10df3b3578ec43268c1d181a18"
+    }
+  ],
+  "report_artifacts_self": {
+    "path": "data/st6/ST6_VERSIONING_REPORT.json",
+    "why_absent": "a file cannot carry the hash of its own bytes: the digest would be of the previous write. Its identity is therefore the git blob of the bytes at the commit that carries it (CURRENT_HEAD in the mission's final response) and the sha256 held for it by any later reader, which is verifiable with `git cat-file blob HEAD:data/st6/ST6_VERSIONING_REPORT.json | sha256sum`."
+  },
   "scheduler_lifecycle": {
     "after_the_close": "every later tick is an idempotent no-op: no sample, no artefact rewrite, no run event; the consolidation stays byte-identical across repetitions and across a simulated restart",
-    "at_the_close": "the ended branch returns EXIT_PERIOD_ENDED before any collection statement; the consolidation is written once, the missed windows are named and the terminal state is declared",
+    "at_the_close": "the ended branch returns EXIT_PERIOD_ENDED before any statement that could collect, re-derived from the tick's syntax tree by closure_guard_structure and replayed; the consolidation is written once, with the metrics consolidated, the missed windows named, the verifiers delegated and the terminal state declared",
     "before_the_close": "the tick takes the shared lease, consults the local slot state first and makes no market request when the slot is already observed",
     "no_admin_dependency": true,
     "other_programs_tasks_touched": false,
+    "run_log_provenance": "every run event records the launch mode it declares, so a reader can separate the task's own ticks from manual and verification invocations; the events written before the field existed carry none and are named as unrecorded rather than rewritten",
     "task_self_expiry": "the task's declared Duration is P30D and expires it on its own",
-    "terminal_transition": "the period disables its own task (schtasks /change /tn <own task> /disable), unelevated, own task only, outcome recorded in the consolidation; a failure is recorded with a note to disable it by hand"
+    "terminal_transition": "the period disables its own task (schtasks /change /tn <own task> /disable) without elevation and without touching another program's task; a failure is recorded in the consolidation rather than raised"
   },
   "separation": {
     "IMMUTABLE_EVIDENCE": [
@@ -465,15 +632,58 @@
       "why": "the replayed consolidation must not embed the live commit id, or the determinism proof would break whenever the code is committed"
     }
   },
+  "snapshot_registry": [
+    {
+      "copy_root": "data/st6/snapshots/ST6_LIVE_STATE_20261008T215219Z",
+      "current_head": "fc3b6dce26534ba2af360b17571057eb633629b2",
+      "generated_at_utc": "2026-10-08T21:52:19Z",
+      "live_files_copied": 15,
+      "manifest": "data/st6/snapshots/ST6_LIVE_STATE_20261008T215219Z.json",
+      "manifest_sha256": "5439b266d7a76e855b0a69cc78b51fa31c216b041606d3974a58224cea0d00e9",
+      "raw_evidence_reproduced": true,
+      "snapshot_id": "ST6_LIVE_STATE_20261008T215219Z",
+      "windows_index_rows_at_snapshot": 2
+    },
+    {
+      "copy_root": "data/st6/snapshots/ST6_LIVE_STATE_20261008T215222Z",
+      "current_head": "fc3b6dce26534ba2af360b17571057eb633629b2",
+      "generated_at_utc": "2026-10-08T21:52:23Z",
+      "live_files_copied": 15,
+      "manifest": "data/st6/snapshots/ST6_LIVE_STATE_20261008T215222Z.json",
+      "manifest_sha256": "a047e83e95a7993eac30aa38f5030c93eae34f0a0ca102b6648fc0375840d583",
+      "raw_evidence_reproduced": true,
+      "snapshot_id": "ST6_LIVE_STATE_20261008T215222Z",
+      "windows_index_rows_at_snapshot": 2
+    },
+    {
+      "copy_root": "data/st6/snapshots/ST6_LIVE_STATE_20261008T221134Z",
+      "current_head": "14514d66dbcdd4236a9d18dcbc79c1d90d9a14a1",
+      "generated_at_utc": "2026-10-08T22:11:35Z",
+      "live_files_copied": 15,
+      "manifest": "data/st6/snapshots/ST6_LIVE_STATE_20261008T221134Z.json",
+      "manifest_sha256": "c7b64e01a896b0a32b01dc4003cb6cc3463db94d1b5fb42865cf6d7fff35e9f0",
+      "raw_evidence_reproduced": true,
+      "snapshot_id": "ST6_LIVE_STATE_20261008T221134Z",
+      "windows_index_rows_at_snapshot": 2
+    }
+  ],
   "verification_evidence": {
     "close_independent_verification": {
+      "artifact": "data/st6/ST6_CLOSE_INDEPENDENT_VERIFICATION.json",
       "checks_passed": 19,
       "checks_total": 19,
       "false_success": 0,
+      "mismatches": 0,
+      "negative_tests": {
+        "failed": 0,
+        "passed": 17,
+        "status": "ST6_CLOSE_NEGATIVE_TESTS"
+      },
       "status": "PASS",
       "verdict": "ST6_CLOSE_VERIFIED"
     },
     "close_replay": {
+      "artifact": "data/st6/ST6_CLOSE_REPLAY_REPORT.json",
       "close_mechanics_verdict": "PASS",
       "declared_deviations": [
         "BOUNDARY-SLOT-DUE-RULE",
@@ -481,62 +691,58 @@
       ],
       "real_market_requests": 0,
       "real_scheduler_calls": 0,
+      "real_state_unchanged": true,
       "real_state_unchanged_by_the_replay": true,
       "summary": {
         "declared_deviations": 0,
         "failed": 0,
         "passed": 10,
         "scenarios": 10
-      }
-    },
-    "determinism": {
-      "rerun_close_mechanics": "PASS",
-      "rerun_close_sha256": "8610cf46337fb400ce55b8bd3c829be581bd0a4b7423acb5adb6766a114e923a",
-      "shipped_close_sha256": "8610cf46337fb400ce55b8bd3c829be581bd0a4b7423acb5adb6766a114e923a",
-      "verdicts_equal": true
-    },
-    "negative_tests": {
-      "failed": 0,
-      "passed": 17,
-      "status": "PASS",
-      "tests": 17
-    },
-    "replayed_close": {
-      "auto_extended": false,
-      "breaches_total": 1,
-      "closure_drift_breaches": 1,
-      "coverage_total": {
-        "completed_windows": 2,
-        "coverage_complete": false,
-        "coverage_token": "REGIME_COVERAGE_INSUFFICIENT",
-        "days_covered": 1,
-        "declared_slots_reached": 84,
-        "missed_windows": 82,
-        "observed_windows": 2,
-        "planned_windows": 84
       },
-      "credentials_used": 0,
-      "drift_breaches_lost_by_the_close": [],
-      "drift_verdict": "DRIFT_WIDER_THAN_MODELLED",
-      "live_drift_breaches": 1,
-      "missed_windows": 82,
-      "orders_sent": 0,
-      "outcome": "INSUFFICIENT_REGIME_COVERAGE",
-      "terminal_state": "PERIOD_CLOSED_NO_FURTHER_COLLECTION"
+      "unexplained_changes": []
     },
-    "scheduler_verifier": {
-      "checks_passed": 1515,
-      "checks_total": 1515,
-      "false_success": 0,
-      "live_tests": {
-        "concurrency": "PASS",
-        "due_idempotency": "PASS",
-        "error_exit_status": "PASS",
-        "period_closure_guard": "PASS",
-        "real_execution": "PASS"
+    "live_health": {
+      "artifact": "data/st6/ST6_HEALTH_STATUS.json",
+      "consecutive_failures": 0,
+      "consecutive_failures_over": "non-manual run events only",
+      "heartbeat_basis": "LAST_NON_MANUAL_RUN",
+      "missed_windows_recorded": 0,
+      "run_events": 142,
+      "run_events_by_provenance": {
+        "MANUAL": 3,
+        "SCHEDULED": 10,
+        "UNRECORDED": 129
       },
+      "status": "HEALTHY",
+      "unaccounted_slots": [],
+      "windows_completed": 2
+    },
+    "live_state_snapshot_check": {
+      "checks": 17,
+      "live_files_moved_since_the_snapshot": 0,
+      "newest_snapshot": "ST6_LIVE_STATE_20261008T221134Z",
+      "read_at_utc": "2026-10-08T22:13:36Z",
       "status": "PASS"
     },
-    "unit_suite": "tests/unit/research/test_st6_scheduler.py + tests/unit/research/test_st6_forward_regime.py -> 43 passed"
+    "scheduler_verifier": {
+      "artifact": "data/st6/ST6_SCHEDULER_VERIFICATION.json",
+      "checks_passed": 1710,
+      "checks_total": 1710,
+      "false_success": 0,
+      "mismatches": 0,
+      "status": "PASS"
+    },
+    "unit_suites": {
+      "tests/unit/research/test_st6_forward_regime.py": {
+        "failed": 0,
+        "passed": 22
+      },
+      "tests/unit/research/test_st6_scheduler.py": {
+        "failed": 0,
+        "note": "three added with this work: run-event provenance, the manual-invocation rule, and the snapshot check's drift-versus-corruption separation",
+        "passed": 24
+      },
+      "total_passed": 46
+    }
   }
 }
