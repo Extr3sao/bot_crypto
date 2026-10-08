@@ -45,7 +45,8 @@ ROADMAP = REPO / "tasks" / "roadmap.md"
 OPERATING_MODEL = REPO / "docs" / "research" / "PROFITABILITY_OPERATING_MODEL.json"
 FREEZE = REPO / "docs" / "governance" / "PROFITABILITY_FIRST_FREEZE.md"
 
-RETRIEVED_AT = "2026-10-08T02:00:00Z"
+#: When this gate's evidence was actually read and its gates measured, not an idealised date.
+RETRIEVED_AT = "2026-10-08T09:45:00Z"
 COST_FLOOR_BPS = 23.791
 COST_STRESS_MULTIPLE = 1.5
 FORBIDDEN_VERDICTS = ("EDGE_CONFIRMED", "PROFITABLE", "READY_FOR_PAPER", "READY_FOR_LIVE")
