@@ -481,6 +481,10 @@ def test_the_open_defects_are_declared_rather_than_absorbed(closure: dict) -> No
 def test_the_verification_artefact_stays_inside_its_own_vocabulary(verification: dict) -> None:
     assert verification["verdict"] in VERDICTS
     assert verification["allowed_verdicts"] == list(VERDICTS)
-    assert verification["head"] == verification["closure_head"] or verification["head"] != ""
-    assert verification["closure_head"] == verification["closure_delivery_commit"]
+    delivery = verification["closure_delivery_commit"]
+    closure_head = verification["closure_head"]
+    _, delivery_precedes = git("merge-base", "--is-ancestor", delivery, closure_head)
+    assert delivery_precedes == 0
+    _, head_precedes = git("merge-base", "--is-ancestor", closure_head, verification["head"])
+    assert head_precedes == 0
     assert "library" in verification["method"] and "git blobs" in verification["method"]

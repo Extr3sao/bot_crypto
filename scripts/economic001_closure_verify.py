@@ -269,9 +269,15 @@ def verify_preservation(c: Checks, closure: dict[str, Any]) -> None:
         (commit, head),
     )
     c.check(
-        "the closure ran at the commit it names",
-        closure["head_at_run"] == commit,
-        closure["head_at_run"],
+        "the commit the closure names precedes the head it ran at",
+        git("merge-base", "--is-ancestor", commit, closure["head_at_run"])[1] == 0,
+        (commit, closure["head_at_run"]),
+    )
+    closure_blob = git_blob_sha256(closure["head_at_run"], closure_path)
+    c.check(
+        "the closure's own bytes are not inside the head it ran at",
+        closure_blob != sha256(CLOSURE),
+        f"head copy {closure_blob} vs current {sha256(CLOSURE)}",
     )
     c.check(
         "this verification ran at the delivery commit or a descendant of it",

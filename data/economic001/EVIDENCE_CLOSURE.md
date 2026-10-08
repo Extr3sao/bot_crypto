@@ -1,7 +1,7 @@
 # ECONOMIC-001 — COST EVIDENCE CLOSURE & EXECUTION REALITY
 
-generated_at_utc = 2026-10-08T15:01:23Z (computed, not authored)
-current_head = 0f8292651ce3cd3ae113c0229de1b7487a00f472
+generated_at_utc = 2026-10-08T15:04:39Z (computed, not authored)
+current_head = 2167e58d678449907f0d41634a8aaab48fdc8e7d
 false_success = 0
 
 > This gate adds no strategy and opens no campaign. It consolidates the economic evidence,
@@ -45,7 +45,7 @@ each horizon is measured on the *native series of that horizon* (the 15-minute f
 
 All horizons certifiable at their own resolution: **True**; all agree with the already-verified report within 0.00%: **True**; monotonic and gapless: **True**.
 
-Windows are disjoint by construction at every horizon (step equals the window length, so no two windows share a bar), and the count is the declared `floor(available / bars)` per asset.  The shifted and exhaustive conventions are reported beside the aligned one as a robustness check, not as the primary measurement.
+Windows are disjoint by construction at every horizon (step equals the window length, so no two windows share a bar) and the count is the number of disjoint windows the series admits per asset.  The shifted and exhaustive conventions are reported beside the aligned one as a robustness check, not as the primary measurement.  The agreement with the already-verified report is *exact* rather than approximate, and that is information: a coarser bar opens where its first finer bar opens, so the aligned native window compares the same two prices as the report's k-bar window on the 5-minute series — the one-timeline identity re-checked in the next table, not a coincidence.
 
 ### Series integrity and one timeline
 
@@ -179,7 +179,7 @@ there is no order archive at all: the storage directory holds state journals, no
 
 | field | value |
 | --- | --- |
-| CURRENT_HEAD | 0f8292651ce3cd3ae113c0229de1b7487a00f472 |
+| CURRENT_HEAD | 2167e58d678449907f0d41634a8aaab48fdc8e7d |
 | FALSE_SUCCESS | 0 |
 | FILES_COMMITTED | 6 files at `0f8292651ce3cd3ae113c0229de1b7487a00f472`; 8 pending in this gate; 35 foreign files excluded |
 | DATASET_HASHES | 12 series hashed (`data/raw/alpha003/price/*.json`) |

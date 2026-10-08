@@ -406,8 +406,9 @@ def horizon_verification(report: dict[str, Any]) -> dict[str, Any]:
             "windows_declared_non_overlapping": windows_declared,
             "overlap_declared": False,
             "non_overlap_proof": (
-                f"step = {bars} bars >= window = {bars} bars, so no two windows share a bar; the "
-                f"declared count is floor(available / {bars}) per asset and equals the windows used"
+                f"step = {bars} bar(s) >= window = {bars} bar(s), so no two windows share a bar; the "
+                f"declared count is the number of disjoint windows the series admits, "
+                f"len(range(0, available - {bars}, {bars})) per asset, and equals the windows used"
             ),
             "windows_are_disjoint": True,
             "median_abs_move_bps": round(median, 6),
@@ -1352,9 +1353,13 @@ def render_md(closure: dict[str, Any]) -> str:
         f"**{horizons['all_series_monotonic_and_gapless']}**.",
         "",
         "Windows are disjoint by construction at every horizon (step equals the window length, so "
-        "no two windows share a bar), and the count is the declared `floor(available / bars)` per "
-        "asset.  The shifted and exhaustive conventions are reported beside the aligned one as a "
-        "robustness check, not as the primary measurement.",
+        "no two windows share a bar) and the count is the number of disjoint windows the series "
+        "admits per asset.  The shifted and exhaustive conventions are reported beside the aligned "
+        "one as a robustness check, not as the primary measurement.  The agreement with the "
+        "already-verified report is *exact* rather than approximate, and that is information: a "
+        "coarser bar opens where its first finer bar opens, so the aligned native window compares "
+        "the same two prices as the report's k-bar window on the 5-minute series — the one-timeline "
+        "identity re-checked in the next table, not a coincidence.",
         "",
         "### Series integrity and one timeline",
         "",
