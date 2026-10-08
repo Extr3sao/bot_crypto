@@ -19,7 +19,8 @@
 - **business_edge_requirement**: RFC-041 requirement stands unchanged: NET POSITIVE + BENCHMARK-ADJUSTED VALUE + EXECUTABLE + ROBUST. It is never relaxed to trade sooner.
 - **trigger_c_capital_change**: A material capital change (trigger C) only opens a PRODUCT_FIT_REVIEW for archived candidates; it never approves a strategy by itself.
 - **next_action_policy**:
-  - **trigger**: ONLY a NEW QUALIFIED OPPORTUNITY or a MATERIAL CAPITAL / INSTRUMENT CHANGE reopens evaluation
+  - **trigger**: ONLY a NEW QUALIFIED OPPORTUNITY, a MATERIAL CAPITAL / INSTRUMENT CHANGE, or the owner-approved RFC-046 limited exemption of 2026-10-08 (offline research only) reopens evaluation
+  - **rfc046_limited_exemption**: approved by owner 2026-10-08 (option 5A); offline Controlled Discovery only; `G_BUSINESS_REENTRY` stays NOT_PASS; no paper, no live, no orders (`TRADES_AUTHORIZED = 0`); stop rule + no refill; ADR-0024
   - **no_periodic_rfc**: No RFC-044/RFC-045 merely because time passes
   - **opportunity_watch**: human process: NEW EVIDENCE -> BUSINESS_REENTRY_CHECKLIST (no daemon, no new infrastructure)
 - **profitability_definition**: PROFITABILITY = NET_RETURN + CAPITAL + TIME + RISK + COST

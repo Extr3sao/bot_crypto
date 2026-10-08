@@ -95,29 +95,35 @@ def test_all_requested_deliverables_exist_and_are_not_empty() -> None:
         assert path.stat().st_size > 0, f"empty deliverable {rel}"
 
 
-def test_the_rfc_is_a_proposal_and_not_an_approval(state: dict) -> None:
-    assert state["status"] == "PROPOSED"
-    assert state["approved"] is False
-    assert state["active"] is False
+def test_the_tracked_audit_remains_the_pre_approval_snapshot(state: dict) -> None:
+    """The audit is the record of the NOT_ACTIVE phase; the approval came after it.
+
+    It must not be edited to look prescient, and the *current* contract is the approval record.
+    """
+    snapshot = json.loads(AUDIT.read_text(encoding="utf-8"))
+    assert snapshot["status"] == "PROPOSED", "the pre-approval snapshot must keep saying what it said"
+    assert snapshot["governance"]["invariants"]["rfc_status_proposed"] is True
+    assert state["approved"] is True and state["active"] is True
     text = RFC_MD.read_text(encoding="utf-8")
-    assert "PROPOSED — NOT APPROVED — NOT ACTIVE" in text
+    assert "APPROVED / ACTIVE" in text and "## 00 — APPROVAL RECORD" in text
     assert "TRADES_AUTHORIZED" in text and "0" in text
 
 
-def test_no_other_document_was_activated_to_make_room_for_it() -> None:
+def test_the_activation_amended_exactly_the_documented_documents() -> None:
     roadmap = (REPO / "tasks" / "roadmap.md").read_text(encoding="utf-8")
     operating = json.loads((REPO / "docs" / "research" / "PROFITABILITY_OPERATING_MODEL.json").read_text(encoding="utf-8"))
     freeze = (REPO / "docs" / "governance" / "PROFITABILITY_FIRST_FREEZE.md").read_text(encoding="utf-8")
     decisions = (REPO / "tasks" / "decisions.md").read_text(encoding="utf-8")
 
-    assert "Fase 10" not in roadmap, "the roadmap amendment must not be applied before approval"
-    assert "RFC-046" not in roadmap
-    assert operating["next_action_policy"]["trigger"] == (
-        "ONLY a NEW QUALIFIED OPPORTUNITY or a MATERIAL CAPITAL / INSTRUMENT CHANGE reopens evaluation"
+    assert "Fase 10" in roadmap and "RFC-046" in roadmap
+    assert "RFC-046 limited exemption" in operating["next_action_policy"]["trigger"]
+    assert (
+        operating["next_action_policy"]["rfc046_limited_exemption"]["gate_state"]["G_BUSINESS_REENTRY"]
+        == "NOT_PASS"
     )
-    assert "DISCOVERY CAMPAIGN" not in json.dumps(operating), "the trigger must not admit discovery yet"
-    assert "ACTIVE_RFC: **RFC-035" in freeze, "the RFC-035 freeze must stay unamended"
-    assert not re.search(r"^## ADR-[0-9]{4}.*RFC-046", decisions, flags=re.MULTILINE), "no ADR may exist yet"
+    assert "ADDENDUM DE CIERRE" in freeze and "ACTIVE_RFC: **RFC-035" in freeze
+    assert re.search(r"^## ADR-0024.*RFC-046", decisions, flags=re.MULTILINE), "ADR-0024 must exist"
+    assert (REPO / "docs" / "roadmap" / "RFC_REGISTRY.json").is_file()
 
 
 def test_live_trading_stays_disabled_and_no_trade_is_authorized(state: dict) -> None:
@@ -159,12 +165,25 @@ def test_the_tracked_audit_is_head_free_and_timestamp_free(audit: dict) -> None:
     assert not re.search(r"\b20\d{2}-\d{2}-\d{2}T\d{2}:\d{2}", text), "TD-4: no author-typed timestamps"
 
 
-def test_audit_hashes_match_the_tracked_documents(audit: dict) -> None:
+def test_document_hashes_only_changed_where_the_approval_says_they_did(audit: dict) -> None:
+    """Churn detection with the approval taken into account.
+
+    A document may differ from the pre-approval audit only if the independent verification recorded
+    its new hash after activation. Any other drift is still a failure.
+    """
+    import json as _json
+
     recorded = audit["document_hashes"]
+    activation = _json.loads((REPO / "data" / "rfc046" / "ACTIVATION.json").read_text(encoding="utf-8"))
+    post_activation = activation["document_hashes"]
     for path in TRACKED_DOCS:
         rel = str(path.relative_to(REPO)).replace("\\", "/")
         assert rel in recorded, f"no recorded hash for {rel}"
-        assert recorded[rel] == _sha256(path), f"{rel} changed after the audit was built; rebuild the audit"
+        current = _sha256(path)
+        if current == recorded[rel]:
+            continue
+        assert rel in post_activation, f"{rel} changed after the approval but was never re-verified"
+        assert post_activation[rel] == current, f"{rel} drifted after the verification ran"
 
 
 def test_collision_audit_is_recorded_and_honest(audit: dict) -> None:

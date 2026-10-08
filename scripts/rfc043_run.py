@@ -485,9 +485,21 @@ def build_model_payload(generated_at: str) -> dict[str, Any]:
         ),
         "next_action_policy": {
             "trigger": (
-                "ONLY a NEW QUALIFIED OPPORTUNITY or a MATERIAL CAPITAL / INSTRUMENT "
-                "CHANGE reopens evaluation"
+                "ONLY a NEW QUALIFIED OPPORTUNITY, a MATERIAL CAPITAL / INSTRUMENT "
+                "CHANGE, or the owner-approved RFC-046 limited exemption of 2026-10-08 "
+                "(offline research only) reopens evaluation"
             ),
+            "rfc046_limited_exemption": {
+                "approved_by": "owner",
+                "approved_at": "2026-10-08",
+                "decision": "option 5A - specific, dated RFC-041 exemption; offline research only",
+                "gate_state": {
+                    "G_BUSINESS_REENTRY": "NOT_PASS",
+                    "LIVE_TRADING": "DISABLED",
+                    "TRADES_AUTHORIZED": 0,
+                },
+                "adr": "tasks/decisions.md ADR-0024",
+            },
             "no_periodic_rfc": "No RFC-044/RFC-045 merely because time passes",
             "opportunity_watch": (
                 "human process: NEW EVIDENCE -> BUSINESS_REENTRY_CHECKLIST (no daemon, "

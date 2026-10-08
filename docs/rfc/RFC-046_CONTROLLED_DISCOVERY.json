@@ -1,9 +1,9 @@
 {
   "rfc": "RFC-046",
   "title": "CONTROLLED QUANTITATIVE STRATEGY DISCOVERY",
-  "status": "PROPOSED",
-  "approved": false,
-  "active": false,
+  "status": "APPROVED",
+  "approved": true,
+  "active": true,
   "document": "docs/rfc/RFC-046_CONTROLLED_DISCOVERY.md",
   "supersedes": null,
   "parent_authority": "RFC-041 BUSINESS-FREEZE-2026-001",
@@ -25,7 +25,11 @@
     "occupied_numbers": 26,
     "occupied_and_declared_in_tracked_docs": 9,
     "occupied_without_any_versioned_declaration": 17,
-    "named_in_prose_only": ["001", "016", "022"],
+    "named_in_prose_only": [
+      "001",
+      "016",
+      "022"
+    ],
     "downstream_stages": "stage names, not RFC numbers; no number block is reserved",
     "registry_exists": false,
     "registry_proposed_path": "docs/roadmap/RFC_REGISTRY.json"
@@ -100,17 +104,61 @@
     "retroactive_application": false,
     "inherits_criteria_source": "docs/STRATEGY_ADMISSION_CRITERIA.md (commit c1ffbaa)",
     "requirements": [
-      { "id": "PG-1", "requirement": "net expectancy > 0 after the audited cost model", "relation": "strengthens c2" },
-      { "id": "PG-2", "requirement": "net out-of-sample PnL > 0", "relation": "inherits c4" },
-      { "id": "PG-3", "requirement": "profit factor >= 1.10", "relation": "tightens c3 (which requires > 1.0)" },
-      { "id": "PG-4", "requirement": "sufficient OOS sample per the applicable contract", "relation": "inherits c1 (>= 100 total, >= 30 OOS)" },
-      { "id": "PG-5", "requirement": "chronological validation across distinct periods", "relation": "inherits c5 + walk-forward" },
-      { "id": "PG-6", "requirement": "lower confidence bound of expectancy > 0 under serial dependence", "relation": "new (block bootstrap / HAC; never an i.i.d. t-test)" },
-      { "id": "PG-7", "requirement": "1.5x cost stress remains positive", "relation": "tightens c7 (PF > 0.9 at 2x); both run" },
-      { "id": "PG-8", "requirement": "no risk-engine violations", "relation": "new" },
-      { "id": "PG-9", "requirement": "no excessive dependence on one trade or one regime", "relation": "inherits c8 (no window > 60% of positive net), extended to single-trade dependence" },
-      { "id": "PG-10", "requirement": "multiple-testing correction when more than one trial ran", "relation": "new" },
-      { "id": "PG-11", "requirement": "no look-ahead or PIT violation", "relation": "new; enforced mechanically" }
+      {
+        "id": "PG-1",
+        "requirement": "net expectancy > 0 after the audited cost model",
+        "relation": "strengthens c2"
+      },
+      {
+        "id": "PG-2",
+        "requirement": "net out-of-sample PnL > 0",
+        "relation": "inherits c4"
+      },
+      {
+        "id": "PG-3",
+        "requirement": "profit factor >= 1.10",
+        "relation": "tightens c3 (which requires > 1.0)"
+      },
+      {
+        "id": "PG-4",
+        "requirement": "sufficient OOS sample per the applicable contract",
+        "relation": "inherits c1 (>= 100 total, >= 30 OOS)"
+      },
+      {
+        "id": "PG-5",
+        "requirement": "chronological validation across distinct periods",
+        "relation": "inherits c5 + walk-forward"
+      },
+      {
+        "id": "PG-6",
+        "requirement": "lower confidence bound of expectancy > 0 under serial dependence",
+        "relation": "new (block bootstrap / HAC; never an i.i.d. t-test)"
+      },
+      {
+        "id": "PG-7",
+        "requirement": "1.5x cost stress remains positive",
+        "relation": "tightens c7 (PF > 0.9 at 2x); both run"
+      },
+      {
+        "id": "PG-8",
+        "requirement": "no risk-engine violations",
+        "relation": "new"
+      },
+      {
+        "id": "PG-9",
+        "requirement": "no excessive dependence on one trade or one regime",
+        "relation": "inherits c8 (no window > 60% of positive net), extended to single-trade dependence"
+      },
+      {
+        "id": "PG-10",
+        "requirement": "multiple-testing correction when more than one trial ran",
+        "relation": "new"
+      },
+      {
+        "id": "PG-11",
+        "requirement": "no look-ahead or PIT violation",
+        "relation": "new; enforced mechanically"
+      }
     ]
   },
   "failure_policy": {
@@ -139,34 +187,69 @@
     "any_tier_authorized": false,
     "business_edge_milestone": "M0",
     "trades_authorized": 0,
-    "profitability_verified": false
+    "profitability_verified": false,
+    "discovery_offline_authorized": true
   },
-  "invariants_while_proposed": {
-    "tasks/roadmap.md": "unchanged; no discovery phase inserted",
-    "docs/research/PROFITABILITY_OPERATING_MODEL.json": "unchanged; next_action_policy.trigger still admits only a qualified trigger",
-    "docs/governance/PROFITABILITY_FIRST_FREEZE.md": "unchanged",
-    "tasks/decisions.md": "no ADR recorded for RFC-046",
-    "config/runtime.yaml": "live_trading_enabled false",
-    "trades": "none executed, none authorized"
-  },
-  "required_amendments_before_activation": [
-    "docs/research/BUSINESS_REENTRY_POLICY.md - explicit dated exemption or the programme does not start",
-    "docs/research/PROFITABILITY_OPERATING_MODEL.json - amend next_action_policy.trigger",
-    "docs/governance/PROFITABILITY_FIRST_FREEZE.md - close the RFC-035 freeze explicitly",
-    "tasks/roadmap.md - add the discovery phase and name RFC-046 as the vehicle",
-    "tasks/decisions.md - one ADR recording the amendment, the reason and the stop rule"
-  ],
   "technical_debt": [
-    { "id": "TD-1", "incident": "repo-wide mypy cannot complete (duplicate module name in reports/paper-strategy-lifecycle-shadow-02)", "status": "OPEN", "blocks_this_rfc": false },
-    { "id": "TD-2", "incident": "RFC-035E verifier raises TypeError on missing inputs instead of FAIL/INCOMPLETE", "status": "OPEN_NOT_REPAIRED", "blocks_this_rfc": false },
-    { "id": "TD-3", "incident": "concurrency risk in the gitignored reports/ scratch tree", "status": "OPEN", "blocks_this_rfc": false },
-    { "id": "TD-4", "incident": "execution timestamps fixed by author constants (3 instances)", "status": "OPEN", "blocks_this_rfc": false },
-    { "id": "TD-5", "incident": "evidence persistence ignored by git for reports/*; 17 of the 26 occupied RFC numbers have no versioned declaration", "status": "OPEN", "blocks_this_rfc": false, "mitigated_here": true }
+    {
+      "id": "TD-1",
+      "incident": "repo-wide mypy cannot complete (duplicate module name in reports/paper-strategy-lifecycle-shadow-02)",
+      "status": "OPEN",
+      "blocks_this_rfc": false
+    },
+    {
+      "id": "TD-2",
+      "incident": "RFC-035E verifier raises TypeError on missing inputs instead of FAIL/INCOMPLETE",
+      "status": "OPEN_NOT_REPAIRED",
+      "blocks_this_rfc": false
+    },
+    {
+      "id": "TD-3",
+      "incident": "concurrency risk in the gitignored reports/ scratch tree",
+      "status": "OPEN",
+      "blocks_this_rfc": false
+    },
+    {
+      "id": "TD-4",
+      "incident": "execution timestamps fixed by author constants (3 instances)",
+      "status": "OPEN",
+      "blocks_this_rfc": false
+    },
+    {
+      "id": "TD-5",
+      "incident": "evidence persistence ignored by git for reports/*; 17 of the 26 occupied RFC numbers have no versioned declaration",
+      "status": "OPEN",
+      "blocks_this_rfc": false,
+      "mitigated_here": true
+    }
   ],
-  "next_gate": "APPROVAL_REQUIRED",
+  "next_gate": "FIRST_CAMPAIGN_RUN_AND_INDEPENDENT_VERIFICATION",
   "forbidden_verdicts": [
     "PROFITABLE",
     "EDGE_CONFIRMED",
     "PRODUCTION_READY"
-  ]
+  ],
+  "approval": {
+    "approved_by": "owner",
+    "approved_at": "2026-10-08",
+    "decision": "option 5A - specific, dated RFC-041 exemption",
+    "scope": "offline controlled discovery only",
+    "adr": "tasks/decisions.md ADR-0024",
+    "activates": [
+      "docs/research/BUSINESS_REENTRY_POLICY.md - dated exemption applied",
+      "docs/research/PROFITABILITY_OPERATING_MODEL.json - trigger amended",
+      "docs/governance/PROFITABILITY_FIRST_FREEZE.md - RFC-035 freeze closed",
+      "tasks/roadmap.md - Fase 10 added",
+      "docs/roadmap/RFC_REGISTRY.json - registry created"
+    ]
+  },
+  "invariants_while_active": {
+    "LIVE_TRADING": "DISABLED",
+    "TRADES_AUTHORIZED": 0,
+    "G_BUSINESS_REENTRY": "NOT_PASS",
+    "RISK_ENGINE": "DETERMINISTIC",
+    "BUILDER": "NOT_VERIFIER",
+    "FALSE_SUCCESS": 0,
+    "real_orders": "REFUSED_BY_POLICY"
+  }
 }

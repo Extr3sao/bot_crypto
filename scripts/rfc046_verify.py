@@ -13,6 +13,12 @@ Exit code 0 = PASS, 1 = FAIL. ``MISMATCHES = n`` is printed for the builder to r
 ``FALSE_SUCCESS`` is *measured*, not asserted: it counts claims recorded as satisfied in a tracked artefact
 that this verifier cannot reproduce. A tracked artefact that says ``true`` about something that is false is the
 only thing this counter rewards.
+
+HISTORICAL SCOPE (2026-10-08): this tool was built for the RFC-046 NOT_ACTIVE phase. The owner
+approved option 5A on 2026-10-08 (tasks/decisions.md ADR-0024), so the proposal-era invariants it
+measures (status PROPOSED, trigger unchanged, no ADR) are expected to report as changed **by
+design**. The current verifier is `scripts/rfc046_campaign_verify.py`; this file is kept because
+it produced the pre-approval report and is part of the record, not because it is still green.
 """
 
 from __future__ import annotations

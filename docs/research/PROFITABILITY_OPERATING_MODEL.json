@@ -19,7 +19,25 @@
   "business_edge_requirement": "RFC-041 requirement stands unchanged: NET POSITIVE + BENCHMARK-ADJUSTED VALUE + EXECUTABLE + ROBUST. It is never relaxed to trade sooner.",
   "trigger_c_capital_change": "A material capital change (trigger C) only opens a PRODUCT_FIT_REVIEW for archived candidates; it never approves a strategy by itself.",
   "next_action_policy": {
-    "trigger": "ONLY a NEW QUALIFIED OPPORTUNITY or a MATERIAL CAPITAL / INSTRUMENT CHANGE reopens evaluation",
+    "trigger": "ONLY a NEW QUALIFIED OPPORTUNITY, a MATERIAL CAPITAL / INSTRUMENT CHANGE, or the owner-approved RFC-046 limited exemption of 2026-10-08 (offline research only) reopens evaluation",
+    "rfc046_limited_exemption": {
+      "approved_by": "owner",
+      "approved_at": "2026-10-08",
+      "decision": "option 5A - specific, dated RFC-041 exemption; offline research only",
+      "scope": "Controlled Discovery (RFC-046): offline hypotheses, offline experiments, independent verification",
+      "not_authorized": [
+        "paper trading",
+        "live trading",
+        "real orders",
+        "capital deployment",
+        "automatic promotion",
+        "automatic risk-engine modification",
+        "OOS optimisation"
+      ],
+      "gate_state": {"G_BUSINESS_REENTRY": "NOT_PASS", "LIVE_TRADING": "DISABLED", "TRADES_AUTHORIZED": 0},
+      "stop": "DISCOVERY_STOP_RULES.md; no automatic refill; revocable by the owner",
+      "adr": "tasks/decisions.md ADR-0024"
+    },
     "no_periodic_rfc": "No RFC-044/RFC-045 merely because time passes",
     "opportunity_watch": "human process: NEW EVIDENCE -> BUSINESS_REENTRY_CHECKLIST (no daemon, no new infrastructure)"
   },

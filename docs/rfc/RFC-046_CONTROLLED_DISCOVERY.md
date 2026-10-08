@@ -3,8 +3,8 @@
 | field | value |
 | --- | --- |
 | RFC | **RFC-046** |
-| STATUS | **PROPOSED — NOT APPROVED — NOT ACTIVE** |
-| MODE | documentation and governance only; no programme is running |
+| STATUS | **APPROVED / ACTIVE — owner decision 2026-10-08 (option 5A, ADR-0024)** |
+| MODE | offline controlled quantitative research (`DISCOVERY_OFFLINE = AUTHORIZED`); no paper, no live |
 | SUPERSEDES | nothing |
 | PARENT AUTHORITY | RFC-041 `BUSINESS-FREEZE-2026-001` (unchanged) and `PROFITABILITY-FIRST-2026-002` (RFC-035 freeze, to be closed by the amendment) |
 | PRECEDENT | `reports/profitability_gate035/FINAL_REPORT.json` — RFC-035 closed `CLOSED_NO_SUITABLE_EXTERNAL_STRATEGY` with `REPLICATE_P0 = NONE` |
@@ -13,9 +13,22 @@
 | LIVE_TRADING | DISABLED |
 | PROFITABILITY_VERIFIED | FALSE |
 
-> **This document is a proposal.** It is not a decision, it opens no workstream, it authorizes no capital and it
-> does not modify any existing governance document. Activation requires the four amendments in §12 and the explicit
-> approval named in §15. Until then the correct action is route A: wait.
+> **This document is a decision now.** The owner approved option 5A on 2026-10-08 (`tasks/decisions.md ADR-0024`): RFC-046 is **APPROVED / ACTIVE for offline research only**. `G_BUSINESS_REENTRY` stays `NOT_PASS`, `LIVE_TRADING` stays `DISABLED`, `TRADES_AUTHORIZED` stays `0`. The approval authorizes no capital and no production promotion.
+
+## 00 — APPROVAL RECORD (2026-10-08)
+
+- **Decision**: option 5A — a specific, dated RFC-041 exemption that activates RFC-046 **only in
+  offline research**.
+- **Recorded in**: `tasks/decisions.md ADR-0024`.
+- **Applied changes**: dated exemption in `docs/research/BUSINESS_REENTRY_POLICY.*`; trigger amended in
+  `docs/research/PROFITABILITY_OPERATING_MODEL.*`; RFC-035 freeze closed in
+  `docs/governance/PROFITABILITY_FIRST_FREEZE.md`; `Fase 10` in `tasks/roadmap.md`; identifier registry
+  `docs/roadmap/RFC_REGISTRY.json`.
+- **Unchanged**: `G_BUSINESS_REENTRY != PASS`, `LIVE_TRADING = DISABLED`, `TRADES_AUTHORIZED = 0`,
+  `RISK_ENGINE = DETERMINISTIC`, `BUILDER != VERIFIER`, `FALSE_SUCCESS = 0`, and every RFC-041 reject
+  condition. The approval opens the research door only.
+- **Stop**: `docs/governance/DISCOVERY_STOP_RULES.md`; `DISCOVERY_CAMPAIGN_FAILED` ends the programme
+  with no automatic refill.
 
 ## 01 — PRESERVE EXISTING AUTHORITY
 
@@ -508,16 +521,16 @@ explicitly, and the proposed RFC registry (§12.2) would record that path as the
 
 ## 15 — FINAL DECISION
 
-Until explicit approval of the governance change:
+Owner decision 2026-10-08 (ADR-0024). The pre-approval state is kept for the record:
 
 ```text
-RFC-046        = PROPOSED
-DISCOVERY      = NOT_ACTIVE
+RFC-046        = APPROVED / ACTIVE (2026-10-08, option 5A)
+DISCOVERY      = ACTIVE (offline only)
 LIVE_TRADING   = DISABLED
 TRADES_AUTHORIZED = 0
 ```
 
-After the governance change is approved and the four amendments in §12.3 are registered:
+Applied on 2026-10-08 (ADR-0024), together with the RFC identifier registry:
 
 ```text
 RFC-046        = APPROVED

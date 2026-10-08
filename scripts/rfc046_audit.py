@@ -12,6 +12,12 @@ timestamp is the TD-4 defect this RFC registers. The gitignored report carries t
 
 The builder never rewrites the tracked prose documents; it reads and hashes them. That separation is what
 kept the RFC-035 gate from entering a rebuild loop.
+
+HISTORICAL SCOPE (2026-10-08): this tool was built for the RFC-046 NOT_ACTIVE phase. The owner
+approved option 5A on 2026-10-08 (tasks/decisions.md ADR-0024), so the proposal-era invariants it
+measures (status PROPOSED, trigger unchanged, no ADR) are expected to report as changed **by
+design**. The current verifier is `scripts/rfc046_campaign_verify.py`; this file is kept because
+it produced the pre-approval report and is part of the record, not because it is still green.
 """
 
 from __future__ import annotations

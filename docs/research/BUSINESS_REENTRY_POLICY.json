@@ -99,6 +99,28 @@
     "data integrity",
     "critical maintenance"
   ],
+  "rfc046_limited_exemption": {
+    "approved_by": "owner",
+    "approved_at": "2026-10-08",
+    "decision": "option 5A - specific, dated RFC-041 exemption; offline research only",
+    "scope": "Controlled Discovery (RFC-046): offline hypotheses, offline experiments, independent verification",
+    "not_authorized": [
+      "paper trading",
+      "live trading",
+      "real orders",
+      "capital deployment",
+      "automatic promotion",
+      "automatic risk-engine modification",
+      "OOS optimisation"
+    ],
+    "gate_state": {
+      "G_BUSINESS_REENTRY": "NOT_PASS",
+      "LIVE_TRADING": "DISABLED",
+      "TRADES_AUTHORIZED": 0
+    },
+    "stop": "DISCOVERY_STOP_RULES.md; no automatic refill; revocable by the owner",
+    "adr": "tasks/decisions.md ADR-0024"
+  },
   "next_rfc_requires": "G_BUSINESS_REENTRY = PASS",
   "next_rfc_type_if_pass": "RFC-0XX BUSINESS-QUALIFIED STRATEGY REPRODUCTION"
 }

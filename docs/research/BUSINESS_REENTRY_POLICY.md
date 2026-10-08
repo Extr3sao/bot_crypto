@@ -1,5 +1,17 @@
 # BUSINESS REENTRY POLICY (RFC-041)
 
+> **EXCEPCION LIMITADA Y FECHADA — RFC-046 (aprobada 2026-10-08, ADR-0024)**
+> El propietario aprueba la alternativa **5A**: una excepcion especifica de RFC-041 que activa
+> RFC-046 **exclusivamente en investigacion offline** (Controlled Discovery). Esta excepcion:
+> - **no** modifica `G_BUSINESS_REENTRY`, que permanece **distinto de PASS**;
+> - **no** autoriza paper, live, ordenes reales ni despliegue de capital (`TRADES_AUTHORIZED = 0`);
+> - **no** relaja `business_edge_requirement` ni los `reject_conditions` de este documento;
+> - solo admite investigacion offline preregistrada bajo `docs/governance/DISCOVERY_ADMISSION_POLICY.md`
+>   y `docs/governance/DISCOVERY_STOP_RULES.md`;
+> - esta fechada, es revocable, y su alcance se agota con el stop rule de RFC-046.
+> La unica puerta que abre es la de investigacion; todas las puertas de produccion siguen intactas.
+
+
 ```json
 {
   "rfc": "RFC-041",

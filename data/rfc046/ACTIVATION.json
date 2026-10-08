@@ -1,0 +1,45 @@
+{
+  "artifact": "RFC-046_ACTIVATION_VERIFICATION",
+  "rfc": "RFC-046",
+  "rfc_status": "APPROVED / ACTIVE",
+  "verifier": "scripts/rfc046_campaign_verify.py",
+  "builder": "scripts/rfc046_campaign.py + scripts/rfc046_activate.py",
+  "builder_equals_verifier": false,
+  "head": "c9d4a55a9da5f0a3eb10145ada0601b59132fd1e",
+  "document_hashes": {
+    "tasks/decisions.md": "38622df9a5ad74dbb9dc81503af452e06581a1148637d640af9102333f31d438",
+    "tasks/roadmap.md": "5310f6a423318cdbca8f26c1dcee5feadbc1d38c8b379a43ba679ba3a6c5e974",
+    "docs/rfc/RFC-046_CONTROLLED_DISCOVERY.md": "a14753f5ec62446eb99c284b36ed6007ef76aeae77234392190738b3fae412f3",
+    "docs/rfc/RFC-046_CONTROLLED_DISCOVERY.json": "5b7275c366ff1ac367b1c9f78efe4803891610dc7a7c9eb28c553a4e0de8bead",
+    "docs/research/BUSINESS_REENTRY_POLICY.md": "efb3e3e112378281bd62baf0a0709d4fc3ad5dfd2d775cfb6c75edc89d8859d1",
+    "docs/research/BUSINESS_REENTRY_POLICY.json": "961e92c0cd1f02acb227e8d2a9f63f9394e6e77d9fb72c80d8f8f5432a46f3e7",
+    "docs/research/PROFITABILITY_OPERATING_MODEL.json": "39c97e02716f9ceef54f6b11eca1e31ed7e5921e5c1fd7ad4a94db14f31a5d32",
+    "docs/research/PROFITABILITY_OPERATING_MODEL.md": "cfd503b2a5e4dc62b5f2f7a1878845b0fed0311a2ff5e8d9f05b34fe2f37f974",
+    "docs/governance/PROFITABILITY_FIRST_FREEZE.md": "4eb331f58f669f6b18c458822d5bcc10cbae6e4d2cf3645690baf7683e3794f9",
+    "docs/roadmap/RFC_REGISTRY.json": "eabbcbedd969345f4b88d18448b44b6bed6595e4d475887e298aa108422001d6",
+    "docs/roadmap/PROFITABILITY_ROADMAP_AMENDMENT.md": "c25e1794376781cbcf7c3c63142c901f16b554961b0935875ca694f93ab67f07",
+    "docs/governance/DISCOVERY_ADMISSION_POLICY.md": "209f8f47ffc509ef1dd53703af82c41e3abca89932d6e7ae4ab6057c88d055fe",
+    "docs/governance/DISCOVERY_STOP_RULES.md": "3c5bfd2cf00f73ab1348742c2ac3b7481855a44af0e44355153ac7561ce91d1d",
+    "docs/architecture/DISCOVERY_EXECUTION_FLOW.md": "95ece8b5fa4936052b9ab0b72a5dd3e353d96dbccecd9b1087429d8b34727d50"
+  },
+  "spec_hashes": {
+    "HYP-001": "e5e58176e4c8fb01e79c7db368fd889f6f264a3e956bc1be601389daa8dd135a",
+    "HYP-002": "3336b8f343d899af0415f3f9e35fce03d72f0cdd626ac6872b9add2e53964ecf",
+    "HYP-003": "8f99b0366301a304e6637dc2a640265d18bd1607df73b579fe2ca418a0cf007c"
+  },
+  "campaign": {
+    "campaign_status": "DISCOVERY_CAMPAIGN_FAILED",
+    "verdicts": {
+      "CAND-046-001": "CANDIDATE_REJECTED",
+      "CAND-046-002": "CANDIDATE_REJECTED",
+      "CAND-046-003": "CANDIDATE_REJECTED"
+    }
+  },
+  "checks_total": 76,
+  "checks_passed": 76,
+  "mismatches": 0,
+  "failures": [],
+  "false_success": 0,
+  "status": "PASS",
+  "policy_checks": "read from the governance documents themselves, not from a summary"
+}

@@ -1,0 +1,289 @@
+{
+  "registry": "RFC_IDENTIFIER_REGISTRY",
+  "schema_version": 1,
+  "updated_at_utc": "2026-10-08T00:00:00Z (activation; timestamps are author-declared, TD-4)",
+  "source_of_truth": "data/rfc046/audit.json (artefact scan + tracked-document declarations)",
+  "generated_by": "scripts/rfc046_activate.py",
+  "allocation_rule": "A new RFC number must be checked against this registry first. The next free number is the smallest integer above 046 that this registry does not list as occupied. Numbers are never reused. 045 stays empty by control: four campaign verifiers assert that no RFC-045 artefact exists, so filling it would break a real invariant rather than merely reuse a number.",
+  "next_free_number_above_046": "047",
+  "current_rfc": {
+    "number": "046",
+    "status": "APPROVED / ACTIVE",
+    "approval": "ADR-0024 (2026-10-08)",
+    "offline_only": true
+  },
+  "counts": {
+    "occupied": 27,
+    "vacant_by_control": 1,
+    "unversioned_occupancy": 17
+  },
+  "unversioned_occupancy_numbers": [
+    "000",
+    "010",
+    "021",
+    "023",
+    "024",
+    "025",
+    "026",
+    "027",
+    "028",
+    "029",
+    "031",
+    "032",
+    "033",
+    "034",
+    "039",
+    "040",
+    "042"
+  ],
+  "numbers": {
+    "000": {
+      "state": "OCCUPIED",
+      "declaration_strength": "UNVERSIONED_ARTEFACT",
+      "declared_in_tracked_docs": [],
+      "artefacts_versioned": false,
+      "artefact_count": 3
+    },
+    "010": {
+      "state": "OCCUPIED",
+      "declaration_strength": "UNVERSIONED_ARTEFACT",
+      "declared_in_tracked_docs": [],
+      "artefacts_versioned": false,
+      "artefact_count": 10
+    },
+    "020": {
+      "state": "OCCUPIED",
+      "declaration_strength": "TRACKED_DOCUMENT",
+      "declared_in_tracked_docs": [
+        "docs/runtime/data_authority_map.json",
+        "docs/runtime/data_authority_map.md"
+      ],
+      "artefacts_versioned": false,
+      "artefact_count": 12
+    },
+    "021": {
+      "state": "OCCUPIED",
+      "declaration_strength": "UNVERSIONED_ARTEFACT",
+      "declared_in_tracked_docs": [],
+      "artefacts_versioned": false,
+      "artefact_count": 4
+    },
+    "023": {
+      "state": "OCCUPIED",
+      "declaration_strength": "UNVERSIONED_ARTEFACT",
+      "declared_in_tracked_docs": [],
+      "artefacts_versioned": false,
+      "artefact_count": 6
+    },
+    "024": {
+      "state": "OCCUPIED",
+      "declaration_strength": "UNVERSIONED_ARTEFACT",
+      "declared_in_tracked_docs": [],
+      "artefacts_versioned": false,
+      "artefact_count": 10
+    },
+    "025": {
+      "state": "OCCUPIED",
+      "declaration_strength": "UNVERSIONED_ARTEFACT",
+      "declared_in_tracked_docs": [],
+      "artefacts_versioned": false,
+      "artefact_count": 2
+    },
+    "026": {
+      "state": "OCCUPIED",
+      "declaration_strength": "UNVERSIONED_ARTEFACT",
+      "declared_in_tracked_docs": [],
+      "artefacts_versioned": false,
+      "artefact_count": 6
+    },
+    "027": {
+      "state": "OCCUPIED",
+      "declaration_strength": "UNVERSIONED_ARTEFACT",
+      "declared_in_tracked_docs": [],
+      "artefacts_versioned": false,
+      "artefact_count": 2
+    },
+    "028": {
+      "state": "OCCUPIED",
+      "declaration_strength": "UNVERSIONED_ARTEFACT",
+      "declared_in_tracked_docs": [],
+      "artefacts_versioned": false,
+      "artefact_count": 6
+    },
+    "029": {
+      "state": "OCCUPIED",
+      "declaration_strength": "UNVERSIONED_ARTEFACT",
+      "declared_in_tracked_docs": [],
+      "artefacts_versioned": false,
+      "artefact_count": 6
+    },
+    "030": {
+      "state": "OCCUPIED",
+      "declaration_strength": "TRACKED_DOCUMENT",
+      "declared_in_tracked_docs": [
+        "docs/runtime/RFC-030_TWO_LEG_EXECUTION.md"
+      ],
+      "artefacts_versioned": false,
+      "artefact_count": 10
+    },
+    "031": {
+      "state": "OCCUPIED",
+      "declaration_strength": "UNVERSIONED_ARTEFACT",
+      "declared_in_tracked_docs": [],
+      "artefacts_versioned": false,
+      "artefact_count": 8
+    },
+    "032": {
+      "state": "OCCUPIED",
+      "declaration_strength": "UNVERSIONED_ARTEFACT",
+      "declared_in_tracked_docs": [],
+      "artefacts_versioned": false,
+      "artefact_count": 6
+    },
+    "033": {
+      "state": "OCCUPIED",
+      "declaration_strength": "UNVERSIONED_ARTEFACT",
+      "declared_in_tracked_docs": [],
+      "artefacts_versioned": false,
+      "artefact_count": 6
+    },
+    "034": {
+      "state": "OCCUPIED",
+      "declaration_strength": "UNVERSIONED_ARTEFACT",
+      "declared_in_tracked_docs": [],
+      "artefacts_versioned": false,
+      "artefact_count": 6
+    },
+    "035": {
+      "state": "OCCUPIED",
+      "declaration_strength": "TRACKED_DOCUMENT",
+      "declared_in_tracked_docs": [
+        "docs/research/STRATEGIC_PROFITABILITY_PLAN_V2.json",
+        "docs/research/STRATEGIC_PROFITABILITY_PLAN_V2.md"
+      ],
+      "artefacts_versioned": false,
+      "artefact_count": 9
+    },
+    "036": {
+      "state": "OCCUPIED",
+      "declaration_strength": "TRACKED_DOCUMENT",
+      "declared_in_tracked_docs": [
+        "docs/research/MANAGED_FUTURES_TREND_V1.json",
+        "docs/research/MANAGED_FUTURES_TREND_V1.md"
+      ],
+      "artefacts_versioned": false,
+      "artefact_count": 6
+    },
+    "037": {
+      "state": "OCCUPIED",
+      "declaration_strength": "TRACKED_DOCUMENT",
+      "declared_in_tracked_docs": [
+        "docs/research/MANAGED_FUTURES_REFUTATION_RFC037.json",
+        "docs/research/MANAGED_FUTURES_REFUTATION_RFC037.md"
+      ],
+      "artefacts_versioned": false,
+      "artefact_count": 8
+    },
+    "038": {
+      "state": "OCCUPIED",
+      "declaration_strength": "TRACKED_DOCUMENT",
+      "declared_in_tracked_docs": [
+        "docs/research/MANAGED_FUTURES_DECISION_RFC038.md"
+      ],
+      "artefacts_versioned": false,
+      "artefact_count": 6
+    },
+    "039": {
+      "state": "OCCUPIED",
+      "declaration_strength": "UNVERSIONED_ARTEFACT",
+      "declared_in_tracked_docs": [],
+      "artefacts_versioned": false,
+      "artefact_count": 6
+    },
+    "040": {
+      "state": "OCCUPIED",
+      "declaration_strength": "UNVERSIONED_ARTEFACT",
+      "declared_in_tracked_docs": [],
+      "artefacts_versioned": false,
+      "artefact_count": 6
+    },
+    "041": {
+      "state": "OCCUPIED",
+      "declaration_strength": "TRACKED_DOCUMENT",
+      "declared_in_tracked_docs": [
+        "docs/research/BUSINESS_REENTRY_POLICY.json",
+        "docs/research/BUSINESS_REENTRY_POLICY.md",
+        "docs/research/CANDIDATE_ARCHIVE.json",
+        "docs/research/CANDIDATE_ARCHIVE.md",
+        "docs/research/ECONOMIC_SCOREBOARD.json",
+        "docs/research/ECONOMIC_SCOREBOARD.md",
+        "docs/research/ECONOMIC_STATE.json",
+        "docs/research/FINAL_BUSINESS_DECISION.json",
+        "docs/research/FINAL_BUSINESS_DECISION.md"
+      ],
+      "artefacts_versioned": false,
+      "artefact_count": 6
+    },
+    "042": {
+      "state": "OCCUPIED",
+      "declaration_strength": "UNVERSIONED_ARTEFACT",
+      "declared_in_tracked_docs": [],
+      "artefacts_versioned": false,
+      "artefact_count": 6
+    },
+    "043": {
+      "state": "OCCUPIED",
+      "declaration_strength": "TRACKED_DOCUMENT",
+      "declared_in_tracked_docs": [
+        "docs/research/CAPITAL_PROFIT_MATRIX.json",
+        "docs/research/CAPITAL_PROFIT_MATRIX.md",
+        "docs/research/CAPITAL_SCALE_PLAN.json",
+        "docs/research/PROFITABILITY_OPERATING_MODEL.json",
+        "docs/research/PROFITABILITY_OPERATING_SCOREBOARD.json"
+      ],
+      "artefacts_versioned": false,
+      "artefact_count": 6
+    },
+    "044": {
+      "state": "OCCUPIED",
+      "declaration_strength": "TRACKED_DOCUMENT",
+      "declared_in_tracked_docs": [
+        "docs/research/REENTRY_DECISION_LEDGER.json",
+        "docs/research/REENTRY_EVIDENCE_REGISTRY.json"
+      ],
+      "artefacts_versioned": false,
+      "artefact_count": 6
+    },
+    "045": {
+      "state": "VACANT_BY_CONTROL",
+      "reason": "asserted absent by campaign verifiers; creating an RFC-045 artefact would break those checks",
+      "asserting_files": [
+        "scripts/cap001_verify.py",
+        "scripts/cap002_verify.py",
+        "scripts/cap003_verify.py",
+        "scripts/cap004_verify.py"
+      ],
+      "assertion_count": 4
+    },
+    "046": {
+      "state": "OCCUPIED",
+      "declaration_strength": "TRACKED_DOCUMENT",
+      "declared_in_tracked_docs": [
+        "docs/rfc/RFC-046_CONTROLLED_DISCOVERY.md"
+      ],
+      "artefacts_versioned": true,
+      "artefact_count": 2,
+      "occupant": "RFC-046 CONTROLLED QUANTITATIVE STRATEGY DISCOVERY",
+      "status": "APPROVED / ACTIVE",
+      "approved_at": "2026-10-08",
+      "approval_record": "tasks/decisions.md ADR-0024",
+      "prior_artefacts": [],
+      "mentions_only_before_this_rfc": []
+    }
+  },
+  "known_limitations": [
+    "Occupancy was reconstructed from artefacts and tracked documents, not from a historical registry (none existed before this file).",
+    "Artefacts under reports/* are gitignored, so 'versioned artefact' means the declaration is tracked, not the artefact.",
+    "A snapshot ages: an RFC artefact added later by another workstream must be added here."
+  ]
+}

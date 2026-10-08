@@ -342,6 +342,27 @@ def build_reentry_policy(generated_at: str) -> dict[str, Any]:
         "capital_principle": BF.CAPITAL_PRINCIPLE,
         "no_profitability_by_test_count": "tests are engineering, not economic evidence",
         "engineering_freeze_allowances": list(BF.ENGINEERING_FREEZE_ALLOWANCES),
+        "rfc046_limited_exemption": {
+            "approved_by": "owner",
+            "approved_at": "2026-10-08",
+            "decision": "option 5A - specific, dated RFC-041 exemption; offline research only",
+            "gate_state": {"G_BUSINESS_REENTRY": "NOT_PASS", "LIVE_TRADING": "DISABLED", "TRADES_AUTHORIZED": 0},
+            "adr": "tasks/decisions.md ADR-0024",
+        },
+        "rfc046_limited_exemption": {
+            "approved_by": "owner",
+            "approved_at": "2026-10-08",
+            "decision": "option 5A - specific, dated RFC-041 exemption; offline research only",
+            "gate_state": {"G_BUSINESS_REENTRY": "NOT_PASS", "LIVE_TRADING": "DISABLED", "TRADES_AUTHORIZED": 0},
+            "adr": "tasks/decisions.md ADR-0024",
+        },
+        "rfc046_limited_exemption": {
+            "approved_by": "owner",
+            "approved_at": "2026-10-08",
+            "decision": "option 5A - specific, dated RFC-041 exemption; offline research only",
+            "gate_state": {"G_BUSINESS_REENTRY": "NOT_PASS", "LIVE_TRADING": "DISABLED", "TRADES_AUTHORIZED": 0},
+            "adr": "tasks/decisions.md ADR-0024",
+        },
         "next_rfc_requires": "G_BUSINESS_REENTRY = PASS",
         "next_rfc_type_if_pass": "RFC-0XX BUSINESS-QUALIFIED STRATEGY REPRODUCTION",
     }

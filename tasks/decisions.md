@@ -1078,3 +1078,36 @@ global del ledger (header section) se actualizará atómicamente, por
 lo que NO se requerirá per-ADR "next free" footnote nunca más.
 
 
+
+## ADR-0024 - RFC-046: excepcion limitada y fechada de RFC-041 para Controlled Discovery (offline)
+
+> RFC-046 ACTIVATION — registrada el 2026-10-08. No usa footnotes "next free" (regla post-ADR-0023).
+
+- **Estado**: Decidido y aprobado por el propietario.
+- **Contexto**: RFC-035 cerro sin candidato (`CLOSED_NO_SUITABLE_EXTERNAL_STRATEGY`,
+  `REPLICATE_P0 = NONE`) y RFC-041 dejo el proyecto sin siguiente movimiento admitido: su gate
+  `G_BUSINESS_REENTRY` exige un trigger cualificado (A-E) y ninguno ha disparado. La unica via
+  que RFC-041 admite es nueva evidencia externa o un cambio estructural, lo que impide buscar
+  ventaja economica internamente. RFC-046 propone investigacion cuantitativa controlada, offline,
+  preregistrada y con presupuesto cerrado.
+- **Opciones**:
+  - esperar un trigger cualificado (coste: parada indefinida, sin linea de investigacion);
+  - excepcion general a RFC-041 (rechazada: abriria produccion sin evidencia);
+  - excepcion limitada, fechada y offline (aprobada, opcion 5A).
+- **Decision**: opcion **5A**. Se aprueba una excepcion especifica de RFC-041 que activa RFC-046
+  **exclusivamente en investigacion offline**. `G_BUSINESS_REENTRY` permanece **distinto de PASS**.
+  No se autoriza paper, live, ordenes reales, despliegue de capital, promocion automatica,
+  modificacion automatica del Risk Engine, ni optimizacion sobre OOS.
+- **Razon**: permite buscar ventaja economica neta con un presupuesto acotado y evidencia
+  verificable, sin relajar ninguna puerta de produccion ni reescribir los contratos historicos.
+- **Consecuencias aplicadas en esta activacion**:
+  - `RFC-046 = APPROVED / ACTIVE`; `DISCOVERY_OFFLINE = AUTHORIZED`; `LIVE_TRADING = DISABLED`;
+    `TRADES_AUTHORIZED = 0`; `G_BUSINESS_REENTRY != PASS`; `RISK_ENGINE = DETERMINISTIC`;
+    `BUILDER != VERIFIER`; `FALSE_SUCCESS = 0`.
+  - Excepcion fechada en `docs/research/BUSINESS_REENTRY_POLICY.*`.
+  - Trigger de `docs/research/PROFITABILITY_OPERATING_MODEL.*` ampliado solo para Controlled Discovery.
+  - Cierre formal de `docs/governance/PROFITABILITY_FIRST_FREEZE.md` (evidencia RFC-035 conservada).
+  - `Fase 10` en `tasks/roadmap.md` y registro de identificadores `docs/roadmap/RFC_REGISTRY.json`.
+  - Parada: `docs/governance/DISCOVERY_STOP_RULES.md`. Agotado el presupuesto o fallada la campana
+    se emite `DISCOVERY_CAMPAIGN_FAILED` y **no hay refill automatico de hipotesis**.
+  - Revocable por el propietario en cualquier momento; sin efecto sobre produccion.
