@@ -1,0 +1,260 @@
+{
+  "artifact": "ST6_LIVE_STATE_SNAPSHOT_V1",
+  "classification": {
+    "IMMUTABLE_EVIDENCE": [
+      {
+        "compressed_bytes": 18114,
+        "compressed_sha256": "952558be273504cc4a6649482a4646a903852ff929f8a3da34f16ae095b45324",
+        "indexed": true,
+        "path": "data\\st6\\raw\\20261008T162202Z.json.gz",
+        "recorded_uncompressed_sha256": "e720f19ded6541b2b292940297d0b317328b0ad1ce1c2589de2ecda5e84da4e7",
+        "reproduces_the_recorded_hash": true,
+        "uncompressed_sha256": "e720f19ded6541b2b292940297d0b317328b0ad1ce1c2589de2ecda5e84da4e7",
+        "window_id": "20261008T162202Z"
+      },
+      {
+        "compressed_bytes": 17904,
+        "compressed_sha256": "c6811a49c2c09d48c2154140764a610fe6fa48ef6b9fd351cc6539148d10ec27",
+        "indexed": true,
+        "path": "data\\st6\\raw\\20261008T200323Z.json.gz",
+        "recorded_uncompressed_sha256": "1340ee196977b3d16ce3958e85ef422edd8cf072ca31b91f70562c2b5ed41fd3",
+        "reproduces_the_recorded_hash": true,
+        "uncompressed_sha256": "1340ee196977b3d16ce3958e85ef422edd8cf072ca31b91f70562c2b5ed41fd3",
+        "window_id": "20261008T200323Z"
+      }
+    ],
+    "LIVE_RUNTIME_STATE": [
+      {
+        "bytes": 5787,
+        "git_blob_sha1": "348a36214b724d0c7b364cf4036cfa53c243bf93",
+        "modified_utc": "2026-10-08T16:37:37Z",
+        "path": "data/st6/ST6_PERIOD.json",
+        "present": true,
+        "sha256": "5dd14bc8eac887786129d06e5aafed3de25b203764cb06033e39df0188cc5cae"
+      },
+      {
+        "bytes": 5330,
+        "git_blob_sha1": "71f561ed8b078bd09b99f1c9639c578e51f115a9",
+        "modified_utc": "2026-10-08T20:03:24Z",
+        "path": "data/st6/ST6_WINDOWS.jsonl",
+        "present": true,
+        "sha256": "7be9fd501d55835549ed9016164c980a605b72a6f9d7982d41f3e92752743284"
+      },
+      {
+        "bytes": 53369,
+        "git_blob_sha1": "993e1df2c87268f592c7f233d6fa1242df42fbff",
+        "modified_utc": "2026-10-08T20:03:24Z",
+        "path": "data/st6/ST6_OBSERVATIONS.jsonl",
+        "present": true,
+        "sha256": "b8d2f0fc6d369519b09222da4e06852643c93f8d68343ece7c718515af641ff6"
+      },
+      {
+        "bytes": 75793,
+        "git_blob_sha1": "12fdbf2b224891b3e6bb27e079811ef4979be3f4",
+        "modified_utc": "2026-10-08T21:48:14Z",
+        "path": "data/st6/ST6_RUNS.jsonl",
+        "present": true,
+        "sha256": "d14ea01b2170c940f20a51f80d962b7307795d9d768bad01b35238b78431ac2b"
+      },
+      {
+        "bytes": 21225,
+        "git_blob_sha1": "fab92fcbb8fc6a334137d32e985d23dae8bba0c5",
+        "modified_utc": "2026-10-08T21:48:14Z",
+        "path": "data/st6/ST6_HEALTH.jsonl",
+        "present": true,
+        "sha256": "019d40ddbe9ef2bce721ab5231fb2554d330145b063542653a847a58da612757"
+      },
+      {
+        "bytes": 2446,
+        "git_blob_sha1": "a5e1c711f26bbcb656180dea81aadedda128780b",
+        "modified_utc": "2026-10-08T21:48:14Z",
+        "path": "data/st6/ST6_HEALTH_STATUS.json",
+        "present": true,
+        "sha256": "5fc0f1680bfc578b2d60a7ac0143deff38b848ea9a135e5163cf85c2743e5e5e"
+      },
+      {
+        "path": "data/st6/ST6_MISSED_WINDOWS.jsonl",
+        "present": false
+      },
+      {
+        "path": "data/st6/ST6_PERIOD_CLOSURE.json",
+        "present": false
+      },
+      {
+        "bytes": 6493,
+        "git_blob_sha1": "4a41e149c4547a5a9de9758b472f82083b43df66",
+        "modified_utc": "2026-10-08T20:04:31Z",
+        "path": "data/st6/ST6_REGIME_COVERAGE.json",
+        "present": true,
+        "sha256": "d2628536119dd1dc9be7fbe7339ac40ba63f7f4e1a9c3dde2aaba742b72f9619"
+      },
+      {
+        "bytes": 3664,
+        "git_blob_sha1": "283e956c6aa7d567f65178554101e14cde1f0e2e",
+        "modified_utc": "2026-10-08T20:04:31Z",
+        "path": "data/st6/ST6_MODEL_DRIFT.json",
+        "present": true,
+        "sha256": "ace6faf01eed9eabb5022eff16d07287147f8b037e3470c688b068059ab4897c"
+      },
+      {
+        "bytes": 32524,
+        "git_blob_sha1": "6c686a9851b8271c38e0aa14896ec38ff3fd1de1",
+        "modified_utc": "2026-10-08T20:04:31Z",
+        "path": "data/st6/ST6_FORWARD_REGIME_REPORT.json",
+        "present": true,
+        "sha256": "7902cef359f5fe6a3650e3ffb49523c7a586f7e0ceb6f8838c2a77ee2d704beb"
+      },
+      {
+        "bytes": 6547,
+        "git_blob_sha1": "59fe808b303399ba63447779ea9642f4f34a5e3a",
+        "modified_utc": "2026-10-08T20:04:31Z",
+        "path": "data/st6/ST6_FORWARD_REGIME_REPORT.md",
+        "present": true,
+        "sha256": "6e87401449a63fede82dd72aee25159474a8c1394e50d11af45e915ac65dd0da"
+      },
+      {
+        "bytes": 3834,
+        "git_blob_sha1": "4b13f09e00033749da7bad8c346cfd1dc0834e42",
+        "modified_utc": "2026-10-08T21:48:15Z",
+        "path": "data/st6/ST6_SCHEDULER_REPORT.json",
+        "present": true,
+        "sha256": "93f199089e434c30422234297d043f9aa4c857e7c0cf51260e0dde2aee32eb53"
+      },
+      {
+        "bytes": 1935,
+        "git_blob_sha1": "b7bd69d318880dc21678bfdd7dfb1a07111ce1f2",
+        "modified_utc": "2026-10-08T21:48:15Z",
+        "path": "data/st6/ST6_SCHEDULER_REPORT.md",
+        "present": true,
+        "sha256": "dcae61fe889cecad69c603e3dff3f47046a28e70e4ea388d1d26252cdaf0fc44"
+      },
+      {
+        "bytes": 5848,
+        "git_blob_sha1": "b81a0ccfb50c874c89965a302405f3675fd6bf10",
+        "modified_utc": "2026-10-08T21:45:41Z",
+        "path": "data/st6/ST6_SCHEDULER_VERIFICATION.json",
+        "present": true,
+        "sha256": "c7f8a14cef5bca1238558ccd052dabcc602efcf44aa1ed36364c13ce02160212"
+      },
+      {
+        "bytes": 1780,
+        "git_blob_sha1": "49b30faff9d2b2073df1842081f4b4794c807b74",
+        "modified_utc": "2026-10-08T17:26:36Z",
+        "path": "data/st6/ST6_INDEPENDENT_VERIFICATION.json",
+        "present": true,
+        "sha256": "11cc71200bc42d10f3f93e650b9593ce4c405eb896974061311865eedd9e590d"
+      },
+      {
+        "bytes": 1294,
+        "git_blob_sha1": "80ef016a74f8a8357bced64d567e232a6013ee61",
+        "modified_utc": "2026-10-08T17:26:36Z",
+        "path": "data/st6/ST6_INDEPENDENT_VERIFICATION.md",
+        "present": true,
+        "sha256": "719de3f2577ef50561f43dfd093c696e0c27136a1b0f06bef1d5b8c4a1652e63"
+      }
+    ],
+    "TRANSIENT_COORDINATION": [
+      {
+        "path": "data/st6/scheduler_lock/CAMPAIGN_LOCK.json",
+        "present": false
+      }
+    ],
+    "VERSIONED_IMPLEMENTATION": [
+      {
+        "bytes": 121866,
+        "git_blob_sha1": "3c3c7092c942ef3613be17f6ead89652431f8ae3",
+        "modified_utc": "2026-10-08T21:40:14Z",
+        "path": "scripts/st6_forward_regime.py",
+        "present": true,
+        "sha256": "3f9c683356827c3edbb80ad314a7385c99a415cecb370b75d731e5dc9aeb11b1"
+      },
+      {
+        "bytes": 18246,
+        "git_blob_sha1": "36ce06959843401ccb42da291d2086218484e4c2",
+        "modified_utc": "2026-10-08T17:49:43Z",
+        "path": "scripts/st6_health_check.py",
+        "present": true,
+        "sha256": "5451d315a57138c5adfa851ac91d3a8c79b84b230743621e737973ac2024b6dd"
+      },
+      {
+        "bytes": 29401,
+        "git_blob_sha1": "8eceb9b2ead559fad37f4c29178bb5332f119484",
+        "modified_utc": "2026-10-08T17:46:55Z",
+        "path": "scripts/st6_scheduler_verify.py",
+        "present": true,
+        "sha256": "b9b44d9b4a6aeabb38bd05928339d991f5a8b11ea1e9864f012d7a985f2a4374"
+      },
+      {
+        "bytes": 11797,
+        "git_blob_sha1": "821987eaa8f7db8143c05d2191776f7ce26a1bb6",
+        "modified_utc": "2026-10-08T21:38:12Z",
+        "path": "scripts/st6_state_snapshot.py",
+        "present": true,
+        "sha256": "6b5bb9ed7818f733b140b353df0bb3b43d6ce4787ab6597e4c4e9fa86839f520"
+      },
+      {
+        "bytes": 61284,
+        "git_blob_sha1": "29b2a3cbb4c7ead03356976535fb94c1059d5149",
+        "modified_utc": "2026-10-08T21:52:05Z",
+        "path": "scripts/st6_close_replay.py",
+        "present": true,
+        "sha256": "7094017ddb7ba879fac32e6100db4146fbb0d79cbc91ba0334baa1055de52ff2"
+      },
+      {
+        "bytes": 46742,
+        "git_blob_sha1": "26b52211bbeee9bbcb68d17fefbb70ca6f15c970",
+        "modified_utc": "2026-10-08T21:43:30Z",
+        "path": "scripts/st6_close_verify.py",
+        "present": true,
+        "sha256": "5b104ea367a58a071f8c870c2493f98cbf2aba42f87b185dfe857d2c1bad4c0a"
+      },
+      {
+        "bytes": 26255,
+        "git_blob_sha1": "c54a23284067074c30e6165b6778cb646435e972",
+        "modified_utc": "2026-10-08T21:43:44Z",
+        "path": "tests/unit/research/test_st6_scheduler.py",
+        "present": true,
+        "sha256": "8427695d6af81d2c7136ec2cde7357fa43af65943e05f985fe42dd3040b3e936"
+      },
+      {
+        "bytes": 3308,
+        "git_blob_sha1": "6c13e0e75568feaca1329a226116eed2b18d58ac",
+        "modified_utc": "2026-10-08T17:15:23Z",
+        "path": "data/st6/ST6_TASK_DEFINITION.xml",
+        "present": true,
+        "sha256": "c52ad4dc8ead1c098d9ac8eae1a1ff01d7aca32ca24fbd8be332fe3c8da251a2"
+      }
+    ]
+  },
+  "copied_live_files": [
+    "data/st6/ST6_PERIOD.json",
+    "data/st6/ST6_WINDOWS.jsonl",
+    "data/st6/ST6_OBSERVATIONS.jsonl",
+    "data/st6/ST6_RUNS.jsonl",
+    "data/st6/ST6_HEALTH.jsonl",
+    "data/st6/ST6_HEALTH_STATUS.json",
+    "data/st6/ST6_REGIME_COVERAGE.json",
+    "data/st6/ST6_MODEL_DRIFT.json",
+    "data/st6/ST6_FORWARD_REGIME_REPORT.json",
+    "data/st6/ST6_FORWARD_REGIME_REPORT.md",
+    "data/st6/ST6_SCHEDULER_REPORT.json",
+    "data/st6/ST6_SCHEDULER_REPORT.md",
+    "data/st6/ST6_SCHEDULER_VERIFICATION.json",
+    "data/st6/ST6_INDEPENDENT_VERIFICATION.json",
+    "data/st6/ST6_INDEPENDENT_VERIFICATION.md"
+  ],
+  "copy_root": "data\\st6\\snapshots\\ST6_LIVE_STATE_20261008T215222Z",
+  "current_head": "fc3b6dce26534ba2af360b17571057eb633629b2",
+  "generated_at_utc": "2026-10-08T21:52:23Z",
+  "hash_algorithm": "sha256",
+  "period": {
+    "ends_at_utc": "2026-10-22T16:21:20Z",
+    "period_days": 14,
+    "slots_per_day": 6,
+    "started_at_utc": "2026-10-08T16:21:20Z"
+  },
+  "purpose": "a dated, immutable picture of the ST-6 live runtime state so the moving state is not committed as if it were static, and so a later reader can tell which bytes the implementation was reading",
+  "reading": "the live files are copied and hashed, not committed; the raw evidence is re-hashed and required to reproduce the hash recorded in the window index; the implementation files carry the git blob hash the commit will record",
+  "snapshot_id": "ST6_LIVE_STATE_20261008T215222Z",
+  "windows_index_rows": 2
+}

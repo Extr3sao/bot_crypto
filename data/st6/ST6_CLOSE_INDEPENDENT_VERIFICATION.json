@@ -1,0 +1,284 @@
+{
+  "artifact": "ST6_CLOSE_INDEPENDENT_VERIFICATION_V1",
+  "builder": "scripts/st6_forward_regime.py",
+  "builder_equals_verifier": false,
+  "checks_passed": 19,
+  "checks_total": 19,
+  "counts": {
+    "closure_present": false,
+    "missed": 0,
+    "observations": 24,
+    "raw_snapshots": 2,
+    "runs": 129,
+    "windows": 2
+  },
+  "denominator": {
+    "closes_inside_slot": "2026-10-22#4",
+    "derived_windows": 84,
+    "first_slot": "2026-10-08#4",
+    "first_slot_starts_at_utc": "2026-10-08T16:00:00Z",
+    "last_slot": "2026-10-22#3",
+    "last_slot_ends_at_utc": "2026-10-22T16:00:00Z",
+    "period_ends_at_utc": "2026-10-22T16:21:20Z",
+    "period_started_at_utc": "2026-10-08T16:21:20Z",
+    "planned_windows": 84
+  },
+  "determinism": {
+    "exit_code": 0,
+    "rerun_close_mechanics": "PASS",
+    "rerun_close_sha256": "8610cf46337fb400ce55b8bd3c829be581bd0a4b7423acb5adb6766a114e923a",
+    "shipped_close_sha256": "8610cf46337fb400ce55b8bd3c829be581bd0a4b7423acb5adb6766a114e923a",
+    "stderr_tail": [],
+    "stdout_tail": [
+      "PASS: close mechanics 10/10 scenarios PASS, 0 FAIL; real state unchanged: True; market requests: 0",
+      "written -> C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\st6-verify-rerun-127u_s_v\\report.json, C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\st6-verify-rerun-127u_s_v\\report.md"
+    ],
+    "verdicts_equal": true
+  },
+  "failures": [],
+  "false_success": 0,
+  "findings": {
+    "closure": [],
+    "denominator": [],
+    "drift": [],
+    "idempotency": [],
+    "missed": [],
+    "order_paths": [],
+    "post_close": [],
+    "replay_report": [],
+    "separation": [],
+    "snapshot": [],
+    "windows": []
+  },
+  "generated_at_utc": "2026-10-08T21:52:22Z",
+  "method": "the verifier re-derives the plan, the window index, the missed accounting, the terminal state, the post-close contract and the drift preservation from the state on disk; it re-verifies the live-state snapshot by re-hashing it; it exercises the replay harness again and compares the close it produces; and it proves its own checks fail on corrupted fixtures before it reports anything",
+  "mismatches": 0,
+  "negative_tests": {
+    "artifact": "ST6_CLOSE_NEGATIVE_TESTS",
+    "failed": 0,
+    "passed": 17,
+    "results": [
+      {
+        "detected": true,
+        "expected_finding": "duplicated slot",
+        "findings": [
+          "the window index holds a duplicated slot: ['2026-10-08#4']",
+          "the window index holds a duplicated window_id"
+        ],
+        "fixture": "a duplicated window index row",
+        "status": "PASS"
+      },
+      {
+        "detected": true,
+        "expected_finding": "sha256 mismatch",
+        "findings": [
+          "data\\st6\\raw\\20261008T162202Z.json.gz sha256 mismatch against the index"
+        ],
+        "fixture": "a tampered window hash",
+        "status": "PASS"
+      },
+      {
+        "detected": true,
+        "expected_finding": "is missing",
+        "findings": [
+          "data\\st6\\raw\\20261008T162202Z.json.gz is missing"
+        ],
+        "fixture": "a missing raw snapshot",
+        "status": "PASS"
+      },
+      {
+        "detected": true,
+        "expected_finding": "order or credential",
+        "findings": [
+          "offender.py carries an order or credential path: ['create_order']"
+        ],
+        "fixture": "an order path in a program",
+        "status": "PASS"
+      },
+      {
+        "detected": true,
+        "expected_finding": "another period",
+        "findings": [
+          "the consolidation belongs to another period: 2026-01-01T00:00:00Z -> 2026-01-15T00:00:00Z",
+          "the consolidation does not refuse extension",
+          "a supported outcome was recorded over incomplete coverage"
+        ],
+        "fixture": "a consolidation of another period",
+        "status": "PASS"
+      },
+      {
+        "detected": true,
+        "expected_finding": "incomplete coverage",
+        "findings": [
+          "a supported outcome was recorded over incomplete coverage"
+        ],
+        "fixture": "a supported outcome over incomplete coverage",
+        "status": "PASS"
+      },
+      {
+        "detected": true,
+        "expected_finding": "no breach visible",
+        "findings": [
+          "a drift verdict is recorded under an insufficient-coverage classification with no breach visible beside it"
+        ],
+        "fixture": "drift buried under insufficient coverage",
+        "status": "PASS"
+      },
+      {
+        "detected": true,
+        "expected_finding": "hides a measured drift",
+        "findings": [
+          "a supported outcome hides a measured drift"
+        ],
+        "fixture": "a supported outcome hiding a measured drift",
+        "status": "PASS"
+      },
+      {
+        "detected": true,
+        "expected_finding": "does not match the breaches",
+        "findings": [
+          "the preserved drift block does not match the breaches listed in the consolidation"
+        ],
+        "fixture": "a preserved drift block that does not match its breaches",
+        "status": "PASS"
+      },
+      {
+        "detected": true,
+        "expected_finding": "market request",
+        "findings": [
+          "the run x after the close made 4 market request(s)",
+          "the run x after the close recorded 'COLLECTED'"
+        ],
+        "fixture": "a market request after the declared end",
+        "status": "PASS"
+      },
+      {
+        "detected": true,
+        "expected_finding": "neither observed nor missed",
+        "findings": [
+          "the ended declared slot 2026-10-08#4 is neither observed nor missed",
+          "the ended declared slot 2026-10-08#5 is neither observed nor missed",
+          "the ended declared slot 2026-10-09#0 is neither observed nor missed",
+          "the ended declared slot 2026-10-09#1 is neither observed nor missed",
+          "the ended declared slot 2026-10-09#2 is neither observed nor missed",
+          "the ended declared slot 2026-10-09#3 is neither observed nor missed",
+          "the ended declared slot 2026-10-09#4 is neither observed nor missed",
+          "the ended declared slot 2026-10-09#5 is neither observed nor missed",
+          "the ended declared slot 2026-10-10#0 is neither observed nor missed",
+          "the ended declared slot 2026-10-10#1 is neither observed nor missed",
+          "the ended declared slot 2026-10-10#2 is neither observed nor missed",
+          "the ended declared slot 2026-10-10#3 is neither observed nor missed"
+        ],
+        "fixture": "an ended declared slot that is unaccounted for",
+        "status": "PASS"
+      },
+      {
+        "detected": true,
+        "expected_finding": "ends after the declared end",
+        "findings": [
+          "the plan says 84 windows but the derivation produced 8",
+          "the last eligible window 2026-10-09#5 ends after the declared end (2026-10-10T00:00:00Z > 2026-10-08T20:00:00Z)",
+          "the partial slot the period closes inside (2026-10-08#5) is counted as an eligible window"
+        ],
+        "fixture": "a declaration whose plan runs past its own end",
+        "status": "PASS"
+      },
+      {
+        "detected": true,
+        "expected_finding": "changed after the snapshot",
+        "findings": [
+          "the implementation file scripts/st6_forward_regime.py changed after the snapshot"
+        ],
+        "fixture": "an implementation hash that moved after the snapshot",
+        "status": "PASS"
+      },
+      {
+        "detected": true,
+        "expected_finding": "not classified as VERSIONED_IMPLEMENTATION",
+        "findings": [
+          "scripts/st6_forward_regime.py is not classified as VERSIONED_IMPLEMENTATION",
+          "scripts/st6_scheduler_verify.py is not classified as VERSIONED_IMPLEMENTATION",
+          "data/st6/ST6_TASK_DEFINITION.xml is not classified as VERSIONED_IMPLEMENTATION",
+          "data/st6/ST6_RUNS.jsonl is not classified as LIVE_RUNTIME_STATE",
+          "data/st6/ST6_HEALTH_STATUS.json is not classified as LIVE_RUNTIME_STATE",
+          "data/st6/ST6_WINDOWS.jsonl is not classified as LIVE_RUNTIME_STATE",
+          "data/st6/ST6_OBSERVATIONS.jsonl is not classified as LIVE_RUNTIME_STATE"
+        ],
+        "fixture": "an implementation file classified as live state",
+        "status": "PASS"
+      },
+      {
+        "detected": true,
+        "expected_finding": "with a failed check",
+        "findings": [
+          "the replay reports PASS on 3. the exact close instant with a failed check: the close returned the declared terminal status",
+          "the replay reports real market requests",
+          "the replay reports real scheduler calls"
+        ],
+        "fixture": "a replay report that hides a failed check",
+        "status": "PASS"
+      },
+      {
+        "detected": true,
+        "expected_finding": "moved real files",
+        "findings": [
+          "the replay moved real files it does not explain: ['scripts/st6_forward_regime.py']",
+          "the replay reports real market requests",
+          "the replay reports real scheduler calls"
+        ],
+        "fixture": "a replay report with unexplained real changes",
+        "status": "PASS"
+      },
+      {
+        "detected": true,
+        "expected_finding": "none",
+        "findings": [],
+        "fixture": "a program that merely names the forbidden paths",
+        "status": "PASS"
+      }
+    ],
+    "status": "PASS",
+    "tests": 17
+  },
+  "replay_harness": "scripts/st6_close_replay.py",
+  "replayed_close": {
+    "auto_extended": false,
+    "breaches_total": 1,
+    "closure_drift_breaches": 1,
+    "coverage_total": {
+      "completed_windows": 2,
+      "coverage_complete": false,
+      "coverage_token": "REGIME_COVERAGE_INSUFFICIENT",
+      "days_covered": 1,
+      "declared_slots_reached": 84,
+      "missed_windows": 82,
+      "observed_windows": 2,
+      "planned_windows": 84
+    },
+    "credentials_used": 0,
+    "drift_breaches_lost_by_the_close": [],
+    "drift_verdict": "DRIFT_WIDER_THAN_MODELLED",
+    "live_drift_breaches": 1,
+    "missed_windows": 82,
+    "orders_sent": 0,
+    "outcome": "INSUFFICIENT_REGIME_COVERAGE",
+    "terminal_state": "PERIOD_CLOSED_NO_FURTHER_COLLECTION"
+  },
+  "snapshot_life": {
+    "live_files_that_moved_since_the_snapshot": [],
+    "manifest": "data\\st6\\snapshots\\ST6_LIVE_STATE_20261008T215219Z.json",
+    "reading": "live runtime state keeps moving by design: those files are the ones the running tick rewrites, and the snapshot copy is the immutable record of what they held",
+    "snapshot_id": "ST6_LIVE_STATE_20261008T215219Z"
+  },
+  "standing_state": {
+    "ECO_1": "OPEN",
+    "LIVE_TRADING": "DISABLED",
+    "NEXT_CAMPAIGN": "NOT_AUTHORIZED",
+    "PROFITABILITY_VERIFIED": false,
+    "ST6_AUTONOMOUS_COLLECTION_ACTIVE": true,
+    "TRADES_AUTHORIZED": 0
+  },
+  "status": "PASS",
+  "verdict": "ST6_CLOSE_VERIFIED",
+  "verifier": "scripts/st6_close_verify.py"
+}

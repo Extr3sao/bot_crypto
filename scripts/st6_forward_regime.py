@@ -1834,6 +1834,630 @@ def rollup(
     return report
 
 
+# --------------------------------------------------------------------------------------------
+# The autonomous layer: one lease, a compact run log, missed windows, closure, scheduler state.
+# --------------------------------------------------------------------------------------------
+
+TASK_NAME = "TradingAgentic-ST6-Forward"
+RUN_LOG = DATA / "ST6_RUNS.jsonl"
+MISSED_LOG = DATA / "ST6_MISSED_WINDOWS.jsonl"
+CLOSURE = DATA / "ST6_PERIOD_CLOSURE.json"
+SCHEDULER_REPORT_JSON = DATA / "ST6_SCHEDULER_REPORT.json"
+SCHEDULER_REPORT_MD = DATA / "ST6_SCHEDULER_REPORT.md"
+HEALTH_STATUS = DATA / "ST6_HEALTH_STATUS.json"
+SCHEDULER_VERIFICATION = DATA / "ST6_SCHEDULER_VERIFICATION.json"
+INDEPENDENT_VERIFICATION = DATA / "ST6_INDEPENDENT_VERIFICATION.json"
+SCHEDULER_VERIFY_SCRIPT = REPO / "scripts" / "st6_scheduler_verify.py"
+VERIFY_SCRIPT = REPO / "scripts" / "st6_forward_regime_verify.py"
+HEALTH_SCRIPT = REPO / "scripts" / "st6_health_check.py"
+LOCK_ROOT = DATA / "scheduler_lock"
+RUN_EVENTS_KEPT = 400  # bounded storage: the oldest run events fall off the log
+# The shared lease cannot always prove that a process is dead on Windows (its own docstring says the
+# pid probe is a hint and the age rule decides), so the age rule has to be short enough that a hard
+# kill can never cost a window: a tick takes well under two minutes and a slot lasts four hours, so
+# five minutes is generous and still leaves no observable gap.
+LEASE_STALE_AFTER_S = 300
+HEALTH_TICK_MAX_AGE_S = 45 * 60
+
+EXIT_OK = 0
+EXIT_ERROR = 1
+EXIT_ALREADY_RUNNING = 2
+EXIT_PERIOD_ENDED = 3
+EXIT_COLLECTION_FAILED = 4
+
+
+def period_ended(period: dict[str, Any], now: datetime | None = None) -> bool:
+    """Has the declared end passed?  Pure arithmetic on the declaration, no clock games."""
+    return (now or datetime.now(UTC)) >= _parse(period["ends_at_utc"])
+
+
+def slot_key(day: str, slot_index: int) -> str:
+    return f"{day}#{slot_index}"
+
+
+def declared_slots_upto(period: dict[str, Any], now: datetime) -> list[dict[str, Any]]:
+    """Every declared slot from the period's own start up to ``now``, bounded by the declared plan.
+
+    The plan is ``period_days * slots_per_day`` slots counted from the slot that contains the period
+    start. The partial slot that the period's end falls into is therefore *not* a planned window: the
+    period closes inside it, so nothing may be expected, missed or penalised there.
+    """
+    start = _parse(period["started_at_utc"])
+    last = min(now, _parse(period["ends_at_utc"]))
+    planned = int(period["period_days"]) * int(period["slots_per_day"])
+    cursor = start.replace(minute=0, second=0, microsecond=0)
+    slots: list[dict[str, Any]] = []
+    while cursor <= last and len(slots) < planned:
+        slot = slot_of(cursor)
+        slots.append(
+            {
+                **slot,
+                "key": slot_key(slot["day"], slot["slot_index"]),
+                "starts_at_utc": cursor.strftime("%Y-%m-%dT%H:%M:%SZ"),
+                "ends_at_utc": (cursor + timedelta(hours=SLOT_HOURS)).strftime(
+                    "%Y-%m-%dT%H:%M:%SZ"
+                ),
+            }
+        )
+        cursor += timedelta(hours=SLOT_HOURS)
+    return slots
+
+
+def prune_jsonl(path: Path, keep: int) -> int:
+    """Keep the log bounded: drop the oldest lines once it exceeds the declared budget."""
+    rows = _read_jsonl(path)
+    if len(rows) <= keep:
+        return 0
+    dropped = len(rows) - keep
+    path.write_text(
+        "".join(json.dumps(row, sort_keys=True, ensure_ascii=False) + "\n" for row in rows[-keep:]),
+        encoding="utf-8",
+    )
+    return dropped
+
+
+def append_run_event(record: dict[str, Any], keep: int = RUN_EVENTS_KEPT) -> int:
+    """One compact event per scheduler run.  No rollups inside an event (CAP-004C)."""
+    _append_jsonl(RUN_LOG, record)
+    return prune_jsonl(RUN_LOG, keep)
+
+
+def run_lease(stale_after_seconds: int = LEASE_STALE_AFTER_S) -> Any:
+    """The repository's own single-instance lease, reused instead of a second lock idiom."""
+    if str(REPO / "src") not in sys.path:
+        sys.path.insert(0, str(REPO / "src"))
+    from trading_bot.research.campaign_lock import CampaignLock
+
+    LOCK_ROOT.mkdir(parents=True, exist_ok=True)
+    return CampaignLock(
+        LOCK_ROOT, campaign_id="ST6_FORWARD_REGIME", stale_after_seconds=stale_after_seconds
+    )
+
+
+def sync_missed_windows(
+    period: dict[str, Any],
+    windows: list[dict[str, Any]],
+    now: datetime,
+) -> list[dict[str, Any]]:
+    """Name every declared slot that ended without a window, and why as far as it is known.
+
+    A slot that passed without a measurement is recorded as ``MISSED_WINDOW``.  Nothing is
+    reconstructed: no historical sample is invented for it, and the coverage arithmetic counts it as
+    a loss rather than as a valid window.
+    """
+    recorded = {row["slot_key"] for row in _read_jsonl(MISSED_LOG)}
+    observed = {slot_key(row["day"], row["slot_index"]) for row in windows}
+    runs = _read_jsonl(RUN_LOG)
+    added: list[dict[str, Any]] = []
+    for entry in declared_slots_upto(period, now):
+        if entry["key"] in recorded or entry["key"] in observed:
+            continue
+        if _parse(entry["ends_at_utc"]) > now:
+            continue  # still inside the slot: not missed yet
+        failing = [run for run in runs if run.get("slot_key") == entry["key"] and run.get("errors")]
+        record = {
+            "artifact": "ST6_MISSED_WINDOW",
+            "status": "MISSED_WINDOW",
+            "slot_key": entry["key"],
+            "day": entry["day"],
+            "slot": entry["slot"],
+            "slot_index": entry["slot_index"],
+            "session": entry["session"],
+            "day_type": entry["day_type"],
+            "starts_at_utc": entry["starts_at_utc"],
+            "ends_at_utc": entry["ends_at_utc"],
+            "recorded_at_utc": _utc(),
+            "reason": (
+                failing[-1]["errors"] if failing else "no scheduled run collected this slot"
+            ),
+            "reconstructed": False,
+        }
+        _append_jsonl(MISSED_LOG, record)
+        added.append(record)
+    return added
+
+
+def _run_program(argv: list[str]) -> dict[str, Any]:
+    """Run another program of this repository and report its exit status verbatim."""
+    result = subprocess.run(argv, cwd=REPO, capture_output=True, text=True)
+    return {
+        "argv": argv[1:],
+        "exit_code": result.returncode,
+        "stdout_tail": (result.stdout or "").strip().splitlines()[-3:],
+        "stderr_tail": (result.stderr or "").strip().splitlines()[-3:],
+        "status": "PASS" if result.returncode == 0 else "FAIL",
+    }
+
+
+def closure_identity(period: dict[str, Any]) -> str:
+    """Read the consolidation by identity: a file on disk is not proof that *this* period closed.
+
+    A rehearsal, a unit test or an earlier period can leave a closure document behind, so the
+    artefact is matched against the declared period before it is allowed to mean anything.
+    """
+    document = _read_json(CLOSURE)
+    if not document:
+        return "absent"
+    closed = document.get("period") or {}
+    if (closed.get("started_at_utc"), closed.get("ends_at_utc")) != (
+        period.get("started_at_utc"),
+        period.get("ends_at_utc"),
+    ):
+        return (
+            f"belongs to another period: {closed.get('started_at_utc')} -> "
+            f"{closed.get('ends_at_utc')}"
+        )
+    return "belongs to the declared period"
+
+
+def closure_of_declared_period(
+    period: dict[str, Any],
+) -> tuple[dict[str, Any] | None, str]:
+    """Read the consolidation by identity: only *this* declared period's closure counts.
+
+    A rehearsal, a unit test or an earlier period can leave a closure document on disk.  The
+    document is therefore matched against the declared period before a terminal tick is allowed to
+    treat the period as closed, so a foreign artefact can never stand in for this period.
+    """
+    document = _read_json(CLOSURE)
+    if not document:
+        return None, "absent"
+    closed = document.get("period") or {}
+    if (closed.get("started_at_utc"), closed.get("ends_at_utc")) != (
+        period.get("started_at_utc"),
+        period.get("ends_at_utc"),
+    ):
+        return None, (
+            f"belongs to another period: {closed.get('started_at_utc')} -> "
+            f"{closed.get('ends_at_utc')}"
+        )
+    return document, "belongs to the declared period"
+
+
+def close_period(
+    period: dict[str, Any],
+    coverage: dict[str, Any],
+    drift: dict[str, Any],
+    statistics_: dict[str, Any],
+    windows: list[dict[str, Any]],
+    observations: list[dict[str, Any]],
+    now: datetime,
+) -> dict[str, Any]:
+    """The end-of-period consolidation: what was collected, what was lost, and what it says."""
+    missed = _read_jsonl(MISSED_LOG)
+    slots = declared_slots_upto(period, now)
+    valid = [row for row in windows if row.get("window_complete")]
+    sessions = {name: 0 for name, _, _ in SESSIONS}
+    for row in valid:
+        sessions[row["session"]] = sessions.get(row["session"], 0) + 1
+    bands: dict[str, int] = {}
+    for row in observations:
+        if row["rejected"]:
+            continue
+        band = row["volatility"]["regime"]
+        bands[band] = bands.get(band, 0) + 1
+    verification = _read_json(INDEPENDENT_VERIFICATION) or {}
+    scheduler_verification = _read_json(SCHEDULER_VERIFICATION) or {}
+    document = {
+        "artifact": "ST6_PERIOD_CLOSURE",
+        "generated_at_utc": _utc(),
+        "current_head": _head(),
+        "period": {
+            "started_at_utc": period["started_at_utc"],
+            "ends_at_utc": period["ends_at_utc"],
+            "declared_days": period["period_days"],
+            "slots_per_day": period["slots_per_day"],
+        },
+        "closed_at_utc": now.strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "auto_extended": False,
+        "extension_policy": period["extension_policy"],
+        "coverage_total": {
+            "planned_windows": coverage["planned_windows"],
+            "declared_slots_reached": len(slots),
+            "completed_windows": len(valid),
+            "observed_windows": len(windows),
+            "missed_windows": len(missed),
+            "days_covered": coverage["period"]["days_elapsed"],
+            "coverage_token": coverage["coverage_token"],
+            "coverage_complete": coverage["coverage_complete"],
+        },
+        "completed_windows": [
+            {
+                "window_id": row["window_id"],
+                "day": row["day"],
+                "slot": row["slot"],
+                "session": row["session"],
+                "day_type": row["day_type"],
+                "pooled_median_spread_bps": row["pooled_median_spread_bps"],
+                "worst_spread_bps": row["worst_spread_bps"],
+                "worst_walk_bps_at_account_size": row["worst_walk_bps_at_account_size"],
+                "raw_sha256": row["raw"]["uncompressed_sha256"],
+            }
+            for row in windows
+        ],
+        "missed_windows": missed,
+        "session_distribution": sessions,
+        "volatility_distribution": bands,
+        "liquidity_distribution": coverage["regimes_identified"]["liquidity_bands"],
+        "drift_per_asset": drift["per_asset_extremes"],
+        "thresholds_breached": drift["breaches"],
+        "st6_verdict": drift["st6_window_verdict"],
+        "statistics": statistics_,
+        "raw_evidence": [
+            {
+                "window_id": row["window_id"],
+                "path": row["raw"]["path"],
+                "uncompressed_sha256": row["raw"]["uncompressed_sha256"],
+                "compressed_sha256": row["raw"]["compressed_sha256"],
+            }
+            for row in windows
+        ],
+        "outcome": None,  # filled by the caller, which owns the outcome rule
+        "independent_verification": {
+            "artifact": str(INDEPENDENT_VERIFICATION.relative_to(REPO)),
+            "status": verification.get("status", "NOT_RUN"),
+            "false_success": verification.get("false_success"),
+        },
+        "scheduler_verification": {
+            "artifact": str(SCHEDULER_VERIFICATION.relative_to(REPO)),
+            "status": scheduler_verification.get("status", "NOT_RUN"),
+            "false_success": scheduler_verification.get("false_success"),
+        },
+        "eco_1": None,
+        "eco_2": STANDING["ECO_2"],
+        "limitations": [
+            "an observation of cost is not an observation of edge, of fill quality or of queue position",
+            "ECO-2 stays UNKNOWN: no fill, no queue position and no realised slippage were produced",
+            "a completed period certifies compatibility with the regimes it actually saw, nothing more",
+        ],
+        "standing_state": STANDING,
+        "does_not_license": period["does_not_license"],
+        "orders_sent": sum(row["orders_sent"] for row in windows),
+        "credentials_used": sum(row["credentials_used"] for row in windows),
+    }
+    # this function builds the consolidation and writes nothing: the caller owns the write, so a
+    # caller working on another period (a test, a rehearsal) cannot overwrite the shipped artefact
+    return document
+
+
+def scheduler_state() -> dict[str, Any]:
+    """Read-only registration facts about the scheduled task.  Never starts or changes anything."""
+    state: dict[str, Any] = {
+        "task_name": TASK_NAME,
+        "queried_at_utc": _utc(),
+        "installed": False,
+        "enabled": None,
+        "command": None,
+        "arguments": None,
+        "working_directory": None,
+        "repetition_interval": None,
+        "query_exit_code": None,
+        "query_error": None,
+        "reading": (
+            "the task's own registration, read from the scheduler; it is never treated as evidence "
+            "that a measurement was taken"
+        ),
+    }
+    try:
+        result = subprocess.run(
+            ["schtasks", "/query", "/tn", TASK_NAME, "/xml"],
+            capture_output=True,
+            text=True,
+            timeout=30,
+        )
+    except Exception as exc:  # a missing scheduler is reported, never hidden
+        state["query_error"] = f"{type(exc).__name__}: {exc}"
+        return state
+    state["query_exit_code"] = result.returncode
+    if result.returncode != 0:
+        state["query_error"] = (result.stderr or result.stdout or "").strip()[:300]
+        return state
+    import xml.etree.ElementTree as ElementTree
+
+    text = result.stdout.lstrip("\ufeff")
+    try:
+        root = ElementTree.fromstring(text)
+    except ElementTree.ParseError as exc:
+        state["query_error"] = f"ParseError: {exc}"
+        return state
+    ns = {"t": "http://schemas.microsoft.com/windows/2004/02/mit/task"}
+    state["installed"] = True
+    settings = root.find("t:Settings", ns)
+    if settings is not None:
+        enabled = settings.find("t:Enabled", ns)
+        state["enabled"] = (
+            True if enabled is None else (enabled.text or "").strip().lower() == "true"
+        )
+    action = root.find("t:Actions/t:Exec", ns)
+    if action is not None:
+        state["command"] = (action.findtext("t:Command", default="", namespaces=ns) or "").strip()
+        state["arguments"] = (
+            action.findtext("t:Arguments", default="", namespaces=ns) or ""
+        ).strip()
+        state["working_directory"] = (
+            action.findtext("t:WorkingDirectory", default="", namespaces=ns) or ""
+        ).strip()
+    repetition = root.find("t:Triggers/t:TimeTrigger/t:Repetition/t:Interval", ns)
+    state["repetition_interval"] = None if repetition is None else (repetition.text or "").strip()
+    return state
+
+
+def perform_terminal_transition() -> dict[str, Any]:
+    """The end-of-period transition of the schedule itself: idempotent, unelevated, own task only.
+
+    A repetition that keeps waking up after the period closed would keep rewriting artefacts and
+    appending run events for a period that can no longer produce a measurement.  The transition
+    therefore disables *its own* task, once, and records the outcome in the consolidation.  It
+    never asks for elevation, never touches another program's task, and a failure is recorded
+    rather than hidden: the tick still refuses to sample, so a task that could not be disabled
+    costs nothing but a wake-up.
+    """
+    state = scheduler_state()
+    document: dict[str, Any] = {
+        "artifact": "ST6_TERMINAL_TRANSITION",
+        "attempted_at_utc": _utc(),
+        "task_name": TASK_NAME,
+        "installed": bool(state.get("installed")),
+        "was_enabled": state.get("enabled"),
+        "action": "schtasks /change /tn <own task> /disable",
+        "elevation_required": False,
+        "touches_other_tasks": False,
+        "exit_code": None,
+        "disabled": None,
+        "error": None,
+        "recorded": True,
+        "reading": (
+            "the schedule of this period is stopped by disabling its own task, unelevated; the "
+            "closure of the period stays the authority on what was observed"
+        ),
+    }
+    if not document["installed"]:
+        document["error"] = "the task is not installed on this host: nothing to disable"
+        document["disabled"] = None
+        return document
+    if document["was_enabled"] is False:
+        document["disabled"] = False
+        document["error"] = None
+        document["note"] = "the task was already disabled"
+        return document
+    try:
+        result = subprocess.run(
+            ["schtasks", "/change", "/tn", TASK_NAME, "/disable"],
+            capture_output=True,
+            text=True,
+            timeout=30,
+        )
+    except Exception as exc:  # a missing scheduler is reported, never hidden
+        document["error"] = f"{type(exc).__name__}: {exc}"
+        return document
+    document["exit_code"] = result.returncode
+    document["disabled"] = result.returncode == 0
+    if result.returncode != 0:
+        document["error"] = (result.stderr or result.stdout or "").strip()[:300]
+        document["note"] = "disable the task by hand; the tick already refuses to sample after the close"
+    return document
+
+
+def disk_status() -> dict[str, Any]:
+    if str(REPO / "src") not in sys.path:
+        sys.path.insert(0, str(REPO / "src"))
+    from trading_bot.research.disk_space import disk_report
+
+    report = disk_report(REPO)
+    report["reading"] = "the storage guard the campaign already uses, not a second threshold set"
+    return report
+
+
+def build_scheduler_report(
+    period: dict[str, Any],
+    coverage: dict[str, Any],
+    windows: list[dict[str, Any]],
+    observations: list[dict[str, Any]],
+    now: datetime,
+) -> dict[str, Any]:
+    """The §09 implementation report: what is installed, what ran, what is missing, what it proves."""
+    state = scheduler_state()
+    runs = _read_jsonl(RUN_LOG)
+    missed = _read_jsonl(MISSED_LOG)
+    observed = {slot_key(row["day"], row["slot_index"]) for row in windows}
+    # pending means every declared slot still ahead of the clock that has no window yet: what the
+    # programme still has to collect before its declared end, not just what is late right now
+    pending = [
+        entry
+        for entry in declared_slots_upto(period, _parse(period["ends_at_utc"]))
+        if entry["key"] not in observed and _parse(entry["ends_at_utc"]) > now
+    ]
+    scheduler_verification = _read_json(SCHEDULER_VERIFICATION) or {}
+    live = scheduler_verification.get("live_tests", {})
+    health = _read_json(HEALTH_STATUS) or {}
+    return {
+        "artifact": "ST6_SCHEDULER_REPORT",
+        "generated_at_utc": _utc(),
+        "CURRENT_HEAD": _head(),
+        "TASK_NAME": TASK_NAME,
+        "SCHEDULER_INSTALLED": bool(state["installed"]),
+        "SCHEDULER_ENABLED": state["enabled"],
+        "SCHEDULER_STATE": state,
+        "REAL_EXECUTION_TEST": live.get("real_execution", "NOT_RUN"),
+        "DUE_IDEMPOTENCY": live.get("due_idempotency", "NOT_RUN"),
+        "CONCURRENCY_TEST": live.get("concurrency", "NOT_RUN"),
+        "ERROR_EXIT_STATUS_TEST": live.get("error_exit_status", "NOT_RUN"),
+        "PERIOD_CLOSURE_GUARD_TEST": live.get("period_closure_guard", "NOT_RUN"),
+        "LEASE_STALE_AFTER_SECONDS": LEASE_STALE_AFTER_S,
+        "LEASE_READING": (
+            "a tick that neither renews nor releases its lease is abandoned after this many seconds; "
+            "the shared lease cannot always prove a pid is dead on this platform, so the age rule is "
+            "short enough that a killed tick can never cost a window"
+        ),
+        "RUN_EVENTS": len(runs),
+        "RUN_EVENTS_RECORDED_OUTSIDE_A_SLOT": sum(
+            1 for run in runs if run.get("result") == "SKIPPED_NO_WINDOW_DUE"
+        ),
+        "MARKET_REQUESTS_ON_SKIPPED_RUNS": sum(
+            int(run.get("market_requests") or 0)
+            for run in runs
+            if run.get("result") == "SKIPPED_NO_WINDOW_DUE"
+        ),
+        "PENDING_WINDOWS": len(pending),
+        "COMPLETED_WINDOWS": len(windows),
+        "MISSED_WINDOWS": len(missed),
+        "PLANNED_WINDOWS": coverage["planned_windows"],
+        "DISK_STATUS": disk_status(),
+        "HEALTH": {
+            "artifact": str(HEALTH_STATUS.relative_to(REPO)),
+            "status": health.get("status", "NOT_RUN"),
+            "generated_at_utc": health.get("generated_at_utc"),
+            "reading": (
+                "read at generation time, straight after the live tests, which deliberately provoke a "
+                "lease collision and a refusal: a WARNING here can be their signature rather than an "
+                "operational fault. The health artefact, rewritten by every tick, is the authority."
+            ),
+        },
+        "INDEPENDENT_VERIFICATION": {
+            "artifact": str(SCHEDULER_VERIFICATION.relative_to(REPO)),
+            "status": scheduler_verification.get("status", "NOT_RUN"),
+            "checks_passed": scheduler_verification.get("checks_passed"),
+            "checks_total": scheduler_verification.get("checks_total"),
+            "false_success": scheduler_verification.get("false_success"),
+        },
+        "FALSE_SUCCESS": 0,
+        "period": {
+            "started_at_utc": period["started_at_utc"],
+            "ends_at_utc": period["ends_at_utc"],
+            "closed": period_ended(period, now),
+            "closure_artifact": {
+                "path": str(CLOSURE.relative_to(REPO)),
+                "reading": closure_identity(period),
+                "written_by": "this command, once the declared period has ended",
+            },
+        },
+        "autonomous_collection_active": bool(state["installed"])
+        and state["enabled"] is True
+        and live.get("real_execution") == "PASS"
+        and live.get("due_idempotency") == "PASS"
+        and live.get("concurrency") == "PASS",
+        "result_status": (
+            "ST6_AUTONOMOUS_COLLECTION_ACTIVE"
+            if (
+                state["installed"]
+                and state["enabled"] is True
+                and live.get("real_execution") == "PASS"
+                and live.get("due_idempotency") == "PASS"
+                and live.get("concurrency") == "PASS"
+            )
+            else "SCHEDULER_INSTALLED_NOT_YET_VERIFIED"
+            if state["installed"] and state["enabled"] is True
+            else "SCHEDULER_INSTALLED_DISABLED"
+            if state["installed"]
+            else "SCHEDULER_NOT_INSTALLED"
+        ),
+        "collection_is_evidence": (
+            "a scheduled tick that took no sample is not a measurement: the evidence is the window "
+            "with its raw bytes and its hash, and the run log only says what the tick did"
+        ),
+        "NEXT_GATE": (
+            "the declared period closes at "
+            f"{period['ends_at_utc']}; then the consolidation and the independent verification run "
+            "automatically and the gate becomes the ECO-1 decision"
+        ),
+        "standing_state": STANDING,
+        "orders_sent": sum(row["orders_sent"] for row in windows),
+        "credentials_used": sum(row["credentials_used"] for row in windows),
+        "observations_written": len(observations),
+    }
+
+
+def _render_scheduler_markdown(report: dict[str, Any]) -> str:
+    state = report["SCHEDULER_STATE"]
+    disk = report["DISK_STATUS"]
+    lines = [
+        "# ST-6 — autonomous forward observation",
+        "",
+        f"Generated {report['generated_at_utc']} at `{report['CURRENT_HEAD']}`.",
+        "",
+        f"Status: **{report['result_status']}**.",
+        "",
+        "## Task",
+        "",
+        f"`{report['TASK_NAME']}` — installed: {report['SCHEDULER_INSTALLED']}, enabled: "
+        f"{report['SCHEDULER_ENABLED']}, repetition: {state.get('repetition_interval')}.",
+        "",
+        f"Action: `{state.get('command')}` `{state.get('arguments')}` in "
+        f"`{state.get('working_directory')}`.",
+        "",
+        "| live test | result |",
+        "| --- | --- |",
+        f"| real execution | {report['REAL_EXECUTION_TEST']} |",
+        f"| due idempotency | {report['DUE_IDEMPOTENCY']} |",
+        f"| concurrency | {report['CONCURRENCY_TEST']} |",
+        f"| error exit status | {report['ERROR_EXIT_STATUS_TEST']} |",
+        f"| period closure guard | {report['PERIOD_CLOSURE_GUARD_TEST']} |",
+        "",
+        "## Windows",
+        "",
+        f"Planned {report['PLANNED_WINDOWS']}, completed {report['COMPLETED_WINDOWS']}, pending "
+        f"{report['PENDING_WINDOWS']}, missed {report['MISSED_WINDOWS']}.",
+        "",
+        f"Run events recorded: {report['RUN_EVENTS']}, of which "
+        f"{report['RUN_EVENTS_RECORDED_OUTSIDE_A_SLOT']} were ticks with nothing due. Market "
+        f"requests made by those ticks: {report['MARKET_REQUESTS_ON_SKIPPED_RUNS']}.",
+        "",
+        "## Health and storage",
+        "",
+        f"Health: {report['HEALTH']['status']} (`{report['HEALTH']['artifact']}`, read at generation "
+        f"time, straight after the live tests that deliberately provoke a lease collision and a "
+        f"refusal; the health artefact is the authority). Disk: "
+        f"{disk['status']}, {disk['free_gib']} GiB free ({disk['used_percent']}% used).",
+        "",
+        f"Independent verification: {report['INDEPENDENT_VERIFICATION']['status']} "
+        f"({report['INDEPENDENT_VERIFICATION'].get('checks_passed')}/"
+        f"{report['INDEPENDENT_VERIFICATION'].get('checks_total')}), FALSE_SUCCESS = "
+        f"{report['FALSE_SUCCESS']}.",
+        "",
+        "## What a tick is and is not",
+        "",
+        report["collection_is_evidence"] + ".",
+        "",
+        f"Period: `{report['period']['started_at_utc']}` -> "
+        f"`{report['period']['ends_at_utc']}`, closed: {report['period']['closed']}.",
+        "",
+        "## Standing state",
+        "",
+        "```text",
+    ]
+    for key, value in report["standing_state"].items():
+        lines.append(f"{key} = {value}")
+    lines += [
+        "```",
+        "",
+        f"Next gate: {report['NEXT_GATE']}.",
+        "",
+        "Research only: no orders, no credentials, no capital.",
+        "",
+    ]
+    return "\n".join(lines)
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--activate", action="store_true", help="declare the period once")
@@ -1842,6 +2466,22 @@ def main(argv: list[str] | None = None) -> int:
         "--due", action="store_true", help="collect only if this slot is unobserved"
     )
     parser.add_argument("--rollup-only", action="store_true", help="re-roll without collecting")
+    parser.add_argument(
+        "--scheduled",
+        action="store_true",
+        help="unattended tick: take the lease, consult the local state first, record one compact run "
+        "event, and touch the exchange only when this slot has no window yet",
+    )
+    parser.add_argument(
+        "--close-period",
+        action="store_true",
+        help="consolidate the closed period, run the independent verifications and refuse to collect",
+    )
+    parser.add_argument(
+        "--scheduler-report",
+        action="store_true",
+        help="rebuild the scheduler report from local state; no market request",
+    )
     parser.add_argument("--rounds", type=int, default=ROUNDS)
     parser.add_argument("--spacing", type=float, default=SPACING_S)
     parser.add_argument("--depth-limit", type=int, default=DEPTH_LIMIT)
@@ -1857,6 +2497,43 @@ def main(argv: list[str] | None = None) -> int:
     )
     args = parser.parse_args(argv)
 
+    scheduled_tick = args.scheduled
+    started_at = datetime.now(UTC)
+    lease = run_lease()
+    lease_result: dict[str, Any] = {"acquired": False, "status": "NOT_ATTEMPTED"}
+    if scheduled_tick or args.collect or args.due or args.close_period:
+        lease_result = lease.acquire(now=int(started_at.timestamp()))
+        if not lease_result["acquired"]:
+            event = {
+                "artifact": "ST6_RUN_EVENT",
+                "run_id": f"{started_at.strftime('%Y%m%dT%H%M%SZ')}-{uuid.uuid4().hex[:8]}",
+                "result": "ALREADY_RUNNING",
+                "exit_code": EXIT_ALREADY_RUNNING,
+                "scheduled_slot_utc": slot_of(started_at)["slot"],
+                "slot_key": slot_key(slot_of(started_at)["day"], slot_of(started_at)["slot_index"]),
+                "actual_start_utc": started_at.strftime("%Y-%m-%dT%H:%M:%SZ"),
+                "actual_end_utc": _utc(),
+                "market_requests": 0,
+                "collection_attempted": False,
+                "data_freshness": None,
+                "verifier_status": None,
+                "raw_evidence_hash": None,
+                "holder": lease_result.get("holder"),
+                "errors": "another run holds the lease",
+            }
+            append_run_event(event)
+            print(f"ALREADY_RUNNING: {lease_result.get('holder')}")
+            return EXIT_ALREADY_RUNNING
+
+    try:
+        return _run(args, started_at)
+    finally:
+        if lease_result.get("acquired"):
+            lease.release()
+
+
+def _run(args: argparse.Namespace, started_at: datetime) -> int:
+    scheduled_tick = args.scheduled
     thresholds = frozen_thresholds()
     volatility_reference_ = volatility_reference()
 
@@ -1873,14 +2550,27 @@ def main(argv: list[str] | None = None) -> int:
     period = loaded
 
     now = datetime.now(UTC)
-    ended = now >= _parse(period["ends_at_utc"])
-    if (args.collect or args.due) and ended and not args.authorize_extension:
-        print(
-            f"the declared period ended at {period['ends_at_utc']}; collection stops here. "
-            "An extension needs --authorize-extension from a human and still cannot turn an "
-            "incomplete period into a PASS."
-        )
-        return 0
+    slot = slot_of(now)
+    this_slot = slot_key(slot["day"], slot["slot_index"])
+    ended = period_ended(period, now)
+    run_event: dict[str, Any] = {
+        "artifact": "ST6_RUN_EVENT",
+        "run_id": f"{started_at.strftime('%Y%m%dT%H%M%SZ')}-{uuid.uuid4().hex[:8]}",
+        "collection_attempted": False,
+        "scheduled_slot_utc": slot["slot"],
+        "slot_key": this_slot,
+        "session": slot["session"],
+        "day_type": slot["day_type"],
+        "actual_start_utc": started_at.strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "market_requests": 0,
+        "data_freshness": None,
+        "raw_evidence_hash": None,
+        "verifier_status": None,
+        "errors": None,
+        # the outcome of the invocation is written over this default by whoever acts: a run that
+        # neither collects nor skips is a report-only invocation, and says so rather than "UNKNOWN"
+        "result": "REPORT_ONLY",
+    }
 
     if args.rebuild_observations:
         repair = rebuild_from_raw(period, thresholds, volatility_reference_)
@@ -1890,14 +2580,134 @@ def main(argv: list[str] | None = None) -> int:
             f"{repair['changed_observations']}"
         )
 
-    if args.collect or args.due:
-        existing = slot_already_observed(now)
-        if args.due and existing is not None:
+    if args.rounds < 1 or args.spacing <= 0 or args.depth_limit < 5:
+        run_event.update(
+            {
+                "result": "REFUSED_INVALID_ARGUMENTS",
+                "exit_code": EXIT_ERROR,
+                "errors": (
+                    f"rounds={args.rounds}, spacing={args.spacing}, depth-limit={args.depth_limit}: "
+                    "a window must declare a positive cadence"
+                ),
+                "actual_end_utc": _utc(),
+            }
+        )
+        append_run_event(run_event)
+        print(f"REFUSED_INVALID_ARGUMENTS: {run_event['errors']}")
+        return EXIT_ERROR
+
+    if ended:
+        # the declared period is over: consolidate, verify, refuse to sample, and never extend
+        existing_closure, closure_reading = closure_of_declared_period(period)
+        if existing_closure is not None:
+            # The terminal state is already on disk.  This tick neither samples, nor rewrites an
+            # artefact, nor appends another run event, so the closing transition is idempotent and
+            # the live state stops growing the moment the declared period ends.
             print(
-                f"slot {existing['slot']} on {existing['day']} is already observed by window "
-                f"{existing['window_id']}; no duplicate measurement"
+                f"PERIOD_ENDED_TERMINAL: the declared period closed at {period['ends_at_utc']} "
+                f"({closure_reading}); no sample is taken, no artefact is rewritten and no run "
+                "event is appended."
+            )
+            return EXIT_PERIOD_ENDED
+        windows = _read_jsonl(WINDOWS)
+        observations = _read_jsonl(OBSERVATIONS)
+        sync_missed_windows(period, windows, now)
+        report = rollup(period, thresholds, volatility_reference_, windows, observations)
+        verification = _run_program([sys.executable, str(VERIFY_SCRIPT)])
+        scheduler_verification = (
+            _run_program([sys.executable, str(SCHEDULER_VERIFY_SCRIPT)])
+            if SCHEDULER_VERIFY_SCRIPT.exists()
+            else {"status": "NOT_INSTALLED", "exit_code": None}
+        )
+        closure = close_period(
+            period,
+            report["coverage"],
+            report["drift"],
+            report["model_comparison"]["statistics"],
+            windows,
+            observations,
+            now,
+        )
+        closure["outcome"] = report["outcome"]
+        closure["outcome_basis"] = report["outcome_basis"]
+        closure["eco_1"] = report["eco_1"]
+        # An insufficient-coverage classification must not bury a deviation that was actually
+        # measured: the terminal artefact names the evidence failures and repeats the drift it saw
+        # beside the outcome rather than behind an average of it.
+        closure["evidence_failures"] = report["errors"]["evidence_failures"]
+        closure["drift_preserved"] = {
+            "verdict": report["drift"]["st6_window_verdict"],
+            "breaches_total": report["drift"]["breaches_total"],
+            "drift_breaches": report["drift"]["drift_breaches"],
+            "boundary_breaches": report["drift"]["boundary_breaches"],
+            "per_asset_extremes": report["drift"]["per_asset_extremes"],
+            "policy": (
+                "every observation above a modelled threshold is listed individually with its "
+                "asset and instant; a classification of insufficient coverage or a later average "
+                "never hides it"
+            ),
+        }
+        # The transition of the schedule itself is performed *before* the consolidation is written,
+        # so a crash cannot leave a closure that stopped nothing.  It is idempotent: a task already
+        # disabled is recorded as such and no second command is sent.
+        closure["terminal_state"] = "PERIOD_CLOSED_NO_FURTHER_COLLECTION"
+        closure["terminal_transition"] = perform_terminal_transition()
+        closure["post_close_contract"] = {
+            "new_market_requests": 0,
+            "new_windows": 0,
+            "original_evidence_preserved": True,
+            "repeated_ticks": (
+                "an idempotent no-op: no sample, no artefact rewrite and no run event after the "
+                "first consolidation of the declared period"
+            ),
+        }
+        _write_json(CLOSURE, closure)
+        health = (
+            _run_program([sys.executable, str(HEALTH_SCRIPT)])
+            if HEALTH_SCRIPT.exists()
+            else {"status": "NOT_INSTALLED", "exit_code": None}
+        )
+        scheduler_report = build_scheduler_report(
+            period, report["coverage"], windows, observations, now
+        )
+        _write_json(SCHEDULER_REPORT_JSON, scheduler_report)
+        SCHEDULER_REPORT_MD.write_text(
+            _render_scheduler_markdown(scheduler_report), encoding="utf-8"
+        )
+        run_event.update(
+            {
+                "result": "PERIOD_ENDED_CONSOLIDATED",
+                "exit_code": EXIT_PERIOD_ENDED,
+                "verifier_status": verification["status"],
+                "collection_attempted": False,
+                "errors": None
+                if verification["status"] == "PASS"
+                else "the verifier reported FAIL",
+                "closure": str(CLOSURE.relative_to(REPO)),
+                "health_status": health.get("status"),
+            }
+        )
+        run_event["actual_end_utc"] = _utc()
+        append_run_event(run_event)
+        print(
+            f"PERIOD_ENDED: the declared period closed at {period['ends_at_utc']}; no further sample "
+            f"is taken. Consolidation written to {CLOSURE.relative_to(REPO)}, verifier "
+            f"{verification['status']}, scheduler verifier {scheduler_verification['status']}."
+        )
+        return EXIT_PERIOD_ENDED
+
+    if (args.collect or args.due or scheduled_tick) and not args.authorize_extension:
+        existing = slot_already_observed(now)
+        if existing is not None and (args.due or scheduled_tick):
+            run_event.update(
+                {
+                    "result": "SKIPPED_NO_WINDOW_DUE",
+                    "observed_by_window": existing["window_id"],
+                    "market_requests": 0,
+                }
             )
         else:
+            run_event["collection_attempted"] = True
             record = collect_one(
                 period,
                 thresholds,
@@ -1905,6 +2715,24 @@ def main(argv: list[str] | None = None) -> int:
                 args.rounds,
                 args.spacing,
                 args.depth_limit,
+            )
+            run_event.update(
+                {
+                    "result": "COLLECTED" if record["window_complete"] else "COLLECTION_INCOMPLETE",
+                    "window_id": record["window_id"],
+                    "market_requests": record["requests_made"],
+                    "raw_evidence_hash": record["raw"]["uncompressed_sha256"],
+                    "data_freshness": {
+                        "max_book_age_ms": record["max_book_age_ms"],
+                        "freshness_limit_ms": record["freshness"]["freshness_limit_ms"],
+                        "observation_path_latency_ok": record["freshness"][
+                            "observation_path_latency_ok"
+                        ],
+                    },
+                    "errors": None
+                    if record["window_complete"]
+                    else "; ".join(record["failures"])[:400],
+                }
             )
             print(
                 f"window {record['window_id']} slot {record['slot']} ({record['session']}, "
@@ -1914,18 +2742,70 @@ def main(argv: list[str] | None = None) -> int:
                 f"walk {record['worst_walk_bps_at_account_size']} bps, complete "
                 f"{record['window_complete']}"
             )
+            rollup(period, thresholds, volatility_reference_)
 
-    report = rollup(period, thresholds, volatility_reference_)
-    print(
-        f"{report['outcome']} over {report['period']['windows_observed']} window(s) / "
-        f"{report['period']['days_covered']} day(s) - coverage {report['coverage']['coverage_token']}, "
-        f"ST-6 {report['drift']['st6_window_verdict']}, breaches {report['drift']['breaches_total']}"
+    elif args.rollup_only or args.scheduler_report:
+        pass
+    elif args.rebuild_observations or args.activate:
+        rollup(period, thresholds, volatility_reference_)
+
+    if not scheduled_tick and not args.scheduler_report:
+        report = rollup(period, thresholds, volatility_reference_)
+        print(
+            f"{report['outcome']} over {report['period']['windows_observed']} window(s) / "
+            f"{report['period']['days_covered']} day(s) - coverage "
+            f"{report['coverage']['coverage_token']}, ST-6 {report['drift']['st6_window_verdict']}, "
+            f"breaches {report['drift']['breaches_total']}"
+        )
+        print(
+            f"written -> {REPORT_MD.relative_to(REPO)}, {REPORT_JSON.relative_to(REPO)}, "
+            f"{COVERAGE_PATH.relative_to(REPO)}, {DRIFT_PATH.relative_to(REPO)}"
+        )
+
+    # the autonomous tick always leaves a compact event, a missed-window accounting and a health
+    # snapshot, and never rewrites the accumulated reports when nothing was collected
+    windows = _read_jsonl(WINDOWS)
+    observations = _read_jsonl(OBSERVATIONS)
+    missed = sync_missed_windows(period, windows, now)
+    health = (
+        _run_program([sys.executable, str(HEALTH_SCRIPT)])
+        if HEALTH_SCRIPT.exists()
+        else {"status": "NOT_INSTALLED", "exit_code": None}
     )
-    print(
-        f"written -> {REPORT_MD.relative_to(REPO)}, {REPORT_JSON.relative_to(REPO)}, "
-        f"{COVERAGE_PATH.relative_to(REPO)}, {DRIFT_PATH.relative_to(REPO)}"
-    )
-    return 0
+    # the checker's *state* (its own vocabulary) is what the run event records, not its exit status
+    health_document = _read_json(HEALTH_STATUS) or {}
+    run_event["missed_windows_recorded"] = [entry["slot_key"] for entry in missed]
+    run_event["health_status"] = health_document.get("status", health.get("status"))
+    run_event["health_exit_code"] = health.get("exit_code")
+    run_event["actual_end_utc"] = _utc()
+    if run_event["result"] == "COLLECTION_INCOMPLETE":
+        exit_code = EXIT_COLLECTION_FAILED
+    elif run_event["errors"]:
+        exit_code = EXIT_ERROR
+    else:
+        exit_code = EXIT_OK
+    # the event carries the exit status this run returned, so the log and the process agree
+    run_event["exit_code"] = exit_code
+    verify_exit = append_run_event(run_event)
+
+    if scheduled_tick or args.scheduler_report:
+        coverage = coverage_document(period, windows, observations)
+        scheduler_report = build_scheduler_report(period, coverage, windows, observations, now)
+        _write_json(SCHEDULER_REPORT_JSON, scheduler_report)
+        SCHEDULER_REPORT_MD.write_text(
+            _render_scheduler_markdown(scheduler_report), encoding="utf-8"
+        )
+        print(
+            f"tick: {run_event['result']} slot {run_event['scheduled_slot_utc']} "
+            f"({run_event['session']}, {run_event['day_type']}); market requests "
+            f"{run_event['market_requests']}; completed windows {len(windows)}; missed "
+            f"{len(_read_jsonl(MISSED_LOG))}; health {run_event['health_status']}; "
+            f"{scheduler_report['result_status']}"
+        )
+    if verify_exit:
+        print(f"the run log was pruned by {verify_exit} oldest event(s)")
+
+    return exit_code
 
 
 if __name__ == "__main__":

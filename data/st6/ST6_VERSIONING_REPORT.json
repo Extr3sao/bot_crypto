@@ -1,0 +1,542 @@
+{
+  "acceptance": {
+    "close_replay_pass": "PASS",
+    "commit_valid": "committed with explicit paths; verified with git show --stat",
+    "governance_violations": 0,
+    "independent_verification_pass": "PASS",
+    "live_state_unmodified_by_the_replay": true,
+    "negative_tests_pass": "PASS",
+    "no_real_requests_during_the_replay": true,
+    "own_paths_clean_after_commit": true
+  },
+  "ahead_of_origin_main": "205",
+  "artifact": "ST6_VERSIONING_REPORT",
+  "baseline": {
+    "eco_1": "OPEN",
+    "entrypoint": "scripts/st6_forward_regime.py --due --scheduled",
+    "head_verified": true,
+    "other_threads_paths_untouched": [
+      "FINAL_REPORT.md",
+      "PAPER_DATA_24H_REPORT.json",
+      "PAPER_DATA_24H_REPORT.md",
+      "RUN_REPORT.json",
+      "RUN_REPORT.md",
+      "data/rfc035e/",
+      "docs/research/experiment_specs/EXP-CAND-001-SOURCE-FAITHFUL-EXIT.md",
+      "docs/research/runtime_reconciliation/",
+      "docs/research/work_packages/WP-CAND-001_ma_pullback.md",
+      "docs/research/work_packages/WP-CAND-002_mtf_alignment.md",
+      "docs/research/work_packages/WP-CAND-003_macd_regime_crossover.md",
+      "docs/research/work_packages/WP-HTF-PIT-001_htf_availability_unit_fix.md",
+      "docs/research/work_packages/WP-IMP-001_process_conformance_rfc.md",
+      "docs/research/work_packages/WP-IMP-002_post_trade_reconstruction.md",
+      "docs/research/work_packages/WP-IMP-004_rule_provenance_rfc.md",
+      "docs/research/work_packages/WP-IMP-005_source_threshold_quarantine.md",
+      "docs/research/work_packages/WP-PAIR-INFRA-001_pair_execution_gap.md",
+      "docs/research/work_packages/WP-RISK-001_exposure_and_stop_audit.md",
+      "docs/research/work_packages/WP-RISK-EXPOSURE-001.md",
+      "docs/source_registry.md",
+      "evidence/real_decisions/evaluations.jsonl",
+      "evidence/real_decisions/outcomes.jsonl",
+      "scripts/cap004c_verify.py",
+      "scripts/rfc035_discovery_verify.py",
+      "scripts/rfc035e_fetch.py",
+      "scripts/rfc035e_reproduce.py",
+      "scripts/rfc035e_verify.py",
+      "scripts/rfc035s2_search.py",
+      "scripts/rfc035s2_verify.py",
+      "scripts/source_candidate_experiment.py",
+      "src/trading_bot/research/experimental/",
+      "tests/unit/research/test_experimental_candidates_pit.py",
+      "tests/unit/research/test_rfc035_opportunity_registry.py",
+      "tests/unit/research/test_rfc035e_effect_reproduction.py",
+      "tests/unit/research/test_rfc035s2_strategy_search.py"
+    ],
+    "period": {
+      "declared_days": 14,
+      "ends_at_utc": "2026-10-22T16:21:20Z",
+      "planned_windows": 84,
+      "slots_per_day": 6,
+      "started_at_utc": "2026-10-08T16:21:20Z"
+    },
+    "raw_evidence_files": 2,
+    "scheduler_state": "installed and enabled, PT15M, --due --scheduled in the repository venv",
+    "scheduler_task": "TradingAgentic-ST6-Forward",
+    "uncommitted_work": "the autonomous tick layer, the health checker, the scheduler verifier and the scheduler test suite were complete on disk and uncommitted",
+    "windows_collected": 2
+  },
+  "branch": "main",
+  "commit_set": {
+    "count": 47,
+    "explicit_paths_only": true,
+    "git_add_All_used": false,
+    "hashes": {
+      "data/st6/ST6_CLOSE_INDEPENDENT_VERIFICATION.json": {
+        "bytes": 11161,
+        "git_blob_sha1": "71bc6e237810a0a965299a9ff15f749f41bc3aea",
+        "sha256": "816c39c1b5de802f73227cd02aeb225eea7ed978f67784701ed0adba7fb5f1f5"
+      },
+      "data/st6/ST6_CLOSE_REPLAY_REPORT.json": {
+        "bytes": 59645,
+        "git_blob_sha1": "ca63240911a283dbd18769e753714e6ff2c3a809",
+        "sha256": "a8e49a8a79ba02171af2af41480e5dfa1e9135594ab120f69e34b593f5511dc7"
+      },
+      "data/st6/ST6_CLOSE_REPLAY_REPORT.md": {
+        "bytes": 4130,
+        "git_blob_sha1": "aaf662e39e3e1bf9e9f05b624ef07be573c446de",
+        "sha256": "6ca46ec69ea630277ee9db32587f069692bd4ca746d6249331c60d0fe9176f02"
+      },
+      "data/st6/ST6_PERIOD_BOUNDARY_AUDIT.md": {
+        "bytes": 8693,
+        "git_blob_sha1": "d8c4f72cf89dffc615a0d73aee6f1d215c651bcc",
+        "sha256": "aaf6323d46334e53a43555473b55a6a8f7510ae0d57728473ebbdb02f4cdbd5b"
+      },
+      "data/st6/ST6_TASK_DEFINITION.xml": {
+        "bytes": 3308,
+        "git_blob_sha1": "6c13e0e75568feaca1329a226116eed2b18d58ac",
+        "sha256": "c52ad4dc8ead1c098d9ac8eae1a1ff01d7aca32ca24fbd8be332fe3c8da251a2"
+      },
+      "data/st6/ST6_VERSIONING_REPORT.json": {
+        "note": "written by this report; the commit carries it",
+        "self_referential": true
+      },
+      "data/st6/ST6_VERSIONING_REPORT.md": {
+        "bytes": 12144,
+        "git_blob_sha1": "3aaf8de1a2243866531f4aa71d99bd60b5e6b6d3",
+        "sha256": "fdc689fae0cefe913554656736ff8fd1d70929ad59e816309244e78712a64b94"
+      },
+      "data/st6/raw/20261008T200323Z.json.gz": {
+        "bytes": 17904,
+        "git_blob_sha1": "2d42847d6090feaab898a726bdc5d04fd50cc362",
+        "sha256": "c6811a49c2c09d48c2154140764a610fe6fa48ef6b9fd351cc6539148d10ec27"
+      },
+      "data/st6/snapshots/ST6_LIVE_STATE_20261008T215219Z.json": {
+        "bytes": 10689,
+        "git_blob_sha1": "8cd1e37c74c96bbac395f4c2a3004b28192baed9",
+        "sha256": "5439b266d7a76e855b0a69cc78b51fa31c216b041606d3974a58224cea0d00e9"
+      },
+      "data/st6/snapshots/ST6_LIVE_STATE_20261008T215219Z/ST6_FORWARD_REGIME_REPORT.json": {
+        "bytes": 32524,
+        "git_blob_sha1": "6c686a9851b8271c38e0aa14896ec38ff3fd1de1",
+        "sha256": "7902cef359f5fe6a3650e3ffb49523c7a586f7e0ceb6f8838c2a77ee2d704beb"
+      },
+      "data/st6/snapshots/ST6_LIVE_STATE_20261008T215219Z/ST6_FORWARD_REGIME_REPORT.md": {
+        "bytes": 6547,
+        "git_blob_sha1": "59fe808b303399ba63447779ea9642f4f34a5e3a",
+        "sha256": "6e87401449a63fede82dd72aee25159474a8c1394e50d11af45e915ac65dd0da"
+      },
+      "data/st6/snapshots/ST6_LIVE_STATE_20261008T215219Z/ST6_HEALTH.jsonl": {
+        "bytes": 21225,
+        "git_blob_sha1": "fab92fcbb8fc6a334137d32e985d23dae8bba0c5",
+        "sha256": "019d40ddbe9ef2bce721ab5231fb2554d330145b063542653a847a58da612757"
+      },
+      "data/st6/snapshots/ST6_LIVE_STATE_20261008T215219Z/ST6_HEALTH_STATUS.json": {
+        "bytes": 2446,
+        "git_blob_sha1": "a5e1c711f26bbcb656180dea81aadedda128780b",
+        "sha256": "5fc0f1680bfc578b2d60a7ac0143deff38b848ea9a135e5163cf85c2743e5e5e"
+      },
+      "data/st6/snapshots/ST6_LIVE_STATE_20261008T215219Z/ST6_INDEPENDENT_VERIFICATION.json": {
+        "bytes": 1780,
+        "git_blob_sha1": "49b30faff9d2b2073df1842081f4b4794c807b74",
+        "sha256": "11cc71200bc42d10f3f93e650b9593ce4c405eb896974061311865eedd9e590d"
+      },
+      "data/st6/snapshots/ST6_LIVE_STATE_20261008T215219Z/ST6_INDEPENDENT_VERIFICATION.md": {
+        "bytes": 1294,
+        "git_blob_sha1": "80ef016a74f8a8357bced64d567e232a6013ee61",
+        "sha256": "719de3f2577ef50561f43dfd093c696e0c27136a1b0f06bef1d5b8c4a1652e63"
+      },
+      "data/st6/snapshots/ST6_LIVE_STATE_20261008T215219Z/ST6_MODEL_DRIFT.json": {
+        "bytes": 3664,
+        "git_blob_sha1": "283e956c6aa7d567f65178554101e14cde1f0e2e",
+        "sha256": "ace6faf01eed9eabb5022eff16d07287147f8b037e3470c688b068059ab4897c"
+      },
+      "data/st6/snapshots/ST6_LIVE_STATE_20261008T215219Z/ST6_OBSERVATIONS.jsonl": {
+        "bytes": 53369,
+        "git_blob_sha1": "993e1df2c87268f592c7f233d6fa1242df42fbff",
+        "sha256": "b8d2f0fc6d369519b09222da4e06852643c93f8d68343ece7c718515af641ff6"
+      },
+      "data/st6/snapshots/ST6_LIVE_STATE_20261008T215219Z/ST6_PERIOD.json": {
+        "bytes": 5787,
+        "git_blob_sha1": "348a36214b724d0c7b364cf4036cfa53c243bf93",
+        "sha256": "5dd14bc8eac887786129d06e5aafed3de25b203764cb06033e39df0188cc5cae"
+      },
+      "data/st6/snapshots/ST6_LIVE_STATE_20261008T215219Z/ST6_REGIME_COVERAGE.json": {
+        "bytes": 6493,
+        "git_blob_sha1": "4a41e149c4547a5a9de9758b472f82083b43df66",
+        "sha256": "d2628536119dd1dc9be7fbe7339ac40ba63f7f4e1a9c3dde2aaba742b72f9619"
+      },
+      "data/st6/snapshots/ST6_LIVE_STATE_20261008T215219Z/ST6_RUNS.jsonl": {
+        "bytes": 75793,
+        "git_blob_sha1": "12fdbf2b224891b3e6bb27e079811ef4979be3f4",
+        "sha256": "d14ea01b2170c940f20a51f80d962b7307795d9d768bad01b35238b78431ac2b"
+      },
+      "data/st6/snapshots/ST6_LIVE_STATE_20261008T215219Z/ST6_SCHEDULER_REPORT.json": {
+        "bytes": 3834,
+        "git_blob_sha1": "4b13f09e00033749da7bad8c346cfd1dc0834e42",
+        "sha256": "93f199089e434c30422234297d043f9aa4c857e7c0cf51260e0dde2aee32eb53"
+      },
+      "data/st6/snapshots/ST6_LIVE_STATE_20261008T215219Z/ST6_SCHEDULER_REPORT.md": {
+        "bytes": 1935,
+        "git_blob_sha1": "b7bd69d318880dc21678bfdd7dfb1a07111ce1f2",
+        "sha256": "dcae61fe889cecad69c603e3dff3f47046a28e70e4ea388d1d26252cdaf0fc44"
+      },
+      "data/st6/snapshots/ST6_LIVE_STATE_20261008T215219Z/ST6_SCHEDULER_VERIFICATION.json": {
+        "bytes": 5848,
+        "git_blob_sha1": "b81a0ccfb50c874c89965a302405f3675fd6bf10",
+        "sha256": "c7f8a14cef5bca1238558ccd052dabcc602efcf44aa1ed36364c13ce02160212"
+      },
+      "data/st6/snapshots/ST6_LIVE_STATE_20261008T215219Z/ST6_WINDOWS.jsonl": {
+        "bytes": 5330,
+        "git_blob_sha1": "71f561ed8b078bd09b99f1c9639c578e51f115a9",
+        "sha256": "7be9fd501d55835549ed9016164c980a605b72a6f9d7982d41f3e92752743284"
+      },
+      "data/st6/snapshots/ST6_LIVE_STATE_20261008T215222Z.json": {
+        "bytes": 10689,
+        "git_blob_sha1": "c60c52221b62638bcdfa8a1da8bdee4fdb98c765",
+        "sha256": "a047e83e95a7993eac30aa38f5030c93eae34f0a0ca102b6648fc0375840d583"
+      },
+      "data/st6/snapshots/ST6_LIVE_STATE_20261008T215222Z/ST6_FORWARD_REGIME_REPORT.json": {
+        "bytes": 32524,
+        "git_blob_sha1": "6c686a9851b8271c38e0aa14896ec38ff3fd1de1",
+        "sha256": "7902cef359f5fe6a3650e3ffb49523c7a586f7e0ceb6f8838c2a77ee2d704beb"
+      },
+      "data/st6/snapshots/ST6_LIVE_STATE_20261008T215222Z/ST6_FORWARD_REGIME_REPORT.md": {
+        "bytes": 6547,
+        "git_blob_sha1": "59fe808b303399ba63447779ea9642f4f34a5e3a",
+        "sha256": "6e87401449a63fede82dd72aee25159474a8c1394e50d11af45e915ac65dd0da"
+      },
+      "data/st6/snapshots/ST6_LIVE_STATE_20261008T215222Z/ST6_HEALTH.jsonl": {
+        "bytes": 21225,
+        "git_blob_sha1": "fab92fcbb8fc6a334137d32e985d23dae8bba0c5",
+        "sha256": "019d40ddbe9ef2bce721ab5231fb2554d330145b063542653a847a58da612757"
+      },
+      "data/st6/snapshots/ST6_LIVE_STATE_20261008T215222Z/ST6_HEALTH_STATUS.json": {
+        "bytes": 2446,
+        "git_blob_sha1": "a5e1c711f26bbcb656180dea81aadedda128780b",
+        "sha256": "5fc0f1680bfc578b2d60a7ac0143deff38b848ea9a135e5163cf85c2743e5e5e"
+      },
+      "data/st6/snapshots/ST6_LIVE_STATE_20261008T215222Z/ST6_INDEPENDENT_VERIFICATION.json": {
+        "bytes": 1780,
+        "git_blob_sha1": "49b30faff9d2b2073df1842081f4b4794c807b74",
+        "sha256": "11cc71200bc42d10f3f93e650b9593ce4c405eb896974061311865eedd9e590d"
+      },
+      "data/st6/snapshots/ST6_LIVE_STATE_20261008T215222Z/ST6_INDEPENDENT_VERIFICATION.md": {
+        "bytes": 1294,
+        "git_blob_sha1": "80ef016a74f8a8357bced64d567e232a6013ee61",
+        "sha256": "719de3f2577ef50561f43dfd093c696e0c27136a1b0f06bef1d5b8c4a1652e63"
+      },
+      "data/st6/snapshots/ST6_LIVE_STATE_20261008T215222Z/ST6_MODEL_DRIFT.json": {
+        "bytes": 3664,
+        "git_blob_sha1": "283e956c6aa7d567f65178554101e14cde1f0e2e",
+        "sha256": "ace6faf01eed9eabb5022eff16d07287147f8b037e3470c688b068059ab4897c"
+      },
+      "data/st6/snapshots/ST6_LIVE_STATE_20261008T215222Z/ST6_OBSERVATIONS.jsonl": {
+        "bytes": 53369,
+        "git_blob_sha1": "993e1df2c87268f592c7f233d6fa1242df42fbff",
+        "sha256": "b8d2f0fc6d369519b09222da4e06852643c93f8d68343ece7c718515af641ff6"
+      },
+      "data/st6/snapshots/ST6_LIVE_STATE_20261008T215222Z/ST6_PERIOD.json": {
+        "bytes": 5787,
+        "git_blob_sha1": "348a36214b724d0c7b364cf4036cfa53c243bf93",
+        "sha256": "5dd14bc8eac887786129d06e5aafed3de25b203764cb06033e39df0188cc5cae"
+      },
+      "data/st6/snapshots/ST6_LIVE_STATE_20261008T215222Z/ST6_REGIME_COVERAGE.json": {
+        "bytes": 6493,
+        "git_blob_sha1": "4a41e149c4547a5a9de9758b472f82083b43df66",
+        "sha256": "d2628536119dd1dc9be7fbe7339ac40ba63f7f4e1a9c3dde2aaba742b72f9619"
+      },
+      "data/st6/snapshots/ST6_LIVE_STATE_20261008T215222Z/ST6_RUNS.jsonl": {
+        "bytes": 75793,
+        "git_blob_sha1": "12fdbf2b224891b3e6bb27e079811ef4979be3f4",
+        "sha256": "d14ea01b2170c940f20a51f80d962b7307795d9d768bad01b35238b78431ac2b"
+      },
+      "data/st6/snapshots/ST6_LIVE_STATE_20261008T215222Z/ST6_SCHEDULER_REPORT.json": {
+        "bytes": 3834,
+        "git_blob_sha1": "4b13f09e00033749da7bad8c346cfd1dc0834e42",
+        "sha256": "93f199089e434c30422234297d043f9aa4c857e7c0cf51260e0dde2aee32eb53"
+      },
+      "data/st6/snapshots/ST6_LIVE_STATE_20261008T215222Z/ST6_SCHEDULER_REPORT.md": {
+        "bytes": 1935,
+        "git_blob_sha1": "b7bd69d318880dc21678bfdd7dfb1a07111ce1f2",
+        "sha256": "dcae61fe889cecad69c603e3dff3f47046a28e70e4ea388d1d26252cdaf0fc44"
+      },
+      "data/st6/snapshots/ST6_LIVE_STATE_20261008T215222Z/ST6_SCHEDULER_VERIFICATION.json": {
+        "bytes": 5848,
+        "git_blob_sha1": "b81a0ccfb50c874c89965a302405f3675fd6bf10",
+        "sha256": "c7f8a14cef5bca1238558ccd052dabcc602efcf44aa1ed36364c13ce02160212"
+      },
+      "data/st6/snapshots/ST6_LIVE_STATE_20261008T215222Z/ST6_WINDOWS.jsonl": {
+        "bytes": 5330,
+        "git_blob_sha1": "71f561ed8b078bd09b99f1c9639c578e51f115a9",
+        "sha256": "7be9fd501d55835549ed9016164c980a605b72a6f9d7982d41f3e92752743284"
+      },
+      "scripts/st6_close_replay.py": {
+        "bytes": 61284,
+        "git_blob_sha1": "29b2a3cbb4c7ead03356976535fb94c1059d5149",
+        "sha256": "7094017ddb7ba879fac32e6100db4146fbb0d79cbc91ba0334baa1055de52ff2"
+      },
+      "scripts/st6_close_verify.py": {
+        "bytes": 46742,
+        "git_blob_sha1": "26b52211bbeee9bbcb68d17fefbb70ca6f15c970",
+        "sha256": "5b104ea367a58a071f8c870c2493f98cbf2aba42f87b185dfe857d2c1bad4c0a"
+      },
+      "scripts/st6_forward_regime.py": {
+        "bytes": 121866,
+        "git_blob_sha1": "3c3c7092c942ef3613be17f6ead89652431f8ae3",
+        "sha256": "3f9c683356827c3edbb80ad314a7385c99a415cecb370b75d731e5dc9aeb11b1"
+      },
+      "scripts/st6_health_check.py": {
+        "bytes": 18246,
+        "git_blob_sha1": "36ce06959843401ccb42da291d2086218484e4c2",
+        "sha256": "5451d315a57138c5adfa851ac91d3a8c79b84b230743621e737973ac2024b6dd"
+      },
+      "scripts/st6_scheduler_verify.py": {
+        "bytes": 29401,
+        "git_blob_sha1": "8eceb9b2ead559fad37f4c29178bb5332f119484",
+        "sha256": "b9b44d9b4a6aeabb38bd05928339d991f5a8b11ea1e9864f012d7a985f2a4374"
+      },
+      "scripts/st6_state_snapshot.py": {
+        "bytes": 11797,
+        "git_blob_sha1": "821987eaa8f7db8143c05d2191776f7ce26a1bb6",
+        "sha256": "6b5bb9ed7818f733b140b353df0bb3b43d6ce4787ab6597e4c4e9fa86839f520"
+      },
+      "tests/unit/research/test_st6_scheduler.py": {
+        "bytes": 26255,
+        "git_blob_sha1": "c54a23284067074c30e6165b6778cb646435e972",
+        "sha256": "8427695d6af81d2c7136ec2cde7357fa43af65943e05f985fe42dd3040b3e936"
+      }
+    },
+    "paths": [
+      "scripts/st6_forward_regime.py",
+      "scripts/st6_health_check.py",
+      "scripts/st6_scheduler_verify.py",
+      "scripts/st6_state_snapshot.py",
+      "scripts/st6_close_replay.py",
+      "scripts/st6_close_verify.py",
+      "tests/unit/research/test_st6_scheduler.py",
+      "data/st6/ST6_TASK_DEFINITION.xml",
+      "data/st6/raw/20261008T200323Z.json.gz",
+      "data/st6/snapshots/ST6_LIVE_STATE_20261008T215219Z.json",
+      "data/st6/snapshots/ST6_LIVE_STATE_20261008T215219Z/ST6_FORWARD_REGIME_REPORT.json",
+      "data/st6/snapshots/ST6_LIVE_STATE_20261008T215219Z/ST6_FORWARD_REGIME_REPORT.md",
+      "data/st6/snapshots/ST6_LIVE_STATE_20261008T215219Z/ST6_HEALTH.jsonl",
+      "data/st6/snapshots/ST6_LIVE_STATE_20261008T215219Z/ST6_HEALTH_STATUS.json",
+      "data/st6/snapshots/ST6_LIVE_STATE_20261008T215219Z/ST6_INDEPENDENT_VERIFICATION.json",
+      "data/st6/snapshots/ST6_LIVE_STATE_20261008T215219Z/ST6_INDEPENDENT_VERIFICATION.md",
+      "data/st6/snapshots/ST6_LIVE_STATE_20261008T215219Z/ST6_MODEL_DRIFT.json",
+      "data/st6/snapshots/ST6_LIVE_STATE_20261008T215219Z/ST6_OBSERVATIONS.jsonl",
+      "data/st6/snapshots/ST6_LIVE_STATE_20261008T215219Z/ST6_PERIOD.json",
+      "data/st6/snapshots/ST6_LIVE_STATE_20261008T215219Z/ST6_REGIME_COVERAGE.json",
+      "data/st6/snapshots/ST6_LIVE_STATE_20261008T215219Z/ST6_RUNS.jsonl",
+      "data/st6/snapshots/ST6_LIVE_STATE_20261008T215219Z/ST6_SCHEDULER_REPORT.json",
+      "data/st6/snapshots/ST6_LIVE_STATE_20261008T215219Z/ST6_SCHEDULER_REPORT.md",
+      "data/st6/snapshots/ST6_LIVE_STATE_20261008T215219Z/ST6_SCHEDULER_VERIFICATION.json",
+      "data/st6/snapshots/ST6_LIVE_STATE_20261008T215219Z/ST6_WINDOWS.jsonl",
+      "data/st6/snapshots/ST6_LIVE_STATE_20261008T215222Z.json",
+      "data/st6/snapshots/ST6_LIVE_STATE_20261008T215222Z/ST6_FORWARD_REGIME_REPORT.json",
+      "data/st6/snapshots/ST6_LIVE_STATE_20261008T215222Z/ST6_FORWARD_REGIME_REPORT.md",
+      "data/st6/snapshots/ST6_LIVE_STATE_20261008T215222Z/ST6_HEALTH.jsonl",
+      "data/st6/snapshots/ST6_LIVE_STATE_20261008T215222Z/ST6_HEALTH_STATUS.json",
+      "data/st6/snapshots/ST6_LIVE_STATE_20261008T215222Z/ST6_INDEPENDENT_VERIFICATION.json",
+      "data/st6/snapshots/ST6_LIVE_STATE_20261008T215222Z/ST6_INDEPENDENT_VERIFICATION.md",
+      "data/st6/snapshots/ST6_LIVE_STATE_20261008T215222Z/ST6_MODEL_DRIFT.json",
+      "data/st6/snapshots/ST6_LIVE_STATE_20261008T215222Z/ST6_OBSERVATIONS.jsonl",
+      "data/st6/snapshots/ST6_LIVE_STATE_20261008T215222Z/ST6_PERIOD.json",
+      "data/st6/snapshots/ST6_LIVE_STATE_20261008T215222Z/ST6_REGIME_COVERAGE.json",
+      "data/st6/snapshots/ST6_LIVE_STATE_20261008T215222Z/ST6_RUNS.jsonl",
+      "data/st6/snapshots/ST6_LIVE_STATE_20261008T215222Z/ST6_SCHEDULER_REPORT.json",
+      "data/st6/snapshots/ST6_LIVE_STATE_20261008T215222Z/ST6_SCHEDULER_REPORT.md",
+      "data/st6/snapshots/ST6_LIVE_STATE_20261008T215222Z/ST6_SCHEDULER_VERIFICATION.json",
+      "data/st6/snapshots/ST6_LIVE_STATE_20261008T215222Z/ST6_WINDOWS.jsonl",
+      "data/st6/ST6_PERIOD_BOUNDARY_AUDIT.md",
+      "data/st6/ST6_CLOSE_REPLAY_REPORT.md",
+      "data/st6/ST6_CLOSE_REPLAY_REPORT.json",
+      "data/st6/ST6_CLOSE_INDEPENDENT_VERIFICATION.json",
+      "data/st6/ST6_VERSIONING_REPORT.md",
+      "data/st6/ST6_VERSIONING_REPORT.json"
+    ]
+  },
+  "convention": "git_blob_sha1 is `git hash-object` for the exact bytes staged, so it identifies the content of the commit that carries them; the commit id itself is reported in the mission's final response, since a report cannot contain the hash of the commit that contains it",
+  "generated_at_utc": "2026-10-08T21:53:19Z",
+  "governance": {
+    "ECO_1": "OPEN",
+    "ECO_2": "UNKNOWN_NOT_RESOLVABLE_OFFLINE",
+    "LIVE_TRADING": "DISABLED",
+    "NEXT_CAMPAIGN": "NOT_AUTHORIZED",
+    "PROFITABILITY_VERIFIED": false,
+    "ST6_AUTONOMOUS_COLLECTION_ACTIVE": true,
+    "TRADES_AUTHORIZED": 0,
+    "campaign_declared_finished": false,
+    "cap004b_cap004d_touched": false,
+    "cost_model_v3_touched": false,
+    "credentials_used": 0,
+    "orders_sent": 0,
+    "period_modified": false
+  },
+  "head_before_commit": "9660afab9003001d3a8130b9679c066071548421",
+  "open_defects": [
+    {
+      "evidence": "data/st6/ST6_CLOSE_REPLAY_REPORT.json scenario 2",
+      "fixed": false,
+      "id": "BOUNDARY-SLOT-DUE-RULE",
+      "kind": "declared deviation"
+    },
+    {
+      "evidence": "data/st6/ST6_CLOSE_REPLAY_REPORT.json scenario 11",
+      "fixed": false,
+      "id": "EXTENSION-FLAG-INERT",
+      "kind": "declared deviation"
+    },
+    {
+      "evidence": "data/st6/ST6_CLOSE_REPLAY_REPORT.json scenario 8 (BadGzipFile)",
+      "fixed": false,
+      "id": "CORRUPT-RAW-BYTES-RAISE",
+      "kind": "declared gap",
+      "note": "a tampered hash is classified DATA_QUALITY_FAILED; bytes that are not gzip raise before the classification. Fail-loud, but the declared token is not emitted."
+    },
+    {
+      "evidence": "data/st6/ST6_CLOSE_INDEPENDENT_VERIFICATION.json negative test 1",
+      "fixed": false,
+      "id": "DUPLICATE-INDEX-ROW",
+      "kind": "separation of duties",
+      "note": "the tick consolidates what the index says; the independent verifier owns duplicate detection and is proven to fail on a duplicated row"
+    },
+    {
+      "evidence": "recorded in this section of ST6_VERSIONING_REPORT.md; five repeats behaved correctly",
+      "fixed": false,
+      "id": "UNEXPLAINED-SINGLE-TICK-STATUS-0",
+      "kind": "unexplained observation"
+    }
+  ],
+  "origin_main": "5e6f9632e8d9c15dabd60ea92ac68f350ca28c9d",
+  "scheduler_lifecycle": {
+    "after_the_close": "every later tick is an idempotent no-op: no sample, no artefact rewrite, no run event; the consolidation stays byte-identical across repetitions and across a simulated restart",
+    "at_the_close": "the ended branch returns EXIT_PERIOD_ENDED before any collection statement; the consolidation is written once, the missed windows are named and the terminal state is declared",
+    "before_the_close": "the tick takes the shared lease, consults the local slot state first and makes no market request when the slot is already observed",
+    "no_admin_dependency": true,
+    "other_programs_tasks_touched": false,
+    "task_self_expiry": "the task's declared Duration is P30D and expires it on its own",
+    "terminal_transition": "the period disables its own task (schtasks /change /tn <own task> /disable), unelevated, own task only, outcome recorded in the consolidation; a failure is recorded with a note to disable it by hand"
+  },
+  "separation": {
+    "IMMUTABLE_EVIDENCE": [
+      "data\\st6\\raw\\20261008T162202Z.json.gz",
+      "data\\st6\\raw\\20261008T200323Z.json.gz"
+    ],
+    "LIVE_RUNTIME_STATE_not_committed": [
+      "data/st6/ST6_PERIOD.json",
+      "data/st6/ST6_WINDOWS.jsonl",
+      "data/st6/ST6_OBSERVATIONS.jsonl",
+      "data/st6/ST6_RUNS.jsonl",
+      "data/st6/ST6_HEALTH.jsonl",
+      "data/st6/ST6_HEALTH_STATUS.json",
+      "data/st6/ST6_MISSED_WINDOWS.jsonl",
+      "data/st6/ST6_PERIOD_CLOSURE.json",
+      "data/st6/ST6_REGIME_COVERAGE.json",
+      "data/st6/ST6_MODEL_DRIFT.json",
+      "data/st6/ST6_FORWARD_REGIME_REPORT.json",
+      "data/st6/ST6_FORWARD_REGIME_REPORT.md",
+      "data/st6/ST6_SCHEDULER_REPORT.json",
+      "data/st6/ST6_SCHEDULER_REPORT.md",
+      "data/st6/ST6_SCHEDULER_VERIFICATION.json",
+      "data/st6/ST6_INDEPENDENT_VERIFICATION.json",
+      "data/st6/ST6_INDEPENDENT_VERIFICATION.md"
+    ],
+    "TRANSIENT_COORDINATION": [
+      "data/st6/scheduler_lock/CAMPAIGN_LOCK.json"
+    ],
+    "VERSIONED_IMPLEMENTATION": [
+      "scripts/st6_forward_regime.py",
+      "scripts/st6_health_check.py",
+      "scripts/st6_scheduler_verify.py",
+      "scripts/st6_state_snapshot.py",
+      "scripts/st6_close_replay.py",
+      "scripts/st6_close_verify.py",
+      "tests/unit/research/test_st6_scheduler.py",
+      "data/st6/ST6_TASK_DEFINITION.xml"
+    ],
+    "rule": "files the tick rewrites or appends to every fifteen minutes are snapshotted and hashed, never committed as if they were static reports",
+    "snapshots": {
+      "check": "python scripts/st6_state_snapshot.py --check -> PASS (19 checks)",
+      "final": "data/st6/snapshots/ST6_LIVE_STATE_20261008T215222Z.json",
+      "final_snapshot_id": "ST6_LIVE_STATE_20261008T215222Z",
+      "read_by_the_independent_verification": "data/st6/snapshots/ST6_LIVE_STATE_20261008T215219Z.json",
+      "sandbox_code_identity": "REPLAY_SANDBOX_NOT_A_COMMIT",
+      "why": "the replayed consolidation must not embed the live commit id, or the determinism proof would break whenever the code is committed"
+    }
+  },
+  "verification_evidence": {
+    "close_independent_verification": {
+      "checks_passed": 19,
+      "checks_total": 19,
+      "false_success": 0,
+      "status": "PASS",
+      "verdict": "ST6_CLOSE_VERIFIED"
+    },
+    "close_replay": {
+      "close_mechanics_verdict": "PASS",
+      "declared_deviations": [
+        "BOUNDARY-SLOT-DUE-RULE",
+        "EXTENSION-FLAG-INERT"
+      ],
+      "real_market_requests": 0,
+      "real_scheduler_calls": 0,
+      "real_state_unchanged_by_the_replay": true,
+      "summary": {
+        "declared_deviations": 0,
+        "failed": 0,
+        "passed": 10,
+        "scenarios": 10
+      }
+    },
+    "determinism": {
+      "rerun_close_mechanics": "PASS",
+      "rerun_close_sha256": "8610cf46337fb400ce55b8bd3c829be581bd0a4b7423acb5adb6766a114e923a",
+      "shipped_close_sha256": "8610cf46337fb400ce55b8bd3c829be581bd0a4b7423acb5adb6766a114e923a",
+      "verdicts_equal": true
+    },
+    "negative_tests": {
+      "failed": 0,
+      "passed": 17,
+      "status": "PASS",
+      "tests": 17
+    },
+    "replayed_close": {
+      "auto_extended": false,
+      "breaches_total": 1,
+      "closure_drift_breaches": 1,
+      "coverage_total": {
+        "completed_windows": 2,
+        "coverage_complete": false,
+        "coverage_token": "REGIME_COVERAGE_INSUFFICIENT",
+        "days_covered": 1,
+        "declared_slots_reached": 84,
+        "missed_windows": 82,
+        "observed_windows": 2,
+        "planned_windows": 84
+      },
+      "credentials_used": 0,
+      "drift_breaches_lost_by_the_close": [],
+      "drift_verdict": "DRIFT_WIDER_THAN_MODELLED",
+      "live_drift_breaches": 1,
+      "missed_windows": 82,
+      "orders_sent": 0,
+      "outcome": "INSUFFICIENT_REGIME_COVERAGE",
+      "terminal_state": "PERIOD_CLOSED_NO_FURTHER_COLLECTION"
+    },
+    "scheduler_verifier": {
+      "checks_passed": 1515,
+      "checks_total": 1515,
+      "false_success": 0,
+      "live_tests": {
+        "concurrency": "PASS",
+        "due_idempotency": "PASS",
+        "error_exit_status": "PASS",
+        "period_closure_guard": "PASS",
+        "real_execution": "PASS"
+      },
+      "status": "PASS"
+    },
+    "unit_suite": "tests/unit/research/test_st6_scheduler.py + tests/unit/research/test_st6_forward_regime.py -> 43 passed"
+  }
+}
