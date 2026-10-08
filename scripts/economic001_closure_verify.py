@@ -848,7 +848,11 @@ def main(argv: list[str] | None = None) -> int:
     )
     for failure in c.failed:
         print(f"  FAIL {failure}")
-    print(f"written -> {out.relative_to(REPO)}")
+    try:
+        shown = out.relative_to(REPO)
+    except ValueError:  # an explicit --out outside the repository is legitimate
+        shown = out
+    print(f"written -> {shown}")
     return 1 if c.failed else 0
 
 
