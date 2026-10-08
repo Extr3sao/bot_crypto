@@ -1395,6 +1395,33 @@ def verifier_summary(path: Path) -> str:
     return f"{payload.get('status')} {payload.get('passed')}/{payload.get('total')}"
 
 
+def _campaign_health_compact() -> str | None:
+    """The last CAP-004D verdict as one compact word (§37)."""
+    try:
+        from trading_bot.research import campaign_health as ch
+
+        snapshot = ch.read_health_tail(REPO / "reports" / "cap004d", limit=1)
+    except Exception:  # pragma: no cover - observability never breaks status
+        return None
+    if not snapshot:
+        return None
+    return str(snapshot[-1].get("health_status")) or None
+
+
+def _campaign_health_last_check() -> str | None:
+    """When the health watch last ran, as UTC text."""
+    try:
+        from trading_bot.research import campaign_health as ch
+
+        snapshot = ch.read_health_tail(REPO / "reports" / "cap004d", limit=1)
+    except Exception:  # pragma: no cover
+        return None
+    if not snapshot:
+        return None
+    observed = snapshot[-1].get("observed_at_utc")
+    return str(observed) if observed else None
+
+
 def status_report(*, now: int) -> dict[str, Any]:
     ledger = dl.DecisionLedger(LEDGER_ROOT)
     if not LEDGER_ROOT.is_dir():
@@ -1443,6 +1470,11 @@ def status_report(*, now: int) -> dict[str, Any]:
         "next_decision_slot": cm.next_decision_slot(now),
         "next_decision_slot_utc": utc_iso(cm.next_decision_slot(now)),
         "chain_status": chain["status"],
+        # CAP-004D (§36/§37): the last health-watch verdict, read from its
+        # persisted snapshot.  Compact words only — the full JSON lives in
+        # reports/cap004d/CAMPAIGN_HEALTH.json and is never folded in here.
+        "campaignHealth": _campaign_health_compact(),
+        "last_health_check": _campaign_health_last_check(),
         "drift_status": drift["status"],
         "stop_requested": lock.stop_requested(),
         "operations": verify_operations_chain(read_operations(OPS_LEDGER)),
@@ -1463,6 +1495,8 @@ def _render_status(report: Mapping[str, Any]) -> str:
         "# CAP-004B supervisor status",
         "",
         f"- supervisor state: **{report.get('supervisor_state')}**",
+        f"- campaign health: **{report.get('campaignHealth') or 'unknown'}**"
+        f" (checked {report.get('last_health_check') or 'never'})",
         f"- campaign: {report.get('campaign_id')} v{report.get('campaign_version')}"
         f" (ops {report.get('ops_version')})",
         f"- campaign status: {report.get('campaign_status')}",
