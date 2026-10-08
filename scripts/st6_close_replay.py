@@ -190,6 +190,12 @@ def sha256_file(path: Path) -> str:
     return sha256_bytes(path.read_bytes())
 
 
+def raw_sha256(path: Path) -> str:
+    """The hash of a gzipped raw snapshot's uncompressed bytes, read with a context manager."""
+    with gzip.open(path, "rb") as handle:
+        return sha256_bytes(handle.read())
+
+
 def read_json(path: Path) -> dict[str, Any] | None:
     if not path.exists():
         return None
@@ -200,7 +206,9 @@ def read_json(path: Path) -> dict[str, Any] | None:
 def read_jsonl(path: Path) -> list[dict[str, Any]]:
     if not path.exists():
         return []
-    return [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
+    return [
+        json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip()
+    ]
 
 
 def write_jsonl(path: Path, rows: list[dict[str, Any]]) -> None:
@@ -391,9 +399,9 @@ def load_tick(sandbox: Sandbox, recorder: Recorder, head: str) -> types.ModuleTy
     module._run_program = record_verifier  # type: ignore[assignment]
 
     def record_scheduler_state() -> dict[str, Any]:
-        recorded = (
-            read_json(DATA / "ST6_SCHEDULER_REPORT.json") or {}
-        ).get("SCHEDULER_STATE") or {}
+        recorded = (read_json(DATA / "ST6_SCHEDULER_REPORT.json") or {}).get(
+            "SCHEDULER_STATE"
+        ) or {}
         recorder.scheduler_queries.append({"what": "scheduler_state", "source": "snapshot"})
         return {
             "task_name": recorded.get("task_name", "TradingAgentic-ST6-Forward"),
@@ -569,9 +577,7 @@ def scenario_2_boundary(root: Path, recorder: Recorder, head: str) -> dict[str, 
 
     last_eligible = Sandbox("last-eligible", root / "last-eligible")
     module = load_tick(last_eligible, recorder, head)
-    eligible_run = run_tick(
-        module, last_eligible, "2026-10-22T15:59:00Z", ["--due", "--scheduled"]
-    )
+    eligible_run = run_tick(module, last_eligible, "2026-10-22T15:59:00Z", ["--due", "--scheduled"])
 
     boundary = Sandbox("boundary", root / "boundary")
     module_boundary = load_tick(boundary, recorder, head)
@@ -641,7 +647,9 @@ def scenario_2_boundary(root: Path, recorder: Recorder, head: str) -> dict[str, 
     }
 
 
-def scenario_3_to_6_close_sequence(root: Path, recorder: Recorder, head: str) -> list[dict[str, Any]]:
+def scenario_3_to_6_close_sequence(
+    root: Path, recorder: Recorder, head: str
+) -> list[dict[str, Any]]:
     sandbox = Sandbox("close-sequence", root / "close-sequence")
     # one module instance closes; a second one (fresh import) proves the no-op after the close
     module = load_tick(sandbox, recorder, head)
@@ -649,12 +657,9 @@ def scenario_3_to_6_close_sequence(root: Path, recorder: Recorder, head: str) ->
     closure = read_json(sandbox.closure) or {}
     period = sandbox.period()
     slots = declared_slots(period, parse_instant(CLOSE_INSTANT))
-    observed = set(sandbox.state()["window_ids"])
     missed_rows = read_jsonl(sandbox.missed)
     declared_keys = {slot["key"] for slot in slots}
-    observed_keys = {
-        f"{row['day']}#{row['slot_index']}" for row in read_jsonl(sandbox.windows)
-    }
+    observed_keys = {f"{row['day']}#{row['slot_index']}" for row in read_jsonl(sandbox.windows)}
     missed_keys = [row["slot_key"] for row in missed_rows]
 
     last_event = closed["last_run"] or {}
@@ -727,9 +732,7 @@ def scenario_3_to_6_close_sequence(root: Path, recorder: Recorder, head: str) ->
     # 6: unattended windows
     expected_missed = PLANNED_WINDOWS - len(observed_keys)
     missed_checks = {
-        "every declared slot that ended without a window is recorded as missed": sorted(
-            missed_keys
-        )
+        "every declared slot that ended without a window is recorded as missed": sorted(missed_keys)
         == sorted(declared_keys - observed_keys),
         "the number of missed windows is the plan minus what was observed": len(missed_keys)
         == expected_missed,
@@ -748,10 +751,9 @@ def scenario_3_to_6_close_sequence(root: Path, recorder: Recorder, head: str) ->
     period_arithmetic_checks = {
         "the plan counted from the start's own slot is 84 windows": len(slots) == 84,
         "the observed windows still reproduce their raw evidence": all(
-            sha256_bytes(gzip.open(sandbox.raw_dir / f"{window_id}.json.gz", "rb").read())
+            raw_sha256(sandbox.raw_dir / f"{row['window_id']}.json.gz")
             == row["raw"]["uncompressed_sha256"]
             for row in read_jsonl(sandbox.windows)
-            for window_id in [row["window_id"]]
         ),
     }
 
@@ -940,7 +942,9 @@ def scenario_8_corrupt_data(root: Path, recorder: Recorder, head: str) -> dict[s
         }
     )
 
-    all_checks = {f"{entry['case']}: {name}": ok for entry in results for name, ok in entry["checks"].items()}
+    all_checks = {
+        f"{entry['case']}: {name}": ok for entry in results for name, ok in entry["checks"].items()
+    }
     all_checks["none of the corrupted states reached the market"] = all(
         entry["result"]["network_attempts"] == 0 for entry in results
     )
@@ -959,7 +963,6 @@ def scenario_8_corrupt_data(root: Path, recorder: Recorder, head: str) -> dict[s
 def scenario_9_missing_evidence(root: Path, recorder: Recorder, head: str) -> dict[str, Any]:
     sandbox = Sandbox("missing-evidence", root / "missing-evidence")
     target = sorted(sandbox.raw_dir.glob("*.json.gz"))[0]
-    missing_path = f"data\\st6\\raw\\{target.name}"
     target.unlink()
     module = load_tick(sandbox, recorder, head)
     run = run_tick(module, sandbox, CLOSE_INSTANT, ["--due", "--scheduled"])
@@ -1115,7 +1118,8 @@ def scenario_10_restart_recovery(root: Path, recorder: Recorder, head: str) -> d
         and run_second["exit_code"] == 3,
         "the consolidation is byte-identical across a simulated restart": first_hash is not None
         and first_hash == second_hash,
-        "the second process rewrote nothing it did not need to": run_second["delta"]["windows"] == 0,
+        "the second process rewrote nothing it did not need to": run_second["delta"]["windows"]
+        == 0,
         "a fresh process after the close is inert": after["exit_code"] == 3
         and after["delta"]["runs"] == 0
         and sha256_file(second.closure) == second_hash,
@@ -1232,14 +1236,18 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--cleanup", action="store_true", help="remove the sandboxes on exit")
     args = parser.parse_args(argv)
 
-    live_head = __import__("subprocess").run(
-        ["git", "rev-parse", "HEAD"], cwd=REPO, capture_output=True, text=True, check=True
-    ).stdout.strip()
+    live_head = (
+        __import__("subprocess")
+        .run(["git", "rev-parse", "HEAD"], cwd=REPO, capture_output=True, text=True, check=True)
+        .stdout.strip()
+    )
     # what the sandbox records as the code identity: a constant, so the determinism proof does not
     # depend on the commit hash (the real head is recorded at the top level of this report)
     head = "REPLAY_SANDBOX_NOT_A_COMMIT"
-    root = Path(args.sandbox_root) if args.sandbox_root else Path(
-        tempfile.mkdtemp(prefix="st6-close-replay-")
+    root = (
+        Path(args.sandbox_root)
+        if args.sandbox_root
+        else Path(tempfile.mkdtemp(prefix="st6-close-replay-"))
     )
     root.mkdir(parents=True, exist_ok=True)
     recorder = Recorder()

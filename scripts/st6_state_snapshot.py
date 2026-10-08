@@ -121,6 +121,14 @@ def _git_blob(path: Path) -> str | None:
         return None
 
 
+def _relative(path: Path) -> str:
+    """A repository-relative spelling when there is one: the check may be pointed elsewhere."""
+    try:
+        return str(Path(path).relative_to(REPO)).replace("\\", "/")
+    except ValueError:
+        return str(path).replace("\\", "/")
+
+
 def _describe(relative: str) -> dict[str, Any]:
     path = REPO / relative
     if not path.exists():
@@ -154,8 +162,7 @@ def raw_evidence_inventory(windows: dict[str, dict[str, Any]]) -> list[dict[str,
                 "compressed_sha256": _sha256(path),
                 "uncompressed_sha256": uncompressed,
                 "recorded_uncompressed_sha256": recorded.get("uncompressed_sha256"),
-                "reproduces_the_recorded_hash": uncompressed
-                == recorded.get("uncompressed_sha256"),
+                "reproduces_the_recorded_hash": uncompressed == recorded.get("uncompressed_sha256"),
                 "indexed": window_id in windows,
             }
         )
@@ -165,11 +172,15 @@ def raw_evidence_inventory(windows: dict[str, dict[str, Any]]) -> list[dict[str,
 def build_snapshot() -> dict[str, Any]:
     stamp = _stamp()
     period = json.loads(PERIOD.read_text(encoding="utf-8")) if PERIOD.exists() else {}
-    window_rows = [
-        json.loads(line)
-        for line in WINDOWS.read_text(encoding="utf-8").splitlines()
-        if line.strip()
-    ] if WINDOWS.exists() else []
+    window_rows = (
+        [
+            json.loads(line)
+            for line in WINDOWS.read_text(encoding="utf-8").splitlines()
+            if line.strip()
+        ]
+        if WINDOWS.exists()
+        else []
+    )
     windows = {row["window_id"]: row for row in window_rows}
 
     live: list[dict[str, Any]] = [_describe(relative) for relative in LIVE_RUNTIME_STATE]
@@ -235,30 +246,93 @@ def newest_manifest() -> Path | None:
 
 
 def check_snapshot(manifest_path: Path) -> dict[str, Any]:
-    """Re-verify a snapshot: the copy must still hash to the recorded original."""
+    """Re-verify a snapshot: its own bytes and the evidence, never the live campaign's.
+
+    Two different questions are deliberately kept apart.  *Integrity* asks whether the snapshot
+    still says what it said: its manifest must be readable and complete, every copied live file
+    must still hash to the original recorded for it, and every raw window must still reproduce the
+    hash the window index carries.  *Drift* asks whether the live campaign has moved on since the
+    snapshot was taken — which it does by design, every fifteen minutes, because the tick rewrites
+    its own state.  Drift is reported together with the bytes involved and never counted as a
+    failure, so this check stays meaningful for the whole period instead of failing on the first
+    tick after it ran.
+    """
     document = json.loads(manifest_path.read_text(encoding="utf-8"))
     findings: list[str] = []
+    if document.get("artifact") != SNAPSHOT_VERSION:
+        findings.append(f"unexpected artifact token: {document.get('artifact')!r}")
+    if document.get("hash_algorithm") != HASH_ALGORITHM:
+        findings.append(f"unexpected hash algorithm: {document.get('hash_algorithm')!r}")
+    for key in ("LIVE_RUNTIME_STATE", "IMMUTABLE_EVIDENCE", "VERSIONED_IMPLEMENTATION"):
+        if key not in (document.get("classification") or {}):
+            findings.append(f"the manifest carries no {key} section")
+    if findings:  # nothing below can be trusted
+        return {
+            "artifact": "ST6_LIVE_STATE_SNAPSHOT_CHECK",
+            "checked_at_utc": _utc(),
+            "manifest": _relative(manifest_path),
+            "snapshot_id": document.get("snapshot_id"),
+            "checks": 0,
+            "findings": findings,
+            "live_state_moved_since_snapshot": [],
+            "status": "FAIL",
+        }
+
+    copy_root = REPO / document["copy_root"]
+    checks = 0
+    drift: list[dict[str, Any]] = []
     for entry in document["classification"]["LIVE_RUNTIME_STATE"]:
         if not entry.get("present"):
             continue
-        if _sha256(REPO / entry["path"]) != entry["sha256"]:
-            findings.append(f"{entry['path']} no longer hashes to the snapshot's original")
-        copy = REPO / document["copy_root"] / Path(entry["path"]).relative_to("data/st6")
+        checks += 1
+        copy = copy_root / Path(entry["path"]).relative_to("data/st6")
         if not copy.exists():
             findings.append(f"{entry['path']} is missing from the snapshot copy")
-        elif _sha256(copy) != entry["sha256"]:
+            continue
+        copied = _sha256(copy)
+        if copied != entry["sha256"]:
             findings.append(f"{entry['path']} hashes differently inside the snapshot copy")
+            continue
+        live = REPO / entry["path"]
+        if not live.exists():
+            drift.append({"path": entry["path"], "now": "ABSENT", "at_snapshot": entry["sha256"]})
+            continue
+        current = _sha256(live)
+        if current != entry["sha256"]:
+            drift.append(
+                {
+                    "path": entry["path"],
+                    "at_snapshot": entry["sha256"],
+                    "now": current,
+                    "same_size": live.stat().st_size == entry.get("bytes"),
+                }
+            )
     for entry in document["classification"]["IMMUTABLE_EVIDENCE"]:
+        checks += 1
         if not entry["reproduces_the_recorded_hash"]:
-            findings.append(f"{entry['path']} does not reproduce its recorded window hash")
+            findings.append(f"{entry['path']} did not reproduce its recorded window hash")
+        path = REPO / entry["path"]
+        if not path.exists():
+            findings.append(f"{entry['path']} has disappeared since the snapshot was taken")
+            continue
+        if _sha256(path) != entry["compressed_sha256"]:
+            findings.append(f"{entry['path']} changed since the snapshot was taken")
+        with gzip.open(path, "rb") as handle:
+            if hashlib.sha256(handle.read()).hexdigest() != entry["uncompressed_sha256"]:
+                findings.append(f"{entry['path']} no longer decompresses to its recorded bytes")
     return {
         "artifact": "ST6_LIVE_STATE_SNAPSHOT_CHECK",
         "checked_at_utc": _utc(),
-        "manifest": str(manifest_path.relative_to(REPO)),
+        "manifest": _relative(manifest_path),
         "snapshot_id": document.get("snapshot_id"),
-        "checks": len(document["classification"]["LIVE_RUNTIME_STATE"])
-        + len(document["classification"]["IMMUTABLE_EVIDENCE"]),
+        "checks": checks,
         "findings": findings,
+        "live_state_moved_since_snapshot": drift,
+        "live_state_drift_count": len(drift),
+        "live_state_drift_is_not_a_failure": (
+            "the tick rewrites its own state every fifteen minutes; the snapshot keeps the original "
+            "bytes, and a moved live file means the campaign advanced, not that the snapshot failed"
+        ),
         "status": "PASS" if not findings else "FAIL",
     }
 
@@ -275,7 +349,14 @@ def main(argv: list[str] | None = None) -> int:
         result = check_snapshot(manifest)
         for finding in result["findings"]:
             print(f"  FAIL {finding}")
-        print(f"{result['status']} {result['checks']} checks -> {manifest.name}")
+        print(
+            f"{result['status']} {result['checks']} checks -> {manifest.name}; "
+            f"{result.get('live_state_drift_count', 0)} live file(s) have moved since the snapshot"
+        )
+        for entry in result.get("live_state_moved_since_snapshot", []):
+            print(
+                f"  moved {entry['path']} {str(entry['at_snapshot'])[:12]} -> {str(entry['now'])[:12]}"
+            )
         return 0 if result["status"] == "PASS" else 1
 
     document = build_snapshot()

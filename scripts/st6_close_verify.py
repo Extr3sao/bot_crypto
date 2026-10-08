@@ -46,7 +46,6 @@ import gzip
 import hashlib
 import json
 import subprocess
-import sys
 import tempfile
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
@@ -123,7 +122,9 @@ def read_json(path: Path) -> dict[str, Any] | None:
 def read_jsonl(path: Path) -> list[dict[str, Any]]:
     if not path.exists():
         return []
-    return [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
+    return [
+        json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip()
+    ]
 
 
 def sha256_bytes(payload: bytes) -> str:
@@ -198,9 +199,7 @@ def findings_denominator(period: dict[str, Any]) -> tuple[dict[str, Any], list[s
     }
     findings: list[str] = []
     if len(slots) != planned:
-        findings.append(
-            f"the plan says {planned} windows but the derivation produced {len(slots)}"
-        )
+        findings.append(f"the plan says {planned} windows but the derivation produced {len(slots)}")
     if first.get("key") != f"{start.strftime('%Y-%m-%d')}#{start.hour // SLOT_HOURS}":
         findings.append(
             f"the first eligible window {first.get('key')} is not the slot that contains the "
@@ -225,7 +224,7 @@ def findings_windows(windows: list[dict[str, Any]], raw_dir: Path) -> list[str]:
     duplicates = sorted({key for key in keys if keys.count(key) > 1})
     if duplicates:
         findings.append(f"the window index holds a duplicated slot: {duplicates}")
-    if len(windows) != len({row['window_id'] for row in windows}):
+    if len(windows) != len({row["window_id"] for row in windows}):
         findings.append("the window index holds a duplicated window_id")
     for row in windows:
         path = raw_dir / f"{row['window_id']}.json.gz"
@@ -374,12 +373,14 @@ def findings_idempotency(report: dict[str, Any]) -> list[str]:
         if not ok:
             findings.append(f"the replay's idempotency check failed: {name}")
     repeat_hashes = {
-        repeat.get("state_after", {}).get("closure_sha256") for repeat in scenario.get("repeats", [])
+        repeat.get("state_after", {}).get("closure_sha256")
+        for repeat in scenario.get("repeats", [])
     }
     if len(repeat_hashes) > 1:
         findings.append("the consolidation changed across repeated post-close executions")
     restart = next(
-        (entry for entry in report.get("scenarios", []) if entry["scenario"].startswith("10.")), None
+        (entry for entry in report.get("scenarios", []) if entry["scenario"].startswith("10.")),
+        None,
     )
     if restart is not None and restart.get("closure_sha256_first") != restart.get(
         "closure_sha256_second"
@@ -462,9 +463,7 @@ def findings_snapshot(manifest: dict[str, Any] | None) -> list[str]:
             findings.append(f"the implementation file {entry['path']} is missing")
             continue
         if sha256_file(REPO / entry["path"]) != entry["sha256"]:
-            findings.append(
-                f"the implementation file {entry['path']} changed after the snapshot"
-            )
+            findings.append(f"the implementation file {entry['path']} changed after the snapshot")
     return findings
 
 
@@ -593,7 +592,11 @@ def negative_self_tests(period: dict[str, Any], windows: list[dict[str, Any]]) -
         "outcome": "INSUFFICIENT_REGIME_COVERAGE",
         "outcome_basis": "the coverage rule is not met",
         "thresholds_breached": [],
-        "drift_preserved": {"verdict": "DRIFT_WIDER_THAN_MODELLED", "breaches_total": 0, "policy": "x"},
+        "drift_preserved": {
+            "verdict": "DRIFT_WIDER_THAN_MODELLED",
+            "breaches_total": 0,
+            "policy": "x",
+        },
     }
     record("drift buried under insufficient coverage", findings_drift(hidden), "no breach visible")
     record(
@@ -643,7 +646,9 @@ def negative_self_tests(period: dict[str, Any], windows: list[dict[str, Any]]) -
     # 8. an ended slot that is neither observed nor missed
     record(
         "an ended declared slot that is unaccounted for",
-        findings_missed(period, [], [], parse_instant(period["started_at_utc"]) + timedelta(days=2)),
+        findings_missed(
+            period, [], [], parse_instant(period["started_at_utc"]) + timedelta(days=2)
+        ),
         "neither observed nor missed",
     )
     # 9. a declaration whose plan runs past its own end
@@ -907,7 +912,9 @@ def main(argv: list[str] | None = None) -> int:
     drift_findings = findings_drift(closure)
     post_close_findings = findings_post_close(runs, period, closure)
     idempotency_findings = findings_idempotency(report or {})
-    report_findings = findings_replay_report(report or {}) if report else ["no replay report exists"]
+    report_findings = (
+        findings_replay_report(report or {}) if report else ["no replay report exists"]
+    )
     snapshot_findings = findings_snapshot(manifest)
     live_moved = live_files_moved_since_snapshot(manifest)
     separation_findings = findings_separation(manifest)
@@ -921,11 +928,19 @@ def main(argv: list[str] | None = None) -> int:
         not denominator_findings,
         denominator,
     )
-    c.check("the window index is unique and reproduces its evidence", not windows_findings, windows_findings)
+    c.check(
+        "the window index is unique and reproduces its evidence",
+        not windows_findings,
+        windows_findings,
+    )
     c.check("every ended declared slot is accounted for", not missed_findings, missed_findings)
-    c.check("a consolidation belongs to the declared period", not closure_findings, closure_findings)
+    c.check(
+        "a consolidation belongs to the declared period", not closure_findings, closure_findings
+    )
     c.check("a measured drift is preserved beside the outcome", not drift_findings, drift_findings)
-    c.check("no market request was made after the close", not post_close_findings, post_close_findings)
+    c.check(
+        "no market request was made after the close", not post_close_findings, post_close_findings
+    )
     c.check("the close is idempotent", not idempotency_findings, idempotency_findings)
     c.check("the replay report is internally consistent", not report_findings, report_findings)
     c.check("the live-state snapshot reproduces", not snapshot_findings, snapshot_findings)
@@ -969,7 +984,9 @@ def main(argv: list[str] | None = None) -> int:
             "rerun_close_sha256": close_hash(rerun["report"]),
             "verdicts_equal": [
                 entry["verdict"]
-                for entry in sorted((report or {}).get("scenarios", []), key=lambda e: e["scenario"])
+                for entry in sorted(
+                    (report or {}).get("scenarios", []), key=lambda e: e["scenario"]
+                )
             ]
             == [
                 entry["verdict"]

@@ -2254,7 +2254,9 @@ def perform_terminal_transition() -> dict[str, Any]:
     document["disabled"] = result.returncode == 0
     if result.returncode != 0:
         document["error"] = (result.stderr or result.stdout or "").strip()[:300]
-        document["note"] = "disable the task by hand; the tick already refuses to sample after the close"
+        document["note"] = (
+            "disable the task by hand; the tick already refuses to sample after the close"
+        )
     return document
 
 
@@ -2507,6 +2509,13 @@ def main(argv: list[str] | None = None) -> int:
             event = {
                 "artifact": "ST6_RUN_EVENT",
                 "run_id": f"{started_at.strftime('%Y%m%dT%H%M%SZ')}-{uuid.uuid4().hex[:8]}",
+                # the launch mode this invocation declares: SCHEDULED is the task's own command
+                # line, anything else is MANUAL.  The health monitor derives the failure streak and
+                # the heartbeat from the non-manual events only, so a deliberate refusal fixture
+                # cannot be read as the campaign failing, and a manual run cannot be read as the
+                # schedule being alive.  A fixture that emulates the task's command line declares
+                # itself SCHEDULED, because that is what it says it is.
+                "invocation": "SCHEDULED" if scheduled_tick else "MANUAL",
                 "result": "ALREADY_RUNNING",
                 "exit_code": EXIT_ALREADY_RUNNING,
                 "scheduled_slot_utc": slot_of(started_at)["slot"],
@@ -2556,6 +2565,11 @@ def _run(args: argparse.Namespace, started_at: datetime) -> int:
     run_event: dict[str, Any] = {
         "artifact": "ST6_RUN_EVENT",
         "run_id": f"{started_at.strftime('%Y%m%dT%H%M%SZ')}-{uuid.uuid4().hex[:8]}",
+        # the declared launch mode: SCHEDULED for the task's own command line, MANUAL for anything
+        # else.  Recorded so a reader of the append-only log can tell which events declared
+        # themselves the schedule, and so the health monitor does not read a manual fixture as a
+        # real campaign failure.  It is a declaration, not an unforgeable origin record.
+        "invocation": "SCHEDULED" if scheduled_tick else "MANUAL",
         "collection_attempted": False,
         "scheduled_slot_utc": slot["slot"],
         "slot_key": this_slot,

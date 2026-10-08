@@ -219,6 +219,27 @@ def consecutive_failures(runs: list[dict[str, Any]]) -> int:
     return streak
 
 
+def is_manual(run: dict[str, Any]) -> bool:
+    """An invocation that did not declare itself the schedule.
+
+    The run log is append-only and shared: the fixture that provokes a deliberate
+    ``REFUSED_INVALID_ARGUMENTS`` writes a real event, and every event written before the field
+    existed carries no provenance at all.  A manual event is therefore excluded from the failure
+    streak and from the heartbeat, while an unrecorded one is *kept*: dropping it could hide a real
+    failure.  This reads a declaration, so a fixture that emulates the task's command line is
+    counted as the schedule — the limit is declared rather than papered over.
+    """
+    return str(run.get("invocation", "")).upper() == "MANUAL"
+
+
+def run_provenance(runs: list[dict[str, Any]]) -> dict[str, int]:
+    counts = {"SCHEDULED": 0, "MANUAL": 0, "UNRECORDED": 0}
+    for run in runs:
+        label = str(run.get("invocation", "")).upper()
+        counts[label if label in ("SCHEDULED", "MANUAL") else "UNRECORDED"] += 1
+    return counts
+
+
 def evaluate(now: datetime | None = None) -> dict[str, Any]:
     now = now or datetime.now(UTC).replace(microsecond=0)
     period = read_json(PERIOD)
@@ -260,12 +281,19 @@ def evaluate(now: datetime | None = None) -> dict[str, Any]:
         if ended
         else None
     )
+    # the campaign's own ticks: a manual invocation is not the schedule, so it neither extends
+    # the failure streak nor refreshes the heartbeat
+    scheduled_runs = [run for run in runs if not is_manual(run)]
+    provenance = run_provenance(runs)
     last_run = runs[-1] if runs else None
+    last_scheduled_run = scheduled_runs[-1] if scheduled_runs else None
     heartbeat_age_s = None
-    if last_run and last_run.get("actual_end_utc"):
-        heartbeat_age_s = int((now - _parse(last_run["actual_end_utc"])).total_seconds())
+    heartbeat_basis = "NO_RUN_RECORDED"
+    if last_scheduled_run and last_scheduled_run.get("actual_end_utc"):
+        heartbeat_age_s = int((now - _parse(last_scheduled_run["actual_end_utc"])).total_seconds())
+        heartbeat_basis = "LAST_NON_MANUAL_RUN"
     period_over = now >= _parse(period["ends_at_utc"])
-    streak = consecutive_failures(runs)
+    streak = consecutive_failures(scheduled_runs)
     scheduler_verification = read_json(SCHEDULER_VERIFICATION) or {}
     live = scheduler_verification.get("live_tests", {})
 
@@ -311,6 +339,21 @@ def evaluate(now: datetime | None = None) -> dict[str, Any]:
         )
     if not runs:
         warning.append("no run event has been recorded yet")
+    if provenance["MANUAL"] and not provenance["SCHEDULED"]:
+        warning.append(
+            f"every one of the {provenance['MANUAL']} run event(s) on record is a manual or "
+            "verification invocation: the schedule itself has not ticked yet"
+        )
+    if (
+        heartbeat_age_s is not None
+        and last_scheduled_run is not None
+        and last_run is not None
+        and is_manual(last_run)
+    ):
+        warning.append(
+            f"the newest run event ({last_run.get('result')}) is a manual invocation, so it is not "
+            "counted as the schedule being alive"
+        )
     if recorderrors := (last_run.get("errors") if last_run else None):
         warning.append(f"the last run recorded an error: {recorderrors}"[:200])
     if disk["status"] == "WARNING":
@@ -369,7 +412,9 @@ def evaluate(now: datetime | None = None) -> dict[str, Any]:
             "missed_fraction_of_ended_slots": missed_fraction,
             "raw_evidence": evidence,
             "run_events": len(runs),
+            "run_events_by_provenance": provenance,
             "consecutive_failures": streak,
+            "consecutive_failures_over": "non-manual run events only",
             "last_run": {
                 "run_id": last_run.get("run_id"),
                 "result": last_run.get("result"),
@@ -379,6 +424,7 @@ def evaluate(now: datetime | None = None) -> dict[str, Any]:
             if last_run
             else None,
             "heartbeat_age_seconds": heartbeat_age_s,
+            "heartbeat_basis": heartbeat_basis,
             "tick_grace_seconds": TICK_GRACE_SECONDS,
             "scheduler": registration,
             "disk": disk,

@@ -16,6 +16,7 @@ import importlib.util
 import json
 import subprocess
 import sys
+import time
 import xml.etree.ElementTree as ElementTree
 from datetime import UTC, datetime
 from pathlib import Path
@@ -115,6 +116,49 @@ def run_tick(*extra: str) -> subprocess.CompletedProcess:
         capture_output=True,
         text=True,
         timeout=300,
+    )
+
+
+LEASE = DATA / "scheduler_lock" / "CAMPAIGN_LOCK.json"
+
+
+def wait_for_a_free_lease(timeout_seconds: int = 300) -> None:
+    """The Windows task holds the lease while it collects, and it wakes every fifteen minutes.
+
+    A collision with the schedule is not the behaviour these tests are about, so they wait for the
+    scheduler to finish rather than racing it.  The wait is bounded, and a lease that never frees
+    is raised as a failure — a stuck lease is a real defect, not something to skip past.
+    """
+    deadline = time.monotonic() + timeout_seconds
+    while LEASE.exists():
+        try:
+            holder = json.loads(LEASE.read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            holder = None
+        if holder is None:
+            return
+        age = int(datetime.now(UTC).timestamp()) - int(holder.get("renewed_at", 0))
+        if age > int(holder.get("stale_after_seconds", 0)):
+            return  # stale: the tick itself reclaims it, which is what the lease is for
+        if time.monotonic() > deadline:
+            raise AssertionError(
+                f"{holder.get('campaign_id')} lease held by pid {holder.get('pid')} for more than "
+                f"{timeout_seconds} s without being renewed or released: {holder}"
+            )
+        time.sleep(5)
+
+
+def run_tick_without_a_collision(*extra: str) -> subprocess.CompletedProcess:
+    """The same as ``run_tick``, except that a scheduled tick is waited out rather than raced."""
+    completed = run_tick(*extra)
+    for _ in range(2):
+        if completed.returncode != 2:
+            return completed
+        wait_for_a_free_lease()
+        completed = run_tick(*extra)
+    raise AssertionError(
+        "the scheduled tick took the lease twice while this test waited: LIVE_TICK_CONTENTION, "
+        f"last run said {completed.stdout.strip()[:200]!r}"
     )
 
 
@@ -264,8 +308,8 @@ def test_an_observed_slot_costs_nothing_to_re_tick() -> None:
             "this slot has no window yet: the tick would have to collect and this test is not a sampler"
         )
     before = len(read_jsonl(WINDOWS))
-    first = run_tick("--due", "--scheduled")
-    second = run_tick("--due", "--scheduled")
+    first = run_tick_without_a_collision("--due", "--scheduled")
+    second = run_tick_without_a_collision("--due", "--scheduled")
     after = len(read_jsonl(WINDOWS))
     assert first.returncode == 0 and second.returncode == 0
     assert after == before, "a tick in an already observed slot collected another window"
@@ -276,6 +320,7 @@ def test_an_observed_slot_costs_nothing_to_re_tick() -> None:
 
 
 def test_a_second_writer_refuses_and_makes_no_market_request(tick: object) -> None:
+    wait_for_a_free_lease()  # the test wants to be the second writer, not to race the first
     lease = tick.run_lease()
     acquired = lease.acquire(now=int(datetime.now(UTC).timestamp()))
     assert acquired["acquired"] is True, acquired
@@ -292,7 +337,7 @@ def test_a_second_writer_refuses_and_makes_no_market_request(tick: object) -> No
 
 def test_an_impossible_cadence_refuses_with_a_non_zero_status() -> None:
     before = len(read_jsonl(RUN_LOG))
-    result = run_tick("--collect", "--rounds", "0")
+    result = run_tick_without_a_collision("--collect", "--rounds", "0")
     fresh = read_jsonl(RUN_LOG)[before:]
     assert result.returncode == 1
     assert fresh and fresh[-1]["result"] == "REFUSED_INVALID_ARGUMENTS"
@@ -616,3 +661,107 @@ def test_the_close_replay_is_isolated_and_passes_on_the_shipped_state(tmp_path: 
     missed = next(entry for entry in report["scenarios"] if entry["scenario"].startswith("6."))
     assert missed["declared_windows"] == 84
     assert missed["missed_windows"] == 84 - missed["observed_windows"]
+
+
+# ------------------------------------------------- who invoked the tick, and what that means
+
+SNAPSHOT_SCRIPT = REPO / "scripts" / "st6_state_snapshot.py"
+PROVENANCE_VOCABULARY = ("SCHEDULED", "MANUAL")
+
+
+def test_the_run_log_records_who_invoked_the_tick() -> None:
+    """The log is append-only and shared with the fixtures, so the caller must be recorded.
+
+    Rows written before the field existed carry no provenance and are left alone; every row that
+    does carry one must use the declared vocabulary.
+    """
+    rows = read_jsonl(RUN_LOG)
+    assert rows
+    for run in rows:
+        if "invocation" in run:
+            assert run["invocation"] in PROVENANCE_VOCABULARY, run
+    assert {run["invocation"] for run in rows if run.get("invocation") == "SCHEDULED"} <= set(
+        PROVENANCE_VOCABULARY
+    )
+
+
+def test_a_manual_invocation_is_neither_a_failure_nor_a_heartbeat(health: object) -> None:
+    """A verification fixture must not be able to trip the live monitor or keep it looking alive."""
+    assert health.is_manual({"invocation": "MANUAL"}) is True
+    assert health.is_manual({"invocation": "SCHEDULED"}) is False
+    assert health.is_manual({}) is False
+    runs = [
+        {"invocation": "SCHEDULED", "errors": None, "actual_end_utc": "2026-10-08T21:00:00Z"},
+        {"invocation": "MANUAL", "errors": "rounds=0", "actual_end_utc": "2026-10-08T21:10:00Z"},
+        {"invocation": "MANUAL", "errors": "rounds=0", "actual_end_utc": "2026-10-08T21:20:00Z"},
+        {"errors": "a real failure", "actual_end_utc": "2026-10-08T21:30:00Z"},
+    ]
+    kept = [run for run in runs if not health.is_manual(run)]
+    # the fixtures are dropped, the unrecorded row is kept: dropping it could hide a real failure
+    assert health.consecutive_failures(kept) == 1
+    # unfiltered, the two fixtures would have turned one recorded error into a CRITICAL streak
+    assert health.consecutive_failures(runs) == 3
+    assert health.consecutive_failures(kept) < health.CONSECUTIVE_FAILURES_CRITICAL
+    assert health.run_provenance(runs) == {"SCHEDULED": 1, "MANUAL": 2, "UNRECORDED": 1}
+    # the heartbeat follows the schedule, not the newest line in the file
+    assert kept[-1]["actual_end_utc"] == "2026-10-08T21:30:00Z"
+
+
+def test_the_snapshot_check_separates_drift_from_corruption(tmp_path: Path) -> None:
+    """The snapshot must stay verifiable for fourteen days while the tick rewrites the live state."""
+    import hashlib
+    import shutil
+
+    snapshot = load_module("st6_state_snapshot_check", "scripts/st6_state_snapshot.py")
+    # one live file, copied into the snapshot under its own name: the copy is the original
+    # (the snapshot stores the live files flat, without the data/st6 prefix)
+    copy_root = tmp_path / "copy"
+    copy_root.mkdir(parents=True)
+    live_name = "ST6_PERIOD.json"
+    original = tmp_path / "original-bytes"
+    original.write_bytes(b'{"artifact": "ST6_PERIOD", "frozen": true}\n')
+    shutil.copy2(original, copy_root / live_name)
+    entry = {
+        "path": f"data/st6/{live_name}",
+        "present": True,
+        "bytes": original.stat().st_size,
+        "sha256": hashlib.sha256(original.read_bytes()).hexdigest(),
+        "git_blob_sha1": None,
+    }
+    manifest = tmp_path / "ST6_LIVE_STATE_20261008T000000Z.json"
+    manifest.write_text(
+        json.dumps(
+            {
+                "artifact": snapshot.SNAPSHOT_VERSION,
+                "snapshot_id": manifest.stem,
+                "hash_algorithm": snapshot.HASH_ALGORITHM,
+                "copy_root": str(copy_root),
+                "classification": {
+                    "LIVE_RUNTIME_STATE": [entry],
+                    "IMMUTABLE_EVIDENCE": [],
+                    "VERSIONED_IMPLEMENTATION": [],
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+    # the live file has moved on (the tick rewrote it): drift, reported and not fatal
+    result = snapshot.check_snapshot(manifest)
+    assert result["status"] == "PASS", result["findings"]
+    assert result["checks"] == 1
+    assert result["live_state_drift_count"] == 1
+    assert result["live_state_moved_since_snapshot"][0]["path"] == entry["path"]
+    # the snapshot's own bytes are tampered with: integrity, and it must fail
+    (copy_root / live_name).write_bytes(b'{"artifact": "ST6_PERIOD"}\n')
+    tampered = snapshot.check_snapshot(manifest)
+    assert tampered["status"] == "FAIL"
+    assert any("inside the snapshot copy" in finding for finding in tampered["findings"])
+    # a record that has disappeared is a failure too, not drift
+    (copy_root / live_name).unlink()
+    missing = snapshot.check_snapshot(manifest)
+    assert missing["status"] == "FAIL"
+    assert any("missing from the snapshot copy" in finding for finding in missing["findings"])
+    # and a manifest that is not ours is refused before anything is believed
+    manifest.write_text(json.dumps({"artifact": "SOMETHING_ELSE"}), encoding="utf-8")
+    refused = snapshot.check_snapshot(manifest)
+    assert refused["status"] == "FAIL" and refused["checks"] == 0
