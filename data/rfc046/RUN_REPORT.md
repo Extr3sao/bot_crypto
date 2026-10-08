@@ -1,7 +1,7 @@
 # RFC-046 RUN REPORT — CONTROLLED DISCOVERY, FIRST CAMPAIGN
 
-generated_at_utc = 2026-10-08T12:16:20Z (computed, not authored)
-head_at_run = c9d4a55a9da5f0a3eb10145ada0601b59132fd1e
+generated_at_utc = 2026-10-08T12:21:20Z (computed, not authored)
+head_at_run = 78bfb871ec62c9f9bc6a2181e28ccc307d5f1b83
 campaign_status = **DISCOVERY_CAMPAIGN_FAILED**
 discovery_offline_authorized = TRUE (ADR-0024)
 live_trading = DISABLED
