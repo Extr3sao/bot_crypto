@@ -1372,10 +1372,15 @@ def main(argv: list[str] | None = None) -> int:
     out_json = Path(args.out_json)
     out_json.parent.mkdir(parents=True, exist_ok=True)
     out_json.write_text(
-        json.dumps(report, indent=2, sort_keys=True, ensure_ascii=False) + "\n", encoding="utf-8"
+        json.dumps(report, indent=2, sort_keys=True, ensure_ascii=False) + "\n",
+        encoding="utf-8",
+        # the bytes of an artefact whose hashes are recorded must not depend on the platform's
+        # line separator: without this, Windows writes CRLF and the recorded digest describes a
+        # file that no other host, and no reader of the committed bytes, can reproduce
+        newline="\n",
     )
     out_md = Path(args.out_md)
-    out_md.write_text(render_markdown(report), encoding="utf-8")
+    out_md.write_text(render_markdown(report), encoding="utf-8", newline="\n")
     print(
         f"{report['close_mechanics_verdict']}: close mechanics {report['summary']['passed']}/"
         f"{report['summary']['scenarios']} scenarios PASS, {report['summary']['failed']} FAIL; "

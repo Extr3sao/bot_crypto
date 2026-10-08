@@ -234,7 +234,11 @@ def build_snapshot() -> dict[str, Any]:
     }
     manifest_path = SNAPSHOT_DIR / f"ST6_LIVE_STATE_{stamp}.json"
     manifest_path.write_text(
-        json.dumps(document, indent=2, sort_keys=True, ensure_ascii=False) + "\n", encoding="utf-8"
+        json.dumps(document, indent=2, sort_keys=True, ensure_ascii=False) + "\n",
+        encoding="utf-8",
+        # the manifest is the record of every hash in the snapshot: its own bytes must not depend
+        # on the platform's line separator
+        newline="\n",
     )
     document["manifest_path"] = str(manifest_path.relative_to(REPO))
     return document

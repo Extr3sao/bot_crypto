@@ -63,14 +63,15 @@ The window index is therefore **not** committed: it is campaign state that the n
 rewrites, and the current one is not the last one this period will have. Its exact bytes at the
 snapshot instant are inside the snapshot, with their sha256.
 
-Three dated snapshots were produced by `scripts/st6_state_snapshot.py`:
+Four dated snapshots were produced by `scripts/st6_state_snapshot.py`:
 
 * `data/st6/snapshots/ST6_LIVE_STATE_20261008T215219Z.json` — the one the independent verification
   read at the first commit;
 * `data/st6/snapshots/ST6_LIVE_STATE_20261008T215222Z.json` — the picture taken after that
   verification;
-* `data/st6/snapshots/ST6_LIVE_STATE_20261008T221134Z.json` — the picture taken at the final commit
-  `14514d6`, and the one `--check` re-verifies.
+* `data/st6/snapshots/ST6_LIVE_STATE_20261008T221134Z.json` — the picture taken at `14514d6`;
+* `data/st6/snapshots/ST6_LIVE_STATE_20261008T222000Z.json` — the picture taken once the code had
+  stopped moving, and the one `--check` re-verifies.
 
 Each snapshot copies every live file under `data/st6/snapshots/<id>/` and records, for each one, its
 sha256, size, mtime and **git blob hash**, plus a re-hash of every raw window snapshot against the
@@ -147,7 +148,8 @@ mission's final response (`CURRENT_HEAD`).
 | negative fixtures — duplication, tampered hash, missing evidence, order path, foreign closure, supported-over-incomplete-coverage, hidden drift, plan past its end, moved implementation hash, misclassified artefact, hidden failed check, unexplained real change | **PASS 17/17** corruptions detected |
 | determinism — the harness re-run from the same seed state | close sha256 `8610cf46337fb400…` reproduced exactly, byte for byte; every scenario verdict equal. Inside the sandbox the tick records the code identity as a constant (`REPLAY_SANDBOX_NOT_A_COMMIT`), so this proof does not depend on the commit hash — the real head is recorded at the top level of the report |
 | unit suites | **46 passed**, 0 failed (`test_st6_scheduler.py` 24, `test_st6_forward_regime.py` 22); three of them added with this work |
-| live-state snapshot | `--check` PASS (17 checks, 0 live files moved) right after it was taken; every raw hash reproduces |
+| live-state snapshot | `--check` PASS (17 checks, 0 live files moved) right after `ST6_LIVE_STATE_20261008T222000Z` was taken; every raw hash reproduces |
+| a stale snapshot is refused | when the three programs were edited after `ST6_LIVE_STATE_20261008T221134Z` had been taken, the independent verifier **failed** with `the implementation file scripts/st6_state_snapshot.py changed after the snapshot` (18/19, FALSE_SUCCESS 1). The snapshot was retaken in the right order and the same verification then passed 19/19. The check is not decorative. |
 | live health after the correction | `WARNING`; run events 140 by provenance `{MANUAL: 3, SCHEDULED: 8, UNRECORDED: 129}`; failure streak 1 computed over non-manual events only (threshold 3); heartbeat basis `LAST_NON_MANUAL_RUN`; 2 windows, 0 unaccounted slots, 0 missed |
 
 The replayed close produced `INSUFFICIENT_REGIME_COVERAGE` (2 of 84 planned windows, 82 missed) with
@@ -170,32 +172,40 @@ the terminal state `PERIOD_CLOSED_NO_FURTHER_COLLECTION`, the drift preserved be
 4. **`DUPLICATE-INDEX-ROW`** — the tick consolidates what the index says; duplicate detection belongs
    to the verifier, which is proven to fail on a duplicated row.
 
-Three further defects were found while producing this evidence and are **fixed** in `14514d6`,
-because each one made the evidence itself untrustworthy rather than describing the campaign:
+Four further defects were found while producing this evidence, and each is **fixed**, because each one
+made the evidence itself untrustworthy rather than describing the campaign:
 
-5. **`FIXTURE-REFUSALS-TRIPPED-THE-LIVE-MONITOR`** (fixed). The run log is append-only and shared with
-the fixtures, so the deliberate `REFUSED_INVALID_ARGUMENTS` of a verification run was counted by the
-health monitor as the campaign failing, and a manual run refreshed its 45-minute liveness heartbeat.
-Measured before the fix: `consecutive_failures` **2 of a critical threshold of 3** at
-2026-10-08T21:48Z, with 26 deliberate refusals and 24 lease collisions from fixtures in the live log —
-the next fixture would have raised a false `CRITICAL`. Every run event now records the launch mode it
-declares, and the monitor derives its failure streak and its heartbeat from the non-manual events
-only, deliberately still counting the 129 rows written before the field existed, because dropping
-them could hide a real failure. After the fix the live status reports a streak of 1 and
-`heartbeat_basis = LAST_NON_MANUAL_RUN`.
-6. **`SNAPSHOT-CHECK-CONFLATED-DRIFT-WITH-CORRUPTION`** (fixed). `--check` failed as soon as the tick
-rewrote its own state, i.e. within fifteen minutes of being taken; five live files had already moved
-by 22:00Z. It now verifies the snapshot's own bytes and the raw evidence as *integrity*, and reports
-the campaign moving on as *drift*, named and hashed. Proven by a new negative test: tampering with
-the snapshot copy fails the check, a missing copy fails the check, a manifest that is not ours is
-refused before anything is believed, and a live file that has moved passes as drift.
-7. **`LIVE-TESTS-RACED-THE-SCHEDULER`** (fixed). Three live tests asserted on the tick's outcome
-while the 15-minute task held the shared lease, so they failed with `ALREADY_RUNNING` whenever the
-scheduler was mid-collection (observed at 22:03Z: 3 failed; the same suite passed 24/24 at 22:08Z).
-They now wait for a free lease with a bounded and *loud* timeout, and a lease that never frees is
-reported as a failure rather than skipped past.
+5. **`FIXTURE-REFUSALS-TRIPPED-THE-LIVE-MONITOR`** (fixed in `14514d6`). The run log is append-only and
+   shared with the fixtures, so the deliberate `REFUSED_INVALID_ARGUMENTS` of a verification run was
+   counted by the health monitor as the campaign failing, and a manual run refreshed its 45-minute
+   liveness heartbeat. Measured before the fix: `consecutive_failures` **2 of a critical threshold of
+   3** at 2026-10-08T21:48Z, with 26 deliberate refusals and 24 lease collisions from fixtures in the
+   live log — the next fixture would have raised a false `CRITICAL`, and a stopped schedule could
+   have looked alive. Every run event now records the launch mode it declares, and the monitor derives
+   its failure streak and its heartbeat from the non-manual events only, deliberately still counting
+   the 129 rows written before the field existed, because dropping them could hide a real failure.
+   After the fix the live status reports a streak of 1 and `heartbeat_basis = LAST_NON_MANUAL_RUN`.
+6. **`SNAPSHOT-CHECK-CONFLATED-DRIFT-WITH-CORRUPTION`** (fixed in `14514d6`). `--check` failed as soon
+   as the tick rewrote its own state, i.e. within fifteen minutes of being taken; five live files had
+   already moved by 22:00Z. It now verifies the snapshot's own bytes and the raw evidence as
+   *integrity*, and reports the campaign moving on as *drift*, named and hashed. Proven by a new
+   negative test: tampering with the snapshot copy fails the check, a missing copy fails the check, a
+   manifest that is not ours is refused before anything is believed, and a live file that has moved
+   passes as drift.
+7. **`LIVE-TESTS-RACED-THE-SCHEDULER`** (fixed in `14514d6`). Three live tests asserted on the tick's
+   outcome while the 15-minute task held the shared lease, so they failed with `ALREADY_RUNNING`
+   whenever the scheduler was mid-collection (observed at 22:03Z: 3 failed; the same suite passed
+   24/24 at 22:08Z). They now wait for a free lease with a bounded and *loud* timeout, and a lease that
+   never frees is reported as a failure rather than skipped past.
+8. **`ARTEFACT-BYTES-DEPENDED-ON-THE-PLATFORM`** (fixed in the commit that carries this report). The
+   three artefacts written by the new programs were created through a Windows text-mode write, so they
+   carried CRLF while git stores LF: the sha256 this report first recorded described bytes that no
+   other host — and no reader of the committed blob — could reproduce. The acceptance check caught it
+   (`3 recorded hashes did not reproduce`), and the writers now open with `newline="\n"`, so the
+   recorded digest describes the bytes that ship. A hash that only reproduces on the machine that
+   wrote it is not a hash.
 
-8. **`RUN-LOG-PROVENANCE-IS-DECLARED-MODE`** — still open, deliberately. The launch mode is what the
+9. **`RUN-LOG-PROVENANCE-IS-DECLARED-MODE`** — still open, deliberately. The launch mode is what the
 invocation declares on its command line, not an unforgeable origin, so a fixture that passes
 `--scheduled` is recorded exactly as the task would be, and the 129 rows that predate the field carry
 no provenance at all. Minimal correction: have the registered task carry a per-installation token, or

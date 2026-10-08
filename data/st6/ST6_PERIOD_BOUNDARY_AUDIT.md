@@ -180,6 +180,21 @@ answers two questions apart: the snapshot's own bytes, its copied files and the 
 a failure). New negative test: a tampered copy fails, a missing copy fails, a foreign manifest is
 refused before anything is believed, and a moved live file passes as drift.
 
+### F7 — `ARTEFACT-BYTES-DEPENDED-ON-THE-PLATFORM` (fixed)
+
+The artefacts written by the new programs were produced through a Windows text-mode write, so they
+carried CRLF while git stores LF, and the sha256 recorded for them did not describe the bytes that
+ship. The acceptance check found it by re-hashing every recorded digest against the committed blob:
+`3 recorded hashes did not reproduce`. The writers now open with `newline="\n"`, which matters here
+more than anywhere else in this phase — the denominator audit, the replay report and the consolidation
+are all quoted by hash, and a hash that only reproduces on the machine that wrote it proves nothing.
+
+Related, and worth recording as evidence that the verification is not decorative: when three programs
+were edited after `ST6_LIVE_STATE_20261008T221134Z` had been taken, the independent verifier **failed**
+(`the implementation file scripts/st6_state_snapshot.py changed after the snapshot`, 18/19,
+FALSE_SUCCESS 1). The snapshot was retaken once the code had stopped moving and the same verification
+then passed 19/19.
+
 ### F6 — `LIVE-TESTS-RACED-THE-SCHEDULER` (fixed)
 
 Three live tests asserted on the tick's outcome while the 15-minute task held the shared lease, so

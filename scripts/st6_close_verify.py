@@ -1089,7 +1089,10 @@ def main(argv: list[str] | None = None) -> int:
     out = Path(args.out)
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(
-        json.dumps(result, indent=2, sort_keys=True, ensure_ascii=False) + "\n", encoding="utf-8"
+        json.dumps(result, indent=2, sort_keys=True, ensure_ascii=False) + "\n",
+        encoding="utf-8",
+        # the recorded hashes of this artefact must describe bytes that any host can reproduce
+        newline="\n",
     )
     print(
         f"{result['status']} {result['checks_passed']}/{result['checks_total']} checks, "
