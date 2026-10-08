@@ -1,0 +1,39 @@
+{
+  "measured_at_utc": "2026-10-08T02:00:00Z",
+  "ruff_repo": {
+    "command": "python -m ruff check .",
+    "result": "All checks passed!",
+    "exit_code": 0
+  },
+  "mypy_own_files": {
+    "command": "python -m mypy scripts/pgate035_closure.py scripts/pgate035_verify.py",
+    "result": "Success: no issues found in 2 source files",
+    "exit_code": 0
+  },
+  "mypy_repo": {
+    "command": "python -m mypy .",
+    "result": "Found 1 error in 1 file (errors prevented further checking)",
+    "exit_code": 1,
+    "failing_files": [
+      "reports/paper-strategy-lifecycle-shadow-02/analyze.py"
+    ],
+    "ownership": "not this gate's: a duplicate-module path collision in another thread's report script, which aborts the run before this gate's files are checked",
+    "note": "this is a different blocker from the 72 errors reported by the RFC-035S3 round; both belong to files this gate does not own"
+  },
+  "pytest_gate035": {
+    "command": "python -m pytest tests/unit/research/test_profitability_gate035.py -q -p no:randomly",
+    "result": "24 passed",
+    "exit_code": 0
+  },
+  "pytest_full": {
+    "command": "python -m pytest -q -p no:randomly",
+    "result": "2884 passed, 78 warnings in 215.14s",
+    "exit_code": 0,
+    "note": "2860 was the count before this gate added its own 24 offline guards; the final state is 2884"
+  },
+  "independent_verification": {
+    "command": "python scripts/pgate035_verify.py",
+    "result": "PASS 313/313 passed, 0 mismatches, false_success=0",
+    "exit_code": 0
+  }
+}
