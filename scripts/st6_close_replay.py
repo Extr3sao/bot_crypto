@@ -15,7 +15,10 @@ against a copy of the real state, with an injected UTC clock instead of the syst
   terminal transition is intercepted, and any other subprocess call raises;
 * the **clock is injected** through a frozen ``datetime`` subclass placed in the tick's namespace,
   so the same state and clock always produce the same close, and the system clock is never changed;
-* the **real state is fingerprinted before and after**, and every byte that moved is attributed.
+* the **real state is fingerprinted before and after**, and every byte that moved is attributed;
+* the state the close is a function of is **identified before it is replayed** (the collected windows
+  and the artefacts that describe them), because a campaign that keeps collecting legitimately
+  closes differently on a later tick: the verifier reconciles the two by identity, not by hope.
 
 Scenarios (the ones §04 of the mission declares, plus the negative ones):
 
@@ -93,6 +96,8 @@ REDIRECTED_CONSTANTS = (
     "REPORT_MD",
     "RUN_LOG",
     "MISSED_LOG",
+    "WITNESS_LOG",
+    "SCHEDULER_EVIDENCE",
     "CLOSURE",
     "SCHEDULER_REPORT_JSON",
     "SCHEDULER_REPORT_MD",
@@ -216,6 +221,42 @@ def write_jsonl(path: Path, rows: list[dict[str, Any]]) -> None:
         "".join(json.dumps(row, sort_keys=True, ensure_ascii=False) + "\n" for row in rows),
         encoding="utf-8",
     )
+
+
+#: The state the close reads: the collected windows of the period and the artefacts that describe
+#: them.  A live campaign keeps collecting, so the same harness on a later tick legitimately
+#: produces a different consolidation: recording *which* state was replayed is what makes the
+#: difference attributable instead of unverifiable.
+CLOSE_INPUT_FILES = (
+    "ST6_PERIOD.json",
+    "ST6_WINDOWS.jsonl",
+    "ST6_RUNS.jsonl",
+    "ST6_OBSERVATIONS.jsonl",
+    "ST6_MISSED_WINDOWS.jsonl",
+    "ST6_MODEL_DRIFT.json",
+    "ST6_REGIME_COVERAGE.json",
+)
+
+
+def close_input_identity(base: Path) -> dict[str, Any]:
+    """The identity of a state a close was replayed against, taken before the replay touches it."""
+    files: dict[str, str] = {}
+    for name in CLOSE_INPUT_FILES:
+        path = base / name
+        files[name] = sha256_file(path) if path.exists() else "ABSENT"
+    windows = read_jsonl(base / "ST6_WINDOWS.jsonl")
+    window_ids = sorted(f"{row['day']}#{row['slot_index']}" for row in windows)
+    payload = json.dumps(
+        {"files": files, "window_ids": window_ids}, sort_keys=True, separators=(",", ":")
+    ).encode("utf-8")
+    return {
+        "digest": sha256_bytes(payload),
+        "files": files,
+        "window_ids": window_ids,
+        "observed_windows": len(window_ids),
+        "declared_windows": PLANNED_WINDOWS,
+        "taken_from": str(base),
+    }
 
 
 def fingerprint_real_state() -> dict[str, str]:
@@ -651,6 +692,8 @@ def scenario_3_to_6_close_sequence(
     root: Path, recorder: Recorder, head: str
 ) -> list[dict[str, Any]]:
     sandbox = Sandbox("close-sequence", root / "close-sequence")
+    # before anything runs: the identity of the state this close is a function of
+    input_state = close_input_identity(sandbox.base)
     # one module instance closes; a second one (fresh import) proves the no-op after the close
     module = load_tick(sandbox, recorder, head)
     closed = run_tick(module, sandbox, CLOSE_INSTANT, ["--due", "--scheduled"])
@@ -765,6 +808,7 @@ def scenario_3_to_6_close_sequence(
             "result": closed,
             "closure_outcome": closure.get("outcome"),
             "closure_sha256": sha256_file(sandbox.closure),
+            "input_state": input_state,
             "reading": (
                 "the consolidation is written once, the missed windows are named, the terminal "
                 "state is declared and the tick that produced it sampled nothing"
@@ -1148,6 +1192,14 @@ def scenario_10_restart_recovery(root: Path, recorder: Recorder, head: str) -> d
 # ------------------------------------------------------------------------------------------------
 
 
+def close_input(report: dict[str, Any]) -> dict[str, Any]:
+    """The identity of the state the close sequence was replayed against."""
+    scenario = next(
+        (entry for entry in report.get("scenarios", []) if entry["scenario"].startswith("3.")), None
+    )
+    return (scenario or {}).get("input_state") or {}
+
+
 def render_markdown(report: dict[str, Any]) -> str:
     lines = [
         "# ST-6 — isolated close replay",
@@ -1165,6 +1217,16 @@ def render_markdown(report: dict[str, Any]) -> str:
         f"{report['summary']['passed']}/{report['summary']['scenarios']} scenarios PASS, "
         f"{report['summary']['failed']} FAIL, "
         f"{report['summary']['declared_deviations']} declared deviation(s).",
+        "",
+        "## The state this close was replayed against",
+        "",
+        "The consolidation is a function of the collected state and the injected clock, so the state",
+        "itself is identified here: close input state "
+        f"`{close_input(report)['digest'][:16]}` with "
+        f"{close_input(report)['observed_windows']} of "
+        f"{close_input(report)['declared_windows']} declared windows collected at replay time. A",
+        "later replay of a state that has since collected more windows legitimately produces a",
+        "different consolidation; the verifier attributes that difference instead of hiding it.",
         "",
         "## Scenarios",
         "",
@@ -1281,9 +1343,16 @@ def main(argv: list[str] | None = None) -> int:
         for relative in set(real_before) | set(real_after)
         if real_before.get(relative) != real_after.get(relative)
     )
-    # a live tick keeps working while this runs: its own artefacts are attributed, not excused
+    # a live tick keeps working while this runs, and so does the read-only witness that samples the
+    # scheduler's own reporting: their artefacts are attributed, not excused
     live_files = {
         "data/st6/ST6_RUNS.jsonl",
+        "data/st6/ST6_SCHEDULER_WITNESS.jsonl",
+        "data/st6/ST6_SCHEDULER_EVIDENCE.json",
+        "data/st6/ST6_RETENTION_AUDIT.md",
+        "data/st6/ST6_SLOT_LEDGER.json",
+        "data/st6/ST6_SCHEDULER_PROVENANCE.json",
+        "data/st6/ST6_SCHEDULER_PROVENANCE.md",
         "data/st6/ST6_HEALTH.jsonl",
         "data/st6/ST6_HEALTH_STATUS.json",
         "data/st6/ST6_SCHEDULER_REPORT.json",

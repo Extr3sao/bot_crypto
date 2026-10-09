@@ -51,14 +51,14 @@
     "system_clock_changed": false
   },
   "close_mechanics_verdict": "PASS",
-  "current_head": "9eb1e464cf8b090af222127153e33f6ea6e1e949",
+  "current_head": "7cd8d72f8d4330682af560f11b30cac211ad78b3",
   "does_not_prove": [
     "that the real period will close on its own date: it proves how the close behaves",
     "that the market data of a slot the guard refused is anything: nothing was sampled",
     "that the delegated verifiers pass: they are intercepted inside the replay"
   ],
   "false_success": 0,
-  "generated_at_utc": "2026-10-09T07:59:59Z",
+  "generated_at_utc": "2026-10-09T16:35:35Z",
   "isolation": {
     "live_activity_attributed": [],
     "network_attempts": [
@@ -94,6 +94,8 @@
       "REPORT_MD",
       "RUN_LOG",
       "MISSED_LOG",
+      "WITNESS_LOG",
+      "SCHEDULER_EVIDENCE",
       "CLOSURE",
       "SCHEDULER_REPORT_JSON",
       "SCHEDULER_REPORT_MD",
@@ -105,7 +107,7 @@
       "PRICE_DIR"
     ],
     "sandbox_outside_repository": true,
-    "sandbox_root": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\st6-close-replay-v5nq3157",
+    "sandbox_root": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\st6-close-replay-s5p_vol5",
     "scheduler_queries": [
       {
         "source": "snapshot",
@@ -202,19 +204,7 @@
       {
         "argv": [
           "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
-          "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\scripts\\st6_forward_regime_verify.py"
-        ]
-      },
-      {
-        "argv": [
-          "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
-          "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\scripts\\st6_scheduler_verify.py"
-        ]
-      },
-      {
-        "argv": [
-          "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
-          "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\scripts\\st6_health_check.py"
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\scripts\\st6_slot_ledger.py"
         ]
       },
       {
@@ -292,7 +282,31 @@
       {
         "argv": [
           "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\scripts\\st6_forward_regime_verify.py"
+        ]
+      },
+      {
+        "argv": [
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\scripts\\st6_scheduler_verify.py"
+        ]
+      },
+      {
+        "argv": [
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
           "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\scripts\\st6_health_check.py"
+        ]
+      },
+      {
+        "argv": [
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\scripts\\st6_health_check.py"
+        ]
+      },
+      {
+        "argv": [
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\scripts\\st6_slot_ledger.py"
         ]
       },
       {
@@ -366,12 +380,14 @@
           "health_exit_code": null,
           "health_status": "HEALTHY",
           "invocation": "SCHEDULED",
+          "ledger_exit_code": null,
+          "ledger_status": "NOT_EXECUTED_IN_REPLAY",
           "market_requests": 0,
           "missed_windows_recorded": [],
           "observed_by_window": "20261008T200323Z",
           "raw_evidence_hash": null,
           "result": "SKIPPED_NO_WINDOW_DUE",
-          "run_id": "20261008T220000Z-f6988ba1",
+          "run_id": "20261008T220000Z-57ef536e",
           "scheduled_slot_utc": "20:00-24:00 UTC",
           "session": "us",
           "slot_key": "2026-10-08#5",
@@ -382,11 +398,11 @@
           "closure_present": false,
           "closure_sha256": null,
           "missed": 0,
-          "runs": 214,
-          "windows": 4
+          "runs": 374,
+          "windows": 7
         },
         "stdout_tail": [
-          "tick: SKIPPED_NO_WINDOW_DUE slot 20:00-24:00 UTC (us, weekday); market requests 0; completed windows 4; missed 0; health HEALTHY; ST6_AUTONOMOUS_COLLECTION_ACTIVE"
+          "tick: SKIPPED_NO_WINDOW_DUE slot 20:00-24:00 UTC (us, weekday); market requests 0; completed windows 7; missed 0; health HEALTHY; ST6_AUTONOMOUS_COLLECTION_ACTIVE"
         ]
       },
       "scenario": "1. a tick before the close, in an already observed slot",
@@ -411,8 +427,8 @@
         "exit_code": null,
         "instant": "2026-10-22T16:10:00Z",
         "last_run": {
-          "actual_end_utc": "2026-10-09T07:59:09Z",
-          "actual_start_utc": "2026-10-09T07:58:58Z",
+          "actual_end_utc": "2026-10-09T16:35:24Z",
+          "actual_start_utc": "2026-10-09T16:35:16Z",
           "artifact": "ST6_RUN_EVENT",
           "collection_attempted": false,
           "data_freshness": null,
@@ -423,10 +439,10 @@
           "market_requests": 0,
           "raw_evidence_hash": null,
           "result": "REFUSED_INVALID_ARGUMENTS",
-          "run_id": "20261009T075858Z-15b29026",
-          "scheduled_slot_utc": "04:00-08:00 UTC",
-          "session": "asia",
-          "slot_key": "2026-10-09#1",
+          "run_id": "20261009T163516Z-3d86c11f",
+          "scheduled_slot_utc": "16:00-20:00 UTC",
+          "session": "us",
+          "slot_key": "2026-10-09#4",
           "verifier_status": null
         },
         "network_attempts": 1,
@@ -434,8 +450,8 @@
           "closure_present": false,
           "closure_sha256": null,
           "missed": 0,
-          "runs": 213,
-          "windows": 4
+          "runs": 373,
+          "windows": 7
         },
         "stdout_tail": []
       },
@@ -475,8 +491,8 @@
         "exit_code": null,
         "instant": "2026-10-22T15:59:00Z",
         "last_run": {
-          "actual_end_utc": "2026-10-09T07:59:09Z",
-          "actual_start_utc": "2026-10-09T07:58:58Z",
+          "actual_end_utc": "2026-10-09T16:35:24Z",
+          "actual_start_utc": "2026-10-09T16:35:16Z",
           "artifact": "ST6_RUN_EVENT",
           "collection_attempted": false,
           "data_freshness": null,
@@ -487,10 +503,10 @@
           "market_requests": 0,
           "raw_evidence_hash": null,
           "result": "REFUSED_INVALID_ARGUMENTS",
-          "run_id": "20261009T075858Z-15b29026",
-          "scheduled_slot_utc": "04:00-08:00 UTC",
-          "session": "asia",
-          "slot_key": "2026-10-09#1",
+          "run_id": "20261009T163516Z-3d86c11f",
+          "scheduled_slot_utc": "16:00-20:00 UTC",
+          "session": "us",
+          "slot_key": "2026-10-09#4",
           "verifier_status": null
         },
         "network_attempts": 1,
@@ -498,8 +514,8 @@
           "closure_present": false,
           "closure_sha256": null,
           "missed": 0,
-          "runs": 213,
-          "windows": 4
+          "runs": 373,
+          "windows": 7
         },
         "stdout_tail": []
       },
@@ -525,7 +541,31 @@
         "the transition of the schedule itself is recorded": true
       },
       "closure_outcome": "INSUFFICIENT_REGIME_COVERAGE",
-      "closure_sha256": "568a20191bb8700b87659928e8b569c77d7fd153d522d6ed74e0e32f1975b861",
+      "closure_sha256": "7f8b8d07e8cd8d306b4937642bb385b9395b62c800df5aa964c98125b47c67a3",
+      "input_state": {
+        "declared_windows": 84,
+        "digest": "e0f73751cf369bbbe17eae47fac510643c7c97d2010ee176a0448a4110051aa4",
+        "files": {
+          "ST6_MISSED_WINDOWS.jsonl": "ABSENT",
+          "ST6_MODEL_DRIFT.json": "28ae0cf679f5663004284f35ca8d8f9132ea7ac62a7c9d78fbff183f924af602",
+          "ST6_OBSERVATIONS.jsonl": "48be3191b73fd9f1e34f102118dadfb21929a4c6e5aa26bed6a43926df772494",
+          "ST6_PERIOD.json": "5dd14bc8eac887786129d06e5aafed3de25b203764cb06033e39df0188cc5cae",
+          "ST6_REGIME_COVERAGE.json": "225304491a5c7d8d9a24ed299d68086c91c73645c8f9cba1d27ecfc05507c42f",
+          "ST6_RUNS.jsonl": "5fa2d94a1bb713859573aa42aa865ee7671da41436e73dbf9fba965b42dce209",
+          "ST6_WINDOWS.jsonl": "88e982be84122e05bcd42eb2b5ba28e62f447bc5fbe96721da318a62efc736e0"
+        },
+        "observed_windows": 7,
+        "taken_from": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\st6-close-replay-s5p_vol5\\close-sequence\\data\\st6",
+        "window_ids": [
+          "2026-10-08#4",
+          "2026-10-08#5",
+          "2026-10-09#0",
+          "2026-10-09#1",
+          "2026-10-09#2",
+          "2026-10-09#3",
+          "2026-10-09#4"
+        ]
+      },
       "reading": "the consolidation is written once, the missed windows are named, the terminal state is declared and the tick that produced it sampled nothing",
       "result": {
         "argv": [
@@ -535,7 +575,7 @@
         "delta": {
           "closure_changed": true,
           "closure_written": true,
-          "missed": 80,
+          "missed": 77,
           "raw_files": 0,
           "runs": 1,
           "windows": 0
@@ -559,7 +599,7 @@
           "market_requests": 0,
           "raw_evidence_hash": null,
           "result": "PERIOD_ENDED_CONSOLIDATED",
-          "run_id": "20261022T162120Z-6103f2a2",
+          "run_id": "20261022T162120Z-3d1deedd",
           "scheduled_slot_utc": "16:00-20:00 UTC",
           "session": "us",
           "slot_key": "2026-10-22#4",
@@ -568,16 +608,16 @@
         "network_attempts": 0,
         "state_after": {
           "closure_present": true,
-          "closure_sha256": "568a20191bb8700b87659928e8b569c77d7fd153d522d6ed74e0e32f1975b861",
-          "missed": 80,
-          "runs": 214,
-          "windows": 4
+          "closure_sha256": "7f8b8d07e8cd8d306b4937642bb385b9395b62c800df5aa964c98125b47c67a3",
+          "missed": 77,
+          "runs": 374,
+          "windows": 7
         },
         "stdout_tail": [
           "PERIOD_ENDED: the declared period closed at 2026-10-22T16:21:20Z; no further sample is taken. Consolidation written to data\\st6\\ST6_PERIOD_CLOSURE.json, verifier NOT_EXECUTED_IN_REPLAY, scheduler verifier NOT_EXECUTED_IN_REPLAY."
         ]
       },
-      "sandbox": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\st6-close-replay-v5nq3157\\close-sequence",
+      "sandbox": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\st6-close-replay-s5p_vol5\\close-sequence",
       "scenario": "3. the exact close instant",
       "verdict": "PASS"
     },
@@ -625,7 +665,7 @@
             "market_requests": 0,
             "raw_evidence_hash": null,
             "result": "PERIOD_ENDED_CONSOLIDATED",
-            "run_id": "20261022T162120Z-6103f2a2",
+            "run_id": "20261022T162120Z-3d1deedd",
             "scheduled_slot_utc": "16:00-20:00 UTC",
             "session": "us",
             "slot_key": "2026-10-22#4",
@@ -634,10 +674,10 @@
           "network_attempts": 0,
           "state_after": {
             "closure_present": true,
-            "closure_sha256": "568a20191bb8700b87659928e8b569c77d7fd153d522d6ed74e0e32f1975b861",
-            "missed": 80,
-            "runs": 214,
-            "windows": 4
+            "closure_sha256": "7f8b8d07e8cd8d306b4937642bb385b9395b62c800df5aa964c98125b47c67a3",
+            "missed": 77,
+            "runs": 374,
+            "windows": 7
           },
           "stdout_tail": [
             "PERIOD_ENDED_TERMINAL: the declared period closed at 2026-10-22T16:21:20Z (belongs to the declared period); no sample is taken, no artefact is rewritten and no run event is appended."
@@ -675,7 +715,7 @@
             "market_requests": 0,
             "raw_evidence_hash": null,
             "result": "PERIOD_ENDED_CONSOLIDATED",
-            "run_id": "20261022T162120Z-6103f2a2",
+            "run_id": "20261022T162120Z-3d1deedd",
             "scheduled_slot_utc": "16:00-20:00 UTC",
             "session": "us",
             "slot_key": "2026-10-22#4",
@@ -684,10 +724,10 @@
           "network_attempts": 0,
           "state_after": {
             "closure_present": true,
-            "closure_sha256": "568a20191bb8700b87659928e8b569c77d7fd153d522d6ed74e0e32f1975b861",
-            "missed": 80,
-            "runs": 214,
-            "windows": 4
+            "closure_sha256": "7f8b8d07e8cd8d306b4937642bb385b9395b62c800df5aa964c98125b47c67a3",
+            "missed": 77,
+            "runs": 374,
+            "windows": 7
           },
           "stdout_tail": [
             "PERIOD_ENDED_TERMINAL: the declared period closed at 2026-10-22T16:21:20Z (belongs to the declared period); no sample is taken, no artefact is rewritten and no run event is appended."
@@ -725,7 +765,7 @@
             "market_requests": 0,
             "raw_evidence_hash": null,
             "result": "PERIOD_ENDED_CONSOLIDATED",
-            "run_id": "20261022T162120Z-6103f2a2",
+            "run_id": "20261022T162120Z-3d1deedd",
             "scheduled_slot_utc": "16:00-20:00 UTC",
             "session": "us",
             "slot_key": "2026-10-22#4",
@@ -734,10 +774,10 @@
           "network_attempts": 0,
           "state_after": {
             "closure_present": true,
-            "closure_sha256": "568a20191bb8700b87659928e8b569c77d7fd153d522d6ed74e0e32f1975b861",
-            "missed": 80,
-            "runs": 214,
-            "windows": 4
+            "closure_sha256": "7f8b8d07e8cd8d306b4937642bb385b9395b62c800df5aa964c98125b47c67a3",
+            "missed": 77,
+            "runs": 374,
+            "windows": 7
           },
           "stdout_tail": [
             "PERIOD_ENDED_TERMINAL: the declared period closed at 2026-10-22T16:21:20Z (belongs to the declared period); no sample is taken, no artefact is rewritten and no run event is appended."
@@ -776,7 +816,7 @@
           "market_requests": 0,
           "raw_evidence_hash": null,
           "result": "PERIOD_ENDED_CONSOLIDATED",
-          "run_id": "20261022T162120Z-6103f2a2",
+          "run_id": "20261022T162120Z-3d1deedd",
           "scheduled_slot_utc": "16:00-20:00 UTC",
           "session": "us",
           "slot_key": "2026-10-22#4",
@@ -785,10 +825,10 @@
         "network_attempts": 0,
         "state_after": {
           "closure_present": true,
-          "closure_sha256": "568a20191bb8700b87659928e8b569c77d7fd153d522d6ed74e0e32f1975b861",
-          "missed": 80,
-          "runs": 214,
-          "windows": 4
+          "closure_sha256": "7f8b8d07e8cd8d306b4937642bb385b9395b62c800df5aa964c98125b47c67a3",
+          "missed": 77,
+          "runs": 374,
+          "windows": 7
         },
         "stdout_tail": [
           "PERIOD_ENDED_TERMINAL: the declared period closed at 2026-10-22T16:21:20Z (belongs to the declared period); no sample is taken, no artefact is rewritten and no run event is appended."
@@ -811,8 +851,8 @@
         "the plan counted from the start's own slot is 84 windows": true
       },
       "declared_windows": 84,
-      "missed_windows": 80,
-      "observed_windows": 4,
+      "missed_windows": 77,
+      "observed_windows": 7,
       "reading": "a slot that passed without a measurement is written down as a loss with its reason, never invented, and the denominator stays the declared plan",
       "scenario": "6. unattended windows",
       "verdict": "PASS"
@@ -858,7 +898,7 @@
             "campaign_id": "ST6_FORWARD_REGIME",
             "host": "DESKTOP-4CHO695",
             "lease_version": "CAMPAIGN_LEASE_V1",
-            "pid": 15120,
+            "pid": 32692,
             "renewed_at": 1791496800,
             "stale_after_seconds": 300
           },
@@ -866,7 +906,7 @@
           "market_requests": 0,
           "raw_evidence_hash": null,
           "result": "ALREADY_RUNNING",
-          "run_id": "20261008T220000Z-04831d00",
+          "run_id": "20261008T220000Z-b4231eb2",
           "scheduled_slot_utc": "20:00-24:00 UTC",
           "slot_key": "2026-10-08#5",
           "verifier_status": null
@@ -876,11 +916,11 @@
           "closure_present": false,
           "closure_sha256": null,
           "missed": 0,
-          "runs": 214,
-          "windows": 4
+          "runs": 374,
+          "windows": 7
         },
         "stdout_tail": [
-          "ALREADY_RUNNING: {'acquired_at': 1791496800, 'campaign_id': 'ST6_FORWARD_REGIME', 'host': 'DESKTOP-4CHO695', 'lease_version': 'CAMPAIGN_LEASE_V1', 'pid': 15120, 'renewed_at': 1791496800, 'stale_after_seconds': 300}"
+          "ALREADY_RUNNING: {'acquired_at': 1791496800, 'campaign_id': 'ST6_FORWARD_REGIME', 'host': 'DESKTOP-4CHO695', 'lease_version': 'CAMPAIGN_LEASE_V1', 'pid': 32692, 'renewed_at': 1791496800, 'stale_after_seconds': 300}"
         ]
       },
       "scenario": "7. concurrent execution",
@@ -905,7 +945,7 @@
             "delta": {
               "closure_changed": true,
               "closure_written": true,
-              "missed": 80,
+              "missed": 77,
               "raw_files": 0,
               "runs": 1,
               "windows": 0
@@ -929,7 +969,7 @@
               "market_requests": 0,
               "raw_evidence_hash": null,
               "result": "PERIOD_ENDED_CONSOLIDATED",
-              "run_id": "20261022T162120Z-f80bd0ce",
+              "run_id": "20261022T162120Z-5692ca40",
               "scheduled_slot_utc": "16:00-20:00 UTC",
               "session": "us",
               "slot_key": "2026-10-22#4",
@@ -938,10 +978,10 @@
             "network_attempts": 0,
             "state_after": {
               "closure_present": true,
-              "closure_sha256": "3ef7bfc6a73fc9a82cee9fbf1a9759b59d73417a06cba59b5ed8a5a7c3c90ade",
-              "missed": 80,
-              "runs": 214,
-              "windows": 4
+              "closure_sha256": "087281e60dcbb6c26df36874b396ce880e4a8682e76254759989f987676e2238",
+              "missed": 77,
+              "runs": 374,
+              "windows": 7
             },
             "stdout_tail": [
               "PERIOD_ENDED: the declared period closed at 2026-10-22T16:21:20Z; no further sample is taken. Consolidation written to data\\st6\\ST6_PERIOD_CLOSURE.json, verifier NOT_EXECUTED_IN_REPLAY, scheduler verifier NOT_EXECUTED_IN_REPLAY."
@@ -968,7 +1008,7 @@
             "delta": {
               "closure_changed": false,
               "closure_written": false,
-              "missed": 80,
+              "missed": 77,
               "raw_files": 0,
               "runs": 0,
               "windows": 0
@@ -978,8 +1018,8 @@
             "exit_code": null,
             "instant": "2026-10-22T16:21:20Z",
             "last_run": {
-              "actual_end_utc": "2026-10-09T07:59:09Z",
-              "actual_start_utc": "2026-10-09T07:58:58Z",
+              "actual_end_utc": "2026-10-09T16:35:24Z",
+              "actual_start_utc": "2026-10-09T16:35:16Z",
               "artifact": "ST6_RUN_EVENT",
               "collection_attempted": false,
               "data_freshness": null,
@@ -990,19 +1030,19 @@
               "market_requests": 0,
               "raw_evidence_hash": null,
               "result": "REFUSED_INVALID_ARGUMENTS",
-              "run_id": "20261009T075858Z-15b29026",
-              "scheduled_slot_utc": "04:00-08:00 UTC",
-              "session": "asia",
-              "slot_key": "2026-10-09#1",
+              "run_id": "20261009T163516Z-3d86c11f",
+              "scheduled_slot_utc": "16:00-20:00 UTC",
+              "session": "us",
+              "slot_key": "2026-10-09#4",
               "verifier_status": null
             },
             "network_attempts": 0,
             "state_after": {
               "closure_present": false,
               "closure_sha256": null,
-              "missed": 80,
-              "runs": 213,
-              "windows": 4
+              "missed": 77,
+              "runs": 373,
+              "windows": 7
             },
             "stdout_tail": []
           },
@@ -1023,7 +1063,7 @@
             "delta": {
               "closure_changed": true,
               "closure_written": true,
-              "missed": 80,
+              "missed": 77,
               "raw_files": 0,
               "runs": 1,
               "windows": 0
@@ -1047,7 +1087,7 @@
               "market_requests": 0,
               "raw_evidence_hash": null,
               "result": "PERIOD_ENDED_CONSOLIDATED",
-              "run_id": "20261022T162120Z-5c82ffce",
+              "run_id": "20261022T162120Z-35292edf",
               "scheduled_slot_utc": "16:00-20:00 UTC",
               "session": "us",
               "slot_key": "2026-10-22#4",
@@ -1056,10 +1096,10 @@
             "network_attempts": 0,
             "state_after": {
               "closure_present": true,
-              "closure_sha256": "102088b0b13a5f08198288d5b80b6d47d7c28db0854b82819927cbb6a6e3cd13",
-              "missed": 80,
-              "runs": 215,
-              "windows": 5
+              "closure_sha256": "60679c370659c943e33cc36601ce7bc8999c05bee15cb5eb4b4abda812b905c0",
+              "missed": 77,
+              "runs": 375,
+              "windows": 8
             },
             "stdout_tail": [
               "PERIOD_ENDED: the declared period closed at 2026-10-22T16:21:20Z; no further sample is taken. Consolidation written to data\\st6\\ST6_PERIOD_CLOSURE.json, verifier NOT_EXECUTED_IN_REPLAY, scheduler verifier NOT_EXECUTED_IN_REPLAY."
@@ -1108,7 +1148,7 @@
         "delta": {
           "closure_changed": true,
           "closure_written": true,
-          "missed": 80,
+          "missed": 77,
           "raw_files": 0,
           "runs": 1,
           "windows": 0
@@ -1132,7 +1172,7 @@
           "market_requests": 0,
           "raw_evidence_hash": null,
           "result": "PERIOD_ENDED_CONSOLIDATED",
-          "run_id": "20261022T162120Z-ab70c77e",
+          "run_id": "20261022T162120Z-7f9bd981",
           "scheduled_slot_utc": "16:00-20:00 UTC",
           "session": "us",
           "slot_key": "2026-10-22#4",
@@ -1141,10 +1181,10 @@
         "network_attempts": 0,
         "state_after": {
           "closure_present": true,
-          "closure_sha256": "18bf179c7f88d0c36111d41e4c5a6e1ccc5d69ca6bc228015128ea8a6503ff76",
-          "missed": 80,
-          "runs": 214,
-          "windows": 4
+          "closure_sha256": "ae3d5bf5d06efefcf4117a7fa61a4976aca82c3034ad85e4ec92444c4598c860",
+          "missed": 77,
+          "runs": 374,
+          "windows": 7
         },
         "stdout_tail": [
           "PERIOD_ENDED: the declared period closed at 2026-10-22T16:21:20Z; no further sample is taken. Consolidation written to data\\st6\\ST6_PERIOD_CLOSURE.json, verifier NOT_EXECUTED_IN_REPLAY, scheduler verifier NOT_EXECUTED_IN_REPLAY."
@@ -1186,7 +1226,7 @@
           "market_requests": 0,
           "raw_evidence_hash": null,
           "result": "PERIOD_ENDED_CONSOLIDATED",
-          "run_id": "20261022T162120Z-c02d2e02",
+          "run_id": "20261022T162120Z-0ed262f8",
           "scheduled_slot_utc": "16:00-20:00 UTC",
           "session": "us",
           "slot_key": "2026-10-22#4",
@@ -1195,10 +1235,10 @@
         "network_attempts": 0,
         "state_after": {
           "closure_present": true,
-          "closure_sha256": "568a20191bb8700b87659928e8b569c77d7fd153d522d6ed74e0e32f1975b861",
-          "missed": 80,
-          "runs": 214,
-          "windows": 4
+          "closure_sha256": "7f8b8d07e8cd8d306b4937642bb385b9395b62c800df5aa964c98125b47c67a3",
+          "missed": 77,
+          "runs": 374,
+          "windows": 7
         },
         "stdout_tail": [
           "PERIOD_ENDED_TERMINAL: the declared period closed at 2026-10-22T16:21:20Z (belongs to the declared period); no sample is taken, no artefact is rewritten and no run event is appended."
@@ -1211,8 +1251,8 @@
         "the consolidation is byte-identical across a simulated restart": true,
         "the second process rewrote nothing it did not need to": true
       },
-      "closure_sha256_first": "568a20191bb8700b87659928e8b569c77d7fd153d522d6ed74e0e32f1975b861",
-      "closure_sha256_second": "568a20191bb8700b87659928e8b569c77d7fd153d522d6ed74e0e32f1975b861",
+      "closure_sha256_first": "7f8b8d07e8cd8d306b4937642bb385b9395b62c800df5aa964c98125b47c67a3",
+      "closure_sha256_second": "7f8b8d07e8cd8d306b4937642bb385b9395b62c800df5aa964c98125b47c67a3",
       "first_run": {
         "argv": [
           "--due",
@@ -1221,7 +1261,7 @@
         "delta": {
           "closure_changed": true,
           "closure_written": true,
-          "missed": 80,
+          "missed": 77,
           "raw_files": 0,
           "runs": 1,
           "windows": 0
@@ -1245,7 +1285,7 @@
           "market_requests": 0,
           "raw_evidence_hash": null,
           "result": "PERIOD_ENDED_CONSOLIDATED",
-          "run_id": "20261022T162120Z-c02d2e02",
+          "run_id": "20261022T162120Z-0ed262f8",
           "scheduled_slot_utc": "16:00-20:00 UTC",
           "session": "us",
           "slot_key": "2026-10-22#4",
@@ -1254,10 +1294,10 @@
         "network_attempts": 0,
         "state_after": {
           "closure_present": true,
-          "closure_sha256": "568a20191bb8700b87659928e8b569c77d7fd153d522d6ed74e0e32f1975b861",
-          "missed": 80,
-          "runs": 214,
-          "windows": 4
+          "closure_sha256": "7f8b8d07e8cd8d306b4937642bb385b9395b62c800df5aa964c98125b47c67a3",
+          "missed": 77,
+          "runs": 374,
+          "windows": 7
         },
         "stdout_tail": [
           "PERIOD_ENDED: the declared period closed at 2026-10-22T16:21:20Z; no further sample is taken. Consolidation written to data\\st6\\ST6_PERIOD_CLOSURE.json, verifier NOT_EXECUTED_IN_REPLAY, scheduler verifier NOT_EXECUTED_IN_REPLAY."
@@ -1297,7 +1337,7 @@
           "market_requests": 0,
           "raw_evidence_hash": null,
           "result": "PERIOD_ENDED_CONSOLIDATED",
-          "run_id": "20261022T162120Z-c02d2e02",
+          "run_id": "20261022T162120Z-0ed262f8",
           "scheduled_slot_utc": "16:00-20:00 UTC",
           "session": "us",
           "slot_key": "2026-10-22#4",
@@ -1306,10 +1346,10 @@
         "network_attempts": 0,
         "state_after": {
           "closure_present": true,
-          "closure_sha256": "568a20191bb8700b87659928e8b569c77d7fd153d522d6ed74e0e32f1975b861",
-          "missed": 80,
-          "runs": 214,
-          "windows": 4
+          "closure_sha256": "7f8b8d07e8cd8d306b4937642bb385b9395b62c800df5aa964c98125b47c67a3",
+          "missed": 77,
+          "runs": 374,
+          "windows": 7
         },
         "stdout_tail": [
           "PERIOD_ENDED_TERMINAL: the declared period closed at 2026-10-22T16:21:20Z (belongs to the declared period); no sample is taken, no artefact is rewritten and no run event is appended."
@@ -1327,7 +1367,7 @@
         "delta": {
           "closure_changed": true,
           "closure_written": true,
-          "missed": 80,
+          "missed": 77,
           "raw_files": 0,
           "runs": 1,
           "windows": 0
@@ -1351,7 +1391,7 @@
           "market_requests": 0,
           "raw_evidence_hash": null,
           "result": "PERIOD_ENDED_CONSOLIDATED",
-          "run_id": "20261022T162120Z-b2d6c569",
+          "run_id": "20261022T162120Z-83e3521b",
           "scheduled_slot_utc": "16:00-20:00 UTC",
           "session": "us",
           "slot_key": "2026-10-22#4",
@@ -1360,10 +1400,10 @@
         "network_attempts": 0,
         "state_after": {
           "closure_present": true,
-          "closure_sha256": "568a20191bb8700b87659928e8b569c77d7fd153d522d6ed74e0e32f1975b861",
-          "missed": 80,
-          "runs": 214,
-          "windows": 4
+          "closure_sha256": "7f8b8d07e8cd8d306b4937642bb385b9395b62c800df5aa964c98125b47c67a3",
+          "missed": 77,
+          "runs": 374,
+          "windows": 7
         },
         "stdout_tail": [
           "PERIOD_ENDED: the declared period closed at 2026-10-22T16:21:20Z; no further sample is taken. Consolidation written to data\\st6\\ST6_PERIOD_CLOSURE.json, verifier NOT_EXECUTED_IN_REPLAY, scheduler verifier NOT_EXECUTED_IN_REPLAY."
@@ -1436,11 +1476,13 @@
           "health_exit_code": null,
           "health_status": "HEALTHY",
           "invocation": "MANUAL",
+          "ledger_exit_code": null,
+          "ledger_status": "NOT_EXECUTED_IN_REPLAY",
           "market_requests": 0,
           "missed_windows_recorded": [],
           "raw_evidence_hash": null,
           "result": "REPORT_ONLY",
-          "run_id": "20261009T020000Z-114cfb31",
+          "run_id": "20261009T020000Z-809135f0",
           "scheduled_slot_utc": "00:00-04:00 UTC",
           "session": "asia",
           "slot_key": "2026-10-09#0",
@@ -1451,11 +1493,11 @@
           "closure_present": false,
           "closure_sha256": null,
           "missed": 0,
-          "runs": 214,
-          "windows": 4
+          "runs": 374,
+          "windows": 7
         },
         "stdout_tail": [
-          "INSUFFICIENT_REGIME_COVERAGE over 4 window(s) / 2 day(s) - coverage REGIME_COVERAGE_INSUFFICIENT, ST-6 DRIFT_WIDER_THAN_MODELLED, breaches 1",
+          "INSUFFICIENT_REGIME_COVERAGE over 7 window(s) / 2 day(s) - coverage REGIME_COVERAGE_INSUFFICIENT, ST-6 DRIFT_WIDER_THAN_MODELLED, breaches 1",
           "written -> data\\st6\\ST6_FORWARD_REGIME_REPORT.md, data\\st6\\ST6_FORWARD_REGIME_REPORT.json, data\\st6\\ST6_REGIME_COVERAGE.json, data\\st6\\ST6_MODEL_DRIFT.json"
         ]
       },
@@ -1471,5 +1513,5 @@
     "scenarios": 10
   },
   "tick": "scripts/st6_forward_regime.py",
-  "tick_sha256": "83875a55bb91562f88a6a5643f6226e12de4d0c3cbc56fccc50483c0a4daf50c"
+  "tick_sha256": "784ea2369ac19478700993d9f7e74ac7b4b6e9c6b3b1e20fcf1fb5d73fde15b0"
 }

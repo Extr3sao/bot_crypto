@@ -14,11 +14,12 @@ from __future__ import annotations
 import gzip
 import importlib.util
 import json
+import os
 import subprocess
 import sys
 import time
 import xml.etree.ElementTree as ElementTree
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
 import pytest
@@ -116,6 +117,24 @@ def run_tick(*extra: str) -> subprocess.CompletedProcess:
         capture_output=True,
         text=True,
         timeout=300,
+    )
+
+
+def run_tick_in_an_isolated_lease_root(root: Path, *extra: str) -> subprocess.CompletedProcess:
+    """The same tick, with its single-instance lease redirected away from the campaign's.
+
+    A test that has to hold the lease in order to be refused must not hold the one the installed
+    task uses: the real schedule wakes every fifteen minutes, and blocking it would make a test the
+    cause of a refused tick.  The root is passed to the child as well, so both writers contend for
+    the same private lock and the campaign's is never taken nor contended for.
+    """
+    return subprocess.run(
+        [str(PYTHON), str(TICK), *extra],
+        cwd=REPO,
+        capture_output=True,
+        text=True,
+        timeout=300,
+        env={**os.environ, "ST6_LOCK_ROOT": str(root)},
     )
 
 
@@ -308,8 +327,25 @@ def test_a_lost_slot_is_written_down_and_never_invented(tick: object, tmp_path: 
         monkeypatch.undo()
 
 
+def complete_coverage(launches: int = 0) -> dict:
+    """An external record that covers a slot whole, naming this many scheduler launches inside it."""
+    return {
+        "status": "EXTERNAL_COVERAGE_COMPLETE",
+        "external_samples_in_slot": 60,
+        "scheduler_engine_launch_count": launches,
+        "scheduler_engine_launches_reported_in_slot": [f"launch-{index}" for index in range(launches)],
+        "reading": "the witness covered the slot",
+    }
+
+
 def test_the_attendance_of_a_lost_slot_is_proven_rather_than_assumed(tick: object) -> None:
-    """A slot nobody attended and a slot the tick visited without measuring are different losses."""
+    """A slot nobody attended and a slot the tick visited without measuring are different losses.
+
+    The two sources carry different weights, and the tests below are the two halves of that: the
+    tick's own log can prove that a run happened, and it can never prove that none did.  An absence
+    is therefore reachable only through the external record — and where the two disagree the slot is
+    carried as a conflict, because one of them is wrong and this program may not choose which.
+    """
     slot = {
         "key": "2026-09-02#2",
         "starts_at_utc": "2026-09-02T08:00:00Z",
@@ -333,16 +369,38 @@ def test_the_attendance_of_a_lost_slot_is_proven_rather_than_assumed(tick: objec
     by_hand = {**quiet, "invocation": "MANUAL"}
     later = {**earlier, "slot_key": "2026-09-02#3", "actual_start_utc": "2026-09-02T12:10:00Z"}
 
-    unattended = tick.slot_attendance([earlier], slot)
+    # the run log is silent about the slot and reaches back past it — but the run log is written by
+    # the tick, so its silence is not evidence: without external coverage the class is UNKNOWN
+    quiet_log = tick.slot_attendance([earlier], slot)
+    assert quiet_log["classification"] == "ATTENDANCE_UNKNOWN"
+    assert quiet_log["log_covers_whole_slot"] is True
+    assert quiet_log["scheduled_runs_in_slot"] == 0
+    assert quiet_log["external_evidence_status"] == "SCHEDULER_EVIDENCE_UNAVAILABLE"
+    assert "not proof that nothing ran" in quiet_log["basis"]
+
+    # with the external record covering the whole slot and naming no run, the absence is carried
+    unattended = tick.slot_attendance([earlier], slot, complete_coverage(0))
     assert unattended["classification"] == "UNATTENDED_NO_RUN_EVENT"
-    assert unattended["log_covers_whole_slot"] is True
-    assert unattended["scheduled_runs_in_slot"] == 0
-    assert "before the slot began" in unattended["basis"]
+    assert unattended["absence_requires_external_coverage"] is True
+    assert "covers every instant of the slot" in unattended["basis"]
+
+    # the external record names a run the log knows nothing about: the two contradict each other
+    conflicting = tick.slot_attendance([earlier], slot, complete_coverage(3))
+    assert conflicting["classification"] == "ATTENDANCE_EVIDENCE_CONFLICT"
+    assert conflicting["conflict"]["internal_claim"]
+    assert conflicting["conflict"]["external_claim"]
+
+    # the other direction: the log declares a tick the scheduler's own record never named
+    undeclared = tick.slot_attendance([earlier, quiet], slot, complete_coverage(0))
+    assert undeclared["classification"] == "ATTENDANCE_EVIDENCE_CONFLICT"
 
     attended = tick.slot_attendance([earlier, quiet], slot)
     assert attended["classification"] == "ATTENDED_NOT_COLLECTED"
     assert attended["scheduled_runs_in_slot"] == 1
     assert attended["results_in_slot"] == {"SKIPPED_DATA_STALE": 1}
+    # and a corroborated launch agrees with the log instead of contradicting it
+    corroborated = tick.slot_attendance([earlier, quiet], slot, complete_coverage(1))
+    assert corroborated["classification"] == "ATTENDED_NOT_COLLECTED"
 
     refused = tick.slot_attendance([earlier, failing], slot)
     assert refused["classification"] == "ATTENDED_REQUEST_FAILED"
@@ -352,9 +410,13 @@ def test_the_attendance_of_a_lost_slot_is_proven_rather_than_assumed(tick: objec
     # a run that declares itself manual is not the schedule: a slot only visited by hand still went
     # unattended, and the record says so instead of counting the visit as attendance
     only_by_hand = tick.slot_attendance([earlier, by_hand], slot)
-    assert only_by_hand["classification"] == "UNATTENDED_NO_RUN_EVENT"
+    assert only_by_hand["classification"] == "ATTENDANCE_UNKNOWN"
     assert only_by_hand["manual_runs_in_slot"] == 1
     assert only_by_hand["scheduled_runs_in_slot"] == 0
+    # a manual visit is not the schedule even when the external record covers the slot
+    still_by_hand = tick.slot_attendance([earlier, by_hand], slot, complete_coverage(0))
+    assert still_by_hand["classification"] == "UNATTENDED_NO_RUN_EVENT"
+    assert still_by_hand["manual_runs_in_slot"] == 1
 
     # the log is bounded: once its oldest retained event starts after this slot began, the absence of
     # an event can no longer be told apart from one that was pruned, and nothing is claimed
@@ -400,7 +462,7 @@ def test_the_health_check_audits_the_stated_cause_of_a_missed_slot(health: objec
     }
     honest = {"slot_key": slot_key, **bounds, "attendance": dict(attendance)}
 
-    clean = health.audit_missed_attendance(period, [honest], [earlier, inside])
+    clean = health.audit_missed_attendance(period, [honest], [earlier, inside], [], None)
     assert clean["unsupported"] == []
     assert clean["by_classification"] == {"ATTENDED_NOT_COLLECTED": 1}
 
@@ -412,25 +474,29 @@ def test_the_health_check_audits_the_stated_cause_of_a_missed_slot(health: objec
             "scheduled_runs_in_slot": 0,
         },
     }
-    caught = health.audit_missed_attendance(period, [lying], [earlier, inside])
+    caught = health.audit_missed_attendance(period, [lying], [earlier, inside], [], None)
     assert caught["unsupported"], "a record that blames the schedule was not caught"
     assert any("while the run log says" in finding for finding in caught["unsupported"])
 
-    bare = health.audit_missed_attendance(period, [{"slot_key": slot_key, **bounds}], [earlier])
+    bare = health.audit_missed_attendance(
+        period, [{"slot_key": slot_key, **bounds}], [earlier], [], None
+    )
     assert bare["unsupported"] and "no attendance evidence" in bare["unsupported"][0]
 
     unsupported_class = {
         **honest,
         "attendance": {**attendance, "classification": "NOT_A_DECLARED_CAUSE"},
     }
-    assert health.audit_missed_attendance(period, [unsupported_class], [earlier])["unsupported"]
+    assert health.audit_missed_attendance(period, [unsupported_class], [earlier], [], None)[
+        "unsupported"
+    ]
 
     wrong_bounds = {**honest, "ends_at_utc": "2026-09-01T09:00:00Z"}
-    drifted = health.audit_missed_attendance(period, [wrong_bounds], [earlier, inside])
+    drifted = health.audit_missed_attendance(period, [wrong_bounds], [earlier, inside], [], None)
     assert any("not the declared ones" in finding for finding in drifted["unsupported"])
 
-    # an unattended slot is named as such, and an unprovable old slot is called unknown rather than
-    # being counted as a failure of the host
+    # an absence is the heavy claim: with no external record covering the slot, the checker must
+    # refuse it — the tick's own log can never prove that nothing ran
     silenced = {
         **honest,
         "attendance": {
@@ -439,9 +505,65 @@ def test_the_health_check_audits_the_stated_cause_of_a_missed_slot(health: objec
             "scheduled_runs_in_slot": 0,
         },
     }
-    provably_unattended = health.audit_missed_attendance(period, [silenced], [earlier])
-    assert provably_unattended["unsupported"] == []
-    assert provably_unattended["unattended_slots"] == [slot_key]
+    without_coverage = health.audit_missed_attendance(period, [silenced], [earlier], [], None)
+    assert without_coverage["unsupported"], "an absence claim without external coverage passed"
+    assert without_coverage["unattended_slots"] == []
+
+    # the same slot, with a witness that sampled it throughout and named no launch: now the class
+    # is the record's own, and the checker agrees with it
+    def covering_samples() -> list[dict]:
+        start = datetime(2026, 9, 1, 3, 59, tzinfo=UTC)
+        rows = []
+        for step in range(0, 25):
+            moment = start + timedelta(minutes=10 * step)
+            rows.append(
+                {
+                    "sample_id": f"fixture-{moment.strftime('%H%M')}",
+                    "sampled_at_utc": moment.strftime("%Y-%m-%dT%H:%M:%S.000Z"),
+                    "scheduler_reported_last_run_utc": None,
+                }
+            )
+        return rows
+
+    supported = {
+        **silenced,
+        "attendance": {
+            **silenced["attendance"],
+            "external_evidence_status": "EXTERNAL_COVERAGE_COMPLETE",
+            "external_evidence": {
+                "status": "EXTERNAL_COVERAGE_COMPLETE",
+                "scheduler_engine_launch_count": 0,
+            },
+        },
+    }
+    audited = health.audit_missed_attendance(
+        period,
+        [supported],
+        [earlier],
+        covering_samples(),
+        None,
+        datetime(2026, 9, 1, 12, 0, tzinfo=UTC),
+    )
+    assert audited["unsupported"] == [], audited["unsupported"]
+    assert audited["unattended_slots"] == [slot_key]
+    # and the same coverage that names a run turns the claim into a conflict, not a verdict
+    conflicting = health.audit_missed_attendance(
+        period,
+        [supported],
+        [earlier],
+        [
+            *covering_samples(),
+            {
+                "sample_id": "fixture-launch",
+                "sampled_at_utc": "2026-09-01T05:00:00.000Z",
+                "scheduler_reported_last_run_utc": "2026-09-01T04:30:00Z",
+            },
+        ],
+        None,
+        datetime(2026, 9, 1, 12, 0, tzinfo=UTC),
+    )
+    assert conflicting["unsupported"], "a slot the scheduler ran was accepted as unattended"
+
     unprovable = {
         **honest,
         "attendance": {
@@ -455,10 +577,13 @@ def test_the_health_check_audits_the_stated_cause_of_a_missed_slot(health: objec
         period,
         [unprovable],
         [{**earlier, "slot_key": "2026-09-01#2", "actual_start_utc": "2026-09-01T09:00:00Z"}],
+        [],
+        None,
     )
     assert pruned["unsupported"] == []
     assert pruned["unknown_slots"] == [slot_key]
     assert pruned["unattended_slots"] == []
+    assert pruned["policy_version"] == 2
 
 
 def test_an_observed_slot_costs_nothing_to_re_tick() -> None:
@@ -483,13 +608,20 @@ def test_an_observed_slot_costs_nothing_to_re_tick() -> None:
     assert period["period_days"] == 14
 
 
-def test_a_second_writer_refuses_and_makes_no_market_request(tick: object) -> None:
-    wait_for_a_free_lease()  # the test wants to be the second writer, not to race the first
+def test_a_second_writer_refuses_and_makes_no_market_request(
+    tick: object, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Refusal is proven in a private lock root: the test is never the campaign's blocking writer."""
+    isolated = tmp_path / "scheduler_lock"
+    monkeypatch.setattr(tick, "LOCK_ROOT", isolated)
     lease = tick.run_lease()
     acquired = lease.acquire(now=int(datetime.now(UTC).timestamp()))
     assert acquired["acquired"] is True, acquired
+    assert (isolated / "CAMPAIGN_LOCK.json").exists(), "the held lease is not the isolated one"
     try:
-        result = run_tick("--due", "--scheduled")
+        # launched by this test, not by the schedule: the event it leaves must not declare itself
+        # the schedule's own tick, so the second writer carries no --scheduled flag
+        result = run_tick_in_an_isolated_lease_root(isolated, "--due")
     finally:
         lease.release()
     assert result.returncode == 2
@@ -497,6 +629,24 @@ def test_a_second_writer_refuses_and_makes_no_market_request(tick: object) -> No
     assert refusals, "the refusal left no trace in the run log"
     assert refusals[-1]["market_requests"] == 0
     assert refusals[-1]["errors"]
+    assert refusals[-1]["invocation"].upper() != "SCHEDULED"
+
+
+def test_the_lease_root_is_the_campaign_s_unless_a_test_asks_for_its_own(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    """The installed task must keep using the campaign's lock; an isolated root must be opt-in.
+
+    This is what lets a test hold a lease without becoming the writer the real schedule contends
+    with: if the opt-in silently stopped working, the test suite would start refusing real ticks
+    again, and it would do so invisibly.
+    """
+    default = load_module("st6_tick_default_root", "scripts/st6_forward_regime.py")
+    assert Path(default.LOCK_ROOT) == DATA / "scheduler_lock", default.LOCK_ROOT
+    monkeypatch.setenv("ST6_LOCK_ROOT", str(tmp_path / "isolated"))
+    isolated = load_module("st6_tick_isolated_root", "scripts/st6_forward_regime.py")
+    assert Path(isolated.LOCK_ROOT) == tmp_path / "isolated", isolated.LOCK_ROOT
+    assert Path(isolated.LOCK_ROOT) != DATA / "scheduler_lock"
 
 
 def test_an_impossible_cadence_refuses_with_a_non_zero_status() -> None:
@@ -996,3 +1146,562 @@ def test_the_snapshot_check_separates_drift_from_corruption(tmp_path: Path) -> N
     manifest.write_text(json.dumps({"artifact": "SOMETHING_ELSE"}), encoding="utf-8")
     refused = snapshot.check_snapshot(manifest)
     assert refused["status"] == "FAIL" and refused["checks"] == 0
+
+
+# ------------------------------- the external record, and what it is allowed to carry
+
+LEDGER_SCRIPT = REPO / "scripts" / "st6_slot_ledger.py"
+WITNESS_SCRIPT = REPO / "scripts" / "st6_scheduler_witness.py"
+
+
+@pytest.fixture(scope="module")
+def evidence(tick: object) -> object:
+    return load_module("st6_external_evidence", "scripts/st6_scheduler_evidence.py")
+
+
+@pytest.fixture(scope="module")
+def ledger_module(tick: object) -> object:
+    return load_module("st6_slot_ledger", "scripts/st6_slot_ledger.py")
+
+
+def witness_samples(
+    start: str,
+    end: str,
+    step_minutes: int = 10,
+    launches: tuple[str, ...] = (),
+    boot_utc: str | None = None,
+) -> list[dict]:
+    """Synthetic witness samples over an interval, with the boot instant of a fixture host."""
+    rows: list[dict] = []
+    moment = datetime.strptime(start, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=UTC)
+    stop = datetime.strptime(end, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=UTC)
+    while moment <= stop:
+        stamp = moment.strftime("%Y-%m-%dT%H:%M:%S.000Z")
+        named = max((item for item in launches if item <= stamp), default=None)
+        rows.append(
+            {
+                "artifact": "ST6_SCHEDULER_WITNESS_SAMPLE",
+                "sample_id": f"fixture-{stamp}",
+                "sampled_at_utc": stamp,
+                "scheduler_reported_last_run_utc": named,
+                "scheduler_reported_last_result": 0,
+                "system_local_offset_minutes": 120,
+                "system_last_boot_utc": boot_utc,
+            }
+        )
+        moment += timedelta(minutes=step_minutes)
+    return rows
+
+
+SLOT_START = "2026-09-02T08:00:00Z"
+SLOT_END = "2026-09-02T12:00:00Z"
+SLOT_AFTER = datetime(2026, 9, 2, 13, 0, tzinfo=UTC)
+
+
+def a_slot() -> dict:
+    return {"key": "2026-09-02#2", "starts_at_utc": SLOT_START, "ends_at_utc": SLOT_END}
+
+
+def test_the_external_record_covers_a_slot_only_when_it_saw_the_whole_of_it(
+    evidence: object,
+) -> None:
+    """Coverage is arithmetic, not sentiment: a slot is covered only across its whole length."""
+    start = datetime.strptime(SLOT_START, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=UTC)
+    end = datetime.strptime(SLOT_END, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=UTC)
+    whole = witness_samples("2026-09-02T07:50:00Z", SLOT_END)
+    covered = evidence.slot_external_coverage(start, end, whole, None, SLOT_AFTER)
+    assert covered["status"] == "EXTERNAL_COVERAGE_COMPLETE"
+    assert covered["external_samples_in_slot"] > 0
+
+    # the witness started inside the slot: a trigger before its first sample could have run unseen
+    late = witness_samples("2026-09-02T09:00:00Z", SLOT_END)
+    partial = evidence.slot_external_coverage(start, end, late, None, SLOT_AFTER)
+    assert partial["status"] == "EXTERNAL_COVERAGE_PARTIAL"
+
+    # the witness log holds nothing from inside the slot and the slot has ended: the witness never
+    # reached it, so no external record covers it and no claim may rest on it
+    pruned = evidence.slot_external_coverage(
+        start, end, witness_samples("2026-09-02T07:55:00Z", "2026-09-02T07:56:00Z"), None, SLOT_AFTER
+    )
+    assert pruned["status"] == "SCHEDULER_EVIDENCE_UNAVAILABLE"
+    gone = evidence.slot_external_coverage(start, end, [], None, SLOT_AFTER)
+    assert gone["status"] == "SCHEDULER_EVIDENCE_UNAVAILABLE"
+    # a slot that is still running is partial: the rest of it has not happened yet
+    running = evidence.slot_external_coverage(
+        start,
+        end,
+        witness_samples("2026-09-02T09:00:00Z", "2026-09-02T09:30:00Z"),
+        None,
+        datetime(2026, 9, 2, 9, 40, tzinfo=UTC),
+    )
+    assert running["status"] == "EXTERNAL_COVERAGE_PARTIAL"
+
+    # a gap wider than a declared tick is not coverage, even with samples on both sides
+    gapped = [
+        row
+        for row in witness_samples("2026-09-02T07:50:00Z", SLOT_END)
+        if not row["sampled_at_utc"].startswith(("2026-09-02T09", "2026-09-02T10"))
+    ]
+    holed = evidence.slot_external_coverage(start, end, gapped, None, SLOT_AFTER)
+    assert holed["status"] == "EXTERNAL_COVERAGE_PARTIAL"
+    assert holed["largest_sample_gap_s"] > holed["max_gap_tolerated_s"]
+
+    # a slot that has not begun is not covered by anything
+    future = evidence.slot_external_coverage(
+        datetime(2026, 9, 3, 0, 0, tzinfo=UTC),
+        datetime(2026, 9, 3, 4, 0, tzinfo=UTC),
+        whole,
+        None,
+        SLOT_AFTER,
+    )
+    assert future["status"] == "EXTERNAL_COVERAGE_NOT_YET_STARTED"
+
+
+def test_a_machine_restart_inside_a_slot_stops_the_record_carrying_an_absence(
+    evidence: object, tick: object
+) -> None:
+    """A host that was down cannot prove that nothing was due: the restart is a discontinuity."""
+    start = datetime.strptime(SLOT_START, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=UTC)
+    end = datetime.strptime(SLOT_END, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=UTC)
+    rows = witness_samples("2026-09-02T07:50:00Z", SLOT_END, boot_utc="2026-09-02T09:30:00Z")
+    coverage = evidence.slot_external_coverage(start, end, rows, None, SLOT_AFTER)
+    assert coverage["system_restart_inside_slot"] is True
+    assert coverage["status"] == "EXTERNAL_COVERAGE_PARTIAL"
+    assert "restarted inside the slot" in coverage["reading"]
+    # and the rule follows: no absence is carried, the slot is unknown
+    earlier = {
+        "slot_key": "2026-09-02#1",
+        "actual_start_utc": "2026-09-02T06:30:00Z",
+        "invocation": "SCHEDULED",
+        "result": "SKIPPED_NO_WINDOW_DUE",
+        "market_requests": 0,
+        "errors": None,
+    }
+    attendance = tick.slot_attendance([earlier], a_slot(), coverage)
+    assert attendance["classification"] == "ATTENDANCE_UNKNOWN"
+
+
+def test_the_launch_instants_the_scheduler_named_are_the_only_external_launch_evidence(
+    evidence: object,
+) -> None:
+    """A sample names the scheduler's most recent run, so the instants it reports are dates too."""
+    start = datetime.strptime(SLOT_START, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=UTC)
+    end = datetime.strptime(SLOT_END, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=UTC)
+    launches = ("2026-09-02T08:30:00Z", "2026-09-02T09:15:00Z")
+    rows = witness_samples("2026-09-02T07:50:00Z", SLOT_END, launches=launches)
+    coverage = evidence.slot_external_coverage(start, end, rows, None, SLOT_AFTER)
+    assert coverage["scheduler_engine_launch_count"] == 2
+    assert coverage["scheduler_engine_launches_reported_in_slot"] == list(launches)
+    # a run instant from before the slot belongs to the previous slot, not to this one
+    before = witness_samples("2026-09-02T07:50:00Z", SLOT_END, launches=("2026-09-02T07:30:00Z",))
+    earlier_only = evidence.slot_external_coverage(start, end, before, None, SLOT_AFTER)
+    assert earlier_only["scheduler_engine_launch_count"] == 0
+    assert earlier_only["scheduler_engine_launches_outside_the_slot_count"] == 1
+
+
+def test_a_run_is_attributed_to_the_scheduler_only_when_its_own_record_says_so(
+    evidence: object,
+) -> None:
+    """The event's own declaration is the weakest evidence there is; the report says which it is."""
+    rows = witness_samples("2026-09-02T07:50:00Z", SLOT_END, launches=("2026-09-02T08:30:00Z",))
+    event = {
+        "run_id": "fixture-run",
+        "actual_start_utc": "2026-09-02T08:30:02Z",
+        "invocation": "SCHEDULED",
+    }
+    corroborated = evidence.corroborate_run(event, rows, boundary_local="2026-09-02T08:18:00")
+    assert corroborated["status"].startswith("CORROBORATED")
+    assert corroborated["matches"][0]["delta_s"] <= 120
+    assert corroborated["declared_grid"]["status"] in ("ON_DECLARED_GRID", "OFF_DECLARED_GRID")
+    # nothing outside the run log corroborates an old event: the scheduler keeps only its last run
+    unrecorded = evidence.corroborate_run(
+        {**event, "actual_start_utc": "2026-09-02T08:05:00Z"}, rows
+    )
+    assert unrecorded["status"] == "UNATTRIBUTED"
+    # a contradictory or missing instant is not attributed to anything
+    assert evidence.corroborate_run({"run_id": "x"}, rows)["status"] == "UNATTRIBUTED"
+    assert evidence.corroborate_run({**event, "actual_start_utc": "yesterday"}, rows)[
+        "status"
+    ] == "UNATTRIBUTED"
+
+
+def test_a_run_event_from_a_slot_with_a_window_but_no_corroboration_is_labelled(
+    ledger_module: object,
+) -> None:
+    """A window is evidence of a measurement; it is not evidence that the schedule asked for it."""
+    slot = {
+        "slot_id": "2026-09-02#2",
+        "day": "2026-09-02",
+        "slot_index": 2,
+        "slot_utc": "08:00-12:00 UTC",
+        "starts_at": datetime(2026, 9, 2, 8, 0, tzinfo=UTC),
+        "starts_at_utc": SLOT_START,
+        "ends_at": datetime(2026, 9, 2, 12, 0, tzinfo=UTC),
+        "ends_at_utc": SLOT_END,
+    }
+    window = {
+        "window_id": "20260902T083000Z",
+        "day": "2026-09-02",
+        "slot_index": 2,
+        "raw": {"path": "data/st6/raw/none.json.gz", "uncompressed_sha256": "0" * 64},
+        "freshness": {"observation_path_latency_ok": True},
+    }
+    runs = [
+        {
+            "run_id": "20260902T083000Z-fixture",
+            "slot_key": "2026-09-02#2",
+            "actual_start_utc": "2026-09-02T08:30:00Z",
+            "actual_end_utc": "2026-09-02T08:30:09Z",
+            "invocation": "SCHEDULED",
+            "result": "COLLECTED",
+            "exit_code": 0,
+            "market_requests": 18,
+            "errors": None,
+        },
+        {  # a second run inside the same slot, overlapping the first: counted, never doubled
+            "run_id": "20260902T083000Z-fixture-b",
+            "slot_key": "2026-09-02#2",
+            "actual_start_utc": "2026-09-02T08:30:05Z",
+            "actual_end_utc": "2026-09-02T08:30:12Z",
+            "invocation": "SCHEDULED",
+            "result": "SKIPPED_NO_WINDOW_DUE",
+            "exit_code": 0,
+            "market_requests": 0,
+            "errors": None,
+        },
+    ]
+    grid = {"interval_minutes": 15, "start_boundary_local": "2026-09-02T08:18:00"}
+    entry = ledger_module.build_slot_entry(
+        slot,
+        {"started_at_utc": SLOT_START, "ends_at_utc": "2026-09-03T08:00:00Z"},
+        {"2026-09-02#2": window},
+        runs,
+        {},
+        [],
+        None,
+        grid,
+        {"20260902T083000Z-fixture": {"reason": "a live test"}},
+        SLOT_AFTER,
+    )
+    assert entry["state"] == "COLLECTED"
+    assert entry["collection_window_id"] == "20260902T083000Z"
+    assert entry["concurrent_runs_in_slot"] == 2
+    origins = {row["internal_run_id"]: row["origin"] for row in entry["runs"]}
+    # the run the verifier caused is labelled as its own; the other is only a declaration
+    assert origins["20260902T083000Z-fixture"] == "INDUCED_BY_THE_VERIFIER"
+    assert origins["20260902T083000Z-fixture-b"] == "SELF_DECLARED_UNVERIFIED"
+    assert entry["expected_trigger"]["expected_triggers_in_slot"] == 16
+    assert entry["expected_trigger"]["trigger_type_observable"] is False
+    # the raw path of the fixture does not exist, so its hash is not claimed to reproduce
+    assert entry["raw_evidence"]["present"] is False
+    assert entry["verifier_status"] == "HASH_MISMATCH"
+
+
+def test_a_manual_run_never_counts_as_attendance(ledger_module: object) -> None:
+    slot = {
+        "slot_id": "2026-09-02#2",
+        "day": "2026-09-02",
+        "slot_index": 2,
+        "slot_utc": "08:00-12:00 UTC",
+        "starts_at": datetime(2026, 9, 2, 8, 0, tzinfo=UTC),
+        "starts_at_utc": SLOT_START,
+        "ends_at": datetime(2026, 9, 2, 12, 0, tzinfo=UTC),
+        "ends_at_utc": SLOT_END,
+    }
+    by_hand = {
+        "run_id": "by-hand",
+        "slot_key": "2026-09-02#2",
+        "actual_start_utc": "2026-09-02T08:30:00Z",
+        "actual_end_utc": "2026-09-02T08:31:00Z",
+        "invocation": "MANUAL",
+        "result": "REPORT_ONLY",
+        "exit_code": 0,
+        "market_requests": 0,
+        "errors": None,
+    }
+    entry = ledger_module.build_slot_entry(
+        slot,
+        {"started_at_utc": SLOT_START, "ends_at_utc": "2026-09-03T08:00:00Z"},
+        {},
+        [by_hand],
+        {},
+        [],
+        None,
+        {"interval_minutes": 15},
+        {},
+        SLOT_AFTER,
+    )
+    assert entry["runs"][0]["origin"] == "MANUAL"
+    assert entry["state"] == "LOST_NO_WINDOW" or entry["state"] == "UNACCOUNTED"
+    assert entry["attendance_classification"] is None  # nothing was recorded for this slot here
+
+
+def test_a_corrupt_or_duplicated_ledger_is_refused_rather_than_read_as_empty(
+    ledger_module: object,
+) -> None:
+    assert ledger_module.reconcile_with_ledger(None)["readable"] is False
+    assert ledger_module.reconcile_with_ledger({"slots": "not a list"})["readable"] is False
+    duplicated = ledger_module.reconcile_with_ledger(
+        {"slots": [{"slot_id": "a"}, {"slot_id": "a"}], "generated_at_utc": "now"}
+    )
+    assert duplicated["readable"] is True and duplicated["duplicate_slot_ids"] == ["a"]
+    malformed = ledger_module.reconcile_with_ledger({"slots": [{"slot_id": "a"}, "nonsense"]})
+    assert malformed["malformed_entries"]
+
+
+def test_a_raw_hash_that_does_not_reproduce_is_a_mismatch_not_a_pass(
+    ledger_module: object, tmp_path: Path
+) -> None:
+    """The ledger quotes hashes, so it re-derives them; a hash that does not reproduce is a finding."""
+    payload = b'{"artifact": "ST6_FIXTURE"}\n'
+    path = tmp_path / "window.json.gz"
+    with gzip.open(path, "wb") as handle:
+        handle.write(payload)
+    digest = __import__("hashlib").sha256(payload).hexdigest()
+    good = {"raw": {"path": str(path), "uncompressed_sha256": digest}}
+    assert ledger_module.raw_evidence_ok(good)["reproduces"] is True
+    bad = {"raw": {"path": str(path), "uncompressed_sha256": "0" * 64}}
+    assert ledger_module.raw_evidence_ok(bad)["reproduces"] is False
+    absent = {"raw": {"path": str(tmp_path / "gone.json.gz"), "uncompressed_sha256": digest}}
+    assert ledger_module.raw_evidence_ok(absent)["present"] is False
+
+
+def test_the_ledger_keeps_what_a_bounded_log_has_already_forgotten(ledger_module: object) -> None:
+    """The run log and the witness log are bounded: the ledger must not lose ground when they roll."""
+    run = {
+        "internal_run_id": "old-run",
+        "process_start_utc": "2026-09-02T08:30:00Z",
+        "origin": "SELF_DECLARED_UNVERIFIED",
+    }
+    previous = {
+        "slot_id": "2026-09-02#2",
+        "read_at_utc": "2026-09-02T13:00:00Z",
+        "runs": [run],
+        "external_evidence": {
+            "status": "EXTERNAL_COVERAGE_COMPLETE",
+            "scheduler_engine_launch_count": 0,
+        },
+        "attendance_evidence": {"classification": "UNATTENDED_NO_RUN_EVENT"},
+        "attendance_classification": "UNATTENDED_NO_RUN_EVENT",
+        "failure_reason": "UNATTENDED_NO_RUN_EVENT: nothing ran",
+    }
+    # the current read sees neither the run nor any coverage: the ledger keeps what it had
+    current = {
+        "slot_id": "2026-09-02#2",
+        "read_at_utc": "2026-09-03T13:00:00Z",
+        "runs": [],
+        "external_evidence": {"status": "SCHEDULER_EVIDENCE_UNAVAILABLE"},
+        "external_evidence_status": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "attendance_evidence": None,
+        "attendance_classification": None,
+        "failure_reason": None,
+    }
+    merged, carried = ledger_module.carry_forward(current, previous)
+    assert merged["runs"] == [run]
+    assert merged["external_evidence_status"] == "EXTERNAL_COVERAGE_COMPLETE"
+    assert merged["attendance_classification"] == "UNATTENDED_NO_RUN_EVENT"
+    assert sorted(carried) == [
+        "attendance_classification",
+        "attendance_evidence",
+        "external_evidence",
+        "failure_reason",
+        "runs",
+    ]
+    assert merged["first_recorded_at_utc"] == "2026-09-02T13:00:00Z"
+    # a stronger statement is never replaced by a weaker one, and a fresh one is never reverted
+    live = {
+        **current,
+        "runs": [
+            {
+                "internal_run_id": "new-run",
+                "process_start_utc": "2026-09-03T08:30:00Z",
+                "origin": "CORROBORATED_ENGINE_LAUNCH",
+            }
+        ],
+        "external_evidence": {"status": "EXTERNAL_COVERAGE_COMPLETE"},
+        "external_evidence_status": "EXTERNAL_COVERAGE_COMPLETE",
+    }
+    merged_live, carried_live = ledger_module.carry_forward(live, previous)
+    assert carried_live == ["runs"]
+    assert [row["internal_run_id"] for row in merged_live["runs"]] == ["old-run", "new-run"]
+
+
+def test_the_witness_records_what_the_host_says_and_never_hides_a_failure(monkeypatch) -> None:
+    """An unreadable system is a recorded finding: the witness does not fall back on a program."""
+    witness = load_module("st6_witness_probe", "scripts/st6_scheduler_witness.py")
+
+    def broken(script: str, timeout: int = 60) -> dict:
+        return {"exit_code": 1, "stdout": "", "stderr": "access denied", "error": "access denied"}
+
+    monkeypatch.setattr(witness, "powershell", broken)
+    channels = witness.channel_state()
+    operational = channels["channels"]["Microsoft-Windows-TaskScheduler/Operational"]
+    assert operational["enabled"] is None
+    assert operational["query_error"] == "access denied"
+    assert channels["security_log_readable"] is False
+    evidence_document = witness.build_evidence()
+    assert evidence_document["per_run_external_evidence"]["status"] == "SCHEDULER_EVIDENCE_UNAVAILABLE"
+    assert evidence_document["task_registration"]["error"] == "access denied"
+    assert evidence_document["remediation"]["authorised"] is False
+    # and a channel that is disabled is unavailable even when it answers normally
+    assert "never recorded" in evidence_document["per_run_external_evidence"]["reason"]
+
+
+def test_an_unreadable_event_log_is_not_an_empty_one(monkeypatch) -> None:
+    """Case 7 of the declared negative tests: a source that cannot be read is recorded as such."""
+    witness = load_module("st6_witness_unreadable", "scripts/st6_scheduler_witness.py")
+
+    def unreachable(*arguments: str) -> dict:
+        return {
+            "stdout": "",
+            "stderr": "access denied",
+            "exit_code": None,
+            "error": "PermissionError: access denied",
+            "reachable": False,
+        }
+
+    monkeypatch.setattr(witness, "wevtutil", unreachable)
+    depth = witness.channel_depth("Microsoft-Windows-TaskScheduler/Operational")
+    assert depth["reachable"] is False
+    assert depth["answers_nothing"] is True, "an unreadable channel is not reported as readable"
+    assessment = witness.rotation_assessment(
+        {
+            "channels": {
+                "Microsoft-Windows-TaskScheduler/Operational": {
+                    "depth": depth,
+                    "retention_is_archive": False,
+                    "max_size_bytes": 10485760,
+                }
+            }
+        }
+    )
+    entry = assessment["channels"]["Microsoft-Windows-TaskScheduler/Operational"]
+    assert entry["state"] == "EXTERNAL_RECORD_NOT_READABLE", entry
+    assert entry["error"], "the reason the source could not be read is not kept"
+
+
+def test_the_event_date_read_from_the_log_is_converted_to_utc(monkeypatch) -> None:
+    """The tool prints a local instant with a Z on it: keeping that as UTC would misdate the log."""
+    witness = load_module("st6_witness_clock", "scripts/st6_scheduler_witness.py")
+
+    def answer(*arguments: str) -> dict:
+        stdout = (
+            "fileSize: 1048576\n"
+            "numberOfLogRecords: 2268\n"
+            "oldestRecordNumber: 440\n"
+        )
+        if arguments[0] == "qe":
+            stdout = "Event[0]\n  Log Name: any\n  Date: 2026-10-09T18:24:57.8700000Z\n"
+        return {
+            "stdout": stdout,
+            "stderr": "",
+            "exit_code": 0,
+            "error": None,
+            "reachable": True,
+        }
+
+    monkeypatch.setattr(witness, "wevtutil", answer)
+    depth = witness.channel_depth("any channel")
+    offset = datetime.now().astimezone().utcoffset() or timedelta(0)
+    expected = (datetime(2026, 10, 9, 18, 24, 57, tzinfo=UTC) - offset).strftime(
+        "%Y-%m-%dT%H:%M:%SZ"
+    )
+    assert depth["oldest_retained_event_utc"] == expected, depth
+    assert depth["oldest_retained_event_raw"].startswith("2026-10-09T18:24:57")
+    assert depth["host_utc_offset_minutes"] == int(offset.total_seconds() // 60)
+    assert depth["records_no_longer_present_before_the_oldest"] == 439
+
+
+def test_the_rotation_of_a_log_is_recorded_as_loss_not_as_absence() -> None:
+    """Case 8 of the declared negative tests: records a log has evicted are loss, not proof."""
+    witness = load_module("st6_witness_rotation", "scripts/st6_scheduler_witness.py")
+
+    def channel(depth: dict) -> dict:
+        return {"depth": depth, "retention_is_archive": False, "max_size_bytes": 1048576}
+
+    assessment = witness.rotation_assessment(
+        {
+            "channels": {
+                "circular and full": channel(
+                    {
+                        "reachable": True,
+                        "answers_nothing": False,
+                        "records_held": 2268,
+                        "file_size_bytes": 1048576,
+                        "oldest_record_number": 440,
+                        "records_no_longer_present_before_the_oldest": 439,
+                        "oldest_retained_event_utc": "2025-11-02T04:30:31Z",
+                        "newest_retained_event_utc": "2026-10-09T15:23:26Z",
+                    }
+                ),
+                "never recorded": channel(
+                    {
+                        "reachable": True,
+                        "answers_nothing": True,
+                        "records_held": None,
+                        "file_size_bytes": None,
+                        "oldest_record_number": None,
+                        "records_no_longer_present_before_the_oldest": None,
+                        "oldest_retained_event_utc": None,
+                        "newest_retained_event_utc": None,
+                    }
+                ),
+                "empty and readable": channel(
+                    {
+                        "reachable": True,
+                        "answers_nothing": False,
+                        "records_held": 0,
+                        "file_size_bytes": 0,
+                        "oldest_record_number": 1,
+                        "records_no_longer_present_before_the_oldest": 0,
+                        "oldest_retained_event_utc": None,
+                        "newest_retained_event_utc": None,
+                    }
+                ),
+            }
+        }
+    )
+    assert assessment["status"] == "EXTERNAL_RECORD_ROTATION_LOSS_RECORDED"
+    rotated = assessment["channels"]["circular and full"]
+    assert rotated["state"] == "RECORDS_ROTATED_OUT"
+    assert rotated["records_no_longer_present_before_the_oldest"] == 439
+    assert rotated["full"] is True and rotated["circular"] is True
+    assert assessment["channels"]["never recorded"]["state"] == "NEVER_RECORDED"
+    assert "empty and readable" not in assessment["channels"], (
+        "an empty log that answers is neither a rotation loss nor an unreadable source"
+    )
+    assert "cannot be repaired" in assessment["does_not_authorise"]
+
+
+def test_the_declared_slot_grid_is_eighty_four_and_never_a_partial_slot(ledger_module: object) -> None:
+    period = json.loads(PERIOD.read_text(encoding="utf-8"))
+    slots = ledger_module.declared_slots(period)
+    assert len(slots) == 84
+    assert slots[0]["slot_id"] == "2026-10-08#4"
+    assert slots[-1]["slot_id"] == "2026-10-22#3"
+    assert slots[-1]["ends_at_utc"] == "2026-10-22T16:00:00Z"
+    # the period closes inside the next slot, and that slot is not a planned window
+    assert all(slot["slot_id"] != "2026-10-22#4" for slot in slots)
+    assert len({slot["slot_id"] for slot in slots}) == 84
+
+
+def test_the_shipped_ledger_accounts_for_every_declared_slot(ledger_module: object) -> None:
+    """The durable record must cover the plan, agree with the index, and never invent a slot."""
+    document = json.loads((DATA / "ST6_SLOT_LEDGER.json").read_text(encoding="utf-8"))
+    period = json.loads(PERIOD.read_text(encoding="utf-8"))
+    declared = {slot["slot_id"]: slot for slot in ledger_module.declared_slots(period)}
+    rows = {row["slot_id"]: row for row in document["slots"]}
+    assert set(rows) == set(declared)
+    windows = {f"{row['day']}#{row['slot_index']}": row for row in read_jsonl(WINDOWS)}
+    for slot_id, row in rows.items():
+        assert row["slot_start_utc"] == declared[slot_id]["starts_at_utc"]
+        assert row["state"] in ("COLLECTED", "LOST_NO_WINDOW", "PENDING", "UNACCOUNTED")
+        if slot_id in windows:
+            assert row["state"] == "COLLECTED"
+            assert row["collection_window_id"] == windows[slot_id]["window_id"]
+            assert row["raw_evidence_hash"] == windows[slot_id]["raw"]["uncompressed_sha256"]
+            assert row["raw_evidence"]["reproduces"] is True
+        classification = row.get("attendance_classification")
+        if classification == "UNATTENDED_NO_RUN_EVENT":
+            assert row["external_evidence_status"] == "EXTERNAL_COVERAGE_COMPLETE"
+    assert document["summary"]["states"].get("UNACCOUNTED", 0) == 0

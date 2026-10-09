@@ -46,6 +46,18 @@ if str(REPO / "src") not in sys.path:
 
 from trading_bot.research.disk_space import disk_report  # noqa: E402
 
+if str(REPO / "scripts") not in sys.path:
+    sys.path.insert(0, str(REPO / "scripts"))
+
+from st6_scheduler_evidence import (  # noqa: E402  the external record of the schedule
+    EXTERNAL_COVERAGE_COMPLETE,
+    SCHEDULER_EVIDENCE_UNAVAILABLE,
+    slot_external_coverage,
+)
+from st6_scheduler_evidence import extract_samples as normalise_samples  # noqa: E402  external
+from st6_scheduler_evidence import load_samples as load_witness_samples  # noqa: E402  external
+from st6_scheduler_evidence import read_json as read_external_json  # noqa: E402  external
+
 DATA = REPO / "data" / "st6"
 PERIOD = DATA / "ST6_PERIOD.json"
 WINDOWS = DATA / "ST6_WINDOWS.jsonl"
@@ -67,13 +79,24 @@ MAX_MISSED_FRACTION = 0.2
 CONSECUTIVE_FAILURES_CRITICAL = 3
 #: The vocabulary a missed window may use for its cause, and what the classes mean.  A slot nobody
 #: attended is a failure of the host or of the task; a slot the tick visited and still did not
-#: measure is a failure of the tick; an absent event in an old slot proves nothing at all.
+#: measure is a failure of the tick; an absent event in an old slot proves nothing at all; and when
+#: the tick's own log and the scheduler's own reporting disagree, the record says so instead of
+#: choosing a side.
 MISSED_ATTENDANCE_CLASSES = (
     "ATTENDED_NOT_COLLECTED",
     "ATTENDED_REQUEST_FAILED",
     "UNATTENDED_NO_RUN_EVENT",
+    "ATTENDANCE_UNKNOWN",
     "ATTENDANCE_UNKNOWN_RUN_LOG_TRUNCATED",
+    "ATTENDANCE_EVIDENCE_CONFLICT",
 )
+ATTENDANCE_POLICY_VERSION = 2
+#: The classes whose claim is an *absence*, and which therefore require the external record to cover
+#: the whole slot.  Kept beside the checker's own implementation of the rule so a reader can see
+#: which claims carry the heavier burden.
+ABSENCE_CLASSES = ("UNATTENDED_NO_RUN_EVENT",)
+WITNESS_LOG = DATA / "ST6_SCHEDULER_WITNESS.jsonl"
+SCHEDULER_EVIDENCE = DATA / "ST6_SCHEDULER_EVIDENCE.json"
 
 HEALTHY, WARNING, CRITICAL, PERIOD_COMPLETED = (
     "HEALTHY",
@@ -186,15 +209,29 @@ def _request_count(run: dict[str, Any]) -> int:
 
 
 def attendance_class_from_runs(
-    runs: list[dict[str, Any]], slot_key: str, starts_at_utc: str
+    runs: list[dict[str, Any]],
+    slot_key: str,
+    starts_at_utc: str,
+    external: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
-    """Re-derive, from the run log alone, what happened inside one declared slot.
+    """Re-derive, from the run log and the external record, what happened inside one slot.
 
     This is deliberately a second implementation of the builder's rule: the health check must be
     able to disagree with the record, otherwise it is decoration.  A run that explicitly declares
     itself ``MANUAL`` is not the schedule and is not counted as attendance; an event with no
     declaration at all is kept, so the check never manufactures a gap in the evidence.
+
+    The rule this implementation enforces, in its own words: attendance can be read from the tick's
+    log, absence cannot.  ``UNATTENDED_NO_RUN_EVENT`` is reachable here only when the external
+    record covers every instant of the slot and the scheduler's own last-run field never named a run
+    inside it; a slot where the two records disagree is a conflict, not a verdict.
     """
+    coverage = external if isinstance(external, dict) else {
+        "status": SCHEDULER_EVIDENCE_UNAVAILABLE,
+        "scheduler_engine_launch_count": 0,
+    }
+    external_status = str(coverage.get("status") or SCHEDULER_EVIDENCE_UNAVAILABLE)
+    launches = int(coverage.get("scheduler_engine_launch_count") or 0)
     events = [run for run in runs if isinstance(run, dict)]
     in_slot = [run for run in events if run.get("slot_key") == slot_key]
     attended = [run for run in in_slot if str(run.get("invocation", "")).upper() != "MANUAL"]
@@ -208,16 +245,26 @@ def attendance_class_from_runs(
     for run in attended:
         token = str(run.get("result") or "UNRECORDED")
         results[token] = results.get(token, 0) + 1
-    if attended:
+    if attended and external_status == EXTERNAL_COVERAGE_COMPLETE and launches == 0:
+        classification = "ATTENDANCE_EVIDENCE_CONFLICT"
+    elif attended:
         classification = (
             "ATTENDED_REQUEST_FAILED" if requests and failing else "ATTENDED_NOT_COLLECTED"
         )
+    elif external_status == EXTERNAL_COVERAGE_COMPLETE and launches > 0:
+        classification = "ATTENDANCE_EVIDENCE_CONFLICT"
+    elif external_status == EXTERNAL_COVERAGE_COMPLETE:
+        classification = "UNATTENDED_NO_RUN_EVENT"
+    elif not covers_whole_slot:
+        classification = "ATTENDANCE_UNKNOWN_RUN_LOG_TRUNCATED"
     else:
-        classification = (
-            "UNATTENDED_NO_RUN_EVENT"
-            if covers_whole_slot
-            else "ATTENDANCE_UNKNOWN_RUN_LOG_TRUNCATED"
-        )
+        classification = "ATTENDANCE_UNKNOWN"
+    # a claim of absence that the external record cannot carry is a divergence, and the checker
+    # names it as one rather than quietly lowering the class
+    absence_unsupported = (
+        classification in ABSENCE_CLASSES
+        and external_status != EXTERNAL_COVERAGE_COMPLETE
+    )
     return {
         "classification": classification,
         "scheduled_runs_in_slot": len(attended),
@@ -227,11 +274,21 @@ def attendance_class_from_runs(
         "log_covers_whole_slot": covers_whole_slot,
         "run_log_events_retained": len(starts),
         "run_log_first_utc": starts[0] if starts else None,
+        "external_evidence_status": external_status,
+        "external_samples_in_slot": coverage.get("external_samples_in_slot"),
+        "scheduler_engine_launch_count": launches,
+        "absence_claim_supported_by_external_coverage": not absence_unsupported,
+        "policy_version": ATTENDANCE_POLICY_VERSION,
     }
 
 
 def audit_missed_attendance(
-    period: dict[str, Any], missed: list[dict[str, Any]], runs: list[dict[str, Any]]
+    period: dict[str, Any],
+    missed: list[dict[str, Any]],
+    runs: list[dict[str, Any]],
+    samples: list[dict[str, Any]] | None = None,
+    external_evidence: dict[str, Any] | None = None,
+    now: datetime | None = None,
 ) -> dict[str, Any]:
     """Check every missed window's stated cause against the run log, and against the declared grid.
 
@@ -244,9 +301,19 @@ def audit_missed_attendance(
         entry["key"]: entry
         for entry in declared_slots_upto(period, _parse(period["ends_at_utc"]))
     }
+    moment = now or datetime.now(UTC).replace(microsecond=0)
+    # the samples are normalised here whatever their source: the arithmetic below compares datetimes,
+    # and a raw witness row carries strings
+    witness = (
+        normalise_samples(samples) if samples is not None else load_witness_samples(WITNESS_LOG)
+    )
+    evidence = (
+        external_evidence if external_evidence is not None else read_external_json(SCHEDULER_EVIDENCE)
+    )
     by_classification: dict[str, int] = {}
     unattended: list[str] = []
     unknown: list[str] = []
+    conflicts: list[str] = []
     unsupported: list[str] = []
     for row in missed:
         key = str(row.get("slot_key"))
@@ -275,7 +342,10 @@ def audit_missed_attendance(
                 f"{row.get('ends_at_utc')}) are not the declared ones ({expected_start} -> "
                 f"{entry['ends_at_utc']})"
             )
-        derived = attendance_class_from_runs(runs, key, expected_start)
+        coverage = slot_external_coverage(
+            _parse(expected_start), _parse(entry["ends_at_utc"]), witness, evidence, moment
+        )
+        derived = attendance_class_from_runs(runs, key, expected_start, coverage)
         if classification != derived["classification"]:
             unsupported.append(
                 f"{key}: the record claims {classification} while the run log says "
@@ -292,28 +362,52 @@ def audit_missed_attendance(
                     f"{key}: the record claims {field}={recorded.get(field)!r} while the run log "
                     f"says {derived[field]!r}"
                 )
-        if classification == "UNATTENDED_NO_RUN_EVENT":
+        # the class the slot would take from the external record alone, which is what a reader can
+        # check without believing the tick's own log
+        if derived["absence_claim_supported_by_external_coverage"] is False:
+            unsupported.append(
+                f"{key}: the record claims {classification} without external coverage of the slot "
+                f"(external status {derived['external_evidence_status']})"
+            )
+        # the lists describe what the evidence supports, not what the record asserts: a claim this
+        # checker does not accept is reported in `unsupported` and nowhere else, so a wrong claim can
+        # neither raise nor lower the status of the campaign by being written down
+        supported = str(derived["classification"])
+        if supported == "UNATTENDED_NO_RUN_EVENT":
             unattended.append(key)
-        if classification == "ATTENDANCE_UNKNOWN_RUN_LOG_TRUNCATED":
+        if supported in ("ATTENDANCE_UNKNOWN", "ATTENDANCE_UNKNOWN_RUN_LOG_TRUNCATED"):
             unknown.append(key)
+        if supported == "ATTENDANCE_EVIDENCE_CONFLICT":
+            conflicts.append(key)
     return {
         "claims": len(missed),
         "by_classification": by_classification,
         "unattended_slots": unattended,
         "unattended_reading": (
-            "a slot with no scheduled run event inside it while the retained run log spans the slot "
-            "is a failure of the host or of the task, not of the data"
+            "a slot nobody attended is a failure of the host or of the task — and it is only claimed "
+            "when the external record covers every instant of the slot and the scheduler's own "
+            "reporting named no run inside it"
         ),
         "unknown_slots": unknown,
         "unknown_reading": (
-            "old slots whose events were pruned are recorded as unknown: absence of an event is not "
-            "proof of an unattended slot once the log no longer reaches back to it"
+            "a slot is recorded as unknown when the tick's own log holds no event for it and the "
+            "external record cannot cover it: an absent line in a program's own diary is not proof "
+            "that nothing ran"
+        ),
+        "conflict_slots": conflicts,
+        "conflict_reading": (
+            "the tick's log and the scheduler's own reporting disagreed about the slot; the record "
+            "says so instead of choosing a side"
         ),
         "unsupported": unsupported,
         "vocabulary": list(MISSED_ATTENDANCE_CLASSES),
+        "policy_version": ATTENDANCE_POLICY_VERSION,
+        "external_status": (evidence or {}).get("per_run_external_evidence", {}).get("status")
+        or SCHEDULER_EVIDENCE_UNAVAILABLE,
+        "witness_samples_considered": len(witness),
         "reading": (
-            "the cause of every missed window was re-derived from the run events and from the "
-            "declared grid, never taken from the record on trust"
+            "the cause of every missed window was re-derived from the run events, from the declared "
+            "grid and from the external record of the scheduler, never taken from the record on trust"
         ),
     }
 
@@ -437,7 +531,13 @@ def evaluate(now: datetime | None = None) -> dict[str, Any]:
     observations = read_jsonl(OBSERVATIONS)
     runs = read_jsonl(RUN_LOG)
     missed = read_jsonl(MISSED_LOG)
-    attendance_audit = audit_missed_attendance(period, missed, runs)
+    witness = load_witness_samples(WITNESS_LOG)
+    scheduler_evidence = read_external_json(SCHEDULER_EVIDENCE)
+    attendance_audit = audit_missed_attendance(
+        period, missed, runs, witness, scheduler_evidence, now
+    )
+    external_block = (scheduler_evidence or {}).get("per_run_external_evidence") or {}
+    external_status = str(external_block.get("status") or SCHEDULER_EVIDENCE_UNAVAILABLE)
     closure, closure_reading = closure_of_declared_period(period)
     registration = scheduler_registration()
     disk = disk_report(REPO)
@@ -447,6 +547,7 @@ def evaluate(now: datetime | None = None) -> dict[str, Any]:
     observed = {f"{row['day']}#{row['slot_index']}" for row in windows}
     recorded_missed = {row["slot_key"] for row in missed}
     ended = [entry for entry in slots if _parse(entry["ends_at_utc"]) <= now]
+    witness_covered_slots = [entry["key"] for entry in ended]
     # what the programme still has to collect before its declared end, which is what a reader of a
     # pending count expects to see
     pending = [
@@ -505,6 +606,16 @@ def evaluate(now: datetime | None = None) -> dict[str, Any]:
         critical.append(
             f"{missed_fraction:.0%} of the ended slots have no window, above the declared maximum"
         )
+    unobserved_ended = [entry["key"] for entry in ended if entry["key"] not in observed]
+    if external_status == SCHEDULER_EVIDENCE_UNAVAILABLE and unobserved_ended and not period_over:
+        # the limitation is recorded always, and it raises the status exactly when it bites: a slot
+        # ended without a window and no external record can carry the reason
+        warning.append(
+            f"{len(unobserved_ended)} ended slot(s) have no window and per-run external evidence is "
+            "SCHEDULER_EVIDENCE_UNAVAILABLE on this host: the Task Scheduler operational channel is "
+            "disabled and no witness covered those slots, so their attendance is UNKNOWN rather "
+            "than proven unattended"
+        )
     if not period_over and not registration["installed"]:
         critical.append("the period is open and the scheduled task is not installed")
     if not period_over and registration["installed"] and registration["enabled"] is False:
@@ -545,9 +656,15 @@ def evaluate(now: datetime | None = None) -> dict[str, Any]:
         )
     if attendance_audit["unattended_slots"]:
         warning.append(
-            f"{len(attendance_audit['unattended_slots'])} slot(s) provably went unattended: no "
-            "scheduled run event lies inside them while the retained run log spans them "
+            f"{len(attendance_audit['unattended_slots'])} slot(s) went unattended with the external "
+            "record covering them and naming no run inside "
             f"{attendance_audit['unattended_slots'][:6]}"
+        )
+    if attendance_audit["conflict_slots"]:
+        critical.append(
+            f"{len(attendance_audit['conflict_slots'])} slot(s) are carried as evidence conflicts: "
+            "the tick's own log and the scheduler's own reporting disagree about them "
+            f"{attendance_audit['conflict_slots'][:6]}"
         )
     if not live:
         warning.append(
@@ -598,6 +715,18 @@ def evaluate(now: datetime | None = None) -> dict[str, Any]:
             "declared_slots_pending": len(pending),
             "missed_windows_recorded": len(missed),
             "missed_window_attendance": attendance_audit,
+            "external_evidence": {
+                "status": external_status,
+                "reason": external_block.get("reason"),
+                "witness_samples": len(witness),
+                "witness_covered_from_utc": witness[0]["sampled_at_utc"] if witness else None,
+                "witness_covered_to_utc": witness[-1]["sampled_at_utc"] if witness else None,
+                "slots_ended_that_the_witness_could_cover": witness_covered_slots,
+                "reading": (
+                    "a claim of absence needs the external record to cover the whole slot; where it "
+                    "does not, the class is UNKNOWN and no cause is asserted"
+                ),
+            },
             "unaccounted_slots": unaccounted,
             "missed_fraction_of_ended_slots": missed_fraction,
             "raw_evidence": evidence,

@@ -51,6 +51,9 @@ VERSIONED_IMPLEMENTATION = (
     "scripts/st6_forward_regime.py",
     "scripts/st6_health_check.py",
     "scripts/st6_scheduler_verify.py",
+    "scripts/st6_scheduler_witness.py",
+    "scripts/st6_scheduler_evidence.py",
+    "scripts/st6_slot_ledger.py",
     "scripts/st6_state_snapshot.py",
     "scripts/st6_close_replay.py",
     "scripts/st6_close_verify.py",
@@ -77,6 +80,15 @@ LIVE_RUNTIME_STATE = (
     "data/st6/ST6_SCHEDULER_VERIFICATION.json",
     "data/st6/ST6_INDEPENDENT_VERIFICATION.json",
     "data/st6/ST6_INDEPENDENT_VERIFICATION.md",
+    "data/st6/ST6_SCHEDULER_WITNESS.jsonl",
+    "data/st6/ST6_SCHEDULER_EVIDENCE.json",
+    "data/st6/ST6_SLOT_LEDGER.json",
+    "data/st6/ST6_RETENTION_AUDIT.md",
+    "data/st6/ST6_SCHEDULER_PROVENANCE.json",
+    "data/st6/ST6_SCHEDULER_PROVENANCE.md",
+    "data/st6/ST6_VERIFIER_INDUCED_RUNS.jsonl",
+    "data/st6/ST6_INDEPENDENT_RECONCILIATION.json",
+    "data/st6/ST6_INDEPENDENT_RECONCILIATION.md",
 )
 
 #: The lock is transient coordination, not evidence: hashed for completeness, never copied.

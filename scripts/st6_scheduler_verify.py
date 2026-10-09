@@ -37,8 +37,10 @@ from __future__ import annotations
 import argparse
 import ast
 import json
+import os
 import subprocess
 import sys
+import tempfile
 import time
 import xml.etree.ElementTree as ElementTree
 from datetime import UTC, datetime, timedelta
@@ -47,6 +49,21 @@ from typing import Any
 
 REPO = Path(__file__).resolve().parents[1]
 SCRIPTS = REPO / "scripts"
+if str(SCRIPTS) not in sys.path:
+    sys.path.insert(0, str(SCRIPTS))
+
+from st6_scheduler_evidence import (  # noqa: E402  the external record of the schedule
+    EXTERNAL_COVERAGE_COMPLETE,
+    SCHEDULER_EVIDENCE_UNAVAILABLE,
+    slot_external_coverage,
+)
+from st6_scheduler_evidence import (  # noqa: E402  the external record of the schedule
+    load_samples as load_witness_samples,
+)
+from st6_scheduler_evidence import (  # noqa: E402  the external record of the schedule
+    read_json as read_external_json,
+)
+
 TICK = SCRIPTS / "st6_forward_regime.py"
 HEALTH = SCRIPTS / "st6_health_check.py"
 PYTHON = REPO / ".venv" / "Scripts" / "python.exe"
@@ -56,7 +73,14 @@ WINDOWS = DATA / "ST6_WINDOWS.jsonl"
 MISSED_LOG = DATA / "ST6_MISSED_WINDOWS.jsonl"
 RUN_LOG = DATA / "ST6_RUNS.jsonl"
 CLOSURE = DATA / "ST6_PERIOD_CLOSURE.json"
+WITNESS_LOG = DATA / "ST6_SCHEDULER_WITNESS.jsonl"
+SCHEDULER_EVIDENCE = DATA / "ST6_SCHEDULER_EVIDENCE.json"
+LEDGER = DATA / "ST6_SLOT_LEDGER.json"
+INDUCED_RUNS = DATA / "ST6_VERIFIER_INDUCED_RUNS.jsonl"
+RECONCILIATION_JSON = DATA / "ST6_INDEPENDENT_RECONCILIATION.json"
+RECONCILIATION_MD = DATA / "ST6_INDEPENDENT_RECONCILIATION.md"
 OUT = DATA / "ST6_SCHEDULER_VERIFICATION.json"
+INDUCED_RUNS_KEPT = 2000
 TASK_NAME = "TradingAgentic-ST6-Forward"
 LOCAL_STATE = REPO / "data" / "storage"
 
@@ -69,8 +93,12 @@ ATTENDANCE_CLASSES = (
     "ATTENDED_NOT_COLLECTED",
     "ATTENDED_REQUEST_FAILED",
     "UNATTENDED_NO_RUN_EVENT",
+    "ATTENDANCE_UNKNOWN",
     "ATTENDANCE_UNKNOWN_RUN_LOG_TRUNCATED",
+    "ATTENDANCE_EVIDENCE_CONFLICT",
 )
+ABSENCE_CLASSES = ("UNATTENDED_NO_RUN_EVENT",)
+LEDGER_STATES = ("COLLECTED", "LOST_NO_WINDOW", "PENDING", "UNACCOUNTED")
 TASK_TRIGGER_TIMEOUT_S = 120
 RUN_EVENT_FIELDS = (
     "run_id",
@@ -123,6 +151,14 @@ RESULT_EXIT_CODES = {
     # stays known rather than being rewritten
     "UNKNOWN": 0,
 }
+
+
+def _parse(stamp: str) -> datetime:
+    """A UTC timestamp from this repository's artefacts, parsed the one way they are written."""
+    text = str(stamp)
+    if "." in text:
+        return datetime.strptime(text, "%Y-%m-%dT%H:%M:%S.%fZ").replace(tzinfo=UTC)
+    return datetime.strptime(text, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=UTC)
 
 
 class Checks:
@@ -238,13 +274,20 @@ def run_tick(extra: list[str], timeout: int = 180) -> dict[str, Any]:
 
 
 def slots_ended_by(period: dict[str, Any], now: datetime) -> list[dict[str, Any]]:
+    """The declared grid, bounded by the plan itself: days x slots per day, no more.
+
+    The partial slot the period's end falls into is not a planned window: the period closes inside
+    it, so nothing may be expected, lost or penalised there.  Bounding the enumeration by the plan
+    is what keeps that slot out of the accounting instead of turning it into a permanent debt.
+    """
     start = datetime.strptime(period["started_at_utc"], "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=UTC)
     last = min(
         now, datetime.strptime(period["ends_at_utc"], "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=UTC)
     )
+    planned = int(period["period_days"]) * int(period["slots_per_day"])
     cursor = start.replace(minute=0, second=0, microsecond=0)
     slots: list[dict[str, Any]] = []
-    while cursor <= last:
+    while cursor <= last and len(slots) < planned:
         index = cursor.hour // SLOT_HOURS
         slots.append(
             {
@@ -281,6 +324,10 @@ def live_real_execution() -> dict[str, Any]:
         runs = read_jsonl(RUN_LOG)
         if len(runs) > before:
             event = runs[-1]
+            record_induced_runs(
+                [event],
+                "live real-execution test: the task was triggered through the scheduler itself",
+            )
             return {
                 "status": "PASS",
                 "detail": "the scheduler started the task and its tick wrote a run event",
@@ -303,6 +350,10 @@ def live_due_idempotency() -> dict[str, Any]:
     windows_after = len(read_jsonl(WINDOWS))
     runs = read_jsonl(RUN_LOG)
     tails = runs[-2:]
+    record_induced_runs(
+        tails,
+        "live due-idempotency test: two direct ticks that emulate the task's command line",
+    )
     ok = (
         windows_after == windows_before
         and len(runs) >= 2
@@ -335,34 +386,71 @@ def live_due_idempotency() -> dict[str, Any]:
 
 
 def live_concurrency() -> dict[str, Any]:
+    """Two writers, one lease — held by this test in a *private* lock root, never the campaign's.
+
+    The property under test is the lease's refusal, not the path of the file it lives in, and a test
+    that held the campaign's own lease would make the real schedule refuse whenever its fifteen
+    minutes came round while the test ran.  The isolated root is therefore asked for explicitly and
+    passed to the process under test, so the production lock is neither taken nor contended for.
+    """
     sys.path.insert(0, str(SCRIPTS))
     import st6_forward_regime as phase  # the tick's own lease, exercised live
 
+    isolated = Path(tempfile.mkdtemp(prefix="st6-concurrency-lease-"))
+    previous_root = phase.LOCK_ROOT
+    previous_env = os.environ.get("ST6_LOCK_ROOT")
+    phase.LOCK_ROOT = isolated
+    os.environ["ST6_LOCK_ROOT"] = str(isolated)
     lease = phase.run_lease()
     acquired = lease.acquire(now=int(datetime.now(UTC).timestamp()))
     if not acquired["acquired"]:
+        phase.LOCK_ROOT = previous_root
         return {
             "status": "FAIL",
             "detail": f"could not take the lease to run the test: {acquired}",
         }
     try:
-        second = run_tick(["--due", "--scheduled"])
+        # the second writer is launched by this verifier, not by the schedule: it must not declare
+        # itself the schedule's own tick, so it carries no --scheduled flag and the event it leaves
+        # is a manual refusal, which no read of the log can mistake for a skipped collection
+        second = run_tick(["--due"])
         runs = read_jsonl(RUN_LOG)
         refused = [event for event in runs if event.get("result") == "ALREADY_RUNNING"]
-        ok = second["exit_code"] == 2 and bool(refused)
+        record_induced_runs(
+            refused[-1:],
+            "live concurrency test: the second process was refused while the lease was held",
+        )
+        ok = (
+            second["exit_code"] == 2
+            and bool(refused)
+            and str(refused[-1].get("invocation", "")).upper() != "SCHEDULED"
+        )
         return {
             "status": "PASS" if ok else "FAIL",
             "detail": (
-                "a second process refused the tick with ALREADY_RUNNING while the lease was held"
+                "a second process refused the tick with ALREADY_RUNNING while the lease was held, in "
+                "a private lock root, and declared no scheduled invocation"
                 if ok
                 else "the second process did not refuse with the declared status"
             ),
             "second_exit_code": second["exit_code"],
             "refusals_recorded": len(refused),
             "refusal_event": refused[-1] if refused else None,
+            "lease_root": str(isolated),
+            "campaign_lease_used": False,
+            "campaign_lease_reading": (
+                "this test took its own lease in a private lock root and passed that root to the "
+                "process under test: the campaign's lock is neither taken nor contended for, so a "
+                "real scheduled tick is never refused on account of this verification"
+            ),
         }
     finally:
         lease.release()
+        phase.LOCK_ROOT = previous_root
+        if previous_env is None:
+            os.environ.pop("ST6_LOCK_ROOT", None)
+        else:
+            os.environ["ST6_LOCK_ROOT"] = previous_env
 
 
 def live_error_exit_status() -> dict[str, Any]:
@@ -370,6 +458,7 @@ def live_error_exit_status() -> dict[str, Any]:
     result = run_tick(["--collect", "--rounds", "0"])
     runs = read_jsonl(RUN_LOG)
     fresh = runs[before:]
+    record_induced_runs(fresh, "live refusal test: a tick with an impossible cadence")
     ok = result["exit_code"] == 1 and any(
         event.get("result") == "REFUSED_INVALID_ARGUMENTS" for event in fresh
     )
@@ -673,6 +762,448 @@ def verify_no_live_paths(c: Checks, tick_source: str, health_source: str) -> Non
     )
 
 
+def record_induced_runs(events: list[dict[str, Any]], reason: str) -> list[dict[str, Any]]:
+    """Write down the runs this verifier caused, so nobody has to guess which ticks were its own.
+
+    Every live test here provokes a real run: ``schtasks /run`` starts the task through the engine,
+    and the direct ticks write their own events.  Those events are not the schedule's ticks and must
+    not be counted as the campaign working, so they are recorded at the moment they are caused and
+    subtracted from the attendance arithmetic afterwards.  The write is atomic and bounded.
+    """
+    written: list[dict[str, Any]] = []
+    for event in events:
+        run_id = event.get("run_id")
+        if not run_id:
+            continue
+        written.append(
+            {
+                "artifact": "ST6_VERIFIER_INDUCED_RUN",
+                "run_id": run_id,
+                "run_start_utc": event.get("actual_start_utc"),
+                "slot_key": event.get("slot_key"),
+                "result": event.get("result"),
+                "exit_code": event.get("exit_code"),
+                "reason": reason,
+                "recorded_at_utc": datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ"),
+                "reading": (
+                    "this run was caused by the scheduler verifier's own live test: a real launch, "
+                    "and not the schedule's own tick"
+                ),
+            }
+        )
+    if not written:
+        return []
+    with INDUCED_RUNS.open("a", encoding="utf-8") as handle:
+        for row in written:
+            handle.write(json.dumps(row, sort_keys=True, ensure_ascii=False) + "\n")
+    rows = read_jsonl(INDUCED_RUNS)
+    if len(rows) > INDUCED_RUNS_KEPT:
+        kept = rows[-INDUCED_RUNS_KEPT:]
+        temporary = INDUCED_RUNS.with_suffix(INDUCED_RUNS.suffix + ".tmp")
+        temporary.write_text(
+            "".join(json.dumps(row, sort_keys=True, ensure_ascii=False) + "\n" for row in kept),
+            encoding="utf-8",
+        )
+        temporary.replace(INDUCED_RUNS)
+    return written
+
+
+def induced_runs_by_id() -> dict[str, dict[str, Any]]:
+    return {
+        str(row["run_id"]): row
+        for row in read_jsonl(INDUCED_RUNS)
+        if isinstance(row, dict) and row.get("run_id")
+    }
+
+
+def verify_ledger(
+    c: Checks, period: dict[str, Any], ledger: dict[str, Any] | None, now: datetime
+) -> dict[str, Any]:
+    """Check the slot ledger structurally: one entry per declared slot, and nothing invented."""
+    if ledger is None:
+        c.check("the slot ledger exists", False, "no ledger on disk")
+        return {"entries": 0, "status": "ABSENT"}
+    slots = ledger.get("slots")
+    c.check("the ledger carries a list of slots", isinstance(slots, list), type(slots).__name__)
+    rows = [row for row in slots or [] if isinstance(row, dict)]
+    declared = {
+        entry["key"]: entry for entry in slots_ended_by(period, _parse(period["ends_at_utc"]))
+    }
+    planned = int(ledger.get("period", {}).get("planned_slots") or 0)
+    c.check(
+        "the ledger holds one entry for every declared slot",
+        planned == 6 * int(period["period_days"]) and len(rows) == planned,
+        {"planned": planned, "entries": len(rows), "declared_days": period["period_days"]},
+    )
+    ids = [str(row.get("slot_id")) for row in rows]
+    duplicates = sorted({slot for slot in ids if ids.count(slot) > 1})
+    c.check("no slot is duplicated in the ledger", not duplicates, duplicates)
+    unexpected = sorted(set(ids) - set(declared))
+    c.check("the ledger invents no slot outside the declared grid", not unexpected, unexpected)
+    missing = sorted(set(declared) - set(ids))
+    c.check("the ledger omits no declared slot", not missing, missing)
+    windows = read_jsonl(WINDOWS)
+    observed = {f"{row['day']}#{row['slot_index']}": row for row in windows}
+    states: dict[str, int] = {}
+    for row in rows:
+        slot_id = str(row.get("slot_id"))
+        states[str(row.get("state"))] = states.get(str(row.get("state")), 0) + 1
+        c.check(
+            f"ledger {slot_id}: the state is a declared one",
+            row.get("state") in LEDGER_STATES,
+            row.get("state"),
+        )
+        entry = declared.get(slot_id)
+        if entry is not None:
+            expected_start = (entry["ends_at_utc"].replace("Z", "")), None  # recomputed below
+            del expected_start
+            start = (
+                _parse(entry["ends_at_utc"]) - timedelta(hours=SLOT_HOURS)
+            ).strftime("%Y-%m-%dT%H:%M:%SZ")
+            c.check(
+                f"ledger {slot_id}: the bounds are the declared ones",
+                (row.get("slot_start_utc"), row.get("slot_end_utc"))
+                == (start, entry["ends_at_utc"]),
+                (row.get("slot_start_utc"), row.get("slot_end_utc"), start, entry["ends_at_utc"]),
+            )
+        ended = str(row.get("slot_end_utc")) <= now.strftime("%Y-%m-%dT%H:%M:%SZ")
+        if row.get("state") == "COLLECTED":
+            window = observed.get(slot_id)
+            c.check(
+                f"ledger {slot_id}: a collected slot names its window and its hash",
+                window is not None
+                and row.get("collection_window_id") == window.get("window_id")
+                and row.get("raw_evidence_hash") == window["raw"]["uncompressed_sha256"],
+                {"window": row.get("collection_window_id"), "recorded": row.get("raw_evidence_hash")},
+            )
+            c.check(
+                f"ledger {slot_id}: the raw bytes reproduce the recorded hash",
+                bool((row.get("raw_evidence") or {}).get("reproduces")),
+                row.get("raw_evidence"),
+            )
+        if row.get("state") in ("LOST_NO_WINDOW", "UNACCOUNTED"):
+            c.check(
+                f"ledger {slot_id}: a lost slot names the class it is carried under",
+                bool(row.get("attendance_classification")),
+                row.get("attendance_classification"),
+            )
+        if row.get("state") == "UNACCOUNTED":
+            c.check(
+                f"ledger {slot_id}: an unaccounted slot is a defect, not a state of the schedule",
+                False,
+                f"{slot_id} ended with neither a window nor a recorded loss",
+            )
+        if row.get("state") == "PENDING":
+            c.check(
+                f"ledger {slot_id}: a pending slot has not ended",
+                not ended,
+                row.get("slot_end_utc"),
+            )
+        status = str(row.get("external_evidence_status"))
+        c.check(
+            f"ledger {slot_id}: the external status is a declared token",
+            status
+            in (
+                EXTERNAL_COVERAGE_COMPLETE,
+                "EXTERNAL_COVERAGE_PARTIAL",
+                SCHEDULER_EVIDENCE_UNAVAILABLE,
+                "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+            ),
+            status,
+        )
+        classification = str(row.get("attendance_classification") or "")
+        if classification in ABSENCE_CLASSES:
+            c.check(
+                f"ledger {slot_id}: an absence claim rests on external coverage of the slot",
+                status == EXTERNAL_COVERAGE_COMPLETE,
+                {"classification": classification, "external_status": status},
+            )
+        for run in row.get("runs") or []:
+            c.check(
+                f"ledger {slot_id}: a run carries an origin from the declared vocabulary",
+                str(run.get("origin"))
+                in (
+                    "CORROBORATED_ENGINE_LAUNCH",
+                    "SELF_DECLARED_UNVERIFIED",
+                    "MANUAL",
+                    "INDUCED_BY_THE_VERIFIER",
+                    "UNATTRIBUTED",
+                ),
+                run.get("origin"),
+            )
+    summary = ledger.get("summary") or {}
+    recomputed: dict[str, int] = {}
+    for row in rows:
+        recomputed[str(row.get("state"))] = recomputed.get(str(row.get("state")), 0) + 1
+    c.check(
+        "the ledger's own summary counts match its entries",
+        (summary.get("states") or {}) == recomputed,
+        {"claimed": summary.get("states"), "recomputed": recomputed},
+    )
+    unaccounted = [str(row.get("slot_id")) for row in rows if row.get("state") == "UNACCOUNTED"]
+    return {
+        "entries": len(rows),
+        "planned": planned,
+        "states": recomputed,
+        "unaccounted": unaccounted,
+        "status": "PASS" if not unaccounted else "FAIL",
+    }
+
+
+def derive_attendance(
+    runs: list[dict[str, Any]], slot_key: str, starts_at_utc: str, coverage: dict[str, Any]
+) -> str:
+    """This verifier's own reading of the attendance rule, written here rather than imported.
+
+    A second implementation of the same policy: attendance can be read from the tick's log, absence
+    cannot, and a slot where the two records disagree is a conflict.  If it disagrees with the
+    builder, that disagreement is the finding.
+    """
+    external_status = str(coverage.get("status") or SCHEDULER_EVIDENCE_UNAVAILABLE)
+    launches = int(coverage.get("scheduler_engine_launch_count") or 0)
+    complete = external_status == EXTERNAL_COVERAGE_COMPLETE
+    in_slot = [run for run in runs if run.get("slot_key") == slot_key]
+    attended = [run for run in in_slot if str(run.get("invocation", "")).upper() != "MANUAL"]
+    starts = sorted(
+        str(run.get("actual_start_utc")) for run in runs if run.get("actual_start_utc")
+    )
+    covers = bool(starts) and starts[0] <= starts_at_utc
+    if attended and complete and launches == 0:
+        return "ATTENDANCE_EVIDENCE_CONFLICT"
+    if attended:
+        requests = sum(int(run.get("market_requests") or 0) for run in attended)
+        failing = [run for run in attended if run.get("errors")]
+        return "ATTENDED_REQUEST_FAILED" if requests and failing else "ATTENDED_NOT_COLLECTED"
+    if complete and launches > 0:
+        return "ATTENDANCE_EVIDENCE_CONFLICT"
+    if complete:
+        return "UNATTENDED_NO_RUN_EVENT"
+    return "ATTENDANCE_UNKNOWN_RUN_LOG_TRUNCATED" if not covers else "ATTENDANCE_UNKNOWN"
+
+
+def reconcile_slots(
+    c: Checks, period: dict[str, Any], ledger: dict[str, Any], now: datetime
+) -> tuple[dict[str, Any], list[str]]:
+    """Reconcile each declared slot across the three sources, and report what each one says.
+
+    A — the external record: the task's registration, the scheduler's own reported instants and the
+        coverage the witness actually achieved;
+    B — the internal record: the run events, the missed log and the ledger's own entry;
+    C — the raw evidence: the window's bytes, re-hashed here, which are the only corroboration of a
+        measurement that does not come from a program of this repository's own bookkeeping.
+    """
+    runs = read_jsonl(RUN_LOG)
+    windows = read_jsonl(WINDOWS)
+    missed = {row["slot_key"]: row for row in read_jsonl(MISSED_LOG)}
+    samples = load_witness_samples(WITNESS_LOG)
+    evidence = read_external_json(SCHEDULER_EVIDENCE)
+    induced = induced_runs_by_id()
+    ledger_rows = {str(row.get("slot_id")): row for row in ledger.get("slots") or []}
+    observed = {f"{row['day']}#{row['slot_index']}": row for row in windows}
+    disagreements: list[str] = []
+    per_slot: list[dict[str, Any]] = []
+    counts = {
+        "COLLECTED": 0,
+        "LOST_NO_WINDOW": 0,
+        "PENDING": 0,
+        "UNACCOUNTED": 0,
+    }
+    for entry in slots_ended_by(period, _parse(period["ends_at_utc"])):
+        slot_id = entry["key"]
+        start = (_parse(entry["ends_at_utc"]) - timedelta(hours=SLOT_HOURS)).strftime(
+            "%Y-%m-%dT%H:%M:%SZ"
+        )
+        coverage = slot_external_coverage(
+            _parse(start), _parse(entry["ends_at_utc"]), samples, evidence, now
+        )
+        row = ledger_rows.get(slot_id)
+        window = observed.get(slot_id)
+        state = "PENDING" if row is None else str(row.get("state"))
+        if state in counts:
+            counts[state] += 1
+        # the loss vocabulary classifies *losses*: a slot that produced its own window is not one,
+        # and re-deriving a loss class for it would state something false about its collection
+        derived = None if window is not None else derive_attendance(runs, slot_id, start, coverage)
+        recorded = str((row or {}).get("attendance_classification") or "") or None
+        if window is not None and recorded is not None:
+            disagreements.append(
+                f"{slot_id}: the ledger carries the loss class {recorded} for a slot that produced "
+                f"window {window['window_id']}"
+            )
+        elif not window and recorded and recorded != derived:
+            disagreements.append(
+                f"{slot_id}: the ledger carries {recorded} while this verifier re-derives {derived}"
+            )
+        if window is not None and state != "COLLECTED":
+            disagreements.append(
+                f"{slot_id}: a window exists in the index but the ledger carries {state}"
+            )
+        if row is not None and window is not None:
+            digest = str(row.get("raw_evidence_hash"))
+            if digest != window["raw"]["uncompressed_sha256"]:
+                disagreements.append(
+                    f"{slot_id}: the ledger's raw hash does not match the window index"
+                )
+            if not (row.get("raw_evidence") or {}).get("reproduces"):
+                disagreements.append(f"{slot_id}: the raw bytes do not reproduce the recorded hash")
+        slot_runs = [run for run in runs if run.get("slot_key") == slot_id]
+        per_slot.append(
+            {
+                "slot_id": slot_id,
+                "slot_start_utc": start,
+                "slot_end_utc": entry["ends_at_utc"],
+                "state": state,
+                "A_external": {
+                    "status": coverage["status"],
+                    "samples_in_slot": coverage["external_samples_in_slot"],
+                    "scheduler_instants_named": coverage["scheduler_engine_launches_reported_in_slot"],
+                    "system_restart_inside_slot": coverage["system_restart_inside_slot"],
+                    "per_run_evidence": (evidence or {})
+                    .get("per_run_external_evidence", {})
+                    .get("status", SCHEDULER_EVIDENCE_UNAVAILABLE),
+                    "reading": coverage["reading"],
+                },
+                "B_internal": {
+                    "run_events": len(slot_runs),
+                    "scheduled_events": len(
+                        [
+                            run
+                            for run in slot_runs
+                            if str(run.get("invocation", "")).upper() != "MANUAL"
+                        ]
+                    ),
+                    "run_ids_caused_by_this_verifier": sorted(
+                        str(run.get("run_id"))
+                        for run in slot_runs
+                        if str(run.get("run_id")) in induced
+                    ),
+                    "missed_record": bool(missed.get(slot_id)),
+                    "ledger_classification": recorded,
+                    "re_derived_classification": derived,
+                    "attendance_reading": (
+                        f"the slot produced window {window['window_id']}: it is not a loss, so the "
+                        "loss vocabulary has no class for it"
+                        if window is not None
+                        else "the slot produced no window: the loss vocabulary applies"
+                    ),
+                    "agrees": recorded is None or recorded == derived,
+                },
+                "C_raw_evidence": {
+                    "window_id": (window or {}).get("window_id"),
+                    "raw_path": ((window or {}).get("raw") or {}).get("path"),
+                    "uncompressed_sha256": ((window or {}).get("raw") or {}).get(
+                        "uncompressed_sha256"
+                    ),
+                    "recorded_in_ledger": (row or {}).get("raw_evidence_hash"),
+                    "reproduces": ((row or {}).get("raw_evidence") or {}).get("reproduces"),
+                },
+                "verdict": (
+                    "WINDOW_AND_BYTES_VERIFIED"
+                    if window is not None and ((row or {}).get("raw_evidence") or {}).get("reproduces")
+                    else (
+                        "LOSS_WITH_STATED_CLASS"
+                        if recorded
+                        else ("AHEAD" if state == "PENDING" else "UNACCOUNTED")
+                    )
+                ),
+            }
+        )
+    for slot in per_slot:
+        if slot["state"] == "UNACCOUNTED":
+            disagreements.append(
+                f"{slot['slot_id']}: the slot ended with neither a window nor a recorded loss"
+            )
+    document = {
+        "artifact": "ST6_INDEPENDENT_RECONCILIATION",
+        "verifier": "scripts/st6_scheduler_verify.py",
+        "generated_at_utc": now.strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "period": {
+            "started_at_utc": period["started_at_utc"],
+            "ends_at_utc": period["ends_at_utc"],
+        },
+        "sources": {
+            "A_external": "the Task Scheduler's own reporting, sampled by scripts/st6_scheduler_witness.py",
+            "B_internal": "the run log, the missed log and the slot ledger",
+            "C_raw": "the raw window bytes on disk, re-hashed here",
+            "per_run_external_status": (evidence or {})
+            .get("per_run_external_evidence", {})
+            .get("status", SCHEDULER_EVIDENCE_UNAVAILABLE),
+            "witness_samples": len(samples),
+        },
+        "states": counts,
+        "slots": per_slot,
+        "disagreements": disagreements,
+        "false_success": len(disagreements),
+        "status": "PASS" if not disagreements else "FAIL",
+        "reading": (
+            "every declared slot is reconciled across the scheduler's own record, the repository's "
+            "own logs and the raw bytes; a slot whose absence of a window cannot be explained by the "
+            "external record is carried as UNKNOWN rather than as proven unattended, and a raw hash "
+            "that does not reproduce is a finding"
+        ),
+    }
+    for finding in disagreements:
+        c.check(f"reconciliation: {finding}", False, finding)
+    c.check(
+        "no declared slot is left unaccounted for by the reconciliation",
+        counts["UNACCOUNTED"] == 0,
+        counts,
+    )
+    return document, disagreements
+
+
+def render_reconciliation_markdown(document: dict[str, Any]) -> str:
+    counts = document["states"]
+    sources = document["sources"]
+    lines = [
+        "# ST-6 — independent reconciliation of the declared slots",
+        "",
+        f"Generated {document['generated_at_utc']} by `scripts/st6_scheduler_verify.py`.",
+        "",
+        "## The three sources",
+        "",
+        f"- **A — external:** {sources['A_external']} "
+        f"(`{sources['per_run_external_status']}`, {sources['witness_samples']} sample(s) retained).",
+        f"- **B — internal:** {sources['B_internal']}.",
+        f"- **C — raw:** {sources['C_raw']}.",
+        "",
+        "| state | slots |",
+        "| --- | --- |",
+        *[f"| {state} | {count} |" for state, count in sorted(counts.items())],
+        "",
+        f"Disagreements: **{document['false_success']}** — status `{document['status']}`.",
+        "",
+        "## Per slot",
+        "",
+        "| slot | state | A external | scheduler instants named | B runs | class | verdict |",
+        "| --- | --- | --- | --- | --- | --- | --- |",
+        *[
+            "| {slot} | {state} | {external} | {instants} | {runs} | {klass} | {verdict} |".format(
+                slot=entry["slot_id"],
+                state=entry["state"],
+                external=entry["A_external"]["status"],
+                instants=len(entry["A_external"]["scheduler_instants_named"]),
+                runs=entry["B_internal"]["run_events"],
+                klass=entry["B_internal"]["ledger_classification"]
+                or entry["B_internal"]["re_derived_classification"]
+                or ("not a loss" if entry["state"] == "COLLECTED" else "unknown"),
+                verdict=entry["verdict"],
+            )
+            for entry in document["slots"]
+        ],
+        "",
+    ]
+    if document["disagreements"]:
+        lines += [
+            "## Disagreements",
+            "",
+            *[f"- {item}" for item in document["disagreements"]],
+            "",
+        ]
+    lines += [document["reading"], "", "Research only: no orders, no credentials, no capital.", ""]
+    return "\n".join(lines)
+
+
 def closure_for_declared_period(period: dict[str, Any]) -> tuple[dict[str, Any] | None, str]:
     """A consolidation counts only when it is the consolidation *of this* declared period.
 
@@ -729,6 +1260,31 @@ def main(argv: list[str] | None = None) -> int:
     run_log_state = verify_run_log(c)
     missed_state = verify_missed_accounting(c, period, now)
     verify_no_live_paths(c, tick_source, health_source)
+    ledger = read_json(LEDGER)
+    ledger_state = verify_ledger(c, period, ledger, now)
+    reconciliation, disagreements = (
+        reconcile_slots(c, period, ledger, now)
+        if ledger is not None
+        else ({"status": "NOT_RUN", "reason": "the ledger does not exist"}, [])
+    )
+    if ledger is not None:
+        RECONCILIATION_JSON.write_text(
+            json.dumps(reconciliation, indent=2, sort_keys=True, ensure_ascii=False) + "\n",
+            encoding="utf-8",
+        )
+        RECONCILIATION_MD.write_text(
+            render_reconciliation_markdown(reconciliation), encoding="utf-8"
+        )
+    c.check(
+        "the reconciliation agrees with the ledger",
+        reconciliation.get("status") in ("PASS", "NOT_RUN"),
+        disagreements,
+    )
+    c.check(
+        "the induced runs are recorded rather than counted as the schedule",
+        bool(induced_runs_by_id()) or not read_jsonl(INDUCED_RUNS),
+        len(read_jsonl(INDUCED_RUNS)),
+    )
 
     closure, closure_reading = closure_for_declared_period(period)
     c.check(
@@ -768,6 +1324,8 @@ def main(argv: list[str] | None = None) -> int:
         "period_closure": {"reading": closure_reading, "present": closure is not None},
         "run_log": run_log_state,
         "missed_accounting": missed_state,
+        "slot_ledger": ledger_state,
+        "reconciliation": reconciliation,
         "checks_total": c.total,
         "checks_passed": c.passed,
         "mismatches": len(c.failed),

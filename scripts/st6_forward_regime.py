@@ -41,6 +41,7 @@ import argparse
 import gzip
 import hashlib
 import json
+import os
 import statistics
 import subprocess
 import sys
@@ -58,6 +59,13 @@ sys.path.insert(0, str(SCRIPTS))
 from cost_drift_monitor import judge as st6_judge  # noqa: E402  the proven ST-6 drift rule
 from cost_drift_monitor import window_metrics  # noqa: E402  the proven window arithmetic
 from economic001_readonly_probe import BASE, SYMBOLS, collect  # noqa: E402  the proven probe
+from st6_scheduler_evidence import (  # noqa: E402  the external record of the schedule
+    EXTERNAL_COVERAGE_COMPLETE,
+    SCHEDULER_EVIDENCE_UNAVAILABLE,
+    slot_external_coverage,
+)
+from st6_scheduler_evidence import load_samples as _load_witness_samples  # noqa: E402  external
+from st6_scheduler_evidence import read_json as _read_external_json  # noqa: E402  external
 
 DATA = REPO / "data" / "st6"
 PERIOD_PATH = DATA / "ST6_PERIOD.json"
@@ -1841,6 +1849,10 @@ def rollup(
 TASK_NAME = "TradingAgentic-ST6-Forward"
 RUN_LOG = DATA / "ST6_RUNS.jsonl"
 MISSED_LOG = DATA / "ST6_MISSED_WINDOWS.jsonl"
+#: The external record of the schedule: samples of the Task Scheduler's own reporting taken by a
+#: process that is not this one, plus the dated statement of which external evidence exists.
+WITNESS_LOG = DATA / "ST6_SCHEDULER_WITNESS.jsonl"
+SCHEDULER_EVIDENCE = DATA / "ST6_SCHEDULER_EVIDENCE.json"
 CLOSURE = DATA / "ST6_PERIOD_CLOSURE.json"
 SCHEDULER_REPORT_JSON = DATA / "ST6_SCHEDULER_REPORT.json"
 SCHEDULER_REPORT_MD = DATA / "ST6_SCHEDULER_REPORT.md"
@@ -1848,24 +1860,65 @@ HEALTH_STATUS = DATA / "ST6_HEALTH_STATUS.json"
 SCHEDULER_VERIFICATION = DATA / "ST6_SCHEDULER_VERIFICATION.json"
 INDEPENDENT_VERIFICATION = DATA / "ST6_INDEPENDENT_VERIFICATION.json"
 SCHEDULER_VERIFY_SCRIPT = REPO / "scripts" / "st6_scheduler_verify.py"
+LEDGER_SCRIPT = REPO / "scripts" / "st6_slot_ledger.py"
 VERIFY_SCRIPT = REPO / "scripts" / "st6_forward_regime_verify.py"
 HEALTH_SCRIPT = REPO / "scripts" / "st6_health_check.py"
-LOCK_ROOT = DATA / "scheduler_lock"
+#: Where the single-instance lease lives. Unset — the normal case, and the one the installed task
+#: runs under — it is the campaign's own lock. A test that has to exercise the lease **without ever
+#: becoming the writer the real schedule contends with** asks for an isolated root through
+#: ``ST6_LOCK_ROOT``, so a scheduled tick arriving while the test holds its own lease is never
+#: refused on account of it.
+LOCK_ROOT = Path(os.getenv("ST6_LOCK_ROOT") or (DATA / "scheduler_lock"))
 RUN_EVENTS_KEPT = 400  # bounded storage: the oldest run events fall off the log
 #: Why a declared slot ended without a window.  A missed slot is not merely counted: the retained
 #: run log is asked what it can prove about the slot, and what it cannot prove is recorded as
 #: unknown rather than dressed up as a cause.
+#:
+#: Two sources decide the class, and they are not equally strong.  The run log is written by the tick
+#: itself, so it can say that a run happened but it can never say that no run happened: an absent
+#: event is only an absent event.  A claim of *absence* therefore requires the external record —
+#: samples of the Task Scheduler's own reporting taken by a different process — to cover every
+#: instant of the slot, and on this host that record starts only where the witness started.  Where it
+#: does not reach, the class is UNKNOWN, which is a statement about the evidence and not about the
+#: schedule.
 MISSED_ATTENDANCE_CLASSES = (
     "ATTENDED_NOT_COLLECTED",
     "ATTENDED_REQUEST_FAILED",
     "UNATTENDED_NO_RUN_EVENT",
+    "ATTENDANCE_UNKNOWN",
     "ATTENDANCE_UNKNOWN_RUN_LOG_TRUNCATED",
+    "ATTENDANCE_EVIDENCE_CONFLICT",
 )
+ATTENDANCE_POLICY_VERSION = 2
 MISSED_ATTENDANCE_POLICY = (
-    "a missed slot is classified from the run log as it stands at the moment of accounting, and the "
-    "classification is written into the missed record itself: the run log is bounded and "
-    "front-truncated, so pruning can later remove the very events the inference rested on"
+    "a missed slot is classified from the retained run log and from the external record of the "
+    "scheduler at the moment of accounting, and the classification is written into the missed record "
+    "itself; an absence of execution is claimed only when the external record covers every instant "
+    "of the slot, otherwise the class is UNKNOWN; the run log is bounded and front-truncated, so "
+    "pruning can later remove the very events the inference rested on"
 )
+#: What policy version 2 supersedes: version 1 inferred an unattended slot from the absence of an
+#: event in the tick's own log while that log reached back past the slot.  The inference was sound
+#: about the log and unsound about the world: a missing line in a program's own diary is not proof
+#: that nothing ran.
+MISSED_ATTENDANCE_SUPERSEDES = {
+    "policy_version": 1,
+    "what_changed": (
+        "UNATTENDED_NO_RUN_EVENT used to be reachable from the run log alone; from version 2 it "
+        "requires external coverage of the whole slot, and a slot the log cannot speak for is "
+        "ATTENDANCE_UNKNOWN"
+    ),
+    "why": (
+        "the run log is written by the tick, so its silences are not evidence: only a record taken "
+        "outside the tick can carry a claim of absence, and this host's per-run external record "
+        "starts where the witness started"
+    ),
+    "historical_records": (
+        "no missed window has been recorded under version 1, so nothing has to be reclassified; a "
+        "record that were corrected would keep its previous classification and the cause of the "
+        "correction beside the new one"
+    ),
+}
 # The shared lease cannot always prove that a process is dead on Windows (its own docstring says the
 # pid probe is a hint and the age rule decides), so the age rule has to be short enough that a hard
 # kill can never cost a window: a tick takes well under two minutes and a slot lasts four hours, so
@@ -1967,15 +2020,31 @@ def _request_count(run: dict[str, Any]) -> int:
         return 0
 
 
-def slot_attendance(runs: list[dict[str, Any]], entry: dict[str, Any]) -> dict[str, Any]:
-    """What the retained run log proves about the schedule inside one declared slot.
+def slot_attendance(
+    runs: list[dict[str, Any]],
+    entry: dict[str, Any],
+    external: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    """What the retained run log, together with the external record, proves about one slot.
 
     Two failures are told apart, and the difference is the point: a slot nobody attended is a
     failure of the host or of the task, while a slot the tick visited and still did not measure is a
-    failure of the tick.  The evidence is the slot's own run events, and the bound is stated rather
-    than hidden — the log is front-truncated, so unless its oldest retained event starts at or
-    before this slot began, the absence of an event proves nothing and the record says so.
+    failure of the tick.
+
+    The asymmetry between the two sources is the whole rule.  The run log is written by the tick,
+    so it can prove attendance and it cannot prove absence; a claim of absence is made only when the
+    external record covers every instant of the slot and the scheduler's own reporting never named a
+    run inside it.  ``external`` is therefore not a hint but a precondition: left out, the class can
+    never be ``UNATTENDED_NO_RUN_EVENT``, because the input that would support it is missing.
     """
+    unavailable = {
+        "status": SCHEDULER_EVIDENCE_UNAVAILABLE,
+        "reason": "no external record was supplied to this accounting",
+        "scheduler_engine_launch_count": 0,
+    }
+    coverage = external if isinstance(external, dict) else unavailable
+    external_status = str(coverage.get("status") or SCHEDULER_EVIDENCE_UNAVAILABLE)
+    launches = int(coverage.get("scheduler_engine_launch_count") or 0)
     key = entry["key"]
     events = [run for run in runs if isinstance(run, dict)]
     in_slot = [run for run in events if run.get("slot_key") == key]
@@ -1989,20 +2058,51 @@ def slot_attendance(runs: list[dict[str, Any]], entry: dict[str, Any]) -> dict[s
     for run in attended:
         token = str(run.get("result") or "UNRECORDED")
         results[token] = results.get(token, 0) + 1
+    conflict: dict[str, Any] | None = None
     if attended:
         classification = (
             "ATTENDED_REQUEST_FAILED" if requests and failing else "ATTENDED_NOT_COLLECTED"
         )
+        if external_status == EXTERNAL_COVERAGE_COMPLETE and launches == 0:
+            # the tick's own log says the schedule ran; the scheduler's own reporting, watched for
+            # the whole slot, never named a run.  One of the two is wrong and this program may not
+            # choose which: the conflict is recorded and the record stops there.
+            classification = "ATTENDANCE_EVIDENCE_CONFLICT"
+            conflict = {
+                "internal_claim": f"{len(attended)} run event(s) declare SCHEDULED inside {key}",
+                "external_claim": (
+                    "the external record covers the whole slot and the scheduler's own last-run "
+                    "field never named a run inside it"
+                ),
+                "consequence": (
+                    "a run that the scheduler did not launch cannot be the schedule's tick; the "
+                    "slot is carried as a conflict until the two records agree"
+                ),
+            }
+    elif external_status == EXTERNAL_COVERAGE_COMPLETE and launches > 0:
+        classification = "ATTENDANCE_EVIDENCE_CONFLICT"
+        conflict = {
+            "internal_claim": f"the retained run log holds no scheduled event inside {key}",
+            "external_claim": (
+                f"the scheduler's own reporting named {launches} run instant(s) inside the slot, so "
+                "the schedule did fire"
+            ),
+            "consequence": (
+                "the events that would explain the slot are not in the log; the slot is carried as a "
+                "conflict rather than as an unattended slot"
+            ),
+        }
+    elif external_status == EXTERNAL_COVERAGE_COMPLETE:
+        classification = "UNATTENDED_NO_RUN_EVENT"
+    elif not covers_whole_slot:
+        classification = "ATTENDANCE_UNKNOWN_RUN_LOG_TRUNCATED"
     else:
-        classification = (
-            "UNATTENDED_NO_RUN_EVENT"
-            if covers_whole_slot
-            else "ATTENDANCE_UNKNOWN_RUN_LOG_TRUNCATED"
-        )
+        classification = "ATTENDANCE_UNKNOWN"
     if classification == "UNATTENDED_NO_RUN_EVENT":
         basis = (
-            f"no scheduled run event lies in {key} while the retained run log reaches back to "
-            f"{starts[0]}, before the slot began: the schedule itself did not fire inside the slot"
+            f"no scheduled run event lies in {key}, and the external record covers every instant of "
+            f"the slot ({coverage.get('external_samples_in_slot')} sample(s)) while the scheduler's "
+            "own last-run field named none: the schedule did not fire inside the slot"
         )
     elif classification == "ATTENDED_NOT_COLLECTED":
         basis = (
@@ -2013,6 +2113,15 @@ def slot_attendance(runs: list[dict[str, Any]], entry: dict[str, Any]) -> dict[s
         basis = (
             f"{len(attended)} scheduled run event(s) lie in {key} and {requests} market "
             "request(s) were made without producing a window"
+        )
+    elif classification == "ATTENDANCE_EVIDENCE_CONFLICT":
+        basis = f"the two records disagree about {key}: {conflict}" if conflict else "conflict"
+    elif classification == "ATTENDANCE_UNKNOWN":
+        basis = (
+            f"the retained run log holds no scheduled event inside {key} and reaches back past the "
+            f"slot's own start, but no external record covers the slot ({external_status}): an "
+            "absent line in the tick's own log is not proof that nothing ran, so the attendance of "
+            "this slot is unknown"
         )
     else:
         basis = (
@@ -2025,6 +2134,8 @@ def slot_attendance(runs: list[dict[str, Any]], entry: dict[str, Any]) -> dict[s
         "classification": classification,
         "slot_key": key,
         "policy": MISSED_ATTENDANCE_POLICY,
+        "policy_version": ATTENDANCE_POLICY_VERSION,
+        "supersedes": MISSED_ATTENDANCE_SUPERSEDES,
         "log_covers_whole_slot": covers_whole_slot,
         "run_log_events_retained": len(starts),
         "run_log_first_utc": starts[0] if starts else None,
@@ -2034,10 +2145,15 @@ def slot_attendance(runs: list[dict[str, Any]], entry: dict[str, Any]) -> dict[s
         "results_in_slot": results,
         "market_requests_in_slot": requests,
         "last_error_in_slot": last_error,
+        "external_evidence_status": external_status,
+        "external_evidence": coverage,
+        "absence_requires_external_coverage": True,
+        "conflict": conflict,
         "basis": basis,
         "evidence_lifetime": (
-            "captured at accounting time; the run log is bounded and front-truncated, so the events "
-            "this inference rests on may not be retained later"
+            "captured at accounting time; the run log is bounded and front-truncated and the witness "
+            "log is bounded too, so the records this inference rests on may not be retained later — "
+            "which is why the slot ledger is written before they can be pruned"
         ),
         "read_at_utc": _utc(),
     }
@@ -2059,13 +2175,25 @@ def sync_missed_windows(
     recorded = {row["slot_key"] for row in _read_jsonl(MISSED_LOG)}
     observed = {slot_key(row["day"], row["slot_index"]) for row in windows}
     runs = _read_jsonl(RUN_LOG)
+    # the external record is read once per accounting and handed to every slot: a slot is covered
+    # only by samples that bracket the whole of it, so the coverage is computed per slot, never
+    # borrowed from the newest sample
+    samples = _load_witness_samples(WITNESS_LOG)
+    evidence = _read_external_json(SCHEDULER_EVIDENCE)
     added: list[dict[str, Any]] = []
     for entry in declared_slots_upto(period, now):
         if entry["key"] in recorded or entry["key"] in observed:
             continue
         if _parse(entry["ends_at_utc"]) > now:
             continue  # still inside the slot: not missed yet
-        attendance = slot_attendance(runs, entry)
+        coverage = slot_external_coverage(
+            _parse(entry["starts_at_utc"]),
+            _parse(entry["ends_at_utc"]),
+            samples,
+            evidence,
+            now,
+        )
+        attendance = slot_attendance(runs, entry, coverage)
         record = {
             "artifact": "ST6_MISSED_WINDOW",
             "status": "MISSED_WINDOW",
@@ -2078,6 +2206,8 @@ def sync_missed_windows(
             "starts_at_utc": entry["starts_at_utc"],
             "ends_at_utc": entry["ends_at_utc"],
             "recorded_at_utc": _utc(),
+            "attendance_policy_version": ATTENDANCE_POLICY_VERSION,
+            "external_evidence_status": coverage["status"],
             "reason": f"{attendance['classification']}: {attendance['basis']}"[:300],
             "attendance": attendance,
             "reconstructed": False,
@@ -2898,9 +3028,21 @@ def _run(args: argparse.Namespace, started_at: datetime) -> int:
     )
     # the checker's *state* (its own vocabulary) is what the run event records, not its exit status
     health_document = _read_json(HEALTH_STATUS) or {}
+    # The slot ledger is the durable record of the eighty-four declared slots, and the logs it is
+    # derived from are bounded: refreshing it inside the tick is what keeps a slot's evidence from
+    # being pruned before the ledger has written it down.  It is a separate program, run as a
+    # subprocess, so the tick's own outcome does not depend on the bookkeeping succeeding — and the
+    # event records what that program returned instead of assuming it worked.
+    ledger_result = (
+        _run_program([sys.executable, str(LEDGER_SCRIPT)])
+        if LEDGER_SCRIPT.exists()
+        else {"status": "NOT_INSTALLED", "exit_code": None}
+    )
     run_event["missed_windows_recorded"] = [entry["slot_key"] for entry in missed]
     run_event["health_status"] = health_document.get("status", health.get("status"))
     run_event["health_exit_code"] = health.get("exit_code")
+    run_event["ledger_status"] = ledger_result["status"]
+    run_event["ledger_exit_code"] = ledger_result["exit_code"]
     run_event["actual_end_utc"] = _utc()
     if run_event["result"] == "COLLECTION_INCOMPLETE":
         exit_code = EXIT_COLLECTION_FAILED

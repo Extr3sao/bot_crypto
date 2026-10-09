@@ -1,6 +1,6 @@
 # ST-6 — isolated close replay
 
-Generated 2026-10-09T07:59:59Z at `9eb1e464cf8b090af222127153e33f6ea6e1e949`.
+Generated 2026-10-09T16:35:35Z at `7cd8d72f8d4330682af560f11b30cac211ad78b3`.
 
 Inside the sandbox the tick records the code identity as `REPLAY_SANDBOX_NOT_A_COMMIT`:
 a constant on purpose, so the determinism proof does not depend on the commit hash.
@@ -9,6 +9,13 @@ Replay of `scripts/st6_forward_regime.py` against an isolated copy of the live s
 UTC clock. Period `2026-10-08T16:21:20Z` → `2026-10-22T16:21:20Z`; close instant `2026-10-22T16:21:20Z`.
 
 **Close mechanics: PASS** — 10/10 scenarios PASS, 0 FAIL, 0 declared deviation(s).
+
+## The state this close was replayed against
+
+The consolidation is a function of the collected state and the injected clock, so the state
+itself is identified here: close input state `e0f73751cf369bbb` with 7 of 84 declared windows collected at replay time. A
+later replay of a state that has since collected more windows legitimately produces a
+different consolidation; the verifier attributes that difference instead of hiding it.
 
 ## Scenarios
 
@@ -27,7 +34,7 @@ UTC clock. Period `2026-10-08T16:21:20Z` → `2026-10-22T16:21:20Z`; close insta
 
 ## Isolation and non-interference
 
-Sandboxes: `C:\Users\GVLLFR~1\AppData\Local\Temp\st6-close-replay-v5nq3157` (a temporary directory outside the
+Sandboxes: `C:\Users\GVLLFR~1\AppData\Local\Temp\st6-close-replay-s5p_vol5` (a temporary directory outside the
 repository). Real state unmoved by the replay: **True** (identical bytes before and after: True)
 
 Real market requests: 0. Real scheduler calls: 0. Market attempts refused by the guard: 2. Terminal transitions intercepted: 6.

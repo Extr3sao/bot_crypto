@@ -46,6 +46,7 @@ import gzip
 import hashlib
 import json
 import subprocess
+import sys
 import tempfile
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
@@ -53,6 +54,15 @@ from typing import Any
 
 REPO = Path(__file__).resolve().parents[1]
 SCRIPTS = REPO / "scripts"
+if str(SCRIPTS) not in sys.path:
+    sys.path.insert(0, str(SCRIPTS))
+
+# the external record of the schedule, taken by a process that is neither the tick nor this verifier
+from st6_scheduler_evidence import extract_samples as normalise_samples  # noqa: E402
+from st6_scheduler_evidence import load_samples as load_witness_samples  # noqa: E402
+from st6_scheduler_evidence import read_json as read_external_json  # noqa: E402
+from st6_scheduler_evidence import slot_external_coverage  # noqa: E402
+
 DATA = REPO / "data" / "st6"
 SNAPSHOTS = DATA / "snapshots"
 RAW = DATA / "raw"
@@ -76,13 +86,21 @@ OUTCOMES = (
     "INSUFFICIENT_REGIME_COVERAGE",
     "DATA_QUALITY_FAILED",
 )
-#: The causes a missed window may state, and the class this verifier re-derives from the run log.
+#: The causes a missed window may state, and the class this verifier re-derives from the run log and
+#: from the external record of the scheduler.  A claim of absence is the heavy one: it needs the
+#: external record to cover every instant of the slot, because the run log is written by the tick
+#: and its silences prove nothing about the world.
 ATTENDANCE_CLASSES = (
     "ATTENDED_NOT_COLLECTED",
     "ATTENDED_REQUEST_FAILED",
     "UNATTENDED_NO_RUN_EVENT",
+    "ATTENDANCE_UNKNOWN",
     "ATTENDANCE_UNKNOWN_RUN_LOG_TRUNCATED",
+    "ATTENDANCE_EVIDENCE_CONFLICT",
 )
+ABSENCE_CLASSES = ("UNATTENDED_NO_RUN_EVENT",)
+WITNESS_LOG = DATA / "ST6_SCHEDULER_WITNESS.jsonl"
+SCHEDULER_EVIDENCE = DATA / "ST6_SCHEDULER_EVIDENCE.json"
 #: Executable tokens that would be an order or a credential path, not a check for one.
 ORDER_TOKENS = (
     "create_order",
@@ -262,15 +280,28 @@ def _request_count(run: dict[str, Any]) -> int:
 
 
 def attendance_from_runs(
-    runs: list[dict[str, Any]], slot_key: str, starts_at_utc: str
+    runs: list[dict[str, Any]],
+    slot_key: str,
+    starts_at_utc: str,
+    external: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
-    """What the run log says happened inside one slot — re-derived here, not read from the record.
+    """What the run log and the external record say about one slot — re-derived, not read.
 
     A run that declares itself ``MANUAL`` is not the schedule; a run that declares nothing is kept,
     because dropping an unlabelled event could turn a busy slot into an unattended one.  The log is
     front-truncated, so unless its oldest retained event starts at or before the slot's own start the
     absence of an event proves nothing and the derived class says so.
+
+    And the log is the tick's own: it can carry attendance, it cannot carry absence.  The class here
+    is therefore read from both sources, and when they disagree the verdict is a conflict.
     """
+    coverage = external if isinstance(external, dict) else {
+        "status": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+        "scheduler_engine_launch_count": 0,
+    }
+    external_status = str(coverage.get("status") or "SCHEDULER_EVIDENCE_UNAVAILABLE")
+    launches = int(coverage.get("scheduler_engine_launch_count") or 0)
+    complete = external_status == "EXTERNAL_COVERAGE_COMPLETE"
     events = [run for run in runs if isinstance(run, dict)]
     in_slot = [run for run in events if run.get("slot_key") == slot_key]
     attended = [run for run in in_slot if str(run.get("invocation", "")).upper() != "MANUAL"]
@@ -278,22 +309,31 @@ def attendance_from_runs(
     covers_whole_slot = bool(starts) and starts[0] <= starts_at_utc
     requests = sum(_request_count(run) for run in attended)
     failing = [run for run in attended if run.get("errors")]
-    if attended:
+    if attended and complete and launches == 0:
+        classification = "ATTENDANCE_EVIDENCE_CONFLICT"
+    elif attended:
         classification = (
             "ATTENDED_REQUEST_FAILED" if requests and failing else "ATTENDED_NOT_COLLECTED"
         )
+    elif complete and launches > 0:
+        classification = "ATTENDANCE_EVIDENCE_CONFLICT"
+    elif complete:
+        classification = "UNATTENDED_NO_RUN_EVENT"
+    elif not covers_whole_slot:
+        classification = "ATTENDANCE_UNKNOWN_RUN_LOG_TRUNCATED"
     else:
-        classification = (
-            "UNATTENDED_NO_RUN_EVENT"
-            if covers_whole_slot
-            else "ATTENDANCE_UNKNOWN_RUN_LOG_TRUNCATED"
-        )
+        classification = "ATTENDANCE_UNKNOWN"
     return {
         "classification": classification,
         "scheduled_runs_in_slot": len(attended),
         "manual_runs_in_slot": len(in_slot) - len(attended),
         "market_requests_in_slot": requests,
         "log_covers_whole_slot": covers_whole_slot,
+        "external_evidence_status": external_status,
+        "scheduler_engine_launch_count": launches,
+        "absence_claim_supported_by_external_coverage": not (
+            classification in ABSENCE_CLASSES and not complete
+        ),
     }
 
 
@@ -303,6 +343,8 @@ def findings_missed(
     missed: list[dict[str, Any]],
     now: datetime,
     runs: list[dict[str, Any]],
+    witness: list[dict[str, Any]] | None = None,
+    evidence: dict[str, Any] | None = None,
 ) -> list[str]:
     findings: list[str] = []
     planned = {slot["key"] for slot in eligible_windows(period)}
@@ -355,11 +397,18 @@ def findings_missed(
                 f"the missed window {key} is not bounded by the declared slot "
                 f"({row.get('starts_at_utc')} -> {row.get('ends_at_utc')})"
             )
-        derived = attendance_from_runs(runs, key, slot["starts_at_utc"])
+        coverage = slot_external_coverage(
+            parse_instant(slot["starts_at_utc"]),
+            parse_instant(slot["ends_at_utc"]),
+            normalise_samples(witness or []),
+            evidence,
+            now,
+        )
+        derived = attendance_from_runs(runs, key, slot["starts_at_utc"], coverage)
         if classification != derived["classification"]:
             findings.append(
-                f"the missed window {key} states {classification} while the run log says "
-                f"{derived['classification']}"
+                f"the missed window {key} states {classification} while the run log and the external "
+                f"record say {derived['classification']}"
             )
         for field in (
             "scheduled_runs_in_slot",
@@ -372,6 +421,90 @@ def findings_missed(
                     f"the missed window {key} claims {field}={attendance.get(field)!r} while the "
                     f"run log says {derived[field]!r}"
                 )
+        if not derived["absence_claim_supported_by_external_coverage"]:
+            findings.append(
+                f"the missed window {key} claims the absence {classification} without external "
+                f"coverage of the slot ({derived['external_evidence_status']})"
+            )
+        recorded_status = str(
+            (attendance.get("external_evidence") or {}).get("status")
+            or attendance.get("external_evidence_status")
+            or ""
+        )
+        if classification in ABSENCE_CLASSES and recorded_status and recorded_status != (
+            "EXTERNAL_COVERAGE_COMPLETE"
+        ):
+            findings.append(
+                f"the missed window {key} records external status {recorded_status!r} while claiming "
+                "the absence "
+                f"{classification}"
+            )
+    return findings
+
+
+def findings_ledger(
+    ledger: dict[str, Any] | None, period: dict[str, Any], windows: list[dict[str, Any]]
+) -> list[str]:
+    """The close must read the eighty-four slots from the ledger, so the ledger is audited here.
+
+    The consolidation at the end of the period is built on the slot ledger — the durable record —
+    rather than on logs that are bounded and front-truncated, so a ledger that is incomplete, that
+    invents a slot, that misstates a bound or that claims an absence without external coverage would
+    make the consolidation wrong even if every other artefact were right.
+    """
+    if ledger is None:
+        return ["no slot ledger exists: the consolidation has no durable per-slot record"]
+    findings: list[str] = []
+    declared = {slot["key"]: slot for slot in eligible_windows(period)}
+    rows = [row for row in ledger.get("slots") or [] if isinstance(row, dict)]
+    ids = [str(row.get("slot_id")) for row in rows]
+    if len(rows) != len(declared):
+        findings.append(
+            f"the ledger holds {len(rows)} slot(s) for {len(declared)} declared slot(s)"
+        )
+    if len(set(ids)) != len(ids):
+        findings.append("the ledger repeats a slot id")
+    missing = sorted(set(declared) - set(ids))
+    if missing:
+        findings.append(f"the ledger omits declared slot(s): {missing}")
+    unexpected = sorted(set(ids) - set(declared))
+    if unexpected:
+        findings.append(f"the ledger carries slot(s) outside the declared plan: {unexpected}")
+    observed = {f"{row['day']}#{row['slot_index']}": row for row in windows}
+    for row in rows:
+        slot_id = str(row.get("slot_id"))
+        slot = declared.get(slot_id)
+        if slot is None:
+            continue
+        if (row.get("slot_start_utc"), row.get("slot_end_utc")) != (
+            slot["starts_at_utc"],
+            slot["ends_at_utc"],
+        ):
+            findings.append(f"the ledger misstates the bounds of {slot_id}")
+        if row.get("state") not in ("COLLECTED", "LOST_NO_WINDOW", "PENDING", "UNACCOUNTED"):
+            findings.append(f"the ledger states an undeclared state {row.get('state')!r} for {slot_id}")
+        window = observed.get(slot_id)
+        if window is not None and row.get("state") != "COLLECTED":
+            findings.append(f"{slot_id} has a window in the index but the ledger calls it "
+                            f"{row.get('state')}")
+        if window is None and row.get("state") == "COLLECTED":
+            findings.append(f"the ledger calls {slot_id} collected while the index holds no window")
+        if window is not None:
+            if row.get("collection_window_id") != window.get("window_id"):
+                findings.append(f"the ledger names the wrong window for {slot_id}")
+            recorded_raw = (window.get("raw") or {}).get("uncompressed_sha256")
+            if recorded_raw and row.get("raw_evidence_hash") != recorded_raw:
+                findings.append(f"the ledger's raw hash for {slot_id} does not match the index")
+        classification = str(row.get("attendance_classification") or "")
+        if classification in ABSENCE_CLASSES and row.get("external_evidence_status") != (
+            "EXTERNAL_COVERAGE_COMPLETE"
+        ):
+            findings.append(
+                f"the ledger claims the absence {classification} for {slot_id} without external "
+                "coverage of the slot"
+            )
+        if row.get("state") == "UNACCOUNTED":
+            findings.append(f"{slot_id} ended with neither a window nor a recorded loss")
     return findings
 
 
@@ -488,6 +621,27 @@ def findings_idempotency(report: dict[str, Any]) -> list[str]:
 
 def findings_replay_report(report: dict[str, Any]) -> list[str]:
     findings: list[str] = []
+    input_state = close_input(report)
+    if not input_state.get("digest"):
+        findings.append(
+            "the replay report does not identify the state it replayed: its close cannot be "
+            "attributed to any state"
+        )
+    else:
+        planned = int(input_state.get("declared_windows") or 0)
+        window_ids = list(input_state.get("window_ids") or [])
+        if len(window_ids) != int(input_state.get("observed_windows") or -1):
+            findings.append("the replay report counts windows it does not list")
+        if len(set(window_ids)) != len(window_ids):
+            findings.append("the replay report lists a duplicated window")
+        counted = scenario(report, "6.").get("observed_windows")
+        if counted is not None and counted != len(window_ids):
+            findings.append(
+                "the replay report's close counts a different number of observed windows than the "
+                f"state it says it replayed: {counted} against {len(window_ids)}"
+            )
+        if planned and int(scenario(report, "6.").get("declared_windows") or 0) != planned:
+            findings.append("the replay report's closed plan and replayed plan disagree")
     for entry in report.get("scenarios", []):
         for name, ok in entry.get("checks", {}).items():
             if not ok and entry.get("verdict") == "PASS":
@@ -844,6 +998,229 @@ def negative_self_tests(period: dict[str, Any], windows: list[dict[str, Any]]) -
             "status": "PASS" if not honest_findings else "FAIL",
         }
     )
+    # 8g-8j. the external record: an absence may only be claimed under coverage of the whole slot
+    def covering_witness(slot: dict[str, Any], launches: list[str]) -> list[dict[str, Any]]:
+        """Ten-minute samples across the whole slot, optionally naming a scheduler launch."""
+        start = parse_instant(slot["starts_at_utc"])
+        end = parse_instant(slot["ends_at_utc"])
+        samples: list[dict[str, Any]] = [
+            {
+                "sample_id": f"fixture-{start.strftime('%H%M%S')}",
+                "sampled_at_utc": start.strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3] + "Z",
+                "scheduler_reported_last_run_utc": None,
+                "scheduler_reported_last_task_result": 0,
+                "scheduler_reported_state": 3,
+                "scheduler_reported_missed_runs": 0,
+                "any_tick_launched_by_the_scheduler_service": False,
+            }
+        ]
+        cursor = start
+        while cursor < end:
+            cursor = min(cursor + timedelta(minutes=10), end)
+            named = next((entry for entry in launches if entry <= cursor.strftime(
+                "%Y-%m-%dT%H:%M:%SZ"
+            )), None)
+            samples.append(
+                {
+                    "sample_id": f"fixture-{cursor.strftime('%H%M%S')}",
+                    "sampled_at_utc": cursor.strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3] + "Z",
+                    "scheduler_reported_last_run_utc": named,
+                    "scheduler_reported_last_task_result": 0,
+                    "scheduler_reported_state": 3,
+                    "scheduler_reported_missed_runs": 0,
+                    "any_tick_launched_by_the_scheduler_service": False,
+                }
+            )
+        return samples
+
+    # the absence fixtures need a slot whose *start* the retained log can reach: the period begins
+    # inside its first slot, so the second declared slot is the first one a covering claim can even be
+    # made about
+    absence_slot = eligible_windows(period)[1]
+    covering = covering_witness(absence_slot, [])
+    after_the_slot = parse_instant(absence_slot["ends_at_utc"]) + timedelta(hours=1)
+    # the first declared slot is measured in these fixtures, so the only loss under test is the slot
+    # the absence claim is about
+    observed_first_slot = [
+        {"day": "2026-10-08", "slot_index": eligible_windows(period)[0]["key"].split("#")[1]}
+    ]
+    # a run event from before this slot, so that the retained log demonstrably reaches back past it:
+    # without it the derived class could not be a claim about the whole slot at all
+    before_ran = [
+        {
+            "run_id": "fixture-before",
+            "slot_key": "2026-10-08#0",
+            "actual_start_utc": parse_instant(period["started_at_utc"]).strftime(
+                "%Y-%m-%dT%H:%M:%SZ"
+            ),
+            "invocation": "SCHEDULED",
+            "result": "SKIPPED_NO_WINDOW_DUE",
+            "market_requests": 0,
+            "errors": None,
+        }
+    ]
+    unattended_claim = {
+        **honest,
+        "slot_key": absence_slot["key"],
+        "starts_at_utc": absence_slot["starts_at_utc"],
+        "ends_at_utc": absence_slot["ends_at_utc"],
+        "reason": "UNATTENDED_NO_RUN_EVENT: the schedule did not fire",
+        "attendance": {
+            **honest["attendance"],
+            "classification": "UNATTENDED_NO_RUN_EVENT",
+            "scheduled_runs_in_slot": 0,
+            "log_covers_whole_slot": True,
+        },
+    }
+    record(
+        "an absence claim without any external coverage of the slot",
+        findings_missed(
+            period, [], [unattended_claim], after_the_slot, before_ran, witness=[], evidence=None
+        ),
+        "ATTENDANCE_UNKNOWN",
+    )
+    record(
+        "an absence claim while the external record names a run inside the slot",
+        findings_missed(
+            period,
+            observed_first_slot,
+            [
+                {
+                    **unattended_claim,
+                    "attendance": {
+                        **unattended_claim["attendance"],
+                        "external_evidence_status": "EXTERNAL_COVERAGE_COMPLETE",
+                        "external_evidence": {
+                            "status": "EXTERNAL_COVERAGE_COMPLETE",
+                            "scheduler_engine_launch_count": 1,
+                        },
+                    },
+                }
+            ],
+            after_the_slot,
+            before_ran,
+            witness=covering_witness(absence_slot, [absence_slot["starts_at_utc"]]),
+            evidence=None,
+        ),
+        "say ATTENDANCE_EVIDENCE_CONFLICT",
+    )
+    # the other direction: a supported absence, and an attended slot, must both pass clean
+    supported_absence = {
+        **unattended_claim,
+        "attendance": {
+            **unattended_claim["attendance"],
+            "external_evidence_status": "EXTERNAL_COVERAGE_COMPLETE",
+            "external_evidence": {
+                "status": "EXTERNAL_COVERAGE_COMPLETE",
+                "scheduler_engine_launch_count": 0,
+            },
+        },
+    }
+    supported_findings = findings_missed(
+        period,
+        observed_first_slot,
+        [supported_absence],
+        after_the_slot,
+        before_ran,
+        witness=covering,
+        evidence=None,
+    )
+    results.append(
+        {
+            "fixture": "an absence claim backed by external coverage that names no run",
+            "expected_finding": "none",
+            "findings": supported_findings,
+            "detected": not supported_findings,
+            "status": "PASS" if not supported_findings else "FAIL",
+        }
+    )
+    # a witness that started inside the slot leaves it partial: the tick's own record still carries
+    # the attendance, and no absence is asserted either way
+    partial_witness = [
+        row
+        for row in covering_witness(slot, [])
+        if row["sampled_at_utc"] >= "2026-10-08T17:00:00.000Z"
+    ]
+    attended_findings = findings_missed(
+        period,
+        [],
+        [
+            {
+                **honest,
+                "attendance": {
+                    **honest["attendance"],
+                    "external_evidence_status": "EXTERNAL_COVERAGE_PARTIAL",
+                },
+            }
+        ],
+        parse_instant(slot["ends_at_utc"]) + timedelta(hours=1),
+        ran_in_slot,
+        witness=partial_witness,
+        evidence=None,
+    )
+    results.append(
+        {
+            "fixture": "an attended slot recorded while the external record only covered part of it",
+            "expected_finding": "none",
+            "findings": attended_findings,
+            "detected": not attended_findings,
+            "status": "PASS" if not attended_findings else "FAIL",
+        }
+    )
+    # 8k-8l. the slot ledger, which the consolidation is built on
+    declared = eligible_windows(period)
+    healthy_ledger = {
+        "slots": [
+            {
+                "slot_id": slot["key"],
+                "slot_start_utc": slot["starts_at_utc"],
+                "slot_end_utc": slot["ends_at_utc"],
+                "state": "PENDING",
+                "attendance_classification": None,
+                "external_evidence_status": "EXTERNAL_COVERAGE_NOT_YET_STARTED",
+            }
+            for slot in declared
+        ]
+    }
+    record(
+        "a ledger that omits a declared slot",
+        findings_ledger({**healthy_ledger, "slots": healthy_ledger["slots"][:-1]}, period, []),
+        "omits declared slot",
+    )
+    record(
+        "a ledger that claims an absence without external coverage",
+        findings_ledger(
+            {
+                "slots": [
+                    {
+                        **healthy_ledger["slots"][0],
+                        "state": "LOST_NO_WINDOW",
+                        "attendance_classification": "UNATTENDED_NO_RUN_EVENT",
+                        "external_evidence_status": "SCHEDULER_EVIDENCE_UNAVAILABLE",
+                    },
+                    *healthy_ledger["slots"][1:],
+                ]
+            },
+            period,
+            [
+                {
+                    "day": declared[0]["key"].split("#")[0],
+                    "slot_index": int(declared[0]["key"].split("#")[1]),
+                }
+            ],
+        ),
+        "without external coverage of the slot",
+    )
+    ledger_clean = findings_ledger(healthy_ledger, period, [])
+    results.append(
+        {
+            "fixture": "a ledger with one entry per declared slot and no unsupported claim",
+            "expected_finding": "none",
+            "findings": ledger_clean,
+            "detected": not ledger_clean,
+            "status": "PASS" if not ledger_clean else "FAIL",
+        }
+    )
     # 9. a declaration whose plan runs past its own end
     record(
         "a declaration whose plan runs past its own end",
@@ -939,6 +1316,71 @@ def negative_self_tests(period: dict[str, Any], windows: list[dict[str, Any]]) -
             else "FAIL",
         }
     )
+    # 15 to 18. the replay's own origin: a close is a function of a state, and the state is named
+    def replay_report(
+        digest: str | None, window_ids: list[str], missed: int, closure_hash: str
+    ) -> dict[str, Any]:
+        input_state: dict[str, Any] = {
+            "window_ids": window_ids,
+            "observed_windows": len(window_ids),
+            "declared_windows": 84,
+        }
+        if digest is not None:
+            input_state["digest"] = digest
+        return {
+            "scenarios": [
+                {
+                    "scenario": "3. the exact close instant",
+                    "verdict": "PASS",
+                    "checks": {},
+                    "closure_sha256": closure_hash,
+                    "input_state": input_state,
+                },
+                {
+                    "scenario": "6. unattended windows",
+                    "verdict": "PASS",
+                    "checks": {},
+                    "missed_windows": missed,
+                    "observed_windows": len(window_ids),
+                    "declared_windows": 84,
+                },
+            ],
+            "isolation": {"real_state_unchanged": True, "sandbox_outside_repository": True},
+        }
+
+    same_state = replay_report("state-A", ["2026-10-08#0"], 83, "closure-one")
+    record(
+        "the same state closed two different ways",
+        reconcile_replays(
+            same_state,
+            replay_report("state-A", ["2026-10-08#0"], 83, "closure-two"),
+            ["2026-10-08#0"],
+        )["findings"],
+        "closed the same way",
+    )
+    record(
+        "a state that lost a window since the ship",
+        reconcile_replays(
+            replay_report("state-A", ["2026-10-08#0", "2026-10-08#9"], 82, "closure-one"),
+            replay_report("state-B", ["2026-10-08#0"], 83, "closure-two"),
+            ["2026-10-08#0"],
+        )["findings"],
+        "advanced by collection alone",
+    )
+    record(
+        "a shipped close that does not add up to its own plan",
+        reconcile_replays(
+            replay_report("state-A", ["2026-10-08#0"], 60, "closure-one"),
+            replay_report("state-A", ["2026-10-08#0"], 83, "closure-one"),
+            ["2026-10-08#0"],
+        )["findings"],
+        "the plan minus the windows it had collected",
+    )
+    record(
+        "a replay report that names no state at all",
+        findings_replay_report(replay_report(None, ["2026-10-08#0"], 83, "closure-one")),
+        "does not identify the state it replayed",
+    )
     failed = [entry for entry in results if entry["status"] == "FAIL"]
     return {
         "artifact": "ST6_CLOSE_NEGATIVE_TESTS",
@@ -993,6 +1435,97 @@ def close_hash(report: dict[str, Any] | None) -> str | None:
         (entry for entry in report.get("scenarios", []) if entry["scenario"].startswith("3.")), None
     )
     return None if scenario is None else scenario.get("closure_sha256")
+
+
+def close_input(report: dict[str, Any] | None) -> dict[str, Any]:
+    """The identity of the state a replay's close sequence was taken against."""
+    if not report:
+        return {}
+    scenario = next(
+        (entry for entry in report.get("scenarios", []) if entry["scenario"].startswith("3.")), None
+    )
+    return ((scenario or {}).get("input_state") or {})
+
+
+def scenario(report: dict[str, Any] | None, prefix: str) -> dict[str, Any]:
+    if not report:
+        return {}
+    return next(
+        (entry for entry in report.get("scenarios", []) if entry["scenario"].startswith(prefix)), {}
+    )
+
+
+def reconcile_replays(
+    shipped: dict[str, Any] | None,
+    rerun: dict[str, Any] | None,
+    live_window_ids: list[str],
+) -> dict[str, Any]:
+    """Reconcile two replays of the close by the identity of the state each one replayed.
+
+    A consolidation is a function of the collected state and of the close instant, and the campaign
+    keeps collecting while this runs.  So two replays are only required to agree byte for byte when
+    they replayed the *same* state; when the state has advanced, the shipped artefact has to be the
+    close of an earlier state of the same period, and the advance has to be collection that only
+    added windows.  Either way the reading is derived here, from the artefacts, and a report that
+    states its own origin without corroboration fails.
+    """
+    shipped_input = close_input(shipped)
+    rerun_input = close_input(rerun)
+    shipped_ids = set(shipped_input.get("window_ids") or [])
+    rerun_ids = list(rerun_input.get("window_ids") or [])
+    live_ids = list(live_window_ids)
+    planned = int(shipped_input.get("declared_windows") or rerun_input.get("declared_windows") or 0)
+    shipped_digest = shipped_input.get("digest")
+    rerun_digest = rerun_input.get("digest")
+    same_state = bool(shipped_digest) and shipped_digest == rerun_digest
+    shipped_missed = scenario(shipped, "6.").get("missed_windows")
+    rerun_missed = scenario(rerun, "6.").get("missed_windows")
+    checks = {
+        "the shipped report identifies the state it replayed": bool(shipped_digest),
+        "the rerun identifies the state it replayed": bool(rerun_digest),
+        "the rerun replayed the live state": sorted(rerun_ids) == sorted(live_ids),
+        "the two reports close the same declared plan": int(
+            shipped_input.get("declared_windows") or 0
+        )
+        == int(rerun_input.get("declared_windows") or -1)
+        and int(shipped_input.get("declared_windows") or 0)
+        == int(scenario(shipped, "6.").get("declared_windows") or -1)
+        == int(scenario(rerun, "6.").get("declared_windows") or -1),
+        "the shipped close is the plan minus the windows it had collected": (
+            shipped_missed == planned - len(shipped_ids) and planned > 0
+        ),
+        "the rerun's close is the plan minus the windows now collected": (
+            rerun_missed == planned - len(rerun_ids)
+        ),
+        "the state advanced by collection alone": shipped_ids <= set(live_ids),
+    }
+    if same_state:
+        checks["the same state is closed the same way"] = close_hash(shipped) == close_hash(rerun)
+    else:
+        checks["the advance is a later state of the same period"] = len(rerun_ids) >= len(
+            shipped_ids
+        ) and bool(shipped_ids)
+    failed = [name for name, ok in checks.items() if not ok]
+    return {
+        "shipped_input_state": shipped_input.get("digest"),
+        "rerun_input_state": rerun_input.get("digest"),
+        "same_input_state": same_state,
+        "reading": (
+            "REPRODUCED: the shipped artefact is the byte-for-byte close of a state that has not "
+            "moved since"
+            if same_state
+            else "SUPERSEDED_BY_NEW_COLLECTION: the shipped artefact is the close of an earlier "
+            "state of the same period, and the state advanced by collecting more windows"
+        ),
+        "shipped_observed_windows": shipped_input.get("observed_windows"),
+        "rerun_observed_windows": len(rerun_ids),
+        "live_observed_windows": len(live_ids),
+        "windows_added_since_the_ship": sorted(set(live_ids) - shipped_ids),
+        "shipped_missed_windows": shipped_missed,
+        "rerun_missed_windows": rerun_missed,
+        "checks": checks,
+        "findings": failed,
+    }
 
 
 def replayed_close(root: Path) -> dict[str, Any]:
@@ -1095,12 +1628,21 @@ def main(argv: list[str] | None = None) -> int:
     runs = read_jsonl(RUNS)
     closure = read_json(CLOSURE)
     report = read_json(REPLAY_REPORT)
+    ledger_document = read_json(DATA / "ST6_SLOT_LEDGER.json")
     manifest_path = sorted(SNAPSHOTS.glob("ST6_LIVE_STATE_*.json"))
     manifest = read_json(manifest_path[-1]) if manifest_path else None
 
     denominator, denominator_findings = findings_denominator(period)
     windows_findings = findings_windows(windows, RAW)
-    missed_findings = findings_missed(period, windows, missed, datetime.now(UTC), runs)
+    missed_findings = findings_missed(
+        period,
+        windows,
+        missed,
+        datetime.now(UTC),
+        runs,
+        load_witness_samples(WITNESS_LOG),
+        read_external_json(SCHEDULER_EVIDENCE),
+    )
     closure_findings = findings_closure(closure, period)
     drift_findings = findings_drift(closure)
     post_close_findings = findings_post_close(runs, period, closure)
@@ -1108,6 +1650,7 @@ def main(argv: list[str] | None = None) -> int:
     report_findings = (
         findings_replay_report(report or {}) if report else ["no replay report exists"]
     )
+    ledger_findings = findings_ledger(ledger_document, period, windows)
     snapshot_findings = findings_snapshot(manifest)
     live_moved = live_files_moved_since_snapshot(manifest)
     separation_findings = findings_separation(manifest)
@@ -1136,6 +1679,11 @@ def main(argv: list[str] | None = None) -> int:
     )
     c.check("the close is idempotent", not idempotency_findings, idempotency_findings)
     c.check("the replay report is internally consistent", not report_findings, report_findings)
+    c.check(
+        "the eighty-four slots are read from a complete ledger",
+        not ledger_findings,
+        ledger_findings,
+    )
     c.check("the live-state snapshot reproduces", not snapshot_findings, snapshot_findings)
     c.check(
         "the artefacts are separated into immutable, versioned and live",
@@ -1169,12 +1717,16 @@ def main(argv: list[str] | None = None) -> int:
             not (replayed_summary or {}).get("drift_breaches_lost_by_the_close"),
             replayed_summary,
         )
+        reconciliation_replay = reconcile_replays(
+            report, rerun["report"], sorted(f"{row['day']}#{row['slot_index']}" for row in windows)
+        )
         determinism = {
             "exit_code": rerun["exit_code"],
             "stdout_tail": rerun["stdout_tail"],
             "stderr_tail": rerun["stderr_tail"],
             "shipped_close_sha256": close_hash(report),
             "rerun_close_sha256": close_hash(rerun["report"]),
+            "input_state": reconciliation_replay,
             "verdicts_equal": [
                 entry["verdict"]
                 for entry in sorted(
@@ -1193,7 +1745,7 @@ def main(argv: list[str] | None = None) -> int:
             "the replay runs again and closes the same state the same way",
             rerun["exit_code"] == 0
             and determinism["rerun_close_mechanics"] == "PASS"
-            and determinism["shipped_close_sha256"] == determinism["rerun_close_sha256"],
+            and not reconciliation_replay["findings"],
             determinism,
         )
         c.check(
@@ -1240,6 +1792,7 @@ def main(argv: list[str] | None = None) -> int:
             "post_close": post_close_findings,
             "idempotency": idempotency_findings,
             "replay_report": report_findings,
+            "slot_ledger": ledger_findings,
             "snapshot": snapshot_findings,
             "separation": separation_findings,
             "order_paths": order_findings,
