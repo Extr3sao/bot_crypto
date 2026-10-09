@@ -1,6 +1,6 @@
 # ST-6 — isolated close replay
 
-Generated 2026-10-09T16:35:35Z at `7cd8d72f8d4330682af560f11b30cac211ad78b3`.
+Generated 2026-10-09T20:02:39Z at `fa6056af68d858d410df145ee4429b34eb155a8e`.
 
 Inside the sandbox the tick records the code identity as `REPLAY_SANDBOX_NOT_A_COMMIT`:
 a constant on purpose, so the determinism proof does not depend on the commit hash.
@@ -13,7 +13,7 @@ UTC clock. Period `2026-10-08T16:21:20Z` → `2026-10-22T16:21:20Z`; close insta
 ## The state this close was replayed against
 
 The consolidation is a function of the collected state and the injected clock, so the state
-itself is identified here: close input state `e0f73751cf369bbb` with 7 of 84 declared windows collected at replay time. A
+itself is identified here: close input state `e7b3145545de0ae0` with 7 of 84 declared windows collected at replay time. A
 later replay of a state that has since collected more windows legitimately produces a
 different consolidation; the verifier attributes that difference instead of hiding it.
 
@@ -34,7 +34,7 @@ different consolidation; the verifier attributes that difference instead of hidi
 
 ## Isolation and non-interference
 
-Sandboxes: `C:\Users\GVLLFR~1\AppData\Local\Temp\st6-close-replay-s5p_vol5` (a temporary directory outside the
+Sandboxes: `C:\Users\GVLLFR~1\AppData\Local\Temp\st6-close-replay-nxxoa1ig` (a temporary directory outside the
 repository). Real state unmoved by the replay: **True** (identical bytes before and after: True)
 
 Real market requests: 0. Real scheduler calls: 0. Market attempts refused by the guard: 2. Terminal transitions intercepted: 6.

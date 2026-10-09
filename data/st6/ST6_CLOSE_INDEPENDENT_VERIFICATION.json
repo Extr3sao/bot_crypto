@@ -9,7 +9,7 @@
     "missed": 0,
     "observations": 84,
     "raw_snapshots": 7,
-    "runs": 373,
+    "runs": 400,
     "windows": 7
   },
   "denominator": {
@@ -39,22 +39,22 @@
       "findings": [],
       "live_observed_windows": 7,
       "reading": "REPRODUCED: the shipped artefact is the byte-for-byte close of a state that has not moved since",
-      "rerun_input_state": "e0f73751cf369bbbe17eae47fac510643c7c97d2010ee176a0448a4110051aa4",
+      "rerun_input_state": "e7b3145545de0ae04c20698d4b668d4a6ef97e0f8b1639d662b690797a7faf30",
       "rerun_missed_windows": 77,
       "rerun_observed_windows": 7,
       "same_input_state": true,
-      "shipped_input_state": "e0f73751cf369bbbe17eae47fac510643c7c97d2010ee176a0448a4110051aa4",
+      "shipped_input_state": "e7b3145545de0ae04c20698d4b668d4a6ef97e0f8b1639d662b690797a7faf30",
       "shipped_missed_windows": 77,
       "shipped_observed_windows": 7,
       "windows_added_since_the_ship": []
     },
     "rerun_close_mechanics": "PASS",
-    "rerun_close_sha256": "7f8b8d07e8cd8d306b4937642bb385b9395b62c800df5aa964c98125b47c67a3",
-    "shipped_close_sha256": "7f8b8d07e8cd8d306b4937642bb385b9395b62c800df5aa964c98125b47c67a3",
+    "rerun_close_sha256": "afad52204e6e43e541b8716ab7a7afa4bcd8b905b368707010676a4b2861fd51",
+    "shipped_close_sha256": "afad52204e6e43e541b8716ab7a7afa4bcd8b905b368707010676a4b2861fd51",
     "stderr_tail": [],
     "stdout_tail": [
       "PASS: close mechanics 10/10 scenarios PASS, 0 FAIL; real state unchanged: True; market requests: 0",
-      "written -> C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\st6-verify-rerun-76ugnp20\\report.json, C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\st6-verify-rerun-76ugnp20\\report.md"
+      "written -> C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\st6-verify-rerun-q2vjeybl\\report.json, C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\st6-verify-rerun-q2vjeybl\\report.md"
     ],
     "verdicts_equal": true
   },
@@ -74,7 +74,7 @@
     "snapshot": [],
     "windows": []
   },
-  "generated_at_utc": "2026-10-09T16:37:24Z",
+  "generated_at_utc": "2026-10-09T20:02:52Z",
   "method": "the verifier re-derives the plan, the window index, the missed accounting, the terminal state, the post-close contract and the drift preservation from the state on disk; it re-verifies the live-state snapshot by re-hashing it; it exercises the replay harness again and compares the close it produces; and it proves its own checks fail on corrupted fixtures before it reports anything",
   "mismatches": 0,
   "negative_tests": {
@@ -434,13 +434,10 @@
     "terminal_state": "PERIOD_CLOSED_NO_FURTHER_COLLECTION"
   },
   "snapshot_life": {
-    "live_files_that_moved_since_the_snapshot": [
-      "data/st6/ST6_HEALTH.jsonl",
-      "data/st6/ST6_HEALTH_STATUS.json"
-    ],
-    "manifest": "data\\st6\\snapshots\\ST6_LIVE_STATE_20261009T163535Z.json",
+    "live_files_that_moved_since_the_snapshot": [],
+    "manifest": "data\\st6\\snapshots\\ST6_LIVE_STATE_20261009T200234Z.json",
     "reading": "live runtime state keeps moving by design: those files are the ones the running tick rewrites, and the snapshot copy is the immutable record of what they held",
-    "snapshot_id": "ST6_LIVE_STATE_20261009T163535Z"
+    "snapshot_id": "ST6_LIVE_STATE_20261009T200234Z"
   },
   "standing_state": {
     "ECO_1": "OPEN",
