@@ -1,15 +1,17 @@
 {
   "acceptance": {
     "close_replay_pass": "PASS",
-    "commit_valid": "two commits, both made with explicit paths only and verified with git show --stat: 8a7afd2 (47 paths) and 14514d6 (6 paths); this report and the newest snapshot are carried by the commit that follows, whose id is reported as CURRENT_HEAD",
+    "commit_valid": "six commits of this work, every one made with explicit paths only and verified with `git show --stat`: 8a7afd2 (47), 14514d6 (6), f0173f7 (22), 5178353 (24), 9eb1e46 (2) and 3868f59 (104); this report and the boundary audit are carried by the commit that follows, whose id is reported as CURRENT_HEAD",
     "governance_violations": 0,
     "independent_verification_pass": "PASS",
     "live_runtime_state_left_uncommitted": true,
     "live_state_unmodified_by_the_replay": true,
-    "negative_tests_pass": "ST6_CLOSE_NEGATIVE_TESTS 17/17 detected",
+    "missed_window_evidence_reproduced": "the replayed close carries 80 missed windows with attendance evidence; the health check, the close verifier and the scheduler verifier re-derive the class from the run events, and the live period records 0 missed windows and 0 unsupported claims",
+    "negative_tests_pass": "ST6_CLOSE_NEGATIVE_TESTS 22/22 detected",
     "no_real_requests_during_the_replay": true,
     "own_paths_clean_after_commit": true,
-    "recorded_hashes_reproduce_from_committed_blobs": "every digest in implementation_hashes, report_artifacts and snapshot_registry was re-hashed against `git cat-file blob HEAD:<path>` by a separate check; the digests this report records are of the bytes the commit that carries it stores verbatim"
+    "recorded_hashes_reproduce_from_committed_blobs": "every digest in implementation_hashes, report_artifacts, snapshot_registry and the manifests' per-file records was re-hashed against the committed blobs by a separate check; the digests this report records are of the bytes the commit that carries it stores verbatim",
+    "snapshot_copies_reproduce_from_committed_blobs": "every copy of every snapshot was re-hashed against `git cat-file blob HEAD:<path>`: 90 copies, 0 mismatches, after the trees were switched to verbatim storage"
   },
   "ahead_of_origin_main": "205",
   "artifact": "ST6_VERSIONING_REPORT",
@@ -360,6 +362,26 @@
   },
   "commits": [
     {
+      "id": "3868f5958250ccf846094c698719cc821f565a8c",
+      "role": "the second pass: the attendance evidence of a missed slot, the two verifiers, the regenerated replay report and six snapshot trees",
+      "subject": "fix(research): prove why an ST-6 slot went unattended instead of asserting it"
+    },
+    {
+      "id": "9eb1e464cf8b090af222127153e33f6ea6e1e949",
+      "role": "the report that carried the first pass",
+      "subject": "docs(research): record the ST-6 close evidence against the bytes that ship"
+    },
+    {
+      "id": "3868f5958250ccf846094c698719cc821f565a8c",
+      "role": "the second pass: the attendance evidence of a missed slot, the two verifiers, the regenerated replay report and six snapshot trees",
+      "subject": "fix(research): prove why an ST-6 slot went unattended instead of asserting it"
+    },
+    {
+      "id": "9eb1e464cf8b090af222127153e33f6ea6e1e949",
+      "role": "the report that carried the first pass",
+      "subject": "docs(research): record the ST-6 close evidence against the bytes that ship"
+    },
+    {
       "id": "5178353f27c00671cd478c4e723b546ae97fb43e",
       "role": "the LF artefact writers and the regenerated artefacts and snapshot",
       "subject": "fix(research): write the ST-6 artefacts with LF so their recorded hashes travel"
@@ -381,8 +403,8 @@
     }
   ],
   "convention": "git_blob_sha1 is `git hash-object` for the exact bytes staged, so it identifies the content the commit carries; committed_blob_sha1 is what HEAD actually holds, and the two agree for every implementation path in this report. A commit cannot contain its own id, so the report of a commit is carried by the commit that follows it, and the id is returned in the mission's final response (CURRENT_HEAD).",
-  "current_head": "5178353f27c00671cd478c4e723b546ae97fb43e",
-  "generated_at_utc": "2026-10-08T22:26:33Z",
+  "current_head": "3868f5958250ccf846094c698719cc821f565a8c",
+  "generated_at_utc": "2026-10-09T08:14:51Z",
   "governance": {
     "ECO_1": "OPEN",
     "ECO_2": "UNKNOWN_NOT_RESOLVABLE_OFFLINE",
@@ -401,63 +423,105 @@
   "head_before_commit": "9660afab9003001d3a8130b9679c066071548421",
   "implementation_hashes": [
     {
-      "bytes": 122969,
-      "git_blob_sha1": "142287f750dbb30f4c0e7cb26e12ca88785839b5",
+      "bytes": 128360,
+      "git_blob_sha1": "0935dfb76c026e8b68410aac177b4bcc31aefb9b",
       "path": "scripts/st6_forward_regime.py",
-      "reading": "sha256 of the bytes on disk, which are the bytes the commit carries: git normalises the same text to LF, and these files have no CRLF in either place. Reproduce with `git cat-file blob HEAD:scripts/st6_forward_regime.py | sha256sum`.",
-      "sha256": "c6fbeb875779e1da2c7882ec476451ab894e9959bc828c450726e6d8bda1fce3"
+      "reading": "sha256 of the bytes on disk, which are the bytes the commit carries: these files have no CRLF in either place. Reproduce with `git cat-file blob HEAD:<path> | sha256sum`.",
+      "sha256": "83875a55bb91562f88a6a5643f6226e12de4d0c3cbc56fccc50483c0a4daf50c"
     },
     {
-      "bytes": 20512,
-      "git_blob_sha1": "2abb44bf0228fc5b1bfc8c6c8fbf6be48adf5eba",
+      "bytes": 30037,
+      "git_blob_sha1": "6ee615c867af2e84fb8b4465ba2b7efc4a99a1fb",
       "path": "scripts/st6_health_check.py",
-      "reading": "sha256 of the bytes on disk, which are the bytes the commit carries: git normalises the same text to LF, and these files have no CRLF in either place. Reproduce with `git cat-file blob HEAD:scripts/st6_health_check.py | sha256sum`.",
-      "sha256": "5e4450cc96c1400eb8a52d959dc613c7dcdb70c7fe55478a11fc7ced5437cd18"
+      "reading": "sha256 of the bytes on disk, which are the bytes the commit carries: these files have no CRLF in either place. Reproduce with `git cat-file blob HEAD:<path> | sha256sum`.",
+      "sha256": "79d1e0357473f3c6fe0f619c1fab33781387258548350522e103fcc349175c79"
     },
     {
-      "bytes": 29401,
-      "git_blob_sha1": "8eceb9b2ead559fad37f4c29178bb5332f119484",
+      "bytes": 32276,
+      "git_blob_sha1": "21db3ba38c7869507c1981a34dcb99d4e60dd509",
       "path": "scripts/st6_scheduler_verify.py",
-      "reading": "sha256 of the bytes on disk, which are the bytes the commit carries: git normalises the same text to LF, and these files have no CRLF in either place. Reproduce with `git cat-file blob HEAD:scripts/st6_scheduler_verify.py | sha256sum`.",
-      "sha256": "b9b44d9b4a6aeabb38bd05928339d991f5a8b11ea1e9864f012d7a985f2a4374"
+      "reading": "sha256 of the bytes on disk, which are the bytes the commit carries: these files have no CRLF in either place. Reproduce with `git cat-file blob HEAD:<path> | sha256sum`.",
+      "sha256": "531539cfe40f2d3d45250454de0480d41de1f39f1282a777fa8b6450112439d8"
     },
     {
-      "bytes": 15607,
-      "git_blob_sha1": "28b7114be4943cbd24a8afb5e713bde950926716",
+      "bytes": 17536,
+      "git_blob_sha1": "6c657d90177eab67d0569790bc35caddf7347a5a",
       "path": "scripts/st6_state_snapshot.py",
-      "reading": "sha256 of the bytes on disk, which are the bytes the commit carries: git normalises the same text to LF, and these files have no CRLF in either place. Reproduce with `git cat-file blob HEAD:scripts/st6_state_snapshot.py | sha256sum`.",
-      "sha256": "12ccda26ee1eebd86d16733cb840e1a1ab27583effea77da2ac9d42a0bd0876e"
+      "reading": "sha256 of the bytes on disk, which are the bytes the commit carries: these files have no CRLF in either place. Reproduce with `git cat-file blob HEAD:<path> | sha256sum`.",
+      "sha256": "5d0007bf9df32021df11d55da6bd1fc0cd4e1a1d49f365a15aab086e2aa9d47d"
     },
     {
       "bytes": 61686,
       "git_blob_sha1": "65a072f7b3cbbefb8f5e02234861e22d0b25ecd4",
       "path": "scripts/st6_close_replay.py",
-      "reading": "sha256 of the bytes on disk, which are the bytes the commit carries: git normalises the same text to LF, and these files have no CRLF in either place. Reproduce with `git cat-file blob HEAD:scripts/st6_close_replay.py | sha256sum`.",
+      "reading": "sha256 of the bytes on disk, which are the bytes the commit carries: these files have no CRLF in either place. Reproduce with `git cat-file blob HEAD:<path> | sha256sum`.",
       "sha256": "97bbe5ad358148c139a6dbeab1a028ca56bddd6b02b65baa4dab89a7c7c3ca9c"
     },
     {
-      "bytes": 47018,
-      "git_blob_sha1": "88fd5a99331d8b8465443d0c94cccb422e8d4123",
+      "bytes": 54712,
+      "git_blob_sha1": "c55d1235cfbd830255817dd2aea45bb5b9dba6b8",
       "path": "scripts/st6_close_verify.py",
-      "reading": "sha256 of the bytes on disk, which are the bytes the commit carries: git normalises the same text to LF, and these files have no CRLF in either place. Reproduce with `git cat-file blob HEAD:scripts/st6_close_verify.py | sha256sum`.",
-      "sha256": "30976237dba94151c95c4ec889a273cdfb91a9f61ba7c29e7ebe6c5921d18373"
+      "reading": "sha256 of the bytes on disk, which are the bytes the commit carries: these files have no CRLF in either place. Reproduce with `git cat-file blob HEAD:<path> | sha256sum`.",
+      "sha256": "6cacf28e2a934a25a90b24f5606b23cc1d49f19a2db14ee75915b950a00fcbf6"
     },
     {
-      "bytes": 33335,
-      "git_blob_sha1": "20a406d2797f4ef9d9c578c0a6eba913f3ad35d4",
+      "bytes": 43806,
+      "git_blob_sha1": "3c0c242e3af5de20a1b307ba5fcb4df4931beaa4",
       "path": "tests/unit/research/test_st6_scheduler.py",
-      "reading": "sha256 of the bytes on disk, which are the bytes the commit carries: git normalises the same text to LF, and these files have no CRLF in either place. Reproduce with `git cat-file blob HEAD:tests/unit/research/test_st6_scheduler.py | sha256sum`.",
-      "sha256": "3f52b2ae15c7abdd02c514345a3c76c52a7b211ce79752714cf058f70365c0d5"
+      "reading": "sha256 of the bytes on disk, which are the bytes the commit carries: these files have no CRLF in either place. Reproduce with `git cat-file blob HEAD:<path> | sha256sum`.",
+      "sha256": "a4d804b88c5029eacbceabadb7f1b4bc020f648c4c0324f6447f078b2dda597b"
     },
     {
       "bytes": 3308,
       "git_blob_sha1": "6c13e0e75568feaca1329a226116eed2b18d58ac",
       "path": "data/st6/ST6_TASK_DEFINITION.xml",
-      "reading": "sha256 of the bytes on disk, which are the bytes the commit carries: git normalises the same text to LF, and these files have no CRLF in either place. Reproduce with `git cat-file blob HEAD:data/st6/ST6_TASK_DEFINITION.xml | sha256sum`.",
+      "reading": "sha256 of the bytes on disk, which are the bytes the commit carries: these files have no CRLF in either place. Reproduce with `git cat-file blob HEAD:<path> | sha256sum`.",
       "sha256": "c52ad4dc8ead1c098d9ac8eae1a1ff01d7aca32ca24fbd8be332fe3c8da251a2"
     }
   ],
   "open_defects": [
+    {
+      "evidence": "the discarded snapshot ST6_LIVE_STATE_20261009T073309Z: five per-file digests recorded for bytes nowhere on disk (ST6_RUNS.jsonl efbfc4812771 vs bc5427395b1c), repaired in 3868f59 by hashing the copy after writing it",
+      "fixed": true,
+      "id": "SNAPSHOT-HASHED-A-FILE-THE-TICK-REWROTE",
+      "kind": "evidence defect",
+      "note": "the snapshot read each live file's hash and copied it in two steps while the tick rewrites five of those files every fifteen minutes; the manifest now hashes the copy it wrote, names what moved during the pass, and the raced snapshot was discarded rather than shipped"
+    },
+    {
+      "evidence": "all 90 copies of the six snapshots re-hashed against `git cat-file blob HEAD:<path>`: 0 mismatches after the fix, 5 mismatches before it",
+      "fixed": true,
+      "id": "SNAPSHOT-COPIES-STORED-NORMALISED",
+      "kind": "evidence defect",
+      "note": "the copies were committed through git's text conversion (core.autocrlf=true) while the manifests record the CRLF bytes of the host, so the recorded digests reproduced only on this machine; data/st6/snapshots/.gitattributes now sets -text and the trees are stored verbatim, and not one byte on disk changed"
+    },
+    {
+      "evidence": "one suite failure at 08:07Z and a 267 s pass of the same test immediately afterwards",
+      "fixed": false,
+      "id": "FIXTURE-CONTENTION-COSTS-A-TEST-MINUTES",
+      "kind": "environmental",
+      "note": "a live test waits out a lease the scheduler holds; when the holder is dead the lock is freed by the lease's own 300 s staleness rule, so a test can take minutes and, at the edge of its budget, fail loudly.  The trade-off is deliberate: LEASE_STALE_AFTER_S=300 and a 15-minute cadence mean a five-minute stall cannot cost a slot.  Declared, not widened into a flakier wait"
+    },
+    {
+      "evidence": "the discarded snapshot ST6_LIVE_STATE_20261009T073309Z: five per-file digests recorded for bytes nowhere on disk (ST6_RUNS.jsonl efbfc4812771 vs bc5427395b1c), repaired in 3868f59 by hashing the copy after writing it",
+      "fixed": true,
+      "id": "SNAPSHOT-HASHED-A-FILE-THE-TICK-REWROTE",
+      "kind": "evidence defect",
+      "note": "the snapshot read each live file's hash and copied it in two steps while the tick rewrites five of those files every fifteen minutes; the manifest now hashes the copy it wrote, names what moved during the pass, and the raced snapshot was discarded rather than shipped"
+    },
+    {
+      "evidence": "all 90 copies of the six snapshots re-hashed against `git cat-file blob HEAD:<path>`: 0 mismatches after the fix, 5 mismatches before it",
+      "fixed": true,
+      "id": "SNAPSHOT-COPIES-STORED-NORMALISED",
+      "kind": "evidence defect",
+      "note": "the copies were committed through git's text conversion (core.autocrlf=true) while the manifests record the CRLF bytes of the host, so the recorded digests reproduced only on this machine; data/st6/snapshots/.gitattributes now sets -text and the trees are stored verbatim, and not one byte on disk changed"
+    },
+    {
+      "evidence": "one suite failure at 08:07Z and a 267 s pass of the same test immediately afterwards",
+      "fixed": false,
+      "id": "FIXTURE-CONTENTION-COSTS-A-TEST-MINUTES",
+      "kind": "environmental",
+      "note": "a live test waits out a lease the scheduler holds; when the holder is dead the lock is freed by the lease's own 300 s staleness rule, so a test can take minutes and, at the edge of its budget, fail loudly.  The trade-off is deliberate: LEASE_STALE_AFTER_S=300 and a 15-minute cadence mean a five-minute stall cannot cost a slot.  Declared, not widened into a flakier wait"
+    },
     {
       "evidence": "data/st6/ST6_CLOSE_REPLAY_REPORT.json scenario 2",
       "fixed": false,
@@ -538,36 +602,29 @@
       "bytes": 14205,
       "git_blob_sha1": "e9f0c72540e4c265922b792449f1d4d9775a7521",
       "path": "data/st6/ST6_PERIOD_BOUNDARY_AUDIT.md",
-      "reading": "sha256 of the bytes on disk, which the commit that carries this report stores verbatim (no CRLF to normalise). Reproduce with `git cat-file blob HEAD:data/st6/ST6_PERIOD_BOUNDARY_AUDIT.md | sha256sum`.",
+      "reading": "sha256 of the bytes on disk, which the commit that carries this report stores verbatim. Reproduce with `git cat-file blob HEAD:<path> | sha256sum`.",
       "sha256": "c50c275d697b6a35e95f55320f5d460a2124acf7bc3f13a8c14a7e3c8c5101c9"
     },
     {
       "bytes": 4069,
-      "git_blob_sha1": "9e90f02651e9ac0dbf92c8d8bb45238fb81967d6",
+      "git_blob_sha1": "704c45c853cc3b7a4483e5df5abf8a8581352436",
       "path": "data/st6/ST6_CLOSE_REPLAY_REPORT.md",
-      "reading": "sha256 of the bytes on disk, which the commit that carries this report stores verbatim (no CRLF to normalise). Reproduce with `git cat-file blob HEAD:data/st6/ST6_CLOSE_REPLAY_REPORT.md | sha256sum`.",
-      "sha256": "518efd9a4a14c4e5dc16264d0473422ad64d252ac53888e9ced921d2df595556"
+      "reading": "sha256 of the bytes on disk, which the commit that carries this report stores verbatim. Reproduce with `git cat-file blob HEAD:<path> | sha256sum`.",
+      "sha256": "b4f72aa4749756f9fd0c718dcc34d8cf62faf800fcfe37dd2d3073500dff58bc"
     },
     {
-      "bytes": 58857,
-      "git_blob_sha1": "8d105e8630b8c1828e835ad8df0940a279b4059c",
+      "bytes": 58589,
+      "git_blob_sha1": "c14909e1168232ad9622a94def55911d2d931e35",
       "path": "data/st6/ST6_CLOSE_REPLAY_REPORT.json",
-      "reading": "sha256 of the bytes on disk, which the commit that carries this report stores verbatim (no CRLF to normalise). Reproduce with `git cat-file blob HEAD:data/st6/ST6_CLOSE_REPLAY_REPORT.json | sha256sum`.",
-      "sha256": "b07d46e84c836edae94a03c7527d82a97da67b5e76dd0902a1aa06f3dbf3632f"
+      "reading": "sha256 of the bytes on disk, which the commit that carries this report stores verbatim. Reproduce with `git cat-file blob HEAD:<path> | sha256sum`.",
+      "sha256": "0a5f35569cebf128db2931f41763801421c3845969d17990602afe6045fea5d9"
     },
     {
-      "bytes": 10877,
-      "git_blob_sha1": "344a4d24840f375d687c7fadb909a9ebed3e4718",
-      "path": "data/st6/ST6_CLOSE_INDEPENDENT_VERIFICATION.json",
-      "reading": "sha256 of the bytes on disk, which the commit that carries this report stores verbatim (no CRLF to normalise). Reproduce with `git cat-file blob HEAD:data/st6/ST6_CLOSE_INDEPENDENT_VERIFICATION.json | sha256sum`.",
-      "sha256": "6dc23c73e821c954268f5208b55ec8f252d62e512e78b01d5eee976f7ee7cf7e"
-    },
-    {
-      "bytes": 17760,
-      "git_blob_sha1": "a7b343d0d17c34f84ea0256b1f69aec758111596",
+      "bytes": 27516,
+      "git_blob_sha1": "7936df942a1ef2859005758a505638bfdedc4e7d",
       "path": "data/st6/ST6_VERSIONING_REPORT.md",
-      "reading": "sha256 of the bytes on disk, which the commit that carries this report stores verbatim (no CRLF to normalise). Reproduce with `git cat-file blob HEAD:data/st6/ST6_VERSIONING_REPORT.md | sha256sum`.",
-      "sha256": "625f6b1e71215586ff38d6eb0274a7439224714fa1f68450974876c34f5f58e8"
+      "reading": "sha256 of the bytes on disk, which the commit that carries this report stores verbatim. Reproduce with `git cat-file blob HEAD:<path> | sha256sum`.",
+      "sha256": "727193b04808dca8dff5594d1f5f12117d731badd4a89e652f59afab59b6cd57"
     }
   ],
   "report_artifacts_self": {
@@ -583,6 +640,35 @@
     "run_log_provenance": "every run event records the launch mode it declares, so a reader can separate the task's own ticks from manual and verification invocations; the events written before the field existed carry none and are named as unrecorded rather than rewritten",
     "task_self_expiry": "the task's declared Duration is P30D and expires it on its own",
     "terminal_transition": "the period disables its own task (schtasks /change /tn <own task> /disable) without elevation and without touching another program's task; a failure is recorded in the consolidation rather than raised"
+  },
+  "second_pass": {
+    "audit_chain": {
+      "close_verifier": "scripts/st6_close_verify.py — requires the block, the declared vocabulary, the declared bounds and a matching derived class, with five new negative fixtures",
+      "health": "scripts/st6_health_check.py — re-derives the class and calls a claim it cannot support CRITICAL",
+      "scheduler_verifier": "scripts/st6_scheduler_verify.py — requires the class to agree with its own counters and, while the log covers the slot, with a second count from the events",
+      "writer": "scripts/st6_forward_regime.py — slot_attendance records the class and its counters"
+    },
+    "commit": "3868f5958250ccf846094c698719cc821f565a8c",
+    "live_period": {
+      "missed_windows": 0,
+      "reading": "the path is exercised by the replay and by the unit tests; no loss has happened in the live period yet, and nothing is claimed about one",
+      "unsupported_claims": []
+    },
+    "one_live_window_after_the_change": "the tick collected 2026-10-09#2 at 08:00:52Z with the new code and recorded HEALTHY, and every later test added to it",
+    "paths": 104,
+    "replayed_close": {
+      "classes": "UNATTENDED_NO_RUN_EVENT x 80 (the sandbox log reaches back before every slot it did not observe)",
+      "missed_windows": 80,
+      "with_attendance_evidence": "80 of 80"
+    },
+    "run_log_bound": "the log keeps 400 events and is front-truncated, so a slot whose events were pruned is recorded as unprovable rather than as unattended; the record states how long its inference stays valid",
+    "vocabulary": [
+      "UNATTENDED_NO_RUN_EVENT",
+      "ATTENDED_NOT_COLLECTED",
+      "ATTENDED_REQUEST_FAILED",
+      "ATTENDANCE_UNKNOWN_RUN_LOG_TRUNCATED"
+    ],
+    "what_changed": "a declared slot that ended without a window used to be recorded with one generic sentence, so a host that never fired and a tick that ran without measuring read the same.  Each missed record now carries the attendance evidence the run log held when the slot was accounted, and three programs audit that claim instead of trusting it"
   },
   "separation": {
     "IMMUTABLE_EVIDENCE": [
@@ -624,10 +710,11 @@
     "rule": "files the tick rewrites or appends to every fifteen minutes are snapshotted and hashed, never committed as if they were static reports",
     "snapshots": {
       "check": "python scripts/st6_state_snapshot.py --check -> PASS (19 checks)",
-      "final": "data/st6/snapshots/ST6_LIVE_STATE_20261008T215222Z.json",
-      "final_snapshot_id": "ST6_LIVE_STATE_20261008T215222Z",
-      "read_by_the_independent_verification": "data/st6/snapshots/ST6_LIVE_STATE_20261008T215219Z.json",
+      "final": "data/st6/snapshots/ST6_LIVE_STATE_20261009T075959Z.json",
+      "final_snapshot_id": "ST6_LIVE_STATE_20261009T075959Z",
+      "read_by_the_independent_verification": "data/st6/snapshots/ST6_LIVE_STATE_20261009T075959Z.json",
       "sandbox_code_identity": "REPLAY_SANDBOX_NOT_A_COMMIT",
+      "storage": "the snapshot trees are stored verbatim (-text): this host writes the live ST-6 files with CRLF and git's text conversion would otherwise store LF, so the per-file digests in the manifests would not be reproducible from the commit.  Re-hashed after the change: 90 copies across six snapshots, 0 mismatches against `git cat-file blob HEAD:<path>`",
       "why": "the replayed consolidation must not embed the live commit id, or the determinism proof would break whenever the code is committed"
     }
   },
@@ -639,10 +726,11 @@
       "generated_at_utc": "2026-10-08T21:52:19Z",
       "live_files_copied": 15,
       "manifest": "data/st6/snapshots/ST6_LIVE_STATE_20261008T215219Z.json",
-      "manifest_git_blob_sha1": "8cd1e37c74c96bbac395f4c2a3004b28192baed9",
-      "manifest_sha256_of_committed_bytes": "bc45e9f61e9295aba112d7fb21e1fc726251a007abb8c85db841e0c25088ed3f",
+      "manifest_git_blob_sha1": "224587f0d28993785d68f4334f5e21dd0a9abfef",
+      "manifest_sha256_of_committed_bytes": "5439b266d7a76e855b0a69cc78b51fa31c216b041606d3974a58224cea0d00e9",
       "raw_evidence_reproduced": true,
       "snapshot_id": "ST6_LIVE_STATE_20261008T215219Z",
+      "storage": "stored verbatim under data/st6/snapshots/.gitattributes (-text), so every digest the manifest records describes the bytes the commit holds",
       "windows_index_rows_at_snapshot": 2
     },
     {
@@ -652,10 +740,11 @@
       "generated_at_utc": "2026-10-08T21:52:23Z",
       "live_files_copied": 15,
       "manifest": "data/st6/snapshots/ST6_LIVE_STATE_20261008T215222Z.json",
-      "manifest_git_blob_sha1": "c60c52221b62638bcdfa8a1da8bdee4fdb98c765",
-      "manifest_sha256_of_committed_bytes": "3ebe405cd8f2da599be10ea24288deb6cbcde1bf1a9a58c2eef563b1d646bf0b",
+      "manifest_git_blob_sha1": "9018a57ddac8703a587492c697c60e2c7c4a0d78",
+      "manifest_sha256_of_committed_bytes": "a047e83e95a7993eac30aa38f5030c93eae34f0a0ca102b6648fc0375840d583",
       "raw_evidence_reproduced": true,
       "snapshot_id": "ST6_LIVE_STATE_20261008T215222Z",
+      "storage": "stored verbatim under data/st6/snapshots/.gitattributes (-text), so every digest the manifest records describes the bytes the commit holds",
       "windows_index_rows_at_snapshot": 2
     },
     {
@@ -665,10 +754,11 @@
       "generated_at_utc": "2026-10-08T22:11:35Z",
       "live_files_copied": 15,
       "manifest": "data/st6/snapshots/ST6_LIVE_STATE_20261008T221134Z.json",
-      "manifest_git_blob_sha1": "75a39d0500ea4f8813cf09c0305861f1e541ce3b",
-      "manifest_sha256_of_committed_bytes": "4bdb24cb9adddefe83e6b010b5fa9e02bd3fce48f5017ff349b46c0fd5f05919",
+      "manifest_git_blob_sha1": "f2e080fcf1ef1dbd4fc24354f1eadb4877d0ae35",
+      "manifest_sha256_of_committed_bytes": "c7b64e01a896b0a32b01dc4003cb6cc3463db94d1b5fb42865cf6d7fff35e9f0",
       "raw_evidence_reproduced": true,
       "snapshot_id": "ST6_LIVE_STATE_20261008T221134Z",
+      "storage": "stored verbatim under data/st6/snapshots/.gitattributes (-text), so every digest the manifest records describes the bytes the commit holds",
       "windows_index_rows_at_snapshot": 2
     },
     {
@@ -682,7 +772,36 @@
       "manifest_sha256_of_committed_bytes": "9f021f60dd5f076ebb7dce46f81931b3f923401b77d21f54247db3e9983ba5fd",
       "raw_evidence_reproduced": true,
       "snapshot_id": "ST6_LIVE_STATE_20261008T222000Z",
+      "storage": "stored verbatim under data/st6/snapshots/.gitattributes (-text), so every digest the manifest records describes the bytes the commit holds",
       "windows_index_rows_at_snapshot": 2
+    },
+    {
+      "committed": true,
+      "copy_root": "data/st6/snapshots/ST6_LIVE_STATE_20261009T074023Z",
+      "current_head_recorded": "9eb1e464cf8b090af222127153e33f6ea6e1e949",
+      "generated_at_utc": "2026-10-09T07:40:23Z",
+      "live_files_copied": 15,
+      "manifest": "data/st6/snapshots/ST6_LIVE_STATE_20261009T074023Z.json",
+      "manifest_git_blob_sha1": "e4a8b2ea4f9442fbb042ec383eb5fbbd3b78440a",
+      "manifest_sha256_of_committed_bytes": "b6dc0dcfd631eed4ff93d97ffa5e640c7a7bf2f4987a233060850bceb5688bb6",
+      "raw_evidence_reproduced": true,
+      "snapshot_id": "ST6_LIVE_STATE_20261009T074023Z",
+      "storage": "stored verbatim under data/st6/snapshots/.gitattributes (-text), so every digest the manifest records describes the bytes the commit holds",
+      "windows_index_rows_at_snapshot": 4
+    },
+    {
+      "committed": true,
+      "copy_root": "data/st6/snapshots/ST6_LIVE_STATE_20261009T075959Z",
+      "current_head_recorded": "9eb1e464cf8b090af222127153e33f6ea6e1e949",
+      "generated_at_utc": "2026-10-09T08:00:00Z",
+      "live_files_copied": 15,
+      "manifest": "data/st6/snapshots/ST6_LIVE_STATE_20261009T075959Z.json",
+      "manifest_git_blob_sha1": "85f0111cdee1ccdbdf8604222b63905548db8785",
+      "manifest_sha256_of_committed_bytes": "308a6ea12876cdf8a6beff8453d8f0f09720e0d631b030814bb7e5c17e92d57a",
+      "raw_evidence_reproduced": true,
+      "snapshot_id": "ST6_LIVE_STATE_20261009T075959Z",
+      "storage": "stored verbatim under data/st6/snapshots/.gitattributes (-text), so every digest the manifest records describes the bytes the commit holds",
+      "windows_index_rows_at_snapshot": 4
     }
   ],
   "verification_evidence": {
@@ -690,28 +809,297 @@
       "artifact": "data/st6/ST6_CLOSE_INDEPENDENT_VERIFICATION.json",
       "checks_passed": 19,
       "checks_total": 19,
+      "determinism": {
+        "exit_code": 0,
+        "rerun_close_mechanics": "PASS",
+        "rerun_close_sha256": "568a20191bb8700b87659928e8b569c77d7fd153d522d6ed74e0e32f1975b861",
+        "shipped_close_sha256": "568a20191bb8700b87659928e8b569c77d7fd153d522d6ed74e0e32f1975b861",
+        "stderr_tail": [],
+        "stdout_tail": [
+          "PASS: close mechanics 10/10 scenarios PASS, 0 FAIL; real state unchanged: True; market requests: 0",
+          "written -> C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\st6-verify-rerun-8jvcmydu\\report.json, C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\st6-verify-rerun-8jvcmydu\\report.md"
+        ],
+        "verdicts_equal": true
+      },
+      "digest_at_generation": {
+        "bytes": 12585,
+        "reading": "the verification artefact is live runtime state and is rewritten every time the verifier runs, so this digest describes the run this report was generated from and is deliberately not a claim about a committed blob",
+        "sha256": "c0dce12767a61e6434328c729bbc8067f4ecc52ea7e1be323c5d6cc91f3301d1"
+      },
       "false_success": 0,
       "mismatches": 0,
       "negative_tests": {
         "artifact": "ST6_CLOSE_NEGATIVE_TESTS",
         "failed": 0,
-        "passed": 17
+        "passed": 22,
+        "results": [
+          {
+            "detected": true,
+            "expected_finding": "duplicated slot",
+            "findings": [
+              "the window index holds a duplicated slot: ['2026-10-08#4']",
+              "the window index holds a duplicated window_id"
+            ],
+            "fixture": "a duplicated window index row",
+            "status": "PASS"
+          },
+          {
+            "detected": true,
+            "expected_finding": "sha256 mismatch",
+            "findings": [
+              "data\\st6\\raw\\20261008T162202Z.json.gz sha256 mismatch against the index"
+            ],
+            "fixture": "a tampered window hash",
+            "status": "PASS"
+          },
+          {
+            "detected": true,
+            "expected_finding": "is missing",
+            "findings": [
+              "data\\st6\\raw\\20261008T162202Z.json.gz is missing"
+            ],
+            "fixture": "a missing raw snapshot",
+            "status": "PASS"
+          },
+          {
+            "detected": true,
+            "expected_finding": "order or credential",
+            "findings": [
+              "offender.py carries an order or credential path: ['create_order']"
+            ],
+            "fixture": "an order path in a program",
+            "status": "PASS"
+          },
+          {
+            "detected": true,
+            "expected_finding": "another period",
+            "findings": [
+              "the consolidation belongs to another period: 2026-01-01T00:00:00Z -> 2026-01-15T00:00:00Z",
+              "the consolidation does not refuse extension",
+              "a supported outcome was recorded over incomplete coverage"
+            ],
+            "fixture": "a consolidation of another period",
+            "status": "PASS"
+          },
+          {
+            "detected": true,
+            "expected_finding": "incomplete coverage",
+            "findings": [
+              "a supported outcome was recorded over incomplete coverage"
+            ],
+            "fixture": "a supported outcome over incomplete coverage",
+            "status": "PASS"
+          },
+          {
+            "detected": true,
+            "expected_finding": "no breach visible",
+            "findings": [
+              "a drift verdict is recorded under an insufficient-coverage classification with no breach visible beside it"
+            ],
+            "fixture": "drift buried under insufficient coverage",
+            "status": "PASS"
+          },
+          {
+            "detected": true,
+            "expected_finding": "hides a measured drift",
+            "findings": [
+              "a supported outcome hides a measured drift"
+            ],
+            "fixture": "a supported outcome hiding a measured drift",
+            "status": "PASS"
+          },
+          {
+            "detected": true,
+            "expected_finding": "does not match the breaches",
+            "findings": [
+              "the preserved drift block does not match the breaches listed in the consolidation"
+            ],
+            "fixture": "a preserved drift block that does not match its breaches",
+            "status": "PASS"
+          },
+          {
+            "detected": true,
+            "expected_finding": "market request",
+            "findings": [
+              "the run x after the close made 4 market request(s)",
+              "the run x after the close recorded 'COLLECTED'"
+            ],
+            "fixture": "a market request after the declared end",
+            "status": "PASS"
+          },
+          {
+            "detected": true,
+            "expected_finding": "neither observed nor missed",
+            "findings": [
+              "the ended declared slot 2026-10-08#4 is neither observed nor missed",
+              "the ended declared slot 2026-10-08#5 is neither observed nor missed",
+              "the ended declared slot 2026-10-09#0 is neither observed nor missed",
+              "the ended declared slot 2026-10-09#1 is neither observed nor missed",
+              "the ended declared slot 2026-10-09#2 is neither observed nor missed",
+              "the ended declared slot 2026-10-09#3 is neither observed nor missed",
+              "the ended declared slot 2026-10-09#4 is neither observed nor missed",
+              "the ended declared slot 2026-10-09#5 is neither observed nor missed",
+              "the ended declared slot 2026-10-10#0 is neither observed nor missed",
+              "the ended declared slot 2026-10-10#1 is neither observed nor missed",
+              "the ended declared slot 2026-10-10#2 is neither observed nor missed",
+              "the ended declared slot 2026-10-10#3 is neither observed nor missed"
+            ],
+            "fixture": "an ended declared slot that is unaccounted for",
+            "status": "PASS"
+          },
+          {
+            "detected": true,
+            "expected_finding": "while the run log says",
+            "findings": [
+              "the missed window 2026-10-08#4 states UNATTENDED_NO_RUN_EVENT while the run log says ATTENDED_NOT_COLLECTED",
+              "the missed window 2026-10-08#4 claims scheduled_runs_in_slot=0 while the run log says 1"
+            ],
+            "fixture": "a missed window that blames the schedule while the log shows the tick ran",
+            "status": "PASS"
+          },
+          {
+            "detected": true,
+            "expected_finding": "carries no attendance evidence",
+            "findings": [
+              "the missed window 2026-10-08#4 carries no attendance evidence"
+            ],
+            "fixture": "a missed window with no attendance evidence at all",
+            "status": "PASS"
+          },
+          {
+            "detected": true,
+            "expected_finding": "claims scheduled_runs_in_slot",
+            "findings": [
+              "the missed window 2026-10-08#4 claims scheduled_runs_in_slot=3 while the run log says 1"
+            ],
+            "fixture": "a missed window whose own counters contradict the run log",
+            "status": "PASS"
+          },
+          {
+            "detected": true,
+            "expected_finding": "is not bounded by the declared slot",
+            "findings": [
+              "the missed window 2026-10-08#4 is not bounded by the declared slot (2026-10-08T16:00:00Z -> 2026-10-08T20:21:20Z)"
+            ],
+            "fixture": "a missed window bounded by a slot that was never declared",
+            "status": "PASS"
+          },
+          {
+            "detected": true,
+            "expected_finding": "none",
+            "findings": [],
+            "fixture": "an honest missed window whose stated cause the log supports",
+            "status": "PASS"
+          },
+          {
+            "detected": true,
+            "expected_finding": "ends after the declared end",
+            "findings": [
+              "the plan says 84 windows but the derivation produced 8",
+              "the last eligible window 2026-10-09#5 ends after the declared end (2026-10-10T00:00:00Z > 2026-10-08T20:00:00Z)",
+              "the partial slot the period closes inside (2026-10-08#5) is counted as an eligible window"
+            ],
+            "fixture": "a declaration whose plan runs past its own end",
+            "status": "PASS"
+          },
+          {
+            "detected": true,
+            "expected_finding": "changed after the snapshot",
+            "findings": [
+              "the implementation file scripts/st6_forward_regime.py changed after the snapshot"
+            ],
+            "fixture": "an implementation hash that moved after the snapshot",
+            "status": "PASS"
+          },
+          {
+            "detected": true,
+            "expected_finding": "not classified as VERSIONED_IMPLEMENTATION",
+            "findings": [
+              "scripts/st6_forward_regime.py is not classified as VERSIONED_IMPLEMENTATION",
+              "scripts/st6_scheduler_verify.py is not classified as VERSIONED_IMPLEMENTATION",
+              "data/st6/ST6_TASK_DEFINITION.xml is not classified as VERSIONED_IMPLEMENTATION",
+              "data/st6/ST6_RUNS.jsonl is not classified as LIVE_RUNTIME_STATE",
+              "data/st6/ST6_HEALTH_STATUS.json is not classified as LIVE_RUNTIME_STATE",
+              "data/st6/ST6_WINDOWS.jsonl is not classified as LIVE_RUNTIME_STATE",
+              "data/st6/ST6_OBSERVATIONS.jsonl is not classified as LIVE_RUNTIME_STATE"
+            ],
+            "fixture": "an implementation file classified as live state",
+            "status": "PASS"
+          },
+          {
+            "detected": true,
+            "expected_finding": "with a failed check",
+            "findings": [
+              "the replay reports PASS on 3. the exact close instant with a failed check: the close returned the declared terminal status",
+              "the replay reports real market requests",
+              "the replay reports real scheduler calls"
+            ],
+            "fixture": "a replay report that hides a failed check",
+            "status": "PASS"
+          },
+          {
+            "detected": true,
+            "expected_finding": "moved real files",
+            "findings": [
+              "the replay moved real files it does not explain: ['scripts/st6_forward_regime.py']",
+              "the replay reports real market requests",
+              "the replay reports real scheduler calls"
+            ],
+            "fixture": "a replay report with unexplained real changes",
+            "status": "PASS"
+          },
+          {
+            "detected": true,
+            "expected_finding": "none",
+            "findings": [],
+            "fixture": "a program that merely names the forbidden paths",
+            "status": "PASS"
+          }
+        ],
+        "status": "PASS",
+        "tests": 22
       },
       "refused_a_stale_snapshot": "the same verifier returned 18/19 with FALSE_SUCCESS 1 while three programs had changed after the snapshot it was reading; it was not weakened to make the later run pass, the snapshot was retaken in the right order",
+      "replayed_close": {
+        "auto_extended": false,
+        "breaches_total": 1,
+        "closure_drift_breaches": 1,
+        "coverage_total": {
+          "completed_windows": 4,
+          "coverage_complete": false,
+          "coverage_token": "REGIME_COVERAGE_INSUFFICIENT",
+          "days_covered": 2,
+          "declared_slots_reached": 84,
+          "missed_windows": 80,
+          "observed_windows": 4,
+          "planned_windows": 84
+        },
+        "credentials_used": 0,
+        "drift_breaches_lost_by_the_close": [],
+        "drift_verdict": "DRIFT_WIDER_THAN_MODELLED",
+        "live_drift_breaches": 1,
+        "missed_windows": 80,
+        "orders_sent": 0,
+        "outcome": "INSUFFICIENT_REGIME_COVERAGE",
+        "terminal_state": "PERIOD_CLOSED_NO_FURTHER_COLLECTION"
+      },
+      "snapshot_life": {
+        "live_files_that_moved_since_the_snapshot": [],
+        "manifest": "data\\st6\\snapshots\\ST6_LIVE_STATE_20261009T075959Z.json",
+        "reading": "live runtime state keeps moving by design: those files are the ones the running tick rewrites, and the snapshot copy is the immutable record of what they held",
+        "snapshot_id": "ST6_LIVE_STATE_20261009T075959Z"
+      },
       "status": "PASS",
       "verdict": "ST6_CLOSE_VERIFIED"
     },
     "close_replay": {
       "artifact": "data/st6/ST6_CLOSE_REPLAY_REPORT.json",
       "close_mechanics_verdict": "PASS",
-      "declared_deviations": [
-        "BOUNDARY-SLOT-DUE-RULE",
-        "EXTENSION-FLAG-INERT"
-      ],
+      "declared_deviations": 2,
+      "missed_windows_in_the_replayed_close": 80,
       "real_market_requests": 0,
       "real_scheduler_calls": 0,
       "real_state_unchanged": true,
-      "real_state_unchanged_by_the_replay": true,
       "summary": {
         "declared_deviations": 0,
         "failed": 0,
@@ -722,45 +1110,75 @@
     },
     "live_health": {
       "artifact": "data/st6/ST6_HEALTH_STATUS.json",
-      "consecutive_failures": 1,
+      "consecutive_failures": 0,
       "consecutive_failures_over": "non-manual run events only",
+      "generated_at_utc": "2026-10-09T08:02:56Z",
       "heartbeat_basis": "LAST_NON_MANUAL_RUN",
+      "manual_invocations": 12,
+      "manual_invocations_with_errors": 12,
+      "missed_window_attendance": {},
+      "missed_window_claims_the_run_log_does_not_support": [],
       "missed_windows_recorded": 0,
-      "run_events": 145,
+      "observations": 60,
+      "run_events": 219,
       "run_events_by_provenance": {
-        "MANUAL": 4,
-        "SCHEDULED": 12,
+        "MANUAL": 12,
+        "SCHEDULED": 78,
         "UNRECORDED": 129
       },
-      "status": "WARNING",
+      "status": "HEALTHY",
       "unaccounted_slots": [],
-      "windows_completed": 2
+      "windows_completed": 5
     },
     "live_state_snapshot_check": {
-      "checks": 17,
-      "live_files_moved_since_the_snapshot": 0,
-      "newest_snapshot": "ST6_LIVE_STATE_20261008T222000Z",
+      "checks": 19,
+      "newest_snapshot": "ST6_LIVE_STATE_20261009T075959Z",
+      "reading": "the snapshot's own bytes, its copies and the raw evidence reproduce; the live files that have moved since are reported as drift, not as failure",
       "status": "PASS"
     },
     "scheduler_verifier": {
       "artifact": "data/st6/ST6_SCHEDULER_VERIFICATION.json",
-      "checks_passed": 1710,
-      "checks_total": 1710,
+      "checks_passed": 2570,
+      "checks_total": 2570,
       "false_success": 0,
+      "live_tests": {
+        "concurrency": "PASS",
+        "due_idempotency": "PASS",
+        "error_exit_status": "PASS",
+        "period_closure_guard": "PASS",
+        "real_execution": "PASS"
+      },
       "mismatches": 0,
+      "missed_accounting": {
+        "ended_slots": 4,
+        "missed_slots": 0,
+        "observed_slots": 5,
+        "unaccounted": []
+      },
+      "run_log": {
+        "collected_slots": [
+          "2026-10-08#5",
+          "2026-10-09#0",
+          "2026-10-09#1",
+          "2026-10-09#2"
+        ],
+        "runs": 218,
+        "windows": 5
+      },
       "status": "PASS"
     },
     "unit_suites": {
+      "note": "one instance of the scheduler suite failed at 08:07Z when the refusal test collided with the scheduler's own tick and passed on its own four minutes later: the declared contention of open defect FIXTURE-CONTENTION-COSTS-A-TEST-MINUTES",
       "tests/unit/research/test_st6_forward_regime.py": {
         "failed": 0,
         "passed": 22
       },
       "tests/unit/research/test_st6_scheduler.py": {
-        "added_with_this_work": 3,
+        "added_in_this_pass": 4,
         "failed": 0,
-        "passed": 24
+        "passed": 28
       },
-      "total_passed": 46
+      "total_passed": 50
     }
   }
 }
