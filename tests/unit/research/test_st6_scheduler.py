@@ -650,9 +650,14 @@ def test_the_lease_root_is_the_campaign_s_unless_a_test_asks_for_its_own(
 
 
 def test_an_impossible_cadence_refuses_with_a_non_zero_status() -> None:
-    before = len(read_jsonl(RUN_LOG))
+    # by run identity and not by list length: the run log is bounded and front-truncated, so once it
+    # holds its bound an appended event removes one from the front and a difference of lengths would
+    # report no event at all while one had just been written
+    before = {event.get("run_id") for event in read_jsonl(RUN_LOG)}
     result = run_tick_without_a_collision("--collect", "--rounds", "0")
-    fresh = read_jsonl(RUN_LOG)[before:]
+    fresh = [
+        event for event in read_jsonl(RUN_LOG) if event.get("run_id") not in before
+    ]
     assert result.returncode == 1
     assert fresh and fresh[-1]["result"] == "REFUSED_INVALID_ARGUMENTS"
     assert fresh[-1]["exit_code"] == 1

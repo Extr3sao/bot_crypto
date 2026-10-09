@@ -306,8 +306,20 @@ def slots_ended_by(period: dict[str, Any], now: datetime) -> list[dict[str, Any]
 # ---------------------------------------------------------------------------------------------
 
 
+def fresh_run_events(before: set[str | None]) -> list[dict[str, Any]]:
+    """The run events the log did not hold before, identified by their own identity.
+
+    The run log is bounded and front-truncated, so once it reaches its bound the number of lines it
+    holds stops growing: one appended event removes one from the front.  A test that compared *lengths*
+    would then see no new event at all while an event had just been written, and would report a
+    behaviour as broken that was working.  An event's identity is its run id, which is what this
+    compares; the assertion the caller makes is unchanged.
+    """
+    return [event for event in read_jsonl(RUN_LOG) if event.get("run_id") not in before]
+
+
 def live_real_execution() -> dict[str, Any]:
-    before = len(read_jsonl(RUN_LOG))
+    before = {event.get("run_id") for event in read_jsonl(RUN_LOG)}
     try:
         triggered = subprocess.run(
             ["schtasks", "/run", "/tn", TASK_NAME], capture_output=True, text=True, timeout=60
@@ -321,9 +333,17 @@ def live_real_execution() -> dict[str, Any]:
         }
     deadline = time.time() + TASK_TRIGGER_TIMEOUT_S
     while time.time() < deadline:
-        runs = read_jsonl(RUN_LOG)
-        if len(runs) > before:
-            event = runs[-1]
+        # the event this waits for is a *launch*: a refusal is a new line in the log too, and taking
+        # any new line as proof that the triggered task ran would let the very collision this test is
+        # meant to catch pass it
+        launches = [
+            event
+            for event in fresh_run_events(before)
+            if str(event.get("invocation", "")).upper() == "SCHEDULED"
+            and event.get("result") != "ALREADY_RUNNING"
+        ]
+        if launches:
+            event = launches[-1]
             record_induced_runs(
                 [event],
                 "live real-execution test: the task was triggered through the scheduler itself",
@@ -454,10 +474,9 @@ def live_concurrency() -> dict[str, Any]:
 
 
 def live_error_exit_status() -> dict[str, Any]:
-    before = len(read_jsonl(RUN_LOG))
+    before = {event.get("run_id") for event in read_jsonl(RUN_LOG)}
     result = run_tick(["--collect", "--rounds", "0"])
-    runs = read_jsonl(RUN_LOG)
-    fresh = runs[before:]
+    fresh = fresh_run_events(before)
     record_induced_runs(fresh, "live refusal test: a tick with an impossible cadence")
     ok = result["exit_code"] == 1 and any(
         event.get("result") == "REFUSED_INVALID_ARGUMENTS" for event in fresh

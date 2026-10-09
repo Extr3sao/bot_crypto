@@ -3,7 +3,7 @@
   "verifier": "scripts/st6_scheduler_verify.py",
   "builder": "scripts/st6_forward_regime.py",
   "builder_equals_verifier": false,
-  "generated_at_utc": "2026-10-09T16:34:43Z",
+  "generated_at_utc": "2026-10-09T19:56:56Z",
   "task": {
     "installed": true,
     "enabled": true,
@@ -28,7 +28,7 @@
       "detail": "the scheduler started the task and its tick wrote a run event",
       "trigger_exit_code": 0,
       "event": {
-        "run_id": "20261009T163444Z-c3c22301",
+        "run_id": "20261009T195657Z-2d78910d",
         "result": "SKIPPED_NO_WINDOW_DUE",
         "exit_code": 0,
         "market_requests": 0
@@ -46,7 +46,8 @@
         ],
         "exit_code": 0,
         "stdout_tail": [
-          "tick: SKIPPED_NO_WINDOW_DUE slot 16:00-20:00 UTC (us, weekday); market requests 0; completed windows 7; missed 0; health HEALTHY; ST6_AUTONOMOUS_COLLECTION_ACTIVE"
+          "tick: SKIPPED_NO_WINDOW_DUE slot 16:00-20:00 UTC (us, weekday); market requests 0; completed windows 7; missed 0; health HEALTHY; ST6_AUTONOMOUS_COLLECTION_ACTIVE",
+          "the run log was pruned by 1 oldest event(s)"
         ],
         "stderr_tail": []
       },
@@ -57,19 +58,20 @@
         ],
         "exit_code": 0,
         "stdout_tail": [
-          "tick: SKIPPED_NO_WINDOW_DUE slot 16:00-20:00 UTC (us, weekday); market requests 0; completed windows 7; missed 0; health HEALTHY; ST6_AUTONOMOUS_COLLECTION_ACTIVE"
+          "tick: SKIPPED_NO_WINDOW_DUE slot 16:00-20:00 UTC (us, weekday); market requests 0; completed windows 7; missed 0; health HEALTHY; ST6_AUTONOMOUS_COLLECTION_ACTIVE",
+          "the run log was pruned by 1 oldest event(s)"
         ],
         "stderr_tail": []
       },
       "events": [
         {
-          "run_id": "20261009T163453Z-61399657",
+          "run_id": "20261009T195711Z-f1d85dd4",
           "result": "SKIPPED_NO_WINDOW_DUE",
           "exit_code": 0,
           "market_requests": 0
         },
         {
-          "run_id": "20261009T163504Z-b6f8d8e3",
+          "run_id": "20261009T195721Z-fca56c85",
           "result": "SKIPPED_NO_WINDOW_DUE",
           "exit_code": 0,
           "market_requests": 0
@@ -80,34 +82,34 @@
       "status": "PASS",
       "detail": "a second process refused the tick with ALREADY_RUNNING while the lease was held, in a private lock root, and declared no scheduled invocation",
       "second_exit_code": 2,
-      "refusals_recorded": 67,
+      "refusals_recorded": 75,
       "refusal_event": {
-        "actual_end_utc": "2026-10-09T16:35:16Z",
-        "actual_start_utc": "2026-10-09T16:35:15Z",
+        "actual_end_utc": "2026-10-09T19:57:32Z",
+        "actual_start_utc": "2026-10-09T19:57:31Z",
         "artifact": "ST6_RUN_EVENT",
         "collection_attempted": false,
         "data_freshness": null,
         "errors": "another run holds the lease",
         "exit_code": 2,
         "holder": {
-          "acquired_at": 1791563715,
+          "acquired_at": 1791575851,
           "campaign_id": "ST6_FORWARD_REGIME",
           "host": "DESKTOP-4CHO695",
           "lease_version": "CAMPAIGN_LEASE_V1",
-          "pid": 15176,
-          "renewed_at": 1791563715,
+          "pid": 15416,
+          "renewed_at": 1791575851,
           "stale_after_seconds": 300
         },
         "invocation": "MANUAL",
         "market_requests": 0,
         "raw_evidence_hash": null,
         "result": "ALREADY_RUNNING",
-        "run_id": "20261009T163515Z-c1aa84dc",
+        "run_id": "20261009T195731Z-f91fcf06",
         "scheduled_slot_utc": "16:00-20:00 UTC",
         "slot_key": "2026-10-09#4",
         "verifier_status": null
       },
-      "lease_root": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\st6-concurrency-lease-fne554w_",
+      "lease_root": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\st6-concurrency-lease-u7mcxm5u",
       "campaign_lease_used": false,
       "campaign_lease_reading": "this test took its own lease in a private lock root and passed that root to the process under test: the campaign's lock is neither taken nor contended for, so a real scheduled tick is never refused on account of this verification"
     },
@@ -144,7 +146,7 @@
     "present": false
   },
   "run_log": {
-    "runs": 373,
+    "runs": 400,
     "collected_slots": [
       "2026-10-08#5",
       "2026-10-09#0",
@@ -174,7 +176,7 @@
   "reconciliation": {
     "artifact": "ST6_INDEPENDENT_RECONCILIATION",
     "verifier": "scripts/st6_scheduler_verify.py",
-    "generated_at_utc": "2026-10-09T16:34:43Z",
+    "generated_at_utc": "2026-10-09T19:56:56Z",
     "period": {
       "started_at_utc": "2026-10-08T16:21:20Z",
       "ends_at_utc": "2026-10-22T16:21:20Z"
@@ -207,8 +209,8 @@
           "reading": "no external record covers this slot: the operational channel of this host has never recorded, and the witness was not sampling when the slot ran"
         },
         "B_internal": {
-          "run_events": 96,
-          "scheduled_events": 96,
+          "run_events": 80,
+          "scheduled_events": 80,
           "run_ids_caused_by_this_verifier": [],
           "missed_record": false,
           "ledger_classification": null,
@@ -421,8 +423,8 @@
           "reading": "the witness saw part of the slot but not all of it, so a trigger could have run between two samples unseen: attendance inside the slot is UNKNOWN from the external record"
         },
         "B_internal": {
-          "run_events": 80,
-          "scheduled_events": 54,
+          "run_events": 123,
+          "scheduled_events": 81,
           "run_ids_caused_by_this_verifier": [
             "20261009T160433Z-cb717a7d",
             "20261009T160442Z-4ce757f5",
@@ -463,7 +465,25 @@
             "20261009T163453Z-61399657",
             "20261009T163504Z-b6f8d8e3",
             "20261009T163515Z-c1aa84dc",
-            "20261009T163516Z-3d86c11f"
+            "20261009T163516Z-3d86c11f",
+            "20261009T194747Z-8350e35d",
+            "20261009T194803Z-c6c0a3de",
+            "20261009T194806Z-dbd19d27",
+            "20261009T194807Z-cdc38271",
+            "20261009T194858Z-c79d84f9",
+            "20261009T194903Z-96dd29cd",
+            "20261009T194904Z-540df2b5",
+            "20261009T194906Z-75b6f230",
+            "20261009T194907Z-1af4583e",
+            "20261009T195304Z-24799cab",
+            "20261009T195319Z-403d2021",
+            "20261009T195328Z-c6a8119e",
+            "20261009T195339Z-56f4a63e",
+            "20261009T195657Z-2d78910d",
+            "20261009T195711Z-f1d85dd4",
+            "20261009T195721Z-fca56c85",
+            "20261009T195731Z-f91fcf06",
+            "20261009T195732Z-8a51494a"
           ],
           "missed_record": false,
           "ledger_classification": null,
@@ -2950,8 +2970,8 @@
     "status": "PASS",
     "reading": "every declared slot is reconciled across the scheduler's own record, the repository's own logs and the raw bytes; a slot whose absence of a window cannot be explained by the external record is carried as UNKNOWN rather than as proven unattended, and a raw hash that does not reproduce is a finding"
   },
-  "checks_total": 5096,
-  "checks_passed": 5096,
+  "checks_total": 5449,
+  "checks_passed": 5449,
   "mismatches": 0,
   "failures": [],
   "false_success": 0,
