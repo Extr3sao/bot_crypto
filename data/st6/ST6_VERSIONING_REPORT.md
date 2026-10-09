@@ -175,7 +175,8 @@ mission's final response (`CURRENT_HEAD`).
 | live-state snapshot | `--check` PASS (19 checks) right after `ST6_LIVE_STATE_20261009T075959Z` was taken: the snapshot's own bytes and the raw evidence reproduce, and the live files that have moved since are named as drift |
 | snapshot storage | every copy of all six snapshots re-hashed against `git cat-file blob HEAD:<path>`: **90 copies, 0 mismatches** |
 | a stale snapshot is refused | when the three programs were edited after `ST6_LIVE_STATE_20261008T221134Z` had been taken, the independent verifier **failed** with `the implementation file scripts/st6_state_snapshot.py changed after the snapshot` (18/19, FALSE_SUCCESS 1). The snapshot was retaken in the right order and the same verification then passed 19/19. The check is not decorative. |
-| live health after the second pass | `HEALTHY` at 2026-10-09T08:02:56Z; 219 run events by provenance `{MANUAL: 12, SCHEDULED: 78, UNRECORDED: 129}`; failure streak **0** over non-manual events only (threshold 3); heartbeat basis `LAST_NON_MANUAL_RUN`, age 12 s; what the fixtures did is recorded beside it as information (`manual_invocations_with_errors: 12`, last manual error `rounds=0 …`) and no longer raises the status; 5 windows, 60 observations, 0 unaccounted slots, 0 missed, 0 unsupported attendance claims |
+| live health after the second pass | `HEALTHY` at 2026-10-09T08:02:56Z, written by the tick that ran after the change: 219 run events by provenance `{MANUAL: 12, SCHEDULED: 78, UNRECORDED: 129}`, failure streak **0** over non-manual events (threshold 3), heartbeat basis `LAST_NON_MANUAL_RUN`, age 12 s, 5 windows, 60 observations, 0 unaccounted slots, 0 missed, 0 unsupported attendance claims, and the fixtures' own failures recorded beside it as information (`manual_invocations_with_errors: 12`, last manual error `rounds=0 …`) |
+| live health five minutes later, read by hand | `WARNING` at 2026-10-09T08:16:53Z with the single reason *the last scheduled run recorded an error: another run holds the lease* — the scheduler verifier's own lease-refusal fixture, which declares the task's command line and so is indistinguishable from it (defect 9, measured there). The next real tick rewrites it; this is the declared limit, not a signal about the campaign |
 
 The replayed close produced `INSUFFICIENT_REGIME_COVERAGE` (2 of 84 planned windows, 82 missed) with
 the terminal state `PERIOD_CLOSED_NO_FURTHER_COLLECTION`, the drift preserved beside the outcome
@@ -235,7 +236,12 @@ invocation declares on its command line, not an unforgeable origin, so a fixture
 `--scheduled` is recorded exactly as the task would be, and the 129 rows that predate the field carry
 no provenance at all. Minimal correction: have the registered task carry a per-installation token, or
 reconcile the log against Task Scheduler's own `Last Run Time`. Not applied here: it would mean
-changing the installed task, which this work does not need in order to prove the close.
+changing the installed task, which this work does not need in order to prove the close. Measured at
+2026-10-09T08:16:54Z: the scheduler verifier's own lease-refusal fixture writes a
+`SCHEDULED`-provenanced event carrying an error, so the live status reads `WARNING` — *the last
+scheduled run recorded an error: another run holds the lease* — until the next real tick rewrites it.
+The manual fixtures no longer do that (defect 5's fix), and the remaining instance is this declared
+limit rather than a new defect.
 
 Also recorded: during the test run that hardened the flakiness of the cadence test, one single-shot
 tick returned status 0 with empty output and no run event (a live tick was sharing the lease at that
