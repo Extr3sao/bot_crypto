@@ -13,7 +13,7 @@
       "detail": {
         "audit_says_enabled": false,
         "host_says_enabled": false,
-        "read_at_utc": "2026-10-09T19:58:49Z"
+        "read_at_utc": "2026-10-09T20:00:41Z"
       },
       "status": "PASS"
     },
@@ -213,7 +213,7 @@
     "operational_config_sha256": "8c40bc8b7d6b1dcf7a39baeb2f3718883f21b4db96fcfdfa4a1e41443b8814c2",
     "operational_enabled": false,
     "operational_read_status": "OK",
-    "read_at_utc": "2026-10-09T19:58:49Z",
+    "read_at_utc": "2026-10-09T20:00:41Z",
     "schtasks": {
       "exit_code": 0,
       "status": "OK"
@@ -442,7 +442,7 @@
     }
   },
   "status": "PASS",
-  "taken_at_utc": "2026-10-09T19:58:50Z",
+  "taken_at_utc": "2026-10-09T20:00:42Z",
   "unverified_checks": [],
   "verifier": "scripts/rfc047_verify.py"
 }

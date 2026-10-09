@@ -2,7 +2,7 @@
 
 | field | value |
 | --- | --- |
-| **CURRENT_HEAD** | a709c88d828eff9e7651e1d7d4c3a72df8ad15c2 |
+| **CURRENT_HEAD** | c667683e2e1d8c4a1a55abca9ad1f06d25d9dd4c |
 | **RFC047_STATUS** | RFC047_BLOCKED_HOST_PERMISSIONS |
 | **WINDOWS_CHANNEL_BEFORE** | CHANNEL_DISABLED (enabled=False, retention=false, max_size_bytes=10485760, records=None, never recorded) |
 | **WINDOWS_CHANNEL_AFTER** | CHANNEL_DISABLED (enabled=False, retention=false, max_size_bytes=10485760, records=None, never recorded); unchanged, because the change that would enable it was not applied |
@@ -18,7 +18,7 @@
 | **RUNTIME_TESTS** | RFC047_RUNTIME_CORRELATION_PARTIAL_INTERNAL_AND_SERVICE_ONLY: 5 of 6 links of the runtime chain are held by real artefacts; the external trigger is not among them |
 | **INDEPENDENT_VERIFICATION** | PASS |
 | **FALSE_SUCCESS** | 0 |
-| **COMMITS** | one commit carries the whole RFC-047 change set (baseline a709c88d828eff9e7651e1d7d4c3a72df8ad15c2 plus these files); it is created after this report is written, so the report names the baseline it audited and the commit itself is read from the repository's history. Only RFC-047's own files are staged; other agents' pending modifications are left untouched. |
+| **COMMITS** | 2 commit(s) touch the paths of this RFC, read from the repository's own history: 7b673f5 (2026-10-09) RFC-047: read the Windows event plane instead of letting the monitor's own account stand as proof; a709c88 (2026-10-09) feat(research): record the origin of every ST-6 run and stop losing slot evidence. The report is written after them, so CURRENT_HEAD names the head it was written at; only RFC-047's own files are committed by those commits, and the pending modifications of other work are left untouched. A defect found beside this RFC is repaired in a commit of its own and is recorded in section 14 of the document. |
 | **BLOCKERS** | HOST_AUDIT_CHANGE_APPROVAL_REQUIRED: enable the Microsoft-Windows-TaskScheduler/Operational channel (wevtutil sl ... /e:true): the only configuration change RFC-047 contemplates was requested and not approved, and the unelevated attempt was refused with exit code 5 (Error al guardar la configuración o al activar el registro Microsoft-Windows-TaskScheduler/Operational. Acceso denegado.); without that change no external per-run record can exist, so no slot of this period can be corroborated run by run |
 | **NEXT_GATE** | the real close of the ST-6 period at 2026-10-22T16:21:20Z, and — before it — the single command that would let the remaining slots of the period be corroborated as they happen: wevtutil sl Microsoft-Windows-TaskScheduler/Operational /e:true, with an elevated token |
 

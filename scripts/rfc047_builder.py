@@ -164,6 +164,42 @@ def git_head() -> str:
     return answer.stdout.strip() or "UNAVAILABLE"
 
 
+#: The paths that belong to RFC-047, so that the commits named in the report are read from the
+#: repository's own history rather than typed here: a commit hash written by hand is a claim, and a
+#: claim about which commit carries a file is exactly the kind of thing this RFC exists to check.
+RFC047_PATHS = (
+    "docs/rfc/RFC-047_ST6_SCHEDULER_PROVENANCE.md",
+    "docs/rfc/RFC-047_ST6_SCHEDULER_PROVENANCE.json",
+    "scripts/rfc047_builder.py",
+    "scripts/rfc047_verify.py",
+    "scripts/st6_windows_events.py",
+    "scripts/st6_slot_ledger.py",
+    "data/st6/RFC047_",
+    "data/st6/rfc047/",
+    "tests/unit/research/test_rfc047_windows_evidence.py",
+)
+
+
+def git_commits(paths: tuple[str, ...], limit: int = 5) -> list[dict[str, str]]:
+    """The commits that touched these paths, as git itself answers."""
+    try:
+        answer = subprocess.run(
+            ["git", "log", f"-{int(limit)}", "--format=%h|%ad|%s", "--date=short", "--", *paths],
+            capture_output=True,
+            text=True,
+            check=False,
+            cwd=REPO,
+        )
+    except FileNotFoundError:  # pragma: no cover - a host without git
+        return []
+    rows: list[dict[str, str]] = []
+    for line in answer.stdout.splitlines():
+        parts = line.split("|", 2)
+        if len(parts) == 3:
+            rows.append({"commit": parts[0], "date": parts[1], "subject": parts[2]})
+    return rows
+
+
 def write_json(path: Path, document: dict[str, Any], sort_keys: bool = True) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     temporary = path.with_suffix(path.suffix + ".tmp")
@@ -680,7 +716,9 @@ def build_report(
     # the verifier is a separate program that writes its own document; what the report says about it
     # is read from that document rather than assumed, so a report written before the verification
     # says so instead of inheriting a verdict it never received
-    verification = verification if verification is not None else read_json(VERIFICATION_JSON) or None
+    verification = (
+        verification if verification is not None else read_json(VERIFICATION_JSON) or None
+    )
     negative_summary = negative_summary or ((verification or {}).get("negative_controls") or None)
     period = read_json(PERIOD_PATH) or {}
     operational = (
@@ -691,6 +729,21 @@ def build_report(
     ) or {}
     registry = read_json(REGISTRY) or {}
     gate = audit.get("gate") or {}
+    commits = git_commits(RFC047_PATHS)
+    commits_text = (
+        f"{len(commits)} commit(s) touch the paths of this RFC, read from the repository's own "
+        "history: "
+        + "; ".join(f"{row['commit']} ({row['date']}) {row['subject']}" for row in commits)
+        + ". The report is written after them, so CURRENT_HEAD names the head it was written at; "
+        "only RFC-047's own files are committed by those commits, and the pending modifications of "
+        "other work are left untouched. A defect found beside this RFC is repaired in a commit of "
+        "its own and is recorded in section 14 of the document."
+        if commits
+        else (
+            "no commit touches the paths of this RFC yet: the change set is not committed, and this "
+            "report says so rather than naming a commit it cannot see"
+        )
+    )
     channel_before = (
         f"{operational.get('state')} (enabled={operational.get('config', {}).get('enabled')}, "
         f"retention={operational.get('config', {}).get('retention')}, "
@@ -792,12 +845,7 @@ def build_report(
             verification.get("status", "NOT_RUN") if verification else "NOT_RUN"
         ),
         "FALSE_SUCCESS": (verification or {}).get("false_success", 0),
-        "COMMITS": (
-            f"one commit carries the whole RFC-047 change set (baseline {git_head()} plus these "
-            "files); it is created after this report is written, so the report names the baseline it "
-            "audited and the commit itself is read from the repository's history. Only RFC-047's own "
-            "files are staged; other agents' pending modifications are left untouched."
-        ),
+        "COMMITS": commits_text,
         "BLOCKERS": [
             f"{gate.get('status')}: {gate.get('change_contemplated')} was requested and not "
             "approved, and the unelevated attempt was refused with exit code "

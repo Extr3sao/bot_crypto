@@ -1,6 +1,6 @@
 # ST-6 — provenance of the scheduled tick
 
-Generated 2026-10-09T19:58:48Z by `scripts/st6_slot_ledger.py`, read-only with respect to the campaign.
+Generated 2026-10-09T19:59:59Z by `scripts/st6_slot_ledger.py`, read-only with respect to the campaign.
 
 ## 01 — External evidence: `SCHEDULER_EVIDENCE_UNAVAILABLE`
 

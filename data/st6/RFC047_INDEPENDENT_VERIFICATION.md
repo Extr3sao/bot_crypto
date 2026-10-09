@@ -1,7 +1,7 @@
 # RFC-047 — INDEPENDENT VERIFICATION
 
 - **status**: `PASS`
-- **taken at**: 2026-10-09T19:58:50Z
+- **taken at**: 2026-10-09T20:00:42Z
 - **verifier**: `scripts/rfc047_verify.py` — imports nothing from the builder, the ledger or the ingestion component
 - **checks**: 16 (0 failed, 0 unverified)
 - **FALSE_SUCCESS**: `0`
@@ -23,7 +23,7 @@
 
 | check | status | detail |
 | --- | --- |
-| `channel_state_matches_the_host` | PASS | {'audit_says_enabled': False, 'host_says_enabled': False, 'read_at_utc': '2026-10-09T19:58:49Z'} |
+| `channel_state_matches_the_host` | PASS | {'audit_says_enabled': False, 'host_says_enabled': False, 'read_at_utc': '2026-10-09T20:00:41Z'} |
 | `declared_grid_recomputed` | PASS | {'slots_declared_by_the_period': 84, 'slots_in_the_ledger': 84, 'bounds_agree': True, 'slots_per_day': 6} |
 | `provenance_recomputed` | PASS | {'slots': 84, 'mismatches': [], 'count': 0} |
 | `store_cannot_outlive_the_channel` | PASS | {'records_of_the_monitored_task': 0, 'coverage_from_utc': None, 'reading': 'a record of this task in the store implies an instant from which the channel could have produced it'} |

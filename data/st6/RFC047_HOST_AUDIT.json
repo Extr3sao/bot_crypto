@@ -55,7 +55,7 @@
         "host_offset_minutes": 120,
         "newest_event_utc": "2026-10-09T19:28:23.798309Z",
         "reading": "the newest record is not in the future, so the instants of this channel are UTC as they claim to be",
-        "seconds_ahead_of_the_wall_clock": -1852.0,
+        "seconds_ahead_of_the_wall_clock": -1893.9,
         "status": "CONSISTENT_WITH_UTC"
       }
     },
@@ -109,7 +109,7 @@
   "coverage_from_utc": null,
   "coverage_reading": "no instant exists from which a per-run record could exist: the operational channel is disabled and has never recorded on this host, so every slot of the period is outside the reach of external evidence, and a later rebuild may not promote one",
   "disk": {
-    "free_bytes": 20404424704,
+    "free_bytes": 20441919488,
     "measured": true,
     "total_bytes": 255041990656,
     "used_percent": 92.0
@@ -153,13 +153,13 @@
     "operational": "false"
   },
   "session": {
-    "as_of_utc": "2026-10-09T19:59:15Z",
+    "as_of_utc": "2026-10-09T19:59:57Z",
     "is_administrator_token": false,
     "read_probe_exit_code": 0,
     "read_probe_status": "OK",
     "user": "DIRECTORI\\GVLLFR0035"
   },
-  "taken_at_utc": "2026-10-09T19:59:15Z",
+  "taken_at_utc": "2026-10-09T19:59:57Z",
   "task": {
     "declared_by": "data/st6/ST6_SCHEDULER_EVIDENCE.json, the task's own registration",
     "full_path": "\\TradingAgentic-ST6-Forward",

@@ -1,9 +1,9 @@
 {
   "artifact": "RFC047_FINAL_REPORT",
   "title": "RFC-047 — ST-6 SCHEDULER PROVENANCE & INDEPENDENT EXECUTION EVIDENCE",
-  "generated_at_utc": "2026-10-09T19:58:48Z",
+  "generated_at_utc": "2026-10-09T20:00:40Z",
   "generated_by": "scripts/rfc047_builder.py",
-  "CURRENT_HEAD": "a709c88d828eff9e7651e1d7d4c3a72df8ad15c2",
+  "CURRENT_HEAD": "c667683e2e1d8c4a1a55abca9ad1f06d25d9dd4c",
   "RFC047_STATUS": "RFC047_BLOCKED_HOST_PERMISSIONS",
   "WINDOWS_CHANNEL_BEFORE": "CHANNEL_DISABLED (enabled=False, retention=false, max_size_bytes=10485760, records=None, never recorded)",
   "WINDOWS_CHANNEL_AFTER": "CHANNEL_DISABLED (enabled=False, retention=false, max_size_bytes=10485760, records=None, never recorded); unchanged, because the change that would enable it was not applied",
@@ -25,7 +25,7 @@
   "RUNTIME_TESTS": "RFC047_RUNTIME_CORRELATION_PARTIAL_INTERNAL_AND_SERVICE_ONLY: 5 of 6 links of the runtime chain are held by real artefacts; the external trigger is not among them",
   "INDEPENDENT_VERIFICATION": "PASS",
   "FALSE_SUCCESS": 0,
-  "COMMITS": "one commit carries the whole RFC-047 change set (baseline a709c88d828eff9e7651e1d7d4c3a72df8ad15c2 plus these files); it is created after this report is written, so the report names the baseline it audited and the commit itself is read from the repository's history. Only RFC-047's own files are staged; other agents' pending modifications are left untouched.",
+  "COMMITS": "2 commit(s) touch the paths of this RFC, read from the repository's own history: 7b673f5 (2026-10-09) RFC-047: read the Windows event plane instead of letting the monitor's own account stand as proof; a709c88 (2026-10-09) feat(research): record the origin of every ST-6 run and stop losing slot evidence. The report is written after them, so CURRENT_HEAD names the head it was written at; only RFC-047's own files are committed by those commits, and the pending modifications of other work are left untouched. A defect found beside this RFC is repaired in a commit of its own and is recorded in section 14 of the document.",
   "BLOCKERS": [
     "HOST_AUDIT_CHANGE_APPROVAL_REQUIRED: enable the Microsoft-Windows-TaskScheduler/Operational channel (wevtutil sl ... /e:true): the only configuration change RFC-047 contemplates was requested and not approved, and the unelevated attempt was refused with exit code 5 (Error al guardar la configuración o al activar el registro Microsoft-Windows-TaskScheduler/Operational.\nAcceso denegado.)",
     "without that change no external per-run record can exist, so no slot of this period can be corroborated run by run"
@@ -57,7 +57,7 @@
   },
   "runtime": {
     "artifact": "RFC047_RUNTIME_VERIFICATION",
-    "built_at_utc": "2026-10-09T19:58:48Z",
+    "built_at_utc": "2026-10-09T20:00:40Z",
     "built_by": "scripts/rfc047_builder.py",
     "requirement": "WP-047-06 and the runtime test of RFC-047: show at least one real correlation between a Windows scheduled trigger, a process execution, an ST-6 run id, the outcome of the slot and the reference to its evidence",
     "status": "RFC047_RUNTIME_CORRELATION_PARTIAL_INTERNAL_AND_SERVICE_ONLY",

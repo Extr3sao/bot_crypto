@@ -49,7 +49,7 @@
     "why": "the operational channel is disabled on this host and the change that would enable it was refused without an elevated token; the maintenance channel carries only identifiers 800 and 808, none of which describes a task's execution"
   },
   "evidence_version": "RFC047_WINDOWS_EVENT_EVIDENCE_V1",
-  "generated_at_utc": "2026-10-09T19:59:16Z",
+  "generated_at_utc": "2026-10-09T19:59:57Z",
   "generated_by": "scripts/st6_windows_events.py",
   "live_state": {
     "attempts_recorded": 20,
@@ -59,7 +59,7 @@
       "bytes_per_record": null,
       "records": 0
     },
-    "last_attempt_at_utc": "2026-10-09T19:59:15Z",
+    "last_attempt_at_utc": "2026-10-09T19:59:57Z",
     "last_attempt_status": "CHANNEL_DISABLED_NO_RECORDS",
     "path": "data/st6/rfc047/WINDOWS_EVENT_LIVE_STATE.json",
     "watermarks": {
