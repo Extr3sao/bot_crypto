@@ -200,7 +200,7 @@
       "witness_samples": 152
     }
   },
-  "generated_at_utc": "2026-10-09T16:37:46Z",
+  "generated_at_utc": "2026-10-09T19:58:48Z",
   "generated_by": "scripts/st6_slot_ledger.py",
   "origins": {
     "corroborated_runs": [
@@ -1115,9 +1115,9 @@
     ],
     "counts": {
       "CORROBORATED_ENGINE_LAUNCH": 20,
-      "INDUCED_BY_THE_VERIFIER": 50,
-      "MANUAL": 35,
-      "SELF_DECLARED_UNVERIFIED": 140,
+      "INDUCED_BY_THE_VERIFIER": 68,
+      "MANUAL": 46,
+      "SELF_DECLARED_UNVERIFIED": 157,
       "UNATTRIBUTED": 129
     },
     "definition": {
@@ -1465,7 +1465,7 @@
       "PENDING": 77
     }
   },
-  "system_time_utc": "2026-10-09T16:37:46Z",
+  "system_time_utc": "2026-10-09T19:58:48Z",
   "task_name": "TradingAgentic-ST6-Forward",
   "what_is_not_claimed": [
     "that any past slot of this period was provably unattended: no per-run external record covers those hours on this host",

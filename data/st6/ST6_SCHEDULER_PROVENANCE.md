@@ -1,6 +1,6 @@
 # ST-6 — provenance of the scheduled tick
 
-Generated 2026-10-09T16:37:46Z by `scripts/st6_slot_ledger.py`, read-only with respect to the campaign.
+Generated 2026-10-09T19:58:48Z by `scripts/st6_slot_ledger.py`, read-only with respect to the campaign.
 
 ## 01 — External evidence: `SCHEDULER_EVIDENCE_UNAVAILABLE`
 
@@ -24,9 +24,9 @@ Rotation of the external record: `EXTERNAL_RECORD_ROTATION_LOSS_RECORDED`.
 | origin | runs | what it means |
 | --- | --- | --- |
 | `CORROBORATED_ENGINE_LAUNCH` | 20 | a witness sample names the scheduler's own last-run instant at this event's start, so the Task Scheduler engine launched the task then; the operational channel is disabled, so the trigger type stays unknown |
-| `SELF_DECLARED_UNVERIFIED` | 140 | the event declares itself the schedule and nothing outside the run log corroborates it: a declaration, not proof |
-| `MANUAL` | 35 | the event declares itself a manual invocation |
-| `INDUCED_BY_THE_VERIFIER` | 50 | this repository's own verifier asked the scheduler to run the task; a real launch, and not the schedule's own tick |
+| `SELF_DECLARED_UNVERIFIED` | 157 | the event declares itself the schedule and nothing outside the run log corroborates it: a declaration, not proof |
+| `MANUAL` | 46 | the event declares itself a manual invocation |
+| `INDUCED_BY_THE_VERIFIER` | 68 | this repository's own verifier asked the scheduler to run the task; a real launch, and not the schedule's own tick |
 | `UNATTRIBUTED` | 129 | the event declares nothing and no witness sample reaches it |
 
 a run event's origin is decided outside the tick: by the scheduler's own record, by the verifier's own record of what it induced, or by the event's own declaration, which is the weakest of the three and is labelled as such

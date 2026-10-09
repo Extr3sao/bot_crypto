@@ -1,11 +1,11 @@
 {
   "registry": "RFC_IDENTIFIER_REGISTRY",
   "schema_version": 1,
-  "updated_at_utc": "2026-10-08T00:00:00Z (activation; timestamps are author-declared, TD-4)",
+  "updated_at_utc": "2026-10-09T00:00:00Z (RFC-047 registered; timestamps are author-declared, TD-4)",
   "source_of_truth": "data/rfc046/audit.json (artefact scan + tracked-document declarations)",
   "generated_by": "scripts/rfc046_activate.py",
   "allocation_rule": "A new RFC number must be checked against this registry first. The next free number is the smallest integer above 046 that this registry does not list as occupied. Numbers are never reused. 045 stays empty by control: four campaign verifiers assert that no RFC-045 artefact exists, so filling it would break a real invariant rather than merely reuse a number.",
-  "next_free_number_above_046": "047",
+  "next_free_number_above_046": "048",
   "current_rfc": {
     "number": "046",
     "status": "APPROVED / ACTIVE",
@@ -13,7 +13,7 @@
     "offline_only": true
   },
   "counts": {
-    "occupied": 27,
+    "occupied": 28,
     "vacant_by_control": 1,
     "unversioned_occupancy": 17
   },
@@ -279,11 +279,28 @@
       "approval_record": "tasks/decisions.md ADR-0024",
       "prior_artefacts": [],
       "mentions_only_before_this_rfc": []
+    },
+    "047": {
+      "state": "OCCUPIED",
+      "declaration_strength": "TRACKED_DOCUMENT",
+      "declared_in_tracked_docs": [
+        "docs/rfc/RFC-047_ST6_SCHEDULER_PROVENANCE.md"
+      ],
+      "artefacts_versioned": true,
+      "artefact_count": 2,
+      "occupant": "RFC-047 ST-6 SCHEDULER PROVENANCE & INDEPENDENT EXECUTION EVIDENCE",
+      "status": "RFC047_BLOCKED_HOST_PERMISSIONS",
+      "approved_at": null,
+      "approval_record": null,
+      "prior_artefacts": [],
+      "mentions_only_before_this_rfc": [],
+      "registered_by": "the RFC-047 implementation, after checking that this registry did not list the number; the registry's own generator (scripts/rfc046_activate.py) scans artefacts at activation time and was not re-run"
     }
   },
   "known_limitations": [
     "Occupancy was reconstructed from artefacts and tracked documents, not from a historical registry (none existed before this file).",
     "Artefacts under reports/* are gitignored, so 'versioned artefact' means the declaration is tracked, not the artefact.",
-    "A snapshot ages: an RFC artefact added later by another workstream must be added here."
+    "A snapshot ages: an RFC artefact added later by another workstream must be added here.",
+    "RFC-047 was registered by hand rather than by re-running the generator, and the recorded document hash of this file in data/rfc046/ACTIVATION.json was updated for that one change so that RFC-046's own hash check stays true instead of going stale."
   ]
 }

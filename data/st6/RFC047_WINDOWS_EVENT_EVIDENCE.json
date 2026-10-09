@@ -1,0 +1,86 @@
+{
+  "artifact": "RFC047_WINDOWS_EVENT_EVIDENCE",
+  "channels": {
+    "Microsoft-Windows-TaskScheduler/Maintenance": {
+      "attempt_status": "NO_RECORDS_MATCHING_THE_TASK",
+      "enabled": true,
+      "event_ids_seen": [],
+      "event_record_ids": [],
+      "readable": true,
+      "records_stored": 0,
+      "state": "CHANNEL_AVAILABLE",
+      "watermark": 2713
+    },
+    "Microsoft-Windows-TaskScheduler/Operational": {
+      "attempt_status": "CHANNEL_DISABLED_NO_RECORDS",
+      "enabled": false,
+      "event_ids_seen": [],
+      "event_record_ids": [],
+      "readable": true,
+      "records_stored": 0,
+      "state": "CHANNEL_DISABLED",
+      "watermark": null
+    }
+  },
+  "collection_never_blocks_the_monitor": "the scheduled tick runs this program as a subprocess and records its exit status; a refused read cannot stop a sample from being taken",
+  "event_identifier_candidates": {
+    "classification_rule": "a record is classified by its channel, its task path, its instance identifiers and its instants; the identifier alone never establishes that a run was scheduled",
+    "declared": [
+      100,
+      102,
+      107,
+      110,
+      200,
+      201
+    ],
+    "semantics": {
+      "declaration": null,
+      "declaration_path": "data/st6/rfc047/EVENT_SEMANTICS.json",
+      "reason": "no declaration of the identifiers' meaning exists for this host, and none may be invented here: the identifiers are read as candidates and a record is classified by its fields",
+      "rules": null,
+      "state": "NOT_VERIFIED_ON_THIS_HOST"
+    }
+  },
+  "events_available": 0,
+  "events_missing_or_unobtainable": {
+    "gate_status": "HOST_AUDIT_CHANGE_APPROVAL_REQUIRED",
+    "operational_channel_enabled": false,
+    "records_lost_to_rotation_in_the_maintenance_channel": 440,
+    "why": "the operational channel is disabled on this host and the change that would enable it was refused without an elevated token; the maintenance channel carries only identifiers 800 and 808, none of which describes a task's execution"
+  },
+  "evidence_version": "RFC047_WINDOWS_EVENT_EVIDENCE_V1",
+  "generated_at_utc": "2026-10-09T19:59:16Z",
+  "generated_by": "scripts/st6_windows_events.py",
+  "live_state": {
+    "attempts_recorded": 20,
+    "growth": {
+      "bound": "one record per (channel, EventRecordID), deduplicated on write; the store is never an export of the whole log and never grows by a re-read",
+      "bytes": 0,
+      "bytes_per_record": null,
+      "records": 0
+    },
+    "last_attempt_at_utc": "2026-10-09T19:59:15Z",
+    "last_attempt_status": "CHANNEL_DISABLED_NO_RECORDS",
+    "path": "data/st6/rfc047/WINDOWS_EVENT_LIVE_STATE.json",
+    "watermarks": {
+      "Microsoft-Windows-TaskScheduler/Maintenance": 2713
+    }
+  },
+  "purpose": "the durable, deduplicated record of the Task Scheduler events this host produced, and an honest account of the events it could not produce or could not be read",
+  "retention": {
+    "bounded": true,
+    "deduplicated": true,
+    "policy": "the store holds only records of the monitored task, one per EventRecordID, and is preserved until the period closes; the log itself is never exported wholesale",
+    "refusals_recorded": true,
+    "rotation_and_reset_recorded": true,
+    "storage_bytes_measured": 0,
+    "watermark_advanced_only_after_a_durable_write": true
+  },
+  "store": {
+    "bytes": 0,
+    "deduplicated_on": "(channel, event_record_id)",
+    "path": "data/st6/rfc047/WINDOWS_EVENTS.jsonl",
+    "records_total": 0
+  },
+  "store_version": "RFC047_WIN_EVENT_STORE_V1"
+}

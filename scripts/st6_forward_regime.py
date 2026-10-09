@@ -1861,6 +1861,10 @@ SCHEDULER_VERIFICATION = DATA / "ST6_SCHEDULER_VERIFICATION.json"
 INDEPENDENT_VERIFICATION = DATA / "ST6_INDEPENDENT_VERIFICATION.json"
 SCHEDULER_VERIFY_SCRIPT = REPO / "scripts" / "st6_scheduler_verify.py"
 LEDGER_SCRIPT = REPO / "scripts" / "st6_slot_ledger.py"
+#: RFC-047's read of the Windows event plane. It runs as a subprocess of the tick and its failure is
+#: recorded, never propagated: the monitor must not depend on the audit channel to collect a sample,
+#: so a refused or absent read costs provenance and never an observation.
+WINDOWS_EVENTS_SCRIPT = REPO / "scripts" / "st6_windows_events.py"
 VERIFY_SCRIPT = REPO / "scripts" / "st6_forward_regime_verify.py"
 HEALTH_SCRIPT = REPO / "scripts" / "st6_health_check.py"
 #: Where the single-instance lease lives. Unset — the normal case, and the one the installed task
@@ -3038,11 +3042,22 @@ def _run(args: argparse.Namespace, started_at: datetime) -> int:
         if LEDGER_SCRIPT.exists()
         else {"status": "NOT_INSTALLED", "exit_code": None}
     )
+    # The external record is read here, in the tick, so that the event channel is captured from the
+    # moment it exists rather than from the moment somebody remembers to run a script. Its own exit
+    # status is recorded and nothing else: the tick's exit code is decided below, from the collection
+    # and the errors of the tick itself.
+    windows_events_result = (
+        _run_program([sys.executable, str(WINDOWS_EVENTS_SCRIPT), "--ingest"])
+        if WINDOWS_EVENTS_SCRIPT.exists()
+        else {"status": "NOT_INSTALLED", "exit_code": None}
+    )
     run_event["missed_windows_recorded"] = [entry["slot_key"] for entry in missed]
     run_event["health_status"] = health_document.get("status", health.get("status"))
     run_event["health_exit_code"] = health.get("exit_code")
     run_event["ledger_status"] = ledger_result["status"]
     run_event["ledger_exit_code"] = ledger_result["exit_code"]
+    run_event["windows_event_capture_status"] = windows_events_result["status"]
+    run_event["windows_event_capture_exit_code"] = windows_events_result["exit_code"]
     run_event["actual_end_utc"] = _utc()
     if run_event["result"] == "COLLECTION_INCOMPLETE":
         exit_code = EXIT_COLLECTION_FAILED

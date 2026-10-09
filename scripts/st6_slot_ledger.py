@@ -43,6 +43,7 @@ SCRIPTS = REPO / "scripts"
 if str(SCRIPTS) not in sys.path:
     sys.path.insert(0, str(SCRIPTS))
 
+import st6_windows_events as windows_evidence  # noqa: E402  RFC-047's event plane of evidence
 from st6_scheduler_evidence import (  # noqa: E402  the external record of the schedule
     EXTERNAL_COVERAGE_COMPLETE,
     EXTERNAL_COVERAGE_NOT_YET_STARTED,
@@ -97,6 +98,35 @@ ORIGINS = (
     ORIGIN_INDUCED,
     ORIGIN_UNATTRIBUTED,
 )
+#: RFC-047 adds a *block*, never a rewrite: the version-1 fields above keep their names and their
+#: values, and every statement RFC-047 makes lives under its own keys and its own version, so a
+#: reader can always tell which rule produced what.
+WINDOWS_EVIDENCE_BLOCK_VERSION = "RFC047_WINDOWS_EVIDENCE_V1"
+#: The closed vocabulary of RFC-047.  Confirmation requires both a record of this host whose meaning
+#: has been established from a real record *and* a correlation with an internal run; a run's own
+#: declaration is never enough, and neither is an identifier on its own.
+WIN_EVENT_CONFIRMED_SCHEDULED = "WIN_EVENT_CONFIRMED_SCHEDULED"
+WIN_EVENT_CONFIRMED_MANUAL = "WIN_EVENT_CONFIRMED_MANUAL"
+WIN_EVENT_PARTIAL = "WIN_EVENT_PARTIAL"
+WIN_EVENT_UNAVAILABLE = "WIN_EVENT_UNAVAILABLE"
+WIN_EVENT_CONFLICT = "WIN_EVENT_CONFLICT"
+PRE_ENABLE_NOT_OBSERVABLE = "PRE_ENABLE_NOT_OBSERVABLE"
+PENDING_EVENT_COMPLETION = "PENDING_EVENT_COMPLETION"
+WINDOWS_EVIDENCE_STATES = (
+    WIN_EVENT_CONFIRMED_SCHEDULED,
+    WIN_EVENT_CONFIRMED_MANUAL,
+    WIN_EVENT_PARTIAL,
+    WIN_EVENT_CONFLICT,
+    PENDING_EVENT_COMPLETION,
+    WIN_EVENT_UNAVAILABLE,
+    PRE_ENABLE_NOT_OBSERVABLE,
+)
+#: How far apart an event and a run's start may be and still describe one launch.  The engine writes
+#: the record as it starts the process, so the two instants are close but never equal.
+WIN_CORRELATION_TOLERANCE_S = 120
+#: A completion record can be written after the process it describes has exited, so a slot that
+#: ended less than this ago is held as pending rather than called an absence.
+WIN_COMPLETION_GRACE_S = 30 * 60
 
 
 def _utc() -> str:
@@ -232,6 +262,332 @@ def _coverage_rank(status: str | None) -> int:
     }.get(str(status), 0)
 
 
+def _windows_rank(state: str | None) -> int:
+    """How strong a statement about the external record is, so a rebuild never weakens one."""
+    return {
+        WIN_EVENT_CONFIRMED_SCHEDULED: 5,
+        WIN_EVENT_CONFIRMED_MANUAL: 5,
+        # a contradiction is a finding, not a gap: it is kept as strongly as a confirmation
+        WIN_EVENT_CONFLICT: 5,
+        WIN_EVENT_PARTIAL: 3,
+        PENDING_EVENT_COMPLETION: 2,
+        WIN_EVENT_UNAVAILABLE: 1,
+        PRE_ENABLE_NOT_OBSERVABLE: 1,
+    }.get(str(state), 0)
+
+
+def windows_evidence_context() -> dict[str, Any]:
+    """RFC-047's external record, read once per build so every slot is classified alike.
+
+    Everything the classification needs is read from artefacts, not from this program's own memory:
+    the host audit says whether the channel could ever have recorded, the live state says how far the
+    read has advanced and when, the store holds the records, and the semantics of the identifiers
+    count only once a real record of this host supports them.
+    """
+    audit = read_json(windows_evidence.HOST_AUDIT_JSON) or {}
+    live = read_json(windows_evidence.LIVE_STATE) or {}
+    events = windows_evidence.load_store()
+    operational = (
+        (audit.get("channels") or {}).get(windows_evidence.CHANNEL_OPERATIONAL)
+    ) or {}
+    config = operational.get("config") or {}
+    attempts = [
+        {
+            "attempted_at_utc": entry.get("attempted_at_utc"),
+            "statuses": {
+                channel: report.get("status")
+                for channel, report in (entry.get("channels") or {}).items()
+            },
+        }
+        for entry in live.get("attempts") or []
+        if isinstance(entry, dict)
+    ]
+    return {
+        "block_version": WINDOWS_EVIDENCE_BLOCK_VERSION,
+        "events": events,
+        "records_available": len(events),
+        "channel_state": operational.get("state"),
+        "channel_enabled": config.get("enabled"),
+        "readable": operational.get("readable"),
+        "gate_status": (audit.get("gate") or {}).get("status"),
+        "coverage_from_utc": audit.get("coverage_from_utc"),
+        "examined_through_record_id": (live.get("watermarks") or {}).get(
+            windows_evidence.CHANNEL_OPERATIONAL
+        ),
+        "read_attempts": attempts,
+        "semantics": windows_evidence.semantics_status(events),
+        "evidence_document": str(windows_evidence.EVIDENCE_JSON.relative_to(REPO)).replace(
+            "\\", "/"
+        ),
+    }
+
+
+def _covered_by_a_read(
+    ends_at: datetime, context: dict[str, Any]
+) -> tuple[bool, str | None]:
+    """Was the channel read *after* this slot ended, with the read succeeding?
+
+    Only such a read makes an absence meaningful: if nothing has examined the channel since the slot
+    closed, a record describing it may simply not have been read yet, and calling that an absence
+    would be an invention.  The instant of the read, not the instant of the record, is what settles
+    it.
+    """
+    threshold = ends_at + timedelta(seconds=WIN_COMPLETION_GRACE_S)
+    for attempt in sorted(
+        context.get("read_attempts") or [], key=lambda entry: str(entry.get("attempted_at_utc"))
+    ):
+        stamp = attempt.get("attempted_at_utc")
+        if not stamp:
+            continue
+        try:
+            moment = _parse(str(stamp))
+        except ValueError:
+            continue
+        if moment < threshold:
+            continue
+        status = (attempt.get("statuses") or {}).get(windows_evidence.CHANNEL_OPERATIONAL)
+        if status in ("RECORDS_INGESTED", "NO_RECORDS_MATCHING_THE_TASK"):
+            return True, str(stamp)
+    return False, None
+
+
+def windows_event_evidence_for(
+    slot: dict[str, Any],
+    runs: list[dict[str, Any]],
+    context: dict[str, Any],
+    now: datetime,
+) -> dict[str, Any]:
+    """What Windows says about this slot's runs, and where it can say nothing, that it cannot.
+
+    The block is built so that it *cannot* reach a confirmation by itself.  ``WIN_EVENT_CONFIRMED_*``
+    needs the meaning of the identifiers to have been established from a real record of this host and
+    a record naming this task at the instant of an internal run; anything less is partial, pending,
+    unavailable or in conflict, with the missing element named.  A contradiction is recorded as a
+    contradiction and never smoothed into a gap: the claim that the schedule ran, against a covered
+    external record that names nothing, is precisely the difference RFC-047 exists to expose.
+    """
+    starts_at, ends_at = slot["starts_at"], slot["ends_at"]
+    semantics = context.get("semantics") or {}
+    semantics_verified = semantics.get("state") == "VERIFIED_ON_THIS_HOST"
+    role_of: dict[int, str] = {}
+    if semantics_verified:
+        for role, identifiers in (semantics.get("rules") or {}).items():
+            for identifier in identifiers or []:
+                try:
+                    role_of[int(identifier)] = str(role)
+                except (TypeError, ValueError):
+                    continue
+    ours = [
+        row
+        for row in context.get("events") or []
+        if row.get("belongs_to_the_monitored_task") and row.get("event_timestamp_utc")
+    ]
+    inside: list[dict[str, Any]] = []
+    for row in ours:
+        try:
+            moment = _parse(str(row["event_timestamp_utc"]))
+        except ValueError:
+            continue
+        if starts_at <= moment <= ends_at:
+            inside.append(row)
+    correlations: list[dict[str, Any]] = []
+    for run in runs:
+        started = run.get("process_start_utc")
+        if not started:
+            continue
+        try:
+            moment = _parse(str(started))
+        except ValueError:
+            continue
+        near: list[tuple[float, dict[str, Any]]] = []
+        for row in inside:
+            try:
+                delta = abs((_parse(str(row["event_timestamp_utc"])) - moment).total_seconds())
+            except ValueError:
+                continue
+            if delta <= WIN_CORRELATION_TOLERANCE_S:
+                near.append((delta, row))
+        if not near:
+            continue
+        delta, nearest = min(near, key=lambda pair: pair[0])
+        correlations.append(
+            {
+                "internal_run_id": run.get("internal_run_id"),
+                "declared_invocation": run.get("declared_invocation"),
+                "process_start_utc": started,
+                "origin": run.get("origin"),
+                "event_record_id": nearest.get("event_record_id"),
+                "event_id": nearest.get("event_id"),
+                "event_timestamp_utc": nearest.get("event_timestamp_utc"),
+                "delta_s": round(delta, 3),
+                "declared_role": role_of.get(int(nearest.get("event_id") or -1)),
+                "event_xml_sha256": nearest.get("event_xml_sha256"),
+                "basis": (
+                    "the task path recorded in the event, and an instant within the correlation "
+                    "tolerance of the run's own start"
+                ),
+            }
+        )
+    claims_scheduled = [
+        row
+        for row in runs
+        if str(row.get("declared_invocation") or "").upper() == "SCHEDULED"
+        or row.get("origin") in (ORIGIN_CORROBORATED, ORIGIN_SELF_DECLARED)
+    ]
+    missing: list[str] = []
+    covered, covered_by_read_at = _covered_by_a_read(ends_at, context)
+    if not context.get("coverage_from_utc"):
+        state = PRE_ENABLE_NOT_OBSERVABLE
+        reason = (
+            "no instant exists from which a record of a run of this host could have come: the "
+            "operational channel is disabled and has never recorded, so this slot is outside the "
+            "reach of external evidence and is never promoted to it by a later rebuild"
+        )
+        missing = [
+            "a channel that could have recorded a run",
+            "any per-run record for this slot",
+        ]
+    elif not (context.get("readable") and context.get("channel_enabled")):
+        state = WIN_EVENT_UNAVAILABLE
+        reason = (
+            "the channel that would have recorded a run of this slot is not both enabled and "
+            "readable, so the external record cannot speak about it"
+        )
+        missing = ["an enabled, readable channel"]
+    elif correlations:
+        roles = {str(row["declared_role"]) for row in correlations}
+        claimed = any(
+            str(row.get("declared_invocation") or "").upper() == "SCHEDULED"
+            or row.get("origin") in (ORIGIN_CORROBORATED, ORIGIN_SELF_DECLARED)
+            for row in correlations
+        )
+        if "manual" in roles and claimed:
+            state = WIN_EVENT_CONFLICT
+            reason = (
+                "the run log claims a scheduled launch at an instant the external record answers "
+                "with a hand-requested one: the two accounts of the same instant disagree, and the "
+                "scheduled claim is not upheld"
+            )
+        elif roles == {"scheduled"} and claimed:
+            state = WIN_EVENT_CONFIRMED_SCHEDULED
+            reason = (
+                "a real record of this host, whose meaning was established from a real record, "
+                "names this task's launch at the instant of the internal run, and the run log claims "
+                "the same instant"
+            )
+        elif roles == {"manual"}:
+            state = WIN_EVENT_CONFIRMED_MANUAL
+            reason = (
+                "the external record names a hand-requested launch of this task: it is never counted "
+                "as attendance of the schedule"
+            )
+        else:
+            state = WIN_EVENT_PARTIAL
+            if not semantics_verified:
+                missing.append("the established meaning of the identifiers on this host")
+            if not {"scheduled", "manual"} & roles:
+                missing.append("a record that names the trigger that fired")
+            reason = (
+                "a real record of this host names the task near an internal run, but the elements "
+                "needed to call its origin established are not all present"
+            )
+    elif ends_at + timedelta(seconds=WIN_COMPLETION_GRACE_S) > now and context.get(
+        "channel_enabled"
+    ):
+        state = PENDING_EVENT_COMPLETION
+        reason = (
+            "the slot ended inside the completion grace: the engine writes the completion of an "
+            "action after the process it describes has exited, so this is a delay until a later read "
+            "reconciles it, not an absence and not a failure"
+        )
+        missing = ["the record of the run, which may still arrive"]
+    elif covered and claims_scheduled:
+        state = WIN_EVENT_CONFLICT
+        reason = (
+            "the external record was read after this slot closed and names no launch of this task, "
+            "while the run log claims the schedule started one: the claim is not upheld and is "
+            "recorded as a contradiction rather than as a gap"
+        )
+        missing = ["a record of the launch the run log claims"]
+    elif covered and runs:
+        state = WIN_EVENT_PARTIAL
+        reason = (
+            "the external record was read after this slot closed and names no launch of this task, "
+            "while a run of this slot exists that does not claim the schedule: consistent with a "
+            "process started outside the schedule, so there is no contradiction to record and no "
+            "confirmation either"
+        )
+        missing = ["a record that names this task's launch"]
+    elif covered:
+        state = WIN_EVENT_PARTIAL
+        reason = (
+            "the external record covers this slot and names no launch of this task, which agrees "
+            "with a slot that produced no run; an absence agrees but confirms nothing"
+        )
+        missing = ["a launch to confirm"]
+    else:
+        state = WIN_EVENT_UNAVAILABLE
+        reason = (
+            "no read of the channel has happened since this slot closed, so the external record "
+            "cannot yet be asked about it; the state is temporary and a later read reconciles it"
+        )
+        missing = ["a read of the channel after the slot closed"]
+    return {
+        "block_version": WINDOWS_EVIDENCE_BLOCK_VERSION,
+        "state": state,
+        "reason": reason,
+        "channel": windows_evidence.CHANNEL_OPERATIONAL,
+        "channel_state": context.get("channel_state"),
+        "channel_enabled": context.get("channel_enabled"),
+        "channel_readable": context.get("readable"),
+        "gate_status": context.get("gate_status"),
+        "coverage_from_utc": context.get("coverage_from_utc"),
+        "examined_through_record_id": context.get("examined_through_record_id"),
+        "identifier_semantics": semantics.get("state"),
+        "records_available": context.get("records_available"),
+        "events_in_slot": [
+            {
+                "event_record_id": row.get("event_record_id"),
+                "event_id": row.get("event_id"),
+                "event_timestamp_utc": row.get("event_timestamp_utc"),
+                "task_full_path": row.get("task_full_path"),
+                "instance_id": row.get("instance_id"),
+                "result_code": row.get("result_code"),
+                "event_xml_sha256": row.get("event_xml_sha256"),
+            }
+            for row in inside
+        ],
+        "correlated_runs": correlations,
+        "runs_claiming_the_schedule": [
+            row.get("internal_run_id") for row in claims_scheduled
+        ],
+        "external_read_after_the_slot": {
+            "covered": covered,
+            "read_at_utc": covered_by_read_at,
+            "means_an_absence_here": (
+                "a read of the channel succeeded after this slot closed, so a record describing it "
+                "would have been read"
+                if covered
+                else "no successful read of the channel happened after this slot closed"
+            ),
+        },
+        "missing_elements": sorted(set(missing)),
+        "evidence_refs": {
+            "store": "data/st6/rfc047/WINDOWS_EVENTS.jsonl",
+            "live_state": str(windows_evidence.LIVE_STATE.relative_to(REPO)).replace("\\", "/"),
+            "host_audit": str(windows_evidence.HOST_AUDIT_JSON.relative_to(REPO)).replace(
+                "\\", "/"
+            ),
+            "evidence_document": context.get("evidence_document"),
+        },
+        "never_confirms_alone": (
+            "a run's own declaration, an identifier on its own, or this ledger's own fields are "
+            "never enough to reach a confirmation: only a record of this host, whose meaning was "
+            "established from a real record, correlated with the run, reaches one"
+        ),
+    }
+
+
 def carry_forward(
     entry: dict[str, Any], previous: dict[str, Any] | None
 ) -> tuple[dict[str, Any], list[str]]:
@@ -264,6 +620,16 @@ def carry_forward(
         entry["external_evidence_status"] = previous_status
         entry["external_evidence_carried_forward_from_utc"] = previous.get("read_at_utc")
         carried.append("external_evidence")
+    # RFC-047's block is carried forward on the same rule as coverage: the store is durable, so a
+    # rebuild should not have less than an earlier read, and if it somehow does, the earlier
+    # statement stands and says when it was made rather than silently weakening
+    previous_windows_state = (previous.get("windows_event_evidence") or {}).get("state")
+    if _windows_rank(previous_windows_state) > _windows_rank(
+        (entry.get("windows_event_evidence") or {}).get("state")
+    ):
+        entry["windows_event_evidence"] = previous.get("windows_event_evidence")
+        entry["windows_event_evidence_carried_forward_from_utc"] = previous.get("read_at_utc")
+        carried.append("windows_event_evidence")
     for field in ("attendance_evidence", "attendance_classification", "failure_reason"):
         if entry.get(field) is None and previous.get(field) is not None:
             entry[field] = previous[field]
@@ -288,6 +654,7 @@ def build_slot_entry(
     induced: dict[str, dict[str, Any]],
     now: datetime,
     previous: dict[str, Any] | None = None,
+    windows_context: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     coverage = slot_external_coverage(
         slot["starts_at"], slot["ends_at"], samples, evidence, now
@@ -461,6 +828,9 @@ def build_slot_entry(
             "WINDOW_BYTES_REPRODUCE" if entry["raw_evidence"]["reproduces"] else "HASH_MISMATCH"
         )
         entry["freshness_ok"] = verifier
+    entry["windows_event_evidence"] = windows_event_evidence_for(
+        slot, run_rows, windows_context or windows_evidence_context(), now
+    )
     entry, carried = carry_forward(entry, previous)
     entry["carried_forward_fields"] = carried
     entry["first_recorded_at_utc"] = entry.get("first_recorded_at_utc") or entry["read_at_utc"]
@@ -499,6 +869,9 @@ def build_ledger(now: datetime | None = None) -> dict[str, Any]:
     missed = read_jsonl(MISSED_LOG)
     induced = induced_runs()
     grid = trigger_grid(period, evidence)
+    # RFC-047's external record, read once so that all eighty-four entries are classified against
+    # exactly the same store, audit and watermark
+    windows_context = windows_evidence_context()
     windows_by_slot = {f"{row['day']}#{row['slot_index']}": row for row in windows}
     missed_by_slot = {row["slot_key"]: row for row in missed}
     previous_ledger = read_json(LEDGER)
@@ -523,6 +896,7 @@ def build_ledger(now: datetime | None = None) -> dict[str, Any]:
             induced,
             moment,
             previous_by_slot.get(slot["slot_id"]),
+            windows_context,
         )
         for slot in slots
     ]
@@ -577,6 +951,17 @@ def build_ledger(now: datetime | None = None) -> dict[str, Any]:
                     SCHEDULER_EVIDENCE_UNAVAILABLE,
                     EXTERNAL_COVERAGE_NOT_YET_STARTED,
                 )
+            },
+            # every state of RFC-047's vocabulary is reported, including the ones that never occur:
+            # a state that is missing from the report reads as a zero, and a zero nobody looked for
+            # is how an absence becomes invisible
+            "windows_event_evidence_states": {
+                state: sum(
+                    1
+                    for entry in entries
+                    if (entry.get("windows_event_evidence") or {}).get("state") == state
+                )
+                for state in WINDOWS_EVIDENCE_STATES
             },
         },
         "slots": entries,
