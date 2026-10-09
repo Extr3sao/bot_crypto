@@ -169,6 +169,52 @@ def raw_evidence_inventory(windows: dict[str, dict[str, Any]]) -> list[dict[str,
     return rows
 
 
+def copy_live_state(
+    copy_root: Path,
+) -> tuple[list[dict[str, Any]], list[str], list[str]]:
+    """Copy every live file, describe the *copy*, and name what the tick moved while copying.
+
+    \"The live files are copied and hashed\" was one step too generous: hashing the live file and
+    copying it in two separate reads leaves a window in which the fifteen-minute tick can rewrite it,
+    and the manifest then records a digest for a version of the file that exists nowhere on disk —
+    measured, at 07:33:09Z, on the five files the tick writes.  The copy is therefore made first and
+    hashed afterwards, so every digest in the manifest is true by construction, and a file whose
+    live bytes changed during the pass is named instead of being quietly mixed into one picture.
+    """
+    entries: list[dict[str, Any]] = []
+    copies: list[str] = []
+    moved: list[str] = []
+    for relative in LIVE_RUNTIME_STATE:
+        source = REPO / relative
+        if not source.exists():
+            entries.append({"path": relative, "present": False})
+            continue
+        target = copy_root / Path(relative).relative_to("data/st6")
+        target.parent.mkdir(parents=True, exist_ok=True)
+        before = _sha256(source)
+        shutil.copy2(source, target)
+        after = _sha256(source)
+        entries.append(
+            {
+                "path": relative,
+                "present": True,
+                "bytes": target.stat().st_size,
+                "sha256": _sha256(target),
+                "git_blob_sha1": _git_blob(target),
+                "modified_utc": datetime.fromtimestamp(target.stat().st_mtime, UTC).strftime(
+                    "%Y-%m-%dT%H:%M:%SZ"
+                ),
+                "live_sha256_before_the_copy": before,
+                "live_sha256_after_the_copy": after,
+                "live_moved_during_the_copy": before != after,
+            }
+        )
+        copies.append(relative)
+        if before != after:
+            moved.append(relative)
+    return entries, copies, moved
+
+
 def build_snapshot() -> dict[str, Any]:
     stamp = _stamp()
     period = json.loads(PERIOD.read_text(encoding="utf-8")) if PERIOD.exists() else {}
@@ -183,22 +229,13 @@ def build_snapshot() -> dict[str, Any]:
     )
     windows = {row["window_id"]: row for row in window_rows}
 
-    live: list[dict[str, Any]] = [_describe(relative) for relative in LIVE_RUNTIME_STATE]
     implementation = [_describe(relative) for relative in VERSIONED_IMPLEMENTATION]
     transient = [_describe(relative) for relative in TRANSIENT]
     evidence = raw_evidence_inventory(windows)
 
     copy_root = SNAPSHOT_DIR / f"ST6_LIVE_STATE_{stamp}"
     copy_root.mkdir(parents=True, exist_ok=True)
-    copies: list[str] = []
-    for entry in live:
-        if not entry["present"]:
-            continue
-        source = REPO / entry["path"]
-        target = copy_root / Path(entry["path"]).relative_to("data/st6")
-        target.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(source, target)
-        copies.append(entry["path"])
+    live, copies, moved = copy_live_state(copy_root)
 
     document: dict[str, Any] = {
         "artifact": SNAPSHOT_VERSION,
@@ -225,11 +262,14 @@ def build_snapshot() -> dict[str, Any]:
         },
         "windows_index_rows": len(window_rows),
         "copied_live_files": copies,
+        "live_files_that_moved_during_the_snapshot": moved,
         "copy_root": str(copy_root.relative_to(REPO)),
         "reading": (
-            "the live files are copied and hashed, not committed; the raw evidence is re-hashed and "
-            "required to reproduce the hash recorded in the window index; the implementation files "
-            "carry the git blob hash the commit will record"
+            "the live files are copied and the *copy* is hashed, not committed; the raw evidence is "
+            "re-hashed and required to reproduce the hash recorded in the window index; the "
+            "implementation files carry the git blob hash the commit will record; a live file the "
+            "running tick rewrote while the snapshot was being taken is named in "
+            "`live_files_that_moved_during_the_snapshot` rather than silently mixed into the picture"
         ),
     }
     manifest_path = SNAPSHOT_DIR / f"ST6_LIVE_STATE_{stamp}.json"

@@ -1852,6 +1852,20 @@ VERIFY_SCRIPT = REPO / "scripts" / "st6_forward_regime_verify.py"
 HEALTH_SCRIPT = REPO / "scripts" / "st6_health_check.py"
 LOCK_ROOT = DATA / "scheduler_lock"
 RUN_EVENTS_KEPT = 400  # bounded storage: the oldest run events fall off the log
+#: Why a declared slot ended without a window.  A missed slot is not merely counted: the retained
+#: run log is asked what it can prove about the slot, and what it cannot prove is recorded as
+#: unknown rather than dressed up as a cause.
+MISSED_ATTENDANCE_CLASSES = (
+    "ATTENDED_NOT_COLLECTED",
+    "ATTENDED_REQUEST_FAILED",
+    "UNATTENDED_NO_RUN_EVENT",
+    "ATTENDANCE_UNKNOWN_RUN_LOG_TRUNCATED",
+)
+MISSED_ATTENDANCE_POLICY = (
+    "a missed slot is classified from the run log as it stands at the moment of accounting, and the "
+    "classification is written into the missed record itself: the run log is bounded and "
+    "front-truncated, so pruning can later remove the very events the inference rested on"
+)
 # The shared lease cannot always prove that a process is dead on Windows (its own docstring says the
 # pid probe is a hint and the age rule decides), so the age rule has to be short enough that a hard
 # kill can never cost a window: a tick takes well under two minutes and a slot lasts four hours, so
@@ -1934,6 +1948,101 @@ def run_lease(stale_after_seconds: int = LEASE_STALE_AFTER_S) -> Any:
     )
 
 
+def run_is_scheduled(run: dict[str, Any]) -> bool:
+    """Was this run the schedule's own invocation?
+
+    The run log is append-only and shared: a manual or test invocation writes a real event, and every
+    event written before the provenance field existed carries no declaration at all.  Only a run that
+    explicitly declares ``MANUAL`` is excluded, so a gap in the evidence is never manufactured by
+    assuming that an unlabelled run was manual.
+    """
+    return str(run.get("invocation", "")).upper() != "MANUAL"
+
+
+def _request_count(run: dict[str, Any]) -> int:
+    """A run's market-request count, read defensively: a corrupt field must not stop the accounting."""
+    try:
+        return int(run.get("market_requests") or 0)
+    except (TypeError, ValueError):
+        return 0
+
+
+def slot_attendance(runs: list[dict[str, Any]], entry: dict[str, Any]) -> dict[str, Any]:
+    """What the retained run log proves about the schedule inside one declared slot.
+
+    Two failures are told apart, and the difference is the point: a slot nobody attended is a
+    failure of the host or of the task, while a slot the tick visited and still did not measure is a
+    failure of the tick.  The evidence is the slot's own run events, and the bound is stated rather
+    than hidden — the log is front-truncated, so unless its oldest retained event starts at or
+    before this slot began, the absence of an event proves nothing and the record says so.
+    """
+    key = entry["key"]
+    events = [run for run in runs if isinstance(run, dict)]
+    in_slot = [run for run in events if run.get("slot_key") == key]
+    attended = [run for run in in_slot if run_is_scheduled(run)]
+    manual = [run for run in in_slot if not run_is_scheduled(run)]
+    starts = sorted(str(run.get("actual_start_utc")) for run in events if run.get("actual_start_utc"))
+    covers_whole_slot = bool(starts) and starts[0] <= entry["starts_at_utc"]
+    requests = sum(_request_count(run) for run in attended)
+    failing = [run for run in attended if run.get("errors")]
+    results: dict[str, int] = {}
+    for run in attended:
+        token = str(run.get("result") or "UNRECORDED")
+        results[token] = results.get(token, 0) + 1
+    if attended:
+        classification = (
+            "ATTENDED_REQUEST_FAILED" if requests and failing else "ATTENDED_NOT_COLLECTED"
+        )
+    else:
+        classification = (
+            "UNATTENDED_NO_RUN_EVENT"
+            if covers_whole_slot
+            else "ATTENDANCE_UNKNOWN_RUN_LOG_TRUNCATED"
+        )
+    if classification == "UNATTENDED_NO_RUN_EVENT":
+        basis = (
+            f"no scheduled run event lies in {key} while the retained run log reaches back to "
+            f"{starts[0]}, before the slot began: the schedule itself did not fire inside the slot"
+        )
+    elif classification == "ATTENDED_NOT_COLLECTED":
+        basis = (
+            f"{len(attended)} scheduled run event(s) lie in {key} with results {results} and no "
+            "window came of them: the tick ran and the slot was still not measured"
+        )
+    elif classification == "ATTENDED_REQUEST_FAILED":
+        basis = (
+            f"{len(attended)} scheduled run event(s) lie in {key} and {requests} market "
+            "request(s) were made without producing a window"
+        )
+    else:
+        basis = (
+            f"the retained run log cannot speak for {key}: it holds {len(starts)} event(s) and its "
+            "oldest retained one starts after the slot began, so an absent event cannot be told "
+            "apart from one that was pruned"
+        )
+    last_error = str(failing[-1]["errors"])[:300] if failing else None
+    return {
+        "classification": classification,
+        "slot_key": key,
+        "policy": MISSED_ATTENDANCE_POLICY,
+        "log_covers_whole_slot": covers_whole_slot,
+        "run_log_events_retained": len(starts),
+        "run_log_first_utc": starts[0] if starts else None,
+        "run_log_last_utc": starts[-1] if starts else None,
+        "scheduled_runs_in_slot": len(attended),
+        "manual_runs_in_slot": len(manual),
+        "results_in_slot": results,
+        "market_requests_in_slot": requests,
+        "last_error_in_slot": last_error,
+        "basis": basis,
+        "evidence_lifetime": (
+            "captured at accounting time; the run log is bounded and front-truncated, so the events "
+            "this inference rests on may not be retained later"
+        ),
+        "read_at_utc": _utc(),
+    }
+
+
 def sync_missed_windows(
     period: dict[str, Any],
     windows: list[dict[str, Any]],
@@ -1943,7 +2052,9 @@ def sync_missed_windows(
 
     A slot that passed without a measurement is recorded as ``MISSED_WINDOW``.  Nothing is
     reconstructed: no historical sample is invented for it, and the coverage arithmetic counts it as
-    a loss rather than as a valid window.
+    a loss rather than as a valid window.  The record also carries the attendance evidence read from
+    the run log at that moment, so a later reader is told whether the slot went unattended or was
+    visited and still not measured instead of being left with a generic"no run" claim.
     """
     recorded = {row["slot_key"] for row in _read_jsonl(MISSED_LOG)}
     observed = {slot_key(row["day"], row["slot_index"]) for row in windows}
@@ -1954,7 +2065,7 @@ def sync_missed_windows(
             continue
         if _parse(entry["ends_at_utc"]) > now:
             continue  # still inside the slot: not missed yet
-        failing = [run for run in runs if run.get("slot_key") == entry["key"] and run.get("errors")]
+        attendance = slot_attendance(runs, entry)
         record = {
             "artifact": "ST6_MISSED_WINDOW",
             "status": "MISSED_WINDOW",
@@ -1967,9 +2078,8 @@ def sync_missed_windows(
             "starts_at_utc": entry["starts_at_utc"],
             "ends_at_utc": entry["ends_at_utc"],
             "recorded_at_utc": _utc(),
-            "reason": (
-                failing[-1]["errors"] if failing else "no scheduled run collected this slot"
-            ),
+            "reason": f"{attendance['classification']}: {attendance['basis']}"[:300],
+            "attendance": attendance,
             "reconstructed": False,
         }
         _append_jsonl(MISSED_LOG, record)

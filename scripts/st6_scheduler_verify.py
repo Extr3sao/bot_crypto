@@ -22,7 +22,8 @@ declaration about it:
   (no rollups inside an event, per CAP-004C) and for agreement between each event's result and the
   exit status the process returned;
 * missed windows are recomputed: every declared slot that has already ended must be either an
-  observed window or a recorded ``MISSED_WINDOW``, and nothing is ever reconstructed;
+  observed window or a recorded ``MISSED_WINDOW``, nothing is ever reconstructed, and each miss must
+  state a cause from the declared vocabulary whose own counters agree with the retained run events;
 * both programs are scanned for an order or credential path in their syntax trees.
 
 It fails closed, reports ``FALSE_SUCCESS`` as the number of mismatches, and writes
@@ -62,6 +63,14 @@ LOCAL_STATE = REPO / "data" / "storage"
 SLOT_HOURS = 4
 SLOTS_PER_DAY = 6
 EXPECTED_INTERVAL = "PT15M"
+#: The causes a missed window may state.  A slot nobody attended and a slot the tick visited without
+#: measuring are different failures, and the record has to say which one it was.
+ATTENDANCE_CLASSES = (
+    "ATTENDED_NOT_COLLECTED",
+    "ATTENDED_REQUEST_FAILED",
+    "UNATTENDED_NO_RUN_EVENT",
+    "ATTENDANCE_UNKNOWN_RUN_LOG_TRUNCATED",
+)
 TASK_TRIGGER_TIMEOUT_S = 120
 RUN_EVENT_FIELDS = (
     "run_id",
@@ -503,6 +512,10 @@ def verify_run_log(c: Checks) -> dict[str, Any]:
 def verify_missed_accounting(c: Checks, period: dict[str, Any], now: datetime) -> dict[str, Any]:
     windows = read_jsonl(WINDOWS)
     missed = read_jsonl(MISSED_LOG)
+    runs = read_jsonl(RUN_LOG)
+    retained = sorted(
+        str(run.get("actual_start_utc")) for run in runs if run.get("actual_start_utc")
+    )
     observed = {f"{row['day']}#{row['slot_index']}" for row in windows}
     recorded = {row["slot_key"] for row in missed}
     ended = [
@@ -531,6 +544,53 @@ def verify_missed_accounting(c: Checks, period: dict[str, Any], now: datetime) -
             bool(row.get("reason")),
             row.get("reason"),
         )
+        attendance = row.get("attendance")
+        attendance = attendance if isinstance(attendance, dict) else {}
+        classification = str(attendance.get("classification"))
+        try:
+            counted = int(attendance.get("scheduled_runs_in_slot") or 0)
+        except (TypeError, ValueError):
+            counted = -1  # an unreadable count fails the consistency check instead of crashing it
+        covers = bool(attendance.get("log_covers_whole_slot"))
+        c.check(
+            f"missed {row['slot_key']}: the cause is declared and carries its own evidence",
+            classification in ATTENDANCE_CLASSES,
+            row.get("attendance"),
+        )
+        c.check(
+            f"missed {row['slot_key']}: the stated cause agrees with its own counters",
+            (classification.startswith("ATTENDED") and counted > 0)
+            or (classification == "UNATTENDED_NO_RUN_EVENT" and counted == 0 and covers)
+            or (
+                classification == "ATTENDANCE_UNKNOWN_RUN_LOG_TRUNCATED"
+                and counted == 0
+                and not covers
+            ),
+            {
+                "classification": classification,
+                "scheduled_runs_in_slot": counted,
+                "log_covers_whole_slot": covers,
+            },
+        )
+        c.check(
+            f"missed {row['slot_key']}: the evidence declares how long it stays valid",
+            bool(attendance.get("policy")) and bool(attendance.get("evidence_lifetime")),
+            attendance.get("evidence_lifetime"),
+        )
+        # While the retained log still reaches back past the slot's own start, no event inside that
+        # slot can have been pruned, so the number it holds is a second count of the record's claim.
+        if retained and retained[0] <= str(row.get("starts_at_utc")):
+            live = sum(
+                1
+                for run in runs
+                if run.get("slot_key") == row["slot_key"]
+                and str(run.get("invocation", "")).upper() != "MANUAL"
+            )
+            c.check(
+                f"missed {row['slot_key']}: the recorded attendance count matches the run log",
+                counted == live,
+                {"recorded": counted, "retained_events_in_slot": live},
+            )
     invented = [row["slot_key"] for row in missed if row["slot_key"] in observed]
     c.check("no slot is both missed and observed", not invented, invented)
     return {

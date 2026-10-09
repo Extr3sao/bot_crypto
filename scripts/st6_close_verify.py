@@ -76,6 +76,13 @@ OUTCOMES = (
     "INSUFFICIENT_REGIME_COVERAGE",
     "DATA_QUALITY_FAILED",
 )
+#: The causes a missed window may state, and the class this verifier re-derives from the run log.
+ATTENDANCE_CLASSES = (
+    "ATTENDED_NOT_COLLECTED",
+    "ATTENDED_REQUEST_FAILED",
+    "UNATTENDED_NO_RUN_EVENT",
+    "ATTENDANCE_UNKNOWN_RUN_LOG_TRUNCATED",
+)
 #: Executable tokens that would be an order or a credential path, not a check for one.
 ORDER_TOKENS = (
     "create_order",
@@ -246,11 +253,56 @@ def findings_windows(windows: list[dict[str, Any]], raw_dir: Path) -> list[str]:
     return findings
 
 
+def _request_count(run: dict[str, Any]) -> int:
+    """A run's market-request count, read defensively: a corrupt field must not stop the verifier."""
+    try:
+        return int(run.get("market_requests") or 0)
+    except (TypeError, ValueError):
+        return 0
+
+
+def attendance_from_runs(
+    runs: list[dict[str, Any]], slot_key: str, starts_at_utc: str
+) -> dict[str, Any]:
+    """What the run log says happened inside one slot — re-derived here, not read from the record.
+
+    A run that declares itself ``MANUAL`` is not the schedule; a run that declares nothing is kept,
+    because dropping an unlabelled event could turn a busy slot into an unattended one.  The log is
+    front-truncated, so unless its oldest retained event starts at or before the slot's own start the
+    absence of an event proves nothing and the derived class says so.
+    """
+    events = [run for run in runs if isinstance(run, dict)]
+    in_slot = [run for run in events if run.get("slot_key") == slot_key]
+    attended = [run for run in in_slot if str(run.get("invocation", "")).upper() != "MANUAL"]
+    starts = sorted(str(run.get("actual_start_utc")) for run in events if run.get("actual_start_utc"))
+    covers_whole_slot = bool(starts) and starts[0] <= starts_at_utc
+    requests = sum(_request_count(run) for run in attended)
+    failing = [run for run in attended if run.get("errors")]
+    if attended:
+        classification = (
+            "ATTENDED_REQUEST_FAILED" if requests and failing else "ATTENDED_NOT_COLLECTED"
+        )
+    else:
+        classification = (
+            "UNATTENDED_NO_RUN_EVENT"
+            if covers_whole_slot
+            else "ATTENDANCE_UNKNOWN_RUN_LOG_TRUNCATED"
+        )
+    return {
+        "classification": classification,
+        "scheduled_runs_in_slot": len(attended),
+        "manual_runs_in_slot": len(in_slot) - len(attended),
+        "market_requests_in_slot": requests,
+        "log_covers_whole_slot": covers_whole_slot,
+    }
+
+
 def findings_missed(
     period: dict[str, Any],
     windows: list[dict[str, Any]],
     missed: list[dict[str, Any]],
     now: datetime,
+    runs: list[dict[str, Any]],
 ) -> list[str]:
     findings: list[str] = []
     planned = {slot["key"] for slot in eligible_windows(period)}
@@ -275,6 +327,51 @@ def findings_missed(
             continue
         if slot["key"] not in observed and slot["key"] not in set(recorded):
             findings.append(f"the ended declared slot {slot['key']} is neither observed nor missed")
+    # The stated cause is audited, not accepted: it has to name a declared class, to be bounded by
+    # the declared grid, and to match what this verifier re-derives from the run events itself.  A
+    # missed window that blames the schedule while the log shows the tick running is exactly the
+    # kind of claim this program exists to catch.
+    declared = {slot["key"]: slot for slot in eligible_windows(period)}
+    for row in missed:
+        key = str(row.get("slot_key"))
+        attendance = row.get("attendance")
+        if not isinstance(attendance, dict):
+            findings.append(f"the missed window {key} carries no attendance evidence")
+            continue
+        classification = str(attendance.get("classification"))
+        if classification not in ATTENDANCE_CLASSES:
+            findings.append(
+                f"the missed window {key} states an undeclared cause {classification!r}"
+            )
+            continue
+        slot = declared.get(key)
+        if slot is None:
+            continue  # already reported as a slot outside the declared plan
+        if (row.get("starts_at_utc"), row.get("ends_at_utc")) != (
+            slot["starts_at_utc"],
+            slot["ends_at_utc"],
+        ):
+            findings.append(
+                f"the missed window {key} is not bounded by the declared slot "
+                f"({row.get('starts_at_utc')} -> {row.get('ends_at_utc')})"
+            )
+        derived = attendance_from_runs(runs, key, slot["starts_at_utc"])
+        if classification != derived["classification"]:
+            findings.append(
+                f"the missed window {key} states {classification} while the run log says "
+                f"{derived['classification']}"
+            )
+        for field in (
+            "scheduled_runs_in_slot",
+            "manual_runs_in_slot",
+            "market_requests_in_slot",
+            "log_covers_whole_slot",
+        ):
+            if attendance.get(field) != derived[field]:
+                findings.append(
+                    f"the missed window {key} claims {field}={attendance.get(field)!r} while the "
+                    f"run log says {derived[field]!r}"
+                )
     return findings
 
 
@@ -647,9 +744,105 @@ def negative_self_tests(period: dict[str, Any], windows: list[dict[str, Any]]) -
     record(
         "an ended declared slot that is unaccounted for",
         findings_missed(
-            period, [], [], parse_instant(period["started_at_utc"]) + timedelta(days=2)
+            period, [], [], parse_instant(period["started_at_utc"]) + timedelta(days=2), []
         ),
         "neither observed nor missed",
+    )
+    # 8b-8e. the stated cause of a missed window, which is now audited rather than trusted
+    slot = eligible_windows(period)[0]
+    inside = slot["starts_at_utc"]
+    ran_in_slot = [
+        {
+            "run_id": "fixture",
+            "slot_key": slot["key"],
+            "actual_start_utc": inside,
+            "invocation": "SCHEDULED",
+            "result": "SKIPPED_NO_WINDOW_DUE",
+            "market_requests": 0,
+            "errors": None,
+        }
+    ]
+    honest = {
+        "artifact": "ST6_MISSED_WINDOW",
+        "status": "MISSED_WINDOW",
+        "slot_key": slot["key"],
+        "starts_at_utc": slot["starts_at_utc"],
+        "ends_at_utc": slot["ends_at_utc"],
+        "reason": "ATTENDED_NOT_COLLECTED: the tick visited the slot and measured nothing",
+        "reconstructed": False,
+        "attendance": {
+            "classification": "ATTENDED_NOT_COLLECTED",
+            "scheduled_runs_in_slot": 1,
+            "manual_runs_in_slot": 0,
+            "market_requests_in_slot": 0,
+            "log_covers_whole_slot": True,
+        },
+    }
+    before_the_slot = parse_instant(period["started_at_utc"])
+    record(
+        "a missed window that blames the schedule while the log shows the tick ran",
+        findings_missed(
+            period,
+            [],
+            [
+                {
+                    **honest,
+                    "attendance": {
+                        **honest["attendance"],
+                        "classification": "UNATTENDED_NO_RUN_EVENT",
+                        "scheduled_runs_in_slot": 0,
+                    },
+                }
+            ],
+            before_the_slot,
+            ran_in_slot,
+        ),
+        "while the run log says",
+    )
+    record(
+        "a missed window with no attendance evidence at all",
+        findings_missed(
+            period,
+            [],
+            [{key: value for key, value in honest.items() if key != "attendance"}],
+            before_the_slot,
+            ran_in_slot,
+        ),
+        "carries no attendance evidence",
+    )
+    record(
+        "a missed window whose own counters contradict the run log",
+        findings_missed(
+            period,
+            [],
+            [
+                {
+                    **honest,
+                    "attendance": {**honest["attendance"], "scheduled_runs_in_slot": 3},
+                }
+            ],
+            before_the_slot,
+            ran_in_slot,
+        ),
+        "claims scheduled_runs_in_slot",
+    )
+    record(
+        "a missed window bounded by a slot that was never declared",
+        findings_missed(
+            period, [], [{**honest, "ends_at_utc": "2026-10-08T20:21:20Z"}], before_the_slot, ran_in_slot
+        ),
+        "is not bounded by the declared slot",
+    )
+    # 8f. the other direction: an honest claim must not be flagged
+    honest_findings = findings_missed(period, [], [honest], before_the_slot, ran_in_slot)
+    results.append(
+        {
+            "fixture": "an honest missed window whose stated cause the log supports",
+            "expected_finding": "none",
+            "findings": honest_findings,
+            "detected": not honest_findings,
+            "status": "PASS" if not honest_findings else "FAIL",
+        }
     )
     # 9. a declaration whose plan runs past its own end
     record(
@@ -907,7 +1100,7 @@ def main(argv: list[str] | None = None) -> int:
 
     denominator, denominator_findings = findings_denominator(period)
     windows_findings = findings_windows(windows, RAW)
-    missed_findings = findings_missed(period, windows, missed, datetime.now(UTC))
+    missed_findings = findings_missed(period, windows, missed, datetime.now(UTC), runs)
     closure_findings = findings_closure(closure, period)
     drift_findings = findings_drift(closure)
     post_close_findings = findings_post_close(runs, period, closure)

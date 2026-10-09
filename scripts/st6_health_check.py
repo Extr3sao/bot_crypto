@@ -13,7 +13,10 @@ registration, never from a heartbeat:
 * windows come from the window index and their raw bytes are re-hashed before they are counted;
 * every declared slot that has already ended is required to be either an observed window or a
   recorded ``MISSED_WINDOW``; an end-of-slot that is in neither state is a CRITICAL divergence
-  between what the programme says and what it recorded;
+  between what the programme says and what it recorded, and a missed window whose stated cause the
+  run log does not support is a CRITICAL divergence too — the cause is re-derived here from the run
+  events rather than taken on trust, so an unattended slot and an attended-but-unmeasured slot do
+  not collapse into the same claim;
 * storage is read through the campaign's existing disk guard, not a second threshold set;
 * the heartbeat age is a *hint* about the tick, and a missing tick is a WARNING about the schedule,
   never a claim about the data.
@@ -62,6 +65,15 @@ TICK_GRACE_SECONDS = 45 * 60  # three missed ticks before the schedule is called
 HEALTH_EVENTS_KEPT = 400
 MAX_MISSED_FRACTION = 0.2
 CONSECUTIVE_FAILURES_CRITICAL = 3
+#: The vocabulary a missed window may use for its cause, and what the classes mean.  A slot nobody
+#: attended is a failure of the host or of the task; a slot the tick visited and still did not
+#: measure is a failure of the tick; an absent event in an old slot proves nothing at all.
+MISSED_ATTENDANCE_CLASSES = (
+    "ATTENDED_NOT_COLLECTED",
+    "ATTENDED_REQUEST_FAILED",
+    "UNATTENDED_NO_RUN_EVENT",
+    "ATTENDANCE_UNKNOWN_RUN_LOG_TRUNCATED",
+)
 
 HEALTHY, WARNING, CRITICAL, PERIOD_COMPLETED = (
     "HEALTHY",
@@ -165,6 +177,147 @@ def scheduler_registration() -> dict[str, Any]:
     return state
 
 
+def _request_count(run: dict[str, Any]) -> int:
+    """A run's market-request count, read defensively: a corrupt field must not stop the audit."""
+    try:
+        return int(run.get("market_requests") or 0)
+    except (TypeError, ValueError):
+        return 0
+
+
+def attendance_class_from_runs(
+    runs: list[dict[str, Any]], slot_key: str, starts_at_utc: str
+) -> dict[str, Any]:
+    """Re-derive, from the run log alone, what happened inside one declared slot.
+
+    This is deliberately a second implementation of the builder's rule: the health check must be
+    able to disagree with the record, otherwise it is decoration.  A run that explicitly declares
+    itself ``MANUAL`` is not the schedule and is not counted as attendance; an event with no
+    declaration at all is kept, so the check never manufactures a gap in the evidence.
+    """
+    events = [run for run in runs if isinstance(run, dict)]
+    in_slot = [run for run in events if run.get("slot_key") == slot_key]
+    attended = [run for run in in_slot if str(run.get("invocation", "")).upper() != "MANUAL"]
+    starts = sorted(str(run.get("actual_start_utc")) for run in events if run.get("actual_start_utc"))
+    # only a log that reaches back to the slot's own start can speak for its whole length: pruning
+    # removes the oldest events, so a slot whose head was pruned cannot be called unattended
+    covers_whole_slot = bool(starts) and starts[0] <= starts_at_utc
+    requests = sum(_request_count(run) for run in attended)
+    failing = [run for run in attended if run.get("errors")]
+    results: dict[str, int] = {}
+    for run in attended:
+        token = str(run.get("result") or "UNRECORDED")
+        results[token] = results.get(token, 0) + 1
+    if attended:
+        classification = (
+            "ATTENDED_REQUEST_FAILED" if requests and failing else "ATTENDED_NOT_COLLECTED"
+        )
+    else:
+        classification = (
+            "UNATTENDED_NO_RUN_EVENT"
+            if covers_whole_slot
+            else "ATTENDANCE_UNKNOWN_RUN_LOG_TRUNCATED"
+        )
+    return {
+        "classification": classification,
+        "scheduled_runs_in_slot": len(attended),
+        "manual_runs_in_slot": len(in_slot) - len(attended),
+        "market_requests_in_slot": requests,
+        "results_in_slot": results,
+        "log_covers_whole_slot": covers_whole_slot,
+        "run_log_events_retained": len(starts),
+        "run_log_first_utc": starts[0] if starts else None,
+    }
+
+
+def audit_missed_attendance(
+    period: dict[str, Any], missed: list[dict[str, Any]], runs: list[dict[str, Any]]
+) -> dict[str, Any]:
+    """Check every missed window's stated cause against the run log, and against the declared grid.
+
+    The claim is audited on four counts: it must name a class from the declared vocabulary, its own
+    counters must agree with the events, the slot's bounds must be the declared ones, and the class
+    itself must match what is re-derived here.  A claim the evidence does not support is a
+    divergence, never a pass with a note.
+    """
+    planned = {
+        entry["key"]: entry
+        for entry in declared_slots_upto(period, _parse(period["ends_at_utc"]))
+    }
+    by_classification: dict[str, int] = {}
+    unattended: list[str] = []
+    unknown: list[str] = []
+    unsupported: list[str] = []
+    for row in missed:
+        key = str(row.get("slot_key"))
+        recorded = row.get("attendance")
+        if not isinstance(recorded, dict):
+            unsupported.append(f"{key}: no attendance evidence is recorded at all")
+            continue
+        classification = str(recorded.get("classification"))
+        by_classification[classification] = by_classification.get(classification, 0) + 1
+        if classification not in MISSED_ATTENDANCE_CLASSES:
+            unsupported.append(f"{key}: the recorded cause {classification!r} is not declared")
+            continue
+        entry = planned.get(key)
+        if entry is None:
+            unsupported.append(f"{key}: the slot is not in the declared plan")
+            continue
+        expected_start = (_parse(entry["ends_at_utc"]) - timedelta(hours=SLOT_HOURS)).strftime(
+            "%Y-%m-%dT%H:%M:%SZ"
+        )
+        if (row.get("ends_at_utc"), row.get("starts_at_utc")) != (
+            entry["ends_at_utc"],
+            expected_start,
+        ):
+            unsupported.append(
+                f"{key}: the recorded bounds ({row.get('starts_at_utc')} -> "
+                f"{row.get('ends_at_utc')}) are not the declared ones ({expected_start} -> "
+                f"{entry['ends_at_utc']})"
+            )
+        derived = attendance_class_from_runs(runs, key, expected_start)
+        if classification != derived["classification"]:
+            unsupported.append(
+                f"{key}: the record claims {classification} while the run log says "
+                f"{derived['classification']}"
+            )
+        for field in (
+            "scheduled_runs_in_slot",
+            "manual_runs_in_slot",
+            "market_requests_in_slot",
+            "log_covers_whole_slot",
+        ):
+            if recorded.get(field) != derived[field]:
+                unsupported.append(
+                    f"{key}: the record claims {field}={recorded.get(field)!r} while the run log "
+                    f"says {derived[field]!r}"
+                )
+        if classification == "UNATTENDED_NO_RUN_EVENT":
+            unattended.append(key)
+        if classification == "ATTENDANCE_UNKNOWN_RUN_LOG_TRUNCATED":
+            unknown.append(key)
+    return {
+        "claims": len(missed),
+        "by_classification": by_classification,
+        "unattended_slots": unattended,
+        "unattended_reading": (
+            "a slot with no scheduled run event inside it while the retained run log spans the slot "
+            "is a failure of the host or of the task, not of the data"
+        ),
+        "unknown_slots": unknown,
+        "unknown_reading": (
+            "old slots whose events were pruned are recorded as unknown: absence of an event is not "
+            "proof of an unattended slot once the log no longer reaches back to it"
+        ),
+        "unsupported": unsupported,
+        "vocabulary": list(MISSED_ATTENDANCE_CLASSES),
+        "reading": (
+            "the cause of every missed window was re-derived from the run events and from the "
+            "declared grid, never taken from the record on trust"
+        ),
+    }
+
+
 def declared_slots_upto(period: dict[str, Any], now: datetime) -> list[dict[str, Any]]:
     """The declared slots up to ``now``, bounded by the plan: days x slots per day, no more.
 
@@ -232,6 +385,35 @@ def is_manual(run: dict[str, Any]) -> bool:
     return str(run.get("invocation", "")).upper() == "MANUAL"
 
 
+def error_warnings(runs: list[dict[str, Any]]) -> list[str]:
+    """The schedule's own last failure, if any: a manual or verification run is not the programme.
+
+    The run log is shared with the fixtures, so a deliberate refusal can be the newest event while
+    the campaign's own tick is perfectly healthy.  Only the schedule's runs raise the status; what a
+    manual invocation did is reported as information beside it, never as a verdict on the campaign.
+    """
+    scheduled = [run for run in runs if not is_manual(run)]
+    if scheduled and scheduled[-1].get("errors"):
+        return [f"the last scheduled run recorded an error: {str(scheduled[-1]['errors'])[:200]}"]
+    return []
+
+
+def provenance_information(runs: list[dict[str, Any]]) -> dict[str, Any]:
+    """What the manual invocations did — information about the harness, not about the campaign."""
+    manual = [run for run in runs if is_manual(run)]
+    failing = [run for run in manual if run.get("errors")]
+    return {
+        "manual_invocations": len(manual),
+        "manual_invocations_with_errors": len(failing),
+        "newest_event_is_manual": bool(runs) and is_manual(runs[-1]),
+        "last_manual_error": str(failing[-1]["errors"])[:200] if failing else None,
+        "reading": (
+            "a manual or verification invocation is not the schedule: it neither raises the status "
+            "of the observation programme nor refreshes its heartbeat"
+        ),
+    }
+
+
 def run_provenance(runs: list[dict[str, Any]]) -> dict[str, int]:
     counts = {"SCHEDULED": 0, "MANUAL": 0, "UNRECORDED": 0}
     for run in runs:
@@ -255,6 +437,7 @@ def evaluate(now: datetime | None = None) -> dict[str, Any]:
     observations = read_jsonl(OBSERVATIONS)
     runs = read_jsonl(RUN_LOG)
     missed = read_jsonl(MISSED_LOG)
+    attendance_audit = audit_missed_attendance(period, missed, runs)
     closure, closure_reading = closure_of_declared_period(period)
     registration = scheduler_registration()
     disk = disk_report(REPO)
@@ -309,6 +492,11 @@ def evaluate(now: datetime | None = None) -> dict[str, Any]:
             f"{len(unaccounted)} declared slot(s) ended without a window and without a "
             f"MISSED_WINDOW record: {unaccounted[:6]}"
         )
+    if attendance_audit["unsupported"]:
+        critical.append(
+            f"{len(attendance_audit['unsupported'])} missed window(s) state a cause the run log "
+            f"does not support: {attendance_audit['unsupported'][:4]}"
+        )
     if disk["status"] == "CRITICAL":
         critical.append(f"disk is CRITICAL: {disk['free_gib']} GiB free")
     if streak >= CONSECUTIVE_FAILURES_CRITICAL:
@@ -344,22 +532,23 @@ def evaluate(now: datetime | None = None) -> dict[str, Any]:
             f"every one of the {provenance['MANUAL']} run event(s) on record is a manual or "
             "verification invocation: the schedule itself has not ticked yet"
         )
-    if (
-        heartbeat_age_s is not None
-        and last_scheduled_run is not None
-        and last_run is not None
-        and is_manual(last_run)
-    ):
-        warning.append(
-            f"the newest run event ({last_run.get('result')}) is a manual invocation, so it is not "
-            "counted as the schedule being alive"
-        )
-    if recorderrors := (last_run.get("errors") if last_run else None):
-        warning.append(f"the last run recorded an error: {recorderrors}"[:200])
+    warning.extend(error_warnings(runs))
     if disk["status"] == "WARNING":
         warning.append(f"disk is WARNING: {disk['free_gib']} GiB free")
     if missed and missed_fraction is not None and missed_fraction <= MAX_MISSED_FRACTION:
-        warning.append(f"{len(missed)} window(s) are recorded as MISSED_WINDOW")
+        warning.append(
+            f"{len(missed)} window(s) are recorded as MISSED_WINDOW: "
+            + ", ".join(
+                f"{token} {count}"
+                for token, count in sorted(attendance_audit["by_classification"].items())
+            )
+        )
+    if attendance_audit["unattended_slots"]:
+        warning.append(
+            f"{len(attendance_audit['unattended_slots'])} slot(s) provably went unattended: no "
+            "scheduled run event lies inside them while the retained run log spans them "
+            f"{attendance_audit['unattended_slots'][:6]}"
+        )
     if not live:
         warning.append(
             "the scheduler has not been verified with live tests yet, so autonomous collection is "
@@ -408,11 +597,13 @@ def evaluate(now: datetime | None = None) -> dict[str, Any]:
             "declared_slots_ended": len(ended),
             "declared_slots_pending": len(pending),
             "missed_windows_recorded": len(missed),
+            "missed_window_attendance": attendance_audit,
             "unaccounted_slots": unaccounted,
             "missed_fraction_of_ended_slots": missed_fraction,
             "raw_evidence": evidence,
             "run_events": len(runs),
             "run_events_by_provenance": provenance,
+            "invocation_provenance": provenance_information(runs),
             "consecutive_failures": streak,
             "consecutive_failures_over": "non-manual run events only",
             "last_run": {
@@ -422,6 +613,15 @@ def evaluate(now: datetime | None = None) -> dict[str, Any]:
                 "exit_code": last_run.get("exit_code"),
             }
             if last_run
+            else None,
+            "last_scheduled_run": {
+                "run_id": last_scheduled_run.get("run_id"),
+                "result": last_scheduled_run.get("result"),
+                "actual_end_utc": last_scheduled_run.get("actual_end_utc"),
+                "exit_code": last_scheduled_run.get("exit_code"),
+                "errors": last_scheduled_run.get("errors"),
+            }
+            if last_scheduled_run
             else None,
             "heartbeat_age_seconds": heartbeat_age_s,
             "heartbeat_basis": heartbeat_basis,

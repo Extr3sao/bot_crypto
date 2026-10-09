@@ -276,7 +276,18 @@ def test_a_lost_slot_is_written_down_and_never_invented(tick: object, tmp_path: 
         assert recorded, "a lost slot was not recorded at all"
         assert all(entry["status"] == "MISSED_WINDOW" for entry in recorded)
         assert all(entry["reconstructed"] is False for entry in recorded)
-        assert all(entry["reason"] == "no scheduled run collected this slot" for entry in recorded)
+        # the reason is no longer a generic sentence: the run log here is empty, so the honest
+        # answer is not "no run collected this slot" but "the evidence cannot speak for it"
+        assert all(
+            entry["attendance"]["classification"] == "ATTENDANCE_UNKNOWN_RUN_LOG_TRUNCATED"
+            for entry in recorded
+        )
+        assert all(
+            entry["reason"].startswith("ATTENDANCE_UNKNOWN_RUN_LOG_TRUNCATED") for entry in recorded
+        )
+        assert all(entry["attendance"]["basis"] for entry in recorded)
+        assert all(entry["attendance"]["policy"] for entry in recorded)
+        assert all(entry["attendance"]["evidence_lifetime"] for entry in recorded)
         # the slots the window covers are the declared grid, not an invented one
         assert {entry["slot"] for entry in recorded} == {
             "00:00-04:00 UTC",
@@ -295,6 +306,159 @@ def test_a_lost_slot_is_written_down_and_never_invented(tick: object, tmp_path: 
         assert fresh == []
     finally:
         monkeypatch.undo()
+
+
+def test_the_attendance_of_a_lost_slot_is_proven_rather_than_assumed(tick: object) -> None:
+    """A slot nobody attended and a slot the tick visited without measuring are different losses."""
+    slot = {
+        "key": "2026-09-02#2",
+        "starts_at_utc": "2026-09-02T08:00:00Z",
+        "ends_at_utc": "2026-09-02T12:00:00Z",
+    }
+    earlier = {
+        "slot_key": "2026-09-02#1",
+        "actual_start_utc": "2026-09-02T06:30:00Z",
+        "invocation": "SCHEDULED",
+        "result": "SKIPPED_NO_WINDOW_DUE",
+        "market_requests": 0,
+        "errors": None,
+    }
+    quiet = {
+        **earlier,
+        "slot_key": slot["key"],
+        "actual_start_utc": "2026-09-02T08:30:00Z",
+        "result": "SKIPPED_DATA_STALE",
+    }
+    failing = {**quiet, "market_requests": 4, "errors": "the exchange refused the request"}
+    by_hand = {**quiet, "invocation": "MANUAL"}
+    later = {**earlier, "slot_key": "2026-09-02#3", "actual_start_utc": "2026-09-02T12:10:00Z"}
+
+    unattended = tick.slot_attendance([earlier], slot)
+    assert unattended["classification"] == "UNATTENDED_NO_RUN_EVENT"
+    assert unattended["log_covers_whole_slot"] is True
+    assert unattended["scheduled_runs_in_slot"] == 0
+    assert "before the slot began" in unattended["basis"]
+
+    attended = tick.slot_attendance([earlier, quiet], slot)
+    assert attended["classification"] == "ATTENDED_NOT_COLLECTED"
+    assert attended["scheduled_runs_in_slot"] == 1
+    assert attended["results_in_slot"] == {"SKIPPED_DATA_STALE": 1}
+
+    refused = tick.slot_attendance([earlier, failing], slot)
+    assert refused["classification"] == "ATTENDED_REQUEST_FAILED"
+    assert refused["market_requests_in_slot"] == 4
+    assert refused["last_error_in_slot"] == "the exchange refused the request"
+
+    # a run that declares itself manual is not the schedule: a slot only visited by hand still went
+    # unattended, and the record says so instead of counting the visit as attendance
+    only_by_hand = tick.slot_attendance([earlier, by_hand], slot)
+    assert only_by_hand["classification"] == "UNATTENDED_NO_RUN_EVENT"
+    assert only_by_hand["manual_runs_in_slot"] == 1
+    assert only_by_hand["scheduled_runs_in_slot"] == 0
+
+    # the log is bounded: once its oldest retained event starts after this slot began, the absence of
+    # an event can no longer be told apart from one that was pruned, and nothing is claimed
+    truncated = tick.slot_attendance([later], slot)
+    assert truncated["classification"] == "ATTENDANCE_UNKNOWN_RUN_LOG_TRUNCATED"
+    assert truncated["log_covers_whole_slot"] is False
+    assert "cannot speak for" in truncated["basis"]
+
+    # a corrupt counter must not stop the accounting: it is read as unreadable, never as a crash
+    corrupt = tick.slot_attendance([earlier, {**quiet, "market_requests": "many"}], slot)
+    assert corrupt["market_requests_in_slot"] == 0
+    assert corrupt["classification"] == "ATTENDED_NOT_COLLECTED"
+
+
+def test_the_health_check_audits_the_stated_cause_of_a_missed_slot(health: object) -> None:
+    """The record's cause is re-derived from the run events: the checker must be able to disagree."""
+    period = {
+        "started_at_utc": "2026-09-01T00:00:00Z",
+        "ends_at_utc": "2026-09-02T00:00:00Z",
+        "period_days": 1,
+        "slots_per_day": 6,
+    }
+    slot_key = "2026-09-01#1"  # 04:00 -> 08:00 UTC
+    earlier = {
+        "slot_key": "2026-09-01#0",
+        "actual_start_utc": "2026-09-01T03:50:00Z",
+        "invocation": "SCHEDULED",
+        "market_requests": 0,
+        "errors": None,
+    }
+    inside = {
+        **earlier,
+        "slot_key": slot_key,
+        "actual_start_utc": "2026-09-01T04:30:00Z",
+    }
+    bounds = {"starts_at_utc": "2026-09-01T04:00:00Z", "ends_at_utc": "2026-09-01T08:00:00Z"}
+    attendance = {
+        "classification": "ATTENDED_NOT_COLLECTED",
+        "scheduled_runs_in_slot": 1,
+        "manual_runs_in_slot": 0,
+        "market_requests_in_slot": 0,
+        "log_covers_whole_slot": True,
+    }
+    honest = {"slot_key": slot_key, **bounds, "attendance": dict(attendance)}
+
+    clean = health.audit_missed_attendance(period, [honest], [earlier, inside])
+    assert clean["unsupported"] == []
+    assert clean["by_classification"] == {"ATTENDED_NOT_COLLECTED": 1}
+
+    lying = {
+        **honest,
+        "attendance": {
+            **attendance,
+            "classification": "UNATTENDED_NO_RUN_EVENT",
+            "scheduled_runs_in_slot": 0,
+        },
+    }
+    caught = health.audit_missed_attendance(period, [lying], [earlier, inside])
+    assert caught["unsupported"], "a record that blames the schedule was not caught"
+    assert any("while the run log says" in finding for finding in caught["unsupported"])
+
+    bare = health.audit_missed_attendance(period, [{"slot_key": slot_key, **bounds}], [earlier])
+    assert bare["unsupported"] and "no attendance evidence" in bare["unsupported"][0]
+
+    unsupported_class = {
+        **honest,
+        "attendance": {**attendance, "classification": "NOT_A_DECLARED_CAUSE"},
+    }
+    assert health.audit_missed_attendance(period, [unsupported_class], [earlier])["unsupported"]
+
+    wrong_bounds = {**honest, "ends_at_utc": "2026-09-01T09:00:00Z"}
+    drifted = health.audit_missed_attendance(period, [wrong_bounds], [earlier, inside])
+    assert any("not the declared ones" in finding for finding in drifted["unsupported"])
+
+    # an unattended slot is named as such, and an unprovable old slot is called unknown rather than
+    # being counted as a failure of the host
+    silenced = {
+        **honest,
+        "attendance": {
+            **attendance,
+            "classification": "UNATTENDED_NO_RUN_EVENT",
+            "scheduled_runs_in_slot": 0,
+        },
+    }
+    provably_unattended = health.audit_missed_attendance(period, [silenced], [earlier])
+    assert provably_unattended["unsupported"] == []
+    assert provably_unattended["unattended_slots"] == [slot_key]
+    unprovable = {
+        **honest,
+        "attendance": {
+            **attendance,
+            "classification": "ATTENDANCE_UNKNOWN_RUN_LOG_TRUNCATED",
+            "scheduled_runs_in_slot": 0,
+            "log_covers_whole_slot": False,
+        },
+    }
+    pruned = health.audit_missed_attendance(
+        period,
+        [unprovable],
+        [{**earlier, "slot_key": "2026-09-01#2", "actual_start_utc": "2026-09-01T09:00:00Z"}],
+    )
+    assert pruned["unsupported"] == []
+    assert pruned["unknown_slots"] == [slot_key]
+    assert pruned["unattended_slots"] == []
 
 
 def test_an_observed_slot_costs_nothing_to_re_tick() -> None:
@@ -705,6 +869,73 @@ def test_a_manual_invocation_is_neither_a_failure_nor_a_heartbeat(health: object
     assert health.run_provenance(runs) == {"SCHEDULED": 1, "MANUAL": 2, "UNRECORDED": 1}
     # the heartbeat follows the schedule, not the newest line in the file
     assert kept[-1]["actual_end_utc"] == "2026-10-08T21:30:00Z"
+
+
+def test_a_fixture_refusal_is_not_reported_as_the_campaign_failing(health: object) -> None:
+    """The newest event can be a fixture: the error that describes the programme is the schedule's."""
+    quiet = {"invocation": "SCHEDULED", "result": "SKIPPED_NO_WINDOW_DUE", "errors": None}
+    schedule_failed = {
+        "invocation": "SCHEDULED",
+        "result": "COLLECTION_INCOMPLETE",
+        "errors": "the probe failed",
+    }
+    fixture_failed = {
+        "invocation": "MANUAL",
+        "result": "REFUSED_INVALID_ARGUMENTS",
+        "errors": "rounds=0, spacing=5.0",
+    }
+    unrecorded_failed = {"result": "COLLECTION_INCOMPLETE", "errors": "no provenance at all"}
+
+    # a fixture's refusal raises nothing: it is information about the harness, not a verdict
+    assert health.error_warnings([quiet, fixture_failed]) == []
+    information = health.provenance_information([quiet, fixture_failed])
+    assert information["manual_invocations"] == 1
+    assert information["manual_invocations_with_errors"] == 1
+    assert information["newest_event_is_manual"] is True
+    assert "rounds=0" in information["last_manual_error"]
+
+    both = health.error_warnings([quiet, schedule_failed, fixture_failed])
+    assert len(both) == 1 and "last scheduled run recorded an error" in both[0]
+    assert "the probe failed" in both[0]
+
+    # a row written before the provenance field existed is kept: it may be the schedule failing
+    kept = health.error_warnings([quiet, unrecorded_failed])
+    assert kept and "last scheduled run recorded an error" in kept[0]
+
+
+def test_every_snapshot_describes_the_copies_it_wrote() -> None:
+    """A manifest must describe bytes that exist, on a host whose tick rewrites five files every 15m.
+
+    The first pass hashed the live file and copied it in two separate reads, so a snapshot taken
+    while the tick was writing (07:33:09Z) recorded five digests for versions that were nowhere on
+    disk.  Every later manifest hashes the copy it wrote, and the live file it saw move is named.
+    """
+    import hashlib
+
+    manifests = sorted((DATA / "snapshots").glob("ST6_LIVE_STATE_*.json"))
+    assert manifests, "no snapshot exists to check"
+    documents = [json.loads(path.read_text(encoding="utf-8")) for path in manifests]
+    expected = 0
+    for manifest_path, manifest in zip(manifests, documents, strict=True):
+        assert manifest["copy_root"].endswith(manifest_path.stem)
+        present = [e for e in manifest["classification"]["LIVE_RUNTIME_STATE"] if e.get("present")]
+        assert len(present) == len(manifest["copied_live_files"])
+        expected += len(present)
+        for entry in present:
+            copy = (
+                DATA
+                / "snapshots"
+                / manifest_path.stem
+                / Path(entry["path"]).relative_to("data/st6")
+            )
+            assert copy.exists(), f"{entry['path']} has no copy in {manifest_path.stem}"
+            actual = hashlib.sha256(copy.read_bytes()).hexdigest()
+            assert actual == entry["sha256"], (manifest_path.name, entry["path"], actual)
+            if "live_moved_during_the_copy" in entry:
+                assert entry["live_moved_during_the_copy"] == (
+                    entry["live_sha256_before_the_copy"] != entry["live_sha256_after_the_copy"]
+                )
+    assert expected >= 13 * len(manifests)
 
 
 def test_the_snapshot_check_separates_drift_from_corruption(tmp_path: Path) -> None:
