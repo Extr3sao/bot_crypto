@@ -1,0 +1,13 @@
+{
+  "key": "h41_current.html",
+  "url": "https://www.federalreserve.gov/releases/h41/current/h41.htm",
+  "retrieved_at_utc": "2026-10-10T12:58:32Z",
+  "mode": "network",
+  "http_status": 200,
+  "content_type": "text/html",
+  "bytes": 701918,
+  "sha256": "bbc62c6b9050fc5986b779e305bcabcf0e92582d559e89af77d28889cc97183d",
+  "raw_retained": true,
+  "status": "ok",
+  "body_truncated_at_deadline": false
+}

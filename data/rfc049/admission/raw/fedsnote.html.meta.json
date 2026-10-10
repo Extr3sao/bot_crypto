@@ -1,0 +1,13 @@
+{
+  "key": "fedsnote.html",
+  "url": "https://www.federalreserve.gov/econres/notes/feds-notes/primary-and-secondary-markets-for-stablecoins-20240223.html",
+  "retrieved_at_utc": "2026-10-10T12:58:34Z",
+  "mode": "network",
+  "http_status": 200,
+  "content_type": "text/html",
+  "bytes": 135763,
+  "sha256": "d37506a4b55f5e7049970a0773530e0fd04043d314631494c3c2fbc75955db78",
+  "raw_retained": true,
+  "status": "ok",
+  "body_truncated_at_deadline": false
+}

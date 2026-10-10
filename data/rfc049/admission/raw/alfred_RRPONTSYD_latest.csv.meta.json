@@ -1,0 +1,13 @@
+{
+  "key": "alfred_RRPONTSYD_latest.csv",
+  "url": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=RRPONTSYD",
+  "retrieved_at_utc": "2026-10-10T12:58:30Z",
+  "mode": "network",
+  "http_status": 200,
+  "content_type": "application/csv",
+  "bytes": 95451,
+  "sha256": "3cc8e1c8a43625f664f6b65616af780409e4dc01d2592d2f7322fc477c73e18b",
+  "raw_retained": true,
+  "status": "ok",
+  "body_truncated_at_deadline": false
+}

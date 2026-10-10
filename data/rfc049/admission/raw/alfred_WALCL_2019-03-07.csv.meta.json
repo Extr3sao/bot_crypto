@@ -1,0 +1,13 @@
+{
+  "key": "alfred_WALCL_2019-03-07.csv",
+  "url": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=WALCL&vintage_date=2019-03-07",
+  "retrieved_at_utc": "2026-10-10T12:58:25Z",
+  "mode": "network",
+  "http_status": 200,
+  "content_type": "application/csv",
+  "bytes": 15824,
+  "sha256": "c2a58276880b14189385e3fd4947214b0c586fe75d35b2fc0b789296d34da1a2",
+  "raw_retained": true,
+  "status": "ok",
+  "body_truncated_at_deadline": false
+}

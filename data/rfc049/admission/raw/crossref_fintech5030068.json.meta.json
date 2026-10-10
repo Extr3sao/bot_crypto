@@ -1,0 +1,13 @@
+{
+  "key": "crossref_fintech5030068.json",
+  "url": "https://api.crossref.org/works/10.3390/fintech5030068",
+  "retrieved_at_utc": "2026-10-10T13:10:47Z",
+  "mode": "network",
+  "http_status": 200,
+  "content_type": "application/json",
+  "bytes": 13961,
+  "sha256": "fe523dd4f0f346530c32ad79057765893009014b4cdd7a97168a89c3c0fa912c",
+  "raw_retained": true,
+  "status": "ok",
+  "body_truncated_at_deadline": false
+}
