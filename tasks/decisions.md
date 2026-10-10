@@ -1111,3 +1111,107 @@ lo que NO se requerirá per-ADR "next free" footnote nunca más.
   - Parada: `docs/governance/DISCOVERY_STOP_RULES.md`. Agotado el presupuesto o fallada la campana
     se emite `DISCOVERY_CAMPAIGN_FAILED` y **no hay refill automatico de hipotesis**.
   - Revocable por el propietario en cualquier momento; sin efecto sobre produccion.
+
+
+## ADR-0025 - RFC-049 Discovery 2: autorizacion de campana offline (DEV/VAL) por el operador
+
+> RFC-049 DISCOVERY 2 ACTIVATION — registrada el 2026-10-10. No usa footnotes "next free" (regla post-ADR-0023).
+
+- **Estado**: Decidido y aprobado por el propietario (operador).
+- **Contexto**: RFC-049 Phase A cerro en `RFC049_PREPARED_AWAITING_CAMPAIGN_AUTHORIZATION` con dos
+  hipotesis admitidas y congeladas (H-049-001 liquidez stablecoin, H-049-002 liquidez neta USD) y
+  `NEXT_CAMPAIGN = NOT_AUTHORIZED`. La admission RFC-049B las clasifico
+  `READY_FOR_AUTHORIZED_TEST` con PIT verificado y zero violaciones de disponibilidad. El gate de
+  activacion (`PREREGISTRATION_MANIFEST.json#gate`) exige que la autorizacion venga del operador
+  "via a governance decision that changes NEXT_CAMPAIGN"; el charter reserva al operador autorizar
+  la campana (RFC049_DISCOVERY_ADMISSION §7). El operador emitio la instruccion "TRADING AGENTIC
+  PORTABLE — RFC-049 DISCOVERY 2" autorizando exclusivamente la preparacion y ejecucion de
+  experimentos Discovery 2 offline, condicionada a que el charter permita registrar validamente
+  dicha autorizacion y excluyendo explicitamente el OOS sellado, paper fuera de sus gates y
+  trading real.
+- **Opciones**:
+  - mantener `NOT_AUTHORIZED` (coste: la campana no produce evidencia y las candidatas quedan sin
+    medir en sus particiones expuestas);
+  - campana completa incluida apertura OOS y promocion (rechazada: el OOS sellado solo se abre en
+    su gate temporal —20 round trips o 24 meses— y la promocion tiene gate propio);
+  - autorizacion limitada a DEV/VAL offline sobre particiones RESEARCH_EXPOSED, con OOS sellado,
+    paper y live intactos (aprobada).
+- **Decision**: opcion limitada. `NEXT_CAMPAIGN = AUTHORIZED` con
+  `authorization_scope = OFFLINE_DEV_VAL_ONLY`. Se ejecutan WP-049-06 (runtime de estrategia en el
+  plano de investigacion), WP-049-07 (experimentos economicos DEV/VAL), WP-049-08 (robustez) y
+  WP-049-09 (reproduccion independiente) con reglas, costes, umbrales y particiones congelados, y
+  ademas el diagnostico de filtros de liquidez sobre una base declarada (FASE 4 de la instruccion)
+  y la auditoria del pipeline ACTIVE (FASE 5).
+- **Razon**: permite medir valor economico neto con disciplina preregistrada y evidencia
+  verificable, sin relajar ninguna puerta ni reescribir la evidencia historica. El charter permite
+  registrar esta autorizacion (operador = autoridad de activacion) y no existe autorizacion
+  adicional incumplida para el alcance autorizado; por tanto NO se registra BLOCKED para DEV/VAL.
+- **Consecuencias aplicadas en esta activacion**:
+  - `data/rfc049/discovery2/CAMPAIGN_AUTHORIZATION.json` registra la decision, su alcance y las
+    comprobaciones de control; los artefactos historicos de Phase A y RFC-049B (BASELINE_AUDIT,
+    DATA_EXPOSURE_AUDIT, PREREGISTRATION_MANIFEST, `admission/*`, `ECONOMIC_RESULTS`,
+    `ROBUSTNESS_REPORT`) NO se modifican; los resultados nuevos viven en `data/rfc049/discovery2/`.
+  - `SEALED_OOS = CLOSED` (apertura unica en su gate: 20 round trips o 24 meses desde
+    `freeze_timestamp_utc = 2026-10-10T11:26:20Z`); `PAPER_PROMOTION = NOT_AUTHORIZED` (gate
+    separado); `LIVE_TRADING = DISABLED`; `TRADES_AUTHORIZED = 0`; `PROFITABILITY_VERIFIED = FALSE`.
+  - Todo resultado DEV/VAL es RESEARCH_EXPOSED y no confirmatorio; ningun PASS es emitible antes
+    del OOS sellado y ningun umbral se cambia tras conocer resultados.
+  - El minimo de 20 round trips OOS no se reduce; si el OOS no llega a 20 en 24 meses el resultado
+    es `INSUFFICIENT_OOS_SAMPLE`, nunca PASS y nunca REJECT por potencia.
+  - Revocable por el operador en cualquier momento; sin efecto sobre produccion.
+
+
+## ADR-0026 - RFC-049 Discovery 2: cierre de campana (DISCOVERY_CAMPAIGN_FAILED) y retirada de la apertura unica del OOS sellado
+
+> RFC-049 DISCOVERY 2 CLOSURE — registrada el 2026-10-10 sobre HEAD `2d113a0ae82f`. Decisiones de
+> gobernanza por el operador (propietario); no toca evidencia congelada ni reabre candidatas.
+
+- **Estado**: Decidido y aprobado por el propietario (operador).
+- **Contexto**: ADR-0025 autorizo la campana Discovery 2 en alcance `OFFLINE_DEV_VAL_ONLY`. La Fase B
+  se ejecuto completa y verificada de forma independiente (PASS 37/37, 8/8 controles, `FALSE_SUCCESS = 0`):
+  ambas candidatas congeladas produjeron un net grande en desarrollo 2019-2023 y DECAYERON a no
+  confirmatorio en validacion 2024-2026. Segun la lista de umbrales congelados, ambas registran criterios
+  fallidos (`ECONOMIC_RESULTS.json#failed_criteria`): H-049-001 LCB/validacion, drawdown/desarrollo y
+  validacion, single-trade/validacion e incrementales/validacion; H-049-002 LCB/validacion,
+  drawdown/validacion, single-trade/desarrollo e incrementales/validacion. Por `RFC049_DISCOVERY_ADMISSION`
+  §6 un candidato que falla una etapa se cierra en esa etapa. Con ambas cerradas, ST-2 de
+  `DISCOVERY_STOP_RULES.md` ("ningun candidato satisface `PROFITABILITY_GATE_V1`") es terminal:
+  `DISCOVERY_CAMPAIGN_FAILED`. Quedo ademas abierta una pregunta de gobernanza: la apertura unica del OOS
+  sellado quedo *moot* (ninguna candidata puede promocionar y el gate es inalcanzable en su propia ventana:
+  5.9 y 12.4 round trips esperados en 24 meses frente al minimo de 20). El operador instruyo registrar el
+  cierre y resolver si se cancela dicha apertura en vez de gastar la unica inspeccion.
+- **Opciones** (para el OOS sellado):
+  - abrir la ventana en su gate y registrar la lectura forward (rechazada: consumiria la unica muestra
+    forward no contaminada para una decision que ya no puede cambiar —una lectura sin decision adjunta, el
+    riesgo de trial no registrado de ST-10— y ST-8 prohibe inspeccionar OOS mas de una vez por candidata);
+  - dejar el gate armado y esperar su disparo a los 24 meses (2028-10-10) (rechazada: el mismo consumo
+    irreversible, dos anos mas tarde, manteniendo vivas como objetos de seguimiento dos candidatas cerradas);
+  - **retirar la apertura junto con las candidatas cerradas, sin leer la ventana** (aprobada).
+- **Decision**: cierre de la campana en estado terminal `DISCOVERY_CAMPAIGN_FAILED` (ST-2) y resolucion del
+  OOS sellado en **`CANCELLED_NOT_OPENED`**: la ventana no se lee, la unica inspeccion licenciada queda
+  anulada sin usarse y `OOS_OPENED` permanece `false`.
+- **Razon**: el valor de informacion de la inspeccion es cero (ninguna candidata cerrada puede promocionar y
+  el gate es mecanicamente inalcanzable en su ventana) mientras su coste es positivo e irreversible (se
+  consume la unica muestra forward no contaminada). No abrir es la accion dominante. No se rebaja el minimo
+  de 20 round trips, no hay REJECT por potencia y la etiqueta que el gate habria producido sigue siendo
+  `INSUFFICIENT_OOS_SAMPLE`.
+- **Consecuencias aplicadas en este cierre**:
+  - `data/rfc049/discovery2/CAMPAIGN_CLOSURE.json` y `CAMPAIGN_CLOSURE.md` registran la campana terminal,
+    las hipotesis y candidatas intentadas, los trials contados, el motivo de rechazo por candidata con la
+    clave de umbral congelada, el resultado negativo, los defectos y las mediciones superadas conservadas
+    (`DISCOVERY_STOP_RULES.md` §3).
+  - `SEALED_OOS = CANCELLED_NOT_OPENED`; la declaracion congelada en `PREREGISTRATION_MANIFEST.json` NO se
+    edita (es un registro de Fase A bajo hash): este ADR y el artefacto de cierre son la autoridad hacia
+    adelante y la superan. La ventana no se lee ni se borra. Una campana futura recibe su PROPIO freeze y su
+    propia ventana sellada; no puede reclamar la ventana 2026-10-11 como su primera inspeccion.
+  - `HYPOTHESIS_001 = HYPOTHESIS_002 = CLOSED_REJECTED_DEV_VAL`; `HYPOTHESIS_BUDGET = EXHAUSTED_NO_REFILL`;
+    `NEXT_CAMPAIGN = NOT_AUTHORIZED` (el alcance de ADR-0025 se consumio y no se extiende a trabajo nuevo).
+  - Sin cambios de umbrales, de modelo de coste, de particiones ni de especificaciones; sin busqueda de
+    parametros; sin reapertura, sustitucion ni re-tune de candidatas; sin filtros anadidos para rescatar
+    periodos perdedores. Artefactos historicos no reescritos.
+  - Estado de gobernanza posterior: `PAPER_PROMOTION = NOT_AUTHORIZED`, `LIVE_TRADING = DISABLED`,
+    `TRADES_AUTHORIZED = 0`, `PROFITABILITY_VERIFIED = FALSE`, `FALSE_SUCCESS = 0`,
+    `RISK_ENGINE = DETERMINISTIC`, `RFC_049_DISCOVERY2 = CLOSED`.
+  - Ruta por defecto: esperar evidencia externa cualificada; no reabrir las familias cerradas ni recargar el
+    presupuesto de hipotesis. Reversion solo por un ADR nuevo que revierta explicitamente este; ni siquiera
+    entonces podria resucitar una candidata terminada.

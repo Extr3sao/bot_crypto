@@ -1,6 +1,6 @@
 {
   "artifact": "RFC049B_INDEPENDENT_VERIFICATION",
-  "generated_at_utc": "2026-10-10T13:15:31Z",
+  "generated_at_utc": "2026-10-10T16:12:35Z",
   "verifier": "scripts/rfc049b_verify.py",
   "builder": "scripts/rfc049b_admission.py",
   "builder_imported": false,
@@ -411,8 +411,8 @@
     "PIT_SOURCE_VERIFICATION.json": "1c37a4857bdc33af212e57c46e70865e8c0fec60445f718b3bbedfcab0d68467",
     "OOS_SAMPLE_FEASIBILITY.json": "7474606612b6fdc5af6e9b100e92f4aa84b8ba2b67f0da7c70b45a20f8b4bae9",
     "HYPOTHESIS_INDEPENDENCE.md": "3d0987e9417c3f30471528878d3cad2099b531fae89dca87670fdbda77f6e675",
-    "FINAL_ADMISSION_REPORT.json": "a95b1102afda4966a97c3d3960b2471c307d45918a99950fc9da3b286ee34699",
-    "FINAL_ADMISSION_REPORT.md": "b074237515d4a133597940e7231f8fae43d9650c8c82250e3ae02bbd78330fda"
+    "FINAL_ADMISSION_REPORT.json": "362d692e50d9c4dfcdd09c4c70f35f7b6c2c91348b732e52c116277a98cae398",
+    "FINAL_ADMISSION_REPORT.md": "3859496ce929e375c424a189c75fc93c2377d92d4e750639ca8ac0ee680b63f1"
   },
   "scope": {
     "returns_computed": false,
