@@ -1,6 +1,6 @@
 # RUN REPORT — POST RFC-049 / ACTIVE RECOVERY
 
-- generated `2026-10-10T19:54:12Z` · head `fae2f333de31` · branch `main`
+- generated `2026-10-10T20:03:06Z` · head `96b2d620de75` · branch `main`
 - mode: OFFLINE — no keys, no orders, no capital, no live path; only read-only audits and tests
 - closure commit (WP-1): `108c44d` — Close RFC-049 Discovery 2 and retire the sealed OOS opening unused (24 files, this lane only)
 
@@ -20,18 +20,18 @@
 
 | path | exists | sha256 |
 | --- | --- | --- |
-| `data/recovery/CAMPAIGN_STATE_VIEW.json` | True | `9882862c40966a82` |
-| `data/recovery/CAMPAIGN_STATE_VIEW_REPORT.md` | True | `8f0e1f73f74ee7da` |
-| `data/recovery/ACTIVE_ECONOMIC_AUDIT.json` | True | `db150c19f7aac3e7` |
-| `data/recovery/ACTIVE_ECONOMIC_AUDIT.md` | True | `335d5b74e6ba8055` |
+| `data/recovery/CAMPAIGN_STATE_VIEW.json` | True | `75cdfa95446a190a` |
+| `data/recovery/CAMPAIGN_STATE_VIEW_REPORT.md` | True | `ee829e44fc42c164` |
+| `data/recovery/ACTIVE_ECONOMIC_AUDIT.json` | True | `1ccccf356b0e5322` |
+| `data/recovery/ACTIVE_ECONOMIC_AUDIT.md` | True | `d9d8b853879a3c9e` |
 | `data/recovery/ACTIVE_RECOVERY_ROADMAP.md` | True | `48d92b379b3be5e6` |
 | `data/recovery/RFC049_POST_CLOSURE_REPORT.md` | True | `ab2e138c32acbcff` |
-| `data/recovery/INDEPENDENT_VERIFICATION.json` | True | `0314783a0a1ec162` |
+| `data/recovery/INDEPENDENT_VERIFICATION.json` | True | `15867a548a0d6137` |
 | `data/recovery/FINAL_REPORT.md` | True | `d0219388dbca59c1` |
-| `scripts/campaign_state_view.py` | True | `6c0434f6222d3f12` |
-| `scripts/active_economic_audit.py` | True | `12b84b059e917ee7` |
+| `scripts/campaign_state_view.py` | True | `e94966b30b402140` |
+| `scripts/active_economic_audit.py` | True | `a1d55ea37777a404` |
 | `scripts/recovery_verify.py` | True | `c6d1dd67b3c6a9cc` |
-| `tests/unit/research/test_active_recovery_wp.py` | True | `e927269536eec4c4` |
+| `tests/unit/research/test_active_recovery_wp.py` | True | `50d4403bd1658e99` |
 
 ## Notes
 

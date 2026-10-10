@@ -1095,11 +1095,11 @@ def render_markdown(payload: dict[str, Any]) -> str:
     return "\n".join(lines) + "\n"
 
 
-# ``sources`` records the hashes of the evidence at the moment of the run, including files
-# owned by other lanes (the paper lane's 24h report, the reports/ baselines). It is excluded
-# from the identity hash so that an unrelated worktree write cannot change the audit's
-# identity; the hashes remain in the artefact for auditability.
-VOLATILE_KEYS = ("generated_at_utc", "payload_sha256", "sources")
+# The identity hash covers the audit's *findings* and nothing about the moment it was taken.
+# ``sources`` records per-file hashes, including files owned by other lanes (the paper lane's
+# 24h report, the reports/ baselines); ``head``/``branch``/``generated_at_utc`` move with every
+# commit and every run. They stay in the artefact for auditability but not in its identity.
+VOLATILE_KEYS = ("generated_at_utc", "payload_sha256", "head", "branch", "sources")
 
 
 def payload_hash(payload: dict[str, Any]) -> str:

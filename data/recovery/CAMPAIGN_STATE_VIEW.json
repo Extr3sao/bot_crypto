@@ -1,8 +1,8 @@
 {
   "artifact": "CAMPAIGN_STATE_VIEW",
   "work_package": "WP-2 (POST RFC-049 / ACTIVE RECOVERY)",
-  "generated_at_utc": "2026-10-10T19:50:39Z",
-  "head": "fae2f333de31b318c067366e67700f6f5e62b518",
+  "generated_at_utc": "2026-10-10T19:59:53Z",
+  "head": "96b2d620de752663555ee0ee9f6f5f121c6842a6",
   "branch": "main",
   "mode": "READ-ONLY DERIVED VIEW — sources are read and hashed, never written",
   "precedence": {
@@ -2464,8 +2464,8 @@
       "path": "data/st6/ST6_HEALTH_STATUS.json",
       "exists": true,
       "tracked": false,
-      "sha256_before": "7af7ac3852e2b545caadc65fe08aee4b54715f316dd7ba06c40b97b89b0fbfdf",
-      "sha256_after": "7af7ac3852e2b545caadc65fe08aee4b54715f316dd7ba06c40b97b89b0fbfdf"
+      "sha256_before": "882b9c30b12160cf6f11b97a00d1742642fcd64fe026b674e034a4c1b3f68a7f",
+      "sha256_after": "882b9c30b12160cf6f11b97a00d1742642fcd64fe026b674e034a4c1b3f68a7f"
     },
     {
       "path": "docs/roadmap/RFC_REGISTRY.json",
@@ -2483,5 +2483,5 @@
     }
   ],
   "sources_unchanged": true,
-  "payload_sha256": "2d9a3d5875ef91ee3b44dd7c7d445b969f448d9f76f55b2e981c6c67c224d6ca"
+  "payload_sha256": "16cb43e028ce371e271007f3cdde1ed8b2d6b9364f94ebbe241ba65c07aa5078"
 }

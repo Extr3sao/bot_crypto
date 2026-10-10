@@ -836,11 +836,11 @@ def render_markdown(payload: dict[str, Any]) -> str:
     return "\n".join(lines) + "\n"
 
 
-# ``sources`` records the hashes of the evidence at the moment of the run. It is excluded
-# from the identity hash because one of those sources (data/st6/*) is owned by another lane
-# that keeps writing it: the view's *derived state* is what must be reproducible, and the
-# per-source hashes stay in the artefact for auditability either way.
-VOLATILE_KEYS = ("generated_at_utc", "payload_sha256", "sources")
+# The identity hash covers the view's *derived state* and nothing about the moment it was
+# taken. ``sources`` records per-file hashes, one of which (data/st6/*) belongs to another
+# lane that keeps writing it; ``head``/``branch``/``generated_at_utc`` move with every commit
+# and every run. They stay in the artefact for auditability but not in its identity.
+VOLATILE_KEYS = ("generated_at_utc", "payload_sha256", "head", "branch", "sources")
 
 
 def payload_hash(payload: dict[str, Any]) -> str:

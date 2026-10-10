@@ -86,6 +86,32 @@ def test_state_view_reports_sources_unchanged(state_view):
     )
 
 
+@pytest.mark.parametrize("script", ["campaign_state_view", "active_economic_audit"])
+def test_identity_hash_ignores_the_moment_but_not_the_findings(script):
+    """The identity hash must be stable across commits and volatile inputs.
+
+    ``head``/``branch``/``generated_at_utc`` and the per-file ``sources`` block describe the
+    moment; a finding describes the state. Committing the artefact (which moves HEAD) or an
+    unrelated lane writing its own file must not change the identity, and a real change to a
+    finding must.
+    """
+    module = load_script(script)
+    payload = module.build()
+    baseline = module.payload_hash(payload)
+
+    moment = {**payload, "head": "0" * 40, "branch": "other-branch",
+              "generated_at_utc": "1999-01-01T00:00:00Z", "sources": []}
+    assert module.payload_hash(moment) == baseline, "volatile fields leaked into the identity hash"
+
+    changed = json.loads(json.dumps(payload))
+    if "strategies" in changed:
+        first = sorted(changed["strategies"])[0]
+        changed["strategies"][first]["ledger_status"] = "PAPER_CANDIDATE"
+    else:
+        changed["campaigns"][0]["effective_state"]["NEXT_CAMPAIGN"] = "AUTHORIZED"
+    assert module.payload_hash(changed) != baseline, "a changed finding must change the identity"
+
+
 def test_frozen_declaration_is_superseded_not_current(state_view):
     payload = state_view.build()
     campaign = next(c for c in payload["campaigns"] if c["id"] == "RFC-049-DISCOVERY-2")
