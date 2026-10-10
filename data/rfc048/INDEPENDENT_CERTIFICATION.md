@@ -1,6 +1,6 @@
 # RFC-048V — Independent Certification
 
-- Head: `19b1a0bf4dd1` · baseline `19b1a0b`
+- Head: `081201f1eeaf` · baseline `19b1a0b`
 - Status: **RFC048_OFFLINE_CERTIFIED** · FALSE_SUCCESS = 0
 
 ## Gates
@@ -8,18 +8,18 @@
 | gate | result | evidence |
 | --- | --- | --- |
 | ruff check · ruff format · mypy strict | PASS | 14 delivered files: All checks passed!; 22 files already formatted; Success: no issues found in 22 source files |
-| repo-wide suite (`pytest tests`) | PASS | 3210 passed, 78 warnings in 266.01s (0:04:26) |
+| repo-wide suite (`pytest tests`) | PASS | 3210 passed, 78 warnings in 268.08s (0:04:28) |
 | RFC-048 independent verifier | PASS | 31 decisions, 303 checks, 8/8 negative controls |
 | adversarial falsification | PASS | 4000 random scenarios, 0 false approvals |
 | runtime authority | PASS | 31 decisions through the real engine |
-| tests | PASS | risk suite: 119 passed in 6.15s; unit suite: 3163 passed in 268.00s (0:04:27) |
+| tests | PASS | risk suite: 119 passed in 6.23s; unit suite: 3163 passed in 270.21s (0:04:30) |
 | economic integrity | PASS | 41 re-derived checks |
 | point-in-time funding | PASS | 4 probes |
 | governance | PASS | protected paths untouched: True |
 
 ## Manifest
 
-- 54 delivered files hashed (digest `170fe3cb5d960058…`)
+- 50 delivered files hashed (digest `4ee673cc040a7ded…`)
 
 ## Attack family coverage (§03)
 
@@ -46,7 +46,7 @@
 
 ## Repo-wide suite and hermeticity
 
-- verdict: **PASS** — 3210 passed, 78 warnings in 266.01s (0:04:26)
+- verdict: **PASS** — 3210 passed, 78 warnings in 268.08s (0:04:28)
 - hermeticity probe: 6769 files under `reports/` sampled over 30.0s with no local test running; 0 changed ()
 
 ## Estado anterior vs corregido

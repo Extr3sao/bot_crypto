@@ -1,11 +1,13 @@
 {
   "schema_version": "rfc048v-final-certification-report-v1",
   "rfc": "RFC-048V",
-  "generated_at_utc": "2026-10-10T09:23:55Z",
-  "CURRENT_HEAD": "19b1a0bf4dd1e6f042d4dc367dd83e939b44e20c",
+  "generated_at_utc": "2026-10-10T09:40:10Z",
+  "CURRENT_HEAD": "081201f1eeaf77985f55dc488ffec373939d8c02",
   "COMMITS": {
     "rfc048_baseline": "19b1a0b",
-    "campaign_commits": [],
+    "campaign_commits": [
+      "081201f Falsify and recertify the futures risk plane independently (RFC-048V)"
+    ],
     "note": "only RFC-048 files are staged in these commits"
   },
   "RUNTIME_REACHABILITY": {
@@ -40,51 +42,74 @@
   "DEFECTS_FIXED": [
     {
       "id": "DEF-048V-01",
+      "component": "FuturesRiskEngine",
       "severity": "HIGH",
       "title": "non-finite numbers were not validated: NaN mark and NaN leverage reached approvals",
       "status": "FIXED"
     },
     {
       "id": "DEF-048V-02",
+      "component": "FuturesRiskEngine",
       "severity": "HIGH",
       "title": "hostile numbers raised instead of refusing (NaN reached int())",
       "status": "FIXED"
     },
     {
       "id": "DEF-048V-03",
+      "component": "FuturesRiskEngine",
       "severity": "MEDIUM",
       "title": "a repeated decision id reserved its margin twice",
       "status": "FIXED"
     },
     {
       "id": "DEF-048V-04",
+      "component": "FuturesRiskEngine",
       "severity": "MEDIUM",
       "title": "the aggregate margin-utilization ceiling could be exceeded by concurrent decisions",
       "status": "FIXED"
     },
     {
       "id": "DEF-048V-05",
+      "component": "FuturesRiskEngine",
       "severity": "MEDIUM",
       "title": "a non-finite reservation poisoned the ledger for every later decision",
       "status": "FIXED"
     },
     {
       "id": "DEF-048V-06",
+      "component": "FuturesRiskEngine",
       "severity": "MEDIUM",
       "title": "an unmodelable stress scenario was silently treated as no stress",
       "status": "FIXED"
     },
     {
       "id": "DEF-048V-07",
+      "component": "FuturesRiskEngine",
       "severity": "LOW",
       "title": "a non-finite funding observation could corrupt the funding term",
       "status": "FIXED"
     },
     {
       "id": "DEF-048V-08",
+      "component": "FuturesRiskEngine",
       "severity": "MEDIUM",
       "title": "the closed-form liquidation solve extrapolated the maintenance amount below its zero floor",
       "status": "FIXED"
+    },
+    {
+      "id": "DEF-048V-09",
+      "component": "certification tooling",
+      "severity": "MEDIUM",
+      "status": "FIXED",
+      "title": "the certifier hashed its own certificate files into its manifest before rewriting them, so --verify-commit failed on a clean delivered tree",
+      "detected_by": "scripts/rfc048v_certify.py --verify-commit, run against the delivery commit after the certificates had been committed",
+      "counterexample": "on a clean tree at the delivery commit, --verify-commit returned exit 1 with 4 blob mismatches: FINAL_CERTIFICATION_REPORT.json e26e59df739f -> 2880b83b7306, FINAL_CERTIFICATION_REPORT.md 567ec006838f -> 82ba8429df9b, INDEPENDENT_CERTIFICATION.json 4a40b1ff2584 -> 93ba4810ed00, INDEPENDENT_CERTIFICATION.md 378b662ce5c7 -> e31a101617a3",
+      "root_cause": "manifest() was evaluated as an argument before write_reports() rewrote the four certificate files, so their recorded blobs were the previous generation's bytes; a document cannot contain the hash of its own final content",
+      "behaviour_before": "the manifest and the report's DELIVERABLES hashes were stale by one generation for the certificate files, and the delivery gate could never pass",
+      "behaviour_after": "the manifest excludes the certifier's own outputs and says why; DELIVERY_COMMIT_VERIFICATION.{json,md} carries their sha256 and git blob after they are written, and --verify-commit returns 0 on the delivered tree",
+      "regression_test": "`uv run python scripts/rfc048v_certify.py --verify-commit` on the delivered commit (exit 0, 0 mismatches); `--record-delivery-commit` re-hashes the six excluded files and fails if any delivered blob moved",
+      "shared_with_engine_defects": "found by the same falsification posture: the verification was executed against the artefact it had produced, instead of being assumed to hold",
+      "fixed_in": "the RFC-048V delivery commit; its exact hash is the `delivery_commit` field of data/rfc048/DELIVERY_COMMIT_VERIFICATION.json"
     }
   ],
   "RISK_INVARIANTS": {
@@ -187,7 +212,7 @@
     "risk_suite": {
       "command": "uv run pytest tests/unit/risk -q",
       "exit_code": 0,
-      "summary": "119 passed in 6.15s",
+      "summary": "119 passed in 6.23s",
       "failures": [],
       "passed": true
     },
@@ -195,7 +220,7 @@
       "command": "uv run pytest tests/unit -q",
       "executed": true,
       "exit_code": 0,
-      "summary": "3163 passed in 268.00s (0:04:27)",
+      "summary": "3163 passed in 270.21s (0:04:30)",
       "failures": [],
       "passed": true
     },
@@ -203,7 +228,7 @@
       "command": "uv run pytest tests -q",
       "executed": true,
       "exit_code": 0,
-      "summary": "3210 passed, 78 warnings in 266.01s (0:04:26)",
+      "summary": "3210 passed, 78 warnings in 268.08s (0:04:28)",
       "failures": [],
       "passed": true,
       "failure_analysis": []
@@ -236,7 +261,7 @@
     "verdict": "PASS",
     "passed": true,
     "raw_passed": true,
-    "summary": "3210 passed, 78 warnings in 266.01s (0:04:26)",
+    "summary": "3210 passed, 78 warnings in 268.08s (0:04:28)",
     "failures": [],
     "hermeticity_probe": {
       "observed": true,
@@ -265,35 +290,43 @@
   "DELIVERABLES": [
     {
       "path": "data/rfc048/ADVERSARIAL_FINDINGS.md",
-      "sha256": "07f0783d52ed04c5ace9a4d67af74cc526dd6821e1da439488d936b8d418618e"
+      "sha256": "4666970b083eb51da25cbfcf4662784f2bc64cd3c384b1950500fa2728ba1d13",
+      "self_referential": false
     },
     {
       "path": "data/rfc048/ADVERSARIAL_FINDINGS.json",
-      "sha256": "5c35c9540cee3b230ce424075bb729c69c69cb48e0acb31e5a56dbfaddfa47db"
+      "sha256": "39d88cd8b47732bbd0b374e84b7533f3834ac83d5b7585cb673d1dc231a28655",
+      "self_referential": false
     },
     {
       "path": "data/rfc048/RUNTIME_AUTHORITY_VERIFICATION.md",
-      "sha256": "6a19accf577d9427aff2f4f93f12ba39e52150288dd1ead9cacdcc5428bbe9a3"
+      "sha256": "8d3397d452e68be6ea438ebf7364fd648dff1939cea103aedfeb9dfb8b4fbe4f",
+      "self_referential": false
     },
     {
       "path": "data/rfc048/RUNTIME_AUTHORITY_VERIFICATION.json",
-      "sha256": "99a8f4a3ae3a1e0790a4c83225c2520ee2e3bf65baa0c71ea1e55463aba557fc"
+      "sha256": "25faa0f0cec1de2ee4d6729c7c42d9803d0bfc17a3ef7c623536ebbe0b914e8b",
+      "self_referential": false
     },
     {
       "path": "data/rfc048/INDEPENDENT_CERTIFICATION.md",
-      "sha256": "12ac8520f945b3f8225e27833f0abe00bb5e643aa96a18d699b8c1f4a0a18b7d"
+      "sha256": null,
+      "self_referential": true
     },
     {
       "path": "data/rfc048/INDEPENDENT_CERTIFICATION.json",
-      "sha256": "9702ea3f0fb833d29f5b605be66029f954edc10b99f3ccf7a1e699b35882d4dd"
+      "sha256": null,
+      "self_referential": true
     },
     {
       "path": "data/rfc048/FINAL_CERTIFICATION_REPORT.md",
-      "sha256": "c04ec306f110e8322b0c71d2a8dcde92cc3f456d8b5a70fcd71364f0ae27c4f3"
+      "sha256": null,
+      "self_referential": true
     },
     {
       "path": "data/rfc048/FINAL_CERTIFICATION_REPORT.json",
-      "sha256": "45e9890c85d71751d23aff1b99c02a2c4c3d4f7a7d2e8ea3e628331d7291931b"
+      "sha256": null,
+      "self_referential": true
     }
   ],
   "STATE_CHANGE": {

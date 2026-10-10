@@ -1,9 +1,9 @@
 {
   "schema_version": "rfc048v-runtime-authority-verification-v1",
   "rfc": "RFC-048V",
-  "generated_at_utc": "2026-10-10T09:13:38Z",
-  "current_head": "19b1a0bf4dd1e6f042d4dc367dd83e939b44e20c",
-  "duration_seconds": 0.089,
+  "generated_at_utc": "2026-10-10T09:29:41Z",
+  "current_head": "081201f1eeaf77985f55dc488ffec373939d8c02",
+  "duration_seconds": 0.085,
   "entrypoint": {
     "decision_authority": "trading_bot.autonomous.decision.DecisionEngine.decide",
     "runtime_call_site": "src/trading_bot/autonomous/runtime.py (self._decision_engine.decide)",

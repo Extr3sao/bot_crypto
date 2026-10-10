@@ -1,6 +1,6 @@
 # RFC-048V — Adversarial Findings
 
-- Falsifier: `RFC048V-FALSIFIER-v1` · head `19b1a0bf4dd1` · prefix `19b1a0b`
+- Falsifier: `RFC048V-FALSIFIER-v1` · head `081201f1eeaf` · prefix `19b1a0b`
 - Random search: seed `20261010` x 4000 scenarios
 - Verdict: **PASS — no false approval survived; every invariant held under the counterexamples, the catalogue replay, the randomized search, the numeric-root liquidation cross-check and the concurrency probes.** · FALSE_SUCCESS = 0
 
@@ -125,4 +125,4 @@ False approvals: **0** · conservative divergences (engine stricter than the ora
 | AGREE | 27 |
 | CONSERVATIVE_DIVERGENCE | 4 |
 
-_2026-10-10T09:13:36Z_
+_2026-10-10T09:29:39Z_

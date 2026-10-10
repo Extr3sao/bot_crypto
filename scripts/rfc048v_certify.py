@@ -22,7 +22,8 @@ Gates:
 7. an immutable manifest (git blob hashes) of every delivered code/evidence file.
 
     uv run python scripts/rfc048v_certify.py [--quick]
-    uv run python scripts/rfc048v_certify.py --verify-commit   # read-only
+    uv run python scripts/rfc048v_certify.py --verify-commit           # read-only
+    uv run python scripts/rfc048v_certify.py --record-delivery-commit  # reads, adds a record
 """
 
 from __future__ import annotations
@@ -109,6 +110,79 @@ NON_HERMETIC_OBSERVERS = {
         "CAP-004/paper supervisors write into that tree while the suite runs"
     ),
 }
+
+#: Every file this certifier writes. A file cannot be hashed inside the document
+#: that defines it, so the manifest excludes them and the delivery-commit record
+#: (written afterwards, and itself excluded) is what carries their hashes.
+SELF_REFERENTIAL = (
+    "data/rfc048/INDEPENDENT_CERTIFICATION.json",
+    "data/rfc048/INDEPENDENT_CERTIFICATION.md",
+    "data/rfc048/FINAL_CERTIFICATION_REPORT.json",
+    "data/rfc048/FINAL_CERTIFICATION_REPORT.md",
+    "data/rfc048/DELIVERY_COMMIT_VERIFICATION.json",
+    "data/rfc048/DELIVERY_COMMIT_VERIFICATION.md",
+)
+
+#: Written by --record-delivery-commit. Producing them is what makes them
+#: untracked, so the delivery check discounts exactly these two paths.
+DELIVERY_RECORD_PATHS = (
+    "data/rfc048/DELIVERY_COMMIT_VERIFICATION.json",
+    "data/rfc048/DELIVERY_COMMIT_VERIFICATION.md",
+)
+
+#: Defects found in the verification tooling itself while verifying the delivery.
+#: Recorded with the same detail as an engine defect: this campaign's own checks are
+#: not exempt from the falsification it applies to the engine.
+TOOLING_DEFECTS: tuple[dict[str, Any], ...] = (
+    {
+        "id": "DEF-048V-09",
+        "component": "certification tooling",
+        "severity": "MEDIUM",
+        "status": "FIXED",
+        "title": (
+            "the certifier hashed its own certificate files into its manifest before "
+            "rewriting them, so --verify-commit failed on a clean delivered tree"
+        ),
+        "detected_by": (
+            "scripts/rfc048v_certify.py --verify-commit, run against the delivery commit "
+            "after the certificates had been committed"
+        ),
+        "counterexample": (
+            "on a clean tree at the delivery commit, --verify-commit returned exit 1 with 4 "
+            "blob mismatches: FINAL_CERTIFICATION_REPORT.json e26e59df739f -> 2880b83b7306, "
+            "FINAL_CERTIFICATION_REPORT.md 567ec006838f -> 82ba8429df9b, "
+            "INDEPENDENT_CERTIFICATION.json 4a40b1ff2584 -> 93ba4810ed00, "
+            "INDEPENDENT_CERTIFICATION.md 378b662ce5c7 -> e31a101617a3"
+        ),
+        "root_cause": (
+            "manifest() was evaluated as an argument before write_reports() rewrote the "
+            "four certificate files, so their recorded blobs were the previous "
+            "generation's bytes; a document cannot contain the hash of its own final content"
+        ),
+        "behaviour_before": (
+            "the manifest and the report's DELIVERABLES hashes were stale by one generation "
+            "for the certificate files, and the delivery gate could never pass"
+        ),
+        "behaviour_after": (
+            "the manifest excludes the certifier's own outputs and says why; "
+            "DELIVERY_COMMIT_VERIFICATION.{json,md} carries their sha256 and git blob after "
+            "they are written, and --verify-commit returns 0 on the delivered tree"
+        ),
+        "regression_test": (
+            "`uv run python scripts/rfc048v_certify.py --verify-commit` on the delivered "
+            "commit (exit 0, 0 mismatches); `--record-delivery-commit` re-hashes the six "
+            "excluded files and fails if any delivered blob moved"
+        ),
+        "shared_with_engine_defects": (
+            "found by the same falsification posture: the verification was executed against "
+            "the artefact it had produced, instead of being assumed to hold"
+        ),
+        "fixed_in": (
+            "the RFC-048V delivery commit; its exact hash is the `delivery_commit` field of "
+            "data/rfc048/DELIVERY_COMMIT_VERIFICATION.json"
+        ),
+    },
+)
 
 #: The eight deliverables §09 requires, listed with their hashes in the report.
 REQUIRED_DELIVERABLES = (
@@ -930,8 +1004,9 @@ def manifest() -> dict[str, Any]:
             )
         elif path.is_file():
             files.append(entry)
+    excluded = sorted({name for name in files if name in SELF_REFERENTIAL})
     rows = []
-    for name in sorted(set(files)):
+    for name in sorted(set(files) - set(SELF_REFERENTIAL)):
         blob = git("hash-object", name)
         rows.append(
             {
@@ -945,24 +1020,38 @@ def manifest() -> dict[str, Any]:
         "files": rows,
         "file_count": len(rows),
         "uncommitted_at_generation": [line for line in dirty.splitlines() if line.strip()],
+        # A document cannot contain the hash of its own final bytes: hashing these
+        # before writing them made --verify-commit fail on a clean tree (the defect
+        # this exclusion fixes). DELIVERY_COMMIT_VERIFICATION carries their hashes.
+        "self_referential_excluded": excluded,
+        "self_reference_note": (
+            "a file cannot certify its own bytes; the excluded certificate files are "
+            "hashed by DELIVERY_COMMIT_VERIFICATION.{json,md}, written after them"
+        ),
     }
 
 
-def verify_commit_against_manifest(payload: dict[str, Any]) -> dict[str, Any]:
+def verify_commit_against_manifest(
+    payload: dict[str, Any], *, ignore: tuple[str, ...] = ()
+) -> dict[str, Any]:
     problems: list[str] = []
     for row in payload["manifest"]["files"]:
         current = git("hash-object", row["path"])
         if current != row["git_blob"]:
             problems.append(f"{row['path']}: {row['git_blob'][:12]} -> {current[:12]}")
     dirty = git("status", "--porcelain", "--", *DELIVERED_PATHS)
+    lines = [line for line in dirty.splitlines() if line.strip()]
+    ignored = [line for line in lines if any(name in line for name in ignore)]
+    relevant = [line for line in lines if not any(name in line for name in ignore)]
     return {
         "checked_files": len(payload["manifest"]["files"]),
         "mismatches": problems,
-        "working_tree_clean": dirty == "",
-        "dirty_entries": [line for line in dirty.splitlines() if line.strip()][:20],
+        "working_tree_clean": not relevant,
+        "dirty_entries": relevant[:20],
+        "ignored_dirty_entries": ignored,
         "current_head": git("rev-parse", "HEAD"),
         "recorded_head": payload["current_head"],
-        "passed": not problems and dirty == "",
+        "passed": not problems and not relevant,
     }
 
 
@@ -1048,6 +1137,7 @@ def build_reports(
         "quality_gates": gates["lint"],
         "repo_suite": repo,
         "reports_hermeticity_probe": hermeticity,
+        "verification_tooling_defects": [dict(d) for d in TOOLING_DEFECTS],
         "economic_integrity": economic,
         "pit_funding_integrity": pit,
         "governance": governance,
@@ -1096,9 +1186,16 @@ def build_reports(
             "families": [d["id"] for d in falsifier["defects"]],
         },
         "DEFECTS_FIXED": [
-            {"id": d["id"], "severity": d["severity"], "title": d["title"], "status": d["status"]}
+            {
+                "id": d["id"],
+                "component": "FuturesRiskEngine",
+                "severity": d["severity"],
+                "title": d["title"],
+                "status": d["status"],
+            }
             for d in falsifier["defects"]
-        ],
+        ]
+        + [dict(d) for d in TOOLING_DEFECTS],
         "RISK_INVARIANTS": {
             "invariants": falsifier["invariant_status"],
             "random_scenarios": falsifier["totals"]["random_scenarios"],
@@ -1142,7 +1239,14 @@ def build_reports(
         ),
         "INDEPENDENT_VERIFICATION": gates["verifier"],
         "DELIVERABLES": [
-            {"path": name, "sha256": sha256_file(ROOT / name)} for name in REQUIRED_DELIVERABLES
+            {
+                "path": name,
+                # `None` for the certificate's own files: they are hashed by
+                # DELIVERY_COMMIT_VERIFICATION, which is written after them.
+                "sha256": None if name in SELF_REFERENTIAL else sha256_file(ROOT / name),
+                "self_referential": name in SELF_REFERENTIAL,
+            }
+            for name in REQUIRED_DELIVERABLES
         ],
         "STATE_CHANGE": {
             "regenerated": sorted(state_change["regenerated_artefacts"]),
@@ -1332,7 +1436,13 @@ def write_reports(certification: dict[str, Any], final: dict[str, Any]) -> None:
         "",
     ]
     final_lines += [
-        f"- `{row['path']}` — sha256 `{row['sha256'][:16]}…`" for row in final["DELIVERABLES"]
+        f"- `{row['path']}` — "
+        + (
+            "sha256 recorded in `DELIVERY_COMMIT_VERIFICATION.json` (self-referential)"
+            if row["sha256"] is None
+            else f"sha256 `{row['sha256'][:16]}…`"
+        )
+        for row in final["DELIVERABLES"]
     ]
     final_lines += [
         "",
@@ -1346,7 +1456,7 @@ def write_reports(certification: dict[str, Any], final: dict[str, Any]) -> None:
         "",
     ]
     final_lines += [
-        f"- `{d['id']}` ({d['severity']}, {d['status']}): {d['title']}"
+        f"- `{d['id']}` ({d['severity']}, {d['status']}, {d['component']}): {d['title']}"
         for d in final["DEFECTS_FIXED"]
     ]
     final_lines += [
@@ -1357,6 +1467,29 @@ def write_reports(certification: dict[str, Any], final: dict[str, Any]) -> None:
     final_lines += [
         f"- `{name}`: {status}" for name, status in final["RISK_INVARIANTS"]["invariants"].items()
     ]
+    final_lines += [
+        "",
+        "## Verification-tooling defects",
+        "",
+        "The verification is held to the standard it applies to the engine.",
+        "",
+    ]
+    for defect in final["DEFECTS_FIXED"]:
+        if defect["component"] != "certification tooling":
+            continue
+        final_lines += [
+            f"### {defect['id']} — {defect['title']}",
+            "",
+            f"- severity: {defect['severity']} · status: {defect['status']}",
+            f"- detected by: {defect['detected_by']}",
+            f"- counterexample: {defect['counterexample']}",
+            f"- root cause: {defect['root_cause']}",
+            f"- behaviour before: {defect['behaviour_before']}",
+            f"- behaviour after: {defect['behaviour_after']}",
+            f"- regression test: {defect['regression_test']}",
+            f"- fixed in: {defect['fixed_in']}",
+            "",
+        ]
     final_lines += [
         "",
         "## Quality gates",
@@ -1402,6 +1535,90 @@ def write_reports(certification: dict[str, Any], final: dict[str, Any]) -> None:
     (DATA / "FINAL_CERTIFICATION_REPORT.md").write_text("\n".join(final_lines), encoding="utf-8")
 
 
+def record_delivery_commit() -> int:
+    """Attest that the delivered commit's blobs are the certified ones.
+
+    Reads the committed certificate, re-hashes every non-self-referential delivered
+    file as a git object, hashes the certificate files the manifest has to exclude,
+    and writes only its own record.
+    """
+    payload = json.loads((DATA / "INDEPENDENT_CERTIFICATION.json").read_text(encoding="utf-8"))
+    result = verify_commit_against_manifest(payload, ignore=DELIVERY_RECORD_PATHS)
+    commit = git("rev-parse", "HEAD")
+    self_referential: list[dict[str, Any]] = [
+        {
+            "path": name,
+            "sha256": sha256_file(ROOT / name),
+            "git_blob": git("hash-object", name),
+            "tracked": git("ls-files", "--error-unmatch", name).endswith(name),
+        }
+        for name in SELF_REFERENTIAL
+        if (ROOT / name).is_file()
+    ]
+    record = {
+        "schema_version": "rfc048v-delivery-commit-verification-v1",
+        "rfc": "RFC-048V",
+        "generated_at_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        "delivery_commit": commit,
+        "delivery_commit_subject": git("log", "-1", "--format=%s"),
+        "delivery_tree": git("rev-parse", "HEAD^{tree}"),
+        "certificate": {
+            "generated_at_utc": payload["generated_at_utc"],
+            "generated_at_head": payload["current_head"],
+            "status": payload["status"],
+            "false_success": payload["false_success"],
+        },
+        "manifest_files": payload["manifest"]["file_count"],
+        "manifest_digest": payload["manifest_digest"],
+        "blob_identity": result,
+        "self_referential_files": self_referential,
+        "conclusion": (
+            "Every file in the certified manifest hashes to the same git object in the "
+            "delivered commit, the certificate's own files are hashed here, and the "
+            "delivered paths carry no uncommitted change: the certificate describes the "
+            "tree this commit records."
+            if result["passed"]
+            else "The delivered commit does not reproduce the certified manifest."
+        ),
+    }
+    (DATA / "DELIVERY_COMMIT_VERIFICATION.json").write_text(
+        json.dumps(record, indent=2) + "\n", encoding="utf-8"
+    )
+    lines = [
+        "# RFC-048V — Delivery Commit Verification",
+        "",
+        f"- delivery commit: `{commit}`",
+        f"- subject: {record['delivery_commit_subject']}",
+        f"- tree: `{record['delivery_tree']}`",
+        f"- certificate: `{payload['status']}` generated `{payload['generated_at_utc']}` at head "
+        f"`{payload['current_head'][:12]}`",
+        f"- manifest: {record['manifest_files']} files, digest `{record['manifest_digest'][:16]}…`",
+        "",
+        "## Blob identity",
+        "",
+        f"- manifest files re-hashed: {result['checked_files']}",
+        f"- mismatches: {len(result['mismatches']) or 'none'}",
+        f"- delivered paths with uncommitted change: {len(result['dirty_entries']) or 'none'}",
+        f"- verdict: {'PASS' if result['passed'] else 'FAIL'}",
+        "",
+        "## Files excluded from the manifest (self-referential)",
+        "",
+        "A document cannot contain the hash of its own final bytes, so the certifier's own "
+        "outputs are excluded from its manifest and hashed here instead.",
+        "",
+    ]
+    lines += [
+        f"- `{row['path']}` — sha256 `{row['sha256'][:16]}…`, git blob `{row['git_blob'][:12]}`"
+        for row in self_referential
+    ]
+    lines += ["", record["conclusion"], ""]
+    if result["mismatches"]:
+        lines += ["## Mismatches", ""] + [f"- {row}" for row in result["mismatches"]] + [""]
+    (DATA / "DELIVERY_COMMIT_VERIFICATION.md").write_text("\n".join(lines), encoding="utf-8")
+    print(json.dumps(record, indent=2))
+    return 0 if result["passed"] else 1
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="RFC-048V certification")
     parser.add_argument("--quick", action="store_true")
@@ -1409,6 +1626,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--no-full-suite", dest="full_suite", action="store_false")
     parser.add_argument("--no-repo-suite", dest="repo_suite", action="store_false")
     parser.add_argument("--verify-commit", action="store_true")
+    parser.add_argument("--record-delivery-commit", action="store_true")
     args = parser.parse_args(argv)
 
     if args.verify_commit:
@@ -1416,6 +1634,9 @@ def main(argv: list[str] | None = None) -> int:
         result = verify_commit_against_manifest(payload)
         print(json.dumps(result, indent=2))
         return 0 if result["passed"] else 1
+
+    if args.record_delivery_commit:
+        return record_delivery_commit()
 
     started = time.time()
     full = args.full_suite and not args.quick

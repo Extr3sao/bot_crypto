@@ -1,8 +1,8 @@
 {
   "schema_version": "rfc048v-independent-certification-v1",
   "rfc": "RFC-048V",
-  "generated_at_utc": "2026-10-10T09:23:55Z",
-  "current_head": "19b1a0bf4dd1e6f042d4dc367dd83e939b44e20c",
+  "generated_at_utc": "2026-10-10T09:40:10Z",
+  "current_head": "081201f1eeaf77985f55dc488ffec373939d8c02",
   "rfc048_baseline_commit": "19b1a0b",
   "status": "RFC048_OFFLINE_CERTIFIED",
   "gates": {
@@ -85,7 +85,7 @@
       "risk_suite": {
         "command": "uv run pytest tests/unit/risk -q",
         "exit_code": 0,
-        "summary": "119 passed in 6.15s",
+        "summary": "119 passed in 6.23s",
         "failures": [],
         "passed": true
       },
@@ -93,7 +93,7 @@
         "command": "uv run pytest tests/unit -q",
         "executed": true,
         "exit_code": 0,
-        "summary": "3163 passed in 268.00s (0:04:27)",
+        "summary": "3163 passed in 270.21s (0:04:30)",
         "failures": [],
         "passed": true
       },
@@ -101,7 +101,7 @@
         "command": "uv run pytest tests -q",
         "executed": true,
         "exit_code": 0,
-        "summary": "3210 passed, 78 warnings in 266.01s (0:04:26)",
+        "summary": "3210 passed, 78 warnings in 268.08s (0:04:28)",
         "failures": [],
         "passed": true,
         "failure_analysis": []
@@ -135,7 +135,7 @@
     "verdict": "PASS",
     "passed": true,
     "raw_passed": true,
-    "summary": "3210 passed, 78 warnings in 266.01s (0:04:26)",
+    "summary": "3210 passed, 78 warnings in 268.08s (0:04:28)",
     "failures": [],
     "hermeticity_probe": {
       "observed": true,
@@ -154,6 +154,23 @@
     "foreign_writers_detected": false,
     "passed": true
   },
+  "verification_tooling_defects": [
+    {
+      "id": "DEF-048V-09",
+      "component": "certification tooling",
+      "severity": "MEDIUM",
+      "status": "FIXED",
+      "title": "the certifier hashed its own certificate files into its manifest before rewriting them, so --verify-commit failed on a clean delivered tree",
+      "detected_by": "scripts/rfc048v_certify.py --verify-commit, run against the delivery commit after the certificates had been committed",
+      "counterexample": "on a clean tree at the delivery commit, --verify-commit returned exit 1 with 4 blob mismatches: FINAL_CERTIFICATION_REPORT.json e26e59df739f -> 2880b83b7306, FINAL_CERTIFICATION_REPORT.md 567ec006838f -> 82ba8429df9b, INDEPENDENT_CERTIFICATION.json 4a40b1ff2584 -> 93ba4810ed00, INDEPENDENT_CERTIFICATION.md 378b662ce5c7 -> e31a101617a3",
+      "root_cause": "manifest() was evaluated as an argument before write_reports() rewrote the four certificate files, so their recorded blobs were the previous generation's bytes; a document cannot contain the hash of its own final content",
+      "behaviour_before": "the manifest and the report's DELIVERABLES hashes were stale by one generation for the certificate files, and the delivery gate could never pass",
+      "behaviour_after": "the manifest excludes the certifier's own outputs and says why; DELIVERY_COMMIT_VERIFICATION.{json,md} carries their sha256 and git blob after they are written, and --verify-commit returns 0 on the delivered tree",
+      "regression_test": "`uv run python scripts/rfc048v_certify.py --verify-commit` on the delivered commit (exit 0, 0 mismatches); `--record-delivery-commit` re-hashes the six excluded files and fails if any delivered blob moved",
+      "shared_with_engine_defects": "found by the same falsification posture: the verification was executed against the artefact it had produced, instead of being assumed to hold",
+      "fixed_in": "the RFC-048V delivery commit; its exact hash is the `delivery_commit` field of data/rfc048/DELIVERY_COMMIT_VERIFICATION.json"
+    }
+  ],
   "economic_integrity": {
     "checks": [
       {
@@ -452,28 +469,18 @@
       },
       {
         "path": "data/rfc048/ADVERSARIAL_FINDINGS.json",
-        "git_blob": "fe46ba703ffb9e3140e9da26e78cd474e75b5271",
-        "sha256": "5c35c9540cee3b230ce424075bb729c69c69cb48e0acb31e5a56dbfaddfa47db"
+        "git_blob": "777a695f40da27b68a57b030e8cbace31541f7b5",
+        "sha256": "39d88cd8b47732bbd0b374e84b7533f3834ac83d5b7585cb673d1dc231a28655"
       },
       {
         "path": "data/rfc048/ADVERSARIAL_FINDINGS.md",
-        "git_blob": "a7184fcf2bb6ca6fc21e6c0d4dacb417cad82658",
-        "sha256": "07f0783d52ed04c5ace9a4d67af74cc526dd6821e1da439488d936b8d418618e"
+        "git_blob": "77a6ea3ad6df717f2f2a326d25525e5d50f3d6b0",
+        "sha256": "4666970b083eb51da25cbfcf4662784f2bc64cd3c384b1950500fa2728ba1d13"
       },
       {
         "path": "data/rfc048/ECONOMIC_FEASIBILITY.json",
         "git_blob": "efbfc54e077097d53c4c43b3861f5986f22992ba",
         "sha256": "c6a87acf00877bfafc217e2129defb2e2e3ec765f82a27850ac14f7aca162c55"
-      },
-      {
-        "path": "data/rfc048/FINAL_CERTIFICATION_REPORT.json",
-        "git_blob": "e26e59df739f49b6e97ec01b786e1a375ef4e7c2",
-        "sha256": "45e9890c85d71751d23aff1b99c02a2c4c3d4f7a7d2e8ea3e628331d7291931b"
-      },
-      {
-        "path": "data/rfc048/FINAL_CERTIFICATION_REPORT.md",
-        "git_blob": "567ec006838f52084240df4f99aa99842f05cacb",
-        "sha256": "c04ec306f110e8322b0c71d2a8dcde92cc3f456d8b5a70fcd71364f0ae27c4f3"
       },
       {
         "path": "data/rfc048/FINAL_REPORT.json",
@@ -491,19 +498,9 @@
         "sha256": "73a84323e1e502c0a6bf8cb894f97dd1c6c1f55e09d4a973020b9a532ffcf590"
       },
       {
-        "path": "data/rfc048/INDEPENDENT_CERTIFICATION.json",
-        "git_blob": "4a40b1ff258404a8698accb3a775ab8d2121204d",
-        "sha256": "9702ea3f0fb833d29f5b605be66029f954edc10b99f3ccf7a1e699b35882d4dd"
-      },
-      {
-        "path": "data/rfc048/INDEPENDENT_CERTIFICATION.md",
-        "git_blob": "378b662ce5c7aef379a7fe361f19a2faeb3caf13",
-        "sha256": "12ac8520f945b3f8225e27833f0abe00bb5e643aa96a18d699b8c1f4a0a18b7d"
-      },
-      {
         "path": "data/rfc048/INDEPENDENT_VERIFICATION.json",
-        "git_blob": "d128e33d5e0aa03bdee1bc893f0bc28588f5e04d",
-        "sha256": "65901d3ffe0ab54fa35d105f8eb11f8b9bc98f19eba3c68957c4a1f6dc7e04cb"
+        "git_blob": "c6ad45d821692415e42b5a7b68ea1f97931b86b5",
+        "sha256": "f08daf860258572967678cb0eb084f048637699268f6b162b7fb05833dc83888"
       },
       {
         "path": "data/rfc048/INSTRUMENTS.json",
@@ -532,13 +529,13 @@
       },
       {
         "path": "data/rfc048/RUNTIME_AUTHORITY_VERIFICATION.json",
-        "git_blob": "a8eaf5657559f511ec460bdcb44d4d55ec832889",
-        "sha256": "99a8f4a3ae3a1e0790a4c83225c2520ee2e3bf65baa0c71ea1e55463aba557fc"
+        "git_blob": "35cace0cc9577635a9a56052fd306fb4f468f108",
+        "sha256": "25faa0f0cec1de2ee4d6729c7c42d9803d0bfc17a3ef7c623536ebbe0b914e8b"
       },
       {
         "path": "data/rfc048/RUNTIME_AUTHORITY_VERIFICATION.md",
-        "git_blob": "46f2a9034dc56ca2466fd5f7174473793dcbc384",
-        "sha256": "6a19accf577d9427aff2f4f93f12ba39e52150288dd1ead9cacdcc5428bbe9a3"
+        "git_blob": "d2b821eabd93253bcedd71dcf2650ea52773fd52",
+        "sha256": "8d3397d452e68be6ea438ebf7364fd648dff1939cea103aedfeb9dfb8b4fbe4f"
       },
       {
         "path": "data/rfc048/RUNTIME_EXECUTION_REPORT.json",
@@ -627,8 +624,8 @@
       },
       {
         "path": "scripts/rfc048v_certify.py",
-        "git_blob": "7d70430e911056b39a2747a6259ffd5d71cf10c0",
-        "sha256": "20c767b570e47a656055d43979c90ccecb7d19fa2e4d1f4d91e3b616017c0c93"
+        "git_blob": "989ae313c2c540aa8003aece539e4d8ca0750fb1",
+        "sha256": "7f752758e4f81acf5f0c1d174de1ccad869c79e2b9243634866f052addcf4b3e"
       },
       {
         "path": "scripts/rfc048v_falsify.py",
@@ -716,75 +713,32 @@
         "sha256": "49dbbf5424a92cf194dae042856ba0dd84db2458c2d0ce4dab70d063024761cb"
       }
     ],
-    "file_count": 54,
+    "file_count": 50,
     "uncommitted_at_generation": [
-      "M data/rfc048/INDEPENDENT_VERIFICATION.json",
-      " M data/rfc048/RUNTIME_EXECUTION_REPORT.json",
-      "M  scripts/rfc048_derive_instruments.py",
-      " M scripts/rfc048_report.py",
-      "M  scripts/rfc048_run.py",
-      "M  scripts/rfc048_verify.py",
-      "AM scripts/rfc048v_certify.py",
-      "A  scripts/rfc048v_falsify.py",
-      "A  scripts/rfc048v_runtime_authority.py",
-      "M  src/trading_bot/risk/futures/contracts.py",
-      "M  src/trading_bot/risk/futures/costs.py",
-      "M  src/trading_bot/risk/futures/engine.py",
-      "M  src/trading_bot/risk/futures/instruments.py",
-      "M  src/trading_bot/risk/futures/integration.py",
-      "M  src/trading_bot/risk/futures/margin.py",
-      "M  src/trading_bot/risk/futures/portfolio.py",
-      "M  src/trading_bot/risk/futures/sizing.py",
-      "A  src/trading_bot/risk/futures_falsification.py",
-      " M src/trading_bot/risk/futures_verification.py",
-      "A  tests/unit/risk/test_futures_falsification_regressions.py",
-      " M tests/unit/risk/test_futures_independent_verifier.py",
-      " M tests/unit/risk/test_futures_risk_engine.py",
-      " M tests/unit/risk/test_futures_runtime_integration.py",
-      "?? data/rfc048/ADVERSARIAL_FINDINGS.json",
-      "?? data/rfc048/ADVERSARIAL_FINDINGS.md",
-      "?? data/rfc048/FINAL_CERTIFICATION_REPORT.json",
-      "?? data/rfc048/FINAL_CERTIFICATION_REPORT.md",
-      "?? data/rfc048/INDEPENDENT_CERTIFICATION.json",
-      "?? data/rfc048/INDEPENDENT_CERTIFICATION.md",
-      "?? data/rfc048/RUNTIME_AUTHORITY_VERIFICATION.json",
-      "?? data/rfc048/RUNTIME_AUTHORITY_VERIFICATION.md"
-    ]
+      "M data/rfc048/ADVERSARIAL_FINDINGS.json",
+      " M data/rfc048/ADVERSARIAL_FINDINGS.md",
+      " M data/rfc048/INDEPENDENT_VERIFICATION.json",
+      " M data/rfc048/RUNTIME_AUTHORITY_VERIFICATION.json",
+      " M data/rfc048/RUNTIME_AUTHORITY_VERIFICATION.md",
+      " M scripts/rfc048v_certify.py"
+    ],
+    "self_referential_excluded": [
+      "data/rfc048/FINAL_CERTIFICATION_REPORT.json",
+      "data/rfc048/FINAL_CERTIFICATION_REPORT.md",
+      "data/rfc048/INDEPENDENT_CERTIFICATION.json",
+      "data/rfc048/INDEPENDENT_CERTIFICATION.md"
+    ],
+    "self_reference_note": "a file cannot certify its own bytes; the excluded certificate files are hashed by DELIVERY_COMMIT_VERIFICATION.{json,md}, written after them"
   },
-  "manifest_digest": "170fe3cb5d9600581689f85751df45387e84cfe6dd92f32811aa0118cec3c9b2",
+  "manifest_digest": "4ee673cc040a7ded5e3c6807f5e7a50fa66d92a1c0a954d7fdf9a8657772b6a9",
   "state_change": {
     "delivered_paths_dirty_at_generation": [
-      "M data/rfc048/INDEPENDENT_VERIFICATION.json",
-      " M data/rfc048/RUNTIME_EXECUTION_REPORT.json",
-      "M  scripts/rfc048_derive_instruments.py",
-      " M scripts/rfc048_report.py",
-      "M  scripts/rfc048_run.py",
-      "M  scripts/rfc048_verify.py",
-      "AM scripts/rfc048v_certify.py",
-      "A  scripts/rfc048v_falsify.py",
-      "A  scripts/rfc048v_runtime_authority.py",
-      "M  src/trading_bot/risk/futures/contracts.py",
-      "M  src/trading_bot/risk/futures/costs.py",
-      "M  src/trading_bot/risk/futures/engine.py",
-      "M  src/trading_bot/risk/futures/instruments.py",
-      "M  src/trading_bot/risk/futures/integration.py",
-      "M  src/trading_bot/risk/futures/margin.py",
-      "M  src/trading_bot/risk/futures/portfolio.py",
-      "M  src/trading_bot/risk/futures/sizing.py",
-      "A  src/trading_bot/risk/futures_falsification.py",
-      " M src/trading_bot/risk/futures_verification.py",
-      "A  tests/unit/risk/test_futures_falsification_regressions.py",
-      " M tests/unit/risk/test_futures_independent_verifier.py",
-      " M tests/unit/risk/test_futures_risk_engine.py",
-      " M tests/unit/risk/test_futures_runtime_integration.py",
-      "?? data/rfc048/ADVERSARIAL_FINDINGS.json",
-      "?? data/rfc048/ADVERSARIAL_FINDINGS.md",
-      "?? data/rfc048/FINAL_CERTIFICATION_REPORT.json",
-      "?? data/rfc048/FINAL_CERTIFICATION_REPORT.md",
-      "?? data/rfc048/INDEPENDENT_CERTIFICATION.json",
-      "?? data/rfc048/INDEPENDENT_CERTIFICATION.md",
-      "?? data/rfc048/RUNTIME_AUTHORITY_VERIFICATION.json",
-      "?? data/rfc048/RUNTIME_AUTHORITY_VERIFICATION.md"
+      "M data/rfc048/ADVERSARIAL_FINDINGS.json",
+      " M data/rfc048/ADVERSARIAL_FINDINGS.md",
+      " M data/rfc048/INDEPENDENT_VERIFICATION.json",
+      " M data/rfc048/RUNTIME_AUTHORITY_VERIFICATION.json",
+      " M data/rfc048/RUNTIME_AUTHORITY_VERIFICATION.md",
+      " M scripts/rfc048v_certify.py"
     ],
     "regenerated_artefacts": {
       "data/rfc048/RUNTIME_EXECUTION_REPORT.json": {
@@ -868,7 +822,7 @@
           {
             "field": "generated_at_utc",
             "before": "2026-10-09T22:59:26Z",
-            "after": "2026-10-10T09:13:35Z"
+            "after": "2026-10-10T09:29:38Z"
           }
         ],
         "decision_level_unchanged": true,
@@ -1167,5 +1121,5 @@
     "FALSE_SUCCESS counts every false approval across the independent verifier, the adversarial campaign and the verifier's exit code",
     "the repo-wide suite is recorded with the ownership of every failure: a failure that disappears in isolation and whose observation window is provably written by foreign processes is reported as EXTERNAL_NON_HERMETIC, never silently excluded and never counted as a pass"
   ],
-  "duration_seconds": 623.134
+  "duration_seconds": 635.015
 }

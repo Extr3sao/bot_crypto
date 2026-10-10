@@ -2,8 +2,8 @@
   "schema_version": "rfc048v-adversarial-findings-v1",
   "rfc": "RFC-048V",
   "falsifier_version": "RFC048V-FALSIFIER-v1",
-  "generated_at_utc": "2026-10-10T09:13:36Z",
-  "current_head": "19b1a0bf4dd1e6f042d4dc367dd83e939b44e20c",
+  "generated_at_utc": "2026-10-10T09:29:39Z",
+  "current_head": "081201f1eeaf77985f55dc488ffec373939d8c02",
   "prefix_commit": "19b1a0b",
   "seed": 20261010,
   "random_search_count": 4000,
@@ -3746,5 +3746,5 @@
     "status": "FIXED"
   },
   "conclusion": "PASS \u2014 no false approval survived; every invariant held under the counterexamples, the catalogue replay, the randomized search, the numeric-root liquidation cross-check and the concurrency probes.",
-  "duration_seconds": 0.633
+  "duration_seconds": 0.632
 }

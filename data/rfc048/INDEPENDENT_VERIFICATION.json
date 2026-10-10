@@ -2,7 +2,7 @@
   "schema_version": 1,
   "rfc": "RFC-048",
   "generated_by": "scripts/rfc048_verify.py",
-  "generated_at_utc": "2026-10-10T09:13:35Z",
+  "generated_at_utc": "2026-10-10T09:29:38Z",
   "verifier_version": "RFC048-INDEPENDENT-VERIFIER-v1",
   "builder": "trading_bot.risk.futures (engine, margin, sizing, costs)",
   "verifier": "trading_bot.risk.futures_verification (no builder import)",
