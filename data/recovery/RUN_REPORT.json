@@ -1,9 +1,9 @@
 {
   "artifact": "ACTIVE_RECOVERY_RUN_REPORT",
   "work_package": "POST RFC-049 / ACTIVE RECOVERY (WP-1..WP-5)",
-  "generated_at_utc": "2026-10-10T19:46:11Z",
-  "head": "108c44d08f7a00f970b33c8a1ddaf1a91b30dd73",
-  "branch": "",
+  "generated_at_utc": "2026-10-10T19:54:12Z",
+  "head": "fae2f333de31b318c067366e67700f6f5e62b518",
+  "branch": "main",
   "mode": "OFFLINE — no keys, no orders, no capital, no live path; only read-only audits and tests",
   "wc1_commit": {
     "commit": "108c44d",
@@ -26,7 +26,7 @@
       "command": ".venv/Scripts/python.exe scripts/campaign_state_view.py",
       "exit_code": 0,
       "result": "PASS",
-      "output_tail": "    \"A4_append_only_drift\"\n  ],\n  \"next_free_rfc_derived\": 50,\n  \"sources_unchanged\": true,\n  \"payload_sha256\": \"86d56930c0c47763eda3d02e5832a16cf78f4ddd4b41131f375d2b3b0d3651f5\"\n}",
+      "output_tail": "    \"A4_append_only_drift\"\n  ],\n  \"next_free_rfc_derived\": 50,\n  \"sources_unchanged\": true,\n  \"payload_sha256\": \"2d9a3d5875ef91ee3b44dd7c7d445b969f448d9f76f55b2e981c6c67c224d6ca\"\n}",
       "executed": true
     },
     {
@@ -34,7 +34,7 @@
       "command": ".venv/Scripts/python.exe scripts/campaign_state_view.py --check",
       "exit_code": 0,
       "result": "PASS",
-      "output_tail": "{\"check\": \"determinism:payload_sha256_stable\", \"result\": \"PASS\", \"detail\": \"86d56930c0c47763 vs 86d56930c0c47763\"}",
+      "output_tail": "{\"check\": \"determinism:payload_sha256_stable\", \"result\": \"PASS\", \"detail\": \"2d9a3d5875ef91ee vs 2d9a3d5875ef91ee\"}",
       "executed": true
     },
     {
@@ -42,7 +42,7 @@
       "command": ".venv/Scripts/python.exe scripts/active_economic_audit.py",
       "exit_code": 0,
       "result": "PASS",
-      "output_tail": "      \"zero_cost_gross_bps\": 6.276\n    }\n  ],\n  \"checks_failed\": 0,\n  \"payload_sha256\": \"095d37035ef1d4fb984ebe7d0da40ab11c9c270be31298aedd656a075c029fa2\"\n}",
+      "output_tail": "      \"zero_cost_gross_bps\": 6.276\n    }\n  ],\n  \"checks_failed\": 0,\n  \"payload_sha256\": \"60515f711dd2feee17dfe8a2cc986c771833a4af4bfdad168c9740ee6ead6be3\"\n}",
       "executed": true
     },
     {
@@ -50,7 +50,7 @@
       "command": ".venv/Scripts/python.exe scripts/active_economic_audit.py --check",
       "exit_code": 0,
       "result": "PASS",
-      "output_tail": "{\"check\": \"determinism:payload_sha256_stable\", \"result\": \"PASS\", \"detail\": \"095d37035ef1d4fb vs 095d37035ef1d4fb\"}",
+      "output_tail": "{\"check\": \"determinism:payload_sha256_stable\", \"result\": \"PASS\", \"detail\": \"60515f711dd2feee vs 60515f711dd2feee\"}",
       "executed": true
     },
     {
@@ -66,7 +66,7 @@
       "command": ".venv/Scripts/python.exe -m pytest tests/unit/research/test_active_recovery_wp.py -q",
       "exit_code": 0,
       "result": "PASS",
-      "output_tail": "........................                                                 [100%]\n24 passed in 8.11s",
+      "output_tail": "........................                                                 [100%]\n24 passed in 8.54s",
       "executed": true
     },
     {
@@ -74,7 +74,7 @@
       "command": ".venv/Scripts/python.exe -m pytest tests/unit/research -q",
       "exit_code": 0,
       "result": "PASS",
-      "output_tail": "........................................................................ [ 87%]\n........................................................................ [ 91%]\n........................................................................ [ 95%]\n........................................................................ [ 99%]\n...                                                                      [100%]\n1731 passed in 170.19s (0:02:50)",
+      "output_tail": "........................................................................ [ 87%]\n........................................................................ [ 91%]\n........................................................................ [ 95%]\n........................................................................ [ 99%]\n...                                                                      [100%]\n1731 passed in 196.92s (0:03:16)",
       "executed": true
     }
   ],
@@ -82,22 +82,22 @@
     {
       "path": "data/recovery/CAMPAIGN_STATE_VIEW.json",
       "exists": true,
-      "sha256": "8e1f888f8e4e825158126f9b33ca4a32f68d0a811feb7dc4bdac02ebad1e3ed2"
+      "sha256": "9882862c40966a823c78a116c87a52919b1e5c671562898d837082e6c79b42e2"
     },
     {
       "path": "data/recovery/CAMPAIGN_STATE_VIEW_REPORT.md",
       "exists": true,
-      "sha256": "d9dc4e2fb834a08c6704420a2bcff5795e18c40e6d48ac73b008fb9653f9edb5"
+      "sha256": "8f0e1f73f74ee7dac5e815ac454e019c63207b74ce4493a5dcc510940854c289"
     },
     {
       "path": "data/recovery/ACTIVE_ECONOMIC_AUDIT.json",
       "exists": true,
-      "sha256": "710f106821f1cf5a8f191476aee2b692ab497b423791d075e9542b76ae756349"
+      "sha256": "db150c19f7aac3e73a32f0c16c837c360cc5c4afa9035c8a93b5b8a2200ad21f"
     },
     {
       "path": "data/recovery/ACTIVE_ECONOMIC_AUDIT.md",
       "exists": true,
-      "sha256": "78d3909ba444374919fa7558d264ef5b945a2f1f01f5e24925ce68589884cb7c"
+      "sha256": "335d5b74e6ba8055eee3a54c2cfd939bf3091c129cb1ec7db6a0a2289d0fbeb1"
     },
     {
       "path": "data/recovery/ACTIVE_RECOVERY_ROADMAP.md",
@@ -112,7 +112,7 @@
     {
       "path": "data/recovery/INDEPENDENT_VERIFICATION.json",
       "exists": true,
-      "sha256": "2f96d4a5d92844168995e27b189c4f37d26b4fabeba2870b9d60a695e192d6d4"
+      "sha256": "0314783a0a1ec162e009d092002efd5c78f9785e07d2ab5650eb9f729cb72e4c"
     },
     {
       "path": "data/recovery/FINAL_REPORT.md",
@@ -122,7 +122,7 @@
     {
       "path": "scripts/campaign_state_view.py",
       "exists": true,
-      "sha256": "6d46c16e14274821373f3d0eb75b0ccc9acd964bc18d0145498ba417bf8197be"
+      "sha256": "6c0434f6222d3f12230f9b19dd36ea7cc43b3fb8636d565e3b419003f5fae09b"
     },
     {
       "path": "scripts/active_economic_audit.py",

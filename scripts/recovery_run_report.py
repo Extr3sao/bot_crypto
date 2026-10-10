@@ -81,7 +81,7 @@ def main() -> int:
                     "executed": False} for entry in COMMANDS]
 
     head = subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True).stdout.strip()
-    branch = subprocess.run(["git", "branch", "--current"], cwd=ROOT, capture_output=True, text=True).stdout.strip()
+    branch = subprocess.run(["git", "branch", "--show-current"], cwd=ROOT, capture_output=True, text=True).stdout.strip()
 
     def assemble(steps: list[dict[str, Any]]) -> dict[str, Any]:
         return {

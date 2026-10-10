@@ -1,6 +1,6 @@
 # ACTIVE ECONOMIC AUDIT (WP-3)
 
-- generated `2026-10-10T19:43:09Z` · head `108c44d08f7a` · branch `main`
+- generated `2026-10-10T19:50:43Z` · head `fae2f333de31` · branch `main`
 - tracked admission ledger + primary research artefacts + the live registry code path + the paper lane's own reports; the runtime cost plane is re-derived from COST_MODEL_V3, never typed
 - mode: offline read-only; no process started, nothing executed
 

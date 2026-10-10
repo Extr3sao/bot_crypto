@@ -703,7 +703,7 @@ def build() -> dict[str, Any]:
         "work_package": "WP-2 (POST RFC-049 / ACTIVE RECOVERY)",
         "generated_at_utc": datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "head": subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True).stdout.strip(),
-        "branch": subprocess.run(["git", "branch", "--current"], cwd=ROOT, capture_output=True, text=True).stdout.strip(),
+        "branch": subprocess.run(["git", "branch", "--show-current"], cwd=ROOT, capture_output=True, text=True).stdout.strip(),
         "mode": "READ-ONLY DERIVED VIEW — sources are read and hashed, never written",
         "precedence": PRECEDENCE,
             "adr_index": [{"adr": a["adr"], "title": a["title"], "facts": a["facts"],
