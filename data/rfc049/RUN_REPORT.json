@@ -1,0 +1,208 @@
+{
+  "artifact": "RFC049_RUN_REPORT",
+  "campaign": "RFC-049 DISCOVERY 2 — Phase A",
+  "generated_at_utc": "2026-10-10T11:26:20Z",
+  "repeatable_command": "python scripts/rfc049_prepare.py [--offline]",
+  "checks": [
+    {
+      "check": "vendor:defillama_stablecoin_supply_all.json",
+      "result": "PASS",
+      "detail": "3238 rows, 2017-11-29..2026-10-10"
+    },
+    {
+      "check": "vendor:blockchain_info_hashrate_8y.json",
+      "result": "PASS",
+      "detail": "2917 rows, 2018-10-12..2026-10-09"
+    },
+    {
+      "check": "vendor:blockchain_info_miners_revenue_all.json",
+      "result": "PASS",
+      "detail": "1619 rows, 2009-01-17..2026-10-07"
+    },
+    {
+      "check": "vendor:fred_WALCL.csv",
+      "result": "PASS",
+      "detail": "1243 rows, 2002-12-18..2026-10-07"
+    },
+    {
+      "check": "vendor:fred_RRPONTSYD.csv",
+      "result": "PASS",
+      "detail": "6176 rows, 2003-02-07..2026-10-09"
+    },
+    {
+      "check": "vendor:fred_WTREGEN.csv",
+      "result": "PASS",
+      "detail": "1243 rows, 2002-12-18..2026-10-07"
+    },
+    {
+      "check": "vendor:fred_DFII10.csv",
+      "result": "PASS",
+      "detail": "6201 rows, 2003-01-02..2026-10-08"
+    },
+    {
+      "check": "vendor:fred_DTWEXBGS.csv",
+      "result": "PASS",
+      "detail": "5415 rows, 2006-01-02..2026-10-02"
+    },
+    {
+      "check": "vendor:fred_DFF.csv",
+      "result": "PASS",
+      "detail": "26398 rows, 1954-07-01..2026-10-08"
+    },
+    {
+      "check": "baseline:rfc_number_collision",
+      "result": "PASS",
+      "detail": "tracked mentions before this RFC: ['scripts/rfc048v_certify.py']"
+    },
+    {
+      "check": "baseline:rfc048v_status",
+      "result": "PASS",
+      "detail": "RFC048_FINAL_STATUS=RFC048_OFFLINE_CERTIFIED"
+    },
+    {
+      "check": "baseline:governance",
+      "result": "PASS",
+      "detail": "{\"DISCOVERY_CAMPAIGN_FAILED\": true, \"LIVE_TRADING\": \"DISABLED\", \"NEXT_CAMPAIGN\": \"NOT_AUTHORIZED\", \"PROFITABILITY_VERIFIED\": false, \"TRADES_AUTHORIZED\": 0}"
+    },
+    {
+      "check": "baseline:cost_model",
+      "result": "PASS",
+      "detail": "200 USDT=23.353553391 bps, 1000 USDT=23.790569415 bps"
+    },
+    {
+      "check": "baseline:protected:config",
+      "result": "PASS",
+      "detail": "protected path present; this RFC must not modify it"
+    },
+    {
+      "check": "baseline:protected:docs/COST_MODEL_V3.json",
+      "result": "PASS",
+      "detail": "protected path present; this RFC must not modify it"
+    },
+    {
+      "check": "baseline:protected:data/st6",
+      "result": "PASS",
+      "detail": "protected path present; this RFC must not modify it"
+    },
+    {
+      "check": "baseline:protected:scripts/st6_scheduler_witness.py",
+      "result": "PASS",
+      "detail": "protected path present; this RFC must not modify it"
+    },
+    {
+      "check": "baseline:protected:src/trading_bot/risk/futures",
+      "result": "PASS",
+      "detail": "protected path present; this RFC must not modify it"
+    },
+    {
+      "check": "baseline:closed_line:perpetual funding carry (long spot / short perpe",
+      "result": "PASS",
+      "detail": "evidence paths present"
+    },
+    {
+      "check": "baseline:closed_line:spot-BTC ETF net-flow continuation",
+      "result": "PASS",
+      "detail": "evidence paths present"
+    },
+    {
+      "check": "baseline:closed_line:time-series momentum / trend following (spot and",
+      "result": "PASS",
+      "detail": "evidence paths present"
+    },
+    {
+      "check": "baseline:closed_line:cross-sectional momentum / reversal / low volati",
+      "result": "PASS",
+      "detail": "evidence paths present"
+    },
+    {
+      "check": "baseline:closed_line:funding capitulation / settlement dip / weekend ",
+      "result": "PASS",
+      "detail": "evidence paths present"
+    },
+    {
+      "check": "baseline:closed_line:derivatives positioning confirmation (OI / long-",
+      "result": "PASS",
+      "detail": "evidence paths present"
+    },
+    {
+      "check": "baseline:closed_line:cross-asset lead-lag (daily and intraday), relat",
+      "result": "PASS",
+      "detail": "evidence paths present"
+    },
+    {
+      "check": "baseline:closed_line:intraday seasonality / clock-boundary / overnigh",
+      "result": "PASS",
+      "detail": "evidence paths present"
+    },
+    {
+      "check": "baseline:closed_line:order-flow imbalance / microstructure families",
+      "result": "PASS",
+      "detail": "evidence paths present"
+    },
+    {
+      "check": "baseline:closed_line:token unlock / vesting supply events",
+      "result": "PASS",
+      "detail": "evidence paths present"
+    },
+    {
+      "check": "baseline:closed_line:liquidation-cascade reversal",
+      "result": "PASS",
+      "detail": "evidence paths present"
+    },
+    {
+      "check": "baseline:closed_line:stablecoin exchange-flow prediction (OPP-0003 co",
+      "result": "PASS",
+      "detail": "evidence paths present"
+    },
+    {
+      "check": "spec:H-049-001:fields",
+      "result": "PASS",
+      "detail": "all required fields present"
+    },
+    {
+      "check": "spec:H-049-002:fields",
+      "result": "PASS",
+      "detail": "all required fields present"
+    },
+    {
+      "check": "spec:H-049-003:fields",
+      "result": "PASS",
+      "detail": "all required fields present"
+    },
+    {
+      "check": "prereg:H-049-001:thresholds",
+      "result": "PASS",
+      "detail": "RFC-049 §16 minimum contract present"
+    },
+    {
+      "check": "prereg:H-049-001:pf_min",
+      "result": "PASS",
+      "detail": "PF_min=1.1"
+    },
+    {
+      "check": "prereg:H-049-002:thresholds",
+      "result": "PASS",
+      "detail": "RFC-049 §16 minimum contract present"
+    },
+    {
+      "check": "prereg:H-049-002:pf_min",
+      "result": "PASS",
+      "detail": "PF_min=1.1"
+    },
+    {
+      "check": "gate:next_campaign",
+      "result": "PASS",
+      "detail": "NEXT_CAMPAIGN=NOT_AUTHORIZED -> Phase A stops"
+    },
+    {
+      "check": "final:deliverables",
+      "result": "PASS",
+      "detail": "all present"
+    }
+  ],
+  "checks_total": 39,
+  "checks_failed": 0,
+  "exit_status": "PASS",
+  "economic_computations": [],
+  "note": "Phase A executes no economic evaluation: no signal, no return, no PnL, no trade is computed anywhere in this run"
+}

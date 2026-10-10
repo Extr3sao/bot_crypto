@@ -1,0 +1,347 @@
+{
+  "artifact": "RFC049_BASELINE_AUDIT",
+  "generated_at_utc": "2026-10-10T11:26:19Z",
+  "head": "cba8a337e802e66941a7ba72af71c499322bd2fa",
+  "branch": "main",
+  "working_tree": {
+    "dirty_entries": 85,
+    "note": "the working tree carries uncommitted changes owned by other agents (ST-6 observability, CAP-004, paper reports); this RFC neither stages nor touches them",
+    "sample": [
+      "M FINAL_REPORT.md",
+      " M RUN_REPORT.json",
+      " M RUN_REPORT.md",
+      " M data/st6/RFC047_RUNTIME_VERIFICATION.json",
+      " M data/st6/ST6_FORWARD_REGIME_REPORT.json",
+      " M data/st6/ST6_FORWARD_REGIME_REPORT.md",
+      " M data/st6/ST6_INDEPENDENT_RECONCILIATION.json",
+      " M data/st6/ST6_INDEPENDENT_RECONCILIATION.md",
+      " M data/st6/ST6_INDEPENDENT_VERIFICATION.json",
+      " M data/st6/ST6_INDEPENDENT_VERIFICATION.md"
+    ]
+  },
+  "rfc048v": {
+    "status": "RFC048_OFFLINE_CERTIFIED",
+    "source": "data/rfc048/FINAL_CERTIFICATION_REPORT.json",
+    "false_success": 0
+  },
+  "governance_preserved": {
+    "DISCOVERY_CAMPAIGN_FAILED": true,
+    "NEXT_CAMPAIGN": "NOT_AUTHORIZED",
+    "LIVE_TRADING": "DISABLED",
+    "TRADES_AUTHORIZED": 0,
+    "PROFITABILITY_VERIFIED": false
+  },
+  "cost_model": {
+    "model": "COST_MODEL_V3",
+    "scenario": "BINANCE_SPOT_STANDARD_TAKER",
+    "artifact": "docs/COST_MODEL_V3.json",
+    "artifact_sha256": "2f0e62d2408e6cc544d139bd6d43292698061d4d6ac325f70adab2b781965159",
+    "sizes": {
+      "200_usdt": {
+        "round_trip_bps": 23.353553391,
+        "stress_1_5x_bps": 35.030330086,
+        "components": [
+          {
+            "name": "exchange_fee_entry",
+            "value_bps": 10.0,
+            "knowledge": "KNOWN"
+          },
+          {
+            "name": "exchange_fee_exit",
+            "value_bps": 10.0,
+            "knowledge": "KNOWN"
+          },
+          {
+            "name": "spread",
+            "value_bps": 1.0,
+            "knowledge": "ESTIMATED"
+          },
+          {
+            "name": "slippage",
+            "value_bps": 2.282842712,
+            "knowledge": "ESTIMATED"
+          },
+          {
+            "name": "market_impact",
+            "value_bps": 0.070710678,
+            "knowledge": "ESTIMATED"
+          }
+        ]
+      },
+      "1000_usdt": {
+        "round_trip_bps": 23.790569415,
+        "stress_1_5x_bps": 35.685854123,
+        "components": [
+          {
+            "name": "exchange_fee_entry",
+            "value_bps": 10.0,
+            "knowledge": "KNOWN"
+          },
+          {
+            "name": "exchange_fee_exit",
+            "value_bps": 10.0,
+            "knowledge": "KNOWN"
+          },
+          {
+            "name": "spread",
+            "value_bps": 1.0,
+            "knowledge": "ESTIMATED"
+          },
+          {
+            "name": "slippage",
+            "value_bps": 2.632455532,
+            "knowledge": "ESTIMATED"
+          },
+          {
+            "name": "market_impact",
+            "value_bps": 0.158113883,
+            "knowledge": "ESTIMATED"
+          }
+        ]
+      }
+    },
+    "knowledge_split": "20.0 bps KNOWN (fees) + ESTIMATED execution terms; never account-verified"
+  },
+  "futures_scope": {
+    "supported": [
+      "LINEAR_PERPETUAL"
+    ],
+    "unsupported": [
+      "INVERSE_PERPETUAL",
+      "DELIVERY_FUTURE",
+      "LINEAR_DELIVERY_FUTURE"
+    ],
+    "position_modes_supported": [
+      "ISOLATED"
+    ],
+    "instruments": [
+      {
+        "instrument_id": "BINANCE_USDM_BTCUSDT_PERP",
+        "contract_type": "LINEAR_PERPETUAL",
+        "position_mode": "ISOLATED",
+        "minimum_notional": 50.0,
+        "price_tick": 0.1,
+        "quantity_step": 0.001
+      },
+      {
+        "instrument_id": "BINANCE_USDM_BTCUSDT_261225",
+        "contract_type": "DELIVERY_FUTURE",
+        "position_mode": "ISOLATED",
+        "minimum_notional": 5.0,
+        "price_tick": 0.1,
+        "quantity_step": 0.001
+      },
+      {
+        "instrument_id": "BINANCE_COINM_BTCUSD_PERP",
+        "contract_type": "INVERSE_PERPETUAL",
+        "position_mode": "ISOLATED",
+        "minimum_notional": null,
+        "price_tick": null,
+        "quantity_step": null
+      }
+    ],
+    "certification": "RFC-048V offline certification; advisory review only, no order path"
+  },
+  "datasets": {
+    "alpha001_daily_panel": {
+      "path": "data/raw/alpha001",
+      "files": 21,
+      "rows": 68875,
+      "sample": {
+        "ADA-USDT_1d.json": {
+          "rows": 3095,
+          "first_ms": 1523923200000,
+          "last_ms": 1791244800000
+        },
+        "ALGO-USDT_1d.json": {
+          "rows": 2664,
+          "first_ms": 1561161600000,
+          "last_ms": 1791244800000
+        },
+        "ATOM-USDT_1d.json": {
+          "rows": 2718,
+          "first_ms": 1556496000000,
+          "last_ms": 1791244800000
+        },
+        "AVAX-USDT_1d.json": {
+          "rows": 2206,
+          "first_ms": 1600732800000,
+          "last_ms": 1791244800000
+        }
+      },
+      "role": "daily spot OHLC for the 4-symbol universe and 17 further majors"
+    },
+    "alpha002_capture": {
+      "path": "data/raw/alpha002",
+      "manifest": "data/raw/alpha002/MANIFEST.json",
+      "series": 84,
+      "rows": 301383,
+      "role": "ALPHA-002"
+    },
+    "alpha003_capture": {
+      "path": "data/raw/alpha003",
+      "role": "alpha003"
+    },
+    "rfc048_futures_micro": {
+      "path": "data/rfc048/raw",
+      "files": [
+        "binance_usdm_btcusdt_5m_klines.json",
+        "binance_usdm_depth_btcusdt_100.json",
+        "binance_usdm_exchange_info.json",
+        "binance_usdm_funding_rate_btcusdt.json",
+        "binance_usdm_leverage_brackets_btcusdt.json",
+        "binance_usdm_premium_index_btcusdt.json",
+        "esma_cfd_product_intervention_2026-02-24.html"
+      ],
+      "role": "futures contract specs, funding history, 5m klines (3.5 days), depth snapshot"
+    },
+    "rfc035e_etf_flows": {
+      "path": "data/rfc035e",
+      "files": [
+        "etf_flow_btc_daily.json",
+        "binance_btcusdt_1d_klines.json",
+        "farside_btc_etf_flow_all_data.html"
+      ],
+      "role": "Farside US spot BTC ETF daily net flows + Binance BTCUSDT 1d klines (RFC-035E line, closed)"
+    }
+  },
+  "closed_lines": [
+    {
+      "family": "perpetual funding carry (long spot / short perpetual)",
+      "status": "REJECTED_INSTRUMENT_AND_CAPITAL_FIT",
+      "closed_by": "RFC-028 / RFC-029 / RFC-035 rounds 1-3",
+      "evidence": [
+        "research/profitability/opportunities/OPP-0008.md",
+        "research/profitability/opportunities/OPP-0030.md"
+      ],
+      "note": "gross annualised funding +2.11%/yr BTC, +1.63%/yr ETH: too small at project capital scale"
+    },
+    {
+      "family": "spot-BTC ETF net-flow continuation",
+      "status": "EFFECT_NOT_REPRODUCED",
+      "closed_by": "RFC-035E",
+      "evidence": [
+        "research/profitability/opportunities/OPP-0001.md",
+        "data/rfc035e/derived/etf_flow_btc_daily.json"
+      ],
+      "note": "the surviving variants sat at or below the cost floor; the lagged-flow effect was a trend proxy"
+    },
+    {
+      "family": "time-series momentum / trend following (spot and perp)",
+      "status": "REJECTED",
+      "closed_by": "RFC-041 / RFC-046 / ALPHA-001 / ALPHA-003",
+      "evidence": [
+        "docs/research/CANDIDATE_ARCHIVE.json",
+        "docs/research/alpha003/ALPHA002_CLOSURE.json"
+      ],
+      "note": "closed after validation failures; any admitted hypothesis is measured against a 200-day trend baseline"
+    },
+    {
+      "family": "cross-sectional momentum / reversal / low volatility",
+      "status": "REJECTED",
+      "closed_by": "RFC-041 / ARP-005 / ALPHA-001",
+      "evidence": [
+        "docs/research/CANDIDATE_ARCHIVE.json",
+        "docs/research/alpha002/ALPHA001_CLOSURE.json"
+      ],
+      "note": "six price-conditioned families tested with corrected significance: zero survivors"
+    },
+    {
+      "family": "funding capitulation / settlement dip / weekend rebound",
+      "status": "CANDIDATE_REJECTED",
+      "closed_by": "RFC-046",
+      "evidence": [
+        "data/rfc046/RUN_REPORT.json"
+      ],
+      "note": "first controlled discovery campaign; all three candidates failed every profitability gate"
+    },
+    {
+      "family": "derivatives positioning confirmation (OI / long-short ratios / funding thresholds)",
+      "status": "REJECT",
+      "closed_by": "ALPHA-002",
+      "evidence": [
+        "docs/research/alpha003/ALPHA002_CLOSURE.json"
+      ],
+      "note": "the derivatives confirmation subtracted value versus the price condition it was built on"
+    },
+    {
+      "family": "cross-asset lead-lag (daily and intraday), relative strength, dispersion convergence",
+      "status": "REJECT",
+      "closed_by": "ALPHA-001 / ALPHA-003",
+      "evidence": [
+        "docs/research/alpha002/ALPHA001_CLOSURE.json",
+        "docs/research/alpha003/ALPHA003_CLOSURE.json"
+      ],
+      "note": "the cross-asset term added nothing over the target's own history"
+    },
+    {
+      "family": "intraday seasonality / clock-boundary / overnight windows",
+      "status": "REJECTED_COST",
+      "closed_by": "RFC-035 rounds 1-3",
+      "evidence": [
+        "research/profitability/opportunities/OPP-0005.md",
+        "research/profitability/opportunities/OPP-0006.md",
+        "research/profitability/opportunities/OPP-0009.md"
+      ],
+      "note": "cost floor exceeds the intraday effect size"
+    },
+    {
+      "family": "order-flow imbalance / microstructure families",
+      "status": "REJECTED_CLOSED_INTERNAL_FAMILY",
+      "closed_by": "RFC-035 / microstructure V1-V2",
+      "evidence": [
+        "research/profitability/opportunities/OPP-0007.md",
+        "docs/MICROSTRUCTURE_V2_INDEPENDENT_VERIFICATION.md"
+      ],
+      "note": "closed internal family; not re-openable as new"
+    },
+    {
+      "family": "token unlock / vesting supply events",
+      "status": "NOT_SELECTED_DIRECTION_AND_FIDELITY",
+      "closed_by": "RFC-035",
+      "evidence": [
+        "research/profitability/opportunities/OPP-0002.md"
+      ],
+      "note": "entry/exit/threshold undefined in the source; no verified unlock dataset"
+    },
+    {
+      "family": "liquidation-cascade reversal",
+      "status": "INSUFFICIENT_EVIDENCE",
+      "closed_by": "RFC-035 / RFC-046 data audit",
+      "evidence": [
+        "research/profitability/opportunities/OPP-0004.md"
+      ],
+      "note": "no historical liquidation series with verifiable provenance and adequate sample"
+    },
+    {
+      "family": "stablecoin exchange-flow prediction (OPP-0003 construction)",
+      "status": "WATCH_BLOCKED_ON_DATA_AND_COST",
+      "closed_by": "RFC-035 (not closed; blocked)",
+      "evidence": [
+        "research/profitability/opportunities/OPP-0003.md"
+      ],
+      "note": "labelled exchange-flow series are commercial and the 1-2h horizon collides with the cost floor; H-049-001 uses a free aggregate series at a cost-compatible horizon and declares this relationship"
+    }
+  ],
+  "protected_paths": [
+    "config",
+    "docs/COST_MODEL_V3.json",
+    "data/st6",
+    "scripts/st6_scheduler_witness.py",
+    "src/trading_bot/risk/futures"
+  ],
+  "rfc_number_collision": {
+    "scan": "git grep -l -i -E 'RFC-049|RFC049|rfc049' over tracked files",
+    "mentions_before_this_rfc": [
+      "scripts/rfc048v_certify.py"
+    ],
+    "interpretation": "the only tracked mention is the RFC-048V negative control (scripts/rfc048v_certify.py, check NO_RFC_049_OPENED). Creating the RFC-049 preparation documents intentionally makes that control read False on the current tree; the RFC-048V delivery certificate remains valid for the commit it describes (cba8a33) and is neither re-run nor rewritten here."
+  },
+  "rfc048v_interaction": {
+    "check": "NO_RFC_049_OPENED",
+    "file": "scripts/rfc048v_certify.py",
+    "status_after_this_rfc": "the check would read False on the current tree by design",
+    "campaign_opened": false,
+    "note": "the check proved RFC-048V did not open a successor campaign; RFC-049 is PREPARED with NEXT_CAMPAIGN=NOT_AUTHORIZED, so no campaign is opened by it, and the historical certificate is preserved unmodified"
+  }
+}

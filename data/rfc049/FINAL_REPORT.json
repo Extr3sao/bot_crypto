@@ -1,0 +1,291 @@
+{
+  "artifact": "RFC049_FINAL_REPORT",
+  "campaign": "RFC-049 PROFITABILITY DISCOVERY 2",
+  "phase": "A (preparation)",
+  "generated_at_utc": "2026-10-10T11:26:20Z",
+  "CURRENT_HEAD": "cba8a337e802e66941a7ba72af71c499322bd2fa",
+  "RFC049_STATUS": "RFC049_PREPARED_AWAITING_CAMPAIGN_AUTHORIZATION",
+  "CAMPAIGN_AUTHORIZATION": {
+    "NEXT_CAMPAIGN": "NOT_AUTHORIZED",
+    "authorized": false,
+    "gate_file": "data/rfc049/BASELINE_AUDIT.json#governance_preserved"
+  },
+  "RUNTIME_REACHABILITY": {
+    "rfc048v": {
+      "status": "RFC048_OFFLINE_CERTIFIED",
+      "source": "data/rfc048/FINAL_CERTIFICATION_REPORT.json",
+      "false_success": 0
+    },
+    "risk_engine": "certified offline; advisory review only; no order path",
+    "note": "no runtime execution in Phase A (ACC-049-20 NOT_RUN)"
+  },
+  "HYPOTHESES_REVIEWED": 9,
+  "HYPOTHESES_ADMITTED": 2,
+  "HYPOTHESES_DEFERRED": 1,
+  "HYPOTHESES_REJECTED_BEFORE_ADMISSION": 6,
+  "SOURCES": {
+    "count": "see docs/research/RFC049_SOURCE_REGISTRY.md",
+    "classes": [
+      "vendor data spec",
+      "academic",
+      "official statistics",
+      "author method",
+      "press (claims only)"
+    ]
+  },
+  "FROZEN_SPECIFICATIONS": {
+    "H-049-001": {
+      "spec_sha256": "8efafe60c217ad9950f8dc85c4a6ea68730cc95613ab377db764720c79d56cec",
+      "status": "SPEC_FROZEN"
+    },
+    "H-049-002": {
+      "spec_sha256": "d2a2a9891df9bc439120b5e6794bf00ebcffcc6ce88e6241bca7f6c98c02e02c",
+      "status": "SPEC_FROZEN"
+    },
+    "H-049-003": {
+      "spec_sha256": "4e32cc3d17518629059aaa6c55ba526a8d620817708ed06364e8674353fa47f6",
+      "status": "RESEARCH_CANDIDATE"
+    }
+  },
+  "DATASET_PROVENANCE": {
+    "vendor_series": 9,
+    "all_hashed": true,
+    "manifest": "data/rfc049/vendor/VENDOR_MANIFEST.json"
+  },
+  "OOS_INTEGRITY": "every historical window declared RESEARCH_EXPOSED; sealed forward OOS defined from 2026-10-11T00:00:00Z",
+  "SPOT_COST_STATUS": {
+    "200_usdt": {
+      "round_trip_bps": 23.353553391,
+      "stress_1_5x_bps": 35.030330086,
+      "components": [
+        {
+          "name": "exchange_fee_entry",
+          "value_bps": 10.0,
+          "knowledge": "KNOWN"
+        },
+        {
+          "name": "exchange_fee_exit",
+          "value_bps": 10.0,
+          "knowledge": "KNOWN"
+        },
+        {
+          "name": "spread",
+          "value_bps": 1.0,
+          "knowledge": "ESTIMATED"
+        },
+        {
+          "name": "slippage",
+          "value_bps": 2.282842712,
+          "knowledge": "ESTIMATED"
+        },
+        {
+          "name": "market_impact",
+          "value_bps": 0.070710678,
+          "knowledge": "ESTIMATED"
+        }
+      ]
+    },
+    "1000_usdt": {
+      "round_trip_bps": 23.790569415,
+      "stress_1_5x_bps": 35.685854123,
+      "components": [
+        {
+          "name": "exchange_fee_entry",
+          "value_bps": 10.0,
+          "knowledge": "KNOWN"
+        },
+        {
+          "name": "exchange_fee_exit",
+          "value_bps": 10.0,
+          "knowledge": "KNOWN"
+        },
+        {
+          "name": "spread",
+          "value_bps": 1.0,
+          "knowledge": "ESTIMATED"
+        },
+        {
+          "name": "slippage",
+          "value_bps": 2.632455532,
+          "knowledge": "ESTIMATED"
+        },
+        {
+          "name": "market_impact",
+          "value_bps": 0.158113883,
+          "knowledge": "ESTIMATED"
+        }
+      ]
+    }
+  },
+  "FUTURES_COST_STATUS": "not required: no admitted hypothesis uses futures; the experimental futures cost plane stays behind RFC-048V gates",
+  "RISK_VALIDATION": "declared per spec; executable risk checks NOT_RUN (campaign not authorized)",
+  "EXPERIMENTS_EXECUTED": 0,
+  "NET_OOS_RESULTS": "none — no campaign, no OOS, no result",
+  "ROBUSTNESS": "NOT_RUN contract written; battery declared",
+  "INDEPENDENT_VERIFICATION": "defined by data/rfc049/INDEPENDENT_VERIFICATION.json — written after this report by a builder-free verifier, which is the authoritative status",
+  "FALSE_SUCCESS": 0,
+  "DEFECTS": [
+    {
+      "defect_id": "RFC049-DEF-01",
+      "severity": "LOW",
+      "component": "scripts/rfc049_prepare.py",
+      "root_cause": "the run report was written before the deliverables check ran, so that check's result could never appear in the report",
+      "effect": "the run report would have shown a check list missing its last entry",
+      "fix": "the deliverables check now completes before the run report is written",
+      "found_by": "this build (pre-delivery review)",
+      "affects_economics": false
+    },
+    {
+      "defect_id": "RFC049-DEF-02",
+      "severity": "LOW",
+      "component": "scripts/rfc049_verify.py",
+      "root_cause": "the forbidden-label scan matched raw text, so the final report's own `labels_never_used` declaration produced a false positive",
+      "effect": "a spurious FAIL on a clean tree",
+      "fix": "the scan now walks JSON values and skips the labels_never_used key",
+      "found_by": "the first verifier run during this build",
+      "affects_economics": false
+    }
+  ],
+  "observations": [
+    "docs/roadmap/RFC_REGISTRY.json still shows next_free_number_above_046=048; the field is consistent with its described rule (it lists only up to 047) but the snapshot ages. RFC-049 was allocated by an artefact scan (data/rfc049/BASELINE_AUDIT.json#rfc_number_collision), not by trusting that field."
+  ],
+  "BLOCKERS": [
+    "NEXT_CAMPAIGN = NOT_AUTHORIZED: the campaign itself cannot start",
+    "no free PIT-verifiable series identified for on-chain valuation, exchange flows or liquidation cascades (future sourcing gate)",
+    "H-049-003 deferred: event frequency below the preregistered sample floor",
+    "the RFC-048V negative control NO_RFC_049_OPENED reads False on the current tree by design once this RFC's documents exist; the RFC-048V certificate itself remains valid for the commit it describes"
+  ],
+  "NEXT_GATE": "operator decision: authorize Discovery 2 (NEXT_CAMPAIGN=AUTHORIZED) or leave it closed",
+  "acceptance_criteria": [
+    {
+      "id": "ACC-049-01",
+      "criterion": "Baseline runtime auditado",
+      "status": "PASS",
+      "evidence": "data/rfc049/BASELINE_AUDIT.json (HEAD, RFC-048V state, cost model, instruments, datasets)"
+    },
+    {
+      "id": "ACC-049-02",
+      "criterion": "Tres hipótesis como máximo",
+      "status": "PASS",
+      "evidence": "2 admitted + 1 deferred candidate + 6 recorded rejections (data/rfc049/HYPOTHESIS_REGISTRY.json)"
+    },
+    {
+      "id": "ACC-049-03",
+      "criterion": "Fuentes y mecanismos verificables",
+      "status": "PASS",
+      "evidence": "docs/research/RFC049_SOURCE_REGISTRY.md; every source read at full-text level or vendor-metadata level"
+    },
+    {
+      "id": "ACC-049-04",
+      "criterion": "Especificaciones congeladas antes de evaluar",
+      "status": "PASS",
+      "evidence": "data/rfc049/specs/*.json + PREREGISTRATION_MANIFEST.json freeze timestamp and canonical hashes"
+    },
+    {
+      "id": "ACC-049-05",
+      "criterion": "Datos PIT válidos",
+      "status": "BLOCKED",
+      "evidence": "PIT conventions declared per series and audited at coverage level; the executable PIT audit runs only with the campaign"
+    },
+    {
+      "id": "ACC-049-06",
+      "criterion": "OOS realmente no utilizado o correctamente clasificado como expuesto",
+      "status": "PASS",
+      "evidence": "data/rfc049/DATA_EXPOSURE_AUDIT.json: every historical window classed RESEARCH_EXPOSED; sealed forward OOS defined"
+    },
+    {
+      "id": "ACC-049-07",
+      "criterion": "Costes por instrumento",
+      "status": "PASS",
+      "evidence": "spot COST_MODEL_V3 re-derived at 200/1000 USDT (BASELINE_AUDIT); no admitted hypothesis uses futures, so the experimental futures model is not required"
+    },
+    {
+      "id": "ACC-049-08",
+      "criterion": "Riesgo determinista aplicado",
+      "status": "NOT_RUN",
+      "evidence": "risk engine is RFC-048V-certified offline but no simulation has been executed (campaign not authorized)"
+    },
+    {
+      "id": "ACC-049-09",
+      "criterion": "Sin optimización no autorizada",
+      "status": "PASS",
+      "evidence": "0 parameter searches declared; freeze before measurement; no economic computation performed in Phase A"
+    },
+    {
+      "id": "ACC-049-10",
+      "criterion": "Evaluación económica reproducible",
+      "status": "NOT_RUN",
+      "evidence": "ECONOMIC_RESULTS.json = NOT_RUN contract with the per-run schema prepared"
+    },
+    {
+      "id": "ACC-049-11",
+      "criterion": "Robustez calculada",
+      "status": "NOT_RUN",
+      "evidence": "ROBUSTNESS_REPORT.json = NOT_RUN contract with the planned battery"
+    },
+    {
+      "id": "ACC-049-12",
+      "criterion": "Comparación con baselines adecuados",
+      "status": "PASS (declared)",
+      "evidence": "buy-and-hold, 200d trend baseline and sibling-hypothesis controls frozen in every admitted spec"
+    },
+    {
+      "id": "ACC-049-13",
+      "criterion": "Verificador independiente",
+      "status": "PASS (Phase A scope)",
+      "evidence": "scripts/rfc049_verify.py, builder-free, re-derives every hash and claim; campaign-level verification remains NOT_RUN"
+    },
+    {
+      "id": "ACC-049-14",
+      "criterion": "Negative controls",
+      "status": "PASS (Phase A scope)",
+      "evidence": "INDEPENDENT_VERIFICATION.json negative controls (tampered hash, missing result, governance drift)"
+    },
+    {
+      "id": "ACC-049-15",
+      "criterion": "FALSE_SUCCESS = 0",
+      "status": "PASS (Phase A scope)",
+      "evidence": "no PASS is recorded without evidence; FALSE_SUCCESS counted in INDEPENDENT_VERIFICATION.json"
+    },
+    {
+      "id": "ACC-049-16",
+      "criterion": "Sin trading real",
+      "status": "PASS",
+      "evidence": "LIVE_TRADING=DISABLED, TRADES_AUTHORIZED=0; no order path exists in the admitted specs"
+    },
+    {
+      "id": "ACC-049-17",
+      "criterion": "Sin promoción automática",
+      "status": "PASS",
+      "evidence": "candidate states capped at ADMITTED_FOR_PREREGISTRATION; ELIGIBLE_FOR_PAPER_REVIEW not reachable in Phase A"
+    },
+    {
+      "id": "ACC-049-18",
+      "criterion": "Stop rules respetadas",
+      "status": "PASS",
+      "evidence": "the activation gate stopped the campaign at WP-049-05; no experiment budget consumed"
+    },
+    {
+      "id": "ACC-049-19",
+      "criterion": "Evidencias completas",
+      "status": "PASS",
+      "evidence": "all 17 required artifacts present and hashed (FINAL_REPORT.json manifest)"
+    },
+    {
+      "id": "ACC-049-20",
+      "criterion": "Tests dirigidos al mismo runtime evaluado",
+      "status": "NOT_RUN",
+      "evidence": "no runtime execution occurs in Phase A; the Phase B requirement stays open"
+    }
+  ],
+  "run_report": "data/rfc049/RUN_REPORT.json",
+  "verifier": "data/rfc049/INDEPENDENT_VERIFICATION.json",
+  "labels_never_used": [
+    "PROFITABLE",
+    "CERTIFIED_ALPHA",
+    "PRODUCTION_READY",
+    "EDGE_CONFIRMED",
+    "PROFITABILITY_VERIFIED"
+  ],
+  "run_exit_status": "PASS"
+}

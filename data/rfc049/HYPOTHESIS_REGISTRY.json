@@ -1,0 +1,160 @@
+{
+  "artifact": "RFC049_HYPOTHESIS_REGISTRY",
+  "generated_at_utc": "2026-10-10T11:26:20Z",
+  "campaign": "RFC-049 DISCOVERY 2 (Phase A)",
+  "budget": {
+    "max_admitted_hypotheses": 3,
+    "admitted": 2,
+    "deferred": 1,
+    "rejected_before_admission": 6
+  },
+  "states_available": [
+    "RESEARCH_CANDIDATE",
+    "RESEARCH_REJECTED",
+    "ADMITTED_FOR_PREREGISTRATION",
+    "SPEC_FROZEN",
+    "ECONOMIC_TEST_AUTHORIZED",
+    "EVALUATED",
+    "REJECTED",
+    "INSUFFICIENT_EVIDENCE",
+    "ELIGIBLE_FOR_INDEPENDENT_REVIEW"
+  ],
+  "hypotheses": [
+    {
+      "hypothesis_id": "H-049-001",
+      "strategy_id": "S-049-001-STABLE_LIQUIDITY_IMPULSE",
+      "family": "stablecoin_primary_issuance",
+      "mechanism_summary": "Stablecoins are the settlement rail of crypto trading.",
+      "status": "SPEC_FROZEN",
+      "admission_status": "ADMITTED_FOR_PREREGISTRATION",
+      "source_ids": [
+        "SRC-049-001",
+        "SRC-049-002",
+        "SRC-049-003",
+        "SRC-049-004",
+        "SRC-049-005"
+      ],
+      "asset_universe": [
+        "BTCUSDT"
+      ],
+      "timeframes": "1d bars; decision evaluated weekly at Sunday 23:00:00 UTC; execution at the next daily bar open (Monday 00:00 UTC)",
+      "instrument_types": [
+        "spot_long_cash"
+      ],
+      "estimated_turnover": {
+        "basis": "pre-measurement estimate from the rule's design (weekly decisions, 30-day growth versus its 365-day median)",
+        "expected_round_trips_per_year": "6 to 20",
+        "annual_cost_drag_at_20_trips_pct_capital": null,
+        "note": "the drag is computed in PREREGISTRATION_MANIFEST.json from the frozen cost model; realised turnover is measured in Phase B and may not be tuned"
+      },
+      "spec_file": "data/rfc049/specs/H-049-001.json",
+      "spec_file_sha256": "fd5cd2991466e2436a16d2440984845285a0258da5f65fe1d44c3ef289969d88",
+      "spec_canonical_sha256": "8efafe60c217ad9950f8dc85c4a6ea68730cc95613ab377db764720c79d56cec",
+      "reviewed_against_closed_lines": [
+        "spot-BTC ETF net-flow continuation (closed): different mechanism (stablecoin primary issuance, not ETF creations) and a different data source; the ETF-flow line was falsified as a trend proxy, which this spec's trend baseline will test again",
+        "stablecoin exchange-flow prediction (OPP-0003, WATCH not closed): this hypothesis is not the 1-2h exchange-flow construction; it uses a free aggregate series at a cost-compatible horizon and keeps OPP-0003's reopen conditions in view"
+      ],
+      "non_admission_reason": null
+    },
+    {
+      "hypothesis_id": "H-049-002",
+      "strategy_id": "S-049-002-MACRO_NET_LIQUIDITY_REGIME",
+      "family": "usd_net_liquidity_regime",
+      "mechanism_summary": "Bitcoin trades as a long-duration, dollar-liquidity-sensitive risk asset.",
+      "status": "SPEC_FROZEN",
+      "admission_status": "ADMITTED_FOR_PREREGISTRATION",
+      "source_ids": [
+        "SRC-049-006",
+        "SRC-049-007",
+        "SRC-049-008"
+      ],
+      "asset_universe": [
+        "BTCUSDT"
+      ],
+      "timeframes": "1d bars; decision evaluated weekly at Sunday 23:00:00 UTC; execution at the next daily bar open (Monday 00:00 UTC)",
+      "instrument_types": [
+        "spot_long_cash"
+      ],
+      "estimated_turnover": {
+        "basis": "pre-measurement estimate from the rule's design (weekly decisions, 4-week net-liquidity change sign)",
+        "expected_round_trips_per_year": "10 to 26",
+        "annual_cost_drag_at_20_trips_pct_capital": null,
+        "note": "the drag is computed in PREREGISTRATION_MANIFEST.json from the frozen cost model; realised turnover is measured in Phase B and may not be tuned"
+      },
+      "spec_file": "data/rfc049/specs/H-049-002.json",
+      "spec_file_sha256": "cdafdc151e2514f9cafeb5580f960a991de29f57ef96b609889ff23d36a01bd0",
+      "spec_canonical_sha256": "d2a2a9891df9bc439120b5e6794bf00ebcffcc6ce88e6241bca7f6c98c02e02c",
+      "reviewed_against_closed_lines": [
+        "time-series momentum / trend (closed): the signal is a macro accounting identity, not a price transform; the 200-day trend baseline is the frozen camera that detects a trend re-description",
+        "funding carry (closed): no basis, no perpetual leg, no funding cashflow"
+      ],
+      "non_admission_reason": null
+    },
+    {
+      "hypothesis_id": "H-049-003",
+      "strategy_id": "S-049-003-MINER_SUPPLY_STRESS",
+      "family": "miner_capitulation_supply_side",
+      "mechanism_summary": "Miners are structurally forced sellers of BTC: their revenues are in BTC and their costs are in fiat.",
+      "status": "RESEARCH_CANDIDATE",
+      "admission_status": "RESEARCH_CANDIDATE",
+      "source_ids": [
+        "SRC-049-009",
+        "SRC-049-010",
+        "SRC-049-011",
+        "SRC-049-012"
+      ],
+      "asset_universe": [
+        "BTCUSDT"
+      ],
+      "timeframes": "1d bars; daily decision at bar close; execution at the next bar open",
+      "instrument_types": [
+        "spot_long_cash"
+      ],
+      "estimated_turnover": {
+        "basis": "observed event frequency of hash-ribbon episodes in the available daily hashrate history (2018-10 to 2026-10)",
+        "expected_round_trips_per_year": "1 to 4",
+        "note": "at this frequency a sealed forward window of 24 months can accumulate at most a handful of closed round trips, far below the campaign's preregistered 20-trip floor"
+      },
+      "spec_file": "data/rfc049/specs/H-049-003.json",
+      "spec_file_sha256": "c77aa9a8c7aa897c2d504ed940c012cd3100a47490ee2ca6b37f08a5a79e26e9",
+      "spec_canonical_sha256": "4e32cc3d17518629059aaa6c55ba526a8d620817708ed06364e8674353fa47f6",
+      "reviewed_against_closed_lines": [
+        "no closed line matches a hashrate/supply-side mechanism; retained, not admitted"
+      ],
+      "non_admission_reason": "NOT ADMITTED in Discovery 2: the rule's event frequency (1-4 round trips per year) cannot support the campaign's preregistered sample floor of 20 sealed out-of-sample round trips within 24 months, so the campaign could not reach a PASS or FAIL verdict on it; its historical window (daily resolution) also covers only two cycles. It is retained with its observation rule so that it can be re-proposed when the forward hashrate record and any future information source give it a feasible design. Admitting it now would spend one of the three campaign slots on a design that is foreknown to return INSUFFICIENT_OOS_SAMPLE."
+    }
+  ],
+  "rejected_before_admission": [
+    {
+      "hypothesis_id": "R-049-001",
+      "mechanism": "Google Trends search attention predicts BTC returns (investor attention factor)",
+      "reason": "the Trend index is recomputed retroactively by the vendor, so historical values are not PIT-reproducible and a strict PIT audit cannot pass; forward-only collection would postpone any result beyond the campaign window"
+    },
+    {
+      "hypothesis_id": "R-049-002",
+      "mechanism": "stablecoin exchange net-inflow prediction at the 1-2h horizon (OPP-0003)",
+      "reason": "labelled exchange-flow history is commercial and the source's horizon is below the cost floor (reopen condition in OPP-0003 unmet)"
+    },
+    {
+      "hypothesis_id": "R-049-003",
+      "mechanism": "MVRV / realized-cap valuation mean reversion",
+      "reason": "realized-cap history requires a paid provider; no free verifiable series with PIT publication semantics was identified in Phase A"
+    },
+    {
+      "hypothesis_id": "R-049-004",
+      "mechanism": "Deribit DVOL implied-volatility risk premium timing",
+      "reason": "the tradeable expression (options) is outside the certified runtime and the spot-only expression reduces to a volatility-shock signal, a family already closed by ALPHA-001 F5"
+    },
+    {
+      "hypothesis_id": "R-049-005",
+      "mechanism": "quarterly futures roll / expiry basis convergence",
+      "reason": "same basis-carry family already rejected (OPP-0008/0030); no free historical quarterly contract series with verified provenance in the repository"
+    },
+    {
+      "hypothesis_id": "R-049-006",
+      "mechanism": "Bitcoin network adoption (active addresses / NVT) valuation",
+      "reason": "active-address series are sensitive to chain heuristics and vendor revisions; no versioned, PIT-pinned source identified; overlaps Metcalfe-style valuation claims that are not falsifiable at daily frequency"
+    }
+  ],
+  "note": "admission is not validation and not a profitability claim"
+}
