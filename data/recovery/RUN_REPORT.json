@@ -1,8 +1,8 @@
 {
   "artifact": "ACTIVE_RECOVERY_RUN_REPORT",
   "work_package": "POST RFC-049 / ACTIVE RECOVERY (WP-1..WP-5)",
-  "generated_at_utc": "2026-10-10T20:03:06Z",
-  "head": "96b2d620de752663555ee0ee9f6f5f121c6842a6",
+  "generated_at_utc": "2026-10-10T20:07:02Z",
+  "head": "aed26c71efb9ee68b8d442804cbe9dd40a63212b",
   "branch": "main",
   "mode": "OFFLINE — no keys, no orders, no capital, no live path; only read-only audits and tests",
   "wc1_commit": {
@@ -66,7 +66,7 @@
       "command": ".venv/Scripts/python.exe -m pytest tests/unit/research/test_active_recovery_wp.py -q",
       "exit_code": 0,
       "result": "PASS",
-      "output_tail": "..........................                                               [100%]\n26 passed in 10.39s",
+      "output_tail": "..........................                                               [100%]\n26 passed in 9.45s",
       "executed": true
     },
     {
@@ -74,7 +74,7 @@
       "command": ".venv/Scripts/python.exe -m pytest tests/unit/research -q",
       "exit_code": 0,
       "result": "PASS",
-      "output_tail": "...............................................................s........ [ 95%]\n........................................................................ [ 99%]\n.....                                                                    [100%]\n=========================== short test summary info ===========================\nSKIPPED [1] tests\\unit\\research\\test_st6_scheduler.py:596: this slot has no window yet: the tick would have to collect and this test is not a sampler\n1732 passed, 1 skipped in 174.81s (0:02:54)",
+      "output_tail": "........................................................................ [ 87%]\n........................................................................ [ 91%]\n........................................................................ [ 95%]\n........................................................................ [ 99%]\n.....                                                                    [100%]\n1733 passed in 182.89s (0:03:02)",
       "executed": true
     }
   ],
@@ -82,22 +82,22 @@
     {
       "path": "data/recovery/CAMPAIGN_STATE_VIEW.json",
       "exists": true,
-      "sha256": "75cdfa95446a190ae76accbe314c1443694b62e975dfd1a581847672796d7846"
+      "sha256": "538032fb95379a4d509e36da5acac11c26e9f347959a7a30fd0b85d1cf993d96"
     },
     {
       "path": "data/recovery/CAMPAIGN_STATE_VIEW_REPORT.md",
       "exists": true,
-      "sha256": "ee829e44fc42c1642d20b206136efc7550369659777c06cade67c32db06db5e3"
+      "sha256": "c76c712a775ec5d1db89aa433127de9c15cc9ab4cfb8b8bca1c8eadff6c1418d"
     },
     {
       "path": "data/recovery/ACTIVE_ECONOMIC_AUDIT.json",
       "exists": true,
-      "sha256": "1ccccf356b0e53228f5bdef0683c4a3a7fe0823c2eddfd36bf7976e4bb8a0e9a"
+      "sha256": "31fc6d4f57248bed8b5710df29ae743040747b85d380cb6d105403b8fd8bcda4"
     },
     {
       "path": "data/recovery/ACTIVE_ECONOMIC_AUDIT.md",
       "exists": true,
-      "sha256": "d9d8b853879a3c9ee4792860289d6fd57ebf50d92383c29e71372ea753e7ca58"
+      "sha256": "24652f8ccd5ca5bf3e8cb885047559f6e5699b9465efd2e480cf1f4c294b8789"
     },
     {
       "path": "data/recovery/ACTIVE_RECOVERY_ROADMAP.md",
@@ -112,7 +112,7 @@
     {
       "path": "data/recovery/INDEPENDENT_VERIFICATION.json",
       "exists": true,
-      "sha256": "15867a548a0d6137e5b8a3d4870855b2d10b4a3e6a916b98a83d60f708f0c7ac"
+      "sha256": "8440436ab8b7d221c4cc654733b1a5feaebb0279fd29704e05872a39f904e424"
     },
     {
       "path": "data/recovery/FINAL_REPORT.md",

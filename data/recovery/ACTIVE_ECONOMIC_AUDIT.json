@@ -1,8 +1,8 @@
 {
   "artifact": "ACTIVE_ECONOMIC_AUDIT",
   "work_package": "WP-3 (POST RFC-049 / ACTIVE RECOVERY)",
-  "generated_at_utc": "2026-10-10T19:59:57Z",
-  "head": "96b2d620de752663555ee0ee9f6f5f121c6842a6",
+  "generated_at_utc": "2026-10-10T20:03:46Z",
+  "head": "aed26c71efb9ee68b8d442804cbe9dd40a63212b",
   "branch": "main",
   "mode": "OFFLINE READ-ONLY AUDIT — no process started, no order, no key, no capital",
   "method": "tracked admission ledger + primary research artefacts + the live registry code path + the paper lane's own reports; the runtime cost plane is re-derived from COST_MODEL_V3, never typed",
