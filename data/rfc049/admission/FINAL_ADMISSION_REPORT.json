@@ -1,7 +1,7 @@
 {
   "artifact": "RFC049B_FINAL_ADMISSION_REPORT",
-  "generated_at_utc": "2026-10-10T13:13:45Z",
-  "CURRENT_HEAD": "9f2d1f428b9a83838ff610aae938848091822a8c",
+  "generated_at_utc": "2026-10-10T13:15:31Z",
+  "CURRENT_HEAD": "b295dc81be8ea9044d453f3ed34279d302cf850c",
   "HYPOTHESIS_001_ADMISSION": "READY_FOR_AUTHORIZED_TEST",
   "HYPOTHESIS_002_ADMISSION": "READY_FOR_AUTHORIZED_TEST",
   "PIT_VERIFICATION": {
@@ -310,7 +310,7 @@
       "sha256": "7ed8b074f196c3efe888384f367e0d22f69df90d9ef5cce4617938277fbc6bd4",
       "raw_retained": true,
       "status": "ok",
-      "body_truncated_at_deadline": false
+      "served_from_cache_at_utc": "2026-10-10T13:15:00Z"
     },
     {
       "key": "fred_page_WALCL.html",
@@ -323,7 +323,7 @@
       "sha256": "b769716d73f126ff7f148bdad5ffce12deca03f6d8f56a17b9edcd2d9654bc24",
       "raw_retained": true,
       "status": "ok",
-      "served_from_cache_at_utc": "2026-10-10T13:13:14Z"
+      "served_from_cache_at_utc": "2026-10-10T13:15:00Z"
     },
     {
       "key": "fred_page_RRPONTSYD.html",
@@ -336,7 +336,7 @@
       "sha256": "328214d68ad5914f2012444215a6a982d61dd473476e8b1c44fd73c768a659be",
       "raw_retained": true,
       "status": "ok",
-      "served_from_cache_at_utc": "2026-10-10T13:13:14Z"
+      "served_from_cache_at_utc": "2026-10-10T13:15:00Z"
     },
     {
       "key": "fred_page_WTREGEN.html",
@@ -349,7 +349,7 @@
       "sha256": "c9821f735b78079f749dd4611950994e1c44c41386f4b9b67d0da79a7801d6e9",
       "raw_retained": true,
       "status": "ok",
-      "served_from_cache_at_utc": "2026-10-10T13:13:14Z"
+      "served_from_cache_at_utc": "2026-10-10T13:15:00Z"
     },
     {
       "key": "alfred_WALCL_latest.csv",
@@ -362,7 +362,7 @@
       "sha256": "47cbbf5338e64f39930e6206314bc7f033c616998d153f9b455e0af76f0d5241",
       "raw_retained": true,
       "status": "ok",
-      "served_from_cache_at_utc": "2026-10-10T13:13:14Z"
+      "served_from_cache_at_utc": "2026-10-10T13:15:00Z"
     },
     {
       "key": "alfred_WALCL_2019-03-07.csv",
@@ -375,7 +375,7 @@
       "sha256": "c2a58276880b14189385e3fd4947214b0c586fe75d35b2fc0b789296d34da1a2",
       "raw_retained": true,
       "status": "ok",
-      "served_from_cache_at_utc": "2026-10-10T13:13:14Z"
+      "served_from_cache_at_utc": "2026-10-10T13:15:00Z"
     },
     {
       "key": "alfred_WALCL_2023-03-15.csv",
@@ -388,7 +388,7 @@
       "sha256": "bcb42655369a25576fc7d968dc6fb586cc78964e5885e17902c2450884532de5",
       "raw_retained": true,
       "status": "ok",
-      "served_from_cache_at_utc": "2026-10-10T13:13:14Z"
+      "served_from_cache_at_utc": "2026-10-10T13:15:00Z"
     },
     {
       "key": "alfred_WTREGEN_latest.csv",
@@ -401,7 +401,7 @@
       "sha256": "73face29afe1d988b8266f421ec45605866f25333f8f1a21c96a0395e633de4b",
       "raw_retained": true,
       "status": "ok",
-      "served_from_cache_at_utc": "2026-10-10T13:13:14Z"
+      "served_from_cache_at_utc": "2026-10-10T13:15:00Z"
     },
     {
       "key": "alfred_WTREGEN_2019-03-07.csv",
@@ -414,7 +414,7 @@
       "sha256": "b8fdc0251a315fbcb0710e1143df7cd4994345d1c2a2a4d89f8a7f26af90de29",
       "raw_retained": true,
       "status": "ok",
-      "served_from_cache_at_utc": "2026-10-10T13:13:14Z"
+      "served_from_cache_at_utc": "2026-10-10T13:15:00Z"
     },
     {
       "key": "alfred_WTREGEN_2023-03-15.csv",
@@ -427,7 +427,7 @@
       "sha256": "d9bc7d80749d305f3b14a215d99d94c1ad0ed145a3c98673ea2f7605e254a187",
       "raw_retained": true,
       "status": "ok",
-      "served_from_cache_at_utc": "2026-10-10T13:13:14Z"
+      "served_from_cache_at_utc": "2026-10-10T13:15:00Z"
     },
     {
       "key": "alfred_RRPONTSYD_latest.csv",
@@ -440,7 +440,7 @@
       "sha256": "3cc8e1c8a43625f664f6b65616af780409e4dc01d2592d2f7322fc477c73e18b",
       "raw_retained": true,
       "status": "ok",
-      "served_from_cache_at_utc": "2026-10-10T13:13:14Z"
+      "served_from_cache_at_utc": "2026-10-10T13:15:00Z"
     },
     {
       "key": "alfred_RRPONTSYD_2019-03-07.csv",
@@ -453,7 +453,7 @@
       "sha256": "3b5231bb3393fddd0d5be8a31f663e2eef4d2a7fc7db22ed771c8ba328b21144",
       "raw_retained": true,
       "status": "ok",
-      "served_from_cache_at_utc": "2026-10-10T13:13:14Z"
+      "served_from_cache_at_utc": "2026-10-10T13:15:00Z"
     },
     {
       "key": "alfred_RRPONTSYD_2023-03-15.csv",
@@ -466,7 +466,7 @@
       "sha256": "383d313a26c9c3ea2536e9873ace86bcdf6fd68e99698d39b0bdf3503ddf98c8",
       "raw_retained": true,
       "status": "ok",
-      "served_from_cache_at_utc": "2026-10-10T13:13:14Z"
+      "served_from_cache_at_utc": "2026-10-10T13:15:00Z"
     },
     {
       "key": "h41_current.html",
@@ -479,7 +479,7 @@
       "sha256": "bbc62c6b9050fc5986b779e305bcabcf0e92582d559e89af77d28889cc97183d",
       "raw_retained": true,
       "status": "ok",
-      "served_from_cache_at_utc": "2026-10-10T13:13:14Z"
+      "served_from_cache_at_utc": "2026-10-10T13:15:00Z"
     },
     {
       "key": "nyfed_rrp_last7.json",
@@ -492,7 +492,7 @@
       "sha256": "26179b56b8d9cbaec4bb0391ba90cc48dbcd385458fdf1d115b5b51a9c8ddc63",
       "raw_retained": true,
       "status": "ok",
-      "served_from_cache_at_utc": "2026-10-10T13:13:14Z"
+      "served_from_cache_at_utc": "2026-10-10T13:15:00Z"
     },
     {
       "key": "dts_tga.json",
@@ -505,7 +505,7 @@
       "sha256": "6175152c0f7dc0e3102bf64845c17cbf55dd348e33a4bce4e960540fc3e78d11",
       "raw_retained": true,
       "status": "ok",
-      "served_from_cache_at_utc": "2026-10-10T13:13:14Z"
+      "served_from_cache_at_utc": "2026-10-10T13:15:00Z"
     },
     {
       "key": "arxiv_abs.html",
@@ -518,12 +518,12 @@
       "sha256": "0116a86601dafb7440966818682af2de6debcc720c175479a5db811ce8dcefe1",
       "raw_retained": true,
       "status": "ok",
-      "served_from_cache_at_utc": "2026-10-10T13:13:14Z"
+      "served_from_cache_at_utc": "2026-10-10T13:15:00Z"
     },
     {
       "key": "arxiv_pdf.pdf",
       "url": "https://arxiv.org/pdf/2411.06327v2",
-      "retrieved_at_utc": "2026-10-10T13:13:14Z",
+      "retrieved_at_utc": "2026-10-10T13:15:00Z",
       "mode": "network",
       "http_status": 200,
       "content_type": "application/pdf",
@@ -541,15 +541,15 @@
       "http_status": 200,
       "content_type": "text/html",
       "bytes": 135763,
-      "sha256": "d37506a4b55f5e7049970a0773530e0fd04043d314631494c3c2fbc75955db78",
+      "sha256": "990c98060743a0df473cbdbf1461419a0be3d9b3b10c611c387e196677b6bf90",
       "raw_retained": true,
       "status": "ok",
-      "served_from_cache_at_utc": "2026-10-10T13:13:14Z"
+      "served_from_cache_at_utc": "2026-10-10T13:15:00Z"
     },
     {
       "key": "philly_wp26-24.pdf",
       "url": "https://www.philadelphiafed.org/-/media/frbp/assets/working-papers/2026/wp26-24.pdf",
-      "retrieved_at_utc": "2026-10-10T13:13:15Z",
+      "retrieved_at_utc": "2026-10-10T13:15:00Z",
       "mode": "network",
       "http_status": 200,
       "content_type": "application/pdf",
@@ -570,7 +570,7 @@
       "sha256": "95a0f327d7cfdba64049ff8eeae336e14c8ed2053363785d5e9e4e53e0097d53",
       "raw_retained": true,
       "status": "ok",
-      "served_from_cache_at_utc": "2026-10-10T13:13:15Z"
+      "served_from_cache_at_utc": "2026-10-10T13:15:00Z"
     },
     {
       "key": "crossref_fintech5030068.json",
@@ -583,7 +583,7 @@
       "sha256": "fe523dd4f0f346530c32ad79057765893009014b4cdd7a97168a89c3c0fa912c",
       "raw_retained": true,
       "status": "ok",
-      "served_from_cache_at_utc": "2026-10-10T13:13:15Z"
+      "served_from_cache_at_utc": "2026-10-10T13:15:00Z"
     },
     {
       "key": "crossref_ssrn4904716.json",
@@ -596,12 +596,12 @@
       "sha256": "21616415595e7fd744f2fb8556683281f67acfd8c85dcc2600ed6719579d7491",
       "raw_retained": true,
       "status": "ok",
-      "served_from_cache_at_utc": "2026-10-10T13:13:15Z"
+      "served_from_cache_at_utc": "2026-10-10T13:15:00Z"
     },
     {
       "key": "blocked_mdpi.html",
       "url": "https://www.mdpi.com/1911-8074/18/9/491",
-      "retrieved_at_utc": "2026-10-10T13:13:21Z",
+      "retrieved_at_utc": "2026-10-10T13:15:06Z",
       "mode": "network",
       "http_status": null,
       "bytes": 0,
@@ -613,7 +613,7 @@
     {
       "key": "blocked_ssrn.html",
       "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4904716",
-      "retrieved_at_utc": "2026-10-10T13:13:27Z",
+      "retrieved_at_utc": "2026-10-10T13:15:13Z",
       "mode": "network",
       "http_status": null,
       "bytes": 0,
@@ -625,18 +625,18 @@
     {
       "key": "semantic_scholar.json",
       "url": "https://api.semanticscholar.org/graph/v1/paper/search",
-      "retrieved_at_utc": "2026-10-10T13:13:42Z",
+      "retrieved_at_utc": "2026-10-10T13:15:28Z",
       "mode": "network",
       "http_status": 200,
       "bytes": 909,
-      "sha256": "9b6b950a632abb156620118111a3ac4d04c175a84f91bfea223fda68210319c9",
+      "sha256": "ce75a436d10cc7300f1edb247658b96301cc6b3833702c9d7c7cc07612dd5a5c",
       "raw_retained": true,
       "status": "ok"
     },
     {
       "key": "philly_wp26-24.extracted.txt",
       "url": "https://www.philadelphiafed.org/-/media/frbp/assets/working-papers/2026/wp26-24.pdf",
-      "retrieved_at_utc": "2026-10-10T13:13:45Z",
+      "retrieved_at_utc": "2026-10-10T13:15:31Z",
       "mode": "derived",
       "http_status": null,
       "bytes": 167923,

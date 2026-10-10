@@ -1,0 +1,5 @@
+# The RFC-049 audits hash these trees byte for byte (frozen specifications, vendor
+# snapshots, retrieved primary-source evidence).  Git's automatic end-of-line
+# normalisation would rewrite those bytes on checkout and silently break every
+# recorded digest, so the trees are stored exactly as they are on disk.
+data/rfc049/** -text

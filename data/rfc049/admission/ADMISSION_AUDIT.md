@@ -1,6 +1,6 @@
 # RFC-049B — ADMISSION AUDIT
 
-- generated: `2026-10-10T13:13:45Z` · HEAD `9f2d1f428b9a83838ff610aae938848091822a8c`
+- generated: `2026-10-10T13:15:31Z` · HEAD `b295dc81be8ea9044d453f3ed34279d302cf850c`
 - returns computed: **no** · PnL computed: **no** · OOS opened: **no** · experiments executed: **0**
 - checks: 43 (0 failed, 2 blocked)
 

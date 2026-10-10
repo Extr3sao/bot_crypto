@@ -1,6 +1,6 @@
 {
   "artifact": "RFC049B_OOS_SAMPLE_FEASIBILITY",
-  "generated_at_utc": "2026-10-10T13:13:45Z",
+  "generated_at_utc": "2026-10-10T13:15:30Z",
   "method": "frozen rules applied to research-exposed inputs; only trade counts and dates are produced. No return, no PnL and no profit factor is computed, and the sealed window is untouched.",
   "thresholds_changed": false,
   "statistical_criterion_unchanged": "20 round trips or 24 months, whichever comes first; fewer than 20 at 24 months is INSUFFICIENT_OOS_SAMPLE and is neither PASS nor REJECT",

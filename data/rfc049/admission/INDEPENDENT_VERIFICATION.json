@@ -1,6 +1,6 @@
 {
   "artifact": "RFC049B_INDEPENDENT_VERIFICATION",
-  "generated_at_utc": "2026-10-10T13:13:45Z",
+  "generated_at_utc": "2026-10-10T13:15:31Z",
   "verifier": "scripts/rfc049b_verify.py",
   "builder": "scripts/rfc049b_admission.py",
   "builder_imported": false,
@@ -407,12 +407,12 @@
   "negative_controls_missed": [],
   "FALSE_SUCCESS": 0,
   "verified_artifacts": {
-    "ADMISSION_AUDIT.json": "e3cbcad66f9328870c52b14805b723ec20795ceb54720f8de324642d274b01a1",
-    "PIT_SOURCE_VERIFICATION.json": "42bc42904a528c2239d362d44006c29e8139d7c991f5351071bab6b2d1598ee8",
-    "OOS_SAMPLE_FEASIBILITY.json": "10b982c9cc0ae8a8068ce3a377c5c732402a11ea474f0284c1303943900e140a",
+    "ADMISSION_AUDIT.json": "146bdbfac73d9662a6c75bdc4d3e5e587a5c2122906ffc18270259a310199f01",
+    "PIT_SOURCE_VERIFICATION.json": "1c37a4857bdc33af212e57c46e70865e8c0fec60445f718b3bbedfcab0d68467",
+    "OOS_SAMPLE_FEASIBILITY.json": "7474606612b6fdc5af6e9b100e92f4aa84b8ba2b67f0da7c70b45a20f8b4bae9",
     "HYPOTHESIS_INDEPENDENCE.md": "3d0987e9417c3f30471528878d3cad2099b531fae89dca87670fdbda77f6e675",
-    "FINAL_ADMISSION_REPORT.json": "120b332c0f39a51f76b8e929af1b0f7331aa14f04fcc74043a80eee9fdbc5768",
-    "FINAL_ADMISSION_REPORT.md": "42395ce2bea67a52244f0d8bb6b12e24030df0ed919a6ed54795fd534b5b5942"
+    "FINAL_ADMISSION_REPORT.json": "a95b1102afda4966a97c3d3960b2471c307d45918a99950fc9da3b286ee34699",
+    "FINAL_ADMISSION_REPORT.md": "b074237515d4a133597940e7231f8fae43d9650c8c82250e3ae02bbd78330fda"
   },
   "scope": {
     "returns_computed": false,

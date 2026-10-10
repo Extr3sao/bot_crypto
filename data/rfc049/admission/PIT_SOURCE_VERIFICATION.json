@@ -1,6 +1,6 @@
 {
   "artifact": "RFC049B_PIT_SOURCE_VERIFICATION",
-  "generated_at_utc": "2026-10-10T13:13:45Z",
+  "generated_at_utc": "2026-10-10T13:15:30Z",
   "classification_vocabulary": {
     "PIT_VERIFIED": "primary-source evidence fixes both the value identity and an availability time on or before the decision instant, with no measured restatement affecting a decision",
     "PIT_CONSERVATIVE_PROXY": "availability is a declared convention or the series shows measured backfill, so the value used is conservative rather than provable",

@@ -1,6 +1,6 @@
 # RFC-049B — FINAL ADMISSION REPORT
 
-- CURRENT_HEAD: `9f2d1f428b9a83838ff610aae938848091822a8c` · generated `2026-10-10T13:13:45Z`
+- CURRENT_HEAD: `b295dc81be8ea9044d453f3ed34279d302cf850c` · generated `2026-10-10T13:15:31Z`
 - H-049-001 admission: **READY_FOR_AUTHORIZED_TEST**
 - H-049-002 admission: **READY_FOR_AUTHORIZED_TEST**
 - campaign authorization: **NOT_AUTHORIZED** · experiments executed **0** · OOS opened **no** · trades authorized **0**
