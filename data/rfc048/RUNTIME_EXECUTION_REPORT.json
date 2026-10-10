@@ -2,9 +2,9 @@
   "schema_version": 1,
   "rfc": "RFC-048",
   "generated_by": "scripts/rfc048_run.py",
-  "generated_at_utc": "2026-10-09T22:52:19Z",
-  "duration_seconds": 0.022,
-  "current_head": "66cfe0867bfbfbc9fd31b37e7d500f40f6a0c6af",
+  "generated_at_utc": "2026-10-10T08:58:07Z",
+  "duration_seconds": 0.033,
+  "current_head": "19b1a0bf4dd1e6f042d4dc367dd83e939b44e20c",
   "branch": "main",
   "engine": {
     "module": "trading_bot.risk.futures",
@@ -83,14 +83,16 @@
   },
   "concurrency": {
     "probe": "8 concurrent decisions on one equity pool of 200 USDT",
-    "approved_count": 8,
-    "refused_count": 0,
-    "sum_approved_margin": 132.000078771,
-    "ledger_reserved": 132.000078771,
-    "ledger_free": 67.999921229,
+    "approved_count": 6,
+    "refused_count": 2,
+    "sum_approved_margin": 99.0000590783,
+    "ledger_reserved": 99.0000590783,
+    "ledger_free": 100.9999409217,
     "equity": 200.0,
     "invariant_holds": true,
-    "refusal_reasons": []
+    "refusal_reasons": [
+      "MARGIN_UTILIZATION_LIMIT"
+    ]
   },
   "runtime_integration": {
     "reachable": true,

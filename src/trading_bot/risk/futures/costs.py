@@ -22,6 +22,7 @@ when the decision was taken can never be used (RFC-048 §8, no look-ahead).
 
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass
 from typing import Any
 
@@ -34,6 +35,13 @@ __all__ = ["CostBreakdown", "FundingContext", "FuturesCostModel"]
 _SPREAD_SIDES = 2.0
 #: Fees are paid on both the opening and the closing notional.
 _FEE_SIDES = 2.0
+
+
+def _finite_number(value: Any) -> bool:
+    """True only for a real, finite number (rejects NaN/None/strings)."""
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
+        return False
+    return math.isfinite(float(value))
 
 
 @dataclass(frozen=True, slots=True)
@@ -86,7 +94,13 @@ def funding_context(
     position of each direction could POSSIBLY pay; it is returned unsigned and
     the caller applies it against the position's direction.
     """
-    visible = [o for o in funding_observations if int(o["funding_time_ms"]) <= decision_timestamp_ms]
+    visible = [
+        o
+        for o in funding_observations
+        if _finite_number(o.get("funding_time_ms"))
+        and _finite_number(o.get("funding_rate"))
+        and int(o["funding_time_ms"]) <= decision_timestamp_ms
+    ]
     interval = instrument.funding_interval_ms
     if interval is None:
         # Without a funding interval the number of settlements inside the
@@ -213,10 +227,18 @@ class FuturesCostModel:
         for price, size in levels:
             level_price = float(price)
             level_qty = float(size)
+            if (
+                not math.isfinite(level_price)
+                or not math.isfinite(level_qty)
+                or level_price <= 0
+                or level_qty <= 0
+            ):
+                # A level the model cannot read is not a level it may ignore:
+                # an unreadable book means the impact is unknown, and an unknown
+                # cost is refused by the engine. (RFC-048V DEF-048V-04.)
+                return None
             level_notional = level_price * level_qty
             take = min(remaining, level_notional)
-            if level_price <= 0:
-                return None
             consumed_qty += take / level_price
             consumed_notional += take
             remaining -= take
@@ -226,6 +248,8 @@ class FuturesCostModel:
             return None
         vwap = consumed_notional / consumed_qty
         best = float(levels[0][0])
+        if not math.isfinite(vwap) or not math.isfinite(best) or best <= 0:
+            return None
         return abs(vwap - best) / best * 10_000.0
 
     # -- the model -----------------------------------------------------------
@@ -284,7 +308,7 @@ class FuturesCostModel:
         exit_fee_usdt = entry_fee_usdt
 
         # -- spread
-        if self._spread_bps is None:
+        if self._spread_bps is None or not math.isfinite(self._spread_bps):
             unknown.append("spread")
             spread_cost = 0.0
         else:
@@ -292,7 +316,7 @@ class FuturesCostModel:
             known.append("spread")
 
         # -- slippage (assumption) and impact (measured from the book)
-        if slippage_bps is None:
+        if slippage_bps is None or not math.isfinite(slippage_bps):
             unknown.append("slippage")
             slippage = 0.0
         else:
@@ -365,7 +389,12 @@ class FuturesCostModel:
             + funding_expected
         )
         worst = total - funding_expected + funding_paid
-        if stress_slippage_bps is not None and slippage_bps is not None:
+        if (
+            stress_slippage_bps is not None
+            and math.isfinite(stress_slippage_bps)
+            and slippage_bps is not None
+            and math.isfinite(slippage_bps)
+        ):
             worst += notional * (stress_slippage_bps - slippage_bps) / 10_000.0 * 2.0
         liquidation_scenario = funding_paid + (liquidation_fee or 0.0)
 

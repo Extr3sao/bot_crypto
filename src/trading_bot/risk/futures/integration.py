@@ -19,6 +19,7 @@ Two deliberate properties:
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from typing import Any
 
 from trading_bot.autonomous.contracts import (
@@ -40,7 +41,11 @@ from .contracts import RiskDecision, RiskDecisionCode
 __all__ = [
     "INTEGRATION_VERSION",
     "build_decision_request",
+    "build_decision_request_from_review",
+    "run_engine_through_runtime",
     "run_through_decision_engine",
+    "safe_review",
+    "to_review_from_error",
     "to_risk_review",
 ]
 
@@ -81,7 +86,9 @@ def to_risk_review(
         verdict=verdict,
         reason=reason,
         notional_usdt=(
-            decision.approved_notional if decision.decision is not RiskDecisionCode.NO_TRADE else None
+            decision.approved_notional
+            if decision.decision is not RiskDecisionCode.NO_TRADE
+            else None
         ),
         source=f"FuturesRiskEngine[{INTEGRATION_VERSION}]",
         # Advisory by construction: RFC-048 authorises simulation scenarios only,
@@ -106,10 +113,13 @@ def to_risk_review(
     )
 
 
-def build_decision_request(
+def build_decision_request_from_review(
     *,
-    decision: RiskDecision,
-    instrument_status: str,
+    review: RiskReview,
+    stop_price: float | None,
+    cost_scenario_id: str,
+    size_usd_hint: float,
+    instrument_status: str = "PRODUCT_ELIGIBILITY_UNKNOWN",
     strategy_id: str,
     run_id: str,
     decision_id: str,
@@ -126,7 +136,11 @@ def build_decision_request(
     edge_source_doc: str = "",
     regime: str | None = None,
 ) -> DecisionRequest:
-    """Assemble the real ``DecisionRequest`` the runtime would build.
+    """Assemble the real ``DecisionRequest`` around ANY review.
+
+    This is the seam the fail-safe path needs: a review produced by an engine
+    error must be able to sit on a real packet, so the runtime can fail closed
+    instead of crashing or (worse) reporting a pass.
 
     The default admission is ``RESEARCH_REQUIRED`` / not admitted: the futures
     engine must be reachable from the decision boundary WITHOUT creating an
@@ -145,15 +159,15 @@ def build_decision_request(
         market_time_ms=market_time_ms,
         decision_time_ms=holistic_time_ms,
         entry_reference=entry_reference,
-        structural_stop=decision.stop_price,
+        structural_stop=stop_price,
         horizon_minutes=60.0,
         expected_gross_edge_bps=expected_gross_edge_bps,
         expected_cost_bps=expected_cost_bps,
         expected_net_edge_bps=expected_gross_edge_bps - expected_cost_bps,
         cost=CostBreakdown(
-            scenario_id=decision.decision_id,
+            scenario_id=cost_scenario_id,
             cost_model_version="FUTURES_COST_MODEL_RFC048_V1",
-            size_usd=decision.approved_notional or decision.requested_notional,
+            size_usd=size_usd_hint,
             horizon_minutes=60.0,
             spread_bps=0.0,
             spread_knowledge="MEASURED_SNAPSHOT",
@@ -183,9 +197,7 @@ def build_decision_request(
         regime=regime,
         confidence=0.0,
         evidence=("rfc048:offline_risk_probe",),
-        counter_evidence=(
-            "RFC-046 discovery campaign failed; no strategy is admitted for paper",
-        ),
+        counter_evidence=("RFC-046 discovery campaign failed; no strategy is admitted for paper",),
     )
     admission = AdmissionEntry(
         strategy_id=strategy_id,
@@ -212,8 +224,105 @@ def build_decision_request(
             verdict=VerifierVerdict.PASS,
             verifier_version="rfc048-offline-probe",
         ),
-        risk=to_risk_review(decision, instrument_status=instrument_status),
+        risk=review,
     )
+
+
+def build_decision_request(
+    *,
+    decision: RiskDecision,
+    instrument_status: str = "PRODUCT_ELIGIBILITY_UNKNOWN",
+    strategy_id: str,
+    run_id: str,
+    decision_id: str,
+    asset: str,
+    symbol: str,
+    direction: str,
+    entry_reference: float,
+    expected_gross_edge_bps: float,
+    expected_cost_bps: float,
+    market_time_ms: int,
+    holistic_time_ms: int,
+    admission_status: AdmissionStatus = AdmissionStatus.RESEARCH_REQUIRED,
+    admitted_for_paper: bool = False,
+    edge_source_doc: str = "",
+    regime: str | None = None,
+) -> DecisionRequest:
+    """Assemble the real ``DecisionRequest`` from a futures decision."""
+    return build_decision_request_from_review(
+        review=to_risk_review(decision, instrument_status=instrument_status),
+        stop_price=decision.stop_price,
+        cost_scenario_id=decision.decision_id,
+        size_usd_hint=decision.approved_notional or decision.requested_notional,
+        instrument_status=instrument_status,
+        strategy_id=strategy_id,
+        run_id=run_id,
+        decision_id=decision_id,
+        asset=asset,
+        symbol=symbol,
+        direction=direction,
+        entry_reference=entry_reference,
+        expected_gross_edge_bps=expected_gross_edge_bps,
+        expected_cost_bps=expected_cost_bps,
+        market_time_ms=market_time_ms,
+        holistic_time_ms=holistic_time_ms,
+        admission_status=admission_status,
+        admitted_for_paper=admitted_for_paper,
+        edge_source_doc=edge_source_doc,
+        regime=regime,
+    )
+
+
+def to_review_from_error(exc: BaseException) -> RiskReview:
+    """Turn an engine failure into a BINDING veto (fail-safe, not fail-open).
+
+    The review is deliberately NOT advisory: an advisory veto can never block
+    anything, so an engine error that did not know what to do would become an
+    error the runtime is allowed to ignore. It is also ``evaluated=False``: no
+    verdict was produced, and the trace must not claim one was.
+    (RFC-048V §02: an engine error produces a safe rejection.)
+    """
+    return RiskReview(
+        verdict=RiskVerdict.VETO,
+        reason=f"FUTURES_ENGINE_ERROR:{type(exc).__name__}: {exc}",
+        notional_usdt=None,
+        source=f"FuturesRiskEngine[{INTEGRATION_VERSION}]",
+        advisory=False,
+        evaluated=False,
+        rule="futures_engine_fail_safe",
+        inputs={
+            "error_type": type(exc).__name__,
+            "error_message": str(exc)[:500],
+            "order_authorised": False,
+        },
+    )
+
+
+def safe_review(
+    evaluate: Callable[[], RiskDecision],
+    *,
+    instrument_status: str = "PRODUCT_ELIGIBILITY_UNKNOWN",
+) -> RiskReview:
+    """Run the engine and never let a failure escape as anything but a veto."""
+    try:
+        return to_risk_review(evaluate(), instrument_status=instrument_status)
+    except Exception as exc:  # failing safe is the whole point
+        return to_review_from_error(exc)
+
+
+def run_engine_through_runtime(
+    *,
+    evaluate: Callable[[], RiskDecision],
+    build: Callable[[RiskReview], DecisionRequest],
+) -> DecisionResult:
+    """Engine + fail-safe + the REAL ``DecisionEngine``, in one call.
+
+    ``build`` receives the review (a real verdict or a fail-safe veto) and must
+    return the packet the runtime would evaluate. The result always has
+    ``order_authorised=False`` unless a formal admission genuinely passed the
+    runtime's own gates.
+    """
+    return run_through_decision_engine(build(safe_review(evaluate)))
 
 
 def run_through_decision_engine(request: DecisionRequest) -> DecisionResult:
@@ -233,7 +342,5 @@ def decision_mode_probe(result: DecisionResult) -> dict[str, Any]:
         "order_authorised": result.order_authorised,
         "notional_usdt": result.notional_usdt,
         "is_no_trade": result.mode is DecisionMode.NO_TRADE,
-        "no_trade_kind": (
-            result.no_trade_kind.value if result.no_trade_kind is not None else None
-        ),
+        "no_trade_kind": (result.no_trade_kind.value if result.no_trade_kind is not None else None),
     }

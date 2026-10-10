@@ -97,7 +97,9 @@ def test_every_decision_maps_to_a_real_review(code: RiskDecisionCode, verdict: R
     """No futures verdict may be lost on the way into the runtime vocabulary."""
     decision = make_decision(
         decision=code,
-        rejection_reasons=() if code is RiskDecisionCode.APPROVE_SIMULATION else (RejectionCode.RISK_VETO if False else RejectionCode.COST_UNKNOWN,),
+        rejection_reasons=()
+        if code is RiskDecisionCode.APPROVE_SIMULATION
+        else (RejectionCode.RISK_VETO if False else RejectionCode.COST_UNKNOWN,),
     )
     review = to_risk_review(decision)
     assert review.verdict is verdict

@@ -139,7 +139,9 @@ def test_verifier_does_not_import_the_builder() -> None:
     assert proc.stdout.strip() == "[]"
 
 
-def test_verifier_reproduces_a_real_approval(instrument, snapshot_payload, funding_history, fixtures):
+def test_verifier_reproduces_a_real_approval(
+    instrument, snapshot_payload, funding_history, fixtures
+):
     """A decision produced here survives an independent recomputation."""
     case = build_case(instrument, snapshot_payload, funding_history)
     assert case["decision"]["decision"] in {"APPROVE_SIMULATION", "REDUCE_SIMULATED_SIZE"}
@@ -148,7 +150,9 @@ def test_verifier_reproduces_a_real_approval(instrument, snapshot_payload, fundi
     assert failed == []
 
 
-def test_negative_controls_are_all_detected(instrument, snapshot_payload, funding_history, fixtures):
+def test_negative_controls_are_all_detected(
+    instrument, snapshot_payload, funding_history, fixtures
+):
     """§13 — the seven required controls plus the order-authorisation control."""
     case = build_case(instrument, snapshot_payload, funding_history)
     report = run_verification({"decisions": [case]}, fixtures)

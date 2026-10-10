@@ -11,6 +11,7 @@ collateral set cannot be created by accident.
 
 from __future__ import annotations
 
+import math
 import threading
 from dataclasses import dataclass, field
 from typing import Any
@@ -144,24 +145,61 @@ class MarginLedger:
             return self.equity - self._reserved
 
     def try_reserve(
-        self, amount: float, *, decision_id: str, collateral_group: str = "ISOLATED"
+        self,
+        amount: float,
+        *,
+        decision_id: str,
+        collateral_group: str = "ISOLATED",
+        max_committed: float | None = None,
     ) -> tuple[bool, float, RejectionCode | None]:
-        """Reserve ``amount`` or refuse. Returns ``(ok, granted, reason)``."""
-        if amount <= 0:
-            return False, 0.0, RejectionCode.RISK_BUDGET_EXCEEDED
+        """Reserve ``amount`` or refuse. Returns ``(ok, granted, reason)``.
+
+        Three safety properties, each pinned by a regression test:
+
+        * non-finite numbers are refused, never absorbed — a NaN reservation
+          used to poison ``reserved``/``free`` for every later decision
+          (RFC-048V DEF-048V-05);
+        * a repeated ``decision_id`` is idempotent: the existing reservation is
+          re-confirmed instead of counted twice, and a larger request for the
+          same id is a conflict (RFC-048V DEF-048V-03);
+        * the optional ``max_committed`` ceiling makes the aggregate policy
+          limit hold under concurrency instead of only against one snapshot
+          (RFC-048V DEF-048V-04).
+        """
+        number = float(amount)
+        if not math.isfinite(number) or number <= 0:
+            return False, 0.0, RejectionCode.INVALID_NUMERIC_INPUT
+        ceiling: float | None = None
+        if max_committed is not None:
+            ceiling = float(max_committed)
+            if not math.isfinite(ceiling) or ceiling < 0:
+                return False, 0.0, RejectionCode.INVALID_NUMERIC_INPUT
         with self._lock:
+            if not math.isfinite(self.equity) or not math.isfinite(self._reserved):
+                return False, 0.0, RejectionCode.INVALID_NUMERIC_INPUT
+            already = sum(
+                float(grant["amount"])
+                for grant in self._grants
+                if grant["decision_id"] == decision_id
+            )
+            if already > 0:
+                if number <= already + 1e-12:
+                    return True, already, None
+                return False, 0.0, RejectionCode.SHARED_COLLATERAL_CONFLICT
             available = self.equity - self._reserved
-            if amount > available + 1e-12:
+            if number > available + 1e-12:
                 return False, 0.0, RejectionCode.INSUFFICIENT_MARGIN
-            self._reserved += amount
+            if ceiling is not None and self._reserved + number > ceiling + 1e-9:
+                return False, 0.0, RejectionCode.MARGIN_UTILIZATION_LIMIT
+            self._reserved += number
             self._grants.append(
                 {
                     "decision_id": decision_id,
-                    "amount": amount,
+                    "amount": number,
                     "collateral_group": collateral_group,
                 }
             )
-            return True, amount, None
+            return True, number, None
 
     def release(self, decision_id: str) -> float:
         """Release every reservation tied to a decision id (cancellation)."""

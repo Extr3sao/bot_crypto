@@ -19,6 +19,7 @@ bracket ceiling, and the engine re-checks the liquidation geometry at that level
 
 from __future__ import annotations
 
+import math
 import time
 from dataclasses import dataclass, field, replace
 from typing import Any
@@ -199,6 +200,22 @@ class FuturesRiskEngine:
                 evidence,
             )
 
+        # 0. numeric validity -----------------------------------------------------
+        # Every number the engine reasons about must be real and finite. NaN is
+        # the dangerous case: it defeats `<=`-style comparisons, so an
+        # unvalidated NaN silently SATISFIES limits instead of failing them.
+        # (RFC-048V DEF-048V-01: a NaN mark used to reach an approval.)
+        numeric_reasons, numeric_notes = self._validate_numbers(request)
+        if numeric_reasons:
+            return self._reject(
+                proposal,
+                request,
+                RiskDecisionCode.DATA_INVALID,
+                numeric_reasons,
+                numeric_notes,
+                evidence,
+            )
+
         # 1. contract capability -------------------------------------------------
         try:
             self._spec.ensure_usable(proposal.position_mode)
@@ -231,7 +248,9 @@ class FuturesRiskEngine:
         mark = proposal.mark_price or request.market.get("mark_price")
         entry = float(proposal.entry_price)
         risk_budget = equity * policy.risk_budget_pct
-        evidence.append(f"risk_budget_usdt={risk_budget:.6f} (equity {equity} x {policy.risk_budget_pct})")
+        evidence.append(
+            f"risk_budget_usdt={risk_budget:.6f} (equity {equity} x {policy.risk_budget_pct})"
+        )
 
         # 3. costs ---------------------------------------------------------------
         funding = funding_context(
@@ -290,7 +309,9 @@ class FuturesRiskEngine:
                 or RejectionCode.RISK_BUDGET_EXCEEDED in sizing.reasons
                 else RiskDecisionCode.NO_TRADE
             )
-            return self._reject(proposal, request, code, list(sizing.reasons), list(sizing.notes), evidence)
+            return self._reject(
+                proposal, request, code, list(sizing.reasons), list(sizing.notes), evidence
+            )
         if sizing.quantity <= 0:
             return self._reject(
                 proposal,
@@ -300,9 +321,9 @@ class FuturesRiskEngine:
                 ["quantity step produced a zero quantity"],
                 evidence,
             )
-        if proposal.stop_price is not None and abs(entry - proposal.stop_price) / entry * 10_000.0 < (
-            policy.min_stop_distance_bps
-        ):
+        if proposal.stop_price is not None and abs(
+            entry - proposal.stop_price
+        ) / entry * 10_000.0 < (policy.min_stop_distance_bps):
             return self._reject(
                 proposal,
                 request,
@@ -325,7 +346,9 @@ class FuturesRiskEngine:
                 request,
                 RiskDecisionCode.NO_TRADE,
                 [RejectionCode.COST_UNKNOWN],
-                [f"unknown cost components at the approved size: {list(sizing_costs.unknown_components)}"],
+                [
+                    f"unknown cost components at the approved size: {list(sizing_costs.unknown_components)}"
+                ],
                 evidence,
                 sizing=sizing,
                 costs=sizing_costs,
@@ -382,7 +405,9 @@ class FuturesRiskEngine:
         )
         initial_margin = self._margin.initial_margin(sizing.notional, allowed_leverage)
         maintenance, _ = self._margin.maintenance_margin(sizing.notional)
-        evidence.append(f"initial_margin_usdt={initial_margin:.6f} maintenance_usdt={maintenance:.6f}")
+        evidence.append(
+            f"initial_margin_usdt={initial_margin:.6f} maintenance_usdt={maintenance:.6f}"
+        )
 
         # 5b. portfolio gate: hard limits refuse, soft limits SHRINK the size -------
         hard_reasons, hard_notes, cap = self._portfolio_gate(
@@ -407,9 +432,11 @@ class FuturesRiskEngine:
         if cap < sizing.notional - 1e-9:
             clipped = self._spec.round_quantity_down(cap / entry)
             clipped_notional = clipped * entry
-            if clipped <= 0 or (
-                self._spec.quantity_min and clipped < self._spec.quantity_min
-            ) or clipped_notional < self._spec.minimum_notional:
+            if (
+                clipped <= 0
+                or (self._spec.quantity_min and clipped < self._spec.quantity_min)
+                or clipped_notional < self._spec.minimum_notional
+            ):
                 return self._reject(
                     proposal,
                     request,
@@ -425,8 +452,7 @@ class FuturesRiskEngine:
                     effective_leverage=allowed_leverage,
                 )
             evidence.append(
-                f"portfolio_cap_clip={sizing.notional:.6f}->{clipped_notional:.6f} "
-                f"(cap {cap:.6f})"
+                f"portfolio_cap_clip={sizing.notional:.6f}->{clipped_notional:.6f} (cap {cap:.6f})"
             )
             sizing = replace(
                 sizing,
@@ -441,7 +467,9 @@ class FuturesRiskEngine:
             )
             sizing_costs = _costs_at(sizing.notional)
             bracket = self._spec.bracket_for(sizing.notional)
-            allowed_leverage = min(requested_leverage, policy.max_leverage, float(bracket.max_open_pos_leverage))
+            allowed_leverage = min(
+                requested_leverage, policy.max_leverage, float(bracket.max_open_pos_leverage)
+            )
             initial_margin = self._margin.initial_margin(sizing.notional, allowed_leverage)
 
         stress = request.stress_scenarios or (
@@ -577,6 +605,11 @@ class FuturesRiskEngine:
                 initial_margin,
                 decision_id=proposal.decision_id,
                 collateral_group=f"ISOLATED:{self._spec.instrument_id}",
+                # The declared utilisation ceiling is an AGGREGATE limit: it is
+                # enforced by the ledger under its own lock, so two concurrent
+                # decisions cannot each spend the same room against a stale
+                # snapshot (RFC-048V DEF-048V-04).
+                max_committed=self._policy.max_margin_utilization_pct * equity,
             )
             if not ok:
                 return self._reject(
@@ -682,6 +715,74 @@ class FuturesRiskEngine:
 
     # -- gates ---------------------------------------------------------------
 
+    def _validate_numbers(self, request: ScenarioRequest) -> tuple[list[RejectionCode], list[str]]:
+        """Refuse a request carrying any non-finite or impossible number.
+
+        The checks are deliberately placed at the engine boundary (not only at
+        the integrations): the engine is the deterministic authority, so it
+        validates its own inputs. (RFC-048V DEF-048V-01/DEF-048V-06.)
+        """
+        proposal = request.proposal
+        snapshot = request.snapshot
+        market = request.market
+        bad: list[str] = []
+
+        def check(name: str, value: Any, *, positive: bool = True) -> None:
+            if value is None:
+                return
+            try:
+                number = float(value)
+            except (TypeError, ValueError):
+                bad.append(name)
+                return
+            if not math.isfinite(number) or (positive and number <= 0):
+                bad.append(name)
+
+        check("entry_price", proposal.entry_price)
+        check("stop_price", proposal.stop_price)
+        check("mark_price", proposal.mark_price)
+        check("requested_notional", proposal.requested_notional)
+        check("requested_leverage", proposal.requested_leverage)
+        check("horizon_minutes", proposal.horizon_minutes)
+        check("data_timestamp_ms", proposal.data_timestamp_ms)
+        check("decision_timestamp_ms", proposal.decision_timestamp_ms)
+        check("equity", snapshot.equity)
+        check("free_margin", snapshot.free_margin, positive=False)
+        check("reserved_margin", snapshot.reserved_margin, positive=False)
+        check("snapshot_timestamp_ms", snapshot.timestamp_ms)
+        check("daily_pnl", snapshot.daily_pnl, positive=False)
+        check("drawdown_pct", snapshot.drawdown_pct, positive=False)
+        check("consecutive_losses", snapshot.consecutive_losses, positive=False)
+        for index, position in enumerate(snapshot.positions):
+            check(f"positions[{index}].quantity", position.quantity, positive=False)
+            check(f"positions[{index}].entry_price", position.entry_price)
+            check(f"positions[{index}].notional", position.notional, positive=False)
+            check(f"positions[{index}].reserved_margin", position.reserved_margin, positive=False)
+        mark = proposal.mark_price if proposal.mark_price is not None else market.get("mark_price")
+        check("market_mark_price", mark)
+        spread = market.get("spread_bps")
+        if spread is not None and not (
+            isinstance(spread, (int, float))
+            and not isinstance(spread, bool)
+            and math.isfinite(float(spread))
+        ):
+            bad.append("spread_bps")
+        for index, scenario in enumerate(request.stress_scenarios):
+            if not math.isfinite(scenario.adverse_move_pct) or scenario.adverse_move_pct < 0:
+                bad.append(f"stress[{index}].adverse_move_pct")
+            if not math.isfinite(scenario.spread_widening_bps) or scenario.spread_widening_bps < 0:
+                bad.append(f"stress[{index}].spread_widening_bps")
+            if not math.isfinite(scenario.funding_rate):
+                bad.append(f"stress[{index}].funding_rate")
+            if scenario.funding_settlements < 0:
+                bad.append(f"stress[{index}].funding_settlements")
+        if not bad:
+            return [], []
+        return (
+            [RejectionCode.INVALID_NUMERIC_INPUT],
+            ["non-finite or out-of-range inputs: " + ", ".join(sorted(dict.fromkeys(bad)))],
+        )
+
     def _validate_data(
         self, request: ScenarioRequest
     ) -> tuple[list[RejectionCode], list[str], int]:
@@ -691,9 +792,7 @@ class FuturesRiskEngine:
         age = proposal.decision_timestamp_ms - proposal.data_timestamp_ms
         if proposal.decision_timestamp_ms <= proposal.data_timestamp_ms:
             reasons.append(RejectionCode.FUTURE_TIMESTAMP)
-            notes.append(
-                "the decision would use market data timestamped at or after itself"
-            )
+            notes.append("the decision would use market data timestamped at or after itself")
         if age > self._policy.max_data_age_ms:
             reasons.append(RejectionCode.STALE_DATA)
             notes.append(f"data age {age} ms exceeds {self._policy.max_data_age_ms} ms")
@@ -786,13 +885,15 @@ class FuturesRiskEngine:
         caps: list[float] = []
         caps.append(max(equity * policy.max_gross_exposure_pct - snapshot.gross_exposure, 0.0))
         caps.append(
-            max(equity * policy.max_concentration_pct - snapshot.exposure_by_asset().get(asset, 0.0), 0.0)
+            max(
+                equity * policy.max_concentration_pct
+                - snapshot.exposure_by_asset().get(asset, 0.0),
+                0.0,
+            )
         )
         free = max(snapshot.free_margin, 0.0)
         caps.append(free * leverage)
-        util_room = max(
-            equity * policy.max_margin_utilization_pct - snapshot.reserved_margin, 0.0
-        )
+        util_room = max(equity * policy.max_margin_utilization_pct - snapshot.reserved_margin, 0.0)
         caps.append(util_room * leverage)
 
         signed = 1.0 if direction is Direction.LONG else -1.0
@@ -848,17 +949,11 @@ class FuturesRiskEngine:
             quantity=0.0,
             entry_price=float(proposal.entry_price),
             stop_price=proposal.stop_price,
-            liquidation_price=(
-                assessment.liquidation_price if assessment is not None else None
-            ),
+            liquidation_price=(assessment.liquidation_price if assessment is not None else None),
             maintenance_margin=(
                 assessment.maintenance_margin_entry if assessment is not None else 0.0
             ),
-            cost_status=(
-                costs.status
-                if costs is not None
-                else CostStatus.COST_UNKNOWN
-            ),
+            cost_status=(costs.status if costs is not None else CostStatus.COST_UNKNOWN),
             gross_exposure_after=request.snapshot.gross_exposure,
             net_exposure_after=request.snapshot.net_exposure,
             portfolio_snapshot_id=request.snapshot.snapshot_id,

@@ -159,9 +159,17 @@ def _liquidation_root(
         notional = quantity * price
         bracket = _bracket_for(spec, notional)
         mm = _maintenance_margin(bracket, notional)
-        return _margin_balance(
-            direction=direction, quantity=quantity, entry=entry, price=price, wallet=wallet, safety=safety
-        ) - mm
+        return (
+            _margin_balance(
+                direction=direction,
+                quantity=quantity,
+                entry=entry,
+                price=price,
+                wallet=wallet,
+                safety=safety,
+            )
+            - mm
+        )
 
     f_lo, f_hi = excess(lo), excess(hi)
     if f_lo * f_hi > 0:
@@ -266,7 +274,9 @@ def _sizing_grid_max(
         notional = next_qty * entry
         if notional > limit:
             break
-        worst = notional * (stop_distance / entry) + notional * gap_pct + notional * cost_bps / 10_000.0
+        worst = (
+            notional * (stop_distance / entry) + notional * gap_pct + notional * cost_bps / 10_000.0
+        )
         if worst > risk_budget + MONEY_TOL:
             break
         best = next_qty
@@ -321,9 +331,8 @@ def verify_decision(
     declared_brackets = instrument.get("maintenance_margin_brackets") or []
     provenance_ok = (not supported) or (
         len(declared_brackets) == len(spec["maintenance_margin_brackets"])
-        and fixtures.bracket_source_hash == _sha256_file(
-            fixtures.raw_dir / "binance_usdm_leverage_brackets_btcusdt.json"
-        )
+        and fixtures.bracket_source_hash
+        == _sha256_file(fixtures.raw_dir / "binance_usdm_leverage_brackets_btcusdt.json")
         and instrument.get("source_hash_brackets", fixtures.bracket_source_hash)
         == fixtures.bracket_source_hash
     )
@@ -420,9 +429,7 @@ def verify_decision(
     total_cost = float(costs.get("total_round_trip_usdt", 0.0))
     worst_cost = float(costs.get("worst_case_cost_usdt", 0.0))
     unknown = list(costs.get("unknown_components") or [])
-    named_unknown = bool(
-        {"COST_UNKNOWN", "FUNDING_UNKNOWN"} & set(decision["rejection_reasons"])
-    )
+    named_unknown = bool({"COST_UNKNOWN", "FUNDING_UNKNOWN"} & set(decision["rejection_reasons"]))
     charged_enough = total_cost >= floor_cost - MONEY_TOL and worst_cost >= total_cost - MONEY_TOL
     complete = not unknown and charged_enough
     notional_consistent = (not approved_here) or (
@@ -461,7 +468,9 @@ def verify_decision(
     provided = (entry.get("inputs") or {}).get("funding_observations_provided")
     visible = [
         row
-        for row in fixtures.funding["observations"][: int(provided) if provided is not None else None]
+        for row in fixtures.funding["observations"][
+            : int(provided) if provided is not None else None
+        ]
         if int(row["funding_time_ms"]) <= decision_ts
     ]
     # Independently recomputed funding charge: this does not trust the engine's
@@ -469,9 +478,7 @@ def verify_decision(
     # decision's own timestamps.
     interval = _funding_interval_ms(spec)
     details_horizon = float((detail.get("proposal") or {}).get("horizon_minutes", 0.0))
-    settlements = (
-        int(details_horizon * 60_000 // interval) if interval and details_horizon else 0
-    )
+    settlements = int(details_horizon * 60_000 // interval) if interval and details_horizon else 0
     notional_for_funding = float(
         costs.get("notional") or decision["approved_notional"] or decision["requested_notional"]
     )
@@ -485,12 +492,10 @@ def verify_decision(
     elif not visible:
         # Settlements will occur but no rate was published at the decision: the
         # decision may not be an approval and must say why.
-        funding_ok = (
-            decision["decision"] not in {"APPROVE_SIMULATION", "REDUCE_SIMULATED_SIZE"}
-            and bool(
-                {"FUNDING_UNKNOWN", "COST_UNKNOWN"} & set(decision["rejection_reasons"])
-            )
-        )
+        funding_ok = decision["decision"] not in {
+            "APPROVE_SIMULATION",
+            "REDUCE_SIMULATED_SIZE",
+        } and bool({"FUNDING_UNKNOWN", "COST_UNKNOWN"} & set(decision["rejection_reasons"]))
         expected_charge = None
         expected_expected = None
     else:
@@ -503,11 +508,9 @@ def verify_decision(
             if (observed > 0 if long_side else observed < 0)
             else 0.0
         )
-        funding_ok = (
-            abs(reported_funding - expected_charge) <= max(MONEY_TOL, expected_charge * 1e-9)
-            and abs(reported_expected - expected_expected)
-            <= max(MONEY_TOL, expected_expected * 1e-9)
-        )
+        funding_ok = abs(reported_funding - expected_charge) <= max(
+            MONEY_TOL, expected_charge * 1e-9
+        ) and abs(reported_expected - expected_expected) <= max(MONEY_TOL, expected_expected * 1e-9)
     checks.append(
         CheckResult(
             "funding_point_in_time",
@@ -614,7 +617,9 @@ def verify_decision(
         bracket = _bracket_for(spec, approved)
         venue_ceiling = float(bracket["max_open_pos_leverage"])
         allowed = min(
-            float(decision["requested_leverage"]), float(policy.get("max_leverage", 1e9)), venue_ceiling
+            float(decision["requested_leverage"]),
+            float(policy.get("max_leverage", 1e9)),
+            venue_ceiling,
         )
         expected_margin = approved / leverage if leverage > 0 else float("inf")
         expected_mm = _maintenance_margin(bracket, approved)
@@ -673,8 +678,10 @@ def verify_decision(
             hi=hi,
         )
         reported_lp = decision["liquidation_price"]
-        lp_ok = root is not None and reported_lp is not None and abs(root - reported_lp) <= max(
-            PRICE_TOL, root * 1e-6
+        lp_ok = (
+            root is not None
+            and reported_lp is not None
+            and abs(root - reported_lp) <= max(PRICE_TOL, root * 1e-6)
         )
         numbers["liquidation_root"] = root
         numbers["liquidation_reported"] = reported_lp
@@ -792,11 +799,7 @@ def _simulate_path(
     bar high. The reported liquidation price must lie inside that breach window,
     and no earlier bar may breach.
     """
-    bars = [
-        bar
-        for bar in snapshot["klines_5m"]
-        if int(bar["close_time_ms"]) <= int(decisions_ts)
-    ]
+    bars = [bar for bar in snapshot["klines_5m"] if int(bar["close_time_ms"]) <= int(decisions_ts)]
     if not bars:
         return CheckResult(
             "liquidation_path_simulation",
@@ -933,9 +936,7 @@ def negative_controls(
     record("wrong_notional", tampered, "notional_consistency must fail")
 
     tampered = _deep_copy(base)
-    tampered["decision"]["effective_leverage"] = (
-        tampered["decision"]["requested_leverage"] * 10.0
-    )
+    tampered["decision"]["effective_leverage"] = tampered["decision"]["requested_leverage"] * 10.0
     record("excess_leverage", tampered, "margin_and_leverage must fail")
 
     tampered = _deep_copy(base)
@@ -943,9 +944,7 @@ def negative_controls(
     record("aggregate_risk_omitted", tampered, "aggregate_margin_pool must fail")
 
     tampered = _deep_copy(base)
-    tampered["decision"]["data_timestamp_ms"] = (
-        tampered["decision"]["decision_timestamp_ms"] + 1000
-    )
+    tampered["decision"]["data_timestamp_ms"] = tampered["decision"]["decision_timestamp_ms"] + 1000
     record("temporally_invalid", tampered, "temporal_validity must fail")
 
     tampered = _deep_copy(base)

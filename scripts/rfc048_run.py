@@ -143,9 +143,7 @@ def execute(
             proposal=proposal_,
             snapshot=snapshot_,
             market=market_,
-            funding_observations=(
-                FUNDING_OBSERVATIONS if funding is None else funding
-            ),
+            funding_observations=(FUNDING_OBSERVATIONS if funding is None else funding),
             funding_source_hash=FUNDING_HASH,
             stress_scenarios=stress,
         )
@@ -498,6 +496,9 @@ def run_catalogue(scenarios: list[dict[str, Any]]) -> list[dict[str, Any]]:
             )
             or (expectation == "measured" and decision["decision"] in set(RiskDecisionCode))
         )
+        provided_funding: list[dict[str, Any]] = (
+            FUNDING_OBSERVATIONS if scenario.get("funding") is None else list(scenario["funding"])
+        )
         results.append(
             {
                 "scenario": scenario["id"],
@@ -510,9 +511,7 @@ def run_catalogue(scenarios: list[dict[str, Any]]) -> list[dict[str, Any]]:
                 # The verifier re-derives every number from the SAME input evidence
                 # the engine was given, so what was withheld has to be recorded.
                 "inputs": {
-                    "funding_observations_provided": len(
-                        scenario.get("funding") if scenario.get("funding") is not None else FUNDING_OBSERVATIONS
-                    ),
+                    "funding_observations_provided": len(provided_funding),
                     "mark_price_provided": scenario.get("market", market()).get("mark_price")
                     is not None,
                     "stress_scenarios": [s.to_dict() for s in scenario.get("stress", ())],
@@ -832,7 +831,7 @@ def economic_feasibility(reg: Any) -> dict[str, Any]:
     capital = 0.002 * MARK
     comparison_a = []
     for move in (0.01, -0.01):
-        row = {
+        row: dict[str, Any] = {
             "gross_move_pct": move * 100.0,
             "same_notional_usdt": round(fixed_notional, 8),
             "grid_aligned": True,
@@ -1061,27 +1060,33 @@ def main() -> int:
     refused = [row for row in catalogue if row["decision"]["approved_notional"] == 0.0]
     any_order_authorised = any(row["decision"]["order_authorised"] for row in catalogue)
 
-    write(DATA / "RISK_SCENARIOS.json", {
-        "schema_version": 1,
-        "generated_by": "scripts/rfc048_run.py",
-        "instrument_id": "BINANCE_USDM_BTCUSDT_PERP",
-        "case_count": len(catalogue),
-        "cases": catalogue,
-    })
+    write(
+        DATA / "RISK_SCENARIOS.json",
+        {
+            "schema_version": 1,
+            "generated_by": "scripts/rfc048_run.py",
+            "instrument_id": "BINANCE_USDM_BTCUSDT_PERP",
+            "case_count": len(catalogue),
+            "cases": catalogue,
+        },
+    )
     model_cases = margin_model_cases(reg)
-    write(DATA / "MARGIN_LIQUIDATION_CASES.json", {
-        "schema_version": 1,
-        "generated_by": "scripts/rfc048_run.py",
-        "instrument_id": "BINANCE_USDM_BTCUSDT_PERP",
-        "margin_model": "isolated linear perpetual; maintenance ladder from the venue payload",
-        "case_count": len(margin_cases),
-        "cases": margin_cases,
-        "model_level_case_count": len(model_cases),
-        "model_level_cases": model_cases,
-    })
+    write(
+        DATA / "MARGIN_LIQUIDATION_CASES.json",
+        {
+            "schema_version": 1,
+            "generated_by": "scripts/rfc048_run.py",
+            "instrument_id": "BINANCE_USDM_BTCUSDT_PERP",
+            "margin_model": "isolated linear perpetual; maintenance ladder from the venue payload",
+            "case_count": len(margin_cases),
+            "cases": margin_cases,
+            "model_level_case_count": len(model_cases),
+            "model_level_cases": model_cases,
+        },
+    )
     write(DATA / "ECONOMIC_FEASIBILITY.json", feasibility)
 
-    report = {
+    report: dict[str, Any] = {
         "schema_version": 1,
         "rfc": "RFC-048",
         "generated_by": "scripts/rfc048_run.py",
@@ -1145,7 +1150,6 @@ def main() -> int:
 def write(path: Path, payload: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
-
 
 
 if __name__ == "__main__":

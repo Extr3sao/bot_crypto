@@ -73,7 +73,8 @@ def load(name: str) -> Any:
 
 
 def filter_of(symbol: dict[str, Any], kind: str) -> dict[str, Any]:
-    for f in symbol["filters"]:
+    filters: list[dict[str, Any]] = symbol["filters"]
+    for f in filters:
         if f["filterType"] == kind:
             return f
     raise KeyError(f"{symbol['symbol']}: missing filter {kind}")
@@ -239,7 +240,7 @@ def main() -> int:
         ),
     }
 
-    inverse = {
+    inverse: dict[str, Any] = {
         "instrument_id": "BINANCE_COINM_BTCUSD_PERP",
         "venue": "BINANCE_COINM",
         "venue_symbol": "BTCUSD_PERP",
@@ -269,7 +270,7 @@ def main() -> int:
         ),
     }
 
-    instruments = {
+    instruments: dict[str, Any] = {
         "schema_version": 1,
         "generated_by": "scripts/rfc048_derive_instruments.py",
         "generated_at_utc": _utc(int(exchange_info.get("serverTime", 0))),
@@ -291,7 +292,7 @@ def main() -> int:
     asks = [(float(p), float(q)) for p, q in depth["asks"]]
     last_close = float(klines[-1][4])
 
-    snapshot = {
+    snapshot: dict[str, Any] = {
         "schema_version": 1,
         "instrument_id": supported["instrument_id"],
         "source_hash": provenance["sources"]["depth"]["sha256"],
@@ -324,7 +325,7 @@ def main() -> int:
         ],
     }
 
-    funding = {
+    funding: dict[str, Any] = {
         "schema_version": 1,
         "instrument_id": supported["instrument_id"],
         "source_hash": provenance["sources"]["funding_rate"]["sha256"],

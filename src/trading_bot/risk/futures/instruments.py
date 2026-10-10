@@ -9,6 +9,7 @@ has no verified model refuses to produce a spec, raising
 from __future__ import annotations
 
 import json
+import math
 from dataclasses import dataclass, field
 from itertools import pairwise
 from pathlib import Path
@@ -190,8 +191,13 @@ class InstrumentSpec:
         return self.bracket_for(notional).max_open_pos_leverage
 
     def round_quantity_down(self, quantity: float) -> float:
-        """Never round up: rounding must never increase approved risk."""
-        if self.quantity_step <= 0:
+        """Never round up: rounding must never increase approved risk.
+
+        A non-finite quantity rounds to zero instead of raising: an
+        unrepresentable size must become a refusal, never a crash and never a
+        size. (RFC-048V DEF-048V-02: NaN used to reach ``int()`` here.)
+        """
+        if self.quantity_step <= 0 or not math.isfinite(quantity) or quantity <= 0.0:
             return 0.0
         steps = int(quantity / self.quantity_step + 1e-9)
         return round(steps * self.quantity_step, 12)
@@ -297,9 +303,7 @@ def spec_from_dict(row: dict[str, Any]) -> InstrumentSpec:
         contract_multiplier=float(row.get("contract_multiplier") or 0.0),
         quantity_step=float(row.get("quantity_step") or 0.0),
         quantity_min=float(row.get("quantity_min") or 0.0),
-        quantity_max=(
-            float(row["quantity_max"]) if row.get("quantity_max") is not None else None
-        ),
+        quantity_max=(float(row["quantity_max"]) if row.get("quantity_max") is not None else None),
         price_tick=float(row.get("price_tick") or 0.0),
         minimum_notional=float(row.get("minimum_notional") or 0.0),
         maximum_notional=(
@@ -340,7 +344,5 @@ def spec_from_dict(row: dict[str, Any]) -> InstrumentSpec:
 def load_instrument_registry(path: Path) -> InstrumentRegistry:
     """Load ``data/rfc048/INSTRUMENTS.json`` (or any file of the same shape)."""
     payload = json.loads(path.read_text(encoding="utf-8"))
-    instruments = {
-        row["instrument_id"]: spec_from_dict(row) for row in payload["instruments"]
-    }
+    instruments = {row["instrument_id"]: spec_from_dict(row) for row in payload["instruments"]}
     return InstrumentRegistry(instruments)

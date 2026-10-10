@@ -90,7 +90,7 @@ def risk_bounded_sizing(
             reasons=(RejectionCode.INSUFFICIENT_EQUITY,),
             notes=("equity and risk budget must be positive",),
         )
-    if entry_price <= 0:
+    if not math.isfinite(entry_price) or entry_price <= 0:
         return SizingResult(
             approved=False,
             quantity=0.0,
@@ -151,7 +151,7 @@ def risk_bounded_sizing(
         )
 
     stop_distance = _stop_distance(direction=direction, entry=entry_price, stop=stop_price)
-    if stop_distance <= 0:
+    if not math.isfinite(stop_distance) or stop_distance <= 0:
         return SizingResult(
             approved=False,
             quantity=0.0,
@@ -296,8 +296,10 @@ def risk_bounded_sizing(
             notional * stop_distance_pct + notional * gap_reserve_pct + realised_cost
         )
         notes.append("size reduced after the post-rounding budget re-check")
-        if quantity <= 0 or notional < spec.minimum_notional or (
-            spec.quantity_min and quantity < spec.quantity_min
+        if (
+            quantity <= 0
+            or notional < spec.minimum_notional
+            or (spec.quantity_min and quantity < spec.quantity_min)
         ):
             return SizingResult(
                 approved=False,

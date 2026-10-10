@@ -130,9 +130,7 @@ def run(
     ledger: MarginLedger | None = None,
     stress: tuple[StressScenario, ...] = (),
 ) -> object:
-    engine = FuturesRiskEngine(
-        spec=instrument, policy=policy or make_policy(), ledger=ledger
-    )
+    engine = FuturesRiskEngine(spec=instrument, policy=policy or make_policy(), ledger=ledger)
     request = ScenarioRequest(
         proposal=proposal or make_proposal(market),
         snapshot=snapshot or make_snapshot(),
@@ -232,7 +230,9 @@ def test_case_06_severe_adverse_gap(instrument, market_payload, funding_observat
     assert RejectionCode.PARTIAL_LIQUIDATION_UNSUPPORTED.value in codes(result)
 
 
-def test_case_07_adverse_funding_accumulated(instrument, market_payload, funding_observations) -> None:
+def test_case_07_adverse_funding_accumulated(
+    instrument, market_payload, funding_observations
+) -> None:
     """7. Funding adverso acumulado — funding is charged, and it can kill the trade."""
     market = dict(market_payload)
     long_horizon = run(
@@ -319,7 +319,9 @@ def test_case_08b_engine_reports_bracket_shift_rows(
         assert row["liquidation_price"] is not None
 
 
-def test_case_09_commissions_exceed_profit(instrument, market_payload, funding_observations) -> None:
+def test_case_09_commissions_exceed_profit(
+    instrument, market_payload, funding_observations
+) -> None:
     """9. Comisiones superiores al beneficio — a one-cent edge does not survive."""
     result = run(
         instrument=instrument,
@@ -633,9 +635,7 @@ def test_case_24_product_not_available(instrument, market_payload, funding_obser
 
 def test_inverse_perpetual_is_refused_by_name() -> None:
     """A coin-margined contract can never be priced with linear algebra."""
-    inverse = load_instrument_registry(DATA / "INSTRUMENTS.json").get(
-        "BINANCE_COINM_BTCUSD_PERP"
-    )
+    inverse = load_instrument_registry(DATA / "INSTRUMENTS.json").get("BINANCE_COINM_BTCUSD_PERP")
     assert inverse.contract_type is ContractType.INVERSE_PERPETUAL
     with pytest.raises(Exception) as excinfo:
         inverse.ensure_usable(PositionMode.ISOLATED)
@@ -791,6 +791,4 @@ def test_maintenance_ladder_matches_venue_continuity(instrument) -> None:
         # both sides of a boundary must price the same maintenance margin.
         at_boundary_lower = lower.maintenance_margin(lower.notional_cap)
         at_boundary_upper = upper.maintenance_margin(upper.notional_floor)
-        assert abs(at_boundary_lower - at_boundary_upper) <= 1e-6 * max(
-            1.0, at_boundary_lower
-        )
+        assert abs(at_boundary_lower - at_boundary_upper) <= 1e-6 * max(1.0, at_boundary_lower)

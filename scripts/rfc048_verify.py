@@ -72,6 +72,10 @@ def verify_model_cases(fixtures: Any, payload: dict[str, Any]) -> dict[str, Any]
             if row["notional_floor"] <= notional <= row["notional_cap"]:
                 bracket = row
                 break
+        if bracket is None:
+            # The ladder must cover every notional the engine would size: an
+            # uncovered notional is a fixture defect, not a verifier opinion.
+            raise SystemExit(f"{case['case']}: no maintenance bracket contains {notional}")
         mm = max(
             notional * bracket["maintenance_margin_rate"] - bracket["cum_maintenance_amount"],
             0.0,
@@ -200,11 +204,15 @@ def main() -> int:
         json.dumps(artifact, indent=2) + "\n", encoding="utf-8"
     )
 
-    print(f"decisions verified: {verification['decisions_passed']}/{verification['decisions_verified']}")
+    print(
+        f"decisions verified: {verification['decisions_passed']}/{verification['decisions_verified']}"
+    )
     print(f"checks run: {verification['checks_run']}  failed: {len(verification['checks_failed'])}")
-    print(f"negative controls detected: "
-          f"{sum(1 for c in verification['negative_controls'] if c['detected'])}/"
-          f"{len(verification['negative_controls'])}")
+    print(
+        f"negative controls detected: "
+        f"{sum(1 for c in verification['negative_controls'] if c['detected'])}/"
+        f"{len(verification['negative_controls'])}"
+    )
     print(f"false_success: {false_success}")
     print(f"independent process: {independence['independent']}  reproducible: {reproducible}")
     print(f"model-level cases passed: {model_cases['passed']}")

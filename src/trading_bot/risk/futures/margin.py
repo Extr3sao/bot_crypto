@@ -177,8 +177,38 @@ class MarginModel:
             denominator = quantity * (1.0 + bracket_rate)
         if denominator <= 0:
             return None
-        price = numerator / denominator
-        return price if price > 0 else 0.0
+        # The venue floors the maintenance amount at zero: m(P) = max(qty*P*rate
+        # - cum, 0). The condition is therefore piecewise linear with a kink at
+        # m(P) = 0. Solving only the linear branch extrapolates maintenance
+        # below its floor and UNDERSTATES the liquidation price for a long
+        # (RFC-048V DEF-048V-08, found by the numeric-root cross-check). Solve
+        # each piece and keep the candidate that lies inside its own domain.
+        kink = (
+            cum_maintenance_amount / (quantity * bracket_rate) if bracket_rate > 0.0 else math.inf
+        )
+        linear_price = numerator / denominator
+        floored_price = (
+            entry_price + (adverse_terms_usdt - wallet_balance) / quantity
+            if direction is Direction.LONG
+            else entry_price + (wallet_balance - adverse_terms_usdt) / quantity
+        )
+        candidates: list[float] = []
+        if direction is Direction.LONG:
+            # above the kink the clamp is inactive; below it the term is zero
+            if linear_price > 0.0 and linear_price >= kink:
+                candidates.append(linear_price)
+            if floored_price > 0.0 and floored_price <= kink:
+                candidates.append(floored_price)
+        else:
+            if floored_price > 0.0 and floored_price <= kink:
+                candidates.append(floored_price)
+            if linear_price > 0.0 and linear_price >= kink:
+                candidates.append(linear_price)
+        if not candidates:
+            return 0.0
+        # Exactly one candidate is valid outside the degenerate kink; if both
+        # land on the kink, the more conservative one wins.
+        return max(candidates) if direction is Direction.LONG else min(candidates)
 
     def assess(
         self,
@@ -213,6 +243,29 @@ class MarginModel:
                 reason=RejectionCode.INCOMPLETE_MARGIN_MODEL,
                 notes=["quantity/entry not usable for a liquidation computation"],
             )
+        # A non-finite number defeats every comparison below, so the model
+        # refuses to reason about it instead of returning a NaN "result".
+        # (RFC-048V DEF-048V-01/06.)
+        non_finite = [
+            name
+            for name, value in (
+                ("quantity", quantity),
+                ("entry_price", entry_price),
+                ("wallet_balance", wallet_balance),
+                ("funding_owed_usdt", funding_owed_usdt),
+                ("market_price", market_price),
+            )
+            if value is not None and not math.isfinite(float(value))
+        ]
+        if non_finite:
+            return self._unknown_assessment(
+                direction=direction,
+                quantity=quantity,
+                entry_price=entry_price,
+                wallet_balance=wallet_balance,
+                reason=RejectionCode.LIQUIDATION_RISK_UNKNOWN,
+                notes=["non-finite liquidation inputs: " + ", ".join(non_finite)],
+            )
 
         entry_notional = quantity * entry_price
         bracket = self._spec.bracket_for(entry_notional)
@@ -228,6 +281,9 @@ class MarginModel:
         if market_price is None or market_price <= 0:
             reasons.append(RejectionCode.MISSING_MARK_PRICE)
             notes.append("mark price missing: cannot separate mark from index/last")
+        elif not math.isfinite(float(market_price)):
+            reasons.append(RejectionCode.MISSING_MARK_PRICE)
+            notes.append("mark price is not a real number")
 
         if reasons:
             return self._unknown_assessment(
@@ -252,8 +308,23 @@ class MarginModel:
             adverse_terms_usdt=safety,
         )
         buffer_bps = _buffer_bps(direction, entry_price, liquidation_price)
+        if (
+            liquidation_price is None
+            or buffer_bps is None
+            or not (math.isfinite(float(liquidation_price)) and math.isfinite(float(buffer_bps)))
+        ):
+            return self._unknown_assessment(
+                direction=direction,
+                quantity=quantity,
+                entry_price=entry_price,
+                wallet_balance=wallet_balance,
+                reason=RejectionCode.LIQUIDATION_RISK_UNKNOWN,
+                notes=["liquidation arithmetic produced a non-finite result"],
+                maintenance_margin=maintenance,
+                bracket_seq=bracket_seq,
+            )
 
-        stress_lp, stress_buffer, bracket_shifted, stress_path = self._stress(
+        stress_lp, stress_buffer, bracket_shifted, stress_path, unmodelable = self._stress(
             direction=direction,
             quantity=quantity,
             entry_price=entry_price,
@@ -262,6 +333,15 @@ class MarginModel:
             funding_owed_usdt=funding_owed_usdt,
             scenarios=stress_scenarios,
         )
+        if unmodelable:
+            # A declared stress path the model cannot evaluate is NOT "no
+            # stress": it makes the whole assessment unknown and blocks the
+            # position. (RFC-048V DEF-048V-06.)
+            reasons.append(RejectionCode.LIQUIDATION_RISK_UNKNOWN)
+            notes.append(
+                "declared stress scenarios are not modelable (non-finite or "
+                "negative parameters): " + ", ".join(unmodelable)
+            )
 
         return LiquidationAssessment(
             status=(
@@ -299,13 +379,24 @@ class MarginModel:
         liquidation_fee: float,
         funding_owed_usdt: float,
         scenarios: tuple[StressScenario, ...],
-    ) -> tuple[float | None, float | None, bool, tuple[dict[str, Any], ...]]:
+    ) -> tuple[float | None, float | None, bool, tuple[dict[str, Any], ...], tuple[str, ...]]:
         """Worst liquidation price across the declared stress paths."""
         worst_lp: float | None = None
         worst_buffer: float | None = None
         bracket_shifted = False
         path: list[dict[str, Any]] = []
+        unmodelable: list[str] = []
         for scenario in scenarios:
+            if (
+                not math.isfinite(scenario.adverse_move_pct)
+                or scenario.adverse_move_pct < 0
+                or not math.isfinite(scenario.spread_widening_bps)
+                or scenario.spread_widening_bps < 0
+                or not math.isfinite(scenario.funding_rate)
+                or scenario.funding_settlements < 0
+            ):
+                unmodelable.append(scenario.name)
+                continue
             if direction is Direction.LONG:
                 mark = entry_price * (1.0 - scenario.adverse_move_pct)
             else:
@@ -325,12 +416,7 @@ class MarginModel:
                 else 0.0
             )
             spread_cost = stress_notional * scenario.spread_widening_bps / 10_000.0
-            safety = (
-                max(funding_owed_usdt, 0.0)
-                + extra_funding
-                + liquidation_fee
-                + spread_cost
-            )
+            safety = max(funding_owed_usdt, 0.0) + extra_funding + liquidation_fee + spread_cost
             lp = self.liquidation_price(
                 direction=direction,
                 quantity=quantity,
@@ -354,12 +440,13 @@ class MarginModel:
                     "buffer_bps": None if buffer is None else round(buffer, 6),
                 }
             )
-            if lp is None or buffer is None:
+            if lp is None or buffer is None or not (math.isfinite(lp) and math.isfinite(buffer)):
+                unmodelable.append(scenario.name)
                 continue
             if worst_buffer is None or buffer < worst_buffer:
                 worst_buffer = buffer
                 worst_lp = lp
-        return worst_lp, worst_buffer, bracket_shifted, tuple(path)
+        return worst_lp, worst_buffer, bracket_shifted, tuple(path), tuple(unmodelable)
 
     def _unknown_assessment(
         self,

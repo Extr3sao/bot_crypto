@@ -81,6 +81,10 @@ class RejectionCode(StrEnum):
     STALE_DATA = "STALE_DATA"
     FUTURE_TIMESTAMP = "FUTURE_TIMESTAMP"
     MISSING_MARK_PRICE = "MISSING_MARK_PRICE"
+    #: A number the engine must reason about was NaN or infinite. NaN is the
+    #: worst case: it defeats every ``<=``-style gate, so an unvalidated NaN
+    #: silently satisfies limits instead of failing them. (RFC-048V DEF-048V-01.)
+    INVALID_NUMERIC_INPUT = "INVALID_NUMERIC_INPUT"
     INCOMPLETE_MARGIN_MODEL = "INCOMPLETE_MARGIN_MODEL"
     LIQUIDATION_RISK_UNKNOWN = "LIQUIDATION_RISK_UNKNOWN"
     PARTIAL_LIQUIDATION_UNSUPPORTED = "PARTIAL_LIQUIDATION_UNSUPPORTED"

@@ -291,7 +291,9 @@ def main() -> int:
             ],
         },
         "SUPPORTED_INSTRUMENTS": {
-            "implemented": ["LINEAR_PERPETUAL (isolated margin), BINANCE_USDM BINANCE_USDM_BTCUSDT_PERP"],
+            "implemented": [
+                "LINEAR_PERPETUAL (isolated margin), BINANCE_USDM BINANCE_USDM_BTCUSDT_PERP"
+            ],
             "declared_not_supported": [
                 "INVERSE_PERPETUAL (coin-margined)",
                 "DELIVERY_FUTURE (quarterly)",
@@ -345,7 +347,9 @@ def main() -> int:
             "status_counts": _count(
                 margins["model_level_cases"], lambda row: row["assessment"]["status"]
             ),
-            "buffer_minimum_bps": execution["engine"]["policy_version"]["min_liquidation_buffer_bps"],
+            "buffer_minimum_bps": execution["engine"]["policy_version"][
+                "min_liquidation_buffer_bps"
+            ],
             "unknown_blocks_approval": True,
             "defect_found_and_fixed": {
                 "id": "DEF-048-01",
@@ -492,8 +496,7 @@ def main() -> int:
             {
                 "id": "BLK-048-04",
                 "summary": (
-                    "cross margin is declared but not validated; only isolated margin is "
-                    "modelled"
+                    "cross margin is declared but not validated; only isolated margin is modelled"
                 ),
                 "impact": "cross-margin scenarios are refused (UNSUPPORTED_INSTRUMENT)",
             },
@@ -521,9 +524,7 @@ def main() -> int:
         },
     }
 
-    (DATA / "FINAL_REPORT.json").write_text(
-        json.dumps(report, indent=2) + "\n", encoding="utf-8"
-    )
+    (DATA / "FINAL_REPORT.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     (DATA / "FINAL_REPORT.md").write_text(_markdown(report, cases, feasibility), encoding="utf-8")
 
     print(f"verdict: {report['NEXT_GATE']['state']}")
@@ -556,8 +557,10 @@ def _markdown(
     add(f"- **CURRENT_HEAD**: `{report['CURRENT_HEAD']}` (branch `{report['BRANCH']}`)")
     add(f"- **VERDICT**: `{report['NEXT_GATE']['state']}`")
     add(f"- **FALSE_SUCCESS**: `{report['FALSE_SUCCESS']}`")
-    add("- **LIVE_TRADING**: `DISABLED` · **TRADES_AUTHORIZED**: `0` · "
-        "**PROFITABILITY_VERIFIED**: `FALSE`")
+    add(
+        "- **LIVE_TRADING**: `DISABLED` · **TRADES_AUTHORIZED**: `0` · "
+        "**PROFITABILITY_VERIFIED**: `FALSE`"
+    )
     add("")
     add("## 1. Decision catalogue")
     add("")
@@ -580,7 +583,9 @@ def _markdown(
     sizing = report["POSITION_SIZING_STATUS"]
     add(f"- rule: {sizing['budget_rule']}")
     add(f"- rounding: {sizing['rounding']}")
-    add(f"- approvals: {sizing['approved_decisions']} · refusals: {len(cases) - sizing['approved_decisions']}")
+    add(
+        f"- approvals: {sizing['approved_decisions']} · refusals: {len(cases) - sizing['approved_decisions']}"
+    )
     add("")
     add("## 3. Margin and liquidation")
     add("")
@@ -602,7 +607,9 @@ def _markdown(
         for block in feasibility[key]:
             add(f"### {title}, gross move {block['gross_move_pct']:+.0f}%")
             add("")
-            add("| leg | notional | margin | gross PnL | net PnL | return on margin | liquidation buffer |")
+            add(
+                "| leg | notional | margin | gross PnL | net PnL | return on margin | liquidation buffer |"
+            )
             add("| --- | --- | --- | --- | --- | --- | --- |")
             for leg in block["legs"]:
                 buffer = (
@@ -621,17 +628,25 @@ def _markdown(
         f"- leverage creates alpha: **{feasibility['analysis']['leverage_creates_alpha']}** — "
         f"{feasibility['analysis']['same_notional_effect_of_leverage']}"
     )
-    add(f"- safe leverage ceiling estimate: {feasibility['analysis']['safe_leverage_ceiling_estimate']}")
+    add(
+        f"- safe leverage ceiling estimate: {feasibility['analysis']['safe_leverage_ceiling_estimate']}"
+    )
     add("")
     add("## 5. Independent verification")
     add("")
     verification = report["INDEPENDENT_VERIFICATION"]
-    add(f"- verifier: `{verification['verifier']}` (builder modules loaded: "
-        f"{verification['builder_modules_loaded_by_verifier'] or 'none'})")
-    add(f"- decisions verified: {verification['decisions_verified']} · checks: "
-        f"{verification['checks_run']} · failed: {verification['checks_failed']}")
-    add(f"- negative controls detected: {verification['negative_controls_detected']}/"
-        f"{verification['negative_controls_total']} · FALSE_SUCCESS: {verification['FALSE_SUCCESS']}")
+    add(
+        f"- verifier: `{verification['verifier']}` (builder modules loaded: "
+        f"{verification['builder_modules_loaded_by_verifier'] or 'none'})"
+    )
+    add(
+        f"- decisions verified: {verification['decisions_verified']} · checks: "
+        f"{verification['checks_run']} · failed: {verification['checks_failed']}"
+    )
+    add(
+        f"- negative controls detected: {verification['negative_controls_detected']}/"
+        f"{verification['negative_controls_total']} · FALSE_SUCCESS: {verification['FALSE_SUCCESS']}"
+    )
     add("")
     add("## 6. Defects and blockers")
     add("")
@@ -657,7 +672,9 @@ def _markdown(
     add("### Commit hygiene")
     add("")
     add(f"- RFC-048 files (uncommitted): {len(report['COMMITS']['files_owned_by_this_rfc'])}")
-    add(f"- other threads' files, left untouched: {len(report['COMMITS']['files_owned_by_other_threads_left_untouched'])}")
+    add(
+        f"- other threads' files, left untouched: {len(report['COMMITS']['files_owned_by_other_threads_left_untouched'])}"
+    )
     add("")
     return "\n".join(lines) + "\n"
 

@@ -1,0 +1,321 @@
+{
+  "schema_version": "rfc048v-final-certification-report-v1",
+  "rfc": "RFC-048V",
+  "generated_at_utc": "2026-10-10T09:23:55Z",
+  "CURRENT_HEAD": "19b1a0bf4dd1e6f042d4dc367dd83e939b44e20c",
+  "COMMITS": {
+    "rfc048_baseline": "19b1a0b",
+    "campaign_commits": [],
+    "note": "only RFC-048 files are staged in these commits"
+  },
+  "RUNTIME_REACHABILITY": {
+    "decision_authority": "trading_bot.autonomous.decision.DecisionEngine.decide",
+    "flow": "TradeProposal -> FuturesRiskEngine -> RiskDecision -> RiskReview -> DecisionRequest -> DecisionEngine -> SHADOW_TRADE / NO_TRADE",
+    "recorded_decisions_through_the_real_engine": 31,
+    "approved_simulated": 8,
+    "any_order_authorised": false,
+    "verdict": {
+      "runtime_reachability": "PASS",
+      "veto_irreversibility": "PASS",
+      "engine_error_fail_safe": "PASS",
+      "incomplete_data_refused": "PASS",
+      "live_path_blocked": "PASS",
+      "approvals_are_not_order_permissions": "PASS"
+    }
+  },
+  "FALSE_APPROVALS_FOUND": {
+    "pre_fix_counterexamples": 12,
+    "post_fix": 0,
+    "families": [
+      "DEF-048V-01",
+      "DEF-048V-02",
+      "DEF-048V-03",
+      "DEF-048V-04",
+      "DEF-048V-05",
+      "DEF-048V-06",
+      "DEF-048V-07",
+      "DEF-048V-08"
+    ]
+  },
+  "DEFECTS_FIXED": [
+    {
+      "id": "DEF-048V-01",
+      "severity": "HIGH",
+      "title": "non-finite numbers were not validated: NaN mark and NaN leverage reached approvals",
+      "status": "FIXED"
+    },
+    {
+      "id": "DEF-048V-02",
+      "severity": "HIGH",
+      "title": "hostile numbers raised instead of refusing (NaN reached int())",
+      "status": "FIXED"
+    },
+    {
+      "id": "DEF-048V-03",
+      "severity": "MEDIUM",
+      "title": "a repeated decision id reserved its margin twice",
+      "status": "FIXED"
+    },
+    {
+      "id": "DEF-048V-04",
+      "severity": "MEDIUM",
+      "title": "the aggregate margin-utilization ceiling could be exceeded by concurrent decisions",
+      "status": "FIXED"
+    },
+    {
+      "id": "DEF-048V-05",
+      "severity": "MEDIUM",
+      "title": "a non-finite reservation poisoned the ledger for every later decision",
+      "status": "FIXED"
+    },
+    {
+      "id": "DEF-048V-06",
+      "severity": "MEDIUM",
+      "title": "an unmodelable stress scenario was silently treated as no stress",
+      "status": "FIXED"
+    },
+    {
+      "id": "DEF-048V-07",
+      "severity": "LOW",
+      "title": "a non-finite funding observation could corrupt the funding term",
+      "status": "FIXED"
+    },
+    {
+      "id": "DEF-048V-08",
+      "severity": "MEDIUM",
+      "title": "the closed-form liquidation solve extrapolated the maintenance amount below its zero floor",
+      "status": "FIXED"
+    }
+  ],
+  "RISK_INVARIANTS": {
+    "invariants": {
+      "I1_APPROVED_RISK_LE_BUDGET": "HELD",
+      "I2_MARGIN_LE_AVAILABLE": "HELD",
+      "I3_NOTIONAL_LE_MAX_ALLOWED": "HELD",
+      "I4_DATA_ORDER": "HELD",
+      "I5_UNKNOWN_CRITICAL_INPUT": "HELD",
+      "I6_UNSUPPORTED_CONTRACT": "HELD",
+      "I7_LIQUIDATION_KNOWN_AND_SAFE": "HELD",
+      "I8_LIVE_ROUTE_BLOCKED": "HELD",
+      "I9_NO_ORDER_AUTHORISED": "HELD",
+      "I10_ROUNDING_REDUCES": "HELD"
+    },
+    "random_scenarios": 4000,
+    "catalogue_cases": 31,
+    "counterexample_replays": 12
+  },
+  "LIQUIDATION_VERIFICATION": {
+    "grid_points": 50,
+    "worst_difference_bps": 5.838404776472034e-10,
+    "mismatch_count": 0,
+    "defect": {
+      "id": "DEF-048V-08",
+      "found_by": "numeric-root cross-check in this campaign",
+      "pre_fix": {
+        "direction": "LONG",
+        "notional": 999999.99,
+        "leverage": 1.0,
+        "builder_liquidation_price": 0.0,
+        "independent_liquidation_price": 41.25,
+        "difference_bps": 5.0
+      },
+      "post_fix_worst_difference_bps": 5.838404776472034e-10,
+      "status": "FIXED"
+    },
+    "independent_verifier_model_cases": 8
+  },
+  "PORTFOLIO_CONCURRENCY": {
+    "simultaneous_reserve": {
+      "no_double_count": true,
+      "solvent": true,
+      "aggregate_utilization_respected": true,
+      "refusals_name_the_ceiling": true
+    },
+    "cancel_then_reserve": {
+      "release_restores_the_pool": true,
+      "re_reserve_succeeds": true
+    },
+    "failed_reserve": {
+      "refused": true,
+      "pool_untouched": true,
+      "reason_is_insufficient_margin": true
+    },
+    "retry_same_decision": {
+      "counted_once": true,
+      "finite": true,
+      "released_back_to_zero": true
+    },
+    "snapshot_skew": {
+      "ledger_equity_authoritative": true,
+      "reserved_within_real_pool": true
+    },
+    "reserve_release_storm": {
+      "reserved_matches_grants_minus_releases": true,
+      "ceiling_holds": true,
+      "pool_solvent": true,
+      "no_exceptions": true
+    }
+  },
+  "ECONOMIC_INTEGRITY": {
+    "checks": 41,
+    "failed": [],
+    "leverage_creates_alpha": false,
+    "pit_funding": [
+      {
+        "check": "PIT_VISIBLE_HISTORY_USED",
+        "passed": true,
+        "detail": "decision=REDUCE_SIMULATED_SIZE"
+      },
+      {
+        "check": "ONLY_FUTURE_SETTLEMENTS_MEANS_UNKNOWN_AND_REFUSED",
+        "passed": true,
+        "detail": "decision=NO_TRADE, reasons=['FUNDING_UNKNOWN', 'COST_UNKNOWN']"
+      },
+      {
+        "check": "FUTURE_SETTLEMENT_CANNOT_CHANGE_THE_VERDICT",
+        "passed": true,
+        "detail": "decision=REDUCE_SIMULATED_SIZE (full history=REDUCE_SIMULATED_SIZE)"
+      },
+      {
+        "check": "NO_SETTLEMENT_IN_HORIZON_IS_A_CONTRACTUAL_ZERO",
+        "passed": true,
+        "detail": "60-minute horizon: the venue interval proves no settlement can occur"
+      }
+    ]
+  },
+  "TEST_RESULTS": {
+    "risk_suite": {
+      "command": "uv run pytest tests/unit/risk -q",
+      "exit_code": 0,
+      "summary": "119 passed in 6.15s",
+      "failures": [],
+      "passed": true
+    },
+    "full_unit_suite": {
+      "command": "uv run pytest tests/unit -q",
+      "executed": true,
+      "exit_code": 0,
+      "summary": "3163 passed in 268.00s (0:04:27)",
+      "failures": [],
+      "passed": true
+    },
+    "repo_suite": {
+      "command": "uv run pytest tests -q",
+      "executed": true,
+      "exit_code": 0,
+      "summary": "3210 passed, 78 warnings in 266.01s (0:04:26)",
+      "failures": [],
+      "passed": true,
+      "failure_analysis": []
+    },
+    "passed": true
+  },
+  "QUALITY_GATES": {
+    "ruff_check": {
+      "command": "uv run ruff check src/trading_bot/risk/futures src/trading_bot/risk/futures_verification.py src/trading_bot/risk/futures_falsification.py tests/unit/risk/test_futures_risk_engine.py tests/unit/risk/test_futures_independent_verifier.py tests/unit/risk/test_futures_runtime_integration.py tests/unit/risk/test_futures_falsification_regressions.py scripts/rfc048_derive_instruments.py scripts/rfc048_run.py scripts/rfc048_verify.py scripts/rfc048_report.py scripts/rfc048v_falsify.py scripts/rfc048v_runtime_authority.py scripts/rfc048v_certify.py",
+      "exit_code": 0,
+      "summary": "All checks passed!",
+      "passed": true
+    },
+    "ruff_format": {
+      "command": "uv run ruff format --check src/trading_bot/risk/futures src/trading_bot/risk/futures_verification.py src/trading_bot/risk/futures_falsification.py tests/unit/risk/test_futures_risk_engine.py tests/unit/risk/test_futures_independent_verifier.py tests/unit/risk/test_futures_runtime_integration.py tests/unit/risk/test_futures_falsification_regressions.py scripts/rfc048_derive_instruments.py scripts/rfc048_run.py scripts/rfc048_verify.py scripts/rfc048_report.py scripts/rfc048v_falsify.py scripts/rfc048v_runtime_authority.py scripts/rfc048v_certify.py",
+      "exit_code": 0,
+      "summary": "22 files already formatted",
+      "passed": true
+    },
+    "mypy_strict": {
+      "command": "uv run mypy src/trading_bot/risk/futures src/trading_bot/risk/futures_verification.py src/trading_bot/risk/futures_falsification.py tests/unit/risk/test_futures_risk_engine.py tests/unit/risk/test_futures_independent_verifier.py tests/unit/risk/test_futures_runtime_integration.py tests/unit/risk/test_futures_falsification_regressions.py scripts/rfc048_derive_instruments.py scripts/rfc048_run.py scripts/rfc048_verify.py scripts/rfc048_report.py scripts/rfc048v_falsify.py scripts/rfc048v_runtime_authority.py scripts/rfc048v_certify.py",
+      "exit_code": 0,
+      "summary": "Success: no issues found in 22 source files",
+      "passed": true
+    },
+    "files": 14,
+    "passed": true
+  },
+  "REPO_SUITE": {
+    "verdict": "PASS",
+    "passed": true,
+    "raw_passed": true,
+    "summary": "3210 passed, 78 warnings in 266.01s (0:04:26)",
+    "failures": [],
+    "hermeticity_probe": {
+      "observed": true,
+      "files_sampled": 6769,
+      "window_seconds": 30.0,
+      "changed_with_no_local_test_running": [],
+      "foreign_writers_detected": false,
+      "passed": true
+    }
+  },
+  "LIMITATIONS": [],
+  "INDEPENDENT_VERIFICATION": {
+    "command": "uv run python scripts/rfc048_verify.py",
+    "exit_code": 0,
+    "verdict": "RFC048_OFFLINE_VERIFIED",
+    "decisions_verified": 31,
+    "checks_run": 303,
+    "checks_failed": 0,
+    "false_success": 0,
+    "negative_controls_detected": 8,
+    "negative_controls_total": 8,
+    "independent_process": true,
+    "reproducible": true,
+    "passed": true
+  },
+  "DELIVERABLES": [
+    {
+      "path": "data/rfc048/ADVERSARIAL_FINDINGS.md",
+      "sha256": "07f0783d52ed04c5ace9a4d67af74cc526dd6821e1da439488d936b8d418618e"
+    },
+    {
+      "path": "data/rfc048/ADVERSARIAL_FINDINGS.json",
+      "sha256": "5c35c9540cee3b230ce424075bb729c69c69cb48e0acb31e5a56dbfaddfa47db"
+    },
+    {
+      "path": "data/rfc048/RUNTIME_AUTHORITY_VERIFICATION.md",
+      "sha256": "6a19accf577d9427aff2f4f93f12ba39e52150288dd1ead9cacdcc5428bbe9a3"
+    },
+    {
+      "path": "data/rfc048/RUNTIME_AUTHORITY_VERIFICATION.json",
+      "sha256": "99a8f4a3ae3a1e0790a4c83225c2520ee2e3bf65baa0c71ea1e55463aba557fc"
+    },
+    {
+      "path": "data/rfc048/INDEPENDENT_CERTIFICATION.md",
+      "sha256": "12ac8520f945b3f8225e27833f0abe00bb5e643aa96a18d699b8c1f4a0a18b7d"
+    },
+    {
+      "path": "data/rfc048/INDEPENDENT_CERTIFICATION.json",
+      "sha256": "9702ea3f0fb833d29f5b605be66029f954edc10b99f3ccf7a1e699b35882d4dd"
+    },
+    {
+      "path": "data/rfc048/FINAL_CERTIFICATION_REPORT.md",
+      "sha256": "c04ec306f110e8322b0c71d2a8dcde92cc3f456d8b5a70fcd71364f0ae27c4f3"
+    },
+    {
+      "path": "data/rfc048/FINAL_CERTIFICATION_REPORT.json",
+      "sha256": "45e9890c85d71751d23aff1b99c02a2c4c3d4f7a7d2e8ea3e628331d7291931b"
+    }
+  ],
+  "STATE_CHANGE": {
+    "regenerated": [
+      "data/rfc048/INDEPENDENT_VERIFICATION.json",
+      "data/rfc048/RUNTIME_EXECUTION_REPORT.json"
+    ],
+    "verifier_decision_level_unchanged": true
+  },
+  "FALSE_SUCCESS": 0,
+  "RFC048_FINAL_STATUS": "RFC048_OFFLINE_CERTIFIED",
+  "NEXT_ECONOMIC_GATE": {
+    "question": "can a second economic research campaign start? Not yet. The runtime is ready to size and bound a futures position; it has nothing with a measured edge to size, and it cannot place orders by construction.",
+    "required_before_campaign_2": [
+      "a strategy hypothesis with a PIT-measured edge (the RFC-046 campaign failed and no candidate is admitted; RFC-048 explicitly does not create one)",
+      "a measured futures cost model verified against a real account schedule (fees are currently a published assumption, spread/impact measured once)",
+      "jurisdiction/venue eligibility verified for the operator (BLK-048-02: still PRODUCT_ELIGIBILITY_UNKNOWN)",
+      "partial-liquidation rules obtained in verifiable form (BLK-048-03: refused rather than modelled)",
+      "cross-margin dependencies validated before any cross usage (BLK-048-04)",
+      "a binding futures review path plus admission-ledger integration if futures PAPER is ever to place simulated orders (today the review is advisory and no order is authorised)"
+    ],
+    "not_included": "opening that campaign, changing governance flags, or treating an engineering pass as economic evidence"
+  },
+  "CONCLUSION": "Offline certification of the supported contracts. It means the risk arithmetic, the refusals and the runtime boundary survived independent rebuilding and adversarial search. It does not mean profitability, eligibility or production readiness."
+}
