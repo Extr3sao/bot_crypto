@@ -1,8 +1,8 @@
 {
   "artifact": "ACTIVE_RECOVERY_INDEPENDENT_VERIFICATION",
   "work_package": "WP-5 (POST RFC-049 / ACTIVE RECOVERY)",
-  "generated_at_utc": "2026-10-11T19:04:16Z",
-  "head": "57772efd5b29a9af30430147165fe1012ddeb30d",
+  "generated_at_utc": "2026-10-11T19:12:33Z",
+  "head": "eb509aaaffbdc15017f7920df41285016ec0efe8",
   "verifier": "scripts/recovery_verify.py",
   "builders": [
     "scripts/active_economic_audit.py",
