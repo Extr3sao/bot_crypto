@@ -137,3 +137,37 @@ waits for the two collection gates.
 ```text
 PROFITABILITY_VERIFIED = FALSE
 ```
+
+---
+
+## WP-8 — recovery determinism, state authority and clean checkout (after WP-1..WP-5)
+
+This report described the campaign state view and the ACTIVE audit as they were written. WP-8
+established that they could only be *reproduced* on the machine that wrote them, and repaired
+that without moving a single economic finding. The work package's own answers are in
+[wp8/FINAL_REPORT.md](wp8/FINAL_REPORT.md); what matters for this document:
+
+- **What was wrong.** The lane read four gitignored `reports/` outputs, another lane's live
+  state file and an untracked paper report from the working tree, and pinned every digest over
+  raw bytes, so a clean checkout produced different numbers (7 gross-positive cells became 1;
+  the paper lane's failure disappeared). Nothing was edited to cause it: the defect predates
+  WP-7.
+- **What changed.** Every input is now declared with a class and an authority
+  (`scripts/recovery_input_evidence.py`); committed inputs are read from HEAD, external ones
+  from byte-identical evidence copies the commit carries, digests are content digests
+  (LF-normalised) and the moment and per-machine facts are outside the identity. Both
+  artefacts were regenerated, and the proof that no finding moved is
+  [wp8/evidence/ECONOMIC_INVARIANCE.json](wp8/evidence/ECONOMIC_INVARIANCE.json)
+  (`IDENTICAL`, `admitted_for_paper` 0 → 0).
+- **What is now checkable.** A clean checkout of the commit rebuilds both artefacts to the same
+  state and runs the independent verifier inside that checkout:
+  [wp8/CLEAN_CHECKOUT_REHEARSAL_REPORT.json](wp8/CLEAN_CHECKOUT_REHEARSAL_REPORT.json)
+  (`PASS`, 4/4 identical on state digests, no input modified), with two sabotage proofs showing
+  the rehearsal fails when an input is altered. The same versioned script is wired into CI
+  (`.github/workflows/recovery-determinism.yml`) and reports its runner as `LOCAL` or
+  `GITHUB_ACTIONS`.
+- **What did not change.** No threshold, cost assumption, admission criterion, frozen artefact
+  or historical report was modified; RFC-049 remains `DISCOVERY_CAMPAIGN_FAILED` with the
+  sealed OOS `CANCELLED_NOT_OPENED`; nothing is authorized, admitted or promoted; no order path
+  and no live-trading capability was added. `PROFITABILITY_VERIFIED = FALSE`,
+  `LIVE_TRADING = DISABLED`, `TRADES_AUTHORIZED = 0`, `FALSE_SUCCESS = 0`.

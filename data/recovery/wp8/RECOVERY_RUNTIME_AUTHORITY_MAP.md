@@ -97,3 +97,23 @@ and is part of their identity; the materialization state of each one is publishe
   (`data/raw/*` is gitignored and pinned by digest in the RFC-049 manifest). Their absence on
   a machine is now a materialization note; their content, if present, is graded against the
   frozen digest. Nothing in the lane is reproduced from them.
+
+## Addendum (WP-8H) — what the clean-checkout rehearsal added to this map
+
+The map above is what the programs read. The rehearsal then ran them in a detached worktree of
+a committed candidate and found two things the map did not cover, both now fixed:
+
+1. **A declared-only input must not report the machine.** `EXTERNAL_DATASET` resolved to
+   `LOCAL_MATERIALIZATION` when the file was present and `ABSENT` when it was not, and that
+   value is published inside the identity-bearing coverage summary. The origin now names the
+   *route* (`LOCAL_MATERIALIZATION`, always) and the presence is reported next to it, with the
+   per-machine detail in `local_observations`. Reading a declared-only input from the working
+   tree is allowed; *publishing which machine held it* is not.
+2. **The rehearsal's own detector.** Because every declared input is read from HEAD, a mutation
+   made inside the checkout cannot be seen by the bundle verify step or by the artefact
+   comparison. The rehearsal therefore guards that only the artefacts it reproduces and its own
+   run records may change, and a modified input fails it (`inputs_modified_in_the_checkout`),
+   which is what the two sabotage proofs exercise.
+
+The map's class table is unchanged: what changed is that the classes are now the only thing a
+published value may depend on.

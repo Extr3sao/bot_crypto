@@ -145,5 +145,31 @@
     "a command not executed in this invocation is reported as NOT_EXECUTED, never as passing",
     "the research suite is a regression run over tests/unit/research; its count is in the output tail",
     "the report is written once before the commands run and rewritten with their real exit codes, so the verification step can see a complete deliverable set"
-  ]
+  ],
+  "wp8": {
+    "artifact": "WP8_RUN_REPORT",
+    "report": "wp8/RUN_REPORT.md",
+    "head": "e07ce6cc3c00",
+    "status": "COMPLETED",
+    "summary": "the lane's published state became a function of the commit instead of the machine: committed pinned inputs, content digests, a state view that ignores the working tree, a versioned clean-checkout rehearsal, and a verifier that re-derives the result",
+    "steps": {
+      "input_bundle_verify": "PASS",
+      "state_view": "PASS",
+      "audit": "PASS",
+      "economic_invariance": "IDENTICAL",
+      "contract_tests": "28 passed",
+      "determinism_tests": "15 (12 fast + 3 slow)",
+      "ci_parity_tests": "8 passed",
+      "global_suite": "3390 passed, 3 deselected",
+      "clean_checkout_rehearsal": "PASS on e07ce6c, 4/4 artefacts state-identical, no input modified",
+      "sabotage_proofs": "2/2 SABOTAGE_DETECTED",
+      "independent_verification": "PASS 17/17 checks, 13/13 controls, false_success 0"
+    },
+    "flags": {
+      "LIVE_TRADING": "DISABLED",
+      "PAPER_PROMOTION": "NOT_AUTHORIZED",
+      "SEALED_OOS": "CANCELLED_NOT_OPENED",
+      "FALSE_SUCCESS": 0
+    }
+  }
 }

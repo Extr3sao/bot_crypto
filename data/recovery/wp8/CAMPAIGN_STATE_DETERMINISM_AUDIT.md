@@ -187,6 +187,40 @@ regressions for the causes above:
 | the clean-checkout rehearsal passes on this commit | the whole sequence |
 | a sabotaged evidence copy / a sabotaged committed input is detected | a rehearsal that cannot fail |
 
+## 4b. WP-8H — what the rehearsal found that the identity hash did not
+
+The rehearsal failed three times before it passed, and each failure was a real defect. Two of
+them belong to this view:
+
+1. **The coverage summary embedded the machine.** `I7_inputs_are_reproducible` published
+   `resolved_from` over every declared input, and the two gitignored price datasets resolved to
+   `LOCAL_MATERIALIZATION` where they exist and `ABSENT` where they do not — inside a field that
+   is *not* volatile, so the committed view encoded which machine built it. The origin now names
+   the route (`LOCAL_MATERIALIZATION`, always) with the presence reported next to it, and the
+   per-machine observations stay in `local_observations`, which is outside the identity
+   (`6c3af00`). This is the defect the raw-byte pin would have produced one level up: the
+   identity was clean, the *reported* state was not.
+2. **The rendered report carried the same fact.** `CAMPAIGN_STATE_VIEW_REPORT.md` renders the
+   observation table, so its bytes differed between two checkouts of one commit. The rehearsal
+   now declares that section volatile next to the moment line and compares the report on what
+   it asserts (`4b32d97`).
+
+A third failure was in the rehearsal itself, not the view: its sabotage proofs expected the
+input bundle step and the artefact comparison to notice a mutation made *inside* the checkout,
+and neither can — both read from HEAD, which is the property this work package established. The
+rehearsal now guards that only the artefacts it reproduces and its own run records may change,
+and both sabotage targets are detected by that guard, with the mutation path named in the report
+(`272df9f`; artefacts under `evidence/SABOTAGE_*.json`).
+
+What the rehearsal therefore proves, as a file a reader can open rather than a claim:
+
+| claim | evidence |
+| --- | --- |
+| a clean checkout of the commit rebuilds the view and its report to the same state | `CLEAN_CHECKOUT_REHEARSAL_REPORT.json`, 4/4 identical on state digests |
+| no input is modified by the run | `inputs_modified_in_the_checkout: []` |
+| a mutation of an input is detected | `evidence/SABOTAGE_EVIDENCE_COPY.json`, `evidence/SABOTAGE_COMMITTED_INPUT.json` |
+| the run reports who ran it | `runner: LOCAL` here, `GITHUB_ACTIONS` in CI (`recovery-determinism.yml`) |
+
 ## 5. Limitations
 
 - The rehearsal and these tests were executed on **Windows** only. The cross-platform claim

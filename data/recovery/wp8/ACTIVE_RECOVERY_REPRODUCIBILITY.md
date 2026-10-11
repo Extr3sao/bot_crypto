@@ -97,6 +97,33 @@ would be the same class of defect this work package exists to close. The cost-ba
 *lane's* conclusions (the explorer, the verification, the 17/17 adversarial sweep) are
 unchanged, and its evidence set is verified again by the rehearsal.
 
+## 5b. WP-8H — the same defect, one lane over
+
+The clean-checkout rehearsal rebuilds the audit and then runs the **cost-barrier** lane's gate,
+which is where the second defect of this family surfaced: the explorer pinned the audit by its
+**bytes**, so a rebuild anywhere else (a new moment, nothing else changed) looked like content
+drift and the gate failed with "regenerate and re-verify". A pin that can only be satisfied on
+the machine that wrote it is the defect WP-8 removed from this lane, surviving in the next one.
+
+The repair keeps both pins and uses each for what it can do (`279d73f`):
+
+| pin | what it catches | reproducible away from the writing machine |
+| --- | --- | --- |
+| `sha256` (bytes) | any change at all, including the moment | no — informational |
+| `state_sha256` (document minus the volatile keys) | every change to what the audit states | yes |
+
+The gate judges a state-pinned input on its state and reports the byte status beside it
+(`pins: 4 byte-exact, 1 state-exact, 0 line-ending-only, 0 drifted`), the producers were
+re-captured in the same commit, and the WP-7 certification was re-issued: `CERTIFIED` on
+`e07ce6c`, fingerprint `0cfdb13e…`, with the record it replaced named in `supersession`
+(`bd607266…` on `081ee7a`).
+
+One verifier check was corrected in the same series (`6cac3c6`): C14 demanded an evidence copy
+for the two declared-only datasets, which by declaration never need one. It now requires that
+their authority (the RFC-049 preregistration manifest) is in the commit and that nothing has
+promoted them into a finding-bearing input — a class upgrade that *would* need a copy — with
+control N13 showing that branch firing.
+
 ## 6. Limitations
 
 - The four evidence copies are copies of local research outputs. They are admissible only

@@ -10,6 +10,12 @@
 > (`scripts/recovery_verify.py`) re-derives their numbers without importing either, and a
 > fourth (`scripts/clean_checkout_rehearsal.py`) rebuilds everything in a detached worktree
 > of the commit and asks the verifier to confirm it there.
+>
+> **Revision.** This report describes the sequence `e670d2a → 3f8d646 → 306939c → 9b9a4b8 →
+> 6c3af00 → 4b32d97 → 66dc3de → 279d73f → 6cac3c6 → 272df9f → e07ce6c`, with the record
+> commit that carries it (and the rehearsal report, the verifier's record, the sabotage
+> proofs and the re-issued WP-7 certification) as its child. The clean-checkout rehearsal
+> passed on `e07ce6c`; the verifier's record names that head; the certification names it too.
 
 ```
 FALSE_SUCCESS = 0
@@ -45,6 +51,13 @@ of **the machine**, not of the commit. Two mechanisms, both measured
 
 The attribution matters: the same three nodes fail at `38b8e18`, the baseline *before* WP-7,
 so WP-7 neither caused nor discovered it.
+
+Two further defects of the same family were found by the rehearsal afterwards, in the order
+it failed (`RUN_REPORT.md` §4): the coverage summaries embedded whether *this machine* held
+the two gitignored price datasets, and the cost-barrier lane — a different work package —
+pinned the audit's bytes, which no rebuild anywhere else could ever satisfy. Both are now
+fixed, with the artefacts regenerated, the producer pins re-captured and the WP-7
+certification re-issued.
 
 ## Q2 — Which dependencies were contaminating the reconstruction?
 
@@ -93,10 +106,12 @@ list, which the repair alters on purpose.
 | what | command | result |
 | --- | --- | --- |
 | lane contract tests | `pytest tests/unit/research/test_active_recovery_wp.py -q` | 28 passed (26 before WP-8) |
-| determinism regressions | `pytest tests/unit/research/test_recovery_determinism.py -q` | 14 tests: CRLF/LF, later ADR, dirty input, missing input, contradictory sources, hash change, occupancy, repeated reproduction, invariance, rehearsal + 2 sabotages |
+| determinism regressions | `pytest tests/unit/research/test_recovery_determinism.py -q` | 15 tests: CRLF/LF, later ADR, dirty input, missing input, contradictory sources, hash change, occupancy, repeated reproduction, invariance, rehearsal + 2 sabotages |
 | CI parity contract | `pytest tests/unit/research/test_recovery_ci_parity.py -q` | 8 passed |
-| global suite | `pytest -m "not slow and not market" -q` | **3381 passed, 3 deselected** (the slow rehearsal tests) |
-| rehearsal + sabotages | `pytest tests/unit/research/test_recovery_determinism.py -m slow` and `scripts/clean_checkout_rehearsal.py --scope full` | recorded in `CLEAN_CHECKOUT_REHEARSAL_REPORT.json` |
+| cost-barrier lane tests | `pytest tests/unit/research/test_cost_barrier_{explorer,gate,adversarial,ci_parity}.py -q` | 93 passed |
+| cost-barrier gate and sweep | `scripts/cost_barrier_gate.py`, `scripts/cost_barrier_adversarial.py` | `FULL_REPRODUCTION_PASS`, 0 controls missed; 17 attacks, 0 evaded |
+| global suite | `pytest -m "not slow and not market" -q` | **3390 passed, 3 deselected** (the slow rehearsal tests) |
+| rehearsal + sabotages | `pytest tests/unit/research/test_recovery_determinism.py -m slow` and `scripts/clean_checkout_rehearsal.py --scope full` | **PASS** on `e07ce6c`, 4/4 artefacts state-identical, no input modified; both sabotages `SABOTAGE_DETECTED`, kept as `evidence/SABOTAGE_*.json` |
 | independent verification | `scripts/recovery_verify.py` | `../INDEPENDENT_VERIFICATION.json`: C1–C17 + 12 negative controls, each shown to fire |
 | lint / types | `ruff check`, `mypy` on the touched files | clean |
 | economic invariance | `scripts/recovery_economic_invariance.py --check` | `STABLE`, `IDENTICAL` |
@@ -109,11 +124,17 @@ red-then-green because the inputs became committed and the digests became conten
 
 | commit | subject | what it carries |
 | --- | --- | --- |
-| `e670d2a` | Give the ACTIVE recovery lane's external inputs a committed, pinned authority | the input bundle (`wp8/evidence/inputs/` + sidecar + `.gitattributes -text`), the baseline evidence; it also commits `PAPER_DATA_24H_REPORT.json`/`.md`, an audit input that was untracked (the paper lane's bytes, unmodified) |
+| `e670d2a` | Give the ACTIVE recovery lane's external inputs a committed, pinned authority | the input bundle (`wp8/evidence/inputs/` + sidecar + `.gitattributes -text`) and the baseline evidence; it also commits `PAPER_DATA_24H_REPORT.json`/`.md`, an audit input that was untracked (the paper lane's bytes, unmodified) |
 | `3f8d646` | Make the recovery lane's state and audit a function of the commit, not the machine | `recovery_input_evidence.py`, the state view and audit repairs, `clean_checkout_rehearsal.py`, the regression suite, the regenerated artefacts |
 | `306939c` | Follow the regenerated audit through the cost-barrier chain instead of failing on it | the cost-barrier chain re-pinned to the regenerated audit digest (+2 adversarial attacks) |
-| `C` (candidate) | the commit that carries this report | the WP-8 reports, `recovery_economic_invariance.py`, the CI workflow, the parity tests |
-| `R` (record) | its child | the rehearsal report, the verifier's record, the lane-level report updates, the revision block below |
+| `9b9a4b8` | Make the recovery lane's reproducibility a claim anyone can re-run | the WP-8 authority, determinism, reproducibility and run reports, `recovery_economic_invariance.py`, the CI workflow, the CI parity tests |
+| `6c3af00` | Stop publishing which machine built the artefacts, and compare the state | the dataset-route fix, the state-digest comparison, the regenerated artefacts |
+| `4b32d97` | Compare the rendered reports on their state too, not on this machine | the volatile-section rule for the rendered reports |
+| `66dc3de`, `279d73f` | the cost-barrier chain follows the regenerated audit, twice | the re-pinned chain and, at `279d73f`, the state pin that replaces the byte pin over the audit |
+| `6cac3c6` | Judge a declared-only dataset on its authority instead of demanding bytes | the C14 correction and control N13 |
+| `272df9f` | Detect a mutated input the only way a HEAD-reading lane can: by the checkout | the input guard and the two sabotage detectors |
+| `e07ce6c` | Keep the two sabotage proofs as artefacts instead of test output | `evidence/SABOTAGE_*.json` |
+| record commit (child of `e07ce6c`) | | the rehearsal report, the verifier's record, the re-issued WP-7 certification and the lane-level report updates |
 
 `33512b5` (WP-7) is **not** part of this list: it re-issued the cost-barrier certification
 record after that record's fingerprint check was added. WP-8 re-issues that record once more,
@@ -127,13 +148,15 @@ because the audit artefact it fingerprints was regenerated (see Q6).
   commit the rehearsal tested (`C`). A reader has both: what was tested, and where it was
   verified.
 - **Cost-barrier lane (WP-7)**: `data/recovery/wp7/COST_BARRIER_CERTIFICATION.json` is
-  `CERTIFIED`, and it now carries a `supersession` block: previous fingerprint
-  `bd607266…` on head `081ee7a`, previous status `CERTIFIED`, previous evidence-digest table
-  digest `e9e8a7a5…`, and the reason — WP-8D regenerated
-  `data/recovery/ACTIVE_ECONOMIC_AUDIT.json`, an input of that record. The previous record
-  was **replaced, not rewritten**: its fingerprint, its candidate head and a digest of its
-  evidence table are preserved inside the new one, so the chain `3e60112` (certified code) →
-  `7ed61f7`/`33512b5` (records) → this re-issue remains auditable.
+  `CERTIFIED` on head `e07ce6c` with `dirty_watched_paths: []`, fingerprint `0cfdb13e…`, 93
+  lane tests passed, gate `FULL_REPRODUCTION_PASS`, adversarial `EVALUATED` 17/17 — and it
+  carries a `supersession` block naming the record it replaced (`bd607266…` on `081ee7a`,
+  previous status `CERTIFIED`, plus a digest of that record's evidence table) and the reason:
+  the audit artefact it fingerprints was regenerated by WP-8D, and a reproducibility defect in
+  its own pins was closed by WP-8H. The previous record was **replaced, not rewritten**, so the
+  chain `3e60112` (certified code) → `7ed61f7`/`33512b5` (records) → this re-issue stays
+  auditable. The record was re-issued twice while the chain was being fixed; the intermediate
+  attempt never left the working tree, and only this one is committed.
 - **What has no authority**: nothing in this work package authorizes a strategy, a campaign
   or a paper promotion. `RFC-049-DISCOVERY-2` remains `DISCOVERY_CAMPAIGN_FAILED`, the sealed
   OOS remains `CANCELLED_NOT_OPENED`, `NEXT_CAMPAIGN` and `PAPER_PROMOTION` remain
@@ -159,6 +182,13 @@ because the audit artefact it fingerprints was regenerated (see Q6).
    will fail loudly if it is.
 5. **WP-8 does not re-open discovery.** The economic question (RFC-049) is closed as failed;
    this work package changed no criterion, no cost assumption and no admission rule.
+6. **The CI workflow has not run on GitHub.** `.github/workflows/recovery-determinism.yml` is
+   committed and its activation and content are held by parity tests, but from this machine the
+   honest state is "rehearsed locally", not "verified in CI".
+7. **The cost-barrier lane now carries two pins for the audit** (a byte pin and a state pin).
+   That is deliberate — the byte pin still catches any change, the state pin is what survives a
+   rebuild — but a reader comparing the two artefacts will see both, and only the state pin is
+   satisfiable away from this machine.
 
 ## Q8 — What is still missing before the ACTIVE economic recovery can continue?
 

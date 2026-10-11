@@ -39,3 +39,38 @@
 - the research suite is a regression run over tests/unit/research; its count is in the output tail
 - the report is written once before the commands run and rewritten with their real exit codes, so the verification step can see a complete deliverable set
 
+
+## WP-8 — recovery determinism, state authority and clean checkout
+
+The WP-1..WP-5 section above records the run that produced the lane's reports. WP-8 came
+after, and it changed *how this lane reads its inputs*, not what it concludes. The full
+report is [wp8/RUN_REPORT.md](wp8/RUN_REPORT.md); the short version:
+
+| step | result |
+| --- | --- |
+| input bundle (`recovery_input_evidence.py --verify`) | VERIFIED, 0 failures |
+| campaign state view / ACTIVE economic audit (+ `--check`) | PASS — and reproducible in a clean checkout |
+| economic invariance of the repair | `IDENTICAL`: 0 changed findings, `admitted_for_paper` 0 → 0 |
+| lane contract tests / determinism regressions / CI parity | 28 / 15 / 8 passed |
+| global suite | 3390 passed, 3 deselected (the slow rehearsal tests) |
+| clean-checkout rehearsal (`clean_checkout_rehearsal.py --scope full`) | **PASS** on `e07ce6c`, 4/4 artefacts state-identical, no input modified |
+| sabotage proofs | 2/2 `SABOTAGE_DETECTED` (`wp8/evidence/SABOTAGE_*.json`) |
+| independent verification | **PASS** 17/17 checks, 13/13 controls, `false_success 0` |
+
+Three things a reader of the old report should know:
+
+1. `data/recovery/CAMPAIGN_STATE_VIEW.json` and `data/recovery/ACTIVE_ECONOMIC_AUDIT.json`
+   were **regenerated** in WP-8: they now resolve every input from the commit (or from a
+   digest-pinned evidence copy) instead of from whatever the machine happened to hold. Their
+   economic content did not move (see `wp8/evidence/ECONOMIC_INVARIANCE.json`), and the
+   `INDEPENDENT_VERIFICATION.json` in this directory is the verifier's record of the repair.
+2. The hash table above describes the artefacts as they stood when WP-1..WP-5 closed; the
+   current files carry the identity of the repaired state, and their digests are in
+   [wp8/RUN_REPORT.json](wp8/RUN_REPORT.json).
+3. The WP-7 cost-barrier record that fingerprints the audit was re-issued as a consequence
+   (`data/recovery/wp7/COST_BARRIER_CERTIFICATION.json`, `CERTIFIED` on `e07ce6c`, with the
+   supersession block naming the record it replaced).
+
+Governance is unchanged: `LIVE_TRADING = DISABLED`, `PAPER_PROMOTION = NOT_AUTHORIZED`,
+sealed OOS `CANCELLED_NOT_OPENED`, `FALSE_SUCCESS = 0`, no strategy admitted (0 before and
+after), no threshold, cost model or admission rule touched.
