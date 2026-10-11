@@ -246,6 +246,42 @@ def test_no_source_of_either_artefact_came_from_the_working_tree(view_payload, a
     assert view_payload["sources_unchanged"] is True
 
 
+def test_the_repair_moved_no_economic_finding():
+    """WP-8D is a provenance repair: the published numbers must be the same numbers.
+
+    The comparison is re-derived here from the two commits (never from the evidence file
+    alone), so a changed finding fails this test even if the evidence were regenerated.
+    """
+
+    invariance = load_script("recovery_economic_invariance")
+    fresh = invariance.compare()
+    assert fresh["verdict"] == "IDENTICAL", json.dumps(fresh["audit"]["changed_findings"])
+    assert fresh["audit"]["changed_findings"] == []
+    assert fresh["state_view"]["campaign_effective_state_identical"] is True
+    assert fresh["headline"] == {
+        "per_strategy_records_identical": True,
+        "aggregates_identical": True,
+        "admitted_for_paper_before": 0,
+        "admitted_for_paper_after": 0,
+        "net_positive_count_before": 0,
+        "net_positive_count_after": 0,
+    }
+
+    committed = json.loads((RECOVERY / "wp8" / "evidence" / "ECONOMIC_INVARIANCE.json")
+                           .read_text(encoding="utf-8"))
+    assert committed["generated_by"] == "scripts/recovery_economic_invariance.py"
+    assert committed["verdict"] == fresh["verdict"]
+    assert committed["before_commit"] == fresh["before_commit"]
+    assert committed["after_commit"] == fresh["after_commit"]
+    assert committed["headline"] == fresh["headline"]
+    for side in ("audit", "state_view"):
+        assert committed[side]["identical_findings"] == fresh[side]["identical_findings"]
+        assert committed[side]["changed_findings"] == fresh[side]["changed_findings"]
+    # the one intended change is declared rather than smoothed away
+    assert fresh["state_view"]["changed_findings"] == ["advisories"]
+    assert fresh["expected_changes"]
+
+
 # --------------------------------------------------------------------------- #
 # the rehearsal, end to end
 # --------------------------------------------------------------------------- #

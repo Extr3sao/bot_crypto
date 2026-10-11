@@ -1,0 +1,169 @@
+{
+  "artifact": "WP8_RUN_REPORT",
+  "work_package": "WP-8 — recovery determinism, state authority & clean checkout certification",
+  "generated_at_utc": "2026-10-11T19:45:00Z",
+  "branch": "main",
+  "mode": "OFFLINE — no keys, no orders, no capital, no live path; read-only audits, tests and a detached-worktree rehearsal",
+  "flags": {
+    "FALSE_SUCCESS": 0,
+    "BUILDER_NOT_VERIFIER": true,
+    "TEST_TARGET_IS_RUNTIME_TARGET": true,
+    "LIVE_TRADING": "DISABLED",
+    "PAPER_PROMOTION": "NOT_AUTHORIZED",
+    "OOS": "CANCELLED_NOT_OPENED",
+    "RFC049_TERMINAL_STATE": "DISCOVERY_CAMPAIGN_FAILED"
+  },
+  "baseline": {
+    "captured_before_any_edit": true,
+    "evidence": "data/recovery/wp8/evidence/BASELINE_REPRODUCTION.json",
+    "trees": [
+      {
+        "label": "shared working tree",
+        "head": "33512b591bbf60e9a995792644257262bdd0b563",
+        "summary": "1 failed, 25 passed",
+        "failed_nodes": [
+          "tests/unit/research/test_active_recovery_wp.py::test_state_view_is_deterministic"
+        ]
+      },
+      {
+        "label": "clean worktree at HEAD",
+        "head": "33512b591bbf60e9a995792644257262bdd0b563",
+        "summary": "3 failed, 23 passed",
+        "missing_inputs": 8
+      },
+      {
+        "label": "clean worktree at the pre-WP-7 baseline 38b8e18",
+        "head": "38b8e183d54c5ac8552296218e28f3ded8d95885",
+        "summary": "3 failed, 23 passed"
+      }
+    ],
+    "attribution": "the same three fail at 38b8e18, before WP-7 touched this lane: the defect is not a WP-7 regression"
+  },
+  "steps": [
+    {
+      "step": "input authority (capture)",
+      "command": ".venv/Scripts/python.exe scripts/recovery_input_evidence.py --capture",
+      "exit_code": 0,
+      "result": "PASS",
+      "produces": "data/recovery/wp8/evidence/INPUT_EVIDENCE.json + evidence/inputs/"
+    },
+    {
+      "step": "input bundle verify",
+      "command": ".venv/Scripts/python.exe scripts/recovery_input_evidence.py --verify",
+      "exit_code": 0,
+      "result": "PASS",
+      "detail": "status VERIFIED, 0 failures"
+    },
+    {
+      "step": "campaign state view",
+      "command": ".venv/Scripts/python.exe scripts/campaign_state_view.py",
+      "exit_code": 0,
+      "result": "PASS"
+    },
+    {
+      "step": "state view determinism",
+      "command": ".venv/Scripts/python.exe scripts/campaign_state_view.py --check",
+      "exit_code": 0,
+      "result": "PASS",
+      "detail": "the committed payload hash recomputes from the commit"
+    },
+    {
+      "step": "ACTIVE economic audit",
+      "command": ".venv/Scripts/python.exe scripts/active_economic_audit.py",
+      "exit_code": 0,
+      "result": "PASS"
+    },
+    {
+      "step": "audit determinism",
+      "command": ".venv/Scripts/python.exe scripts/active_economic_audit.py --check",
+      "exit_code": 0,
+      "result": "PASS"
+    },
+    {
+      "step": "economic invariance of the repair",
+      "command": ".venv/Scripts/python.exe scripts/recovery_economic_invariance.py --check",
+      "exit_code": 0,
+      "result": "PASS",
+      "detail": "status STABLE, verdict IDENTICAL, 0 changed audit findings, 0 changed campaign effective states"
+    },
+    {
+      "step": "lane contract tests",
+      "command": ".venv/Scripts/python.exe -m pytest tests/unit/research/test_active_recovery_wp.py -q",
+      "exit_code": 0,
+      "result": "PASS",
+      "detail": "28 passed (26 before WP-8)"
+    },
+    {
+      "step": "determinism regressions",
+      "command": ".venv/Scripts/python.exe -m pytest tests/unit/research/test_recovery_determinism.py -q",
+      "exit_code": 0,
+      "result": "PASS",
+      "detail": "14 collected: 11 fast, 3 rehearsal/sabotage (slow)"
+    },
+    {
+      "step": "CI parity contract",
+      "command": ".venv/Scripts/python.exe -m pytest tests/unit/research/test_recovery_ci_parity.py -q",
+      "exit_code": 0,
+      "result": "PASS",
+      "detail": "8 passed"
+    },
+    {
+      "step": "lint",
+      "command": ".venv/Scripts/python.exe -m ruff check <ten touched files>",
+      "exit_code": 0,
+      "result": "PASS"
+    },
+    {
+      "step": "types",
+      "command": ".venv/Scripts/python.exe -m mypy <five scripts + the new producer>",
+      "exit_code": 0,
+      "result": "PASS",
+      "detail": "no issues found"
+    },
+    {
+      "step": "global suite",
+      "command": ".venv/Scripts/python.exe -m pytest -m \"not slow and not market\" -q",
+      "exit_code": 0,
+      "result": "PASS",
+      "detail": "3381 passed, 3 deselected (the slow rehearsal tests)"
+    }
+  ],
+  "post_commit_sequence": {
+    "why": "the rehearsal refuses to describe a dirty tree and three of its tests are slow, so it runs on the committed candidate and its outcome is the claim",
+    "steps": [
+      {
+        "step": "clean-checkout rehearsal",
+        "command": ".venv/Scripts/python.exe scripts/clean_checkout_rehearsal.py --scope full --json",
+        "outcome_lands_in": "data/recovery/wp8/CLEAN_CHECKOUT_REHEARSAL_REPORT.json"
+      },
+      {
+        "step": "sabotage cases",
+        "command": ".venv/Scripts/python.exe -m pytest tests/unit/research/test_recovery_determinism.py -m slow -q",
+        "outcome_lands_in": "the same report's sabotage block"
+      },
+      {
+        "step": "independent verification",
+        "command": ".venv/Scripts/python.exe scripts/recovery_verify.py",
+        "outcome_lands_in": "data/recovery/INDEPENDENT_VERIFICATION.json"
+      }
+    ]
+  },
+  "not_claimed": {
+    "profitability": false,
+    "admitted_for_paper_before": 0,
+    "admitted_for_paper_after": 0,
+    "net_positive_count_before": 0,
+    "net_positive_count_after": 0,
+    "cross_platform": "rests on content digests taken over LF-normalised content and on the CI run of the same versioned script, not on one local run"
+  },
+  "deliverables": [
+    "data/recovery/wp8/RECOVERY_RUNTIME_AUTHORITY_MAP.md",
+    "data/recovery/wp8/CAMPAIGN_STATE_DETERMINISM_AUDIT.md",
+    "data/recovery/wp8/ACTIVE_RECOVERY_REPRODUCIBILITY.md",
+    "data/recovery/wp8/CLEAN_CHECKOUT_REHEARSAL_REPORT.json",
+    "data/recovery/wp8/RUN_REPORT.md",
+    "data/recovery/wp8/RUN_REPORT.json",
+    "data/recovery/wp8/FINAL_REPORT.md",
+    "data/recovery/INDEPENDENT_VERIFICATION.json"
+  ]
+}
