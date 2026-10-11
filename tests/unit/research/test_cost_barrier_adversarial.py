@@ -353,6 +353,31 @@ def test_the_certification_record_digests_content_not_a_checkout(harness, certif
         assert digest == expected, rel
 
 
+def test_the_record_fingerprint_follows_from_its_own_head_and_digests():
+    """The fingerprint has to be derivable from what the record publishes.
+
+    A digest nobody can recompute is decoration: it looks like identification and
+    is not. The record names its candidate head and its digests, so the
+    fingerprint is recomputed here from exactly those two fields - no reliance on
+    the tree this test happens to run in. The digest convention is checked
+    separately; this is the composition.
+    """
+    import hashlib
+
+    record_path = RECOVERY / "wp7" / "COST_BARRIER_CERTIFICATION.json"
+    if not record_path.exists():
+        pytest.skip("the certification record has not been produced in this checkout")
+    record = json.loads(record_path.read_text(encoding="utf-8"))
+    recomputed = hashlib.sha256(
+        json.dumps(
+            {"head": record["candidate"]["head"], "digests": record["evidence_digests"]},
+            sort_keys=True,
+        ).encode("utf-8")
+    ).hexdigest()
+    assert recomputed == record["evidence_fingerprint"]
+    assert record["candidate"]["head"] and len(record["candidate"]["head"]) == 40
+
+
 def test_the_committed_certification_record_refuses_or_reports_a_full_run():
     record_path = RECOVERY / "wp7" / "COST_BARRIER_CERTIFICATION.json"
     if not record_path.exists():
