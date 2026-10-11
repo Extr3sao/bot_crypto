@@ -1,6 +1,6 @@
 # COST-BARRIER EXPLORER - per venue and per horizon
 
-- generated `2026-10-11T17:18:12Z` · head `3f8d646ac849` · branch `main`
+- generated `2026-10-11T18:16:19Z` · head `4b32d97a433c` · branch `main`
 - mode: OFFLINE read-only: no keys, no orders, no capital, no live path
 - cells: 24 · venue configurations: 120 · checks: 24/24 pass
 
