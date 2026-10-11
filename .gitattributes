@@ -9,3 +9,9 @@ data/rfc049/** -text
 # published explorer recorded for it, so git must not normalise them on the way in
 # or out.  Same reason as the RFC-049 trees above, same treatment.
 data/recovery/wp7/evidence/** -text
+
+# The WP-8 input-authority bundle is digest-pinned for the same reason as the
+# cost-barrier one: every external input the ACTIVE recovery lane needs must arrive
+# in a clean checkout with exactly the bytes its published artefact recorded, so git
+# must not normalise them on the way in or out.
+data/recovery/wp8/evidence/** -text
