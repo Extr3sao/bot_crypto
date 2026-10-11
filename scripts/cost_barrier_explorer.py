@@ -33,8 +33,10 @@ Definitions (fixed in this module, applied mechanically):
   Reachability resting on an ASSUMED line is reported as such and never mixed into
   the observed-only count.
 
-Read-only: writes only ``data/recovery/COST_BARRIER_EXPLORER.{json,md}``; starts no
-process, touches no runtime state, opens no network path and claims no promotion.
+Read-only: writes only ``data/recovery/COST_BARRIER_EXPLORER.{json,md}`` (or the
+directory given by ``--out-dir``, which exists so a governor or a drift gate can
+reproduce the artefact without touching the published files); starts no process,
+touches no runtime state, opens no network path and claims no promotion.
 """
 
 from __future__ import annotations
@@ -1128,15 +1130,20 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--check", action="store_true",
                         help="rebuild and compare payload_sha256 with the stored artefact")
+    parser.add_argument("--out-dir", type=Path, default=OUT,
+                        help="directory to write the artefact into (default: data/recovery). "
+                             "A drift gate uses a temporary directory so reproduction never "
+                             "touches the published files.")
     args = parser.parse_args()
 
-    OUT.mkdir(parents=True, exist_ok=True)
+    out_dir: Path = args.out_dir
+    out_dir.mkdir(parents=True, exist_ok=True)
     payload = build()
     payload["payload_sha256"] = payload_hash(payload)
-    target_json = OUT / "COST_BARRIER_EXPLORER.json"
+    target_json = out_dir / "COST_BARRIER_EXPLORER.json"
     stored = json.loads(target_json.read_text(encoding="utf-8")) if target_json.exists() else {}
     target_json.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-    (OUT / "COST_BARRIER_EXPLORER.md").write_text(render_markdown(payload), encoding="utf-8")
+    (out_dir / "COST_BARRIER_EXPLORER.md").write_text(render_markdown(payload), encoding="utf-8")
 
     if args.check:
         same = stored.get("payload_sha256") == payload["payload_sha256"]

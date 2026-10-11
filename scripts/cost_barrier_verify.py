@@ -18,7 +18,10 @@ copies of the artefact. A control that is *not* detected means the verifier is
 vacuous, and is reported as a miss - never as a pass. ``false_success`` stays 0
 because a mutation that survives would raise it.
 
-Read-only. Writes only ``data/recovery/COST_BARRIER_VERIFICATION.json``.
+Read-only. Writes only ``data/recovery/COST_BARRIER_VERIFICATION.json`` (or the
+path given by ``--out``; ``--explorer`` selects which artefact to verify), so a
+drift gate can re-verify a freshly rebuilt artefact without touching the
+published documents.
 """
 
 from __future__ import annotations
@@ -426,10 +429,14 @@ def mutation_controls(explorer: dict[str, Any], truth: dict[str, Any]) -> list[d
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--json", action="store_true", help="print the verification document")
+    parser.add_argument("--explorer", default=EXPLORER,
+                        help="explorer artefact to verify (default: the published one)")
+    parser.add_argument("--out", default=VERIFICATION,
+                        help="where to write the verification document (default: data/recovery)")
     args = parser.parse_args()
 
     truth = recompute()
-    explorer = read_json(EXPLORER)
+    explorer = read_json(args.explorer)
     checks: list[dict[str, Any]] = []
 
     mismatches = compare(explorer, truth)
@@ -479,7 +486,7 @@ def main() -> int:
             "independent recomputation from primary sources (WP-3 audit + COST_MODEL_V3) of "
             "every published number, followed by 13 mutation controls against the artefact"
         ),
-        "subjects": [EXPLORER, AUDIT],
+        "subjects": [args.explorer, AUDIT],
         "checks": checks,
         "checks_total": len(checks),
         "checks_failed": sum(1 for c in checks if c["result"] != "PASS"),
@@ -494,8 +501,8 @@ def main() -> int:
             "model, and that the assumed lines are unmodelled. No promotion is implied."
         ),
     }
-    Path(VERIFICATION).write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n",
-                                  encoding="utf-8")
+    Path(args.out).write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n",
+                              encoding="utf-8")
 
     print(json.dumps({
         "status": payload["status"],

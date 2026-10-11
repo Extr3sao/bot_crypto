@@ -1,0 +1,102 @@
+# Cost-barrier drift gate (WP-6 governance follow-on)
+#
+# The explorer and its independent verifier are only worth something while they
+# keep reproducing from the inputs on disk. This workflow runs the gate whenever
+# one of the declared inputs changes - the admission ledger, the cost model and
+# its document, the WP-3 audit and its producer, or the artefacts and pipeline
+# scripts themselves - and fails visibly the moment a published number stops
+# reproducing.
+#
+# Two steps, exactly one runs:
+#   * full reproduction when the locally generated market-horizon input is
+#     materialized (it is gitignored by design, so a clean runner normally
+#     does not carry it; `scripts/cost_barrier.py` regenerates it locally);
+#   * --check everywhere else: a clean checkout cannot re-run the builder, but
+#     the check still re-runs the independent verifier (all 120 cost lines,
+#     480 reachability sets, 24 verdicts, 13 mutation controls), validates the
+#     published pins and the attestation, and reports the missing generated
+#     input as an explicit advisory - never as a silent skip.
+#
+# Not a required status check: the four gates pinned in
+# quality/release-gates.md Bloque 6 are unchanged. Documented in docs/ci.md 3.
+
+name: Cost-barrier drift gate
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "config/strategy_admission.json"
+      - "src/trading_bot/research/microstructure/cost_model_v3.py"
+      - "docs/COST_MODEL_V3.json"
+      - "data/recovery/ACTIVE_ECONOMIC_AUDIT.json"
+      - "scripts/active_economic_audit.py"
+      # The market-horizon producer; its gitignored output cannot trigger a
+      # path filter because it is never committed.
+      - "scripts/cost_barrier.py"
+      - "scripts/cost_barrier_explorer.py"
+      - "scripts/cost_barrier_verify.py"
+      - "scripts/cost_barrier_gate.py"
+      - "data/recovery/COST_BARRIER_EXPLORER.json"
+      - "data/recovery/COST_BARRIER_EXPLORER.md"
+      - "data/recovery/COST_BARRIER_VERIFICATION.json"
+      - "tests/unit/research/test_cost_barrier_explorer.py"
+      - "tests/unit/research/test_cost_barrier_gate.py"
+      - ".github/workflows/cost-barrier-gate.yml"
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "config/strategy_admission.json"
+      - "src/trading_bot/research/microstructure/cost_model_v3.py"
+      - "docs/COST_MODEL_V3.json"
+      - "data/recovery/ACTIVE_ECONOMIC_AUDIT.json"
+      - "scripts/active_economic_audit.py"
+      - "scripts/cost_barrier.py"
+      - "scripts/cost_barrier_explorer.py"
+      - "scripts/cost_barrier_verify.py"
+      - "scripts/cost_barrier_gate.py"
+      - "data/recovery/COST_BARRIER_EXPLORER.json"
+      - "data/recovery/COST_BARRIER_EXPLORER.md"
+      - "data/recovery/COST_BARRIER_VERIFICATION.json"
+      - "tests/unit/research/test_cost_barrier_explorer.py"
+      - "tests/unit/research/test_cost_barrier_gate.py"
+      - ".github/workflows/cost-barrier-gate.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  cost-barrier-gate:
+    name: Re-run the cost-barrier explorer and verifier
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+
+      - name: Set up Python (.python-version)
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: ".python-version"
+
+      - name: Sync dependencies
+        run: uv sync --all-extras --dev
+
+      - name: "Drift gate: full reproduction (input set materialized)"
+        if: hashFiles('reports/strategy-baseline/COST_BARRIER.json') != ''
+        run: uv run python scripts/cost_barrier_gate.py --json
+
+      - name: "Drift gate: check mode (clean checkout, generated input absent)"
+        if: hashFiles('reports/strategy-baseline/COST_BARRIER.json') == ''
+        run: uv run python scripts/cost_barrier_gate.py --check --json

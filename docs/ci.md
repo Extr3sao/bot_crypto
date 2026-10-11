@@ -39,6 +39,29 @@ Los markers `slow` y `market` se excluyen de la validación rápida de PRs
 para mantener el feedback < 5 minutos. Nightly CI (pendiente) correrá
 la suite completa con esos markers incluidos.
 
+### Gate adicional (no required): cost-barrier drift
+
+- **Workflow**: `.github/workflows/cost-barrier-gate.yml` (no forma parte
+  de los 4 status-checks required de Bloque 6; aparece como job independiente).
+- **Disparadores**: `push`/`pull_request` a `main` que toquen el ledger de
+  admisión (`config/strategy_admission.json`), el modelo de coste
+  (`src/trading_bot/research/microstructure/cost_model_v3.py`,
+  `docs/COST_MODEL_V3.json`), la auditoría
+  (`data/recovery/ACTIVE_ECONOMIC_AUDIT.json`, `scripts/active_economic_audit.py`),
+  el explorador de cost-barrier o sus artefactos; también `workflow_dispatch`.
+- **Comando**: en un checkout limpio,
+  `uv run python scripts/cost_barrier_gate.py --check --json` (el input
+  generado localmente `reports/strategy-baseline/COST_BARRIER.json` no viaja
+  en el repo: queda como advisory explícito); con ese input materializado,
+  `uv run python scripts/cost_barrier_gate.py --json` (reproducción completa:
+  re-ejecuta builder y verificador en un directorio temporal).
+- **Fail-criterion**: cualquier número publicado que deje de reproducirse
+  (exit 1 con `<path>: <publicado> -> <fresco>`), un self-hash que no
+  recomputa, una atestación rota, una bandera de gobernanza que cambie, un
+  input citado cuyo contenido derive (obliga a regenerar y re-verificar) o
+  controles propios fallidos. Una diferencia LF/CRLF no es drift; un input
+  generado ausente es advisory (falla con `--strict`).
+
 ## 4. Cómo debuggear fallos de CI en local
 
 Replicar localmente al 100% el pipeline:
@@ -57,6 +80,9 @@ uv run mypy .
 # Auditoria
 uv export --all-extras --dev --no-hashes > reqs.txt
 uv run pip-audit -r reqs.txt
+
+# Gate de drift del cost-barrier (WP-6): reproduccion completa local
+uv run python scripts/cost_barrier_gate.py --json
 
 # Tests + cobertura
 uv run pytest -m "not slow and not market" --cov --cov-fail-under=90
