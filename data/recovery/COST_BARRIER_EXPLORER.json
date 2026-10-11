@@ -1,8 +1,8 @@
 {
   "artifact": "COST_BARRIER_EXPLORER",
   "work_package": "POST RFC-049 / ACTIVE RECOVERY - WP-6 (cost-barrier exploration)",
-  "generated_at_utc": "2026-10-11T18:16:19Z",
-  "head": "4b32d97a433c47bb4cefc05dd8df18ae64209d1c",
+  "generated_at_utc": "2026-10-11T18:36:08Z",
+  "head": "66dc3de62f87a0bcc8a53f1065ba7a311a4ca6d0",
   "branch": "main",
   "mode": "OFFLINE read-only: no keys, no orders, no capital, no live path",
   "ladder": "This is WP-6 of the ACTIVE recovery lane: WP-1 closed RFC-049, WP-2 reconstructed campaign state, WP-3 audited the 24 cells, WP-4/5 reported. WP-6 turns the cost plane from a gate into a searched surface: which (venue, execution mode, size, liquidity) lines any cell can clear, and at which horizon.",
@@ -10628,35 +10628,40 @@
       "role": "ACTIVE economic audit (WP-3): the 24 cells and their zero-cost gross edge",
       "exists": true,
       "tracked": true,
-      "sha256": "e05be22b1b165900368e1ffeb1aa8802c766c47c4636df4a635e1beed5efddf3"
+      "sha256": "e05be22b1b165900368e1ffeb1aa8802c766c47c4636df4a635e1beed5efddf3",
+      "state_sha256": "023b66ffd1213b069607a8844f669c0ff00c0b35533619a031d4d6a5d2fb2a53"
     },
     {
       "path": "reports/strategy-baseline/COST_BARRIER.json",
       "role": "transaction-cost barrier: median bars/hours for a move equal to the cost",
       "exists": true,
       "tracked": false,
-      "sha256": "2437f446051d97ec15bd1bd95de550d46db3fb4d555ccab6557a3a2b2bac1fd4"
+      "sha256": "2437f446051d97ec15bd1bd95de550d46db3fb4d555ccab6557a3a2b2bac1fd4",
+      "state_sha256": null
     },
     {
       "path": "config/strategy_admission.json",
       "role": "tracked admission ledger: the only source of 'may this run PAPER?'",
       "exists": true,
       "tracked": true,
-      "sha256": "6c4dd0be1fc2fff24920c9f9226c7f81f8d3d4dc80671b5a424721da497f7db1"
+      "sha256": "6c4dd0be1fc2fff24920c9f9226c7f81f8d3d4dc80671b5a424721da497f7db1",
+      "state_sha256": null
     },
     {
       "path": "docs/COST_MODEL_V3.json",
       "role": "COST_MODEL_V3 document: venue scenarios and knowledge classes",
       "exists": true,
       "tracked": true,
-      "sha256": "2f0e62d2408e6cc544d139bd6d43292698061d4d6ac325f70adab2b781965159"
+      "sha256": "2f0e62d2408e6cc544d139bd6d43292698061d4d6ac325f70adab2b781965159",
+      "state_sha256": null
     },
     {
       "path": "src/trading_bot/research/microstructure/cost_model_v3.py",
       "role": "the executable cost model this artefact evaluates",
       "exists": true,
       "tracked": true,
-      "sha256": "bc7e27538b65b7f3f8a376687d5e100c97cdfd14a2dbd87f293707acf02247ee"
+      "sha256": "bc7e27538b65b7f3f8a376687d5e100c97cdfd14a2dbd87f293707acf02247ee",
+      "state_sha256": null
     }
   ],
   "checks": [

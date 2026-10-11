@@ -616,6 +616,27 @@ def frequency_axis(audit: dict[str, Any], frontier: dict[str, Any]) -> dict[str,
 # failed re-derivation rather than a silent mismatch - which is what it is for.
 VOLATILE_KEYS = ("generated_at_utc", "payload_sha256", "head", "branch", "sources", "local_observations")
 
+# WP-8H: an input that carries its own state identity is pinned by that state and not by the
+# bytes. The audit stamps the moment and the commit into the file, so a rebuild in a clean
+# checkout legitimately changes its raw digest - a pin over the bytes could only ever be
+# satisfied on the machine that wrote them, which is the defect WP-8 removed from this lane
+# and the rehearsal then found here.
+
+def state_pin(path: Path) -> str | None:
+    """The digest of what a JSON artefact *states*, or None for a file without the convention."""
+    if path.suffix != ".json" or not path.exists():
+        return None
+    try:
+        document = json.loads(path.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, UnicodeDecodeError):
+        return None
+    if not isinstance(document, dict) or "payload_sha256" not in document:
+        return None
+    body = {k: v for k, v in document.items() if k not in VOLATILE_KEYS}
+    return hashlib.sha256(
+        json.dumps(body, indent=2, sort_keys=True, ensure_ascii=False).encode("utf-8")
+    ).hexdigest()
+
 
 def payload_hash(payload: dict[str, Any]) -> str:
     body = {k: v for k, v in payload.items() if k not in VOLATILE_KEYS}
@@ -647,7 +668,8 @@ def build() -> dict[str, Any]:
     sources = [
         {"path": rel, "role": SOURCE_ROLES[rel], "exists": (ROOT / rel).exists(),
          "tracked": tracked(rel) if (ROOT / rel).exists() else None,
-         "sha256": sha256_file(ROOT / rel)}
+         "sha256": sha256_file(ROOT / rel),
+         "state_sha256": state_pin(ROOT / rel)}
         for rel in (AUDIT, COST_BARRIER, LEDGER, COST_V3, COST_MODEL_MODULE)
     ]
     check("sources:all_present", all(s["exists"] for s in sources),

@@ -121,6 +121,7 @@ VOLATILE_EXPLORER = ("generated_at_utc", "payload_sha256", "head", "branch", "so
 VOLATILE_VERIFICATION = ("generated_at_utc", "head", "subjects")
 
 PIN_EXACT = "EXACT"
+PIN_STATE_EXACT = "EXACT_STATE"
 PIN_EOL = "EOL_ONLY"
 PIN_DRIFT = "DRIFT"
 PIN_NOT_PINNED = "NOT_PINNED"
@@ -281,6 +282,26 @@ def pin_status(pin: str | None, data: bytes) -> str:
     if candidates["LF"] == pin or candidates["CRLF"] == pin:
         return PIN_EOL
     return PIN_DRIFT
+
+
+# The identity convention of an input that carries its own state (WP-8H). Repeated here on
+# purpose: a gate that imported the producer's convention could not notice it changing.
+STATE_VOLATILE_KEYS: tuple[str, ...] = ("generated_at_utc", "payload_sha256", "head", "branch",
+                                        "sources", "local_observations")
+
+
+def state_digest(rel: str, data: bytes | None) -> str | None:
+    """The digest of a JSON input's own state, or None when the input has no such identity."""
+    if data is None or Path(rel).suffix != ".json":
+        return None
+    try:
+        document = json.loads(data.decode("utf-8"))
+    except (json.JSONDecodeError, UnicodeDecodeError):
+        return None
+    if not isinstance(document, dict) or "payload_sha256" not in document:
+        return None
+    body = {k: v for k, v in document.items() if k not in STATE_VOLATILE_KEYS}
+    return sha256_bytes(json.dumps(body, indent=2, sort_keys=True, ensure_ascii=False).encode("utf-8"))
 
 
 def payload_hash(body: dict[str, Any], volatile: tuple[str, ...] = VOLATILE_EXPLORER) -> str:
@@ -463,9 +484,13 @@ def attestation_failures(verification: dict[str, Any], explorer: dict[str, Any])
 
 
 def input_rows(explorer: dict[str, Any]) -> tuple[list[dict[str, Any]], list[str]]:
-    """Compare every declared input with the pins the explorer published."""
-    pins = {
-        str(row.get("path")): row.get("sha256")
+    """Compare every declared input with the pins the explorer published.
+
+    An input that publishes a state pin is judged on its state: the raw digest is still
+    reported next to it, but a rebuild that only moves the moment is not drift.
+    """
+    published = {
+        str(row.get("path")): row
         for row in explorer.get("sources") or []
     }
     rows: list[dict[str, Any]] = []
@@ -474,12 +499,24 @@ def input_rows(explorer: dict[str, Any]) -> tuple[list[dict[str, Any]], list[str
         path = ROOT / rel
         present = path.exists()
         data = path.read_bytes() if present else None
-        pin = pins.get(rel) if pinned else None
+        source = published.get(rel) or {}
+        pin = source.get("sha256") if pinned else None
+        state_pin = source.get("state_sha256") if pinned else None
         if pinned and pin is None:
             defects.append(
                 f"{rel} is declared pinned but the artefact's sources[] carries no pin for it"
             )
-        status = PIN_ABSENT if data is None else pin_status(pin, data)
+        byte_status = PIN_ABSENT if data is None else pin_status(pin, data)
+        state = state_digest(rel, data)
+        if data is None:
+            status = PIN_ABSENT
+        elif state_pin is not None:
+            if state is None:
+                status = PIN_DRIFT
+            else:
+                status = PIN_STATE_EXACT if state == state_pin else PIN_DRIFT
+        else:
+            status = byte_status
         rows.append({
             "path": rel,
             "role": role,
@@ -487,10 +524,15 @@ def input_rows(explorer: dict[str, Any]) -> tuple[list[dict[str, Any]], list[str
             "present": present,
             "pin_status": status,
             "pin": pin,
+            "state_pin": state_pin,
+            "state_status": ("EXACT" if state_pin is not None and state == state_pin
+                             else "UNPINNED" if state_pin is None else "DRIFT"),
+            "byte_status": byte_status,
             "sha256_current": sha256_bytes(data) if data is not None else None,
+            "state_sha256_current": state,
         })
-    extra = sorted(set(pins) - set(PINNED_PATHS))
-    missing = sorted(set(PINNED_PATHS) - set(pins))
+    extra = sorted(set(published) - set(PINNED_PATHS))
+    missing = sorted(set(PINNED_PATHS) - set(published))
     if extra or missing:
         defects.append(
             f"published pin set and declared pin set diverge: extra={extra} missing={missing}"
@@ -908,6 +950,7 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
     drifted = [row for row in rows if row["pin_status"] == PIN_DRIFT]
     eol_only = [row for row in rows if row["pin_status"] == PIN_EOL]
     exact = [row for row in rows if row["pin_status"] == PIN_EXACT]
+    state_exact = [row for row in rows if row["pin_status"] == PIN_STATE_EXACT]
 
     if absent:
         detail = "absent: " + ", ".join(row["path"] for row in absent)
@@ -938,22 +981,25 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
         ))
 
     pin_detail = (
-        f"{len(present)}/{len(rows)} present; pinned: {len(exact)} exact, {len(eol_only)} "
-        f"line-ending-only, {len(drifted)} drifted"
+        f"{len(present)}/{len(rows)} present; pinned: {len(exact)} byte-exact, "
+        f"{len(state_exact)} state-exact, {len(eol_only)} line-ending-only, {len(drifted)} drifted"
     )
     checks.append(check(
         not drifted and not defects,
         "inputs:published_pins_match_the_declared_sources",
         pin_detail if not drifted and not defects
         else pin_detail + ("; " + "; ".join(
-            [f"{row['path']} content drift (pin {str(row['pin'])[:16]}...)" for row in drifted]
+            [f"{row['path']} {('state' if row['state_pin'] else 'content')} drift "
+             f"(pin {str(row['state_pin'] or row['pin'])[:16]}...)" for row in drifted]
             + defects
         )),
     ))
     for row in drifted:
+        kind = "state" if row["state_pin"] else "content"
         failures.append(
-            f"cited input {row['path']} no longer matches the pin the explorer published "
-            f"({str(row['pin'])[:16]}...): the artefact must be regenerated and re-verified"
+            f"cited input {row['path']} no longer matches the {kind} pin the explorer published "
+            f"({str(row['state_pin'] or row['pin'])[:16]}...): the artefact must be regenerated "
+            f"and re-verified"
         )
     for defect in defects:
         failures.append(defect)

@@ -1,9 +1,9 @@
 {
   "artifact": "COST_BARRIER_PRODUCER_PINS",
   "work_package": "WP-7E: give the four unpinned producers a digest of their own",
-  "generated_at_utc": "2026-10-11T17:18:45Z",
+  "generated_at_utc": "2026-10-11T18:36:24Z",
   "generated_by": "scripts/cost_barrier_evidence.py --capture",
-  "head": "3f8d646ac849f494f3838152dcdc64d100554736",
+  "head": "66dc3de62f87a0bcc8a53f1065ba7a311a4ca6d0",
   "authority": "the commit that carries this file; re-pinning is an explicit, reviewed act that must accompany regeneration and re-verification of the artefacts",
   "admissible_byte_conventions": "a consumer must accept a watched producer whose bytes equal the pinned content in LF or CRLF form (sha256_lf / sha256_crlf); sha256 records the bytes of the tree that wrote this manifest and is informational only. A checkout with core.autocrlf rewrites line endings without touching content, so requiring the raw digest would fail every clean checkout for a difference no edit caused",
   "why_only_these_four": "these are exactly the declared inputs that carry no published pin; the five pinned inputs already have an authority (the artefact's sources[]) and re-pinning them here would create a second, weaker one",
@@ -31,10 +31,10 @@
     {
       "path": "scripts/cost_barrier_explorer.py",
       "role": "builder of the explorer artefact",
-      "sha256": "3e400f02b8c4d64baa5e455f4c9cd04d2c6a484134f2b162c5459e741f654021",
-      "sha256_lf": "3e400f02b8c4d64baa5e455f4c9cd04d2c6a484134f2b162c5459e741f654021",
-      "sha256_crlf": "51e5417400aa374e766d272a41f59d4d003fa689f5a68879693a13dccc8c2efd",
-      "bytes": 55817
+      "sha256": "b2bc66da02592ba9d2d9d7e60b48369a3fc2c6b5939a9bfee7d0cd1118913960",
+      "sha256_lf": "b2bc66da02592ba9d2d9d7e60b48369a3fc2c6b5939a9bfee7d0cd1118913960",
+      "sha256_crlf": "9a03093eeb0b57ecd7ff4aba31e7bab1b7fc8253520950c7bfb3c4215e123b10",
+      "bytes": 56928
     },
     {
       "path": "scripts/cost_barrier_verify.py",

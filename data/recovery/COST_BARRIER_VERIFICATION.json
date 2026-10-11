@@ -1,8 +1,8 @@
 {
   "artifact": "COST_BARRIER_INDEPENDENT_VERIFICATION",
   "work_package": "POST RFC-049 / ACTIVE RECOVERY - WP-6 verification",
-  "generated_at_utc": "2026-10-11T18:16:21Z",
-  "head": "4b32d97a433c47bb4cefc05dd8df18ae64209d1c",
+  "generated_at_utc": "2026-10-11T18:36:10Z",
+  "head": "66dc3de62f87a0bcc8a53f1065ba7a311a4ca6d0",
   "verifier": "scripts/cost_barrier_verify.py",
   "builder": "scripts/cost_barrier_explorer.py",
   "builder_imported": false,
