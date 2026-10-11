@@ -3,3 +3,9 @@
 # normalisation would rewrite those bytes on checkout and silently break every
 # recorded digest, so the trees are stored exactly as they are on disk.
 data/rfc049/** -text
+
+# The cost-barrier CI evidence bundle is digest-pinned: the copy of the gitignored
+# market-horizon input must arrive in a clean checkout with exactly the bytes the
+# published explorer recorded for it, so git must not normalise them on the way in
+# or out.  Same reason as the RFC-049 trees above, same treatment.
+data/recovery/wp7/evidence/** -text

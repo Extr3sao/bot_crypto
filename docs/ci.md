@@ -39,28 +39,44 @@ Los markers `slow` y `market` se excluyen de la validación rápida de PRs
 para mantener el feedback < 5 minutos. Nightly CI (pendiente) correrá
 la suite completa con esos markers incluidos.
 
-### Gate adicional (no required): cost-barrier drift
+### Gate adicional### Gate adicional (no required): cost-barrier drift
 
 - **Workflow**: `.github/workflows/cost-barrier-gate.yml` (no forma parte
   de los 4 status-checks required de Bloque 6; aparece como job independiente).
-- **Disparadores**: `push`/`pull_request` a `main` que toquen el ledger de
-  admisión (`config/strategy_admission.json`), el modelo de coste
-  (`src/trading_bot/research/microstructure/cost_model_v3.py`,
-  `docs/COST_MODEL_V3.json`), la auditoría
-  (`data/recovery/ACTIVE_ECONOMIC_AUDIT.json`, `scripts/active_economic_audit.py`),
-  el explorador de cost-barrier o sus artefactos; también `workflow_dispatch`.
-- **Comando**: en un checkout limpio,
-  `uv run python scripts/cost_barrier_gate.py --check --json` (el input
-  generado localmente `reports/strategy-baseline/COST_BARRIER.json` no viaja
-  en el repo: queda como advisory explícito); con ese input materializado,
-  `uv run python scripts/cost_barrier_gate.py --json` (reproducción completa:
-  re-ejecuta builder y verificador en un directorio temporal).
-- **Fail-criterion**: cualquier número publicado que deje de reproducirse
-  (exit 1 con `<path>: <publicado> -> <fresco>`), un self-hash que no
-  recomputa, una atestación rota, una bandera de gobernanza que cambie, un
-  input citado cuyo contenido derive (obliga a regenerar y re-verificar) o
-  controles propios fallidos. Una diferencia LF/CRLF no es drift; un input
-  generado ausente es advisory (falla con `--strict`).
+- **Disparadores**: `push`/`pull_request` a `main` que toquen cualquiera de las
+  dependencias que declara el gate -el ledger de admision, el modelo de coste y
+  su documento, la auditoria WP-3 y su productor, el explorador, su verificador,
+  el gate, el bundle de evidencia, los tests de contrato- o el propio workflow;
+  tambien `workflow_dispatch`. El contrato de activacion lo comprueba el propio
+  gate (`ci:activation_contract_covers_every_declared_input`): si una dependencia
+  se mueve a una ruta que el filtro no cubre, el gate lo nombra.
+- **Materializacion**: el input generado
+  `reports/strategy-baseline/COST_BARRIER.json` es gitignored por diseno (sus
+  propios datos de barras tampoco viajan en el repo), asi que el checkout lo
+  materializa desde la copia de evidencia
+  `data/recovery/wp7/evidence/COST_BARRIER.json`, que debe reproducir el sha256
+  que el artefacto publicado registro en su `sources[]` y el digest del
+  manifiesto de productores. Si no coincide, el paso falla visiblemente y el gate
+  queda en `BLOCKED_MISSING_INPUT` -nunca en PASS-.
+- **Comandos**: `uv run python scripts/cost_barrier_evidence.py --materialize
+  --json` -> `uv run python scripts/cost_barrier_gate.py --json --report ...` ->
+  `uv run python scripts/cost_barrier_adversarial.py --out ... --report ...` ->
+  `uv run python scripts/cost_barrier_certify.py --json --out ...`; la evidencia
+  se conserva como artifact (`if: always()`, `if-no-files-found: error`) y ningun
+  paso lleva `continue-on-error`.
+- **Estados y exit codes**: `FULL_REPRODUCTION_PASS` (0), `CHECK_ONLY_PASS` y
+  `CHECK_ONLY_WITH_ADVISORIES` (2, parcial), `BLOCKED_MISSING_INPUT` (3),
+  `FULL_REPRODUCTION_FAIL` (4), `INTEGRITY_FAILURE` (5). Solo el primero satisface
+  un requisito de certificacion completa: una comprobacion parcial no puede
+  promover estrategias ni certificar resultados economicos.
+- **Fail-criterion**: cualquier numero publicado que deje de reproducirse
+  (`<path>: <publicado> -> <fresco>`), un self-hash que no recomputa, una
+  atestacion rota, una bandera de gobernanza que cambie, un input citado cuyo
+  contenido derive (obliga a regenerar y re-verificar), un productor fuera del
+  manifiesto, un input requerido sin materializar, un ataque adversario que
+  escape o controles propios fallidos. Una diferencia LF/CRLF no es drift; un
+  input generado ausente es advisory en `--check` (falla con `--strict`) y
+  bloqueo en modo completo.
 
 ## 4. Cómo debuggear fallos de CI en local
 
@@ -81,8 +97,11 @@ uv run mypy .
 uv export --all-extras --dev --no-hashes > reqs.txt
 uv run pip-audit -r reqs.txt
 
-# Gate de drift del cost-barrier (WP-6): reproduccion completa local
+# Gate de drift del cost-barrier (WP-6/WP-7): reproduccion completa local
+uv run python scripts/cost_barrier_evidence.py --materialize --json
 uv run python scripts/cost_barrier_gate.py --json
+uv run python scripts/cost_barrier_adversarial.py --out .ci/ADVERSARIAL.json
+uv run python scripts/cost_barrier_certify.py --json
 
 # Tests + cobertura
 uv run pytest -m "not slow and not market" --cov --cov-fail-under=90

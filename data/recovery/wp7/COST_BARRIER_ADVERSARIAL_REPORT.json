@@ -1,0 +1,815 @@
+{
+  "artifact": "COST_BARRIER_ADVERSARIAL_REPORT",
+  "work_package": "WP-7D adversarial verification of the cost-barrier drift gate",
+  "generated_at_utc": "2026-10-11T12:22:07Z",
+  "gate_under_test": {
+    "label": "WP-7 hardened gate (this working tree)",
+    "path": "scripts/cost_barrier_gate.py",
+    "sha256": "6ff2793aee81b88df483190df2a54f238687dec2edc9d24273d2367952bd7d2e",
+    "revision": "38b8e183d54c5ac8552296218e28f3ded8d95885"
+  },
+  "environment": {
+    "python": "3.11.15",
+    "platform": "win32"
+  },
+  "attacks": [
+    {
+      "attack_id": "A01",
+      "mutation_changed_the_tree": true,
+      "title": "alter a published number without touching its hash",
+      "requirement": "1",
+      "input": "data/recovery/COST_BARRIER_EXPLORER.json",
+      "mutation": "cells[0].zero_cost_gross_bps moved to 3.178; payload_sha256 left as published",
+      "expected": {
+        "full": "FLAGGED",
+        "check": "FLAGGED"
+      },
+      "observed": [
+        {
+          "mode": "full",
+          "vocabulary": "contract",
+          "status": "INTEGRITY_FAILURE",
+          "exit_code": 5,
+          "checks_failed": 2,
+          "expected": "FLAGGED",
+          "detected": true
+        },
+        {
+          "mode": "check",
+          "vocabulary": "contract",
+          "status": "INTEGRITY_FAILURE",
+          "exit_code": 5,
+          "checks_failed": 2,
+          "expected": "FLAGGED",
+          "detected": true
+        }
+      ],
+      "legs": [],
+      "detected": true,
+      "valid_mutation": true,
+      "detected_in": [
+        "full",
+        "check"
+      ],
+      "missed_in": [],
+      "how": "the artefact's own self-hash no longer recomputes, so no re-run is needed to see it",
+      "evidence": "[full] artifact:explorer_self_hash_and_checks: payload_sha256 da4ab06129c927eb0dfccf820bc0db2673321b031cef77e0317594bb82c19fc6 != recomputed 792e03432572312ada17e9a569ae346867ef178fd84875eceaf6b284a1bbef8b; [check] artifact:explorer_self_hash_and_checks: payload_sha256 da4ab06129c927eb0dfccf820bc0db2673321b031cef77e0317594bb82c19fc6 != recomputed 792e03432572312ada17e9a569ae346867ef178fd84875eceaf6b284a1bbef8b",
+      "counter_evidence": "",
+      "sandbox_missing_files": []
+    },
+    {
+      "attack_id": "A02",
+      "mutation_changed_the_tree": true,
+      "title": "alter a published number and recompute its hash honestly",
+      "requirement": "2",
+      "input": "data/recovery/COST_BARRIER_EXPLORER.json",
+      "mutation": "cells[0].zero_cost_gross_bps moved to 3.178 (+5 bps) with payload_sha256 recomputed honestly",
+      "expected": {
+        "full": "FLAGGED",
+        "check": "FLAGGED"
+      },
+      "observed": [
+        {
+          "mode": "full",
+          "vocabulary": "contract",
+          "status": "INTEGRITY_FAILURE",
+          "exit_code": 5,
+          "checks_failed": 2,
+          "expected": "FLAGGED",
+          "detected": true
+        },
+        {
+          "mode": "check",
+          "vocabulary": "contract",
+          "status": "INTEGRITY_FAILURE",
+          "exit_code": 5,
+          "checks_failed": 2,
+          "expected": "FLAGGED",
+          "detected": true
+        }
+      ],
+      "legs": [],
+      "detected": true,
+      "valid_mutation": true,
+      "detected_in": [
+        "full",
+        "check"
+      ],
+      "missed_in": [],
+      "how": "self-consistency alone cannot help: the number has to survive re-derivation",
+      "evidence": "[full] artifact:verification_attests_the_explorer: no control demonstrates a body mutation caught by recomputation; 12 control signal(s) do not form a pair around the committed hash 792e03432572312ada17e9a569ae346867ef178fd84875eceaf6b284a1bbef8b: [('da4ab06129c927eb0dfccf820bc0db2673321b031cef77e0317594bb82c19fc6', '46f1f8d713ceac9bf90a32f23d9ba7a639d0e03695ced78745f5e6d0dd85cd63'), ('da4ab06129c927eb0d; [check] artifact:verification_attests_the_explorer: no control demonstrates a body mutation caught by recomputation; 12 control signal(s) do not form a pair around the committed hash 792e03432572312ada17e9a569ae346867ef178fd84875eceaf6b284a1bbef8b: [('da4ab06129c927eb0dfccf820bc0db2673321b031cef77e0317594bb82c19fc6', '46f1f8d713ceac9bf90a32f23d9ba7a639d0e03695ced78745f5e6d0dd85cd63'), ('da4ab06129c927eb0d",
+      "counter_evidence": "",
+      "sandbox_missing_files": []
+    },
+    {
+      "attack_id": "A03",
+      "mutation_changed_the_tree": true,
+      "title": "alter the cost model",
+      "requirement": "3",
+      "input": "src/trading_bot/research/microstructure/cost_model_v3.py",
+      "mutation": "one fee literal in the executable cost model changed (5.0 -> 4.5)",
+      "expected": {
+        "full": "FLAGGED",
+        "check": "FLAGGED"
+      },
+      "observed": [
+        {
+          "mode": "full",
+          "vocabulary": "contract",
+          "status": "INTEGRITY_FAILURE",
+          "exit_code": 5,
+          "checks_failed": 3,
+          "expected": "FLAGGED",
+          "detected": true
+        },
+        {
+          "mode": "check",
+          "vocabulary": "contract",
+          "status": "INTEGRITY_FAILURE",
+          "exit_code": 5,
+          "checks_failed": 2,
+          "expected": "FLAGGED",
+          "detected": true
+        }
+      ],
+      "legs": [],
+      "detected": true,
+      "valid_mutation": true,
+      "detected_in": [
+        "full",
+        "check"
+      ],
+      "missed_in": [],
+      "how": "the artefact pins the executable module it evaluated, byte for byte",
+      "evidence": "[full] inputs:published_pins_match_the_declared_sources: 9/9 present; pinned: 4 exact, 0 line-ending-only, 1 drifted; src/trading_bot/research/microstructure/cost_model_v3.py content drift (pin bc7e27538b65b7f3...); [check] inputs:published_pins_match_the_declared_sources: 9/9 present; pinned: 4 exact, 0 line-ending-only, 1 drifted; src/trading_bot/research/microstructure/cost_model_v3.py content drift (pin bc7e27538b65b7f3...)",
+      "counter_evidence": "",
+      "sandbox_missing_files": []
+    },
+    {
+      "attack_id": "A04",
+      "mutation_changed_the_tree": true,
+      "title": "alter the admission ledger",
+      "requirement": "4",
+      "input": "config/strategy_admission.json",
+      "mutation": "the first admission-ledger entry is marked admitted_for_paper",
+      "expected": {
+        "full": "FLAGGED",
+        "check": "FLAGGED"
+      },
+      "observed": [
+        {
+          "mode": "full",
+          "vocabulary": "contract",
+          "status": "INTEGRITY_FAILURE",
+          "exit_code": 5,
+          "checks_failed": 1,
+          "expected": "FLAGGED",
+          "detected": true
+        },
+        {
+          "mode": "check",
+          "vocabulary": "contract",
+          "status": "INTEGRITY_FAILURE",
+          "exit_code": 5,
+          "checks_failed": 1,
+          "expected": "FLAGGED",
+          "detected": true
+        }
+      ],
+      "legs": [],
+      "detected": true,
+      "valid_mutation": true,
+      "detected_in": [
+        "full",
+        "check"
+      ],
+      "missed_in": [],
+      "how": "same pin discipline as the cost model",
+      "evidence": "[full] inputs:published_pins_match_the_declared_sources: 9/9 present; pinned: 4 exact, 0 line-ending-only, 1 drifted; config/strategy_admission.json content drift (pin 6c4dd0be1fc2fff2...); [check] inputs:published_pins_match_the_declared_sources: 9/9 present; pinned: 4 exact, 0 line-ending-only, 1 drifted; config/strategy_admission.json content drift (pin 6c4dd0be1fc2fff2...)",
+      "counter_evidence": "",
+      "sandbox_missing_files": []
+    },
+    {
+      "attack_id": "A05",
+      "mutation_changed_the_tree": true,
+      "title": "substitute a pin for a valid one from another version",
+      "requirement": "5",
+      "input": "data/recovery/COST_BARRIER_EXPLORER.json",
+      "mutation": "the ledger's pin is replaced by a genuine digest belonging to another file (the WP-3 audit) - valid hash, wrong artefact",
+      "expected": {
+        "full": "FLAGGED",
+        "check": "FLAGGED"
+      },
+      "observed": [
+        {
+          "mode": "full",
+          "vocabulary": "contract",
+          "status": "INTEGRITY_FAILURE",
+          "exit_code": 5,
+          "checks_failed": 1,
+          "expected": "FLAGGED",
+          "detected": true
+        },
+        {
+          "mode": "check",
+          "vocabulary": "contract",
+          "status": "INTEGRITY_FAILURE",
+          "exit_code": 5,
+          "checks_failed": 1,
+          "expected": "FLAGGED",
+          "detected": true
+        }
+      ],
+      "legs": [],
+      "detected": true,
+      "valid_mutation": true,
+      "detected_in": [
+        "full",
+        "check"
+      ],
+      "missed_in": [],
+      "how": "the pin is compared against the bytes of the file it cites, not against its shape",
+      "evidence": "[full] inputs:published_pins_match_the_declared_sources: 9/9 present; pinned: 4 exact, 0 line-ending-only, 1 drifted; config/strategy_admission.json content drift (pin 31fc6d4f57248bed...); [check] inputs:published_pins_match_the_declared_sources: 9/9 present; pinned: 4 exact, 0 line-ending-only, 1 drifted; config/strategy_admission.json content drift (pin 31fc6d4f57248bed...)",
+      "counter_evidence": "",
+      "sandbox_missing_files": []
+    },
+    {
+      "attack_id": "A06",
+      "mutation_changed_the_tree": true,
+      "title": "remove a required input",
+      "requirement": "6",
+      "input": "reports/strategy-baseline/COST_BARRIER.json",
+      "mutation": "reports/strategy-baseline/COST_BARRIER.json deleted after being materialized",
+      "expected": {
+        "full": "BLOCKED",
+        "check": "PARTIAL"
+      },
+      "observed": [
+        {
+          "mode": "full",
+          "vocabulary": "contract",
+          "status": "BLOCKED_MISSING_INPUT",
+          "exit_code": 3,
+          "checks_failed": 4,
+          "expected": "BLOCKED",
+          "detected": true
+        },
+        {
+          "mode": "check",
+          "vocabulary": "contract",
+          "status": "CHECK_ONLY_WITH_ADVISORIES",
+          "exit_code": 2,
+          "checks_failed": 0,
+          "expected": "PARTIAL",
+          "detected": true
+        }
+      ],
+      "legs": [],
+      "detected": true,
+      "valid_mutation": true,
+      "detected_in": [
+        "full",
+        "check"
+      ],
+      "missed_in": [],
+      "how": "full mode refuses to claim a reproduction it cannot run; check mode says so and stays partial",
+      "evidence": "[full] full reproduction requires every declared input; absent: reports/strategy-baseline/COST_BARRIER.json. Materialize the generated inputs (the market-horizon report is produced locally from reports/strategy-baseline/data/) and re-run.; [check] status CHECK_ONLY_WITH_ADVISORIES (exit 2)",
+      "counter_evidence": "",
+      "sandbox_missing_files": []
+    },
+    {
+      "attack_id": "A07",
+      "mutation_changed_the_tree": true,
+      "title": "alter an unpinned producer",
+      "requirement": "7",
+      "input": "scripts/cost_barrier.py",
+      "mutation": "scripts/cost_barrier.py (the market-horizon producer) edited: the BASE line 12.0 -> 11.0. No published artefact changes, so nothing but a producer pin can see it",
+      "expected": {
+        "full": "FLAGGED",
+        "check": "FLAGGED"
+      },
+      "observed": [
+        {
+          "mode": "full",
+          "vocabulary": "contract",
+          "status": "INTEGRITY_FAILURE",
+          "exit_code": 5,
+          "checks_failed": 1,
+          "expected": "FLAGGED",
+          "detected": true
+        },
+        {
+          "mode": "check",
+          "vocabulary": "contract",
+          "status": "INTEGRITY_FAILURE",
+          "exit_code": 5,
+          "checks_failed": 1,
+          "expected": "FLAGGED",
+          "detected": true
+        }
+      ],
+      "legs": [],
+      "detected": true,
+      "valid_mutation": true,
+      "detected_in": [
+        "full",
+        "check"
+      ],
+      "missed_in": [],
+      "how": "the producer digest manifest is what closes this; without it nothing in the tree changes",
+      "evidence": "[full] producers:digests_match_the_pinned_manifest: scripts/cost_barrier.py drifted from the pinned producer digest; [check] producers:digests_match_the_pinned_manifest: scripts/cost_barrier.py drifted from the pinned producer digest",
+      "counter_evidence": "",
+      "sandbox_missing_files": []
+    },
+    {
+      "attack_id": "A08",
+      "mutation_changed_the_tree": true,
+      "title": "modify the builder and a published result together",
+      "requirement": "8",
+      "input": "scripts/cost_barrier_explorer.py",
+      "mutation": "the builder is edited (OPS_PER_DAY 3.0 -> 4.0) and then re-run so the published artefact and its verification document are regenerated from it: builder and result agree with each other, so only a producer pin can object",
+      "expected": {
+        "full": "FLAGGED",
+        "check": "FLAGGED"
+      },
+      "observed": [
+        {
+          "mode": "full",
+          "vocabulary": "contract",
+          "status": "INTEGRITY_FAILURE",
+          "exit_code": 5,
+          "checks_failed": 1,
+          "expected": "FLAGGED",
+          "detected": true
+        },
+        {
+          "mode": "check",
+          "vocabulary": "contract",
+          "status": "INTEGRITY_FAILURE",
+          "exit_code": 5,
+          "checks_failed": 1,
+          "expected": "FLAGGED",
+          "detected": true
+        }
+      ],
+      "legs": [],
+      "detected": true,
+      "valid_mutation": true,
+      "detected_in": [
+        "full",
+        "check"
+      ],
+      "missed_in": [],
+      "how": "a coherent lie passes every self-consistency check; the producer pin is the only witness",
+      "evidence": "[full] producers:digests_match_the_pinned_manifest: scripts/cost_barrier_explorer.py drifted from the pinned producer digest; [check] producers:digests_match_the_pinned_manifest: scripts/cost_barrier_explorer.py drifted from the pinned producer digest",
+      "counter_evidence": "",
+      "sandbox_missing_files": []
+    },
+    {
+      "attack_id": "A09",
+      "mutation_changed_the_tree": true,
+      "title": "modify a published verdict",
+      "requirement": "9",
+      "input": "data/recovery/COST_BARRIER_EXPLORER.json",
+      "mutation": "the published horizon verdict is rewritten from HORIZON_INVARIANT_AT_ZERO_FUNDING to HORIZON_DEPENDENT_AT_ZERO_FUNDING with the self-hash recomputed",
+      "expected": {
+        "full": "FLAGGED",
+        "check": "FLAGGED"
+      },
+      "observed": [
+        {
+          "mode": "full",
+          "vocabulary": "contract",
+          "status": "INTEGRITY_FAILURE",
+          "exit_code": 5,
+          "checks_failed": 2,
+          "expected": "FLAGGED",
+          "detected": true
+        },
+        {
+          "mode": "check",
+          "vocabulary": "contract",
+          "status": "INTEGRITY_FAILURE",
+          "exit_code": 5,
+          "checks_failed": 2,
+          "expected": "FLAGGED",
+          "detected": true
+        }
+      ],
+      "legs": [],
+      "detected": true,
+      "valid_mutation": true,
+      "detected_in": [
+        "full",
+        "check"
+      ],
+      "missed_in": [],
+      "how": "verdicts are re-derived from the audit and the cost model by the independent verifier",
+      "evidence": "[full] artifact:verification_attests_the_explorer: no control demonstrates a body mutation caught by recomputation; no control demonstrates a self-hash tamper caught by recomputation; 13 control signal(s) do not form a pair around the committed hash dfd8461f5f82d8b8a1300ea50a043a340b85cf6660d7473b7134ea807e8d3d93: [('da4ab06129c927eb0dfccf820bc0db2673321b031cef77e0317594bb82c19fc6', '792e03432572312ada17; [check] artifact:verification_attests_the_explorer: no control demonstrates a body mutation caught by recomputation; no control demonstrates a self-hash tamper caught by recomputation; 13 control signal(s) do not form a pair around the committed hash dfd8461f5f82d8b8a1300ea50a043a340b85cf6660d7473b7134ea807e8d3d93: [('da4ab06129c927eb0dfccf820bc0db2673321b031cef77e0317594bb82c19fc6', '792e03432572312ada17",
+      "counter_evidence": "",
+      "sandbox_missing_files": []
+    },
+    {
+      "attack_id": "A10",
+      "mutation_changed_the_tree": true,
+      "title": "manipulate the negative-control results",
+      "requirement": "10",
+      "input": "data/recovery/COST_BARRIER_VERIFICATION.json",
+      "mutation": "every negative control in the verification document rewritten to claim detection with a fabricated signal",
+      "expected": {
+        "full": "FLAGGED",
+        "check": "FLAGGED"
+      },
+      "observed": [
+        {
+          "mode": "full",
+          "vocabulary": "contract",
+          "status": "INTEGRITY_FAILURE",
+          "exit_code": 5,
+          "checks_failed": 2,
+          "expected": "FLAGGED",
+          "detected": true
+        },
+        {
+          "mode": "check",
+          "vocabulary": "contract",
+          "status": "INTEGRITY_FAILURE",
+          "exit_code": 5,
+          "checks_failed": 2,
+          "expected": "FLAGGED",
+          "detected": true
+        }
+      ],
+      "legs": [],
+      "detected": true,
+      "valid_mutation": true,
+      "detected_in": [
+        "full",
+        "check"
+      ],
+      "missed_in": [],
+      "how": "the gate re-runs the verifier, and a control ledger that no longer matches the fresh one is document drift",
+      "evidence": "[full] artifact:verification_attests_the_explorer: no control demonstrates a self-hash tamper caught by recomputation; [check] artifact:verification_attests_the_explorer: no control demonstrates a self-hash tamper caught by recomputation",
+      "counter_evidence": "",
+      "sandbox_missing_files": []
+    },
+    {
+      "attack_id": "A11",
+      "mutation_changed_the_tree": true,
+      "title": "introduce a legitimate CRLF/LF difference",
+      "requirement": "11",
+      "input": "reports/strategy-baseline/COST_BARRIER.json",
+      "mutation": "the pinned market-horizon input re-encoded with LF line endings only (legitimate checkout difference)",
+      "expected": {
+        "full": "CLEAN",
+        "check": "PARTIAL"
+      },
+      "observed": [
+        {
+          "mode": "full",
+          "vocabulary": "contract",
+          "status": "FULL_REPRODUCTION_PASS",
+          "exit_code": 0,
+          "checks_failed": 0,
+          "expected": "CLEAN",
+          "detected": true
+        },
+        {
+          "mode": "check",
+          "vocabulary": "contract",
+          "status": "CHECK_ONLY_PASS",
+          "exit_code": 2,
+          "checks_failed": 0,
+          "expected": "PARTIAL",
+          "detected": true
+        }
+      ],
+      "legs": [],
+      "detected": true,
+      "valid_mutation": true,
+      "detected_in": [
+        "full",
+        "check"
+      ],
+      "missed_in": [],
+      "how": "positive control: a checkout convention is not drift, and must not be reported as one",
+      "evidence": "[full] status FULL_REPRODUCTION_PASS (exit 0); [check] status CHECK_ONLY_PASS (exit 2)",
+      "counter_evidence": "",
+      "sandbox_missing_files": []
+    },
+    {
+      "attack_id": "A12",
+      "mutation_changed_the_tree": true,
+      "title": "combine a real content change with an end-of-line change",
+      "requirement": "12",
+      "input": "reports/strategy-baseline/COST_BARRIER.json",
+      "mutation": "one published median moved (27.51 -> 27.52) and the file re-encoded to LF in the same edit",
+      "expected": {
+        "full": "FLAGGED",
+        "check": "FLAGGED"
+      },
+      "observed": [
+        {
+          "mode": "full",
+          "vocabulary": "contract",
+          "status": "INTEGRITY_FAILURE",
+          "exit_code": 5,
+          "checks_failed": 4,
+          "expected": "FLAGGED",
+          "detected": true
+        },
+        {
+          "mode": "check",
+          "vocabulary": "contract",
+          "status": "INTEGRITY_FAILURE",
+          "exit_code": 5,
+          "checks_failed": 2,
+          "expected": "FLAGGED",
+          "detected": true
+        }
+      ],
+      "legs": [],
+      "detected": true,
+      "valid_mutation": true,
+      "detected_in": [
+        "full",
+        "check"
+      ],
+      "missed_in": [],
+      "how": "end-of-line tolerance must not become a laundering service for content",
+      "evidence": "[full] inputs:published_pins_match_the_declared_sources: 9/9 present; pinned: 4 exact, 0 line-ending-only, 1 drifted; reports/strategy-baseline/COST_BARRIER.json content drift (pin 2437f446051d97ec...); [check] inputs:published_pins_match_the_declared_sources: 9/9 present; pinned: 4 exact, 0 line-ending-only, 1 drifted; reports/strategy-baseline/COST_BARRIER.json content drift (pin 2437f446051d97ec...)",
+      "counter_evidence": "",
+      "sandbox_missing_files": []
+    },
+    {
+      "attack_id": "A13",
+      "mutation_changed_the_tree": true,
+      "title": "disable the checks through configuration or environment",
+      "requirement": "13",
+      "input": "environment + config files",
+      "mutation": "a config file and a skip marker asking the gate to stand down with each hostile environment variable set, on a tree whose published number was already moved",
+      "expected": {
+        "full": "FLAGGED",
+        "check": "FLAGGED"
+      },
+      "observed": [
+        {
+          "mode": "full",
+          "vocabulary": "contract",
+          "status": "INTEGRITY_FAILURE",
+          "exit_code": 5,
+          "checks_failed": 2,
+          "expected": "FLAGGED",
+          "detected": true
+        },
+        {
+          "mode": "check",
+          "vocabulary": "contract",
+          "status": "INTEGRITY_FAILURE",
+          "exit_code": 5,
+          "checks_failed": 2,
+          "expected": "FLAGGED",
+          "detected": true
+        }
+      ],
+      "legs": [
+        {
+          "leg": "environment_and_config_change_no_verdict_in_either_direction",
+          "clean_hostile": {
+            "status": "FULL_REPRODUCTION_PASS",
+            "exit_code": 0,
+            "flagged": false
+          },
+          "plain": {
+            "status": "INTEGRITY_FAILURE",
+            "exit_code": 5
+          },
+          "hostile": {
+            "status": "INTEGRITY_FAILURE",
+            "exit_code": 5
+          },
+          "invariant": true,
+          "evidence": "clean+hostile FULL_REPRODUCTION_PASS/exit 0; defective plain INTEGRITY_FAILURE/exit 5 vs hostile INTEGRITY_FAILURE/exit 5"
+        }
+      ],
+      "detected": true,
+      "valid_mutation": true,
+      "detected_in": [
+        "full",
+        "check"
+      ],
+      "missed_in": [],
+      "how": "the tree also carries a moved number, so a run that stands down is visible; the hostile environment is applied to a mutation that is already flagged",
+      "evidence": "[full] artifact:verification_attests_the_explorer: no control demonstrates a body mutation caught by recomputation; 12 control signal(s) do not form a pair around the committed hash 792e03432572312ada17e9a569ae346867ef178fd84875eceaf6b284a1bbef8b: [('da4ab06129c927eb0dfccf820bc0db2673321b031cef77e0317594bb82c19fc6', '46f1f8d713ceac9bf90a32f23d9ba7a639d0e03695ced78745f5e6d0dd85cd63'), ('da4ab06129c927eb0d; [check] artifact:verification_attests_the_explorer: no control demonstrates a body mutation caught by recomputation; 12 control signal(s) do not form a pair around the committed hash 792e03432572312ada17e9a569ae346867ef178fd84875eceaf6b284a1bbef8b: [('da4ab06129c927eb0dfccf820bc0db2673321b031cef77e0317594bb82c19fc6', '46f1f8d713ceac9bf90a32f23d9ba7a639d0e03695ced78745f5e6d0dd85cd63'), ('da4ab06129c927eb0d",
+      "counter_evidence": "",
+      "sandbox_missing_files": []
+    },
+    {
+      "attack_id": "A14",
+      "mutation_changed_the_tree": true,
+      "title": "alter dependency paths so CI stops activating",
+      "requirement": "14",
+      "input": "src/trading_bot/research/microstructure/cost_model_v3.py",
+      "mutation": "the executable cost model is moved to src/trading_bot/research/microstructure/costs/cost_model_v3.py and everything that cites it is rewired (explorer, verifier, the gate's declared inputs, the artefact's pin and the producer manifest) - but the workflow's path filters are not",
+      "expected": {
+        "full": "FLAGGED",
+        "check": "FLAGGED"
+      },
+      "observed": [
+        {
+          "mode": "full",
+          "vocabulary": "contract",
+          "status": "INTEGRITY_FAILURE",
+          "exit_code": 5,
+          "checks_failed": 5,
+          "expected": "FLAGGED",
+          "detected": true
+        },
+        {
+          "mode": "check",
+          "vocabulary": "contract",
+          "status": "INTEGRITY_FAILURE",
+          "exit_code": 5,
+          "checks_failed": 3,
+          "expected": "FLAGGED",
+          "detected": true
+        }
+      ],
+      "legs": [],
+      "detected": true,
+      "valid_mutation": true,
+      "detected_in": [
+        "full",
+        "check"
+      ],
+      "missed_in": [],
+      "how": "the gate checks that its activation contract still covers every declared input, and the relocated path is not in the filters",
+      "evidence": "[full] producers:digests_match_the_pinned_manifest: scripts/cost_barrier_verify.py drifted from the pinned producer digest; [check] producers:digests_match_the_pinned_manifest: scripts/cost_barrier_verify.py drifted from the pinned producer digest",
+      "counter_evidence": "",
+      "sandbox_missing_files": []
+    },
+    {
+      "attack_id": "A17",
+      "mutation_changed_the_tree": true,
+      "title": "prune the CI path filters instead of the code",
+      "requirement": "extra",
+      "input": ".github/workflows/cost-barrier-gate.yml",
+      "mutation": "src/trading_bot/research/microstructure/cost_model_v3.py removed from both path filters, so a change to the executable cost model would no longer activate the workflow that is supposed to catch it",
+      "expected": {
+        "full": "FLAGGED",
+        "check": "FLAGGED"
+      },
+      "observed": [
+        {
+          "mode": "full",
+          "vocabulary": "contract",
+          "status": "INTEGRITY_FAILURE",
+          "exit_code": 5,
+          "checks_failed": 1,
+          "expected": "FLAGGED",
+          "detected": true
+        },
+        {
+          "mode": "check",
+          "vocabulary": "contract",
+          "status": "INTEGRITY_FAILURE",
+          "exit_code": 5,
+          "checks_failed": 1,
+          "expected": "FLAGGED",
+          "detected": true
+        }
+      ],
+      "legs": [],
+      "detected": true,
+      "valid_mutation": true,
+      "detected_in": [
+        "full",
+        "check"
+      ],
+      "missed_in": [],
+      "how": "same activation contract, attacked from the workflow side",
+      "evidence": "[full] ci:activation_contract_covers_every_declared_input: a change to ['src/trading_bot/research/microstructure/cost_model_v3.py'] would not activate the workflow on push; a change to ['src/trading_bot/research/microstructure/cost_model_v3.py'] would not activate the workflow on pull_request; [check] ci:activation_contract_covers_every_declared_input: a change to ['src/trading_bot/research/microstructure/cost_model_v3.py'] would not activate the workflow on push; a change to ['src/trading_bot/research/microstructure/cost_model_v3.py'] would not activate the workflow on pull_request",
+      "counter_evidence": "",
+      "sandbox_missing_files": []
+    },
+    {
+      "attack_id": "A15",
+      "mutation_changed_the_tree": true,
+      "title": "make a check-only result satisfy a full gate",
+      "requirement": "15",
+      "input": "the gate's own report",
+      "mutation": "a check-only report (mode=check, no builder run) rewritten to say FULL_REPRODUCTION_PASS with the certification flag flipped",
+      "expected": {
+        "full": "CLEAN",
+        "check": "PARTIAL"
+      },
+      "observed": [
+        {
+          "mode": "full",
+          "vocabulary": "contract",
+          "status": "FULL_REPRODUCTION_PASS",
+          "exit_code": 0,
+          "checks_failed": 0,
+          "expected": "CLEAN",
+          "detected": true
+        },
+        {
+          "mode": "check",
+          "vocabulary": "contract",
+          "status": "CHECK_ONLY_PASS",
+          "exit_code": 2,
+          "checks_failed": 0,
+          "expected": "PARTIAL",
+          "detected": true
+        }
+      ],
+      "legs": [
+        {
+          "leg": "the_certifier_refuses_a_partial_run_dressed_as_full",
+          "refused": true,
+          "observed_status": "FAILED",
+          "reasons": [
+            "the evidence bundle was not verified for this candidate, so the inputs the reproduction consumed are not accounted for",
+            "a FULL_REPRODUCTION_PASS report claims mode 'check'",
+            "the contract tests failed (exit 1): ",
+            "1 adversarial attack(s) escaped the gate"
+          ],
+          "evidence": "certifier verdict FAILED for a mode=check report claiming FULL_REPRODUCTION_PASS: ['the evidence bundle was not verified for this candidate, so the inputs the reproduction consumed are not accounted for', \"a FULL_REPRODUCTION_PASS report claims mode 'check'\"]",
+          "skipped": false
+        }
+      ],
+      "detected": true,
+      "valid_mutation": true,
+      "detected_in": [
+        "full",
+        "check"
+      ],
+      "missed_in": [],
+      "how": "the undressed run is partial by contract; the dressed one is kept as evidence and handed to the certifier, which must refuse it",
+      "evidence": "[full] status FULL_REPRODUCTION_PASS (exit 0); [check] status CHECK_ONLY_PASS (exit 2)",
+      "counter_evidence": "",
+      "sandbox_missing_files": []
+    },
+    {
+      "attack_id": "A16",
+      "mutation_changed_the_tree": true,
+      "title": "alter a derived market-horizon number and recompute the hash honestly",
+      "requirement": "extra",
+      "input": "data/recovery/COST_BARRIER_EXPLORER.json",
+      "mutation": "horizon.market_horizon.rows[1h/SOL].hours_to_BASE -> 99.0 with payload_sha256 recomputed honestly (the independent verifier never reads that source)",
+      "expected": {
+        "full": "FLAGGED",
+        "check": "FLAGGED"
+      },
+      "observed": [
+        {
+          "mode": "full",
+          "vocabulary": "contract",
+          "status": "INTEGRITY_FAILURE",
+          "exit_code": 5,
+          "checks_failed": 3,
+          "expected": "FLAGGED",
+          "detected": true
+        },
+        {
+          "mode": "check",
+          "vocabulary": "contract",
+          "status": "INTEGRITY_FAILURE",
+          "exit_code": 5,
+          "checks_failed": 3,
+          "expected": "FLAGGED",
+          "detected": true
+        }
+      ],
+      "legs": [],
+      "detected": true,
+      "valid_mutation": true,
+      "detected_in": [
+        "full",
+        "check"
+      ],
+      "missed_in": [],
+      "how": "the section the independent verifier never reads is re-derived by the gate from the pinned source",
+      "evidence": "[full] artifact:verification_attests_the_explorer: no control demonstrates a body mutation caught by recomputation; no control demonstrates a self-hash tamper caught by recomputation; 13 control signal(s) do not form a pair around the committed hash dd3abc392e430125c9a29c35464f69bfa7c4311b402c26f60c2d990b47acb6a1: [('da4ab06129c927eb0dfccf820bc0db2673321b031cef77e0317594bb82c19fc6', '792e03432572312ada17; [check] artifact:verification_attests_the_explorer: no control demonstrates a body mutation caught by recomputation; no control demonstrates a self-hash tamper caught by recomputation; 13 control signal(s) do not form a pair around the committed hash dd3abc392e430125c9a29c35464f69bfa7c4311b402c26f60c2d990b47acb6a1: [('da4ab06129c927eb0dfccf820bc0db2673321b031cef77e0317594bb82c19fc6', '792e03432572312ada17",
+      "counter_evidence": "",
+      "sandbox_missing_files": []
+    }
+  ],
+  "attacks_total": 17,
+  "attacks_detected": 17,
+  "attacks_evaded": 0,
+  "attacks_invalid": 0,
+  "invalid_mutations": [],
+  "escapes": [],
+  "legs_failed": [],
+  "claims": {
+    "promotion_claimed": false,
+    "rentable_claimed": false,
+    "certified_claimed": false,
+    "production_ready_claimed": false,
+    "authorization_state": "NOT_AUTHORIZED",
+    "trades_authorized": 0,
+    "false_success": 0
+  },
+  "false_success": 0
+}
