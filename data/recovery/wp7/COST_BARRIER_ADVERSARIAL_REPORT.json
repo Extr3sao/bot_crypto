@@ -1,12 +1,19 @@
 {
   "artifact": "COST_BARRIER_ADVERSARIAL_REPORT",
   "work_package": "WP-7D adversarial verification of the cost-barrier drift gate",
-  "generated_at_utc": "2026-10-11T12:22:07Z",
+  "generated_at_utc": "2026-10-11T12:52:42Z",
+  "status": "EVALUATED",
+  "substrate": {
+    "path": "reports/strategy-baseline/COST_BARRIER.json",
+    "present": true,
+    "why": "the market-horizon input is generated from cached bar datasets and is gitignored by design, so a clean checkout does not carry it. `scripts/cost_barrier_evidence.py --materialize` restores it from the digest-pinned evidence before this suite runs. Without it every full-reproduction attack degenerates into 'the gate was already blocked', so a detection rate measured here would be vacuous; the report says NOT_EVALUABLE rather than counting those degenerations as detection"
+  },
   "gate_under_test": {
-    "label": "WP-7 hardened gate (this working tree)",
+    "label": "current working tree at a551fdc",
     "path": "scripts/cost_barrier_gate.py",
     "sha256": "6ff2793aee81b88df483190df2a54f238687dec2edc9d24273d2367952bd7d2e",
-    "revision": "38b8e183d54c5ac8552296218e28f3ded8d95885"
+    "sha256_lf": "6ff2793aee81b88df483190df2a54f238687dec2edc9d24273d2367952bd7d2e",
+    "revision": "a551fdc8dba75325a9603684c06e85114805b6ed"
   },
   "environment": {
     "python": "3.11.15",
@@ -239,7 +246,7 @@
       "title": "remove a required input",
       "requirement": "6",
       "input": "reports/strategy-baseline/COST_BARRIER.json",
-      "mutation": "reports/strategy-baseline/COST_BARRIER.json deleted after being materialized",
+      "mutation": "reports/strategy-baseline/COST_BARRIER.json removed: the gitignored input the reproduction needs is deleted, so a full reproduction must become impossible",
       "expected": {
         "full": "BLOCKED",
         "check": "PARTIAL"
@@ -732,7 +739,7 @@
             "the evidence bundle was not verified for this candidate, so the inputs the reproduction consumed are not accounted for",
             "a FULL_REPRODUCTION_PASS report claims mode 'check'",
             "the contract tests failed (exit 1): ",
-            "1 adversarial attack(s) escaped the gate"
+            "the adversarial suite reports status None, not 'EVALUATED': its substrate must be materialized before a detection rate counts as evidence"
           ],
           "evidence": "certifier verdict FAILED for a mode=check report claiming FULL_REPRODUCTION_PASS: ['the evidence bundle was not verified for this candidate, so the inputs the reproduction consumed are not accounted for', \"a FULL_REPRODUCTION_PASS report claims mode 'check'\"]",
           "skipped": false

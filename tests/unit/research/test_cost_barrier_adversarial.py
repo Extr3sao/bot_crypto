@@ -327,6 +327,32 @@ def test_every_missing_criterion_refuses_certification(certifier, overrides):
     assert outcome["reasons"], "a refusal must name its reason"
 
 
+def test_the_gate_under_test_is_identified_by_content_not_by_the_checkout(harness, tmp_path):
+    """A checkout rewrites line endings; the digest must name the code, not the tree."""
+    source = tmp_path / "gate.py"
+    source.write_bytes(b"a = 1\r\nb = 2\r\n")
+    assert harness.content_digest(source) == harness.sha256_bytes(b"a = 1\nb = 2\n")
+    assert harness.sha256_file(source) != harness.content_digest(source)
+    assert harness.content_digest(tmp_path / "absent.py") is None
+
+
+def test_the_certification_record_digests_content_not_a_checkout(harness, certifier):
+    import hashlib
+
+    record_path = RECOVERY / "wp7" / "COST_BARRIER_CERTIFICATION.json"
+    if not record_path.exists():
+        pytest.skip("the certification record has not been produced in this checkout")
+    record = json.loads(record_path.read_text(encoding="utf-8"))
+    assert "LF" in str(record.get("evidence_digest_convention"))
+    digests = record["evidence_digests"]
+    assert digests, "the record identifies nothing"
+    for rel, digest in digests.items():
+        expected = hashlib.sha256(
+            (ROOT / rel).read_bytes().replace(b"\r\n", b"\n")
+        ).hexdigest()
+        assert digest == expected, rel
+
+
 def test_the_committed_certification_record_refuses_or_reports_a_full_run():
     record_path = RECOVERY / "wp7" / "COST_BARRIER_CERTIFICATION.json"
     if not record_path.exists():

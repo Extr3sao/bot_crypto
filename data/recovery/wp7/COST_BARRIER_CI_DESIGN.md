@@ -98,11 +98,26 @@ true for exactly one state, and the certifier refuses anything else.
 
 ## 5. Integrity and provenance (WP-7E)
 
-* **Producer pins.** The four producers that had no pin now carry digests in
+* **Producer pins, in the byte conventions a checkout can produce.** The four
+  producers that had no pin now carry digests in
   `data/recovery/wp7/evidence/PRODUCER_PINS.json`, verified on every gate run. A
   producer edit is a named failure requiring regeneration, re-verification and an
   explicit re-pin in the same commit (the churn is the point: it is what makes the
   change visible).
+  The manifest records three digests per producer: `sha256_lf` and `sha256_crlf`
+  are the **authorities**, and `sha256` is the byte form of the tree that wrote
+  the manifest, kept as information only. This is the defect the rehearsal found
+  and it is worth stating plainly: `core.autocrlf=true` rewrites line endings on
+  checkout without touching content, so a pin over the authoring tree's raw bytes
+  declares the same commit different in every clean worktree. The three LF
+  producers were reported as changed on checkout, materialization exited `2`, and
+  the gate had no input to reproduce — the bundle was unverifiable anywhere but on
+  the machine that wrote it. A difference that is line endings **and nothing else**
+  is now accepted, reported as an advisory naming the file and the convention, and
+  never as a finding; a difference that survives normalisation is still `DRIFT`.
+  The gate's `pin_status` and the bundle's `eol_status` are held equal on the same
+  inputs by `test_the_gate_and_the_evidence_bundle_agree_on_what_a_producer_drift_is`,
+  so the two implementations cannot disagree about whether a pin held.
 * **Pin authority.** For each pin: the artefact's `sources[]` for the five
   inputs, the manifest for the four producers, and behind both the commit that
   carries it. The manifest records that authority, what it deliberately excludes
@@ -132,7 +147,9 @@ record only after evaluating them:
 3. the gate reaches `FULL_REPRODUCTION_PASS` **in full mode**;
 4. that same run attests the artefact: 0 failed checks, 0 missed mutation
    controls, `false_success` 0;
-5. the adversarial suite reports 0 escapes, 0 invalid mutations and 0 failed legs;
+5. the adversarial suite reports status `EVALUATED` (its substrate present, so the
+   rate is not a count of degenerations), 0 escapes, 0 invalid mutations and 0
+   failed legs;
 6. the record identifies commit, environment and evidence digests;
 7. nothing hidden: any non-zero step, any integrity failure, any blocked input is
    named in `decision.reasons`.
@@ -140,7 +157,18 @@ record only after evaluating them:
 Refusals are part of the contract: a `mode: check` report rewritten to claim
 `FULL_REPRODUCTION_PASS` is refused (`mode` is cross-checked), a check-only
 status yields `PARTIAL`, a missing input yields `BLOCKED_MISSING_INPUT`, an escape
-or a failed test yields `FAILED`.
+or a failed test yields `FAILED`, and a sweep that ran without its substrate
+(`NOT_EVALUABLE`) is refused rather than counted.
+
+The substrate clause is a rehearsal finding too (§9). With
+the gitignored input absent, every attack whose expectation is "the reproduction
+must fail" degenerates into "the gate was already blocked", which the sweep would
+have recorded as the attack being caught: a 17/17 from a checkout that never
+materialized anything. The sweep now asks the sandbox whether the input is there,
+returns `NOT_EVALUABLE` and exits non-zero when it is not, and the certifier
+refuses a report that does not attest `substrate.present: true`. A clean checkout
+running the steps out of order therefore cannot harvest a detection rate from
+having nothing to attack.
 
 ## 7. Independent trust root — evaluated, not available
 
@@ -184,5 +212,43 @@ the shared ADR log is left byte-identical.
   re-pin in the same commit. That is a deliberate cost.
 * The GitHub workflow has never executed on GitHub from this lane (no push was
   authorized). What was verified here is the same procedure on a clean `git
-  worktree` of the candidate commit — see `RUN_REPORT.md`.
+  worktree` of the candidate commit — see §9.
 * CI is evidence, not proof against a compromised runner.
+
+## 9. The clean-checkout rehearsal, and what it found
+
+`git worktree add --detach /tmp/wp7_ci_rehearsal <commit>` produces a tree with
+none of the gitignored working files, which is the closest stand-in available here
+for a GitHub runner. The CI sequence is then run in that tree — materialize, full
+gate, adversarial sweep — and the worktree is checked afterwards for any move in
+`data/`, `scripts/`, `tests/` or `.github/`. Two rehearsals were run, and the
+first one is the reason this document has a §9 at all.
+
+| run | commit | materialize | gate | sweep | published files moved |
+| --- | --- | --- | --- | --- | --- |
+| 1 | `749bf4c` | **exit 2** (`INTEGRITY_FAILURE`) | exit 3 `BLOCKED_MISSING_INPUT` | crashed (A06 mutated an input that was not there) | 0 |
+| 2 | `a551fdc` | exit 0 (`VERIFIED`, input written, `2437f446…`) | exit 0 `FULL_REPRODUCTION_PASS`, 0 checks failed | exit 0, 17/17 detected, `EVALUATED`, 0 escapes | 0 |
+
+The first run failed for two distinct reasons, both of them invisible from inside
+the authoring tree:
+
+1. **The pins were checkout-dependent.** Three of the four producers were pinned
+   by the raw bytes of the working tree, whose line endings `core.autocrlf`
+   rewrites on checkout, so the clean tree hashed them differently:
+   `drifted/absent: scripts/active_economic_audit.py (EOL_ONLY), …`. Materialization
+   refuses to place an input while the bundle is not verified, so the gate then had
+   no input and correctly said `BLOCKED_MISSING_INPUT` — the gate was right, and
+   the bundle was unrunnable. Fixed by pinning content (LF/CRLF authorities, §5).
+2. **The sweep would have counted a degeneration as detection.** A06 deletes the
+   required input; on a checkout that never had it, the mutation crashed with
+   `FileNotFoundError` — and had it been tolerated, "the input is gone and the gate
+   is blocked" would have been recorded as the attack being caught. Fixed by the
+   `NOT_EVALUABLE` substrate clause (§6).
+
+Both are recorded here rather than quietly fixed because they are the class of
+defect this lane exists to catch: a check that passes for a reason unrelated to
+what it claims, discovered only by running the sequence where it will actually
+run. Run 2 is the state of the lane: on a clean checkout of the certified commit,
+the input materializes from its pin, the gate reaches a full reproduction, all
+seventeen attacks are caught with their substrate present, and no published file
+is touched by any of it.

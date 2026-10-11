@@ -85,6 +85,21 @@ CERTIFYING_STATUSES: tuple[str, ...] = (CERTIFIED,)
 EXIT_CODES: dict[str, int] = {CERTIFIED: 0, PARTIAL: 2, BLOCKED: 3, FAILED: 4}
 
 
+def content_digest(rel: str) -> str | None:
+    """The digest that identifies an artefact's *content*, not a checkout's bytes.
+
+    ``core.autocrlf`` rewrites line endings on checkout, so a raw-byte digest
+    makes the same commit fingerprint differently on a CI runner than on the
+    machine that wrote the record that travels with it - a difference that looks
+    like changed evidence and is not. Line endings are normalised to LF, which is
+    what git itself stores; a content change still moves the digest either way.
+    """
+    path = ROOT / rel
+    if not path.exists():
+        return None
+    return hashlib.sha256(path.read_bytes().replace(b"\r\n", b"\n")).hexdigest()
+
+
 def sha256_file(rel: str) -> str | None:
     path = ROOT / rel
     return hashlib.sha256(path.read_bytes()).hexdigest() if path.exists() else None
@@ -285,7 +300,7 @@ def build_record(
         else (steps.get("adversarial") or {}),
         integrity=integrity,
     )
-    digests = {rel: sha256_file(rel) for rel in EVIDENCE_PATHS}
+    digests = {rel: content_digest(rel) for rel in EVIDENCE_PATHS}
     fingerprint = hashlib.sha256(
         json.dumps(
             {"head": git_value("rev-parse", "HEAD"), "digests": digests},
@@ -343,6 +358,11 @@ def build_record(
         "status": decision["status"],
         "exit_code": EXIT_CODES[decision["status"]],
         "evidence_digests": digests,
+        "evidence_digest_convention": (
+            "sha256 over the artefact's content with line endings normalised to LF: a checkout "
+            "rewrites line endings without touching content, so the same commit must fingerprint "
+            "the same on a runner as on the machine that produced the record"
+        ),
         "evidence_fingerprint": fingerprint,
         "adversarial_summary": {
             "status": (adversarial_report or {}).get("status"),

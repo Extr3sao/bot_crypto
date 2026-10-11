@@ -16,6 +16,7 @@
 | audit inputs | `git ls-files --error-unmatch` per declared input, plus digests | 9 declared inputs: 4 tracked+pinned, 1 gitignored+pinned, 4 tracked+unpinned producers |
 | audit authority | compared pins with bytes; re-ran the tools | pins reproduce; verifier 4/4 checks, 13/13 mutation controls |
 | attack the wiring | 17 attacks on isolated copies (WP-7D) | **3 escaped the WP-6 gate** (A07, A08, A17); each is addressed below, and the two remaining gaps are declared |
+| rehearse CI on a clean checkout | `git worktree add --detach <commit>` + materialize + full gate + sweep, then `git status` inside the worktree | run 1 (`749bf4c`) failed: pins were checkout-dependent, and the sweep would have counted a degeneration as detection. Run 2 (`a551fdc`, after the fixes) is `FULL_REPRODUCTION_PASS` with 17/17 attacks caught and 0 published files moved - see `COST_BARRIER_CI_DESIGN.md` §9 |
 
 Nothing was redesigned that already worked: the builder, the verifier and the
 published artefacts of WP-6 are byte-identical to `38b8e18` in this lane.
@@ -97,6 +98,8 @@ structural reason. Each row below is a real run, not a hypothesis.
 | A17 CI path filters pruned | the cost model removed from both filters | **escaped, both modes**: nothing in the repository reads the workflow | detected (activation contract) |
 | A14 dependency path altered | cost model moved, every citation rewired, artefact and manifest re-pinned | detected **incidentally**: the reroute left the tools erroring (builder exit 1, verifier exit 1) rather than any check naming the real problem - adequate detection, wrong witness, and nothing stops a more careful reroute | detected by a *named* check: `ci:activation_contract_covers_every_declared_input` |
 | A01/A02 a published number edited, with or without an honest re-hash; A13 the same defect with every off-switch set | `cells[0].zero_cost_gross_bps +5 bps` | detected in both modes (self-hash, and the verifier's own re-derivation) | unchanged; A13 adds a two-sided invariance leg proving the hostile knobs change no verdict in either direction |
+| **the checkout itself** (found by rehearsal, not by an attack) | run the CI sequence on a clean worktree of the candidate commit | not applicable to the WP-6 gate: the bundle did not exist yet | **detected and fixed**: three producers were pinned by the authoring tree's line endings, so a clean checkout reported them changed and materialization exited `2`, leaving the gate blocked. Pins are now by content (`sha256_lf` / `sha256_crlf`), a line-ending-only difference is an advisory |
+| **a detection rate measured with nothing to attack** (found by rehearsal) | run the sweep on a checkout that never materialized the input | not applicable to the WP-6 gate | **detected and fixed**: every "the reproduction must fail" attack degenerates into "the gate was blocked already", which the sweep would have counted as caught. It now reports `NOT_EVALUABLE`, exits non-zero, and the certifier refuses that report |
 
 Detected by the WP-6 gate already, and still detected: A03 cost model edited,
 A04 ledger edited, A05 pin substituted with a valid digest from another file,
@@ -140,6 +143,8 @@ Two structural facts behind the escapes:
 | the WP-3 audit's own economic content (whether 8.912 bps is the right number) | the lane treats the audit as the primary source of the cells | out of scope: WP-3 owns that; the gate only holds the explorer to the audit's published values |
 | the cached bar datasets behind input 5 | not committed, not reproducible from the repo (need network) | the evidence copy is byte-identical to what the artefact was built from; regenerating the *input itself* remains outside CI and is declared as such |
 | a malicious GitHub Action or a compromised runner | infrastructure, not repository state | declared: CI is evidence, not proof against the runner |
+| an edit to a producer that changes nothing but its line endings | the pins are content pins by necessity: a checkout rewrites line endings, so the byte convention cannot be part of the authority without making the bundle unverifiable outside the authoring machine | declared: such a difference is reported as an advisory naming the file and the convention, and the gate's report shows `EOL_ONLY` per producer. Content drift in either convention is still `DRIFT` |
+| the CI sequence being run in an order other than the declared one (sweep before materialize) | the workflow runs the steps in order, and step failure stops the job | the sweep now refuses to report a detection rate without its substrate (`NOT_EVALUABLE`, non-zero exit), so an out-of-order run yields a refusal instead of a vacuous 17/17 |
 
 ## 7. Authority summary
 

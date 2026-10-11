@@ -1,8 +1,9 @@
 # COST_BARRIER_ADVERSARIAL_REPORT
 
-- gate under test: **WP-7 hardened gate (this working tree)** (`sha256 6ff2793aee81b88d...`, revision `38b8e183d54c`)
+- gate under test: **current working tree at a551fdc** (`sha256_lf 6ff2793aee81b88d...`, revision `a551fdc8dba7`)
+- status: **EVALUATED** (substrate `reports/strategy-baseline/COST_BARRIER.json` present)
 - attacks: **17/17 detected**, 0 evaded, 0 invalid, 0 leg(s) failed
-- generated `2026-10-11T12:22:07Z` · python `3.11.15` · `win32`
+- generated `2026-10-11T12:52:42Z` · python `3.11.15` · `win32`
 
 Each attack runs against a throwaway sandbox built from the real files; the published artefacts and inputs are never touched. `DETECTED` means the gate's own published state flagged the run for that mode; a mutation that leaves the tree green is recorded as an escape rather than smoothed over.
 
@@ -81,7 +82,7 @@ Each attack runs against a throwaway sandbox built from the real files; the publ
 ### A06 — remove a required input
 
 - **input**: `reports/strategy-baseline/COST_BARRIER.json`
-- **mutation**: reports/strategy-baseline/COST_BARRIER.json deleted after being materialized
+- **mutation**: reports/strategy-baseline/COST_BARRIER.json removed: the gitignored input the reproduction needs is deleted, so a full reproduction must become impossible
 - **expected**: {'full': 'BLOCKED', 'check': 'PARTIAL'}
 - **observed**: `full` → `BLOCKED_MISSING_INPUT` (exit 3, checks_failed 4); `check` → `CHECK_ONLY_WITH_ADVISORIES` (exit 2, checks_failed 0)
 - **detected**: yes

@@ -123,6 +123,18 @@ def sha256_file(path: Path) -> str | None:
     return sha256_bytes(path.read_bytes()) if path.exists() else None
 
 
+def content_digest(path: Path) -> str | None:
+    """The gate's content identity: line endings normalised to LF before hashing.
+
+    The gate under test is named by its digest, and a raw-byte digest would name
+    the checkout rather than the code - the same commit checked out with
+    ``core.autocrlf`` differs by line endings alone.
+    """
+    if not path.exists():
+        return None
+    return sha256_bytes(path.read_bytes().replace(b"\r\n", b"\n"))
+
+
 def read_json(path: Path) -> Any:
     return json.loads(path.read_text(encoding="utf-8"))
 
@@ -1078,7 +1090,12 @@ def run_all(
         "gate_under_test": {
             "label": gate_label,
             "path": GATE,
+            # Two digests on purpose: `sha256` is the bytes this run actually
+            # read, `sha256_lf` is the gate's content identity, which is the one
+            # that is comparable across checkouts (a checkout rewrites line
+            # endings without touching content).
             "sha256": sha256_file(workdir / "_probe" / GATE),
+            "sha256_lf": content_digest(workdir / "_probe" / GATE),
             "revision": subprocess.run(
                 ["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True, check=False
             ).stdout.strip(),
@@ -1128,7 +1145,7 @@ def render(report: dict[str, Any]) -> str:
         "# COST_BARRIER_ADVERSARIAL_REPORT",
         "",
         f"- gate under test: **{report['gate_under_test']['label']}** "
-        f"(`sha256 {str(report['gate_under_test']['sha256'])[:16]}...`, revision "
+        f"(`sha256_lf {str(report['gate_under_test'].get('sha256_lf'))[:16]}...`, revision "
         f"`{report['gate_under_test']['revision'][:12]}`)",
         f"- status: **{report.get('status', 'EVALUATED')}** (substrate "
         f"`{report.get('substrate', {}).get('path')}` "

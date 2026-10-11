@@ -1,8 +1,8 @@
 {
   "artifact": "COST_BARRIER_INPUT_EVIDENCE",
   "work_package": "WP-7B: byte-identical evidence copy of a gitignored generated input",
-  "captured_at_utc": "2026-10-11T11:57:20Z",
-  "captured_commit": "38b8e183d54c5ac8552296218e28f3ded8d95885",
+  "captured_at_utc": "2026-10-11T12:37:11Z",
+  "captured_commit": "749bf4c0bd714eaa45b9b5af1ef13157ea70b48f",
   "source_path": "reports/strategy-baseline/COST_BARRIER.json",
   "evidence_path": "data/recovery/wp7/evidence/COST_BARRIER.json",
   "reason": "reports/strategy-baseline/COST_BARRIER.json is generated from cached bar datasets that are not committed, so it is gitignored by design and absent from a clean checkout. This copy is byte-identical to the file the published artefact was built from.",
