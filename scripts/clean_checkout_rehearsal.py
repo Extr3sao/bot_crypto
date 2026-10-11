@@ -24,7 +24,10 @@ Sequence (``--scope full``; ``--scope recovery`` stops after the recovery lane):
    from the commit, which is the only thing a CI runner can rely on;
 4. run the producers and the lane's contract and determinism tests;
 5. compare the regenerated artefacts with the committed ones by content digest, and
-   report every other tracked path the run moved;
+   guard the inputs: the run may rewrite the artefacts it is reproducing and its own run
+   records, and nothing else. Every declared input is read from HEAD rather than from the
+   working tree, so a mutation of an input inside the checkout is invisible to the steps
+   themselves - the guard is what sees it, and the sabotage proofs rest on it;
 6. run the independent verifier *after* the comparison report exists, because the
    verifier is required to check that report;
 7. fail on an absent or unverified dependency rather than on a missing file later.
@@ -40,7 +43,7 @@ Two distinctions the report keeps explicit:
 
 Exit codes: 0 expected outcome (pass, or a sabotage detected), 2 integrity failure,
 3 blocked missing input, 4 refused (dirty paths under test), 5 sabotage NOT detected,
-6 reproduction failure.
+6 reproduction failure, 7 an input was modified inside the checkout.
 """
 
 from __future__ import annotations
@@ -129,6 +132,7 @@ EXIT_BLOCKED = 3
 EXIT_REFUSED = 4
 EXIT_NOT_DETECTED = 5
 EXIT_REPRODUCTION = 6
+EXIT_INPUT_MODIFIED = 7
 
 SABOTAGE_TARGETS = ("evidence_copy", "committed_input")
 
@@ -264,7 +268,8 @@ def sabotage(worktree: Path, target: str) -> dict[str, Any]:
             "target": target,
             "path": str(victim.relative_to(worktree)).replace("\\", "/"),
             "mutation": "added a key to the evidence copy of the timeframe audit",
-            "expected_detector": "the input bundle verify step",
+            "expected_detector": "the input guard, because the bundle verify step reads this file "
+                                 "from HEAD and a checkout mutation is invisible to it",
         }
     victim = worktree / "tasks/decisions.md"
     text = victim.read_text(encoding="utf-8")
@@ -274,7 +279,9 @@ def sabotage(worktree: Path, target: str) -> dict[str, Any]:
         "target": target,
         "path": str(victim.relative_to(worktree)).replace("\\", "/"),
         "mutation": "appended an ADR that authorizes a campaign",
-        "expected_detector": "the artefact comparison",
+        "expected_detector": "the input guard; the artefact comparison reads decisions.md from HEAD, "
+                             "which is why an uncommitted authorization cannot reach a finding and "
+                             "why the guard rather than the comparison is the detector",
     }
 
 
@@ -314,6 +321,8 @@ def render_markdown(report: dict[str, Any]) -> str:
     lines.append(f"- published artefacts whose state moved: {report['published_paths_moved'] or 'none'}")
     lines.append(f"- artefacts whose bytes the rebuild rewrote (the moment): "
                  f"{report.get('worktree_paths_rewritten_by_the_run') or 'none'}")
+    lines.append(f"- **inputs modified inside the checkout: "
+                 f"{report.get('inputs_modified_in_the_checkout') or 'none'}**")
     lines.append(f"- run records that legitimately differ: {report['run_records_changed'] or 'none'}")
     lines.append(f"- excluded from the state comparison: document keys {list(VOLATILE_KEYS)}; "
                  f"report lines starting {list(VOLATILE_MD_LINE_PREFIXES)}; report sections "
@@ -349,6 +358,7 @@ def rehearse(commit: str | None, scope: str, sabotage_target: str | None,
         "artifacts": {},
         "published_paths_moved": [],
         "run_records_changed": [],
+        "inputs_modified_in_the_checkout": [],
         "line_endings": {"eol_only_encountered": False,
                          "note": "a line-ending-only difference is a checkout artefact, not a finding: "
                                  "the digests are content digests and an EOL difference is an advisory"},
@@ -427,6 +437,14 @@ def rehearse(commit: str | None, scope: str, sabotage_target: str | None,
                                                          and not line.split()[-1].startswith("data/recovery/wp8/")]
         report["published_paths_moved"] = [rel for rel, entry in report["artifacts"].items()
                                            if entry["identical"] is False]
+        # 5b. the input guard. The run is allowed to rewrite the artefacts it is reproducing
+        # and its own run records; a tracked path that is neither has been modified inside a
+        # checkout that was supposed to be the commit itself. The steps cannot see that (they
+        # read every declared input from HEAD, which is the property WP-8 established), so the
+        # guard is the thing that does - and it is what the sabotage proofs exercise.
+        exempt = set(ARTIFACTS) | set(RUN_RECORDS)
+        report["inputs_modified_in_the_checkout"] = [line.strip() for line in changed
+                                                     if line.split()[-1] not in exempt]
         report["line_endings"]["eol_only_encountered"] = any(
             item["eol_only_difference_reported"] for item in report["steps"])
 
@@ -440,14 +458,23 @@ def rehearse(commit: str | None, scope: str, sabotage_target: str | None,
             failed = [item for item in report["steps"] if item["result"] != "PASS"]
             reproduction = bool(report["published_paths_moved"]) or any(
                 entry["identical"] is False for entry in report["artifacts"].values())
+            guard = list(report["inputs_modified_in_the_checkout"])
+            guard_detector = (
+                "the input guard saw a tracked path that is neither a derived artefact nor a run "
+                "record modified inside the clean checkout: " + ", ".join(guard[:3])
+            )
             if report["sabotage"]:
                 detected, detected_by = False, None
-                if report["sabotage"]["target"] == "evidence_copy" and any(
-                        item["step"] == "verify_recovery_input_bundle" and item["result"] == "FAIL"
-                        for item in failed):
-                    detected, detected_by = True, "the input bundle verify step rejected the altered copy"
-                if report["sabotage"]["target"] == "committed_input" and reproduction:
-                    detected, detected_by = True, "the artefact comparison saw a published artefact move"
+                if report["sabotage"]["target"] == "evidence_copy" and (
+                        any(item["step"] == "verify_recovery_input_bundle" and item["result"] == "FAIL"
+                            for item in failed) or guard):
+                    detected = True
+                    detected_by = guard_detector if guard else \
+                        "the input bundle verify step rejected the altered copy"
+                if report["sabotage"]["target"] == "committed_input" and (reproduction or guard):
+                    detected = True
+                    detected_by = guard_detector if guard else \
+                        "the artefact comparison saw a published artefact move"
                 report["sabotage"].update({"detected": detected, "detected_by": detected_by})
                 if not detected and "was NOT detected" not in " ".join(report["limitations"]):
                     report["limitations"].append(
@@ -455,6 +482,9 @@ def rehearse(commit: str | None, scope: str, sabotage_target: str | None,
                         "not measuring what it claims to")
                 return (("SABOTAGE_DETECTED" if detected else "SABOTAGE_NOT_DETECTED"),
                         EXIT_OK if detected else EXIT_NOT_DETECTED)
+            if guard:
+                report["modified_inputs"] = guard
+                return "INPUT_MODIFIED", EXIT_INPUT_MODIFIED
             if reproduction:
                 return "REPRODUCTION_FAILED", EXIT_REPRODUCTION
             if failed:
