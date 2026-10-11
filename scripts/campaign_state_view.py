@@ -25,6 +25,21 @@ What it does
 
 It never writes outside ``data/recovery/`` and never modifies a source artefact;
 ``sources_unchanged`` is computed by re-hashing every source inside the same run.
+
+WP-8 makes the view a function of the commit rather than of the machine (see
+``scripts/recovery_input_evidence.py``):
+
+* committed sources are read through ``git show HEAD:<path>``, so an uncommitted
+  edit cannot enter a certified state and cannot change its identity;
+* an input that is gitignored or owned by another lane is resolved to the evidence
+  copy or dated snapshot the repository carries, and whatever is on this machine is
+  reported as an observation outside the identity;
+* digests are content digests (``sha256_lf``/``sha256_crlf``), so ``core.autocrlf``
+  can no longer change a recorded identity;
+* RFC number occupancy is derived from the committed tree, not from whatever
+  directories a working tree happens to hold;
+* the governance-mirror invariant records its *coverage*: a check that cannot see
+  both mirrors is ``NOT_CHECKED``, never a silent pass.
 """
 
 from __future__ import annotations
@@ -40,9 +55,24 @@ from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "scripts"))
+
+from recovery_input_evidence import (  # noqa: E402  (a sibling module, not an installed package)
+    committed_bytes,
+    committed_tree_entries,
+    content_forms,
+    declarations,
+    declared_input_failures,
+    observations,
+    reproduction_evidence_failures,
+    resolve,
+    resolve_json,
+)
+
 OUT = ROOT / "data" / "recovery"
 
 DECISIONS = "tasks/decisions.md"
+ST6_HEALTH = "data/st6/ST6_HEALTH_STATUS.json"
 
 # --------------------------------------------------------------------------- #
 # precedence: declared once, applied everywhere
@@ -86,25 +116,19 @@ INLINE_FACT_RE = re.compile(r"`([A-Z][A-Z0-9_]{2,})\s*=\s*([^`]+)`")
 ADR_HEADING_RE = re.compile(r"^##\s+ADR-(\d{4})\b(.*)$", re.MULTILINE)
 
 
-def sha256_file(path: Path) -> str | None:
-    return hashlib.sha256(path.read_bytes()).hexdigest() if path.exists() else None
+def source_digest(rel: str) -> dict[str, Any] | None:
+    """Content digests of the bytes this view actually read for ``rel``.
 
-
-def tracked(rel: str) -> bool:
-    out = subprocess.run(
-        ["git", "ls-files", "--error-unmatch", rel], cwd=ROOT, capture_output=True, text=True
-    )
-    return out.returncode == 0
+    The bytes come from the commit (or from the evidence copy a commit carries), and
+    ``sha256_lf`` is the authority: two checkouts of one commit that differ only by
+    line endings are the same state, and the artefact has to say so.
+    """
+    data = resolve(rel)["bytes"]
+    return content_forms(data) if data is not None else None
 
 
 def read_json(rel: str) -> Any:
-    path = ROOT / rel
-    if not path.exists():
-        return None
-    try:
-        return json.loads(path.read_text(encoding="utf-8"))
-    except json.JSONDecodeError:
-        return None
+    return resolve_json(rel)
 
 
 def dig(obj: Any, dotted: str) -> Any:
@@ -126,8 +150,8 @@ def dig(obj: Any, dotted: str) -> Any:
 
 
 def text_of(rel: str) -> str | None:
-    path = ROOT / rel
-    return path.read_text(encoding="utf-8", errors="replace") if path.exists() else None
+    data = resolve(rel)["bytes"]
+    return data.decode("utf-8", errors="replace") if data is not None else None
 
 
 # --------------------------------------------------------------------------- #
@@ -407,47 +431,88 @@ def judge_pin(recorded: str | None, actual: str | None, kind: str) -> str:
     return "DRIFTED" if kind == "APPEND_ONLY" else "FAILED"
 
 
+def grade_pin(kind: str, recorded: str | None, data: bytes | None) -> str:
+    """Grade one recorded digest against the bytes this view reads for it.
+
+    The grade is content-based on purpose: a digest taken over raw bytes changes
+    when ``core.autocrlf`` rewrites line endings on checkout, which would make the
+    same commit grade differently on two machines. ``sha256_lf`` and ``sha256_crlf``
+    both count as a match, and the raw digest is kept only as a legacy alias.
+    """
+    if kind == "UNRESOLVED" or recorded is None:
+        # the pin does not name a reachable artefact: that is an admission about the pin,
+        # not a missing file, and it must not be reported as one
+        return "UNRESOLVED"
+    if data is None:
+        return "MISSING"
+    forms = content_forms(data)
+    if recorded in (forms["sha256"], forms["sha256_lf"], forms["sha256_crlf"]):
+        return "VERIFIED"
+    return "DRIFTED" if kind == "APPEND_ONLY" else "FAILED"
+
+
+def pin_row(kind: str, pin: str, rel: str | None, recorded: str | None, note: str) -> dict[str, Any]:
+    data = resolve(rel)["bytes"] if rel else None
+    forms = content_forms(data) if data is not None else None
+    return {
+        "kind": kind,
+        "pin": pin,
+        "path": rel,
+        "recorded": recorded,
+        "actual_sha256_lf": forms["sha256_lf"] if forms else None,
+        "actual_sha256_crlf": forms["sha256_crlf"] if forms else None,
+        "line_endings": forms["line_endings"] if forms else None,
+        "result": grade_pin(kind, recorded, data),
+        "note": note,
+    }
+
+
 def verify_hash_pins() -> list[dict[str, Any]]:
+    """Grade the pins whose subject is committed at HEAD.
+
+    A pin on a committed artefact is a claim about this commit and fails loudly. A
+    pin on an input that is gitignored by design (the raw datasets) is *not* graded
+    here: whether that file happens to sit on this machine is not a property of the
+    commit, and grading it "MISSING" turned every clean checkout into a
+    contradiction. Those are declared and observed through
+    ``recovery_input_evidence`` instead (WP-8B).
+    """
     pins: list[dict[str, Any]] = []
     manifest = read_json("data/rfc049/PREREGISTRATION_MANIFEST.json") or {}
     for hypothesis, entry in (manifest.get("spec_hashes") or {}).items():
         rel = entry.get("spec_file")
         recorded = entry.get("spec_file_sha256")
         if rel and recorded:
-            pins.append({"kind": "STRICT", "pin": f"spec:{hypothesis}", "path": rel, "recorded": recorded,
-                         "actual": sha256_file(ROOT / rel), "result": None,
-                         "note": "frozen strategy spec, pinned by the preregistration manifest"})
+            pins.append(pin_row("STRICT", f"spec:{hypothesis}", rel, recorded,
+                                "frozen strategy spec, pinned by the preregistration manifest"))
     for group in ("price_series", "signal_series"):
         for name, entry in ((manifest.get("dataset_hashes") or {}).get(group) or {}).items():
-            rel = name if "/" in name else None
-            if rel is None and group == "price_series":
-                rel = name
-            if rel is None:
-                continue
             recorded = entry.get("sha256")
-            if recorded:
-                pins.append({"kind": "STRICT", "pin": f"dataset:{group}:{name}", "path": rel, "recorded": recorded,
-                             "actual": sha256_file(ROOT / rel), "result": None,
-                             "note": "frozen input series, pinned by the preregistration manifest"})
+            if not recorded:
+                continue
+            if "/" in name:
+                # a gitignored input: declared and observed by recovery_input_evidence,
+                # never graded inside the identity this view certifies
+                continue
+            pins.append(pin_row("UNRESOLVED", f"dataset:{group}:{name}", None, recorded,
+                                "the manifest records a digest but no path, so this pin cannot be checked "
+                                "from the repository"))
     activation = read_json("data/rfc046/ACTIVATION.json") or {}
     for name, recorded in (activation.get("spec_hashes") or {}).items():
         rel = None
         for candidate in (f"data/rfc046/specs/{name}.json", f"data/rfc046/{name}.json"):
-            if (ROOT / candidate).exists():
+            if committed_bytes(candidate) is not None:
                 rel = candidate
                 break
-        pins.append({"kind": "STRICT" if rel else "UNRESOLVED", "pin": f"rfc046-spec:{name}", "path": rel,
-                     "recorded": recorded, "actual": sha256_file(ROOT / rel) if rel else None, "result": None,
-                     "note": "RFC-046 hypothesis spec pin; UNRESOLVED means the pinned artefact is not in the tree"})
+        pins.append(pin_row("STRICT" if rel else "UNRESOLVED", f"rfc046-spec:{name}", rel, recorded,
+                            "RFC-046 hypothesis spec pin; UNRESOLVED means the pinned artefact is not "
+                            "in the repository"))
     for rel, pointer in APPEND_ONLY_ATTESTATIONS:
         payload = read_json(rel) or {}
         for name, recorded in (dig(payload, pointer) or {}).items():
-            pins.append({"kind": "APPEND_ONLY", "pin": f"{pointer}:{name}", "path": name, "recorded": recorded,
-                         "actual": sha256_file(ROOT / name), "result": None,
-                         "note": "attestation of a document that is append-only by convention; drift is expected and "
-                                 "is not a contradiction"})
-    for pin in pins:
-        pin["result"] = judge_pin(pin["recorded"], pin["actual"], pin["kind"])
+            pins.append(pin_row("APPEND_ONLY", f"{pointer}:{name}", name, recorded,
+                                "attestation of a document that is append-only by convention; drift is "
+                                "expected and is not a contradiction"))
     return pins
 
 
@@ -547,9 +612,23 @@ def build() -> dict[str, Any]:
     # ---- invariants ------------------------------------------------------- #
     invariants: list[dict[str, Any]] = []
 
-    def invariant(code: str, statement: str, result: bool, detail: str) -> None:
-        invariants.append({"id": code, "statement": statement,
-                           "result": "PASS" if result else "FAIL", "detail": detail})
+    def invariant(code: str, statement: str, result: bool | None, detail: str,
+                  coverage: dict[str, Any] | None = None) -> None:
+        """A three-valued invariant.
+
+        ``None`` means the check could not be made in this checkout (a mirror is
+        absent, a source is unavailable). That is *not* a pass: an empty comparison
+        that reports PASS is how a check that never ran gets cited as satisfied.
+        """
+        entry: dict[str, Any] = {
+            "id": code,
+            "statement": statement,
+            "result": "NOT_CHECKED" if result is None else ("PASS" if result else "FAIL"),
+            "detail": detail,
+        }
+        if coverage is not None:
+            entry["coverage"] = coverage
+        invariants.append(entry)
 
     strict_failed = [p for p in integrity_pins if p["result"] == "FAILED"]
     strict_missing = [p for p in integrity_pins if p["result"] == "MISSING"]
@@ -592,7 +671,8 @@ def build() -> dict[str, Any]:
 
     closure_flags = (dig(read_json("data/rfc049/discovery2/CAMPAIGN_CLOSURE.json") or {},
                          "governance_flags_after_closure") or {})
-    st6_standing = (dig(read_json("data/st6/ST6_HEALTH_STATUS.json") or {}, "standing_state") or {})
+    st6_resolution = resolve(ST6_HEALTH)
+    st6_standing = (dig(read_json(ST6_HEALTH) or {}, "standing_state") or {})
     shared = sorted(set(closure_flags) & set(st6_standing))
     disagreements = [
         {"field": key, "closure": closure_flags[key], "st6": st6_standing[key]}
@@ -601,9 +681,18 @@ def build() -> dict[str, Any]:
     ]
     invariant("I5_governance_mirrors_agree",
               "the closure record and the forward-regime lane state the same governance flags",
-              not disagreements,
-              json.dumps(disagreements) if disagreements else
-              f"{len(shared)} shared flags agree ({', '.join(shared[:6])}{'…' if len(shared) > 6 else ''})")
+              None if not st6_standing else not disagreements,
+              "the forward lane's mirror is not available in this checkout, so this check is NOT_CHECKED "
+              "rather than passing on an empty comparison" if not st6_standing else
+              (json.dumps(disagreements) if disagreements else
+               f"{len(shared)} shared flags agree ({', '.join(shared[:6])}{'…' if len(shared) > 6 else ''})"),
+              coverage={
+                  "mirror_source": ST6_HEALTH,
+                  "mirror_resolved_from": st6_resolution["origin"],
+                  "mirror_present": bool(st6_standing),
+                  "shared_flags": len(shared),
+                  "coverage": "FULL" if st6_standing else "NONE",
+              })
 
     rfc_registry = read_json("docs/roadmap/RFC_REGISTRY.json") or {}
     source_paths.add("docs/roadmap/RFC_REGISTRY.json")
@@ -624,11 +713,29 @@ def build() -> dict[str, Any]:
               not phase_collisions,
               f"declared {campaign_numbers}" + (f"; collisions {phase_collisions}" if phase_collisions else ""))
 
-    # the tree, not the registry, is the ground truth for which numbers are taken
+    # WP-8C: reproducibility is a certified property of the view, not a hope. Every input
+    # a finding rests on must resolve from the commit - HEAD content, or an evidence copy
+    # the commit carries that reproduces the digest its published artefact recorded.
+    authority_failures = list(declared_input_failures()) + list(reproduction_evidence_failures())
+    declared = declarations()
+    invariant("I7_inputs_are_reproducible",
+              "every input a finding rests on resolves from the commit - HEAD content or a committed, "
+              "digest-verified evidence copy - and never from an uncommitted file",
+              not authority_failures,
+              "; ".join(authority_failures[:4]) if authority_failures else
+              f"{len(declared)} declared inputs resolve from the repository",
+              coverage={"declared_inputs": len(declared),
+                        "classes": sorted({record["class"] for record in declared.values()}),
+                        "resolved_from": sorted({resolve(rel)["origin"] for rel in declared})})
+
+    # the committed tree, not the working tree, is the ground truth for which numbers
+    # are taken: an untracked data/rfcNNN/ directory is not something this view may
+    # certify, and deriving occupancy from the filesystem made the identity depend on
+    # whatever another lane happened to leave lying around (WP-8C)
     tree_numbers = sorted({
         int(match.group(1))
-        for path in (ROOT / "data").iterdir() if path.is_dir()
-        for match in [re.match(r"rfc(\d{3})", path.name)]
+        for path in committed_tree_entries("data/")
+        for match in [re.match(r"data/rfc(\d{3})", path)]
         if match
     })
     advisories: list[dict[str, Any]] = []
@@ -667,9 +774,12 @@ def build() -> dict[str, Any]:
         })
 
     # ---- sources: immutability ------------------------------------------- #
-    before = {rel: sha256_file(ROOT / rel) for rel in sorted(source_paths)}
-    after = {rel: sha256_file(ROOT / rel) for rel in sorted(source_paths)}
-    unchanged = before == after
+    # the digests are content digests of the bytes this view read (commit content, or
+    # the evidence copy a commit carries), taken before and after the build: the view
+    # claims to have changed nothing, and an unreadable source is not a silent None
+    before = {rel: (source_digest(rel) or {}).get("sha256_lf") for rel in sorted(source_paths)}
+    after = {rel: (source_digest(rel) or {}).get("sha256_lf") for rel in sorted(source_paths)}
+    unchanged = before == after and all(value is not None for value in before.values())
 
     ambiguous: list[dict[str, Any]] = []
     for resolution in resolutions:
@@ -691,6 +801,15 @@ def build() -> dict[str, Any]:
 
     unresolved = [c for campaign in campaigns for c in campaign["unresolved_contradictions"]]
     failed_invariants = [i for i in invariants if i["result"] == "FAIL"]
+    not_checked = [i for i in invariants if i["result"] == "NOT_CHECKED"]
+    if not_checked:
+        advisories.append({
+            "id": "A6_invariants_not_checked",
+            "statement": "an invariant could not be evaluated in this checkout",
+            "detail": json.dumps([{"id": i["id"], "detail": i["detail"]} for i in not_checked]),
+            "effect": "recorded as NOT_CHECKED, never as PASS: a check that could not see its inputs has "
+                      "not confirmed anything",
+        })
     if unresolved or failed_invariants:
         status = "CONTRADICTION"
     elif advisories:
@@ -725,11 +844,21 @@ def build() -> dict[str, Any]:
             "registry_next_free_declared": rfc_registry.get("next_free_number_above_046"),
             "next_free_derived": next_free,
         },
+        "input_authority": {
+            "note": "what every input this view reads is, and what authority it answers to; the "
+                    "declaration is part of the identity, the materialization state is not",
+            "declared_inputs": declarations(),
+        },
         "status": status,
-        "sources": [{"path": rel, "exists": (ROOT / rel).exists(),
-                     "tracked": tracked(rel) if (ROOT / rel).exists() else None,
+        "sources": [{"path": rel,
+                     "exists": committed_bytes(rel) is not None or (ROOT / rel).exists(),
+                     "resolved_from": resolve(rel)["origin"],
+                     "class": resolve(rel)["class"],
                      "sha256_before": before.get(rel), "sha256_after": after.get(rel)} for rel in sorted(source_paths)],
         "sources_unchanged": unchanged,
+        # observations are what *this* machine holds: they are published for audit and
+        # excluded from the identity, so a local file cannot move a certified state
+        "local_observations": observations(),
     }
     return payload
 
@@ -784,18 +913,45 @@ def render_markdown(payload: dict[str, Any]) -> str:
     add("## Integrity")
     add("")
     if payload["integrity"]["pins"]:
-        add("| pin | kind | recorded | actual | result |")
-        add("| --- | --- | --- | --- | --- |")
+        add("| pin | kind | recorded | actual (LF content digest) | eol | result |")
+        add("| --- | --- | --- | --- | --- | --- |")
         for pin in payload["integrity"]["pins"]:
             recorded = str(pin["recorded"])[:16]
-            actual = str(pin["actual"])[:16]
-            add(f"| `{pin['pin']}` | {pin['kind']} | `{recorded}` | `{actual}` | **{pin['result']}** |")
+            actual = str(pin["actual_sha256_lf"])[:16]
+            add(f"| `{pin['pin']}` | {pin['kind']} | `{recorded}` | `{actual}` | "
+                f"{pin['line_endings'] or '—'} | **{pin['result']}** |")
     else:
         add("no hash pins declared")
     add("")
     scan = payload["integrity"]["governance_scan"]
     add(f"- governance scan over {len(scan['scanned'])} artefacts: "
         f"{len(scan['profitability_claims'])} profitability claims, {len(scan['sealed_oos_opened'])} sealed-OOS openings.")
+    add("")
+    add("## Inputs and their authority")
+    add("")
+    add("What each input is, and what it answers to. A committed input is read from the commit; an "
+        "external one from the evidence copy the repository carries. The declaration is part of the "
+        "view's identity; whether this machine happens to hold the original is not.")
+    add("")
+    add("| input | class | required | authority | evidence copy |")
+    add("| --- | --- | --- | --- | --- |")
+    for rel, record in (payload.get("input_authority", {}).get("declared_inputs") or {}).items():
+        evidence = record.get("evidence_copy") or {}
+        evidence_text = (f"`{record.get('evidence_path')}` (`{str(evidence.get('sha256_lf'))[:12]}`)"
+                         if evidence else "—")
+        add(f"| `{rel}` | {record['class']} | {'yes' if record['required_to_reproduce_a_finding'] else 'no'} | "
+            f"`{record['authority'].get('kind')}` | {evidence_text} |")
+    add("")
+    add("## Local observations (volatile — not part of the identity)")
+    add("")
+    for observation in payload.get("local_observations") or []:
+        add(f"- `{observation['path']}` ({observation['class']}): resolved from "
+            f"`{observation['resolved_from']}`; local file present: "
+            f"{observation['present_on_this_machine']}"
+            + (f"; reproduces its authority: {observation['local_reproduces_the_authority']}"
+               if observation.get('local_reproduces_the_authority') is not None else "")
+            + (f"; attested fields match the snapshot: {observation['attested_fields_match_the_snapshot']}"
+               if observation.get('attested_fields_match_the_snapshot') is not None else ""))
     add("")
     add("## Invariants")
     add("")
@@ -840,7 +996,7 @@ def render_markdown(payload: dict[str, Any]) -> str:
 # taken. ``sources`` records per-file hashes, one of which (data/st6/*) belongs to another
 # lane that keeps writing it; ``head``/``branch``/``generated_at_utc`` move with every commit
 # and every run. They stay in the artefact for auditability but not in its identity.
-VOLATILE_KEYS = ("generated_at_utc", "payload_sha256", "head", "branch", "sources")
+VOLATILE_KEYS = ("generated_at_utc", "payload_sha256", "head", "branch", "sources", "local_observations")
 
 
 def payload_hash(payload: dict[str, Any]) -> str:
@@ -877,6 +1033,10 @@ def main() -> int:
                  for p in payload["integrity"]["pins"]},
         "superseded_values": sum(len(c["superseded_values"]) for c in payload["campaigns"]),
         "advisories": [a["id"] for a in payload["advisories"]],
+        "invariants_not_checked": [i["id"] for i in payload["invariants"] if i["result"] == "NOT_CHECKED"],
+        "inputs": {cls: sum(1 for r in payload["input_authority"]["declared_inputs"].values()
+                            if r["class"] == cls)
+                   for cls in sorted({r["class"] for r in payload["input_authority"]["declared_inputs"].values()})},
         "next_free_rfc_derived": payload["rfc_numbering"]["next_free_derived"],
         "sources_unchanged": payload["sources_unchanged"],
         "payload_sha256": payload["payload_sha256"],

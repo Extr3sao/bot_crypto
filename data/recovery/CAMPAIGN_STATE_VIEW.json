@@ -1,8 +1,8 @@
 {
   "artifact": "CAMPAIGN_STATE_VIEW",
   "work_package": "WP-2 (POST RFC-049 / ACTIVE RECOVERY)",
-  "generated_at_utc": "2026-10-10T20:03:42Z",
-  "head": "aed26c71efb9ee68b8d442804cbe9dd40a63212b",
+  "generated_at_utc": "2026-10-11T17:02:28Z",
+  "head": "e670d2a94a5444d283c9c51930ee548aedc569f2",
   "branch": "main",
   "mode": "READ-ONLY DERIVED VIEW — sources are read and hashed, never written",
   "precedence": {
@@ -2050,7 +2050,9 @@
         "pin": "spec:H-049-001",
         "path": "data/rfc049/specs/H-049-001.json",
         "recorded": "fd5cd2991466e2436a16d2440984845285a0258da5f65fe1d44c3ef289969d88",
-        "actual": "fd5cd2991466e2436a16d2440984845285a0258da5f65fe1d44c3ef289969d88",
+        "actual_sha256_lf": "fd5cd2991466e2436a16d2440984845285a0258da5f65fe1d44c3ef289969d88",
+        "actual_sha256_crlf": "1d51eea0d47a694c890052a06262c4449bf8d5ef58933ecc12fe3187a36ec02f",
+        "line_endings": "LF",
         "result": "VERIFIED",
         "note": "frozen strategy spec, pinned by the preregistration manifest"
       },
@@ -2059,7 +2061,9 @@
         "pin": "spec:H-049-002",
         "path": "data/rfc049/specs/H-049-002.json",
         "recorded": "cdafdc151e2514f9cafeb5580f960a991de29f57ef96b609889ff23d36a01bd0",
-        "actual": "cdafdc151e2514f9cafeb5580f960a991de29f57ef96b609889ff23d36a01bd0",
+        "actual_sha256_lf": "cdafdc151e2514f9cafeb5580f960a991de29f57ef96b609889ff23d36a01bd0",
+        "actual_sha256_crlf": "9dc2645c9e094cb4987930a4f78bcbc55ae3580ba9d3e4f8dc7e0f923eb386e1",
+        "line_endings": "LF",
         "result": "VERIFIED",
         "note": "frozen strategy spec, pinned by the preregistration manifest"
       },
@@ -2068,61 +2072,152 @@
         "pin": "spec:H-049-003",
         "path": "data/rfc049/specs/H-049-003.json",
         "recorded": "c77aa9a8c7aa897c2d504ed940c012cd3100a47490ee2ca6b37f08a5a79e26e9",
-        "actual": "c77aa9a8c7aa897c2d504ed940c012cd3100a47490ee2ca6b37f08a5a79e26e9",
+        "actual_sha256_lf": "c77aa9a8c7aa897c2d504ed940c012cd3100a47490ee2ca6b37f08a5a79e26e9",
+        "actual_sha256_crlf": "1cd48f6e5e1627260526caead67ba9c70d02068b5d495df83e65081fd3ad6e4c",
+        "line_endings": "LF",
         "result": "VERIFIED",
         "note": "frozen strategy spec, pinned by the preregistration manifest"
       },
       {
-        "kind": "STRICT",
-        "pin": "dataset:price_series:data/raw/alpha001/BTC-USDT_1d.json",
-        "path": "data/raw/alpha001/BTC-USDT_1d.json",
-        "recorded": "558fb9a07d2baa6a5e68b9eaed031adb750774542bfdc4c27c3b6a4f6260ebd1",
-        "actual": "558fb9a07d2baa6a5e68b9eaed031adb750774542bfdc4c27c3b6a4f6260ebd1",
-        "result": "VERIFIED",
-        "note": "frozen input series, pinned by the preregistration manifest"
+        "kind": "UNRESOLVED",
+        "pin": "dataset:signal_series:defillama_stablecoin_supply_all.json",
+        "path": null,
+        "recorded": "b8250250e0cabc5d0eda669b6b0f064e4aed1521bc6be67ef0edb03d048336e9",
+        "actual_sha256_lf": null,
+        "actual_sha256_crlf": null,
+        "line_endings": null,
+        "result": "UNRESOLVED",
+        "note": "the manifest records a digest but no path, so this pin cannot be checked from the repository"
       },
       {
-        "kind": "STRICT",
-        "pin": "dataset:price_series:data/raw/alpha001/ETH-USDT_1d.json",
-        "path": "data/raw/alpha001/ETH-USDT_1d.json",
-        "recorded": "840396f1adf31bef0a533ec3f56b52517c9facd9c23f0dbd7d448be9a113d745",
-        "actual": "840396f1adf31bef0a533ec3f56b52517c9facd9c23f0dbd7d448be9a113d745",
-        "result": "VERIFIED",
-        "note": "frozen input series, pinned by the preregistration manifest"
+        "kind": "UNRESOLVED",
+        "pin": "dataset:signal_series:blockchain_info_hashrate_8y.json",
+        "path": null,
+        "recorded": "ede914a9089311a2fc82b181dd9f508ab510c6952dca7da3736ad0caaa929882",
+        "actual_sha256_lf": null,
+        "actual_sha256_crlf": null,
+        "line_endings": null,
+        "result": "UNRESOLVED",
+        "note": "the manifest records a digest but no path, so this pin cannot be checked from the repository"
+      },
+      {
+        "kind": "UNRESOLVED",
+        "pin": "dataset:signal_series:blockchain_info_miners_revenue_all.json",
+        "path": null,
+        "recorded": "c62f0a94a622dd35da8e40cc009484b42bf2a00088ddc4ab66f4a7d7b9ad273f",
+        "actual_sha256_lf": null,
+        "actual_sha256_crlf": null,
+        "line_endings": null,
+        "result": "UNRESOLVED",
+        "note": "the manifest records a digest but no path, so this pin cannot be checked from the repository"
+      },
+      {
+        "kind": "UNRESOLVED",
+        "pin": "dataset:signal_series:fred_WALCL.csv",
+        "path": null,
+        "recorded": "c6519d91e9d8546ce63f6a8ea20b82c1a7ddd0d6bd3a1146e448d574cc4d2c1c",
+        "actual_sha256_lf": null,
+        "actual_sha256_crlf": null,
+        "line_endings": null,
+        "result": "UNRESOLVED",
+        "note": "the manifest records a digest but no path, so this pin cannot be checked from the repository"
+      },
+      {
+        "kind": "UNRESOLVED",
+        "pin": "dataset:signal_series:fred_RRPONTSYD.csv",
+        "path": null,
+        "recorded": "1bea66a24c8bae36df0661efc96e1ff7d0388625d6f0dbf3b79d20fdbf5c3d68",
+        "actual_sha256_lf": null,
+        "actual_sha256_crlf": null,
+        "line_endings": null,
+        "result": "UNRESOLVED",
+        "note": "the manifest records a digest but no path, so this pin cannot be checked from the repository"
+      },
+      {
+        "kind": "UNRESOLVED",
+        "pin": "dataset:signal_series:fred_WTREGEN.csv",
+        "path": null,
+        "recorded": "1efab94a7a507516f319cb152b4336427424590ed58ea34580cdc54366a7036e",
+        "actual_sha256_lf": null,
+        "actual_sha256_crlf": null,
+        "line_endings": null,
+        "result": "UNRESOLVED",
+        "note": "the manifest records a digest but no path, so this pin cannot be checked from the repository"
+      },
+      {
+        "kind": "UNRESOLVED",
+        "pin": "dataset:signal_series:fred_DFII10.csv",
+        "path": null,
+        "recorded": "0277781c1336527c38275803bfedc0b7f1c264740b9406981edda0d2796ab6ee",
+        "actual_sha256_lf": null,
+        "actual_sha256_crlf": null,
+        "line_endings": null,
+        "result": "UNRESOLVED",
+        "note": "the manifest records a digest but no path, so this pin cannot be checked from the repository"
+      },
+      {
+        "kind": "UNRESOLVED",
+        "pin": "dataset:signal_series:fred_DTWEXBGS.csv",
+        "path": null,
+        "recorded": "75edd28ba1eceade938fa6621edfebc4d4e9cbcc846c6f07be27f8aef0ead321",
+        "actual_sha256_lf": null,
+        "actual_sha256_crlf": null,
+        "line_endings": null,
+        "result": "UNRESOLVED",
+        "note": "the manifest records a digest but no path, so this pin cannot be checked from the repository"
+      },
+      {
+        "kind": "UNRESOLVED",
+        "pin": "dataset:signal_series:fred_DFF.csv",
+        "path": null,
+        "recorded": "a93504210b53532fda653a7ee8d543b00b1780c83f2131e35bb94827a973c2df",
+        "actual_sha256_lf": null,
+        "actual_sha256_crlf": null,
+        "line_endings": null,
+        "result": "UNRESOLVED",
+        "note": "the manifest records a digest but no path, so this pin cannot be checked from the repository"
       },
       {
         "kind": "UNRESOLVED",
         "pin": "rfc046-spec:HYP-001",
         "path": null,
         "recorded": "e5e58176e4c8fb01e79c7db368fd889f6f264a3e956bc1be601389daa8dd135a",
-        "actual": null,
+        "actual_sha256_lf": null,
+        "actual_sha256_crlf": null,
+        "line_endings": null,
         "result": "UNRESOLVED",
-        "note": "RFC-046 hypothesis spec pin; UNRESOLVED means the pinned artefact is not in the tree"
+        "note": "RFC-046 hypothesis spec pin; UNRESOLVED means the pinned artefact is not in the repository"
       },
       {
         "kind": "UNRESOLVED",
         "pin": "rfc046-spec:HYP-002",
         "path": null,
         "recorded": "3336b8f343d899af0415f3f9e35fce03d72f0cdd626ac6872b9add2e53964ecf",
-        "actual": null,
+        "actual_sha256_lf": null,
+        "actual_sha256_crlf": null,
+        "line_endings": null,
         "result": "UNRESOLVED",
-        "note": "RFC-046 hypothesis spec pin; UNRESOLVED means the pinned artefact is not in the tree"
+        "note": "RFC-046 hypothesis spec pin; UNRESOLVED means the pinned artefact is not in the repository"
       },
       {
         "kind": "UNRESOLVED",
         "pin": "rfc046-spec:HYP-003",
         "path": null,
         "recorded": "8f99b0366301a304e6637dc2a640265d18bd1607df73b579fe2ca418a0cf007c",
-        "actual": null,
+        "actual_sha256_lf": null,
+        "actual_sha256_crlf": null,
+        "line_endings": null,
         "result": "UNRESOLVED",
-        "note": "RFC-046 hypothesis spec pin; UNRESOLVED means the pinned artefact is not in the tree"
+        "note": "RFC-046 hypothesis spec pin; UNRESOLVED means the pinned artefact is not in the repository"
       },
       {
         "kind": "APPEND_ONLY",
         "pin": "document_hashes:tasks/decisions.md",
         "path": "tasks/decisions.md",
         "recorded": "38622df9a5ad74dbb9dc81503af452e06581a1148637d640af9102333f31d438",
-        "actual": "0e0003e1010e63e548fd99a453c676ed0547772e6be907c6c6b6ee8d7c9bbd24",
+        "actual_sha256_lf": "0e0003e1010e63e548fd99a453c676ed0547772e6be907c6c6b6ee8d7c9bbd24",
+        "actual_sha256_crlf": "f6e96ec6ac62fae12107af85aef5213e40f2c216a1fa9366409ff6d36778bc7d",
+        "line_endings": "LF",
         "result": "DRIFTED",
         "note": "attestation of a document that is append-only by convention; drift is expected and is not a contradiction"
       },
@@ -2131,7 +2226,9 @@
         "pin": "document_hashes:tasks/roadmap.md",
         "path": "tasks/roadmap.md",
         "recorded": "5310f6a423318cdbca8f26c1dcee5feadbc1d38c8b379a43ba679ba3a6c5e974",
-        "actual": "5310f6a423318cdbca8f26c1dcee5feadbc1d38c8b379a43ba679ba3a6c5e974",
+        "actual_sha256_lf": "5310f6a423318cdbca8f26c1dcee5feadbc1d38c8b379a43ba679ba3a6c5e974",
+        "actual_sha256_crlf": "809d651a9b5141b11aee968301c1a29312e9fef00b51352a3a938557d6472067",
+        "line_endings": "LF",
         "result": "VERIFIED",
         "note": "attestation of a document that is append-only by convention; drift is expected and is not a contradiction"
       },
@@ -2140,7 +2237,9 @@
         "pin": "document_hashes:docs/rfc/RFC-046_CONTROLLED_DISCOVERY.md",
         "path": "docs/rfc/RFC-046_CONTROLLED_DISCOVERY.md",
         "recorded": "a14753f5ec62446eb99c284b36ed6007ef76aeae77234392190738b3fae412f3",
-        "actual": "a14753f5ec62446eb99c284b36ed6007ef76aeae77234392190738b3fae412f3",
+        "actual_sha256_lf": "a14753f5ec62446eb99c284b36ed6007ef76aeae77234392190738b3fae412f3",
+        "actual_sha256_crlf": "56354513915dcd003910c75e35cc5d130c72e994c72f58811b3140cb981ccd33",
+        "line_endings": "LF",
         "result": "VERIFIED",
         "note": "attestation of a document that is append-only by convention; drift is expected and is not a contradiction"
       },
@@ -2149,7 +2248,9 @@
         "pin": "document_hashes:docs/rfc/RFC-046_CONTROLLED_DISCOVERY.json",
         "path": "docs/rfc/RFC-046_CONTROLLED_DISCOVERY.json",
         "recorded": "5b7275c366ff1ac367b1c9f78efe4803891610dc7a7c9eb28c553a4e0de8bead",
-        "actual": "5b7275c366ff1ac367b1c9f78efe4803891610dc7a7c9eb28c553a4e0de8bead",
+        "actual_sha256_lf": "5b7275c366ff1ac367b1c9f78efe4803891610dc7a7c9eb28c553a4e0de8bead",
+        "actual_sha256_crlf": "41ad9c6086f9675bdb6b523763c94fd1b256a75041ba90de78d3f01e545ef8c7",
+        "line_endings": "LF",
         "result": "VERIFIED",
         "note": "attestation of a document that is append-only by convention; drift is expected and is not a contradiction"
       },
@@ -2158,7 +2259,9 @@
         "pin": "document_hashes:docs/research/BUSINESS_REENTRY_POLICY.md",
         "path": "docs/research/BUSINESS_REENTRY_POLICY.md",
         "recorded": "efb3e3e112378281bd62baf0a0709d4fc3ad5dfd2d775cfb6c75edc89d8859d1",
-        "actual": "efb3e3e112378281bd62baf0a0709d4fc3ad5dfd2d775cfb6c75edc89d8859d1",
+        "actual_sha256_lf": "efb3e3e112378281bd62baf0a0709d4fc3ad5dfd2d775cfb6c75edc89d8859d1",
+        "actual_sha256_crlf": "a2025ab5df382278d702a90da20240eff304b543821d4b6c3932c570b682f4d7",
+        "line_endings": "LF",
         "result": "VERIFIED",
         "note": "attestation of a document that is append-only by convention; drift is expected and is not a contradiction"
       },
@@ -2167,7 +2270,9 @@
         "pin": "document_hashes:docs/research/BUSINESS_REENTRY_POLICY.json",
         "path": "docs/research/BUSINESS_REENTRY_POLICY.json",
         "recorded": "961e92c0cd1f02acb227e8d2a9f63f9394e6e77d9fb72c80d8f8f5432a46f3e7",
-        "actual": "961e92c0cd1f02acb227e8d2a9f63f9394e6e77d9fb72c80d8f8f5432a46f3e7",
+        "actual_sha256_lf": "961e92c0cd1f02acb227e8d2a9f63f9394e6e77d9fb72c80d8f8f5432a46f3e7",
+        "actual_sha256_crlf": "632cdd7d6a5fd89506c3eb6a260cb4e49fbde02f2ad8ebe2a57f16768fccac98",
+        "line_endings": "LF",
         "result": "VERIFIED",
         "note": "attestation of a document that is append-only by convention; drift is expected and is not a contradiction"
       },
@@ -2176,7 +2281,9 @@
         "pin": "document_hashes:docs/research/PROFITABILITY_OPERATING_MODEL.json",
         "path": "docs/research/PROFITABILITY_OPERATING_MODEL.json",
         "recorded": "39c97e02716f9ceef54f6b11eca1e31ed7e5921e5c1fd7ad4a94db14f31a5d32",
-        "actual": "39c97e02716f9ceef54f6b11eca1e31ed7e5921e5c1fd7ad4a94db14f31a5d32",
+        "actual_sha256_lf": "39c97e02716f9ceef54f6b11eca1e31ed7e5921e5c1fd7ad4a94db14f31a5d32",
+        "actual_sha256_crlf": "fbccf6a82a4dd5f5283eea9824b0dafd91ea20c25913d81013d3e4b22c123013",
+        "line_endings": "LF",
         "result": "VERIFIED",
         "note": "attestation of a document that is append-only by convention; drift is expected and is not a contradiction"
       },
@@ -2185,7 +2292,9 @@
         "pin": "document_hashes:docs/research/PROFITABILITY_OPERATING_MODEL.md",
         "path": "docs/research/PROFITABILITY_OPERATING_MODEL.md",
         "recorded": "cfd503b2a5e4dc62b5f2f7a1878845b0fed0311a2ff5e8d9f05b34fe2f37f974",
-        "actual": "cfd503b2a5e4dc62b5f2f7a1878845b0fed0311a2ff5e8d9f05b34fe2f37f974",
+        "actual_sha256_lf": "cfd503b2a5e4dc62b5f2f7a1878845b0fed0311a2ff5e8d9f05b34fe2f37f974",
+        "actual_sha256_crlf": "4fde4d8280ac5e9606b685fb2a3c410478648ef933f87b558be31343f10908bd",
+        "line_endings": "LF",
         "result": "VERIFIED",
         "note": "attestation of a document that is append-only by convention; drift is expected and is not a contradiction"
       },
@@ -2194,7 +2303,9 @@
         "pin": "document_hashes:docs/governance/PROFITABILITY_FIRST_FREEZE.md",
         "path": "docs/governance/PROFITABILITY_FIRST_FREEZE.md",
         "recorded": "4eb331f58f669f6b18c458822d5bcc10cbae6e4d2cf3645690baf7683e3794f9",
-        "actual": "4eb331f58f669f6b18c458822d5bcc10cbae6e4d2cf3645690baf7683e3794f9",
+        "actual_sha256_lf": "4eb331f58f669f6b18c458822d5bcc10cbae6e4d2cf3645690baf7683e3794f9",
+        "actual_sha256_crlf": "8b18bacbaf916e0cf50b402c334798ce7fcc4da80a64d0e89dd595bb12bfa366",
+        "line_endings": "LF",
         "result": "VERIFIED",
         "note": "attestation of a document that is append-only by convention; drift is expected and is not a contradiction"
       },
@@ -2203,7 +2314,9 @@
         "pin": "document_hashes:docs/roadmap/RFC_REGISTRY.json",
         "path": "docs/roadmap/RFC_REGISTRY.json",
         "recorded": "04aab57d2e3e4cfe92e4f048bf3908dc059abde343f6dce798da3e2276f2563e",
-        "actual": "04aab57d2e3e4cfe92e4f048bf3908dc059abde343f6dce798da3e2276f2563e",
+        "actual_sha256_lf": "04aab57d2e3e4cfe92e4f048bf3908dc059abde343f6dce798da3e2276f2563e",
+        "actual_sha256_crlf": "1a9600f54df12f04dd47705a936751b6c4851cd1a87efd7f7d92bb8b0a2211fb",
+        "line_endings": "LF",
         "result": "VERIFIED",
         "note": "attestation of a document that is append-only by convention; drift is expected and is not a contradiction"
       },
@@ -2212,7 +2325,9 @@
         "pin": "document_hashes:docs/roadmap/PROFITABILITY_ROADMAP_AMENDMENT.md",
         "path": "docs/roadmap/PROFITABILITY_ROADMAP_AMENDMENT.md",
         "recorded": "c25e1794376781cbcf7c3c63142c901f16b554961b0935875ca694f93ab67f07",
-        "actual": "c25e1794376781cbcf7c3c63142c901f16b554961b0935875ca694f93ab67f07",
+        "actual_sha256_lf": "c25e1794376781cbcf7c3c63142c901f16b554961b0935875ca694f93ab67f07",
+        "actual_sha256_crlf": "08ae13d17e739bc03a689b4487ae7f8058576c290492732d09179c6084ee935d",
+        "line_endings": "LF",
         "result": "VERIFIED",
         "note": "attestation of a document that is append-only by convention; drift is expected and is not a contradiction"
       },
@@ -2221,7 +2336,9 @@
         "pin": "document_hashes:docs/governance/DISCOVERY_ADMISSION_POLICY.md",
         "path": "docs/governance/DISCOVERY_ADMISSION_POLICY.md",
         "recorded": "209f8f47ffc509ef1dd53703af82c41e3abca89932d6e7ae4ab6057c88d055fe",
-        "actual": "209f8f47ffc509ef1dd53703af82c41e3abca89932d6e7ae4ab6057c88d055fe",
+        "actual_sha256_lf": "209f8f47ffc509ef1dd53703af82c41e3abca89932d6e7ae4ab6057c88d055fe",
+        "actual_sha256_crlf": "ff481bbbb4816d2ec8cfe2815f851e66b3ec4f93af166fbd96fe4f6d8c9f6995",
+        "line_endings": "LF",
         "result": "VERIFIED",
         "note": "attestation of a document that is append-only by convention; drift is expected and is not a contradiction"
       },
@@ -2230,7 +2347,9 @@
         "pin": "document_hashes:docs/governance/DISCOVERY_STOP_RULES.md",
         "path": "docs/governance/DISCOVERY_STOP_RULES.md",
         "recorded": "3c5bfd2cf00f73ab1348742c2ac3b7481855a44af0e44355153ac7561ce91d1d",
-        "actual": "3c5bfd2cf00f73ab1348742c2ac3b7481855a44af0e44355153ac7561ce91d1d",
+        "actual_sha256_lf": "3c5bfd2cf00f73ab1348742c2ac3b7481855a44af0e44355153ac7561ce91d1d",
+        "actual_sha256_crlf": "49c6cb0f55dfa833ff693a4d42a70ab06c33dc2619606c422f8ace5a5c4ce819",
+        "line_endings": "LF",
         "result": "VERIFIED",
         "note": "attestation of a document that is append-only by convention; drift is expected and is not a contradiction"
       },
@@ -2239,7 +2358,9 @@
         "pin": "document_hashes:docs/architecture/DISCOVERY_EXECUTION_FLOW.md",
         "path": "docs/architecture/DISCOVERY_EXECUTION_FLOW.md",
         "recorded": "95ece8b5fa4936052b9ab0b72a5dd3e353d96dbccecd9b1087429d8b34727d50",
-        "actual": "95ece8b5fa4936052b9ab0b72a5dd3e353d96dbccecd9b1087429d8b34727d50",
+        "actual_sha256_lf": "95ece8b5fa4936052b9ab0b72a5dd3e353d96dbccecd9b1087429d8b34727d50",
+        "actual_sha256_crlf": "bf4d1f5124c75ffd2be77e3dbb1f02aebc65efc0448e1200c420d8592e2859c3",
+        "line_endings": "LF",
         "result": "VERIFIED",
         "note": "attestation of a document that is append-only by convention; drift is expected and is not a contradiction"
       }
@@ -2280,7 +2401,7 @@
       "id": "I1_frozen_pins_verify",
       "statement": "every hash-pinned frozen artefact matches its recorded digest",
       "result": "PASS",
-      "detail": "18 verified, 0 failed, 0 missing"
+      "detail": "16 verified, 0 failed, 0 missing"
     },
     {
       "id": "I2_builder_is_not_verifier",
@@ -2304,13 +2425,40 @@
       "id": "I5_governance_mirrors_agree",
       "statement": "the closure record and the forward-regime lane state the same governance flags",
       "result": "PASS",
-      "detail": "4 shared flags agree (LIVE_TRADING, NEXT_CAMPAIGN, PROFITABILITY_VERIFIED, TRADES_AUTHORIZED)"
+      "detail": "4 shared flags agree (LIVE_TRADING, NEXT_CAMPAIGN, PROFITABILITY_VERIFIED, TRADES_AUTHORIZED)",
+      "coverage": {
+        "mirror_source": "data/st6/ST6_HEALTH_STATUS.json",
+        "mirror_resolved_from": "EVIDENCE_COPY",
+        "mirror_present": true,
+        "shared_flags": 4,
+        "coverage": "FULL"
+      }
     },
     {
       "id": "I6_campaign_numbers_are_consistent",
       "statement": "an RFC number is claimed by exactly one RFC: campaigns that share a number are phases of it",
       "result": "PASS",
       "detail": "declared [46, 48, 49]"
+    },
+    {
+      "id": "I7_inputs_are_reproducible",
+      "statement": "every input a finding rests on resolves from the commit - HEAD content or a committed, digest-verified evidence copy - and never from an uncommitted file",
+      "result": "PASS",
+      "detail": "8 declared inputs resolve from the repository",
+      "coverage": {
+        "declared_inputs": 8,
+        "classes": [
+          "COMMITTED",
+          "EXTERNAL_DATASET",
+          "EXTERNAL_GENERATED",
+          "EXTERNAL_LIVE"
+        ],
+        "resolved_from": [
+          "EVIDENCE_COPY",
+          "HEAD",
+          "LOCAL_MATERIALIZATION"
+        ]
+      }
     }
   ],
   "contradictions": [],
@@ -2331,7 +2479,7 @@
     {
       "id": "A3_unresolved_pins",
       "statement": "some recorded digests cannot be checked because the pinned artefact is not in the tree",
-      "detail": "3 pins: ['rfc046-spec:HYP-001', 'rfc046-spec:HYP-002', 'rfc046-spec:HYP-003']",
+      "detail": "12 pins: ['dataset:signal_series:defillama_stablecoin_supply_all.json', 'dataset:signal_series:blockchain_info_hashrate_8y.json', 'dataset:signal_series:blockchain_info_miners_revenue_all.json', 'dataset:signal_series:fred_WALCL.csv', 'dataset:signal_series:fred_RRPONTSYD.csv', 'dataset:signal_series:fred_WTREGEN.csv']",
       "effect": "not a contradiction (nothing is contradicted), but those pins prove nothing today"
     },
     {
@@ -2381,107 +2529,387 @@
     "registry_next_free_declared": "048",
     "next_free_derived": 50
   },
+  "input_authority": {
+    "note": "what every input this view reads is, and what authority it answers to; the declaration is part of the identity, the materialization state is not",
+    "declared_inputs": {
+      "PAPER_DATA_24H_REPORT.json": {
+        "path": "PAPER_DATA_24H_REPORT.json",
+        "class": "COMMITTED",
+        "role": "the paper lane's closed 24h data-accumulation report (PAPER_24H_DATA_FAILED)",
+        "required_to_reproduce_a_finding": true,
+        "authority": {
+          "kind": "committed",
+          "artifact": null
+        }
+      },
+      "data/raw/alpha001/BTC-USDT_1d.json": {
+        "path": "data/raw/alpha001/BTC-USDT_1d.json",
+        "class": "EXTERNAL_DATASET",
+        "role": "frozen price series pinned by the RFC-049 preregistration manifest",
+        "required_to_reproduce_a_finding": false,
+        "authority": {
+          "kind": "preregistration_manifest",
+          "artifact": "data/rfc049/PREREGISTRATION_MANIFEST.json"
+        }
+      },
+      "data/raw/alpha001/ETH-USDT_1d.json": {
+        "path": "data/raw/alpha001/ETH-USDT_1d.json",
+        "class": "EXTERNAL_DATASET",
+        "role": "frozen price series pinned by the RFC-049 preregistration manifest",
+        "required_to_reproduce_a_finding": false,
+        "authority": {
+          "kind": "preregistration_manifest",
+          "artifact": "data/rfc049/PREREGISTRATION_MANIFEST.json"
+        }
+      },
+      "data/st6/ST6_HEALTH_STATUS.json": {
+        "path": "data/st6/ST6_HEALTH_STATUS.json",
+        "class": "EXTERNAL_LIVE",
+        "role": "forward-regime lane's health and standing-state declaration (governance mirror)",
+        "required_to_reproduce_a_finding": true,
+        "authority": {
+          "kind": "dated_snapshot",
+          "artifact": "data/recovery/wp8/evidence/INPUT_EVIDENCE.json"
+        },
+        "attested_fields": [
+          "status",
+          "standing_state.NEXT_CAMPAIGN",
+          "standing_state.LIVE_TRADING"
+        ],
+        "evidence_copy": {
+          "sha256": "2568153be115097053bdded399ffdfc56a0522c7682718d59e6fea7313165e5f",
+          "sha256_lf": "945f94e0757f1553811338dfccafe1d4914abecd358840aff9e5028436b7d007",
+          "sha256_crlf": "2568153be115097053bdded399ffdfc56a0522c7682718d59e6fea7313165e5f",
+          "bytes": 6142,
+          "line_endings": "CRLF",
+          "in_head": true
+        },
+        "evidence_path": "data/recovery/wp8/evidence/inputs/ST6_HEALTH_STATUS.json"
+      },
+      "reports/alpha-recovery-v1/STRATEGY_FAILURE_MATRIX.md": {
+        "path": "reports/alpha-recovery-v1/STRATEGY_FAILURE_MATRIX.md",
+        "class": "EXTERNAL_GENERATED",
+        "role": "ARP-001 strategy failure matrix: per-family entry-drift evidence",
+        "required_to_reproduce_a_finding": true,
+        "authority": {
+          "kind": "published_sources",
+          "artifact": "data/recovery/ACTIVE_ECONOMIC_AUDIT.json"
+        },
+        "evidence_copy": {
+          "sha256": "b248c3687fbdec09d5f971d6a836f7f72f6b73c0bc5150d361252f43b21258fa",
+          "sha256_lf": "b248c3687fbdec09d5f971d6a836f7f72f6b73c0bc5150d361252f43b21258fa",
+          "sha256_crlf": "3756f213498876187ec33f8adf13eeb5aee7fec28bfa596f5c047dc2f35c8100",
+          "bytes": 3501,
+          "line_endings": "LF",
+          "in_head": true
+        },
+        "evidence_path": "data/recovery/wp8/evidence/inputs/STRATEGY_FAILURE_MATRIX.md"
+      },
+      "reports/strategy-baseline/COST_BARRIER.json": {
+        "path": "reports/strategy-baseline/COST_BARRIER.json",
+        "class": "EXTERNAL_GENERATED",
+        "role": "market-horizon source: median bars needed to cover the round trip",
+        "required_to_reproduce_a_finding": true,
+        "authority": {
+          "kind": "published_sources",
+          "artifact": "data/recovery/ACTIVE_ECONOMIC_AUDIT.json"
+        },
+        "evidence_copy": {
+          "sha256": "2437f446051d97ec15bd1bd95de550d46db3fb4d555ccab6557a3a2b2bac1fd4",
+          "sha256_lf": "1547cea438d2fb90d8556870c30dcbd911b5a841283ce982b423d04fbcc53640",
+          "sha256_crlf": "2437f446051d97ec15bd1bd95de550d46db3fb4d555ccab6557a3a2b2bac1fd4",
+          "bytes": 3822,
+          "line_endings": "CRLF",
+          "in_head": true
+        },
+        "evidence_path": "data/recovery/wp8/evidence/inputs/COST_BARRIER.json"
+      },
+      "reports/strategy-baseline/REGIME_ANALYSIS.json": {
+        "path": "reports/strategy-baseline/REGIME_ANALYSIS.json",
+        "class": "EXTERNAL_GENERATED",
+        "role": "D-05 regime-conditional cells used by the robustness attribution",
+        "required_to_reproduce_a_finding": true,
+        "authority": {
+          "kind": "published_sources",
+          "artifact": "data/recovery/ACTIVE_ECONOMIC_AUDIT.json"
+        },
+        "evidence_copy": {
+          "sha256": "ceb5b2265dcaddf5c7d3b6636a999cfefe7d4305d0f2e781158d65fbcfc4ee94",
+          "sha256_lf": "fca537b09a717d8a25ecf6cb717edc317e587a85748caad5ff2de52d7893c02d",
+          "sha256_crlf": "ceb5b2265dcaddf5c7d3b6636a999cfefe7d4305d0f2e781158d65fbcfc4ee94",
+          "bytes": 3670,
+          "line_endings": "CRLF",
+          "in_head": true
+        },
+        "evidence_path": "data/recovery/wp8/evidence/inputs/REGIME_ANALYSIS.json"
+      },
+      "reports/strategy-baseline/TIMEFRAME_AUDIT.json": {
+        "path": "reports/strategy-baseline/TIMEFRAME_AUDIT.json",
+        "class": "EXTERNAL_GENERATED",
+        "role": "per-timeframe (15m/30m/1h) parity-engine totals, BASE and ZERO_COST, with DEV/VAL/OOS",
+        "required_to_reproduce_a_finding": true,
+        "authority": {
+          "kind": "published_sources",
+          "artifact": "data/recovery/ACTIVE_ECONOMIC_AUDIT.json"
+        },
+        "evidence_copy": {
+          "sha256": "2844787551a46e2a4a84ace1facf503d49afd75869b192d951ef25a8bde0e52c",
+          "sha256_lf": "82df1ba81b1800eb0e9c75321159d522b7e86cf9f414b2f37c7559127fa2484c",
+          "sha256_crlf": "2844787551a46e2a4a84ace1facf503d49afd75869b192d951ef25a8bde0e52c",
+          "bytes": 109211,
+          "line_endings": "CRLF",
+          "in_head": true
+        },
+        "evidence_path": "data/recovery/wp8/evidence/inputs/TIMEFRAME_AUDIT.json"
+      }
+    }
+  },
   "status": "CONSISTENT_WITH_ADVISORIES",
   "sources": [
     {
       "path": "PAPER_DATA_24H_REPORT.json",
       "exists": true,
-      "tracked": false,
+      "resolved_from": "HEAD",
+      "class": "COMMITTED",
       "sha256_before": "a1d2f1de84c3ad3b11d8408763ea8bed7eb36f1c5c61761c2616f9d3ced5777e",
       "sha256_after": "a1d2f1de84c3ad3b11d8408763ea8bed7eb36f1c5c61761c2616f9d3ced5777e"
     },
     {
       "path": "config/strategy_admission.json",
       "exists": true,
-      "tracked": true,
-      "sha256_before": "6c4dd0be1fc2fff24920c9f9226c7f81f8d3d4dc80671b5a424721da497f7db1",
-      "sha256_after": "6c4dd0be1fc2fff24920c9f9226c7f81f8d3d4dc80671b5a424721da497f7db1"
+      "resolved_from": "HEAD",
+      "class": "COMMITTED",
+      "sha256_before": "92aab5415d92ff39219e7db68cb8057f746e4d7e6d6a6fb46a3971754bfc65e2",
+      "sha256_after": "92aab5415d92ff39219e7db68cb8057f746e4d7e6d6a6fb46a3971754bfc65e2"
     },
     {
       "path": "data/rfc046/ACTIVATION.json",
       "exists": true,
-      "tracked": true,
-      "sha256_before": "daa3914bd580896d7c80b2129ed2969a8db522349fb1e27010bca061040ed5ba",
-      "sha256_after": "daa3914bd580896d7c80b2129ed2969a8db522349fb1e27010bca061040ed5ba"
+      "resolved_from": "HEAD",
+      "class": "COMMITTED",
+      "sha256_before": "2ede31f6cd653c62d97d9b9acb8b6f9e01cbff857014ed71d1716552541252ab",
+      "sha256_after": "2ede31f6cd653c62d97d9b9acb8b6f9e01cbff857014ed71d1716552541252ab"
     },
     {
       "path": "data/rfc046/ECONOMIC_FEASIBILITY.json",
       "exists": true,
-      "tracked": true,
-      "sha256_before": "35a0a0f28b7fca29632f51efa45703e8d7ce871d74a7cbe0857086645a883b73",
-      "sha256_after": "35a0a0f28b7fca29632f51efa45703e8d7ce871d74a7cbe0857086645a883b73"
+      "resolved_from": "HEAD",
+      "class": "COMMITTED",
+      "sha256_before": "0a2ac9ca7d03d2150e7e9c9ee90604d06e4dbfe71b02c72e3faeb4401076d740",
+      "sha256_after": "0a2ac9ca7d03d2150e7e9c9ee90604d06e4dbfe71b02c72e3faeb4401076d740"
     },
     {
       "path": "data/rfc048/FINAL_CERTIFICATION_REPORT.json",
       "exists": true,
-      "tracked": true,
-      "sha256_before": "de3f56ec67b8b863fa631cdb47cddf1f1966c94b4f24221e53f4001ef32a6938",
-      "sha256_after": "de3f56ec67b8b863fa631cdb47cddf1f1966c94b4f24221e53f4001ef32a6938"
+      "resolved_from": "HEAD",
+      "class": "COMMITTED",
+      "sha256_before": "b0a8a1b1f4db2cabb9337ca5f824f55e56bec57428fcfd130292f11de8f8f071",
+      "sha256_after": "b0a8a1b1f4db2cabb9337ca5f824f55e56bec57428fcfd130292f11de8f8f071"
     },
     {
       "path": "data/rfc049/ECONOMIC_RESULTS.json",
       "exists": true,
-      "tracked": true,
-      "sha256_before": "79deb36fa94c76493e80767b946925f209a42fabdedbfeb36551d46db388f89d",
-      "sha256_after": "79deb36fa94c76493e80767b946925f209a42fabdedbfeb36551d46db388f89d"
+      "resolved_from": "HEAD",
+      "class": "COMMITTED",
+      "sha256_before": "f95d08c53cb90bc545b1bd59eed4db952451b0a21ec4944fc369d985266c6e7e",
+      "sha256_after": "f95d08c53cb90bc545b1bd59eed4db952451b0a21ec4944fc369d985266c6e7e"
     },
     {
       "path": "data/rfc049/PREREGISTRATION_MANIFEST.json",
       "exists": true,
-      "tracked": true,
-      "sha256_before": "da878baaf3b5d9ecdafe9888eb284f20eacdbb68274c3176051d5c8f88fc0782",
-      "sha256_after": "da878baaf3b5d9ecdafe9888eb284f20eacdbb68274c3176051d5c8f88fc0782"
+      "resolved_from": "HEAD",
+      "class": "COMMITTED",
+      "sha256_before": "8f95c976595768f084b353515e56fcba88abe888209bf94a12293f44b935f2b7",
+      "sha256_after": "8f95c976595768f084b353515e56fcba88abe888209bf94a12293f44b935f2b7"
     },
     {
       "path": "data/rfc049/admission/FINAL_ADMISSION_REPORT.json",
       "exists": true,
-      "tracked": true,
-      "sha256_before": "362d692e50d9c4dfcdd09c4c70f35f7b6c2c91348b732e52c116277a98cae398",
-      "sha256_after": "362d692e50d9c4dfcdd09c4c70f35f7b6c2c91348b732e52c116277a98cae398"
+      "resolved_from": "HEAD",
+      "class": "COMMITTED",
+      "sha256_before": "67630d07a69b6a63c878b1cf1c5fec491924d8612e3e45817bdc1d00ad6268a2",
+      "sha256_after": "67630d07a69b6a63c878b1cf1c5fec491924d8612e3e45817bdc1d00ad6268a2"
     },
     {
       "path": "data/rfc049/admission/INDEPENDENT_VERIFICATION.json",
       "exists": true,
-      "tracked": true,
-      "sha256_before": "977fd73ec5109d76346b41c6733dd86353eb74b0c3bd33f765fdf3b336cdf1e5",
-      "sha256_after": "977fd73ec5109d76346b41c6733dd86353eb74b0c3bd33f765fdf3b336cdf1e5"
+      "resolved_from": "HEAD",
+      "class": "COMMITTED",
+      "sha256_before": "acc72afa0e96d5ce7c44985194cc7722ecf520455d38627f541d9d613ac13efc",
+      "sha256_after": "acc72afa0e96d5ce7c44985194cc7722ecf520455d38627f541d9d613ac13efc"
     },
     {
       "path": "data/rfc049/discovery2/CAMPAIGN_CLOSURE.json",
       "exists": true,
-      "tracked": true,
+      "resolved_from": "HEAD",
+      "class": "COMMITTED",
       "sha256_before": "3b8ef7c028150f4597d19cb253a632baa13bfbba233d58a2c0adcb8473789659",
       "sha256_after": "3b8ef7c028150f4597d19cb253a632baa13bfbba233d58a2c0adcb8473789659"
     },
     {
       "path": "data/rfc049/discovery2/INDEPENDENT_VERIFICATION.json",
       "exists": true,
-      "tracked": true,
-      "sha256_before": "8f1b3597894c0e5231284482e0d3c74dd45c7c57df5f850bff6236282e87876d",
-      "sha256_after": "8f1b3597894c0e5231284482e0d3c74dd45c7c57df5f850bff6236282e87876d"
+      "resolved_from": "HEAD",
+      "class": "COMMITTED",
+      "sha256_before": "0b7f8d6c3576e678910783713cd5deb44409f1c98e2fc7260a7eb271635f43cd",
+      "sha256_after": "0b7f8d6c3576e678910783713cd5deb44409f1c98e2fc7260a7eb271635f43cd"
     },
     {
       "path": "data/st6/ST6_HEALTH_STATUS.json",
       "exists": true,
-      "tracked": false,
-      "sha256_before": "54638ed55ba17e5306326a1feaccca32366d2b64b0cef95326bc0c4cbd05eb47",
-      "sha256_after": "54638ed55ba17e5306326a1feaccca32366d2b64b0cef95326bc0c4cbd05eb47"
+      "resolved_from": "EVIDENCE_COPY",
+      "class": "EXTERNAL_LIVE",
+      "sha256_before": "945f94e0757f1553811338dfccafe1d4914abecd358840aff9e5028436b7d007",
+      "sha256_after": "945f94e0757f1553811338dfccafe1d4914abecd358840aff9e5028436b7d007"
     },
     {
       "path": "docs/roadmap/RFC_REGISTRY.json",
       "exists": true,
-      "tracked": true,
+      "resolved_from": "HEAD",
+      "class": "COMMITTED",
       "sha256_before": "04aab57d2e3e4cfe92e4f048bf3908dc059abde343f6dce798da3e2276f2563e",
       "sha256_after": "04aab57d2e3e4cfe92e4f048bf3908dc059abde343f6dce798da3e2276f2563e"
     },
     {
       "path": "tasks/decisions.md",
       "exists": true,
-      "tracked": true,
+      "resolved_from": "HEAD",
+      "class": "COMMITTED",
       "sha256_before": "0e0003e1010e63e548fd99a453c676ed0547772e6be907c6c6b6ee8d7c9bbd24",
       "sha256_after": "0e0003e1010e63e548fd99a453c676ed0547772e6be907c6c6b6ee8d7c9bbd24"
     }
   ],
   "sources_unchanged": true,
-  "payload_sha256": "16cb43e028ce371e271007f3cdde1ed8b2d6b9364f94ebbe241ba65c07aa5078"
+  "local_observations": [
+    {
+      "path": "PAPER_DATA_24H_REPORT.json",
+      "class": "COMMITTED",
+      "resolved_from": "HEAD",
+      "present_on_this_machine": true,
+      "local_forms": {
+        "sha256": "a1d2f1de84c3ad3b11d8408763ea8bed7eb36f1c5c61761c2616f9d3ced5777e",
+        "sha256_lf": "a1d2f1de84c3ad3b11d8408763ea8bed7eb36f1c5c61761c2616f9d3ced5777e",
+        "sha256_crlf": "09b3956793839c6410ee21b12e86cf8b9689676054c605e77388a6d1b22b421c",
+        "bytes": 10493,
+        "line_endings": "LF"
+      },
+      "local_reproduces_the_authority": true
+    },
+    {
+      "path": "data/raw/alpha001/BTC-USDT_1d.json",
+      "class": "EXTERNAL_DATASET",
+      "resolved_from": "LOCAL_MATERIALIZATION",
+      "present_on_this_machine": true,
+      "local_forms": {
+        "sha256": "558fb9a07d2baa6a5e68b9eaed031adb750774542bfdc4c27c3b6a4f6260ebd1",
+        "sha256_lf": "558fb9a07d2baa6a5e68b9eaed031adb750774542bfdc4c27c3b6a4f6260ebd1",
+        "sha256_crlf": "558fb9a07d2baa6a5e68b9eaed031adb750774542bfdc4c27c3b6a4f6260ebd1",
+        "bytes": 227920,
+        "line_endings": "LF"
+      },
+      "local_reproduces_the_authority": true
+    },
+    {
+      "path": "data/raw/alpha001/ETH-USDT_1d.json",
+      "class": "EXTERNAL_DATASET",
+      "resolved_from": "LOCAL_MATERIALIZATION",
+      "present_on_this_machine": true,
+      "local_forms": {
+        "sha256": "840396f1adf31bef0a533ec3f56b52517c9facd9c23f0dbd7d448be9a113d745",
+        "sha256_lf": "840396f1adf31bef0a533ec3f56b52517c9facd9c23f0dbd7d448be9a113d745",
+        "sha256_crlf": "840396f1adf31bef0a533ec3f56b52517c9facd9c23f0dbd7d448be9a113d745",
+        "bytes": 213474,
+        "line_endings": "LF"
+      },
+      "local_reproduces_the_authority": true
+    },
+    {
+      "path": "data/st6/ST6_HEALTH_STATUS.json",
+      "class": "EXTERNAL_LIVE",
+      "resolved_from": "EVIDENCE_COPY",
+      "present_on_this_machine": true,
+      "local_forms": {
+        "sha256": "dc32eb6ceba436d524511e68d2a10cbdf80d34aba907253ce85cf9e8c241c3ab",
+        "sha256_lf": "32b1cbe69282158c14979d87bd3906e9162fb29a774dcaaf7ef710db16f780b9",
+        "sha256_crlf": "dc32eb6ceba436d524511e68d2a10cbdf80d34aba907253ce85cf9e8c241c3ab",
+        "bytes": 6142,
+        "line_endings": "CRLF"
+      },
+      "local_reproduces_the_authority": false,
+      "attested_field_values": {
+        "status": "HEALTHY",
+        "standing_state.NEXT_CAMPAIGN": "NOT_AUTHORIZED",
+        "standing_state.LIVE_TRADING": "DISABLED"
+      },
+      "attested_fields_match_the_snapshot": true,
+      "evidence_reproduces_the_authority": true,
+      "local_matches_the_evidence_copy": false,
+      "note": "a live lane file: the certified state reads the dated snapshot the repository carries, and this observation is what the file says right now"
+    },
+    {
+      "path": "reports/alpha-recovery-v1/STRATEGY_FAILURE_MATRIX.md",
+      "class": "EXTERNAL_GENERATED",
+      "resolved_from": "EVIDENCE_COPY",
+      "present_on_this_machine": true,
+      "local_forms": {
+        "sha256": "b248c3687fbdec09d5f971d6a836f7f72f6b73c0bc5150d361252f43b21258fa",
+        "sha256_lf": "b248c3687fbdec09d5f971d6a836f7f72f6b73c0bc5150d361252f43b21258fa",
+        "sha256_crlf": "3756f213498876187ec33f8adf13eeb5aee7fec28bfa596f5c047dc2f35c8100",
+        "bytes": 3501,
+        "line_endings": "LF"
+      },
+      "local_reproduces_the_authority": true,
+      "evidence_reproduces_the_authority": true,
+      "local_matches_the_evidence_copy": true
+    },
+    {
+      "path": "reports/strategy-baseline/COST_BARRIER.json",
+      "class": "EXTERNAL_GENERATED",
+      "resolved_from": "EVIDENCE_COPY",
+      "present_on_this_machine": true,
+      "local_forms": {
+        "sha256": "2437f446051d97ec15bd1bd95de550d46db3fb4d555ccab6557a3a2b2bac1fd4",
+        "sha256_lf": "1547cea438d2fb90d8556870c30dcbd911b5a841283ce982b423d04fbcc53640",
+        "sha256_crlf": "2437f446051d97ec15bd1bd95de550d46db3fb4d555ccab6557a3a2b2bac1fd4",
+        "bytes": 3822,
+        "line_endings": "CRLF"
+      },
+      "local_reproduces_the_authority": true,
+      "evidence_reproduces_the_authority": true,
+      "local_matches_the_evidence_copy": true
+    },
+    {
+      "path": "reports/strategy-baseline/REGIME_ANALYSIS.json",
+      "class": "EXTERNAL_GENERATED",
+      "resolved_from": "EVIDENCE_COPY",
+      "present_on_this_machine": true,
+      "local_forms": {
+        "sha256": "ceb5b2265dcaddf5c7d3b6636a999cfefe7d4305d0f2e781158d65fbcfc4ee94",
+        "sha256_lf": "fca537b09a717d8a25ecf6cb717edc317e587a85748caad5ff2de52d7893c02d",
+        "sha256_crlf": "ceb5b2265dcaddf5c7d3b6636a999cfefe7d4305d0f2e781158d65fbcfc4ee94",
+        "bytes": 3670,
+        "line_endings": "CRLF"
+      },
+      "local_reproduces_the_authority": true,
+      "evidence_reproduces_the_authority": true,
+      "local_matches_the_evidence_copy": true
+    },
+    {
+      "path": "reports/strategy-baseline/TIMEFRAME_AUDIT.json",
+      "class": "EXTERNAL_GENERATED",
+      "resolved_from": "EVIDENCE_COPY",
+      "present_on_this_machine": true,
+      "local_forms": {
+        "sha256": "2844787551a46e2a4a84ace1facf503d49afd75869b192d951ef25a8bde0e52c",
+        "sha256_lf": "82df1ba81b1800eb0e9c75321159d522b7e86cf9f414b2f37c7559127fa2484c",
+        "sha256_crlf": "2844787551a46e2a4a84ace1facf503d49afd75869b192d951ef25a8bde0e52c",
+        "bytes": 109211,
+        "line_endings": "CRLF"
+      },
+      "local_reproduces_the_authority": true,
+      "evidence_reproduces_the_authority": true,
+      "local_matches_the_evidence_copy": true
+    }
+  ],
+  "payload_sha256": "e7bee5d8b710640c99ccf8484c7e1a0c9a1511aaa9796d4aea3066952845d733"
 }

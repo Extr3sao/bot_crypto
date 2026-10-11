@@ -36,6 +36,20 @@ from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "scripts"))
+
+from recovery_input_evidence import (  # noqa: E402  (a sibling module, not an installed package)
+    committed_bytes,
+    content_forms,
+    declarations,
+    declared_input_failures,
+    observations,
+    reproduction_evidence_failures,
+    resolve,
+    resolve_json,
+    resolve_text,
+)
+
 OUT = ROOT / "data" / "recovery"
 
 # --------------------------------------------------------------------------- #
@@ -126,27 +140,39 @@ FAILURE_CATEGORIES = (
 )
 
 
-def sha256_file(path: Path) -> str | None:
-    return hashlib.sha256(path.read_bytes()).hexdigest() if path.exists() else None
+def source_row(rel: str) -> dict[str, Any]:
+    """One source as this audit actually read it.
+
+    ``sha256_lf`` is the authority: two checkouts of one commit that differ only by line
+    endings are the same state. ``resolved_from`` says where the bytes came from, so a
+    working-tree fallback is visible instead of looking like a commit read.
+    """
+    resolved = resolve(rel)
+    forms = content_forms(resolved["bytes"]) if resolved["bytes"] is not None else None
+    return {
+        "path": rel,
+        "role": SOURCE_ROLES.get(rel, ""),
+        "class": resolved["class"],
+        "resolved_from": resolved["origin"],
+        "exists": resolved["present"],
+        "in_head": committed_bytes(rel) is not None,
+        "sha256": forms["sha256"] if forms else None,
+        "sha256_lf": forms["sha256_lf"] if forms else None,
+        "sha256_crlf": forms["sha256_crlf"] if forms else None,
+        "line_endings": forms["line_endings"] if forms else None,
+    }
 
 
-def tracked(rel: str) -> bool:
-    out = subprocess.run(
-        ["git", "ls-files", "--error-unmatch", rel], cwd=ROOT, capture_output=True, text=True
-    )
-    return out.returncode == 0
-
-
+# Every read below goes through the input-authority module (WP-8B): a committed input is
+# read from the commit, an external one from the evidence copy the repository carries. The
+# audit used to read whatever sat on the machine, which is how its published findings ended
+# up reconstructible on exactly one computer.
 def read_text(rel: str) -> str | None:
-    path = ROOT / rel
-    return path.read_text(encoding="utf-8", errors="replace") if path.exists() else None
+    return resolve_text(rel)
 
 
 def read_json(rel: str) -> Any:
-    path = ROOT / rel
-    if not path.exists():
-        return None
-    return json.loads(path.read_text(encoding="utf-8"))
+    return resolve_json(rel)
 
 
 def usd_to_bps(usd_per_trade: float, stake: float) -> float:
@@ -629,10 +655,15 @@ def build() -> dict[str, Any]:
     entrypoints = []
     for rel in ENTRYPOINT_CANDIDATES:
         text = read_text(rel)
+        resolved = resolve(rel)
+        forms = content_forms(resolved["bytes"]) if resolved["bytes"] is not None else None
         entrypoints.append({
             "path": rel,
             "exists": text is not None,
-            "sha256": sha256_file(ROOT / rel),
+            # content forms, not the raw bytes: a checkout that rewrites line endings is the
+            # same commit, and the audit's identity must not depend on which one it is read in
+            "sha256_lf": forms["sha256_lf"] if forms else None,
+            "sha256_crlf": forms["sha256_crlf"] if forms else None,
             "composes_admission_ledger": bool(text and "AdmissionLedger" in text),
             "composes_paper_broker": bool(text and "PaperBroker" in text),
             "has_default_indicator_precompute": bool(text and "_default_indicators" in text),
@@ -842,10 +873,18 @@ def build() -> dict[str, Any]:
     def check(name: str, passed: bool, detail: str) -> None:
         checks.append({"check": name, "result": "PASS" if passed else "FAIL", "detail": detail})
 
-    check("sources:all_present", all((ROOT / p).exists() for p in (LEDGER, RESULTS_V3, MATRIX, TIMEFRAME_AUDIT, CRITERIA, COST_V3)),
+    check("sources:all_present", all(resolve(p)["present"] for p in (LEDGER, RESULTS_V3, MATRIX, TIMEFRAME_AUDIT, CRITERIA, COST_V3)),
           "ledger, V3 results, admission matrix, timeframe audit, criteria, cost model")
-    check("sources:tracked_or_declared", all(tracked(p) for p in (LEDGER, RESULTS_V3, MATRIX, CRITERIA, COST_V3)),
-          "the strategy evidence is tracked; the reports/ baselines are declared worktree artefacts")
+    check("sources:tracked_or_declared", all(committed_bytes(p) is not None for p in (LEDGER, RESULTS_V3, MATRIX, CRITERIA, COST_V3)),
+          "the strategy evidence is tracked; the reports/ baselines are resolved from the evidence bundle")
+    # WP-8D: reproducibility is a certified property, not an assumption. Every input a
+    # finding rests on has to resolve from the commit, or from a committed evidence copy
+    # that reproduces the digest the published artefact recorded for it.
+    authority_failures = list(declared_input_failures()) + list(reproduction_evidence_failures())
+    check("inputs:every_external_input_resolves_from_the_commit", not authority_failures,
+          "; ".join(authority_failures[:4]) or
+          f"{len(declarations())} declared inputs resolve from the repository; "
+          f"resolved from: {sorted({resolve(p)['origin'] for p in declarations()})}")
     check("cost:reproduces_frozen_admission_round_trip", cost_plane["reproduces_frozen_value"],
           f"derived {cost_plane['round_trip_bps_200_usdt']!r} vs frozen {FROZEN_ADMISSION_RT_BPS!r}")
     check("ledger:24_entries", len(records) == 24, f"{len(records)} entries")
@@ -906,11 +945,13 @@ def build() -> dict[str, Any]:
         "mode": "OFFLINE READ-ONLY AUDIT — no process started, no order, no key, no capital",
         "method": "tracked admission ledger + primary research artefacts + the live registry code path + the paper "
                   "lane's own reports; the runtime cost plane is re-derived from COST_MODEL_V3, never typed",
-        "sources": [
-            {"path": rel, "role": SOURCE_ROLES.get(rel, ""), "exists": (ROOT / rel).exists(),
-             "tracked": tracked(rel) if (ROOT / rel).exists() else None, "sha256": sha256_file(ROOT / rel)}
-            for rel in sorted(SOURCE_ROLES)
-        ],
+        "sources": [source_row(rel) for rel in sorted(SOURCE_ROLES)],
+        "input_authority": {
+            "note": "what every input is and what authority it answers to; the declaration is part of "
+                    "the identity, the materialization state is not",
+            "declared_inputs": declarations(),
+        },
+        "local_observations": observations(),
         "entrypoints": entrypoints,
         "cost_plane": cost_plane,
         "strategy_count": len(records),
@@ -1099,7 +1140,7 @@ def render_markdown(payload: dict[str, Any]) -> str:
 # ``sources`` records per-file hashes, including files owned by other lanes (the paper lane's
 # 24h report, the reports/ baselines); ``head``/``branch``/``generated_at_utc`` move with every
 # commit and every run. They stay in the artefact for auditability but not in its identity.
-VOLATILE_KEYS = ("generated_at_utc", "payload_sha256", "head", "branch", "sources")
+VOLATILE_KEYS = ("generated_at_utc", "payload_sha256", "head", "branch", "sources", "local_observations")
 
 
 def payload_hash(payload: dict[str, Any]) -> str:

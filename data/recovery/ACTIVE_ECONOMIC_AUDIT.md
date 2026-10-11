@@ -1,6 +1,6 @@
 # ACTIVE ECONOMIC AUDIT (WP-3)
 
-- generated `2026-10-10T20:03:46Z` · head `aed26c71efb9` · branch `main`
+- generated `2026-10-11T17:02:27Z` · head `e670d2a94a54` · branch `main`
 - tracked admission ledger + primary research artefacts + the live registry code path + the paper lane's own reports; the runtime cost plane is re-derived from COST_MODEL_V3, never typed
 - mode: offline read-only; no process started, nothing executed
 
@@ -157,7 +157,8 @@ One work package is justified by the evidence: a cost-and-entry research campaig
 | check | result | detail |
 | --- | --- | --- |
 | `sources:all_present` | PASS | ledger, V3 results, admission matrix, timeframe audit, criteria, cost model |
-| `sources:tracked_or_declared` | PASS | the strategy evidence is tracked; the reports/ baselines are declared worktree artefacts |
+| `sources:tracked_or_declared` | PASS | the strategy evidence is tracked; the reports/ baselines are resolved from the evidence bundle |
+| `inputs:every_external_input_resolves_from_the_commit` | PASS | 8 declared inputs resolve from the repository; resolved from: ['EVIDENCE_COPY', 'HEAD', 'LOCAL_MATERIALIZATION'] |
 | `cost:reproduces_frozen_admission_round_trip` | PASS | derived 23.353553390593273 vs frozen 23.353553391 |
 | `ledger:24_entries` | PASS | 24 entries |
 | `ledger:zero_admitted` | PASS | admitted_for_paper=false everywhere |
@@ -175,5 +176,5 @@ One work package is justified by the evidence: a cost-and-entry research campaig
 | `governance:roadmap_assumes_no_authorization` | PASS | NEXT_CAMPAIGN=NOT_AUTHORIZED — the roadmap proposes; only the operator authorizes |
 | `runtime:def206_evidence_verified` | PASS | scripts/start_paper_trading.py still carries the ema/rsi/atr-only precompute |
 
-**18/18 checks pass; checks_failed = 0.**
+**19/19 checks pass; checks_failed = 0.**
 

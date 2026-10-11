@@ -209,6 +209,34 @@ def test_committed_view_is_consistent_and_makes_no_claim(state_view):
         assert by_id[required]["result"] == "PASS", by_id[required]
     # a strict pin that fails would make the view contradictory; only append-only drift is tolerated
     assert not [p for p in payload["integrity"]["pins"] if p["result"] in {"FAILED", "MISSING"}]
+    # a pin that could not be checked says so and names nothing: it is never dressed as verified
+    for pin in payload["integrity"]["pins"]:
+        if pin["result"] == "UNRESOLVED":
+            assert pin["path"] is None and pin["actual_sha256_lf"] is None, pin
+        else:
+            assert pin["actual_sha256_lf"], pin
+
+
+def test_the_view_declares_where_every_input_comes_from():
+    """WP-8C: the certified state names every input's class, authority and evidence copy."""
+    payload = json.loads((RECOVERY / "CAMPAIGN_STATE_VIEW.json").read_text(encoding="utf-8"))
+    declared = payload["input_authority"]["declared_inputs"]
+    assert {record["class"] for record in declared.values()} == {
+        "COMMITTED", "EXTERNAL_GENERATED", "EXTERNAL_LIVE", "EXTERNAL_DATASET"}
+
+    # the forward lane's governance mirror is read from a dated snapshot the repository carries:
+    # another lane rewrites the live file on its own schedule, and a moving file cannot be
+    # certified, so the view certifies the snapshot and observes the rest
+    st6 = declared["data/st6/ST6_HEALTH_STATUS.json"]
+    assert st6["class"] == "EXTERNAL_LIVE"
+    assert st6["evidence_copy"]["in_head"] is True
+    assert st6["evidence_copy"]["sha256_lf"]
+    assert payload["local_observations"]
+
+    by_id = {item["id"]: item for item in payload["invariants"]}
+    assert by_id["I7_inputs_are_reproducible"]["result"] == "PASS"
+    assert by_id["I7_inputs_are_reproducible"]["coverage"]["declared_inputs"] == len(declared)
+    assert by_id["I5_governance_mirrors_agree"]["coverage"]["coverage"] == "FULL"
 
 
 def test_registry_staleness_is_an_advisory_not_a_contradiction(state_view):
@@ -245,6 +273,24 @@ def test_audit_is_deterministic_and_committed(audit):
     assert first == second
     stored = json.loads((RECOVERY / "ACTIVE_ECONOMIC_AUDIT.json").read_text(encoding="utf-8"))
     assert stored["payload_sha256"] == first, "the committed audit is stale: re-run scripts/active_economic_audit.py"
+
+
+def test_audit_inputs_resolve_from_the_commit(audit):
+    """WP-8D: the audit's numbers come from inputs a clean checkout also has."""
+    payload = json.loads((RECOVERY / "ACTIVE_ECONOMIC_AUDIT.json").read_text(encoding="utf-8"))
+    rows = {row["path"]: row for row in payload["sources"]}
+    # these four are gitignored by design, so the audit can only have read the committed
+    # evidence copy; reading the local file is what made its findings unreproducible
+    for rel in ("reports/strategy-baseline/TIMEFRAME_AUDIT.json",
+                "reports/strategy-baseline/COST_BARRIER.json",
+                "reports/strategy-baseline/REGIME_ANALYSIS.json",
+                "reports/alpha-recovery-v1/STRATEGY_FAILURE_MATRIX.md"):
+        assert rows[rel]["resolved_from"] == "EVIDENCE_COPY", rows[rel]
+        assert rows[rel]["sha256_lf"], rows[rel]
+    assert all(row["resolved_from"] in {"HEAD", "EVIDENCE_COPY", "LOCAL_MATERIALIZATION"}
+               for row in payload["sources"])
+    checks = {item["check"]: item for item in payload["checks"]}
+    assert checks["inputs:every_external_input_resolves_from_the_commit"]["result"] == "PASS"
 
 
 def test_audit_checks_all_pass(audit):
