@@ -202,6 +202,23 @@ def test_a_line_ending_only_change_is_not_a_finding(harness, tmp_path):
     assert observed["full"] == "FULL_REPRODUCTION_PASS"
 
 
+def test_a_sweep_without_its_substrate_refuses_to_report_a_rate(harness, tmp_path, monkeypatch):
+    """A clean checkout has no materialized input, and that must not read as detection.
+
+    Without the gitignored input every full-reproduction attack degenerates into
+    "the gate was already blocked", which the harness would otherwise count as
+    the attack being caught. The sweep has to say NOT_EVALUABLE instead, and the
+    mutation that could not land is recorded as invalid rather than detected.
+    """
+    monkeypatch.setattr(harness, "MARKET_HORIZON", "reports/strategy-baseline/absent.json")
+    report = harness.run_all(workdir=tmp_path, gate_source=None, gate_label="no substrate", only="A06")
+    assert report["status"] == "NOT_EVALUABLE"
+    assert report["substrate"]["present"] is False
+    assert report["attacks_invalid"] == 1
+    assert report["attacks_detected"] == 0
+    assert "materialize" in report["substrate"]["why"]
+
+
 # --------------------------------------------------------------------------- #
 # the certifier's refusal
 # --------------------------------------------------------------------------- #
@@ -217,7 +234,14 @@ FULL_REPORT = {
 }
 INTEGRITY_OK = {"status": "VERIFIED"}
 TESTS_OK = {"passed": True, "exit_code": 0}
-ADVERSARIAL_OK = {"attacks_total": 17, "attacks_evaded": 0, "legs_failed": [], "escapes": []}
+ADVERSARIAL_OK = {
+    "status": "EVALUATED",
+    "substrate": {"path": "reports/strategy-baseline/COST_BARRIER.json", "present": True},
+    "attacks_total": 17,
+    "attacks_evaded": 0,
+    "legs_failed": [],
+    "escapes": [],
+}
 
 
 def test_a_complete_candidate_certifies(certifier):
@@ -277,6 +301,11 @@ def test_a_blocked_input_is_blocked_not_failed(certifier):
                          "escapes": [{"attack_id": "A07"}]}},
         {"adversarial": {**ADVERSARIAL_OK, "legs_failed": ["A13:leg"]}},
         {"adversarial": {"attacks_total": 0, "attacks_evaded": 0, "legs_failed": []}},
+        {"adversarial": {**ADVERSARIAL_OK, "status": "NOT_EVALUABLE",
+                         "substrate": {"path": "reports/strategy-baseline/COST_BARRIER.json",
+                                       "present": False, "why": "materialize first"}}},
+        {"adversarial": {**ADVERSARIAL_OK, "substrate": {"present": False}}},
+        {"adversarial": {**ADVERSARIAL_OK, "substrate": None}},
         {"integrity": {"status": "INTEGRITY_FAILURE", "failures": ["the copy drifted"]}},
         {"integrity": None},
         {"gate_report": {**FULL_REPORT, "integrity_failures": ["a pin drifted"]}},

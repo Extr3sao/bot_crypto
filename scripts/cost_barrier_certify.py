@@ -206,6 +206,24 @@ def evaluate(
     else:
         escapes = adversarial.get("attacks_evaded")
         legs = adversarial.get("legs_failed") or []
+        # A sweep without its substrate reports degenerations ('the gate was
+        # already blocked') as detections, so its rate is not evidence at all.
+        sweep_status = adversarial.get("status")
+        substrate_present = (adversarial.get("substrate") or {}).get("present")
+        if sweep_status != "EVALUATED":
+            reasons.append(
+                f"the adversarial suite reports status {sweep_status!r}, not 'EVALUATED': its "
+                "substrate must be materialized before a detection rate counts as evidence"
+                + (
+                    f" - {(adversarial.get('substrate') or {}).get('why')}"
+                    if adversarial.get("substrate") else ""
+                )
+            )
+        elif substrate_present is not True:
+            reasons.append(
+                "the adversarial report does not attest that its substrate was present, so its "
+                "detection rate is vacuous and cannot support a certification requirement"
+            )
         if escapes:
             reasons.append(f"{escapes} adversarial attack(s) escaped the gate")
         if adversarial.get("escapes"):
@@ -309,6 +327,10 @@ def build_record(
                 "false_success": ((gate_report or {}).get("claims") or {}).get("false_success"),
             },
             "5_adversarial_controls": {
+                "status": (adversarial_report or {}).get("status"),
+                "substrate_present": (
+                    (adversarial_report or {}).get("substrate") or {}
+                ).get("present"),
                 "attacks_total": (adversarial_report or {}).get("attacks_total"),
                 "attacks_evaded": (adversarial_report or {}).get("attacks_evaded"),
                 "legs_failed": (adversarial_report or {}).get("legs_failed"),
@@ -323,6 +345,10 @@ def build_record(
         "evidence_digests": digests,
         "evidence_fingerprint": fingerprint,
         "adversarial_summary": {
+            "status": (adversarial_report or {}).get("status"),
+            "substrate_present": (
+                (adversarial_report or {}).get("substrate") or {}
+            ).get("present"),
             "attacks_total": (adversarial_report or {}).get("attacks_total"),
             "attacks_detected": (adversarial_report or {}).get("attacks_detected"),
             "attacks_evaded": (adversarial_report or {}).get("attacks_evaded"),

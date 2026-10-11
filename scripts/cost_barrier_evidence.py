@@ -119,6 +119,40 @@ def eol_status(pin: str | None, data: bytes) -> str:
     return PIN_DRIFT
 
 
+def pin_forms(path: Path) -> dict[str, Any]:
+    """The digests a producer is pinned by, in every admissible byte convention.
+
+    ``sha256`` is the digest of the bytes as they sat on the machine that wrote
+    the manifest, and is *not* an authority: ``core.autocrlf`` rewrites line
+    endings on checkout, so the same commit presents different bytes to a clean
+    checkout than to the tree the pin was written in.  A rehearsal on a clean
+    worktree proved exactly that, and three producers were flagged as changed
+    for a difference no edit caused.  The authorities are therefore the LF and
+    CRLF content forms, and a match means the file *is* that content in one of
+    them - not merely that it normalises to it.
+    """
+    if not path.exists():
+        return {"sha256": None, "sha256_lf": None, "sha256_crlf": None, "bytes": None}
+    forms = eol_forms(path.read_bytes())
+    return {
+        "sha256": sha256_bytes(forms["EXACT"]),
+        "sha256_lf": sha256_bytes(forms["LF"]),
+        "sha256_crlf": sha256_bytes(forms["CRLF"]),
+        "bytes": len(forms["EXACT"]),
+    }
+
+
+def admissible(status: str) -> bool:
+    """A pin is satisfied by identical content in either line convention.
+
+    Only ``PIN_DRIFT`` means the content moved.  ``PIN_EOL`` means the bytes
+    differ by line endings alone, which is what a checkout does to a text file,
+    so failing it would make the bundle unverifiable everywhere but on the
+    machine that wrote it - the defect the rehearsal found.
+    """
+    return status in (PIN_EXACT, PIN_EOL)
+
+
 def git_head() -> str:
     out = subprocess.run(
         ["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True, check=False
@@ -229,12 +263,7 @@ def capture(mode: str) -> tuple[dict[str, Any], int]:
         ),
     })
     producers = [
-        {
-            "path": rel,
-            "role": role,
-            "sha256": sha256_file(ROOT / rel),
-            "bytes": (ROOT / rel).stat().st_size if (ROOT / rel).exists() else None,
-        }
+        {"path": rel, "role": role, **pin_forms(ROOT / rel)}
         for rel, role in sorted(PRODUCER_ROLES.items())
     ]
     write_json(ROOT / PRODUCER_PINS, {
@@ -246,6 +275,13 @@ def capture(mode: str) -> tuple[dict[str, Any], int]:
         "authority": (
             "the commit that carries this file; re-pinning is an explicit, reviewed act that "
             "must accompany regeneration and re-verification of the artefacts"
+        ),
+        "admissible_byte_conventions": (
+            "a consumer must accept a watched producer whose bytes equal the pinned content in "
+            "LF or CRLF form (sha256_lf / sha256_crlf); sha256 records the bytes of the tree "
+            "that wrote this manifest and is informational only. A checkout with core.autocrlf "
+            "rewrites line endings without touching content, so requiring the raw digest would "
+            "fail every clean checkout for a difference no edit caused"
         ),
         "why_only_these_four": (
             "these are exactly the declared inputs that carry no published pin; the five pinned "
@@ -320,6 +356,7 @@ def verify(do_materialize: bool) -> tuple[dict[str, Any], int]:
     pin = published_pin(explorer, TARGET)
     checks: list[dict[str, Any]] = []
     failures: list[str] = []
+    advisories: list[str] = []
 
     checks.append(check(
         "evidence:copy_matches_the_recorded_digest",
@@ -384,10 +421,14 @@ def verify(do_materialize: bool) -> tuple[dict[str, Any], int]:
             "path": rel,
             "present": present,
             "recorded": recorded,
+            "recorded_lf": (entry or {}).get("sha256_lf"),
             "current": current,
             "pin_status": row_status,
         })
-    drifted = [row for row in rows if row["pin_status"] != PIN_EXACT]
+    # Only DRIFT (or a vanished producer) is a failure: EOL_ONLY is a checkout
+    # artefact, and the gate's producer matrix draws the same distinction.
+    drifted = [row for row in rows if not admissible(str(row["pin_status"]))]
+    eol_only = [row for row in rows if row["pin_status"] == PIN_EOL]
     extra = sorted(
         str(row.get("path")) for row in manifest.get("producers") or []
         if str(row.get("path")) not in PRODUCER_ROLES
@@ -395,7 +436,9 @@ def verify(do_materialize: bool) -> tuple[dict[str, Any], int]:
     checks.append(check(
         "evidence:producer_digests_match_the_manifest",
         not drifted and not extra,
-        f"{len(rows) - len(drifted)}/{len(rows)} producer(s) match"
+        f"{len(rows) - len(drifted)}/{len(rows)} producer(s) match "
+        f"({sum(1 for r in rows if r['pin_status'] == PIN_EXACT)} exact, "
+        f"{len(eol_only)} line-ending-only)"
         if not drifted and not extra
         else "drifted/absent: " + ", ".join(
             f"{row['path']} ({row['pin_status']})" for row in drifted
@@ -406,6 +449,12 @@ def verify(do_materialize: bool) -> tuple[dict[str, Any], int]:
             "watched producer(s) changed since the manifest was written: "
             + ", ".join(str(row["path"]) for row in drifted)
             + " - regenerate, re-verify and re-pin in the same commit"
+        )
+    if eol_only:
+        advisories.append(
+            "line-ending-only difference, accepted: "
+            + ", ".join(f"{row['path']} ({row['pin_status']})" for row in eol_only)
+            + ". The content is the pinned content; git rewrote the bytes on checkout"
         )
 
     checks.append(check(
@@ -480,7 +529,7 @@ def verify(do_materialize: bool) -> tuple[dict[str, Any], int]:
         "producers": rows,
         "placement": placement,
         "failures": failures,
-        "advisories": [],
+        "advisories": advisories,
         "exit_code": EXIT_OK if not failures else EXIT_INTEGRITY,
     }
     return report, (EXIT_OK if not failures else EXIT_INTEGRITY)
@@ -497,6 +546,9 @@ def render(report: dict[str, Any]) -> str:
         lines.append(f"  [{row['result']}] {row['check']} - {row['detail']}")
     if report.get("placement"):
         lines.append(f"  placement: {report['placement']}")
+    if report.get("advisories"):
+        lines.append("  ADVISORIES:")
+        lines.extend(f"    - {item}" for item in report["advisories"])
     if report.get("failures"):
         lines.append("  FAILURES:")
         lines.extend(f"    - {item}" for item in report["failures"])

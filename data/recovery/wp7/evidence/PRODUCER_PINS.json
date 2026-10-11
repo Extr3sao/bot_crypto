@@ -1,10 +1,11 @@
 {
   "artifact": "COST_BARRIER_PRODUCER_PINS",
   "work_package": "WP-7E: give the four unpinned producers a digest of their own",
-  "generated_at_utc": "2026-10-11T11:57:20Z",
+  "generated_at_utc": "2026-10-11T12:37:11Z",
   "generated_by": "scripts/cost_barrier_evidence.py --capture",
-  "head": "38b8e183d54c5ac8552296218e28f3ded8d95885",
+  "head": "749bf4c0bd714eaa45b9b5af1ef13157ea70b48f",
   "authority": "the commit that carries this file; re-pinning is an explicit, reviewed act that must accompany regeneration and re-verification of the artefacts",
+  "admissible_byte_conventions": "a consumer must accept a watched producer whose bytes equal the pinned content in LF or CRLF form (sha256_lf / sha256_crlf); sha256 records the bytes of the tree that wrote this manifest and is informational only. A checkout with core.autocrlf rewrites line endings without touching content, so requiring the raw digest would fail every clean checkout for a difference no edit caused",
   "why_only_these_four": "these are exactly the declared inputs that carry no published pin; the five pinned inputs already have an authority (the artefact's sources[]) and re-pinning them here would create a second, weaker one",
   "excluded": {
     "scripts/cost_barrier_gate.py": "the checker cannot pin itself: a digest the checker verifies against itself is vacuous, and presenting it as assurance would be worse than the gap it names",
@@ -15,24 +16,32 @@
       "path": "scripts/active_economic_audit.py",
       "role": "producer of the WP-3 audit (the 24 cells)",
       "sha256": "a1d55ea37777a40463e8f28d8ad29addb5e6c61ae2ad2a36b2e8218669cca51e",
+      "sha256_lf": "a1d55ea37777a40463e8f28d8ad29addb5e6c61ae2ad2a36b2e8218669cca51e",
+      "sha256_crlf": "938aafb0fd12b970c4dc0d3b3f3ee7aeb2dc4c6dfef1d868e3419439ca1a6c15",
       "bytes": 62292
     },
     {
       "path": "scripts/cost_barrier.py",
       "role": "producer of the market-horizon report (gitignored output)",
       "sha256": "03c69a01232a656c318de4b0b21aa759e27a03a48eedf3b319c8389abfc68cc0",
+      "sha256_lf": "2c9ed4e053f49fe26cf8c37b31bf6fb471e0f0ccab4b510a56406e250fd1c3b8",
+      "sha256_crlf": "03c69a01232a656c318de4b0b21aa759e27a03a48eedf3b319c8389abfc68cc0",
       "bytes": 4233
     },
     {
       "path": "scripts/cost_barrier_explorer.py",
       "role": "builder of the explorer artefact",
       "sha256": "b294d85844189dfe8cb41f39681e6304cf7c9e7685861b0beb9e8ed0b1f860c4",
+      "sha256_lf": "b294d85844189dfe8cb41f39681e6304cf7c9e7685861b0beb9e8ed0b1f860c4",
+      "sha256_crlf": "663a5d240a667d51145230d103eb15970eed66cfa139e0748ca6333de54e07ef",
       "bytes": 55446
     },
     {
       "path": "scripts/cost_barrier_verify.py",
       "role": "independent verifier of the explorer artefact",
       "sha256": "a43fe404dec4016540c035e10432eddf30595fb496e02cc8dc3aed9d15447908",
+      "sha256_lf": "a43fe404dec4016540c035e10432eddf30595fb496e02cc8dc3aed9d15447908",
+      "sha256_crlf": "9dd6e46cab240b288936a0dfe70ec958201755257120ec4e080c3b689acf08ad",
       "bytes": 23599
     }
   ]

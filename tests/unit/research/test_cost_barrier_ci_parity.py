@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import fnmatch
 import importlib.util
+import json
 import subprocess
 import sys
 from pathlib import Path
@@ -190,3 +191,66 @@ def test_tests_ci_and_the_runtime_all_run_the_same_bytes():
 def test_the_gitignored_evidence_copy_survives_a_checkout_in_the_pinned_form():
     attributes = (ROOT / ".gitattributes").read_text(encoding="utf-8")
     assert "data/recovery/wp7/evidence/** -text" in attributes
+
+
+def _load(path: Path):
+    spec = importlib.util.spec_from_file_location(path.stem, path)
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[path.stem] = module
+    assert spec.loader is not None
+    spec.loader.exec_module(module)
+    return module
+
+
+def git_blob(rel: str) -> bytes:
+    """The bytes git stores for a path - what a checkout on any platform starts from."""
+    out = subprocess.run(
+        ["git", "show", f"HEAD:{rel}"], cwd=ROOT, capture_output=True, check=False,
+    )
+    assert out.returncode == 0, out.stderr
+    return out.stdout
+
+
+def load_evidence():
+    return _load(ROOT / "scripts" / "cost_barrier_evidence.py")
+
+
+def test_the_producer_pins_survive_a_checkout_that_rewrites_line_endings():
+    """The defect a clean-checkout rehearsal found, held shut.
+
+    ``core.autocrlf`` rewrites line endings on checkout without touching content,
+    so the same commit presents different bytes in a clean worktree than in the
+    tree a pin was written in. Pinning the raw digest of the authoring tree made
+    three producers look edited on every clean checkout, and the manifest now
+    records the LF and CRLF content forms as its authorities.
+    """
+    evidence = load_evidence()
+    manifest = json.loads((ROOT / evidence.PRODUCER_PINS).read_text(encoding="utf-8"))
+    rows = manifest["producers"]
+    assert rows, "the manifest pins no producers"
+    for row in rows:
+        blob = git_blob(row["path"])
+        lf = blob.replace(b"\r\n", b"\n")
+        assert row["sha256_lf"] == evidence.sha256_bytes(lf), row["path"]
+        assert row["sha256_crlf"] == evidence.sha256_bytes(lf.replace(b"\n", b"\r\n")), row["path"]
+        for data in (lf, lf.replace(b"\n", b"\r\n")):
+            status = evidence.eol_status(row["sha256"], data)
+            assert evidence.admissible(status), (row["path"], status)
+        # Content drift is still drift, whichever convention it arrives in.
+        changed = lf[: len(lf) // 2] + b"\n# edited by an attacker\n" + lf[len(lf) // 2:]
+        assert evidence.eol_status(row["sha256"], changed) == evidence.PIN_DRIFT, row["path"]
+        assert not evidence.admissible(evidence.PIN_DRIFT)
+
+
+def test_the_gate_and_the_evidence_bundle_agree_on_what_a_producer_drift_is():
+    # Two implementations of the same judgement; a mismatch would let CI and the
+    # gate disagree about whether a pin held.
+    gate = load_gate()
+    evidence = load_evidence()
+    lf = b"alpha\nbeta\n"
+    for data in (lf, b"alpha\r\nbeta\r\n", b"alpha\nbeta"):
+        pin = evidence.sha256_bytes(lf)
+        assert gate.pin_status(pin, data) == evidence.eol_status(pin, data), data
+        assert evidence.admissible(evidence.eol_status(pin, data)) is (
+            gate.pin_status(pin, data) != gate.PIN_DRIFT
+        ), data

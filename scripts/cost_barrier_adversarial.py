@@ -407,11 +407,19 @@ def foreign_pin_detail(sandbox: Path) -> str:
 
 
 def remove_required_input(sandbox: Path) -> None:
-    (sandbox / MARKET_HORIZON).unlink()
+    # On a checkout that never materialized the input the file is already gone,
+    # and unlinking it would raise instead of measuring anything. Deleting what
+    # is there is the mutation; whether it was there is the substrate's business.
+    path = sandbox / MARKET_HORIZON
+    if path.exists():
+        path.unlink()
 
 
 def remove_input_detail(sandbox: Path) -> str:
-    return f"{MARKET_HORIZON} deleted after being materialized"
+    return (
+        f"{MARKET_HORIZON} removed: the gitignored input the reproduction needs is deleted, "
+        "so a full reproduction must become impossible"
+    )
 
 
 def mutate_unpinned_producer(sandbox: Path) -> None:
@@ -1032,6 +1040,22 @@ def run_all(
     probe = workdir / "_probe"
     probe.mkdir(parents=True, exist_ok=True)
     missing = build_sandbox(probe, gate_source)
+    substrate = {
+        "path": MARKET_HORIZON,
+        # Ask the sandbox, not the declared file list: a name missing from that
+        # list would otherwise be reported as a present substrate.
+        "present": (probe / MARKET_HORIZON).exists(),
+        "why": (
+            "the market-horizon input is generated from cached bar datasets and is gitignored "
+            "by design, so a clean checkout does not carry it. "
+            "`scripts/cost_barrier_evidence.py --materialize` restores it from the "
+            "digest-pinned evidence before this suite runs. Without it every "
+            "full-reproduction attack degenerates into 'the gate was already blocked', so a "
+            "detection rate measured here would be vacuous; the report says NOT_EVALUABLE "
+            "rather than counting those degenerations as detection"
+        ),
+    }
+    status = "EVALUATED" if substrate["present"] else "NOT_EVALUABLE"
     attacks = [a for a in ATTACKS if only is None or a["attack_id"] == only]
     rows = [
         run_attack(a, workdir=workdir, gate_source=gate_source, sandbox_files_missing=missing)
@@ -1049,6 +1073,8 @@ def run_all(
         "artifact": "COST_BARRIER_ADVERSARIAL_REPORT",
         "work_package": "WP-7D adversarial verification of the cost-barrier drift gate",
         "generated_at_utc": datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "status": status,
+        "substrate": substrate,
         "gate_under_test": {
             "label": gate_label,
             "path": GATE,
@@ -1104,12 +1130,26 @@ def render(report: dict[str, Any]) -> str:
         f"- gate under test: **{report['gate_under_test']['label']}** "
         f"(`sha256 {str(report['gate_under_test']['sha256'])[:16]}...`, revision "
         f"`{report['gate_under_test']['revision'][:12]}`)",
+        f"- status: **{report.get('status', 'EVALUATED')}** (substrate "
+        f"`{report.get('substrate', {}).get('path')}` "
+        f"{'present' if report.get('substrate', {}).get('present') else 'ABSENT'})",
         f"- attacks: **{report['attacks_detected']}/{report['attacks_total']} detected**, "
         f"{report['attacks_evaded']} evaded, {report.get('attacks_invalid', 0)} invalid, "
         f"{len(report['legs_failed'])} leg(s) failed",
         f"- generated `{report['generated_at_utc']}` · python `{report['environment']['python']}` "
         f"· `{report['environment']['platform']}`",
         "",
+    ]
+    if report.get("status") == "NOT_EVALUABLE":
+        lines += [
+            "> **NOT EVALUABLE.** The substrate this suite attacks is absent from this "
+            "checkout, so the counts below are not a detection rate: with no materialized "
+            "input, attacks that should force a partial or failed reproduction cannot be "
+            "distinguished from a gate that was blocked to begin with. "
+            f"{report['substrate']['why']}.",
+            "",
+        ]
+    lines += [
         "Each attack runs against a throwaway sandbox built from the real files; the published "
         "artefacts and inputs are never touched. `DETECTED` means the gate's own published state "
         "flagged the run for that mode; a mutation that leaves the tree green is recorded as an "
@@ -1201,6 +1241,11 @@ def main(argv: list[str] | None = None) -> int:
         f"attacks detected {report['attacks_detected']}/{report['attacks_total']}, "
         f"escaped {report['attacks_evaded']}, legs failed {len(report['legs_failed'])}"
     )
+    if report.get("status") == "NOT_EVALUABLE":
+        print(
+            f"  NOT EVALUABLE: {report['substrate']['path']} is absent from the sandbox, so "
+            "materialize the evidence before reading any detection rate from this run"
+        )
     for escape in report["escapes"]:
         print(f"  ESCAPE {escape['attack_id']} {escape['title']} (missed in {escape['missed_in']})")
     for row in report.get("invalid_mutations") or []:
@@ -1216,7 +1261,8 @@ def main(argv: list[str] | None = None) -> int:
     if args.json:
         print(json.dumps(report, indent=2))
     return 0 if (
-        report["attacks_evaded"] == 0
+        report.get("status") == "EVALUATED"
+        and report["attacks_evaded"] == 0
         and report["attacks_invalid"] == 0
         and not report["legs_failed"]
     ) else 1
