@@ -1,6 +1,6 @@
 # CAMPAIGN STATE VIEW (WP-2)
 
-- generated `2026-10-11T17:02:28Z` · head `e670d2a94a54` · branch `main`
+- generated `2026-10-11T18:01:50Z` · head `9b9a4b8a6429` · branch `main`
 - **status: CONSISTENT_WITH_ADVISORIES** · sources unchanged: True
 
 A frozen declaration is a historical record. This view resolves, per campaign and per field, which statement is *current*, using this precedence and nothing else:

@@ -1,8 +1,8 @@
 {
   "artifact": "ACTIVE_ECONOMIC_AUDIT",
   "work_package": "WP-3 (POST RFC-049 / ACTIVE RECOVERY)",
-  "generated_at_utc": "2026-10-11T17:02:27Z",
-  "head": "e670d2a94a5444d283c9c51930ee548aedc569f2",
+  "generated_at_utc": "2026-10-11T18:01:51Z",
+  "head": "9b9a4b8a64294b7368f660dab64bb27dd3409fc2",
   "branch": "main",
   "mode": "OFFLINE READ-ONLY AUDIT — no process started, no order, no key, no capital",
   "method": "tracked admission ledger + primary research artefacts + the live registry code path + the paper lane's own reports; the runtime cost plane is re-derived from COST_MODEL_V3, never typed",
@@ -396,10 +396,10 @@
       "resolved_from": "EVIDENCE_COPY",
       "present_on_this_machine": true,
       "local_forms": {
-        "sha256": "dc32eb6ceba436d524511e68d2a10cbdf80d34aba907253ce85cf9e8c241c3ab",
-        "sha256_lf": "32b1cbe69282158c14979d87bd3906e9162fb29a774dcaaf7ef710db16f780b9",
-        "sha256_crlf": "dc32eb6ceba436d524511e68d2a10cbdf80d34aba907253ce85cf9e8c241c3ab",
-        "bytes": 6142,
+        "sha256": "3c6b0d2f9635a84ee47074a8eb59208d4dea6d2aca3eb01314d40f05a0148cdd",
+        "sha256_lf": "a40036b219a9a9bfb6bf198596fc56839ac086e71443b9900564b7f4809b9365",
+        "sha256_crlf": "3c6b0d2f9635a84ee47074a8eb59208d4dea6d2aca3eb01314d40f05a0148cdd",
+        "bytes": 6143,
         "line_endings": "CRLF"
       },
       "local_reproduces_the_authority": false,

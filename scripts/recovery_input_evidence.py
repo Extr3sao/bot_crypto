@@ -321,10 +321,15 @@ def resolve(rel: str) -> dict[str, Any]:
             origin = "WORKTREE_FALLBACK"
     elif cls == EXTERNAL_DATASET:
         # not needed to reproduce any finding: a local materialization is graded as an
-        # observation against the frozen manifest digest, never read into a finding
+        # observation against the frozen manifest digest, never read into a finding.
+        # The origin names the *route*, not this machine's state: it stays
+        # LOCAL_MATERIALIZATION whether or not the dataset is present here (``present``
+        # says which), because a published artefact must not encode which machine built
+        # it - that is the defect WP-8C removed, and this input is where it survived
+        # longest (WP-8H: the clean-checkout rehearsal found it, the state digest did not).
         if (ROOT / rel).exists():
             data = (ROOT / rel).read_bytes()
-            origin = "LOCAL_MATERIALIZATION"
+        origin = "LOCAL_MATERIALIZATION"
     else:
         data = committed_bytes(rel)
         if data is not None:

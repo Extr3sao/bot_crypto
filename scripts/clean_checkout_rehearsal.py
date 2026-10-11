@@ -108,6 +108,19 @@ RUN_RECORDS: tuple[str, ...] = (
     "data/recovery/INDEPENDENT_VERIFICATION.json",
 )
 
+# The identity contract of the derived artefacts, repeated here on purpose (WP-8C): a
+# rehearsal that imported the builder's convention could not notice the convention
+# changing underneath it. The moment, the commit the artefact was built at, the branch,
+# the per-machine source table and the per-machine observations are outside the state;
+# everything else is inside it and must reproduce byte for byte.
+VOLATILE_KEYS: tuple[str, ...] = ("generated_at_utc", "payload_sha256", "head", "branch",
+                                  "sources", "local_observations")
+
+# The rendered reports carry exactly one volatile line (the moment and the commit). It is
+# removed before the comparison and the count is reported: normalising is declared here,
+# not hidden in a diff that somebody has to be trusted to have read.
+VOLATILE_MD_LINE_PREFIXES: tuple[str, ...] = ("- generated `",)
+
 EXIT_OK = 0
 EXIT_INTEGRITY = 2
 EXIT_BLOCKED = 3
@@ -147,8 +160,31 @@ def step(name: str, command: list[str], cwd: Path, expected_exit: int = 0) -> di
     }
 
 
+def state_digest(data: bytes, rel: str) -> tuple[str, int]:
+    """The digest of what the artefact *states*, with the moment and this machine taken out.
+
+    A JSON artefact's state is its document minus ``VOLATILE_KEYS``; a rendered report's
+    state is its content minus the lines that carry the moment. Returns the digest and the
+    number of volatile lines removed (0 for JSON, where the keys are removed instead), so
+    the report can show how much was normalised away.
+    """
+    if rel.endswith(".json"):
+        try:
+            document = json.loads(data.decode("utf-8"))
+        except (json.JSONDecodeError, UnicodeDecodeError):
+            return content_forms(data)["sha256_lf"], 0
+        return content_forms(
+            json.dumps({k: v for k, v in document.items() if k not in VOLATILE_KEYS},
+                       indent=2, ensure_ascii=False, sort_keys=True).encode("utf-8")
+        )["sha256_lf"], 0
+    text = data.decode("utf-8", "replace").replace("\r\n", "\n")
+    kept = [line for line in text.split("\n")
+            if not line.startswith(VOLATILE_MD_LINE_PREFIXES)]
+    return content_forms("\n".join(kept).encode("utf-8"))["sha256_lf"], len(text.split("\n")) - len(kept)
+
+
 def artifact_state(root: Path) -> dict[str, Any]:
-    """The published artefacts as they stand in ``root``, by content digest."""
+    """The published artefacts as they stand in ``root``: raw bytes and state."""
     out: dict[str, Any] = {}
     for rel in ARTIFACTS:
         path = root / rel
@@ -162,9 +198,15 @@ def artifact_state(root: Path) -> dict[str, Any]:
                 document = json.loads(data.decode("utf-8"))
             except (json.JSONDecodeError, UnicodeDecodeError):
                 document = {}
+        state, volatile_lines = state_digest(data, rel)
         out[rel] = {
             "exists": True,
+            # informational: the bytes include the moment, so they differ between two
+            # rebuilds of one commit by construction
             "sha256_lf": content_forms(data)["sha256_lf"],
+            # the comparison is made on this
+            "state_sha256_lf": state,
+            "state_volatile_lines_removed": volatile_lines,
             "payload_sha256": document.get("payload_sha256"),
             "status": document.get("status"),
             "checks_failed": document.get("checks_failed"),
@@ -172,12 +214,27 @@ def artifact_state(root: Path) -> dict[str, Any]:
     return out
 
 
+def identical_state(published: dict[str, Any] | None, regenerated: dict[str, Any] | None) -> bool:
+    """Same state, same published identity, same verdict - the raw bytes are allowed to differ."""
+    if not published or not regenerated:
+        return False
+    if not published.get("exists") or not regenerated.get("exists"):
+        return published == regenerated
+    return (
+        published.get("state_sha256_lf") == regenerated.get("state_sha256_lf")
+        and published.get("payload_sha256") == regenerated.get("payload_sha256")
+        and published.get("status") == regenerated.get("status")
+        and published.get("checks_failed") == regenerated.get("checks_failed")
+    )
+
+
 def compare(published: dict[str, Any], regenerated: dict[str, Any]) -> dict[str, Any]:
     return {
         rel: {
             "published": published.get(rel),
             "regenerated": regenerated.get(rel),
-            "identical": published.get(rel) == regenerated.get(rel),
+            "identical": identical_state(published.get(rel), regenerated.get(rel)),
+            "bytes_identical": bool(published.get(rel)) and published.get(rel) == regenerated.get(rel),
         }
         for rel in ARTIFACTS
     }
@@ -228,16 +285,26 @@ def render_markdown(report: dict[str, Any]) -> str:
     ]
     for item in report["steps"]:
         lines.append(f"| `{item['step']}` | {item['expected_exit']} | {item['exit_code']} | **{item['result']}** |")
-    lines += ["", "## Artefacts (must be reproduced byte for byte)", "",
-              "| artefact | published | regenerated | identical |", "| --- | --- | --- | --- |"]
+    lines += ["", "## Artefacts (state must be reproduced byte for byte)", "",
+              "The comparison is made on the state: the JSON documents minus the moment, the",
+              "commit and the per-machine source table, and the rendered reports minus the one",
+              "line that carries the moment. The raw byte digests are shown too - two rebuilds",
+              "of one commit differ there by construction.", "",
+              "| artefact | published state | regenerated state | identical | bytes identical |",
+              "| --- | --- | --- | --- | --- |"]
     for rel, entry in report["artifacts"].items():
         published = entry["published"] or {}
         regenerated = entry["regenerated"] or {}
-        lines.append(f"| `{rel}` | `{str(published.get('sha256_lf'))[:12]}` | "
-                     f"`{str(regenerated.get('sha256_lf'))[:12]}` | {entry['identical']} |")
+        lines.append(f"| `{rel}` | `{str(published.get('state_sha256_lf'))[:12]}` | "
+                     f"`{str(regenerated.get('state_sha256_lf'))[:12]}` | **{entry['identical']}** | "
+                     f"{entry.get('bytes_identical')} |")
     lines += ["", "## What moved", ""]
-    lines.append(f"- published artefacts modified by the run: {report['published_paths_moved'] or 'none'}")
+    lines.append(f"- published artefacts whose state moved: {report['published_paths_moved'] or 'none'}")
+    lines.append(f"- artefacts whose bytes the rebuild rewrote (the moment): "
+                 f"{report.get('worktree_paths_rewritten_by_the_run') or 'none'}")
     lines.append(f"- run records that legitimately differ: {report['run_records_changed'] or 'none'}")
+    lines.append(f"- excluded from the state comparison: document keys {list(VOLATILE_KEYS)}; "
+                 f"report lines starting {list(VOLATILE_MD_LINE_PREFIXES)}")
     lines.append(f"- line-ending-only differences encountered: {report['line_endings']['eol_only_encountered']}")
     if report.get("sabotage"):
         lines += ["", "## Sabotage", ""]
@@ -272,6 +339,14 @@ def rehearse(commit: str | None, scope: str, sabotage_target: str | None,
         "line_endings": {"eol_only_encountered": False,
                          "note": "a line-ending-only difference is a checkout artefact, not a finding: "
                                  "the digests are content digests and an EOL difference is an advisory"},
+        "comparison_rule": {
+            "state_digest": "sha256 of the JSON document minus the volatile keys, or of the rendered "
+                            "report minus the line that carries the moment",
+            "excluded_json_keys": list(VOLATILE_KEYS),
+            "excluded_report_line_prefixes": list(VOLATILE_MD_LINE_PREFIXES),
+            "not_excluded": "the verdict, the checks, the invariants, the sources' resolution "
+                            "origins and the payload identity - none of these may differ",
+        },
         "sabotage": None,
         "limitations": [],
     }
@@ -329,9 +404,15 @@ def rehearse(commit: str | None, scope: str, sabotage_target: str | None,
         report["untracked_after_the_run"] = [line for line in status.stdout.splitlines() if line.startswith("??")]
         report["run_records_changed"] = [line.strip() for line in changed
                                          if line.split()[-1] in RUN_RECORDS]
-        report["published_paths_moved"] = [line.strip() for line in changed
-                                           if line.split()[-1] not in RUN_RECORDS
-                                           and not line.split()[-1].startswith("data/recovery/wp8/")]
+        # git sees a rewrite whenever a rebuild stamps a new moment into the file, so the
+        # version-control view and the state view are reported separately: only the state
+        # view decides the verdict, and the other one is kept because a reader deserves to
+        # know that the bytes moved.
+        report["worktree_paths_rewritten_by_the_run"] = [line.strip() for line in changed
+                                                         if line.split()[-1] not in RUN_RECORDS
+                                                         and not line.split()[-1].startswith("data/recovery/wp8/")]
+        report["published_paths_moved"] = [rel for rel, entry in report["artifacts"].items()
+                                           if entry["identical"] is False]
         report["line_endings"]["eol_only_encountered"] = any(
             item["eol_only_difference_reported"] for item in report["steps"])
 
