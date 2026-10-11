@@ -116,10 +116,12 @@ RUN_RECORDS: tuple[str, ...] = (
 VOLATILE_KEYS: tuple[str, ...] = ("generated_at_utc", "payload_sha256", "head", "branch",
                                   "sources", "local_observations")
 
-# The rendered reports carry exactly one volatile line (the moment and the commit). It is
-# removed before the comparison and the count is reported: normalising is declared here,
-# not hidden in a diff that somebody has to be trusted to have read.
+# The rendered reports carry exactly one volatile line (the moment and the commit) and one
+# volatile section (the per-machine observation table). Both are removed before the
+# comparison and the count is reported: normalising is declared here, not hidden in a diff
+# that somebody has to be trusted to have read.
 VOLATILE_MD_LINE_PREFIXES: tuple[str, ...] = ("- generated `",)
+VOLATILE_MD_SECTIONS: tuple[str, ...] = ("Local observations (volatile",)
 
 EXIT_OK = 0
 EXIT_INTEGRITY = 2
@@ -178,8 +180,18 @@ def state_digest(data: bytes, rel: str) -> tuple[str, int]:
                        indent=2, ensure_ascii=False, sort_keys=True).encode("utf-8")
         )["sha256_lf"], 0
     text = data.decode("utf-8", "replace").replace("\r\n", "\n")
-    kept = [line for line in text.split("\n")
-            if not line.startswith(VOLATILE_MD_LINE_PREFIXES)]
+    kept: list[str] = []
+    in_volatile_section = False
+    for line in text.split("\n"):
+        heading = line.startswith("#")
+        if heading:
+            in_volatile_section = any(marker in line for marker in VOLATILE_MD_SECTIONS)
+            if in_volatile_section:
+                kept.append(line)
+                continue
+        if in_volatile_section or line.startswith(VOLATILE_MD_LINE_PREFIXES):
+            continue
+        kept.append(line)
     return content_forms("\n".join(kept).encode("utf-8"))["sha256_lf"], len(text.split("\n")) - len(kept)
 
 
@@ -304,7 +316,8 @@ def render_markdown(report: dict[str, Any]) -> str:
                  f"{report.get('worktree_paths_rewritten_by_the_run') or 'none'}")
     lines.append(f"- run records that legitimately differ: {report['run_records_changed'] or 'none'}")
     lines.append(f"- excluded from the state comparison: document keys {list(VOLATILE_KEYS)}; "
-                 f"report lines starting {list(VOLATILE_MD_LINE_PREFIXES)}")
+                 f"report lines starting {list(VOLATILE_MD_LINE_PREFIXES)}; report sections "
+                 f"containing {list(VOLATILE_MD_SECTIONS)}")
     lines.append(f"- line-ending-only differences encountered: {report['line_endings']['eol_only_encountered']}")
     if report.get("sabotage"):
         lines += ["", "## Sabotage", ""]
@@ -344,6 +357,7 @@ def rehearse(commit: str | None, scope: str, sabotage_target: str | None,
                             "report minus the line that carries the moment",
             "excluded_json_keys": list(VOLATILE_KEYS),
             "excluded_report_line_prefixes": list(VOLATILE_MD_LINE_PREFIXES),
+            "excluded_report_sections": list(VOLATILE_MD_SECTIONS),
             "not_excluded": "the verdict, the checks, the invariants, the sources' resolution "
                             "origins and the payload identity - none of these may differ",
         },
