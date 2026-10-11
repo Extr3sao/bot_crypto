@@ -18,6 +18,19 @@ Stopping is `Ctrl-C`, or writing ``STOP`` into the run directory, or running
 this script again with ``--stop <run-dir>``: all three flush state and finalise
 manifests before exiting (§51). Nothing here can reach LIVE: every child is
 either read-only market data or the PAPER broker.
+
+WP-9B — **disk budget preflight (§10)**: before anything is started, the window
+declared by ``--duration-hours`` is costed at the measured capture rate, at the
+declared stress multiple, and against both the collector's own valve and the free
+space this host really has. The first 24 h window stopped after 4.16 h because it
+was launched with an 800 MB valve while its measured rate was 192 MB/h: the two
+numbers were never compared, and the comparison is arithmetic rather than physics.
+A window whose valve cannot pay for itself is `INCOHERENT_BUDGET` and is refused
+unless ``--autoscale-collector-budget`` raises the valve explicitly (the decision
+is recorded in `LAB_PLAN.json`); a window this host cannot pay for is
+`INSUFFICIENT_FREE_SPACE` and is refused outright, because disk size is not a
+preference — point ``--data-root`` at another volume instead. Exit code 4 means the
+preflight refused; nothing was started.
 """
 
 from __future__ import annotations
@@ -41,7 +54,21 @@ from trading_bot.autonomous.supervisor import (  # noqa: E402
     Supervisor,
     disk_free_bytes,
 )
+from trading_bot.research.disk_budget import (  # noqa: E402
+    DECLARED_FALLBACK_BYTES_PER_HOUR,
+    REFUSED_STATES,
+    free_bytes,
+    plan_window,
+)
 from trading_bot.research.forward.outcome import EXIT_FAILED  # noqa: E402
+
+#: The measured rate and overhead the cost plane of the preflight reads, produced by
+#: ``scripts/wp9_disk_budget_audit.py``. A measurement with a named source, not a
+#: constant living in the launcher.
+DISK_AUDIT_PATH = Path("data/recovery/wp9/WP9_DISK_BUDGET_AUDIT.json")
+
+#: The preflight refused and started nothing (§10, WP-9B).
+EXIT_DISK_PREFLIGHT = 4
 
 DEFAULT_LAB_ROOT = Path("reports/paper-lab")
 DEFAULT_FORWARD_ROOT = Path("reports/microstructure-forward-lab")
@@ -152,8 +179,112 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--disk-warning-gb", type=float, default=1.5)
     parser.add_argument("--disk-critical-gb", type=float, default=0.8)
     parser.add_argument("--disk-stop-gb", type=float, default=0.3)
+    parser.add_argument(
+        "--disk-reserve-gb",
+        type=float,
+        default=2.0,
+        help=(
+            "WP-9B — free space the preflight will not spend. The 0.3/0.8/1.5 GB levels are "
+            "walls the supervisor reacts at; this is the space the host keeps for itself and "
+            "for the other writers on the same volume."
+        ),
+    )
+    parser.add_argument(
+        "--expected-bytes-per-hour",
+        type=float,
+        default=None,
+        help=(
+            "WP-9B — capture rate for the disk preflight. Default: the measured rate in "
+            f"{DISK_AUDIT_PATH}, else the declared conservative fallback "
+            f"({DECLARED_FALLBACK_BYTES_PER_HOUR} B/h). The plan always names which it used."
+        ),
+    )
+    parser.add_argument(
+        "--disk-stress-multiplier",
+        type=float,
+        default=1.5,
+        help="WP-9B — the preflight costs the window at this multiple of the measured rate",
+    )
+    parser.add_argument(
+        "--autoscale-collector-budget",
+        action="store_true",
+        help=(
+            "WP-9B — raise --collector-max-bytes to what the declared window needs at the "
+            "stress rate instead of refusing. Explicit, and recorded in LAB_PLAN.json."
+        ),
+    )
     parser.add_argument("--dry-run", action="store_true", help="print the plan and exit")
     return parser.parse_args(argv)
+
+
+def resolve_capture_measurement(args: argparse.Namespace) -> tuple[float | None, float, str]:
+    """The rate the preflight costs the window at, and where that rate came from.
+
+    Three sources, in order, each one named in the plan so a reader can disagree with the
+    number rather than wonder where it came from: the operator's own declaration, the
+    measurement published by the disk audit, and the declared conservative fallback.
+    """
+    if args.expected_bytes_per_hour is not None:
+        return (
+            float(args.expected_bytes_per_hour),
+            0.0,
+            "operator: --expected-bytes-per-hour",
+        )
+    path = REPO_ROOT / DISK_AUDIT_PATH
+    try:
+        audit = json.loads(path.read_text(encoding="utf-8"))
+        rate = float(audit["measurement"]["rates"]["planning_rate_bytes_per_hour"])
+        overhead = float(audit["components"]["overhead_bytes_per_hour"] or 0.0)
+        windows = audit.get("windows") or {}
+        measured_on = ", ".join(
+            str(windows[key]["run_id"]) for key in ("sealed", "unsealed") if key in windows
+        )
+        return (
+            rate,
+            overhead,
+            f"measured by scripts/wp9_disk_budget_audit.py on {measured_on or 'the audited windows'}",
+        )
+    except (OSError, ValueError, KeyError, TypeError) as exc:
+        return (
+            None,
+            0.0,
+            f"{DECLARED_FALLBACK_BYTES_PER_HOUR} B/h declared fallback: {DISK_AUDIT_PATH} "
+            f"is unavailable ({type(exc).__name__})",
+        )
+
+
+def disk_preflight(args: argparse.Namespace) -> tuple[dict[str, Any], int | None]:
+    """Cost the declared window before starting anything (§10, WP-9B).
+
+    Returns the plan section for `LAB_PLAN.json` and, when the run must not start, the
+    exit code to return with it.
+    """
+    rate, overhead, source = resolve_capture_measurement(args)
+    plan = plan_window(
+        hours=args.duration_hours,
+        collector_max_bytes=args.collector_max_bytes,
+        free=free_bytes(REPO_ROOT),
+        rate_bytes_per_hour=rate,
+        rate_source=source,
+        overhead_bytes_per_hour=overhead,
+        stress_multiplier=args.disk_stress_multiplier,
+        reserve_bytes=int(args.disk_reserve_gb * 1e9),
+        autoscale=args.autoscale_collector_budget,
+    )
+    if plan.autoscaled:
+        # The one repair the preflight may make, and it is not silent: the valve the
+        # collector child will actually be given is the autoscaled one.
+        args.collector_max_bytes = plan.collector_max_bytes
+    section = {
+        **plan.as_dict(),
+        "preflight": (
+            "costed before any child starts; the defect that stopped the first 24 h window "
+            "was two numbers that were never compared"
+        ),
+        "refused": plan.state in REFUSED_STATES,
+        "exit_code_when_refused": EXIT_DISK_PREFLIGHT,
+    }
+    return section, (EXIT_DISK_PREFLIGHT if plan.state in REFUSED_STATES else None)
 
 
 def disk_thresholds(args: argparse.Namespace) -> DiskThresholds:
@@ -417,6 +548,9 @@ def main() -> int:
     run_id = args.run_id or f"paper-lab-{time.strftime('%Y%m%d-%H%M%S', time.gmtime())}"
     run_dir = lab_dir / run_id
     stop_files = child_stop_files(args, run_id, run_dir)
+    # §10/WP-9B — cost the window before the children exist, so an autoscaled valve is
+    # the valve the collector is actually launched with.
+    disk_budget, refused = disk_preflight(args)
     specs = build_specs(args, run_id, run_dir, stop_files)
 
     plan = {
@@ -441,6 +575,7 @@ def main() -> int:
         },
         "disk": {
             "thresholds": disk_thresholds(args).as_dict(),
+            "budget": disk_budget,
             "storage_guard": (
                 "at the STOP level the collector is asked to stop gracefully; PAPER "
                 "is not touched"
@@ -464,7 +599,26 @@ def main() -> int:
     }
     if args.dry_run:
         print(json.dumps(plan, indent=2, ensure_ascii=False))
-        return 0
+        if refused:
+            print(
+                f"[lab] disk preflight REFUSED: {disk_budget['state']} — "
+                + "; ".join(disk_budget["reasons"]),
+                file=sys.stderr,
+            )
+        return refused or 0
+
+    if refused:
+        # Nothing has been created yet: no run directory, no child, no partial capture
+        # that would look like an experiment. The refusal names the arithmetic.
+        print(
+            json.dumps({"run_id": run_id, "disk_budget": disk_budget}, indent=2, ensure_ascii=False)
+        )
+        print(
+            f"[lab] disk preflight REFUSED ({disk_budget['state']}): "
+            + "; ".join(disk_budget["reasons"]),
+            file=sys.stderr,
+        )
+        return refused
 
     run_dir.mkdir(parents=True, exist_ok=True)
     (run_dir / "LAB_PLAN.json").write_text(
