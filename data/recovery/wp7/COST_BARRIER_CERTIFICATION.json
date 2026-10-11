@@ -1,9 +1,9 @@
 {
   "artifact": "COST_BARRIER_CERTIFICATION",
   "work_package": "WP-7F certification gate for the cost-barrier lane",
-  "generated_at_utc": "2026-10-11T13:04:34Z",
+  "generated_at_utc": "2026-10-11T13:15:59Z",
   "candidate": {
-    "head": "3e601120858dbd08a24f1170bedb89645d36628f",
+    "head": "081ee7a53ede9d007e35567ff3798c2325ef6660",
     "branch": "main",
     "dirty_watched_paths": [],
     "environment": {
@@ -30,7 +30,7 @@
       "attacks_evaded": 0,
       "legs_failed": []
     },
-    "6_identifiable_evidence": "b09d86be09fe645850f379d9bfdd8691022234e2dec179894f05b1b44cab2c12",
+    "6_identifiable_evidence": "bd6072667ef95b3e0cde1ed4976c67dbd33072ae64cbf820ed471c54d22b4967",
     "7_no_hidden_errors": true
   },
   "steps": {
@@ -39,7 +39,7 @@
       "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m pytest -q tests/unit/research/test_cost_barrier_explorer.py tests/unit/research/test_cost_barrier_gate.py tests/unit/research/test_cost_barrier_adversarial.py tests/unit/research/test_cost_barrier_ci_parity.py",
       "exit_code": 0,
       "passed": true,
-      "stdout_tail": "........................................................................ [ 79%]\n...................                                                      [100%]\n91 passed in 58.68s",
+      "stdout_tail": "........................................................................ [ 78%]\n....................                                                     [100%]\n92 passed in 59.07s",
       "stderr_tail": ""
     },
     "materialize_inputs": {
@@ -52,7 +52,7 @@
     },
     "input_integrity": {
       "step": "input integrity (evidence bundle)",
-      "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\scripts\\cost_barrier_evidence.py --report C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\cost_barrier_certify_x1n7vtyi\\integrity.json",
+      "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\scripts\\cost_barrier_evidence.py --report C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\cost_barrier_certify_b0oc5hud\\integrity.json",
       "exit_code": 0,
       "passed": true,
       "stdout_tail": " [PASS] evidence:the_copy_reproduces_the_published_pin - EXACT for the copy against pin 2437f446051d97ec...\n  [PASS] evidence:captured_against_the_published_artefact_revision - captured for payload da4ab06129c927eb... vs published da4ab06129c927eb...\n  [PASS] evidence:producer_digests_match_the_manifest - 4/4 producer(s) match (4 exact, 0 line-ending-only)\n  [PASS] evidence:the_checker_is_not_pinned_by_the_bundle - scripts/cost_barrier_gate.py is excluded by design; the checker cannot vouch for itself\n  placement: {'target': 'reports/strategy-baseline/COST_BARRIER.json', 'materialized': False}",
@@ -60,7 +60,7 @@
     },
     "full_reproduction": {
       "step": "full reproduction",
-      "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\scripts\\cost_barrier_gate.py --json --report C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\cost_barrier_certify_x1n7vtyi\\gate_report.json",
+      "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\scripts\\cost_barrier_gate.py --json --report C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\cost_barrier_certify_b0oc5hud\\gate_report.json",
       "exit_code": 0,
       "passed": true,
       "stdout_tail": "ULL_REPRODUCTION_PASS\",\n  \"certification\": {\n    \"status\": \"FULL_REPRODUCTION_PASS\",\n    \"requires\": \"FULL_REPRODUCTION_PASS\",\n    \"satisfies_full_certification\": true,\n    \"is_partial\": false,\n    \"partial_result_may_certify_economic_results\": false,\n    \"partial_result_may_promote_strategies\": false,\n    \"note\": \"a check-only run re-verifies the published numbers but never re-runs the builder; it is useful evidence on a clean checkout and is never a substitute for a full reproduction\"\n  },\n  \"exit_code\": 0,\n  \"gate_sha256\": \"6ff2793aee81b88df483190df2a54f238687dec2edc9d24273d2367952bd7d2e\"\n}",
@@ -68,7 +68,7 @@
     },
     "adversarial": {
       "step": "adversarial suite",
-      "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\scripts\\cost_barrier_adversarial.py --out C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\cost_barrier_certify_x1n7vtyi\\adversarial.json",
+      "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\scripts\\cost_barrier_adversarial.py --out C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\cost_barrier_certify_b0oc5hud\\adversarial.json",
       "exit_code": 0,
       "passed": true,
       "stdout_tail": "attacks detected 17/17, escaped 0, legs failed 0",
@@ -100,7 +100,7 @@
     ".github/workflows/cost-barrier-gate.yml": "fae181321e4e6232e4d070b80968cf77b5a6ff1d62f2396333e25aaa17bca579"
   },
   "evidence_digest_convention": "sha256 over the artefact's content with line endings normalised to LF: a checkout rewrites line endings without touching content, so the same commit must fingerprint the same on a runner as on the machine that produced the record",
-  "evidence_fingerprint": "b09d86be09fe645850f379d9bfdd8691022234e2dec179894f05b1b44cab2c12",
+  "evidence_fingerprint": "bd6072667ef95b3e0cde1ed4976c67dbd33072ae64cbf820ed471c54d22b4967",
   "adversarial_summary": {
     "status": "EVALUATED",
     "substrate_present": true,
