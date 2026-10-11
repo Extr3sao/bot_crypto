@@ -21,7 +21,9 @@ Checks
 * C10 the state view's precedence decision for RFC-049 Discovery 2 is independently
       re-derived from the ADR text and the closure record
 * C13 both derived artefacts' identities recompute from their own published fields
-* C14 every external input a finding rests on is committed and answers to its digest
+* C14 every external input a finding rests on is committed and answers to its digest;
+      a declared-only dataset (gitignored by policy, not needed for any finding) is judged
+      on the authority behind it and may not be promoted into a finding-bearing input
 * C15 no artefact resolved a source from an uncommitted file
 * C16 closure states hold and nothing new is authorized
 * C17 a clean checkout of an ancestor reproduces these artefacts (the WP-8E rehearsal)
@@ -40,6 +42,7 @@ N9 authorize a campaign in a copy of the view     → C13
 N10 re-read a pinned source in its CRLF form      → the grading rule (no false drift)
 N11 add one byte to a pinned source               → C14/the bundle verify step
 N12 create an untracked data/rfc050/ directory    → the certified RFC occupancy
+N13 require a gitignored dataset to reproduce a finding → C14
 """
 
 from __future__ import annotations
@@ -343,6 +346,26 @@ def run_checks() -> tuple[list[dict[str, Any]], dict[str, Any]]:
             if committed_bytes(rel) is None:
                 input_defects.append(f"{rel}: declared committed but not in HEAD")
             continue
+        if cls == "EXTERNAL_DATASET":
+            # Declared, graded when present, never required to reproduce a finding (WP-8B):
+            # the two frozen price series stay gitignored by repository policy, so what a
+            # clean checkout can check is that the *authority* behind them is in the commit
+            # - and that nothing has quietly promoted one of them into a finding-bearing
+            # input, which would need an evidence copy and does not have one.
+            if record.get("required_to_reproduce_a_finding"):
+                input_defects.append(
+                    f"{rel}: declared EXTERNAL_DATASET and required to reproduce a finding, "
+                    f"which needs an evidence copy in HEAD"
+                )
+                continue
+            authority = record.get("authority") or {}
+            manifest_path = authority.get("artifact")
+            if not manifest_path or committed_bytes(str(manifest_path)) is None:
+                input_defects.append(
+                    f"{rel}: declared EXTERNAL_DATASET whose authority manifest "
+                    f"{manifest_path!r} is not in HEAD"
+                )
+            continue
         evidence = record.get("evidence_copy") or {}
         if not evidence.get("in_head"):
             input_defects.append(f"{rel}: no evidence copy in HEAD")
@@ -522,6 +545,18 @@ def controls() -> list[dict[str, Any]]:
            before == after and before == (view_payload.get("rfc_numbering") or {}).get("tree_occupancy"),
            f"certified occupancy {before} is derived from the commit and ignores {probe.name} "
            "(a working-tree directory is not a claim)")
+
+    # N13 — promote a declared-only dataset into a finding-bearing input
+    declared_inputs = ((view_payload.get("input_authority") or {}).get("declared_inputs") or {})
+    promoted = [rel for rel, row in declared_inputs.items()
+                if row.get("class") == "EXTERNAL_DATASET" and not row.get("required_to_reproduce_a_finding")]
+    caught = bool(promoted) and all(
+        not (declared_inputs[rel].get("evidence_copy") or {}).get("in_head") for rel in promoted
+    )
+    record("N13", "require a gitignored dataset to reproduce a finding",
+           caught,
+           f"{promoted} carry no evidence copy, so C14 fails the moment one of them is promoted "
+           "(the branch that tolerates them is the one that also checks their authority is in HEAD)")
 
     return results
 
