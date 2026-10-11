@@ -610,7 +610,11 @@ def frequency_axis(audit: dict[str, Any], frontier: dict[str, Any]) -> dict[str,
 # --------------------------------------------------------------------------- #
 
 
-VOLATILE_KEYS = ("generated_at_utc", "payload_sha256", "head", "branch", "sources")
+# The identity convention of the artefact this explorer re-derives. It has to track that
+# artefact's own list: WP-8 added ``local_observations`` there (per-machine materialization
+# facts that must not certify anything), and the check below caught the divergence as a
+# failed re-derivation rather than a silent mismatch - which is what it is for.
+VOLATILE_KEYS = ("generated_at_utc", "payload_sha256", "head", "branch", "sources", "local_observations")
 
 
 def payload_hash(payload: dict[str, Any]) -> str:

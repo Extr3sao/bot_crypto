@@ -1,9 +1,9 @@
 {
   "artifact": "COST_BARRIER_PRODUCER_PINS",
   "work_package": "WP-7E: give the four unpinned producers a digest of their own",
-  "generated_at_utc": "2026-10-11T12:37:11Z",
+  "generated_at_utc": "2026-10-11T17:18:45Z",
   "generated_by": "scripts/cost_barrier_evidence.py --capture",
-  "head": "749bf4c0bd714eaa45b9b5af1ef13157ea70b48f",
+  "head": "3f8d646ac849f494f3838152dcdc64d100554736",
   "authority": "the commit that carries this file; re-pinning is an explicit, reviewed act that must accompany regeneration and re-verification of the artefacts",
   "admissible_byte_conventions": "a consumer must accept a watched producer whose bytes equal the pinned content in LF or CRLF form (sha256_lf / sha256_crlf); sha256 records the bytes of the tree that wrote this manifest and is informational only. A checkout with core.autocrlf rewrites line endings without touching content, so requiring the raw digest would fail every clean checkout for a difference no edit caused",
   "why_only_these_four": "these are exactly the declared inputs that carry no published pin; the five pinned inputs already have an authority (the artefact's sources[]) and re-pinning them here would create a second, weaker one",
@@ -15,10 +15,10 @@
     {
       "path": "scripts/active_economic_audit.py",
       "role": "producer of the WP-3 audit (the 24 cells)",
-      "sha256": "a1d55ea37777a40463e8f28d8ad29addb5e6c61ae2ad2a36b2e8218669cca51e",
-      "sha256_lf": "a1d55ea37777a40463e8f28d8ad29addb5e6c61ae2ad2a36b2e8218669cca51e",
-      "sha256_crlf": "938aafb0fd12b970c4dc0d3b3f3ee7aeb2dc4c6dfef1d868e3419439ca1a6c15",
-      "bytes": 62292
+      "sha256": "6c4fbd8093a7057a0d02d7fdcb2953dccebf11b2959746bf1ebc7bb45f0cf5ba",
+      "sha256_lf": "6c4fbd8093a7057a0d02d7fdcb2953dccebf11b2959746bf1ebc7bb45f0cf5ba",
+      "sha256_crlf": "ffa7c075f4846d028b5013f2959bc04db7cb10597cbac0d9133eaf18f3c5823b",
+      "bytes": 64618
     },
     {
       "path": "scripts/cost_barrier.py",
@@ -31,10 +31,10 @@
     {
       "path": "scripts/cost_barrier_explorer.py",
       "role": "builder of the explorer artefact",
-      "sha256": "b294d85844189dfe8cb41f39681e6304cf7c9e7685861b0beb9e8ed0b1f860c4",
-      "sha256_lf": "b294d85844189dfe8cb41f39681e6304cf7c9e7685861b0beb9e8ed0b1f860c4",
-      "sha256_crlf": "663a5d240a667d51145230d103eb15970eed66cfa139e0748ca6333de54e07ef",
-      "bytes": 55446
+      "sha256": "3e400f02b8c4d64baa5e455f4c9cd04d2c6a484134f2b162c5459e741f654021",
+      "sha256_lf": "3e400f02b8c4d64baa5e455f4c9cd04d2c6a484134f2b162c5459e741f654021",
+      "sha256_crlf": "51e5417400aa374e766d272a41f59d4d003fa689f5a68879693a13dccc8c2efd",
+      "bytes": 55817
     },
     {
       "path": "scripts/cost_barrier_verify.py",

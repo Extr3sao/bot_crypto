@@ -1,6 +1,6 @@
 # COST-BARRIER EXPLORER - per venue and per horizon
 
-- generated `2026-10-11T09:11:06Z` · head `dfeb140f2572` · branch `main`
+- generated `2026-10-11T17:18:12Z` · head `3f8d646ac849` · branch `main`
 - mode: OFFLINE read-only: no keys, no orders, no capital, no live path
 - cells: 24 · venue configurations: 120 · checks: 24/24 pass
 
@@ -182,7 +182,7 @@ Post-only direction, measured per venue:
 
 **24/24 checks pass; checks_failed = 0.**
 
-- `PASS` audit:payload_sha256_reproduces - recomputed 355d018b34a05a7c vs stored 355d018b34a05a7c
+- `PASS` audit:payload_sha256_reproduces - recomputed 023b66ffd1213b06 vs stored 023b66ffd1213b06
 - `PASS` sources:all_present - data/recovery/ACTIVE_ECONOMIC_AUDIT.json=ok, reports/strategy-baseline/COST_BARRIER.json=ok, config/strategy_admission.json=ok, docs/COST_MODEL_V3.json=ok, src/trading_bot/research/microstructure/cost_model_v3.py=ok
 - `PASS` cells:count_matches_audit - 24 cells vs strategy_count 24
 - `PASS` cells:gross_positive_set_matches_audit_aggregates - derived ['mean_reversion@15m', 'mean_reversion@30m', 'mean_reversion@5m', 'trend@15m', 'trend@30m', 'volatility@1h', 'volatility@30m'] vs declared ['mean_reversion@15m', 'mean_reversion@30m', 'mean_reversion@5m', 'trend@15m', 'trend@30m', 'volatility@1h', 'volatility@30m']
@@ -208,6 +208,6 @@ Post-only direction, measured per venue:
 - `PASS` governance:no_promotion_or_rentability_claimed - the explorer reduces the barrier to a measured configuration set; it authorizes nothing and claims no strategy is RENTABLE, CERTIFIED or PRODUCTION_READY
 
 - claims: {"authorization_state": "NOT_AUTHORIZED", "certified_claimed": false, "false_success": 0, "production_ready_claimed": false, "promotion_claimed": false, "rentable_claimed": false, "trades_authorized": 0}
-- payload_sha256: `da4ab06129c927eb0dfccf820bc0db2673321b031cef77e0317594bb82c19fc6`
+- payload_sha256: `4383d812d6e18928c53894c7ee3ba063723d351ab945fcfc206373dfaa2621fb`
 
 Nothing here declares a strategy RENTABLE, CERTIFIED or PRODUCTION_READY. The map shows where a barrier could be cleared and under which assumptions; the assumptions that would have to be earned (a forward maker fill model, observed spreads) are named, not granted.

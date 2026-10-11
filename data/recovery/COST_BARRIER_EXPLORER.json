@@ -1,8 +1,8 @@
 {
   "artifact": "COST_BARRIER_EXPLORER",
   "work_package": "POST RFC-049 / ACTIVE RECOVERY - WP-6 (cost-barrier exploration)",
-  "generated_at_utc": "2026-10-11T09:11:06Z",
-  "head": "dfeb140f2572ea483ccd1fed2f751e467299b50d",
+  "generated_at_utc": "2026-10-11T17:18:12Z",
+  "head": "3f8d646ac849f494f3838152dcdc64d100554736",
   "branch": "main",
   "mode": "OFFLINE read-only: no keys, no orders, no capital, no live path",
   "ladder": "This is WP-6 of the ACTIVE recovery lane: WP-1 closed RFC-049, WP-2 reconstructed campaign state, WP-3 audited the 24 cells, WP-4/5 reported. WP-6 turns the cost plane from a gate into a searched surface: which (venue, execution mode, size, liquidity) lines any cell can clear, and at which horizon.",
@@ -10628,7 +10628,7 @@
       "role": "ACTIVE economic audit (WP-3): the 24 cells and their zero-cost gross edge",
       "exists": true,
       "tracked": true,
-      "sha256": "31fc6d4f57248bed8b5710df29ae743040747b85d380cb6d105403b8fd8bcda4"
+      "sha256": "9f86427e6eb752f495e0e92079782f16e46e764eab3b3b98a28455c3d5fac2d5"
     },
     {
       "path": "reports/strategy-baseline/COST_BARRIER.json",
@@ -10663,7 +10663,7 @@
     {
       "check": "audit:payload_sha256_reproduces",
       "result": "PASS",
-      "detail": "recomputed 355d018b34a05a7c vs stored 355d018b34a05a7c"
+      "detail": "recomputed 023b66ffd1213b06 vs stored 023b66ffd1213b06"
     },
     {
       "check": "sources:all_present",
@@ -10793,5 +10793,5 @@
     "false_success": 0
   },
   "scope": "Derived, read-only map. Every cost is the repository's own COST_MODEL_V3 evaluated at the stated configuration; every edge is the WP-3 audit's published zero-cost gross. No metric is estimated here and no runtime behaviour is changed.",
-  "payload_sha256": "da4ab06129c927eb0dfccf820bc0db2673321b031cef77e0317594bb82c19fc6"
+  "payload_sha256": "4383d812d6e18928c53894c7ee3ba063723d351ab945fcfc206373dfaa2621fb"
 }

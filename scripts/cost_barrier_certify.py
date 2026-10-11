@@ -285,6 +285,28 @@ def dirty_watched() -> list[str]:
     return [line.strip() for line in out.stdout.splitlines() if line.strip()]
 
 
+def committed_record(path: Path) -> dict[str, Any] | None:
+    """The record this run replaces, read from HEAD rather than from the working tree.
+
+    The supersession anchor has to be the *commit's* record: reading the local file would
+    let a second run of this certifier see its own previous attempt, and the supersession
+    would quietly disappear the moment the tool ran twice - exactly the kind of silent
+    history loss this block exists to prevent.
+    """
+    try:
+        rel = path.resolve().relative_to(ROOT).as_posix()
+    except ValueError:  # pragma: no cover - the record always lives in the repository
+        return None
+    out = subprocess.run(["git", "show", f"HEAD:{rel}"], cwd=ROOT, capture_output=True, check=False)
+    if out.returncode != 0:
+        return None
+    try:
+        document = json.loads(out.stdout.decode("utf-8"))
+    except json.JSONDecodeError:
+        return None
+    return document if isinstance(document, dict) else None
+
+
 def build_record(
     *,
     steps: dict[str, dict[str, Any]],
@@ -292,6 +314,7 @@ def build_record(
     integrity: dict[str, Any] | None,
     gate_report: dict[str, Any] | None,
     out_path: Path,
+    supersession_reason: str | None = None,
 ) -> dict[str, Any]:
     decision = evaluate(
         gate_report=gate_report,
@@ -316,6 +339,39 @@ def build_record(
         )
     gate_advisories = list((gate_report or {}).get("advisories") or [])
     advisories.extend(f"gate advisory: {item}" for item in gate_advisories)
+
+    # WP-8D: this record fingerprints an artefact another work package regenerated, so it is
+    # re-issued. A re-issue that dropped the previous identity would be indistinguishable
+    # from a certification that always said the new thing.
+    previous = committed_record(out_path)
+    previous_supersession = (previous or {}).get("supersession") if isinstance(previous, dict) else None
+    supersession: dict[str, Any] | None = None
+    if isinstance(previous_supersession, dict):
+        # the committed record already names what it replaced and this run reproduced the same
+        # identity: the trail is carried forward, so re-running the tool cannot erase it
+        supersession = {
+            **previous_supersession,
+            "reproduced": True,
+            "note": "this run reproduced the same identity, so the supersession recorded here still "
+                    "stands; re-running the certifier may not erase it",
+        }
+    if isinstance(previous, dict) and previous.get("evidence_fingerprint") not in (None, fingerprint):
+        supersession = {
+            "previous_fingerprint": previous["evidence_fingerprint"],
+            "previous_candidate_head": (previous.get("candidate") or {}).get("head"),
+            "previous_status": previous.get("status"),
+            "previous_evidence_digests_sha256": hashlib.sha256(
+                json.dumps(previous.get("evidence_digests"), sort_keys=True).encode("utf-8")
+            ).hexdigest(),
+            "reason": supersession_reason or (
+                "the fingerprinted evidence changed, so this record is re-issued; the previous "
+                "record's identity is preserved here instead of being overwritten silently"
+            ),
+            "how": "the record file is replaced, but the previous fingerprint, candidate head and a "
+                   "digest of its evidence table are kept here, so a reader can see that the "
+                   "certification was re-issued and what it replaced",
+            "superseded_chain": previous_supersession,
+        }
     return {
         "artifact": "COST_BARRIER_CERTIFICATION",
         "work_package": "WP-7F certification gate for the cost-barrier lane",
@@ -364,6 +420,7 @@ def build_record(
             "the same on a runner as on the machine that produced the record"
         ),
         "evidence_fingerprint": fingerprint,
+        "supersession": supersession,
         "adversarial_summary": {
             "status": (adversarial_report or {}).get("status"),
             "substrate_present": (
@@ -431,6 +488,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--json", action="store_true", help="print the record as JSON")
     parser.add_argument("--workdir", default=None,
                         help="keep the intermediate reports here instead of a temporary directory")
+    parser.add_argument("--supersedes-reason", default=None,
+                        help="why this record replaces the one committed at HEAD, if it does")
     args = parser.parse_args(argv)
 
     temporary = args.workdir is None
@@ -482,6 +541,7 @@ def main(argv: list[str] | None = None) -> int:
         integrity=integrity,
         gate_report=gate_report,
         out_path=Path(args.out),
+        supersession_reason=args.supersedes_reason,
     )
     Path(args.out).parent.mkdir(parents=True, exist_ok=True)
     Path(args.out).write_text(
