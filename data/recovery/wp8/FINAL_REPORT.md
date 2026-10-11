@@ -12,10 +12,13 @@
 > of the commit and asks the verifier to confirm it there.
 >
 > **Revision.** This report describes the sequence `e670d2a → 3f8d646 → 306939c → 9b9a4b8 →
-> 6c3af00 → 4b32d97 → 66dc3de → 279d73f → 6cac3c6 → 272df9f → e07ce6c`, with the record
-> commit that carries it (and the rehearsal report, the verifier's record, the sabotage
-> proofs and the re-issued WP-7 certification) as its child. The clean-checkout rehearsal
-> passed on `e07ce6c`; the verifier's record names that head; the certification names it too.
+> 6c3af00 → 4b32d97 → 66dc3de → 279d73f → 6cac3c6 → 272df9f → e07ce6c`. The record commit
+> `57772ef` carries this report, the re-issued certification, the rehearsal report and the two
+> sabotage proofs, all naming `e07ce6c` — the commit that carries the code they describe. The
+> verifier's record lives at `91c9aca` and names `57772ef` as the head it verified, because a
+> record is an output of the run it describes and cannot name the commit that carries it. The
+> rehearsal is re-run by the test suite on whatever commit is checked out, so `57772ef` and
+> `91c9aca` are themselves rehearsed (`3 passed` in the `slow` set).
 
 ```
 FALSE_SUCCESS = 0
@@ -134,7 +137,8 @@ red-then-green because the inputs became committed and the digests became conten
 | `6cac3c6` | Judge a declared-only dataset on its authority instead of demanding bytes | the C14 correction and control N13 |
 | `272df9f` | Detect a mutated input the only way a HEAD-reading lane can: by the checkout | the input guard and the two sabotage detectors |
 | `e07ce6c` | Keep the two sabotage proofs as artefacts instead of test output | `evidence/SABOTAGE_*.json` |
-| record commit (child of `e07ce6c`) | | the rehearsal report, the verifier's record, the re-issued WP-7 certification and the lane-level report updates |
+| `57772ef` | Publish the WP-8 reports, the rehearsal, and the re-issued certification | the seven WP-8 reports, `CLEAN_CHECKOUT_REHEARSAL_REPORT.{json,md}`, the re-issued `wp7/COST_BARRIER_CERTIFICATION.json` and the lane-level report updates; all of them name `e07ce6c` |
+| `91c9aca` | Let the verifier's record name the commit that carries it | `../INDEPENDENT_VERIFICATION.json` on head `57772ef` |
 
 `33512b5` (WP-7) is **not** part of this list: it re-issued the cost-barrier certification
 record after that record's fingerprint check was added. WP-8 re-issues that record once more,
@@ -143,10 +147,11 @@ because the audit artefact it fingerprints was regenerated (see Q6).
 ## Q6 — Which certification has authority over which commit?
 
 - **Implementation**: commits `e670d2a` → `3f8d646` → `306939c` → `C` → `R` on `main`.
-- **Recovery lane**: `R` carries `INDEPENDENT_VERIFICATION.json`, whose `head` names the
-  commit the verifier ran on, and the rehearsal report, whose `rehearsed_commit` names the
-  commit the rehearsal tested (`C`). A reader has both: what was tested, and where it was
-  verified.
+- **Recovery lane**: `57772ef` carries the rehearsal report, whose `rehearsed_commit` is
+  `e07ce6c`, and `91c9aca` carries `INDEPENDENT_VERIFICATION.json`, whose `head` is `57772ef`.
+  A reader therefore has both answers: which commit was rehearsed, and which one the verifier
+  confirmed. The `slow` test set re-runs the whole rehearsal on whatever commit is checked out,
+  so the published head is rehearsed too.
 - **Cost-barrier lane (WP-7)**: `data/recovery/wp7/COST_BARRIER_CERTIFICATION.json` is
   `CERTIFIED` on head `e07ce6c` with `dirty_watched_paths: []`, fingerprint `0cfdb13e…`, 93
   lane tests passed, gate `FULL_REPRODUCTION_PASS`, adversarial `EVALUATED` 17/17 — and it
