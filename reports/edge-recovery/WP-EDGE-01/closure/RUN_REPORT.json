@@ -1,0 +1,688 @@
+{
+  "schema_version": 1,
+  "work_package": "WP-EDGE-01 closure: H6 (entry on a retest of the broken level), the out-of-sample review of the 4h trend candidate, and the repair of the recovery gate",
+  "generated_at_utc": "2026-10-12T18:59:58Z",
+  "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
+  "head": "e81eba9a1f184a67589eb7c5fedf02f474023526",
+  "head_note": "`head` is the commit the code and the artefacts below belong to. This record is carried by the commit that follows it, which touches records only; `git log --oneline af250f2..HEAD` names it.",
+  "produced_by": "a one-shot generator that reads the published artefacts and git; every number here is read from them, never retyped by hand",
+  "verified_by": "scripts/edge01_closure_report_check.py",
+  "deliverables": {
+    "final_report": {
+      "path": "reports/edge-recovery/WP-EDGE-01/FINAL_REPORT.md",
+      "sha256": "c1ca977d31c8c1be103fc0e9474b8716c7cdfc370e419fd934265734e8031466",
+      "bytes": 11236
+    },
+    "run_report": {
+      "path": "reports/edge-recovery/WP-EDGE-01/closure/RUN_REPORT.json"
+    },
+    "operations_csv": [
+      {
+        "path": "reports/edge-recovery/WP-EDGE-01/retest-h6/RETEST_TRADES.csv",
+        "sha256": "b879de29bb6ffa6b8085c15da49d0ceecd45cc9b57695b1e39d97d893a54435c",
+        "bytes": 985421
+      },
+      {
+        "path": "reports/edge-recovery/WP-EDGE-01/retest-h6/RETEST_ORDERS.csv",
+        "sha256": "a1e60516584aca88b22e6e823ed88d8184bbecaa9a4b53da7afca3b8e5db8675",
+        "bytes": 288395
+      },
+      {
+        "path": "reports/edge-recovery/WP-EDGE-01/oos-trend-4h/OOS_TREND_TRADES.csv",
+        "sha256": "2e62d5eab122194f65f8490abe5faa04b0aa64efafdc5e135b874e174b345118",
+        "bytes": 262234
+      },
+      {
+        "path": "reports/edge-recovery/WP-EDGE-01/TRADES.csv",
+        "sha256": "36eb8f34dfd5f3e47375da0f4b83a3bc0c49c0c83fc1b9396ee16676ee5f5d1d",
+        "bytes": 1543110
+      }
+    ],
+    "verification_artifacts": [
+      "INDEPENDENT_VERIFICATION.json",
+      "retest-h6/RETEST_VERIFICATION.json",
+      "oos-trend-4h/OOS_TREND_VERIFICATION.json",
+      "closure/REPORT_FIGURES_CHECK.json",
+      "closure/CLEAN_CHECKOUT_REHEARSAL.json"
+    ]
+  },
+  "h6": {
+    "experiment": "ABL-EDGE01-H6",
+    "question": "H2 measured the intraday book paying for the extension: 236 of 290 DEV fills landed at or past 0.25 ATR above the broken level and only the fills closest to the level carried positive gross. Does entering on a resting limit AT the level — same signals, same stop, same target, same risk budget, same costs — improve the net expectancy, and are the orders actually filled?",
+    "primary_window": "DEV",
+    "windows": [
+      "DEV",
+      "VAL",
+      "OOS"
+    ],
+    "scenario_plan": {
+      "DEV": [
+        "BASE",
+        "2X_FEES"
+      ],
+      "VAL": [
+        "BASE"
+      ],
+      "OOS": [
+        "BASE",
+        "2X_FEES"
+      ]
+    },
+    "arms": {
+      "frozen_market": "the frozen EDGE-INTRA-01 ruleset, market entry at the next bar's open (the published WP arm, re-run here as the baseline of this experiment)",
+      "plan_market": "the SAME plans the retest arm would rest, crossed at market: it isolates how much of the difference is the plan's own gate numbers and how much is the execution price",
+      "plan_limit": "the same plans rested as limit buys at the broken level, live for the declared expiry, filled only if a bar trades at or through the level, at the level and never better"
+    },
+    "assets": [
+      "BTC",
+      "ETH",
+      "SOL"
+    ],
+    "variant_params": {
+      "base_candidate": "edge_intra_01",
+      "entry": "resting limit buy at the broken level (hard_invalidation)",
+      "retest_expiry_bars": 8,
+      "fill_rule": "a bar whose low reaches the level fills it, at the level, never better",
+      "cancellation": "a close below the level cancels the plan; the window end cancels it"
+    },
+    "frozen_params_baseline": {
+      "resistance_lookback": 20,
+      "atr_period": 14,
+      "breakout_buffer_atr": 0.1,
+      "volume_lookback": 20,
+      "volume_mult": 1.2,
+      "stop_atr_below_level": 0.5,
+      "max_stop_atr": 2.5,
+      "min_rr": 1.5,
+      "cost_margin": 1.5,
+      "trailing_atr": 2.0,
+      "level_reset_atr": 1.0
+    },
+    "decision_rule_declared_before_running": {
+      "primary_window": "DEV",
+      "primary_scenario": "BASE",
+      "baseline_arm": "frozen_market",
+      "variant_arm": "plan_limit",
+      "min_orders_placed": 100,
+      "min_filled_trades": 50,
+      "min_fill_rate": 0.4,
+      "economic_rule": {
+        "RETEST_UNPOWERED": "fewer orders placed or fills than the declared floors",
+        "RETEST_IMPROVES_NET": "net AND expectancy per trade both better than the baseline",
+        "RETEST_IMPROVES_EXPECTANCY_ONLY": "expectancy per trade better, net not better",
+        "RETEST_DOES_NOT_HELP": "neither net nor expectancy better than the baseline"
+      },
+      "execution_rule": {
+        "VIABLE": "at least the declared share of the placed orders was filled",
+        "STARVED": "the plan cannot be executed often enough to matter, whatever its P&L"
+      },
+      "not_claimed": "a favourable economic reading is a hypothesis for a new pre-registered run, not a promotion: nothing is wired into the PAPER runtime and the ruleset in candidates.FROZEN_PARAMS is unchanged"
+    },
+    "verdict": "RETEST_IMPROVES_NET",
+    "execution": "VIABLE",
+    "reason": "net -495.88 vs -496.43 USDT (+0.55) and expectancy -1.3330 vs -1.7118 (+0.3788) | 372/686 orders filled (54.23%) against the declared floor 40% -> VIABLE | same plans crossed at market: net -496.43 USDT, expectancy -1.7118",
+    "dev_base_arms": {
+      "frozen_market": {
+        "trades": 290,
+        "gross_usdt": -151.7123,
+        "fees_usdt": 289.7934,
+        "price_costs_usdt": 54.9241,
+        "net_usdt": -496.4298,
+        "win_rate_pct": 19.3103,
+        "profit_factor": 0.3224,
+        "expectancy_usdt": -1.7118,
+        "max_drawdown_pct": 5.0427,
+        "exposure_pct_of_time": 1.5714,
+        "signal_count": 860,
+        "signals_planning_a_limit": 0,
+        "orders_placed": 0,
+        "orders_filled": 0,
+        "orders_by_outcome": {},
+        "fill_rate": null,
+        "median_discount_bps": null,
+        "median_bars_resting": null
+      },
+      "plan_market": {
+        "trades": 290,
+        "gross_usdt": -151.7123,
+        "fees_usdt": 289.7934,
+        "price_costs_usdt": 54.9241,
+        "net_usdt": -496.4298,
+        "win_rate_pct": 19.3103,
+        "profit_factor": 0.3224,
+        "expectancy_usdt": -1.7118,
+        "max_drawdown_pct": 5.0427,
+        "exposure_pct_of_time": 1.5714,
+        "signal_count": 860,
+        "signals_planning_a_limit": 860,
+        "orders_placed": 0,
+        "orders_filled": 0,
+        "orders_by_outcome": {},
+        "fill_rate": null,
+        "median_discount_bps": null,
+        "median_bars_resting": null
+      },
+      "plan_limit": {
+        "trades": 372,
+        "gross_usdt": -53.5185,
+        "fees_usdt": 371.876,
+        "price_costs_usdt": 70.4811,
+        "net_usdt": -495.8756,
+        "win_rate_pct": 9.4086,
+        "profit_factor": 0.2912,
+        "expectancy_usdt": -1.333,
+        "max_drawdown_pct": 5.0041,
+        "exposure_pct_of_time": 0.9932,
+        "signal_count": 860,
+        "signals_planning_a_limit": 860,
+        "orders_placed": 686,
+        "orders_filled": 372,
+        "orders_by_outcome": {
+          "filled": 372,
+          "expired": 128,
+          "refused_by_risk_budget": 183,
+          "cancelled_window_end": 3
+        },
+        "fill_rate": 0.542274,
+        "median_discount_bps": 0.0,
+        "median_bars_resting": 1.0
+      }
+    },
+    "confirmation": {
+      "VAL": {
+        "baseline_net_usdt": -479.1833,
+        "variant_net_usdt": -357.4449,
+        "net_delta_usdt": 121.7384,
+        "baseline_expectancy_usdt": -1.393,
+        "variant_expectancy_usdt": -1.3288,
+        "fill_rate": 0.768571,
+        "orders_placed": 350,
+        "trades": 269,
+        "note": "confirmatory window: the plan's rules were frozen before any of the three windows was run under H6 and nothing was re-tuned after reading it, but the diagnosis that motivated the plan came from DEV, so DEV is its design window and this one is evidence, not a decision"
+      },
+      "OOS": {
+        "baseline_net_usdt": -94.8077,
+        "variant_net_usdt": -55.7084,
+        "net_delta_usdt": 39.0993,
+        "baseline_expectancy_usdt": -1.5049,
+        "variant_expectancy_usdt": -1.0316,
+        "fill_rate": 0.818182,
+        "orders_placed": 66,
+        "trades": 54,
+        "note": "confirmatory window: the plan's rules were frozen before any of the three windows was run under H6 and nothing was re-tuned after reading it, but the diagnosis that motivated the plan came from DEV, so DEV is its design window and this one is evidence, not a decision"
+      }
+    },
+    "oos_cost_stress": {
+      "scenario": "2X_FEES",
+      "baseline_net_usdt": -133.2011,
+      "variant_net_usdt": -87.9506
+    },
+    "frozen_book_untouched": {
+      "params_delta_empty_in_every_arm": false,
+      "plan_market_reproduces_the_frozen_book": true,
+      "params_hash": "d073a2d686b9b198c36c9a3c6009d36130577ba247a2016c3f791813cb749d77"
+    },
+    "source_digest": "ed51f8f9ed98883ca80267aed65fe766f3b2a877720744469867ec0112737954",
+    "promoted": false
+  },
+  "oos_trend_4h": {
+    "experiment": "OOS-EDGE01-TREND-4H",
+    "question": "EDGE-TREND-01 4h is positive on DEV (+1,921.1792 USDT) and positive on OOS, but H3 warned that the OOS net may be one fat trade rather than an edge. Is there enough out-of-sample evidence — per asset, per calendar period, per regime and against buy & hold, before and after cost stress — to justify taking this ruleset to PAPER?",
+    "candidate": "edge_trend_01",
+    "decision_window": "OOS",
+    "windows": [
+      "DEV",
+      "VAL",
+      "OOS"
+    ],
+    "scenario_plan": {
+      "DEV": [
+        "BASE"
+      ],
+      "VAL": [
+        "BASE"
+      ],
+      "OOS": [
+        "BASE",
+        "2X_FEES"
+      ]
+    },
+    "assets": [
+      "BTC",
+      "ETH",
+      "SOL"
+    ],
+    "frozen_params": {
+      "ema_fast": 50,
+      "ema_slow": 200,
+      "breakout_lookback": 20,
+      "atr_period": 14,
+      "trailing_atr": 3.0,
+      "exit_ema": 50,
+      "cost_margin": 1.5
+    },
+    "verdict": "NOT_SUFFICIENT_EVIDENCE",
+    "reasons": [
+      "no_single_trade_carries_the_net: largest trade is 0.7987 of the OOS net (limit 0.5)"
+    ],
+    "checks": [
+      {
+        "criterion": "oos_net_positive",
+        "result": "PASS",
+        "required": true,
+        "detail": "OOS net 208.01 USDT"
+      },
+      {
+        "criterion": "oos_net_positive_under_2x_fees",
+        "result": "PASS",
+        "required": true,
+        "detail": "OOS net with 2x fees 160.67 USDT"
+      },
+      {
+        "criterion": "oos_trades_floor",
+        "result": "PASS",
+        "required": true,
+        "detail": "52 OOS trades vs floor 30"
+      },
+      {
+        "criterion": "no_single_trade_carries_the_net",
+        "result": "FAIL",
+        "required": true,
+        "detail": "largest trade is 0.7987 of the OOS net (limit 0.5)"
+      },
+      {
+        "criterion": "assets_positive",
+        "result": "PASS",
+        "required": true,
+        "detail": "2/3 single-asset OOS books positive (BTC, ETH) vs required 2"
+      },
+      {
+        "criterion": "drawdown_below_buy_and_hold",
+        "result": "PASS",
+        "required": true,
+        "detail": "OOS max drawdown 2.57% vs the deepest buy & hold drawdown 73.20%"
+      },
+      {
+        "criterion": "periods_positive",
+        "result": "PASS",
+        "required": true,
+        "detail": "2/3 OOS periods positive (2025H1, 2025H2) vs required 2"
+      }
+    ],
+    "decision_rule": {
+      "decision_window": "OOS",
+      "periods_are": "calendar halves of the OOS window, declared before the run",
+      "require_oos_net_positive": true,
+      "require_oos_net_positive_under_2x_fees": true,
+      "min_oos_trades": 30,
+      "max_single_trade_share_of_net": 0.5,
+      "min_positive_assets": 2,
+      "require_drawdown_below_buy_and_hold": true,
+      "min_positive_periods": 2,
+      "meaning": {
+        "SUFFICIENT_EVIDENCE_FOR_PAPER": "every requirement above met on OOS, plus the WP gate",
+        "NOT_SUFFICIENT_EVIDENCE": "the sample is powered and at least one requirement fails",
+        "UNPOWERED": "fewer than the declared minimum OOS trades: nothing is concluded"
+      },
+      "not_claimed": "PAPER here means the evidence supports wiring the frozen ruleset into the paper pipeline; it is not a profitability claim, not a live-trading authorisation and not a certification. No capital is at risk in this experiment."
+    },
+    "wp_admission": {
+      "verdict": "INSUFFICIENT_EVIDENCE",
+      "reasons": [
+        "the largest single trade is 0.80 of the oos net"
+      ],
+      "power": "powered (oos n=52 >= 30)",
+      "evidence": {
+        "window_net_usdt": {
+          "DEV": 1921.1792,
+          "VAL": 4.5253,
+          "OOS": 208.0056
+        },
+        "oos_trades": 52,
+        "min_oos_trades": 30,
+        "oos_net_usdt": 208.0056,
+        "oos_2x_fees_net_usdt": 160.6723,
+        "positive_regimes_oos": 1
+      }
+    },
+    "runs": {
+      "DEV:BASE": {
+        "trades": 223,
+        "gross_usdt": 2128.9105,
+        "fees_usdt": 174.6333,
+        "price_costs_usdt": 33.0981,
+        "net_usdt": 1921.1792,
+        "expectancy_usdt": 8.6152,
+        "profit_factor": 1.7782,
+        "max_drawdown_pct": 4.2793,
+        "exposure_pct_of_time": 24.5997,
+        "largest_trade_share_of_net": 0.0673
+      },
+      "VAL:BASE": {
+        "trades": 58,
+        "gross_usdt": 62.5185,
+        "fees_usdt": 48.753,
+        "price_costs_usdt": 9.2401,
+        "net_usdt": 4.5253,
+        "expectancy_usdt": 0.078,
+        "profit_factor": 1.0068,
+        "max_drawdown_pct": 4.1002,
+        "exposure_pct_of_time": 29.0259,
+        "largest_trade_share_of_net": 27.5248
+      },
+      "OOS:BASE": {
+        "trades": 52,
+        "gross_usdt": 264.3207,
+        "fees_usdt": 47.3423,
+        "price_costs_usdt": 8.9727,
+        "net_usdt": 208.0056,
+        "expectancy_usdt": 4.0001,
+        "profit_factor": 1.3312,
+        "max_drawdown_pct": 2.567,
+        "exposure_pct_of_time": 19.4641,
+        "largest_trade_share_of_net": 0.7987
+      },
+      "OOS:2X_FEES": {
+        "trades": 52,
+        "gross_usdt": 264.2518,
+        "fees_usdt": 94.6135,
+        "price_costs_usdt": 8.966,
+        "net_usdt": 160.6723,
+        "expectancy_usdt": 3.0899,
+        "profit_factor": 1.2461,
+        "max_drawdown_pct": 2.7025,
+        "exposure_pct_of_time": 19.4641,
+        "largest_trade_share_of_net": 1.0267
+      }
+    },
+    "assets_oos_base": {
+      "BTC": {
+        "trades": 18,
+        "net_usdt": 3.0607,
+        "expectancy_usdt": 0.17
+      },
+      "ETH": {
+        "trades": 16,
+        "net_usdt": 281.6015,
+        "expectancy_usdt": 17.6001
+      },
+      "SOL": {
+        "trades": 18,
+        "net_usdt": -75.549,
+        "expectancy_usdt": -4.1972
+      }
+    },
+    "assets_oos_2x_fees": {
+      "BTC": {
+        "trades": 18,
+        "net_usdt": -14.6785,
+        "expectancy_usdt": -0.8155
+      },
+      "ETH": {
+        "trades": 16,
+        "net_usdt": 266.7926,
+        "expectancy_usdt": 16.6745
+      },
+      "SOL": {
+        "trades": 18,
+        "net_usdt": -90.1035,
+        "expectancy_usdt": -5.0058
+      }
+    },
+    "periods_oos": [
+      {
+        "period": "2025H1",
+        "start_utc": "2025-01-01T00:00:00+00:00",
+        "end_utc": "2025-07-01T00:00:00+00:00",
+        "trades": 24,
+        "net_usdt": 22.7467,
+        "expectancy_usdt": 0.947778,
+        "win_rate_pct": 37.5
+      },
+      {
+        "period": "2025H2",
+        "start_utc": "2025-07-01T00:00:00+00:00",
+        "end_utc": "2026-01-01T00:00:00+00:00",
+        "trades": 21,
+        "net_usdt": 244.1381,
+        "expectancy_usdt": 11.625624,
+        "win_rate_pct": 52.381
+      },
+      {
+        "period": "2026Q1",
+        "start_utc": "2026-01-01T00:00:00+00:00",
+        "end_utc": "2026-03-01T00:00:00+00:00",
+        "trades": 7,
+        "net_usdt": -58.8791,
+        "expectancy_usdt": -8.411305,
+        "win_rate_pct": 42.8571
+      }
+    ],
+    "buy_and_hold_oos": {
+      "BTC": {
+        "return_pct": -29.852665,
+        "max_drawdown_pct": 49.836972
+      },
+      "ETH": {
+        "return_pct": -42.479224,
+        "max_drawdown_pct": 62.224291
+      },
+      "SOL": {
+        "return_pct": -56.924744,
+        "max_drawdown_pct": 73.200811
+      }
+    },
+    "source_digest": "ed51f8f9ed98883ca80267aed65fe766f3b2a877720744469867ec0112737954",
+    "promoted_to_paper": false
+  },
+  "verification": {
+    "independent_verifiers_import_nothing_from_the_package": true,
+    "verifier_rule": "Each verifier is a separate process that imports nothing from trading_bot: it reads the published artefacts, re-derives the metrics, the cost identity, the order lifecycle and the frozen decision rules, and mutates its own inputs to prove the checks bite.",
+    "verifiers": [
+      "scripts/edge01_verify.py",
+      "scripts/edge01_closure_verify.py --experiment h6",
+      "scripts/edge01_closure_verify.py --experiment oos",
+      "scripts/edge01_closure_report_check.py"
+    ],
+    "experiments": [
+      {
+        "experiment": "campaign (WP-EDGE-01)",
+        "artifact": "INDEPENDENT_VERIFICATION.json",
+        "checks": 14,
+        "passed": 14,
+        "failed": 0,
+        "mutations": "8/8"
+      },
+      {
+        "experiment": "h6",
+        "artifact": "retest-h6/RETEST_VERIFICATION.json",
+        "checks": 15,
+        "passed": 15,
+        "failed": 0,
+        "mutations": "19/19"
+      },
+      {
+        "experiment": "oos",
+        "artifact": "oos-trend-4h/OOS_TREND_VERIFICATION.json",
+        "checks": 13,
+        "passed": 13,
+        "failed": 0,
+        "mutations": "17/17"
+      }
+    ],
+    "recovery_gate": {
+      "record": "reports/edge-recovery/WP-EDGE-01/closure/CLEAN_CHECKOUT_REHEARSAL.json",
+      "rehearsed_commit": "af250f27811ce7c913d4a89585f531b739fd2d2b",
+      "status": "PASS",
+      "published_paths_moved": [],
+      "artifacts_identical": true,
+      "artifacts": [
+        "data/recovery/ACTIVE_ECONOMIC_AUDIT.json",
+        "data/recovery/ACTIVE_ECONOMIC_AUDIT.md",
+        "data/recovery/CAMPAIGN_STATE_VIEW.json",
+        "data/recovery/CAMPAIGN_STATE_VIEW_REPORT.md"
+      ],
+      "taken_in_this_closure": true,
+      "note": "The recovery bundle also carries data/recovery/wp8/CLEAN_CHECKOUT_REHEARSAL_REPORT.json, which another thread left uncommitted in the shared checkout at commit 5348fcd5. It was neither read as evidence nor overwritten; the record above is the rehearsal taken at this closure's commit."
+    },
+    "report_check": {
+      "verifier": "scripts/edge01_closure_report_check.py",
+      "verifies": [
+        "every figure quoted in FINAL_REPORT.md traces to an artefact",
+        "every claim and digest in closure/RUN_REPORT.json re-derives",
+        "the campaign source digest is recomputed from the committed blobs"
+      ],
+      "figures_checked": 76,
+      "figures_missing": 0,
+      "status": "PASS"
+    }
+  },
+  "tests": {
+    "edge01_unit": {
+      "command": "pytest tests/unit/research/test_edge01_*.py -q",
+      "result": "126 passed in 6.41s",
+      "exit_code": 0,
+      "green": true
+    },
+    "recovery_regressions": {
+      "command": "pytest tests/unit/research/test_active_recovery_wp.py::test_state_view_is_deterministic tests/unit/research/test_recovery_determinism.py::test_repeated_reproduction_is_byte_identical tests/unit/research/test_recovery_determinism.py::test_the_clean_checkout_rehearsal_passes_on_this_commit -q",
+      "result": "3 passed in 22.19s",
+      "exit_code": 0,
+      "green": true,
+      "tests": [
+        "tests/unit/research/test_active_recovery_wp.py::test_state_view_is_deterministic",
+        "tests/unit/research/test_recovery_determinism.py::test_repeated_reproduction_is_byte_identical",
+        "tests/unit/research/test_recovery_determinism.py::test_the_clean_checkout_rehearsal_passes_on_this_commit"
+      ]
+    }
+  },
+  "frozen_measurement_reproduced": {
+    "claim": "the frozen campaign still reproduces its published numbers after the H6, OOS and recovery work",
+    "campaign_source_sha256": "616a86fa7258fa9efe2faf1d3b333a87722944aef9796bfa228417014c178c5a",
+    "source_digest_rule": "sha256 over name+bytes of src/trading_bot/research/edge01/*.py, scripts/edge01_run.py and scripts/edge01_verify.py, with CRLF folded to LF so the digest does not depend on the checkout's line endings",
+    "byte_identical_after_the_rerun": [
+      "TRADES.csv",
+      "EQUITY_CURVE.csv",
+      "MARKET_CONTEXT.csv",
+      "STRATEGY_RESULTS.json"
+    ],
+    "verdicts": {
+      "edge_intra_01": "REJECT",
+      "edge_intra_02": "REJECT",
+      "edge_intra_02_no_fvg": "REJECT",
+      "edge_trend_01_4h": "INSUFFICIENT_EVIDENCE",
+      "edge_trend_01_1d": "INSUFFICIENT_EVIDENCE"
+    },
+    "intraday_dev_net_usdt": -496.4298,
+    "trend_4h_dev_net_usdt": 1921.1792,
+    "trend_4h_oos_net_usdt": 208.0056,
+    "paper_status": {
+      "integrated": false,
+      "reason": "No candidate reached ADMIT. Wiring a rejected candidate into the PAPER runtime would have made the runtime execute rules whose only measured property is losing money after costs.",
+      "runtime_untouched": "src/trading_bot/autonomous/** and the paper pipeline were not modified by this WP: the runtime remains the authority for PAPER and keeps its deterministic risk and execution behaviour.",
+      "trend_4h_oos_review": {
+        "decision": "NOT_SUFFICIENT_EVIDENCE",
+        "asking": "is there enough out-of-sample evidence to take the frozen 4h trend ruleset to PAPER?",
+        "answer": "no. OOS is positive (+208.01 USDT, +160.67 under 2x fees) but one trade carries 79.87% of the net, only ETH of the three assets is positive, and VAL is flat; the WP's own admission rule returns INSUFFICIENT_EVIDENCE. The paper pipeline stays untouched and nothing is certified.",
+        "evidence": "reports/edge-recovery/WP-EDGE-01/oos-trend-4h/OOS_TREND.json",
+        "verdict_rule": "reports/edge-recovery/WP-EDGE-01/oos-trend-4h/OOS_TREND.json#verdict.decision_rule"
+      }
+    }
+  },
+  "commits": [
+    {
+      "sha": "ce42ca42c297fe2b6a6594a49b385ed811442666",
+      "subject": "Carry the final WP-EDGE-01 git state, digest and verification counts in one record. [WP-EDGE-01]"
+    },
+    {
+      "sha": "90cee7327e69de1af0d599d9c5b008f43ed3b722",
+      "subject": "Model the retest entry and review the 4h trend out of sample. [WP-EDGE-01]"
+    },
+    {
+      "sha": "752225531529f601c91426538579daadeafeef7f",
+      "subject": "Regenerate the derived recovery view with its sources and record ADR-0031. [WP-EDGE-01]"
+    },
+    {
+      "sha": "af250f27811ce7c913d4a89585f531b739fd2d2b",
+      "subject": "Anchor the recovery state view to the commit that first carries ADR-0031. [WP-EDGE-01]"
+    },
+    {
+      "sha": "e81eba9a1f184a67589eb7c5fedf02f474023526",
+      "subject": "Publish the WP-EDGE-01 closure report with a verifier that re-derives its figures. [WP-EDGE-01]"
+    }
+  ],
+  "push": {
+    "attempted": true,
+    "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
+    "remote": "https://github.com/Extr3sao/bot_crypto.git",
+    "status": "BLOCKED_GITHUB_AUTH",
+    "published": false,
+    "remote_message": "remote: No anonymous write access. (recorded on the earlier probe of this branch; the probe below cannot reach the remote at all)",
+    "probes": [
+      {
+        "command": "GIT_TERMINAL_PROMPT=0 git -c credential.helper= push --dry-run origin HEAD",
+        "why": "no helper, no prompt: the only question left is whether a credential can be supplied non-interactively",
+        "exit_code": 128,
+        "stderr": "fatal: could not read Username for 'https://github.com': terminal prompts disabled",
+        "result": "no credential available without a human"
+      },
+      {
+        "command": "GIT_TERMINAL_PROMPT=0 git push --dry-run origin HEAD",
+        "why": "the configured helper (manager) is allowed to answer",
+        "exit_code": null,
+        "stderr": "did not return within 180 s: the credential manager waits for an interactive sign-in even with GIT_TERMINAL_PROMPT=0; the process tree was terminated by the harness and no git or credential-manager process was left running (checked)",
+        "result": "blocks on an interactive sign-in that no automated run can complete"
+      },
+      {
+        "command": "git ls-remote --heads origin",
+        "why": "separate read access from write access",
+        "exit_code": 0,
+        "stderr": "",
+        "result": "61 branches listed anonymously: the remote is reachable, only writing is unauthenticated"
+      }
+    ],
+    "fatal_message": "fatal: could not read Username for 'https://github.com': terminal prompts disabled",
+    "remote_head_of_this_branch": null,
+    "remote_head_note": "`git ls-remote --heads origin refs/heads/agent/edge-recovery/*` returns nothing, so the branch and its commits exist only locally.",
+    "unlock_procedure": [
+      "1. The operator puts a credential they own where their own git configuration can read it. This checkout has `credential.helper = manager` (Git Credential Manager), which only authenticates interactively, so any of these works and none of them requires a token in this chat or in this repository:",
+      "   a. run `git push origin HEAD` once from an interactive terminal and complete the sign-in; the manager stores the credential in the operating system's vault and later non-interactive pushes reuse it;",
+      "   b. pre-seed that vault without git prompting for a URL: pipe `protocol=https`, `host=github.com`, `username=<github user>` and `password=<fine-grained PAT with contents:write>` into `git credential-manager store` (the value never leaves the operator's machine and is never read or printed here);",
+      "   c. set an exported token in the environment of the pushing process and let git read it from the environment only, e.g. `GITHUB_TOKEN=... git -c credential.helper='!f() { echo username=x-access-token; echo password=$GITHUB_TOKEN; }; f' push origin HEAD`;",
+      "   d. install the GitHub CLI and let it configure git: `gh auth login --hostname github.com --git-protocol https` followed by `gh auth setup-git`.",
+      "2. Verify the unlock without writing to the remote: `GIT_TERMINAL_PROMPT=0 git push --dry-run origin HEAD` must exit 0 and print the ref update it would publish.",
+      "3. Publish the branch (it does not exist on the remote yet): `git push --set-upstream origin agent/edge-recovery/WP-EDGE-00-baseline`.",
+      "4. Confirm from the remote, not from the local exit code: `git ls-remote --heads origin refs/heads/agent/edge-recovery/WP-EDGE-00-baseline` must return the pushed commit, and its sha must equal `git rev-parse HEAD`.",
+      "Rules: never paste the credential into the chat, never commit it, and revoke it if it ever reaches a log. Nothing in this work package depends on the push: the campaign runs offline against local corpora and both verifiers read only published files."
+    ],
+    "secrets_handling": "No token, password or credential value was read, printed, stored or requested. This record lists only the presence or absence of the mechanisms and the exact commands an operator can run."
+  },
+  "auth_diagnosis": {
+    "github_token_env": "unset",
+    "gh_token_env": "unset",
+    "git_askpass_env": "unset",
+    "ssh_agent": "unset (SSH_AUTH_SOCK absent)",
+    "git_credential_file": "absent (~/.git-credentials)",
+    "configured_credential_helper": "manager (Git Credential Manager: interactive sign-in only)",
+    "gh_cli": "not installed",
+    "first_probe_note": "The manager does not honour GIT_TERMINAL_PROMPT=0: the probe with the helper enabled never returned and had to be terminated, which is why the recorded exit code for it is null rather than a code.",
+    "secrets_handling": "No token, password or credential value was read, printed, stored or requested. This file records only the presence or absence of the mechanisms."
+  },
+  "checkout_notes": {
+    "shared_checkout": true,
+    "not_owned_and_not_staged": [
+      "FINAL_REPORT.md, RUN_REPORT.json, RUN_REPORT.md (repository root)",
+      "data/st6/*, data/rfc035e/*, evidence/real_decisions/*",
+      "scripts/cap004c_verify.py, scripts/st6_scheduler_witness.py",
+      "data/recovery/wp8/CLEAN_CHECKOUT_REHEARSAL_REPORT.{json,md} (regenerated at 5348fcd5 on 2026-10-11 by another thread; left untouched)",
+      "untracked tests/unit/research/test_swing_*.py and test_rfc035*.py"
+    ],
+    "note": "This work package edited and committed only the paths it lists in git_sync_status.json#local.files_owned_by_this_wp."
+  },
+  "not_claimed": [
+    "CERTIFIED",
+    "PRODUCTION_READY",
+    "live trading",
+    "capital at risk"
+  ]
+}
