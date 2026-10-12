@@ -110,7 +110,7 @@ class Suite:
     def run(self) -> bool:
         for method in (
             self.check_artifacts_present,
-            self.check_commit_matches_head,
+            self.check_run_commit_is_ancestor,
             self.check_mode_and_no_production_actions,
             self.check_trace_chain_intact,
             self.check_counts_rederived,
@@ -156,11 +156,11 @@ class Suite:
             "all required artifacts present" if not missing else f"missing: {missing}",
         )
 
-    def check_commit_matches_head(self) -> None:
+    def check_run_commit_is_ancestor(self) -> None:
         try:
             rr = read_json(self.real_dir() / "RUN_REPORT.json")
         except Exception as exc:
-            self.record("COMMIT_MATCHES_HEAD", False, f"unreadable run report: {exc}")
+            self.record("RUN_COMMIT_IS_ANCESTOR", False, f"unreadable run report: {exc}")
             return
         git_head = (
             self.head
@@ -168,11 +168,39 @@ class Suite:
                 ["git", "rev-parse", "HEAD"], capture_output=True, text=True, check=True
             ).stdout.strip()
         )
-        got = str(rr.get("commit", ""))
+        run_commit = str(rr.get("commit", ""))
+        # The invariant is not "run commit == HEAD": once the evidence is committed, HEAD
+        # legitimately moves. What must hold is that the commit the run executed on is an
+        # ancestor of HEAD and that nothing since then touched anything but this WP's own
+        # evidence/verifier paths - i.e. no runtime code changed after the smoke ran.
+        ancestor = (
+            subprocess.run(
+                ["git", "merge-base", "--is-ancestor", run_commit, git_head],
+                capture_output=True,
+            ).returncode
+            == 0
+        )
+        changed = [
+            line
+            for line in subprocess.run(
+                ["git", "diff", "--name-only", f"{run_commit}..{git_head}"],
+                capture_output=True,
+                text=True,
+            ).stdout.splitlines()
+            if line.strip()
+        ]
+        allowed = [
+            path
+            for path in changed
+            if path.startswith("reports/edge-recovery/") or path == "scripts/wp_edge_00_verify.py"
+        ]
+        ok = ancestor and len(allowed) == len(changed)
         self.record(
-            "COMMIT_MATCHES_HEAD",
-            got == git_head,
-            f"run report commit={got[:12]} git HEAD={git_head[:12]}",
+            "RUN_COMMIT_IS_ANCESTOR",
+            ok,
+            f"run commit={run_commit[:12]} ancestor of HEAD={git_head[:12]}={ancestor}; "
+            f"files changed since run={len(changed)} "
+            f"(all evidence/verifier={len(allowed) == len(changed)})",
         )
 
     def check_mode_and_no_production_actions(self) -> None:

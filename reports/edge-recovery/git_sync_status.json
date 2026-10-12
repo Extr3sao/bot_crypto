@@ -48,5 +48,5 @@
     "action": "authenticate git (or provide a token) and run: git push -u origin agent/edge-recovery/WP-EDGE-00-baseline",
     "then": "verify remote SHA with: git ls-remote origin refs/heads/agent/edge-recovery/WP-EDGE-00-baseline"
   },
-  "branch_tip_note": "87826d489148b480bab7950f73720a0013cba2f3 is the tip at the time this record was generated; commits after it on this branch only adjust provenance lines inside FINAL_REPORT.md"
+  "branch_tip_note": "87826d4 was the tip at the time this record was generated; later commits on this branch only touch reports/edge-recovery/** and scripts/wp_edge_00_verify.py (the WP's own evidence and verifier), never runtime code"
 }

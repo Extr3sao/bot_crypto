@@ -9,7 +9,7 @@ STATUS:              PASS (runtime, evidencia y verificación)  +  GIT_SYNC: BLO
 COMMITS:             95bc418 (evidencia + verificador, 23 ficheros)
                      87826d489148b480bab7950f73720a0013cba2f3 (este informe + git_sync_status.json) (este informe + git_sync_status.json, 2 ficheros)
 LOCAL_SHA:           95bc41804661dd51253c4c592dbb3b4ecfe4a738 (evidencia) · 87826d489148b480bab7950f73720a0013cba2f3 (informe)
-BRANCH_TIP:          git log -1 agent/edge-recovery/WP-EDGE-00-baseline (los commits posteriores a 87826d4 solo ajustan la procedencia de los propios informes)
+BRANCH_TIP:          git log -1 agent/edge-recovery/WP-EDGE-00-baseline (los commits posteriores a 87826d4 solo tocan reports/edge-recovery/** y scripts/wp_edge_00_verify.py: evidencia y verificador del propio WP, nunca codigo de runtime)
 REMOTE_SHA:          NOT_VERIFIED — la rama no existe en el remoto; sin credencial de escritura
 BRANCH:              agent/edge-recovery/WP-EDGE-00-baseline (creada desde main @ 1d2192b)
 main (intacta):      1d2192b0aec8cfe1bf2bfcaa308c4787229b3d22  ·  259 commits por delante de origin/main
@@ -77,6 +77,7 @@ lint/type de lo nuevo:
 | DEF-WP00-01 | Un activo inactivo (SOL, `volume_below_threshold`) se convierte en `NO_TRADE_DATA`/`context_error` en lugar de una clasificación de universo | reporting | Sí (no hay orden) | `PAPER_DAILY_REPORT.md` + `errors[]` del RUN_REPORT real |
 | DEF-WP00-02 | `scripts/verify_l5_independent.py` es un **verificador obsoleto** (`STALE_VERIFIER`): su fixture usa `status="CONFIRMED"`, que el gate DEF-AUTO-4 ya no admite → 8/11 | verificación | Sí | `diagnostics/verify_l5_independent_HEAD.stdout.txt` + `research/strategy_router.py` |
 | DEF-WP00-03 | `provider_verified=false` / `provider_supported=null` en el preflight de mercados del proveedor | observabilidad | No bloqueante | log del run real |
+| DEF-WP00-04 | **Verificador del propio WP demasiado estricto**: equiparaba el `commit` del run con `HEAD`; al commitear la evidencia el chequeo pasaba a FAIL. Corregido a la invariante correcta (el commit del run es ancestro de HEAD **y** solo cambiaron paths de evidencia/verificador) y re-ejecutado: 12/12 | verificación | Sí | `scripts/wp_edge_00_verify.py` (check `RUN_COMMIT_IS_ANCESTOR`) |
 
 ## 6. BLOCKERS
 
