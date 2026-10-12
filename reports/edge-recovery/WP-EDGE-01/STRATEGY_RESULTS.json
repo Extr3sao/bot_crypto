@@ -73,6 +73,35 @@
           "sha256": "72a268137cbe944b4521da9281b8ae326b5ebeeaa416750f8b75fce772bcc33e"
         }
       },
+      "evaluated": {
+        "assets": [
+          "BTC",
+          "ETH",
+          "SOL"
+        ],
+        "side": "LONG only (spot)",
+        "timeframe": "15m",
+        "split_family": "intraday",
+        "windows": {
+          "DEV": {
+            "start_utc": "2024-10-01T00:00:00+00:00",
+            "end_utc": "2025-06-30T00:00:00+00:00"
+          },
+          "VAL": {
+            "start_utc": "2025-07-01T00:00:00+00:00",
+            "end_utc": "2025-12-31T00:00:00+00:00"
+          },
+          "OOS": {
+            "start_utc": "2026-01-01T00:00:00+00:00",
+            "end_utc": "2026-10-07T00:00:00+00:00"
+          }
+        },
+        "cost_scenarios": [
+          "BASE",
+          "2X_FEES",
+          "ADVERSE"
+        ]
+      },
       "splits": {
         "DEV": {
           "BASE": {
@@ -1239,6 +1268,35 @@
           ],
           "sha256": "72a268137cbe944b4521da9281b8ae326b5ebeeaa416750f8b75fce772bcc33e"
         }
+      },
+      "evaluated": {
+        "assets": [
+          "BTC",
+          "ETH",
+          "SOL"
+        ],
+        "side": "LONG only (spot)",
+        "timeframe": "15m",
+        "split_family": "intraday",
+        "windows": {
+          "DEV": {
+            "start_utc": "2024-10-01T00:00:00+00:00",
+            "end_utc": "2025-06-30T00:00:00+00:00"
+          },
+          "VAL": {
+            "start_utc": "2025-07-01T00:00:00+00:00",
+            "end_utc": "2025-12-31T00:00:00+00:00"
+          },
+          "OOS": {
+            "start_utc": "2026-01-01T00:00:00+00:00",
+            "end_utc": "2026-10-07T00:00:00+00:00"
+          }
+        },
+        "cost_scenarios": [
+          "BASE",
+          "2X_FEES",
+          "ADVERSE"
+        ]
       },
       "splits": {
         "DEV": {
@@ -2466,6 +2524,35 @@
           ],
           "sha256": "72a268137cbe944b4521da9281b8ae326b5ebeeaa416750f8b75fce772bcc33e"
         }
+      },
+      "evaluated": {
+        "assets": [
+          "BTC",
+          "ETH",
+          "SOL"
+        ],
+        "side": "LONG only (spot)",
+        "timeframe": "15m",
+        "split_family": "intraday",
+        "windows": {
+          "DEV": {
+            "start_utc": "2024-10-01T00:00:00+00:00",
+            "end_utc": "2025-06-30T00:00:00+00:00"
+          },
+          "VAL": {
+            "start_utc": "2025-07-01T00:00:00+00:00",
+            "end_utc": "2025-12-31T00:00:00+00:00"
+          },
+          "OOS": {
+            "start_utc": "2026-01-01T00:00:00+00:00",
+            "end_utc": "2026-10-07T00:00:00+00:00"
+          }
+        },
+        "cost_scenarios": [
+          "BASE",
+          "2X_FEES",
+          "ADVERSE"
+        ]
       },
       "splits": {
         "DEV": {
@@ -3695,6 +3782,35 @@
           "sha256": "f4d16c3664c142d178e65a944f927bdcf0d450318a90f67a5089048c194ace57"
         }
       },
+      "evaluated": {
+        "assets": [
+          "BTC",
+          "ETH",
+          "SOL"
+        ],
+        "side": "LONG only (spot)",
+        "timeframe": "4h",
+        "split_family": "trend",
+        "windows": {
+          "DEV": {
+            "start_utc": "2019-01-01T00:00:00+00:00",
+            "end_utc": "2023-12-31T00:00:00+00:00"
+          },
+          "VAL": {
+            "start_utc": "2024-01-01T00:00:00+00:00",
+            "end_utc": "2024-12-31T00:00:00+00:00"
+          },
+          "OOS": {
+            "start_utc": "2025-01-01T00:00:00+00:00",
+            "end_utc": "2026-02-28T00:00:00+00:00"
+          }
+        },
+        "cost_scenarios": [
+          "BASE",
+          "2X_FEES",
+          "ADVERSE"
+        ]
+      },
       "splits": {
         "DEV": {
           "BASE": {
@@ -4901,6 +5017,35 @@
           ],
           "sha256": "f4d16c3664c142d178e65a944f927bdcf0d450318a90f67a5089048c194ace57"
         }
+      },
+      "evaluated": {
+        "assets": [
+          "BTC",
+          "ETH",
+          "SOL"
+        ],
+        "side": "LONG only (spot)",
+        "timeframe": "1d",
+        "split_family": "trend",
+        "windows": {
+          "DEV": {
+            "start_utc": "2019-01-01T00:00:00+00:00",
+            "end_utc": "2023-12-31T00:00:00+00:00"
+          },
+          "VAL": {
+            "start_utc": "2024-01-01T00:00:00+00:00",
+            "end_utc": "2024-12-31T00:00:00+00:00"
+          },
+          "OOS": {
+            "start_utc": "2025-01-01T00:00:00+00:00",
+            "end_utc": "2026-02-28T00:00:00+00:00"
+          }
+        },
+        "cost_scenarios": [
+          "BASE",
+          "2X_FEES",
+          "ADVERSE"
+        ]
       },
       "splits": {
         "DEV": {

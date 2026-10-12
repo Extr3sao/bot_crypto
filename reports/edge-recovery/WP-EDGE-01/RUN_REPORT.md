@@ -3,14 +3,14 @@
 | | |
 |---|---|
 | run_id | `wp-edge-01-campaign` |
-| HEAD al ejecutar | `ab7be9c4c60e8cb01e87f659b3d3baa45d5151c1` |
+| HEAD al ejecutar | `a76297e21e83430e52f4082a7317370681583862` |
 | rama | `agent/edge-recovery/WP-EDGE-00-baseline` |
 | arbol sucio al ejecutar | `True` |
-| huella del código ejecutado (sha256) | `5c082f0560da9f3167119ae24adf7a2f525aaec3a212a39a83b3b9528f0d520f` |
+| huella del código ejecutado (sha256) | `a9ca6d7d05f9e19c9d334d9c1460fcf7ec19db0c1601b249d232c24effa15c5c` |
 | params_hash | `d073a2d686b9b198c36c9a3c6009d36130577ba247a2016c3f791813cb749d77` |
 | modo | backtest determinista sobre datos históricos locales; 0 órdenes, 0 claves, 0 red |
 | entrypoint | `scripts/edge01_run.py` |
-| generado | 2026-10-12T13:07:42.974146+00:00 |
+| generado | 2026-10-12T13:19:59.000375+00:00 |
 
 > El `HEAD` de arriba es lo que la máquina tenía al medir; cuando el árbol
 > está sucio el identificador de esta medida es la **huella del código**

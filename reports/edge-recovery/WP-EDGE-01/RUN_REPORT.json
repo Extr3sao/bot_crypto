@@ -1,12 +1,12 @@
 {
   "run_id": "wp-edge-01-campaign",
   "params_hash": "d073a2d686b9b198c36c9a3c6009d36130577ba247a2016c3f791813cb749d77",
-  "generated_at_utc": "2026-10-12T13:07:42.974146+00:00",
+  "generated_at_utc": "2026-10-12T13:19:59.000375+00:00",
   "git": {
-    "head_commit": "ab7be9c4c60e8cb01e87f659b3d3baa45d5151c1",
+    "head_commit": "a76297e21e83430e52f4082a7317370681583862",
     "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
     "worktree_dirty": true,
-    "source_sha256": "5c082f0560da9f3167119ae24adf7a2f525aaec3a212a39a83b3b9528f0d520f",
+    "source_sha256": "a9ca6d7d05f9e19c9d334d9c1460fcf7ec19db0c1601b249d232c24effa15c5c",
     "source_digest_rule": "sha256 over name+bytes of src/trading_bot/research/edge01/*.py, scripts/edge01_run.py and scripts/edge01_verify.py, with CRLF folded to LF so the digest does not depend on the checkout's line endings"
   },
   "mode": "deterministic backtest over local historical corpora; 0 orders, 0 credentials, 0 network calls",
@@ -436,6 +436,35 @@
           ],
           "sha256": "72a268137cbe944b4521da9281b8ae326b5ebeeaa416750f8b75fce772bcc33e"
         }
+      },
+      "evaluated": {
+        "assets": [
+          "BTC",
+          "ETH",
+          "SOL"
+        ],
+        "side": "LONG only (spot)",
+        "timeframe": "15m",
+        "split_family": "intraday",
+        "windows": {
+          "DEV": {
+            "start_utc": "2024-10-01T00:00:00+00:00",
+            "end_utc": "2025-06-30T00:00:00+00:00"
+          },
+          "VAL": {
+            "start_utc": "2025-07-01T00:00:00+00:00",
+            "end_utc": "2025-12-31T00:00:00+00:00"
+          },
+          "OOS": {
+            "start_utc": "2026-01-01T00:00:00+00:00",
+            "end_utc": "2026-10-07T00:00:00+00:00"
+          }
+        },
+        "cost_scenarios": [
+          "BASE",
+          "2X_FEES",
+          "ADVERSE"
+        ]
       },
       "splits": {
         "DEV": {
@@ -1603,6 +1632,35 @@
           ],
           "sha256": "72a268137cbe944b4521da9281b8ae326b5ebeeaa416750f8b75fce772bcc33e"
         }
+      },
+      "evaluated": {
+        "assets": [
+          "BTC",
+          "ETH",
+          "SOL"
+        ],
+        "side": "LONG only (spot)",
+        "timeframe": "15m",
+        "split_family": "intraday",
+        "windows": {
+          "DEV": {
+            "start_utc": "2024-10-01T00:00:00+00:00",
+            "end_utc": "2025-06-30T00:00:00+00:00"
+          },
+          "VAL": {
+            "start_utc": "2025-07-01T00:00:00+00:00",
+            "end_utc": "2025-12-31T00:00:00+00:00"
+          },
+          "OOS": {
+            "start_utc": "2026-01-01T00:00:00+00:00",
+            "end_utc": "2026-10-07T00:00:00+00:00"
+          }
+        },
+        "cost_scenarios": [
+          "BASE",
+          "2X_FEES",
+          "ADVERSE"
+        ]
       },
       "splits": {
         "DEV": {
@@ -2830,6 +2888,35 @@
           ],
           "sha256": "72a268137cbe944b4521da9281b8ae326b5ebeeaa416750f8b75fce772bcc33e"
         }
+      },
+      "evaluated": {
+        "assets": [
+          "BTC",
+          "ETH",
+          "SOL"
+        ],
+        "side": "LONG only (spot)",
+        "timeframe": "15m",
+        "split_family": "intraday",
+        "windows": {
+          "DEV": {
+            "start_utc": "2024-10-01T00:00:00+00:00",
+            "end_utc": "2025-06-30T00:00:00+00:00"
+          },
+          "VAL": {
+            "start_utc": "2025-07-01T00:00:00+00:00",
+            "end_utc": "2025-12-31T00:00:00+00:00"
+          },
+          "OOS": {
+            "start_utc": "2026-01-01T00:00:00+00:00",
+            "end_utc": "2026-10-07T00:00:00+00:00"
+          }
+        },
+        "cost_scenarios": [
+          "BASE",
+          "2X_FEES",
+          "ADVERSE"
+        ]
       },
       "splits": {
         "DEV": {
@@ -4059,6 +4146,35 @@
           "sha256": "f4d16c3664c142d178e65a944f927bdcf0d450318a90f67a5089048c194ace57"
         }
       },
+      "evaluated": {
+        "assets": [
+          "BTC",
+          "ETH",
+          "SOL"
+        ],
+        "side": "LONG only (spot)",
+        "timeframe": "4h",
+        "split_family": "trend",
+        "windows": {
+          "DEV": {
+            "start_utc": "2019-01-01T00:00:00+00:00",
+            "end_utc": "2023-12-31T00:00:00+00:00"
+          },
+          "VAL": {
+            "start_utc": "2024-01-01T00:00:00+00:00",
+            "end_utc": "2024-12-31T00:00:00+00:00"
+          },
+          "OOS": {
+            "start_utc": "2025-01-01T00:00:00+00:00",
+            "end_utc": "2026-02-28T00:00:00+00:00"
+          }
+        },
+        "cost_scenarios": [
+          "BASE",
+          "2X_FEES",
+          "ADVERSE"
+        ]
+      },
       "splits": {
         "DEV": {
           "BASE": {
@@ -5266,6 +5382,35 @@
           "sha256": "f4d16c3664c142d178e65a944f927bdcf0d450318a90f67a5089048c194ace57"
         }
       },
+      "evaluated": {
+        "assets": [
+          "BTC",
+          "ETH",
+          "SOL"
+        ],
+        "side": "LONG only (spot)",
+        "timeframe": "1d",
+        "split_family": "trend",
+        "windows": {
+          "DEV": {
+            "start_utc": "2019-01-01T00:00:00+00:00",
+            "end_utc": "2023-12-31T00:00:00+00:00"
+          },
+          "VAL": {
+            "start_utc": "2024-01-01T00:00:00+00:00",
+            "end_utc": "2024-12-31T00:00:00+00:00"
+          },
+          "OOS": {
+            "start_utc": "2025-01-01T00:00:00+00:00",
+            "end_utc": "2026-02-28T00:00:00+00:00"
+          }
+        },
+        "cost_scenarios": [
+          "BASE",
+          "2X_FEES",
+          "ADVERSE"
+        ]
+      },
       "splits": {
         "DEV": {
           "BASE": {
@@ -6464,15 +6609,15 @@
       "bytes": 212532
     },
     "STRATEGY_RESULTS.json": {
-      "sha256": "20fea9c0b0bd60a72b9f3ecc530547b26f9a09679d93e3882f65bbadf428b7ff",
-      "bytes": 216675
+      "sha256": "4c4e9a19aa4dcd0a39535a0001f960ee85c7a35199125cce2165bab5f2b308b4",
+      "bytes": 220562
     },
     "STRATEGY_RESULTS.md": {
-      "sha256": "e301685c59e39e417b60cdfc6587cd252f70f65c6d62fc1473b8779f31535f76",
-      "bytes": 19065
+      "sha256": "388c5d67e49df6abca501ad4fb0692fc5532e3c1b0dce64f5238821899ac1d03",
+      "bytes": 20607
     },
     "RUN_REPORT.md": {
-      "sha256": "09e40ed2efb1771cf11dfdf2537ce2dfdf641c6ca0df5fcd0cffeff6ad3cdbc9",
+      "sha256": "e4019def27b30374c3853671d70f7b143c25eacca328e050667239ffde022cb8",
       "bytes": 24039
     }
   },

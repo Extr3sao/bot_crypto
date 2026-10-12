@@ -2,8 +2,8 @@
 
 - run_id: `wp-edge-01-campaign`
 - params_hash: `d073a2d686b9b198c36c9a3c6009d36130577ba247a2016c3f791813cb749d77`
-- generated (UTC): 2026-10-12T13:07:42.974146+00:00
-- commit: `ab7be9c4c60e8cb01e87f659b3d3baa45d5151c1`
+- generated (UTC): 2026-10-12T13:19:59.000375+00:00
+- commit: `a76297e21e83430e52f4082a7317370681583862`
 - data: local corpora only (15m: `data/raw/alpha003/price`, 1h: `reports/alpha-expansion-v1/data`, aggregated to 4h/1d)
 
 ## Cost scenarios
@@ -27,6 +27,10 @@
 ## Per split and scenario
 
 ### edge_intra_01 (15m)
+
+- evaluated assets: BTC, ETH, SOL (spot, long only)
+- evaluated period: DEV 2024-10-01..2025-06-30; VAL 2025-07-01..2025-12-31; OOS 2026-01-01..2026-10-07
+- evaluated combinations: 3 splits x 3 cost scenarios = 1600 measured trade instances (the same rule set re-priced per scenario, not extra evidence)
 
 Costs are split the way the model charges them: the fee is the contractual component and the price cost is spread + slippage + impact, charged half on each leg. `cost_bps_realised` per trade reconciles with the plane printed here (the verifier re-checks it fill by fill).
 
@@ -60,6 +64,10 @@ Market context at ENTRY (BASE scenario), from the benchmark only (`BTC`, daily, 
 Entry trend state of the candidate's own filter (the `regime` column of TRADES.csv, which is NOT a market regime): {"UP": {"trades": 63, "net": -94.8077, "win_rate": 17.4603}}
 
 ### edge_intra_02 (15m)
+
+- evaluated assets: BTC, ETH, SOL (spot, long only)
+- evaluated period: DEV 2024-10-01..2025-06-30; VAL 2025-07-01..2025-12-31; OOS 2026-01-01..2026-10-07
+- evaluated combinations: 3 splits x 3 cost scenarios = 588 measured trade instances (the same rule set re-priced per scenario, not extra evidence)
 
 Costs are split the way the model charges them: the fee is the contractual component and the price cost is spread + slippage + impact, charged half on each leg. `cost_bps_realised` per trade reconciles with the plane printed here (the verifier re-checks it fill by fill).
 
@@ -96,6 +104,10 @@ Entry trend state of the candidate's own filter (the `regime` column of TRADES.c
 
 ### edge_intra_02_no_fvg (15m)
 
+- evaluated assets: BTC, ETH, SOL (spot, long only)
+- evaluated period: DEV 2024-10-01..2025-06-30; VAL 2025-07-01..2025-12-31; OOS 2026-01-01..2026-10-07
+- evaluated combinations: 3 splits x 3 cost scenarios = 1241 measured trade instances (the same rule set re-priced per scenario, not extra evidence)
+
 Costs are split the way the model charges them: the fee is the contractual component and the price cost is spread + slippage + impact, charged half on each leg. `cost_bps_realised` per trade reconciles with the plane printed here (the verifier re-checks it fill by fill).
 
 | split | scenario | trades | gross | fees | price costs | fee bps | spread bps | slip bps | impact bps | net | win rate | profit factor | expectancy | max DD | Sharpe | exposure |
@@ -130,6 +142,10 @@ Market context at ENTRY (BASE scenario), from the benchmark only (`BTC`, daily, 
 Entry trend state of the candidate's own filter (the `regime` column of TRADES.csv, which is NOT a market regime): {"UP": {"trades": 45, "net": -69.0987, "win_rate": 22.2222}}
 
 ### edge_trend_01_4h (4h)
+
+- evaluated assets: BTC, ETH, SOL (spot, long only)
+- evaluated period: DEV 2019-01-01..2023-12-31; VAL 2024-01-01..2024-12-31; OOS 2025-01-01..2026-02-28
+- evaluated combinations: 3 splits x 3 cost scenarios = 999 measured trade instances (the same rule set re-priced per scenario, not extra evidence)
 
 Costs are split the way the model charges them: the fee is the contractual component and the price cost is spread + slippage + impact, charged half on each leg. `cost_bps_realised` per trade reconciles with the plane printed here (the verifier re-checks it fill by fill).
 
@@ -168,6 +184,10 @@ Market context at ENTRY (BASE scenario), from the benchmark only (`BTC`, daily, 
 Entry trend state of the candidate's own filter (the `regime` column of TRADES.csv, which is NOT a market regime): {"UP": {"trades": 52, "net": 208.0056, "win_rate": 44.2308}}
 
 ### edge_trend_01_1d (1d)
+
+- evaluated assets: BTC, ETH, SOL (spot, long only)
+- evaluated period: DEV 2019-01-01..2023-12-31; VAL 2024-01-01..2024-12-31; OOS 2025-01-01..2026-02-28
+- evaluated combinations: 3 splits x 3 cost scenarios = 216 measured trade instances (the same rule set re-priced per scenario, not extra evidence)
 
 Costs are split the way the model charges them: the fee is the contractual component and the price cost is spread + slippage + impact, charged half on each leg. `cost_bps_realised` per trade reconciles with the plane printed here (the verifier re-checks it fill by fill).
 

@@ -1072,6 +1072,22 @@ def _summary(campaign: dict[str, Any]) -> dict[str, Any]:
             "frozen_params": payload["scope"]["frozen_params"],
             "params_hash": payload["scope"]["params_hash"],
             "provenance": payload["scope"]["provenance"],
+            "evaluated": {
+                "assets": list(payload["scope"]["assets"]),
+                "side": "LONG only (spot)",
+                "timeframe": payload["scope"]["timeframe"],
+                "split_family": payload["scope"]["split"],
+                "windows": {
+                    name: {
+                        "start_utc": bounds["start_utc"],
+                        "end_utc": bounds["end_utc"],
+                    }
+                    for name, bounds in (
+                        campaign["splits"].get(str(payload["scope"]["split"]), {}) or {}
+                    ).items()
+                },
+                "cost_scenarios": list(campaign["cost_scenarios"]),
+            },
             "splits": {},
         }
         for split, scenarios in payload["splits"].items():
@@ -1129,8 +1145,25 @@ def _results_markdown(campaign: dict[str, Any], summary: dict[str, Any]) -> str:
         )
     lines += ["", "## Per split and scenario", ""]
     for candidate_id, payload in campaign["candidates"].items():
+        scope = payload["scope"]
+        windows = campaign["splits"].get(str(scope["split"]), {})
+        period = "; ".join(
+            f"{name} {bounds['start_utc'][:10]}..{bounds['end_utc'][:10]}"
+            for name, bounds in windows.items()
+        )
+        measured = {}
+        for split_scenarios in payload["splits"].values():
+            for data in split_scenarios.values():
+                measured["trades"] = measured.get("trades", 0) + int(data["trades"])
         lines += [
-            f"### {candidate_id} ({payload['scope']['timeframe']})",
+            f"### {candidate_id} ({scope['timeframe']})",
+            "",
+            f"- evaluated assets: {', '.join(scope['assets'])} (spot, long only)",
+            f"- evaluated period: {period or 'n/a'}",
+            f"- evaluated combinations: {len(windows)} splits x "
+            f"{len(campaign['cost_scenarios'])} cost scenarios = "
+            f"{measured.get('trades', 0)} measured trade instances (the same rule set "
+            f"re-priced per scenario, not extra evidence)",
             "",
             "Costs are split the way the model charges them: the fee is the "
             "contractual component and the price cost is spread + slippage + impact, "
