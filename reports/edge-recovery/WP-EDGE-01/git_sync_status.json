@@ -1,9 +1,8 @@
 {
   "work_package": "WP-EDGE-01",
-  "generated_at_utc_note": "written after the two WP commits and after the push probe",
   "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
   "local": {
-    "head": "7539633964d41d534b79f3519594ffb53f0c6570",
+    "head_at_commit_of_this_file": "5f6cf817a613133df2c7e1219a507592b3e55e2c",
     "commits_created_by_this_wp": [
       {
         "sha": "46b72fde7d10dda421730ce2a818e09302f08b2a",
@@ -12,18 +11,38 @@
       {
         "sha": "7539633964d41d534b79f3519594ffb53f0c6570",
         "subject": "Publish the WP-EDGE-01 campaign results and their independent verification. [WP-EDGE-01]"
+      },
+      {
+        "sha": "5f6cf817a613133df2c7e1219a507592b3e55e2c",
+        "subject": "Split fees from slippage in the per-strategy table and record the push block. [WP-EDGE-01]"
       }
     ],
-    "source_sha256_of_measured_modules_at_run": "e15e0c97fa035b6605e4543c16102cd74ebca9d4289bf814c79172e36973abd3",
+    "files_owned_by_this_wp": [
+      "src/trading_bot/research/edge01/{__init__,data,features,costs,candidates,simulator,campaign}.py",
+      "scripts/edge01_run.py",
+      "scripts/edge01_verify.py",
+      "tests/unit/research/test_edge01_pit.py",
+      "tests/unit/research/test_edge01_gate_and_artifacts.py",
+      "reports/edge-recovery/WP-EDGE-01/* (had to be force-added: reports/* is gitignored)"
+    ],
+    "uncommitted_after_this_wp": [],
     "worktree_dirty": true,
-    "dirty_note": "The checkout is shared: other threads have uncommitted changes in data/st6, evidence/, scripts/cap004c_verify.py, scripts/st6_scheduler_witness.py, FINAL_REPORT.md and several report files. None of those files belong to this WP and none were staged, edited or reverted here. This WP's own files show no uncommitted changes."
+    "dirty_note": "The checkout is shared: other threads have uncommitted changes in data/st6, evidence/, scripts/cap004c_verify.py, scripts/st6_scheduler_witness.py, FINAL_REPORT.md and several report files. None of those files belong to this WP; none were staged, edited or reverted here."
+  },
+  "run_to_commit_identity": {
+    "measured_with_head": "7539633964d41d534b79f3519594ffb53f0c6570",
+    "measured_with_worktree_dirty": true,
+    "source_sha256_at_measurement": "694d4be2905ef9d76df1cefaba05ba5d94c49ea85c6178652c4af081e19a60d9",
+    "source_sha256_of_the_committed_tree": "694d4be2905ef9d76df1cefaba05ba5d94c49ea85c6178652c4af081e19a60d9",
+    "identity_holds": true,
+    "note": "The run happened while the last commit was still uncommitted, so HEAD alone would not identify the code that produced the artefacts. The recorded source digest does: it is byte-identical to the digest of the committed modules, so the published numbers correspond to the committed code."
   },
   "remote": {
     "name": "origin",
     "url": "https://github.com/Extr3sao/bot_crypto.git",
     "anonymous_read": "OK (git ls-remote --heads origin succeeded)",
     "remote_head_of_this_branch": null,
-    "remote_head_note": "git ls-remote origin refs/heads/agent/edge-recovery/* returned nothing: the branch (and therefore both WP-EDGE-01 commits) does not exist on GitHub."
+    "remote_head_note": "git ls-remote origin refs/heads/agent/edge-recovery/* returned nothing: the branch, and therefore all three WP-EDGE-01 commits, does not exist on GitHub."
   },
   "push": {
     "attempted": true,
@@ -40,16 +59,20 @@
     "git_credential_file": "absent (~/.git-credentials)",
     "configured_credential_helper": "manager (Git Credential Manager: interactive sign-in only)",
     "gh_cli": "not installed",
-    "first_probe_note": "Without GIT_TERMINAL_PROMPT=0 the same dry-run hung for the full 60 s timeout while the credential manager waited for an interactive sign-in, which is the same block seen on WP-EDGE-00b.",
-    "secrets_handling": "No token, password or credential value was read, printed, stored or requested. This file records only the presence/absence of the mechanisms."
+    "first_probe_note": "Without GIT_TERMINAL_PROMPT=0 the same dry-run hung for the full 60 s timeout while the credential manager waited for an interactive sign-in, which is the same block recorded on WP-EDGE-00b.",
+    "secrets_handling": "No token, password or credential value was read, printed, stored or requested. This file records only the presence or absence of the mechanisms."
   },
   "consequence": [
-    "GitHub does not have this work: the two local commits and all six measured artefacts exist only in this checkout.",
+    "GitHub does not have this work: the three local commits and every measured artefact exist only in this checkout.",
     "Nothing in RUN_REPORT.md/.json, STRATEGY_RESULTS.md/.json or INDEPENDENT_VERIFICATION.json claims the branch was published.",
-    "The correct way to unblock is to authenticate the machine's own Git credential mechanism (or provide a token through the environment by an authorised route); pasting a token into this transcript is neither necessary nor safe and was not requested."
+    "To unblock, the machine's own Git credential mechanism must be authenticated (or a token supplied through the environment by an authorised route). Pasting a token into this transcript is neither necessary nor safe, and was not requested."
   ],
-  "artefact_sha256": {
-    "RUN_REPORT.md": "see RUN_REPORT.json -> artifacts (digests are computed by the runner)",
-    "INDEPENDENT_VERIFICATION.json": "result of scripts/edge01_verify.py --self-test, not covered by the runner inventory"
+  "verification_artefact": {
+    "file": "INDEPENDENT_VERIFICATION.json",
+    "produced_by": "scripts/edge01_verify.py --dir reports/edge-recovery/WP-EDGE-01 --self-test",
+    "checks_passed": "13/13",
+    "mutations_detected": "7/7",
+    "false_success": 0,
+    "coverage_note": "It is produced after the runner's integrity inventory, so it is the result of checking the other five artefacts rather than a sixth measured file."
   }
 }
