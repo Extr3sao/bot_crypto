@@ -55,6 +55,27 @@ logs/*
 reports/*
 !reports/.gitkeep
 
+# ------------------------------------------------------------
+# WP-EDGE-01 — la evidencia de la campana y de la ablacion H1 SI se versiona.
+# `reports/*` ignora el ARBOL entero, y git no re-incluye un fichero cuyo
+# directorio padre esta excluido: hay que re-incluir la cadena de padres paso a
+# paso y volver a ignorar lo de en medio, para que la excepcion alcance solo a
+# esta carpeta y no abra de golpe el resto de salidas de reports/.
+# ------------------------------------------------------------
+!reports/edge-recovery/
+reports/edge-recovery/*
+!reports/edge-recovery/WP-EDGE-01/
+reports/edge-recovery/WP-EDGE-01/*
+# Una linea por experimento: la excepcion queda explicita y acotada a la evidencia
+# de cada ablacion, no a todo lo que se suelte en la carpeta del WP.
+!reports/edge-recovery/WP-EDGE-01/ablation-h1/
+!reports/edge-recovery/WP-EDGE-01/risk-budget-h5/
+!reports/edge-recovery/WP-EDGE-01/entry-timing-h2/
+!reports/edge-recovery/WP-EDGE-01/vol-filter-h4/
+!reports/edge-recovery/WP-EDGE-01/retest-h6/
+!reports/edge-recovery/WP-EDGE-01/oos-trend-4h/
+!reports/edge-recovery/WP-EDGE-01/closure/
+
 # ============================================================
 # CAP-003 — evidencias OHLCV crudas: locales por tamano.
 # El ledger (evidence/real_decisions/*.jsonl) SI se versiona y

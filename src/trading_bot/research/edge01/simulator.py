@@ -134,6 +134,11 @@ class PortfolioResult:
     equity_curve: list[tuple[int, float]] = field(default_factory=list)
     refusals: list[dict[str, Any]] = field(default_factory=list)
     signals: list[dict[str, Any]] = field(default_factory=list)
+    #: One row per PLANNED LIMIT ORDER, with the outcome it ended with (filled,
+    #: expired, cancelled by the plan's own invalidation, refused by the risk budget
+    #: at the moment of the touch, or cancelled by the end of the window). Empty
+    #: whenever every intent is a market intent, which is the frozen campaign.
+    orders: list[dict[str, Any]] = field(default_factory=list)
     bars_seen: int = 0
     per_asset_bars: dict[str, int] = field(default_factory=dict)
 
@@ -142,6 +147,7 @@ class PortfolioResult:
             "trades": len(self.trades),
             "refusals": len(self.refusals),
             "signals": len(self.signals),
+            "orders": len(self.orders),
             "bars_seen": self.bars_seen,
             "per_asset_bars": dict(self.per_asset_bars),
         }
@@ -179,12 +185,20 @@ def run_portfolio(
     exit_ema: dict[str, list[float | None]] | None = None,
     window_start_ts: int | None = None,
     window_end_ts: int | None = None,
+    limit_entries: bool = False,
 ) -> PortfolioResult:
     """Simulate one candidate across assets on a shared clock.
 
     ``context`` is the higher timeframe a candidate needs (the 1h series for the
     intraday candidates); it is passed in rather than fetched, so the same object
     the tests pin is the one the simulation read.
+
+    ``limit_entries`` decides how a signal that carries a planned limit entry
+    (``signal.entry_limit``) is executed: ``False`` — the default, and the frozen
+    campaign — crosses at the next bar's open like any other market intent, so the
+    same candidate object can be measured as "the plan, executed at market";
+    ``True`` rests a limit buy at the planned price and lets the bars decide
+    whether it ever fills. Nothing about the candidate's rules changes with it.
     """
     idx_by_asset = {asset: _index(bars) for asset, bars in bars_by_asset.items()}
     timeline = _merge_timeline(bars_by_asset)
@@ -209,6 +223,10 @@ def run_portfolio(
     cash = policy.start_equity
     positions: dict[str, Position] = {}
     pending: list[CandidateSignal] = []
+    #: At most one resting limit order per asset, keyed by asset: the plan that owns
+    #: the entry window. Empty unless ``limit_entries`` is on and a signal asked for
+    #: a limit price.
+    resting: dict[str, dict[str, Any]] = {}
     result = PortfolioResult()
     marks: dict[str, float] = {}
     gate = _Gate(peak_equity=policy.start_equity)
@@ -252,6 +270,31 @@ def run_portfolio(
             )
         pending = []
 
+        # 1b) resolve the resting limit orders this bar touched. A planned entry is
+        #     re-examined on every bar of its own clock until it fills, expires or is
+        #     cancelled, and the FILL is checked before the plan's own invalidation: a
+        #     bar whose low reached the level did touch the order whatever it closed
+        #     at, so crediting the cancellation instead would skip the loss the fill
+        #     would have taken.
+        for asset in list(resting):
+            idx = idx_by_asset.get(asset, {}).get(ts)
+            if idx is None:
+                continue
+            cash += _touch_order(
+                resting[asset],
+                bar=bars_by_asset[asset][idx],
+                idx=idx,
+                ts=ts,
+                positions=positions,
+                result=result,
+                policy=policy,
+                plane=plane,
+                gate=gate,
+                equity=_equity(),
+            )
+            if not resting[asset]["resting"]:
+                resting.pop(asset, None)
+
         # 2) mark, manage and exit open positions on this bar
         for asset in list(positions):
             idx = idx_by_asset.get(asset, {}).get(ts)
@@ -289,6 +332,28 @@ def run_portfolio(
                 continue
             signal = _bind(outcome, asset)
             result.signals.append(signal.to_dict())
+            if limit_entries and signal.entry_limit is not None:
+                # The plan is an execution, not a rule: it becomes a resting limit
+                # order instead of a market intent. A signal printed while the asset
+                # already holds a position is dropped exactly as the market arm drops
+                # it, so the two arms differ only in how the same plan is executed.
+                if asset in positions:
+                    continue
+                if asset in resting:
+                    result.refusals.append(
+                        {
+                            "candidate": signal.candidate,
+                            "symbol": asset,
+                            "reason": "order_already_resting",
+                            "decision_ts": signal.decision_ts,
+                            "source": "research",
+                            "detail": {"level": signal.entry_limit},
+                        }
+                    )
+                    continue
+                resting[asset] = _rest_order(signal, idx)
+                result.orders.append(resting[asset]["row"])
+                continue
             if asset not in positions:
                 pending.append(signal)
 
@@ -297,6 +362,9 @@ def run_portfolio(
         #     curve was written would make final_equity and sum(net) disagree
         #     (DEF-EDGE01-08).
         if ts == last_ts:
+            for asset, order in list(resting.items()):
+                _close_order(order, "cancelled_window_end", ts, last_in_window.get(asset, -1))
+                resting.pop(asset, None)
             for asset, pos in list(positions.items()):
                 settle_idx = last_in_window.get(asset, -1)
                 if settle_idx < 0:  # pragma: no cover - no bar in the window, no entry
@@ -359,7 +427,121 @@ def _bind(signal: CandidateSignal, asset: str) -> CandidateSignal:
         trailing_atr_value=signal.trailing_atr_value,
         exit_ema_period=signal.exit_ema_period,
         hard_invalidation=signal.hard_invalidation,
+        entry_limit=signal.entry_limit,
+        limit_expiry_bars=signal.limit_expiry_bars,
     )
+
+
+def _rest_order(signal: CandidateSignal, placed_index: int) -> dict[str, Any]:
+    """Open a resting limit order for a signal that planned one.
+
+    The published row is created here and mutated in place when the order ends, so
+    ``result.orders`` is ordered by placement and every row ends with an outcome.
+    ``discount_bps`` is what the plan saves by entering at the level instead of at
+    the breakout close: it is the size of the bet the plan is making, per order.
+    """
+    level = float(signal.entry_limit)
+    close = float(signal.entry_reference)
+    expiry_bars = int(signal.limit_expiry_bars or 0)
+    row = {
+        "candidate": signal.candidate,
+        "asset": signal.symbol,
+        "level": round(level, 8),
+        "placement_ts": signal.decision_ts,
+        "placed_bar": signal.bar_index,
+        "expiry_bars": expiry_bars,
+        "expiry_bar": signal.bar_index + expiry_bars,
+        "breakout_close": round(close, 8),
+        "discount_bps": round((close - level) / close * 10_000.0, 6) if close > 0 else None,
+        "stop": round(float(signal.stop), 8),
+        "target": round(float(signal.targets[0]), 8) if signal.targets else None,
+        "outcome": "RESTING",
+        "outcome_ts": None,
+        "outcome_bar": None,
+        "bars_resting": 0,
+        "refusal_reason": None,
+    }
+    return {
+        "signal": signal,
+        "level": level,
+        "placed_index": placed_index,
+        "expiry_bars": expiry_bars,
+        "resting": True,
+        "row": row,
+    }
+
+
+def _close_order(order: dict[str, Any], outcome: str, ts: int, idx: int) -> None:
+    """End a resting order: the outcome is published, never implied."""
+    order["resting"] = False
+    row = order["row"]
+    row["outcome"] = outcome
+    row["outcome_ts"] = ts
+    row["outcome_bar"] = idx
+    row["bars_resting"] = max(0, idx - int(order["placed_index"]))
+
+
+def _touch_order(
+    order: dict[str, Any],
+    *,
+    bar: OHLCVBar,
+    idx: int,
+    ts: int,
+    positions: dict[str, Position],
+    result: PortfolioResult,
+    policy: RiskPolicy,
+    plane: CostPlane,
+    gate: _Gate,
+    equity: float,
+) -> float:
+    """Resolve one resting limit order against one bar; return the cash delta.
+
+    A buy limit at ``L`` is filled when the bar trades at or through it (``low <=
+    L``) and is filled AT ``L``, never better: a bar that gapped below the level is
+    scored at the level, so the model does not credit the plan with a price it could
+    not have counted on. The fill pays the same modelled spread, slippage, impact and
+    fee as a market entry — no maker rebate is invented — and the runtime's risk
+    budget is consulted at the moment of the touch, exactly as it is for a market
+    entry. A budget refusal is an outcome of its own, with the reason the budget
+    gave: "the level was reached and the book would not take it" is a result.
+
+    Order of resolution: the expiry is enforced first, because the order is live for
+    exactly the declared number of bars and a bar beyond that window must not fill it;
+    then the FILL, then the plan's own invalidation. Cancelling a bar inside the window
+    that touched the level would skip the loss that fill would have taken.
+    """
+    level = float(order["level"])
+    row = order["row"]
+    bars_resting = idx - int(order["placed_index"])
+    if bars_resting > int(order["expiry_bars"]):
+        _close_order(order, "expired", ts, idx)
+        return 0.0
+    if bar.low <= level:
+        before = len(result.refusals)
+        delta = _enter(
+            order["signal"],
+            bar=bar,
+            idx=idx,
+            ts=ts,
+            mid=level,
+            positions=positions,
+            result=result,
+            policy=policy,
+            plane=plane,
+            gate=gate,
+            equity=equity,
+        )
+        if len(result.refusals) > before:
+            _close_order(order, "refused_by_risk_budget", ts, idx)
+            row["refusal_reason"] = result.refusals[-1].get("reason")
+            return 0.0
+        _close_order(order, "filled", ts, idx)
+        return delta
+    if bar.close < level:
+        _close_order(order, "cancelled_close_below_level", ts, idx)
+        return 0.0
+    row["bars_resting"] = bars_resting
+    return 0.0
 
 
 def _fill(
@@ -375,7 +557,7 @@ def _fill(
     gate: _Gate,
     equity: float,
 ) -> float:
-    """Fill one intent at the next bar's open, subject to the configured risk policy.
+    """Fill one intent at the next bar's OPEN, subject to the configured risk policy.
 
     Returns the cash delta: 0.0 for every refusal, ``-qty * entry_fill`` for a
     fill (the position is paid for), so the caller's book stays consistent.
@@ -384,6 +566,48 @@ def _fill(
     idx = idx_by_asset[asset].get(ts)
     if idx is None:
         return 0.0
+    bar = bars_by_asset[asset][idx]
+    return _enter(
+        signal,
+        bar=bar,
+        idx=idx,
+        ts=ts,
+        mid=bar.open,
+        positions=positions,
+        result=result,
+        policy=policy,
+        plane=plane,
+        gate=gate,
+        equity=equity,
+    )
+
+
+def _enter(
+    signal: CandidateSignal,
+    *,
+    bar: OHLCVBar,
+    idx: int,
+    ts: int,
+    mid: float,
+    positions: dict[str, Position],
+    result: PortfolioResult,
+    policy: RiskPolicy,
+    plane: CostPlane,
+    gate: _Gate,
+    equity: float,
+) -> float:
+    """Book one entry at ``mid``, after the runtime's own risk budget admits it.
+
+    ``mid`` is the market price the intent crosses (the next bar's open) or the
+    level a resting limit has just been touched at. Every gate, the conservative
+    sizing and the cost components charged are the SAME code for both, so an entry
+    cannot be flattered by the way it arrived; a refused entry appends exactly one
+    row to ``result.refusals``, which is how the caller tells a refusal from a fill.
+
+    Returns the cash delta: 0.0 for every refusal, ``-qty * entry_fill`` for a
+    fill (the position is paid for), so the caller's book stays consistent.
+    """
+    asset = signal.symbol
     if asset in positions:
         result.refusals.append(
             {
@@ -444,8 +668,6 @@ def _fill(
             )
             return 0.0
 
-    bar = bars_by_asset[asset][idx]
-    mid = bar.open
     if mid <= 0:
         result.refusals.append(
             {

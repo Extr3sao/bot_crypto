@@ -1,0 +1,708 @@
+{
+  "run_id": "wp-edge-01-volatility-filter-h4",
+  "generated_at_utc": "2026-10-12T18:38:05.057060+00:00",
+  "git": {
+    "head_commit": "ce42ca42c297fe2b6a6594a49b385ed811442666",
+    "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
+    "worktree_dirty": true,
+    "source_sha256": "616a86fa7258fa9efe2faf1d3b333a87722944aef9796bfa228417014c178c5a",
+    "source_digest_rule": "sha256 over name+bytes of src/trading_bot/research/edge01/*.py, scripts/edge01_run.py and scripts/edge01_verify.py, with CRLF folded to LF so the digest does not depend on the checkout's line endings"
+  },
+  "source_digest": {
+    "combined_sha256": "8b64b3f5ac7a34fa9230d4209258cbca4ea3bf80b5b9d822bb0ec869d206b82c",
+    "files": {
+      "src/trading_bot/research/edge01/__init__.py": "0bff4c03e469f6b2baceafd97f030d9408b0edcbb21dfe4dc3374b9e6239becb",
+      "src/trading_bot/research/edge01/campaign.py": "83970e6203401905a6b4473cee389970769f8a09690c12b565260b4305742605",
+      "src/trading_bot/research/edge01/candidates.py": "592d629ca91714d9730bf959fd44e0f08f1111ed7a06d7654f6407f51279eac3",
+      "src/trading_bot/research/edge01/closure.py": "1a072ef056e2defb7cd756fa7023628f01504d3fe3e5728060ffd90e1d1dbbf8",
+      "src/trading_bot/research/edge01/costs.py": "ebd6aba5da31d6b432d09b6979ea8775e9ca1a30c4e1c714c7cc182c26bf6f8d",
+      "src/trading_bot/research/edge01/data.py": "ac7b37f1768d1d2a5b37801f781a335869b38af8159a16ae173163b84ad495c2",
+      "src/trading_bot/research/edge01/features.py": "76c0dcbb9faef7f0d47f1de9fad1c2d12901c81c1c5496a582a311c5deb21fab",
+      "src/trading_bot/research/edge01/retest.py": "913c1f97c3d8709168f64d43df3ce3a75222a8d11de8f756679c68701155dd5d",
+      "src/trading_bot/research/edge01/simulator.py": "f8ea260e6b770d39a44bf41550f2039cf4fc5ad7ec938a07b6f89bca58cc98db",
+      "scripts/edge01_run.py": "dbfaf908042447cf582f04894bd2513292f3e1cc8f600b8c93046cb086df5d43",
+      "scripts/edge01_verify.py": "d777850c00c49aba7e032057ef1ba8d81e11695b8fe791d66dbd3ab66558f5c3",
+      "scripts/edge01_mechanism_ablation.py": "10eb7befa3f8082460fed743585501ab96d4117320b7a02c5e2173da447fee8d",
+      "scripts/edge01_mechanism_ablation_verify.py": "49912831734c99fd07b096663bf2a5851f35e226255b99da28272f11c9be0970"
+    }
+  },
+  "mode": "deterministic backtest over the local historical corpus, DEV window only; 0 orders, 0 credentials, 0 network calls, no VAL or OOS bar read",
+  "entrypoint": "scripts/edge01_mechanism_ablation.py",
+  "verifier": "scripts/edge01_mechanism_ablation_verify.py",
+  "params_hash": "d073a2d686b9b198c36c9a3c6009d36130577ba247a2016c3f791813cb749d77",
+  "experiment": {
+    "id": "ABL-EDGE01-H4",
+    "hypothesis": "H4",
+    "kind": "ablation",
+    "question": "EDGE-TREND-01 has no separate volatility entry filter: volatility only reaches it through the ATR-scaled stop, so it trades quiet and violent regimes alike. Does refusing the least volatile breakouts help on DEV?",
+    "candidate": "edge_trend_01",
+    "profile": "4h",
+    "split": "trend",
+    "window": "DEV",
+    "scenario": "BASE",
+    "timeframe": "4h",
+    "horizon_minutes": 1440.0,
+    "changed_field": "min_atr_pct",
+    "baseline_threshold_pct": null,
+    "grid_percentiles": [
+      25.0,
+      50.0,
+      75.0
+    ],
+    "percentile_rule": "nearest rank: index = ceil(pct/100 * n) - 1 over the ascending atr/close values of every DEV bar with a defined atr_period ATR, all assets pooled",
+    "gate_placement": "the gate is the FIRST entry gate after the breakout: a bar that does not break the prior extreme is never even counted as a volatility refusal",
+    "changed_rule_note": "every arm is the frozen candidate plus exactly one field, min_atr_pct, set to a grid value; the baseline arm adds no field at all",
+    "window_start_utc": "2019-01-01T00:00:00+00:00",
+    "window_end_utc": "2023-12-31T00:00:00+00:00",
+    "window_start_ms": 1546300800000,
+    "window_end_ms": 1703980800000,
+    "window_days": 1825.0,
+    "assets": [
+      "BTC",
+      "ETH",
+      "SOL"
+    ],
+    "frozen_params_baseline": {
+      "ema_fast": 50,
+      "ema_slow": 200,
+      "breakout_lookback": 20,
+      "atr_period": 14,
+      "trailing_atr": 3.0,
+      "exit_ema": 50,
+      "cost_margin": 1.5
+    },
+    "plane": {
+      "scenario_id": "BASE",
+      "cost_model_version": "COST_MODEL_V3",
+      "size_usd": 1000.0,
+      "horizon_minutes": 1440.0,
+      "fee_bps": 20.0,
+      "spread_bps": 1.0,
+      "slippage_bps": 2.632456,
+      "impact_bps": 0.158114,
+      "funding_bps": 0.0,
+      "other_bps": 0.0,
+      "round_trip_bps": 23.790569
+    },
+    "risk_config_path": "config/risk.yaml",
+    "risk_config_sha256": "3c27c866d5f11afea96a80598c1e72c69816ecc3b77e97c5ad7fa86417593a2e",
+    "decision_rule": {
+      "min_dev_trades": 30,
+      "min_improvement_usdt": 0.0,
+      "max_single_trade_share_of_net": 0.5,
+      "meaning": {
+        "INCONCLUSIVE": "the unfiltered baseline itself has fewer than min_dev_trades DEV trades: the DEV window cannot read a volatility filter on this candidate at all",
+        "FILTER_NOT_JUSTIFIED_ON_DEV": "no threshold beats the baseline on DEV, or the arm that does is carried by a single trade or is not profitable itself: the filter is NOT added to the ruleset, because a filter chosen after the outcome is not evidence",
+        "FILTER_FROZEN_FOR_VALIDATION": "one threshold clears the sample floor, improves DEV net by more than min_improvement_usdt and is not a single trade: it is FROZEN here and must be measured once on VAL/OOS by a new pre-registered run. This experiment does not read them and the threshold is not promoted on DEV"
+      },
+      "rule": "Among the arms with at least min_dev_trades DEV trades, take the highest DEV net (ties broken by the LOWEST threshold). INCONCLUSIVE when the baseline does not clear the floor. FILTER_NOT_JUSTIFIED_ON_DEV when the winner is the baseline, or its improvement over the baseline is <= min_improvement_usdt, or its net is not positive, or any single trade carries more than max_single_trade_share_of_net of it (or of the baseline's net when the baseline is the winner). Otherwise FILTER_FROZEN_FOR_VALIDATION."
+    },
+    "corpus_provenance": {
+      "BTC": {
+        "symbol": "BTC",
+        "timeframe": "4h",
+        "bars": 15665,
+        "first_ts": 1546300800000,
+        "last_ts": 1772308800000,
+        "sources": [
+          "reports/alpha-expansion-v1/data/BTCUSDT_2019.json",
+          "reports/alpha-expansion-v1/data/BTCUSDT_2020.json",
+          "reports/alpha-expansion-v1/data/BTCUSDT_2021.json",
+          "reports/alpha-expansion-v1/data/BTCUSDT_2022.json",
+          "reports/alpha-expansion-v1/data/BTCUSDT_2023.json",
+          "reports/alpha-expansion-v1/data/BTCUSDT_2024.json",
+          "reports/alpha-expansion-v1/data/BTCUSDT_2025.json",
+          "reports/alpha-expansion-v1/data/BTCUSDT_2026.json"
+        ],
+        "sha256": "f4d16c3664c142d178e65a944f927bdcf0d450318a90f67a5089048c194ace57"
+      },
+      "ETH": {
+        "symbol": "ETH",
+        "timeframe": "4h",
+        "bars": 15665,
+        "first_ts": 1546300800000,
+        "last_ts": 1772308800000,
+        "sources": [
+          "reports/alpha-expansion-v1/data/ETHUSDT_2019.json",
+          "reports/alpha-expansion-v1/data/ETHUSDT_2020.json",
+          "reports/alpha-expansion-v1/data/ETHUSDT_2021.json",
+          "reports/alpha-expansion-v1/data/ETHUSDT_2022.json",
+          "reports/alpha-expansion-v1/data/ETHUSDT_2023.json",
+          "reports/alpha-expansion-v1/data/ETHUSDT_2024.json",
+          "reports/alpha-expansion-v1/data/ETHUSDT_2025.json",
+          "reports/alpha-expansion-v1/data/ETHUSDT_2026.json"
+        ],
+        "sha256": "365046d4738aa7b1dee89a8fc2a544cdfa80b1b6d64ee66a207f504de85afab9"
+      },
+      "SOL": {
+        "symbol": "SOL",
+        "timeframe": "4h",
+        "bars": 12153,
+        "first_ts": 1597132800000,
+        "last_ts": 1772308800000,
+        "sources": [
+          "reports/alpha-expansion-v1/data/SOLUSDT_2020.json",
+          "reports/alpha-expansion-v1/data/SOLUSDT_2021.json",
+          "reports/alpha-expansion-v1/data/SOLUSDT_2022.json",
+          "reports/alpha-expansion-v1/data/SOLUSDT_2023.json",
+          "reports/alpha-expansion-v1/data/SOLUSDT_2024.json",
+          "reports/alpha-expansion-v1/data/SOLUSDT_2025.json",
+          "reports/alpha-expansion-v1/data/SOLUSDT_2026.json"
+        ],
+        "sha256": "847d8eb45eafebd80825f3146c47e3ef34c829516ea5f8501664655f04ff1613"
+      },
+      "aggregated_from_1h": {
+        "symbol": "BTC",
+        "timeframe": "1h",
+        "bars": 62724,
+        "first_ts": 1546300800000,
+        "last_ts": 1772319600000,
+        "sources": [
+          "reports/alpha-expansion-v1/data/BTCUSDT_2019.json",
+          "reports/alpha-expansion-v1/data/BTCUSDT_2020.json",
+          "reports/alpha-expansion-v1/data/BTCUSDT_2021.json",
+          "reports/alpha-expansion-v1/data/BTCUSDT_2022.json",
+          "reports/alpha-expansion-v1/data/BTCUSDT_2023.json",
+          "reports/alpha-expansion-v1/data/BTCUSDT_2024.json",
+          "reports/alpha-expansion-v1/data/BTCUSDT_2025.json",
+          "reports/alpha-expansion-v1/data/BTCUSDT_2026.json"
+        ],
+        "sha256": "f4d16c3664c142d178e65a944f927bdcf0d450318a90f67a5089048c194ace57"
+      }
+    }
+  },
+  "market_context": {
+    "benchmark": "BTC",
+    "timeframe": "1d (aggregated from 1h shards; a day exists only when its 24 contiguous hours do)",
+    "rule": "benchmark BTC daily close against its own 200-day EMA, with that EMA's 20-day change deciding trend from range: BULL when close > EMA200 and the EMA rose over the last 20 days, BEAR when close < EMA200 and it fell, SIDEWAYS otherwise, UNDEFINED while either input is still warming up. This is the project's existing convention (trading_bot/research/swing/backtest.py::build_regimes), reused rather than re-invented; it is a market label for reporting, never a signal.",
+    "labels": [
+      "BULL",
+      "BEAR",
+      "SIDEWAYS",
+      "UNDEFINED"
+    ],
+    "sources": [
+      "reports/alpha-expansion-v1/data/BTCUSDT_2019.json",
+      "reports/alpha-expansion-v1/data/BTCUSDT_2020.json",
+      "reports/alpha-expansion-v1/data/BTCUSDT_2021.json",
+      "reports/alpha-expansion-v1/data/BTCUSDT_2022.json",
+      "reports/alpha-expansion-v1/data/BTCUSDT_2023.json",
+      "reports/alpha-expansion-v1/data/BTCUSDT_2024.json",
+      "reports/alpha-expansion-v1/data/BTCUSDT_2025.json",
+      "reports/alpha-expansion-v1/data/BTCUSDT_2026.json"
+    ],
+    "source_sha256": "f4d16c3664c142d178e65a944f927bdcf0d450318a90f67a5089048c194ace57",
+    "days": 2596,
+    "first_close_ms": 1546387200000,
+    "last_close_ms": 1772323200000,
+    "label_days": {
+      "UNDEFINED": 219,
+      "BULL": 1468,
+      "SIDEWAYS": 212,
+      "BEAR": 697
+    },
+    "artefact": "MARKET_CONTEXT.csv"
+  },
+  "grid": {
+    "percentiles": [
+      25.0,
+      50.0,
+      75.0
+    ],
+    "percentile_rule": "nearest rank: index = ceil(pct/100 * n) - 1 over the ascending atr/close values of every DEV bar with a defined atr_period ATR, all assets pooled",
+    "values_pct": {
+      "p25": 1.551912,
+      "p50": 2.239198,
+      "p75": 3.330741
+    },
+    "sample": {
+      "bars_with_atr": 29206,
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL"
+      ],
+      "atr_period": 14,
+      "min_atr_pct": 0.253026,
+      "median_atr_pct": 2.23921,
+      "max_atr_pct": 27.26569
+    }
+  },
+  "verdict": {
+    "verdict": "FILTER_NOT_JUSTIFIED_ON_DEV",
+    "rule": {
+      "min_dev_trades": 30,
+      "min_improvement_usdt": 0.0,
+      "max_single_trade_share_of_net": 0.5
+    },
+    "frozen_threshold_pct": null,
+    "ranking": [
+      "baseline",
+      "p25",
+      "p50",
+      "p75"
+    ],
+    "grid_values_pct": {
+      "p25": 1.551912,
+      "p50": 2.239198,
+      "p75": 3.330741
+    },
+    "improvement_usdt": 0.0,
+    "winner": "baseline",
+    "winner_single_trade_share_of_net": 0.0673,
+    "meaning": {
+      "INCONCLUSIVE": "the unfiltered baseline itself has fewer than min_dev_trades DEV trades: the DEV window cannot read a volatility filter on this candidate at all",
+      "FILTER_NOT_JUSTIFIED_ON_DEV": "no threshold beats the baseline on DEV, or the arm that does is carried by a single trade or is not profitable itself: the filter is NOT added to the ruleset, because a filter chosen after the outcome is not evidence",
+      "FILTER_FROZEN_FOR_VALIDATION": "one threshold clears the sample floor, improves DEV net by more than min_improvement_usdt and is not a single trade: it is FROZEN here and must be measured once on VAL/OOS by a new pre-registered run. This experiment does not read them and the threshold is not promoted on DEV"
+    },
+    "rule_text": "Among the arms with at least min_dev_trades DEV trades, take the highest DEV net (ties broken by the LOWEST threshold). INCONCLUSIVE when the baseline does not clear the floor. FILTER_NOT_JUSTIFIED_ON_DEV when the winner is the baseline, or its improvement over the baseline is <= min_improvement_usdt, or its net is not positive, or any single trade carries more than max_single_trade_share_of_net of it (or of the baseline's net when the baseline is the winner). Otherwise FILTER_FROZEN_FOR_VALIDATION.",
+    "val_oos_read": false,
+    "next_step": "the frozen threshold goes through VAL and then OOS in a NEW pre-registered run; nothing here is wired into any ruleset",
+    "reason": "the best DEV arm is baseline with 1,921.18 USDT against 1,921.18 for the unfiltered baseline (+0 USDT); share of the winner's net in its single largest trade: 0.0673"
+  },
+  "limitations": [
+    "picking one of four arms on DEV is itself a selection: the winner is frozen, not promoted, and its VAL/OOS behaviour is unknown",
+    "the grid comes from the DEV input distribution of atr/close, so a different window would place the thresholds elsewhere; the rule and the percentile definition are published so the placement is auditable",
+    "the gate refuses entries only (it does not size down and does not change the exit): it cannot rescue a position it would not have opened",
+    "removing less volatile breakouts removes a population, not a per-trade outcome; the arms are different equity trajectories, so the comparison is between two books, not two versions of one trade",
+    "single DEV window; no historical order book; long side only (spot)"
+  ],
+  "arms": {
+    "baseline": {
+      "role": "baseline",
+      "candidate_id": "edge_trend_01",
+      "min_atr_pct": null,
+      "params": {
+        "ema_fast": 50,
+        "ema_slow": 200,
+        "breakout_lookback": 20,
+        "atr_period": 14,
+        "trailing_atr": 3.0,
+        "exit_ema": 50,
+        "cost_margin": 1.5
+      },
+      "params_delta": {
+        "added": [],
+        "removed": [],
+        "changed": []
+      },
+      "bars_evaluated": 28651,
+      "warmup_bars": 597,
+      "signal_count": 1037,
+      "vol_refusals": 0,
+      "signals_below_threshold": 0,
+      "refusals": {
+        "candidate:trend_filter_fail": 535
+      },
+      "trades": 223,
+      "gross_usdt": 2128.9105,
+      "fees_usdt": 174.6333,
+      "price_costs_usdt": 33.0981,
+      "net_usdt": 1921.1792,
+      "return_pct": 19.2118,
+      "final_equity": 11921.1792,
+      "win_rate_pct": 56.9507,
+      "profit_factor": 1.7782,
+      "expectancy_usdt": 8.6152,
+      "avg_win_usdt": 34.5675,
+      "avg_loss_usdt": -25.7176,
+      "payoff_ratio": 1.3441,
+      "max_drawdown_pct": 4.2793,
+      "sharpe_annualised": 1.2243,
+      "sharpe_convention": "per-4h equity returns, annualised with 2190 bars/year; None when fewer than 100 observations",
+      "exposure_pct_of_time": 24.5997,
+      "total_cost_bps_per_trade": 24.0796,
+      "largest_trade_share_of_net": 0.0673,
+      "by_asset": {
+        "BTC": {
+          "trades": 71,
+          "net": 1016.6645,
+          "win_rate": 63.3803
+        },
+        "ETH": {
+          "trades": 94,
+          "net": 493.0042,
+          "win_rate": 52.1277
+        },
+        "SOL": {
+          "trades": 58,
+          "net": 411.5105,
+          "win_rate": 56.8966
+        }
+      },
+      "by_regime": {
+        "UP": {
+          "trades": 223,
+          "net": 1921.1792,
+          "win_rate": 56.9507
+        }
+      },
+      "by_market_context": {
+        "BEAR": {
+          "trades": 26,
+          "net": 16.4682,
+          "win_rate": 46.1538
+        },
+        "BULL": {
+          "trades": 159,
+          "net": 1339.6867,
+          "win_rate": 57.8616
+        },
+        "SIDEWAYS": {
+          "trades": 14,
+          "net": 77.0108,
+          "win_rate": 64.2857
+        },
+        "UNDEFINED": {
+          "trades": 24,
+          "net": 488.0135,
+          "win_rate": 58.3333
+        }
+      },
+      "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
+      "exit_reason_mix": {
+        "trailing_stop": 130,
+        "stop_loss": 91,
+        "end_of_data": 2
+      },
+      "avg_duration_min": 8697.04,
+      "gross_per_trade_usdt": 9.5467
+    },
+    "p25": {
+      "role": "p25",
+      "candidate_id": "edge_trend_01",
+      "min_atr_pct": 1.551912,
+      "params": {
+        "ema_fast": 50,
+        "ema_slow": 200,
+        "breakout_lookback": 20,
+        "atr_period": 14,
+        "trailing_atr": 3.0,
+        "exit_ema": 50,
+        "cost_margin": 1.5,
+        "min_atr_pct": 1.551912
+      },
+      "params_delta": {
+        "added": [
+          "min_atr_pct"
+        ],
+        "removed": [],
+        "changed": []
+      },
+      "bars_evaluated": 28651,
+      "warmup_bars": 597,
+      "signal_count": 801,
+      "vol_refusals": 366,
+      "signals_below_threshold": 0,
+      "refusals": {
+        "candidate:trend_filter_fail": 405,
+        "candidate:volatility_filter_fail": 366
+      },
+      "trades": 188,
+      "gross_usdt": 1758.6916,
+      "fees_usdt": 137.1607,
+      "price_costs_usdt": 25.9959,
+      "net_usdt": 1595.535,
+      "return_pct": 15.9554,
+      "final_equity": 11595.535,
+      "win_rate_pct": 57.4468,
+      "profit_factor": 1.7414,
+      "expectancy_usdt": 8.4869,
+      "avg_win_usdt": 34.6998,
+      "avg_loss_usdt": -26.9006,
+      "payoff_ratio": 1.2899,
+      "max_drawdown_pct": 3.9844,
+      "sharpe_annualised": 1.0772,
+      "sharpe_convention": "per-4h equity returns, annualised with 2190 bars/year; None when fewer than 100 observations",
+      "exposure_pct_of_time": 22.8037,
+      "total_cost_bps_per_trade": 24.095,
+      "largest_trade_share_of_net": 0.079,
+      "by_asset": {
+        "BTC": {
+          "trades": 50,
+          "net": 648.2474,
+          "win_rate": 62.0
+        },
+        "ETH": {
+          "trades": 82,
+          "net": 535.5501,
+          "win_rate": 54.878
+        },
+        "SOL": {
+          "trades": 56,
+          "net": 411.7376,
+          "win_rate": 57.1429
+        }
+      },
+      "by_regime": {
+        "UP": {
+          "trades": 188,
+          "net": 1595.535,
+          "win_rate": 57.4468
+        }
+      },
+      "by_market_context": {
+        "BEAR": {
+          "trades": 24,
+          "net": 45.4954,
+          "win_rate": 45.8333
+        },
+        "BULL": {
+          "trades": 133,
+          "net": 1146.9366,
+          "win_rate": 59.3985
+        },
+        "SIDEWAYS": {
+          "trades": 11,
+          "net": 65.5879,
+          "win_rate": 63.6364
+        },
+        "UNDEFINED": {
+          "trades": 20,
+          "net": 337.5151,
+          "win_rate": 55.0
+        }
+      },
+      "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
+      "exit_reason_mix": {
+        "trailing_stop": 111,
+        "stop_loss": 77
+      },
+      "avg_duration_min": 9562.98,
+      "gross_per_trade_usdt": 9.3547
+    },
+    "p50": {
+      "role": "p50",
+      "candidate_id": "edge_trend_01",
+      "min_atr_pct": 2.239198,
+      "params": {
+        "ema_fast": 50,
+        "ema_slow": 200,
+        "breakout_lookback": 20,
+        "atr_period": 14,
+        "trailing_atr": 3.0,
+        "exit_ema": 50,
+        "cost_margin": 1.5,
+        "min_atr_pct": 2.239198
+      },
+      "params_delta": {
+        "added": [
+          "min_atr_pct"
+        ],
+        "removed": [],
+        "changed": []
+      },
+      "bars_evaluated": 28651,
+      "warmup_bars": 597,
+      "signal_count": 500,
+      "vol_refusals": 794,
+      "signals_below_threshold": 0,
+      "refusals": {
+        "candidate:volatility_filter_fail": 794,
+        "candidate:trend_filter_fail": 278
+      },
+      "trades": 131,
+      "gross_usdt": 1084.2846,
+      "fees_usdt": 76.1744,
+      "price_costs_usdt": 14.4373,
+      "net_usdt": 993.6729,
+      "return_pct": 9.9367,
+      "final_equity": 10993.6729,
+      "win_rate_pct": 56.4885,
+      "profit_factor": 1.6757,
+      "expectancy_usdt": 7.5853,
+      "avg_win_usdt": 33.302,
+      "avg_loss_usdt": -25.8014,
+      "payoff_ratio": 1.2907,
+      "max_drawdown_pct": 3.1987,
+      "sharpe_annualised": 0.8602,
+      "sharpe_convention": "per-4h equity returns, annualised with 2190 bars/year; None when fewer than 100 observations",
+      "exposure_pct_of_time": 16.0396,
+      "total_cost_bps_per_trade": 24.1295,
+      "largest_trade_share_of_net": 0.1243,
+      "by_asset": {
+        "BTC": {
+          "trades": 27,
+          "net": 99.3978,
+          "win_rate": 48.1481
+        },
+        "ETH": {
+          "trades": 53,
+          "net": 461.2083,
+          "win_rate": 56.6038
+        },
+        "SOL": {
+          "trades": 51,
+          "net": 433.0668,
+          "win_rate": 60.7843
+        }
+      },
+      "by_regime": {
+        "UP": {
+          "trades": 131,
+          "net": 993.6729,
+          "win_rate": 56.4885
+        }
+      },
+      "by_market_context": {
+        "BEAR": {
+          "trades": 15,
+          "net": -135.2918,
+          "win_rate": 40.0
+        },
+        "BULL": {
+          "trades": 92,
+          "net": 700.6404,
+          "win_rate": 58.6957
+        },
+        "SIDEWAYS": {
+          "trades": 9,
+          "net": 137.0174,
+          "win_rate": 66.6667
+        },
+        "UNDEFINED": {
+          "trades": 15,
+          "net": 291.3069,
+          "win_rate": 53.3333
+        }
+      },
+      "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
+      "exit_reason_mix": {
+        "trailing_stop": 77,
+        "stop_loss": 54
+      },
+      "avg_duration_min": 9653.13,
+      "gross_per_trade_usdt": 8.277
+    },
+    "p75": {
+      "role": "p75",
+      "candidate_id": "edge_trend_01",
+      "min_atr_pct": 3.330741,
+      "params": {
+        "ema_fast": 50,
+        "ema_slow": 200,
+        "breakout_lookback": 20,
+        "atr_period": 14,
+        "trailing_atr": 3.0,
+        "exit_ema": 50,
+        "cost_margin": 1.5,
+        "min_atr_pct": 3.330741
+      },
+      "params_delta": {
+        "added": [
+          "min_atr_pct"
+        ],
+        "removed": [],
+        "changed": []
+      },
+      "bars_evaluated": 28651,
+      "warmup_bars": 597,
+      "signal_count": 217,
+      "vol_refusals": 1243,
+      "signals_below_threshold": 0,
+      "refusals": {
+        "candidate:volatility_filter_fail": 1243,
+        "candidate:trend_filter_fail": 112
+      },
+      "trades": 58,
+      "gross_usdt": 527.3296,
+      "fees_usdt": 22.9961,
+      "price_costs_usdt": 4.3584,
+      "net_usdt": 499.975,
+      "return_pct": 4.9998,
+      "final_equity": 10499.975,
+      "win_rate_pct": 58.6207,
+      "profit_factor": 1.8825,
+      "expectancy_usdt": 8.6203,
+      "avg_win_usdt": 31.3674,
+      "avg_loss_usdt": -23.6049,
+      "payoff_ratio": 1.3289,
+      "max_drawdown_pct": 1.9405,
+      "sharpe_annualised": 0.7051,
+      "sharpe_convention": "per-4h equity returns, annualised with 2190 bars/year; None when fewer than 100 observations",
+      "exposure_pct_of_time": 7.4886,
+      "total_cost_bps_per_trade": 24.3442,
+      "largest_trade_share_of_net": 0.2675,
+      "by_asset": {
+        "BTC": {
+          "trades": 9,
+          "net": 22.2888,
+          "win_rate": 44.4444
+        },
+        "ETH": {
+          "trades": 15,
+          "net": 14.851,
+          "win_rate": 53.3333
+        },
+        "SOL": {
+          "trades": 34,
+          "net": 462.8352,
+          "win_rate": 64.7059
+        }
+      },
+      "by_regime": {
+        "UP": {
+          "trades": 58,
+          "net": 499.975,
+          "win_rate": 58.6207
+        }
+      },
+      "by_market_context": {
+        "BEAR": {
+          "trades": 6,
+          "net": -40.6997,
+          "win_rate": 33.3333
+        },
+        "BULL": {
+          "trades": 43,
+          "net": 409.5064,
+          "win_rate": 60.4651
+        },
+        "SIDEWAYS": {
+          "trades": 5,
+          "net": 148.8133,
+          "win_rate": 80.0
+        },
+        "UNDEFINED": {
+          "trades": 4,
+          "net": -17.6449,
+          "win_rate": 50.0
+        }
+      },
+      "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
+      "exit_reason_mix": {
+        "trailing_stop": 36,
+        "stop_loss": 22
+      },
+      "avg_duration_min": 10179.31,
+      "gross_per_trade_usdt": 9.0919
+    }
+  },
+  "artifacts": {
+    "VOL_FILTER_TRADES.csv": {
+      "sha256": "81c500a69edd5420e8123dae4792d84ae3623ce7cb4ef607465b3eb8c4386d73",
+      "bytes": 203941
+    },
+    "VOL_FILTER_REFUSALS.csv": {
+      "sha256": "48e6a3b150434841f973d0d10fdf763e362f01469138507801e1f39181756be2",
+      "bytes": 345216
+    },
+    "VOL_FILTER_SIGNALS.csv": {
+      "sha256": "d358b25eae6f88f85ca15e6b086dd70ed4c91587903162ad706a3a0e895fcd2c",
+      "bytes": 403745
+    },
+    "VOL_FILTER_ATR.csv": {
+      "sha256": "20e1403539fc2a33d2f711d8e67bd346862a305b3402550bba517af5419a8ec2",
+      "bytes": 628565
+    },
+    "MARKET_CONTEXT.csv": {
+      "sha256": "b4df16db377d90ac2af68e1283e9db716338bf822ae90f29c51191061e865013",
+      "bytes": 212532
+    },
+    "VOL_FILTER.md": {
+      "sha256": "b697c81be4e01799cfc97a86ba147dcf87b7687b0caee23e6510fdcd074c8f30",
+      "bytes": 4387
+    }
+  },
+  "artifact_note": "digests cover every volatility-filter artefact except VOL_FILTER.json itself, which is the file carrying them"
+}

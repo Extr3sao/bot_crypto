@@ -3,14 +3,14 @@
 | | |
 |---|---|
 | run_id | `wp-edge-01-campaign` |
-| HEAD al ejecutar | `a76297e21e83430e52f4082a7317370681583862` |
+| HEAD al ejecutar | `ce42ca42c297fe2b6a6594a49b385ed811442666` |
 | rama | `agent/edge-recovery/WP-EDGE-00-baseline` |
 | arbol sucio al ejecutar | `True` |
-| huella del código ejecutado (sha256) | `a9ca6d7d05f9e19c9d334d9c1460fcf7ec19db0c1601b249d232c24effa15c5c` |
+| huella del código ejecutado (sha256) | `616a86fa7258fa9efe2faf1d3b333a87722944aef9796bfa228417014c178c5a` |
 | params_hash | `d073a2d686b9b198c36c9a3c6009d36130577ba247a2016c3f791813cb749d77` |
 | modo | backtest determinista sobre datos históricos locales; 0 órdenes, 0 claves, 0 red |
 | entrypoint | `scripts/edge01_run.py` |
-| generado | 2026-10-12T13:19:59.000375+00:00 |
+| generado | 2026-10-12T18:36:51.466789+00:00 |
 
 > El `HEAD` de arriba es lo que la máquina tenía al medir; cuando el árbol
 > está sucio el identificador de esta medida es la **huella del código**
@@ -228,7 +228,9 @@ Reproducir esta medida (sin red, sin claves):
 ## 11. Hipótesis para la siguiente iteración
 
 - **H1**: The intraday funnel is dominated by trend_filter_fail (>=2000 refusals per window against ~60 trades): the 1h trend filter, not the breakout, is what decides participation. — *Test:* Re-run the frozen EDGE-INTRA-01 with the trend filter removed as an ablation and compare on DEV only; a candidate whose edge lives in a filter must be visible there before VAL is touched.
+- **H5**: H1's extra signals were refused by the RISK layer, not by the entry rules: the 5% peak-to-trough drawdown halt fired on 493 DEV entries and would have fired on more, which makes the risk budget a candidate ceiling on intraday frequency. — *Test:* Run the frozen EDGE-INTRA-01 on DEV with the drawdown halt made inert (one field apart from config/risk.yaml) and read the marginal trades, the halt's duty cycle and the drawdown it buys.
 - **H2**: Gross is negative in DEV/VAL/OOS for the breakouts, so the loss is not only cost: the entry is late relative to the level it breaks. — *Test:* Measure the post-entry MFE/MAE distribution by distance from the broken level. If MFE is already spent at entry, the entry rule has to move earlier (retest or limit at the level), not the stop.
+- **H6**: H2's reading, turned into an entry: if the book pays for the extension, the same signals entered on a resting limit AT the broken level should buy back the part of the move the breakout gives away. — *Test:* Rest the frozen signals as limit buys at the level they broke, let the bars decide whether they fill, and compare the arm against the frozen market arm on the same corpus, risk budget and costs. The ruleset is not touched: only the execution changes.
 - **H3**: EDGE-TREND-01 4h is positive in DEV (+2,140 USDT) and in OOS (+208), but the OOS net is 80% one trade, so it may be a fat tail rather than an edge. — *Test:* Re-run it on the 1h corpus over 2019-2026 with the same rules and check whether the positive tail repeats across calendar years, with the single-trade share reported per year.
 - **H4**: EDGE-TREND-01 has no separate volatility entry filter: volatility only reaches it through the ATR-scaled stop, so it trades quiet and violent regimes alike, and the losses may concentrate where a trend starts from a dead-volatility base. — *Test:* Declare a small grid of minimum-ATR thresholds BEFORE looking at VAL or OOS, pick on DEV only, freeze, then measure once. If the filter cannot be justified on DEV, it does not go in — a filter chosen after the out-of-sample window has been read proves nothing.
 

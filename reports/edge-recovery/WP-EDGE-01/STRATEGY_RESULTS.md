@@ -2,8 +2,8 @@
 
 - run_id: `wp-edge-01-campaign`
 - params_hash: `d073a2d686b9b198c36c9a3c6009d36130577ba247a2016c3f791813cb749d77`
-- generated (UTC): 2026-10-12T13:19:59.000375+00:00
-- commit: `a76297e21e83430e52f4082a7317370681583862`
+- generated (UTC): 2026-10-12T18:36:51.466789+00:00
+- commit: `ce42ca42c297fe2b6a6594a49b385ed811442666`
 - data: local corpora only (15m: `data/raw/alpha003/price`, 1h: `reports/alpha-expansion-v1/data`, aggregated to 4h/1d)
 
 ## Cost scenarios

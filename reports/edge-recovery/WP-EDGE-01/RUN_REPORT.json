@@ -1,12 +1,12 @@
 {
   "run_id": "wp-edge-01-campaign",
   "params_hash": "d073a2d686b9b198c36c9a3c6009d36130577ba247a2016c3f791813cb749d77",
-  "generated_at_utc": "2026-10-12T13:19:59.000375+00:00",
+  "generated_at_utc": "2026-10-12T18:36:51.466789+00:00",
   "git": {
-    "head_commit": "a76297e21e83430e52f4082a7317370681583862",
+    "head_commit": "ce42ca42c297fe2b6a6594a49b385ed811442666",
     "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
     "worktree_dirty": true,
-    "source_sha256": "a9ca6d7d05f9e19c9d334d9c1460fcf7ec19db0c1601b249d232c24effa15c5c",
+    "source_sha256": "616a86fa7258fa9efe2faf1d3b333a87722944aef9796bfa228417014c178c5a",
     "source_digest_rule": "sha256 over name+bytes of src/trading_bot/research/edge01/*.py, scripts/edge01_run.py and scripts/edge01_verify.py, with CRLF folded to LF so the digest does not depend on the checkout's line endings"
   },
   "mode": "deterministic backtest over local historical corpora; 0 orders, 0 credentials, 0 network calls",
@@ -6566,28 +6566,51 @@
   "paper_status": {
     "integrated": false,
     "reason": "No candidate reached ADMIT. Wiring a rejected candidate into the PAPER runtime would have made the runtime execute rules whose only measured property is losing money after costs.",
-    "runtime_untouched": "src/trading_bot/autonomous/** and the paper pipeline were not modified by this WP: the runtime remains the authority for PAPER and keeps its deterministic risk and execution behaviour."
+    "runtime_untouched": "src/trading_bot/autonomous/** and the paper pipeline were not modified by this WP: the runtime remains the authority for PAPER and keeps its deterministic risk and execution behaviour.",
+    "trend_4h_oos_review": {
+      "decision": "NOT_SUFFICIENT_EVIDENCE",
+      "asking": "is there enough out-of-sample evidence to take the frozen 4h trend ruleset to PAPER?",
+      "answer": "no. OOS is positive (+208.01 USDT, +160.67 under 2x fees) but one trade carries 79.87% of the net, only ETH of the three assets is positive, and VAL is flat; the WP's own admission rule returns INSUFFICIENT_EVIDENCE. The paper pipeline stays untouched and nothing is certified.",
+      "evidence": "reports/edge-recovery/WP-EDGE-01/oos-trend-4h/OOS_TREND.json",
+      "verdict_rule": "reports/edge-recovery/WP-EDGE-01/oos-trend-4h/OOS_TREND.json#verdict.decision_rule"
+    }
   },
   "next_hypotheses": [
     {
       "id": "H1",
       "hypothesis": "The intraday funnel is dominated by trend_filter_fail (>=2000 refusals per window against ~60 trades): the 1h trend filter, not the breakout, is what decides participation.",
-      "test": "Re-run the frozen EDGE-INTRA-01 with the trend filter removed as an ablation and compare on DEV only; a candidate whose edge lives in a filter must be visible there before VAL is touched."
+      "test": "Re-run the frozen EDGE-INTRA-01 with the trend filter removed as an ablation and compare on DEV only; a candidate whose edge lives in a filter must be visible there before VAL is touched.",
+      "result": "TESTED on DEV only (scripts/edge01_ablation.py, reports/edge-recovery/WP-EDGE-01/ablation-h1/, ADR-0028): the answer is BREAKOUT_IS_THE_CAUSE, not the filter. Both arms consider the same 3,260 DEV setups; removing the 1h gate resolves its 1,097 refusals into 668 extra signals and 429 refusals at the gates behind it, and only 23 of those signals survive the risk layer into a trade. The DEV gross stays negative (-128.96 USDT against -151.71 with the filter), so the entry rule loses before costs either way. Most of the extra participation is absorbed by the 5% drawdown kill switch (risk_drawdown_halt +630), which is a risk-budget statement, not an edge. No window was opened for the variant and nothing is promoted."
+    },
+    {
+      "id": "H5",
+      "hypothesis": "H1's extra signals were refused by the RISK layer, not by the entry rules: the 5% peak-to-trough drawdown halt fired on 493 DEV entries and would have fired on more, which makes the risk budget a candidate ceiling on intraday frequency.",
+      "test": "Run the frozen EDGE-INTRA-01 on DEV with the drawdown halt made inert (one field apart from config/risk.yaml) and read the marginal trades, the halt's duty cycle and the drawdown it buys.",
+      "result": "TESTED on DEV only (scripts/edge01_risk_ablation.py, reports/edge-recovery/WP-EDGE-01/risk-budget-h5/, ADR-0029): see the ablation's own verdict, published with the two budgets, the marginal numbers and the drawdown cost of removing the protection. The runtime risk authority is untouched and nothing is promoted."
     },
     {
       "id": "H2",
       "hypothesis": "Gross is negative in DEV/VAL/OOS for the breakouts, so the loss is not only cost: the entry is late relative to the level it breaks.",
-      "test": "Measure the post-entry MFE/MAE distribution by distance from the broken level. If MFE is already spent at entry, the entry rule has to move earlier (retest or limit at the level), not the stop."
+      "test": "Measure the post-entry MFE/MAE distribution by distance from the broken level. If MFE is already spent at entry, the entry rule has to move earlier (retest or limit at the level), not the stop.",
+      "result": "TESTED on DEV only (scripts/edge01_mechanism_ablation.py, reports/edge-recovery/WP-EDGE-01/entry-timing-h2/, ADR-0030): the answer is ENTRY_IS_LATE. Of the 290 fills the risk budget let through, 236 (81%) land at or past 0.25 ATR above the level the signal itself names in hard_invalidation, and the 54 that fill closer in carry the better expectancy (-1.0882 USDT per trade against -1.8545). The near side is the only one positive BEFORE costs (+5.47 USDT against -157.18), so the loss is paid on the way in: the next variant is an entry at the level (limit or retest), not a stop or a cost change. The diagnostic reads the trades the risk budget allowed, not every signal (what the budget removed is H5), no window was opened for it and nothing is promoted. The variant it pointed at is H6 below."
+    },
+    {
+      "id": "H6",
+      "hypothesis": "H2's reading, turned into an entry: if the book pays for the extension, the same signals entered on a resting limit AT the broken level should buy back the part of the move the breakout gives away.",
+      "test": "Rest the frozen signals as limit buys at the level they broke, let the bars decide whether they fill, and compare the arm against the frozen market arm on the same corpus, risk budget and costs. The ruleset is not touched: only the execution changes.",
+      "result": "TESTED on DEV with VAL/OOS as confirmation (scripts/edge01_closure_experiments.py --experiment h6, reports/edge-recovery/WP-EDGE-01/retest-h6/, ADR-0031): the answer is RETEST_IMPROVES_NET with VIABLE execution. On DEV the variant fills 372 of 686 planned orders (54.23%: 128 expire unfilled, 183 are refused by the risk budget at the moment of the touch, 3 are cancelled at the end of the window) and books -495.88 USDT against the frozen arm's -496.4298, with the expectancy per trade improving from -1.7118 to -1.3330 (+0.3788). The gain repeats outside its design window: VAL +121.74 USDT (76.86% fills) and OOS +39.10 (81.82% fills). The same plans crossed at market reproduce the frozen arm exactly (-496.4298 / -1.7118), so the difference is the execution price and not the signal set. The absolute net stays negative: the entry improvement does not make the intraday breakout profitable, and nothing is promoted."
     },
     {
       "id": "H3",
       "hypothesis": "EDGE-TREND-01 4h is positive in DEV (+2,140 USDT) and in OOS (+208), but the OOS net is 80% one trade, so it may be a fat tail rather than an edge.",
-      "test": "Re-run it on the 1h corpus over 2019-2026 with the same rules and check whether the positive tail repeats across calendar years, with the single-trade share reported per year."
+      "test": "Re-run it on the 1h corpus over 2019-2026 with the same rules and check whether the positive tail repeats across calendar years, with the single-trade share reported per year.",
+      "result": "TESTED on DEV/VAL/OOS without touching a parameter (scripts/edge01_closure_experiments.py --experiment oos, reports/edge-recovery/WP-EDGE-01/oos-trend-4h/, ADR-0031): the answer is NOT_SUFFICIENT_EVIDENCE for PAPER, and the reason is exactly the fat tail H3 named. OOS nets +208.01 USDT over 52 trades and stays positive under 2x fees (+160.67), its drawdown (2.57%) is far below buy & hold's, and two of the three calendar periods are positive, but the largest single trade is 79.87% of the whole OOS net: the window is one trade. The per-asset books say the same thing about concentration - OOS BTC +3.06 (and -14.68 under 2x fees), ETH +281.60, SOL -75.55 - so the only real positive is ETH, and VAL is essentially flat (+4.53 over 58 trades). The WP's own admission rule agrees: INSUFFICIENT_EVIDENCE. Nothing goes to PAPER."
     },
     {
       "id": "H4",
       "hypothesis": "EDGE-TREND-01 has no separate volatility entry filter: volatility only reaches it through the ATR-scaled stop, so it trades quiet and violent regimes alike, and the losses may concentrate where a trend starts from a dead-volatility base.",
-      "test": "Declare a small grid of minimum-ATR thresholds BEFORE looking at VAL or OOS, pick on DEV only, freeze, then measure once. If the filter cannot be justified on DEV, it does not go in — a filter chosen after the out-of-sample window has been read proves nothing."
+      "test": "Declare a small grid of minimum-ATR thresholds BEFORE looking at VAL or OOS, pick on DEV only, freeze, then measure once. If the filter cannot be justified on DEV, it does not go in — a filter chosen after the out-of-sample window has been read proves nothing.",
+      "result": "TESTED on DEV only (scripts/edge01_mechanism_ablation.py, reports/edge-recovery/WP-EDGE-01/vol-filter-h4/, ADR-0030): the answer is FILTER_NOT_JUSTIFIED_ON_DEV, so the frozen ruleset gains no min_atr_pct field and its frozen threshold stays null. The grid was computed from DEV BEFORE any arm ran (nearest rank at the 25th/50th/75th percentile of atr/close over 29,206 bars: 1.551912 / 2.239198 / 3.330741), every arm is the frozen candidate plus that one field, and every threshold loses net against the unfiltered baseline (1,921.18 USDT: p25 1,595.54, p50 993.67, p75 499.98). The filter cuts participation without improving the quality of a trade, so it is not adopted. Published with the verdict, not promoted: p75 keeps the baseline's expectancy on 26% of the trades and less than half the drawdown, which is a question for a new hypothesis, not a change. VAL and OOS were not read."
     }
   ],
   "test_target_equals_runtime_target": {
@@ -6613,12 +6636,12 @@
       "bytes": 220562
     },
     "STRATEGY_RESULTS.md": {
-      "sha256": "388c5d67e49df6abca501ad4fb0692fc5532e3c1b0dce64f5238821899ac1d03",
+      "sha256": "fecc34dcceca03203289d5f9a701675044cef4763d4b7585e2055a47c6518a6c",
       "bytes": 20607
     },
     "RUN_REPORT.md": {
-      "sha256": "e4019def27b30374c3853671d70f7b143c25eacca328e050667239ffde022cb8",
-      "bytes": 24039
+      "sha256": "866f7b5bd521b3d0f08f633e0043ccce9b0c34aaf1c9eb80b76af7c0715de6a1",
+      "bytes": 24959
     }
   },
   "artifact_note": "digests cover every artefact except RUN_REPORT.json itself, which is the file carrying them"

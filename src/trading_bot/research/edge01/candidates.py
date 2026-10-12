@@ -9,7 +9,9 @@ of ``i + 1``.
 The three candidates share one contract:
 
 * ``EDGE-INTRA-01``  — 15m breakout of a confirmed resistance with a 1h trend
-  filter, a volume expansion filter and a measured-move objective;
+  filter, a volume expansion filter and a measured-move objective.
+  ``use_trend_filter=False`` is the pre-registered H1 ablation that isolates
+  how much of the intraday funnel the 1h gate, not the breakout, decides;
 * ``EDGE-INTRA-02``  — the SAME breakout, then a retest inside the broken level
   plus a confirmed bullish three-candle imbalance (FVG). ``require_fvg=False``
   is the pre-registered ablation that isolates what the FVG contributes;
@@ -168,7 +170,15 @@ def build_context(bars: list[OHLCVBar], *, timeframe: str, fast: int, slow: int)
 
 @dataclass(frozen=True, slots=True)
 class CandidateSignal:
-    """A proposal the simulator may execute. Never carries a size (risk sizes it)."""
+    """A proposal the simulator may execute. Never carries a size (risk sizes it).
+
+    ``entry_limit`` and ``limit_expiry_bars`` describe a *planned execution*, not a
+    change of rules: when ``entry_limit`` is set the signal asks for a resting
+    limit buy at that price, live for ``limit_expiry_bars`` bars of its own clock,
+    and the simulator decides whether it ever fills. Both default to ``None``, so
+    every pre-registered candidate keeps printing market intents and the frozen
+    campaign is untouched; only the H6 retest variant sets them (see ``retest``).
+    """
 
     candidate: str
     symbol: str
@@ -190,6 +200,8 @@ class CandidateSignal:
     trailing_atr_value: float | None = None
     exit_ema_period: int | None = None
     hard_invalidation: float | None = None
+    entry_limit: float | None = None
+    limit_expiry_bars: int | None = None
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -211,6 +223,8 @@ class CandidateSignal:
             "trailing_atr": self.trailing_atr,
             "exit_ema_period": self.exit_ema_period,
             "hard_invalidation": self.hard_invalidation,
+            "entry_limit": self.entry_limit,
+            "limit_expiry_bars": self.limit_expiry_bars,
             "evidence": self.evidence,
         }
 
@@ -350,6 +364,16 @@ class IntraBreakout(_Base):
     timeframe = "15m"
     context_timeframe = "1h"
 
+    @property
+    def use_trend_filter(self) -> bool:
+        """``False`` only in the H1 ablation: the frozen ruleset minus the 1h gate.
+
+        The key is absent from ``FROZEN_PARAMS['edge_intra_01']``, so the pre-
+        registered run and ``PARAMS_HASH`` are unchanged; only the derived
+        ablation passes it explicitly.
+        """
+        return bool(self.params.get("use_trend_filter", True))
+
     def _build_state(self, bars: list[OHLCVBar]) -> dict[str, Any]:
         p = self.params
         return {
@@ -405,10 +429,19 @@ class IntraBreakout(_Base):
                 avg_volume=avg_volume,
             )
 
+        # The 1h trend filter. The pre-registered H1 ablation
+        # (``use_trend_filter=False``) removes ONLY this refusal: the higher
+        # timeframe is still read so the regime LABEL stays comparable between
+        # the two runs, and a context that is genuinely unavailable is still
+        # refused rather than skipped.
         htf, htf_refusal = _htf_uptrend(context, decision_ts)
-        if htf_refusal is not None or htf is None:
-            htf_gate = htf_refusal or ("htf_unavailable", {})
-            return self.refuse(i, decision_ts, htf_gate[0], **htf_gate[1])
+        if htf_refusal is not None:
+            reason, detail = htf_refusal
+            filtered = reason == "trend_filter_fail" and not self.use_trend_filter
+            if not filtered:
+                return self.refuse(i, decision_ts, reason, **detail)
+        if htf is None:
+            return self.refuse(i, decision_ts, "htf_unavailable", {})
 
         stop = level - float(p["stop_atr_below_level"]) * a
         if stop >= close:
@@ -734,6 +767,20 @@ class TrendFollow(_Base):
         if close <= level:
             return None  # no breakout: nothing to refuse
 
+        # Optional entry gate: H4's frozen ablation adds a minimum ATR/close and
+        # nothing else (see ENTRY_VOLATILITY_FILTER in campaign.py). Default is
+        # None, so the frozen candidate's params — and its params_hash — do not
+        # move when the gate is unused.
+        min_atr_pct = p.get("min_atr_pct")
+        atr_pct = a / close * 100.0
+        if min_atr_pct is not None and atr_pct < float(min_atr_pct):
+            return self.refuse(
+                i,
+                decision_ts,
+                "volatility_filter_fail",
+                atr_pct=atr_pct,
+                min_atr_pct=float(min_atr_pct),
+            )
         if not (fast > slow and close > slow):
             return self.refuse(
                 i,
@@ -783,6 +830,7 @@ class TrendFollow(_Base):
                 "ema_fast": fast,
                 "ema_slow": slow,
                 "atr": a,
+                "atr_pct": atr_pct,
                 "breakout_level": level,
                 "profile": self.profile,
             },
@@ -802,7 +850,9 @@ def _htf_uptrend(
     if state.index < 0 or state.ema_slow is None or state.close is None:
         return None, ("context_not_available", {"decision_ts": decision_ts})
     if not (state.close > state.ema_slow and state.trend != "DOWN"):
-        return None, (
+        # The state is returned alongside the refusal so the ablation that drops
+        # this gate can still label the resulting trade with the same regime.
+        return state, (
             "trend_filter_fail",
             {"htf_close": state.close, "htf_ema_slow": state.ema_slow, "trend": state.trend},
         )
@@ -810,9 +860,17 @@ def _htf_uptrend(
 
 
 def build_candidates() -> dict[str, _Base]:
-    """The pre-registered candidates plus the FVG ablation, all disabled by default."""
+    """The pre-registered candidates plus the two pre-registered ablations.
+
+    Both ablations are derived by override, never by editing ``FROZEN_PARAMS``:
+    the frozen hash of the pre-registered rulesets stays the one written down
+    before the campaign ran.
+    """
     return {
         "edge_intra_01": IntraBreakout(),
+        "edge_intra_01_no_trend": IntraBreakout(
+            {**FROZEN_PARAMS["edge_intra_01"], "use_trend_filter": False}
+        ),
         "edge_intra_02": IntraRetestFvg(),
         "edge_intra_02_no_fvg": IntraRetestFvg(
             {**FROZEN_PARAMS["edge_intra_02"], "require_fvg": False}
