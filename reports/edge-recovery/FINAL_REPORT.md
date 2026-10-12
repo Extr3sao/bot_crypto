@@ -15,6 +15,16 @@ BRANCH:              agent/edge-recovery/WP-EDGE-00-baseline (creada desde main 
 main (intacta):      1d2192b0aec8cfe1bf2bfcaa308c4787229b3d22  ·  259 commits por delante de origin/main
 origin/main:         5e6f9632e8d9c15dabd60ea92ac68f350ca28c9d  (2026-09-22)
 FALSE_SUCCESS:       0
+IMPLEMENTED:         authority map + baseline + git divergence + first observable PAPER run + independent verifier; no runtime code changed
+TESTS:               python -m pytest tests/unit/autonomous tests/unit/paper tests/unit/cert tests/integration -q -> 385 passed, 0 failed, 0 skipped; ruff + mypy OK
+RUNTIME_VALIDATION:  PASS - scripts/autonomous_paper.py @ 1d2192b: 6 decisiones, 0 ordenes, trace chain intacta (TEST_TARGET == RUNTIME_TARGET)
+PAPER_VALIDATION:    PASS con 0 trades: ZERO_BY_NO_TRADE (el ledger no admite ninguna estrategia); sin posiciones
+STRATEGY_RESULTS:    NO_TRADE esperado; ninguna ventaja economica demostrada en este WP
+DEFECTS:             4 (DEF-WP00-01 .. DEF-WP00-04; ver seccion 5)
+EVIDENCE:            reports/edge-recovery/{RUN_REPORT.md,RUN_REPORT.json,runtime_authority_map.md,baseline.json,git_divergence_report.md,git_sync_status.json,INDEPENDENT_VERIFICATION.json,runs/**,diagnostics/**}
+ARCHITECTURE_STATUS: unchanged (WP de observacion y evidencia)
+RFC_STATUS:          RFC-TAP-EDGE-001 E0 completado en su parte local; GIT_SYNC_VERIFIED pendiente de autenticacion
+NEXT_PHASE:          WP-EDGE-01 (no ejecutado)
 ```
 
 ## 1. Implementado
