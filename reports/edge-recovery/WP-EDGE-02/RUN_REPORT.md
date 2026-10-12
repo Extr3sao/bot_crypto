@@ -213,7 +213,7 @@ Los digests completos estan en `RUN_REPORT.json#artifacts`.
 | `f886e53` | Record the WP-EDGE-02 closure: verdicts, refusals, digests and the blocked push. [WP-EDGE-02] |
 | `6070806` | Record that a full re-run reproduces the WP-EDGE-02 tables byte for byte. [WP-EDGE-02] |
 
-`WP-EDGE-02` aporta **3 commits** sobre `87f2357`: codigo, verificador, pruebas, artefactos, el ADR-0032 y la excepcion de `.gitignore` que versiona esta evidencia; despues el registro de ejecucion y el informe final; y por ultimo la reproducibilidad byte a byte. Medido con `git rev-list --count 4be09fb..HEAD` en el momento de escribir esta correccion: **23 commits** por delante de la base `4be09fb`. El commit que lleva esta correccion suma uno mas; el recuento exacto se obtiene con ese comando.
+`WP-EDGE-02` aporta **4 commits** sobre `87f2357`: codigo, verificador, pruebas, artefactos, el ADR-0032 y la excepcion de `.gitignore` que versiona esta evidencia; despues el registro de ejecucion y el informe final; la reproducibilidad byte a byte; y la correccion de estos recuentos (`cb94dd2`, `f886e53`, `6070806`, `8759ebd`). En `8759ebd`, `git rev-list --count 4be09fb..HEAD` da **24 commits** por delante de la base `4be09fb`; el numero se declara asi, anclado al commit que lo escribio, porque cualquier commit posterior suma uno y no se reescribe aqui.
 
 ## 9. Publicacion — `BLOCKED_GITHUB_AUTH`
 

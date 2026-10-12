@@ -6,7 +6,6 @@
   "git": {
     "head_commit": "cb94dd291dc5221e46d39054fb73cf468242d465",
     "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
-    "commits_ahead_of_the_wp01_baseline_4be09fb": 21,
     "recent_commits": [
       "cb94dd2 Stress the frozen 4h trend reading and audit H6's 183 risk refusals. [WP-EDGE-02]",
       "87f2357 Re-derive the closure records after the report revision. [WP-EDGE-01]",
@@ -51,11 +50,10 @@
         "scripts/edge01_wp02_verify.py": "6319a21ee976b1d22a100e0704ca6e8b30ae7b2df79213e91a857a1409d58267"
       }
     },
-    "head_commit_at_run": "cb94dd291dc5221e46d39054fb73cf468242d465",
     "commits_by_this_work_package": [
       {
         "sha": "cb94dd2",
-        "subject": "Stress the frozen 4h trend reading and audit H6s 183 risk refusals. [WP-EDGE-02]"
+        "subject": "Stress the frozen 4h trend reading and audit H6's 183 risk refusals. [WP-EDGE-02]"
       },
       {
         "sha": "f886e53",
@@ -64,11 +62,16 @@
       {
         "sha": "6070806",
         "subject": "Record that a full re-run reproduces the WP-EDGE-02 tables byte for byte. [WP-EDGE-02]"
+      },
+      {
+        "sha": "8759ebd",
+        "subject": "Correct the commit counts and list the three WP-EDGE-02 commits. [WP-EDGE-02]"
       }
     ],
-    "commits_ahead_of_4be09fb": 23,
-    "commits_ahead_measured_at": "git rev-list --count 4be09fb..HEAD, measured when the closure was written; the commit that carries a later correction adds one more, so the count is re-derived, not trusted",
-    "note_on_the_two_counts": "21 was the count when the run record was first generated (HEAD cb94dd2); 23 is the count once the closure documents were committed"
+    "commits_ahead_of_4be09fb": 24,
+    "commits_ahead_measured_at": "commit 8759ebd",
+    "commits_ahead_measured_by": "git rev-list --count 4be09fb..HEAD, evaluated at 8759ebd",
+    "count_discipline": "the count is stated as of the commit that wrote it (8759ebd) and is re-derivable with git rev-list --count 4be09fb..HEAD; a later commit adds one and is not folded back into this record, so the number is never a claim about a tree the reader cannot check"
   },
   "provenance": {
     "claim": "the nine package modules WP-EDGE-01 measured are byte-identical; the package hash a new run records differs only because two modules were added, and no WP-EDGE-01 artefact or script was edited",
@@ -809,5 +812,5 @@
     "no historical evidence was regenerated to hide an inconsistency",
     "no token was read, requested, stored or printed"
   ],
-  "work_package_commits": 3
+  "work_package_commits": 4
 }
