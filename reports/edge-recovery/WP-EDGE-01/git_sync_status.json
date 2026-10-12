@@ -2,7 +2,7 @@
   "work_package": "WP-EDGE-01",
   "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
   "local": {
-    "head_at_commit_of_this_file": "the revision that carries this text is the record commit listed last in commits_created_by_this_wp; it names e81eba9a1f184a67589eb7c5fedf02f474023526 as the head it was written at",
+    "head_at_commit_of_this_file": "the revision that carries this text is the record commit listed last in commits_created_by_this_wp; it names 94714bd3ec2b0420aef6ed0c746c8c5df5b0e82d as the head it was written at",
     "head_before_this_wp": "4be09fb95b90669fbf10ab73073f8915a7c8020d",
     "commits_created_by_this_wp": [
       {
@@ -89,6 +89,16 @@
         "sha": "e81eba9a1f184a67589eb7c5fedf02f474023526",
         "kind": "closure",
         "subject": "Publish the WP-EDGE-01 closure report with a verifier that re-derives its figures. [WP-EDGE-01]"
+      },
+      {
+        "sha": "b29f1745c9c6ec324876271869fa7e284fca8d60",
+        "kind": "closure",
+        "subject": "Record the WP-EDGE-01 closure: verdicts, digests, commits and the blocked push. [WP-EDGE-01]"
+      },
+      {
+        "sha": "94714bd3ec2b0420aef6ed0c746c8c5df5b0e82d",
+        "kind": "closure",
+        "subject": "Attribute the push probes in the closure report to the commands that produced them. [WP-EDGE-01]"
       }
     ],
     "files_owned_by_this_wp": [
@@ -116,7 +126,7 @@
     "source_digest_rule": "sha256 over name+bytes of src/trading_bot/research/edge01/*.py, scripts/edge01_run.py and scripts/edge01_verify.py, with CRLF folded to LF so the digest does not depend on the checkout's line endings",
     "source_sha256_at_measurement": "616a86fa7258fa9efe2faf1d3b333a87722944aef9796bfa228417014c178c5a",
     "source_sha256_of_the_committed_tree": "616a86fa7258fa9efe2faf1d3b333a87722944aef9796bfa228417014c178c5a",
-    "source_sha256_of_the_committed_tree_at": "e81eba9a1f184a67589eb7c5fedf02f474023526",
+    "source_sha256_of_the_committed_tree_at": "94714bd3ec2b0420aef6ed0c746c8c5df5b0e82d",
     "identity_holds": true,
     "how_to_check": "Recompute the digest from the blobs of the commit, never from the working tree: `python -c \"import subprocess,hashlib,pathlib;...\"` is not needed because scripts/edge01_closure_report_check.py does it and refuses an artefact whose digest does not match the commit it names. The digest folds CRLF to LF, so the working tree, the stored blobs and a clean checkout agree (DEF-EDGE01-09).",
     "note": "The campaign was re-run after the H6, OOS and recovery work, on the same corpus and the same frozen parameters, and republished byte-identical results (TRADES.csv, EQUITY_CURVE.csv, MARKET_CONTEXT.csv, STRATEGY_RESULTS.json); the digest recorded in RUN_REPORT.json is the digest of the code at af250f2, which already contains every closure change to the research package."
@@ -223,13 +233,13 @@
     "produced_after_the_last_artefact_change": true
   },
   "final_state": {
-    "head": "e81eba9a1f184a67589eb7c5fedf02f474023526",
+    "head": "94714bd3ec2b0420aef6ed0c746c8c5df5b0e82d",
     "worktree_clean_for_wp_paths": true,
     "push_status": "BLOCKED_GITHUB_AUTH",
     "paper_integration": "NOT_AUTHORIZED (no candidate reached ADMIT; the 4h trend review returned NOT_SUFFICIENT_EVIDENCE / INSUFFICIENT_EVIDENCE)",
-    "commits_listed_here": 17,
-    "commits_in_this_wp_at_HEAD": 17,
-    "carrying_commit_not_self_listed": false,
+    "commits_listed_here": 19,
+    "commits_in_this_wp_at_HEAD": 19,
+    "carrying_commit_not_self_listed": true,
     "carrying_commit_note": "A record cannot name the commit that carries it. The revision below names every commit up to the content commit and states the digest of the code it indexes; `git log --oneline 4be09fb..HEAD` shows the record commit itself."
   },
   "closure": {

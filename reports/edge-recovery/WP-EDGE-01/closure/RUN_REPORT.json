@@ -1,17 +1,17 @@
 {
   "schema_version": 1,
   "work_package": "WP-EDGE-01 closure: H6 (entry on a retest of the broken level), the out-of-sample review of the 4h trend candidate, and the repair of the recovery gate",
-  "generated_at_utc": "2026-10-12T18:59:58Z",
+  "generated_at_utc": "2026-10-12T19:06:30Z",
   "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
-  "head": "e81eba9a1f184a67589eb7c5fedf02f474023526",
+  "head": "94714bd3ec2b0420aef6ed0c746c8c5df5b0e82d",
   "head_note": "`head` is the commit the code and the artefacts below belong to. This record is carried by the commit that follows it, which touches records only; `git log --oneline af250f2..HEAD` names it.",
   "produced_by": "a one-shot generator that reads the published artefacts and git; every number here is read from them, never retyped by hand",
   "verified_by": "scripts/edge01_closure_report_check.py",
   "deliverables": {
     "final_report": {
       "path": "reports/edge-recovery/WP-EDGE-01/FINAL_REPORT.md",
-      "sha256": "c1ca977d31c8c1be103fc0e9474b8716c7cdfc370e419fd934265734e8031466",
-      "bytes": 11236
+      "sha256": "03aa2a14d0aa7317b683b1c6d64cf51fe3e0fa9f1ec25081fb622007bdcf843e",
+      "bytes": 11965
     },
     "run_report": {
       "path": "reports/edge-recovery/WP-EDGE-01/closure/RUN_REPORT.json"
@@ -540,13 +540,13 @@
   "tests": {
     "edge01_unit": {
       "command": "pytest tests/unit/research/test_edge01_*.py -q",
-      "result": "126 passed in 6.41s",
+      "result": "126 passed in 6.72s",
       "exit_code": 0,
       "green": true
     },
     "recovery_regressions": {
       "command": "pytest tests/unit/research/test_active_recovery_wp.py::test_state_view_is_deterministic tests/unit/research/test_recovery_determinism.py::test_repeated_reproduction_is_byte_identical tests/unit/research/test_recovery_determinism.py::test_the_clean_checkout_rehearsal_passes_on_this_commit -q",
-      "result": "3 passed in 22.19s",
+      "result": "3 passed in 22.61s",
       "exit_code": 0,
       "green": true,
       "tests": [
@@ -609,6 +609,14 @@
     {
       "sha": "e81eba9a1f184a67589eb7c5fedf02f474023526",
       "subject": "Publish the WP-EDGE-01 closure report with a verifier that re-derives its figures. [WP-EDGE-01]"
+    },
+    {
+      "sha": "b29f1745c9c6ec324876271869fa7e284fca8d60",
+      "subject": "Record the WP-EDGE-01 closure: verdicts, digests, commits and the blocked push. [WP-EDGE-01]"
+    },
+    {
+      "sha": "94714bd3ec2b0420aef6ed0c746c8c5df5b0e82d",
+      "subject": "Attribute the push probes in the closure report to the commands that produced them. [WP-EDGE-01]"
     }
   ],
   "push": {
