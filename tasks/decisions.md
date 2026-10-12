@@ -1238,7 +1238,8 @@ lo que NO se requerirá per-ADR "next free" footnote nunca más.
     ejecutar al runtime reglas cuya unica propiedad medida es perder dinero despues de costes).
 - **Decision**: los tres candidatos viven en `src/trading_bot/research/edge01/` y se ejecutan con
   `scripts/edge01_run.py`; la verificacion independiente vive en `scripts/edge01_verify.py`, que no
-  importa el paquete y comprueba solo los CSV/JSON publicados (13/13 checks, con auto-test mutante).
+  importa el paquete y comprueba solo los CSV/JSON publicados (14/14 checks, con auto-test
+  mutante 8/8).
   La clasificacion es por candidato y por particion: `ADMIT` exige OOS neto positivo, expectancy
   positiva, al menos un regimen rentable, margen bajo 2x fees y muestra suficiente; si no, `REJECT`, y
   si la evidencia es suficiente pero debil, `INSUFFICIENT_EVIDENCE` en vez de inventar veredicto.
@@ -1260,8 +1261,20 @@ lo que NO se requerirá per-ADR "next free" footnote nunca más.
     `TRADES_AUTHORIZED = 0`, `PROFITABILITY_VERIFIED = FALSE`.
   - Los defectos encontrados y corregidos durante el WP (look-ahead de 45 min en la lectura de contexto
     1h, liquidacion de posiciones abiertas al final de la ventana, colision de identificadores en
-    `TRADES.csv`, tamano de los JSON publicados) se registran en `RUN_REPORT.json#defects_fixed_in_this_wp`
+    `TRADES.csv`, tamano de los JSON publicados, y una huella de codigo que dependia de los finales de
+    linea del checkout) se registran en `RUN_REPORT.json#defects_fixed_in_this_wp` (DEF-EDGE01-01..09)
     con su evidencia de test, en vez de quedar como cambios silenciosos.
+  - La cobertura de mercado no se mide con la columna `regime` de `TRADES.csv`: esa columna es el
+    estado del filtro de tendencia del propio candidato y un candidato filtrado solo puede escribir un
+    valor, asi que el criterio preinscrito `require_min_positive_regimes` queda estructuralmente
+    sesgado y se declara debil en vez de presentarlo como prueba. La cobertura real (alcista, bajista,
+    lateral) se publica como `market_context` por operacion, calculado con la regla del benchmark
+    (BTC diario: cierre frente a su EMA200 y la pendiente a 20 dias de esa EMA, convencion ya existente
+    del lane swing) leida *as-of* el instante de la decision, publicada dia a dia en `MARKET_CONTEXT.csv`
+    y re-derivada por el verificador sin importar el paquete (`MARKET_CONTEXT_ATTRIBUTION`). Los dias
+    sin lectura posible se cuentan como `UNDEFINED` en su propia columna.
+  - Ningun umbral, criterio ni veredicto cambio al anadir esa columna: los tres intraday siguen
+    `REJECT` y los dos trend siguen `INSUFFICIENT_EVIDENCE`.
   - EDGE-TREND-01 no lleva un filtro de volatilidad separado (el ATR solo vive en stop y trailing): se
     declara como tal y no se anade a posteriori. Las hipotesis siguientes quedan en
     `RUN_REPORT.json#next_hypotheses`; no se recarga ningun presupuesto de hipotesis por este ADR.
