@@ -107,13 +107,20 @@ mismo `payload_sha256`) para descartar que la vista se lea a si misma.
 
 - Los commits locales, con su sha y su asunto, estan listados en `closure/RUN_REPORT.json#commits` y
   en `git_sync_status.json#local.commits_created_by_this_wp`.
-- La publicacion en GitHub sigue **bloqueada por credenciales** y se diagnostico otra vez desde cero
-  tras los commits: `git push --dry-run` con `GIT_TERMINAL_PROMPT=0` devuelve
-  `remote: No anonymous write access.` (exit 128). No hay `GITHUB_TOKEN`/`GH_TOKEN` en el entorno, no
+- La publicacion en GitHub sigue **bloqueada por credenciales** y se diagnostico otra vez desde
+  cero tras los commits. Dos sondas, ninguna con exito: con el helper desactivado,
+  `GIT_TERMINAL_PROMPT=0 git -c credential.helper= push --dry-run origin HEAD` sale **128** con
+  `fatal: could not read Username for 'https://github.com': terminal prompts disabled`; con el
+  helper configurado, `GIT_TERMINAL_PROMPT=0 git push --dry-run origin HEAD` **no retorna** ni en
+  180 s (el gestor abre su propio dialogo interactivo y no respeta esa variable), asi que el
+  registro guarda `exit_code: null` para esa sonda y anota que el arbol de procesos se termino sin
+  dejar ningun proceso vivo. El mensaje `remote: No anonymous write access.` pertenece a una sonda
+  anterior y esta marcado como tal. No hay `GITHUB_TOKEN`/`GH_TOKEN`/`GIT_ASKPASS` en el entorno, no
   existe `~/.git-credentials`, no hay `gh` instalado y el helper configurado es `manager` (Git
-  Credential Manager), que solo puede autenticar de forma interactiva. **No se ha leido, pedido,
-  almacenado ni impreso ningun token.** El procedimiento exacto de desbloqueo esta en
-  `closure/RUN_REPORT.json#push.unlock_procedure`.
+  Credential Manager). La lectura anonima si funciona: `git ls-remote --heads origin` lista 61 ramas
+  (exit 0) y `refs/heads/agent/edge-recovery/*` esta **vacio**, asi que la rama y sus 18 commits
+  existen solo en local. **No se ha leido, pedido, almacenado ni impreso ningun token.** El
+  procedimiento exacto de desbloqueo esta en `closure/RUN_REPORT.json#push.unlock_procedure`.
 
 ## 6. Bloqueos y siguiente accion concreta
 
