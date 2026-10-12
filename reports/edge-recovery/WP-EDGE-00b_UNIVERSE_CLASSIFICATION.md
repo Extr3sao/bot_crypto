@@ -106,6 +106,16 @@ Evidencia: [RUN_REPORT.md](reports/edge-recovery/runs/WP-EDGE-00b-universe-fix/w
 
 No se reescribió ningún artefacto de WP-00: su certificación (`INDEPENDENT_VERIFICATION.json`, run `wp-edge-00-smoke-real`) pertenece al commit `6a3a090` y sigue intacta en ese commit. Pero su chequeo `RUN_COMMIT_IS_ANCESTOR` exige que **nada de código de runtime haya cambiado desde el smoke**, y este WP cambia código de runtime: al commitear, ese chequeo pasa a `FAIL` **por diseño**, y significa exactamente lo que dice — la evidencia de WP-00 ya no describe `HEAD`. El smoke equivalente para el nuevo estado es el run de este WP (`wp-edge-00b-universe-fix`). No se debilitó el chequeo para que siguiera verde.
 
+Transcripción literal, en HEAD `1bf9f79` y sobre una copia de la evidencia (el artefacto congelado no se tocó), en [WP-EDGE-00b_WP00_PROVENANCE_CONSEQUENCE.txt](reports/edge-recovery/WP-EDGE-00b_WP00_PROVENANCE_CONSEQUENCE.txt):
+
+```text
+[FAIL] RUN_COMMIT_IS_ANCESTOR: run commit=1d2192b0aec8 ancestor of HEAD=1bf9f79483a7=True;
+       files changed since run=44 (all evidence/verifier=False)
+-> FAIL checks=11/12 negative=8/8 false_success=0   (exit 1)
+```
+
+Estado de sincronización con GitHub de este WP (commits locales retenidos, push bloqueado con su causa exacta): [git_sync_status_WP-EDGE-00b.json](reports/edge-recovery/git_sync_status_WP-EDGE-00b.json). **GitHub no está actualizado** y no se declara que lo esté.
+
 ## 8. Límites (lo que este WP NO demuestra)
 
 - **No es rentabilidad**: 0 operaciones, PnL 0 por no haber posición. Nada aquí dice si alguna estrategia gana dinero.
