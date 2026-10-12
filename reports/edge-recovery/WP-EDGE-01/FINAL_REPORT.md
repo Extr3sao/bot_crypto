@@ -39,7 +39,9 @@ correr ninguna.
 | `plan_limit` (limite en el nivel) | 372 | **-495,88** | **-1,3330** | 9,41% | 0,2912 | 5,00% | 0,99% |
 
 - **Veredicto**: **`RETEST_IMPROVES_NET`** con lectura de ejecucion **`VIABLE`**. OOS, que no decide:
-  44,23% de win rate en 52 operaciones.
+  -55,7084 USDT en 54 operaciones con 9,26% de win rate, frente al libro congelado en esa misma
+  ventana (-94,8077 en 63 operaciones, 17,46%). El win rate baja tambien fuera de la ventana de
+  diseno: la entrada en el nivel gana menos veces y cobra mas por operacion.
 - **Ejecucion**: 686 ordenes planificadas en DEV, 372 rellenas (**54,23%**), 128 caducadas, 183
   rechazadas por el presupuesto de riesgo en el momento del toque y 3 canceladas al terminar la
   ventana. Fuera de la ventana de diseno el relleno sube: VAL 76,86% y OOS 81,82%.
@@ -74,11 +76,16 @@ congelo antes de correr la descomposicion.
 | `periods_positive` (>=2 de 3) | PASS | dos de los tres periodos declarados |
 
 **Veredicto: `NOT_SUFFICIENT_EVIDENCE`.** La razon es exactamente la que H3 nombro: la ventana fuera
-de muestra es una sola operacion. Los libros por activo lo confirman (con 2x fees BTC pasa a -14,68 y
-SOL a -90,10: lo unico que aguanta es ETH), y VAL es plano. La regla de admision del propio WP coincide:
+de muestra es una sola operacion. Los libros por activo lo confirman (con 2x fees BTC pasa a -14,68,
+SOL a -90,10 y solo ETH se mantiene positivo, en 266,79), y VAL es plano. La regla de admision del propio WP coincide:
 `INSUFFICIENT_EVIDENCE`. **Nada va a PAPER** y la tuberia de paper no se ha tocado.
 
 ## 4. Que pruebas fallan y por que
+
+Ninguna prueba de esta cadena falla en el codigo final. El estado se midio, no se deduce del
+codigo: 126/126 en los seis ficheros `test_edge01_*.py`, 3/3 en las tres regresiones de
+recuperacion y `PASS` en el ensayo de checkout limpio (`closure/CLEAN_CHECKOUT_REHEARSAL.json`,
+rehecho sobre el commit final y con 0 rutas publicadas movidas).
 
 | prueba | estado | causa |
 |---|---|---|
@@ -99,7 +106,7 @@ mismo `payload_sha256`) para descartar que la vista se lea a si misma.
 ## 5. Commits locales y publicacion
 
 - Los commits locales, con su sha y su asunto, estan listados en `closure/RUN_REPORT.json#commits` y
-  en `git_sync_status.json`.
+  en `git_sync_status.json#local.commits_created_by_this_wp`.
 - La publicacion en GitHub sigue **bloqueada por credenciales** y se diagnostico otra vez desde cero
   tras los commits: `git push --dry-run` con `GIT_TERMINAL_PROMPT=0` devuelve
   `remote: No anonymous write access.` (exit 128). No hay `GITHUB_TOKEN`/`GH_TOKEN` en el entorno, no
@@ -147,3 +154,5 @@ mismo `payload_sha256`) para descartar que la vista se lea a si misma.
 | `RUN_REPORT.json`, `STRATEGY_RESULTS.json`, `TRADES.csv`, `INDEPENDENT_VERIFICATION.json` | la campana congelada y su verificacion (14/14) |
 | `ablation-h1/`, `entry-timing-h2/`, `vol-filter-h4/`, `risk-budget-h5/` | las cuatro ablaciones, cada una re-anclada y verificada |
 | `closure/RUN_REPORT.json` | registro del cierre: comandos, digests, veredictos, commits y bloqueo de push |
+| `closure/CLEAN_CHECKOUT_REHEARSAL.json` | ensayo en checkout limpio del commit `af250f2` en esta sesion: `PASS`, 4/4 artefactos identicos, 0 rutas publicadas movidas |
+| `closure/REPORT_FIGURES_CHECK.json` + `scripts/edge01_closure_report_check.py` | las 76 cifras de este informe, reformateadas desde los artefactos y exigidas literalmente en el texto: 76/76 |
