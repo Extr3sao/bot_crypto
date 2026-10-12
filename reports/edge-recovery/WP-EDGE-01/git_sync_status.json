@@ -2,7 +2,7 @@
   "work_package": "WP-EDGE-01",
   "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
   "local": {
-    "head_at_commit_of_this_file": "ba0779b3c4254a4532984899a5ac989047f5a3ed",
+    "head_at_commit_of_this_file": "ba0779b (HEAD when this file was written)",
     "head_before_this_wp": "4be09fb95b90669fbf10ab73073f8915a7c8020d",
     "commits_created_by_this_wp": [
       {
@@ -36,7 +36,8 @@
     ],
     "uncommitted_after_this_wp": [],
     "worktree_dirty": true,
-    "dirty_note": "The checkout is shared: other threads have uncommitted changes in data/st6, evidence/, scripts/cap004c_verify.py, scripts/st6_scheduler_witness.py, FINAL_REPORT.md and several report files. None of those files belong to this WP; none were staged, edited or reverted here."
+    "dirty_note": "The checkout is shared: other threads have uncommitted changes in data/st6, evidence/, scripts/cap004c_verify.py, scripts/st6_scheduler_witness.py, FINAL_REPORT.md and several report files. None of those files belong to this WP; none were staged, edited or reverted here.",
+    "self_reference": "This file is committed as c9687a8, whose content is this file. A status file cannot contain the hash of the commit that carries it, so the measured HEAD is recorded as a literal and the commit that contains it is named here instead of being chased with another commit."
   },
   "run_to_commit_identity": {
     "measured_with_head": "7539633964d41d534b79f3519594ffb53f0c6570",
