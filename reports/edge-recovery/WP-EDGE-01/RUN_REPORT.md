@@ -3,14 +3,14 @@
 | | |
 |---|---|
 | run_id | `wp-edge-01-campaign` |
-| HEAD al ejecutar | `7539633964d41d534b79f3519594ffb53f0c6570` |
+| HEAD al ejecutar | `1a0a6c85299ca09ac354d3bcf797b34a806adff2` |
 | rama | `agent/edge-recovery/WP-EDGE-00-baseline` |
 | arbol sucio al ejecutar | `True` |
-| huella del código ejecutado (sha256) | `694d4be2905ef9d76df1cefaba05ba5d94c49ea85c6178652c4af081e19a60d9` |
+| huella del código ejecutado (sha256) | `2ccce6dc6019fe9c04d53d3c1c38e52b7721c14a82ef77fe5c6f6c9e0f63f4fe` |
 | params_hash | `d073a2d686b9b198c36c9a3c6009d36130577ba247a2016c3f791813cb749d77` |
 | modo | backtest determinista sobre datos históricos locales; 0 órdenes, 0 claves, 0 red |
 | entrypoint | `scripts/edge01_run.py` |
-| generado | 2026-10-12T11:55:49.333132+00:00 |
+| generado | 2026-10-12T12:02:50.297125+00:00 |
 
 > El `HEAD` de arriba es lo que la máquina tenía al medir; cuando el árbol
 > está sucio el identificador de esta medida es la **huella del código**
@@ -151,8 +151,8 @@ Señales impresas por el candidato (antes de riesgo y ejecución): edge_intra_01
 | `DEF-EDGE01-04` | A verdict could not be told apart from an unpowered measurement: the gate returned on the first failing criterion. | Single-reason early return, no sample-size statement. | Every reason is collected; REJECT needs either a powered sample or a net that is negative in all three windows; the verdict carries power and evidence fields. | tests/unit/research/test_edge01_gate_and_artifacts.py |
 | `DEF-EDGE01-05` | STRATEGY_RESULTS.json and RUN_REPORT.json were ~86 MB each. | Per-bar working buffers (buy & hold bar returns, the equity curve) were serialised into the published JSON. | _public() strips private keys recursively; the buffers stay in memory. | artefact inventory (bytes) in RUN_REPORT.json |
 | `DEF-EDGE01-06` | The 1h trend filter of the two intraday candidates read a 1h bar whose close had not happened yet: up to 45 minutes of look-ahead. | OHLCVBar.ts is the bar's OPEN time, but the as-of read compared it directly with the decision instant instead of with the bar's close (open + duration). | last_closed_index takes the context bar's own span and requires ts + span <= decision_ts; ContextSeries passes the span of its timeframe. | tests/unit/research/test_edge01_pit.py::test_context_bar_is_unreadable_until_it_closes |
-| `DEF-EDGE01-08` | A position still open when the window ended was settled at the last bar of the whole corpus: a 2023 DEV decision could be closed with a 2026 price, and the equity curve (which stops with the window) no longer matched the sum of the trade results. | The end-of-window settlement used bars[-1] instead of the last bar inside the measured window. | The simulator resolves the last in-window bar per asset before walking the timeline and settles there, keeping exit_ts inside the window. | scripts/edge01_verify.py check EQUITY_CONSERVATION; tests/unit/research/test_edge01_pit.py::test_end_of_window_settlement_stays_in_the_window |
 | `DEF-EDGE01-07` | In TRADES.csv the ablation and the 4h/1d runs were indistinguishable: every row of edge_intra_02_no_fvg said edge_intra_02, and both trend runs said edge_trend_01, so a reader grouping by that column merged runs that must be compared, not merged. | The candidate id inside the signal was unpacked AFTER the run key, so it overwrote it. | The run key is written last and the id that printed the signal is kept in its own ``strategy`` column. | scripts/edge01_verify.py check EQUITY_CONSERVATION (grouped by run key) |
+| `DEF-EDGE01-08` | A position still open when the window ended was settled at the last bar of the whole corpus: a 2023 DEV decision could be closed with a 2026 price, and the equity curve (which stops with the window) no longer matched the sum of the trade results. Found by the verifier's EQUITY_CONSERVATION check, not by reading the code. | The end-of-window settlement used bars[-1] instead of the last bar inside the measured window. | The simulator resolves the last in-window bar per asset before walking the timeline and settles there, keeping exit_ts inside the window. | scripts/edge01_verify.py check EQUITY_CONSERVATION; tests/unit/research/test_edge01_pit.py::test_end_of_window_settlement_stays_in_the_window |
 
 ## 8. Verificación
 
@@ -189,6 +189,7 @@ Reproducir esta medida (sin red, sin claves):
 - **H1**: The intraday funnel is dominated by trend_filter_fail (>=2000 refusals per window against ~60 trades): the 1h trend filter, not the breakout, is what decides participation. — *Test:* Re-run the frozen EDGE-INTRA-01 with the trend filter removed as an ablation and compare on DEV only; a candidate whose edge lives in a filter must be visible there before VAL is touched.
 - **H2**: Gross is negative in DEV/VAL/OOS for the breakouts, so the loss is not only cost: the entry is late relative to the level it breaks. — *Test:* Measure the post-entry MFE/MAE distribution by distance from the broken level. If MFE is already spent at entry, the entry rule has to move earlier (retest or limit at the level), not the stop.
 - **H3**: EDGE-TREND-01 4h is positive in DEV (+2,140 USDT) and in OOS (+208), but the OOS net is 80% one trade, so it may be a fat tail rather than an edge. — *Test:* Re-run it on the 1h corpus over 2019-2026 with the same rules and check whether the positive tail repeats across calendar years, with the single-trade share reported per year.
+- **H4**: EDGE-TREND-01 has no separate volatility entry filter: volatility only reaches it through the ATR-scaled stop, so it trades quiet and violent regimes alike, and the losses may concentrate where a trend starts from a dead-volatility base. — *Test:* Declare a small grid of minimum-ATR thresholds BEFORE looking at VAL or OOS, pick on DEV only, freeze, then measure once. If the filter cannot be justified on DEV, it does not go in — a filter chosen after the out-of-sample window has been read proves nothing.
 
 ## 11. Limitaciones
 
@@ -198,6 +199,7 @@ Reproducir esta medida (sin red, sin claves):
 - The 4h and 1d corpora are aggregated from 1h, so a full 1-day bar exists only where 24 contiguous 1h bars exist; partial days are dropped, not interpolated.
 - Regime labels are computed from the same close series the candidates trade, with no look-ahead, but they are a research taxonomy, not the runtime's.
 - Long-only: the runtime trades Binance spot, so no short side was simulated for any candidate even where a down-breakout would be symmetric.
+- EDGE-TREND-01 has a trend filter (EMA50 > EMA200 and price above EMA200) but no SEPARATE volatility entry filter: volatility enters the ruleset through the ATR used for the stop distance, the modelled objective and the trailing exit, and through the cost-coverage gate, which grows with the volatility it expects to pay for. Adding a volatility filter now, after seeing the results, would be exactly the post-hoc adjustment this WP refuses to make; it is stated here and carried forward as hypothesis H4 instead.
 - No parameter was tuned on VAL or OOS; the rulesets are frozen in candidates.FROZEN_PARAMS with a recorded hash. This also means the candidates are untuned, and an untuned first iteration is expected to lose.
 - Nothing here is real money, live performance, or a promise of profitability.
 

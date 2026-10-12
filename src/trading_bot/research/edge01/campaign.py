@@ -207,27 +207,6 @@ DEFECTS_FIXED: list[dict[str, str]] = [
         ),
     },
     {
-        "id": "DEF-EDGE01-08",
-        "symptom": (
-            "A position still open when the window ended was settled at the last bar "
-            "of the whole corpus: a 2023 DEV decision could be closed with a 2026 "
-            "price, and the equity curve (which stops with the window) no longer "
-            "matched the sum of the trade results."
-        ),
-        "cause": (
-            "The end-of-window settlement used bars[-1] instead of the last bar inside "
-            "the measured window."
-        ),
-        "fix": (
-            "The simulator resolves the last in-window bar per asset before walking "
-            "the timeline and settles there, keeping exit_ts inside the window."
-        ),
-        "evidence": (
-            "scripts/edge01_verify.py check EQUITY_CONSERVATION; "
-            "tests/unit/research/test_edge01_pit.py::test_end_of_window_settlement_stays_in_the_window"
-        ),
-    },
-    {
         "id": "DEF-EDGE01-07",
         "symptom": (
             "In TRADES.csv the ablation and the 4h/1d runs were indistinguishable: "
@@ -244,6 +223,28 @@ DEFECTS_FIXED: list[dict[str, str]] = [
             "kept in its own ``strategy`` column."
         ),
         "evidence": "scripts/edge01_verify.py check EQUITY_CONSERVATION (grouped by run key)",
+    },
+    {
+        "id": "DEF-EDGE01-08",
+        "symptom": (
+            "A position still open when the window ended was settled at the last bar "
+            "of the whole corpus: a 2023 DEV decision could be closed with a 2026 "
+            "price, and the equity curve (which stops with the window) no longer "
+            "matched the sum of the trade results. Found by the verifier's "
+            "EQUITY_CONSERVATION check, not by reading the code."
+        ),
+        "cause": (
+            "The end-of-window settlement used bars[-1] instead of the last bar inside "
+            "the measured window."
+        ),
+        "fix": (
+            "The simulator resolves the last in-window bar per asset before walking "
+            "the timeline and settles there, keeping exit_ts inside the window."
+        ),
+        "evidence": (
+            "scripts/edge01_verify.py check EQUITY_CONSERVATION; "
+            "tests/unit/research/test_edge01_pit.py::test_end_of_window_settlement_stays_in_the_window"
+        ),
     },
 ]
 
@@ -263,6 +264,13 @@ LIMITATIONS: list[str] = [
     "with no look-ahead, but they are a research taxonomy, not the runtime's.",
     "Long-only: the runtime trades Binance spot, so no short side was simulated for "
     "any candidate even where a down-breakout would be symmetric.",
+    "EDGE-TREND-01 has a trend filter (EMA50 > EMA200 and price above EMA200) but "
+    "no SEPARATE volatility entry filter: volatility enters the ruleset through the "
+    "ATR used for the stop distance, the modelled objective and the trailing exit, "
+    "and through the cost-coverage gate, which grows with the volatility it expects "
+    "to pay for. Adding a volatility filter now, after seeing the results, would be "
+    "exactly the post-hoc adjustment this WP refuses to make; it is stated here and "
+    "carried forward as hypothesis H4 instead.",
     "No parameter was tuned on VAL or OOS; the rulesets are frozen in "
     "candidates.FROZEN_PARAMS with a recorded hash. This also means the candidates "
     "are untuned, and an untuned first iteration is expected to lose.",
@@ -321,6 +329,21 @@ NEXT_HYPOTHESES: list[dict[str, str]] = [
             "Re-run it on the 1h corpus over 2019-2026 with the same rules and check "
             "whether the positive tail repeats across calendar years, with the "
             "single-trade share reported per year."
+        ),
+    },
+    {
+        "id": "H4",
+        "hypothesis": (
+            "EDGE-TREND-01 has no separate volatility entry filter: volatility only "
+            "reaches it through the ATR-scaled stop, so it trades quiet and violent "
+            "regimes alike, and the losses may concentrate where a trend starts from "
+            "a dead-volatility base."
+        ),
+        "test": (
+            "Declare a small grid of minimum-ATR thresholds BEFORE looking at VAL "
+            "or OOS, pick on DEV only, freeze, then measure once. If the filter "
+            "cannot be justified on DEV, it does not go in — a filter chosen after "
+            "the out-of-sample window has been read proves nothing."
         ),
     },
 ]
