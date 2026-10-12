@@ -4,7 +4,7 @@
   "generated_at_utc": "2026-10-12T09:10:59.031115+00:00",
   "remote": "https://github.com/Extr3sao/bot_crypto.git",
   "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
-  "local_sha": "95bc41804661dd51253c4c592dbb3b4ecfe4a738",
+  "local_sha": "87826d489148b480bab7950f73720a0013cba2f3",
   "remote_sha": null,
   "remote_branch_exists": false,
   "tracking_upstream": null,
@@ -15,6 +15,14 @@
       "exit_code": 128,
       "result": "FAILED",
       "reason": "fatal: could not read Username for 'https://github.com': terminal prompts disabled -> no stored credential is available to this environment for write access",
+      "classification": "BLOCKED_GITHUB_AUTH"
+    },
+    {
+      "at_utc": "2026-10-12T09:2x:00Z",
+      "command": "GIT_TERMINAL_PROMPT=0 GCM_INTERACTIVE=never git push -u origin agent/edge-recovery/WP-EDGE-00-baseline",
+      "exit_code": 128,
+      "result": "FAILED",
+      "reason": "fatal: could not read Username for 'https://github.com': terminal prompts disabled (same cause as the first attempt)",
       "classification": "BLOCKED_GITHUB_AUTH"
     }
   ],
@@ -39,5 +47,6 @@
   "next_step": {
     "action": "authenticate git (or provide a token) and run: git push -u origin agent/edge-recovery/WP-EDGE-00-baseline",
     "then": "verify remote SHA with: git ls-remote origin refs/heads/agent/edge-recovery/WP-EDGE-00-baseline"
-  }
+  },
+  "branch_tip_note": "87826d489148b480bab7950f73720a0013cba2f3 is the tip at the time this record was generated; commits after it on this branch only adjust provenance lines inside FINAL_REPORT.md"
 }
