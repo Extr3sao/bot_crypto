@@ -12,6 +12,7 @@ from trading_bot.autonomous.contracts import (
     DecisionMode,
     DecisionTrace,
     EdgeEvidence,
+    NoTradeKind,
     OutcomeRecord,
     OutcomeStatus,
     ReviewType,
@@ -198,6 +199,26 @@ def test_shadow_trace_requires_the_shadow_contract() -> None:
 def test_no_trade_trace_cannot_carry_an_order() -> None:
     with pytest.raises(ValueError, match="NO_TRADE must never create an order"):
         _trace(order_created=True, orders_created=1)
+
+
+def test_an_excluded_asset_trace_cannot_carry_a_proposal() -> None:
+    """DEF-WP00-01 — a universe exclusion never reasoned about a proposal.
+
+    Same rule as ``NO_TRADE_DATA``: the asset was refused before any strategy
+    saw it, so a trace claiming otherwise would describe a decision that never
+    happened.
+    """
+    with pytest.raises(ValueError, match="cannot carry a trade proposal"):
+        _trace(
+            classification="UNIVERSE_FILTERED",
+            no_trade_kind=NoTradeKind.NO_TRADE_UNIVERSE.value,
+            proposal=_proposal().to_dict(),
+        )
+
+
+def test_an_unknown_no_trade_kind_is_refused() -> None:
+    with pytest.raises(ValueError, match="unknown no_trade_kind"):
+        _trace(no_trade_kind="NO_TRADE_MADE_UP")
 
 
 def test_agent_capability_refuses_forbidden_capabilities() -> None:

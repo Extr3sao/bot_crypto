@@ -165,6 +165,7 @@ def test_no_trade_classification_matrix() -> None:
     assert no_trade_kind_for("VERIFIER_FAIL") is NoTradeKind.NO_TRADE_CONFLICT
     assert no_trade_kind_for("NO_MARKET_DATA") is NoTradeKind.NO_TRADE_DATA
     assert no_trade_kind_for("CONTEXT_ERROR") is NoTradeKind.NO_TRADE_DATA
+    assert no_trade_kind_for("UNIVERSE_FILTERED") is NoTradeKind.NO_TRADE_UNIVERSE
     with pytest.raises(ValueError):
         no_trade_kind_for("PAPER_ADMITTED")
 
@@ -209,7 +210,7 @@ def test_a_provider_outage_is_a_runtime_failure_not_a_no_trade(tmp_path: Path) -
     assert totals["runtime_failures"] == 1
     assert totals["no_trades"] == 0
     assert totals["no_trade_NO_TRADE_STRATEGIC"] == 0
-    # Every asset-cycle evaluation is exactly one of the four honest buckets.
+    # Every asset-cycle evaluation is exactly one of the honest buckets.
     assert (
         totals["paper_trades"]
         + totals["shadow_trades"]
