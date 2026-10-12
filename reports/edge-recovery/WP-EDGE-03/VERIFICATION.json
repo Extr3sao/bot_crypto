@@ -1,0 +1,300 @@
+{
+  "checks": {
+    "checks": [
+      {
+        "check": "ARTIFACTS_PRESENT",
+        "detail": "7 artefact(s) required; missing none, empty none",
+        "passed": true
+      },
+      {
+        "check": "FROZEN_CORPUS_UNCHANGED",
+        "detail": "all 6 frozen series match their pinned digests",
+        "passed": true
+      },
+      {
+        "check": "STORE_DIGESTS_MATCH_MANIFEST",
+        "detail": "6 store file(s) verified",
+        "passed": true
+      },
+      {
+        "check": "FORWARD_BARS_AFTER_FREEZE",
+        "detail": "17850 forward bar(s) admissible",
+        "passed": true
+      },
+      {
+        "check": "QUALITY_RECOMPUTED",
+        "detail": "gaps, duplicates and order match the store",
+        "passed": true
+      },
+      {
+        "check": "OBSERVATION_DAYS_RECOMPUTED",
+        "detail": "226 common observation day(s)",
+        "passed": true
+      },
+      {
+        "check": "LATENCY_RECOMPUTED",
+        "detail": "ingestion lag matches the stored provenance",
+        "passed": true
+      },
+      {
+        "check": "SHADOW_WINDOW_RESPECTED",
+        "detail": "1286 shadow row(s) inside the forward window",
+        "passed": true
+      },
+      {
+        "check": "SHADOW_WINDOW_START_CONSISTENT",
+        "detail": "16 observed arm(s) start exactly after their freeze",
+        "passed": true
+      },
+      {
+        "check": "HYPOTHETICAL_ONLY",
+        "detail": "425 shadow row(s) hypothetical, zero orders",
+        "passed": true
+      },
+      {
+        "check": "SHADOW_ACCOUNTING",
+        "detail": "every arm's net equals the sum of its fills",
+        "passed": true
+      },
+      {
+        "check": "EXPOSURE_RECOMPUTED",
+        "detail": "16 observed arm(s) exposure recomputed from their fills",
+        "passed": true
+      },
+      {
+        "check": "PARITY_CLASSES_RECOMPUTED",
+        "detail": "544 case(s) re-classified, 0 defect(s)",
+        "passed": true
+      },
+      {
+        "check": "PARITY_CASES_COMPLETE",
+        "detail": "544 case(s) complete and unique",
+        "passed": true
+      },
+      {
+        "check": "RESTART_PROOF_CONSISTENT",
+        "detail": "the second ingest added nothing and moved nothing",
+        "passed": true
+      },
+      {
+        "check": "VERDICT_RECOMPUTED",
+        "detail": "OBSERVATION_AVAILABLE with promotion NONE",
+        "passed": true
+      },
+      {
+        "check": "TEST_TARGET_EQUALS_RUNTIME",
+        "detail": "both targets are run_forward_observation",
+        "passed": true
+      },
+      {
+        "check": "NO_ORDER_PATH",
+        "detail": "7 source(s) free of order paths",
+        "passed": true
+      }
+    ],
+    "failed": 0,
+    "passed": 18,
+    "verdict": "VERIFY_PASS"
+  },
+  "self_test": {
+    "applied": 18,
+    "collateral_breaks": 4,
+    "detected": 18,
+    "sabotages": [
+      {
+        "baseline_passed": true,
+        "broken_checks": [
+          "ARTIFACTS_PRESENT"
+        ],
+        "collateral": [],
+        "detected": true,
+        "expected_check": "ARTIFACTS_PRESENT",
+        "sabotage": "delete an artefact"
+      },
+      {
+        "baseline_passed": true,
+        "broken_checks": [
+          "FROZEN_CORPUS_UNCHANGED"
+        ],
+        "collateral": [],
+        "detected": true,
+        "expected_check": "FROZEN_CORPUS_UNCHANGED",
+        "sabotage": "move the frozen corpus digest"
+      },
+      {
+        "baseline_passed": true,
+        "broken_checks": [
+          "STORE_DIGESTS_MATCH_MANIFEST"
+        ],
+        "collateral": [],
+        "detected": true,
+        "expected_check": "STORE_DIGESTS_MATCH_MANIFEST",
+        "sabotage": "break a store digest in the manifest"
+      },
+      {
+        "baseline_passed": true,
+        "broken_checks": [
+          "FORWARD_BARS_AFTER_FREEZE",
+          "LATENCY_RECOMPUTED",
+          "QUALITY_RECOMPUTED",
+          "STORE_DIGESTS_MATCH_MANIFEST"
+        ],
+        "collateral": [
+          "LATENCY_RECOMPUTED",
+          "QUALITY_RECOMPUTED",
+          "STORE_DIGESTS_MATCH_MANIFEST"
+        ],
+        "detected": true,
+        "expected_check": "FORWARD_BARS_AFTER_FREEZE",
+        "sabotage": "write a bar at the frozen end"
+      },
+      {
+        "baseline_passed": true,
+        "broken_checks": [
+          "QUALITY_RECOMPUTED"
+        ],
+        "collateral": [],
+        "detected": true,
+        "expected_check": "QUALITY_RECOMPUTED",
+        "sabotage": "inflate the duplicate count"
+      },
+      {
+        "baseline_passed": true,
+        "broken_checks": [
+          "OBSERVATION_DAYS_RECOMPUTED"
+        ],
+        "collateral": [],
+        "detected": true,
+        "expected_check": "OBSERVATION_DAYS_RECOMPUTED",
+        "sabotage": "inflate the observation days"
+      },
+      {
+        "baseline_passed": true,
+        "broken_checks": [
+          "LATENCY_RECOMPUTED"
+        ],
+        "collateral": [],
+        "detected": true,
+        "expected_check": "LATENCY_RECOMPUTED",
+        "sabotage": "falsify the ingestion latency"
+      },
+      {
+        "baseline_passed": true,
+        "broken_checks": [
+          "SHADOW_WINDOW_RESPECTED",
+          "SHADOW_WINDOW_START_CONSISTENT"
+        ],
+        "collateral": [
+          "SHADOW_WINDOW_START_CONSISTENT"
+        ],
+        "detected": true,
+        "expected_check": "SHADOW_WINDOW_RESPECTED",
+        "sabotage": "move a signal before the freeze"
+      },
+      {
+        "baseline_passed": true,
+        "broken_checks": [
+          "SHADOW_WINDOW_START_CONSISTENT"
+        ],
+        "collateral": [],
+        "detected": true,
+        "expected_check": "SHADOW_WINDOW_START_CONSISTENT",
+        "sabotage": "move the shadow window start"
+      },
+      {
+        "baseline_passed": true,
+        "broken_checks": [
+          "HYPOTHETICAL_ONLY"
+        ],
+        "collateral": [],
+        "detected": true,
+        "expected_check": "HYPOTHETICAL_ONLY",
+        "sabotage": "claim an order was sent"
+      },
+      {
+        "baseline_passed": true,
+        "broken_checks": [
+          "SHADOW_ACCOUNTING"
+        ],
+        "collateral": [],
+        "detected": true,
+        "expected_check": "SHADOW_ACCOUNTING",
+        "sabotage": "move a trade's net"
+      },
+      {
+        "baseline_passed": true,
+        "broken_checks": [
+          "PARITY_CLASSES_RECOMPUTED"
+        ],
+        "collateral": [],
+        "detected": true,
+        "expected_check": "PARITY_CLASSES_RECOMPUTED",
+        "sabotage": "flip a parity class"
+      },
+      {
+        "baseline_passed": true,
+        "broken_checks": [
+          "PARITY_CLASSES_RECOMPUTED"
+        ],
+        "collateral": [],
+        "detected": true,
+        "expected_check": "PARITY_CLASSES_RECOMPUTED",
+        "sabotage": "inflate a parity count"
+      },
+      {
+        "baseline_passed": true,
+        "broken_checks": [
+          "RESTART_PROOF_CONSISTENT"
+        ],
+        "collateral": [],
+        "detected": true,
+        "expected_check": "RESTART_PROOF_CONSISTENT",
+        "sabotage": "break the restart proof"
+      },
+      {
+        "baseline_passed": true,
+        "broken_checks": [
+          "VERDICT_RECOMPUTED"
+        ],
+        "collateral": [],
+        "detected": true,
+        "expected_check": "VERDICT_RECOMPUTED",
+        "sabotage": "overstate the verdict"
+      },
+      {
+        "baseline_passed": true,
+        "broken_checks": [
+          "TEST_TARGET_EQUALS_RUNTIME"
+        ],
+        "collateral": [],
+        "detected": true,
+        "expected_check": "TEST_TARGET_EQUALS_RUNTIME",
+        "sabotage": "stop the tests driving the target"
+      },
+      {
+        "baseline_passed": true,
+        "broken_checks": [
+          "EXPOSURE_RECOMPUTED"
+        ],
+        "collateral": [],
+        "detected": true,
+        "expected_check": "EXPOSURE_RECOMPUTED",
+        "sabotage": "inflate the primary arm's exposure"
+      },
+      {
+        "baseline_passed": true,
+        "broken_checks": [
+          "NO_ORDER_PATH"
+        ],
+        "collateral": [],
+        "detected": true,
+        "expected_check": "NO_ORDER_PATH",
+        "sabotage": "introduce an order call"
+      }
+    ],
+    "skipped": 0,
+    "skipped_labels": [],
+    "undetected": 0,
+    "verdict": "SELF_TEST_PASS"
+  }
+}

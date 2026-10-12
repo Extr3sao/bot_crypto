@@ -40,6 +40,11 @@ data/backtests/*
 data/storage/*
 data/chart_snapshots/*
 data/*.db
+# WP-EDGE-03 — tienda forward: OHLCV crudo de ~5 MB que crece en cada corrida. Se
+# mantiene local por el mismo criterio que los corpus crudos de arriba; lo que SI
+# se versiona es su procedencia (INGEST_LEDGER.jsonl) y sus digests, pinados en
+# reports/edge-recovery/WP-EDGE-03/forward-observation/OBSERVATION.json#manifest.
+data/forward/
 !data/raw/.gitkeep
 !data/processed/.gitkeep
 !data/backtests/.gitkeep
@@ -94,6 +99,21 @@ reports/edge-recovery/WP-EDGE-02/*
 # informes: se re-incluye por extension y solo en ese nivel.
 !reports/edge-recovery/WP-EDGE-02/*.json
 !reports/edge-recovery/WP-EDGE-02/*.md
+
+# ------------------------------------------------------------
+# WP-EDGE-03 — misma cadena de excepciones que WP-EDGE-01/02, por el mismo motivo:
+# la evidencia de la observacion forward (ingesta incremental, shadow de los
+# rulesets congelados y paridad de riesgo) SI se versiona, y cada carpeta de salida
+# se re-incluye con su propia linea para que la excepcion quede acotada.
+# ------------------------------------------------------------
+!reports/edge-recovery/WP-EDGE-03/
+reports/edge-recovery/WP-EDGE-03/*
+!reports/edge-recovery/WP-EDGE-03/forward-observation/
+!reports/edge-recovery/WP-EDGE-03/risk-parity/
+# La verificacion independiente vive en la raiz de la carpeta del WP, junto a los
+# informes: se re-incluye por extension y solo en ese nivel.
+!reports/edge-recovery/WP-EDGE-03/*.json
+!reports/edge-recovery/WP-EDGE-03/*.md
 
 # ============================================================
 # CAP-003 — evidencias OHLCV crudas: locales por tamano.
