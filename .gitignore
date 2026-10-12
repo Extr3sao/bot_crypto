@@ -75,6 +75,10 @@ reports/edge-recovery/WP-EDGE-01/*
 !reports/edge-recovery/WP-EDGE-01/retest-h6/
 !reports/edge-recovery/WP-EDGE-01/oos-trend-4h/
 !reports/edge-recovery/WP-EDGE-01/closure/
+# El informe de cierre es un .md en la RAIZ de la carpeta del WP (junto a los
+# artefactos de la campana), no dentro de un experimento: se re-incluye por
+# extension y solo en ese nivel.
+!reports/edge-recovery/WP-EDGE-01/*.md
 
 # ============================================================
 # CAP-003 — evidencias OHLCV crudas: locales por tamano.

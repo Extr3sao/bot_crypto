@@ -1,9 +1,9 @@
 {
   "artifact": "CAMPAIGN_STATE_VIEW",
   "work_package": "WP-2 (POST RFC-049 / ACTIVE RECOVERY)",
-  "generated_at_utc": "2026-10-11T18:01:50Z",
-  "head": "9b9a4b8a64294b7368f660dab64bb27dd3409fc2",
-  "branch": "main",
+  "generated_at_utc": "2026-10-12T18:40:41Z",
+  "head": "90cee7327e69de1af0d599d9c5b008f43ed3b722",
+  "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
   "mode": "READ-ONLY DERIVED VIEW — sources are read and hashed, never written",
   "precedence": {
     "P1_governance_decision": {
@@ -200,6 +200,17 @@
         "PROFITABILITY_VERIFIED": "FALSE",
         "RISK_ENGINE": "DETERMINISTIC",
         "RFC_049_DISCOVERY2": "CLOSED"
+      },
+      "facts_conflicts": {}
+    },
+    {
+      "adr": "ADR-0027",
+      "title": "WP-EDGE-01: lane de investigacion edge01 congelado, verificacion por artefactos y runtime PAPER intacto",
+      "facts": {
+        "PAPER_PROMOTION": "NOT_AUTHORIZED",
+        "LIVE_TRADING": "DISABLED",
+        "TRADES_AUTHORIZED": "0",
+        "PROFITABILITY_VERIFIED": "FALSE"
       },
       "facts_conflicts": {}
     }
@@ -2215,8 +2226,8 @@
         "pin": "document_hashes:tasks/decisions.md",
         "path": "tasks/decisions.md",
         "recorded": "38622df9a5ad74dbb9dc81503af452e06581a1148637d640af9102333f31d438",
-        "actual_sha256_lf": "0e0003e1010e63e548fd99a453c676ed0547772e6be907c6c6b6ee8d7c9bbd24",
-        "actual_sha256_crlf": "f6e96ec6ac62fae12107af85aef5213e40f2c216a1fa9366409ff6d36778bc7d",
+        "actual_sha256_lf": "dbf540c11dced96b67046049e35bf3af6b4db230ec782f355cb4adcc8b225b0c",
+        "actual_sha256_crlf": "b903513c7990038567599e124eaa7070413bad50c36926fb9c9dad9b8f06f550",
         "line_endings": "LF",
         "result": "DRIFTED",
         "note": "attestation of a document that is append-only by convention; drift is expected and is not a contradiction"
@@ -2775,8 +2786,8 @@
       "exists": true,
       "resolved_from": "HEAD",
       "class": "COMMITTED",
-      "sha256_before": "0e0003e1010e63e548fd99a453c676ed0547772e6be907c6c6b6ee8d7c9bbd24",
-      "sha256_after": "0e0003e1010e63e548fd99a453c676ed0547772e6be907c6c6b6ee8d7c9bbd24"
+      "sha256_before": "dbf540c11dced96b67046049e35bf3af6b4db230ec782f355cb4adcc8b225b0c",
+      "sha256_after": "dbf540c11dced96b67046049e35bf3af6b4db230ec782f355cb4adcc8b225b0c"
     }
   ],
   "sources_unchanged": true,
@@ -2829,10 +2840,10 @@
       "resolved_from": "EVIDENCE_COPY",
       "present_on_this_machine": true,
       "local_forms": {
-        "sha256": "3c6b0d2f9635a84ee47074a8eb59208d4dea6d2aca3eb01314d40f05a0148cdd",
-        "sha256_lf": "a40036b219a9a9bfb6bf198596fc56839ac086e71443b9900564b7f4809b9365",
-        "sha256_crlf": "3c6b0d2f9635a84ee47074a8eb59208d4dea6d2aca3eb01314d40f05a0148cdd",
-        "bytes": 6143,
+        "sha256": "9dea77174d89ac2f15329f071c89083103fdb690cff15b3a70c240b5fe6bd7ac",
+        "sha256_lf": "6bd89eb626bf7e70edbf0f088bccaae81f320e57ec761e4884b6d9a1c3622d3a",
+        "sha256_crlf": "9dea77174d89ac2f15329f071c89083103fdb690cff15b3a70c240b5fe6bd7ac",
+        "bytes": 6290,
         "line_endings": "CRLF"
       },
       "local_reproduces_the_authority": false,
@@ -2911,5 +2922,5 @@
       "local_matches_the_evidence_copy": true
     }
   ],
-  "payload_sha256": "e7bee5d8b710640c99ccf8484c7e1a0c9a1511aaa9796d4aea3066952845d733"
+  "payload_sha256": "8bbd684db68e60d9444b2ebc5eb73609b883c1b82347fd67bfef053cb26170c1"
 }
