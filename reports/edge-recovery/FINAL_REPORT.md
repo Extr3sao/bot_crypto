@@ -7,7 +7,7 @@
 PHASE:               WP-EDGE-00 (RFC-TAP-EDGE-001 / ROADMAP-TAP-EDGE-001)
 STATUS:              PASS (runtime, evidencia y verificación)  +  GIT_SYNC: BLOCKED_GITHUB_AUTH
 COMMITS:             95bc418 (evidencia + verificador, 23 ficheros)
-                     87826d489148b480bab7950f73720a0013cba2f3 (este informe + git_sync_status.json) (este informe + git_sync_status.json, 2 ficheros)
+                     87826d489148b480bab7950f73720a0013cba2f3 (este informe + git_sync_status.json, 2 ficheros)
 LOCAL_SHA:           95bc41804661dd51253c4c592dbb3b4ecfe4a738 (evidencia) · 87826d489148b480bab7950f73720a0013cba2f3 (informe)
 BRANCH_TIP:          git log -1 agent/edge-recovery/WP-EDGE-00-baseline (los commits posteriores a 87826d4 solo tocan reports/edge-recovery/** y scripts/wp_edge_00_verify.py: evidencia y verificador del propio WP, nunca codigo de runtime)
 REMOTE_SHA:          NOT_VERIFIED — la rama no existe en el remoto; sin credencial de escritura

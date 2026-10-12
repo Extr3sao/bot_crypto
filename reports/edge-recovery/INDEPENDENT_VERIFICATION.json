@@ -1,7 +1,7 @@
 {
   "artifact": "WP-EDGE-00-INDEPENDENT-VERIFICATION",
   "verifier": "scripts/wp_edge_00_verify.py (separate process, artifact-only; no runtime imports)",
-  "generated_at_utc": "2026-10-12T09:14:32.697000+00:00",
+  "generated_at_utc": "2026-10-12T09:14:55.907693+00:00",
   "base": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\edge-recovery",
   "checks_passed": 12,
   "checks_total": 12,
@@ -14,7 +14,7 @@
     {
       "name": "RUN_COMMIT_IS_ANCESTOR",
       "passed": true,
-      "detail": "run commit=1d2192b0aec8 ancestor of HEAD=95297b3aa482=True; files changed since run=25 (all evidence/verifier=True)"
+      "detail": "run commit=1d2192b0aec8 ancestor of HEAD=c74a3e12239e=True; files changed since run=25 (all evidence/verifier=True)"
     },
     {
       "name": "MODE_PAPER_NO_LIVE_PATH",
