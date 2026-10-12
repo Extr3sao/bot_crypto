@@ -1587,3 +1587,86 @@ lo que NO se requerirá per-ADR "next free" footnote nunca más.
 - **Reversion**: solo un ADR nuevo. Volver a la entrada a mercado es borrar la variante (el libro
   congelado no cambio); pasar el 4h a PAPER exigiria una muestra OOS donde ninguna operacion concentre
   el neto, o un ruleset nuevo con su propia corrida pre-registrada.
+
+## ADR-0032 - WP-EDGE-02: robustez de tendencia 4h (criterio de concentracion intacto) y auditoria de los 183 rechazos de riesgo de H6
+
+- **Fecha**: 2026-10-12
+- **Estado**: aceptado
+- **Contexto**: WP-EDGE-01 cerro con dos preguntas abiertas y un push bloqueado. La
+  revision OOS del 4h se nego a pasar a PAPER por UN motivo declarado (la mayor
+  operacion era el 79,87% del neto OOS, contra un limite del 50%), que es un
+  diagnostico y no un analisis: no dice cuanto del resto del libro sobrevive. Y H6
+  publico que 183 de sus 686 ordenes limite fueron rechazadas por el presupuesto de
+  riesgo en el instante del toque (148 halt de drawdown, 35 cooldown de perdidas) sin
+  comprobar si el presupuesto acerto en cada una.
+- **Decision (WP-EDGE-02A)**: se congela ANTES de medir una regla de robustez de nueve
+  criterios sobre el ruleset 4h ya congelado, sin tocar un parametro ni el corpus:
+  - el criterio de concentracion se mantiene EXACTAMENTE en 0,50 y se declara de donde
+    viene (`OOS_TREND_DECISION.max_single_trade_share_of_net`); una variante consciente
+    del tamano (por ejemplo contra la suma de los k mayores o contra el beneficio bruto)
+    queda registrada como PROPUESTA para un experimento nuevo, no como revision
+    retroactiva de esta corrida;
+  - la sensibilidad por dejar fuera las k mayores ganadoras (k=1 y k=3) es un diagnostico
+    SOBRE la corrida publicada: no se re-ajusta nada y las operaciones retiradas se
+    publican para poder devolverlas;
+  - la incertidumbre se declara y se reimplementa: intervalo Newey-West (regla de lag
+    `floor(4*(n/100)^(2/9))` y valor critico t por tabla declarada hasta 9 grados de
+    libertad y expansion de Cornish-Fisher por encima) mas bootstrap de bloques
+    estacionario con PRNG xorshift64* sembrado, 5000 remuestreos y longitud de bloque 5;
+  - los periodos adicionales se Miden en vez de prometerse: la cobertura del corpus se
+    publica y una franja sobrante solo cuenta como periodo usable si supera un minimo
+    declarado de 30 dias.
+- **Resultado (WP-EDGE-02A)**: la reproduccion del cierre anterior es EXACTA (OOS
+  +208,0056 en 52 operaciones, mayor operacion 0,7987 del neto, 16 comparaciones) y el
+  veredicto es **`INSUFFICIENT_EVIDENCE`**: falla el criterio de concentracion (0,7987 >
+  0,50) y el intervalo HAC de la expectativa CONTIENE el 0 (`[-9,2735, +17,2738]`; el
+  bootstrap da `[-6,7735, +15,6310]`). Ningun criterio decisivo falla: el libro sobrevive
+  a perder su mejor operacion (+41,87 USDT) aunque no a perder tres (-221,33), el plano
+  ADVERSE (fees x2, slippage e impacto x3) todavia deja +146,89, dos de los tres libros por
+  activo son positivos y el drawdown (2,57%) esta muy por debajo del buy & hold (73,20%).
+  La contribucion dice de donde viene el neto: ETH en libro propio +281,60 frente a BTC
+  +3,06 y SOL -75,55; en VAL el mismo libro pierde su mejor operacion y pasa a -120,03.
+  **Nada pasa a PAPER** y la tuberia de paper no se toco.
+- **Decision (WP-EDGE-02B)**: la auditoria no relaja ningun limite y no cambia el
+  ruleset. Re-ejecuta las tres ramas de H6 con un envoltorio OBSERVADOR sobre el camino
+  de entrada del simulador congelado (registra el estado que vio el presupuesto y
+  devuelve el valor original sin alterarlo; se restaura en un `finally`), declara antes
+  de correr las reglas que dan sentido a cada motivo de rechazo, comprueba cada rechazo
+  contra ese estado capturado Y ademas contra un estado RECONSTRUIDO desde el corpus
+  local y el libro de operaciones publicado por un proceso aparte que no importa nada del
+  paquete, y publica los invariantes del libro (contabilidad, caja no negativa, sizing
+  contra el riesgo configurado, topes de notional por orden/activo/total, minimo de
+  notional, limites de posiciones y de operaciones diarias, un desenlace por orden,
+  atribucion del rechazo y ausencia de duplicados).
+- **Resultado (WP-EDGE-02B)**: **`AUDIT_PASS`**. 686 ordenes con el reparto publicado
+  (372 rellenas, 128 caducadas, 183 rechazadas, 3 canceladas), 183/183 rechazos de la
+  ventana primaria justificados por el estado reconstruido (148 halt + 35 cooldown),
+  2734/2734 rechazos de todas las ventanas y ramas, 150 filas de invariantes con 0 fallos,
+  la curva de capital reconstruida desde el corpus coincide en las 26113 barras publicadas
+  y la identidad contable cierra (10.000,00 - 495,8756 = 9.504,1244). Frente al Risk
+  Engine real (`src/trading_bot/risk/manager.py`) la misma regla dispara en 2734/2734
+  casos, y la brecha de modelado queda declarada: el presupuesto de investigacion NO
+  modela el limite de perdida diaria, el semanal, el drawdown diario, el bloqueo de fin de
+  semana, los bloqueos de spread/ATR ni el kill switch, asi que en vivo bloquearia AL MENOS
+  igual, nunca menos.
+- **Defecto encontrado y corregido dentro de este WP**: `DEF-EDGE02-01` - el observador
+  sustituia un mapping de posiciones vacio pero VIVO por uno nuevo (`positions or {}`), de
+  modo que una entrada tomada con el libro plano se quedaba sin tamano atribuido. Lo
+  detectaron los propios invariantes de entrada en la primera corrida (15 filas fallando,
+  todas `notional_at_or_above_minimum` con notional 0) y se fija con una prueba de
+  regresion que reproduce el bug a proposito.
+- **Procedencia**: los 9 modulos del paquete que WP-EDGE-01 midio quedan BYTE A BYTE
+  identicos; la huella del paquete que registra una corrida nueva cambia solo porque se
+  anaden dos modulos (`robustness.py`, `risk_audit.py`). Ningun artefacto de WP-EDGE-01 se
+  edito y ningun script suyo se modifico: la comprobacion por fichero esta en el RUN_REPORT.
+- **Consecuencias**:
+  - El criterio de concentracion del 50% sigue siendo el que decide: la pregunta util
+    ahora es un experimento NUEVO pre-registrado sobre un criterio consciente del tamano,
+    no una reinterpretacion de esta corrida.
+  - Un periodo genuinamente nuevo exige corpus nuevo: el congelado termina en la ultima
+    barra del OOS (solo sobran 5 barras de barrido, 0,83 dias).
+  - La auditoria convierte "183 rechazos" en un hecho comprobado: no son un defecto de
+    accounting, ni estado obsoleto, ni rechazos duplicados; son el halt del 5% y el
+    cooldown de 3 perdidas haciendo su trabajo sobre un libro que pierde dinero.
+- **Reversion**: solo un ADR nuevo. Relajar el halt o el criterio de concentracion para
+  que este libro pase es exactamente lo que este WP se prohibe.

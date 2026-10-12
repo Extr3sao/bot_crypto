@@ -80,6 +80,21 @@ reports/edge-recovery/WP-EDGE-01/*
 # extension y solo en ese nivel.
 !reports/edge-recovery/WP-EDGE-01/*.md
 
+# ------------------------------------------------------------
+# WP-EDGE-02 — misma cadena de excepciones que WP-EDGE-01, por el mismo motivo:
+# la evidencia de la robustez de tendencia y de la auditoria de riesgo SI se
+# versiona, y cada carpeta de experimento se re-incluye con su propia linea para
+# que la excepcion quede acotada a esa evidencia.
+# ------------------------------------------------------------
+!reports/edge-recovery/WP-EDGE-02/
+reports/edge-recovery/WP-EDGE-02/*
+!reports/edge-recovery/WP-EDGE-02/trend-robustness/
+!reports/edge-recovery/WP-EDGE-02/h6-risk-audit/
+# La verificacion independiente vive en la raiz de la carpeta del WP, junto a los
+# informes: se re-incluye por extension y solo en ese nivel.
+!reports/edge-recovery/WP-EDGE-02/*.json
+!reports/edge-recovery/WP-EDGE-02/*.md
+
 # ============================================================
 # CAP-003 — evidencias OHLCV crudas: locales por tamano.
 # El ledger (evidence/real_decisions/*.jsonl) SI se versiona y
