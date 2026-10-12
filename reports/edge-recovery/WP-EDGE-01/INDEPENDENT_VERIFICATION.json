@@ -1,0 +1,166 @@
+{
+  "dir": "reports\\edge-recovery\\WP-EDGE-01",
+  "checks": [
+    {
+      "check": "ARTIFACTS_PRESENT",
+      "ok": true,
+      "detail": "5 artefacts match their digests"
+    },
+    {
+      "check": "TRADE_SCHEMA",
+      "ok": true,
+      "detail": "4644 rows, 25 columns"
+    },
+    {
+      "check": "NO_LOOKAHEAD_FILL",
+      "ok": true,
+      "detail": "4644 fills at or after their decision; 1101 stopped on the entry bar itself; 3 waited for the next existing bar (corpus gap)"
+    },
+    {
+      "check": "OPEN_POSITION_NOT_DOUBLE_COUNTED",
+      "ok": true,
+      "detail": "every equity point lies inside the book band"
+    },
+    {
+      "check": "EQUITY_CONSERVATION",
+      "ok": true,
+      "detail": "15 windows conserve cash"
+    },
+    {
+      "check": "COST_IDENTITY",
+      "ok": true,
+      "detail": "cost identity holds for 4644 trades"
+    },
+    {
+      "check": "COST_PLANE_APPLIED",
+      "ok": true,
+      "detail": "4644 fills pay exactly the declared rates; 45 planes recorded"
+    },
+    {
+      "check": "EXIT_REASON_DOMAIN",
+      "ok": true,
+      "detail": "every exit reason is declared"
+    },
+    {
+      "check": "ZERO_TRADES_EXPLAINED",
+      "ok": true,
+      "detail": "every empty window carries its reasons"
+    },
+    {
+      "check": "VERDICT_CONSISTENCY",
+      "ok": true,
+      "detail": "5 verdicts recomputed from the metrics"
+    },
+    {
+      "check": "EVIDENCE_FROM_METRICS",
+      "ok": true,
+      "detail": "recorded evidence equals the published metrics"
+    },
+    {
+      "check": "BASELINE_PRESENT",
+      "ok": true,
+      "detail": "135 baselines present and consistent"
+    },
+    {
+      "check": "RUN_IDENTIFIABLE",
+      "ok": true,
+      "detail": "5 runs, 3 strategies, every trade attributed"
+    }
+  ],
+  "passed": 13,
+  "total": 13,
+  "self_test": {
+    "baseline_all_green": true,
+    "baseline": {
+      "ARTIFACTS_PRESENT": true,
+      "TRADE_SCHEMA": true,
+      "NO_LOOKAHEAD_FILL": true,
+      "OPEN_POSITION_NOT_DOUBLE_COUNTED": true,
+      "EQUITY_CONSERVATION": true,
+      "COST_IDENTITY": true,
+      "COST_PLANE_APPLIED": true,
+      "EXIT_REASON_DOMAIN": true,
+      "ZERO_TRADES_EXPLAINED": true,
+      "VERDICT_CONSISTENCY": true,
+      "EVIDENCE_FROM_METRICS": true,
+      "BASELINE_PRESENT": true,
+      "RUN_IDENTIFIABLE": true
+    },
+    "mutations": [
+      {
+        "mutation": "M1_double_counted_position",
+        "expected_check": "OPEN_POSITION_NOT_DOUBLE_COUNTED",
+        "detected": [
+          "ARTIFACTS_PRESENT",
+          "OPEN_POSITION_NOT_DOUBLE_COUNTED"
+        ],
+        "expected_check_failed": true,
+        "detail": "edge_intra_01/DEV @ 1728310500000: equity 10,503.41 outside [9,499.00, 10,501.00] (closed 0.00, open 500.00); edge_intra_01/OOS @ 1767308400000: equity 10,494.55 outside [9,993.55, 9,995.55] (closed -5.45, open 0.00); edge_intra_01/VAL @ 1751454900000: equity 10,497.55 outside [9,492.05, 10,494.05] (closed -6.95, open 500.00); edge_intra_02/DEV @ 1729432800000: equity 10,512.99 outside [10,011.99, 10,013.99] (closed 12.99, open 0.00); edge_intra_02/OOS @ 1767371400000: equity 10,503.34 outside [9,500.63, 10,502.63] (closed 1.63, open 500.00); edge_intra_02/VAL @ 1751961600000: equity 10,507.02 outside [9,504.35, 10,506.35] (closed 5.35, open 500.00); edge_intra_02_no_fvg/DEV @ 1728314100000: equity 10,491.12 outside [9,990.12, 9,992.12] (closed -8.88, open 0.00); edge_intra_02_no_fvg/OOS @ 1767309300000: equity 10,502.48 outside [9,499.00, 10,501.00] (closed 0.00, open 500.00); edge_intra_02_no_fvg/VAL @ 1751472000000: equity 10,502.83 outside [9,498.45, 10,500.45] (closed -0.55, open 500.00); edge_trend_01_1d/DEV @ 1568678400000: equity 10,178.22 outside [9,780.34, 10,168.86] (closed -25.40, open 193.26); edge_trend_01_1d/OOS @ 1737158400000: equity 10,230.64 outside [9,769.37, 10,230.63] (closed 0.00, open 229.63); edge_trend_01_1d/VAL @ 1707350400000: equity 10,259.74 outside [9,643.81, 10,254.36] (closed -50.92, open 304.28); edge_trend_01_4h/DEV @ 1550448000000: equity 10,489.38 outside [9,525.15, 10,474.85] (closed 0.00, open 473.85); edge_trend_01_4h/OOS @ 1736136000000: equity 10,501.32 outside [9,499.00, 10,501.00] (closed 0.00, open 500.00); edge_trend_01_4h/VAL @ 1704139200000: equity 10,507.50 outside [9,499.00, 10,501.00] (closed 0.00, open 500.00)"
+      },
+      {
+        "mutation": "M2_tampered_fee",
+        "expected_check": "COST_IDENTITY",
+        "detected": [
+          "ARTIFACTS_PRESENT",
+          "COST_IDENTITY",
+          "COST_PLANE_APPLIED"
+        ],
+        "expected_check_failed": true,
+        "detail": "edge_intra_01/DEV/BASE: net -1.17897975 != -2.678890; edge_intra_01/DEV: cost_bps 23.786307 != 53.7845 recomputed"
+      },
+      {
+        "mutation": "M3_fill_before_decision",
+        "expected_check": "NO_LOOKAHEAD_FILL",
+        "detected": [
+          "ARTIFACTS_PRESENT",
+          "NO_LOOKAHEAD_FILL"
+        ],
+        "expected_check_failed": true,
+        "detail": "edge_intra_01/DEV/ETH: filled 900000 ms before the decision"
+      },
+      {
+        "mutation": "M4_unknown_exit_reason",
+        "expected_check": "EXIT_REASON_DOMAIN",
+        "detected": [
+          "ARTIFACTS_PRESENT",
+          "EXIT_REASON_DOMAIN"
+        ],
+        "expected_check_failed": true,
+        "detail": "unknown exit reasons: magic_exit"
+      },
+      {
+        "mutation": "M5_flipped_verdict",
+        "expected_check": "VERDICT_CONSISTENCY",
+        "detected": [
+          "ARTIFACTS_PRESENT",
+          "VERDICT_CONSISTENCY"
+        ],
+        "expected_check_failed": true,
+        "detail": "edge_intra_01: recorded ADMIT but the artefacts imply REJECT (failing: net, expectancy, regimes, stress); edge_intra_01: admitted while failing ['net', 'expectancy', 'regimes', 'stress']"
+      },
+      {
+        "mutation": "M6_tampered_evidence",
+        "expected_check": "EVIDENCE_FROM_METRICS",
+        "detected": [
+          "ARTIFACTS_PRESENT",
+          "EVIDENCE_FROM_METRICS"
+        ],
+        "expected_check_failed": true,
+        "detail": "edge_intra_01.oos_net_usdt: recorded 4905.1923 != -94.8077"
+      },
+      {
+        "mutation": "M7_scenario_not_applied",
+        "expected_check": "COST_PLANE_APPLIED",
+        "detected": [
+          "ARTIFACTS_PRESENT",
+          "COST_IDENTITY",
+          "COST_PLANE_APPLIED"
+        ],
+        "expected_check_failed": true,
+        "detail": "edge_intra_01/DEV/2X_FEES: fee rate 20.0000 bps != declared 40.0000; edge_intra_01/DEV/2X_FEES: fee rate 20.0000 bps != declared 40.0000; edge_intra_01/DEV/2X_FEES: fee rate 20.0000 bps != declared 40.0000; edge_intra_01/DEV/2X_FEES: fee rate 20.0000 bps != declared 40.0000; edge_intra_01/DEV/2X_FEES: fee rate 20.0000 bps != declared 40.0000; edge_intra_01/DEV/2X_FEES: fee rate 20.0000 bps != declared 40.0000"
+      }
+    ],
+    "all_detected": true
+  },
+  "failed": 0
+}
