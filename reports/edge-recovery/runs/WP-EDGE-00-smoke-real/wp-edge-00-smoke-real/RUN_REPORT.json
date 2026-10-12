@@ -1,0 +1,318 @@
+{
+  "run_id": "wp-edge-00-smoke-real",
+  "runtime_version": "autonomous-paper-runtime-v1",
+  "environment": "ccxt:binance",
+  "commit": "1d2192b0aec8cfe1bf2bfcaa308c4787229b3d22",
+  "mode": "paper",
+  "assets": [
+    "BTC",
+    "ETH",
+    "SOL"
+  ],
+  "timeframe": "5m",
+  "cycles": 2,
+  "started_at_ms": 1791795395133,
+  "ended_at_ms": 1791795418954,
+  "totals": {
+    "asset_cycle_evaluations": 6,
+    "paper_trades": 0,
+    "shadow_trades": 0,
+    "no_trades": 6,
+    "runtime_failures": 0,
+    "orders_created": 0,
+    "traces_persisted": 6,
+    "outcomes_resolved": 0,
+    "outcomes_pending": 4,
+    "performance_updates": 0,
+    "no_trade_NO_TRADE_STRATEGIC": 4,
+    "no_trade_NO_TRADE_RISK": 0,
+    "no_trade_NO_TRADE_DATA": 2,
+    "no_trade_NO_TRADE_CONFLICT": 0,
+    "risk_APPROVED": 4,
+    "risk_VETOED": 0,
+    "risk_NOT_APPLICABLE": 2,
+    "risk_NOT_EVALUATED": 0
+  },
+  "cycles_detail": [
+    {
+      "cycle": 1,
+      "session_id": "74ee720dcec04a51",
+      "started_at_ms": 1791795395133,
+      "ended_at_ms": 1791795400731,
+      "assets": [
+        {
+          "asset": "BTC",
+          "symbol": "BTC/USDT",
+          "regime": "LOW_VOLATILITY",
+          "market_time_ms": 1791795395133,
+          "decision_time_ms": 1791795395133,
+          "strategies_considered": [
+            "breakout@5m",
+            "ema_crossover@5m",
+            "mean_reversion@5m",
+            "momentum@5m",
+            "trend@5m",
+            "volatility@5m"
+          ],
+          "strategy_selected": "ema_crossover@5m",
+          "mode": "NO_TRADE",
+          "reason": "gross_edge_not_positive:-4.5600bps",
+          "classification": "NO_GROSS_EDGE",
+          "no_trade_kind": "NO_TRADE_STRATEGIC",
+          "failure_kind": null,
+          "expected_gross_edge_bps": -4.56,
+          "expected_cost_bps": 22.79176677942867,
+          "expected_net_edge_bps": -27.35176677942867,
+          "verifier_verdict": "PASS",
+          "risk_verdict": "PASS",
+          "risk_state": "APPROVED",
+          "risk_evaluated": true,
+          "risk_rule": "all_limits_pass",
+          "decision_id": "74ee720dcec04a51-BTC",
+          "trace_persisted": true,
+          "order_created": false
+        },
+        {
+          "asset": "ETH",
+          "symbol": "ETH/USDT",
+          "regime": "LOW_VOLATILITY",
+          "market_time_ms": 1791795395133,
+          "decision_time_ms": 1791795395133,
+          "strategies_considered": [
+            "breakout@5m",
+            "ema_crossover@5m",
+            "mean_reversion@5m",
+            "momentum@5m",
+            "trend@5m",
+            "volatility@5m"
+          ],
+          "strategy_selected": "ema_crossover@5m",
+          "mode": "NO_TRADE",
+          "reason": "gross_edge_not_positive:-4.5600bps",
+          "classification": "NO_GROSS_EDGE",
+          "no_trade_kind": "NO_TRADE_STRATEGIC",
+          "failure_kind": null,
+          "expected_gross_edge_bps": -4.56,
+          "expected_cost_bps": 22.829743392551386,
+          "expected_net_edge_bps": -27.389743392551384,
+          "verifier_verdict": "PASS",
+          "risk_verdict": "PASS",
+          "risk_state": "APPROVED",
+          "risk_evaluated": true,
+          "risk_rule": "all_limits_pass",
+          "decision_id": "74ee720dcec04a51-ETH",
+          "trace_persisted": true,
+          "order_created": false
+        },
+        {
+          "asset": "SOL",
+          "symbol": "SOL/USDT",
+          "regime": null,
+          "market_time_ms": 1791795395133,
+          "decision_time_ms": 1791795395133,
+          "strategies_considered": [
+            "breakout@5m",
+            "ema_crossover@5m",
+            "mean_reversion@5m",
+            "momentum@5m",
+            "trend@5m",
+            "volatility@5m"
+          ],
+          "strategy_selected": null,
+          "mode": "NO_TRADE",
+          "reason": "context_error:AssetContextError: no bars at or before ts 1791795395133 for SOL",
+          "classification": "CONTEXT_ERROR",
+          "no_trade_kind": "NO_TRADE_DATA",
+          "failure_kind": null,
+          "expected_gross_edge_bps": null,
+          "expected_cost_bps": null,
+          "expected_net_edge_bps": null,
+          "verifier_verdict": "NOT_RUN",
+          "risk_verdict": "NOT_APPLICABLE",
+          "risk_state": "NOT_APPLICABLE",
+          "risk_evaluated": false,
+          "risk_rule": "",
+          "decision_id": "74ee720dcec04a51-SOL",
+          "trace_persisted": true,
+          "order_created": false
+        }
+      ],
+      "paper_trades": 0,
+      "shadow_trades": 0,
+      "no_trades": 3,
+      "no_trade_kinds": {
+        "NO_TRADE_STRATEGIC": 2,
+        "NO_TRADE_DATA": 1
+      },
+      "risk_states": {
+        "APPROVED": 2,
+        "NOT_APPLICABLE": 1
+      },
+      "runtime_failures": 0,
+      "orders_created": 0,
+      "traces_persisted": 3,
+      "outcomes_resolved": 0,
+      "outcomes_pending": 2,
+      "performance_updates": 0,
+      "broker_fills_closed": 0,
+      "errors": [
+        "SOL/USDT: context_error AssetContextError: no bars at or before ts 1791795395133 for SOL"
+      ]
+    },
+    {
+      "cycle": 2,
+      "session_id": "ee6cd214621343de",
+      "started_at_ms": 1791795415745,
+      "ended_at_ms": 1791795418922,
+      "assets": [
+        {
+          "asset": "BTC",
+          "symbol": "BTC/USDT",
+          "regime": "LOW_VOLATILITY",
+          "market_time_ms": 1791795415745,
+          "decision_time_ms": 1791795415745,
+          "strategies_considered": [
+            "breakout@5m",
+            "ema_crossover@5m",
+            "mean_reversion@5m",
+            "momentum@5m",
+            "trend@5m",
+            "volatility@5m"
+          ],
+          "strategy_selected": "ema_crossover@5m",
+          "mode": "NO_TRADE",
+          "reason": "gross_edge_not_positive:-4.5600bps",
+          "classification": "NO_GROSS_EDGE",
+          "no_trade_kind": "NO_TRADE_STRATEGIC",
+          "failure_kind": null,
+          "expected_gross_edge_bps": -4.56,
+          "expected_cost_bps": 22.79176677942867,
+          "expected_net_edge_bps": -27.35176677942867,
+          "verifier_verdict": "PASS",
+          "risk_verdict": "PASS",
+          "risk_state": "APPROVED",
+          "risk_evaluated": true,
+          "risk_rule": "all_limits_pass",
+          "decision_id": "ee6cd214621343de-BTC",
+          "trace_persisted": true,
+          "order_created": false
+        },
+        {
+          "asset": "ETH",
+          "symbol": "ETH/USDT",
+          "regime": "LOW_VOLATILITY",
+          "market_time_ms": 1791795415745,
+          "decision_time_ms": 1791795415745,
+          "strategies_considered": [
+            "breakout@5m",
+            "ema_crossover@5m",
+            "mean_reversion@5m",
+            "momentum@5m",
+            "trend@5m",
+            "volatility@5m"
+          ],
+          "strategy_selected": "ema_crossover@5m",
+          "mode": "NO_TRADE",
+          "reason": "gross_edge_not_positive:-4.5600bps",
+          "classification": "NO_GROSS_EDGE",
+          "no_trade_kind": "NO_TRADE_STRATEGIC",
+          "failure_kind": null,
+          "expected_gross_edge_bps": -4.56,
+          "expected_cost_bps": 22.829746155027102,
+          "expected_net_edge_bps": -27.3897461550271,
+          "verifier_verdict": "PASS",
+          "risk_verdict": "PASS",
+          "risk_state": "APPROVED",
+          "risk_evaluated": true,
+          "risk_rule": "all_limits_pass",
+          "decision_id": "ee6cd214621343de-ETH",
+          "trace_persisted": true,
+          "order_created": false
+        },
+        {
+          "asset": "SOL",
+          "symbol": "SOL/USDT",
+          "regime": null,
+          "market_time_ms": 1791795415745,
+          "decision_time_ms": 1791795415745,
+          "strategies_considered": [
+            "breakout@5m",
+            "ema_crossover@5m",
+            "mean_reversion@5m",
+            "momentum@5m",
+            "trend@5m",
+            "volatility@5m"
+          ],
+          "strategy_selected": null,
+          "mode": "NO_TRADE",
+          "reason": "context_error:AssetContextError: no bars at or before ts 1791795415745 for SOL",
+          "classification": "CONTEXT_ERROR",
+          "no_trade_kind": "NO_TRADE_DATA",
+          "failure_kind": null,
+          "expected_gross_edge_bps": null,
+          "expected_cost_bps": null,
+          "expected_net_edge_bps": null,
+          "verifier_verdict": "NOT_RUN",
+          "risk_verdict": "NOT_APPLICABLE",
+          "risk_state": "NOT_APPLICABLE",
+          "risk_evaluated": false,
+          "risk_rule": "",
+          "decision_id": "ee6cd214621343de-SOL",
+          "trace_persisted": true,
+          "order_created": false
+        }
+      ],
+      "paper_trades": 0,
+      "shadow_trades": 0,
+      "no_trades": 3,
+      "no_trade_kinds": {
+        "NO_TRADE_STRATEGIC": 2,
+        "NO_TRADE_DATA": 1
+      },
+      "risk_states": {
+        "APPROVED": 2,
+        "NOT_APPLICABLE": 1
+      },
+      "runtime_failures": 0,
+      "orders_created": 0,
+      "traces_persisted": 3,
+      "outcomes_resolved": 0,
+      "outcomes_pending": 4,
+      "performance_updates": 0,
+      "broker_fills_closed": 0,
+      "errors": [
+        "SOL/USDT: context_error AssetContextError: no bars at or before ts 1791795415745 for SOL"
+      ]
+    }
+  ],
+  "executions": [],
+  "outcomes": [],
+  "pending_decision_ids": [
+    "74ee720dcec04a51-BTC",
+    "74ee720dcec04a51-ETH",
+    "ee6cd214621343de-BTC",
+    "ee6cd214621343de-ETH"
+  ],
+  "performance": [],
+  "trace_chain": {
+    "ok": true,
+    "records": 6,
+    "broken_at": null,
+    "detail": "hash chain intact"
+  },
+  "replay": {
+    "attempted": 6,
+    "ok": 6,
+    "failed": 0,
+    "statuses": {
+      "PARTIAL": 6
+    },
+    "failures": [],
+    "market_data_accessed": false
+  },
+  "errors": [
+    "SOL/USDT: context_error AssetContextError: no bars at or before ts 1791795395133 for SOL",
+    "SOL/USDT: context_error AssetContextError: no bars at or before ts 1791795415745 for SOL"
+  ],
+  "production_actions": 0
+}

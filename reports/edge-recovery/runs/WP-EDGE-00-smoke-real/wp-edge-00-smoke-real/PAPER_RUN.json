@@ -1,0 +1,33 @@
+{
+  "run_id": "wp-edge-00-smoke-real",
+  "pid": 1240,
+  "state": "STOPPED",
+  "stop_reason": "completed",
+  "cycles": 2,
+  "cadence": "interval",
+  "bar_close_settlement_seconds": 5.0,
+  "skipped_duplicate_cycles": 0,
+  "totals": {
+    "asset_cycle_evaluations": 6,
+    "paper_trades": 0,
+    "shadow_trades": 0,
+    "no_trades": 6,
+    "runtime_failures": 0,
+    "orders_created": 0,
+    "traces_persisted": 6,
+    "outcomes_resolved": 0,
+    "outcomes_pending": 4,
+    "performance_updates": 0,
+    "no_trade_NO_TRADE_STRATEGIC": 4,
+    "no_trade_NO_TRADE_RISK": 0,
+    "no_trade_NO_TRADE_DATA": 2,
+    "no_trade_NO_TRADE_CONFLICT": 0,
+    "risk_APPROVED": 4,
+    "risk_VETOED": 0,
+    "risk_NOT_APPLICABLE": 2,
+    "risk_NOT_EVALUATED": 0
+  },
+  "storage_failures": 0,
+  "storage_errors": [],
+  "ended_at_ms": 1791795419000
+}

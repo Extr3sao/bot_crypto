@@ -1,0 +1,35 @@
+{
+ "_schema_version": "strategy-admission-ledger-v1",
+ "_generated_by": "tests/unit/cert/test_paper_smoke_decision_path.py (CONTROLLED TEST)",
+ "_claim": "a controlled fixture, not market evidence",
+ "_sources": [
+  {
+   "path": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+   "sha256": "fixture"
+  }
+ ],
+ "strategies": {
+  "ema_crossover@5m": {
+   "family": "ema_crossover",
+   "status": "PAPER_CANDIDATE",
+   "admitted_for_paper": true,
+   "expected_gross_edge_bps": 12.0,
+   "edge_evidence": {
+    "source_doc": "CONTROLLED TEST fixture",
+    "metric": "fixture.reachability",
+    "value_bps": 12.0,
+    "knowledge": "ASSUMED",
+    "sample_trades": 1,
+    "note": "reachability fixture only: this is NOT market evidence",
+    "evidence_class": "CONTROLLED_TEST_FIXTURE",
+    "period": "n/a",
+    "timeframe": "5m",
+    "status": "PAPER_CANDIDATE"
+   },
+   "source_doc": "CONTROLLED TEST fixture",
+   "rationale": "CONTROLLED TEST: exercises the decision path to the broker boundary",
+   "timeframe": "5m",
+   "known": true
+  }
+ }
+}
