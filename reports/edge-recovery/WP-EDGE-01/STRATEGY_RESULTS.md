@@ -2,8 +2,8 @@
 
 - run_id: `wp-edge-01-campaign`
 - params_hash: `d073a2d686b9b198c36c9a3c6009d36130577ba247a2016c3f791813cb749d77`
-- generated (UTC): 2026-10-12T12:02:50.297125+00:00
-- commit: `1a0a6c85299ca09ac354d3bcf797b34a806adff2`
+- generated (UTC): 2026-10-12T13:02:28.395619+00:00
+- commit: `042947cf58b25d3b706b28fde81b4be6986c6c2f`
 - data: local corpora only (15m: `data/raw/alpha003/price`, 1h: `reports/alpha-expansion-v1/data`, aggregated to 4h/1d)
 
 ## Cost scenarios
@@ -48,6 +48,17 @@ Refusals (OOS/BASE, top): candidate:trend_filter_fail=2282, candidate:volume_fil
 
 Buy & hold over the same OOS window: -2.60% / -9.39% / -3.49%
 
+Market context at ENTRY (BASE scenario), from the benchmark only (`BTC`, daily, as-of each decision, rule in `RUN_REPORT.json#market_context`). This is what the market was doing, independently of the candidate; `UNDEFINED` means the benchmark could not be read yet (no day closed, or the label falls after 2026-03-01).
+
+| split | market context | trades | net | win rate |
+|---|---|---|---|---|
+| DEV | BULL | 290 | -496.43 | 19.31% |
+| VAL | BEAR | 40 | -107.58 | 10.00% |
+| VAL | BULL | 304 | -371.60 | 19.41% |
+| OOS | BEAR | 63 | -94.81 | 17.46% |
+
+Entry trend state of the candidate's own filter (the `regime` column of TRADES.csv, which is NOT a market regime): {"UP": {"trades": 63, "net": -94.8077, "win_rate": 17.4603}}
+
 ### edge_intra_02 (15m)
 
 Costs are split the way the model charges them: the fee is the contractual component and the price cost is spread + slippage + impact, charged half on each leg. `cost_bps_realised` per trade reconciles with the plane printed here (the verifier re-checks it fill by fill).
@@ -69,6 +80,19 @@ Exit reasons (OOS/BASE): invalidation=4, stop_loss=4, target=4, trailing_stop=2
 Refusals (OOS/BASE, top): candidate:trend_filter_fail=2264, candidate:volume_filter_fail=307, candidate:retest_not_confirmed=171, candidate:no_confirmed_fvg=118, candidate:level_already_traded=86, candidate:no_retest_confirmed=64, candidate:rr_below_minimum=4, candidate:reward_below_cost=3
 
 Buy & hold over the same OOS window: -2.60% / -9.39% / -3.49%
+
+Market context at ENTRY (BASE scenario), from the benchmark only (`BTC`, daily, as-of each decision, rule in `RUN_REPORT.json#market_context`). This is what the market was doing, independently of the candidate; `UNDEFINED` means the benchmark could not be read yet (no day closed, or the label falls after 2026-03-01).
+
+| split | market context | trades | net | win rate |
+|---|---|---|---|---|
+| DEV | BEAR | 8 | 8.26 | 37.50% |
+| DEV | BULL | 119 | -178.74 | 21.01% |
+| DEV | SIDEWAYS | 8 | -19.40 | 12.50% |
+| VAL | BEAR | 6 | -24.97 | 0.00% |
+| VAL | BULL | 66 | -77.61 | 24.24% |
+| OOS | BEAR | 14 | -12.63 | 42.86% |
+
+Entry trend state of the candidate's own filter (the `regime` column of TRADES.csv, which is NOT a market regime): {"UP": {"trades": 14, "net": -12.6286, "win_rate": 42.8571}}
 
 ### edge_intra_02_no_fvg (15m)
 
@@ -92,6 +116,19 @@ Refusals (OOS/BASE, top): candidate:trend_filter_fail=2273, candidate:volume_fil
 
 Buy & hold over the same OOS window: -2.60% / -9.39% / -3.49%
 
+Market context at ENTRY (BASE scenario), from the benchmark only (`BTC`, daily, as-of each decision, rule in `RUN_REPORT.json#market_context`). This is what the market was doing, independently of the candidate; `UNDEFINED` means the benchmark could not be read yet (no day closed, or the label falls after 2026-03-01).
+
+| split | market context | trades | net | win rate |
+|---|---|---|---|---|
+| DEV | BEAR | 4 | -10.54 | 0.00% |
+| DEV | BULL | 264 | -483.89 | 14.77% |
+| DEV | SIDEWAYS | 2 | -6.40 | 0.00% |
+| VAL | BEAR | 21 | -53.89 | 14.29% |
+| VAL | BULL | 186 | -235.11 | 20.97% |
+| OOS | BEAR | 45 | -69.10 | 22.22% |
+
+Entry trend state of the candidate's own filter (the `regime` column of TRADES.csv, which is NOT a market regime): {"UP": {"trades": 45, "net": -69.0987, "win_rate": 22.2222}}
+
 ### edge_trend_01_4h (4h)
 
 Costs are split the way the model charges them: the fee is the contractual component and the price cost is spread + slippage + impact, charged half on each leg. `cost_bps_realised` per trade reconciles with the plane printed here (the verifier re-checks it fill by fill).
@@ -113,6 +150,22 @@ Exit reasons (OOS/BASE): stop_loss=29, trailing_stop=23
 Refusals (OOS/BASE, top): candidate:trend_filter_fail=205
 
 Buy & hold over the same OOS window: -29.85% / -42.48% / -56.92%
+
+Market context at ENTRY (BASE scenario), from the benchmark only (`BTC`, daily, as-of each decision, rule in `RUN_REPORT.json#market_context`). This is what the market was doing, independently of the candidate; `UNDEFINED` means the benchmark could not be read yet (no day closed, or the label falls after 2026-03-01).
+
+| split | market context | trades | net | win rate |
+|---|---|---|---|---|
+| DEV | BEAR | 26 | 16.47 | 46.15% |
+| DEV | BULL | 159 | 1,339.69 | 57.86% |
+| DEV | SIDEWAYS | 14 | 77.01 | 64.29% |
+| DEV | UNDEFINED | 24 | 488.01 | 58.33% |
+| VAL | BULL | 57 | -0.18 | 47.37% |
+| VAL | SIDEWAYS | 1 | 4.71 | 100.00% |
+| OOS | BEAR | 7 | -58.88 | 42.86% |
+| OOS | BULL | 41 | 177.43 | 41.46% |
+| OOS | SIDEWAYS | 4 | 89.45 | 75.00% |
+
+Entry trend state of the candidate's own filter (the `regime` column of TRADES.csv, which is NOT a market regime): {"UP": {"trades": 52, "net": 208.0056, "win_rate": 44.2308}}
 
 ### edge_trend_01_1d (1d)
 
@@ -136,6 +189,20 @@ Refusals (OOS/BASE, top): candidate:trend_filter_fail=27
 
 Buy & hold over the same OOS window: -28.60% / -41.28% / -55.55%
 
+Market context at ENTRY (BASE scenario), from the benchmark only (`BTC`, daily, as-of each decision, rule in `RUN_REPORT.json#market_context`). This is what the market was doing, independently of the candidate; `UNDEFINED` means the benchmark could not be read yet (no day closed, or the label falls after 2026-03-01).
+
+| split | market context | trades | net | win rate |
+|---|---|---|---|---|
+| DEV | BULL | 36 | 785.52 | 69.44% |
+| DEV | SIDEWAYS | 2 | 166.39 | 100.00% |
+| DEV | UNDEFINED | 1 | -25.40 | 0.00% |
+| VAL | BULL | 17 | -12.08 | 29.41% |
+| VAL | SIDEWAYS | 3 | 98.62 | 66.67% |
+| OOS | BULL | 12 | -137.68 | 33.33% |
+| OOS | SIDEWAYS | 1 | 19.08 | 100.00% |
+
+Entry trend state of the candidate's own filter (the `regime` column of TRADES.csv, which is NOT a market regime): {"UP": {"trades": 13, "net": -118.6003, "win_rate": 38.4615}}
+
 ## Honesty notes
 
 - `net` is after fees, spread, slippage and impact: the plan it was sized against is printed per scenario above.
@@ -143,4 +210,5 @@ Buy & hold over the same OOS window: -28.60% / -41.28% / -55.55%
 - `REJECT` needs either a powered OOS sample or a net that is negative in all three windows; a small sample that is merely unprofitable stays `INSUFFICIENT_EVIDENCE`, and every reason is listed so the reader can re-judge it.
 - Nothing in this table is a profitability claim: no candidate reached `ADMIT`, and a positive net carried by one trade is reported as such.
 - Buy & hold uses the same window and the same cost plane, and trades once.
+- `market_context` is the benchmark (BTC) regime at the entry instant, read as-of and never later; it is independent of every candidate. The `regime` column instead records the entry trend state of the candidate's own filter, so a filtered candidate reports a single value there by construction — which is why the market coverage question is answered by `market_context` and not by that column.
 - Admission criteria (fixed before measuring): {"min_oos_trades": 30, "require_oos_net_positive": true, "require_oos_expectancy_positive": true, "require_oos_base_scenario_positive": true, "max_single_trade_share_of_net": 0.5, "require_min_positive_regimes": 1, "require_oos_cost_stress_positive": true, "note": "Initial thresholds for WP-EDGE-01, recorded before the campaign ran. They are NOT an approved profitability bar; they are the minimum evidence needed to avoid calling noise an edge. The cost-stress criterion (OOS net still positive at 2x fees) is stated here rather than inferred from the measured results."}

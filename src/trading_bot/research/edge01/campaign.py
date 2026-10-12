@@ -38,6 +38,12 @@ from .candidates import (
 from .costs import ADMISSION_SCENARIO as ADMISSION_SCENARIO_LABEL
 from .costs import COST_SCENARIOS, CostPlane, cost_plane
 from .data import ASSETS, REPO, OHLCVBar, load_1h, load_15m, resample
+from .features import (
+    MARKET_REGIME_RULE,
+    MarketRegimeRow,
+    market_regime_at,
+    market_regime_series,
+)
 from .simulator import RiskPolicy, buy_and_hold
 from .simulator import run_portfolio as run_portfolio_sim
 
@@ -260,8 +266,19 @@ LIMITATIONS: list[str] = [
     "one. Both are reported per trade.",
     "The 4h and 1d corpora are aggregated from 1h, so a full 1-day bar exists only "
     "where 24 contiguous 1h bars exist; partial days are dropped, not interpolated.",
-    "Regime labels are computed from the same close series the candidates trade, "
-    "with no look-ahead, but they are a research taxonomy, not the runtime's.",
+    "The ``regime`` column of a trade is the candidate's OWN entry trend state "
+    "(the 1h/4h/1d filter that let the trade through), NOT a market regime: a "
+    "candidate that only enters in an uptrend can only ever print one value, so "
+    "the pre-registered ``require_min_positive_regimes`` criterion is structurally "
+    "one-sided for them and is disclosed as weak rather than presented as proof "
+    "of multi-regime coverage. The market coverage question is answered by "
+    "``market_context``, a benchmark label independent of every candidate.",
+    "``market_context`` is benchmark-relative (BTC daily, see MARKET_CONTEXT rule "
+    "in RUN_REPORT.json): it says what the market was doing, not what the asset "
+    "traded was doing. It comes from the 1h corpus, which ends 2026-02-28, so the "
+    "intraday OOS window is only labelled up to that date and carries UNDEFINED "
+    "after it; the count of UNDEFINED decisions is reported instead of being "
+    "quietly folded into a neighbouring label.",
     "Long-only: the runtime trades Binance spot, so no short side was simulated for "
     "any candidate even where a down-breakout would be symmetric.",
     "EDGE-TREND-01 has a trend filter (EMA50 > EMA200 and price above EMA200) but "
@@ -463,6 +480,18 @@ def _metrics(
     exit_mix: dict[str, int] = {}
     for trade in trades:
         exit_mix[trade["exit_reason"]] = exit_mix.get(trade["exit_reason"], 0) + 1
+    by_market_context: dict[str, Any] = {}
+    for label in sorted({t.get("market_context") or "UNDEFINED" for t in trades}):
+        subset = [t for t in trades if (t.get("market_context") or "UNDEFINED") == label]
+        by_market_context[label] = {
+            "trades": len(subset),
+            "net": round(sum(t["net"] for t in subset), 4),
+            "win_rate": round(
+                100.0 * sum(1 for t in subset if t["net"] > 0) / len(subset), 4
+            )
+            if subset
+            else None,
+        }
     largest = max(nets, default=0.0)
     return {
         "trades": len(trades),
@@ -504,6 +533,12 @@ def _metrics(
         ),
         "by_asset": by_asset,
         "by_regime": by_regime,
+        "by_market_context": by_market_context,
+        "by_regime_note": (
+            "entry trend state of the candidate's own filter (the value that let the "
+            "trade through), NOT a market regime; see by_market_context for the "
+            "benchmark-relative one"
+        ),
         "exit_reason_mix": exit_mix,
         "avg_duration_min": (
             round(sum(t["duration_min"] for t in trades) / len(trades), 2) if trades else None
@@ -598,9 +633,39 @@ def _gate(*, splits: dict[str, Any], criteria: dict[str, Any]) -> dict[str, Any]
     }
 
 
+def _market_context_series() -> tuple[tuple[MarketRegimeRow, ...], dict[str, Any]]:
+    """The benchmark market regime, built once from the longest local corpus.
+
+    The label is a property of the market, computed from BTC alone, so it is the
+    same for every candidate and every cost scenario: pairing it with a trade
+    cannot be tuned. It is read as-of the decision instant, never later.
+    """
+    corpus = load_1h("BTC")
+    daily = resample(corpus, "1d")
+    rows = market_regime_series(list(daily.bars))
+    counts: dict[str, int] = {}
+    for row in rows:
+        counts[row.label] = counts.get(row.label, 0) + 1
+    meta = {
+        "benchmark": "BTC",
+        "timeframe": "1d (aggregated from 1h shards; a day exists only when its 24 contiguous hours do)",
+        "rule": MARKET_REGIME_RULE,
+        "labels": ["BULL", "BEAR", "SIDEWAYS", "UNDEFINED"],
+        "sources": list(corpus.sources),
+        "source_sha256": corpus.sha256,
+        "days": len(rows),
+        "first_close_ms": rows[0].close_ms if rows else None,
+        "last_close_ms": rows[-1].close_ms if rows else None,
+        "label_days": counts,
+        "artefact": "MARKET_CONTEXT.csv",
+    }
+    return rows, meta
+
+
 def run_campaign(*, scenarios: tuple[str, ...] = ("BASE", "2X_FEES", "ADVERSE")) -> dict[str, Any]:
     """Run every candidate over every split, in every cost scenario."""
     policy = load_risk_policy()
+    regime_rows, regime_meta = _market_context_series()
     results: dict[str, Any] = {}
     corpus_cache: dict[str, _Corpus] = {}
     for candidate_id, scope in CANDIDATE_SCOPES.items():
@@ -644,6 +709,12 @@ def run_campaign(*, scenarios: tuple[str, ...] = ("BASE", "2X_FEES", "ADVERSE"))
                     window_start_ts=start,
                     window_end_ts=end,
                 )
+                # The market label is attached per trade, as-of the decision
+                # instant, from a series no candidate can influence.
+                for trade in sim.trades:
+                    trade["market_context"] = market_regime_at(
+                        regime_rows, int(trade["decision_ts"])
+                    )
                 metrics = _metrics(
                     trades=sim.trades,
                     equity_curve=sim.equity_curve,
@@ -699,6 +770,10 @@ def run_campaign(*, scenarios: tuple[str, ...] = ("BASE", "2X_FEES", "ADVERSE"))
             for name, window in SPLITS.items()
         },
         "cost_scenarios": COST_SCENARIOS,
+        "market_context": {
+            "meta": regime_meta,
+            "rows": [row.to_row() for row in regime_rows],
+        },
         "admission_criteria": ADMISSION_CRITERIA,
         "risk_policy": policy.to_dict(),
         "candidates": results,
@@ -747,6 +822,10 @@ def write_artifacts(campaign: dict[str, Any], outdir: Path) -> dict[str, Path]:
     _write_csv(equity_path, equity_rows)
     written["EQUITY_CURVE.csv"] = equity_path
 
+    context_path = outdir / "MARKET_CONTEXT.csv"
+    _write_csv(context_path, campaign["market_context"]["rows"])
+    written["MARKET_CONTEXT.csv"] = context_path
+
     summary = _summary(campaign)
     results_json = outdir / "STRATEGY_RESULTS.json"
     results_json.write_text(
@@ -784,6 +863,7 @@ def write_artifacts(campaign: dict[str, Any], outdir: Path) -> dict[str, Path]:
                 "entrypoint": "scripts/edge01_run.py",
                 "verifier": "scripts/edge01_verify.py",
                 "cost_scenarios": campaign["cost_scenarios"],
+                "market_context": campaign["market_context"]["meta"],
                 "admission_criteria": campaign["admission_criteria"],
                 "risk_policy": campaign["risk_policy"],
                 "splits": campaign["splits"],
@@ -1041,6 +1121,35 @@ def _results_markdown(campaign: dict[str, Any], summary: dict[str, Any]) -> str:
         lines += ["", "Exit reasons (OOS/BASE): " + _exit_mix(payload), ""]
         lines += ["Refusals (OOS/BASE, top): " + _refusal_mix(payload), ""]
         lines += ["Buy & hold over the same OOS window: " + _buy_hold(payload), ""]
+        meta = campaign["market_context"]["meta"]
+        lines += [
+            f"Market context at ENTRY (BASE scenario), from the benchmark only "
+            f"(`{meta['benchmark']}`, daily, as-of each decision, rule in "
+            f"`RUN_REPORT.json#market_context`). This is what the market was doing, "
+            f"independently of the candidate; `UNDEFINED` means the benchmark could "
+            f"not be read yet (no day closed, or the label falls after "
+            f"{_iso(meta['last_close_ms'])}).",
+            "",
+            "| split | market context | trades | net | win rate |",
+            "|---|---|---|---|---|",
+        ]
+        for split in ("DEV", "VAL", "OOS"):
+            context = payload["splits"][split]["BASE"].get("by_market_context") or {}
+            if not context:
+                lines.append(f"| {split} | (no trades) | 0 | n/a | n/a |")
+            for label in sorted(context):
+                bucket = context[label]
+                lines.append(
+                    f"| {split} | {label} | {bucket['trades']} | {_num(bucket['net'])} | "
+                    f"{_pct(bucket['win_rate'])} |"
+                )
+        lines += [
+            "",
+            "Entry trend state of the candidate's own filter (the `regime` column of "
+            "TRADES.csv, which is NOT a market regime): "
+            + json.dumps(payload["splits"]["OOS"]["BASE"].get("by_regime") or {}),
+            "",
+        ]
     lines += [
         "## Honesty notes",
         "",
@@ -1055,6 +1164,12 @@ def _results_markdown(campaign: dict[str, Any], summary: dict[str, Any]) -> str:
         "- Nothing in this table is a profitability claim: no candidate reached "
         "`ADMIT`, and a positive net carried by one trade is reported as such.",
         "- Buy & hold uses the same window and the same cost plane, and trades once.",
+        "- `market_context` is the benchmark (BTC) regime at the entry instant, read "
+        "as-of and never later; it is independent of every candidate. The `regime` "
+        "column instead records the entry trend state of the candidate's own "
+        "filter, so a filtered candidate reports a single value there by "
+        "construction — which is why the market coverage question is answered by "
+        "`market_context` and not by that column.",
         f"- Admission criteria (fixed before measuring): {json.dumps(campaign['admission_criteria'])}",
         "",
     ]
@@ -1193,7 +1308,46 @@ def _run_markdown(campaign: dict[str, Any], summary: dict[str, Any]) -> str:
             )
     lines += [
         "",
-        "## 7. Defectos encontrados al ejecutar (y corregidos aqu\u00ed)",
+        "## 7. Contexto de mercado al entrar (benchmark)",
+        "",
+        "La pregunta del WP es si los candidatos se probaron en mercado alcista,\n"
+        "bajista y lateral. La respuesta no puede venir de la columna `regime` de\n"
+        "`TRADES.csv`: esa columna es el estado del FILTRO DE TENDENCIA del propio\n"
+        "candidato en el momento de entrar (es el valor que dej\u00f3 pasar la operaci\u00f3n), y\n"
+        "un candidato que s\u00f3lo entra en tendencia alcista s\u00f3lo puede escribir un\n"
+        "valor. Por eso cada operaci\u00f3n lleva adem\u00e1s `market_context`, calculado\n"
+        "sobre el benchmark y le\u00eddo *as-of* el instante de la decisi\u00f3n:\n"
+        "",
+        f"- benchmark: `{campaign['market_context']['meta']['benchmark']}`, diario "
+        f"({campaign['market_context']['meta']['timeframe']})",
+        f"- regla: {campaign['market_context']['meta']['rule']}",
+        f"- d\u00edas etiquetados: {campaign['market_context']['meta']['days']} "
+        f"({_iso(campaign['market_context']['meta']['first_close_ms'])}.."
+        f"{_iso(campaign['market_context']['meta']['last_close_ms'])}); "
+        f"reparto: `{json.dumps(campaign['market_context']['meta']['label_days'])}`",
+        "- fichero: `MARKET_CONTEXT.csv` (una fila por d\u00eda, con su sha256 en "
+        "`RUN_REPORT.json`); el verificador comprueba que cada `market_context` "
+        "de `TRADES.csv` es el \u00faltimo d\u00eda cerrado antes de su `decision_ts`.",
+        "",
+        "Operaciones por contexto de mercado (BASE):",
+        "",
+        "| candidato | split | BULL | BEAR | SIDEWAYS | UNDEFINED |",
+        "|---|---|---|---|---|---|",
+    ]
+    for candidate_id, payload in campaign["candidates"].items():
+        for split in ("DEV", "VAL", "OOS"):
+            context = payload["splits"][split]["BASE"].get("by_market_context") or {}
+            cells = [str((context.get(label) or {}).get("trades", 0)) for label in
+                     ("BULL", "BEAR", "SIDEWAYS", "UNDEFINED")]
+            lines.append(f"| {candidate_id} | {split} | " + " | ".join(cells) + " |")
+    lines += [
+        "",
+        "`UNDEFINED` no es un rango: significa que el benchmark no pod\u00eda leerse "
+        "(a\u00fan no hab\u00eda cerrado ning\u00fan d\u00eda, o la fecha cae despu\u00e9s del final del "
+        "corpus de 1h). Se cuenta en su propia columna en vez de repartirse entre "
+        "las etiquetas vecinas.",
+        "",
+        "## 8. Defectos encontrados al ejecutar (y corregidos aqu\u00ed)",
         "",
         "| id | s\u00edntoma | causa | correcci\u00f3n | evidencia |",
         "|---|---|---|---|---|",
@@ -1205,7 +1359,7 @@ def _run_markdown(campaign: dict[str, Any], summary: dict[str, Any]) -> str:
         )
     lines += [
         "",
-        "## 8. Verificaci\u00f3n",
+        "## 9. Verificaci\u00f3n",
         "",
         "Reproducir esta medida (sin red, sin claves):",
         "",
@@ -1223,37 +1377,40 @@ def _run_markdown(campaign: dict[str, Any], summary: dict[str, Any]) -> str:
         "- Tests de causalidad y contabilidad: `tests/unit/research/test_edge01_pit.py`\n"
         "  (look-ahead en pivotes y FVG, estado por serie, identidad de caja).",
         "- Tests del veredicto y de los artefactos:\n"
-        "  `tests/unit/research/test_edge01_gate_and_artifacts.py`.",
+        "  `tests/unit/research/test_edge01_gate_and_artifacts.py`.\n"
+        "- El verificador comprueba adem\u00e1s, desde los artefactos solos, que el\n"
+        "  `market_context` de cada operaci\u00f3n es el del \u00faltimo d\u00eda del benchmark\n"
+        "  cerrado antes de su decisi\u00f3n (`MARKET_CONTEXT_ATTRIBUTION`).",
         "- Cada artefacto lleva su sha256 y su tama\u00f1o en `RUN_REPORT.json`.\n"
         "  El backtester no comparte c\u00f3digo de decisi\u00f3n con el runtime.",
         "- `INDEPENDENT_VERIFICATION.json` lo produce el verificador DESPU\u00c9S de esta "
         "medida, as\u00ed que no est\u00e1 en el inventario de integridad de arriba: es el "
-        "resultado de comprobar los otros cinco, no una medida m\u00e1s.",
+        "resultado de comprobar el resto, no una medida m\u00e1s.",
         "- `TEST_TARGET == RUNTIME_TARGET`: "
         + str(_runtime_diff() or "el WP no ha tocado ning\u00fan fichero del runtime")
         + ". Los tests y el runner importan el mismo paquete "
         "(`trading_bot.research.edge01`) y el verificador no importa nada del proyecto.",
         "",
-        "## 9. PAPER",
+        "## 10. PAPER",
         "",
         f"- Integrado: `{PAPER_STATUS['integrated']}` \u2014 {PAPER_STATUS['reason']}",
         f"- Runtime: {PAPER_STATUS['runtime_untouched']}",
         "- No se activa dinero real: 0 \u00f3rdenes en este WP.",
         "",
-        "## 10. Hip\u00f3tesis para la siguiente iteraci\u00f3n",
+        "## 11. Hip\u00f3tesis para la siguiente iteraci\u00f3n",
         "",
     ]
     for item in NEXT_HYPOTHESES:
         lines.append(f"- **{item['id']}**: {item['hypothesis']} \u2014 *Test:* {item['test']}")
     lines += [
         "",
-        "## 11. Limitaciones",
+        "## 12. Limitaciones",
         "",
     ]
     lines += [f"- {item}" for item in LIMITATIONS]
     lines += [
         "",
-        "## 12. Artefactos",
+        "## 13. Artefactos",
         "",
         "| artefacto | contenido |",
         "|---|---|",
@@ -1261,6 +1418,7 @@ def _run_markdown(campaign: dict[str, Any], summary: dict[str, Any]) -> str:
         "| `STRATEGY_RESULTS.json` | lo mismo en JSON, m\u00e1s scope, params congelados y procedencia |",
         "| `TRADES.csv` | una fila por operaci\u00f3n cerrada, con costes desglosados y R m\u00faltiple |",
         "| `EQUITY_CURVE.csv` | curva de capital por candidato y split (escenario BASE) |",
+        "| `MARKET_CONTEXT.csv` | r\u00e9gimen del benchmark por d\u00eda, con la regla declarada; base del `market_context` de cada operaci\u00f3n |",
         "| `RUN_REPORT.json` | metadatos de la medida, integridad (sha256/tama\u00f1o) y veredictos |",
         "",
     ]

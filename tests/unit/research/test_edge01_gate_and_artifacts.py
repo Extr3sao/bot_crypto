@@ -3,8 +3,9 @@
 The gate is where a research lane is allowed to lie to itself, so it is tested
 branch by branch: a small sample must not become an admission, an unpowered
 negative must not be sold as a rejection, and a powered negative must not be
-softened into "more data needed". The artefact tests pin the contract of the six
-required outputs, including that private in-memory buffers never reach them.
+softened into "more data needed". The artefact tests pin the contract of the
+required outputs, including that private in-memory buffers never reach them and
+that the benchmark coverage file is part of the published set.
 """
 
 from __future__ import annotations
@@ -261,6 +262,31 @@ def _fake_campaign() -> dict[str, Any]:
         "frozen_params": {"edge_intra_01": {"resistance_lookback": 20}},
         "splits": {"intraday": split_windows},
         "cost_scenarios": {"BASE": (1.0, 1.0)},
+        "market_context": {
+            "meta": {
+                "benchmark": "BTC",
+                "timeframe": "1d (aggregated from 1h shards)",
+                "rule": "close vs EMA200 with the EMA's 20-day slope",
+                "labels": ["BULL", "BEAR", "SIDEWAYS", "UNDEFINED"],
+                "sources": ["reports/alpha-expansion-v1/data/BTCUSDT_2019.json"],
+                "source_sha256": "c" * 64,
+                "days": 1,
+                "first_close_ms": 1_700_000_000_000,
+                "last_close_ms": 1_700_086_400_000,
+                "label_days": {"BULL": 1},
+                "artefact": "MARKET_CONTEXT.csv",
+            },
+            "rows": [
+                {
+                    "close_ms": 1_700_086_400_000,
+                    "iso_utc": "2023-11-15T00:00:00+00:00",
+                    "label": "BULL",
+                    "close": 36_000.0,
+                    "ema_200": 30_000.0,
+                    "ema_slope_20": 120.0,
+                }
+            ],
+        },
         "admission_criteria": ADMISSION_CRITERIA,
         "risk_policy": load_risk_policy().to_dict(),
         "candidates": {
@@ -289,11 +315,14 @@ def _fake_campaign() -> dict[str, Any]:
     }
 
 
-def test_write_artifacts_publishes_six_files_with_an_integrity_inventory(tmp_path: Path) -> None:
+def test_write_artifacts_publishes_every_required_file_with_an_integrity_inventory(
+    tmp_path: Path,
+) -> None:
     campaign = _fake_campaign()
     written = write_artifacts(campaign, tmp_path)
     assert sorted(written) == [
         "EQUITY_CURVE.csv",
+        "MARKET_CONTEXT.csv",
         "RUN_REPORT.json",
         "RUN_REPORT.md",
         "STRATEGY_RESULTS.json",
@@ -345,6 +374,8 @@ def test_run_report_markdown_states_the_honesty_limits(tmp_path: Path) -> None:
         "Limitaciones",
         "Hipótesis",
         "Defectos",
+        "Contexto de mercado",
+        "MARKET_CONTEXT.csv",
         "edge01_verify.py",
         "sha256",
     ):

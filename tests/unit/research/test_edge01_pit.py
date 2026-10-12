@@ -24,10 +24,13 @@ from trading_bot.research.edge01.candidates import (
 from trading_bot.research.edge01.costs import cost_plane
 from trading_bot.research.edge01.data import BAR_MS, OHLCVBar
 from trading_bot.research.edge01.features import (
+    MARKET_REGIMES,
     atr,
     build_feature_series,
     confirmed_swings,
     fvg_bullish_at,
+    market_regime_at,
+    market_regime_series,
     prior_extreme,
 )
 from trading_bot.research.edge01.simulator import (
@@ -363,3 +366,53 @@ def test_buy_and_hold_pays_the_round_trip_cost_and_starts_at_the_first_open() ->
     assert hold["exit_mid"] == bars[-1].close
     assert hold["equity_final"] == pytest.approx(10_000.0 * (1 + hold["return_pct"] / 100.0))
     assert "_bar_returns" in hold  # in memory only; the artefacts drop it (DEF-EDGE01-05)
+
+
+# --------------------------------------------------------------------------- #
+# Benchmark market context (the bull / bear / sideways coverage claim)
+# --------------------------------------------------------------------------- #
+
+DAY = BAR_MS["1d"]
+
+
+def daily(closes: list[float]) -> list[OHLCVBar]:
+    return [
+        bar(i * DAY, o=value, h=value, low=value, c=value)
+        for i, value in enumerate(closes)
+    ]
+
+
+def test_market_regime_labels_nothing_before_its_inputs_exist() -> None:
+    rows = market_regime_series(daily([100.0] * 30), ema_period=10, slope_lookback=2)
+    assert rows[0].label == "UNDEFINED"
+    assert rows[9].label == "UNDEFINED"  # the EMA is seeded AT index 9, not before
+    assert rows[10].label == "UNDEFINED"  # the slope needs two seeded EMA points
+    assert rows[11].label in MARKET_REGIMES
+    assert rows[11].label != "UNDEFINED"
+
+
+def test_market_regime_separates_bull_bear_and_sideways_without_a_threshold() -> None:
+    warm = [100.0] * 6
+    up = market_regime_series(
+        daily(warm + [100.0 + i * 2.0 for i in range(20)]), ema_period=10, slope_lookback=3
+    )
+    down = market_regime_series(
+        daily(warm + [100.0 - i * 2.0 for i in range(20)]), ema_period=10, slope_lookback=3
+    )
+    sideways = market_regime_series(daily([100.0] * 26), ema_period=10, slope_lookback=3)
+    assert up[-1].label == "BULL"
+    assert down[-1].label == "BEAR"
+    assert sideways[-1].label == "SIDEWAYS"
+
+
+def test_market_regime_is_unreadable_until_that_day_closes() -> None:
+    rows = market_regime_series(
+        daily([100.0] * 6 + [100.0 + i * 2.0 for i in range(20)]),
+        ema_period=10,
+        slope_lookback=3,
+    )
+    assert market_regime_at(rows, 0) == "UNDEFINED"  # nothing had closed yet
+    for index in range(11, len(rows)):
+        day = rows[index]
+        assert market_regime_at(rows, day.close_ms - 1) == rows[index - 1].label
+        assert market_regime_at(rows, day.close_ms) == day.label

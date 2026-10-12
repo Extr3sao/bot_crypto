@@ -119,6 +119,14 @@
                 "win_rate": 19.3103
               }
             },
+            "by_market_context": {
+              "BULL": {
+                "trades": 290,
+                "net": -496.4298,
+                "win_rate": 19.3103
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
             "exit_reason_mix": {
               "trailing_stop": 47,
               "stop_loss": 130,
@@ -231,6 +239,14 @@
                 "win_rate": 18.7817
               }
             },
+            "by_market_context": {
+              "BULL": {
+                "trades": 197,
+                "net": -501.72,
+                "win_rate": 18.7817
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
             "exit_reason_mix": {
               "trailing_stop": 36,
               "stop_loss": 77,
@@ -343,6 +359,14 @@
                 "win_rate": 17.7515
               }
             },
+            "by_market_context": {
+              "BULL": {
+                "trades": 169,
+                "net": -496.1672,
+                "win_rate": 17.7515
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
             "exit_reason_mix": {
               "trailing_stop": 33,
               "stop_loss": 64,
@@ -457,6 +481,19 @@
                 "win_rate": 18.314
               }
             },
+            "by_market_context": {
+              "BEAR": {
+                "trades": 40,
+                "net": -107.5798,
+                "win_rate": 10.0
+              },
+              "BULL": {
+                "trades": 304,
+                "net": -371.6034,
+                "win_rate": 19.4079
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
             "exit_reason_mix": {
               "stop_loss": 148,
               "invalidation": 91,
@@ -568,6 +605,14 @@
                 "win_rate": 16.087
               }
             },
+            "by_market_context": {
+              "BULL": {
+                "trades": 230,
+                "net": -508.9188,
+                "win_rate": 16.087
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
             "exit_reason_mix": {
               "stop_loss": 95,
               "trailing_stop": 43,
@@ -680,6 +725,14 @@
                 "win_rate": 15.7895
               }
             },
+            "by_market_context": {
+              "BULL": {
+                "trades": 209,
+                "net": -504.8194,
+                "win_rate": 15.7895
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
             "exit_reason_mix": {
               "stop_loss": 89,
               "trailing_stop": 40,
@@ -794,6 +847,14 @@
                 "win_rate": 17.4603
               }
             },
+            "by_market_context": {
+              "BEAR": {
+                "trades": 63,
+                "net": -94.8077,
+                "win_rate": 17.4603
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
             "exit_reason_mix": {
               "stop_loss": 21,
               "invalidation": 28,
@@ -905,6 +966,14 @@
                 "win_rate": 17.3077
               }
             },
+            "by_market_context": {
+              "BEAR": {
+                "trades": 52,
+                "net": -133.2011,
+                "win_rate": 17.3077
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
             "exit_reason_mix": {
               "stop_loss": 17,
               "invalidation": 23,
@@ -1016,6 +1085,14 @@
                 "win_rate": 19.5652
               }
             },
+            "by_market_context": {
+              "BEAR": {
+                "trades": 46,
+                "net": -125.036,
+                "win_rate": 19.5652
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
             "exit_reason_mix": {
               "stop_loss": 14,
               "invalidation": 21,
@@ -1209,6 +1286,24 @@
                 "win_rate": 21.4815
               }
             },
+            "by_market_context": {
+              "BEAR": {
+                "trades": 8,
+                "net": 8.2596,
+                "win_rate": 37.5
+              },
+              "BULL": {
+                "trades": 119,
+                "net": -178.7393,
+                "win_rate": 21.0084
+              },
+              "SIDEWAYS": {
+                "trades": 8,
+                "net": -19.3972,
+                "win_rate": 12.5
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
             "exit_reason_mix": {
               "target": 24,
               "trailing_stop": 17,
@@ -1323,6 +1418,24 @@
                 "win_rate": 22.5225
               }
             },
+            "by_market_context": {
+              "BEAR": {
+                "trades": 7,
+                "net": 3.976,
+                "win_rate": 28.5714
+              },
+              "BULL": {
+                "trades": 96,
+                "net": -234.6028,
+                "win_rate": 22.9167
+              },
+              "SIDEWAYS": {
+                "trades": 8,
+                "net": -27.3858,
+                "win_rate": 12.5
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
             "exit_reason_mix": {
               "target": 21,
               "trailing_stop": 15,
@@ -1437,6 +1550,24 @@
                 "win_rate": 24.2718
               }
             },
+            "by_market_context": {
+              "BEAR": {
+                "trades": 7,
+                "net": 2.017,
+                "win_rate": 28.5714
+              },
+              "BULL": {
+                "trades": 89,
+                "net": -233.7708,
+                "win_rate": 24.7191
+              },
+              "SIDEWAYS": {
+                "trades": 7,
+                "net": -25.1366,
+                "win_rate": 14.2857
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
             "exit_reason_mix": {
               "target": 21,
               "trailing_stop": 15,
@@ -1552,6 +1683,19 @@
                 "win_rate": 22.2222
               }
             },
+            "by_market_context": {
+              "BEAR": {
+                "trades": 6,
+                "net": -24.9683,
+                "win_rate": 0.0
+              },
+              "BULL": {
+                "trades": 66,
+                "net": -77.612,
+                "win_rate": 24.2424
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
             "exit_reason_mix": {
               "target": 13,
               "stop_loss": 28,
@@ -1666,6 +1810,19 @@
                 "win_rate": 19.403
               }
             },
+            "by_market_context": {
+              "BEAR": {
+                "trades": 5,
+                "net": -27.0163,
+                "win_rate": 0.0
+              },
+              "BULL": {
+                "trades": 62,
+                "net": -137.6132,
+                "win_rate": 20.9677
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
             "exit_reason_mix": {
               "stop_loss": 25,
               "target": 11,
@@ -1780,6 +1937,19 @@
                 "win_rate": 18.0328
               }
             },
+            "by_market_context": {
+              "BEAR": {
+                "trades": 5,
+                "net": -28.3989,
+                "win_rate": 0.0
+              },
+              "BULL": {
+                "trades": 56,
+                "net": -143.4793,
+                "win_rate": 19.6429
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
             "exit_reason_mix": {
               "stop_loss": 22,
               "target": 9,
@@ -1896,6 +2066,14 @@
                 "win_rate": 42.8571
               }
             },
+            "by_market_context": {
+              "BEAR": {
+                "trades": 14,
+                "net": -12.6286,
+                "win_rate": 42.8571
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
             "exit_reason_mix": {
               "target": 4,
               "trailing_stop": 2,
@@ -2010,6 +2188,14 @@
                 "win_rate": 23.0769
               }
             },
+            "by_market_context": {
+              "BEAR": {
+                "trades": 13,
+                "net": -31.505,
+                "win_rate": 23.0769
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
             "exit_reason_mix": {
               "stop_loss": 5,
               "trailing_stop": 2,
@@ -2124,6 +2310,14 @@
                 "win_rate": 25.0
               }
             },
+            "by_market_context": {
+              "BEAR": {
+                "trades": 12,
+                "net": -30.8046,
+                "win_rate": 25.0
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
             "exit_reason_mix": {
               "stop_loss": 4,
               "trailing_stop": 2,
@@ -2319,6 +2513,24 @@
                 "win_rate": 14.4444
               }
             },
+            "by_market_context": {
+              "BEAR": {
+                "trades": 4,
+                "net": -10.5414,
+                "win_rate": 0.0
+              },
+              "BULL": {
+                "trades": 264,
+                "net": -483.8865,
+                "win_rate": 14.7727
+              },
+              "SIDEWAYS": {
+                "trades": 2,
+                "net": -6.4047,
+                "win_rate": 0.0
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
             "exit_reason_mix": {
               "stop_loss": 135,
               "invalidation": 78,
@@ -2433,6 +2645,14 @@
                 "win_rate": 13.0178
               }
             },
+            "by_market_context": {
+              "BULL": {
+                "trades": 169,
+                "net": -502.1435,
+                "win_rate": 13.0178
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
             "exit_reason_mix": {
               "stop_loss": 85,
               "invalidation": 50,
@@ -2547,6 +2767,14 @@
                 "win_rate": 13.4615
               }
             },
+            "by_market_context": {
+              "BULL": {
+                "trades": 156,
+                "net": -501.7486,
+                "win_rate": 13.4615
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
             "exit_reason_mix": {
               "stop_loss": 78,
               "invalidation": 48,
@@ -2663,6 +2891,19 @@
                 "win_rate": 20.2899
               }
             },
+            "by_market_context": {
+              "BEAR": {
+                "trades": 21,
+                "net": -53.8902,
+                "win_rate": 14.2857
+              },
+              "BULL": {
+                "trades": 186,
+                "net": -235.1104,
+                "win_rate": 20.9677
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
             "exit_reason_mix": {
               "invalidation": 44,
               "target": 36,
@@ -2777,6 +3018,19 @@
                 "win_rate": 19.0751
               }
             },
+            "by_market_context": {
+              "BEAR": {
+                "trades": 18,
+                "net": -64.1272,
+                "win_rate": 11.1111
+              },
+              "BULL": {
+                "trades": 155,
+                "net": -342.9404,
+                "win_rate": 20.0
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
             "exit_reason_mix": {
               "invalidation": 39,
               "trailing_stop": 28,
@@ -2891,6 +3145,19 @@
                 "win_rate": 16.1491
               }
             },
+            "by_market_context": {
+              "BEAR": {
+                "trades": 16,
+                "net": -65.4224,
+                "win_rate": 6.25
+              },
+              "BULL": {
+                "trades": 145,
+                "net": -381.8252,
+                "win_rate": 17.2414
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
             "exit_reason_mix": {
               "invalidation": 38,
               "trailing_stop": 25,
@@ -3007,6 +3274,14 @@
                 "win_rate": 22.2222
               }
             },
+            "by_market_context": {
+              "BEAR": {
+                "trades": 45,
+                "net": -69.0987,
+                "win_rate": 22.2222
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
             "exit_reason_mix": {
               "trailing_stop": 3,
               "stop_loss": 21,
@@ -3119,6 +3394,14 @@
                 "win_rate": 16.129
               }
             },
+            "by_market_context": {
+              "BEAR": {
+                "trades": 31,
+                "net": -82.8262,
+                "win_rate": 16.129
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
             "exit_reason_mix": {
               "trailing_stop": 3,
               "stop_loss": 13,
@@ -3231,6 +3514,14 @@
                 "win_rate": 17.2414
               }
             },
+            "by_market_context": {
+              "BEAR": {
+                "trades": 29,
+                "net": -84.7203,
+                "win_rate": 17.2414
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
             "exit_reason_mix": {
               "trailing_stop": 3,
               "stop_loss": 12,
@@ -3450,6 +3741,29 @@
                 "win_rate": 56.9507
               }
             },
+            "by_market_context": {
+              "BEAR": {
+                "trades": 26,
+                "net": 16.4682,
+                "win_rate": 46.1538
+              },
+              "BULL": {
+                "trades": 159,
+                "net": 1339.6867,
+                "win_rate": 57.8616
+              },
+              "SIDEWAYS": {
+                "trades": 14,
+                "net": 77.0108,
+                "win_rate": 64.2857
+              },
+              "UNDEFINED": {
+                "trades": 24,
+                "net": 488.0135,
+                "win_rate": 58.3333
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
             "exit_reason_mix": {
               "trailing_stop": 130,
               "stop_loss": 91,
@@ -3554,6 +3868,29 @@
                 "win_rate": 54.7085
               }
             },
+            "by_market_context": {
+              "BEAR": {
+                "trades": 26,
+                "net": -2.4647,
+                "win_rate": 46.1538
+              },
+              "BULL": {
+                "trades": 159,
+                "net": 1207.1059,
+                "win_rate": 54.717
+              },
+              "SIDEWAYS": {
+                "trades": 14,
+                "net": 65.9635,
+                "win_rate": 64.2857
+              },
+              "UNDEFINED": {
+                "trades": 24,
+                "net": 468.1963,
+                "win_rate": 58.3333
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
             "exit_reason_mix": {
               "trailing_stop": 130,
               "stop_loss": 91,
@@ -3658,6 +3995,29 @@
                 "win_rate": 54.2601
               }
             },
+            "by_market_context": {
+              "BEAR": {
+                "trades": 26,
+                "net": -7.4479,
+                "win_rate": 42.3077
+              },
+              "BULL": {
+                "trades": 159,
+                "net": 1166.8455,
+                "win_rate": 54.717
+              },
+              "SIDEWAYS": {
+                "trades": 14,
+                "net": 62.4661,
+                "win_rate": 64.2857
+              },
+              "UNDEFINED": {
+                "trades": 24,
+                "net": 461.1208,
+                "win_rate": 58.3333
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
             "exit_reason_mix": {
               "trailing_stop": 130,
               "stop_loss": 91,
@@ -3764,6 +4124,19 @@
                 "win_rate": 48.2759
               }
             },
+            "by_market_context": {
+              "BULL": {
+                "trades": 57,
+                "net": -0.1819,
+                "win_rate": 47.3684
+              },
+              "SIDEWAYS": {
+                "trades": 1,
+                "net": 4.7072,
+                "win_rate": 100.0
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
             "exit_reason_mix": {
               "trailing_stop": 29,
               "stop_loss": 29
@@ -3867,6 +4240,19 @@
                 "win_rate": 46.5517
               }
             },
+            "by_market_context": {
+              "BULL": {
+                "trades": 57,
+                "net": -48.2486,
+                "win_rate": 45.614
+              },
+              "SIDEWAYS": {
+                "trades": 1,
+                "net": 3.8099,
+                "win_rate": 100.0
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
             "exit_reason_mix": {
               "trailing_stop": 29,
               "stop_loss": 29
@@ -3970,6 +4356,19 @@
                 "win_rate": 46.5517
               }
             },
+            "by_market_context": {
+              "BULL": {
+                "trades": 57,
+                "net": -62.3044,
+                "win_rate": 45.614
+              },
+              "SIDEWAYS": {
+                "trades": 1,
+                "net": 3.5428,
+                "win_rate": 100.0
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
             "exit_reason_mix": {
               "trailing_stop": 29,
               "stop_loss": 29
@@ -4075,6 +4474,24 @@
                 "win_rate": 44.2308
               }
             },
+            "by_market_context": {
+              "BEAR": {
+                "trades": 7,
+                "net": -58.8791,
+                "win_rate": 42.8571
+              },
+              "BULL": {
+                "trades": 41,
+                "net": 177.4313,
+                "win_rate": 41.4634
+              },
+              "SIDEWAYS": {
+                "trades": 4,
+                "net": 89.4535,
+                "win_rate": 75.0
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
             "exit_reason_mix": {
               "trailing_stop": 23,
               "stop_loss": 29
@@ -4178,6 +4595,24 @@
                 "win_rate": 42.3077
               }
             },
+            "by_market_context": {
+              "BEAR": {
+                "trades": 7,
+                "net": -65.6619,
+                "win_rate": 42.8571
+              },
+              "BULL": {
+                "trades": 41,
+                "net": 140.7384,
+                "win_rate": 39.0244
+              },
+              "SIDEWAYS": {
+                "trades": 4,
+                "net": 85.5958,
+                "win_rate": 75.0
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
             "exit_reason_mix": {
               "trailing_stop": 23,
               "stop_loss": 29
@@ -4281,6 +4716,24 @@
                 "win_rate": 42.3077
               }
             },
+            "by_market_context": {
+              "BEAR": {
+                "trades": 7,
+                "net": -67.3982,
+                "win_rate": 42.8571
+              },
+              "BULL": {
+                "trades": 41,
+                "net": 130.0024,
+                "win_rate": 39.0244
+              },
+              "SIDEWAYS": {
+                "trades": 4,
+                "net": 84.2866,
+                "win_rate": 75.0
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
             "exit_reason_mix": {
               "trailing_stop": 23,
               "stop_loss": 29
@@ -4495,6 +4948,24 @@
                 "win_rate": 69.2308
               }
             },
+            "by_market_context": {
+              "BULL": {
+                "trades": 36,
+                "net": 785.52,
+                "win_rate": 69.4444
+              },
+              "SIDEWAYS": {
+                "trades": 2,
+                "net": 166.3884,
+                "win_rate": 100.0
+              },
+              "UNDEFINED": {
+                "trades": 1,
+                "net": -25.3994,
+                "win_rate": 0.0
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
             "exit_reason_mix": {
               "stop_loss": 12,
               "trailing_stop": 26,
@@ -4599,6 +5070,24 @@
                 "win_rate": 69.2308
               }
             },
+            "by_market_context": {
+              "BULL": {
+                "trades": 36,
+                "net": 771.5596,
+                "win_rate": 69.4444
+              },
+              "SIDEWAYS": {
+                "trades": 2,
+                "net": 165.5725,
+                "win_rate": 100.0
+              },
+              "UNDEFINED": {
+                "trades": 1,
+                "net": -25.7664,
+                "win_rate": 0.0
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
             "exit_reason_mix": {
               "stop_loss": 12,
               "trailing_stop": 26,
@@ -4703,6 +5192,24 @@
                 "win_rate": 69.2308
               }
             },
+            "by_market_context": {
+              "BULL": {
+                "trades": 36,
+                "net": 766.088,
+                "win_rate": 69.4444
+              },
+              "SIDEWAYS": {
+                "trades": 2,
+                "net": 165.102,
+                "win_rate": 100.0
+              },
+              "UNDEFINED": {
+                "trades": 1,
+                "net": -25.8124,
+                "win_rate": 0.0
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
             "exit_reason_mix": {
               "stop_loss": 12,
               "trailing_stop": 26,
@@ -4809,6 +5316,19 @@
                 "win_rate": 35.0
               }
             },
+            "by_market_context": {
+              "BULL": {
+                "trades": 17,
+                "net": -12.0773,
+                "win_rate": 29.4118
+              },
+              "SIDEWAYS": {
+                "trades": 3,
+                "net": 98.6154,
+                "win_rate": 66.6667
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
             "exit_reason_mix": {
               "stop_loss": 11,
               "trailing_stop": 7,
@@ -4913,6 +5433,19 @@
                 "win_rate": 35.0
               }
             },
+            "by_market_context": {
+              "BULL": {
+                "trades": 17,
+                "net": -18.3256,
+                "win_rate": 29.4118
+              },
+              "SIDEWAYS": {
+                "trades": 3,
+                "net": 97.2883,
+                "win_rate": 66.6667
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
             "exit_reason_mix": {
               "stop_loss": 11,
               "trailing_stop": 7,
@@ -5017,6 +5550,19 @@
                 "win_rate": 35.0
               }
             },
+            "by_market_context": {
+              "BULL": {
+                "trades": 17,
+                "net": -20.2808,
+                "win_rate": 29.4118
+              },
+              "SIDEWAYS": {
+                "trades": 3,
+                "net": 96.6829,
+                "win_rate": 66.6667
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
             "exit_reason_mix": {
               "stop_loss": 11,
               "trailing_stop": 7,
@@ -5123,6 +5669,19 @@
                 "win_rate": 38.4615
               }
             },
+            "by_market_context": {
+              "BULL": {
+                "trades": 12,
+                "net": -137.6845,
+                "win_rate": 33.3333
+              },
+              "SIDEWAYS": {
+                "trades": 1,
+                "net": 19.0841,
+                "win_rate": 100.0
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
             "exit_reason_mix": {
               "stop_loss": 8,
               "trailing_stop": 5
@@ -5226,6 +5785,19 @@
                 "win_rate": 38.4615
               }
             },
+            "by_market_context": {
+              "BULL": {
+                "trades": 12,
+                "net": -143.7699,
+                "win_rate": 33.3333
+              },
+              "SIDEWAYS": {
+                "trades": 1,
+                "net": 18.6078,
+                "win_rate": 100.0
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
             "exit_reason_mix": {
               "stop_loss": 8,
               "trailing_stop": 5
@@ -5329,6 +5901,19 @@
                 "win_rate": 38.4615
               }
             },
+            "by_market_context": {
+              "BULL": {
+                "trades": 12,
+                "net": -144.9976,
+                "win_rate": 33.3333
+              },
+              "SIDEWAYS": {
+                "trades": 1,
+                "net": 18.428,
+                "win_rate": 100.0
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
             "exit_reason_mix": {
               "stop_loss": 8,
               "trailing_stop": 5

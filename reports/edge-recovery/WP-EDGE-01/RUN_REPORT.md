@@ -3,14 +3,14 @@
 | | |
 |---|---|
 | run_id | `wp-edge-01-campaign` |
-| HEAD al ejecutar | `1a0a6c85299ca09ac354d3bcf797b34a806adff2` |
+| HEAD al ejecutar | `042947cf58b25d3b706b28fde81b4be6986c6c2f` |
 | rama | `agent/edge-recovery/WP-EDGE-00-baseline` |
 | arbol sucio al ejecutar | `True` |
-| huella del código ejecutado (sha256) | `2ccce6dc6019fe9c04d53d3c1c38e52b7721c14a82ef77fe5c6f6c9e0f63f4fe` |
+| huella del código ejecutado (sha256) | `c832d95859f5986a04e610de9809be6b5fb805eed00854adcf6ba0b340cb467e` |
 | params_hash | `d073a2d686b9b198c36c9a3c6009d36130577ba247a2016c3f791813cb749d77` |
 | modo | backtest determinista sobre datos históricos locales; 0 órdenes, 0 claves, 0 red |
 | entrypoint | `scripts/edge01_run.py` |
-| generado | 2026-10-12T12:02:50.297125+00:00 |
+| generado | 2026-10-12T13:02:28.395619+00:00 |
 
 > El `HEAD` de arriba es lo que la máquina tenía al medir; cuando el árbol
 > está sucio el identificador de esta medida es la **huella del código**
@@ -141,7 +141,44 @@ Señales impresas por el candidato (antes de riesgo y ejecución): edge_intra_01
 | edge_trend_01_1d | VAL | 86.54 | 0.87% | 120.78% / 45.93% / 85.67% |
 | edge_trend_01_1d | OOS | -118.60 | -1.19% | -28.60% / -41.28% / -55.55% |
 
-## 7. Defectos encontrados al ejecutar (y corregidos aquí)
+## 7. Contexto de mercado al entrar (benchmark)
+
+La pregunta del WP es si los candidatos se probaron en mercado alcista,
+bajista y lateral. La respuesta no puede venir de la columna `regime` de
+`TRADES.csv`: esa columna es el estado del FILTRO DE TENDENCIA del propio
+candidato en el momento de entrar (es el valor que dejó pasar la operación), y
+un candidato que sólo entra en tendencia alcista sólo puede escribir un
+valor. Por eso cada operación lleva además `market_context`, calculado
+sobre el benchmark y leído *as-of* el instante de la decisión:
+
+- benchmark: `BTC`, diario (1d (aggregated from 1h shards; a day exists only when its 24 contiguous hours do))
+- regla: benchmark BTC daily close against its own 200-day EMA, with that EMA's 20-day change deciding trend from range: BULL when close > EMA200 and the EMA rose over the last 20 days, BEAR when close < EMA200 and it fell, SIDEWAYS otherwise, UNDEFINED while either input is still warming up. This is the project's existing convention (trading_bot/research/swing/backtest.py::build_regimes), reused rather than re-invented; it is a market label for reporting, never a signal.
+- días etiquetados: 2596 (2019-01-02..2026-03-01); reparto: `{"UNDEFINED": 219, "BULL": 1468, "SIDEWAYS": 212, "BEAR": 697}`
+- fichero: `MARKET_CONTEXT.csv` (una fila por día, con su sha256 en `RUN_REPORT.json`); el verificador comprueba que cada `market_context` de `TRADES.csv` es el último día cerrado antes de su `decision_ts`.
+
+Operaciones por contexto de mercado (BASE):
+
+| candidato | split | BULL | BEAR | SIDEWAYS | UNDEFINED |
+|---|---|---|---|---|---|
+| edge_intra_01 | DEV | 290 | 0 | 0 | 0 |
+| edge_intra_01 | VAL | 304 | 40 | 0 | 0 |
+| edge_intra_01 | OOS | 0 | 63 | 0 | 0 |
+| edge_intra_02 | DEV | 119 | 8 | 8 | 0 |
+| edge_intra_02 | VAL | 66 | 6 | 0 | 0 |
+| edge_intra_02 | OOS | 0 | 14 | 0 | 0 |
+| edge_intra_02_no_fvg | DEV | 264 | 4 | 2 | 0 |
+| edge_intra_02_no_fvg | VAL | 186 | 21 | 0 | 0 |
+| edge_intra_02_no_fvg | OOS | 0 | 45 | 0 | 0 |
+| edge_trend_01_4h | DEV | 159 | 26 | 14 | 24 |
+| edge_trend_01_4h | VAL | 57 | 0 | 1 | 0 |
+| edge_trend_01_4h | OOS | 41 | 7 | 4 | 0 |
+| edge_trend_01_1d | DEV | 36 | 0 | 2 | 1 |
+| edge_trend_01_1d | VAL | 17 | 0 | 3 | 0 |
+| edge_trend_01_1d | OOS | 12 | 0 | 1 | 0 |
+
+`UNDEFINED` no es un rango: significa que el benchmark no podía leerse (aún no había cerrado ningún día, o la fecha cae después del final del corpus de 1h). Se cuenta en su propia columna en vez de repartirse entre las etiquetas vecinas.
+
+## 8. Defectos encontrados al ejecutar (y corregidos aquí)
 
 | id | síntoma | causa | corrección | evidencia |
 |---|---|---|---|---|
@@ -154,7 +191,7 @@ Señales impresas por el candidato (antes de riesgo y ejecución): edge_intra_01
 | `DEF-EDGE01-07` | In TRADES.csv the ablation and the 4h/1d runs were indistinguishable: every row of edge_intra_02_no_fvg said edge_intra_02, and both trend runs said edge_trend_01, so a reader grouping by that column merged runs that must be compared, not merged. | The candidate id inside the signal was unpacked AFTER the run key, so it overwrote it. | The run key is written last and the id that printed the signal is kept in its own ``strategy`` column. | scripts/edge01_verify.py check EQUITY_CONSERVATION (grouped by run key) |
 | `DEF-EDGE01-08` | A position still open when the window ended was settled at the last bar of the whole corpus: a 2023 DEV decision could be closed with a 2026 price, and the equity curve (which stops with the window) no longer matched the sum of the trade results. Found by the verifier's EQUITY_CONSERVATION check, not by reading the code. | The end-of-window settlement used bars[-1] instead of the last bar inside the measured window. | The simulator resolves the last in-window bar per asset before walking the timeline and settles there, keeping exit_ts inside the window. | scripts/edge01_verify.py check EQUITY_CONSERVATION; tests/unit/research/test_edge01_pit.py::test_end_of_window_settlement_stays_in_the_window |
 
-## 8. Verificación
+## 9. Verificación
 
 Reproducir esta medida (sin red, sin claves):
 
@@ -173,37 +210,41 @@ Reproducir esta medida (sin red, sin claves):
   (look-ahead en pivotes y FVG, estado por serie, identidad de caja).
 - Tests del veredicto y de los artefactos:
   `tests/unit/research/test_edge01_gate_and_artifacts.py`.
+- El verificador comprueba además, desde los artefactos solos, que el
+  `market_context` de cada operación es el del último día del benchmark
+  cerrado antes de su decisión (`MARKET_CONTEXT_ATTRIBUTION`).
 - Cada artefacto lleva su sha256 y su tamaño en `RUN_REPORT.json`.
   El backtester no comparte código de decisión con el runtime.
-- `INDEPENDENT_VERIFICATION.json` lo produce el verificador DESPUÉS de esta medida, así que no está en el inventario de integridad de arriba: es el resultado de comprobar los otros cinco, no una medida más.
+- `INDEPENDENT_VERIFICATION.json` lo produce el verificador DESPUÉS de esta medida, así que no está en el inventario de integridad de arriba: es el resultado de comprobar el resto, no una medida más.
 - `TEST_TARGET == RUNTIME_TARGET`: el WP no ha tocado ningún fichero del runtime. Los tests y el runner importan el mismo paquete (`trading_bot.research.edge01`) y el verificador no importa nada del proyecto.
 
-## 9. PAPER
+## 10. PAPER
 
 - Integrado: `False` — No candidate reached ADMIT. Wiring a rejected candidate into the PAPER runtime would have made the runtime execute rules whose only measured property is losing money after costs.
 - Runtime: src/trading_bot/autonomous/** and the paper pipeline were not modified by this WP: the runtime remains the authority for PAPER and keeps its deterministic risk and execution behaviour.
 - No se activa dinero real: 0 órdenes en este WP.
 
-## 10. Hipótesis para la siguiente iteración
+## 11. Hipótesis para la siguiente iteración
 
 - **H1**: The intraday funnel is dominated by trend_filter_fail (>=2000 refusals per window against ~60 trades): the 1h trend filter, not the breakout, is what decides participation. — *Test:* Re-run the frozen EDGE-INTRA-01 with the trend filter removed as an ablation and compare on DEV only; a candidate whose edge lives in a filter must be visible there before VAL is touched.
 - **H2**: Gross is negative in DEV/VAL/OOS for the breakouts, so the loss is not only cost: the entry is late relative to the level it breaks. — *Test:* Measure the post-entry MFE/MAE distribution by distance from the broken level. If MFE is already spent at entry, the entry rule has to move earlier (retest or limit at the level), not the stop.
 - **H3**: EDGE-TREND-01 4h is positive in DEV (+2,140 USDT) and in OOS (+208), but the OOS net is 80% one trade, so it may be a fat tail rather than an edge. — *Test:* Re-run it on the 1h corpus over 2019-2026 with the same rules and check whether the positive tail repeats across calendar years, with the single-trade share reported per year.
 - **H4**: EDGE-TREND-01 has no separate volatility entry filter: volatility only reaches it through the ATR-scaled stop, so it trades quiet and violent regimes alike, and the losses may concentrate where a trend starts from a dead-volatility base. — *Test:* Declare a small grid of minimum-ATR thresholds BEFORE looking at VAL or OOS, pick on DEV only, freeze, then measure once. If the filter cannot be justified on DEV, it does not go in — a filter chosen after the out-of-sample window has been read proves nothing.
 
-## 11. Limitaciones
+## 12. Limitaciones
 
 - The 15m corpus spans 2024-10-01..2026-10-07 and the 1h corpus 2019-01-01..2026-02-28; there is no data outside those windows, so no candidate is measured through 2018 or the 2021 top on 15m.
 - No historical order book: the spread is the project's modelled default for the venue, not an observed one. Only the fee component is contractual.
 - Slippage and impact come from COST_MODEL_V3 at a fixed 1000 USDT intent; the positions are capped at 500 USDT, so the realised cost is at most the declared one. Both are reported per trade.
 - The 4h and 1d corpora are aggregated from 1h, so a full 1-day bar exists only where 24 contiguous 1h bars exist; partial days are dropped, not interpolated.
-- Regime labels are computed from the same close series the candidates trade, with no look-ahead, but they are a research taxonomy, not the runtime's.
+- The ``regime`` column of a trade is the candidate's OWN entry trend state (the 1h/4h/1d filter that let the trade through), NOT a market regime: a candidate that only enters in an uptrend can only ever print one value, so the pre-registered ``require_min_positive_regimes`` criterion is structurally one-sided for them and is disclosed as weak rather than presented as proof of multi-regime coverage. The market coverage question is answered by ``market_context``, a benchmark label independent of every candidate.
+- ``market_context`` is benchmark-relative (BTC daily, see MARKET_CONTEXT rule in RUN_REPORT.json): it says what the market was doing, not what the asset traded was doing. It comes from the 1h corpus, which ends 2026-02-28, so the intraday OOS window is only labelled up to that date and carries UNDEFINED after it; the count of UNDEFINED decisions is reported instead of being quietly folded into a neighbouring label.
 - Long-only: the runtime trades Binance spot, so no short side was simulated for any candidate even where a down-breakout would be symmetric.
 - EDGE-TREND-01 has a trend filter (EMA50 > EMA200 and price above EMA200) but no SEPARATE volatility entry filter: volatility enters the ruleset through the ATR used for the stop distance, the modelled objective and the trailing exit, and through the cost-coverage gate, which grows with the volatility it expects to pay for. Adding a volatility filter now, after seeing the results, would be exactly the post-hoc adjustment this WP refuses to make; it is stated here and carried forward as hypothesis H4 instead.
 - No parameter was tuned on VAL or OOS; the rulesets are frozen in candidates.FROZEN_PARAMS with a recorded hash. This also means the candidates are untuned, and an untuned first iteration is expected to lose.
 - Nothing here is real money, live performance, or a promise of profitability.
 
-## 12. Artefactos
+## 13. Artefactos
 
 | artefacto | contenido |
 |---|---|
@@ -211,4 +252,5 @@ Reproducir esta medida (sin red, sin claves):
 | `STRATEGY_RESULTS.json` | lo mismo en JSON, más scope, params congelados y procedencia |
 | `TRADES.csv` | una fila por operación cerrada, con costes desglosados y R múltiple |
 | `EQUITY_CURVE.csv` | curva de capital por candidato y split (escenario BASE) |
+| `MARKET_CONTEXT.csv` | régimen del benchmark por día, con la regla declarada; base del `market_context` de cada operación |
 | `RUN_REPORT.json` | metadatos de la medida, integridad (sha256/tamaño) y veredictos |

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """Independent verification of the WP-EDGE-01 artefacts.
 
-Reads only the six artefacts of a run and re-derives everything it can on its own:
+Reads only the published artefacts of a run and re-derives everything it can on its own:
 
     python scripts/edge01_verify.py --dir reports/edge-recovery/WP-EDGE-01
     python scripts/edge01_verify.py --dir reports/edge-recovery/WP-EDGE-01 --self-test
@@ -13,7 +13,7 @@ simulator, a bug in the simulator would be checked by the same bug.
 
 Checks
 ------
-1. ``ARTIFACTS_PRESENT``            all six files exist and match the digests in RUN_REPORT.json
+1. ``ARTIFACTS_PRESENT``            every inventoried file exists and matches its recorded digest
 2. ``TRADE_SCHEMA``                 required columns, numeric and finite
 3. ``NO_LOOKAHEAD_FILL``            every fill happens at the open AFTER the decision instant
 4. ``OPEN_POSITION_NOT_DOUBLE_COUNTED``  the equity curve stays inside the book band
@@ -26,6 +26,7 @@ Checks
 11. ``EVIDENCE_FROM_METRICS``       the recorded evidence numbers equal the published metrics
 12. ``BASELINE_PRESENT``            buy & hold exists for every split/asset and is cost-adjusted
 13. ``RUN_IDENTIFIABLE``            every trade says which run produced it, and that run exists
+14. ``MARKET_CONTEXT_ATTRIBUTION``  each trade's benchmark regime is the last benchmark day closed before its decision
 
 ``--self-test`` copies the artefacts to a temporary directory, injects each defect
 in turn (double-counted equity, tampered fees, a fill before its decision, a
@@ -36,6 +37,7 @@ and requires the matching check to FAIL. A check nobody can break is not a check
 from __future__ import annotations
 
 import argparse
+import bisect
 import csv
 import hashlib
 import json
@@ -73,6 +75,7 @@ TRADE_COLUMNS = (
     "net",
     "cost_bps_realised",
     "exit_reason",
+    "market_context",
 )
 EXIT_REASONS = frozenset(
     {
@@ -103,6 +106,7 @@ class Dataset:
         for name in (
             "TRADES.csv",
             "EQUITY_CURVE.csv",
+            "MARKET_CONTEXT.csv",
             "STRATEGY_RESULTS.json",
             "STRATEGY_RESULTS.md",
             "RUN_REPORT.json",
@@ -589,6 +593,72 @@ def check_run_identifiable(ds: Dataset) -> tuple[bool, str]:
     )
 
 
+def check_market_context_attribution(ds: Dataset) -> tuple[bool, str]:
+    """The benchmark label of a trade must be the one readable at its decision.
+
+    The claim under test is that the bull/bear/sideways coverage of a run is a
+    property of the MARKET, not of the candidate: the label is looked up here
+    from ``MARKET_CONTEXT.csv`` alone (last benchmark day whose close is at or
+    before ``decision_ts``), so a label that was read from a later day — a
+    look-ahead — cannot survive this check, and neither can a label invented for
+    a day the benchmark never closed.
+    """
+
+    rows = _read_csv(ds.root / "MARKET_CONTEXT.csv")
+    if not rows:
+        return False, "MARKET_CONTEXT.csv is empty: every trade cites a benchmark label"
+    declared = ds.report.get("market_context") or {}
+    rule = str(declared.get("rule") or "")
+    if not rule:
+        return False, "RUN_REPORT.json does not state the market-context rule"
+    labels = list(declared.get("labels") or ["BULL", "BEAR", "SIDEWAYS", "UNDEFINED"])
+    problems: list[str] = []
+    days: list[tuple[int, str]] = []
+    for row in rows:
+        try:
+            close_ms = int(row["close_ms"])
+        except (TypeError, ValueError):
+            problems.append(f"MARKET_CONTEXT.csv: close_ms={row.get('close_ms')!r} is not an int")
+            continue
+        label = str(row.get("label"))
+        if label not in labels:
+            problems.append(f"MARKET_CONTEXT.csv: label {label!r} is not in the declared set")
+        days.append((close_ms, label))
+    if [ts for ts, _ in days] != sorted(ts for ts, _ in days):
+        problems.append("MARKET_CONTEXT.csv is not ordered by close_ms")
+    if len({ts for ts, _ in days}) != len(days):
+        problems.append("MARKET_CONTEXT.csv repeats a benchmark day")
+    declared_days = declared.get("days")
+    if declared_days is not None and int(declared_days) != len(days):
+        problems.append(f"RUN_REPORT.json declares {declared_days} benchmark days, file has {len(days)}")
+    last_label_ms = days[-1][0] if days else None
+    if declared.get("last_close_ms") not in (None, last_label_ms):
+        problems.append(
+            f"RUN_REPORT.json last_close_ms {declared.get('last_close_ms')} != {last_label_ms}"
+        )
+
+    ts_list = [ts for ts, _ in days]
+    counts: dict[str, int] = {}
+    for row in ds.trades:
+        expected = "UNDEFINED"
+        index = bisect.bisect_right(ts_list, int(row["decision_ts"])) - 1
+        if index >= 0:
+            expected = days[index][1]
+        actual = row.get("market_context")
+        counts[actual or "MISSING"] = counts.get(actual or "MISSING", 0) + 1
+        if actual != expected:
+            problems.append(
+                f"{row['candidate']}/{row['split']}/{row['asset']} @ {row['decision_ts']}: "
+                f"market_context {actual!r} != {expected!r} readable at that instant"
+            )
+        if len(problems) > 5:
+            break
+    spread = ", ".join(f"{key}={value}" for key, value in sorted(counts.items()))
+    return (not problems), "; ".join(problems) or (
+        f"{len(ds.trades)} trades attributed from {len(days)} benchmark days ({spread})"
+    )
+
+
 CHECKS = (
     ("ARTIFACTS_PRESENT", check_artifacts_present),
     ("TRADE_SCHEMA", check_trade_schema),
@@ -603,6 +673,7 @@ CHECKS = (
     ("EVIDENCE_FROM_METRICS", check_evidence_from_metrics),
     ("BASELINE_PRESENT", check_baseline_present),
     ("RUN_IDENTIFIABLE", check_run_identifiable),
+    ("MARKET_CONTEXT_ATTRIBUTION", check_market_context_attribution),
 )
 
 
@@ -699,6 +770,15 @@ def _mutate_delete_scenario(root: Path) -> None:
     _rewrite_csv(root / "TRADES.csv", rows)
 
 
+def _mutate_market_context(root: Path) -> None:
+    """Re-label every trade with a neighbouring regime: the benchmark did not say that."""
+    rows = _read_csv(root / "TRADES.csv")
+    rotation = {"BULL": "BEAR", "BEAR": "SIDEWAYS", "SIDEWAYS": "BULL", "UNDEFINED": "BULL"}
+    for row in rows:
+        row["market_context"] = rotation.get(row["market_context"], "BULL")
+    _rewrite_csv(root / "TRADES.csv", rows)
+
+
 MUTATIONS: tuple[tuple[str, str, Any], ...] = (
     ("M1_double_counted_position", "OPEN_POSITION_NOT_DOUBLE_COUNTED", _mutate_equity_double_count),
     ("M2_tampered_fee", "COST_IDENTITY", _mutate_fee_tamper),
@@ -707,6 +787,7 @@ MUTATIONS: tuple[tuple[str, str, Any], ...] = (
     ("M5_flipped_verdict", "VERDICT_CONSISTENCY", _mutate_verdict_flip),
     ("M6_tampered_evidence", "EVIDENCE_FROM_METRICS", _mutate_evidence),
     ("M7_scenario_not_applied", "COST_PLANE_APPLIED", _mutate_delete_scenario),
+    ("M8_relabelled_market_context", "MARKET_CONTEXT_ATTRIBUTION", _mutate_market_context),
 )
 
 

@@ -24,18 +24,23 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from .data import OHLCVBar
+from .data import BAR_MS, OHLCVBar
 
 __all__ = [
     "FVG",
+    "MARKET_REGIMES",
+    "MARKET_REGIME_RULE",
     "SWING_K",
     "FeatureSeries",
+    "MarketRegimeRow",
     "atr",
     "build_feature_series",
     "confirmed_swings",
     "ema",
     "fvg_bullish_at",
     "last_closed_index",
+    "market_regime_at",
+    "market_regime_series",
     "prior_extreme",
     "swing_points",
     "trend_label",
@@ -44,6 +49,108 @@ __all__ = [
 
 #: Bars on each side of a pivot. Confirmation needs ``K`` closed bars to the right.
 SWING_K = 3
+
+#: Benchmark market regimes. ``UNDEFINED`` is a real value, not a missing one: it
+#: means the rule could not be evaluated (warm-up, or no bar closed yet), and it is
+#: never reported as a regime that was measured.
+MARKET_REGIMES: tuple[str, ...] = ("BULL", "BEAR", "SIDEWAYS", "UNDEFINED")
+
+#: The rule, spelled out, because a label without its rule is not evidence.
+MARKET_REGIME_RULE = (
+    "benchmark BTC daily close against its own 200-day EMA, with that EMA's "
+    "20-day change deciding trend from range: BULL when close > EMA200 and the "
+    "EMA rose over the last 20 days, BEAR when close < EMA200 and it fell, "
+    "SIDEWAYS otherwise, UNDEFINED while either input is still warming up. "
+    "This is the project's existing convention "
+    "(trading_bot/research/swing/backtest.py::build_regimes), reused rather than "
+    "re-invented; it is a market label for reporting, never a signal."
+)
+
+MARKET_REGIME_EMA_PERIOD = 200
+MARKET_REGIME_SLOPE_LOOKBACK = 20
+
+
+@dataclass(frozen=True, slots=True)
+class MarketRegimeRow:
+    """One benchmark day: when it became readable, and what it said.
+
+    ``close_ms`` is the instant the label becomes knowable — the daily bar's own
+    close (``ts + 1d``, since ``ts`` is the bar's OPEN time). A decision taken
+    before that instant must not see the label; ``market_regime_at`` enforces it.
+    """
+
+    close_ms: int
+    label: str
+    close: float
+    ema: float | None
+    slope: float | None
+
+    def to_row(self) -> dict[str, object]:
+        return {
+            "close_ms": self.close_ms,
+            "iso_utc": _iso(self.close_ms),
+            "label": self.label,
+            "close": round(self.close, 8),
+            "ema_200": None if self.ema is None else round(self.ema, 8),
+            "ema_slope_20": None if self.slope is None else round(self.slope, 8),
+        }
+
+
+def _iso(ts_ms: int) -> str:
+    from datetime import UTC, datetime
+
+    return datetime.fromtimestamp(ts_ms / 1000, tz=UTC).isoformat()
+
+
+def market_regime_series(
+    daily_bars: list[OHLCVBar],
+    *,
+    ema_period: int = MARKET_REGIME_EMA_PERIOD,
+    slope_lookback: int = MARKET_REGIME_SLOPE_LOOKBACK,
+) -> tuple[MarketRegimeRow, ...]:
+    """Label every benchmark day with the market regime in force at its close."""
+    closes = [b.close for b in daily_bars]
+    emas = ema(closes, ema_period)
+    rows: list[MarketRegimeRow] = []
+    for i, bar in enumerate(daily_bars):
+        anchor = emas[i]
+        slope: float | None = None
+        if anchor is not None and i - slope_lookback >= 0 and emas[i - slope_lookback] is not None:
+            slope = anchor - float(emas[i - slope_lookback])
+        if anchor is None or slope is None:
+            label = "UNDEFINED"
+        elif bar.close > anchor and slope > 0.0:
+            label = "BULL"
+        elif bar.close < anchor and slope < 0.0:
+            label = "BEAR"
+        else:
+            label = "SIDEWAYS"
+        rows.append(
+            MarketRegimeRow(
+                close_ms=bar.ts + BAR_MS["1d"],
+                label=label,
+                close=bar.close,
+                ema=anchor,
+                slope=slope,
+            )
+        )
+    return tuple(rows)
+
+
+def market_regime_at(rows: tuple[MarketRegimeRow, ...], decision_ts: int) -> str:
+    """The benchmark label a decision at ``decision_ts`` could actually read.
+
+    Only days whose close has already happened count, so the label never leaks a
+    day the decision was taken inside; ``UNDEFINED`` means no day had closed yet.
+    """
+    lo, hi = 0, len(rows)
+    while lo < hi:
+        mid = (lo + hi) // 2
+        if rows[mid].close_ms <= decision_ts:
+            lo = mid + 1
+        else:
+            hi = mid
+    return rows[lo - 1].label if lo > 0 else "UNDEFINED"
 
 
 @dataclass(frozen=True, slots=True)

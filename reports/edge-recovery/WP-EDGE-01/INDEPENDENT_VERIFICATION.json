@@ -4,12 +4,12 @@
     {
       "check": "ARTIFACTS_PRESENT",
       "ok": true,
-      "detail": "5 artefacts match their digests"
+      "detail": "6 artefacts match their digests"
     },
     {
       "check": "TRADE_SCHEMA",
       "ok": true,
-      "detail": "4644 rows, 25 columns"
+      "detail": "4644 rows, 26 columns"
     },
     {
       "check": "NO_LOOKAHEAD_FILL",
@@ -65,10 +65,15 @@
       "check": "RUN_IDENTIFIABLE",
       "ok": true,
       "detail": "5 runs, 3 strategies, every trade attributed"
+    },
+    {
+      "check": "MARKET_CONTEXT_ATTRIBUTION",
+      "ok": true,
+      "detail": "4644 trades attributed from 2596 benchmark days (BEAR=541, BULL=3928, SIDEWAYS=100, UNDEFINED=75)"
     }
   ],
-  "passed": 13,
-  "total": 13,
+  "passed": 14,
+  "total": 14,
   "self_test": {
     "baseline_all_green": true,
     "baseline": {
@@ -84,7 +89,8 @@
       "VERDICT_CONSISTENCY": true,
       "EVIDENCE_FROM_METRICS": true,
       "BASELINE_PRESENT": true,
-      "RUN_IDENTIFIABLE": true
+      "RUN_IDENTIFIABLE": true,
+      "MARKET_CONTEXT_ATTRIBUTION": true
     },
     "mutations": [
       {
@@ -158,6 +164,16 @@
         ],
         "expected_check_failed": true,
         "detail": "edge_intra_01/DEV/2X_FEES: fee rate 20.0000 bps != declared 40.0000; edge_intra_01/DEV/2X_FEES: fee rate 20.0000 bps != declared 40.0000; edge_intra_01/DEV/2X_FEES: fee rate 20.0000 bps != declared 40.0000; edge_intra_01/DEV/2X_FEES: fee rate 20.0000 bps != declared 40.0000; edge_intra_01/DEV/2X_FEES: fee rate 20.0000 bps != declared 40.0000; edge_intra_01/DEV/2X_FEES: fee rate 20.0000 bps != declared 40.0000"
+      },
+      {
+        "mutation": "M8_relabelled_market_context",
+        "expected_check": "MARKET_CONTEXT_ATTRIBUTION",
+        "detected": [
+          "ARTIFACTS_PRESENT",
+          "MARKET_CONTEXT_ATTRIBUTION"
+        ],
+        "expected_check_failed": true,
+        "detail": "edge_intra_01/DEV/ETH @ 1728310500000: market_context 'BEAR' != 'BULL' readable at that instant; edge_intra_01/DEV/BTC @ 1728311400000: market_context 'BEAR' != 'BULL' readable at that instant; edge_intra_01/DEV/SOL @ 1728311400000: market_context 'BEAR' != 'BULL' readable at that instant; edge_intra_01/DEV/BTC @ 1728396000000: market_context 'BEAR' != 'BULL' readable at that instant; edge_intra_01/DEV/ETH @ 1728396000000: market_context 'BEAR' != 'BULL' readable at that instant; edge_intra_01/DEV/SOL @ 1728396000000: market_context 'BEAR' != 'BULL' readable at that instant"
       }
     ],
     "all_detected": true
