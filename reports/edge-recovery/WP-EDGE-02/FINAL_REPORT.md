@@ -51,8 +51,10 @@ Un defecto **si** aparecio y esta corregido, con prueba de regresion: `DEF-EDGE0
 | sha | asunto |
 |---|---|
 | `cb94dd2` | Stress the frozen 4h trend reading and audit H6's 183 risk refusals. [WP-EDGE-02] |
+| `f886e53` | Record the WP-EDGE-02 closure: verdicts, refusals, digests and the blocked push. [WP-EDGE-02] |
+| `6070806` | Record that a full re-run reproduces the WP-EDGE-02 tables byte for byte. [WP-EDGE-02] |
 
-Un commit de este WP sobre `87f2357`, con codigo, verificador, pruebas, artefactos, ADR-0032 y la excepcion de `.gitignore` que versiona esta evidencia. El arbol queda 19 commits por delante de `4be09fb`.
+Tres commits de este WP sobre `87f2357`: codigo, verificador, pruebas, artefactos, ADR-0032 y la excepcion de `.gitignore` que versiona esta evidencia; el registro de ejecucion y este informe; y la reproducibilidad byte a byte de una segunda corrida completa. Medido al escribirse esta correccion (`git rev-list --count 4be09fb..HEAD`): **23 commits** por delante de `4be09fb`, mas el commit que lleva la correccion.
 
 **Publicacion: `BLOCKED_GITHUB_AUTH`, no verificada.** Se sono de nuevo desde cero y con refspec explicito:
 

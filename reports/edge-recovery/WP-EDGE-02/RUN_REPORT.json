@@ -50,7 +50,25 @@
         "scripts/edge01_robustness_experiments.py": "f10cd129a6b2f4a36711054e1f7014003f4d46c86f0925d5ab092ee19a01fd6e",
         "scripts/edge01_wp02_verify.py": "6319a21ee976b1d22a100e0704ca6e8b30ae7b2df79213e91a857a1409d58267"
       }
-    }
+    },
+    "head_commit_at_run": "cb94dd291dc5221e46d39054fb73cf468242d465",
+    "commits_by_this_work_package": [
+      {
+        "sha": "cb94dd2",
+        "subject": "Stress the frozen 4h trend reading and audit H6s 183 risk refusals. [WP-EDGE-02]"
+      },
+      {
+        "sha": "f886e53",
+        "subject": "Record the WP-EDGE-02 closure: verdicts, refusals, digests and the blocked push. [WP-EDGE-02]"
+      },
+      {
+        "sha": "6070806",
+        "subject": "Record that a full re-run reproduces the WP-EDGE-02 tables byte for byte. [WP-EDGE-02]"
+      }
+    ],
+    "commits_ahead_of_4be09fb": 23,
+    "commits_ahead_measured_at": "git rev-list --count 4be09fb..HEAD, measured when the closure was written; the commit that carries a later correction adds one more, so the count is re-derived, not trusted",
+    "note_on_the_two_counts": "21 was the count when the run record was first generated (HEAD cb94dd2); 23 is the count once the closure documents were committed"
   },
   "provenance": {
     "claim": "the nine package modules WP-EDGE-01 measured are byte-identical; the package hash a new run records differs only because two modules were added, and no WP-EDGE-01 artefact or script was edited",
@@ -790,5 +808,6 @@
     "nothing was wired into the PAPER runtime and no limits or parameters were changed",
     "no historical evidence was regenerated to hide an inconsistency",
     "no token was read, requested, stored or printed"
-  ]
+  ],
+  "work_package_commits": 3
 }

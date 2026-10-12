@@ -210,8 +210,10 @@ Los digests completos estan en `RUN_REPORT.json#artifacts`.
 | sha | asunto |
 |---|---|
 | `cb94dd2` | Stress the frozen 4h trend reading and audit H6's 183 risk refusals. [WP-EDGE-02] |
+| `f886e53` | Record the WP-EDGE-02 closure: verdicts, refusals, digests and the blocked push. [WP-EDGE-02] |
+| `6070806` | Record that a full re-run reproduces the WP-EDGE-02 tables byte for byte. [WP-EDGE-02] |
 
-`WP-EDGE-02` aporta 1 commit sobre `87f2357` (que deja el arbol 19 commits por delante de la base `4be09fb`). El commit incluye codigo, verificador, pruebas, artefactos, el ADR-0032 y la excepcion de `.gitignore` que versiona esta evidencia.
+`WP-EDGE-02` aporta **3 commits** sobre `87f2357`: codigo, verificador, pruebas, artefactos, el ADR-0032 y la excepcion de `.gitignore` que versiona esta evidencia; despues el registro de ejecucion y el informe final; y por ultimo la reproducibilidad byte a byte. Medido con `git rev-list --count 4be09fb..HEAD` en el momento de escribir esta correccion: **23 commits** por delante de la base `4be09fb`. El commit que lleva esta correccion suma uno mas; el recuento exacto se obtiene con ese comando.
 
 ## 9. Publicacion — `BLOCKED_GITHUB_AUTH`
 
