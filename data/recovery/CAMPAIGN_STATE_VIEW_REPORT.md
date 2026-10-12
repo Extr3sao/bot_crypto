@@ -1,6 +1,6 @@
 # CAMPAIGN STATE VIEW (WP-2)
 
-- generated `2026-10-12T18:40:41Z` · head `90cee7327e69` · branch `agent/edge-recovery/WP-EDGE-00-baseline`
+- generated `2026-10-12T18:41:48Z` · head `752225531529` · branch `agent/edge-recovery/WP-EDGE-00-baseline`
 - **status: CONSISTENT_WITH_ADVISORIES** · sources unchanged: True
 
 A frozen declaration is a historical record. This view resolves, per campaign and per field, which statement is *current*, using this precedence and nothing else:
@@ -107,7 +107,7 @@ A frozen declaration is a historical record. This view resolves, per campaign an
 | `rfc046-spec:HYP-001` | UNRESOLVED | `e5e58176e4c8fb01` | `None` | — | **UNRESOLVED** |
 | `rfc046-spec:HYP-002` | UNRESOLVED | `3336b8f343d899af` | `None` | — | **UNRESOLVED** |
 | `rfc046-spec:HYP-003` | UNRESOLVED | `8f99b0366301a304` | `None` | — | **UNRESOLVED** |
-| `document_hashes:tasks/decisions.md` | APPEND_ONLY | `38622df9a5ad74db` | `dbf540c11dced96b` | LF | **DRIFTED** |
+| `document_hashes:tasks/decisions.md` | APPEND_ONLY | `38622df9a5ad74db` | `c80d2e57178a2f92` | LF | **DRIFTED** |
 | `document_hashes:tasks/roadmap.md` | APPEND_ONLY | `5310f6a423318cdb` | `5310f6a423318cdb` | LF | **VERIFIED** |
 | `document_hashes:docs/rfc/RFC-046_CONTROLLED_DISCOVERY.md` | APPEND_ONLY | `a14753f5ec62446e` | `a14753f5ec62446e` | LF | **VERIFIED** |
 | `document_hashes:docs/rfc/RFC-046_CONTROLLED_DISCOVERY.json` | APPEND_ONLY | `5b7275c366ff1ac3` | `5b7275c366ff1ac3` | LF | **VERIFIED** |
@@ -200,4 +200,8 @@ RFC numbering: tree occupies [35, 46, 48, 49]; registry lists [0, 10, 20, 21, 23
 | ADR-0025 | RFC-049 Discovery 2: autorizacion de campana offline (DEV/VAL) por el operador | `LIVE_TRADING=DISABLED`, `NEXT_CAMPAIGN=AUTHORIZED`, `PAPER_PROMOTION=NOT_AUTHORIZED`, `PROFITABILITY_VERIFIED=FALSE`, `SEALED_OOS=CLOSED`, `TRADES_AUTHORIZED=0` |
 | ADR-0026 | RFC-049 Discovery 2: cierre de campana (DISCOVERY_CAMPAIGN_FAILED) y retirada de la apertura unica del OOS sellado | `FALSE_SUCCESS=0`, `HYPOTHESIS_001=CLOSED_REJECTED_DEV_VAL`, `HYPOTHESIS_BUDGET=EXHAUSTED_NO_REFILL`, `LIVE_TRADING=DISABLED`, `NEXT_CAMPAIGN=NOT_AUTHORIZED`, `PAPER_PROMOTION=NOT_AUTHORIZED`, `PROFITABILITY_VERIFIED=FALSE`, `RFC_049_DISCOVERY2=CLOSED`, `RISK_ENGINE=DETERMINISTIC`, `SEALED_OOS=CANCELLED_NOT_OPENED`, `TRADES_AUTHORIZED=0` |
 | ADR-0027 | WP-EDGE-01: lane de investigacion edge01 congelado, verificacion por artefactos y runtime PAPER intacto | `LIVE_TRADING=DISABLED`, `PAPER_PROMOTION=NOT_AUTHORIZED`, `PROFITABILITY_VERIFIED=FALSE`, `TRADES_AUTHORIZED=0` |
+| ADR-0028 | WP-EDGE-01 H1: ablacion congelada de EDGE-INTRA-01 sin filtro de tendencia, medida SOLO en DEV | `PAPER_PROMOTION=NOT_AUTHORIZED` |
+| ADR-0029 | WP-EDGE-01 H5: presupuesto de riesgo separado con el kill switch de drawdown inerte, medido SOLO en DEV | — |
+| ADR-0030 | WP-EDGE-01 H2/H4: el patron de ablacion congelada se reutiliza para dos preguntas de mecanismo (timing de entrada y filtro de volatilidad) | — |
+| ADR-0031 | WP-EDGE-01 cierre: H6 (entrada por retest, con relleno de limite modelado), revision OOS de tendencia 4h (sin PAPER) y reparacion del mecanismo de la vista de estado | — |
 

@@ -1,8 +1,8 @@
 {
   "artifact": "CAMPAIGN_STATE_VIEW",
   "work_package": "WP-2 (POST RFC-049 / ACTIVE RECOVERY)",
-  "generated_at_utc": "2026-10-12T18:40:41Z",
-  "head": "90cee7327e69de1af0d599d9c5b008f43ed3b722",
+  "generated_at_utc": "2026-10-12T18:41:48Z",
+  "head": "752225531529f601c91426538579daadeafeef7f",
   "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
   "mode": "READ-ONLY DERIVED VIEW — sources are read and hashed, never written",
   "precedence": {
@@ -212,6 +212,32 @@
         "TRADES_AUTHORIZED": "0",
         "PROFITABILITY_VERIFIED": "FALSE"
       },
+      "facts_conflicts": {}
+    },
+    {
+      "adr": "ADR-0028",
+      "title": "WP-EDGE-01 H1: ablacion congelada de EDGE-INTRA-01 sin filtro de tendencia, medida SOLO en DEV",
+      "facts": {
+        "PAPER_PROMOTION": "NOT_AUTHORIZED"
+      },
+      "facts_conflicts": {}
+    },
+    {
+      "adr": "ADR-0029",
+      "title": "WP-EDGE-01 H5: presupuesto de riesgo separado con el kill switch de drawdown inerte, medido SOLO en DEV",
+      "facts": {},
+      "facts_conflicts": {}
+    },
+    {
+      "adr": "ADR-0030",
+      "title": "WP-EDGE-01 H2/H4: el patron de ablacion congelada se reutiliza para dos preguntas de mecanismo (timing de entrada y filtro de volatilidad)",
+      "facts": {},
+      "facts_conflicts": {}
+    },
+    {
+      "adr": "ADR-0031",
+      "title": "WP-EDGE-01 cierre: H6 (entrada por retest, con relleno de limite modelado), revision OOS de tendencia 4h (sin PAPER) y reparacion del mecanismo de la vista de estado",
+      "facts": {},
       "facts_conflicts": {}
     }
   ],
@@ -2226,8 +2252,8 @@
         "pin": "document_hashes:tasks/decisions.md",
         "path": "tasks/decisions.md",
         "recorded": "38622df9a5ad74dbb9dc81503af452e06581a1148637d640af9102333f31d438",
-        "actual_sha256_lf": "dbf540c11dced96b67046049e35bf3af6b4db230ec782f355cb4adcc8b225b0c",
-        "actual_sha256_crlf": "b903513c7990038567599e124eaa7070413bad50c36926fb9c9dad9b8f06f550",
+        "actual_sha256_lf": "c80d2e57178a2f92386ccb78587587e0ee6e6108069bd4a46d9fff249e38181b",
+        "actual_sha256_crlf": "0df217539968e28bdcf5dbbbc5131e64bf2d316819bba0fe6194350fef9c83f4",
         "line_endings": "LF",
         "result": "DRIFTED",
         "note": "attestation of a document that is append-only by convention; drift is expected and is not a contradiction"
@@ -2786,8 +2812,8 @@
       "exists": true,
       "resolved_from": "HEAD",
       "class": "COMMITTED",
-      "sha256_before": "dbf540c11dced96b67046049e35bf3af6b4db230ec782f355cb4adcc8b225b0c",
-      "sha256_after": "dbf540c11dced96b67046049e35bf3af6b4db230ec782f355cb4adcc8b225b0c"
+      "sha256_before": "c80d2e57178a2f92386ccb78587587e0ee6e6108069bd4a46d9fff249e38181b",
+      "sha256_after": "c80d2e57178a2f92386ccb78587587e0ee6e6108069bd4a46d9fff249e38181b"
     }
   ],
   "sources_unchanged": true,
@@ -2922,5 +2948,5 @@
       "local_matches_the_evidence_copy": true
     }
   ],
-  "payload_sha256": "8bbd684db68e60d9444b2ebc5eb73609b883c1b82347fd67bfef053cb26170c1"
+  "payload_sha256": "3fb11fc9b9ff51f103b1ba1c5f61b159927e3e532a26acffc7e4c4ef43f1c72c"
 }
