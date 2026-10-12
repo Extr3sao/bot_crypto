@@ -1,0 +1,213 @@
+{
+  "artifact": "WP10_RUN_REPORT",
+  "work_package": "WP-10 (ECONOMIC EDGE RECOVERY & EXECUTION COST DISCOVERY)",
+  "generated_at_utc": "2026-10-12T06:24:38Z",
+  "head": "90ed615b1b2514682bbf9a85834fdd81c45f0774",
+  "branch": "main",
+  "mode": "OFFLINE READ-ONLY \u2014 no network, no key, no order, no capital",
+  "lane_commit": {
+    "head": "5348fcd55ab9ef404c676d8aada8daa8c85b9785",
+    "branch": null
+  },
+  "sections": {
+    "phase0_wp9_closure": {
+      "label": "phase 0 \u2014 controlled close of WP-9",
+      "artifact": "WP10_PHASE0_WP9_CLOSURE",
+      "verdict": "PARTIAL/FAIL \u2014 exit 4; producers failed: disk-audit, readiness, verifier; artefacts that did not match the commit: WP9_ACTIVE_ECONOMIC_BLOCKERS.json; inputs the commit does not carry: 1 named in this file",
+      "sha256": "ad83e91244adb4581f96789240df0c9d146eb3d5654d35ca4851e0dc269e8b36",
+      "generated_at_utc": "2026-10-11T23:12:19Z"
+    },
+    "baseline": {
+      "label": "phase 1 \u2014 economic baseline",
+      "artifact": "WP10_BASELINE_ECONOMIC_AUDIT",
+      "verdict": "PARTIAL \u2014 the six headline numbers reproduce from primary sources with declared discrepancies, and two requested metrics do not exist in the record",
+      "sha256": "aff9dbd04995d6c3960b2951660ce028ef474759d05d4c7efde6077633951b2c",
+      "generated_at_utc": "2026-10-11T22:35:56Z"
+    },
+    "execution_cost": {
+      "label": "E-1 \u2014 execution cost reality",
+      "artifact": "WP10_EXECUTION_COST_DISTRIBUTION",
+      "verdict": {
+        "e1": "PLANE_OVERSTATES_MICROSTRUCTURE",
+        "checkpoints_reproduced": 1984,
+        "checkpoints_mismatched": 0,
+        "look_ahead_violations": 0,
+        "false_success": 0
+      },
+      "sha256": "a64543fc3732c26e593082616b5d929261438481c34e526c5f55259482bc510b",
+      "generated_at_utc": "2026-10-12T06:07:11Z"
+    },
+    "e1_decision": {
+      "label": "E-1 \u2014 economic decision",
+      "artifact": "WP10_E1_DECISION",
+      "verdict": "PARTIAL \u2014 the plane's non-fee allowance is conservative at the median (measured, not asserted) and is not the binding constraint: the KNOWN fee legs alone exceed the best gross edge in the register, so no execution improvement available in this capture can admit any of the 24 cells",
+      "sha256": "93179ddc8fc14afe2b9cb80dc81a8f9900c951574c353c6c27a2d12bef2213fd",
+      "generated_at_utc": "2026-10-12T06:10:29Z"
+    },
+    "e2": {
+      "label": "E-2 \u2014 forward drift entry screen",
+      "artifact": "WP10_E2_PREREGISTRATION",
+      "verdict": {
+        "e2": "SPEC_ONLY",
+        "gate": "CLOSED",
+        "self_tests_passed": true,
+        "authorized": false,
+        "campaign_started": false
+      },
+      "sha256": "95ff4f0402c662c92d9d26ca976688ea3a4f54dd0b514724ef2b3524e71762d7",
+      "generated_at_utc": "2026-10-11T22:43:38Z"
+    },
+    "matrix": {
+      "label": "phase 5 \u2014 ACTIVE recovery matrix",
+      "artifact": "WP10_ACTIVE_RECOVERY_MATRIX",
+      "verdict": "PARTIAL \u2014 the chain is populated and 0 families reach ADOPT; the obstacle is named per family, and for every family it is either an unresolvable edge or a cost gap",
+      "sha256": "0693ea609aa710740b5e54680d86c081cf2dd3c17f30cdb7294b4a10782c8dc0",
+      "generated_at_utc": "2026-10-12T06:08:55Z"
+    },
+    "blockers": {
+      "label": "phase 6 \u2014 open blockers",
+      "artifact": "WP10_OPEN_BLOCKERS",
+      "verdict": "BLOCKED for the four operational items that need publication, a longer window, a bigger volume or an operator decision; OPEN for offline economic work on data already captured",
+      "sha256": "f88ce1d718c9668f1885a1d8f1481174ce8807f28e5aaaa64f1d0094f871ed42",
+      "generated_at_utc": "2026-10-11T22:43:08Z"
+    },
+    "verification": {
+      "label": "phase 7 \u2014 independent verification",
+      "artifact": "WP10_INDEPENDENT_VERIFICATION",
+      "verdict": "PASS",
+      "sha256": "d8a97abb875d5c6de082d7e93716fe97669ba5c5cf14a32c4636b154b06cb0ac",
+      "generated_at_utc": "2026-10-12T06:24:38Z"
+    }
+  },
+  "claims": {
+    "register": {
+      "strategies": 24,
+      "admitted": 0,
+      "no_gross_edge": 17,
+      "cost_killed": 7,
+      "best_gross_bps": 8.912,
+      "frozen_plane_bps": 23.353553,
+      "every_published_headline_number_rebuilt": true,
+      "discrepancies_declared": 3,
+      "unresolvable_cells": 16
+    },
+    "execution_cost": {
+      "state": "PLANE_OVERSTATES_MICROSTRUCTURE",
+      "measured_round_trip_microstructure_bps": 0.024697,
+      "plane_non_fee_bps": 3.353554,
+      "plane_fee_bps": 20.0,
+      "share_of_plane_that_is_fee": 0.856401,
+      "checkpoints_reproduced": 1984,
+      "look_ahead_violations": 0,
+      "why_it_is_not_the_binding_constraint": "the measured microstructure cost cannot promote a rejected strategy by itself: the two fee legs are KNOWN from the published schedule and on their own exceed the best gross edge in the 24-strategy ledger (8.912 bps). Cheaper execution narrows the bar; it does not clear it"
+    },
+    "decision": {
+      "planes": {
+        "frozen_admission": 23.353553,
+        "measured": 20.024697,
+        "measured_worst_tail": 24.58632,
+        "baseline_arm": 12.0,
+        "discounted_fee_tier": 15.024697
+      },
+      "admitted_by_plane": {
+        "frozen_admission": 0,
+        "measured": 0,
+        "measured_worst_tail": 0,
+        "baseline_arm": 0,
+        "discounted_fee_tier": 0
+      },
+      "required_fee_per_side_bps_for_the_best_cell": 4.443652,
+      "best_cell": "volatility@30m",
+      "best_cell_ci95_half_width_bps": 12.009576,
+      "positive_cells": 7,
+      "positive_cells_separated_from_zero": 1
+    },
+    "matrix": {
+      "verdict_counts": {
+        "REJECT": 3,
+        "RESEARCH_MORE": 1,
+        "INSUFFICIENT_EVIDENCE": 2
+      },
+      "measured_cost_layer": true
+    },
+    "blockers": {
+      "unpublished_commits": 256,
+      "ci_runner_state": "BLOCKED",
+      "hours_affordable": 88.69
+    },
+    "verification": {
+      "verdict": "PASS",
+      "checks": 53,
+      "checks_failed": 0,
+      "controls": 12,
+      "controls_missed": 0,
+      "false_success": 0,
+      "drift": [
+        {
+          "figure": "unpublished commits",
+          "in_the_artefact": 256,
+          "right_now": 257,
+          "why": "commits were added by other lanes after the artefact was built; the artefact's own value reproduces at its own head"
+        },
+        {
+          "figure": "free volume",
+          "in_the_artefact_gb": 17.051,
+          "right_now_gb": 14.857,
+          "difference_gb": -2.193,
+          "why": "the host is shared and other lanes and agents wrote and read the volume between the measurement and this verification"
+        },
+        {
+          "figure": "state-view pins",
+          "paths_that_no_longer_match": [
+            "data/st6/ST6_HEALTH_STATUS.json"
+          ],
+          "why": "the pinned artefacts are live outputs of other lanes: an untracked file cannot be pinned at all, and a tracked one whose content moved was rewritten by its own lane after the view was taken"
+        }
+      ]
+    }
+  },
+  "governance": {
+    "live_trading": "DISABLED",
+    "trades_authorized": 0,
+    "paper_promotion": "NOT_AUTHORIZED",
+    "strategies_admitted": 0,
+    "strategies_reopened": 0,
+    "thresholds_changed": 0,
+    "cost_model_changed": false,
+    "result_class": "RESEARCH_RESULT (cost measurement) \u2014 not BACKTEST, not REPLAY, not PAPER, not LIVE"
+  },
+  "validation": [
+    {
+      "check": "every artefact the report folds exists",
+      "ok": true,
+      "missing": []
+    },
+    {
+      "check": "the register's six published headline numbers were rebuilt from primary sources",
+      "ok": true
+    },
+    {
+      "check": "E-1 reports a measurement and not an assertion",
+      "ok": true
+    },
+    {
+      "check": "the independent verifier passed with every control detected",
+      "ok": true,
+      "detail": {
+        "verdict": "PASS",
+        "failed": 0,
+        "missed_controls": 0
+      }
+    },
+    {
+      "check": "nothing in WP-10 admits, promotes or reopens a strategy",
+      "ok": true
+    },
+    {
+      "check": "the drift the verifier found is carried into the report rather than smoothed away",
+      "ok": true
+    }
+  ],
+  "next_decision": "the decision WP-10 hands over: whether to (a) spend the next campaign on a new hypothesis that must clear the 20 bps round-trip fee floor at the current tier \u2014 2.25x the best gross edge in the register \u2014 or (b) first change the fee tier the plane assumes, which is a governance and account decision with no measurement attached, or (c) capture order-level execution evidence, which is the only way maker execution can ever be priced and is the only measurement WP-10 could not make from what exists",
+  "payload_sha256": "9f0228fe87253b5d30b6c4205b7830b05583f1e10217b39908aa6ecb2da88529"
+}
