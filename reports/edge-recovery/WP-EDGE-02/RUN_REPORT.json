@@ -71,7 +71,9 @@
     "commits_ahead_of_4be09fb": 24,
     "commits_ahead_measured_at": "commit 8759ebd",
     "commits_ahead_measured_by": "git rev-list --count 4be09fb..HEAD, evaluated at 8759ebd",
-    "count_discipline": "the count is stated as of the commit that wrote it (8759ebd) and is re-derivable with git rev-list --count 4be09fb..HEAD; a later commit adds one and is not folded back into this record, so the number is never a claim about a tree the reader cannot check"
+    "count_discipline": "the count is stated as of the commit that wrote it (8759ebd) and is re-derivable with git rev-list --count 4be09fb..HEAD; a later commit adds one and is not folded back into this record, so the number is never a claim about a tree the reader cannot check",
+    "commits_set_defined_by": "git log --oneline --grep='\\[WP-EDGE-02\\]' 87f2357..HEAD",
+    "commits_table_scope": "the list below is a snapshot of the four commits up to 8759ebd, the commit the counts are anchored to; commits that correct this record afterwards join the set through the command above and do not rewrite the snapshot or the count"
   },
   "provenance": {
     "claim": "the nine package modules WP-EDGE-01 measured are byte-identical; the package hash a new run records differs only because two modules were added, and no WP-EDGE-01 artefact or script was edited",

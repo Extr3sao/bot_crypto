@@ -53,8 +53,9 @@ Un defecto **si** aparecio y esta corregido, con prueba de regresion: `DEF-EDGE0
 | `cb94dd2` | Stress the frozen 4h trend reading and audit H6's 183 risk refusals. [WP-EDGE-02] |
 | `f886e53` | Record the WP-EDGE-02 closure: verdicts, refusals, digests and the blocked push. [WP-EDGE-02] |
 | `6070806` | Record that a full re-run reproduces the WP-EDGE-02 tables byte for byte. [WP-EDGE-02] |
+| `8759ebd` | Correct the commit counts and list the three WP-EDGE-02 commits. [WP-EDGE-02] |
 
-Cuatro commits de este WP sobre `87f2357` (`cb94dd2`, `f886e53`, `6070806`, `8759ebd`): codigo, verificador, pruebas, artefactos, ADR-0032 y la excepcion de `.gitignore` que versiona esta evidencia; el registro de ejecucion y este informe; la reproducibilidad byte a byte de una segunda corrida completa; y la correccion de estos recuentos. En `8759ebd`, `git rev-list --count 4be09fb..HEAD` da **24 commits** por delante de `4be09fb`; el numero va anclado al commit que lo escribio porque un commit posterior suma uno.
+Cuatro commits de este WP sobre `87f2357`: codigo, verificador, pruebas, artefactos, ADR-0032 y la excepcion de `.gitignore` que versiona esta evidencia; el registro de ejecucion y este informe; la reproducibilidad byte a byte de una segunda corrida completa; y la correccion de estos recuentos. La tabla es la foto hasta el commit que ancla el recuento; el conjunto completo lo da `git log --oneline --grep='\[WP-EDGE-02\]' 87f2357..HEAD`, que ademas recoge los commits de correccion posteriores. En `8759ebd`, `git rev-list --count 4be09fb..HEAD` da **24 commits** por delante de `4be09fb`; el numero va anclado al commit que lo escribio porque un commit posterior suma uno.
 
 **Publicacion: `BLOCKED_GITHUB_AUTH`, no verificada.** Se sono de nuevo desde cero y con refspec explicito:
 

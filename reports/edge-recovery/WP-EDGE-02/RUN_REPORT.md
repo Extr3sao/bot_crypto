@@ -207,13 +207,22 @@ Los digests completos estan en `RUN_REPORT.json#artifacts`.
 
 ## 8. Commits
 
+El conjunto de commits de este WP **no lo define esta tabla**, lo define la etiqueta del asunto:
+
+```
+git log --oneline --grep='\[WP-EDGE-02\]' 87f2357..HEAD
+```
+
+La tabla es una foto de los cuatro comprometidos hasta el commit que ancla el recuento (`8759ebd`); cualquier commit posterior de correccion entra por ese comando y no obliga a reescribir la tabla.
+
 | sha | asunto |
 |---|---|
 | `cb94dd2` | Stress the frozen 4h trend reading and audit H6's 183 risk refusals. [WP-EDGE-02] |
 | `f886e53` | Record the WP-EDGE-02 closure: verdicts, refusals, digests and the blocked push. [WP-EDGE-02] |
 | `6070806` | Record that a full re-run reproduces the WP-EDGE-02 tables byte for byte. [WP-EDGE-02] |
+| `8759ebd` | Correct the commit counts and list the three WP-EDGE-02 commits. [WP-EDGE-02] |
 
-`WP-EDGE-02` aporta **4 commits** sobre `87f2357`: codigo, verificador, pruebas, artefactos, el ADR-0032 y la excepcion de `.gitignore` que versiona esta evidencia; despues el registro de ejecucion y el informe final; la reproducibilidad byte a byte; y la correccion de estos recuentos (`cb94dd2`, `f886e53`, `6070806`, `8759ebd`). En `8759ebd`, `git rev-list --count 4be09fb..HEAD` da **24 commits** por delante de la base `4be09fb`; el numero se declara asi, anclado al commit que lo escribio, porque cualquier commit posterior suma uno y no se reescribe aqui.
+`WP-EDGE-02` aporta **4 commits** sobre `87f2357`: codigo, verificador, pruebas, artefactos, el ADR-0032 y la excepcion de `.gitignore` que versiona esta evidencia; despues el registro de ejecucion y el informe final; la reproducibilidad byte a byte; y la correccion de estos recuentos. En `8759ebd`, `git rev-list --count 4be09fb..HEAD` da **24 commits** por delante de la base `4be09fb`: el numero se declara anclado al commit que lo escribio, porque un recuento que se reescribe tras cada commit nunca converge. Las dos cifras se re-derivan con los dos comandos citados, no se creen.
 
 ## 9. Publicacion — `BLOCKED_GITHUB_AUTH`
 
