@@ -991,17 +991,26 @@ def _results_markdown(campaign: dict[str, Any], summary: dict[str, Any]) -> str:
         lines += [
             f"### {candidate_id} ({payload['scope']['timeframe']})",
             "",
-            "| split | scenario | trades | gross | costs (fees+price) | net | win rate | "
-            "profit factor | expectancy | max DD | Sharpe | exposure |",
-            "|---|---|---|---|---|---|---|---|---|---|---|---|",
+            "Costs are split the way the model charges them: the fee is the "
+            "contractual component and the price cost is spread + slippage + impact, "
+            "charged half on each leg. `cost_bps_realised` per trade reconciles with "
+            "the plane printed here (the verifier re-checks it fill by fill).",
+            "",
+            "| split | scenario | trades | gross | fees | price costs | fee bps | "
+            "spread bps | slip bps | impact bps | net | win rate | profit factor | "
+            "expectancy | max DD | Sharpe | exposure |",
+            "|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|",
         ]
         for split in ("DEV", "VAL", "OOS"):
             for scenario in campaign["cost_scenarios"]:
                 data = payload["splits"][split][scenario]
-                costs = (data["fees_usdt"] or 0) + (data["price_costs_usdt"] or 0)
+                plane = data.get("plane") or {}
                 lines.append(
                     f"| {split} | {scenario} | {data['trades']} | {_num(data['gross_usdt'])} | "
-                    f"{_num(costs)} | {_num(data['net_usdt'])} | {_pct(data['win_rate_pct'])} | "
+                    f"{_num(data['fees_usdt'])} | {_num(data['price_costs_usdt'])} | "
+                    f"{_num(plane.get('fee_bps'))} | {_num(plane.get('spread_bps'))} | "
+                    f"{_num(plane.get('slippage_bps'))} | {_num(plane.get('impact_bps'))} | "
+                    f"{_num(data['net_usdt'])} | {_pct(data['win_rate_pct'])} | "
                     f"{_num(data['profit_factor'])} | {_num(data['expectancy_usdt'])} | "
                     f"{_pct(data['max_drawdown_pct'])} | {_num(data['sharpe_annualised'])} | "
                     f"{_pct(data['exposure_pct_of_time'])} |"

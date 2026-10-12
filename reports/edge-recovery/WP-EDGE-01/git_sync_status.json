@@ -1,0 +1,55 @@
+{
+  "work_package": "WP-EDGE-01",
+  "generated_at_utc_note": "written after the two WP commits and after the push probe",
+  "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
+  "local": {
+    "head": "7539633964d41d534b79f3519594ffb53f0c6570",
+    "commits_created_by_this_wp": [
+      {
+        "sha": "46b72fde7d10dda421730ce2a818e09302f08b2a",
+        "subject": "Add the EDGE-01 candidates, simulator, campaign harness and verifier. [WP-EDGE-01]"
+      },
+      {
+        "sha": "7539633964d41d534b79f3519594ffb53f0c6570",
+        "subject": "Publish the WP-EDGE-01 campaign results and their independent verification. [WP-EDGE-01]"
+      }
+    ],
+    "source_sha256_of_measured_modules_at_run": "e15e0c97fa035b6605e4543c16102cd74ebca9d4289bf814c79172e36973abd3",
+    "worktree_dirty": true,
+    "dirty_note": "The checkout is shared: other threads have uncommitted changes in data/st6, evidence/, scripts/cap004c_verify.py, scripts/st6_scheduler_witness.py, FINAL_REPORT.md and several report files. None of those files belong to this WP and none were staged, edited or reverted here. This WP's own files show no uncommitted changes."
+  },
+  "remote": {
+    "name": "origin",
+    "url": "https://github.com/Extr3sao/bot_crypto.git",
+    "anonymous_read": "OK (git ls-remote --heads origin succeeded)",
+    "remote_head_of_this_branch": null,
+    "remote_head_note": "git ls-remote origin refs/heads/agent/edge-recovery/* returned nothing: the branch (and therefore both WP-EDGE-01 commits) does not exist on GitHub."
+  },
+  "push": {
+    "attempted": true,
+    "command_class": "git push --dry-run origin HEAD, with GIT_TERMINAL_PROMPT=0 and the credential helper disabled for the probe only",
+    "exit_code": 128,
+    "remote_message": "remote: No anonymous write access.",
+    "fatal_message": "fatal: Authentication failed for 'https://github.com/Extr3sao/bot_crypto.git/'",
+    "status": "BLOCKED_GITHUB_AUTH",
+    "published": false
+  },
+  "auth_diagnosis": {
+    "github_token_env": "unset",
+    "gh_token_env": "unset",
+    "git_credential_file": "absent (~/.git-credentials)",
+    "configured_credential_helper": "manager (Git Credential Manager: interactive sign-in only)",
+    "gh_cli": "not installed",
+    "first_probe_note": "Without GIT_TERMINAL_PROMPT=0 the same dry-run hung for the full 60 s timeout while the credential manager waited for an interactive sign-in, which is the same block seen on WP-EDGE-00b.",
+    "secrets_handling": "No token, password or credential value was read, printed, stored or requested. This file records only the presence/absence of the mechanisms."
+  },
+  "consequence": [
+    "GitHub does not have this work: the two local commits and all six measured artefacts exist only in this checkout.",
+    "Nothing in RUN_REPORT.md/.json, STRATEGY_RESULTS.md/.json or INDEPENDENT_VERIFICATION.json claims the branch was published.",
+    "The correct way to unblock is to authenticate the machine's own Git credential mechanism (or provide a token through the environment by an authorised route); pasting a token into this transcript is neither necessary nor safe and was not requested."
+  ],
+  "artefact_sha256": {
+    "RUN_REPORT.md": "see RUN_REPORT.json -> artifacts (digests are computed by the runner)",
+    "INDEPENDENT_VERIFICATION.json": "result of scripts/edge01_verify.py --self-test, not covered by the runner inventory"
+  }
+}

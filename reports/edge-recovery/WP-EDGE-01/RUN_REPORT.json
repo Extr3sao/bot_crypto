@@ -1,12 +1,12 @@
 {
   "run_id": "wp-edge-01-campaign",
   "params_hash": "d073a2d686b9b198c36c9a3c6009d36130577ba247a2016c3f791813cb749d77",
-  "generated_at_utc": "2026-10-12T11:50:47.415640+00:00",
+  "generated_at_utc": "2026-10-12T11:55:49.333132+00:00",
   "git": {
-    "head_commit": "4be09fb95b90669fbf10ab73073f8915a7c8020d",
+    "head_commit": "7539633964d41d534b79f3519594ffb53f0c6570",
     "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
     "worktree_dirty": true,
-    "source_sha256": "e15e0c97fa035b6605e4543c16102cd74ebca9d4289bf814c79172e36973abd3"
+    "source_sha256": "694d4be2905ef9d76df1cefaba05ba5d94c49ea85c6178652c4af081e19a60d9"
   },
   "mode": "deterministic backtest over local historical corpora; 0 orders, 0 credentials, 0 network calls",
   "entrypoint": "scripts/edge01_run.py",
@@ -5832,11 +5832,11 @@
       "bytes": 192509
     },
     "STRATEGY_RESULTS.md": {
-      "sha256": "1342cbb3e96d9ca9a0ab7c6c6ba7d6d1ba3337440a1e7799a46c6ccd439e1ad3",
-      "bytes": 11134
+      "sha256": "d6c2d5fb93752b3ea52d9f869a5da55fdc611fda8bbceae44258a447121a786b",
+      "bytes": 14485
     },
     "RUN_REPORT.md": {
-      "sha256": "b07472ac41e23c69eae4a66dd21fc5bca4e6189695bc160a9142a04ad1ea33bf",
+      "sha256": "09996887f163c3ef06ce3e5b6c7d8392ddcde6aa98433e92070824d349441b81",
       "bytes": 18587
     }
   },
