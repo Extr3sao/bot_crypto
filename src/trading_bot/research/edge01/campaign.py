@@ -192,6 +192,26 @@ DEFECTS_FIXED: list[dict[str, str]] = [
         "evidence": "artefact inventory (bytes) in RUN_REPORT.json",
     },
     {
+        "id": "DEF-EDGE01-09",
+        "symptom": (
+            "The recorded source digest identified one copy of the code, not the code: "
+            "the same commit gave three different digests (working tree, stored blob, "
+            "clean checkout) because git rewrites line endings on this machine."
+        ),
+        "cause": (
+            "The digest hashed raw bytes, and ``core.autocrlf`` means the same commit "
+            "lands on disk as LF or CRLF depending on how it arrived."
+        ),
+        "fix": (
+            "The digest folds CRLF to LF before hashing and the rule is published next "
+            "to the digest in RUN_REPORT.json, so a clean checkout reproduces it."
+        ),
+        "evidence": (
+            "measured: worktree c832d958..., blob a81cb296..., clean checkout "
+            "313b140b... for commit ab7be9c before the fix; identical after it"
+        ),
+    },
+    {
         "id": "DEF-EDGE01-06",
         "symptom": (
             "The 1h trend filter of the two intraday candidates read a 1h bar whose "
@@ -911,6 +931,19 @@ def _sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
+def _normalised(raw: bytes) -> bytes:
+    """Line endings stripped before hashing, so the digest identifies the CODE.
+
+    This checkout has ``core.autocrlf`` set, so the same committed content lands
+    on disk as LF or CRLF depending on how it arrived: the working tree, the
+    stored blob and a fresh checkout of the same commit produced three different
+    digests for byte-identical code (DEF-EDGE01-09). Normalising makes the
+    recorded provenance reproducible from a clean checkout instead of tying it
+    to one machine's checkout state.
+    """
+    return raw.replace(b"\r\n", b"\n")
+
+
 def _git_state() -> dict[str, Any]:
     """HEAD, branch and dirtiness, plus a digest of the code that was executed.
 
@@ -929,11 +962,11 @@ def _git_state() -> dict[str, Any]:
     source = hashlib.sha256()
     for path in sorted((REPO / "src" / "trading_bot" / "research" / "edge01").glob("*.py")):
         source.update(path.name.encode())
-        source.update(path.read_bytes())
+        source.update(_normalised(path.read_bytes()))
     for script in (REPO / "scripts" / "edge01_run.py", REPO / "scripts" / "edge01_verify.py"):
         if script.exists():
             source.update(script.name.encode())
-            source.update(script.read_bytes())
+            source.update(_normalised(script.read_bytes()))
     try:
         state: dict[str, Any] = {
             "head_commit": _git("rev-parse", "HEAD"),
@@ -943,6 +976,11 @@ def _git_state() -> dict[str, Any]:
     except Exception:  # pragma: no cover - a tree without git is reported, not guessed
         state = {"head_commit": "UNKNOWN", "branch": "UNKNOWN", "worktree_dirty": None}
     state["source_sha256"] = source.hexdigest()
+    state["source_digest_rule"] = (
+        "sha256 over name+bytes of src/trading_bot/research/edge01/*.py, "
+        "scripts/edge01_run.py and scripts/edge01_verify.py, with CRLF folded to LF "
+        "so the digest does not depend on the checkout's line endings"
+    )
     return state
 
 

@@ -3,14 +3,14 @@
 | | |
 |---|---|
 | run_id | `wp-edge-01-campaign` |
-| HEAD al ejecutar | `042947cf58b25d3b706b28fde81b4be6986c6c2f` |
+| HEAD al ejecutar | `ab7be9c4c60e8cb01e87f659b3d3baa45d5151c1` |
 | rama | `agent/edge-recovery/WP-EDGE-00-baseline` |
 | arbol sucio al ejecutar | `True` |
-| huella del código ejecutado (sha256) | `c832d95859f5986a04e610de9809be6b5fb805eed00854adcf6ba0b340cb467e` |
+| huella del código ejecutado (sha256) | `5c082f0560da9f3167119ae24adf7a2f525aaec3a212a39a83b3b9528f0d520f` |
 | params_hash | `d073a2d686b9b198c36c9a3c6009d36130577ba247a2016c3f791813cb749d77` |
 | modo | backtest determinista sobre datos históricos locales; 0 órdenes, 0 claves, 0 red |
 | entrypoint | `scripts/edge01_run.py` |
-| generado | 2026-10-12T13:02:28.395619+00:00 |
+| generado | 2026-10-12T13:07:42.974146+00:00 |
 
 > El `HEAD` de arriba es lo que la máquina tenía al medir; cuando el árbol
 > está sucio el identificador de esta medida es la **huella del código**
@@ -187,6 +187,7 @@ Operaciones por contexto de mercado (BASE):
 | `DEF-EDGE01-03` | With three assets on one clock, a pending breakout on one asset could be aged, expired or fired by another asset's bars. | One candidate object was reused across assets with a single state slot. | Per-series state keyed by the identity of the bar list the caller walked; prepare() is idempotent. | tests/unit/research/test_edge01_pit.py::test_state_is_per_series |
 | `DEF-EDGE01-04` | A verdict could not be told apart from an unpowered measurement: the gate returned on the first failing criterion. | Single-reason early return, no sample-size statement. | Every reason is collected; REJECT needs either a powered sample or a net that is negative in all three windows; the verdict carries power and evidence fields. | tests/unit/research/test_edge01_gate_and_artifacts.py |
 | `DEF-EDGE01-05` | STRATEGY_RESULTS.json and RUN_REPORT.json were ~86 MB each. | Per-bar working buffers (buy & hold bar returns, the equity curve) were serialised into the published JSON. | _public() strips private keys recursively; the buffers stay in memory. | artefact inventory (bytes) in RUN_REPORT.json |
+| `DEF-EDGE01-09` | The recorded source digest identified one copy of the code, not the code: the same commit gave three different digests (working tree, stored blob, clean checkout) because git rewrites line endings on this machine. | The digest hashed raw bytes, and ``core.autocrlf`` means the same commit lands on disk as LF or CRLF depending on how it arrived. | The digest folds CRLF to LF before hashing and the rule is published next to the digest in RUN_REPORT.json, so a clean checkout reproduces it. | measured: worktree c832d958..., blob a81cb296..., clean checkout 313b140b... for commit ab7be9c before the fix; identical after it |
 | `DEF-EDGE01-06` | The 1h trend filter of the two intraday candidates read a 1h bar whose close had not happened yet: up to 45 minutes of look-ahead. | OHLCVBar.ts is the bar's OPEN time, but the as-of read compared it directly with the decision instant instead of with the bar's close (open + duration). | last_closed_index takes the context bar's own span and requires ts + span <= decision_ts; ContextSeries passes the span of its timeframe. | tests/unit/research/test_edge01_pit.py::test_context_bar_is_unreadable_until_it_closes |
 | `DEF-EDGE01-07` | In TRADES.csv the ablation and the 4h/1d runs were indistinguishable: every row of edge_intra_02_no_fvg said edge_intra_02, and both trend runs said edge_trend_01, so a reader grouping by that column merged runs that must be compared, not merged. | The candidate id inside the signal was unpacked AFTER the run key, so it overwrote it. | The run key is written last and the id that printed the signal is kept in its own ``strategy`` column. | scripts/edge01_verify.py check EQUITY_CONSERVATION (grouped by run key) |
 | `DEF-EDGE01-08` | A position still open when the window ended was settled at the last bar of the whole corpus: a 2023 DEV decision could be closed with a 2026 price, and the equity curve (which stops with the window) no longer matched the sum of the trade results. Found by the verifier's EQUITY_CONSERVATION check, not by reading the code. | The end-of-window settlement used bars[-1] instead of the last bar inside the measured window. | The simulator resolves the last in-window bar per asset before walking the timeline and settles there, keeping exit_ts inside the window. | scripts/edge01_verify.py check EQUITY_CONSERVATION; tests/unit/research/test_edge01_pit.py::test_end_of_window_settlement_stays_in_the_window |

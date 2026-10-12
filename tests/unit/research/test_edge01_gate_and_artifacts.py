@@ -18,6 +18,7 @@ from typing import Any
 import pytest
 import yaml
 
+from trading_bot.research.edge01 import campaign as campaign_module
 from trading_bot.research.edge01.campaign import (
     ADMISSION_CRITERIA,
     DEFECTS_FIXED,
@@ -395,3 +396,45 @@ def test_verdict_of_a_gate_result_is_one_of_three_labels() -> None:
 @pytest.mark.parametrize("key", ["head_commit", "branch", "worktree_dirty", "source_sha256"])
 def test_git_state_reports_the_measurement_identity(key: str) -> None:
     assert key in _git_state()
+
+
+def _write_source_tree(root: Path, *, crlf: bool) -> None:
+    body = "x = 1\ny = 2\n"
+    payload = (body.replace("\n", "\r\n") if crlf else body).encode()
+    module_dir = root / "src" / "trading_bot" / "research" / "edge01"
+    module_dir.mkdir(parents=True, exist_ok=True)
+    scripts = root / "scripts"
+    scripts.mkdir(parents=True, exist_ok=True)
+    (module_dir / "campaign.py").write_bytes(payload)
+    (scripts / "edge01_run.py").write_bytes(payload)
+    (scripts / "edge01_verify.py").write_bytes(payload)
+
+
+def test_source_digest_identifies_the_code_not_the_checkout_line_endings(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Same code, two checkouts' line endings: one digest (DEF-EDGE01-08)."""
+
+    lf, crlf = tmp_path / "lf", tmp_path / "crlf"
+    _write_source_tree(lf, crlf=False)
+    _write_source_tree(crlf, crlf=True)
+    monkeypatch.setattr(campaign_module, "REPO", lf)
+    first = campaign_module._git_state()
+    monkeypatch.setattr(campaign_module, "REPO", crlf)
+    second = campaign_module._git_state()
+    assert first["source_sha256"] == second["source_sha256"]
+    assert "CRLF folded to LF" in str(first["source_digest_rule"])
+
+
+def test_source_digest_changes_when_the_code_changes(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """The digest is not a constant: different code must not digest the same."""
+
+    tree = tmp_path / "tree"
+    _write_source_tree(tree, crlf=False)
+    monkeypatch.setattr(campaign_module, "REPO", tree)
+    before = campaign_module._git_state()["source_sha256"]
+    module = tree / "src" / "trading_bot" / "research" / "edge01" / "campaign.py"
+    module.write_bytes(module.read_bytes() + b"z = 3\n")
+    assert campaign_module._git_state()["source_sha256"] != before

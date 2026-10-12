@@ -1,12 +1,13 @@
 {
   "run_id": "wp-edge-01-campaign",
   "params_hash": "d073a2d686b9b198c36c9a3c6009d36130577ba247a2016c3f791813cb749d77",
-  "generated_at_utc": "2026-10-12T13:02:28.395619+00:00",
+  "generated_at_utc": "2026-10-12T13:07:42.974146+00:00",
   "git": {
-    "head_commit": "042947cf58b25d3b706b28fde81b4be6986c6c2f",
+    "head_commit": "ab7be9c4c60e8cb01e87f659b3d3baa45d5151c1",
     "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
     "worktree_dirty": true,
-    "source_sha256": "c832d95859f5986a04e610de9809be6b5fb805eed00854adcf6ba0b340cb467e"
+    "source_sha256": "5c082f0560da9f3167119ae24adf7a2f525aaec3a212a39a83b3b9528f0d520f",
+    "source_digest_rule": "sha256 over name+bytes of src/trading_bot/research/edge01/*.py, scripts/edge01_run.py and scripts/edge01_verify.py, with CRLF folded to LF so the digest does not depend on the checkout's line endings"
   },
   "mode": "deterministic backtest over local historical corpora; 0 orders, 0 credentials, 0 network calls",
   "entrypoint": "scripts/edge01_run.py",
@@ -6377,6 +6378,13 @@
       "evidence": "artefact inventory (bytes) in RUN_REPORT.json"
     },
     {
+      "id": "DEF-EDGE01-09",
+      "symptom": "The recorded source digest identified one copy of the code, not the code: the same commit gave three different digests (working tree, stored blob, clean checkout) because git rewrites line endings on this machine.",
+      "cause": "The digest hashed raw bytes, and ``core.autocrlf`` means the same commit lands on disk as LF or CRLF depending on how it arrived.",
+      "fix": "The digest folds CRLF to LF before hashing and the rule is published next to the digest in RUN_REPORT.json, so a clean checkout reproduces it.",
+      "evidence": "measured: worktree c832d958..., blob a81cb296..., clean checkout 313b140b... for commit ab7be9c before the fix; identical after it"
+    },
+    {
       "id": "DEF-EDGE01-06",
       "symptom": "The 1h trend filter of the two intraday candidates read a 1h bar whose close had not happened yet: up to 45 minutes of look-ahead.",
       "cause": "OHLCVBar.ts is the bar's OPEN time, but the as-of read compared it directly with the decision instant instead of with the bar's close (open + duration).",
@@ -6460,12 +6468,12 @@
       "bytes": 216675
     },
     "STRATEGY_RESULTS.md": {
-      "sha256": "b09e618adba7d99c2fa3b25dbfab27e2d2e4b70945c6a800d94afe5ac524f387",
+      "sha256": "e301685c59e39e417b60cdfc6587cd252f70f65c6d62fc1473b8779f31535f76",
       "bytes": 19065
     },
     "RUN_REPORT.md": {
-      "sha256": "969db594ef37ae97c5e22f7ea3268efaa451b56a361ef2461a92e4191123cec8",
-      "bytes": 23392
+      "sha256": "09e40ed2efb1771cf11dfdf2537ce2dfdf641c6ca0df5fcd0cffeff6ad3cdbc9",
+      "bytes": 24039
     }
   },
   "artifact_note": "digests cover every artefact except RUN_REPORT.json itself, which is the file carrying them"
