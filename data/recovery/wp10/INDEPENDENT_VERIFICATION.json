@@ -422,7 +422,7 @@
       "ok": true,
       "detail": {
         "artefact_head": "5348fcd55ab9",
-        "head": "90ed615b1b25"
+        "head": "49ca773dc26d"
       }
     },
     {
@@ -609,8 +609,8 @@
   "artifact": "WP10_INDEPENDENT_VERIFICATION",
   "work_package": "WP-10 (ECONOMIC EDGE RECOVERY & EXECUTION COST DISCOVERY)",
   "phase": "PHASE 7 \u2014 INDEPENDENT VERIFICATION",
-  "generated_at_utc": "2026-10-12T06:24:38Z",
-  "head": "90ed615b1b2514682bbf9a85834fdd81c45f0774",
+  "generated_at_utc": "2026-10-12T06:26:44Z",
+  "head": "49ca773dc26d855d7c846e0d8ce0044c75b0d876",
   "builder_imported": false,
   "verifier": "scripts/wp10_verify.py",
   "builders_verified": [
@@ -712,7 +712,7 @@
     },
     "blockers": {
       "unpublished_commits_at_the_artefact_head": "256",
-      "unpublished_commits_now": "257",
+      "unpublished_commits_now": "258",
       "sealed_hours": 4.159301,
       "pinned_artefacts_checked": 14,
       "pinned_artefacts_matching": 13
@@ -753,14 +753,14 @@
     {
       "figure": "unpublished commits",
       "in_the_artefact": 256,
-      "right_now": 257,
+      "right_now": 258,
       "why": "commits were added by other lanes after the artefact was built; the artefact's own value reproduces at its own head"
     },
     {
       "figure": "free volume",
       "in_the_artefact_gb": 17.051,
-      "right_now_gb": 14.857,
-      "difference_gb": -2.193,
+      "right_now_gb": 14.853,
+      "difference_gb": -2.198,
       "why": "the host is shared and other lanes and agents wrote and read the volume between the measurement and this verification"
     },
     {

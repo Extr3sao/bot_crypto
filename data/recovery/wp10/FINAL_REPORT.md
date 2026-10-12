@@ -76,11 +76,18 @@ es el que el propio modelo de costes hacía creer**.
 | commit | contenido | estado |
 | --- | --- | --- |
 | `90ed615` | cierre de WP-9 sobre sus propios archivos (73) | local, sin publicar |
-| *(pendiente)* | artefactos y scripts de WP-10 (`scripts/wp10_*.py`, `tests/unit/research/test_wp10_lane.py`, `data/recovery/wp10/**`) | local, sin publicar |
+| `49ca773` | artefactos y scripts de WP-10: 29 archivos (`scripts/wp10_*.py` × 9, `tests/unit/research/test_wp10_lane.py`, `data/recovery/wp10/**` × 19) | local, sin publicar |
 
+- **Identidad de la verificación**: `INDEPENDENT_VERIFICATION.json` y `RUN_REPORT.json`
+  registran `head = 49ca773dc26d855d7c846e0d8ce0044c75b0d876`, el commit que **contiene** los
+  artefactos que verifican. Las enmiendas posteriores de este informe solo nombran ese commit.
 - Rama: `main`. Cola sin publicar medida por el artefacto de bloqueos: **256 commits** en su
-  propio head (`5348fcd`), **257** en el momento de la verificación. No se ha publicado nada y
-  no se ha usado `force-push`.
+  propio head (`5348fcd`), **257** en el momento de la verificación y **258** tras publicar esta
+  lane. No se ha publicado nada al remoto y no se ha usado `force-push`.
+- Alcance del commit: solo archivos propios. No incluye `data/st6/`, `evidence/real_decisions/`
+  ni los informes raíz de otras lanes, que siguen modificados en el árbol de trabajo y
+  permanecen intactos. Control de secretos sobre los 30 archivos: sin coincidencias reales (el
+  único acierto del escáner es su propia definición de patrón y el canario documentado).
 
 ---
 

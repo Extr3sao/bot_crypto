@@ -1,8 +1,8 @@
 {
   "artifact": "WP10_RUN_REPORT",
   "work_package": "WP-10 (ECONOMIC EDGE RECOVERY & EXECUTION COST DISCOVERY)",
-  "generated_at_utc": "2026-10-12T06:24:38Z",
-  "head": "90ed615b1b2514682bbf9a85834fdd81c45f0774",
+  "generated_at_utc": "2026-10-12T06:26:44Z",
+  "head": "49ca773dc26d855d7c846e0d8ce0044c75b0d876",
   "branch": "main",
   "mode": "OFFLINE READ-ONLY \u2014 no network, no key, no order, no capital",
   "lane_commit": {
@@ -75,8 +75,8 @@
       "label": "phase 7 \u2014 independent verification",
       "artifact": "WP10_INDEPENDENT_VERIFICATION",
       "verdict": "PASS",
-      "sha256": "d8a97abb875d5c6de082d7e93716fe97669ba5c5cf14a32c4636b154b06cb0ac",
-      "generated_at_utc": "2026-10-12T06:24:38Z"
+      "sha256": "ee94c51208b49aa61d46589b676857247b6f39652b1ed84daf9c2f8c5ee0fd06",
+      "generated_at_utc": "2026-10-12T06:26:44Z"
     }
   },
   "claims": {
@@ -146,14 +146,14 @@
         {
           "figure": "unpublished commits",
           "in_the_artefact": 256,
-          "right_now": 257,
+          "right_now": 258,
           "why": "commits were added by other lanes after the artefact was built; the artefact's own value reproduces at its own head"
         },
         {
           "figure": "free volume",
           "in_the_artefact_gb": 17.051,
-          "right_now_gb": 14.857,
-          "difference_gb": -2.193,
+          "right_now_gb": 14.853,
+          "difference_gb": -2.198,
           "why": "the host is shared and other lanes and agents wrote and read the volume between the measurement and this verification"
         },
         {
@@ -209,5 +209,5 @@
     }
   ],
   "next_decision": "the decision WP-10 hands over: whether to (a) spend the next campaign on a new hypothesis that must clear the 20 bps round-trip fee floor at the current tier \u2014 2.25x the best gross edge in the register \u2014 or (b) first change the fee tier the plane assumes, which is a governance and account decision with no measurement attached, or (c) capture order-level execution evidence, which is the only way maker execution can ever be priced and is the only measurement WP-10 could not make from what exists",
-  "payload_sha256": "9f0228fe87253b5d30b6c4205b7830b05583f1e10217b39908aa6ecb2da88529"
+  "payload_sha256": "e02abb860ba08eb04631b1b4aecab48d7fa38d223f7d3678216f9aad5a874cfe"
 }

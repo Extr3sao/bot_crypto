@@ -1,6 +1,6 @@
 # WP-10 — RUN REPORT
 
-> `2026-10-12T06:24:38Z` · head `90ed615b1b2514682bbf9a85834fdd81c45f0774` · branch `main` · modo `OFFLINE READ-ONLY — no network, no key, no order, no capital`
+> `2026-10-12T06:26:44Z` · head `49ca773dc26d855d7c846e0d8ce0044c75b0d876` · branch `main` · modo `OFFLINE READ-ONLY — no network, no key, no order, no capital`
 
 ## 1. Qué se ejecutó y qué produjo
 
@@ -52,8 +52,8 @@
 ## 6. Verificación independiente
 
 * veredicto `PASS`: 53 controles de afirmación, 0 fallidos; 12 controles negativos, 0 no detectados; `false_success = 0`
-* deriva de estado: `unpublished commits` (256 → 257) — commits were added by other lanes after the artefact was built; the artefact's own value reproduces at its own head
-* deriva de estado: `free volume` (17.051 GB → 14.857 GB) — the host is shared and other lanes and agents wrote and read the volume between the measurement and this verification
+* deriva de estado: `unpublished commits` (256 → 258) — commits were added by other lanes after the artefact was built; the artefact's own value reproduces at its own head
+* deriva de estado: `free volume` (17.051 GB → 14.853 GB) — the host is shared and other lanes and agents wrote and read the volume between the measurement and this verification
 * deriva de estado: `state-view pins` (data/st6/ST6_HEALTH_STATUS.json) — the pinned artefacts are live outputs of other lanes: an untracked file cannot be pinned at all, and a tracked one whose content moved was rewritten by its own lane after the view was taken
 
 ## 7. Gobernanza
