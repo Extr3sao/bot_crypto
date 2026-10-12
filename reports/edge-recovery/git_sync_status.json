@@ -1,0 +1,43 @@
+{
+  "artifact": "git_sync_status.json",
+  "work_package": "WP-EDGE-00",
+  "generated_at_utc": "2026-10-12T09:10:59.031115+00:00",
+  "remote": "https://github.com/Extr3sao/bot_crypto.git",
+  "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
+  "local_sha": "95bc41804661dd51253c4c592dbb3b4ecfe4a738",
+  "remote_sha": null,
+  "remote_branch_exists": false,
+  "tracking_upstream": null,
+  "push_attempts": [
+    {
+      "at_utc": "2026-10-12T09:10:59.031115+00:00",
+      "command": "GIT_TERMINAL_PROMPT=0 GCM_INTERACTIVE=never git push -u origin agent/edge-recovery/WP-EDGE-00-baseline",
+      "exit_code": 128,
+      "result": "FAILED",
+      "reason": "fatal: could not read Username for 'https://github.com': terminal prompts disabled -> no stored credential is available to this environment for write access",
+      "classification": "BLOCKED_GITHUB_AUTH"
+    }
+  ],
+  "read_access": {
+    "works": true,
+    "evidence": "git fetch origin and git ls-remote succeeded (public read)"
+  },
+  "write_access": {
+    "works": false,
+    "classification": "BLOCKED_GITHUB_AUTH"
+  },
+  "pull_request": {
+    "status": "BLOCKED",
+    "reason": "gh CLI not installed and no token available; PR cannot be opened from this environment"
+  },
+  "desfase": {
+    "remote_main": "5e6f9632e8d9c15dabd60ea92ac68f350ca28c9d",
+    "local_main_ahead_of_remote_main": 259,
+    "note": "the agent branch carries 260 commits not present on the remote (259 pre-existing local commits + 1 WP-EDGE-00 commit); pushing it publishes that history to the branch only, never to main"
+  },
+  "changes_retained": true,
+  "next_step": {
+    "action": "authenticate git (or provide a token) and run: git push -u origin agent/edge-recovery/WP-EDGE-00-baseline",
+    "then": "verify remote SHA with: git ls-remote origin refs/heads/agent/edge-recovery/WP-EDGE-00-baseline"
+  }
+}
