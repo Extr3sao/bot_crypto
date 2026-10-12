@@ -2,7 +2,7 @@
   "work_package": "WP-EDGE-01",
   "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
   "local": {
-    "head_at_commit_of_this_file": "4d7a67e (HEAD when this revision was written)",
+    "head_at_commit_of_this_file": "03a62bd (HEAD when this revision was written)",
     "head_before_this_wp": "4be09fb95b90669fbf10ab73073f8915a7c8020d",
     "commits_created_by_this_wp": [
       {
@@ -54,6 +54,16 @@
         "sha": "4d7a67ea49d7c5d801025ef013f447f28382b135",
         "kind": "instrument-and-artifact",
         "subject": "Hash the code, not one machine's line endings, in the source digest. [WP-EDGE-01]"
+      },
+      {
+        "sha": "a76297e21e83430e52f4082a7317370681583862",
+        "kind": "documentation-only",
+        "subject": "Refresh ADR-0027 and the sync record for the market-context and digest work. [WP-EDGE-01]"
+      },
+      {
+        "sha": "03a62bd72323c7891962e6059f11884201e6620f",
+        "kind": "instrument-and-artifact",
+        "subject": "State the evaluated period and assets inside each strategy's results. [WP-EDGE-01]"
       }
     ],
     "files_owned_by_this_wp": [
@@ -71,15 +81,15 @@
     "self_reference": "A status file cannot contain the hash of the commit that carries it. This file has been revised by each documentation commit listed above with kind=documentation-only; the revision that carries the current text names the commits it summarises instead of chasing its own hash. `git log --oneline -- reports/edge-recovery/WP-EDGE-01/git_sync_status.json` shows every revision."
   },
   "run_to_commit_identity": {
-    "measured_with_head": "ab7be9c4c60e8cb01e87f659b3d3baa45d5151c1",
+    "measured_with_head": "a76297e21e83430e52f4082a7317370681583862",
     "measured_with_worktree_dirty": true,
     "source_digest_rule": "sha256 over name+bytes of src/trading_bot/research/edge01/*.py, scripts/edge01_run.py and scripts/edge01_verify.py, with CRLF folded to LF",
-    "source_sha256_at_measurement": "5c082f0560da9f3167119ae24adf7a2f525aaec3a212a39a83b3b9528f0d520f",
-    "source_sha256_of_the_committed_tree": "5c082f0560da9f3167119ae24adf7a2f525aaec3a212a39a83b3b9528f0d520f",
-    "source_sha256_of_the_committed_tree_at": "4d7a67ea49d7c5d801025ef013f447f28382b135",
+    "source_sha256_at_measurement": "a9ca6d7d05f9e19c9d334d9c1460fcf7ec19db0c1601b249d232c24effa15c5c",
+    "source_sha256_of_the_committed_tree": "a9ca6d7d05f9e19c9d334d9c1460fcf7ec19db0c1601b249d232c24effa15c5c",
+    "source_sha256_of_the_committed_tree_at": "03a62bd72323c7891962e6059f11884201e6620f",
     "identity_holds": true,
     "how_to_check": "Recompute the digest over the blobs of 4d7a67e with CRLF folded to LF; it equals the digest RUN_REPORT.json recorded at measurement, so the published numbers belong to the published code. The digest is recomputed the same way by trading_bot.research.edge01.campaign._git_state and is published with its rule in RUN_REPORT.json#git.",
-    "note": "The measurement ran while HEAD was ab7be9c and the tree was dirty (the digest fix and the documentation commits were still uncommitted), so HEAD alone would not identify the code behind the artefacts; the recorded source digest does. Before DEF-EDGE01-09 the same commit produced three different digests here (working tree c832d958, stored blob a81cb296, clean checkout 313b140b) because core.autocrlf rewrites line endings; folding CRLF to LF removed that ambiguity."
+    "note": "The measured run happened while HEAD was a76297e and the tree was dirty (the last artefacts and the documentation commits were still uncommitted), so HEAD alone would not identify the code behind the artefacts; the recorded source digest does. With the CRLF folding introduced by DEF-EDGE01-09 that digest is the same for the working tree, the stored blobs and a clean checkout; before the fix the same commit produced three different digests here (c832d958 / a81cb296 / 313b140b)."
   },
   "remote": {
     "name": "origin",
@@ -113,6 +123,18 @@
     "checks_passed": 14,
     "checks_total": 14,
     "mutations_detected": "8/8",
-    "produced_by": "scripts/edge01_verify.py (separate process, imports nothing from the package)"
+    "produced_by": "scripts/edge01_verify.py (separate process, imports nothing from the package)",
+    "produced_after_the_last_artefact_change": true,
+    "note": "The verifier is not part of the integrity inventory inside RUN_REPORT.json: it checks the artefacts, so it must be produced after them."
+  },
+  "final_state": {
+    "head": "03a62bd72323c7891962e6059f11884201e6620f",
+    "worktree_clean_for_wp_paths": true,
+    "push_status": "BLOCKED_GITHUB_AUTH",
+    "paper_integration": "NOT_AUTHORIZED (no candidate reached ADMIT)",
+    "commits_listed_here": 12,
+    "commits_in_this_wp_at_HEAD": 12,
+    "carrying_commit_not_self_listed": true,
+    "carrying_commit_note": "This revision is committed by a commit that cannot precede itself, so the count at HEAD is one more than the list above: verify with `git log --oneline 4be09fb..HEAD`."
   }
 }
