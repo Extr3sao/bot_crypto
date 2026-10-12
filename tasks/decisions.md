@@ -1215,3 +1215,59 @@ lo que NO se requerirá per-ADR "next free" footnote nunca más.
   - Ruta por defecto: esperar evidencia externa cualificada; no reabrir las familias cerradas ni recargar el
     presupuesto de hipotesis. Reversion solo por un ADR nuevo que revierta explicitamente este; ni siquiera
     entonces podria resucitar una candidata terminada.
+
+## ADR-0027 - WP-EDGE-01: lane de investigacion edge01 congelado, verificacion por artefactos y runtime PAPER intacto
+
+> WP-EDGE-01 STRATEGY RESULTS - registrada el 2026-10-12 sobre la rama
+> `agent/edge-recovery/WP-EDGE-00-baseline`. Decision de metodo y de promocion; no reabre candidatas
+> cerradas de otras campanas ni toca evidencia congelada.
+
+- **Estado**: Decidido y aplicado (trabajo local, sin autorizacion de capital real).
+- **Contexto**: el WP pedia implementar y evaluar tres candidatos reales (EDGE-INTRA-01, EDGE-INTRA-02,
+  EDGE-TREND-01) sobre datos historicos locales y decidir su promocion. El repo ya tenia un runtime
+  autoritativo (`src/trading_bot/autonomous/**` para PAPER, risk y execution deterministas) y campanas
+  previas congeladas. Habia que elegir como medir sin contaminar el runtime ni reutilizar evidencia
+  historica, y que hacer si ningun candidato supera los criterios.
+- **Opciones**:
+  - medir dentro del runtime PAPER reutilizando su pipeline (rechazada: mezcla la investigacion con la
+    ruta que ejecuta decisiones, y cualquier ajuste para que los candidatos pasen habria cambiado
+    comportamiento ya verificado del runtime);
+  - medir en un lane de investigacion propio, con datos, costes y particiones congelados y verificado por
+    un tercero que solo lee artefactos (aprobada);
+  - promover el mejor candidato aunque no alcance ADMIT, para "tener algo en PAPER" (rechazada: haria
+    ejecutar al runtime reglas cuya unica propiedad medida es perder dinero despues de costes).
+- **Decision**: los tres candidatos viven en `src/trading_bot/research/edge01/` y se ejecutan con
+  `scripts/edge01_run.py`; la verificacion independiente vive en `scripts/edge01_verify.py`, que no
+  importa el paquete y comprueba solo los CSV/JSON publicados (13/13 checks, con auto-test mutante).
+  La clasificacion es por candidato y por particion: `ADMIT` exige OOS neto positivo, expectancy
+  positiva, al menos un regimen rentable, margen bajo 2x fees y muestra suficiente; si no, `REJECT`, y
+  si la evidencia es suficiente pero debil, `INSUFFICIENT_EVIDENCE` en vez de inventar veredicto.
+- **Razon**: mantiene la separacion entre investigacion y runtime, permite reproducir cada numero desde
+  los artefactos publicados sin ejecutar el codigo, y evita que la presion por promocion convierta un
+  resultado negativo en una pieza de produccion. Ninguna particion se abre sin declararlo y ningun
+  parametro se optimiza sobre el conjunto de prueba.
+- **Consecuencias aplicadas en este WP**:
+  - `reports/edge-recovery/WP-EDGE-01/` publica `STRATEGY_RESULTS.md|json`, `TRADES.csv`,
+    `EQUITY_CURVE.csv`, `RUN_REPORT.md|json`, `INDEPENDENT_VERIFICATION.json` y `git_sync_status.json`;
+    `RUN_REPORT.json#test_target_equals_runtime_target` registra que tests y runner usan el mismo paquete
+    y que `runtime_files_changed_by_this_wp` esta vacio.
+  - Resultado: EDGE-INTRA-01, EDGE-INTRA-02 y su ablacion sin FVG quedan `REJECT` (neto y expectancy
+    negativos en DEV, VAL y OOS, y sin margen bajo 2x fees); EDGE-TREND-01 en 4h y 1d quedan
+    `INSUFFICIENT_EVIDENCE` (la unica ventana positiva depende de una sola operacion o tiene muestra
+    insuficiente). Ningun candidato alcanza `ADMIT`.
+  - `PAPER_PROMOTION = NOT_AUTHORIZED` por ausencia de candidato admitido: no se integra nada en el
+    pipeline PAPER. `src/trading_bot/autonomous/**` no se modifica. `LIVE_TRADING = DISABLED`,
+    `TRADES_AUTHORIZED = 0`, `PROFITABILITY_VERIFIED = FALSE`.
+  - Los defectos encontrados y corregidos durante el WP (look-ahead de 45 min en la lectura de contexto
+    1h, liquidacion de posiciones abiertas al final de la ventana, colision de identificadores en
+    `TRADES.csv`, tamano de los JSON publicados) se registran en `RUN_REPORT.json#defects_fixed_in_this_wp`
+    con su evidencia de test, en vez de quedar como cambios silenciosos.
+  - EDGE-TREND-01 no lleva un filtro de volatilidad separado (el ATR solo vive en stop y trailing): se
+    declara como tal y no se anade a posteriori. Las hipotesis siguientes quedan en
+    `RUN_REPORT.json#next_hypotheses`; no se recarga ningun presupuesto de hipotesis por este ADR.
+  - Publicacion remota: `push = BLOCKED_GITHUB_AUTH` (sin token, sin credential helper usable y `gh` no
+    instalado). Los cinco commits del WP quedan locales; no se leyo, imprimio ni almaceno ninguna
+    credencial.
+  - Reversion: solo un ADR nuevo que revierta explicitamente este, y no podria resucitar los veredictos
+    medidos sin nueva evidencia fuera de muestra.
+

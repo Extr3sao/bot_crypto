@@ -2,28 +2,43 @@
   "work_package": "WP-EDGE-01",
   "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
   "local": {
-    "head_at_commit_of_this_file": "ba0779b (HEAD when this file was written)",
+    "head_at_commit_of_this_file": "ba0779b (HEAD when this file was first written; revised at HEAD d3c28e7)",
     "head_before_this_wp": "4be09fb95b90669fbf10ab73073f8915a7c8020d",
     "commits_created_by_this_wp": [
       {
         "sha": "46b72fde7d10dda421730ce2a818e09302f08b2a",
-        "subject": "Add the EDGE-01 candidates, simulator, campaign harness and verifier. [WP-EDGE-01]"
+        "subject": "Add the EDGE-01 candidates, simulator, campaign harness and verifier. [WP-EDGE-01]",
+        "kind": "instrument-or-artifact"
       },
       {
         "sha": "7539633964d41d534b79f3519594ffb53f0c6570",
-        "subject": "Publish the WP-EDGE-01 campaign results and their independent verification. [WP-EDGE-01]"
+        "subject": "Publish the WP-EDGE-01 campaign results and their independent verification. [WP-EDGE-01]",
+        "kind": "instrument-or-artifact"
       },
       {
         "sha": "5f6cf817a613133df2c7e1219a507592b3e55e2c",
-        "subject": "Split fees from slippage in the per-strategy table and record the push block. [WP-EDGE-01]"
+        "subject": "Split fees from slippage in the per-strategy table and record the push block. [WP-EDGE-01]",
+        "kind": "instrument-or-artifact"
       },
       {
         "sha": "1a0a6c85299ca09ac354d3bcf797b34a806adff2",
-        "subject": "Record the final WP-EDGE-01 git state and the run-to-commit identity. [WP-EDGE-01]"
+        "subject": "Record the final WP-EDGE-01 git state and the run-to-commit identity. [WP-EDGE-01]",
+        "kind": "instrument-or-artifact"
       },
       {
         "sha": "ba0779b3c4254a4532984899a5ac989047f5a3ed",
-        "subject": "State the missing volatility filter and the next hypotheses explicitly. [WP-EDGE-01]"
+        "subject": "State the missing volatility filter and the next hypotheses explicitly. [WP-EDGE-01]",
+        "kind": "instrument-or-artifact"
+      },
+      {
+        "sha": "c9687a8a140a7c37b5c6a084e378dff851527f70",
+        "kind": "documentation-only",
+        "subject_note": "Records the run-to-commit identity and this status file."
+      },
+      {
+        "sha": "d3c28e7ea098c368ef56348729b125f4c1b94537",
+        "kind": "documentation-only",
+        "subject_note": "Names the commit that carries this status file instead of chasing its own hash."
       }
     ],
     "files_owned_by_this_wp": [
@@ -37,7 +52,8 @@
     "uncommitted_after_this_wp": [],
     "worktree_dirty": true,
     "dirty_note": "The checkout is shared: other threads have uncommitted changes in data/st6, evidence/, scripts/cap004c_verify.py, scripts/st6_scheduler_witness.py, FINAL_REPORT.md and several report files. None of those files belong to this WP; none were staged, edited or reverted here.",
-    "self_reference": "This file is committed as c9687a8, whose content is this file. A status file cannot contain the hash of the commit that carries it, so the measured HEAD is recorded as a literal and the commit that contains it is named here instead of being chased with another commit."
+    "self_reference": "A status file cannot contain the hash of the commit that carries it. The first version of this file was published in c9687a8 and its current text arrives in the commit that carries this revision, whose subject names it; the two revisions are listed in local.commits_created_by_this_wp with kind=documentation-only. Verify either by `git log --oneline -- reports/edge-recovery/WP-EDGE-01/git_sync_status.json`.",
+    "push_lifecycle": "Still local: no commit of this WP exists on origin, so the branch is unpublishable without credentials rather than partially published."
   },
   "run_to_commit_identity": {
     "measured_with_head": "7539633964d41d534b79f3519594ffb53f0c6570",
