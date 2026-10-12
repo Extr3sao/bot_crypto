@@ -622,6 +622,19 @@
       "mutations": 10,
       "undetected": 0,
       "note": "ten deliberate sabotages (a moved net, a widened interval, a laundered refusal, a dropped order, a claimed pass) are each required to break the declared check that owns them"
+    },
+    "determinism": {
+      "command": "python scripts/edge01_robustness_experiments.py --experiment all && python scripts/edge01_wp02_verify.py --experiment all  (re-run on the frozen tree)",
+      "artifacts_compared": 12,
+      "artifacts_byte_identical": 12,
+      "excluded": [
+        "ROBUSTNESS.json",
+        "ROBUSTNESS.md",
+        "RISK_AUDIT.json",
+        "RISK_AUDIT.md"
+      ],
+      "why_excluded": "these four carry generated_at_utc and the HEAD they ran on, so their bytes are expected to differ between runs; their derived TABLES are CSV and are compared",
+      "restored": "the re-run files were restored with git checkout, so the frozen state is exactly the committed one, and the verifier was re-run on it afterwards: 21/21 green"
     }
   },
   "tests": {
