@@ -129,6 +129,22 @@ reports/edge-recovery/WP-EDGE-04/*
 !reports/edge-recovery/WP-EDGE-04/*.json
 !reports/edge-recovery/WP-EDGE-04/*.md
 
+# ------------------------------------------------------------
+# WP-EDGE-05 — misma cadena de excepciones que WP-EDGE-01/02/03/04, por el mismo
+# motivo: el watchdog independiente, la reconciliacion posterior a un crash, la
+# auditoría de continuidad de Windows, el presupuesto de recursos, la verificación
+# independiente y la instantánea fechada de la evidencia viva SI se versionan.
+# La instantánea (evidence/) lleva la línea temporal, el registro de las dos tareas
+# programadas y la rebanada de la tienda, cada uno con su sha256 en
+# evidence/SNAPSHOT.json; el estado operativo vivo sigue bajo data/forward/
+# (ignorado más arriba), de modo que nada de lo que crece en cada tick entra aquí.
+# ------------------------------------------------------------
+!reports/edge-recovery/WP-EDGE-05/
+reports/edge-recovery/WP-EDGE-05/*
+!reports/edge-recovery/WP-EDGE-05/evidence/
+!reports/edge-recovery/WP-EDGE-05/*.json
+!reports/edge-recovery/WP-EDGE-05/*.md
+
 # ============================================================
 # CAP-003 — evidencias OHLCV crudas: locales por tamano.
 # El ledger (evidence/real_decisions/*.jsonl) SI se versiona y

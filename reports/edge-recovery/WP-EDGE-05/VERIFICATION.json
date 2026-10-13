@@ -1,0 +1,360 @@
+{
+  "at_utc": "2026-10-13T20:13:18Z",
+  "check_count": 13,
+  "checks": [
+    {
+      "check": "watchdog_rows_shape_and_restraint",
+      "detail": [],
+      "reading": "9 reading(s): every one makes no market request, holds no lease and writes nothing into the lane",
+      "status": "PASS"
+    },
+    {
+      "check": "verdict_is_the_worst_check_status",
+      "detail": [],
+      "reading": "each row's verdict is the worst of the statuses it itself reports",
+      "status": "PASS"
+    },
+    {
+      "check": "category_and_operational_failure_are_derived",
+      "detail": [],
+      "reading": "the failure flag is narrower than the verdict, and only a real trouble is one",
+      "status": "PASS"
+    },
+    {
+      "check": "lane_silence_is_consistent_with_the_run_log",
+      "detail": [],
+      "reading": "the silence a reading reports is never smaller than the gap between its own instant and the newest consuming tick on file",
+      "status": "PASS"
+    },
+    {
+      "check": "market_expectation_matches_the_store",
+      "detail": [],
+      "reading": "a reading that calls the market quiet is checked against the store's own tail and the closed-bar calendar",
+      "status": "PASS"
+    },
+    {
+      "check": "scheduler_result_translated_through_the_lane_vocabulary",
+      "detail": {
+        "problems": [],
+        "table_size": 10
+      },
+      "reading": "9 reading(s) carried a scheduler result code",
+      "status": "PASS"
+    },
+    {
+      "check": "alerts_are_per_transition",
+      "detail": [],
+      "reading": "25 alert(s), 16 kind(s)",
+      "status": "PASS"
+    },
+    {
+      "check": "the_watchdog_really_detected_an_interruption",
+      "detail": {
+        "closed_episodes": 1,
+        "closed_with_a_named_fault": 1,
+        "closed_with_the_recovering_tick_named": 1,
+        "episodes_of_trouble": 1,
+        "first": {
+          "category": "SCHEDULER_FAILURE",
+          "closed": true,
+          "findings": [
+            "scheduler_task"
+          ],
+          "operational_failure": true,
+          "recovery_named_in_log": true,
+          "since_utc": "2026-10-13T18:48:16Z",
+          "until_utc": "2026-10-13T19:12:07Z",
+          "verdict": "WATCH_ALARM"
+        }
+      },
+      "reading": "at least one episode of trouble, closed by a recovery, with the fault named and the recovering tick present in the lane's run log",
+      "status": "PASS"
+    },
+    {
+      "check": "reconciliation_chains_recomputed",
+      "detail": [],
+      "reading": "the ledger/bar chain of all six series was recomputed from the raw files (store mode LIVE)",
+      "status": "PASS"
+    },
+    {
+      "check": "unattributed_attempts_recomputed",
+      "detail": [],
+      "reading": "2 attempt(s) of the ledger have no run row naming them, and every bar each one claims is checked against the store",
+      "status": "PASS"
+    },
+    {
+      "check": "no_artefact_promotes_or_orders",
+      "detail": [],
+      "reading": "29 artefact(s) parsed for orders, realised results and promotions",
+      "status": "PASS"
+    },
+    {
+      "check": "watchdog_bounds_declared_and_kept",
+      "detail": [],
+      "reading": "9 reading(s), 25 alert(s), 1 daily file(s), 193564 bytes",
+      "status": "PASS"
+    },
+    {
+      "check": "recorded_digests_match_the_files",
+      "detail": {
+        "inputs_checked": 3,
+        "mismatched": [
+          {
+            "input": "15m:BTC",
+            "reading": "the store file moved on"
+          },
+          {
+            "input": "15m:ETH",
+            "reading": "the store file moved on"
+          },
+          {
+            "input": "15m:SOL",
+            "reading": "the store file moved on"
+          },
+          {
+            "input": "1h:BTC",
+            "reading": "the store file moved on"
+          },
+          {
+            "input": "1h:ETH",
+            "reading": "the store file moved on"
+          }
+        ],
+        "note": "the lane ticks every fifteen minutes, so a digest recorded by one reading and a file read later are expected to differ once the lane writes again; the counted check here is that each recorded digest is present and well formed, and that the reconciliation's own inputs are pinned by name and digest",
+        "store_mode": "LIVE"
+      },
+      "reading": "the reconciliation records the digest of every input it read, so a reader can tell whether it is looking at the same evidence",
+      "status": "PASS"
+    }
+  ],
+  "hypothetical": true,
+  "order_sent": false,
+  "passed": 13,
+  "promotion": "NONE",
+  "schema_version": "EDGE05_INDEPENDENT_VERIFICATION_V1",
+  "self_test": {
+    "count": 15,
+    "detected": 15,
+    "sabotages": [
+      {
+        "detail": [
+          "WATCH-20261013T200239Z: market_requests 4"
+        ],
+        "detected": true,
+        "expected_check": "watchdog_rows_shape_and_restraint",
+        "index": 1,
+        "sabotage": "a reading that made a market request"
+      },
+      {
+        "detail": [
+          {
+            "check_id": "WATCH-20261013T190232Z",
+            "recomputed": "WATCH_ALARM",
+            "verdict": "WATCH_OK"
+          }
+        ],
+        "detected": true,
+        "expected_check": "verdict_is_the_worst_check_status",
+        "index": 2,
+        "sabotage": "a verdict that is not the worst check"
+      },
+      {
+        "detail": [
+          {
+            "check_id": "WATCH-20261013T190232Z",
+            "operational_failure": false,
+            "recomputed": true
+          }
+        ],
+        "detected": true,
+        "expected_check": "category_and_operational_failure_are_derived",
+        "index": 3,
+        "sabotage": "a failure flag cleared"
+      },
+      {
+        "detail": [
+          {
+            "category": "HEALTHY",
+            "check_id": "WATCH-20261013T190232Z",
+            "reading": "a non-OK verdict is never filed as healthy",
+            "verdict": "WATCH_ALARM"
+          }
+        ],
+        "detected": true,
+        "expected_check": "category_and_operational_failure_are_derived",
+        "index": 4,
+        "sabotage": "a blocked reading filed as healthy"
+      },
+      {
+        "detail": [
+          {
+            "check_id": "WATCH-20261013T200239Z",
+            "floor_from_the_log": 1265.964,
+            "reported": 0.0
+          }
+        ],
+        "detected": true,
+        "expected_check": "lane_silence_is_consistent_with_the_run_log",
+        "index": 5,
+        "sabotage": "a silence smaller than the log allows"
+      },
+      {
+        "detail": [
+          {
+            "check_id": "WATCH-20261013T200239Z",
+            "market_quiet": true,
+            "missing_by_recomputation": 45
+          }
+        ],
+        "detected": true,
+        "expected_check": "market_expectation_matches_the_store",
+        "index": 6,
+        "sabotage": "a quiet market the store contradicts"
+      },
+      {
+        "detail": {
+          "problems": [
+            {
+              "acceptable": [
+                "DISK_BUDGET_EXCEEDED"
+              ],
+              "check_id": "WATCH-20261013T200239Z",
+              "exit_code": 5,
+              "lane_outcome": "OBSERVED"
+            }
+          ],
+          "table_size": 10
+        },
+        "detected": true,
+        "expected_check": "scheduler_result_translated_through_the_lane_vocabulary",
+        "index": 7,
+        "sabotage": "a scheduler code mapped to the wrong outcome"
+      },
+      {
+        "detail": [
+          {
+            "kind": "WATCHDOG_RECOVERED",
+            "reading": "repeated state",
+            "state": "OK"
+          },
+          {
+            "kind": "WATCHDOG_RECOVERED",
+            "reading": "recovered from WATCH_OK"
+          }
+        ],
+        "detected": true,
+        "expected_check": "alerts_are_per_transition",
+        "index": 8,
+        "sabotage": "a recovery announced without a trouble"
+      },
+      {
+        "detail": [
+          {
+            "kind": "RECONCILIATION_REQUIRED",
+            "reading": "repeated state",
+            "state": "126 UNATTRIBUTED BARS"
+          }
+        ],
+        "detected": true,
+        "expected_check": "alerts_are_per_transition",
+        "index": 9,
+        "sabotage": "an alert state repeated"
+      },
+      {
+        "detail": {
+          "closed_episodes": 0,
+          "closed_with_a_named_fault": 0,
+          "closed_with_the_recovering_tick_named": 0,
+          "episodes_of_trouble": 0,
+          "first": null
+        },
+        "detected": true,
+        "expected_check": "the_watchdog_really_detected_an_interruption",
+        "index": 10,
+        "sabotage": "every episode of trouble erased"
+      },
+      {
+        "detail": [
+          {
+            "field": "ledger_rows",
+            "recomputed": 77,
+            "reported": 76,
+            "series": "1h:BTC"
+          },
+          {
+            "field": "chain_holds",
+            "recomputed": false,
+            "reported": true,
+            "series": "1h:BTC"
+          }
+        ],
+        "detected": true,
+        "expected_check": "reconciliation_chains_recomputed",
+        "index": 11,
+        "sabotage": "a ledger chain that jumps"
+      },
+      {
+        "detail": [
+          {
+            "bars_removed": 1,
+            "reading": "the reconciliation reports removing a bar"
+          }
+        ],
+        "detected": true,
+        "expected_check": "reconciliation_chains_recomputed",
+        "index": 12,
+        "sabotage": "a reconciliation that admits removing a bar"
+      },
+      {
+        "detail": [
+          {
+            "attempt": "2026-10-13T11:25:20Z",
+            "bars_appended": 4,
+            "recomputed": 0
+          }
+        ],
+        "detected": true,
+        "expected_check": "unattributed_attempts_recomputed",
+        "index": 13,
+        "sabotage": "an episode filed closed with a missing bar"
+      },
+      {
+        "detail": [
+          {
+            "field": "promotion",
+            "file": "RECONCILIATION.json",
+            "reading": "an artefact carries a promotion",
+            "value": "PAPER"
+          }
+        ],
+        "detected": true,
+        "expected_check": "no_artefact_promotes_or_orders",
+        "index": 14,
+        "sabotage": "a promotion in the reconciliation"
+      },
+      {
+        "detail": [
+          {
+            "cap": 5760,
+            "log": "watchdog.jsonl",
+            "rows": 5761
+          }
+        ],
+        "detected": true,
+        "expected_check": "watchdog_bounds_declared_and_kept",
+        "index": 15,
+        "sabotage": "a watchdog log past its cap"
+      }
+    ],
+    "verdict": "SELF_TEST_PASS 15/15"
+  },
+  "verdict": "VERIFY_PASS 13/13",
+  "verified_at_utc": "2026-10-13T20:13:18Z",
+  "watched": {
+    "lane_state_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04",
+    "store_mode": "LIVE",
+    "store_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge03",
+    "store_slice": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge05\\STORE_SLICE.json",
+    "watch_state_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge05"
+  }
+}

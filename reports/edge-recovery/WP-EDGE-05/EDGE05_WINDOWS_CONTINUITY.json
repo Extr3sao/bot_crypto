@@ -1,0 +1,142 @@
+{
+  "commands_for_the_owner": [
+    "schtasks /change /tn \"TradingAgentic-EDGE04-Forward\" /ru \"<DOMAIN\\user>\" /rp \"<password>\"",
+    "schtasks /change /tn \"TradingAgentic-EDGE05-Watchdog\" /ru \"<DOMAIN\\user>\" /rp \"<password>\"",
+    "# or, from PowerShell, which also needs the password interactively:\n$c = Get-Credential; Set-ScheduledTask -TaskName 'TradingAgentic-EDGE04-Forward' -User $c.UserName -Password $c.GetNetworkCredential().Password"
+  ],
+  "generated_at_utc": "2026-10-13T20:13:50Z",
+  "hypothetical": true,
+  "logon_mode_as_the_platform_prints_it": {
+    "Ejecutar como usuario": "GVLLFR0035",
+    "Estado": "Listo",
+    "Nombre de tarea": "\\TradingAgentic-EDGE04-Forward"
+  },
+  "not_applied_because": "storing an account credential on this host is exactly what the security rules of this project forbid an automated agent to do; the change is spelled out for a person to make, and until it is made the sixty-day accumulation depends on the session staying alive",
+  "order_sent": false,
+  "promotion": "NONE",
+  "registered_settings": {
+    "AllowHardTerminate_defaulted": "true (element absent: schema default)",
+    "AllowStartOnDemand_defaulted": "true (element absent: schema default)",
+    "DisallowStartIfOnBatteries": "false",
+    "Enabled_defaulted": "true (element absent: schema default)",
+    "ExecutionTimeLimit": "PT1H",
+    "Hidden_defaulted": "false (element absent: schema default)",
+    "IdleSettings": {
+      "RestartOnIdle": "false",
+      "StopOnIdleEnd": "true"
+    },
+    "MultipleInstancesPolicy": "IgnoreNew",
+    "Priority_defaulted": "7 (element absent: schema default)",
+    "RestartOnFailure": {
+      "Count": "3",
+      "Interval": "PT5M"
+    },
+    "RunLevel_defaulted": "LeastPrivilege (element absent: schema default)",
+    "RunOnlyIfNetworkAvailable_defaulted": "false (element absent: schema default)",
+    "StartWhenAvailable": "true",
+    "StopIfGoingOnBatteries": "false",
+    "WakeToRun_defaulted": "false (element absent: schema default)",
+    "action_arguments": "\"C:/Users/GVLLFR0035/Downloads/bot freebuff/scripts/edge04_observer.py\" --scheduled --due",
+    "action_command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+    "logon_type": "InteractiveToken",
+    "run_level": "LeastPrivilege (element absent: schema default)",
+    "start_boundary": "2026-10-13T13:25:53",
+    "trigger_duration": "P3650D",
+    "trigger_repetition_interval": "PT15M",
+    "user_id": "S-1-12-1-2907394642-1261797007-1573842048-3608101379"
+  },
+  "safe_unattended_modes": [
+    {
+      "authorisation": "the owner's decision; this work package leaves it registered as it is",
+      "limitation": "a logoff, a reboot without an auto-logon, or a session that is closed ends the observation until somebody logs back in",
+      "mode": "a host that stays logged in, with the screen locked",
+      "needs": "nothing beyond what is registered"
+    },
+    {
+      "authorisation": "REQUIRED \u2014 operator. The commands are in `commands_for_the_owner`",
+      "limitation": "a credential would have to be stored on this host; the WP was not authorised to hold one and did not",
+      "mode": "run whether the user is logged on or not",
+      "needs": "the account's password stored for the task, or a dedicated low-privilege service account, and the policy to allow it"
+    },
+    {
+      "authorisation": "not available on this host and NOT EXERCISED",
+      "limitation": "still a user session; the durable form is a system service",
+      "mode": "a Linux host with systemd --user",
+      "needs": "the same command under a timer, with Persistent=true"
+    }
+  ],
+  "schema_version": "EDGE05_WINDOWS_CONTINUITY_V1",
+  "task": "TradingAgentic-EDGE04-Forward",
+  "watchdog_task": {
+    "available": true,
+    "settings": {
+      "action": {
+        "Arguments": "\"C:/Users/GVLLFR0035/Downloads/bot freebuff/scripts/edge05_watchdog.py\"",
+        "Command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+        "WorkingDirectory": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff"
+      },
+      "defaulted": [
+        "Enabled=true",
+        "RunLevel=LeastPrivilege",
+        "AllowHardTerminate=true",
+        "WakeToRun=false",
+        "RunOnlyIfNetworkAvailable=false",
+        "Hidden=false",
+        "AllowStartOnDemand=true",
+        "Priority=7"
+      ],
+      "explicit": [
+        "Principals/UserId",
+        "Principals/LogonType",
+        "Settings/DisallowStartIfOnBatteries",
+        "Settings/StopIfGoingOnBatteries",
+        "Settings/ExecutionTimeLimit",
+        "Settings/MultipleInstancesPolicy",
+        "Settings/RestartOnFailure",
+        "Settings/StartWhenAvailable",
+        "Settings/IdleSettings"
+      ],
+      "principals": {
+        "LogonType": "InteractiveToken",
+        "UserId": "S-1-12-1-2907394642-1261797007-1573842048-3608101379"
+      },
+      "reading": "read by element path from the platform's own export; an element the platform omits is at its schema default, which is listed under *_defaulted rather than recorded as unset",
+      "settings": {
+        "AllowHardTerminate_defaulted": "true",
+        "AllowStartOnDemand_defaulted": "true",
+        "DisallowStartIfOnBatteries": "false",
+        "Enabled_defaulted": "true",
+        "ExecutionTimeLimit": "PT1H",
+        "Hidden_defaulted": "false",
+        "IdleSettings": {
+          "RestartOnIdle": "false",
+          "StopOnIdleEnd": "true"
+        },
+        "MultipleInstancesPolicy": "IgnoreNew",
+        "Priority_defaulted": "7",
+        "RestartOnFailure": {
+          "Count": "3",
+          "Interval": "PT5M"
+        },
+        "RunLevel_defaulted": "LeastPrivilege",
+        "RunOnlyIfNetworkAvailable_defaulted": "false",
+        "StartWhenAvailable": "true",
+        "StopIfGoingOnBatteries": "false",
+        "WakeToRun_defaulted": "false"
+      },
+      "trigger": {
+        "Duration": "P3650D",
+        "StartBoundary": "2026-10-13T21:02:30",
+        "repetition_interval": "PT15M"
+      }
+    }
+  },
+  "what_the_platform_says_it_allows": {
+    "logged_off": "does NOT run: LogonType=InteractiveToken means the task needs the user's session, and no stored credential exists for it. This is the single largest caveat on the sixty-day requirement",
+    "logged_on_user_session": "the task runs: the tick has been observed firing unattended on a schedule, without any agent or terminal open",
+    "machine_asleep": "the trigger is missed and StartWhenAvailable fires it on wake; that path is declared by the registration and NOT EXERCISED here",
+    "machine_off_across_several_slots": "the next tick ingests every bar that closed after the store's high-water mark, so the gap is latency and not data \u2014 EXERCISED by this work package as a real scheduler outage, see OUTAGE_REHEARSAL_*.json",
+    "machine_rebooted": "NOT EXERCISED: a reboot would end this session and every other process on the host, which is an operator's decision and not a work package's",
+    "screen_locked_but_session_alive": "EXPECTED to run \u2014 a locked screen does not end the session \u2014 and NOT EXERCISED: locking this host's screen would interrupt the person using it, so the work package records the expectation and does not measure it"
+  }
+}

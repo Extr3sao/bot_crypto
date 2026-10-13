@@ -1,0 +1,127 @@
+{
+  "alert_kinds": [
+    "DISK_RECOVERED",
+    "DISK_WARNING",
+    "EVIDENCE_CORRUPT",
+    "GROWTH_BUDGET_EXCEEDED",
+    "INGEST_STALLED",
+    "MARKET_QUIET",
+    "RECONCILIATION_REQUIRED",
+    "RESTART_PROOF_BROKEN",
+    "SCHEDULER_DISABLED",
+    "SCHEDULER_TASK_FAILED",
+    "STORE_STALE",
+    "TICK_DIED_MID_WRITE",
+    "TICK_OVERDUE",
+    "WATCHDOG_ALARM",
+    "WATCHDOG_DEGRADED",
+    "WATCHDOG_RECOVERED"
+  ],
+  "alerts_on_file": 25,
+  "generated_at_utc": "2026-10-13T20:13:48Z",
+  "hypothetical": true,
+  "latest": {
+    "at_utc": "2026-10-13T20:02:39Z",
+    "category": "HEALTHY",
+    "check_id": "WATCH-20261013T200239Z",
+    "checks": {
+      "evidence_integrity": {
+        "reason": "the lane's evidence is readable and internally consistent",
+        "status": "OK"
+      },
+      "lane_cadence": {
+        "reason": "a tick consumed a slot within the declared schedule",
+        "status": "OK"
+      },
+      "lane_lease": {
+        "reason": "no lease is on disk",
+        "status": "OK"
+      },
+      "lane_process": {
+        "reason": "every recorded tick finished and the process table answered",
+        "status": "OK"
+      },
+      "market_expectation": {
+        "reason": "6 bar(s) closed since the last tick and are pending the next trigger: normal latency inside the declared schedule, not a failure",
+        "status": "OK"
+      },
+      "resource_disk": {
+        "reason": "free space is above the warning floor",
+        "status": "OK"
+      },
+      "resource_growth": {
+        "reason": "the lane publishes no forecast because its own measured rate is volatile; a growth verdict is not invented from an unstable reading",
+        "status": "OK"
+      },
+      "restart_proof": {
+        "reason": "every second ingest pass at an instant appended nothing: no bar was written twice",
+        "status": "OK"
+      },
+      "scheduler_cadence": {
+        "reason": "the next trigger is in the future",
+        "status": "OK"
+      },
+      "scheduler_last_result": {
+        "reason": "the scheduler's last result is a lane tick that did its job",
+        "status": "OK"
+      },
+      "scheduler_task": {
+        "reason": "the task is registered and enabled",
+        "status": "OK"
+      },
+      "store_freshness": {
+        "reason": "every series holds a bar that closed inside its staleness bound",
+        "status": "OK"
+      },
+      "watchdog_cadence": {
+        "reason": "the watchdog's previous check is inside its own cadence",
+        "status": "OK"
+      }
+    },
+    "findings": [],
+    "history": {
+      "checks_on_file": 8,
+      "corrupt_lines": 0,
+      "episode_open": false,
+      "episodes_of_trouble": 1,
+      "newest_trouble_at_utc": "2026-10-13T18:48:16Z",
+      "open_episode_since_utc": null,
+      "previous_at_utc": "2026-10-13T19:47:33Z",
+      "previous_verdict": "WATCH_OK",
+      "read_at_utc": "2026-10-13T20:02:39Z",
+      "recoveries": 1
+    },
+    "hypothetical": true,
+    "lane": {
+      "missing_at_last_tick": 0,
+      "newest_consuming_run_id": "FWD-EDGE04-20261013T194500Z",
+      "pending_since_last_tick": 6,
+      "silence_seconds": 368.914
+    },
+    "market_quiet": false,
+    "operational_failure": false,
+    "order_sent": false,
+    "promotion": "NONE",
+    "reading": "an independent verdict on the forward lane: it is produced by a process that holds no lease, runs no pipeline and makes no market request, and every field above is derived from the lane's own files and the operating system's own reporting",
+    "scheduler": {
+      "enabled": true,
+      "last_task_result": 0,
+      "next_run_utc": "10/13/2026 22:10:53",
+      "state": "Ready",
+      "task_name": "TradingAgentic-EDGE04-Forward"
+    },
+    "schema_version": "EDGE05_WATCHDOG_V1",
+    "verdict": "WATCH_OK",
+    "warnings": []
+  },
+  "order_sent": false,
+  "promotion": "NONE",
+  "readings_on_file": 9,
+  "schema_version": "EDGE05_WATCHDOG_STATUS_V1",
+  "task": "TradingAgentic-EDGE05-Watchdog",
+  "verdicts_seen": [
+    "WATCH_ALARM",
+    "WATCH_OK"
+  ],
+  "watching": "TradingAgentic-EDGE04-Forward"
+}

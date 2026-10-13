@@ -1,0 +1,43 @@
+{
+  "files": {
+    "EDGE05_RESOURCE_BUDGET.json": {
+      "bytes": 2080,
+      "sha256": "add6492cc4d900a138eefaebed38e6f2ede778878965fe382c25c6edd96b28d0"
+    },
+    "EDGE05_TASK_REGISTRATION.json": {
+      "bytes": 9362,
+      "sha256": "0a8c6b80e102bb63b910451e5dd7b494053408cd1d65683abea3daf6d94daf85"
+    },
+    "EDGE05_WATCHDOG_STATUS.json": {
+      "bytes": 4190,
+      "sha256": "23353537346f68ec5d52ae919fcb4e398d7582881c542be316ab2d9622fdb017"
+    },
+    "EDGE05_WINDOWS_CONTINUITY.json": {
+      "bytes": 7409,
+      "sha256": "3e4dc6ff39e6c421fa9bd84b2c15b7260358c731049faaceaf3bcab5467b3477"
+    },
+    "EDGE05_WINDOWS_CONTINUITY.md": {
+      "bytes": 4623,
+      "sha256": "4bdaba0e637aa6e09397759e6d17fed6d0183016db2f6e46abd6b88014a36140"
+    },
+    "FASE5_TIMELINE.md": {
+      "bytes": 8626,
+      "sha256": "fe843ffa8618a63b6ad8389c1d6b4d2490ab886365d6a5faa379ed567be4ae22"
+    },
+    "STORE_SLICE.json": {
+      "bytes": 14728,
+      "sha256": "34b6abb4924b6711cd5cbf890d931d3cf0dfbd236c0f7bd57aeaa4fc8484005c"
+    }
+  },
+  "generated_at_utc": "2026-10-13T20:13:50Z",
+  "hypothetical": true,
+  "inputs": {
+    "lane_state_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04",
+    "store_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge03",
+    "watch_state_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge05"
+  },
+  "order_sent": false,
+  "promotion": "NONE",
+  "reading": "every artefact this closure wrote, with its digest: the set can be checked rather than trusted, and the verifier can be pointed at this directory with the same command it uses on the live tree",
+  "schema_version": "EDGE05_EVIDENCE_SNAPSHOT_V1"
+}
