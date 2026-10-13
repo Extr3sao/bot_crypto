@@ -55,7 +55,13 @@
         "exit_code": 0
       }
     ],
-    "reports_only_offline": {"command": "python scripts/edge03_run.py --reports-only <OBSERVATION.json>", "exit_code": 0, "network": "none"}
+    "reports_only_offline": {
+      "command": "python scripts/edge03_run.py --reports-only <OBSERVATION.json> --outdir <scratch>",
+      "exit_code": 0,
+      "network": "none",
+      "byte_identical": {"CUMULATIVE.md": true, "CUMULATIVE.json": true, "DAILY_REPORTS.json": true, "DAILY_2026-10-13.md": true},
+      "claim": "the published reports are a function of the stored observation and of nothing else"
+    }
   },
   "verdict": {
     "observation_state": "OBSERVATION_AVAILABLE",
@@ -140,6 +146,11 @@
     "checks_failed": 0,
     "verdict": "VERIFY_PASS",
     "self_test": {"applied": 20, "detected": 20, "undetected": 0, "skipped": 0, "collateral_breaks": 4, "verdict": "SELF_TEST_PASS"},
+    "rerun_on_the_committed_tree": {
+      "command": "python scripts/edge03_verify.py --json-out <scratch>",
+      "exit_code": 0,
+      "result": "the fresh check list equals the committed VERIFICATION.json#checks exactly (19 passed, 0 failed)"
+    },
     "highlights": {
       "forward_bars_admissible": 17940,
       "shadow_rows_inside_window": 1356,
@@ -219,6 +230,7 @@
       {"command": "GIT_TERMINAL_PROMPT=0 git push --dry-run", "exit_code": 128, "result": "the branch has no upstream: no remote write was attempted"},
       {"command": "GIT_TERMINAL_PROMPT=0 git -c credential.helper= push --dry-run origin HEAD:refs/heads/agent/edge-recovery/WP-EDGE-03", "exit_code": 128, "result": "fatal: could not read Username for 'https://github.com': terminal prompts disabled"},
       {"command": "GIT_TERMINAL_PROMPT=0 git push --dry-run origin HEAD:refs/heads/agent/edge-recovery/WP-EDGE-03 (default helper)", "exit_code": 124, "result": "hangs: the interactive helper opens its own dialog, which GIT_TERMINAL_PROMPT does not suppress; cut at 45 s"},
+      {"command": "GIT_TERMINAL_PROMPT=0 git push -u origin HEAD:refs/heads/agent/edge-recovery/WP-EDGE-00-baseline (default helper, after the closure commits)", "exit_code": 124, "result": "same hang; no write was attempted and no ref was created"},
       {"command": "GIT_TERMINAL_PROMPT=0 git ls-remote --heads origin 'refs/heads/agent/edge-recovery/*'", "exit_code": 0, "result": "anonymous read OK; no ref of this lane exists on the remote"}
     ],
     "credentials": {"GITHUB_TOKEN": "unset", "GH_TOKEN": "unset", "GIT_ASKPASS": "unset", "git_credentials_file": "absent", "gh_cli": "not installed"},
