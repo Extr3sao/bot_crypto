@@ -41,7 +41,7 @@ from trading_bot.research.edge01.campaign import RISK_CONFIG, load_risk_policy
 from trading_bot.research.edge01.candidates import CandidateSignal
 from trading_bot.research.edge01.costs import CostPlane, cost_plane
 from trading_bot.research.edge01.data import OHLCVBar
-from trading_bot.risk.manager import RiskManager, RiskCheck
+from trading_bot.risk.manager import RiskCheck, RiskManager
 from trading_bot.strategies.types import Signal
 
 from .shadow import HORIZON_MINUTES
@@ -805,7 +805,7 @@ def run_parity(
             )
         )
 
-    reproduced = {"checked": 0, "reproduced": 0, "mismatches": []}
+    reproduced: dict[str, Any] = {"checked": 0, "reproduced": 0, "mismatches": []}
     capture_cases = shadow_cases(captures or [], limit=shadow_case_limit)
     for case in capture_cases:
         comparison = compare(

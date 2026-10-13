@@ -10,24 +10,28 @@ rule from the declarations written here, and recomputes what the payload claims:
 1.  ``ARTIFACTS_PRESENT``              every required artefact exists and is not empty
 2.  ``FROZEN_CORPUS_UNCHANGED``        the frozen shards' digests and last instants are the
                                        ones the payload recorded (so the past did not move)
-3.  ``STORE_DIGESTS_MATCH_MANIFEST``   every store file answers to its published sha256
-4.  ``FORWARD_BARS_AFTER_FREEZE``      every stored bar is on the grid, strictly after the
+3.  ``FROZEN_PARAMS_PINNED``           the ruleset digest re-derived from the source text
+                                       equals the payload's pin and the campaign's
+                                       published ``params_hash``
+4.  ``STORE_DIGESTS_MATCH_MANIFEST``   every store file answers to its published sha256
+5.  ``FORWARD_BARS_AFTER_FREEZE``      every stored bar is on the grid, strictly after the
                                        frozen end, and was CLOSED when it was fetched
-5.  ``QUALITY_RECOMPUTED``             gaps, duplicates and order recomputed from the store
-6.  ``OBSERVATION_DAYS_RECOMPUTED``    the coverage rule applied to the raw bars
-7.  ``LATENCY_RECOMPUTED``             bar close to store, from the stored provenance
-8.  ``SHADOW_WINDOW_RESPECTED``        no signal, fill or refusal sits at or before a freeze
-9.  ``SHADOW_WINDOW_START_CONSISTENT`` each arm's window start is the first bucket after
+6.  ``QUALITY_RECOMPUTED``             gaps, duplicates and order recomputed from the store
+7.  ``OBSERVATION_DAYS_RECOMPUTED``    the coverage rule applied to the raw bars
+8.  ``LATENCY_RECOMPUTED``             bar close to store, from the stored provenance
+9.  ``SHADOW_WINDOW_RESPECTED``        no signal, fill or refusal sits at or before a freeze
+10. ``SHADOW_WINDOW_START_CONSISTENT`` each arm's window start is the first bucket after
                                        the frozen end of its own source timeframe
-10. ``HYPOTHETICAL_ONLY``              every shadow row is hypothetical and order-free
-11. ``SHADOW_ACCOUNTING``              net == sum(fills) and the curve closes on the book
-12. ``PARITY_CLASSES_RECOMPUTED``      every case's class, the counts and the verdict are
+11. ``HYPOTHETICAL_ONLY``              every shadow row is hypothetical and order-free
+12. ``SHADOW_ACCOUNTING``              net == sum(fills) and the curve closes on the book
+13. ``EXPOSURE_RECOMPUTED``            each arm's exposure recomputed from its own fills
+14. ``PARITY_CLASSES_RECOMPUTED``      every case's class, the counts and the verdict are
                                        re-derived from the published decision columns
-13. ``PARITY_CASES_COMPLETE``          both decisions present, class in the vocabulary
-14. ``RESTART_PROOF_CONSISTENT``       the second ingest appended nothing and moved nothing
-15. ``VERDICT_RECOMPUTED``             the observation verdict follows from the floor
-16. ``TEST_TARGET_EQUALS_RUNTIME``     the tests and the runner drive the same callable
-17. ``NO_ORDER_PATH``                  no order endpoint or exchange client is referenced
+15. ``PARITY_CASES_COMPLETE``          both decisions present, class in the vocabulary
+16. ``RESTART_PROOF_CONSISTENT``       the second ingest appended nothing and moved nothing
+17. ``VERDICT_RECOMPUTED``             the observation verdict follows from the floor
+18. ``TEST_TARGET_EQUALS_RUNTIME``     the tests and the runner drive the same callable
+19. ``NO_ORDER_PATH``                  no order endpoint or exchange client is referenced
 
 ``--self-test`` sabotages a copy of the evidence once per check and requires the matching
 check to break: a check nobody can break is reported as a failure, not as a pass.
@@ -36,16 +40,18 @@ check to break: a check nobody can break is reported as a failure, not as a pass
 from __future__ import annotations
 
 import argparse
+import ast
 import csv
 import hashlib
 import json
 import shutil
-import sys
 import tempfile
+from collections.abc import Callable
 from dataclasses import dataclass, replace
 from datetime import UTC, datetime
+from itertools import pairwise
 from pathlib import Path
-from typing import Any, Callable
+from typing import Any, cast
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -73,6 +79,12 @@ ASSETS = ("BTC", "ETH", "SOL")
 
 CORPUS_1H = "reports/alpha-expansion-v1/data"
 CORPUS_15M = "data/raw/alpha003/price"
+
+#: Where the campaign published the ruleset digest, and the source that holds the ruleset.
+#: The verifier reads the ruleset out of the SOURCE TEXT (it imports no ``trading_bot``
+#: code), so a module-level constant could not hide a change made after publication.
+FROZEN_PARAMS_PATH = "reports/edge-recovery/WP-EDGE-01/oos-trend-4h/OOS_TREND.json"
+CANDIDATES_SOURCE = "src/trading_bot/research/edge01/candidates.py"
 
 REQUIRED = (
     "forward-observation/OBSERVATION.json",
@@ -162,10 +174,10 @@ class Bundle:
         return json.loads(self.path(relative).read_text(encoding="utf-8"))
 
     def observation(self) -> dict[str, Any]:
-        return self.load("forward-observation/OBSERVATION.json")
+        return cast(dict[str, Any], self.load("forward-observation/OBSERVATION.json"))
 
     def parity(self) -> dict[str, Any]:
-        return self.load("risk-parity/PARITY.json")
+        return cast(dict[str, Any], self.load("risk-parity/PARITY.json"))
 
     def store_root(self) -> Path:
         return self.repo / "data" / "forward" / "edge03"
@@ -300,6 +312,81 @@ def check_frozen_corpus(bundle: Bundle) -> list[tuple[str, bool, str]]:
     ]
 
 
+def _params_digest(source: str) -> str | None:
+    """Hash the ``FROZEN_PARAMS`` literal exactly as it stands in the source text.
+
+    ``ast`` is the point: the verifier must be able to hash a ruleset the lane could have
+    edited between the publication and this run, and importing the module would hand back
+    whatever the current code happens to say.
+    """
+    for node in ast.parse(source).body:
+        value_node: ast.expr | None = None
+        if isinstance(node, ast.AnnAssign):
+            name = getattr(node.target, "id", None)
+            value_node = node.value
+        elif isinstance(node, ast.Assign):
+            name = next(
+                (getattr(target, "id", None) for target in node.targets if getattr(target, "id", None)),
+                None,
+            )
+            value_node = node.value
+        else:
+            continue
+        if name == "FROZEN_PARAMS" and value_node is not None:
+            literal: Any = ast.literal_eval(value_node)
+            canonical: str = json.dumps(literal, sort_keys=True, separators=(",", ":"))
+            return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
+    return None
+
+
+def check_frozen_params(bundle: Bundle) -> list[tuple[str, bool, str]]:
+    """The ruleset this run read forward is the ruleset the campaign published.
+
+    Three independent statements must agree: the digest re-derived from the source text,
+    the digest the payload pinned, and the digest WP-EDGE-01 published. A forward reading
+    of a tuned ruleset is not a forward reading of the frozen one, so a disagreement here
+    is a failure rather than a note.
+    """
+    payload = bundle.observation()
+    recorded = payload.get("frozen_params") or {}
+    planned = ((payload.get("plan") or {}).get("frozen") or {}).get("params_hash")
+    source = bundle.source(CANDIDATES_SOURCE)
+    failures: list[str] = []
+    rederived = _params_digest(source) if source else None
+    if not source:
+        failures.append(f"{CANDIDATES_SOURCE} is not readable")
+    elif rederived is None:
+        failures.append(f"no FROZEN_PARAMS literal found in {CANDIDATES_SOURCE}")
+    published_path = ROOT / FROZEN_PARAMS_PATH
+    published = None
+    if published_path.is_file():
+        published = json.loads(published_path.read_text(encoding="utf-8")).get("params_hash")
+    else:
+        failures.append(f"no publication at {FROZEN_PARAMS_PATH}")
+    if rederived is not None:
+        for label, value in (
+            ("the payload's ruleset pin", recorded.get("params_hash")),
+            ("the plan's frozen digest", planned),
+            ("the published params_hash", published),
+        ):
+            if value != rederived:
+                failures.append(f"{label} is {value}, the source re-derives {rederived}")
+    if recorded.get("agrees_with_publication") is not True:
+        failures.append("the payload does not assert agreement with the publication")
+    return [
+        (
+            "FROZEN_PARAMS_PINNED",
+            not failures,
+            "; ".join(failures)
+            if failures
+            else (
+                f"ruleset digest {str(rederived)[:16]} re-derived from the source, pinned "
+                f"by the payload and equal to the published value"
+            ),
+        )
+    ]
+
+
 def check_store_digests(bundle: Bundle) -> list[tuple[str, bool, str]]:
     payload = bundle.observation()
     manifest = (payload.get("manifest") or {}).get("files") or {}
@@ -363,7 +450,7 @@ def _audit(rows: list[dict[str, Any]], *, timeframe: str) -> dict[str, Any]:
     stamps = [int(row["ts"]) for row in rows]
     gaps: list[dict[str, Any]] = []
     missing = 0
-    for a, b in zip(stamps, stamps[1:]):
+    for a, b in pairwise(stamps):
         if b - a <= span:
             continue
         slots = (b - a) // span - 1
@@ -380,7 +467,7 @@ def _audit(rows: list[dict[str, Any]], *, timeframe: str) -> dict[str, Any]:
         "first_ts": stamps[0] if stamps else None,
         "last_ts": stamps[-1] if stamps else None,
         "duplicates": len(stamps) - len(set(stamps)),
-        "out_of_order": sum(1 for a, b in zip(stamps, stamps[1:]) if b <= a),
+        "out_of_order": sum(1 for a, b in pairwise(stamps) if b <= a),
         "gap_count": len(gaps),
         "missing_bars": missing,
     }
@@ -454,35 +541,68 @@ def check_observation_days(bundle: Bundle) -> list[tuple[str, bool, str]]:
 
 
 def check_latency(bundle: Bundle) -> list[tuple[str, bool, str]]:
-    claimed = bundle.observation().get("latency") or {}
+    """Both latency readings, each recomputed from the store's own provenance.
+
+    The window figures must match every stored bar; the fresh figures must match the bars
+    stamped with the run's own fetch instant. The split matters: a run that mixed the two
+    could publish the first run's backfill as if it were the feed's current latency.
+    """
+    payload = bundle.observation()
+    claimed = payload.get("latency") or {}
+    run_instant = payload.get("observed_at_ms")
     failures: list[str] = []
     for timeframe in ("1h", "15m"):
         span = SPAN_MS[timeframe]
         for asset in ASSETS:
             key = f"{timeframe}:{asset}"
+            rows = bundle.store_rows(timeframe, asset)
             lag = [
                 (int(row["fetched_at_ms"]) - (int(row["ts"]) + span)) / 1000.0
-                for row in bundle.store_rows(timeframe, asset)
+                for row in rows
                 if row.get("fetched_at_ms") is not None
+            ]
+            fresh = [
+                (int(row["fetched_at_ms"]) - (int(row["ts"]) + span)) / 1000.0
+                for row in rows
+                if row.get("fetched_at_ms") is not None
+                and run_instant is not None
+                and int(row["fetched_at_ms"]) == int(run_instant)
             ]
             seen = claimed.get(key) or {}
             if int(seen.get("samples") or 0) != len(lag):
                 failures.append(f"{key}.samples: {seen.get('samples')} vs {len(lag)}")
                 continue
-            if not lag:
-                continue
+            if int(seen.get("fresh_bars") or 0) != len(fresh):
+                failures.append(f"{key}.fresh_bars: {seen.get('fresh_bars')} vs {len(fresh)}")
             for field, value in (
-                ("min_seconds", min(lag)),
-                ("median_seconds", _median(lag)),
-                ("max_seconds", max(lag)),
+                ("min_seconds", min(lag) if lag else None),
+                ("median_seconds", _median(lag) if lag else None),
+                ("max_seconds", max(lag) if lag else None),
+                ("fresh_min_seconds", min(fresh) if fresh else None),
+                ("fresh_median_seconds", _median(fresh) if fresh else None),
+                ("fresh_max_seconds", max(fresh) if fresh else None),
             ):
-                if abs(float(seen.get(field) or 0.0) - value) > 1e-3:
-                    failures.append(f"{key}.{field}: {seen.get(field)} vs {round(value, 3)}")
+                claimed_value = seen.get(field)
+                if value is None:
+                    # This run pulled no bar for this series, so there is no lag to report:
+                    # a number here is a figure the store cannot support.
+                    if claimed_value is not None:
+                        failures.append(
+                            f"{key}.{field}: claims {claimed_value} for a run that pulled no bar"
+                        )
+                    continue
+                if abs(float(claimed_value or 0.0) - value) > 1e-3:
+                    failures.append(f"{key}.{field}: {claimed_value} vs {round(value, 3)}")
+            instants = {row.get("fetched_at_ms") for row in rows if row.get("fetched_at_ms")}
+            if int(seen.get("fetch_instants") or 0) != len(instants):
+                failures.append(f"{key}.fetch_instants: {seen.get('fetch_instants')} vs {len(instants)}")
     return [
         (
             "LATENCY_RECOMPUTED",
             not failures,
-            "; ".join(failures[:6]) if failures else "ingestion lag matches the stored provenance",
+            "; ".join(failures[:6])
+            if failures
+            else "window and last-run ingestion lag both match the stored provenance",
         )
     ]
 
@@ -787,14 +907,13 @@ def check_restart(bundle: Bundle) -> list[tuple[str, bool, str]]:
     for row in ledger:
         grouped.setdefault((str(row.get("timeframe")), str(row.get("symbol"))), []).append(row)
     for key, rows in grouped.items():
-        same_instant = [
-            row for row in rows if int(row.get("run_at_ms") or 0) == int(proof.get("digests") is not None and rows[-1].get("run_at_ms") or rows[-1].get("run_at_ms") or 0)
-        ]
         last_two = rows[-2:]
-        if len(rows) >= 2 and int(last_two[0].get("run_at_ms")) == int(last_two[1].get("run_at_ms")):
-            if int(last_two[1].get("appended") or 0) != 0:
-                failures.append(f"{key}: the second run at the same instant appended bars")
-        del same_instant
+        if (
+            len(rows) >= 2
+            and int(last_two[0].get("run_at_ms") or 0) == int(last_two[1].get("run_at_ms") or 0)
+            and int(last_two[1].get("appended") or 0) != 0
+        ):
+            failures.append(f"{key}: the second run at the same instant appended bars")
     if int(proof.get("duplicate_timestamps") or 0) != 0:
         failures.append("the store reports duplicate timestamps")
     if int(proof.get("duplicate_refusals") or 0) != 0:
@@ -893,6 +1012,7 @@ def check_no_order_path(bundle: Bundle) -> list[tuple[str, bool, str]]:
 CHECKS: tuple[tuple[str, Callable[[Bundle], list[tuple[str, bool, str]]]], ...] = (
     ("ARTIFACTS_PRESENT", check_artifacts_present),
     ("FROZEN_CORPUS_UNCHANGED", check_frozen_corpus),
+    ("FROZEN_PARAMS_PINNED", check_frozen_params),
     ("STORE_DIGESTS_MATCH_MANIFEST", check_store_digests),
     ("FORWARD_BARS_AFTER_FREEZE", check_forward_bars),
     ("QUALITY_RECOMPUTED", check_quality),
@@ -944,7 +1064,7 @@ def _copy_evidence(bundle: Bundle, tmp: Path) -> Bundle:
     artifacts = tmp / "artifacts"
     shutil.copytree(bundle.artifacts, artifacts)
     sources = tmp / "sources"
-    for relative in (*SCANNED_SOURCES, "tests/unit/research/test_edge03_forward.py"):
+    for relative in (*SCANNED_SOURCES, "tests/unit/research/test_edge03_forward.py", CANDIDATES_SOURCE):
         target = sources / relative
         target.parent.mkdir(parents=True, exist_ok=True)
         source = bundle.sources / relative
@@ -1001,6 +1121,18 @@ def _sabotages() -> list[tuple[str, Callable[[Bundle], Bundle]]]:
         path.write_text(json.dumps(row, sort_keys=True) + "\n" + path.read_text(encoding="utf-8"), encoding="utf-8")
         return bundle
 
+    def ruleset_tuned(bundle: Bundle) -> Bundle:
+        path = bundle.sources / CANDIDATES_SOURCE
+        text = path.read_text(encoding="utf-8")
+        tuned = text.replace('"resistance_lookback": 20', '"resistance_lookback": 21', 1)
+        if tuned == text:
+            raise AssertionError(
+                "the frozen-parameter sabotage no longer matches the source it targets; "
+                "a sabotage that changes nothing would prove nothing"
+            )
+        path.write_text(tuned, encoding="utf-8")
+        return bundle
+
     def fake_quality(bundle: Bundle) -> Bundle:
         _rewrite_json(
             bundle.path("forward-observation/OBSERVATION.json"),
@@ -1020,6 +1152,24 @@ def _sabotages() -> list[tuple[str, Callable[[Bundle], Bundle]]]:
             bundle.path("forward-observation/OBSERVATION.json"),
             lambda payload: payload["latency"]["1h:BTC"].__setitem__("max_seconds", -1.0),
         )
+        return bundle
+
+    def fake_fresh_latency(bundle: Bundle) -> Bundle:
+        """Claim a last-run lag the store cannot support, in whichever state the run is.
+
+        A negative lag is impossible, so the claim is wrong either way; and when the run
+        pulled no bar at all the payload has to publish NO fresh figure, which is the
+        other half of the rule this sabotage probes.
+        """
+
+        def mutate(payload: dict[str, Any]) -> None:
+            latency = payload.get("latency") or {}
+            fresh_keys = sorted(key for key, seen in latency.items() if seen.get("fresh_samples"))
+            for key in (fresh_keys or sorted(latency))[:1]:
+                latency[key]["fresh_min_seconds"] = -1.0
+                latency[key]["fresh_max_seconds"] = -1.0
+
+        _rewrite_json(bundle.path("forward-observation/OBSERVATION.json"), mutate)
         return bundle
 
     def signal_before_freeze(bundle: Bundle) -> Bundle:
@@ -1131,11 +1281,13 @@ def _sabotages() -> list[tuple[str, Callable[[Bundle], Bundle]]]:
     return [
         ("delete an artefact", delete_artifact),
         ("move the frozen corpus digest", move_frozen),
+        ("tune a frozen ruleset parameter", ruleset_tuned),
         ("break a store digest in the manifest", break_manifest),
         ("write a bar at the frozen end", bar_before_freeze),
         ("inflate the duplicate count", fake_quality),
         ("inflate the observation days", fake_days),
         ("falsify the ingestion latency", fake_latency),
+        ("publish the backfill as the last-run latency", fake_fresh_latency),
         ("move a signal before the freeze", signal_before_freeze),
         ("move the shadow window start", window_start_moved),
         ("claim an order was sent", order_sent),
@@ -1156,11 +1308,13 @@ def self_test(bundle: Bundle) -> dict[str, Any]:
     expected_failures = {
         "delete an artefact": "ARTIFACTS_PRESENT",
         "move the frozen corpus digest": "FROZEN_CORPUS_UNCHANGED",
+        "tune a frozen ruleset parameter": "FROZEN_PARAMS_PINNED",
         "break a store digest in the manifest": "STORE_DIGESTS_MATCH_MANIFEST",
         "write a bar at the frozen end": "FORWARD_BARS_AFTER_FREEZE",
         "inflate the duplicate count": "QUALITY_RECOMPUTED",
         "inflate the observation days": "OBSERVATION_DAYS_RECOMPUTED",
         "falsify the ingestion latency": "LATENCY_RECOMPUTED",
+        "publish the backfill as the last-run latency": "LATENCY_RECOMPUTED",
         "move a signal before the freeze": "SHADOW_WINDOW_RESPECTED",
         "move the shadow window start": "SHADOW_WINDOW_START_CONSISTENT",
         "claim an order was sent": "HYPOTHETICAL_ONLY",

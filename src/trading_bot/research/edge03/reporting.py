@@ -198,14 +198,26 @@ def daily_markdown(payload: dict[str, Any], day: str) -> str:
         "",
         "## Process state",
         "",
-        f"- Ingest outcomes: "
+        "- Ingest outcomes: "
         + ", ".join(
             f"`{k}` {v}" for k, v in sorted(payload.get("health", {}).get("ingest_outcomes", {}).items())
         )
         or "- Ingest outcomes: —",
         f"- Errors raised by the run: **{len(payload.get('health', {}).get('errors', []))}**",
-        f"- Ingestion latency (bar close → store), seconds — the **backfill** distance on a "
-        "first run, not the polling latency of a scheduled reader: "
+        "- Ingestion latency of the bars THIS run pulled (bar close → store), seconds: "
+        + (
+            ", ".join(
+                f"`{row['series']}` {_num(row.get('fresh_samples'), 0)} sample(s) "
+                f"min {_num(row.get('fresh_min_seconds'), 0)} / "
+                f"median {_num(row.get('fresh_median_seconds'), 0)} / "
+                f"max {_num(row.get('fresh_max_seconds'), 0)}"
+                for row in _series_latency(payload)
+                if row.get("fresh_samples")
+            )
+            or "this run pulled no new bar"
+        ),
+        "- Window latency over every stored bar, seconds (dominated by the one-time "
+        "backfill of the frozen prefix, so it is NOT a feed latency): "
         + (
             ", ".join(
                 f"`{row['series']}` max {_num(row.get('max_seconds'), 0)}"
@@ -297,25 +309,45 @@ def cumulative_markdown(payload: dict[str, Any]) -> str:
             "",
         ]
     latency_rows = _series_latency(payload)
+    fresh_rows = [row for row in latency_rows if row.get("fresh_samples")]
+    if fresh_rows:
+        lines += [
+            "## Ingestion latency of the bars this run pulled (bar close → store)",
+            "",
+            "| series | bars pulled | min s | median s | max s |",
+            "| --- | ---: | ---: | ---: | ---: |",
+        ]
+        for row in fresh_rows:
+            lines.append(
+                f"| `{row['series']}` | {row.get('fresh_bars', 0)} | "
+                f"{_num(row.get('fresh_min_seconds'), 0)} | "
+                f"{_num(row.get('fresh_median_seconds'), 0)} | "
+                f"{_num(row.get('fresh_max_seconds'), 0)} |"
+            )
+        lines += [
+            "",
+            "These are the bars stamped with this run's fetch instant — the lag a scheduled "
+            "reader meets, measured from each bar's close to the moment it reached the store.",
+            "",
+        ]
     if latency_rows:
         lines += [
-            "## Ingestion latency (bar close → store)",
+            "## Window latency over every stored bar (backfill included)",
             "",
-            "| series | samples | min s | median s | max s |",
-            "| --- | ---: | ---: | ---: | ---: |",
+            "| series | samples | fetches | min s | median s | max s |",
+            "| --- | ---: | ---: | ---: | ---: | ---: |",
         ]
         for row in latency_rows:
             lines.append(
-                f"| `{row['series']}` | {row.get('samples', 0)} | "
+                f"| `{row['series']}` | {row.get('samples', 0)} | {row.get('fetch_instants', 0)} | "
                 f"{_num(row.get('min_seconds'), 0)} | {_num(row.get('median_seconds'), 0)} | "
                 f"{_num(row.get('max_seconds'), 0)} |"
             )
         lines += [
             "",
-            "A first run fetches the whole window in one pass, so the figures above are the "
-            "**backfill** distance (each bar's close to this run's instant), not the polling "
-            "latency of a scheduled reader. On later runs only freshly received bars "
-            "contribute, and the same column then measures the real bar-close-to-store lag.",
+            "The first run fetched the whole window in one pass, so this table is the "
+            "**backfill** distance (each bar's close to that run's instant), not a property "
+            "of the feed. The table above is the one that answers \"how fresh is the store\".",
             "",
         ]
 
@@ -435,7 +467,7 @@ def _daily_rollup(payload: dict[str, Any]) -> tuple[dict[str, Any], dict[str, An
     for arm, summary in payload.get("shadow", {}).get("arm_summaries", {}).items():
         if summary.get("status") != "observed":
             continue
-        slot = {}
+        slot: dict[str, dict[str, float]] = {}
         arm_days[arm] = slot
         for row in summary.get("signals_detail", []):
             day = _day(int(row["decision_ts"]))

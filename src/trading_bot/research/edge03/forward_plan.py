@@ -11,8 +11,9 @@ Three things are frozen and pinned by value, not by convention:
   ``2026-02-28T23:00:00Z`` (bar OPEN time); the 15m shards stop at
   ``2026-10-07T11:30:00Z``. ``assert_frozen_corpus`` re-reads them and fails loudly if
   the local bytes moved, so a forward bar can never be confused with a frozen one.
-* **the ruleset.** ``PARAMS_HASH`` is the frozen hash printed by the campaign; it is
-  re-derived here and compared, so a forward run cannot silently measure a tuned rule.
+* **the ruleset.** ``assert_frozen_params`` re-hashes ``FROZEN_PARAMS`` from scratch and
+  compares the result with both the imported constant and the digest the campaign
+  published, so a forward run cannot silently measure a tuned rule.
 * **the decision rules.** ``FORWARD_DECISION`` restates, before the first fetch, what
   counts as an admissible bar, what a gap is, what the shadow is allowed to claim and
   which observation length is enough to say anything at all.
@@ -23,25 +24,39 @@ strategy: ``promotion`` is fixed to ``NONE`` and is not a parameter.
 
 from __future__ import annotations
 
+import hashlib
+import json
+from pathlib import Path
 from typing import Any
 
-from trading_bot.research.edge01.candidates import PARAMS_HASH
-from trading_bot.research.edge01.data import ASSETS, load_15m, load_1h
+from trading_bot.research.edge01.candidates import FROZEN_PARAMS, PARAMS_HASH
+from trading_bot.research.edge01.data import ASSETS, load_1h, load_15m
 
 __all__ = [
     "FORWARD_DECISION",
     "FORWARD_PLAN",
-    "FROZEN_15M_END_MS",
     "FROZEN_1H_END_MS",
+    "FROZEN_15M_END_MS",
     "FROZEN_SHARD_SHA256",
     "MIN_OBSERVATION_DAYS",
+    "PARAMS_HASH_PUBLISHED_BY",
     "SOURCE",
     "assert_frozen_corpus",
+    "assert_frozen_params",
     "observation_floor",
 ]
 
 #: Public, read-only market data. No credentials, no order endpoint, no private host.
 SOURCE = "BINANCE_PUBLIC_REST:/api/v3/klines"
+
+#: Where the campaign published the digest of the ruleset it measured. The forward lane
+#: pins itself to that file: the ruleset is compared against a value someone else wrote
+#: down before this lane existed, not against a value this lane could restate at will.
+PARAMS_HASH_PUBLISHED_BY = "reports/edge-recovery/WP-EDGE-01/oos-trend-4h/OOS_TREND.json"
+
+#: The same recipe the candidates module hashes with, restated so the forward lane can
+#: re-derive the digest instead of trusting the imported constant.
+PARAMS_HASH_RECIPE = "sha256(json.dumps(FROZEN_PARAMS, sort_keys=True, separators=(',', ':')))"
 
 #: Last bar OPEN time of each frozen corpus (ms UTC), read off the shard files that
 #: WP-EDGE-01/02 measured. A forward bar is admissible only if it is strictly later.
@@ -84,9 +99,8 @@ FORWARD_PLAN: dict[str, Any] = {
     "timeframes": ["1h", "15m"],
     "frozen": {
         "params_hash": PARAMS_HASH,
-        "params_hash_published_by": (
-            "reports/edge-recovery/WP-EDGE-01/oos-trend-4h/OOS_TREND.json#params_hash"
-        ),
+        "params_hash_published_by": f"{PARAMS_HASH_PUBLISHED_BY}#params_hash",
+        "params_hash_recipe": PARAMS_HASH_RECIPE,
         "1h_end_ms": FROZEN_1H_END_MS,
         "15m_end_ms": FROZEN_15M_END_MS,
     },
@@ -240,3 +254,54 @@ def assert_frozen_corpus() -> dict[str, Any]:
                 "sha256_prefix16": digest,
             }
     return seen
+
+
+def assert_frozen_params(repo_root: Path | None = None) -> dict[str, Any]:
+    """Re-derive the ruleset digest and pin it to the value the campaign published.
+
+    A forward lane that claims it cannot measure a tuned rule is worth exactly what it
+    enforces, so this function does three things and reports all three:
+
+    * it re-hashes ``FROZEN_PARAMS`` from scratch, with the recipe restated in this module,
+      instead of trusting the imported ``PARAMS_HASH`` constant;
+    * it compares that digest with the imported constant;
+    * it reads the digest the campaign PUBLISHED and compares it again.
+
+    A disagreement raises: it would mean the ruleset loaded in this process is not the
+    ruleset whose results WP-EDGE-01/02 recorded, and a forward reading of a different
+    ruleset is not a forward reading of the frozen one.
+
+    ``repo_root`` exists for a rehearsal that pins against a copied tree; left out, the
+    pin resolves against the checkout this module was loaded from, which is the only tree
+    that can answer for the ruleset in memory.
+    """
+    base = Path(__file__).resolve().parents[4] if repo_root is None else Path(repo_root)
+    published_path = base / PARAMS_HASH_PUBLISHED_BY
+    canonical = json.dumps(FROZEN_PARAMS, sort_keys=True, separators=(",", ":"))
+    rederived = hashlib.sha256(canonical.encode("utf-8")).hexdigest()
+    if rederived != PARAMS_HASH:
+        raise AssertionError(
+            f"the ruleset digest re-derived here ({rederived}) is not the one the "
+            f"candidates module publishes ({PARAMS_HASH}); the frozen parameters moved."
+        )
+    if not published_path.is_file():
+        raise AssertionError(
+            f"the published ruleset digest is missing at {PARAMS_HASH_PUBLISHED_BY}: the "
+            f"forward lane cannot pin the ruleset against a value nobody wrote down."
+        )
+    published = json.loads(published_path.read_text(encoding="utf-8"))
+    published_hash = published.get("params_hash")
+    if published_hash != rederived:
+        raise AssertionError(
+            f"the campaign published params_hash {published_hash}, this process re-derives "
+            f"{rederived}: refusing to read a tuned ruleset forward."
+        )
+    return {
+        "params_hash": rederived,
+        "imported_params_hash": PARAMS_HASH,
+        "published_params_hash": published_hash,
+        "published_by": f"{PARAMS_HASH_PUBLISHED_BY}#params_hash",
+        "recipe": PARAMS_HASH_RECIPE,
+        "agrees_with_imported_constant": rederived == PARAMS_HASH,
+        "agrees_with_publication": published_hash == rederived,
+    }

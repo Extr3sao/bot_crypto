@@ -6,6 +6,8 @@ that runs. Each test names the failure it would catch:
 
 * the frozen corpora are re-read and compared against the digests and end instants the
   earlier work packages published — if the local bytes move, the check below breaks;
+* the ruleset digest is re-derived from the frozen parameters and must equal the one the
+  campaign published — a tuned parameter refuses to run forward;
 * ingestion stores only CLOSED bars, only after the freeze, only on the grid, and the
   rejects are counted by name instead of vanishing;
 * a gap is reported and never filled, and a revision to an already-stored bar is recorded
@@ -121,6 +123,34 @@ def test_a_moved_frozen_corpus_refuses_to_run(tmp_path, monkeypatch):
     monkeypatch.setattr(FP, "FROZEN_SHARD_SHA256", moved)
     with pytest.raises(AssertionError, match="frozen 1h corpus for BTC changed"):
         FP.assert_frozen_corpus()
+
+
+def test_the_ruleset_digest_is_re_derived_and_pinned_to_the_publication():
+    pinned = FP.assert_frozen_params()
+    assert pinned["params_hash"] == pinned["imported_params_hash"]
+    assert pinned["agrees_with_publication"] is True
+    assert pinned["published_by"].endswith("#params_hash")
+
+
+def test_a_tuned_ruleset_refuses_to_run_forward(monkeypatch):
+    """A forward reading of a tuned ruleset is not a forward reading of the frozen one."""
+    monkeypatch.setitem(FP.FROZEN_PARAMS["edge_intra_01"], "resistance_lookback", 21)
+    with pytest.raises(AssertionError, match="the frozen parameters moved"):
+        FP.assert_frozen_params()
+
+
+def test_a_missing_publication_refuses_to_pin_the_ruleset(tmp_path, monkeypatch):
+    monkeypatch.setattr(FP, "PARAMS_HASH_PUBLISHED_BY", "reports/does-not-exist.json")
+    with pytest.raises(AssertionError, match="cannot pin the ruleset"):
+        FP.assert_frozen_params(tmp_path)
+
+
+def test_a_publication_of_another_ruleset_refuses_to_run(tmp_path, monkeypatch):
+    published = tmp_path / "OOS_TREND.json"
+    published.write_text(json.dumps({"params_hash": "0" * 64}), encoding="utf-8")
+    monkeypatch.setattr(FP, "PARAMS_HASH_PUBLISHED_BY", "OOS_TREND.json")
+    with pytest.raises(AssertionError, match="refusing to read a tuned ruleset forward"):
+        FP.assert_frozen_params(tmp_path)
 
 
 # ----------------------------------------------------------------------------- ingestion
@@ -523,6 +553,61 @@ def test_the_lane_ingests_shadows_and_writes_artifacts(tmp_path):
     assert (outdir / "risk-parity" / "PARITY.md").exists()
 
 
+def test_the_latency_split_separates_this_run_from_the_backfill(tmp_path):
+    """Publishing the first backfill as the feed's latency would mislead a reader."""
+    payload, outdir = _run(tmp_path)
+    report = (outdir / "forward-observation" / "CUMULATIVE.md").read_text(encoding="utf-8")
+    assert "bars this run pulled" in report
+    assert "backfill included" in report
+    observed = {key: seen for key, seen in payload["latency"].items() if seen["samples"]}
+    assert observed, "the scripted source fed at least the 1h series"
+    for key, seen in payload["latency"].items():
+        if key not in observed:
+            # A series this source never fed has no lag to report, and must not invent one.
+            assert seen["fresh_bars"] == 0 and seen["median_seconds"] is None, key
+            continue
+        assert seen["fresh_bars"] > 0, key
+        assert seen["samples"] >= seen["fresh_bars"], key
+        assert seen["fresh_samples"] == seen["fresh_bars"], key
+        # The scripted source stamps every bar with this run's instant, so on a FIRST run
+        # the fresh set is the whole window and both readings must agree exactly.
+        assert seen["fresh_median_seconds"] == seen["median_seconds"], key
+        assert seen["fetch_instants"] == 1, key
+
+
+def test_a_second_run_reports_only_its_own_bars_as_fresh(tmp_path):
+    """The second poll's latency is its own, not the distance back to the backfill."""
+    source, now = scripted(bars=24)
+    store_root = default_store_root(tmp_path)
+    if store_root.exists():
+        shutil.rmtree(store_root)
+    first = RUN.run_forward_observation(
+        repo_root=tmp_path, source=source, observed_at_ms=now, scenarios=("BASE",), sweep_cases=4
+    )
+    second_now = now + 6 * HOUR
+    more = {asset: [kline(now + index * HOUR, 200.0) for index in range(6)] for asset in ("BTC", "ETH", "SOL")}
+    second = RUN.run_forward_observation(
+        repo_root=tmp_path,
+        source=ScriptedKlineSource(rows_by_symbol=more, server_time=second_now),
+        observed_at_ms=second_now,
+        scenarios=("BASE",),
+        sweep_cases=4,
+    )
+    assert first["health"]["new_bars"] == 24 * 3
+    assert second["health"]["new_bars"] == 6 * 3
+    for key, seen in second["latency"].items():
+        if key.startswith("15m"):
+            # The scripted source feeds no 15m bars, so this poll added nothing there.
+            assert seen["fresh_bars"] == 0 and seen["samples"] == 0, key
+            continue
+        assert seen["fetch_instants"] == 2, key
+        assert seen["fresh_bars"] == 6, key
+        assert seen["samples"] > seen["fresh_bars"], key
+        # This poll's worst lag is a fraction of the window's, which is the whole point:
+        # the two readings are not the same number wearing two labels.
+        assert seen["fresh_max_seconds"] < seen["max_seconds"], key
+
+
 def test_the_daily_rollup_is_day_first_and_the_report_names_the_arms(tmp_path):
     """A rollup keyed by arm first leaves the daily report claiming nothing happened."""
     payload, _ = _run(tmp_path, scenarios=("BASE",))
@@ -584,7 +669,7 @@ def test_a_15m_hole_does_not_stop_the_1h_arms(tmp_path):
 @pytest.mark.slow
 def test_the_independent_verifier_accepts_the_lane_and_detects_tampering(tmp_path):
     verifier = load_script("scripts/edge03_verify.py")
-    payload, outdir = _run(tmp_path, scenarios=("BASE",))
+    _payload, outdir = _run(tmp_path, scenarios=("BASE",))
     bundle = verifier.Bundle(
         artifacts=outdir,
         repo=tmp_path,

@@ -34,6 +34,7 @@ import urllib.error
 import urllib.request
 from collections.abc import Callable, Iterable, Sequence
 from dataclasses import dataclass
+from itertools import pairwise
 from pathlib import Path
 from typing import Any, Protocol
 
@@ -127,8 +128,9 @@ class BinancePublicKlines:
                         raise urllib.error.HTTPError(
                             url, response.status, "unexpected status", response.headers, None
                         )
-                    return response.read()
-            except Exception as exc:  # noqa: BLE001 - retried, then re-raised verbatim
+                    body: bytes = response.read()
+                    return body
+            except Exception as exc:
                 last = exc
                 if attempt + 1 < self._attempts:
                     self._sleep(self._backoff * (attempt + 1))
@@ -376,10 +378,10 @@ def audit_series(
     span = BAR_MS[timeframe]
     stamps = [int(r["ts"]) for r in stored]
     duplicates = len(stamps) - len(set(stamps))
-    out_of_order = sum(1 for a, b in zip(stamps, stamps[1:]) if b <= a)
+    out_of_order = sum(1 for a, b in pairwise(stamps) if b <= a)
     gaps: list[dict[str, Any]] = []
     missing_slots = 0
-    for a, b in zip(stamps, stamps[1:]):
+    for a, b in pairwise(stamps):
         if b - a <= span:
             continue
         slots = (b - a) // span - 1

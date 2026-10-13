@@ -32,7 +32,6 @@ from __future__ import annotations
 
 import argparse
 import json
-import os
 import sys
 from datetime import UTC, datetime
 from pathlib import Path
@@ -43,8 +42,8 @@ sys.path.insert(0, str(REPO_ROOT / "src"))
 from trading_bot.research.edge03.parity import write_parity_artifacts  # noqa: E402
 from trading_bot.research.edge03.reporting import write_observability  # noqa: E402
 from trading_bot.research.edge03.run import (  # noqa: E402
-    write_forward_artifacts,
     run_forward_observation,
+    write_forward_artifacts,
 )
 
 #: The callable both the runner and the tests drive. Named here so the verifier can insist

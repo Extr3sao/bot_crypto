@@ -313,13 +313,13 @@ class ShadowReader:
             state["reason"] = result.refusals[-1].get("reason") if refused else None
             state["entry_notional"] = round(abs(delta), 6) if not refused else None
             reader.captures.append(state)
-            return delta
+            return float(delta)
 
-        SIM._enter = observed  # type: ignore[assignment]
+        SIM._enter = observed
 
     def remove(self) -> None:
         if self._original_enter is not None:
-            SIM._enter = self._original_enter  # type: ignore[assignment]
+            SIM._enter = self._original_enter
             self._original_enter = None
 
     # -- one arm -----------------------------------------------------------
@@ -431,7 +431,7 @@ def run_shadow(
             provenance[f"1h:{asset}"] = {**prov, "frozen_last_ts": frozen[-1].ts}
             union_1h[asset] = union_series(frozen, forward, label=f"1h:{asset}")
 
-        for profile, builder in (("4h", "trend"), ("1d", "trend")):
+        for profile in ("4h", "1d"):
             arm_id = f"edge_trend_01_{profile}"
             bars_by_asset: dict[str, list[OHLCVBar]] = {}
             last_frozen: dict[str, int] = {}

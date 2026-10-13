@@ -5,7 +5,9 @@ scripted source: a pipeline that only works from a shell is a pipeline nobody ca
 
 The order is deliberate:
 
-1. **the frozen corpora are re-read and must not have moved** (``assert_frozen_corpus``);
+1. **the frozen corpora are re-read and must not have moved** (``assert_frozen_corpus``),
+   **and the ruleset digest is re-derived and must equal the one the campaign published**
+   (``assert_frozen_params``);
 2. **the forward store grows** by the bars that closed since the last run, per series,
    with an explicit ``no_new_data`` result when there was nothing to add;
 3. **a second ingest at the same instant proves restart safety**: it must append nothing
@@ -41,7 +43,7 @@ from .ingest import (
     observation_days,
     store_manifest,
 )
-from .parity import run_parity, write_parity_artifacts
+from .parity import run_parity
 from .reporting import observation_verdict, write_observability
 from .shadow import run_shadow
 
@@ -76,13 +78,16 @@ def quiet_runtime_logs() -> None:
     )
 
 
-def _latency(rows: list[dict[str, Any]], *, timeframe: str) -> dict[str, Any]:
-    """Bar-close → store, in seconds: what the ingestion path costs end to end."""
-    lag = [
+def _lag_seconds(rows: list[dict[str, Any]], *, timeframe: str) -> list[float]:
+    """Bar close → store, in seconds, for every row that carries its fetch instant."""
+    return [
         (int(row["fetched_at_ms"]) - (int(row["ts"]) + BAR_MS[timeframe])) / 1000.0
         for row in rows
         if row.get("fetched_at_ms") is not None
     ]
+
+
+def _lag_stats(lag: list[float]) -> dict[str, Any]:
     if not lag:
         return {"samples": 0, "min_seconds": None, "median_seconds": None, "max_seconds": None}
     return {
@@ -90,6 +95,42 @@ def _latency(rows: list[dict[str, Any]], *, timeframe: str) -> dict[str, Any]:
         "min_seconds": round(min(lag), 3),
         "median_seconds": round(statistics.median(lag), 3),
         "max_seconds": round(max(lag), 3),
+    }
+
+
+def _latency(
+    rows: list[dict[str, Any]], *, timeframe: str, fetched_at_ms: int | None = None
+) -> dict[str, Any]:
+    """Bar-close → store, in seconds: what the ingestion path costs end to end.
+
+    Two readings, deliberately kept apart. The window figures cover every bar the store
+    holds, which on a first run is one long BACKFILL: a bar from March is "late" by months,
+    and that is an artefact of when this lane started, not a property of the feed. The
+    ``fresh_*`` figures cover only the bars stamped with THIS run's fetch instant — exactly
+    the bars this run appended — and that is the lag a scheduled reader actually meets.
+    """
+    window = _lag_stats(_lag_seconds(rows, timeframe=timeframe))
+    fresh_rows = (
+        [row for row in rows if row.get("fetched_at_ms") == fetched_at_ms]
+        if fetched_at_ms is not None
+        else []
+    )
+    fresh = _lag_stats(_lag_seconds(fresh_rows, timeframe=timeframe))
+    return {
+        **window,
+        "fetch_instants": len(
+            {row.get("fetched_at_ms") for row in rows if row.get("fetched_at_ms")}
+        ),
+        "fetch_instant_ms": fetched_at_ms,
+        "fresh_bars": len(fresh_rows),
+        "fresh_samples": fresh["samples"],
+        "fresh_min_seconds": fresh["min_seconds"],
+        "fresh_median_seconds": fresh["median_seconds"],
+        "fresh_max_seconds": fresh["max_seconds"],
+        "note": (
+            "window = every stored bar (a first run backfills, so this figure is not a feed "
+            "latency); fresh = the bars this run pulled, measured close → store"
+        ),
     }
 
 
@@ -182,6 +223,10 @@ def run_forward_observation(
     klines = source if source is not None else BinancePublicKlines()
 
     frozen = FP.assert_frozen_corpus()
+    # The ruleset belongs to the CODE, not to the tree the store happens to live in, so the
+    # pin resolves against the checkout this module was loaded from: a lane driven from a
+    # temporary directory still has to measure the published ruleset.
+    params_pin = FP.assert_frozen_params()
     now = int(observed_at_ms if observed_at_ms is not None else klines.server_time_ms())
 
     first: list[dict[str, Any]] = []
@@ -199,7 +244,7 @@ def run_forward_observation(
                     observed_at_ms=now,
                 )
             )
-        except Exception as exc:  # noqa: BLE001 - recorded, then the lane keeps going
+        except Exception as exc:
             errors.append({"series": f"{timeframe}:{symbol}", "stage": "ingest", "error": repr(exc)})
             first.append(
                 {
@@ -241,7 +286,7 @@ def run_forward_observation(
         observation[key] = observation_days(
             stored, timeframe=timeframe, coverage=FP.OBSERVATION_COVERAGE
         )
-        latency[key] = _latency(stored, timeframe=timeframe)
+        latency[key] = _latency(stored, timeframe=timeframe, fetched_at_ms=now)
         duplicate_timestamps += int(quality[key]["duplicates"])
 
     shadow = run_shadow(
@@ -262,12 +307,16 @@ def run_forward_observation(
     primary_trades = primary.get("trades", []) if isinstance(primary, dict) else []
     duplicate_refusals = 0
     if isinstance(primary, dict) and primary.get("refusals"):
-        seen: set[tuple[Any, ...]] = set()
+        refusal_keys: set[tuple[Any, ...]] = set()
         for refusal in primary["refusals"]:
-            key = (refusal.get("symbol"), refusal.get("decision_ts"), refusal.get("reason"))
-            if key in seen:
+            refusal_key = (
+                refusal.get("symbol"),
+                refusal.get("decision_ts"),
+                refusal.get("reason"),
+            )
+            if refusal_key in refusal_keys:
                 duplicate_refusals += 1
-            seen.add(key)
+            refusal_keys.add(refusal_key)
 
     manifest = store_manifest(store, series=FORWARD_SERIES)
     total_days = _observation_total(observation, assets=ASSETS)
@@ -285,6 +334,7 @@ def run_forward_observation(
         "plan": FP.FORWARD_PLAN,
         "decision": FP.FORWARD_DECISION,
         "frozen_corpus": frozen,
+        "frozen_params": params_pin,
         "ingest": {
             "ledger": first,
             "ledger_path": str(ledger.path.relative_to(repo_root)).replace("\\", "/"),
