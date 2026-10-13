@@ -1,0 +1,105 @@
+{
+  "files": {
+    "alerts.jsonl": {
+      "bytes": 1397,
+      "sha256": "64ee2e99ecec8c9b869d131691357b10faeddacb05d62fb71d72b174b2f32f83"
+    },
+    "coverage.json": {
+      "bytes": 121076,
+      "sha256": "4ec5f8b3e26f2311f2853342e402293331f940771f70a41739a7125e09747081"
+    },
+    "daily/2026-10-13.json": {
+      "bytes": 138497,
+      "sha256": "4d34c8882c4e6e97726802af08f99bbdd7be98352614e276bfc74040bddd474d"
+    },
+    "health.json": {
+      "bytes": 3418,
+      "sha256": "afd71bde3fef57cce4ee5ac584c93b422355492ed4e5e7865ade67d79eef5111"
+    },
+    "install.json": {
+      "bytes": 3468,
+      "sha256": "475153d6241cdcd1d5f8276215ffdfe25d3c7637d2ff2178a9b16cfc16c9c830"
+    },
+    "ledger/INGEST_LEDGER.jsonl": {
+      "bytes": 180600,
+      "sha256": "1247ee254ddf7bc267d340afec39942c0ba736ec274f94fc9794ca69127fd708"
+    },
+    "publication/CUMULATIVE.json": {
+      "bytes": 48794,
+      "sha256": "166879fcaf4ff26b84e9fa98e5837b41b23027ee8f7351d5093d03a9bcb69eae"
+    },
+    "publication/CUMULATIVE.md": {
+      "bytes": 5069,
+      "sha256": "401d55512fc479e32f8384249bee5a6cdba9cd148335a953dd5ce0329e42c103"
+    },
+    "publication/DAILY_2026-10-13.md": {
+      "bytes": 3548,
+      "sha256": "3634bf970619eeb6f9e114e7f065b19ed8c2c5590fcb205c9c23a0996f926022"
+    },
+    "publication/DAILY_REPORTS.json": {
+      "bytes": 146302,
+      "sha256": "b5177f0e9596d4c797147465f569ce5f9d2f2fff7f25fa16925655732e19ff5f"
+    },
+    "publication/LATEST.json": {
+      "bytes": 2109,
+      "sha256": "8caf9e5acad41818aaa2eea6d9386d497d3af3c360bb85a536dc6393d0551ff4"
+    },
+    "publication/OBSERVATION.json": {
+      "bytes": 1219650,
+      "sha256": "682df4a12a929f443d3fa17213b3580e638b5916c9c1bb68db034584a0e14118"
+    },
+    "publication/SHADOW_DECISIONS.jsonl": {
+      "bytes": 59304,
+      "sha256": "86494c33acf997613bcd1becd5e128f70c937887ed0dbe42581728bcc0c5501a"
+    },
+    "publication/SHADOW_EQUITY.csv": {
+      "bytes": 64856,
+      "sha256": "b76fca73d1b2eb3b97131fbe7844169a1c54a7d7c90d9ac0abc1229edb8d92fa"
+    },
+    "publication/SHADOW_REFUSALS.csv": {
+      "bytes": 57901,
+      "sha256": "12a59e250109a64e427b7c3672f165a8f6677c3bf3ee6075fb795869bbeae546"
+    },
+    "publication/SHADOW_SIGNALS.csv": {
+      "bytes": 40525,
+      "sha256": "c04daaaa69135eeb26cdf7fd607612313b19b7d98e9451f0ca068a72ae5f6df7"
+    },
+    "publication/SHADOW_TRADES.csv": {
+      "bytes": 20885,
+      "sha256": "07bc3c44c848330b3154e79ddae52b556ae96a3601343ccc2f80f5a8d3e541fd"
+    },
+    "publication/risk-parity/PARITY.json": {
+      "bytes": 597905,
+      "sha256": "4a9e1fe97fa508d2e81ced0a039fdac1e954a8980ca232d5f0fd2ec4361fdc39"
+    },
+    "publication/risk-parity/PARITY.md": {
+      "bytes": 46657,
+      "sha256": "d3137ca781359ea6a7a029d5cb80e21b83cfa6c00896cc46ad199c7f56401044"
+    },
+    "publication/risk-parity/PARITY_CASES.csv": {
+      "bytes": 136989,
+      "sha256": "548b77a42127df3fa632008067f0b23fcb4f17e2d366a93ca831c886dad2e637"
+    },
+    "resource_budget.json": {
+      "bytes": 3216,
+      "sha256": "58205ab31a413fc73e0768a5ee46a21617e58f1e27b0ddf5c75c69ca3a00f54a"
+    },
+    "runs.jsonl": {
+      "bytes": 91308,
+      "sha256": "418bd58f95e12f8a9118e24cc536bb355e54193e52810dfc06426a3cccc1dec9"
+    },
+    "slot_ledger_repair.json": {
+      "bytes": 774,
+      "sha256": "1b4e453e804c3fec3b6091cd9e605b72f164d03918c84a5ed5844f66d988a352"
+    },
+    "slots.jsonl": {
+      "bytes": 3990,
+      "sha256": "7d77ef14573723bb8522ce27f47da9640502f4fe606408c0c6a93bd12d081160"
+    }
+  },
+  "generated_at_utc": "2026-10-13T15:08:17Z",
+  "hypothetical": true,
+  "order_sent": false,
+  "reading": "a dated snapshot of the whole live state root: the run log and the daily evidence are the durable record, the digests here pin the bytes that were live when the snapshot was taken, and the copy is whole so the byte budget can be checked against the same tree the reading describes",
+  "schema_version": "EDGE04_TICK_V1"
+}

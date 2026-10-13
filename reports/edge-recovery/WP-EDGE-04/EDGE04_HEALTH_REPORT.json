@@ -1,0 +1,250 @@
+{
+  "artefact": "EDGE04_HEALTH_REPORT.json",
+  "budget_growth_status": "VOLATILE",
+  "consecutive_non_observations": 0,
+  "corrupt_log_lines": 0,
+  "disk": {
+    "critical_free_bytes": 2147483648,
+    "free_bytes": 7252746240,
+    "free_gib": 6.7546,
+    "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04",
+    "status": "HEALTHY",
+    "total_bytes": 255041990656,
+    "total_gib": 237.5264,
+    "used_percent": 97.16,
+    "warning_free_bytes": 5368709120
+  },
+  "expected_ticks_in_window": 96,
+  "failure_count": 2,
+  "failures": [
+    {
+      "at_utc": "2026-10-13T11:25:39Z",
+      "outcome": "ALREADY_RUNNING",
+      "reason": "holder pid 35104 is live and renewed",
+      "run_id": "FWD-EDGE04-20261013T111500Z"
+    },
+    {
+      "at_utc": "2026-10-13T15:03:55Z",
+      "outcome": "ALREADY_RUNNING",
+      "reason": "holder pid 1308 is live and renewed",
+      "run_id": "FWD-EDGE04-20261013T150000Z"
+    }
+  ],
+  "generated_at_utc": "2026-10-13T15:08:17Z",
+  "hypothetical": true,
+  "last_observation_utc": "2026-10-13T15:07:57Z",
+  "last_tick": {
+    "duration_seconds": 31.621,
+    "outcome": "NO_NEW_DATA",
+    "run_id": "FWD-EDGE04-20261013T150000Z"
+  },
+  "live_health_full": {
+    "budget": {
+      "declared": {
+        "daily_kept": 366,
+        "lane_bytes": 268435456,
+        "ledger_kept": 4032,
+        "publication_interval_seconds": 86400,
+        "runs_kept": 2880,
+        "slots_kept": 2880
+      },
+      "disk": {
+        "critical_free_bytes": 2147483648,
+        "free_bytes": 7252742144,
+        "free_gib": 6.7546,
+        "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04",
+        "status": "HEALTHY",
+        "total_bytes": 255041990656,
+        "total_gib": 237.5264,
+        "used_percent": 97.16,
+        "warning_free_bytes": 5368709120
+      },
+      "forecast": {
+        "days_to_critical_free": null,
+        "days_to_warning_free": null,
+        "lane_days_to_budget": null,
+        "reading": "a forecast is published only when the measured rate is stable; otherwise it is null, because an invented number is worse than no number"
+      },
+      "generated_at_utc": "2026-10-13T15:07:57Z",
+      "growth": {
+        "bytes_per_day": null,
+        "coefficient_of_variation": 0.6548,
+        "discarded_samples": 0,
+        "dropped_foreign_unit_samples": 0,
+        "interval_seconds": [
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          219.0,
+          681.0,
+          480.0,
+          210.0
+        ],
+        "mean_bytes_per_day": 2129914.054,
+        "samples": 15,
+        "since": null,
+        "status": "VOLATILE",
+        "stddev_bytes_per_day": 1394719.23
+      },
+      "measured": {
+        "lane": 2998225,
+        "lane_bytes": 2998225,
+        "publication": 0,
+        "publication_inside_state": true,
+        "state": 2998225,
+        "store": 5598300
+      },
+      "over_budget": false,
+      "policy": {
+        "critical": "below 2147483648 free bytes: the tick records DISK_BUDGET_EXCEEDED and makes no market request at all",
+        "healthy": "full tick, and the heavy publication when its cadence is due",
+        "pruning": "only the bounded operational logs are front-truncated; the store, the daily evidence files and every published report are never rewritten or deleted",
+        "warning": "below 5368709120 free bytes: ingest continues, the heavy publication waits"
+      },
+      "schema_version": "EDGE04_RESOURCE_BUDGET_V1"
+    },
+    "consecutive_non_observations": 0,
+    "corrupt_log_lines": 0,
+    "disk": {
+      "critical_free_bytes": 2147483648,
+      "free_bytes": 7252746240,
+      "free_gib": 6.7546,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04",
+      "status": "HEALTHY",
+      "total_bytes": 255041990656,
+      "total_gib": 237.5264,
+      "used_percent": 97.16,
+      "warning_free_bytes": 5368709120
+    },
+    "expected_ticks_in_window": 96,
+    "generated_at_utc": "2026-10-13T15:07:57Z",
+    "hypothetical": true,
+    "last_observation_utc": "2026-10-13T15:07:57Z",
+    "last_tick": {
+      "duration_seconds": 31.621,
+      "outcome": "NO_NEW_DATA",
+      "run_id": "FWD-EDGE04-20261013T150000Z"
+    },
+    "last_tick_utc": "2026-10-13T15:07:57Z",
+    "observations_in_window": 17,
+    "order_sent": false,
+    "outcomes_in_window": {
+      "ALREADY_OBSERVED": 3,
+      "ALREADY_RUNNING": 2,
+      "NO_NEW_DATA": 3,
+      "OBSERVED": 14
+    },
+    "reasons": [
+      "the measured growth rate is volatile"
+    ],
+    "schema_version": "EDGE04_HEALTH_V1",
+    "status": "DEGRADED",
+    "ticks_in_window": 22
+  },
+  "live_health_path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04\\health.json",
+  "order_sent": false,
+  "outcomes_in_window": {
+    "ALREADY_OBSERVED": 3,
+    "ALREADY_RUNNING": 2,
+    "NO_NEW_DATA": 3,
+    "OBSERVED": 14
+  },
+  "reasons": [
+    "the measured growth rate is volatile"
+  ],
+  "scheduler": {
+    "arguments": "\"C:/Users/GVLLFR0035/Downloads/bot freebuff/scripts/edge04_observer.py\" --scheduled --due",
+    "enabled": true,
+    "installed": true,
+    "interval_minutes": 15,
+    "receipts": [
+      {
+        "arguments": "\"C:/Users/GVLLFR0035/Downloads/bot freebuff/scripts/edge04_observer.py\" --scheduled --due",
+        "at_utc": "2026-10-13T11:23:27Z",
+        "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+        "description": "WP-EDGE-04 forward observation: unattended tick of the frozen WP-EDGE-03 forward lane. Public market data only; no credentials, no orders, no capital.",
+        "interval_minutes": 15,
+        "note": "the scheduler's own registration is a declaration; it is evidence that the task exists and is enabled, never that a measurement was taken",
+        "schema_version": "EDGE04_TICK_V1",
+        "status": "INSTALLED",
+        "task": {
+          "arguments": "\"C:/Users/GVLLFR0035/Downloads/bot freebuff/scripts/edge04_observer.py\" --scheduled --due",
+          "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+          "enabled": true,
+          "installed": true,
+          "last_run_time": "11/30/1999 00:00:00",
+          "last_task_result": 267011,
+          "missed_runs": 0,
+          "multiple_instances": "IgnoreNew",
+          "next_run_time": "10/13/2026 13:24:25",
+          "scheduler_type": "windows_task_scheduler",
+          "start_when_available": "True",
+          "state": "Ready",
+          "task_name": "TradingAgentic-EDGE04-Forward",
+          "working_directory": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff"
+        },
+        "task_name": "TradingAgentic-EDGE04-Forward",
+        "working_directory": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff"
+      },
+      {
+        "arguments": "\"C:/Users/GVLLFR0035/Downloads/bot freebuff/scripts/edge04_observer.py\" --scheduled --due",
+        "at_utc": "2026-10-13T11:24:55Z",
+        "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+        "description": "WP-EDGE-04 forward observation: unattended tick of the frozen WP-EDGE-03 forward lane. Public market data only; no credentials, no orders, no capital.",
+        "interval_minutes": 15,
+        "note": "the scheduler's own registration is a declaration; it is evidence that the task exists and is enabled, never that a measurement was taken",
+        "schema_version": "EDGE04_TICK_V1",
+        "status": "UPDATED",
+        "task": {
+          "arguments": "\"C:/Users/GVLLFR0035/Downloads/bot freebuff/scripts/edge04_observer.py\" --scheduled --due",
+          "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+          "enabled": true,
+          "installed": true,
+          "last_run_time": "10/13/2026 13:24:25",
+          "last_task_result": 0,
+          "missed_runs": 0,
+          "multiple_instances": "IgnoreNew",
+          "next_run_time": "10/13/2026 13:25:53",
+          "scheduler_type": "windows_task_scheduler",
+          "start_when_available": "True",
+          "state": "Ready",
+          "task_name": "TradingAgentic-EDGE04-Forward",
+          "working_directory": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff"
+        },
+        "task_name": "TradingAgentic-EDGE04-Forward",
+        "working_directory": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff"
+      }
+    ],
+    "schema_version": "EDGE04_TICK_V1",
+    "task_name": "TradingAgentic-EDGE04-Forward"
+  },
+  "schema_version": "EDGE04_CLOSURE_V1",
+  "status": "DEGRADED",
+  "ticks_in_window": 22,
+  "traffic": {
+    "alerts_by_kind": {
+      "HEALTH_DEGRADED": 2,
+      "HEALTH_RECOVERED": 3
+    },
+    "duplicate_slots": [],
+    "ticks_by_outcome": {
+      "ALREADY_OBSERVED": 3,
+      "ALREADY_RUNNING": 2,
+      "NO_NEW_DATA": 3,
+      "OBSERVED": 14
+    }
+  },
+  "verification": {
+    "independent_verifier": "scripts/edge04_verify.py",
+    "reading": "the health artefact is the observer's own reading; the verdict that counts is the verifier's, which does not share this module's code",
+    "verdict_path": "INDEPENDENT_VERIFICATION.json"
+  },
+  "work_package": "WP-EDGE-04"
+}

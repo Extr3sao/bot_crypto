@@ -1,0 +1,132 @@
+{
+  "declared": {
+    "daily_kept": 366,
+    "lane_bytes": 268435456,
+    "ledger_kept": 4032,
+    "publication_interval_seconds": 86400,
+    "runs_kept": 2880,
+    "slots_kept": 2880
+  },
+  "disk": {
+    "critical_free_bytes": 2147483648,
+    "free_bytes": 7252742144,
+    "free_gib": 6.7546,
+    "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04",
+    "status": "HEALTHY",
+    "total_bytes": 255041990656,
+    "total_gib": 237.5264,
+    "used_percent": 97.16,
+    "warning_free_bytes": 5368709120
+  },
+  "forecast": {
+    "days_to_critical_free": null,
+    "days_to_warning_free": null,
+    "lane_days_to_budget": null,
+    "reading": "a forecast is published only when the measured rate is stable; otherwise it is null, because an invented number is worse than no number"
+  },
+  "generated_at_utc": "2026-10-13T15:07:25Z",
+  "growth": {
+    "bytes_per_day": null,
+    "coefficient_of_variation": 0.556,
+    "discarded_samples": 0,
+    "dropped_foreign_unit_samples": 0,
+    "interval_seconds": [
+      900.0,
+      900.0,
+      900.0,
+      900.0,
+      900.0,
+      900.0,
+      900.0,
+      900.0,
+      900.0,
+      900.0,
+      219.0,
+      681.0,
+      480.0
+    ],
+    "mean_bytes_per_day": 1859126.783,
+    "samples": 14,
+    "since": null,
+    "status": "VOLATILE",
+    "stddev_bytes_per_day": 1033593.376
+  },
+  "measured": {
+    "lane": 2998142,
+    "lane_bytes": 2998142,
+    "publication": 0,
+    "publication_inside_state": true,
+    "state": 2998142,
+    "store": 5598300
+  },
+  "over_budget": false,
+  "policy": {
+    "critical": "below 2147483648 free bytes: the tick records DISK_BUDGET_EXCEEDED and makes no market request at all",
+    "healthy": "full tick, and the heavy publication when its cadence is due",
+    "pruning": "only the bounded operational logs are front-truncated; the store, the daily evidence files and every published report are never rewritten or deleted",
+    "warning": "below 5368709120 free bytes: ingest continues, the heavy publication waits"
+  },
+  "samples": [
+    {
+      "bytes": 2791042,
+      "ts_ms": 1791893455983
+    },
+    {
+      "bytes": 2805865,
+      "ts_ms": 1791894355715
+    },
+    {
+      "bytes": 2820252,
+      "ts_ms": 1791895255717
+    },
+    {
+      "bytes": 2835379,
+      "ts_ms": 1791896155945
+    },
+    {
+      "bytes": 2851473,
+      "ts_ms": 1791897055730
+    },
+    {
+      "bytes": 2866349,
+      "ts_ms": 1791897955734
+    },
+    {
+      "bytes": 2881226,
+      "ts_ms": 1791898855787
+    },
+    {
+      "bytes": 2896127,
+      "ts_ms": 1791899755716
+    },
+    {
+      "bytes": 2912261,
+      "ts_ms": 1791900655767
+    },
+    {
+      "bytes": 2927127,
+      "ts_ms": 1791901555762
+    },
+    {
+      "bytes": 2942020,
+      "ts_ms": 1791902455816
+    },
+    {
+      "bytes": 2955483,
+      "ts_ms": 1791902674051
+    },
+    {
+      "bytes": 2971357,
+      "ts_ms": 1791903355875
+    },
+    {
+      "bytes": 2984409,
+      "ts_ms": 1791903835325
+    },
+    {
+      "bytes": 2998142,
+      "ts_ms": 1791904045923
+    }
+  ],
+  "schema_version": "EDGE04_RESOURCE_BUDGET_V1"
+}

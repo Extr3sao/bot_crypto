@@ -1,0 +1,5502 @@
+{
+  "artefact": "EDGE04_FORWARD_COVERAGE.json",
+  "continuity": {
+    "consuming_ticks": 17,
+    "longest_silence_seconds": 1525.751,
+    "non_observing_outcomes": {
+      "ALREADY_OBSERVED": 3,
+      "ALREADY_RUNNING": 2,
+      "NO_NEW_DATA": 3
+    },
+    "reading": "silence is measured between the ticks that consumed a slot, because a trigger that found its slot already sealed is not a gap in the observation",
+    "silences": [
+      {
+        "from_utc": "2026-10-13T11:24:03Z",
+        "silence_seconds": 418.398,
+        "to_utc": "2026-10-13T11:31:01Z"
+      },
+      {
+        "from_utc": "2026-10-13T11:31:01Z",
+        "silence_seconds": 1525.751,
+        "to_utc": "2026-10-13T11:56:27Z"
+      },
+      {
+        "from_utc": "2026-10-13T11:56:27Z",
+        "silence_seconds": 907.686,
+        "to_utc": "2026-10-13T12:11:35Z"
+      },
+      {
+        "from_utc": "2026-10-13T12:11:35Z",
+        "silence_seconds": 890.963,
+        "to_utc": "2026-10-13T12:26:26Z"
+      },
+      {
+        "from_utc": "2026-10-13T12:26:26Z",
+        "silence_seconds": 900.64,
+        "to_utc": "2026-10-13T12:41:26Z"
+      },
+      {
+        "from_utc": "2026-10-13T12:41:26Z",
+        "silence_seconds": 905.201,
+        "to_utc": "2026-10-13T12:56:32Z"
+      },
+      {
+        "from_utc": "2026-10-13T12:56:32Z",
+        "silence_seconds": 901.081,
+        "to_utc": "2026-10-13T13:11:33Z"
+      },
+      {
+        "from_utc": "2026-10-13T13:11:33Z",
+        "silence_seconds": 897.073,
+        "to_utc": "2026-10-13T13:26:30Z"
+      },
+      {
+        "from_utc": "2026-10-13T13:26:30Z",
+        "silence_seconds": 896.994,
+        "to_utc": "2026-10-13T13:41:27Z"
+      },
+      {
+        "from_utc": "2026-10-13T13:41:27Z",
+        "silence_seconds": 902.974,
+        "to_utc": "2026-10-13T13:56:30Z"
+      },
+      {
+        "from_utc": "2026-10-13T13:56:30Z",
+        "silence_seconds": 900.518,
+        "to_utc": "2026-10-13T14:11:30Z"
+      },
+      {
+        "from_utc": "2026-10-13T14:11:30Z",
+        "silence_seconds": 898.121,
+        "to_utc": "2026-10-13T14:26:28Z"
+      },
+      {
+        "from_utc": "2026-10-13T14:26:28Z",
+        "silence_seconds": 916.104,
+        "to_utc": "2026-10-13T14:41:45Z"
+      },
+      {
+        "from_utc": "2026-10-13T14:41:45Z",
+        "silence_seconds": 195.861,
+        "to_utc": "2026-10-13T14:45:00Z"
+      },
+      {
+        "from_utc": "2026-10-13T14:45:00Z",
+        "silence_seconds": 684.977,
+        "to_utc": "2026-10-13T14:56:25Z"
+      },
+      {
+        "from_utc": "2026-10-13T14:56:25Z",
+        "silence_seconds": 691.65,
+        "to_utc": "2026-10-13T15:07:57Z"
+      }
+    ],
+    "silences_over_warning_seconds": [],
+    "unavailability_seconds": 0
+  },
+  "days_with_any_data": 227,
+  "declared_rule": {
+    "coverage_required": 0.9,
+    "primary_assets": [
+      "BTC",
+      "ETH",
+      "SOL"
+    ],
+    "prospective_lag_bound_ms": {
+      "15m": 1800000,
+      "1h": 7200000
+    },
+    "reading": "a day counts only if every primary asset holds at least 90% of the bars the calendar expects for its timeframe, and only if those bars reached the store while they were still fresh; the frozen corpora are older than the epoch and no day before it is a forward observation day",
+    "required_days": 60,
+    "series": [
+      "1h:BTC",
+      "1h:ETH",
+      "1h:SOL",
+      "15m:BTC",
+      "15m:ETH",
+      "15m:SOL"
+    ],
+    "stale_after_ms": {
+      "15m": 14400000,
+      "1h": 14400000
+    }
+  },
+  "densely_covered_but_backfilled": 226,
+  "epoch_utc": "2026-03-01T00:00:00Z",
+  "freeze": {
+    "frozen_15m_end_utc": "2026-10-07T11:30:00Z",
+    "frozen_1h_end_utc": "2026-02-28T23:00:00Z",
+    "params_hash": "d073a2d686b9b198c36c9a3c6009d36130577ba247a2016c3f791813cb749d77",
+    "reading": "the frozen corpora end at these instants; every stored bar is strictly later, and no day before the epoch is a forward observation day"
+  },
+  "generated_at_utc": "2026-10-13T15:08:17Z",
+  "hypothetical": true,
+  "live_coverage_full": {
+    "coverage_required": 0.9,
+    "days": [
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-03-01",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-03-02",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-03-03",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-03-04",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-03-05",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-03-06",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-03-07",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-03-08",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-03-09",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-03-10",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-03-11",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-03-12",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-03-13",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-03-14",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-03-15",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-03-16",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-03-17",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-03-18",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-03-19",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-03-20",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-03-21",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-03-22",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-03-23",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-03-24",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-03-25",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-03-26",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-03-27",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-03-28",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-03-29",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-03-30",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-03-31",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-04-01",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-04-02",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-04-03",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-04-04",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-04-05",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-04-06",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-04-07",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-04-08",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-04-09",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-04-10",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-04-11",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-04-12",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-04-13",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-04-14",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-04-15",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-04-16",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-04-17",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-04-18",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-04-19",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-04-20",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-04-21",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-04-22",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-04-23",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-04-24",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-04-25",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-04-26",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-04-27",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-04-28",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-04-29",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-04-30",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-05-01",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-05-02",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-05-03",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-05-04",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-05-05",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-05-06",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-05-07",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-05-08",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-05-09",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-05-10",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-05-11",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-05-12",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-05-13",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-05-14",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-05-15",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-05-16",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-05-17",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-05-18",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-05-19",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-05-20",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-05-21",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-05-22",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-05-23",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-05-24",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-05-25",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-05-26",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-05-27",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-05-28",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-05-29",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-05-30",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-05-31",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-06-01",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-06-02",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-06-03",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-06-04",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-06-05",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-06-06",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-06-07",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-06-08",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-06-09",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-06-10",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-06-11",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-06-12",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-06-13",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-06-14",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-06-15",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-06-16",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-06-17",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-06-18",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-06-19",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-06-20",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-06-21",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-06-22",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-06-23",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-06-24",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-06-25",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-06-26",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-06-27",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-06-28",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-06-29",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-06-30",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-07-01",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-07-02",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-07-03",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-07-04",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-07-05",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-07-06",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-07-07",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-07-08",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-07-09",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-07-10",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-07-11",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-07-12",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-07-13",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-07-14",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-07-15",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-07-16",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-07-17",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-07-18",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-07-19",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-07-20",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-07-21",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-07-22",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-07-23",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-07-24",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-07-25",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-07-26",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-07-27",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-07-28",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-07-29",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-07-30",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-07-31",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-08-01",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-08-02",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-08-03",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-08-04",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-08-05",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-08-06",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-08-07",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-08-08",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-08-09",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-08-10",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-08-11",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-08-12",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-08-13",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-08-14",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-08-15",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-08-16",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-08-17",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-08-18",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-08-19",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-08-20",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-08-21",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-08-22",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-08-23",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-08-24",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-08-25",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-08-26",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-08-27",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-08-28",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-08-29",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-08-30",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-08-31",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-09-01",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-09-02",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-09-03",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-09-04",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-09-05",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-09-06",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-09-07",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-09-08",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-09-09",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-09-10",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-09-11",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-09-12",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-09-13",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-09-14",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-09-15",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-09-16",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-09-17",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-09-18",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-09-19",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-09-20",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-09-21",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-09-22",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-09-23",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-09-24",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-09-25",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-09-26",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-09-27",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-09-28",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-09-29",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-09-30",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-10-01",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-10-02",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-10-03",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-10-04",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-10-05",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-10-06",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-10-07",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-10-08",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-10-09",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-10-10",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.0,
+          "1h:ETH": 0.0,
+          "1h:SOL": 0.0
+        },
+        "day": "2026-10-11",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 0,
+          "1h:ETH": 0,
+          "1h:SOL": 0
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.083333,
+          "1h:ETH": 0.083333,
+          "1h:SOL": 0.083333
+        },
+        "day": "2026-10-12",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 2,
+          "1h:ETH": 2,
+          "1h:SOL": 2
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "INCOMPLETE",
+        "coverage": {
+          "1h:BTC": 0.333333,
+          "1h:ETH": 0.333333,
+          "1h:SOL": 0.333333
+        },
+        "day": "2026-10-13",
+        "densely_covered": false,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 8,
+          "1h:ETH": 8,
+          "1h:SOL": 8
+        },
+        "stored_bars": {
+          "1h:BTC": 15,
+          "1h:ETH": 15,
+          "1h:SOL": 15
+        }
+      }
+    ],
+    "days_with_any_data": 227,
+    "densely_covered_but_backfilled": 226,
+    "densely_covered_but_backfilled_days": [
+      "2026-03-01",
+      "2026-03-02",
+      "2026-03-03",
+      "2026-03-04",
+      "2026-03-05",
+      "2026-03-06",
+      "2026-03-07",
+      "2026-03-08",
+      "2026-03-09",
+      "2026-03-10",
+      "2026-03-11",
+      "2026-03-12",
+      "2026-03-13",
+      "2026-03-14",
+      "2026-03-15",
+      "2026-03-16",
+      "2026-03-17",
+      "2026-03-18",
+      "2026-03-19",
+      "2026-03-20",
+      "2026-03-21",
+      "2026-03-22",
+      "2026-03-23",
+      "2026-03-24",
+      "2026-03-25",
+      "2026-03-26",
+      "2026-03-27",
+      "2026-03-28",
+      "2026-03-29",
+      "2026-03-30",
+      "2026-03-31",
+      "2026-04-01",
+      "2026-04-02",
+      "2026-04-03",
+      "2026-04-04",
+      "2026-04-05",
+      "2026-04-06",
+      "2026-04-07",
+      "2026-04-08",
+      "2026-04-09",
+      "2026-04-10",
+      "2026-04-11",
+      "2026-04-12",
+      "2026-04-13",
+      "2026-04-14",
+      "2026-04-15",
+      "2026-04-16",
+      "2026-04-17",
+      "2026-04-18",
+      "2026-04-19",
+      "2026-04-20",
+      "2026-04-21",
+      "2026-04-22",
+      "2026-04-23",
+      "2026-04-24",
+      "2026-04-25",
+      "2026-04-26",
+      "2026-04-27",
+      "2026-04-28",
+      "2026-04-29",
+      "2026-04-30",
+      "2026-05-01",
+      "2026-05-02",
+      "2026-05-03",
+      "2026-05-04",
+      "2026-05-05",
+      "2026-05-06",
+      "2026-05-07",
+      "2026-05-08",
+      "2026-05-09",
+      "2026-05-10",
+      "2026-05-11",
+      "2026-05-12",
+      "2026-05-13",
+      "2026-05-14",
+      "2026-05-15",
+      "2026-05-16",
+      "2026-05-17",
+      "2026-05-18",
+      "2026-05-19",
+      "2026-05-20",
+      "2026-05-21",
+      "2026-05-22",
+      "2026-05-23",
+      "2026-05-24",
+      "2026-05-25",
+      "2026-05-26",
+      "2026-05-27",
+      "2026-05-28",
+      "2026-05-29",
+      "2026-05-30",
+      "2026-05-31",
+      "2026-06-01",
+      "2026-06-02",
+      "2026-06-03",
+      "2026-06-04",
+      "2026-06-05",
+      "2026-06-06",
+      "2026-06-07",
+      "2026-06-08",
+      "2026-06-09",
+      "2026-06-10",
+      "2026-06-11",
+      "2026-06-12",
+      "2026-06-13",
+      "2026-06-14",
+      "2026-06-15",
+      "2026-06-16",
+      "2026-06-17",
+      "2026-06-18",
+      "2026-06-19",
+      "2026-06-20",
+      "2026-06-21",
+      "2026-06-22",
+      "2026-06-23",
+      "2026-06-24",
+      "2026-06-25",
+      "2026-06-26",
+      "2026-06-27",
+      "2026-06-28",
+      "2026-06-29",
+      "2026-06-30",
+      "2026-07-01",
+      "2026-07-02",
+      "2026-07-03",
+      "2026-07-04",
+      "2026-07-05",
+      "2026-07-06",
+      "2026-07-07",
+      "2026-07-08",
+      "2026-07-09",
+      "2026-07-10",
+      "2026-07-11",
+      "2026-07-12",
+      "2026-07-13",
+      "2026-07-14",
+      "2026-07-15",
+      "2026-07-16",
+      "2026-07-17",
+      "2026-07-18",
+      "2026-07-19",
+      "2026-07-20",
+      "2026-07-21",
+      "2026-07-22",
+      "2026-07-23",
+      "2026-07-24",
+      "2026-07-25",
+      "2026-07-26",
+      "2026-07-27",
+      "2026-07-28",
+      "2026-07-29",
+      "2026-07-30",
+      "2026-07-31",
+      "2026-08-01",
+      "2026-08-02",
+      "2026-08-03",
+      "2026-08-04",
+      "2026-08-05",
+      "2026-08-06",
+      "2026-08-07",
+      "2026-08-08",
+      "2026-08-09",
+      "2026-08-10",
+      "2026-08-11",
+      "2026-08-12",
+      "2026-08-13",
+      "2026-08-14",
+      "2026-08-15",
+      "2026-08-16",
+      "2026-08-17",
+      "2026-08-18",
+      "2026-08-19",
+      "2026-08-20",
+      "2026-08-21",
+      "2026-08-22",
+      "2026-08-23",
+      "2026-08-24",
+      "2026-08-25",
+      "2026-08-26",
+      "2026-08-27",
+      "2026-08-28",
+      "2026-08-29",
+      "2026-08-30",
+      "2026-08-31",
+      "2026-09-01",
+      "2026-09-02",
+      "2026-09-03",
+      "2026-09-04",
+      "2026-09-05",
+      "2026-09-06",
+      "2026-09-07",
+      "2026-09-08",
+      "2026-09-09",
+      "2026-09-10",
+      "2026-09-11",
+      "2026-09-12",
+      "2026-09-13",
+      "2026-09-14",
+      "2026-09-15",
+      "2026-09-16",
+      "2026-09-17",
+      "2026-09-18",
+      "2026-09-19",
+      "2026-09-20",
+      "2026-09-21",
+      "2026-09-22",
+      "2026-09-23",
+      "2026-09-24",
+      "2026-09-25",
+      "2026-09-26",
+      "2026-09-27",
+      "2026-09-28",
+      "2026-09-29",
+      "2026-09-30",
+      "2026-10-01",
+      "2026-10-02",
+      "2026-10-03",
+      "2026-10-04",
+      "2026-10-05",
+      "2026-10-06",
+      "2026-10-07",
+      "2026-10-08",
+      "2026-10-09",
+      "2026-10-10",
+      "2026-10-11",
+      "2026-10-12"
+    ],
+    "epoch_utc": "2026-03-01T00:00:00Z",
+    "freeze": {
+      "frozen_15m_end_utc": "2026-10-07T11:30:00Z",
+      "frozen_1h_end_utc": "2026-02-28T23:00:00Z",
+      "params_hash": "d073a2d686b9b198c36c9a3c6009d36130577ba247a2016c3f791813cb749d77",
+      "reading": "the frozen corpora end at these instants; every stored bar is strictly later, and no day before the epoch is a forward observation day"
+    },
+    "generated_at_utc": "2026-10-13T15:07:56Z",
+    "market_instant_utc": "2026-10-13T15:07:27Z",
+    "not_an_admission": "reaching the floor makes a later decision possible; it does not make it, and this lane cannot promote a strategy",
+    "not_counted": "days before the observation epoch, and days whose bars arrived long after they closed, are not forward observation days: a backfill is history, not an observation",
+    "period_hashes": {
+      "2026-10-11": {
+        "15m:BTC": "c3ed3b83799045f6",
+        "15m:ETH": "8699e01b8f5e48fb",
+        "15m:SOL": "5633ced680152850",
+        "1h:BTC": "0d58574a7e216041",
+        "1h:ETH": "4ddd596c4f8d66b3",
+        "1h:SOL": "d303805a7127f328"
+      },
+      "2026-10-12": {
+        "15m:BTC": "f75c836fae7b2992",
+        "15m:ETH": "39970bf01f26412d",
+        "15m:SOL": "48845be6fc7d36e2",
+        "1h:BTC": "989da9e9b5cf0603",
+        "1h:ETH": "5de48bde45567b67",
+        "1h:SOL": "6fcdc1c30c288010"
+      },
+      "2026-10-13": {
+        "15m:BTC": "3bcbac7a66183cd9",
+        "15m:ETH": "037ed62a84f47bb0",
+        "15m:SOL": "66b2ee5f637eb674",
+        "1h:BTC": "237a41c3c26f0447",
+        "1h:ETH": "3a43186d15970bbb",
+        "1h:SOL": "6baa592b6dc4c09b"
+      }
+    },
+    "primary_assets": [
+      "BTC",
+      "ETH",
+      "SOL"
+    ],
+    "primary_series": [
+      "1h:BTC",
+      "1h:ETH",
+      "1h:SOL"
+    ],
+    "promotion": "NONE",
+    "prospectively_observed": 0,
+    "prospectively_observed_days": [],
+    "remaining_days": 60,
+    "required_days": 60,
+    "rule": "a day counts only if every primary asset holds at least 90% of the 24 hourly bars the calendar expects for it, and every one of those bars was stored within its timeframe's lag bound of closing ({'1h': 7200000, '15m': 1800000})",
+    "schema_version": "EDGE04_COVERAGE_V1",
+    "state_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04",
+    "store_digests": {
+      "15m:BTC": "801561cc1bb95008",
+      "15m:ETH": "ef46058d60950d5a",
+      "15m:SOL": "a87c8be7b426874f",
+      "1h:BTC": "92cdde888f62d932",
+      "1h:ETH": "660e848c7b3b6815",
+      "1h:SOL": "fcb04f43ca06c799"
+    },
+    "store_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge03",
+    "window_observation_days": 226,
+    "window_vs_prospective": "the window figure counts every stored bar after the freeze, the prospectively observed figure counts only days whose bars were stored as they closed: only the second one is an observation of the future"
+  },
+  "live_coverage_path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04\\coverage.json",
+  "not_an_admission": "reaching the floor makes a later decision possible; it does not make it, and this lane cannot promote a strategy",
+  "not_counted": "days before the observation epoch, and days whose bars arrived long after they closed, are not forward observation days: a backfill is history, not an observation",
+  "order_sent": false,
+  "period_hashes": {
+    "2026-10-11": {
+      "15m:BTC": "c3ed3b83799045f6",
+      "15m:ETH": "8699e01b8f5e48fb",
+      "15m:SOL": "5633ced680152850",
+      "1h:BTC": "0d58574a7e216041",
+      "1h:ETH": "4ddd596c4f8d66b3",
+      "1h:SOL": "d303805a7127f328"
+    },
+    "2026-10-12": {
+      "15m:BTC": "f75c836fae7b2992",
+      "15m:ETH": "39970bf01f26412d",
+      "15m:SOL": "48845be6fc7d36e2",
+      "1h:BTC": "989da9e9b5cf0603",
+      "1h:ETH": "5de48bde45567b67",
+      "1h:SOL": "6fcdc1c30c288010"
+    },
+    "2026-10-13": {
+      "15m:BTC": "3bcbac7a66183cd9",
+      "15m:ETH": "037ed62a84f47bb0",
+      "15m:SOL": "66b2ee5f637eb674",
+      "1h:BTC": "237a41c3c26f0447",
+      "1h:ETH": "3a43186d15970bbb",
+      "1h:SOL": "6baa592b6dc4c09b"
+    }
+  },
+  "promotion": "NONE",
+  "prospectively_observed": 0,
+  "prospectively_observed_days": [],
+  "remaining_days": 60,
+  "schema_version": "EDGE04_CLOSURE_V1",
+  "store_digests": {
+    "15m:BTC": "801561cc1bb95008",
+    "15m:ETH": "ef46058d60950d5a",
+    "15m:SOL": "a87c8be7b426874f",
+    "1h:BTC": "92cdde888f62d932",
+    "1h:ETH": "660e848c7b3b6815",
+    "1h:SOL": "fcb04f43ca06c799"
+  },
+  "traffic": {
+    "alerts": 5,
+    "alerts_by_kind": {
+      "HEALTH_DEGRADED": 2,
+      "HEALTH_RECOVERED": 3
+    },
+    "bars_appended": 51,
+    "corrupt_lines": {
+      "alerts": 0,
+      "runs": 0,
+      "slots": 0
+    },
+    "duplicate_slots": [],
+    "first_tick_utc": "2026-10-13T11:24:03Z",
+    "last_tick_utc": "2026-10-13T15:07:57Z",
+    "market_requests": 68,
+    "slot_rows": 16,
+    "ticks": 22,
+    "ticks_by_mode": {
+      "MANUAL": 5,
+      "SCHEDULED": 17
+    },
+    "ticks_by_outcome": {
+      "ALREADY_OBSERVED": 3,
+      "ALREADY_RUNNING": 2,
+      "NO_NEW_DATA": 3,
+      "OBSERVED": 14
+    }
+  },
+  "work_package": "WP-EDGE-04"
+}

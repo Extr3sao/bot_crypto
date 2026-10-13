@@ -1,0 +1,64 @@
+{
+  "artifacts": {
+    "cases_csv": {
+      "bytes": 136989,
+      "sha256": "548b77a42127df3fa632008067f0b23fcb4f17e2d366a93ca831c886dad2e637"
+    },
+    "cumulative": {
+      "bytes": 5069,
+      "sha256": "401d55512fc479e32f8384249bee5a6cdba9cd148335a953dd5ce0329e42c103"
+    },
+    "daily": {
+      "bytes": 3548,
+      "sha256": "3634bf970619eeb6f9e114e7f065b19ed8c2c5590fcb205c9c23a0996f926022"
+    },
+    "daily_rollup": {
+      "bytes": 146302,
+      "sha256": "b5177f0e9596d4c797147465f569ce5f9d2f2fff7f25fa16925655732e19ff5f"
+    },
+    "decisions": {
+      "bytes": 59304,
+      "sha256": "86494c33acf997613bcd1becd5e128f70c937887ed0dbe42581728bcc0c5501a"
+    },
+    "equity": {
+      "bytes": 64856,
+      "sha256": "b76fca73d1b2eb3b97131fbe7844169a1c54a7d7c90d9ac0abc1229edb8d92fa"
+    },
+    "json": {
+      "bytes": 597905,
+      "sha256": "4a9e1fe97fa508d2e81ced0a039fdac1e954a8980ca232d5f0fd2ec4361fdc39"
+    },
+    "markdown": {
+      "bytes": 46657,
+      "sha256": "d3137ca781359ea6a7a029d5cb80e21b83cfa6c00896cc46ad199c7f56401044"
+    },
+    "observation": {
+      "bytes": 1219650,
+      "sha256": "682df4a12a929f443d3fa17213b3580e638b5916c9c1bb68db034584a0e14118"
+    },
+    "refusals": {
+      "bytes": 57901,
+      "sha256": "12a59e250109a64e427b7c3672f165a8f6677c3bf3ee6075fb795869bbeae546"
+    },
+    "signals": {
+      "bytes": 40525,
+      "sha256": "c04daaaa69135eeb26cdf7fd607612313b19b7d98e9451f0ca068a72ae5f6df7"
+    },
+    "summary": {
+      "bytes": 48794,
+      "sha256": "166879fcaf4ff26b84e9fa98e5837b41b23027ee8f7351d5093d03a9bcb69eae"
+    },
+    "trades": {
+      "bytes": 20885,
+      "sha256": "07bc3c44c848330b3154e79ddae52b556ae96a3601343ccc2f80f5a8d3e541fd"
+    }
+  },
+  "hypothetical": true,
+  "order_sent": false,
+  "params_hash": "d073a2d686b9b198c36c9a3c6009d36130577ba247a2016c3f791813cb749d77",
+  "published_at_ms": 1791890619831,
+  "published_at_utc": "2026-10-13T11:23:39Z",
+  "recorded_at_ms": 1791890618322,
+  "run_id": "FWD-EDGE03-20261013T112339Z",
+  "schema_version": "EDGE04_TICK_V1"
+}

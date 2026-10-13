@@ -1,0 +1,340 @@
+{
+  "schema_version": "EDGE04_RUN_REPORT_V1",
+  "work_package": "WP-EDGE-04",
+  "title": "Autonomous forward observation of the frozen WP-EDGE-03 lane",
+  "generated_at_utc": "2026-10-13T15:20:00Z",
+  "does_not_authorise": "PAPER or LIVE trading: reaching the observation floor makes a later decision possible, it does not make it, and this lane cannot promote a strategy",
+  "hypothetical": true,
+  "order_sent": false,
+  "promotion": "NONE",
+  "sources": {
+    "run_log": "data/forward/edge04/runs.jsonl (22 rows)",
+    "slot_ledger": "data/forward/edge04/slots.jsonl (16 rows)",
+    "alerts": "data/forward/edge04/alerts.jsonl (5 rows)",
+    "daily_evidence": "data/forward/edge04/daily/2026-10-13.json",
+    "health": "data/forward/edge04/health.json",
+    "budget": "data/forward/edge04/resource_budget.json",
+    "coverage": "data/forward/edge04/coverage.json",
+    "publication": "data/forward/edge04/publication/LATEST.json",
+    "scheduler_receipt": "data/forward/edge04/install.json",
+    "snapshot": "reports/edge-recovery/WP-EDGE-04/evidence/SNAPSHOT.json",
+    "verifier_verdict": "reports/edge-recovery/WP-EDGE-04/INDEPENDENT_VERIFICATION.json",
+    "closure_artefacts": "reports/edge-recovery/WP-EDGE-04/EDGE04_{FORWARD_COVERAGE,RESOURCE_BUDGET,HEALTH_REPORT}.json",
+    "tick_timeline": "reports/edge-recovery/WP-EDGE-04/evidence/FASE7_TIMELINE.md"
+  },
+  "repository": {
+    "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
+    "base_commit": "1d5eda9e72b0ad07fa1807f2df33a5f5bb761668",
+    "lane_commits": [
+      {
+        "commit": "5b1e771",
+        "subject": "Say a pid cannot be probed instead of crashing the lease. [WP-EDGE-04]",
+        "files": [
+          "src/trading_bot/research/campaign_lock.py",
+          "tests/unit/research/test_campaign_runtime.py"
+        ],
+        "why": "a shared-module fix, committed on its own because every campaign that takes this lease had the same trap"
+      },
+      {
+        "commit": "4b845c9",
+        "subject": "Make the forward lane tick itself, once per slot. [WP-EDGE-04]",
+        "files": [
+          "src/trading_bot/research/edge03/autonomous.py",
+          "src/trading_bot/research/edge03/run.py",
+          "scripts/edge04_observer.py",
+          "scripts/edge04_closure.py",
+          "scripts/edge04_verify.py",
+          "tests/unit/research/test_edge04_autonomous.py",
+          ".gitignore"
+        ],
+        "why": "the lane itself: the tick engine, its single portable entry point, its verifier, its closure and the versioning exception that publishes them"
+      }
+    ],
+    "uncommitted_by_this_work_package": "none",
+    "other_workstreams_left_untouched": [
+      "FINAL_REPORT.md",
+      "RUN_REPORT.md",
+      "RUN_REPORT.json",
+      "data/recovery/wp8/*",
+      "data/st6/*",
+      "docs/source_registry.md",
+      "evidence/real_decisions/*",
+      "scripts/cap004c_verify.py",
+      "scripts/st6_scheduler_witness.py"
+    ],
+    "push": {
+      "state": "BLOCKED_GITHUB_AUTH",
+      "reading": "the credential helper still prompts, and prompts are disabled; the commits stay local rather than being re-attributed to someone else"
+    }
+  },
+  "runtime": {
+    "host": "DESKTOP-4CHO695",
+    "python": ".venv\\Scripts\\python.exe 3.11.15",
+    "task_name": "TradingAgentic-EDGE04-Forward",
+    "task_command": ".venv\\Scripts\\python.exe scripts\\edge04_observer.py --scheduled --due",
+    "working_directory": "the repository root",
+    "installed": true,
+    "enabled": true,
+    "interval_minutes": 15,
+    "observed_firings_utc": [":10:55Z", ":25:55Z", ":40:55Z", ":55:55Z"],
+    "interactive_agent_required": false
+  },
+  "window": {
+    "first_tick_utc": "2026-10-13T11:24:03Z",
+    "last_tick_utc": "2026-10-13T15:07:57Z",
+    "unattended_scheduled_span": "11:23:27Z to 14:55:55Z",
+    "closing_health": "DEGRADED",
+    "closing_health_reasons": ["the measured growth rate is volatile"]
+  },
+  "ticks": {
+    "total": 22,
+    "by_mode": {"SCHEDULED": 17, "MANUAL": 5},
+    "by_outcome": {
+      "OBSERVED": 14,
+      "ALREADY_OBSERVED": 3,
+      "NO_NEW_DATA": 3,
+      "ALREADY_RUNNING": 2
+    },
+    "slot_seals": 16,
+    "duplicate_slots": [],
+    "market_requests": 68,
+    "bars_appended": 51,
+    "corrupt_log_lines": {"runs": 0, "slots": 0, "alerts": 0},
+    "longest_silence_between_consuming_ticks_seconds": 1525.751,
+    "unavailability_seconds": 0,
+    "tick_wall_time_seconds": {"median": 31.273, "max": 49.24, "sum": 565.412}
+  },
+  "data": {
+    "venue": "Binance public /api/v3/klines (no credentials)",
+    "series": ["1h:BTC", "1h:ETH", "1h:SOL", "15m:BTC", "15m:ETH", "15m:SOL"],
+    "newly_closed_bars_stored_this_window": 51,
+    "per_series_appended": {
+      "15m:BTC": 14,
+      "15m:ETH": 14,
+      "15m:SOL": 14,
+      "1h:BTC": 3,
+      "1h:ETH": 3,
+      "1h:SOL": 3
+    },
+    "expected_new_bars": 51,
+    "missing_bars": 0,
+    "store_total_bars": 18084,
+    "day_store_hashes": {
+      "15m:BTC": "3bcbac7a66183cd9",
+      "15m:ETH": "037ed62a84f47bb0",
+      "15m:SOL": "66b2ee5f637eb674",
+      "1h:BTC": "237a41c3c26f0447",
+      "1h:ETH": "3a43186d15970bbb",
+      "1h:SOL": "6baa592b6dc4c09b"
+    },
+    "period_hashes_available_for": ["2026-10-11", "2026-10-12", "2026-10-13"],
+    "point_in_time": "only bars that had closed at the tick's own market instant are requested; a bar still open is not fetched, not counted and not called a gap",
+    "latency_rule": "close to store, measured per bar this tick pulled; a bar counts forward only if it arrived within 30 min (15m) or 2 h (1h) of closing",
+    "store_digests": {
+      "15m:BTC": "801561cc1bb95008",
+      "15m:ETH": "ef46058d60950d5a",
+      "15m:SOL": "a87c8be7b426874f",
+      "1h:BTC": "92cdde888f62d932",
+      "1h:ETH": "660e848c7b3b6815",
+      "1h:SOL": "fcb04f43ca06c799"
+    }
+  },
+  "ruleset": {
+    "params_hash": "d073a2d686b9b198c36c9a3c6009d36130577ba247a2016c3f791813cb749d77",
+    "agrees_with_publication": true,
+    "checked_on_every_tick": "forward_plan.assert_frozen_params() runs first; a moved ruleset is VERIFICATION_FAILED (exit 6), never a warning",
+    "changed_by_this_work_package": false,
+    "decision_digest_of_the_last_run": "e6ed38e7015e25dea4a2464289f3947d1f7ee6b941426337ee16591935ce911a"
+  },
+  "strategies_evaluated": {
+    "arms": 16,
+    "reading": "each arm is re-read over the whole forward window on every tick; the figures are hypothetical, and no arm is ranked, chosen or promoted here",
+    "names": [
+      "edge_intra_01:BASE",
+      "edge_intra_01:2X_FEES",
+      "edge_intra_01:ADVERSE",
+      "edge_intra_01r_limit:BASE",
+      "edge_intra_01r_market:BASE",
+      "edge_intra_01r_market:2X_FEES",
+      "edge_intra_01r_market:ADVERSE",
+      "edge_intra_02:BASE",
+      "edge_intra_02:2X_FEES",
+      "edge_intra_02:ADVERSE",
+      "edge_trend_01_1d:BASE",
+      "edge_trend_01_1d:2X_FEES",
+      "edge_trend_01_1d:ADVERSE",
+      "edge_trend_01_4h:BASE",
+      "edge_trend_01_4h:2X_FEES",
+      "edge_trend_01_4h:ADVERSE"
+    ],
+    "primary_arm": "edge_trend_01_4h:BASE"
+  },
+  "decisions": {
+    "signals_in_window": 324,
+    "captured_decisions": 101,
+    "refusals_in_window": 951,
+    "signals_on_this_date": 0,
+    "trades_on_this_date": 0,
+    "reading": "a decision is a hypothetical signal under the frozen ruleset; a refusal is a decision the ruleset declined to take. Both are evidence; neither is an order"
+  },
+  "hypothetical_economics": {
+    "primary_arm": "edge_trend_01_4h:BASE",
+    "primary_trades": 31,
+    "primary_gross_usdt": -9.087451,
+    "primary_fees_usdt": 29.608409,
+    "primary_price_costs_usdt": 5.611636,
+    "primary_net_usdt": -44.307497,
+    "primary_max_drawdown_pct": 2.776571,
+    "primary_no_trade_bars": 3974,
+    "reading": "hypothetical only: these are the frozen ruleset's numbers over the forward window with costs and slippage applied, not a realised result and not an expectation of one"
+  },
+  "risk_engine_parity": {
+    "verdict": "PARITY_PASS",
+    "defects": 0,
+    "decisions_compared": 544,
+    "counts": {
+      "AGREE_APPROVED": 79,
+      "AGREE_REFUSED_SAME_RULE": 155,
+      "RULE_ORDER_DIFFERS": 194,
+      "RULE_NOT_MODELLED_BY_RESEARCH": 72,
+      "SIZING_ROUNDING_ONLY": 35,
+      "RESEARCH_ONLY_REFUSAL": 9
+    },
+    "reading": "the research budget is compared with the real Risk Engine's own decisions on the same inputs; a difference is named, never smoothed"
+  },
+  "errors": [
+    {
+      "at_utc": "2026-10-13T11:25:39Z",
+      "run_id": "FWD-EDGE04-20261013T111500Z",
+      "outcome": "ALREADY_RUNNING",
+      "exit_code": 2,
+      "reason": "holder pid 35104 is live and renewed",
+      "slot_consumed": false,
+      "market_requests": 0
+    },
+    {
+      "at_utc": "2026-10-13T15:03:55Z",
+      "run_id": "FWD-EDGE04-20261013T150000Z",
+      "outcome": "ALREADY_RUNNING",
+      "exit_code": 2,
+      "reason": "holder pid 1308 is live and renewed",
+      "slot_consumed": false,
+      "market_requests": 0
+    }
+  ],
+  "alerts": {
+    "rows": 5,
+    "by_kind": {"HEALTH_RECOVERED": 3, "HEALTH_DEGRADED": 2},
+    "pre_fix_rows_that_survive": [
+      {"at_utc": "2026-10-13T11:23:38Z", "kind": "HEALTH_RECOVERED", "state": "HEALTHY", "note": "announced a recovery with nothing to recover from: a healthy tick after a healthy tick. Written before the vocabulary was fixed; left in place rather than hidden"},
+      {"at_utc": "2026-10-13T11:30:34Z", "kind": "HEALTH_RECOVERED", "state": "HEALTHY", "note": "the same, on the second tick"}
+    ],
+    "post_fix_behaviour_observed": "the only later HEALTH_RECOVERED (12:25:55Z) follows the HEALTH_DEGRADED episode recorded at 11:55:56Z",
+    "removed_row": "one further pre-fix row, announcing a recovery while carrying state DEGRADED, was dropped from the bounded alert log while the vocabulary was fixed; its text lived only there and is not quoted. The run log was not rewritten",
+    "no_order_or_promotion_alert": "no alert in the vocabulary can place an order or promote anything"
+  },
+  "publication": {
+    "pointer": "data/forward/edge04/publication/LATEST.json",
+    "artifacts": 13,
+    "set": [
+      "daily",
+      "summary",
+      "cumulative",
+      "markdown",
+      "signals",
+      "trades",
+      "decisions",
+      "refusals",
+      "equity",
+      "cases_csv",
+      "json",
+      "observation",
+      "daily_rollup"
+    ],
+    "published_at_utc": "2026-10-13T11:23:39Z",
+    "run_id": "FWD-EDGE03-20261013T112339Z",
+    "cadence": "once per 24 h, not per tick; every later tick records 'the publication cadence has not elapsed'",
+    "digests_verified": true,
+    "bytes": 2450494,
+    "offline_reproduction": {
+      "command": "scripts/edge04_observer.py --report-only <dir> --compare",
+      "byte_identical": {"daily": true, "daily_rollup": true, "summary": true, "cumulative": false},
+      "cumulative_difference": "one line: 'Ledger rows on file: 228' now against '12' as published. write_observability() counts the ingest ledger's rows on disk at the path the payload names, so that line is a live reading rather than a function of the preserved payload. Three of four reproduce byte for byte; the property holds but it expires, and it is reported rather than claimed away"
+    }
+  },
+  "independent_verification": {
+    "verifier": "scripts/edge04_verify.py",
+    "shares_code_with_the_lane": false,
+    "verdict": "VERIFY_PASS",
+    "checks_passed": 15,
+    "checks_total": 15,
+    "self_test": {
+      "verdict": "SELF_TEST_PASS",
+      "sabotages_detected": 20,
+      "sabotages_applied": 20,
+      "skipped": 0
+    },
+    "failed_then_fixed": [
+      "DAILY_EVIDENCE_CONSISTENT: a day file that let a repeat trigger overwrite an interval's numbers",
+      "BUDGET_DECLARED_MEASURED_AND_BOUNDED: a reading taken before the tick's own row was on disk",
+      "BUDGET_DECLARED_MEASURED_AND_BOUNDED: a snapshot that copied a curated list instead of the whole state root"
+    ],
+    "self_test_blind_spot_found": "the 'grow a bounded log past its cap' sabotage was caught only as a side effect of a byte comparison; the cap arm itself compared names the bundle never loads. Both were repaired",
+    "verdict_file": "reports/edge-recovery/WP-EDGE-04/INDEPENDENT_VERIFICATION.json"
+  },
+  "resources": {
+    "lane_bytes": 2998142,
+    "lane_budget_bytes": 268435456,
+    "lane_used_percent_of_budget": 1.12,
+    "store_bytes": 5598300,
+    "publication_bytes": 2450494,
+    "free_bytes": 7252742144,
+    "free_gib": 6.7546,
+    "total_gib": 237.5264,
+    "volume_used_percent": 97.16,
+    "warning_free_bytes": 5368709120,
+    "critical_free_bytes": 2147483648,
+    "disk_status": "HEALTHY",
+    "measured_growth_bytes_per_day": null,
+    "mean_growth_bytes_per_day": 1859126.783,
+    "coefficient_of_variation": 0.556,
+    "growth_status": "VOLATILE",
+    "forecast": null,
+    "forecast_rule": "a forecast is published only when the measured rate is stable; an invented number is worse than no number",
+    "bounded_logs": {
+      "runs_kept": 2880,
+      "slots_kept": 2880,
+      "ledger_kept": 4032,
+      "daily_kept": 366,
+      "alerts_kept": 500
+    },
+    "frozen_evidence_never_pruned": ["the forward store", "daily/<date>.json", "every published report"]
+  },
+  "forward_coverage": {
+    "epoch_utc": "2026-03-01T00:00:00Z",
+    "required_days": 60,
+    "prospectively_observed": 0,
+    "remaining_days": 60,
+    "days_with_any_data": 227,
+    "densely_covered_but_backfilled": 226,
+    "rule": "a day counts only if every primary asset holds at least 90% of the bars the calendar expects and those bars reached the store while still fresh",
+    "reading": "zero, and zero is correct: the frozen corpora cover history, and a day on which the scheduler ran is not a forward day. This is an observation requirement, not an admission"
+  },
+  "not_exercised": [
+    "a long unattended window: 2 h 5 m of scheduled firing was observed, which is not 60 days of it",
+    "logoff or reboot across a tick: the task runs under InteractiveToken and surviving logoff needs stored credentials this work package is not authorised to hold",
+    "Linux registration: no POSIX host here; the runner is portable and the cron/systemd lines are declared",
+    "a real provider outage: the venue answered all day",
+    "live DISK_BUDGET_EXCEEDED / VERIFICATION_FAILED / RUNTIME_EXCEPTION / STALE_DATA / MISSING_BARS: exercised in the suite and the sabotage matrix, not live",
+    "reaching the 60-day floor"
+  ],
+  "false_success_controls": {
+    "orders_sent": 0,
+    "promotions": 0,
+    "checks_that_cannot_fail": 0,
+    "days_counted_without_a_forward_observation": 0,
+    "duplicate_seals_in_the_ledger": 0,
+    "claim_that_a_rehearsal_was_a_live_run": 0,
+    "reading_larger_than_the_tree": 0
+  }
+}
