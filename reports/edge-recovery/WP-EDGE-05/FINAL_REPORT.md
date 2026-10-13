@@ -178,7 +178,8 @@ publican por cohorte, sin agregarlas nunca como si fueran una sola muestra:
 | --- | --- | --- |
 | **HISTÓRICO / BACKFILLED** | 226 | barras almacenadas después del congelado pero **no** observadas al cerrarse: es historia, no observación |
 | **FORWARD PROSPECTIVO** | **0** | días cuyas barras se guardaron al cerrarse, dentro del límite de latencia de su marco |
-| Días con algún dato | 227 | incluye el 2026-10-13, clasificado `INCOMPLETE` (cobertura 0,5) y que **no cuenta** |
+| **RECHAZADOS** (otras clases) | 1 | el 2026-10-13, clasificado `INCOMPLETE` (cobertura 0,54): **no cuenta**, y se publica con su motivo |
+| Días con algún dato | 227 | el listado completo, día a día y con su razón, está en [`EDGE05_FORWARD_ELIGIBILITY.json`](reports/edge-recovery/WP-EDGE-05/EDGE05_FORWARD_ELIGIBILITY.json) |
 
 Criterios fijados **antes** de acumular: cobertura mínima 90 % de las 24 barras horarias por activo
 principal, latencia máxima de 1 h y 15 min, y exclusión explícita del backfill. La cohorte prospectiva
@@ -216,7 +217,7 @@ promociona nada: el resultado neto es negativo y así se publica.
 
 | ACC | Qué se exigía | Resultado | Base |
 | --- | --- | --- | --- |
-| ACC-01 | Auditoría del runtime y baseline reproducible | **PASS** | `reports/edge-recovery/runtime_authority_map.md`; commit base `e07785b`, tareas exportadas, espacio libre y snapshot |
+| ACC-01 | Auditoría del runtime y baseline reproducible | **PASS** | [`RUNTIME_AUTHORITY_MAP.md`](reports/edge-recovery/WP-EDGE-05/RUNTIME_AUTHORITY_MAP.md) propio de este WP (el de WP-EDGE-00 no cubría esta cadena); commit base `e07785b`, tareas exportadas, espacio libre y snapshot |
 | ACC-02 | El planificador dispara de verdad, ≥2 slots sin intervención | **PASS** | ejecución desatendida de lane y vigilante; 41 ticks, 9 lecturas, resultado `0` |
 | ACC-03 | El vigilante detecta una parada inducida, con latencia medida y sin falso PASS | **PASS** | 6 s (`18:48:10Z`→`18:48:16Z`), `WATCH_ALARM`/`SCHEDULER_FAILURE`, alerta `SCHEDULER_DISABLED`, episodio cerrado |
 | ACC-04 | Caída tras persistencia parcial | **PASS** | 6 barras de `15:02:10Z` presentes, cobertura única, **0 duplicaciones** |

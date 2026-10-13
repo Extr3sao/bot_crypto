@@ -17,13 +17,13 @@
     "WATCHDOG_DEGRADED",
     "WATCHDOG_RECOVERED"
   ],
-  "alerts_on_file": 25,
-  "generated_at_utc": "2026-10-13T20:13:48Z",
+  "alerts_on_file": 26,
+  "generated_at_utc": "2026-10-13T20:18:29Z",
   "hypothetical": true,
   "latest": {
-    "at_utc": "2026-10-13T20:02:39Z",
+    "at_utc": "2026-10-13T20:17:33Z",
     "category": "HEALTHY",
-    "check_id": "WATCH-20261013T200239Z",
+    "check_id": "WATCH-20261013T201733Z",
     "checks": {
       "evidence_integrity": {
         "reason": "the lane's evidence is readable and internally consistent",
@@ -42,7 +42,7 @@
         "status": "OK"
       },
       "market_expectation": {
-        "reason": "6 bar(s) closed since the last tick and are pending the next trigger: normal latency inside the declared schedule, not a failure",
+        "reason": "3 bar(s) closed since the last tick and are pending the next trigger: normal latency inside the declared schedule, not a failure",
         "status": "OK"
       },
       "resource_disk": {
@@ -80,23 +80,23 @@
     },
     "findings": [],
     "history": {
-      "checks_on_file": 8,
+      "checks_on_file": 9,
       "corrupt_lines": 0,
       "episode_open": false,
       "episodes_of_trouble": 1,
       "newest_trouble_at_utc": "2026-10-13T18:48:16Z",
       "open_episode_since_utc": null,
-      "previous_at_utc": "2026-10-13T19:47:33Z",
+      "previous_at_utc": "2026-10-13T20:02:39Z",
       "previous_verdict": "WATCH_OK",
-      "read_at_utc": "2026-10-13T20:02:39Z",
+      "read_at_utc": "2026-10-13T20:17:33Z",
       "recoveries": 1
     },
     "hypothetical": true,
     "lane": {
       "missing_at_last_tick": 0,
-      "newest_consuming_run_id": "FWD-EDGE04-20261013T194500Z",
-      "pending_since_last_tick": 6,
-      "silence_seconds": 368.914
+      "newest_consuming_run_id": "FWD-EDGE04-20261013T200000Z",
+      "pending_since_last_tick": 3,
+      "silence_seconds": 359.517
     },
     "market_quiet": false,
     "operational_failure": false,
@@ -106,7 +106,7 @@
     "scheduler": {
       "enabled": true,
       "last_task_result": 0,
-      "next_run_utc": "10/13/2026 22:10:53",
+      "next_run_utc": "10/13/2026 22:25:53",
       "state": "Ready",
       "task_name": "TradingAgentic-EDGE04-Forward"
     },
@@ -116,7 +116,7 @@
   },
   "order_sent": false,
   "promotion": "NONE",
-  "readings_on_file": 9,
+  "readings_on_file": 10,
   "schema_version": "EDGE05_WATCHDOG_STATUS_V1",
   "task": "TradingAgentic-EDGE05-Watchdog",
   "verdicts_seen": [

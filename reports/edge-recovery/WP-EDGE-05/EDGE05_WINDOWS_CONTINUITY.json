@@ -4,7 +4,7 @@
     "schtasks /change /tn \"TradingAgentic-EDGE05-Watchdog\" /ru \"<DOMAIN\\user>\" /rp \"<password>\"",
     "# or, from PowerShell, which also needs the password interactively:\n$c = Get-Credential; Set-ScheduledTask -TaskName 'TradingAgentic-EDGE04-Forward' -User $c.UserName -Password $c.GetNetworkCredential().Password"
   ],
-  "generated_at_utc": "2026-10-13T20:13:50Z",
+  "generated_at_utc": "2026-10-13T20:18:31Z",
   "hypothetical": true,
   "logon_mode_as_the_platform_prints_it": {
     "Ejecutar como usuario": "GVLLFR0035",

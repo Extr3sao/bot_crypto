@@ -1,35 +1,39 @@
 {
   "files": {
+    "EDGE05_FORWARD_ELIGIBILITY.json": {
+      "bytes": 155994,
+      "sha256": "12766a38eb668059e884de0a3023ccbca471bcc7b5d9e8a7c1b9a105e301ad50"
+    },
     "EDGE05_RESOURCE_BUDGET.json": {
       "bytes": 2080,
-      "sha256": "add6492cc4d900a138eefaebed38e6f2ede778878965fe382c25c6edd96b28d0"
+      "sha256": "4c81c27f07417496b65e82eae1bbd2339ad7e10e4037d3bd47567bf7a605603e"
     },
     "EDGE05_TASK_REGISTRATION.json": {
       "bytes": 9362,
       "sha256": "0a8c6b80e102bb63b910451e5dd7b494053408cd1d65683abea3daf6d94daf85"
     },
     "EDGE05_WATCHDOG_STATUS.json": {
-      "bytes": 4190,
-      "sha256": "23353537346f68ec5d52ae919fcb4e398d7582881c542be316ab2d9622fdb017"
+      "bytes": 4191,
+      "sha256": "1f4952ff492cc1af9884dd134edf38bc3d9bf198f37f7edb83427408b8b9456b"
     },
     "EDGE05_WINDOWS_CONTINUITY.json": {
       "bytes": 7409,
-      "sha256": "3e4dc6ff39e6c421fa9bd84b2c15b7260358c731049faaceaf3bcab5467b3477"
+      "sha256": "a2e8eb6323ec8c8451de5377a739382b969cd695973c3183ce3fbe61a5e588cb"
     },
     "EDGE05_WINDOWS_CONTINUITY.md": {
       "bytes": 4623,
       "sha256": "4bdaba0e637aa6e09397759e6d17fed6d0183016db2f6e46abd6b88014a36140"
     },
     "FASE5_TIMELINE.md": {
-      "bytes": 8626,
-      "sha256": "fe843ffa8618a63b6ad8389c1d6b4d2490ab886365d6a5faa379ed567be4ae22"
+      "bytes": 8795,
+      "sha256": "5c6946162ad97a92442da06e95ee6a049a203f74a119d712ced56185749386be"
     },
     "STORE_SLICE.json": {
       "bytes": 14728,
-      "sha256": "34b6abb4924b6711cd5cbf890d931d3cf0dfbd236c0f7bd57aeaa4fc8484005c"
+      "sha256": "5f0e2577ab26fd54b0984dcc1d392503395545b72ee44e3921d174b46821a721"
     }
   },
-  "generated_at_utc": "2026-10-13T20:13:50Z",
+  "generated_at_utc": "2026-10-13T20:18:31Z",
   "hypothetical": true,
   "inputs": {
     "lane_state_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04",

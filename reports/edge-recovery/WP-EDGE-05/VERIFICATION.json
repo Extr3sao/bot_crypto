@@ -1,11 +1,11 @@
 {
-  "at_utc": "2026-10-13T20:16:32Z",
+  "at_utc": "2026-10-13T20:19:29Z",
   "check_count": 13,
   "checks": [
     {
       "check": "watchdog_rows_shape_and_restraint",
       "detail": [],
-      "reading": "9 reading(s): every one makes no market request, holds no lease and writes nothing into the lane",
+      "reading": "10 reading(s): every one makes no market request, holds no lease and writes nothing into the lane",
       "status": "PASS"
     },
     {
@@ -38,13 +38,13 @@
         "problems": [],
         "table_size": 10
       },
-      "reading": "9 reading(s) carried a scheduler result code",
+      "reading": "10 reading(s) carried a scheduler result code",
       "status": "PASS"
     },
     {
       "check": "alerts_are_per_transition",
       "detail": [],
-      "reading": "25 alert(s), 16 kind(s)",
+      "reading": "26 alert(s), 16 kind(s)",
       "status": "PASS"
     },
     {
@@ -91,7 +91,7 @@
     {
       "check": "watchdog_bounds_declared_and_kept",
       "detail": [],
-      "reading": "9 reading(s), 25 alert(s), 1 daily file(s), 194146 bytes",
+      "reading": "10 reading(s), 26 alert(s), 1 daily file(s), 213656 bytes",
       "status": "PASS"
     },
     {
@@ -117,7 +117,7 @@
     "sabotages": [
       {
         "detail": [
-          "WATCH-20261013T200239Z: market_requests 4"
+          "WATCH-20261013T201733Z: market_requests 4"
         ],
         "detected": true,
         "expected_check": "watchdog_rows_shape_and_restraint",
@@ -167,8 +167,8 @@
       {
         "detail": [
           {
-            "check_id": "WATCH-20261013T200239Z",
-            "floor_from_the_log": 1265.964,
+            "check_id": "WATCH-20261013T201733Z",
+            "floor_from_the_log": 2159.517,
             "reported": 0.0
           }
         ],
@@ -180,9 +180,9 @@
       {
         "detail": [
           {
-            "check_id": "WATCH-20261013T200239Z",
+            "check_id": "WATCH-20261013T201733Z",
             "market_quiet": true,
-            "missing_by_recomputation": 45
+            "missing_by_recomputation": 48
           }
         ],
         "detected": true,
@@ -197,7 +197,7 @@
               "acceptable": [
                 "DISK_BUDGET_EXCEEDED"
               ],
-              "check_id": "WATCH-20261013T200239Z",
+              "check_id": "WATCH-20261013T201733Z",
               "exit_code": 5,
               "lane_outcome": "OBSERVED"
             }
@@ -231,7 +231,7 @@
           {
             "kind": "RECONCILIATION_REQUIRED",
             "reading": "repeated state",
-            "state": "126 UNATTRIBUTED BARS"
+            "state": "132 UNATTRIBUTED BARS"
           }
         ],
         "detected": true,
@@ -328,7 +328,7 @@
     "verdict": "SELF_TEST_PASS 15/15"
   },
   "verdict": "VERIFY_PASS 13/13",
-  "verified_at_utc": "2026-10-13T20:16:32Z",
+  "verified_at_utc": "2026-10-13T20:19:29Z",
   "watched": {
     "lane_state_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04",
     "store_mode": "LIVE",

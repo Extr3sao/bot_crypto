@@ -78,5 +78,7 @@
 | 2026-10-13T20:02:39Z | alert | `RECONCILIATION_REQUIRED` 126 UNATTRIBUTED BARS (WARNING) |
 | 2026-10-13T20:02:39Z | watchdog | `WATCH_OK` (HEALTHY) · no finding |
 | 2026-10-13T20:11:33Z | lane | `OBSERVED` FWD-EDGE04-20261013T200000Z · 6 new bar(s) · 7 request(s) · slot 2026-10-13T20:00Z |
+| 2026-10-13T20:17:33Z | alert | `RECONCILIATION_REQUIRED` 132 UNATTRIBUTED BARS (WARNING) |
+| 2026-10-13T20:17:33Z | watchdog | `WATCH_OK` (HEALTHY) · no finding |
 
-*42 lane tick(s), 9 watchdog reading(s), 25 alert(s).*
+*42 lane tick(s), 10 watchdog reading(s), 26 alert(s).*

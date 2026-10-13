@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-10-13T20:13:50Z",
+  "generated_at_utc": "2026-10-13T20:18:31Z",
   "hypothetical": true,
   "order_sent": false,
   "reading": "the bars after each series' ledger epoch, which is the whole of what the reconciliation reads from the store, plus the digest of the file they were taken from",

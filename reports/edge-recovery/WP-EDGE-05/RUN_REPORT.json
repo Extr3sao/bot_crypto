@@ -19,7 +19,9 @@
     "reconciliation": "data/forward/edge05/reconciliation/RECONCILIATION.json",
     "watchdog_install_receipt": "data/forward/edge05/install.json",
     "verifier_verdict": "reports/edge-recovery/WP-EDGE-05/VERIFICATION.json",
-    "closure_artefacts": "reports/edge-recovery/WP-EDGE-05/EDGE05_{WATCHDOG_STATUS,RESOURCE_BUDGET,WINDOWS_CONTINUITY}.json",
+    "closure_artefacts": "reports/edge-recovery/WP-EDGE-05/EDGE05_{WATCHDOG_STATUS,RESOURCE_BUDGET,WINDOWS_CONTINUITY,FORWARD_ELIGIBILITY}.json",
+    "forward_eligibility": "reports/edge-recovery/WP-EDGE-05/EDGE05_FORWARD_ELIGIBILITY.json (227 days, 0 eligible)",
+    "runtime_authority_map": "reports/edge-recovery/WP-EDGE-05/RUNTIME_AUTHORITY_MAP.md",
     "timeline": "reports/edge-recovery/WP-EDGE-05/evidence/FASE5_TIMELINE.md",
     "task_registrations": "reports/edge-recovery/WP-EDGE-05/evidence/EDGE05_TASK_REGISTRATION.json",
     "outage_rehearsal": "reports/edge-recovery/WP-EDGE-05/evidence/OUTAGE_REHEARSAL_START.json",
@@ -341,8 +343,10 @@
       },
       "rule": "a day counts only if every primary asset holds at least 90% of the 24 hourly bars the calendar expects for it, and every one of those bars was stored within its timeframe's lag bound of closing"
     },
+    "published_as": "reports/edge-recovery/WP-EDGE-05/EDGE05_FORWARD_ELIGIBILITY.json",
     "cohorts_kept_apart": {
       "HISTORICAL_BACKFILLED": {"days": 226, "counted_as_forward": false, "measured": "the 226 days of the observation window, all classed DENSE_BUT_BACKFILLED: their bars were stored long after they closed"},
+      "REFUSED_OTHER_CLASSES": {"days": 1, "by_class": {"INCOMPLETE": 1}, "counted_as_forward": false},
       "FORWARD_PROSPECTIVE": {"days": 0, "counted_as_forward": true},
       "reading": "a backfill is history, not an observation; the two are reported separately and never aggregated into one sample"
     }

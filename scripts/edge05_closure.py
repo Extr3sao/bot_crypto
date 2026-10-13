@@ -9,6 +9,8 @@ operating system's own description of the scheduled task, and writes:
 
 * ``EDGE05_WATCHDOG_STATUS.json`` — the newest verdict, its history and the alert log's shape;
 * ``EDGE05_RESOURCE_BUDGET.json`` — measured growth, the declared thresholds and what each one does;
+* ``EDGE05_FORWARD_ELIGIBILITY.json`` — the forward days the lane's own coverage record admits and
+  the days it refuses, split into the two cohorts that must never be added together;
 * ``EDGE05_WINDOWS_CONTINUITY.json`` / ``.md`` — the task's registered settings, the operating
   system's own statement about the logon mode, what that permits, and the one change that would
   remove the limitation (which needs the owner's password and is therefore not applied here);
@@ -319,6 +321,129 @@ def resource_budget(*, lane: Path, watch: Path, store: Path) -> dict[str, Any]:
     }
 
 
+def forward_eligibility(*, lane: Path) -> dict[str, Any]:
+    """The forward days that count, and the days that do not, with the rule that decides it.
+
+    Nothing here is recomputed and nothing here is decided: the lane's own coverage record holds the
+    criteria, frozen before any result was accumulated, and its own verdict for every day. This
+    function's job is to carry that verdict into the published evidence with its source and the
+    digest of the file it came from, in the two cohorts that must never be added together. A day the
+    lane has not admitted is listed with the reason it was refused, and the prospective cohort is
+    published even when it is empty - especially when it is empty.
+    """
+    path = lane / "coverage.json"
+    coverage = read_json(path)
+    if not coverage:
+        return {
+            "schema_version": "EDGE05_FORWARD_ELIGIBILITY_V1",
+            "generated_at_utc": stamp_ms(now_ms()),
+            "source": str(path),
+            "source_available": False,
+            "reading": (
+                "the lane's own coverage record is not readable here, so no forward day is claimed: "
+                "an unreadable eligibility record is not an eligible day"
+            ),
+            "required_days": None,
+            "eligible_days": None,
+            "hypothetical": True,
+            "order_sent": False,
+            "promotion": "NONE",
+        }
+    days = coverage.get("days") or []
+    rows: list[dict[str, Any]] = []
+    for day in days:
+        observed = bool(day.get("prospectively_observed"))
+        reasons: list[str] = []
+        if not observed:
+            if str(day.get("class")) == "DENSE_BUT_BACKFILLED":
+                reasons.append(
+                    "the bars are stored but were not stored as they closed: a backfill is history, "
+                    "not an observation of the future"
+                )
+            elif day.get("densely_covered") is False:
+                reasons.append(
+                    f"coverage below the declared floor for at least one primary asset "
+                    f"(dense={day.get('densely_covered')})"
+                )
+            else:
+                reasons.append(f"the lane did not admit it (class {day.get('class')})")
+        rows.append(
+            {
+                "utc_date": day.get("day"),
+                "class": day.get("class"),
+                "eligible": observed,
+                "prospectively_observed": observed,
+                "expected_bars": day.get("expected_bars"),
+                "coverage": day.get("coverage"),
+                "stored_bars": day.get("stored_bars"),
+                "prospectively_observed_bars": day.get("prospectively_observed_bars"),
+                "reasons": reasons,
+            }
+        )
+    prospective = [row for row in rows if row["eligible"]]
+    backfilled = [row for row in rows if not row["eligible"] and row["class"] == "DENSE_BUT_BACKFILLED"]
+    refused = [row for row in rows if not row["eligible"] and row["class"] != "DENSE_BUT_BACKFILLED"]
+    refused_by_class: dict[str, int] = {}
+    for row in refused:
+        key = str(row["class"])
+        refused_by_class[key] = refused_by_class.get(key, 0) + 1
+    return {
+        "schema_version": "EDGE05_FORWARD_ELIGIBILITY_V1",
+        "generated_at_utc": stamp_ms(now_ms()),
+        "source": str(path),
+        "source_schema": coverage.get("schema_version"),
+        "source_sha256": sha256_file(path),
+        "source_generated_at_utc": coverage.get("generated_at_utc"),
+        "source_available": True,
+        "rule": coverage.get("rule"),
+        "criteria_frozen_before_accumulating": {
+            "coverage_required": coverage.get("coverage_required"),
+            "primary_assets": coverage.get("primary_assets"),
+            "primary_series": coverage.get("primary_series"),
+            "lag_bounds_ms": coverage.get("lag_bounds_ms") or coverage.get("lag_bound_ms"),
+            "freeze": coverage.get("freeze"),
+        },
+        "days": rows,
+        "counts": {
+            "days_with_any_data": len(rows),
+            "eligible_days": len(prospective),
+            "required_days": coverage.get("required_days"),
+            "remaining_days": coverage.get("remaining_days"),
+            "days_in_the_observation_window_but_backfilled": coverage.get(
+                "window_observation_days"
+            ),
+        },
+        "cohorts": {
+            "FORWARD_PROSPECTIVE": {
+                "days": len(prospective),
+                "counted_as_forward": True,
+                "instances": [row["utc_date"] for row in prospective],
+            },
+            "HISTORICAL_BACKFILLED": {
+                "days": len(backfilled),
+                "counted_as_forward": False,
+                "instances": [row["utc_date"] for row in backfilled],
+            },
+            "REFUSED_OTHER_CLASSES": {
+                "days": len(refused),
+                "counted_as_forward": False,
+                "by_class": refused_by_class,
+                "instances": [row["utc_date"] for row in refused],
+            },
+            "reading": (
+                "the cohorts are reported separately and are never aggregated into one sample: a "
+                "backfilled day is history, a refused day is not a day, and only the prospective "
+                "cohort observes the future"
+            ),
+        },
+        "not_counted": coverage.get("not_counted"),
+        "not_an_admission": coverage.get("not_an_admission"),
+        "hypothetical": True,
+        "order_sent": False,
+        "promotion": "NONE",
+    }
+
+
 def windows_continuity(*, task: dict[str, Any], mode: dict[str, Any]) -> dict[str, Any]:
     settings = task.get("settings") or {}
     internals = settings.get("settings") or {}
@@ -515,6 +640,8 @@ def main(argv: list[str] | None = None) -> int:
 
     budget = resource_budget(lane=lane, watch=watch, store=store)
     write_json("EDGE05_RESOURCE_BUDGET.json", budget, directory=out)
+
+    write_json("EDGE05_FORWARD_ELIGIBILITY.json", forward_eligibility(lane=lane), directory=out)
 
     task = task_xml(LANE_TASK)
     watchdog_task = task_xml(WATCHDOG_TASK)

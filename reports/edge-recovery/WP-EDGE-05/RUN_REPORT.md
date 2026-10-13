@@ -208,6 +208,13 @@ which is the whole point of the two floors being declared in advance.
   vocabulary and the verdicts seen.
 * **`EDGE05_RESOURCE_BUDGET.json`** — measured growth, declared floors, what each threshold does, what
   is never deleted and what is pruned.
+* **`EDGE05_FORWARD_ELIGIBILITY.json`** — the 227 days with data, each with the lane's own class, its
+  coverage, and the reason it was admitted or refused, plus the criteria frozen before any result was
+  accumulated (coverage floor, lag bounds, `params_hash`) and the cohorts kept apart: **0** prospective,
+  226 backfilled, 1 refused as `INCOMPLETE`. The prospective cohort is published even when it is empty.
+* **`RUNTIME_AUTHORITY_MAP.md`** — this work package's own authority map and baseline: the real
+  entrypoints, what each one executes, every write surface and who owns it, and what the map
+  deliberately does not cover.
 * **`EDGE05_WINDOWS_CONTINUITY.json` / `.md`** — the registered settings, the operating system's own
   statement about the logon mode, what that permits, and the one change that would remove the
   limitation (which needs the owner's password and is therefore not applied).

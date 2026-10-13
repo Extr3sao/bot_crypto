@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-10-13T20:13:48Z",
+  "generated_at_utc": "2026-10-13T20:18:29Z",
   "hypothetical": true,
   "measured": {
     "from_the_lanes_own_samples": {
@@ -21,7 +21,7 @@
     },
     "store_bars_total": 18159,
     "store_bytes": 5621615,
-    "watchdog_tree_bytes": 193564
+    "watchdog_tree_bytes": 213656
   },
   "never_deleted": [
     "the forward store",
@@ -38,7 +38,7 @@
   "schema_version": "EDGE05_RESOURCE_BUDGET_V1",
   "snapshots": {
     "policy": "a snapshot that would be identical to the previous one is refused and the refusal recorded; the watchdog copies its own readings, never the store",
-    "store_slice_bytes": 14146
+    "store_slice_bytes": 14728
   },
   "thresholds": {
     "free_space": {
@@ -53,8 +53,8 @@
     }
   },
   "volume": {
-    "free_bytes": 6069309440,
-    "free_gib": 5.6525,
+    "free_bytes": 6060654592,
+    "free_gib": 5.6444,
     "total_bytes": 255041990656,
     "used_percent": 97.62
   }
