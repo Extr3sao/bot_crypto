@@ -454,6 +454,36 @@ class Verifier:
                         "market_quiet": expectation.get("market_quiet"),
                     }
                 )
+            # The reading's own arithmetic, which needs neither a clock nor a store. The summary of a
+            # reading is a function of its parts, so a summary that disagrees with them is broken
+            # whatever the market later did: a store that has since caught up can hide a stale
+            # summary, and cannot hide a reading that contradicts itself.
+            series_rows = expectation.get("series") or []
+            claimed_pending = 0
+            for item in series_rows:
+                claimed_pending += int(item.get("pending_since_last_tick") or 0)
+            if series_rows and bool(expectation.get("market_quiet")) != (claimed_pending == 0):
+                problems.append(
+                    {
+                        "check_id": row.get("check_id"),
+                        "market_quiet": expectation.get("market_quiet"),
+                        "claimed_pending_on_its_own_series": claimed_pending,
+                        "reading": (
+                            "the reading calls the market quiet while its own series report bars "
+                            "closed and not yet collected"
+                        ),
+                    }
+                )
+            stated_total = expectation.get("pending_since_last_tick")
+            if stated_total is not None and int(stated_total) != claimed_pending:
+                problems.append(
+                    {
+                        "check_id": row.get("check_id"),
+                        "pending_since_last_tick": stated_total,
+                        "sum_over_its_own_series": claimed_pending,
+                        "reading": "the reading's pending total is not the sum over its own series",
+                    }
+                )
             if last_market is None:
                 continue
         return self.check(
@@ -1004,10 +1034,23 @@ def sabotage_cases() -> list[dict[str, Any]]:
         last["checks"]["lane_cadence"]["silence_seconds"] = 0.0
 
     def s_market_quiet(rows, ev, lane):
-        rows[-1]["checks"]["market_expectation"]["market_quiet"] = True
-        rows[-1]["checks"]["market_expectation"]["reason"] = "sabotage"
-        for series in rows[-1]["checks"]["market_expectation"]["series"]:
+        # A quiet market is only a lie when the store is behind the calendar, and a lane that has
+        # just ticked leaves the store level with it — so the lie is planted where it is always a
+        # lie: the reading keeps its claim of a quiet market and is moved forward three hours, to an
+        # instant by which the closed-bar calendar says every series owes bars the store cannot
+        # hold. The reading's own parts are moved with it so that the summary still agrees with
+        # them, and the store is the only thing left contradicting it.
+        expectation = rows[-1]["checks"]["market_expectation"]
+        expectation["market_quiet"] = True
+        expectation["reason"] = "sabotage"
+        expectation["pending_since_last_tick"] = 0
+        shift = 3 * HOUR
+        for series in expectation["series"]:
             series["pending_since_last_tick"] = 0
+            if series.get("newest_closed_now_ts") is not None:
+                series["newest_closed_now_ts"] = int(series["newest_closed_now_ts"]) + shift
+        rows[-1]["at_ms"] = int(rows[-1].get("at_ms") or 0) + shift
+        rows[-1]["at_utc"] = stamp_ms(int(rows[-1]["at_ms"]))
 
     def s_scheduler_translation(rows, ev, lane):
         for row in rows:
