@@ -212,7 +212,7 @@ which is the whole point of the two floors being declared in advance.
   coverage, and the reason it was admitted or refused, plus the criteria frozen before any result was
   accumulated (coverage floor, lag bounds, `params_hash`) and the cohorts kept apart: **0** prospective,
   226 backfilled, 1 refused as `INCOMPLETE`. The prospective cohort is published even when it is empty.
-* **`RUNTIME_AUTHORITY_MAP.md`** — this work package's own authority map and baseline: the real
+* **`runtime_authority_map.md`** — this work package's own authority map and baseline: the real
   entrypoints, what each one executes, every write surface and who owns it, and what the map
   deliberately does not cover.
 * **`EDGE05_WINDOWS_CONTINUITY.json` / `.md`** — the registered settings, the operating system's own
@@ -259,6 +259,14 @@ nothing and rewrites nothing of the lane's.
    market quiet while its own series report bars closed and uncollected is a contradiction no store
    state can excuse, and one a store that has since caught up would hide. Both the flip and the
    clock-drift are now covered, and the matrix is deterministic rather than lucky.
+5. **A suite that let the host decide.** `test_edge04_autonomous.py` and `test_edge05_watchdog.py`
+   built their fixtures on the machine's own volume, so once this host fell under the 5 GiB healthy
+   floor the same code produced 42 failures at 1.9 GiB free and 18 at 2.0 GiB: a verdict decided by
+   free space. Both fixtures now pin a healthy volume by default — which is the rule the file itself
+   already stated for the two tests that are about the disk policy (*a host whose volume happens to be
+   low must not be able to turn its assertions green or red*). With the pin in place the three
+   forward-chain suites report **91 passed, exit 0** on a host holding **1.94 GiB free**, the same
+   state that failed before, while the tests that are about the disk policy still pin their own floors.
 
 ## 10. Where it stands, and what is missing
 
@@ -274,11 +282,11 @@ nothing and rewrites nothing of the lane's.
 | The six bars of the previous crash | **traceable** — present, single coverage, closed |
 | Idempotence / no double decision | **yes** — second ingest pass appends 0, `RESTART_PROOF_BROKEN` 0 |
 | Windows continuity audited, safe mode proposed | **yes**; the logoff case is a recorded operator blocker |
-| Growth measured, thresholds defined, near-full disk tested | **yes**; thresholds exercised in tests, not live |
+| Growth measured, thresholds defined, near-full disk tested | **yes**; thresholds exercised in tests **and then crossed live** (see §12) |
 | 60 forward days | **0 of 60** — this work package adds reliability, not a single forward day |
 | A host that stays logged in | **required and not guaranteed** — `InteractiveToken`; surviving logoff needs a credential this work package will not hold |
 | Long unattended window | **NOT_EXERCISED** — a 24-minute live outage, not 60 days of scheduled firing |
-| Live `DISK_BUDGET_EXCEEDED` / `STORE_STALE` / `EVIDENCE_CORRUPT` | exercised by tests and the sabotage matrix, **not live** |
+| Live `DISK_BUDGET_EXCEEDED` / `STORE_STALE` / `EVIDENCE_CORRUPT` | `DISK_BUDGET_EXCEEDED` **live, 5 times** (§12); `STORE_STALE` and `EVIDENCE_CORRUPT` still exercised by tests and the sabotage matrix only |
 
 Not claimed: `PASS`, `CERTIFIED`, `PRODUCTION_READY`, `READY_FOR_PAPER`. The watchdog observes; it does
 not admit, and it cannot promote a strategy. Zero of sixty forward days remains the honest reading of
@@ -315,3 +323,39 @@ back to back. Run the verifier alone more than fifteen minutes after the last re
 supposed to report `reconciliation_chains_recomputed` failing by exactly the ticks the lane has added
 since — that is the check working, not the watchdog failing. The published pair in this directory is
 reconciliation `20:13:12Z` → verification `20:13:18Z`, both regenerated from the live state.
+
+## 12. Later observation — the disk crossed its floor for real
+
+*Appended after the report above was first published, because the host changed underneath it and a
+report that kept claiming a clean volume would be false.*
+
+At `2026-10-13T21:45Z` the volume held **1.948 GiB free** — under the 2 GiB `CRITICAL` floor and far
+under the 5 GiB healthy floor. Nothing was simulated: the lane, running from the Task Scheduler,
+refused its own ticks.
+
+| Evidence | Reading |
+| --- | --- |
+| Lane run rows | 48 in total, of which **5** `DISK_BUDGET_EXCEEDED` |
+| First refusal | `20:25:56Z` |
+| Latest two ticks | `21:25:56Z` and `21:40:56Z`, both refused with 0 market requests |
+| Free bytes at this reading | 2 091 692 032 (1.948 GiB) against the 2 GiB critical floor |
+| Watchdog, newest reading | `21:32:33Z` — `WATCH_ALARM`, category `SCHEDULER_FAILURE`, `resource_disk` `WARN`, `lane_cadence` `OK` |
+| Watchdog readings / alerts on file | 15 / 35, including `DISK_WARNING` ×2 |
+
+What this does and does not prove:
+
+* **The fail-closed path is real, not rehearsed.** The tick refused *before* making a market request,
+  which is what ACC-09 asks for, and each refusal carries its own reason in its own row: *"1.9 GiB
+  free is below the 2147483648 byte critical floor: the tick refused before making a market
+  request"*.
+* **Nothing was deleted to make room.** The lane stopped; no authoritative datum was removed and the
+  evidence tree is intact.
+* **One honest wart.** The watchdog's own resource check read `WARN` (the volume oscillates across the
+  2 GiB line between readings), so its category came from the lane's non-zero scheduler result —
+  `SCHEDULER_FAILURE` — rather than from resource pressure. A tick that *deliberately* fails closed
+  because the volume is full is not a scheduler malfunction, and the vocabulary already has a
+  `RESOURCE_PRESSURE` category for exactly this. Recorded rather than smoothed over: a categorisation
+  to improve, not a check that failed.
+* **The forward gate is not accumulating while this holds.** 0 of 60 forward days was already the
+  reading; while the volume stays under the floor it stays 0. Reclaiming space is the owner's decision,
+  and no data was touched to make room.

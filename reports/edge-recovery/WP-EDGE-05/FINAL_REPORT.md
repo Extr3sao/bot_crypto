@@ -217,7 +217,7 @@ promociona nada: el resultado neto es negativo y así se publica.
 
 | ACC | Qué se exigía | Resultado | Base |
 | --- | --- | --- | --- |
-| ACC-01 | Auditoría del runtime y baseline reproducible | **PASS** | [`RUNTIME_AUTHORITY_MAP.md`](reports/edge-recovery/WP-EDGE-05/RUNTIME_AUTHORITY_MAP.md) propio de este WP (el de WP-EDGE-00 no cubría esta cadena); commit base `e07785b`, tareas exportadas, espacio libre y snapshot |
+| ACC-01 | Auditoría del runtime y baseline reproducible | **PASS** | [`runtime_authority_map.md`](reports/edge-recovery/WP-EDGE-05/runtime_authority_map.md) propio de este WP (el de WP-EDGE-00 no cubría esta cadena); commit base `e07785b`, tareas exportadas, espacio libre y snapshot |
 | ACC-02 | El planificador dispara de verdad, ≥2 slots sin intervención | **PASS** | ejecución desatendida de lane y vigilante; 41 ticks, 9 lecturas, resultado `0` |
 | ACC-03 | El vigilante detecta una parada inducida, con latencia medida y sin falso PASS | **PASS** | 6 s (`18:48:10Z`→`18:48:16Z`), `WATCH_ALARM`/`SCHEDULER_FAILURE`, alerta `SCHEDULER_DISABLED`, episodio cerrado |
 | ACC-04 | Caída tras persistencia parcial | **PASS** | 6 barras de `15:02:10Z` presentes, cobertura única, **0 duplicaciones** |
@@ -225,10 +225,10 @@ promociona nada: el resultado neto es negativo y así se publica.
 | ACC-06 | Reintento del mismo slot | **PASS** | 4 `ALREADY_OBSERVED` y 2 `ALREADY_RUNNING`; 37 segundas pasadas que añaden 0 |
 | ACC-07 | Reinicio y lease huérfano | **PASS** | sin lease huérfano en ninguna lectura; recuperación del lease en el ensayo de interrupción de WP-EDGE-04 y en tests |
 | ACC-08 | Proveedor caído y datos stale | **NOT_TESTED** | clasificación implementada (`STORE_STALE`, `PROVIDER_UNAVAILABLE`) y ejercitada en tests, **no en vivo**: no hubo caída real de proveedor |
-| ACC-09 | Presión de disco | **PASS (test)** | dos suelos y dos acciones ejercitados en tests; en vivo 6,01 GiB libres, por encima del aviso |
+| ACC-09 | Presión de disco | **PASS (test + vivo)** | dos suelos y dos acciones ejercitados en tests; **y cruzado en vivo**: 5 ticks `DISK_BUDGET_EXCEEDED` desde `20:25:56Z`, con 1,95 GiB libres frente al suelo crítico de 2 GiB, sin borrar nada (ver §12 del informe técnico) |
 | ACC-10 | Elegibilidad forward | **PASS** | 226 días backfilled excluidos, 0 prospectivos, día `INCOMPLETE` no contado, criterios congelados con `params_hash` |
 | ACC-11 | Comparación de riesgo | **PASS** | sin cambios en el Risk Engine ni en `config/risk.yaml`; 1 digest de decisiones, 0 divergencias |
-| ACC-12 | Verificación independiente | **PASS** | 13/13 y 15/15 con código de salida real 0; constructor distinto del verificador |
+| ACC-12 | Verificación independiente | **PASS** | 13/13 y 15/15 con código de salida real 0; constructor distinto del verificador; suites unitarias de la cadena **91 passed, exit 0** con el host a 1,94 GiB libres |
 | ACC-13 | Operación sin órdenes | **PASS** | `order_sent: false`, `hypothetical: true`, `promotion: NONE` en todos los artefactos |
 | ACC-14 | Observación prolongada | **NOT_TESTED** | 24 minutos de parada real, no 60 días; el gate de 60 días sigue abierto |
 | ACC-15 | Git y trazabilidad | **PASS / BLOCKED** | commits aislados; publicación `BLOCKED_GITHUB_AUTH` documentada |
@@ -242,10 +242,19 @@ promociona nada: el resultado neto es negativo y así se publica.
 2. **Nada de fuera del host.** Si la máquina está apagada, nada dentro de ella informa de ello. El
    dominio de fallo está documentado y un observador externo sería otra tarea.
 3. **Bloqueo de pantalla, reinicio y suspensión no ejercidos** (interrumpirían a la persona usuaria).
-4. **Ningún umbral de disco se ha cruzado en vivo**; se han ejercitado en tests.
+4. **Un umbral de disco sí se cruzó en vivo, después de publicar el informe.** Desde `20:25:56Z` la
+   lane lleva **5 ticks `DISK_BUDGET_EXCEEDED`** con ~1,95 GiB libres: cierra en falso antes de pedir
+   nada y no borra datos, que es lo que ACC-09 pedía, pero mientras siga así **la acumulación forward
+   está parada** (sigue en 0 de 60). Dato añadido en §12 del informe técnico, junto con la categoría
+   `SCHEDULER_FAILURE` que el vigilante da a una negativa deliberada por disco.
 5. **Ventana desatendida de 24 minutos**, no de 60 días.
 6. **Cohorte prospectiva vacía**: 0 de 60 días forward válidos.
 7. **Publicación en GitHub bloqueada** por autenticación; los commits quedan locales.
+8. **Las suites unitarias de la cadena leían el volumen del host**, así que el mismo código daba 42
+   fallos con 1,9 GiB libres y 18 con 2,0 y 91 pasaban con 6 GiB: veredicto decidido por el espacio
+   libre. Ambas fixtures fijan ahora un volumen sano por defecto (el propio fichero ya enunciaba la
+   regla para los dos tests que sí tratan la política de disco), y las suites de la cadena dan
+   **91 passed, exit 0** en un host a 1,94 GiB. Sin tocar aserciones ni el comportamiento del producto.
 
 Nada de esto se declara `PASS`, `CERTIFIED`, `READY_FOR_PAPER` ni `PRODUCTION_READY`.
 
