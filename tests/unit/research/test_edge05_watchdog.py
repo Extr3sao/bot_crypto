@@ -346,6 +346,10 @@ def watchdog(
     lane = lane or Lane(tmp_path)
     clock_fn = clock or (lambda: (now_ms or T0 + 5 * QUARTER) / 1000.0)
     kwargs.setdefault("process_probe", lambda: {"available": True, "processes": []})
+    # The volume is pinned HEALTHY by default, for the same reason as the lane's own tests: the
+    # host's momentary free space must not be able to flip a verdict. The resource tests below pass
+    # their own probe to state a specific volume.
+    kwargs.setdefault("disk_probe", lambda path: disk_reading(WD.HEALTHY, 50 * 1024**3))
     seen = WD.ForwardWatchdog(
         repo_root=tmp_path,
         lane_state_root=lane.state,

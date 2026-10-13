@@ -291,6 +291,11 @@ def observer(
     kwargs.setdefault("pipeline", fake_pipeline())
     kwargs.setdefault("sleep", lambda seconds: None)
     kwargs.setdefault("clock", clock or Clock(INSTANT))
+    # The volume is pinned HEALTHY so that this host's free space cannot decide an assertion: a
+    # machine that happens to be near its floors must not turn a tick test green or red. The tests
+    # that are about the disk policy itself pin their own floors, as they do above.
+    kwargs.setdefault("warning_bytes", 1)
+    kwargs.setdefault("critical_bytes", 1)
     seen = AUTO.ForwardObserver(
         repo_root=tmp_path,
         state_root=tmp_path / "state",
@@ -1061,6 +1066,10 @@ def real_pipeline(**kwargs: Any) -> dict[str, Any]:
 def real_observer(
     tmp_path: Path, *, clock: Clock | None = None, **kwargs: Any
 ) -> AUTO.ForwardObserver:
+    # Same as ``observer``: the volume is pinned HEALTHY so this host's free space is not a hidden
+    # input to a test that is about the observation, not about the disk policy.
+    kwargs.setdefault("warning_bytes", 1)
+    kwargs.setdefault("critical_bytes", 1)
     return AUTO.ForwardObserver(
         repo_root=tmp_path,
         state_root=tmp_path / "state",
