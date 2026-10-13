@@ -139,7 +139,19 @@ de orden de reglas o de redondeo se publican como tales.
 | `risk-parity/PARITY.md` / `PARITY.json` / `PARITY_CASES.csv` | la paridad caso a caso, con la clase y las dos decisiones |
 
 Los informes se generan **del artefacto, no de prosa**: `--reports-only` los re-renderiza sin red desde un
-`OBSERVATION.json` guardado, y eso es lo que se ejecuto.
+`OBSERVATION.json` guardado, y eso es lo que se ejecuto. Sobre el arbol **commiteado**, la re-generacion
+offline produce ficheros **byte a byte identicos** a los publicados:
+
+```
+python scripts/edge03_run.py --reports-only reports/edge-recovery/WP-EDGE-03/forward-observation/OBSERVATION.json --outdir <scratch>
+  IDENTICAL CUMULATIVE.md · IDENTICAL CUMULATIVE.json
+  IDENTICAL DAILY_REPORTS.json · IDENTICAL DAILY_2026-10-13.md
+```
+
+Es decir: un lector puede volver a leer la corrida entera (dias, tablas y decisiones) sin la red y sin esta
+maquina, porque los informes son funcion del `OBSERVATION.json` y de nada mas. La verificacion independiente
+se re-ejecuto sobre el arbol commiteado y da **exactamente** las mismas 19 comprobaciones que publica
+`VERIFICATION.json` (`committed checks == fresh rerun: True`).
 
 ## 6. Verificacion independiente
 
