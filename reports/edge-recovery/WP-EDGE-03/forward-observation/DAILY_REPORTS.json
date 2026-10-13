@@ -1654,19 +1654,19 @@
     },
     "2026-09-19": {
       "edge_trend_01_1d:2X_FEES": {
-        "net_usdt": -3.199291,
+        "net_usdt": -12.790181,
         "refusals": 0,
         "signals": 1,
         "trades": 1
       },
       "edge_trend_01_1d:ADVERSE": {
-        "net_usdt": -3.299671,
+        "net_usdt": -12.867184,
         "refusals": 0,
         "signals": 1,
         "trades": 1
       },
       "edge_trend_01_1d:BASE": {
-        "net_usdt": -2.814006,
+        "net_usdt": -12.414506,
         "refusals": 0,
         "signals": 1,
         "trades": 1
@@ -1694,19 +1694,19 @@
     },
     "2026-09-22": {
       "edge_trend_01_1d:2X_FEES": {
-        "net_usdt": -36.732649,
+        "net_usdt": -43.215496,
         "refusals": 0,
         "signals": 3,
         "trades": 2
       },
       "edge_trend_01_1d:ADVERSE": {
-        "net_usdt": -36.906987,
+        "net_usdt": -43.366895,
         "refusals": 0,
         "signals": 3,
         "trades": 2
       },
       "edge_trend_01_1d:BASE": {
-        "net_usdt": -35.758272,
+        "net_usdt": -42.247614,
         "refusals": 0,
         "signals": 3,
         "trades": 2
@@ -2139,6 +2139,68 @@
         "signals": 0,
         "trades": 0
       }
+    },
+    "2026-10-13": {
+      "edge_intra_01:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 7,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_intra_01:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 7,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_intra_01:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 7,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_intra_01r_limit:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 7,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_intra_01r_market:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 7,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_intra_01r_market:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 7,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_intra_01r_market:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 7,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_intra_02:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 7,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_intra_02:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 7,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_intra_02:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 7,
+        "signals": 0,
+        "trades": 0
+      }
     }
   },
   "dates": [
@@ -2367,11 +2429,12 @@
     "2026-10-09",
     "2026-10-10",
     "2026-10-11",
-    "2026-10-12"
+    "2026-10-12",
+    "2026-10-13"
   ],
   "days": {
     "2026-03-01": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -2388,7 +2451,7 @@
       "trades": 0
     },
     "2026-03-02": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -2407,7 +2470,7 @@
       "trades": 0
     },
     "2026-03-03": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -2424,7 +2487,7 @@
       "trades": 0
     },
     "2026-03-04": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -2443,7 +2506,7 @@
       "trades": 0
     },
     "2026-03-05": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -2462,7 +2525,7 @@
       "trades": 0
     },
     "2026-03-06": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -2479,7 +2542,7 @@
       "trades": 0
     },
     "2026-03-07": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -2496,7 +2559,7 @@
       "trades": 0
     },
     "2026-03-08": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -2513,7 +2576,7 @@
       "trades": 0
     },
     "2026-03-09": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -2530,7 +2593,7 @@
       "trades": 0
     },
     "2026-03-10": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -2549,7 +2612,7 @@
       "trades": 0
     },
     "2026-03-11": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -2566,7 +2629,7 @@
       "trades": 0
     },
     "2026-03-12": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -2583,7 +2646,7 @@
       "trades": 0
     },
     "2026-03-13": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -2602,7 +2665,7 @@
       "trades": 0
     },
     "2026-03-14": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -2619,7 +2682,7 @@
       "trades": 0
     },
     "2026-03-15": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -2636,7 +2699,7 @@
       "trades": 0
     },
     "2026-03-16": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -2655,7 +2718,7 @@
       "trades": 0
     },
     "2026-03-17": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -2674,7 +2737,7 @@
       "trades": 6
     },
     "2026-03-18": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -2691,7 +2754,7 @@
       "trades": 0
     },
     "2026-03-19": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -2708,7 +2771,7 @@
       "trades": 0
     },
     "2026-03-20": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -2725,7 +2788,7 @@
       "trades": 0
     },
     "2026-03-21": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -2742,7 +2805,7 @@
       "trades": 0
     },
     "2026-03-22": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -2759,7 +2822,7 @@
       "trades": 0
     },
     "2026-03-23": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -2776,7 +2839,7 @@
       "trades": 0
     },
     "2026-03-24": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -2793,7 +2856,7 @@
       "trades": 0
     },
     "2026-03-25": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -2810,7 +2873,7 @@
       "trades": 3
     },
     "2026-03-26": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -2827,7 +2890,7 @@
       "trades": 0
     },
     "2026-03-27": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -2844,7 +2907,7 @@
       "trades": 0
     },
     "2026-03-28": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -2861,7 +2924,7 @@
       "trades": 0
     },
     "2026-03-29": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -2878,7 +2941,7 @@
       "trades": 0
     },
     "2026-03-30": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -2895,7 +2958,7 @@
       "trades": 0
     },
     "2026-03-31": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -2914,7 +2977,7 @@
       "trades": 0
     },
     "2026-04-01": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -2933,7 +2996,7 @@
       "trades": 0
     },
     "2026-04-02": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -2950,7 +3013,7 @@
       "trades": 0
     },
     "2026-04-03": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -2967,7 +3030,7 @@
       "trades": 0
     },
     "2026-04-04": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -2984,7 +3047,7 @@
       "trades": 0
     },
     "2026-04-05": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -3001,7 +3064,7 @@
       "trades": 0
     },
     "2026-04-06": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -3020,7 +3083,7 @@
       "trades": 0
     },
     "2026-04-07": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -3037,7 +3100,7 @@
       "trades": 0
     },
     "2026-04-08": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -3056,7 +3119,7 @@
       "trades": 0
     },
     "2026-04-09": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -3073,7 +3136,7 @@
       "trades": 0
     },
     "2026-04-10": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -3090,7 +3153,7 @@
       "trades": 0
     },
     "2026-04-11": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -3109,7 +3172,7 @@
       "trades": 6
     },
     "2026-04-12": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -3128,7 +3191,7 @@
       "trades": 0
     },
     "2026-04-13": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -3145,7 +3208,7 @@
       "trades": 0
     },
     "2026-04-14": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -3164,7 +3227,7 @@
       "trades": 6
     },
     "2026-04-15": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -3181,7 +3244,7 @@
       "trades": 0
     },
     "2026-04-16": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -3200,7 +3263,7 @@
       "trades": 0
     },
     "2026-04-17": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -3219,7 +3282,7 @@
       "trades": 0
     },
     "2026-04-18": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -3238,7 +3301,7 @@
       "trades": 0
     },
     "2026-04-19": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -3255,7 +3318,7 @@
       "trades": 0
     },
     "2026-04-20": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -3272,7 +3335,7 @@
       "trades": 0
     },
     "2026-04-21": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -3289,7 +3352,7 @@
       "trades": 0
     },
     "2026-04-22": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -3306,7 +3369,7 @@
       "trades": 6
     },
     "2026-04-23": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -3323,7 +3386,7 @@
       "trades": 0
     },
     "2026-04-24": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -3340,7 +3403,7 @@
       "trades": 0
     },
     "2026-04-25": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -3357,7 +3420,7 @@
       "trades": 0
     },
     "2026-04-26": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -3374,7 +3437,7 @@
       "trades": 0
     },
     "2026-04-27": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -3391,7 +3454,7 @@
       "trades": 0
     },
     "2026-04-28": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -3408,7 +3471,7 @@
       "trades": 0
     },
     "2026-04-29": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -3425,7 +3488,7 @@
       "trades": 0
     },
     "2026-04-30": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -3442,7 +3505,7 @@
       "trades": 0
     },
     "2026-05-01": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -3459,7 +3522,7 @@
       "trades": 0
     },
     "2026-05-02": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -3476,7 +3539,7 @@
       "trades": 0
     },
     "2026-05-03": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -3493,7 +3556,7 @@
       "trades": 0
     },
     "2026-05-04": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -3512,7 +3575,7 @@
       "trades": 3
     },
     "2026-05-05": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -3531,7 +3594,7 @@
       "trades": 0
     },
     "2026-05-06": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -3550,7 +3613,7 @@
       "trades": 3
     },
     "2026-05-07": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -3567,7 +3630,7 @@
       "trades": 3
     },
     "2026-05-08": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -3584,7 +3647,7 @@
       "trades": 0
     },
     "2026-05-09": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -3603,7 +3666,7 @@
       "trades": 0
     },
     "2026-05-10": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -3622,7 +3685,7 @@
       "trades": 3
     },
     "2026-05-11": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -3641,7 +3704,7 @@
       "trades": 0
     },
     "2026-05-12": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -3660,7 +3723,7 @@
       "trades": 0
     },
     "2026-05-13": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -3677,7 +3740,7 @@
       "trades": 0
     },
     "2026-05-14": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -3694,7 +3757,7 @@
       "trades": 0
     },
     "2026-05-15": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -3711,7 +3774,7 @@
       "trades": 0
     },
     "2026-05-16": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -3728,7 +3791,7 @@
       "trades": 0
     },
     "2026-05-17": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -3745,7 +3808,7 @@
       "trades": 0
     },
     "2026-05-18": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -3762,7 +3825,7 @@
       "trades": 0
     },
     "2026-05-19": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -3779,7 +3842,7 @@
       "trades": 0
     },
     "2026-05-20": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -3796,7 +3859,7 @@
       "trades": 0
     },
     "2026-05-21": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -3815,7 +3878,7 @@
       "trades": 0
     },
     "2026-05-22": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -3832,7 +3895,7 @@
       "trades": 0
     },
     "2026-05-23": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -3849,7 +3912,7 @@
       "trades": 0
     },
     "2026-05-24": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -3866,7 +3929,7 @@
       "trades": 0
     },
     "2026-05-25": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -3883,7 +3946,7 @@
       "trades": 0
     },
     "2026-05-26": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -3900,7 +3963,7 @@
       "trades": 0
     },
     "2026-05-27": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -3917,7 +3980,7 @@
       "trades": 0
     },
     "2026-05-28": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -3934,7 +3997,7 @@
       "trades": 0
     },
     "2026-05-29": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -3951,7 +4014,7 @@
       "trades": 0
     },
     "2026-05-30": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -3968,7 +4031,7 @@
       "trades": 0
     },
     "2026-05-31": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -3985,7 +4048,7 @@
       "trades": 0
     },
     "2026-06-01": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -4002,7 +4065,7 @@
       "trades": 0
     },
     "2026-06-02": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -4019,7 +4082,7 @@
       "trades": 0
     },
     "2026-06-03": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -4036,7 +4099,7 @@
       "trades": 0
     },
     "2026-06-04": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -4053,7 +4116,7 @@
       "trades": 0
     },
     "2026-06-05": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -4070,7 +4133,7 @@
       "trades": 0
     },
     "2026-06-06": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -4087,7 +4150,7 @@
       "trades": 0
     },
     "2026-06-07": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -4104,7 +4167,7 @@
       "trades": 0
     },
     "2026-06-08": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -4121,7 +4184,7 @@
       "trades": 0
     },
     "2026-06-09": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -4138,7 +4201,7 @@
       "trades": 0
     },
     "2026-06-10": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -4155,7 +4218,7 @@
       "trades": 0
     },
     "2026-06-11": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -4172,7 +4235,7 @@
       "trades": 0
     },
     "2026-06-12": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -4189,7 +4252,7 @@
       "trades": 0
     },
     "2026-06-13": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -4206,7 +4269,7 @@
       "trades": 0
     },
     "2026-06-14": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -4225,7 +4288,7 @@
       "trades": 0
     },
     "2026-06-15": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -4244,7 +4307,7 @@
       "trades": 0
     },
     "2026-06-16": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -4261,7 +4324,7 @@
       "trades": 0
     },
     "2026-06-17": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -4278,7 +4341,7 @@
       "trades": 0
     },
     "2026-06-18": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -4295,7 +4358,7 @@
       "trades": 0
     },
     "2026-06-19": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -4312,7 +4375,7 @@
       "trades": 0
     },
     "2026-06-20": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -4329,7 +4392,7 @@
       "trades": 0
     },
     "2026-06-21": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -4348,7 +4411,7 @@
       "trades": 0
     },
     "2026-06-22": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -4367,7 +4430,7 @@
       "trades": 0
     },
     "2026-06-23": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -4384,7 +4447,7 @@
       "trades": 0
     },
     "2026-06-24": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -4401,7 +4464,7 @@
       "trades": 0
     },
     "2026-06-25": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -4418,7 +4481,7 @@
       "trades": 0
     },
     "2026-06-26": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -4437,7 +4500,7 @@
       "trades": 0
     },
     "2026-06-27": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -4454,7 +4517,7 @@
       "trades": 0
     },
     "2026-06-28": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -4471,7 +4534,7 @@
       "trades": 0
     },
     "2026-06-29": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -4490,7 +4553,7 @@
       "trades": 0
     },
     "2026-06-30": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -4507,7 +4570,7 @@
       "trades": 0
     },
     "2026-07-01": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -4526,7 +4589,7 @@
       "trades": 0
     },
     "2026-07-02": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -4545,7 +4608,7 @@
       "trades": 3
     },
     "2026-07-03": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -4564,7 +4627,7 @@
       "trades": 0
     },
     "2026-07-04": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -4583,7 +4646,7 @@
       "trades": 0
     },
     "2026-07-05": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -4600,7 +4663,7 @@
       "trades": 0
     },
     "2026-07-06": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -4619,7 +4682,7 @@
       "trades": 0
     },
     "2026-07-07": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -4638,7 +4701,7 @@
       "trades": 0
     },
     "2026-07-08": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -4655,7 +4718,7 @@
       "trades": 0
     },
     "2026-07-09": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -4672,7 +4735,7 @@
       "trades": 0
     },
     "2026-07-10": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -4691,7 +4754,7 @@
       "trades": 0
     },
     "2026-07-11": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -4708,7 +4771,7 @@
       "trades": 3
     },
     "2026-07-12": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -4725,7 +4788,7 @@
       "trades": 0
     },
     "2026-07-13": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -4742,7 +4805,7 @@
       "trades": 0
     },
     "2026-07-14": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -4761,7 +4824,7 @@
       "trades": 3
     },
     "2026-07-15": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -4780,7 +4843,7 @@
       "trades": 0
     },
     "2026-07-16": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -4799,7 +4862,7 @@
       "trades": 0
     },
     "2026-07-17": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -4816,7 +4879,7 @@
       "trades": 0
     },
     "2026-07-18": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -4833,7 +4896,7 @@
       "trades": 0
     },
     "2026-07-19": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -4850,7 +4913,7 @@
       "trades": 0
     },
     "2026-07-20": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -4867,7 +4930,7 @@
       "trades": 6
     },
     "2026-07-21": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -4884,7 +4947,7 @@
       "trades": 0
     },
     "2026-07-22": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -4903,7 +4966,7 @@
       "trades": 0
     },
     "2026-07-23": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -4920,7 +4983,7 @@
       "trades": 0
     },
     "2026-07-24": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -4937,7 +5000,7 @@
       "trades": 0
     },
     "2026-07-25": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -4954,7 +5017,7 @@
       "trades": 0
     },
     "2026-07-26": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -4971,7 +5034,7 @@
       "trades": 0
     },
     "2026-07-27": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -4988,7 +5051,7 @@
       "trades": 0
     },
     "2026-07-28": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -5005,7 +5068,7 @@
       "trades": 0
     },
     "2026-07-29": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -5022,7 +5085,7 @@
       "trades": 0
     },
     "2026-07-30": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -5039,7 +5102,7 @@
       "trades": 0
     },
     "2026-07-31": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -5056,7 +5119,7 @@
       "trades": 0
     },
     "2026-08-01": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -5073,7 +5136,7 @@
       "trades": 0
     },
     "2026-08-02": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -5090,7 +5153,7 @@
       "trades": 0
     },
     "2026-08-03": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -5107,7 +5170,7 @@
       "trades": 0
     },
     "2026-08-04": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -5124,7 +5187,7 @@
       "trades": 0
     },
     "2026-08-05": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -5143,7 +5206,7 @@
       "trades": 2
     },
     "2026-08-06": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -5160,7 +5223,7 @@
       "trades": 0
     },
     "2026-08-07": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -5179,7 +5242,7 @@
       "trades": 0
     },
     "2026-08-08": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -5198,7 +5261,7 @@
       "trades": 0
     },
     "2026-08-09": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -5217,7 +5280,7 @@
       "trades": 0
     },
     "2026-08-10": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -5234,7 +5297,7 @@
       "trades": 0
     },
     "2026-08-11": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -5251,7 +5314,7 @@
       "trades": 0
     },
     "2026-08-12": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -5268,7 +5331,7 @@
       "trades": 0
     },
     "2026-08-13": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -5285,7 +5348,7 @@
       "trades": 0
     },
     "2026-08-14": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -5302,7 +5365,7 @@
       "trades": 0
     },
     "2026-08-15": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -5319,7 +5382,7 @@
       "trades": 0
     },
     "2026-08-16": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -5336,7 +5399,7 @@
       "trades": 0
     },
     "2026-08-17": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -5355,7 +5418,7 @@
       "trades": 3
     },
     "2026-08-18": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -5374,7 +5437,7 @@
       "trades": 0
     },
     "2026-08-19": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -5393,7 +5456,7 @@
       "trades": 0
     },
     "2026-08-20": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -5412,7 +5475,7 @@
       "trades": 3
     },
     "2026-08-21": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -5431,7 +5494,7 @@
       "trades": 0
     },
     "2026-08-22": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -5450,7 +5513,7 @@
       "trades": 0
     },
     "2026-08-23": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -5467,7 +5530,7 @@
       "trades": 0
     },
     "2026-08-24": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -5484,7 +5547,7 @@
       "trades": 0
     },
     "2026-08-25": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -5501,7 +5564,7 @@
       "trades": 0
     },
     "2026-08-26": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -5518,7 +5581,7 @@
       "trades": 0
     },
     "2026-08-27": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -5535,7 +5598,7 @@
       "trades": 3
     },
     "2026-08-28": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -5554,7 +5617,7 @@
       "trades": 0
     },
     "2026-08-29": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -5571,7 +5634,7 @@
       "trades": 0
     },
     "2026-08-30": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -5588,7 +5651,7 @@
       "trades": 0
     },
     "2026-08-31": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -5605,7 +5668,7 @@
       "trades": 0
     },
     "2026-09-01": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -5622,7 +5685,7 @@
       "trades": 0
     },
     "2026-09-02": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -5639,7 +5702,7 @@
       "trades": 0
     },
     "2026-09-03": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -5656,7 +5719,7 @@
       "trades": 6
     },
     "2026-09-04": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -5673,7 +5736,7 @@
       "trades": 0
     },
     "2026-09-05": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -5690,7 +5753,7 @@
       "trades": 0
     },
     "2026-09-06": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -5707,7 +5770,7 @@
       "trades": 0
     },
     "2026-09-07": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -5724,7 +5787,7 @@
       "trades": 0
     },
     "2026-09-08": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -5741,7 +5804,7 @@
       "trades": 0
     },
     "2026-09-09": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -5758,7 +5821,7 @@
       "trades": 0
     },
     "2026-09-10": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -5775,7 +5838,7 @@
       "trades": 0
     },
     "2026-09-11": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -5792,7 +5855,7 @@
       "trades": 0
     },
     "2026-09-12": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -5809,7 +5872,7 @@
       "trades": 0
     },
     "2026-09-13": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -5826,7 +5889,7 @@
       "trades": 0
     },
     "2026-09-14": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -5843,7 +5906,7 @@
       "trades": 0
     },
     "2026-09-15": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -5860,7 +5923,7 @@
       "trades": 0
     },
     "2026-09-16": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -5877,7 +5940,7 @@
       "trades": 0
     },
     "2026-09-17": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -5894,7 +5957,7 @@
       "trades": 0
     },
     "2026-09-18": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -5911,7 +5974,7 @@
       "trades": 9
     },
     "2026-09-19": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -5921,14 +5984,14 @@
       "cumulative_net_usdt": -4.633081,
       "drawdown_pct": 0.772229,
       "equity": 9995.366919,
-      "net_usdt": -9.312968,
+      "net_usdt": -38.071871,
       "refusal_mix": {},
       "refusals": 0,
       "signals": 3,
       "trades": 3
     },
     "2026-09-20": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -5945,7 +6008,7 @@
       "trades": 0
     },
     "2026-09-21": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -5962,7 +6025,7 @@
       "trades": 3
     },
     "2026-09-22": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -5972,14 +6035,14 @@
       "cumulative_net_usdt": 45.814847,
       "drawdown_pct": 0.271413,
       "equity": 10045.814847,
-      "net_usdt": -109.397908,
+      "net_usdt": -128.830005,
       "refusal_mix": {},
       "refusals": 0,
       "signals": 9,
       "trades": 6
     },
     "2026-09-23": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -5996,7 +6059,7 @@
       "trades": 0
     },
     "2026-09-24": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -6013,7 +6076,7 @@
       "trades": 0
     },
     "2026-09-25": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -6030,7 +6093,7 @@
       "trades": 0
     },
     "2026-09-26": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -6047,7 +6110,7 @@
       "trades": 0
     },
     "2026-09-27": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -6064,7 +6127,7 @@
       "trades": 0
     },
     "2026-09-28": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -6081,7 +6144,7 @@
       "trades": 0
     },
     "2026-09-29": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -6098,7 +6161,7 @@
       "trades": 3
     },
     "2026-09-30": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -6115,7 +6178,7 @@
       "trades": 0
     },
     "2026-10-01": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -6132,7 +6195,7 @@
       "trades": 0
     },
     "2026-10-02": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -6149,7 +6212,7 @@
       "trades": 3
     },
     "2026-10-03": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -6166,7 +6229,7 @@
       "trades": 0
     },
     "2026-10-04": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -6183,7 +6246,7 @@
       "trades": 0
     },
     "2026-10-05": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -6200,7 +6263,7 @@
       "trades": 0
     },
     "2026-10-06": {
-      "appended": 72,
+      "appended": 0,
       "bars": 72,
       "by_series": {
         "1h:BTC": 24,
@@ -6217,7 +6280,7 @@
       "trades": 0
     },
     "2026-10-07": {
-      "appended": 219,
+      "appended": 0,
       "bars": 219,
       "by_series": {
         "15m:BTC": 49,
@@ -6237,7 +6300,7 @@
       "trades": 0
     },
     "2026-10-08": {
-      "appended": 360,
+      "appended": 0,
       "bars": 360,
       "by_series": {
         "15m:BTC": 96,
@@ -6260,7 +6323,7 @@
       "trades": 0
     },
     "2026-10-09": {
-      "appended": 360,
+      "appended": 0,
       "bars": 360,
       "by_series": {
         "15m:BTC": 96,
@@ -6283,7 +6346,7 @@
       "trades": 0
     },
     "2026-10-10": {
-      "appended": 360,
+      "appended": 0,
       "bars": 360,
       "by_series": {
         "15m:BTC": 96,
@@ -6306,7 +6369,7 @@
       "trades": 0
     },
     "2026-10-11": {
-      "appended": 360,
+      "appended": 0,
       "bars": 360,
       "by_series": {
         "15m:BTC": 96,
@@ -6329,15 +6392,15 @@
       "trades": 3
     },
     "2026-10-12": {
-      "appended": 351,
-      "bars": 351,
+      "appended": 3,
+      "bars": 360,
       "by_series": {
-        "15m:BTC": 94,
-        "15m:ETH": 94,
-        "15m:SOL": 94,
-        "1h:BTC": 23,
-        "1h:ETH": 23,
-        "1h:SOL": 23
+        "15m:BTC": 96,
+        "15m:ETH": 96,
+        "15m:SOL": 96,
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
       },
       "cumulative_net_usdt": -44.307497,
       "drawdown_pct": 1.166092,
@@ -6348,7 +6411,30 @@
         "candidate:volume_filter_fail": 30
       },
       "refusals": 90,
-      "run_appended": 17850,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-10-13": {
+      "appended": 18,
+      "bars": 81,
+      "by_series": {
+        "15m:BTC": 22,
+        "15m:ETH": 22,
+        "15m:SOL": 22,
+        "1h:BTC": 5,
+        "1h:ETH": 5,
+        "1h:SOL": 5
+      },
+      "cumulative_net_usdt": -44.307497,
+      "drawdown_pct": 1.166092,
+      "equity": 9955.692503,
+      "net_usdt": 0.0,
+      "refusal_mix": {
+        "candidate:trend_filter_fail": 20,
+        "candidate:volume_filter_fail": 50
+      },
+      "refusals": 70,
+      "run_appended": 3,
       "signals": 0,
       "trades": 0
     }

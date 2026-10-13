@@ -1,6 +1,6 @@
 # EDGE-03 forward observation — cumulative
 
-Run `FWD-EDGE03-20261012T233951Z` at 2026-10-12T23:40:30Z; market instant 2026-10-12T23:39:51Z.
+Run `FWD-EDGE03-20261013T053048Z` at 2026-10-13T05:31:12Z; market instant 2026-10-13T05:30:48Z.
 
 **OBSERVATION_AVAILABLE** — 226 independent observation day(s) accumulated; the lane still promotes nothing (the forward pipeline does not read an admission criterion)
 
@@ -10,33 +10,43 @@ Promotion: **NONE**. Risk parity: **PARITY_PASS**.
 
 | series | bars | first bar (UTC) | last bar (UTC) | observation days | gaps | duplicates |
 | --- | ---: | --- | --- | ---: | ---: | ---: |
-| `15m:BTC` | 527 | 2026-10-07T11:45:00Z | 2026-10-12T23:15:00Z | 5 | 0 | 0 |
-| `15m:ETH` | 527 | 2026-10-07T11:45:00Z | 2026-10-12T23:15:00Z | 5 | 0 | 0 |
-| `15m:SOL` | 527 | 2026-10-07T11:45:00Z | 2026-10-12T23:15:00Z | 5 | 0 | 0 |
-| `1h:BTC` | 5423 | 2026-03-01T00:00:00Z | 2026-10-12T22:00:00Z | 226 | 0 | 0 |
-| `1h:ETH` | 5423 | 2026-03-01T00:00:00Z | 2026-10-12T22:00:00Z | 226 | 0 | 0 |
-| `1h:SOL` | 5423 | 2026-03-01T00:00:00Z | 2026-10-12T22:00:00Z | 226 | 0 | 0 |
+| `15m:BTC` | 551 | 2026-10-07T11:45:00Z | 2026-10-13T05:15:00Z | 5 | 0 | 0 |
+| `15m:ETH` | 551 | 2026-10-07T11:45:00Z | 2026-10-13T05:15:00Z | 5 | 0 | 0 |
+| `15m:SOL` | 551 | 2026-10-07T11:45:00Z | 2026-10-13T05:15:00Z | 5 | 0 | 0 |
+| `1h:BTC` | 5429 | 2026-03-01T00:00:00Z | 2026-10-13T04:00:00Z | 226 | 0 | 0 |
+| `1h:ETH` | 5429 | 2026-03-01T00:00:00Z | 2026-10-13T04:00:00Z | 226 | 0 | 0 |
+| `1h:SOL` | 5429 | 2026-03-01T00:00:00Z | 2026-10-13T04:00:00Z | 226 | 0 | 0 |
 
 Total independent observation days (densest 1h series): **226** of a declared floor of 60.
 
 ## Ingest ledger
 
-Observation pass: **6** series attempted; outcomes: `ingested` 6.
+Observation pass: **6** series attempted; outcomes: `ingested` 3, `no_new_data` 3.
 
-Ledger rows on file: **12** (6 from the observation pass, 6 from the restart pass at the same instant).
+Ledger rows on file: **60** (6 from the observation pass, 54 from the restart pass at the same instant).
 
-## Ingestion latency (bar close → store)
+## Ingestion latency of the bars this run pulled (bar close → store)
 
-| series | samples | min s | median s | max s |
+| series | bars pulled | min s | median s | max s |
 | --- | ---: | ---: | ---: | ---: |
-| `15m:BTC` | 527 | 591 | 237,291 | 473,991 |
-| `15m:ETH` | 527 | 591 | 237,291 | 473,991 |
-| `15m:SOL` | 527 | 591 | 237,291 | 473,991 |
-| `1h:BTC` | 5423 | 2,391 | 9,761,991 | 19,521,591 |
-| `1h:ETH` | 5423 | 2,391 | 9,761,991 | 19,521,591 |
-| `1h:SOL` | 5423 | 2,391 | 9,761,991 | 19,521,591 |
+| `15m:BTC` | 1 | 49 | 49 | 49 |
+| `15m:ETH` | 1 | 49 | 49 | 49 |
+| `15m:SOL` | 1 | 49 | 49 | 49 |
 
-A first run fetches the whole window in one pass, so the figures above are the **backfill** distance (each bar's close to this run's instant), not the polling latency of a scheduled reader. On later runs only freshly received bars contribute, and the same column then measures the real bar-close-to-store lag.
+These are the bars stamped with this run's fetch instant — the lag a scheduled reader meets, measured from each bar's close to the moment it reached the store.
+
+## Window latency over every stored bar (backfill included)
+
+| series | samples | fetches | min s | median s | max s |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| `15m:BTC` | 551 | 4 | 49 | 226,491 | 473,991 |
+| `15m:ETH` | 551 | 4 | 49 | 226,491 | 473,991 |
+| `15m:SOL` | 551 | 4 | 49 | 226,491 | 473,991 |
+| `1h:BTC` | 5429 | 2 | 53 | 9,751,191 | 19,521,591 |
+| `1h:ETH` | 5429 | 2 | 53 | 9,751,191 | 19,521,591 |
+| `1h:SOL` | 5429 | 2 | 53 | 9,751,191 | 19,521,591 |
+
+The first run fetched the whole window in one pass, so this table is the **backfill** distance (each bar's close to that run's instant), not a property of the feed. The table above is the one that answers "how fresh is the store".
 
 ## Restart and duplicate proof
 
@@ -49,22 +59,22 @@ A first run fetches the whole window in one pass, so the figures above are the *
 
 | arm | timeframe | scenario | window bars | signals | hypothetical fills | net USDT | max DD % | exposure % |
 | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| `edge_intra_01:2X_FEES` | 15m | 2X_FEES | 1581 | 0 | 0 | 0 | 0.00 | 0.00 |
-| `edge_intra_01:ADVERSE` | 15m | ADVERSE | 1581 | 0 | 0 | 0 | 0.00 | 0.00 |
-| `edge_intra_01:BASE` | 15m | BASE | 1581 | 0 | 0 | 0 | 0.00 | 0.00 |
-| `edge_intra_01r_limit:BASE` | 15m | BASE | 1581 | 0 | 0 | 0 | 0.00 | 0.00 |
-| `edge_intra_01r_market:2X_FEES` | 15m | 2X_FEES | 1581 | 0 | 0 | 0 | 0.00 | 0.00 |
-| `edge_intra_01r_market:ADVERSE` | 15m | ADVERSE | 1581 | 0 | 0 | 0 | 0.00 | 0.00 |
-| `edge_intra_01r_market:BASE` | 15m | BASE | 1581 | 0 | 0 | 0 | 0.00 | 0.00 |
-| `edge_intra_02:2X_FEES` | 15m | 2X_FEES | 1581 | 0 | 0 | 0 | 0.00 | 0.00 |
-| `edge_intra_02:ADVERSE` | 15m | ADVERSE | 1581 | 0 | 0 | 0 | 0.00 | 0.00 |
-| `edge_intra_02:BASE` | 15m | BASE | 1581 | 0 | 0 | 0 | 0.00 | 0.00 |
-| `edge_trend_01_1d:2X_FEES` | 1d | 2X_FEES | 675 | 5 | 3 | -39.93 | 0.59 | 8.44 |
-| `edge_trend_01_1d:ADVERSE` | 1d | ADVERSE | 675 | 5 | 3 | -40.21 | 0.59 | 8.44 |
-| `edge_trend_01_1d:BASE` | 1d | BASE | 675 | 5 | 3 | -38.57 | 0.58 | 8.44 |
-| `edge_trend_01_4h:2X_FEES` | 4h | 2X_FEES | 4065 | 103 | 31 | -73.77 | 2.94 | 28.91 |
-| `edge_trend_01_4h:ADVERSE` | 4h | ADVERSE | 4065 | 103 | 30 | -69.69 | 2.92 | 30.21 |
-| `edge_trend_01_4h:BASE` | 4h | BASE | 4065 | 103 | 31 | -44.31 | 2.78 | 28.91 |
+| `edge_intra_01:2X_FEES` | 15m | 2X_FEES | 1653 | 0 | 0 | 0 | 0.00 | 0.00 |
+| `edge_intra_01:ADVERSE` | 15m | ADVERSE | 1653 | 0 | 0 | 0 | 0.00 | 0.00 |
+| `edge_intra_01:BASE` | 15m | BASE | 1653 | 0 | 0 | 0 | 0.00 | 0.00 |
+| `edge_intra_01r_limit:BASE` | 15m | BASE | 1653 | 0 | 0 | 0 | 0.00 | 0.00 |
+| `edge_intra_01r_market:2X_FEES` | 15m | 2X_FEES | 1653 | 0 | 0 | 0 | 0.00 | 0.00 |
+| `edge_intra_01r_market:ADVERSE` | 15m | ADVERSE | 1653 | 0 | 0 | 0 | 0.00 | 0.00 |
+| `edge_intra_01r_market:BASE` | 15m | BASE | 1653 | 0 | 0 | 0 | 0.00 | 0.00 |
+| `edge_intra_02:2X_FEES` | 15m | 2X_FEES | 1653 | 0 | 0 | 0 | 0.00 | 0.00 |
+| `edge_intra_02:ADVERSE` | 15m | ADVERSE | 1653 | 0 | 0 | 0 | 0.00 | 0.00 |
+| `edge_intra_02:BASE` | 15m | BASE | 1653 | 0 | 0 | 0 | 0.00 | 0.00 |
+| `edge_trend_01_1d:2X_FEES` | 1d | 2X_FEES | 678 | 5 | 3 | -56.01 | 0.67 | 8.70 |
+| `edge_trend_01_1d:ADVERSE` | 1d | ADVERSE | 678 | 5 | 3 | -56.23 | 0.67 | 8.70 |
+| `edge_trend_01_1d:BASE` | 1d | BASE | 678 | 5 | 3 | -54.66 | 0.66 | 8.70 |
+| `edge_trend_01_4h:2X_FEES` | 4h | 2X_FEES | 4071 | 103 | 31 | -73.77 | 2.94 | 28.86 |
+| `edge_trend_01_4h:ADVERSE` | 4h | ADVERSE | 4071 | 103 | 30 | -69.69 | 2.92 | 30.16 |
+| `edge_trend_01_4h:BASE` | 4h | BASE | 4071 | 103 | 31 | -44.31 | 2.78 | 28.86 |
 
 Every fill in that table is hypothetical (no order was sent, no capital moved). The metrics are a reading of what the frozen rules printed on the new bars, not a claim about the future and not an admission criterion.
 

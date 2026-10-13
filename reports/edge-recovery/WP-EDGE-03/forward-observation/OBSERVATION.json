@@ -55,15 +55,29 @@
       "sha256_prefix16": "847d8eb45eafebd8"
     }
   },
-  "generated_at_utc": "2026-10-12T23:40:30Z",
+  "frozen_params": {
+    "agrees_with_imported_constant": true,
+    "agrees_with_publication": true,
+    "imported_params_hash": "d073a2d686b9b198c36c9a3c6009d36130577ba247a2016c3f791813cb749d77",
+    "params_hash": "d073a2d686b9b198c36c9a3c6009d36130577ba247a2016c3f791813cb749d77",
+    "published_by": "reports/edge-recovery/WP-EDGE-01/oos-trend-4h/OOS_TREND.json#params_hash",
+    "published_params_hash": "d073a2d686b9b198c36c9a3c6009d36130577ba247a2016c3f791813cb749d77",
+    "recipe": "sha256(json.dumps(FROZEN_PARAMS, sort_keys=True, separators=(',', ':')))"
+  },
+  "generated_at_utc": "2026-10-13T05:31:12Z",
   "health": {
     "errors": [],
     "ingest_outcomes": {
-      "ingested": 6
+      "ingested": 3,
+      "no_new_data": 3
     },
     "ingest_runs": 6,
-    "new_bars": 17850,
-    "no_new_data_series": [],
+    "new_bars": 3,
+    "no_new_data_series": [
+      "1h:BTC",
+      "1h:ETH",
+      "1h:SOL"
+    ],
     "observation_days": 226,
     "observation_days_detail": {
       "common_days": 226,
@@ -303,185 +317,122 @@
       "rule": "a day counts only if every primary asset met the declared coverage on it"
     },
     "primary_trades": 31,
-    "stored_bars": 17850
+    "stored_bars": 17940
   },
   "ingest": {
     "ledger": [
       {
-        "appended": 5423,
+        "appended": 0,
         "audit": {
-          "bars": 5423,
+          "bars": 5429,
           "contiguous": true,
           "duplicates": 0,
           "first_expected_ts": 1772323200000,
           "first_ts": 1772323200000,
           "gap_count": 0,
           "gaps": [],
-          "last_ts": 1791842400000,
+          "last_ts": 1791864000000,
           "missing_bars": 0,
           "out_of_order": 0,
           "timeframe": "1h"
         },
-        "fetched_rows": 5424,
+        "fetched_rows": 0,
         "frozen_end_ms": 1772319600000,
-        "high_water_ts": null,
-        "next_expected_ts": 1772323200000,
-        "outcome": "ingested",
-        "pages": 6,
-        "payload_sha256": "6eff9cb90ac435c9c6d7ec89d9f4a696b6c4cee5821981adfd830c9ffeb2f1c0",
-        "prefix_preserved": true,
-        "reason": null,
-        "rejected": {
-          "already_stored": 0,
-          "at_or_before_frozen_end": 0,
-          "duplicate_in_fetch": 0,
-          "incomplete_ohlc": 0,
-          "not_closed": 1,
-          "off_grid": 0
-        },
-        "requests": [
-          "?symbol=BTCUSDT&interval=1h&startTime=1772323200000&endTime=1791848391232&limit=1000",
-          "?symbol=BTCUSDT&interval=1h&startTime=1775923200000&endTime=1791848391232&limit=1000",
-          "?symbol=BTCUSDT&interval=1h&startTime=1779523200000&endTime=1791848391232&limit=1000",
-          "?symbol=BTCUSDT&interval=1h&startTime=1783123200000&endTime=1791848391232&limit=1000",
-          "?symbol=BTCUSDT&interval=1h&startTime=1786723200000&endTime=1791848391232&limit=1000",
-          "?symbol=BTCUSDT&interval=1h&startTime=1790323200000&endTime=1791848391232&limit=1000"
-        ],
+        "high_water_ts": 1791864000000,
+        "next_expected_ts": 1791867600000,
+        "outcome": "no_new_data",
+        "reason": "the next 1h bar (open 1791867600000) had not closed at 1791869448801; nothing to ingest",
+        "rejected": {},
         "revisions": [],
-        "run_at_ms": 1791848391233,
+        "run_at_ms": 1791869448801,
         "source": "BINANCE_PUBLIC_REST:/api/v3/klines",
-        "store_bytes": 1702821,
-        "store_sha256": "233d0b089f00182936e2ed3841c4570096c4e1014ed7ada937c0e2445dd10742",
-        "stored_after": 5423,
-        "stored_before": 0,
+        "stored_before": 5429,
         "symbol": "BTC",
         "timeframe": "1h",
         "venue_symbol": "BTCUSDT"
       },
       {
-        "appended": 5423,
+        "appended": 0,
         "audit": {
-          "bars": 5423,
+          "bars": 5429,
           "contiguous": true,
           "duplicates": 0,
           "first_expected_ts": 1772323200000,
           "first_ts": 1772323200000,
           "gap_count": 0,
           "gaps": [],
-          "last_ts": 1791842400000,
+          "last_ts": 1791864000000,
           "missing_bars": 0,
           "out_of_order": 0,
           "timeframe": "1h"
         },
-        "fetched_rows": 5424,
+        "fetched_rows": 0,
         "frozen_end_ms": 1772319600000,
-        "high_water_ts": null,
-        "next_expected_ts": 1772323200000,
-        "outcome": "ingested",
-        "pages": 6,
-        "payload_sha256": "2f2e6cb4004c4f77a0e9bb56d28a122fed891fc1223b31c0b7de242afb8f8d5e",
-        "prefix_preserved": true,
-        "reason": null,
-        "rejected": {
-          "already_stored": 0,
-          "at_or_before_frozen_end": 0,
-          "duplicate_in_fetch": 0,
-          "incomplete_ohlc": 0,
-          "not_closed": 1,
-          "off_grid": 0
-        },
-        "requests": [
-          "?symbol=ETHUSDT&interval=1h&startTime=1772323200000&endTime=1791848391232&limit=1000",
-          "?symbol=ETHUSDT&interval=1h&startTime=1775923200000&endTime=1791848391232&limit=1000",
-          "?symbol=ETHUSDT&interval=1h&startTime=1779523200000&endTime=1791848391232&limit=1000",
-          "?symbol=ETHUSDT&interval=1h&startTime=1783123200000&endTime=1791848391232&limit=1000",
-          "?symbol=ETHUSDT&interval=1h&startTime=1786723200000&endTime=1791848391232&limit=1000",
-          "?symbol=ETHUSDT&interval=1h&startTime=1790323200000&endTime=1791848391232&limit=1000"
-        ],
+        "high_water_ts": 1791864000000,
+        "next_expected_ts": 1791867600000,
+        "outcome": "no_new_data",
+        "reason": "the next 1h bar (open 1791867600000) had not closed at 1791869448801; nothing to ingest",
+        "rejected": {},
         "revisions": [],
-        "run_at_ms": 1791848391233,
+        "run_at_ms": 1791869448801,
         "source": "BINANCE_PUBLIC_REST:/api/v3/klines",
-        "store_bytes": 1685045,
-        "store_sha256": "35fb0db4cfc63ae7923e589c62341f0e6ea6da9f1e450b2f7e74c5ccf0f5910c",
-        "stored_after": 5423,
-        "stored_before": 0,
+        "stored_before": 5429,
         "symbol": "ETH",
         "timeframe": "1h",
         "venue_symbol": "ETHUSDT"
       },
       {
-        "appended": 5423,
+        "appended": 0,
         "audit": {
-          "bars": 5423,
+          "bars": 5429,
           "contiguous": true,
           "duplicates": 0,
           "first_expected_ts": 1772323200000,
           "first_ts": 1772323200000,
           "gap_count": 0,
           "gaps": [],
-          "last_ts": 1791842400000,
+          "last_ts": 1791864000000,
           "missing_bars": 0,
           "out_of_order": 0,
           "timeframe": "1h"
         },
-        "fetched_rows": 5424,
+        "fetched_rows": 0,
         "frozen_end_ms": 1772319600000,
-        "high_water_ts": null,
-        "next_expected_ts": 1772323200000,
-        "outcome": "ingested",
-        "pages": 6,
-        "payload_sha256": "67ed70ac7d9c0e585c01dc0512a1259b255e71f83eae8b487fa3ac6e0b61de68",
-        "prefix_preserved": true,
-        "reason": null,
-        "rejected": {
-          "already_stored": 0,
-          "at_or_before_frozen_end": 0,
-          "duplicate_in_fetch": 0,
-          "incomplete_ohlc": 0,
-          "not_closed": 1,
-          "off_grid": 0
-        },
-        "requests": [
-          "?symbol=SOLUSDT&interval=1h&startTime=1772323200000&endTime=1791848391232&limit=1000",
-          "?symbol=SOLUSDT&interval=1h&startTime=1775923200000&endTime=1791848391232&limit=1000",
-          "?symbol=SOLUSDT&interval=1h&startTime=1779523200000&endTime=1791848391232&limit=1000",
-          "?symbol=SOLUSDT&interval=1h&startTime=1783123200000&endTime=1791848391232&limit=1000",
-          "?symbol=SOLUSDT&interval=1h&startTime=1786723200000&endTime=1791848391232&limit=1000",
-          "?symbol=SOLUSDT&interval=1h&startTime=1790323200000&endTime=1791848391232&limit=1000"
-        ],
+        "high_water_ts": 1791864000000,
+        "next_expected_ts": 1791867600000,
+        "outcome": "no_new_data",
+        "reason": "the next 1h bar (open 1791867600000) had not closed at 1791869448801; nothing to ingest",
+        "rejected": {},
         "revisions": [],
-        "run_at_ms": 1791848391233,
+        "run_at_ms": 1791869448801,
         "source": "BINANCE_PUBLIC_REST:/api/v3/klines",
-        "store_bytes": 1646122,
-        "store_sha256": "543cad9564ccedc6b305934c45bb859a64abf7932c0f434636765214909480ba",
-        "stored_after": 5423,
-        "stored_before": 0,
+        "stored_before": 5429,
         "symbol": "SOL",
         "timeframe": "1h",
         "venue_symbol": "SOLUSDT"
       },
       {
-        "appended": 527,
+        "appended": 1,
         "audit": {
-          "bars": 527,
+          "bars": 551,
           "contiguous": true,
           "duplicates": 0,
           "first_expected_ts": 1791373500000,
           "first_ts": 1791373500000,
           "gap_count": 0,
           "gaps": [],
-          "last_ts": 1791846900000,
+          "last_ts": 1791868500000,
           "missing_bars": 0,
           "out_of_order": 0,
           "timeframe": "15m"
         },
-        "fetched_rows": 528,
+        "fetched_rows": 2,
         "frozen_end_ms": 1791372600000,
-        "high_water_ts": null,
-        "next_expected_ts": 1791373500000,
+        "high_water_ts": 1791867600000,
+        "next_expected_ts": 1791868500000,
         "outcome": "ingested",
         "pages": 1,
-        "payload_sha256": "508633713080153388dd1178794a286eff9f14f5954c751736b47ec53b09a289",
+        "payload_sha256": "30f5e8f60cf4dd0a11342d8e6082025ee080335422cd5c24a0f04555f02b142b",
         "prefix_preserved": true,
         "reason": null,
         "rejected": {
@@ -493,41 +444,41 @@
           "off_grid": 0
         },
         "requests": [
-          "?symbol=BTCUSDT&interval=15m&startTime=1791373500000&endTime=1791848391232&limit=1000"
+          "?symbol=BTCUSDT&interval=15m&startTime=1791868500000&endTime=1791869448800&limit=1000"
         ],
         "revisions": [],
-        "run_at_ms": 1791848391233,
+        "run_at_ms": 1791869448801,
         "source": "BINANCE_PUBLIC_REST:/api/v3/klines",
-        "store_bytes": 165677,
-        "store_sha256": "172a1d36f6046a1f9149924ef76b2e7ccd12a9ff76e95d7337edbaac195ee003",
-        "stored_after": 527,
-        "stored_before": 0,
+        "store_bytes": 173235,
+        "store_sha256": "cf18e247ca0e236ca5abdb485fe0cfb9cd1576c903b4bfca54b69a4f0c05095a",
+        "stored_after": 551,
+        "stored_before": 550,
         "symbol": "BTC",
         "timeframe": "15m",
         "venue_symbol": "BTCUSDT"
       },
       {
-        "appended": 527,
+        "appended": 1,
         "audit": {
-          "bars": 527,
+          "bars": 551,
           "contiguous": true,
           "duplicates": 0,
           "first_expected_ts": 1791373500000,
           "first_ts": 1791373500000,
           "gap_count": 0,
           "gaps": [],
-          "last_ts": 1791846900000,
+          "last_ts": 1791868500000,
           "missing_bars": 0,
           "out_of_order": 0,
           "timeframe": "15m"
         },
-        "fetched_rows": 528,
+        "fetched_rows": 2,
         "frozen_end_ms": 1791372600000,
-        "high_water_ts": null,
-        "next_expected_ts": 1791373500000,
+        "high_water_ts": 1791867600000,
+        "next_expected_ts": 1791868500000,
         "outcome": "ingested",
         "pages": 1,
-        "payload_sha256": "5af2fa9a266891dabb5dd6747b80b7e57c05c67ef0d6277b4d8be2f530f6f372",
+        "payload_sha256": "029ab07714df28de1211355e5585c0e11071e82acfef0f6c08b31cf8f67fd766",
         "prefix_preserved": true,
         "reason": null,
         "rejected": {
@@ -539,41 +490,41 @@
           "off_grid": 0
         },
         "requests": [
-          "?symbol=ETHUSDT&interval=15m&startTime=1791373500000&endTime=1791848391232&limit=1000"
+          "?symbol=ETHUSDT&interval=15m&startTime=1791868500000&endTime=1791869448800&limit=1000"
         ],
         "revisions": [],
-        "run_at_ms": 1791848391233,
+        "run_at_ms": 1791869448801,
         "source": "BINANCE_PUBLIC_REST:/api/v3/klines",
-        "store_bytes": 163983,
-        "store_sha256": "edf2b3a88559b5b58b4ad89ed6a2061031c429427fcb0f7929c85b1065854c22",
-        "stored_after": 527,
-        "stored_before": 0,
+        "store_bytes": 171456,
+        "store_sha256": "9c5d676aab0dca093b2443ebb928fb74c691401d7ee3b60581264afbf5e35576",
+        "stored_after": 551,
+        "stored_before": 550,
         "symbol": "ETH",
         "timeframe": "15m",
         "venue_symbol": "ETHUSDT"
       },
       {
-        "appended": 527,
+        "appended": 1,
         "audit": {
-          "bars": 527,
+          "bars": 551,
           "contiguous": true,
           "duplicates": 0,
           "first_expected_ts": 1791373500000,
           "first_ts": 1791373500000,
           "gap_count": 0,
           "gaps": [],
-          "last_ts": 1791846900000,
+          "last_ts": 1791868500000,
           "missing_bars": 0,
           "out_of_order": 0,
           "timeframe": "15m"
         },
-        "fetched_rows": 528,
+        "fetched_rows": 2,
         "frozen_end_ms": 1791372600000,
-        "high_water_ts": null,
-        "next_expected_ts": 1791373500000,
+        "high_water_ts": 1791867600000,
+        "next_expected_ts": 1791868500000,
         "outcome": "ingested",
         "pages": 1,
-        "payload_sha256": "9be1b7e50e4b50f7a1b6c2938cbffd0a3fe839766d026853ff0fab1ed1c6c2df",
+        "payload_sha256": "515264aa72763d473f35c4268ff98ba6a1bdb79e697b7edfa6a6cfd8bfba8bb4",
         "prefix_preserved": true,
         "reason": null,
         "rejected": {
@@ -585,15 +536,15 @@
           "off_grid": 0
         },
         "requests": [
-          "?symbol=SOLUSDT&interval=15m&startTime=1791373500000&endTime=1791848391232&limit=1000"
+          "?symbol=SOLUSDT&interval=15m&startTime=1791868500000&endTime=1791869448800&limit=1000"
         ],
         "revisions": [],
-        "run_at_ms": 1791848391233,
+        "run_at_ms": 1791869448801,
         "source": "BINANCE_PUBLIC_REST:/api/v3/klines",
-        "store_bytes": 161866,
-        "store_sha256": "5a0a90c45f7f8dc063e11f577c837667c19adddc29c63021d3abcb2b6697d638",
-        "stored_after": 527,
-        "stored_before": 0,
+        "store_bytes": 169247,
+        "store_sha256": "7e8cc8ee39719a73ce362deeafbc9e1c285f810169b3b69dd5e26bed2c9e9ea5",
+        "stored_after": 551,
+        "stored_before": 550,
         "symbol": "SOL",
         "timeframe": "15m",
         "venue_symbol": "SOLUSDT"
@@ -611,101 +562,149 @@
   },
   "latency": {
     "15m:BTC": {
+      "fetch_instant_ms": 1791869448801,
+      "fetch_instants": 4,
+      "fresh_bars": 1,
+      "fresh_max_seconds": 48.801,
+      "fresh_median_seconds": 48.801,
+      "fresh_min_seconds": 48.801,
+      "fresh_samples": 1,
       "max_seconds": 473991.233,
-      "median_seconds": 237291.233,
-      "min_seconds": 591.233,
-      "samples": 527
+      "median_seconds": 226491.233,
+      "min_seconds": 48.801,
+      "note": "window = every stored bar (a first run backfills, so this figure is not a feed latency); fresh = the bars this run pulled, measured close \u2192 store",
+      "samples": 551
     },
     "15m:ETH": {
+      "fetch_instant_ms": 1791869448801,
+      "fetch_instants": 4,
+      "fresh_bars": 1,
+      "fresh_max_seconds": 48.801,
+      "fresh_median_seconds": 48.801,
+      "fresh_min_seconds": 48.801,
+      "fresh_samples": 1,
       "max_seconds": 473991.233,
-      "median_seconds": 237291.233,
-      "min_seconds": 591.233,
-      "samples": 527
+      "median_seconds": 226491.233,
+      "min_seconds": 48.801,
+      "note": "window = every stored bar (a first run backfills, so this figure is not a feed latency); fresh = the bars this run pulled, measured close \u2192 store",
+      "samples": 551
     },
     "15m:SOL": {
+      "fetch_instant_ms": 1791869448801,
+      "fetch_instants": 4,
+      "fresh_bars": 1,
+      "fresh_max_seconds": 48.801,
+      "fresh_median_seconds": 48.801,
+      "fresh_min_seconds": 48.801,
+      "fresh_samples": 1,
       "max_seconds": 473991.233,
-      "median_seconds": 237291.233,
-      "min_seconds": 591.233,
-      "samples": 527
+      "median_seconds": 226491.233,
+      "min_seconds": 48.801,
+      "note": "window = every stored bar (a first run backfills, so this figure is not a feed latency); fresh = the bars this run pulled, measured close \u2192 store",
+      "samples": 551
     },
     "1h:BTC": {
+      "fetch_instant_ms": 1791869448801,
+      "fetch_instants": 2,
+      "fresh_bars": 0,
+      "fresh_max_seconds": null,
+      "fresh_median_seconds": null,
+      "fresh_min_seconds": null,
+      "fresh_samples": 0,
       "max_seconds": 19521591.233,
-      "median_seconds": 9761991.233,
-      "min_seconds": 2391.233,
-      "samples": 5423
+      "median_seconds": 9751191.233,
+      "min_seconds": 53.055,
+      "note": "window = every stored bar (a first run backfills, so this figure is not a feed latency); fresh = the bars this run pulled, measured close \u2192 store",
+      "samples": 5429
     },
     "1h:ETH": {
+      "fetch_instant_ms": 1791869448801,
+      "fetch_instants": 2,
+      "fresh_bars": 0,
+      "fresh_max_seconds": null,
+      "fresh_median_seconds": null,
+      "fresh_min_seconds": null,
+      "fresh_samples": 0,
       "max_seconds": 19521591.233,
-      "median_seconds": 9761991.233,
-      "min_seconds": 2391.233,
-      "samples": 5423
+      "median_seconds": 9751191.233,
+      "min_seconds": 53.055,
+      "note": "window = every stored bar (a first run backfills, so this figure is not a feed latency); fresh = the bars this run pulled, measured close \u2192 store",
+      "samples": 5429
     },
     "1h:SOL": {
+      "fetch_instant_ms": 1791869448801,
+      "fetch_instants": 2,
+      "fresh_bars": 0,
+      "fresh_max_seconds": null,
+      "fresh_median_seconds": null,
+      "fresh_min_seconds": null,
+      "fresh_samples": 0,
       "max_seconds": 19521591.233,
-      "median_seconds": 9761991.233,
-      "min_seconds": 2391.233,
-      "samples": 5423
+      "median_seconds": 9751191.233,
+      "min_seconds": 53.055,
+      "note": "window = every stored bar (a first run backfills, so this figure is not a feed latency); fresh = the bars this run pulled, measured close \u2192 store",
+      "samples": 5429
     }
   },
   "manifest": {
     "files": {
       "15m:BTC": {
-        "bars": 527,
-        "bytes": 165677,
+        "bars": 551,
+        "bytes": 173235,
         "first_ts": 1791373500000,
-        "last_ts": 1791846900000,
+        "last_ts": 1791868500000,
         "path": "BTC.jsonl",
         "relative_path": "15m/BTC.jsonl",
-        "sha256": "172a1d36f6046a1f9149924ef76b2e7ccd12a9ff76e95d7337edbaac195ee003"
+        "sha256": "cf18e247ca0e236ca5abdb485fe0cfb9cd1576c903b4bfca54b69a4f0c05095a"
       },
       "15m:ETH": {
-        "bars": 527,
-        "bytes": 163983,
+        "bars": 551,
+        "bytes": 171456,
         "first_ts": 1791373500000,
-        "last_ts": 1791846900000,
+        "last_ts": 1791868500000,
         "path": "ETH.jsonl",
         "relative_path": "15m/ETH.jsonl",
-        "sha256": "edf2b3a88559b5b58b4ad89ed6a2061031c429427fcb0f7929c85b1065854c22"
+        "sha256": "9c5d676aab0dca093b2443ebb928fb74c691401d7ee3b60581264afbf5e35576"
       },
       "15m:SOL": {
-        "bars": 527,
-        "bytes": 161866,
+        "bars": 551,
+        "bytes": 169247,
         "first_ts": 1791373500000,
-        "last_ts": 1791846900000,
+        "last_ts": 1791868500000,
         "path": "SOL.jsonl",
         "relative_path": "15m/SOL.jsonl",
-        "sha256": "5a0a90c45f7f8dc063e11f577c837667c19adddc29c63021d3abcb2b6697d638"
+        "sha256": "7e8cc8ee39719a73ce362deeafbc9e1c285f810169b3b69dd5e26bed2c9e9ea5"
       },
       "1h:BTC": {
-        "bars": 5423,
-        "bytes": 1702821,
+        "bars": 5429,
+        "bytes": 1704706,
         "first_ts": 1772323200000,
-        "last_ts": 1791842400000,
+        "last_ts": 1791864000000,
         "path": "BTC.jsonl",
         "relative_path": "1h/BTC.jsonl",
-        "sha256": "233d0b089f00182936e2ed3841c4570096c4e1014ed7ada937c0e2445dd10742"
+        "sha256": "8db27070cc85245c5831a44a1db0b82b07d8c93ac21f1fd97a52b2cef7a4ba9b"
       },
       "1h:ETH": {
-        "bars": 5423,
-        "bytes": 1685045,
+        "bars": 5429,
+        "bytes": 1686912,
         "first_ts": 1772323200000,
-        "last_ts": 1791842400000,
+        "last_ts": 1791864000000,
         "path": "ETH.jsonl",
         "relative_path": "1h/ETH.jsonl",
-        "sha256": "35fb0db4cfc63ae7923e589c62341f0e6ea6da9f1e450b2f7e74c5ccf0f5910c"
+        "sha256": "48a26465c94585c669aca4ff74e75d354401720bc15a608ae1799dc1f4611842"
       },
       "1h:SOL": {
-        "bars": 5423,
-        "bytes": 1646122,
+        "bars": 5429,
+        "bytes": 1647965,
         "first_ts": 1772323200000,
-        "last_ts": 1791842400000,
+        "last_ts": 1791864000000,
         "path": "SOL.jsonl",
         "relative_path": "1h/SOL.jsonl",
-        "sha256": "543cad9564ccedc6b305934c45bb859a64abf7932c0f434636765214909480ba"
+        "sha256": "be3a5186c9eebaf7c54a15a57a235d09c6261bf3c1b8c6b452c066b9b34f24e1"
       }
     },
     "series": 6,
-    "total_bars": 17850
+    "total_bars": 17940
   },
   "observation": {
     "15m:BTC": {
@@ -717,17 +716,12 @@
         "2026-10-11",
         "2026-10-12"
       ],
-      "days_with_data": 6,
+      "days_with_data": 7,
       "expected_bars_per_day": 96,
-      "newest_fetch_ms": 1791848391233,
+      "newest_fetch_ms": 1791869448801,
       "observation_days": 5,
       "per_day_appended": {
-        "2026-10-07": 49,
-        "2026-10-08": 96,
-        "2026-10-09": 96,
-        "2026-10-10": 96,
-        "2026-10-11": 96,
-        "2026-10-12": 94
+        "2026-10-13": 1
       },
       "per_day_bars": {
         "2026-10-07": 49,
@@ -735,7 +729,8 @@
         "2026-10-09": 96,
         "2026-10-10": 96,
         "2026-10-11": 96,
-        "2026-10-12": 94
+        "2026-10-12": 96,
+        "2026-10-13": 22
       }
     },
     "15m:ETH": {
@@ -747,17 +742,12 @@
         "2026-10-11",
         "2026-10-12"
       ],
-      "days_with_data": 6,
+      "days_with_data": 7,
       "expected_bars_per_day": 96,
-      "newest_fetch_ms": 1791848391233,
+      "newest_fetch_ms": 1791869448801,
       "observation_days": 5,
       "per_day_appended": {
-        "2026-10-07": 49,
-        "2026-10-08": 96,
-        "2026-10-09": 96,
-        "2026-10-10": 96,
-        "2026-10-11": 96,
-        "2026-10-12": 94
+        "2026-10-13": 1
       },
       "per_day_bars": {
         "2026-10-07": 49,
@@ -765,7 +755,8 @@
         "2026-10-09": 96,
         "2026-10-10": 96,
         "2026-10-11": 96,
-        "2026-10-12": 94
+        "2026-10-12": 96,
+        "2026-10-13": 22
       }
     },
     "15m:SOL": {
@@ -777,17 +768,12 @@
         "2026-10-11",
         "2026-10-12"
       ],
-      "days_with_data": 6,
+      "days_with_data": 7,
       "expected_bars_per_day": 96,
-      "newest_fetch_ms": 1791848391233,
+      "newest_fetch_ms": 1791869448801,
       "observation_days": 5,
       "per_day_appended": {
-        "2026-10-07": 49,
-        "2026-10-08": 96,
-        "2026-10-09": 96,
-        "2026-10-10": 96,
-        "2026-10-11": 96,
-        "2026-10-12": 94
+        "2026-10-13": 1
       },
       "per_day_bars": {
         "2026-10-07": 49,
@@ -795,7 +781,8 @@
         "2026-10-09": 96,
         "2026-10-10": 96,
         "2026-10-11": 96,
-        "2026-10-12": 94
+        "2026-10-12": 96,
+        "2026-10-13": 22
       }
     },
     "1h:BTC": {
@@ -1028,237 +1015,13 @@
         "2026-10-11",
         "2026-10-12"
       ],
-      "days_with_data": 226,
+      "days_with_data": 227,
       "expected_bars_per_day": 24,
-      "newest_fetch_ms": 1791848391233,
+      "newest_fetch_ms": 1791867653055,
       "observation_days": 226,
       "per_day_appended": {
-        "2026-03-01": 24,
-        "2026-03-02": 24,
-        "2026-03-03": 24,
-        "2026-03-04": 24,
-        "2026-03-05": 24,
-        "2026-03-06": 24,
-        "2026-03-07": 24,
-        "2026-03-08": 24,
-        "2026-03-09": 24,
-        "2026-03-10": 24,
-        "2026-03-11": 24,
-        "2026-03-12": 24,
-        "2026-03-13": 24,
-        "2026-03-14": 24,
-        "2026-03-15": 24,
-        "2026-03-16": 24,
-        "2026-03-17": 24,
-        "2026-03-18": 24,
-        "2026-03-19": 24,
-        "2026-03-20": 24,
-        "2026-03-21": 24,
-        "2026-03-22": 24,
-        "2026-03-23": 24,
-        "2026-03-24": 24,
-        "2026-03-25": 24,
-        "2026-03-26": 24,
-        "2026-03-27": 24,
-        "2026-03-28": 24,
-        "2026-03-29": 24,
-        "2026-03-30": 24,
-        "2026-03-31": 24,
-        "2026-04-01": 24,
-        "2026-04-02": 24,
-        "2026-04-03": 24,
-        "2026-04-04": 24,
-        "2026-04-05": 24,
-        "2026-04-06": 24,
-        "2026-04-07": 24,
-        "2026-04-08": 24,
-        "2026-04-09": 24,
-        "2026-04-10": 24,
-        "2026-04-11": 24,
-        "2026-04-12": 24,
-        "2026-04-13": 24,
-        "2026-04-14": 24,
-        "2026-04-15": 24,
-        "2026-04-16": 24,
-        "2026-04-17": 24,
-        "2026-04-18": 24,
-        "2026-04-19": 24,
-        "2026-04-20": 24,
-        "2026-04-21": 24,
-        "2026-04-22": 24,
-        "2026-04-23": 24,
-        "2026-04-24": 24,
-        "2026-04-25": 24,
-        "2026-04-26": 24,
-        "2026-04-27": 24,
-        "2026-04-28": 24,
-        "2026-04-29": 24,
-        "2026-04-30": 24,
-        "2026-05-01": 24,
-        "2026-05-02": 24,
-        "2026-05-03": 24,
-        "2026-05-04": 24,
-        "2026-05-05": 24,
-        "2026-05-06": 24,
-        "2026-05-07": 24,
-        "2026-05-08": 24,
-        "2026-05-09": 24,
-        "2026-05-10": 24,
-        "2026-05-11": 24,
-        "2026-05-12": 24,
-        "2026-05-13": 24,
-        "2026-05-14": 24,
-        "2026-05-15": 24,
-        "2026-05-16": 24,
-        "2026-05-17": 24,
-        "2026-05-18": 24,
-        "2026-05-19": 24,
-        "2026-05-20": 24,
-        "2026-05-21": 24,
-        "2026-05-22": 24,
-        "2026-05-23": 24,
-        "2026-05-24": 24,
-        "2026-05-25": 24,
-        "2026-05-26": 24,
-        "2026-05-27": 24,
-        "2026-05-28": 24,
-        "2026-05-29": 24,
-        "2026-05-30": 24,
-        "2026-05-31": 24,
-        "2026-06-01": 24,
-        "2026-06-02": 24,
-        "2026-06-03": 24,
-        "2026-06-04": 24,
-        "2026-06-05": 24,
-        "2026-06-06": 24,
-        "2026-06-07": 24,
-        "2026-06-08": 24,
-        "2026-06-09": 24,
-        "2026-06-10": 24,
-        "2026-06-11": 24,
-        "2026-06-12": 24,
-        "2026-06-13": 24,
-        "2026-06-14": 24,
-        "2026-06-15": 24,
-        "2026-06-16": 24,
-        "2026-06-17": 24,
-        "2026-06-18": 24,
-        "2026-06-19": 24,
-        "2026-06-20": 24,
-        "2026-06-21": 24,
-        "2026-06-22": 24,
-        "2026-06-23": 24,
-        "2026-06-24": 24,
-        "2026-06-25": 24,
-        "2026-06-26": 24,
-        "2026-06-27": 24,
-        "2026-06-28": 24,
-        "2026-06-29": 24,
-        "2026-06-30": 24,
-        "2026-07-01": 24,
-        "2026-07-02": 24,
-        "2026-07-03": 24,
-        "2026-07-04": 24,
-        "2026-07-05": 24,
-        "2026-07-06": 24,
-        "2026-07-07": 24,
-        "2026-07-08": 24,
-        "2026-07-09": 24,
-        "2026-07-10": 24,
-        "2026-07-11": 24,
-        "2026-07-12": 24,
-        "2026-07-13": 24,
-        "2026-07-14": 24,
-        "2026-07-15": 24,
-        "2026-07-16": 24,
-        "2026-07-17": 24,
-        "2026-07-18": 24,
-        "2026-07-19": 24,
-        "2026-07-20": 24,
-        "2026-07-21": 24,
-        "2026-07-22": 24,
-        "2026-07-23": 24,
-        "2026-07-24": 24,
-        "2026-07-25": 24,
-        "2026-07-26": 24,
-        "2026-07-27": 24,
-        "2026-07-28": 24,
-        "2026-07-29": 24,
-        "2026-07-30": 24,
-        "2026-07-31": 24,
-        "2026-08-01": 24,
-        "2026-08-02": 24,
-        "2026-08-03": 24,
-        "2026-08-04": 24,
-        "2026-08-05": 24,
-        "2026-08-06": 24,
-        "2026-08-07": 24,
-        "2026-08-08": 24,
-        "2026-08-09": 24,
-        "2026-08-10": 24,
-        "2026-08-11": 24,
-        "2026-08-12": 24,
-        "2026-08-13": 24,
-        "2026-08-14": 24,
-        "2026-08-15": 24,
-        "2026-08-16": 24,
-        "2026-08-17": 24,
-        "2026-08-18": 24,
-        "2026-08-19": 24,
-        "2026-08-20": 24,
-        "2026-08-21": 24,
-        "2026-08-22": 24,
-        "2026-08-23": 24,
-        "2026-08-24": 24,
-        "2026-08-25": 24,
-        "2026-08-26": 24,
-        "2026-08-27": 24,
-        "2026-08-28": 24,
-        "2026-08-29": 24,
-        "2026-08-30": 24,
-        "2026-08-31": 24,
-        "2026-09-01": 24,
-        "2026-09-02": 24,
-        "2026-09-03": 24,
-        "2026-09-04": 24,
-        "2026-09-05": 24,
-        "2026-09-06": 24,
-        "2026-09-07": 24,
-        "2026-09-08": 24,
-        "2026-09-09": 24,
-        "2026-09-10": 24,
-        "2026-09-11": 24,
-        "2026-09-12": 24,
-        "2026-09-13": 24,
-        "2026-09-14": 24,
-        "2026-09-15": 24,
-        "2026-09-16": 24,
-        "2026-09-17": 24,
-        "2026-09-18": 24,
-        "2026-09-19": 24,
-        "2026-09-20": 24,
-        "2026-09-21": 24,
-        "2026-09-22": 24,
-        "2026-09-23": 24,
-        "2026-09-24": 24,
-        "2026-09-25": 24,
-        "2026-09-26": 24,
-        "2026-09-27": 24,
-        "2026-09-28": 24,
-        "2026-09-29": 24,
-        "2026-09-30": 24,
-        "2026-10-01": 24,
-        "2026-10-02": 24,
-        "2026-10-03": 24,
-        "2026-10-04": 24,
-        "2026-10-05": 24,
-        "2026-10-06": 24,
-        "2026-10-07": 24,
-        "2026-10-08": 24,
-        "2026-10-09": 24,
-        "2026-10-10": 24,
-        "2026-10-11": 24,
-        "2026-10-12": 23
+        "2026-10-12": 1,
+        "2026-10-13": 5
       },
       "per_day_bars": {
         "2026-03-01": 24,
@@ -1486,7 +1249,8 @@
         "2026-10-09": 24,
         "2026-10-10": 24,
         "2026-10-11": 24,
-        "2026-10-12": 23
+        "2026-10-12": 24,
+        "2026-10-13": 5
       }
     },
     "1h:ETH": {
@@ -1719,237 +1483,13 @@
         "2026-10-11",
         "2026-10-12"
       ],
-      "days_with_data": 226,
+      "days_with_data": 227,
       "expected_bars_per_day": 24,
-      "newest_fetch_ms": 1791848391233,
+      "newest_fetch_ms": 1791867653055,
       "observation_days": 226,
       "per_day_appended": {
-        "2026-03-01": 24,
-        "2026-03-02": 24,
-        "2026-03-03": 24,
-        "2026-03-04": 24,
-        "2026-03-05": 24,
-        "2026-03-06": 24,
-        "2026-03-07": 24,
-        "2026-03-08": 24,
-        "2026-03-09": 24,
-        "2026-03-10": 24,
-        "2026-03-11": 24,
-        "2026-03-12": 24,
-        "2026-03-13": 24,
-        "2026-03-14": 24,
-        "2026-03-15": 24,
-        "2026-03-16": 24,
-        "2026-03-17": 24,
-        "2026-03-18": 24,
-        "2026-03-19": 24,
-        "2026-03-20": 24,
-        "2026-03-21": 24,
-        "2026-03-22": 24,
-        "2026-03-23": 24,
-        "2026-03-24": 24,
-        "2026-03-25": 24,
-        "2026-03-26": 24,
-        "2026-03-27": 24,
-        "2026-03-28": 24,
-        "2026-03-29": 24,
-        "2026-03-30": 24,
-        "2026-03-31": 24,
-        "2026-04-01": 24,
-        "2026-04-02": 24,
-        "2026-04-03": 24,
-        "2026-04-04": 24,
-        "2026-04-05": 24,
-        "2026-04-06": 24,
-        "2026-04-07": 24,
-        "2026-04-08": 24,
-        "2026-04-09": 24,
-        "2026-04-10": 24,
-        "2026-04-11": 24,
-        "2026-04-12": 24,
-        "2026-04-13": 24,
-        "2026-04-14": 24,
-        "2026-04-15": 24,
-        "2026-04-16": 24,
-        "2026-04-17": 24,
-        "2026-04-18": 24,
-        "2026-04-19": 24,
-        "2026-04-20": 24,
-        "2026-04-21": 24,
-        "2026-04-22": 24,
-        "2026-04-23": 24,
-        "2026-04-24": 24,
-        "2026-04-25": 24,
-        "2026-04-26": 24,
-        "2026-04-27": 24,
-        "2026-04-28": 24,
-        "2026-04-29": 24,
-        "2026-04-30": 24,
-        "2026-05-01": 24,
-        "2026-05-02": 24,
-        "2026-05-03": 24,
-        "2026-05-04": 24,
-        "2026-05-05": 24,
-        "2026-05-06": 24,
-        "2026-05-07": 24,
-        "2026-05-08": 24,
-        "2026-05-09": 24,
-        "2026-05-10": 24,
-        "2026-05-11": 24,
-        "2026-05-12": 24,
-        "2026-05-13": 24,
-        "2026-05-14": 24,
-        "2026-05-15": 24,
-        "2026-05-16": 24,
-        "2026-05-17": 24,
-        "2026-05-18": 24,
-        "2026-05-19": 24,
-        "2026-05-20": 24,
-        "2026-05-21": 24,
-        "2026-05-22": 24,
-        "2026-05-23": 24,
-        "2026-05-24": 24,
-        "2026-05-25": 24,
-        "2026-05-26": 24,
-        "2026-05-27": 24,
-        "2026-05-28": 24,
-        "2026-05-29": 24,
-        "2026-05-30": 24,
-        "2026-05-31": 24,
-        "2026-06-01": 24,
-        "2026-06-02": 24,
-        "2026-06-03": 24,
-        "2026-06-04": 24,
-        "2026-06-05": 24,
-        "2026-06-06": 24,
-        "2026-06-07": 24,
-        "2026-06-08": 24,
-        "2026-06-09": 24,
-        "2026-06-10": 24,
-        "2026-06-11": 24,
-        "2026-06-12": 24,
-        "2026-06-13": 24,
-        "2026-06-14": 24,
-        "2026-06-15": 24,
-        "2026-06-16": 24,
-        "2026-06-17": 24,
-        "2026-06-18": 24,
-        "2026-06-19": 24,
-        "2026-06-20": 24,
-        "2026-06-21": 24,
-        "2026-06-22": 24,
-        "2026-06-23": 24,
-        "2026-06-24": 24,
-        "2026-06-25": 24,
-        "2026-06-26": 24,
-        "2026-06-27": 24,
-        "2026-06-28": 24,
-        "2026-06-29": 24,
-        "2026-06-30": 24,
-        "2026-07-01": 24,
-        "2026-07-02": 24,
-        "2026-07-03": 24,
-        "2026-07-04": 24,
-        "2026-07-05": 24,
-        "2026-07-06": 24,
-        "2026-07-07": 24,
-        "2026-07-08": 24,
-        "2026-07-09": 24,
-        "2026-07-10": 24,
-        "2026-07-11": 24,
-        "2026-07-12": 24,
-        "2026-07-13": 24,
-        "2026-07-14": 24,
-        "2026-07-15": 24,
-        "2026-07-16": 24,
-        "2026-07-17": 24,
-        "2026-07-18": 24,
-        "2026-07-19": 24,
-        "2026-07-20": 24,
-        "2026-07-21": 24,
-        "2026-07-22": 24,
-        "2026-07-23": 24,
-        "2026-07-24": 24,
-        "2026-07-25": 24,
-        "2026-07-26": 24,
-        "2026-07-27": 24,
-        "2026-07-28": 24,
-        "2026-07-29": 24,
-        "2026-07-30": 24,
-        "2026-07-31": 24,
-        "2026-08-01": 24,
-        "2026-08-02": 24,
-        "2026-08-03": 24,
-        "2026-08-04": 24,
-        "2026-08-05": 24,
-        "2026-08-06": 24,
-        "2026-08-07": 24,
-        "2026-08-08": 24,
-        "2026-08-09": 24,
-        "2026-08-10": 24,
-        "2026-08-11": 24,
-        "2026-08-12": 24,
-        "2026-08-13": 24,
-        "2026-08-14": 24,
-        "2026-08-15": 24,
-        "2026-08-16": 24,
-        "2026-08-17": 24,
-        "2026-08-18": 24,
-        "2026-08-19": 24,
-        "2026-08-20": 24,
-        "2026-08-21": 24,
-        "2026-08-22": 24,
-        "2026-08-23": 24,
-        "2026-08-24": 24,
-        "2026-08-25": 24,
-        "2026-08-26": 24,
-        "2026-08-27": 24,
-        "2026-08-28": 24,
-        "2026-08-29": 24,
-        "2026-08-30": 24,
-        "2026-08-31": 24,
-        "2026-09-01": 24,
-        "2026-09-02": 24,
-        "2026-09-03": 24,
-        "2026-09-04": 24,
-        "2026-09-05": 24,
-        "2026-09-06": 24,
-        "2026-09-07": 24,
-        "2026-09-08": 24,
-        "2026-09-09": 24,
-        "2026-09-10": 24,
-        "2026-09-11": 24,
-        "2026-09-12": 24,
-        "2026-09-13": 24,
-        "2026-09-14": 24,
-        "2026-09-15": 24,
-        "2026-09-16": 24,
-        "2026-09-17": 24,
-        "2026-09-18": 24,
-        "2026-09-19": 24,
-        "2026-09-20": 24,
-        "2026-09-21": 24,
-        "2026-09-22": 24,
-        "2026-09-23": 24,
-        "2026-09-24": 24,
-        "2026-09-25": 24,
-        "2026-09-26": 24,
-        "2026-09-27": 24,
-        "2026-09-28": 24,
-        "2026-09-29": 24,
-        "2026-09-30": 24,
-        "2026-10-01": 24,
-        "2026-10-02": 24,
-        "2026-10-03": 24,
-        "2026-10-04": 24,
-        "2026-10-05": 24,
-        "2026-10-06": 24,
-        "2026-10-07": 24,
-        "2026-10-08": 24,
-        "2026-10-09": 24,
-        "2026-10-10": 24,
-        "2026-10-11": 24,
-        "2026-10-12": 23
+        "2026-10-12": 1,
+        "2026-10-13": 5
       },
       "per_day_bars": {
         "2026-03-01": 24,
@@ -2177,7 +1717,8 @@
         "2026-10-09": 24,
         "2026-10-10": 24,
         "2026-10-11": 24,
-        "2026-10-12": 23
+        "2026-10-12": 24,
+        "2026-10-13": 5
       }
     },
     "1h:SOL": {
@@ -2410,237 +1951,13 @@
         "2026-10-11",
         "2026-10-12"
       ],
-      "days_with_data": 226,
+      "days_with_data": 227,
       "expected_bars_per_day": 24,
-      "newest_fetch_ms": 1791848391233,
+      "newest_fetch_ms": 1791867653055,
       "observation_days": 226,
       "per_day_appended": {
-        "2026-03-01": 24,
-        "2026-03-02": 24,
-        "2026-03-03": 24,
-        "2026-03-04": 24,
-        "2026-03-05": 24,
-        "2026-03-06": 24,
-        "2026-03-07": 24,
-        "2026-03-08": 24,
-        "2026-03-09": 24,
-        "2026-03-10": 24,
-        "2026-03-11": 24,
-        "2026-03-12": 24,
-        "2026-03-13": 24,
-        "2026-03-14": 24,
-        "2026-03-15": 24,
-        "2026-03-16": 24,
-        "2026-03-17": 24,
-        "2026-03-18": 24,
-        "2026-03-19": 24,
-        "2026-03-20": 24,
-        "2026-03-21": 24,
-        "2026-03-22": 24,
-        "2026-03-23": 24,
-        "2026-03-24": 24,
-        "2026-03-25": 24,
-        "2026-03-26": 24,
-        "2026-03-27": 24,
-        "2026-03-28": 24,
-        "2026-03-29": 24,
-        "2026-03-30": 24,
-        "2026-03-31": 24,
-        "2026-04-01": 24,
-        "2026-04-02": 24,
-        "2026-04-03": 24,
-        "2026-04-04": 24,
-        "2026-04-05": 24,
-        "2026-04-06": 24,
-        "2026-04-07": 24,
-        "2026-04-08": 24,
-        "2026-04-09": 24,
-        "2026-04-10": 24,
-        "2026-04-11": 24,
-        "2026-04-12": 24,
-        "2026-04-13": 24,
-        "2026-04-14": 24,
-        "2026-04-15": 24,
-        "2026-04-16": 24,
-        "2026-04-17": 24,
-        "2026-04-18": 24,
-        "2026-04-19": 24,
-        "2026-04-20": 24,
-        "2026-04-21": 24,
-        "2026-04-22": 24,
-        "2026-04-23": 24,
-        "2026-04-24": 24,
-        "2026-04-25": 24,
-        "2026-04-26": 24,
-        "2026-04-27": 24,
-        "2026-04-28": 24,
-        "2026-04-29": 24,
-        "2026-04-30": 24,
-        "2026-05-01": 24,
-        "2026-05-02": 24,
-        "2026-05-03": 24,
-        "2026-05-04": 24,
-        "2026-05-05": 24,
-        "2026-05-06": 24,
-        "2026-05-07": 24,
-        "2026-05-08": 24,
-        "2026-05-09": 24,
-        "2026-05-10": 24,
-        "2026-05-11": 24,
-        "2026-05-12": 24,
-        "2026-05-13": 24,
-        "2026-05-14": 24,
-        "2026-05-15": 24,
-        "2026-05-16": 24,
-        "2026-05-17": 24,
-        "2026-05-18": 24,
-        "2026-05-19": 24,
-        "2026-05-20": 24,
-        "2026-05-21": 24,
-        "2026-05-22": 24,
-        "2026-05-23": 24,
-        "2026-05-24": 24,
-        "2026-05-25": 24,
-        "2026-05-26": 24,
-        "2026-05-27": 24,
-        "2026-05-28": 24,
-        "2026-05-29": 24,
-        "2026-05-30": 24,
-        "2026-05-31": 24,
-        "2026-06-01": 24,
-        "2026-06-02": 24,
-        "2026-06-03": 24,
-        "2026-06-04": 24,
-        "2026-06-05": 24,
-        "2026-06-06": 24,
-        "2026-06-07": 24,
-        "2026-06-08": 24,
-        "2026-06-09": 24,
-        "2026-06-10": 24,
-        "2026-06-11": 24,
-        "2026-06-12": 24,
-        "2026-06-13": 24,
-        "2026-06-14": 24,
-        "2026-06-15": 24,
-        "2026-06-16": 24,
-        "2026-06-17": 24,
-        "2026-06-18": 24,
-        "2026-06-19": 24,
-        "2026-06-20": 24,
-        "2026-06-21": 24,
-        "2026-06-22": 24,
-        "2026-06-23": 24,
-        "2026-06-24": 24,
-        "2026-06-25": 24,
-        "2026-06-26": 24,
-        "2026-06-27": 24,
-        "2026-06-28": 24,
-        "2026-06-29": 24,
-        "2026-06-30": 24,
-        "2026-07-01": 24,
-        "2026-07-02": 24,
-        "2026-07-03": 24,
-        "2026-07-04": 24,
-        "2026-07-05": 24,
-        "2026-07-06": 24,
-        "2026-07-07": 24,
-        "2026-07-08": 24,
-        "2026-07-09": 24,
-        "2026-07-10": 24,
-        "2026-07-11": 24,
-        "2026-07-12": 24,
-        "2026-07-13": 24,
-        "2026-07-14": 24,
-        "2026-07-15": 24,
-        "2026-07-16": 24,
-        "2026-07-17": 24,
-        "2026-07-18": 24,
-        "2026-07-19": 24,
-        "2026-07-20": 24,
-        "2026-07-21": 24,
-        "2026-07-22": 24,
-        "2026-07-23": 24,
-        "2026-07-24": 24,
-        "2026-07-25": 24,
-        "2026-07-26": 24,
-        "2026-07-27": 24,
-        "2026-07-28": 24,
-        "2026-07-29": 24,
-        "2026-07-30": 24,
-        "2026-07-31": 24,
-        "2026-08-01": 24,
-        "2026-08-02": 24,
-        "2026-08-03": 24,
-        "2026-08-04": 24,
-        "2026-08-05": 24,
-        "2026-08-06": 24,
-        "2026-08-07": 24,
-        "2026-08-08": 24,
-        "2026-08-09": 24,
-        "2026-08-10": 24,
-        "2026-08-11": 24,
-        "2026-08-12": 24,
-        "2026-08-13": 24,
-        "2026-08-14": 24,
-        "2026-08-15": 24,
-        "2026-08-16": 24,
-        "2026-08-17": 24,
-        "2026-08-18": 24,
-        "2026-08-19": 24,
-        "2026-08-20": 24,
-        "2026-08-21": 24,
-        "2026-08-22": 24,
-        "2026-08-23": 24,
-        "2026-08-24": 24,
-        "2026-08-25": 24,
-        "2026-08-26": 24,
-        "2026-08-27": 24,
-        "2026-08-28": 24,
-        "2026-08-29": 24,
-        "2026-08-30": 24,
-        "2026-08-31": 24,
-        "2026-09-01": 24,
-        "2026-09-02": 24,
-        "2026-09-03": 24,
-        "2026-09-04": 24,
-        "2026-09-05": 24,
-        "2026-09-06": 24,
-        "2026-09-07": 24,
-        "2026-09-08": 24,
-        "2026-09-09": 24,
-        "2026-09-10": 24,
-        "2026-09-11": 24,
-        "2026-09-12": 24,
-        "2026-09-13": 24,
-        "2026-09-14": 24,
-        "2026-09-15": 24,
-        "2026-09-16": 24,
-        "2026-09-17": 24,
-        "2026-09-18": 24,
-        "2026-09-19": 24,
-        "2026-09-20": 24,
-        "2026-09-21": 24,
-        "2026-09-22": 24,
-        "2026-09-23": 24,
-        "2026-09-24": 24,
-        "2026-09-25": 24,
-        "2026-09-26": 24,
-        "2026-09-27": 24,
-        "2026-09-28": 24,
-        "2026-09-29": 24,
-        "2026-09-30": 24,
-        "2026-10-01": 24,
-        "2026-10-02": 24,
-        "2026-10-03": 24,
-        "2026-10-04": 24,
-        "2026-10-05": 24,
-        "2026-10-06": 24,
-        "2026-10-07": 24,
-        "2026-10-08": 24,
-        "2026-10-09": 24,
-        "2026-10-10": 24,
-        "2026-10-11": 24,
-        "2026-10-12": 23
+        "2026-10-12": 1,
+        "2026-10-13": 5
       },
       "per_day_bars": {
         "2026-03-01": 24,
@@ -2868,12 +2185,13 @@
         "2026-10-09": 24,
         "2026-10-10": 24,
         "2026-10-11": 24,
-        "2026-10-12": 23
+        "2026-10-12": 24,
+        "2026-10-13": 5
       }
     }
   },
-  "observed_at_ms": 1791848391233,
-  "observed_at_utc": "2026-10-12T23:39:51Z",
+  "observed_at_ms": 1791869448801,
+  "observed_at_utc": "2026-10-13T05:30:48Z",
   "parity": {
     "captured_reproduction": {
       "checked": 101,
@@ -2927,7 +2245,8 @@
       "15m_end_ms": 1791372600000,
       "1h_end_ms": 1772319600000,
       "params_hash": "d073a2d686b9b198c36c9a3c6009d36130577ba247a2016c3f791813cb749d77",
-      "params_hash_published_by": "reports/edge-recovery/WP-EDGE-01/oos-trend-4h/OOS_TREND.json#params_hash"
+      "params_hash_published_by": "reports/edge-recovery/WP-EDGE-01/oos-trend-4h/OOS_TREND.json#params_hash",
+      "params_hash_recipe": "sha256(json.dumps(FROZEN_PARAMS, sort_keys=True, separators=(',', ':')))"
     },
     "id": "FWD-EDGE01",
     "promotion": "NONE \u2014 this lane reports observations; it cannot admit a strategy",
@@ -8396,83 +7715,91 @@
     [
       1791820800000,
       9955.692503
+    ],
+    [
+      1791835200000,
+      9955.692503
+    ],
+    [
+      1791849600000,
+      9955.692503
     ]
   ],
   "quality": {
     "15m:BTC": {
-      "bars": 527,
+      "bars": 551,
       "contiguous": true,
       "duplicates": 0,
       "first_expected_ts": 1791373500000,
       "first_ts": 1791373500000,
       "gap_count": 0,
       "gaps": [],
-      "last_ts": 1791846900000,
+      "last_ts": 1791868500000,
       "missing_bars": 0,
       "out_of_order": 0,
       "timeframe": "15m"
     },
     "15m:ETH": {
-      "bars": 527,
+      "bars": 551,
       "contiguous": true,
       "duplicates": 0,
       "first_expected_ts": 1791373500000,
       "first_ts": 1791373500000,
       "gap_count": 0,
       "gaps": [],
-      "last_ts": 1791846900000,
+      "last_ts": 1791868500000,
       "missing_bars": 0,
       "out_of_order": 0,
       "timeframe": "15m"
     },
     "15m:SOL": {
-      "bars": 527,
+      "bars": 551,
       "contiguous": true,
       "duplicates": 0,
       "first_expected_ts": 1791373500000,
       "first_ts": 1791373500000,
       "gap_count": 0,
       "gaps": [],
-      "last_ts": 1791846900000,
+      "last_ts": 1791868500000,
       "missing_bars": 0,
       "out_of_order": 0,
       "timeframe": "15m"
     },
     "1h:BTC": {
-      "bars": 5423,
+      "bars": 5429,
       "contiguous": true,
       "duplicates": 0,
       "first_expected_ts": 1772323200000,
       "first_ts": 1772323200000,
       "gap_count": 0,
       "gaps": [],
-      "last_ts": 1791842400000,
+      "last_ts": 1791864000000,
       "missing_bars": 0,
       "out_of_order": 0,
       "timeframe": "1h"
     },
     "1h:ETH": {
-      "bars": 5423,
+      "bars": 5429,
       "contiguous": true,
       "duplicates": 0,
       "first_expected_ts": 1772323200000,
       "first_ts": 1772323200000,
       "gap_count": 0,
       "gaps": [],
-      "last_ts": 1791842400000,
+      "last_ts": 1791864000000,
       "missing_bars": 0,
       "out_of_order": 0,
       "timeframe": "1h"
     },
     "1h:SOL": {
-      "bars": 5423,
+      "bars": 5429,
       "contiguous": true,
       "duplicates": 0,
       "first_expected_ts": 1772323200000,
       "first_ts": 1772323200000,
       "gap_count": 0,
       "gaps": [],
-      "last_ts": 1791842400000,
+      "last_ts": 1791864000000,
       "missing_bars": 0,
       "out_of_order": 0,
       "timeframe": "1h"
@@ -8480,12 +7807,12 @@
   },
   "restart_proof": {
     "digests": {
-      "15m:BTC": "172a1d36f6046a1f9149924ef76b2e7ccd12a9ff76e95d7337edbaac195ee003",
-      "15m:ETH": "edf2b3a88559b5b58b4ad89ed6a2061031c429427fcb0f7929c85b1065854c22",
-      "15m:SOL": "5a0a90c45f7f8dc063e11f577c837667c19adddc29c63021d3abcb2b6697d638",
-      "1h:BTC": "233d0b089f00182936e2ed3841c4570096c4e1014ed7ada937c0e2445dd10742",
-      "1h:ETH": "35fb0db4cfc63ae7923e589c62341f0e6ea6da9f1e450b2f7e74c5ccf0f5910c",
-      "1h:SOL": "543cad9564ccedc6b305934c45bb859a64abf7932c0f434636765214909480ba"
+      "15m:BTC": "cf18e247ca0e236ca5abdb485fe0cfb9cd1576c903b4bfca54b69a4f0c05095a",
+      "15m:ETH": "9c5d676aab0dca093b2443ebb928fb74c691401d7ee3b60581264afbf5e35576",
+      "15m:SOL": "7e8cc8ee39719a73ce362deeafbc9e1c285f810169b3b69dd5e26bed2c9e9ea5",
+      "1h:BTC": "8db27070cc85245c5831a44a1db0b82b07d8c93ac21f1fd97a52b2cef7a4ba9b",
+      "1h:ETH": "48a26465c94585c669aca4ff74e75d354401720bc15a608ae1799dc1f4611842",
+      "1h:SOL": "be3a5186c9eebaf7c54a15a57a235d09c6261bf3c1b8c6b452c066b9b34f24e1"
     },
     "digests_unchanged": true,
     "duplicate_refusals": 0,
@@ -8496,13 +7823,13 @@
       "no_new_data"
     ]
   },
-  "run_id": "FWD-EDGE03-20261012T233951Z",
+  "run_id": "FWD-EDGE03-20261013T053048Z",
   "shadow": {
     "arm_summaries": {
       "edge_intra_01:2X_FEES": {
         "arm": "edge_intra_01:2X_FEES",
-        "bars_seen": 527,
-        "candidate_bars_evaluated": 1581,
+        "bars_seen": 551,
+        "candidate_bars_evaluated": 1653,
         "candidate_warmup_bars": 0,
         "metrics": {
           "expectancy_usdt": null,
@@ -8537,8 +7864,8 @@
           "spread_bps": 1.0
         },
         "refusal_mix": {
-          "candidate:trend_filter_fail": 34,
-          "candidate:volume_filter_fail": 17
+          "candidate:trend_filter_fail": 36,
+          "candidate:volume_filter_fail": 22
         },
         "refusals_detail": [
           {
@@ -9186,6 +8513,92 @@
             "reason": "volume_filter_fail",
             "source": "candidate",
             "symbol": "BTC"
+          },
+          {
+            "bar_index": 71246,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1791863100000,
+            "detail": {
+              "htf_close": 82930.0,
+              "htf_ema_slow": 83444.96697450371,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71246,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1791863100000,
+            "detail": {
+              "htf_close": 82930.0,
+              "htf_ema_slow": 83444.96697450371,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "ETH"
+          },
+          {
+            "bar_index": 71246,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1791863100000,
+            "detail": {
+              "avg_volume": 53476.27334999999,
+              "volume": 45020.177
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71252,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1791868500000,
+            "detail": {
+              "avg_volume": 182.92674100000005,
+              "volume": 163.69487
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71252,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1791868500000,
+            "detail": {
+              "avg_volume": 5045.998920000001,
+              "volume": 2605.6978
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "ETH"
+          },
+          {
+            "bar_index": 71252,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1791868500000,
+            "detail": {
+              "avg_volume": 49203.9506,
+              "volume": 21808.792
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71253,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1791869400000,
+            "detail": {
+              "avg_volume": 4445.681625,
+              "volume": 4824.9148
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "ETH"
           }
         ],
         "scenario": "2X_FEES",
@@ -9194,14 +8607,14 @@
         "status": "observed",
         "timeframe": "15m",
         "trades_detail": [],
-        "window_bars": 1581,
-        "window_end_ts": 1791846900000,
+        "window_bars": 1653,
+        "window_end_ts": 1791868500000,
         "window_start_ts": 1791373500000
       },
       "edge_intra_01:ADVERSE": {
         "arm": "edge_intra_01:ADVERSE",
-        "bars_seen": 527,
-        "candidate_bars_evaluated": 1581,
+        "bars_seen": 551,
+        "candidate_bars_evaluated": 1653,
         "candidate_warmup_bars": 0,
         "metrics": {
           "expectancy_usdt": null,
@@ -9236,8 +8649,8 @@
           "spread_bps": 1.0
         },
         "refusal_mix": {
-          "candidate:trend_filter_fail": 34,
-          "candidate:volume_filter_fail": 17
+          "candidate:trend_filter_fail": 36,
+          "candidate:volume_filter_fail": 22
         },
         "refusals_detail": [
           {
@@ -9885,6 +9298,92 @@
             "reason": "volume_filter_fail",
             "source": "candidate",
             "symbol": "BTC"
+          },
+          {
+            "bar_index": 71246,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1791863100000,
+            "detail": {
+              "htf_close": 82930.0,
+              "htf_ema_slow": 83444.96697450371,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71246,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1791863100000,
+            "detail": {
+              "htf_close": 82930.0,
+              "htf_ema_slow": 83444.96697450371,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "ETH"
+          },
+          {
+            "bar_index": 71246,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1791863100000,
+            "detail": {
+              "avg_volume": 53476.27334999999,
+              "volume": 45020.177
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71252,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1791868500000,
+            "detail": {
+              "avg_volume": 182.92674100000005,
+              "volume": 163.69487
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71252,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1791868500000,
+            "detail": {
+              "avg_volume": 5045.998920000001,
+              "volume": 2605.6978
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "ETH"
+          },
+          {
+            "bar_index": 71252,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1791868500000,
+            "detail": {
+              "avg_volume": 49203.9506,
+              "volume": 21808.792
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71253,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1791869400000,
+            "detail": {
+              "avg_volume": 4445.681625,
+              "volume": 4824.9148
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "ETH"
           }
         ],
         "scenario": "ADVERSE",
@@ -9893,14 +9392,14 @@
         "status": "observed",
         "timeframe": "15m",
         "trades_detail": [],
-        "window_bars": 1581,
-        "window_end_ts": 1791846900000,
+        "window_bars": 1653,
+        "window_end_ts": 1791868500000,
         "window_start_ts": 1791373500000
       },
       "edge_intra_01:BASE": {
         "arm": "edge_intra_01:BASE",
-        "bars_seen": 527,
-        "candidate_bars_evaluated": 1581,
+        "bars_seen": 551,
+        "candidate_bars_evaluated": 1653,
         "candidate_warmup_bars": 0,
         "metrics": {
           "expectancy_usdt": null,
@@ -9935,8 +9434,8 @@
           "spread_bps": 1.0
         },
         "refusal_mix": {
-          "candidate:trend_filter_fail": 34,
-          "candidate:volume_filter_fail": 17
+          "candidate:trend_filter_fail": 36,
+          "candidate:volume_filter_fail": 22
         },
         "refusals_detail": [
           {
@@ -10584,6 +10083,92 @@
             "reason": "volume_filter_fail",
             "source": "candidate",
             "symbol": "BTC"
+          },
+          {
+            "bar_index": 71246,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1791863100000,
+            "detail": {
+              "htf_close": 82930.0,
+              "htf_ema_slow": 83444.96697450371,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71246,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1791863100000,
+            "detail": {
+              "htf_close": 82930.0,
+              "htf_ema_slow": 83444.96697450371,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "ETH"
+          },
+          {
+            "bar_index": 71246,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1791863100000,
+            "detail": {
+              "avg_volume": 53476.27334999999,
+              "volume": 45020.177
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71252,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1791868500000,
+            "detail": {
+              "avg_volume": 182.92674100000005,
+              "volume": 163.69487
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71252,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1791868500000,
+            "detail": {
+              "avg_volume": 5045.998920000001,
+              "volume": 2605.6978
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "ETH"
+          },
+          {
+            "bar_index": 71252,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1791868500000,
+            "detail": {
+              "avg_volume": 49203.9506,
+              "volume": 21808.792
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71253,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1791869400000,
+            "detail": {
+              "avg_volume": 4445.681625,
+              "volume": 4824.9148
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "ETH"
           }
         ],
         "scenario": "BASE",
@@ -10592,14 +10177,14 @@
         "status": "observed",
         "timeframe": "15m",
         "trades_detail": [],
-        "window_bars": 1581,
-        "window_end_ts": 1791846900000,
+        "window_bars": 1653,
+        "window_end_ts": 1791868500000,
         "window_start_ts": 1791373500000
       },
       "edge_intra_01r_limit:BASE": {
         "arm": "edge_intra_01r_limit:BASE",
-        "bars_seen": 527,
-        "candidate_bars_evaluated": 1581,
+        "bars_seen": 551,
+        "candidate_bars_evaluated": 1653,
         "candidate_warmup_bars": 0,
         "metrics": {
           "expectancy_usdt": null,
@@ -10634,8 +10219,8 @@
           "spread_bps": 1.0
         },
         "refusal_mix": {
-          "candidate:trend_filter_fail": 34,
-          "candidate:volume_filter_fail": 17
+          "candidate:trend_filter_fail": 36,
+          "candidate:volume_filter_fail": 22
         },
         "refusals_detail": [
           {
@@ -11283,6 +10868,92 @@
             "reason": "volume_filter_fail",
             "source": "candidate",
             "symbol": "BTC"
+          },
+          {
+            "bar_index": 71246,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1791863100000,
+            "detail": {
+              "htf_close": 82930.0,
+              "htf_ema_slow": 83444.96697450371,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71246,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1791863100000,
+            "detail": {
+              "htf_close": 82930.0,
+              "htf_ema_slow": 83444.96697450371,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "ETH"
+          },
+          {
+            "bar_index": 71246,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1791863100000,
+            "detail": {
+              "avg_volume": 53476.27334999999,
+              "volume": 45020.177
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71252,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1791868500000,
+            "detail": {
+              "avg_volume": 182.92674100000005,
+              "volume": 163.69487
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71252,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1791868500000,
+            "detail": {
+              "avg_volume": 5045.998920000001,
+              "volume": 2605.6978
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "ETH"
+          },
+          {
+            "bar_index": 71252,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1791868500000,
+            "detail": {
+              "avg_volume": 49203.9506,
+              "volume": 21808.792
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71253,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1791869400000,
+            "detail": {
+              "avg_volume": 4445.681625,
+              "volume": 4824.9148
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "ETH"
           }
         ],
         "scenario": "BASE",
@@ -11291,14 +10962,14 @@
         "status": "observed",
         "timeframe": "15m",
         "trades_detail": [],
-        "window_bars": 1581,
-        "window_end_ts": 1791846900000,
+        "window_bars": 1653,
+        "window_end_ts": 1791868500000,
         "window_start_ts": 1791373500000
       },
       "edge_intra_01r_market:2X_FEES": {
         "arm": "edge_intra_01r_market:2X_FEES",
-        "bars_seen": 527,
-        "candidate_bars_evaluated": 1581,
+        "bars_seen": 551,
+        "candidate_bars_evaluated": 1653,
         "candidate_warmup_bars": 0,
         "metrics": {
           "expectancy_usdt": null,
@@ -11333,8 +11004,8 @@
           "spread_bps": 1.0
         },
         "refusal_mix": {
-          "candidate:trend_filter_fail": 34,
-          "candidate:volume_filter_fail": 17
+          "candidate:trend_filter_fail": 36,
+          "candidate:volume_filter_fail": 22
         },
         "refusals_detail": [
           {
@@ -11982,6 +11653,92 @@
             "reason": "volume_filter_fail",
             "source": "candidate",
             "symbol": "BTC"
+          },
+          {
+            "bar_index": 71246,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1791863100000,
+            "detail": {
+              "htf_close": 82930.0,
+              "htf_ema_slow": 83444.96697450371,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71246,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1791863100000,
+            "detail": {
+              "htf_close": 82930.0,
+              "htf_ema_slow": 83444.96697450371,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "ETH"
+          },
+          {
+            "bar_index": 71246,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1791863100000,
+            "detail": {
+              "avg_volume": 53476.27334999999,
+              "volume": 45020.177
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71252,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1791868500000,
+            "detail": {
+              "avg_volume": 182.92674100000005,
+              "volume": 163.69487
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71252,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1791868500000,
+            "detail": {
+              "avg_volume": 5045.998920000001,
+              "volume": 2605.6978
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "ETH"
+          },
+          {
+            "bar_index": 71252,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1791868500000,
+            "detail": {
+              "avg_volume": 49203.9506,
+              "volume": 21808.792
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71253,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1791869400000,
+            "detail": {
+              "avg_volume": 4445.681625,
+              "volume": 4824.9148
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "ETH"
           }
         ],
         "scenario": "2X_FEES",
@@ -11990,14 +11747,14 @@
         "status": "observed",
         "timeframe": "15m",
         "trades_detail": [],
-        "window_bars": 1581,
-        "window_end_ts": 1791846900000,
+        "window_bars": 1653,
+        "window_end_ts": 1791868500000,
         "window_start_ts": 1791373500000
       },
       "edge_intra_01r_market:ADVERSE": {
         "arm": "edge_intra_01r_market:ADVERSE",
-        "bars_seen": 527,
-        "candidate_bars_evaluated": 1581,
+        "bars_seen": 551,
+        "candidate_bars_evaluated": 1653,
         "candidate_warmup_bars": 0,
         "metrics": {
           "expectancy_usdt": null,
@@ -12032,8 +11789,8 @@
           "spread_bps": 1.0
         },
         "refusal_mix": {
-          "candidate:trend_filter_fail": 34,
-          "candidate:volume_filter_fail": 17
+          "candidate:trend_filter_fail": 36,
+          "candidate:volume_filter_fail": 22
         },
         "refusals_detail": [
           {
@@ -12681,6 +12438,92 @@
             "reason": "volume_filter_fail",
             "source": "candidate",
             "symbol": "BTC"
+          },
+          {
+            "bar_index": 71246,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1791863100000,
+            "detail": {
+              "htf_close": 82930.0,
+              "htf_ema_slow": 83444.96697450371,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71246,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1791863100000,
+            "detail": {
+              "htf_close": 82930.0,
+              "htf_ema_slow": 83444.96697450371,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "ETH"
+          },
+          {
+            "bar_index": 71246,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1791863100000,
+            "detail": {
+              "avg_volume": 53476.27334999999,
+              "volume": 45020.177
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71252,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1791868500000,
+            "detail": {
+              "avg_volume": 182.92674100000005,
+              "volume": 163.69487
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71252,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1791868500000,
+            "detail": {
+              "avg_volume": 5045.998920000001,
+              "volume": 2605.6978
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "ETH"
+          },
+          {
+            "bar_index": 71252,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1791868500000,
+            "detail": {
+              "avg_volume": 49203.9506,
+              "volume": 21808.792
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71253,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1791869400000,
+            "detail": {
+              "avg_volume": 4445.681625,
+              "volume": 4824.9148
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "ETH"
           }
         ],
         "scenario": "ADVERSE",
@@ -12689,14 +12532,14 @@
         "status": "observed",
         "timeframe": "15m",
         "trades_detail": [],
-        "window_bars": 1581,
-        "window_end_ts": 1791846900000,
+        "window_bars": 1653,
+        "window_end_ts": 1791868500000,
         "window_start_ts": 1791373500000
       },
       "edge_intra_01r_market:BASE": {
         "arm": "edge_intra_01r_market:BASE",
-        "bars_seen": 527,
-        "candidate_bars_evaluated": 1581,
+        "bars_seen": 551,
+        "candidate_bars_evaluated": 1653,
         "candidate_warmup_bars": 0,
         "metrics": {
           "expectancy_usdt": null,
@@ -12731,8 +12574,8 @@
           "spread_bps": 1.0
         },
         "refusal_mix": {
-          "candidate:trend_filter_fail": 34,
-          "candidate:volume_filter_fail": 17
+          "candidate:trend_filter_fail": 36,
+          "candidate:volume_filter_fail": 22
         },
         "refusals_detail": [
           {
@@ -13380,6 +13223,92 @@
             "reason": "volume_filter_fail",
             "source": "candidate",
             "symbol": "BTC"
+          },
+          {
+            "bar_index": 71246,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1791863100000,
+            "detail": {
+              "htf_close": 82930.0,
+              "htf_ema_slow": 83444.96697450371,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71246,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1791863100000,
+            "detail": {
+              "htf_close": 82930.0,
+              "htf_ema_slow": 83444.96697450371,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "ETH"
+          },
+          {
+            "bar_index": 71246,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1791863100000,
+            "detail": {
+              "avg_volume": 53476.27334999999,
+              "volume": 45020.177
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71252,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1791868500000,
+            "detail": {
+              "avg_volume": 182.92674100000005,
+              "volume": 163.69487
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71252,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1791868500000,
+            "detail": {
+              "avg_volume": 5045.998920000001,
+              "volume": 2605.6978
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "ETH"
+          },
+          {
+            "bar_index": 71252,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1791868500000,
+            "detail": {
+              "avg_volume": 49203.9506,
+              "volume": 21808.792
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71253,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1791869400000,
+            "detail": {
+              "avg_volume": 4445.681625,
+              "volume": 4824.9148
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "ETH"
           }
         ],
         "scenario": "BASE",
@@ -13388,14 +13317,14 @@
         "status": "observed",
         "timeframe": "15m",
         "trades_detail": [],
-        "window_bars": 1581,
-        "window_end_ts": 1791846900000,
+        "window_bars": 1653,
+        "window_end_ts": 1791868500000,
         "window_start_ts": 1791373500000
       },
       "edge_intra_02:2X_FEES": {
         "arm": "edge_intra_02:2X_FEES",
-        "bars_seen": 527,
-        "candidate_bars_evaluated": 1581,
+        "bars_seen": 551,
+        "candidate_bars_evaluated": 1653,
         "candidate_warmup_bars": 0,
         "metrics": {
           "expectancy_usdt": null,
@@ -13430,8 +13359,8 @@
           "spread_bps": 1.0
         },
         "refusal_mix": {
-          "candidate:trend_filter_fail": 34,
-          "candidate:volume_filter_fail": 17
+          "candidate:trend_filter_fail": 36,
+          "candidate:volume_filter_fail": 22
         },
         "refusals_detail": [
           {
@@ -14079,6 +14008,92 @@
             "reason": "volume_filter_fail",
             "source": "candidate",
             "symbol": "BTC"
+          },
+          {
+            "bar_index": 71246,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1791863100000,
+            "detail": {
+              "htf_close": 82930.0,
+              "htf_ema_slow": 83444.96697450371,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71246,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1791863100000,
+            "detail": {
+              "htf_close": 82930.0,
+              "htf_ema_slow": 83444.96697450371,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "ETH"
+          },
+          {
+            "bar_index": 71246,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1791863100000,
+            "detail": {
+              "avg_volume": 53476.27334999999,
+              "volume": 45020.177
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71252,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1791868500000,
+            "detail": {
+              "avg_volume": 182.92674100000005,
+              "volume": 163.69487
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71252,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1791868500000,
+            "detail": {
+              "avg_volume": 5045.998920000001,
+              "volume": 2605.6978
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "ETH"
+          },
+          {
+            "bar_index": 71252,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1791868500000,
+            "detail": {
+              "avg_volume": 49203.9506,
+              "volume": 21808.792
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71253,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1791869400000,
+            "detail": {
+              "avg_volume": 4445.681625,
+              "volume": 4824.9148
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "ETH"
           }
         ],
         "scenario": "2X_FEES",
@@ -14087,14 +14102,14 @@
         "status": "observed",
         "timeframe": "15m",
         "trades_detail": [],
-        "window_bars": 1581,
-        "window_end_ts": 1791846900000,
+        "window_bars": 1653,
+        "window_end_ts": 1791868500000,
         "window_start_ts": 1791373500000
       },
       "edge_intra_02:ADVERSE": {
         "arm": "edge_intra_02:ADVERSE",
-        "bars_seen": 527,
-        "candidate_bars_evaluated": 1581,
+        "bars_seen": 551,
+        "candidate_bars_evaluated": 1653,
         "candidate_warmup_bars": 0,
         "metrics": {
           "expectancy_usdt": null,
@@ -14129,8 +14144,8 @@
           "spread_bps": 1.0
         },
         "refusal_mix": {
-          "candidate:trend_filter_fail": 34,
-          "candidate:volume_filter_fail": 17
+          "candidate:trend_filter_fail": 36,
+          "candidate:volume_filter_fail": 22
         },
         "refusals_detail": [
           {
@@ -14778,6 +14793,92 @@
             "reason": "volume_filter_fail",
             "source": "candidate",
             "symbol": "BTC"
+          },
+          {
+            "bar_index": 71246,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1791863100000,
+            "detail": {
+              "htf_close": 82930.0,
+              "htf_ema_slow": 83444.96697450371,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71246,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1791863100000,
+            "detail": {
+              "htf_close": 82930.0,
+              "htf_ema_slow": 83444.96697450371,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "ETH"
+          },
+          {
+            "bar_index": 71246,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1791863100000,
+            "detail": {
+              "avg_volume": 53476.27334999999,
+              "volume": 45020.177
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71252,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1791868500000,
+            "detail": {
+              "avg_volume": 182.92674100000005,
+              "volume": 163.69487
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71252,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1791868500000,
+            "detail": {
+              "avg_volume": 5045.998920000001,
+              "volume": 2605.6978
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "ETH"
+          },
+          {
+            "bar_index": 71252,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1791868500000,
+            "detail": {
+              "avg_volume": 49203.9506,
+              "volume": 21808.792
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71253,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1791869400000,
+            "detail": {
+              "avg_volume": 4445.681625,
+              "volume": 4824.9148
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "ETH"
           }
         ],
         "scenario": "ADVERSE",
@@ -14786,14 +14887,14 @@
         "status": "observed",
         "timeframe": "15m",
         "trades_detail": [],
-        "window_bars": 1581,
-        "window_end_ts": 1791846900000,
+        "window_bars": 1653,
+        "window_end_ts": 1791868500000,
         "window_start_ts": 1791373500000
       },
       "edge_intra_02:BASE": {
         "arm": "edge_intra_02:BASE",
-        "bars_seen": 527,
-        "candidate_bars_evaluated": 1581,
+        "bars_seen": 551,
+        "candidate_bars_evaluated": 1653,
         "candidate_warmup_bars": 0,
         "metrics": {
           "expectancy_usdt": null,
@@ -14828,8 +14929,8 @@
           "spread_bps": 1.0
         },
         "refusal_mix": {
-          "candidate:trend_filter_fail": 34,
-          "candidate:volume_filter_fail": 17
+          "candidate:trend_filter_fail": 36,
+          "candidate:volume_filter_fail": 22
         },
         "refusals_detail": [
           {
@@ -15477,6 +15578,92 @@
             "reason": "volume_filter_fail",
             "source": "candidate",
             "symbol": "BTC"
+          },
+          {
+            "bar_index": 71246,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1791863100000,
+            "detail": {
+              "htf_close": 82930.0,
+              "htf_ema_slow": 83444.96697450371,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71246,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1791863100000,
+            "detail": {
+              "htf_close": 82930.0,
+              "htf_ema_slow": 83444.96697450371,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "ETH"
+          },
+          {
+            "bar_index": 71246,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1791863100000,
+            "detail": {
+              "avg_volume": 53476.27334999999,
+              "volume": 45020.177
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71252,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1791868500000,
+            "detail": {
+              "avg_volume": 182.92674100000005,
+              "volume": 163.69487
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71252,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1791868500000,
+            "detail": {
+              "avg_volume": 5045.998920000001,
+              "volume": 2605.6978
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "ETH"
+          },
+          {
+            "bar_index": 71252,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1791868500000,
+            "detail": {
+              "avg_volume": 49203.9506,
+              "volume": 21808.792
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71253,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1791869400000,
+            "detail": {
+              "avg_volume": 4445.681625,
+              "volume": 4824.9148
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "ETH"
           }
         ],
         "scenario": "BASE",
@@ -15485,29 +15672,29 @@
         "status": "observed",
         "timeframe": "15m",
         "trades_detail": [],
-        "window_bars": 1581,
-        "window_end_ts": 1791846900000,
+        "window_bars": 1653,
+        "window_end_ts": 1791868500000,
         "window_start_ts": 1791373500000
       },
       "edge_trend_01_1d:2X_FEES": {
         "arm": "edge_trend_01_1d:2X_FEES",
-        "bars_seen": 225,
-        "candidate_bars_evaluated": 675,
+        "bars_seen": 226,
+        "candidate_bars_evaluated": 678,
         "candidate_warmup_bars": 0,
         "metrics": {
-          "expectancy_usdt": -13.310647,
-          "exposure_pct_of_time": 8.444444,
-          "fees_usdt": 2.719326,
-          "final_equity": 9960.068059,
-          "gross_usdt": -36.954922,
+          "expectancy_usdt": -18.668559,
+          "exposure_pct_of_time": 8.702065,
+          "fees_usdt": 2.687114,
+          "final_equity": 9943.994323,
+          "gross_usdt": -53.063923,
           "hypothetical": true,
-          "largest_trade_share_of_net": 0.647459,
-          "max_drawdown_pct": 0.587233,
-          "net_usdt": -39.931941,
+          "largest_trade_share_of_net": 0.461637,
+          "max_drawdown_pct": 0.670051,
+          "net_usdt": -56.005677,
           "order_sent": false,
-          "price_costs_usdt": 0.257694,
+          "price_costs_usdt": 0.25464,
           "profit_factor": 0.0,
-          "return_pct": -0.399319,
+          "return_pct": -0.560057,
           "trades": 3,
           "win_rate_pct": 0.0
         },
@@ -16156,32 +16343,32 @@
             "arm": "edge_trend_01_1d:2X_FEES",
             "asset": "SOL",
             "candidate": "edge_trend_01",
-            "cost_bps_realised": 43.516252,
+            "cost_bps_realised": 42.430817,
             "decision_ts": 1789776000000,
-            "duration_min": 31680.0,
+            "duration_min": 33120.0,
             "entry_bar": 2219,
             "entry_fill": 112.74136365,
             "entry_mid": 112.72,
             "entry_ts": 1789776000000,
-            "exit_bar": 2241,
-            "exit_fill": 111.328896,
-            "exit_mid": 111.35,
+            "exit_bar": 2242,
+            "exit_fill": 105.73995547,
+            "exit_mid": 105.76,
             "exit_reason": "end_of_data",
-            "exit_ts": 1791676800000,
+            "exit_ts": 1791763200000,
             "expected_cost_bps": 43.790569,
             "expected_gross_bps": 1287.957518,
-            "fees": 0.77057176,
-            "gross": -2.35569708,
+            "fees": 0.75135154,
+            "gross": -11.96762897,
             "hypothetical": true,
-            "mae": 7.01,
-            "mae_bps": 621.894961,
+            "mae": 7.31,
+            "mae_bps": 648.509581,
             "mfe": 12.23,
             "mfe_bps": 1084.989354,
-            "net": -3.1992914,
+            "net": -12.79018134,
             "notional": 193.8573,
             "order_sent": false,
             "planned_risk_usdt": 25.0,
-            "price_costs": 0.07302256,
+            "price_costs": 0.07120082,
             "qty": 1.7194869214,
             "regime": "UP",
             "side": "LONG",
@@ -16192,32 +16379,32 @@
             "arm": "edge_trend_01_1d:2X_FEES",
             "asset": "BTC",
             "candidate": "edge_trend_01",
-            "cost_bps_realised": 43.062913,
+            "cost_bps_realised": 42.576974,
             "decision_ts": 1790035200000,
-            "duration_min": 27360.0,
+            "duration_min": 28800.0,
             "entry_bar": 2801,
             "entry_fill": 86636.42695803,
             "entry_mid": 86620.01,
             "entry_ts": 1790035200000,
-            "exit_bar": 2820,
-            "exit_fill": 83757.24260868,
-            "exit_mid": 83773.12,
+            "exit_bar": 2821,
+            "exit_fill": 81834.48709467,
+            "exit_mid": 81850.0,
             "exit_reason": "end_of_data",
-            "exit_ts": 1791676800000,
+            "exit_ts": 1791763200000,
             "expected_cost_bps": 43.790569,
             "expected_gross_bps": 853.260382,
-            "fees": 1.15131605,
-            "gross": -9.61793406,
+            "fees": 1.13832438,
+            "gross": -16.11500327,
             "hypothetical": true,
             "mae": 6226.45,
             "mae_bps": 718.823514,
             "mfe": 658.53,
             "mfe_bps": 76.025159,
-            "net": -10.87835335,
+            "net": -17.3611995,
             "notional": 292.692532,
             "order_sent": false,
             "planned_risk_usdt": 25.025056,
-            "price_costs": 0.10910324,
+            "price_costs": 0.10787186,
             "qty": 0.0033784003,
             "regime": "UP",
             "side": "LONG",
@@ -16225,29 +16412,29 @@
             "stop_initial": 79229.05857143
           }
         ],
-        "window_bars": 675,
-        "window_end_ts": 1791676800000,
+        "window_bars": 678,
+        "window_end_ts": 1791763200000,
         "window_start_ts": 1772323200000
       },
       "edge_trend_01_1d:ADVERSE": {
         "arm": "edge_trend_01_1d:ADVERSE",
-        "bars_seen": 225,
-        "candidate_bars_evaluated": 675,
+        "bars_seen": 226,
+        "candidate_bars_evaluated": 678,
         "candidate_warmup_bars": 0,
         "metrics": {
-          "expectancy_usdt": -13.402219,
-          "exposure_pct_of_time": 8.444444,
-          "fees_usdt": 2.712038,
-          "final_equity": 9959.793342,
-          "gross_usdt": -36.859218,
+          "expectancy_usdt": -18.744693,
+          "exposure_pct_of_time": 8.702065,
+          "fees_usdt": 2.679919,
+          "final_equity": 9943.765921,
+          "gross_usdt": -52.926287,
           "hypothetical": true,
-          "largest_trade_share_of_net": 0.644271,
-          "max_drawdown_pct": 0.586274,
-          "net_usdt": -40.206658,
+          "largest_trade_share_of_net": 0.460646,
+          "max_drawdown_pct": 0.670179,
+          "net_usdt": -56.234079,
           "order_sent": false,
-          "price_costs_usdt": 0.635403,
+          "price_costs_usdt": 0.627874,
           "profit_factor": 0.0,
-          "return_pct": -0.402067,
+          "return_pct": -0.562341,
           "trades": 3,
           "win_rate_pct": 0.0
         },
@@ -16896,32 +17083,32 @@
             "arm": "edge_trend_01_1d:ADVERSE",
             "asset": "SOL",
             "candidate": "edge_trend_01",
-            "cost_bps_realised": 49.048806,
+            "cost_bps_realised": 47.825626,
             "decision_ts": 1789776000000,
-            "duration_min": 31680.0,
+            "duration_min": 33120.0,
             "entry_bar": 2219,
             "entry_fill": 112.77281895,
             "entry_mid": 112.72,
             "entry_ts": 1789776000000,
-            "exit_bar": 2241,
-            "exit_fill": 111.29782301,
-            "exit_mid": 111.35,
+            "exit_bar": 2242,
+            "exit_fill": 105.71044241,
+            "exit_mid": 105.76,
             "exit_reason": "end_of_data",
-            "exit_ts": 1791676800000,
+            "exit_ts": 1791763200000,
             "expected_cost_bps": 49.371708,
             "expected_gross_bps": 1287.957518,
-            "fees": 0.76890956,
-            "gross": -2.35061158,
+            "fees": 0.74973618,
+            "gross": -11.94179315,
             "hypothetical": true,
-            "mae": 7.01,
-            "mae_bps": 621.894961,
+            "mae": 7.31,
+            "mae_bps": 648.509581,
             "mfe": 12.23,
             "mfe_bps": 1084.989354,
-            "net": -3.29967053,
+            "net": -12.86718443,
             "notional": 193.49277,
             "order_sent": false,
             "planned_risk_usdt": 25.0,
-            "price_costs": 0.18014938,
+            "price_costs": 0.1756551,
             "qty": 1.7157748786,
             "regime": "UP",
             "side": "LONG",
@@ -16932,32 +17119,32 @@
             "arm": "edge_trend_01_1d:ADVERSE",
             "asset": "BTC",
             "candidate": "edge_trend_01",
-            "cost_bps_realised": 48.537936,
+            "cost_bps_realised": 47.990331,
             "decision_ts": 1790035200000,
-            "duration_min": 27360.0,
+            "duration_min": 28800.0,
             "entry_bar": 2801,
             "entry_fill": 86660.5988731,
             "entry_mid": 86620.01,
             "entry_ts": 1790035200000,
-            "exit_bar": 2820,
-            "exit_fill": 83733.86513803,
-            "exit_mid": 83773.12,
+            "exit_bar": 2821,
+            "exit_fill": 81811.64628401,
+            "exit_mid": 81850.0,
             "exit_reason": "end_of_data",
-            "exit_ts": 1791676800000,
+            "exit_ts": 1791763200000,
             "expected_cost_bps": 49.371708,
             "expected_gross_bps": 853.260382,
-            "fees": 1.14756795,
-            "gross": -9.58657825,
+            "fees": 1.13462224,
+            "gross": -16.0624661,
             "hypothetical": true,
             "mae": 6226.45,
             "mae_bps": 718.823514,
             "mfe": 658.53,
             "mfe_bps": 76.025159,
-            "net": -11.00301089,
+            "net": -17.46291853,
             "notional": 291.819709,
             "order_sent": false,
             "planned_risk_usdt": 25.024867,
-            "price_costs": 0.2688647,
+            "price_costs": 0.26583019,
             "qty": 0.0033673863,
             "regime": "UP",
             "side": "LONG",
@@ -16965,29 +17152,29 @@
             "stop_initial": 79229.05857143
           }
         ],
-        "window_bars": 675,
-        "window_end_ts": 1791676800000,
+        "window_bars": 678,
+        "window_end_ts": 1791763200000,
         "window_start_ts": 1772323200000
       },
       "edge_trend_01_1d:BASE": {
         "arm": "edge_trend_01_1d:BASE",
-        "bars_seen": 225,
-        "candidate_bars_evaluated": 675,
+        "bars_seen": 226,
+        "candidate_bars_evaluated": 678,
         "candidate_warmup_bars": 0,
         "metrics": {
-          "expectancy_usdt": -12.857426,
-          "exposure_pct_of_time": 8.444444,
-          "fees_usdt": 1.359663,
-          "final_equity": 9961.427722,
-          "gross_usdt": -36.954922,
+          "expectancy_usdt": -18.220707,
+          "exposure_pct_of_time": 8.702065,
+          "fees_usdt": 1.343557,
+          "final_equity": 9945.33788,
+          "gross_usdt": -53.063923,
           "hypothetical": true,
-          "largest_trade_share_of_net": 0.659945,
-          "max_drawdown_pct": 0.583251,
-          "net_usdt": -38.572278,
+          "largest_trade_share_of_net": 0.46569,
+          "max_drawdown_pct": 0.656631,
+          "net_usdt": -54.66212,
           "order_sent": false,
-          "price_costs_usdt": 0.257694,
+          "price_costs_usdt": 0.25464,
           "profit_factor": 0.0,
-          "return_pct": -0.385723,
+          "return_pct": -0.546621,
           "trades": 3,
           "win_rate_pct": 0.0
         },
@@ -17636,32 +17823,32 @@
             "arm": "edge_trend_01_1d:BASE",
             "asset": "SOL",
             "candidate": "edge_trend_01",
-            "cost_bps_realised": 23.641536,
+            "cost_bps_realised": 23.051832,
             "decision_ts": 1789776000000,
-            "duration_min": 31680.0,
+            "duration_min": 33120.0,
             "entry_bar": 2219,
             "entry_fill": 112.74136365,
             "entry_mid": 112.72,
             "entry_ts": 1789776000000,
-            "exit_bar": 2241,
-            "exit_fill": 111.328896,
-            "exit_mid": 111.35,
+            "exit_bar": 2242,
+            "exit_fill": 105.73995547,
+            "exit_mid": 105.76,
             "exit_reason": "end_of_data",
-            "exit_ts": 1791676800000,
+            "exit_ts": 1791763200000,
             "expected_cost_bps": 23.790569,
             "expected_gross_bps": 1287.957518,
-            "fees": 0.38528588,
-            "gross": -2.35569708,
+            "fees": 0.37567577,
+            "gross": -11.96762897,
             "hypothetical": true,
-            "mae": 7.01,
-            "mae_bps": 621.894961,
+            "mae": 7.31,
+            "mae_bps": 648.509581,
             "mfe": 12.23,
             "mfe_bps": 1084.989354,
-            "net": -2.81400552,
+            "net": -12.41450557,
             "notional": 193.8573,
             "order_sent": false,
             "planned_risk_usdt": 25.0,
-            "price_costs": 0.07302256,
+            "price_costs": 0.07120082,
             "qty": 1.7194869214,
             "regime": "UP",
             "side": "LONG",
@@ -17672,32 +17859,32 @@
             "arm": "edge_trend_01_1d:BASE",
             "asset": "BTC",
             "candidate": "edge_trend_01",
-            "cost_bps_realised": 23.395242,
+            "cost_bps_realised": 23.131238,
             "decision_ts": 1790035200000,
-            "duration_min": 27360.0,
+            "duration_min": 28800.0,
             "entry_bar": 2801,
             "entry_fill": 86636.42695803,
             "entry_mid": 86620.01,
             "entry_ts": 1790035200000,
-            "exit_bar": 2820,
-            "exit_fill": 83757.24260868,
-            "exit_mid": 83773.12,
+            "exit_bar": 2821,
+            "exit_fill": 81834.48709467,
+            "exit_mid": 81850.0,
             "exit_reason": "end_of_data",
-            "exit_ts": 1791676800000,
+            "exit_ts": 1791763200000,
             "expected_cost_bps": 23.790569,
             "expected_gross_bps": 853.260382,
-            "fees": 0.57565803,
-            "gross": -9.61793406,
+            "fees": 0.56916219,
+            "gross": -16.11500327,
             "hypothetical": true,
             "mae": 6226.45,
             "mae_bps": 718.823514,
             "mfe": 658.53,
             "mfe_bps": 76.025159,
-            "net": -10.30269533,
+            "net": -16.79203732,
             "notional": 292.692532,
             "order_sent": false,
             "planned_risk_usdt": 25.025056,
-            "price_costs": 0.10910324,
+            "price_costs": 0.10787186,
             "qty": 0.0033784003,
             "regime": "UP",
             "side": "LONG",
@@ -17705,18 +17892,18 @@
             "stop_initial": 79229.05857143
           }
         ],
-        "window_bars": 675,
-        "window_end_ts": 1791676800000,
+        "window_bars": 678,
+        "window_end_ts": 1791763200000,
         "window_start_ts": 1772323200000
       },
       "edge_trend_01_4h:2X_FEES": {
         "arm": "edge_trend_01_4h:2X_FEES",
-        "bars_seen": 1355,
-        "candidate_bars_evaluated": 4065,
+        "bars_seen": 1357,
+        "candidate_bars_evaluated": 4071,
         "candidate_warmup_bars": 0,
         "metrics": {
           "expectancy_usdt": -2.379686,
-          "exposure_pct_of_time": 28.905289,
+          "exposure_pct_of_time": 28.862687,
           "fees_usdt": 59.203482,
           "final_equity": 9926.229741,
           "gross_usdt": -8.956405,
@@ -23598,18 +23785,18 @@
             "stop_initial": 82504.21928571
           }
         ],
-        "window_bars": 4065,
-        "window_end_ts": 1791820800000,
+        "window_bars": 4071,
+        "window_end_ts": 1791849600000,
         "window_start_ts": 1772323200000
       },
       "edge_trend_01_4h:ADVERSE": {
         "arm": "edge_trend_01_4h:ADVERSE",
-        "bars_seen": 1355,
-        "candidate_bars_evaluated": 4065,
+        "bars_seen": 1357,
+        "candidate_bars_evaluated": 4071,
         "candidate_warmup_bars": 0,
         "metrics": {
           "expectancy_usdt": -2.322915,
-          "exposure_pct_of_time": 30.209102,
+          "exposure_pct_of_time": 30.164579,
           "fees_usdt": 57.155822,
           "final_equity": 9930.312554,
           "gross_usdt": 0.859568,
@@ -29455,18 +29642,18 @@
             "stop_initial": 82504.21928571
           }
         ],
-        "window_bars": 4065,
-        "window_end_ts": 1791820800000,
+        "window_bars": 4071,
+        "window_end_ts": 1791849600000,
         "window_start_ts": 1772323200000
       },
       "edge_trend_01_4h:BASE": {
         "arm": "edge_trend_01_4h:BASE",
-        "bars_seen": 1355,
-        "candidate_bars_evaluated": 4065,
+        "bars_seen": 1357,
+        "candidate_bars_evaluated": 4071,
         "candidate_warmup_bars": 0,
         "metrics": {
           "expectancy_usdt": -1.429274,
-          "exposure_pct_of_time": 28.905289,
+          "exposure_pct_of_time": 28.862687,
           "fees_usdt": 29.608409,
           "final_equity": 9955.692503,
           "gross_usdt": -9.087451,
@@ -35348,8 +35535,8 @@
             "stop_initial": 82504.21928571
           }
         ],
-        "window_bars": 4065,
-        "window_end_ts": 1791820800000,
+        "window_bars": 4071,
+        "window_end_ts": 1791849600000,
         "window_start_ts": 1772323200000
       }
     },
@@ -35362,68 +35549,68 @@
     "primary_available": true,
     "provenance": {
       "15m:BTC": {
-        "bars": 527,
-        "fetched_at_ms": 1791848391233,
+        "bars": 551,
+        "fetched_at_ms": 1791869448801,
         "first_ts": 1791373500000,
         "frozen_last_ts": 1791372600000,
-        "last_ts": 1791846900000,
+        "last_ts": 1791868500000,
         "source": "BINANCE_PUBLIC_REST:/api/v3/klines",
-        "store_sha256": "172a1d36f6046a1f9149924ef76b2e7ccd12a9ff76e95d7337edbaac195ee003",
+        "store_sha256": "cf18e247ca0e236ca5abdb485fe0cfb9cd1576c903b4bfca54b69a4f0c05095a",
         "symbol": "BTC",
         "timeframe": "15m"
       },
       "15m:ETH": {
-        "bars": 527,
-        "fetched_at_ms": 1791848391233,
+        "bars": 551,
+        "fetched_at_ms": 1791869448801,
         "first_ts": 1791373500000,
         "frozen_last_ts": 1791372600000,
-        "last_ts": 1791846900000,
+        "last_ts": 1791868500000,
         "source": "BINANCE_PUBLIC_REST:/api/v3/klines",
-        "store_sha256": "edf2b3a88559b5b58b4ad89ed6a2061031c429427fcb0f7929c85b1065854c22",
+        "store_sha256": "9c5d676aab0dca093b2443ebb928fb74c691401d7ee3b60581264afbf5e35576",
         "symbol": "ETH",
         "timeframe": "15m"
       },
       "15m:SOL": {
-        "bars": 527,
-        "fetched_at_ms": 1791848391233,
+        "bars": 551,
+        "fetched_at_ms": 1791869448801,
         "first_ts": 1791373500000,
         "frozen_last_ts": 1791372600000,
-        "last_ts": 1791846900000,
+        "last_ts": 1791868500000,
         "source": "BINANCE_PUBLIC_REST:/api/v3/klines",
-        "store_sha256": "5a0a90c45f7f8dc063e11f577c837667c19adddc29c63021d3abcb2b6697d638",
+        "store_sha256": "7e8cc8ee39719a73ce362deeafbc9e1c285f810169b3b69dd5e26bed2c9e9ea5",
         "symbol": "SOL",
         "timeframe": "15m"
       },
       "1h:BTC": {
-        "bars": 5423,
-        "fetched_at_ms": 1791848391233,
+        "bars": 5429,
+        "fetched_at_ms": 1791867653055,
         "first_ts": 1772323200000,
         "frozen_last_ts": 1772319600000,
-        "last_ts": 1791842400000,
+        "last_ts": 1791864000000,
         "source": "BINANCE_PUBLIC_REST:/api/v3/klines",
-        "store_sha256": "233d0b089f00182936e2ed3841c4570096c4e1014ed7ada937c0e2445dd10742",
+        "store_sha256": "8db27070cc85245c5831a44a1db0b82b07d8c93ac21f1fd97a52b2cef7a4ba9b",
         "symbol": "BTC",
         "timeframe": "1h"
       },
       "1h:ETH": {
-        "bars": 5423,
-        "fetched_at_ms": 1791848391233,
+        "bars": 5429,
+        "fetched_at_ms": 1791867653055,
         "first_ts": 1772323200000,
         "frozen_last_ts": 1772319600000,
-        "last_ts": 1791842400000,
+        "last_ts": 1791864000000,
         "source": "BINANCE_PUBLIC_REST:/api/v3/klines",
-        "store_sha256": "35fb0db4cfc63ae7923e589c62341f0e6ea6da9f1e450b2f7e74c5ccf0f5910c",
+        "store_sha256": "48a26465c94585c669aca4ff74e75d354401720bc15a608ae1799dc1f4611842",
         "symbol": "ETH",
         "timeframe": "1h"
       },
       "1h:SOL": {
-        "bars": 5423,
-        "fetched_at_ms": 1791848391233,
+        "bars": 5429,
+        "fetched_at_ms": 1791867653055,
         "first_ts": 1772323200000,
         "frozen_last_ts": 1772319600000,
-        "last_ts": 1791842400000,
+        "last_ts": 1791864000000,
         "source": "BINANCE_PUBLIC_REST:/api/v3/klines",
-        "store_sha256": "543cad9564ccedc6b305934c45bb859a64abf7932c0f434636765214909480ba",
+        "store_sha256": "be3a5186c9eebaf7c54a15a57a235d09c6261bf3c1b8c6b452c066b9b34f24e1",
         "symbol": "SOL",
         "timeframe": "1h"
       }
@@ -35433,7 +35620,7 @@
   "test_target": "run_forward_observation",
   "verdict": {
     "coverage_required": 0.9,
-    "new_bars_this_run": 17850,
+    "new_bars_this_run": 3,
     "not_claimed": "a running forward pipeline is not evidence of an edge: no admission criterion is evaluated here, and no strategy is promoted",
     "observation_days": 226,
     "observation_floor": 60,
@@ -35441,6 +35628,6 @@
     "promotion": "NONE",
     "reason": "226 independent observation day(s) accumulated; the lane still promotes nothing (the forward pipeline does not read an admission criterion)",
     "state": "OBSERVATION_AVAILABLE",
-    "stored_bars": 17850
+    "stored_bars": 17940
   }
 }

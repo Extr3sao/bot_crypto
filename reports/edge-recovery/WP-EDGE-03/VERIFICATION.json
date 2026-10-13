@@ -12,13 +12,18 @@
         "passed": true
       },
       {
+        "check": "FROZEN_PARAMS_PINNED",
+        "detail": "ruleset digest d073a2d686b9b198 re-derived from the source, pinned by the payload and equal to the published value",
+        "passed": true
+      },
+      {
         "check": "STORE_DIGESTS_MATCH_MANIFEST",
         "detail": "6 store file(s) verified",
         "passed": true
       },
       {
         "check": "FORWARD_BARS_AFTER_FREEZE",
-        "detail": "17850 forward bar(s) admissible",
+        "detail": "17940 forward bar(s) admissible",
         "passed": true
       },
       {
@@ -33,12 +38,12 @@
       },
       {
         "check": "LATENCY_RECOMPUTED",
-        "detail": "ingestion lag matches the stored provenance",
+        "detail": "window and last-run ingestion lag both match the stored provenance",
         "passed": true
       },
       {
         "check": "SHADOW_WINDOW_RESPECTED",
-        "detail": "1286 shadow row(s) inside the forward window",
+        "detail": "1356 shadow row(s) inside the forward window",
         "passed": true
       },
       {
@@ -93,13 +98,13 @@
       }
     ],
     "failed": 0,
-    "passed": 18,
+    "passed": 19,
     "verdict": "VERIFY_PASS"
   },
   "self_test": {
-    "applied": 18,
+    "applied": 20,
     "collateral_breaks": 4,
-    "detected": 18,
+    "detected": 20,
     "sabotages": [
       {
         "baseline_passed": true,
@@ -120,6 +125,16 @@
         "detected": true,
         "expected_check": "FROZEN_CORPUS_UNCHANGED",
         "sabotage": "move the frozen corpus digest"
+      },
+      {
+        "baseline_passed": true,
+        "broken_checks": [
+          "FROZEN_PARAMS_PINNED"
+        ],
+        "collateral": [],
+        "detected": true,
+        "expected_check": "FROZEN_PARAMS_PINNED",
+        "sabotage": "tune a frozen ruleset parameter"
       },
       {
         "baseline_passed": true,
@@ -177,6 +192,16 @@
         "detected": true,
         "expected_check": "LATENCY_RECOMPUTED",
         "sabotage": "falsify the ingestion latency"
+      },
+      {
+        "baseline_passed": true,
+        "broken_checks": [
+          "LATENCY_RECOMPUTED"
+        ],
+        "collateral": [],
+        "detected": true,
+        "expected_check": "LATENCY_RECOMPUTED",
+        "sabotage": "publish the backfill as the last-run latency"
       },
       {
         "baseline_passed": true,
