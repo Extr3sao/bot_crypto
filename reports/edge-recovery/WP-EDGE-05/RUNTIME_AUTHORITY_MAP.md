@@ -98,7 +98,36 @@ recibo y su reactivación. No se ha creado ningún segundo orquestador de tradin
   work package no ha creado y declara como limitación.
 * `UNKNOWN` no equivale a éxito en ninguna comprobación del vigilante.
 
-## 8. Reproducir el baseline
+## 8. El contrato de estados: el que ya existía, y por qué no se ha duplicado
+
+La RFC propone un `TickJournal` con fases `PLANNED → ACQUIRED → INGESTING → RECONCILING →
+EVALUATING → COMMITTING → OBSERVED` y terminales `NO_NEW_DATA`, `DEGRADED`, `FAILED`, `SKIPPED`,
+`RECOVERED`. Al mapearlo contra lo que ya existe aparece un hallazgo que conviene decir en voz alta:
+
+**La lane no escribe un diario de fases.** Escribe **una fila por intento, al terminar**
+(`runs.jsonl`), con `started_at_utc`, `finished_at_utc`, `slot_key`, `lease`, `slot_sealed`,
+`slot_already_observed`, `new_bars`, `missing_bars`, `errors` y `outcome`. Las fases intermedias **no**
+están journalizadas; por eso la seguridad frente a una caída no descansa en una máquina de estados,
+sino en dos cosas que sí existen y se verifican: el **high-water mark** de cada fila del ledger de
+ingesta y la **reconciliación**, que reconstruye de forma determinista qué escribió cada intento aunque
+nunca llegara a registrarse (§4 del RUN_REPORT). Añadir un diario de fases habría duplicado un
+vocabulario autoritativo y cambiado el camino del tick, que es justo lo que la RFC prohíbe.
+
+| Estado que la RFC proponía | Vocabulario autoritativo que ya existe | Dónde |
+| --- | --- | --- |
+| `OBSERVED`, `NO_NEW_DATA` | `OBSERVED`, `NO_NEW_DATA` — mismos nombres, mismo significado | `research/edge03/autonomous.py` (`EXIT_CODES`) |
+| `SKIPPED` | `ALREADY_OBSERVED`, `ALREADY_RUNNING` — el slot ya está sellado, o ya hay otro intento dentro | idem |
+| `FAILED` | `FAILED_OUTCOMES`: `PROVIDER_UNAVAILABLE`, `MISSING_BARS`, `STALE_DATA`, `DISK_BUDGET_EXCEEDED`, `VERIFICATION_FAILED`, `RUNTIME_EXCEPTION` | idem |
+| `ACQUIRED` | el campo `lease` de la fila del tick (`LEASE_STALE_AFTER_SECONDS = 300`) | `research/campaign_lock.py`, `edge03/autonomous.py` |
+| `COMMITTING` | sello por slot: `slot_sealed` / `slot_already_observed` | `runs.jsonl`, `slots.jsonl` |
+| `DEGRADED` | `health_status` de la lane (`HEALTHY`/`DEGRADED`) y veredicto `WATCH_DEGRADED` del vigilante | `edge03/autonomous.py`, `edge05/watchdog.py` |
+| `RECOVERED` | episodio de reconciliación `CLOSED` con `recovered_by_run` nombrado, y alerta `WATCHDOG_RECOVERED` con `recovered_by_run_id` | `edge05/reconcile.py`, `edge05/watchdog.py` |
+| (salud del vigilante) | veredictos `WATCH_OK`/`WATCH_DEGRADED`/`WATCH_ALARM`/`WATCH_BLOCKED`; estados por comprobación `OK`/`WARN`/`ALARM`/`BLOCKED`/`UNKNOWN`; categorías `HEALTHY`, `MARKET_QUIET`, `LANE_OVERDUE`, `SCHEDULER_FAILURE`, `INGEST_FAILURE`, `EVIDENCE_BROKEN`, `RESOURCE_PRESSURE`, `WATCHDOG_SELF_GAP` | `EDGE05_WATCHDOG_STATUS.json` publica las vistas (`verdicts_seen`, `alert_kinds`); el vocabulario vive en el módulo |
+| (integridad de la evidencia) | códigos de defecto `UNATTRIBUTED_BAR`, `UNATTRIBUTED_ATTEMPT`, `CLAIMED_BUT_ABSENT`, `DOUBLE_CLAIM`, `CHAIN_BROKEN`, `SEAL_ORPHANED`, `SEAL_MISSING`, `DECISION_DIVERGENCE`, `RESTART_PROOF_BROKEN`; veredictos `RECONCILIATION_CLEAN`/`RECONCILIATION_INCOMPLETE`; `RECONSTRUCTED` frente a `ABSENT` | `edge05/reconcile.py` |
+
+`UNKNOWN` nunca equivale a éxito, ni en el vigilante ni aquí.
+
+## 9. Reproducir el baseline
 
 ```bash
 git log --oneline -8
