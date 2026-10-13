@@ -50,13 +50,24 @@ DEFAULT_STALE_AFTER_SECONDS = 1_800
 
 
 def _pid_probe(pid: int) -> bool | None:
-    """``True`` alive, ``False`` gone, ``None`` when the platform cannot say."""
+    """``True`` alive, ``False`` gone, ``None`` when the platform cannot say.
+
+    A probe that cannot answer must *say so*, never raise: the caller is deciding whether to
+    reclaim a lease, and a platform that refuses to answer is exactly the case the lease's own
+    age rule exists for. Raising here turns a stale lease into a crashed process.
+    """
+    if not isinstance(pid, int) or pid <= 0:
+        return None
     try:
         os.kill(pid, 0)
     except ProcessLookupError:
         return False
     except PermissionError:
         return True
+    except SystemError:
+        # Windows answers a pid it cannot map with ``WinError 87`` raised as ``SystemError``,
+        # which is not an ``OSError`` and so would otherwise escape both handlers below.
+        return None
     except OSError:
         return None
     return True
