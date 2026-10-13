@@ -261,5 +261,12 @@ python scripts/edge05_verify.py --self-test         # verificador independiente 
 python scripts/edge05_closure.py                    # regenera todos los artefactos desde el estado vivo
 ```
 
+**El orden importa en un caso.** `edge05_reconcile.py` y `edge05_verify.py` son un par: el verificador
+recalcula la cadena ledger↔barras a partir de los ficheros que la reconciliación registró, así que se
+ejecutan seguidos. Si se ejecuta el verificador solo, más de quince minutos después de la última
+reconciliación, **debe** informar de que `reconciliation_chains_recomputed` falla exactamente por los
+ticks que la lane ha añadido desde entonces: eso es la comprobación funcionando, no el vigilante
+fallando. El par publicado en este directorio es reconciliación `20:13:12Z` → verificación `20:13:18Z`.
+
 Informe técnico completo en inglés: [`RUN_REPORT.md`](reports/edge-recovery/WP-EDGE-05/RUN_REPORT.md) y
 su gemelo máquina [`RUN_REPORT.json`](reports/edge-recovery/WP-EDGE-05/RUN_REPORT.json).

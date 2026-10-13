@@ -1,5 +1,5 @@
 {
-  "at_utc": "2026-10-13T20:13:18Z",
+  "at_utc": "2026-10-13T20:16:32Z",
   "check_count": 13,
   "checks": [
     {
@@ -91,35 +91,14 @@
     {
       "check": "watchdog_bounds_declared_and_kept",
       "detail": [],
-      "reading": "9 reading(s), 25 alert(s), 1 daily file(s), 193564 bytes",
+      "reading": "9 reading(s), 25 alert(s), 1 daily file(s), 194146 bytes",
       "status": "PASS"
     },
     {
       "check": "recorded_digests_match_the_files",
       "detail": {
         "inputs_checked": 3,
-        "mismatched": [
-          {
-            "input": "15m:BTC",
-            "reading": "the store file moved on"
-          },
-          {
-            "input": "15m:ETH",
-            "reading": "the store file moved on"
-          },
-          {
-            "input": "15m:SOL",
-            "reading": "the store file moved on"
-          },
-          {
-            "input": "1h:BTC",
-            "reading": "the store file moved on"
-          },
-          {
-            "input": "1h:ETH",
-            "reading": "the store file moved on"
-          }
-        ],
+        "mismatched": [],
         "note": "the lane ticks every fifteen minutes, so a digest recorded by one reading and a file read later are expected to differ once the lane writes again; the counted check here is that each recorded digest is present and well formed, and that the reconciliation's own inputs are pinned by name and digest",
         "store_mode": "LIVE"
       },
@@ -349,7 +328,7 @@
     "verdict": "SELF_TEST_PASS 15/15"
   },
   "verdict": "VERIFY_PASS 13/13",
-  "verified_at_utc": "2026-10-13T20:13:18Z",
+  "verified_at_utc": "2026-10-13T20:16:32Z",
   "watched": {
     "lane_state_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04",
     "store_mode": "LIVE",

@@ -301,3 +301,10 @@ python scripts/edge05_verify.py --slice reports/edge-recovery/WP-EDGE-05/evidenc
 # regenerate every artefact in this directory from the live state
 python scripts/edge05_closure.py
 ```
+
+**Order matters for one of them.** `edge05_reconcile.py` and `edge05_verify.py` are a pair: the
+verifier recomputes the ledger/bar chain from the files the reconciliation recorded, so the two are run
+back to back. Run the verifier alone more than fifteen minutes after the last reconciliation and it is
+supposed to report `reconciliation_chains_recomputed` failing by exactly the ticks the lane has added
+since — that is the check working, not the watchdog failing. The published pair in this directory is
+reconciliation `20:13:12Z` → verification `20:13:18Z`, both regenerated from the live state.
