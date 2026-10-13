@@ -39,9 +39,17 @@ because every campaign that takes this lease had the same trap. The lane's own a
 directory) are a third, separate commit — see §7. No other workstream's file was staged, and the
 operational state under `data/forward/` is ignored by git and therefore not in any of them.
 
-**Push: `BLOCKED_GITHUB_AUTH`** — the credential helper still prompts and prompts are disabled, so
-the four commits stay local rather than being attributed to somebody else. This is the same blocker
-the previous work packages recorded; it is a diagnosis, not a pass.
+**Push: `BLOCKED_GITHUB_AUTH`** — re-probed after this work package's commits rather than assumed:
+
+```
+$ GIT_TERMINAL_PROMPT=0 GIT_ASKPASS=/bin/true timeout 60 git push --dry-run origin HEAD
+(60 s, no output, killed)  exit 124
+```
+
+`origin` is `https://github.com/Extr3sao/bot_crypto.git`; the credential helper never returns because
+the prompt it is waiting for is disabled. The probe was a **dry run** and no credential was supplied,
+so nothing left this machine. The commits stay local rather than being re-attributed to somebody
+else. This is the same blocker the previous work packages recorded; it is a diagnosis, not a pass.
 
 ## 3. What the ticks did with the data
 
@@ -129,7 +137,9 @@ crosses the declared cap. A check that cannot fail is not a check.
   reading (228 now, 12 as published). Three of four, stated as three of four: the reproduction
   property is real but it expires, and that is a finding rather than a footnote.
 * **Independent verification**: `INDEPENDENT_VERIFICATION.json` — `VERIFY_PASS` 15/15,
-  `SELF_TEST_PASS` 20/20 sabotages detected, 0 skipped.
+  `SELF_TEST_PASS` 20/20 sabotages detected, 0 skipped. Re-run afterwards against the **committed**
+  snapshot (`VERIFIER_RERUN.json`, `15:16:24Z`): same 15 checks, same 20 sabotages, exit 0 — the
+  published verdict is re-derived rather than merely described.
 * **Closure artefacts**: `EDGE04_FORWARD_COVERAGE.json`, `EDGE04_RESOURCE_BUDGET.json`,
   `EDGE04_HEALTH_REPORT.json`, `evidence/FASE7_TIMELINE.md`, all regenerated from the live state by
   `scripts/edge04_closure.py`, which decides nothing and rewrites nothing.

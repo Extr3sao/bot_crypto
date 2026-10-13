@@ -64,7 +64,16 @@
     ],
     "push": {
       "state": "BLOCKED_GITHUB_AUTH",
-      "reading": "the credential helper still prompts, and prompts are disabled; the commits stay local rather than being re-attributed to someone else"
+      "remote": "https://github.com/Extr3sao/bot_crypto.git",
+      "probe": {
+        "at_utc": "2026-10-13T15:15:39Z",
+        "command": "GIT_TERMINAL_PROMPT=0 GIT_ASKPASS=/bin/true timeout 60 git push --dry-run origin HEAD",
+        "exit_code": 124,
+        "output": "",
+        "reading": "the push never completes and prints nothing: the credential helper is waiting for a prompt that is disabled. A dry run, so nothing left this machine"
+      },
+      "action_taken": "the commits stay local rather than being re-attributed to someone else; the probe was a dry run and no credential was supplied",
+      "note": "this is the same blocker the earlier work packages recorded, re-probed after this work package's commits rather than assumed"
     }
   },
   "runtime": {
@@ -280,7 +289,18 @@
       "BUDGET_DECLARED_MEASURED_AND_BOUNDED: a snapshot that copied a curated list instead of the whole state root"
     ],
     "self_test_blind_spot_found": "the 'grow a bounded log past its cap' sabotage was caught only as a side effect of a byte comparison; the cap arm itself compared names the bundle never loads. Both were repaired",
-    "verdict_file": "reports/edge-recovery/WP-EDGE-04/INDEPENDENT_VERIFICATION.json"
+    "verdict_file": "reports/edge-recovery/WP-EDGE-04/INDEPENDENT_VERIFICATION.json",
+    "rerun_on_the_committed_snapshot": {
+      "at_utc": "2026-10-13T15:16:24Z",
+      "command": "scripts/edge04_verify.py --state-root reports/edge-recovery/WP-EDGE-04/evidence --repo . --install …/evidence/install.json --self-test",
+      "verdict": "VERIFY_PASS",
+      "checks_passed": 15,
+      "self_test": "SELF_TEST_PASS",
+      "sabotages_detected": 20,
+      "exit_code": 0,
+      "file": "reports/edge-recovery/WP-EDGE-04/VERIFIER_RERUN.json",
+      "reading": "the committed snapshot re-derives the published verdict rather than merely being described by it"
+    }
   },
   "resources": {
     "lane_bytes": 2998142,

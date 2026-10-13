@@ -228,3 +228,7 @@ python scripts/edge04_verify.py --state-root reports/edge-recovery/WP-EDGE-04/ev
 
 `scripts/edge04_closure.py` decides nothing and rewrites nothing: it reads, it writes under
 `--reports`, and it runs the verifier.
+
+Both were run against the committed snapshot after the commits: the verifier re-derived the same
+15/15 checks and the same 20/20 sabotages (exit 0, `VERIFIER_RERUN.json`), and the push probe
+diagnosed `BLOCKED_GITHUB_AUTH` — a dry run, no credential supplied, so the commits are local.
