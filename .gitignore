@@ -115,6 +115,20 @@ reports/edge-recovery/WP-EDGE-03/*
 !reports/edge-recovery/WP-EDGE-03/*.json
 !reports/edge-recovery/WP-EDGE-03/*.md
 
+# ------------------------------------------------------------
+# WP-EDGE-04 — misma cadena de excepciones que WP-EDGE-01/02/03: la auditoria del
+# runtime, el diseno del scheduler, los informes, la verificacion independiente y
+# la instantanea fechada de la evidencia viva SI se versionan. La instantanea
+# incluye la publicacion que la evidencia apunta, porque un puntero cuyos
+# artefactos se quedan fuera no lo puede comprobar nadie; cada fichero copiado
+# lleva su sha256 en evidence/SNAPSHOT.json.
+# ------------------------------------------------------------
+!reports/edge-recovery/WP-EDGE-04/
+reports/edge-recovery/WP-EDGE-04/*
+!reports/edge-recovery/WP-EDGE-04/evidence/
+!reports/edge-recovery/WP-EDGE-04/*.json
+!reports/edge-recovery/WP-EDGE-04/*.md
+
 # ============================================================
 # CAP-003 — evidencias OHLCV crudas: locales por tamano.
 # El ledger (evidence/real_decisions/*.jsonl) SI se versiona y

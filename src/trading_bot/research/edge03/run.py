@@ -134,6 +134,24 @@ def _latency(
     }
 
 
+def default_ledger_dir(repo_root: Path) -> Path:
+    """Where the ingest ledger of the WP-EDGE-03 observation is published.
+
+    Named here, not inlined, because the unattended tick of WP-EDGE-04 points at its own
+    ledger root: two writers appending to one log would make a reader unable to tell which
+    observation a row belongs to.
+    """
+    return Path(repo_root) / "reports" / "edge-recovery" / "WP-EDGE-03" / "forward-observation"
+
+
+def _relative_to(path: Path, root: Path) -> str:
+    """A repo-relative posix path, or the absolute one when it lives outside the repo."""
+    try:
+        return str(path.relative_to(root)).replace("\\", "/")
+    except ValueError:
+        return str(path).replace("\\", "/")
+
+
 def _observation_total(observation: dict[str, Any], *, assets: tuple[str, ...]) -> dict[str, Any]:
     """Independent observation days, counted on the assets the primary arm trades.
 
@@ -206,6 +224,7 @@ def run_forward_observation(
     sweep_cases: int = 384,
     shadow_case_limit: int | None = 600,
     store_root: Path | None = None,
+    ledger_dir: Path | None = None,
     quiet: bool = True,
 ) -> dict[str, Any]:
     """The whole lane, from the frozen corpora to the observation payload.
@@ -213,12 +232,16 @@ def run_forward_observation(
     ``store_root`` is the one seam a rehearsal needs: pointing it elsewhere keeps a
     synthetic run out of the published store, which is the only way a rehearsal can be
     harmless to the evidence.
+
+    ``ledger_dir`` is the same seam for the ingest record: left out, the rows go to the
+    ledger WP-EDGE-03 published; the unattended tick of WP-EDGE-04 passes its own root so
+    its rows never interleave with the observation the earlier work package published.
     """
     if quiet:
         quiet_runtime_logs()
     repo_root = Path(repo_root)
     store = ForwardStore(Path(store_root) if store_root is not None else default_store_root(repo_root))
-    ledger_dir = repo_root / "reports" / "edge-recovery" / "WP-EDGE-03" / "forward-observation"
+    ledger_dir = Path(ledger_dir) if ledger_dir is not None else default_ledger_dir(repo_root)
     ledger = IngestLedger(ledger_dir / "INGEST_LEDGER.jsonl")
     klines = source if source is not None else BinancePublicKlines()
 
@@ -337,7 +360,7 @@ def run_forward_observation(
         "frozen_params": params_pin,
         "ingest": {
             "ledger": first,
-            "ledger_path": str(ledger.path.relative_to(repo_root)).replace("\\", "/"),
+            "ledger_path": _relative_to(ledger.path, repo_root),
             "series": [f"{tf}:{sym}" for tf, sym in FORWARD_SERIES],
         },
         "manifest": manifest,
