@@ -359,3 +359,8 @@ What this does and does not prove:
 * **The forward gate is not accumulating while this holds.** 0 of 60 forward days was already the
   reading; while the volume stays under the floor it stays 0. Reclaiming space is the owner's decision,
   and no data was touched to make room.
+
+*Where the rest of this report quotes counts — 9 watchdog readings, 25 alert rows, 42 lane ticks, the
+"22 rows, 16 kinds" of §10 — those are the readings at the published instant `20:14Z`. The numbers in
+this section are later ones, and they moved because the lane kept running; the two sets are not
+contradictory, they are two readings of a live system.*
