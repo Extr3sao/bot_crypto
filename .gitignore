@@ -183,6 +183,34 @@ reports/edge-recovery/WP-EDGE-06/research/*/*
 !reports/edge-recovery/WP-EDGE-06/research/*/*.csv
 !reports/edge-recovery/WP-EDGE-06/research/*/*.jsonl
 
+# ------------------------------------------------------------
+# WP-EDGE-07 — misma cadena de excepciones que WP-EDGE-01…06, por el mismo motivo:
+# la pre-registracion (escrita y commiteada ANTES de leer la ventana nueva), la
+# validacion economica de la variante tendencial, la investigacion ACTIVE y los
+# informes SI se versionan. `validation/` y `active-research/` necesitan su propia
+# linea porque git no re-incluye un fichero cuyo directorio padre esta excluido, y
+# es ahi donde vive la evidencia. El corpus nuevo (data/edge07/holdout-1h/) se
+# versiona con su manifiesto de sha256 por shard; el estado vivo sigue bajo
+# data/forward/ y no entra aqui.
+# ------------------------------------------------------------
+!reports/edge-recovery/WP-EDGE-07/
+reports/edge-recovery/WP-EDGE-07/*
+!reports/edge-recovery/WP-EDGE-07/*.json
+!reports/edge-recovery/WP-EDGE-07/*.md
+!reports/edge-recovery/WP-EDGE-07/*.jsonl
+!reports/edge-recovery/WP-EDGE-07/validation/
+reports/edge-recovery/WP-EDGE-07/validation/*
+!reports/edge-recovery/WP-EDGE-07/validation/*.json
+!reports/edge-recovery/WP-EDGE-07/validation/*.md
+!reports/edge-recovery/WP-EDGE-07/validation/*.csv
+!reports/edge-recovery/WP-EDGE-07/validation/*.jsonl
+!reports/edge-recovery/WP-EDGE-07/active-research/
+reports/edge-recovery/WP-EDGE-07/active-research/*
+!reports/edge-recovery/WP-EDGE-07/active-research/*.json
+!reports/edge-recovery/WP-EDGE-07/active-research/*.md
+!reports/edge-recovery/WP-EDGE-07/active-research/*.csv
+!reports/edge-recovery/WP-EDGE-07/active-research/*.jsonl
+
 # ============================================================
 # CAP-003 — evidencias OHLCV crudas: locales por tamano.
 # El ledger (evidence/real_decisions/*.jsonl) SI se versiona y
