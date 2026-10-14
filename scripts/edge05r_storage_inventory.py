@@ -37,6 +37,7 @@ UTC = timezone.utc
 REPO_ROOT = Path(__file__).resolve().parents[1]
 
 SCHEMA_VERSION = "EDGE05R_STORAGE_INVENTORY_V1"
+DEFAULT_LABEL = "WP-EDGE-05R"
 GIB = 1024**3
 MIB = 1024**2
 
@@ -514,7 +515,8 @@ def render(payload: dict[str, Any]) -> str:
     volume = payload["volume"]
     totals = payload["totals"]
     lines = [
-        "# WP-EDGE-05R — storage diagnosis: where the volume went, and what is mine to move",
+        f"# {payload.get('label', DEFAULT_LABEL)} — storage diagnosis: where the volume went, "
+        "and what is mine to move",
         "",
         f"*Read at `{payload['as_of_utc']}` on `{payload['host']}`. Read-only: this file "
         "sizes things and says who owns them; it deletes nothing.*",
@@ -636,6 +638,10 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--out", default=None, help="directory for the two artefacts")
     parser.add_argument("--top", type=int, default=20, help="how many largest files to list")
     parser.add_argument("--json", action="store_true", help="print the payload, write nothing")
+    #: The work package that is RE-RUNNING this tool, not the one that wrote it: the same
+    #: measurement taken later belongs to the later reading, and a file titled with the
+    #: earlier one invites a reader to date the numbers by their heading.
+    parser.add_argument("--label", default=DEFAULT_LABEL)
     options = parser.parse_args(argv)
 
     root = Path(options.root).resolve() if options.root else REPO_ROOT
@@ -645,6 +651,7 @@ def main(argv: list[str] | None = None) -> int:
         else REPO_ROOT / "reports" / "edge-recovery" / "WP-EDGE-05R"
     )
     payload = build(root, top_largest=options.top)
+    payload["label"] = options.label
 
     if options.json:
         print(json.dumps(payload, indent=2, sort_keys=True, default=str))

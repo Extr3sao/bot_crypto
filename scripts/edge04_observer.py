@@ -9,6 +9,7 @@
     python scripts/edge04_observer.py --snapshot DIR      copy live evidence into a directory
     python scripts/edge04_observer.py --report-only DIR   re-render the reports offline
     python scripts/edge04_observer.py --repair-slot-ledger drop duplicate seals from the ledger
+    python scripts/edge04_observer.py --no-refresh-derived  tick without re-reading the lane
 
 The tick itself is in :mod:`trading_bot.research.edge03.autonomous`; this file only parses
 arguments, builds the observer, calls it, and returns the outcome's exit code. There is no
@@ -26,6 +27,14 @@ result:
     6  VERIFICATION_FAILED                            the frozen pin refused
     7  PROVIDER_UNAVAILABLE                           every series failed to fetch
 
+The tick is also the trigger for the lane's *derived reading*. A reconciliation that is only
+run by hand describes the lane as it was when somebody last ran it, which is how WP-EDGE-05R
+found it: three ticks behind the evidence it reads. So a scheduled tick that consumed its slot
+re-reads the lane into the watchdog's reconciliation record, with the instant, the duration and
+the status of that re-read carried inside the tick's own record. It never changes the tick's
+outcome: a lane that observed and could not be re-read has still observed, and the failure is
+reported rather than converted into a pass or a stop.
+
 Research only: public market data, no credentials, no orders, no capital, no promotion.
 """
 
@@ -35,8 +44,10 @@ import argparse
 import hashlib
 import json
 import sys
+import time
 from datetime import UTC, datetime
 from pathlib import Path
+from typing import Any
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT / "src"))
@@ -44,6 +55,7 @@ sys.path.insert(0, str(REPO_ROOT / "src"))
 from trading_bot.research.edge03.autonomous import (  # noqa: E402
     MODE_MANUAL,
     MODE_SCHEDULED,
+    SLOT_CONSUMING_OUTCOMES,
     STATE_SCHEMA_VERSION,
     ForwardObserver,
     read_jsonl,
@@ -83,6 +95,46 @@ def _parse_instant(value: str | None) -> int | None:
 
 def _sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def _refresh_derived(*, outcome: str, repo_root: Path) -> dict[str, Any]:
+    """Re-read the lane after a tick that consumed its slot.
+
+    The reconciliation is a reading of what the lane just wrote, so the tick is the only
+    trigger it needs and the lane's own state is the only input. It is written into the
+    watchdog's state (``data/forward/edge05/reconciliation/``), not into a report directory:
+    a reading that rewrote published reports on every 15-minute tick would put the churn
+    exactly where the reviewer looks, and the reading is what the reports are rendered from,
+    not the other way round.
+
+    Returns the receipt that travels inside the tick record. A failure here is recorded with
+    its exception type and message and does not raise: the tick's verdict is about the lane.
+    """
+    started = time.monotonic()
+    try:
+        from trading_bot.research.edge05.reconcile import Reconciler
+
+        reconciler = Reconciler(repo_root=repo_root)
+        report = reconciler.reconcile()
+        written = reconciler.write(report)
+    except Exception as exc:  # recorded here, never converted into the tick's verdict
+        return {
+            "ran": False,
+            "reason": f"{type(exc).__name__}: {exc}",
+            "seconds": round(time.monotonic() - started, 3),
+            "after_outcome": outcome,
+        }
+    return {
+        "ran": True,
+        "reason": None,
+        "seconds": round(time.monotonic() - started, 3),
+        "after_outcome": outcome,
+        "status": report.get("status"),
+        "unattributed_bars": report.get("totals", {}).get("unattributed_bars")
+        if isinstance(report.get("totals"), dict)
+        else None,
+        "artifacts": {name: str(path) for name, path in written.items()},
+    }
 
 
 def _install(observer: ForwardObserver, *, interval_minutes: int, dry_run: bool) -> int:
@@ -266,6 +318,19 @@ def main(argv: list[str] | None = None) -> int:
         "--report-only", nargs="?", const="", default=None, help="re-render reports offline"
     )
     parser.add_argument(
+        "--refresh-derived",
+        dest="refresh_derived",
+        action="store_true",
+        default=None,
+        help="re-read the lane into the watchdog's reconciliation record after the tick",
+    )
+    parser.add_argument(
+        "--no-refresh-derived",
+        dest="refresh_derived",
+        action="store_false",
+        help="tick without the derived re-read (a manual tick does this by default)",
+    )
+    parser.add_argument(
         "--compare", action="store_true", help="with --report-only, check byte identity"
     )
     args = parser.parse_args(argv)
@@ -327,6 +392,26 @@ def main(argv: list[str] | None = None) -> int:
         force_publication=bool(args.force),
         mode=MODE_SCHEDULED if args.scheduled else MODE_MANUAL,
     )
+    # The cadence, not a person, keeps the derived reading current: the operating system runs
+    # `--scheduled --due`, so a scheduled tick that consumed its slot is what re-reads the lane.
+    # A tick that found the slot already observed changed nothing, and neither does a manual one.
+    wants_refresh = (
+        args.refresh_derived if args.refresh_derived is not None else bool(args.scheduled)
+    )
+    if wants_refresh and record.get("outcome") in SLOT_CONSUMING_OUTCOMES:
+        record["derived_refresh"] = _refresh_derived(
+            outcome=str(record["outcome"]), repo_root=REPO_ROOT
+        )
+    elif wants_refresh:
+        record["derived_refresh"] = {
+            "ran": False,
+            "reason": (
+                f"the tick's outcome is {record.get('outcome')}: it changed nothing, so there is "
+                "nothing for the derived reading to re-read"
+            ),
+            "seconds": 0.0,
+            "after_outcome": record.get("outcome"),
+        }
     if args.json:
         print(json.dumps(record, indent=2, sort_keys=True, default=str))
     else:
@@ -347,6 +432,11 @@ def main(argv: list[str] | None = None) -> int:
         )
         print(f"health       {record.get('health_status')}")
         print(f"alerts       {len(record.get('alerts') or [])}")
+        derived = record.get("derived_refresh")
+        if derived is not None:
+            print(
+                f"derived      {'re-read in ' + str(derived['seconds']) + ' s' if derived['ran'] else 'NOT re-read — ' + str(derived['reason'])}"
+            )
         print(f"exit         {record['exit_code']}")
     return int(record["exit_code"])
 

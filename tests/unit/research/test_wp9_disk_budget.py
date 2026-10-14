@@ -12,7 +12,11 @@ against that arithmetic rather than against the shape of the code:
   passes is a claim about `scripts/start_paper_lab.py` and not about a harness;
 * the rate the launcher uses is the measured one when the audit is present, and the
   plan always names which source it used — a plan that cannot say where its rate came
-  from is a number with no provenance.
+  from is a number with no provenance;
+* the volume each test reads is **declared by the test**, never inherited from the
+  machine it happens to run on: on 2026-10-14 this host sat at 2.6 GiB free, under its
+  own floors, and three tests below answered `INSUFFICIENT_FREE_SPACE` before the
+  arithmetic they exist for was ever reached.
 """
 
 from __future__ import annotations
@@ -44,6 +48,28 @@ MEASURED_BYTES_PER_HOUR = 192_251_690.906
 FAILED_VALVE_BYTES = 800_000_000
 
 GB = 1_000_000_000
+
+#: The volume the tests that are about the valve declare: free space that can pay for
+#: the 24 h window at the stress rate (6.92 GB) plus the launcher's own reserve, with
+#: room to spare. Pinning it is what makes the verdict a function of the arithmetic.
+PINNED_FREE_BYTES = 32 * GB
+
+#: The volume the one test that IS about a host too small for its window declares. It is
+#: deliberately tiny: the assertion is that no flag this launcher knows can start a
+#: 72 h window against a host that cannot pay for it, and that must hold on any machine,
+#: not just on one whose free space happens to be small today.
+PINNED_SMALL_FREE_BYTES = 5 * GB
+
+
+def _pin_volume(monkeypatch: Any, launcher: Any, free: int) -> None:
+    """Point the launcher's free-space reads at a volume this test declares.
+
+    The launcher reads the disk through two module-level helpers, so patching both is
+    patching the volume — and it changes not one assertion: the numbers under test are
+    the rate, the valve and the reserve, all of which the test already supplies.
+    """
+    monkeypatch.setattr(launcher, "free_bytes", lambda path: free)
+    monkeypatch.setattr(launcher, "disk_free_bytes", lambda path: free)
 
 
 def _load_script(name: str) -> Any:
@@ -180,7 +206,9 @@ def test_the_declared_fallback_is_conservative_against_the_measured_rate() -> No
 # --------------------------------------------------------------------------- #
 
 
-def test_the_launcher_costs_the_declared_window_before_starting(launcher: Any) -> None:
+def test_the_launcher_costs_the_declared_window_before_starting(launcher: Any,
+                                                               monkeypatch: Any) -> None:
+    _pin_volume(monkeypatch, launcher, PINNED_FREE_BYTES)
     args = launcher.parse_args(["--duration-hours", "24", "--collector-max-bytes", "7000000000"])
     section, refused = launcher.disk_preflight(args)
     assert refused is None
@@ -193,6 +221,7 @@ def test_the_launcher_costs_the_declared_window_before_starting(launcher: Any) -
 def test_the_launcher_refuses_the_configuration_that_failed(launcher: Any, monkeypatch: Any,
                                                            capsys: Any) -> None:
     """Through `main()`: exit 4, nothing created, the arithmetic in the message."""
+    _pin_volume(monkeypatch, launcher, PINNED_FREE_BYTES)
     run_id = "wp9-preflight-refusal"
     monkeypatch.setattr(
         launcher.sys,
@@ -219,6 +248,7 @@ def test_the_launcher_refuses_the_configuration_that_failed(launcher: Any, monke
 def test_the_launcher_autoscales_only_when_asked_and_the_children_get_the_new_valve(
     launcher: Any, monkeypatch: Any, capsys: Any
 ) -> None:
+    _pin_volume(monkeypatch, launcher, PINNED_FREE_BYTES)
     monkeypatch.setattr(
         launcher.sys,
         "argv",
@@ -245,7 +275,13 @@ def test_the_launcher_autoscales_only_when_asked_and_the_children_get_the_new_va
 
 def test_the_launcher_refuses_a_window_the_host_cannot_pay_for(launcher: Any, monkeypatch: Any,
                                                               capsys: Any) -> None:
-    """72 h at the measured rate needs more than this host has, so no flag lets it start."""
+    """72 h at the measured rate needs more than the declared volume can pay for.
+
+    The declaration is the test's own (`--disk-reserve-gb 100` against a pinned 5 GB
+    volume), so the refusal is read here as a property of the preflight rather than as a
+    fact about whichever machine ran it.
+    """
+    _pin_volume(monkeypatch, launcher, PINNED_SMALL_FREE_BYTES)
     monkeypatch.setattr(
         launcher.sys,
         "argv",

@@ -35,6 +35,7 @@ UTC = UTC
 REPO_ROOT = Path(__file__).resolve().parents[1]
 
 SCHEMA_VERSION = "EDGE05R_STORAGE_RECLAIM_V1"
+DEFAULT_LABEL = "WP-EDGE-05R"
 GIB = 1024**3
 MIB = 1024**2
 
@@ -212,6 +213,9 @@ def main(argv: list[str] | None = None) -> int:
         help="actually delete; without it the run is a dry run and nothing is removed",
     )
     parser.add_argument("--json", action="store_true")
+    #: The work package re-running the sweep, so a later reading is not filed under the
+    #: earlier work package's name (see the inventory tool's option of the same name).
+    parser.add_argument("--label", default=DEFAULT_LABEL)
     options = parser.parse_args(argv)
 
     root = Path(options.root).resolve() if options.root else REPO_ROOT
@@ -245,6 +249,7 @@ def main(argv: list[str] | None = None) -> int:
 
     payload: dict[str, Any] = {
         "schema_version": SCHEMA_VERSION,
+        "label": options.label,
         "run_id": f"EDGE05R-RECLAIM-{as_of.replace('-', '').replace(':', '')}",
         "as_of_utc": as_of,
         "host": os.environ.get("COMPUTERNAME", "unknown"),
@@ -354,7 +359,7 @@ def main(argv: list[str] | None = None) -> int:
 def render(payload: dict[str, Any]) -> str:
     volume = payload["volume"]
     lines = [
-        "# WP-EDGE-05R — storage recovery: what came back, and what did not",
+        f"# {payload.get('label', DEFAULT_LABEL)} — storage recovery: what came back, and what did not",
         "",
         f"*Read at `{payload['as_of_utc']}` on `{payload['host']}`. Mode: "
         f"**{'applied' if payload['applied'] else 'dry run — nothing was deleted'}**.*",
