@@ -1,14 +1,14 @@
 {
   "schema_version": "EDGE07_RUN_REPORT_V1",
-  "as_of_utc": "2026-10-14T09:22:48Z",
+  "as_of_utc": "2026-10-14T09:24:16Z",
   "host": "DESKTOP-4CHO695",
   "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
-  "head": "7737481e355f2c41ea4b0cce8e40c9bb8925b2a0",
-  "worktree_dirty_entries": 136,
-  "worktree_dirty_entries_of_this_work_package": 0,
+  "head": "62ce473048d3bcc8ff4afb1a8c950ec40f57259b",
+  "worktree_dirty_entries": 143,
+  "worktree_dirty_entries_of_this_work_package": 7,
   "volume": {
-    "free_bytes": 3619807232,
-    "free_gib": 3.371,
+    "free_bytes": 3617484800,
+    "free_gib": 3.369,
     "total_gib": 237.5,
     "critical_floor_gib": 2.0,
     "healthy_floor_gib": 5.0,
@@ -560,7 +560,7 @@
     "command": "scripts/edge07_verify.py --self-test",
     "exit_code": 0,
     "stdout_tail": "  A-5  PASS  every scheduled slot WP-EDGE-06 published is still in the lane's log, in order, never re\n  B-1  PASS  every holdout shard still hashes to the digest its manifest recorded\n  B-2  PASS  the parameters read on the new window are the registered bytes, and the run says so\n  B-3  PASS  the runner reproduced every published consulted-window figure it re-derived\n  B-4  PASS  the trend verdict follows from its own checks by the registered mapping\n  B-5  PASS  nothing was promoted, no order was sent, every reading is hypothetical\n  B-6  PASS  the new window begins after the last bar of every frozen corpus\n  C-1  PASS  each ACTIVE verdict follows from its own checks, and a screened-out book read no indepen\n  C-2  PASS  the published one-hour ceiling for BTC on the new window recomputes from the bars\nresult PASS (13/13)\nself-test PASS: 14/14 sabotages detected\nwrote reports\\edge-recovery\\WP-EDGE-07\\VERIFICATION.json",
-    "as_of_utc": "2026-10-14T09:22:50Z",
+    "as_of_utc": "2026-10-14T09:24:18Z",
     "result": "PASS",
     "checks_passed": 13,
     "checks_total": 13,
@@ -641,9 +641,9 @@
     "owned": {
       "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m pytest -q tests/unit/research/test_edge07_scheduler_evidence.py tests/unit/research/test_edge06_cadence.py tests/unit/research/test_wp9_disk_budget.py",
       "exit_code": 0,
-      "seconds": 3.03,
-      "summary": "26 passed in 2.09s",
-      "stdout_tail": "..........................                                               [100%]\n26 passed in 2.09s",
+      "seconds": 3.1,
+      "summary": "26 passed in 2.15s",
+      "stdout_tail": "..........................                                               [100%]\n26 passed in 2.15s",
       "stderr_tail": ""
     },
     "lint": {
@@ -665,7 +665,7 @@
     "types": {
       "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m mypy scripts/edge07_report.py scripts/edge07_verify.py scripts/edge07_validate.py scripts/edge07_active.py scripts/edge07_active_barrier.py scripts/edge07_fetch_holdout.py scripts/edge07_growth_evidence.py scripts/edge07_reclaim.py src/trading_bot/research/edge07",
       "exit_code": 0,
-      "seconds": 0.58,
+      "seconds": 0.71,
       "summary": "Success: no issues found in 11 source files",
       "stdout_tail": "Success: no issues found in 11 source files",
       "stderr_tail": ""
@@ -674,6 +674,64 @@
   "hypothetical": true,
   "order_sent": false,
   "promotion": "NONE",
+  "github": {
+    "schema_version": "EDGE07_GITHUB_STATE_V1",
+    "as_of_utc": "2026-10-14T09:24:16Z",
+    "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
+    "head": "62ce473048d3bcc8ff4afb1a8c950ec40f57259b",
+    "remote": "https://github.com/Extr3sao/bot_crypto.git",
+    "remote_branch_ref": "refs/heads/agent/edge-recovery/WP-EDGE-00-baseline",
+    "remote_has_this_branch": true,
+    "remote_tip": "62ce473048d3bcc8ff4afb1a8c950ec40f57259b",
+    "remote_matches_head": true,
+    "pushed_range_at_last_push": "edd4ef2..62ce473",
+    "push_kind": "normal fast-forward of an existing remote branch; force push not used and not needed",
+    "force_push_used": false,
+    "commits_of_this_work_package": [
+      {
+        "sha": "62ce473048d3bcc8ff4afb1a8c950ec40f57259b",
+        "subject": "Re-take the reading at the commit that publishes it [WP-EDGE-07]"
+      },
+      {
+        "sha": "7737481e355f2c41ea4b0cce8e40c9bb8925b2a0",
+        "subject": "Render the run record and the final report from one reading of the whole package [WP-EDGE-07]"
+      },
+      {
+        "sha": "85e110898280d9f3dc0b2e76484830302b8cf0d8",
+        "subject": "Run the work package's own files through the formatter and the type checker [WP-EDGE-07]"
+      },
+      {
+        "sha": "b0ddf50914500b56e4df0c670d58b3b2b9a628ff",
+        "subject": "Correct the append-only claim: run_id names the slot, not the tick [WP-EDGE-07]"
+      },
+      {
+        "sha": "838586425b94d741477610a5f59ef598d8bdbdc1",
+        "subject": "Screen the ACTIVE books, measure the ceiling they run into, and record the proposal [WP-EDGE-07]"
+      },
+      {
+        "sha": "e2b3b6c2e38b2d10baf9a2259a24b76d846fa346",
+        "subject": "Register two ACTIVE multi-asset candidates and the cost wall they face [WP-EDGE-07]"
+      },
+      {
+        "sha": "8e66e81b7686aa37098d000ec3379be9f1e31e2b",
+        "subject": "Read the frozen trend book on a window nobody had read, and let the registered criteria reject it [WP-EDGE-07]"
+      },
+      {
+        "sha": "53d905bb369a6860f0618258b83cc0cb16abab6b",
+        "subject": "Recover the lane's operating margin from our own scratch, and make the cadence's re-read leave a receipt [WP-EDGE-07]"
+      },
+      {
+        "sha": "046cfd68d955b77ab3530bdd3fa2751c41675531",
+        "subject": "Register the WP-EDGE-07 trend validation before the new window is read [WP-EDGE-07]"
+      }
+    ],
+    "commits_total": 9,
+    "worktree_dirty_entries": 143,
+    "worktree_dirty_entries_of_this_work_package": 7,
+    "volume_free_bytes_at_this_reading": 3617484800,
+    "credentials_read_or_printed": false,
+    "note_on_this_file": "this file is written after the push and describes the ref at that instant; the commit carrying it is published by the following push, which is why remote_matches_head is read from the remote rather than assumed"
+  },
   "acceptance": [
     {
       "id": "ACC-01",
@@ -682,6 +740,8 @@
       "figures": [
         "branch",
         "head",
+        "github.remote_matches_head",
+        "github.commits_total",
         "worktree_dirty_entries_of_this_work_package"
       ]
     },
@@ -883,6 +943,11 @@
       "bytes": 5479
     },
     {
+      "path": "reports/edge-recovery/WP-EDGE-07/GITHUB_STATE.json",
+      "sha256": "6f4c727cd04f3b119ed9504c2b07dd9962cc1eda1f2dc402b20761fd0ded5587",
+      "bytes": 2795
+    },
+    {
       "path": "reports/edge-recovery/WP-EDGE-07/GROWTH_EVIDENCE.json",
       "sha256": "2f630eff2dddffd7244916edf1cda668f47e9be1ffd7ea3c9b078739fa8ecd7d",
       "bytes": 419023
@@ -934,19 +999,19 @@
     },
     {
       "path": "reports/edge-recovery/WP-EDGE-07/VERIFICATION.json",
-      "sha256": "7bdea6e24a130fd6df1cd9d9a28bd1d3569f6cfac20d2e80329807f2550edaee",
+      "sha256": "14da1b3e7ae08c26eb9b55a86494bf7e5980bd673f208db79d43b83c61f14e8b",
       "bytes": 12723
     },
     {
       "path": "reports/edge-recovery/WP-EDGE-07/VERIFICATION.md",
-      "sha256": "5acc4a4f0c6b68a1e5f0b5be29380e3e6363645a339d0f7dc528a194343ce772",
+      "sha256": "0cc5760c510727338b135651b82996988711fc9fc5b7ef4966413e696b8b32c9",
       "bytes": 4115
     }
   ],
   "verdict": "CLOSED_WITH_OPEN_ITEMS",
   "open_items": [
     {
-      "item": "The volume is 3.371 GiB free: above the 2.0 GiB the lane refuses under and below the 5.0 GiB the heavy publication waits for, so the lane ingests while the heavier export still waits",
+      "item": "The volume is 3.369 GiB free: above the 2.0 GiB the lane refuses under and below the 5.0 GiB the heavy publication waits for, so the lane ingests while the heavier export still waits",
       "owner": "The volume's owner: clear temporary files older than a day"
     },
     {

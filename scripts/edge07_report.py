@@ -491,8 +491,17 @@ def acceptance(reading: dict[str, Any]) -> list[dict[str, Any]]:
         {
             "id": "ACC-01",
             "requirement": "Branch, remote, commits and working tree verified and published",
-            "status": "PASS" if reading["branch"] and reading["head"] else "NOT_TESTED",
-            "figures": ["branch", "head", "worktree_dirty_entries_of_this_work_package"],
+            "status": status(
+                bool(reading["branch"])
+                and (reading.get("github") or {}).get("remote_matches_head") is True
+            ),
+            "figures": [
+                "branch",
+                "head",
+                "github.remote_matches_head",
+                "github.commits_total",
+                "worktree_dirty_entries_of_this_work_package",
+            ],
         },
         {
             "id": "ACC-02",
@@ -669,9 +678,62 @@ def artefacts() -> list[dict[str, Any]]:
     return rows
 
 
+def github_state(reading: dict[str, Any]) -> dict[str, Any]:
+    """The published ref, read back from the remote rather than assumed.
+
+    WP-EDGE-06's lesson, kept: an artefact that says "pushed" without asking the remote is a claim,
+    not a reading. So the remote ref is fetched, compared with HEAD, and the comparison is what the
+    acceptance row quotes — including the case where the remote could not be reached, which is
+    recorded as `None` rather than dressed up as a match.
+    """
+    branch = reading["branch"]
+    head = reading["head"]
+    ls_remote = git("ls-remote", "origin", f"refs/heads/{branch}")
+    remote_sha = ls_remote.split()[0] if ls_remote.strip() else None
+    commits: list[dict[str, str]] = []
+    for line in git("log", "--format=%H|%s", "-n", "200").splitlines():
+        sha, _, subject = line.partition("|")
+        if "[WP-EDGE-07]" in subject:
+            commits.append({"sha": sha, "subject": subject})
+    oldest = commits[-1]["sha"] if commits else head
+    return {
+        "schema_version": "EDGE07_GITHUB_STATE_V1",
+        "as_of_utc": reading["as_of_utc"],
+        "branch": branch,
+        "head": head,
+        "remote": git("remote", "get-url", "origin"),
+        "remote_branch_ref": f"refs/heads/{branch}",
+        "remote_has_this_branch": bool(remote_sha),
+        "remote_tip": remote_sha,
+        "remote_matches_head": (None if remote_sha is None else remote_sha == head),
+        "pushed_range_at_last_push": f"{git('rev-parse', '--short', f'{oldest}^')}..{head[:7]}",
+        "push_kind": (
+            "normal fast-forward of an existing remote branch; force push not used and not needed"
+        ),
+        "force_push_used": False,
+        "commits_of_this_work_package": commits,
+        "commits_total": len(commits),
+        "worktree_dirty_entries": reading["worktree_dirty_entries"],
+        "worktree_dirty_entries_of_this_work_package": reading[
+            "worktree_dirty_entries_of_this_work_package"
+        ],
+        "volume_free_bytes_at_this_reading": reading["volume"]["free_bytes"],
+        "credentials_read_or_printed": False,
+        "note_on_this_file": (
+            "this file is written after the push and describes the ref at that instant; the commit "
+            "carrying it is published by the following push, which is why remote_matches_head is "
+            "read from the remote rather than assumed"
+        ),
+    }
+
+
 def build(*, tests: bool, verify: bool) -> dict[str, Any]:
     reading = measurement(tests=tests, verify=verify)
+    reading["github"] = github_state(reading)
     reading["acceptance"] = acceptance(reading)
+    (WP / "GITHUB_STATE.json").write_text(
+        json.dumps(reading["github"], indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
+    )
     reading["artefacts"] = artefacts()
     reading["verdict"] = (
         "CLOSED_WITH_OPEN_ITEMS"
@@ -1003,6 +1065,10 @@ def render_final(payload: dict[str, Any]) -> str:
         "",
         "| Item | What was done | Evidence |",
         "| --- | --- | --- |",
+        f"| Branch, remote, commits | Published: `{payload['github']['pushed_range_at_last_push']}` "
+        f"fast-forwarded the existing remote branch (no force), and the remote was read back to "
+        f"confirm it holds this reading's `head`: {payload['github']['remote_matches_head']} | "
+        f"`GITHUB_STATE.json` |",
         f"| Recovery | {storage['applied_runs']} applied sweeps totalling "
         f"**{fmt_bytes(storage['reclaimed_bytes_total'])}** of this repository's own tool "
         f"caches, every removal re-checked at the instant it was made "

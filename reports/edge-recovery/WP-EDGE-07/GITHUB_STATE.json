@@ -1,0 +1,58 @@
+{
+  "schema_version": "EDGE07_GITHUB_STATE_V1",
+  "as_of_utc": "2026-10-14T09:24:16Z",
+  "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
+  "head": "62ce473048d3bcc8ff4afb1a8c950ec40f57259b",
+  "remote": "https://github.com/Extr3sao/bot_crypto.git",
+  "remote_branch_ref": "refs/heads/agent/edge-recovery/WP-EDGE-00-baseline",
+  "remote_has_this_branch": true,
+  "remote_tip": "62ce473048d3bcc8ff4afb1a8c950ec40f57259b",
+  "remote_matches_head": true,
+  "pushed_range_at_last_push": "edd4ef2..62ce473",
+  "push_kind": "normal fast-forward of an existing remote branch; force push not used and not needed",
+  "force_push_used": false,
+  "commits_of_this_work_package": [
+    {
+      "sha": "62ce473048d3bcc8ff4afb1a8c950ec40f57259b",
+      "subject": "Re-take the reading at the commit that publishes it [WP-EDGE-07]"
+    },
+    {
+      "sha": "7737481e355f2c41ea4b0cce8e40c9bb8925b2a0",
+      "subject": "Render the run record and the final report from one reading of the whole package [WP-EDGE-07]"
+    },
+    {
+      "sha": "85e110898280d9f3dc0b2e76484830302b8cf0d8",
+      "subject": "Run the work package's own files through the formatter and the type checker [WP-EDGE-07]"
+    },
+    {
+      "sha": "b0ddf50914500b56e4df0c670d58b3b2b9a628ff",
+      "subject": "Correct the append-only claim: run_id names the slot, not the tick [WP-EDGE-07]"
+    },
+    {
+      "sha": "838586425b94d741477610a5f59ef598d8bdbdc1",
+      "subject": "Screen the ACTIVE books, measure the ceiling they run into, and record the proposal [WP-EDGE-07]"
+    },
+    {
+      "sha": "e2b3b6c2e38b2d10baf9a2259a24b76d846fa346",
+      "subject": "Register two ACTIVE multi-asset candidates and the cost wall they face [WP-EDGE-07]"
+    },
+    {
+      "sha": "8e66e81b7686aa37098d000ec3379be9f1e31e2b",
+      "subject": "Read the frozen trend book on a window nobody had read, and let the registered criteria reject it [WP-EDGE-07]"
+    },
+    {
+      "sha": "53d905bb369a6860f0618258b83cc0cb16abab6b",
+      "subject": "Recover the lane's operating margin from our own scratch, and make the cadence's re-read leave a receipt [WP-EDGE-07]"
+    },
+    {
+      "sha": "046cfd68d955b77ab3530bdd3fa2751c41675531",
+      "subject": "Register the WP-EDGE-07 trend validation before the new window is read [WP-EDGE-07]"
+    }
+  ],
+  "commits_total": 9,
+  "worktree_dirty_entries": 143,
+  "worktree_dirty_entries_of_this_work_package": 7,
+  "volume_free_bytes_at_this_reading": 3617484800,
+  "credentials_read_or_printed": false,
+  "note_on_this_file": "this file is written after the push and describes the ref at that instant; the commit carrying it is published by the following push, which is why remote_matches_head is read from the remote rather than assumed"
+}
