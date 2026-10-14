@@ -94,7 +94,17 @@ from ..edge03.autonomous import (  # the lane's own vocabulary, reused rather th
 
 __all__ = [
     "ALERT_KINDS",
+    "CATEGORY_BY_FAILURE_CLASS",
+    "CATEGORY_DEGRADED_UNCLASSIFIED",
     "CHECK_NAMES",
+    "FAILURE_CLASSES",
+    "FAILURE_CLASS_BY_OUTCOME",
+    "FAILURE_DATA_QUALITY",
+    "FAILURE_EXPECTED_NO_NEW_DATA",
+    "FAILURE_PROVIDER",
+    "FAILURE_RESOURCE",
+    "FAILURE_RUNTIME",
+    "FAILURE_SCHEDULER",
     "ForwardWatchdog",
     "TASK_NAME",
     "WATCHDOG_SCHEMA_VERSION",
@@ -110,7 +120,7 @@ __all__ = [
 TASK_NAME = "TradingAgentic-EDGE04-Forward"
 WATCHDOG_TASK_NAME = "TradingAgentic-EDGE05-Watchdog"
 
-WATCHDOG_SCHEMA_VERSION = "EDGE05_WATCHDOG_V1"
+WATCHDOG_SCHEMA_VERSION = "EDGE05_WATCHDOG_V2"
 DAILY_SCHEMA_VERSION = "EDGE05_WATCHDOG_DAILY_V1"
 SNAPSHOT_SCHEMA_VERSION = "EDGE05_SNAPSHOT_V1"
 
@@ -132,6 +142,60 @@ CATEGORY_INGEST_FAILURE = "INGEST_FAILURE"
 CATEGORY_EVIDENCE_BROKEN = "EVIDENCE_BROKEN"
 CATEGORY_RESOURCE_PRESSURE = "RESOURCE_PRESSURE"
 CATEGORY_WATCHDOG_GAP = "WATCHDOG_SELF_GAP"
+CATEGORY_PROVIDER_FAILURE = "PROVIDER_FAILURE"
+CATEGORY_DATA_QUALITY_FAILURE = "DATA_QUALITY_FAILURE"
+CATEGORY_RUNTIME_FAILURE = "RUNTIME_FAILURE"
+#: The floor under the categories: a reading that is not OK and that no check could attribute still
+#: gets a name. Without it, "degraded" would fall through to `HEALTHY`, which is how a reading ends
+#: up contradicting itself — and the live log did exactly that once, at 21:17:33Z.
+CATEGORY_DEGRADED_UNCLASSIFIED = "DEGRADED_UNCLASSIFIED"
+
+#: *Why* something is wrong, which is a different question from *where it was noticed*. A tick
+#: that refuses because the volume is full is noticed through the scheduler's own result code,
+#: and filing that as a scheduler failure sends the reader to repair the wrong system. Each name
+#: here is a cause; the category a row carries is chosen from the cause before the location.
+FAILURE_SCHEDULER = "SCHEDULER_FAILURE"
+FAILURE_RESOURCE = "RESOURCE_PRESSURE"
+FAILURE_PROVIDER = "PROVIDER_FAILURE"
+FAILURE_DATA_QUALITY = "DATA_QUALITY_FAILURE"
+FAILURE_RUNTIME = "RUNTIME_FAILURE"
+FAILURE_EXPECTED_NO_NEW_DATA = "EXPECTED_NO_NEW_DATA"
+
+#: The six, listed so the vocabulary is closed: a seventh cause cannot appear unnoticed.
+#: `EXPECTED_NO_NEW_DATA` is not trouble at all — it is the lane reporting that there was
+#: nothing new to observe — which is exactly why it is named instead of left implicit.
+FAILURE_CLASSES = (
+    FAILURE_RESOURCE,
+    FAILURE_PROVIDER,
+    FAILURE_DATA_QUALITY,
+    FAILURE_RUNTIME,
+    FAILURE_SCHEDULER,
+    FAILURE_EXPECTED_NO_NEW_DATA,
+)
+
+#: The lane's own outcome vocabulary, read as causes. Only outcomes the lane really produces
+#: appear here; an outcome absent from the map is treated as a scheduler fault, never guessed at.
+FAILURE_CLASS_BY_OUTCOME = {
+    NO_NEW_DATA: FAILURE_EXPECTED_NO_NEW_DATA,
+    ALREADY_OBSERVED: FAILURE_EXPECTED_NO_NEW_DATA,
+    ALREADY_RUNNING: FAILURE_EXPECTED_NO_NEW_DATA,
+    DISK_BUDGET_EXCEEDED: FAILURE_RESOURCE,
+    PROVIDER_UNAVAILABLE: FAILURE_PROVIDER,
+    MISSING_BARS: FAILURE_DATA_QUALITY,
+    STALE_DATA: FAILURE_DATA_QUALITY,
+    VERIFICATION_FAILED: FAILURE_DATA_QUALITY,
+    RUNTIME_EXCEPTION: FAILURE_RUNTIME,
+}
+
+#: Which category a cause is shown as. `EXPECTED_NO_NEW_DATA` is deliberately absent: it is not
+#: a failure, so it never selects a failure category.
+CATEGORY_BY_FAILURE_CLASS = {
+    FAILURE_RESOURCE: CATEGORY_RESOURCE_PRESSURE,
+    FAILURE_PROVIDER: CATEGORY_PROVIDER_FAILURE,
+    FAILURE_DATA_QUALITY: CATEGORY_DATA_QUALITY_FAILURE,
+    FAILURE_RUNTIME: CATEGORY_RUNTIME_FAILURE,
+    FAILURE_SCHEDULER: CATEGORY_SCHEDULER_FAILURE,
+}
 
 #: One name per reading, so a check can be pointed at by name and a reader can tell which part of
 #: the lane is being described without knowing the implementation.
@@ -218,6 +282,10 @@ ALERT_KINDS = (
     "SCHEDULER_MISSING",
     "SCHEDULER_DISABLED",
     "SCHEDULER_TASK_FAILED",
+    #: A tick the lane itself refused because the volume is full. Distinct from
+    #: `SCHEDULER_TASK_FAILED` on purpose: the task did what it was told, and repairing the
+    #: scheduler would not add one byte of free space.
+    "TICK_REFUSED_RESOURCE",
     "TICK_OVERDUE",
     "TICK_WEDGED",
     "TICK_DIED_MID_WRITE",
@@ -383,7 +451,9 @@ def default_scheduler_instant_probe(*, task_name: str = TASK_NAME) -> dict[str, 
         "NextRunTime=$i.NextRunTime.ToUniversalTime().ToString('o'); "
         "LastRunTime=$i.LastRunTime.ToUniversalTime().ToString('o'); "
         "LastTaskResult=$i.LastTaskResult; NumberOfMissedRuns=$i.NumberOfMissedRuns; "
-        "Now=([datetime]::UtcNow.ToString('o')); LocalOffsetMinutes=[int]([System.TimeZoneInfo]::Local.BaseUtcOffset.TotalMinutes) } "
+        "Now=([datetime]::UtcNow.ToString('o')); "
+        "LocalOffsetMinutes=[int]([System.TimeZoneInfo]::Local.BaseUtcOffset.TotalMinutes); "
+        "LocalUtcOffsetMinutes=[int]([System.TimeZoneInfo]::Local.GetUtcOffset([datetime]::UtcNow).TotalMinutes) } "
         "| ConvertTo-Json -Compress }"
     )
     try:
@@ -415,6 +485,7 @@ def default_scheduler_instant_probe(*, task_name: str = TASK_NAME) -> dict[str, 
         "missed_runs": loaded.get("NumberOfMissedRuns"),
         "queried_at_utc": loaded.get("Now"),
         "local_offset_minutes": loaded.get("LocalOffsetMinutes"),
+        "local_utc_offset_minutes": loaded.get("LocalUtcOffsetMinutes"),
     }
 
 
@@ -687,8 +758,14 @@ class ForwardWatchdog:
             "state": state or None,
             "multiple_instances": reading.get("multiple_instances"),
             "start_when_available": reading.get("start_when_available"),
-            "next_run_utc": reading.get("next_run_time"),
-            "last_run_utc": reading.get("last_run_time"),
+            # The supervisor answers in the platform's own spelling, which is *local and
+            # unlabelled*; the instant probe is the one that converts. Publishing the local
+            # spelling under a `_utc` name is how one instant appeared twice in a single row,
+            # two hours apart: `next_run_utc` 10/14/2026 07:40:53 beside `05:40:53Z` elsewhere.
+            "next_run_utc": instants.get("next_run_utc") if instants.get("available") else None,
+            "last_run_utc": instants.get("last_run_utc") if instants.get("available") else None,
+            "next_run_platform_spelling": reading.get("next_run_time"),
+            "last_run_platform_spelling": reading.get("last_run_time"),
             "missed_runs": reading.get("missed_runs"),
             "reason": (
                 "the task is not registered"
@@ -705,6 +782,7 @@ class ForwardWatchdog:
             return {
                 "status": STATUS_UNKNOWN,
                 "available": False,
+                "failure_class": FAILURE_SCHEDULER,
                 "reason": reading.get("reason") or "the scheduler could not be read",
             }
         instants = self._scheduler_instant_probe()
@@ -718,32 +796,51 @@ class ForwardWatchdog:
             except (TypeError, ValueError):
                 code = None
         outcome = SCHEDULER_RESULT_VOCABULARY.get(code) if code is not None else None
+        # The exit code says a tick did not deliver; the *cause* says which system to look at. A
+        # non-zero result the lane produced on purpose, because its own guard refused, is resource
+        # pressure however it is noticed — and the scheduler is not the thing to repair.
+        cause: str | None = None
         if code is None:
             status = STATUS_UNKNOWN
+            cause = FAILURE_SCHEDULER
             reason = "the scheduler reports no last result for this task"
         elif code == 0:
             status = STATUS_OK
             reason = "the scheduler's last result is a lane tick that did its job"
-        elif outcome in (NO_NEW_DATA, OBSERVED, ALREADY_OBSERVED):
+        elif outcome == OBSERVED:
             status = STATUS_OK
             reason = f"the scheduler's last result is {outcome}"
+        elif outcome in (NO_NEW_DATA, ALREADY_OBSERVED):
+            status = STATUS_OK
+            cause = FAILURE_EXPECTED_NO_NEW_DATA
+            reason = f"the scheduler's last result is {outcome}"
         elif outcome == ALREADY_RUNNING:
-            status = STATUS_WARN
-            reason = "the scheduler's last result is a tick that lost the lease to a live one"
+            # A second trigger arriving while a tick is in flight is the schedule working, not a
+            # failure to observe: it is the lane being careful, and it is filed as expected.
+            status = STATUS_OK
+            cause = FAILURE_EXPECTED_NO_NEW_DATA
+            reason = (
+                "the scheduler's last result is a tick that lost the lease to a live one: a second "
+                "trigger in one slot, which is the schedule working"
+            )
         elif outcome in (MISSING_BARS, STALE_DATA, PROVIDER_UNAVAILABLE):
             status = STATUS_WARN
+            cause = FAILURE_CLASS_BY_OUTCOME.get(outcome, FAILURE_DATA_QUALITY)
             reason = f"the scheduler's last result is {outcome}: the tick ran and the store is short"
         elif outcome in (DISK_BUDGET_EXCEEDED, VERIFICATION_FAILED, RUNTIME_EXCEPTION):
             status = STATUS_ALARM
+            cause = FAILURE_CLASS_BY_OUTCOME.get(outcome, FAILURE_RUNTIME)
             reason = f"the scheduler's last result is {outcome}"
         elif outcome in ("TASK_IS_RUNNING",):
             status = STATUS_OK
             reason = "the scheduler reports a tick in flight"
         elif outcome in ("TASK_HAS_NOT_RUN", "TASK_TERMINATED_BY_USER"):
             status = STATUS_WARN
+            cause = FAILURE_SCHEDULER
             reason = f"the scheduler reports {outcome}"
         else:
             status = STATUS_ALARM
+            cause = FAILURE_SCHEDULER
             reason = f"the scheduler's last result {raw!r} is not in the lane's vocabulary"
         return {
             "status": status,
@@ -751,6 +848,16 @@ class ForwardWatchdog:
             "raw_result": raw,
             "exit_code": code,
             "lane_outcome": outcome,
+            "failure_class": cause,
+            "cause": (
+                "a tick the lane refused itself, on a cause that is not the scheduler"
+                if cause == FAILURE_RESOURCE
+                else "the platform's own report about the task"
+                if cause == FAILURE_SCHEDULER
+                else "nothing the scheduler did"
+                if cause is not None
+                else "no failure"
+            ),
             "reason": reason,
             "vocabulary": {str(key): value for key, value in sorted(SCHEDULER_RESULT_VOCABULARY.items())},
         }
@@ -767,7 +874,12 @@ class ForwardWatchdog:
             missed_count = int(str(missed))
         except (TypeError, ValueError):
             missed_count = None
-        skew = _seconds_between(now, host_ms) if host_ms is not None else None
+        # The probe runs *after* ``now`` is stamped, so the two instants are ordered by
+        # construction and the difference between them is elapsed time, not clock skew: the
+        # figure says how far behind the reading its own probe answered. A *negative* value,
+        # where the probe reports an instant older than the stamp it was taken after, is the one
+        # thing one clock cannot do — and that, not the ordinary lag, is the disagreement.
+        probe_lag = None if host_ms is None else round((host_ms - now) / 1000.0, 3)
         overdue = None if next_ms is None else round((now - next_ms) / 1000.0, 3)
         status = STATUS_OK
         reason = "the next trigger is in the future"
@@ -787,11 +899,19 @@ class ForwardWatchdog:
         if missed_count:
             status = STATUS_ALARM
             reason = f"the scheduler reports {missed_count} missed run(s)"
-        if skew is not None and abs(skew) > SCHEDULER_GRACE_SECONDS:
+        if probe_lag is not None and probe_lag < -SCHEDULER_GRACE_SECONDS:
             status = STATUS_ALARM
             reason = (
-                f"this process and the scheduler disagree about the current instant by {skew}s: "
-                "every age below is measured against a clock that is wrong"
+                f"the scheduler's own probe answered with an instant "
+                f"{abs(probe_lag)}s *before* the reading it was taken after: one clock cannot "
+                "do that, so the two instants are not on the same clock"
+            )
+        elif probe_lag is not None and probe_lag > SCHEDULER_GRACE_SECONDS:
+            status = STATUS_ALARM
+            reason = (
+                f"the scheduler's own probe answered {probe_lag}s of elapsed time after this "
+                "reading was stamped: the find is about the probe, which is that far behind, "
+                "not about the schedule"
             )
         return {
             "status": status,
@@ -803,14 +923,19 @@ class ForwardWatchdog:
             "last_run_utc": instants.get("last_run_utc"),
             "overdue_seconds": overdue,
             "missed_runs": missed_count,
-            "host_clock_skew_seconds": skew,
+            "probe_answer_lag_seconds": probe_lag,
+            "reading_stamped_at_utc": stamp(now),
+            "probe_reported_now_utc": instants.get("queried_at_utc"),
             "local_offset_minutes": instants.get("local_offset_minutes"),
+            "local_utc_offset_minutes": instants.get("local_utc_offset_minutes"),
             "scheduler_spelling": scheduler.get("next_run_time"),
             "grace_seconds": SCHEDULER_GRACE_SECONDS,
             "reason": reason,
             "note": (
                 "the platform's unlabelled spelling is recorded verbatim and is not read as an "
-                "instant: only the round-trip UTC form is"
+                "instant: only the round-trip UTC form is. `local_offset_minutes` is the host's "
+                "*base* offset and is an hour short of the wall clock in summer time; "
+                "`local_utc_offset_minutes` is the offset in force at the instant read"
             ),
         }
 
@@ -1379,6 +1504,25 @@ class ForwardWatchdog:
             "category": category,
             "operational_failure": operational_failure,
             "market_quiet": market_quiet,
+            # The cause and the closed list of causes this row saw, so a reader — and the
+            # verifier — can check the category against the reason instead of trusting it.
+            "cause": (
+                checks.get("scheduler_last_result", {}).get("failure_class")
+                if checks.get("scheduler_last_result", {}).get("failure_class")
+                in CATEGORY_BY_FAILURE_CLASS
+                else None
+            ),
+            "failure_classes": sorted(
+                {
+                    str(body.get("failure_class"))
+                    for body in checks.values()
+                    if body.get("failure_class")
+                }
+            ),
+            "expected_no_new_data": (
+                str(checks.get("scheduler_last_result", {}).get("failure_class"))
+                == FAILURE_EXPECTED_NO_NEW_DATA
+            ),
             "checks": {name: checks[name] for name in sorted(checks)},
             "findings": [
                 f"{name}: {body.get('reason')}"
@@ -1434,36 +1578,67 @@ class ForwardWatchdog:
             if name in checks
         )
         restart_broken = str(checks.get("restart_proof", {}).get("status")) == STATUS_BLOCKED
+        last = checks.get("scheduler_last_result", {})
+        last_alarming = str(last.get("status")) in (STATUS_ALARM, STATUS_BLOCKED)
+        # The cause is read whatever the severity: a tick the store is short of bars is a data
+        # quality reading at WARN, and filing that as "healthy with a degraded verdict" is the
+        # contradiction the vocabulary exists to prevent.
+        last_class = last.get("failure_class")
+        # A last-result alarm the lane caused on purpose, because its own guard refused, is not a
+        # scheduler fault: the task fired, the lane declined, and the volume is what needs
+        # attention. Filing it as a scheduler failure would send the reader to repair the clock.
         scheduler_failure = any(
             str(checks[name].get("status")) in (STATUS_ALARM, STATUS_BLOCKED)
-            for name in ("scheduler_task", "scheduler_cadence", "scheduler_last_result")
+            for name in ("scheduler_task", "scheduler_cadence")
             if name in checks
-        )
+        ) or (last_alarming and last_class != FAILURE_RESOURCE)
         evidence_broken = str(checks.get("evidence_integrity", {}).get("status")) == STATUS_ALARM
-        resource_pressure = any(
-            str(checks[name].get("status")) in (STATUS_BLOCKED, STATUS_ALARM)
+        resource_refusal = last_alarming and last_class == FAILURE_RESOURCE
+        # A WARN volume is resource pressure too: below the *warning* floor the lane still ingests
+        # but the heavy publication waits, and filing that as healthy is the contradiction the
+        # live log produced once and the verifier caught.
+        resource_pressure = resource_refusal or any(
+            str(checks[name].get("status")) in (STATUS_BLOCKED, STATUS_ALARM, STATUS_WARN)
             for name in ("resource_disk", "resource_growth")
             if name in checks
         )
+        # The cause, when a check can name one: it outranks the place the trouble was noticed.
+        cause = last_class if last_class in CATEGORY_BY_FAILURE_CLASS else None
         watchdog_gap = str(checks.get("watchdog_cadence", {}).get("status")) in (
             STATUS_WARN,
             STATUS_ALARM,
+            STATUS_BLOCKED,
         )
         if verdict == WATCH_OK:
             category = CATEGORY_MARKET_QUIET if market_quiet else CATEGORY_HEALTHY
         elif restart_broken or evidence_broken:
             category = CATEGORY_EVIDENCE_BROKEN
-        elif lane_failure:
-            category = CATEGORY_LANE_OVERDUE if market_quiet is False else CATEGORY_INGEST_FAILURE
-        elif scheduler_failure:
-            category = CATEGORY_SCHEDULER_FAILURE
+        elif cause is not None:
+            category = CATEGORY_BY_FAILURE_CLASS[cause]
         elif resource_pressure:
             category = CATEGORY_RESOURCE_PRESSURE
+        elif scheduler_failure:
+            category = CATEGORY_SCHEDULER_FAILURE
+        elif lane_failure:
+            category = CATEGORY_LANE_OVERDUE if market_quiet is False else CATEGORY_INGEST_FAILURE
         elif watchdog_gap:
             category = CATEGORY_WATCHDOG_GAP
+        elif any(
+            str(checks.get(name, {}).get("status")) != STATUS_OK
+            for name in ("lane_lease", "lane_cadence", "lane_process", "market_expectation", "store_freshness")
+        ):
+            # Something about the lane's own ability to observe is not OK, even at WARN.
+            category = CATEGORY_INGEST_FAILURE
         else:
-            category = CATEGORY_HEALTHY
-        return verdict, category, bool(lane_failure or scheduler_failure or restart_broken), market_quiet
+            # The last resort, and the point of the whole chain: a verdict that is not OK is never
+            # filed as healthy. If no check could name the cause, the reading says so.
+            category = CATEGORY_DEGRADED_UNCLASSIFIED
+        # The flag stays narrow but not blind: a refused tick is a tick that did not observe, so
+        # it is an operational failure — of the lane, on a cause the category names.
+        operational_failure = bool(
+            lane_failure or scheduler_failure or restart_broken or resource_refusal
+        )
+        return verdict, category, operational_failure, market_quiet
 
     # -- its own log ------------------------------------------------------- #
     def _history(self, now_ms: int, *, current: str | None = None) -> dict[str, Any]:
@@ -1553,7 +1728,11 @@ class ForwardWatchdog:
                 {"state": "ENABLED", "severity": "INFO", "reason": scheduler.get("reason")},
             )
         result = checks.get("scheduler_last_result", {})
-        if result.get("status") in (STATUS_ALARM, STATUS_BLOCKED):
+        refusing_on_resources = (
+            str(result.get("status")) in (STATUS_ALARM, STATUS_BLOCKED)
+            and result.get("failure_class") == FAILURE_RESOURCE
+        )
+        if str(result.get("status")) in (STATUS_ALARM, STATUS_BLOCKED) and not refusing_on_resources:
             raise_alert(
                 "SCHEDULER_TASK_FAILED",
                 {
@@ -1565,8 +1744,33 @@ class ForwardWatchdog:
         else:
             raise_alert(
                 "SCHEDULER_TASK_FAILED",
-                {"state": "CLEAR", "severity": "INFO", "reason": result.get("reason")},
+                {
+                    "state": "CLEAR",
+                    "severity": "INFO",
+                    "reason": (
+                        "the task fired and the lane refused its own tick on resource pressure: "
+                        "the scheduler is not the system to repair"
+                        if refusing_on_resources
+                        else result.get("reason")
+                    ),
+                },
             )
+        # The refusal is still an alarm — it is simply filed against the volume, which is where
+        # the remedy lives, rather than against the task that ran exactly as scheduled.
+        raise_alert(
+            "TICK_REFUSED_RESOURCE",
+            {
+                "state": (
+                    f"RESULT:{result.get('lane_outcome')}" if refusing_on_resources else "CLEAR"
+                ),
+                "severity": "CRITICAL" if refusing_on_resources else "INFO",
+                "reason": (
+                    result.get("reason")
+                    if refusing_on_resources
+                    else "the lane's last tick was not refused on resources"
+                ),
+            },
+        )
         cadence = checks.get("lane_cadence", {})
         overdue = str(cadence.get("status")) in (STATUS_ALARM, STATUS_BLOCKED, STATUS_WARN)
         raise_alert(

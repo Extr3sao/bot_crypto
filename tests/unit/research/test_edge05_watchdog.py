@@ -317,8 +317,9 @@ def instants(
 ) -> dict[str, Any]:
     """The scheduler's own reporting, with its instants read off the watchdog's own clock.
 
-    The host clock skew is a *finding* the watchdog raises, so a fixture that got it wrong would
-    turn every test into a skew test. Here both sides read the same pinned clock.
+    How far behind the reading its own probe answered is a *finding* the watchdog raises, so a
+    fixture that got it wrong would turn every test into a probe-lag test. Here both sides read
+    the same pinned clock, which puts the lag at zero.
     """
     return {
         "available": True,
@@ -330,6 +331,7 @@ def instants(
         "missed_runs": missed,
         "queried_at_utc": stamp_ms(now_ms),
         "local_offset_minutes": 0,
+        "local_utc_offset_minutes": 0,
     }
 
 
@@ -473,6 +475,142 @@ def test_the_schedulers_own_last_result_is_translated_through_the_lanes_vocabula
     assert "not in the lane's vocabulary" in unknown["checks"]["scheduler_last_result"]["reason"]
 
 
+# --------------------------------------------------------------------------- the cause
+def test_the_six_causes_are_closed_and_cover_every_outcome_the_lane_produces():
+    """Where a failure is *noticed* is not what it *is*, so the causes are named and counted."""
+    assert set(WD.FAILURE_CLASSES) == {
+        WD.FAILURE_RESOURCE,
+        WD.FAILURE_PROVIDER,
+        WD.FAILURE_DATA_QUALITY,
+        WD.FAILURE_RUNTIME,
+        WD.FAILURE_SCHEDULER,
+        WD.FAILURE_EXPECTED_NO_NEW_DATA,
+    }
+    # Every cause that is trouble is shown as a category; the expected one is not trouble.
+    assert set(WD.CATEGORY_BY_FAILURE_CLASS) == set(WD.FAILURE_CLASSES) - {
+        WD.FAILURE_EXPECTED_NO_NEW_DATA
+    }
+    from trading_bot.research.edge03.autonomous import EXIT_CODES
+
+    for outcome in EXIT_CODES:
+        if outcome == "OBSERVED":
+            continue  # a tick that observed something is not a failure of any kind
+        assert outcome in WD.FAILURE_CLASS_BY_OUTCOME, f"{outcome} has no cause"
+        assert WD.FAILURE_CLASS_BY_OUTCOME[outcome] in WD.FAILURE_CLASSES
+
+
+def test_a_tick_the_lane_refused_on_disk_is_resource_pressure_and_never_a_scheduler_failure(
+    tmp_path,
+):
+    """The finding: a scheduler that fired on time, a lane that declined, and a wrong accusation.
+
+    The scheduler's result code is non-zero, so the old rule read it as the task failing and sent
+    the reader to repair the scheduler. The cause is the volume, and that is where the remedy is.
+    """
+    lane = healthy_lane(tmp_path)
+    # 5 is the lane's DISK_BUDGET_EXCEEDED; the volume itself is not even low in this reading, so
+    # the only thing that can explain the non-zero result is the refusal the lane wrote down.
+    row = watchdog(tmp_path, lane, scheduler_probe=lambda: scheduler(last_task_result=5)).check(
+        persist=False
+    )
+    assert row["checks"]["scheduler_last_result"]["failure_class"] == WD.FAILURE_RESOURCE
+    assert row["cause"] == WD.FAILURE_RESOURCE
+    assert row["category"] == WD.CATEGORY_RESOURCE_PRESSURE
+    assert row["category"] != WD.CATEGORY_SCHEDULER_FAILURE
+    assert row["operational_failure"] is True, "a refused tick is a tick that did not observe"
+    assert row["checks"]["scheduler_task"]["status"] == WD.STATUS_OK
+    kinds = {alert["kind"]: alert for alert in row["alerts"]}
+    # The refusal is still an alarm — filed against the volume.
+    assert kinds["TICK_REFUSED_RESOURCE"]["state"] == "RESULT:DISK_BUDGET_EXCEEDED"
+    assert kinds["TICK_REFUSED_RESOURCE"]["severity"] == "CRITICAL"
+    # The scheduler is cleared in words, not merely left unmentioned.
+    assert kinds["SCHEDULER_TASK_FAILED"]["state"] == "CLEAR"
+    assert kinds["SCHEDULER_TASK_FAILED"]["severity"] == "INFO"
+
+
+@pytest.mark.parametrize(
+    ("exit_code", "expected_class", "expected_category", "expected_verdict"),
+    (
+        (5, WD.FAILURE_RESOURCE, WD.CATEGORY_RESOURCE_PRESSURE, WD.WATCH_ALARM),
+        (7, WD.FAILURE_PROVIDER, WD.CATEGORY_PROVIDER_FAILURE, WD.WATCH_DEGRADED),
+        (4, WD.FAILURE_DATA_QUALITY, WD.CATEGORY_DATA_QUALITY_FAILURE, WD.WATCH_DEGRADED),
+        (6, WD.FAILURE_DATA_QUALITY, WD.CATEGORY_DATA_QUALITY_FAILURE, WD.WATCH_ALARM),
+        (1, WD.FAILURE_RUNTIME, WD.CATEGORY_RUNTIME_FAILURE, WD.WATCH_ALARM),
+    ),
+)
+def test_each_cause_is_named_and_the_category_follows_the_cause(
+    tmp_path, exit_code, expected_class, expected_category, expected_verdict
+):
+    """The lane's own exit code names the cause, and the cause picks the category."""
+    lane = healthy_lane(tmp_path)
+    row = watchdog(
+        tmp_path, lane, scheduler_probe=lambda: scheduler(last_task_result=exit_code)
+    ).check(persist=False)
+    result = row["checks"]["scheduler_last_result"]
+    assert result["exit_code"] == exit_code
+    assert result["failure_class"] == expected_class
+    assert row["cause"] == expected_class
+    assert row["category"] == expected_category
+    assert row["expected_no_new_data"] is False
+    assert expected_class in row["failure_classes"]
+    assert row["verdict"] == expected_verdict
+    # Only a genuine scheduler fault may be filed as one.
+    if expected_class != WD.FAILURE_SCHEDULER:
+        assert row["category"] != WD.CATEGORY_SCHEDULER_FAILURE
+
+
+def test_a_warning_volume_is_resource_pressure_and_not_a_healthy_reading(tmp_path):
+    """The live log produced this contradiction once, at 21:17:33Z, and the verifier caught it.
+
+    Below the *warning* floor the lane still ingests and the heavy publication waits: the reading
+    is degraded, and a degraded reading may not be filed as healthy.
+    """
+    lane = healthy_lane(tmp_path)
+    row = watchdog(
+        tmp_path, lane, disk_probe=lambda path: disk_reading(WD.WARNING, 3 * 1024**3)
+    ).check(persist=False)
+    assert row["verdict"] == WD.WATCH_DEGRADED
+    assert row["category"] == WD.CATEGORY_RESOURCE_PRESSURE
+    assert row["category"] != WD.CATEGORY_HEALTHY
+
+
+def test_a_non_ok_verdict_is_never_filed_as_healthy(tmp_path):
+    """The invariant the verifier enforces, held by the chain itself rather than by luck.
+
+    Every check is forced, one at a time, to each status that is not OK; whatever the reading then
+    says about the lane, it may not claim the lane is healthy.
+    """
+    lane = healthy_lane(tmp_path)
+    for name in WD.CHECK_NAMES:
+        for status in (WD.STATUS_UNKNOWN, WD.STATUS_WARN, WD.STATUS_ALARM, WD.STATUS_BLOCKED):
+            seen = watchdog(tmp_path, lane)
+            original = getattr(seen, f"check_{name}")
+
+            def forced(*args: Any, _original: Any = original, _status: str = status, **kwargs: Any):
+                return {**_original(*args, **kwargs), "status": _status}
+
+            setattr(seen, f"check_{name}", forced)
+            row = seen.check(persist=False)
+            assert row["verdict"] != WD.WATCH_OK, (name, status, row["verdict"])
+            assert row["category"] != WD.CATEGORY_HEALTHY, (name, status, row["category"])
+
+
+def test_a_tick_with_nothing_to_do_is_named_as_expected_rather_than_as_trouble(tmp_path):
+    """A second trigger losing the lease to a live tick is the schedule working, and says so."""
+    lane = healthy_lane(tmp_path)
+    # 2 is the lane's ALREADY_RUNNING: the trigger arrived while a tick was already in flight.
+    row = watchdog(tmp_path, lane, scheduler_probe=lambda: scheduler(last_task_result=2)).check(
+        persist=False
+    )
+    result = row["checks"]["scheduler_last_result"]
+    assert result["failure_class"] == WD.FAILURE_EXPECTED_NO_NEW_DATA
+    assert row["expected_no_new_data"] is True
+    assert WD.FAILURE_EXPECTED_NO_NEW_DATA in row["failure_classes"]
+    # It is not an alarm, so it is not a cause, and nothing in it accuses the scheduler.
+    assert row["cause"] is None
+    assert WD.CATEGORY_SCHEDULER_FAILURE not in {row["category"]}
+
+
 def test_a_platform_that_cannot_be_read_is_unknown_and_never_a_pass(tmp_path):
     lane = healthy_lane(tmp_path)
     row = watchdog(
@@ -515,15 +653,30 @@ def test_a_next_trigger_that_was_due_and_did_not_fire_is_a_stalled_schedule(tmp_
     assert row["verdict"] == WD.WATCH_ALARM
 
 
-def test_a_wrong_host_clock_is_named_because_every_age_depends_on_it(tmp_path):
+def test_a_probe_that_answers_long_after_the_reading_is_reported_as_a_late_probe(tmp_path):
+    """A lag is elapsed time and is named as one: the finding is about the probe, not the clocks."""
     lane = healthy_lane(tmp_path)
-    skewed = instants(next_run_ms=T0 + 900_000)
-    skewed["queried_at_utc"] = stamp_ms(T0 + 4 * HOUR)
-    row = watchdog(tmp_path, lane, instant_probe=lambda: skewed).check(persist=False)
+    late = instants(next_run_ms=T0 + 900_000)
+    late["queried_at_utc"] = stamp_ms(T0 + 4 * HOUR)
+    row = watchdog(tmp_path, lane, instant_probe=lambda: late).check(persist=False)
     cadence = row["checks"]["scheduler_cadence"]
     assert cadence["status"] == WD.STATUS_ALARM
-    assert "disagree about the current instant" in cadence["reason"]
-    assert cadence["host_clock_skew_seconds"] is not None
+    assert cadence["probe_answer_lag_seconds"] == (4 * HOUR - 5 * QUARTER) / 1000.0
+    assert "elapsed time" in cadence["reason"]
+    assert "clock skew" not in cadence["reason"]
+
+
+def test_a_probe_answering_before_the_reading_it_followed_is_a_clock_disagreement(tmp_path):
+    """The one direction elapsed time cannot produce, and the test says why it cannot."""
+    lane = healthy_lane(tmp_path)
+    early = instants(next_run_ms=T0 + 900_000)
+    early["queried_at_utc"] = stamp_ms(T0 - 4 * HOUR)
+    row = watchdog(tmp_path, lane, instant_probe=lambda: early).check(persist=False)
+    cadence = row["checks"]["scheduler_cadence"]
+    assert cadence["status"] == WD.STATUS_ALARM
+    assert cadence["probe_answer_lag_seconds"] == -(4 * HOUR + 5 * QUARTER) / 1000.0
+    assert "one clock cannot" in cadence["reason"]
+    assert cadence["reading_stamped_at_utc"] and cadence["probe_reported_now_utc"]
 
 
 # --------------------------------------------------------------------------- the process

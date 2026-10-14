@@ -55,7 +55,11 @@ from typing import Any
 REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT / "src"))
 
-STATE_SCHEMA = "EDGE05_WATCHDOG_V1"
+#: The contract the newest readings must keep, and the one they were written under before it.
+#: V2 added the failure *cause* (a disk refusal is resource pressure, not a scheduler fault); a log
+#: that spans the change holds both, and the newest row must be the current one.
+STATE_SCHEMA = "EDGE05_WATCHDOG_V2"
+STATE_SCHEMAS = ("EDGE05_WATCHDOG_V1", "EDGE05_WATCHDOG_V2")
 RECON_SCHEMA = "EDGE05_RECONCILIATION_V1"
 QUARTER = 900_000
 HOUR = 3_600_000
@@ -147,6 +151,19 @@ def parse_ms(value: Any) -> int | None:
     if parsed.tzinfo is None:
         parsed = parsed.replace(tzinfo=UTC)
     return int(parsed.timestamp() * 1000)
+
+
+def _written_by(row: dict[str, Any], taken_ms: int | None) -> bool:
+    """Whether a run row had been written by the instant a reading was taken.
+
+    A run row whose own instant is missing is counted as written: the reading records the digest of
+    every file it read, so refusing to compare against a row it demonstrably read would be the wrong
+    direction to be careful in.
+    """
+    if taken_ms is None:
+        return True
+    written = parse_ms(row.get("finished_at_utc") or row.get("started_at_utc"))
+    return written is None or written <= taken_ms
 
 
 def stamp_ms(instant_ms: int) -> str:
@@ -271,8 +288,13 @@ class Verifier:
                 reading="no watchdog reading is on file",
             )
         problems: list[str] = []
+        if str(rows[-1].get("schema_version")) != STATE_SCHEMA:
+            problems.append(
+                f"the newest reading is {rows[-1].get('schema_version')!r}, not {STATE_SCHEMA}: "
+                "the current contract is not the one being kept"
+            )
         for row in rows:
-            if row.get("schema_version") != STATE_SCHEMA:
+            if row.get("schema_version") not in STATE_SCHEMAS:
                 problems.append(f"{row.get('check_id')}: schema {row.get('schema_version')}")
             if int(row.get("market_requests") or 0) != 0:
                 problems.append(f"{row.get('check_id')}: market_requests {row.get('market_requests')}")
@@ -318,6 +340,11 @@ class Verifier:
 
     def check_category_and_failure_flag(self) -> bool:
         bad: list[dict[str, Any]] = []
+        # A reading written under the older vocabulary is not evidence of a *current* defect, and
+        # the verifier does not erase it either: whatever the contract in force would reject in an
+        # old row is recorded under `historical`, so the record keeps the defect and the verdict
+        # keeps its meaning.
+        historical: list[dict[str, Any]] = []
         for row in self.ev.watch_rows:
             checks = row.get("checks") or {}
             verdict = str(row.get("verdict"))
@@ -325,16 +352,27 @@ class Verifier:
                 str(checks.get(name, {}).get("status")) in ("ALARM", "BLOCKED")
                 for name in ("lane_cadence", "lane_process", "market_expectation", "store_freshness")
             )
+            last = checks.get("scheduler_last_result") or {}
+            last_status = str(last.get("status"))
+            last_class = last.get("failure_class")
+            # A non-zero result the lane produced *on purpose*, because its own guard refused, is
+            # resource pressure however it was noticed. The reading states the cause itself, so
+            # the rule is restated here rather than believed — which is the point of a verifier.
+            resource_refusal = (
+                last_status in ("ALARM", "BLOCKED") and last_class == "RESOURCE_PRESSURE"
+            )
             scheduler_failure = any(
                 str(checks.get(name, {}).get("status")) in ("ALARM", "BLOCKED")
-                for name in ("scheduler_task", "scheduler_cadence", "scheduler_last_result")
-            )
+                for name in ("scheduler_task", "scheduler_cadence")
+            ) or (last_status in ("ALARM", "BLOCKED") and last_class != "RESOURCE_PRESSURE")
             evidence_broken = str(checks.get("restart_proof", {}).get("status")) == "BLOCKED"
             resource = any(
                 str(checks.get(name, {}).get("status")) in ("ALARM", "BLOCKED")
                 for name in ("resource_disk", "resource_growth")
             )
-            expected_failure = bool(lane_failure or scheduler_failure or evidence_broken)
+            expected_failure = bool(
+                lane_failure or scheduler_failure or evidence_broken or resource_refusal
+            )
             if bool(row.get("operational_failure")) != expected_failure:
                 bad.append(
                     {
@@ -344,10 +382,11 @@ class Verifier:
                     }
                 )
             category = str(row.get("category"))
+            findings = bad if str(row.get("schema_version")) == STATE_SCHEMA else historical
             if verdict == "WATCH_OK" and category not in ("HEALTHY", "MARKET_QUIET"):
-                bad.append({"check_id": row.get("check_id"), "category": category})
+                findings.append({"check_id": row.get("check_id"), "category": category})
             if verdict != "WATCH_OK" and category == "HEALTHY":
-                bad.append(
+                findings.append(
                     {
                         "check_id": row.get("check_id"),
                         "verdict": verdict,
@@ -357,11 +396,31 @@ class Verifier:
                 )
             if resource and not evidence_broken and not lane_failure and not scheduler_failure:
                 if category != "RESOURCE_PRESSURE":
-                    bad.append({"check_id": row.get("check_id"), "category": category})
+                    findings.append({"check_id": row.get("check_id"), "category": category})
+            if resource_refusal and not evidence_broken and category != "RESOURCE_PRESSURE":
+                findings.append(
+                    {
+                        "check_id": row.get("check_id"),
+                        "category": category,
+                        "reading": (
+                            "the reading itself names resource pressure as the cause: the task ran, "
+                            "the lane refused, and the scheduler is not the system to repair"
+                        ),
+                    }
+                )
         return self.check(
             "category_and_operational_failure_are_derived",
             ok=not bad,
-            detail=bad[:5],
+            detail={
+                "current_contract_violations": bad[:5],
+                "historical": historical[:5],
+                "reading": (
+                    "the failure flag is narrower than the verdict and only a real trouble is one; "
+                    "the category rules are checked against the reading contract in force, and a "
+                    "reading the current contract would reject, written under the older one, is "
+                    "recorded rather than rewritten"
+                ),
+            },
             reading="the failure flag is narrower than the verdict, and only a real trouble is one",
         )
 
@@ -641,15 +700,46 @@ class Verifier:
                 "reconciliation_present", ok=False, reading="no reconciliation artefact on file"
             )
         ledger = self.ev.ledger
+        # The lane ticks every fifteen minutes, so the ledger and the store move under any reading:
+        # a recomputation over everything currently on file would fail because the lane worked, not
+        # because the reading is wrong. That is not a theory. On 2026-10-14 the artefact written at
+        # 06:24:45Z verified PASS at 06:24:52Z and FAIL at 06:27:15Z with nothing changed about it
+        # but two scheduled ticks. So the comparison is cut at the instant the artefact itself
+        # records — the evidence it could see — and what is left out is stated in the reading below,
+        # because a narrowed comparison that does not say what it narrowed is the other way to lie.
+        taken_ms = int(report.get("generated_at_ms") or 0) or None
+        excluded_rows = 0
+        excluded_bars = 0
         problems: list[dict[str, Any]] = []
         recomputed: dict[str, Any] = {}
         for timeframe, symbol in SERIES:
             name = f"{timeframe}:{symbol}"
             span = SPAN[timeframe]
-            rows = [row for row in ledger if f"{row.get('timeframe')}:{row.get('symbol')}" == name]
-            rows.sort(key=lambda row: int(row.get("run_at_ms") or 0))
+            on_file = [row for row in ledger if f"{row.get('timeframe')}:{row.get('symbol')}" == name]
+            on_file.sort(key=lambda row: int(row.get("run_at_ms") or 0))
+            # A bar's own timestamp is not when it was written: the 15m bar closing at 06:15:00Z
+            # entered the store with the tick at 06:25:56Z, so cutting by the bar's timestamp alone
+            # would credit the reading with evidence it had not read. A bar written after this
+            # reading is therefore identified by the *later* row that claims it, and left out with
+            # its claim rather than counted as a bar the reading failed to attribute.
+            written_later: set[int] = set()
+            rows = on_file
+            if taken_ms is not None:
+                for row in on_file:
+                    if int(row.get("run_at_ms") or 0) <= taken_ms:
+                        continue
+                    high_water = row.get("high_water_ts")
+                    if high_water is None:
+                        continue
+                    for step in range(1, int(row.get("appended") or 0) + 1):
+                        written_later.add(int(high_water) + step * span)
+                rows = [row for row in on_file if int(row.get("run_at_ms") or 0) <= taken_ms]
+                excluded_rows += len(on_file) - len(rows)
             bars = self.ev.store_bars(timeframe, symbol)
             stored_ts = sorted(int(bar["ts"]) for bar in bars)
+            if taken_ms is not None:
+                excluded_bars += sum(1 for ts in stored_ts if ts in written_later)
+                stored_ts = [ts for ts in stored_ts if ts not in written_later]
             epoch = int(rows[0].get("high_water_ts")) if rows and rows[0].get("high_water_ts") is not None else None
             claims: dict[int, dict[str, Any]] = {}
             chain_holds = True
@@ -724,13 +814,22 @@ class Verifier:
             )
         if int(report.get("lane_writes") or 0) != 0:
             problems.append({"reading": "the reconciliation reports writes into the lane"})
+        scope = (
+            "nothing was cut: the artefact records no instant"
+            if taken_ms is None
+            else (
+                f"cut at the reading's own instant {stamp_ms(taken_ms)}, leaving out "
+                f"{excluded_rows} ledger row(s) and {excluded_bars} bar(s) written after it — evidence "
+                "it could not have seen, and cannot be wrong about"
+            )
+        )
         return self.check(
             "reconciliation_chains_recomputed",
             ok=not problems,
             detail=problems[:10],
             reading=(
                 f"the ledger/bar chain of all six series was recomputed from the raw files "
-                f"(store mode {self.ev.store_mode})"
+                f"(store mode {self.ev.store_mode}); {scope}"
             ),
         )
 
@@ -738,14 +837,21 @@ class Verifier:
         report = self.ev.reconciliation()
         ledger = self.ev.ledger
         runs = self.ev.runs
+        # Same cut, same reason as the chains above: an attempt or a run row written after the
+        # artefact's own instant is evidence it could not have read, and a check that counted it
+        # would report the lane's normal work as the reading's error.
+        taken_ms = int(report.get("generated_at_ms") or 0) or None
         run_instants = {
             int(parse_ms(row.get("market_instant_utc")) // 1000)
             for row in runs
             if parse_ms(row.get("market_instant_utc")) is not None
+            and _written_by(row, taken_ms)
         }
         attempts: dict[int, list[dict[str, Any]]] = {}
         for row in ledger:
             if row.get("run_at_ms") is None:
+                continue
+            if taken_ms is not None and int(row["run_at_ms"]) > taken_ms:
                 continue
             attempts.setdefault(int(row["run_at_ms"]), []).append(row)
         expected = {
@@ -1019,10 +1125,17 @@ def sabotage_cases() -> list[dict[str, Any]]:
         rows[-1]["operational_failure"] = False
 
     def s_category_healthy(rows, ev, lane):
+        # The subject has to be a reading written under the contract being checked: filing an old
+        # one would only produce a historical note, and a sabotage that cannot be caught is not a
+        # sabotage.
         for row in reversed(rows):
-            if str(row.get("verdict")) != "WATCH_OK":
+            if (
+                str(row.get("verdict")) != "WATCH_OK"
+                and str(row.get("schema_version")) == STATE_SCHEMA
+            ):
                 row["category"] = "HEALTHY"
                 return
+        rows[-1]["schema_version"] = STATE_SCHEMA
         rows[-1]["checks"]["resource_disk"]["status"] = "BLOCKED"
         rows[-1]["checks"]["resource_disk"]["disk_status"] = "CRITICAL"
         rows[-1]["verdict"] = "WATCH_BLOCKED"
@@ -1065,6 +1178,39 @@ def sabotage_cases() -> list[dict[str, Any]]:
             "lane_outcome": "OBSERVED",
             "reason": "sabotage",
         }
+
+    def s_resource_refusal_as_scheduler_failure(rows, ev, lane):
+        """The defect this work package exists to remove: blaming the scheduler for a full volume.
+
+        The newest row is given a refusal the lane made on its own resources — a cause the reading
+        states — and then filed as a scheduler failure. A verifier that derives the category from
+        the cause has to see it.
+        """
+        if not rows:
+            return False
+        row = rows[-1]
+        row["schema_version"] = STATE_SCHEMA  # the claim is about the contract in force
+        checks = row.setdefault("checks", {})
+        checks["scheduler_last_result"] = {
+            "status": "ALARM",
+            "available": True,
+            "exit_code": 5,
+            "lane_outcome": "DISK_BUDGET_EXCEEDED",
+            "failure_class": "RESOURCE_PRESSURE",
+            "reason": "sabotage: the lane refused its own tick on a full volume",
+        }
+        row["cause"] = "RESOURCE_PRESSURE"
+        row["failure_classes"] = sorted(
+            {*(row.get("failure_classes") or []), "RESOURCE_PRESSURE"}
+        )
+        row["operational_failure"] = True
+        # Keep the verdict honest for the new state so that only the category check can catch it.
+        worst = max(
+            (STATUS_RANK.get(str(body.get("status")), 0) for body in checks.values()), default=0
+        )
+        row["verdict"] = VERDICT_FOR[worst]
+        row["category"] = "SCHEDULER_FAILURE"
+        return True
 
     def s_alerts_ok_ok_recovery(alerts, ev, lane):
         rows = ev.watch_rows
@@ -1159,6 +1305,7 @@ def sabotage_cases() -> list[dict[str, Any]]:
         {"name": "a verdict that is not the worst check", "apply": s_verdict_flipped, "caught_by": "verdict_is_the_worst_check_status"},
         {"name": "a failure flag cleared", "apply": s_failure_flag, "caught_by": "category_and_operational_failure_are_derived"},
         {"name": "a blocked reading filed as healthy", "apply": s_category_healthy, "caught_by": "category_and_operational_failure_are_derived"},
+        {"name": "a resource refusal filed as a scheduler failure", "apply": s_resource_refusal_as_scheduler_failure, "caught_by": "category_and_operational_failure_are_derived"},
         {"name": "a silence smaller than the log allows", "apply": s_lane_silence, "caught_by": "lane_silence_is_consistent_with_the_run_log"},
         {"name": "a quiet market the store contradicts", "apply": s_market_quiet, "caught_by": "market_expectation_matches_the_store"},
         {"name": "a scheduler code mapped to the wrong outcome", "apply": s_scheduler_translation, "caught_by": "scheduler_result_translated_through_the_lane_vocabulary"},
