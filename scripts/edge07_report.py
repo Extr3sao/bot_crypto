@@ -732,7 +732,9 @@ def artefacts() -> list[dict[str, Any]]:
     for path in sorted(WP.rglob("*")):
         if not path.is_file() or path.suffix not in {".json", ".md", ".csv", ".jsonl"}:
             continue
-        if path.name in {"RUN_REPORT.json", "RUN_REPORT.md", "FINAL_REPORT.md"}:
+        if path.name in RENDERED_ARTEFACTS:
+            # A digest of a file that is rewritten after it is hashed is a figure that was true a
+            # moment ago; the generator's own outputs are therefore named as excluded, not hashed.
             continue
         rows.append(
             {
@@ -1099,6 +1101,11 @@ def render_run(payload: dict[str, Any]) -> str:
     lines += [
         "",
         "## 7. Artefacts, with the digest of each",
+        "",
+        "*Every artefact of this work package except the four files this generator writes "
+        "(`RUN_REPORT.json`, `RUN_REPORT.md`, `FINAL_REPORT.md`, `INFORME_EJECUTIVO.md`) and the "
+        "verification it re-runs: a digest of a file that is rewritten after it is hashed would be "
+        "a figure that was true a moment ago.*",
         "",
         "| Artefact | sha256 |",
         "| --- | --- |",
