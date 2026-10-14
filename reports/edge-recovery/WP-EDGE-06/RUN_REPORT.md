@@ -1,10 +1,10 @@
 # WP-EDGE-06 — RUN_REPORT
 
-*One reading at `2026-10-14T08:15:35Z` (`EDGE06-REPORT-20261014T081535Z`) on `DESKTOP-4CHO695`, from branch `agent/edge-recovery/WP-EDGE-00-baseline` at `fe5c400d9cc6`. Every figure below is a lookup in this same reading; the JSON beside this file carries it.*
+*One reading at `2026-10-14T08:18:17Z` (`EDGE06-REPORT-20261014T081817Z`) on `DESKTOP-4CHO695`, from branch `agent/edge-recovery/WP-EDGE-00-baseline` at `89b5e2210c8b`. Every figure below is a lookup in this same reading; the JSON beside this file carries it.*
 
 ## 1. The volume, at this instant
 
-- Free: **1.145 GiB** of 237.5 GiB — `BELOW_CRITICAL` (the lane refuses below 2.0 GiB and waits below 5.0 GiB).
+- Free: **1.237 GiB** of 237.5 GiB — `BELOW_CRITICAL` (the lane refuses below 2.0 GiB and waits below 5.0 GiB).
 - The repository holds 5750585960 bytes (2.25 % of the volume); every tool cache this work package is entitled to remove is worth 43.48 MiB here.
 - Returned by this work package's own sweep: **45591379 bytes (43.48 MiB)**; the verdict went `ABOVE_CRITICAL_BELOW_HEALTHY` → `ABOVE_CRITICAL_BELOW_HEALTHY`.
 - The volume's other tenants hold **166.87 GiB** (fully walked for every tenant: `False`), of which `AppData/Local` alone is 74686.0 MiB and the temporary directory 29.27 GiB — **27.9 GiB of it older than a day**.
@@ -26,8 +26,8 @@ The most recent refusal, verbatim from the lane's own record:
 
 | What | Result | Command |
 | --- | --- | --- |
-| this work package's own suites | exit `0` — 130 passed in 56.45s | `C:\Users\GVLLFR0035\Downloads\bot freebuff\.venv\Scripts\python.exe -m pytest -q tests/unit/research/test_edge04_autonomous.py tests/unit/research/test_edge05_watchdog.py tests/unit/research/test_edge05_reconcile.py tests/unit/research/test_edge06_cadence.py tests/unit/research/test_edge06_families.py tests/unit/research/test_wp9_disk_budget.py` |
-| the repaired recovery tests | exit `0` — 3 passed in 29.86s | `C:\Users\GVLLFR0035\Downloads\bot freebuff\.venv\Scripts\python.exe -m pytest -q tests/unit/research/test_active_recovery_wp.py::test_state_view_is_deterministic tests/unit/research/test_recovery_determinism.py::test_repeated_reproduction_is_byte_identical tests/unit/research/test_recovery_determinism.py::test_the_clean_checkout_rehearsal_passes_on_this_commit` |
+| this work package's own suites | exit `0` — 130 passed in 57.75s | `C:\Users\GVLLFR0035\Downloads\bot freebuff\.venv\Scripts\python.exe -m pytest -q tests/unit/research/test_edge04_autonomous.py tests/unit/research/test_edge05_watchdog.py tests/unit/research/test_edge05_reconcile.py tests/unit/research/test_edge06_cadence.py tests/unit/research/test_edge06_families.py tests/unit/research/test_wp9_disk_budget.py` |
+| the repaired recovery tests | exit `0` — 3 passed in 29.40s | `C:\Users\GVLLFR0035\Downloads\bot freebuff\.venv\Scripts\python.exe -m pytest -q tests/unit/research/test_active_recovery_wp.py::test_state_view_is_deterministic tests/unit/research/test_recovery_determinism.py::test_repeated_reproduction_is_byte_identical tests/unit/research/test_recovery_determinism.py::test_the_clean_checkout_rehearsal_passes_on_this_commit` |
 
 - Independent verification: **VERIFY_PASS**, 7/7 checks, self-test `PASS` with 8 sabotages and 0 undetected.
 - **The whole `tests/unit/research` suite was NOT re-run in this work package.** WP-EDGE-05R read it in full an hour before this one (2226 passed, 7 failed, all 7 attributed), and this work package repaired 3 of those 7 and ran everything it owns or touched. The remaining 4 are other workstreams' artefacts, one of which is now diagnosed as an open conflict rather than a stale file.

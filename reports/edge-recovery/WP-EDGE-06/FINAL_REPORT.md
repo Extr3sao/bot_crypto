@@ -1,10 +1,10 @@
 # WP-EDGE-06 — FINAL REPORT
 
-*Read at `2026-10-14T08:15:35Z` from `fe5c400d9cc6` on branch `agent/edge-recovery/WP-EDGE-00-baseline`. One reading, three reports: the technical one, the run record and this one are renderings of the same frozen dictionary.*
+*Read at `2026-10-14T08:18:17Z` from `89b5e2210c8b` on branch `agent/edge-recovery/WP-EDGE-00-baseline`. One reading, three reports: the technical one, the run record and this one are renderings of the same frozen dictionary.*
 
 ## 1. In one line
 
-**`CLOSED_WITH_OPEN_ITEMS`** — every acceptance row that could be measured passes (7/7 independent checks, 8 sabotages, 0 undetected), and the ingestion is **blocked by the volume, not by this work package**: 1.145 GiB free is `BELOW_CRITICAL`, below the 2 GiB the lane refuses under.
+**`CLOSED_WITH_OPEN_ITEMS`** — every acceptance row that could be measured passes (7/7 independent checks, 8 sabotages, 0 undetected), and the ingestion is **blocked by the volume, not by this work package**: 1.237 GiB free is `BELOW_CRITICAL`, below the 2 GiB the lane refuses under.
 
 ## 2. Track A — operational closure
 
@@ -57,13 +57,13 @@ The three results in one paragraph: the fade back to the mean is **rejected** �
 
 | Figure | Value |
 | --- | --- |
-| `as_of_utc` | `2026-10-14T08:15:35Z` |
-| `head` | `fe5c400d9cc69c08f797a703b8e6f376d8922ec8` |
+| `as_of_utc` | `2026-10-14T08:18:17Z` |
+| `head` | `89b5e2210c8b5d8f6bfd7d11c13eefb8b693b6f1` |
 | `branch` | `agent/edge-recovery/WP-EDGE-00-baseline` |
-| `worktree_dirty_entries` | `139` |
-| `worktree_dirty_entries_of_this_work_package` | `4` |
-| `volume.free_bytes` | `1229729792` |
-| `volume.free_gib` | `1.145` |
+| `worktree_dirty_entries` | `136` |
+| `worktree_dirty_entries_of_this_work_package` | `1` |
+| `volume.free_bytes` | `1328234496` |
+| `volume.free_gib` | `1.237` |
 | `volume.total_gib` | `237.5` |
 | `volume.critical_floor_gib` | `2.0` |
 | `volume.healthy_floor_gib` | `5.0` |

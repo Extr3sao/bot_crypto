@@ -178,7 +178,7 @@
       "sha256": "d7445e0f52eefd420e2e141a50246fc87a4c592d0ce758781638eca8cd431981"
     }
   },
-  "as_of_utc": "2026-10-14T08:15:35Z",
+  "as_of_utc": "2026-10-14T08:18:17Z",
   "audit": {
     "intraday_conclusion": {
       "edge_intra_01": "NO_GROSS_EDGE"
@@ -272,7 +272,7 @@
       "verdict": "INSUFFICIENT_EVIDENCE"
     }
   },
-  "head": "fe5c400d9cc69c08f797a703b8e6f376d8922ec8",
+  "head": "89b5e2210c8b5d8f6bfd7d11c13eefb8b693b6f1",
   "hypothetical": true,
   "lane": {
     "last_observing_new_bars": 3,
@@ -299,7 +299,7 @@
   },
   "order_sent": false,
   "promotion": "NONE",
-  "run_id": "EDGE06-REPORT-20261014T081535Z",
+  "run_id": "EDGE06-REPORT-20261014T081817Z",
   "schema_version": "EDGE06_RUN_REPORT_V1",
   "storage": {
     "appdata_local_measured": false,
@@ -320,18 +320,18 @@
     "owned": {
       "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m pytest -q tests/unit/research/test_edge04_autonomous.py tests/unit/research/test_edge05_watchdog.py tests/unit/research/test_edge05_reconcile.py tests/unit/research/test_edge06_cadence.py tests/unit/research/test_edge06_families.py tests/unit/research/test_wp9_disk_budget.py",
       "exit_code": 0,
-      "seconds": 57.28,
+      "seconds": 58.59,
       "stderr_tail": "",
-      "stdout_tail": "........................................................................ [ 55%]\n..........................................................               [100%]\n130 passed in 56.45s",
-      "summary": "130 passed in 56.45s"
+      "stdout_tail": "........................................................................ [ 55%]\n..........................................................               [100%]\n130 passed in 57.75s",
+      "summary": "130 passed in 57.75s"
     },
     "repaired": {
       "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m pytest -q tests/unit/research/test_active_recovery_wp.py::test_state_view_is_deterministic tests/unit/research/test_recovery_determinism.py::test_repeated_reproduction_is_byte_identical tests/unit/research/test_recovery_determinism.py::test_the_clean_checkout_rehearsal_passes_on_this_commit",
       "exit_code": 0,
-      "seconds": 30.65,
+      "seconds": 30.24,
       "stderr_tail": "",
-      "stdout_tail": "...                                                                      [100%]\n3 passed in 29.86s",
-      "summary": "3 passed in 29.86s"
+      "stdout_tail": "...                                                                      [100%]\n3 passed in 29.40s",
+      "summary": "3 passed in 29.40s"
     }
   },
   "verification": {
@@ -345,13 +345,13 @@
   },
   "volume": {
     "critical_floor_gib": 2.0,
-    "free_bytes": 1229729792,
-    "free_gib": 1.145,
+    "free_bytes": 1328234496,
+    "free_gib": 1.237,
     "healthy_floor_gib": 5.0,
     "total_gib": 237.5,
     "verdict": "BELOW_CRITICAL"
   },
   "work_package": "WP-EDGE-06",
-  "worktree_dirty_entries": 139,
-  "worktree_dirty_entries_of_this_work_package": 4
+  "worktree_dirty_entries": 136,
+  "worktree_dirty_entries_of_this_work_package": 1
 }
