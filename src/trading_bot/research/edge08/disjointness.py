@@ -139,9 +139,7 @@ def disjointness_report(symbols: tuple[str, ...]) -> dict[str, Any]:
                 violations.append({"symbol": symbol, "path": entry["path"], "kind": entry["kind"]})
     for symbol, shard_paths in shards.items():
         for shard_path in shard_paths:
-            violations.append(
-                {"symbol": symbol, "path": shard_path, "kind": "local_corpus_shard"}
-            )
+            violations.append({"symbol": symbol, "path": shard_path, "kind": "local_corpus_shard"})
     return {
         "symbols": list(symbols),
         "allowed_kinds": list(ALLOWED_CLASSES),

@@ -76,7 +76,9 @@ def screen_outcomes() -> dict[str, dict[str, Any]]:
     outcomes: dict[str, dict[str, Any]] = {}
     for _track, path in SCREEN_PATHS.items():
         if not path.is_file():
-            raise SystemExit(f"missing {path.relative_to(REPO_ROOT)}: run scripts/edge08_screen.py first")
+            raise SystemExit(
+                f"missing {path.relative_to(REPO_ROOT)}: run scripts/edge08_screen.py first"
+            )
         payload = json.loads(path.read_text(encoding="utf-8"))
         for arm, entry in payload["arms"].items():
             outcomes[arm] = dict(entry["screen"])
@@ -151,7 +153,9 @@ def build() -> dict[str, Any]:
             "horizon_minutes": scope["horizon_minutes"],
             "answers": scope.get("answers") or scope.get("already"),
             "params": dict(DECLARED_PARAMS.get(arm) or {}),
-            "params_hash": params_hash(dict(DECLARED_PARAMS[arm])) if arm in DECLARED_PARAMS else None,
+            "params_hash": params_hash(dict(DECLARED_PARAMS[arm]))
+            if arm in DECLARED_PARAMS
+            else None,
             "scenarios": list(scenarios),
             "cells": cells,
             "gate_status": gate,
@@ -401,7 +405,9 @@ def main(argv: list[str] | None = None) -> int:
         verdict = str(entry.get("verdict"))
         verdicts[verdict] = verdicts.get(verdict, 0) + 1
     print(f"verdicts: {verdicts}")
-    print(f"wrote {OUTDIR.relative_to(REPO_ROOT)} (VALIDATION.json/md, GATE_STATUS.json/md, HOLDOUT_TRADES.csv)")
+    print(
+        f"wrote {OUTDIR.relative_to(REPO_ROOT)} (VALIDATION.json/md, GATE_STATUS.json/md, HOLDOUT_TRADES.csv)"
+    )
     return 0
 
 
