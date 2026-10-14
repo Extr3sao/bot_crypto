@@ -1,8 +1,8 @@
 {
   "artifact": "CAMPAIGN_STATE_VIEW",
   "work_package": "WP-2 (POST RFC-049 / ACTIVE RECOVERY)",
-  "generated_at_utc": "2026-10-12T18:41:48Z",
-  "head": "752225531529f601c91426538579daadeafeef7f",
+  "generated_at_utc": "2026-10-14T07:50:33Z",
+  "head": "bcf398e5453fe2714cbea8f5064e9e613978a482",
   "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
   "mode": "READ-ONLY DERIVED VIEW — sources are read and hashed, never written",
   "precedence": {
@@ -237,6 +237,12 @@
     {
       "adr": "ADR-0031",
       "title": "WP-EDGE-01 cierre: H6 (entrada por retest, con relleno de limite modelado), revision OOS de tendencia 4h (sin PAPER) y reparacion del mecanismo de la vista de estado",
+      "facts": {},
+      "facts_conflicts": {}
+    },
+    {
+      "adr": "ADR-0032",
+      "title": "WP-EDGE-02: robustez de tendencia 4h (criterio de concentracion intacto) y auditoria de los 183 rechazos de riesgo de H6",
       "facts": {},
       "facts_conflicts": {}
     }
@@ -2252,8 +2258,8 @@
         "pin": "document_hashes:tasks/decisions.md",
         "path": "tasks/decisions.md",
         "recorded": "38622df9a5ad74dbb9dc81503af452e06581a1148637d640af9102333f31d438",
-        "actual_sha256_lf": "c80d2e57178a2f92386ccb78587587e0ee6e6108069bd4a46d9fff249e38181b",
-        "actual_sha256_crlf": "0df217539968e28bdcf5dbbbc5131e64bf2d316819bba0fe6194350fef9c83f4",
+        "actual_sha256_lf": "142c6ba0ffc7efd639ca45f269e6fda1bd2467c0f54c354994ec2984bdbf8535",
+        "actual_sha256_crlf": "cc90bb5f6fa875cd93157a7a2f61e0dacb6060e5994f2e6c5fe50c3a99e4b708",
         "line_endings": "LF",
         "result": "DRIFTED",
         "note": "attestation of a document that is append-only by convention; drift is expected and is not a contradiction"
@@ -2812,8 +2818,8 @@
       "exists": true,
       "resolved_from": "HEAD",
       "class": "COMMITTED",
-      "sha256_before": "c80d2e57178a2f92386ccb78587587e0ee6e6108069bd4a46d9fff249e38181b",
-      "sha256_after": "c80d2e57178a2f92386ccb78587587e0ee6e6108069bd4a46d9fff249e38181b"
+      "sha256_before": "142c6ba0ffc7efd639ca45f269e6fda1bd2467c0f54c354994ec2984bdbf8535",
+      "sha256_after": "142c6ba0ffc7efd639ca45f269e6fda1bd2467c0f54c354994ec2984bdbf8535"
     }
   ],
   "sources_unchanged": true,
@@ -2866,19 +2872,19 @@
       "resolved_from": "EVIDENCE_COPY",
       "present_on_this_machine": true,
       "local_forms": {
-        "sha256": "9dea77174d89ac2f15329f071c89083103fdb690cff15b3a70c240b5fe6bd7ac",
-        "sha256_lf": "6bd89eb626bf7e70edbf0f088bccaae81f320e57ec761e4884b6d9a1c3622d3a",
-        "sha256_crlf": "9dea77174d89ac2f15329f071c89083103fdb690cff15b3a70c240b5fe6bd7ac",
-        "bytes": 6290,
+        "sha256": "313d8b2aef9da1e1091a0fe5821e30ac87f321876041a104f0a8b67e9e23ed15",
+        "sha256_lf": "8974b713850972a21f551d1f071bff819184611ce7d2191efac3903a395f5fbb",
+        "sha256_crlf": "313d8b2aef9da1e1091a0fe5821e30ac87f321876041a104f0a8b67e9e23ed15",
+        "bytes": 6392,
         "line_endings": "CRLF"
       },
       "local_reproduces_the_authority": false,
       "attested_field_values": {
-        "status": "HEALTHY",
+        "status": "WARNING",
         "standing_state.NEXT_CAMPAIGN": "NOT_AUTHORIZED",
         "standing_state.LIVE_TRADING": "DISABLED"
       },
-      "attested_fields_match_the_snapshot": true,
+      "attested_fields_match_the_snapshot": false,
       "evidence_reproduces_the_authority": true,
       "local_matches_the_evidence_copy": false,
       "note": "a live lane file: the certified state reads the dated snapshot the repository carries, and this observation is what the file says right now"
@@ -2948,5 +2954,5 @@
       "local_matches_the_evidence_copy": true
     }
   ],
-  "payload_sha256": "3fb11fc9b9ff51f103b1ba1c5f61b159927e3e532a26acffc7e4c4ef43f1c72c"
+  "payload_sha256": "51ef35aa5168d9758d0a0493bb9a10ee99708879ee37a1ad64dedff2ffb74a6f"
 }

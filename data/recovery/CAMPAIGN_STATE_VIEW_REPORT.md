@@ -1,6 +1,6 @@
 # CAMPAIGN STATE VIEW (WP-2)
 
-- generated `2026-10-12T18:41:48Z` · head `752225531529` · branch `agent/edge-recovery/WP-EDGE-00-baseline`
+- generated `2026-10-14T07:50:33Z` · head `bcf398e5453f` · branch `agent/edge-recovery/WP-EDGE-00-baseline`
 - **status: CONSISTENT_WITH_ADVISORIES** · sources unchanged: True
 
 A frozen declaration is a historical record. This view resolves, per campaign and per field, which statement is *current*, using this precedence and nothing else:
@@ -107,7 +107,7 @@ A frozen declaration is a historical record. This view resolves, per campaign an
 | `rfc046-spec:HYP-001` | UNRESOLVED | `e5e58176e4c8fb01` | `None` | — | **UNRESOLVED** |
 | `rfc046-spec:HYP-002` | UNRESOLVED | `3336b8f343d899af` | `None` | — | **UNRESOLVED** |
 | `rfc046-spec:HYP-003` | UNRESOLVED | `8f99b0366301a304` | `None` | — | **UNRESOLVED** |
-| `document_hashes:tasks/decisions.md` | APPEND_ONLY | `38622df9a5ad74db` | `c80d2e57178a2f92` | LF | **DRIFTED** |
+| `document_hashes:tasks/decisions.md` | APPEND_ONLY | `38622df9a5ad74db` | `142c6ba0ffc7efd6` | LF | **DRIFTED** |
 | `document_hashes:tasks/roadmap.md` | APPEND_ONLY | `5310f6a423318cdb` | `5310f6a423318cdb` | LF | **VERIFIED** |
 | `document_hashes:docs/rfc/RFC-046_CONTROLLED_DISCOVERY.md` | APPEND_ONLY | `a14753f5ec62446e` | `a14753f5ec62446e` | LF | **VERIFIED** |
 | `document_hashes:docs/rfc/RFC-046_CONTROLLED_DISCOVERY.json` | APPEND_ONLY | `5b7275c366ff1ac3` | `5b7275c366ff1ac3` | LF | **VERIFIED** |
@@ -144,7 +144,7 @@ What each input is, and what it answers to. A committed input is read from the c
 - `PAPER_DATA_24H_REPORT.json` (COMMITTED): resolved from `HEAD`; local file present: True; reproduces its authority: True
 - `data/raw/alpha001/BTC-USDT_1d.json` (EXTERNAL_DATASET): resolved from `LOCAL_MATERIALIZATION`; local file present: True; reproduces its authority: True
 - `data/raw/alpha001/ETH-USDT_1d.json` (EXTERNAL_DATASET): resolved from `LOCAL_MATERIALIZATION`; local file present: True; reproduces its authority: True
-- `data/st6/ST6_HEALTH_STATUS.json` (EXTERNAL_LIVE): resolved from `EVIDENCE_COPY`; local file present: True; reproduces its authority: False; attested fields match the snapshot: True
+- `data/st6/ST6_HEALTH_STATUS.json` (EXTERNAL_LIVE): resolved from `EVIDENCE_COPY`; local file present: True; reproduces its authority: False; attested fields match the snapshot: False
 - `reports/alpha-recovery-v1/STRATEGY_FAILURE_MATRIX.md` (EXTERNAL_GENERATED): resolved from `EVIDENCE_COPY`; local file present: True; reproduces its authority: True
 - `reports/strategy-baseline/COST_BARRIER.json` (EXTERNAL_GENERATED): resolved from `EVIDENCE_COPY`; local file present: True; reproduces its authority: True
 - `reports/strategy-baseline/REGIME_ANALYSIS.json` (EXTERNAL_GENERATED): resolved from `EVIDENCE_COPY`; local file present: True; reproduces its authority: True
@@ -204,4 +204,5 @@ RFC numbering: tree occupies [35, 46, 48, 49]; registry lists [0, 10, 20, 21, 23
 | ADR-0029 | WP-EDGE-01 H5: presupuesto de riesgo separado con el kill switch de drawdown inerte, medido SOLO en DEV | — |
 | ADR-0030 | WP-EDGE-01 H2/H4: el patron de ablacion congelada se reutiliza para dos preguntas de mecanismo (timing de entrada y filtro de volatilidad) | — |
 | ADR-0031 | WP-EDGE-01 cierre: H6 (entrada por retest, con relleno de limite modelado), revision OOS de tendencia 4h (sin PAPER) y reparacion del mecanismo de la vista de estado | — |
+| ADR-0032 | WP-EDGE-02: robustez de tendencia 4h (criterio de concentracion intacto) y auditoria de los 183 rechazos de riesgo de H6 | — |
 
