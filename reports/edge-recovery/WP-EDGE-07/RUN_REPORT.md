@@ -1,10 +1,10 @@
 # WP-EDGE-07 — RUN_REPORT
 
-*One reading at `2026-10-14T09:22:22Z` on `DESKTOP-4CHO695`, from branch `agent/edge-recovery/WP-EDGE-00-baseline` at `838586425b94`. Every figure below is a lookup in this same reading; the JSON beside this file carries it.*
+*One reading at `2026-10-14T09:22:48Z` on `DESKTOP-4CHO695`, from branch `agent/edge-recovery/WP-EDGE-00-baseline` at `7737481e355f`. Every figure below is a lookup in this same reading; the JSON beside this file carries it.*
 
 ## 1. The volume, and what this work package removed from it
 
-- Free: **3.373 GiB** of 237.5 GiB — `ABOVE_CRITICAL_BELOW_HEALTHY` (the lane refuses below 2.0 GiB and the heavy publication waits below 5.0 GiB).
+- Free: **3.371 GiB** of 237.5 GiB — `ABOVE_CRITICAL_BELOW_HEALTHY` (the lane refuses below 2.0 GiB and the heavy publication waits below 5.0 GiB).
 - Reclaim history: **8 invocations**, 4 dry run(s) and **4 applied**; **2,261,922,757 bytes (2.11 GiB)** removed in total.
 - The latest applied sweep is `2026-10-14T08:50:23Z`; it moved the volume from 2,824,138,752 bytes (2.63 GiB) to 3,955,908,608 bytes (3.68 GiB) free.
 - Every removal is recorded and none was faked: **193 paths** recorded as removed, **0** of them still on disk.
@@ -71,10 +71,10 @@ The mission's own target — 3 trades a day — is reachable at: H = 1 h (72 tra
 
 | What | Result | Command |
 | --- | --- | --- |
-| this work package's own suites | exit `0` — 26 passed in 2.03s (2.98s) | `C:\Users\GVLLFR0035\Downloads\bot freebuff\.venv\Scripts\python.exe -m pytest -q tests/unit/research/test_edge07_scheduler_evidence.py tests/unit/research/test_edge06_cadence.py tests/unit/research/test_wp9_disk_budget.py` |
-| the linter | exit `0` — All checks passed! (0.14s) | `C:\Users\GVLLFR0035\Downloads\bot freebuff\.venv\Scripts\python.exe -m ruff check scripts/edge07_report.py scripts/edge07_verify.py scripts/edge07_validate.py scripts/edge07_active.py scripts/edge07_active_barrier.py scripts/edge07_fetch_holdout.py scripts/edge07_growth_evidence.py scripts/edge07_reclaim.py src/trading_bot/research/edge07 tests/unit/research/test_edge07_scheduler_evidence.py` |
-| the formatter | exit `0` — 12 files already formatted (0.14s) | `C:\Users\GVLLFR0035\Downloads\bot freebuff\.venv\Scripts\python.exe -m ruff format --check scripts/edge07_report.py scripts/edge07_verify.py scripts/edge07_validate.py scripts/edge07_active.py scripts/edge07_active_barrier.py scripts/edge07_fetch_holdout.py scripts/edge07_growth_evidence.py scripts/edge07_reclaim.py src/trading_bot/research/edge07 tests/unit/research/test_edge07_scheduler_evidence.py` |
-| the type checker | exit `0` — Success: no issues found in 11 source files (0.65s) | `C:\Users\GVLLFR0035\Downloads\bot freebuff\.venv\Scripts\python.exe -m mypy scripts/edge07_report.py scripts/edge07_verify.py scripts/edge07_validate.py scripts/edge07_active.py scripts/edge07_active_barrier.py scripts/edge07_fetch_holdout.py scripts/edge07_growth_evidence.py scripts/edge07_reclaim.py src/trading_bot/research/edge07` |
+| this work package's own suites | exit `0` — 26 passed in 2.09s (3.03s) | `C:\Users\GVLLFR0035\Downloads\bot freebuff\.venv\Scripts\python.exe -m pytest -q tests/unit/research/test_edge07_scheduler_evidence.py tests/unit/research/test_edge06_cadence.py tests/unit/research/test_wp9_disk_budget.py` |
+| the linter | exit `0` — All checks passed! (0.13s) | `C:\Users\GVLLFR0035\Downloads\bot freebuff\.venv\Scripts\python.exe -m ruff check scripts/edge07_report.py scripts/edge07_verify.py scripts/edge07_validate.py scripts/edge07_active.py scripts/edge07_active_barrier.py scripts/edge07_fetch_holdout.py scripts/edge07_growth_evidence.py scripts/edge07_reclaim.py src/trading_bot/research/edge07 tests/unit/research/test_edge07_scheduler_evidence.py` |
+| the formatter | exit `0` — 12 files already formatted (0.13s) | `C:\Users\GVLLFR0035\Downloads\bot freebuff\.venv\Scripts\python.exe -m ruff format --check scripts/edge07_report.py scripts/edge07_verify.py scripts/edge07_validate.py scripts/edge07_active.py scripts/edge07_active_barrier.py scripts/edge07_fetch_holdout.py scripts/edge07_growth_evidence.py scripts/edge07_reclaim.py src/trading_bot/research/edge07 tests/unit/research/test_edge07_scheduler_evidence.py` |
+| the type checker | exit `0` — Success: no issues found in 11 source files (0.58s) | `C:\Users\GVLLFR0035\Downloads\bot freebuff\.venv\Scripts\python.exe -m mypy scripts/edge07_report.py scripts/edge07_verify.py scripts/edge07_validate.py scripts/edge07_active.py scripts/edge07_active_barrier.py scripts/edge07_fetch_holdout.py scripts/edge07_growth_evidence.py scripts/edge07_reclaim.py src/trading_bot/research/edge07` |
 
 - Independent verification: **PASS**, 13/13 checks, self-test `PASS` with 14 sabotages and 0 undetected.
 - The verifier's own exit status: `0` (`scripts/edge07_verify.py --self-test`).
@@ -139,7 +139,7 @@ The mission's own target — 3 trades a day — is reachable at: H = 1 h (72 tra
 | `reports/edge-recovery/WP-EDGE-07/validation/VALIDATION.json` | `9a318e917bdf14189c971b08dcb9aa90…` |
 | `reports/edge-recovery/WP-EDGE-07/validation/VALIDATION.md` | `89ca9c860cdddfdd23bd07c7aa6b9071…` |
 | `reports/edge-recovery/WP-EDGE-07/validation/VALIDATION_TRADES.csv` | `20e0fa0631d8714849b137f737dbe087…` |
-| `reports/edge-recovery/WP-EDGE-07/VERIFICATION.json` | `eac11d8ad161eb4924f4500c2b4a353e…` |
-| `reports/edge-recovery/WP-EDGE-07/VERIFICATION.md` | `e3ca883e37fea4ac98f422bd7761260d…` |
+| `reports/edge-recovery/WP-EDGE-07/VERIFICATION.json` | `7bdea6e24a130fd6df1cd9d9a28bd1d3…` |
+| `reports/edge-recovery/WP-EDGE-07/VERIFICATION.md` | `5acc4a4f0c6b68a1e5f0b5be29380e3e…` |
 
 *`promotion: NONE`, `order_sent: False`, `hypothetical: True`.*
