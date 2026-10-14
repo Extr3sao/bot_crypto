@@ -1,14 +1,14 @@
 {
   "schema_version": "EDGE07_RUN_REPORT_V1",
-  "as_of_utc": "2026-10-14T09:24:16Z",
+  "as_of_utc": "2026-10-14T09:24:49Z",
   "host": "DESKTOP-4CHO695",
   "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
-  "head": "62ce473048d3bcc8ff4afb1a8c950ec40f57259b",
-  "worktree_dirty_entries": 143,
-  "worktree_dirty_entries_of_this_work_package": 7,
+  "head": "196deb49475e171c4a4ef3b0a21620e0f4a8be39",
+  "worktree_dirty_entries": 137,
+  "worktree_dirty_entries_of_this_work_package": 1,
   "volume": {
-    "free_bytes": 3617484800,
-    "free_gib": 3.369,
+    "free_bytes": 3612786688,
+    "free_gib": 3.365,
     "total_gib": 237.5,
     "critical_floor_gib": 2.0,
     "healthy_floor_gib": 5.0,
@@ -560,7 +560,7 @@
     "command": "scripts/edge07_verify.py --self-test",
     "exit_code": 0,
     "stdout_tail": "  A-5  PASS  every scheduled slot WP-EDGE-06 published is still in the lane's log, in order, never re\n  B-1  PASS  every holdout shard still hashes to the digest its manifest recorded\n  B-2  PASS  the parameters read on the new window are the registered bytes, and the run says so\n  B-3  PASS  the runner reproduced every published consulted-window figure it re-derived\n  B-4  PASS  the trend verdict follows from its own checks by the registered mapping\n  B-5  PASS  nothing was promoted, no order was sent, every reading is hypothetical\n  B-6  PASS  the new window begins after the last bar of every frozen corpus\n  C-1  PASS  each ACTIVE verdict follows from its own checks, and a screened-out book read no indepen\n  C-2  PASS  the published one-hour ceiling for BTC on the new window recomputes from the bars\nresult PASS (13/13)\nself-test PASS: 14/14 sabotages detected\nwrote reports\\edge-recovery\\WP-EDGE-07\\VERIFICATION.json",
-    "as_of_utc": "2026-10-14T09:24:18Z",
+    "as_of_utc": "2026-10-14T09:24:51Z",
     "result": "PASS",
     "checks_passed": 13,
     "checks_total": 13,
@@ -641,15 +641,15 @@
     "owned": {
       "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m pytest -q tests/unit/research/test_edge07_scheduler_evidence.py tests/unit/research/test_edge06_cadence.py tests/unit/research/test_wp9_disk_budget.py",
       "exit_code": 0,
-      "seconds": 3.1,
-      "summary": "26 passed in 2.15s",
-      "stdout_tail": "..........................                                               [100%]\n26 passed in 2.15s",
+      "seconds": 3.04,
+      "summary": "26 passed in 2.11s",
+      "stdout_tail": "..........................                                               [100%]\n26 passed in 2.11s",
       "stderr_tail": ""
     },
     "lint": {
       "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m ruff check scripts/edge07_report.py scripts/edge07_verify.py scripts/edge07_validate.py scripts/edge07_active.py scripts/edge07_active_barrier.py scripts/edge07_fetch_holdout.py scripts/edge07_growth_evidence.py scripts/edge07_reclaim.py src/trading_bot/research/edge07 tests/unit/research/test_edge07_scheduler_evidence.py",
       "exit_code": 0,
-      "seconds": 0.13,
+      "seconds": 0.14,
       "summary": "All checks passed!",
       "stdout_tail": "All checks passed!",
       "stderr_tail": ""
@@ -657,7 +657,7 @@
     "format": {
       "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m ruff format --check scripts/edge07_report.py scripts/edge07_verify.py scripts/edge07_validate.py scripts/edge07_active.py scripts/edge07_active_barrier.py scripts/edge07_fetch_holdout.py scripts/edge07_growth_evidence.py scripts/edge07_reclaim.py src/trading_bot/research/edge07 tests/unit/research/test_edge07_scheduler_evidence.py",
       "exit_code": 0,
-      "seconds": 0.13,
+      "seconds": 0.14,
       "summary": "12 files already formatted",
       "stdout_tail": "12 files already formatted",
       "stderr_tail": ""
@@ -665,7 +665,7 @@
     "types": {
       "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m mypy scripts/edge07_report.py scripts/edge07_verify.py scripts/edge07_validate.py scripts/edge07_active.py scripts/edge07_active_barrier.py scripts/edge07_fetch_holdout.py scripts/edge07_growth_evidence.py scripts/edge07_reclaim.py src/trading_bot/research/edge07",
       "exit_code": 0,
-      "seconds": 0.71,
+      "seconds": 0.59,
       "summary": "Success: no issues found in 11 source files",
       "stdout_tail": "Success: no issues found in 11 source files",
       "stderr_tail": ""
@@ -676,18 +676,22 @@
   "promotion": "NONE",
   "github": {
     "schema_version": "EDGE07_GITHUB_STATE_V1",
-    "as_of_utc": "2026-10-14T09:24:16Z",
+    "as_of_utc": "2026-10-14T09:24:49Z",
     "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
-    "head": "62ce473048d3bcc8ff4afb1a8c950ec40f57259b",
+    "head": "196deb49475e171c4a4ef3b0a21620e0f4a8be39",
     "remote": "https://github.com/Extr3sao/bot_crypto.git",
     "remote_branch_ref": "refs/heads/agent/edge-recovery/WP-EDGE-00-baseline",
     "remote_has_this_branch": true,
-    "remote_tip": "62ce473048d3bcc8ff4afb1a8c950ec40f57259b",
+    "remote_tip": "196deb49475e171c4a4ef3b0a21620e0f4a8be39",
     "remote_matches_head": true,
-    "pushed_range_at_last_push": "edd4ef2..62ce473",
+    "pushed_range_at_last_push": "edd4ef2..196deb4",
     "push_kind": "normal fast-forward of an existing remote branch; force push not used and not needed",
     "force_push_used": false,
     "commits_of_this_work_package": [
+      {
+        "sha": "196deb49475e171c4a4ef3b0a21620e0f4a8be39",
+        "subject": "Read the published ref back from the remote instead of asserting it [WP-EDGE-07]"
+      },
       {
         "sha": "62ce473048d3bcc8ff4afb1a8c950ec40f57259b",
         "subject": "Re-take the reading at the commit that publishes it [WP-EDGE-07]"
@@ -725,10 +729,10 @@
         "subject": "Register the WP-EDGE-07 trend validation before the new window is read [WP-EDGE-07]"
       }
     ],
-    "commits_total": 9,
-    "worktree_dirty_entries": 143,
-    "worktree_dirty_entries_of_this_work_package": 7,
-    "volume_free_bytes_at_this_reading": 3617484800,
+    "commits_total": 10,
+    "worktree_dirty_entries": 137,
+    "worktree_dirty_entries_of_this_work_package": 1,
+    "volume_free_bytes_at_this_reading": 3612786688,
     "credentials_read_or_printed": false,
     "note_on_this_file": "this file is written after the push and describes the ref at that instant; the commit carrying it is published by the following push, which is why remote_matches_head is read from the remote rather than assumed"
   },
@@ -944,8 +948,8 @@
     },
     {
       "path": "reports/edge-recovery/WP-EDGE-07/GITHUB_STATE.json",
-      "sha256": "6f4c727cd04f3b119ed9504c2b07dd9962cc1eda1f2dc402b20761fd0ded5587",
-      "bytes": 2795
+      "sha256": "8c7e433c7add2f601a0671753dafb414184cd521053ee46755359fa8265e9b67",
+      "bytes": 2970
     },
     {
       "path": "reports/edge-recovery/WP-EDGE-07/GROWTH_EVIDENCE.json",
@@ -999,19 +1003,19 @@
     },
     {
       "path": "reports/edge-recovery/WP-EDGE-07/VERIFICATION.json",
-      "sha256": "14da1b3e7ae08c26eb9b55a86494bf7e5980bd673f208db79d43b83c61f14e8b",
+      "sha256": "3a201944f8df27ce03028b2a2a9e3ae67156e8755ccd2e5346fa5af6d0c8714b",
       "bytes": 12723
     },
     {
       "path": "reports/edge-recovery/WP-EDGE-07/VERIFICATION.md",
-      "sha256": "0cc5760c510727338b135651b82996988711fc9fc5b7ef4966413e696b8b32c9",
+      "sha256": "477fb7e77900b780f9ac39107621eb0786a686019c2d6a23b161bf45b0306fee",
       "bytes": 4115
     }
   ],
   "verdict": "CLOSED_WITH_OPEN_ITEMS",
   "open_items": [
     {
-      "item": "The volume is 3.369 GiB free: above the 2.0 GiB the lane refuses under and below the 5.0 GiB the heavy publication waits for, so the lane ingests while the heavier export still waits",
+      "item": "The volume is 3.365 GiB free: above the 2.0 GiB the lane refuses under and below the 5.0 GiB the heavy publication waits for, so the lane ingests while the heavier export still waits",
       "owner": "The volume's owner: clear temporary files older than a day"
     },
     {

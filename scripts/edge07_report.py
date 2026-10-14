@@ -69,6 +69,18 @@ OWNED_LINT_PATHS = (
 #: Where the reclaim's own running history is written, one record per invocation.
 RECLAIM_HISTORY = WP / "STORAGE_RECLAIM_HISTORY.jsonl"
 
+#: The files this generator rewrites (and the verifier re-takes) while a reading is being made.
+#: They are dirty at that instant by construction, so counting them as uncommitted work would make
+#: "what has this work package not committed" unanswerable — it would always be at least these.
+RENDERED_ARTEFACTS = (
+    "RUN_REPORT.json",
+    "RUN_REPORT.md",
+    "FINAL_REPORT.md",
+    "GITHUB_STATE.json",
+    "VERIFICATION.json",
+    "VERIFICATION.md",
+)
+
 
 def now() -> str:
     return datetime.now(tz=UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -220,7 +232,12 @@ def measurement(*, tests: bool, verify: bool) -> dict[str, Any]:
     as_of = now()
     usage = shutil.disk_usage(REPO_ROOT)
     dirty = [line for line in git("status", "--porcelain=v1").splitlines() if line.strip()]
-    mine = [line for line in dirty if "WP-EDGE-07" in line or "edge07" in line]
+    mine = [
+        line
+        for line in dirty
+        if ("WP-EDGE-07" in line or "edge07" in line)
+        and not any(line.endswith(name) for name in RENDERED_ARTEFACTS)
+    ]
 
     storage = storage_reading()
     verification = (

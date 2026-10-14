@@ -1,6 +1,6 @@
 # WP-EDGE-07 — FINAL REPORT
 
-*Read at `2026-10-14T09:24:16Z` from `62ce473048d3` on branch `agent/edge-recovery/WP-EDGE-00-baseline`. One reading, three reports: the run record, the verification and this one are renderings of the same frozen dictionary.*
+*Read at `2026-10-14T09:24:49Z` from `196deb49475e` on branch `agent/edge-recovery/WP-EDGE-00-baseline`. One reading, three reports: the run record, the verification and this one are renderings of the same frozen dictionary.*
 
 ## 1. In one line
 
@@ -10,10 +10,10 @@
 
 | Item | What was done | Evidence |
 | --- | --- | --- |
-| Branch, remote, commits | Published: `edd4ef2..62ce473` fast-forwarded the existing remote branch (no force), and the remote was read back to confirm it holds this reading's `head`: True | `GITHUB_STATE.json` |
+| Branch, remote, commits | Published: `edd4ef2..196deb4` fast-forwarded the existing remote branch (no force), and the remote was read back to confirm it holds this reading's `head`: True | `GITHUB_STATE.json` |
 | Recovery | 4 applied sweeps totalling **2,261,922,757 bytes (2.11 GiB)** of this repository's own tool caches, every removal re-checked at the instant it was made (193 recorded paths, 0 still present) | `STORAGE_RECLAIM.md` |
 | The lane resumed | 2 real scheduled observing ticks after the reclaim, the first on `2026-10-14T08:45Z` | `RUN_REPORT.md` §2 |
-| The volume today | 3.369 GiB free — `ABOVE_CRITICAL_BELOW_HEALTHY`, above the 2.0 GiB the lane refuses under | `RUN_REPORT.json` |
+| The volume today | 3.365 GiB free — `ABOVE_CRITICAL_BELOW_HEALTHY`, above the 2.0 GiB the lane refuses under | `RUN_REPORT.json` |
 | Who else grows it | 12 neighbouring entries named and left alone; the writers table is the volume owner's to act on | `GROWTH_EVIDENCE.md` |
 
 ## 3. Track B — the trend book, on a window nobody had read
@@ -44,7 +44,7 @@ The durable result is the ceiling they ran into: at a one-hour clock a book must
 
 ## 6. What stays open, and who can close it
 
-- The volume is 3.369 GiB free: above the 2.0 GiB the lane refuses under and below the 5.0 GiB the heavy publication waits for, so the lane ingests while the heavier export still waits — *The volume's owner: clear temporary files older than a day*
+- The volume is 3.365 GiB free: above the 2.0 GiB the lane refuses under and below the 5.0 GiB the heavy publication waits for, so the lane ingests while the heavier export still waits — *The volume's owner: clear temporary files older than a day*
 - The trend book with the fixed target was rejected on a window nobody had read, so 'would a different exit have saved it' is unanswered — the trailing arm on the same window is positive but under-powered — *A new pre-registration, on a window that has not been read*
 - Both ACTIVE books were stopped by their own registered screen before the independent window, so the hourly frequency target rests on the measured ceiling rather than on a candidate — *A new registration at a clock the barrier table says is affordable*
 
@@ -60,13 +60,13 @@ The durable result is the ceiling they ran into: at a one-hour clock a book must
 
 | Figure | Value |
 | --- | --- |
-| `as_of_utc` | `2026-10-14T09:24:16Z` |
-| `head` | `62ce473048d3bcc8ff4afb1a8c950ec40f57259b` |
+| `as_of_utc` | `2026-10-14T09:24:49Z` |
+| `head` | `196deb49475e171c4a4ef3b0a21620e0f4a8be39` |
 | `branch` | `agent/edge-recovery/WP-EDGE-00-baseline` |
-| `worktree_dirty_entries` | `143` |
-| `worktree_dirty_entries_of_this_work_package` | `7` |
-| `volume.free_bytes` | `3617484800` |
-| `volume.free_gib` | `3.369` |
+| `worktree_dirty_entries` | `137` |
+| `worktree_dirty_entries_of_this_work_package` | `1` |
+| `volume.free_bytes` | `3612786688` |
+| `volume.free_gib` | `3.365` |
 | `volume.verdict` | `ABOVE_CRITICAL_BELOW_HEALTHY` |
 | `storage.applied_runs` | `4` |
 | `storage.reclaimed_bytes_total` | `2261922757` |
@@ -89,5 +89,5 @@ The durable result is the ceiling they ran into: at a one-hour clock a book must
 | `verification.checks_passed` | `13` |
 | `verification.failing` | `0` |
 | `verification.sabotages_detected` | `14` |
-| `tests.owned_summary` | `26 passed in 2.15s` |
+| `tests.owned_summary` | `26 passed in 2.11s` |
 | `tests.owned_exit_code` | `0` |

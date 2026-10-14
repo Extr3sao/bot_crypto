@@ -1,17 +1,21 @@
 {
   "schema_version": "EDGE07_GITHUB_STATE_V1",
-  "as_of_utc": "2026-10-14T09:24:16Z",
+  "as_of_utc": "2026-10-14T09:24:49Z",
   "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
-  "head": "62ce473048d3bcc8ff4afb1a8c950ec40f57259b",
+  "head": "196deb49475e171c4a4ef3b0a21620e0f4a8be39",
   "remote": "https://github.com/Extr3sao/bot_crypto.git",
   "remote_branch_ref": "refs/heads/agent/edge-recovery/WP-EDGE-00-baseline",
   "remote_has_this_branch": true,
-  "remote_tip": "62ce473048d3bcc8ff4afb1a8c950ec40f57259b",
+  "remote_tip": "196deb49475e171c4a4ef3b0a21620e0f4a8be39",
   "remote_matches_head": true,
-  "pushed_range_at_last_push": "edd4ef2..62ce473",
+  "pushed_range_at_last_push": "edd4ef2..196deb4",
   "push_kind": "normal fast-forward of an existing remote branch; force push not used and not needed",
   "force_push_used": false,
   "commits_of_this_work_package": [
+    {
+      "sha": "196deb49475e171c4a4ef3b0a21620e0f4a8be39",
+      "subject": "Read the published ref back from the remote instead of asserting it [WP-EDGE-07]"
+    },
     {
       "sha": "62ce473048d3bcc8ff4afb1a8c950ec40f57259b",
       "subject": "Re-take the reading at the commit that publishes it [WP-EDGE-07]"
@@ -49,10 +53,10 @@
       "subject": "Register the WP-EDGE-07 trend validation before the new window is read [WP-EDGE-07]"
     }
   ],
-  "commits_total": 9,
-  "worktree_dirty_entries": 143,
-  "worktree_dirty_entries_of_this_work_package": 7,
-  "volume_free_bytes_at_this_reading": 3617484800,
+  "commits_total": 10,
+  "worktree_dirty_entries": 137,
+  "worktree_dirty_entries_of_this_work_package": 1,
+  "volume_free_bytes_at_this_reading": 3612786688,
   "credentials_read_or_printed": false,
   "note_on_this_file": "this file is written after the push and describes the ref at that instant; the commit carrying it is published by the following push, which is why remote_matches_head is read from the remote rather than assumed"
 }
