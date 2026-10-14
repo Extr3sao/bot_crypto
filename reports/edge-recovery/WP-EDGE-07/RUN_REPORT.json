@@ -1,14 +1,14 @@
 {
   "schema_version": "EDGE07_RUN_REPORT_V1",
-  "as_of_utc": "2026-10-14T09:42:10Z",
+  "as_of_utc": "2026-10-14T09:42:28Z",
   "host": "DESKTOP-4CHO695",
   "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
-  "head": "69f85d2f4bd19ae392b8a72b61e921d33a70f5a1",
-  "worktree_dirty_entries": 144,
-  "worktree_dirty_entries_of_this_work_package": 1,
+  "head": "ebdafc32a34aa43866632004610498599703b7af",
+  "worktree_dirty_entries": 136,
+  "worktree_dirty_entries_of_this_work_package": 0,
   "volume": {
-    "free_bytes": 3342798848,
-    "free_gib": 3.113,
+    "free_bytes": 3310678016,
+    "free_gib": 3.083,
     "total_gib": 237.5,
     "critical_floor_gib": 2.0,
     "healthy_floor_gib": 5.0,
@@ -632,7 +632,7 @@
     "command": "scripts/edge07_verify.py --self-test",
     "exit_code": 0,
     "stdout_tail": "  A-5  PASS  every scheduled slot WP-EDGE-06 published is still in the lane's log, in order, never re\n  B-1  PASS  every holdout shard still hashes to the digest its manifest recorded\n  B-2  PASS  the parameters read on the new window are the registered bytes, and the run says so\n  B-3  PASS  the runner reproduced every published consulted-window figure it re-derived\n  B-4  PASS  the trend verdict follows from its own checks by the registered mapping\n  B-5  PASS  nothing was promoted, no order was sent, every reading is hypothetical\n  B-6  PASS  the new window begins after the last bar of every frozen corpus\n  C-1  PASS  each ACTIVE verdict follows from its own checks, and a screened-out book read no indepen\n  C-2  PASS  the published one-hour ceiling for BTC on the new window recomputes from the bars\nresult PASS (13/13)\nself-test PASS: 14/14 sabotages detected\nwrote reports\\edge-recovery\\WP-EDGE-07\\VERIFICATION.json",
-    "as_of_utc": "2026-10-14T09:42:12Z",
+    "as_of_utc": "2026-10-14T09:42:29Z",
     "result": "PASS",
     "checks_passed": 13,
     "checks_total": 13,
@@ -713,15 +713,15 @@
     "owned": {
       "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m pytest -q tests/unit/research/test_edge07_scheduler_evidence.py tests/unit/research/test_edge06_cadence.py tests/unit/research/test_wp9_disk_budget.py",
       "exit_code": 0,
-      "seconds": 3.64,
-      "summary": "26 passed in 2.55s",
-      "stdout_tail": "..........................                                               [100%]\n26 passed in 2.55s",
+      "seconds": 3.46,
+      "summary": "26 passed in 2.46s",
+      "stdout_tail": "..........................                                               [100%]\n26 passed in 2.46s",
       "stderr_tail": ""
     },
     "lint": {
       "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m ruff check scripts/edge07_report.py scripts/edge07_verify.py scripts/edge07_validate.py scripts/edge07_active.py scripts/edge07_active_barrier.py scripts/edge07_fetch_holdout.py scripts/edge07_growth_evidence.py scripts/edge07_reclaim.py src/trading_bot/research/edge07 tests/unit/research/test_edge07_scheduler_evidence.py",
       "exit_code": 0,
-      "seconds": 0.18,
+      "seconds": 0.16,
       "summary": "All checks passed!",
       "stdout_tail": "All checks passed!",
       "stderr_tail": ""
@@ -729,7 +729,7 @@
     "format": {
       "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m ruff format --check scripts/edge07_report.py scripts/edge07_verify.py scripts/edge07_validate.py scripts/edge07_active.py scripts/edge07_active_barrier.py scripts/edge07_fetch_holdout.py scripts/edge07_growth_evidence.py scripts/edge07_reclaim.py src/trading_bot/research/edge07 tests/unit/research/test_edge07_scheduler_evidence.py",
       "exit_code": 0,
-      "seconds": 0.17,
+      "seconds": 0.15,
       "summary": "12 files already formatted",
       "stdout_tail": "12 files already formatted",
       "stderr_tail": ""
@@ -737,7 +737,7 @@
     "types": {
       "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m mypy scripts/edge07_report.py scripts/edge07_verify.py scripts/edge07_validate.py scripts/edge07_active.py scripts/edge07_active_barrier.py scripts/edge07_fetch_holdout.py scripts/edge07_growth_evidence.py scripts/edge07_reclaim.py src/trading_bot/research/edge07",
       "exit_code": 0,
-      "seconds": 0.93,
+      "seconds": 0.71,
       "summary": "Success: no issues found in 11 source files",
       "stdout_tail": "Success: no issues found in 11 source files",
       "stderr_tail": ""
@@ -748,18 +748,22 @@
   "promotion": "NONE",
   "github": {
     "schema_version": "EDGE07_GITHUB_STATE_V1",
-    "as_of_utc": "2026-10-14T09:42:10Z",
+    "as_of_utc": "2026-10-14T09:42:28Z",
     "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
-    "head": "69f85d2f4bd19ae392b8a72b61e921d33a70f5a1",
+    "head": "ebdafc32a34aa43866632004610498599703b7af",
     "remote": "https://github.com/Extr3sao/bot_crypto.git",
     "remote_branch_ref": "refs/heads/agent/edge-recovery/WP-EDGE-00-baseline",
     "remote_has_this_branch": true,
-    "remote_tip": "69f85d2f4bd19ae392b8a72b61e921d33a70f5a1",
+    "remote_tip": "ebdafc32a34aa43866632004610498599703b7af",
     "remote_matches_head": true,
-    "pushed_range_at_last_push": "edd4ef2..69f85d2",
+    "pushed_range_at_last_push": "edd4ef2..ebdafc3",
     "push_kind": "normal fast-forward of an existing remote branch; force push not used and not needed",
     "force_push_used": false,
     "commits_of_this_work_package": [
+      {
+        "sha": "ebdafc32a34aa43866632004610498599703b7af",
+        "subject": "Render the executive report, the per-window table and the cadence receipt too [WP-EDGE-07]"
+      },
       {
         "sha": "69f85d2f4bd19ae392b8a72b61e921d33a70f5a1",
         "subject": "Re-take the reading at the published commit, so the three reports agree with it [WP-EDGE-07]"
@@ -809,10 +813,10 @@
         "subject": "Register the WP-EDGE-07 trend validation before the new window is read [WP-EDGE-07]"
       }
     ],
-    "commits_total": 12,
-    "worktree_dirty_entries": 144,
-    "worktree_dirty_entries_of_this_work_package": 1,
-    "volume_free_bytes_at_this_reading": 3342798848,
+    "commits_total": 13,
+    "worktree_dirty_entries": 136,
+    "worktree_dirty_entries_of_this_work_package": 0,
+    "volume_free_bytes_at_this_reading": 3310678016,
     "credentials_read_or_printed": false,
     "note_on_this_file": "this file is written after the push and describes the ref at that instant; the commit carrying it is published by the following push, which is why remote_matches_head is read from the remote rather than assumed"
   },
@@ -1029,8 +1033,8 @@
     },
     {
       "path": "reports/edge-recovery/WP-EDGE-07/GITHUB_STATE.json",
-      "sha256": "35190f197c3851e7fecda26b3bb4f608909a0eeb2d7f1654154024efe29829c2",
-      "bytes": 3338
+      "sha256": "3bba0bc536437afe2fb98c926915309862dafd4775197c0ea57cb7f6b072a656",
+      "bytes": 3522
     },
     {
       "path": "reports/edge-recovery/WP-EDGE-07/GROWTH_EVIDENCE.json",
@@ -1044,8 +1048,8 @@
     },
     {
       "path": "reports/edge-recovery/WP-EDGE-07/INFORME_EJECUTIVO.md",
-      "sha256": "9577ffc412da5a688024fbf3058260d45c01d83c312ef41ffbff7ecca33888e2",
-      "bytes": 7611
+      "sha256": "58dcede3abfd2819d798dbbc52a4fab80bd682c234a403dc2be463518865b333",
+      "bytes": 7613
     },
     {
       "path": "reports/edge-recovery/WP-EDGE-07/PREREGISTRATION.json",
@@ -1089,19 +1093,19 @@
     },
     {
       "path": "reports/edge-recovery/WP-EDGE-07/VERIFICATION.json",
-      "sha256": "e1903ae815346076e98e5a5d36ea51e671ae9ab9be9e123e207183a596ee3d5a",
-      "bytes": 14270
+      "sha256": "4707ec8dc70fcc9517cd5dbb313bbc916adf17e5739ca24f5c759f7507ee2490",
+      "bytes": 14269
     },
     {
       "path": "reports/edge-recovery/WP-EDGE-07/VERIFICATION.md",
-      "sha256": "b566e3de493e32de220060c03f0098cee04f3ab10784687802c348c8c9166072",
-      "bytes": 4115
+      "sha256": "324d3823e9e72a32680a16293e049d948f63a70717267fdaf348a2fc01499200",
+      "bytes": 4114
     }
   ],
   "verdict": "CLOSED_WITH_OPEN_ITEMS",
   "open_items": [
     {
-      "item": "The volume is 3.113 GiB free: above the 2.0 GiB the lane refuses under and below the 5.0 GiB the heavy publication waits for, so the lane ingests while the heavier export still waits",
+      "item": "The volume is 3.083 GiB free: above the 2.0 GiB the lane refuses under and below the 5.0 GiB the heavy publication waits for, so the lane ingests while the heavier export still waits",
       "owner": "The volume's owner: clear temporary files older than a day"
     },
     {

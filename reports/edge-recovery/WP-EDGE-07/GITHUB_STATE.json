@@ -1,17 +1,21 @@
 {
   "schema_version": "EDGE07_GITHUB_STATE_V1",
-  "as_of_utc": "2026-10-14T09:42:10Z",
+  "as_of_utc": "2026-10-14T09:42:28Z",
   "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
-  "head": "69f85d2f4bd19ae392b8a72b61e921d33a70f5a1",
+  "head": "ebdafc32a34aa43866632004610498599703b7af",
   "remote": "https://github.com/Extr3sao/bot_crypto.git",
   "remote_branch_ref": "refs/heads/agent/edge-recovery/WP-EDGE-00-baseline",
   "remote_has_this_branch": true,
-  "remote_tip": "69f85d2f4bd19ae392b8a72b61e921d33a70f5a1",
+  "remote_tip": "ebdafc32a34aa43866632004610498599703b7af",
   "remote_matches_head": true,
-  "pushed_range_at_last_push": "edd4ef2..69f85d2",
+  "pushed_range_at_last_push": "edd4ef2..ebdafc3",
   "push_kind": "normal fast-forward of an existing remote branch; force push not used and not needed",
   "force_push_used": false,
   "commits_of_this_work_package": [
+    {
+      "sha": "ebdafc32a34aa43866632004610498599703b7af",
+      "subject": "Render the executive report, the per-window table and the cadence receipt too [WP-EDGE-07]"
+    },
     {
       "sha": "69f85d2f4bd19ae392b8a72b61e921d33a70f5a1",
       "subject": "Re-take the reading at the published commit, so the three reports agree with it [WP-EDGE-07]"
@@ -61,10 +65,10 @@
       "subject": "Register the WP-EDGE-07 trend validation before the new window is read [WP-EDGE-07]"
     }
   ],
-  "commits_total": 12,
-  "worktree_dirty_entries": 144,
-  "worktree_dirty_entries_of_this_work_package": 1,
-  "volume_free_bytes_at_this_reading": 3342798848,
+  "commits_total": 13,
+  "worktree_dirty_entries": 136,
+  "worktree_dirty_entries_of_this_work_package": 0,
+  "volume_free_bytes_at_this_reading": 3310678016,
   "credentials_read_or_printed": false,
   "note_on_this_file": "this file is written after the push and describes the ref at that instant; the commit carrying it is published by the following push, which is why remote_matches_head is read from the remote rather than assumed"
 }
