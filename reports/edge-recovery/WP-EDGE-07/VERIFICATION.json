@@ -1,12 +1,12 @@
 {
-  "as_of_utc": "2026-10-14T09:43:06Z",
+  "as_of_utc": "2026-10-14T09:43:25Z",
   "checks": [
     {
       "detail": {
         "clears_healthy_floor": false,
         "critical_floor_bytes": 2147483648,
-        "free_bytes": 3203190784,
-        "free_gib": 2.983,
+        "free_bytes": 3198779392,
+        "free_gib": 2.979,
         "healthy_floor_bytes": 5368709120
       },
       "id": "A-1",

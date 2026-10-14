@@ -1,10 +1,10 @@
 # WP-EDGE-07 — independent verification
 
-*Run at `2026-10-14T09:43:06Z`. Result: **PASS** (13/13 checks).*
+*Run at `2026-10-14T09:43:25Z`. Result: **PASS** (13/13 checks).*
 
 | # | Claim re-derived | Result | Detail |
 | --- | --- | --- | --- |
-| A-1 | the volume is above the runtime's 2 GiB critical floor | True | `{"free_bytes": 3203190784, "free_gib": 2.983, "critical_floor_bytes": 2147483648, "healthy_floor_bytes": 5368709120, "clears_healthy_floor": false}` |
+| A-1 | the volume is above the runtime's 2 GiB critical floor | True | `{"free_bytes": 3198779392, "free_gib": 2.979, "critical_floor_bytes": 2147483648, "healthy_floor_bytes": 5368709120, "clears_healthy_floor": false}` |
 | A-2 | every path the reclaim recorded as removed is gone, and at least one sweep was applied | True | `{"applied_runs": 4, "paths_recorded_as_removed": 193, "paths_that_still_exist": [], "reclaimed_bytes_total": 2261922757}` |
 | A-3 | at least two real scheduled ticks observed after the reclaim | True | `{"after": "2026-10-14T08:44:22Z", "count": 4, "ticks": [{"slot_key": "2026-10-14T08:45Z", "started_at_utc": "2026-10-14T08:55:56Z", "new_bars": 18, "market_requests": 7}, {"slot_key": "2026-10-14T09:00Z", "started_at_…` |
 | A-4 | every scheduled tick after the wiring has a durable receipt, and its ran/not-ran follows the tick's own outcome | True | `{"wiring_reference": "2026-10-14T09:07:00Z", "scheduled_ticks_since": 3, "receipts_on_file": 3, "receipts_missing": [], "receipts_inconsistent_with_the_tick": [], "last_receipt": {"after_outcome": "OBSERVED", "artifac…` |

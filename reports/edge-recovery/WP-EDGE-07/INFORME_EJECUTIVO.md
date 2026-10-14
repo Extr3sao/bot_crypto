@@ -1,6 +1,6 @@
 # WP-EDGE-07 — Informe ejecutivo
 
-*Lectura única de `2026-10-14T09:43:04Z` en `DESKTOP-4CHO695`, rama `agent/edge-recovery/WP-EDGE-00-baseline` en el commit `52d30c08498f`. Todas las cifras de este informe salen del mismo diccionario del que se renderizan RUN_REPORT y FINAL_REPORT; no hay una cuarta medición paralela.*
+*Lectura única de `2026-10-14T09:43:23Z` en `DESKTOP-4CHO695`, rama `agent/edge-recovery/WP-EDGE-00-baseline` en el commit `d30d52d068c1`. Todas las cifras de este informe salen del mismo diccionario del que se renderizan RUN_REPORT y FINAL_REPORT; no hay una cuarta medición paralela.*
 
 ## 1. Veredicto
 
@@ -11,7 +11,7 @@
 | Punto del encargo | Resultado |
 | --- | --- |
 | Qué es lo que crece en `AppData/Local` | Tabla de escritores medida y publicada (`GROWTH_EVIDENCE.md`); los mayores escritores son aplicaciones del usuario, no el repositorio |
-| Espacio libre y umbrales | **2.983 GiB** de 237.5 GiB, `ABOVE_CRITICAL_BELOW_HEALTHY`; el carril rechaza por debajo de 2.0 GiB y la publicación pesada espera por debajo de 5.0 GiB |
+| Espacio libre y umbrales | **2.979 GiB** de 237.5 GiB, `ABOVE_CRITICAL_BELOW_HEALTHY`; el carril rechaza por debajo de 2.0 GiB y la publicación pesada espera por debajo de 5.0 GiB |
 | No borrar nada externo sin autorización | Solo se retiraron cachés propias del repositorio: 193 rutas registradas, 0 aún presentes, 12 vecinos nombrados y **no** borrados |
 | Recuperar margen con acciones seguras | **2,261,922,757 bytes (2.11 GiB)** en 4 barridos aplicados, de 8 invocaciones (las de prueba en seco no borran nada) |
 | Dos ticks programados reales `OBSERVED` | **4** ticks programados observados después de la recuperación, con sus slots y peticiones de mercado en `RUN_REPORT.md` §2 |
@@ -67,13 +67,13 @@ A un reloj horario hay que capturar la mayor parte del movimiento entero: práct
 | --- | --- |
 | Verificador independiente | **PASS**, 13/13 comprobaciones, 0 fallidas, exit `0` |
 | Autoprueba del verificador | PASS: 14/14 sabotajes detectados |
-| Pruebas propias | exit `0` - 26 passed in 2.47s |
+| Pruebas propias | exit `0` - 26 passed in 2.17s |
 | Lint, formato y tipos | exit `0`, `0`, `0` |
 | Evidencia económica reproducible | El runner reprodujo cada cifra publicada que re-deriva (instrument check: True), y la ventana nueva tiene digest por fragmento `196884f9e719315e…` |
-| Commits aislados y push | rama `agent/edge-recovery/WP-EDGE-00-baseline`, rango `edd4ef2..52d30c0`, el remoto leído de vuelta: True |
+| Commits aislados y push | rama `agent/edge-recovery/WP-EDGE-00-baseline`, rango `edd4ef2..d30d52d`, el remoto leído de vuelta: True |
 
 ## 7. Decisiones abiertas
 
-- El volumen está en 2.983 GiB: por encima de los 2.0 GiB bajo los que el carril rechaza ticks, por debajo de los 5.0 GiB que espera la publicación pesada — *el titular del volumen: limpiar temporales de más de un día*
+- El volumen está en 2.979 GiB: por encima de los 2.0 GiB bajo los que el carril rechaza ticks, por debajo de los 5.0 GiB que espera la publicación pesada — *el titular del volumen: limpiar temporales de más de un día*
 - La variante de salida fija fue rechazada en una ventana que nadie había leído, así que '¿habría salvado algo otra salida?' queda sin responder: la comparación trailing es positiva en la misma ventana pero sin potencia — *un nuevo preregistro sobre una ventana sin leer*
 - Las dos ACTIVE se detuvieron en su propio filtro registrado antes de la ventana independiente, así que el objetivo horario descansa en el techo medido y no en una candidata — *un nuevo registro en un reloj que la tabla de barrera dice que es pagable*
