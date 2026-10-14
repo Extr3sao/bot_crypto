@@ -1,6 +1,6 @@
 # WP-EDGE-08 — final report
 
-*One reading of the whole package at `2026-10-14T21:41:37Z` (`EDGE08-REPORT-20261014T214137Z`). Every figure below comes from that reading; the four documents are rendered from one dictionary, so they cannot disagree with each other.*
+*One reading of the whole package at `2026-10-14T21:42:44Z` (`EDGE08-REPORT-20261014T214244Z`). Every figure below comes from that reading; the four documents are rendered from one dictionary, so they cannot disagree with each other.*
 
 ## 1. The verdict
 

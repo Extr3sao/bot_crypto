@@ -1,6 +1,6 @@
 # WP-EDGE-08 — run report
 
-*Run `EDGE08-REPORT-20261014T214137Z` at `2026-10-14T21:41:37Z`, branch `agent/edge-recovery/WP-EDGE-00-baseline`, head `a595cbf8cbfb`. Verdict: **CLOSED_WITH_OPEN_ITEMS** — the cross-section was read once, every arm the screen let through is rejected on it, the gate status is published, the verification passes with its sabotage self-test, and the open items are the ones the numbers point at*
+*Run `EDGE08-REPORT-20261014T214244Z` at `2026-10-14T21:42:44Z`, branch `agent/edge-recovery/WP-EDGE-00-baseline`, head `5c34cc718ff3`. Verdict: **CLOSED_WITH_OPEN_ITEMS** — the cross-section was read once, every arm the screen let through is rejected on it, the gate status is published, the verification passes with its sabotage self-test, and the open items are the ones the numbers point at*
 
 ## 1. Acceptance, row by row
 
@@ -17,9 +17,9 @@
 | B-9 | gate status published | **PASS** | validation/GATE_STATUS.{json,md}: 9 arms with their registered verdict beside the frozen gate's own reading |
 | B-10 | no PASS, PAPER_READY or profitability declared without evidence | **PASS** | promotion: NONE, order_sent: False; every verdict is computed from the registered criteria and the artefacts carry the numbers they rest on |
 | B-11 | no real trading, no risk limit modified | **PASS** | config/risk.yaml is read, never written, by this package; its digest is 3c27c866d5f11afe... and the last commit that touched it is 10cdee2 chore: initial Phase 0 scaffolding for crypto-scalping-agentic-bot |
-| B-12 | isolated commits and safe push | **PASS** | branch agent/edge-recovery/WP-EDGE-00-baseline, head a595cbf, remote refs/heads/agent/edge-recovery/WP-EDGE-00-baseline, tip read back 9e2c04ee06f4, range at last push 9e2c04e..a595cbf (+5 ahead), force push used: False, unpushed commits 5 |
+| B-12 | isolated commits and safe push | **PASS** | branch agent/edge-recovery/WP-EDGE-00-baseline, head 5c34cc7, remote refs/heads/agent/edge-recovery/WP-EDGE-00-baseline, tip read back 5c34cc718ff3, range at last push 5c34cc7..5c34cc7 (+0 ahead), force push used: False, unpushed commits 0 |
 | B-13 | executive report in Spanish | **PASS** | INFORME_EJECUTIVO.md, rendered from the same dictionary as this document |
-| B-14 | owned tests, lint, format and types | **PASS** | owned: exit 0 (26 passed in 1.71s); lint: exit 0 (All checks passed!); format: exit 0 (21 files already formatted); types: exit 0 (Success: no issues found in 12 source files) |
+| B-14 | owned tests, lint, format and types | **PASS** | owned: exit 0 (26 passed in 1.33s); lint: exit 0 (All checks passed!); format: exit 0 (21 files already formatted); types: exit 0 (Success: no issues found in 12 source files) |
 
 ## 2. What was measured, and where the evidence lives
 
@@ -46,7 +46,7 @@ The known-universe columns come from the screens (proposed books) or the matrix 
 ## 4. Verification, tests and digests
 
 - Independent verifier: **PASS** (14/14), sabotage self-test PASS (14/14).
-- `owned`: exit `0` — 26 passed in 1.71s
+- `owned`: exit `0` — 26 passed in 1.33s
 - `lint`: exit `0` — All checks passed!
 - `format`: exit `0` — 21 files already formatted
 - `types`: exit `0` — Success: no issues found in 12 source files
@@ -71,9 +71,9 @@ The four documents this script writes are excluded from the table by name, toget
 
 ## 5. Git
 
-- Branch `agent/edge-recovery/WP-EDGE-00-baseline`, head `a595cbf8cbfbe161b327e6269a4c2aff74890566`, remote `refs/heads/agent/edge-recovery/WP-EDGE-00-baseline`.
-- Pushed range at the last push: `9e2c04e..a595cbf (+5 ahead)`; remote tip read back: `9e2c04ee06f4d6dee2436b4a790a554fe0e27484`; matches head: `False`; force push used: `False`.
-- Package files still uncommitted at this reading: [' M scripts/edge08_validate.py', ' M src/trading_bot/research/edge08/disjointness.py', '?? reports/edge-recovery/WP-EDGE-08/FINAL_REPORT.md', '?? reports/edge-recovery/WP-EDGE-08/GITHUB_STATE.json', '?? reports/edge-recovery/WP-EDGE-08/INFORME_EJECUTIVO.md', '?? reports/edge-recovery/WP-EDGE-08/RUN_REPORT.json', '?? reports/edge-recovery/WP-EDGE-08/RUN_REPORT.md', '?? reports/edge-recovery/WP-EDGE-08/VERIFICATION.json', '?? reports/edge-recovery/WP-EDGE-08/VERIFICATION.md', '?? scripts/edge08_report.py', '?? scripts/edge08_verify.py'].
+- Branch `agent/edge-recovery/WP-EDGE-00-baseline`, head `5c34cc718ff3d6b8a6e7b82062d26be3c1be3140`, remote `refs/heads/agent/edge-recovery/WP-EDGE-00-baseline`.
+- Pushed range at the last push: `5c34cc7..5c34cc7 (+0 ahead)`; remote tip read back: `5c34cc718ff3d6b8a6e7b82062d26be3c1be3140`; matches head: `True`; force push used: `False`.
+- Package files still uncommitted at this reading: none.
 
 ## 6. Defects found by running, and fixed
 

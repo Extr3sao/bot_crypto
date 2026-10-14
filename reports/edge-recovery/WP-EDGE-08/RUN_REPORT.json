@@ -67,7 +67,7 @@
       "status": "PASS"
     },
     {
-      "evidence": "branch agent/edge-recovery/WP-EDGE-00-baseline, head a595cbf, remote refs/heads/agent/edge-recovery/WP-EDGE-00-baseline, tip read back 9e2c04ee06f4, range at last push 9e2c04e..a595cbf (+5 ahead), force push used: False, unpushed commits 5",
+      "evidence": "branch agent/edge-recovery/WP-EDGE-00-baseline, head 5c34cc7, remote refs/heads/agent/edge-recovery/WP-EDGE-00-baseline, tip read back 5c34cc718ff3, range at last push 5c34cc7..5c34cc7 (+0 ahead), force push used: False, unpushed commits 0",
       "id": "B-12",
       "requirement": "isolated commits and safe push",
       "status": "PASS"
@@ -79,7 +79,7 @@
       "status": "PASS"
     },
     {
-      "evidence": "owned: exit 0 (26 passed in 1.71s); lint: exit 0 (All checks passed!); format: exit 0 (21 files already formatted); types: exit 0 (Success: no issues found in 12 source files)",
+      "evidence": "owned: exit 0 (26 passed in 1.33s); lint: exit 0 (All checks passed!); format: exit 0 (21 files already formatted); types: exit 0 (Success: no issues found in 12 source files)",
       "id": "B-14",
       "requirement": "owned tests, lint, format and types",
       "status": "PASS"
@@ -3872,7 +3872,7 @@
     }
   ],
   "arms_total": 9,
-  "as_of_utc": "2026-10-14T21:41:37Z",
+  "as_of_utc": "2026-10-14T21:42:44Z",
   "best_known_universe_net": {
     "arm": "edge08_quality_breakout_daily",
     "net_usdt": 924.1688
@@ -4278,54 +4278,21 @@
   "gate_rows": 9,
   "git": {
     "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
-    "commits_unpushed_at_this_reading": [
-      {
-        "sha": "a595cbf8cbfbe161b327e6269a4c2aff74890566",
-        "subject": "Read the cross-section once, and let the registered criteria reject every arm [WP-EDGE-08E]"
-      },
-      {
-        "sha": "035bb500a0d4fe996ba226a05a1d6662da4dc8e0",
-        "subject": "Publish the economic matrix: nine arms, three windows, three cost scenarios [WP-EDGE-08D]"
-      },
-      {
-        "sha": "5094a0ba8cdaa219ad3b8a091e81414dc350fa5b",
-        "subject": "Screen the ACTIVE books on a clock the cost barrier can pay [WP-EDGE-08C]"
-      },
-      {
-        "sha": "abef18eb41b597e949f73b83a9f0dc4d6e956530",
-        "subject": "Screen the three QUALITY books, and record the defect the screen itself exposed [WP-EDGE-08B]"
-      },
-      {
-        "sha": "18e2ad9434d4cba676a8491623dd60fa13f09303",
-        "subject": "Register RFC-EDGE-008 and fetch the one resource this project has not read: a cross-section."
-      }
-    ],
+    "commits_unpushed_at_this_reading": [],
     "credentials_read_or_printed": false,
     "force_push_used": false,
-    "head": "a595cbf8cbfbe161b327e6269a4c2aff74890566",
+    "head": "5c34cc718ff3d6b8a6e7b82062d26be3c1be3140",
     "note": "this file is written before the commit that publishes it, so the pushed range describes the ref at the last push and the remote tip is read from the remote rather than assumed; the commit carrying this file is published by the following push, which is why the one-commit lag is stated here rather than hidden",
-    "own_uncommitted_paths": [
-      " M scripts/edge08_validate.py",
-      " M src/trading_bot/research/edge08/disjointness.py",
-      "?? reports/edge-recovery/WP-EDGE-08/FINAL_REPORT.md",
-      "?? reports/edge-recovery/WP-EDGE-08/GITHUB_STATE.json",
-      "?? reports/edge-recovery/WP-EDGE-08/INFORME_EJECUTIVO.md",
-      "?? reports/edge-recovery/WP-EDGE-08/RUN_REPORT.json",
-      "?? reports/edge-recovery/WP-EDGE-08/RUN_REPORT.md",
-      "?? reports/edge-recovery/WP-EDGE-08/VERIFICATION.json",
-      "?? reports/edge-recovery/WP-EDGE-08/VERIFICATION.md",
-      "?? scripts/edge08_report.py",
-      "?? scripts/edge08_verify.py"
-    ],
+    "own_uncommitted_paths": [],
     "push_kind": "normal fast-forward of an existing remote branch; force push not used and not needed",
-    "pushed_range_at_last_push": "9e2c04e..a595cbf (+5 ahead)",
+    "pushed_range_at_last_push": "5c34cc7..5c34cc7 (+0 ahead)",
     "remote": "https://github.com/Extr3sao/bot_crypto.git",
     "remote_branch_ref": "refs/heads/agent/edge-recovery/WP-EDGE-00-baseline",
     "remote_has_this_branch": true,
-    "remote_matches_head": false,
-    "remote_tip": "9e2c04ee06f4d6dee2436b4a790a554fe0e27484",
-    "worktree_dirty_entries": 150,
-    "worktree_dirty_entries_of_this_work_package": 11
+    "remote_matches_head": true,
+    "remote_tip": "5c34cc718ff3d6b8a6e7b82062d26be3c1be3140",
+    "worktree_dirty_entries": 139,
+    "worktree_dirty_entries_of_this_work_package": 0
   },
   "known_universe": {
     "best_arm_at_dev": "edge08_quality_breakout_daily",
@@ -4375,7 +4342,7 @@
   "rfc": "RFC-EDGE-008",
   "risk_config_digest": "3c27c866d5f11afea96a80598c1e72c69816ecc3b77e97c5ad7fa86417593a2e",
   "risk_config_last_commit": "10cdee2 chore: initial Phase 0 scaffolding for crypto-scalping-agentic-bot",
-  "run_id": "EDGE08-REPORT-20261014T214137Z",
+  "run_id": "EDGE08-REPORT-20261014T214244Z",
   "schema_version": "EDGE08_V1",
   "tests": {
     "format": {
@@ -4391,7 +4358,7 @@
     "owned": {
       "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m pytest tests/unit/research/test_edge08_cross_section.py -q",
       "exit_code": 0,
-      "summary": "26 passed in 1.71s"
+      "summary": "26 passed in 1.33s"
     },
     "types": {
       "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m mypy --strict src/trading_bot/research/edge08/",

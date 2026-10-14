@@ -1,6 +1,6 @@
 # WP-EDGE-08 — informe ejecutivo
 
-*Lectura única de `2026-10-14T21:41:37Z` (`EDGE08-REPORT-20261014T214137Z`), rama `agent/edge-recovery/WP-EDGE-00-baseline`, commit `a595cbf8cbfb`. Las cifras de este informe salen del mismo diccionario que RUN_REPORT y FINAL_REPORT; no hay una cuarta medición paralela.*
+*Lectura única de `2026-10-14T21:42:44Z` (`EDGE08-REPORT-20261014T214244Z`), rama `agent/edge-recovery/WP-EDGE-00-baseline`, commit `5c34cc718ff3`. Las cifras de este informe salen del mismo diccionario que RUN_REPORT y FINAL_REPORT; no hay una cuarta medición paralela.*
 
 ## 1. Veredicto
 
@@ -52,12 +52,12 @@ Los tres libros congelados de paquetes anteriores se leyeron sobre el mismo corp
 | --- | --- |
 | Verificador independiente | **PASS**, 14/14 comprobaciones |
 | Autoprueba por sabotaje | PASS: 14/14 |
-| `owned` | exit `0` — 26 passed in 1.71s |
+| `owned` | exit `0` — 26 passed in 1.33s |
 | `lint` | exit `0` — All checks passed! |
 | `format` | exit `0` — 21 files already formatted |
 | `types` | exit `0` — Success: no issues found in 12 source files |
 | Digests | 13 artefactos publicados en RUN_REPORT.md |
-| Commits y push | rama `agent/edge-recovery/WP-EDGE-00-baseline`, rango en el último push `9e2c04e..a595cbf (+5 ahead)`, remoto releído: `False` |
+| Commits y push | rama `agent/edge-recovery/WP-EDGE-00-baseline`, rango en el último push `5c34cc7..5c34cc7 (+0 ahead)`, remoto releído: `True` |
 
 ## 9. Decisiones abiertas
 
