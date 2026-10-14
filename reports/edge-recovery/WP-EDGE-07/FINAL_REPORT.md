@@ -1,6 +1,6 @@
 # WP-EDGE-07 — FINAL REPORT
 
-*Read at `2026-10-14T09:25:08Z` from `07deeb40dd3f` on branch `agent/edge-recovery/WP-EDGE-00-baseline`. One reading, three reports: the run record, the verification and this one are renderings of the same frozen dictionary.*
+*Read at `2026-10-14T09:42:10Z` from `69f85d2f4bd1` on branch `agent/edge-recovery/WP-EDGE-00-baseline`. One reading, three reports: the run record, the verification and this one are renderings of the same frozen dictionary.*
 
 ## 1. In one line
 
@@ -10,10 +10,11 @@
 
 | Item | What was done | Evidence |
 | --- | --- | --- |
-| Branch, remote, commits | Published: `edd4ef2..07deeb4` fast-forwarded the existing remote branch (no force), and the remote was read back to confirm it holds this reading's `head`: True | `GITHUB_STATE.json` |
+| Branch, remote, commits | Published: `edd4ef2..69f85d2` fast-forwarded the existing remote branch (no force), and the remote was read back to confirm it holds this reading's `head`: True | `GITHUB_STATE.json` |
 | Recovery | 4 applied sweeps totalling **2,261,922,757 bytes (2.11 GiB)** of this repository's own tool caches, every removal re-checked at the instant it was made (193 recorded paths, 0 still present) | `STORAGE_RECLAIM.md` |
-| The lane resumed | 2 real scheduled observing ticks after the reclaim, the first on `2026-10-14T08:45Z` | `RUN_REPORT.md` §2 |
-| The volume today | 3.364 GiB free — `ABOVE_CRITICAL_BELOW_HEALTHY`, above the 2.0 GiB the lane refuses under | `RUN_REPORT.json` |
+| The lane resumed | 4 real scheduled observing ticks after the reclaim, the first on `2026-10-14T08:45Z` | `RUN_REPORT.md` §2 |
+| Reconciliation inside the cadence | The scheduler's own tick now re-runs the integrated reconciliation and leaves a durable receipt: 3 receipts on file, the last for slot `2026-10-14T09:30Z` (`ran: True`, 4 artefacts) — a refused tick writes no receipt and says why instead | `VERIFICATION.md` check A-4, `test_edge06_cadence.py` |
+| The volume today | 3.113 GiB free — `ABOVE_CRITICAL_BELOW_HEALTHY`, above the 2.0 GiB the lane refuses under | `RUN_REPORT.json` |
 | Who else grows it | 12 neighbouring entries named and left alone; the writers table is the volume owner's to act on | `GROWTH_EVIDENCE.md` |
 
 ## 3. Track B — the trend book, on a window nobody had read
@@ -44,7 +45,7 @@ The durable result is the ceiling they ran into: at a one-hour clock a book must
 
 ## 6. What stays open, and who can close it
 
-- The volume is 3.364 GiB free: above the 2.0 GiB the lane refuses under and below the 5.0 GiB the heavy publication waits for, so the lane ingests while the heavier export still waits — *The volume's owner: clear temporary files older than a day*
+- The volume is 3.113 GiB free: above the 2.0 GiB the lane refuses under and below the 5.0 GiB the heavy publication waits for, so the lane ingests while the heavier export still waits — *The volume's owner: clear temporary files older than a day*
 - The trend book with the fixed target was rejected on a window nobody had read, so 'would a different exit have saved it' is unanswered — the trailing arm on the same window is positive but under-powered — *A new pre-registration, on a window that has not been read*
 - Both ACTIVE books were stopped by their own registered screen before the independent window, so the hourly frequency target rests on the measured ceiling rather than on a candidate — *A new registration at a clock the barrier table says is affordable*
 
@@ -60,22 +61,22 @@ The durable result is the ceiling they ran into: at a one-hour clock a book must
 
 | Figure | Value |
 | --- | --- |
-| `as_of_utc` | `2026-10-14T09:25:08Z` |
-| `head` | `07deeb40dd3f28781e7d6f64d6701dbec0330e59` |
+| `as_of_utc` | `2026-10-14T09:42:10Z` |
+| `head` | `69f85d2f4bd19ae392b8a72b61e921d33a70f5a1` |
 | `branch` | `agent/edge-recovery/WP-EDGE-00-baseline` |
-| `worktree_dirty_entries` | `136` |
-| `worktree_dirty_entries_of_this_work_package` | `0` |
-| `volume.free_bytes` | `3612553216` |
-| `volume.free_gib` | `3.364` |
+| `worktree_dirty_entries` | `144` |
+| `worktree_dirty_entries_of_this_work_package` | `1` |
+| `volume.free_bytes` | `3342798848` |
+| `volume.free_gib` | `3.113` |
 | `volume.verdict` | `ABOVE_CRITICAL_BELOW_HEALTHY` |
 | `storage.applied_runs` | `4` |
 | `storage.reclaimed_bytes_total` | `2261922757` |
 | `storage.paths_recorded_as_removed` | `193` |
 | `storage.latest_applied_utc` | `2026-10-14T08:50:23Z` |
-| `lane.runs_total` | `96` |
-| `lane.runs_observing` | `49` |
+| `lane.runs_total` | `98` |
+| `lane.runs_observing` | `51` |
 | `lane.refusals_for_disk` | `41` |
-| `lane.scheduled_observing_ticks_after_the_reclaim_count` | `2` |
+| `lane.scheduled_observing_ticks_after_the_reclaim_count` | `4` |
 | `validation.verdict` | `REJECT` |
 | `validation.powered` | `True` |
 | `validation.new_window.trades` | `65` |
@@ -89,5 +90,5 @@ The durable result is the ceiling they ran into: at a one-hour clock a book must
 | `verification.checks_passed` | `13` |
 | `verification.failing` | `0` |
 | `verification.sabotages_detected` | `14` |
-| `tests.owned_summary` | `26 passed in 2.19s` |
+| `tests.owned_summary` | `26 passed in 2.55s` |
 | `tests.owned_exit_code` | `0` |

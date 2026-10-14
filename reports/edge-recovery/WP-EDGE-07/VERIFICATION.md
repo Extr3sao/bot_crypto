@@ -1,14 +1,14 @@
 # WP-EDGE-07 — independent verification
 
-*Run at `2026-10-14T09:25:10Z`. Result: **PASS** (13/13 checks).*
+*Run at `2026-10-14T09:42:12Z`. Result: **PASS** (13/13 checks).*
 
 | # | Claim re-derived | Result | Detail |
 | --- | --- | --- | --- |
-| A-1 | the volume is above the runtime's 2 GiB critical floor | True | `{"free_bytes": 3612553216, "free_gib": 3.364, "critical_floor_bytes": 2147483648, "healthy_floor_bytes": 5368709120, "clears_healthy_floor": false}` |
+| A-1 | the volume is above the runtime's 2 GiB critical floor | True | `{"free_bytes": 3342790656, "free_gib": 3.113, "critical_floor_bytes": 2147483648, "healthy_floor_bytes": 5368709120, "clears_healthy_floor": false}` |
 | A-2 | every path the reclaim recorded as removed is gone, and at least one sweep was applied | True | `{"applied_runs": 4, "paths_recorded_as_removed": 193, "paths_that_still_exist": [], "reclaimed_bytes_total": 2261922757}` |
-| A-3 | at least two real scheduled ticks observed after the reclaim | True | `{"after": "2026-10-14T08:44:22Z", "count": 2, "ticks": [{"slot_key": "2026-10-14T08:45Z", "started_at_utc": "2026-10-14T08:55:56Z", "new_bars": 18, "market_requests": 7}, {"slot_key": "2026-10-14T09:00Z", "started_at_…` |
-| A-4 | every scheduled tick after the wiring has a durable receipt, and its ran/not-ran follows the tick's own outcome | True | `{"wiring_reference": "2026-10-14T09:07:00Z", "scheduled_ticks_since": 1, "receipts_on_file": 1, "receipts_missing": [], "receipts_inconsistent_with_the_tick": [], "last_receipt": {"after_outcome": "OBSERVED", "artifac…` |
-| A-5 | every scheduled slot WP-EDGE-06 published is still in the lane's log, in order, never replayed, and its store still holds every series | True | `{"run_records": 96, "slots_anchored": 11, "slots_vanished": [], "records_replayed": 0, "started_at_non_decreasing": true, "store_series": {"15m/BTC.jsonl": 661, "15m/ETH.jsonl": 661, "15m/SOL.jsonl": 661, "1h/BTC.json…` |
+| A-3 | at least two real scheduled ticks observed after the reclaim | True | `{"after": "2026-10-14T08:44:22Z", "count": 4, "ticks": [{"slot_key": "2026-10-14T08:45Z", "started_at_utc": "2026-10-14T08:55:56Z", "new_bars": 18, "market_requests": 7}, {"slot_key": "2026-10-14T09:00Z", "started_at_…` |
+| A-4 | every scheduled tick after the wiring has a durable receipt, and its ran/not-ran follows the tick's own outcome | True | `{"wiring_reference": "2026-10-14T09:07:00Z", "scheduled_ticks_since": 3, "receipts_on_file": 3, "receipts_missing": [], "receipts_inconsistent_with_the_tick": [], "last_receipt": {"after_outcome": "OBSERVED", "artifac…` |
+| A-5 | every scheduled slot WP-EDGE-06 published is still in the lane's log, in order, never replayed, and its store still holds every series | True | `{"run_records": 98, "slots_anchored": 11, "slots_vanished": [], "records_replayed": 0, "started_at_non_decreasing": true, "store_series": {"15m/BTC.jsonl": 663, "15m/ETH.jsonl": 663, "15m/SOL.jsonl": 663, "1h/BTC.json…` |
 | B-1 | every holdout shard still hashes to the digest its manifest recorded | True | `{"symbols": ["BTCUSDT", "ETHUSDT", "SOLUSDT"], "mismatched": [], "corpus_digest": "196884f9e719315eaf4a0e1844d28cdf2528f9743f043931c9383a172a7e3cec", "gaps": 0}` |
 | B-2 | the parameters read on the new window are the registered bytes, and the run says so | True | `{"recomputed": "9ceb20fc7d4500c334e2d58f6ff4cd6d26c6b228c4f8ef93f3c709082e44e8ad", "registered": "9ceb20fc7d4500c334e2d58f6ff4cd6d26c6b228c4f8ef93f3c709082e44e8ad", "recorded": "9ceb20fc7d4500c334e2d58f6ff4cd6d26c6b22…` |
 | B-3 | the runner reproduced every published consulted-window figure it re-derived | True | `{"figures": 10, "unequal": []}` |

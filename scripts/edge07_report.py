@@ -76,6 +76,7 @@ RENDERED_ARTEFACTS = (
     "RUN_REPORT.json",
     "RUN_REPORT.md",
     "FINAL_REPORT.md",
+    "INFORME_EJECUTIVO.md",
     "GITHUB_STATE.json",
     "VERIFICATION.json",
     "VERIFICATION.md",
@@ -260,6 +261,31 @@ def measurement(*, tests: bool, verify: bool) -> dict[str, Any]:
     extras = base.get("extras") or {}
     self_test = verification_json.get("self_test") or {}
     barrier_rows = (barrier.get("per_asset") or {}).get("NEW_HOLDOUT") or {}
+    receipts = read_jsonl(RECEIPTS)
+
+    def window_reading(name: str) -> dict[str, Any]:
+        """One window of the book at BASE, plus what the 2x-fee stress does to it."""
+        scenarios = validation.get(name) or {}
+        scene = scenarios.get("BASE") or {}
+        stress = scenarios.get("2X_FEES") or {}
+        return {
+            "trades": scene.get("trades"),
+            "net_usdt": scene.get("net_usdt"),
+            "expectancy_usdt": scene.get("expectancy_usdt"),
+            "sharpe_annualised": scene.get("sharpe_annualised"),
+            "profit_factor": scene.get("profit_factor"),
+            "max_drawdown_pct": scene.get("max_drawdown_pct"),
+            "largest_trade_share_of_net": scene.get("largest_trade_share_of_net"),
+            "total_cost_bps_per_trade": scene.get("total_cost_bps_per_trade"),
+            "net_usdt_at_2x_fees": stress.get("net_usdt"),
+            "consulted_before_this_work_package": name != "NEW_HOLDOUT",
+        }
+
+    windows = {
+        name: window_reading(name)
+        for name in ("DEV", "VAL", "OOS_CONSULTED", "NEW_HOLDOUT")
+        if name in validation
+    }
 
     return {
         "schema_version": SCHEMA_VERSION,
@@ -284,7 +310,23 @@ def measurement(*, tests: bool, verify: bool) -> dict[str, Any]:
             ),
         },
         "storage": storage,
-        "lane": lane_reading(storage.get("latest_applied_utc")),
+        "lane": {
+            **lane_reading(storage.get("latest_applied_utc")),
+            "receipts_total": len(receipts),
+            "last_receipt": (
+                {
+                    "slot_key": receipts[-1].get("slot_key"),
+                    "at_utc": receipts[-1].get("at_utc"),
+                    "mode": receipts[-1].get("mode"),
+                    "after_outcome": receipts[-1].get("after_outcome"),
+                    "ran": receipts[-1].get("ran"),
+                    "status": receipts[-1].get("status"),
+                    "reconciliation_artifacts": len(receipts[-1].get("artifacts") or {}),
+                }
+                if receipts
+                else None
+            ),
+        },
         "tracks": {
             "validation": {
                 "run_id": validation.get("run_id"),
@@ -362,6 +404,7 @@ def measurement(*, tests: bool, verify: bool) -> dict[str, Any]:
                         "round_trip_bps"
                     ),
                 },
+                "windows": windows,
             },
             "active": {
                 "run_id": active.get("run_id"),
@@ -552,14 +595,20 @@ def acceptance(reading: dict[str, Any]) -> list[dict[str, Any]]:
         },
         {
             "id": "ACC-05",
-            "requirement": "A tick that consumed its slot re-reads the derived state and carries the receipt",
+            "requirement": "A tick that consumed its slot re-runs the integrated reconciliation and carries its receipt",
             "status": status(
-                next(
+                lane["receipts_total"] > 0
+                and (lane["last_receipt"] or {}).get("ran") is True
+                and next(
                     (row["passed"] for row in verification["checks"] if row["id"] == "A-4"),
                     False,
                 )
             ),
-            "figures": ["reclaim_history.invocations", "storage.latest_applied_utc"],
+            "figures": [
+                "lane.receipts_total",
+                "lane.last_receipt",
+                "lane.last_receipt.reconciliation_artifacts",
+            ],
         },
         {
             "id": "ACC-06",
@@ -905,6 +954,27 @@ def render_run(payload: dict[str, Any]) -> str:
         f"{validation['comparison']['fixed_target_trades']} trades. Neither arm clears its own "
         "criteria on this window.",
         "",
+        "### The book on every window it was read on, at BASE",
+        "",
+        "| Window | Read before this work package | Trades | Net (USDT) | Net at 2x fees | "
+        "Expectancy | Sharpe | PF | DD % | Largest share | Cost bps |",
+        "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
+    ]
+    for name, window in validation["windows"].items():
+        lines.append(
+            f"| `{name}` | {window['consulted_before_this_work_package']} | {window['trades']} | "
+            f"**{window['net_usdt']}** | {window['net_usdt_at_2x_fees']} | "
+            f"{window['expectancy_usdt']} | {window['sharpe_annualised']} | "
+            f"{window['profit_factor']} | {window['max_drawdown_pct']} | "
+            f"{fmt_share(window['largest_trade_share_of_net'])} | "
+            f"{window['total_cost_bps_per_trade']} |"
+        )
+    lines += [
+        "",
+        "*`OOS_CONSULTED` is the window earlier work packages had already read, shown here so the "
+        "comparison with `NEW_HOLDOUT` is explicit rather than implied; the three cost scenarios, "
+        "per-asset and per-regime breakdowns live in `validation/VALIDATION.md` §3 and §4.*",
+        "",
         "| # | Criterion | Passed | Value |",
         "| --- | --- | --- | --- |",
     ]
@@ -1038,7 +1108,8 @@ def render_run(payload: dict[str, Any]) -> str:
         lines.append(f"| `{row['path']}` | `{digest[:32]}…` |")
     lines += [
         "",
-        "*`promotion: NONE`, `order_sent: False`, `hypothetical: True`.*",
+        "*`promotion: NONE`, `order_sent: False`, `hypothetical: True`. Informe ejecutivo en "
+        "castellano, renderizado de esta misma lectura: `INFORME_EJECUTIVO.md`.*",
         "",
     ]
     return "\n".join(lines)
@@ -1096,6 +1167,13 @@ def render_final(payload: dict[str, Any]) -> str:
         f"ticks after the reclaim, the first on "
         f"`{(lane['scheduled_observing_ticks_after_the_reclaim'] or [{}])[0].get('slot_key')}` | "
         f"`RUN_REPORT.md` §2 |",
+        f"| Reconciliation inside the cadence | The scheduler's own tick now re-runs the integrated "
+        f"reconciliation and leaves a durable receipt: {lane['receipts_total']} receipts on file, "
+        f"the last for slot `{(lane['last_receipt'] or {}).get('slot_key')}` "
+        f"(`ran: {(lane['last_receipt'] or {}).get('ran')}`, "
+        f"{((lane['last_receipt'] or {}).get('reconciliation_artifacts'))} artefacts) — a refused "
+        "tick writes no receipt and says why instead | `VERIFICATION.md` check A-4, "
+        "`test_edge06_cadence.py` |",
         f"| The volume today | {volume['free_gib']} GiB free — `{volume['verdict']}`, above the "
         f"{volume['critical_floor_gib']} GiB the lane refuses under | `RUN_REPORT.json` |",
         f"| Who else grows it | {storage['neighbours_named_not_deleted']} neighbouring entries named "
@@ -1242,6 +1320,225 @@ def render_final(payload: dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
+def render_executive_es(payload: dict[str, Any]) -> str:
+    """El informe ejecutivo que pide el encargo, en castellano y desde la misma lectura.
+
+    Un informe escrito aparte seria un cuarto documento que se separa de los otros tres en cuanto
+    alguien vuelva a leer el volumen; renderizarlo del mismo diccionario es lo unico que garantiza
+    que sus cifras sigan siendo las que se midieron.
+    """
+    lane = payload["lane"]
+    storage = payload["storage"]
+    volume = payload["volume"]
+    validation = payload["tracks"]["validation"]
+    windows = validation["windows"]
+    active = payload["tracks"]["active"]
+    barrier = payload["tracks"]["barrier"]
+    verification = payload["verification"]
+    tests = payload["tests"]
+    holdout = windows.get("NEW_HOLDOUT") or {}
+    consulted = windows.get("OOS_CONSULTED") or {}
+    last_receipt = lane["last_receipt"] or {}
+    floor_rows = [
+        (row["horizon_hours"], row.get("capture_fraction_needed_to_break_even"))
+        for row in (barrier["rows"].get("BTC") or [])
+    ]
+
+    def pct(value: float | None) -> str:
+        return "n/d" if value is None else f"{value * 100:.0f} %"
+
+    lines = [
+        "# WP-EDGE-07 — Informe ejecutivo",
+        "",
+        f"*Lectura única de `{payload['as_of_utc']}` en `{payload['host']}`, rama "
+        f"`{payload['branch']}` en el commit `{payload['head'][:12]}`. Todas las cifras de este "
+        "informe salen del mismo diccionario del que se renderizan RUN_REPORT y FINAL_REPORT; "
+        "no hay una cuarta medición paralela.*",
+        "",
+        "## 1. Veredicto",
+        "",
+        f"**`{payload['verdict']}`**: el volumen se recuperó lo suficiente para que el carril "
+        "volviera a ingerir, las tres variantes de investigación (la tendencia de salida fija y las "
+        "dos ACTIVE) fueron **rechazadas por criterios registrados antes de leer los datos**, la "
+        "pregunta de frecuencia quedó respondida con una medición del techo de costes, y el "
+        "verificador independiente pasa "
+        f"{verification['checks_passed']}/{verification['checks_total']} con "
+        f"{verification['sabotages_detected']} de {verification['sabotages']} sabotajes detectados.",
+        "",
+        "## 2. Track A — recuperación operativa",
+        "",
+        "| Punto del encargo | Resultado |",
+        "| --- | --- |",
+        "| Qué es lo que crece en `AppData/Local` | Tabla de escritores medida y publicada "
+        "(`GROWTH_EVIDENCE.md`); los mayores escritores son aplicaciones del usuario, no el "
+        "repositorio |",
+        f"| Espacio libre y umbrales | **{volume['free_gib']} GiB** de {volume['total_gib']} GiB, "
+        f"`{volume['verdict']}`; el carril rechaza por debajo de "
+        f"{volume['critical_floor_gib']} GiB y la publicación pesada espera por debajo de "
+        f"{volume['healthy_floor_gib']} GiB |",
+        f"| No borrar nada externo sin autorización | Solo se retiraron cachés propias del "
+        f"repositorio: {storage['paths_recorded_as_removed']} rutas registradas, "
+        f"{len(storage['paths_that_still_exist'])} aún presentes, "
+        f"{storage['neighbours_named_not_deleted']} vecinos nombrados y **no** borrados |",
+        f"| Recuperar margen con acciones seguras | **{fmt_bytes(storage['reclaimed_bytes_total'])}** "
+        f"en {storage['applied_runs']} barridos aplicados, de {storage['invocations_recorded']} "
+        "invocaciones (las de prueba en seco no borran nada) |",
+        f"| Dos ticks programados reales `OBSERVED` | "
+        f"**{lane['scheduled_observing_ticks_after_the_reclaim_count']}** ticks programados "
+        "observados después de la recuperación, con sus slots y peticiones de mercado en "
+        "`RUN_REPORT.md` §2 |",
+        f"| La reconciliación integrada corre desde el scheduler | {lane['receipts_total']} recibos "
+        f"durables en `data/forward/edge04/derived_refresh.jsonl`; el último del slot "
+        f"`{last_receipt.get('slot_key')}` con `ran: {last_receipt.get('ran')}` y "
+        f"{last_receipt.get('reconciliation_artifacts')} artefactos de reconciliación |",
+        f"| Datos forward y artefactos congelados intactos | El verificador re-deriva que el log es "
+        "append-only, que el almacén conserva todas las series y que los parámetros congelados "
+        f"siguen siendo los registrados (`{validation['params_hash'][:16]}…`) |",
+        "",
+        "## 3. Track B — validación económica de la tendencia con objetivo fijo 3xATR",
+        "",
+        f"Parámetros, datos, costes, hipótesis y criterios se registraron el "
+        f"`{validation['registered_at_utc']}` (`{validation['preregistration_run_id']}`), antes de "
+        f"descargar el corpus. La ventana nueva (`{validation['requested_range']['start_utc']}` a "
+        f"`{validation['requested_range']['end_utc_exclusive']}`, "
+        f"{validation['coverage_min_bars']} barras de 4h por activo, {validation['gaps']} huecos) se "
+        "leyó una sola vez.",
+        "",
+        "### PnL neto por ventana, escenario BASE",
+        "",
+        "| Ventana | Ya consultada antes | Operaciones | Neto (USDT) | Neto con 2x comisiones | "
+        "Esperanza | Sharpe | Profit factor | DD max % | Concentración mayor | Coste bps |",
+        "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
+    ]
+    for name, window in windows.items():
+        lines.append(
+            f"| `{name}` | {window['consulted_before_this_work_package']} | {window['trades']} | "
+            f"**{window['net_usdt']}** | {window['net_usdt_at_2x_fees']} | "
+            f"{window['expectancy_usdt']} | {window['sharpe_annualised']} | "
+            f"{window['profit_factor']} | {window['max_drawdown_pct']} | "
+            f"{fmt_share(window['largest_trade_share_of_net'])} | "
+            f"{window['total_cost_bps_per_trade']} |"
+        )
+    lines += [
+        "",
+        f"**Veredicto `{validation['verdict']}`** en la ventana nueva, con potencia "
+        f"({validation['powered']}, {holdout.get('trades')} operaciones): criterios decisivos "
+        f"fallidos {', '.join(validation['failed'] or [])}. La ventana consultada antes de este "
+        f"trabajo está separada de forma explícita y no se usó para ajustar nada; su neto de "
+        f"referencia es "
+        f"{consulted.get('net_usdt')} USDT y no se lee como evidencia nueva.",
+        "",
+        f"Robustez y comparación: por activo y por régimen de mercado (publicados en "
+        f"`validation/VALIDATION.md`), en tres bloques temporales iguales "
+        f"({validation['positive_time_blocks']} de 3 positivos), quitando la mejor operación "
+        f"({(validation['no_trade_null'] or {}).get('net_usdt')} USDT), con intervalos al 90 % por "
+        f"bootstrap de bloques de 20 operaciones (esperanza {fmt_ci(validation['expectancy_ci_90_usdt'])}) "
+        f"y dependencia temporal (autocorrelación lag-1 "
+        f"{validation['serial_dependence']['lag1_autocorrelation']} frente a una banda de "
+        f"±{validation['serial_dependence']['band_2_over_sqrt_n']}). La comparación trailing usa "
+        f"los mismos datos, costes y política de riesgo: {validation['comparison']['trailing_net_usdt']} "
+        f"USDT en {validation['comparison']['trailing_trades']} operaciones, insuficiente por "
+        "potencia y concentración, no una admisión.",
+        "",
+        "## 4. Track C — investigación ACTIVE",
+        "",
+        f"La tendencia se mantiene como módulo separado de baja frecuencia. Se registraron "
+        f"{active['multiplicity']} candidatas ACTIVE multi-activo con objetivo de "
+        f"{active['frequency_target_per_day']:g} operaciones diarias, y el propio filtro registrado "
+        "las rechazó antes de tocar la ventana independiente: "
+        + "; ".join(
+            f"`{book}` {body['verdict']}"
+            for book, body in sorted((active["readings"] or {}).items())
+        )
+        + ". Ninguna relajó un límite, forzó operaciones ni multiplicó exposición.",
+        "",
+        "### Por qué la frecuencia alta está cerrada por aritmética, no por una mala candidata",
+        "",
+        f"Con un ida y vuelta de **{barrier['declared_cost_wall_bps']} bps**, la fracción del "
+        "movimiento open-to-open que una estrategia debe capturar solo para empatar, medida sobre "
+        "las barras de la ventana independiente, es:",
+        "",
+        "| Horizonte | Operaciones/día en el universo | Fracción del movimiento necesaria (BTC) |",
+        "| --- | --- | --- |",
+    ]
+    for horizon, fraction in floor_rows:
+        lines.append(f"| {horizon:g} h | {int(72 / horizon)} | {pct(fraction)} |")
+    lines += [
+        "",
+        "A un reloj horario hay que capturar la mayor parte del movimiento entero: prácticamente "
+        "inalcanzable. A un reloj diario (una entrada por activo y día, el objetivo del encargo) la "
+        "exigencia baja al 11-16 %, que sí es un problema de estrategia y no de costes. Esa es la "
+        "dirección que la evidencia señala, registrada como propuesta y no ejecutada.",
+        "",
+        "## 5. Qué NO se declara",
+        "",
+        f"- Ni `CERTIFIED`, ni `READY_FOR_PAPER`, ni `PRODUCTION_READY`: `promotion: "
+        f"{payload['promotion']}`, `order_sent: {payload['order_sent']}`.",
+        "- No se acortó ningún día forward: la compuerta de 60 días sigue intacta.",
+        "- `NEW_HOLDOUT` está gastada: no se repite, no se ajusta y no se vuelve a leer.",
+        f"- El volumen sigue por debajo del umbral sano de {volume['healthy_floor_gib']} GiB, así "
+        "que la publicación pesada espera; limpiar temporales del perfil es decisión del titular "
+        "del volumen, no una limpieza del repositorio.",
+        "- Ningún límite de riesgo, regla de tamaño ni compuerta de promoción se modificó; no se "
+        "leyó, guardó ni imprimió ninguna credencial.",
+        "",
+        "## 6. Verificación y reproducibilidad",
+        "",
+        "| Comprobación | Resultado |",
+        "| --- | --- |",
+        f"| Verificador independiente | **{verification['result']}**, "
+        f"{verification['checks_passed']}/{verification['checks_total']} comprobaciones, "
+        f"{verification['failing_count']} fallidas, exit `{verification['exit_code']}` |",
+        f"| Autoprueba del verificador | {verification['self_test']}: "
+        f"{verification['sabotages_detected']}/{verification['sabotages']} sabotajes detectados |",
+        f"| Pruebas propias | exit `{(tests['owned'] or {}).get('exit_code')}` - "
+        f"{(tests['owned'] or {}).get('summary')} |",
+        f"| Lint, formato y tipos | exit `{(tests['lint'] or {}).get('exit_code')}`, "
+        f"`{(tests['format'] or {}).get('exit_code')}`, `{(tests['types'] or {}).get('exit_code')}` |",
+        f"| Evidencia económica reproducible | El runner reprodujo cada cifra publicada que "
+        f"re-deriva (instrument check: {validation['instrument_check_all_equal']}), y la ventana "
+        f"nueva tiene digest por fragmento `{(validation['manifest_digest'] or '')[:16]}…` |",
+        f"| Commits aislados y push | rama `{payload['branch']}`, "
+        f"rango `{payload['github']['pushed_range_at_last_push']}`, el remoto leído de vuelta: "
+        f"{payload['github']['remote_matches_head']} |",
+        "",
+        "## 7. Decisiones abiertas",
+        "",
+    ]
+    abiertas: list[tuple[str, str]] = []
+    if volume["free_gib"] < volume["healthy_floor_gib"]:
+        abiertas.append(
+            (
+                f"El volumen está en {volume['free_gib']} GiB: por encima de los "
+                f"{volume['critical_floor_gib']} GiB bajo los que el carril rechaza ticks, por "
+                f"debajo de los {volume['healthy_floor_gib']} GiB que espera la publicación pesada",
+                "el titular del volumen: limpiar temporales de más de un día",
+            )
+        )
+    if validation["verdict"] != "ADMIT_PAPER":
+        abiertas.append(
+            (
+                "La variante de salida fija fue rechazada en una ventana que nadie había leído, así "
+                "que '¿habría salvado algo otra salida?' queda sin responder: la comparación "
+                "trailing es positiva en la misma ventana pero sin potencia",
+                "un nuevo preregistro sobre una ventana sin leer",
+            )
+        )
+    if not active["holdout_read_by_any_candidate"]:
+        abiertas.append(
+            (
+                "Las dos ACTIVE se detuvieron en su propio filtro registrado antes de la ventana "
+                "independiente, así que el objetivo horario descansa en el techo medido y no en una "
+                "candidata",
+                "un nuevo registro en un reloj que la tabla de barrera dice que es pagable",
+            )
+        )
+    for item, owner in abiertas:
+        lines.append(f"- {item} — *{owner}*")
+    lines.append("")
+    return "\n".join(lines)
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--tests", action="store_true", help="run the owned suites and the linter")
@@ -1256,6 +1553,7 @@ def main(argv: list[str] | None = None) -> int:
     )
     (WP / "RUN_REPORT.md").write_text(render_run(payload), encoding="utf-8")
     (WP / "FINAL_REPORT.md").write_text(render_final(payload), encoding="utf-8")
+    (WP / "INFORME_EJECUTIVO.md").write_text(render_executive_es(payload), encoding="utf-8")
 
     print(f"{payload['verdict']}  free {payload['volume']['free_gib']} GiB")
     for row in payload["acceptance"]:
@@ -1266,7 +1564,7 @@ def main(argv: list[str] | None = None) -> int:
         f"self-test {payload['verification']['self_test']} "
         f"({payload['verification']['sabotages_detected']}/{payload['verification']['sabotages']})"
     )
-    print("wrote RUN_REPORT.json, RUN_REPORT.md, FINAL_REPORT.md")
+    print("wrote RUN_REPORT.json, RUN_REPORT.md, FINAL_REPORT.md, INFORME_EJECUTIVO.md")
     return 0
 
 

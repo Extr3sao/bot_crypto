@@ -1,10 +1,10 @@
 # WP-EDGE-07 — RUN_REPORT
 
-*One reading at `2026-10-14T09:25:08Z` on `DESKTOP-4CHO695`, from branch `agent/edge-recovery/WP-EDGE-00-baseline` at `07deeb40dd3f`. Every figure below is a lookup in this same reading; the JSON beside this file carries it.*
+*One reading at `2026-10-14T09:42:10Z` on `DESKTOP-4CHO695`, from branch `agent/edge-recovery/WP-EDGE-00-baseline` at `69f85d2f4bd1`. Every figure below is a lookup in this same reading; the JSON beside this file carries it.*
 
 ## 1. The volume, and what this work package removed from it
 
-- Free: **3.364 GiB** of 237.5 GiB — `ABOVE_CRITICAL_BELOW_HEALTHY` (the lane refuses below 2.0 GiB and the heavy publication waits below 5.0 GiB).
+- Free: **3.113 GiB** of 237.5 GiB — `ABOVE_CRITICAL_BELOW_HEALTHY` (the lane refuses below 2.0 GiB and the heavy publication waits below 5.0 GiB).
 - Reclaim history: **8 invocations**, 4 dry run(s) and **4 applied**; **2,261,922,757 bytes (2.11 GiB)** removed in total.
 - The latest applied sweep is `2026-10-14T08:50:23Z`; it moved the volume from 2,824,138,752 bytes (2.63 GiB) to 3,955,908,608 bytes (3.68 GiB) free.
 - Every removal is recorded and none was faked: **193 paths** recorded as removed, **0** of them still on disk.
@@ -12,13 +12,15 @@
 
 ## 2. The lane
 
-- Runs recorded: 96, of which 49 observed.
-- Last observing tick: `2026-10-14T09:00Z` (started 2026-10-14T09:10:58Z, 6 new bars).
+- Runs recorded: 98, of which 51 observed.
+- Last observing tick: `2026-10-14T09:30Z` (started 2026-10-14T09:40:57Z, 3 new bars).
 - Ticks refused for disk, over the whole log: 41 (the last one on `2026-10-14T08:30Z`).
-- Scheduled observing ticks **after the reclaim** (`2026-10-14T08:50:23Z`): 2
+- Scheduled observing ticks **after the reclaim** (`2026-10-14T08:50:23Z`): 4
 
   - `2026-10-14T08:45Z` started 2026-10-14T08:55:56Z: 18 new bars, 7 market request(s)
   - `2026-10-14T09:00Z` started 2026-10-14T09:10:58Z: 6 new bars, 7 market request(s)
+  - `2026-10-14T09:15Z` started 2026-10-14T09:25:57Z: 3 new bars, 4 market request(s)
+  - `2026-10-14T09:30Z` started 2026-10-14T09:40:57Z: 3 new bars, 4 market request(s)
 
 ## 3. Track B — the trend book on a window nobody had read
 
@@ -28,6 +30,17 @@
 - Net -140.3041 USDT over 65 trades at BASE — gross -63.0744, fees 64.9246, expectancy -2.1585 USDT/trade, win rate 20.0 %, profit factor 0.671, max drawdown 2.1413 %.
 - The registered readings: expectancy 90 % CI [-5.1501, 1.0015] (point -2.1585) USDT/trade, net 90 % CI [-334.7546, 65.097] (point -140.3041) USDT, 1 of 3 time blocks positive, and serial dependence lag-1 0.5073 against a ±0.2481 band (11 runs against 21.8 expected, z -4.2574).
 - The comparison arm, same window and costs: the frozen trailing exit earned 61.0046 USDT over 28 trades (largest trade 223.7 % of the net) against the fixed target's -140.3041 USDT over 65 trades. Neither arm clears its own criteria on this window.
+
+### The book on every window it was read on, at BASE
+
+| Window | Read before this work package | Trades | Net (USDT) | Net at 2x fees | Expectancy | Sharpe | PF | DD % | Largest share | Cost bps |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `DEV` | True | 584 | **1056.2895** | 104.2169 | 1.8087 | 0.7219 | 1.1966 | 4.0367 | 7.4 % | 23.8579 |
+| `VAL` | True | 136 | **-146.1493** | -281.5418 | -1.0746 | -0.575 | 0.869 | 3.5367 | — | 23.7887 |
+| `OOS_CONSULTED` | True | 113 | **230.0174** | 116.674 | 2.0356 | 0.9585 | 1.321 | 1.5329 | 22.2 % | 23.8629 |
+| `NEW_HOLDOUT` | False | 65 | **-140.3041** | -205.2287 | -2.1585 | -1.2461 | 0.671 | 2.1413 | — | 23.763 |
+
+*`OOS_CONSULTED` is the window earlier work packages had already read, shown here so the comparison with `NEW_HOLDOUT` is explicit rather than implied; the three cost scenarios, per-asset and per-regime breakdowns live in `validation/VALIDATION.md` §3 and §4.*
 
 | # | Criterion | Passed | Value |
 | --- | --- | --- | --- |
@@ -71,10 +84,10 @@ The mission's own target — 3 trades a day — is reachable at: H = 1 h (72 tra
 
 | What | Result | Command |
 | --- | --- | --- |
-| this work package's own suites | exit `0` — 26 passed in 2.19s (3.18s) | `C:\Users\GVLLFR0035\Downloads\bot freebuff\.venv\Scripts\python.exe -m pytest -q tests/unit/research/test_edge07_scheduler_evidence.py tests/unit/research/test_edge06_cadence.py tests/unit/research/test_wp9_disk_budget.py` |
-| the linter | exit `0` — All checks passed! (0.14s) | `C:\Users\GVLLFR0035\Downloads\bot freebuff\.venv\Scripts\python.exe -m ruff check scripts/edge07_report.py scripts/edge07_verify.py scripts/edge07_validate.py scripts/edge07_active.py scripts/edge07_active_barrier.py scripts/edge07_fetch_holdout.py scripts/edge07_growth_evidence.py scripts/edge07_reclaim.py src/trading_bot/research/edge07 tests/unit/research/test_edge07_scheduler_evidence.py` |
-| the formatter | exit `0` — 12 files already formatted (0.15s) | `C:\Users\GVLLFR0035\Downloads\bot freebuff\.venv\Scripts\python.exe -m ruff format --check scripts/edge07_report.py scripts/edge07_verify.py scripts/edge07_validate.py scripts/edge07_active.py scripts/edge07_active_barrier.py scripts/edge07_fetch_holdout.py scripts/edge07_growth_evidence.py scripts/edge07_reclaim.py src/trading_bot/research/edge07 tests/unit/research/test_edge07_scheduler_evidence.py` |
-| the type checker | exit `0` — Success: no issues found in 11 source files (0.55s) | `C:\Users\GVLLFR0035\Downloads\bot freebuff\.venv\Scripts\python.exe -m mypy scripts/edge07_report.py scripts/edge07_verify.py scripts/edge07_validate.py scripts/edge07_active.py scripts/edge07_active_barrier.py scripts/edge07_fetch_holdout.py scripts/edge07_growth_evidence.py scripts/edge07_reclaim.py src/trading_bot/research/edge07` |
+| this work package's own suites | exit `0` — 26 passed in 2.55s (3.64s) | `C:\Users\GVLLFR0035\Downloads\bot freebuff\.venv\Scripts\python.exe -m pytest -q tests/unit/research/test_edge07_scheduler_evidence.py tests/unit/research/test_edge06_cadence.py tests/unit/research/test_wp9_disk_budget.py` |
+| the linter | exit `0` — All checks passed! (0.18s) | `C:\Users\GVLLFR0035\Downloads\bot freebuff\.venv\Scripts\python.exe -m ruff check scripts/edge07_report.py scripts/edge07_verify.py scripts/edge07_validate.py scripts/edge07_active.py scripts/edge07_active_barrier.py scripts/edge07_fetch_holdout.py scripts/edge07_growth_evidence.py scripts/edge07_reclaim.py src/trading_bot/research/edge07 tests/unit/research/test_edge07_scheduler_evidence.py` |
+| the formatter | exit `0` — 12 files already formatted (0.17s) | `C:\Users\GVLLFR0035\Downloads\bot freebuff\.venv\Scripts\python.exe -m ruff format --check scripts/edge07_report.py scripts/edge07_verify.py scripts/edge07_validate.py scripts/edge07_active.py scripts/edge07_active_barrier.py scripts/edge07_fetch_holdout.py scripts/edge07_growth_evidence.py scripts/edge07_reclaim.py src/trading_bot/research/edge07 tests/unit/research/test_edge07_scheduler_evidence.py` |
+| the type checker | exit `0` — Success: no issues found in 11 source files (0.93s) | `C:\Users\GVLLFR0035\Downloads\bot freebuff\.venv\Scripts\python.exe -m mypy scripts/edge07_report.py scripts/edge07_verify.py scripts/edge07_validate.py scripts/edge07_active.py scripts/edge07_active_barrier.py scripts/edge07_fetch_holdout.py scripts/edge07_growth_evidence.py scripts/edge07_reclaim.py src/trading_bot/research/edge07` |
 
 - Independent verification: **PASS**, 13/13 checks, self-test `PASS` with 14 sabotages and 0 undetected.
 - The verifier's own exit status: `0` (`scripts/edge07_verify.py --self-test`).
@@ -103,7 +116,7 @@ The mission's own target — 3 trades a day — is reachable at: H = 1 h (72 tra
 | ACC-02 | Only this repository's own tool caches were removed, and every removal is recorded | **PASS** | `storage.applied_runs`, `storage.paths_recorded_as_removed`, `storage.paths_that_still_exist` |
 | ACC-03 | The volume clears the floor the lane refuses below, and the shortfall to healthy is stated | **PASS** | `volume.free_gib`, `volume.verdict`, `storage.reclaimed_bytes_total` |
 | ACC-04 | The volume's other writers are named, and none of their files was deleted | **PASS** | `storage.neighbours_named_not_deleted`, `storage.eligible_entries`, `growth.writers` |
-| ACC-05 | A tick that consumed its slot re-reads the derived state and carries the receipt | **PASS** | `reclaim_history.invocations`, `storage.latest_applied_utc` |
+| ACC-05 | A tick that consumed its slot re-runs the integrated reconciliation and carries its receipt | **PASS** | `lane.receipts_total`, `lane.last_receipt`, `lane.last_receipt.reconciliation_artifacts` |
 | ACC-06 | Ingestion resumed through real scheduled ticks after the reclaim | **PASS** | `lane.scheduled_observing_ticks_after_the_reclaim`, `lane.runs_observing`, `lane.refusals_for_disk` |
 | ACC-07 | The trend parameters are the registered bytes, and the run says so | **PASS** | `validation.params_hash`, `validation.registered_params_hash` |
 | ACC-08 | The new window is unread by the frozen corpora, complete, and its coverage declared | **PASS** | `validation.coverage_4h_bars`, `validation.gaps`, `validation.requested_range` |
@@ -129,9 +142,10 @@ The mission's own target — 3 trades a day — is reachable at: H = 1 h (72 tra
 | `reports/edge-recovery/WP-EDGE-07/active-research/FINDINGS.md` | `8f5cb021d65957eb9a75c5d3446c9ae9…` |
 | `reports/edge-recovery/WP-EDGE-07/active-research/PREREGISTRATION.json` | `be680f480ea9de874d3a4b51b8572719…` |
 | `reports/edge-recovery/WP-EDGE-07/active-research/PREREGISTRATION.md` | `94043a05d00b4d4a9ed7c267b5497a4d…` |
-| `reports/edge-recovery/WP-EDGE-07/GITHUB_STATE.json` | `16c232d0ee5b1238b73119b3cfbe046d…` |
+| `reports/edge-recovery/WP-EDGE-07/GITHUB_STATE.json` | `35190f197c3851e7fecda26b3bb4f608…` |
 | `reports/edge-recovery/WP-EDGE-07/GROWTH_EVIDENCE.json` | `2f630eff2dddffd7244916edf1cda668…` |
 | `reports/edge-recovery/WP-EDGE-07/GROWTH_EVIDENCE.md` | `7150732b73c637323a1008e466d76b32…` |
+| `reports/edge-recovery/WP-EDGE-07/INFORME_EJECUTIVO.md` | `9577ffc412da5a688024fbf3058260d4…` |
 | `reports/edge-recovery/WP-EDGE-07/PREREGISTRATION.json` | `6ded966cd78257140cc3b3d3f105307c…` |
 | `reports/edge-recovery/WP-EDGE-07/PREREGISTRATION.md` | `296bd4e37d8932d0d0cfc2420dbe1a0d…` |
 | `reports/edge-recovery/WP-EDGE-07/STORAGE_RECLAIM.json` | `f08f7954eb994a112c2cbe3deb4bbfba…` |
@@ -140,7 +154,7 @@ The mission's own target — 3 trades a day — is reachable at: H = 1 h (72 tra
 | `reports/edge-recovery/WP-EDGE-07/validation/VALIDATION.json` | `9a318e917bdf14189c971b08dcb9aa90…` |
 | `reports/edge-recovery/WP-EDGE-07/validation/VALIDATION.md` | `89ca9c860cdddfdd23bd07c7aa6b9071…` |
 | `reports/edge-recovery/WP-EDGE-07/validation/VALIDATION_TRADES.csv` | `20e0fa0631d8714849b137f737dbe087…` |
-| `reports/edge-recovery/WP-EDGE-07/VERIFICATION.json` | `89ce271e33e2243965b2e1798db7ef07…` |
-| `reports/edge-recovery/WP-EDGE-07/VERIFICATION.md` | `e30618176d318ae2df47cd9aaeda80d3…` |
+| `reports/edge-recovery/WP-EDGE-07/VERIFICATION.json` | `e1903ae815346076e98e5a5d36ea51e6…` |
+| `reports/edge-recovery/WP-EDGE-07/VERIFICATION.md` | `b566e3de493e32de220060c03f0098ce…` |
 
-*`promotion: NONE`, `order_sent: False`, `hypothetical: True`.*
+*`promotion: NONE`, `order_sent: False`, `hypothetical: True`. Informe ejecutivo en castellano, renderizado de esta misma lectura: `INFORME_EJECUTIVO.md`.*

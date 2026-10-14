@@ -1,12 +1,12 @@
 {
-  "as_of_utc": "2026-10-14T09:25:10Z",
+  "as_of_utc": "2026-10-14T09:42:12Z",
   "checks": [
     {
       "detail": {
         "clears_healthy_floor": false,
         "critical_floor_bytes": 2147483648,
-        "free_bytes": 3612553216,
-        "free_gib": 3.364,
+        "free_bytes": 3342790656,
+        "free_gib": 3.113,
         "healthy_floor_bytes": 5368709120
       },
       "id": "A-1",
@@ -27,7 +27,7 @@
     {
       "detail": {
         "after": "2026-10-14T08:44:22Z",
-        "count": 2,
+        "count": 4,
         "ticks": [
           {
             "market_requests": 7,
@@ -40,6 +40,18 @@
             "new_bars": 6,
             "slot_key": "2026-10-14T09:00Z",
             "started_at_utc": "2026-10-14T09:10:58Z"
+          },
+          {
+            "market_requests": 4,
+            "new_bars": 3,
+            "slot_key": "2026-10-14T09:15Z",
+            "started_at_utc": "2026-10-14T09:25:57Z"
+          },
+          {
+            "market_requests": 4,
+            "new_bars": 3,
+            "slot_key": "2026-10-14T09:30Z",
+            "started_at_utc": "2026-10-14T09:40:57Z"
           }
         ]
       },
@@ -57,24 +69,24 @@
             "markers": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge05\\reconciliation\\INCOMPLETE_STATES.jsonl",
             "reconciliation": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge05\\reconciliation\\RECONCILIATION.json"
           },
-          "at_utc": "2026-10-14T09:11:51Z",
+          "at_utc": "2026-10-14T09:41:47Z",
           "hypothetical": true,
           "mode": "SCHEDULED",
           "order_sent": false,
           "outcome": "OBSERVED",
           "ran": true,
           "reason": null,
-          "run_id": "FWD-EDGE04-20261014T090000Z",
+          "run_id": "FWD-EDGE04-20261014T093000Z",
           "schema_version": "EDGE04_DERIVED_REFRESH_V1",
-          "seconds": 0.156,
-          "slot_key": "2026-10-14T09:00Z",
+          "seconds": 0.266,
+          "slot_key": "2026-10-14T09:30Z",
           "status": "HISTORICAL_ONLY",
           "unattributed_bars": null
         },
         "receipts_inconsistent_with_the_tick": [],
         "receipts_missing": [],
-        "receipts_on_file": 1,
-        "scheduled_ticks_since": 1,
+        "receipts_on_file": 3,
+        "scheduled_ticks_since": 3,
         "wiring_reference": "2026-10-14T09:07:00Z"
       },
       "id": "A-4",
@@ -84,14 +96,14 @@
     {
       "detail": {
         "records_replayed": 0,
-        "run_records": 96,
+        "run_records": 98,
         "slots_anchored": 11,
         "slots_vanished": [],
         "started_at_non_decreasing": true,
         "store_series": {
-          "15m/BTC.jsonl": 661,
-          "15m/ETH.jsonl": 661,
-          "15m/SOL.jsonl": 661,
+          "15m/BTC.jsonl": 663,
+          "15m/ETH.jsonl": 663,
+          "15m/SOL.jsonl": 663,
           "1h/BTC.jsonl": 5457,
           "1h/ETH.jsonl": 5457,
           "1h/SOL.jsonl": 5457
@@ -248,13 +260,34 @@
       {
         "check": "A-4",
         "detail": {
-          "last_receipt": null,
+          "last_receipt": {
+            "after_outcome": "OBSERVED",
+            "artifacts": {
+              "attribution": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge05\\reconciliation\\BAR_ATTRIBUTION.json",
+              "markdown": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge05\\reconciliation\\RECONCILIATION.md",
+              "markers": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge05\\reconciliation\\INCOMPLETE_STATES.jsonl",
+              "reconciliation": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge05\\reconciliation\\RECONCILIATION.json"
+            },
+            "at_utc": "2026-10-14T09:27:00Z",
+            "hypothetical": true,
+            "mode": "SCHEDULED",
+            "order_sent": false,
+            "outcome": "OBSERVED",
+            "ran": true,
+            "reason": null,
+            "run_id": "FWD-EDGE04-20261014T091500Z",
+            "schema_version": "EDGE04_DERIVED_REFRESH_V1",
+            "seconds": 0.234,
+            "slot_key": "2026-10-14T09:15Z",
+            "status": "HISTORICAL_ONLY",
+            "unattributed_bars": null
+          },
           "receipts_inconsistent_with_the_tick": [],
           "receipts_missing": [
-            "FWD-EDGE04-20261014T090000Z"
+            "FWD-EDGE04-20261014T093000Z"
           ],
-          "receipts_on_file": 0,
-          "scheduled_ticks_since": 1,
+          "receipts_on_file": 2,
+          "scheduled_ticks_since": 3,
           "wiring_reference": "2026-10-14T09:07:00Z"
         },
         "detected": true,
@@ -264,14 +297,14 @@
         "check": "A-5",
         "detail": {
           "records_replayed": 0,
-          "run_records": 96,
+          "run_records": 98,
           "slots_anchored": 11,
           "slots_vanished": [],
           "started_at_non_decreasing": true,
           "store_series": {
             "15m/BTC.jsonl": 0,
-            "15m/ETH.jsonl": 661,
-            "15m/SOL.jsonl": 661,
+            "15m/ETH.jsonl": 663,
+            "15m/SOL.jsonl": 663,
             "1h/BTC.jsonl": 5457,
             "1h/ETH.jsonl": 5457,
             "1h/SOL.jsonl": 5457
@@ -400,16 +433,16 @@
         "check": "A-6",
         "detail": {
           "records_replayed": 0,
-          "run_records": 95,
+          "run_records": 97,
           "slots_anchored": 11,
           "slots_vanished": [
             "2026-10-14T06:00Z"
           ],
           "started_at_non_decreasing": true,
           "store_series": {
-            "15m/BTC.jsonl": 661,
-            "15m/ETH.jsonl": 661,
-            "15m/SOL.jsonl": 661,
+            "15m/BTC.jsonl": 663,
+            "15m/ETH.jsonl": 663,
+            "15m/SOL.jsonl": 663,
             "1h/BTC.jsonl": 5457,
             "1h/ETH.jsonl": 5457,
             "1h/SOL.jsonl": 5457

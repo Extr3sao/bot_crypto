@@ -1,14 +1,14 @@
 {
   "schema_version": "EDGE07_RUN_REPORT_V1",
-  "as_of_utc": "2026-10-14T09:25:08Z",
+  "as_of_utc": "2026-10-14T09:42:10Z",
   "host": "DESKTOP-4CHO695",
   "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
-  "head": "07deeb40dd3f28781e7d6f64d6701dbec0330e59",
-  "worktree_dirty_entries": 136,
-  "worktree_dirty_entries_of_this_work_package": 0,
+  "head": "69f85d2f4bd19ae392b8a72b61e921d33a70f5a1",
+  "worktree_dirty_entries": 144,
+  "worktree_dirty_entries_of_this_work_package": 1,
   "volume": {
-    "free_bytes": 3612553216,
-    "free_gib": 3.364,
+    "free_bytes": 3342798848,
+    "free_gib": 3.113,
     "total_gib": 237.5,
     "critical_floor_gib": 2.0,
     "healthy_floor_gib": 5.0,
@@ -42,11 +42,11 @@
     }
   },
   "lane": {
-    "runs_total": 96,
-    "runs_observing": 49,
-    "last_observing_slot": "2026-10-14T09:00Z",
-    "last_observing_started_utc": "2026-10-14T09:10:58Z",
-    "last_observing_new_bars": 6,
+    "runs_total": 98,
+    "runs_observing": 51,
+    "last_observing_slot": "2026-10-14T09:30Z",
+    "last_observing_started_utc": "2026-10-14T09:40:57Z",
+    "last_observing_new_bars": 3,
     "refusals_for_disk": 41,
     "last_refusal_slot": "2026-10-14T08:30Z",
     "scheduled_observing_ticks_after_the_reclaim": [
@@ -61,9 +61,31 @@
         "started_at_utc": "2026-10-14T09:10:58Z",
         "new_bars": 6,
         "market_requests": 7
+      },
+      {
+        "slot_key": "2026-10-14T09:15Z",
+        "started_at_utc": "2026-10-14T09:25:57Z",
+        "new_bars": 3,
+        "market_requests": 4
+      },
+      {
+        "slot_key": "2026-10-14T09:30Z",
+        "started_at_utc": "2026-10-14T09:40:57Z",
+        "new_bars": 3,
+        "market_requests": 4
       }
     ],
-    "scheduled_observing_ticks_after_the_reclaim_count": 2
+    "scheduled_observing_ticks_after_the_reclaim_count": 4,
+    "receipts_total": 3,
+    "last_receipt": {
+      "slot_key": "2026-10-14T09:30Z",
+      "at_utc": "2026-10-14T09:41:47Z",
+      "mode": "SCHEDULED",
+      "after_outcome": "OBSERVED",
+      "ran": true,
+      "status": "HISTORICAL_ONLY",
+      "reconciliation_artifacts": 4
+    }
   },
   "tracks": {
     "validation": {
@@ -277,6 +299,56 @@
       "costs": {
         "model": "COST_MODEL_V3",
         "round_trip_bps": 23.790569
+      },
+      "windows": {
+        "DEV": {
+          "trades": 584,
+          "net_usdt": 1056.2895,
+          "expectancy_usdt": 1.8087,
+          "sharpe_annualised": 0.7219,
+          "profit_factor": 1.1966,
+          "max_drawdown_pct": 4.0367,
+          "largest_trade_share_of_net": 0.0743,
+          "total_cost_bps_per_trade": 23.8579,
+          "net_usdt_at_2x_fees": 104.2169,
+          "consulted_before_this_work_package": true
+        },
+        "VAL": {
+          "trades": 136,
+          "net_usdt": -146.1493,
+          "expectancy_usdt": -1.0746,
+          "sharpe_annualised": -0.575,
+          "profit_factor": 0.869,
+          "max_drawdown_pct": 3.5367,
+          "largest_trade_share_of_net": null,
+          "total_cost_bps_per_trade": 23.7887,
+          "net_usdt_at_2x_fees": -281.5418,
+          "consulted_before_this_work_package": true
+        },
+        "OOS_CONSULTED": {
+          "trades": 113,
+          "net_usdt": 230.0174,
+          "expectancy_usdt": 2.0356,
+          "sharpe_annualised": 0.9585,
+          "profit_factor": 1.321,
+          "max_drawdown_pct": 1.5329,
+          "largest_trade_share_of_net": 0.2219,
+          "total_cost_bps_per_trade": 23.8629,
+          "net_usdt_at_2x_fees": 116.674,
+          "consulted_before_this_work_package": true
+        },
+        "NEW_HOLDOUT": {
+          "trades": 65,
+          "net_usdt": -140.3041,
+          "expectancy_usdt": -2.1585,
+          "sharpe_annualised": -1.2461,
+          "profit_factor": 0.671,
+          "max_drawdown_pct": 2.1413,
+          "largest_trade_share_of_net": null,
+          "total_cost_bps_per_trade": 23.763,
+          "net_usdt_at_2x_fees": -205.2287,
+          "consulted_before_this_work_package": false
+        }
       }
     },
     "active": {
@@ -560,7 +632,7 @@
     "command": "scripts/edge07_verify.py --self-test",
     "exit_code": 0,
     "stdout_tail": "  A-5  PASS  every scheduled slot WP-EDGE-06 published is still in the lane's log, in order, never re\n  B-1  PASS  every holdout shard still hashes to the digest its manifest recorded\n  B-2  PASS  the parameters read on the new window are the registered bytes, and the run says so\n  B-3  PASS  the runner reproduced every published consulted-window figure it re-derived\n  B-4  PASS  the trend verdict follows from its own checks by the registered mapping\n  B-5  PASS  nothing was promoted, no order was sent, every reading is hypothetical\n  B-6  PASS  the new window begins after the last bar of every frozen corpus\n  C-1  PASS  each ACTIVE verdict follows from its own checks, and a screened-out book read no indepen\n  C-2  PASS  the published one-hour ceiling for BTC on the new window recomputes from the bars\nresult PASS (13/13)\nself-test PASS: 14/14 sabotages detected\nwrote reports\\edge-recovery\\WP-EDGE-07\\VERIFICATION.json",
-    "as_of_utc": "2026-10-14T09:25:10Z",
+    "as_of_utc": "2026-10-14T09:42:12Z",
     "result": "PASS",
     "checks_passed": 13,
     "checks_total": 13,
@@ -641,15 +713,15 @@
     "owned": {
       "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m pytest -q tests/unit/research/test_edge07_scheduler_evidence.py tests/unit/research/test_edge06_cadence.py tests/unit/research/test_wp9_disk_budget.py",
       "exit_code": 0,
-      "seconds": 3.18,
-      "summary": "26 passed in 2.19s",
-      "stdout_tail": "..........................                                               [100%]\n26 passed in 2.19s",
+      "seconds": 3.64,
+      "summary": "26 passed in 2.55s",
+      "stdout_tail": "..........................                                               [100%]\n26 passed in 2.55s",
       "stderr_tail": ""
     },
     "lint": {
       "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m ruff check scripts/edge07_report.py scripts/edge07_verify.py scripts/edge07_validate.py scripts/edge07_active.py scripts/edge07_active_barrier.py scripts/edge07_fetch_holdout.py scripts/edge07_growth_evidence.py scripts/edge07_reclaim.py src/trading_bot/research/edge07 tests/unit/research/test_edge07_scheduler_evidence.py",
       "exit_code": 0,
-      "seconds": 0.14,
+      "seconds": 0.18,
       "summary": "All checks passed!",
       "stdout_tail": "All checks passed!",
       "stderr_tail": ""
@@ -657,7 +729,7 @@
     "format": {
       "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m ruff format --check scripts/edge07_report.py scripts/edge07_verify.py scripts/edge07_validate.py scripts/edge07_active.py scripts/edge07_active_barrier.py scripts/edge07_fetch_holdout.py scripts/edge07_growth_evidence.py scripts/edge07_reclaim.py src/trading_bot/research/edge07 tests/unit/research/test_edge07_scheduler_evidence.py",
       "exit_code": 0,
-      "seconds": 0.15,
+      "seconds": 0.17,
       "summary": "12 files already formatted",
       "stdout_tail": "12 files already formatted",
       "stderr_tail": ""
@@ -665,7 +737,7 @@
     "types": {
       "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m mypy scripts/edge07_report.py scripts/edge07_verify.py scripts/edge07_validate.py scripts/edge07_active.py scripts/edge07_active_barrier.py scripts/edge07_fetch_holdout.py scripts/edge07_growth_evidence.py scripts/edge07_reclaim.py src/trading_bot/research/edge07",
       "exit_code": 0,
-      "seconds": 0.55,
+      "seconds": 0.93,
       "summary": "Success: no issues found in 11 source files",
       "stdout_tail": "Success: no issues found in 11 source files",
       "stderr_tail": ""
@@ -676,18 +748,22 @@
   "promotion": "NONE",
   "github": {
     "schema_version": "EDGE07_GITHUB_STATE_V1",
-    "as_of_utc": "2026-10-14T09:25:08Z",
+    "as_of_utc": "2026-10-14T09:42:10Z",
     "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
-    "head": "07deeb40dd3f28781e7d6f64d6701dbec0330e59",
+    "head": "69f85d2f4bd19ae392b8a72b61e921d33a70f5a1",
     "remote": "https://github.com/Extr3sao/bot_crypto.git",
     "remote_branch_ref": "refs/heads/agent/edge-recovery/WP-EDGE-00-baseline",
     "remote_has_this_branch": true,
-    "remote_tip": "07deeb40dd3f28781e7d6f64d6701dbec0330e59",
+    "remote_tip": "69f85d2f4bd19ae392b8a72b61e921d33a70f5a1",
     "remote_matches_head": true,
-    "pushed_range_at_last_push": "edd4ef2..07deeb4",
+    "pushed_range_at_last_push": "edd4ef2..69f85d2",
     "push_kind": "normal fast-forward of an existing remote branch; force push not used and not needed",
     "force_push_used": false,
     "commits_of_this_work_package": [
+      {
+        "sha": "69f85d2f4bd19ae392b8a72b61e921d33a70f5a1",
+        "subject": "Re-take the reading at the published commit, so the three reports agree with it [WP-EDGE-07]"
+      },
       {
         "sha": "07deeb40dd3f28781e7d6f64d6701dbec0330e59",
         "subject": "Count uncommitted work, not the files a reading is in the middle of writing [WP-EDGE-07]"
@@ -733,10 +809,10 @@
         "subject": "Register the WP-EDGE-07 trend validation before the new window is read [WP-EDGE-07]"
       }
     ],
-    "commits_total": 11,
-    "worktree_dirty_entries": 136,
-    "worktree_dirty_entries_of_this_work_package": 0,
-    "volume_free_bytes_at_this_reading": 3612553216,
+    "commits_total": 12,
+    "worktree_dirty_entries": 144,
+    "worktree_dirty_entries_of_this_work_package": 1,
+    "volume_free_bytes_at_this_reading": 3342798848,
     "credentials_read_or_printed": false,
     "note_on_this_file": "this file is written after the push and describes the ref at that instant; the commit carrying it is published by the following push, which is why remote_matches_head is read from the remote rather than assumed"
   },
@@ -785,11 +861,12 @@
     },
     {
       "id": "ACC-05",
-      "requirement": "A tick that consumed its slot re-reads the derived state and carries the receipt",
+      "requirement": "A tick that consumed its slot re-runs the integrated reconciliation and carries its receipt",
       "status": "PASS",
       "figures": [
-        "reclaim_history.invocations",
-        "storage.latest_applied_utc"
+        "lane.receipts_total",
+        "lane.last_receipt",
+        "lane.last_receipt.reconciliation_artifacts"
       ]
     },
     {
@@ -952,8 +1029,8 @@
     },
     {
       "path": "reports/edge-recovery/WP-EDGE-07/GITHUB_STATE.json",
-      "sha256": "16c232d0ee5b1238b73119b3cfbe046dd7052a5cbf13fd76caf4660f20e5f098",
-      "bytes": 3152
+      "sha256": "35190f197c3851e7fecda26b3bb4f608909a0eeb2d7f1654154024efe29829c2",
+      "bytes": 3338
     },
     {
       "path": "reports/edge-recovery/WP-EDGE-07/GROWTH_EVIDENCE.json",
@@ -964,6 +1041,11 @@
       "path": "reports/edge-recovery/WP-EDGE-07/GROWTH_EVIDENCE.md",
       "sha256": "7150732b73c637323a1008e466d76b32aa1602a2810df9b540379aa10cfd6bc3",
       "bytes": 9831
+    },
+    {
+      "path": "reports/edge-recovery/WP-EDGE-07/INFORME_EJECUTIVO.md",
+      "sha256": "9577ffc412da5a688024fbf3058260d45c01d83c312ef41ffbff7ecca33888e2",
+      "bytes": 7611
     },
     {
       "path": "reports/edge-recovery/WP-EDGE-07/PREREGISTRATION.json",
@@ -1007,19 +1089,19 @@
     },
     {
       "path": "reports/edge-recovery/WP-EDGE-07/VERIFICATION.json",
-      "sha256": "89ce271e33e2243965b2e1798db7ef076befa13bdc41d2c78b127a033276bb9f",
-      "bytes": 12723
+      "sha256": "e1903ae815346076e98e5a5d36ea51e671ae9ab9be9e123e207183a596ee3d5a",
+      "bytes": 14270
     },
     {
       "path": "reports/edge-recovery/WP-EDGE-07/VERIFICATION.md",
-      "sha256": "e30618176d318ae2df47cd9aaeda80d37b29311b0838a1b0f80dd581e0f9e678",
+      "sha256": "b566e3de493e32de220060c03f0098cee04f3ab10784687802c348c8c9166072",
       "bytes": 4115
     }
   ],
   "verdict": "CLOSED_WITH_OPEN_ITEMS",
   "open_items": [
     {
-      "item": "The volume is 3.364 GiB free: above the 2.0 GiB the lane refuses under and below the 5.0 GiB the heavy publication waits for, so the lane ingests while the heavier export still waits",
+      "item": "The volume is 3.113 GiB free: above the 2.0 GiB the lane refuses under and below the 5.0 GiB the heavy publication waits for, so the lane ingests while the heavier export still waits",
       "owner": "The volume's owner: clear temporary files older than a day"
     },
     {
