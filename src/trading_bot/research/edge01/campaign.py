@@ -112,8 +112,11 @@ CANDIDATE_SCOPES: dict[str, dict[str, Any]] = {
 }
 
 #: Bars per year per timeframe, used to annualise Sharpe. Declared, not guessed.
+#: "1h" was added for WP-EDGE-07 Track C's ACTIVE book (a one-hour clock); the entry is
+#: additive, so no frozen lane's Sharpe moves because of it.
 BARS_PER_YEAR: dict[str, float] = {
     "15m": 4 * 24 * 365,
+    "1h": 24 * 365,
     "4h": 6 * 365,
     "1d": 365,
 }
