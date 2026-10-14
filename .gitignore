@@ -158,6 +158,30 @@ reports/edge-recovery/WP-EDGE-05R/*
 !reports/edge-recovery/WP-EDGE-05R/*.json
 !reports/edge-recovery/WP-EDGE-05R/*.md
 !reports/edge-recovery/WP-EDGE-05R/*.jsonl
+# ------------------------------------------------------------
+# WP-EDGE-06 — misma cadena de excepciones que WP-EDGE-01…05R, por el mismo motivo: el
+# diagnostico de almacenamiento, el inventario de los inquilinos del volumen, la auditoria
+# economica, las hipotesis registradas ANTES de correr, y los informes SI se versionan.
+# `research/` necesita su propia linea: git no re-incluye un fichero cuyo directorio padre
+# esta excluido, y esa carpeta es la que lleva la evidencia de las familias nuevas.
+# ------------------------------------------------------------
+!reports/edge-recovery/WP-EDGE-06/
+reports/edge-recovery/WP-EDGE-06/*
+!reports/edge-recovery/WP-EDGE-06/*.json
+!reports/edge-recovery/WP-EDGE-06/*.md
+!reports/edge-recovery/WP-EDGE-06/*.jsonl
+!reports/edge-recovery/WP-EDGE-06/research/
+reports/edge-recovery/WP-EDGE-06/research/*
+!reports/edge-recovery/WP-EDGE-06/research/*.json
+!reports/edge-recovery/WP-EDGE-06/research/*.md
+!reports/edge-recovery/WP-EDGE-06/research/*.jsonl
+!reports/edge-recovery/WP-EDGE-06/research/*.csv
+!reports/edge-recovery/WP-EDGE-06/research/*/
+reports/edge-recovery/WP-EDGE-06/research/*/*
+!reports/edge-recovery/WP-EDGE-06/research/*/*.json
+!reports/edge-recovery/WP-EDGE-06/research/*/*.md
+!reports/edge-recovery/WP-EDGE-06/research/*/*.csv
+!reports/edge-recovery/WP-EDGE-06/research/*/*.jsonl
 
 # ============================================================
 # CAP-003 — evidencias OHLCV crudas: locales por tamano.
