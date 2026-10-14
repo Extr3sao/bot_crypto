@@ -1,0 +1,747 @@
+{
+  "as_of_utc": "2026-10-14T21:41:25Z",
+  "checks": [
+    {
+      "detail": {
+        "allowed_kinds": [
+          "catalogue",
+          "fetch_or_list_script",
+          "test",
+          "documentation",
+          "this_work_package"
+        ],
+        "method": "git grep over TRACKED files (an untracked scratch file cannot argue a symbol is clean, and a committed shard cannot hide), classified by path; plus a glob for a shard of the symbol in every corpus this repository already holds",
+        "shards_outside_the_cross_section": {},
+        "symbols": [
+          "AAVEUSDT",
+          "UNIUSDT",
+          "KSMUSDT",
+          "SNXUSDT",
+          "CRVUSDT",
+          "SUSHIUSDT"
+        ],
+        "violating_kinds": [],
+        "violations": []
+      },
+      "id": "A-1",
+      "passed": true,
+      "statement": "no corpus of this repository holds a bar of any of the six symbols, and every tracked mention of one is a catalogue, a fetch script, a test, documentation or this package"
+    },
+    {
+      "detail": {
+        "corpus_digest_in_manifest": "fb32470f5bc6329eee558dfdbc436685ad4de91a7a7374ea329499c1c258735b",
+        "corpus_digest_in_registration": "fb32470f5bc6329eee558dfdbc436685ad4de91a7a7374ea329499c1c258735b",
+        "corpus_digest_recomputed": "fb32470f5bc6329eee558dfdbc436685ad4de91a7a7374ea329499c1c258735b",
+        "mismatched": {},
+        "symbols": [
+          "AAVEUSDT",
+          "CRVUSDT",
+          "KSMUSDT",
+          "SNXUSDT",
+          "SUSHIUSDT",
+          "UNIUSDT"
+        ]
+      },
+      "id": "A-2",
+      "passed": true,
+      "statement": "every shard's SHA-256 recomputes, the corpus digest follows from those shards, and the registration pinned the same digest"
+    },
+    {
+      "detail": {
+        "decisive_window": {
+          "1d": {
+            "floor": 400,
+            "floor_is_registered": true,
+            "published": {
+              "AAVE": 651,
+              "CRV": 651,
+              "KSM": 651,
+              "SNX": 651,
+              "SUSHI": 651,
+              "UNI": 651
+            },
+            "recomputed": {
+              "AAVE": 651,
+              "CRV": 651,
+              "KSM": 651,
+              "SNX": 651,
+              "SUSHI": 651,
+              "UNI": 651
+            }
+          },
+          "1h": {
+            "floor": 8000,
+            "floor_is_registered": true,
+            "published": {
+              "AAVE": 15633,
+              "CRV": 15633,
+              "KSM": 15633,
+              "SNX": 15633,
+              "SUSHI": 15633,
+              "UNI": 15633
+            },
+            "recomputed": {
+              "AAVE": 15633,
+              "CRV": 15633,
+              "KSM": 15633,
+              "SNX": 15633,
+              "SUSHI": 15633,
+              "UNI": 15633
+            }
+          },
+          "4h": {
+            "floor": 1500,
+            "floor_is_registered": true,
+            "published": {
+              "AAVE": 3909,
+              "CRV": 3909,
+              "KSM": 3909,
+              "SNX": 3909,
+              "SUSHI": 3909,
+              "UNI": 3909
+            },
+            "recomputed": {
+              "AAVE": 3909,
+              "CRV": 3909,
+              "KSM": 3909,
+              "SNX": 3909,
+              "SUSHI": 3909,
+              "UNI": 3909
+            }
+          }
+        },
+        "mismatches": {}
+      },
+      "id": "A-3",
+      "passed": true,
+      "statement": "the complete bars per asset the report published recompute from the shards on all three clocks, and the decisive-window floor is the registered one"
+    },
+    {
+      "detail": {
+        "exit_code": 0,
+        "mismatched": {},
+        "stderr": "",
+        "stdout": "registration matches the code that obeys it"
+      },
+      "id": "A-4",
+      "passed": true,
+      "statement": "`edge08_preregister.py --check` re-renders the committed registration from the code, and every registered parameter hash recomputes"
+    },
+    {
+      "detail": {
+        "books_without_registration": [],
+        "mismatched_params_hashes": {},
+        "registered_books": [
+          "edge08_active_daybreak_1h",
+          "edge08_active_multiday_range_1h",
+          "edge08_active_stretch_revert_1h",
+          "edge08_quality_breakout_daily",
+          "edge08_quality_pullback_daily",
+          "edge08_quality_reversion_daily"
+        ],
+        "superseded_hashes": [
+          "7d2c5f5c2fba5e969197f3847feee48f72e37be3043817f6ecd42aef3dd8b750",
+          "c44e61e2745b5d5b1f688084da702875078102b1b7e22aa2888e4220fa5d1d10"
+        ],
+        "superseded_still_under_test": [],
+        "validation_artefact_mismatches": {}
+      },
+      "id": "B-1",
+      "passed": true,
+      "statement": "the parameter hash of every book under test recomputes to the registered value, the reading artefact names the same bytes, and no superseded hash is still under test"
+    },
+    {
+      "detail": {
+        "arms": [
+          {
+            "arm": "edge08_quality_breakout_daily",
+            "dev_gross_expectancy_usdt": 18.4381,
+            "dev_trades": 52,
+            "published": true,
+            "recomputed": true
+          },
+          {
+            "arm": "edge08_quality_pullback_daily",
+            "dev_gross_expectancy_usdt": -1.8711,
+            "dev_trades": 165,
+            "published": false,
+            "recomputed": false
+          },
+          {
+            "arm": "edge08_quality_reversion_daily",
+            "dev_gross_expectancy_usdt": null,
+            "dev_trades": 0,
+            "published": false,
+            "recomputed": false
+          },
+          {
+            "arm": "edge08_active_daybreak_1h",
+            "dev_gross_expectancy_usdt": 1.1815,
+            "dev_trades": 554,
+            "published": true,
+            "recomputed": true
+          },
+          {
+            "arm": "edge08_active_multiday_range_1h",
+            "dev_gross_expectancy_usdt": 2.3116,
+            "dev_trades": 205,
+            "published": true,
+            "recomputed": true
+          },
+          {
+            "arm": "edge08_active_stretch_revert_1h",
+            "dev_gross_expectancy_usdt": -1.2496,
+            "dev_trades": 132,
+            "published": false,
+            "recomputed": false
+          }
+        ],
+        "mismatched": [],
+        "stopped_arms": [
+          "edge08_active_stretch_revert_1h",
+          "edge08_quality_pullback_daily",
+          "edge08_quality_reversion_daily"
+        ],
+        "stopped_but_read": []
+      },
+      "id": "B-2",
+      "passed": true,
+      "statement": "the gross screen recomputes from its own DEV rows, every arm it stopped is absent from the cross-section reading, and each of those arms carries the registered verdict"
+    },
+    {
+      "detail": {
+        "mismatched": {},
+        "unknown_verdicts": [],
+        "verdicts": {
+          "edge06_trend_fixed": "NOT_APPLICABLE",
+          "edge07_active_thrust": "NOT_APPLICABLE",
+          "edge08_active_daybreak_1h": "REJECT",
+          "edge08_active_multiday_range_1h": "REJECT",
+          "edge08_active_stretch_revert_1h": "REJECT_NO_GROSS_EDGE",
+          "edge08_quality_breakout_daily": "REJECT",
+          "edge08_quality_pullback_daily": "REJECT_NO_GROSS_EDGE",
+          "edge08_quality_reversion_daily": "REJECT_NO_GROSS_EDGE",
+          "edge_trend_01_4h": "NOT_APPLICABLE"
+        }
+      },
+      "id": "B-3",
+      "passed": true,
+      "statement": "each arm's verdict follows from the checks the arm itself published, and no arm is admitted without the registered minimum sample"
+    },
+    {
+      "detail": {
+        "offenders": []
+      },
+      "id": "B-4",
+      "passed": true,
+      "statement": "no artefact of this package promotes anything or carries a size, a quantity or an order: promotion is NONE and order_sent is false everywhere"
+    },
+    {
+      "detail": {
+        "digest_consistent": true,
+        "mismatches": {}
+      },
+      "id": "B-5",
+      "passed": true,
+      "statement": "the windows read are the registered windows on every artefact, and the cross-section read is the corpus the registration pinned"
+    },
+    {
+      "detail": {
+        "affected_arms": [
+          "edge08_quality_pullback_daily",
+          "edge08_quality_reversion_daily"
+        ],
+        "in_active": [
+          "DEF-EDGE08-01"
+        ],
+        "in_quality": [
+          "DEF-EDGE08-01"
+        ]
+      },
+      "id": "B-6",
+      "passed": true,
+      "statement": "the defect the screen exposed is published in both screen artefacts with its cause, its fix and the parameters it superseded"
+    },
+    {
+      "detail": {
+        "decisive_window_days": 651.3333,
+        "mismatches": {}
+      },
+      "id": "B-7",
+      "passed": true,
+      "statement": "the trades-per-day the verdicts read recompute from the decisive window's own rows and its own length"
+    },
+    {
+      "detail": {
+        "mismatches": {}
+      },
+      "id": "B-8",
+      "passed": true,
+      "statement": "each decisive cell's money is internally consistent: expectancy is net over trades, the interval's point is that expectancy, and concentration is published exactly when the net is positive"
+    },
+    {
+      "detail": {
+        "arms_in_gate_status": [
+          "edge06_trend_fixed",
+          "edge07_active_thrust",
+          "edge08_active_daybreak_1h",
+          "edge08_active_multiday_range_1h",
+          "edge08_active_stretch_revert_1h",
+          "edge08_quality_breakout_daily",
+          "edge08_quality_pullback_daily",
+          "edge08_quality_reversion_daily",
+          "edge_trend_01_4h"
+        ],
+        "arms_in_validation": [
+          "edge06_trend_fixed",
+          "edge07_active_thrust",
+          "edge08_active_daybreak_1h",
+          "edge08_active_multiday_range_1h",
+          "edge08_active_stretch_revert_1h",
+          "edge08_quality_breakout_daily",
+          "edge08_quality_pullback_daily",
+          "edge08_quality_reversion_daily",
+          "edge_trend_01_4h"
+        ],
+        "load": {
+          "edge06_trend_fixed": "not read",
+          "edge07_active_thrust": "not read",
+          "edge08_active_daybreak_1h": "read",
+          "edge08_active_multiday_range_1h": "read",
+          "edge08_active_stretch_revert_1h": "not read",
+          "edge08_quality_breakout_daily": "read",
+          "edge08_quality_pullback_daily": "not read",
+          "edge08_quality_reversion_daily": "not read",
+          "edge_trend_01_4h": "not read"
+        },
+        "mismatched": {}
+      },
+      "id": "C-1",
+      "passed": true,
+      "statement": "the gate status lists every arm this package registers, its verdict agrees with the validation, and the table says what it is: a status, not a permission"
+    },
+    {
+      "detail": {
+        "arm": "edge07_active_thrust",
+        "published_cost_bps": 23.7839,
+        "published_net_usdt": -488.0181,
+        "recomputed_cost_bps": 23.7839,
+        "recomputed_net_usdt": -488.0181,
+        "rows": 381
+      },
+      "id": "C-2",
+      "passed": true,
+      "statement": "one published cell recomputes from the raw trade rows: the same trade count, the same net and the same cost per traded notional"
+    }
+  ],
+  "failing": [],
+  "passed": 14,
+  "result": "PASS",
+  "schema_version": "EDGE08_VERIFICATION_V1",
+  "self_test": {
+    "baseline_failing": [],
+    "baseline_result": "PASS",
+    "detected": 14,
+    "result": "PASS",
+    "sabotages": [
+      {
+        "check": "A-1",
+        "detail": {
+          "allowed_kinds": [
+            "catalogue",
+            "fetch_or_list_script",
+            "test",
+            "documentation",
+            "this_work_package"
+          ],
+          "method": "git grep over TRACKED files (an untracked scratch file cannot argue a symbol is clean, and a committed shard cannot hide), classified by path; plus a glob for a shard of the symbol in every corpus this repository already holds",
+          "shards_outside_the_cross_section": {},
+          "symbols": [
+            "AAVEUSDT",
+            "UNIUSDT",
+            "KSMUSDT",
+            "SNXUSDT",
+            "CRVUSDT",
+            "SUSHIUSDT"
+          ],
+          "violating_kinds": [
+            "result_artefact"
+          ],
+          "violations": [
+            {
+              "kind": "result_artefact",
+              "path": "reports/edge-recovery/WP-EDGE-06/research/FAMILY_PROGRAM.json",
+              "symbol": "AAVEUSDT"
+            }
+          ]
+        },
+        "detected": true
+      },
+      {
+        "check": "A-2",
+        "detail": {
+          "corpus_digest_in_manifest": "fb32470f5bc6329eee558dfdbc436685ad4de91a7a7374ea329499c1c258735b",
+          "corpus_digest_in_registration": "fb32470f5bc6329eee558dfdbc436685ad4de91a7a7374ea329499c1c258735b",
+          "corpus_digest_recomputed": "fb32470f5bc6329eee558dfdbc436685ad4de91a7a7374ea329499c1c258735b",
+          "mismatched": {
+            "AAVEUSDT": {
+              "published": "0000000000000000000000000000000000000000000000000000000000000000",
+              "recomputed": "e3d555cd638aa8bce8c51dd2dd3859ac263aca7eeca00c4a230acb88f83ae8c5"
+            }
+          },
+          "symbols": [
+            "AAVEUSDT",
+            "CRVUSDT",
+            "KSMUSDT",
+            "SNXUSDT",
+            "SUSHIUSDT",
+            "UNIUSDT"
+          ]
+        },
+        "detected": true
+      },
+      {
+        "check": "A-3",
+        "detail": {
+          "decisive_window": {
+            "1d": {
+              "floor": 400,
+              "floor_is_registered": true,
+              "published": {
+                "AAVE": 651,
+                "CRV": 651,
+                "KSM": 651,
+                "SNX": 651,
+                "SUSHI": 651,
+                "UNI": 651
+              },
+              "recomputed": {
+                "AAVE": 651,
+                "CRV": 651,
+                "KSM": 651,
+                "SNX": 651,
+                "SUSHI": 651,
+                "UNI": 651
+              }
+            },
+            "1h": {
+              "floor": 8000,
+              "floor_is_registered": true,
+              "published": {
+                "AAVE": 15633,
+                "CRV": 15633,
+                "KSM": 15633,
+                "SNX": 15633,
+                "SUSHI": 15633,
+                "UNI": 15633
+              },
+              "recomputed": {
+                "AAVE": 15633,
+                "CRV": 15633,
+                "KSM": 15633,
+                "SNX": 15633,
+                "SUSHI": 15633,
+                "UNI": 15633
+              }
+            },
+            "4h": {
+              "floor": 1500,
+              "floor_is_registered": true,
+              "published": {
+                "AAVE": 3909,
+                "CRV": 3909,
+                "KSM": 3909,
+                "SNX": 3909,
+                "SUSHI": 3909,
+                "UNI": 3909
+              },
+              "recomputed": {
+                "AAVE": 3909,
+                "CRV": 3909,
+                "KSM": 3909,
+                "SNX": 3909,
+                "SUSHI": 3909,
+                "UNI": 3909
+              }
+            }
+          },
+          "mismatches": {
+            "1d/OOS": {
+              "published": {
+                "AAVE": 1,
+                "CRV": 651,
+                "KSM": 651,
+                "SNX": 651,
+                "SUSHI": 651,
+                "UNI": 651
+              },
+              "recomputed": {
+                "AAVE": 651,
+                "CRV": 651,
+                "KSM": 651,
+                "SNX": 651,
+                "SUSHI": 651,
+                "UNI": 651
+              }
+            }
+          }
+        },
+        "detected": true
+      },
+      {
+        "check": "A-4",
+        "detail": {
+          "exit_code": 1,
+          "mismatched": {},
+          "stderr": "",
+          "stdout": "registration matches the code that obeys it"
+        },
+        "detected": true
+      },
+      {
+        "check": "B-1",
+        "detail": {
+          "books_without_registration": [],
+          "mismatched_params_hashes": {
+            "edge08_active_daybreak_1h": {
+              "published": "0000000000000000000000000000000000000000000000000000000000000000",
+              "recomputed": "d1ed6bbe8a016018e9ad109d98f278f1b891a0f0479efdda5b4c7cadf7810d2f"
+            }
+          },
+          "registered_books": [
+            "edge08_active_daybreak_1h",
+            "edge08_active_multiday_range_1h",
+            "edge08_active_stretch_revert_1h",
+            "edge08_quality_breakout_daily",
+            "edge08_quality_pullback_daily",
+            "edge08_quality_reversion_daily"
+          ],
+          "superseded_hashes": [
+            "7d2c5f5c2fba5e969197f3847feee48f72e37be3043817f6ecd42aef3dd8b750",
+            "c44e61e2745b5d5b1f688084da702875078102b1b7e22aa2888e4220fa5d1d10"
+          ],
+          "superseded_still_under_test": [],
+          "validation_artefact_mismatches": {
+            "edge08_active_daybreak_1h": {
+              "registered_params_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+              "validation_params_hash": "d1ed6bbe8a016018e9ad109d98f278f1b891a0f0479efdda5b4c7cadf7810d2f"
+            }
+          }
+        },
+        "detected": true
+      },
+      {
+        "check": "B-2",
+        "detail": {
+          "arms": [
+            {
+              "arm": "edge08_quality_breakout_daily",
+              "dev_gross_expectancy_usdt": 18.4381,
+              "dev_trades": 52,
+              "published": true,
+              "recomputed": true
+            },
+            {
+              "arm": "edge08_quality_pullback_daily",
+              "dev_gross_expectancy_usdt": -1.8711,
+              "dev_trades": 165,
+              "published": true,
+              "recomputed": false
+            },
+            {
+              "arm": "edge08_quality_reversion_daily",
+              "dev_gross_expectancy_usdt": null,
+              "dev_trades": 0,
+              "published": false,
+              "recomputed": false
+            },
+            {
+              "arm": "edge08_active_daybreak_1h",
+              "dev_gross_expectancy_usdt": 1.1815,
+              "dev_trades": 554,
+              "published": true,
+              "recomputed": true
+            },
+            {
+              "arm": "edge08_active_multiday_range_1h",
+              "dev_gross_expectancy_usdt": 2.3116,
+              "dev_trades": 205,
+              "published": true,
+              "recomputed": true
+            },
+            {
+              "arm": "edge08_active_stretch_revert_1h",
+              "dev_gross_expectancy_usdt": -1.2496,
+              "dev_trades": 132,
+              "published": false,
+              "recomputed": false
+            }
+          ],
+          "mismatched": [
+            {
+              "arm": "edge08_quality_pullback_daily",
+              "dev_gross_expectancy_usdt": -1.8711,
+              "dev_trades": 165,
+              "published": true,
+              "recomputed": false
+            }
+          ],
+          "stopped_arms": [
+            "edge08_active_stretch_revert_1h",
+            "edge08_quality_pullback_daily",
+            "edge08_quality_reversion_daily"
+          ],
+          "stopped_but_read": []
+        },
+        "detected": true
+      },
+      {
+        "check": "B-3",
+        "detail": {
+          "mismatched": {
+            "edge08_active_daybreak_1h": {
+              "published": "ADMIT_PAPER",
+              "recomputed": "REJECT"
+            }
+          },
+          "unknown_verdicts": [],
+          "verdicts": {
+            "edge06_trend_fixed": "NOT_APPLICABLE",
+            "edge07_active_thrust": "NOT_APPLICABLE",
+            "edge08_active_daybreak_1h": "ADMIT_PAPER",
+            "edge08_active_multiday_range_1h": "REJECT",
+            "edge08_active_stretch_revert_1h": "REJECT_NO_GROSS_EDGE",
+            "edge08_quality_breakout_daily": "REJECT",
+            "edge08_quality_pullback_daily": "REJECT_NO_GROSS_EDGE",
+            "edge08_quality_reversion_daily": "REJECT_NO_GROSS_EDGE",
+            "edge_trend_01_4h": "NOT_APPLICABLE"
+          }
+        },
+        "detected": true
+      },
+      {
+        "check": "B-4",
+        "detail": {
+          "offenders": [
+            {
+              "artefact": "validation",
+              "promotion": "PAPER"
+            }
+          ]
+        },
+        "detected": true
+      },
+      {
+        "check": "B-5",
+        "detail": {
+          "digest_consistent": true,
+          "mismatches": {
+            "validation/OOS": {
+              "published": {
+                "end": 1791964800000,
+                "start": 1600000000000
+              },
+              "registered": {
+                "end": 1791964800000,
+                "start": 1735689600000
+              }
+            }
+          }
+        },
+        "detected": true
+      },
+      {
+        "check": "B-6",
+        "detail": {
+          "affected_arms": [
+            "edge08_quality_pullback_daily",
+            "edge08_quality_reversion_daily"
+          ],
+          "in_active": [],
+          "in_quality": [
+            "DEF-EDGE08-01"
+          ]
+        },
+        "detected": true
+      },
+      {
+        "check": "B-7",
+        "detail": {
+          "decisive_window_days": 651.3333,
+          "mismatches": {
+            "edge06_trend_fixed": {
+              "published": 99.0,
+              "recomputed": 0.2211
+            }
+          }
+        },
+        "detected": true
+      },
+      {
+        "check": "B-8",
+        "detail": {
+          "mismatches": {
+            "edge06_trend_fixed": [
+              "expectancy does not equal net/trades",
+              "the bootstrap point is not the expectancy",
+              "no share of the net is published for a positive net"
+            ]
+          }
+        },
+        "detected": true
+      },
+      {
+        "check": "C-1",
+        "detail": {
+          "arms_in_gate_status": [
+            "edge06_trend_fixed",
+            "edge07_active_thrust",
+            "edge08_active_daybreak_1h",
+            "edge08_active_multiday_range_1h",
+            "edge08_active_stretch_revert_1h",
+            "edge08_quality_breakout_daily",
+            "edge08_quality_pullback_daily",
+            "edge08_quality_reversion_daily"
+          ],
+          "arms_in_validation": [
+            "edge06_trend_fixed",
+            "edge07_active_thrust",
+            "edge08_active_daybreak_1h",
+            "edge08_active_multiday_range_1h",
+            "edge08_active_stretch_revert_1h",
+            "edge08_quality_breakout_daily",
+            "edge08_quality_pullback_daily",
+            "edge08_quality_reversion_daily",
+            "edge_trend_01_4h"
+          ],
+          "load": {
+            "edge06_trend_fixed": "not read",
+            "edge07_active_thrust": "not read",
+            "edge08_active_daybreak_1h": "read",
+            "edge08_active_multiday_range_1h": "read",
+            "edge08_active_stretch_revert_1h": "not read",
+            "edge08_quality_breakout_daily": "read",
+            "edge08_quality_pullback_daily": "not read",
+            "edge08_quality_reversion_daily": "not read"
+          },
+          "mismatched": {}
+        },
+        "detected": true
+      },
+      {
+        "check": "C-2",
+        "detail": {
+          "arm": "edge07_active_thrust",
+          "published_cost_bps": 23.7839,
+          "published_net_usdt": -488.0181,
+          "recomputed_cost_bps": 23.7839,
+          "recomputed_net_usdt": 380511.9819,
+          "rows": 381
+        },
+        "detected": true
+      }
+    ],
+    "total": 14
+  },
+  "total": 14
+}
