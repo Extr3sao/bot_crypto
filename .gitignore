@@ -211,6 +211,44 @@ reports/edge-recovery/WP-EDGE-07/active-research/*
 !reports/edge-recovery/WP-EDGE-07/active-research/*.csv
 !reports/edge-recovery/WP-EDGE-07/active-research/*.jsonl
 
+# ------------------------------------------------------------
+# WP-EDGE-08 — misma cadena de excepciones que WP-EDGE-01…07, por el mismo motivo: lo que
+# se versiona es la evidencia. Aqui la evidencia es una CROSS-SECTION: seis simbolos que
+# ningun artefacto commiteado habia medido nunca (AAVE, UNI, MKR, SNX, CRV, SUSHI), asi que
+# la RFC-EDGE-008, su pre-registracion (commiteada antes de leer una sola barra del corpus),
+# los dos tracks (calidad y activo), la matriz economica y las validaciones SI entran.
+# `*.md` en la raiz del WP cubre RFC-EDGE-008.md, PREREGISTRATION.md, UNIVERSE.md,
+# RUN_REPORT.md, FINAL_REPORT.md y el informe ejecutivo; las subcarpetas necesitan su propia
+# linea porque git no re-incluye un fichero cuyo directorio padre esta excluido.
+# El corpus nuevo (data/edge08/universe-1h/, ~15 MiB) se versiona con su manifiesto de
+# sha256 por shard: sin el, la validacion no seria reproducible desde el commit.
+# ------------------------------------------------------------
+!reports/edge-recovery/WP-EDGE-08/
+reports/edge-recovery/WP-EDGE-08/*
+!reports/edge-recovery/WP-EDGE-08/*.json
+!reports/edge-recovery/WP-EDGE-08/*.md
+!reports/edge-recovery/WP-EDGE-08/*.jsonl
+!reports/edge-recovery/WP-EDGE-08/quality/
+reports/edge-recovery/WP-EDGE-08/quality/*
+!reports/edge-recovery/WP-EDGE-08/quality/*.json
+!reports/edge-recovery/WP-EDGE-08/quality/*.md
+!reports/edge-recovery/WP-EDGE-08/quality/*.csv
+!reports/edge-recovery/WP-EDGE-08/active/
+reports/edge-recovery/WP-EDGE-08/active/*
+!reports/edge-recovery/WP-EDGE-08/active/*.json
+!reports/edge-recovery/WP-EDGE-08/active/*.md
+!reports/edge-recovery/WP-EDGE-08/active/*.csv
+!reports/edge-recovery/WP-EDGE-08/economics/
+reports/edge-recovery/WP-EDGE-08/economics/*
+!reports/edge-recovery/WP-EDGE-08/economics/*.json
+!reports/edge-recovery/WP-EDGE-08/economics/*.md
+!reports/edge-recovery/WP-EDGE-08/economics/*.csv
+!reports/edge-recovery/WP-EDGE-08/validation/
+reports/edge-recovery/WP-EDGE-08/validation/*
+!reports/edge-recovery/WP-EDGE-08/validation/*.json
+!reports/edge-recovery/WP-EDGE-08/validation/*.md
+!reports/edge-recovery/WP-EDGE-08/validation/*.csv
+
 # ============================================================
 # CAP-003 — evidencias OHLCV crudas: locales por tamano.
 # El ledger (evidence/real_decisions/*.jsonl) SI se versiona y
