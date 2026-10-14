@@ -93,7 +93,9 @@ def _receipts(state_root: Path) -> list[dict[str, Any]]:
     path = state_root / "derived_refresh.jsonl"
     if not path.is_file():
         return []
-    return [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
+    return [
+        json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip()
+    ]
 
 
 def test_a_tick_that_observed_persists_a_receipt_that_it_re_read(

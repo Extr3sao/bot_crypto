@@ -37,7 +37,11 @@ from trading_bot.research.edge01 import campaign as C
 from trading_bot.research.edge01.candidates import build_candidates
 from trading_bot.research.edge01.costs import cost_plane
 from trading_bot.research.edge01.data import ASSETS, Corpus, load_1h, resample
-from trading_bot.research.edge01.features import MARKET_REGIME_RULE, market_regime_at, market_regime_series
+from trading_bot.research.edge01.features import (
+    MARKET_REGIME_RULE,
+    market_regime_at,
+    market_regime_series,
+)
 from trading_bot.research.edge01.simulator import run_portfolio
 from trading_bot.research.edge06.families import build_families
 
@@ -197,9 +201,7 @@ def _extras(
     expectancies: list[float] = []
     totals: list[float] = []
     if nets:
-        blocks = [
-            nets[i : i + BOOTSTRAP_BLOCK] for i in range(0, len(nets), BOOTSTRAP_BLOCK)
-        ]
+        blocks = [nets[i : i + BOOTSTRAP_BLOCK] for i in range(0, len(nets), BOOTSTRAP_BLOCK)]
         for _ in range(BOOTSTRAP_RESAMPLES):
             sample: list[float] = []
             while len(sample) < len(nets):
@@ -508,7 +510,9 @@ def instrument_check(result: dict[str, Any]) -> dict[str, Any]:
     remembered value.
     """
     checks: list[dict[str, Any]] = []
-    program_path = REPO_ROOT / "reports" / "edge-recovery" / "WP-EDGE-06" / "research" / "FAMILY_PROGRAM.json"
+    program_path = (
+        REPO_ROOT / "reports" / "edge-recovery" / "WP-EDGE-06" / "research" / "FAMILY_PROGRAM.json"
+    )
     if program_path.is_file():
         published = json.loads(program_path.read_text(encoding="utf-8"))
         family = (published.get("families") or {}).get("edge06_trend_fixed", {}).get("splits") or {}
@@ -539,7 +543,9 @@ def instrument_check(result: dict[str, Any]) -> dict[str, Any]:
     campaign_path = REPO_ROOT / "reports" / "edge-recovery" / "WP-EDGE-01" / "STRATEGY_RESULTS.json"
     if campaign_path.is_file():
         published = json.loads(campaign_path.read_text(encoding="utf-8"))
-        frozen = ((published.get("candidates") or {}).get("edge_trend_01_4h") or {}).get("splits") or {}
+        frozen = ((published.get("candidates") or {}).get("edge_trend_01_4h") or {}).get(
+            "splits"
+        ) or {}
         mine = result["TRAILING_OOS_CONSULTED"]["BASE"]
         theirs = (frozen.get("OOS") or {}).get("BASE") or {}
         if theirs:
@@ -624,9 +630,7 @@ def evaluate() -> dict[str, Any]:
         "VAL": dict(C.SPLITS["trend"]["VAL"]),
         "OOS_CONSULTED": dict(C.SPLITS["trend"]["OOS"]),
     }
-    coverage = {
-        asset: len(bars) for asset, bars in sorted(holdout.bars_by_asset.items())
-    }
+    coverage = {asset: len(bars) for asset, bars in sorted(holdout.bars_by_asset.items())}
     enough_coverage = all(count >= MIN_HOLDOUT_BARS for count in coverage.values())
 
     result: dict[str, Any] = {

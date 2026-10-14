@@ -224,7 +224,9 @@ def main(argv: list[str] | None = None) -> int:
             "no interpolation, no synthesis, gaps left absent"
         ),
         "disjoint_from_frozen_corpora": {
-            "frozen_last_bar_utc": {symbol: stamp(ts) for symbol, ts in sorted(frozen_last.items())},
+            "frozen_last_bar_utc": {
+                symbol: stamp(ts) for symbol, ts in sorted(frozen_last.items())
+            },
             "new_window_starts_utc": stamp(START_MS),
             "disjoint": all(ts < START_MS for ts in frozen_last.values()),
         },
@@ -277,9 +279,7 @@ def main(argv: list[str] | None = None) -> int:
             sort_keys=True,
         ).encode("utf-8")
     ).hexdigest()
-    MANIFEST.write_text(
-        json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
-    )
+    MANIFEST.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     print(
         f"manifest {MANIFEST.relative_to(REPO_ROOT)}: "
         f"{payload['totals']['bars']} bars, {payload['totals']['bytes'] / 1024:.1f} KiB, "

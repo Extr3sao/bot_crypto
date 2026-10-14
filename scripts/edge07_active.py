@@ -128,10 +128,17 @@ def run_candidate(
     return out
 
 
-def verdict_for(book_id: str, screen: dict[str, Any], holdout: dict[str, Any] | None) -> dict[str, Any]:
+def verdict_for(
+    book_id: str, screen: dict[str, Any], holdout: dict[str, Any] | None
+) -> dict[str, Any]:
     dev_gross = screen["DEV"]["BASE"].get("gross_expectancy_usdt")
     dev_trades = int(screen["DEV"]["BASE"].get("trades") or 0)
-    base = {"id": "C0", "statement": "DEV gross expectancy > 0", "value": dev_gross, "passed": bool(dev_gross and dev_gross > 0)}
+    base = {
+        "id": "C0",
+        "statement": "DEV gross expectancy > 0",
+        "value": dev_gross,
+        "passed": bool(dev_gross and dev_gross > 0),
+    }
     if not base["passed"]:
         return {
             "book": book_id,
@@ -162,25 +169,70 @@ def verdict_for(book_id: str, screen: dict[str, Any], holdout: dict[str, Any] | 
     share = hbase.get("largest_trade_share_of_net")
     checks = [
         base,
-        {"id": "C1", "statement": "trades >= 3 per day", "value": per_day, "passed": bool(per_day and per_day >= A.FREQUENCY_TARGET_PER_DAY)},
-        {"id": "C2", "statement": "net > 0 at BASE", "value": hbase.get("net_usdt"), "passed": float(hbase.get("net_usdt") or 0) > 0},
-        {"id": "C3", "statement": "expectancy > 0 at BASE", "value": hbase.get("expectancy_usdt"), "passed": float(hbase.get("expectancy_usdt") or 0) > 0},
-        {"id": "C4", "statement": "net > 0 at 2X_FEES", "value": hstress.get("net_usdt"), "passed": float(hstress.get("net_usdt") or 0) > 0},
-        {"id": "C5", "statement": "largest single trade <= 50% of the net", "value": share, "passed": share is not None and float(share) <= 0.5},
-        {"id": "C6", "statement": "net > 0 in >= 2 of 3 time blocks", "value": hbase["extras"]["positive_time_blocks"], "passed": int(hbase["extras"]["positive_time_blocks"]) >= 2},
+        {
+            "id": "C1",
+            "statement": "trades >= 3 per day",
+            "value": per_day,
+            "passed": bool(per_day and per_day >= A.FREQUENCY_TARGET_PER_DAY),
+        },
+        {
+            "id": "C2",
+            "statement": "net > 0 at BASE",
+            "value": hbase.get("net_usdt"),
+            "passed": float(hbase.get("net_usdt") or 0) > 0,
+        },
+        {
+            "id": "C3",
+            "statement": "expectancy > 0 at BASE",
+            "value": hbase.get("expectancy_usdt"),
+            "passed": float(hbase.get("expectancy_usdt") or 0) > 0,
+        },
+        {
+            "id": "C4",
+            "statement": "net > 0 at 2X_FEES",
+            "value": hstress.get("net_usdt"),
+            "passed": float(hstress.get("net_usdt") or 0) > 0,
+        },
+        {
+            "id": "C5",
+            "statement": "largest single trade <= 50% of the net",
+            "value": share,
+            "passed": share is not None and float(share) <= 0.5,
+        },
+        {
+            "id": "C6",
+            "statement": "net > 0 in >= 2 of 3 time blocks",
+            "value": hbase["extras"]["positive_time_blocks"],
+            "passed": int(hbase["extras"]["positive_time_blocks"]) >= 2,
+        },
     ]
     failed = [check["id"] for check in checks if not check["passed"]]
     powered = int(hbase.get("trades") or 0) >= SCREEN_MIN_TRADES
     if not failed:
-        verdict, why = "ADMIT_PAPER", "every registered criterion passed on the independent window: admitted to a paper lane, and to paper only"
+        verdict, why = (
+            "ADMIT_PAPER",
+            "every registered criterion passed on the independent window: admitted to a paper lane, and to paper only",
+        )
     elif not powered:
-        verdict, why = "INSUFFICIENT_EVIDENCE", f"the independent sample is too small to decide ({hbase.get('trades')} trades)"
+        verdict, why = (
+            "INSUFFICIENT_EVIDENCE",
+            f"the independent sample is too small to decide ({hbase.get('trades')} trades)",
+        )
     elif failed == ["C1"]:
-        verdict, why = "INSUFFICIENT_EVIDENCE", f"the frequency aim is missed ({per_day} trades/day < {A.FREQUENCY_TARGET_PER_DAY}) while everything else is non-negative"
+        verdict, why = (
+            "INSUFFICIENT_EVIDENCE",
+            f"the frequency aim is missed ({per_day} trades/day < {A.FREQUENCY_TARGET_PER_DAY}) while everything else is non-negative",
+        )
     elif "C5" in failed and float(hbase.get("net_usdt") or 0) > 0:
-        verdict, why = "INSUFFICIENT_EVIDENCE", "one trade carries the net: the concentration criterion failed"
+        verdict, why = (
+            "INSUFFICIENT_EVIDENCE",
+            "one trade carries the net: the concentration criterion failed",
+        )
     else:
-        verdict, why = "REJECT", f"decisive criterion failed on the independent window: {', '.join(failed)}"
+        verdict, why = (
+            "REJECT",
+            f"decisive criterion failed on the independent window: {', '.join(failed)}",
+        )
     return {
         "book": book_id,
         "verdict": verdict,
@@ -261,14 +313,18 @@ def evaluate(*, screen_only: bool = False) -> dict[str, Any]:
     result["holdout"] = holdout_readings
     result["readings"] = readings
     result["best_observed_gross_bps_per_trade"] = {
-        book_id: (reading["DEV"]["BASE"].get("gross_bps_per_trade")) for book_id, reading in screen.items()
+        book_id: (reading["DEV"]["BASE"].get("gross_bps_per_trade"))
+        for book_id, reading in screen.items()
     }
     result["frequency"] = {
         book_id: {
             "screen_DEV_trades_per_day": reading["DEV"]["BASE"].get("trades_per_day"),
             "screen_VAL_trades_per_day": reading["VAL"]["BASE"].get("trades_per_day"),
             "holdout_trades_per_day": (
-                holdout_readings.get(book_id, {}).get("NEW_HOLDOUT", {}).get("BASE", {}).get("trades_per_day")
+                holdout_readings.get(book_id, {})
+                .get("NEW_HOLDOUT", {})
+                .get("BASE", {})
+                .get("trades_per_day")
             ),
         }
         for book_id, reading in screen.items()
@@ -331,13 +387,17 @@ def write_artifacts(payload: dict[str, Any], outdir: Path) -> dict[str, Path]:
             for scenario, metrics in scenarios.items():
                 if isinstance(metrics, dict) and "trade_rows" in metrics:
                     for trade in metrics["trade_rows"]:
-                        rows.append({"book": book_id, "window": window, "scenario": scenario, **trade})
+                        rows.append(
+                            {"book": book_id, "window": window, "scenario": scenario, **trade}
+                        )
     for book_id, windows in (payload.get("holdout") or {}).items():
         for window, scenarios in windows.items():
             for scenario, metrics in scenarios.items():
                 if isinstance(metrics, dict) and "trade_rows" in metrics:
                     for trade in metrics["trade_rows"]:
-                        rows.append({"book": book_id, "window": window, "scenario": scenario, **trade})
+                        rows.append(
+                            {"book": book_id, "window": window, "scenario": scenario, **trade}
+                        )
     trades_path = outdir / "ACTIVE_TRADES.csv"
     fieldnames = [
         "book",
@@ -483,7 +543,11 @@ def main(argv: list[str] | None = None) -> int:
 
     payload = evaluate(screen_only=options.screen_only)
     if options.json:
-        print(json.dumps(_strip_rows(payload), indent=2, ensure_ascii=False, sort_keys=True, default=str))
+        print(
+            json.dumps(
+                _strip_rows(payload), indent=2, ensure_ascii=False, sort_keys=True, default=str
+            )
+        )
         return 0
     written = write_artifacts(payload, Path(options.out))
     print(summarise(payload))

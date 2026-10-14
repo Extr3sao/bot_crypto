@@ -119,10 +119,9 @@ def main(argv: list[str] | None = None) -> int:
         stored_path = out_dir / "VALIDATION.json"
         stored = json.loads(stored_path.read_text(encoding="utf-8"))
         same_verdict = stored.get("reading", {}).get("verdict") == payload["reading"]["verdict"]
-        same_net = (
-            stored.get("NEW_HOLDOUT", {}).get("BASE", {}).get("net_usdt")
-            == payload["NEW_HOLDOUT"]["BASE"].get("net_usdt")
-        )
+        same_net = stored.get("NEW_HOLDOUT", {}).get("BASE", {}).get("net_usdt") == payload[
+            "NEW_HOLDOUT"
+        ]["BASE"].get("net_usdt")
         print(
             json.dumps(
                 {
@@ -130,7 +129,9 @@ def main(argv: list[str] | None = None) -> int:
                     "result": "PASS" if (same_verdict and same_net) else "FAIL",
                     "stored_verdict": stored.get("reading", {}).get("verdict"),
                     "verdict": payload["reading"]["verdict"],
-                    "stored_net_usdt": stored.get("NEW_HOLDOUT", {}).get("BASE", {}).get("net_usdt"),
+                    "stored_net_usdt": stored.get("NEW_HOLDOUT", {})
+                    .get("BASE", {})
+                    .get("net_usdt"),
                     "net_usdt": payload["NEW_HOLDOUT"]["BASE"].get("net_usdt"),
                 },
                 indent=2,

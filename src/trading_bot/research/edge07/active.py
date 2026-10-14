@@ -117,9 +117,7 @@ class ActiveThrust(_Base):
             )
         thrust = (close - bar.open) / a
         if thrust < float(p["thrust_atr"]):
-            return self.refuse(
-                i, decision_ts, "thrust_filter_fail", thrust_atr=round(thrust, 4)
-            )
+            return self.refuse(i, decision_ts, "thrust_filter_fail", thrust_atr=round(thrust, 4))
         stop = close - float(p["stop_atr"]) * a
         objective = close + float(p["target_atr"]) * a
         numbers, refusal = self.cost_gate(

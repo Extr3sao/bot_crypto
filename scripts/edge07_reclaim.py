@@ -182,13 +182,17 @@ def worktrees() -> list[dict[str, Any]]:
             diff = git("diff", cwd=path).stdout
             block["diff_sha256"] = hashlib.sha256(diff).hexdigest()
         head = block.get("head")
-        block["head_present"] = bool(head) and git("cat-file", "-e", f"{head}^{{commit}}").returncode == 0
+        block["head_present"] = (
+            bool(head) and git("cat-file", "-e", f"{head}^{{commit}}").returncode == 0
+        )
         block["is_this_checkout"] = path.resolve() == REPO_ROOT
         block["size_bytes"], block["files"] = measure(path) if path.exists() else (0, 0)
     return blocks
 
 
-def pytest_sessions(temp: Path, *, min_age_minutes: float) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+def pytest_sessions(
+    temp: Path, *, min_age_minutes: float
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
     """Every session under pytest's base temp directory except the newest and the fresh ones."""
     base = temp / f"pytest-of-{os.environ.get('USERNAME', '')}"
     if not base.is_dir():
@@ -354,7 +358,10 @@ def remove_path(path: Path) -> tuple[bool, str]:
     except OSError as exc:  # a locked file is a fact, not a crash
         return False, repr(exc)
     if path.exists():
-        return False, "the path still exists after the removal attempt (a file is held by a process?)"
+        return (
+            False,
+            "the path still exists after the removal attempt (a file is held by a process?)",
+        )
     return True, ""
 
 
@@ -463,10 +470,18 @@ def render(payload: dict[str, Any]) -> str:
             )
     else:
         lines.append("*Nothing was removed: this was a dry run, or nothing passed its rule.*")
-    lines += ["", "## 3. Kept, and why", "", "| Path | Rule | Size | Kept because |", "| --- | --- | --- | --- |"]
+    lines += [
+        "",
+        "## 3. Kept, and why",
+        "",
+        "| Path | Rule | Size | Kept because |",
+        "| --- | --- | --- | --- |",
+    ]
     for row in payload["kept"]:
         reason = (row.get("provenance") or {}).get("reason", "")
-        lines.append(f"| `{row['path']}` | `{row['rule']}` | {row['bytes'] / MIB:.2f} MiB | {reason} |")
+        lines.append(
+            f"| `{row['path']}` | `{row['rule']}` | {row['bytes'] / MIB:.2f} MiB | {reason} |"
+        )
     lines += [
         "",
         "## 4. Not ours: the neighbours this tool measured and left alone",
@@ -496,7 +511,9 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
     )
-    parser.add_argument("--apply", action="store_true", help="actually delete; default is a dry run")
+    parser.add_argument(
+        "--apply", action="store_true", help="actually delete; default is a dry run"
+    )
     parser.add_argument(
         "--include-dirty-worktrees",
         action="store_true",
@@ -584,9 +601,7 @@ def main(argv: list[str] | None = None) -> int:
         "kept": plan_payload["kept"],
         "neighbours": plan_payload["neighbours"],
         "worktrees_after": [
-            block
-            for block in worktrees()
-            if not block["is_this_checkout"] and block["exists"]
+            block for block in worktrees() if not block["is_this_checkout"] and block["exists"]
         ],
     }
     payload["verification"] = {
@@ -607,7 +622,9 @@ def main(argv: list[str] | None = None) -> int:
         json.dumps(payload, indent=2, ensure_ascii=False, default=str) + "\n", encoding="utf-8"
     )
     (out_dir / "STORAGE_RECLAIM.md").write_text(render(payload), encoding="utf-8")
-    history = REPO_ROOT / "reports" / "edge-recovery" / "WP-EDGE-07" / "STORAGE_RECLAIM_HISTORY.jsonl"
+    history = (
+        REPO_ROOT / "reports" / "edge-recovery" / "WP-EDGE-07" / "STORAGE_RECLAIM_HISTORY.jsonl"
+    )
     with history.open("a", encoding="utf-8") as handle:
         handle.write(
             json.dumps(
@@ -634,13 +651,21 @@ def main(argv: list[str] | None = None) -> int:
         print(f"WP-EDGE-07 STORAGE RECLAIM — {payload['mode']}")
         print("=" * 78)
         print(f"free before          : {before.free / GIB:.3f} GiB")
-        print(f"eligible             : {len(plan_payload['eligible'])} path(s), "
-              f"{plan_payload['eligible_bytes'] / MIB:.2f} MiB")
-        print(f"removed              : {len([r for r in removed if r['removed']])} path(s), "
-              f"{reclaimed / MIB:.2f} MiB")
+        print(
+            f"eligible             : {len(plan_payload['eligible'])} path(s), "
+            f"{plan_payload['eligible_bytes'] / MIB:.2f} MiB"
+        )
+        print(
+            f"removed              : {len([r for r in removed if r['removed']])} path(s), "
+            f"{reclaimed / MIB:.2f} MiB"
+        )
         print(f"free after           : {after.free / GIB:.3f} GiB")
-        print(f"critical floor       : {'CLEARED' if after.free >= CRITICAL_FLOOR_BYTES else 'still below'}")
-        print(f"healthy floor        : {'CLEARED' if after.free >= HEALTHY_FLOOR_BYTES else 'still below'}")
+        print(
+            f"critical floor       : {'CLEARED' if after.free >= CRITICAL_FLOOR_BYTES else 'still below'}"
+        )
+        print(
+            f"healthy floor        : {'CLEARED' if after.free >= HEALTHY_FLOOR_BYTES else 'still below'}"
+        )
         for row in removed:
             mark = "removed" if row["removed"] else ("planned" if not options.apply else "FAILED")
             print(f"  {mark:<8} {row['bytes'] / MIB:9.2f} MiB  {row['rule']:<20} {row['path']}")

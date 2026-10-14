@@ -51,9 +51,7 @@ def now_utc() -> str:
     return datetime.now(tz=UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
-def ceiling(
-    bars: list[Any], *, window: dict[str, int], horizon: int
-) -> dict[str, Any]:
+def ceiling(bars: list[Any], *, window: dict[str, int], horizon: int) -> dict[str, Any]:
     """The perfect-foresight open-to-open capture at ``horizon`` bars, inside the window."""
     moves: list[float] = []
     for index in range(len(bars) - horizon - 1):
@@ -80,9 +78,7 @@ def ceiling(
         "p90_absolute_move_bps": round(sorted_moves[int(len(sorted_moves) * 0.9)], 4),
         "round_trip_cost_bps": round(cost, 4),
         "perfect_foresight_net_bps": round(mean - cost, 4),
-        "share_of_moves_below_cost": round(
-            sum(1 for move in moves if move < cost) / len(moves), 4
-        ),
+        "share_of_moves_below_cost": round(sum(1 for move in moves if move < cost) / len(moves), 4),
         "capture_fraction_needed_to_break_even": round(cost / mean, 4) if mean else None,
     }
 
@@ -115,9 +111,7 @@ def evaluate() -> dict[str, Any]:
         "NEW_HOLDOUT": dict(V.NEW_HOLDOUT),
     }
     frozen = {asset: list(load_1h(asset).bars) for asset in ASSETS}
-    holdout = {
-        asset: list(load_1h(asset, corpus=V.HOLDOUT_DIR).bars) for asset in ASSETS
-    }
+    holdout = {asset: list(load_1h(asset, corpus=V.HOLDOUT_DIR).bars) for asset in ASSETS}
     measured: dict[str, Any] = {}
     for window_name, window in windows.items():
         source = holdout if window_name == "NEW_HOLDOUT" else frozen

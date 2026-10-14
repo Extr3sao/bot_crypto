@@ -127,9 +127,10 @@ def running_processes() -> dict[str, Any]:
     home = str(Path.home()).lower()
     rows: list[dict[str, Any]] = []
     try:
-        import psutil  # type: ignore[import-not-found]
+        # Not a project dependency: present on some hosts, absent on others, and never assumed.
+        import psutil  # type: ignore[import-untyped]
     except ImportError:
-        psutil = None  # type: ignore[assignment]
+        psutil = None
     if psutil is not None:
         for proc in psutil.process_iter(["pid", "name", "exe", "cmdline", "create_time"]):
             try:
@@ -160,7 +161,11 @@ def running_processes() -> dict[str, Any]:
             if home.split("\\")[-1] in line.lower() or "appdata" in line.lower():
                 rows.append({"raw": line.strip()[:240]})
         source = "ps -W (psutil unavailable)"
-    return {"source": source, "count": len(rows), "processes": sorted(rows, key=lambda r: r.get("name") or "")}
+    return {
+        "source": source,
+        "count": len(rows),
+        "processes": sorted(rows, key=lambda r: r.get("name") or ""),
+    }
 
 
 def build(*, window_minutes: float, budget_seconds: float, roots: list[Path]) -> dict[str, Any]:
@@ -168,7 +173,10 @@ def build(*, window_minutes: float, budget_seconds: float, roots: list[Path]) ->
     usage = shutil.disk_usage(REPO_ROOT)
     limits = thresholds()
     per_root = [
-        {"name": str(path), **walk_recent(path, window_minutes=window_minutes, budget_seconds=budget_seconds)}
+        {
+            "name": str(path),
+            **walk_recent(path, window_minutes=window_minutes, budget_seconds=budget_seconds),
+        }
         for path in roots
         if path.exists()
     ]
@@ -195,7 +203,9 @@ def build(*, window_minutes: float, budget_seconds: float, roots: list[Path]) ->
             "bytes_to_resume_ingestion": shortfall_critical,
             "gib_to_resume_ingestion": round(shortfall_critical / GIB, 3),
             "bytes_to_reach_healthy": max(0, limits["healthy_free_bytes"] - usage.free),
-            "gib_to_reach_healthy": round(max(0, limits["healthy_free_bytes"] - usage.free) / GIB, 3),
+            "gib_to_reach_healthy": round(
+                max(0, limits["healthy_free_bytes"] - usage.free) / GIB, 3
+            ),
             "reading": (
                 "the lane refuses a tick below the critical floor and the heavy publication waits "
                 "below the healthy floor; the numbers above are the distance to each, measured now"
@@ -267,7 +277,9 @@ def render(payload: dict[str, Any]) -> str:
             "| Extension | Written | Files |",
             "| --- | --- | --- |",
         ]
-        for ext, row in sorted(root["by_extension"].items(), key=lambda item: -item[1]["bytes"])[:12]:
+        for ext, row in sorted(root["by_extension"].items(), key=lambda item: -item[1]["bytes"])[
+            :12
+        ]:
             lines.append(f"| `{ext}` | {row['bytes'] / MIB:,.1f} MiB | {row['files']:,} |")
         lines.append("")
 
@@ -313,7 +325,9 @@ def main(argv: list[str] | None = None) -> int:
         default=None,
         help=f"root to walk (repeatable); default {home / 'AppData' / 'Local'}",
     )
-    parser.add_argument("--out", default=str(REPO_ROOT / "reports" / "edge-recovery" / "WP-EDGE-07"))
+    parser.add_argument(
+        "--out", default=str(REPO_ROOT / "reports" / "edge-recovery" / "WP-EDGE-07")
+    )
     parser.add_argument("--json", action="store_true")
     options = parser.parse_args(argv)
 
