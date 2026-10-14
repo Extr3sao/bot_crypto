@@ -356,36 +356,68 @@ def pressure_line(snapshot: Snapshot) -> str:
 
 
 def floor_line(snapshot: Snapshot) -> str:
-    """What the volume means, from the floors the lane's own guard uses — not from a literal.
+    """What the volume means *now*, decided by the live verdict and nothing else.
 
-    The sentence this replaced said "the healthy 5 GiB floor is not reached" unconditionally, and
-    the report of 2026-10-14T00:22Z printed it beside a verdict of `BELOW_CRITICAL`. A sentence
-    that cannot follow its own figure from one reading to the next is the defect this work package
-    exists to remove, so this one is a function of the figures and nothing else.
+    One instant per sentence, chosen by the sentence's own subject. The version this replaces asked
+    the *sweep's* verdict (`storage_verdict_after`, read at 05:44:52Z when the volume held
+    5.502 GiB) whether the *volume* cleared the floors at this reading's instant (3.566 GiB), and
+    printed "clear of both declared floors" directly above a table that said
+    `ABOVE_CRITICAL_BELOW_HEALTHY` — two instants blended into one claim, which is the defect this
+    work package exists to remove.
     """
-    verdict = str(snapshot("storage_verdict_after"))
+    verdict = str(snapshot("volume_verdict"))
     free = snapshot("volume_free_gib")
-    reclaimed = snapshot("storage_reclaimed_bytes")
     if verdict == "HEALTHY":
         return (
-            f"- El volumen queda **por encima de los dos suelos declarados** (`{verdict}`, {free} GiB "
-            f"libres). De ese espacio, **{reclaimed} bytes** son cachés de herramienta que devolvió "
-            "este work package; el resto del alivio no es suyo: se recuperó fuera del repositorio, "
-            "entre dos lecturas del mismo volumen, y las dos quedan etiquetadas con su instante en el "
-            "informe técnico en lugar de presentarse como una sola."
+            f"- El volumen está **por encima de los dos suelos declarados** (`{verdict}`, {free} GiB "
+            "libres al tomar esta lectura). El alivio no es todo de este work package: lo que devolvió "
+            "son las cachés de la viñeta anterior, y el resto se recuperó fuera del repositorio, entre "
+            "dos lecturas del mismo volumen que quedan etiquetadas por separado en el informe técnico."
         )
     if verdict == "ABOVE_CRITICAL_BELOW_HEALTHY":
         return (
-            f"- El volumen queda **por encima del suelo crítico y por debajo del sano** (`{verdict}`, "
-            f"{free} GiB libres) tras devolver {reclaimed} bytes de caché: la lane ingiere y la "
-            "publicación pesada espera. Un consumidor más en este volumen cierra la ventana."
+            f"- El volumen está **por encima del suelo crítico y por debajo del sano** (`{verdict}`, "
+            f"{free} GiB libres al tomar esta lectura): la lane ingiere y la publicación pesada espera, "
+            "y un consumidor más cierra la ventana. El suelo que falta no lo puede cerrar este "
+            "repositorio — su parte está en `STORAGE_INVENTORY.md` y en el plan adjunto, no ejecutado aquí."
         )
     return (
-        f"- **No se alcanza el suelo crítico de 2 GiB** (`{verdict}`, {free} GiB libres), y con las "
-        f"cachés ({reclaimed} bytes) no basta: el siguiente tick programado seguirá siendo rechazado "
-        "antes de hacer ninguna petición de mercado. Cerrar esa distancia no es una limpieza — el "
-        "inventario de diagnóstico nombra los consumidores, dentro y fuera del repositorio, y la "
-        "decisión es del propietario del volumen."
+        f"- **El volumen está por debajo del suelo crítico de 2 GiB** (`{verdict}`, {free} GiB "
+        "libres): el siguiente tick programado será rechazado antes de hacer ninguna petición de "
+        "mercado. Cerrar esa distancia no es una limpieza — el inventario de diagnóstico nombra los "
+        "consumidores, dentro y fuera del repositorio, y la decisión es del propietario del volumen."
+    )
+
+
+def newest_reading_line(snapshot: Snapshot) -> str:
+    """The newest reading's own line, including the case where no failure class was assigned."""
+    verdict = snapshot("watchdog_newest_verdict")
+    category = snapshot("watchdog_newest_category")
+    cause = snapshot("watchdog_newest_cause")
+    when = snapshot("watchdog_newest_at_utc")
+    if cause is None:
+        return (
+            f"- Lectura más nueva (`{when}`): `{verdict}` / `{category}` (esquema "
+            f"`{snapshot('watchdog_newest_schema')}`), **sin clase de fallo asignada**: lo que la "
+            "categoría nombra es presión — un aviso del volumen, no un fallo del planificador ni de la lane."
+        )
+    return (
+        f"- Lectura más nueva (`{when}`): `{verdict}` / `{category}` (esquema "
+        f"`{snapshot('watchdog_newest_schema')}`), causa `{cause}`."
+    )
+
+
+def instant_labels_line(snapshot: Snapshot) -> str:
+    """The labelling repair, cited from the figures rather than described from memory."""
+    return (
+        "- El mismo instante se publica ahora en las dos formas que se derivaron: "
+        f"`{snapshot('watchdog_newest_scheduler_next_run_utc')}` como instante y "
+        f"`{snapshot('watchdog_newest_scheduler_platform_spelling')}` como la grafía de la plataforma, "
+        "y la sonda declara su propio retraso medido entre dos instantes que la misma comprobación "
+        f"publica (`watchdog_newest_probe_answer_lag_seconds` = "
+        f"{snapshot('watchdog_newest_probe_answer_lag_seconds')} s). Antes, la grafía local viajaba bajo "
+        "un nombre `_utc` — el mismo instante a dos horas de distancia dentro de una fila — y el "
+        "desfase de reloj publicado era ese retraso con el signo cambiado."
     )
 
 
@@ -402,25 +434,31 @@ def reclaim_note(snapshot: Snapshot) -> str:
         "data, evidence, other workstreams' artefacts, source and the environment's own files were "
         "sized and left alone."
     )
-    verdict = str(snapshot("storage_verdict_after"))
-    if verdict == "HEALTHY":
+    # The live verdict decides this sentence, not the sweep's: the sweep recorded `HEALTHY` when it
+    # ran (5.502 GiB free) and this reading records `ABOVE_CRITICAL_BELOW_HEALTHY` (3.497 GiB).
+    # Asking the sweep's instant about this one is how the report of 06:52:02Z printed "clears both
+    # declared floors" above a table that said the opposite — one instant answering for another.
+    live = str(snapshot("volume_verdict"))
+    sweep = str(snapshot("storage_verdict_after"))
+    if live == "HEALTHY":
         return base + (
-            " The volume clears both declared floors at the instants this report cites, and most of "
-            "that headroom is not this work package's doing: the sweep returned tens of MiB inside "
-            "the repository while the volume gained several GiB from outside it, between two "
-            "readings this report keeps separate rather than blending. What the repository could "
-            "give back on its own was given back; the rest is the volume owner's decision, planned "
-            "rather than executed in `VOLUME_NEIGHBOURS.md`."
+            f" At this reading's instant the volume clears both declared floors (`{live}`); the "
+            f"sweep's own reading put it at `{sweep}` in its own instant, minutes earlier, and the two "
+            "are kept apart on purpose — most of the headroom between them came from outside the "
+            "repository, and only the cache it returned belongs to this work package. The rest is the "
+            "volume owner's decision, planned rather than executed in `VOLUME_NEIGHBOURS.md`."
         )
-    if verdict == "ABOVE_CRITICAL_BELOW_HEALTHY":
+    if live == "ABOVE_CRITICAL_BELOW_HEALTHY":
         return base + (
-            " It was not enough to reach the healthy floor: the lane ingests and the heavy "
-            "publication waits, and the plan for what remains is the owner's to accept or refuse."
+            f" The sweep's own reading recorded `{sweep}` and this reading records `{live}`: the lane "
+            "ingests and the heavy publication waits, and the repository cannot close that gap out of "
+            "its own caches. What is left is the volume owner's decision, planned in "
+            "`VOLUME_NEIGHBOURS.md` rather than executed here."
         )
     return base + (
-        " It was not enough to reach the critical floor either, so the next scheduled tick will be "
-        "refused before it makes any market request; the plan for what remains is the owner's to "
-        "accept or refuse."
+        f" The sweep's own reading recorded `{sweep}` and this reading records `{live}`: the next "
+        "scheduled tick will be refused before it makes any market request. What is left is the "
+        "volume owner's decision, planned in `VOLUME_NEIGHBOURS.md` rather than executed here."
     )
 
 
@@ -653,7 +691,12 @@ def render_run_md(
         f"| Newest reading | `{snapshot('watchdog_newest_verdict')}` / "
         f"`{snapshot('watchdog_newest_category')}`, schema "
         f"`{snapshot('watchdog_newest_schema')}` |",
-        f"| Newest cause | `{snapshot('watchdog_newest_cause')}` |",
+        "| Newest cause | "
+        + (
+            f"`{snapshot('watchdog_newest_cause')}` |"
+            if snapshot("watchdog_newest_cause") is not None
+            else "*(no failure class: what the category names is pressure, not a fault)* |"
+        ),
         f"| Alerts | {snapshot('watchdog_alerts')} rows |",
         f"| Detection latency (rehearsal) | "
         f"{snapshot('watchdog_detection_latency_seconds')} s |",
@@ -856,6 +899,37 @@ def render_final_md(
     for row in rows:
         counts[row["verdict"]] = counts.get(row["verdict"], 0) + 1
     resumen = ", ".join(f"{value} {key}" for key, value in sorted(counts.items()))
+    # The verdict and the ingest state are computed in English because the JSON report is English;
+    # the executive summary says them in its own language rather than importing the sentence.
+    untested = ", ".join(row["id"] for row in rows if row["verdict"] == NOT_TESTED)
+    verdict_es = {
+        "CLOSED": "todas las filas de aceptación están en PASS",
+        "CLOSED_WITH_OPEN_ITEMS": (
+            f"todas las filas que se podían medir están en PASS, con {counts.get(NOT_TESTED, 0)} "
+            f"declaradas no probadas: {untested}"
+        ),
+        "NOT_CLOSED": (
+            "hay filas fallidas o bloqueadas: "
+            + ", ".join(
+                row["id"] for row in rows if row["verdict"] in (FAIL, BLOCKED)
+            )
+        ),
+        "NOT_CLOSED_INGEST_BLOCKED": (
+            "la lane no puede observar en este instante, así que no se declara cierre"
+        ),
+    }.get(verdict, verdict_why)
+    state_es = {
+        "INGEST_BLOCKED": (
+            "El tick más nuevo fue rechazado por el propio guardián de disco de la lane: ningún "
+            "informe declara éxito mientras la lane no pueda observar"
+        ),
+        "INGEST_RESUMED": (
+            f"La lane rechazó {snapshot('lane_ticks_disk_budget_exceeded')} tick(s) por disco y ha "
+            "vuelto a observar después: el rechazo fue real y ha terminado"
+        ),
+        "INGESTING": "El tick más nuevo observó, sin ningún rechazo en el registro",
+        "INGEST_UNKNOWN": f"El resultado del tick más nuevo es `{snapshot('lane_last_outcome')}`",
+    }.get(state, why)
     lines = [
         "# WP-EDGE-05R — Recuperación y coherencia de informes: informe ejecutivo",
         "",
@@ -866,9 +940,9 @@ def render_final_md(
         "",
         "## 1. Estado en una línea",
         "",
-        f"**Veredicto del work package: `{verdict}`** — {verdict_why}.",
+        f"**Veredicto del work package: `{verdict}`** — {verdict_es}.",
         "",
-        f"**Estado de la ingesta: `{state}`** — {why}.",
+        f"**Estado de la ingesta: `{state}`** — {state_es}.",
         "",
         "## 2. Disco: qué estaba mal, qué se devolvió y qué no se tocó",
         "",
@@ -877,18 +951,17 @@ def render_final_md(
         f"{snapshot('storage_repo_bytes')} bytes; el resto del volumen está fuera de este "
         "workstream y no se ha medido ni tocado.",
         f"- Se recuperaron **{snapshot('storage_reclaimed_bytes')} bytes** de cachés de herramienta "
-        "(`__pycache__`, mypy, pytest, ruff, hypothesis, coverage), cada ruta verificada en el "
-        "momento de borrarla como caché por nombre, no versionada por git y nombrada en "
-        "`.gitignore`. En un dry run previo el plan se negó a incluir `.hypothesis` justo porque "
-        "`.gitignore` no lo nombraba: se corrigió el `.gitignore` y entonces sí pasó la prueba.",
+        "(`__pycache__`, mypy, pytest, ruff, hypothesis, coverage): cada ruta se comprobó en el momento "
+        "de borrarla como caché por nombre, no versionada por git y nombrada en `.gitignore` — la base "
+        "de ejemplos de `hypothesis` solo entra en la regla desde que el `.gitignore` la nombra. La "
+        f"barrida registró `{snapshot('storage_verdict_after')}` en su propio instante "
+        f"(`{snapshot('storage_free_bytes_after')}` bytes libres), que no es el instante de esta lectura.",
         floor_line(snapshot),
         "- Nada de datos de mercado, evidencia, otros workstreams, código ni el entorno se tocó: el "
         "criterio de cada ruta borrada se re-verificó en el momento de borrarla.",
         "- El plan que **sí** requeriría una decisión del propietario —los consumidores del volumen "
         "fuera del repositorio y su tamaño— está en `STORAGE_INVENTORY.md` y en el plan adjunto, no "
         "ejecutado aquí.",
-        "-",
-        f"  {pressure_line(snapshot)}",
         "",
         "## 3. La lane, después del rechazo",
         "",
@@ -912,9 +985,8 @@ def render_final_md(
         "por recursos como fallo del planificador: si volviera a etiquetarse mal, ese sabotaje "
         "dejaría de detectarse y el self-test fallaría.",
         "",
-        f"- Estado de la lectura más nueva: `{snapshot('watchdog_newest_verdict')}` / "
-        f"`{snapshot('watchdog_newest_category')}` (esquema `{snapshot('watchdog_newest_schema')}`), "
-        f"causa `{snapshot('watchdog_newest_cause')}`.",
+        newest_reading_line(snapshot),
+        instant_labels_line(snapshot),
         f"- Lecturas: {snapshot('watchdog_readings')}; alertas: {snapshot('watchdog_alerts')}.",
         "",
         "## 5. Informes coherentes",

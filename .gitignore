@@ -145,6 +145,20 @@ reports/edge-recovery/WP-EDGE-05/*
 !reports/edge-recovery/WP-EDGE-05/*.json
 !reports/edge-recovery/WP-EDGE-05/*.md
 
+# ------------------------------------------------------------
+# WP-EDGE-05R — misma cadena de excepciones que WP-EDGE-01…05, por el mismo motivo:
+# el diagnostico de almacenamiento, el registro de la recuperacion, la instantanea de
+# lectura, los informes renderizados desde ella, la verificacion independiente, la
+# regresion y el estado de GitHub SI se versionan. La instantanea de lectura fija el
+# sha256 de cada artefacto del que cita una cifra, y el estado vivo (data/forward/)
+# sigue bajo la regla de arriba, de modo que nada que crezca en cada tick entra aqui.
+# ------------------------------------------------------------
+!reports/edge-recovery/WP-EDGE-05R/
+reports/edge-recovery/WP-EDGE-05R/*
+!reports/edge-recovery/WP-EDGE-05R/*.json
+!reports/edge-recovery/WP-EDGE-05R/*.md
+!reports/edge-recovery/WP-EDGE-05R/*.jsonl
+
 # ============================================================
 # CAP-003 — evidencias OHLCV crudas: locales por tamano.
 # El ledger (evidence/real_decisions/*.jsonl) SI se versiona y
@@ -186,6 +200,10 @@ htmlcov/
 .tox/
 .mypy_cache/
 .ruff_cache/
+# WP-EDGE-05R — the hypothesis example database is a tool cache like the others: the
+# tool rewrites it, git tracks none of it, and leaving it unnamed here made it the one
+# untracked cache the storage reclaim could not prove safe to remove.
+.hypothesis/
 
 # ============================================================
 # Docker
