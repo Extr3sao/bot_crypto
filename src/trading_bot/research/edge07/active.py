@@ -10,7 +10,7 @@ Three rules, and they are the reason this file is short:
 * **no size, no risk change** — a signal carries a stop and a target, ``config/risk.yaml``
   decides the quantity, and no candidate may relax a limit or add a cooldown;
 * **the cost gate is global** — every candidate goes through ``_Base.cost_gate`` with a declared
-  ``cost_margin``, so a setup whose own objective does not clear 1.25× the round-trip cost is
+  ``cost_margin``, so a setup whose own objective does not clear 1.25x the round-trip cost is
   refused *by the instrument*, before anybody looks at a result. At a one-hour horizon that cost
   is 23.79 bps per trade (``COST_MODEL_V3``, ``BINANCE_SPOT_STANDARD_TAKER``);
 * **registered parameters** — ``DECLARED_PARAMS`` is the machine-readable copy of the two
