@@ -1,7 +1,11 @@
 {
-  "as_of_utc": "2026-10-14T08:17:14Z",
+  "as_of_utc": "2026-10-14T08:17:41Z",
   "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
   "commits_of_this_work_package": [
+    {
+      "sha": "7a798550de8e6068ebf5a81bf69865f84a960f56",
+      "subject": "Render the run, final and verification reports from one reading, and record the published state. [WP-EDGE-06]"
+    },
     {
       "sha": "fe5c400d9cc69c08f797a703b8e6f376d8922ec8",
       "subject": "Audit the frozen books, decompose the intraday loss, and run three newly registered families. [WP-EDGE-06]"
@@ -23,18 +27,21 @@
       "subject": "Regenerate the derived state view at HEAD so the rehearsal has a commit to rehearse. [WP-EDGE-06]"
     }
   ],
-  "commits_total": 5,
+  "commits_total": 6,
   "credentials_read_or_printed": false,
+  "dirty_entries_belonging_to_other_workstreams": "M FINAL_REPORT.md\n M RUN_REPORT.json\n M RUN_REPORT.md\n M data/recovery/wp8/CLEAN_CHECKOUT_REHEARSAL_REPORT.json\n M data/recovery/wp8/CLEAN_CHECKOUT_REHEARSAL_REPORT.md\n M data/st6/RFC047_RUNTIME_VERIFICATION.json\n M data/st6/ST6_FORWARD_REGIME_REPORT.json\n M data/st6/ST6_FORWARD_REGIME_REPORT.md\n M data/st6/ST6_INDEPENDENT_RECONCILIATION.json\n M data/st6/ST6_INDEPENDENT_RECONCILIATION.md\n M data/st6/ST6_INDEPENDENT_VERIFICATION.json\n M data/st6/ST6_INDEPENDENT_VERIFICATION.md\n M data/st6/ST6_MODEL_DRIFT.json\n M data/st6/ST6_OBSERVATIONS.jsonl\n M data/st6/ST6_REGIME_COVERAGE.json\n M data/st6/ST6_SCHEDULER_PROVENANCE.json\n M data/st6/ST6_SCHEDULER_PROVENANCE.md\n M data/st6/ST6_SCHEDULER_REPORT.json\n M data/st6/ST6_SCHEDULER_REPORT.md\n M data/st6/ST6_SLOT_LEDGER.json\n M data/st6/ST6_VERIFIER_INDUCED_RUNS.jsonl\n M data/st6/ST6_WINDOWS.jsonl\n M data/st6/rfc047/WINDOWS_EVENT_LIVE_STATE.json\n M docs/source_registry.md\n M evidence/real_decisions/evaluations.jsonl\n M evidence/real_decisions/outcomes.jsonl\n M scripts/cap004c_verify.py\n M scripts/st6_scheduler_witness.py\n?? .ci/CLEAN_CHECKOUT_REHEARSAL_STDOUT.json\n?? .ci/COST_BARRIER_ADVERSARIAL_REPORT.json\n?? .ci/COST_BARRIER_ADVERSARIAL_REPORT.md\n?? .ci/COST_BARRIER_CERTIFICATION.json\n?? .ci/INDEPENDENT_VERIFICATION_STDOUT.json\n?? .ci/adv.json\n?? .ci/adv.md\n?? .ci/adv2.json\n?? .ci/adv2.md\n?? .ci/cb_capture.json\n?? .ci/cb_evidence.json\n?? .ci/cb_evidence2.json\n?? .ci/cert.err\n?? .ci/cert.json\n?? .ci/cert_final1/\n?? .ci/cert_final2/\n?? .ci/cert_record.json\n?? .ci/certfinal/\n?? .ci/certfinal2/\n?? .ci/certrun/\n?? .ci/cost_barrier_gate_report.json\n?? .ci/edge05r/\n?? .ci/edge06/\n?? .ci/gate.err\n?? .ci/gate.json\n?? .ci/gate2.json\n?? .ci/gate3.json\n?? .ci/recovery_input_verify.json\n?? data/rfc035e/\n?? data/st6/ST6_HEALTH.jsonl\n?? data/st6/ST6_HEALTH_STATUS.json\n?? data/st6/ST6_RUNS.jsonl\n?? data/st6/raw/20261009T200324Z.json.gz\n?? data/st6/raw/20261010T000324Z.json.gz\n?? data/st6/raw/20261010T040324Z.json.gz\n?? data/st6/raw/20261010T080323Z.json.gz\n?? data/st6/raw/20261010T120323Z.json.gz\n?? data/st6/raw/20261010T160328Z.json.gz\n?? data/st6/raw/20261010T200325Z.json.gz\n?? data/st6/raw/20261011T000323Z.json.gz\n?? data/st6/raw/20261011T040323Z.json.gz\n?? data/st6/raw/20261011T080323Z.json.gz\n?? data/st6/raw/20261011T120323Z.json.gz\n?? data/st6/raw/20261011T160322Z.json.gz\n?? data/st6/raw/20261011T200324Z.json.gz\n?? data/st6/raw/20261012T000323Z.json.gz\n?? data/st6/raw/20261012T040323Z.json.gz\n?? data/st6/raw/20261012T080323Z.json.gz\n?? data/st6/raw/20261012T120323Z.json.gz\n?? data/st6/raw/20261012T160323Z.json.gz\n?? data/st6/raw/20261012T200327Z.json.gz\n?? data/st6/raw/20261013T000323Z.json.gz\n?? data/st6/raw/20261013T040323Z.json.gz\n?? data/st6/raw/20261013T080324Z.json.gz\n?? data/st6/raw/20261013T120323Z.json.gz\n?? data/st6/raw/20261013T160323Z.json.gz\n?? data/st6/raw/20261013T200342Z.json.gz\n?? data/st6/raw/20261014T000323Z.json.gz\n?? data/st6/raw/20261014T040323Z.json.gz\n?? data/st6/raw/20261014T080326Z.json.gz\n?? data/st6/snapshots/ST6_LIVE_STATE_20261009T151914Z.json\n?? data/st6/snapshots/ST6_LIVE_STATE_20261009T151914Z/\n?? data/st6/snapshots/ST6_LIVE_STATE_20261009T160955Z.json\n?? data/st6/snapshots/ST6_LIVE_STATE_20261009T160955Z/\n?? data/st6/snapshots/ST6_LIVE_STATE_20261009T162537Z.json\n?? data/st6/snapshots/ST6_LIVE_STATE_20261009T162537Z/\n?? data/st6/snapshots/ST6_LIVE_STATE_20261009T162657Z.json\n?? data/st6/snapshots/ST6_LIVE_STATE_20261009T162657Z/\n?? data/st6/snapshots/ST6_LIVE_STATE_20261009T162826Z.json\n?? data/st6/snapshots/ST6_LIVE_STATE_20261009T162826Z/\n?? data/st6/snapshots/ST6_LIVE_STATE_20261009T163248Z.json\n?? data/st6/snapshots/ST6_LIVE_STATE_20261009T163248Z/\n?? data/st6/snapshots/ST6_LIVE_STATE_20261009T200234Z.json\n?? data/st6/snapshots/ST6_LIVE_STATE_20261009T200234Z/\n?? data/swing/\n?? docs/research/experiment_specs/EXP-CAND-001-SOURCE-FAITHFUL-EXIT.md\n?? docs/research/runtime_reconciliation/\n?? docs/research/work_packages/WP-CAND-001_ma_pullback.md\n?? docs/research/work_packages/WP-CAND-002_mtf_alignment.md\n?? docs/research/work_packages/WP-CAND-003_macd_regime_crossover.md\n?? docs/research/work_packages/WP-HTF-PIT-001_htf_availability_unit_fix.md\n?? docs/research/work_packages/WP-IMP-001_process_conformance_rfc.md\n?? docs/research/work_packages/WP-IMP-002_post_trade_reconstruction.md\n?? docs/research/work_packages/WP-IMP-004_rule_provenance_rfc.md\n?? docs/research/work_packages/WP-IMP-005_source_threshold_quarantine.md\n?? docs/research/work_packages/WP-PAIR-INFRA-001_pair_execution_gap.md\n?? docs/research/work_packages/WP-RISK-001_exposure_and_stop_audit.md\n?? docs/research/work_packages/WP-RISK-EXPOSURE-001.md\n?? scripts/rfc035_discovery_verify.py\n?? scripts/rfc035e_fetch.py\n?? scripts/rfc035e_reproduce.py\n?? scripts/rfc035e_verify.py\n?? scripts/rfc035s2_search.py\n?? scripts/rfc035s2_verify.py\n?? scripts/source_candidate_experiment.py\n?? scripts/swing_preregister.py\n?? scripts/swing_run.py\n?? scripts/swing_verify.py\n?? src/trading_bot/research/experimental/\n?? src/trading_bot/research/swing/\n?? tests/unit/research/test_experimental_candidates_pit.py\n?? tests/unit/research/test_rfc035_opportunity_registry.py\n?? tests/unit/research/test_rfc035e_effect_reproduction.py\n?? tests/unit/research/test_rfc035s2_strategy_search.py\n?? tests/unit/research/test_swing_costs_and_metrics.py\n?? tests/unit/research/test_swing_monitor_and_registry.py\n?? tests/unit/research/test_swing_pit_and_signals.py\n?? tests/unit/research/test_swing_risk_and_portfolio.py",
   "force_push_used": false,
-  "head": "fe5c400d9cc69c08f797a703b8e6f376d8922ec8",
-  "head_is_ancestor_of_local_main": true,
-  "local_main_ahead_of_origin_main": "259",
-  "push_performed_in_this_work_package": "recorded when the branch was published; see remote_matches_head",
+  "head": "7a798550de8e6068ebf5a81bf69865f84a960f56",
+  "note_on_this_file": "this file is committed after the push and describes the ref at that instant; the commit carrying it is published by the following push, which is why remote_matches_head is read again by the file rather than assumed",
+  "push_kind": "normal fast-forward of a new remote branch; force push not used and not needed",
+  "push_performed": true,
+  "pushed_range_at_last_push": "bcf398e..7a79855",
   "remote": "https://github.com/Extr3sao/bot_crypto.git",
   "remote_branch_ref": "refs/heads/agent/edge-recovery/WP-EDGE-00-baseline",
   "remote_has_this_branch": true,
-  "remote_matches_head": false,
+  "remote_matches_head": true,
   "schema_version": "EDGE06_GITHUB_STATE_V1",
-  "worktree_dirty_entries": 142,
-  "worktree_dirty_entries_of_this_work_package": 7
+  "volume_free_bytes_at_this_reading": 1329639424,
+  "worktree_dirty_entries": 136,
+  "worktree_dirty_entries_of_this_work_package": 0
 }
