@@ -1,6 +1,6 @@
 # WP-EDGE-05R — Recuperación y coherencia de informes: informe ejecutivo
 
-*Una sola lectura, tomada a las `2026-10-14T06:53:55Z` (`EDGE05R-READ-20261014T065355Z`, digest `70edb16a3cc41bfb…`). Todas las cifras de este informe llevan su instante de lectura y el digest del artefacto del que salen; los tres informes —este, el técnico y el JSON— son tres lecturas del mismo fichero congelado.*
+*Una sola lectura, tomada a las `2026-10-14T06:57:22Z` (`EDGE05R-READ-20261014T065722Z`, digest `eb91c3e2ad584861…`). Todas las cifras de este informe llevan su instante de lectura y el digest del artefacto del que salen; los tres informes —este, el técnico y el JSON— son tres lecturas del mismo fichero congelado.*
 
 ## 1. Estado en una línea
 
@@ -10,17 +10,17 @@
 
 ## 2. Disco: qué estaba mal, qué se devolvió y qué no se tocó
 
-- El volumen tenía **3.497 GiB libres** al tomar esta lectura (`ABOVE_CRITICAL_BELOW_HEALTHY`). El repositorio ocupa 5724066394 bytes; el resto del volumen está fuera de este workstream y no se ha medido ni tocado.
+- El volumen tenía **4.013 GiB libres** al tomar esta lectura (`ABOVE_CRITICAL_BELOW_HEALTHY`). El repositorio ocupa 5724066394 bytes; el resto del volumen está fuera de este workstream y no se ha medido ni tocado.
 - Se recuperaron **45461012 bytes** de cachés de herramienta (`__pycache__`, mypy, pytest, ruff, hypothesis, coverage): cada ruta se comprobó en el momento de borrarla como caché por nombre, no versionada por git y nombrada en `.gitignore` — la base de ejemplos de `hypothesis` solo entra en la regla desde que el `.gitignore` la nombra. La barrida registró `HEALTHY` en su propio instante (`5907402752` bytes libres), que no es el instante de esta lectura.
-- El volumen está **por encima del suelo crítico y por debajo del sano** (`ABOVE_CRITICAL_BELOW_HEALTHY`, 3.497 GiB libres al tomar esta lectura): la lane ingiere y la publicación pesada espera, y un consumidor más cierra la ventana. El suelo que falta no lo puede cerrar este repositorio — su parte está en `STORAGE_INVENTORY.md` y en el plan adjunto, no ejecutado aquí.
+- El volumen está **por encima del suelo crítico y por debajo del sano** (`ABOVE_CRITICAL_BELOW_HEALTHY`, 4.013 GiB libres al tomar esta lectura): la lane ingiere y la publicación pesada espera, y un consumidor más cierra la ventana. El suelo que falta no lo puede cerrar este repositorio — su parte está en `STORAGE_INVENTORY.md` y en el plan adjunto, no ejecutado aquí.
 - Nada de datos de mercado, evidencia, otros workstreams, código ni el entorno se tocó: el criterio de cada ruta borrada se re-verificó en el momento de borrarla.
 - El plan que **sí** requeriría una decisión del propietario —los consumidores del volumen fuera del repositorio y su tamaño— está en `STORAGE_INVENTORY.md` y en el plan adjunto, no ejecutado aquí.
 
 ## 3. La lane, después del rechazo
 
 - La lane rechazó **35 tick(s)** por disco, el primero a las `2026-10-13T20:25:56Z`, **antes de hacer ninguna petición de mercado** y sin borrar nada.
-- El tick programado **después** de la recuperación volvió a observar: `OBSERVED` a las `2026-10-14T06:42:20Z` con 3 barra(s) nuevas, y sin que nadie ejecutara el comando a mano. Es la comprobación que pedía el encargo: el mismo planificador, con el volumen por encima del suelo, y el rechazo anterior conservado en el registro.
-- Total: **40 ticks observados** de 84, 18315 barras en 6 series, 42 slots sellados.
+- El tick programado **después** de la recuperación volvió a observar: `OBSERVED` a las `2026-10-14T06:57:08Z` con 3 barra(s) nuevas, y sin que nadie ejecutara el comando a mano. Es la comprobación que pedía el encargo: el mismo planificador, con el volumen por encima del suelo, y el rechazo anterior conservado en el registro.
+- Total: **41 ticks observados** de 85, 18318 barras en 6 series, 43 slots sellados.
 
 ## 4. Clasificación de fallos: la causa, no el sitio donde se notó
 

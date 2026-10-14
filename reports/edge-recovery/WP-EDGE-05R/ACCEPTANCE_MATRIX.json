@@ -1,10 +1,10 @@
 {
-  "as_of_utc": "2026-10-14T06:53:55Z",
+  "as_of_utc": "2026-10-14T06:57:22Z",
   "rows": [
     {
       "evidence": [
         {
-          "as_of_utc": "2026-10-14T06:53:55Z",
+          "as_of_utc": "2026-10-14T06:57:22Z",
           "figure": "runtime_authority_map_bytes",
           "measurement_scope": "this work package's own runtime authority map, as written",
           "source_artifact": "reports\\edge-recovery\\WP-EDGE-05R\\runtime_authority_map.md",
@@ -13,13 +13,13 @@
           "value": 7058
         },
         {
-          "as_of_utc": "2026-10-14T06:53:55Z",
+          "as_of_utc": "2026-10-14T06:57:22Z",
           "figure": "git_head",
           "measurement_scope": "the commit the reading was taken at",
           "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.git\\HEAD",
           "source_digest": "7c2818bac891262df1ebb00b2be7f917da46f671946fda4594fcfd86e152f719",
           "unit": "commit",
-          "value": "52d75f07ca2824ec537fdfb1992bfa1530608567"
+          "value": "f418619372e0eae0bbbdfaaebbd84f54804fdff1"
         }
       ],
       "id": "ACC-01",
@@ -30,25 +30,25 @@
     {
       "evidence": [
         {
-          "as_of_utc": "2026-10-14T06:53:55Z",
+          "as_of_utc": "2026-10-14T06:57:22Z",
           "figure": "lane_ticks_observed",
           "measurement_scope": "rows of the lane's run log whose outcome is OBSERVED",
           "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04\\runs.jsonl",
-          "source_digest": "c1b0d09d4a9f77f55751b095257459954397ca6e93e5d3f0563247636693a4e3",
+          "source_digest": "f032e803bd8c0bfdcff605f8787e95ea77f803be87eecce8f9ca270702d71153",
           "unit": "ticks",
-          "value": 40
+          "value": 41
         },
         {
-          "as_of_utc": "2026-10-14T06:53:55Z",
+          "as_of_utc": "2026-10-14T06:57:22Z",
           "figure": "lane_ticks_total",
           "measurement_scope": "every row of the lane's run log",
           "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04\\runs.jsonl",
-          "source_digest": "c1b0d09d4a9f77f55751b095257459954397ca6e93e5d3f0563247636693a4e3",
+          "source_digest": "f032e803bd8c0bfdcff605f8787e95ea77f803be87eecce8f9ca270702d71153",
           "unit": "ticks",
-          "value": 84
+          "value": 85
         },
         {
-          "as_of_utc": "2026-10-14T06:53:55Z",
+          "as_of_utc": "2026-10-14T06:57:22Z",
           "figure": "watchdog_newest_at_utc",
           "measurement_scope": "the newest reading on file",
           "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge05\\watchdog.jsonl",
@@ -65,7 +65,7 @@
     {
       "evidence": [
         {
-          "as_of_utc": "2026-10-14T06:53:55Z",
+          "as_of_utc": "2026-10-14T06:57:22Z",
           "figure": "watchdog_detection_latency_seconds",
           "measurement_scope": "the induced-outage rehearsal of 2026-10-13 18:48Z: the watchdog's own two readings around the stop, quoted from that evidence file",
           "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\edge-recovery\\WP-EDGE-05\\evidence\\OUTAGE_DETECT_1.txt",
@@ -74,7 +74,7 @@
           "value": 6.0
         },
         {
-          "as_of_utc": "2026-10-14T06:53:55Z",
+          "as_of_utc": "2026-10-14T06:57:22Z",
           "figure": "watchdog_alert_kinds",
           "measurement_scope": "alert rows grouped by kind",
           "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge05\\watch_alerts.jsonl",
@@ -111,7 +111,7 @@
     {
       "evidence": [
         {
-          "as_of_utc": "2026-10-14T06:53:55Z",
+          "as_of_utc": "2026-10-14T06:57:22Z",
           "figure": "defect_chain_broken",
           "measurement_scope": "closed defect counts from the reconciliation",
           "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge05\\reconciliation\\RECONCILIATION.json",
@@ -120,7 +120,7 @@
           "value": 0
         },
         {
-          "as_of_utc": "2026-10-14T06:53:55Z",
+          "as_of_utc": "2026-10-14T06:57:22Z",
           "figure": "defect_double_claim",
           "measurement_scope": "closed defect counts from the reconciliation",
           "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge05\\reconciliation\\RECONCILIATION.json",
@@ -129,7 +129,7 @@
           "value": 0
         },
         {
-          "as_of_utc": "2026-10-14T06:53:55Z",
+          "as_of_utc": "2026-10-14T06:57:22Z",
           "figure": "restart_proof_broken",
           "measurement_scope": "instants where the second ingest pass appended a bar it should not have",
           "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge05\\reconciliation\\RECONCILIATION.json",
@@ -138,7 +138,7 @@
           "value": 0
         },
         {
-          "as_of_utc": "2026-10-14T06:53:55Z",
+          "as_of_utc": "2026-10-14T06:57:22Z",
           "figure": "reconciliation_seals_orphaned",
           "measurement_scope": "the reconciliation's own seal accounting",
           "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge05\\reconciliation\\RECONCILIATION.json",
@@ -155,7 +155,7 @@
     {
       "evidence": [
         {
-          "as_of_utc": "2026-10-14T06:53:55Z",
+          "as_of_utc": "2026-10-14T06:57:22Z",
           "figure": "defect_seal_missing",
           "measurement_scope": "closed defect counts from the reconciliation",
           "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge05\\reconciliation\\RECONCILIATION.json",
@@ -164,7 +164,7 @@
           "value": 0
         },
         {
-          "as_of_utc": "2026-10-14T06:53:55Z",
+          "as_of_utc": "2026-10-14T06:57:22Z",
           "figure": "defect_seal_orphaned",
           "measurement_scope": "closed defect counts from the reconciliation",
           "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge05\\reconciliation\\RECONCILIATION.json",
@@ -173,7 +173,7 @@
           "value": 0
         },
         {
-          "as_of_utc": "2026-10-14T06:53:55Z",
+          "as_of_utc": "2026-10-14T06:57:22Z",
           "figure": "defect_decision_divergence",
           "measurement_scope": "closed defect counts from the reconciliation",
           "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge05\\reconciliation\\RECONCILIATION.json",
@@ -182,7 +182,7 @@
           "value": 0
         },
         {
-          "as_of_utc": "2026-10-14T06:53:55Z",
+          "as_of_utc": "2026-10-14T06:57:22Z",
           "figure": "reconciliation_seals",
           "measurement_scope": "sealed slots the reconciliation accounted for",
           "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge05\\reconciliation\\RECONCILIATION.json",
@@ -199,20 +199,20 @@
     {
       "evidence": [
         {
-          "as_of_utc": "2026-10-14T06:53:55Z",
+          "as_of_utc": "2026-10-14T06:57:22Z",
           "figure": "lane_ticks_already_observed",
           "measurement_scope": "rows of the lane's run log whose outcome is ALREADY_OBSERVED",
           "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04\\runs.jsonl",
-          "source_digest": "c1b0d09d4a9f77f55751b095257459954397ca6e93e5d3f0563247636693a4e3",
+          "source_digest": "f032e803bd8c0bfdcff605f8787e95ea77f803be87eecce8f9ca270702d71153",
           "unit": "ticks",
           "value": 4
         },
         {
-          "as_of_utc": "2026-10-14T06:53:55Z",
+          "as_of_utc": "2026-10-14T06:57:22Z",
           "figure": "lane_ticks_already_running",
           "measurement_scope": "rows of the lane's run log whose outcome is ALREADY_RUNNING",
           "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04\\runs.jsonl",
-          "source_digest": "c1b0d09d4a9f77f55751b095257459954397ca6e93e5d3f0563247636693a4e3",
+          "source_digest": "f032e803bd8c0bfdcff605f8787e95ea77f803be87eecce8f9ca270702d71153",
           "unit": "ticks",
           "value": 2
         }
@@ -225,7 +225,7 @@
     {
       "evidence": [
         {
-          "as_of_utc": "2026-10-14T06:53:55Z",
+          "as_of_utc": "2026-10-14T06:57:22Z",
           "figure": "restart_proof_broken",
           "measurement_scope": "instants where the second ingest pass appended a bar it should not have",
           "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge05\\reconciliation\\RECONCILIATION.json",
@@ -234,7 +234,7 @@
           "value": 0
         },
         {
-          "as_of_utc": "2026-10-14T06:53:55Z",
+          "as_of_utc": "2026-10-14T06:57:22Z",
           "figure": "reconciliation_unattributed_bars",
           "measurement_scope": "stored bars no recorded attempt claims, named rather than deleted",
           "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge05\\reconciliation\\RECONCILIATION.json",
@@ -243,7 +243,7 @@
           "value": 0
         },
         {
-          "as_of_utc": "2026-10-14T06:53:55Z",
+          "as_of_utc": "2026-10-14T06:57:22Z",
           "figure": "watchdog_newest_at_utc",
           "measurement_scope": "the newest reading on file",
           "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge05\\watchdog.jsonl",
@@ -260,7 +260,7 @@
     {
       "evidence": [
         {
-          "as_of_utc": "2026-10-14T06:53:55Z",
+          "as_of_utc": "2026-10-14T06:57:22Z",
           "figure": "defect_chain_broken",
           "measurement_scope": "closed defect counts from the reconciliation",
           "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge05\\reconciliation\\RECONCILIATION.json",
@@ -277,25 +277,25 @@
     {
       "evidence": [
         {
-          "as_of_utc": "2026-10-14T06:53:55Z",
+          "as_of_utc": "2026-10-14T06:57:22Z",
           "figure": "lane_ticks_disk_budget_exceeded",
           "measurement_scope": "rows of the lane's run log whose outcome is DISK_BUDGET_EXCEEDED",
           "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04\\runs.jsonl",
-          "source_digest": "c1b0d09d4a9f77f55751b095257459954397ca6e93e5d3f0563247636693a4e3",
+          "source_digest": "f032e803bd8c0bfdcff605f8787e95ea77f803be87eecce8f9ca270702d71153",
           "unit": "ticks",
           "value": 35
         },
         {
-          "as_of_utc": "2026-10-14T06:53:55Z",
+          "as_of_utc": "2026-10-14T06:57:22Z",
           "figure": "lane_first_disk_refusal_utc",
           "measurement_scope": "the first row of the lane's run log that refused on disk, if any",
           "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04\\runs.jsonl",
-          "source_digest": "c1b0d09d4a9f77f55751b095257459954397ca6e93e5d3f0563247636693a4e3",
+          "source_digest": "f032e803bd8c0bfdcff605f8787e95ea77f803be87eecce8f9ca270702d71153",
           "unit": "instant",
           "value": "2026-10-13T20:25:56Z"
         },
         {
-          "as_of_utc": "2026-10-14T06:53:55Z",
+          "as_of_utc": "2026-10-14T06:57:22Z",
           "figure": "volume_verdict",
           "measurement_scope": "the two floors the lane's own guard declares (2 GiB and 5 GiB)",
           "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\pyproject.toml",
@@ -304,7 +304,7 @@
           "value": "ABOVE_CRITICAL_BELOW_HEALTHY"
         },
         {
-          "as_of_utc": "2026-10-14T06:53:55Z",
+          "as_of_utc": "2026-10-14T06:57:22Z",
           "figure": "storage_reclaimed_bytes",
           "measurement_scope": "bytes removed by the reclaim, measured by the OS",
           "source_artifact": "reports\\edge-recovery\\WP-EDGE-05R\\STORAGE_RECLAIM.json",
@@ -313,7 +313,7 @@
           "value": 45461012
         },
         {
-          "as_of_utc": "2026-10-14T06:53:55Z",
+          "as_of_utc": "2026-10-14T06:57:22Z",
           "figure": "storage_verdict_after",
           "measurement_scope": "the floor the volume stood at after the reclaim",
           "source_artifact": "reports\\edge-recovery\\WP-EDGE-05R\\STORAGE_RECLAIM.json",
@@ -330,38 +330,38 @@
     {
       "evidence": [
         {
-          "as_of_utc": "2026-10-14T06:53:55Z",
+          "as_of_utc": "2026-10-14T06:57:22Z",
           "figure": "forward_days_with_data",
           "measurement_scope": "the lane's own coverage file: what it counts and what it refuses",
           "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04\\coverage.json",
-          "source_digest": "0d5dbdb3814df602d83138e8113ed776d080c44485059bd12a82aee13cb0897c",
+          "source_digest": "17831c89535ae2b6745f65bfe7e0ea22a5df09633adef79ce38aa37dd78b7c3e",
           "unit": "days",
           "value": 228
         },
         {
-          "as_of_utc": "2026-10-14T06:53:55Z",
+          "as_of_utc": "2026-10-14T06:57:22Z",
           "figure": "forward_days_densely_covered_but_backfilled",
           "measurement_scope": "the lane's own coverage file: what it counts and what it refuses",
           "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04\\coverage.json",
-          "source_digest": "0d5dbdb3814df602d83138e8113ed776d080c44485059bd12a82aee13cb0897c",
+          "source_digest": "17831c89535ae2b6745f65bfe7e0ea22a5df09633adef79ce38aa37dd78b7c3e",
           "unit": "days",
           "value": 227
         },
         {
-          "as_of_utc": "2026-10-14T06:53:55Z",
+          "as_of_utc": "2026-10-14T06:57:22Z",
           "figure": "forward_days_prospectively_observed",
           "measurement_scope": "the lane's own coverage file: what it counts and what it refuses",
           "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04\\coverage.json",
-          "source_digest": "0d5dbdb3814df602d83138e8113ed776d080c44485059bd12a82aee13cb0897c",
+          "source_digest": "17831c89535ae2b6745f65bfe7e0ea22a5df09633adef79ce38aa37dd78b7c3e",
           "unit": "days",
           "value": 0
         },
         {
-          "as_of_utc": "2026-10-14T06:53:55Z",
+          "as_of_utc": "2026-10-14T06:57:22Z",
           "figure": "forward_days_required",
           "measurement_scope": "the lane's own coverage file: what it counts and what it refuses",
           "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04\\coverage.json",
-          "source_digest": "0d5dbdb3814df602d83138e8113ed776d080c44485059bd12a82aee13cb0897c",
+          "source_digest": "17831c89535ae2b6745f65bfe7e0ea22a5df09633adef79ce38aa37dd78b7c3e",
           "unit": "days",
           "value": 60
         }
@@ -374,20 +374,20 @@
     {
       "evidence": [
         {
-          "as_of_utc": "2026-10-14T06:53:55Z",
+          "as_of_utc": "2026-10-14T06:57:22Z",
           "figure": "lane_last_parity_verdict",
           "measurement_scope": "the newest row of the lane's run log",
           "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04\\runs.jsonl",
-          "source_digest": "c1b0d09d4a9f77f55751b095257459954397ca6e93e5d3f0563247636693a4e3",
+          "source_digest": "f032e803bd8c0bfdcff605f8787e95ea77f803be87eecce8f9ca270702d71153",
           "unit": "label",
           "value": "PARITY_PASS"
         },
         {
-          "as_of_utc": "2026-10-14T06:53:55Z",
+          "as_of_utc": "2026-10-14T06:57:22Z",
           "figure": "lane_last_ruleset_params_hash",
           "measurement_scope": "the newest row of the lane's run log",
           "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04\\runs.jsonl",
-          "source_digest": "c1b0d09d4a9f77f55751b095257459954397ca6e93e5d3f0563247636693a4e3",
+          "source_digest": "f032e803bd8c0bfdcff605f8787e95ea77f803be87eecce8f9ca270702d71153",
           "unit": "digest",
           "value": "d073a2d686b9b198c36c9a3c6009d36130577ba247a2016c3f791813cb749d77"
         }
@@ -400,7 +400,7 @@
     {
       "evidence": [
         {
-          "as_of_utc": "2026-10-14T06:53:55Z",
+          "as_of_utc": "2026-10-14T06:57:22Z",
           "figure": "verification_verdict",
           "measurement_scope": "the independent verifier's own verdict on the latest state",
           "source_artifact": "reports\\edge-recovery\\WP-EDGE-05R\\VERIFICATION.json",
@@ -409,7 +409,7 @@
           "value": "VERIFY_PASS 13/13"
         },
         {
-          "as_of_utc": "2026-10-14T06:53:55Z",
+          "as_of_utc": "2026-10-14T06:57:22Z",
           "figure": "verification_self_test",
           "measurement_scope": "how many sabotages the matrix caught",
           "source_artifact": "reports\\edge-recovery\\WP-EDGE-05R\\VERIFICATION.json",
@@ -418,7 +418,7 @@
           "value": "SELF_TEST_PASS 16/16"
         },
         {
-          "as_of_utc": "2026-10-14T06:53:55Z",
+          "as_of_utc": "2026-10-14T06:57:22Z",
           "figure": "tests_chain_passed",
           "measurement_scope": "the forward chain's three suites: the lane's, the watchdog's, the reconciliation's",
           "source_artifact": "reports\\edge-recovery\\WP-EDGE-05R\\REGRESSION.json",
@@ -427,7 +427,7 @@
           "value": 102
         },
         {
-          "as_of_utc": "2026-10-14T06:53:55Z",
+          "as_of_utc": "2026-10-14T06:57:22Z",
           "figure": "tests_chain_exit_code",
           "measurement_scope": "the test command's own exit status, not a summary of it",
           "source_artifact": "reports\\edge-recovery\\WP-EDGE-05R\\REGRESSION.json",
@@ -436,7 +436,7 @@
           "value": 0
         },
         {
-          "as_of_utc": "2026-10-14T06:53:55Z",
+          "as_of_utc": "2026-10-14T06:57:22Z",
           "figure": "tests_chain_failed",
           "measurement_scope": "failures in the forward chain's suites",
           "source_artifact": "reports\\edge-recovery\\WP-EDGE-05R\\REGRESSION.json",
@@ -453,16 +453,16 @@
     {
       "evidence": [
         {
-          "as_of_utc": "2026-10-14T06:53:55Z",
+          "as_of_utc": "2026-10-14T06:57:22Z",
           "figure": "lane_rows_claiming_an_order",
           "measurement_scope": "every lane run row, checked for a sent order or a promotion",
           "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04\\runs.jsonl",
-          "source_digest": "c1b0d09d4a9f77f55751b095257459954397ca6e93e5d3f0563247636693a4e3",
+          "source_digest": "f032e803bd8c0bfdcff605f8787e95ea77f803be87eecce8f9ca270702d71153",
           "unit": "rows",
           "value": 0
         },
         {
-          "as_of_utc": "2026-10-14T06:53:55Z",
+          "as_of_utc": "2026-10-14T06:57:22Z",
           "figure": "watchdog_rows_claiming_an_order",
           "measurement_scope": "every watchdog reading, checked for a sent order or a promotion",
           "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge05\\watchdog.jsonl",
@@ -471,7 +471,7 @@
           "value": 0
         },
         {
-          "as_of_utc": "2026-10-14T06:53:55Z",
+          "as_of_utc": "2026-10-14T06:57:22Z",
           "figure": "reconciliation_market_requests",
           "measurement_scope": "the newest reconciliation on file",
           "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge05\\reconciliation\\RECONCILIATION.json",
@@ -488,20 +488,20 @@
     {
       "evidence": [
         {
-          "as_of_utc": "2026-10-14T06:53:55Z",
+          "as_of_utc": "2026-10-14T06:57:22Z",
           "figure": "forward_days_prospectively_observed",
           "measurement_scope": "the lane's own coverage file: what it counts and what it refuses",
           "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04\\coverage.json",
-          "source_digest": "0d5dbdb3814df602d83138e8113ed776d080c44485059bd12a82aee13cb0897c",
+          "source_digest": "17831c89535ae2b6745f65bfe7e0ea22a5df09633adef79ce38aa37dd78b7c3e",
           "unit": "days",
           "value": 0
         },
         {
-          "as_of_utc": "2026-10-14T06:53:55Z",
+          "as_of_utc": "2026-10-14T06:57:22Z",
           "figure": "forward_days_required",
           "measurement_scope": "the lane's own coverage file: what it counts and what it refuses",
           "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04\\coverage.json",
-          "source_digest": "0d5dbdb3814df602d83138e8113ed776d080c44485059bd12a82aee13cb0897c",
+          "source_digest": "17831c89535ae2b6745f65bfe7e0ea22a5df09633adef79ce38aa37dd78b7c3e",
           "unit": "days",
           "value": 60
         }
@@ -514,38 +514,38 @@
     {
       "evidence": [
         {
-          "as_of_utc": "2026-10-14T06:53:55Z",
+          "as_of_utc": "2026-10-14T06:57:22Z",
           "figure": "git_head",
           "measurement_scope": "the commit the reading was taken at",
           "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.git\\HEAD",
           "source_digest": "7c2818bac891262df1ebb00b2be7f917da46f671946fda4594fcfd86e152f719",
           "unit": "commit",
-          "value": "52d75f07ca2824ec537fdfb1992bfa1530608567"
+          "value": "f418619372e0eae0bbbdfaaebbd84f54804fdff1"
         },
         {
-          "as_of_utc": "2026-10-14T06:53:55Z",
+          "as_of_utc": "2026-10-14T06:57:22Z",
           "figure": "git_commits_since_root",
           "measurement_scope": "commits reachable from HEAD since the root commit",
           "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.git\\HEAD",
           "source_digest": "7c2818bac891262df1ebb00b2be7f917da46f671946fda4594fcfd86e152f719",
           "unit": "commits",
-          "value": 398
+          "value": 399
         },
         {
-          "as_of_utc": "2026-10-14T06:53:55Z",
+          "as_of_utc": "2026-10-14T06:57:22Z",
           "figure": "git_dirty_entries",
           "measurement_scope": "lines of `git status --porcelain`: every change, whoever made it",
           "source_artifact": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.git\\HEAD",
           "source_digest": "7c2818bac891262df1ebb00b2be7f917da46f671946fda4594fcfd86e152f719",
           "unit": "paths",
-          "value": 137
+          "value": 135
         },
         {
-          "as_of_utc": "2026-10-14T06:53:55Z",
+          "as_of_utc": "2026-10-14T06:57:22Z",
           "figure": "github_push_state",
           "measurement_scope": "the recorded result of the publication probe, not re-probed here",
           "source_artifact": "reports\\edge-recovery\\WP-EDGE-05R\\GITHUB_STATE.json",
-          "source_digest": "1b9d943635bc877843a77a83179f9f95641f8c7177b4439b9f478405e7fa33af",
+          "source_digest": "a857462e653f8e6353ef90565916388758f3820c0f44ab4b00c216fcd2a75b01",
           "unit": "label",
           "value": "AVAILABLE_NOT_EXERCISED"
         }
@@ -556,7 +556,7 @@
       "verdict": "PASS"
     }
   ],
-  "run_id": "EDGE05R-READ-20261014T065355Z",
+  "run_id": "EDGE05R-READ-20261014T065722Z",
   "schema_version": "EDGE05R_ACCEPTANCE_MATRIX_V1",
-  "snapshot_digest": "70edb16a3cc41bfb49e332c9e172d5f016e6f9e995e48c41509bba8bc4051a5f"
+  "snapshot_digest": "eb91c3e2ad58486131596e9f968d6caca05187307e04616a8a32d168a242868c"
 }

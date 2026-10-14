@@ -1,6 +1,6 @@
 # WP-EDGE-05R — recovery and reporting integrity
 
-*One reading, taken at `2026-10-14T06:53:55Z`, snapshot `EDGE05R-READ-20261014T065355Z`, digest `70edb16a3cc41bfb…`. Every figure in this report was read at that instant and says so; the Markdown, the JSON and the executive summary are three renderings of that one file.*
+*One reading, taken at `2026-10-14T06:57:22Z`, snapshot `EDGE05R-READ-20261014T065722Z`, digest `eb91c3e2ad584861…`. Every figure in this report was read at that instant and says so; the Markdown, the JSON and the executive summary are three renderings of that one file.*
 
 ## 0. The bottom line
 
@@ -8,13 +8,13 @@
 
 **Ingest state: `INGEST_RESUMED`.** The lane refused 35 tick(s) on disk and has observed again since: the refusal was real and is over.
 
-The volume is above the critical floor but under the healthy one (3.497 GiB free): the lane ingests and the heavy publication waits. One more consumer on this volume ends the window.
+The volume is above the critical floor but under the healthy one (4.013 GiB free): the lane ingests and the heavy publication waits. One more consumer on this volume ends the window.
 
 | Question | Answer, as of this reading |
 | --- | --- |
-| Free space | 3.497 GiB (`ABOVE_CRITICAL_BELOW_HEALTHY`) |
-| Lane ticks | 84 total, 40 observed, 35 refused on disk |
-| Newest tick | `OBSERVED` at 2026-10-14T06:42:20Z |
+| Free space | 4.013 GiB (`ABOVE_CRITICAL_BELOW_HEALTHY`) |
+| Lane ticks | 85 total, 41 observed, 35 refused on disk |
+| Newest tick | `OBSERVED` at 2026-10-14T06:57:08Z |
 | Watchdog readings | 53, newest `WATCH_DEGRADED` / `RESOURCE_PRESSURE` |
 | Forward days | 0 of 60 prospectively observed; 228 days carry data, 227 of them backfilled |
 | Reconciliation | `RECONCILIATION_INCOMPLETE` / `HISTORICAL_ONLY` at 2026-10-14T06:24:45Z |
@@ -28,7 +28,7 @@ The volume is above the critical floor but under the healthy one (3.497 GiB free
 | Proven safe to reclaim | 20771371 bytes of tool cache |
 | Actually reclaimed | 45461012 bytes |
 | Free after the reclaim | 5907402752 bytes (`HEALTHY`) |
-| Free at this reading | 3754631168 bytes |
+| Free at this reading | 4308934656 bytes |
 
 The reclaim removed tool caches and nothing else: each path was checked, at the moment it was removed, for being a cache by name, untracked by git and named in `.gitignore`. Market data, evidence, other workstreams' artefacts, source and the environment's own files were sized and left alone. The sweep's own reading recorded `HEALTHY` and this reading records `ABOVE_CRITICAL_BELOW_HEALTHY`: the lane ingests and the heavy publication waits, and the repository cannot close that gap out of its own caches. What is left is the volume owner's decision, planned in `VOLUME_NEIGHBOURS.md` rather than executed here.
 
@@ -36,12 +36,12 @@ The reclaim removed tool caches and nothing else: each path was checked, at the 
 
 | | |
 | --- | --- |
-| Tick count by outcome | `already_observed`=4, `already_running`=2, `disk_budget_exceeded`=35, `no_new_data`=3, `observed`=40 |
+| Tick count by outcome | `already_observed`=4, `already_running`=2, `disk_budget_exceeded`=35, `no_new_data`=3, `observed`=41 |
 | First disk refusal | 2026-10-13T20:25:56Z |
 | Newest tick | `OBSERVED` with 3 new bar(s), parity `PARITY_PASS` |
-| Stored bars | 18315 across 6 series |
-| Sealed slots | 42 |
-| Ingest attempts | 540, 288 bars appended in total |
+| Stored bars | 18318 across 6 series |
+| Sealed slots | 43 |
+| Ingest attempts | 552, 291 bars appended in total |
 
 ## 3. The watchdog, and the cause it now names
 
@@ -64,7 +64,7 @@ The figure that was published as `host_clock_skew_seconds` was the same kind of 
 
 The host's own offset is published two ways for the same reason: `120` minutes is the offset in force at the instant read, while the base offset the platform reports is 60 minutes — an hour short of the wall clock, and an hour of error for anyone who converts with it.
 
-Every alert row that names the scheduler or a refused tick, taken from this same reading (`2026-10-14T06:53:55Z`), oldest first. The last two are the repair working on a real refusal:
+Every alert row that names the scheduler or a refused tick, taken from this same reading (`2026-10-14T06:57:22Z`), oldest first. The last two are the repair working on a real refusal:
 
 | Instant | Alert (kind, state, severity) |
 | --- | --- |
@@ -157,130 +157,130 @@ The 4 `STALE_COMMITTED_ARTEFACT` failures are a committed view and a certificati
 
 | Figure | Value | Unit | as_of_utc | Source digest | Scope |
 | --- | --- | --- | --- | --- | --- |
-| `defect_chain_broken` | 0 | count | 2026-10-14T06:53:55Z | `1f883dd5b673…` | closed defect counts from the reconciliation |
-| `defect_claimed_but_absent` | 0 | count | 2026-10-14T06:53:55Z | `1f883dd5b673…` | closed defect counts from the reconciliation |
-| `defect_decision_divergence` | 0 | count | 2026-10-14T06:53:55Z | `1f883dd5b673…` | closed defect counts from the reconciliation |
-| `defect_double_claim` | 0 | count | 2026-10-14T06:53:55Z | `1f883dd5b673…` | closed defect counts from the reconciliation |
-| `defect_restart_proof_broken` | 0 | count | 2026-10-14T06:53:55Z | `1f883dd5b673…` | closed defect counts from the reconciliation |
-| `defect_seal_missing` | 0 | count | 2026-10-14T06:53:55Z | `1f883dd5b673…` | closed defect counts from the reconciliation |
-| `defect_seal_orphaned` | 0 | count | 2026-10-14T06:53:55Z | `1f883dd5b673…` | closed defect counts from the reconciliation |
-| `defect_unattributed_attempt` | 2 | count | 2026-10-14T06:53:55Z | `1f883dd5b673…` | closed defect counts from the reconciliation |
-| `defect_unattributed_bar` | 0 | count | 2026-10-14T06:53:55Z | `1f883dd5b673…` | closed defect counts from the reconciliation |
-| `forward_coverage_required` | 0.9 | ratio | 2026-10-14T06:53:55Z | `0d5dbdb3814d…` | the lane's own coverage file: what it counts and what it refuses |
-| `forward_days_densely_covered_but_backfilled` | 227 | days | 2026-10-14T06:53:55Z | `0d5dbdb3814d…` | the lane's own coverage file: what it counts and what it refuses |
-| `forward_days_observed_window` | 227 | days | 2026-10-14T06:53:55Z | `0d5dbdb3814d…` | the lane's own coverage file: what it counts and what it refuses |
-| `forward_days_prospectively_observed` | 0 | days | 2026-10-14T06:53:55Z | `0d5dbdb3814d…` | the lane's own coverage file: what it counts and what it refuses |
-| `forward_days_remaining` | 60 | days | 2026-10-14T06:53:55Z | `0d5dbdb3814d…` | the lane's own coverage file: what it counts and what it refuses |
-| `forward_days_required` | 60 | days | 2026-10-14T06:53:55Z | `0d5dbdb3814d…` | the lane's own coverage file: what it counts and what it refuses |
-| `forward_days_with_data` | 228 | days | 2026-10-14T06:53:55Z | `0d5dbdb3814d…` | the lane's own coverage file: what it counts and what it refuses |
-| `forward_epoch_utc` | 2026-03-01T00:00:00Z | instant | 2026-10-14T06:53:55Z | `0d5dbdb3814d…` | the lane's own coverage file: what it counts and what it refuses |
-| `forward_freeze` | frozen_15m_end_utc=2026-10-07T11:30:00Z, frozen_1h_end_utc=2026-02-28T23:00:00Z, params_hash=d073a2d686b9b198c36c9a3c6009d36130577ba247a2016c3f791813cb749d77, reading=the frozen corpora end at these instants; every stored bar is strictly later, and no day before the epoch is a forward observation day | label | 2026-10-14T06:53:55Z | `0d5dbdb3814d…` | the lane's own coverage file: what it counts and what it refuses |
-| `git_branch` | agent/edge-recovery/WP-EDGE-00-baseline | label | 2026-10-14T06:53:55Z | `7c2818bac891…` | the branch the reading was taken on |
-| `git_commits_since_root` | 398 | commits | 2026-10-14T06:53:55Z | `7c2818bac891…` | commits reachable from HEAD since the root commit |
-| `git_dirty_entries` | 137 | paths | 2026-10-14T06:53:55Z | `7c2818bac891…` | lines of `git status --porcelain`: every change, whoever made it |
-| `git_head` | 52d75f07ca2824ec537fdfb1992bfa1530608567 | commit | 2026-10-14T06:53:55Z | `7c2818bac891…` | the commit the reading was taken at |
-| `github_probe_exit_code` | 0 | exit code | 2026-10-14T06:53:55Z | `1b9d943635bc…` | the probe's own exit status |
-| `github_push_state` | AVAILABLE_NOT_EXERCISED | label | 2026-10-14T06:53:55Z | `1b9d943635bc…` | the recorded result of the publication probe, not re-probed here |
-| `ingest_appended_bars` | 288 | bars | 2026-10-14T06:53:55Z | `6f21ddae9763…` | the `appended` field summed over every ingest attempt |
-| `ingest_ledger_rows` | 540 | attempts | 2026-10-14T06:53:55Z | `6f21ddae9763…` | every ingest attempt the lane recorded, one row per series and tick |
-| `lane_first_disk_refusal_utc` | 2026-10-13T20:25:56Z | instant | 2026-10-14T06:53:55Z | `c1b0d09d4a9f…` | the first row of the lane's run log that refused on disk, if any |
-| `lane_health_last_observation_utc` | 2026-10-14T06:42:20Z | instant | 2026-10-14T06:53:55Z | `c83dd27164d7…` | the lane's own health file |
-| `lane_health_status` | DEGRADED | label | 2026-10-14T06:53:55Z | `c83dd27164d7…` | the lane's own health file at this instant |
-| `lane_last_exit_code` | 0 | exit code | 2026-10-14T06:53:55Z | `c1b0d09d4a9f…` | the newest row of the lane's run log |
-| `lane_last_health_status` | DEGRADED | label | 2026-10-14T06:53:55Z | `c1b0d09d4a9f…` | the newest row of the lane's run log |
-| `lane_last_market_requests` | 4 | requests | 2026-10-14T06:53:55Z | `c1b0d09d4a9f…` | the newest row of the lane's run log |
-| `lane_last_new_bars` | 3 | bars | 2026-10-14T06:53:55Z | `c1b0d09d4a9f…` | the newest row of the lane's run log |
-| `lane_last_outcome` | OBSERVED | label | 2026-10-14T06:53:55Z | `c1b0d09d4a9f…` | the newest row of the lane's run log |
-| `lane_last_parity_verdict` | PARITY_PASS | label | 2026-10-14T06:53:55Z | `c1b0d09d4a9f…` | the newest row of the lane's run log |
-| `lane_last_ruleset_params_hash` | d073a2d686b9b198c36c9a3c6009d36130577ba247a2016c3f791813cb749d77 | digest | 2026-10-14T06:53:55Z | `c1b0d09d4a9f…` | the newest row of the lane's run log |
-| `lane_last_tick_utc` | 2026-10-14T06:42:20Z | instant | 2026-10-14T06:53:55Z | `c1b0d09d4a9f…` | the newest row of the lane's run log |
-| `lane_rows_claiming_an_order` | 0 | rows | 2026-10-14T06:53:55Z | `c1b0d09d4a9f…` | every lane run row, checked for a sent order or a promotion |
-| `lane_slot_seals` | 42 | seals | 2026-10-14T06:53:55Z | `0d825080e8d6…` | sealed slots in the lane's slot ledger |
-| `lane_ticks_already_observed` | 4 | ticks | 2026-10-14T06:53:55Z | `c1b0d09d4a9f…` | rows of the lane's run log whose outcome is ALREADY_OBSERVED |
-| `lane_ticks_already_running` | 2 | ticks | 2026-10-14T06:53:55Z | `c1b0d09d4a9f…` | rows of the lane's run log whose outcome is ALREADY_RUNNING |
-| `lane_ticks_disk_budget_exceeded` | 35 | ticks | 2026-10-14T06:53:55Z | `c1b0d09d4a9f…` | rows of the lane's run log whose outcome is DISK_BUDGET_EXCEEDED |
-| `lane_ticks_no_new_data` | 3 | ticks | 2026-10-14T06:53:55Z | `c1b0d09d4a9f…` | rows of the lane's run log whose outcome is NO_NEW_DATA |
-| `lane_ticks_observed` | 40 | ticks | 2026-10-14T06:53:55Z | `c1b0d09d4a9f…` | rows of the lane's run log whose outcome is OBSERVED |
-| `lane_ticks_total` | 84 | ticks | 2026-10-14T06:53:55Z | `c1b0d09d4a9f…` | every row of the lane's run log |
-| `reconciliation_chains_holding` | 6 | series | 2026-10-14T06:53:55Z | `1f883dd5b673…` | of 6 series, how many chains the recomputation holds for |
-| `reconciliation_generated_at_utc` | 2026-10-14T06:24:45Z | instant | 2026-10-14T06:53:55Z | `1f883dd5b673…` | the newest reconciliation on file |
-| `reconciliation_historical_defects` | 2 | defects | 2026-10-14T06:53:55Z | `1f883dd5b673…` | the newest reconciliation on file |
-| `reconciliation_market_requests` | 0 | requests | 2026-10-14T06:53:55Z | `1f883dd5b673…` | the newest reconciliation on file |
-| `reconciliation_open_defects` | 0 | defects | 2026-10-14T06:53:55Z | `1f883dd5b673…` | the newest reconciliation on file |
-| `reconciliation_seals` | 40 | seals | 2026-10-14T06:53:55Z | `1f883dd5b673…` | sealed slots the reconciliation accounted for |
-| `reconciliation_seals_missing_for_a_consuming_run` | 0 | seals | 2026-10-14T06:53:55Z | `1f883dd5b673…` | the reconciliation's own seal accounting |
-| `reconciliation_seals_of_an_unrecorded_run` | 0 | seals | 2026-10-14T06:53:55Z | `1f883dd5b673…` | the reconciliation's own seal accounting |
-| `reconciliation_seals_orphaned` | 0 | seals | 2026-10-14T06:53:55Z | `1f883dd5b673…` | the reconciliation's own seal accounting |
-| `reconciliation_status` | HISTORICAL_ONLY | label | 2026-10-14T06:53:55Z | `1f883dd5b673…` | the newest reconciliation on file |
-| `reconciliation_stored_bars` | 18309 | bars | 2026-10-14T06:53:55Z | `1f883dd5b673…` | stored bars summed over the per-series chains |
-| `reconciliation_unattributed_bars` | 0 | bars | 2026-10-14T06:53:55Z | `1f883dd5b673…` | stored bars no recorded attempt claims, named rather than deleted |
-| `reconciliation_verdict` | RECONCILIATION_INCOMPLETE | label | 2026-10-14T06:53:55Z | `1f883dd5b673…` | the newest reconciliation on file |
-| `restart_proof_broken` | 0 | instances | 2026-10-14T06:53:55Z | `1f883dd5b673…` | instants where the second ingest pass appended a bar it should not have |
-| `restart_proof_instants_with_two_passes` | 43 | instants | 2026-10-14T06:53:55Z | `1f883dd5b673…` | market instants the lane ingested twice, as its own design does |
-| `runtime_authority_map_bytes` | 7058 | bytes | 2026-10-14T06:53:55Z | `c0cc7f25eed2…` | this work package's own runtime authority map, as written |
-| `storage_free_bytes_after` | 5907402752 | bytes | 2026-10-14T06:53:55Z | `dc525c5201fd…` | free space after the reclaim, from the OS |
-| `storage_reclaimed_bytes` | 45461012 | bytes | 2026-10-14T06:53:55Z | `dc525c5201fd…` | bytes removed by the reclaim, measured by the OS |
-| `storage_repo_bytes` | 5724066394 | bytes | 2026-10-14T06:53:55Z | `63f987ca4ff4…` | every file under the repository root |
-| `storage_safe_reclaimable_bytes` | 20771371 | bytes | 2026-10-14T06:53:55Z | `63f987ca4ff4…` | tool caches proven untracked and gitignored at that reading |
-| `storage_verdict_after` | HEALTHY | label | 2026-10-14T06:53:55Z | `dc525c5201fd…` | the floor the volume stood at after the reclaim |
-| `store_bars` | 18315 | bars | 2026-10-14T06:53:55Z | `6d8edaa57731…` | every stored closed bar, summed over the series |
-| `store_series` | 6 | series | 2026-10-14T06:53:55Z | `6d8edaa57731…` | every series file in the forward store |
-| `tests_chain_exit_code` | 0 | exit code | 2026-10-14T06:53:55Z | `53368382d1a9…` | the test command's own exit status, not a summary of it |
-| `tests_chain_failed` | 0 | tests | 2026-10-14T06:53:55Z | `53368382d1a9…` | failures in the forward chain's suites |
-| `tests_chain_passed` | 102 | tests | 2026-10-14T06:53:55Z | `53368382d1a9…` | the forward chain's three suites: the lane's, the watchdog's, the reconciliation's |
-| `tests_full_exit_code` | 1 | exit code | 2026-10-14T06:53:55Z | `53368382d1a9…` | the whole-suite command's own exit status |
-| `tests_full_failed` | 7 | tests | 2026-10-14T06:53:55Z | `53368382d1a9…` | failures anywhere in the research suite, this work package's or not |
-| `tests_full_passed` | 2226 | tests | 2026-10-14T06:53:55Z | `53368382d1a9…` | every test under tests/unit/research, run in one invocation |
-| `tests_unexplained_failures` | 0 | tests | 2026-10-14T06:53:55Z | `53368382d1a9…` | failures for which no cause was demonstrated |
-| `verification_generated_at_utc` | None | instant | 2026-10-14T06:53:55Z | `ece67e5677c5…` | when the verifier read the state |
-| `verification_self_test` | SELF_TEST_PASS 16/16 | label | 2026-10-14T06:53:55Z | `ece67e5677c5…` | how many sabotages the matrix caught |
-| `verification_verdict` | VERIFY_PASS 13/13 | label | 2026-10-14T06:53:55Z | `ece67e5677c5…` | the independent verifier's own verdict on the latest state |
-| `volume_change_bytes_per_hour` | -253106336.8 | bytes per hour | 2026-10-14T06:53:55Z | `87dff3a645e6…` | the change in free space between the first and the newest footprint of 12.01 h: negative means the volume is being consumed faster than it is being returned, and this window contains the reclaim |
-| `volume_change_bytes_per_hour_recent` | -379837084.5 | bytes per hour | 2026-10-14T06:53:55Z | `87dff3a645e6…` | the same quantity over the newest three readings, after the reclaim |
-| `volume_free_bytes` | 3754631168 | bytes | 2026-10-14T06:53:55Z | `83d072d27d0a…` | volume C: as seen from the repository root |
-| `volume_free_bytes_first_watchdog_reading` | 7233032192 | bytes | 2026-10-14T06:53:55Z | `87dff3a645e6…` | the oldest watchdog reading on file that recorded free space |
-| `volume_free_bytes_newest_watchdog_reading` | 4194103296 | bytes | 2026-10-14T06:53:55Z | `87dff3a645e6…` | the newest watchdog reading that recorded free space |
-| `volume_free_gib` | 3.497 | GiB | 2026-10-14T06:53:55Z | `83d072d27d0a…` | volume C: |
-| `volume_verdict` | ABOVE_CRITICAL_BELOW_HEALTHY | label | 2026-10-14T06:53:55Z | `83d072d27d0a…` | the two floors the lane's own guard declares (2 GiB and 5 GiB) |
-| `watchdog_alert_kinds` | DISK_CRITICAL=1, DISK_RECOVERED=1, DISK_WARNING=4, EVIDENCE_CORRUPT=1, GROWTH_BUDGET_EXCEEDED=1, INGEST_STALLED=1, MARKET_QUIET=4, RECONCILIATION_REQUIRED=13 | map | 2026-10-14T06:53:55Z | `d2441a196dc3…` | alert rows grouped by kind |
-| `watchdog_alerts` | 55 | alerts | 2026-10-14T06:53:55Z | `d2441a196dc3…` | every alert row the watchdog appended, one per transition |
-| `watchdog_categories_seen` | HEALTHY=9, MARKET_QUIET=1, RESOURCE_PRESSURE=35, SCHEDULER_FAILURE=8 | map | 2026-10-14T06:53:55Z | `87dff3a645e6…` | how many readings were filed under each category, over the whole log |
-| `watchdog_detection_latency_seconds` | 6.0 | seconds | 2026-10-14T06:53:55Z | `e7757ea1d5c3…` | the induced-outage rehearsal of 2026-10-13 18:48Z: the watchdog's own two readings around the stop, quoted from that evidence file |
-| `watchdog_newest_at_utc` | 2026-10-14T06:47:33Z | instant | 2026-10-14T06:53:55Z | `87dff3a645e6…` | the newest reading on file |
-| `watchdog_newest_category` | RESOURCE_PRESSURE | label | 2026-10-14T06:53:55Z | `87dff3a645e6…` | the newest reading on file |
-| `watchdog_newest_cause` | None | label | 2026-10-14T06:53:55Z | `87dff3a645e6…` | the newest reading on file |
-| `watchdog_newest_local_utc_offset_minutes` | 120 | minutes | 2026-10-14T06:53:55Z | `87dff3a645e6…` | the newest reading's own scheduler section |
-| `watchdog_newest_operational_failure` | False | boolean | 2026-10-14T06:53:55Z | `87dff3a645e6…` | the newest reading on file |
-| `watchdog_newest_probe_answer_lag_seconds` | 11.013 | seconds | 2026-10-14T06:53:55Z | `87dff3a645e6…` | the newest reading's own scheduler section |
-| `watchdog_newest_scheduler_next_run_utc` | 2026-10-14T06:55:53.0000000Z | instant | 2026-10-14T06:53:55Z | `87dff3a645e6…` | the newest reading's own scheduler section |
-| `watchdog_newest_scheduler_platform_spelling` | 10/14/2026 08:55:53 | label | 2026-10-14T06:53:55Z | `87dff3a645e6…` | the newest reading's own scheduler section |
-| `watchdog_newest_schema` | EDGE05_WATCHDOG_V2 | label | 2026-10-14T06:53:55Z | `87dff3a645e6…` | the newest reading on file |
-| `watchdog_newest_verdict` | WATCH_DEGRADED | label | 2026-10-14T06:53:55Z | `87dff3a645e6…` | the newest reading on file |
-| `watchdog_readings` | 53 | readings | 2026-10-14T06:53:55Z | `87dff3a645e6…` | every reading the watchdog has on file |
-| `watchdog_rows_claiming_an_order` | 0 | rows | 2026-10-14T06:53:55Z | `87dff3a645e6…` | every watchdog reading, checked for a sent order or a promotion |
-| `watchdog_verdict_watch_alarm` | 4 | readings | 2026-10-14T06:53:55Z | `87dff3a645e6…` | readings whose verdict is WATCH_ALARM |
-| `watchdog_verdict_watch_blocked` | 35 | readings | 2026-10-14T06:53:55Z | `87dff3a645e6…` | readings whose verdict is WATCH_BLOCKED |
-| `watchdog_verdict_watch_degraded` | 5 | readings | 2026-10-14T06:53:55Z | `87dff3a645e6…` | readings whose verdict is WATCH_DEGRADED |
-| `watchdog_verdict_watch_ok` | 9 | readings | 2026-10-14T06:53:55Z | `87dff3a645e6…` | readings whose verdict is WATCH_OK |
+| `defect_chain_broken` | 0 | count | 2026-10-14T06:57:22Z | `1f883dd5b673…` | closed defect counts from the reconciliation |
+| `defect_claimed_but_absent` | 0 | count | 2026-10-14T06:57:22Z | `1f883dd5b673…` | closed defect counts from the reconciliation |
+| `defect_decision_divergence` | 0 | count | 2026-10-14T06:57:22Z | `1f883dd5b673…` | closed defect counts from the reconciliation |
+| `defect_double_claim` | 0 | count | 2026-10-14T06:57:22Z | `1f883dd5b673…` | closed defect counts from the reconciliation |
+| `defect_restart_proof_broken` | 0 | count | 2026-10-14T06:57:22Z | `1f883dd5b673…` | closed defect counts from the reconciliation |
+| `defect_seal_missing` | 0 | count | 2026-10-14T06:57:22Z | `1f883dd5b673…` | closed defect counts from the reconciliation |
+| `defect_seal_orphaned` | 0 | count | 2026-10-14T06:57:22Z | `1f883dd5b673…` | closed defect counts from the reconciliation |
+| `defect_unattributed_attempt` | 2 | count | 2026-10-14T06:57:22Z | `1f883dd5b673…` | closed defect counts from the reconciliation |
+| `defect_unattributed_bar` | 0 | count | 2026-10-14T06:57:22Z | `1f883dd5b673…` | closed defect counts from the reconciliation |
+| `forward_coverage_required` | 0.9 | ratio | 2026-10-14T06:57:22Z | `17831c89535a…` | the lane's own coverage file: what it counts and what it refuses |
+| `forward_days_densely_covered_but_backfilled` | 227 | days | 2026-10-14T06:57:22Z | `17831c89535a…` | the lane's own coverage file: what it counts and what it refuses |
+| `forward_days_observed_window` | 227 | days | 2026-10-14T06:57:22Z | `17831c89535a…` | the lane's own coverage file: what it counts and what it refuses |
+| `forward_days_prospectively_observed` | 0 | days | 2026-10-14T06:57:22Z | `17831c89535a…` | the lane's own coverage file: what it counts and what it refuses |
+| `forward_days_remaining` | 60 | days | 2026-10-14T06:57:22Z | `17831c89535a…` | the lane's own coverage file: what it counts and what it refuses |
+| `forward_days_required` | 60 | days | 2026-10-14T06:57:22Z | `17831c89535a…` | the lane's own coverage file: what it counts and what it refuses |
+| `forward_days_with_data` | 228 | days | 2026-10-14T06:57:22Z | `17831c89535a…` | the lane's own coverage file: what it counts and what it refuses |
+| `forward_epoch_utc` | 2026-03-01T00:00:00Z | instant | 2026-10-14T06:57:22Z | `17831c89535a…` | the lane's own coverage file: what it counts and what it refuses |
+| `forward_freeze` | frozen_15m_end_utc=2026-10-07T11:30:00Z, frozen_1h_end_utc=2026-02-28T23:00:00Z, params_hash=d073a2d686b9b198c36c9a3c6009d36130577ba247a2016c3f791813cb749d77, reading=the frozen corpora end at these instants; every stored bar is strictly later, and no day before the epoch is a forward observation day | label | 2026-10-14T06:57:22Z | `17831c89535a…` | the lane's own coverage file: what it counts and what it refuses |
+| `git_branch` | agent/edge-recovery/WP-EDGE-00-baseline | label | 2026-10-14T06:57:22Z | `7c2818bac891…` | the branch the reading was taken on |
+| `git_commits_since_root` | 399 | commits | 2026-10-14T06:57:22Z | `7c2818bac891…` | commits reachable from HEAD since the root commit |
+| `git_dirty_entries` | 135 | paths | 2026-10-14T06:57:22Z | `7c2818bac891…` | lines of `git status --porcelain`: every change, whoever made it |
+| `git_head` | f418619372e0eae0bbbdfaaebbd84f54804fdff1 | commit | 2026-10-14T06:57:22Z | `7c2818bac891…` | the commit the reading was taken at |
+| `github_probe_exit_code` | 0 | exit code | 2026-10-14T06:57:22Z | `a857462e653f…` | the probe's own exit status |
+| `github_push_state` | AVAILABLE_NOT_EXERCISED | label | 2026-10-14T06:57:22Z | `a857462e653f…` | the recorded result of the publication probe, not re-probed here |
+| `ingest_appended_bars` | 291 | bars | 2026-10-14T06:57:22Z | `85abd4da3d44…` | the `appended` field summed over every ingest attempt |
+| `ingest_ledger_rows` | 552 | attempts | 2026-10-14T06:57:22Z | `85abd4da3d44…` | every ingest attempt the lane recorded, one row per series and tick |
+| `lane_first_disk_refusal_utc` | 2026-10-13T20:25:56Z | instant | 2026-10-14T06:57:22Z | `f032e803bd8c…` | the first row of the lane's run log that refused on disk, if any |
+| `lane_health_last_observation_utc` | 2026-10-14T06:57:08Z | instant | 2026-10-14T06:57:22Z | `5c0ec59c33a4…` | the lane's own health file |
+| `lane_health_status` | DEGRADED | label | 2026-10-14T06:57:22Z | `5c0ec59c33a4…` | the lane's own health file at this instant |
+| `lane_last_exit_code` | 0 | exit code | 2026-10-14T06:57:22Z | `f032e803bd8c…` | the newest row of the lane's run log |
+| `lane_last_health_status` | DEGRADED | label | 2026-10-14T06:57:22Z | `f032e803bd8c…` | the newest row of the lane's run log |
+| `lane_last_market_requests` | 4 | requests | 2026-10-14T06:57:22Z | `f032e803bd8c…` | the newest row of the lane's run log |
+| `lane_last_new_bars` | 3 | bars | 2026-10-14T06:57:22Z | `f032e803bd8c…` | the newest row of the lane's run log |
+| `lane_last_outcome` | OBSERVED | label | 2026-10-14T06:57:22Z | `f032e803bd8c…` | the newest row of the lane's run log |
+| `lane_last_parity_verdict` | PARITY_PASS | label | 2026-10-14T06:57:22Z | `f032e803bd8c…` | the newest row of the lane's run log |
+| `lane_last_ruleset_params_hash` | d073a2d686b9b198c36c9a3c6009d36130577ba247a2016c3f791813cb749d77 | digest | 2026-10-14T06:57:22Z | `f032e803bd8c…` | the newest row of the lane's run log |
+| `lane_last_tick_utc` | 2026-10-14T06:57:08Z | instant | 2026-10-14T06:57:22Z | `f032e803bd8c…` | the newest row of the lane's run log |
+| `lane_rows_claiming_an_order` | 0 | rows | 2026-10-14T06:57:22Z | `f032e803bd8c…` | every lane run row, checked for a sent order or a promotion |
+| `lane_slot_seals` | 43 | seals | 2026-10-14T06:57:22Z | `4f50a60e083b…` | sealed slots in the lane's slot ledger |
+| `lane_ticks_already_observed` | 4 | ticks | 2026-10-14T06:57:22Z | `f032e803bd8c…` | rows of the lane's run log whose outcome is ALREADY_OBSERVED |
+| `lane_ticks_already_running` | 2 | ticks | 2026-10-14T06:57:22Z | `f032e803bd8c…` | rows of the lane's run log whose outcome is ALREADY_RUNNING |
+| `lane_ticks_disk_budget_exceeded` | 35 | ticks | 2026-10-14T06:57:22Z | `f032e803bd8c…` | rows of the lane's run log whose outcome is DISK_BUDGET_EXCEEDED |
+| `lane_ticks_no_new_data` | 3 | ticks | 2026-10-14T06:57:22Z | `f032e803bd8c…` | rows of the lane's run log whose outcome is NO_NEW_DATA |
+| `lane_ticks_observed` | 41 | ticks | 2026-10-14T06:57:22Z | `f032e803bd8c…` | rows of the lane's run log whose outcome is OBSERVED |
+| `lane_ticks_total` | 85 | ticks | 2026-10-14T06:57:22Z | `f032e803bd8c…` | every row of the lane's run log |
+| `reconciliation_chains_holding` | 6 | series | 2026-10-14T06:57:22Z | `1f883dd5b673…` | of 6 series, how many chains the recomputation holds for |
+| `reconciliation_generated_at_utc` | 2026-10-14T06:24:45Z | instant | 2026-10-14T06:57:22Z | `1f883dd5b673…` | the newest reconciliation on file |
+| `reconciliation_historical_defects` | 2 | defects | 2026-10-14T06:57:22Z | `1f883dd5b673…` | the newest reconciliation on file |
+| `reconciliation_market_requests` | 0 | requests | 2026-10-14T06:57:22Z | `1f883dd5b673…` | the newest reconciliation on file |
+| `reconciliation_open_defects` | 0 | defects | 2026-10-14T06:57:22Z | `1f883dd5b673…` | the newest reconciliation on file |
+| `reconciliation_seals` | 40 | seals | 2026-10-14T06:57:22Z | `1f883dd5b673…` | sealed slots the reconciliation accounted for |
+| `reconciliation_seals_missing_for_a_consuming_run` | 0 | seals | 2026-10-14T06:57:22Z | `1f883dd5b673…` | the reconciliation's own seal accounting |
+| `reconciliation_seals_of_an_unrecorded_run` | 0 | seals | 2026-10-14T06:57:22Z | `1f883dd5b673…` | the reconciliation's own seal accounting |
+| `reconciliation_seals_orphaned` | 0 | seals | 2026-10-14T06:57:22Z | `1f883dd5b673…` | the reconciliation's own seal accounting |
+| `reconciliation_status` | HISTORICAL_ONLY | label | 2026-10-14T06:57:22Z | `1f883dd5b673…` | the newest reconciliation on file |
+| `reconciliation_stored_bars` | 18309 | bars | 2026-10-14T06:57:22Z | `1f883dd5b673…` | stored bars summed over the per-series chains |
+| `reconciliation_unattributed_bars` | 0 | bars | 2026-10-14T06:57:22Z | `1f883dd5b673…` | stored bars no recorded attempt claims, named rather than deleted |
+| `reconciliation_verdict` | RECONCILIATION_INCOMPLETE | label | 2026-10-14T06:57:22Z | `1f883dd5b673…` | the newest reconciliation on file |
+| `restart_proof_broken` | 0 | instances | 2026-10-14T06:57:22Z | `1f883dd5b673…` | instants where the second ingest pass appended a bar it should not have |
+| `restart_proof_instants_with_two_passes` | 43 | instants | 2026-10-14T06:57:22Z | `1f883dd5b673…` | market instants the lane ingested twice, as its own design does |
+| `runtime_authority_map_bytes` | 7058 | bytes | 2026-10-14T06:57:22Z | `c0cc7f25eed2…` | this work package's own runtime authority map, as written |
+| `storage_free_bytes_after` | 5907402752 | bytes | 2026-10-14T06:57:22Z | `dc525c5201fd…` | free space after the reclaim, from the OS |
+| `storage_reclaimed_bytes` | 45461012 | bytes | 2026-10-14T06:57:22Z | `dc525c5201fd…` | bytes removed by the reclaim, measured by the OS |
+| `storage_repo_bytes` | 5724066394 | bytes | 2026-10-14T06:57:22Z | `63f987ca4ff4…` | every file under the repository root |
+| `storage_safe_reclaimable_bytes` | 20771371 | bytes | 2026-10-14T06:57:22Z | `63f987ca4ff4…` | tool caches proven untracked and gitignored at that reading |
+| `storage_verdict_after` | HEALTHY | label | 2026-10-14T06:57:22Z | `dc525c5201fd…` | the floor the volume stood at after the reclaim |
+| `store_bars` | 18318 | bars | 2026-10-14T06:57:22Z | `4125028fd405…` | every stored closed bar, summed over the series |
+| `store_series` | 6 | series | 2026-10-14T06:57:22Z | `4125028fd405…` | every series file in the forward store |
+| `tests_chain_exit_code` | 0 | exit code | 2026-10-14T06:57:22Z | `53368382d1a9…` | the test command's own exit status, not a summary of it |
+| `tests_chain_failed` | 0 | tests | 2026-10-14T06:57:22Z | `53368382d1a9…` | failures in the forward chain's suites |
+| `tests_chain_passed` | 102 | tests | 2026-10-14T06:57:22Z | `53368382d1a9…` | the forward chain's three suites: the lane's, the watchdog's, the reconciliation's |
+| `tests_full_exit_code` | 1 | exit code | 2026-10-14T06:57:22Z | `53368382d1a9…` | the whole-suite command's own exit status |
+| `tests_full_failed` | 7 | tests | 2026-10-14T06:57:22Z | `53368382d1a9…` | failures anywhere in the research suite, this work package's or not |
+| `tests_full_passed` | 2226 | tests | 2026-10-14T06:57:22Z | `53368382d1a9…` | every test under tests/unit/research, run in one invocation |
+| `tests_unexplained_failures` | 0 | tests | 2026-10-14T06:57:22Z | `53368382d1a9…` | failures for which no cause was demonstrated |
+| `verification_generated_at_utc` | None | instant | 2026-10-14T06:57:22Z | `ece67e5677c5…` | when the verifier read the state |
+| `verification_self_test` | SELF_TEST_PASS 16/16 | label | 2026-10-14T06:57:22Z | `ece67e5677c5…` | how many sabotages the matrix caught |
+| `verification_verdict` | VERIFY_PASS 13/13 | label | 2026-10-14T06:57:22Z | `ece67e5677c5…` | the independent verifier's own verdict on the latest state |
+| `volume_change_bytes_per_hour` | -253106336.8 | bytes per hour | 2026-10-14T06:57:22Z | `87dff3a645e6…` | the change in free space between the first and the newest footprint of 12.01 h: negative means the volume is being consumed faster than it is being returned, and this window contains the reclaim |
+| `volume_change_bytes_per_hour_recent` | -379837084.5 | bytes per hour | 2026-10-14T06:57:22Z | `87dff3a645e6…` | the same quantity over the newest three readings, after the reclaim |
+| `volume_free_bytes` | 4308934656 | bytes | 2026-10-14T06:57:22Z | `83d072d27d0a…` | volume C: as seen from the repository root |
+| `volume_free_bytes_first_watchdog_reading` | 7233032192 | bytes | 2026-10-14T06:57:22Z | `87dff3a645e6…` | the oldest watchdog reading on file that recorded free space |
+| `volume_free_bytes_newest_watchdog_reading` | 4194103296 | bytes | 2026-10-14T06:57:22Z | `87dff3a645e6…` | the newest watchdog reading that recorded free space |
+| `volume_free_gib` | 4.013 | GiB | 2026-10-14T06:57:22Z | `83d072d27d0a…` | volume C: |
+| `volume_verdict` | ABOVE_CRITICAL_BELOW_HEALTHY | label | 2026-10-14T06:57:22Z | `83d072d27d0a…` | the two floors the lane's own guard declares (2 GiB and 5 GiB) |
+| `watchdog_alert_kinds` | DISK_CRITICAL=1, DISK_RECOVERED=1, DISK_WARNING=4, EVIDENCE_CORRUPT=1, GROWTH_BUDGET_EXCEEDED=1, INGEST_STALLED=1, MARKET_QUIET=4, RECONCILIATION_REQUIRED=13 | map | 2026-10-14T06:57:22Z | `d2441a196dc3…` | alert rows grouped by kind |
+| `watchdog_alerts` | 55 | alerts | 2026-10-14T06:57:22Z | `d2441a196dc3…` | every alert row the watchdog appended, one per transition |
+| `watchdog_categories_seen` | HEALTHY=9, MARKET_QUIET=1, RESOURCE_PRESSURE=35, SCHEDULER_FAILURE=8 | map | 2026-10-14T06:57:22Z | `87dff3a645e6…` | how many readings were filed under each category, over the whole log |
+| `watchdog_detection_latency_seconds` | 6.0 | seconds | 2026-10-14T06:57:22Z | `e7757ea1d5c3…` | the induced-outage rehearsal of 2026-10-13 18:48Z: the watchdog's own two readings around the stop, quoted from that evidence file |
+| `watchdog_newest_at_utc` | 2026-10-14T06:47:33Z | instant | 2026-10-14T06:57:22Z | `87dff3a645e6…` | the newest reading on file |
+| `watchdog_newest_category` | RESOURCE_PRESSURE | label | 2026-10-14T06:57:22Z | `87dff3a645e6…` | the newest reading on file |
+| `watchdog_newest_cause` | None | label | 2026-10-14T06:57:22Z | `87dff3a645e6…` | the newest reading on file |
+| `watchdog_newest_local_utc_offset_minutes` | 120 | minutes | 2026-10-14T06:57:22Z | `87dff3a645e6…` | the newest reading's own scheduler section |
+| `watchdog_newest_operational_failure` | False | boolean | 2026-10-14T06:57:22Z | `87dff3a645e6…` | the newest reading on file |
+| `watchdog_newest_probe_answer_lag_seconds` | 11.013 | seconds | 2026-10-14T06:57:22Z | `87dff3a645e6…` | the newest reading's own scheduler section |
+| `watchdog_newest_scheduler_next_run_utc` | 2026-10-14T06:55:53.0000000Z | instant | 2026-10-14T06:57:22Z | `87dff3a645e6…` | the newest reading's own scheduler section |
+| `watchdog_newest_scheduler_platform_spelling` | 10/14/2026 08:55:53 | label | 2026-10-14T06:57:22Z | `87dff3a645e6…` | the newest reading's own scheduler section |
+| `watchdog_newest_schema` | EDGE05_WATCHDOG_V2 | label | 2026-10-14T06:57:22Z | `87dff3a645e6…` | the newest reading on file |
+| `watchdog_newest_verdict` | WATCH_DEGRADED | label | 2026-10-14T06:57:22Z | `87dff3a645e6…` | the newest reading on file |
+| `watchdog_readings` | 53 | readings | 2026-10-14T06:57:22Z | `87dff3a645e6…` | every reading the watchdog has on file |
+| `watchdog_rows_claiming_an_order` | 0 | rows | 2026-10-14T06:57:22Z | `87dff3a645e6…` | every watchdog reading, checked for a sent order or a promotion |
+| `watchdog_verdict_watch_alarm` | 4 | readings | 2026-10-14T06:57:22Z | `87dff3a645e6…` | readings whose verdict is WATCH_ALARM |
+| `watchdog_verdict_watch_blocked` | 35 | readings | 2026-10-14T06:57:22Z | `87dff3a645e6…` | readings whose verdict is WATCH_BLOCKED |
+| `watchdog_verdict_watch_degraded` | 5 | readings | 2026-10-14T06:57:22Z | `87dff3a645e6…` | readings whose verdict is WATCH_DEGRADED |
+| `watchdog_verdict_watch_ok` | 9 | readings | 2026-10-14T06:57:22Z | `87dff3a645e6…` | readings whose verdict is WATCH_OK |
 
 ## 8. Sources, each with the digest it had at this reading
 
 | Source | Path | Bytes | Rows | Digest |
 | --- | --- | --- | --- | --- |
-| `coverage` | `C:\Users\GVLLFR0035\Downloads\bot freebuff\data\forward\edge04\coverage.json` | 121602 | None | `0d5dbdb3814df602…` |
+| `coverage` | `C:\Users\GVLLFR0035\Downloads\bot freebuff\data\forward\edge04\coverage.json` | 121602 | None | `17831c89535ae2b6…` |
 | `git` | `C:\Users\GVLLFR0035\Downloads\bot freebuff\.git\HEAD` | 56 | None | `7c2818bac891262d…` |
-| `github_state` | `reports\edge-recovery\WP-EDGE-05R\GITHUB_STATE.json` | 2917 | None | `1b9d943635bc8778…` |
-| `ingest_ledger` | `C:\Users\GVLLFR0035\Downloads\bot freebuff\data\forward\edge04\ledger\INGEST_LEDGER.jsonl` | 437214 | 540 | `6f21ddae97634cae…` |
-| `lane_health` | `C:\Users\GVLLFR0035\Downloads\bot freebuff\data\forward\edge04\health.json` | 4515 | None | `c83dd27164d7b1a6…` |
-| `lane_runs` | `C:\Users\GVLLFR0035\Downloads\bot freebuff\data\forward\edge04\runs.jsonl` | 285260 | 84 | `c1b0d09d4a9f77f5…` |
-| `lane_slots` | `C:\Users\GVLLFR0035\Downloads\bot freebuff\data\forward\edge04\slots.jsonl` | 10467 | 42 | `0d825080e8d65f5d…` |
+| `github_state` | `reports\edge-recovery\WP-EDGE-05R\GITHUB_STATE.json` | 3312 | None | `a857462e653f8e63…` |
+| `ingest_ledger` | `C:\Users\GVLLFR0035\Downloads\bot freebuff\data\forward\edge04\ledger\INGEST_LEDGER.jsonl` | 446718 | 552 | `85abd4da3d443cb3…` |
+| `lane_health` | `C:\Users\GVLLFR0035\Downloads\bot freebuff\data\forward\edge04\health.json` | 4532 | None | `5c0ec59c33a4d1a4…` |
+| `lane_runs` | `C:\Users\GVLLFR0035\Downloads\bot freebuff\data\forward\edge04\runs.jsonl` | 290123 | 85 | `f032e803bd8c0bfd…` |
+| `lane_slots` | `C:\Users\GVLLFR0035\Downloads\bot freebuff\data\forward\edge04\slots.jsonl` | 10716 | 43 | `4f50a60e083b0a8e…` |
 | `outage_detect` | `C:\Users\GVLLFR0035\Downloads\bot freebuff\reports\edge-recovery\WP-EDGE-05\evidence\OUTAGE_DETECT_1.txt` | 1583 | None | `e7757ea1d5c3fc59…` |
 | `reconciliation` | `C:\Users\GVLLFR0035\Downloads\bot freebuff\data\forward\edge05\reconciliation\RECONCILIATION.json` | 15015 | None | `1f883dd5b6735837…` |
 | `regression` | `reports\edge-recovery\WP-EDGE-05R\REGRESSION.json` | 7389 | None | `53368382d1a9d1b3…` |
 | `runtime_authority_map` | `reports\edge-recovery\WP-EDGE-05R\runtime_authority_map.md` | 7058 | None | `c0cc7f25eed26094…` |
 | `storage_inventory` | `reports\edge-recovery\WP-EDGE-05R\STORAGE_INVENTORY.json` | 127018 | None | `63f987ca4ff41aba…` |
 | `storage_reclaim` | `reports\edge-recovery\WP-EDGE-05R\STORAGE_RECLAIM.json` | 140440 | None | `dc525c5201fdf9e0…` |
-| `store` | `C:\Users\GVLLFR0035\Downloads\bot freebuff\data\forward\edge03` | 5670082 | 18315 | `6d8edaa5773133ca…` |
+| `store` | `C:\Users\GVLLFR0035\Downloads\bot freebuff\data\forward\edge03` | 5671017 | 18318 | `4125028fd405de0a…` |
 | `verification` | `reports\edge-recovery\WP-EDGE-05R\VERIFICATION.json` | 14789 | None | `ece67e5677c5f825…` |
 | `volume` | `C:\Users\GVLLFR0035\Downloads\bot freebuff\pyproject.toml` | 7335 | None | `83d072d27d0a6b2e…` |
 | `watchdog_alerts` | `C:\Users\GVLLFR0035\Downloads\bot freebuff\data\forward\edge05\watch_alerts.jsonl` | 65301 | 55 | `d2441a196dc3282e…` |
