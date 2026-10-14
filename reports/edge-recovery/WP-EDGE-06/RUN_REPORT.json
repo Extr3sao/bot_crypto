@@ -1,0 +1,357 @@
+{
+  "acceptance": [
+    {
+      "figures": [
+        "head",
+        "branch",
+        "worktree_dirty_entries_of_this_work_package"
+      ],
+      "id": "ACC-01",
+      "requirement": "Branch, remote, commits and working tree verified and published",
+      "result": "PASS"
+    },
+    {
+      "figures": [
+        "tenants_total_gib",
+        "appdata_local_mib",
+        "temp_older_than_a_day_gib"
+      ],
+      "id": "ACC-02",
+      "requirement": "External storage audited without deleting other tenants' files",
+      "result": "PASS"
+    },
+    {
+      "figures": [
+        "reclaimed_bytes",
+        "verdict_after",
+        "safe_reclaimable_mib"
+      ],
+      "id": "ACC-03",
+      "requirement": "Disk margin recovered by safe cache cleanup; the rest documented",
+      "result": "PASS"
+    },
+    {
+      "figures": [
+        "volume_free_gib",
+        "volume_verdict"
+      ],
+      "id": "ACC-04",
+      "requirement": "The volume clears its floors with operational margin",
+      "result": "NOT_TESTED"
+    },
+    {
+      "figures": [
+        "tests.owned.exit_code"
+      ],
+      "id": "ACC-05",
+      "requirement": "Periodic reconciliation integrated with consistent snapshots",
+      "result": "PASS"
+    },
+    {
+      "figures": [
+        "tests.owned.summary"
+      ],
+      "id": "ACC-06",
+      "requirement": "The WP-9B tests no longer depend on the real host disk",
+      "result": "PASS"
+    },
+    {
+      "figures": [
+        "verification.verdict",
+        "verification.checks_passed"
+      ],
+      "id": "ACC-07",
+      "requirement": "The stale-artefact failures investigated without touching frozen evidence",
+      "result": "PASS"
+    },
+    {
+      "figures": [
+        "lane.runs_observing",
+        "lane.last_observing_slot",
+        "lane.refusals_for_disk"
+      ],
+      "id": "ACC-08",
+      "requirement": "Continuity verified through real scheduled ticks",
+      "result": "PASS"
+    },
+    {
+      "figures": [
+        "verification.verdict"
+      ],
+      "id": "ACC-09",
+      "requirement": "Strategy and risk rules held frozen",
+      "result": "PASS"
+    },
+    {
+      "figures": [
+        "audit.rows"
+      ],
+      "id": "ACC-10",
+      "requirement": "Existing strategies audited with their net results",
+      "result": "PASS"
+    },
+    {
+      "figures": [
+        "audit.intraday_conclusion"
+      ],
+      "id": "ACC-11",
+      "requirement": "Why the intraday book loses is answered with the frozen data",
+      "result": "PASS"
+    },
+    {
+      "figures": [
+        "families"
+      ],
+      "id": "ACC-12",
+      "requirement": "Hypotheses registered before the out-of-sample run",
+      "result": "PASS"
+    },
+    {
+      "figures": [
+        "families"
+      ],
+      "id": "ACC-13",
+      "requirement": "Families compared on the same data, windows, costs and constraints",
+      "result": "PASS"
+    },
+    {
+      "figures": [
+        "families"
+      ],
+      "id": "ACC-14",
+      "requirement": "Metrics and robustness measured per family",
+      "result": "PASS"
+    },
+    {
+      "figures": [
+        "families"
+      ],
+      "id": "ACC-15",
+      "requirement": "Candidates without robust edge rejected; no promotion",
+      "result": "PASS"
+    },
+    {
+      "figures": [
+        "verification.verdict",
+        "verification.mutations"
+      ],
+      "id": "ACC-16",
+      "requirement": "Independent verification, with the command's own exit status",
+      "result": "PASS"
+    },
+    {
+      "figures": [
+        "lane.runs_observing"
+      ],
+      "id": "ACC-17",
+      "requirement": "Long unattended window",
+      "result": "NOT_TESTED"
+    }
+  ],
+  "artifacts": {
+    "family_program": {
+      "path": "reports/edge-recovery/WP-EDGE-06/research/FAMILY_PROGRAM.json",
+      "sha256": "a5cb789cbffbc1225e99cdb0037ff9d37394a9d5f9625d498099ba0455486a2c"
+    },
+    "hypotheses": {
+      "path": "reports/edge-recovery/WP-EDGE-06/research/HYPOTHESES.md",
+      "sha256": "ec85335452dc972b048202069727312fb7279a7c3fb0e1bcbd06d46ad092019b"
+    },
+    "storage_inventory": {
+      "path": "reports/edge-recovery/WP-EDGE-06/STORAGE_INVENTORY.json",
+      "sha256": "ef73f70dbb6ff298e35897aecd7dfcbb677167df8c717e583f8bd654b5c6a490"
+    },
+    "storage_reclaim": {
+      "path": "reports/edge-recovery/WP-EDGE-06/STORAGE_RECLAIM.json",
+      "sha256": "0136fb0ee07cf36eacd817b99e5fa176229c519b642cb0b8934f4bd0ab6ebeaa"
+    },
+    "strategy_audit": {
+      "path": "reports/edge-recovery/WP-EDGE-06/research/STRATEGY_AUDIT.json",
+      "sha256": "110214d1104718d6eb0c177012a86721059e45ad4d9dd86e25aa919e36a233ff"
+    },
+    "verification": {
+      "path": "reports/edge-recovery/WP-EDGE-06/VERIFICATION.json",
+      "sha256": "b9587d8bd63f27bf20a58671f45b5e1981cc2004f3ded7462aadea1f61e91e0f"
+    },
+    "volume_tenants": {
+      "path": "reports/edge-recovery/WP-EDGE-06/VOLUME_TENANTS.json",
+      "sha256": "d7445e0f52eefd420e2e141a50246fc87a4c592d0ce758781638eca8cd431981"
+    }
+  },
+  "as_of_utc": "2026-10-14T08:15:35Z",
+  "audit": {
+    "intraday_conclusion": {
+      "edge_intra_01": "NO_GROSS_EDGE"
+    },
+    "rows": 45
+  },
+  "audit_reading": "the gross expectation is negative in every window measured, before a single fee is charged: DEV:BASE -151.71 USDT over 290 trades (-10.46 bps/trade); OOS:BASE -19.91 USDT over 63 trades (-6.32 bps/trade); VAL:BASE -70.15 USDT over 344 trades (-4.08 bps/trade). Costs are the larger part of the net loss, but they are not the cause: a book that needed only a fee cut would show a positive gross against a negative net. Lowering fees cannot move a negative expectancy across zero \u2014 only a different setup, a different entry, or a longer hold can.",
+  "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
+  "families": {
+    "edge06_fade_extension": {
+      "evidence": {
+        "dev_base_net_usdt": -340.9207,
+        "dev_gross_usdt": -150.8223,
+        "dev_trades": 187,
+        "min_oos_trades": 30,
+        "oos_2x_fees_net_usdt": -438.0427,
+        "oos_cost_bps_per_trade": 23.62,
+        "oos_largest_trade_share_of_net": null,
+        "oos_net_usdt": -391.3438,
+        "oos_trades": 50,
+        "oos_without_the_largest_usdt": -454.9851,
+        "positive_regimes_oos": 0,
+        "window_net_usdt": {
+          "DEV": -340.9207,
+          "OOS": -391.3438,
+          "VAL": 469.6773
+        },
+        "windows_are_previously_read": true
+      },
+      "gate": "REJECT",
+      "reasons": [
+        "oos net -391.34 USDT <= 0 after costs",
+        "oos expectancy -7.8269 USDT/trade <= 0",
+        "oos has 0 profitable regime(s), fewer than the required 1",
+        "oos net turns negative under 2x fees (-438.04 USDT): no cost margin",
+        "the DEV gross is -150.82 USDT: the setup loses money before any fee, which no cost change can repair"
+      ],
+      "verdict": "REJECT_NO_GROSS_EDGE"
+    },
+    "edge06_trend_fixed": {
+      "evidence": {
+        "dev_base_net_usdt": 1056.2895,
+        "dev_gross_usdt": 1746.0725,
+        "dev_trades": 584,
+        "min_oos_trades": 30,
+        "oos_2x_fees_net_usdt": 116.674,
+        "oos_cost_bps_per_trade": 23.8629,
+        "oos_largest_trade_share_of_net": 0.2219,
+        "oos_net_usdt": 230.0174,
+        "oos_trades": 113,
+        "oos_without_the_largest_usdt": 178.9786,
+        "positive_regimes_oos": 1,
+        "window_net_usdt": {
+          "DEV": 1056.2895,
+          "OOS": 230.0174,
+          "VAL": -146.1493
+        },
+        "windows_are_previously_read": true
+      },
+      "gate": "ADMIT",
+      "reasons": [
+        "oos net positive after costs, sample powered, no single trade carries it",
+        "clears the frozen gate, is not carried by one trade, and survives removing its largest winner \u2014 still NOT validated: this OOS window was read before"
+      ],
+      "verdict": "ADMIT"
+    },
+    "edge06_xs_momentum": {
+      "evidence": {
+        "dev_base_net_usdt": 432.4416,
+        "dev_gross_usdt": 604.48,
+        "dev_trades": 175,
+        "min_oos_trades": 30,
+        "oos_2x_fees_net_usdt": 126.0126,
+        "oos_cost_bps_per_trade": 23.9065,
+        "oos_largest_trade_share_of_net": 0.6372,
+        "oos_net_usdt": 170.192,
+        "oos_trades": 45,
+        "oos_without_the_largest_usdt": 61.7396,
+        "positive_regimes_oos": 1,
+        "window_net_usdt": {
+          "DEV": 432.4416,
+          "OOS": 170.192,
+          "VAL": -78.4308
+        },
+        "windows_are_previously_read": true
+      },
+      "gate": "INSUFFICIENT_EVIDENCE",
+      "reasons": [
+        "the largest single trade is 0.64 of the oos net"
+      ],
+      "verdict": "INSUFFICIENT_EVIDENCE"
+    }
+  },
+  "head": "fe5c400d9cc69c08f797a703b8e6f376d8922ec8",
+  "hypothetical": true,
+  "lane": {
+    "last_observing_new_bars": 3,
+    "last_observing_slot": "2026-10-14T07:30Z",
+    "last_observing_started_utc": "2026-10-14T07:40:56Z",
+    "last_refusal": {
+      "derived_refresh": null,
+      "market_requests": 0,
+      "outcome_reason": "1.1567 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+      "slot_key": "2026-10-14T08:00Z"
+    },
+    "refusals_for_disk": 39,
+    "runs_observing": 47,
+    "runs_total": 92,
+    "scheduled_ticks_in_the_last_hour": [
+      "2026-10-14T07:00Z",
+      "2026-10-14T07:15Z",
+      "2026-10-14T07:30Z",
+      "2026-10-14T07:45Z",
+      "2026-10-14T07:45Z",
+      "2026-10-14T08:00Z",
+      "2026-10-14T08:00Z"
+    ]
+  },
+  "order_sent": false,
+  "promotion": "NONE",
+  "run_id": "EDGE06-REPORT-20261014T081535Z",
+  "schema_version": "EDGE06_RUN_REPORT_V1",
+  "storage": {
+    "appdata_local_measured": false,
+    "appdata_local_mib": 74686.0,
+    "reclaimed_bytes": 45591379,
+    "reclaimed_mib": 43.48,
+    "repository_bytes": 5750585960,
+    "repository_share_of_volume_pct": 2.25,
+    "safe_reclaimable_mib": 43.48,
+    "temp_older_than_a_day_gib": 27.9,
+    "temp_total_gib": 29.27,
+    "tenants_all_measured": false,
+    "tenants_total_gib": 166.87,
+    "verdict_after": "ABOVE_CRITICAL_BELOW_HEALTHY",
+    "verdict_before": "ABOVE_CRITICAL_BELOW_HEALTHY"
+  },
+  "tests": {
+    "owned": {
+      "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m pytest -q tests/unit/research/test_edge04_autonomous.py tests/unit/research/test_edge05_watchdog.py tests/unit/research/test_edge05_reconcile.py tests/unit/research/test_edge06_cadence.py tests/unit/research/test_edge06_families.py tests/unit/research/test_wp9_disk_budget.py",
+      "exit_code": 0,
+      "seconds": 57.28,
+      "stderr_tail": "",
+      "stdout_tail": "........................................................................ [ 55%]\n..........................................................               [100%]\n130 passed in 56.45s",
+      "summary": "130 passed in 56.45s"
+    },
+    "repaired": {
+      "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m pytest -q tests/unit/research/test_active_recovery_wp.py::test_state_view_is_deterministic tests/unit/research/test_recovery_determinism.py::test_repeated_reproduction_is_byte_identical tests/unit/research/test_recovery_determinism.py::test_the_clean_checkout_rehearsal_passes_on_this_commit",
+      "exit_code": 0,
+      "seconds": 30.65,
+      "stderr_tail": "",
+      "stdout_tail": "...                                                                      [100%]\n3 passed in 29.86s",
+      "summary": "3 passed in 29.86s"
+    }
+  },
+  "verification": {
+    "as_of_utc": "2026-10-14T08:14:31Z",
+    "checks_passed": 7,
+    "checks_total": 7,
+    "mutations": 8,
+    "self_test": "PASS",
+    "undetected": 0,
+    "verdict": "VERIFY_PASS"
+  },
+  "volume": {
+    "critical_floor_gib": 2.0,
+    "free_bytes": 1229729792,
+    "free_gib": 1.145,
+    "healthy_floor_gib": 5.0,
+    "total_gib": 237.5,
+    "verdict": "BELOW_CRITICAL"
+  },
+  "work_package": "WP-EDGE-06",
+  "worktree_dirty_entries": 139,
+  "worktree_dirty_entries_of_this_work_package": 4
+}

@@ -1,0 +1,40 @@
+{
+  "as_of_utc": "2026-10-14T08:17:14Z",
+  "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
+  "commits_of_this_work_package": [
+    {
+      "sha": "fe5c400d9cc69c08f797a703b8e6f376d8922ec8",
+      "subject": "Audit the frozen books, decompose the intraday loss, and run three newly registered families. [WP-EDGE-06]"
+    },
+    {
+      "sha": "e00bfe5f2bca58e73e68f9a1622d11be3a75b441",
+      "subject": "Make the scheduled tick the trigger for the lane's derived reading, and declare the volume in the WP-9B tests. [WP-EDGE-06]"
+    },
+    {
+      "sha": "7ba9d999db6a51c23559517a597e57aba2ab41ea",
+      "subject": "Register the Track B hypotheses and their parameters before any out-of-sample run. [WP-EDGE-06]"
+    },
+    {
+      "sha": "15adfe62878d8c5743db9109f48b468f5733d557",
+      "subject": "Version WP-EDGE-06's storage artefacts, which are the first readings of this work package. [WP-EDGE-06]"
+    },
+    {
+      "sha": "bd23cb3ada6450e0b72a32aee3d6c2189a1500a0",
+      "subject": "Regenerate the derived state view at HEAD so the rehearsal has a commit to rehearse. [WP-EDGE-06]"
+    }
+  ],
+  "commits_total": 5,
+  "credentials_read_or_printed": false,
+  "force_push_used": false,
+  "head": "fe5c400d9cc69c08f797a703b8e6f376d8922ec8",
+  "head_is_ancestor_of_local_main": true,
+  "local_main_ahead_of_origin_main": "259",
+  "push_performed_in_this_work_package": "recorded when the branch was published; see remote_matches_head",
+  "remote": "https://github.com/Extr3sao/bot_crypto.git",
+  "remote_branch_ref": "refs/heads/agent/edge-recovery/WP-EDGE-00-baseline",
+  "remote_has_this_branch": true,
+  "remote_matches_head": false,
+  "schema_version": "EDGE06_GITHUB_STATE_V1",
+  "worktree_dirty_entries": 142,
+  "worktree_dirty_entries_of_this_work_package": 7
+}
