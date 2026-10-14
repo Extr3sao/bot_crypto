@@ -1,5 +1,10 @@
 """WP-EDGE-04 — the single portable entry point of the autonomous forward observer.
 
+The derived re-read's receipt is appended to ``<state-root>/derived_refresh.jsonl`` on every
+scheduled tick (see :func:`_persist_derived_refresh`): the tick record itself is written before
+the re-read happens and the scheduler discards stdout, so without that line nothing durable
+said whether the reconciliation had run from the cadence.
+
     python scripts/edge04_observer.py                     one manual tick
     python scripts/edge04_observer.py --scheduled --due   what the operating system runs
     python scripts/edge04_observer.py --status            read the observer's own state
@@ -95,6 +100,46 @@ def _parse_instant(value: str | None) -> int | None:
 
 def _sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def _persist_derived_refresh(observer: object, record: dict[str, Any], receipt: dict[str, Any]) -> Path | None:
+    """Append the re-read's receipt where a reader can find it without stdout.
+
+    The receipt used to live only in the tick record the script *prints*: the record itself is
+    persisted by ``ForwardObserver.tick`` before the re-read happens, and the scheduler discards
+    stdout, so nothing durable said whether the reconciliation had run from the cadence. This
+    appends one line per tick to the observer's own state, joined to the tick by ``run_id`` and
+    ``slot_key``. A failure here is recorded and never changes the tick's verdict: the tick's
+    verdict is about the lane, and this is a receipt about the reading.
+    """
+    state_root = getattr(observer, "state_root", None)
+    if state_root is None:
+        receipt["persisted"] = False
+        receipt["persist_error"] = "the observer exposes no state root to write to"
+        return None
+    path = Path(state_root) / "derived_refresh.jsonl"
+    line = {
+        "schema_version": "EDGE04_DERIVED_REFRESH_V1",
+        "at_utc": stamp(int(datetime.now(tz=UTC).timestamp() * 1000)),
+        "run_id": record.get("run_id"),
+        "slot_key": record.get("slot_key"),
+        "mode": record.get("mode"),
+        "outcome": record.get("outcome"),
+        **{key: receipt.get(key) for key in ("ran", "reason", "seconds", "after_outcome", "status", "unattributed_bars", "artifacts")},
+        "hypothetical": bool(record.get("hypothetical")),
+        "order_sent": False,
+    }
+    try:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        with path.open("a", encoding="utf-8") as handle:
+            handle.write(json.dumps(line, sort_keys=True, default=str) + "\n")
+    except OSError as exc:
+        receipt["persisted"] = False
+        receipt["persist_error"] = f"{type(exc).__name__}: {exc}"
+        return None
+    receipt["persisted"] = True
+    receipt["receipt_log"] = str(path)
+    return path
 
 
 def _refresh_derived(*, outcome: str, repo_root: Path) -> dict[str, Any]:
@@ -412,6 +457,10 @@ def main(argv: list[str] | None = None) -> int:
             "seconds": 0.0,
             "after_outcome": record.get("outcome"),
         }
+    if wants_refresh:
+        # The receipt is durable, not just printed: the scheduler throws stdout away, and a
+        # re-read nobody can show afterwards is a re-read a reader has to take on trust.
+        _persist_derived_refresh(observer, record, record["derived_refresh"])
     if args.json:
         print(json.dumps(record, indent=2, sort_keys=True, default=str))
     else:
