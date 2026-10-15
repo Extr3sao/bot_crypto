@@ -1,0 +1,651 @@
+{
+  "availability": {
+    "host_down_hours": 0.127,
+    "host_down_seconds": 458.525,
+    "reading": "schedulable is the fraction of the window in which the host was up AND a session existed: a task registered with InteractiveToken has no other state in which it can start, so on this host that fraction is the ceiling on observation",
+    "recovery": [
+      {
+        "ends_at_a_sign_in": true,
+        "first_tick_after_utc": "2026-10-15T04:56:15Z",
+        "latency_note": "measured from the sign-in that ended the window",
+        "reason": "logoff with no sign-in after it, until the next one",
+        "recovery_latency_seconds": 321.41,
+        "seconds": 22876.438,
+        "window_from_utc": "2026-10-14T22:29:37Z",
+        "window_to_utc": "2026-10-15T04:50:54Z"
+      },
+      {
+        "ends_at_a_sign_in": false,
+        "first_tick_after_utc": "2026-10-15T04:56:15Z",
+        "latency_note": "not quoted: this window ends inside a longer session absence, so the delay to the next tick measures that absence, not this reboot",
+        "reason": "shutdown and boot recorded by Kernel-General",
+        "recovery_latency_seconds": null,
+        "seconds": 444.478,
+        "window_from_utc": "2026-10-14T22:33:49Z",
+        "window_to_utc": "2026-10-14T22:41:14Z"
+      },
+      {
+        "ends_at_a_sign_in": false,
+        "first_tick_after_utc": "2026-10-15T04:56:15Z",
+        "latency_note": "not quoted: this window ends inside a longer session absence, so the delay to the next tick measures that absence, not this reboot",
+        "reason": "shutdown and boot recorded by Kernel-General",
+        "recovery_latency_seconds": null,
+        "seconds": 14.047,
+        "window_from_utc": "2026-10-14T22:43:07Z",
+        "window_to_utc": "2026-10-14T22:43:21Z"
+      }
+    ],
+    "schedulable_fraction": 0.8824,
+    "session_absent_hours": 6.355,
+    "session_absent_seconds": 22876.438,
+    "windows": {
+      "counts": {
+        "boots": 2,
+        "power_events": 29,
+        "session_transitions": 3,
+        "shutdowns": 2,
+        "sleep_resume_pairs": 0
+      },
+      "host_down": [
+        [
+          1792017229613,
+          1792017674091,
+          "shutdown and boot recorded by Kernel-General"
+        ],
+        [
+          1792017787766,
+          1792017801813,
+          "shutdown and boot recorded by Kernel-General"
+        ]
+      ],
+      "reading": "every window here is a pair of records the host wrote; an unpaired record becomes an open window that ends at the observation instant, so a cause is never extended past the evidence for it",
+      "session_absent": [
+        [
+          1792016977698,
+          1792039854136,
+          "logoff with no sign-in after it, until the next one"
+        ]
+      ],
+      "sleep": [],
+      "transitions": [
+        [
+          1792016977698,
+          "logoff"
+        ],
+        [
+          1792039854136,
+          "logon"
+        ],
+        [
+          1792039854512,
+          "logon"
+        ]
+      ]
+    }
+  },
+  "checks": [
+    {
+      "detail": "195 answered instants = 152 slot-consuming + 43 refused",
+      "name": "every_answered_instant_is_a_tick",
+      "passed": true
+    },
+    {
+      "detail": "195 answered + 26 unanswered = 221 expected",
+      "name": "answered_and_unanswered_account_for_every_instant",
+      "passed": true
+    },
+    {
+      "detail": "26 unanswered instants, 26 attributed",
+      "name": "every_unmatched_instant_has_a_recorded_cause",
+      "passed": true
+    },
+    {
+      "detail": "0 sleep attributions against 0 recorded sleep/resume pairs",
+      "name": "sleep_cause_is_claimed_only_with_a_sleep_record",
+      "passed": true
+    },
+    {
+      "detail": "the lane's per-day coverage floor is still 0.9",
+      "name": "coverage_threshold_unchanged",
+      "passed": true
+    },
+    {
+      "detail": "the admission requirement is still 60 prospective days",
+      "name": "forward_requirement_unchanged",
+      "passed": true
+    },
+    {
+      "detail": "207 tick records read, 0 of them record an order",
+      "name": "no_tick_claims_an_order",
+      "passed": true
+    },
+    {
+      "detail": "0 tick records claim a non-hypothetical result",
+      "name": "every_tick_marks_itself_hypothetical",
+      "passed": true
+    }
+  ],
+  "daily": [
+    {
+      "accounted": 51,
+      "consumed": 37,
+      "coverage_of_expected": 0.7255,
+      "day": "2026-10-13",
+      "expected": 51,
+      "host_down": 0,
+      "no_session": 0,
+      "refused": 13,
+      "silent": 1,
+      "sleep": 0,
+      "unaccounted": 0
+    },
+    {
+      "accounted": 96,
+      "consumed": 60,
+      "coverage_of_expected": 0.625,
+      "day": "2026-10-14",
+      "expected": 96,
+      "host_down": 1,
+      "no_session": 5,
+      "refused": 30,
+      "silent": 0,
+      "sleep": 0,
+      "unaccounted": 0
+    },
+    {
+      "accounted": 74,
+      "consumed": 55,
+      "coverage_of_expected": 0.7432,
+      "day": "2026-10-15",
+      "expected": 74,
+      "host_down": 0,
+      "no_session": 19,
+      "refused": 0,
+      "silent": 0,
+      "sleep": 0,
+      "unaccounted": 0
+    }
+  ],
+  "generated_at_utc": "2026-10-15T18:31:46Z",
+  "hypothetical": true,
+  "invariants": {
+    "coverage_required": 0.9,
+    "forward_days_required": 60,
+    "non_hypothetical_ticks": 0,
+    "orders_recorded": 0,
+    "promotion": {
+      "NONE": 207
+    },
+    "reading": "the frozen ruleset, the coverage floor, the 60-day requirement and the no-order/no-promotion marks are read back from the records rather than restated here, so a drift shows up as a disagreement between them",
+    "ruleset": {
+      "agrees": true,
+      "agrees_with_imported_constant": true,
+      "agrees_with_publication": true,
+      "hashes_recorded_by_ticks": [
+        "d073a2d686b9b198c36c9a3c6009d36130577ba247a2016c3f791813cb749d77"
+      ],
+      "imported_params_hash": "d073a2d686b9b198c36c9a3c6009d36130577ba247a2016c3f791813cb749d77",
+      "params_hash": "d073a2d686b9b198c36c9a3c6009d36130577ba247a2016c3f791813cb749d77",
+      "published_by": "reports/edge-recovery/WP-EDGE-01/oos-trend-4h/OOS_TREND.json#params_hash",
+      "published_params_hash": "d073a2d686b9b198c36c9a3c6009d36130577ba247a2016c3f791813cb749d77",
+      "recipe": "sha256(json.dumps(FROZEN_PARAMS, sort_keys=True, separators=(',', ':')))",
+      "ticks_agree": true
+    }
+  },
+  "order_sent": false,
+  "schema_version": "EDGE04R_CONTINUITY_AUDIT_V1",
+  "silences": {
+    "over_warning_bound": 1,
+    "reading": "a silence is measured between the ticks that consumed a slot, so an unclosed gap in the slot ledger is visible here as the seconds between two ticks",
+    "worst": [
+      {
+        "from_utc": "2026-10-14T22:25:56Z",
+        "missed_triggers": 25,
+        "next_outcome": "OBSERVED",
+        "previous_outcome": "OBSERVED",
+        "seconds": 23418.872,
+        "to_utc": "2026-10-15T04:56:15Z",
+        "warning": true
+      },
+      {
+        "from_utc": "2026-10-13T18:40:56Z",
+        "missed_triggers": 1,
+        "next_outcome": "OBSERVED",
+        "previous_outcome": "OBSERVED",
+        "seconds": 1799.976,
+        "to_utc": "2026-10-13T19:10:55Z",
+        "warning": false
+      },
+      {
+        "from_utc": "2026-10-15T17:56:04Z",
+        "missed_triggers": 0,
+        "next_outcome": "OBSERVED",
+        "previous_outcome": "OBSERVED",
+        "seconds": 918.175,
+        "to_utc": "2026-10-15T18:11:23Z",
+        "warning": false
+      },
+      {
+        "from_utc": "2026-10-14T05:55:56Z",
+        "missed_triggers": 0,
+        "next_outcome": "OBSERVED",
+        "previous_outcome": "OBSERVED",
+        "seconds": 914.605,
+        "to_utc": "2026-10-14T06:11:11Z",
+        "warning": false
+      },
+      {
+        "from_utc": "2026-10-15T16:55:55Z",
+        "missed_triggers": 0,
+        "next_outcome": "OBSERVED",
+        "previous_outcome": "OBSERVED",
+        "seconds": 903.717,
+        "to_utc": "2026-10-15T17:10:59Z",
+        "warning": false
+      },
+      {
+        "from_utc": "2026-10-15T05:25:57Z",
+        "missed_triggers": 0,
+        "next_outcome": "OBSERVED",
+        "previous_outcome": "OBSERVED",
+        "seconds": 903.376,
+        "to_utc": "2026-10-15T05:41:00Z",
+        "warning": false
+      },
+      {
+        "from_utc": "2026-10-15T17:41:02Z",
+        "missed_triggers": 0,
+        "next_outcome": "OBSERVED",
+        "previous_outcome": "OBSERVED",
+        "seconds": 902.838,
+        "to_utc": "2026-10-15T17:56:04Z",
+        "warning": false
+      },
+      {
+        "from_utc": "2026-10-13T21:40:56Z",
+        "missed_triggers": 0,
+        "next_outcome": "OBSERVED",
+        "previous_outcome": "DISK_BUDGET_EXCEEDED",
+        "seconds": 902.789,
+        "to_utc": "2026-10-13T21:55:58Z",
+        "warning": false
+      },
+      {
+        "from_utc": "2026-10-15T15:25:56Z",
+        "missed_triggers": 0,
+        "next_outcome": "OBSERVED",
+        "previous_outcome": "ALREADY_OBSERVED",
+        "seconds": 902.584,
+        "to_utc": "2026-10-15T15:40:58Z",
+        "warning": false
+      },
+      {
+        "from_utc": "2026-10-15T17:25:59Z",
+        "missed_triggers": 0,
+        "next_outcome": "OBSERVED",
+        "previous_outcome": "OBSERVED",
+        "seconds": 902.365,
+        "to_utc": "2026-10-15T17:41:02Z",
+        "warning": false
+      }
+    ]
+  },
+  "slots": {
+    "sealed": 152
+  },
+  "snapshot": {
+    "RUN_LOG_SNAPSHOT.jsonl": "2a9db98131c51a025c7b00785f5b31ceb0a1f1ddbe8e50ba6635c67fea4f32f0",
+    "SLOT_LEDGER_SNAPSHOT.jsonl": "65381f8837df84c9b2dff2c3cd09cf363c607b9472175c53052883faaca08e33"
+  },
+  "storage": {
+    "estate": {
+      "current_drive": "C:",
+      "drive_type_note": "drive_type 3 is a fixed local disk; a network-backed or cloud mount can report the same capacity as the host's own volume while holding none of it, which is why capacity alone is not accepted as room",
+      "lane_budget_bytes": 268435456,
+      "lane_bytes": 12402232,
+      "physical_disks": [
+        {
+          "bus_type": "NVMe",
+          "friendly_name": "KXG60ZNV256G KIOXIA",
+          "media_type": "SSD",
+          "size_gib": 238.47
+        }
+      ],
+      "reading": "relocation is judged only on volumes that are real, writable and independent of primary storage; a network-backed mount that reports the host's own capacity is not a volume with capacity, and no other workstream's tree is moved to make room",
+      "relocatable_candidates": [],
+      "required_free_gib": 5.25,
+      "verdict": "NO_VOLUME_WITH_CAPACITY",
+      "volumes": [
+        {
+          "capacity_gib": 237.53,
+          "drive_letter": "C:",
+          "exclusion_reason": "the volume the lane already lives on: moving a tree inside one volume is not relocation and would not change the free space the guard reads",
+          "file_system": "NTFS",
+          "free_gib": 7.83,
+          "is_primary_disk": true,
+          "label": "",
+          "usable_for_relocation": false,
+          "used_percent": 96.7
+        },
+        {
+          "capacity_gib": 237.53,
+          "drive_letter": "G:",
+          "exclusion_reason": "FAT32 is not NTFS: the store's atomic rename and long-path behaviour are not guaranteed",
+          "file_system": "FAT32",
+          "free_gib": 7.44,
+          "is_primary_disk": false,
+          "label": "Google Drive",
+          "usable_for_relocation": false,
+          "used_percent": 96.87
+        },
+        {
+          "capacity_gib": 0.83,
+          "drive_letter": "",
+          "exclusion_reason": "not mounted: there is no path to write the store to; 0.05 GiB free is below the 5.25 GiB a target must hold to keep the lane above the guard's warning floor",
+          "file_system": "NTFS",
+          "free_gib": 0.05,
+          "is_primary_disk": false,
+          "label": "",
+          "usable_for_relocation": false,
+          "used_percent": 93.6
+        },
+        {
+          "capacity_gib": 0.09,
+          "drive_letter": "",
+          "exclusion_reason": "not mounted: there is no path to write the store to; FAT32 is not NTFS: the store's atomic rename and long-path behaviour are not guaranteed; 0.01 GiB free is below the 5.25 GiB a target must hold to keep the lane above the guard's warning floor",
+          "file_system": "FAT32",
+          "free_gib": 0.01,
+          "is_primary_disk": false,
+          "label": "",
+          "usable_for_relocation": false,
+          "used_percent": 93.1
+        }
+      ]
+    },
+    "pressure": {
+      "critical_threshold_bytes": 2147483648,
+      "first_utc": "2026-10-13T11:23:38Z",
+      "hours_in_critical": 10.764,
+      "last_utc": "2026-10-15T18:26:00Z",
+      "maximum_free_bytes": 12989526016,
+      "maximum_free_gib": 12.0974,
+      "minimum_free_bytes": 891416576,
+      "minimum_free_gib": 0.8302,
+      "reading": "the guard's own thresholds are unchanged: it refuses before any market request, so a refused tick costs a market call and a slot, never a false observation",
+      "refused_ticks": 45,
+      "samples": 207,
+      "seconds_in_critical": 38749.71,
+      "seconds_in_warning": 23350.96,
+      "warning_threshold_bytes": 5368709120
+    }
+  },
+  "ticks": {
+    "consumed_slot": 160,
+    "launch_details": [
+      {
+        "consumed_slot": true,
+        "disk_free_bytes": 8330788864,
+        "disk_status": "HEALTHY",
+        "duration_seconds": 25.23,
+        "exit_code": 0,
+        "finished_ms": 1791890643552,
+        "hypothetical": true,
+        "mode": "SCHEDULED",
+        "order_sent": false,
+        "outcome": "NO_NEW_DATA",
+        "run_id": "FWD-EDGE04-20261013T111500Z",
+        "slot_key": "2026-10-13T11:15Z",
+        "started_ms": 1791890618322
+      },
+      {
+        "consumed_slot": true,
+        "disk_free_bytes": 8330428416,
+        "disk_status": "HEALTHY",
+        "duration_seconds": 0.0,
+        "exit_code": 0,
+        "finished_ms": 1791890667380,
+        "hypothetical": true,
+        "mode": "SCHEDULED",
+        "order_sent": false,
+        "outcome": "ALREADY_OBSERVED",
+        "run_id": "FWD-EDGE04-20261013T111500Z",
+        "slot_key": "2026-10-13T11:15Z",
+        "started_ms": 1791890667380
+      },
+      {
+        "consumed_slot": false,
+        "disk_free_bytes": 1601843200,
+        "disk_status": "CRITICAL",
+        "duration_seconds": 0.018,
+        "exit_code": 5,
+        "finished_ms": 1791964509165,
+        "hypothetical": true,
+        "mode": "SCHEDULED",
+        "order_sent": false,
+        "outcome": "DISK_BUDGET_EXCEEDED",
+        "run_id": "FWD-EDGE04-20261014T074500Z",
+        "slot_key": "2026-10-14T07:45Z",
+        "started_ms": 1791964509147
+      },
+      {
+        "consumed_slot": false,
+        "disk_free_bytes": 1242046464,
+        "disk_status": "CRITICAL",
+        "duration_seconds": 0.01,
+        "exit_code": 5,
+        "finished_ms": 1791965680108,
+        "hypothetical": true,
+        "mode": "SCHEDULED",
+        "order_sent": false,
+        "outcome": "DISK_BUDGET_EXCEEDED",
+        "run_id": "FWD-EDGE04-20261014T080000Z",
+        "slot_key": "2026-10-14T08:00Z",
+        "started_ms": 1791965680098
+      },
+      {
+        "consumed_slot": true,
+        "disk_free_bytes": 11338870784,
+        "disk_status": "HEALTHY",
+        "duration_seconds": 0.013,
+        "exit_code": 0,
+        "finished_ms": 1792076389582,
+        "hypothetical": true,
+        "mode": "SCHEDULED",
+        "order_sent": false,
+        "outcome": "ALREADY_OBSERVED",
+        "run_id": "FWD-EDGE04-20261015T144500Z",
+        "slot_key": "2026-10-15T14:45Z",
+        "started_ms": 1792076389569
+      },
+      {
+        "consumed_slot": true,
+        "disk_free_bytes": 11338321920,
+        "disk_status": "HEALTHY",
+        "duration_seconds": 39.468,
+        "exit_code": 0,
+        "finished_ms": 1792076440995,
+        "hypothetical": true,
+        "mode": "SCHEDULED",
+        "order_sent": false,
+        "outcome": "OBSERVED",
+        "run_id": "FWD-EDGE04-20261015T150000Z",
+        "slot_key": "2026-10-15T15:00Z",
+        "started_ms": 1792076401527
+      }
+    ],
+    "launches_outside_the_cadence": 6,
+    "manual": 6,
+    "max_duration_seconds": 349.035,
+    "median_duration_seconds": 34.64,
+    "outcomes": {
+      "ALREADY_OBSERVED": 7,
+      "ALREADY_RUNNING": 2,
+      "DISK_BUDGET_EXCEEDED": 45,
+      "NO_NEW_DATA": 3,
+      "OBSERVED": 150
+    },
+    "overrunning_ticks": [],
+    "refusals_by_outcome": {
+      "DISK_BUDGET_EXCEEDED": 43
+    },
+    "refused": 47,
+    "scheduled": 201,
+    "total": 207
+  },
+  "trigger_loss": {
+    "answered_by_a_tick": 195,
+    "causes": {
+      "HOST_DOWN": 1,
+      "NO_SESSION": 24,
+      "SILENT_UNATTRIBUTABLE": 1
+    },
+    "expected": 221,
+    "never_answered": 26,
+    "reading": "a trigger answered by a tick that the guard refused was fired and lost, and so was a trigger no process answered; the two are counted apart because only one of them is a scheduling problem",
+    "refused_after_firing": 43,
+    "slot_consuming_answers": 152,
+    "total_lost": 69,
+    "unattributed_instants": [
+      {
+        "cause": "SILENT_UNATTRIBUTABLE",
+        "instant_ms": 1791917756000,
+        "instant_utc": "2026-10-13T18:55:56Z"
+      },
+      {
+        "cause": "HOST_DOWN",
+        "instant_ms": 1792017656000,
+        "instant_utc": "2026-10-14T22:40:56Z"
+      },
+      {
+        "cause": "NO_SESSION",
+        "instant_ms": 1792018556000,
+        "instant_utc": "2026-10-14T22:55:56Z"
+      },
+      {
+        "cause": "NO_SESSION",
+        "instant_ms": 1792019456000,
+        "instant_utc": "2026-10-14T23:10:56Z"
+      },
+      {
+        "cause": "NO_SESSION",
+        "instant_ms": 1792020356000,
+        "instant_utc": "2026-10-14T23:25:56Z"
+      },
+      {
+        "cause": "NO_SESSION",
+        "instant_ms": 1792021256000,
+        "instant_utc": "2026-10-14T23:40:56Z"
+      },
+      {
+        "cause": "NO_SESSION",
+        "instant_ms": 1792022156000,
+        "instant_utc": "2026-10-14T23:55:56Z"
+      },
+      {
+        "cause": "NO_SESSION",
+        "instant_ms": 1792023056000,
+        "instant_utc": "2026-10-15T00:10:56Z"
+      },
+      {
+        "cause": "NO_SESSION",
+        "instant_ms": 1792023956000,
+        "instant_utc": "2026-10-15T00:25:56Z"
+      },
+      {
+        "cause": "NO_SESSION",
+        "instant_ms": 1792024856000,
+        "instant_utc": "2026-10-15T00:40:56Z"
+      },
+      {
+        "cause": "NO_SESSION",
+        "instant_ms": 1792025756000,
+        "instant_utc": "2026-10-15T00:55:56Z"
+      },
+      {
+        "cause": "NO_SESSION",
+        "instant_ms": 1792026656000,
+        "instant_utc": "2026-10-15T01:10:56Z"
+      },
+      {
+        "cause": "NO_SESSION",
+        "instant_ms": 1792027556000,
+        "instant_utc": "2026-10-15T01:25:56Z"
+      },
+      {
+        "cause": "NO_SESSION",
+        "instant_ms": 1792028456000,
+        "instant_utc": "2026-10-15T01:40:56Z"
+      },
+      {
+        "cause": "NO_SESSION",
+        "instant_ms": 1792029356000,
+        "instant_utc": "2026-10-15T01:55:56Z"
+      },
+      {
+        "cause": "NO_SESSION",
+        "instant_ms": 1792030256000,
+        "instant_utc": "2026-10-15T02:10:56Z"
+      },
+      {
+        "cause": "NO_SESSION",
+        "instant_ms": 1792031156000,
+        "instant_utc": "2026-10-15T02:25:56Z"
+      },
+      {
+        "cause": "NO_SESSION",
+        "instant_ms": 1792032056000,
+        "instant_utc": "2026-10-15T02:40:56Z"
+      },
+      {
+        "cause": "NO_SESSION",
+        "instant_ms": 1792032956000,
+        "instant_utc": "2026-10-15T02:55:56Z"
+      },
+      {
+        "cause": "NO_SESSION",
+        "instant_ms": 1792033856000,
+        "instant_utc": "2026-10-15T03:10:56Z"
+      },
+      {
+        "cause": "NO_SESSION",
+        "instant_ms": 1792034756000,
+        "instant_utc": "2026-10-15T03:25:56Z"
+      },
+      {
+        "cause": "NO_SESSION",
+        "instant_ms": 1792035656000,
+        "instant_utc": "2026-10-15T03:40:56Z"
+      },
+      {
+        "cause": "NO_SESSION",
+        "instant_ms": 1792036556000,
+        "instant_utc": "2026-10-15T03:55:56Z"
+      },
+      {
+        "cause": "NO_SESSION",
+        "instant_ms": 1792037456000,
+        "instant_utc": "2026-10-15T04:10:56Z"
+      },
+      {
+        "cause": "NO_SESSION",
+        "instant_ms": 1792038356000,
+        "instant_utc": "2026-10-15T04:25:56Z"
+      },
+      {
+        "cause": "NO_SESSION",
+        "instant_ms": 1792039256000,
+        "instant_utc": "2026-10-15T04:40:56Z"
+      }
+    ]
+  },
+  "verdict": "AUDIT_PASS",
+  "window": {
+    "from_utc": "2026-10-13T11:23:38Z",
+    "hours": 55.135,
+    "interval_seconds": 900,
+    "phase_offset_ms": 656000,
+    "phase_source": "measured from the ticks the host actually launched",
+    "seconds": 198487.678,
+    "to_utc": "2026-10-15T18:31:46Z"
+  }
+}

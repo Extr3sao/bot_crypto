@@ -1,0 +1,177 @@
+{
+  "schema_version": "EDGE04R_RUN_REPORT_V1",
+  "work_package": "WP-EDGE-04R",
+  "title": "Continuity of the forward observer: attributing every trigger the schedule lost",
+  "reading_instant_utc": "2026-10-15T18:31:46Z",
+  "declared_reading": {
+    "command": "python scripts/edge04r_continuity.py --until 2026-10-15T18:31:46Z",
+    "reproduce_offline": "python scripts/edge04r_continuity.py --offline --stored-snapshot --until 2026-10-15T18:31:46Z",
+    "inputs": {
+      "RUN_LOG_SNAPSHOT.jsonl": "2a9db98131c51a025c7b00785f5b31ceb0a1f1ddbe8e50ba6635c67fea4f32f0",
+      "SLOT_LEDGER_SNAPSHOT.jsonl": "65381f8837df84c9b2dff2c3cd09cf363c607b9472175c53052883faaca08e33"
+    },
+    "note": "the reading is a function of the committed snapshot plus the declared instant, so a re-run on another machine reaches the same numbers"
+  },
+  "window": {
+    "from_utc": "2026-10-13T11:23:38Z",
+    "to_utc": "2026-10-15T18:31:46Z",
+    "hours": 55.136,
+    "interval_seconds": 900,
+    "phase_offset_ms": 656000,
+    "phase_source": "measured from the ticks the host actually launched"
+  },
+  "trigger_loss": {
+    "expected_instants": 221,
+    "answered_by_a_tick": 195,
+    "slot_consuming_answers": 152,
+    "refused_after_firing": 43,
+    "never_answered": 26,
+    "causes": {
+      "NO_SESSION": 24,
+      "HOST_DOWN": 1,
+      "SILENT_UNATTRIBUTABLE": 1,
+      "SLEEP": 0
+    },
+    "total_lost": 69,
+    "refusals_by_outcome": {
+      "DISK_BUDGET_EXCEEDED": 43
+    }
+  },
+  "cause_quantification": {
+    "long_execution": {
+      "verdict": "RULED_OUT",
+      "evidence": "median tick 34.64 s, maximum 349.035 s, zero ticks over the 900 s interval",
+      "comment": "a tick cannot eat its successor's trigger at this duration"
+    },
+    "host_sleep_or_standby": {
+      "verdict": "RULED_OUT",
+      "evidence": "0 Kernel-Power sleep/resume pairs in the window; 29 power events, none of them a 42/107 pair",
+      "comment": "the earlier reading attributed the silence to a machine that sleeps; the host records no sleep at all"
+    },
+    "absence_of_an_interactive_session": {
+      "verdict": "CONFIRMED_AND_DOMINANT",
+      "evidence": "24 of 26 unanswered triggers fall in one 22876.438 s (6.355 h) window between a logoff at 2026-10-14T22:29:37Z and a sign-in at 2026-10-15T04:50:54Z",
+      "comment": "the task is registered LogonType=InteractiveToken, so no session means the trigger produces no process and no record; AutoAdminLogon=0, so a reboot leaves the host at the sign-in screen indefinitely"
+    },
+    "host_down": {
+      "verdict": "CONFIRMED_AND_SMALL",
+      "evidence": "2 reboots (Windows Update) at 2026-10-14T22:33:49Z->22:41:14Z and 22:43:07Z->22:43:21Z, 458.525 s of downtime, 1 trigger",
+      "comment": "the reboots sit inside the session absence, so their cost is indistinguishable from its cost and is counted there"
+    },
+    "disk_pressure": {
+      "verdict": "CONFIRMED_AND_SEPARATE",
+      "evidence": "43 triggers fired and were refused by the storage guard (45 refusals total, 2 of them outside the cadence); volume free space fell to 0.8302 GiB with 10.764 h below the 2 GiB critical floor and 6.49 h below the 5 GiB warning floor",
+      "comment": "these are not scheduling losses: the guard refused before any market request, so each one cost a market call and a slot"
+    },
+    "scheduler_silence_with_the_host_up": {
+      "verdict": "CONFIRMED_AND_UNATTRIBUTABLE",
+      "evidence": "1 instant (2026-10-13T18:55:56Z) with the host up and a session present produced no tick and no host-side record",
+      "comment": "the Task Scheduler's operational log is disabled on this host and enabling it needs administrator rights, so 'never fired' cannot be separated from 'died before writing' retroactively"
+    }
+  },
+  "ticks": {
+    "total": 207,
+    "scheduled": 201,
+    "manual": 6,
+    "launches_outside_the_cadence": 6,
+    "consumed_slot": 160,
+    "refused": 47,
+    "outcomes": {
+      "OBSERVED": 150,
+      "NO_NEW_DATA": 3,
+      "ALREADY_OBSERVED": 7,
+      "DISK_BUDGET_EXCEEDED": 45,
+      "ALREADY_RUNNING": 2
+    },
+    "median_duration_seconds": 34.64,
+    "max_duration_seconds": 349.035
+  },
+  "availability": {
+    "schedulable_fraction": 0.8824,
+    "session_absent_seconds": 22876.438,
+    "session_absent_hours": 6.355,
+    "host_down_seconds": 458.525,
+    "host_down_hours": 0.127,
+    "recovery_latency_after_sign_in_seconds": 321.41,
+    "silences_over_warning_bound": 1,
+    "worst_silence_seconds": 23418.872,
+    "worst_silence_missed_triggers": 25
+  },
+  "daily": [
+    {"day": "2026-10-13", "expected": 51, "consumed": 37, "refused": 13, "no_session": 0, "host_down": 0, "silent": 1, "unaccounted": 0},
+    {"day": "2026-10-14", "expected": 96, "consumed": 60, "refused": 30, "no_session": 5, "host_down": 1, "silent": 0, "unaccounted": 0},
+    {"day": "2026-10-15", "expected": 74, "consumed": 55, "refused": 0, "no_session": 19, "host_down": 0, "silent": 0, "unaccounted": 0}
+  ],
+  "storage": {
+    "verdict": "NO_VOLUME_WITH_CAPACITY",
+    "lane_bytes": 12368125,
+    "lane_budget_bytes": 268435456,
+    "minimum_free_gib": 0.8302,
+    "maximum_free_gib": 12.0974,
+    "hours_in_critical": 10.764,
+    "hours_in_warning": 6.49,
+    "refused_ticks": 45,
+    "volumes": [
+      {"drive": "C:", "filesystem": "NTFS", "free_gib": 7.07, "used_percent": 97.03, "usable": false, "why": "the volume the lane already lives on"},
+      {"drive": "G:", "filesystem": "FAT32", "label": "Google Drive", "free_gib": 6.71, "usable": false, "why": "not NTFS, and a cloud mount that reports the host's own capacity while holding none of it"},
+      {"drive": "", "filesystem": "NTFS", "free_gib": 0.05, "usable": false, "why": "not mounted"},
+      {"drive": "", "filesystem": "FAT32", "free_gib": 0.01, "usable": false, "why": "not mounted and not NTFS"}
+    ],
+    "physical_disks": [{"friendly_name": "KXG60ZNV256G KIOXIA", "media_type": "SSD", "bus_type": "NVMe", "size_gib": 238.47}]
+  },
+  "session_independence": {
+    "logon_trigger": "VIABLE — registered on a throwaway task, read back from the scheduler carrying MSFT_TaskLogonTrigger (Delay PT1M) alongside MSFT_TaskTimeTrigger, run on demand, then deleted",
+    "witness_action": "VIABLE — the first action wrote its line before the long action ran, proving a launch can leave a trace even when the entry point dies",
+    "s4u_task": "NEEDS_ELEVATION — the registration attempt waited for input and did not complete; S4U needs the batch-logon right",
+    "windows_service": "NEEDS_ELEVATION — not attempted; a service would need administrator rights",
+    "automatic_logon": "NEEDS_CREDENTIALS — AutoAdminLogon=0 and this work package holds no credential and will not acquire one",
+    "task_scheduler_operational_log": "NEEDS_ELEVATION — the enable attempt was refused with 'Acceso denegado'",
+    "wake_to_run": "NOT_APPLICABLE — no sleep or standby was recorded, so there is nothing for the setting to recover",
+    "applied_to_the_live_task": false,
+    "what_it_would_buy": {
+      "logon_trigger": "bounds the recovery from a sign-in to about a minute instead of up to a quarter of an hour: measured recovery was 321.41 s",
+      "s4u": "would make the 24 triggers lost to an absent session scheduleable at all",
+      "witness": "would make the 1 unattributable trigger attributable without an administrator"
+    }
+  },
+  "economic_certificate": {
+    "artefact": "data/recovery/ACTIVE_ECONOMIC_AUDIT.json",
+    "certificate": "data/recovery/wp7/COST_BARRIER_CERTIFICATION.json",
+    "recorded_digest": "8a101e8875bdf61d3da92635d2b845dbc2bfb156277a1780a4a7a48f0748a481",
+    "digest_at_head": "d1d49f09d8de20ad14437cbce1e7d362e597342ae21c452ff51b08c14a207aa5",
+    "recorded_digest_matches_the_certificate_commit": true,
+    "certificate_commit": "57772ef",
+    "regenerating_commit": "7522255",
+    "substance_changed": false,
+    "changed_leaf_values_out_of_2985": 6,
+    "verdict": "STALE_BY_PROVENANCE",
+    "handling": "declared, not silenced: the record was correct at its own commit and its input was re-rendered one day later by its own lane; re-issuing belongs to the work package that owns the certificate"
+  },
+  "invariants": {
+    "params_hash": "d073a2d686b9b198c36c9a3c6009d36130577ba247a2016c3f791813cb749d77",
+    "params_hash_agrees_with_imported_constant": true,
+    "params_hash_agrees_with_publication": true,
+    "params_hash_recorded_by_ticks": true,
+    "coverage_required": 0.9,
+    "forward_days_required": 60,
+    "prospective_observation_days": 0,
+    "orders_recorded": 0,
+    "non_hypothetical_ticks": 0,
+    "promotion": "NONE in every tick record"
+  },
+  "verification": {
+    "audit_checks": "8/8 PASS",
+    "independent_verifier": "scripts/edge04r_verify.py, no code shared with the audit",
+    "sabotage_matrix": "see VERIFICATION.json"
+  },
+  "publication": {
+    "pushed_commits": ["351ecba", "046c7df", "f1a6b31", "570ccd6", "5980e37"],
+    "remote_ref": "refs/heads/agent/edge-recovery/WP-EDGE-00-baseline",
+    "remote_before": "26eeea47b64cb0124d9eb46fb76a7d2846c745a0",
+    "remote_after": "5980e37023427dd4c9053a2ddbfcc9ec2936a431",
+    "method": "fast-forward only; no force push, no branch other than the lane's own"
+  },
+  "hypothetical": true,
+  "order_sent": false,
+  "promotion": "NONE"
+}

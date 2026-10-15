@@ -1,0 +1,122 @@
+{
+  "checks": [
+    {
+      "detail": "7/7 named deliverables",
+      "name": "deliverable_set_present",
+      "passed": true
+    },
+    {
+      "detail": "7/7 evidence files",
+      "name": "evidence_set_present",
+      "passed": true
+    },
+    {
+      "detail": "2 files; []",
+      "name": "snapshot_files_match_their_digests",
+      "passed": true
+    },
+    {
+      "detail": "[]",
+      "name": "the_audit_and_the_manifest_name_the_same_bytes",
+      "passed": true
+    },
+    {
+      "detail": "8 checks; failing []",
+      "name": "the_audit_own_checks_pass",
+      "passed": true
+    },
+    {
+      "detail": "9/9 figures agree; {}",
+      "name": "independent_re_derivation_agrees",
+      "passed": true
+    },
+    {
+      "detail": "[]",
+      "name": "every_day_reconciles",
+      "passed": true
+    },
+    {
+      "detail": "0 sleep attributions against 0 sleep/resume pairs",
+      "name": "no_sleep_cause_without_a_sleep_record",
+      "passed": true
+    },
+    {
+      "detail": "re-derived d073a2d686b9b198c36c9a3c6009d36130577ba247a2016c3f791813cb749d77 vs published d073a2d686b9b198c36c9a3c6009d36130577ba247a2016c3f791813cb749d77",
+      "name": "frozen_ruleset_unchanged",
+      "passed": true
+    },
+    {
+      "detail": "coverage 0.9, days 60",
+      "name": "coverage_floor_and_forward_requirement_intact",
+      "passed": true
+    },
+    {
+      "detail": "orders 0, non-hypothetical 0, promotions {'NONE': 207}",
+      "name": "no_order_and_no_promotion_anywhere",
+      "passed": true
+    },
+    {
+      "detail": "verdict NO_VOLUME_WITH_CAPACITY, 0 qualifying volume(s)",
+      "name": "storage_verdict_follows_from_the_estate",
+      "passed": true
+    },
+    {
+      "detail": "viable ['SESSION_LOGON_TRIGGER', 'WITNESS_ACTION']; exercised ['SESSION_LOGON_TRIGGER', 'WITNESS_ACTION']",
+      "name": "no_mechanism_is_viable_without_a_probe_that_earned_it",
+      "passed": true
+    },
+    {
+      "detail": "recorded 8a101e8875bd vs head d1d49f09d8de, substance changed False",
+      "name": "the_stale_certificate_is_diagnosed_and_not_silenced",
+      "passed": true
+    },
+    {
+      "detail": "no readiness or promotion claim",
+      "name": "no_deliverable_claims_a_promotion_or_a_readiness",
+      "passed": true
+    }
+  ],
+  "economic_certificate": {
+    "digest_at_head": "d1d49f09d8de20ad14437cbce1e7d362e597342ae21c452ff51b08c14a207aa5",
+    "recorded_digest": "8a101e8875bdf61d3da92635d2b845dbc2bfb156277a1780a4a7a48f0748a481",
+    "verdict": "STALE_BY_PROVENANCE"
+  },
+  "failures": [],
+  "hypothetical": true,
+  "order_sent": false,
+  "re_derivation": {
+    "answered": 195,
+    "causes": {
+      "HOST_DOWN": 1,
+      "NO_SESSION": 24,
+      "SILENT_UNATTRIBUTABLE": 1
+    },
+    "consumed": 152,
+    "expected": 221,
+    "phase": 656000,
+    "refused": 43,
+    "window_from": "2026-10-13T11:23:38Z",
+    "window_to": "2026-10-15T18:31:46Z"
+  },
+  "schema_version": "EDGE04R_VERIFICATION_V1",
+  "self_test": {
+    "applied": 10,
+    "detected": 10,
+    "sabotages": {
+      "break_a_day_so_its_columns_do_not_add_up": true,
+      "call_a_mechanism_viable_without_a_probe": true,
+      "claim_no_trigger_was_lost": true,
+      "claim_one_more_trigger": true,
+      "corrupt_a_snapshot_digest": true,
+      "delete_a_logon_so_an_absence_disappears": true,
+      "flip_a_consumed_tick_into_a_refusal": true,
+      "invent_a_sleep_that_nobody_recorded": true,
+      "publish_a_readiness_claim": true,
+      "silence_the_stale_certificate": true
+    },
+    "undetected": 0,
+    "undetected_names": [],
+    "verdict": "SELF_TEST_PASS"
+  },
+  "verdict": "VERIFY_PASS"
+}
