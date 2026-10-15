@@ -279,6 +279,22 @@ reports/edge-recovery/WP-EDGE-09/*
 !reports/edge-recovery/WP-EDGE-09/experiments/*.md
 
 # ============================================================
+# WP-EDGE-04R — misma cadena de excepciones que WP-EDGE-01/02/03/04, por el mismo
+# motivo: la auditoria de continuidad (que atribuye cada trigger perdido a un estado
+# que el propio host registro), las metricas de disponibilidad, el diseno y las sondas
+# de independencia de sesion, la verificacion independiente y la evidencia del host SI
+# se versionan. `evidence/` lleva la lectura del sistema operativo tal cual se leyo y
+# la auditoria derivada de ella, de modo que el veredicto se puede re-derivar sin este
+# host; el estado vivo del observador sigue bajo data/forward/ (ignorado arriba), asi
+# que nada de lo que crece en cada tick entra aqui.
+# ============================================================
+!reports/edge-recovery/WP-EDGE-04R/
+reports/edge-recovery/WP-EDGE-04R/*
+!reports/edge-recovery/WP-EDGE-04R/evidence/
+!reports/edge-recovery/WP-EDGE-04R/*.json
+!reports/edge-recovery/WP-EDGE-04R/*.md
+
+# ============================================================
 # CAP-003 — evidencias OHLCV crudas: locales por tamano.
 # El ledger (evidence/real_decisions/*.jsonl) SI se versiona y
 # fija cada fichero crudo con su sha256.
