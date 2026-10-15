@@ -8,8 +8,8 @@
   "order_sent": false,
   "promotion": "NONE",
   "sources": {
-    "run_log": "data/forward/edge04/runs.jsonl (195 rows)",
-    "slot_ledger": "data/forward/edge04/slots.jsonl (140 rows)",
+    "run_log": "data/forward/edge04/runs.jsonl (196 rows)",
+    "slot_ledger": "data/forward/edge04/slots.jsonl (141 rows)",
     "alerts": "data/forward/edge04/alerts.jsonl (21 rows)",
     "daily_evidence": "data/forward/edge04/daily/2026-10-{13,14,15}.json",
     "health": "data/forward/edge04/health.json",
@@ -54,7 +54,7 @@
         "note": "four regression tests, one per defect found in this session"
       }
     ],
-    "uncommitted_by_this_work_package": "none: the code commit is 351ecba and this directory is the commit that carries it",
+    "uncommitted_by_this_work_package": "none: the code commit is 351ecba and the artefacts and reports are 046c7df",
     "other_workstreams_left_untouched": [
       "FINAL_REPORT.md",
       "RUN_REPORT.md",
@@ -103,13 +103,13 @@
     "last_tick_utc": "2026-10-15T15:17:20Z",
     "lane_still_ticking_after_the_reading": true,
     "span": "2 days 3 h 54 m",
-    "unattended_scheduled_ticks": 189,
+    "unattended_scheduled_ticks": 190,
     "manual_ticks": 6,
     "closing_health": "DEGRADED",
     "closing_health_reasons": [
       "the measured growth rate is volatile"
     ],
-    "ticks_in_last_24h": 75,
+    "ticks_in_last_24h": 74,
     "triggers_expected_in_last_24h": 96,
     "longest_silence_between_consuming_ticks_seconds": 27918.788,
     "declared_unavailability_seconds": 66683.814,
@@ -148,10 +148,10 @@
       "slots": 0
     },
     "tick_wall_time_seconds": {
-      "median": 34.328,
+      "median": 34.386,
       "max": 94.835,
-      "sum": 5802.854,
-      "ticks_measured": 195
+      "sum": 5874.907,
+      "ticks_measured": 196
     }
   },
   "data": {
@@ -166,27 +166,27 @@
     ],
     "newly_closed_bars_stored_this_window": 774,
     "missing_bars": 0,
-    "store_total_bars": 18807,
+    "store_total_bars": 18810,
     "store_series_bars": {
-      "15m:BTC": 782,
-      "15m:ETH": 782,
-      "15m:SOL": 782,
+      "15m:BTC": 783,
+      "15m:ETH": 783,
+      "15m:SOL": 783,
       "1h:BTC": 5487,
       "1h:ETH": 5487,
       "1h:SOL": 5487
     },
     "store_digests": {
-      "15m:BTC": "bb793bf6130ef6b6",
-      "15m:ETH": "475dd2e27bb73455",
-      "15m:SOL": "f749295cb8f68caf",
+      "15m:BTC": "0d97feff1396bf43",
+      "15m:ETH": "c9004d74074a782d",
+      "15m:SOL": "3f9b0ab3fc3e3f26",
       "1h:BTC": "388008cc5ad7dfc1",
       "1h:ETH": "db003200acbc1c17",
       "1h:SOL": "db0af873c04166fb"
     },
     "day_store_hashes": {
-      "15m:BTC": "d8a152af01bb9533",
-      "15m:ETH": "67f844047bcdee9c",
-      "15m:SOL": "fc4cd715d474a0bf",
+      "15m:BTC": "f7e472adacd9a018",
+      "15m:ETH": "fdd5b9f5c55daa6c",
+      "15m:SOL": "e582fdb550259fdb",
       "1h:BTC": "774eae0cfa76812a",
       "1h:ETH": "1d01318f81b3164c",
       "1h:SOL": "96f57a3749593ca7"
@@ -500,6 +500,36 @@
       "self_test": "SELF_TEST_PASS",
       "sabotages_detected": 20,
       "sabotages_applied": 20
+    }
+  },
+  "regression": {
+    "command": "pytest tests/unit/research tests/unit/autonomous -q -p no:randomly",
+    "result": "2584 passed, 1 failed in 807.27s",
+    "runner": "this host, .venv\\Scripts\\python.exe 3.11.15, at 2026-10-15T15:27Z-15:41Z",
+    "the_lane_s_own_suites": {
+      "tests/unit/research/test_edge04_autonomous.py": "49 passed (45 before this session's four)",
+      "tests/unit/autonomous": "284 passed",
+      "test_edge03_forward.py + test_recovery_determinism.py": "48 passed",
+      "ruff check": "clean on the three changed files",
+      "ruff format --check": "the two files it flags were already unformatted at HEAD, so no repository-wide reformat was applied to them"
+    },
+    "the_one_failure": {
+      "test": "tests/unit/research/test_cost_barrier_adversarial.py::test_the_certification_record_digests_content_not_a_checkout",
+      "detail": "the record digests 8a101e8875bdf61d... for data/recovery/ACTIVE_ECONOMIC_AUDIT.json, which hashes d1d49f09d8de20ad... at HEAD and on disk",
+      "owner": "WP-EDGE-01: the file's last change is commit 7522255",
+      "inherited": true,
+      "evidence": "neither commit of this session touches data/recovery/ or that test; WP-EDGE-09F recorded the same failure before this session began",
+      "handling": "reported as a failure with an owner; the assertion was not weakened and no test was skipped to make the suite read green"
+    },
+    "reading": "the two defects this session fixed were found by the verifier, not by the suite; the suite is what says the fixes broke nothing else, and it is reported with its failure attached",
+    "false_success_controls": {
+      "orders_sent": 0,
+      "promotions": 0,
+      "checks_that_cannot_fail": 0,
+      "days_counted_without_a_forward_observation": 0,
+      "duplicate_seals_in_the_ledger": 0,
+      "claim_that_a_rehearsal_was_a_live_run": 0,
+      "reading_larger_than_the_tree": 0
     }
   }
 }

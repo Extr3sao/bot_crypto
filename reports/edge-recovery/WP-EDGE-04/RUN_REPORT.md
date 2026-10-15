@@ -224,3 +224,24 @@ from the 96 the last 24 hours expected.
 Not claimed: `PASS`, `CERTIFIED`, `PRODUCTION_READY`, `READY_FOR_PAPER`. The lane observes; it does
 not admit. Zero of sixty forward days is the honest reading of the coverage rule, and a day on which
 the scheduler ran is not one of them.
+
+## 10. The regression that covers the changes themselves
+
+| | |
+| --- | --- |
+| `tests/unit/research` + `tests/unit/autonomous`, full | **2 584 passed, 1 failed** (13 m 27 s) |
+| The lane's own regressions | 49 passed (`test_edge04_autonomous.py`, 45 before this session) |
+| The scheduler layer | 284 passed (`tests/unit/autonomous`) |
+| The frozen pipeline and the determinism suite | 48 passed (`test_edge03_forward.py`, `test_recovery_determinism.py`) |
+| Lint | `ruff check` clean on all three changed files |
+
+**The one failure is inherited and is not this work package's.**
+`test_cost_barrier_adversarial.py::test_the_certification_record_digests_content_not_a_checkout`
+fails because a certification record in another lane's package digests `8a101e88…` for
+`data/recovery/ACTIVE_ECONOMIC_AUDIT.json`, which hashes `d1d49f09…` at HEAD and on disk. Neither
+commit of this session touches that file — its last change is `7522255` (`[WP-EDGE-01]`) — and the
+same failure was already recorded by `WP-EDGE-09F` before this session began. It is reported here as
+a failure with an owner, not smoothed into a pass and not silenced by editing the assertion.
+
+The two defects this session fixed were found by the verifier, not by the suite; the suite is what
+says the fixes did not break anything else, and it is reported with its failure attached.
