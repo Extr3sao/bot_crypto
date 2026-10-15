@@ -28,8 +28,9 @@ declarations written here, and recomputes what the artefacts claim:
 11. ``HEALTH_FOLLOWS_THE_LOG``        the health reading follows from the retained run log
 12. ``BUDGET_DECLARED_MEASURED_AND_BOUNDED``  the byte reading is the tree's real size, the log
                                       caps hold, and the daily evidence was not pruned with them
-13. ``PUBLICATION_SWAPPED_ATOMICALLY``every published digest matches its file on disk and no
-                                      staging tree survived
+13. ``PUBLICATION_SWAPPED_ATOMICALLY``every file the publication holds is named by the
+                                      pointer, every name answers to a file with that size
+                                      and digest, and no staging tree survived
 14. ``FREEZE_AND_FLOOR_DECLARED``     the frozen instants, the coverage rule and the 60-day
                                       floor are the ones the earlier work packages declared
 15. ``SCHEDULER_REGISTRATION_READ``   when the task's own registration was captured, it names
@@ -851,11 +852,13 @@ def check_budget_declared_measured_and_bounded(bundle: Bundle) -> list[tuple[str
 
 
 def check_publication_swapped(bundle: Bundle) -> list[tuple[str, bool, str]]:
-    """Every file the publication holds must answer to a recorded digest, and vice versa.
+    """Every file the publication holds must be named, and every name must answer to a file.
 
-    The check is deliberately mapping-free: the pointer names its artefacts by the reporter's
-    own keys, so instead of guessing which key means which file it requires the *set* of
-    published files and the *set* of recorded digests to be the same thing.
+    The pointer keys its artefacts by the file's own path relative to the publication root, so
+    this check is name-for-name: each published file must appear under its own name with the
+    size and digest it really has, and nothing may be recorded that is not there. A pointer
+    that named only the files the newest render wrote would leave the ones an earlier render
+    left behind undescribed, and a reader could not tell a live artefact from a leftover.
     """
     publication = bundle.publication
     if publication is None:
@@ -880,31 +883,40 @@ def check_publication_swapped(bundle: Bundle) -> list[tuple[str, bool, str]]:
     artifacts = payload.get("artifacts") or {}
     if not artifacts:
         failures.append("the publication pointer names no artefact")
-    published = sorted(
-        path
+    published = {
+        path.relative_to(publication).as_posix(): path
         for path in publication.rglob("*")
         if path.is_file() and not path.name.startswith(".") and path != pointer
-    )
-    recorded = {
-        (str(body.get("sha256")), _int(body.get("bytes")))
-        for body in artifacts.values()
-        if isinstance(body, dict)
     }
-    if len(published) != len(recorded):
+    undescribed = sorted(set(published) - set(artifacts))
+    if undescribed:
         failures.append(
-            f"{len(published)} published file(s) against {len(recorded)} recorded digest(s)"
+            f"{len(undescribed)} published file(s) the pointer does not name: {undescribed[:5]}"
         )
-    for path in published:
+    unanswered = sorted(set(artifacts) - set(published))
+    if unanswered:
+        failures.append(
+            f"{len(unanswered)} recorded name(s) no file answers to: {unanswered[:5]}"
+        )
+    checked = 0
+    for name, path in published.items():
+        body = artifacts.get(name)
+        if not isinstance(body, dict):
+            continue
+        checked += 1
+        recorded = (str(body.get("sha256")), _int(body.get("bytes")))
         actual = (_digest(path), path.stat().st_size)
-        if actual not in recorded:
-            name = path.relative_to(publication).as_posix()
-            failures.append(f"a published file answers to no recorded digest: {name}")
+        if actual != recorded:
+            failures.append(
+                f"a published file disagrees with its recorded digest: {name} "
+                f"({actual[1]} bytes on disk, {recorded[1]} recorded)"
+            )
     return [
         (
             "PUBLICATION_SWAPPED_ATOMICALLY",
             not failures,
             "; ".join(failures[:5])
-            or f"{len(published)} published file(s) answer to their recorded digests",
+            or f"{len(published)} published file(s) named and answered ({checked} digest(s) recomputed)",
         )
     ]
 

@@ -1215,3 +1215,129 @@ def test_the_independent_verifier_accepts_a_live_state_and_its_sabotages_are_det
     assert self_test["applied"] + self_test["skipped"] == len(verifier._sabotages())
     assert self_test["undetected"] == 0
     assert self_test["verdict"] == "SELF_TEST_PASS", self_test
+
+
+def test_the_pointer_names_every_file_the_publication_holds(tmp_path):
+    """A published report is never deleted, so the pointer has to name what is there.
+
+    The heavy set is swapped in one file at a time, so a per-day report an earlier render wrote
+    survives the next one. A pointer that enumerated only what the newest render produced would
+    describe a subset of the directory while reading as if it described all of it, and a reader
+    could not tell a live artefact from a leftover — which is what the independent verifier
+    refused in the live lane, naming two day reports the pointer had left out.
+    """
+    clock = Clock(INSTANT)
+    seen = observer(tmp_path, clock=clock, stub=False)
+    seen.publish = lambda payload: stub_publish(seen, payload)  # type: ignore[method-assign]
+    seen.tick(observed_at_ms=INSTANT)
+    retained = seen.publication_dir / "DAILY_2026-01-01.md"
+    retained.write_text("an earlier day's report\n", encoding="utf-8")
+    clock.advance_to(INSTANT + QUARTER)
+    record = seen.tick(observed_at_ms=INSTANT + QUARTER, force_publication=True)
+    pointer = json.loads((seen.publication_dir / "LATEST.json").read_text(encoding="utf-8"))
+    on_disk = {
+        path.relative_to(seen.publication_dir).as_posix()
+        for path in seen.publication_dir.rglob("*")
+        if path.is_file() and not path.name.startswith(".") and path.name != "LATEST.json"
+    }
+    assert on_disk == {"CUMULATIVE.md", "DAILY_2026-01-01.md"}
+    assert set(pointer["artifacts"]) == on_disk
+    assert pointer["artifacts"]["CUMULATIVE.md"]["written_this_publish"] is True
+    assert pointer["artifacts"]["CUMULATIVE.md"]["role"] == "cumulative"
+    assert pointer["artifacts"]["DAILY_2026-01-01.md"]["written_this_publish"] is False
+    assert pointer["artifacts"]["DAILY_2026-01-01.md"]["role"] is None
+    assert pointer["artifacts_retained"] == 1
+    assert record["publication"]["published_files"] == 2
+    assert record["publication"]["retained_files"] == ["DAILY_2026-01-01.md"]
+
+
+def test_the_verifier_refuses_a_publication_holding_an_unnamed_file(tmp_path):
+    """The check that caught the live defect, driven directly: a file nothing records."""
+    verifier = load_script("scripts/edge04_verify.py")
+    source = scripted_source()
+    now = source.server_time
+    seen = real_observer(tmp_path, clock=Clock(now))
+    seen.tick(source=source, observed_at_ms=now, force_publication=True)
+    bundle = verifier.load_bundle(seen.state_root, repo=tmp_path)
+    assert verifier.run_checks(bundle)["verdict"] == "VERIFY_PASS"
+    survived = seen.publication_dir / "DAILY_1999-01-01.md"
+    survived.write_text("a report an earlier render left behind\n", encoding="utf-8")
+    report = verifier.run_checks(verifier.load_bundle(seen.state_root, repo=tmp_path))
+    assert report["verdict"] == "VERIFY_FAIL", report["checks"]
+    assert any("the pointer does not name" in failure for failure in report["failures"])
+
+
+def test_a_finished_days_hashes_are_re_derived_from_the_store(tmp_path):
+    """A day's file is written by its own ticks, so its last write cannot hold its last bars.
+
+    The day file exists so that a claim about a day can be checked against the store later. A
+    file whose hashes were taken while the day was still running can never answer to the store
+    it describes — the verifier found exactly that on two live days. A day the store has
+    finished is corrected once from the store, and a later day's tick is what corrects it.
+    """
+    seen = observer(tmp_path)
+    rows = [
+        {"ts": INSTANT - 3 * QUARTER, "close": 100.0},
+        {"ts": INSTANT - 2 * QUARTER, "close": 101.0},
+    ]
+    stored = {"15m:BTC": rows}
+    day = AUTO.day_key(INSTANT)
+    path = seen.daily_path(day)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(
+        json.dumps(
+            {
+                "schema_version": AUTO.DAILY_SCHEMA_VERSION,
+                "day": day,
+                "ticks": 5,
+                "slots": {"2026-01-01T00:00Z": {"outcome": "OBSERVED"}},
+                "day_hashes": {"15m:BTC": "stale"},
+                "order_sent": False,
+            }
+        ),
+        encoding="utf-8",
+    )
+    later = AUTO.day_key(INSTANT + 24 * HOUR)
+    # Today's own file is this tick's business, not this method's.
+    untouched = seen.finalise_finished_days(stored, today=day)
+    assert untouched["corrected"] == [] and untouched["already_current"] == []
+    reading = seen.finalise_finished_days(stored, today=later)
+    assert reading["corrected"] == [{"day": day, "series": 1}]
+    corrected = json.loads(path.read_text(encoding="utf-8"))
+    assert corrected["day_hashes"] == {"15m:BTC": AUTO._digest_of_rows(rows)[:16]}
+    assert corrected["day_hashes"] == AUTO.period_hashes(stored)[day]
+    assert "day_hashes_finalised_at_utc" in corrected
+    # Nothing else in the file is re-derived behind a reader's back.
+    assert corrected["ticks"] == 5 and corrected["order_sent"] is False
+    assert corrected["slots"] == {"2026-01-01T00:00Z": {"outcome": "OBSERVED"}}
+    again = seen.finalise_finished_days(stored, today=later)
+    assert again["corrected"] == [] and again["already_current"] == [day]
+
+
+def test_a_second_snapshot_does_not_keep_a_file_the_live_tree_lost(tmp_path):
+    """A snapshot lands in a directory that already holds one, so the copy must be one instant.
+
+    A curated subset made the copy smaller than the tree the reading described; the opposite
+    bias is the leftovers of the previous copy, which make the directory a mixture of two
+    instants while claiming to be a reading of one. Only files the previous snapshot recorded
+    are dropped, so unrelated work in the same directory is left where it is.
+    """
+    seen = observer(tmp_path)
+    seen.state_root.mkdir(parents=True, exist_ok=True)
+    target = tmp_path / "snap"
+    (seen.state_root / "runs.jsonl").write_text("a\n", encoding="utf-8")
+    retired = seen.state_root / "retired_report.json"
+    retired.write_text("a report the lane no longer writes\n", encoding="utf-8")
+    seen.snapshot(target)
+    assert (target / "retired_report.json").is_file()
+    retired.unlink()
+    (seen.state_root / "runs.jsonl").write_text("a\nb\n", encoding="utf-8")
+    seen.snapshot(target)
+    assert not (target / "retired_report.json").exists(), "the copy is a mixture of two instants"
+    pointer = json.loads((target / "SNAPSHOT.json").read_text(encoding="utf-8"))
+    assert pointer["superseded_copies_dropped"] == ["retired_report.json"]
+    assert sorted(pointer["files"]) == ["runs.jsonl"]
+    outsider = target / "NOTES.md"
+    outsider.write_text("someone else's work\n", encoding="utf-8")
+    seen.snapshot(target)
+    assert outsider.is_file(), "a file this lane did not write was deleted"

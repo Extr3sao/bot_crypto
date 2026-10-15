@@ -899,6 +899,9 @@ class ForwardObserver:
         record["daily"] = self._write_daily(
             self._daily_update(payload, stored, economics, signals_today, trades_today)
         )
+        record["daily_finalised"] = self.finalise_finished_days(
+            stored, today=day_key(int(payload["observed_at_ms"]))
+        )
         write_json_atomic(self.coverage_path, payload["prospective"])
         record["publication"] = self._maybe_publish(
             payload, started_ms, force=force_publication, disk_status=str(record["disk"]["status"])
@@ -1191,6 +1194,66 @@ class ForwardObserver:
         path = self.daily_path(str(record["day"]))
         write_json_atomic(path, record)
         return str(path)
+
+    def finalise_finished_days(
+        self, stored: dict[str, list[dict[str, Any]]], *, today: str
+    ) -> dict[str, Any]:
+        """Fold the bars a *finished* day gained after its own last write, and say so.
+
+        A day file is written by the ticks of its own day, so the last write of that day
+        happens while the day is still running: the bars that closed after it went into the
+        store and into no file. Its ``day_hashes`` therefore described a partial day for ever
+        — an artefact whose whole purpose is to make a claim about a day checkable, and which
+        could never answer to the store it claims to describe. The independent verifier ran
+        that comparison and found the day of 2026-10-13 and the day of 2026-10-14 answering
+        to nothing.
+
+        A day the store has finished is the one case where the day's content is settled, so
+        the file is corrected from the store once and stays correct — and if a bar for that
+        day arrives later still, the next tick corrects it again, which is why the rule is
+        "re-derive and rewrite only when it disagrees" rather than "freeze". Only the day's
+        hashes are touched: the slot table is derived from the seal on every tick already, and
+        nothing else in the file is re-derived behind a reader's back.
+        """
+        hashes = period_hashes(stored)
+        corrected: list[dict[str, Any]] = []
+        already_current: list[str] = []
+        unexplained: list[str] = []
+        for path in sorted(self.daily_dir.glob("*.json")):
+            day = path.stem
+            if day >= today:
+                continue
+            wanted = hashes.get(day) or {}
+            try:
+                loaded = json.loads(path.read_text(encoding="utf-8"))
+            except (json.JSONDecodeError, OSError):
+                unexplained.append(day)
+                continue
+            if not isinstance(loaded, dict) or not wanted:
+                unexplained.append(day)
+                continue
+            if loaded.get("day_hashes") == wanted:
+                already_current.append(day)
+                continue
+            loaded["day_hashes"] = wanted
+            loaded["day_hashes_finalised_at_utc"] = stamp(self._now_ms())
+            loaded["day_hashes_finalised_note"] = (
+                "the file was last written while its own day was still running, so the hashes "
+                "of that write described a partial day; they are re-derived from the store on "
+                "a tick of a later day, and only a file that disagrees is rewritten"
+            )
+            write_json_atomic(path, loaded)
+            corrected.append({"day": day, "series": len(wanted)})
+        return {
+            "corrected": corrected,
+            "already_current": already_current,
+            "no_store_rows": unexplained,
+            "reading": (
+                "a finished day's own file cannot hold that day's last bars, so a finished day "
+                "whose hashes no longer answer to the store is corrected rather than left "
+                "standing as a claim nobody can check"
+            ),
+        }
 
     def prospective(
         self, payload: dict[str, Any], *, stored: dict[str, list[dict[str, Any]]] | None = None
@@ -1672,6 +1735,7 @@ class ForwardObserver:
         # record, and a publication whose files were written but whose pointer was not is a
         # publication the next tick would repeat.
         pointer = self.publication_dir / "LATEST.json"
+        inventory = self.publication_inventory(written)
         write_json_atomic(
             pointer,
             {
@@ -1681,11 +1745,20 @@ class ForwardObserver:
                 "recorded_at_ms": started_ms,
                 "run_id": payload["run_id"],
                 "params_hash": payload["frozen_params"]["params_hash"],
-                "artifacts": {
-                    name: {"bytes": path.stat().st_size, "sha256": _sha256_file(path)}
-                    for name, path in sorted(written.items())
-                    if path.is_file()
-                },
+                "artifacts": inventory,
+                "artifacts_written_now": sum(
+                    1 for body in inventory.values() if body.get("written_this_publish")
+                ),
+                "artifacts_retained": sum(
+                    1 for body in inventory.values() if not body.get("written_this_publish")
+                ),
+                "inventory_reading": (
+                    "every file the publication holds, keyed by its own path relative to the "
+                    "publication root: the files this render wrote and the ones an earlier "
+                    "render left behind, because a published report is never deleted and a "
+                    "pointer that named only the former would describe a subset of the "
+                    "directory while looking complete"
+                ),
                 "hypothetical": True,
                 "order_sent": False,
             },
@@ -1695,6 +1768,10 @@ class ForwardObserver:
             "at_ms": started_ms,
             "at_utc": stamp(started_ms),
             "artifacts": len(written),
+            "published_files": len(inventory),
+            "retained_files": sorted(
+                name for name, body in inventory.items() if not body.get("written_this_publish")
+            ),
             "bytes": sum(path.stat().st_size for path in written.values() if path.is_file()),
             "digests": {
                 name: _sha256_file(path)[:16]
@@ -1704,6 +1781,40 @@ class ForwardObserver:
             "pointer": str(pointer),
             "staged_then_swapped": True,
         }
+
+    def publication_inventory(self, written: dict[str, Path]) -> dict[str, dict[str, Any]]:
+        """What the publication root holds, each file named by its own path.
+
+        The heavy set is swapped in one file at a time, and a file a later render does not
+        produce is left where it is: the per-date reports accumulate, one per day, and the
+        declared policy never deletes a published report. A pointer that named only what this
+        render wrote would therefore describe a *subset* of the directory while reading as if
+        it described the whole of it — a reader could not tell the current publication from
+        what an earlier one left behind. The independent verifier refused exactly that, with
+        two day reports the pointer did not name; it was right, and the fix is to enumerate
+        the directory instead of the render.
+        """
+        roles = {path.resolve(): name for name, path in written.items()}
+        inventory: dict[str, dict[str, Any]] = {}
+        if not self.publication_dir.is_dir():
+            return inventory
+        for path in sorted(self.publication_dir.rglob("*")):
+            if not path.is_file():
+                continue
+            relative = path.relative_to(self.publication_dir)
+            if any(part.startswith(".") for part in relative.parts):
+                continue
+            key = relative.as_posix()
+            if key == "LATEST.json":
+                continue
+            role = roles.get(path.resolve())
+            inventory[key] = {
+                "bytes": path.stat().st_size,
+                "sha256": _sha256_file(path),
+                "role": role,
+                "written_this_publish": role is not None,
+            }
+        return inventory
 
     def publish(self, payload: dict[str, Any]) -> dict[str, Path]:
         """Write the pipeline's own artefact set into a staging tree, then swap it in.
@@ -1745,6 +1856,13 @@ class ForwardObserver:
 
         Dot-entries are left out on purpose: a half-written temp file is evidence of nothing, and
         the staging tree of an interrupted publication is not a lane artefact.
+
+        The copy is also whole in the other direction: a snapshot is normally taken into a
+        directory that already holds one, and a file the live tree no longer has would otherwise
+        survive beside the newer copy — a directory that is not any single instant while claiming
+        to be one. Exactly the files the *previous* snapshot recorded are dropped when the live
+        tree no longer has them; nothing else in the directory is touched, so pointing this at a
+        directory holding unrelated work deletes none of it.
         """
         outdir = Path(outdir)
         outdir.mkdir(parents=True, exist_ok=True)
@@ -1769,6 +1887,8 @@ class ForwardObserver:
                 target.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copyfile(source, target)
                 copied[f"publication/{relative.as_posix()}"] = target
+        # After *both* copy loops: a name the second loop is about to write is not superseded.
+        dropped = self._drop_superseded_copies(outdir, keep=set(copied))
         write_json_atomic(
             outdir / "SNAPSHOT.json",
             {
@@ -1778,6 +1898,7 @@ class ForwardObserver:
                     name: {"bytes": path.stat().st_size, "sha256": _sha256_file(path)}
                     for name, path in sorted(copied.items())
                 },
+                "superseded_copies_dropped": dropped,
                 "reading": (
                     "a dated snapshot of the whole live state root: the run log and the daily "
                     "evidence are the durable record, the digests here pin the bytes that were "
@@ -1789,6 +1910,36 @@ class ForwardObserver:
             },
         )
         return copied
+
+    @staticmethod
+    def _drop_superseded_copies(outdir: Path, *, keep: set[str]) -> list[str]:
+        """Remove the previous snapshot's files that the live tree no longer has.
+
+        A snapshot is written into a directory that already holds one, so without this the copy
+        is the union of two instants: every file of the newer one and whatever the older one had
+        and the live tree has since lost. The list of what to drop comes from the previous
+        ``SNAPSHOT.json`` — the record of what *that* copy put there — and from nothing else, so
+        a directory that also holds work this lane did not write is left alone.
+        """
+        pointer = outdir / "SNAPSHOT.json"
+        if not pointer.is_file():
+            return []
+        try:
+            previous = json.loads(pointer.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, OSError):
+            return []
+        recorded = previous.get("files") if isinstance(previous, dict) else None
+        if not isinstance(recorded, dict):
+            return []
+        dropped: list[str] = []
+        for name in sorted(recorded):
+            if name in keep or name == "SNAPSHOT.json":
+                continue
+            stale = outdir / name
+            if stale.is_file():
+                stale.unlink()
+                dropped.append(name)
+        return dropped
 
     # -- closing a tick ---------------------------------------------------- #
     def _finish(
