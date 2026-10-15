@@ -1,8 +1,8 @@
 {
   "schema_version": "EDGE04R_GIT_STATE_V1",
   "recorded_at_utc": "2026-10-15T19:28:00Z",
-  "head": "5daa3c0 (the commit that first carried this record; re-read after it, and the record names itself rather than a hash that moves)",
-  "head_at_the_re_read": "5daa3c0",
+  "head": "04bf155 (the commit that first carried this record; re-read after it, and the record names itself rather than a hash that moves)",
+  "head_at_the_re_read": "04bf155",
   "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
   "upstream": "origin/agent/edge-recovery/WP-EDGE-00-baseline",
   "worktree": "C:/Users/GVLLFR0035/Downloads/bot freebuff",
@@ -30,6 +30,21 @@
       "sha": "5daa3c0",
       "subject": "Record the published commits, the blocked push and the one inherited failure.",
       "files": "reports/edge-recovery/WP-EDGE-04R/GIT_STATE.json, RUN_REPORT.{md,json}, VERIFICATION.json"
+    },
+    {
+      "sha": "e6a9df8",
+      "subject": "Anchor every declared path, freeze the reading's instant, and rehearse the definition.",
+      "files": "src/trading_bot/research/edge04r/session.py, scripts/edge04r_{continuity,session,verify}.py, tests/unit/research/test_edge04r_continuity.py, .gitattributes"
+    },
+    {
+      "sha": "04bf155",
+      "subject": "Re-take the reading at the code that carries it, and record the four defects it closed.",
+      "files": "reports/edge-recovery/WP-EDGE-04R/{RUN_REPORT.{md,json},FINAL_REPORT.md,INFORME_EJECUTIVO.md,AVAILABILITY.md,SESSION_INDEPENDENCE.md,VERIFICATION.json,GIT_STATE.json,evidence/*}"
+    },
+    {
+      "sha": "the commit that follows 04bf155",
+      "subject": "Record the published ref, read back from the remote after the push.",
+      "files": "reports/edge-recovery/WP-EDGE-04R/{GIT_STATE.json,RUN_REPORT.{md,json}}"
     }
   ],
   "publication": {
@@ -38,8 +53,12 @@
     "remote_before_this_pass": "5980e37023427dd4c9053a2ddbfcc9ec2936a431",
     "remote_before_this_pass_is_an_ancestor_of_head": true,
     "commits_left_local_by_the_previous_pass": ["98d594e", "40b3665", "b892273", "5daa3c0"],
+    "pushed_commits": ["98d594e", "40b3665", "b892273", "5daa3c0", "e6a9df8", "04bf155"],
+    "remote_after": "04bf155375aeeb137c04ac8fc4755f64faa340e1",
+    "commits_ahead_of_upstream_after_this_pass": 0,
     "verify_command": "git ls-remote origin refs/heads/agent/edge-recovery/WP-EDGE-00-baseline",
-    "remote_read_back": "taken from the remote after the push and recorded in the commit that follows the one carrying this file, rather than quoted from the push command's own output",
+    "remote_read_back": "04bf155375aeeb137c04ac8fc4755f64faa340e1",
+    "read_back_note": "the ref was read from the remote after the push, not quoted from the push command's own output; the read-back equals local HEAD at the time",
     "earlier_blocked_probe": "the previous pass recorded BLOCKED_GITHUB_AUTH; the probe was re-taken and the credential was available, so the block is stale rather than current"
   },
   "regressions": {

@@ -28,8 +28,10 @@ branch, and only the commits this work package owns were pushed.
 | --- | --- |
 | Remote branch | `refs/heads/agent/edge-recovery/WP-EDGE-00-baseline` |
 | Already on the remote before this pass | `5980e37` (the record of the previous pass) |
+| After | `04bf155` — the read-back equals local HEAD |
+| Commits pushed | `98d594e`, `40b3665`, `b892273`, `5daa3c0`, `e6a9df8`, `04bf155` |
 | Method | fast-forward; **no force push**; no other branch touched |
-| Read back from the remote after the push | `info/GIT_STATE.json`, re-probed rather than quoted |
+| Read back from the remote after the push | `git ls-remote`, not the push command's own output |
 
 The four commits the previous pass left local (`98d594e`, `40b3665`, `b892273`, `5daa3c0`)
 and this pass's commits go out together as one fast-forward. The push is probed from the

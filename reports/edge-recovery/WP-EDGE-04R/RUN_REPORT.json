@@ -217,8 +217,11 @@
     "allowed_commits": ["98d594e", "40b3665", "b892273", "5daa3c0", "and the commits of this pass"],
     "remote_ref": "refs/heads/agent/edge-recovery/WP-EDGE-00-baseline",
     "remote_before_this_pass": "5980e37023427dd4c9053a2ddbfcc9ec2936a431",
+    "remote_after": "04bf155375aeeb137c04ac8fc4755f64faa340e1",
+    "pushed_commits": ["98d594e", "40b3665", "b892273", "5daa3c0", "e6a9df8", "04bf155"],
+    "commits_ahead_of_upstream_after_this_pass": 0,
     "method": "fast-forward only; no force push, no branch other than the lane's own",
-    "read_back": "recorded in GIT_STATE.json from git ls-remote, re-probed after the push rather than quoted from the command's own output"
+    "read_back": "04bf155375aeeb137c04ac8fc4755f64faa340e1, taken from git ls-remote after the push rather than quoted from the command's own output; GIT_STATE.json carries the same reading"
   },
   "hypothetical": true,
   "order_sent": false,
