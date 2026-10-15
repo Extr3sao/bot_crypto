@@ -5279,8 +5279,8 @@
     "params_hash": "d073a2d686b9b198c36c9a3c6009d36130577ba247a2016c3f791813cb749d77",
     "reading": "the frozen corpora end at these instants; every stored bar is strictly later, and no day before the epoch is a forward observation day"
   },
-  "generated_at_utc": "2026-10-15T15:17:18Z",
-  "market_instant_utc": "2026-10-15T15:16:37Z",
+  "generated_at_utc": "2026-10-15T15:42:09Z",
+  "market_instant_utc": "2026-10-15T15:41:03Z",
   "not_an_admission": "reaching the floor makes a later decision possible; it does not make it, and this lane cannot promote a strategy",
   "not_counted": "days before the observation epoch, and days whose bars arrived long after they closed, are not forward observation days: a backfill is history, not an observation",
   "period_hashes": {
@@ -5301,9 +5301,9 @@
       "1h:SOL": "759ce4aaa2ce31ad"
     },
     "2026-10-15": {
-      "15m:BTC": "d8a152af01bb9533",
-      "15m:ETH": "67f844047bcdee9c",
-      "15m:SOL": "fc4cd715d474a0bf",
+      "15m:BTC": "f7e472adacd9a018",
+      "15m:ETH": "fdd5b9f5c55daa6c",
+      "15m:SOL": "e582fdb550259fdb",
       "1h:BTC": "774eae0cfa76812a",
       "1h:ETH": "1d01318f81b3164c",
       "1h:SOL": "96f57a3749593ca7"
@@ -5328,9 +5328,9 @@
   "schema_version": "EDGE04_COVERAGE_V1",
   "state_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04",
   "store_digests": {
-    "15m:BTC": "93de3ad2266165a1",
-    "15m:ETH": "0826b9b5580235cb",
-    "15m:SOL": "aa443fe018b49572",
+    "15m:BTC": "0966d1557ea27122",
+    "15m:ETH": "928446a35d785717",
+    "15m:SOL": "dbc34c347e8548b9",
     "1h:BTC": "70a441969d2cfd40",
     "1h:ETH": "b16df78ebf54cc8d",
     "1h:SOL": "0d1d675e28057815"

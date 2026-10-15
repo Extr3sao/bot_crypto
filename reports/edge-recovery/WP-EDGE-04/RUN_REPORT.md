@@ -6,9 +6,11 @@ machine-readable twin is `RUN_REPORT.json`; the tick-by-tick table is
 `evidence/FASE7_TIMELINE.md`; the interpretation is
 `EDGE04_AUTONOMOUS_EXECUTION_REPORT.md`.
 
-This reading was taken at **`2026-10-15T15:17:41Z`** and supersedes the one of
+This reading was taken at **`2026-10-15T15:45:51Z`** and supersedes the one of
 `2026-10-13T15:20:00Z`, which described the first 22 ticks of the same lane. The lane was not
-restarted to write it: the same state root, the same task, the same ruleset, three days later.
+restarted to write it: the same state root, the same task, the same ruleset, three days later. The
+closure that produced it ran against the code as committed (`351ecba`), not against an earlier
+revision: the evidence published here is the output of the code published with it.
 
 Research only. Public market data, no credentials, no orders, no capital, no promotion. Nothing in
 this work package can authorise PAPER or LIVE trading.
@@ -19,16 +21,16 @@ this work package can authorise PAPER or LIVE trading.
 
 | | |
 | --- | --- |
-| Window | `2026-10-13T11:23:38Z` → `2026-10-15T15:17:20Z` (2 days 3 h 54 m) |
-| Unattended scheduled ticks | 188 of the 194 |
+| Window | `2026-10-13T11:23:38Z` → `2026-10-15T15:42:11Z` (2 days 4 h 19 m) |
+| Unattended scheduled ticks | 190 of the 196 |
 | Host / runtime | `DESKTOP-4CHO695`, `.venv\Scripts\python.exe` 3.11.15 |
 | Task | `TradingAgentic-EDGE04-Forward`, installed and enabled, every 15 min |
-| Ticks | 194 — 188 scheduled, 6 manual |
-| Outcomes | `OBSERVED` 138 · `DISK_BUDGET_EXCEEDED` 45 · `ALREADY_OBSERVED` 6 · `NO_NEW_DATA` 3 · `ALREADY_RUNNING` 2 |
+| Ticks | 196 — 190 scheduled, 6 manual |
+| Outcomes | `OBSERVED` 139 · `DISK_BUDGET_EXCEEDED` 45 · `ALREADY_OBSERVED` 7 · `NO_NEW_DATA` 3 · `ALREADY_RUNNING` 2 |
 | Hard failures | **0** (`RUNTIME_EXCEPTION`, `VERIFICATION_FAILED`, `PROVIDER_UNAVAILABLE`, `MISSING_BARS`, `STALE_DATA`) |
-| Slot seals | 140, 140 distinct, none duplicated |
-| Market requests spent | 672 |
-| Newly closed bars stored | 774 across 6 series |
+| Slot seals | 141, 141 distinct, none duplicated |
+| Market requests spent | 676 |
+| Newly closed bars stored | 777 across 6 series |
 | Longest silence between consuming ticks | `27 918.8 s` (7 h 45 m, the machine's night) |
 | Health at the close | `DEGRADED`, one reason: the measured growth rate is volatile |
 | Independent verdict | `VERIFY_PASS` 15/15, `SELF_TEST_PASS` 20/20 |
@@ -61,14 +63,15 @@ committed work. The probe is a dry run and pushes nothing; no credential was sup
 ## 3. What the ticks did with the data
 
 * **Only closed bars.** `expected_closed_bars()` computes the newest bar that can have closed at the
-  tick's own market instant. A 15-minute-only tick spends 4 requests and stores 3 bars; a tick that
-  straddles the hour spends 7 and stores 6. 672 requests produced 774 bars and **0 missing**.
+  tick's own market instant. A  15-minute-only tick spends 4 requests and stores 3 bars; a tick that
+  straddles the hour spends 7 and stores 6. 676 requests produced 777 bars and **0 missing**.
 * **Nothing re-fetched.** A tick whose slot is already sealed never runs the pipeline (`--due` ⇒
-  `ALREADY_OBSERVED`, 0 requests, 0 evidence written). Six ticks took that path, including one fired
-  by the OS scheduler while this report was being written.
-* **Per series, over the window:** `15m:BTC` 130 · `15m:ETH` 130 · `15m:SOL` 130 · `1h:BTC` 128 ·
-  `1h:ETH` 128 · `1h:SOL` 128 = 774. The store holds 18 807 bars and every day file's digests
-  re-derive from it (§6c).
+  `ALREADY_OBSERVED`, 0 requests, 0 evidence written). Seven ticks took that path, several of them
+  fired by the OS scheduler while this report was being written.
+* **Per series, over the window** (summed from the three day files, so the figures include the bars
+  the lane recovered after the disk block): `15m:BTC` 208 · `15m:ETH` 208 · `15m:SOL` 208 ·
+  `1h:BTC` 51 · `1h:ETH` 51 · `1h:SOL` 51 = 777. The store holds 18 810 bars and every day file's
+  digests re-derive from it (§6c).
 * **Latency is measured, and it is not flattering.** Close → store, per bar the tick pulled: the
   median tick reports a fresh-bar median of **658.6 s** and the worst reports **27 658 s**. The large
   figures are the recovery after a block: the high-water mark makes the pipeline re-fetch hours of
@@ -157,10 +160,11 @@ Between them these are the first *live* firings of `DISK_CRITICAL`, `DISK_WARNIN
 
 ## 7. The published evidence
 
-* **Snapshot**: `evidence/` is the whole live state root at `15:17:41Z`, 29 files, each with its
+* **Snapshot**: `evidence/` is the whole live state root at `15:45:51Z`, 29 files, each with its
   sha256 and byte count in `evidence/SNAPSHOT.json`, and every byte of it identical to the live tree
   (§6c). The closure records whether a tick wrote while the copy was taken; this time it did not
-  (`snapshot raced: no`).
+  (`snapshot raced: no`), and the copy had nothing to prune (`superseded_copies_dropped: []`), which
+  is the §6c hardening running on the real destination and finding nothing to remove.
 * **Publication**: `LATEST.json` enumerates **15 published files** — the 13 the newest heavy render
   wrote and the 2 per-date reports earlier renders left in place — and the verifier recomputes all
   15. The heavy set is rendered on the declared 24 h cadence and swapped in by pointer over a staging
@@ -191,33 +195,33 @@ Between them these are the first *live* firings of `DISK_CRITICAL`, `DISK_WARNIN
 
 | | |
 | --- | --- |
-| Lane / budget | 5 445 169 / 268 435 456 bytes (2.03 %) |
-| Store | 5 823 115 bytes |
+| Lane / budget | 5 462 253 / 268 435 456 bytes (2.03 %) |
+| Store | 5 824 046 bytes |
 | Heavy publication | 2 544 674 bytes, once per 24 h |
-| Free on the volume | 10.5794 GiB of 237.5264 GiB (95.55 % used) |
+| Free on the volume | 9.6136 GiB of 237.5264 GiB (95.95 % used) |
 | Disk status | `HEALTHY` (warning floor 5 GiB, critical floor 2 GiB) |
-| Measured growth | **no forecast**: rate volatile (cv 4.42, mean 1.99 MB/day) |
-| Tick wall time | median 34.4 s, max 94.8 s, sum 5 803 s over 194 ticks |
+| Measured growth | **no forecast**: rate volatile (cv 4.30, mean 2.05 MB/day) |
+| Tick wall time | median 34.4 s, max 94.8 s, sum 5 874.9 s over 196 ticks |
 | Bounded logs | runs 2 880 · slots 2 880 · ledger 4 032 · daily 366 · alerts 500 rows |
 | Never pruned | the store, `daily/<date>.json`, every published report |
 
 The volume has been both sides of its own floors during this window, which is the useful part: the
 critical refusal was exercised for real (45 times), the warning path paused the heavy publication,
-and 30.7 hours of host downtime and 17.2 hours of disk refusal are what separate 75 actual triggers
+and 30.7 hours of host downtime and 17.2 hours of disk refusal are what separate 74 actual triggers
 from the 96 the last 24 hours expected.
 
 ## 9. Where it stands, and what is missing
 
 | Item | State |
 | --- | --- |
-| Scheduler installed, enabled, firing unattended | **yes** — 188 scheduled ticks, `last_task_result 0` read back from the scheduler |
-| Closed-bar ingest, no duplicates, point-in-time | **yes** — 672 requests, 774 bars, 0 missing, 140 distinct seals |
+| Scheduler installed, enabled, firing unattended | **yes** — 190 scheduled ticks, `last_task_result 0` read back from the scheduler |
+| Closed-bar ingest, no duplicates, point-in-time | **yes** — 676 requests, 777 bars, 0 missing, 141 distinct seals |
 | Crash → refusal → reclaim, no duplicate bar | **yes** (controlled kill at `15:02:21Z`, reclaimed at `15:07:24Z`) |
 | Real disk exhaustion handled without a request | **yes** — 45 refusals, 0 market requests, 0 slots consumed |
 | Independent verification | `VERIFY_PASS` 15/15, `SELF_TEST_PASS` 20/20 — after it first returned `VERIFY_FAIL` 13/15 |
 | Forward observation days | **0 of 60** (229 days hold data; 228 are dense but backfilled) |
 | A host that stays logged in | **required and not guaranteed** — the task runs under `InteractiveToken`; 30.7 h of silence in this window is that bound, measured |
-| Long unattended window | **NOT_EXERCISED** — 2 days 3 h 54 m is not 60 days |
+| Long unattended window | **NOT_EXERCISED** — 2 days 4 h 19 m is not 60 days |
 | Linux registration | **NOT_EXERCISED** — no POSIX host here |
 | Provider outage, `STALE_DATA`, `MISSING_BARS`, moved ruleset | **NOT_EXERCISED** live — covered by the suite and the 20-sabotage matrix only |
 

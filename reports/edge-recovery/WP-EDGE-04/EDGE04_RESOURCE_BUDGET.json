@@ -10,13 +10,13 @@
   },
   "disk": {
     "critical_free_bytes": 2147483648,
-    "free_bytes": 11359559680,
-    "free_gib": 10.5794,
+    "free_bytes": 10322477056,
+    "free_gib": 9.6136,
     "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04",
     "status": "HEALTHY",
     "total_bytes": 255041990656,
     "total_gib": 237.5264,
-    "used_percent": 95.55,
+    "used_percent": 95.95,
     "warning_free_bytes": 5368709120
   },
   "forecast": {
@@ -25,10 +25,10 @@
     "lane_days_to_budget": null,
     "reading": "a forecast is published only when the measured rate is stable; otherwise it is null, because an invented number is worse than no number"
   },
-  "generated_at_utc": "2026-10-15T15:17:41Z",
+  "generated_at_utc": "2026-10-15T15:45:51Z",
   "growth": {
     "bytes_per_day": null,
-    "coefficient_of_variation": 4.4241,
+    "coefficient_of_variation": 4.2987,
     "discarded_samples": 0,
     "dropped_foreign_unit_samples": 0,
     "interval_seconds": [
@@ -216,13 +216,15 @@
       901.0,
       233.0,
       12.0,
-      655.0
+      655.0,
+      339.0,
+      561.0
     ],
-    "mean_bytes_per_day": 1987050.435,
-    "samples": 186,
+    "mean_bytes_per_day": 2045828.926,
+    "samples": 188,
     "since": null,
     "status": "VOLATILE",
-    "stddev_bytes_per_day": 8790993.36
+    "stddev_bytes_per_day": 8794375.929
   },
   "hypothetical": true,
   "live_budget_full": {
@@ -236,13 +238,13 @@
     },
     "disk": {
       "critical_free_bytes": 2147483648,
-      "free_bytes": 11359559680,
-      "free_gib": 10.5794,
+      "free_bytes": 10322477056,
+      "free_gib": 9.6136,
       "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04",
       "status": "HEALTHY",
       "total_bytes": 255041990656,
       "total_gib": 237.5264,
-      "used_percent": 95.55,
+      "used_percent": 95.95,
       "warning_free_bytes": 5368709120
     },
     "forecast": {
@@ -251,10 +253,10 @@
       "lane_days_to_budget": null,
       "reading": "a forecast is published only when the measured rate is stable; otherwise it is null, because an invented number is worse than no number"
     },
-    "generated_at_utc": "2026-10-15T15:16:35Z",
+    "generated_at_utc": "2026-10-15T15:40:58Z",
     "growth": {
       "bytes_per_day": null,
-      "coefficient_of_variation": 4.4241,
+      "coefficient_of_variation": 4.2987,
       "discarded_samples": 0,
       "dropped_foreign_unit_samples": 0,
       "interval_seconds": [
@@ -442,21 +444,23 @@
         901.0,
         233.0,
         12.0,
-        655.0
+        655.0,
+        339.0,
+        561.0
       ],
-      "mean_bytes_per_day": 1987050.435,
-      "samples": 186,
+      "mean_bytes_per_day": 2045828.926,
+      "samples": 188,
       "since": null,
       "status": "VOLATILE",
-      "stddev_bytes_per_day": 8790993.36
+      "stddev_bytes_per_day": 8794375.929
     },
     "measured": {
-      "lane": 5445169,
-      "lane_bytes": 5445169,
+      "lane": 5462253,
+      "lane_bytes": 5462253,
       "publication": 0,
       "publication_inside_state": true,
-      "state": 5445169,
-      "store": 5823115
+      "state": 5462253,
+      "store": 5824046
     },
     "over_budget": false,
     "policy": {
@@ -1213,18 +1217,26 @@
       {
         "bytes": 5445169,
         "ts_ms": 1792077395829
+      },
+      {
+        "bytes": 5446502,
+        "ts_ms": 1792077956390
+      },
+      {
+        "bytes": 5462253,
+        "ts_ms": 1792078858974
       }
     ],
     "schema_version": "EDGE04_RESOURCE_BUDGET_V1"
   },
   "live_budget_path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04\\resource_budget.json",
   "measured": {
-    "lane": 5445169,
-    "lane_bytes": 5445169,
+    "lane": 5462253,
+    "lane_bytes": 5462253,
     "publication": 0,
     "publication_inside_state": true,
-    "state": 5445169,
-    "store": 5823115
+    "state": 5462253,
+    "store": 5824046
   },
   "order_sent": false,
   "over_budget": false,
@@ -1239,7 +1251,7 @@
     "days_to_lane_budget": null,
     "days_to_warning_free": null,
     "lane_budget_bytes": 268435456,
-    "lane_bytes_now": 5445169,
+    "lane_bytes_now": 5462253,
     "measured_bytes_per_day": null,
     "reading": "the projection is published only when the measured rate is stable; a null is a measurement that does not exist yet, not a zero"
   },
@@ -1249,8 +1261,8 @@
     "max_seconds": 94.835,
     "median_seconds": 34.445,
     "reading": "wall time of the tick as it recorded it, including the fetch; the disk cost of one tick is a few kilobytes of bounded logs, because the heavy report set is rendered once a day and not once a tick",
-    "sum_seconds": 5802.835,
-    "ticks_measured": 194
+    "sum_seconds": 5874.907,
+    "ticks_measured": 196
   },
   "work_package": "WP-EDGE-04"
 }

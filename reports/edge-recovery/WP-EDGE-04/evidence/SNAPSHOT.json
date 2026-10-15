@@ -6,7 +6,7 @@
     },
     "coverage.json": {
       "bytes": 122155,
-      "sha256": "f77443c16afe649cc46f196a2b26eedb584fddcf9511d7b3bfed7eaecde5ea89"
+      "sha256": "35d18240bd2ed9b9378c4ec1bfa77a3016c8902b4d87084238014eb30f24ea1f"
     },
     "daily/2026-10-13.json": {
       "bytes": 143050,
@@ -17,24 +17,24 @@
       "sha256": "ebe0da1bdaf57ff254917a304d84c01d5429747e4364143313fb7f14427a5ad2"
     },
     "daily/2026-10-15.json": {
-      "bytes": 145086,
-      "sha256": "5ed155f724d850323b76006ceb6c11f24c0e21e7b978c61608c2bbf45eb58f8c"
+      "bytes": 145294,
+      "sha256": "361defa0e82ec2c1baa81007f6b56044a93fa248fb121c141d6781cf931af055"
     },
     "derived_refresh.jsonl": {
-      "bytes": 84961,
-      "sha256": "cf636862e1e5631e24439b7c1e7f3e4291f66dbd3dd10c8ba3f86f12c3cdf3a5"
+      "bytes": 86360,
+      "sha256": "68ef02575bca7c3b7bddc02b2d43f5666bc4ac6927dbdd75a08c83d2fac463d2"
     },
     "health.json": {
-      "bytes": 6122,
-      "sha256": "86e3838c8c5d47c03db005a33f6a8d4b1ae17419d7ab2b97a21137a08b683020"
+      "bytes": 6154,
+      "sha256": "848b29e8c639e75261883772c0c9e3a9c54ec5d2fa71489fe6bd6a24be2b88f0"
     },
     "install.json": {
       "bytes": 3468,
       "sha256": "475153d6241cdcd1d5f8276215ffdfe25d3c7637d2ff2178a9b16cfc16c9c830"
     },
     "ledger/INGEST_LEDGER.jsonl": {
-      "bytes": 1401876,
-      "sha256": "bedc9a3ab7b0aa207fedb1367e30df1da50009a2ff0107da376809ce8b31dba5"
+      "bytes": 1411380,
+      "sha256": "9287a3261b02b75d3342ad5d046829c2c031e9697bf2c57d2609f08ce5d106f9"
     },
     "publication/CUMULATIVE.json": {
       "bytes": 49446,
@@ -101,25 +101,26 @@
       "sha256": "548b77a42127df3fa632008067f0b23fcb4f17e2d366a93ca831c886dad2e637"
     },
     "resource_budget.json": {
-      "bytes": 17668,
-      "sha256": "ad24849febe045eddd1124b9e8fe283a79f9c497bedd55431166bdc41433141f"
+      "bytes": 17836,
+      "sha256": "360149fc311abec4dfc3af93548a8afbe4cf61369798af7aaa3f9777d2d509b4"
     },
     "runs.jsonl": {
-      "bytes": 785728,
-      "sha256": "fe7629937525355ce69b6ef369aff10c6b6b809fe12bb6429f8b223ea050a314"
+      "bytes": 792142,
+      "sha256": "e60df0293a1197cb12866d181c7be1576d41f5d749ee78d19ce5ff09844248a8"
     },
     "slot_ledger_repair.json": {
       "bytes": 774,
       "sha256": "1b4e453e804c3fec3b6091cd9e605b72f164d03918c84a5ed5844f66d988a352"
     },
     "slots.jsonl": {
-      "bytes": 34872,
-      "sha256": "ffc12abb95261b2ab46432b56d652c01026a6d46557ef55737de523a4668ced8"
+      "bytes": 35121,
+      "sha256": "b63269e0f47b2ae5a359ad9b6b49c9775c21e862c1decd06b697315cc98bbfc6"
     }
   },
-  "generated_at_utc": "2026-10-15T15:17:41Z",
+  "generated_at_utc": "2026-10-15T15:45:51Z",
   "hypothetical": true,
   "order_sent": false,
   "reading": "a dated snapshot of the whole live state root: the run log and the daily evidence are the durable record, the digests here pin the bytes that were live when the snapshot was taken, and the copy is whole so the byte budget can be checked against the same tree the reading describes",
-  "schema_version": "EDGE04_TICK_V1"
+  "schema_version": "EDGE04_TICK_V1",
+  "superseded_copies_dropped": []
 }

@@ -1,9 +1,9 @@
 {
   "day": "2026-10-15",
   "day_hashes": {
-    "15m:BTC": "d8a152af01bb9533",
-    "15m:ETH": "67f844047bcdee9c",
-    "15m:SOL": "fc4cd715d474a0bf",
+    "15m:BTC": "f7e472adacd9a018",
+    "15m:ETH": "fdd5b9f5c55daa6c",
+    "15m:SOL": "e582fdb550259fdb",
     "1h:BTC": "774eae0cfa76812a",
     "1h:ETH": "1d01318f81b3164c",
     "1h:SOL": "96f57a3749593ca7"
@@ -48,29 +48,29 @@
     }
   },
   "errors": [],
-  "expected_new_bars": 255,
+  "expected_new_bars": 258,
   "first_tick_utc": "2026-10-15T04:57:48Z",
   "hypothetical": true,
-  "last_tick_utc": "2026-10-15T15:17:18Z",
+  "last_tick_utc": "2026-10-15T15:42:09Z",
   "latency_seconds": {
-    "max_seconds": 97.999,
-    "median_of_medians_seconds": 97.999,
+    "max_seconds": 663.856,
+    "median_of_medians_seconds": 663.856,
     "rule": "close → store, of the bars THIS tick pulled; the window reading is in the publication",
     "series": {
       "15m:BTC": {
         "fresh_bars": 1,
-        "max_seconds": 97.999,
-        "median_seconds": 97.999
+        "max_seconds": 663.856,
+        "median_seconds": 663.856
       },
       "15m:ETH": {
         "fresh_bars": 1,
-        "max_seconds": 97.999,
-        "median_seconds": 97.999
+        "max_seconds": 663.856,
+        "median_seconds": 663.856
       },
       "15m:SOL": {
         "fresh_bars": 1,
-        "max_seconds": 97.999,
-        "median_seconds": 97.999
+        "max_seconds": 663.856,
+        "median_seconds": 663.856
       },
       "1h:BTC": {
         "fresh_bars": 0,
@@ -89,9 +89,9 @@
       }
     }
   },
-  "market_instant_utc": "2026-10-15T15:16:37Z",
+  "market_instant_utc": "2026-10-15T15:41:03Z",
   "missing_bars": 0,
-  "new_bars": 255,
+  "new_bars": 258,
   "observation": {
     "coverage_required": 0.9,
     "days": [
@@ -5373,8 +5373,8 @@
       "params_hash": "d073a2d686b9b198c36c9a3c6009d36130577ba247a2016c3f791813cb749d77",
       "reading": "the frozen corpora end at these instants; every stored bar is strictly later, and no day before the epoch is a forward observation day"
     },
-    "generated_at_utc": "2026-10-15T15:17:18Z",
-    "market_instant_utc": "2026-10-15T15:16:37Z",
+    "generated_at_utc": "2026-10-15T15:42:09Z",
+    "market_instant_utc": "2026-10-15T15:41:03Z",
     "not_an_admission": "reaching the floor makes a later decision possible; it does not make it, and this lane cannot promote a strategy",
     "not_counted": "days before the observation epoch, and days whose bars arrived long after they closed, are not forward observation days: a backfill is history, not an observation",
     "period_hashes": {
@@ -5395,9 +5395,9 @@
         "1h:SOL": "759ce4aaa2ce31ad"
       },
       "2026-10-15": {
-        "15m:BTC": "d8a152af01bb9533",
-        "15m:ETH": "67f844047bcdee9c",
-        "15m:SOL": "fc4cd715d474a0bf",
+        "15m:BTC": "f7e472adacd9a018",
+        "15m:ETH": "fdd5b9f5c55daa6c",
+        "15m:SOL": "e582fdb550259fdb",
         "1h:BTC": "774eae0cfa76812a",
         "1h:ETH": "1d01318f81b3164c",
         "1h:SOL": "96f57a3749593ca7"
@@ -5422,9 +5422,9 @@
     "schema_version": "EDGE04_COVERAGE_V1",
     "state_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04",
     "store_digests": {
-      "15m:BTC": "93de3ad2266165a1",
-      "15m:ETH": "0826b9b5580235cb",
-      "15m:SOL": "aa443fe018b49572",
+      "15m:BTC": "0966d1557ea27122",
+      "15m:ETH": "928446a35d785717",
+      "15m:SOL": "dbc34c347e8548b9",
       "1h:BTC": "70a441969d2cfd40",
       "1h:ETH": "b16df78ebf54cc8d",
       "1h:SOL": "0d1d675e28057815"
@@ -5436,9 +5436,9 @@
   "order_sent": false,
   "parity_verdict": "PARITY_PASS",
   "per_series_appended": {
-    "15m:BTC": 68,
-    "15m:ETH": 68,
-    "15m:SOL": 68,
+    "15m:BTC": 69,
+    "15m:ETH": 69,
+    "15m:SOL": 69,
     "1h:BTC": 17,
     "1h:ETH": 17,
     "1h:SOL": 17
@@ -5784,7 +5784,15 @@
       "outcome": "OBSERVED"
     },
     "2026-10-15T15:15Z": {
-      "at_utc": "2026-10-15T15:17:18Z",
+      "at_utc": "2026-10-15T15:17:20Z",
+      "expected": 3,
+      "market_requests": 4,
+      "missing": 0,
+      "new_bars": 3,
+      "outcome": "OBSERVED"
+    },
+    "2026-10-15T15:30Z": {
+      "at_utc": "2026-10-15T15:42:09Z",
       "expected": 3,
       "market_requests": 4,
       "missing": 0,
@@ -5794,15 +5802,15 @@
   },
   "store": {
     "series_digests": {
-      "15m:BTC": "bb793bf6130ef6b6",
-      "15m:ETH": "475dd2e27bb73455",
-      "15m:SOL": "f749295cb8f68caf",
+      "15m:BTC": "0d97feff1396bf43",
+      "15m:ETH": "c9004d74074a782d",
+      "15m:SOL": "3f9b0ab3fc3e3f26",
       "1h:BTC": "388008cc5ad7dfc1",
       "1h:ETH": "db003200acbc1c17",
       "1h:SOL": "db0af873c04166fb"
     },
-    "total_bars": 18807
+    "total_bars": 18810
   },
-  "ticks": 43,
+  "ticks": 44,
   "window_observation_days": 228
 }

@@ -8,7 +8,7 @@ admission conditions exactly — and that does not authorise PAPER or LIVE tradi
 closed bars, refuses to duplicate work, survives a hard kill, survives a real disk exhaustion,
 publishes its evidence and is verified by a verifier that shares none of its code — and that
 **refused the live lane twice in this session** before its two refusals were fixed. It has
-accumulated **0 of 60 forward observation days** and 774 newly stored bars over 2 days 3 h 54 m,
+accumulated **0 of 60 forward observation days** and 777 newly stored bars over 2 days 4 h 19 m,
 which is what two days of a 60-day requirement looks like.
 
 No `PASS`, `CERTIFIED`, `PRODUCTION_READY` or `READY_FOR_PAPER` is claimed, and none should be read
@@ -26,14 +26,14 @@ Research only. Public market data, no credentials, no orders, no capital, no pro
 return value — running every 15 minutes with `MultipleInstances=IgnoreNew` and
 `StartWhenAvailable=true`.
 
-Proof it fires rather than proof it exists: **188 scheduled ticks** ran with no human and no agent
-session involved, and one of them fired *while this report was being written*. This session also
+Proof it fires rather than proof it exists: **190 scheduled ticks** ran with no human and no agent
+session involved, and several of them fired *while this report was being written*. This session also
 asked the scheduler to fire the task (`--run-task`) and read the answer back from the scheduler's own
 fields: `last_run_time` moved and **`last_task_result` became `0`**, the exit code of the tick. Three
 ticks followed from that interaction, all in the run log.
 
 The caveat is not the task, it is the host: `InteractiveToken` plus a machine that sleeps. The last
-24 h contained **75 of the 96 expected triggers**, and the longest silence between two ticks that
+24 h contained **74 of the 96 expected triggers**, and the longest silence between two ticks that
 consumed a slot was **7 h 45 m** (the machine's night). That is the availability bound, measured
 rather than asserted.
 
@@ -63,10 +63,10 @@ On a POSIX host the runner is portable and the registration is one cron line or 
 
 | | |
 | --- | --- |
-| Newly closed bars stored by this lane | **774** (`15m` BTC/ETH/SOL 130 each · `1h` BTC/ETH/SOL 128 each) |
-| Market requests spent | 672 |
+| Newly closed bars stored by this lane | **777** (`15m` BTC/ETH/SOL 208 each · `1h` BTC/ETH/SOL 51 each, summed from the three day files) |
+| Market requests spent | 676 |
 | Missing bars | 0 |
-| Store total | 18 807 bars across 6 series |
+| Store total | 18 810 bars across 6 series |
 | **Valid forward observation days** | **0 of 60** (60 remaining) |
 | Days with any stored data | 229 |
 | Densely covered but backfilled | 228 |
@@ -134,15 +134,15 @@ there, they just did not arrive while the day was live.
 
 | | |
 | --- | --- |
-| Lane tree now | 5 445 169 bytes of a declared 268 435 456 (2.03 %) |
-| Store | 5 823 115 bytes |
+| Lane tree now | 5 462 253 bytes of a declared 268 435 456 (2.03 %) |
+| Store | 5 824 046 bytes |
 | One-off heavy publication | 2 544 674 bytes, rendered **once per 24 h**, not per tick |
 | Marginal cost of one tick | a few kilobytes of bounded logs plus the store's new bars |
-| Measured growth | **volatile → no forecast published** (mean 1.99 MB/day, cv 4.42) |
-| Volume free | 10.5794 GiB of 237.5264 GiB (95.55 % used) |
+| Measured growth | **volatile → no forecast published** (mean 2.05 MB/day, cv 4.30) |
+| Volume free | 9.6136 GiB of 237.5264 GiB (95.95 % used) |
 | Guards | warning below 5 GiB free (ingest continues, publication waits); critical below 2 GiB (`DISK_BUDGET_EXCEEDED`, exit 5, **no market request at all**) |
 
-The coefficient of variation is now 4.42, worse than the 0.556 of the first reading, because the
+The coefficient of variation is now 4.30, worse than the 0.556 of the first reading, because the
 sample mixes 15-minute ticks with an 18-hour hole and a forced multi-megabyte render. No forecast is
 published, and that is the point: a number invented from a rate this unstable would be a fiction with
 a units field. What can be said without inventing anything: the heavy set costs 2.54 MB per day, the
@@ -231,7 +231,7 @@ Only one thing is *missing*, and four things are *unproven*:
    credentials, which this work package is not authorised to hold. **This is the largest single
    obstacle to the 60-day requirement, and at the current rate of coverage the floor of 60 days is not
    reachable on this host.**
-3. **Unproven: a long unattended run.** 2 days 3 h 54 m of unattended scheduled firing was observed,
+3. **Unproven: a long unattended run.** 2 days 4 h 19 m of unattended scheduled firing was observed,
    with real interruptions. That is evidence the mechanism works, not evidence of 60 days of it.
 4. **Unproven: some live failure paths.** The guards and the failure vocabulary are exercised in tests
    and in a 20-sabotage self-test; the disk paths have now fired for real, the outage paths have not.

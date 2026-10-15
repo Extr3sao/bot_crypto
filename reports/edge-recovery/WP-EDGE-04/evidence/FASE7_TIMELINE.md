@@ -1,6 +1,6 @@
 # WP-EDGE-04 — FASE 7 timeline (generated)
 
-Generated at `2026-10-15T15:17:41Z` from `C:\Users\GVLLFR0035\Downloads\bot freebuff\data\forward\edge04\runs.jsonl` and `C:\Users\GVLLFR0035\Downloads\bot freebuff\data\forward\edge04\slots.jsonl`.
+Generated at `2026-10-15T15:45:51Z` from `C:\Users\GVLLFR0035\Downloads\bot freebuff\data\forward\edge04\runs.jsonl` and `C:\Users\GVLLFR0035\Downloads\bot freebuff\data\forward\edge04\slots.jsonl`.
 Every row below is a tick that really ran; nothing in this file is reconstructed.
 
 Registered task: `TradingAgentic-EDGE04-Forward` · installed `True` · enabled `True` · interval `15` min
@@ -210,6 +210,8 @@ Registered task: `TradingAgentic-EDGE04-Forward` · installed `True` · enabled 
 | 192 | 2026-10-15T15:00:01Z | SCHEDULED | `OBSERVED` | 2026-10-15T15:00Z | 7 | 6 | DEGRADED | 0 | ACQUIRED |
 | 193 | 2026-10-15T15:10:56Z | SCHEDULED | `ALREADY_OBSERVED` | 2026-10-15T15:00Z | 0 | 0 | DEGRADED | 0 | — |
 | 194 | 2026-10-15T15:16:35Z | MANUAL | `OBSERVED` | 2026-10-15T15:15Z | 4 | 3 | DEGRADED | 0 | ACQUIRED |
+| 195 | 2026-10-15T15:25:56Z | SCHEDULED | `ALREADY_OBSERVED` | 2026-10-15T15:15Z | 0 | 0 | DEGRADED | 0 | — |
+| 196 | 2026-10-15T15:40:58Z | SCHEDULED | `OBSERVED` | 2026-10-15T15:30Z | 4 | 3 | DEGRADED | 0 | ACQUIRED |
 
 ## Slots consumed
 
@@ -355,6 +357,7 @@ Registered task: `TradingAgentic-EDGE04-Forward` · installed `True` · enabled 
 | 2026-10-15T14:45Z | FWD-EDGE04-20261015T144500Z | OBSERVED | 3 | 4 |
 | 2026-10-15T15:00Z | FWD-EDGE04-20261015T150000Z | OBSERVED | 6 | 7 |
 | 2026-10-15T15:15Z | FWD-EDGE04-20261015T151500Z | OBSERVED | 3 | 4 |
+| 2026-10-15T15:30Z | FWD-EDGE04-20261015T153000Z | OBSERVED | 3 | 4 |
 
 ## Alerts raised in the window
 

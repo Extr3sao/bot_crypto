@@ -2,7 +2,7 @@
   "schema_version": "EDGE04_RUN_REPORT_V1",
   "work_package": "WP-EDGE-04",
   "title": "Autonomous forward observation of the frozen WP-EDGE-03 lane",
-  "generated_at_utc": "2026-10-15T15:17:41Z",
+  "generated_at_utc": "2026-10-15T15:45:51Z",
   "does_not_authorise": "PAPER or LIVE trading: reaching the observation floor makes a later decision possible, it does not make it, and this lane cannot promote a strategy",
   "hypothetical": true,
   "order_sent": false,
@@ -54,7 +54,7 @@
         "note": "four regression tests, one per defect found in this session"
       }
     ],
-    "uncommitted_by_this_work_package": "none: the code commit is 351ecba and the artefacts and reports are 046c7df",
+    "uncommitted_by_this_work_package": "none: the code is 351ecba; the artefacts and reports are 046c7df and f1a6b31, and this commit re-took the evidence with the code as committed so that the published copy is the output of the published revision - the previous copy predated the snapshot-pruning hardening by one edit and contained nothing that needed pruning",
     "other_workstreams_left_untouched": [
       "FINAL_REPORT.md",
       "RUN_REPORT.md",
@@ -100,9 +100,9 @@
   },
   "window": {
     "first_tick_utc": "2026-10-13T11:24:03Z",
-    "last_tick_utc": "2026-10-15T15:17:20Z",
+    "last_tick_utc": "2026-10-15T15:42:11Z",
     "lane_still_ticking_after_the_reading": true,
-    "span": "2 days 3 h 54 m",
+    "span": "2 days 4 h 19 m",
     "unattended_scheduled_ticks": 190,
     "manual_ticks": 6,
     "closing_health": "DEGRADED",
@@ -117,17 +117,17 @@
     "reading": "the schedule is not the observation: 75 of the 96 triggers the last 24 h expected actually fired, and the silence between the ticks that consumed a slot is what says so"
   },
   "ticks": {
-    "total": 194,
+    "total": 196,
     "by_mode": {
       "MANUAL": 6,
-      "SCHEDULED": 188
+      "SCHEDULED": 190
     },
     "by_outcome": {
-      "ALREADY_OBSERVED": 6,
+      "ALREADY_OBSERVED": 7,
       "ALREADY_RUNNING": 2,
       "DISK_BUDGET_EXCEEDED": 45,
       "NO_NEW_DATA": 3,
-      "OBSERVED": 138
+      "OBSERVED": 139
     },
     "reading": "the figures above are the closure's reading of the run log at the instant of the snapshot; later scheduled ticks are on disk and are not counted here",
     "hard_failures": 0,
@@ -138,10 +138,10 @@
       "MISSING_BARS",
       "STALE_DATA"
     ],
-    "slot_seals": 140,
+    "slot_seals": 141,
     "duplicate_slots": [],
-    "market_requests": 672,
-    "bars_appended": 774,
+    "market_requests": 676,
+    "bars_appended": 777,
     "corrupt_log_lines": {
       "alerts": 0,
       "runs": 0,
@@ -164,7 +164,7 @@
       "15m:ETH",
       "15m:SOL"
     ],
-    "newly_closed_bars_stored_this_window": 774,
+    "newly_closed_bars_stored_this_window": 777,
     "missing_bars": 0,
     "store_total_bars": 18810,
     "store_series_bars": {
@@ -367,7 +367,7 @@
     "self_test_blind_spot_found": "the 'grow a bounded log past its cap' sabotage was caught only as a side effect of a byte comparison; the cap arm itself compared names the bundle never loads. Both were repaired",
     "verdict_file": "reports/edge-recovery/WP-EDGE-04/INDEPENDENT_VERIFICATION.json",
     "rerun_on_the_committed_snapshot": {
-      "at_utc": "2026-10-15T15:44Z",
+      "at_utc": "2026-10-15T15:46:59Z",
       "command": "scripts/edge04_verify.py --state-root reports/edge-recovery/WP-EDGE-04/evidence --repo . --install reports/edge-recovery/WP-EDGE-04/evidence/install.json --self-test",
       "verdict": "VERIFY_PASS",
       "checks_passed": 15,
@@ -388,21 +388,21 @@
     }
   },
   "resources": {
-    "lane_bytes": 5445169,
+    "lane_bytes": 5462253,
     "lane_budget_bytes": 268435456,
-    "lane_used_percent_of_budget": 2.028,
-    "store_bytes": 5823115,
+    "lane_used_percent_of_budget": 2.035,
+    "store_bytes": 5824046,
     "publication_bytes": 2544674,
-    "free_bytes": 11359559680,
-    "free_gib": 10.5794,
+    "free_bytes": 10322477056,
+    "free_gib": 9.6136,
     "total_gib": 237.5264,
-    "volume_used_percent": 95.55,
+    "volume_used_percent": 95.95,
     "warning_free_bytes": 5368709120,
     "critical_free_bytes": 2147483648,
     "disk_status": "HEALTHY",
     "measured_growth_bytes_per_day": null,
-    "mean_growth_bytes_per_day": 1987050.435,
-    "coefficient_of_variation": 4.4241,
+    "mean_growth_bytes_per_day": 2045828.926,
+    "coefficient_of_variation": 4.2987,
     "growth_status": "VOLATILE",
     "forecast": {
       "days_to_critical_free": null,

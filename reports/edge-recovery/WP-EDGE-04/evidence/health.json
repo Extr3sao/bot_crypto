@@ -10,13 +10,13 @@
     },
     "disk": {
       "critical_free_bytes": 2147483648,
-      "free_bytes": 11359428608,
-      "free_gib": 10.5793,
+      "free_bytes": 10322477056,
+      "free_gib": 9.6136,
       "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04",
       "status": "HEALTHY",
       "total_bytes": 255041990656,
       "total_gib": 237.5264,
-      "used_percent": 95.55,
+      "used_percent": 95.95,
       "warning_free_bytes": 5368709120
     },
     "forecast": {
@@ -25,10 +25,10 @@
       "lane_days_to_budget": null,
       "reading": "a forecast is published only when the measured rate is stable; otherwise it is null, because an invented number is worse than no number"
     },
-    "generated_at_utc": "2026-10-15T15:17:20Z",
+    "generated_at_utc": "2026-10-15T15:42:11Z",
     "growth": {
       "bytes_per_day": null,
-      "coefficient_of_variation": 4.289,
+      "coefficient_of_variation": 4.2933,
       "discarded_samples": 0,
       "dropped_foreign_unit_samples": 0,
       "interval_seconds": [
@@ -217,21 +217,23 @@
         233.0,
         12.0,
         655.0,
-        339.0
+        339.0,
+        561.0,
+        902.0
       ],
-      "mean_bytes_per_day": 2055724.262,
-      "samples": 187,
+      "mean_bytes_per_day": 2042972.087,
+      "samples": 189,
       "since": null,
       "status": "VOLATILE",
-      "stddev_bytes_per_day": 8816946.72
+      "stddev_bytes_per_day": 8771042.449
     },
     "measured": {
-      "lane": 5445252,
-      "lane_bytes": 5445252,
+      "lane": 5462338,
+      "lane_bytes": 5462338,
       "publication": 0,
       "publication_inside_state": true,
-      "state": 5445252,
-      "store": 5823115
+      "state": 5462338,
+      "store": 5824046
     },
     "over_budget": false,
     "policy": {
@@ -246,30 +248,30 @@
   "corrupt_log_lines": 0,
   "disk": {
     "critical_free_bytes": 2147483648,
-    "free_bytes": 11359191040,
-    "free_gib": 10.5791,
+    "free_bytes": 10322481152,
+    "free_gib": 9.6136,
     "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04",
     "status": "HEALTHY",
     "total_bytes": 255041990656,
     "total_gib": 237.5264,
-    "used_percent": 95.55,
+    "used_percent": 95.95,
     "warning_free_bytes": 5368709120
   },
   "expected_ticks_in_window": 96,
-  "generated_at_utc": "2026-10-15T15:17:20Z",
+  "generated_at_utc": "2026-10-15T15:42:11Z",
   "hypothetical": true,
-  "last_observation_utc": "2026-10-15T15:17:20Z",
+  "last_observation_utc": "2026-10-15T15:42:11Z",
   "last_tick": {
-    "duration_seconds": 44.264,
+    "duration_seconds": 72.053,
     "outcome": "OBSERVED",
-    "run_id": "FWD-EDGE04-20261015T151500Z"
+    "run_id": "FWD-EDGE04-20261015T153000Z"
   },
-  "last_tick_utc": "2026-10-15T15:17:20Z",
-  "observations_in_window": 72,
+  "last_tick_utc": "2026-10-15T15:42:11Z",
+  "observations_in_window": 71,
   "order_sent": false,
   "outcomes_in_window": {
-    "ALREADY_OBSERVED": 2,
-    "OBSERVED": 72
+    "ALREADY_OBSERVED": 3,
+    "OBSERVED": 71
   },
   "reasons": [
     "the measured growth rate is volatile"

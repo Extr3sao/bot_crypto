@@ -14,7 +14,7 @@
       {
         "applied": true,
         "check": "SLOT_DISCIPLINE",
-        "detail": "a slot was observed more than once: ['2026-10-15T15:15Z']",
+        "detail": "a slot was observed more than once: ['2026-10-15T15:30Z']",
         "detected": true,
         "sabotage": "duplicate an observed slot"
       },
@@ -105,7 +105,7 @@
       {
         "applied": true,
         "check": "BUDGET_DECLARED_MEASURED_AND_BOUNDED",
-        "detail": "the measured lane size 999999999 is larger than the tree 5445261; the over-budget flag does not follow from the declared limit",
+        "detail": "the measured lane size 999999999 is larger than the tree 5463235; the over-budget flag does not follow from the declared limit",
         "detected": true,
         "sabotage": "inflate the measured lane size"
       },
@@ -140,7 +140,7 @@
       {
         "applied": true,
         "check": "SLOT_DISCIPLINE",
-        "detail": "slot rows with no consuming run row: ['2026-10-15T15:15Z']; slot 2026-10-15T15:15Z: no consuming run row answers for 'FWD-EDGE04-20261015T151500Z'",
+        "detail": "slot rows with no consuming run row: ['2026-10-15T15:30Z']; slot 2026-10-15T15:30Z: no consuming run row answers for 'FWD-EDGE04-20261015T153000Z'",
         "detected": true,
         "sabotage": "remove the run row behind a slot"
       }
@@ -158,12 +158,12 @@
       },
       {
         "check": "SLOT_DISCIPLINE",
-        "detail": "140 slot(s), no duplicates, all on the grid",
+        "detail": "141 slot(s), no duplicates, all on the grid",
         "passed": true
       },
       {
         "check": "OUTCOMES_AND_EXIT_CODES",
-        "detail": "194 run row(s) agree with the vocabulary",
+        "detail": "196 run row(s) agree with the vocabulary",
         "passed": true
       },
       {
@@ -173,17 +173,17 @@
       },
       {
         "check": "EXPECTATION_ARITHMETIC",
-        "detail": "141 run row(s) recomputed from their own series",
+        "detail": "142 run row(s) recomputed from their own series",
         "passed": true
       },
       {
         "check": "MARKET_REQUESTS_ARE_SPENT",
-        "detail": "194 run row(s) spent their requests coherently",
+        "detail": "196 run row(s) spent their requests coherently",
         "passed": true
       },
       {
         "check": "RULESET_PINNED_AND_UNCHANGED",
-        "detail": "141 run row(s) pinned to d073a2d686b9b198\u2026",
+        "detail": "142 run row(s) pinned to d073a2d686b9b198\u2026",
         "passed": true
       },
       {
@@ -208,7 +208,7 @@
       },
       {
         "check": "BUDGET_DECLARED_MEASURED_AND_BOUNDED",
-        "detail": "lane 5445169 bytes of 268435456 declared",
+        "detail": "lane 5462253 bytes of 268435456 declared",
         "passed": true
       },
       {
