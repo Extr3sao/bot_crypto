@@ -1,6 +1,6 @@
 # WP-EDGE-09 — run report
 
-*Run `EDGE09-REPORT-20261015T052406Z` at `2026-10-15T05:24:06Z`, branch `agent/edge-recovery/WP-EDGE-00-baseline`, head `ef5c8f2baa4a`. Verdict: **NO_ECONOMIC_EDGE_FOUND** — the forward quote data is real and usable, but no measured structure covers the 23-24 bps round trip: the best long-only gross is 1.582703 bps, the tape offers no barrier-clearing move at a 1 or 5 second horizon, and the cheapest registered venue still costs more than the measured gross*
+*Run `EDGE09-REPORT-20261015T052845Z` at `2026-10-15T05:28:45Z`, branch `agent/edge-recovery/WP-EDGE-00-baseline`, head `40b459efb6d4`. Verdict: **NO_ECONOMIC_EDGE_FOUND** — the forward quote data is real and usable, but no measured structure covers the 23-24 bps round trip: the best long-only gross is 1.582703 bps, the tape offers no barrier-clearing move at a 1 or 5 second horizon, and the cheapest registered venue still costs more than the measured gross*
 
 ## 1. Acceptance, row by row
 
@@ -22,9 +22,9 @@
 | A-14 | declare no profitability and no paper or production readiness without evidence | **PASS** | no artifact of this package carries a promotion or a size; the closure status is NO_ECONOMIC_EDGE_FOUND, with PAPER_CANDIDATES = 0 |
 | A-15 | deliver run report, final report, executive summary, economic matrix, source registry, tests and verification | **PASS** | RUN_REPORT.{json,md}, FINAL_REPORT.md, INFORME_EJECUTIVO.md, ECONOMIC_MATRIX.{json,md}, sources/SOURCE_VIABILITY.{json,md}, docs/source_registry.md extended, VERIFICATION.{json,md}, 25 artifact digests published |
 | A-19 | deliver the artifact names the RFC asks for: baseline, capability and feasibility registries, plan, window and experiment ledgers, results matrix | **PASS** | BASELINE.json, DATA_CAPABILITY_REGISTRY.json, DATA_CAPABILITY_REGISTRY.md, DATA_FEASIBILITY_MATRIX.json, DATA_FEASIBILITY_MATRIX.md, HYPOTHESIS_REGISTRY.json, EXPERIMENT_PLAN.md, WINDOW_LEDGER.jsonl, ECONOMIC_FEASIBILITY_REPORT.json, ECONOMIC_FEASIBILITY_REPORT.md, COST_CAPACITY_FREQUENCY_MATRIX.json, COST_CAPACITY_FREQUENCY_MATRIX.md, EXPERIMENT_LEDGER.jsonl, RESULTS_MATRIX.json, RESULTS_MATRIX.md; rendered from the frozen payloads by scripts/edge09_deliverables.py with the digests they were rendered from, and re-checked by VERIFICATION.json C-15 to C-18 |
-| A-16 | publish in isolated commits with a safe push | **PASS** | branch agent/edge-recovery/WP-EDGE-00-baseline, head ef5c8f2, remote tip None, matches head None, force push used False |
+| A-16 | publish in isolated commits with a safe push | **PASS** | branch agent/edge-recovery/WP-EDGE-00-baseline, head 40b459e, remote tip 40b459e, matches head True, force push used False |
 | A-17 | close with NO_VIABLE_DATA or NO_ECONOMIC_EDGE_FOUND when that is what the evidence says | **NO_ECONOMIC_EDGE_FOUND** | the forward quote data is real and usable, but no measured structure covers the 23-24 bps round trip: the best long-only gross is 1.582703 bps, the tape offers no barrier-clearing move at a 1 or 5 second horizon, and the cheapest registered venue still costs more than the measured gross |
-| A-18 | owned tests, lint, format and types | **PASS** | owned: exit 0 (21 passed in 1.78s); lint: exit 0 (All checks passed!); format: exit 0 (18 files already formatted); types: exit 0 (Success: no issues found in 8 source files) |
+| A-18 | owned tests, lint, format and types | **PASS** | owned: exit 0 (21 passed in 1.53s); lint: exit 0 (All checks passed!); format: exit 0 (18 files already formatted); types: exit 0 (Success: no issues found in 8 source files) |
 
 ## 2. What was measured, and where the evidence lives
 
@@ -32,6 +32,7 @@
 - Barriers (admission scenario, Binance spot taker): {"perp|BTCUSDT": 23.1104, "perp|ETHUSDT": 23.1512, "spot|BTCUSDT": 23.0968, "spot|ETHUSDT": 23.1508, "perp|SOLUSDT": 24.0731, "spot|SOLUSDT": 24.0813} bps.
 - Best long-only gross measured: **1.582703 bps** (perp/SOLUSDT at 60s).
 - Negative control: ['COST_KILLED', 'NO_GROSS_EDGE', 'NO_INFORMATION']; `false_success = 0`.
+- Baseline commit `ef5c8f2baa4a` is the tree this package found and audited; the reading above is taken at `40b459efb6d4` on `agent/edge-recovery/WP-EDGE-00-baseline`, and the one-commit lag of GITHUB_STATE.json (written before the commit that carries it, then pushed) is stated there rather than hidden.
 
 ## 3. Verdicts per hypothesis
 
@@ -48,7 +49,7 @@
 ## 4. Verification, tests and digests
 
 - Independent verifier: **PASS** (18/18); sabotage self-test PASS.
-- `owned`: exit `0` — 21 passed in 1.78s
+- `owned`: exit `0` — 21 passed in 1.53s
 - `lint`: exit `0` — All checks passed!
 - `format`: exit `0` — 18 files already formatted
 - `types`: exit `0` — Success: no issues found in 8 source files
@@ -72,7 +73,7 @@
 | `reports/edge-recovery/WP-EDGE-09/PREREGISTRATION.md` | 7524 | `b74f4a2b977d46d5…` |
 | `reports/edge-recovery/WP-EDGE-09/RESULTS_MATRIX.json` | 6245 | `7949662ade411577…` |
 | `reports/edge-recovery/WP-EDGE-09/RESULTS_MATRIX.md` | 2886 | `934db7c017cf319d…` |
-| `reports/edge-recovery/WP-EDGE-09/VERIFICATION.json` | 7011 | `b0f9b5fda43916b1…` |
+| `reports/edge-recovery/WP-EDGE-09/VERIFICATION.json` | 7011 | `c1627eab80a5355b…` |
 | `reports/edge-recovery/WP-EDGE-09/WINDOW_LEDGER.jsonl` | 7647 | `14188eaa892cfe6f…` |
 | `reports/edge-recovery/WP-EDGE-09/audit/ESTATE.json` | 18391 | `f9a8356301386d21…` |
 | `reports/edge-recovery/WP-EDGE-09/experiments/EXPERIMENTS.json` | 112659 | `bde376e5139b651b…` |
@@ -85,9 +86,9 @@ The files this script writes are excluded from the digest table by name: hashing
 
 ## 5. Git
 
-- Branch `agent/edge-recovery/WP-EDGE-00-baseline`, head `ef5c8f2baa4a1da22d494f30c68711c661ff4e6b`, remote `refs/heads/agent/edge-recovery/WP-EDGE-00-baseline`.
-- Pushed range at the last push: `None`; remote tip read back: `None`; matches head: `None`; force push used: `False`.
-- Package files still uncommitted at this reading: ['?? reports/edge-recovery/WP-EDGE-09/BASELINE.json', '?? reports/edge-recovery/WP-EDGE-09/COST_CAPACITY_FREQUENCY_MATRIX.json', '?? reports/edge-recovery/WP-EDGE-09/COST_CAPACITY_FREQUENCY_MATRIX.md', '?? reports/edge-recovery/WP-EDGE-09/DATA_CAPABILITY_REGISTRY.json', '?? reports/edge-recovery/WP-EDGE-09/DATA_CAPABILITY_REGISTRY.md', '?? reports/edge-recovery/WP-EDGE-09/DATA_FEASIBILITY_MATRIX.json', '?? reports/edge-recovery/WP-EDGE-09/DATA_FEASIBILITY_MATRIX.md', '?? reports/edge-recovery/WP-EDGE-09/DELIVERABLES.json', '?? reports/edge-recovery/WP-EDGE-09/ECONOMIC_FEASIBILITY_REPORT.json', '?? reports/edge-recovery/WP-EDGE-09/ECONOMIC_FEASIBILITY_REPORT.md', '?? reports/edge-recovery/WP-EDGE-09/ECONOMIC_MATRIX.json', '?? reports/edge-recovery/WP-EDGE-09/ECONOMIC_MATRIX.md', '?? reports/edge-recovery/WP-EDGE-09/EXPERIMENT_LEDGER.jsonl', '?? reports/edge-recovery/WP-EDGE-09/EXPERIMENT_PLAN.md', '?? reports/edge-recovery/WP-EDGE-09/FINAL_REPORT.md', '?? reports/edge-recovery/WP-EDGE-09/GITHUB_STATE.json', '?? reports/edge-recovery/WP-EDGE-09/HYPOTHESIS_REGISTRY.json', '?? reports/edge-recovery/WP-EDGE-09/INFORME_EJECUTIVO.md', '?? reports/edge-recovery/WP-EDGE-09/PREREGISTRATION.json', '?? reports/edge-recovery/WP-EDGE-09/PREREGISTRATION.md', '?? reports/edge-recovery/WP-EDGE-09/RESULTS_MATRIX.json', '?? reports/edge-recovery/WP-EDGE-09/RESULTS_MATRIX.md', '?? reports/edge-recovery/WP-EDGE-09/RFC-EDGE-009.md', '?? reports/edge-recovery/WP-EDGE-09/RUN_REPORT.json', '?? reports/edge-recovery/WP-EDGE-09/RUN_REPORT.md', '?? reports/edge-recovery/WP-EDGE-09/VERIFICATION.json', '?? reports/edge-recovery/WP-EDGE-09/VERIFICATION.md', '?? reports/edge-recovery/WP-EDGE-09/WINDOW_LEDGER.jsonl', '?? reports/edge-recovery/WP-EDGE-09/audit/ESTATE.json', '?? reports/edge-recovery/WP-EDGE-09/audit/ESTATE.md', '?? reports/edge-recovery/WP-EDGE-09/experiments/EXPERIMENTS.json', '?? reports/edge-recovery/WP-EDGE-09/experiments/EXPERIMENTS.md', '?? reports/edge-recovery/WP-EDGE-09/experiments/EXPERIMENT_REGISTRY.json', '?? reports/edge-recovery/WP-EDGE-09/experiments/EXPERIMENT_REGISTRY.md', '?? reports/edge-recovery/WP-EDGE-09/gates/COST_LIQUIDITY_CAPACITY.json', '?? reports/edge-recovery/WP-EDGE-09/gates/COST_LIQUIDITY_CAPACITY.md', '?? reports/edge-recovery/WP-EDGE-09/panel/DEPTH_SNAPSHOTS.csv', '?? reports/edge-recovery/WP-EDGE-09/panel/OI_SAMPLES.csv', '?? reports/edge-recovery/WP-EDGE-09/panel/PANEL.json', '?? reports/edge-recovery/WP-EDGE-09/panel/PANEL_SECONDS.csv', '?? reports/edge-recovery/WP-EDGE-09/panel/panel_build.log', '?? reports/edge-recovery/WP-EDGE-09/sources/SOURCE_VIABILITY.json', '?? reports/edge-recovery/WP-EDGE-09/sources/SOURCE_VIABILITY.md', '?? scripts/edge09_audit.py', '?? scripts/edge09_deliverables.py', '?? scripts/edge09_experiments.py', '?? scripts/edge09_gates.py', '?? scripts/edge09_panel.py', '?? scripts/edge09_preregister.py', '?? scripts/edge09_report.py', '?? scripts/edge09_sources.py', '?? scripts/edge09_verify.py', '?? src/trading_bot/research/edge09/__init__.py', '?? src/trading_bot/research/edge09/estate.py', '?? src/trading_bot/research/edge09/experiments.py', '?? src/trading_bot/research/edge09/gates.py', '?? src/trading_bot/research/edge09/panel.py', '?? src/trading_bot/research/edge09/registration.py', '?? src/trading_bot/research/edge09/sources.py', '?? src/trading_bot/research/edge09/verdict.py', '?? tests/unit/research/test_edge09_microstructure.py'].
+- Branch `agent/edge-recovery/WP-EDGE-00-baseline`, head `40b459efb6d4611be56b24923d543f7d5a242b8c`, remote `refs/heads/agent/edge-recovery/WP-EDGE-00-baseline`.
+- Pushed range at the last push: `40b459e..40b459e (+0 ahead, 0 behind)`; remote tip read back: `40b459efb6d4611be56b24923d543f7d5a242b8c`; matches head: `True`; force push used: `False`.
+- Package files still uncommitted at this reading: [' M reports/edge-recovery/WP-EDGE-09/VERIFICATION.json', ' M reports/edge-recovery/WP-EDGE-09/VERIFICATION.md', ' M scripts/edge09_report.py'].
 
 ## 6. What this run does not establish
 

@@ -1,6 +1,6 @@
 # WP-EDGE-09 — final report
 
-*One reading of the whole package at `2026-10-15T05:24:06Z` (`EDGE09-REPORT-20261015T052406Z`). Every figure comes from that reading; the documents are rendered from one dictionary.*
+*One reading of the whole package at `2026-10-15T05:28:45Z` (`EDGE09-REPORT-20261015T052845Z`). Every figure comes from that reading; the documents are rendered from one dictionary.*
 
 ## 1. The verdict
 

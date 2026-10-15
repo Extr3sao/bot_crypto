@@ -450,6 +450,10 @@ def render_run(payload: dict[str, Any]) -> str:
         f"({payload['best_gross_cell']}).",
         f"- Negative control: {payload['experiments'].get('negative_control_classification')}; "
         f"`false_success = {payload['experiments'].get('false_success')}`.",
+        f"- Baseline commit `{str(payload['audit'].get('head'))[:12]}` is the tree this package "
+        f"found and audited; the reading above is taken at `{payload['git']['head'][:12]}` on "
+        f"`{payload['git']['branch']}`, and the one-commit lag of GITHUB_STATE.json (written "
+        "before the commit that carries it, then pushed) is stated there rather than hidden.",
         "",
         "## 3. Verdicts per hypothesis",
         "",
