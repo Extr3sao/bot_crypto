@@ -1,22 +1,22 @@
 # WP-EDGE-09 — informe ejecutivo
 
-*Lectura única del paquete en `2026-10-15T05:28:45Z` (`EDGE09-REPORT-20261015T052845Z`). Las cuatro piezas se renderizan del mismo diccionario, así que no pueden contradecirse.*
+*Lectura única del paquete en `2026-10-15T05:30:01Z` (`EDGE09-REPORT-20261015T053001Z`). Las cuatro piezas se renderizan del mismo diccionario, así que no pueden contradecirse.*
 
 ## 1. Veredicto
 
-**`NO_ECONOMIC_EDGE_FOUND`** — the forward quote data is real and usable, but no measured structure covers the 23-24 bps round trip: the best long-only gross is 1.582703 bps, the tape offers no barrier-clearing move at a 1 or 5 second horizon, and the cheapest registered venue still costs more than the measured gross
+**`NO_ECONOMIC_EDGE_FOUND`** — los datos de cotización forward son reales y usables, pero ninguna estructura medida cubre los 23-24 bps de ida y vuelta: el mejor bruto long-only es 1.582703 bps, el tape no ofrece ningún movimiento que cubra la barrera a 1 o 5 segundos, y la sede registrada más barata sigue costando más que el bruto medido
 
-Decisión de adopción: **`DO_NOT_ADOPT`**. nothing measured here is adopted: no strategy, no parameter set and no venue change leaves this package. The RFC's success criterion is a better-founded research decision, and the founded decision is to adopt none of these arms.
+Decisión de adopción: **`DO_NOT_ADOPT`**. Nada de lo medido aquí se adopta: ninguna estrategia, ningún juego de parámetros y ningún cambio de sede sale de este paquete. El criterio de éxito del RFC es una decisión de investigación mejor fundada, y la decisión fundada es no adoptar ninguno de estos brazos.
 
 | Pregunta | Respuesta |
 | --- | --- |
 | Coste de ida y vuelta | 22.99-24.08 bps |
-| Peso de la tarifa en ese coste | 85.9% of the barrier |
+| Peso de la tarifa en ese coste | 85.9 % del coste de ida y vuelta |
 | Mejor movimiento bruto medido | 1.582703 bps |
-| Frecuencia de movimientos que cubren la barrera (tape) | 1s: 0.0/day; 5s: 0.0/day; 60s: 48.018/day; 900s: 179.619/day; 3600s: 11.553/day |
-| Frecuencia que extrae el selector de desequilibrio medido | 1s: 0.0/day long-only; 5s: 0.0/day long-only; 60s: 144.061/day long-only |
-| ¿Una sede más barata lo salva? | no: MEXC_SPOT_TAKER is the cheapest at 12.9866 bps, still above the best gross 1.582703 |
-| ¿El libro medido absorbe el tamaño cotizado? | yes for perp at the quoted size, spot rests on 3 snapshots only |
+| Frecuencia de movimientos que cubren la barrera (tape) | 1s: 0.0/día; 5s: 0.0/día; 60s: 48.018/día; 900s: 179.619/día; 3600s: 11.553/día |
+| Frecuencia que extrae el selector de desequilibrio medido | 1s: 0.0/día long-only; 5s: 0.0/día long-only; 60s: 144.061/día long-only |
+| ¿Una sede más barata lo salva? | no: MEXC_SPOT_TAKER es la más barata con 12.9866 bps, todavía por encima del mejor bruto 1.582703 |
+| ¿El libro medido absorbe el tamaño cotizado? | sí para el perpetuo en el tamaño cotizado; el spot se apoya en solo 3 instantáneas |
 
 ## 2. Qué se midió de verdad
 
@@ -26,7 +26,7 @@ Decisión de adopción: **`DO_NOT_ADOPT`**. nothing measured here is adopted: no
 
 ## 3. Por qué no hay edge
 
-La brecha es aritmética en el reloj corto e informativa en el largo: la barrera es 23-24 bps de ida y vuelta, la tarifa sola son 20 bps, y la mejor señal medida aquí es 1.582703 bps; ni la tarifa más barata registrada (MEXC_SPOT_TAKER) baja la barrera por debajo de ese bruto. A 1 y 5 segundos el propio tape no llega a moverse tanto — el límite superior es cero y ningún selector puede ayudar ahí. A 60 segundos el tape **sí** ofrece movimientos que cubren la barrera, pero el selector medido extrae 1s: 0.0/day long-only; 5s: 0.0/day long-only; 60s: 144.061/day long-only y su bruto sigue siendo 1.582703 bps frente a esa misma barrera: al reloj largo no le falta movimiento, le falta una forma medida de saber cuál es.
+La brecha es aritmética en el reloj corto e informativa en el largo: la barrera es 23-24 bps de ida y vuelta, la tarifa sola son 20 bps, y la mejor señal medida aquí es 1.582703 bps; ni la tarifa más barata registrada (MEXC_SPOT_TAKER) baja la barrera por debajo de ese bruto. A 1 y 5 segundos el propio tape no llega a moverse tanto — el límite superior es cero y ningún selector puede ayudar ahí. A 60 segundos el tape **sí** ofrece movimientos que cubren la barrera, pero el selector medido extrae 1s: 0.0/día long-only; 5s: 0.0/día long-only; 60s: 144.061/día long-only y su bruto sigue siendo 1.582703 bps frente a esa misma barrera: al reloj largo no le falta movimiento, le falta una forma medida de saber cuál es.
 
 ## 4. Qué haría falta para la siguiente fase
 

@@ -1,12 +1,12 @@
 # WP-EDGE-09 — final report
 
-*One reading of the whole package at `2026-10-15T05:28:45Z` (`EDGE09-REPORT-20261015T052845Z`). Every figure comes from that reading; the documents are rendered from one dictionary.*
+*One reading of the whole package at `2026-10-15T05:30:01Z` (`EDGE09-REPORT-20261015T053001Z`). Every figure comes from that reading; the documents are rendered from one dictionary.*
 
 ## 1. The verdict
 
 **`NO_ECONOMIC_EDGE_FOUND`** — the forward quote data is real and usable, but no measured structure covers the 23-24 bps round trip: the best long-only gross is 1.582703 bps, the tape offers no barrier-clearing move at a 1 or 5 second horizon, and the cheapest registered venue still costs more than the measured gross
 
-Adoption decision: **`DO_NOT_ADOPT`**. nothing measured here is adopted: no strategy, no parameter set and no venue change leaves this package. The RFC's success criterion is a better-founded research decision, and the founded decision is to adopt none of these arms.
+Adoption decision: **`DO_NOT_ADOPT`**. Nothing measured here is adopted: no strategy, no parameter set and no venue change leaves this package. The RFC's success criterion is a better-founded research decision, and the founded decision is to adopt none of these arms.
 
 The objective was economic: find an edge that survives the real cost barrier, the real liquidity and the real frequency, or say clearly that there is none. The answer is the second one, and it is measured rather than asserted.
 

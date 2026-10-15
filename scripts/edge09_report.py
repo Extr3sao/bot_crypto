@@ -605,20 +605,21 @@ def render_informe(payload: dict[str, Any]) -> str:
         "",
         "## 1. Veredicto",
         "",
-        f"**`{payload['status']}`** — {payload['status_reason']}",
+        f"**`{payload['status']}`** — {payload['status_reason_es']}",
         "",
-        f"Decisión de adopción: **`{payload['adoption']}`**. {payload['adoption_reason']}",
+        f"Decisión de adopción: **`{payload['adoption']}`**. {payload['adoption_reason_es']}",
         "",
         "| Pregunta | Respuesta |",
         "| --- | --- |",
         f"| Coste de ida y vuelta | {payload['barrier_range']} bps |",
-        f"| Peso de la tarifa en ese coste | {payload['fee_share']} |",
+        f"| Peso de la tarifa en ese coste | {payload['fee_share_es']} |",
         f"| Mejor movimiento bruto medido | {payload['best_gross_bps']} bps |",
-        f"| Frecuencia de movimientos que cubren la barrera (tape) | {payload['frequency_line']} |",
+        f"| Frecuencia de movimientos que cubren la barrera (tape) | "
+        f"{payload['frequency_line_es']} |",
         f"| Frecuencia que extrae el selector de desequilibrio medido | "
-        f"{payload['frequency_selector_line']} |",
-        f"| ¿Una sede más barata lo salva? | {payload['venue_line']} |",
-        f"| ¿El libro medido absorbe el tamaño cotizado? | {payload['capacity_line']} |",
+        f"{payload['frequency_selector_line_es']} |",
+        f"| ¿Una sede más barata lo salva? | {payload['venue_line_es']} |",
+        f"| ¿El libro medido absorbe el tamaño cotizado? | {payload['capacity_line_es']} |",
         "",
         "## 2. Qué se midió de verdad",
         "",
@@ -640,7 +641,7 @@ def render_informe(payload: dict[str, Any]) -> str:
         "el propio tape no llega a moverse tanto — el límite superior es cero y ningún selector "
         "puede ayudar ahí. A 60 segundos el tape **sí** ofrece movimientos que cubren la "
         "barrera, pero el selector medido extrae "
-        f"{payload['frequency_selector_line']} y su bruto sigue siendo "
+        f"{payload['frequency_selector_line_es']} y su bruto sigue siendo "
         f"{payload['best_gross_bps']} bps frente a esa misma barrera: al reloj largo no le falta "
         "movimiento, le falta una forma medida de saber cuál es.",
         "",
@@ -835,9 +836,47 @@ def build(*, run_tests: bool) -> dict[str, Any]:
         ),
         "adoption": "DO_NOT_ADOPT",
         "adoption_reason": (
-            "nothing measured here is adopted: no strategy, no parameter set and no venue "
+            "Nothing measured here is adopted: no strategy, no parameter set and no venue "
             "change leaves this package. The RFC's success criterion is a better-founded "
             "research decision, and the founded decision is to adopt none of these arms."
+        ),
+        "adoption_reason_es": (
+            "Nada de lo medido aquí se adopta: ninguna estrategia, ningún juego de parámetros "
+            "y ningún cambio de sede sale de este paquete. El criterio de éxito del RFC es una "
+            "decisión de investigación mejor fundada, y la decisión fundada es no adoptar "
+            "ninguno de estos brazos."
+        ),
+        "status_reason_es": (
+            "los datos de cotización forward son reales y usables, pero ninguna estructura "
+            "medida cubre los 23-24 bps de ida y vuelta: el mejor bruto long-only es "
+            f"{best['stats']['long_only_mean_bps'] if best else None} bps, el tape no ofrece "
+            "ningún movimiento que cubra la barrera a 1 o 5 segundos, y la sede registrada más "
+            "barata sigue costando más que el bruto medido"
+        ),
+        "fee_share_es": (
+            f"{sum(fees) / len(fees) / (sum(barriers) / len(barriers)) * 100:.1f} % del coste de "
+            "ida y vuelta"
+            if fees and barriers
+            else "no medido"
+        ),
+        "frequency_line_es": "; ".join(
+            f"{row['horizon_seconds']}s: {row.get('clearing_per_day')}/día" for row in pooled
+        ),
+        "frequency_selector_line_es": "; ".join(
+            f"{row['horizon_seconds']}s: {row.get('opportunities_per_day')}/día long-only"
+            for row in selector_pooled
+        ),
+        "venue_line_es": (
+            f"no: {cheapest['scenario']} es la más barata con "
+            f"{cheapest['cheapest_round_trip_bps']} bps, todavía por encima del mejor bruto "
+            f"{best['stats']['long_only_mean_bps'] if best else None}"
+            if cheapest and best
+            else "no medido"
+        ),
+        "capacity_line_es": (
+            "sí para el perpetuo en el tamaño cotizado; el spot se apoya en solo "
+            f"{min((row['snapshots'] for row in capacity if row['market'] == 'spot'), default=0)} "
+            "instantáneas"
         ),
         "best_gross_bps": best["stats"]["long_only_mean_bps"] if best else None,
         "best_gross_cell": (
