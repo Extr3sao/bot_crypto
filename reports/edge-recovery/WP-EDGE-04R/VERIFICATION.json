@@ -99,24 +99,5 @@
     "window_to": "2026-10-15T18:31:46Z"
   },
   "schema_version": "EDGE04R_VERIFICATION_V1",
-  "self_test": {
-    "applied": 10,
-    "detected": 10,
-    "sabotages": {
-      "break_a_day_so_its_columns_do_not_add_up": true,
-      "call_a_mechanism_viable_without_a_probe": true,
-      "claim_no_trigger_was_lost": true,
-      "claim_one_more_trigger": true,
-      "corrupt_a_snapshot_digest": true,
-      "delete_a_logon_so_an_absence_disappears": true,
-      "flip_a_consumed_tick_into_a_refusal": true,
-      "invent_a_sleep_that_nobody_recorded": true,
-      "publish_a_readiness_claim": true,
-      "silence_the_stale_certificate": true
-    },
-    "undetected": 0,
-    "undetected_names": [],
-    "verdict": "SELF_TEST_PASS"
-  },
   "verdict": "VERIFY_PASS"
 }

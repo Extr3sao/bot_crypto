@@ -59,6 +59,16 @@ and — this is the part that made the loss invisible — no record either.
 `AutoAdminLogon` is `0` on this host, so a reboot does not re-create the session: the
 machine sits at the sign-in screen until a person signs in.
 
+### The host's own counter disagrees with the lane, and loses
+
+The registered task reports `NumberOfMissedRuns: 0` for the whole window — the same
+window in which 26 triggers produced no process. Its `LastTaskResult` is `0` and its state
+is `Ready`. Neither number is wrong on the host's terms, and both are useless as evidence:
+the counter does not count a trigger whose task could not start, and the operational log
+that would have said so is **disabled** (`RecordCount: 0`). That is why this audit reads
+the session and power records rather than the scheduler's own summary, and why
+"the task is Ready with no missed runs" is not a statement about continuity.
+
 ### The two causes that are not scheduling problems
 
 * **Disk pressure: 43 triggers fired and were refused.** Not a missed trigger — the

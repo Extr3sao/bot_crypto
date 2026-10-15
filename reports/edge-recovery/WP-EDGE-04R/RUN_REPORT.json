@@ -37,6 +37,14 @@
       "DISK_BUDGET_EXCEEDED": 43
     }
   },
+  "scheduler_counters_are_not_evidence": {
+    "number_of_missed_runs": 0,
+    "last_task_result": 0,
+    "task_state": "Ready",
+    "operational_log_enabled": false,
+    "operational_log_records": 0,
+    "comment": "the registered task reports no missed run for the window in which 26 triggers produced no process, and the log that would have recorded them is disabled: the counters are not wrong on their own terms, they are silent about exactly the case this audit measures"
+  },
   "cause_quantification": {
     "long_execution": {
       "verdict": "RULED_OUT",
@@ -121,7 +129,7 @@
   },
   "session_independence": {
     "logon_trigger": "VIABLE — registered on a throwaway task, read back from the scheduler carrying MSFT_TaskLogonTrigger (Delay PT1M) alongside MSFT_TaskTimeTrigger, run on demand, then deleted",
-    "witness_action": "VIABLE — the first action wrote its line before the long action ran, proving a launch can leave a trace even when the entry point dies",
+    "witness_action": "VIABLE — the first action wrote its line (committed under evidence/probe-scratch/) before the long action ran, so a launch whose entry point then dies has still left a trace; the dying case itself was not exercised",
     "s4u_task": "NEEDS_ELEVATION — the registration attempt waited for input and did not complete; S4U needs the batch-logon right",
     "windows_service": "NEEDS_ELEVATION — not attempted; a service would need administrator rights",
     "automatic_logon": "NEEDS_CREDENTIALS — AutoAdminLogon=0 and this work package holds no credential and will not acquire one",

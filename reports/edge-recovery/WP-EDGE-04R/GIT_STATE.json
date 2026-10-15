@@ -1,0 +1,67 @@
+{
+  "schema_version": "EDGE04R_GIT_STATE_V1",
+  "recorded_at_utc": "2026-10-15T19:20:00Z",
+  "head": "b89227365365b72a14828384d27310b762967648",
+  "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
+  "upstream": "origin/agent/edge-recovery/WP-EDGE-00-baseline",
+  "worktree": "C:/Users/GVLLFR0035/Downloads/bot freebuff",
+  "worktrees": [
+    "C:/Users/GVLLFR0035/Downloads/bot freebuff (this lane)",
+    "C:/Users/GVLLFR0035/Downloads/bot-freebuff-rfc035s3-lab (detached, another lane)"
+  ],
+  "commits_of_this_work_package": [
+    {
+      "sha": "98d594e",
+      "subject": "Attribute every trigger the forward lane lost, and probe what would stop it.",
+      "files": "src/trading_bot/research/edge04r/{__init__,os_evidence,continuity,session}.py, scripts/edge04r_{continuity,session,verify}.py, tests/unit/research/test_edge04r_continuity.py, .gitignore"
+    },
+    {
+      "sha": "40b3665",
+      "subject": "Publish the attributed continuity reading and the evidence it was taken from.",
+      "files": "reports/edge-recovery/WP-EDGE-04R/{RUN_REPORT.md,RUN_REPORT.json,FINAL_REPORT.md,INFORME_EJECUTIVO.md,AVAILABILITY.md,SESSION_INDEPENDENCE.md,VERIFICATION.json,evidence/*}"
+    },
+    {
+      "sha": "b892273",
+      "subject": "Name the witness so version control can carry it, instead of claiming the line.",
+      "files": "src/trading_bot/research/edge04r/session.py, evidence/probe-scratch/*.txt"
+    }
+  ],
+  "publication": {
+    "authorised": "only the five WP-EDGE-04 commits already made; the commits of this work package were NOT pushed",
+    "probe_command": "git push --dry-run origin HEAD:refs/heads/agent/edge-recovery/WP-EDGE-00-baseline",
+    "remote_before": "26eeea47b64cb0124d9eb46fb76a7d2846c745a0",
+    "remote_after": "5980e37023427dd4c9053a2ddbfcc9ec2936a431",
+    "pushed_commits": ["351ecba", "046c7df", "f1a6b31", "570ccd6", "5980e37"],
+    "method": "fast-forward; no force push; no branch other than the lane's own was touched",
+    "commits_ahead_of_upstream_after_this_package": 3,
+    "verify_command": "git ls-remote origin refs/heads/agent/edge-recovery/WP-EDGE-00-baseline",
+    "remote_read_back": "5980e37023427dd4c9053a2ddbfcc9ec2936a431",
+    "earlier_blocked_probe": "the previous pass recorded BLOCKED_GITHUB_AUTH; the probe was re-taken and the credential was available, so the block is stale rather than current"
+  },
+  "regressions": {
+    "tests/unit/research/test_edge04r_continuity.py": "26 passed",
+    "tests/unit/research/test_edge04_autonomous.py": "49 passed",
+    "tests/unit/research (wider)": "2326 passed, 1 failed in 951.37 s",
+    "failing_test": "tests/unit/research/test_cost_barrier_adversarial.py::test_the_certification_record_digests_content_not_a_checkout",
+    "failing_test_owner": "the cost-barrier chain that issued the certificate; not this work package",
+    "failing_test_diagnosis": "STALE_BY_PROVENANCE — see evidence/ECONOMIC_CERTIFICATE_DIAGNOSIS.json; the record matched its artefact at its own commit (57772ef) and a later re-render (7522255, [WP-EDGE-01]) moved 6 of 2985 leaf values, none of them economic",
+    "failing_test_action": "declared, not silenced: neither the certificate nor its input was edited",
+    "ruff": "clean on every file added",
+    "mypy": "strict clean on src/trading_bot/research/edge04r and the three scripts added"
+  },
+  "lane_state_after_the_pass": {
+    "scheduled_tasks_matching_EDGE04": ["TradingAgentic-EDGE04-Forward (Ready)"],
+    "probe_tasks_left_behind": 0,
+    "task_logon_type": "Interactive",
+    "task_triggers": "one MSFT_TaskTimeTrigger, PT15M, unchanged",
+    "number_of_missed_runs": 0,
+    "last_task_result": 0,
+    "ticks_continuing": true,
+    "reading": "the probes registered and deleted their own throwaway tasks; the lane's own registration is exactly as WP-EDGE-04 left it"
+  },
+  "false_success": 0,
+  "builder_is_not_verifier": true,
+  "hypothetical": true,
+  "order_sent": false,
+  "promotion": "NONE"
+}
