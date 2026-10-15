@@ -226,26 +226,26 @@
     "2026-10-10",
     "2026-10-11",
     "2026-10-12",
-    "2026-10-13"
+    "2026-10-13",
+    "2026-10-14",
+    "2026-10-15"
   ],
   "health": {
     "errors": [],
     "ingest_outcomes": {
-      "no_new_data": 6
+      "ingested": 3,
+      "no_new_data": 3
     },
     "ingest_runs": 6,
-    "new_bars": 0,
+    "new_bars": 3,
     "no_new_data_series": [
       "1h:BTC",
       "1h:ETH",
-      "1h:SOL",
-      "15m:BTC",
-      "15m:ETH",
-      "15m:SOL"
+      "1h:SOL"
     ],
-    "observation_days": 226,
+    "observation_days": 228,
     "observation_days_detail": {
-      "common_days": 226,
+      "common_days": 228,
       "days": [
         "2026-03-01",
         "2026-03-02",
@@ -472,17 +472,19 @@
         "2026-10-09",
         "2026-10-10",
         "2026-10-11",
-        "2026-10-12"
+        "2026-10-12",
+        "2026-10-13",
+        "2026-10-14"
       ],
       "per_asset": {
-        "BTC": 226,
-        "ETH": 226,
-        "SOL": 226
+        "BTC": 228,
+        "ETH": 228,
+        "SOL": 228
       },
       "rule": "a day counts only if every primary asset met the declared coverage on it"
     },
     "primary_trades": 31,
-    "stored_bars": 18027
+    "stored_bars": 18807
   },
   "observation": {
     "15m:BTC": {
@@ -492,14 +494,16 @@
         "2026-10-09",
         "2026-10-10",
         "2026-10-11",
-        "2026-10-12"
+        "2026-10-12",
+        "2026-10-13",
+        "2026-10-14"
       ],
-      "days_with_data": 7,
+      "days_with_data": 9,
       "expected_bars_per_day": 96,
-      "newest_fetch_ms": 1791890488560,
-      "observation_days": 5,
+      "newest_fetch_ms": 1792077397999,
+      "observation_days": 7,
       "per_day_appended": {
-        "2026-10-13": 1
+        "2026-10-15": 1
       },
       "per_day_bars": {
         "2026-10-07": 49,
@@ -508,7 +512,9 @@
         "2026-10-10": 96,
         "2026-10-11": 96,
         "2026-10-12": 96,
-        "2026-10-13": 45
+        "2026-10-13": 96,
+        "2026-10-14": 96,
+        "2026-10-15": 61
       }
     },
     "15m:ETH": {
@@ -518,14 +524,16 @@
         "2026-10-09",
         "2026-10-10",
         "2026-10-11",
-        "2026-10-12"
+        "2026-10-12",
+        "2026-10-13",
+        "2026-10-14"
       ],
-      "days_with_data": 7,
+      "days_with_data": 9,
       "expected_bars_per_day": 96,
-      "newest_fetch_ms": 1791890488560,
-      "observation_days": 5,
+      "newest_fetch_ms": 1792077397999,
+      "observation_days": 7,
       "per_day_appended": {
-        "2026-10-13": 1
+        "2026-10-15": 1
       },
       "per_day_bars": {
         "2026-10-07": 49,
@@ -534,7 +542,9 @@
         "2026-10-10": 96,
         "2026-10-11": 96,
         "2026-10-12": 96,
-        "2026-10-13": 45
+        "2026-10-13": 96,
+        "2026-10-14": 96,
+        "2026-10-15": 61
       }
     },
     "15m:SOL": {
@@ -544,14 +554,16 @@
         "2026-10-09",
         "2026-10-10",
         "2026-10-11",
-        "2026-10-12"
+        "2026-10-12",
+        "2026-10-13",
+        "2026-10-14"
       ],
-      "days_with_data": 7,
+      "days_with_data": 9,
       "expected_bars_per_day": 96,
-      "newest_fetch_ms": 1791890488560,
-      "observation_days": 5,
+      "newest_fetch_ms": 1792077397999,
+      "observation_days": 7,
       "per_day_appended": {
-        "2026-10-13": 1
+        "2026-10-15": 1
       },
       "per_day_bars": {
         "2026-10-07": 49,
@@ -560,7 +572,9 @@
         "2026-10-10": 96,
         "2026-10-11": 96,
         "2026-10-12": 96,
-        "2026-10-13": 45
+        "2026-10-13": 96,
+        "2026-10-14": 96,
+        "2026-10-15": 61
       }
     },
     "1h:BTC": {
@@ -791,14 +805,16 @@
         "2026-10-09",
         "2026-10-10",
         "2026-10-11",
-        "2026-10-12"
+        "2026-10-12",
+        "2026-10-13",
+        "2026-10-14"
       ],
-      "days_with_data": 227,
+      "days_with_data": 229,
       "expected_bars_per_day": 24,
-      "newest_fetch_ms": 1791889369592,
-      "observation_days": 226,
+      "newest_fetch_ms": 1792076403665,
+      "observation_days": 228,
       "per_day_appended": {
-        "2026-10-13": 6
+        "2026-10-15": 1
       },
       "per_day_bars": {
         "2026-03-01": 24,
@@ -1027,7 +1043,9 @@
         "2026-10-10": 24,
         "2026-10-11": 24,
         "2026-10-12": 24,
-        "2026-10-13": 11
+        "2026-10-13": 24,
+        "2026-10-14": 24,
+        "2026-10-15": 15
       }
     },
     "1h:ETH": {
@@ -1258,14 +1276,16 @@
         "2026-10-09",
         "2026-10-10",
         "2026-10-11",
-        "2026-10-12"
+        "2026-10-12",
+        "2026-10-13",
+        "2026-10-14"
       ],
-      "days_with_data": 227,
+      "days_with_data": 229,
       "expected_bars_per_day": 24,
-      "newest_fetch_ms": 1791889369592,
-      "observation_days": 226,
+      "newest_fetch_ms": 1792076403665,
+      "observation_days": 228,
       "per_day_appended": {
-        "2026-10-13": 6
+        "2026-10-15": 1
       },
       "per_day_bars": {
         "2026-03-01": 24,
@@ -1494,7 +1514,9 @@
         "2026-10-10": 24,
         "2026-10-11": 24,
         "2026-10-12": 24,
-        "2026-10-13": 11
+        "2026-10-13": 24,
+        "2026-10-14": 24,
+        "2026-10-15": 15
       }
     },
     "1h:SOL": {
@@ -1725,14 +1747,16 @@
         "2026-10-09",
         "2026-10-10",
         "2026-10-11",
-        "2026-10-12"
+        "2026-10-12",
+        "2026-10-13",
+        "2026-10-14"
       ],
-      "days_with_data": 227,
+      "days_with_data": 229,
       "expected_bars_per_day": 24,
-      "newest_fetch_ms": 1791889369592,
-      "observation_days": 226,
+      "newest_fetch_ms": 1792076403665,
+      "observation_days": 228,
       "per_day_appended": {
-        "2026-10-13": 6
+        "2026-10-15": 1
       },
       "per_day_bars": {
         "2026-03-01": 24,
@@ -1961,7 +1985,9 @@
         "2026-10-10": 24,
         "2026-10-11": 24,
         "2026-10-12": 24,
-        "2026-10-13": 11
+        "2026-10-13": 24,
+        "2026-10-14": 24,
+        "2026-10-15": 15
       }
     }
   },
@@ -1979,12 +2005,12 @@
   },
   "restart_proof": {
     "digests": {
-      "15m:BTC": "497f2e2c1690a1857aff42edc5c3f81252c05057caf4b938be6b64a93afa0179",
-      "15m:ETH": "5725a48873894e1a7c42ef0e6a10e3b70b765a195aa5e13a71d90e639608cc3d",
-      "15m:SOL": "c6666ee4702937e77947cbe34bcbc2ca3d7cca3e49f9cb4b82f39c3494b48240",
-      "1h:BTC": "871a43dc896ebd97db732f09b151023a7a3a60b905c393b7319b532babe12f7f",
-      "1h:ETH": "c4318c8f450a1ef41b837e6a2dc81f5e93e07f373a76ed40c7e503b24ae2d83e",
-      "1h:SOL": "76bd878d09c2c7de6257bc54b4e1c4db613caa83aa0f4145db771956f7b37c6d"
+      "15m:BTC": "bb793bf6130ef6b6e7e7dcc6bc29039946725eb003f926bfb0249cadb93c2095",
+      "15m:ETH": "475dd2e27bb73455e9414d3a6b1d9a7580ca2fb8b2c761b813360fca57192d7b",
+      "15m:SOL": "f749295cb8f68caf298c0f9b1731db11b0bed73e1dd4dd8952c0a8345e8cf4de",
+      "1h:BTC": "388008cc5ad7dfc14aa0010d5390f170ff9b0cbd4a00216539b5b3ec7340ba16",
+      "1h:ETH": "db003200acbc1c17fb1fcd7c423adae2dd7f62544d5592343f7b9875381a205a",
+      "1h:SOL": "db0af873c04166fbb4665fcdd46852ff09724ae5179c7f2b738a8000924e1e6b"
     },
     "digests_unchanged": true,
     "duplicate_refusals": 0,
@@ -1997,14 +2023,14 @@
   },
   "verdict": {
     "coverage_required": 0.9,
-    "new_bars_this_run": 0,
+    "new_bars_this_run": 3,
     "not_claimed": "a running forward pipeline is not evidence of an edge: no admission criterion is evaluated here, and no strategy is promoted",
-    "observation_days": 226,
+    "observation_days": 228,
     "observation_floor": 60,
     "parity": "PARITY_PASS",
     "promotion": "NONE",
-    "reason": "226 independent observation day(s) accumulated; the lane still promotes nothing (the forward pipeline does not read an admission criterion)",
+    "reason": "228 independent observation day(s) accumulated; the lane still promotes nothing (the forward pipeline does not read an admission criterion)",
     "state": "OBSERVATION_AVAILABLE",
-    "stored_bars": 18027
+    "stored_bars": 18807
   }
 }

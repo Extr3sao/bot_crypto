@@ -5,17 +5,17 @@
   "corrupt_log_lines": 0,
   "disk": {
     "critical_free_bytes": 2147483648,
-    "free_bytes": 7252746240,
-    "free_gib": 6.7546,
+    "free_bytes": 11359191040,
+    "free_gib": 10.5791,
     "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04",
     "status": "HEALTHY",
     "total_bytes": 255041990656,
     "total_gib": 237.5264,
-    "used_percent": 97.16,
+    "used_percent": 95.55,
     "warning_free_bytes": 5368709120
   },
   "expected_ticks_in_window": 96,
-  "failure_count": 2,
+  "failure_count": 47,
   "failures": [
     {
       "at_utc": "2026-10-13T11:25:39Z",
@@ -28,15 +28,285 @@
       "outcome": "ALREADY_RUNNING",
       "reason": "holder pid 1308 is live and renewed",
       "run_id": "FWD-EDGE04-20261013T150000Z"
+    },
+    {
+      "at_utc": "2026-10-13T20:25:56Z",
+      "outcome": "DISK_BUDGET_EXCEEDED",
+      "reason": "1.8095 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+      "run_id": "FWD-EDGE04-20261013T201500Z"
+    },
+    {
+      "at_utc": "2026-10-13T20:40:56Z",
+      "outcome": "DISK_BUDGET_EXCEEDED",
+      "reason": "1.8143 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+      "run_id": "FWD-EDGE04-20261013T203000Z"
+    },
+    {
+      "at_utc": "2026-10-13T20:55:56Z",
+      "outcome": "DISK_BUDGET_EXCEEDED",
+      "reason": "1.9978 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+      "run_id": "FWD-EDGE04-20261013T204500Z"
+    },
+    {
+      "at_utc": "2026-10-13T21:25:56Z",
+      "outcome": "DISK_BUDGET_EXCEEDED",
+      "reason": "1.996 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+      "run_id": "FWD-EDGE04-20261013T211500Z"
+    },
+    {
+      "at_utc": "2026-10-13T21:40:56Z",
+      "outcome": "DISK_BUDGET_EXCEEDED",
+      "reason": "1.7731 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+      "run_id": "FWD-EDGE04-20261013T213000Z"
+    },
+    {
+      "at_utc": "2026-10-13T22:10:57Z",
+      "outcome": "DISK_BUDGET_EXCEEDED",
+      "reason": "1.7823 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+      "run_id": "FWD-EDGE04-20261013T220000Z"
+    },
+    {
+      "at_utc": "2026-10-13T22:25:56Z",
+      "outcome": "DISK_BUDGET_EXCEEDED",
+      "reason": "1.9903 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+      "run_id": "FWD-EDGE04-20261013T221500Z"
+    },
+    {
+      "at_utc": "2026-10-13T22:40:56Z",
+      "outcome": "DISK_BUDGET_EXCEEDED",
+      "reason": "1.624 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+      "run_id": "FWD-EDGE04-20261013T223000Z"
+    },
+    {
+      "at_utc": "2026-10-13T22:55:56Z",
+      "outcome": "DISK_BUDGET_EXCEEDED",
+      "reason": "1.5221 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+      "run_id": "FWD-EDGE04-20261013T224500Z"
+    },
+    {
+      "at_utc": "2026-10-13T23:10:56Z",
+      "outcome": "DISK_BUDGET_EXCEEDED",
+      "reason": "1.197 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+      "run_id": "FWD-EDGE04-20261013T230000Z"
+    },
+    {
+      "at_utc": "2026-10-13T23:25:56Z",
+      "outcome": "DISK_BUDGET_EXCEEDED",
+      "reason": "1.3044 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+      "run_id": "FWD-EDGE04-20261013T231500Z"
+    },
+    {
+      "at_utc": "2026-10-13T23:40:56Z",
+      "outcome": "DISK_BUDGET_EXCEEDED",
+      "reason": "1.2933 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+      "run_id": "FWD-EDGE04-20261013T233000Z"
+    },
+    {
+      "at_utc": "2026-10-13T23:55:56Z",
+      "outcome": "DISK_BUDGET_EXCEEDED",
+      "reason": "1.2977 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+      "run_id": "FWD-EDGE04-20261013T234500Z"
+    },
+    {
+      "at_utc": "2026-10-14T00:10:56Z",
+      "outcome": "DISK_BUDGET_EXCEEDED",
+      "reason": "1.2913 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+      "run_id": "FWD-EDGE04-20261014T000000Z"
+    },
+    {
+      "at_utc": "2026-10-14T00:25:56Z",
+      "outcome": "DISK_BUDGET_EXCEEDED",
+      "reason": "1.2907 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+      "run_id": "FWD-EDGE04-20261014T001500Z"
+    },
+    {
+      "at_utc": "2026-10-14T00:40:56Z",
+      "outcome": "DISK_BUDGET_EXCEEDED",
+      "reason": "1.2925 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+      "run_id": "FWD-EDGE04-20261014T003000Z"
+    },
+    {
+      "at_utc": "2026-10-14T00:55:56Z",
+      "outcome": "DISK_BUDGET_EXCEEDED",
+      "reason": "1.2859 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+      "run_id": "FWD-EDGE04-20261014T004500Z"
+    },
+    {
+      "at_utc": "2026-10-14T01:10:56Z",
+      "outcome": "DISK_BUDGET_EXCEEDED",
+      "reason": "1.2818 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+      "run_id": "FWD-EDGE04-20261014T010000Z"
+    },
+    {
+      "at_utc": "2026-10-14T01:25:56Z",
+      "outcome": "DISK_BUDGET_EXCEEDED",
+      "reason": "1.2934 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+      "run_id": "FWD-EDGE04-20261014T011500Z"
+    },
+    {
+      "at_utc": "2026-10-14T01:40:56Z",
+      "outcome": "DISK_BUDGET_EXCEEDED",
+      "reason": "1.2915 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+      "run_id": "FWD-EDGE04-20261014T013000Z"
+    },
+    {
+      "at_utc": "2026-10-14T01:55:56Z",
+      "outcome": "DISK_BUDGET_EXCEEDED",
+      "reason": "1.2844 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+      "run_id": "FWD-EDGE04-20261014T014500Z"
+    },
+    {
+      "at_utc": "2026-10-14T02:10:56Z",
+      "outcome": "DISK_BUDGET_EXCEEDED",
+      "reason": "1.2841 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+      "run_id": "FWD-EDGE04-20261014T020000Z"
+    },
+    {
+      "at_utc": "2026-10-14T02:25:56Z",
+      "outcome": "DISK_BUDGET_EXCEEDED",
+      "reason": "1.2958 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+      "run_id": "FWD-EDGE04-20261014T021500Z"
+    },
+    {
+      "at_utc": "2026-10-14T02:40:56Z",
+      "outcome": "DISK_BUDGET_EXCEEDED",
+      "reason": "1.2881 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+      "run_id": "FWD-EDGE04-20261014T023000Z"
+    },
+    {
+      "at_utc": "2026-10-14T02:55:56Z",
+      "outcome": "DISK_BUDGET_EXCEEDED",
+      "reason": "1.2878 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+      "run_id": "FWD-EDGE04-20261014T024500Z"
+    },
+    {
+      "at_utc": "2026-10-14T03:10:56Z",
+      "outcome": "DISK_BUDGET_EXCEEDED",
+      "reason": "1.2925 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+      "run_id": "FWD-EDGE04-20261014T030000Z"
+    },
+    {
+      "at_utc": "2026-10-14T03:25:56Z",
+      "outcome": "DISK_BUDGET_EXCEEDED",
+      "reason": "1.2884 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+      "run_id": "FWD-EDGE04-20261014T031500Z"
+    },
+    {
+      "at_utc": "2026-10-14T03:40:56Z",
+      "outcome": "DISK_BUDGET_EXCEEDED",
+      "reason": "1.2832 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+      "run_id": "FWD-EDGE04-20261014T033000Z"
+    },
+    {
+      "at_utc": "2026-10-14T03:55:56Z",
+      "outcome": "DISK_BUDGET_EXCEEDED",
+      "reason": "1.288 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+      "run_id": "FWD-EDGE04-20261014T034500Z"
+    },
+    {
+      "at_utc": "2026-10-14T04:10:56Z",
+      "outcome": "DISK_BUDGET_EXCEEDED",
+      "reason": "1.2789 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+      "run_id": "FWD-EDGE04-20261014T040000Z"
+    },
+    {
+      "at_utc": "2026-10-14T04:25:56Z",
+      "outcome": "DISK_BUDGET_EXCEEDED",
+      "reason": "1.2677 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+      "run_id": "FWD-EDGE04-20261014T041500Z"
+    },
+    {
+      "at_utc": "2026-10-14T04:40:56Z",
+      "outcome": "DISK_BUDGET_EXCEEDED",
+      "reason": "0.8337 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+      "run_id": "FWD-EDGE04-20261014T043000Z"
+    },
+    {
+      "at_utc": "2026-10-14T04:55:56Z",
+      "outcome": "DISK_BUDGET_EXCEEDED",
+      "reason": "0.8309 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+      "run_id": "FWD-EDGE04-20261014T044500Z"
+    },
+    {
+      "at_utc": "2026-10-14T05:10:56Z",
+      "outcome": "DISK_BUDGET_EXCEEDED",
+      "reason": "0.8302 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+      "run_id": "FWD-EDGE04-20261014T050000Z"
+    },
+    {
+      "at_utc": "2026-10-14T05:25:56Z",
+      "outcome": "DISK_BUDGET_EXCEEDED",
+      "reason": "0.8385 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+      "run_id": "FWD-EDGE04-20261014T051500Z"
+    },
+    {
+      "at_utc": "2026-10-14T07:55:09Z",
+      "outcome": "DISK_BUDGET_EXCEEDED",
+      "reason": "1.4918 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+      "run_id": "FWD-EDGE04-20261014T074500Z"
+    },
+    {
+      "at_utc": "2026-10-14T07:55:56Z",
+      "outcome": "DISK_BUDGET_EXCEEDED",
+      "reason": "1.4919 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+      "run_id": "FWD-EDGE04-20261014T074500Z"
+    },
+    {
+      "at_utc": "2026-10-14T08:10:57Z",
+      "outcome": "DISK_BUDGET_EXCEEDED",
+      "reason": "1.2046 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+      "run_id": "FWD-EDGE04-20261014T080000Z"
+    },
+    {
+      "at_utc": "2026-10-14T08:14:40Z",
+      "outcome": "DISK_BUDGET_EXCEEDED",
+      "reason": "1.1567 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+      "run_id": "FWD-EDGE04-20261014T080000Z"
+    },
+    {
+      "at_utc": "2026-10-14T08:25:56Z",
+      "outcome": "DISK_BUDGET_EXCEEDED",
+      "reason": "1.2614 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+      "run_id": "FWD-EDGE04-20261014T081500Z"
+    },
+    {
+      "at_utc": "2026-10-14T08:40:57Z",
+      "outcome": "DISK_BUDGET_EXCEEDED",
+      "reason": "1.2469 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+      "run_id": "FWD-EDGE04-20261014T083000Z"
+    },
+    {
+      "at_utc": "2026-10-14T12:55:56Z",
+      "outcome": "DISK_BUDGET_EXCEEDED",
+      "reason": "1.6458 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+      "run_id": "FWD-EDGE04-20261014T124500Z"
+    },
+    {
+      "at_utc": "2026-10-14T13:10:56Z",
+      "outcome": "DISK_BUDGET_EXCEEDED",
+      "reason": "1.3843 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+      "run_id": "FWD-EDGE04-20261014T130000Z"
+    },
+    {
+      "at_utc": "2026-10-14T13:25:56Z",
+      "outcome": "DISK_BUDGET_EXCEEDED",
+      "reason": "1.3902 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+      "run_id": "FWD-EDGE04-20261014T131500Z"
+    },
+    {
+      "at_utc": "2026-10-14T13:40:56Z",
+      "outcome": "DISK_BUDGET_EXCEEDED",
+      "reason": "1.3899 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+      "run_id": "FWD-EDGE04-20261014T133000Z"
     }
   ],
-  "generated_at_utc": "2026-10-13T15:08:17Z",
+  "generated_at_utc": "2026-10-15T15:17:41Z",
   "hypothetical": true,
-  "last_observation_utc": "2026-10-13T15:07:57Z",
+  "last_observation_utc": "2026-10-15T15:17:20Z",
   "last_tick": {
-    "duration_seconds": 31.621,
-    "outcome": "NO_NEW_DATA",
-    "run_id": "FWD-EDGE04-20261013T150000Z"
+    "duration_seconds": 44.264,
+    "outcome": "OBSERVED",
+    "run_id": "FWD-EDGE04-20261015T151500Z"
   },
   "live_health_full": {
     "budget": {
@@ -50,13 +320,13 @@
       },
       "disk": {
         "critical_free_bytes": 2147483648,
-        "free_bytes": 7252742144,
-        "free_gib": 6.7546,
+        "free_bytes": 11359428608,
+        "free_gib": 10.5793,
         "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04",
         "status": "HEALTHY",
         "total_bytes": 255041990656,
         "total_gib": 237.5264,
-        "used_percent": 97.16,
+        "used_percent": 95.55,
         "warning_free_bytes": 5368709120
       },
       "forecast": {
@@ -65,10 +335,10 @@
         "lane_days_to_budget": null,
         "reading": "a forecast is published only when the measured rate is stable; otherwise it is null, because an invented number is worse than no number"
       },
-      "generated_at_utc": "2026-10-13T15:07:57Z",
+      "generated_at_utc": "2026-10-15T15:17:20Z",
       "growth": {
         "bytes_per_day": null,
-        "coefficient_of_variation": 0.6548,
+        "coefficient_of_variation": 4.289,
         "discarded_samples": 0,
         "dropped_foreign_unit_samples": 0,
         "interval_seconds": [
@@ -85,21 +355,193 @@
           219.0,
           681.0,
           480.0,
-          210.0
+          210.0,
+          210.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          901.0,
+          1799.0,
+          901.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          902.0,
+          899.0,
+          899.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          915.0,
+          886.0,
+          901.0,
+          898.0,
+          900.0,
+          902.0,
+          898.0,
+          853.0,
+          47.0,
+          901.0,
+          223.0,
+          676.0,
+          901.0,
+          899.0,
+          902.0,
+          899.0,
+          900.0,
+          899.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          901.0,
+          899.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          901.0,
+          899.0,
+          900.0,
+          901.0,
+          899.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          901.0,
+          899.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          23419.0,
+          883.0,
+          899.0,
+          903.0,
+          896.0,
+          902.0,
+          898.0,
+          901.0,
+          899.0,
+          901.0,
+          899.0,
+          901.0,
+          899.0,
+          901.0,
+          899.0,
+          901.0,
+          899.0,
+          902.0,
+          898.0,
+          901.0,
+          899.0,
+          901.0,
+          899.0,
+          902.0,
+          898.0,
+          902.0,
+          898.0,
+          902.0,
+          898.0,
+          902.0,
+          898.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          899.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          901.0,
+          233.0,
+          12.0,
+          655.0,
+          339.0
         ],
-        "mean_bytes_per_day": 2129914.054,
-        "samples": 15,
+        "mean_bytes_per_day": 2055724.262,
+        "samples": 187,
         "since": null,
         "status": "VOLATILE",
-        "stddev_bytes_per_day": 1394719.23
+        "stddev_bytes_per_day": 8816946.72
       },
       "measured": {
-        "lane": 2998225,
-        "lane_bytes": 2998225,
+        "lane": 5445252,
+        "lane_bytes": 5445252,
         "publication": 0,
         "publication_inside_state": true,
-        "state": 2998225,
-        "store": 5598300
+        "state": 5445252,
+        "store": 5823115
       },
       "over_budget": false,
       "policy": {
@@ -114,47 +556,43 @@
     "corrupt_log_lines": 0,
     "disk": {
       "critical_free_bytes": 2147483648,
-      "free_bytes": 7252746240,
-      "free_gib": 6.7546,
+      "free_bytes": 11359191040,
+      "free_gib": 10.5791,
       "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04",
       "status": "HEALTHY",
       "total_bytes": 255041990656,
       "total_gib": 237.5264,
-      "used_percent": 97.16,
+      "used_percent": 95.55,
       "warning_free_bytes": 5368709120
     },
     "expected_ticks_in_window": 96,
-    "generated_at_utc": "2026-10-13T15:07:57Z",
+    "generated_at_utc": "2026-10-15T15:17:20Z",
     "hypothetical": true,
-    "last_observation_utc": "2026-10-13T15:07:57Z",
+    "last_observation_utc": "2026-10-15T15:17:20Z",
     "last_tick": {
-      "duration_seconds": 31.621,
-      "outcome": "NO_NEW_DATA",
-      "run_id": "FWD-EDGE04-20261013T150000Z"
+      "duration_seconds": 44.264,
+      "outcome": "OBSERVED",
+      "run_id": "FWD-EDGE04-20261015T151500Z"
     },
-    "last_tick_utc": "2026-10-13T15:07:57Z",
-    "observations_in_window": 17,
+    "last_tick_utc": "2026-10-15T15:17:20Z",
+    "observations_in_window": 72,
     "order_sent": false,
     "outcomes_in_window": {
-      "ALREADY_OBSERVED": 3,
-      "ALREADY_RUNNING": 2,
-      "NO_NEW_DATA": 3,
-      "OBSERVED": 14
+      "ALREADY_OBSERVED": 2,
+      "OBSERVED": 72
     },
     "reasons": [
       "the measured growth rate is volatile"
     ],
     "schema_version": "EDGE04_HEALTH_V1",
     "status": "DEGRADED",
-    "ticks_in_window": 22
+    "ticks_in_window": 74
   },
   "live_health_path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04\\health.json",
   "order_sent": false,
   "outcomes_in_window": {
-    "ALREADY_OBSERVED": 3,
-    "ALREADY_RUNNING": 2,
-    "NO_NEW_DATA": 3,
-    "OBSERVED": 14
+    "ALREADY_OBSERVED": 2,
+    "OBSERVED": 72
   },
   "reasons": [
     "the measured growth rate is volatile"
@@ -227,18 +665,26 @@
   },
   "schema_version": "EDGE04_CLOSURE_V1",
   "status": "DEGRADED",
-  "ticks_in_window": 22,
+  "ticks_in_window": 74,
   "traffic": {
     "alerts_by_kind": {
-      "HEALTH_DEGRADED": 2,
-      "HEALTH_RECOVERED": 3
+      "DISK_CRITICAL": 1,
+      "DISK_RECOVERED": 1,
+      "DISK_WARNING": 1,
+      "HEALTH_BLOCKED": 5,
+      "HEALTH_DEGRADED": 7,
+      "HEALTH_RECOVERED": 3,
+      "OBSERVATION_GAP": 1,
+      "OBSERVATION_STALLED": 1,
+      "PUBLICATION_PAUSED": 1
     },
     "duplicate_slots": [],
     "ticks_by_outcome": {
-      "ALREADY_OBSERVED": 3,
+      "ALREADY_OBSERVED": 6,
       "ALREADY_RUNNING": 2,
+      "DISK_BUDGET_EXCEEDED": 45,
       "NO_NEW_DATA": 3,
-      "OBSERVED": 14
+      "OBSERVED": 138
     }
   },
   "verification": {

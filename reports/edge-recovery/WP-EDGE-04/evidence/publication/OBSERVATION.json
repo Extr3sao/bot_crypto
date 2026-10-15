@@ -17,32 +17,32 @@
     }
   },
   "forward_expectation": {
-    "appended": 0,
-    "expected": 0,
+    "appended": 3,
+    "expected": 3,
     "last_closed": {
       "15m:BTC": {
-        "closed_ago_seconds": 518.322,
-        "last_ts": 1791889200000
+        "closed_ago_seconds": 95.829,
+        "last_ts": 1792076400000
       },
       "15m:ETH": {
-        "closed_ago_seconds": 518.322,
-        "last_ts": 1791889200000
+        "closed_ago_seconds": 95.829,
+        "last_ts": 1792076400000
       },
       "15m:SOL": {
-        "closed_ago_seconds": 518.322,
-        "last_ts": 1791889200000
+        "closed_ago_seconds": 95.829,
+        "last_ts": 1792076400000
       },
       "1h:BTC": {
-        "closed_ago_seconds": 1418.322,
-        "last_ts": 1791885600000
+        "closed_ago_seconds": 995.829,
+        "last_ts": 1792072800000
       },
       "1h:ETH": {
-        "closed_ago_seconds": 1418.322,
-        "last_ts": 1791885600000
+        "closed_ago_seconds": 995.829,
+        "last_ts": 1792072800000
       },
       "1h:SOL": {
-        "closed_ago_seconds": 1418.322,
-        "last_ts": 1791885600000
+        "closed_ago_seconds": 995.829,
+        "last_ts": 1792072800000
       }
     },
     "missing": 0,
@@ -51,7 +51,7 @@
       {
         "appended": 0,
         "expected": 0,
-        "high_water_ts": 1791885600000,
+        "high_water_ts": 1792072800000,
         "missing": 0,
         "outcome": "no_new_data",
         "series": "1h:BTC"
@@ -59,7 +59,7 @@
       {
         "appended": 0,
         "expected": 0,
-        "high_water_ts": 1791885600000,
+        "high_water_ts": 1792072800000,
         "missing": 0,
         "outcome": "no_new_data",
         "series": "1h:ETH"
@@ -67,33 +67,33 @@
       {
         "appended": 0,
         "expected": 0,
-        "high_water_ts": 1791885600000,
+        "high_water_ts": 1792072800000,
         "missing": 0,
         "outcome": "no_new_data",
         "series": "1h:SOL"
       },
       {
-        "appended": 0,
-        "expected": 0,
-        "high_water_ts": 1791889200000,
+        "appended": 1,
+        "expected": 1,
+        "high_water_ts": 1792075500000,
         "missing": 0,
-        "outcome": "no_new_data",
+        "outcome": "ingested",
         "series": "15m:BTC"
       },
       {
-        "appended": 0,
-        "expected": 0,
-        "high_water_ts": 1791889200000,
+        "appended": 1,
+        "expected": 1,
+        "high_water_ts": 1792075500000,
         "missing": 0,
-        "outcome": "no_new_data",
+        "outcome": "ingested",
         "series": "15m:ETH"
       },
       {
-        "appended": 0,
-        "expected": 0,
-        "high_water_ts": 1791889200000,
+        "appended": 1,
+        "expected": 1,
+        "high_water_ts": 1792075500000,
         "missing": 0,
-        "outcome": "no_new_data",
+        "outcome": "ingested",
         "series": "15m:SOL"
       }
     ],
@@ -146,25 +146,23 @@
     "published_params_hash": "d073a2d686b9b198c36c9a3c6009d36130577ba247a2016c3f791813cb749d77",
     "recipe": "sha256(json.dumps(FROZEN_PARAMS, sort_keys=True, separators=(',', ':')))"
   },
-  "generated_at_utc": "2026-10-13T11:24:02Z",
+  "generated_at_utc": "2026-10-15T15:17:18Z",
   "health": {
     "errors": [],
     "ingest_outcomes": {
-      "no_new_data": 6
+      "ingested": 3,
+      "no_new_data": 3
     },
     "ingest_runs": 6,
-    "new_bars": 0,
+    "new_bars": 3,
     "no_new_data_series": [
       "1h:BTC",
       "1h:ETH",
-      "1h:SOL",
-      "15m:BTC",
-      "15m:ETH",
-      "15m:SOL"
+      "1h:SOL"
     ],
-    "observation_days": 226,
+    "observation_days": 228,
     "observation_days_detail": {
-      "common_days": 226,
+      "common_days": 228,
       "days": [
         "2026-03-01",
         "2026-03-02",
@@ -391,46 +389,48 @@
         "2026-10-09",
         "2026-10-10",
         "2026-10-11",
-        "2026-10-12"
+        "2026-10-12",
+        "2026-10-13",
+        "2026-10-14"
       ],
       "per_asset": {
-        "BTC": 226,
-        "ETH": 226,
-        "SOL": 226
+        "BTC": 228,
+        "ETH": 228,
+        "SOL": 228
       },
       "rule": "a day counts only if every primary asset met the declared coverage on it"
     },
     "primary_trades": 31,
-    "stored_bars": 18027
+    "stored_bars": 18807
   },
   "ingest": {
     "ledger": [
       {
         "appended": 0,
         "audit": {
-          "bars": 5435,
+          "bars": 5487,
           "contiguous": true,
           "duplicates": 0,
           "first_expected_ts": 1772323200000,
           "first_ts": 1772323200000,
           "gap_count": 0,
           "gaps": [],
-          "last_ts": 1791885600000,
+          "last_ts": 1792072800000,
           "missing_bars": 0,
           "out_of_order": 0,
           "timeframe": "1h"
         },
         "fetched_rows": 0,
         "frozen_end_ms": 1772319600000,
-        "high_water_ts": 1791885600000,
-        "next_expected_ts": 1791889200000,
+        "high_water_ts": 1792072800000,
+        "next_expected_ts": 1792076400000,
         "outcome": "no_new_data",
-        "reason": "the next 1h bar (open 1791889200000) had not closed at 1791890619831; nothing to ingest",
+        "reason": "the next 1h bar (open 1792076400000) had not closed at 1792077397999; nothing to ingest",
         "rejected": {},
         "revisions": [],
-        "run_at_ms": 1791890619831,
+        "run_at_ms": 1792077397999,
         "source": "BINANCE_PUBLIC_REST:/api/v3/klines",
-        "stored_before": 5435,
+        "stored_before": 5487,
         "symbol": "BTC",
         "timeframe": "1h",
         "venue_symbol": "BTCUSDT"
@@ -438,29 +438,29 @@
       {
         "appended": 0,
         "audit": {
-          "bars": 5435,
+          "bars": 5487,
           "contiguous": true,
           "duplicates": 0,
           "first_expected_ts": 1772323200000,
           "first_ts": 1772323200000,
           "gap_count": 0,
           "gaps": [],
-          "last_ts": 1791885600000,
+          "last_ts": 1792072800000,
           "missing_bars": 0,
           "out_of_order": 0,
           "timeframe": "1h"
         },
         "fetched_rows": 0,
         "frozen_end_ms": 1772319600000,
-        "high_water_ts": 1791885600000,
-        "next_expected_ts": 1791889200000,
+        "high_water_ts": 1792072800000,
+        "next_expected_ts": 1792076400000,
         "outcome": "no_new_data",
-        "reason": "the next 1h bar (open 1791889200000) had not closed at 1791890619831; nothing to ingest",
+        "reason": "the next 1h bar (open 1792076400000) had not closed at 1792077397999; nothing to ingest",
         "rejected": {},
         "revisions": [],
-        "run_at_ms": 1791890619831,
+        "run_at_ms": 1792077397999,
         "source": "BINANCE_PUBLIC_REST:/api/v3/klines",
-        "stored_before": 5435,
+        "stored_before": 5487,
         "symbol": "ETH",
         "timeframe": "1h",
         "venue_symbol": "ETHUSDT"
@@ -468,119 +468,167 @@
       {
         "appended": 0,
         "audit": {
-          "bars": 5435,
+          "bars": 5487,
           "contiguous": true,
           "duplicates": 0,
           "first_expected_ts": 1772323200000,
           "first_ts": 1772323200000,
           "gap_count": 0,
           "gaps": [],
-          "last_ts": 1791885600000,
+          "last_ts": 1792072800000,
           "missing_bars": 0,
           "out_of_order": 0,
           "timeframe": "1h"
         },
         "fetched_rows": 0,
         "frozen_end_ms": 1772319600000,
-        "high_water_ts": 1791885600000,
-        "next_expected_ts": 1791889200000,
+        "high_water_ts": 1792072800000,
+        "next_expected_ts": 1792076400000,
         "outcome": "no_new_data",
-        "reason": "the next 1h bar (open 1791889200000) had not closed at 1791890619831; nothing to ingest",
+        "reason": "the next 1h bar (open 1792076400000) had not closed at 1792077397999; nothing to ingest",
         "rejected": {},
         "revisions": [],
-        "run_at_ms": 1791890619831,
+        "run_at_ms": 1792077397999,
         "source": "BINANCE_PUBLIC_REST:/api/v3/klines",
-        "stored_before": 5435,
+        "stored_before": 5487,
         "symbol": "SOL",
         "timeframe": "1h",
         "venue_symbol": "SOLUSDT"
       },
       {
-        "appended": 0,
+        "appended": 1,
         "audit": {
-          "bars": 574,
+          "bars": 782,
           "contiguous": true,
           "duplicates": 0,
           "first_expected_ts": 1791373500000,
           "first_ts": 1791373500000,
           "gap_count": 0,
           "gaps": [],
-          "last_ts": 1791889200000,
+          "last_ts": 1792076400000,
           "missing_bars": 0,
           "out_of_order": 0,
           "timeframe": "15m"
         },
-        "fetched_rows": 0,
+        "fetched_rows": 2,
         "frozen_end_ms": 1791372600000,
-        "high_water_ts": 1791889200000,
-        "next_expected_ts": 1791890100000,
-        "outcome": "no_new_data",
-        "reason": "the next 15m bar (open 1791890100000) had not closed at 1791890619831; nothing to ingest",
-        "rejected": {},
+        "high_water_ts": 1792075500000,
+        "next_expected_ts": 1792076400000,
+        "outcome": "ingested",
+        "pages": 1,
+        "payload_sha256": "0c88803d4fd543e1a619f121654e7f044af576674c451c7638a2080344ab1c6e",
+        "prefix_preserved": true,
+        "reason": null,
+        "rejected": {
+          "already_stored": 0,
+          "at_or_before_frozen_end": 0,
+          "duplicate_in_fetch": 0,
+          "incomplete_ohlc": 0,
+          "not_closed": 1,
+          "off_grid": 0
+        },
+        "requests": [
+          "?symbol=BTCUSDT&interval=15m&startTime=1792076400000&endTime=1792077397998&limit=1000"
+        ],
         "revisions": [],
-        "run_at_ms": 1791890619831,
+        "run_at_ms": 1792077397999,
         "source": "BINANCE_PUBLIC_REST:/api/v3/klines",
-        "stored_before": 574,
+        "store_bytes": 245915,
+        "store_sha256": "bb793bf6130ef6b6e7e7dcc6bc29039946725eb003f926bfb0249cadb93c2095",
+        "stored_after": 782,
+        "stored_before": 781,
         "symbol": "BTC",
         "timeframe": "15m",
         "venue_symbol": "BTCUSDT"
       },
       {
-        "appended": 0,
+        "appended": 1,
         "audit": {
-          "bars": 574,
+          "bars": 782,
           "contiguous": true,
           "duplicates": 0,
           "first_expected_ts": 1791373500000,
           "first_ts": 1791373500000,
           "gap_count": 0,
           "gaps": [],
-          "last_ts": 1791889200000,
+          "last_ts": 1792076400000,
           "missing_bars": 0,
           "out_of_order": 0,
           "timeframe": "15m"
         },
-        "fetched_rows": 0,
+        "fetched_rows": 2,
         "frozen_end_ms": 1791372600000,
-        "high_water_ts": 1791889200000,
-        "next_expected_ts": 1791890100000,
-        "outcome": "no_new_data",
-        "reason": "the next 15m bar (open 1791890100000) had not closed at 1791890619831; nothing to ingest",
-        "rejected": {},
+        "high_water_ts": 1792075500000,
+        "next_expected_ts": 1792076400000,
+        "outcome": "ingested",
+        "pages": 1,
+        "payload_sha256": "d95ad1a708022c71404f3c68a49be6b8a8b8d54a65e700b7837f8e173a6a61df",
+        "prefix_preserved": true,
+        "reason": null,
+        "rejected": {
+          "already_stored": 0,
+          "at_or_before_frozen_end": 0,
+          "duplicate_in_fetch": 0,
+          "incomplete_ohlc": 0,
+          "not_closed": 1,
+          "off_grid": 0
+        },
+        "requests": [
+          "?symbol=ETHUSDT&interval=15m&startTime=1792076400000&endTime=1792077397998&limit=1000"
+        ],
         "revisions": [],
-        "run_at_ms": 1791890619831,
+        "run_at_ms": 1792077397999,
         "source": "BINANCE_PUBLIC_REST:/api/v3/klines",
-        "stored_before": 574,
+        "store_bytes": 243355,
+        "store_sha256": "475dd2e27bb73455e9414d3a6b1d9a7580ca2fb8b2c761b813360fca57192d7b",
+        "stored_after": 782,
+        "stored_before": 781,
         "symbol": "ETH",
         "timeframe": "15m",
         "venue_symbol": "ETHUSDT"
       },
       {
-        "appended": 0,
+        "appended": 1,
         "audit": {
-          "bars": 574,
+          "bars": 782,
           "contiguous": true,
           "duplicates": 0,
           "first_expected_ts": 1791373500000,
           "first_ts": 1791373500000,
           "gap_count": 0,
           "gaps": [],
-          "last_ts": 1791889200000,
+          "last_ts": 1792076400000,
           "missing_bars": 0,
           "out_of_order": 0,
           "timeframe": "15m"
         },
-        "fetched_rows": 0,
+        "fetched_rows": 2,
         "frozen_end_ms": 1791372600000,
-        "high_water_ts": 1791889200000,
-        "next_expected_ts": 1791890100000,
-        "outcome": "no_new_data",
-        "reason": "the next 15m bar (open 1791890100000) had not closed at 1791890619831; nothing to ingest",
-        "rejected": {},
+        "high_water_ts": 1792075500000,
+        "next_expected_ts": 1792076400000,
+        "outcome": "ingested",
+        "pages": 1,
+        "payload_sha256": "b5ad529882a9d3920d7c18da68aab4c564f7e20e620efa793504d4859dceae71",
+        "prefix_preserved": true,
+        "reason": null,
+        "rejected": {
+          "already_stored": 0,
+          "at_or_before_frozen_end": 0,
+          "duplicate_in_fetch": 0,
+          "incomplete_ohlc": 0,
+          "not_closed": 1,
+          "off_grid": 0
+        },
+        "requests": [
+          "?symbol=SOLUSDT&interval=15m&startTime=1792076400000&endTime=1792077397998&limit=1000"
+        ],
         "revisions": [],
-        "run_at_ms": 1791890619831,
+        "run_at_ms": 1792077397999,
         "source": "BINANCE_PUBLIC_REST:/api/v3/klines",
-        "stored_before": 574,
+        "store_bytes": 240220,
+        "store_sha256": "f749295cb8f68caf298c0f9b1731db11b0bed73e1dd4dd8952c0a8345e8cf4de",
+        "stored_after": 782,
+        "stored_before": 781,
         "symbol": "SOL",
         "timeframe": "15m",
         "venue_symbol": "SOLUSDT"
@@ -598,149 +646,149 @@
   },
   "latency": {
     "15m:BTC": {
-      "fetch_instant_ms": 1791890619831,
-      "fetch_instants": 6,
-      "fresh_bars": 0,
-      "fresh_max_seconds": null,
-      "fresh_median_seconds": null,
-      "fresh_min_seconds": null,
-      "fresh_samples": 0,
+      "fetch_instant_ms": 1792077397999,
+      "fetch_instants": 145,
+      "fresh_bars": 1,
+      "fresh_max_seconds": 97.999,
+      "fresh_median_seconds": 97.999,
+      "fresh_min_seconds": 97.999,
+      "fresh_samples": 1,
       "max_seconds": 473991.233,
-      "median_seconds": 216141.233,
-      "min_seconds": 48.801,
+      "median_seconds": 122541.233,
+      "min_seconds": 3.665,
       "note": "window = every stored bar (a first run backfills, so this figure is not a feed latency); fresh = the bars this run pulled, measured close \u2192 store",
-      "samples": 574
+      "samples": 782
     },
     "15m:ETH": {
-      "fetch_instant_ms": 1791890619831,
-      "fetch_instants": 6,
-      "fresh_bars": 0,
-      "fresh_max_seconds": null,
-      "fresh_median_seconds": null,
-      "fresh_min_seconds": null,
-      "fresh_samples": 0,
+      "fetch_instant_ms": 1792077397999,
+      "fetch_instants": 145,
+      "fresh_bars": 1,
+      "fresh_max_seconds": 97.999,
+      "fresh_median_seconds": 97.999,
+      "fresh_min_seconds": 97.999,
+      "fresh_samples": 1,
       "max_seconds": 473991.233,
-      "median_seconds": 216141.233,
-      "min_seconds": 48.801,
+      "median_seconds": 122541.233,
+      "min_seconds": 3.665,
       "note": "window = every stored bar (a first run backfills, so this figure is not a feed latency); fresh = the bars this run pulled, measured close \u2192 store",
-      "samples": 574
+      "samples": 782
     },
     "15m:SOL": {
-      "fetch_instant_ms": 1791890619831,
-      "fetch_instants": 6,
-      "fresh_bars": 0,
-      "fresh_max_seconds": null,
-      "fresh_median_seconds": null,
-      "fresh_min_seconds": null,
-      "fresh_samples": 0,
+      "fetch_instant_ms": 1792077397999,
+      "fetch_instants": 145,
+      "fresh_bars": 1,
+      "fresh_max_seconds": 97.999,
+      "fresh_median_seconds": 97.999,
+      "fresh_min_seconds": 97.999,
+      "fresh_samples": 1,
       "max_seconds": 473991.233,
-      "median_seconds": 216141.233,
-      "min_seconds": 48.801,
+      "median_seconds": 122541.233,
+      "min_seconds": 3.665,
       "note": "window = every stored bar (a first run backfills, so this figure is not a feed latency); fresh = the bars this run pulled, measured close \u2192 store",
-      "samples": 574
+      "samples": 782
     },
     "1h:BTC": {
-      "fetch_instant_ms": 1791890619831,
-      "fetch_instants": 3,
+      "fetch_instant_ms": 1792077397999,
+      "fetch_instants": 43,
       "fresh_bars": 0,
       "fresh_max_seconds": null,
       "fresh_median_seconds": null,
       "fresh_min_seconds": null,
       "fresh_samples": 0,
       "max_seconds": 19521591.233,
-      "median_seconds": 9740391.233,
-      "min_seconds": 53.055,
+      "median_seconds": 9646791.233,
+      "min_seconds": 3.665,
       "note": "window = every stored bar (a first run backfills, so this figure is not a feed latency); fresh = the bars this run pulled, measured close \u2192 store",
-      "samples": 5435
+      "samples": 5487
     },
     "1h:ETH": {
-      "fetch_instant_ms": 1791890619831,
-      "fetch_instants": 3,
+      "fetch_instant_ms": 1792077397999,
+      "fetch_instants": 43,
       "fresh_bars": 0,
       "fresh_max_seconds": null,
       "fresh_median_seconds": null,
       "fresh_min_seconds": null,
       "fresh_samples": 0,
       "max_seconds": 19521591.233,
-      "median_seconds": 9740391.233,
-      "min_seconds": 53.055,
+      "median_seconds": 9646791.233,
+      "min_seconds": 3.665,
       "note": "window = every stored bar (a first run backfills, so this figure is not a feed latency); fresh = the bars this run pulled, measured close \u2192 store",
-      "samples": 5435
+      "samples": 5487
     },
     "1h:SOL": {
-      "fetch_instant_ms": 1791890619831,
-      "fetch_instants": 3,
+      "fetch_instant_ms": 1792077397999,
+      "fetch_instants": 43,
       "fresh_bars": 0,
       "fresh_max_seconds": null,
       "fresh_median_seconds": null,
       "fresh_min_seconds": null,
       "fresh_samples": 0,
       "max_seconds": 19521591.233,
-      "median_seconds": 9740391.233,
-      "min_seconds": 53.055,
+      "median_seconds": 9646791.233,
+      "min_seconds": 3.665,
       "note": "window = every stored bar (a first run backfills, so this figure is not a feed latency); fresh = the bars this run pulled, measured close \u2192 store",
-      "samples": 5435
+      "samples": 5487
     }
   },
   "manifest": {
     "files": {
       "15m:BTC": {
-        "bars": 574,
-        "bytes": 180471,
+        "bars": 782,
+        "bytes": 245915,
         "first_ts": 1791373500000,
-        "last_ts": 1791889200000,
+        "last_ts": 1792076400000,
         "path": "BTC.jsonl",
         "relative_path": "15m/BTC.jsonl",
-        "sha256": "497f2e2c1690a1857aff42edc5c3f81252c05057caf4b938be6b64a93afa0179"
+        "sha256": "bb793bf6130ef6b6e7e7dcc6bc29039946725eb003f926bfb0249cadb93c2095"
       },
       "15m:ETH": {
-        "bars": 574,
-        "bytes": 178620,
+        "bars": 782,
+        "bytes": 243355,
         "first_ts": 1791373500000,
-        "last_ts": 1791889200000,
+        "last_ts": 1792076400000,
         "path": "ETH.jsonl",
         "relative_path": "15m/ETH.jsonl",
-        "sha256": "5725a48873894e1a7c42ef0e6a10e3b70b765a195aa5e13a71d90e639608cc3d"
+        "sha256": "475dd2e27bb73455e9414d3a6b1d9a7580ca2fb8b2c761b813360fca57192d7b"
       },
       "15m:SOL": {
-        "bars": 574,
-        "bytes": 176313,
+        "bars": 782,
+        "bytes": 240220,
         "first_ts": 1791373500000,
-        "last_ts": 1791889200000,
+        "last_ts": 1792076400000,
         "path": "SOL.jsonl",
         "relative_path": "15m/SOL.jsonl",
-        "sha256": "c6666ee4702937e77947cbe34bcbc2ca3d7cca3e49f9cb4b82f39c3494b48240"
+        "sha256": "f749295cb8f68caf298c0f9b1731db11b0bed73e1dd4dd8952c0a8345e8cf4de"
       },
       "1h:BTC": {
-        "bars": 5435,
-        "bytes": 1706591,
+        "bars": 5487,
+        "bytes": 1722926,
         "first_ts": 1772323200000,
-        "last_ts": 1791885600000,
+        "last_ts": 1792072800000,
         "path": "BTC.jsonl",
         "relative_path": "1h/BTC.jsonl",
-        "sha256": "871a43dc896ebd97db732f09b151023a7a3a60b905c393b7319b532babe12f7f"
+        "sha256": "388008cc5ad7dfc14aa0010d5390f170ff9b0cbd4a00216539b5b3ec7340ba16"
       },
       "1h:ETH": {
-        "bars": 5435,
-        "bytes": 1688778,
+        "bars": 5487,
+        "bytes": 1704941,
         "first_ts": 1772323200000,
-        "last_ts": 1791885600000,
+        "last_ts": 1792072800000,
         "path": "ETH.jsonl",
         "relative_path": "1h/ETH.jsonl",
-        "sha256": "c4318c8f450a1ef41b837e6a2dc81f5e93e07f373a76ed40c7e503b24ae2d83e"
+        "sha256": "db003200acbc1c17fb1fcd7c423adae2dd7f62544d5592343f7b9875381a205a"
       },
       "1h:SOL": {
-        "bars": 5435,
-        "bytes": 1649803,
+        "bars": 5487,
+        "bytes": 1665758,
         "first_ts": 1772323200000,
-        "last_ts": 1791885600000,
+        "last_ts": 1792072800000,
         "path": "SOL.jsonl",
         "relative_path": "1h/SOL.jsonl",
-        "sha256": "76bd878d09c2c7de6257bc54b4e1c4db613caa83aa0f4145db771956f7b37c6d"
+        "sha256": "db0af873c04166fbb4665fcdd46852ff09724ae5179c7f2b738a8000924e1e6b"
       }
     },
     "series": 6,
-    "total_bars": 18027
+    "total_bars": 18807
   },
   "observation": {
     "15m:BTC": {
@@ -750,14 +798,16 @@
         "2026-10-09",
         "2026-10-10",
         "2026-10-11",
-        "2026-10-12"
+        "2026-10-12",
+        "2026-10-13",
+        "2026-10-14"
       ],
-      "days_with_data": 7,
+      "days_with_data": 9,
       "expected_bars_per_day": 96,
-      "newest_fetch_ms": 1791890488560,
-      "observation_days": 5,
+      "newest_fetch_ms": 1792077397999,
+      "observation_days": 7,
       "per_day_appended": {
-        "2026-10-13": 1
+        "2026-10-15": 1
       },
       "per_day_bars": {
         "2026-10-07": 49,
@@ -766,7 +816,9 @@
         "2026-10-10": 96,
         "2026-10-11": 96,
         "2026-10-12": 96,
-        "2026-10-13": 45
+        "2026-10-13": 96,
+        "2026-10-14": 96,
+        "2026-10-15": 61
       }
     },
     "15m:ETH": {
@@ -776,14 +828,16 @@
         "2026-10-09",
         "2026-10-10",
         "2026-10-11",
-        "2026-10-12"
+        "2026-10-12",
+        "2026-10-13",
+        "2026-10-14"
       ],
-      "days_with_data": 7,
+      "days_with_data": 9,
       "expected_bars_per_day": 96,
-      "newest_fetch_ms": 1791890488560,
-      "observation_days": 5,
+      "newest_fetch_ms": 1792077397999,
+      "observation_days": 7,
       "per_day_appended": {
-        "2026-10-13": 1
+        "2026-10-15": 1
       },
       "per_day_bars": {
         "2026-10-07": 49,
@@ -792,7 +846,9 @@
         "2026-10-10": 96,
         "2026-10-11": 96,
         "2026-10-12": 96,
-        "2026-10-13": 45
+        "2026-10-13": 96,
+        "2026-10-14": 96,
+        "2026-10-15": 61
       }
     },
     "15m:SOL": {
@@ -802,14 +858,16 @@
         "2026-10-09",
         "2026-10-10",
         "2026-10-11",
-        "2026-10-12"
+        "2026-10-12",
+        "2026-10-13",
+        "2026-10-14"
       ],
-      "days_with_data": 7,
+      "days_with_data": 9,
       "expected_bars_per_day": 96,
-      "newest_fetch_ms": 1791890488560,
-      "observation_days": 5,
+      "newest_fetch_ms": 1792077397999,
+      "observation_days": 7,
       "per_day_appended": {
-        "2026-10-13": 1
+        "2026-10-15": 1
       },
       "per_day_bars": {
         "2026-10-07": 49,
@@ -818,7 +876,9 @@
         "2026-10-10": 96,
         "2026-10-11": 96,
         "2026-10-12": 96,
-        "2026-10-13": 45
+        "2026-10-13": 96,
+        "2026-10-14": 96,
+        "2026-10-15": 61
       }
     },
     "1h:BTC": {
@@ -1049,14 +1109,16 @@
         "2026-10-09",
         "2026-10-10",
         "2026-10-11",
-        "2026-10-12"
+        "2026-10-12",
+        "2026-10-13",
+        "2026-10-14"
       ],
-      "days_with_data": 227,
+      "days_with_data": 229,
       "expected_bars_per_day": 24,
-      "newest_fetch_ms": 1791889369592,
-      "observation_days": 226,
+      "newest_fetch_ms": 1792076403665,
+      "observation_days": 228,
       "per_day_appended": {
-        "2026-10-13": 6
+        "2026-10-15": 1
       },
       "per_day_bars": {
         "2026-03-01": 24,
@@ -1285,7 +1347,9 @@
         "2026-10-10": 24,
         "2026-10-11": 24,
         "2026-10-12": 24,
-        "2026-10-13": 11
+        "2026-10-13": 24,
+        "2026-10-14": 24,
+        "2026-10-15": 15
       }
     },
     "1h:ETH": {
@@ -1516,14 +1580,16 @@
         "2026-10-09",
         "2026-10-10",
         "2026-10-11",
-        "2026-10-12"
+        "2026-10-12",
+        "2026-10-13",
+        "2026-10-14"
       ],
-      "days_with_data": 227,
+      "days_with_data": 229,
       "expected_bars_per_day": 24,
-      "newest_fetch_ms": 1791889369592,
-      "observation_days": 226,
+      "newest_fetch_ms": 1792076403665,
+      "observation_days": 228,
       "per_day_appended": {
-        "2026-10-13": 6
+        "2026-10-15": 1
       },
       "per_day_bars": {
         "2026-03-01": 24,
@@ -1752,7 +1818,9 @@
         "2026-10-10": 24,
         "2026-10-11": 24,
         "2026-10-12": 24,
-        "2026-10-13": 11
+        "2026-10-13": 24,
+        "2026-10-14": 24,
+        "2026-10-15": 15
       }
     },
     "1h:SOL": {
@@ -1983,14 +2051,16 @@
         "2026-10-09",
         "2026-10-10",
         "2026-10-11",
-        "2026-10-12"
+        "2026-10-12",
+        "2026-10-13",
+        "2026-10-14"
       ],
-      "days_with_data": 227,
+      "days_with_data": 229,
       "expected_bars_per_day": 24,
-      "newest_fetch_ms": 1791889369592,
-      "observation_days": 226,
+      "newest_fetch_ms": 1792076403665,
+      "observation_days": 228,
       "per_day_appended": {
-        "2026-10-13": 6
+        "2026-10-15": 1
       },
       "per_day_bars": {
         "2026-03-01": 24,
@@ -2219,12 +2289,14 @@
         "2026-10-10": 24,
         "2026-10-11": 24,
         "2026-10-12": 24,
-        "2026-10-13": 11
+        "2026-10-13": 24,
+        "2026-10-14": 24,
+        "2026-10-15": 15
       }
     }
   },
-  "observed_at_ms": 1791890619831,
-  "observed_at_utc": "2026-10-13T11:23:39Z",
+  "observed_at_ms": 1792077397999,
+  "observed_at_utc": "2026-10-15T15:16:37Z",
   "parity": {
     "captured_reproduction": {
       "checked": 101,
@@ -7760,6 +7832,58 @@
     [
       1791864000000,
       9955.692503
+    ],
+    [
+      1791878400000,
+      9955.692503
+    ],
+    [
+      1791892800000,
+      9955.692503
+    ],
+    [
+      1791907200000,
+      9955.692503
+    ],
+    [
+      1791921600000,
+      9955.692503
+    ],
+    [
+      1791936000000,
+      9955.692503
+    ],
+    [
+      1791950400000,
+      9955.692503
+    ],
+    [
+      1791964800000,
+      9955.692503
+    ],
+    [
+      1791979200000,
+      9955.692503
+    ],
+    [
+      1791993600000,
+      9955.692503
+    ],
+    [
+      1792008000000,
+      9955.692503
+    ],
+    [
+      1792022400000,
+      9955.692503
+    ],
+    [
+      1792036800000,
+      9955.692503
+    ],
+    [
+      1792051200000,
+      9955.692503
     ]
   ],
   "prospective": {
@@ -12738,30 +12862,74 @@
         }
       },
       {
-        "class": "INCOMPLETE",
+        "class": "DENSE_BUT_BACKFILLED",
         "coverage": {
-          "1h:BTC": 0.166667,
-          "1h:ETH": 0.166667,
-          "1h:SOL": 0.166667
+          "1h:BTC": 0.583333,
+          "1h:ETH": 0.583333,
+          "1h:SOL": 0.583333
         },
         "day": "2026-10-13",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 14,
+          "1h:ETH": 14,
+          "1h:SOL": 14
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "DENSE_BUT_BACKFILLED",
+        "coverage": {
+          "1h:BTC": 0.791667,
+          "1h:ETH": 0.791667,
+          "1h:SOL": 0.791667
+        },
+        "day": "2026-10-14",
+        "densely_covered": true,
+        "expected_bars": 24,
+        "prospectively_observed": false,
+        "prospectively_observed_bars": {
+          "1h:BTC": 19,
+          "1h:ETH": 19,
+          "1h:SOL": 19
+        },
+        "stored_bars": {
+          "1h:BTC": 24,
+          "1h:ETH": 24,
+          "1h:SOL": 24
+        }
+      },
+      {
+        "class": "INCOMPLETE",
+        "coverage": {
+          "1h:BTC": 0.541667,
+          "1h:ETH": 0.541667,
+          "1h:SOL": 0.541667
+        },
+        "day": "2026-10-15",
         "densely_covered": false,
         "expected_bars": 24,
         "prospectively_observed": false,
         "prospectively_observed_bars": {
-          "1h:BTC": 4,
-          "1h:ETH": 4,
-          "1h:SOL": 4
+          "1h:BTC": 13,
+          "1h:ETH": 13,
+          "1h:SOL": 13
         },
         "stored_bars": {
-          "1h:BTC": 11,
-          "1h:ETH": 11,
-          "1h:SOL": 11
+          "1h:BTC": 15,
+          "1h:ETH": 15,
+          "1h:SOL": 15
         }
       }
     ],
-    "days_with_any_data": 227,
-    "densely_covered_but_backfilled": 226,
+    "days_with_any_data": 229,
+    "densely_covered_but_backfilled": 228,
     "densely_covered_but_backfilled_days": [
       "2026-03-01",
       "2026-03-02",
@@ -12988,7 +13156,9 @@
       "2026-10-09",
       "2026-10-10",
       "2026-10-11",
-      "2026-10-12"
+      "2026-10-12",
+      "2026-10-13",
+      "2026-10-14"
     ],
     "epoch_utc": "2026-03-01T00:00:00Z",
     "freeze": {
@@ -12997,34 +13167,34 @@
       "params_hash": "d073a2d686b9b198c36c9a3c6009d36130577ba247a2016c3f791813cb749d77",
       "reading": "the frozen corpora end at these instants; every stored bar is strictly later, and no day before the epoch is a forward observation day"
     },
-    "generated_at_utc": "2026-10-13T11:24:02Z",
-    "market_instant_utc": "2026-10-13T11:23:39Z",
+    "generated_at_utc": "2026-10-15T15:17:18Z",
+    "market_instant_utc": "2026-10-15T15:16:37Z",
     "not_an_admission": "reaching the floor makes a later decision possible; it does not make it, and this lane cannot promote a strategy",
     "not_counted": "days before the observation epoch, and days whose bars arrived long after they closed, are not forward observation days: a backfill is history, not an observation",
     "period_hashes": {
-      "2026-10-11": {
-        "15m:BTC": "c3ed3b83799045f6",
-        "15m:ETH": "8699e01b8f5e48fb",
-        "15m:SOL": "5633ced680152850",
-        "1h:BTC": "0d58574a7e216041",
-        "1h:ETH": "4ddd596c4f8d66b3",
-        "1h:SOL": "d303805a7127f328"
-      },
-      "2026-10-12": {
-        "15m:BTC": "f75c836fae7b2992",
-        "15m:ETH": "39970bf01f26412d",
-        "15m:SOL": "48845be6fc7d36e2",
-        "1h:BTC": "989da9e9b5cf0603",
-        "1h:ETH": "5de48bde45567b67",
-        "1h:SOL": "6fcdc1c30c288010"
-      },
       "2026-10-13": {
-        "15m:BTC": "0da687292d065554",
-        "15m:ETH": "12ea871dee5dc4f5",
-        "15m:SOL": "278e3d73826715bd",
-        "1h:BTC": "284aa82d0a62df7c",
-        "1h:ETH": "4edd6ab4d1fdd846",
-        "1h:SOL": "ed2e8f8cfb78ca8f"
+        "15m:BTC": "b0748749fbd59e8e",
+        "15m:ETH": "020ed6a5f88ae2e2",
+        "15m:SOL": "9a6d71303811443f",
+        "1h:BTC": "d08b55c9862233ee",
+        "1h:ETH": "62fa5f7987fa2c6a",
+        "1h:SOL": "873c057a15cbb9c2"
+      },
+      "2026-10-14": {
+        "15m:BTC": "f002128f6cded1f8",
+        "15m:ETH": "6566d2e7e2132555",
+        "15m:SOL": "7eee76b59851b281",
+        "1h:BTC": "c76250af47f99d42",
+        "1h:ETH": "27c43c055cfcf6da",
+        "1h:SOL": "759ce4aaa2ce31ad"
+      },
+      "2026-10-15": {
+        "15m:BTC": "d8a152af01bb9533",
+        "15m:ETH": "67f844047bcdee9c",
+        "15m:SOL": "fc4cd715d474a0bf",
+        "1h:BTC": "774eae0cfa76812a",
+        "1h:ETH": "1d01318f81b3164c",
+        "1h:SOL": "96f57a3749593ca7"
       }
     },
     "primary_assets": [
@@ -13046,92 +13216,92 @@
     "schema_version": "EDGE04_COVERAGE_V1",
     "state_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04",
     "store_digests": {
-      "15m:BTC": "8182370d1b993ffc",
-      "15m:ETH": "ed0442a05c46c33e",
-      "15m:SOL": "082814dba09250c2",
-      "1h:BTC": "f8e33634c97dd6a8",
-      "1h:ETH": "75a54779d2b4cea1",
-      "1h:SOL": "b8665511aa501f6e"
+      "15m:BTC": "93de3ad2266165a1",
+      "15m:ETH": "0826b9b5580235cb",
+      "15m:SOL": "aa443fe018b49572",
+      "1h:BTC": "70a441969d2cfd40",
+      "1h:ETH": "b16df78ebf54cc8d",
+      "1h:SOL": "0d1d675e28057815"
     },
     "store_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge03",
-    "window_observation_days": 226,
+    "window_observation_days": 228,
     "window_vs_prospective": "the window figure counts every stored bar after the freeze, the prospectively observed figure counts only days whose bars were stored as they closed: only the second one is an observation of the future"
   },
   "quality": {
     "15m:BTC": {
-      "bars": 574,
+      "bars": 782,
       "contiguous": true,
       "duplicates": 0,
       "first_expected_ts": 1791373500000,
       "first_ts": 1791373500000,
       "gap_count": 0,
       "gaps": [],
-      "last_ts": 1791889200000,
+      "last_ts": 1792076400000,
       "missing_bars": 0,
       "out_of_order": 0,
       "timeframe": "15m"
     },
     "15m:ETH": {
-      "bars": 574,
+      "bars": 782,
       "contiguous": true,
       "duplicates": 0,
       "first_expected_ts": 1791373500000,
       "first_ts": 1791373500000,
       "gap_count": 0,
       "gaps": [],
-      "last_ts": 1791889200000,
+      "last_ts": 1792076400000,
       "missing_bars": 0,
       "out_of_order": 0,
       "timeframe": "15m"
     },
     "15m:SOL": {
-      "bars": 574,
+      "bars": 782,
       "contiguous": true,
       "duplicates": 0,
       "first_expected_ts": 1791373500000,
       "first_ts": 1791373500000,
       "gap_count": 0,
       "gaps": [],
-      "last_ts": 1791889200000,
+      "last_ts": 1792076400000,
       "missing_bars": 0,
       "out_of_order": 0,
       "timeframe": "15m"
     },
     "1h:BTC": {
-      "bars": 5435,
+      "bars": 5487,
       "contiguous": true,
       "duplicates": 0,
       "first_expected_ts": 1772323200000,
       "first_ts": 1772323200000,
       "gap_count": 0,
       "gaps": [],
-      "last_ts": 1791885600000,
+      "last_ts": 1792072800000,
       "missing_bars": 0,
       "out_of_order": 0,
       "timeframe": "1h"
     },
     "1h:ETH": {
-      "bars": 5435,
+      "bars": 5487,
       "contiguous": true,
       "duplicates": 0,
       "first_expected_ts": 1772323200000,
       "first_ts": 1772323200000,
       "gap_count": 0,
       "gaps": [],
-      "last_ts": 1791885600000,
+      "last_ts": 1792072800000,
       "missing_bars": 0,
       "out_of_order": 0,
       "timeframe": "1h"
     },
     "1h:SOL": {
-      "bars": 5435,
+      "bars": 5487,
       "contiguous": true,
       "duplicates": 0,
       "first_expected_ts": 1772323200000,
       "first_ts": 1772323200000,
       "gap_count": 0,
       "gaps": [],
-      "last_ts": 1791885600000,
+      "last_ts": 1792072800000,
       "missing_bars": 0,
       "out_of_order": 0,
       "timeframe": "1h"
@@ -13139,12 +13309,12 @@
   },
   "restart_proof": {
     "digests": {
-      "15m:BTC": "497f2e2c1690a1857aff42edc5c3f81252c05057caf4b938be6b64a93afa0179",
-      "15m:ETH": "5725a48873894e1a7c42ef0e6a10e3b70b765a195aa5e13a71d90e639608cc3d",
-      "15m:SOL": "c6666ee4702937e77947cbe34bcbc2ca3d7cca3e49f9cb4b82f39c3494b48240",
-      "1h:BTC": "871a43dc896ebd97db732f09b151023a7a3a60b905c393b7319b532babe12f7f",
-      "1h:ETH": "c4318c8f450a1ef41b837e6a2dc81f5e93e07f373a76ed40c7e503b24ae2d83e",
-      "1h:SOL": "76bd878d09c2c7de6257bc54b4e1c4db613caa83aa0f4145db771956f7b37c6d"
+      "15m:BTC": "bb793bf6130ef6b6e7e7dcc6bc29039946725eb003f926bfb0249cadb93c2095",
+      "15m:ETH": "475dd2e27bb73455e9414d3a6b1d9a7580ca2fb8b2c761b813360fca57192d7b",
+      "15m:SOL": "f749295cb8f68caf298c0f9b1731db11b0bed73e1dd4dd8952c0a8345e8cf4de",
+      "1h:BTC": "388008cc5ad7dfc14aa0010d5390f170ff9b0cbd4a00216539b5b3ec7340ba16",
+      "1h:ETH": "db003200acbc1c17fb1fcd7c423adae2dd7f62544d5592343f7b9875381a205a",
+      "1h:SOL": "db0af873c04166fbb4665fcdd46852ff09724ae5179c7f2b738a8000924e1e6b"
     },
     "digests_unchanged": true,
     "duplicate_refusals": 0,
@@ -13155,13 +13325,13 @@
       "no_new_data"
     ]
   },
-  "run_id": "FWD-EDGE03-20261013T112339Z",
+  "run_id": "FWD-EDGE03-20261015T151637Z",
   "shadow": {
     "arm_summaries": {
       "edge_intra_01:2X_FEES": {
         "arm": "edge_intra_01:2X_FEES",
-        "bars_seen": 574,
-        "candidate_bars_evaluated": 1722,
+        "bars_seen": 782,
+        "candidate_bars_evaluated": 2346,
         "candidate_warmup_bars": 0,
         "metrics": {
           "expectancy_usdt": null,
@@ -13196,8 +13366,8 @@
           "spread_bps": 1.0
         },
         "refusal_mix": {
-          "candidate:trend_filter_fail": 37,
-          "candidate:volume_filter_fail": 22
+          "candidate:trend_filter_fail": 50,
+          "candidate:volume_filter_fail": 25
         },
         "refusals_detail": [
           {
@@ -13944,6 +14114,211 @@
             "reason": "trend_filter_fail",
             "source": "candidate",
             "symbol": "BTC"
+          },
+          {
+            "bar_index": 71288,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1791900900000,
+            "detail": {
+              "htf_close": 83278.01,
+              "htf_ema_slow": 83451.98030440956,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71319,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1791928800000,
+            "detail": {
+              "avg_volume": 96.73322100000001,
+              "volume": 84.49039
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71330,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1791938700000,
+            "detail": {
+              "htf_close": 83169.0,
+              "htf_ema_slow": 83442.78111582114,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71330,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1791938700000,
+            "detail": {
+              "htf_close": 83169.0,
+              "htf_ema_slow": 83442.78111582114,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "ETH"
+          },
+          {
+            "bar_index": 71330,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1791938700000,
+            "detail": {
+              "htf_close": 83169.0,
+              "htf_ema_slow": 83442.78111582114,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71341,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1791948600000,
+            "detail": {
+              "avg_volume": 116.70613700000001,
+              "volume": 128.1544
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71342,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1791949500000,
+            "detail": {
+              "avg_volume": 119.6913395,
+              "volume": 136.19588
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71342,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1791949500000,
+            "detail": {
+              "htf_close": 83650.01,
+              "htf_ema_slow": 83443.46451910136,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71482,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1792075500000,
+            "detail": {
+              "htf_close": 80208.89,
+              "htf_ema_slow": 82990.69808070327,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71482,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1792075500000,
+            "detail": {
+              "htf_close": 80208.89,
+              "htf_ema_slow": 82990.69808070327,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71483,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1792076400000,
+            "detail": {
+              "htf_close": 81871.95,
+              "htf_ema_slow": 82979.56625900473,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71483,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1792076400000,
+            "detail": {
+              "htf_close": 81871.95,
+              "htf_ema_slow": 82979.56625900473,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "ETH"
+          },
+          {
+            "bar_index": 71483,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1792076400000,
+            "detail": {
+              "htf_close": 81871.95,
+              "htf_ema_slow": 82979.56625900473,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71484,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1792077300000,
+            "detail": {
+              "htf_close": 81871.95,
+              "htf_ema_slow": 82979.56625900473,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71484,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1792077300000,
+            "detail": {
+              "htf_close": 81871.95,
+              "htf_ema_slow": 82979.56625900473,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "ETH"
+          },
+          {
+            "bar_index": 71484,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1792077300000,
+            "detail": {
+              "htf_close": 81871.95,
+              "htf_ema_slow": 82979.56625900473,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
           }
         ],
         "scenario": "2X_FEES",
@@ -13952,14 +14327,14 @@
         "status": "observed",
         "timeframe": "15m",
         "trades_detail": [],
-        "window_bars": 1722,
-        "window_end_ts": 1791889200000,
+        "window_bars": 2346,
+        "window_end_ts": 1792076400000,
         "window_start_ts": 1791373500000
       },
       "edge_intra_01:ADVERSE": {
         "arm": "edge_intra_01:ADVERSE",
-        "bars_seen": 574,
-        "candidate_bars_evaluated": 1722,
+        "bars_seen": 782,
+        "candidate_bars_evaluated": 2346,
         "candidate_warmup_bars": 0,
         "metrics": {
           "expectancy_usdt": null,
@@ -13994,8 +14369,8 @@
           "spread_bps": 1.0
         },
         "refusal_mix": {
-          "candidate:trend_filter_fail": 37,
-          "candidate:volume_filter_fail": 22
+          "candidate:trend_filter_fail": 50,
+          "candidate:volume_filter_fail": 25
         },
         "refusals_detail": [
           {
@@ -14742,6 +15117,211 @@
             "reason": "trend_filter_fail",
             "source": "candidate",
             "symbol": "BTC"
+          },
+          {
+            "bar_index": 71288,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1791900900000,
+            "detail": {
+              "htf_close": 83278.01,
+              "htf_ema_slow": 83451.98030440956,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71319,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1791928800000,
+            "detail": {
+              "avg_volume": 96.73322100000001,
+              "volume": 84.49039
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71330,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1791938700000,
+            "detail": {
+              "htf_close": 83169.0,
+              "htf_ema_slow": 83442.78111582114,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71330,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1791938700000,
+            "detail": {
+              "htf_close": 83169.0,
+              "htf_ema_slow": 83442.78111582114,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "ETH"
+          },
+          {
+            "bar_index": 71330,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1791938700000,
+            "detail": {
+              "htf_close": 83169.0,
+              "htf_ema_slow": 83442.78111582114,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71341,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1791948600000,
+            "detail": {
+              "avg_volume": 116.70613700000001,
+              "volume": 128.1544
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71342,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1791949500000,
+            "detail": {
+              "avg_volume": 119.6913395,
+              "volume": 136.19588
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71342,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1791949500000,
+            "detail": {
+              "htf_close": 83650.01,
+              "htf_ema_slow": 83443.46451910136,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71482,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1792075500000,
+            "detail": {
+              "htf_close": 80208.89,
+              "htf_ema_slow": 82990.69808070327,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71482,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1792075500000,
+            "detail": {
+              "htf_close": 80208.89,
+              "htf_ema_slow": 82990.69808070327,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71483,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1792076400000,
+            "detail": {
+              "htf_close": 81871.95,
+              "htf_ema_slow": 82979.56625900473,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71483,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1792076400000,
+            "detail": {
+              "htf_close": 81871.95,
+              "htf_ema_slow": 82979.56625900473,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "ETH"
+          },
+          {
+            "bar_index": 71483,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1792076400000,
+            "detail": {
+              "htf_close": 81871.95,
+              "htf_ema_slow": 82979.56625900473,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71484,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1792077300000,
+            "detail": {
+              "htf_close": 81871.95,
+              "htf_ema_slow": 82979.56625900473,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71484,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1792077300000,
+            "detail": {
+              "htf_close": 81871.95,
+              "htf_ema_slow": 82979.56625900473,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "ETH"
+          },
+          {
+            "bar_index": 71484,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1792077300000,
+            "detail": {
+              "htf_close": 81871.95,
+              "htf_ema_slow": 82979.56625900473,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
           }
         ],
         "scenario": "ADVERSE",
@@ -14750,14 +15330,14 @@
         "status": "observed",
         "timeframe": "15m",
         "trades_detail": [],
-        "window_bars": 1722,
-        "window_end_ts": 1791889200000,
+        "window_bars": 2346,
+        "window_end_ts": 1792076400000,
         "window_start_ts": 1791373500000
       },
       "edge_intra_01:BASE": {
         "arm": "edge_intra_01:BASE",
-        "bars_seen": 574,
-        "candidate_bars_evaluated": 1722,
+        "bars_seen": 782,
+        "candidate_bars_evaluated": 2346,
         "candidate_warmup_bars": 0,
         "metrics": {
           "expectancy_usdt": null,
@@ -14792,8 +15372,8 @@
           "spread_bps": 1.0
         },
         "refusal_mix": {
-          "candidate:trend_filter_fail": 37,
-          "candidate:volume_filter_fail": 22
+          "candidate:trend_filter_fail": 50,
+          "candidate:volume_filter_fail": 25
         },
         "refusals_detail": [
           {
@@ -15540,6 +16120,211 @@
             "reason": "trend_filter_fail",
             "source": "candidate",
             "symbol": "BTC"
+          },
+          {
+            "bar_index": 71288,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1791900900000,
+            "detail": {
+              "htf_close": 83278.01,
+              "htf_ema_slow": 83451.98030440956,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71319,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1791928800000,
+            "detail": {
+              "avg_volume": 96.73322100000001,
+              "volume": 84.49039
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71330,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1791938700000,
+            "detail": {
+              "htf_close": 83169.0,
+              "htf_ema_slow": 83442.78111582114,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71330,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1791938700000,
+            "detail": {
+              "htf_close": 83169.0,
+              "htf_ema_slow": 83442.78111582114,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "ETH"
+          },
+          {
+            "bar_index": 71330,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1791938700000,
+            "detail": {
+              "htf_close": 83169.0,
+              "htf_ema_slow": 83442.78111582114,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71341,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1791948600000,
+            "detail": {
+              "avg_volume": 116.70613700000001,
+              "volume": 128.1544
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71342,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1791949500000,
+            "detail": {
+              "avg_volume": 119.6913395,
+              "volume": 136.19588
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71342,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1791949500000,
+            "detail": {
+              "htf_close": 83650.01,
+              "htf_ema_slow": 83443.46451910136,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71482,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1792075500000,
+            "detail": {
+              "htf_close": 80208.89,
+              "htf_ema_slow": 82990.69808070327,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71482,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1792075500000,
+            "detail": {
+              "htf_close": 80208.89,
+              "htf_ema_slow": 82990.69808070327,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71483,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1792076400000,
+            "detail": {
+              "htf_close": 81871.95,
+              "htf_ema_slow": 82979.56625900473,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71483,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1792076400000,
+            "detail": {
+              "htf_close": 81871.95,
+              "htf_ema_slow": 82979.56625900473,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "ETH"
+          },
+          {
+            "bar_index": 71483,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1792076400000,
+            "detail": {
+              "htf_close": 81871.95,
+              "htf_ema_slow": 82979.56625900473,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71484,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1792077300000,
+            "detail": {
+              "htf_close": 81871.95,
+              "htf_ema_slow": 82979.56625900473,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71484,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1792077300000,
+            "detail": {
+              "htf_close": 81871.95,
+              "htf_ema_slow": 82979.56625900473,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "ETH"
+          },
+          {
+            "bar_index": 71484,
+            "candidate": "edge_intra_01",
+            "decision_ts": 1792077300000,
+            "detail": {
+              "htf_close": 81871.95,
+              "htf_ema_slow": 82979.56625900473,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
           }
         ],
         "scenario": "BASE",
@@ -15548,14 +16333,14 @@
         "status": "observed",
         "timeframe": "15m",
         "trades_detail": [],
-        "window_bars": 1722,
-        "window_end_ts": 1791889200000,
+        "window_bars": 2346,
+        "window_end_ts": 1792076400000,
         "window_start_ts": 1791373500000
       },
       "edge_intra_01r_limit:BASE": {
         "arm": "edge_intra_01r_limit:BASE",
-        "bars_seen": 574,
-        "candidate_bars_evaluated": 1722,
+        "bars_seen": 782,
+        "candidate_bars_evaluated": 2346,
         "candidate_warmup_bars": 0,
         "metrics": {
           "expectancy_usdt": null,
@@ -15590,8 +16375,8 @@
           "spread_bps": 1.0
         },
         "refusal_mix": {
-          "candidate:trend_filter_fail": 37,
-          "candidate:volume_filter_fail": 22
+          "candidate:trend_filter_fail": 50,
+          "candidate:volume_filter_fail": 25
         },
         "refusals_detail": [
           {
@@ -16338,6 +17123,211 @@
             "reason": "trend_filter_fail",
             "source": "candidate",
             "symbol": "BTC"
+          },
+          {
+            "bar_index": 71288,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1791900900000,
+            "detail": {
+              "htf_close": 83278.01,
+              "htf_ema_slow": 83451.98030440956,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71319,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1791928800000,
+            "detail": {
+              "avg_volume": 96.73322100000001,
+              "volume": 84.49039
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71330,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1791938700000,
+            "detail": {
+              "htf_close": 83169.0,
+              "htf_ema_slow": 83442.78111582114,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71330,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1791938700000,
+            "detail": {
+              "htf_close": 83169.0,
+              "htf_ema_slow": 83442.78111582114,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "ETH"
+          },
+          {
+            "bar_index": 71330,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1791938700000,
+            "detail": {
+              "htf_close": 83169.0,
+              "htf_ema_slow": 83442.78111582114,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71341,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1791948600000,
+            "detail": {
+              "avg_volume": 116.70613700000001,
+              "volume": 128.1544
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71342,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1791949500000,
+            "detail": {
+              "avg_volume": 119.6913395,
+              "volume": 136.19588
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71342,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1791949500000,
+            "detail": {
+              "htf_close": 83650.01,
+              "htf_ema_slow": 83443.46451910136,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71482,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1792075500000,
+            "detail": {
+              "htf_close": 80208.89,
+              "htf_ema_slow": 82990.69808070327,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71482,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1792075500000,
+            "detail": {
+              "htf_close": 80208.89,
+              "htf_ema_slow": 82990.69808070327,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71483,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1792076400000,
+            "detail": {
+              "htf_close": 81871.95,
+              "htf_ema_slow": 82979.56625900473,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71483,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1792076400000,
+            "detail": {
+              "htf_close": 81871.95,
+              "htf_ema_slow": 82979.56625900473,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "ETH"
+          },
+          {
+            "bar_index": 71483,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1792076400000,
+            "detail": {
+              "htf_close": 81871.95,
+              "htf_ema_slow": 82979.56625900473,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71484,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1792077300000,
+            "detail": {
+              "htf_close": 81871.95,
+              "htf_ema_slow": 82979.56625900473,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71484,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1792077300000,
+            "detail": {
+              "htf_close": 81871.95,
+              "htf_ema_slow": 82979.56625900473,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "ETH"
+          },
+          {
+            "bar_index": 71484,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1792077300000,
+            "detail": {
+              "htf_close": 81871.95,
+              "htf_ema_slow": 82979.56625900473,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
           }
         ],
         "scenario": "BASE",
@@ -16346,14 +17336,14 @@
         "status": "observed",
         "timeframe": "15m",
         "trades_detail": [],
-        "window_bars": 1722,
-        "window_end_ts": 1791889200000,
+        "window_bars": 2346,
+        "window_end_ts": 1792076400000,
         "window_start_ts": 1791373500000
       },
       "edge_intra_01r_market:2X_FEES": {
         "arm": "edge_intra_01r_market:2X_FEES",
-        "bars_seen": 574,
-        "candidate_bars_evaluated": 1722,
+        "bars_seen": 782,
+        "candidate_bars_evaluated": 2346,
         "candidate_warmup_bars": 0,
         "metrics": {
           "expectancy_usdt": null,
@@ -16388,8 +17378,8 @@
           "spread_bps": 1.0
         },
         "refusal_mix": {
-          "candidate:trend_filter_fail": 37,
-          "candidate:volume_filter_fail": 22
+          "candidate:trend_filter_fail": 50,
+          "candidate:volume_filter_fail": 25
         },
         "refusals_detail": [
           {
@@ -17136,6 +18126,211 @@
             "reason": "trend_filter_fail",
             "source": "candidate",
             "symbol": "BTC"
+          },
+          {
+            "bar_index": 71288,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1791900900000,
+            "detail": {
+              "htf_close": 83278.01,
+              "htf_ema_slow": 83451.98030440956,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71319,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1791928800000,
+            "detail": {
+              "avg_volume": 96.73322100000001,
+              "volume": 84.49039
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71330,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1791938700000,
+            "detail": {
+              "htf_close": 83169.0,
+              "htf_ema_slow": 83442.78111582114,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71330,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1791938700000,
+            "detail": {
+              "htf_close": 83169.0,
+              "htf_ema_slow": 83442.78111582114,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "ETH"
+          },
+          {
+            "bar_index": 71330,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1791938700000,
+            "detail": {
+              "htf_close": 83169.0,
+              "htf_ema_slow": 83442.78111582114,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71341,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1791948600000,
+            "detail": {
+              "avg_volume": 116.70613700000001,
+              "volume": 128.1544
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71342,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1791949500000,
+            "detail": {
+              "avg_volume": 119.6913395,
+              "volume": 136.19588
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71342,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1791949500000,
+            "detail": {
+              "htf_close": 83650.01,
+              "htf_ema_slow": 83443.46451910136,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71482,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1792075500000,
+            "detail": {
+              "htf_close": 80208.89,
+              "htf_ema_slow": 82990.69808070327,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71482,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1792075500000,
+            "detail": {
+              "htf_close": 80208.89,
+              "htf_ema_slow": 82990.69808070327,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71483,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1792076400000,
+            "detail": {
+              "htf_close": 81871.95,
+              "htf_ema_slow": 82979.56625900473,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71483,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1792076400000,
+            "detail": {
+              "htf_close": 81871.95,
+              "htf_ema_slow": 82979.56625900473,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "ETH"
+          },
+          {
+            "bar_index": 71483,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1792076400000,
+            "detail": {
+              "htf_close": 81871.95,
+              "htf_ema_slow": 82979.56625900473,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71484,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1792077300000,
+            "detail": {
+              "htf_close": 81871.95,
+              "htf_ema_slow": 82979.56625900473,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71484,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1792077300000,
+            "detail": {
+              "htf_close": 81871.95,
+              "htf_ema_slow": 82979.56625900473,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "ETH"
+          },
+          {
+            "bar_index": 71484,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1792077300000,
+            "detail": {
+              "htf_close": 81871.95,
+              "htf_ema_slow": 82979.56625900473,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
           }
         ],
         "scenario": "2X_FEES",
@@ -17144,14 +18339,14 @@
         "status": "observed",
         "timeframe": "15m",
         "trades_detail": [],
-        "window_bars": 1722,
-        "window_end_ts": 1791889200000,
+        "window_bars": 2346,
+        "window_end_ts": 1792076400000,
         "window_start_ts": 1791373500000
       },
       "edge_intra_01r_market:ADVERSE": {
         "arm": "edge_intra_01r_market:ADVERSE",
-        "bars_seen": 574,
-        "candidate_bars_evaluated": 1722,
+        "bars_seen": 782,
+        "candidate_bars_evaluated": 2346,
         "candidate_warmup_bars": 0,
         "metrics": {
           "expectancy_usdt": null,
@@ -17186,8 +18381,8 @@
           "spread_bps": 1.0
         },
         "refusal_mix": {
-          "candidate:trend_filter_fail": 37,
-          "candidate:volume_filter_fail": 22
+          "candidate:trend_filter_fail": 50,
+          "candidate:volume_filter_fail": 25
         },
         "refusals_detail": [
           {
@@ -17934,6 +19129,211 @@
             "reason": "trend_filter_fail",
             "source": "candidate",
             "symbol": "BTC"
+          },
+          {
+            "bar_index": 71288,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1791900900000,
+            "detail": {
+              "htf_close": 83278.01,
+              "htf_ema_slow": 83451.98030440956,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71319,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1791928800000,
+            "detail": {
+              "avg_volume": 96.73322100000001,
+              "volume": 84.49039
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71330,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1791938700000,
+            "detail": {
+              "htf_close": 83169.0,
+              "htf_ema_slow": 83442.78111582114,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71330,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1791938700000,
+            "detail": {
+              "htf_close": 83169.0,
+              "htf_ema_slow": 83442.78111582114,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "ETH"
+          },
+          {
+            "bar_index": 71330,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1791938700000,
+            "detail": {
+              "htf_close": 83169.0,
+              "htf_ema_slow": 83442.78111582114,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71341,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1791948600000,
+            "detail": {
+              "avg_volume": 116.70613700000001,
+              "volume": 128.1544
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71342,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1791949500000,
+            "detail": {
+              "avg_volume": 119.6913395,
+              "volume": 136.19588
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71342,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1791949500000,
+            "detail": {
+              "htf_close": 83650.01,
+              "htf_ema_slow": 83443.46451910136,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71482,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1792075500000,
+            "detail": {
+              "htf_close": 80208.89,
+              "htf_ema_slow": 82990.69808070327,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71482,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1792075500000,
+            "detail": {
+              "htf_close": 80208.89,
+              "htf_ema_slow": 82990.69808070327,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71483,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1792076400000,
+            "detail": {
+              "htf_close": 81871.95,
+              "htf_ema_slow": 82979.56625900473,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71483,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1792076400000,
+            "detail": {
+              "htf_close": 81871.95,
+              "htf_ema_slow": 82979.56625900473,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "ETH"
+          },
+          {
+            "bar_index": 71483,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1792076400000,
+            "detail": {
+              "htf_close": 81871.95,
+              "htf_ema_slow": 82979.56625900473,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71484,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1792077300000,
+            "detail": {
+              "htf_close": 81871.95,
+              "htf_ema_slow": 82979.56625900473,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71484,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1792077300000,
+            "detail": {
+              "htf_close": 81871.95,
+              "htf_ema_slow": 82979.56625900473,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "ETH"
+          },
+          {
+            "bar_index": 71484,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1792077300000,
+            "detail": {
+              "htf_close": 81871.95,
+              "htf_ema_slow": 82979.56625900473,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
           }
         ],
         "scenario": "ADVERSE",
@@ -17942,14 +19342,14 @@
         "status": "observed",
         "timeframe": "15m",
         "trades_detail": [],
-        "window_bars": 1722,
-        "window_end_ts": 1791889200000,
+        "window_bars": 2346,
+        "window_end_ts": 1792076400000,
         "window_start_ts": 1791373500000
       },
       "edge_intra_01r_market:BASE": {
         "arm": "edge_intra_01r_market:BASE",
-        "bars_seen": 574,
-        "candidate_bars_evaluated": 1722,
+        "bars_seen": 782,
+        "candidate_bars_evaluated": 2346,
         "candidate_warmup_bars": 0,
         "metrics": {
           "expectancy_usdt": null,
@@ -17984,8 +19384,8 @@
           "spread_bps": 1.0
         },
         "refusal_mix": {
-          "candidate:trend_filter_fail": 37,
-          "candidate:volume_filter_fail": 22
+          "candidate:trend_filter_fail": 50,
+          "candidate:volume_filter_fail": 25
         },
         "refusals_detail": [
           {
@@ -18732,6 +20132,211 @@
             "reason": "trend_filter_fail",
             "source": "candidate",
             "symbol": "BTC"
+          },
+          {
+            "bar_index": 71288,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1791900900000,
+            "detail": {
+              "htf_close": 83278.01,
+              "htf_ema_slow": 83451.98030440956,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71319,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1791928800000,
+            "detail": {
+              "avg_volume": 96.73322100000001,
+              "volume": 84.49039
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71330,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1791938700000,
+            "detail": {
+              "htf_close": 83169.0,
+              "htf_ema_slow": 83442.78111582114,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71330,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1791938700000,
+            "detail": {
+              "htf_close": 83169.0,
+              "htf_ema_slow": 83442.78111582114,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "ETH"
+          },
+          {
+            "bar_index": 71330,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1791938700000,
+            "detail": {
+              "htf_close": 83169.0,
+              "htf_ema_slow": 83442.78111582114,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71341,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1791948600000,
+            "detail": {
+              "avg_volume": 116.70613700000001,
+              "volume": 128.1544
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71342,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1791949500000,
+            "detail": {
+              "avg_volume": 119.6913395,
+              "volume": 136.19588
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71342,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1791949500000,
+            "detail": {
+              "htf_close": 83650.01,
+              "htf_ema_slow": 83443.46451910136,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71482,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1792075500000,
+            "detail": {
+              "htf_close": 80208.89,
+              "htf_ema_slow": 82990.69808070327,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71482,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1792075500000,
+            "detail": {
+              "htf_close": 80208.89,
+              "htf_ema_slow": 82990.69808070327,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71483,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1792076400000,
+            "detail": {
+              "htf_close": 81871.95,
+              "htf_ema_slow": 82979.56625900473,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71483,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1792076400000,
+            "detail": {
+              "htf_close": 81871.95,
+              "htf_ema_slow": 82979.56625900473,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "ETH"
+          },
+          {
+            "bar_index": 71483,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1792076400000,
+            "detail": {
+              "htf_close": 81871.95,
+              "htf_ema_slow": 82979.56625900473,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71484,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1792077300000,
+            "detail": {
+              "htf_close": 81871.95,
+              "htf_ema_slow": 82979.56625900473,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71484,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1792077300000,
+            "detail": {
+              "htf_close": 81871.95,
+              "htf_ema_slow": 82979.56625900473,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "ETH"
+          },
+          {
+            "bar_index": 71484,
+            "candidate": "edge_intra_01r",
+            "decision_ts": 1792077300000,
+            "detail": {
+              "htf_close": 81871.95,
+              "htf_ema_slow": 82979.56625900473,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
           }
         ],
         "scenario": "BASE",
@@ -18740,14 +20345,14 @@
         "status": "observed",
         "timeframe": "15m",
         "trades_detail": [],
-        "window_bars": 1722,
-        "window_end_ts": 1791889200000,
+        "window_bars": 2346,
+        "window_end_ts": 1792076400000,
         "window_start_ts": 1791373500000
       },
       "edge_intra_02:2X_FEES": {
         "arm": "edge_intra_02:2X_FEES",
-        "bars_seen": 574,
-        "candidate_bars_evaluated": 1722,
+        "bars_seen": 782,
+        "candidate_bars_evaluated": 2346,
         "candidate_warmup_bars": 0,
         "metrics": {
           "expectancy_usdt": null,
@@ -18782,8 +20387,8 @@
           "spread_bps": 1.0
         },
         "refusal_mix": {
-          "candidate:trend_filter_fail": 37,
-          "candidate:volume_filter_fail": 22
+          "candidate:trend_filter_fail": 50,
+          "candidate:volume_filter_fail": 25
         },
         "refusals_detail": [
           {
@@ -19530,6 +21135,211 @@
             "reason": "trend_filter_fail",
             "source": "candidate",
             "symbol": "BTC"
+          },
+          {
+            "bar_index": 71288,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1791900900000,
+            "detail": {
+              "htf_close": 83278.01,
+              "htf_ema_slow": 83451.98030440956,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71319,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1791928800000,
+            "detail": {
+              "avg_volume": 96.73322100000001,
+              "volume": 84.49039
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71330,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1791938700000,
+            "detail": {
+              "htf_close": 83169.0,
+              "htf_ema_slow": 83442.78111582114,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71330,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1791938700000,
+            "detail": {
+              "htf_close": 83169.0,
+              "htf_ema_slow": 83442.78111582114,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "ETH"
+          },
+          {
+            "bar_index": 71330,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1791938700000,
+            "detail": {
+              "htf_close": 83169.0,
+              "htf_ema_slow": 83442.78111582114,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71341,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1791948600000,
+            "detail": {
+              "avg_volume": 116.70613700000001,
+              "volume": 128.1544
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71342,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1791949500000,
+            "detail": {
+              "avg_volume": 119.6913395,
+              "volume": 136.19588
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71342,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1791949500000,
+            "detail": {
+              "htf_close": 83650.01,
+              "htf_ema_slow": 83443.46451910136,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71482,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1792075500000,
+            "detail": {
+              "htf_close": 80208.89,
+              "htf_ema_slow": 82990.69808070327,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71482,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1792075500000,
+            "detail": {
+              "htf_close": 80208.89,
+              "htf_ema_slow": 82990.69808070327,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71483,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1792076400000,
+            "detail": {
+              "htf_close": 81871.95,
+              "htf_ema_slow": 82979.56625900473,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71483,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1792076400000,
+            "detail": {
+              "htf_close": 81871.95,
+              "htf_ema_slow": 82979.56625900473,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "ETH"
+          },
+          {
+            "bar_index": 71483,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1792076400000,
+            "detail": {
+              "htf_close": 81871.95,
+              "htf_ema_slow": 82979.56625900473,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71484,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1792077300000,
+            "detail": {
+              "htf_close": 81871.95,
+              "htf_ema_slow": 82979.56625900473,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71484,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1792077300000,
+            "detail": {
+              "htf_close": 81871.95,
+              "htf_ema_slow": 82979.56625900473,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "ETH"
+          },
+          {
+            "bar_index": 71484,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1792077300000,
+            "detail": {
+              "htf_close": 81871.95,
+              "htf_ema_slow": 82979.56625900473,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
           }
         ],
         "scenario": "2X_FEES",
@@ -19538,14 +21348,14 @@
         "status": "observed",
         "timeframe": "15m",
         "trades_detail": [],
-        "window_bars": 1722,
-        "window_end_ts": 1791889200000,
+        "window_bars": 2346,
+        "window_end_ts": 1792076400000,
         "window_start_ts": 1791373500000
       },
       "edge_intra_02:ADVERSE": {
         "arm": "edge_intra_02:ADVERSE",
-        "bars_seen": 574,
-        "candidate_bars_evaluated": 1722,
+        "bars_seen": 782,
+        "candidate_bars_evaluated": 2346,
         "candidate_warmup_bars": 0,
         "metrics": {
           "expectancy_usdt": null,
@@ -19580,8 +21390,8 @@
           "spread_bps": 1.0
         },
         "refusal_mix": {
-          "candidate:trend_filter_fail": 37,
-          "candidate:volume_filter_fail": 22
+          "candidate:trend_filter_fail": 50,
+          "candidate:volume_filter_fail": 25
         },
         "refusals_detail": [
           {
@@ -20328,6 +22138,211 @@
             "reason": "trend_filter_fail",
             "source": "candidate",
             "symbol": "BTC"
+          },
+          {
+            "bar_index": 71288,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1791900900000,
+            "detail": {
+              "htf_close": 83278.01,
+              "htf_ema_slow": 83451.98030440956,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71319,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1791928800000,
+            "detail": {
+              "avg_volume": 96.73322100000001,
+              "volume": 84.49039
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71330,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1791938700000,
+            "detail": {
+              "htf_close": 83169.0,
+              "htf_ema_slow": 83442.78111582114,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71330,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1791938700000,
+            "detail": {
+              "htf_close": 83169.0,
+              "htf_ema_slow": 83442.78111582114,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "ETH"
+          },
+          {
+            "bar_index": 71330,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1791938700000,
+            "detail": {
+              "htf_close": 83169.0,
+              "htf_ema_slow": 83442.78111582114,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71341,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1791948600000,
+            "detail": {
+              "avg_volume": 116.70613700000001,
+              "volume": 128.1544
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71342,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1791949500000,
+            "detail": {
+              "avg_volume": 119.6913395,
+              "volume": 136.19588
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71342,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1791949500000,
+            "detail": {
+              "htf_close": 83650.01,
+              "htf_ema_slow": 83443.46451910136,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71482,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1792075500000,
+            "detail": {
+              "htf_close": 80208.89,
+              "htf_ema_slow": 82990.69808070327,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71482,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1792075500000,
+            "detail": {
+              "htf_close": 80208.89,
+              "htf_ema_slow": 82990.69808070327,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71483,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1792076400000,
+            "detail": {
+              "htf_close": 81871.95,
+              "htf_ema_slow": 82979.56625900473,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71483,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1792076400000,
+            "detail": {
+              "htf_close": 81871.95,
+              "htf_ema_slow": 82979.56625900473,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "ETH"
+          },
+          {
+            "bar_index": 71483,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1792076400000,
+            "detail": {
+              "htf_close": 81871.95,
+              "htf_ema_slow": 82979.56625900473,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71484,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1792077300000,
+            "detail": {
+              "htf_close": 81871.95,
+              "htf_ema_slow": 82979.56625900473,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71484,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1792077300000,
+            "detail": {
+              "htf_close": 81871.95,
+              "htf_ema_slow": 82979.56625900473,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "ETH"
+          },
+          {
+            "bar_index": 71484,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1792077300000,
+            "detail": {
+              "htf_close": 81871.95,
+              "htf_ema_slow": 82979.56625900473,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
           }
         ],
         "scenario": "ADVERSE",
@@ -20336,14 +22351,14 @@
         "status": "observed",
         "timeframe": "15m",
         "trades_detail": [],
-        "window_bars": 1722,
-        "window_end_ts": 1791889200000,
+        "window_bars": 2346,
+        "window_end_ts": 1792076400000,
         "window_start_ts": 1791373500000
       },
       "edge_intra_02:BASE": {
         "arm": "edge_intra_02:BASE",
-        "bars_seen": 574,
-        "candidate_bars_evaluated": 1722,
+        "bars_seen": 782,
+        "candidate_bars_evaluated": 2346,
         "candidate_warmup_bars": 0,
         "metrics": {
           "expectancy_usdt": null,
@@ -20378,8 +22393,8 @@
           "spread_bps": 1.0
         },
         "refusal_mix": {
-          "candidate:trend_filter_fail": 37,
-          "candidate:volume_filter_fail": 22
+          "candidate:trend_filter_fail": 50,
+          "candidate:volume_filter_fail": 25
         },
         "refusals_detail": [
           {
@@ -21126,6 +23141,211 @@
             "reason": "trend_filter_fail",
             "source": "candidate",
             "symbol": "BTC"
+          },
+          {
+            "bar_index": 71288,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1791900900000,
+            "detail": {
+              "htf_close": 83278.01,
+              "htf_ema_slow": 83451.98030440956,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71319,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1791928800000,
+            "detail": {
+              "avg_volume": 96.73322100000001,
+              "volume": 84.49039
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71330,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1791938700000,
+            "detail": {
+              "htf_close": 83169.0,
+              "htf_ema_slow": 83442.78111582114,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71330,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1791938700000,
+            "detail": {
+              "htf_close": 83169.0,
+              "htf_ema_slow": 83442.78111582114,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "ETH"
+          },
+          {
+            "bar_index": 71330,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1791938700000,
+            "detail": {
+              "htf_close": 83169.0,
+              "htf_ema_slow": 83442.78111582114,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71341,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1791948600000,
+            "detail": {
+              "avg_volume": 116.70613700000001,
+              "volume": 128.1544
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71342,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1791949500000,
+            "detail": {
+              "avg_volume": 119.6913395,
+              "volume": 136.19588
+            },
+            "reason": "volume_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71342,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1791949500000,
+            "detail": {
+              "htf_close": 83650.01,
+              "htf_ema_slow": 83443.46451910136,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71482,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1792075500000,
+            "detail": {
+              "htf_close": 80208.89,
+              "htf_ema_slow": 82990.69808070327,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71482,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1792075500000,
+            "detail": {
+              "htf_close": 80208.89,
+              "htf_ema_slow": 82990.69808070327,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71483,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1792076400000,
+            "detail": {
+              "htf_close": 81871.95,
+              "htf_ema_slow": 82979.56625900473,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71483,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1792076400000,
+            "detail": {
+              "htf_close": 81871.95,
+              "htf_ema_slow": 82979.56625900473,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "ETH"
+          },
+          {
+            "bar_index": 71483,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1792076400000,
+            "detail": {
+              "htf_close": 81871.95,
+              "htf_ema_slow": 82979.56625900473,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
+          },
+          {
+            "bar_index": 71484,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1792077300000,
+            "detail": {
+              "htf_close": 81871.95,
+              "htf_ema_slow": 82979.56625900473,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "BTC"
+          },
+          {
+            "bar_index": 71484,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1792077300000,
+            "detail": {
+              "htf_close": 81871.95,
+              "htf_ema_slow": 82979.56625900473,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "ETH"
+          },
+          {
+            "bar_index": 71484,
+            "candidate": "edge_intra_02",
+            "decision_ts": 1792077300000,
+            "detail": {
+              "htf_close": 81871.95,
+              "htf_ema_slow": 82979.56625900473,
+              "trend": "DOWN"
+            },
+            "reason": "trend_filter_fail",
+            "source": "candidate",
+            "symbol": "SOL"
           }
         ],
         "scenario": "BASE",
@@ -21134,29 +23354,29 @@
         "status": "observed",
         "timeframe": "15m",
         "trades_detail": [],
-        "window_bars": 1722,
-        "window_end_ts": 1791889200000,
+        "window_bars": 2346,
+        "window_end_ts": 1792076400000,
         "window_start_ts": 1791373500000
       },
       "edge_trend_01_1d:2X_FEES": {
         "arm": "edge_trend_01_1d:2X_FEES",
-        "bars_seen": 226,
-        "candidate_bars_evaluated": 678,
+        "bars_seen": 228,
+        "candidate_bars_evaluated": 684,
         "candidate_warmup_bars": 0,
         "metrics": {
-          "expectancy_usdt": -18.668559,
-          "exposure_pct_of_time": 8.702065,
-          "fees_usdt": 2.687114,
-          "final_equity": 9943.994323,
-          "gross_usdt": -53.063923,
+          "expectancy_usdt": -19.698028,
+          "exposure_pct_of_time": 9.210526,
+          "fees_usdt": 2.680925,
+          "final_equity": 9940.905915,
+          "gross_usdt": -56.159106,
           "hypothetical": true,
-          "largest_trade_share_of_net": 0.461637,
-          "max_drawdown_pct": 0.670051,
-          "net_usdt": -56.005677,
+          "largest_trade_share_of_net": 0.437511,
+          "max_drawdown_pct": 0.700901,
+          "net_usdt": -59.094085,
           "order_sent": false,
-          "price_costs_usdt": 0.25464,
+          "price_costs_usdt": 0.254054,
           "profit_factor": 0.0,
-          "return_pct": -0.560057,
+          "return_pct": -0.590941,
           "trades": 3,
           "win_rate_pct": 0.0
         },
@@ -21805,32 +24025,32 @@
             "arm": "edge_trend_01_1d:2X_FEES",
             "asset": "SOL",
             "candidate": "edge_trend_01",
-            "cost_bps_realised": 42.430817,
+            "cost_bps_realised": 42.145381,
             "decision_ts": 1789776000000,
-            "duration_min": 33120.0,
+            "duration_min": 36000.0,
             "entry_bar": 2219,
             "entry_fill": 112.74136365,
             "entry_mid": 112.72,
             "entry_ts": 1789776000000,
-            "exit_bar": 2242,
-            "exit_fill": 105.73995547,
-            "exit_mid": 105.76,
+            "exit_bar": 2244,
+            "exit_fill": 104.27023408,
+            "exit_mid": 104.29,
             "exit_reason": "end_of_data",
-            "exit_ts": 1791763200000,
+            "exit_ts": 1791936000000,
             "expected_cost_bps": 43.790569,
             "expected_gross_bps": 1287.957518,
-            "fees": 0.75135154,
-            "gross": -11.96762897,
+            "fees": 0.74629721,
+            "gross": -14.49527475,
             "hypothetical": true,
-            "mae": 7.31,
-            "mae_bps": 648.509581,
+            "mae": 11.03,
+            "mae_bps": 978.530873,
             "mfe": 12.23,
             "mfe_bps": 1084.989354,
-            "net": -12.79018134,
+            "net": -15.31229372,
             "notional": 193.8573,
             "order_sent": false,
             "planned_risk_usdt": 25.0,
-            "price_costs": 0.07120082,
+            "price_costs": 0.07072176,
             "qty": 1.7194869214,
             "regime": "UP",
             "side": "LONG",
@@ -21841,32 +24061,32 @@
             "arm": "edge_trend_01_1d:2X_FEES",
             "asset": "BTC",
             "candidate": "edge_trend_01",
-            "cost_bps_realised": 42.576974,
+            "cost_bps_realised": 42.534526,
             "decision_ts": 1790035200000,
-            "duration_min": 28800.0,
+            "duration_min": 31680.0,
             "entry_bar": 2801,
             "entry_fill": 86636.42695803,
             "entry_mid": 86620.01,
             "entry_ts": 1790035200000,
-            "exit_bar": 2821,
-            "exit_fill": 81834.48709467,
-            "exit_mid": 81850.0,
+            "exit_bar": 2823,
+            "exit_fill": 81666.52893356,
+            "exit_mid": 81682.01,
             "exit_reason": "end_of_data",
-            "exit_ts": 1791763200000,
+            "exit_ts": 1791936000000,
             "expected_cost_bps": 43.790569,
             "expected_gross_bps": 853.260382,
-            "fees": 1.13832438,
-            "gross": -16.11500327,
+            "fees": 1.13718952,
+            "gross": -16.68254074,
             "hypothetical": true,
             "mae": 6226.45,
             "mae_bps": 718.823514,
             "mfe": 658.53,
             "mfe_bps": 76.025159,
-            "net": -17.3611995,
+            "net": -17.92749455,
             "notional": 292.692532,
             "order_sent": false,
             "planned_risk_usdt": 25.025056,
-            "price_costs": 0.10787186,
+            "price_costs": 0.1077643,
             "qty": 0.0033784003,
             "regime": "UP",
             "side": "LONG",
@@ -21874,29 +24094,29 @@
             "stop_initial": 79229.05857143
           }
         ],
-        "window_bars": 678,
-        "window_end_ts": 1791763200000,
+        "window_bars": 684,
+        "window_end_ts": 1791936000000,
         "window_start_ts": 1772323200000
       },
       "edge_trend_01_1d:ADVERSE": {
         "arm": "edge_trend_01_1d:ADVERSE",
-        "bars_seen": 226,
-        "candidate_bars_evaluated": 678,
+        "bars_seen": 228,
+        "candidate_bars_evaluated": 684,
         "candidate_warmup_bars": 0,
         "metrics": {
-          "expectancy_usdt": -18.744693,
-          "exposure_pct_of_time": 8.702065,
-          "fees_usdt": 2.679919,
-          "final_equity": 9943.765921,
-          "gross_usdt": -52.926287,
+          "expectancy_usdt": -19.771445,
+          "exposure_pct_of_time": 9.210526,
+          "fees_usdt": 2.673746,
+          "final_equity": 9940.685664,
+          "gross_usdt": -56.014163,
           "hypothetical": true,
-          "largest_trade_share_of_net": 0.460646,
-          "max_drawdown_pct": 0.670179,
-          "net_usdt": -56.234079,
+          "largest_trade_share_of_net": 0.436724,
+          "max_drawdown_pct": 0.700948,
+          "net_usdt": -59.314336,
           "order_sent": false,
-          "price_costs_usdt": 0.627874,
+          "price_costs_usdt": 0.626427,
           "profit_factor": 0.0,
-          "return_pct": -0.562341,
+          "return_pct": -0.593143,
           "trades": 3,
           "win_rate_pct": 0.0
         },
@@ -22545,32 +24765,32 @@
             "arm": "edge_trend_01_1d:ADVERSE",
             "asset": "SOL",
             "candidate": "edge_trend_01",
-            "cost_bps_realised": 47.825626,
+            "cost_bps_realised": 47.503966,
             "decision_ts": 1789776000000,
-            "duration_min": 33120.0,
+            "duration_min": 36000.0,
             "entry_bar": 2219,
             "entry_fill": 112.77281895,
             "entry_mid": 112.72,
             "entry_ts": 1789776000000,
-            "exit_bar": 2242,
-            "exit_fill": 105.71044241,
-            "exit_mid": 105.76,
+            "exit_bar": 2244,
+            "exit_fill": 104.24113123,
+            "exit_mid": 104.29,
             "exit_reason": "end_of_data",
-            "exit_ts": 1791763200000,
+            "exit_ts": 1791936000000,
             "expected_cost_bps": 49.371708,
             "expected_gross_bps": 1287.957518,
-            "fees": 0.74973618,
-            "gross": -11.94179315,
+            "fees": 0.74469417,
+            "gross": -14.46398223,
             "hypothetical": true,
-            "mae": 7.31,
-            "mae_bps": 648.509581,
+            "mae": 11.03,
+            "mae_bps": 978.530873,
             "mfe": 12.23,
             "mfe_bps": 1084.989354,
-            "net": -12.86718443,
+            "net": -15.38314963,
             "notional": 193.49277,
             "order_sent": false,
             "planned_risk_usdt": 25.0,
-            "price_costs": 0.1756551,
+            "price_costs": 0.17447324,
             "qty": 1.7157748786,
             "regime": "UP",
             "side": "LONG",
@@ -22581,32 +24801,32 @@
             "arm": "edge_trend_01_1d:ADVERSE",
             "asset": "BTC",
             "candidate": "edge_trend_01",
-            "cost_bps_realised": 47.990331,
+            "cost_bps_realised": 47.942496,
             "decision_ts": 1790035200000,
-            "duration_min": 28800.0,
+            "duration_min": 31680.0,
             "entry_bar": 2801,
             "entry_fill": 86660.5988731,
             "entry_mid": 86620.01,
             "entry_ts": 1790035200000,
-            "exit_bar": 2821,
-            "exit_fill": 81811.64628401,
-            "exit_mid": 81850.0,
+            "exit_bar": 2823,
+            "exit_fill": 81643.73500167,
+            "exit_mid": 81682.01,
             "exit_reason": "end_of_data",
-            "exit_ts": 1791763200000,
+            "exit_ts": 1791936000000,
             "expected_cost_bps": 49.371708,
             "expected_gross_bps": 853.260382,
-            "fees": 1.13462224,
-            "gross": -16.0624661,
+            "fees": 1.1334914,
+            "gross": -16.62815331,
             "hypothetical": true,
             "mae": 6226.45,
             "mae_bps": 718.823514,
             "mfe": 658.53,
             "mfe_bps": 76.025159,
-            "net": -17.46291853,
+            "net": -18.02720983,
             "notional": 291.819709,
             "order_sent": false,
             "planned_risk_usdt": 25.024867,
-            "price_costs": 0.26583019,
+            "price_costs": 0.26556512,
             "qty": 0.0033673863,
             "regime": "UP",
             "side": "LONG",
@@ -22614,29 +24834,29 @@
             "stop_initial": 79229.05857143
           }
         ],
-        "window_bars": 678,
-        "window_end_ts": 1791763200000,
+        "window_bars": 684,
+        "window_end_ts": 1791936000000,
         "window_start_ts": 1772323200000
       },
       "edge_trend_01_1d:BASE": {
         "arm": "edge_trend_01_1d:BASE",
-        "bars_seen": 226,
-        "candidate_bars_evaluated": 678,
+        "bars_seen": 228,
+        "candidate_bars_evaluated": 684,
         "candidate_warmup_bars": 0,
         "metrics": {
-          "expectancy_usdt": -18.220707,
-          "exposure_pct_of_time": 8.702065,
-          "fees_usdt": 1.343557,
-          "final_equity": 9945.33788,
-          "gross_usdt": -53.063923,
+          "expectancy_usdt": -19.251207,
+          "exposure_pct_of_time": 9.210526,
+          "fees_usdt": 1.340462,
+          "final_equity": 9942.246378,
+          "gross_usdt": -56.159106,
           "hypothetical": true,
-          "largest_trade_share_of_net": 0.46569,
-          "max_drawdown_pct": 0.656631,
-          "net_usdt": -54.66212,
+          "largest_trade_share_of_net": 0.440762,
+          "max_drawdown_pct": 0.687511,
+          "net_usdt": -57.753622,
           "order_sent": false,
-          "price_costs_usdt": 0.25464,
+          "price_costs_usdt": 0.254054,
           "profit_factor": 0.0,
-          "return_pct": -0.546621,
+          "return_pct": -0.577536,
           "trades": 3,
           "win_rate_pct": 0.0
         },
@@ -23285,32 +25505,32 @@
             "arm": "edge_trend_01_1d:BASE",
             "asset": "SOL",
             "candidate": "edge_trend_01",
-            "cost_bps_realised": 23.051832,
+            "cost_bps_realised": 22.896758,
             "decision_ts": 1789776000000,
-            "duration_min": 33120.0,
+            "duration_min": 36000.0,
             "entry_bar": 2219,
             "entry_fill": 112.74136365,
             "entry_mid": 112.72,
             "entry_ts": 1789776000000,
-            "exit_bar": 2242,
-            "exit_fill": 105.73995547,
-            "exit_mid": 105.76,
+            "exit_bar": 2244,
+            "exit_fill": 104.27023408,
+            "exit_mid": 104.29,
             "exit_reason": "end_of_data",
-            "exit_ts": 1791763200000,
+            "exit_ts": 1791936000000,
             "expected_cost_bps": 23.790569,
             "expected_gross_bps": 1287.957518,
-            "fees": 0.37567577,
-            "gross": -11.96762897,
+            "fees": 0.3731486,
+            "gross": -14.49527475,
             "hypothetical": true,
-            "mae": 7.31,
-            "mae_bps": 648.509581,
+            "mae": 11.03,
+            "mae_bps": 978.530873,
             "mfe": 12.23,
             "mfe_bps": 1084.989354,
-            "net": -12.41450557,
+            "net": -14.93914512,
             "notional": 193.8573,
             "order_sent": false,
             "planned_risk_usdt": 25.0,
-            "price_costs": 0.07120082,
+            "price_costs": 0.07072176,
             "qty": 1.7194869214,
             "regime": "UP",
             "side": "LONG",
@@ -23321,32 +25541,32 @@
             "arm": "edge_trend_01_1d:BASE",
             "asset": "BTC",
             "candidate": "edge_trend_01",
-            "cost_bps_realised": 23.131238,
+            "cost_bps_realised": 23.108176,
             "decision_ts": 1790035200000,
-            "duration_min": 28800.0,
+            "duration_min": 31680.0,
             "entry_bar": 2801,
             "entry_fill": 86636.42695803,
             "entry_mid": 86620.01,
             "entry_ts": 1790035200000,
-            "exit_bar": 2821,
-            "exit_fill": 81834.48709467,
-            "exit_mid": 81850.0,
+            "exit_bar": 2823,
+            "exit_fill": 81666.52893356,
+            "exit_mid": 81682.01,
             "exit_reason": "end_of_data",
-            "exit_ts": 1791763200000,
+            "exit_ts": 1791936000000,
             "expected_cost_bps": 23.790569,
             "expected_gross_bps": 853.260382,
-            "fees": 0.56916219,
-            "gross": -16.11500327,
+            "fees": 0.56859476,
+            "gross": -16.68254074,
             "hypothetical": true,
             "mae": 6226.45,
             "mae_bps": 718.823514,
             "mfe": 658.53,
             "mfe_bps": 76.025159,
-            "net": -16.79203732,
+            "net": -17.35889979,
             "notional": 292.692532,
             "order_sent": false,
             "planned_risk_usdt": 25.025056,
-            "price_costs": 0.10787186,
+            "price_costs": 0.1077643,
             "qty": 0.0033784003,
             "regime": "UP",
             "side": "LONG",
@@ -23354,18 +25574,18 @@
             "stop_initial": 79229.05857143
           }
         ],
-        "window_bars": 678,
-        "window_end_ts": 1791763200000,
+        "window_bars": 684,
+        "window_end_ts": 1791936000000,
         "window_start_ts": 1772323200000
       },
       "edge_trend_01_4h:2X_FEES": {
         "arm": "edge_trend_01_4h:2X_FEES",
-        "bars_seen": 1358,
-        "candidate_bars_evaluated": 4074,
+        "bars_seen": 1371,
+        "candidate_bars_evaluated": 4113,
         "candidate_warmup_bars": 0,
         "metrics": {
           "expectancy_usdt": -2.379686,
-          "exposure_pct_of_time": 28.841433,
+          "exposure_pct_of_time": 28.567955,
           "fees_usdt": 59.203482,
           "final_equity": 9926.229741,
           "gross_usdt": -8.956405,
@@ -29247,18 +31467,18 @@
             "stop_initial": 82504.21928571
           }
         ],
-        "window_bars": 4074,
-        "window_end_ts": 1791864000000,
+        "window_bars": 4113,
+        "window_end_ts": 1792051200000,
         "window_start_ts": 1772323200000
       },
       "edge_trend_01_4h:ADVERSE": {
         "arm": "edge_trend_01_4h:ADVERSE",
-        "bars_seen": 1358,
-        "candidate_bars_evaluated": 4074,
+        "bars_seen": 1371,
+        "candidate_bars_evaluated": 4113,
         "candidate_warmup_bars": 0,
         "metrics": {
           "expectancy_usdt": -2.322915,
-          "exposure_pct_of_time": 30.142366,
+          "exposure_pct_of_time": 29.856552,
           "fees_usdt": 57.155822,
           "final_equity": 9930.312554,
           "gross_usdt": 0.859568,
@@ -35104,18 +37324,18 @@
             "stop_initial": 82504.21928571
           }
         ],
-        "window_bars": 4074,
-        "window_end_ts": 1791864000000,
+        "window_bars": 4113,
+        "window_end_ts": 1792051200000,
         "window_start_ts": 1772323200000
       },
       "edge_trend_01_4h:BASE": {
         "arm": "edge_trend_01_4h:BASE",
-        "bars_seen": 1358,
-        "candidate_bars_evaluated": 4074,
+        "bars_seen": 1371,
+        "candidate_bars_evaluated": 4113,
         "candidate_warmup_bars": 0,
         "metrics": {
           "expectancy_usdt": -1.429274,
-          "exposure_pct_of_time": 28.841433,
+          "exposure_pct_of_time": 28.567955,
           "fees_usdt": 29.608409,
           "final_equity": 9955.692503,
           "gross_usdt": -9.087451,
@@ -40997,8 +43217,8 @@
             "stop_initial": 82504.21928571
           }
         ],
-        "window_bars": 4074,
-        "window_end_ts": 1791864000000,
+        "window_bars": 4113,
+        "window_end_ts": 1792051200000,
         "window_start_ts": 1772323200000
       }
     },
@@ -41011,68 +43231,68 @@
     "primary_available": true,
     "provenance": {
       "15m:BTC": {
-        "bars": 574,
-        "fetched_at_ms": 1791890488560,
+        "bars": 782,
+        "fetched_at_ms": 1792077397999,
         "first_ts": 1791373500000,
         "frozen_last_ts": 1791372600000,
-        "last_ts": 1791889200000,
+        "last_ts": 1792076400000,
         "source": "BINANCE_PUBLIC_REST:/api/v3/klines",
-        "store_sha256": "497f2e2c1690a1857aff42edc5c3f81252c05057caf4b938be6b64a93afa0179",
+        "store_sha256": "bb793bf6130ef6b6e7e7dcc6bc29039946725eb003f926bfb0249cadb93c2095",
         "symbol": "BTC",
         "timeframe": "15m"
       },
       "15m:ETH": {
-        "bars": 574,
-        "fetched_at_ms": 1791890488560,
+        "bars": 782,
+        "fetched_at_ms": 1792077397999,
         "first_ts": 1791373500000,
         "frozen_last_ts": 1791372600000,
-        "last_ts": 1791889200000,
+        "last_ts": 1792076400000,
         "source": "BINANCE_PUBLIC_REST:/api/v3/klines",
-        "store_sha256": "5725a48873894e1a7c42ef0e6a10e3b70b765a195aa5e13a71d90e639608cc3d",
+        "store_sha256": "475dd2e27bb73455e9414d3a6b1d9a7580ca2fb8b2c761b813360fca57192d7b",
         "symbol": "ETH",
         "timeframe": "15m"
       },
       "15m:SOL": {
-        "bars": 574,
-        "fetched_at_ms": 1791890488560,
+        "bars": 782,
+        "fetched_at_ms": 1792077397999,
         "first_ts": 1791373500000,
         "frozen_last_ts": 1791372600000,
-        "last_ts": 1791889200000,
+        "last_ts": 1792076400000,
         "source": "BINANCE_PUBLIC_REST:/api/v3/klines",
-        "store_sha256": "c6666ee4702937e77947cbe34bcbc2ca3d7cca3e49f9cb4b82f39c3494b48240",
+        "store_sha256": "f749295cb8f68caf298c0f9b1731db11b0bed73e1dd4dd8952c0a8345e8cf4de",
         "symbol": "SOL",
         "timeframe": "15m"
       },
       "1h:BTC": {
-        "bars": 5435,
-        "fetched_at_ms": 1791889369592,
+        "bars": 5487,
+        "fetched_at_ms": 1792076403665,
         "first_ts": 1772323200000,
         "frozen_last_ts": 1772319600000,
-        "last_ts": 1791885600000,
+        "last_ts": 1792072800000,
         "source": "BINANCE_PUBLIC_REST:/api/v3/klines",
-        "store_sha256": "871a43dc896ebd97db732f09b151023a7a3a60b905c393b7319b532babe12f7f",
+        "store_sha256": "388008cc5ad7dfc14aa0010d5390f170ff9b0cbd4a00216539b5b3ec7340ba16",
         "symbol": "BTC",
         "timeframe": "1h"
       },
       "1h:ETH": {
-        "bars": 5435,
-        "fetched_at_ms": 1791889369592,
+        "bars": 5487,
+        "fetched_at_ms": 1792076403665,
         "first_ts": 1772323200000,
         "frozen_last_ts": 1772319600000,
-        "last_ts": 1791885600000,
+        "last_ts": 1792072800000,
         "source": "BINANCE_PUBLIC_REST:/api/v3/klines",
-        "store_sha256": "c4318c8f450a1ef41b837e6a2dc81f5e93e07f373a76ed40c7e503b24ae2d83e",
+        "store_sha256": "db003200acbc1c17fb1fcd7c423adae2dd7f62544d5592343f7b9875381a205a",
         "symbol": "ETH",
         "timeframe": "1h"
       },
       "1h:SOL": {
-        "bars": 5435,
-        "fetched_at_ms": 1791889369592,
+        "bars": 5487,
+        "fetched_at_ms": 1792076403665,
         "first_ts": 1772323200000,
         "frozen_last_ts": 1772319600000,
-        "last_ts": 1791885600000,
+        "last_ts": 1792072800000,
         "source": "BINANCE_PUBLIC_REST:/api/v3/klines",
-        "store_sha256": "76bd878d09c2c7de6257bc54b4e1c4db613caa83aa0f4145db771956f7b37c6d",
+        "store_sha256": "db0af873c04166fbb4665fcdd46852ff09724ae5179c7f2b738a8000924e1e6b",
         "symbol": "SOL",
         "timeframe": "1h"
       }
@@ -41081,14 +43301,14 @@
   },
   "verdict": {
     "coverage_required": 0.9,
-    "new_bars_this_run": 0,
+    "new_bars_this_run": 3,
     "not_claimed": "a running forward pipeline is not evidence of an edge: no admission criterion is evaluated here, and no strategy is promoted",
-    "observation_days": 226,
+    "observation_days": 228,
     "observation_floor": 60,
     "parity": "PARITY_PASS",
     "promotion": "NONE",
-    "reason": "226 independent observation day(s) accumulated; the lane still promotes nothing (the forward pipeline does not read an admission criterion)",
+    "reason": "228 independent observation day(s) accumulated; the lane still promotes nothing (the forward pipeline does not read an admission criterion)",
     "state": "OBSERVATION_AVAILABLE",
-    "stored_bars": 18027
+    "stored_bars": 18807
   }
 }

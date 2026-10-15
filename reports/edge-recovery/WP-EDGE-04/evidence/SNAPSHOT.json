@@ -1,72 +1,92 @@
 {
   "files": {
     "alerts.jsonl": {
-      "bytes": 1397,
-      "sha256": "64ee2e99ecec8c9b869d131691357b10faeddacb05d62fb71d72b174b2f32f83"
+      "bytes": 6575,
+      "sha256": "e2ecc0c636fcdd4317cbaa0336713a39ea5bd8f9ac75a91c8bcfbccbeddfdb37"
     },
     "coverage.json": {
-      "bytes": 121076,
-      "sha256": "4ec5f8b3e26f2311f2853342e402293331f940771f70a41739a7125e09747081"
+      "bytes": 122155,
+      "sha256": "f77443c16afe649cc46f196a2b26eedb584fddcf9511d7b3bfed7eaecde5ea89"
     },
     "daily/2026-10-13.json": {
-      "bytes": 138497,
-      "sha256": "4d34c8882c4e6e97726802af08f99bbdd7be98352614e276bfc74040bddd474d"
+      "bytes": 143050,
+      "sha256": "9bfd37e08e96e13f9665c5cf37b8889d1cc6148690cac537b02060853394d5cc"
+    },
+    "daily/2026-10-14.json": {
+      "bytes": 148252,
+      "sha256": "ebe0da1bdaf57ff254917a304d84c01d5429747e4364143313fb7f14427a5ad2"
+    },
+    "daily/2026-10-15.json": {
+      "bytes": 145086,
+      "sha256": "5ed155f724d850323b76006ceb6c11f24c0e21e7b978c61608c2bbf45eb58f8c"
+    },
+    "derived_refresh.jsonl": {
+      "bytes": 84961,
+      "sha256": "cf636862e1e5631e24439b7c1e7f3e4291f66dbd3dd10c8ba3f86f12c3cdf3a5"
     },
     "health.json": {
-      "bytes": 3418,
-      "sha256": "afd71bde3fef57cce4ee5ac584c93b422355492ed4e5e7865ade67d79eef5111"
+      "bytes": 6122,
+      "sha256": "86e3838c8c5d47c03db005a33f6a8d4b1ae17419d7ab2b97a21137a08b683020"
     },
     "install.json": {
       "bytes": 3468,
       "sha256": "475153d6241cdcd1d5f8276215ffdfe25d3c7637d2ff2178a9b16cfc16c9c830"
     },
     "ledger/INGEST_LEDGER.jsonl": {
-      "bytes": 180600,
-      "sha256": "1247ee254ddf7bc267d340afec39942c0ba736ec274f94fc9794ca69127fd708"
+      "bytes": 1401876,
+      "sha256": "bedc9a3ab7b0aa207fedb1367e30df1da50009a2ff0107da376809ce8b31dba5"
     },
     "publication/CUMULATIVE.json": {
-      "bytes": 48794,
-      "sha256": "166879fcaf4ff26b84e9fa98e5837b41b23027ee8f7351d5093d03a9bcb69eae"
+      "bytes": 49446,
+      "sha256": "c0f4e5b0d268640d308012763b75e56be1f8190a39fcc3af304c745b9284d69c"
     },
     "publication/CUMULATIVE.md": {
-      "bytes": 5069,
-      "sha256": "401d55512fc479e32f8384249bee5a6cdba9cd148335a953dd5ce0329e42c103"
+      "bytes": 5524,
+      "sha256": "72c4239f693f0a5bb0773e6cd2f04b20f79e3161df8fd7144c7ef9a43c65eff5"
     },
     "publication/DAILY_2026-10-13.md": {
       "bytes": 3548,
       "sha256": "3634bf970619eeb6f9e114e7f065b19ed8c2c5590fcb205c9c23a0996f926022"
     },
+    "publication/DAILY_2026-10-14.md": {
+      "bytes": 3699,
+      "sha256": "5f466e9c9152d8b131bb366655fd870baeec30d07889794e12f7468d99511647"
+    },
+    "publication/DAILY_2026-10-15.md": {
+      "bytes": 3612,
+      "sha256": "32ba55d330d216895c5166f6750d3ed76f3cae9f0d45ecaa9fe576ec3caec21f"
+    },
     "publication/DAILY_REPORTS.json": {
-      "bytes": 146302,
-      "sha256": "b5177f0e9596d4c797147465f569ce5f9d2f2fff7f25fa16925655732e19ff5f"
+      "bytes": 150298,
+      "sha256": "9de5eac76257b5edcc1f8ffdb3b49a09234cc8bae7249930944703c9bab50633"
     },
     "publication/LATEST.json": {
-      "bytes": 2109,
-      "sha256": "8caf9e5acad41818aaa2eea6d9386d497d3af3c360bb85a536dc6393d0551ff4"
+      "bytes": 3887,
+      "sha256": "99c5d19b3ce6c607ac7b234c588ef3bee6432dbe448b99beb39a6a943da3c886"
     },
     "publication/OBSERVATION.json": {
-      "bytes": 1219650,
-      "sha256": "682df4a12a929f443d3fa17213b3580e638b5916c9c1bb68db034584a0e14118"
+      "bytes": 1289161,
+      "sha256": "3d511393717e2480b913c64a50a1c4b3dac0b822b3f72734ccf941dd3bfb94be"
     },
     "publication/SHADOW_DECISIONS.jsonl": {
       "bytes": 59304,
       "sha256": "86494c33acf997613bcd1becd5e128f70c937887ed0dbe42581728bcc0c5501a"
     },
     "publication/SHADOW_EQUITY.csv": {
-      "bytes": 64856,
-      "sha256": "b76fca73d1b2eb3b97131fbe7844169a1c54a7d7c90d9ac0abc1229edb8d92fa"
+      "bytes": 65480,
+      "sha256": "5e78bb19e8b3a32625fbeb3c041772450d1ce65e9b6ab135c3979244603f6de1"
     },
     "publication/SHADOW_REFUSALS.csv": {
-      "bytes": 57901,
-      "sha256": "12a59e250109a64e427b7c3672f165a8f6677c3bf3ee6075fb795869bbeae546"
+      "bytes": 67755,
+      "sha256": "7dc29c8d21fbc337badda1dec9620b335a752a638180f384b5406ba8d4b1b80d"
     },
     "publication/SHADOW_SIGNALS.csv": {
       "bytes": 40525,
       "sha256": "c04daaaa69135eeb26cdf7fd607612313b19b7d98e9451f0ca068a72ae5f6df7"
     },
     "publication/SHADOW_TRADES.csv": {
-      "bytes": 20885,
-      "sha256": "07bc3c44c848330b3154e79ddae52b556ae96a3601343ccc2f80f5a8d3e541fd"
+      "bytes": 20884,
+      "sha256": "6e448ac63081592c9cac8c9a1ccfb9b75a61120cfe3eff6744150c99b809f71c"
     },
     "publication/risk-parity/PARITY.json": {
       "bytes": 597905,
@@ -81,23 +101,23 @@
       "sha256": "548b77a42127df3fa632008067f0b23fcb4f17e2d366a93ca831c886dad2e637"
     },
     "resource_budget.json": {
-      "bytes": 3216,
-      "sha256": "58205ab31a413fc73e0768a5ee46a21617e58f1e27b0ddf5c75c69ca3a00f54a"
+      "bytes": 17668,
+      "sha256": "ad24849febe045eddd1124b9e8fe283a79f9c497bedd55431166bdc41433141f"
     },
     "runs.jsonl": {
-      "bytes": 91308,
-      "sha256": "418bd58f95e12f8a9118e24cc536bb355e54193e52810dfc06426a3cccc1dec9"
+      "bytes": 785728,
+      "sha256": "fe7629937525355ce69b6ef369aff10c6b6b809fe12bb6429f8b223ea050a314"
     },
     "slot_ledger_repair.json": {
       "bytes": 774,
       "sha256": "1b4e453e804c3fec3b6091cd9e605b72f164d03918c84a5ed5844f66d988a352"
     },
     "slots.jsonl": {
-      "bytes": 3990,
-      "sha256": "7d77ef14573723bb8522ce27f47da9640502f4fe606408c0c6a93bd12d081160"
+      "bytes": 34872,
+      "sha256": "ffc12abb95261b2ab46432b56d652c01026a6d46557ef55737de523a4668ced8"
     }
   },
-  "generated_at_utc": "2026-10-13T15:08:17Z",
+  "generated_at_utc": "2026-10-15T15:17:41Z",
   "hypothetical": true,
   "order_sent": false,
   "reading": "a dated snapshot of the whole live state root: the run log and the daily evidence are the durable record, the digests here pin the bytes that were live when the snapshot was taken, and the copy is whole so the byte budget can be checked against the same tree the reading describes",

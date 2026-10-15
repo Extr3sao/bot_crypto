@@ -4974,20 +4974,64 @@
       }
     },
     {
-      "class": "INCOMPLETE",
+      "class": "DENSE_BUT_BACKFILLED",
       "coverage": {
-        "1h:BTC": 0.333333,
-        "1h:ETH": 0.333333,
-        "1h:SOL": 0.333333
+        "1h:BTC": 0.583333,
+        "1h:ETH": 0.583333,
+        "1h:SOL": 0.583333
       },
       "day": "2026-10-13",
+      "densely_covered": true,
+      "expected_bars": 24,
+      "prospectively_observed": false,
+      "prospectively_observed_bars": {
+        "1h:BTC": 14,
+        "1h:ETH": 14,
+        "1h:SOL": 14
+      },
+      "stored_bars": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      }
+    },
+    {
+      "class": "DENSE_BUT_BACKFILLED",
+      "coverage": {
+        "1h:BTC": 0.791667,
+        "1h:ETH": 0.791667,
+        "1h:SOL": 0.791667
+      },
+      "day": "2026-10-14",
+      "densely_covered": true,
+      "expected_bars": 24,
+      "prospectively_observed": false,
+      "prospectively_observed_bars": {
+        "1h:BTC": 19,
+        "1h:ETH": 19,
+        "1h:SOL": 19
+      },
+      "stored_bars": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      }
+    },
+    {
+      "class": "INCOMPLETE",
+      "coverage": {
+        "1h:BTC": 0.541667,
+        "1h:ETH": 0.541667,
+        "1h:SOL": 0.541667
+      },
+      "day": "2026-10-15",
       "densely_covered": false,
       "expected_bars": 24,
       "prospectively_observed": false,
       "prospectively_observed_bars": {
-        "1h:BTC": 8,
-        "1h:ETH": 8,
-        "1h:SOL": 8
+        "1h:BTC": 13,
+        "1h:ETH": 13,
+        "1h:SOL": 13
       },
       "stored_bars": {
         "1h:BTC": 15,
@@ -4996,8 +5040,8 @@
       }
     }
   ],
-  "days_with_any_data": 227,
-  "densely_covered_but_backfilled": 226,
+  "days_with_any_data": 229,
+  "densely_covered_but_backfilled": 228,
   "densely_covered_but_backfilled_days": [
     "2026-03-01",
     "2026-03-02",
@@ -5224,7 +5268,9 @@
     "2026-10-09",
     "2026-10-10",
     "2026-10-11",
-    "2026-10-12"
+    "2026-10-12",
+    "2026-10-13",
+    "2026-10-14"
   ],
   "epoch_utc": "2026-03-01T00:00:00Z",
   "freeze": {
@@ -5233,34 +5279,34 @@
     "params_hash": "d073a2d686b9b198c36c9a3c6009d36130577ba247a2016c3f791813cb749d77",
     "reading": "the frozen corpora end at these instants; every stored bar is strictly later, and no day before the epoch is a forward observation day"
   },
-  "generated_at_utc": "2026-10-13T15:07:56Z",
-  "market_instant_utc": "2026-10-13T15:07:27Z",
+  "generated_at_utc": "2026-10-15T15:17:18Z",
+  "market_instant_utc": "2026-10-15T15:16:37Z",
   "not_an_admission": "reaching the floor makes a later decision possible; it does not make it, and this lane cannot promote a strategy",
   "not_counted": "days before the observation epoch, and days whose bars arrived long after they closed, are not forward observation days: a backfill is history, not an observation",
   "period_hashes": {
-    "2026-10-11": {
-      "15m:BTC": "c3ed3b83799045f6",
-      "15m:ETH": "8699e01b8f5e48fb",
-      "15m:SOL": "5633ced680152850",
-      "1h:BTC": "0d58574a7e216041",
-      "1h:ETH": "4ddd596c4f8d66b3",
-      "1h:SOL": "d303805a7127f328"
-    },
-    "2026-10-12": {
-      "15m:BTC": "f75c836fae7b2992",
-      "15m:ETH": "39970bf01f26412d",
-      "15m:SOL": "48845be6fc7d36e2",
-      "1h:BTC": "989da9e9b5cf0603",
-      "1h:ETH": "5de48bde45567b67",
-      "1h:SOL": "6fcdc1c30c288010"
-    },
     "2026-10-13": {
-      "15m:BTC": "3bcbac7a66183cd9",
-      "15m:ETH": "037ed62a84f47bb0",
-      "15m:SOL": "66b2ee5f637eb674",
-      "1h:BTC": "237a41c3c26f0447",
-      "1h:ETH": "3a43186d15970bbb",
-      "1h:SOL": "6baa592b6dc4c09b"
+      "15m:BTC": "b0748749fbd59e8e",
+      "15m:ETH": "020ed6a5f88ae2e2",
+      "15m:SOL": "9a6d71303811443f",
+      "1h:BTC": "d08b55c9862233ee",
+      "1h:ETH": "62fa5f7987fa2c6a",
+      "1h:SOL": "873c057a15cbb9c2"
+    },
+    "2026-10-14": {
+      "15m:BTC": "f002128f6cded1f8",
+      "15m:ETH": "6566d2e7e2132555",
+      "15m:SOL": "7eee76b59851b281",
+      "1h:BTC": "c76250af47f99d42",
+      "1h:ETH": "27c43c055cfcf6da",
+      "1h:SOL": "759ce4aaa2ce31ad"
+    },
+    "2026-10-15": {
+      "15m:BTC": "d8a152af01bb9533",
+      "15m:ETH": "67f844047bcdee9c",
+      "15m:SOL": "fc4cd715d474a0bf",
+      "1h:BTC": "774eae0cfa76812a",
+      "1h:ETH": "1d01318f81b3164c",
+      "1h:SOL": "96f57a3749593ca7"
     }
   },
   "primary_assets": [
@@ -5282,14 +5328,14 @@
   "schema_version": "EDGE04_COVERAGE_V1",
   "state_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04",
   "store_digests": {
-    "15m:BTC": "801561cc1bb95008",
-    "15m:ETH": "ef46058d60950d5a",
-    "15m:SOL": "a87c8be7b426874f",
-    "1h:BTC": "92cdde888f62d932",
-    "1h:ETH": "660e848c7b3b6815",
-    "1h:SOL": "fcb04f43ca06c799"
+    "15m:BTC": "93de3ad2266165a1",
+    "15m:ETH": "0826b9b5580235cb",
+    "15m:SOL": "aa443fe018b49572",
+    "1h:BTC": "70a441969d2cfd40",
+    "1h:ETH": "b16df78ebf54cc8d",
+    "1h:SOL": "0d1d675e28057815"
   },
   "store_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge03",
-  "window_observation_days": 226,
+  "window_observation_days": 228,
   "window_vs_prospective": "the window figure counts every stored bar after the freeze, the prospectively observed figure counts only days whose bars were stored as they closed: only the second one is an observation of the future"
 }

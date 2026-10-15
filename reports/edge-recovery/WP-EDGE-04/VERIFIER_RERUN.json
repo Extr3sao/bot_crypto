@@ -14,7 +14,7 @@
       {
         "applied": true,
         "check": "SLOT_DISCIPLINE",
-        "detail": "a slot was observed more than once: ['2026-10-13T15:00Z']",
+        "detail": "a slot was observed more than once: ['2026-10-15T15:15Z']",
         "detected": true,
         "sabotage": "duplicate an observed slot"
       },
@@ -42,7 +42,7 @@
       {
         "applied": true,
         "check": "NO_ORDER_PATH_OR_PROMOTION",
-        "detail": "daily/2026-10-13.json: promotion is not NONE; daily/2026-10-13.json: names a PAPER or LIVE state",
+        "detail": "daily/2026-10-13.json: promotion is not NONE; daily/2026-10-14.json: promotion is not NONE; daily/2026-10-15.json: promotion is not NONE; daily/2026-10-13.json: names a PAPER or LIVE state; daily/2026-10-14.json: names a PAPER or LIVE state",
         "detected": true,
         "sabotage": "promote the lane in a day file"
       },
@@ -105,7 +105,7 @@
       {
         "applied": true,
         "check": "BUDGET_DECLARED_MEASURED_AND_BOUNDED",
-        "detail": "the measured lane size 999999999 is larger than the tree 2998238; the over-budget flag does not follow from the declared limit",
+        "detail": "the measured lane size 999999999 is larger than the tree 5445261; the over-budget flag does not follow from the declared limit",
         "detected": true,
         "sabotage": "inflate the measured lane size"
       },
@@ -119,14 +119,14 @@
       {
         "applied": true,
         "check": "PUBLICATION_SWAPPED_ATOMICALLY",
-        "detail": "a published file answers to no recorded digest: risk-parity/PARITY_CASES.csv",
+        "detail": "a published file disagrees with its recorded digest: CUMULATIVE.json (49446 bytes on disk, 49446 recorded)",
         "detected": true,
         "sabotage": "break a published digest"
       },
       {
         "applied": true,
         "check": "PUBLICATION_SWAPPED_ATOMICALLY",
-        "detail": "a staging tree survived: ['.staging-1']; 14 published file(s) against 13 recorded digest(s); a published file answers to no recorded digest: .staging-1/HALF.md",
+        "detail": "a staging tree survived: ['.staging-1']; 1 published file(s) the pointer does not name: ['.staging-1/HALF.md']",
         "detected": true,
         "sabotage": "leave a staging tree behind"
       },
@@ -140,7 +140,7 @@
       {
         "applied": true,
         "check": "SLOT_DISCIPLINE",
-        "detail": "slot rows with no consuming run row: ['2026-10-13T15:00Z']; slot 2026-10-13T15:00Z: no consuming run row answers for 'FWD-EDGE04-20261013T150000Z'",
+        "detail": "slot rows with no consuming run row: ['2026-10-15T15:15Z']; slot 2026-10-15T15:15Z: no consuming run row answers for 'FWD-EDGE04-20261015T151500Z'",
         "detected": true,
         "sabotage": "remove the run row behind a slot"
       }
@@ -153,17 +153,17 @@
     "checks": [
       {
         "check": "ARTIFACTS_PRESENT",
-        "detail": "9 file(s), 1 daily evidence file(s)",
+        "detail": "9 file(s), 3 daily evidence file(s)",
         "passed": true
       },
       {
         "check": "SLOT_DISCIPLINE",
-        "detail": "16 slot(s), no duplicates, all on the grid",
+        "detail": "140 slot(s), no duplicates, all on the grid",
         "passed": true
       },
       {
         "check": "OUTCOMES_AND_EXIT_CODES",
-        "detail": "22 run row(s) agree with the vocabulary",
+        "detail": "194 run row(s) agree with the vocabulary",
         "passed": true
       },
       {
@@ -173,22 +173,22 @@
       },
       {
         "check": "EXPECTATION_ARITHMETIC",
-        "detail": "17 run row(s) recomputed from their own series",
+        "detail": "141 run row(s) recomputed from their own series",
         "passed": true
       },
       {
         "check": "MARKET_REQUESTS_ARE_SPENT",
-        "detail": "22 run row(s) spent their requests coherently",
+        "detail": "194 run row(s) spent their requests coherently",
         "passed": true
       },
       {
         "check": "RULESET_PINNED_AND_UNCHANGED",
-        "detail": "17 run row(s) pinned to d073a2d686b9b198\u2026",
+        "detail": "141 run row(s) pinned to d073a2d686b9b198\u2026",
         "passed": true
       },
       {
         "check": "COVERAGE_RULE_APPLIED",
-        "detail": "0 prospective day(s), 226 dense-but-backfilled",
+        "detail": "0 prospective day(s), 228 dense-but-backfilled",
         "passed": true
       },
       {
@@ -198,7 +198,7 @@
       },
       {
         "check": "DAILY_EVIDENCE_CONSISTENT",
-        "detail": "1 day file(s), 6 digest(s) recomputed from the store",
+        "detail": "3 day file(s), 18 digest(s) recomputed from the store",
         "passed": true
       },
       {
@@ -208,12 +208,12 @@
       },
       {
         "check": "BUDGET_DECLARED_MEASURED_AND_BOUNDED",
-        "detail": "lane 2998142 bytes of 268435456 declared",
+        "detail": "lane 5445169 bytes of 268435456 declared",
         "passed": true
       },
       {
         "check": "PUBLICATION_SWAPPED_ATOMICALLY",
-        "detail": "13 published file(s) answer to their recorded digests",
+        "detail": "15 published file(s) named and answered (15 digest(s) recomputed)",
         "passed": true
       },
       {

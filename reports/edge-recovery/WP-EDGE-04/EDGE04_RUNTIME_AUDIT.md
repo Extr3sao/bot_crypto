@@ -187,7 +187,64 @@ four of the five were invisible to inspection and one of them crashed a process.
 10. **The self-test's own teeth were partly illusory (fixed).** The sabotage "grow a bounded log
    past its cap" was being caught by the byte check's size arm as a side effect, not by the cap
    arm, which could never fire: `BOUNDED_LOGS` named `RUNS.jsonl`/`SLOTS.jsonl`, names the bundle
-   does not load, so the row counts it compared were always zero. The names are now the ones the
+   does not load, so the row counts it compared were always zero.   The names are now the ones the
    bundle reads, and the sabotage crosses the **declared** cap instead of appending five rows to a
    2 880-row log. A check that cannot fail is not a check, and a sabotage that proves nothing is
    worse than no sabotage at all.
+
+### 10c. What three days of running found that one afternoon did not
+
+§10b was written from the first afternoon. The lane then ran for two more days and the closure was
+re-run against the live state — the same command a reader would use — and the independent verifier
+**refused the lane twice** before it accepted it. Both refusals were correct. A third defect was
+found while reconciling the first of them. All three were invisible to inspection and none of them
+was a failure of the tick: they were artefacts whose *claims* had quietly stopped being true.
+
+11. **A day file's hashes could never answer to the store (fixed).** `DAILY_EVIDENCE_CONSISTENT`
+    reported `daily/2026-10-13.json: 15m:BTC digest does not answer to the store`, and the same for
+    the other five series. The cause is structural and not a typo: a day file is written by the
+    ticks *of its own day*, so its last write of that day happens while the day is still running and
+    can never contain the day's last bars. The `day_hashes` it published — an artefact whose stated
+    purpose is to make a claim about a day checkable without re-reading the store — therefore
+    described a partial day for ever. `ForwardObserver.finalise_finished_days()` now re-derives the
+    hashes of any *finished* day whose file disagrees with the store, rewrites only that file, and
+    records `day_hashes_finalised_at_utc`; a late-arriving bar for a finished day is folded in by
+    the next tick for the same reason. The next tick corrected 2026-10-13 and 2026-10-14, six series
+    each. Only the hashes are touched — the slot table is already derived from the seal on every
+    tick — so nothing else in a day file is re-derived behind a reader's back.
+12. **The publication pointer described a subset while reading as complete (fixed).**
+    `PUBLICATION_SWAPPED_ATOMICALLY` reported *"15 published file(s) against 13 recorded
+    digest(s); a published file answers to no recorded digest: DAILY_2026-10-13.md; …
+    DAILY_2026-10-14.md"*. The pointer enumerated what the newest render produced; the swap
+    `os.replace`s the files in one at a time and never removes what it does not overwrite, and the
+    declared policy never deletes a published report — so each day leaves its `DAILY_<date>.md`
+    behind. The directory and the manifest had therefore drifted apart by one file per day, and a
+    reader could not tell a live artefact from a leftover. `_maybe_publish()` now writes an
+    inventory of the whole publication root keyed by each file's own path, with size, digest, role
+    and whether this render wrote it; the verifier's check became name-for-name instead of
+    digest-set membership, which is strictly stronger (15 files named, 15 answered), and cannot
+    collapse two byte-identical files into one recorded pair. Files are still never deleted: the
+    retained ones are enumerated, not removed.
+13. **A snapshot could be the union of two instants (hardened).** While reconciling item 11, the
+    refused artefact named a published file whose *bytes in the evidence directory* were those of
+    the previous snapshot (136 444) rather than those of the live tree (136 989). The snapshot is
+    copied into a directory that already holds one, and nothing dropped a file the live tree no
+    longer had — so the copy could hold every file of the new reading *plus* whatever the old one
+    had, while `SNAPSHOT.json` described it as one instant. That is the same class of bias as the
+    curated-subset defect of §10b item 8, in the opposite direction, and it is worse to diagnose
+    because it looks like an inflated reading. `snapshot()` now drops exactly the names the
+    *previous* `SNAPSHOT.json` recorded and the live tree no longer has, records what it dropped,
+    and touches nothing else — a directory that also holds work this lane did not write is left
+    alone, and the live tree is now byte-identical to all 29 files of the copy.
+14. **A guard that had never fired fired 45 times, and behaved (not a defect).** Between
+    `2026-10-13T20:25:56Z` and `2026-10-14T13:40:56Z` the volume sat at 1.81 GiB free, below the
+    declared 2 GiB critical floor, and every trigger returned `DISK_BUDGET_EXCEEDED` (exit 5) with
+    **0 market requests** and **no slot consumed**, raising one `DISK_CRITICAL` alert for the
+    episode rather than one per tick. This is the disk policy doing exactly what it declares, and it
+    is recorded here rather than treated as a pass: it is also the reason 2026-10-13 and 2026-10-14
+    reached only 58.3 % and 79.2 % prospective coverage, and both readings are reported as misses.
+
+The pattern is worth naming, because it is the reason this work package keeps a verifier that shares
+no code with the lane: every defect found in it was an artefact that had *claimed* something and
+stopped being able to support the claim. Reading the code would not have found any of them; ticking
+the real thing and then asking a second process to disagree did.

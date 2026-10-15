@@ -6,6 +6,10 @@ machine-readable twin is `RUN_REPORT.json`; the tick-by-tick table is
 `evidence/FASE7_TIMELINE.md`; the interpretation is
 `EDGE04_AUTONOMOUS_EXECUTION_REPORT.md`.
 
+This reading was taken at **`2026-10-15T15:17:41Z`** and supersedes the one of
+`2026-10-13T15:20:00Z`, which described the first 22 ticks of the same lane. The lane was not
+restarted to write it: the same state root, the same task, the same ruleset, three days later.
+
 Research only. Public market data, no credentials, no orders, no capital, no promotion. Nothing in
 this work package can authorise PAPER or LIVE trading.
 
@@ -15,17 +19,25 @@ this work package can authorise PAPER or LIVE trading.
 
 | | |
 | --- | --- |
-| Window | `2026-10-13T11:24:03Z` → `2026-10-13T15:07:57Z` |
-| Unattended scheduled span | `11:23:27Z` → `14:55:55Z` (2 h 5 m) |
+| Window | `2026-10-13T11:23:38Z` → `2026-10-15T15:17:20Z` (2 days 3 h 54 m) |
+| Unattended scheduled ticks | 188 of the 194 |
 | Host / runtime | `DESKTOP-4CHO695`, `.venv\Scripts\python.exe` 3.11.15 |
 | Task | `TradingAgentic-EDGE04-Forward`, installed and enabled, every 15 min |
-| Ticks | 22 — 17 scheduled, 5 manual |
-| Outcomes | `OBSERVED` 14 · `ALREADY_OBSERVED` 3 · `NO_NEW_DATA` 3 · `ALREADY_RUNNING` 2 |
-| Slot seals | 16, 16 distinct, none duplicated |
-| Market requests spent | 68 |
-| Newly closed bars stored | 51 (expected 51, missing 0) |
+| Ticks | 194 — 188 scheduled, 6 manual |
+| Outcomes | `OBSERVED` 138 · `DISK_BUDGET_EXCEEDED` 45 · `ALREADY_OBSERVED` 6 · `NO_NEW_DATA` 3 · `ALREADY_RUNNING` 2 |
+| Hard failures | **0** (`RUNTIME_EXCEPTION`, `VERIFICATION_FAILED`, `PROVIDER_UNAVAILABLE`, `MISSING_BARS`, `STALE_DATA`) |
+| Slot seals | 140, 140 distinct, none duplicated |
+| Market requests spent | 672 |
+| Newly closed bars stored | 774 across 6 series |
+| Longest silence between consuming ticks | `27 918.8 s` (7 h 45 m, the machine's night) |
 | Health at the close | `DEGRADED`, one reason: the measured growth rate is volatile |
 | Independent verdict | `VERIFY_PASS` 15/15, `SELF_TEST_PASS` 20/20 |
+
+This session re-drove the lane by hand as well, through the scheduler rather than around it:
+`--run-task` asked Task Scheduler to fire the registered task, the scheduler reported
+`CORRECTO: se ha intentado ejecutar la tarea programada`, and the task's own **`last_task_result`
+became `0`** — the OS's field, not the installer's return value. Three ticks followed from that
+interaction, all recorded below.
 
 ## 2. The commits
 
@@ -33,113 +45,144 @@ this work package can authorise PAPER or LIVE trading.
 | --- | --- | --- |
 | `5b1e771` | Say a pid cannot be probed instead of crashing the lease. | `campaign_lock.py`, `test_campaign_runtime.py` |
 | `4b845c9` | Make the forward lane tick itself, once per slot. | the tick engine, the single entry point, the verifier, the closure, the lane's tests, `.gitignore` |
+| `75cb791` | Publish the forward observer's evidence, its verdict and its record. | this directory |
+| `e07785b` | Record the post-commit re-verification and the push probe. | this directory |
+| *this session* | Correct the two artefacts the verifier refused, and harden the snapshot against a mixed copy. | `edge03/autonomous.py`, `scripts/edge04_verify.py`, `tests/unit/research/test_edge04_autonomous.py`, this directory |
 
-Base commit `1d5eda9e72b0ad07fa1807f2df33a5f5bb761668`. The shared-module fix is its own commit
-because every campaign that takes this lease had the same trap. The lane's own artefacts (this
-directory) are a third, separate commit — see §7. No other workstream's file was staged, and the
-operational state under `data/forward/` is ignored by git and therefore not in any of them.
+Base commit `1d5eda9e72b0ad07fa1807f2df33a5f5bb761668`. No other workstream's file is staged: the
+modified files under `data/st6/`, `data/recovery/wp8/`, `evidence/real_decisions/` and
+`docs/source_registry.md` belong to other lanes and were left exactly as they were found. The
+operational state under `data/forward/` is ignored by git and is therefore in none of these commits.
 
-**Push: `BLOCKED_GITHUB_AUTH`** — re-probed after this work package's commits rather than assumed:
-
-```
-$ GIT_TERMINAL_PROMPT=0 GIT_ASKPASS=/bin/true timeout 60 git push --dry-run origin HEAD
-(60 s, no output, killed)  exit 124
-```
-
-`origin` is `https://github.com/Extr3sao/bot_crypto.git`; the credential helper never returns because
-the prompt it is waiting for is disabled. The probe was a **dry run** and no credential was supplied,
-so nothing left this machine. The commits stay local rather than being re-attributed to somebody
-else. This is the same blocker the previous work packages recorded; it is a diagnosis, not a pass.
+**Push:** probed, not asserted, after the commits — `git push --dry-run origin HEAD` answered
+`Everything up-to-date` at `2026-10-15T15:27Z`, i.e. the remote already carries this work package's
+committed work. The probe is a dry run and pushes nothing; no credential was supplied to it.
 
 ## 3. What the ticks did with the data
 
 * **Only closed bars.** `expected_closed_bars()` computes the newest bar that can have closed at the
-  tick's own market instant. The 15-minute-only ticks spend 4 requests and store 3 bars; the ticks
-  that straddle the hour spend 7 and store 6. That ratio is the point-in-time rule, visible.
+  tick's own market instant. A 15-minute-only tick spends 4 requests and stores 3 bars; a tick that
+  straddles the hour spends 7 and stores 6. 672 requests produced 774 bars and **0 missing**.
 * **Nothing re-fetched.** A tick whose slot is already sealed never runs the pipeline (`--due` ⇒
-  `ALREADY_OBSERVED`, 0 requests, 0 evidence written).
-* **Per series, for the day:** `15m:BTC` 14 · `15m:ETH` 14 · `15m:SOL` 14 · `1h:BTC` 3 · `1h:ETH` 3 ·
-  `1h:SOL` 3 = 51, which is the day's own total and the sum of every run row's `new_bars`. The store
-  holds 18 084 bars and the day's recomputed digests match the ones the day file recorded.
-* **Latency** is measured close → store per bar the tick pulled, and the forward rule reads it: a
-  bar counts only if it arrived within 30 min (`15m`) or 2 h (`1h`) of closing.
+  `ALREADY_OBSERVED`, 0 requests, 0 evidence written). Six ticks took that path, including one fired
+  by the OS scheduler while this report was being written.
+* **Per series, over the window:** `15m:BTC` 130 · `15m:ETH` 130 · `15m:SOL` 130 · `1h:BTC` 128 ·
+  `1h:ETH` 128 · `1h:SOL` 128 = 774. The store holds 18 807 bars and every day file's digests
+  re-derive from it (§6c).
+* **Latency is measured, and it is not flattering.** Close → store, per bar the tick pulled: the
+  median tick reports a fresh-bar median of **658.6 s** and the worst reports **27 658 s**. The large
+  figures are the recovery after a block: the high-water mark makes the pipeline re-fetch hours of
+  bars it missed, and those bars *name their own lateness* instead of being smoothed into the
+  healthy ones. The forward rule reads exactly this number: a bar counts only if it arrived within
+  30 min (`15m`) or 2 h (`1h`) of closing, which is why days 2026-10-13 and 2026-10-14 did not reach
+  the 90 % coverage floor (§5).
 
 ## 4. What it decided, and what it refused
 
-* Ruleset pinned on every tick: `params_hash d073a2d686b9b198…` agrees with the publication;
-  `forward_plan.assert_frozen_params()` runs **first**, so a moved ruleset is `VERIFICATION_FAILED`
-  (exit 6) before a single request.
+* Ruleset pinned on every tick: `params_hash d073a2d686b9b198…` agrees with the publication on all
+  141 pipeline runs; `forward_plan.assert_frozen_params()` runs **first**, so a moved ruleset is
+  `VERIFICATION_FAILED` (exit 6) before a single request.
 * 16 arms re-read over the forward window on each tick. Primary arm `edge_trend_01_4h:BASE`, and its
-  hypothetical window: 31 trades, gross **-9.087451 USDT**, fees **29.608409**, price costs
-  **5.611636**, net **-44.307497 USDT**, max drawdown **2.776571 %**, 3 974 no-trade bars.
+  hypothetical window: 31 trades, gross **−9.087451 USDT**, fees **29.608409**, price costs
+  **5.611636**, net **−44.307497 USDT**, max drawdown **2.776571 %**, 3 974 no-trade bars.
   *Hypothetical.* Costs and slippage are applied; nothing was realised and nothing is expected.
-* 324 signals and 951 refusals in the window; 101 captured decisions with digest
-  `e6ed38e7015e25de…`. **0 signals and 0 trades on this date** — the day's own rows are empty, which is
-  what an hours-old observation window looks like.
-* Risk parity against the real Risk Engine: **`PARITY_PASS`, 0 defects**, 544 decisions compared —
-  79 `AGREE_APPROVED`, 155 `AGREE_REFUSED_SAME_RULE`, 194 `RULE_ORDER_DIFFERS`, 72
-  `RULE_NOT_MODELLED_BY_RESEARCH`, 35 `SIZING_ROUNDING_ONLY`, 9 `RESEARCH_ONLY_REFUSAL`. The
-  research budget is compared with the engine's own verdicts on the same inputs; a difference is
-  named, never smoothed.
+* 324 signals and 1 101 refusals in the window; 101 captured decisions with digest
+  `e6ed38e7015e25de…`. **0 signals and 0 trades on any of these dates** — the window's own rows are
+  empty, which is what an hours-old observation window looks like.
+* Risk parity against the real Risk Engine: **`PARITY_PASS`, 0 defects, on every one of the 141
+  runs** that reached it.
 
-## 5. The two errors, and why neither is a failure being hidden
+## 5. Coverage: 0 of 60 forward days, and why the two near-misses are still zero
 
-Both are `ALREADY_RUNNING` refusals, exit 2, **0 market requests**, no slot consumed:
+| Day | Class | Fresh `1h` bars of the 24 expected | Coverage | Counts |
+| --- | --- | ---: | ---: | :-: |
+| 2026-10-11 | `DENSE_BUT_BACKFILLED` | 0 | 0.0 % | no |
+| 2026-10-12 | `DENSE_BUT_BACKFILLED` | 2 | 8.3 % | no |
+| 2026-10-13 | `DENSE_BUT_BACKFILLED` | 14 | 58.3 % | no |
+| 2026-10-14 | `DENSE_BUT_BACKFILLED` | 19 | 79.2 % | no |
+| 2026-10-15 | `INCOMPLETE` (in progress) | 13 of 15 stored | 54.2 % | no |
 
-| at (UTC) | run | reason as written | what it was |
-| --- | --- | --- | --- |
-| `11:25:39Z` | `FWD-EDGE04-20261013T111500Z` | `holder pid 35104 is live and renewed` | a manual probe while the scheduled tick held the lease |
-| `15:03:55Z` | `FWD-EDGE04-20261013T150000Z` | `holder pid 1308 is live and renewed` | the tick after the controlled kill, inside the lease's age bound |
+**0 of 60**, 60 remaining. 229 days hold data and 228 of them are dense but backfilled. The floor is
+90 % of the calendar's hourly bars per primary asset *arriving fresh*, and the lane reached 79.2 %
+on its best day — a near miss that is reported as a miss, because a day at 79 % is not a day at 90 %
+and the rule has no rounding. `BACKFILL_IS_NOT_AN_OBSERVATION` recomputes the same split from the
+day files on every verification and passes: no day counted as observed fails the prospective rule,
+because no day is counted at all.
 
-The second one is the interesting one: the holder was already **dead**, and the lease could not
-legally be reclaimed yet. The honest statement is the lease's arithmetic — who holds it, how long
-ago they renewed it, whether the bound has passed — and not a claim of liveness this platform cannot
-always prove. The wording was corrected after these two rows were written (`4b845c9`); the rows
-themselves are left as they are, because a run log that gets edited when it becomes inconvenient is
-not a run log.
+## 6. What this session found by re-running the closure, and what was fixed
 
-## 6. What broke, and what was fixed
+The re-run was not a formality. The closure renders the artefacts, copies the whole state root and
+then hands that copy to `scripts/edge04_verify.py`, which shares no code with the lane. It **refused
+the live lane twice**, on two different artefacts, and a third defect was found while reconciling
+the first refusal. All three are described in `EDGE04_RUNTIME_AUDIT.md` §10c; this is the short list.
 
-Four defects were found by running the thing, not by reading it. All four are described in
-`EDGE04_RUNTIME_AUDIT.md` §10b; this is the short list.
+1. **The verifier refused two day files, and it was right.** `DAILY_EVIDENCE_CONSISTENT` reported
+   `daily/2026-10-13.json: 15m:BTC digest does not answer to the store` (and the same for the other
+   five series). The cause is structural: a day file is written by the ticks of *its own* day, so
+   the last write of that day happens while the day is still running and can never hold the day's
+   last bars. The `day_hashes` the file publishes for ever described a partial day — an artefact
+   whose entire purpose is to make a claim about a day checkable, and which could not answer to the
+   store it claims to describe. **Fixed**: a tick now re-derives the hashes of any *finished* day
+   whose file disagrees with the store, rewrites only that file, and records that it did
+   (`day_hashes_finalised_at_utc`). The very next tick corrected `2026-10-13` and `2026-10-14`,
+   6 series each.
+2. **The verifier refused the publication directory, and it was right too.**
+   `PUBLICATION_SWAPPED_ATOMICALLY` reported *"15 published file(s) against 13 recorded digest(s); a
+   published file answers to no recorded digest: DAILY_2026-10-13.md; … DAILY_2026-10-14.md"*. The
+   pointer enumerated what the newest render *wrote*, while the swap leaves every earlier per-date
+   report in place — the declared policy never deletes a published report. So the pointer described a
+   subset of the directory while reading as if it described all of it, and a reader could not tell a
+   live artefact from a leftover. **Fixed**: the pointer now enumerates the directory, keyed by each
+   file's own path relative to the publication root, with its size, its digest, the role it was
+   written under and whether *this* render wrote it. The check became name-for-name instead of
+   digest-set membership, which is strictly stronger: 15 files named, 15 answered.
+3. **The snapshot could be a mixture of two instants** — found while reconciling the first refusal,
+   which mentioned a published file whose bytes in the evidence directory were those of the previous
+   snapshot (136 444) and not those of the live tree (136 989). The copy is written into a directory
+   that already holds one, and nothing dropped a file the live tree no longer had, so the directory
+   could hold the union of two readings while claiming to be one. **Hardened**: exactly the files the
+   *previous* `SNAPSHOT.json` recorded are dropped when the live tree no longer has them, and the
+   snapshot names what it dropped. The copy is now whole in both directions — asserted by test, and
+   measured: all 29 live files are byte-identical in `evidence/`.
+4. **A guard that had never fired has now fired 45 times.** 45 ticks refused with
+   `DISK_BUDGET_EXCEEDED` (exit 5, **0 market requests**, no slot consumed) between
+   `2026-10-13T20:25:56Z` and `2026-10-14T13:40:56Z`, with the volume at 1.81 GiB free — below the
+   declared 2 GiB critical floor. That is the guard working, not a defect, and it is why 2026-10-13
+   and 2026-10-14 sit at 58 % and 79 % instead of higher: for ~17 hours the lane could not legally
+   fetch. The volume now has 10.58 GiB free (95.55 % used) and the status is `HEALTHY`.
 
-1. **The lease probe crashed the trigger.** `os.kill(pid, 0)` for a stale pid answers `WinError 87`
-   on this host, raised as `SystemError`, which is not an `OSError`; the first controlled-kill
-   rehearsal died with exit 1 instead of refusing. Fixed in `campaign_lock._pid_probe()` (returns
-   `None`, so the age rule decides) with a regression test, commit `5b1e771`.
-2. **The byte reading excluded the tick's own row.** `budget_reading()` ran before the run row was
-   appended, so the artefact reported a lane smaller than the tree holding it. The verifier refused
-   it — *"9227 bytes below the tree, more than the 6433 bytes of the files written after it"* — and
-   the reading is now taken after the appends.
-3. **The snapshot copied a curated list.** A file the list did not know made the copy smaller than
-   the tree the reading describes, and that failure looks exactly like an inflated reading. The
-   snapshot is now the whole state root, dot-entries excepted, with a digest per file.
-4. **The day file could overwrite an interval's numbers.** `daily/2026-10-13.json` disagreed with the
-   slot ledger after a repeat trigger, the verifier refused it, and the **next scheduled tick**
-   corrected it from the seal (slot `14:30Z`: `NO_NEW_DATA`/0 → `OBSERVED`/3, `at_utc 14:41:45Z`).
-   The day's slot table is derived from the seal on every tick now.
-
-One more, about the tools rather than the lane: the self-test's *"grow a bounded log past its cap"*
-sabotage was being caught only as a side effect of a byte comparison — the cap arm itself compared
-file names the bundle never loads, so it could never fire. Both were repaired, and the sabotage now
-crosses the declared cap. A check that cannot fail is not a check.
+Between them these are the first *live* firings of `DISK_CRITICAL`, `DISK_WARNING`,
+`DISK_RECOVERED`, `PUBLICATION_PAUSED`, `HEALTH_BLOCKED`, `OBSERVATION_GAP` and
+`OBSERVATION_STALLED`; the alert log holds 21 rows, one per transition rather than one per tick.
 
 ## 7. The published evidence
 
-* **Snapshot**: `evidence/` is the whole live state root at `15:08:17Z`, 24 files, each with its
-  sha256 and byte count in `evidence/SNAPSHOT.json`. The closure records whether a tick wrote while
-  the copy was being taken; this time it did not (`snapshot raced: no`).
-* **Publication**: `LATEST.json` names 13 artefacts and the verifier recomputes all 13 from disk.
-  The heavy set is rendered once per 24 h, not per tick, and swapped in by pointer over a staging
-  tree.
+* **Snapshot**: `evidence/` is the whole live state root at `15:17:41Z`, 29 files, each with its
+  sha256 and byte count in `evidence/SNAPSHOT.json`, and every byte of it identical to the live tree
+  (§6c). The closure records whether a tick wrote while the copy was taken; this time it did not
+  (`snapshot raced: no`).
+* **Publication**: `LATEST.json` enumerates **15 published files** — the 13 the newest heavy render
+  wrote and the 2 per-date reports earlier renders left in place — and the verifier recomputes all
+  15. The heavy set is rendered on the declared 24 h cadence and swapped in by pointer over a staging
+  tree; this session forced one render (`--force`) because the pointer's own vocabulary had changed,
+  and the tick record says so.
 * **Offline reproduction**: `--report-only … --compare` reproduces `daily`, `daily_rollup` and
   `summary` byte for byte, and **not** `cumulative`, whose "Ledger rows on file" line is a live
-  reading (228 now, 12 as published). Three of four, stated as three of four: the reproduction
-  property is real but it expires, and that is a finding rather than a footnote.
+  reading. Three of four, stated as three of four.
 * **Independent verification**: `INDEPENDENT_VERIFICATION.json` — `VERIFY_PASS` 15/15,
-  `SELF_TEST_PASS` 20/20 sabotages detected, 0 skipped. Re-run afterwards against the **committed**
-  snapshot (`VERIFIER_RERUN.json`, `15:16:24Z`): same 15 checks, same 20 sabotages, exit 0 — the
-  published verdict is re-derived rather than merely described.
+  `SELF_TEST_PASS` 20/20 sabotages detected, 0 skipped, over the copy above. The verdict was
+  **`VERIFY_FAIL` 13/15** on the first run of this session; the two failures and their causes are §6.
+* **Re-derived against the committed snapshot** (`VERIFIER_RERUN.json`, 27 minutes later, offline,
+  `--self-test`): same 15 checks, same 20 sabotages, exit 0. The published verdict is re-derived
+  rather than merely described.
+* **One arm of that verification has an expiry, and it is named.** The day-hash comparison is exact
+  for ever for a day the store has finished, and exact only at the snapshot instant for the day the
+  store is still filling: a running day file is refreshed by every tick, so a frozen copy of it can
+  only answer to the store as it was when the copy was taken. The re-run above is inside that window;
+  a reader re-running it after the store gains bars for 2026-10-15 should expect that one arm to
+  report the day as an artefact of its own instant, and should re-take the snapshot with
+  `scripts/edge04_closure.py` rather than re-verify a stale copy. Stating this as a limit, not as a
+  pass, is the same treatment the `cumulative` reproduction gets two bullets above.
 * **Closure artefacts**: `EDGE04_FORWARD_COVERAGE.json`, `EDGE04_RESOURCE_BUDGET.json`,
   `EDGE04_HEALTH_REPORT.json`, `evidence/FASE7_TIMELINE.md`, all regenerated from the live state by
   `scripts/edge04_closure.py`, which decides nothing and rewrites nothing.
@@ -148,32 +191,35 @@ crosses the declared cap. A check that cannot fail is not a check.
 
 | | |
 | --- | --- |
-| Lane / budget | 2 998 142 / 268 435 456 bytes (1.12 %) |
-| Store | 5 598 300 bytes |
-| One-off publication | 2 450 494 bytes |
-| Free on the volume | 6.7546 GiB of 237.5264 GiB (97.16 % used) |
+| Lane / budget | 5 445 169 / 268 435 456 bytes (2.03 %) |
+| Store | 5 823 115 bytes |
+| Heavy publication | 2 544 674 bytes, once per 24 h |
+| Free on the volume | 10.5794 GiB of 237.5264 GiB (95.55 % used) |
 | Disk status | `HEALTHY` (warning floor 5 GiB, critical floor 2 GiB) |
-| Measured growth | **no forecast**: rate volatile (cv 0.556), mean 1.86 MB/day |
-| Tick wall time | median 31.3 s, max 49.2 s over 22 ticks |
+| Measured growth | **no forecast**: rate volatile (cv 4.42, mean 1.99 MB/day) |
+| Tick wall time | median 34.4 s, max 94.8 s, sum 5 803 s over 194 ticks |
 | Bounded logs | runs 2 880 · slots 2 880 · ledger 4 032 · daily 366 · alerts 500 rows |
 | Never pruned | the store, `daily/<date>.json`, every published report |
 
-The volume is 97.16 % full and that is not this lane's doing, but it is this lane's risk: the tick's
-own guard (`DISK_BUDGET_EXCEEDED`, exit 5, **no market request**) is the thing standing between a
-full disk and a half-written observation. It has not fired, and it has been exercised by tests.
+The volume has been both sides of its own floors during this window, which is the useful part: the
+critical refusal was exercised for real (45 times), the warning path paused the heavy publication,
+and 30.7 hours of host downtime and 17.2 hours of disk refusal are what separate 75 actual triggers
+from the 96 the last 24 hours expected.
 
 ## 9. Where it stands, and what is missing
 
 | Item | State |
 | --- | --- |
-| Scheduler installed, enabled, firing unattended | **yes** |
-| Closed-bar ingest, no duplicates, point-in-time | **yes** |
-| Crash → refusal → reclaim, no duplicate bar | **yes** (controlled kill at `15:02:21Z`) |
-| Independent verification | `VERIFY_PASS` 15/15, `SELF_TEST_PASS` 20/20 |
-| Forward observation days | **0 of 60** (227 days hold data; 226 are dense but backfilled) |
-| A host that stays logged in | **required and not guaranteed** — the task runs under `InteractiveToken`, and surviving logoff needs stored credentials this work package will not hold |
-| Long unattended window | **NOT_EXERCISED** — 2 h 5 m is not 60 days |
+| Scheduler installed, enabled, firing unattended | **yes** — 188 scheduled ticks, `last_task_result 0` read back from the scheduler |
+| Closed-bar ingest, no duplicates, point-in-time | **yes** — 672 requests, 774 bars, 0 missing, 140 distinct seals |
+| Crash → refusal → reclaim, no duplicate bar | **yes** (controlled kill at `15:02:21Z`, reclaimed at `15:07:24Z`) |
+| Real disk exhaustion handled without a request | **yes** — 45 refusals, 0 market requests, 0 slots consumed |
+| Independent verification | `VERIFY_PASS` 15/15, `SELF_TEST_PASS` 20/20 — after it first returned `VERIFY_FAIL` 13/15 |
+| Forward observation days | **0 of 60** (229 days hold data; 228 are dense but backfilled) |
+| A host that stays logged in | **required and not guaranteed** — the task runs under `InteractiveToken`; 30.7 h of silence in this window is that bound, measured |
+| Long unattended window | **NOT_EXERCISED** — 2 days 3 h 54 m is not 60 days |
 | Linux registration | **NOT_EXERCISED** — no POSIX host here |
+| Provider outage, `STALE_DATA`, `MISSING_BARS`, moved ruleset | **NOT_EXERCISED** live — covered by the suite and the 20-sabotage matrix only |
 
 Not claimed: `PASS`, `CERTIFIED`, `PRODUCTION_READY`, `READY_FOR_PAPER`. The lane observes; it does
 not admit. Zero of sixty forward days is the honest reading of the coverage rule, and a day on which

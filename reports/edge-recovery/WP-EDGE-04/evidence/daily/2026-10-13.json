@@ -1,13 +1,15 @@
 {
   "day": "2026-10-13",
   "day_hashes": {
-    "15m:BTC": "3bcbac7a66183cd9",
-    "15m:ETH": "037ed62a84f47bb0",
-    "15m:SOL": "66b2ee5f637eb674",
-    "1h:BTC": "237a41c3c26f0447",
-    "1h:ETH": "3a43186d15970bbb",
-    "1h:SOL": "6baa592b6dc4c09b"
+    "15m:BTC": "b0748749fbd59e8e",
+    "15m:ETH": "020ed6a5f88ae2e2",
+    "15m:SOL": "9a6d71303811443f",
+    "1h:BTC": "d08b55c9862233ee",
+    "1h:ETH": "62fa5f7987fa2c6a",
+    "1h:SOL": "873c057a15cbb9c2"
   },
+  "day_hashes_finalised_at_utc": "2026-10-15T15:17:19Z",
+  "day_hashes_finalised_note": "the file was last written while its own day was still running, so the hashes of that write described a partial day; they are re-derived from the store on a tick of a later day, and only a file that disagrees is rewritten",
   "economics_hypothetical": {
     "arms": [
       "edge_intra_01:2X_FEES",
@@ -42,35 +44,35 @@
       "primary_gross_usdt": -9.087451,
       "primary_max_drawdown_pct": 2.776571,
       "primary_net_usdt": -44.307497,
-      "primary_no_trade_bars": 3974,
+      "primary_no_trade_bars": 3980,
       "primary_price_costs_usdt": 5.611636,
       "primary_trades": 31
     }
   },
   "errors": [],
-  "expected_new_bars": 51,
+  "expected_new_bars": 150,
   "first_tick_utc": "2026-10-13T11:24:02Z",
   "hypothetical": true,
-  "last_tick_utc": "2026-10-13T15:07:56Z",
+  "last_tick_utc": "2026-10-13T21:56:29Z",
   "latency_seconds": {
-    "max_seconds": null,
-    "median_of_medians_seconds": null,
+    "max_seconds": 2460.578,
+    "median_of_medians_seconds": 1560.578,
     "rule": "close → store, of the bars THIS tick pulled; the window reading is in the publication",
     "series": {
       "15m:BTC": {
-        "fresh_bars": 0,
-        "max_seconds": null,
-        "median_seconds": null
+        "fresh_bars": 3,
+        "max_seconds": 2460.578,
+        "median_seconds": 1560.578
       },
       "15m:ETH": {
-        "fresh_bars": 0,
-        "max_seconds": null,
-        "median_seconds": null
+        "fresh_bars": 3,
+        "max_seconds": 2460.578,
+        "median_seconds": 1560.578
       },
       "15m:SOL": {
-        "fresh_bars": 0,
-        "max_seconds": null,
-        "median_seconds": null
+        "fresh_bars": 3,
+        "max_seconds": 2460.578,
+        "median_seconds": 1560.578
       },
       "1h:BTC": {
         "fresh_bars": 0,
@@ -89,9 +91,9 @@
       }
     }
   },
-  "market_instant_utc": "2026-10-13T15:07:27Z",
+  "market_instant_utc": "2026-10-13T21:56:00Z",
   "missing_bars": 0,
-  "new_bars": 51,
+  "new_bars": 150,
   "observation": {
     "coverage_required": 0.9,
     "days": [
@@ -5070,23 +5072,23 @@
       {
         "class": "INCOMPLETE",
         "coverage": {
-          "1h:BTC": 0.333333,
-          "1h:ETH": 0.333333,
-          "1h:SOL": 0.333333
+          "1h:BTC": 0.583333,
+          "1h:ETH": 0.583333,
+          "1h:SOL": 0.583333
         },
         "day": "2026-10-13",
         "densely_covered": false,
         "expected_bars": 24,
         "prospectively_observed": false,
         "prospectively_observed_bars": {
-          "1h:BTC": 8,
-          "1h:ETH": 8,
-          "1h:SOL": 8
+          "1h:BTC": 14,
+          "1h:ETH": 14,
+          "1h:SOL": 14
         },
         "stored_bars": {
-          "1h:BTC": 15,
-          "1h:ETH": 15,
-          "1h:SOL": 15
+          "1h:BTC": 21,
+          "1h:ETH": 21,
+          "1h:SOL": 21
         }
       }
     ],
@@ -5327,8 +5329,8 @@
       "params_hash": "d073a2d686b9b198c36c9a3c6009d36130577ba247a2016c3f791813cb749d77",
       "reading": "the frozen corpora end at these instants; every stored bar is strictly later, and no day before the epoch is a forward observation day"
     },
-    "generated_at_utc": "2026-10-13T15:07:56Z",
-    "market_instant_utc": "2026-10-13T15:07:27Z",
+    "generated_at_utc": "2026-10-13T21:56:29Z",
+    "market_instant_utc": "2026-10-13T21:56:00Z",
     "not_an_admission": "reaching the floor makes a later decision possible; it does not make it, and this lane cannot promote a strategy",
     "not_counted": "days before the observation epoch, and days whose bars arrived long after they closed, are not forward observation days: a backfill is history, not an observation",
     "period_hashes": {
@@ -5349,12 +5351,12 @@
         "1h:SOL": "6fcdc1c30c288010"
       },
       "2026-10-13": {
-        "15m:BTC": "3bcbac7a66183cd9",
-        "15m:ETH": "037ed62a84f47bb0",
-        "15m:SOL": "66b2ee5f637eb674",
-        "1h:BTC": "237a41c3c26f0447",
-        "1h:ETH": "3a43186d15970bbb",
-        "1h:SOL": "6baa592b6dc4c09b"
+        "15m:BTC": "7b90b86eb5fdd056",
+        "15m:ETH": "684f843a7ebf328c",
+        "15m:SOL": "7fe6595c8c5c8613",
+        "1h:BTC": "4ec2c0f2130c78ab",
+        "1h:ETH": "872e29188d0dda89",
+        "1h:SOL": "777cd3fda361878a"
       }
     },
     "primary_assets": [
@@ -5376,12 +5378,12 @@
     "schema_version": "EDGE04_COVERAGE_V1",
     "state_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04",
     "store_digests": {
-      "15m:BTC": "801561cc1bb95008",
-      "15m:ETH": "ef46058d60950d5a",
-      "15m:SOL": "a87c8be7b426874f",
-      "1h:BTC": "92cdde888f62d932",
-      "1h:ETH": "660e848c7b3b6815",
-      "1h:SOL": "fcb04f43ca06c799"
+      "15m:BTC": "bf4f25463eca6275",
+      "15m:ETH": "e3abd5dfcbf81f7e",
+      "15m:SOL": "22421b57eafaad76",
+      "1h:BTC": "8328ca23ebae6aa0",
+      "1h:ETH": "1e7c2e81de1629d0",
+      "1h:SOL": "206b65cfe2c10c24"
     },
     "store_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge03",
     "window_observation_days": 226,
@@ -5390,12 +5392,12 @@
   "order_sent": false,
   "parity_verdict": "PARITY_PASS",
   "per_series_appended": {
-    "15m:BTC": 14,
-    "15m:ETH": 14,
-    "15m:SOL": 14,
-    "1h:BTC": 3,
-    "1h:ETH": 3,
-    "1h:SOL": 3
+    "15m:BTC": 41,
+    "15m:ETH": 41,
+    "15m:SOL": 41,
+    "1h:BTC": 9,
+    "1h:ETH": 9,
+    "1h:SOL": 9
   },
   "promotion": "NONE",
   "ruleset_params_hash": "d073a2d686b9b198c36c9a3c6009d36130577ba247a2016c3f791813cb749d77",
@@ -5522,25 +5524,193 @@
       "outcome": "OBSERVED"
     },
     "2026-10-13T15:00Z": {
-      "at_utc": "2026-10-13T15:07:56Z",
+      "at_utc": "2026-10-13T15:07:57Z",
       "expected": 0,
       "market_requests": 1,
       "missing": 0,
       "new_bars": 0,
       "outcome": "NO_NEW_DATA"
+    },
+    "2026-10-13T15:15Z": {
+      "at_utc": "2026-10-13T15:26:29Z",
+      "expected": 3,
+      "market_requests": 4,
+      "missing": 0,
+      "new_bars": 3,
+      "outcome": "OBSERVED"
+    },
+    "2026-10-13T15:30Z": {
+      "at_utc": "2026-10-13T15:41:25Z",
+      "expected": 3,
+      "market_requests": 4,
+      "missing": 0,
+      "new_bars": 3,
+      "outcome": "OBSERVED"
+    },
+    "2026-10-13T15:45Z": {
+      "at_utc": "2026-10-13T15:56:24Z",
+      "expected": 3,
+      "market_requests": 4,
+      "missing": 0,
+      "new_bars": 3,
+      "outcome": "OBSERVED"
+    },
+    "2026-10-13T16:00Z": {
+      "at_utc": "2026-10-13T16:11:30Z",
+      "expected": 6,
+      "market_requests": 7,
+      "missing": 0,
+      "new_bars": 6,
+      "outcome": "OBSERVED"
+    },
+    "2026-10-13T16:15Z": {
+      "at_utc": "2026-10-13T16:26:25Z",
+      "expected": 3,
+      "market_requests": 4,
+      "missing": 0,
+      "new_bars": 3,
+      "outcome": "OBSERVED"
+    },
+    "2026-10-13T16:30Z": {
+      "at_utc": "2026-10-13T16:41:25Z",
+      "expected": 3,
+      "market_requests": 4,
+      "missing": 0,
+      "new_bars": 3,
+      "outcome": "OBSERVED"
+    },
+    "2026-10-13T16:45Z": {
+      "at_utc": "2026-10-13T16:56:25Z",
+      "expected": 3,
+      "market_requests": 4,
+      "missing": 0,
+      "new_bars": 3,
+      "outcome": "OBSERVED"
+    },
+    "2026-10-13T17:00Z": {
+      "at_utc": "2026-10-13T17:11:26Z",
+      "expected": 6,
+      "market_requests": 7,
+      "missing": 0,
+      "new_bars": 6,
+      "outcome": "OBSERVED"
+    },
+    "2026-10-13T17:15Z": {
+      "at_utc": "2026-10-13T17:26:26Z",
+      "expected": 3,
+      "market_requests": 4,
+      "missing": 0,
+      "new_bars": 3,
+      "outcome": "OBSERVED"
+    },
+    "2026-10-13T17:30Z": {
+      "at_utc": "2026-10-13T17:41:26Z",
+      "expected": 3,
+      "market_requests": 4,
+      "missing": 0,
+      "new_bars": 3,
+      "outcome": "OBSERVED"
+    },
+    "2026-10-13T17:45Z": {
+      "at_utc": "2026-10-13T17:56:25Z",
+      "expected": 3,
+      "market_requests": 4,
+      "missing": 0,
+      "new_bars": 3,
+      "outcome": "OBSERVED"
+    },
+    "2026-10-13T18:00Z": {
+      "at_utc": "2026-10-13T18:11:30Z",
+      "expected": 6,
+      "market_requests": 7,
+      "missing": 0,
+      "new_bars": 6,
+      "outcome": "OBSERVED"
+    },
+    "2026-10-13T18:15Z": {
+      "at_utc": "2026-10-13T18:26:25Z",
+      "expected": 3,
+      "market_requests": 4,
+      "missing": 0,
+      "new_bars": 3,
+      "outcome": "OBSERVED"
+    },
+    "2026-10-13T18:30Z": {
+      "at_utc": "2026-10-13T18:41:27Z",
+      "expected": 3,
+      "market_requests": 4,
+      "missing": 0,
+      "new_bars": 3,
+      "outcome": "OBSERVED"
+    },
+    "2026-10-13T19:00Z": {
+      "at_utc": "2026-10-13T19:11:27Z",
+      "expected": 9,
+      "market_requests": 7,
+      "missing": 0,
+      "new_bars": 9,
+      "outcome": "OBSERVED"
+    },
+    "2026-10-13T19:15Z": {
+      "at_utc": "2026-10-13T19:26:28Z",
+      "expected": 3,
+      "market_requests": 4,
+      "missing": 0,
+      "new_bars": 3,
+      "outcome": "OBSERVED"
+    },
+    "2026-10-13T19:30Z": {
+      "at_utc": "2026-10-13T19:41:25Z",
+      "expected": 3,
+      "market_requests": 4,
+      "missing": 0,
+      "new_bars": 3,
+      "outcome": "OBSERVED"
+    },
+    "2026-10-13T19:45Z": {
+      "at_utc": "2026-10-13T19:56:30Z",
+      "expected": 3,
+      "market_requests": 4,
+      "missing": 0,
+      "new_bars": 3,
+      "outcome": "OBSERVED"
+    },
+    "2026-10-13T20:00Z": {
+      "at_utc": "2026-10-13T20:11:33Z",
+      "expected": 6,
+      "market_requests": 7,
+      "missing": 0,
+      "new_bars": 6,
+      "outcome": "OBSERVED"
+    },
+    "2026-10-13T21:00Z": {
+      "at_utc": "2026-10-13T21:11:30Z",
+      "expected": 15,
+      "market_requests": 7,
+      "missing": 0,
+      "new_bars": 15,
+      "outcome": "OBSERVED"
+    },
+    "2026-10-13T21:45Z": {
+      "at_utc": "2026-10-13T21:56:29Z",
+      "expected": 9,
+      "market_requests": 4,
+      "missing": 0,
+      "new_bars": 9,
+      "outcome": "OBSERVED"
     }
   },
   "store": {
     "series_digests": {
-      "15m:BTC": "44f9863dcb1d5c1a",
-      "15m:ETH": "2aea1cfb74af958c",
-      "15m:SOL": "2130c40d283cb1df",
-      "1h:BTC": "60a084d3570ff8d8",
-      "1h:ETH": "4c2ba456a063dbaf",
-      "1h:SOL": "0d7b81e38bb4a9c8"
+      "15m:BTC": "8b56dfe9978d3ef4",
+      "15m:ETH": "ebcc1ec302cb4d48",
+      "15m:SOL": "daff382bf20d3135",
+      "1h:BTC": "465d3ebec6ef52b0",
+      "1h:ETH": "4e9f16f58c7e52b8",
+      "1h:SOL": "1798ec77a0416fbe"
     },
-    "total_bars": 18084
+    "total_bars": 18183
   },
-  "ticks": 17,
+  "ticks": 38,
   "window_observation_days": 226
 }

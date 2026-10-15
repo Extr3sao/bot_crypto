@@ -7,8 +7,10 @@ tick that really ran on this host, taken from `data/forward/edge04/runs.jsonl`, 
 The tick-by-tick table is generated into `evidence/FASE7_TIMELINE.md`; this document says what it
 means.
 
-Window: **2026-10-13 11:23:27Z → 15:08:17Z** (~3 h 45 m of the lane's life, of which 2 h 5 m were
-unattended scheduled ticking). Data: public Binance klines only. Orders: none, ever.
+Window: **2026-10-13 11:23:38Z → 2026-10-15T15:17:20Z** (2 days 3 h 54 m of the lane's life, of
+which 188 of its 194 ticks were unattended scheduled ticking). The first reading of this document,
+at `2026-10-13T15:20:00Z`, covered the first 22 ticks of the same lane; the lane was not restarted
+to extend it. Data: public Binance klines only. Orders: none, ever.
 
 Research only. Public market data, no credentials, no orders, no capital, no promotion.
 
@@ -126,10 +128,17 @@ that had only been *designed* would have shipped that.
 
 ## 6. A report is published — **EXERCISED, with one named exception**
 
-`publication/LATEST.json` names **13** artefacts with their digests; the verifier recomputes all 13
-from disk and they answer (`PUBLICATION_SWAPPED_ATOMICALLY`). The heavy set is rendered once per
-24 h, not per tick, and published by pointer over a staging tree, so a torn write cannot leave a
-half-written report.
+`publication/LATEST.json` names **every file the publication holds** — 15 of them at this reading:
+the 13 the newest heavy render wrote and the 2 per-date reports earlier renders left in place — each
+keyed by its own path relative to the publication root, with its size, its digest, the role it was
+written under and whether this render wrote it. The verifier recomputes all 15 from disk and they
+answer, name for name (`PUBLICATION_SWAPPED_ATOMICALLY`).
+
+The pointer used to name only what the newest render *wrote*. That read as complete while describing
+a subset of the directory, because the swap never deletes a published report and therefore leaves
+earlier per-date reports exactly where they are — the independent verifier refused the lane for it,
+and it was right. The heavy set is rendered once per 24 h, not per tick, and published by pointer
+over a staging tree, so a torn write cannot leave a half-written report.
 
 Offline reproduction, re-run today from the preserved observation with no network:
 
