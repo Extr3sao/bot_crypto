@@ -250,6 +250,35 @@ reports/edge-recovery/WP-EDGE-08/validation/*
 !reports/edge-recovery/WP-EDGE-08/validation/*.csv
 
 # ============================================================
+# WP-EDGE-09 — misma cadena de excepciones que WP-EDGE-01…08, por el mismo motivo: la
+# evidencia de la fase de microestructura económica SI se versiona. El panel de un segundo
+# (16.7 MB) se versiona también, y por una razón propia: la captura cruda de la que sale
+# vive bajo reports/ y NO se versiona, así que sin el panel la evidencia no sería
+# verificable en un clon limpio. La cabecera de cada artefacto declara su sha256.
+# ============================================================
+!reports/edge-recovery/WP-EDGE-09/
+reports/edge-recovery/WP-EDGE-09/*
+!reports/edge-recovery/WP-EDGE-09/*.json
+!reports/edge-recovery/WP-EDGE-09/*.md
+!reports/edge-recovery/WP-EDGE-09/*.jsonl
+!reports/edge-recovery/WP-EDGE-09/audit/
+!reports/edge-recovery/WP-EDGE-09/audit/*.json
+!reports/edge-recovery/WP-EDGE-09/audit/*.md
+!reports/edge-recovery/WP-EDGE-09/sources/
+!reports/edge-recovery/WP-EDGE-09/sources/*.json
+!reports/edge-recovery/WP-EDGE-09/sources/*.md
+!reports/edge-recovery/WP-EDGE-09/panel/
+!reports/edge-recovery/WP-EDGE-09/panel/*.json
+!reports/edge-recovery/WP-EDGE-09/panel/*.csv
+!reports/edge-recovery/WP-EDGE-09/panel/panel_build.log
+!reports/edge-recovery/WP-EDGE-09/gates/
+!reports/edge-recovery/WP-EDGE-09/gates/*.json
+!reports/edge-recovery/WP-EDGE-09/gates/*.md
+!reports/edge-recovery/WP-EDGE-09/experiments/
+!reports/edge-recovery/WP-EDGE-09/experiments/*.json
+!reports/edge-recovery/WP-EDGE-09/experiments/*.md
+
+# ============================================================
 # CAP-003 — evidencias OHLCV crudas: locales por tamano.
 # El ledger (evidence/real_decisions/*.jsonl) SI se versiona y
 # fija cada fichero crudo con su sha256.

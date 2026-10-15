@@ -302,3 +302,22 @@ investigación que necesite el flujo agresor del perpetuo, y **no** invalida la 
 **Resultado:** ninguna fuente aporta simultáneamente **availability histórica + rate
 PIT** para Binance `MARGIN_SPOT` en 2019→2025. `ADOPT_P0`/`ADOPT_P1` = ninguno.
 Sustituir funding/futuros por borrow de spot-margin queda prohibido (§11/§23).
+
+## Fuentes medidas por RFC-EDGE-009 (añadidas, no reescritas)
+
+> Medición propia de esta fase el **2026-10-14**. Las filas anteriores de este
+> registro no se tocan: un claim se fija cuando se fija, y se añade lo que se midió después.
+
+| SOURCE_ID | fuente | profundidad medida | PIT | clasificación | evidencia |
+| --- | --- | --- | --- | --- | --- |
+| SRC-19 | forward microstructure capture (this repository) | hours, not weeks: see the measured spans in this artifact | yes — every row carries event/available/receive clocks and the panel uses receive | **FORWARD_ONLY** | `reports/edge-recovery/WP-EDGE-09/sources/SOURCE_VIABILITY.json` |
+| SRC-20 | spot aggressor flow from klines (taker buy fields) | complete history, aggregated per bar | bar close only | **HISTORICAL_USABLE** | `reports/edge-recovery/WP-EDGE-09/sources/SOURCE_VIABILITY.json` |
+| SRC-21 | perp funding and premium index | complete history | publication instant | **HISTORICAL_USABLE** | `reports/edge-recovery/WP-EDGE-09/sources/SOURCE_VIABILITY.json` |
+| SRC-22 | perp open interest | ~30 days retained | publication instant | **LIMITED_HISTORY** | `reports/edge-recovery/WP-EDGE-09/sources/SOURCE_VIABILITY.json` |
+| SRC-23 | liquidation prints | none from this environment | n/a | **UNAVAILABLE_IN_CURRENT_ENVIRONMENT** | `reports/edge-recovery/WP-EDGE-09/sources/SOURCE_VIABILITY.json` |
+| SRC-24 | venue fee schedules (Binance/OKX/Kraken/MEXC) already registered | published headline rates | n/a | **HISTORICAL_USABLE** | `reports/edge-recovery/WP-EDGE-09/sources/SOURCE_VIABILITY.json` |
+| P-01 | `https://fapi.binance.com/fapi/v1/fundingRate` | sondeo HTTP 200 (responde) | n/a | AVAILABLE | `SOURCE_VIABILITY.json` |
+| P-02 | `https://fapi.binance.com/futures/data/openInterestHist` | sondeo HTTP 200 (responde) | n/a | AVAILABLE | `SOURCE_VIABILITY.json` |
+| P-03 | `https://fapi.binance.com/fapi/v1/allForceOrders` | sondeo HTTP 404 (NO responde) | n/a | UNAVAILABLE_IN_CURRENT_ENVIRONMENT | `SOURCE_VIABILITY.json` |
+| P-04 | `https://api.binance.com/api/v3/depth` | sondeo HTTP 200 (responde) | n/a | AVAILABLE | `SOURCE_VIABILITY.json` |
+| P-05 | `https://data.binance.vision/data/spot/monthly/klines/BTCUSDT/1m/BTCUSDT-1m-2026-08.zip` | sondeo HTTP 200 (responde) | n/a | AVAILABLE | `SOURCE_VIABILITY.json` |

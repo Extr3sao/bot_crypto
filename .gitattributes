@@ -15,3 +15,11 @@ data/recovery/wp7/evidence/** -text
 # in a clean checkout with exactly the bytes its published artefact recorded, so git
 # must not normalise them on the way in or out.
 data/recovery/wp8/evidence/** -text
+
+# The WP-EDGE-09 evidence is digest-pinned by the package itself: every gate,
+# experiment, ledger and report row quotes the sha256 of the files it was derived
+# from, and the panel of one second is the only copy of the capture that survives a
+# clone (the raw segments under reports/ are not versioned).  Normalising these bytes
+# on checkout would break the digests the verifier recomputes, so the tree is stored
+# exactly as it is on disk.  Same reason as the trees above, same treatment.
+reports/edge-recovery/WP-EDGE-09/** -text
