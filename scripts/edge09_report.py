@@ -40,6 +40,7 @@ GATES_JSON = WP / "gates" / "COST_LIQUIDITY_CAPACITY.json"
 PANEL_JSON = WP / "panel" / "PANEL.json"
 EXP_JSON = WP / "experiments" / "EXPERIMENTS.json"
 VERIFY_JSON = WP / "VERIFICATION.json"
+RESEARCH_SUITE_JSON = WP / "RESEARCH_SUITE.json"
 RISK_CONFIG = REPO_ROOT / "config" / "risk.yaml"
 
 REPORT_FILES = (
@@ -405,6 +406,21 @@ def acceptance(payload: dict[str, Any]) -> list[dict[str, Any]]:
             "evidence": payload["status_reason"],
         },
         {
+            "id": "A-20",
+            "requirement": "run the wider research suite too, and declare what it finds instead of keeping it out of the package",
+            "status": "PASS"
+            if payload.get("wider_suite", {}).get("passed") is not None
+            else "NOT_TESTED",
+            "evidence": (
+                "RESEARCH_SUITE.{json,md}: "
+                f"{payload.get('wider_suite', {}).get('passed')} passed, "
+                f"{payload.get('wider_suite', {}).get('failed')} failed, "
+                f"{payload.get('wider_suite', {}).get('inherited_failures')} of them inherited "
+                "(outside every path this package commits to); nothing was suppressed to get "
+                "that number"
+            ),
+        },
+        {
             "id": "A-18",
             "requirement": "owned tests, lint, format and types",
             "status": "PASS"
@@ -450,6 +466,10 @@ def render_run(payload: dict[str, Any]) -> str:
         f"({payload['best_gross_cell']}).",
         f"- Negative control: {payload['experiments'].get('negative_control_classification')}; "
         f"`false_success = {payload['experiments'].get('false_success')}`.",
+        f"- Wider research suite: {payload.get('wider_suite', {}).get('passed')} passed, "
+        f"{payload.get('wider_suite', {}).get('failed')} failed, "
+        f"{payload.get('wider_suite', {}).get('inherited_failures')} inherited "
+        "(`RESEARCH_SUITE.md`).",
         f"- Baseline commit `{str(payload['audit'].get('head'))[:12]}` is the tree this package "
         f"found and audited; the reading above is taken at `{payload['git']['head'][:12]}` on "
         f"`{payload['git']['branch']}`, and the one-commit lag of GITHUB_STATE.json (written "
@@ -935,6 +955,10 @@ def build(*, run_tests: bool) -> dict[str, Any]:
             },
         ],
         "tests": owned_tests() if run_tests else {},
+        #: The wider research tree, recorded by scripts/edge09_suite_evidence.py. It
+        #: is where inherited failures live, so its result is declared here rather
+        #: than left out of a package whose own suite is green.
+        "wider_suite": read_json(RESEARCH_SUITE_JSON),
         "git": git_state(),
         "promotion": "NONE",
         "order_sent": False,
@@ -955,6 +979,8 @@ def build(*, run_tests: bool) -> dict[str, Any]:
             EXP_JSON,
             WP / "experiments" / "EXPERIMENT_REGISTRY.json",
             VERIFY_JSON,
+            RESEARCH_SUITE_JSON,
+            RESEARCH_SUITE_JSON.with_suffix(".md"),
             *(WP / name for name in RFC_ARTIFACTS),
             WP / "DELIVERABLES.json",
         )

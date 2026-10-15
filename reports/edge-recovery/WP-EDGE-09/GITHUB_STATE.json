@@ -1,19 +1,22 @@
 {
   "schema_version": "EDGE09_V1",
   "work_package": "WP-EDGE-09",
-  "as_of_utc": "2026-10-15T05:30:01Z",
+  "as_of_utc": "2026-10-15T05:54:14Z",
   "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
-  "head": "7c4dc8d7d14fbbe5b1d3b2ff400bc1a66844d4c6",
+  "head": "eceef9ee3cdddddc1b45e0e36647ee2282745da8",
   "remote": "https://github.com/Extr3sao/bot_crypto.git",
   "remote_branch_ref": "refs/heads/agent/edge-recovery/WP-EDGE-00-baseline",
   "remote_has_this_branch": true,
-  "remote_tip": "7c4dc8d7d14fbbe5b1d3b2ff400bc1a66844d4c6",
+  "remote_tip": "eceef9ee3cdddddc1b45e0e36647ee2282745da8",
   "remote_matches_head": true,
-  "pushed_range_at_last_push": "7c4dc8d..7c4dc8d (+0 ahead, 0 behind)",
+  "pushed_range_at_last_push": "eceef9e..eceef9e (+0 ahead, 0 behind)",
   "force_push_used": false,
   "push_kind": "normal fast-forward of an existing remote branch",
   "own_uncommitted_paths": [
-    " M scripts/edge09_report.py"
+    " M scripts/edge09_report.py",
+    "?? reports/edge-recovery/WP-EDGE-09/RESEARCH_SUITE.json",
+    "?? reports/edge-recovery/WP-EDGE-09/RESEARCH_SUITE.md",
+    "?? scripts/edge09_suite_evidence.py"
   ],
   "credentials_read_or_printed": false,
   "note": "this file is written before the commit that publishes it, so the pushed range describes the ref at the last push and the remote tip is read from the remote; the one-commit lag is stated rather than hidden"

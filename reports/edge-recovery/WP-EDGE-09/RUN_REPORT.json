@@ -1,8 +1,8 @@
 {
   "schema_version": "EDGE09_V1",
   "work_package": "WP-EDGE-09F",
-  "run_id": "EDGE09-REPORT-20261015T053001Z",
-  "as_of_utc": "2026-10-15T05:30:01Z",
+  "run_id": "EDGE09-REPORT-20261015T055414Z",
+  "as_of_utc": "2026-10-15T05:54:14Z",
   "audit": {
     "schema_version": "EDGE09_V1",
     "work_package": "WP-EDGE-09A",
@@ -53921,7 +53921,7 @@
     "owned": {
       "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m pytest tests/unit/research/test_edge09_microstructure.py -q",
       "exit_code": 0,
-      "stdout": ".....................                                                    [100%]\n21 passed in 2.33s",
+      "stdout": ".....................                                                    [100%]\n21 passed in 1.28s",
       "stderr": ""
     },
     "lint": {
@@ -53943,17 +53943,49 @@
       "stderr": ""
     }
   },
+  "wider_suite": {
+    "schema_version": "EDGE09_V1",
+    "work_package": "WP-EDGE-09F",
+    "artifact": "RESEARCH_SUITE",
+    "as_of_utc": "2026-10-15T05:53:07Z",
+    "commit": "eceef9ee3cdddddc1b45e0e36647ee2282745da8",
+    "suite": "tests/unit/research",
+    "command": "python.exe -m pytest tests/unit/research -q",
+    "log_path": ".ci/edge09_research_suite.log",
+    "exit_code": 1,
+    "failed": 1,
+    "passed": 2296,
+    "seconds": 519.64,
+    "failing_tests": [
+      "tests/unit/research/test_cost_barrier_adversarial.py::test_the_certification_record_digests_content_not_a_checkout"
+    ],
+    "failures": [
+      {
+        "test": "tests/unit/research/test_cost_barrier_adversarial.py::test_the_certification_record_digests_content_not_a_checkout",
+        "file": "tests/unit/research/test_cost_barrier_adversarial.py",
+        "files_this_package_touched": false,
+        "why": "outside every path this package commits to; the package's own commits touch no file under it"
+      }
+    ],
+    "inherited_failures": 1,
+    "caused_by_this_package": 0,
+    "reading": "declared, not hidden: a failure outside this package's paths is reported as inherited and left to its owner, and a failure inside them would have to be fixed here before the package could close",
+    "how_to_reproduce": "python edge09_suite_evidence.py --run"
+  },
   "git": {
     "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
-    "head": "7c4dc8d7d14fbbe5b1d3b2ff400bc1a66844d4c6",
+    "head": "eceef9ee3cdddddc1b45e0e36647ee2282745da8",
     "upstream": "origin/agent/edge-recovery/WP-EDGE-00-baseline",
     "remote_branch_ref": "refs/heads/agent/edge-recovery/WP-EDGE-00-baseline",
-    "remote_tip": "7c4dc8d7d14fbbe5b1d3b2ff400bc1a66844d4c6",
+    "remote_tip": "eceef9ee3cdddddc1b45e0e36647ee2282745da8",
     "remote_matches_head": true,
-    "pushed_range_at_last_push": "7c4dc8d..7c4dc8d (+0 ahead, 0 behind)",
+    "pushed_range_at_last_push": "eceef9e..eceef9e (+0 ahead, 0 behind)",
     "force_push_used": false,
     "own_uncommitted_paths": [
-      " M scripts/edge09_report.py"
+      " M scripts/edge09_report.py",
+      "?? reports/edge-recovery/WP-EDGE-09/RESEARCH_SUITE.json",
+      "?? reports/edge-recovery/WP-EDGE-09/RESEARCH_SUITE.md",
+      "?? scripts/edge09_suite_evidence.py"
     ],
     "note": "this file is written before the commit that publishes it, so the pushed range describes the ref at the last push and the remote tip is read from the remote; the one-commit lag is stated rather than hidden"
   },
@@ -53996,6 +54028,14 @@
     "reports/edge-recovery/WP-EDGE-09/VERIFICATION.json": {
       "bytes": 7011,
       "sha256": "c1627eab80a5355b769846547c440593cf0d115e9fdb947bbc12386fdb131e41"
+    },
+    "reports/edge-recovery/WP-EDGE-09/RESEARCH_SUITE.json": {
+      "bytes": 1302,
+      "sha256": "b37594ef414ed02c586b1e4abf2e3cf153844cc2efc18af5a2cdcccbc6ae1789"
+    },
+    "reports/edge-recovery/WP-EDGE-09/RESEARCH_SUITE.md": {
+      "bytes": 939,
+      "sha256": "f53212761c3b0deff2252107f5178cb4bba28fca020f8f7213e47af4c2c607f0"
     },
     "reports/edge-recovery/WP-EDGE-09/BASELINE.json": {
       "bytes": 7886,
@@ -54151,7 +54191,7 @@
       "id": "A-15",
       "requirement": "deliver run report, final report, executive summary, economic matrix, source registry, tests and verification",
       "status": "PASS",
-      "evidence": "RUN_REPORT.{json,md}, FINAL_REPORT.md, INFORME_EJECUTIVO.md, ECONOMIC_MATRIX.{json,md}, sources/SOURCE_VIABILITY.{json,md}, docs/source_registry.md extended, VERIFICATION.{json,md}, 25 artifact digests published"
+      "evidence": "RUN_REPORT.{json,md}, FINAL_REPORT.md, INFORME_EJECUTIVO.md, ECONOMIC_MATRIX.{json,md}, sources/SOURCE_VIABILITY.{json,md}, docs/source_registry.md extended, VERIFICATION.{json,md}, 27 artifact digests published"
     },
     {
       "id": "A-19",
@@ -54163,7 +54203,7 @@
       "id": "A-16",
       "requirement": "publish in isolated commits with a safe push",
       "status": "PASS",
-      "evidence": "branch agent/edge-recovery/WP-EDGE-00-baseline, head 7c4dc8d, remote tip 7c4dc8d, matches head True, force push used False"
+      "evidence": "branch agent/edge-recovery/WP-EDGE-00-baseline, head eceef9e, remote tip eceef9e, matches head True, force push used False"
     },
     {
       "id": "A-17",
@@ -54172,10 +54212,16 @@
       "evidence": "the forward quote data is real and usable, but no measured structure covers the 23-24 bps round trip: the best long-only gross is 1.582703 bps, the tape offers no barrier-clearing move at a 1 or 5 second horizon, and the cheapest registered venue still costs more than the measured gross"
     },
     {
+      "id": "A-20",
+      "requirement": "run the wider research suite too, and declare what it finds instead of keeping it out of the package",
+      "status": "PASS",
+      "evidence": "RESEARCH_SUITE.{json,md}: 2296 passed, 1 failed, 1 of them inherited (outside every path this package commits to); nothing was suppressed to get that number"
+    },
+    {
       "id": "A-18",
       "requirement": "owned tests, lint, format and types",
       "status": "PASS",
-      "evidence": "owned: exit 0 (21 passed in 2.33s); lint: exit 0 (All checks passed!); format: exit 0 (18 files already formatted); types: exit 0 (Success: no issues found in 8 source files)"
+      "evidence": "owned: exit 0 (21 passed in 1.28s); lint: exit 0 (All checks passed!); format: exit 0 (18 files already formatted); types: exit 0 (Success: no issues found in 8 source files)"
     }
   ]
 }
