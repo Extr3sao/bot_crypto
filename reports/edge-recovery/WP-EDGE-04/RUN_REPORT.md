@@ -56,9 +56,14 @@ modified files under `data/st6/`, `data/recovery/wp8/`, `evidence/real_decisions
 `docs/source_registry.md` belong to other lanes and were left exactly as they were found. The
 operational state under `data/forward/` is ignored by git and is therefore in none of these commits.
 
-**Push:** probed, not asserted, after the commits — `git push --dry-run origin HEAD` answered
-`Everything up-to-date` at `2026-10-15T15:27Z`, i.e. the remote already carries this work package's
-committed work. The probe is a dry run and pushes nothing; no credential was supplied to it.
+**Push:** probed, not asserted — **twice**, because the first reading stopped being true the moment
+this session committed. Before those commits, `git push --dry-run origin HEAD` answered
+`Everything up-to-date` (`2026-10-15T15:27Z`): the remote already carried the lane's earlier work.
+After them, the same dry run answers
+`26eeea4..570ccd6  HEAD -> agent/edge-recovery/WP-EDGE-00-baseline` (`2026-10-15T15:48Z`) — four
+commits are local and the remote does not have them. **They stay local**: this work package was not
+authorised to push, and the probe is a dry run that pushes nothing and supplies no credential. The
+first reading is quoted because it was published, and the second is what is true now.
 
 ## 3. What the ticks did with the data
 

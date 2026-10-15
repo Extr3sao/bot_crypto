@@ -67,11 +67,25 @@
       "docs/source_registry.md"
     ],
     "push": {
-      "state": "up_to_date",
-      "probe": "GIT_TERMINAL_PROMPT=0 GIT_ASKPASS=/bin/true git push --dry-run origin HEAD",
-      "at_utc": "2026-10-15T15:27Z",
-      "answer": "Everything up-to-date",
-      "reading": "the remote already carries this work package's committed work; the probe is a dry run and pushes nothing, and no credential was supplied to it"
+      "state": "LOCAL_ONLY_NOT_AUTHORISED",
+      "probes": [
+        {
+          "at_utc": "2026-10-15T15:27Z",
+          "before_this_sessions_commits": true,
+          "answer": "Everything up-to-date",
+          "reading": "the remote already carried the lane's earlier work"
+        },
+        {
+          "at_utc": "2026-10-15T15:48Z",
+          "after_this_sessions_commits": true,
+          "answer": "26eeea4..570ccd6  HEAD -> agent/edge-recovery/WP-EDGE-00-baseline",
+          "reading": "four commits are local and the remote does not have them"
+        }
+      ],
+      "command": "GIT_TERMINAL_PROMPT=0 GIT_ASKPASS=/bin/true git push --dry-run origin HEAD",
+      "remote": "https://github.com/Extr3sao/bot_crypto.git",
+      "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
+      "reading": "the commits stay local: this work package was not authorised to push, and the probe is a dry run that pushes nothing and supplies no credential"
     }
   },
   "runtime": {
