@@ -1,8 +1,8 @@
 {
   "schema_version": "EDGE09_V1",
   "work_package": "WP-EDGE-09F",
-  "run_id": "EDGE09-REPORT-20261015T055414Z",
-  "as_of_utc": "2026-10-15T05:54:14Z",
+  "run_id": "EDGE09-REPORT-20261015T055625Z",
+  "as_of_utc": "2026-10-15T05:56:25Z",
   "audit": {
     "schema_version": "EDGE09_V1",
     "work_package": "WP-EDGE-09A",
@@ -53899,6 +53899,15 @@
     "the capture spans hours across a handful of days, so a rate per day is an extrapolation from a short sample and is reported with its span",
     "no venue in this project has a measured maker fill model, so a passive product cannot be scored here at all"
   ],
+  "limitations_es": [
+    "rentabilidad de ning\u00fan libro: la promoci\u00f3n es NONE y no se env\u00eda ninguna orden",
+    "nada sobre la liquidez fuera de las horas que cubre la captura forward, que se declaran en el informe",
+    "nada sobre el flujo de operaciones del perpetuo: este entorno entreg\u00f3 cero mensajes aggTrade de perpetuo (SRC-15/SRC-18) y la ausencia se declara, nunca se sustituye",
+    "nada sobre fills maker realizados: ning\u00fan mercado de este proyecto tiene un modelo de fill medido",
+    "nada sobre mercados que el runtime excluye (los derivados son informaci\u00f3n, no producto)",
+    "la captura abarca horas repartidas en unos pocos d\u00edas, as\u00ed que una tasa por d\u00eda es una extrapolaci\u00f3n de una muestra corta y se informa siempre con su span",
+    "sin modelo de fill maker, el lado pasivo de cada mercado queda sin puntuar, y ah\u00ed es donde tendr\u00eda que estar una ventaja de coste"
+  ],
   "open_items": [
     {
       "item": "no microstructure signal measured here approaches the barrier; the gap is arithmetic (fee 20 of 23-24 bps), so the next attempt needs a different product or a different venue, not another indicator",
@@ -53921,7 +53930,7 @@
     "owned": {
       "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m pytest tests/unit/research/test_edge09_microstructure.py -q",
       "exit_code": 0,
-      "stdout": ".....................                                                    [100%]\n21 passed in 1.28s",
+      "stdout": ".....................                                                    [100%]\n21 passed in 1.38s",
       "stderr": ""
     },
     "lint": {
@@ -53974,18 +53983,15 @@
   },
   "git": {
     "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
-    "head": "eceef9ee3cdddddc1b45e0e36647ee2282745da8",
+    "head": "d5c93bd9f7246122792694cbfb86537637c00612",
     "upstream": "origin/agent/edge-recovery/WP-EDGE-00-baseline",
     "remote_branch_ref": "refs/heads/agent/edge-recovery/WP-EDGE-00-baseline",
-    "remote_tip": "eceef9ee3cdddddc1b45e0e36647ee2282745da8",
+    "remote_tip": "d5c93bd9f7246122792694cbfb86537637c00612",
     "remote_matches_head": true,
-    "pushed_range_at_last_push": "eceef9e..eceef9e (+0 ahead, 0 behind)",
+    "pushed_range_at_last_push": "d5c93bd..d5c93bd (+0 ahead, 0 behind)",
     "force_push_used": false,
     "own_uncommitted_paths": [
-      " M scripts/edge09_report.py",
-      "?? reports/edge-recovery/WP-EDGE-09/RESEARCH_SUITE.json",
-      "?? reports/edge-recovery/WP-EDGE-09/RESEARCH_SUITE.md",
-      "?? scripts/edge09_suite_evidence.py"
+      " M scripts/edge09_report.py"
     ],
     "note": "this file is written before the commit that publishes it, so the pushed range describes the ref at the last push and the remote tip is read from the remote; the one-commit lag is stated rather than hidden"
   },
@@ -54203,7 +54209,7 @@
       "id": "A-16",
       "requirement": "publish in isolated commits with a safe push",
       "status": "PASS",
-      "evidence": "branch agent/edge-recovery/WP-EDGE-00-baseline, head eceef9e, remote tip eceef9e, matches head True, force push used False"
+      "evidence": "branch agent/edge-recovery/WP-EDGE-00-baseline, head d5c93bd, remote tip d5c93bd, matches head True, force push used False"
     },
     {
       "id": "A-17",
@@ -54221,7 +54227,7 @@
       "id": "A-18",
       "requirement": "owned tests, lint, format and types",
       "status": "PASS",
-      "evidence": "owned: exit 0 (21 passed in 1.28s); lint: exit 0 (All checks passed!); format: exit 0 (18 files already formatted); types: exit 0 (Success: no issues found in 8 source files)"
+      "evidence": "owned: exit 0 (21 passed in 1.38s); lint: exit 0 (All checks passed!); format: exit 0 (18 files already formatted); types: exit 0 (Success: no issues found in 8 source files)"
     }
   ]
 }

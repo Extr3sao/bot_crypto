@@ -1,6 +1,6 @@
 # WP-EDGE-09 — informe ejecutivo
 
-*Lectura única del paquete en `2026-10-15T05:54:14Z` (`EDGE09-REPORT-20261015T055414Z`). Las cuatro piezas se renderizan del mismo diccionario, así que no pueden contradecirse.*
+*Lectura única del paquete en `2026-10-15T05:56:25Z` (`EDGE09-REPORT-20261015T055625Z`). Las cuatro piezas se renderizan del mismo diccionario, así que no pueden contradecirse.*
 
 ## 1. Veredicto
 
@@ -36,12 +36,12 @@ La brecha es aritmética en el reloj corto e informativa en el largo: la barrera
 
 ## 5. Límites declarados
 
-- profitability of any book: promotion is NONE and no order is sent
-- anything about liquidity outside the 4.16 h the forward capture covers
-- anything about the perp trade flow: this environment delivered zero perp aggTrade messages (SRC-15/SRC-18) and the absence is declared, never substituted
-- anything about realised maker fills: no venue in this project has a measured fill model
-- anything about markets the runtime excludes (derivatives are information, not product)
-- the capture spans hours across a handful of days, so a rate per day is an extrapolation from a short sample and is reported with its span
-- no venue in this project has a measured maker fill model, so a passive product cannot be scored here at all
+- rentabilidad de ningún libro: la promoción es NONE y no se envía ninguna orden
+- nada sobre la liquidez fuera de las horas que cubre la captura forward, que se declaran en el informe
+- nada sobre el flujo de operaciones del perpetuo: este entorno entregó cero mensajes aggTrade de perpetuo (SRC-15/SRC-18) y la ausencia se declara, nunca se sustituye
+- nada sobre fills maker realizados: ningún mercado de este proyecto tiene un modelo de fill medido
+- nada sobre mercados que el runtime excluye (los derivados son información, no producto)
+- la captura abarca horas repartidas en unos pocos días, así que una tasa por día es una extrapolación de una muestra corta y se informa siempre con su span
+- sin modelo de fill maker, el lado pasivo de cada mercado queda sin puntuar, y ahí es donde tendría que estar una ventaja de coste
 
 `promotion: NONE`, `order_sent: False`, `FALSE_SUCCESS: 0`. No se declara rentabilidad ni preparación para paper o producción.

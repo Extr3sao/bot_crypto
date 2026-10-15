@@ -676,7 +676,7 @@ def render_informe(payload: dict[str, Any]) -> str:
         "## 5. Límites declarados",
         "",
     ]
-    for limitation in payload["limitations"]:
+    for limitation in payload["limitations_es"]:
         lines.append(f"- {limitation}")
     lines += [
         "",
@@ -796,6 +796,34 @@ def build(*, run_tests: bool) -> dict[str, Any]:
         f"{min((row['snapshots'] for row in capacity if row['market'] == 'spot'), default=0)} "
         "snapshots only"
     )
+    #: The Spanish summary renders its own limitation list rather than quoting the
+    #: English one: a document that switches language inside its own conclusions is
+    #: worse than either language alone.
+    limitations_es = [
+        "rentabilidad de ningún libro: la promoción es NONE y no se envía ninguna orden",
+        (
+            "nada sobre la liquidez fuera de las horas que cubre la captura forward, que se "
+            "declaran en el informe"
+        ),
+        (
+            "nada sobre el flujo de operaciones del perpetuo: este entorno entregó cero "
+            "mensajes aggTrade de perpetuo (SRC-15/SRC-18) y la ausencia se declara, nunca se "
+            "sustituye"
+        ),
+        (
+            "nada sobre fills maker realizados: ningún mercado de este proyecto tiene un "
+            "modelo de fill medido"
+        ),
+        ("nada sobre mercados que el runtime excluye (los derivados son información, no producto)"),
+        (
+            "la captura abarca horas repartidas en unos pocos días, así que una tasa por día es "
+            "una extrapolación de una muestra corta y se informa siempre con su span"
+        ),
+        (
+            "sin modelo de fill maker, el lado pasivo de cada mercado queda sin puntuar, y ahí "
+            "es donde tendría que estar una ventaja de coste"
+        ),
+    ]
     limitations = [
         *(prereg.get("declared_limitations") or []),
         (
@@ -921,6 +949,7 @@ def build(*, run_tests: bool) -> dict[str, Any]:
         "risk_digest": sha256_file(RISK_CONFIG) if RISK_CONFIG.is_file() else "",
         "risk_last_commit": git("log", "-1", "--format=%h %s", "--", "config/risk.yaml"),
         "limitations": limitations,
+        "limitations_es": limitations_es,
         "open_items": [
             {
                 "item": (
