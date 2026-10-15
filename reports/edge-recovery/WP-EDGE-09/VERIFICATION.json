@@ -1,0 +1,242 @@
+{
+  "schema_version": "EDGE09_V1",
+  "work_package": "WP-EDGE-09F",
+  "as_of_utc": "2026-10-15T05:23:47Z",
+  "checks": [
+    {
+      "name": "C-1",
+      "passed": true,
+      "offenders": [],
+      "why": "every authoritative input still carries the digest the audit recorded"
+    },
+    {
+      "name": "C-2",
+      "passed": true,
+      "recorded": "0f87b7baeb92f93d8563043af68d5ea1f60ad51466a8a5ea6ff00bf501a1bff1",
+      "recomputed": "0f87b7baeb92f93d8563043af68d5ea1f60ad51466a8a5ea6ff00bf501a1bff1",
+      "why": "the panel hash recomputes from the bytes on disk"
+    },
+    {
+      "name": "C-3",
+      "passed": true,
+      "samples": [
+        {
+          "run": "paper-lab-continuous-02",
+          "market": "spot",
+          "symbol": "BTCUSDT",
+          "segment": "224500.jsonl.gz",
+          "compared": 40,
+          "mismatches": []
+        },
+        {
+          "run": "paper-lab-continuous-02",
+          "market": "spot",
+          "symbol": "ETHUSDT",
+          "segment": "224500.jsonl.gz",
+          "compared": 38,
+          "mismatches": []
+        },
+        {
+          "run": "paper-lab-continuous-02",
+          "market": "perp",
+          "symbol": "BTCUSDT",
+          "segment": "224500.jsonl.gz",
+          "compared": 40,
+          "mismatches": []
+        },
+        {
+          "run": "paper-lab-continuous-02",
+          "market": "perp",
+          "symbol": "ETHUSDT",
+          "segment": "224500.jsonl.gz",
+          "compared": 40,
+          "mismatches": []
+        }
+      ],
+      "why": "panel rows re-derive from the raw segments through a second reader"
+    },
+    {
+      "name": "C-4",
+      "passed": true,
+      "offenders": [],
+      "rows_checked": 95913,
+      "why": "every row's decision clock lies inside its own second and moves forward"
+    },
+    {
+      "name": "C-5",
+      "passed": true,
+      "cells_checked": 30,
+      "offenders": [],
+      "why": "every published horizon pairing has its partner at or after decision_time + h"
+    },
+    {
+      "name": "C-6",
+      "passed": true,
+      "checked": 40,
+      "offenders": [],
+      "why": "the barrier is the sum of its components, with the 1.5x margin"
+    },
+    {
+      "name": "C-7",
+      "passed": true,
+      "thresholds": {
+        "sample_floor": 500,
+        "safety_multiple": 1.5,
+        "active_target": 3.0,
+        "min_abs_ic": 0.01
+      },
+      "why": "the verifier's own thresholds still agree with the registration"
+    },
+    {
+      "name": "C-8",
+      "passed": true,
+      "cell": {
+        "market": "perp",
+        "symbol": "SOLUSDT",
+        "horizon_seconds": 60,
+        "gross_bps": 1.582703,
+        "cost_bps": 24.0731,
+        "ic": 0.152669,
+        "n": 5785
+      },
+      "published": "COST_KILLED",
+      "recomputed": "COST_KILLED",
+      "why": "the published classification follows from the published numbers and the thresholds"
+    },
+    {
+      "name": "C-9",
+      "passed": true,
+      "classifications": [
+        "COST_KILLED",
+        "NO_GROSS_EDGE",
+        "NO_INFORMATION"
+      ],
+      "false_success": 0,
+      "why": "the negative control is not positive, so FALSE_SUCCESS stays at zero"
+    },
+    {
+      "name": "C-10",
+      "passed": true,
+      "offenders": [],
+      "promotion": {
+        "experiments": "NONE",
+        "order_sent": false
+      },
+      "exempt_documents": [
+        "RFC-EDGE-009.md",
+        "VERIFICATION.json",
+        "VERIFICATION.md"
+      ],
+      "why": "no measurement artifact claims readiness or profitability, and no order was sent; the verifier and the registered RFC name those states only to forbid them"
+    },
+    {
+      "name": "C-11",
+      "passed": true,
+      "universe": [
+        "BTCUSDT",
+        "ETHUSDT",
+        "SOLUSDT"
+      ],
+      "overlap_with_consumed_holdouts": [],
+      "why": "the measured universe shares no symbol with a holdout this project already spent"
+    },
+    {
+      "name": "C-12",
+      "passed": true,
+      "streams_recomputed": 6,
+      "offenders": [],
+      "why": "the published capacity recomputes from the kept depth levels"
+    },
+    {
+      "name": "C-13",
+      "passed": true,
+      "ids": [
+        "E-01",
+        "E-02",
+        "E-03",
+        "E-04",
+        "E-05",
+        "E-06",
+        "E-07"
+      ],
+      "missing": [],
+      "duplicates": [],
+      "why": "every registered hypothesis \u2014 including the rejected ones \u2014 appears once"
+    },
+    {
+      "name": "C-14",
+      "passed": true,
+      "missing": [],
+      "fee_components": {
+        "BINANCE_SPOT_STANDARD_TAKER": 20.0,
+        "KRAKENPRO_SPOT_TAKER": 80.0,
+        "MEXC_SPOT_TAKER": 10.0,
+        "OKX_SPOT_TAKER": 20.0
+      },
+      "why": "every registered venue scenario is priced, and the schedules are not all the same"
+    },
+    {
+      "name": "C-15",
+      "passed": true,
+      "streams_without_a_ledger_row": [],
+      "windows_claimed_as_read_but_unreadable": [],
+      "consumed_holdouts_claimed_again": [],
+      "why": "every measured stream is in the ledger as CONSULTED, no market window that the cost gate never opened is claimed as read, and no spent holdout is re-read"
+    },
+    {
+      "name": "C-16",
+      "passed": true,
+      "mismatched": [],
+      "unknown_classifications": [],
+      "hypotheses_absent_from_ledger": [],
+      "why": "the results matrix, the registry and the experiment ledger agree hypothesis by hypothesis, and every classification is registered vocabulary"
+    },
+    {
+      "name": "C-17",
+      "passed": true,
+      "horizons_without_a_declared_span": [],
+      "long_only_exceeding_any_direction": [],
+      "published": "OBSERVED",
+      "recomputed": "OBSERVED",
+      "why": "the pooled frequency carries the span it was extrapolated from, never counts more long-only opportunities than moves of either sign, and is classified by the rule that kills a book only when every measured horizon is below the target"
+    },
+    {
+      "name": "C-18",
+      "passed": true,
+      "offenders": [],
+      "declared_artifacts": 15,
+      "why": "every derived deliverable still hashes to the digest its manifest declares"
+    }
+  ],
+  "passed": 18,
+  "total": 18,
+  "failing": [],
+  "result": "PASS",
+  "self_test": {
+    "baseline": "PASS",
+    "total": 18,
+    "detected": 18,
+    "detected_by_check": {
+      "C-1": true,
+      "C-2": true,
+      "C-3": true,
+      "C-4": true,
+      "C-5": true,
+      "C-6": true,
+      "C-7": true,
+      "C-8": true,
+      "C-9": true,
+      "C-10": true,
+      "C-11": true,
+      "C-12": true,
+      "C-13": true,
+      "C-14": true,
+      "C-15": true,
+      "C-16": true,
+      "C-17": true,
+      "C-18": true
+    },
+    "result": "PASS",
+    "note": "every check must fail on its own tampered input"
+  }
+}
