@@ -15,6 +15,7 @@ Research only: public market data, no credentials, no orders, no capital.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import sys
 from pathlib import Path
@@ -33,6 +34,20 @@ EVIDENCE_FILENAME = "OS_CONTINUITY_EVIDENCE.json"
 LIVE_TASK = "TradingAgentic-EDGE04-Forward"
 
 
+def _repo_path(value: str | Path) -> Path:
+    """Resolve a declared path against the repository root, not against whatever the cwd is.
+
+    The probes register a scheduled task whose working directory is the repository root,
+    while the command that takes the reading can be launched from anywhere. A relative
+    path taken from the caller's cwd therefore lands somewhere else inside the task: the
+    witness is written where the task looked and the check reads where the caller looked,
+    so a witness action that ran is reported as one that never did. Anchoring to
+    ``REPO_ROOT`` makes both agree no matter which directory the reading is taken from.
+    """
+    candidate = Path(value)
+    return candidate if candidate.is_absolute() else REPO_ROOT / candidate
+
+
 def _write_json(path: Path, payload: dict[str, Any]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(
@@ -42,6 +57,10 @@ def _write_json(path: Path, payload: dict[str, Any]) -> None:
 
 def _render(payload: dict[str, Any]) -> str:
     mechanisms = payload["classification"]["mechanisms"]
+    proposal = payload["proposal"]
+    rehearsal = next(
+        row for row in payload["probes"] if row.get("mechanism") == "PROPOSED_DEFINITION"
+    )
     lines = [
         "# WP-EDGE-04R — session independence: what this host allows",
         "",
@@ -72,11 +91,47 @@ def _render(payload: dict[str, Any]) -> str:
         f"* **S4U:** {payload['recommendation']['what_s4u_would_buy']}",
         f"* **Witness action:** {payload['recommendation']['what_the_witness_buys']}",
         "",
+        "## The definition this package would apply, and what the rehearsal found",
+        "",
+        f"`evidence/{proposal['filename']}` — {proposal['bytes']} bytes, sha256 "
+        f"`{proposal['sha256']}`. It is rendered from the lane's own registration, so applying it "
+        "changes which instants can start and nothing about what the lane does when it starts:",
+        "",
+        "* carried over: "
+        + ", ".join(
+            f"{key}={value}"
+            for key, value in proposal["carried_over_from_the_registration"].items()
+            if value not in ("", None)
+        ),
+        "* added: " + "; ".join(proposal["added"]),
+        "",
+        "| rehearsal (`" + rehearsal["task_name"] + "`) | measured |",
+        "| --- | --- |",
+        f"| verdict | `{rehearsal['verdict']}` |",
+        "| trigger kinds the scheduler reported back | "
+        + ", ".join(rehearsal["trigger_kinds"])
+        + " |",
+        f"| actions, in the order they run | {rehearsal['action_count']} |",
+        f"| witness line written before the long action | {rehearsal['witness_file_written']} |",
+        f"| task deleted after the rehearsal | {rehearsal['deleted_after_the_probe']} |",
+        f"| lines the rehearsal moved from the committed definition | "
+        f"{rehearsal['lines_the_rehearsal_moved_from_the_proposal']} |",
+        "",
+        "The rehearsal registers a copy of the committed definition whose only difference is the "
+        "action payload: running the lane's own action there would let a rehearsal write an "
+        f"out-of-phase tick into the ledger this audit measures, so it carries "
+        f"`{proposal['payload_overridden_for_the_rehearsal']['command']} "
+        f"{proposal['payload_overridden_for_the_rehearsal']['arguments']}` instead. Everything "
+        "else — both triggers, the principal, the settings, the order of the actions, the witness "
+        "path — is the committed bytes.",
+        "",
         "## What was not applied, and why",
         "",
         payload["recommendation"]["not_applied"],
         "",
-        f"The command that would apply it, once an operator decides to: `{payload['recommendation']['apply_command']}`",
+        f"The command that would apply it, once an operator decides to: `{proposal['apply_command']}`"
+        " — it re-registers the live task (in place, `/f`), so it stays an operator decision: "
+        f"`{payload['recommendation']['apply_command']}`",
         "",
         "## The honest bound",
         "",
@@ -98,7 +153,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--task-name", default=LIVE_TASK)
     args = parser.parse_args(argv)
 
-    reports = Path(args.reports)
+    reports = _repo_path(args.reports)
     probe_path = reports / "evidence" / PROBE_FILENAME
     evidence_path = reports / "evidence" / EVIDENCE_FILENAME
     audit_path = reports / "evidence" / AUDIT_FILENAME
@@ -128,11 +183,40 @@ def main(argv: list[str] | None = None) -> int:
         return 4
 
     scratch = reports / "evidence" / "probe-scratch"
+    # The audit owns the count of triggers this window should have fired; the probes quote it
+    # rather than restating it, so the two records cannot drift apart. The key is the audit's
+    # own (``trigger_loss.expected``): naming a key the audit does not carry would silently
+    # fall back to the unnumbered sentence and read as if the count were unavailable.
+    window_instants = int((audit.get("trigger_loss") or {}).get("expected") or 0) or None
+    # The definition an operator would apply, rendered from the lane's own frozen registration.
+    # It is written in the form the scheduler consumes (the definition declares UTF-16), and the
+    # rehearsal registers a copy of it whose only difference is the action payload: running the
+    # lane's own action here would let a rehearsal write an out-of-phase tick into the ledger the
+    # audit measures.
+    witness = reports / "evidence" / "forward-witness.txt"
+    proposal = session.proposal_from_evidence(evidence, witness_path=witness)
+    rehearsal = session.proposal_from_evidence(
+        evidence,
+        witness_path=witness,
+        command=session.INERT_COMMAND,
+        arguments=session.INERT_ARGUMENTS,
+    )
+    proposal_path = reports / "evidence" / session.PROPOSAL_FILENAME
+    proposal_path.write_text(proposal["xml"], encoding="utf-16")
+    proposal["sha256"] = hashlib.sha256(proposal_path.read_bytes()).hexdigest()
+    proposal["bytes"] = proposal_path.stat().st_size
+
     probes = [
         session.probe_logon_trigger_registration(scratch=scratch),
-        session.probe_witness_action(scratch=scratch),
+        session.probe_witness_action(scratch=scratch, window_instants=window_instants),
+        session.probe_proposed_definition(
+            proposal=proposal,
+            rehearsal_xml=rehearsal["xml"],
+            probe_name=f"{session.PROBE_TASK_NAME}-Proposal",
+            witness=witness,
+        ),
         session.probe_s4u_registration(scratch=scratch),
-        session.probe_task_history_log(),
+        session.probe_task_history_log(window_instants=window_instants),
     ]
     sleep_pairs = int(
         ((evidence.get("windows") or {}).get("counts") or {}).get("sleep_resume_pairs")
@@ -144,6 +228,7 @@ def main(argv: list[str] | None = None) -> int:
         "schema_version": session.SESSION_SCHEMA_VERSION,
         "live_task_name": args.task_name,
         "probes": probes,
+        "proposal": proposal,
         "classification": classification,
         "recommendation": session.recommendation(
             audit=audit, probes=classification, task_name=args.task_name

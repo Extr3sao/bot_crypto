@@ -22,6 +22,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 import subprocess
 import sys
 from datetime import UTC, datetime
@@ -30,6 +31,19 @@ from typing import Any
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT / "src"))
+
+
+def _repo_path(value: str | Path) -> Path:
+    """Resolve a declared path against the repository root, not against whatever the cwd is.
+
+    The verifier re-reads the published artefacts and re-runs the audit's own command, so a
+    relative path taken from the caller's cwd would make it verify a different tree than the
+    one the reading names -- and would make the reproduction command it quotes depend on where
+    it was launched. Anchoring to ``REPO_ROOT`` makes the verdict a property of the repository.
+    """
+    candidate = Path(value)
+    return candidate if candidate.is_absolute() else REPO_ROOT / candidate
+
 
 VERIFIER_SCHEMA = "EDGE04R_VERIFICATION_V1"
 INTERVAL_MS = 900_000
@@ -295,6 +309,66 @@ def _own_reading(report: Path) -> dict[str, Any]:
 # -- the checks ------------------------------------------------------------------- #
 
 
+def _block(text: str, tag: str) -> str:
+    """The first ``tag`` element, whole, or an empty string when the document has none."""
+    match = re.search(rf"<{tag}[ >].*?</{tag}>", text, re.S)
+    return match.group(0) if match else ""
+
+
+def _tag(text: str, tag: str) -> str:
+    """The text of the first ``tag`` element, or an empty string."""
+    match = re.search(rf"<{tag}>([^<]*)</{tag}>", text)
+    return match.group(1).strip() if match else ""
+
+
+def _own_definition_reading(report: Path) -> dict[str, Any]:
+    """Read the committed definition the way the scheduler would, not the way the record says.
+
+    The proposal is the one artefact of this package an operator applies, so what matters about
+    it is the file, not the paragraph describing the file. This parses the document itself for
+    the elements that decide when the task may start and what it runs, and carries the record's
+    own claims beside them, so a check can compare the two. ``schtasks`` reads this form (the
+    document declares UTF-16), so it is decoded that way rather than as text.
+    """
+    record = _load(report / "evidence" / "SESSION_INDEPENDENCE.json")
+    proposal = record.get("proposal") or {}
+    path = report / "evidence" / str(proposal.get("filename") or "")
+    reading: dict[str, Any] = {"present": path.is_file(), "filename": path.name}
+    if not reading["present"]:
+        return reading
+    raw = path.read_bytes()
+    text = raw.decode("utf-16", errors="replace")
+    repetition = _block(text, "Repetition")
+    restart = _block(text, "RestartOnFailure")
+    reading.update(
+        {
+            "sha256": _sha(raw),
+            "bytes": len(raw),
+            "recorded_sha256": proposal.get("sha256"),
+            "recorded_bytes": proposal.get("bytes"),
+            "time_triggers": text.count("<TimeTrigger>"),
+            "logon_triggers": text.count("<LogonTrigger>"),
+            "logon_disabled": "<Enabled>false</Enabled>" in _block(text, "LogonTrigger"),
+            "logon_delay": _tag(_block(text, "LogonTrigger"), "Delay"),
+            "date": _tag(text, "Date"),
+            "start_boundary": _tag(_block(text, "TimeTrigger"), "StartBoundary"),
+            "interval": _tag(repetition, "Interval"),
+            "logon_type": _tag(text, "LogonType"),
+            "wake_to_run": _tag(text, "WakeToRun"),
+            "execution_time_limit": _tag(text, "ExecutionTimeLimit"),
+            "multiple_instances": _tag(text, "MultipleInstancesPolicy"),
+            "start_when_available": _tag(text, "StartWhenAvailable"),
+            "restart_count": _tag(restart, "Count"),
+            "commands": re.findall(r"<Command>([^<]*)</Command>", text),
+            "arguments": re.findall(r"<Arguments>([^<]*)</Arguments>", text),
+            "working_directories": re.findall(
+                r"<WorkingDirectory>([^<]*)</WorkingDirectory>", text
+            ),
+        }
+    )
+    return reading
+
+
 def run_checks(report: Path, *, repo: Path) -> dict[str, Any]:
     checks: list[dict[str, Any]] = []
 
@@ -517,6 +591,106 @@ def run_checks(report: Path, *, repo: Path) -> dict[str, Any]:
         f"forbidden claims found: {claimed}" if claimed else "no readiness or promotion claim",
     )
 
+    # 12. The definition this package would apply carries the registration it claims to, and its
+    # rehearsal earned the verdict it was given.
+    definition = _own_definition_reading(report)
+    host = _load(report / "evidence" / "OS_CONTINUITY_EVIDENCE.json")
+    task = host.get("task") or {}
+    record = _load(report / "evidence" / "SESSION_INDEPENDENCE.json")
+    carried = (record.get("proposal") or {}).get("carried_over_from_the_registration") or {}
+    rehearsal: dict[str, Any] = next(
+        (
+            row
+            for row in record.get("probes") or []
+            if str(row.get("mechanism")) == "PROPOSED_DEFINITION"
+        ),
+        {},
+    )
+    live = next((row for row in (task.get("actions") or []) if isinstance(row, dict)), {})
+    triggers = [row for row in (task.get("triggers") or []) if isinstance(row, dict)]
+    live_boundary = next(
+        (str(row.get("start_boundary")) for row in triggers if row.get("start_boundary")), ""
+    )
+    live_interval = next((str(row.get("interval")) for row in triggers if row.get("interval")), "")
+    reported_wake = str(task.get("wake_to_run") or "").strip().lower()
+    kinds = [str(kind) for kind in rehearsal.get("trigger_kinds") or []]
+    problems: list[str] = []
+    if not definition.get("present"):
+        problems.append("the definition the record names is not committed")
+    else:
+        if definition["sha256"] != definition.get("recorded_sha256"):
+            problems.append("the record's digest is not the file's")
+        if definition["bytes"] != definition.get("recorded_bytes"):
+            problems.append("the record's byte count is not the file's")
+        if definition["time_triggers"] != 1 or definition["logon_triggers"] != 1:
+            problems.append("not exactly one trigger of each kind")
+        if definition["logon_disabled"]:
+            problems.append("the logon trigger it adds is disabled")
+        if definition["start_boundary"] != live_boundary:
+            problems.append("the cadence's start boundary moved")
+        if definition["interval"] != live_interval:
+            problems.append(
+                f"interval {definition['interval']} is not the registered {live_interval}"
+            )
+        if definition["logon_type"] != "InteractiveToken":
+            problems.append(f"principal is {definition['logon_type']}")
+        if definition["wake_to_run"] != "false" or reported_wake not in ("false", ""):
+            problems.append("WakeToRun is not the registered setting")
+        if definition["execution_time_limit"] != str(task.get("execution_time_limit") or ""):
+            problems.append("the execution time limit moved")
+        if definition["multiple_instances"] != str(task.get("multiple_instances") or ""):
+            problems.append("the multiple-instances policy moved")
+        if definition["commands"][:1] != ["cmd.exe"] or len(definition["commands"]) != 2:
+            problems.append("the witness action is not the first action")
+        elif definition["commands"][1] != str(live.get("execute") or ""):
+            problems.append("the lane's action is not the one registered")
+        if len(definition["arguments"]) != 2 or definition["arguments"][1:2] != [
+            str(live.get("arguments") or "")
+        ]:
+            problems.append("the lane's arguments are not the ones registered")
+        if definition["working_directories"][:1] != [str(live.get("working_directory") or "")]:
+            problems.append("the lane's working directory is not the one registered")
+        if not (report / "evidence" / "forward-witness.txt").is_file():
+            problems.append("the witness path the definition names is not committed")
+        expected_carried: dict[str, Any] = {
+            "task_name": str(task.get("task_name") or ""),
+            "user_id": str(task.get("user_id") or ""),
+            "interval_minutes": (
+                int(live_interval[2:-1]) if live_interval.startswith("PT") else None
+            ),
+            "command": str(live.get("execute") or ""),
+            "arguments": str(live.get("arguments") or ""),
+            "working_directory": str(live.get("working_directory") or ""),
+        }
+        for key, expected in expected_carried.items():
+            if carried.get(key) != expected:
+                problems.append(f"the record's {key} is not the registration's")
+        if carried.get("logon_type") != "InteractiveToken":
+            problems.append("the record does not carry the principal over")
+        if carried.get("wake_to_run") is not False or reported_wake not in ("false", ""):
+            problems.append("the record's WakeToRun is not the registered setting")
+    if rehearsal.get("verdict") == "VIABLE":
+        if not rehearsal.get("registered") or not rehearsal.get("witness_file_written"):
+            problems.append("the rehearsal is viable without having registered or witnessed")
+        if not any("LogonTrigger" in kind for kind in kinds) or not any(
+            "TimeTrigger" in kind for kind in kinds
+        ):
+            problems.append("the rehearsal is viable without the scheduler reporting both triggers")
+    if rehearsal.get("lines_the_rehearsal_moved_from_the_proposal") != 2:
+        problems.append("the rehearsal did not measure the one difference it claims")
+    check(
+        "the_proposed_definition_carries_the_registration_it_claims",
+        not problems,
+        "; ".join(problems)
+        if problems
+        else (
+            f"{definition.get('filename')} {str(definition.get('sha256'))[:12]} carries the "
+            f"registered action and cadence, adds {definition.get('logon_triggers')} logon "
+            f"trigger (delay {definition.get('logon_delay')}), rehearsal "
+            f"{rehearsal.get('verdict')} on {', '.join(kinds)}"
+        ),
+    )
+
     failures = [row["name"] for row in checks if not row["passed"]]
     return {
         "schema_version": VERIFIER_SCHEMA,
@@ -569,6 +743,8 @@ def _sabotages() -> list[tuple[str, str]]:
         ("silence_the_stale_certificate", "hide_stale_certificate"),
         ("break_a_day_so_its_columns_do_not_add_up", "break_day"),
         ("publish_a_readiness_claim", "claim_readiness"),
+        ("flip_a_setting_the_proposal_carries", "flip_proposal_setting"),
+        ("call_the_rehearsal_viable_without_a_logon_trigger", "overstate_rehearsal"),
     ]
 
 
@@ -648,6 +824,28 @@ def _mutate(report: Path, name: str, target: str) -> None:
             (report / "FINAL_REPORT.md").read_text(encoding="utf-8") + "\nPAPER_READY\n",
             encoding="utf-8",
         )
+    elif target == "flip_proposal_setting":
+        # The record's digest is moved with the file on purpose: a sabotage that also broke the
+        # digest would be caught by the comparison of bytes, and would leave the substance of the
+        # claim -- that the definition carries the registration -- untested.
+        doc = _load(probes_path)
+        path = report / "evidence" / str((doc.get("proposal") or {}).get("filename") or "")
+        text = path.read_bytes().decode("utf-16")
+        path.write_text(
+            text.replace("<WakeToRun>false</WakeToRun>", "<WakeToRun>true</WakeToRun>"),
+            encoding="utf-16",
+        )
+        raw = path.read_bytes()
+        doc["proposal"]["sha256"] = _sha(raw)
+        doc["proposal"]["bytes"] = len(raw)
+        probes_path.write_text(json.dumps(doc, indent=2, sort_keys=True), encoding="utf-8")
+    elif target == "overstate_rehearsal":
+        doc = _load(probes_path)
+        for row in doc.get("probes") or []:
+            if str(row.get("mechanism")) == "PROPOSED_DEFINITION":
+                row["trigger_kinds"] = ["MSFT_TaskTimeTrigger"]
+                row["verdict"] = "VIABLE"
+        probes_path.write_text(json.dumps(doc, indent=2, sort_keys=True), encoding="utf-8")
     else:  # pragma: no cover - a typo in the matrix is a bug, not a passing test
         raise ValueError(f"unknown sabotage target {target!r}")
 
@@ -781,8 +979,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--json", action="store_true")
     args = parser.parse_args(argv)
 
-    report = Path(args.reports)
-    repo = Path(args.repo)
+    report = _repo_path(args.reports)
+    repo = _repo_path(args.repo)
     diagnosis = build_economic_diagnosis(repo=repo)
     (report / "evidence" / "ECONOMIC_CERTIFICATE_DIAGNOSIS.json").write_text(
         json.dumps(diagnosis, indent=2, sort_keys=True) + "\n", encoding="utf-8"

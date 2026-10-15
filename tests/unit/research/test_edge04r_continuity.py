@@ -9,6 +9,7 @@ already answered, a day whose columns must add up, a "sleep" cause with no sleep
 from __future__ import annotations
 
 import json
+from datetime import datetime
 from pathlib import Path
 
 import pytest
@@ -120,14 +121,28 @@ def test_the_phase_is_measured_from_the_launches_not_assumed():
     base = 1_792_000_000_000
     ticks = [
         continuity.Tick(
-            run_id="a", started_ms=base, finished_ms=base + 1000, mode="SCHEDULED",
-            outcome="OBSERVED", exit_code=0, slot_key="s", duration_seconds=1.0,
-            disk_status="HEALTHY", disk_free_bytes=1,
+            run_id="a",
+            started_ms=base,
+            finished_ms=base + 1000,
+            mode="SCHEDULED",
+            outcome="OBSERVED",
+            exit_code=0,
+            slot_key="s",
+            duration_seconds=1.0,
+            disk_status="HEALTHY",
+            disk_free_bytes=1,
         ),
         continuity.Tick(
-            run_id="b", started_ms=base + INTERVAL_MS, finished_ms=base + INTERVAL_MS + 1000,
-            mode="SCHEDULED", outcome="OBSERVED", exit_code=0, slot_key="s2",
-            duration_seconds=1.0, disk_status="HEALTHY", disk_free_bytes=1,
+            run_id="b",
+            started_ms=base + INTERVAL_MS,
+            finished_ms=base + INTERVAL_MS + 1000,
+            mode="SCHEDULED",
+            outcome="OBSERVED",
+            exit_code=0,
+            slot_key="s2",
+            duration_seconds=1.0,
+            disk_status="HEALTHY",
+            disk_free_bytes=1,
         ),
     ]
     offset = continuity.phase_offset_ms(ticks, INTERVAL_MS)
@@ -211,15 +226,29 @@ def test_each_instant_takes_at_most_one_tick_and_each_tick_one_instant():
     instants = [start, start + INTERVAL_MS]
     ticks = [
         continuity.Tick(
-            run_id="first", started_ms=start + 1000, finished_ms=start + 2000, mode="SCHEDULED",
-            outcome="OBSERVED", exit_code=0, slot_key="a", duration_seconds=1.0,
-            disk_status="HEALTHY", disk_free_bytes=1,
+            run_id="first",
+            started_ms=start + 1000,
+            finished_ms=start + 2000,
+            mode="SCHEDULED",
+            outcome="OBSERVED",
+            exit_code=0,
+            slot_key="a",
+            duration_seconds=1.0,
+            disk_status="HEALTHY",
+            disk_free_bytes=1,
         ),
         # A retry 5 minutes later must not be counted as a second trigger firing.
         continuity.Tick(
-            run_id="retry", started_ms=start + 5 * 60 * 1000, finished_ms=start + 5 * 60 * 1000,
-            mode="SCHEDULED", outcome="ALREADY_RUNNING", exit_code=2, slot_key="a",
-            duration_seconds=1.0, disk_status="HEALTHY", disk_free_bytes=1,
+            run_id="retry",
+            started_ms=start + 5 * 60 * 1000,
+            finished_ms=start + 5 * 60 * 1000,
+            mode="SCHEDULED",
+            outcome="ALREADY_RUNNING",
+            exit_code=2,
+            slot_key="a",
+            duration_seconds=1.0,
+            disk_status="HEALTHY",
+            disk_free_bytes=1,
         ),
     ]
     result = continuity.classify_instants(
@@ -247,9 +276,16 @@ def test_a_manual_tick_is_not_an_answer_to_a_trigger():
     base = 1_792_000_000_000
     start = base - (base - PHASE) % INTERVAL_MS + INTERVAL_MS
     manual = continuity.Tick(
-        run_id="manual", started_ms=start, finished_ms=start + 1, mode="MANUAL",
-        outcome="OBSERVED", exit_code=0, slot_key="a", duration_seconds=1.0,
-        disk_status="HEALTHY", disk_free_bytes=1,
+        run_id="manual",
+        started_ms=start,
+        finished_ms=start + 1,
+        mode="MANUAL",
+        outcome="OBSERVED",
+        exit_code=0,
+        slot_key="a",
+        duration_seconds=1.0,
+        disk_status="HEALTHY",
+        disk_free_bytes=1,
     )
     result = continuity.classify_instants(
         [start], [manual], {"host_down": [], "session_absent": [], "sleep": []}, until_ms=start
@@ -265,7 +301,9 @@ def test_a_lost_trigger_inside_an_absence_is_attributed_and_the_days_reconcile(t
     base = 1_792_000_000_000
     start = base - (base - PHASE) % INTERVAL_MS + INTERVAL_MS
     ticks = [
-        _tick(start, disk_status="CRITICAL", free_gib=1.0, outcome="DISK_BUDGET_EXCEEDED", exit_code=5),
+        _tick(
+            start, disk_status="CRITICAL", free_gib=1.0, outcome="DISK_BUDGET_EXCEEDED", exit_code=5
+        ),
         _tick(start + 3 * INTERVAL_MS),
         _tick(start + 4 * INTERVAL_MS),
     ]
@@ -280,7 +318,11 @@ def test_a_lost_trigger_inside_an_absence_is_attributed_and_the_days_reconcile(t
     for day in audit["daily"]:
         assert day["unaccounted"] == 0, day
         assert (
-            day["consumed"] + day["refused"] + day["no_session"] + day["host_down"] + day["sleep"]
+            day["consumed"]
+            + day["refused"]
+            + day["no_session"]
+            + day["host_down"]
+            + day["sleep"]
             + day["silent"]
             == day["expected"]
         )
@@ -293,7 +335,11 @@ def test_a_host_with_no_sleep_record_loses_no_trigger_to_sleep(tmp_path):
     audit = _audit(tmp_path, ticks, _evidence())
     assert audit["trigger_loss"]["causes"].get(os_evidence.SLEEP, 0) == 0
     assert audit["availability"]["windows"]["counts"]["sleep_resume_pairs"] == 0
-    check = next(item for item in audit["checks"] if item["name"] == "sleep_cause_is_claimed_only_with_a_sleep_record")
+    check = next(
+        item
+        for item in audit["checks"]
+        if item["name"] == "sleep_cause_is_claimed_only_with_a_sleep_record"
+    )
     assert check["passed"] is True
 
 
@@ -319,7 +365,9 @@ def test_the_window_is_measured_between_the_first_and_last_launch(tmp_path):
 # -- storage --------------------------------------------------------------------- #
 
 
-def _volume(letter: str, fs: str, free_gib: float, capacity_gib: float = 237.5) -> dict[str, object]:
+def _volume(
+    letter: str, fs: str, free_gib: float, capacity_gib: float = 237.5
+) -> dict[str, object]:
     return {
         "drive_letter": letter,
         "file_system": fs,
@@ -362,7 +410,9 @@ def test_disk_pressure_is_read_from_the_lanes_own_measurements(tmp_path):
     base = 1_792_000_000_000
     start = base - (base - PHASE) % INTERVAL_MS + INTERVAL_MS
     rows = [
-        _tick(start, disk_status="CRITICAL", free_gib=1.5, outcome="DISK_BUDGET_EXCEEDED", exit_code=5),
+        _tick(
+            start, disk_status="CRITICAL", free_gib=1.5, outcome="DISK_BUDGET_EXCEEDED", exit_code=5
+        ),
         _tick(start + INTERVAL_MS, disk_status="WARNING", free_gib=3.0),
         _tick(start + 2 * INTERVAL_MS, disk_status="HEALTHY", free_gib=8.0),
     ]
@@ -454,7 +504,9 @@ def test_a_mechanism_that_was_not_exercised_is_not_called_viable():
 def test_the_recommendation_is_priced_from_the_audit():
     audit = {
         "trigger_loss": {"causes": {"NO_SESSION": 24, "SILENT_UNATTRIBUTABLE": 1}},
-        "availability": {"recovery": [{"ends_at_a_sign_in": True, "recovery_latency_seconds": 321.41}]},
+        "availability": {
+            "recovery": [{"ends_at_a_sign_in": True, "recovery_latency_seconds": 321.41}]
+        },
     }
     classification = session.classify(
         [
@@ -486,3 +538,190 @@ def test_unreadable_instants_are_dropped_rather_than_guessed():
     assert os_evidence.parse_instant("not-a-date") is None
     assert os_evidence.parse_instant(None) is None
     assert os_evidence.parse_instant("2026-10-15T04:50:54Z") is not None
+
+
+# -- the definition this package would apply -------------------------------------- #
+
+ROOT = Path(__file__).resolve().parents[3]
+
+
+def _load_script(name: str):
+    """Import a script by path: the reading commands are the ones a reader runs."""
+    import importlib.util
+    import sys
+
+    spec = importlib.util.spec_from_file_location(name, ROOT / "scripts" / f"{name}.py")
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[name] = module
+    spec.loader.exec_module(module)
+    return module
+
+
+@pytest.fixture(scope="module")
+def continuity_script():
+    return _load_script("edge04r_continuity")
+
+
+def _registered_task(**overrides: object) -> dict[str, object]:
+    """The lane's registration as the host reports it, including its string booleans."""
+    task: dict[str, object] = {
+        "task_name": "TradingAgentic-EDGE04-Forward",
+        "user_id": "tester",
+        "logon_type": "Interactive",
+        "wake_to_run": "False",
+        "execution_time_limit": "PT1H",
+        "multiple_instances": "IgnoreNew",
+        "state": "Ready",
+        "actions": [
+            {
+                "execute": "C:\\repo\\.venv\\Scripts\\python.exe",
+                "arguments": '"C:/repo/scripts/edge04_observer.py" --scheduled --due',
+                "working_directory": "C:\\repo",
+            }
+        ],
+        "triggers": [
+            {
+                "type": "MSFT_TaskTimeTrigger",
+                "enabled": "True",
+                "interval": "PT15M",
+                "duration": "P3650D",
+                "start_boundary": "2026-10-13T13:25:53",
+                "delay": "",
+            }
+        ],
+        "xml": (
+            "<Task><RegistrationInfo><Date>2026-10-13T13:24:53</Date></RegistrationInfo></Task>"
+        ),
+    }
+    task.update(overrides)
+    return task
+
+
+WITNESS = Path("C:\\scratch\\forward-witness.txt")
+
+
+def _proposal(task: dict[str, object] | None = None) -> dict[str, object]:
+    evidence = _evidence()
+    evidence["task"] = task or _registered_task()
+    return session.proposal_from_evidence(evidence, witness_path=WITNESS)
+
+
+def test_the_proposal_carries_the_registration_and_adds_only_the_two_things():
+    """Applying it has to change which instants can start, and nothing about what runs."""
+    proposal = _proposal()
+    xml = str(proposal["xml"])
+    carried = proposal["carried_over_from_the_registration"]
+    assert carried["command"] == "C:\\repo\\.venv\\Scripts\\python.exe"
+    assert carried["arguments"] == '"C:/repo/scripts/edge04_observer.py" --scheduled --due'
+    assert carried["working_directory"] == "C:\\repo"
+    assert carried["logon_type"] == "InteractiveToken"
+    assert carried["interval_minutes"] == 15
+    assert "<LogonType>InteractiveToken</LogonType>" in xml
+    assert "<StartBoundary>2026-10-13T13:25:53</StartBoundary>" in xml
+    assert "<Interval>PT15M</Interval>" in xml
+    assert xml.count("<LogonTrigger>") == 1 and xml.count("<TimeTrigger>") == 1
+    assert xml.index("witness") < xml.index("edge04_observer.py")
+    assert len(proposal["added"]) == 2
+
+
+def test_the_proposal_is_a_function_of_the_registration_not_of_the_clock():
+    """A definition that stamps itself with the clock cannot be reviewed by digest."""
+    first = _proposal()
+    second = _proposal()
+    assert first["xml"] == second["xml"]
+    assert "<Date>2026-10-13T13:24:53</Date>" in str(first["xml"])
+
+
+def test_a_reported_setting_is_read_as_a_boolean_and_not_as_a_nonempty_string():
+    """``bool("False")`` is ``True``: reading a setting that way flips it silently."""
+    assert session._as_bool("False") is False
+    assert session._as_bool("True") is True
+    assert session._as_bool(False) is False
+    assert session._as_bool(None) is False
+    assert "<WakeToRun>false</WakeToRun>" in str(_proposal()["xml"])
+    awake = _proposal(_registered_task(wake_to_run="True"))
+    assert "<WakeToRun>true</WakeToRun>" in str(awake["xml"])
+    assert awake["carried_over_from_the_registration"]["wake_to_run"] is True  # type: ignore[index]
+
+
+def test_the_rehearsal_difference_is_measured_and_it_is_the_action_payload():
+    evidence = _evidence()
+    evidence["task"] = _registered_task()
+    proposal = session.proposal_from_evidence(evidence, witness_path=WITNESS)
+    rehearsal = session.proposal_from_evidence(
+        evidence,
+        witness_path=WITNESS,
+        command=session.INERT_COMMAND,
+        arguments=session.INERT_ARGUMENTS,
+    )
+    moved = [
+        (left, right)
+        for left, right in zip(
+            str(proposal["xml"]).splitlines(), str(rehearsal["xml"]).splitlines(), strict=True
+        )
+        if left != right
+    ]
+    assert len(moved) == 2
+    assert any(session.INERT_ARGUMENTS in line for _, line in moved)
+    assert session.INERT_COMMAND in str(rehearsal["xml"])
+
+
+# -- the reading commands ---------------------------------------------------------- #
+
+
+def test_a_declared_path_is_read_from_the_repository_root(continuity_script):
+    """A relative path taken from the caller's cwd lands somewhere else inside the task."""
+    root = continuity_script.REPO_ROOT
+    assert continuity_script._repo_path("reports/x") == root / "reports" / "x"
+    assert continuity_script._repo_path(Path("C:/already/absolute")) == Path("C:/already/absolute")
+
+
+def test_an_offline_reading_takes_its_instant_from_the_record_it_re_derives(
+    tmp_path, continuity_script
+):
+    """Defaulting to the clock here grows the window by however long the reader took."""
+    record = tmp_path / "EDGE04R_CONTINUITY_AUDIT.json"
+    record.write_text(json.dumps({"window": {"to_utc": "2026-10-15T18:31:46Z"}}), encoding="utf-8")
+    read_back = continuity_script._until_ms(None, offline=True, audit_path=record)
+    assert read_back == int(datetime.fromisoformat("2026-10-15T18:31:46+00:00").timestamp() * 1000)
+    declared = continuity_script._until_ms("2026-01-02T03:04:05Z", offline=True, audit_path=record)
+    assert declared == int(datetime.fromisoformat("2026-01-02T03:04:05+00:00").timestamp() * 1000)
+    assert continuity_script._until_ms(None, offline=True, audit_path=tmp_path / "none.json") > 0
+
+
+def test_an_offline_reading_does_not_read_the_lane_or_rewrite_the_snapshot(
+    tmp_path, continuity_script
+):
+    """The published way to check a reading must be a reading of the committed inputs."""
+    from datetime import UTC
+
+    frozen = int(datetime(2026, 10, 15, 18, 31, 46, tzinfo=UTC).timestamp() * 1000)
+    last = frozen - 900_000
+    rows = [_tick(last)]
+    report = tmp_path / "report"
+    (report / "evidence").mkdir(parents=True)
+    evidence = _evidence()
+    evidence["task"] = _registered_task()
+    (report / "evidence" / "OS_CONTINUITY_EVIDENCE.json").write_text(
+        json.dumps(evidence), encoding="utf-8"
+    )
+    (report / "evidence" / "EDGE04R_CONTINUITY_AUDIT.json").write_text(
+        json.dumps({"window": {"to_utc": "2026-10-15T18:31:46Z"}}), encoding="utf-8"
+    )
+    frozen_rows = "".join(json.dumps(row) + "\n" for row in rows).encode("utf-8")
+    (report / "evidence" / "RUN_LOG_SNAPSHOT.jsonl").write_bytes(frozen_rows)
+    (report / "evidence" / "SLOT_LEDGER_SNAPSHOT.jsonl").write_bytes(b"")
+    (report / "evidence" / "SNAPSHOT.json").write_text(json.dumps({"files": {}}), encoding="utf-8")
+    # A lane that has kept ticking: reading it would move the window past the record's instant.
+    lane = tmp_path / "lane"
+    lane.mkdir()
+    _write_runs(lane, [*rows, _tick(frozen + 3_600_000), _tick(frozen + 4_500_000)])
+    assert (
+        continuity_script.main(["--offline", "--reports", str(report), "--state-root", str(lane)])
+        == 0
+    )
+    audit = json.loads((report / "evidence" / "EDGE04R_CONTINUITY_AUDIT.json").read_text())
+    assert audit["window"]["to_utc"] == "2026-10-15T18:31:46Z"
+    assert audit["ticks"]["total"] == len(rows)
+    assert (report / "evidence" / "RUN_LOG_SNAPSHOT.jsonl").read_bytes() == frozen_rows

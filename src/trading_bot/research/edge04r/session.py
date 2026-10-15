@@ -35,6 +35,7 @@ Research only: public market data, no credentials, no orders, no capital.
 from __future__ import annotations
 
 import json
+import re
 import shutil
 import subprocess
 import tempfile
@@ -48,6 +49,7 @@ __all__ = [
     "NEEDS_CREDENTIALS",
     "NEEDS_ELEVATION",
     "NOT_APPLICABLE",
+    "PROPOSAL_FILENAME",
     "S4U",
     "SERVICE",
     "SESSION_SCHEMA_VERSION",
@@ -55,9 +57,11 @@ __all__ = [
     "build_task_xml",
     "classify",
     "probe_logon_trigger_registration",
+    "probe_proposed_definition",
     "probe_s4u_registration",
     "probe_task_history_log",
     "probe_witness_action",
+    "proposal_from_evidence",
     "recommendation",
 ]
 
@@ -155,6 +159,8 @@ def build_task_xml(
     logon_delay_seconds: int = 60,
     wake_to_run: bool = False,
     description: str = "WP-EDGE-04R session-independence probe",
+    date: str | None = None,
+    start_boundary: str | None = None,
 ) -> str:
     """A task definition with BOTH triggers and a witness action that always runs.
 
@@ -170,11 +176,17 @@ def build_task_xml(
     """
     import datetime as dt
 
+    # ``date`` and ``start_boundary`` are injectable so a definition can be a function of a
+    # registration that already exists: the proposal carries the live cadence's own start
+    # boundary, which keeps its phase, and the probe paths leave both unset and get "now".
+    stamp = dt.datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
+
     return _TASK_XML.format(
-        date=dt.datetime.now().strftime("%Y-%m-%dT%H:%M:%S"),
+        date=date or stamp,
         author=user_id,
         description=description,
-        start_boundary=(dt.datetime.now() + dt.timedelta(minutes=1)).strftime("%Y-%m-%dT%H:%M:%S"),
+        start_boundary=start_boundary
+        or (dt.datetime.now() + dt.timedelta(minutes=1)).strftime("%Y-%m-%dT%H:%M:%S"),
         interval_minutes=interval_minutes,
         logon_delay_seconds=logon_delay_seconds,
         user_id=user_id,
@@ -185,6 +197,202 @@ def build_task_xml(
         arguments=arguments,
         working_dir=working_dir,
     )
+
+
+#: The definition an operator would apply, committed beside the probe that rehearsed it.
+PROPOSAL_FILENAME = "PROPOSED_FORWARD_TASK.xml"
+
+#: What the rehearsal carries in place of the lane's own action.
+INERT_COMMAND = "cmd.exe"
+INERT_ARGUMENTS = "/c exit 0"
+
+#: The scheduler reports the principal as ``Interactive``; the definition has to spell it the
+#: way the XML schema does. Without this the proposal would silently change the principal while
+#: claiming to carry it over, and an InteractiveToken task refuses to start in a session's
+#: absence -- which is the whole subject of this reading.
+_LOGON_TYPE_IN_XML = {"interactive": "InteractiveToken", "s4u": "S4U", "password": "Password"}
+
+
+def _interval_minutes(triggers: Sequence[dict[str, Any]]) -> int:
+    """The cadence the live registration runs at, read from its own trigger, not assumed."""
+    for row in triggers:
+        interval = str(row.get("interval") or "")
+        if interval.startswith("PT") and interval.endswith("M"):
+            try:
+                return int(interval[2:-1])
+            except ValueError:
+                continue
+    return 15
+
+
+def _as_bool(value: Any) -> bool:
+    """A reported setting as a boolean.
+
+    The scheduler's settings arrive as strings -- ``WakeToRun`` is ``"False"`` on this host -- and
+    ``bool("False")`` is ``True``. Taking the string at face value here would make the proposal
+    flip a setting while describing itself as carrying the registration over, which is the kind of
+    difference nobody would notice by reading the definition.
+    """
+    if isinstance(value, str):
+        return value.strip().lower() in ("true", "1", "yes")
+    return bool(value)
+
+
+def _registration_date(task: dict[str, Any], evidence: dict[str, Any]) -> str:
+    """The registration's own date, read off the live definition, so the proposal has no "now".
+
+    A definition that stamps itself with the clock cannot be re-rendered to the same bytes, and
+    a reviewer would have to take the committed copy on faith: the digest would change on every
+    run for a reason that has nothing to do with the lane. The live definition is already in the
+    evidence, so the proposal borrows its date; when that cannot be read, the instant the
+    evidence was collected stands in for it, and either way the value is a fact about the host
+    rather than about when the renderer ran.
+    """
+    match = re.search(r"<Date>([^<]+)</Date>", str(task.get("xml") or ""))
+    if match:
+        return match.group(1)
+    collected = str((evidence.get("host") or {}).get("collected_at_utc") or "")
+    return collected[:19] or "1970-01-01T00:00:00"
+
+
+def proposal_from_evidence(
+    evidence: dict[str, Any],
+    *,
+    witness_path: Path,
+    command: str | None = None,
+    arguments: str | None = None,
+) -> dict[str, Any]:
+    """The definition an operator would apply: the lane's own registration plus two additions.
+
+    Rendered from the frozen host evidence rather than by editing the live XML, so the proposal
+    is a function of the committed inputs and every element of it is accounted for here. Two
+    additions, and nothing else moves:
+
+    * the ``LogonTrigger`` -- additive, so the existing quarter-hourly ``TimeTrigger``, the
+      principal and the lane's action are carried over exactly as the registration has them;
+    * the witness ``Exec`` ahead of the lane's action, which is what makes a future instant that
+      produced no tick distinguishable from one that never reached a process.
+
+    ``command``/``arguments`` override the action payload, which is how the rehearsal carries a
+    command that cannot start the lane; the committed proposal carries the lane's own action.
+    """
+    task = evidence.get("task") or {}
+    actions = [row for row in (task.get("actions") or []) if isinstance(row, dict)]
+    live = actions[0] if actions else {}
+    live_command = str(live.get("execute") or "")
+    live_arguments = str(live.get("arguments") or "")
+    working_dir = str(live.get("working_directory") or "")
+    reported_logon_type = str(task.get("logon_type") or "")
+    logon_type = _LOGON_TYPE_IN_XML.get(reported_logon_type.lower(), reported_logon_type)
+    triggers = [row for row in (task.get("triggers") or []) if isinstance(row, dict)]
+    interval = _interval_minutes(triggers)
+    # The live cadence's own start boundary, so the proposal does not move the phase the audit
+    # measured. Left out only if the registration somehow carries no boundary to copy.
+    live_boundary = next(
+        (str(row.get("start_boundary")) for row in triggers if row.get("start_boundary")), ""
+    )
+    task_name = str(task.get("task_name") or "")
+    xml = build_task_xml(
+        user_id=str(task.get("user_id") or ""),
+        command=command or live_command,
+        arguments=arguments if arguments is not None else live_arguments,
+        working_dir=working_dir,
+        witness_path=witness_path,
+        logon_type=logon_type,
+        interval_minutes=interval,
+        wake_to_run=_as_bool(task.get("wake_to_run")),
+        description=(
+            f"WP-EDGE-04R proposal for {task_name}: the live registration plus a logon trigger "
+            "and a witness action"
+        ),
+        date=_registration_date(task, evidence),
+        start_boundary=live_boundary or None,
+    )
+    return {
+        "filename": PROPOSAL_FILENAME,
+        "task_name": task_name,
+        "carried_over_from_the_registration": {
+            "task_name": task_name,
+            "user_id": str(task.get("user_id") or ""),
+            "logon_type": logon_type,
+            "logon_type_as_the_scheduler_reported_it": reported_logon_type,
+            "interval_minutes": interval,
+            "command": live_command,
+            "arguments": live_arguments,
+            "working_directory": working_dir,
+            "wake_to_run": _as_bool(task.get("wake_to_run")),
+        },
+        "added": [
+            "LogonTrigger, enabled, delay PT60S, additive to the existing TimeTrigger",
+            "a witness Exec ahead of the lane's action",
+        ],
+        "payload_overridden_for_the_rehearsal": {
+            "command": command or INERT_COMMAND,
+            "arguments": arguments if arguments is not None else INERT_ARGUMENTS,
+        },
+        "xml": xml,
+        "apply_command": (
+            f'schtasks /create /tn "{task_name}" /xml "reports/edge-recovery/WP-EDGE-04R/'
+            f'evidence/{PROPOSAL_FILENAME}" /f'
+        ),
+        "reading": (
+            "the definition is a function of the lane's own registration, so applying it changes "
+            "which instants can start -- adding the logon trigger and the witness -- and changes "
+            "nothing about what the lane does when it starts; applying it stays an operator "
+            "decision, because re-registering a running lane moves the phase a reading measures"
+        ),
+    }
+
+
+def probe_proposed_definition(
+    *,
+    proposal: dict[str, Any],
+    rehearsal_xml: str,
+    probe_name: str,
+    witness: Path,
+) -> dict[str, Any]:
+    """Register the proposal under a throwaway name, read it back, run it, delete it.
+
+    The rehearsal carries the proposal's own triggers, principal, settings and action order. It
+    differs in one place: the lane's action is swapped for a command that exits immediately,
+    because running the lane's action here would let a rehearsal write an out-of-phase tick into
+    the ledger this audit measures. How many lines the swap moved is recorded, so "only the
+    action payload differs" is a measurement rather than a claim.
+    """
+    witness.unlink(missing_ok=True)
+    created = _create_task(probe_name, rehearsal_xml)
+    read_back = _read_back(probe_name) if created["ok"] else {"error": "not created"}
+    ran = _run(["schtasks", "/run", "/tn", probe_name]) if created["ok"] else {"ok": False}
+    witness_seen = _await_witness(witness)
+    deleted = _delete_task(probe_name) if created["ok"] else {"ok": True}
+    triggers = read_back.get("triggers") or []
+    kinds = sorted(str(row.get("type")) for row in triggers if isinstance(row, dict))
+    actions = read_back.get("actions") or []
+    proposal_lines = str(proposal.get("xml") or "").splitlines()
+    rehearsal_lines = rehearsal_xml.splitlines()
+    moved = sum(
+        1 for left, right in zip(proposal_lines, rehearsal_lines, strict=False) if left != right
+    ) + abs(len(proposal_lines) - len(rehearsal_lines))
+    has_logon = any("LogonTrigger" in kind for kind in kinds)
+    has_time = any("TimeTrigger" in kind for kind in kinds)
+    return {
+        "mechanism": "PROPOSED_DEFINITION",
+        "verdict": VIABLE if created["ok"] and has_logon and has_time and witness_seen else FAILED,
+        "task_name": probe_name,
+        "registered": bool(created["ok"]),
+        "registration_output": created["stdout"] or created["stderr"],
+        "trigger_kinds": kinds,
+        "action_count": len(actions),
+        "ran_on_demand": bool(ran.get("ok")),
+        "witness_file_written": witness_seen,
+        "deleted_after_the_probe": bool(deleted.get("ok")),
+        "lines_the_rehearsal_moved_from_the_proposal": moved,
+        "detail": (
+            "the committed definition registers and starts on this host with both triggers and "
+            f"its actions in order; the rehearsal moved {moved} line(s) from it, and those lines "
+            "are the lane's action payload"
+        ),
+    }
 
 
 def _run(args: Sequence[str], *, timeout: int = 90) -> dict[str, Any]:
@@ -340,13 +548,18 @@ def probe_logon_trigger_registration(
 
 
 def probe_witness_action(
-    *, probe_name: str = f"{PROBE_TASK_NAME}-Witness", scratch: Path
+    *,
+    probe_name: str = f"{PROBE_TASK_NAME}-Witness",
+    scratch: Path,
+    window_instants: int | None = None,
 ) -> dict[str, Any]:
     """Prove the chained witness action runs before the long action.
 
-    The single unanswered trigger this audit could not attribute (one of 220) is exactly
-    the case a witness separates: if the file has a line for that instant, the task
-    started and the process died; if it has none, the scheduler never started it.
+    The single unanswered trigger this audit could not attribute is exactly the case a
+    witness separates: if the file has a line for that instant, the task started and the
+    process died; if it has none, the scheduler never started it. ``window_instants`` is
+    the audit's own count of triggers the schedule should have fired in the window, passed
+    in rather than restated here so the two records cannot drift apart.
     """
     scratch.mkdir(parents=True, exist_ok=True)
     witness = scratch / "witness-probe.txt"
@@ -440,8 +653,13 @@ def probe_s4u_registration(
     }
 
 
-def probe_task_history_log() -> dict[str, Any]:
-    """Try to enable the one host record that would make future losses attributable."""
+def probe_task_history_log(*, window_instants: int | None = None) -> dict[str, Any]:
+    """Try to enable the one host record that would make future losses attributable.
+
+    ``window_instants`` is the audit's own count of the triggers this window should have
+    fired; the reading is taken from the audit rather than restated here, so a re-taken
+    audit moves this sentence with it instead of leaving a stale figure behind.
+    """
     state = _powershell(
         "$log = Get-WinEvent -ListLog 'Microsoft-Windows-TaskScheduler/Operational'; "
         "[ordered]@{ enabled=[bool]$log.IsEnabled; records=[int]$log.RecordCount } "
@@ -483,8 +701,13 @@ def probe_task_history_log() -> dict[str, Any]:
         "operator_command": "wevtutil sl Microsoft-Windows-TaskScheduler/Operational /e:true",
         "detail": (
             "with this log disabled, a trigger that fired and could not start a process leaves "
-            "no host-side record at all: that is why one of the 220 instants in this window ends "
-            "as SILENT_UNATTRIBUTABLE instead of as a cause"
+            "no host-side record at all: that is why "
+            + (
+                f"one of the {window_instants} instants in this window ends"
+                if window_instants
+                else "an instant in this window ends"
+            )
+            + " as SILENT_UNATTRIBUTABLE instead of as a cause"
         ),
     }
 

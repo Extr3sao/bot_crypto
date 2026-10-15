@@ -16,6 +16,11 @@ data/recovery/wp7/evidence/** -text
 # must not normalise them on the way in or out.
 data/recovery/wp8/evidence/** -text
 
+# The WP-EDGE-04R proposal is the definition the scheduler consumes, and ``schtasks`` reads
+# that form (the document declares UTF-16).  It is committed in the bytes it is applied with
+# and pinned by digest in the record beside it, so git must not normalise it either.
+reports/edge-recovery/WP-EDGE-04R/evidence/PROPOSED_FORWARD_TASK.xml -text
+
 # The WP-EDGE-09 evidence is digest-pinned by the package itself: every gate,
 # experiment, ledger and report row quotes the sha256 of the files it was derived
 # from, and the panel of one second is the only copy of the capture that survives a
