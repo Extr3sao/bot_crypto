@@ -67,6 +67,13 @@
     "powershell": "5.1.26100.9711",
     "user": "DIRECTORI\\GVLLFR0035"
   },
+  "lane": {
+    "bytes": 12402232,
+    "measured_at_utc": "2026-10-15T18:32:24Z",
+    "note": "the tree the lane was writing to, at the instant this evidence was collected, pinned so a re-derivation reads it back instead of measuring a tree the lane has kept growing; every other figure in the audit comes from the host record or the committed tick snapshot, and a later live reading is a new reading of the lane rather than a re-derivation of this one",
+    "state_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04",
+    "store_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge03"
+  },
   "partitions": [
     {
       "disk_number": 0,

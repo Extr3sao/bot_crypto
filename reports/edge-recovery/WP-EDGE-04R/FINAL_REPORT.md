@@ -42,14 +42,21 @@ Both corrections came from measuring, not from reasoning about the configuration
   from the launches, one-to-one matching of instants to ticks, per-instant attribution with
   an explicit precedence, per-day reconciliation, storage reading, invariants.
 * `src/trading_bot/research/edge04r/session.py` — the session-independence probes, and the
-  task definition that adds a `LogonTrigger` and a witness action.
-* `scripts/edge04r_continuity.py` — collect, audit, render; `--offline --stored-snapshot
-  --until` reproduces the reading from the committed evidence alone.
+  task definition that adds a `LogonTrigger` and a witness action. The definition is
+  rendered from the lane's own frozen registration, so it carries no timestamp of its own
+  and the same inputs re-render the same bytes.
+* `scripts/edge04r_continuity.py` — collect, audit, render. `--offline` reads the committed
+  snapshot, never the lane, and never rewrites what it is checking; it reproduces
+  `evidence/EDGE04R_CONTINUITY_AUDIT.json` byte for byte.
 * `scripts/edge04r_verify.py` — an independent verifier that shares no code with the audit
-  and pays for each of its checks with a sabotage.
-* `tests/unit/research/test_edge04r_continuity.py` — 26 tests, including a regression for a
+  and pays for each of its 16 checks with a sabotage (12 of them, all detected).
+* `tests/unit/research/test_edge04r_continuity.py` — 33 tests, including a regression for a
   bug this audit shipped and fixed: walking the boot list and the shutdown list separately
   reported a boot *before* its shutdown as downtime.
+* `evidence/PROPOSED_FORWARD_TASK.xml` — the definition an operator would apply, rehearsed
+  on the host rather than described: registered, read back carrying both trigger kinds, run,
+  witness line written, deleted. It changes **which instants can start** and nothing about
+  what the lane does when it starts.
 
 ## 4. What would remove the session dependence, and what each one needs
 
@@ -80,9 +87,13 @@ market request, so the volume's 97 % occupancy cost slots, never a false observa
 
 ## 6. What the deliverables are worth
 
-* **Re-checkable.** The reading is a function of a committed snapshot plus a declared
-  instant; the verifier re-implements the arithmetic from that snapshot and reaches the same
-  numbers, or says which one it cannot.
+* **Re-checkable, and checked.** The reading is a function of a committed snapshot plus a
+  declared instant. Re-deriving it from another working directory, with a relative path,
+  returns the committed audit's exact bytes (`5e053a7d…`) without reading the lane and
+  without rewriting the snapshot it verifies. Getting there required fixing a published
+  reproduction command that could not reproduce anything: it declared no instant, so the
+  window ended at whatever time the reader ran it, and it re-copied the live lane over the
+  frozen snapshot before auditing it.
 * **Adversarially tested.** The verifier's every claim is paid for with a sabotage: a
   mutated input that must make it fail. Undetected sabotages are reported as failures of the
   check, not hidden.
@@ -105,11 +116,12 @@ market request, so the volume's 97 % occupancy cost slots, never a false observa
 
 | suite | result |
 | --- | --- |
-| `tests/unit/research/test_edge04r_continuity.py` | **26 passed** |
-| `tests/unit/research/test_edge04_autonomous.py` | see `GIT_STATE.json` |
-| `tests/unit/research` (wider) | see `GIT_STATE.json` |
-| `test_cost_barrier_adversarial.py::test_the_certification_record_digests_content_not_a_checkout` | **FAIL, inherited and diagnosed** — `STALE_BY_PROVENANCE`, §6 of `RUN_REPORT.md`; the cause is a one-day-later re-render by the lane that owns the artefact, not a false claim |
-| `ruff` on everything added | clean |
+| `tests/unit/research/test_edge04r_continuity.py` | **33 passed** |
+| `tests/unit/research/test_edge04_autonomous.py` | **49 passed** |
+| `tests/unit/research` (wider) | **2333 passed, 1 failed in 682.82 s** — the failure is the inherited certificate one below, and it is the only one |
+| `test_cost_barrier_adversarial.py::test_the_certification_record_digests_content_not_a_checkout` | **FAIL, inherited and diagnosed** — `STALE_BY_PROVENANCE`, §6 of `RUN_REPORT.md`; the cause is a one-day-later re-render by the lane that owns the artefact, not a false claim. Owner: the cost-barrier chain that issued the certificate, not this work package |
+| `ruff`, `ruff format --check`, `mypy` on everything added or changed | clean |
+| The verifier itself, with its sabotage matrix | **16/16 PASS, 12/12 sabotages detected** |
 
 **This work package authorises PAPER or LIVE trading under no circumstances whatsoever.**
 `hypothetical: true`, `order_sent: false`, promotion `NONE` in every artefact it produced,
@@ -119,8 +131,13 @@ by the campaign's own publication and by every tick record.
 ## 9. Re-checking this package
 
 ```bash
-python scripts/edge04r_continuity.py --offline --stored-snapshot --until 2026-10-15T18:31:46Z
+python scripts/edge04r_continuity.py --offline --reports reports/edge-recovery/WP-EDGE-04R --until 2026-10-15T18:31:46Z
 python scripts/edge04r_session.py --no-probe
 python scripts/edge04r_verify.py --reports reports/edge-recovery/WP-EDGE-04R --repo . --self-test
 ./.venv/Scripts/python.exe -m pytest tests/unit/research/test_edge04r_continuity.py -q
 ```
+
+The first line is the same command the reading publishes, and it is the one that was run
+from outside the package to establish the byte-exact reproduction: the audit it writes and
+the audit in version control are the same bytes, and the tick snapshot it reads is not
+rewritten by reading it.

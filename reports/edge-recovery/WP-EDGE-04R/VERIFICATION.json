@@ -61,7 +61,7 @@
       "passed": true
     },
     {
-      "detail": "viable ['SESSION_LOGON_TRIGGER', 'WITNESS_ACTION']; exercised ['SESSION_LOGON_TRIGGER', 'WITNESS_ACTION']",
+      "detail": "viable ['SESSION_LOGON_TRIGGER', 'WITNESS_ACTION']; exercised ['PROPOSED_DEFINITION', 'SESSION_LOGON_TRIGGER', 'WITNESS_ACTION']",
       "name": "no_mechanism_is_viable_without_a_probe_that_earned_it",
       "passed": true
     },
@@ -73,6 +73,11 @@
     {
       "detail": "no readiness or promotion claim",
       "name": "no_deliverable_claims_a_promotion_or_a_readiness",
+      "passed": true
+    },
+    {
+      "detail": "PROPOSED_FORWARD_TASK.xml 3ae22b847ee6 carries the registered action and cadence, adds 1 logon trigger (delay PT60S), rehearsal VIABLE on MSFT_TaskLogonTrigger, MSFT_TaskTimeTrigger",
+      "name": "the_proposed_definition_carries_the_registration_it_claims",
       "passed": true
     }
   ],
@@ -99,5 +104,26 @@
     "window_to": "2026-10-15T18:31:46Z"
   },
   "schema_version": "EDGE04R_VERIFICATION_V1",
+  "self_test": {
+    "applied": 12,
+    "detected": 12,
+    "sabotages": {
+      "break_a_day_so_its_columns_do_not_add_up": true,
+      "call_a_mechanism_viable_without_a_probe": true,
+      "call_the_rehearsal_viable_without_a_logon_trigger": true,
+      "claim_no_trigger_was_lost": true,
+      "claim_one_more_trigger": true,
+      "corrupt_a_snapshot_digest": true,
+      "delete_a_logon_so_an_absence_disappears": true,
+      "flip_a_consumed_tick_into_a_refusal": true,
+      "flip_a_setting_the_proposal_carries": true,
+      "invent_a_sleep_that_nobody_recorded": true,
+      "publish_a_readiness_claim": true,
+      "silence_the_stale_certificate": true
+    },
+    "undetected": 0,
+    "undetected_names": [],
+    "verdict": "SELF_TEST_PASS"
+  },
   "verdict": "VERIFY_PASS"
 }

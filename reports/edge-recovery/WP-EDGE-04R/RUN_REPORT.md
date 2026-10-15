@@ -3,25 +3,38 @@
 **Reading instant:** 2026-10-15T18:31:46Z · **Window:** 2026-10-13T11:23:38Z → 2026-10-15T18:31:46Z (55.136 h)
 **Schedule:** every 900 s, phase +656 s, measured from the launches the host actually made.
 
-Every figure below is re-derivable offline from `evidence/` alone:
+Every figure below is re-derivable offline from `evidence/` alone, and the check is a
+comparison rather than a reading:
 
 ```bash
-python scripts/edge04r_continuity.py --offline --stored-snapshot --until 2026-10-15T18:31:46Z
+python scripts/edge04r_continuity.py --offline --reports reports/edge-recovery/WP-EDGE-04R --until 2026-10-15T18:31:46Z
 python scripts/edge04r_verify.py --reports reports/edge-recovery/WP-EDGE-04R --repo . --self-test
 ```
 
-## 1. Publish the five local commits
+**Measured, not asserted:** from a different working directory, with a relative `--reports`,
+that command re-derives `evidence/EDGE04R_CONTINUITY_AUDIT.json` to
+`sha256 5e053a7de5024d12207c451325b2fc44761fc2881b1be3c7805b6341bba5f37c` — the same bytes as
+the committed record. `--offline` now implies `--stored-snapshot`: it reads the committed
+tick snapshot, does not read the lane, and does not rewrite the snapshot it is checking.
+An offline run with no `--until` reads the instant back from the record it is re-deriving.
+
+## 1. Publish the local commits
 
 The lane's commits were local because the earlier probe had been answered without a
 credential. The probe was re-taken: GitHub accepted a fast-forward of the lane's own
-branch, and only the five commits this work package owns were pushed.
+branch, and only the commits this work package owns were pushed.
 
 | | |
 | --- | --- |
 | Remote branch | `refs/heads/agent/edge-recovery/WP-EDGE-00-baseline` |
-| Before | `26eeea4` (the parent of the first commit of the set) |
-| After | `5980e37` (identical to local HEAD at the time) |
+| Already on the remote before this pass | `5980e37` (the record of the previous pass) |
 | Method | fast-forward; **no force push**; no other branch touched |
+| Read back from the remote after the push | `info/GIT_STATE.json`, re-probed rather than quoted |
+
+The four commits the previous pass left local (`98d594e`, `40b3665`, `b892273`, `5daa3c0`)
+and this pass's commits go out together as one fast-forward. The push is probed from the
+remote afterwards, and the read-back — not the command's own output — is what the record
+states.
 
 ## 2. Why the schedule lost triggers, one cause at a time
 
@@ -107,6 +120,39 @@ One physical disk (KXIA NVMe SSD, 238.47 GiB), one data partition, 97 % full. **
 `NO_VOLUME_WITH_CAPACITY`.** Moving the store would not change the free space the guard
 reads, and no other workstream's tree was moved to make room.
 
+## 4b. The definition this package would apply, and what the rehearsal found
+
+`evidence/PROPOSED_FORWARD_TASK.xml` is the lane's own registration **plus two additions**,
+rendered from the frozen host evidence (so the definition has no "now" in it and the
+same inputs re-render the same bytes): a `LogonTrigger` with a 60 s delay, and a witness
+`Exec` ahead of the lane's action. Everything else — the quarter-hourly `TimeTrigger` and
+its original `StartBoundary` (the cadence phase the audit measured), the principal
+(`InteractiveToken`, `LeastPrivilege`), `WakeToRun=false`, the 1 h time limit, the
+`IgnoreNew` policy, the restart policy and the lane's own action with its working
+directory — is carried over as the registration has it.
+
+The rehearsal registered the committed definition, read it back from the scheduler, ran it
+and deleted it:
+
+| rehearsal | measured |
+| --- | --- |
+| verdict | `VIABLE` |
+| trigger kinds the scheduler reported back | `MSFT_TaskLogonTrigger`, `MSFT_TaskTimeTrigger` |
+| actions, in the order they run | 2 — witness first |
+| witness line written | yes (`evidence/forward-witness.txt`, committed) |
+| task deleted after the rehearsal | yes; 0 probe tasks left on the host |
+| lines the rehearsal moved from the committed definition | **2** — the action payload |
+
+The two lines are the lane's action, replaced for the rehearsal by `cmd.exe /c exit 0`:
+running the lane's own action there would let a rehearsal write an out-of-phase tick into
+the ledger this audit measures. That the difference is two lines is measured by the probe,
+not claimed. Applying the definition is the operator's call, and it re-registers the live
+task in place, which is why this package rehearses it instead of doing it:
+
+```bash
+schtasks /create /tn "TradingAgentic-EDGE04-Forward" /xml "reports/edge-recovery/WP-EDGE-04R/evidence/PROPOSED_FORWARD_TASK.xml" /f
+```
+
 ## 5. Session independence: what this host actually allows
 
 Each mechanism was *attempted*; the verdict is what the host answered, not what the
@@ -165,13 +211,52 @@ can trace to a commit, which is the one thing this work package was told not to 
 | check | verdict |
 | --- | --- |
 | Audit's own 8 checks (reconciliation, attribution, sleep refutation, invariants) | **8/8 PASS** |
-| Independent verifier, no code shared with the audit | **11/11 PASS** |
-| Sabotage matrix on the verifier | **see `VERIFICATION.json`** |
-| `tests/unit/research/test_edge04r_continuity.py` | **26 PASS** |
+| Independent verifier, no code shared with the audit | **16/16 PASS** |
+| Sabotage matrix on the verifier | **12/12 detected** (`SELF_TEST_PASS`) |
+| The committed definition carries the registration it claims | **PASS** — new check, and it fails on a flipped `WakeToRun` whose digest is kept consistent |
+| Offline reproduction of the audit, from another working directory | **byte-exact**, `5e053a7d…` |
+| `tests/unit/research/test_edge04r_continuity.py` | **33 PASS** |
+| `tests/unit/research/test_edge04_autonomous.py` | **49 PASS** |
 | Wider research suite | see §8 of `FINAL_REPORT.md` |
 | A logon or a reboot during this pass | **NOT_EXERCISED** — logging off would end the session this work runs in |
 | An S4U task actually running without a session | **BLOCKED** — needs the batch-logon right |
 | Enabling the Task Scheduler operational log | **BLOCKED** — needs administrator rights |
 | Linux | **NOT_EXERCISED** — portable by construction, unexercised in fact |
+
+## 8. Defects this pass found and closed
+
+Each of these was found by trying to *check* the previous pass's work rather than by
+re-reading it, and each one had made a claim in this package read differently from what it
+was measured to be.
+
+| # | defect | how it showed up | closed by |
+| --- | --- | --- | --- |
+| `DEF-EDGE04R-1` | the witness probe resolved its scratch path against the caller's **working directory**, while the scheduled task it registers runs in the repository root | the probe reported `WITNESS_ACTION FAILED` when the reading was taken from another directory, and `VIABLE` when it was not | every declared path is anchored on `REPO_ROOT`; the verdict is now a property of the repository, not of where the command was typed |
+| `DEF-EDGE04R-2` | the published way to check this reading **could not reproduce it**: no declared instant (the window ended at whatever time the reader ran the command) and an offline run re-copied the live lane over the frozen snapshot before auditing it | the re-derivation returned 228 instants where the record says 221, and rewrote the snapshot it was supposed to be checking | `--offline` reads the committed snapshot and never the lane; an offline run with no `--until` reads the instant back from the record; the command is rendered from the audit's own window |
+| `DEF-EDGE04R-3` | the audit's own key for the trigger count is `expected`, and the probes asked for `expected_instants`; the fallback printed an unnumbered sentence, while a **hardcoded `220`** in two probes disagreed with the audit's `221` | the session record said "one of the 220 instants" beside an audit that counted 221 | the count is read from the audit in one place and quoted everywhere else; no figure is typed into a sentence |
+| `DEF-EDGE04R-4` | the scheduler reports `WakeToRun` as the **string** `"False"`, and `bool("False")` is `True` | writing the check that the definition carries the registration caught the proposal flipping a setting while describing itself as carrying it over | settings that arrive as strings are parsed as booleans, and the verifier now compares the definition against the frozen registration element by element |
+
+The verifier was hardened with the check that found `DEF-EDGE04R-4`, and the sabotage matrix
+grew with it: flipping a carried setting **while moving the recorded digest with it** is
+caught by the substance comparison, not by the digest comparison, which is the difference
+between a check that can fail and a check that was never load-bearing.
+
+## 9. What is still open
+
+* **The stale economic certificate.** `STALE_BY_PROVENANCE`, declared and not silenced:
+  re-issuing it belongs to the work package that owns the certificate, and editing the
+  recorded digest to make the test pass was explicitly not done.
+* **The three mechanisms that need an operator.** S4U (the batch-logon right), the Task
+  Scheduler operational log and a service all need administrator rights or a credential
+  this package does not hold and will not acquire. The commands that would grant each are
+  in `SESSION_INDEPENDENCE.md`.
+* **The definition itself is a proposal, not a deployment.** It is committed, rehearsed and
+  ready to apply; whether to re-register a running lane (which moves the phase this audit
+  measures) is a decision for the operator.
+* **A logon or a reboot during a pass is still not exercised** — logging off would end the
+  session the work runs in — so the logon trigger's recovery is bounded by construction and
+  by the probe's read-back, not by a measured absence.
+* **Linux is unexercised.** The reading is portable by construction; it has not been run
+  there.
 
 Research only: hypothetical marks, `order_sent: false`, promotion `NONE` in every record.

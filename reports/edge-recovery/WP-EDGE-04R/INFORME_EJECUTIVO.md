@@ -12,15 +12,17 @@ Tres módulos y dos herramientas, todos nuevos y todos verificables sin este hos
 | `src/trading_bot/research/edge04r/os_evidence.py` | lee lo que el propio host registró: arranques, apagados, inicios y cierres de sesión, transiciones de energía, la tarea registrada y el parque de volúmenes. No lee ninguna credencial (la sonda de autologon lee el interruptor y el nombre de cuenta, nunca una contraseña), no inventa causas y no cambia nada del host |
 | `src/trading_bot/research/edge04r/continuity.py` | la auditoría atribuida: fase medida de los lanzamientos reales, emparejamiento uno-a-uno entre instantes y ticks, atribución por instante, reconciliación por día, lectura de almacenamiento e invariantes |
 | `src/trading_bot/research/edge04r/session.py` | las sondas de independencia de sesión y la definición de tarea que añade un disparador de inicio de sesión y una acción testigo |
-| `scripts/edge04r_continuity.py` | recoge, audita y renderiza; con `--offline --stored-snapshot --until` reproduce la lectura solo desde la evidencia versionada |
-| `scripts/edge04r_verify.py` | verificador independiente, sin código compartido con la auditoría, y cada una de sus comprobaciones se paga con un sabotaje |
+| `scripts/edge04r_continuity.py` | recoge, audita y renderiza; con `--offline` lee la instantánea versionada — nunca la lane — y no reescribe lo que comprueba: reproduce `EDGE04R_CONTINUITY_AUDIT.json` byte a byte |
+| `scripts/edge04r_verify.py` | verificador independiente, sin código compartido con la auditoría, y cada una de sus 16 comprobaciones se paga con un sabotaje (12, todos detectados) |
+| `evidence/PROPOSED_FORWARD_TASK.xml` | la definición que aplicaría un operador, **ensayada en el host y no descrita**: registrada, leída de vuelta con ambos disparadores, ejecutada, línea testigo escrita y tarea borrada |
 
 ## 2. Qué se ha ejecutado realmente
 
-* Los **cinco commits locales se publicaron**: fast-forward sobre la propia rama del carril, de `26eeea4` a `5980e37`. Sin `force`, sin tocar ninguna otra rama.
-* La auditoría se ejecutó **contra la lane viva** y se reprodujo después **desde la instantánea versionada**, con el mismo resultado.
-* Las **sondas de sesión se ejercitaron**: se registró una tarea desechable con ambos disparadores, se leyó de vuelta del Programador de tareas, se ejecutó a demanda y se borró. La tarea viva no se tocó.
-* Los **tests** se escribieron y se ejecutaron (26/26 en el módulo nuevo), más la suite amplia y la regresión global.
+* Se **publicó** lo que quedaba local: fast-forward sobre la propia rama del carril, sin `force` y sin tocar ninguna otra rama. El resultado se lee del remoto después del push, no se cita de la salida del comando.
+* La auditoría se ejecutó **contra la lane viva** y se reprodujo después **solo desde lo versionado**: mismo resultado, **byte a byte** (`5e053a7d…`), ejecutando el comando publicado desde **otro directorio** y con ruta relativa.
+* Las **sondas de sesión se ejercitaron**: se registró una tarea desechable con ambos disparadores, se leyó de vuelta del Programador de tareas, se ejecutó a demanda y se borró. La tarea viva no se tocó, y no queda ninguna tarea de sonda en la máquina.
+* La **definición propuesta se ensayó**: registrada desde el fichero versionado, leída de vuelta con `MSFT_TaskLogonTrigger` y `MSFT_TaskTimeTrigger`, ejecutada, línea testigo escrita y borrada. El ensayo sólo difiere de la definición en **2 líneas**, que son el payload de la acción de la lane (medido por la propia sonda, no afirmado).
+* Los **tests** se escribieron y se ejecutaron (33 en el módulo nuevo, 49 en el de la lane), más `ruff`, `ruff format --check` y `mypy` limpios, y la suite amplia y la regresión global.
 
 ## 3. Disparadores perdidos, causa por causa
 
@@ -93,8 +95,8 @@ El re-render cambió la rama, el commit al que se refiere y **una observación v
 
 ## 8. Commits y ficheros
 
-* **Publicados:** `351ecba`, `046c7df`, `f1a6b31`, `570ccd6`, `5980e37` en `refs/heads/agent/edge-recovery/WP-EDGE-00-baseline`.
-* **De este paquete:** los commits aislados de WP-EDGE-04R (código, tests, evidencia e informes), listados en `GIT_STATE.json` con el árbol limpio de la lane y sin ficheros de otros carriles.
+* **Publicados antes de este pase:** `351ecba`, `046c7df`, `f1a6b31`, `570ccd6`, `5980e37` en `refs/heads/agent/edge-recovery/WP-EDGE-00-baseline`.
+* **De este paquete:** los commits aislados de WP-EDGE-04R (código, tests, evidencia e informes), listados en `GIT_STATE.json` con el árbol limpio de la lane y sin ficheros de otros carriles. El read-back del remoto después del push está en ese mismo fichero.
 * Ningún artefacto de este paquete adelanta una admisión: `hypothetical: true`, `order_sent: false` y promoción `NONE` en todos.
 
 ## 9. Defectos y bloqueos
@@ -102,6 +104,10 @@ El re-render cambió la rama, el commit al que se refiere y **una observación v
 | | |
 | --- | --- |
 | Defecto encontrado y corregido en esta auditoría | el emparejamiento de arranques y apagados informaba como caída un arranque anterior a su apagado; hay regresión en los tests |
+| `DEF-EDGE04R-1` | la sonda testigo resolvía su ruta contra el **directorio de trabajo de quien la llamaba**, mientras que la tarea que registra corre en la raíz del repositorio: el veredicto dependía de desde dónde se lanzara la lectura. Todas las rutas declaradas se anclan ahora en `REPO_ROOT` |
+| `DEF-EDGE04R-2` | el comando publicado para comprobar la lectura **no podía reproducirla**: no declaraba instante (la ventana terminaba a la hora en que se ejecutara) y una ejecución offline recopiaba la lane viva sobre la instantánea congelada antes de auditarla. `--offline` lee la instantánea y nunca la lane, y no la reescribe |
+| `DEF-EDGE04R-3` | la clave de la propia auditoría es `expected` y las sondas pedían `expected_instants`: un `220` escrito a mano quedaba junto a una auditoría que contaba 221. La cifra se lee de la auditoría en un único sitio |
+| `DEF-EDGE04R-4` | `WakeToRun` llega como la **cadena** `"False"` y `bool("False")` es `True`: la definición habría cambiado un ajuste mientras afirmaba conservar el registro. Los ajustes de cadena se leen como booleanos, y el verificador compara la definición contra el registro congelado elemento a elemento |
 | Defecto de WP-EDGE-04 corregido aquí | la atribución del silencio a un sueño de la máquina que el host no registra |
 | Bloqueo | S4U, servicio de Windows y registro operativo del Programador: requieren permisos que este paquete no puede obtener legítimamente |
 | Bloqueo | inicio de sesión automático: requeriría guardar una credencial |
@@ -113,6 +119,10 @@ El re-render cambió la rama, el commit al que se refiere y **una observación v
 1. **Levantar el bloqueo de sesión**, que es el único que cambia la aritmética: un administrador registra la tarea con `LogonType=S4U` (o se habilita el inicio de sesión automático, que exige guardar la contraseña y por eso queda fuera de este paquete). Sin eso, cualquier cuenta de días forward seguirá siendo cero por construcción.
 2. **Habilitar el registro operativo del Programador de tareas** (`wevtutil sl Microsoft-Windows-TaskScheduler/Operational /e:true`), para que el próximo disparador sin proceso sea atribuible en lugar de convertirse en `SILENT_UNATTRIBUTABLE`.
 3. **Decidir sobre el volumen**: 10,764 h de la ventana por debajo del suelo crítico no se arreglan moviendo esta lane (12,4 MiB), sino liberando espacio donde vive.
-4. **Adoptar el disparador de inicio de sesión y la acción testigo** si se acepta el despliegue: acotan la recuperación y hacen atribuible lo que hoy no lo es.
+4. **Aplicar la definición propuesta** (`evidence/PROPOSED_FORWARD_TASK.xml`, ya ensayada) si se acepta el despliegue: añade el disparador de inicio de sesión y la acción testigo, y no cambia nada de lo que la lane hace cuando arranca.
+
+```bash
+schtasks /create /tn "TradingAgentic-EDGE04-Forward" /xml "reports/edge-recovery/WP-EDGE-04R/evidence/PROPOSED_FORWARD_TASK.xml" /f
+```
 
 **Ninguna de estas cuatro cosas es una estrategia**, y ninguna autoriza operar: este paquete no habilita PAPER ni LIVE bajo ninguna circunstancia.

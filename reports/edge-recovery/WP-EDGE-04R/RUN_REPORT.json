@@ -5,12 +5,44 @@
   "reading_instant_utc": "2026-10-15T18:31:46Z",
   "declared_reading": {
     "command": "python scripts/edge04r_continuity.py --until 2026-10-15T18:31:46Z",
-    "reproduce_offline": "python scripts/edge04r_continuity.py --offline --stored-snapshot --until 2026-10-15T18:31:46Z",
+    "reproduce_offline": "python scripts/edge04r_continuity.py --offline --reports reports/edge-recovery/WP-EDGE-04R --until 2026-10-15T18:31:46Z",
     "inputs": {
       "RUN_LOG_SNAPSHOT.jsonl": "2a9db98131c51a025c7b00785f5b31ceb0a1f1ddbe8e50ba6635c67fea4f32f0",
-      "SLOT_LEDGER_SNAPSHOT.jsonl": "65381f8837df84c9b2dff2c3cd09cf363c607b9472175c53052883faaca08e33"
+      "SLOT_LEDGER_SNAPSHOT.jsonl": "65381f8837df84c9b2dff2c3cd09cf363c607b9472175c53052883faaca08e33",
+      "OS_CONTINUITY_EVIDENCE.json": "the host reading, including the lane bytes pinned at the instant it was taken"
     },
-    "note": "the reading is a function of the committed snapshot plus the declared instant, so a re-run on another machine reaches the same numbers"
+    "note": "the reading is a function of the committed snapshot plus the declared instant, so a re-run on another machine reaches the same numbers; --offline implies --stored-snapshot, and an offline run with no --until reads the instant back from the record it is re-deriving"
+  },
+  "reproducibility": {
+    "claim": "the committed audit is reproduced byte for byte from the committed inputs, without reading the lane and without rewriting the snapshot it checks",
+    "command": "python scripts/edge04r_continuity.py --offline --reports reports/edge-recovery/WP-EDGE-04R --until 2026-10-15T18:31:46Z",
+    "run_from": "a working directory outside the package, with a relative --reports",
+    "audit_sha256_before": "5e053a7de5024d12207c451325b2fc44761fc2881b1be3c7805b6341bba5f37c",
+    "audit_sha256_after": "5e053a7de5024d12207c451325b2fc44761fc2881b1be3c7805b6341bba5f37c",
+    "snapshot_rewritten": false,
+    "lane_read": false,
+    "verdict": "BYTE_EXACT"
+  },
+  "proposed_definition": {
+    "filename": "PROPOSED_FORWARD_TASK.xml",
+    "task_name": "TradingAgentic-EDGE04-Forward",
+    "rendered_from": "the lane's own frozen registration, so the same inputs re-render the same bytes and the definition carries no timestamp of its own",
+    "carried_over": ["the TimeTrigger and its original StartBoundary (the phase the audit measured)", "the principal: InteractiveToken, LeastPrivilege", "WakeToRun=false, ExecutionTimeLimit=PT1H, IgnoreNew, StartWhenAvailable=true, RestartOnFailure 3 x PT5M", "the lane's action, its arguments and its working directory"],
+    "added": ["a LogonTrigger, enabled, Delay PT60S, additive", "a witness Exec ahead of the lane's action"],
+    "rehearsal": {
+      "verdict": "VIABLE",
+      "registered": true,
+      "trigger_kinds": ["MSFT_TaskLogonTrigger", "MSFT_TaskTimeTrigger"],
+      "actions_in_order": 2,
+      "witness_file_written": true,
+      "deleted_after_the_probe": true,
+      "lines_moved_from_the_committed_definition": 2,
+      "what_the_two_lines_are": "the lane's action payload, replaced for the rehearsal by cmd.exe /c exit 0: running the lane's own action there would write an out-of-phase tick into the ledger this audit measures",
+      "probe_tasks_left_on_the_host": 0
+    },
+    "applied_to_the_live_task": false,
+    "apply_command": "schtasks /create /tn \"TradingAgentic-EDGE04-Forward\" /xml \"reports/edge-recovery/WP-EDGE-04R/evidence/PROPOSED_FORWARD_TASK.xml\" /f",
+    "why_not_applied": "re-registering a running lane's task moves the phase this audit measures; the package renders and rehearses the definition and leaves the decision to the operator"
   },
   "window": {
     "from_utc": "2026-10-13T11:23:38Z",
@@ -169,15 +201,24 @@
   },
   "verification": {
     "audit_checks": "8/8 PASS",
-    "independent_verifier": "scripts/edge04r_verify.py, no code shared with the audit",
-    "sabotage_matrix": "see VERIFICATION.json"
+    "independent_verifier": "16/16 PASS — scripts/edge04r_verify.py, no code shared with the audit",
+    "sabotage_matrix": "12/12 detected, SELF_TEST_PASS — see VERIFICATION.json",
+    "new_check": "the_proposed_definition_carries_the_registration_it_claims — compares the committed definition with the frozen registration element by element, and fails on a carried setting that was flipped with its digest kept consistent",
+    "builder_is_not_verifier": true,
+    "false_success": 0
+  },
+  "defects_closed": {
+    "DEF-EDGE04R-1": "the witness probe resolved its scratch path against the caller's working directory while the task it registers runs in the repository root: the probe reported FAILED or VIABLE depending on where the reading was taken. Every declared path is anchored on REPO_ROOT",
+    "DEF-EDGE04R-2": "the published way to check this reading could not reproduce it: no declared instant, and an offline run re-copied the live lane over the frozen snapshot before auditing it. --offline now reads the committed snapshot, never the lane, and never rewrites it; the instant is declared or read back from the record",
+    "DEF-EDGE04R-3": "the audit's own key is trigger_loss.expected and the probes asked for expected_instants, so a hardcoded 220 stood in a sentence beside an audit that counted 221. The count is read from the audit once and quoted everywhere",
+    "DEF-EDGE04R-4": "WakeToRun arrives as the string \"False\" and bool(\"False\") is True, so the definition would have flipped a setting while claiming to carry the registration over. String settings are parsed as booleans, and the verifier compares the definition against the registration"
   },
   "publication": {
-    "pushed_commits": ["351ecba", "046c7df", "f1a6b31", "570ccd6", "5980e37"],
+    "allowed_commits": ["98d594e", "40b3665", "b892273", "5daa3c0", "and the commits of this pass"],
     "remote_ref": "refs/heads/agent/edge-recovery/WP-EDGE-00-baseline",
-    "remote_before": "26eeea47b64cb0124d9eb46fb76a7d2846c745a0",
-    "remote_after": "5980e37023427dd4c9053a2ddbfcc9ec2936a431",
-    "method": "fast-forward only; no force push, no branch other than the lane's own"
+    "remote_before_this_pass": "5980e37023427dd4c9053a2ddbfcc9ec2936a431",
+    "method": "fast-forward only; no force push, no branch other than the lane's own",
+    "read_back": "recorded in GIT_STATE.json from git ls-remote, re-probed after the push rather than quoted from the command's own output"
   },
   "hypothetical": true,
   "order_sent": false,

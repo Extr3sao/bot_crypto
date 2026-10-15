@@ -92,9 +92,11 @@ Physical disks: 1 — KXG60ZNV256G KIOXIA (SSD, 238.47 GiB)
 ## 7. Re-checking this reading
 
 ```bash
-python scripts/edge04r_continuity.py --offline --reports reports/edge-recovery/WP-EDGE-04R
+python scripts/edge04r_continuity.py --offline --reports reports/edge-recovery/WP-EDGE-04R --until 2026-10-15T18:31:46Z
 python scripts/edge04r_verify.py --reports reports/edge-recovery/WP-EDGE-04R --repo .
 ```
+
+The instant is declared because it is part of what the record says: the same frozen inputs plus this instant reproduce `evidence/EDGE04R_CONTINUITY_AUDIT.json` byte for byte, while the same command without it would end the window at whatever time the reader happened to run it. An offline run with no `--until` reads the instant back from that same file, so it reproduces the record it re-derives; a new reading declares a new one.
 
 Host evidence collected at 2026-10-15T18:32:24.6025896Z on DESKTOP-4CHO695; errors in that collection: 0.
 
