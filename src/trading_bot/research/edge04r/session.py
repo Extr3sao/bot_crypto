@@ -301,7 +301,7 @@ def probe_logon_trigger_registration(
     touches the lane: its action writes to a scratch file and exits.
     """
     scratch.mkdir(parents=True, exist_ok=True)
-    witness = scratch / f"{probe_name}-witness.log"
+    witness = scratch / f"{probe_name}-witness.txt"
     witness.unlink(missing_ok=True)
     user = _current_user()
     xml = build_task_xml(
@@ -349,7 +349,7 @@ def probe_witness_action(
     started and the process died; if it has none, the scheduler never started it.
     """
     scratch.mkdir(parents=True, exist_ok=True)
-    witness = scratch / "witness-probe.log"
+    witness = scratch / "witness-probe.txt"
     witness.unlink(missing_ok=True)
     xml = build_task_xml(
         user_id=_current_user(),

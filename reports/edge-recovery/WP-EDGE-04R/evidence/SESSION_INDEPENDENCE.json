@@ -36,7 +36,7 @@
         "read_back": {
           "actions": [
             {
-              "arguments": "/c echo %DATE% %TIME% witness >> \"C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\edge-recovery\\WP-EDGE-04R\\evidence\\probe-scratch\\TradingAgentic-EDGE04R-Probe-witness.log\"",
+              "arguments": "/c echo %DATE% %TIME% witness >> \"C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\edge-recovery\\WP-EDGE-04R\\evidence\\probe-scratch\\TradingAgentic-EDGE04R-Probe-witness.txt\"",
               "execute": "cmd.exe"
             },
             {
@@ -50,7 +50,7 @@
           "state": "Ready",
           "triggers": [
             {
-              "boundary": "2026-10-15T21:01:51",
+              "boundary": "2026-10-15T21:03:34",
               "delay": "",
               "enabled": "True",
               "type": "MSFT_TaskTimeTrigger"
@@ -64,7 +64,7 @@
           ],
           "user": "GVLLFR0035",
           "wake_to_run": "False",
-          "xml": "<?xml version=\"1.0\" encoding=\"UTF-16\"?>\r\n<Task version=\"1.2\" xmlns=\"http://schemas.microsoft.com/windows/2004/02/mit/task\">\r\n  <RegistrationInfo>\r\n    <Date>2026-10-15T21:00:51</Date>\r\n    <Author>DIRECTORI\\GVLLFR0035</Author>\r\n    <Description>WP-EDGE-04R session-independence probe</Description>\r\n    <URI>\\TradingAgentic-EDGE04R-Probe</URI>\r\n  </RegistrationInfo>\r\n  <Principals>\r\n    <Principal id=\"Author\">\r\n      <UserId>S-1-12-1-2907394642-1261797007-1573842048-3608101379</UserId>\r\n      <LogonType>InteractiveToken</LogonType>\r\n    </Principal>\r\n  </Principals>\r\n  <Settings>\r\n    <DisallowStartIfOnBatteries>false</DisallowStartIfOnBatteries>\r\n    <StopIfGoingOnBatteries>false</StopIfGoingOnBatteries>\r\n    <ExecutionTimeLimit>PT1H</ExecutionTimeLimit>\r\n    <MultipleInstancesPolicy>IgnoreNew</MultipleInstancesPolicy>\r\n    <RestartOnFailure>\r\n      <Count>3</Count>\r\n      <Interval>PT5M</Interval>\r\n    </RestartOnFailure>\r\n    <StartWhenAvailable>true</StartWhenAvailable>\r\n    <IdleSettings>\r\n      <StopOnIdleEnd>true</StopOnIdleEnd>\r\n      <RestartOnIdle>false</RestartOnIdle>\r\n    </IdleSettings>\r\n  </Settings>\r\n  <Triggers>\r\n    <TimeTrigger>\r\n      <StartBoundary>2026-10-15T21:01:51</StartBoundary>\r\n      <Repetition>\r\n        <Interval>PT15M</Interval>\r\n        <Duration>P3650D</Duration>\r\n      </Repetition>\r\n    </TimeTrigger>\r\n    <LogonTrigger>\r\n      <Delay>PT1M</Delay>\r\n      <UserId>DIRECTORI\\GVLLFR0035</UserId>\r\n    </LogonTrigger>\r\n  </Triggers>\r\n  <Actions Context=\"Author\">\r\n    <Exec>\r\n      <Command>cmd.exe</Command>\r\n      <Arguments>/c echo %DATE% %TIME% witness &gt;&gt; \"C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\edge-recovery\\WP-EDGE-04R\\evidence\\probe-scratch\\TradingAgentic-EDGE04R-Probe-witness.log\"</Arguments>\r\n    </Exec>\r\n    <Exec>\r\n      <Command>cmd.exe</Command>\r\n      <Arguments>/c exit 0</Arguments>\r\n      <WorkingDirectory>C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\edge-recovery\\WP-EDGE-04R\\evidence\\probe-scratch</WorkingDirectory>\r\n    </Exec>\r\n  </Actions>\r\n</Task>"
+          "xml": "<?xml version=\"1.0\" encoding=\"UTF-16\"?>\r\n<Task version=\"1.2\" xmlns=\"http://schemas.microsoft.com/windows/2004/02/mit/task\">\r\n  <RegistrationInfo>\r\n    <Date>2026-10-15T21:02:34</Date>\r\n    <Author>DIRECTORI\\GVLLFR0035</Author>\r\n    <Description>WP-EDGE-04R session-independence probe</Description>\r\n    <URI>\\TradingAgentic-EDGE04R-Probe</URI>\r\n  </RegistrationInfo>\r\n  <Principals>\r\n    <Principal id=\"Author\">\r\n      <UserId>S-1-12-1-2907394642-1261797007-1573842048-3608101379</UserId>\r\n      <LogonType>InteractiveToken</LogonType>\r\n    </Principal>\r\n  </Principals>\r\n  <Settings>\r\n    <DisallowStartIfOnBatteries>false</DisallowStartIfOnBatteries>\r\n    <StopIfGoingOnBatteries>false</StopIfGoingOnBatteries>\r\n    <ExecutionTimeLimit>PT1H</ExecutionTimeLimit>\r\n    <MultipleInstancesPolicy>IgnoreNew</MultipleInstancesPolicy>\r\n    <RestartOnFailure>\r\n      <Count>3</Count>\r\n      <Interval>PT5M</Interval>\r\n    </RestartOnFailure>\r\n    <StartWhenAvailable>true</StartWhenAvailable>\r\n    <IdleSettings>\r\n      <StopOnIdleEnd>true</StopOnIdleEnd>\r\n      <RestartOnIdle>false</RestartOnIdle>\r\n    </IdleSettings>\r\n  </Settings>\r\n  <Triggers>\r\n    <TimeTrigger>\r\n      <StartBoundary>2026-10-15T21:03:34</StartBoundary>\r\n      <Repetition>\r\n        <Interval>PT15M</Interval>\r\n        <Duration>P3650D</Duration>\r\n      </Repetition>\r\n    </TimeTrigger>\r\n    <LogonTrigger>\r\n      <Delay>PT1M</Delay>\r\n      <UserId>DIRECTORI\\GVLLFR0035</UserId>\r\n    </LogonTrigger>\r\n  </Triggers>\r\n  <Actions Context=\"Author\">\r\n    <Exec>\r\n      <Command>cmd.exe</Command>\r\n      <Arguments>/c echo %DATE% %TIME% witness &gt;&gt; \"C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\edge-recovery\\WP-EDGE-04R\\evidence\\probe-scratch\\TradingAgentic-EDGE04R-Probe-witness.txt\"</Arguments>\r\n    </Exec>\r\n    <Exec>\r\n      <Command>cmd.exe</Command>\r\n      <Arguments>/c exit 0</Arguments>\r\n      <WorkingDirectory>C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\edge-recovery\\WP-EDGE-04R\\evidence\\probe-scratch</WorkingDirectory>\r\n    </Exec>\r\n  </Actions>\r\n</Task>"
         },
         "registered": true,
         "registration_output": "Correcto: se cre\u00a2 correctamente la tarea programada \"TradingAgentic-EDGE04R-Probe\".",
@@ -98,7 +98,7 @@
         "verdict": "NEEDS_ELEVATION"
       },
       "WITNESS_ACTION": {
-        "evidence_file": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\edge-recovery\\WP-EDGE-04R\\evidence\\probe-scratch\\witness-probe.log",
+        "evidence_file": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\edge-recovery\\WP-EDGE-04R\\evidence\\probe-scratch\\witness-probe.txt",
         "lines_written": 1,
         "mechanism": "WITNESS_ACTION",
         "ran_on_demand": true,
@@ -124,7 +124,7 @@
       "read_back": {
         "actions": [
           {
-            "arguments": "/c echo %DATE% %TIME% witness >> \"C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\edge-recovery\\WP-EDGE-04R\\evidence\\probe-scratch\\TradingAgentic-EDGE04R-Probe-witness.log\"",
+            "arguments": "/c echo %DATE% %TIME% witness >> \"C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\edge-recovery\\WP-EDGE-04R\\evidence\\probe-scratch\\TradingAgentic-EDGE04R-Probe-witness.txt\"",
             "execute": "cmd.exe"
           },
           {
@@ -138,7 +138,7 @@
         "state": "Ready",
         "triggers": [
           {
-            "boundary": "2026-10-15T21:01:51",
+            "boundary": "2026-10-15T21:03:34",
             "delay": "",
             "enabled": "True",
             "type": "MSFT_TaskTimeTrigger"
@@ -152,7 +152,7 @@
         ],
         "user": "GVLLFR0035",
         "wake_to_run": "False",
-        "xml": "<?xml version=\"1.0\" encoding=\"UTF-16\"?>\r\n<Task version=\"1.2\" xmlns=\"http://schemas.microsoft.com/windows/2004/02/mit/task\">\r\n  <RegistrationInfo>\r\n    <Date>2026-10-15T21:00:51</Date>\r\n    <Author>DIRECTORI\\GVLLFR0035</Author>\r\n    <Description>WP-EDGE-04R session-independence probe</Description>\r\n    <URI>\\TradingAgentic-EDGE04R-Probe</URI>\r\n  </RegistrationInfo>\r\n  <Principals>\r\n    <Principal id=\"Author\">\r\n      <UserId>S-1-12-1-2907394642-1261797007-1573842048-3608101379</UserId>\r\n      <LogonType>InteractiveToken</LogonType>\r\n    </Principal>\r\n  </Principals>\r\n  <Settings>\r\n    <DisallowStartIfOnBatteries>false</DisallowStartIfOnBatteries>\r\n    <StopIfGoingOnBatteries>false</StopIfGoingOnBatteries>\r\n    <ExecutionTimeLimit>PT1H</ExecutionTimeLimit>\r\n    <MultipleInstancesPolicy>IgnoreNew</MultipleInstancesPolicy>\r\n    <RestartOnFailure>\r\n      <Count>3</Count>\r\n      <Interval>PT5M</Interval>\r\n    </RestartOnFailure>\r\n    <StartWhenAvailable>true</StartWhenAvailable>\r\n    <IdleSettings>\r\n      <StopOnIdleEnd>true</StopOnIdleEnd>\r\n      <RestartOnIdle>false</RestartOnIdle>\r\n    </IdleSettings>\r\n  </Settings>\r\n  <Triggers>\r\n    <TimeTrigger>\r\n      <StartBoundary>2026-10-15T21:01:51</StartBoundary>\r\n      <Repetition>\r\n        <Interval>PT15M</Interval>\r\n        <Duration>P3650D</Duration>\r\n      </Repetition>\r\n    </TimeTrigger>\r\n    <LogonTrigger>\r\n      <Delay>PT1M</Delay>\r\n      <UserId>DIRECTORI\\GVLLFR0035</UserId>\r\n    </LogonTrigger>\r\n  </Triggers>\r\n  <Actions Context=\"Author\">\r\n    <Exec>\r\n      <Command>cmd.exe</Command>\r\n      <Arguments>/c echo %DATE% %TIME% witness &gt;&gt; \"C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\edge-recovery\\WP-EDGE-04R\\evidence\\probe-scratch\\TradingAgentic-EDGE04R-Probe-witness.log\"</Arguments>\r\n    </Exec>\r\n    <Exec>\r\n      <Command>cmd.exe</Command>\r\n      <Arguments>/c exit 0</Arguments>\r\n      <WorkingDirectory>C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\edge-recovery\\WP-EDGE-04R\\evidence\\probe-scratch</WorkingDirectory>\r\n    </Exec>\r\n  </Actions>\r\n</Task>"
+        "xml": "<?xml version=\"1.0\" encoding=\"UTF-16\"?>\r\n<Task version=\"1.2\" xmlns=\"http://schemas.microsoft.com/windows/2004/02/mit/task\">\r\n  <RegistrationInfo>\r\n    <Date>2026-10-15T21:02:34</Date>\r\n    <Author>DIRECTORI\\GVLLFR0035</Author>\r\n    <Description>WP-EDGE-04R session-independence probe</Description>\r\n    <URI>\\TradingAgentic-EDGE04R-Probe</URI>\r\n  </RegistrationInfo>\r\n  <Principals>\r\n    <Principal id=\"Author\">\r\n      <UserId>S-1-12-1-2907394642-1261797007-1573842048-3608101379</UserId>\r\n      <LogonType>InteractiveToken</LogonType>\r\n    </Principal>\r\n  </Principals>\r\n  <Settings>\r\n    <DisallowStartIfOnBatteries>false</DisallowStartIfOnBatteries>\r\n    <StopIfGoingOnBatteries>false</StopIfGoingOnBatteries>\r\n    <ExecutionTimeLimit>PT1H</ExecutionTimeLimit>\r\n    <MultipleInstancesPolicy>IgnoreNew</MultipleInstancesPolicy>\r\n    <RestartOnFailure>\r\n      <Count>3</Count>\r\n      <Interval>PT5M</Interval>\r\n    </RestartOnFailure>\r\n    <StartWhenAvailable>true</StartWhenAvailable>\r\n    <IdleSettings>\r\n      <StopOnIdleEnd>true</StopOnIdleEnd>\r\n      <RestartOnIdle>false</RestartOnIdle>\r\n    </IdleSettings>\r\n  </Settings>\r\n  <Triggers>\r\n    <TimeTrigger>\r\n      <StartBoundary>2026-10-15T21:03:34</StartBoundary>\r\n      <Repetition>\r\n        <Interval>PT15M</Interval>\r\n        <Duration>P3650D</Duration>\r\n      </Repetition>\r\n    </TimeTrigger>\r\n    <LogonTrigger>\r\n      <Delay>PT1M</Delay>\r\n      <UserId>DIRECTORI\\GVLLFR0035</UserId>\r\n    </LogonTrigger>\r\n  </Triggers>\r\n  <Actions Context=\"Author\">\r\n    <Exec>\r\n      <Command>cmd.exe</Command>\r\n      <Arguments>/c echo %DATE% %TIME% witness &gt;&gt; \"C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\edge-recovery\\WP-EDGE-04R\\evidence\\probe-scratch\\TradingAgentic-EDGE04R-Probe-witness.txt\"</Arguments>\r\n    </Exec>\r\n    <Exec>\r\n      <Command>cmd.exe</Command>\r\n      <Arguments>/c exit 0</Arguments>\r\n      <WorkingDirectory>C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\edge-recovery\\WP-EDGE-04R\\evidence\\probe-scratch</WorkingDirectory>\r\n    </Exec>\r\n  </Actions>\r\n</Task>"
       },
       "registered": true,
       "registration_output": "Correcto: se cre\u00a2 correctamente la tarea programada \"TradingAgentic-EDGE04R-Probe\".",
@@ -165,7 +165,7 @@
       "witness_file_written": true
     },
     {
-      "evidence_file": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\edge-recovery\\WP-EDGE-04R\\evidence\\probe-scratch\\witness-probe.log",
+      "evidence_file": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\edge-recovery\\WP-EDGE-04R\\evidence\\probe-scratch\\witness-probe.txt",
       "lines_written": 1,
       "mechanism": "WITNESS_ACTION",
       "ran_on_demand": true,
