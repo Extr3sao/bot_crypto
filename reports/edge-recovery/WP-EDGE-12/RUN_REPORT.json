@@ -160,10 +160,10 @@
       "sha256": "ccc81ea1153b8332fde1c2312a6fde19a401febac0b3b802e76ed1ccae241523"
     },
     "GIT_STATE.json": {
-      "bytes": 2028,
-      "lines": 47,
+      "bytes": 2254,
+      "lines": 52,
       "present": true,
-      "sha256": "fe84a286c02b74ccb27551f4052bc6518eb3ede339db0c3d80c5efe01771f8b6"
+      "sha256": "d67fdd04251f8c1c4833b776763a0fca8e4833ed6a28e21f66ece6f22ad36d76"
     },
     "OPERATIONAL_VALIDATION.json": {
       "bytes": 21678,
@@ -229,13 +229,13 @@
       "bytes": 6238,
       "lines": 167,
       "present": true,
-      "sha256": "6e3fb23d2e0fdeb39bf8f84653a2fe9edbcaa82f327c17ec8ef893a2904b9751"
+      "sha256": "083dad622d779201262c71be9fe701312a9541436996a0aaacea40b1fc5e366f"
     },
     "VERIFICATION.md": {
       "bytes": 5856,
       "lines": 72,
       "present": true,
-      "sha256": "bcbbd9c193ac300ee079051e409abaf03e48408dd86b2e156a3e68d546782512"
+      "sha256": "49bc22159f22b1b91c70826b3ef29fc0809b57544b3e706cb6d78dbaac9f92f5"
     }
   },
   "evidence": {
@@ -288,17 +288,17 @@
       "sha256": "90e9b85312f92091a950f2d93bdee05b170240c93656646f9fdf3da00e62a123"
     }
   },
-  "generated_at_utc": "2026-10-16T06:35:07Z",
+  "generated_at_utc": "2026-10-16T06:37:33Z",
   "git": {
     "ahead_of_upstream": 0,
     "behind_upstream": 0,
     "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
-    "commits": "the 4 commit(s) that touched this package are listed in GIT_STATE.json; a report that named its own commit would be naming a hash that moves",
-    "head": "f34e43f5817ef862fd2f555c461a6f87f6966e3e",
-    "head_committed_at": "2026-10-16T08:34:05+02:00",
-    "head_is_the_remote_ref": false,
-    "head_subject": "Render the sentence from the figure it sits under. [WP-EDGE-12]",
-    "read_back_from_the_remote": "b3f4d8d88ec2ea44e8bd4e43259c9d6fac3ea2ce",
+    "commits": "the 5 commit(s) that touched this package are listed in GIT_STATE.json; a report that named its own commit would be naming a hash that moves",
+    "head": "c047c87a7c3ec3c31d088aae803c9df92e9b6a7a",
+    "head_committed_at": "2026-10-16T08:36:14+02:00",
+    "head_is_the_remote_ref": true,
+    "head_subject": "Read the Spanish report's figures instead of leaving them blank. [WP-EDGE-12]",
+    "read_back_from_the_remote": "c047c87a7c3ec3c31d088aae803c9df92e9b6a7a",
     "state_file": "GIT_STATE.json",
     "upstream": "origin/agent/edge-recovery/WP-EDGE-00-baseline"
   },
@@ -507,7 +507,7 @@
   "tests": {
     "campaign": "RFC-EDGE-012",
     "collected_nothing": false,
-    "generated_at_utc": "2026-10-16T06:33:50Z",
+    "generated_at_utc": "2026-10-16T06:35:21Z",
     "hypothetical": true,
     "lint": {
       "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m ruff check src/trading_bot/research/edge12/ scripts/edge12_verify.py scripts/edge12_reports.py scripts/edge12_tests.py tests/unit/research/test_edge12_continuity.py tests/unit/research/test_edge12_runner.py",
@@ -526,7 +526,7 @@
       "passed": 61,
       "reason": null,
       "skipped": null,
-      "tail": ".............................................................            [100%]\n61 passed in 1.52s"
+      "tail": ".............................................................            [100%]\n61 passed in 1.67s"
     },
     "read_only": "no network, no live state root, no live store, no scheduler; this step runs the package's own regressions and the lint over its own paths",
     "schema_version": "EDGE12_TEST_RUNS_V1",

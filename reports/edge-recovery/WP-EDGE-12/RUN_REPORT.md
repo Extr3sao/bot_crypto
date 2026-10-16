@@ -1,14 +1,14 @@
 # WP-EDGE-12 — run report
 
-**Generated:** 2026-10-16T06:35:07Z
+**Generated:** 2026-10-16T06:37:33Z
 **Closure state:** `FORWARD_CONTINUITY_BLOCKED` — the mechanism that would remove the session dependence needs an administrator, and 26 instant(s) of the measured window produced no process
 
 ## 1. Git
 
-* branch `agent/edge-recovery/WP-EDGE-00-baseline`, HEAD `f34e43f5817ef862fd2f555c461a6f87f6966e3e`
-* `Render the sentence from the figure it sits under. [WP-EDGE-12]`
-* remote read-back `b3f4d8d88ec2ea44e8bd4e43259c9d6fac3ea2ce`
-* the 4 commit(s) that touched this package are listed in GIT_STATE.json; a report that named its own commit would be naming a hash that moves
+* branch `agent/edge-recovery/WP-EDGE-00-baseline`, HEAD `c047c87a7c3ec3c31d088aae803c9df92e9b6a7a`
+* `Read the Spanish report's figures instead of leaving them blank. [WP-EDGE-12]`
+* remote read-back `c047c87a7c3ec3c31d088aae803c9df92e9b6a7a`
+* the 5 commit(s) that touched this package are listed in GIT_STATE.json; a report that named its own commit would be naming a hash that moves
 * baseline `b3f4d8d88ec2ea44e8bd4e43259c9d6fac3ea2ce` on `agent/edge-recovery/WP-EDGE-00-baseline`, head is the remote ref `True`
 * baseline observer: 255 tick(s), 200 sealed slot(s), coverage `{'coverage_required': 0.9, 'days_with_any_data': 230, 'densely_covered_but_backfilled': 228, 'epoch_utc': '2026-03-01T00:00:00Z', 'generated_at_utc': '2026-10-16T06:26:41Z', 'prospectively_observed': 1, 'remaining_days': 59, 'required_days': 60}` of `0.9` over 60 required day(s), orders recorded `0`
 
@@ -35,7 +35,7 @@
 {
   "campaign": "RFC-EDGE-012",
   "collected_nothing": false,
-  "generated_at_utc": "2026-10-16T06:33:50Z",
+  "generated_at_utc": "2026-10-16T06:35:21Z",
   "hypothetical": true,
   "lint": {
     "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m ruff check src/trading_bot/research/edge12/ scripts/edge12_verify.py scripts/edge12_reports.py scripts/edge12_tests.py tests/unit/research/test_edge12_continuity.py tests/unit/research/test_edge12_runner.py",
@@ -54,7 +54,7 @@
     "passed": 61,
     "reason": null,
     "skipped": null,
-    "tail": ".............................................................            [100%]\n61 passed in 1.52s"
+    "tail": ".............................................................            [100%]\n61 passed in 1.67s"
   },
   "read_only": "no network, no live state root, no live store, no scheduler; this step runs the package's own regressions and the lint over its own paths",
   "schema_version": "EDGE12_TEST_RUNS_V1",
@@ -100,9 +100,9 @@
 | `OPERATIONAL_VALIDATION.md` | 3420 | `02e9c5389430521e…` |
 | `OPERATIONAL_VALIDATION.json` | 21678 | `a5d4ded147840dd1…` |
 | `FORWARD_COVERAGE.json` | 13138 | `ccc81ea1153b8332…` |
-| `VERIFICATION.md` | 5856 | `bcbbd9c193ac300e…` |
-| `VERIFICATION.json` | 6238 | `6e3fb23d2e0fdeb3…` |
-| `GIT_STATE.json` | 2028 | `fe84a286c02b74cc…` |
+| `VERIFICATION.md` | 5856 | `49bc22159f22b1b9…` |
+| `VERIFICATION.json` | 6238 | `083dad622d779201…` |
+| `GIT_STATE.json` | 2254 | `d67fdd04251f8c1c…` |
 
 ## 6. Evidence
 

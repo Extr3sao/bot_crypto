@@ -1,6 +1,6 @@
 # WP-EDGE-12 — informe ejecutivo (castellano)
 
-**Instante de lectura:** 2026-10-16T06:35:07Z · **Ventana operativa:** 2026-10-13T11:23:38Z → 2026-10-16T06:25:56Z (67.0384 h)
+**Instante de lectura:** 2026-10-16T06:37:33Z · **Ventana operativa:** 2026-10-13T11:23:38Z → 2026-10-16T06:25:56Z (67.0384 h)
 
 **Veredicto del paquete:** `FORWARD_CONTINUITY_BLOCKED`.
 

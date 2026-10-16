@@ -401,6 +401,21 @@ def _git_rows(*args: str) -> list[str]:
     return [line for line in raw.splitlines() if line.strip()]
 
 
+def _remote_sha(branch: str) -> str | None:
+    """Ask the remote what it holds, right now, for this branch.
+
+    The gate reads this once, early in the pass; a record taken later must not quote that
+    earlier answer, because the push it is describing may have happened in between. The
+    question is asked again here, at the instant this record is written.
+    """
+    raw = _git("ls-remote", "origin", f"refs/heads/{branch}", timeout=60)
+    for line in raw.splitlines():
+        parts = line.split()
+        if len(parts) == 2 and parts[1].endswith(branch):
+            return parts[0]
+    return None
+
+
 def git_state(*, gate: dict[str, Any]) -> dict[str, Any]:
     """The commits this package owns, and what the remote held when they were read.
 
@@ -414,19 +429,21 @@ def git_state(*, gate: dict[str, Any]) -> dict[str, Any]:
     rows = _git_rows(*commit_args, *GIT_STATE_PATHS)
     ahead = _git_rows("log", "--format=%h\t%s", "@{u}..HEAD")
     behind = _git_rows("log", "--format=%h\t%s", "HEAD..@{u}")
+    branch = _git("rev-parse", "--abbrev-ref", "HEAD")
+    head = _git("rev-parse", "HEAD")
+    remote = _remote_sha(branch) if branch else None
     return {
         "schema_version": "EDGE12_GIT_STATE_V1",
         "recorded_at_utc": ev.now_utc(),
-        "branch": _git("rev-parse", "--abbrev-ref", "HEAD"),
-        "head": _git("rev-parse", "HEAD"),
+        "branch": branch,
+        "head": head,
         "head_subject": _git("log", "-1", "--format=%s"),
         "head_committed_at": _git("log", "-1", "--format=%cI"),
         "upstream": _git("rev-parse", "--abbrev-ref", "@{u}"),
-        "remote_sha": (gate.get("identity") or {}).get("remote_sha"),
-        "remote_sha_source": "git ls-remote, read by WP-EDGE-12A and carried here",
-        "head_is_the_remote_sha": bool(
-            _git("rev-parse", "HEAD") == (gate.get("identity") or {}).get("remote_sha")
-        ),
+        "remote_sha": remote,
+        "remote_sha_source": "git ls-remote, read by this record at its own instant",
+        "remote_sha_at_the_gate": (gate.get("identity") or {}).get("remote_sha"),
+        "head_is_the_remote_sha": bool(remote) and head == remote,
         "commits_ahead_of_upstream": [
             {"sha": row.split("\t")[0], "subject": row.split("\t", 1)[1]} for row in ahead
         ],
@@ -462,7 +479,7 @@ def _verdict_for(decision: dict[str, Any], mechanism: str) -> str | None:
     return None
 
 
-def _git(*args: str) -> str:
+def _git(*args: str, timeout: int = 30) -> str:
     try:
         proc = subprocess.run(
             ["git", *args],
@@ -470,7 +487,7 @@ def _git(*args: str) -> str:
             capture_output=True,
             text=True,
             check=False,
-            timeout=30,
+            timeout=timeout,
         )
     except (OSError, subprocess.TimeoutExpired):
         return ""
