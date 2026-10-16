@@ -20,14 +20,17 @@ independiente y suite adversarial), más su publicación por commits en la rama 
 
 ## 2. Estado Git
 
-- Rama: `agent/edge-recovery/WP-EDGE-00-baseline`
-- Último commit: `ee3922e` — *Render every deliverable the brief names, and register the mapping. [RFC-EDGE-014]*
-- Preparado (staged) para el commit de la RFC-EDGE-014R: **53 ficheros** (paquete
-  `reports/economic-recovery/RFC-EDGE-014R/**`, `scripts/edge14r_*.py`,
-  `src/trading_bot/research/economic_recovery/`, `.gitignore`).
-- Reparaciones de esta sesión **pendientes de preparar**: `tests/conftest.py` (nuevo),
-  `tests/unit/research/test_st6_scheduler.py` (un test acotado),
-  `data/recovery/wp7/COST_BARRIER_CERTIFICATION.json` (re-emitido por su propio certificador).
+- Rama: `agent/edge-recovery/WP-EDGE-00-baseline`, publicada por fast-forward en `origin`
+  (`ee3922e..92327fd`).
+- Últimos commits: `92327fd` — *Repair the cross-package failures the suite surfaced, and record
+  the autonomy policy. [RFC-EDGE-014R]*; `dbddc58` — *Answer the recovery brief with executed
+  evidence, and reconcile the paper arm's ledger. [RFC-EDGE-014R]*; base `ee3922e`
+  (*Render every deliverable the brief names…*, RFC-EDGE-014).
+- Publicado y ya no pendiente: el paquete `reports/economic-recovery/RFC-EDGE-014R/**`
+  (incluido el dataset del replay en `scratch/PAPER_REPLAY_BARS.jsonl`), `scripts/edge14r_*.py`,
+  `src/trading_bot/research/economic_recovery/**`, `.gitignore`, `tests/conftest.py`,
+  `tests/unit/research/test_st6_scheduler.py`,
+  `data/recovery/wp7/COST_BARRIER_CERTIFICATION.json` re-emitido, `AGENTS.md` §7 y este fichero.
 - Sin preparar: modificaciones de otros agentes/WPs (p. ej. `data/st6/**`, `.ci/**`,
   `docs/research/work_packages/**`, `reports/economic-recovery/RFC-EDGE-014/**`,
   `evidence/real_decisions/**`, tests nuevos de `swing`/`rfc035*` de otro agente). **No se tocan
@@ -102,13 +105,20 @@ Artefactos regenerados en consecuencia: `PAPER_EXECUTION_EVIDENCE.*`, `TRADE_PAT
 
 ## 4. Pendiente
 
-1. **Segunda pasada completa de `tests/unit`** — en curso, log
-   `/tmp/edge14r/unit_tests_full2.log` (lanzada 23:10; ~26 min). Objetivo: 0 fallos.
-2. **Preparar y commitear** el paquete 014R (los ficheros ya en staging **más** los regenerados y
-   las reparaciones): `tests/conftest.py`, `tests/unit/research/test_st6_scheduler.py`,
-   `data/recovery/wp7/COST_BARRIER_CERTIFICATION.json`, `docs/agentic/EXECUTION_CHECKPOINT.md`,
-   `AGENTS.md` y el paquete `reports/economic-recovery/RFC-EDGE-014R/**` actualizado.
-   (Hecho ya: el registro de certificación queda `CERTIFIED` con supersesión.)
+Nada de esta ronda queda sin ejecutar. Los dos elementos que siguen abiertos **no son trabajo
+pendiente de una sesión**, sino estado del mundo que solo el tiempo o una estrategia admitida
+pueden cambiar:
+
+1. **Holdout prospectivo `OOS_ACCRUING`** — necesita al menos el umbral congelado de operaciones
+   cerradas por estrategia antes de poder aceptar o rechazar nada; hoy tiene una fracción.
+2. **Una estrategia admitida** con borde bruto positivo medido tras costes: es la entrada que el
+   paquete no produce a propósito. Ninguna familia de las evaluadas la alcanza.
+
+Ronda cerrada y publicada: `tests/unit` completo **3952 passed** (`/tmp/edge14r/unit_tests_full2.log`,
+EXIT=0), `tests/integration` + `tests/regression` **24 passed**, `tests/bdd` **23 passed**,
+verificación independiente **31/31 VERIFIED**, suite adversarial **10/10**, registro de
+certificación re-emitido **CERTIFIED**, `ruff check` + `ruff format --check` + `mypy` limpios en
+los ficheros del paquete.
 
 ## 5. Bloqueos / items abiertos (no ocultar)
 
