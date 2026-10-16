@@ -178,7 +178,7 @@
       "what": "a stage without a ledger is not reported as a measured zero"
     },
     {
-      "detail": "status WARNING, free 2.3377 GiB",
+      "detail": "status WARNING, free 3.9506 GiB",
       "expected": null,
       "got": null,
       "id": "V16",
@@ -256,10 +256,10 @@
     "total": 31
   },
   "false_success": 0,
-  "git_head": "ee3922e9f8e8d240a4c674e8d138f8c8968cc62e",
+  "git_head": "a7b3d49aad5a26929969bb1d5b02e9045578bcaa",
   "method": "every number is recomputed from the primitive records (exported bars, broker fills, engines' per-trade rows, the dataset bytes) rather than read from a summary field; a check that cannot be recomputed is reported as a failure",
   "schema_version": "EDGE14R_INDEPENDENT_VERIFICATION_V1",
   "verdict": "VERIFIED",
-  "verified_at_utc": "2026-10-16T21:20:30Z",
+  "verified_at_utc": "2026-10-16T21:34:13Z",
   "work_package": "WP-EDGE-14R"
 }

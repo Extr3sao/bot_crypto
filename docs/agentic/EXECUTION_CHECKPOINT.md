@@ -21,10 +21,14 @@ independiente y suite adversarial), más su publicación por commits en la rama 
 ## 2. Estado Git
 
 - Rama: `agent/edge-recovery/WP-EDGE-00-baseline`, publicada por fast-forward en `origin`
-  (`ee3922e..92327fd`).
-- Últimos commits: `92327fd` — *Repair the cross-package failures the suite surfaced, and record
-  the autonomy policy. [RFC-EDGE-014R]*; `dbddc58` — *Answer the recovery brief with executed
-  evidence, and reconcile the paper arm's ledger. [RFC-EDGE-014R]*; base `ee3922e`
+  (`ee3922e..a7b3d49`); upstream `origin/agent/edge-recovery/WP-EDGE-00-baseline` = HEAD local.
+  `origin/main` es otra línea de trabajo (avanza con los WP de otros agentes: `8167067`
+  RUN-OP-004, `5e6f963` gates de calidad); este paquete no publica en `main`.
+- Últimos commits: `a7b3d49` — *Let the published paper ledger be checked by a test, not only by a
+  reader. [RFC-EDGE-014R]*; `8d293c3` — *Record the published state in the checkpoint.*;
+  `92327fd` — *Repair the cross-package failures the suite surfaced, and record the autonomy
+  policy. [RFC-EDGE-014R]*; `dbddc58` — *Answer the recovery brief with executed evidence, and
+  reconcile the paper arm's ledger. [RFC-EDGE-014R]*; base `ee3922e`
   (*Render every deliverable the brief names…*, RFC-EDGE-014).
 - Publicado y ya no pendiente: el paquete `reports/economic-recovery/RFC-EDGE-014R/**`
   (incluido el dataset del replay en `scratch/PAPER_REPLAY_BARS.jsonl`), `scripts/edge14r_*.py`,
@@ -49,7 +53,7 @@ independiente y suite adversarial), más su publicación por commits en la rama 
 | Intento bloqueado de Jesse preservado con su causa | `EXTERNAL_ENGINE_JESSE_ATTEMPT_BLOCKED.json` |
 | Comparación económica de 6 brazos | `ECONOMIC_COMPARISON.csv|json` |
 | Prerregistro y captura del holdout prospectivo (estado `OOS_ACCRUING`) | `OOS_PREREGISTRATION.*`, `OOS_CAPTURE_MANIFEST.json` |
-| Verificación independiente (builder ≠ verifier): 30/31, con `V04b` abierto | `INDEPENDENT_VERIFICATION.json|md` |
+| Verificación independiente (builder ≠ verifier): **31/31, VERIFIED**, `open_items: []` (la primera pasada dio 30/31 con `V04b` abierto; ver §3, defecto del libro) | `INDEPENDENT_VERIFICATION.json|md` |
 | Suite adversarial: 10/10 casos ejecutados | `ADVERSARIAL_SUITE.json` |
 | Informes finales generados | `FINAL_REPORT.md`, `RUN_REPORT.md/json`, `INFORME_EJECUTIVO.md` |
 | Capacidad en disco recuperada (1 823 182 848 bytes de cachés regenerables) | `CAPACITY_RECLAIM.json` |
@@ -125,10 +129,36 @@ verificación independiente **31/31 VERIFIED**, suite adversarial **10/10**, reg
 certificación re-emitido **CERTIFIED**, `ruff check` + `ruff format --check` + `mypy` limpios en
 los ficheros del paquete.
 
+### Pasada final de comprobación (post-reparaciones, con exit status capturado)
+
+Los tres ficheros que la suite completa no podía cubrir por sí sola fueron tocados **después** de
+su recolección (29-52 s después de la última escritura de `packages/ci`: `paper_exec.py`,
+`edge14r_reports.py`, `edge14r_verify.py`), así que la verificación se re-ejecutó **en el HEAD
+publicado** y se capturó el exit code de cada comando (`set -o pipefail`, `code=$?` por comando,
+no el de un `tail`):
+
+| Comando | Exit | Última línea |
+| --- | ---: | --- |
+| `ruff check` (14 scripts + paquete + `conftest` + test nuevo) | **0** | `All checks passed!` |
+| `ruff format --check` (los mismos) | **0** | `28 files already formatted` |
+| `mypy` (los mismos, config del repo) | **0** | sin errores |
+| `scripts/edge14r_verify.py` | **0** | `31/31 checks pass; verdict VERIFIED` |
+| `scripts/edge14r_adversarial.py` | **0** | `10/10 executed cases pass` |
+| `pytest tests/integration tests/regression tests/bdd` | **0** | `47 passed` |
+| `pytest` (test nuevo del libro + economic_recovery + scanner + cost-barrier) | **0** | `115 passed` |
+
+La verificación se re-emitió por su propio verificador en el HEAD publicado (`git_head`
+`a7b3d49`, antes `ee3922e`): mismo veredicto 31/31 con `V04b` en PASS; el diff del artefacto son
+solo el HEAD, el instante y la cifra de disco libre que el propio check V16 mide.
+
 ## 5. Bloqueos / items abiertos (no ocultar)
 
 - **Cerrado**: `V04b` / `LEDGER_OPEN_CLOSE_MISMATCH` ya no es un item abierto — ver §3
   (identidad de apertura y drenaje de cierres desde el libro del broker; 31/31 checks).
+- **Sin test unitario propio del bucle paper**: `paper_exec._run_arm` se apoya en el broker y en el
+  motor de ciclo reales, así que no tiene test unitario aislado; queda guardado por el test del
+  artefacto publicado, por la reproducción offline con la identidad de equity y por los 31/31
+  checks de la verificación independiente.
 - **Sin estrategia admitida**: el ledger de admisión comprometido (`config/strategy_admission.json`)
   no admite ninguna familia. Es el freno correcto, no un defecto.
 - **Holdout prospectivo** `OOS_ACCRUING`: sin barras suficientes para puntuar.

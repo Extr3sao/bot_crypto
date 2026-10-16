@@ -1,6 +1,6 @@
 # WP-EDGE-14R — independent verification
 
-*verified at 2026-10-16T21:20:30Z against `ee3922e9f8e8`; verdict **VERIFIED**.*
+*verified at 2026-10-16T21:34:13Z against `a7b3d49aad5a`; verdict **VERIFIED**.*
 
 Every number below is recomputed from the primitive records, not read from a
 summary, and a check that cannot be recomputed is a failure rather than a pass.
@@ -29,7 +29,7 @@ summary, and a check that cannot be recomputed is a failure rather than a pass.
 | V13 | no arm reaches three trades a day with a positive net | PASS | 1 arm(s) reach the ACTIVE frequency (PAPER_REPLAY SANDBOX_ADMISSION) and none of them is profitable, so the target is unmet on quality rather than forced |
 | V14 | the reconciliation's router counts match the paper evidence | PASS | 1758 invocations, all refused |
 | V15 | a stage without a ledger is not reported as a measured zero | PASS | unknown is kept distinct from zero |
-| V16 | the disk guard still permits new decision slots without being relaxed | PASS | status WARNING, free 2.3377 GiB |
+| V16 | the disk guard still permits new decision slots without being relaxed | PASS | status WARNING, free 3.9506 GiB |
 | V17 | every engine's fee identity holds | PASS | Additive(g) - Compounded(g) reproduces the reported residual pair |
 | V18 | the paper broker's charging rule is reproduced from its own fills | PASS | max residual 8.882e-16 |
 | V19 | the adversarial suite is executed, not declared | PASS | 10/10 pass, 0 declared-only |
