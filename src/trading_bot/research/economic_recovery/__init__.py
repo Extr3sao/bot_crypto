@@ -38,7 +38,9 @@ __all__ = [
     "contracts",
     "costs",
     "evidence",
+    "experiments",
     "frequency",
     "parity",
+    "render",
     "trade_path",
 ]

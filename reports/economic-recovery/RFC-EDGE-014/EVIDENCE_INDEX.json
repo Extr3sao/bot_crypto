@@ -1,0 +1,200 @@
+{
+  "files": [
+    {
+      "bytes": 4332,
+      "name": "ACCEPTANCE.json"
+    },
+    {
+      "bytes": 5411,
+      "name": "ARTIFACT_MANIFEST.json"
+    },
+    {
+      "bytes": 9338,
+      "name": "BASELINE.json"
+    },
+    {
+      "bytes": 872,
+      "name": "BENCHMARK_PARITY_REPORT.md"
+    },
+    {
+      "bytes": 286576,
+      "name": "CANDIDATE_EXPERIMENTS.json"
+    },
+    {
+      "bytes": 1223,
+      "name": "CANDIDATE_EXPERIMENTS.md"
+    },
+    {
+      "bytes": 7126,
+      "name": "CANDIDATE_REGISTRY.json"
+    },
+    {
+      "bytes": 1163,
+      "name": "CANDIDATE_SPECS/E14-01_REGIME_CONDITIONED_VOL_BREAKOUT.md"
+    },
+    {
+      "bytes": 988,
+      "name": "CANDIDATE_SPECS/E14-02_LIQUID_SPOT_CROSS_SECTIONAL_ROTATION.md"
+    },
+    {
+      "bytes": 932,
+      "name": "CANDIDATE_SPECS/E14-03_CONDITIONAL_EXTREME_MEAN_REVERSION.md"
+    },
+    {
+      "bytes": 1061,
+      "name": "CANDIDATE_SPECS/E14-04_CROSS_ASSET_LEAD_LAG_TRANSMISSION.md"
+    },
+    {
+      "bytes": 11932,
+      "name": "CLONE_MANIFEST.json"
+    },
+    {
+      "bytes": 787,
+      "name": "EDGE09R_PROVENANCE.md"
+    },
+    {
+      "bytes": 253,
+      "name": "ENGINE_DIFF.csv"
+    },
+    {
+      "bytes": 270,
+      "name": "ENVIRONMENT_LOCKS/external_sources.txt"
+    },
+    {
+      "bytes": 2127,
+      "name": "ENVIRONMENT_LOCKS/pip_freeze.txt"
+    },
+    {
+      "bytes": 273,
+      "name": "ENVIRONMENT_LOCKS/runtime.txt"
+    },
+    {
+      "bytes": 840,
+      "name": "EXPERIMENT_MATRIX.csv"
+    },
+    {
+      "bytes": 10859,
+      "name": "FINAL_REPORT.md"
+    },
+    {
+      "bytes": 4405,
+      "name": "FREQUENCY_DEFINITIONS.json"
+    },
+    {
+      "bytes": 1090,
+      "name": "FREQUENCY_DEFINITIONS.md"
+    },
+    {
+      "bytes": 376,
+      "name": "GATE_DECISIONS.jsonl"
+    },
+    {
+      "bytes": 9926,
+      "name": "GIT_STATE.json"
+    },
+    {
+      "bytes": 10234,
+      "name": "INDEPENDENT_VERIFICATION.json"
+    },
+    {
+      "bytes": 4032,
+      "name": "INDEPENDENT_VERIFICATION.md"
+    },
+    {
+      "bytes": 2423,
+      "name": "INFORME_EJECUTIVO.md"
+    },
+    {
+      "bytes": 2302,
+      "name": "INTEGRITY_VERIFICATION.json"
+    },
+    {
+      "bytes": 1089,
+      "name": "LICENSE_COMPATIBILITY.md"
+    },
+    {
+      "bytes": 10779,
+      "name": "MARKET_COST_RECONCILIATION.json"
+    },
+    {
+      "bytes": 1578,
+      "name": "MARKET_COST_RECONCILIATION.md"
+    },
+    {
+      "bytes": 5743,
+      "name": "NO_TRADE_CAUSE_MATRIX.csv"
+    },
+    {
+      "bytes": 3953,
+      "name": "OOS_HOLDOUT_MANIFEST.json"
+    },
+    {
+      "bytes": 507,
+      "name": "PAPER_BLOCKED.md"
+    },
+    {
+      "bytes": 1210,
+      "name": "PAPER_GATE.json"
+    },
+    {
+      "bytes": 3811,
+      "name": "PATH_MAP.md"
+    },
+    {
+      "bytes": 1181,
+      "name": "REJECTED_CANDIDATES.md"
+    },
+    {
+      "bytes": 10782,
+      "name": "RUN_REPORT.json"
+    },
+    {
+      "bytes": 1153,
+      "name": "RUN_REPORT.md"
+    },
+    {
+      "bytes": 3128,
+      "name": "RUNTIME_AUTHORITY_MAP.json"
+    },
+    {
+      "bytes": 1029,
+      "name": "runtime_authority_map.md"
+    },
+    {
+      "bytes": 3689,
+      "name": "SABOTAGE_MATRIX.csv"
+    },
+    {
+      "bytes": 341,
+      "name": "SECURITY_PREFLIGHT.md"
+    },
+    {
+      "bytes": 622,
+      "name": "source_registry.md"
+    },
+    {
+      "bytes": 397855,
+      "name": "TRADE_FREQUENCY_BY_DAY.csv"
+    },
+    {
+      "bytes": 1105,
+      "name": "TRADE_FUNNEL.csv"
+    },
+    {
+      "bytes": 13297,
+      "name": "TRADE_PATH_DIAGNOSIS.json"
+    },
+    {
+      "bytes": 1804,
+      "name": "TRADE_PATH_DIAGNOSIS.md"
+    },
+    {
+      "bytes": 362,
+      "name": "VENUE_COST_MATRIX.csv"
+    }
+  ],
+  "n_files": 48,
+  "note": "an index of what exists; the digests live in ARTIFACT_MANIFEST.json",
+  "schema_version": "EDGE14_EVIDENCE_INDEX_V1",
+  "work_package": "WP-EDGE-14F"
+}

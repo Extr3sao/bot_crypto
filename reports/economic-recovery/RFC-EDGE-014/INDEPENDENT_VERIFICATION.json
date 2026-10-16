@@ -38,7 +38,7 @@
       "passed": true
     },
     {
-      "detail": "artefacts whose digest does not recompute: none",
+      "detail": "47 artefacts digested, none stale: True; declared exclusions: ['ARTIFACT_MANIFEST.json', 'INDEPENDENT_VERIFICATION.json']; unlisted and undeclared: none",
       "name": "every_published_artefact_digest_still_recomputes",
       "passed": true
     },
@@ -64,7 +64,7 @@
     }
   ],
   "failures": [],
-  "generated_at_utc": "2026-10-16T12:51:24Z",
+  "generated_at_utc": "2026-10-16T13:00:13Z",
   "n_checks": 12,
   "n_passed": 12,
   "n_sabotage_detected": 30,
@@ -276,7 +276,7 @@
         "name": "non_authoritative_test_target"
       },
       {
-        "detail": "the JSON is the single rendered source; no separate MD copy exists to drift from it",
+        "detail": "the rendered share 85.92% is present, and editing it in the markdown alone is detectable",
         "detected": true,
         "id": "S30",
         "kind": "TAMPER_DETECTED",

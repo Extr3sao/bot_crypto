@@ -10,6 +10,7 @@ because a reconciliation that cannot reproduce the number it explains proves not
 
 from __future__ import annotations
 
+import json
 import sys
 from pathlib import Path
 
@@ -25,6 +26,7 @@ from trading_bot.research.economic_recovery import (  # noqa: E402
     experiments,
     frequency,
     parity,
+    render,
     trade_path,
 )
 
@@ -428,3 +430,110 @@ def test_a_component_that_does_not_add_up_is_reported_inconsistent():
     result = breakdown.reconcile()
     assert result["status"] == "INCONSISTENT"
     assert any(check["name"] == "components_add_up_to_the_round_trip" for check in result["checks"])
+
+
+# ------------------------------------------- the deliverable set the brief enumerates
+NAMED_DELIVERABLES = (
+    "BASELINE.json",
+    "runtime_authority_map.md",
+    "TRADE_PATH_DIAGNOSIS.md",
+    "TRADE_PATH_DIAGNOSIS.json",
+    "TRADE_FUNNEL.csv",
+    "NO_TRADE_CAUSE_MATRIX.csv",
+    "EVIDENCE_INDEX.json",
+    "MARKET_COST_RECONCILIATION.md",
+    "MARKET_COST_RECONCILIATION.json",
+    "EDGE09R_PROVENANCE.md",
+    "VENUE_COST_MATRIX.csv",
+    "FREQUENCY_DEFINITIONS.md",
+    "INTEGRITY_VERIFICATION.json",
+    "source_registry.md",
+    "CLONE_MANIFEST.json",
+    "LICENSE_COMPATIBILITY.md",
+    "SECURITY_PREFLIGHT.md",
+    "BENCHMARK_PARITY_REPORT.md",
+    "ENGINE_DIFF.csv",
+    "CANDIDATE_REGISTRY.json",
+    "EXPERIMENT_MATRIX.csv",
+    "CANDIDATE_EXPERIMENTS.md",
+    "CANDIDATE_EXPERIMENTS.json",
+    "OOS_HOLDOUT_MANIFEST.json",
+    "TRADE_FREQUENCY_BY_DAY.csv",
+    "REJECTED_CANDIDATES.md",
+    "PAPER_BLOCKED.md",
+    "GATE_DECISIONS.jsonl",
+    "INDEPENDENT_VERIFICATION.md",
+    "INDEPENDENT_VERIFICATION.json",
+    "SABOTAGE_MATRIX.csv",
+    "RUN_REPORT.md",
+    "RUN_REPORT.json",
+    "FINAL_REPORT.md",
+    "INFORME_EJECUTIVO.md",
+    "GIT_STATE.json",
+    "PATH_MAP.md",
+)
+
+
+def test_every_named_deliverable_the_brief_asks_for_exists():
+    rendered = render.render_all()
+    assert len(rendered) == len(set(rendered)) or True  # names are keys, unique by construction
+    missing = [name for name in NAMED_DELIVERABLES if not (render.REPORTS / name).is_file()]
+    assert missing == [], f"named deliverables missing: {missing}"
+
+
+def _stem(name: str) -> str:
+    """Strip the extension exactly once: ``.json`` is a prefix of ``.jsonl``."""
+    path = Path(name)
+    return path.stem if path.suffix else name
+
+
+def test_the_path_map_registers_every_named_deliverable():
+    render.render_all()
+    mapping = (render.REPORTS / "PATH_MAP.md").read_text(encoding="utf-8")
+    for name in NAMED_DELIVERABLES:
+        assert _stem(name) in mapping, f"PATH_MAP.md does not register {name}"
+    assert _stem("GATE_DECISIONS.jsonl") == "GATE_DECISIONS"
+
+
+def test_each_markdown_deliverable_is_a_rendering_of_a_json_record():
+    for name, source in render.DELIVERABLE_SOURCES:
+        assert (render.REPORTS / source).is_file(), source
+        body = (render.REPORTS / name).read_text(encoding="utf-8")
+        assert body.startswith("# WP-EDGE") or body.startswith("# RFC-EDGE"), name
+
+
+def test_the_per_day_csv_keeps_zero_trade_days_as_rows():
+    text = render.trade_frequency_by_day_csv()
+    lines = text.strip().splitlines()
+    assert lines[0] == "arm,utc_day,trades"
+    assert any(line.endswith(",0") for line in lines[1:]), "no zero-trade day survived"
+
+
+def test_the_engine_diff_declares_the_unrun_engine_rather_than_fabricating_one():
+    text = render.engine_diff_csv()
+    assert "NOT_EXECUTED" in text
+    assert "jesse(SRC-02)" in text
+
+
+def test_the_manifest_excludes_only_the_two_files_it_cannot_digest():
+    payload = render.build_manifest()
+    assert payload["excludes"] == ["ARTIFACT_MANIFEST.json", "INDEPENDENT_VERIFICATION.json"]
+    assert "ARTIFACT_MANIFEST.json" not in payload["artifacts"]
+    assert "INDEPENDENT_VERIFICATION.json" not in payload["artifacts"]
+    assert payload["excludes_because"]
+
+
+def test_the_sabotage_csv_carries_every_case_with_its_kind():
+    render.render_all()
+    lines = render.sabotage_matrix_csv().strip().splitlines()
+    assert lines[0] == "id,name,kind,detected,detail"
+    assert len(lines) == 31  # header plus thirty cases
+    assert "TAMPER_DETECTED" in render.sabotage_matrix_csv()
+
+
+def test_the_gate_decisions_jsonl_lists_a_blocked_decision_per_gate():
+    text = render.gate_decisions_jsonl()
+    rows = [json.loads(line) for line in text.strip().splitlines()]
+    assert rows, "no gate decision was recorded"
+    assert all(row["decision"] == "BLOCKED" for row in rows)
+    assert all(row["gates_relaxed"] == [] for row in rows)

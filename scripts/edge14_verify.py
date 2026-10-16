@@ -286,10 +286,23 @@ def check_artefact_digests() -> dict[str, Any]:
         path = REPORTS / name
         if not path.is_file() or sha256_file(path) != digest:
             bad.append(name)
+    # The manifest declares what it cannot cover; this check verifies that declaration
+    # rather than trusting it, so an artefact cannot quietly drop out of the digests.
+    declared = manifest.get("excludes", [])
+    unlisted = [
+        str(p.relative_to(REPORTS)).replace("\\", "/")
+        for p in sorted(REPORTS.rglob("*"))
+        if p.is_file()
+        and str(p.relative_to(REPORTS)).replace("\\", "/") not in manifest["artifacts"]
+        and p.name not in declared
+    ]
     return {
         "name": "every_published_artefact_digest_still_recomputes",
-        "passed": not bad,
-        "detail": f"artefacts whose digest does not recompute: {bad or 'none'}",
+        "passed": not bad and not unlisted,
+        "detail": (
+            f"{len(manifest['artifacts'])} artefacts digested, none stale: {not bad}; "
+            f"declared exclusions: {declared}; unlisted and undeclared: {unlisted or 'none'}"
+        ),
     }
 
 
@@ -735,15 +748,18 @@ def sabotage_cases() -> list[dict[str, Any]]:
         read_json(REPORTS / "CANDIDATE_EXPERIMENTS.json")["oos_class"]
         == "TEMPORAL_WITHIN_A_CONSUMED_CORPUS",
         "the target is declared non-fresh, so it cannot stand in for an OOS target",
-    )
-
-    # 30. an MD report diverging from its JSON
-    json_artefacts = [p for p in REPORTS.glob("*.json")]
+    )  # 30. a rendered markdown diverging from the JSON it was rendered from.
+    # The markdown deliverables are renderings of the JSON records, so a figure edited in
+    # the markdown alone is exactly the drift this must catch.
+    cost_md = (REPORTS / "MARKET_COST_RECONCILIATION.md").read_text(encoding="utf-8")
+    cost_json = read_json(REPORTS / "MARKET_COST_RECONCILIATION.json")
+    share_text = f"{cost_json['admission_claim']['fee_share_percent']}%"
+    tampered_md = cost_md.replace(share_text, "95.92%")
     case(
         "S30",
         "md_report_diverges_from_json",
-        bool(json_artefacts) and not (REPORTS / "TRADE_PATH_DIAGNOSIS.md").is_file(),
-        "the JSON is the single rendered source; no separate MD copy exists to drift from it",
+        share_text in cost_md and share_text not in tampered_md,
+        f"the rendered share {share_text} is present, and editing it in the markdown alone is detectable",
     )
 
     return cases

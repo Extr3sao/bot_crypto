@@ -1,6 +1,6 @@
 # RFC-EDGE-014 — recuperación económica, auditoría del camino real de órdenes y benchmark externo
 
-*Un solo cierre, a `2026-10-16T12:50:42Z`. Cifras leídas de los artefactos que este run escribió.*
+*Un solo cierre, a `2026-10-16T13:00:12Z`. Cifras leídas de los artefactos que este run escribió.*
 
 ## 1. Estado
 
@@ -125,7 +125,7 @@ mediciones offline se conservan.
 
 ## 9. TESTS
 
-- `C:\Users\GVLLFR0035\Downloads\bot freebuff\.venv\Scripts\python.exe -m pytest tests/unit/research/test_edge14_economic_recovery.py -q` → exit `0` — 37 passed in 23.82s
+- `C:\Users\GVLLFR0035\Downloads\bot freebuff\.venv\Scripts\python.exe -m pytest tests/unit/research/test_edge14_economic_recovery.py -q` → exit `0` — 45 passed in 26.30s
 - `C:\Users\GVLLFR0035\Downloads\bot freebuff\.venv\Scripts\python.exe scripts/edge14_verify.py` → exit `0` — sabotage: 30/30 detected
 
 ## 10. DEFECTS cerrados
@@ -146,15 +146,53 @@ mediciones offline se conservan.
 
 ## 12. EVIDENCE
 
+- `ACCEPTANCE.json`
 - `BASELINE.json`
+- `BENCHMARK_PARITY_REPORT.md`
 - `CANDIDATE_EXPERIMENTS.json`
+- `CANDIDATE_EXPERIMENTS.md`
 - `CANDIDATE_REGISTRY.json`
+- `CANDIDATE_SPECS/E14-01_REGIME_CONDITIONED_VOL_BREAKOUT.md`
+- `CANDIDATE_SPECS/E14-02_LIQUID_SPOT_CROSS_SECTIONAL_ROTATION.md`
+- `CANDIDATE_SPECS/E14-03_CONDITIONAL_EXTREME_MEAN_REVERSION.md`
+- `CANDIDATE_SPECS/E14-04_CROSS_ASSET_LEAD_LAG_TRANSMISSION.md`
 - `CLONE_MANIFEST.json`
+- `EDGE09R_PROVENANCE.md`
+- `ENGINE_DIFF.csv`
+- `ENVIRONMENT_LOCKS/external_sources.txt`
+- `ENVIRONMENT_LOCKS/pip_freeze.txt`
+- `ENVIRONMENT_LOCKS/runtime.txt`
+- `EVIDENCE_INDEX.json`
+- `EXPERIMENT_MATRIX.csv`
+- `FINAL_REPORT.md`
 - `FREQUENCY_DEFINITIONS.json`
+- `FREQUENCY_DEFINITIONS.md`
+- `GATE_DECISIONS.jsonl`
+- `GIT_STATE.json`
+- `INDEPENDENT_VERIFICATION.md`
+- `INFORME_EJECUTIVO.md`
+- `INTEGRITY_VERIFICATION.json`
+- `LICENSE_COMPATIBILITY.md`
 - `MARKET_COST_RECONCILIATION.json`
+- `MARKET_COST_RECONCILIATION.md`
+- `NO_TRADE_CAUSE_MATRIX.csv`
+- `OOS_HOLDOUT_MANIFEST.json`
+- `PAPER_BLOCKED.md`
 - `PAPER_GATE.json`
+- `PATH_MAP.md`
+- `REJECTED_CANDIDATES.md`
 - `RUNTIME_AUTHORITY_MAP.json`
+- `RUN_REPORT.json`
+- `RUN_REPORT.md`
+- `SABOTAGE_MATRIX.csv`
+- `SECURITY_PREFLIGHT.md`
+- `TRADE_FREQUENCY_BY_DAY.csv`
+- `TRADE_FUNNEL.csv`
 - `TRADE_PATH_DIAGNOSIS.json`
+- `TRADE_PATH_DIAGNOSIS.md`
+- `VENUE_COST_MATRIX.csv`
+- `runtime_authority_map.md`
+- `source_registry.md`
 - `INDEPENDENT_VERIFICATION.json`, `ACCEPTANCE.json`, `GIT_STATE.json`
 
 ## 13. ARCHITECTURE_STATUS

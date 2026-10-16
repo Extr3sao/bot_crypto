@@ -23,6 +23,7 @@ from trading_bot.research.economic_recovery import (
     experiments,
     frequency,
     parity,
+    render,
     trade_path,
 )
 from trading_bot.research.economic_recovery import evidence as ev
@@ -285,6 +286,8 @@ def main() -> int:
         written[name] = ev.sha256_file(REPORTS / name) or ""
 
     candidates.write_specs()
+    rendered = render.render_all()
+    print(f"rendered {len(rendered)} named deliverables the brief enumerates")
 
     acceptance = _acceptance()
     counts: dict[str, int] = {}
@@ -301,16 +304,12 @@ def main() -> int:
         },
     )
 
-    ev.write_json(
-        REPORTS / "ARTIFACT_MANIFEST.json",
-        {
-            "generated_at_utc": ev.now_utc(),
-            "artifacts": written,
-            "promotion": "NONE",
-            "order_sent": False,
-        },
+    # Written last, and re-written by the report step, so a digest never describes a
+    # file that has changed after the manifest was taken.
+    manifest = render.build_manifest()
+    print(
+        f"wrote {len(written)} payloads and digested {manifest['n_artifacts']} artefacts to {REPORTS}"
     )
-    print(f"wrote {len(written) + 1} artefacts to {REPORTS}")
     for name in sorted(written):
         print(f"  {name}")
     return 0

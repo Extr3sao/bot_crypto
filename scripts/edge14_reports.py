@@ -11,10 +11,15 @@ from __future__ import annotations
 
 import json
 import subprocess
+import sys
 from datetime import UTC, datetime
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(REPO_ROOT / "src"))
+
+from trading_bot.research.economic_recovery import render  # noqa: E402
+
 REPORTS = REPO_ROOT / "reports" / "economic-recovery" / "RFC-EDGE-014"
 PY = str(REPO_ROOT / ".venv" / "Scripts" / "python.exe")
 
@@ -379,10 +384,14 @@ Research only: ninguna orden, ninguna credencial, ningún capital.
 
 Research only: ninguna orden, ninguna credencial, ningún capital.
 """
-    (REPORTS / "RUN_REPORT.md").write_text(run_md, encoding="utf-8")
+    (REPORTS / "RUN_REPORT.md").write_text(
+        run_md, encoding="utf-8"
+    )  # Re-digest everything now that the reports exist, so the manifest covers them too.
+    manifest = render.build_manifest()
 
     print(
-        f"wrote FINAL_REPORT.md, RUN_REPORT.md/json, INFORME_EJECUTIVO.md, GIT_STATE.json to {REPORTS}"
+        f"wrote FINAL_REPORT.md, RUN_REPORT.md/json, INFORME_EJECUTIVO.md, GIT_STATE.json to {REPORTS}; "
+        f"manifest now digests {manifest['n_artifacts']} artefacts"
     )
     print(f"  tests exit {pytest_result['exit_code']}: {pytest_result['last_line']}")
     print(f"  verification exit {verify_result['exit_code']}: {verify_result['last_line']}")
