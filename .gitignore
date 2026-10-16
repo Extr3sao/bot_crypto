@@ -391,3 +391,20 @@ commit_msg*.txt
 .agentic-backup/
 .freebuff/
 his.zip
+
+# ============================================================
+# RFC-EDGE-014 — recuperación económica. Misma mecánica que los WP de
+# EDGE: `reports/*` ignora el árbol entero y git no re-incluye un fichero
+# cuyo directorio padre está excluido, así que la cadena de padres se
+# re-incluye paso a paso y se vuelve a ignorar lo de en medio. La excepción
+# alcanza solo a esta carpeta y no abre el resto de salidas de reports/.
+# ============================================================
+!reports/economic-recovery/
+reports/economic-recovery/*
+!reports/economic-recovery/RFC-EDGE-014/
+reports/economic-recovery/RFC-EDGE-014/*
+!reports/economic-recovery/RFC-EDGE-014/*.json
+!reports/economic-recovery/RFC-EDGE-014/*.md
+!reports/economic-recovery/RFC-EDGE-014/CANDIDATE_SPECS/
+reports/economic-recovery/RFC-EDGE-014/CANDIDATE_SPECS/*
+!reports/economic-recovery/RFC-EDGE-014/CANDIDATE_SPECS/*.md

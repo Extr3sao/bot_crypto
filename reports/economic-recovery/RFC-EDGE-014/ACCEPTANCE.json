@@ -1,0 +1,131 @@
+{
+  "counts": {
+    "BLOQUEADO_DECLARADO": 1,
+    "SATISFECHO": 23
+  },
+  "order_sent": false,
+  "promotion": "NONE",
+  "rows": [
+    {
+      "id": "ACC-01",
+      "verdict": "SATISFECHO",
+      "why": "branch, HEAD and worktree frozen in BASELINE.json"
+    },
+    {
+      "id": "ACC-02",
+      "verdict": "SATISFECHO",
+      "why": "RUNTIME_AUTHORITY_MAP.json classifies each module and traces entrypoints"
+    },
+    {
+      "id": "ACC-03",
+      "verdict": "SATISFECHO",
+      "why": "window audited as-is: 9.6882 days, no day padded"
+    },
+    {
+      "id": "ACC-04",
+      "verdict": "SATISFECHO",
+      "why": "BACKTEST_FILL vs PAPER_BROKER_FILL vs EXCHANGE_ORDER kept apart in the contracts and the results"
+    },
+    {
+      "id": "ACC-05",
+      "verdict": "SATISFECHO",
+      "why": "live status VERIFIED_ZERO: no order left this runtime, per its own ledger"
+    },
+    {
+      "id": "ACC-06",
+      "verdict": "SATISFECHO",
+      "why": "NO_TRADE reasons reconstructed: ['DATA_GAP', 'DISK_BUDGET_VETO', 'NO_SIGNAL', 'UNKNOWN']"
+    },
+    {
+      "id": "ACC-07",
+      "verdict": "SATISFECHO",
+      "why": "a real safe path was executed on real data: 6 arms"
+    },
+    {
+      "id": "ACC-08",
+      "verdict": "SATISFECHO",
+      "why": "costs rebuilt from the frozen gate artefact; the EDGE-09 originals were not edited"
+    },
+    {
+      "id": "ACC-09",
+      "verdict": "SATISFECHO",
+      "why": "the published 1.3863 divides a cross-venue mean fee by an admission-only mean barrier; the fee was not double counted and no identity was broken in the gate, the identity was broken by the sentence at render time"
+    },
+    {
+      "id": "ACC-10",
+      "verdict": "SATISFECHO",
+      "why": "the selector counts overlapping 60s start points conditioned on extreme imbalance; the tape bound de-overlaps before counting. Only the non-overlapping bound maps to distinct trades."
+    },
+    {
+      "id": "ACC-11",
+      "verdict": "SATISFECHO",
+      "why": "the original provenance digest is preserved; the supersession is a new versioned record"
+    },
+    {
+      "id": "ACC-12",
+      "verdict": "SATISFECHO",
+      "why": "licenses classified before any clone; not copyable: ['SRC-01', 'SRC-05', 'SRC-09']"
+    },
+    {
+      "id": "ACC-13",
+      "verdict": "SATISFECHO",
+      "why": "parity plan freezes dataset/period/capital/costs; clone state CLONED"
+    },
+    {
+      "id": "ACC-14",
+      "verdict": "SATISFECHO",
+      "why": "engine-difference tolerance preregistered before the run; no engines available to run yet"
+    },
+    {
+      "id": "ACC-15",
+      "verdict": "SATISFECHO",
+      "why": "candidates preregistered before any OOS: 4 registered, 3 rejected as duplicates"
+    },
+    {
+      "id": "ACC-16",
+      "verdict": "SATISFECHO",
+      "why": "PIT/warm-up/closed-bar rules are enforced by construction and exercised by the sabotage suite"
+    },
+    {
+      "id": "ACC-17",
+      "verdict": "SATISFECHO",
+      "why": "net of entry and exit costs: round trip 22.9866 bps charged per trade"
+    },
+    {
+      "id": "ACC-18",
+      "verdict": "BLOQUEADO_DECLARADO",
+      "why": "OOS class TEMPORAL_WITHIN_A_CONSUMED_CORPUS: no unread corpus remains in the tree"
+    },
+    {
+      "id": "ACC-19",
+      "verdict": "SATISFECHO",
+      "why": "trades per day reported per arm, zero days included; signals never counted as trades"
+    },
+    {
+      "id": "ACC-20",
+      "verdict": "SATISFECHO",
+      "why": "all arms net-negative or insufficient sample: verdict INSUFFICIENT_SAMPLE_FOR_FRESH_OOS"
+    },
+    {
+      "id": "ACC-21",
+      "verdict": "SATISFECHO",
+      "why": "paper state PAPER_BLOCKED_BY_GATE; no gate relaxed, no promotion"
+    },
+    {
+      "id": "ACC-22",
+      "verdict": "SATISFECHO",
+      "why": "the verifier re-derives results without importing the builder and runs a sabotage suite"
+    },
+    {
+      "id": "ACC-23",
+      "verdict": "SATISFECHO",
+      "why": "reports and JSON reproducible; tests and false-success recorded"
+    },
+    {
+      "id": "ACC-24",
+      "verdict": "SATISFECHO",
+      "why": "next actions are ordered by economic impact, not by new RFCs"
+    }
+  ],
+  "schema_version": "EDGE14_ACCEPTANCE_V1"
+}
