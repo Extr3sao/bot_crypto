@@ -74,7 +74,12 @@ def main() -> int:
         "worktree_paths": [
             line for line in git("status", "--porcelain").splitlines() if line.strip()
         ],
-        "note": "recorded before the packaging commit; the worktree paths belong to other lanes",
+        "note": (
+            "this file is written before the commit that carries it, so its head is the tip "
+            "at render time and the packaging commit comes after it: the lag is one commit "
+            "and is declared here rather than left for a reader to discover. The worktree "
+            "paths are other lanes' work and were not touched by this package."
+        ),
     }
     (REPORTS / "GIT_STATE.json").write_text(
         json.dumps(git_state, indent=2, sort_keys=True) + "\n", encoding="utf-8"

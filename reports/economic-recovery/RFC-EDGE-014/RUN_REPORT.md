@@ -1,6 +1,6 @@
 # RFC-EDGE-014 — run report
 
-*`2026-10-16T12:49:26Z`, branch `agent/edge-recovery/WP-EDGE-00-baseline`, head `c4c1fae64d66`.*
+*`2026-10-16T12:50:42Z`, branch `agent/edge-recovery/WP-EDGE-00-baseline`, head `256f0224d064`.*
 
 ## 1. Aceptación
 
@@ -10,7 +10,7 @@
 
 | Qué | Resultado |
 | --- | --- |
-| Tests del paquete | exit `0` — 37 passed in 24.20s |
+| Tests del paquete | exit `0` — 37 passed in 23.82s |
 | Verificación independiente | `VERIFICATION_PASS` — 12/12 |
 | Sabotajes detectados | 30/30 |
 | Brazos ejecutados | 6 |
@@ -28,8 +28,8 @@
 
 ## 4. Git
 
-- rama `agent/edge-recovery/WP-EDGE-00-baseline`, head `c4c1fae64d6676cc7ac9dee1a4b6896e5f0593e8`
-- upstream `c4c1fae64d6676cc7ac9dee1a4b6896e5f0593e8`, coincide: True
-- rutas sucias en el worktree: 152 (pertenecen a otros carriles; no se tocaron)
+- rama `agent/edge-recovery/WP-EDGE-00-baseline`, head `256f0224d0648e90b394f099a3133d9f5654eaf1`
+- upstream `256f0224d0648e90b394f099a3133d9f5654eaf1`, coincide: True
+- rutas sucias en el worktree: 157 (pertenecen a otros carriles; no se tocaron)
 
 Research only: ninguna orden, ninguna credencial, ningún capital.

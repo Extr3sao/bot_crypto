@@ -1,6 +1,6 @@
 # RFC-EDGE-014 — recuperación económica, auditoría del camino real de órdenes y benchmark externo
 
-*Un solo cierre, a `2026-10-16T12:49:26Z`. Cifras leídas de los artefactos que este run escribió.*
+*Un solo cierre, a `2026-10-16T12:50:42Z`. Cifras leídas de los artefactos que este run escribió.*
 
 ## 1. Estado
 
@@ -125,7 +125,7 @@ mediciones offline se conservan.
 
 ## 9. TESTS
 
-- `C:\Users\GVLLFR0035\Downloads\bot freebuff\.venv\Scripts\python.exe -m pytest tests/unit/research/test_edge14_economic_recovery.py -q` → exit `0` — 37 passed in 24.20s
+- `C:\Users\GVLLFR0035\Downloads\bot freebuff\.venv\Scripts\python.exe -m pytest tests/unit/research/test_edge14_economic_recovery.py -q` → exit `0` — 37 passed in 23.82s
 - `C:\Users\GVLLFR0035\Downloads\bot freebuff\.venv\Scripts\python.exe scripts/edge14_verify.py` → exit `0` — sabotage: 30/30 detected
 
 ## 10. DEFECTS cerrados
