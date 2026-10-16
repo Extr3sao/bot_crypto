@@ -19,14 +19,14 @@
   "status": "PAPER_BLOCKED_BY_GATE",
   "window": {
     "available": true,
-    "cycle_counter_in_heartbeat": 905,
-    "cycles_recorded": 861,
+    "cycle_counter_in_heartbeat": 906,
+    "cycles_recorded": 862,
     "first_operation_utc": "2026-10-06T19:59:02Z",
     "interval_seconds": 900,
-    "last_operation_utc": "2026-10-16T12:30:03Z",
+    "last_operation_utc": "2026-10-16T12:45:03Z",
     "note": "the window is the ledger's own extent; no day was filled in, and the difference between 30 and the measured span is reported, not padded",
     "requested_days": 30,
-    "span_days": 9.6882,
+    "span_days": 9.6986,
     "window_is_the_full_thirty_days": false
   },
   "work_package": "WP-EDGE-14E"

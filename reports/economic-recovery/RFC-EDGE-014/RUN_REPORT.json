@@ -5,8 +5,8 @@
   },
   "baseline": {
     "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
-    "generated_at_utc": "2026-10-16T12:44:13Z",
-    "head": "37971887163f7bbb0cbfe99656bf021f5218abdf",
+    "generated_at_utc": "2026-10-16T12:47:10Z",
+    "head": "60b8c47d6b1fc4d27ffa1ec6caeeaafa7fe4865d",
     "live_trading_enabled": false,
     "note": "frozen before any measurement; the worktree paths belong to other lanes and were not touched",
     "risk_config_sha256": "3c27c866d5f11afea96a80598c1e72c69816ecc3b77e97c5ad7fa86417593a2e",
@@ -143,8 +143,6 @@
       "?? docs/research/work_packages/WP-PAIR-INFRA-001_pair_execution_gap.md",
       "?? docs/research/work_packages/WP-RISK-001_exposure_and_stop_audit.md",
       "?? docs/research/work_packages/WP-RISK-EXPOSURE-001.md",
-      "?? scripts/edge14_run.py",
-      "?? scripts/edge14_verify.py",
       "?? scripts/rfc035_discovery_verify.py",
       "?? scripts/rfc035e_fetch.py",
       "?? scripts/rfc035e_reproduce.py",
@@ -155,10 +153,8 @@
       "?? scripts/swing_preregister.py",
       "?? scripts/swing_run.py",
       "?? scripts/swing_verify.py",
-      "?? src/trading_bot/research/economic_recovery/",
       "?? src/trading_bot/research/experimental/",
       "?? src/trading_bot/research/swing/",
-      "?? tests/unit/research/test_edge14_economic_recovery.py",
       "?? tests/unit/research/test_experimental_candidates_pit.py",
       "?? tests/unit/research/test_rfc035_opportunity_registry.py",
       "?? tests/unit/research/test_rfc035e_effect_reproduction.py",
@@ -174,7 +170,7 @@
   "cost_verdict": "ECONOMIC_INTEGRITY_RECONCILED",
   "false_success": 0,
   "frequency_verdict": "FREQUENCY_RECONCILED_BY_WINDOW_RULE",
-  "generated_at_utc": "2026-10-16T12:45:51Z",
+  "generated_at_utc": "2026-10-16T12:48:06Z",
   "headline": {
     "closed_trades": 1,
     "directional_decisions": 1,
@@ -191,7 +187,7 @@
   "tests": {
     "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m pytest tests/unit/research/test_edge14_economic_recovery.py -q",
     "exit_code": 0,
-    "last_line": "37 passed in 24.50s"
+    "last_line": "37 passed in 23.72s"
   },
   "verification": {
     "checks": "12/12",
