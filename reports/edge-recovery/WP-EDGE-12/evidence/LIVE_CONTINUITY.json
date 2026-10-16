@@ -1,0 +1,41 @@
+{
+  "alerts": {
+    "kinds": {
+      "DISK_CRITICAL": 1,
+      "DISK_RECOVERED": 1,
+      "DISK_WARNING": 1,
+      "HEALTH_BLOCKED": 5,
+      "HEALTH_DEGRADED": 7,
+      "HEALTH_RECOVERED": 3,
+      "OBSERVATION_GAP": 1,
+      "OBSERVATION_STALLED": 1,
+      "PUBLICATION_PAUSED": 1
+    },
+    "total": 21
+  },
+  "corrupt_evidence_is_counted_not_hidden": 0,
+  "corrupt_run_lines": 0,
+  "derived_refresh": {
+    "failures": 7,
+    "reading": "one row per scheduled tick that consumed its slot: the lane re-reads its own reconciliation from the cadence rather than from a person running a command",
+    "rows": 158
+  },
+  "first_tick_utc": "2026-10-13T11:23:38Z",
+  "gaps_over_the_declared_bound": [
+    {
+      "from_utc": "2026-10-14T22:25:56Z",
+      "missed_intervals": 25,
+      "seconds": 23418.9,
+      "to_utc": "2026-10-15T04:56:15Z"
+    }
+  ],
+  "last_tick_utc": "2026-10-16T06:12:22Z",
+  "maximum_tick_seconds": 349.035,
+  "median_tick_seconds": 36.255,
+  "runs": 254,
+  "slot_ledger_is_a_set": true,
+  "slots_sealed_rows": 199,
+  "slots_unique_keys": 199,
+  "ticks_over_the_interval": 0,
+  "worst_gap_seconds": 23418.9
+}

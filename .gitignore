@@ -295,6 +295,24 @@ reports/edge-recovery/WP-EDGE-04R/*
 !reports/edge-recovery/WP-EDGE-04R/*.md
 
 # ============================================================
+# WP-EDGE-12 — misma cadena de excepciones que WP-EDGE-01…09/04R, por el mismo motivo:
+# la puerta de dependencias leida del host, la decision de mecanismo con las negativas
+# verbatim, el techo de almacenamiento, la matriz de continuidad ejercitada sobre el
+# observador real, la validacion operativa y la verificacion independiente SI se
+# versionan. `evidence/` lleva la lectura del sistema operativo tal cual se leyo, los
+# snapshots de los dos logs sobre los que se calcularon las cifras, la definicion
+# propuesta, el XML de la sonda S4U y el registro de las regresiones
+# (TEST_RUNS.json), de modo que el veredicto se puede re-derivar sin este host; el
+# estado vivo del observador y el ensayo de continuidad siguen bajo data/forward/
+# (ignorado arriba), asi que nada de lo que crece en cada tick entra aqui.
+# ============================================================
+!reports/edge-recovery/WP-EDGE-12/
+reports/edge-recovery/WP-EDGE-12/*
+!reports/edge-recovery/WP-EDGE-12/evidence/
+!reports/edge-recovery/WP-EDGE-12/*.json
+!reports/edge-recovery/WP-EDGE-12/*.md
+
+# ============================================================
 # CAP-003 — evidencias OHLCV crudas: locales por tamano.
 # El ledger (evidence/real_decisions/*.jsonl) SI se versiona y
 # fija cada fichero crudo con su sha256.

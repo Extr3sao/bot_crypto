@@ -1,0 +1,84 @@
+{
+  "additive_levers": {
+    "attribution_limitation": "a run recorded as SCHEDULED is invoked with the scheduler's own arguments, which is also what an on-demand `schtasks /run` does; the Task Scheduler operational log that would separate them is disabled on this host, so an off-phase launch is reported as off-phase and not attributed to a mechanism",
+    "measured_phase_ms": 653000,
+    "multiple_instances": "IgnoreNew",
+    "off_phase_instants": [
+      "2026-10-13T11:23:38Z",
+      "2026-10-14T08:14:40Z",
+      "2026-10-15T14:59:49Z",
+      "2026-10-15T15:00:01Z"
+    ],
+    "off_phase_launches": 4,
+    "restart_on_failure": {
+      "count": "3",
+      "interval": "PT5M"
+    },
+    "restart_policy_shaped_detail": [],
+    "restart_policy_shaped_follow_ups": 0,
+    "scheduled_launches": 248,
+    "start_when_available": "True",
+    "what_start_when_available_buys": "it converts a start missed while the host was unavailable into a catch-up run when the host returns; it does not help a start that could not run because no session existed, which is the loss this campaign is actually about"
+  },
+  "applied_to_the_live_task": false,
+  "available_without_new_privileges": [
+    "LOGON_TRIGGER",
+    "WITNESS_ACTION"
+  ],
+  "blocked": {
+    "AUTHORISED_SERVICE_ACCOUNT": "NO_ACCOUNT_DESIGNATED",
+    "INDEPENDENT_HOST_RUNNER": "NO_AUTHORISED_INFRASTRUCTURE_FOUND",
+    "S4U_BARE": "NEEDS_ELEVATION",
+    "S4U_PROPOSAL": "NEEDS_ELEVATION",
+    "SYSTEM_PRINCIPAL": "NEEDS_ELEVATION",
+    "WINDOWS_SERVICE": "NOT_ATTEMPTED_NEEDS_ELEVATION"
+  },
+  "evaluations": [
+    {
+      "detail": "Error: Acceso denegado.",
+      "mechanism": "S4U_TASK",
+      "question": "an S4U task stores no password and runs with no session; needs the batch-logon right",
+      "verdict": "NEEDS_ELEVATION"
+    },
+    {
+      "detail": "no account in this inventory is designated for the lane, and granting a right to an existing account is a change to this host's policy, which this package does not make",
+      "mechanism": "AUTHORISED_SERVICE_ACCOUNT",
+      "question": "a designated account whose rights are granted for this purpose",
+      "verdict": "NO_ACCOUNT_DESIGNATED"
+    },
+    {
+      "detail": "creating a service needs administrator rights; a refused attempt can leave a half-created service behind, and this package does not change the host",
+      "mechanism": "WINDOWS_SERVICE",
+      "question": "a service removes the session dependence and needs administrator rights to create",
+      "verdict": "NOT_ATTEMPTED_NEEDS_ELEVATION"
+    },
+    {
+      "detail": "no SSH configuration, no known remote host and no self-hosted runner declaration was found in this checkout; a runner on another host stays a documented option for an operator who has one, not a mechanism this package can exercise",
+      "mechanism": "INDEPENDENT_HOST_RUNNER",
+      "question": "a runner on another host, if authorised infrastructure exists",
+      "verdict": "NO_AUTHORISED_INFRASTRUCTURE_FOUND"
+    },
+    {
+      "detail": "the LogonTrigger is additive: it does not remove the session absence, it bounds the recovery from it, and it is registered in the same scheduler the lane already uses",
+      "mechanism": "LOGON_TRIGGER",
+      "question": "a mitigation: it does not remove the absence, it bounds the recovery from it",
+      "verdict": "VIABLE"
+    }
+  ],
+  "generated_at_utc": "2026-10-16T06:20:12Z",
+  "hypothetical": true,
+  "order_sent": false,
+  "preflight_verdict": "PREFLIGHT_PASS",
+  "promotion": "NONE",
+  "registration_unchanged_since_wp_edge_04r": true,
+  "schema_version": "EDGE12_RUNNER_PREFLIGHT_V1",
+  "selected": "LOGON_TRIGGER",
+  "selected_detail": "the host refused the S4U registration of this very definition, so the mechanism that removes the dependence is not available to this process; the logon trigger is the strongest available one and is already exercised",
+  "selection_rule": "prefer the mechanism that removes the dependence and stores no credential; fall back to the additive mechanism that bounds the loss instead of the one that would require a credential or a privilege this package does not have",
+  "what_the_selected_mechanism_buys": {
+    "bounds_recovery_after_a_sign_in": true,
+    "logon_trigger_delay_seconds": 60,
+    "makes_silence_attributable": true,
+    "removes_the_session_dependence": false
+  }
+}

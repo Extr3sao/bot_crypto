@@ -1,0 +1,90 @@
+{
+  "applies_nothing": "every item is a read of this host; applying the definition stays an operator action, and the rollback is written before it is needed",
+  "blocking_failures": [],
+  "checks": [
+    {
+      "blocking": true,
+      "detail": "trigger elements: ['TimeTrigger', 'LogonTrigger']",
+      "id": "definition_carries_a_time_trigger",
+      "passed": true
+    },
+    {
+      "blocking": true,
+      "detail": "trigger elements: ['TimeTrigger', 'LogonTrigger']",
+      "id": "definition_adds_a_logon_trigger",
+      "passed": true
+    },
+    {
+      "blocking": true,
+      "detail": "2 action(s), first is the witness: yes",
+      "id": "definition_carries_the_witness_action_first",
+      "passed": true
+    },
+    {
+      "blocking": true,
+      "detail": "logon types declared: ['InteractiveToken']",
+      "id": "definition_declares_its_logon_type",
+      "passed": true
+    },
+    {
+      "blocking": true,
+      "detail": "MultipleInstancesPolicy='IgnoreNew'",
+      "id": "definition_keeps_multiple_instances_ignored",
+      "passed": true
+    },
+    {
+      "blocking": true,
+      "detail": "command=C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+      "id": "the_action_binary_exists_on_this_host",
+      "passed": true
+    },
+    {
+      "blocking": true,
+      "detail": "working_directory=C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff",
+      "id": "the_working_directory_exists_on_this_host",
+      "passed": true
+    },
+    {
+      "blocking": true,
+      "detail": "the same interpreter WP-EDGE-12A measured the entry points under",
+      "id": "the_interpreter_is_the_interpreter_that_certified_this_package",
+      "passed": true
+    },
+    {
+      "blocking": true,
+      "detail": "witness=C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\edge-recovery\\WP-EDGE-12\\evidence\\forward-witness.txt",
+      "id": "the_witness_path_is_writable",
+      "passed": true
+    },
+    {
+      "blocking": false,
+      "detail": "7.5355 GiB free against a critical floor of 2.0 GiB",
+      "id": "the_volume_is_above_the_guard_critical_floor",
+      "passed": true
+    },
+    {
+      "blocking": true,
+      "detail": "live boundary 2026-10-13T13:25:53 vs definition 2026-10-13T13:25:53",
+      "id": "the_definition_keeps_the_live_cadence_phase",
+      "passed": true
+    },
+    {
+      "blocking": true,
+      "detail": "task_name=TradingAgentic-EDGE04-Forward",
+      "id": "the_target_task_name_is_the_lane_own",
+      "passed": true
+    },
+    {
+      "blocking": true,
+      "detail": "the scheduler was asked, not the probe's own delete call",
+      "id": "no_probe_task_was_left_behind_by_this_pass",
+      "passed": true
+    }
+  ],
+  "definition_path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\edge-recovery\\WP-EDGE-12\\evidence\\PROPOSED_DEFINITION.xml",
+  "definition_sha256": "cbb3c76bd4c4e7f45a0be1bb7bb58961716a1cf93a68add35e348143d5bf9c89",
+  "generated_at_utc": "2026-10-16T06:20:12Z",
+  "schema_version": "EDGE12_RUNNER_PREFLIGHT_V1",
+  "task_name": "TradingAgentic-EDGE04-Forward",
+  "verdict": "PREFLIGHT_PASS"
+}
