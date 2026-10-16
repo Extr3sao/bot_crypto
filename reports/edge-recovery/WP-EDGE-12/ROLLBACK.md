@@ -1,6 +1,6 @@
 # WP-EDGE-12B — rollback
 
-**Generated:** 2026-10-16T06:20:12Z · **Task:** `TradingAgentic-EDGE04-Forward`
+**Generated:** 2026-10-16T06:30:43Z · **Task:** `TradingAgentic-EDGE04-Forward`
 
 Written before it is needed, and pinned to the registration that exists now rather than
 to a definition somebody would have to reconstruct from a report.

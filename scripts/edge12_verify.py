@@ -52,6 +52,10 @@ DELIVERABLES: tuple[str, ...] = (
     "RUN_REPORT.json",
     "FINAL_REPORT.md",
     "INFORME_EJECUTIVO.md",
+    # The provenance record the run report points at. It is a deliverable so that the
+    # pointer is backed by an artefact the verifier refuses to pass without, rather than by
+    # a filename a reader is invited to go looking for.
+    "GIT_STATE.json",
 )
 
 #: The evidence this verifier refuses to re-derive without. ``TEST_RUNS.json`` is here on

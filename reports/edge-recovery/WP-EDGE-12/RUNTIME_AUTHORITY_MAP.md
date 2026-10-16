@@ -7,7 +7,7 @@ promote, and the verifier does not decide whether the builder was right.
 | component | authority | where it is visible | what it cannot do |
 | --- | --- | --- | --- |
 | Windows Scheduler | when the observer starts; currently `Ready`, logon type `Interactive`, 1 trigger(s) | the registration, read from the host | nothing about the observation: it cannot seal a slot, ingest a bar or refuse a ruleset |
-| the observer (`scripts/edge04_observer.py`) | one tick: fetch, classify, seal the slot, write the daily evidence | 254 run row(s) in `C:\Users\GVLLFR0035\Downloads\bot freebuff\data\forward\edge04` | no order, no promotion, no risk parameter |
+| the observer (`scripts/edge04_observer.py`) | one tick: fetch, classify, seal the slot, write the daily evidence | 255 run row(s) in `C:\Users\GVLLFR0035\Downloads\bot freebuff\data\forward\edge04` | no order, no promotion, no risk parameter |
 | the forward plan (`edge03/forward_plan.py`) | the frozen corpus and the frozen ruleset; a moved input is a refusal | the pin re-derived on every tick | cannot measure a tuned rule, by construction |
 | the storage guard (`disk_space.py`) | whether a tick may make a market request at all | the refusal outcome and the free-space reading in each run row | cannot delete the store or the daily evidence to make room |
 | the lease (`campaign_lock.py`) | which process may write | the lease record and the `ALREADY_RUNNING` outcome | cannot prove a pid is dead; the age rule decides |

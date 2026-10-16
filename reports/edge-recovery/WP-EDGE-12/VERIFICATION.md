@@ -1,6 +1,6 @@
 # WP-EDGE-12F — independent verification
 
-**Generated:** 2026-10-16T06:23:20Z · **Verdict:** `VERIFY_PASS`
+**Generated:** 2026-10-16T06:30:57Z · **Verdict:** `VERIFY_PASS`
 
 > this verifier imports nothing from trading_bot.research.edge12 and re-derives every figure it checks from the published JSON and the log snapshots
 
@@ -8,26 +8,26 @@
 
 | check | verdict | detail |
 | --- | --- | --- |
-| `the_deliverable_set_is_complete` | PASS | 21 deliverable(s) and 6 evidence file(s); missing deliverables [], missing evidence [] |
-| `the_three_levels_reconcile` | PASS | 242 answered + 26 lost = 268 expected |
+| `the_deliverable_set_is_complete` | PASS | 22 deliverable(s) and 6 evidence file(s); missing deliverables [], missing evidence [] |
+| `the_three_levels_reconcile` | PASS | 243 answered + 26 lost = 269 expected |
 | `the_levels_account_for_every_instant` | PASS | causes sum to 26, total_lost says 26, instants listed 26 |
 | `every_unanswered_instant_has_a_cause_it_can_name` | PASS | 25 attributed by the host's record, 1 left unattributable and reported as such |
 | `no_sleep_cause_without_a_sleep_record` | PASS | 0 sleep attribution(s) against 0 recorded sleep window(s) |
 | `the_coverage_floor_and_the_forward_requirement_are_intact` | PASS | coverage floor 0.9, forward requirement 60 days |
 | `backfilled_days_are_not_counted_as_forward` | PASS | 1 admissible day(s), 228 backfilled day(s), overlap none, mis-classed rows none |
-| `the_slot_ledger_is_a_set` | PASS | 199 row(s) and 199 unique key(s) in the live slot ledger |
+| `the_slot_ledger_is_a_set` | PASS | 200 row(s) and 200 unique key(s) in the live slot ledger |
 | `every_rehearsal_step_won_its_verdict` | PASS | 9 step(s); a verdict its own observation contradicts: none |
 | `the_rehearsal_did_not_touch_the_live_store` | PASS | rehearsal read C:\Users\GVLLFR0035\Downloads\bot freebuff\data\forward\edge03, wrote C:\Users\GVLLFR0035\Downloads\bot freebuff\data\forward\edge12\rehearsal; the live store is C:\Users\GVLLFR0035\Downloads\bot freebuff\data\forward\edge03 |
 | `the_dependency_scan_excluded_its_own_text` | PASS | verdict NOT_PRESENT_IN_TREE, 0 non-self hit(s), 9 of this package's own file(s) excluded |
 | `the_gate_carried_no_failing_check` | PASS | 9 check(s), failing none, verdict DEPENDENCY_GATE_PASS |
-| `the_storage_ceiling_is_inside_its_declared_budget` | PASS | 72810853 B ceiling against 268435456 B budget |
+| `the_storage_ceiling_is_inside_its_declared_budget` | PASS | 72837412 B ceiling against 268435456 B budget |
 | `the_refusals_made_no_market_request` | PASS | 45 refused tick(s), market requests at a refusal: [0] |
 | `off_phase_launches_are_not_attributed` | PASS | 4 off-phase launch(es), limitation stated: True |
 | `nothing_was_applied_to_the_live_task` | PASS | applied=False, probe leftovers none, 13 preflight check(s) |
 | `the_preflight_verdict_follows_from_its_checks` | PASS | 13 check(s), blocking none, verdict PREFLIGHT_PASS |
 | `every_mechanism_verdict_was_earned` | PASS | 8 probe(s); unearned verdicts: none |
 | `the_matrix_covers_every_property` | PASS | 9 required, 9 row(s), missing none, rows without named evidence none |
-| `the_live_reading_matches_the_log_it_was_taken_from` | PASS | 254 row(s) re-read, 1 silence(s) re-derived, worst 23418.9 s, maximum tick 349.035 s |
+| `the_live_reading_matches_the_log_it_was_taken_from` | PASS | 255 row(s) re-read, 1 silence(s) re-derived, worst 23418.9 s, maximum tick 349.035 s |
 | `no_order_and_no_promotion_anywhere` | PASS | offending records: none |
 | `no_readiness_claim_anywhere` | PASS | readiness claims found: none |
 | `the_snapshots_match_their_digests` | PASS | 6 evidence file(s) digested, empty none |

@@ -11,12 +11,12 @@ continuity to be *demonstrated* rather than argued. What was demonstrated here, 
 was not, are different in kind and are kept apart below.
 
 ```
-268 trigger instants in the measured window
-   242 answered by a tick
+269 trigger instants in the measured window
+   243 answered by a tick
    26 never answered by any process
         causes: {'HOST_DOWN': 1, 'NO_SESSION': 24, 'SILENT_UNATTRIBUTABLE': 1, 'SLEEP': 0}
 
-200 slot-consuming tick(s) ran the pipeline
+201 slot-consuming tick(s) ran the pipeline
 1 of 60 admissible forward days
 ```
 
@@ -74,14 +74,14 @@ Selected: **`LOGON_TRIGGER`**. Available without new privileges: ['LOGON_TRIGGER
 
 The two levers already present in the live registration were priced from the lane's own
 log rather than from the settings: `StartWhenAvailable` is on and the log shows
-254 launches with an off-phase minority, and the
+255 launches with an off-phase minority, and the
 `RestartOnFailure` policy produced no measured follow-up after a refused tick. A setting
 that is present and recovers nothing is worth exactly as much as a mechanism that is
 absent, and saying which one it is takes a measurement.
 
 ## 5. Storage: the lane is not the constraint
 
-Ceiling 72810853 B against a declared 268435456 B budget; the store adds 0.006249 GiB over sixty days. Relocation: `NO_VOLUME_WITH_CAPACITY` — the only other volumes are a cloud mount
+Ceiling 72837412 B against a declared 268435456 B budget; the store adds 0.006249 GiB over sixty days. Relocation: `NO_VOLUME_WITH_CAPACITY` — the only other volumes are a cloud mount
 that reports the host's own capacity while holding none of it, and unmounted partitions.
 The guard stays where it is: it refuses *before* any market request, so a full volume costs
 slots and never produces a false observation.
@@ -117,10 +117,10 @@ blocked dependency it reads `BLOQUEADO_DECLARADO` rather than being quietly drop
 | `ACC-03` | Ningún cambio privilegiado sin autorización. | `SATISFECHO` | applied to the live task: False; probe tasks left behind: none; preflight PREFLIGHT_PASS |
 | `ACC-04` | No se almacenan nuevas credenciales. | `SATISFECHO` | no probe stored a credential (0 offender(s)); every probe record carries stored_a_password=false, and no definition here contains a <Password> element |
 | `ACC-05` | Observador ejecutable sin sesión interactiva, o bloqueo declarado. | `BLOQUEADO_DECLARADO` | the mechanism that would remove the session dependence reads NEEDS_ELEVATION on this process's own attempt, so the dependence is bounded and not removed: selected LOGON_TRIGGER; blocked {'AUTHORISED_SERVICE_ACCOUNT': 'NO_ACCOUNT_DESIGNATED', 'INDEPENDENT_HOST_RUNNER': 'NO_AUTHORISED_INFRASTRUCTURE_FOUND', 'S4U_BARE': 'NEEDS_ELEVATION', 'S4U_PROPOSAL': 'NEEDS_ELEVATION', 'SYSTEM_PRINCIPAL': 'NEEDS_ELEVATION', 'WINDOWS_SERVICE': 'NOT_ATTEMPTED_NEEDS_ELEVATION'} |
-| `ACC-06` | No existen ejecuciones simultáneas que corrompan el ledger. | `SATISFECHO` | SINGLE_INSTANCE PASS on the runtime; the slot ledger holds 199 row(s) over 199 unique key(s) |
+| `ACC-06` | No existen ejecuciones simultáneas que corrompan el ledger. | `SATISFECHO` | SINGLE_INSTANCE PASS on the runtime; the slot ledger holds 200 row(s) over 200 unique key(s) |
 | `ACC-07` | Los disparos perdidos tienen causa o clasificación UNATTRIBUTABLE. | `SATISFECHO` | 26 unanswered instant(s), every one classified: {'HOST_DOWN': 1, 'NO_SESSION': 24, 'SILENT_UNATTRIBUTABLE': 1, 'SLEEP': 0} |
-| `ACC-08` | El guardián de disco permanece activo. | `SATISFECHO` | guard HEALTHY at 7.5352 GiB against the campaign's own thresholds; storage verification STORAGE_VERIFY_PASS |
-| `ACC-09` | Existe capacidad de almacenamiento justificada para la observación. | `SATISFECHO` | ceiling 72810853 B of a declared 268435456 B budget; the store adds 0.006249 GiB over sixty days at the measured rate |
+| `ACC-08` | El guardián de disco permanece activo. | `SATISFECHO` | guard HEALTHY at 7.5323 GiB against the campaign's own thresholds; storage verification STORAGE_VERIFY_PASS |
+| `ACC-09` | Existe capacidad de almacenamiento justificada para la observación. | `SATISFECHO` | ceiling 72837412 B of a declared 268435456 B budget; the store adds 0.006249 GiB over sixty days at the measured rate |
 | `ACC-10` | Los snapshots se reproducen offline sin acceder a datos vivos. | `SATISFECHO` | the rehearsal read C:\Users\GVLLFR0035\Downloads\bot freebuff\data\forward\edge03 and wrote C:\Users\GVLLFR0035\Downloads\bot freebuff\data\forward\edge12\rehearsal; the verifier re-derived its figures from the published snapshots with 24 check(s) |
 | `ACC-11` | Los días incompletos no se promocionan. | `SATISFECHO` | level three counts 1 day(s) of 60; an incomplete day is never promoted, it is left INCOMPLETE and reported in FORWARD_COVERAGE.json |
 | `ACC-12` | Los datos backfilled no cuentan como forward prospectivo. | `SATISFECHO` | 228 dense day(s) whose bars arrived late are classified DENSE_BUT_BACKFILLED and counted as zero forward days; the rule is the lane's own prospective_days |
@@ -137,7 +137,7 @@ blocked dependency it reads `BLOQUEADO_DECLARADO` rather than being quietly drop
 {
   "campaign": "RFC-EDGE-012",
   "collected_nothing": false,
-  "generated_at_utc": "2026-10-16T06:23:18Z",
+  "generated_at_utc": "2026-10-16T06:30:54Z",
   "hypothetical": true,
   "lint": {
     "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m ruff check src/trading_bot/research/edge12/ scripts/edge12_verify.py scripts/edge12_reports.py scripts/edge12_tests.py tests/unit/research/test_edge12_continuity.py tests/unit/research/test_edge12_runner.py",
@@ -156,7 +156,7 @@ blocked dependency it reads `BLOQUEADO_DECLARADO` rather than being quietly drop
     "passed": 60,
     "reason": null,
     "skipped": null,
-    "tail": "............................................................             [100%]\n60 passed in 1.51s"
+    "tail": "............................................................             [100%]\n60 passed in 1.82s"
   },
   "read_only": "no network, no live state root, no live store, no scheduler; this step runs the package's own regressions and the lint over its own paths",
   "schema_version": "EDGE12_TEST_RUNS_V1",

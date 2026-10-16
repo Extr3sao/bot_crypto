@@ -58,7 +58,7 @@
     },
     {
       "blocking": false,
-      "detail": "7.5355 GiB free against a critical floor of 2.0 GiB",
+      "detail": "7.5328 GiB free against a critical floor of 2.0 GiB",
       "id": "the_volume_is_above_the_guard_critical_floor",
       "passed": true
     },
@@ -83,7 +83,7 @@
   ],
   "definition_path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\edge-recovery\\WP-EDGE-12\\evidence\\PROPOSED_DEFINITION.xml",
   "definition_sha256": "cbb3c76bd4c4e7f45a0be1bb7bb58961716a1cf93a68add35e348143d5bf9c89",
-  "generated_at_utc": "2026-10-16T06:20:12Z",
+  "generated_at_utc": "2026-10-16T06:30:43Z",
   "schema_version": "EDGE12_RUNNER_PREFLIGHT_V1",
   "task_name": "TradingAgentic-EDGE04-Forward",
   "verdict": "PREFLIGHT_PASS"

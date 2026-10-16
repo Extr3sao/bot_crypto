@@ -1,6 +1,6 @@
 # WP-EDGE-12B — how the observer could be started without a session
 
-**Generated:** 2026-10-16T06:20:12Z · **Selected:** `LOGON_TRIGGER`
+**Generated:** 2026-10-16T06:30:43Z · **Selected:** `LOGON_TRIGGER`
 
 > prefer the mechanism that removes the dependence and stores no credential; fall back to the additive mechanism that bounds the loss instead of the one that would require a credential or a privilege this package does not have
 
@@ -57,7 +57,7 @@ in the lane's own run log, which is what makes them measurable rather than argua
 
 | lever | value | measured effect in this window |
 | --- | --- | --- |
-| `StartWhenAvailable` | True | 4 off-phase scheduled launch(es) of 248 |
+| `StartWhenAvailable` | True | 4 off-phase scheduled launch(es) of 249 |
 | `RestartOnFailure` | count=3, interval=PT5M | 0 follow-up(s) at the policy's own interval |
 | `MultipleInstances` | IgnoreNew | the second trigger changes nothing |
 
@@ -80,7 +80,7 @@ in the lane's own run log, which is what makes them measurable rather than argua
 | `the_working_directory_exists_on_this_host` | PASS | working_directory=C:\Users\GVLLFR0035\Downloads\bot freebuff |
 | `the_interpreter_is_the_interpreter_that_certified_this_package` | PASS | the same interpreter WP-EDGE-12A measured the entry points under |
 | `the_witness_path_is_writable` | PASS | witness=C:\Users\GVLLFR0035\Downloads\bot freebuff\reports\edge-recovery\WP-EDGE-12\evidence\forward-witness.txt |
-| `the_volume_is_above_the_guard_critical_floor` | PASS | 7.5355 GiB free against a critical floor of 2.0 GiB |
+| `the_volume_is_above_the_guard_critical_floor` | PASS | 7.5328 GiB free against a critical floor of 2.0 GiB |
 | `the_definition_keeps_the_live_cadence_phase` | PASS | live boundary 2026-10-13T13:25:53 vs definition 2026-10-13T13:25:53 |
 | `the_target_task_name_is_the_lane_own` | PASS | task_name=TradingAgentic-EDGE04-Forward |
 | `no_probe_task_was_left_behind_by_this_pass` | PASS | the scheduler was asked, not the probe's own delete call |

@@ -46,6 +46,7 @@ DELIVERABLES: tuple[str, ...] = (
     "FORWARD_COVERAGE.json",
     "VERIFICATION.md",
     "VERIFICATION.json",
+    "GIT_STATE.json",
 )
 
 EVIDENCE_FILES: tuple[str, ...] = (
@@ -380,6 +381,80 @@ def acceptance_rows(readings: dict[str, Any]) -> list[dict[str, Any]]:
     ]
 
 
+#: The paths this package owns, used to list its own commits. They are enumerated rather
+#: than globbed so a later package's file cannot be pulled into this one's provenance.
+#: ``.gitignore`` and ``.gitattributes`` are deliberately absent: every work package in
+#: this campaign edits them, so listing commits over them would credit this package with
+#: the others' work.
+GIT_STATE_PATHS: tuple[str, ...] = (
+    "src/trading_bot/research/edge12",
+    "tests/unit/research/test_edge12_continuity.py",
+    "tests/unit/research/test_edge12_runner.py",
+    "reports/edge-recovery/WP-EDGE-12",
+)
+
+GIT_STATE_FILENAME = "GIT_STATE.json"
+
+
+def _git_rows(*args: str) -> list[str]:
+    raw = _git(*args)
+    return [line for line in raw.splitlines() if line.strip()]
+
+
+def git_state(*, gate: dict[str, Any]) -> dict[str, Any]:
+    """The commits this package owns, and what the remote held when they were read.
+
+    A report cannot name the commit that contains it — that hash does not exist until the
+    commit is made — so this record names the commit it was taken *at* and lists the ones
+    that touched these paths. The remote figure is the one the remote returned, read with
+    ``ls-remote`` and carried in the gate's own identity record: a push command's output is
+    a statement about what it sent, not about what the remote now holds.
+    """
+    commit_args = ["log", "-n", "12", "--format=%h\t%s", "--"]
+    rows = _git_rows(*commit_args, *GIT_STATE_PATHS)
+    ahead = _git_rows("log", "--format=%h\t%s", "@{u}..HEAD")
+    behind = _git_rows("log", "--format=%h\t%s", "HEAD..@{u}")
+    return {
+        "schema_version": "EDGE12_GIT_STATE_V1",
+        "recorded_at_utc": ev.now_utc(),
+        "branch": _git("rev-parse", "--abbrev-ref", "HEAD"),
+        "head": _git("rev-parse", "HEAD"),
+        "head_subject": _git("log", "-1", "--format=%s"),
+        "head_committed_at": _git("log", "-1", "--format=%cI"),
+        "upstream": _git("rev-parse", "--abbrev-ref", "@{u}"),
+        "remote_sha": (gate.get("identity") or {}).get("remote_sha"),
+        "remote_sha_source": "git ls-remote, read by WP-EDGE-12A and carried here",
+        "head_is_the_remote_sha": bool(
+            _git("rev-parse", "HEAD") == (gate.get("identity") or {}).get("remote_sha")
+        ),
+        "commits_ahead_of_upstream": [
+            {"sha": row.split("\t")[0], "subject": row.split("\t", 1)[1]} for row in ahead
+        ],
+        "commits_behind_upstream": [
+            {"sha": row.split("\t")[0], "subject": row.split("\t", 1)[1]} for row in behind
+        ],
+        "commits_that_touched_this_package": [
+            {"sha": row.split("\t")[0], "subject": row.split("\t", 1)[1]} for row in rows
+        ],
+        "paths_this_list_was_taken_over": list(GIT_STATE_PATHS),
+        "commits": (
+            "a report cannot name the commit that contains it, so this one names the commit it "
+            "was taken at and lists the commits that touched the paths above"
+        ),
+        "working_tree": {
+            "note": (
+                "other workstreams' edits are present and deliberately uncommitted; this package "
+                "staged only the paths it owns"
+            ),
+            "modified_count": len(_git_rows("status", "--porcelain")),
+        },
+        "verify_command": "git ls-remote origin refs/heads/agent/edge-recovery/WP-EDGE-00-baseline",
+        "hypothetical": True,
+        "order_sent": False,
+        "promotion": "NONE",
+    }
+
+
 def _verdict_for(decision: dict[str, Any], mechanism: str) -> str | None:
     for row in decision.get("evaluations") or []:
         if row.get("mechanism") == mechanism:
@@ -470,6 +545,10 @@ def main(argv: list[str] | None = None) -> int:
         "Task Scheduler operational log so the next silent trigger is attributable instead of "
         "SILENT_UNATTRIBUTABLE"
     )
+    # Written before the digests are taken, so the record is one of the files it digests
+    # rather than a file the reader has to notice is missing from the list.
+    state_row = git_state(gate=gate)
+    ev.write_json(reports / GIT_STATE_FILENAME, state_row)
     deliverable_digests = {name: _digest(reports / name) for name in DELIVERABLES}
     acceptance = acceptance_rows(
         {
@@ -509,11 +588,21 @@ def main(argv: list[str] | None = None) -> int:
             "re-derived from the readings is untouched by the second pass"
         ),
         "git": {
-            "branch": _git("rev-parse", "--abbrev-ref", "HEAD"),
-            "head": _git("rev-parse", "HEAD"),
-            "head_subject": _git("log", "-1", "--format=%s"),
-            "read_back_from_the_remote": gate.get("identity", {}).get("remote_sha"),
-            "commits": "listed in GIT_STATE.json; a report that named its own commit would be naming a hash that moves",
+            "branch": state_row["branch"],
+            "head": state_row["head"],
+            "head_subject": state_row["head_subject"],
+            "head_committed_at": state_row["head_committed_at"],
+            "upstream": state_row["upstream"],
+            "read_back_from_the_remote": state_row["remote_sha"],
+            "head_is_the_remote_ref": state_row["head_is_the_remote_sha"],
+            "ahead_of_upstream": len(state_row["commits_ahead_of_upstream"]),
+            "behind_upstream": len(state_row["commits_behind_upstream"]),
+            "state_file": GIT_STATE_FILENAME,
+            "commits": (
+                f"the {len(state_row['commits_that_touched_this_package'])} commit(s) that touched "
+                f"this package are listed in {GIT_STATE_FILENAME}; a report that named its own "
+                "commit would be naming a hash that moves"
+            ),
         },
         "results": {
             "baseline": {

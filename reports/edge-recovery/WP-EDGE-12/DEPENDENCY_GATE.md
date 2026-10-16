@@ -1,6 +1,6 @@
 # WP-EDGE-12A — dependency and runtime gate
 
-**Generated:** 2026-10-16T06:20:03Z · **Verdict:** `DEPENDENCY_GATE_PASS`
+**Generated:** 2026-10-16T06:30:35Z · **Verdict:** `DEPENDENCY_GATE_PASS`
 
 A work package that answers "are the dependencies met?" from the repository's own
 documents is answering from intent. Every row below is an answer from the host or the
@@ -12,21 +12,21 @@ recorded as unanswered rather than as zero.
 |  |  |
 | --- | --- |
 | branch | `agent/edge-recovery/WP-EDGE-00-baseline` |
-| HEAD | `151c9e0c7c5584772d6d5244ff21c54587cb9fea` |
-| HEAD subject | Record the published ref read back from the remote, not from the push. [WP-EDGE-04R] |
-| committed at | 2026-10-15T22:52:57+02:00 |
+| HEAD | `b3f4d8d88ec2ea44e8bd4e43259c9d6fac3ea2ce` |
+| HEAD subject | Publish the continuity reading and the mechanism that is still blocked. [WP-EDGE-12] |
+| committed at | 2026-10-16T08:25:47+02:00 |
 | upstream | `origin/agent/edge-recovery/WP-EDGE-00-baseline` |
 | divergence | 0 ahead / 0 behind |
-| remote ref | `refs/heads/agent/edge-recovery/WP-EDGE-00-baseline` = `151c9e0c7c5584772d6d5244ff21c54587cb9fea` |
+| remote ref | `refs/heads/agent/edge-recovery/WP-EDGE-00-baseline` = `b3f4d8d88ec2ea44e8bd4e43259c9d6fac3ea2ce` |
 | HEAD is the remote ref | True |
-| modified paths (other workstreams) | 28 |
-| untracked paths (other workstreams) | 131 |
+| modified paths (other workstreams) | 34 |
+| untracked paths (other workstreams) | 121 |
 
 > the modified and untracked paths are other workstreams' live artefacts; this package neither stages nor discards them and measures only its own files
 
 ## 2. The dependency the request names
 
-`RFC-EDGE-011` — searched over 6 scope(s), 8722 file(s): **NOT_PRESENT_IN_TREE**.
+`RFC-EDGE-011` — searched over 6 scope(s), 8723 file(s): **NOT_PRESENT_IN_TREE**.
 
 > the request names RFC-EDGE-011 as a dependency; nothing in this tree carries that identifier, so what this package can certify is what it can measure: the runtime it is pointed at. Treating an absent dependency as satisfied is exactly the failure mode RFC-EDGE-012 exists to prevent.
 
@@ -71,13 +71,13 @@ Interpreter: `C:\Users\GVLLFR0035\Downloads\bot freebuff\.venv\Scripts\python.ex
 | --- | --- |
 | state root | `C:\Users\GVLLFR0035\Downloads\bot freebuff\data\forward\edge04` |
 | store root | `C:\Users\GVLLFR0035\Downloads\bot freebuff\data\forward\edge03` |
-| ticks recorded | 254 |
+| ticks recorded | 255 |
 | corrupt log lines | 0 run / 0 slot |
-| outcomes | {'ALREADY_OBSERVED': 7, 'ALREADY_RUNNING': 2, 'DISK_BUDGET_EXCEEDED': 45, 'NO_NEW_DATA': 3, 'OBSERVED': 197} |
+| outcomes | {'ALREADY_OBSERVED': 7, 'ALREADY_RUNNING': 2, 'DISK_BUDGET_EXCEEDED': 45, 'NO_NEW_DATA': 3, 'OBSERVED': 198} |
 | first tick | 2026-10-13T11:23:38Z |
-| last tick | 2026-10-16T06:12:22Z (OBSERVED) |
-| sealed slots | 199 |
-| current slot | 2026-10-16T06:15Z |
+| last tick | 2026-10-16T06:26:42Z (OBSERVED) |
+| sealed slots | 200 |
+| current slot | 2026-10-16T06:30Z |
 | daily evidence files | 4 |
 | health | {'status': 'DEGRADED', 'reasons': ['the measured growth rate is volatile'], 'ticks_in_window': 99} |
 | prospectively observed days | 1 |
@@ -103,9 +103,9 @@ Interpreter: `C:\Users\GVLLFR0035\Downloads\bot freebuff\.venv\Scripts\python.ex
 | multiple instances | IgnoreNew |
 | execution time limit | PT1H |
 | restart policy | count=3 |
-| last run | 10/16/2026 08:10:54 |
+| last run | 10/16/2026 08:25:54 |
 | last result | 0 |
-| next run | 10/16/2026 08:25:53 |
+| next run | 10/16/2026 08:40:53 |
 | missed runs (the host's own counter) | 0 |
 | Task Scheduler operational log enabled | False |
 
@@ -118,7 +118,7 @@ count a trigger whose task could not start, and the log that would is disabled.
 |  |  |
 | --- | --- |
 | guard status | HEALTHY |
-| free | 7.5353 GiB |
+| free | 7.532 GiB |
 | used | 96.83% |
 | critical floor | 2.0 GiB |
 | warning floor | 5.0 GiB |
@@ -126,10 +126,10 @@ count a trigger whose task could not start, and the log that would is disabled.
 
 | volume | fs | capacity GiB | free GiB | used % | can hold the store |
 | --- | --- | --- | --- | --- | --- |
-| C:  | NTFS | 237.5264 | 7.5355 | 96.83 | False |
+| C:  | NTFS | 237.5264 | 7.5328 | 96.83 | False |
 | (none)  | NTFS | 0.832 | 0.0532 | 93.6 | False |
 | (none)  | FAT32 | 0.0938 | 0.0065 | 93.1 | False |
-| G: Google Drive | FAT32 | 237.5264 | 7.1587 | 96.99 | False |
+| G: Google Drive | FAT32 | 237.5264 | 7.1561 | 96.99 | False |
 
 ## 7. Open failures, carried rather than closed
 
@@ -144,13 +144,13 @@ count a trigger whose task could not start, and the log that would is disabled.
 
 | check | verdict | detail |
 | --- | --- | --- |
-| `the_tree_is_at_a_named_commit` | PASS | agent/edge-recovery/WP-EDGE-00-baseline @ 151c9e0c7c5584772d6d5244ff21c54587cb9fea |
+| `the_tree_is_at_a_named_commit` | PASS | agent/edge-recovery/WP-EDGE-00-baseline @ b3f4d8d88ec2ea44e8bd4e43259c9d6fac3ea2ce |
 | `the_entry_points_answer_the_interpreter_this_lane_runs_under` | PASS | 6/6 entry point(s) answered --help with status 0 |
 | `every_module_the_lane_imports_is_importable` | PASS | 9/9 module(s) imported in a fresh interpreter |
-| `the_observer_has_a_runtime_record` | PASS | 254 tick(s), last 2026-10-16T06:12:22Z (OBSERVED) |
+| `the_observer_has_a_runtime_record` | PASS | 255 tick(s), last 2026-10-16T06:26:42Z (OBSERVED) |
 | `the_registration_is_read_from_the_host_and_not_from_the_lane` | PASS | host reports state=Ready logon_type=Interactive missed_runs=0 |
-| `the_storage_guard_is_reachable` | PASS | guard status HEALTHY, 7.5353 GiB free, NO_VOLUME_WITH_CAPACITY |
-| `the_named_dependency_is_accounted_for` | PASS | RFC-EDGE-011: NOT_PRESENT_IN_TREE over 8722 file(s) in 6 scope(s) — recorded as an external dependency, not assumed satisfied |
+| `the_storage_guard_is_reachable` | PASS | guard status HEALTHY, 7.532 GiB free, NO_VOLUME_WITH_CAPACITY |
+| `the_named_dependency_is_accounted_for` | PASS | RFC-EDGE-011: NOT_PRESENT_IN_TREE over 8723 file(s) in 6 scope(s) — recorded as an external dependency, not assumed satisfied |
 | `no_open_failure_is_reported_as_zero` | PASS | 4 open failure(s) carried with an owner |
 | `no_artefact_claims_an_order_or_a_promotion` | PASS | order_sent=False, promotion=NONE |
 

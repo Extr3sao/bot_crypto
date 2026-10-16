@@ -1,8 +1,8 @@
 {
   "bars": {
-    "market_requests": 953,
+    "market_requests": 957,
     "missing_bars_reported": 0,
-    "new_bars": 996,
+    "new_bars": 999,
     "ticks_reporting_stale_series": 0
   },
   "continuity": {
@@ -650,17 +650,17 @@
       "ticks": 80
     },
     {
-      "consuming": 25,
+      "consuming": 26,
       "coverage_of_the_calendar": 1.0,
       "day": "2026-10-16",
       "disk_lowest_gib": 5.1511,
-      "expected_instants": 25,
-      "market_requests": 121,
-      "median_tick_seconds": 38.414,
-      "new_bars": 96,
-      "observed": 25,
+      "expected_instants": 26,
+      "market_requests": 125,
+      "median_tick_seconds": 38.441,
+      "new_bars": 99,
+      "observed": 26,
       "refused": 0,
-      "ticks": 25
+      "ticks": 26
     }
   ],
   "errors": {
@@ -708,7 +708,7 @@
     ],
     "ticks_with_errors": 47
   },
-  "generated_at_utc": "2026-10-16T06:10:56Z",
+  "generated_at_utc": "2026-10-16T06:25:56Z",
   "hypothetical": true,
   "invariants": {
     "non_hypothetical_ticks": 0,
@@ -719,13 +719,13 @@
   },
   "latency": {
     "maximum_tick_seconds": 349.035,
-    "median_tick_seconds": 36.255,
+    "median_tick_seconds": 36.264,
     "p95_tick_seconds": 71.946,
     "ticks_over_the_interval": 0
   },
   "levels": {
     "one_triggers_fired": {
-      "answered_by_a_tick": 242,
+      "answered_by_a_tick": 243,
       "causes": {
         "HOST_DOWN": 1,
         "NO_SESSION": 24,
@@ -733,7 +733,7 @@
         "SLEEP": 0
       },
       "equals_the_whole": true,
-      "expected_instants": 268,
+      "expected_instants": 269,
       "never_answered": 26
     },
     "three_days_admissible": {
@@ -746,9 +746,9 @@
     "two_observations_made": {
       "fired_and_refused": 45,
       "of_which_no_new_data": 3,
-      "of_which_observed": 197,
+      "of_which_observed": 198,
       "reading": "this level counts processes, not instants: an on-demand run of the same task produces a real observation and does not answer a scheduled instant",
-      "slot_consuming_ticks": 200
+      "slot_consuming_ticks": 201
     }
   },
   "losses": {
@@ -831,7 +831,7 @@
     "ALREADY_RUNNING": 2,
     "DISK_BUDGET_EXCEEDED": 45,
     "NO_NEW_DATA": 3,
-    "OBSERVED": 197
+    "OBSERVED": 198
   },
   "promotion": "NONE",
   "schema_version": "EDGE12_OPERATIONAL_VALIDATION_V1",
@@ -840,16 +840,16 @@
     "refused_ticks": 45,
     "status_counts": {
       "CRITICAL": 45,
-      "HEALTHY": 183,
+      "HEALTHY": 184,
       "WARNING": 26
     }
   },
   "window": {
     "from_utc": "2026-10-13T11:23:38Z",
-    "hours": 66.7885,
+    "hours": 67.0384,
     "interval_seconds": 900,
     "phase_ms": 653000,
     "phase_source": "registration",
-    "to_utc": "2026-10-16T06:10:56Z"
+    "to_utc": "2026-10-16T06:25:56Z"
   }
 }

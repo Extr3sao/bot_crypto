@@ -16,7 +16,7 @@
     },
     "restart_policy_shaped_detail": [],
     "restart_policy_shaped_follow_ups": 0,
-    "scheduled_launches": 248,
+    "scheduled_launches": 249,
     "start_when_available": "True",
     "what_start_when_available_buys": "it converts a start missed while the host was unavailable into a catch-up run when the host returns; it does not help a start that could not run because no session existed, which is the loss this campaign is actually about"
   },
@@ -65,7 +65,7 @@
       "verdict": "VIABLE"
     }
   ],
-  "generated_at_utc": "2026-10-16T06:20:12Z",
+  "generated_at_utc": "2026-10-16T06:30:43Z",
   "hypothetical": true,
   "order_sent": false,
   "preflight_verdict": "PREFLIGHT_PASS",

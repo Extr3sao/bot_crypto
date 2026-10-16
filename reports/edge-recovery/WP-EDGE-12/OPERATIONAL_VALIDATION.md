@@ -1,6 +1,6 @@
 # WP-EDGE-12E — operational validation
 
-**Window:** 2026-10-13T11:23:38Z → 2026-10-16T06:10:56Z (66.7885 h) · cadence 900 s, phase +653000 ms (from the registration)
+**Window:** 2026-10-13T11:23:38Z → 2026-10-16T06:25:56Z (67.0384 h) · cadence 900 s, phase +653000 ms (from the registration)
 
 Three levels, kept apart because a reader conflates them readily: a trigger that fired is
 a property of the calendar, an observation that was made is a property of a process, and a
@@ -11,8 +11,8 @@ admission criterion.
 
 |  |  |
 | --- | --- |
-| expected instants | 268 |
-| answered by a tick | 242 |
+| expected instants | 269 |
+| answered by a tick | 243 |
 | never answered | 26 |
 | answered + lost = expected | True |
 
@@ -29,8 +29,8 @@ admission criterion.
 
 |  |  |
 | --- | --- |
-| slot-consuming ticks | 200 |
-| of which OBSERVED | 197 |
+| slot-consuming ticks | 201 |
+| of which OBSERVED | 198 |
 | of which NO_NEW_DATA | 3 |
 | fired and refused | 45 |
 
@@ -42,7 +42,7 @@ admission criterion.
 | `ALREADY_RUNNING` | 2 |
 | `DISK_BUDGET_EXCEEDED` | 45 |
 | `NO_NEW_DATA` | 3 |
-| `OBSERVED` | 197 |
+| `OBSERVED` | 198 |
 
 ## 3. Level three — days admissible
 
@@ -60,20 +60,20 @@ admission criterion.
 
 |  |  |
 | --- | --- |
-| new bars stored | 996 |
+| new bars stored | 999 |
 | missing bars reported | 0 |
 | ticks reporting a stale series | 0 |
-| market requests | 953 |
+| market requests | 957 |
 | silences over the declared bound | 1 |
 | worst silence | 23418.872 s |
 | highest severity | CRITICAL |
-| median tick | 36.255 s |
+| median tick | 36.264 s |
 | p95 tick | 71.946 s |
 | maximum tick | 349.035 s |
 | ticks over the interval | 0 |
 | refused ticks | 45 |
 | lowest free space | 0.8302 GiB |
-| disk status counts | {'CRITICAL': 45, 'HEALTHY': 183, 'WARNING': 26} |
+| disk status counts | {'CRITICAL': 45, 'HEALTHY': 184, 'WARNING': 26} |
 | ticks with errors | 47 |
 
 ## 5. Per day
@@ -83,7 +83,7 @@ admission criterion.
 | 2026-10-13 | 51 | 57 | 35 | 13 | 150 | 29.918 | 0.7451 |
 | 2026-10-14 | 96 | 92 | 60 | 32 | 369 | 43.941 | 0.625 |
 | 2026-10-15 | 96 | 80 | 77 | 0 | 381 | 36.915 | 0.8021 |
-| 2026-10-16 | 25 | 25 | 25 | 0 | 96 | 38.414 | 1.0 |
+| 2026-10-16 | 26 | 26 | 26 | 0 | 99 | 38.441 | 1.0 |
 
 ## 6. Invariants
 

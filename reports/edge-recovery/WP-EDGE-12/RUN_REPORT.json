@@ -32,7 +32,7 @@
     },
     {
       "criterion": "ACC-06",
-      "evidence": "SINGLE_INSTANCE PASS on the runtime; the slot ledger holds 199 row(s) over 199 unique key(s)",
+      "evidence": "SINGLE_INSTANCE PASS on the runtime; the slot ledger holds 200 row(s) over 200 unique key(s)",
       "requirement": "No existen ejecuciones simult\u00e1neas que corrompan el ledger.",
       "verdict": "SATISFECHO"
     },
@@ -44,13 +44,13 @@
     },
     {
       "criterion": "ACC-08",
-      "evidence": "guard HEALTHY at 7.5352 GiB against the campaign's own thresholds; storage verification STORAGE_VERIFY_PASS",
+      "evidence": "guard HEALTHY at 7.5323 GiB against the campaign's own thresholds; storage verification STORAGE_VERIFY_PASS",
       "requirement": "El guardi\u00e1n de disco permanece activo.",
       "verdict": "SATISFECHO"
     },
     {
       "criterion": "ACC-09",
-      "evidence": "ceiling 72810853 B of a declared 268435456 B budget; the store adds 0.006249 GiB over sixty days at the measured rate",
+      "evidence": "ceiling 72837412 B of a declared 268435456 B budget; the store adds 0.006249 GiB over sixty days at the measured rate",
       "requirement": "Existe capacidad de almacenamiento justificada para la observaci\u00f3n.",
       "verdict": "SATISFECHO"
     },
@@ -121,37 +121,37 @@
       "bytes": 3067,
       "lines": 100,
       "present": true,
-      "sha256": "6d04b9f41ae5725074330ef78897b4b6429df28cb5418e86fe181b1f95e17deb"
+      "sha256": "db27203a57974140736e7ac429f0a515949298b5e46d25a6492ca84bbf46c92e"
     },
     "CAPACITY_FORECAST.json": {
       "bytes": 6993,
       "lines": 218,
       "present": true,
-      "sha256": "cf02aeaae09aeab5890efd27989848342e6f6c9786626f327e64dc5a3b921e42"
+      "sha256": "94a0644b2e076ddbeb0bf0f985b84ab09dcedb39a7db0809b0680528bbd64a79"
     },
     "CONTINUITY_MATRIX.json": {
       "bytes": 4008,
       "lines": 98,
       "present": true,
-      "sha256": "8fd6fc8ab24aeb614f47d5aca38b1e48fdfd46144b8b24c1f0e6310013697a28"
+      "sha256": "f5b79df2c5bb41f989ccdc5953f119e33d2454d292d834d114822ce20757b43d"
     },
     "CONTINUITY_MATRIX.md": {
       "bytes": 3568,
       "lines": 41,
       "present": true,
-      "sha256": "f6cbf58a17dbaa977251c5d6752d0faba27e9e67ec25d4a4bb10cf6331f4861e"
+      "sha256": "2665f0d8c68c8a616b090d2a8bb10d8dc455ff07e2ebbe478dbbf8623b73d7ec"
     },
     "DEPENDENCY_GATE.json": {
-      "bytes": 16733,
-      "lines": 453,
+      "bytes": 17051,
+      "lines": 459,
       "present": true,
-      "sha256": "33f79d5bd2b2caf8455464772a81d8a9710b7dc0afc7b07f84d4d33a18c76225"
+      "sha256": "9479c10f36c23e3082f5d30daeb73791257f5ebc6d74d046629d88b2f862b513"
     },
     "DEPENDENCY_GATE.md": {
-      "bytes": 8000,
+      "bytes": 7998,
       "lines": 159,
       "present": true,
-      "sha256": "44a1c2fe620c667f975e0ee14549dd799ad0599e68ee9193edabed751a9aae4b"
+      "sha256": "5697e1acb67161023ba44825bc85ee4c5e01c7053186dd7602eb1c1b545988e7"
     },
     "FORWARD_COVERAGE.json": {
       "bytes": 13138,
@@ -159,77 +159,83 @@
       "present": true,
       "sha256": "ccc81ea1153b8332fde1c2312a6fde19a401febac0b3b802e76ed1ccae241523"
     },
+    "GIT_STATE.json": {
+      "bytes": 1764,
+      "lines": 39,
+      "present": true,
+      "sha256": "7416a623d200276299fd97bab7c587ac50d8088d8295eda26c49b0a4cbdfd1a5"
+    },
     "OPERATIONAL_VALIDATION.json": {
       "bytes": 21678,
       "lines": 855,
       "present": true,
-      "sha256": "629fed391b30716e7adc0264030d7767b3e0eb0d4bb53c4cd3600adc3757bcd8"
+      "sha256": "a5d4ded147840dd1520bc2aac1d14b1031a823ec1ed20171c326b9d13ebf5fff"
     },
     "OPERATIONAL_VALIDATION.md": {
       "bytes": 3420,
       "lines": 104,
       "present": true,
-      "sha256": "fc7c42e6654d67338ddc1d5b2c961df993d0005f73404a8d5db118cba7272bfa"
+      "sha256": "02e9c5389430521e142c245999c89d6a64dd6cc14e4008be3f8a99e85bef980b"
     },
     "OPERATOR_HANDOFF.md": {
       "bytes": 2030,
       "lines": 59,
       "present": true,
-      "sha256": "f9b151b0f8e9af309205be7eb4507a5a85a5bdfbd31587848d9fc6a1597d4a3e"
+      "sha256": "398220d5a46faf38860e3a5da318972a2ea37d6d820b6760ec3fb68bdbcbc9f1"
     },
     "RECOVERY_REPORT.md": {
       "bytes": 6739,
       "lines": 263,
       "present": true,
-      "sha256": "4db906f54b648a26199bc47d4e8ee841b71b80e11e45a191727374387d404a7c"
+      "sha256": "24ba583555fcfb5ba29ed9e9586163c976de50e3e41746fae204cedc4a5865e3"
     },
     "ROLLBACK.md": {
       "bytes": 1644,
       "lines": 46,
       "present": true,
-      "sha256": "ccbe570235965e2c8d56afa3b64b2a8bfb93c059ce38f27aa74ffec9db428b68"
+      "sha256": "1a544f64c3f6b1873c9067301c4ba807b1b9a310b47661e652679a7b6e1519d5"
     },
     "RUNNER_DECISION.md": {
       "bytes": 7303,
       "lines": 98,
       "present": true,
-      "sha256": "f0626100328799d40638a5da6d279cc6790a204386401ab48b40b5d3f5bf2344"
+      "sha256": "3762ee033ecc68e4ae7b0a495059a5eaded5b0eb09afa304896527a0ce606cc6"
     },
     "RUNNER_PREFLIGHT.json": {
       "bytes": 3200,
       "lines": 90,
       "present": true,
-      "sha256": "3624cae1a001775533cc911e84df939e07d8e00e2e87b62cba852b05cf184ec2"
+      "sha256": "90644e015eb12cbd61955b7705ba8bf2ffded7a36420bf99dfc70e518a098173"
     },
     "RUNTIME_AUTHORITY_MAP.md": {
       "bytes": 2376,
       "lines": 24,
       "present": true,
-      "sha256": "c475793a2152ccfe5eb33bb9cca1241a0c8f4c820514b5635f626111ccec8d99"
+      "sha256": "132dcf01473e42f33c8926e1241abbfdbda2a0da81884e4a5ad80b1ae5b41ff0"
     },
     "STORAGE_PLAN.md": {
       "bytes": 5591,
       "lines": 121,
       "present": true,
-      "sha256": "7ed1edb1797eb36cefa2c92cbd5400f5281801b559088bd84762482254a9d671"
+      "sha256": "3aac6c7e13d51781722e8a1c09174d2a44d1a10ac469367104545c9b23465911"
     },
     "STORAGE_VERIFICATION.json": {
       "bytes": 1004,
       "lines": 34,
       "present": true,
-      "sha256": "1680eca74c1070218c60dc0c0243fc09544b3ba666b90c3196b1674c3430b101"
+      "sha256": "8e3ba9988b9fe3d62d6dec48a00d7bfddd71806c9a75c025a1b9a3daf9e8d0d4"
     },
     "VERIFICATION.json": {
       "bytes": 6238,
       "lines": 167,
       "present": true,
-      "sha256": "1b7a561772a201463510af530a4c5e0680a06996e211755c603cb12ccb875c24"
+      "sha256": "6763b62f7fc142c5d063e970712cefaaa01788a84286c43caf84ba16b19350cf"
     },
     "VERIFICATION.md": {
       "bytes": 5856,
       "lines": 72,
       "present": true,
-      "sha256": "fe48b85eb12aa7ca140e1bcb2ec251448771db3710c2e20ce39f8e731a986dd5"
+      "sha256": "6d414b78f0677a671b9ff0a0d1a50f4f219452fae2fbca997ef8367b034981cb"
     }
   },
   "evidence": {
@@ -243,13 +249,13 @@
       "bytes": 1172,
       "lines": 41,
       "present": true,
-      "sha256": "f015cbee30741034f236bf4b2dd5813d5ee789a43d04a2054f5fa3faab34112a"
+      "sha256": "aeda3eedfe099711ee0cbf810b980281a8d9b17bd4a5a30a532dd84b9656606c"
     },
     "OS_EVIDENCE.json": {
       "bytes": 20103,
       "lines": 430,
       "present": true,
-      "sha256": "b070c55b7c3d657f98463a720281f34d9940808f0cd3c2fd2deba8a441609860"
+      "sha256": "fda311310f07f0e2b00c626c67f8cf873a470e804c8e7c23ccdc729f0313c764"
     },
     "PROPOSED_DEFINITION.xml": {
       "bytes": 4782,
@@ -261,34 +267,40 @@
       "bytes": 4429,
       "lines": 84,
       "present": true,
-      "sha256": "612d9239aa93deaf3158e913ab8237607b73e6e05e06ab48f8ee2b70e6aa8c1b"
+      "sha256": "bd4db96ddfc0852c82cb1cf7642ea6772f609e38f9258f224bd22d6ccbd84955"
     },
     "RUNNER_PROBES.json": {
       "bytes": 13894,
       "lines": 208,
       "present": true,
-      "sha256": "2ca97b38d70915a0818a995619acdc77f2edd8058336f6f4f5da12e5975993b9"
+      "sha256": "f6af10c87fba20305b2405fcae921cc6bddf1a101a1b87b31a797f18c4c4352e"
     },
     "RUN_LOG_SNAPSHOT.jsonl": {
-      "bytes": 1092594,
-      "lines": 254,
+      "bytes": 1097781,
+      "lines": 255,
       "present": true,
-      "sha256": "7035d436be4217c8b6310cc9f5206990c0a3c51e75fada48942e614ec4fdda82"
+      "sha256": "9256a1a5499ef8f8da06627b8ba8f73b7575187fa1bae9be7da238f1926b335c"
     },
     "SLOT_LEDGER_SNAPSHOT.jsonl": {
-      "bytes": 49563,
-      "lines": 199,
+      "bytes": 49812,
+      "lines": 200,
       "present": true,
-      "sha256": "1df5f6608b264a477e5ff7d20efddcebc7d5d7573de2b813547307c3d4ac2a0c"
+      "sha256": "90e9b85312f92091a950f2d93bdee05b170240c93656646f9fdf3da00e62a123"
     }
   },
-  "generated_at_utc": "2026-10-16T06:23:19Z",
+  "generated_at_utc": "2026-10-16T06:30:56Z",
   "git": {
+    "ahead_of_upstream": 0,
+    "behind_upstream": 0,
     "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
-    "commits": "listed in GIT_STATE.json; a report that named its own commit would be naming a hash that moves",
-    "head": "151c9e0c7c5584772d6d5244ff21c54587cb9fea",
-    "head_subject": "Record the published ref read back from the remote, not from the push. [WP-EDGE-04R]",
-    "read_back_from_the_remote": "151c9e0c7c5584772d6d5244ff21c54587cb9fea"
+    "commits": "the 2 commit(s) that touched this package are listed in GIT_STATE.json; a report that named its own commit would be naming a hash that moves",
+    "head": "b3f4d8d88ec2ea44e8bd4e43259c9d6fac3ea2ce",
+    "head_committed_at": "2026-10-16T08:25:47+02:00",
+    "head_is_the_remote_ref": true,
+    "head_subject": "Publish the continuity reading and the mechanism that is still blocked. [WP-EDGE-12]",
+    "read_back_from_the_remote": "b3f4d8d88ec2ea44e8bd4e43259c9d6fac3ea2ce",
+    "state_file": "GIT_STATE.json",
+    "upstream": "origin/agent/edge-recovery/WP-EDGE-00-baseline"
   },
   "hypothetical": true,
   "next_action": "an administrator registers the S4U variant of the proposed definition (the command is in OPERATOR_HANDOFF.md step 5 and the rollback is written in ROLLBACK.md), and enables the Task Scheduler operational log so the next silent trigger is attributable instead of SILENT_UNATTRIBUTABLE",
@@ -331,16 +343,16 @@
         "days_with_any_data": 230,
         "densely_covered_but_backfilled": 228,
         "epoch_utc": "2026-03-01T00:00:00Z",
-        "generated_at_utc": "2026-10-16T06:12:20Z",
+        "generated_at_utc": "2026-10-16T06:26:41Z",
         "prospectively_observed": 1,
         "remaining_days": 59,
         "required_days": 60
       },
       "coverage_required": 0.9,
       "days_required": 60,
-      "head": "151c9e0c7c5584772d6d5244ff21c54587cb9fea",
+      "head": "b3f4d8d88ec2ea44e8bd4e43259c9d6fac3ea2ce",
       "head_is_the_remote_ref": true,
-      "observer_runs": 254,
+      "observer_runs": 255,
       "open_failures_at_the_baseline": [
         "OPEN-EDGE12-1",
         "OPEN-EDGE12-2",
@@ -348,12 +360,12 @@
         "OPEN-EDGE12-4"
       ],
       "orders_recorded": 0,
-      "sealed_slots": 199
+      "sealed_slots": 200
     },
     "continuity": {
       "live_gaps": 1,
       "live_maximum_tick_seconds": 349.035,
-      "live_ticks": 254,
+      "live_ticks": 255,
       "live_worst_gap_seconds": 23418.9,
       "matrix": "CONTINUITY_MATRIX_COMPLETE",
       "not_passing": [
@@ -421,20 +433,20 @@
     },
     "operational": {
       "admissible_days": 1,
-      "answered": 242,
+      "answered": 243,
       "causes": {
         "HOST_DOWN": 1,
         "NO_SESSION": 24,
         "SILENT_UNATTRIBUTABLE": 1,
         "SLEEP": 0
       },
-      "expected_instants": 268,
+      "expected_instants": 269,
       "fired_and_refused": 45,
       "never_answered": 26,
       "orders_recorded": 0,
       "required_days": 60,
-      "slot_consuming_ticks": 200,
-      "window_hours": 66.7885
+      "slot_consuming_ticks": 201,
+      "window_hours": 67.0384
     },
     "runner": {
       "applied_to_the_live_task": false,
@@ -475,11 +487,11 @@
     },
     "storage": {
       "added_gib_over_the_horizon": 0.006249,
-      "ceiling_bytes": 72810853,
+      "ceiling_bytes": 72837412,
       "checks": "STORAGE_VERIFY_PASS",
       "lane_budget_bytes": 268435456,
       "relocation_verdict": "NO_VOLUME_WITH_CAPACITY",
-      "store_bytes_per_day": 111832.72,
+      "store_bytes_per_day": 111832.62,
       "verdict": "NO_USABLE_VOLUME_FOR_A_MOVE"
     },
     "verification": {
@@ -495,7 +507,7 @@
   "tests": {
     "campaign": "RFC-EDGE-012",
     "collected_nothing": false,
-    "generated_at_utc": "2026-10-16T06:23:18Z",
+    "generated_at_utc": "2026-10-16T06:30:54Z",
     "hypothetical": true,
     "lint": {
       "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m ruff check src/trading_bot/research/edge12/ scripts/edge12_verify.py scripts/edge12_reports.py scripts/edge12_tests.py tests/unit/research/test_edge12_continuity.py tests/unit/research/test_edge12_runner.py",
@@ -514,7 +526,7 @@
       "passed": 60,
       "reason": null,
       "skipped": null,
-      "tail": "............................................................             [100%]\n60 passed in 1.51s"
+      "tail": "............................................................             [100%]\n60 passed in 1.82s"
     },
     "read_only": "no network, no live state root, no live store, no scheduler; this step runs the package's own regressions and the lint over its own paths",
     "schema_version": "EDGE12_TEST_RUNS_V1",

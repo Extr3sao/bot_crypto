@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-10-16T06:20:16Z",
+  "generated_at_utc": "2026-10-16T06:30:47Z",
   "hypothetical": true,
   "not_passed": [
     "RESUME_AFTER_ABSENT_SESSION",
@@ -72,7 +72,7 @@
       "verdict": "PASS"
     },
     {
-      "detail": "1 duplicate(s) dropped; the live ledger holds 199 row(s) and 199 unique key(s)",
+      "detail": "1 duplicate(s) dropped; the live ledger holds 200 row(s) and 200 unique key(s)",
       "evidence": "a_duplicated_slot_seal + the live slot ledger",
       "evidence_kind": "REHEARSED_ON_THE_RUNTIME_AND_READ_LIVE",
       "property": "LEDGER_RECONCILIATION",

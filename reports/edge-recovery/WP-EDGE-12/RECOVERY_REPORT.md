@@ -1,6 +1,6 @@
 # WP-EDGE-12D — recovery report
 
-**Generated:** 2026-10-16T06:20:16Z
+**Generated:** 2026-10-16T06:30:47Z
 
 What survives a process dying, a session disappearing and a write being interrupted —
 measured, over an isolated copy of the store, and read against the live lane's own logs.
@@ -9,19 +9,19 @@ measured, over an isolated copy of the store, and read against the live lane's o
 
 |  |  |
 | --- | --- |
-| ticks in the log | 254 |
+| ticks in the log | 255 |
 | first tick | 2026-10-13T11:23:38Z |
-| last tick | 2026-10-16T06:12:22Z |
+| last tick | 2026-10-16T06:26:42Z |
 | corrupt log lines | 0 |
-| slot ledger rows / unique keys | 199 / 199 |
+| slot ledger rows / unique keys | 200 / 200 |
 | the ledger is a set | True |
-| median tick | 36.255 s |
+| median tick | 36.264 s |
 | maximum tick | 349.035 s |
 | ticks over the interval | 0 |
 | silences over the declared bound | 1 |
 | worst silence | 23418.9 s |
 | alerts recorded | {'DISK_CRITICAL': 1, 'DISK_RECOVERED': 1, 'DISK_WARNING': 1, 'HEALTH_BLOCKED': 5, 'HEALTH_DEGRADED': 7, 'HEALTH_RECOVERED': 3, 'OBSERVATION_GAP': 1, 'OBSERVATION_STALLED': 1, 'PUBLICATION_PAUSED': 1} |
-| derived re-reads | 158 row(s), 7 failure(s) |
+| derived re-reads | 159 row(s), 7 failure(s) |
 
 ### 1.1 The silences, one by one
 

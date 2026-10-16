@@ -25,7 +25,7 @@
   ],
   "checks": [
     {
-      "detail": "agent/edge-recovery/WP-EDGE-00-baseline @ 151c9e0c7c5584772d6d5244ff21c54587cb9fea",
+      "detail": "agent/edge-recovery/WP-EDGE-00-baseline @ b3f4d8d88ec2ea44e8bd4e43259c9d6fac3ea2ce",
       "name": "the_tree_is_at_a_named_commit",
       "passed": true
     },
@@ -40,7 +40,7 @@
       "passed": true
     },
     {
-      "detail": "254 tick(s), last 2026-10-16T06:12:22Z (OBSERVED)",
+      "detail": "255 tick(s), last 2026-10-16T06:26:42Z (OBSERVED)",
       "name": "the_observer_has_a_runtime_record",
       "passed": true
     },
@@ -50,12 +50,12 @@
       "passed": true
     },
     {
-      "detail": "guard status HEALTHY, 7.5353 GiB free, NO_VOLUME_WITH_CAPACITY",
+      "detail": "guard status HEALTHY, 7.532 GiB free, NO_VOLUME_WITH_CAPACITY",
       "name": "the_storage_guard_is_reachable",
       "passed": true
     },
     {
-      "detail": "RFC-EDGE-011: NOT_PRESENT_IN_TREE over 8722 file(s) in 6 scope(s) \u2014 recorded as an external dependency, not assumed satisfied",
+      "detail": "RFC-EDGE-011: NOT_PRESENT_IN_TREE over 8723 file(s) in 6 scope(s) \u2014 recorded as an external dependency, not assumed satisfied",
       "name": "the_named_dependency_is_accounted_for",
       "passed": true
     },
@@ -73,7 +73,7 @@
   "dependency_named_by_the_request": {
     "audit": {
       "files_matching": 0,
-      "files_scanned": 8722,
+      "files_scanned": 8723,
       "hits": [],
       "identifier": "RFC-EDGE-011",
       "reading": "the identifier was searched for across the repository's own document, report, source, script, test and task trees, with this package's own files excluded so a scan cannot satisfy a dependency by finding itself; a dependency absent from every one of them is an external dependency, and this audit says so rather than assuming it was satisfied",
@@ -158,17 +158,17 @@
     "total": 6
   },
   "failing_checks": [],
-  "generated_at_utc": "2026-10-16T06:20:03Z",
+  "generated_at_utc": "2026-10-16T06:30:35Z",
   "hypothetical": true,
   "identity": {
     "ahead_of_upstream": 0,
     "behind_upstream": 0,
     "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
-    "head": "151c9e0c7c5584772d6d5244ff21c54587cb9fea",
-    "head_committed_at": "2026-10-15T22:52:57+02:00",
+    "head": "b3f4d8d88ec2ea44e8bd4e43259c9d6fac3ea2ce",
+    "head_committed_at": "2026-10-16T08:25:47+02:00",
     "head_is_the_remote_ref": true,
-    "head_subject": "Record the published ref read back from the remote, not from the push. [WP-EDGE-04R]",
-    "modified_count": 28,
+    "head_subject": "Publish the continuity reading and the mechanism that is still blocked. [WP-EDGE-12]",
+    "modified_count": 34,
     "modified_paths": [
       "INAL_REPORT.md",
       "RUN_REPORT.json",
@@ -196,13 +196,19 @@
       "docs/source_registry.md",
       "evidence/real_decisions/evaluations.jsonl",
       "evidence/real_decisions/outcomes.jsonl",
+      "reports/edge-recovery/WP-EDGE-12/INFORME_EJECUTIVO.md",
+      "reports/edge-recovery/WP-EDGE-12/RUN_REPORT.json",
+      "reports/edge-recovery/WP-EDGE-12/RUN_REPORT.md",
+      "reports/edge-recovery/WP-EDGE-12/evidence/OS_EVIDENCE.json",
       "scripts/cap004c_verify.py",
+      "scripts/edge12_reports.py",
+      "scripts/edge12_verify.py",
       "scripts/st6_scheduler_witness.py"
     ],
     "remote_read_error": null,
     "remote_ref": "refs/heads/agent/edge-recovery/WP-EDGE-00-baseline",
-    "remote_sha": "151c9e0c7c5584772d6d5244ff21c54587cb9fea",
-    "untracked_count": 131,
+    "remote_sha": "b3f4d8d88ec2ea44e8bd4e43259c9d6fac3ea2ce",
+    "untracked_count": 121,
     "upstream": "origin/agent/edge-recovery/WP-EDGE-00-baseline",
     "worktree_note": "the modified and untracked paths are other workstreams' live artefacts; this package neither stages nor discards them and measures only its own files"
   },
@@ -265,12 +271,12 @@
       "days_with_any_data": 230,
       "densely_covered_but_backfilled": 228,
       "epoch_utc": "2026-03-01T00:00:00Z",
-      "generated_at_utc": "2026-10-16T06:12:20Z",
+      "generated_at_utc": "2026-10-16T06:26:41Z",
       "prospectively_observed": 1,
       "remaining_days": 59,
       "required_days": 60
     },
-    "current_slot": "2026-10-16T06:15Z",
+    "current_slot": "2026-10-16T06:30Z",
     "daily_files": 4,
     "first_tick_utc": "2026-10-13T11:23:38Z",
     "health": {
@@ -281,9 +287,9 @@
       "ticks_in_window": 99
     },
     "hypothetical": true,
-    "last_consuming_tick_utc": "2026-10-16T06:12:22Z",
+    "last_consuming_tick_utc": "2026-10-16T06:26:42Z",
     "last_tick_outcome": "OBSERVED",
-    "last_tick_utc": "2026-10-16T06:12:22Z",
+    "last_tick_utc": "2026-10-16T06:26:42Z",
     "lease_path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04\\lock\\CAMPAIGN_LOCK.json",
     "order_sent": false,
     "outcomes": {
@@ -291,14 +297,14 @@
       "ALREADY_RUNNING": 2,
       "DISK_BUDGET_EXCEEDED": 45,
       "NO_NEW_DATA": 3,
-      "OBSERVED": 197
+      "OBSERVED": 198
     },
     "promotion": "NONE",
-    "runs": 254,
-    "sealed_slots": 199,
+    "runs": 255,
+    "sealed_slots": 200,
     "state_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04",
-    "state_root_bytes": 7441064,
-    "store_bytes": 5892111,
+    "state_root_bytes": 7457176,
+    "store_bytes": 5893043,
     "store_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge03"
   },
   "open_failures": {
@@ -347,12 +353,12 @@
       "installed": true,
       "interval_minutes": 15
     },
-    "last_run_utc": "10/16/2026 08:10:54",
+    "last_run_utc": "10/16/2026 08:25:54",
     "last_task_result": 0,
     "logon_type": "Interactive",
     "missed_runs": 0,
     "multiple_instances": "IgnoreNew",
-    "next_run_utc": "10/16/2026 08:25:53",
+    "next_run_utc": "10/16/2026 08:40:53",
     "os_evidence_errors": [],
     "os_evidence_supported": true,
     "present_on_host": true,
@@ -379,7 +385,7 @@
   "storage": {
     "guard": {
       "critical_free_bytes": 2147483648,
-      "free_gib": 7.5353,
+      "free_gib": 7.532,
       "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04",
       "status": "HEALTHY",
       "used_percent": 96.83,
@@ -402,7 +408,7 @@
         "capacity_gib": 237.5264,
         "drive_letter": "C:",
         "file_system": "NTFS",
-        "free_gib": 7.5355,
+        "free_gib": 7.5328,
         "is_ntfs": true,
         "is_the_current_volume": true,
         "label": "",
@@ -435,7 +441,7 @@
         "capacity_gib": 237.5264,
         "drive_letter": "G:",
         "file_system": "FAT32",
-        "free_gib": 7.1587,
+        "free_gib": 7.1561,
         "is_ntfs": false,
         "is_the_current_volume": false,
         "label": "Google Drive",

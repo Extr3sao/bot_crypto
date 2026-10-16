@@ -1,0 +1,39 @@
+{
+  "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
+  "commits": "a report cannot name the commit that contains it, so this one names the commit it was taken at and lists the commits that touched the paths above",
+  "commits_ahead_of_upstream": [],
+  "commits_behind_upstream": [],
+  "commits_that_touched_this_package": [
+    {
+      "sha": "b3f4d8d",
+      "subject": "Publish the continuity reading and the mechanism that is still blocked. [WP-EDGE-12]"
+    },
+    {
+      "sha": "6684791",
+      "subject": "Make the forward lane's continuity provable, and stop the scan certifying itself. [WP-EDGE-12]"
+    }
+  ],
+  "head": "b3f4d8d88ec2ea44e8bd4e43259c9d6fac3ea2ce",
+  "head_committed_at": "2026-10-16T08:25:47+02:00",
+  "head_is_the_remote_sha": true,
+  "head_subject": "Publish the continuity reading and the mechanism that is still blocked. [WP-EDGE-12]",
+  "hypothetical": true,
+  "order_sent": false,
+  "paths_this_list_was_taken_over": [
+    "src/trading_bot/research/edge12",
+    "tests/unit/research/test_edge12_continuity.py",
+    "tests/unit/research/test_edge12_runner.py",
+    "reports/edge-recovery/WP-EDGE-12"
+  ],
+  "promotion": "NONE",
+  "recorded_at_utc": "2026-10-16T06:30:56Z",
+  "remote_sha": "b3f4d8d88ec2ea44e8bd4e43259c9d6fac3ea2ce",
+  "remote_sha_source": "git ls-remote, read by WP-EDGE-12A and carried here",
+  "schema_version": "EDGE12_GIT_STATE_V1",
+  "upstream": "origin/agent/edge-recovery/WP-EDGE-00-baseline",
+  "verify_command": "git ls-remote origin refs/heads/agent/edge-recovery/WP-EDGE-00-baseline",
+  "working_tree": {
+    "modified_count": 179,
+    "note": "other workstreams' edits are present and deliberately uncommitted; this package staged only the paths it owns"
+  }
+}

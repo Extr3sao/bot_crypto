@@ -58,7 +58,7 @@
     }
   ],
   "host": {
-    "collected_at_utc": "2026-10-16T06:18:26.7670949Z",
+    "collected_at_utc": "2026-10-16T06:28:57.9119324Z",
     "elevated": false,
     "last_boot_utc": "2026-10-14T22:43:21.5000000Z",
     "name": "DESKTOP-4CHO695",
@@ -68,8 +68,8 @@
     "user": "DIRECTORI\\GVLLFR0035"
   },
   "lane": {
-    "bytes": 13333175,
-    "measured_at_utc": "2026-10-16T06:18:30Z",
+    "bytes": 13350219,
+    "measured_at_utc": "2026-10-16T06:29:01Z",
     "state_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04",
     "store_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge03"
   },
@@ -341,12 +341,12 @@
     ],
     "disallow_on_batteries": "False",
     "execution_time_limit": "PT1H",
-    "last_run_time": "10/16/2026 08:10:54",
+    "last_run_time": "10/16/2026 08:25:54",
     "last_task_result": 0,
     "logon_type": "Interactive",
     "missed_runs": 0,
     "multiple_instances": "IgnoreNew",
-    "next_run_time": "10/16/2026 08:25:53",
+    "next_run_time": "10/16/2026 08:40:53",
     "restart_count": "3",
     "restart_interval": "PT5M",
     "run_level": "Limited",
@@ -382,7 +382,7 @@
       "drive_letter": "C:",
       "drive_type": 3,
       "file_system": "NTFS",
-      "free_bytes": 8091209728,
+      "free_bytes": 8088244224,
       "label": ""
     },
     {
@@ -409,7 +409,7 @@
       "drive_letter": "G:",
       "drive_type": 3,
       "file_system": "FAT32",
-      "free_bytes": 7686647808,
+      "free_bytes": 7683829760,
       "label": "Google Drive"
     }
   ],
