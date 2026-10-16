@@ -11,7 +11,6 @@ from __future__ import annotations
 
 import json
 import subprocess
-import sys
 from datetime import UTC, datetime
 from pathlib import Path
 
@@ -72,7 +71,9 @@ def main() -> int:
         "head": head,
         "upstream": upstream,
         "head_matches_upstream": bool(upstream and head == upstream),
-        "worktree_paths": [line for line in git("status", "--porcelain").splitlines() if line.strip()],
+        "worktree_paths": [
+            line for line in git("status", "--porcelain").splitlines() if line.strip()
+        ],
         "note": "recorded before the packaging commit; the worktree paths belong to other lanes",
     }
     (REPORTS / "GIT_STATE.json").write_text(
@@ -375,7 +376,9 @@ Research only: ninguna orden, ninguna credencial, ningún capital.
 """
     (REPORTS / "RUN_REPORT.md").write_text(run_md, encoding="utf-8")
 
-    print(f"wrote FINAL_REPORT.md, RUN_REPORT.md/json, INFORME_EJECUTIVO.md, GIT_STATE.json to {REPORTS}")
+    print(
+        f"wrote FINAL_REPORT.md, RUN_REPORT.md/json, INFORME_EJECUTIVO.md, GIT_STATE.json to {REPORTS}"
+    )
     print(f"  tests exit {pytest_result['exit_code']}: {pytest_result['last_line']}")
     print(f"  verification exit {verify_result['exit_code']}: {verify_result['last_line']}")
     return 0

@@ -170,7 +170,7 @@
   "cost_verdict": "ECONOMIC_INTEGRITY_RECONCILED",
   "false_success": 0,
   "frequency_verdict": "FREQUENCY_RECONCILED_BY_WINDOW_RULE",
-  "generated_at_utc": "2026-10-16T12:48:06Z",
+  "generated_at_utc": "2026-10-16T12:49:26Z",
   "headline": {
     "closed_trades": 1,
     "directional_decisions": 1,
@@ -187,7 +187,7 @@
   "tests": {
     "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m pytest tests/unit/research/test_edge14_economic_recovery.py -q",
     "exit_code": 0,
-    "last_line": "37 passed in 23.72s"
+    "last_line": "37 passed in 24.20s"
   },
   "verification": {
     "checks": "12/12",
