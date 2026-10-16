@@ -181,6 +181,25 @@ def run_tick_without_a_collision(*extra: str) -> subprocess.CompletedProcess:
     )
 
 
+def tick_summary(completed: subprocess.CompletedProcess) -> dict[str, object]:
+    """What the tick itself reports it did, read from its own stdout.
+
+    The run log is append-only and shared: the installed schedule writes to it, and a tick
+    that had to be retried writes an ``ALREADY_RUNNING`` row before the row that succeeds.
+    Reading the log's last two rows would therefore let a concurrent writer decide what this
+    test sees - and could equally hide the row this test's own tick wrote. Each scheduled
+    tick prints one summary line about itself, so the child's stdout identifies the run this
+    test started and nothing else.
+    """
+    for line in completed.stdout.splitlines():
+        if not line.startswith("tick: "):
+            continue
+        result, rest = line[len("tick: ") :].split(" slot ", 1)
+        requests = rest.split("market requests ", 1)[1].split(";", 1)[0].strip()
+        return {"result": result.strip(), "market_requests": int(requests)}
+    raise AssertionError(f"the tick printed no summary line: {completed.stdout[-200:]!r}")
+
+
 # ------------------------------------------------------------------ registration and definition
 
 
@@ -602,9 +621,12 @@ def test_an_observed_slot_costs_nothing_to_re_tick() -> None:
     after = len(read_jsonl(WINDOWS))
     assert first.returncode == 0 and second.returncode == 0
     assert after == before, "a tick in an already observed slot collected another window"
-    tails = read_jsonl(RUN_LOG)[-2:]
-    assert all(event["result"] == "SKIPPED_NO_WINDOW_DUE" for event in tails)
-    assert all(event["market_requests"] == 0 for event in tails)
+    # Bound to each tick's own summary rather than to the shared log's last two rows: the
+    # installed schedule writes to the same log, so the tail is not this test's to read.
+    for completed in (first, second):
+        summary = tick_summary(completed)
+        assert summary["result"] == "SKIPPED_NO_WINDOW_DUE", summary
+        assert summary["market_requests"] == 0, summary
     assert period["period_days"] == 14
 
 
