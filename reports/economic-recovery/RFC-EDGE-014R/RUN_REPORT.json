@@ -1,0 +1,140 @@
+{
+  "builder_neq_verifier": true,
+  "credentials_used": false,
+  "execution_classes": {
+    "HISTORICAL_BACKTEST": "the rule measured on frozen bars by four engines",
+    "PAPER_REPLAY": "historical bars driven through the runtime's own paper path: real execution of the code, not prospective observation",
+    "PROSPECTIVE_PAPER": "not produced: the prospective slice is captured and reserved but has not accrued enough bars to be scored"
+  },
+  "false_success": 0,
+  "generated_at_utc": "2026-10-16T21:20:55Z",
+  "git_head": "ee3922e9f8e8d240a4c674e8d138f8c8968cc62e",
+  "ledger_identity": {
+    "closed": 347,
+    "equity_change": -212.544674051,
+    "open_positions_at_end": 1,
+    "opened": 348,
+    "reading": "every close the broker performed is in ``exits``, including the ones the engine performs inside its own cycle, and every opening the broker performed is in ``fills``, including the ones that never survived to a book snapshot. An opening with no close is a position still open when the replay ended, and its count is ``open_positions_at_end``",
+    "realised_equals_equity_change": true,
+    "realised_pnl": -212.544674051,
+    "unpaired_opens": 1
+  },
+  "ledger_reconciliation": {
+    "how": "an opening is identified by symbol, instant and execution price rather than by a timestamp two openings can share, and every close is drained from the broker's own closed-trades ledger, so the closes the engine performs inside its own cycle are recorded too",
+    "id": "LEDGER_OPEN_CLOSE_RECONCILED",
+    "numbers": {
+      "closed": 347,
+      "equity_change": -212.544674051,
+      "open_positions_at_end": 1,
+      "opened": 348,
+      "reading": "every close the broker performed is in ``exits``, including the ones the engine performs inside its own cycle, and every opening the broker performed is in ``fills``, including the ones that never survived to a book snapshot. An opening with no close is a position still open when the replay ended, and its count is ``open_positions_at_end``",
+      "realised_equals_equity_change": true,
+      "realised_pnl": -212.544674051,
+      "unpaired_opens": 1
+    },
+    "status": "CLOSED",
+    "what": "the PAPER_REPLAY sandbox arm records 348 opened fills, 347 closed fills and 1 position still open when the replay ended"
+  },
+  "open_items": [],
+  "order_sent": false,
+  "p1_trade_path": {
+    "authoritative_arm": {
+      "cause": "NO_TRADE:no_strategy_passed_gates",
+      "cycles": 879,
+      "fills_closed": 0,
+      "orders_created": 0,
+      "router_no_trade": 1758
+    },
+    "capacity": "WARNING",
+    "capacity_allows_new_decision": true,
+    "reclaimed_bytes": 1823182848,
+    "sandbox_arm": {
+      "cycles": 879,
+      "fills_closed": 347,
+      "orders_created": 394,
+      "realised_pnl": -212.54467405113758,
+      "rejection_reasons": {
+        "broker:broker_returned_no_fill": 1134,
+        "strategy:no_alpha_in_direction:ANY": 230
+      }
+    }
+  },
+  "p2_external_engines": {
+    "freqtrade": {
+      "matched_residual_bps": 0.010569,
+      "outcome": "EXECUTED",
+      "trades": 44,
+      "verdict": "AGREE_WITHIN_TOLERANCE"
+    },
+    "jesse": {
+      "matched_residual_bps": 7.021359,
+      "outcome": "EXECUTED",
+      "trades": 44,
+      "verdict": "DIVERGENT"
+    },
+    "vnpy_ctastrategy": {
+      "matched_residual_bps": 0.0,
+      "outcome": "EXECUTED",
+      "trades": 42,
+      "verdict": "AGREE_ON_MATCHED_TRADES_WITH_DECLARED_EXTRA"
+    }
+  },
+  "p3_oos": {
+    "bars": {
+      "BTC/USDT": 4,
+      "ETH/USDT": 4
+    },
+    "captured_at": "2026-10-16T20:01:44Z",
+    "preregistration": "2026-10-16T20:01:44Z",
+    "selection_has_read_this_slice": false,
+    "state": "OOS_ACCRUING"
+  },
+  "p4_certification": {
+    "adversarial": {
+      "declared": 0,
+      "executed": 10,
+      "failed": 0,
+      "passed": 10,
+      "total": 10
+    },
+    "clean_clone": "verified from the working tree; a clone run is recorded separately",
+    "fee_reconciled": true,
+    "verification": {
+      "failed": 0,
+      "passed": 31,
+      "total": 31
+    }
+  },
+  "p5_economics": {
+    "arms": [
+      "NEUTRAL_MA_CROSS_1H (this project's simulator)",
+      "NEUTRAL_MA_CROSS_1H (freqtrade)",
+      "NEUTRAL_MA_CROSS_1H (vnpy_ctastrategy)",
+      "NEUTRAL_MA_CROSS_1H (jesse)",
+      "PAPER_REPLAY GATE_INTACT",
+      "PAPER_REPLAY SANDBOX_ADMISSION"
+    ],
+    "buy_and_hold_bps": {
+      "BTC/USDT": 301.7455,
+      "ETH/USDT": 30.2185
+    },
+    "csv": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\economic-recovery\\RFC-EDGE-014R\\ECONOMIC_COMPARISON.csv",
+    "decisions": {
+      "NEUTRAL_MA_CROSS_1H (freqtrade)": "REJECT",
+      "NEUTRAL_MA_CROSS_1H (jesse)": "REJECT",
+      "NEUTRAL_MA_CROSS_1H (this project's simulator)": "REJECT",
+      "NEUTRAL_MA_CROSS_1H (vnpy_ctastrategy)": "REJECT",
+      "PAPER_REPLAY GATE_INTACT": "DEFER",
+      "PAPER_REPLAY SANDBOX_ADMISSION": "REJECT"
+    },
+    "order_sent": false,
+    "promotion": "NONE",
+    "rows": 6,
+    "schema_version": "EDGE14R_ECONOMIC_COMPARISON_V1",
+    "target": "ACTIVE asks for at least three executed trades per day in crypto, seven days a week, only where the economics support it; QUALITY stays independent and no arm here reaches three trades per day with a positive net",
+    "work_package": "WP-EDGE-14R/P5"
+  },
+  "promotion": "NONE",
+  "schema_version": "EDGE14R_RUN_REPORT_V1",
+  "work_package": "WP-EDGE-14R"
+}

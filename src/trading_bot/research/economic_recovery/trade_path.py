@@ -254,7 +254,7 @@ def reason_matrix() -> dict[str, Any]:
     decisions = _read_jsonl(DECISION_LEDGER)
     outcomes = _read_jsonl(OUTCOME_LEDGER)
 
-    raw_codes = Counter()
+    raw_codes: Counter[str] = Counter()
     for op in ops:
         for key in ("error_type", "error"):
             value = op.get(key)

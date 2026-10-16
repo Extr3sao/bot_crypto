@@ -203,9 +203,10 @@ def _long_trades_ma_cross(bars: list[Bar], fast: int, slow: int) -> list[Trade]:
     trades: list[Trade] = []
     entry_idx: int | None = None
     for i in range(1, len(bars)):
-        prev_state = None if ef[i - 1] is None or es[i - 1] is None else ef[i - 1] > es[i - 1]
-        if prev_state is None:
+        prev_fast, prev_slow = ef[i - 1], es[i - 1]
+        if prev_fast is None or prev_slow is None:
             continue
+        prev_state = prev_fast > prev_slow
         if prev_state and entry_idx is None:
             entry_idx = i  # enter at this bar's open, decided on the previous close
         elif not prev_state and entry_idx is not None:
@@ -371,7 +372,7 @@ def _shard(kind: str, symbol: str) -> Path | None:
 def corpus_registry() -> dict[str, Any]:
     rows = []
     for corpus in CORPORA:
-        path = REPO_ROOT / corpus["path"]
+        path = REPO_ROOT / str(corpus["path"])
         present = path.is_dir()
         shards = sorted(p.name for p in path.glob("*.json")) if present else []
         rows.append({**corpus, "present": present, "shards": shards})
@@ -407,6 +408,7 @@ def experiment_payload() -> dict[str, Any]:
                 "reason": f"no shard for {symbol}",
             }
             continue
+        assert shard is not None  # guaranteed by the `if not bars` guard above
         data_manifest.append(
             {"symbol": symbol, "path": str(shard), "bars": len(bars), "sha256": sha256_file(shard)}
         )
@@ -437,7 +439,7 @@ def experiment_payload() -> dict[str, Any]:
     # and the relationship is declared, not assumed to be BTC.
     signal_shard = _shard("edge08", "UNIUSDT")
     signal_bars = load_ohlcv(signal_shard) if signal_shard else []
-    if signal_bars:
+    if signal_bars and signal_shard is not None:
         data_manifest.append(
             {
                 "symbol": "UNIUSDT(signal)",
@@ -449,7 +451,7 @@ def experiment_payload() -> dict[str, Any]:
     for symbol in ("AAVEUSDT", "SUSHIUSDT", "CRVUSDT", "KSMUSDT"):
         alt_shard = _shard("edge08", symbol)
         alt_bars = load_ohlcv(alt_shard) if alt_shard else []
-        if not alt_bars or not signal_bars:
+        if not alt_bars or not signal_bars or alt_shard is None:
             continue
         data_manifest.append(
             {

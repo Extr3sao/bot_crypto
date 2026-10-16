@@ -1,0 +1,89 @@
+{
+  "conventions": {
+    "ADDITIVE": "net_bps = gross_bps - 2 * fees_bps_per_side",
+    "COMPOUNDED": "net_bps = ((1 + gross_bps/1e4) * (1 - f)^2 - 1) * 1e4",
+    "closed_form_gap": "COMPOUNDED(g) - ADDITIVE(g) = 1e4 * ((1 - f)^2 - 1) * (1 + g/1e4) + 2f*1e4 = 2f*1e4 - 1e4*(2f - f^2)*(1 + g/1e4)"
+  },
+  "engines": {
+    "freqtrade": {
+      "convention_difference_bps_as_published": 1.148205,
+      "external_fee_conventions_observed": [
+        "COMPOUNDED"
+      ],
+      "fees_bps_per_round_trip_declared": 20.0,
+      "fees_bps_per_side": 10.0,
+      "identity": "for every matched trade, (net_bps_diff_additive - net_bps_diff_compounded) must equal ADDITIVE(g) - COMPOUNDED(g) exactly: the convention gap is a function of the gross move alone, and it enters with that sign",
+      "identity_holds": true,
+      "matched_fee_convention": "COMPOUNDED",
+      "matched_residual_bps": 0.010569,
+      "max_convention_gap_bps_recomputed": 1.169343287372385,
+      "max_identity_error_bps": 8.563307095019179e-07,
+      "semantics_note": "the published convention_difference_bps is the difference between the two MAX-of-abs residuals, not the max of the per-trade convention gap. The two coincide only when the largest gap trades are also the largest residuals; the recomputed max gap above is the honest per-trade bound",
+      "trades": 44,
+      "unmatched_residual_bps": 1.158774
+    },
+    "jesse": {
+      "convention_difference_bps_as_published": -0.095587,
+      "external_fee_conventions_observed": [
+        "COMPOUNDED"
+      ],
+      "fees_bps_per_round_trip_declared": 20.0,
+      "fees_bps_per_side": 10.0,
+      "identity": "for every matched trade, (net_bps_diff_additive - net_bps_diff_compounded) must equal ADDITIVE(g) - COMPOUNDED(g) exactly: the convention gap is a function of the gross move alone, and it enters with that sign",
+      "identity_holds": true,
+      "matched_fee_convention": "COMPOUNDED",
+      "matched_residual_bps": 7.021359,
+      "max_convention_gap_bps_recomputed": 1.169343287372385,
+      "max_identity_error_bps": 8.425091286290431e-07,
+      "semantics_note": "the published convention_difference_bps is the difference between the two MAX-of-abs residuals, not the max of the per-trade convention gap. The two coincide only when the largest gap trades are also the largest residuals; the recomputed max gap above is the honest per-trade bound",
+      "trades": 44,
+      "unmatched_residual_bps": 6.925772
+    },
+    "vnpy_ctastrategy": {
+      "convention_difference_bps_as_published": 1.169343,
+      "external_fee_conventions_observed": [],
+      "fees_bps_per_round_trip_declared": 20.0,
+      "fees_bps_per_side": 10.0,
+      "identity": "for every matched trade, (net_bps_diff_additive - net_bps_diff_compounded) must equal ADDITIVE(g) - COMPOUNDED(g) exactly: the convention gap is a function of the gross move alone, and it enters with that sign",
+      "identity_holds": true,
+      "matched_fee_convention": "ADDITIVE",
+      "matched_residual_bps": 0.0,
+      "max_convention_gap_bps_recomputed": 1.169343287372385,
+      "max_identity_error_bps": 4.919301514784424e-07,
+      "semantics_note": "the published convention_difference_bps is the difference between the two MAX-of-abs residuals, not the max of the per-trade convention gap. The two coincide only when the largest gap trades are also the largest residuals; the recomputed max gap above is the honest per-trade bound",
+      "trades": 42,
+      "unmatched_residual_bps": 1.169343
+    }
+  },
+  "limitations": [
+    "the parity commission is a declared input (10 bps a side), not a measured venue fee; the admission barrier is a different number from a different source",
+    "the paper broker's 5 bps per fill and 1 bps per side of slippage are the configured scenario, not the venue's live fee schedule",
+    "reconciling units says nothing about whether the costs are the right magnitude for the venue"
+  ],
+  "order_sent": false,
+  "paper_broker": {
+    "closed_fills_audited": 347,
+    "commission_bps_per_fill": 5.0,
+    "commission_bps_per_round_trip": 10.0,
+    "commission_units": "charged per fill on the position's notional: the entry leg on the entry notional and the exit leg on the ENTRY notional (`pos.notional_usdt`), so the round trip is 2 x commission_bps of the entry notional",
+    "explanation_of_residual": "the broker charges the exit commission on the entry notional; charging it on each leg's own notional instead is the difference the parity harness's COMPOUNDED convention models. The residual between the two grows with the move: commission_bps * |g| / 1e4 of the entry notional per round trip. The small remaining difference against the broker's own rule is the rounding of the recorded quantity and price, and it is published rather than absorbed",
+    "max_abs_residual_vs_broker_rule": 8.881784197001252e-16,
+    "max_abs_residual_vs_own_leg_notional": 0.0051712328767123394,
+    "reference_rule": "charged == 2 * commission_bps * entry_notional",
+    "residual_is_second_order": true,
+    "slippage_bps_per_side": 1.0,
+    "slippage_units": "applied in price space (buy: price * (1 + bps/1e4), sell: price / (1 + bps/1e4)) before sizing, so the traded notional is unchanged and the cost is ~1.0 bps of the reference price per side"
+  },
+  "promotion": "NONE",
+  "reconciled": true,
+  "schema_version": "EDGE14R_FEE_CONVENTION_RECONCILIATION_V1",
+  "unit_table": {
+    "bps_per_round_trip": "2 x bps_per_side, the figure the admission barrier uses",
+    "bps_per_side": "the declared commission on one leg, as a fraction x 1e4",
+    "entry_notional": "both legs' commission charged on the entry notional",
+    "per_leg_notional": "each leg's commission charged on that leg's own notional",
+    "price_space_bps": "slippage is applied to the price, not to the notional, so it is a price-space cost and is not interchangeable with a commission"
+  },
+  "verdict": "every cost in this package is stated in one unit system and every reported residual is reproducible from the primitive numbers",
+  "work_package": "WP-EDGE-14R/P4"
+}

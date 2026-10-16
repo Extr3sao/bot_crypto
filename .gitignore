@@ -408,3 +408,23 @@ reports/economic-recovery/RFC-EDGE-014/*
 !reports/economic-recovery/RFC-EDGE-014/CANDIDATE_SPECS/
 reports/economic-recovery/RFC-EDGE-014/CANDIDATE_SPECS/*
 !reports/economic-recovery/RFC-EDGE-014/CANDIDATE_SPECS/*.md
+
+# ============================================================
+# RFC-EDGE-014R — recuperación operativa. Continúa RFC-EDGE-014 y escribe su
+# propio juego de artefactos, para no sobreescribir el registro ya publicado
+# de 014. Misma mecánica de re-inclusión paso a paso. El resto de `scratch/` se
+# queda fuera: son intermedios regenerables. La excepción es el dataset del
+# replay, que SÍ se versiona — una descarga nueva de ccxt siempre trae otra
+# ventana, así que sin el fichero la evidencia de paper no sería re-derivable
+# offline, solo comparable contra una descarga distinta. El ledger sandbox no
+# se versiona: `build_sandbox_ledger()` lo sintetiza de forma determinista.
+# ============================================================
+!reports/economic-recovery/RFC-EDGE-014R/
+reports/economic-recovery/RFC-EDGE-014R/*
+!reports/economic-recovery/RFC-EDGE-014R/*.json
+!reports/economic-recovery/RFC-EDGE-014R/*.md
+!reports/economic-recovery/RFC-EDGE-014R/*.csv
+!reports/economic-recovery/RFC-EDGE-014R/*.jsonl
+!reports/economic-recovery/RFC-EDGE-014R/scratch/
+reports/economic-recovery/RFC-EDGE-014R/scratch/*
+!reports/economic-recovery/RFC-EDGE-014R/scratch/PAPER_REPLAY_BARS.jsonl

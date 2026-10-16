@@ -1,0 +1,230 @@
+{
+  "blocked_history": [
+    {
+      "attempt": 1,
+      "cause": "no Jesse project (strategies/ + storage/) existed, so jesse.services.redis bound no client and the bundled Rust coordinator was never started",
+      "error": "'NoneType' object has no attribute 'sismember'",
+      "error_type": "AttributeError",
+      "outcome": "BLOCKED",
+      "stage": "run",
+      "what": "called jesse.modes.backtest_mode.run directly with candles in memory"
+    }
+  ],
+  "credentials_used": false,
+  "engines": {
+    "freqtrade": {
+      "command": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\edge14r\\engines\\freqtrade\\.venv\\Scripts\\python.exe -m freqtrade backtesting --config C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\edge14r\\parity\\freqtrade\\config_BTC_USDT.json --strategy NeutralMaCross --strategy-path C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\edge14r\\parity\\freqtrade\\strategies --datadir C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\edge14r\\parity\\freqtrade\\user_data\\data\\binance --fee 0.001 --export trades --export-filename C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\edge14r\\parity\\freqtrade\\user_data\\backtest_results\\neutral_BTC_USDT.json --cache none ; C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\edge14r\\engines\\freqtrade\\.venv\\Scripts\\python.exe -m freqtrade backtesting --config C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\edge14r\\parity\\freqtrade\\config_ETH_USDT.json --strategy NeutralMaCross --strategy-path C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\edge14r\\parity\\freqtrade\\strategies --datadir C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\edge14r\\parity\\freqtrade\\user_data\\data\\binance --fee 0.001 --export trades --export-filename C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\edge14r\\parity\\freqtrade\\user_data\\backtest_results\\neutral_ETH_USDT.json --cache none",
+      "comparison": {
+        "breaches": [],
+        "equity_relative_diff": 4.4e-05,
+        "matched_fee_convention": "COMPOUNDED",
+        "matched_residual_bps": 0.010569,
+        "matched_trades": 44,
+        "max_abs_gross_bps_diff": 0.0,
+        "trade_count_gap": 0,
+        "unmatched_residual_bps": 1.158774,
+        "verdict": "AGREE_WITHIN_TOLERANCE"
+      },
+      "detail_file": "EXTERNAL_ENGINE_EXECUTION_FREQTRADE.json",
+      "isolated_environment": null,
+      "isolation": "own virtual environment outside the checkout",
+      "licence": "GPL-3.0",
+      "outcome": "EXECUTED",
+      "parity_report": "BENCHMARK_PARITY_REPORT.json",
+      "per_symbol": [
+        {
+          "duration_seconds": 6.279,
+          "exit_code": 0,
+          "external_trades_seen": 20,
+          "outcome": "EXECUTED",
+          "result_path": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\edge14r\\parity\\freqtrade\\user_data\\backtest_results\\backtest-result-2026-10-16_16-27-08.zip",
+          "result_summary": {
+            "backtest_end_ts": 1792162800000,
+            "backtest_start_ts": 1788656400000,
+            "max_drawdown_account": 0.06860222264618994,
+            "profit_total": -0.035908627353999995,
+            "profit_total_abs": -359.08627354,
+            "strategy_name": "NeutralMaCross",
+            "timeframe": "1h",
+            "total_trades": 20,
+            "trades_per_day": 0.5
+          },
+          "stderr_tail": ",507 - freqtrade.configuration.configuration - INFO - Using max_open_trades: 1 ...\n2026-10-16 18:27:06,507 - freqtrade.configuration.configuration - INFO - Parameter --fee detected, setting fee to: 0.001 ...\n2026-10-16 18:27:06,507 - freqtrade.configuration.configuration - INFO - Using user-data directory: C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\edge14r\\parity\\freqtrade\\user_data ...\n2026-10-16 18:27:06,507 - freqtrade.configuration.configuration - INFO - Using data directory: C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\edge14r\\parity\\freqtrade\\user_data\\data\\binance ...\n2026-10-16 18:27:06,507 - freqtrade.configuration.configuration - INFO - Storing backtest results to \nC:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\edge14r\\parity\\freqtrade\\user_data\\backtest_results\\neutral_BTC_USDT.json ...\n2026-10-16 18:27:06,507 - freqtrade.configuration.configuration - WARNING - DEPRECATED: Using `--export-filename` has no impact when backtesting. Please use `--notes` to annotate backtest results and \n`--backtest-directory` to specify the output directory. \n2026-10-16 18:27:06,507 - freqtrade.configuration.configuration - INFO - Parameter --export detected: trades ...\n2026-10-16 18:27:06,507 - freqtrade.configuration.configuration - INFO - Parameter --cache=none detected ...\n2026-10-16 18:27:06,507 - freqtrade.exchange.check_exchange - INFO - Checking exchange...\n2026-10-16 18:27:06,519 - freqtrade.exchange.check_exchange - INFO - Exchange \"binance\" is officially supported by the Freqtrade development team.\n2026-10-16 18:27:06,519 - freqtrade.configuration.configuration - INFO - Using pairlist from configuration.\n2026-10-16 18:27:06,519 - freqtrade.configuration.config_validation - INFO - Validating configuration ...\n2026-10-16 18:27:06,519 - freqtrade.commands.optimize_commands - INFO - Starting freqtrade in Backtesting mode\n2026-10-16 18:27:06,519 - freqtrade.exchange.exchange - INFO - Instance is running with dry_run enabled\n2026-10-16 18:27:06,519 - freqtrade.exchange.exchange - INFO - Using CCXT 4.5.88\n2026-10-16 18:27:06,519 - freqtrade.exchange.exchange - INFO - Using Exchange \"Binance\"\n2026-10-16 18:27:08,262 - freqtrade.resolvers.exchange_resolver - INFO - Using resolved exchange class 'Binance' ...\n2026-10-16 18:27:08,283 - freqtrade.resolvers.iresolver - INFO - Using resolved strategy NeutralMaCross from \n'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\edge14r\\parity\\freqtrade\\strategies\\NeutralMaCross.py'...\n2026-10-16 18:27:08,285 - freqtrade.strategy.hyper - INFO - Found no parameter file.\n2026-10-16 18:27:08,286 - freqtrade.resolvers.strategy_resolver - INFO - Override strategy 'timeframe' with value from the configuration: 1h.\n2026-10-16 18:27:08,286 - freqtrade.resolvers.strategy_resolver - INFO - Override strategy 'stake_currency' with value from the configuration: USDT.\n2026-10-16 18:27:08,286 - freqtrade.resolvers.strategy_resolver - INFO - Override strategy 'stake_amount' with value from the configuration: unlimited.\n2026-10-16 18:27:08,287 - freqtrade.resolvers.strategy_resolver - INFO - Override strategy 'unfilledtimeout' with value from the configuration: {'entry': 10, 'exit': 10, 'exit_timeout_count': 0, \n'unit': 'minutes'}.\n2026-10-16 18:27:08,287 - freqtrade.resolvers.strategy_resolver - INFO - Override strategy 'max_open_trades' with value from the configuration: 1.\n2026-10-16 18:27:08,287 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using minimal_roi: {'0': 1000}\n2026-10-16 18:27:08,287 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using timeframe: 1h\n2026-10-16 18:27:08,287 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using stoploss: -0.99\n2026-10-16 18:27:08,287 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using trailing_stop: False\n2026-10-16 18:27:08,287 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using trailing_stop_positive_offset: 0.0\n2026-10-16 18:27:08,287 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using trailing_only_offset_is_reached: False\n2026-10-16 18:27:08,287 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using use_custom_stoploss: False\n2026-10-16 18:27:08,287 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using process_only_new_candles: True\n2026-10-16 18:27:08,287 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using order_types: {'entry': 'limit', 'exit': 'limit', 'stoploss': 'limit', 'stoploss_on_exchange': False, \n'stoploss_on_exchange_interval': 60}\n2026-10-16 18:27:08,287 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using order_time_in_force: {'entry': 'GTC', 'exit': 'GTC'}\n2026-10-16 18:27:08,287 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using stake_currency: USDT\n2026-10-16 18:27:08,287 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using stake_amount: unlimited\n2026-10-16 18:27:08,287 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using startup_candle_count: 25\n2026-10-16 18:27:08,287 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using unfilledtimeout: {'entry': 10, 'exit': 10, 'exit_timeout_count': 0, 'unit': 'minutes'}\n2026-10-16 18:27:08,287 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using use_exit_signal: True\n2026-10-16 18:27:08,287 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using exit_profit_only: False\n2026-10-16 18:27:08,287 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using ignore_roi_if_entry_signal: False\n2026-10-16 18:27:08,287 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using exit_profit_offset: 0.0\n2026-10-16 18:27:08,287 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using disable_dataframe_checks: False\n2026-10-16 18:27:08,287 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using ignore_buying_expired_candle_after: 0\n2026-10-16 18:27:08,297 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using position_adjustment_enable: False\n2026-10-16 18:27:08,297 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using max_entry_position_adjustment: -1\n2026-10-16 18:27:08,297 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using max_open_trades: 1\n2026-10-16 18:27:08,297 - freqtrade.configuration.config_validation - INFO - Validating configuration ...\n2026-10-16 18:27:08,304 - freqtrade.resolvers.iresolver - INFO - Using resolved pairlist StaticPairList from \n'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\edge14r\\engines\\freqtrade\\.venv\\Lib\\site-packages\\freqtrade\\plugins\\pairlist\\StaticPairList.py'...\n2026-10-16 18:27:08,312 - freqtrade.optimize.backtesting - INFO - Using fee 0.1000% from config.\n2026-10-16 18:27:08,335 - freqtrade.optimize.backtesting - INFO - Loading data from 2026-09-05 00:00:00 up to 2026-10-16 15:00:00 (41 days).\n2026-10-16 18:27:08,335 - freqtrade.configuration.timerange - WARNING - Moving start-date by 25 candles to account for startup time.\n2026-10-16 18:27:08,352 - freqtrade.optimize.backtesting - INFO - Dataload complete. Calculating indicators\n2026-10-16 18:27:08,352 - freqtrade.optimize.backtesting - WARNING - Backtest result caching disabled due to use of open-ended timerange.\n2026-10-16 18:27:08,352 - freqtrade.optimize.backtesting - INFO - Running backtesting for Strategy NeutralMaCross\n2026-10-16 18:27:08,352 - freqtrade.optimize.backtesting - INFO - Backtesting with data from 2026-09-06 01:00:00 up to 2026-10-16 15:00:00 (40 days).\nbacktest -------------------------------------------------------------------------------------------------------------------------------------------------------------- 4/4     100% \u2022 0:00:00 \u2022 0:00:00\nbacktest -------------------------------------------------------------------------------------------------------------------------------------------------------------- 974/974 100% \u2022 0:00:00 \u2022 0:00:00\n2026-10-16 18:27:08,837 - freqtrade.misc - INFO - dumping json to \n\"C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\edge14r\\parity\\freqtrade\\user_data\\backtest_results\\backtest-result-2026-10-16_16-27-08.meta.json\"\n",
+          "symbol": "BTC/USDT",
+          "timerange": "1788566400000..1792162800000 (all rows in the datadir; no --timerange passed)"
+        },
+        {
+          "duration_seconds": 6.39,
+          "exit_code": 0,
+          "external_trades_seen": 24,
+          "outcome": "EXECUTED",
+          "result_path": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\edge14r\\parity\\freqtrade\\user_data\\backtest_results\\backtest-result-2026-10-16_16-27-15.zip",
+          "result_summary": {
+            "backtest_end_ts": 1792162800000,
+            "backtest_start_ts": 1788656400000,
+            "max_drawdown_account": 0.11431743858122782,
+            "profit_total": -0.074956706155,
+            "profit_total_abs": -749.56706155,
+            "strategy_name": "NeutralMaCross",
+            "timeframe": "1h",
+            "total_trades": 24,
+            "trades_per_day": 0.6
+          },
+          "stderr_tail": ",734 - freqtrade.configuration.configuration - INFO - Using max_open_trades: 1 ...\n2026-10-16 18:27:12,734 - freqtrade.configuration.configuration - INFO - Parameter --fee detected, setting fee to: 0.001 ...\n2026-10-16 18:27:12,734 - freqtrade.configuration.configuration - INFO - Using user-data directory: C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\edge14r\\parity\\freqtrade\\user_data ...\n2026-10-16 18:27:12,734 - freqtrade.configuration.configuration - INFO - Using data directory: C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\edge14r\\parity\\freqtrade\\user_data\\data\\binance ...\n2026-10-16 18:27:12,734 - freqtrade.configuration.configuration - INFO - Storing backtest results to \nC:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\edge14r\\parity\\freqtrade\\user_data\\backtest_results\\neutral_ETH_USDT.json ...\n2026-10-16 18:27:12,734 - freqtrade.configuration.configuration - WARNING - DEPRECATED: Using `--export-filename` has no impact when backtesting. Please use `--notes` to annotate backtest results and \n`--backtest-directory` to specify the output directory. \n2026-10-16 18:27:12,734 - freqtrade.configuration.configuration - INFO - Parameter --export detected: trades ...\n2026-10-16 18:27:12,734 - freqtrade.configuration.configuration - INFO - Parameter --cache=none detected ...\n2026-10-16 18:27:12,734 - freqtrade.exchange.check_exchange - INFO - Checking exchange...\n2026-10-16 18:27:12,754 - freqtrade.exchange.check_exchange - INFO - Exchange \"binance\" is officially supported by the Freqtrade development team.\n2026-10-16 18:27:12,754 - freqtrade.configuration.configuration - INFO - Using pairlist from configuration.\n2026-10-16 18:27:12,756 - freqtrade.configuration.config_validation - INFO - Validating configuration ...\n2026-10-16 18:27:12,758 - freqtrade.commands.optimize_commands - INFO - Starting freqtrade in Backtesting mode\n2026-10-16 18:27:12,760 - freqtrade.exchange.exchange - INFO - Instance is running with dry_run enabled\n2026-10-16 18:27:12,760 - freqtrade.exchange.exchange - INFO - Using CCXT 4.5.88\n2026-10-16 18:27:12,768 - freqtrade.exchange.exchange - INFO - Using Exchange \"Binance\"\n2026-10-16 18:27:14,718 - freqtrade.resolvers.exchange_resolver - INFO - Using resolved exchange class 'Binance' ...\n2026-10-16 18:27:14,729 - freqtrade.resolvers.iresolver - INFO - Using resolved strategy NeutralMaCross from \n'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\edge14r\\parity\\freqtrade\\strategies\\NeutralMaCross.py'...\n2026-10-16 18:27:14,729 - freqtrade.strategy.hyper - INFO - Found no parameter file.\n2026-10-16 18:27:14,729 - freqtrade.resolvers.strategy_resolver - INFO - Override strategy 'timeframe' with value from the configuration: 1h.\n2026-10-16 18:27:14,729 - freqtrade.resolvers.strategy_resolver - INFO - Override strategy 'stake_currency' with value from the configuration: USDT.\n2026-10-16 18:27:14,731 - freqtrade.resolvers.strategy_resolver - INFO - Override strategy 'stake_amount' with value from the configuration: unlimited.\n2026-10-16 18:27:14,732 - freqtrade.resolvers.strategy_resolver - INFO - Override strategy 'unfilledtimeout' with value from the configuration: {'entry': 10, 'exit': 10, 'exit_timeout_count': 0, \n'unit': 'minutes'}.\n2026-10-16 18:27:14,732 - freqtrade.resolvers.strategy_resolver - INFO - Override strategy 'max_open_trades' with value from the configuration: 1.\n2026-10-16 18:27:14,732 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using minimal_roi: {'0': 1000}\n2026-10-16 18:27:14,732 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using timeframe: 1h\n2026-10-16 18:27:14,733 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using stoploss: -0.99\n2026-10-16 18:27:14,733 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using trailing_stop: False\n2026-10-16 18:27:14,733 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using trailing_stop_positive_offset: 0.0\n2026-10-16 18:27:14,735 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using trailing_only_offset_is_reached: False\n2026-10-16 18:27:14,735 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using use_custom_stoploss: False\n2026-10-16 18:27:14,735 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using process_only_new_candles: True\n2026-10-16 18:27:14,735 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using order_types: {'entry': 'limit', 'exit': 'limit', 'stoploss': 'limit', 'stoploss_on_exchange': False, \n'stoploss_on_exchange_interval': 60}\n2026-10-16 18:27:14,735 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using order_time_in_force: {'entry': 'GTC', 'exit': 'GTC'}\n2026-10-16 18:27:14,735 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using stake_currency: USDT\n2026-10-16 18:27:14,735 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using stake_amount: unlimited\n2026-10-16 18:27:14,735 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using startup_candle_count: 25\n2026-10-16 18:27:14,735 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using unfilledtimeout: {'entry': 10, 'exit': 10, 'exit_timeout_count': 0, 'unit': 'minutes'}\n2026-10-16 18:27:14,735 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using use_exit_signal: True\n2026-10-16 18:27:14,735 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using exit_profit_only: False\n2026-10-16 18:27:14,735 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using ignore_roi_if_entry_signal: False\n2026-10-16 18:27:14,735 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using exit_profit_offset: 0.0\n2026-10-16 18:27:14,735 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using disable_dataframe_checks: False\n2026-10-16 18:27:14,735 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using ignore_buying_expired_candle_after: 0\n2026-10-16 18:27:14,735 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using position_adjustment_enable: False\n2026-10-16 18:27:14,735 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using max_entry_position_adjustment: -1\n2026-10-16 18:27:14,735 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using max_open_trades: 1\n2026-10-16 18:27:14,735 - freqtrade.configuration.config_validation - INFO - Validating configuration ...\n2026-10-16 18:27:14,749 - freqtrade.resolvers.iresolver - INFO - Using resolved pairlist StaticPairList from \n'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\edge14r\\engines\\freqtrade\\.venv\\Lib\\site-packages\\freqtrade\\plugins\\pairlist\\StaticPairList.py'...\n2026-10-16 18:27:14,750 - freqtrade.optimize.backtesting - INFO - Using fee 0.1000% from config.\n2026-10-16 18:27:14,783 - freqtrade.optimize.backtesting - INFO - Loading data from 2026-09-05 00:00:00 up to 2026-10-16 15:00:00 (41 days).\n2026-10-16 18:27:14,783 - freqtrade.configuration.timerange - WARNING - Moving start-date by 25 candles to account for startup time.\n2026-10-16 18:27:14,806 - freqtrade.optimize.backtesting - INFO - Dataload complete. Calculating indicators\n2026-10-16 18:27:14,806 - freqtrade.optimize.backtesting - WARNING - Backtest result caching disabled due to use of open-ended timerange.\n2026-10-16 18:27:14,806 - freqtrade.optimize.backtesting - INFO - Running backtesting for Strategy NeutralMaCross\n2026-10-16 18:27:14,806 - freqtrade.optimize.backtesting - INFO - Backtesting with data from 2026-09-06 01:00:00 up to 2026-10-16 15:00:00 (40 days).\nbacktest -------------------------------------------------------------------------------------------------------------------------------------------------------------- 4/4     100% \u2022 0:00:00 \u2022 0:00:00\nbacktest -------------------------------------------------------------------------------------------------------------------------------------------------------------- 974/974 100% \u2022 0:00:00 \u2022 0:00:00\n2026-10-16 18:27:15,215 - freqtrade.misc - INFO - dumping json to \n\"C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\edge14r\\parity\\freqtrade\\user_data\\backtest_results\\backtest-result-2026-10-16_16-27-15.meta.json\"\n",
+          "symbol": "ETH/USDT",
+          "timerange": "1788566400000..1792162800000 (all rows in the datadir; no --timerange passed)"
+        }
+      ],
+      "trades": 44,
+      "version": "unknown"
+    },
+    "jesse": {
+      "command": "jesse.modes.backtest_mode.run with client ids ['982758f4-2f94-48be-ae05-ae3a960c0722', '1bf27ef0-28ea-4184-8039-c0623504d4fe'] inside C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\edge14r\\jesse_ws",
+      "comparison": {
+        "breaches": [
+          "COMPOUNDED_residual=7.021359",
+          "gross_residual=6.985523"
+        ],
+        "equity_relative_diff": 0.00043452,
+        "matched_fee_convention": "COMPOUNDED",
+        "matched_residual_bps": 7.021359,
+        "matched_trades": 44,
+        "max_abs_gross_bps_diff": 6.985523,
+        "trade_count_gap": 0,
+        "unmatched_residual_bps": 6.925772,
+        "verdict": "DIVERGENT"
+      },
+      "detail_file": "EXTERNAL_ENGINE_EXECUTION_JESSE.json",
+      "divergence_explanation": {
+        "force_close_conventions": {
+          "jesse": "final bar's close (update_position/liquidate at the current price)",
+          "trading_agentic": "final bar's open (the first price tradable after the last decision)"
+        },
+        "material_detail": [
+          {
+            "entry_ts_ms": 1792094400000,
+            "exit_instant_agrees": false,
+            "external_gross_bps": -49.800491,
+            "gross_bps_diff": 6.985523,
+            "index": 19,
+            "ta_gross_bps": -42.814968
+          },
+          {
+            "entry_ts_ms": 1792094400000,
+            "exit_instant_agrees": false,
+            "external_gross_bps": 27.110767,
+            "gross_bps_diff": -2.894632,
+            "index": 43,
+            "ta_gross_bps": 24.216135
+          }
+        ],
+        "materially_different_trades": 2,
+        "reading": "the entry instants agree on every matched trade and 42 of 44 trades agree on price to within float noise; the materially different ones are the positions still open at the end of the window, where neither engine has an exit signal and the trailing close is a convention: this project closes at the final bar's open, Jesse closes at the final bar's close. That is a model difference in the forced exit, not a disagreement about the rule, and it is why the verdict is DIVERGENT on two of forty-four trades instead of AGREE",
+        "tolerance_bps": 1.0,
+        "trades_matching_exactly": 11,
+        "trades_within_tolerance": 31
+      },
+      "isolated_environment": "/tmp/edge14r/engines/jesse/.venv",
+      "outcome": "EXECUTED",
+      "parity_report": "BENCHMARK_PARITY_REPORT_JESSE.json",
+      "route_timeframe": "1h",
+      "source_timeframe": "1m",
+      "trades": 44,
+      "version": "3.3.5"
+    },
+    "vnpy_ctastrategy": {
+      "command": "<vnpy-venv>/python.exe scripts/edge14r_vnpy_backtest.py --bars C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\economic-recovery\\RFC-EDGE-014R\\scratch\\PAPER_REPLAY_BARS.jsonl --out C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\edge14r\\vnpy_ws\\vnpy_result.json",
+      "comparison": {
+        "breaches": [
+          "trade_count_gap=2"
+        ],
+        "equity_relative_diff": 0.00616827,
+        "matched_fee_convention": "ADDITIVE",
+        "matched_residual_bps": 0.0,
+        "matched_trades": 42,
+        "max_abs_gross_bps_diff": 0.0,
+        "trade_count_gap": 2,
+        "unmatched_residual_bps": 1.169343,
+        "verdict": "AGREE_ON_MATCHED_TRADES_WITH_DECLARED_EXTRA"
+      },
+      "declared_extra": "VeighNa publishes fills rather than round trips and has no crypto venue in its Exchange enum, so its venue is declared and its net is derived from the gross under the declared convention",
+      "detail_file": "EXTERNAL_ENGINE_EXECUTION_VNPY.json",
+      "outcome": "EXECUTED",
+      "parity_report": "BENCHMARK_PARITY_REPORT_VNPY.json",
+      "trades": 42,
+      "version": "unknown"
+    }
+  },
+  "fill_timing": "a signal observed at the close of bar i fills at the open of bar i+1, on entry and on exit alike",
+  "generated_at_utc": "2026-10-16T19:57:36Z",
+  "jesse_attempt_history": {
+    "blocked_engines_declared_in_the_earlier_report": [
+      {
+        "cause": "Jesse's backtest entrypoint reached its own engine and stopped on a missing Redis client (`NoneType` has no attribute `sismember`): the service it needs does not exist on this host, and starting one is a host-level change nobody authorised here",
+        "dependency": "redis",
+        "engine": "jesse",
+        "error": "'NoneType' object has no attribute 'sismember'",
+        "error_type": "AttributeError",
+        "stage": "run",
+        "version": "3.3.5"
+      }
+    ],
+    "earlier_engine_entry": {
+      "code_copied_into_project": false,
+      "command": "<jesse-venv>/python scripts/edge14r_jesse_attempt.py --bars <dataset> --out <workspace>/jesse_attempt.json",
+      "credentials_used": false,
+      "engine": "jesse",
+      "evidence": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\edge14r\\jesse_ws\\jesse_attempt.json",
+      "invocation": {
+        "candles_passed_in_memory": true,
+        "finish_date": "2026-10-16",
+        "routes": [
+          {
+            "exchange": "Binance",
+            "strategy": "NeutralMaCross",
+            "symbol": "BTC-USDT",
+            "timeframe": "1h"
+          },
+          {
+            "exchange": "Binance",
+            "strategy": "NeutralMaCross",
+            "symbol": "ETH-USDT",
+            "timeframe": "1h"
+          }
+        ],
+        "start_date": "2026-09-01",
+        "user_config": {
+          "exchange": "Binance",
+          "fee": 0.001,
+          "futures_leverage": 1,
+          "futures_leverage_mode": "cross",
+          "starting_balance": 10000.0,
+          "type": "futures",
+          "warm_up_candles": 0
+        }
+      },
+      "isolation": "own virtual environment outside the checkout",
+      "licence": "MIT",
+      "order_sent": false,
+      "outcome": "BLOCKED",
+      "trades_seen": 0,
+      "version": "3.3.5"
+    },
+    "note": "the record of the earlier blocked attempt, kept so the published history is not rewritten: the run reported here is the one that executed"
+  },
+  "limitations": [
+    "no engine's code is imported by the runtime or copied into the tree; each runs in its own environment outside the checkout",
+    "all three engines ran and are reported; the earlier record that Jesse was blocked is preserved in EXTERNAL_ENGINE_JESSE_ATTEMPT_BLOCKED.json",
+    "an environment manifest is a lockfile, not the environment",
+    "agreement between engines is evidence about their accounting, not about any strategy's edge"
+  ],
+  "note": "this file is the three-engine summary; the per-engine detail that used to live under this name is preserved verbatim as EXTERNAL_ENGINE_EXECUTION_FREQTRADE.json and was not rewritten",
+  "order_sent": false,
+  "rule": "NEUTRAL_MA_CROSS_1H",
+  "same_dataset": {
+    "frozen_1h_sha256": "d79ed2c56bf502266d9f950be7f296b0f1e6e068f19a411513c08436c5abe26b",
+    "note": "the two engines that read 1h bars directly consumed the frozen export; Jesse consumes 1-minute source rows and generates the 1h candles itself, so its source was fetched separately and audited to aggregate onto the same frozen bars exactly (JESSE_1M_SOURCE_AUDIT.json)"
+  },
+  "schema_version": "EDGE14R_EXTERNAL_ENGINE_EXECUTION_V2",
+  "work_package": "WP-EDGE-14R/P2"
+}
