@@ -160,10 +160,10 @@
       "sha256": "ccc81ea1153b8332fde1c2312a6fde19a401febac0b3b802e76ed1ccae241523"
     },
     "GIT_STATE.json": {
-      "bytes": 1764,
-      "lines": 39,
+      "bytes": 1940,
+      "lines": 43,
       "present": true,
-      "sha256": "7416a623d200276299fd97bab7c587ac50d8088d8295eda26c49b0a4cbdfd1a5"
+      "sha256": "e0fd3b8eadc6a7f671d660f8add43ed2ffd434c54922220a7dc14240f80da60a"
     },
     "OPERATIONAL_VALIDATION.json": {
       "bytes": 21678,
@@ -229,13 +229,13 @@
       "bytes": 6238,
       "lines": 167,
       "present": true,
-      "sha256": "6763b62f7fc142c5d063e970712cefaaa01788a84286c43caf84ba16b19350cf"
+      "sha256": "800ce5c454f451694fce3f1b42a84ab78b6e19d5de7f2ce0bf591ff559584d1d"
     },
     "VERIFICATION.md": {
       "bytes": 5856,
       "lines": 72,
       "present": true,
-      "sha256": "6d414b78f0677a671b9ff0a0d1a50f4f219452fae2fbca997ef8367b034981cb"
+      "sha256": "6266d55aa873649e65a19ee67fa226f7ff4a420a85f649906eca27b4b3dd8577"
     }
   },
   "evidence": {
@@ -288,16 +288,16 @@
       "sha256": "90e9b85312f92091a950f2d93bdee05b170240c93656646f9fdf3da00e62a123"
     }
   },
-  "generated_at_utc": "2026-10-16T06:30:56Z",
+  "generated_at_utc": "2026-10-16T06:33:52Z",
   "git": {
     "ahead_of_upstream": 0,
     "behind_upstream": 0,
     "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
-    "commits": "the 2 commit(s) that touched this package are listed in GIT_STATE.json; a report that named its own commit would be naming a hash that moves",
-    "head": "b3f4d8d88ec2ea44e8bd4e43259c9d6fac3ea2ce",
-    "head_committed_at": "2026-10-16T08:25:47+02:00",
-    "head_is_the_remote_ref": true,
-    "head_subject": "Publish the continuity reading and the mechanism that is still blocked. [WP-EDGE-12]",
+    "commits": "the 3 commit(s) that touched this package are listed in GIT_STATE.json; a report that named its own commit would be naming a hash that moves",
+    "head": "a89c067fea9b617d08d98de805ad2eab14dbb100",
+    "head_committed_at": "2026-10-16T08:32:20+02:00",
+    "head_is_the_remote_ref": false,
+    "head_subject": "Re-take the reading at the code that carries it, and name the ref the remote returned. [WP-EDGE-12]",
     "read_back_from_the_remote": "b3f4d8d88ec2ea44e8bd4e43259c9d6fac3ea2ce",
     "state_file": "GIT_STATE.json",
     "upstream": "origin/agent/edge-recovery/WP-EDGE-00-baseline"
@@ -507,7 +507,7 @@
   "tests": {
     "campaign": "RFC-EDGE-012",
     "collected_nothing": false,
-    "generated_at_utc": "2026-10-16T06:30:54Z",
+    "generated_at_utc": "2026-10-16T06:33:50Z",
     "hypothetical": true,
     "lint": {
       "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m ruff check src/trading_bot/research/edge12/ scripts/edge12_verify.py scripts/edge12_reports.py scripts/edge12_tests.py tests/unit/research/test_edge12_continuity.py tests/unit/research/test_edge12_runner.py",
@@ -523,10 +523,10 @@
       "errors": null,
       "exit_code": 0,
       "failed": null,
-      "passed": 60,
+      "passed": 61,
       "reason": null,
       "skipped": null,
-      "tail": "............................................................             [100%]\n60 passed in 1.82s"
+      "tail": ".............................................................            [100%]\n61 passed in 1.52s"
     },
     "read_only": "no network, no live state root, no live store, no scheduler; this step runs the package's own regressions and the lint over its own paths",
     "schema_version": "EDGE12_TEST_RUNS_V1",

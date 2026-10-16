@@ -1,6 +1,6 @@
 # WP-EDGE-12F — independent verification
 
-**Generated:** 2026-10-16T06:30:57Z · **Verdict:** `VERIFY_PASS`
+**Generated:** 2026-10-16T06:33:52Z · **Verdict:** `VERIFY_PASS`
 
 > this verifier imports nothing from trading_bot.research.edge12 and re-derives every figure it checks from the published JSON and the log snapshots
 

@@ -914,9 +914,14 @@ def _final_report_md(payload: dict[str, Any]) -> str:
         "admissible forward days",
         "```",
         "",
-        "The third line is the only one an admission criterion may read, and it is zero. Nothing in",
-        "this package moves it: only time and a host that is signed in do, which is why the closure",
-        f"state is `{payload['closure_state']}` and not a readiness claim.",
+        # The sentence is rendered from the figure beside it rather than typed next to it: a
+        # report that says "zero" over a line that reads "1 of 60" is the failure mode this
+        # campaign exists to catch, and it caught this one.
+        f"The third line is the only one an admission criterion may read, and it is "
+        f"{results['operational']['admissible_days']} of "
+        f"{results['operational']['required_days']}. Nothing in this package moves it: only time "
+        "and a host that is signed in do, which is why the closure state is "
+        f"`{payload['closure_state']}` and not a readiness claim.",
         "",
         "## 2. What was proved on the runtime",
         "",

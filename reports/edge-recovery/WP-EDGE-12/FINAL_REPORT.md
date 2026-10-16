@@ -20,9 +20,7 @@ was not, are different in kind and are kept apart below.
 1 of 60 admissible forward days
 ```
 
-The third line is the only one an admission criterion may read, and it is zero. Nothing in
-this package moves it: only time and a host that is signed in do, which is why the closure
-state is `FORWARD_CONTINUITY_BLOCKED` and not a readiness claim.
+The third line is the only one an admission criterion may read, and it is 1 of 60. Nothing in this package moves it: only time and a host that is signed in do, which is why the closure state is `FORWARD_CONTINUITY_BLOCKED` and not a readiness claim.
 
 ## 2. What was proved on the runtime
 
@@ -137,7 +135,7 @@ blocked dependency it reads `BLOQUEADO_DECLARADO` rather than being quietly drop
 {
   "campaign": "RFC-EDGE-012",
   "collected_nothing": false,
-  "generated_at_utc": "2026-10-16T06:30:54Z",
+  "generated_at_utc": "2026-10-16T06:33:50Z",
   "hypothetical": true,
   "lint": {
     "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m ruff check src/trading_bot/research/edge12/ scripts/edge12_verify.py scripts/edge12_reports.py scripts/edge12_tests.py tests/unit/research/test_edge12_continuity.py tests/unit/research/test_edge12_runner.py",
@@ -153,10 +151,10 @@ blocked dependency it reads `BLOQUEADO_DECLARADO` rather than being quietly drop
     "errors": null,
     "exit_code": 0,
     "failed": null,
-    "passed": 60,
+    "passed": 61,
     "reason": null,
     "skipped": null,
-    "tail": "............................................................             [100%]\n60 passed in 1.82s"
+    "tail": ".............................................................            [100%]\n61 passed in 1.52s"
   },
   "read_only": "no network, no live state root, no live store, no scheduler; this step runs the package's own regressions and the lint over its own paths",
   "schema_version": "EDGE12_TEST_RUNS_V1",

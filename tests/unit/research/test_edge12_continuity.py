@@ -20,6 +20,7 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import re
 import sys
 from itertools import pairwise
 from pathlib import Path
@@ -903,6 +904,24 @@ def test_every_criterion_the_rfc_states_has_a_row_and_none_is_answered_with_a_bl
         "the_snapshots_match_their_digests",
         "the_rehearsal_did_not_touch_the_live_store",
     } <= set(verify_script.CHECKS)
+
+
+def test_the_final_report_does_not_state_a_figure_its_own_block_contradicts():
+    """A sentence typed next to a computed figure is a sentence that drifts from it.
+
+    The report said "it is zero" over the line that read "1 of 60": the prose was written
+    when the reading was zero and stayed there after the reading moved. The figure is now
+    rendered from the same value as the line above it, and this reads the published report
+    to check the two agree rather than trusting that they do.
+    """
+    report = ROOT / "reports" / "edge-recovery" / "WP-EDGE-12" / "FINAL_REPORT.md"
+    assert report.is_file(), "the final report is a deliverable; it is absent"
+    text = report.read_text(encoding="utf-8")
+    block = re.search(r"(\d+) of (\d+) \n?admissible forward days", text)
+    assert block is not None, "the report no longer prints the admissible-day figure"
+    admitted, required = block.group(1), block.group(2)
+    assert f"and it is {admitted} of {required}" in text
+    assert "admission criterion" in text
 
 
 def test_a_criterion_is_not_awarded_before_the_verifier_has_run():
