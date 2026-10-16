@@ -28,3 +28,9 @@ reports/edge-recovery/WP-EDGE-04R/evidence/PROPOSED_FORWARD_TASK.xml -text
 # on checkout would break the digests the verifier recomputes, so the tree is stored
 # exactly as it is on disk.  Same reason as the trees above, same treatment.
 reports/edge-recovery/WP-EDGE-09/** -text
+
+# The WP-EDGE-12 proposal is the definition a preflight hashes and an operator would
+# register, and ``schtasks`` reads that form (the document declares UTF-16): the digest
+# published beside it in RUNNER_PREFLIGHT.json is a digest of these bytes, so normalising
+# them on the way in or out would make the recorded hash name a document nobody has.
+reports/edge-recovery/WP-EDGE-12/evidence/PROPOSED_DEFINITION.xml -text
