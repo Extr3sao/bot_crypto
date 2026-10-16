@@ -100,8 +100,13 @@ instrumentado para registrar cada transición que él mismo realiza:
   informes declaran el cierre en vez de absorberlo.
 
 Artefactos regenerados en consecuencia: `PAPER_EXECUTION_EVIDENCE.*`, `TRADE_PATH_RECONCILIATION.*`,
-`FEE_CONVENTION_RECONCILIATION.*`, `ECONOMIC_COMPARISON.*`, `ADVERSARIAL_SUITE.json`,
+`FEE_CONVENTION_RECONCILIATION.*`, `ECONOMIC_COMPARISON.*`, `ADVERSARIAL_SUITE.*`,
 `INDEPENDENT_VERIFICATION.*`, `RUN_REPORT.*`, `FINAL_REPORT.md`, `INFORME_EJECUTIVO.md`.
+
+Contra la regresión: `tests/unit/research/test_edge14r_paper_ledger.py` (5 checks, **5 passed**) lee
+la evidencia publicada y comprueba las identidades del libro; con la evidencia saboteeada en las
+tres formas que cubre (quitar los cierres del motor, tirar dos aperturas, duplicar una) el test
+falla — 1, 2 y 1 fallos respectivamente — y con la evidencia intacta pasa.
 
 ## 4. Pendiente
 
