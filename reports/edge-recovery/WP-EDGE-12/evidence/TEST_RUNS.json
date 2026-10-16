@@ -1,7 +1,7 @@
 {
   "campaign": "RFC-EDGE-012",
   "collected_nothing": false,
-  "generated_at_utc": "2026-10-16T06:33:50Z",
+  "generated_at_utc": "2026-10-16T06:35:21Z",
   "hypothetical": true,
   "lint": {
     "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m ruff check src/trading_bot/research/edge12/ scripts/edge12_verify.py scripts/edge12_reports.py scripts/edge12_tests.py tests/unit/research/test_edge12_continuity.py tests/unit/research/test_edge12_runner.py",
@@ -20,7 +20,7 @@
     "passed": 61,
     "reason": null,
     "skipped": null,
-    "tail": ".............................................................            [100%]\n61 passed in 1.52s"
+    "tail": ".............................................................            [100%]\n61 passed in 1.67s"
   },
   "read_only": "no network, no live state root, no live store, no scheduler; this step runs the package's own regressions and the lint over its own paths",
   "schema_version": "EDGE12_TEST_RUNS_V1",

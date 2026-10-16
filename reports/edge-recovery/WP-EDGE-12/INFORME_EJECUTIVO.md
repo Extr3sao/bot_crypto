@@ -1,6 +1,6 @@
 # WP-EDGE-12 — informe ejecutivo (castellano)
 
-**Instante de lectura:** 2026-10-16T06:33:52Z · **Ventana operativa:** 2026-10-13T11:23:38Z → 2026-10-16T06:25:56Z (67.0384 h)
+**Instante de lectura:** 2026-10-16T06:35:07Z · **Ventana operativa:** 2026-10-13T11:23:38Z → 2026-10-16T06:25:56Z (67.0384 h)
 
 **Veredicto del paquete:** `FORWARD_CONTINUITY_BLOCKED`.
 
@@ -10,9 +10,9 @@
 * **Ejecución sin sesión (12B).** `LOGON_TRIGGER` es el mecanismo seleccionado. El intento de registrar S4U **esta misma definición** lo respondió el host: `NEEDS_ELEVATION`. Los dos mecanismos disponibles son el disparador de inicio de sesión y la acción testigo; los demás exigen administrador o una credencial.
 * **Almacenamiento (12C).** `NO_USABLE_VOLUME_FOR_A_MOVE`: el techo de la lane es 72837412 B frente a un presupuesto de 268435456 B, y el store añade 0.006249 GiB en 60 días. Reubicación: `NO_VOLUME_WITH_CAPACITY`.
 * **Continuidad (12D).** `CONTINUITY_MATRIX_COMPLETE`: 7 de 9 propiedades con veredicto `PASS`, ejercitadas sobre un ensayo real con el observador real y una copia del store.
-* **Validación operativa (12E).** Tres niveles separados: 269 instantes esperados, 243 atendidos, 26 sin proceso, y 1 días forward admisibles de 60.
+* **Validación operativa (12E).** Tres niveles separados: 269 instantes esperados, 243 atendidos, 26 sin proceso, y 1 día(s) forward admisible(s) de 60.
 * **Certificación independiente (12F).** `VERIFY_PASS` con 24 comprobaciones y 24 sabotajes detectados de 24.
-* **Regresiones (DoD/TEST).** `TESTS_PASS`: pytest 61 pasan, no leído fallan, no leído con error; lint con estado 0. La selección declarada está en `evidence/TEST_RUNS.json`.
+* **Regresiones (DoD/TEST).** `TESTS_PASS`: pytest 61 pasan, 0 fallan, 0 con error; lint con estado 0. La selección declarada está en `evidence/TEST_RUNS.json`.
 * **Criterios de aceptación (RFC §6).** {'SATISFECHO': 17, 'BLOQUEADO_DECLARADO': 1}.
 
 ## 2. Lo que sigue bloqueado, y por qué

@@ -123,7 +123,7 @@
     }
   ],
   "failures": [],
-  "generated_at_utc": "2026-10-16T06:33:52Z",
+  "generated_at_utc": "2026-10-16T06:35:16Z",
   "hypothetical": true,
   "independence": "this verifier imports nothing from trading_bot.research.edge12 and re-derives every figure it checks from the published JSON and the log snapshots",
   "order_sent": false,

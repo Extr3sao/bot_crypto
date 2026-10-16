@@ -1059,6 +1059,19 @@ def informe_ejecutivo_md(payload: dict[str, Any]) -> str:
         """A figure nobody read is reported as unread, never as a zero."""
         return "no leído" if value is None else str(value)
 
+    def pytest_figure(key: str) -> str:
+        """pytest omits a count it has none of, and only an odd exit makes that a blank.
+
+        A summary line that reads ``61 passed`` without mentioning failures is a run with no
+        failures; a run whose exit status is not zero and whose summary mentions nothing is a
+        run whose figures were not read. Printing ``no leído`` for both would report a clean
+        suite as an unknown one, which is the same conflation in the other direction.
+        """
+        value = pytest_run.get(key)
+        if value is not None:
+            return str(value)
+        return "0" if pytest_run.get("exit_code") in (0, None) else "no leído"
+
     lines = [
         "# WP-EDGE-12 — informe ejecutivo (castellano)",
         "",
@@ -1095,15 +1108,15 @@ def informe_ejecutivo_md(payload: dict[str, Any]) -> str:
         f"{levels['one_triggers_fired']['expected_instants']} instantes esperados, "
         f"{levels['one_triggers_fired']['answered_by_a_tick']} atendidos, "
         f"{levels['one_triggers_fired']['never_answered']} sin proceso, y "
-        f"{levels['three_days_admissible']['prospectively_observed_days']} días forward admisibles "
-        f"de {levels['three_days_admissible']['required_days']}.",
+        f"{levels['three_days_admissible']['prospectively_observed_days']} día(s) forward "
+        f"admisible(s) de {levels['three_days_admissible']['required_days']}.",
         f"* **Certificación independiente (12F).** `{verification['verdict']}` con "
         f"{len(verification['checks'])} comprobaciones y "
         f"{verification['self_test']['detected']} sabotajes detectados de "
         f"{verification['self_test']['applied']}.",
         f"* **Regresiones (DoD/TEST).** `{tests.get('verdict', 'NO_RECORD')}`: pytest "
-        f"{count(pytest_run.get('passed'))} pasan, {count(pytest_run.get('failed'))} fallan, "
-        f"{count(pytest_run.get('errors'))} con error; lint con estado "
+        f"{count(pytest_run.get('passed'))} pasan, {pytest_figure('failed')} fallan, "
+        f"{pytest_figure('errors')} con error; lint con estado "
         f"{count(lint_run.get('exit_code'))}. La selección declarada está en "
         "`evidence/TEST_RUNS.json`.",
         f"* **Criterios de aceptación (RFC §6).** "
