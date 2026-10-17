@@ -218,12 +218,20 @@
       "what": "the three formerly declared cases are covered"
     },
     {
-      "detail": "protocol sha256 ea332d4ee11a4b42\u2026 still matches the manifest; frozen 2026-10-16T20:01:44Z <= captured 2026-10-16T20:01:44Z; the timestamps are second-resolution, so the hash is the binding commitment",
+      "detail": "v2 evidence: freeze 1792221328939466200 < commit 1792221564 < capture 1792221621701637600; the v1 manifest could not show this (its own record said: preregistration_frozen_at_utc < captured_at_utc: False)",
       "expected": null,
       "got": null,
       "id": "V21",
       "ok": true,
-      "what": "the holdout protocol was frozen before it was captured"
+      "what": "the holdout protocol's freeze was committed before the capture ran"
+    },
+    {
+      "detail": "protocol sha256 ea332d4ee11a4b42\u2026 still matches its manifest; the slice is now labelled descriptive for the WP-EDGE-015 hypotheses as well",
+      "expected": null,
+      "got": null,
+      "id": "V21b",
+      "ok": true,
+      "what": "the v1 slice is preserved byte-for-byte as descriptive evidence"
     },
     {
       "detail": "state OOS_ACCRUING, not scored",
@@ -252,14 +260,14 @@
   ],
   "counts": {
     "failed": 0,
-    "passed": 31,
-    "total": 31
+    "passed": 32,
+    "total": 32
   },
   "false_success": 0,
-  "git_head": "a7b3d49aad5a26929969bb1d5b02e9045578bcaa",
+  "git_head": "c8c208da003554f0402d8b03f83f1eefe28a5414",
   "method": "every number is recomputed from the primitive records (exported bars, broker fills, engines' per-trade rows, the dataset bytes) rather than read from a summary field; a check that cannot be recomputed is reported as a failure",
   "schema_version": "EDGE14R_INDEPENDENT_VERIFICATION_V1",
   "verdict": "VERIFIED",
-  "verified_at_utc": "2026-10-16T21:34:13Z",
+  "verified_at_utc": "2026-10-17T07:41:01Z",
   "work_package": "WP-EDGE-14R"
 }

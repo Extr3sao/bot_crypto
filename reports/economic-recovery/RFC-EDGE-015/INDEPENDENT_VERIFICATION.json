@@ -84,7 +84,7 @@
       "what": "the decisive family's entries satisfy their own gate on past bars only"
     },
     {
-      "detail": "published {'cross_sectional_rotation': 'REJECT', 'mean_reversion_vol_liq': 'EXPERIMENT_COST_FRAGILE', 'trend_pullback': 'REJECT', 'vol_regime_breakout': 'REJECT_OUTLIER_DRIVEN'} vs recomputed {'mean_reversion_vol_liq': 'EXPERIMENT_COST_FRAGILE', 'cross_sectional_rotation': 'REJECT', 'trend_pullback': 'REJECT', 'vol_regime_breakout': 'REJECT_OUTLIER_DRIVEN'}",
+      "detail": "published {'cross_sectional_rotation': 'REJECT', 'mean_reversion_vol_liq': 'EXPERIMENT_COST_FRAGILE', 'trend_pullback': 'REJECT', 'vol_regime_breakout': 'REJECT_OUTLIER_DRIVEN'} vs recomputed {'trend_pullback': 'REJECT', 'vol_regime_breakout': 'REJECT_OUTLIER_DRIVEN', 'cross_sectional_rotation': 'REJECT', 'mean_reversion_vol_liq': 'EXPERIMENT_COST_FRAGILE'}",
       "id": "V13",
       "ok": true,
       "what": "every published verdict is re-derived from the matrix and the frozen thresholds"
@@ -192,7 +192,7 @@
       "what": "both divergences are reported as resolved"
     },
     {
-      "detail": "imports scanned: 14; forbidden found: []",
+      "detail": "imports scanned: 13; forbidden found: []",
       "id": "V31",
       "ok": true,
       "what": "this verifier imports no builder module"

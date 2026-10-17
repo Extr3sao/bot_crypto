@@ -1,6 +1,6 @@
 # WP-EDGE-14R — independent verification
 
-*verified at 2026-10-16T21:34:13Z against `a7b3d49aad5a`; verdict **VERIFIED**.*
+*verified at 2026-10-17T07:41:01Z against `c8c208da0035`; verdict **VERIFIED**.*
 
 Every number below is recomputed from the primitive records, not read from a
 summary, and a check that cannot be recomputed is a failure rather than a pass.
@@ -34,9 +34,10 @@ summary, and a check that cannot be recomputed is a failure rather than a pass.
 | V18 | the paper broker's charging rule is reproduced from its own fills | PASS | max residual 8.882e-16 |
 | V19 | the adversarial suite is executed, not declared | PASS | 10/10 pass, 0 declared-only |
 | V20 | the three formerly declared cases are covered | PASS | replaces ['S12 fill_without_a_broker', 'S17 invented_maker_fill', 'S27 runtime_change_enabling_live'] |
-| V21 | the holdout protocol was frozen before it was captured | PASS | protocol sha256 ea332d4ee11a4b42… still matches the manifest; frozen 2026-10-16T20:01:44Z <= captured 2026-10-16T20:01:44Z; the timestamps are second-resolution, so the hash is the binding commitment |
+| V21 | the holdout protocol's freeze was committed before the capture ran | PASS | v2 evidence: freeze 1792221328939466200 < commit 1792221564 < capture 1792221621701637600; the v1 manifest could not show this (its own record said: preregistration_frozen_at_utc < captured_at_utc: False) |
+| V21b | the v1 slice is preserved byte-for-byte as descriptive evidence | PASS | protocol sha256 ea332d4ee11a4b42… still matches its manifest; the slice is now labelled descriptive for the WP-EDGE-015 hypotheses as well |
 | V22 | the holdout is reserved and no selection has read it | PASS | state OOS_ACCRUING, not scored |
 | V23 | the captured slice still hashes to its recorded digest | PASS | d92ac8cd8e86641c… over 1142 bytes |
 | V24 | the runtime configuration still puts the bot in paper mode | PASS | no live trading enabled by this work package |
 
-**31/31 checks pass.**
+**32/32 checks pass.**

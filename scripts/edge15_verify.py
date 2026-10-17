@@ -27,7 +27,6 @@ import re
 import subprocess
 import sys
 from pathlib import Path
-from statistics import median
 from typing import Any
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
@@ -63,6 +62,16 @@ def _load(path: Path) -> Any:
 
 def _sha256(path: Path) -> str | None:
     return hashlib.sha256(path.read_bytes()).hexdigest() if path.is_file() else None
+
+
+def _num(value: Any) -> float | None:
+    """A number from a CSV cell (which is always text) or from JSON, or None."""
+    if value in (None, ""):
+        return None
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return None
 
 
 # --- independent re-derivations -------------------------------------------------------
@@ -149,70 +158,6 @@ def _atr(highs: list[float], lows: list[float], closes: list[float], span: int) 
     return _ema(true_ranges, span)
 
 
-def _mean_reversion_trades(
-    bars: list[dict[str, Any]], params: dict[str, Any]
-) -> list[dict[str, Any]]:
-    """The z-score family, rebuilt here from its published parameters.
-
-    Deliberately a second implementation: if this file produced a different trade
-    list than the builder's, the matrix row would not survive the comparison, and
-    that disagreement is the check's whole purpose.
-    """
-    closes = [float(bar["close"]) for bar in bars]
-    highs = [float(bar["high"]) for bar in bars]
-    lows = [float(bar["low"]) for bar in bars]
-    volumes = [float(bar["volume"]) for bar in bars]
-    span = int(params["mean_hours"])
-    mean = _sma(closes, span)
-    deviation = _stdev(closes, span)
-    atr = _atr(highs, lows, closes, int(params["atr_hours"]))
-    trades: list[dict[str, Any]] = []
-    entry: int | None = None
-    for index in range(1, len(bars)):
-        previous = index - 1
-        z = math.nan
-        if deviation[previous] > 0:
-            z = (closes[previous] - mean[previous]) / deviation[previous]
-        if entry is None:
-            if z <= float(params["z_entry"]):
-                entry = index
-            continue
-        held = index - entry
-        exit_now = held >= int(params["max_hold_hours"])
-        if not exit_now and deviation[previous] > 0:
-            exit_now = (closes[previous] - mean[previous]) / deviation[previous] >= float(
-                params["z_exit"]
-            )
-        if not exit_now:
-            entry_atr = atr[entry]
-            exit_now = (
-                closes[index]
-                < float(bars[entry]["open"]) - float(params["atr_stop_multiple"]) * entry_atr
-            )
-        if exit_now:
-            entry_price = float(bars[entry]["open"])
-            exit_price = float(bars[index]["open"])
-            trades.append(
-                {
-                    "entry_ts_ms": int(bars[entry]["timestamp"]),
-                    "exit_ts_ms": int(bars[index]["timestamp"]),
-                    "gross_bps": (exit_price / entry_price - 1.0) * 10_000.0,
-                }
-            )
-            entry = None
-    if entry is not None:
-        entry_price = float(bars[entry]["open"])
-        exit_price = float(bars[-1]["open"])
-        trades.append(
-            {
-                "entry_ts_ms": int(bars[entry]["timestamp"]),
-                "exit_ts_ms": int(bars[-1]["timestamp"]),
-                "gross_bps": (exit_price / entry_price - 1.0) * 10_000.0,
-            }
-        )
-    return trades
-
-
 def neutral_trades(bars: list[dict[str, Any]]) -> list[dict[str, Any]]:
     """The frozen parity rule, rebuilt from its specification."""
     closes = [float(bar["close"]) for bar in bars]
@@ -254,9 +199,12 @@ def _normalize_bars(path: Path) -> list[dict[str, Any]]:
     bars: list[dict[str, Any]] = []
     for row in raw:
         if isinstance(row, dict):
+            stamp = row.get("ts") or row.get("timestamp")
+            if stamp is None:
+                continue
             bars.append(
                 {
-                    "timestamp": int(row.get("ts", row.get("timestamp"))),
+                    "timestamp": int(stamp),
                     "open": float(row["open"]),
                     "high": float(row["high"]),
                     "low": float(row["low"]),
@@ -449,12 +397,8 @@ def check_alpha_matrix(checks: Checks) -> None:
         params = evidence["parameters"]
         span = int(params["mean_hours"])
         closes = [float(bar["close"]) for bar in bars]
-        volumes = [float(bar["volume"]) for bar in bars]
-        highs = [float(bar["high"]) for bar in bars]
-        lows = [float(bar["low"]) for bar in bars]
         mean = _sma(closes, span)
         deviation = _stdev(closes, span)
-        atr = _atr(highs, lows, closes, int(params["atr_hours"]))
         worst_price = 0.0
         worst_z = 0.0
         causality = True
@@ -512,14 +456,10 @@ def check_alpha_matrix(checks: Checks) -> None:
             net_1x = float(row["net_bps_total_portfolio"])
             net_2x = float(row["net_bps_total_2x"])
             trades = int(row["trades"])
-            gross = float(row["gross_bps_per_trade"])
         else:
             trades = sum(int(r["trades"]) for r in tail_rows)
             net_1x = sum(float(r["net_bps_total_1x"]) for r in tail_rows)
             net_2x = sum(float(r["net_bps_total_2x"]) for r in tail_rows)
-            gross = sum(
-                float(r["gross_bps_per_trade"]) * int(r["trades"]) for r in tail_rows
-            ) / max(trades, 1)
         if trades == 0:
             verdict = "REJECT_NO_TRADES"
         elif net_1x <= 0:
@@ -529,11 +469,11 @@ def check_alpha_matrix(checks: Checks) -> None:
         else:
             top5 = 0.0
             for row in tail_rows:
-                share = row.get("top5_share_of_gross")
-                if share not in (None, ""):
+                share = _num(row.get("top5_share_of_gross"))
+                if share is not None:
                     top5 += (
-                        float(share)
-                        * max(float(row["gross_bps_per_trade"]), 0.0)
+                        share
+                        * max(_num(row["gross_bps_per_trade"]) or 0.0, 0.0)
                         * int(row["trades"])
                     )
             gross_total = sum(
@@ -848,7 +788,7 @@ def main() -> int:
     check_registration_and_lane(checks)
     check_parity_and_independence(checks)
 
-    payload = {
+    payload: dict[str, Any] = {
         "schema_version": "EDGE15_INDEPENDENT_VERIFICATION_V1",
         "work_package": "WP-EDGE-015/P0.2-P4",
         "verifier": "scripts/edge15_verify.py (imports no builder module by construction)",

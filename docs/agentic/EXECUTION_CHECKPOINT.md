@@ -29,7 +29,12 @@ suficiente. No hay promoción, no se tocaron límites y el holdout queda congela
 - Rama: `agent/edge-recovery/WP-EDGE-00-baseline`.
 - Commits de esta ronda: `b4ff588` — *Freeze the WP-EDGE-015 protocol before its data…*;
   `a6943c4` — *Preregister the holdout in one commit and capture it in another…*;
-  más el commit de informes que sigue a este checkpoint.
+  `c8c208d` — *Write down what the search found, including the family it rejected…* (informes);
+  más el commit de la re-verificación que sigue a este checkpoint.
+- Re-verificación ejecutada a las 07:52Z sobre el árbol de trabajo: `edge15_verify.py` 32/32
+  `VERIFIED` (el verificador dejó de reconstruir la lista de operaciones de la familia y pasó a
+  re-derivar cada decisión contra las barras existentes en el instante de la decisión, que es lo
+  que V11-V12 ya exigían), `edge14r_verify.py` 32/32 `VERIFIED`.
 - **No preparar ni tocar** lo ajeno: `data/st6/**`, `.ci/**`, `docs/research/work_packages/**`,
   `reports/economic-recovery/RFC-EDGE-014/**`, `evidence/real_decisions/**`, los tests nuevos de
   `swing`/`rfc035*` de otro agente, y en general los ~156 ficheros sucios de otras líneas de trabajo.
@@ -79,14 +84,25 @@ que el horizonte de la familia superviviente, así que todas las posiciones cerr
 - `scripts/edge14r_verify.py` con la comprobación de holdout endurecida: **32/32, VERIFIED**.
 - Causalidad de las familias: 10 pruebas que truncan la serie y exigen que la historia ya cerrada se
   reproduzca idéntica.
-- `ruff check`, `ruff format --check` y `mypy` limpios en los ficheros del paquete.
+- `ruff check`, `ruff format --check` y `mypy` limpios en los ficheros del paquete (re-ejecutado
+  07:53Z: RUFF=0, FMT=0 —9 ficheros ya formateados—, MYPY=0 sobre 7 ficheros).
+- Pruebas dirigidas re-ejecutadas 07:52Z: `tests/unit/paper/test_broker_identity.py` +
+  `tests/unit/research/test_alpha15_causality.py` → **16 passed** (7 de broker, 9 de causalidad).
+- Suite completa (dos tramos, 07:24-07:39Z): **2562 passed + 1455 passed**, 3 fallos, ninguno del
+  paquete: (a) `test_two_fills_in_the_same_clock_tick_cannot_share_an_identity` — la primera
+  versión dependía de la resolución del reloj del host; se reescribió para construir la colisión
+  explícitamente y ahora pasa (incluida en los 16 de arriba); (b) y (c) dos pruebas de
+  `test_st6_forward_regime.py` que comparan artefactos `data/st6/**` regenerados por la tarea
+  programada — línea de trabajo ajena, se registran como **limitación**, no como superadas.
 
 ## 4. Pendiente
 
 1. **Holdout prospectivo `OOS_ACCRUING`**: 0 barras todavía. La primera barra horaria posterior a la
-   congelación (07:15:28Z) aún no había cerrado en la captura; al ser el primer corte de una serie
-   prospectiva no puede aceptar ni rechazar nada. Re-capturar cuando haya barras **después** de esa
-   instantánea (`--capture` es idempotente y sólo añade lo nuevo).
+   congelación (07:15:28Z) es la que abre a las 08:00Z y cierra a las 09:00Z; hasta entonces la
+   captura sólo puede devolver cero, que es lo que devolvió. Re-capturar después de las 09:00Z
+   (`--capture` es idempotente y sólo añade lo nuevo; el manifiesto pasa a
+   `OOS_ACCRUING_WITH_PROSPECTIVE_BARS` y V07 vuelve a contar las barras del slice). Una sola barra
+   por símbolo no autoriza ninguna inferencia: el estado sigue siendo acumular.
 2. **Ninguna estrategia admitida**: sigue siendo el freno correcto. Candidatas registradas
    deshabilitadas (`RESEARCH_CANDIDATE` 12, `RESEARCH_REQUIRED` 3, `paper_candidates: []`).
 3. **Hipótesis siguiente** (fijada por la evidencia): familia cuyo bruto por operación supere con

@@ -18,7 +18,7 @@ The verifier imports none of the modules that built these artefacts: the cost mo
 | V10 | every row's cost per round trip recomputes from the published cost model | PASS | worst deviation 0.000e+00 bps over 60 rows |
 | V11 | the sensitivity columns are the same trades priced at 1x, 2x and 3x | PASS | worst identity error 2.183e-11 bps; monotone True |
 | V12 | the decisive family's entries satisfy their own gate on past bars only | PASS | 119 published trades re-derived; worst z overshoot 0.000e+00; worst price mismatch 0.000e+00 |
-| V13 | every published verdict is re-derived from the matrix and the frozen thresholds | PASS | published {'cross_sectional_rotation': 'REJECT', 'mean_reversion_vol_liq': 'EXPERIMENT_COST_FRAGILE', 'trend_pullback': 'REJECT', 'vol_regime_breakout': 'REJECT_OUTLIER_DRIVEN'} vs recomputed {'mean_reversion_vol_liq': 'EXPERIMENT_COST_FRAGILE', 'cross_sectional_rotation': 'REJECT', 'trend_pullback': 'REJECT', 'vol_regime_breakout': 'REJECT_OUTLIER_DRIVEN'} |
+| V13 | every published verdict is re-derived from the matrix and the frozen thresholds | PASS | published {'cross_sectional_rotation': 'REJECT', 'mean_reversion_vol_liq': 'EXPERIMENT_COST_FRAGILE', 'trend_pullback': 'REJECT', 'vol_regime_breakout': 'REJECT_OUTLIER_DRIVEN'} vs recomputed {'trend_pullback': 'REJECT', 'vol_regime_breakout': 'REJECT_OUTLIER_DRIVEN', 'cross_sectional_rotation': 'REJECT', 'mean_reversion_vol_liq': 'EXPERIMENT_COST_FRAGILE'} |
 | V14 | no family is reported as adoptable | PASS | ADOPT requires prospective data, which has not accrued |
 | V15 | the maker family is declared untested rather than given a fabricated fill model | PASS | no queue model exists in the tree, so no maker backtest was run |
 | V16 | NO_ECONOMIC_EDGE_FOUND agrees with the verdicts | PASS | rejected families: ['cross_sectional_rotation', 'trend_pullback', 'vol_regime_breakout'] |
@@ -36,5 +36,5 @@ The verifier imports none of the modules that built these artefacts: the cost mo
 | V28 | every other trade agrees within the preregistered tolerance | PASS | worst 0.080318 bps over 42 trades (tolerance 1.0) |
 | V29 | the two unmatched VeighNa trades are the last two entries of the rule | PASS | unmatched [1792094400000, 1792094400000], last two [1792094400000] |
 | V30 | both divergences are reported as resolved | PASS | jesse RESOLVED, vnpy RESOLVED |
-| V31 | this verifier imports no builder module | PASS | imports scanned: 14; forbidden found: [] |
+| V31 | this verifier imports no builder module | PASS | imports scanned: 13; forbidden found: [] |
 | V32 | the 14R verifier no longer imports the module that built its artefacts | PASS | its 11 imports contain no builder module |
