@@ -110,7 +110,7 @@ __________________ test_the_cli_has_one_exit_code_per_state ___________________
 tests\unit\research\test_cost_barrier_gate.py:152: in test_the_cli_has_one_exit_code_per_state
     assert clean_check.returncode == 2, clean_check.stdout + clean_check.stderr
 E   AssertionError: cost-barrier drift gate: INTEGRITY_FAILURE (check mode) exit 5
-E       head 34622f3c9adeeb2c2417b2edff3d5754f3f54ae3  branch agent/edge-recovery/WP-EDGE-00-baseline
+E       head 64da0cd8c0c2a2b72369638300e26647fb9c168c  branch agent/edge-recovery/WP-EDGE-00-baseline
 E       checks 11/12 PASS
 E       controls 6/6 detected
 E       full certification satisfied: False (partial run)
@@ -204,10 +204,10 @@ tests\unit\research\test_st6_forward_regime.py:844: in test_the_independent_veri
     assert result.returncode == 0, result.stdout + result.stderr
 E   AssertionError: FAIL 11050/11051 checks, 1 mismatches, FALSE_SUCCESS = 1
 E       FAIL the report states what it does not certify: a measured cost exceeded the modelled term beyond the declared boundary policy
-E     written -> C:\Users\GVLLFR0035\AppData\Local\Temp\pytest-of-GVLLFR0035\pytest-2099\test_the_independent_verifier_10\verification.json, C:\Users\GVLLFR0035\AppData\Local\Temp\pytest-of-GVLLFR0035\pytest-2099\test_the_independent_verifier_10\verification.md
+E     written -> C:\Users\GVLLFR0035\AppData\Local\Temp\pytest-of-GVLLFR0035\pytest-2102\test_the_independent_verifier_10\verification.json, C:\Users\GVLLFR0035\AppData\Local\Temp\pytest-of-GVLLFR0035\pytest-2102\test_the_independent_verifier_10\verification.md
 E     
 E   assert 1 == 0
-E    +  where 1 = CompletedProcess(args=['C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe', 'C:\\Users\\GVLLF...pData\\Local\\Temp\\pytest-of-GVLLFR0035\\pytest-2099\\test_the_independent_verifier_10\\verification.md\n', stderr='').returncode
+E    +  where 1 = CompletedProcess(args=['C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe', 'C:\\Users\\GVLLF...pData\\Local\\Temp\\pytest-of-GVLLFR0035\\pytest-2102\\test_the_independent_verifier_10\\verification.md\n', stderr='').returncode
 =========================== short test summary info ===========================
 FAILED tests/unit/research/test_active_recovery_wp.py::test_state_view_is_deterministic
 FAILED tests/unit/research/test_cost_barrier_adversarial.py::test_a_removed_required_input_blocks_in_full_mode_and_stays_partial_in_check
@@ -223,4 +223,5 @@ FAILED tests/unit/research/test_recovery_determinism.py::test_repeated_reproduct
 FAILED tests/unit/research/test_recovery_determinism.py::test_the_clean_checkout_rehearsal_passes_on_this_commit
 FAILED tests/unit/research/test_st6_forward_regime.py::test_the_committed_artefacts_are_coherent
 FAILED tests/unit/research/test_st6_forward_regime.py::test_the_independent_verifier_passes_without_rewriting_the_committed_artefact
-14 failed, 4070 passed in 1313.64s (0:21:53)
+14 failed, 4070 passed in 1184.06s (0:19:44)
+EXIT=1

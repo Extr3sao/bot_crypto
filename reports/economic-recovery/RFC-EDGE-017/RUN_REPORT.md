@@ -107,7 +107,15 @@ Command:
   > reports/economic-recovery/RFC-EDGE-017/FULL_UNIT_SUITE.log 2>&1; echo "EXIT=$?"
 ```
 
-Result: **4070 passed, 14 failed in 1313.64 s (21:53)**, `exit status 1`.
+Two runs, because one run is not a measurement of the published tree:
+
+| run | commit under test | result | wall clock | exit |
+| --- | --- | --- | --- | --- |
+| first | `34622f3` (code identical to the final tree; only the report script's `--index` flag landed afterwards) | 4070 passed, 14 failed | 1313.64 s (21:53) | 1 |
+| **final** | **`64da0cd`** — the commit published to the remote | **4070 passed, 14 failed** | **1184.06 s (19:44)** | **1** |
+
+The two runs produced the *same* fourteen failures, test for test, with no flake and no extra
+failure in the second run: `TEST_TARGET == RUNTIME_TARGET`.
 
 Every failure is named with its owner and its evidence. **None is converted to PASS** and none
 belongs to WP-EDGE-017F:
@@ -121,10 +129,15 @@ belongs to WP-EDGE-017F:
 | 11–12 | `test_recovery_determinism.py` (2, including the clean-checkout rehearsal) | **BLOCKED** | WP-8 line: reproduces from the foreign dirty `evidence/real_decisions/*.jsonl` | `51ef35aa…` vs `25e35d0b…` |
 | 13–14 | `test_st6_forward_regime.py` (2) | **BLOCKED** | ST6 line: accumulated forward data now contradicts the test's "a single window cannot complete coverage" assertion | `coverage_complete` is `True`, test line 815 |
 
-**No test was skipped, weakened or renamed to make the suite green.** The audit files that the
-gate run rewrote during the suite were restored to `HEAD` (`data/recovery/ACTIVE_ECONOMIC_AUDIT.*`)
-because they are not this package's to change; only the report and log produced by this session
-remain modified.
+**No test was skipped, weakened or renamed to make the suite green.**
+
+During both runs the suite rewrote artefacts that belong to other lines (`ACTIVE_ECONOMIC_AUDIT.*`,
+`data/st6/*`, `evidence/real_decisions/*.jsonl`, `RFC-EDGE-014` manifests). The first run's audit
+files were restored to `HEAD`, because they were this package's side effect. The final run was left
+alone on purpose: the working tree already carried another line's uncommitted work (36 files, among
+them `scripts/cap004c_verify.py`, `scripts/st6_scheduler_witness.py`, `alpha15.py`), and a
+single-writer rule forbids overwriting changes this package did not make. Nothing from that tree
+was committed, so the published commit is unaffected.
 
 ## 7. EDGE-016 V57/V58 (reviewed, not hidden)
 

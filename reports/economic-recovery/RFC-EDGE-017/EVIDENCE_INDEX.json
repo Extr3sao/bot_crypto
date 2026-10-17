@@ -4,9 +4,9 @@
     "reports/economic-recovery/RFC-EDGE-017/CLEAN_CHECKOUT_REHEARSAL.json": "9c20d964541d5cb264a03bf135ec62cf1d88d823f4e3ffbb6a9af2393115af75",
     "reports/economic-recovery/RFC-EDGE-017/ECONOMIC_RESULTS.csv": "e1a533283346224d90c24e12363b7518a17a306293d2a539f8f53fe27a87b660",
     "reports/economic-recovery/RFC-EDGE-017/ECONOMIC_RESULTS.json": "cbc5e3624009a0e9061dc5479d7ba8c57093d9236c24231a1a362f2ae724dcff",
-    "reports/economic-recovery/RFC-EDGE-017/FINAL_REPORT.md": "fdb421f0cbb20abab25a40a6b4bb3e26480a982ea47fcbba94ae4c6be1320fe6",
-    "reports/economic-recovery/RFC-EDGE-017/FULL_UNIT_SUITE.log": "2a70cd5512e04d0358a2af0f495864636fa09303dd5c39c9b5f26d0e3c5b3ada",
-    "reports/economic-recovery/RFC-EDGE-017/INDEPENDENT_VERIFICATION.json": "07458ed3f9556191d6dbf9da7a4d96956c97aef8728f3930838efd3fbb8b54d2",
+    "reports/economic-recovery/RFC-EDGE-017/FINAL_REPORT.md": "135e59ecce7515d142c0513077b0c7816d140a0e173033f9beaabf38c3c5f0c6",
+    "reports/economic-recovery/RFC-EDGE-017/FULL_UNIT_SUITE.log": "8cb12f6b4e74cf63c8b07c197c546167525e978b2dd326fa8a869624d60324d7",
+    "reports/economic-recovery/RFC-EDGE-017/INDEPENDENT_VERIFICATION.json": "670ffd7b4edba5b80672070f54d03d30383eee7b6c5b98842520f3a53a6fa9ce",
     "reports/economic-recovery/RFC-EDGE-017/INDEPENDENT_VERIFICATION.md": "5c880c4b9b194da55e23842296a0c2a2d49c32de641066ec3acfde6903773fca",
     "reports/economic-recovery/RFC-EDGE-017/INFORME_EJECUTIVO.md": "344f04e1d96b03e311d5fef79e2d80756677cf2ebd5119a257beb8d412fc3473",
     "reports/economic-recovery/RFC-EDGE-017/NET_RISK_REPLAY.json": "c35f7b5e93365e04d5990384a49288d718a5e437183033e110b99440915445c3",
@@ -14,7 +14,7 @@
     "reports/economic-recovery/RFC-EDGE-017/PROSPECTIVE_COVERAGE.md": "edc5cefbbb086f9fadf7dfa3e7a19b38149eccfdb3d31d6e967ea65f27248e54",
     "reports/economic-recovery/RFC-EDGE-017/RISK_BLOCKS_MATRIX.json": "4dce6097f327530e736ca93799c744ac656929348f61336b0928d66e707cce7f",
     "reports/economic-recovery/RFC-EDGE-017/RUN_REPORT.json": "6eccbf8f85a7333cf9bcf6cf01a7195339ec8e175ae4addccc5342793b9ecc9c",
-    "reports/economic-recovery/RFC-EDGE-017/RUN_REPORT.md": "f17257754c77311d6aa1a139b125f52b380804ca25291e018fc37e9fc8f83a30",
+    "reports/economic-recovery/RFC-EDGE-017/RUN_REPORT.md": "37c2807aa59338c9a052a1dd02438f853ee2d15ef26751ce74487511a56fe43c",
     "reports/economic-recovery/RFC-EDGE-017/SCHEDULER_DECISION.json": "89c02dd4ca25b6449c57b0c0f2c5db541a9d78038073c0dbc3ecb875cca42b09",
     "reports/economic-recovery/RFC-EDGE-017/STORAGE_MEASUREMENT.json": "79f3bbc5c87974d0c14ab883eb02fc6130e998fb116c3eaf2b233512418414d9",
     "reports/economic-recovery/RFC-EDGE-017/experimental_paper/CANONICAL_CYCLES.jsonl": "206c3106705478d00961526004e911580150bdff372ff29a1b5c79efbeda6b65",
@@ -36,6 +36,6 @@
     "src/trading_bot/risk/defensive_blocks.py": "ea9fe7501365395811f25944104c038081621caa27a081555bf01e8ef613b367",
     "src/trading_bot/risk/manager.py": "ee8e84c38a00be80ccafbd4168e6d0a8180a2829b288e7345140d0b33b41473a"
   },
-  "generated_at_utc": "2026-10-17T17:03:50Z",
+  "generated_at_utc": "2026-10-17T17:27:33Z",
   "schema_version": "EDGE17_EVIDENCE_INDEX_V1"
 }

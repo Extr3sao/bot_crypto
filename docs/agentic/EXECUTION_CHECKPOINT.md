@@ -8,8 +8,14 @@
 > Política completa en `AGENTS.md` §7. Reglas de campaña: `FALSE_SUCCESS=0`, `BUILDER != VERIFIER`,
 > nada de trading real, credenciales, apalancamiento ni cambios de límites de riesgo.
 
-*Última actualización: 2026-10-17T17:02Z, sesión WP-EDGE-017F (cierre real de los defectos que
-sobrevivieron a la publicación de 017).*
+*Última actualización: 2026-10-17T17:30Z, sesión WP-EDGE-017F (cierre real de los defectos que
+sobrevivieron a la publicación de 017, y suite definitiva sobre el commit publicado).*
+
+**Estado publicado al cerrar esta sesión**: `HEAD` = `origin/agent/edge-recovery/WP-EDGE-00-baseline`
+= el commit que contiene este párrafo (`git rev-parse HEAD`), 8 commits sobre `5c81aad`, fast-forward
+verificado con `git merge-base --is-ancestor`. La suite se midió en su padre
+`64da0cd8c0c2a2b72369638300e26647fb9c168c`; el delta es solo documentación, sin código ni tests, así
+que `TEST_TARGET == RUNTIME_TARGET` se mantiene. Comprobarlo con `git rev-parse`, no leyéndolo aquí.
 
 ## 0. WP-EDGE-017F — qué se cerró y con qué evidencia
 
@@ -58,7 +64,11 @@ el multiplicador 1.5×, la válvula de 64 MiB ni la política de fin de semana (
   - `126cf95` — captura nueva (slice 9 → 24, ledger, manifiesto).
   - `7ef6458` — EDGE-015 re-verificado 35/35 tras commitear la captura.
   - `34622f3` — replay 1×/2×/3× regenerado + curvas + verificación 31/31.
-  - *(cierre)* — `RUN_REPORT.md`, `FINAL_REPORT.md`, índice de evidencias y este checkpoint.
+  - `64da0cd` — cierre: suite real, propietario por test, `RUN_REPORT.md`, `FINAL_REPORT.md`.
+  - *(cierre documental)* — suite definitiva sobre `64da0cd`, índice de evidencias reconstruido y
+    este checkpoint apuntando al commit publicado.
+- **Publicado**: `git push origin HEAD:agent/edge-recovery/WP-EDGE-00-baseline` →
+  `5c81aad..64da0cd` (fast-forward, sin force). El remoto se comprueba con `git rev-parse`.
 - La cabecera publicada se comprueba con `git rev-parse origin/agent/edge-recovery/WP-EDGE-00-baseline`,
   no leyéndola aquí.
 - **No tocar** lo ajeno: `data/st6/**`, `.ci/**`, `data/recovery/wp8/**`,
@@ -100,7 +110,9 @@ pérdida cerrada). 2×/3× en `NET_RISK_REPLAY.runs.*.weekly_risk`.
 
 ## 4. Pendiente y bloqueado (no ocultar)
 
-1. **Suite global ejecutada**: **4070 passed, 14 failed en 21:53** (exit 1). Los 14 son
+1. **Suite global ejecutada dos veces**: **4070 passed, 14 failed** en 21:53 sobre `34622f3` y
+   **4070 passed, 14 failed en 19:44** (exit 1, 1184.06 s) sobre el commit publicado `64da0cd`,
+   con los **mismos 14 tests** en ambas corridas. Los 14 son
    **BLOCKED** ajenos al paquete: **9 cost-barrier** (el gate fija el audit `023b66ff…` mientras
    el audit comprometido en `HEAD` ya es `c6ea3438…`: inconsistencia previa a 017F), **3 WP-8**
    (`evidence/real_decisions/*.jsonl` sucios de otra línea; vista comprometida obsoleta) y
@@ -141,7 +153,7 @@ cd "$(git rev-parse --show-toplevel)" && ./.venv/Scripts/python scripts/edge15_v
 # 3. Replay (si hace falta regenerarlo)
 cd "$(git rev-parse --show-toplevel)" && for m in 1 2 3; do ./.venv/Scripts/python scripts/edge16_paper_lane.py --cost-mode net --cost-multiplier $m --out reports/economic-recovery/RFC-EDGE-017/scratch/net_${m}x; done
 
-# 4. Suite completa (~40 min con ST6 activa)
+# 4. Suite completa (~20 min con ST6 activa) — dejar el log dentro del paquete
 cd "$(git rev-parse --show-toplevel)" && ./.venv/Scripts/python -m pytest tests/unit -q --tb=short -rf -p no:cacheprovider > reports/economic-recovery/RFC-EDGE-017/FULL_UNIT_SUITE.log 2>&1; echo "EXIT=$?"
 ```
 

@@ -132,8 +132,11 @@ admitted, so `NO_SIGNAL` here means "the lane evaluated the bar and proposed not
   coverage ladder, dedupe, atomicity, single-writer lock).
 - `scripts/edge17_prefix_replay.py`: **9/9** capture defects reproduced from `2536928` and
   from four re-introduced mutants plus a no-lock variant.
-- Full `pytest tests/unit` on this tree: see section 6 (recorded, with owner, PASS/FAIL/
-  BLOCKED — no failure is converted into a pass).
+- Full `pytest tests/unit` on the **published commit `64da0cd`**: **4070 passed, 14 failed,
+  0 skipped** in 1184.06 s, exit status 1. All fourteen are owned by other lines and recorded
+  as `BLOCKED` in `RUN_REPORT.md` §6 with their evidence; none belongs to this package, and
+  none is converted into a pass. A first run on `34622f3` (identical code) produced the same
+  fourteen failures, so the result is not a flake. Zero failures are attributable to 017F.
 
 ## 6. What is still blocked
 
@@ -159,3 +162,20 @@ admitted, so `NO_SIGNAL` here means "the lane evaluated the bar and proposed not
 The economic conclusion does not improve with the corrected accounting: the book loses more
 money once every cost is charged inside the book and the weekly veto stops masking the
 strategy behind a single permanent block. `NO_RESTATED_EDGE_SURVIVES`.
+
+## 8. State as published
+
+| item | value |
+| --- | --- |
+| branch | `agent/edge-recovery/WP-EDGE-00-baseline` |
+| local = remote HEAD | the commit that carries this document (`git rev-parse HEAD`), fast-forwarded from `5c81aad` without force |
+| commit the suite measured | `64da0cd8c0c2a2b72369638300e26647fb9c168c`, the parent of the commit carrying this paragraph; the delta is documentation only, no code and no test |
+| commits added by 017F | 8 (7 of code, data and evidence + this close-out) |
+| suite on that commit | 4070 PASS / 14 BLOCKED (other owners) / 0 package FAIL / 0 skipped |
+| independent verification | 31/31 checks, 14/14 injected faults |
+| working tree at publication | carries another line's uncommitted work (36 files: `data/st6/*`, `evidence/real_decisions/*.jsonl`, `FINAL_REPORT.md` at the repo root, two scripts, `alpha15.py`); left untouched, not committed, and the published commit is unaffected |
+
+`WP-EDGE-017F` is **closed** on the defects it was opened for. It is **not** closed as "the
+repository is green": the fourteen suite failures above remain open with their owners, and the
+prospective capture is still manual because no scheduler is authorized.
+
