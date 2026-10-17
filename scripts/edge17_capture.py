@@ -194,6 +194,29 @@ def main() -> int:
                     first_seen_ms[key] = seen_at
     slice_keys = {row_key(row) for row in slice_rows}
 
+    # WP-EDGE-017F/P1: every ladder row carries its provenance, not just a stage.
+    # A bar is "received at close" only if the collector saw it inside the first
+    # hour after it closed; anything later is a recovery, and anything never seen
+    # is absent. A bar first seen before its close would be an integrity failure.
+    for row in ladder:
+        key = (str(row["symbol"]), int(row["open_ms"]))
+        seen_at = first_seen_ms.get(key)
+        if seen_at is None:
+            row["capture_class"] = "ABSENT"
+            row["first_seen_utc"] = None
+            row["capture_lag_hours"] = None
+            continue
+        lag_ms = seen_at - (int(row["open_ms"]) + PERIOD_MS_1H)
+        row["capture_class"] = (
+            "FIRST_SEEN_BEFORE_CLOSE"
+            if lag_ms < 0
+            else "RECEIVED_AT_CLOSE"
+            if lag_ms < PERIOD_MS_1H
+            else "RECOVERED_LATER"
+        )
+        row["first_seen_utc"] = _utc(seen_at)
+        row["capture_lag_hours"] = round(lag_ms / PERIOD_MS_1H, 3)
+
     per_symbol: dict[str, dict[str, Any]] = {}
     for symbol in SYMBOLS:
         opens = [row["open_ms"] for row in ladder if row["symbol"] == symbol]
@@ -211,10 +234,17 @@ def main() -> int:
             for open_ms in observed
             if (symbol, open_ms) in first_seen_ms
         ]
+        classes = [row["capture_class"] for row in ladder if row["symbol"] == symbol]
         per_symbol[symbol] = {
             "captured_bars": sum(1 for row in slice_rows if row["symbol"] == symbol),
-            "captured_at_close_or_within_one_hour": sum(1 for lag in lags if lag <= 0),
-            "captured_by_backfill_later": sum(1 for lag in lags if lag > 0),
+            "received_at_close": classes.count("RECEIVED_AT_CLOSE"),
+            "recovered_later": classes.count("RECOVERED_LATER"),
+            "absent": classes.count("ABSENT"),
+            "first_seen_before_close": classes.count("FIRST_SEEN_BEFORE_CLOSE"),
+            "captured_at_close_or_within_one_hour": sum(
+                1 for lag in lags if 0 <= lag < PERIOD_MS_1H
+            ),
+            "captured_by_backfill_later": sum(1 for lag in lags if lag >= PERIOD_MS_1H),
             "max_capture_lag_hours": round(max(lags) / PERIOD_MS_1H, 3) if lags else None,
             "expected_closed_bars": len(opens),
             "observed": len(observed),
@@ -229,9 +259,25 @@ def main() -> int:
     integrity: dict[str, Any] = {
         "capture_provenance": {
             "reading": (
-                "a bar whose first ledger record is later than its close was backfilled by the "
+                "a bar whose first ledger record is later than its close was recovered by the "
                 "append-only collector, not observed live at that hour; both are post-freeze "
                 "data the protocol never saw, but only the first is live capture"
+            ),
+            "classes": ["RECEIVED_AT_CLOSE", "RECOVERED_LATER", "ABSENT"],
+            "rule": (
+                "RECEIVED_AT_CLOSE: first ledger record within [close, close + 1h); "
+                "RECOVERED_LATER: first record at or after close + 1h; ABSENT: never recorded. "
+                "FIRST_SEEN_BEFORE_CLOSE is an integrity failure and is counted separately."
+            ),
+            "received_at_close_total": sum(
+                bucket["received_at_close"] for bucket in per_symbol.values()
+            ),
+            "recovered_later_total": sum(
+                bucket["recovered_later"] for bucket in per_symbol.values()
+            ),
+            "absent_total": sum(bucket["absent"] for bucket in per_symbol.values()),
+            "first_seen_before_close_total": sum(
+                bucket["first_seen_before_close"] for bucket in per_symbol.values()
             ),
             "backfilled_total": sum(
                 bucket["captured_by_backfill_later"] for bucket in per_symbol.values()

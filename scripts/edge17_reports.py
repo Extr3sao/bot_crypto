@@ -172,9 +172,20 @@ def replay() -> dict[str, Any]:
         "runs": runs,
         "fills_by_multiplier": fills,
         "monotonic": fills["3x"] <= fills["2x"] <= fills["1x"],
+        "drawdown_by_multiplier": {
+            name: run.get("drawdown_pct") for name, run in runs.items()
+        },
+        "weekly_window": "UTC Monday 00:00 to Monday 00:00 (ADR-017F-01)",
+        "weekly_blocks_by_multiplier": {
+            name: ((run.get("weekly_risk") or {}).get("weekly_blocks_total")) or 0
+            for name, run in runs.items()
+        },
         "answer": (
-            "net risk approves fewer trades as the cost rises: "
+            "fills are "
             + ", ".join(f"{name} {count}" for name, count in fills.items())
+            + ". Cost only removes a fill where a periodic loss rule binds, so 1x and 2x "
+            "can share a count; unlike the pre-017F replay, a weekly veto no longer "
+            "accumulates for the whole run."
         ),
     }
 
@@ -398,6 +409,11 @@ def run_report(
             "live_trading": "DISABLED",
             "weekend_policy": "UNCHANGED (config/risk.yaml untouched)",
             "risk_limits_changed": False,
+            "weekly_window_rolls": replay_doc.get("weekly_window") is not None,
+            "drawdown_measured_from_curve": all(
+                run.get("drawdown_pct") is not None
+                for run in (replay_doc.get("runs") or {}).values()
+            ),
             "disk_guard_relaxed": False,
             "prospective_capture": "MANUAL_NOT_SCHEDULED",
         },
@@ -423,14 +439,24 @@ def run_report(
                     ),
                     default=0,
                 ),
-                "window": "2026-10-17T08:00Z..2026-10-17T10:00Z",
+                "window": (
+                    f"{min(opening)}..{max(opening)}"
+                    if (opening := (integrity.get("expected_opens_utc") or []))
+                    else None
+                ),
                 "proposals_on_them": int(totals.get("bars_with_a_proposal", 0)),
                 "fills_on_them": int(totals.get("bars_with_a_fill", 0)),
+                "received_at_close": (integrity.get("capture_provenance") or {}).get(
+                    "received_at_close_total"
+                ),
+                "recovered_later": (integrity.get("capture_provenance") or {}).get(
+                    "recovered_later_total"
+                ),
                 "reading": (
-                    "three closed hours per symbol, all captured by the repaired append-only "
-                    "collector and all evaluated by the lane; none produced a proposal. They "
-                    "were backfilled by the first fixed run, not observed live at their close: "
-                    "the ledger records the lag"
+                    "every expected closed hour is in the slice and the lane evaluated the "
+                    "most recent ones; none produced a proposal. Provenance is per bar in "
+                    "CAPTURE_INTEGRITY.capture_provenance: only bars the ledger first saw "
+                    "within one hour of their close count as received at close"
                 ),
             },
             "how_many_are_missing_and_why": {
@@ -483,6 +509,13 @@ def run_report(
             "capture": {
                 "slice_rows": totals.get("slice_rows"),
                 "duplicates": totals.get("duplicate_slice_rows"),
+                "received_at_close_total": (integrity.get("capture_provenance") or {}).get(
+                    "received_at_close_total"
+                ),
+                "recovered_later_total": (integrity.get("capture_provenance") or {}).get(
+                    "recovered_later_total"
+                ),
+                "absent_total": (integrity.get("capture_provenance") or {}).get("absent_total"),
                 "backfilled_total": (integrity.get("capture_provenance") or {}).get(
                     "backfilled_total"
                 ),
@@ -500,6 +533,9 @@ def run_report(
                     name: run.get("net_realised_usdt")
                     for name, run in (replay_doc.get("runs") or {}).items()
                 },
+                "drawdown_by_multiplier": replay_doc.get("drawdown_by_multiplier"),
+                "weekly_window": replay_doc.get("weekly_window"),
+                "weekly_blocks_by_multiplier": replay_doc.get("weekly_blocks_by_multiplier"),
                 "equivalence_with_baseline": replay_doc.get("equivalence"),
             },
             "economic": {
@@ -520,10 +556,17 @@ def run_report(
             "scheduler creation: requires administrator privileges, not authorized",
         ],
         "limitations": [
-            "the nine prospective bars were backfilled by the first fixed run, not captured live at their close; the honest claim is post-freeze data, not live observation",
+            (
+                "prospective bars: "
+                f"{(integrity.get('capture_provenance') or {}).get('received_at_close_total', 0)} "
+                "were first recorded within one hour of their close and "
+                f"{(integrity.get('capture_provenance') or {}).get('recovered_later_total', 0)} "
+                "were recovered later by the append-only collector; the honest claim is "
+                "post-freeze data, and only the first class is live capture"
+            ),
             "the replay has no order book and no data-age clock, so spread and latency blocks are enforced on the runtime entrypoint and declared NOT_MEASURED for the bar replay",
             "the broker charges half the spread and slippage per side; a stop filled at its level is still optimistic for a gap through it",
-            "the 2x/3x nets are projections over the 1x fills plus re-runs whose extra cost changed which entries were approved",
+            "2x/3x are genuine re-runs of the lane with the cost multiplier applied inside the book; they are not the same fills repriced, because the extra cost changes which entries pass risk",
         ],
         "code": {path: _sha(REPO / path) for path in CODE_FILES},
     }
