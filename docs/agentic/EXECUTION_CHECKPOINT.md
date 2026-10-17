@@ -17,6 +17,33 @@ verificado con `git merge-base --is-ancestor`. La suite se midió en su padre
 `64da0cd8c0c2a2b72369638300e26647fb9c168c`; el delta es solo documentación, sin código ni tests, así
 que `TEST_TARGET == RUNTIME_TARGET` se mantiene. Comprobarlo con `git rev-parse`, no leyéndolo aquí.
 
+## RFC-AI-BOTS-002 — sesión 2026-10-17T22:30Z (rama `agent/ai-vision/RFC-AI-VISION-001`)
+
+**Objetivo**: ejecutar el RFC de AI Bots sobre AI-VISION-001 sin tocar WEB-017F ni
+`config/risk.yaml`. Confirmar Git antes de escribir: rama propia, `HEAD` = `091d55d` al
+empezar, y varias modificaciones ajenas sin commitear en `reports/`, `data/` y
+`config/vision.yaml` que **no** se han tocado ni staged.
+
+| bloque | estado | evidencia |
+| --- | --- | --- |
+| P0 defectos visuales (volumen doble, margen, cuerpos) | **cerrado** | RED medido (80 rects vs 40; 34 px en borde; 5,93 px/vela) → GREEN en `tests/unit/vision/test_visual_defects.py` |
+| Guards PIT/esquema y hueco de datos | **cerrado** | `guards.py` + `test_guards_and_controls.py`; el lane rechaza ejecutar en una barra no contigua |
+| Registro de bots | **cerrado** | `ai_bots/registry.py`, capacidades cerradas, desactivados por defecto (`AI_BOTS_ENABLED` + `AI_BOTS_ALLOW`) |
+| BOT-VIS-01 / BOT-CTX-01 | `MOCK_TEST` ejecutado | 40 llamadas cada uno, 14 cierres, mismo libro; VIS adjunta 40 PNG, CTX 0 |
+| Verificación independiente | **PASS 34/0** | `scripts/ai_bots_verify.py` sobre artefactos en disco |
+| Llamada multimodal real | **BLOCKED** | `--mode live` → exit 2 `MISSING_CREDENTIAL`; sin `VISION_API_KEY` no hay petición |
+| Comparación económica | `NOT_EVIDENCE` | el modelo fue un guion; no se declara edge |
+
+Suite medida en el árbol de trabajo antes de publicar: **366 passed**
+(`tests/unit/{vision,intelligence,paper,risk}`), ruff y mypy limpios.
+Artefactos: `reports/ai-bots/RFC-AI-BOTS-002/` (RUN_REPORT, FINAL_REPORT,
+INDEPENDENT_VERIFICATION, REA_FINDINGS, manifests, ledgers) y
+`docs/ai-bots/RFC-AI-BOTS-002/` (autoridad, fuentes, matriz de patrones).
+
+**Pendiente real**: credencial del proveedor para `REAL_MODEL_CALLED`; sin ella el veredicto
+económico no puede existir. **No** se ha tocado riesgo, no hay ruta de orden real, y REA
+quedó en `doctor/help` ejecutados con análisis de terceros `NOT_EXECUTED`.
+
 ## 0. WP-EDGE-017F — qué se cerró y con qué evidencia
 
 **Punto de partida validado**: `HEAD` = `origin/agent/edge-recovery/WP-EDGE-00-baseline` =

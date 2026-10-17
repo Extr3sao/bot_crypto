@@ -1,0 +1,55 @@
+{
+  "schema_version": "AIBOT_RUN_REPORT_V1",
+  "generated_at": "2026-10-17T20:42:09.332840+00:00",
+  "mode": "mock",
+  "status": "EXECUTED",
+  "real_model_called": false,
+  "data": {
+    "source": "data/edge08/universe-1h (Binance 1h, committed)",
+    "symbols": [
+      "AAVEUSDT",
+      "UNIUSDT"
+    ],
+    "limit_bars": 600
+  },
+  "bots": [
+    {
+      "bot_id": "BOT-VIS-01",
+      "symbols": "AAVEUSDT+UNIUSDT",
+      "model_status": "MOCK_TEST",
+      "prompt_version": "ai-vision-prompt/2",
+      "calls": 40,
+      "fills": 14,
+      "closed_trades": 14,
+      "net_realised_usdt": -34.448805,
+      "gross_realised_usdt": -20.448805,
+      "costs_usdt": 22.393861,
+      "final_equity_usdt": 9965.551195,
+      "drawdown_pct": 0.360436,
+      "stop_reason": null,
+      "images_attached": 40
+    },
+    {
+      "bot_id": "BOT-CTX-01",
+      "symbols": "AAVEUSDT+UNIUSDT",
+      "model_status": "MOCK_TEST",
+      "prompt_version": "aibot-ctx-prompt/1",
+      "calls": 40,
+      "fills": 14,
+      "closed_trades": 14,
+      "net_realised_usdt": -34.448805,
+      "gross_realised_usdt": -20.448805,
+      "costs_usdt": 22.393861,
+      "final_equity_usdt": 9965.551195,
+      "drawdown_pct": 0.360436,
+      "stop_reason": null,
+      "images_attached": 0
+    }
+  ],
+  "discarded_chart_dirs": [],
+  "economics": "NOT_EVIDENCE",
+  "limitations": [
+    "Mock mode answers with a fixed script; it proves plumbing, not edge.",
+    "Historical replay cannot be labelled as prospective evidence."
+  ]
+}

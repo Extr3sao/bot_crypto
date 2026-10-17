@@ -1,0 +1,282 @@
+{
+  "schema_version": "AIBOT_INDEPENDENT_VERIFICATION_V1",
+  "verifier": "scripts/ai_bots_verify.py (reads artifacts, does not import the runner)",
+  "builder_is_not_verifier": true,
+  "artifact_root": "reports\\ai-bots\\RFC-AI-BOTS-002",
+  "checks": [
+    {
+      "check": "ledger_exists[bot-vis-01]",
+      "status": "PASS",
+      "detail": "BOT-VIS-01_DECISIONS.jsonl"
+    },
+    {
+      "check": "ledger_chain_intact[bot-vis-01]",
+      "status": "PASS",
+      "detail": {
+        "lines": 96,
+        "reason": "INTACT",
+        "head": "b02020ad86d11d9e2a17cf5d9e6593a570943f309ee9ab094e47f446fe251f53"
+      }
+    },
+    {
+      "check": "ledger_has_decisions[bot-vis-01]",
+      "status": "PASS",
+      "detail": 40
+    },
+    {
+      "check": "ledger_exists[bot-ctx-01]",
+      "status": "PASS",
+      "detail": "BOT-CTX-01_DECISIONS.jsonl"
+    },
+    {
+      "check": "ledger_chain_intact[bot-ctx-01]",
+      "status": "PASS",
+      "detail": {
+        "lines": 96,
+        "reason": "INTACT",
+        "head": "4f9ebc3feb64dab0a3bb8af9a327f2855756581726a30fa5e818348aa5657e5b"
+      }
+    },
+    {
+      "check": "ledger_has_decisions[bot-ctx-01]",
+      "status": "PASS",
+      "detail": 40
+    },
+    {
+      "check": "manifest_exists[BOT-VIS-01]",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "vis_sends_a_png_every_decision",
+      "status": "PASS",
+      "detail": {
+        "rows": 40,
+        "attached": 40
+      }
+    },
+    {
+      "check": "vis_png_bytes_match_recorded_hash",
+      "status": "PASS",
+      "detail": {
+        "missing": [],
+        "mismatched": []
+      }
+    },
+    {
+      "check": "vis_prompt_is_visual",
+      "status": "PASS",
+      "detail": "ai-vision-prompt/2"
+    },
+    {
+      "check": "manifest_exists[BOT-CTX-01]",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "ctx_sends_no_image",
+      "status": "PASS",
+      "detail": {
+        "rows": 40,
+        "attached": 0
+      }
+    },
+    {
+      "check": "ctx_prompt_is_structured",
+      "status": "PASS",
+      "detail": "aibot-ctx-prompt/1"
+    },
+    {
+      "check": "trace_count_matches_calls[BOT-VIS-01]",
+      "status": "PASS",
+      "detail": {
+        "rows": 40,
+        "calls": "40"
+      }
+    },
+    {
+      "check": "trace_rows_name_the_bot[BOT-VIS-01]",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "mock_is_never_called_real[BOT-VIS-01]",
+      "status": "PASS",
+      "detail": {
+        "bench": "MOCK_TEST",
+        "trace": [
+          "OK"
+        ]
+      }
+    },
+    {
+      "check": "mock_declares_not_evidence[BOT-VIS-01]",
+      "status": "PASS",
+      "detail": "NOT_EVIDENCE"
+    },
+    {
+      "check": "pnl_reconciles[BOT-VIS-01]",
+      "status": "PASS",
+      "detail": {
+        "reference_gross": -12.054944,
+        "commissions": 14.0,
+        "execution_cost": 8.393861,
+        "net": -34.448805,
+        "bench_net": "-34.448805",
+        "closes": 14
+      }
+    },
+    {
+      "check": "trace_count_matches_calls[BOT-CTX-01]",
+      "status": "PASS",
+      "detail": {
+        "rows": 40,
+        "calls": "40"
+      }
+    },
+    {
+      "check": "trace_rows_name_the_bot[BOT-CTX-01]",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "mock_is_never_called_real[BOT-CTX-01]",
+      "status": "PASS",
+      "detail": {
+        "bench": "MOCK_TEST",
+        "trace": [
+          "OK"
+        ]
+      }
+    },
+    {
+      "check": "mock_declares_not_evidence[BOT-CTX-01]",
+      "status": "PASS",
+      "detail": "NOT_EVIDENCE"
+    },
+    {
+      "check": "pnl_reconciles[BOT-CTX-01]",
+      "status": "PASS",
+      "detail": {
+        "reference_gross": -12.054944,
+        "commissions": 14.0,
+        "execution_cost": 8.393861,
+        "net": -34.448805,
+        "bench_net": "-34.448805",
+        "closes": 14
+      }
+    },
+    {
+      "check": "registry_has_both_bots",
+      "status": "PASS",
+      "detail": [
+        "BOT-CTX-01",
+        "BOT-VIS-01"
+      ]
+    },
+    {
+      "check": "registry_forbids_execution_for_all",
+      "status": "PASS",
+      "detail": []
+    },
+    {
+      "check": "bots_cannot_import_an_exchange",
+      "status": "PASS",
+      "detail": []
+    },
+    {
+      "check": "bot_module_does_not_own_the_book[bots.py]",
+      "status": "PASS",
+      "detail": [
+        "__future__",
+        "collections.abc",
+        "dataclasses",
+        "hashlib",
+        "itertools",
+        "json",
+        "math",
+        "pathlib",
+        "trading_bot.vision.prompt",
+        "trading_bot.vision.provider",
+        "trading_bot.vision.settings",
+        "typing"
+      ]
+    },
+    {
+      "check": "bot_module_does_not_own_the_book[contracts.py]",
+      "status": "PASS",
+      "detail": [
+        "__future__",
+        "hashlib",
+        "json",
+        "pydantic",
+        "trading_bot.vision.contract",
+        "typing"
+      ]
+    },
+    {
+      "check": "bot_module_does_not_own_the_book[registry.py]",
+      "status": "PASS",
+      "detail": [
+        "__future__",
+        "collections.abc",
+        "dataclasses",
+        "json",
+        "os",
+        "pathlib",
+        "typing"
+      ]
+    },
+    {
+      "check": "bot_module_does_not_own_the_book[runner.py]",
+      "status": "PASS",
+      "detail": [
+        "__future__",
+        "collections.abc",
+        "dataclasses",
+        "pathlib",
+        "trading_bot.config.risk",
+        "trading_bot.intelligence.ai_bots.bots",
+        "trading_bot.intelligence.ai_bots.registry",
+        "trading_bot.vision.lane",
+        "trading_bot.vision.prompt",
+        "trading_bot.vision.provider",
+        "trading_bot.vision.settings",
+        "typing",
+        "uuid"
+      ]
+    },
+    {
+      "check": "bot_module_does_not_own_the_book[__init__.py]",
+      "status": "PASS",
+      "detail": [
+        "__future__"
+      ]
+    },
+    {
+      "check": "risk_policy_unchanged_vs_baseline",
+      "status": "PASS",
+      "detail": {
+        "exit": 0,
+        "diff_bytes": 0
+      }
+    },
+    {
+      "check": "live_without_key_is_blocked",
+      "status": "PASS",
+      "detail": {
+        "exit": 2,
+        "status": "BLOCKED",
+        "stdout": "[ai-bots] BLOCKED \u2014 MISSING_CREDENTIAL (no live call was made)"
+      }
+    },
+    {
+      "check": "runtime_imports_are_covered_by_tests",
+      "status": "PASS",
+      "detail": []
+    }
+  ],
+  "passed": 34,
+  "failed": 0,
+  "verdict": "PASS"
+}

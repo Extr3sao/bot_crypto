@@ -1735,3 +1735,27 @@ lo que NO se requerirá per-ADR "next free" footnote nunca más.
   la tubería, no el modelo (el veredicto se marca `NOT_EVIDENCE`).
 - **Reversión**: un ADR nuevo. Relajar la validación para "que el modelo opere" es exactamente lo
   que este paquete se prohíbe.
+## ADR-AIB-01 — Un registro de bots, un libro canónico
+
+- **Fecha**: 2026-10-17.
+- **Contexto**: el RFC-TAP-AI-BOTS-002 añade un segundo agente discrecional (BOT-CTX-01)
+  junto al visual (BOT-VIS-01). El riesgo real de tener dos bots es que cada uno acabe con
+  su propio broker, sus propios límites o su propio sizing, y la comparación entre ambos
+  mida dos políticas en vez de dos decisiones.
+- **Decisión**:
+  1. `BotCapabilityRegistry` es la única puerta: un bot declara modelo, contratos de
+     entrada/salida, presupuesto y latencia; las capacidades de ejecución están prohibidas
+     por lista negra y lanzan `RegistryError` si se intentan conceder.
+  2. Ambos bots se ejecutan a través de `run_bot`, que construye el `RiskManager` y el
+     `PaperBroker` del runtime. Los módulos de bot no importan ninguno de los dos
+     (comprobado por AST en la verificación independiente).
+  3. Todo bot está desactivado por defecto y necesita activación explícita por bot.
+  4. El `model_status` de un run sólo puede ser `REAL_MODEL_CALL` si existe un recibo de
+     llamada con éxito; si no, es `MOCK_TEST` o `REAL_MODEL_ATTEMPTED_FAILED`.
+- **Qué NO cambia**: `config/risk.yaml`, el modo paper/shadow, la ausencia de ruta de
+  orden real, y la prohibición de que un LLM dimensione.
+- **Consecuencias**: dos bots son comparables con los mismos datos, coste y capital; un
+  bot no puede degradar el riesgo del otro. El coste es un registro más que mantener y la
+  obligación de pasar por `run_bot` en vez de invocar el lane a mano.
+- **Reversión**: otro ADR; relajar el registro para que el bot opere es exactamente lo
+  que este ADR prohíbe.

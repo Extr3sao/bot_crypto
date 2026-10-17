@@ -1,0 +1,10 @@
+{
+  "schema_version": "AIBOT_RUN_REPORT_V1",
+  "generated_at": "2026-10-17T20:42:36.803337+00:00",
+  "mode": "live",
+  "status": "BLOCKED",
+  "blocked_reason": "MISSING_CREDENTIAL",
+  "detail": "VISION_API_KEY is absent; no multimodal call was made.",
+  "real_model_called": false,
+  "economics": "NOT_MEASURED"
+}
