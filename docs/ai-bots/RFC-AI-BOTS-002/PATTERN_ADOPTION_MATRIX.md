@@ -1,34 +1,28 @@
-# PATTERN_ADOPTION_MATRIX
+# PATTERN_ADOPTION_MATRIX — qué patrón, con qué evidencia, y en qué estado
 
-Cada fila separa **proyecto**, **patrón** e **implementación**. Una adopción sólo es
-`ADOPT_*` si el patrón está implementado y con test en este repositorio.
+Actualizado en la pasada REA-FIRST (2026-10-18). Regla vigente:
+`NO_REA_EVIDENCE = NO_EXTERNAL_PATTERN_CERTIFICATION`.
 
-| ID | Patrón | Proyecto de origen | Decisión | Implementación propia | Test | Motivo |
-| --- | --- | --- | --- | --- | --- | --- |
-| P-01 | PNG determinista con hash por ventana | qrak (patrón) | ADOPT_P0 | `vision/chart.py` (ya existía; corregido) | `test_chart.py`, `test_visual_defects.py` | Sin esto no se puede probar qué vio el modelo |
-| P-02 | Contrato JSON estricto, sin campos de ejecución | qrak, FenixAI (patrón) | ADOPT_P0 | `vision/contract.py`, `ai_bots/contracts.py` | `test_contract.py`, `test_registry_contracts_runner.py` | Un texto libre no es una orden |
-| P-03 | Ledger de decisiones append-only | nof1.ai (patrón descrito) | ADOPT_P0 | `vision/ledger.py` (cadena de hashes) | `test_ledger.py` + verificación independiente | Permite re-ejecutar la misma decisión |
-| P-04 | Registro de capacidades/plugins con permisos | TradingAgents (patrón) | ADOPT_P0 | `ai_bots/registry.py` | `test_registry_contracts_runner.py` | Un bot no debe poder tocar el libro |
-| P-05 | Un único `RiskManager`/`PaperBroker` por run | patrón del runtime | ADOPT_P0 | `ai_bots/runner.py` | `test_a_bot_run_trades_the_canonical_book_and_writes_both_traces` | Comparación honesta entre bots |
-| P-06 | Control sin imagen para aislar el efecto multimodal | Semantic Signal (idea de ablación) | ADOPT_P1 | `ai_bots/bots.py` (`build_structured_prompt`) | `test_structured_prompt_never_claims_an_image` | Sin control no se sabe si el PNG aporta algo |
-| P-07 | Crítico/adversario ortogonal | TradingAgents | EXPERIMENT | no implementado | — | Sólo si la ablación demuestra mejora neta |
-| P-08 | Consenso de dos modelos | TradingAgents, nof1 | EXPERIMENT | no implementado | — | Duplica coste y latencia antes de saber si hay edge |
-| P-09 | Decisión por substring de texto libre | FortuneMal | REJECT | — | — | Sin schema ni riesgo |
-| P-10 | Grafo multiagente completo con roles fijos | TradingAgents | DEFER | — | — | Latencia y coste sin evidencia de mejora |
-| P-11 | Operar sólo con series numéricas sin imagen | nof1.ai | REJECT como sustituto | — | — | No es visión; se conserva como control P-06 |
-| P-12 | Importar código AGPL/sin licencia | nof1.ai, FortuneMal | REJECT | — | — | Obligaciones materiales no autorizadas |
+| Patrón | Origen | Evidencia | Estado | Por qué |
+| --- | --- | --- | --- | --- |
+| PNG determinista + contrato estricto | propio (AI-VISION-001) + referencia de `SRC-QRAK` | tests de visión | **ADOPTED (propio)** | probado en este repo; de qrak no se copió código |
+| Separación analista/ejecutor | `SRC-FENIX` (Apache-2.0) | ninguna REA | **DEFER** | sin superficie JS/Electron propia; sin clon por disco |
+| Grafo bull/bear + crítico | `SRC-TRADAGENTS` (Apache-2.0) | ninguna REA | **EXPERIMENT** | un informe HTML no prueba la orquestación; ablación obligatoria antes de adoptar |
+| Render Plotly → PNG | `SRC-SEMSIG` (MIT) | ninguna REA | **DEFER** | UI Streamlit = JS de framework; su lógica es Python y se audita con fuente/tests |
+| Ledger de decisiones estilo nof1 | `SRC-NOF1` (AGPL-3.0) | 4 `evidence_id` reales, **estructura sólo** | **DEFER / REJECT código** | la cadena gráfico→modelo→decisión no fue observable; no se copia AGPL |
+| Cualquier cosa de `SRC-FORTUNE` | sin licencia (API 404) | — | **REJECT** | `NO_COPY` sin licencia |
 
-## Notas de coste y compatibilidad
+## Lo que sí está certificado (y no viene de fuera)
 
-- P-01…P-06 son Python puro, funcionan en Windows y no añaden dependencias nuevas salvo
-  `matplotlib` (ya introducida en AI-VISION-001).
-- P-07/P-08 quedan fuera por coste marginal no demostrado, no por dificultad técnica.
-- Ninguna adopción cambia límites de riesgo, sizing ni la política de venue.
+| Garantía | Test | Estado |
+| --- | --- | --- |
+| Imagen alterada ⇒ 0 propuestas, 0 fills | `test_integrity_and_latency.py` | **cerrado** |
+| Respuesta tardía ⇒ sin fill retrospectivo | `test_integrity_and_latency.py` | **cerrado** |
+| Insumos distintos ⇒ `NOT_COMPARABLE` | `test_compare.py` | **cerrado** |
+| Defensas de mercado y veto semanal | `test_edge17_defensive_blocks.py`, matriz de riesgo | **verificado** |
 
-## Evidencia de que la matriz no es retórica
+## Hueco que queda abierto
 
-```text
-tests/unit/vision + tests/unit/intelligence     146 passed
-scripts/ai_bots_verify.py                       34 checks, PASS
-BOT-VIS-01 images_attached=40   BOT-CTX-01 images_attached=0
-```
+Ningún patrón externo ha pasado de `DEFER`/`EXPERIMENT`: para ascender hace falta una
+observación REA que muestre **comportamiento** (llamada, decisión, riesgo u orden), no
+estructura. Hoy sólo nof1 tiene evidencia y no llega a ese punto.

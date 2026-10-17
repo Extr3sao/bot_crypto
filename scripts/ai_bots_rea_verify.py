@@ -23,6 +23,7 @@ REA = REPO / "reports" / "ai-bots" / "RFC-AI-BOTS-002"
 TARGETS = REA / "rea" / "targets"
 FINDINGS = REA / "REA_FINDINGS_V2.json"
 MATRIX = REA / "REA_TARGET_MATRIX.csv"
+DOCS = REPO / "docs" / "ai-bots" / "RFC-AI-BOTS-002"
 
 EVIDENCE_ID = re.compile(r"^ev_[0-9a-f]{64}$")
 #: Licencias medidas con la API de GitHub el 2026-10-18. Una regresión aquí reintroduce
@@ -161,6 +162,62 @@ def main() -> int:
     report.check("no_real_model_call_claimed", states.get("REAL_MODEL_CALLED") is False)
     report.check("no_adoption_certified", not states.get("ADOPT_VERIFIED"))
     report.check("false_success_zero", states.get("FALSE_SUCCESS") == 0)
+
+    # 7. the RFC §5 dossier set exists for every target, and the executed one is populated
+    dossier_files = (
+        "TARGET_BASELINE.json",
+        "ADOPTION_DECISION.md",
+        "RECONSTRUCTION_OBLIGATIONS.json",
+        "SOURCE_RUNTIME_CORRELATION.md",
+    )
+    for target in findings["targets"]:
+        folder = TARGETS / target["target_id"]
+        absent = [name for name in dossier_files if not (folder / name).is_file()]
+        report.check(
+            f"{target['target_id']}_dossier_complete",
+            not absent,
+            "complete" if not absent else f"missing {absent}",
+        )
+        if target.get("rea_executed"):
+            log = folder / "REA_COMMAND_LOG.jsonl"
+            rows = [r for r in log.read_text(encoding="utf-8").splitlines() if r.strip()] if log.is_file() else []
+            report.check(
+                f"{target['target_id']}_command_log_populated",
+                len(rows) >= 2,
+                f"{len(rows)} logged commands",
+            )
+            report.check(
+                f"{target['target_id']}_behaviour_trace_present",
+                (folder / "BEHAVIORAL_TRACE.md").is_file(),
+            )
+
+    required_reports = (
+        "REA_FINDINGS_V2.json",
+        "REA_TARGET_MATRIX.csv",
+        "RECONSTRUCTION_COMPARISON.md",
+        "INFORME_EJECUTIVO.md",
+        "FINAL_REPORT_REA_FIRST.md",
+        "RUN_REPORT_REA_FIRST.json",
+    )
+    absent_reports = [name for name in required_reports if not (REA / name).is_file()]
+    report.check("required_deliverables_present", not absent_reports, str(absent_reports))
+
+    #: The licence column of the SRC-FENIX row, not any prose that mentions the old value.
+    registry = DOCS / "source_registry.md"
+    fenix_licence = ""
+    if registry.is_file():
+        for line in registry.read_text(encoding="utf-8").splitlines():
+            if line.lstrip().startswith("| SRC-FENIX"):
+                cells = [c.strip() for c in line.strip().strip("|").split("|")]
+                raw = cells[2] if len(cells) > 2 else ""
+                # Drop parenthetical history: only the asserted licence counts.
+                fenix_licence = re.sub(r"\([^)]*\)", "", raw).strip()
+                break
+    report.check(
+        "source_registry_corrects_fenix_license",
+        "Apache-2.0" in fenix_licence and "MIT" not in fenix_licence,
+        f"SRC-FENIX licence cell is {fenix_licence!r}",
+    )
 
     payload = {
         "checks": report.checks,

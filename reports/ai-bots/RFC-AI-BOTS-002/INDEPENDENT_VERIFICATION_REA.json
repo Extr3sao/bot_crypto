@@ -104,10 +104,60 @@
       "name": "false_success_zero",
       "ok": true,
       "detail": ""
+    },
+    {
+      "name": "T-NF-NOF1_dossier_complete",
+      "ok": true,
+      "detail": "complete"
+    },
+    {
+      "name": "T-NF-NOF1_command_log_populated",
+      "ok": true,
+      "detail": "5 logged commands"
+    },
+    {
+      "name": "T-NF-NOF1_behaviour_trace_present",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "T-QR-SIGNAL_dossier_complete",
+      "ok": true,
+      "detail": "complete"
+    },
+    {
+      "name": "T-FE-FENIX_dossier_complete",
+      "ok": true,
+      "detail": "complete"
+    },
+    {
+      "name": "T-TA-CRITIC_dossier_complete",
+      "ok": true,
+      "detail": "complete"
+    },
+    {
+      "name": "T-FM-DEMO_dossier_complete",
+      "ok": true,
+      "detail": "complete"
+    },
+    {
+      "name": "T-TAP-OWN_dossier_complete",
+      "ok": true,
+      "detail": "complete"
+    },
+    {
+      "name": "required_deliverables_present",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "name": "source_registry_corrects_fenix_license",
+      "ok": true,
+      "detail": "SRC-FENIX licence cell is '**Apache-2.0** **'"
     }
   ],
   "failures": [],
-  "passed": 21,
+  "passed": 31,
   "failed": 0,
   "evidence_ids_backed": [
     "ev_47c01accd3491fd6e10e893f8a045e5fee226fa520f648f4460396a619efbaf1",

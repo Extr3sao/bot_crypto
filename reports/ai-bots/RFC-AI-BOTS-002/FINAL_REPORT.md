@@ -1,3 +1,5 @@
+<!-- REA-FIRST --> Este informe corresponde al paquete AI-BOTS-002 (runs mock). La pasada REA-FIRST añade `FINAL_REPORT_REA_FIRST.md`, `RUN_REPORT_REA_FIRST.json`, `REA_FINDINGS_V2.json`, `REA_TARGET_MATRIX.csv`, `RECONSTRUCTION_COMPARISON.md`, `INFORME_EJECUTIVO.md` y `rea/targets/`.
+
 # FINAL_REPORT — RFC-TAP-AI-BOTS-002
 
 **Rama:** `agent/ai-vision/RFC-AI-VISION-001` (baseline `b17644a`, HEAD al ejecutar la

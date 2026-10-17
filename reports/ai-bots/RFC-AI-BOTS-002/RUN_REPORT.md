@@ -1,3 +1,5 @@
+<!-- REA-FIRST --> La ejecución REA-FIRST de 2026-10-18 está en `RUN_REPORT_REA_FIRST.json` y sus dossiers por target en `rea/targets/`.
+
 # AI bots run report
 
 **Mode:** mock  

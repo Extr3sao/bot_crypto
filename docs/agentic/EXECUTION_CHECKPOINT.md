@@ -231,3 +231,23 @@ npx -y rea-agents@6.4.0 analyze-javascript-application <ruta> --format json --fe
 **Pendiente real y siguiente paso con valor**: ampliar el análisis de nof1 con
 `--fetch-source-maps` (nombres legibles) o conseguir un artefacto local autorizado de un
 target Python y observar su ciclo con REA CDP; ambos necesitan espacio en disco.
+
+---
+
+## Cierre de la pasada de completitud (2026-10-18)
+
+Objetivo: contrastar el entregable real contra el pliego §5/§9 y cerrar lo que faltaba.
+Verificador ampliado de **21 → 31 PASS / 0 FAIL** (`scripts/ai_bots_rea_verify.py`), y las
+comprobaciones nuevas se probaron **no vacuas**: al retirar `SOURCE_RUNTIME_CORRELATION.md`
+del dossier de nof1 el verificador sale con exit 1 y nombra el fichero ausente.
+
+Añadido en este cierre: `INFORME_EJECUTIVO.md`, `SOURCE_RUNTIME_CORRELATION.md` y
+`RECONSTRUCTION_OBLIGATIONS.json` en los seis dossiers, `PATTERN_ADOPTION_MATRIX.md`
+reescrito con la regla `NO_REA_EVIDENCE = NO_EXTERNAL_PATTERN_CERTIFICATION`, y punteros en
+`FINAL_REPORT.md`/`RUN_REPORT.md` hacia el conjunto REA-FIRST.
+
+**Aviso operativo para la próxima sesión**: `.gitignore:60` es `reports/*`. Los artefactos
+de `reports/` hay que añadirlos con `git add -f`; si no, existen en disco y **no se publican**.
+
+Estado sin cambios: `REAL_MODEL_CALLED=false`, ningún patrón externo certificado, disco
+2,9 GB libres.
