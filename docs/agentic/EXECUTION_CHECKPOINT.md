@@ -2,119 +2,113 @@
 
 > Documento vivo. **Antes de empezar cualquier sesión**: leer este fichero y validarlo contra Git
 > (`git log -1`, `git status --porcelain`, rama actual). Si hay discrepancia, manda Git y este
-> fichero se corrige con el estado real. **Después de cada paquete de trabajo relevante**:
-> actualizar las secciones marcadas.
+> fichero se corrige con el estado real. **Después de cada paquete de trabajo relevante**: actualizar
+> las secciones marcadas.
 >
 > Política completa en `AGENTS.md` §7. Reglas de campaña: `FALSE_SUCCESS=0`, `BUILDER != VERIFIER`,
 > nada de trading real, credenciales, apalancamiento ni cambios de límites de riesgo.
 
-*Última actualización: 2026-10-17T12:15Z, sesión de WP-EDGE-017 (integridad de la captura
-prospectiva y paridad de riesgo neto).*
+*Última actualización: 2026-10-17T16:25Z, sesión de recuperación de WP-EDGE-017.*
 
-## 0. WP-EDGE-017 (sesión actual, RFC-EDGE-017)
+## 0. Diagnóstico de la sesión (el bloqueo no era el que parecía)
 
-**Objetivo (issue #10):** cerrar cuatro defectos operativos que la certificación de EDGE-016 no
-cubría —el colector destructivo, el contador de cobertura que sólo podía valer 0/1, el riesgo
-decidiendo sobre bruto con el coste contabilizado después, y cuatro bloqueos defensivos
-declarados pero no leídos— sin tocar límites, reservas ni la política de fin de semana.
+La rama remota estaba en `2536928`, pero **el trabajo de EDGE-017 no faltaba: existía en local y no
+estaba publicado**. Al abrir esta sesión, `HEAD` era `c3e030a` con 4 commits por delante de
+`origin` (`5b86b65`, `ffd5105`, `9733f12`, `c3e030a`). El bloqueo real era *publicación + verificación
+independiente*, no ausencia de código.
 
-**Resultado: `CAPTURE_APPEND_ONLY_VERIFIED` + `COVERAGE_IDENTITY_HOLDS` +
-`NET_RISK_PARITY_VERIFIED` + `DEFENSIVE_BLOCKS_ENFORCED` + `ECONOMIC_RESULTS_NET_NEGATIVE` +
-`PROSPECTIVE_CAPTURE_MANUAL_NOT_SCHEDULED` + `INDEPENDENT_VERIFIED`.**
+Esta sesión, por tanto, **no reutilizó los resultados anteriores**: volvió a ejecutar los tests y los
+verificadores, reprodujo los defectos de `2536928` con código ejecutable y añadió el hueco que
+quedaba abierto en 017A.
 
-| hecho | evidencia ejecutada |
-| --- | --- |
-| **El colector ya no destruye la muestra.** Fusión por `(símbolo, hora)`, primera escritura inmutable, `os.replace` atómico, reanudación desde la última barra, paginación con confirmación de página corta y sólo barras cerradas | 3 → 9 filas (+6) en la primera captura corregida; dos re-ejecuciones después: **0 añadidas, 0 perdidas, bytes idénticos** (`983944ba…d34a6b66`); registro independiente `OOS_CAPTURE_LEDGER.jsonl` con 3 entradas |
-| **La cobertura cuenta barras, no símbolos** | `CAPTURE_INTEGRITY.json`: 9 esperadas, 9 observadas, 9 evaluadas, **0 faltantes**; identidad `esperadas = observadas + faltantes` por símbolo; racha consecutiva 3 h (08:00–10:00Z) |
-| **La tasa de disco es una medición, no un fallback** | 418,3 B/h de datos + 9 158,0 B/h de sobrecarga = **9 576,3 B/h**; el fallback de 240 MB/h sobrestimaba **25 061,8×**; el guardián, con su reserva (2 GB), su 1,5× y su válvula (64 MiB) **sin tocar**, devuelve `COHERENT`. `CAPTURE_BLOCKED_DISK` era un diagnóstico equivocado |
-| **El coste se paga dentro del libro antes de decidir** | `PaperBroker` cobra comisión, medio spread y slippage por símbolo; `pnl = bruto_ref − coste_ejecución − comisiones` en cada operación; `RiskManager.mark_equity` marca el equity neto antes de cada `check_signal` |
-| **Replay de las 146 operaciones bajo riesgo neto** | 1×: 146 operaciones, −238,7705 USDT (comisiones 146,00 + ejecución 40,334); 2×: **110**, −293,0325 (55 rechazos por límite semanal); 3×: **67**, −294,0563 (105 rechazos). Con coste 0 el motor reproduce **146/146 operaciones idénticas** a EDGE-016 |
-| **Los cuatro bloqueos defensivos se evalúan** | `risk/defensive_blocks.py` cableado en `start_paper_trading → PaperCycleEngine.run_cycle_sync`, con la política del loader real; falla cerrado si falta spread, ATR o latencia; fin de semana por calendario. En el replay: ATR evaluado en 201 propuestas (máx. 2,973 % vs 8 %), 52 entradas rechazadas por fin de semana |
-| **Política intacta** | `config/risk.yaml` sin cambios (fin de semana sigue `false`), `config/runtime.yaml` sigue con live desactivado, ninguna reserva ni límite movido |
-| **Verificación independiente con inyección de fallos** | `scripts/edge17_verify.py` (no importa ningún módulo constructor): **27/27** checks `VERIFIED`, **11/11** mutaciones detectadas (barra caída, duplicada, digest reescrito, hora ausente llamada tranquila, PnL inflado, coste cero, escalera de fills invertida, tasa imposible que «cabe», bloqueos desconectados, live activado, equivalencia rota) |
-| **Pruebas** | nuevas: `test_edge17_capture.py` (15), `test_edge17_net_risk.py` (10), `test_edge17_defensive_blocks.py` (12). Dirigidas: `tests/unit/{paper,risk,config}` + PIT/causalidad EDGE-016 → **257 passed**; `tests/unit/paper` → 73. Suite completa `pytest tests/unit -q`: **4048 passed, 5 failed en 21:56** (`RFC-EDGE-017/FULL_UNIT_SUITE.log`) |
-
-**Los 5 fallos de la suite, nombrados (ninguno del paquete):** 3 son de la línea WP-8
-(`test_active_recovery_wp.py::test_audit_is_deterministic_and_committed`,
-`test_recovery_determinism.py::test_repeated_reproduction_is_byte_identical` y
-`::test_the_clean_checkout_rehearsal_passes_on_this_commit`): su auditoría comprometida está
-desfasada respecto a `evidence/real_decisions/*.jsonl`, que **ya estaban modificados por otra
-línea al abrir la sesión** y este paquete no tocó; los otros 2 son los mismos de ST6 que EDGE-016
-ya registró (su dato acumulado contradice su aserción de «una sola ventana»).
-
-**Git:** la reparación se publicó en `5b86b65` (*Charge the venue cost inside the paper book, and
-stop the holdout from destroying itself.*). Los artefactos y este checkpoint van en los commits de
-evidencia posteriores. Sólo se prepararon ficheros del paquete; los ~160 sucios de otras líneas
-siguen intactos.
-
-## 1. Objetivo anterior (cerrado)
-
-**WP-EDGE-016**: integridad point-in-time, paridad de riesgo y captura prospectiva honesta →
-`PIT_FIXED_RISK_PARITY_VALIDATED` + `ECONOMIC_RESULTS_RESTATED_NO_EDGE`. Sus artefactos quedan
-congelados en `reports/economic-recovery/RFC-EDGE-016/` y describen el código de `2536928`.
-`edge16_verify.py` devuelve hoy **42/44**: V57 y V58 fallan porque este paquete cambió
-`src/trading_bot/paper/broker.py` (nueva clase de coste, líneas desplazadas) y
-`scripts/edge16_paper_lane.py`; los hashes de sus 32 artefactos siguen coincidiendo. No se
-regeneraron sus evidencias: describen el commit anterior y así se declaran. Sus 38/38 mutaciones
-siguen detectándose.
-
-## 2. Estado Git
+## 1. Estado Git (verificado contra `origin`)
 
 - Rama: `agent/edge-recovery/WP-EDGE-00-baseline`.
-- Commit de código de esta ronda: `5b86b65`.
-- **No preparar ni tocar** lo ajeno: `data/st6/**`, `.ci/**`, `data/recovery/wp8/**`,
-  `evidence/real_decisions/**`, `reports/economic-recovery/RFC-EDGE-014*/**`, los tests nuevos de
-  `swing`/`rfc035*` de otro agente, y en general los ~160 ficheros sucios de otras líneas.
+- **Publicado y verificado**: `2536928..1869f53` (`git push` fast-forward, sin `--force`;
+  `git rev-parse origin/agent/edge-recovery/WP-EDGE-00-baseline` = `1869f53584f1a41220365229a851a4ee01ee3894`
+  inmediatamente después del push).
+- Commits publicados en esta sesión:
+  - `1ad3a37` — *Serialise the holdout capture so two collectors cannot lose each other's bars.*
+    (transacción de escritor único + 4 tests + C12/M12 del verificador + replay de prefijos).
+  - `1869f53` — *Refuse a futures size whose quantity quotient overflows instead of crashing.*
+    (defecto ajeno a EDGE-017, encontrado por la suite de propiedades; se declara aparte).
+- Commits publicados por la sesión anterior, ya en `origin`: `5b86b65` (reparación de código),
+  `ffd5105` (evidencias), `9733f12` (digests del holdout), `c3e030a` (auditoría económica).
+- **No tocar** lo ajeno: `data/st6/**`, `.ci/**`, `data/recovery/wp8/**`,
+  `evidence/real_decisions/**`, `reports/economic-recovery/RFC-EDGE-014*/**`,
+  `reports/economic-recovery/RFC-EDGE-016/INDEPENDENT_VERIFICATION.json` y los ~160 ficheros sucios
+  de otras líneas.
 
-## 3. Hecho (con evidencia ejecutada)
+## 2. Hecho y verificado en esta sesión (evidencia ejecutada, no heredada)
 
-### P0-A — captura
-
-| defecto | estado | evidencia |
+| hecho | comando | resultado |
 | --- | --- | --- |
-| `_write_slice` abría con `w`: cada captura truncaba el holdout | **cerrado**: fusión append-only, primera escritura inmutable, conflicto registrado | `oos_capture.merge_slice`; `test_repeated_capture_keeps_every_row_and_is_byte_identical` |
-| `since` fijo + `limit=1000`: la historia creciente se estancaba | **cerrado**: reanudación desde la última barra y paginación con confirmación de página corta | `test_pagination_recovers_history_beyond_one_page`, `test_truncated_page_is_confirmed_with_one_more_request`; `pagination` en el manifiesto |
-| `captured_bars_per_symbol` constante 0/1 y dedupe tautológico | **cerrado**: escalera por `(símbolo, hora)` | `coverage_ladder`; 9/9/0 en `CAPTURE_INTEGRITY.json` |
-| barra de la hora en curso admitida | **cerrado**: `is_closed` | `test_partial_current_hour_bar_is_excluded`; manifiesto `partial_bars_excluded=0` |
-| escritura no atómica | **cerrado**: temporal + `os.replace` + `fsync` | `test_a_failed_replace_leaves_the_previous_slice_intact` |
+| Los 4 defectos de captura de `2536928` se reproducen al ejecutar su código | `python scripts/edge17_prefix_replay.py` → `PREFIX_REPLAY.log` | **9/9 detectados**: 3 filas → 2 (barra destruida), 1000 de 2600 barras (página única), `captured_bars_per_symbol=1` con 3 filas, `duplicate_keys=0` por tautología |
+| Los tests nuevos detectan los defectos si se reintroducen (M1–M4) | mismo script, módulo mutado en `PYTHONPATH` | 3, 3, 3 y 1 tests fallan respectivamente |
+| Sin el lock, dos capturas simultáneas fallan | mismo script, `slice_lock` neutralizado | 1 test falla (lost update / carrera de `os.replace`) |
+| La captura ya es de escritor único | `tests/unit/research/test_edge17_capture.py` | **19 passed** (15 previos + 4 nuevos) |
+| Sin regresiones en el plano afectado | `pytest tests/unit/paper tests/unit/risk tests/unit/research/test_edge17_capture.py` | **225 passed** en 8,3 s |
+| La suite de propiedades del plano de futuros queda verde | `pytest tests/unit/risk/test_futures_falsification_regressions.py` | **43 passed** (antes: `OverflowError` en `instruments.py:202`) |
+| Verificador independiente de EDGE-017 | `python scripts/edge17_verify.py` | **28/28 checks, 12/12 fallos detectados** (C12 y M12 son nuevos) |
+| Verificador de EDGE-015 | `python scripts/edge15_verify.py` | **35/35**, `VERIFIED` |
+| Verificador de EDGE-016 | `python scripts/edge16_verify.py` | **42/44**, mutaciones **38/38**; V57 y V58 siguen fallando (ver §5) |
+| Lint y tipos | `ruff check` / `mypy` sobre los ficheros tocados | OK |
+| Espacios en blanco | `git diff --check` | OK |
 
-### P0-B — almacenamiento
+### Qué cambió de verdad en 017A
 
-`STORAGE_MEASUREMENT.json`: 139,4 B/barra, 418,3 B/h de datos, 9 158,0 B/h de sobrecarga,
-9 576,3 B/h efectivos, factor de sobrestimación 25 061,8×, pico transitorio 2 510 B. Guardián sin
-cambios (1,5×, 2 GB, 64 MiB, 24 h) → `COHERENT`. `widths` de la ventana: 278 595 h por disco y
-7 008 h por válvula.
+`write_slice_atomic` impedía un fichero a medias, **no** un *lost update*: el colector leía la
+slice, pasaba minutos descargando y escribía una fusión construida sobre esa foto vieja; una segunda
+captura que terminase en medio perdía todo lo que había añadido. Ahora:
 
-### P0-C — riesgo neto
+- `oos_capture.slice_lock` toma un fichero hermano con `O_CREAT|O_EXCL` (atómico en todas las
+  plataformas), con timeout que **falla en vez de escribir** y reclamación de locks huérfanos.
+- `oos_capture.merge_and_write` hace *lock → re-lee → fusiona → `os.replace`*, y devuelve
+  `rows_before`/`sha256_before` leídos **dentro** del lock (la foto previa al fetch ya no es la base
+  de la escritura).
+- `scripts/edge15_oos_preregistration.py` escribe ambas slices sólo por `merge_and_write`; la
+  reanudación (`next_since_ms`) sigue usando la lectura previa, que es sólo para decidir el `since`.
+- El verificador independiente añade C12 (la slice sólo se escribe por la transacción) y M12
+  (inyección que lo rompe).
 
-Ver §0. Extra: `baseline_comparison` explica la diferencia de 0,98 USDT frente al neto reexpresado
-de EDGE-016 (la cantidad comprada es menor porque el spread ya se pagó).
+## 3. Estado de los bloques 017A–017E
 
-### P0-D — bloqueos defensivos
+| bloque | estado | evidencia de esta sesión |
+| --- | --- | --- |
+| 017A captura prospectiva | **cerrado y ampliado**: append-only, atómico, reanudable, paginado, sólo barras cerradas y ahora **escritor único** | replay 9/9; 19 tests; C12 |
+| 017B presupuesto de disco | **verificado, no regenerado**: la tasa es una medición (9 576,3 B/h frente al fallback de 240 MB/h), guardián con reserva 2 GB, 1,5× y válvula 64 MiB intactos | checks S1–S3 del verificador |
+| 017C coste dentro del riesgo | **verificado, no regenerado**: `PaperBroker` cobra comisión + medio spread + slippage; `RiskManager.mark_equity` marca el equity neto antes de decidir | checks N1–N9; 146/110/67 operaciones y −238,77/−293,03/−294,06 USDT en `NET_RISK_REPLAY.json` |
+| 017D bloqueos defensivos | **verificado**: cableados en `start_paper_trading → run_cycle_sync`, con condiciones medidas por el scanner y fallo cerrado; política y fin de semana sin tocar | checks D1–D3 |
+| 017E pruebas y evidencias | **parcial**: verificado lo anterior; la suite completa **no** se re-ejecutó en esta sesión | ver §4 |
 
-Ver §0 y `RISK_BLOCKS_MATRIX.json`. `WEEKEND_POLICY.json` de EDGE-016 sigue siendo la referencia
-del conflicto 7/7: **no se cambió la política**; cambiarla requiere ADR.
+**Aviso de método:** los artefactos de 017B/017C (replay económico, medición de almacenamiento) se
+produjeron en la sesión anterior; esta sesión los **re-verificó** (28/28) pero **no los regeneró**.
+No se presentan como ejecución nueva.
 
-## 4. Pendiente
+## 4. Pendiente (lo que falta de verdad)
 
-1. **Ninguna barra observada en vivo**: las 9 son rellenas por la primera ejecución corregida
-   (desfase máximo 2,648 h). La siguiente captura manual, ejecutada dentro de la hora, produce las
-   primeras barras «capturadas al cierre».
-2. **Ninguna estrategia admitida** (`config/strategy_admission.json`): el camino de paper del
-   runtime no tiene nada que ejecutar; el carril experimental salta la admisión por diseño.
-3. **Sin planificador**: crear la tarea exige privilegios de administrador, no autorizados.
-4. **Ensayo de checkout limpio**: pendiente de ejecutar sobre el commit de evidencias; el volumen
-   tiene ~4,4 GB libres y el checkout rastreado pesa 0,14 GB, así que cabe.
+1. **Suite completa `pytest tests/unit`**: no re-ejecutada. El último registro es
+   `4048 passed, 5 failed en 21:56` (`RFC-EDGE-017/FULL_UNIT_SUITE.log`), ya obsoleto. Un intento de
+   `tests/unit/research` completo agotó 600 s (timeout, no fallo) por contención con la tarea ST6.
+2. **Ninguna barra capturada al cierre en vivo**: las 9 del slice vienen de la primera captura
+   corregida. La siguiente captura manual dentro de la hora produce las primeras barras «al cierre».
+3. **Ninguna estrategia admitida** (`config/strategy_admission.json`).
+4. **Sin planificador**: crear la tarea exige privilegios de administrador, no autorizados.
+5. **Regenerar 017B/017C** si se exige evidencia posterior a `1ad3a37` (el replay no depende de la
+   captura, pero hoy no se ha vuelto a ejecutar).
 
-## 5. Bloqueos / items abiertos (no ocultar)
+## 5. Bloqueos e incidencias declaradas (no ocultar)
 
-- **Volumen al 99 %** (4,4 GB libres). El colector ya no es el problema (9,6 KB/h), pero el host
-  no está sano y este paquete no reclamó espacio.
-- **Contención con la tarea programada ST6** (entorno, no defecto): alarga la suite.
-- **`edge16_verify.py` en 42/44** por los dos checks que resuelven líneas/hashes del código
-  vigente; declarado, no regenerado.
-- **Auditoría WP-8 desfasada** por los `evidence/real_decisions/*.jsonl` sucios de otra línea; no
-  se regeneró para no hornear estado no comprometido ajeno.
+- **Volumen al 99 %** (3,7 GB libres). El colector no es el problema (9,6 KB/h), pero el host no está
+  sano y este paquete no reclamó espacio.
+- **`edge16_verify.py` en 42/44**: V57 falla porque
+  `RFC-EDGE-016/INDEPENDENT_VERIFICATION.json` ya estaba modificado por otra línea al abrir la
+  sesión (y volver a ejecutar el verificador lo reescribe: **no se commiteó**); V58 porque
+  `broker.py` cambió de línea con EDGE-017. Sus 38/38 mutaciones se siguen detectando.
+- **Auditoría WP-8 desfasada** por `evidence/real_decisions/*.jsonl`, sucios de otra línea.
+- **Defecto ajeno corregido**: `round_quantity_down` lanzaba `OverflowError` con `entry=2,1e-302`
+  (cociente infinito). Se convirtió en rechazo (0,0) sin tocar ningún límite; commit `1869f53`,
+  separado del paquete.
 
 ## 6. Comandos de reanudación
 
@@ -122,28 +116,32 @@ del conflicto 7/7: **no se cambió la política**; cambiarla requiere ADR.
 # 0. Estado real
 git -C "$(git rev-parse --show-toplevel)" log --oneline -3
 git -C "$(git rev-parse --show-toplevel)" status --porcelain | head -40
+git -C "$(git rev-parse --show-toplevel)" rev-parse origin/agent/edge-recovery/WP-EDGE-00-baseline
 
-# 1. Capturar (append-only, idempotente; después commitear antes de verificar)
+# 1. Reproducir los defectos de captura (no toca red ni datos)
+cd "$(git rev-parse --show-toplevel)" && ./.venv/Scripts/python scripts/edge17_prefix_replay.py
+
+# 2. Capturar (append-only, escritor único; después commitear antes de verificar)
 cd "$(git rev-parse --show-toplevel)" && ./.venv/Scripts/python scripts/edge15_oos_preregistration.py --capture
 
-# 2. Reproducir el paquete (rápido)
-cd "$(git rev-parse --show-toplevel)" && ./.venv/Scripts/python scripts/edge16_paper_lane.py --extend-prospective --out reports/economic-recovery/RFC-EDGE-017/experimental_paper
-cd "$(git rev-parse --show-toplevel)" && ./.venv/Scripts/python scripts/edge17_capture.py
-cd "$(git rev-parse --show-toplevel)" && ./.venv/Scripts/python scripts/edge17_reports.py
-cd "$(git rev-parse --show-toplevel)" && ./.venv/Scripts/python scripts/edge17_verify.py       # 27/27
-cd "$(git rev-parse --show-toplevel)" && ./.venv/Scripts/python scripts/edge15_verify.py        # 35/35
+# 3. Verificadores
+cd "$(git rev-parse --show-toplevel)" && ./.venv/Scripts/python scripts/edge17_verify.py   # 28/28, 12/12
+cd "$(git rev-parse --show-toplevel)" && ./.venv/Scripts/python scripts/edge15_verify.py    # 35/35
+cd "$(git rev-parse --show-toplevel)" && ./.venv/Scripts/python scripts/edge16_verify.py    # 42/44 declarado
 
-# 3. Gates
-cd "$(git rev-parse --show-toplevel)" && ./.venv/Scripts/python -m ruff check src/trading_bot/research/oos_capture.py src/trading_bot/risk/defensive_blocks.py src/trading_bot/paper/broker.py src/trading_bot/risk/manager.py src/trading_bot/paper/paper_cycle.py src/trading_bot/paper/harness.py scripts/edge17_*.py
-cd "$(git rev-parse --show-toplevel)" && ./.venv/Scripts/python -m mypy src/trading_bot/research/oos_capture.py src/trading_bot/risk/defensive_blocks.py src/trading_bot/paper/harness.py
+# 4. Gates
+cd "$(git rev-parse --show-toplevel)" && ./.venv/Scripts/python -m ruff check src/trading_bot/research/oos_capture.py scripts/edge15_oos_preregistration.py scripts/edge17_verify.py
+cd "$(git rev-parse --show-toplevel)" && ./.venv/Scripts/python -m mypy src/trading_bot/research/oos_capture.py
 cd "$(git rev-parse --show-toplevel)" && ./.venv/Scripts/python -m pytest tests/unit/paper tests/unit/risk tests/unit/research/test_edge17_capture.py -q
 
-# 4. Suite completa (~22 min con la tarea ST6 activa)
+# 5. Suite completa (no ejecutada en esta sesión; ~22 min con ST6 activa)
 cd "$(git rev-parse --show-toplevel)" && ./.venv/Scripts/python -m pytest tests/unit -q --tb=short -rf -p no:cacheprovider > reports/economic-recovery/RFC-EDGE-017/FULL_UNIT_SUITE.log 2>&1; echo "EXIT=$?"
 ```
 
 ## 7. Protocolo de actualización
 
-- Al **cerrar un hito**: marcar la fila correspondiente en §3 y actualizar §4/§5.
+- Al **cerrar un hito**: marcar la fila correspondiente en §2/§3 y actualizar §4/§5.
 - Al **cortarse la sesión**: anotar el comando exacto que se estaba ejecutando y su log.
-- **Nunca** mover un elemento de §4 a §3 sin evidencia ejecutada (log, artefacto, exit code).
+- **Nunca** mover un elemento de §4 a §2/§3 sin evidencia ejecutada (log, artefacto, exit code).
+- `reports/economic-recovery/*` está en `.gitignore`: los ficheros nuevos de evidencia se añaden con
+  `git add -f` **sólo** si son propios del bloque.
