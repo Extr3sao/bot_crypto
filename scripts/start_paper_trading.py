@@ -286,6 +286,11 @@ def build_cycle_engine(
         broker=broker,
         indicator_fn=_default_indicators,
         idempotency=IdempotencyGuard(),
+        # WP-EDGE-017/P0.4: the four declared defensive blocks are evaluated on the
+        # real paper entrypoint, fail closed. The policy comes from
+        # config/risk.yaml through the runtime's own loader; nothing is re-typed
+        # and the weekend flag is not changed here.
+        defensive_blocks=settings.risk.blocks,
     )
 
 

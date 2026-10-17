@@ -33,6 +33,7 @@ import json
 from dataclasses import dataclass, field
 from typing import Any
 
+from trading_bot.config.risk import DefensiveBlocks
 from trading_bot.execution.idempotency import IdempotencyGuard
 from trading_bot.market_data.types import OHLCV
 from trading_bot.paper.candidate_portfolio import TradeCandidate, build_portfolio
@@ -40,6 +41,7 @@ from trading_bot.paper.signal_adapter import AdapterError, alpha_signal_to_signa
 from trading_bot.paper.snapshot_context import trim_to_pit
 from trading_bot.research.asset_intelligence.registry import CryptoAssetAgentRegistry
 from trading_bot.research.strategy_router import RouterDecision, StrategyRouter
+from trading_bot.risk.defensive_blocks import BlockVerdict, MarketConditions, evaluate_blocks
 from trading_bot.risk.manager import RiskManager
 
 __all__ = [
@@ -85,6 +87,8 @@ class CycleStageCounts:
     risk_errors: int = 0
     orders_created: int = 0
     broker_errors: int = 0
+    #: WP-EDGE-017/P0.4: one count per defensive block that fired (by block id).
+    defensive_blocks: dict[str, int] = field(default_factory=dict)
     rejections: list[dict[str, Any]] = field(default_factory=list)
 
     def to_dict(self) -> dict[str, Any]:
@@ -105,6 +109,7 @@ class CycleStageCounts:
             "risk_errors": self.risk_errors,
             "orders_created": self.orders_created,
             "broker_errors": self.broker_errors,
+            "defensive_blocks": dict(self.defensive_blocks),
             "rejections": list(self.rejections),
         }
 
@@ -166,6 +171,10 @@ class PaperCycleEngine:
         broker: Any,  # PaperBroker
         indicator_fn: Any | None = None,  # candles → dict[str, IndicatorResult]
         idempotency: IdempotencyGuard | None = None,
+        # WP-EDGE-017/P0.4: the four declared defensive blocks. ``None`` keeps the
+        # historical behaviour for callers that have not opted in; the paper
+        # launcher always supplies the policy from config/risk.yaml.
+        defensive_blocks: DefensiveBlocks | None = None,
     ) -> None:
         self._registry = asset_registry
         self._router = router
@@ -175,6 +184,7 @@ class PaperCycleEngine:
         self._broker = broker
         self._indicator_fn = indicator_fn
         self._idempotency = idempotency or IdempotencyGuard()
+        self._defensive_blocks = defensive_blocks
         # BAR_CLOSE gate state (BURN-IN-V2): per symbol, the (bar_ts, state
         # version) already evaluated. State version bumps when anything that
         # could legitimately change a decision happens (risk counters,
@@ -249,16 +259,27 @@ class PaperCycleEngine:
             bool(getattr(r, "kill_switch_active", False)),
         )
 
+    def _defensive_verdict(
+        self, symbol: str, conditions: dict[str, MarketConditions] | None
+    ) -> BlockVerdict | None:
+        """Evaluate the declared blocks, failing closed if their inputs are absent."""
+        if self._defensive_blocks is None:
+            return None
+        return evaluate_blocks(self._defensive_blocks, (conditions or {}).get(symbol))
+
     def run_cycle_sync(
         self,
         history: dict[str, list[OHLCV]],
         decision_timestamps: dict[str, int],
+        conditions: dict[str, MarketConditions] | None = None,
     ) -> CycleStageCounts:
         """Run the canonical cycle synchronously for each symbol.
 
         ``history`` maps symbol → recent OHLCV series; the PIT slice
         (bars <= decision timestamp) is taken before any feature or
-        context computation.
+        context computation. ``conditions`` carries the measured market
+        context the defensive blocks need; a symbol absent from it is blocked
+        (``market_conditions_unknown``), never waved through.
         """
         counts = CycleStageCounts()
         candidates: list[TradeCandidate] = []
@@ -395,6 +416,19 @@ class PaperCycleEngine:
                 _reject(counts, symbol, "adapter", f"{type(exc).__name__}: {exc}")
                 continue
 
+            verdict = self._defensive_verdict(symbol, conditions)
+            if verdict is not None and verdict.blocked:
+                counts.risk_rejected += 1
+                key = verdict.blocked_by or "defensive_block"
+                counts.defensive_blocks[key] = counts.defensive_blocks.get(key, 0) + 1
+                _reject(
+                    counts,
+                    symbol,
+                    "defensive_block",
+                    f"{key}: {verdict.reason or 'blocked'}",
+                )
+                continue
+
             try:
                 check = self._risk.check_signal(base_signal)
             except Exception as exc:  # risk engine failure ⇒ no order
@@ -460,7 +494,14 @@ class RouteOnlyEngine:
         self,
         history: dict[str, list[OHLCV]],
         decision_timestamps: dict[str, int],
+        conditions: dict[str, Any] | None = None,
     ) -> CycleStageCounts:
+        """Route-only path: it places no orders, so there are no blocks to apply.
+
+        ``conditions`` is accepted so the caller uses one signature for both
+        engines; nothing here can trade, so nothing here is blocked.
+        """
+        del conditions
         counts = CycleStageCounts()
         for symbol in sorted(history):
             ts = int(decision_timestamps.get(symbol, 0))

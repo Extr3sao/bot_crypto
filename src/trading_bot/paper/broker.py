@@ -37,6 +37,25 @@ class BrokerOrderError(Exception):
 
 
 @dataclass(frozen=True, slots=True)
+class BrokerCost:
+    """What one side of one fill costs, in basis points, with its provenance.
+
+    ``commission_bps`` is charged on notional; ``half_spread_bps`` and
+    ``slippage_bps`` are charged as an adverse price adjustment on the fill.
+    Keeping them apart is what lets the closed trade reconcile its net PnL
+    against a reference price instead of hiding an implicit cost in the fill.
+    """
+
+    commission_bps: float = 0.0
+    half_spread_bps: float = 0.0
+    slippage_bps: float = 0.0
+
+    @property
+    def price_bps_per_side(self) -> float:
+        return float(self.half_spread_bps) + float(self.slippage_bps)
+
+
+@dataclass(frozen=True, slots=True)
 class PaperPosition:
     """An open paper position."""
 
@@ -49,6 +68,14 @@ class PaperPosition:
     take_profit_pct: float
     opened_at: float = field(default_factory=time.time)
     entry_commission: float = 0.0  # tracked for true-net PnL at close
+    #: WP-EDGE-017/P0.3: the price the decision asked for, before any spread or
+    #: slippage moved the fill. ``entry_price`` is what the book actually paid.
+    reference_entry_price: float = 0.0
+    #: The cost terms this position was opened under, kept so the exit leg is
+    #: charged the same schedule rather than whatever the broker is configured
+    #: with at close time.
+    commission_bps: float = 0.0
+    price_bps_per_side: float = 0.0
     # AUDIT-V1 provenance: originating strategy (travels to ClosedTrade for
     # PnL-by-strategy attribution).
     strategy_name: str = ""
@@ -88,6 +115,9 @@ class PaperPosition:
             "position_id": self.position_id,
             "entry_order_id": self.entry_order_id,
             "entry_commission": self.entry_commission,
+            "reference_entry_price": self.reference_entry_price,
+            "commission_bps": self.commission_bps,
+            "price_bps_per_side": self.price_bps_per_side,
             "strategy_name": self.strategy_name,
         }
 
@@ -108,11 +138,20 @@ class PaperPosition:
 
 @dataclass(frozen=True, slots=True)
 class ClosedTrade:
-    """A completed paper trade.
+    """A completed paper trade, with every cost it paid named separately.
 
-    ``pnl`` is net of both commissions; ``gross_pnl`` and the two commission
-    legs are carried so a reader can rebuild that number instead of trusting
-    it (WP-EDGE-015/P0.4).
+    ``pnl`` is net of commissions *and* of the spread/slippage embedded in the
+    fills. The decomposition is exact and checkable:
+
+        pnl = reference_gross_pnl - execution_cost_usdt
+              - entry_commission - exit_commission
+
+    ``reference_gross_pnl`` is the price move at the prices the decisions asked
+    for; ``gross_pnl`` is the price move at the prices actually paid. The
+    difference is ``execution_cost_usdt``. WP-EDGE-016 had no such terms: the
+    broker ran at zero commission, so its ``pnl`` was frictionless and the venue
+    cost was subtracted from a report afterwards — which is why RiskManager
+    approved trades the net book could not afford.
     """
 
     symbol: str
@@ -133,6 +172,16 @@ class ClosedTrade:
     gross_pnl: float = 0.0
     entry_commission: float = 0.0
     exit_commission: float = 0.0
+    # WP-EDGE-017/P0.3: the frictionless reference and the cost of execution.
+    reference_entry_price: float = 0.0
+    reference_exit_price: float = 0.0
+    reference_gross_pnl: float = 0.0
+    execution_cost_usdt: float = 0.0
+
+    @property
+    def total_cost_usdt(self) -> float:
+        """Everything the round trip paid, in USDT."""
+        return self.execution_cost_usdt + self.entry_commission + self.exit_commission
 
 
 class PaperBroker:
@@ -154,6 +203,8 @@ class PaperBroker:
         commission_bps: float = 5.0,
         book_id: str | None = None,
         clock: Callable[[], float] | None = None,
+        spread_bps: float = 0.0,
+        cost_schedule: Callable[[str, float], BrokerCost] | None = None,
     ) -> None:
         del db_url  # legacy compat, unused
         #: Where ``opened_at``/``closed_at`` come from. A replay passes its own
@@ -172,6 +223,14 @@ class PaperBroker:
         self._initial_equity = equity
         self._slippage_bps = slippage_bps
         self._commission_bps = commission_bps
+        #: Half of the quoted spread is paid on each side, which is the standard
+        #: way a taker crosses it. Zero by default so every existing caller keeps
+        #: its exact behaviour.
+        self._spread_bps = spread_bps
+        #: Per-symbol cost authority. When supplied it overrides the three static
+        #: parameters above for every fill, because a real venue prices each pair
+        #: and size differently. The callable receives ``(symbol, notional)``.
+        self._cost_schedule = cost_schedule
         self._positions: dict[str, PaperPosition] = {}
         self._closed_trades: list[ClosedTrade] = []
         self._fills_opened = 0
@@ -192,6 +251,20 @@ class PaperBroker:
     @property
     def book_id(self) -> str:
         return self._book_id
+
+    def cost_for(self, symbol: str, notional_usdt: float) -> BrokerCost:
+        """The cost terms for one side of ``symbol`` at ``notional_usdt``.
+
+        A schedule wins over the static parameters. The half-spread is half of
+        ``spread_bps`` because a taker pays the half it crosses.
+        """
+        if self._cost_schedule is not None:
+            return self._cost_schedule(symbol, float(notional_usdt))
+        return BrokerCost(
+            commission_bps=float(self._commission_bps),
+            half_spread_bps=float(self._spread_bps) / 2.0,
+            slippage_bps=float(self._slippage_bps),
+        )
 
     def _next_id(self, kind: str) -> str:
         """Mint a stable, unique identifier: ``<kind>-<book>-<sequence>``.
@@ -243,13 +316,6 @@ class PaperBroker:
             self._log.info("paper.skip_duplicate", symbol=symbol)
             return None
 
-        # Compute fill price with slippage
-        slippage_mult = 1.0 + (self._slippage_bps / 10_000.0)
-        if signal.side == "buy":
-            fill_price = signal.price * slippage_mult
-        else:
-            fill_price = signal.price / slippage_mult
-
         # Compute quantity from position size in metadata.
         # Risk authority invariant: execute_signal is only reachable with a
         # risk-approved size; a missing/invalid notional means the signal
@@ -262,8 +328,17 @@ class PaperBroker:
                 "(pipeline integrity: order must be sized by RiskManager)"
             )
 
+        # WP-EDGE-017/P0.3: the fill pays half the spread plus slippage, and the
+        # commission is charged here rather than being added to a report later.
+        cost = self.cost_for(symbol, notional)
+        reference_price = float(signal.price)
+        friction_mult = 1.0 + (cost.price_bps_per_side / 10_000.0)
+        if signal.side == "buy":
+            fill_price = reference_price * friction_mult
+        else:
+            fill_price = reference_price / friction_mult
         quantity = notional / fill_price
-        commission = notional * (self._commission_bps / 10_000.0)
+        commission = notional * (cost.commission_bps / 10_000.0)
 
         # Create position
         sl_pct = signal.stop_loss_pct or 1.0
@@ -278,6 +353,9 @@ class PaperBroker:
             take_profit_pct=tp_pct,
             entry_commission=commission,
             opened_at=self._clock(),
+            reference_entry_price=reference_price,
+            commission_bps=cost.commission_bps,
+            price_bps_per_side=cost.price_bps_per_side,
             strategy_name=str(signal.strategy_name or ""),
             position_id=self._next_id("pos"),
             entry_order_id=self._next_id("ord"),
@@ -310,21 +388,31 @@ class PaperBroker:
         """
         pos = self._positions.pop(symbol)
 
-        # Apply slippage on exit
-        slippage_mult = 1.0 + (self._slippage_bps / 10_000.0)
+        # WP-EDGE-017/P0.3: the exit pays the same friction the entry did. The
+        # position carried its own terms, so a schedule change cannot re-price a
+        # trade that is already open.
+        reference_exit = float(exit_price)
+        reference_entry = pos.reference_entry_price or pos.entry_price
+        slippage_mult = 1.0 + (pos.price_bps_per_side / 10_000.0)
         if pos.side == "buy":
-            actual_exit = exit_price / slippage_mult
+            actual_exit = reference_exit / slippage_mult
         else:
-            actual_exit = exit_price * slippage_mult
+            actual_exit = reference_exit * slippage_mult
 
         if pos.side == "buy":
             gross_pnl = (actual_exit - pos.entry_price) * pos.quantity
+            reference_gross = (reference_exit - reference_entry) * pos.quantity
         else:
             gross_pnl = (pos.entry_price - actual_exit) * pos.quantity
+            reference_gross = (reference_entry - reference_exit) * pos.quantity
+
+        # The price move lost to crossing the spread and to slippage: exactly the
+        # gap between the frictionless reference and what the book actually got.
+        execution_cost = max(0.0, reference_gross - gross_pnl)
 
         # Deduct BOTH entry and exit commissions for true-net PnL
         entry_commission = pos.entry_commission
-        exit_commission = pos.notional_usdt * (self._commission_bps / 10_000.0)
+        exit_commission = pos.notional_usdt * (pos.commission_bps / 10_000.0)
         net_pnl = gross_pnl - entry_commission - exit_commission
 
         trade = ClosedTrade(
@@ -345,6 +433,10 @@ class PaperBroker:
             gross_pnl=gross_pnl,
             entry_commission=entry_commission,
             exit_commission=exit_commission,
+            reference_entry_price=reference_entry,
+            reference_exit_price=reference_exit,
+            reference_gross_pnl=reference_gross,
+            execution_cost_usdt=execution_cost,
         )
 
         self._closed_trades.append(trade)
@@ -622,6 +714,21 @@ class PaperBroker:
                     <= 1e-9
                     for trade in self._closed_trades
                 ),
+                # WP-EDGE-017/P0.3: net PnL is also the reference move minus every
+                # named cost, so no cost can enter through a side door.
+                "closed_trade_costs_are_named": all(
+                    abs(
+                        trade.pnl
+                        - (
+                            trade.reference_gross_pnl
+                            - trade.execution_cost_usdt
+                            - trade.entry_commission
+                            - trade.exit_commission
+                        )
+                    )
+                    <= 1e-9
+                    for trade in self._closed_trades
+                ),
             },
         }
 
@@ -657,6 +764,11 @@ class PaperBroker:
                 "gross_pnl": t.gross_pnl,
                 "entry_commission": t.entry_commission,
                 "exit_commission": t.exit_commission,
+                "reference_entry_price": t.reference_entry_price,
+                "reference_exit_price": t.reference_exit_price,
+                "reference_gross_pnl": t.reference_gross_pnl,
+                "execution_cost_usdt": t.execution_cost_usdt,
+                "total_cost_usdt": t.total_cost_usdt,
             }
             for t in self._closed_trades
         ]

@@ -43,11 +43,12 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from trading_bot.config.risk import Risk
 from trading_bot.config.settings import load_settings
-from trading_bot.paper.broker import PaperBroker
+from trading_bot.paper.broker import BrokerCost, PaperBroker
 from trading_bot.research.disk_budget import free_bytes
 from trading_bot.research.economic_recovery.alpha15 import (
     FAMILY_BY_NAME,
     TESTED_FAMILIES,
+    cost_for,
     round_trip_cost_bps,
 )
 from trading_bot.research.economic_recovery.experiments import Bar, load_ohlcv
@@ -75,6 +76,25 @@ def broker_both_hit_policy() -> str:
 
 
 BROKER_BOTH_HIT_POLICY = broker_both_hit_policy()
+
+
+def atr_pct_at(bars: list[Bar], index: int, span: int = 14) -> float | None:
+    """ATR%/close at ``index`` from bars at or before it, or None when too short.
+
+    The declared ``blocks.extreme_atr_pct`` needs one measured input; this is it,
+    computed causally so a decision cannot see the bar it trades.
+    """
+    if index < span or index >= len(bars) or bars[index].close <= 0:
+        return None
+    ranges: list[float] = []
+    for offset in range(index - span + 1, index + 1):
+        bar = bars[offset]
+        previous_close = bars[offset - 1].close
+        ranges.append(
+            max(bar.high - bar.low, abs(bar.high - previous_close), abs(bar.low - previous_close))
+        )
+    return (sum(ranges) / len(ranges)) / bars[index].close * 100.0
+
 
 TAG = "EXPERIMENTAL_PROSPECTIVE_PAPER"
 BOOK_ID = "EDGE16LANE"
@@ -137,6 +157,22 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="WP-EDGE-016 canonical experimental paper lane")
     parser.add_argument("--out", default=str(LANE_DIR))
     parser.add_argument("--extend-prospective", action="store_true")
+    parser.add_argument(
+        "--cost-multiplier",
+        type=float,
+        default=1.0,
+        help="adverse multiplier on every traded cost component (1x is the central model)",
+    )
+    parser.add_argument(
+        "--cost-mode",
+        choices=("net", "frictionless"),
+        default="net",
+        help=(
+            "net (default, WP-EDGE-017): the broker charges the venue cost before RiskManager "
+            "sees the result; frictionless reproduces the WP-EDGE-016 book exactly, which is "
+            "what the equivalence regression checks"
+        ),
+    )
     args = parser.parse_args()
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
@@ -146,12 +182,26 @@ def main() -> int:
     series = load_series(args.extend_prospective)
 
     # ---- the canonical objects, wired exactly as the runtime wires them -----------------
+    # WP-EDGE-017/P0.3: the venue cost is charged *inside* the book, on the same
+    # cost model the research restatement uses, so the PnL RiskManager records is
+    # already net. The frictionless book is kept behind a flag because it is the
+    # only way to reproduce the WP-EDGE-016 baseline byte for byte.
+    def cost_schedule(symbol: str, notional: float) -> BrokerCost:
+        terms = cost_for(symbol, stake_usdt=max(notional, 1.0))
+        scale = float(args.cost_multiplier)
+        return BrokerCost(
+            commission_bps=terms.fee_bps_per_side * scale,
+            half_spread_bps=terms.half_spread_bps * scale,
+            slippage_bps=(terms.slippage_bps_per_side + terms.impact_bps_per_side) * scale,
+        )
+
     broker = PaperBroker(
         equity=PORTFOLIO_EQUITY_USDT,
-        slippage_bps=0.0,  # the venue's cost is charged explicitly by the research cost model
+        slippage_bps=0.0,  # the schedule carries the friction when cost_mode=net
         commission_bps=0.0,
         book_id=BOOK_ID,
         clock=lambda: current_ms[0] / 1000.0,
+        cost_schedule=cost_schedule if args.cost_mode == "net" else None,
     )
     current_ms = [min(bars[0].ts_ms for bars in series.values())]
     risk = RiskManager(
@@ -175,6 +225,19 @@ def main() -> int:
     pending: dict[tuple[str, str], Any] = {}
     cycles: list[dict[str, Any]] = []
     coverage: dict[tuple[str, int], dict[str, Any]] = {}
+    #: Last closed price per symbol, so the book can be marked at every decision
+    #: and RiskManager sees net equity, not only realized net PnL.
+    marks: dict[str, float] = {}
+    #: What the declared defensive blocks actually did in this replay.
+    block_stats: dict[str, Any] = {
+        "atr_blocked": 0,
+        "atr_unknown": 0,
+        "weekend_blocked": 0,
+        "max_atr_pct": 0.0,
+        "atr_evaluations": 0,
+        "spread_bps": "NOT_MEASURED_IN_A_BAR_REPLAY",
+        "latency_ms": "NOT_MEASURED_IN_A_BAR_REPLAY",
+    }
 
     def note(symbol: str, ts_ms: int, stage: str, **payload: Any) -> None:
         row = coverage.setdefault(
@@ -185,10 +248,16 @@ def main() -> int:
             row["stages"].append(stage)
         row["detail"].update(payload)
 
+    def mark_risk() -> None:
+        """Hand the risk engine the book's net equity (cash + unrealized - accruals)."""
+        risk.mark_equity(broker.mark_to_market_equity(marks))
+
     def close_positions(closed: list[Any], symbol: str, ts_ms: int) -> None:
         for trade in closed:
+            # ``trade.pnl`` is net of commissions and execution cost (WP-EDGE-017).
             risk.record_trade_result(float(trade.pnl))
             risk.sync_open_positions(dict(broker.positions))
+            mark_risk()
             # the machine that opened it must be told the position is gone, or its own
             # entry state would describe a book that no longer exists
             owner = machines.get(symbol, {}).get(str(trade.strategy_name))
@@ -236,6 +305,7 @@ def main() -> int:
             if index is None:
                 continue
             bar = bars[index]
+            marks[symbol] = bar.close
             note(
                 symbol,
                 ts_ms,
@@ -266,6 +336,7 @@ def main() -> int:
                             price=bar.open,
                             metadata={},
                         )
+                        mark_risk()
                         check = risk.check_signal(signal)
                         cycles.append(
                             {
@@ -399,8 +470,49 @@ def main() -> int:
                 if decision is None:
                     continue
                 if decision.kind == "ENTRY":
+                    # blocks.extreme_atr_pct, on a real measurement from bars at or
+                    # before the decision. Unmeasured is a block, not a pass.
+                    atr = atr_pct_at(bars, index)
+                    block_stats["atr_evaluations"] += 1
+                    if atr is None:
+                        block_stats["atr_unknown"] += 1
+                        cycles.append(
+                            {
+                                "cycle": len(cycles) + 1,
+                                "tag": TAG,
+                                "ts_ms": ts_ms,
+                                "symbol": symbol,
+                                "family": family.name,
+                                "stage": "PROPOSAL",
+                                "action": "NO_TRADE",
+                                "reason": "ATR_UNKNOWN",
+                                "rule": decision.rule,
+                            }
+                        )
+                        note(symbol, ts_ms, "NO_SIGNAL", atr_unknown=True)
+                        continue
+                    block_stats["max_atr_pct"] = max(block_stats["max_atr_pct"], atr)
+                    if atr > policy.blocks.extreme_atr_pct:
+                        block_stats["atr_blocked"] += 1
+                        cycles.append(
+                            {
+                                "cycle": len(cycles) + 1,
+                                "tag": TAG,
+                                "ts_ms": ts_ms,
+                                "symbol": symbol,
+                                "family": family.name,
+                                "stage": "PROPOSAL",
+                                "action": "NO_TRADE",
+                                "reason": "ATR_BLOCK",
+                                "atr_pct": round(atr, 4),
+                                "rule": decision.rule,
+                            }
+                        )
+                        note(symbol, ts_ms, "NO_SIGNAL", atr_blocked=True)
+                        continue
                     weekend = day.weekday() >= 5
                     if weekend and not policy.blocks.weekend_trading:
+                        block_stats["weekend_blocked"] += 1
                         cycles.append(
                             {
                                 "cycle": len(cycles) + 1,
@@ -557,22 +669,16 @@ def main() -> int:
                 float(t["entry_commission"]) + float(t["exit_commission"]) for t in trades
             ),
         },
-        "costs": {
-            "broker_fees_usdt": sum(
-                float(t["entry_commission"]) + float(t["exit_commission"]) for t in trades
-            ),
-            "broker_slippage_bps": 0.0,
-            "lane_pnl_is": "PRE_COST",
-            "where_the_cost_is_charged": (
-                "ECONOMIC_RESTATEMENT.csv applies the venue cost per round trip and reports 1x/2x/3x; "
-                "the trade-by-trade PnL stored here is frictionless and must not be read as net"
-            ),
-            "reading": (
-                "the book is deliberately frictionless so that the fills can be compared bar by bar "
-                "with the research restatement; the economic verdict lives in the restatement, not here"
-            ),
-            "net_of_cost": net_of_cost(trades),
-        },
+        "costs": cost_block(trades, args.cost_mode),
+        "net_risk_parity": net_risk_parity(
+            risk=risk,
+            snapshot=snapshot,
+            trades=trades,
+            actions=actions,
+            initial_equity=PORTFOLIO_EQUITY_USDT,
+            cost_mode=args.cost_mode,
+        ),
+        "baseline_comparison": baseline_comparison(trades),
         "protective_exits": {
             "owner": "trading_bot.paper.broker.PaperBroker.check_positions_ohlc",
             "both_hit_policy": BROKER_BOTH_HIT_POLICY,
@@ -597,6 +703,33 @@ def main() -> int:
                 "bar became available. A real venue adds queue and network delay, so every fill here "
                 "is optimistic in timing even though it is no longer causally impossible"
             ),
+        },
+        "defensive_blocks": {
+            "policy_source": "config/risk.yaml via load_settings",
+            "weekend_trading": {
+                "declared": policy.blocks.weekend_trading,
+                "evaluated_here": True,
+                "entries_refused": block_stats["weekend_blocked"],
+            },
+            "extreme_atr_pct": {
+                "declared": policy.blocks.extreme_atr_pct,
+                "evaluated_here": True,
+                "input": "ATR(14)% at the signal bar, from bars at or before it",
+                "evaluations": block_stats["atr_evaluations"],
+                "refused": block_stats["atr_blocked"],
+                "unmeasured_refused": block_stats["atr_unknown"],
+                "max_observed_pct": round(block_stats["max_atr_pct"], 4),
+            },
+            "excessive_spread_bps": {
+                "declared": policy.blocks.excessive_spread_bps,
+                "evaluated_here": False,
+                "why_not": "a bar replay has no order book; the runtime entrypoint does evaluate it",
+            },
+            "high_latency_ms": {
+                "declared": policy.blocks.high_latency_ms,
+                "evaluated_here": False,
+                "why_not": "a bar replay has no data age; the runtime entrypoint does evaluate it",
+            },
         },
         "risk_state_at_end": canonical_trade_result(risk),
         "isolation": {
@@ -645,6 +778,140 @@ def main() -> int:
     print(f"[lane16] identities hold: {report['positions_and_pnl']['identities_all_hold']}")
     print(f"[lane16] admission ledger untouched: {report['isolation']['untouched']}")
     return 0
+
+
+EDGE16_LANE_REPORT = (
+    REPO
+    / "reports"
+    / "economic-recovery"
+    / "RFC-EDGE-016"
+    / "experimental_paper"
+    / "CANONICAL_LANE_REPORT.json"
+)
+
+
+def cost_block(trades: list[dict[str, Any]], cost_mode: str) -> dict[str, Any]:
+    """What the book paid, split into the terms that are actually bookkept.
+
+    In ``net`` mode the PnL stored on every trade already has these costs
+    deducted, and the identity below is checked rather than asserted. In
+    ``frictionless`` mode nothing is charged, which is exactly the WP-EDGE-016
+    baseline this lane must still be able to reproduce.
+    """
+    commissions = sum(float(t["entry_commission"]) + float(t["exit_commission"]) for t in trades)
+    execution = sum(float(t.get("execution_cost_usdt", 0.0)) for t in trades)
+    reference = sum(float(t.get("reference_gross_pnl", 0.0)) for t in trades)
+    gross = sum(float(t["gross_pnl"]) for t in trades)
+    net = sum(float(t["pnl"]) for t in trades)
+    total_cost = execution + commissions
+    block: dict[str, Any] = {
+        "cost_mode": cost_mode,
+        "lane_pnl_is": "NET_OF_VENUE_COST" if cost_mode == "net" else "PRE_COST",
+        "broker_fees_usdt": round(commissions, 6),
+        "broker_execution_cost_usdt": round(execution, 6),
+        "total_cost_usdt": round(total_cost, 6),
+        "reference_gross_usdt": round(reference, 6),
+        "gross_after_execution_usdt": round(gross, 6),
+        "net_realised_usdt": round(net, 6),
+        "summary": {
+            "reference_gross_usdt": round(reference, 6),
+            "gross_realised_usdt": round(gross, 6),
+        },
+        "reconciles": abs(net - (reference - execution - commissions)) <= 1e-6,
+        "where_the_cost_is_charged": (
+            "inside PaperBroker: half spread and slippage move the fill, commissions are "
+            "charged on both legs, and ClosedTrade.pnl is the result"
+            if cost_mode == "net"
+            else "nowhere: the book is frictionless by request"
+        ),
+        "reading": (
+            "RiskManager.record_trade_result receives this net figure and the engine is "
+            "marked to the broker's net equity before every decision (WP-EDGE-017/P0.3)"
+            if cost_mode == "net"
+            else "the frictionless book reproduces the WP-EDGE-016 baseline; it must never "
+            "be read as a net result"
+        ),
+    }
+    block["stress_projection"] = {
+        "role": "PROJECTION_NOT_A_BOOK",
+        "rule": (
+            "an adverse multiplier m adds (m - 1) x the 1x cost to the net the book already "
+            "paid; it is arithmetic on the same fills, not a second execution path"
+        ),
+        "net_1x_usdt": round(net, 4),
+        "net_2x_usdt": round(net - total_cost, 4),
+        "net_3x_usdt": round(net - 2.0 * total_cost, 4),
+    }
+    block["net_of_cost"] = net_of_cost(trades)
+    return block
+
+
+def net_risk_parity(
+    *,
+    risk: RiskManager,
+    snapshot: dict[str, Any],
+    trades: list[dict[str, Any]],
+    actions: dict[str, int],
+    initial_equity: float,
+    cost_mode: str,
+) -> dict[str, Any]:
+    """Proof that the risk engine and the book are looking at the same money."""
+    net = sum(float(t["pnl"]) for t in trades)
+    unrealised_net = float(snapshot["unrealised_pnl_net"])
+    broker_net_equity = float(snapshot["equity_mark_to_market"])
+    state = risk.snapshot()
+    return {
+        "recorded_input": (
+            "ClosedTrade.pnl (net of commissions and execution cost)"
+            if cost_mode == "net"
+            else "ClosedTrade.pnl (frictionless: reproduces WP-EDGE-016)"
+        ),
+        "sizing_input": "RiskManager.equity, marked to the broker's net equity",
+        "broker_realised_net_usdt": round(net, 9),
+        "broker_unrealised_net_usdt": round(unrealised_net, 9),
+        "broker_net_equity_usdt": round(broker_net_equity, 9),
+        "broker_equity_identity": abs(broker_net_equity - (initial_equity + net + unrealised_net))
+        <= 1e-6,
+        "risk_equity_usdt": round(float(risk.equity), 9),
+        "risk_equity_equals_broker_net": abs(float(risk.equity) - broker_net_equity) <= 1e-6,
+        "risk_daily_pnl_usdt": round(float(risk.daily_pnl), 9),
+        "risk_weekly_pnl_usdt": round(float(risk.weekly_pnl), 9),
+        "risk_drawdown_pct": float(state["drawdown_pct"]),
+        "risk_daily_drawdown_pct": float(state["daily_drawdown_pct"]),
+        "risk_peak_equity_usdt": round(float(risk.peak_equity), 6),
+        "risk_consecutive_losses": int(risk.consecutive_losses),
+        "risk_trades_today": int(risk.trades_today),
+        "rejections_by_rule": {key: actions.get(key, 0) for key in ("RISK_REJECTED", "NO_TRADE")},
+    }
+
+
+def baseline_comparison(trades: list[dict[str, Any]]) -> dict[str, Any]:
+    """This book against the published WP-EDGE-016 fills, term by term."""
+    import json as _json
+
+    if not EDGE16_LANE_REPORT.is_file():
+        return {"baseline_available": False}
+    baseline = _json.loads(EDGE16_LANE_REPORT.read_text(encoding="utf-8"))
+    base_trades = baseline["positions_and_pnl"]["closed_trades"]
+    base_realised = float(baseline["positions_and_pnl"]["realised_pnl_usdt"])
+    base_net = float(baseline["costs"]["net_of_cost"]["net_1x_usdt"])
+    net = sum(float(t["pnl"]) for t in trades)
+    return {
+        "baseline_available": True,
+        "source": str(EDGE16_LANE_REPORT.relative_to(REPO)),
+        "baseline_fills": int(base_trades),
+        "this_fills": len(trades),
+        "fills_changed": len(trades) - int(base_trades),
+        "baseline_frictionless_realised_usdt": round(base_realised, 6),
+        "baseline_net_1x_usdt": round(base_net, 6),
+        "this_realised_usdt": round(net, 6),
+        "difference_vs_baseline_net_1x_usdt": round(net - base_net, 6),
+        "reads_as": (
+            "the baseline net was a report written after the decisions; this net is what "
+            "RiskManager saw before each decision. A difference in fills is a decision that "
+            "net risk no longer approved, not a data change"
+        ),
+    }
 
 
 def net_of_cost(trades: list[dict[str, Any]]) -> dict[str, Any]:

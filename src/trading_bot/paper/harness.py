@@ -22,6 +22,7 @@ from trading_bot.backtesting import BacktestResult, FoldReport, build_fold_repor
 from trading_bot.config.runtime import TradingMode
 from trading_bot.config.settings import Settings
 from trading_bot.market_data.types import OHLCV
+from trading_bot.risk.defensive_blocks import MarketConditions
 from trading_bot.scanner import UniverseScanner
 
 from .archive import PaperSnapshotArchive
@@ -407,6 +408,7 @@ class PaperSessionRunner:
 
         history: dict[str, list[OHLCV]] = {}
         decision_ts: dict[str, int] = {}
+        conditions = self._market_conditions(snapshots)
         if self._history_reader is not None:
             for snap in snapshots:
                 symbol = str(getattr(snap, "symbol", ""))
@@ -435,10 +437,37 @@ class PaperSessionRunner:
                     decision_ts.setdefault(
                         symbol, int(getattr(snap, "timestamp", 0) or session_started_ms)
                     )
-            return engine.run_cycle_sync(history, decision_ts)
+            return engine.run_cycle_sync(history, decision_ts, conditions=conditions)
 
-        counts = engine.run_cycle_sync(history, decision_ts)
+        counts = engine.run_cycle_sync(history, decision_ts, conditions=conditions)
         return counts
+
+    def _market_conditions(self, snapshots: list[Any]) -> dict[str, MarketConditions]:
+        """Measured inputs for the four declared defensive blocks.
+
+        WP-EDGE-017/P0.4: the scanner already measures the spread and the ATR% of
+        every active pair, and the snapshot timestamp gives the age of the data
+        the decision is about to act on. None of it was reaching the risk path.
+        A field the scanner did not measure stays ``None`` so the evaluator blocks
+        instead of passing.
+        """
+        now_ms = int(datetime.datetime.now(datetime.UTC).timestamp() * 1000)
+        at = datetime.datetime.now(datetime.UTC)
+        conditions: dict[str, MarketConditions] = {}
+        for snap in snapshots:
+            symbol = str(getattr(snap, "symbol", "") or "")
+            if not symbol or not getattr(snap, "active", False):
+                continue
+            snap_ts = int(getattr(snap, "timestamp", 0) or 0)
+            spread = getattr(snap, "spread_bps", None)
+            atr = getattr(snap, "atr_pct", None)
+            conditions[symbol] = MarketConditions(
+                at=at,
+                spread_bps=float(spread) if spread is not None else None,
+                atr_pct=float(atr) if atr is not None else None,
+                latency_ms=float(now_ms - snap_ts) if snap_ts > 0 else None,
+            )
+        return conditions
 
     def _record_closed_trades_in_risk(self, execution_summary: Any) -> None:
         """Feed reconciled closed-trade PnL into the canonical RiskManager.

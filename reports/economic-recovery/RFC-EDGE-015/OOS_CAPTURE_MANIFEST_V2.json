@@ -1,7 +1,31 @@
 {
-  "capture_started_unix_ns": 1792227699913727000,
+  "append_only": {
+    "added": 0,
+    "conflicts": [],
+    "contract": "existing rows are read first and never replaced; the merged file is written to a temporary sibling and moved with os.replace, so a failed run leaves the previous slice intact",
+    "descriptive_slice_sha256_after": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "descriptive_slice_sha256_before": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "duplicates_identical": 0,
+    "ledger": "reports/economic-recovery/RFC-EDGE-015/scratch/OOS_CAPTURE_LEDGER.jsonl",
+    "partial_bars_excluded": 0,
+    "rows_after": 9,
+    "rows_before": 9,
+    "slice_sha256_after": "983944ba8e296a802b4873014cc4190879a92ebbbcd0326baa599bbd34da6b66",
+    "slice_sha256_before": "983944ba8e296a802b4873014cc4190879a92ebbbcd0326baa599bbd34da6b66"
+  },
+  "bytes_written": {
+    "descriptive": {
+      "bytes": 0,
+      "rows": 0
+    },
+    "prospective": {
+      "bytes": 1255,
+      "rows": 9
+    }
+  },
+  "capture_started_unix_ns": 1792237156839196100,
   "capture_status": "CAPTURED",
-  "captured_at_utc": "2026-10-17T09:01:39Z",
+  "captured_at_utc": "2026-10-17T11:39:16Z",
   "descriptive": {
     "bars": 0,
     "path": "reports/economic-recovery/RFC-EDGE-015/scratch/OOS_DESCRIPTIVE_1H.jsonl",
@@ -12,9 +36,9 @@
   "order_check": {
     "all_prospective_bars_open_after_freeze": true,
     "assumption": "both instants come from the same host clock in different processes; the commit between them is what makes the ordering checkable from outside this machine",
-    "capture_started_unix_ns": 1792227699913727000,
+    "capture_started_unix_ns": 1792237156839196100,
     "commit_precedes_capture": true,
-    "delta_ns": 6370974260800,
+    "delta_ns": 15827899729900,
     "freeze_at_unix_ns": 1792221328939466200,
     "freeze_precedes_capture": true,
     "method": "the frozen file records its own nanosecond instant and is committed before this runs; the capture reads its own instant before the first network call, compares the two integers, and compares the file on disk against the blob Git holds for that commit",
@@ -25,7 +49,7 @@
       "git": {
         "blob_sha256": "cea0be89347d219ba89e973aa8a1d21223615206586e7a57adf71186188dc4cd",
         "blob_sha256_lf": "cea0be89347d219ba89e973aa8a1d21223615206586e7a57adf71186188dc4cd",
-        "commit": "5308b9dbba0f343b350046f943bcce9da28d0d97",
+        "commit": "253692835f9e9ba5822a680d90be234570ec1242",
         "commit_unix": 1792221564,
         "committed": true,
         "path": "reports/economic-recovery/RFC-EDGE-015/OOS_PREREGISTRATION_V2.json"
@@ -33,6 +57,38 @@
     },
     "protocol_digest_matches": true,
     "verdict": "ORDER_VERIFIED"
+  },
+  "pagination": {
+    "BTC/USDT": {
+      "bars_returned": 0,
+      "fetch_calls": 0,
+      "pages": 0,
+      "requested_from_ms": 1792234800000,
+      "requested_to_ms": 1792234800000,
+      "retried_short_pages": 0,
+      "stop_reason": "END_OF_WINDOW",
+      "truncated": false
+    },
+    "ETH/USDT": {
+      "bars_returned": 0,
+      "fetch_calls": 0,
+      "pages": 0,
+      "requested_from_ms": 1792234800000,
+      "requested_to_ms": 1792234800000,
+      "retried_short_pages": 0,
+      "stop_reason": "END_OF_WINDOW",
+      "truncated": false
+    },
+    "SOL/USDT": {
+      "bars_returned": 0,
+      "fetch_calls": 0,
+      "pages": 0,
+      "requested_from_ms": 1792234800000,
+      "requested_to_ms": 1792234800000,
+      "retried_short_pages": 0,
+      "stop_reason": "END_OF_WINDOW",
+      "truncated": false
+    }
   },
   "preregistration": {
     "file_sha256": "76351aaf63a80d8608a833012ab90bd1325936a9d92ad3eab9abd1a6bfd3666e",
@@ -48,35 +104,39 @@
     "why": "captured by WP-EDGE-14R at 2026-10-16T20:01:44Z, before this protocol existed, so no bar in it can be prospective with respect to it"
   },
   "prospective": {
-    "bars": 3,
+    "bars": 9,
+    "cumulative": true,
     "path": "reports/economic-recovery/RFC-EDGE-015/scratch/OOS_PROSPECTIVE_1H.jsonl",
     "rule": "bar open_ms > frozen_at_epoch_ms",
-    "sha256": "e246b39652e524216c64a57cb5bf795d575a73a05a8eb4b38a59bd59ae120040"
+    "sha256": "983944ba8e296a802b4873014cc4190879a92ebbbcd0326baa599bbd34da6b66"
   },
-  "schema_version": "EDGE15_OOS_CAPTURE_V2",
+  "schema_version": "EDGE15_OOS_CAPTURE_V3",
   "scoring_run": false,
   "selection_has_read_any_slice": false,
   "state": "OOS_ACCRUING_WITH_PROSPECTIVE_BARS",
   "symbols": {
     "BTC/USDT": {
       "descriptive_bars": 0,
-      "prospective_bars": 1
+      "newly_added": 0,
+      "prospective_bars": 3
     },
     "ETH/USDT": {
       "descriptive_bars": 0,
-      "prospective_bars": 1
+      "newly_added": 0,
+      "prospective_bars": 3
     },
     "SOL/USDT": {
       "descriptive_bars": 0,
-      "prospective_bars": 1
+      "newly_added": 0,
+      "prospective_bars": 3
     }
   },
   "window": {
     "capture_from_ms": 1792221328939,
-    "capture_to_ms": 1792227600000,
+    "capture_to_ms": 1792234800000,
     "first_prospective_bar_open_ms": 1792224000000,
     "first_prospective_bar_open_utc": "2026-10-17T08:00:00Z",
     "freeze_epoch_ms": 1792221328939
   },
-  "work_package": "WP-EDGE-015/P0.1"
+  "work_package": "WP-EDGE-015/P0.1 (capture contract repaired by WP-EDGE-017/P0.1)"
 }

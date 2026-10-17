@@ -1,3 +1,9 @@
 {"close": 81723.16, "high": 81760.01, "low": 81667.0, "open": 81738.87, "symbol": "BTC/USDT", "timestamp": 1792224000000, "volume": 205.18572}
+{"close": 81610.31, "high": 81742.76, "low": 81590.21, "open": 81723.16, "symbol": "BTC/USDT", "timestamp": 1792227600000, "volume": 313.2692}
+{"close": 81640.0, "high": 81672.01, "low": 81572.0, "open": 81610.31, "symbol": "BTC/USDT", "timestamp": 1792231200000, "volume": 209.43908}
 {"close": 2436.06, "high": 2436.57, "low": 2433.38, "open": 2435.04, "symbol": "ETH/USDT", "timestamp": 1792224000000, "volume": 2946.2477}
+{"close": 2437.43, "high": 2440.62, "low": 2433.65, "open": 2436.07, "symbol": "ETH/USDT", "timestamp": 1792227600000, "volume": 4269.5831}
+{"close": 2439.57, "high": 2441.65, "low": 2433.1, "open": 2437.44, "symbol": "ETH/USDT", "timestamp": 1792231200000, "volume": 5210.2081}
 {"close": 105.07, "high": 105.12, "low": 104.84, "open": 105.09, "symbol": "SOL/USDT", "timestamp": 1792224000000, "volume": 22225.764}
+{"close": 104.85, "high": 105.13, "low": 104.84, "open": 105.07, "symbol": "SOL/USDT", "timestamp": 1792227600000, "volume": 26932.285}
+{"close": 104.93, "high": 105.03, "low": 104.62, "open": 104.84, "symbol": "SOL/USDT", "timestamp": 1792231200000, "volume": 23800.881}

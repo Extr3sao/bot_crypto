@@ -35,6 +35,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import subprocess
 import sys
 import time
@@ -43,6 +44,19 @@ from typing import Any
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
+from trading_bot.research.oos_capture import (
+    PERIOD_MS_1H,
+    is_closed,
+    last_open_ms,
+    merge_slice,
+    next_since_ms,
+    paginate,
+    read_slice,
+    row_from_ccxt,
+    slice_sha256,
+    write_slice_atomic,
+)
+
 REPO = Path(__file__).resolve().parents[1]
 OUT = REPO / "reports" / "economic-recovery" / "RFC-EDGE-015"
 
@@ -50,6 +64,9 @@ PREREG = OUT / "OOS_PREREGISTRATION_V2.json"
 CAPTURE = OUT / "OOS_CAPTURE_MANIFEST_V2.json"
 PROSPECTIVE_SLICE = OUT / "scratch" / "OOS_PROSPECTIVE_1H.jsonl"
 DESCRIPTIVE_SLICE = OUT / "scratch" / "OOS_DESCRIPTIVE_1H.jsonl"
+#: Independent of the slice: one line per capture attempt and symbol, so coverage can be
+#: recomputed without trusting the file the collector itself rewrites.
+CAPTURE_LEDGER = OUT / "scratch" / "OOS_CAPTURE_LEDGER.jsonl"
 
 #: The 14R slice, captured before this freeze existed. It is data, and it is now
 #: descriptive for every hypothesis frozen below, because none of them was
@@ -175,47 +192,62 @@ def freeze(protocol: dict[str, Any], *, force: bool = False) -> int:
     return 0
 
 
-def _fetch(
-    symbols: list[str], start_ms: int, end_ms: int, exchange_id: str
-) -> dict[str, list[list[float]]]:
+def _fetch_symbol(
+    symbol: str, since_ms: int, end_ms: int, exchange_id: str, page_limit: int = 1000
+) -> tuple[list[list[float]], dict[str, Any]]:
+    """Every closed bar for one symbol in ``[since_ms, end_ms)``, page by page.
+
+    ``since_ms`` is the resumption point from the slice, not the freeze instant,
+    so a restart fills the gap forward instead of re-downloading (and, in the
+    previous implementation, overwriting) history it already held.
+    """
     import ccxt
 
     exchange = getattr(ccxt, exchange_id)()
-    out: dict[str, list[list[float]]] = {}
-    for symbol in symbols:
-        raw = exchange.fetch_ohlcv(symbol, "1h", since=start_ms, limit=1000) or []
-        out[symbol] = [
+    pause = max(exchange.rateLimit, 1000) / 1000.0
+
+    def fetch_page(cursor: int, limit: int) -> list[list[float]]:
+        raw = exchange.fetch_ohlcv(symbol, "1h", since=cursor, limit=limit) or []
+        time.sleep(pause)
+        return [
             [int(r[0]), float(r[1]), float(r[2]), float(r[3]), float(r[4]), float(r[5])]
             for r in raw
-            if start_ms <= int(r[0]) < end_ms
         ]
-        time.sleep(max(exchange.rateLimit, 1000) / 1000.0)
-    return out
+
+    result = paginate(
+        fetch_page,
+        since_ms=since_ms,
+        end_ms=end_ms,
+        period_ms=PERIOD_MS_1H,
+        page_limit=page_limit,
+    )
+    audit = {
+        "requested_from_ms": int(since_ms),
+        "requested_to_ms": int(end_ms),
+        "pages": result.pages,
+        "fetch_calls": result.fetch_calls,
+        "stop_reason": result.stop_reason,
+        "truncated": result.truncated,
+        "retried_short_pages": result.retried_short_pages,
+        "bars_returned": len(result.rows),
+    }
+    return result.rows, audit
 
 
-def _write_slice(path: Path, bars: dict[str, list[list[float]]]) -> tuple[int, str | None]:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    rows = 0
-    with path.open("w", encoding="utf-8") as handle:
-        for symbol in sorted(bars):
-            for row in bars[symbol]:
-                handle.write(
-                    json.dumps(
-                        {
-                            "symbol": symbol,
-                            "timestamp": row[0],
-                            "open": row[1],
-                            "high": row[2],
-                            "low": row[3],
-                            "close": row[4],
-                            "volume": row[5],
-                        },
-                        sort_keys=True,
-                    )
-                    + "\n"
-                )
-                rows += 1
-    return rows, _sha256(path)
+def _append_ledger(entry: dict[str, Any]) -> None:
+    """Append one line to the independent coverage ledger.
+
+    ``O_APPEND`` + a single ``write`` keeps concurrent readers from ever seeing
+    a half-written line; the collector never rewrites this file.
+    """
+    CAPTURE_LEDGER.parent.mkdir(parents=True, exist_ok=True)
+    payload = (json.dumps(entry, sort_keys=True) + "\n").encode("utf-8")
+    descriptor = os.open(CAPTURE_LEDGER, os.O_WRONLY | os.O_CREAT | os.O_APPEND, 0o644)
+    try:
+        os.write(descriptor, payload)
+        os.fsync(descriptor)
+    finally:
+        os.close(descriptor)
 
 
 def capture(symbols: list[str], exchange_id: str) -> int:
@@ -268,11 +300,28 @@ def capture(symbols: list[str], exchange_id: str) -> int:
     order["protocol_digest_matches"] = protocol_sha == prereg.get("protocol_sha256")
 
     start_ms = max(BOUNDARY_MS + 3_600_000, freeze_ms)
-    end_ms = (int(time.time() * 1000) // 3_600_000) * 3_600_000
+    now_ms = int(time.time() * 1000)
+    end_ms = (now_ms // 3_600_000) * 3_600_000
     status = "CAPTURED"
+
+    # Append-only starts here: read what the slice already holds, and fetch each
+    # symbol forward from its newest held bar. Nothing below opens the slice for
+    # writing directly, so a failed run cannot truncate it.
+    existing_prospective = read_slice(PROSPECTIVE_SLICE)
+    existing_descriptive = read_slice(DESCRIPTIVE_SLICE)
+    held = [*existing_prospective, *existing_descriptive]
+    sha_before = slice_sha256(existing_prospective)
+    descriptive_sha_before = slice_sha256(existing_descriptive)
+    rows_before = len(existing_prospective)
+
     fetched: dict[str, list[list[float]]] = {}
+    fetch_audit: dict[str, dict[str, Any]] = {}
     try:
-        fetched = _fetch(symbols, start_ms, end_ms, exchange_id)
+        for symbol in symbols:
+            since = next_since_ms(held, symbol, floor_ms=start_ms, period_ms=PERIOD_MS_1H)
+            rows, audit = _fetch_symbol(symbol, since, end_ms, exchange_id)
+            fetched[symbol] = rows
+            fetch_audit[symbol] = audit
     except Exception as exc:  # network is external to the scientific claim
         status = "NETWORK_UNAVAILABLE"
         print(f"[oos] capture could not reach the venue: {type(exc).__name__}: {exc}")
@@ -283,14 +332,79 @@ def capture(symbols: list[str], exchange_id: str) -> int:
         prospective[symbol] = [r for r in rows if r[0] > freeze_ms]
         descriptive[symbol] = [r for r in rows if r[0] <= freeze_ms]
 
-    n_prospective, sha_prospective = (
-        _write_slice(PROSPECTIVE_SLICE, prospective) if status == "CAPTURED" else (0, None)
-    )
-    n_descriptive, sha_descriptive = (
-        _write_slice(DESCRIPTIVE_SLICE, descriptive) if status == "CAPTURED" else (0, None)
-    )
+    incoming_prospective: list[dict[str, Any]] = []
+    incoming_descriptive: list[dict[str, Any]] = []
+    for symbol in sorted(fetched):
+        for raw in fetched[symbol]:
+            open_ms = int(raw[0])
+            if not is_closed(open_ms, now_ms, PERIOD_MS_1H):
+                continue  # the current hour is still forming: not evidence yet
+            target = incoming_prospective if open_ms > freeze_ms else incoming_descriptive
+            target.append(row_from_ccxt(symbol, raw))
+
+    merge_prospective = merge_slice(existing_prospective, incoming_prospective)
+    merge_descriptive = merge_slice(existing_descriptive, incoming_descriptive)
+
+    n_prospective: int | None = None
+    sha_prospective: str | None = None
+    n_descriptive: int | None = None
+    sha_descriptive: str | None = None
+    written: dict[str, Any] = {}
+    if status == "CAPTURED":
+        slice_write = write_slice_atomic(PROSPECTIVE_SLICE, merge_prospective.rows)
+        descriptive_write = write_slice_atomic(DESCRIPTIVE_SLICE, merge_descriptive.rows)
+        n_prospective = int(slice_write["rows"])
+        sha_prospective = str(slice_write["sha256"])
+        n_descriptive = int(descriptive_write["rows"])
+        sha_descriptive = str(descriptive_write["sha256"])
+        written = {"prospective": slice_write, "descriptive": descriptive_write}
+        partial_excluded = sum(
+            1
+            for rows in fetched.values()
+            for row in rows
+            if not is_closed(int(row[0]), now_ms, PERIOD_MS_1H)
+        )
+        _append_ledger(
+            {
+                "schema_version": "EDGE17_OOS_CAPTURE_LEDGER_V1",
+                "captured_at_utc": _utc(capture_ns),
+                "capture_started_unix_ns": capture_ns,
+                "status": status,
+                "slice_path": _rel(PROSPECTIVE_SLICE),
+                "slice_sha256_before": sha_before,
+                "slice_sha256_after": sha_prospective,
+                "rows_before": rows_before,
+                "rows_after": n_prospective,
+                "added": merge_prospective.added,
+                "duplicates_identical": merge_prospective.duplicates_identical,
+                "conflicts": len(merge_prospective.conflicts),
+                "partial_bar_excluded": partial_excluded,
+                "symbols": {
+                    symbol: {
+                        "opens": [
+                            int(row["timestamp"])
+                            for row in merge_prospective.rows
+                            if row["symbol"] == symbol
+                        ],
+                        "fetched": len(fetched.get(symbol, [])),
+                        "requested_from_ms": fetch_audit.get(symbol, {}).get("requested_from_ms"),
+                        "pages": fetch_audit.get(symbol, {}).get("pages"),
+                        "stop_reason": fetch_audit.get(symbol, {}).get("stop_reason"),
+                    }
+                    for symbol in symbols
+                },
+            }
+        )
+    else:
+        # Nothing was written: report the slice as it stands, never as zero.
+        partial_excluded = 0
+        n_prospective = rows_before
+        sha_prospective = sha_before
+        n_descriptive = len(existing_descriptive)
+        sha_descriptive = descriptive_sha_before
+
     order["all_prospective_bars_open_after_freeze"] = all(
-        row[0] > freeze_ms for rows in prospective.values() for row in rows
+        row["timestamp"] > freeze_ms for row in merge_prospective.rows
     )
     order["verdict"] = (
         "ORDER_VERIFIED"
@@ -303,11 +417,24 @@ def capture(symbols: list[str], exchange_id: str) -> int:
     )
 
     first_prospective_open_ms = min(
-        (row[0] for rows in prospective.values() for row in rows), default=None
+        (row["timestamp"] for row in merge_prospective.rows), default=None
     )
+    per_symbol_captured = {
+        symbol: {
+            "prospective_bars": sum(1 for row in merge_prospective.rows if row["symbol"] == symbol),
+            "descriptive_bars": sum(1 for row in merge_descriptive.rows if row["symbol"] == symbol),
+            "newly_added": sum(
+                1
+                for row in merge_prospective.rows
+                if row["symbol"] == symbol
+                and row["timestamp"] > (last_open_ms(existing_prospective, symbol) or -1)
+            ),
+        }
+        for symbol in sorted(set(fetched) | set(symbols))
+    }
     manifest = {
-        "schema_version": "EDGE15_OOS_CAPTURE_V2",
-        "work_package": "WP-EDGE-015/P0.1",
+        "schema_version": "EDGE15_OOS_CAPTURE_V3",
+        "work_package": "WP-EDGE-015/P0.1 (capture contract repaired by WP-EDGE-017/P0.1)",
         "captured_at_utc": _utc(capture_ns),
         "capture_started_unix_ns": capture_ns,
         "capture_status": status,
@@ -335,6 +462,30 @@ def capture(symbols: list[str], exchange_id: str) -> int:
             "bars": n_prospective,
             "sha256": sha_prospective,
             "rule": "bar open_ms > frozen_at_epoch_ms",
+            "cumulative": True,
+        },
+        "append_only": {
+            "contract": (
+                "existing rows are read first and never replaced; the merged file is written "
+                "to a temporary sibling and moved with os.replace, so a failed run leaves the "
+                "previous slice intact"
+            ),
+            "rows_before": rows_before,
+            "rows_after": n_prospective,
+            "added": merge_prospective.added,
+            "duplicates_identical": merge_prospective.duplicates_identical,
+            "conflicts": list(merge_prospective.conflicts),
+            "slice_sha256_before": sha_before,
+            "slice_sha256_after": sha_prospective,
+            "descriptive_slice_sha256_before": descriptive_sha_before,
+            "descriptive_slice_sha256_after": sha_descriptive,
+            "partial_bars_excluded": partial_excluded,
+            "ledger": _rel(CAPTURE_LEDGER),
+        },
+        "pagination": fetch_audit,
+        "bytes_written": {
+            key: {"rows": value["rows"], "bytes": value["bytes"]}
+            for key, value in (written or {}).items()
         },
         "descriptive": {
             "path": _rel(DESCRIPTIVE_SLICE),
@@ -350,14 +501,8 @@ def capture(symbols: list[str], exchange_id: str) -> int:
         "previously_captured": prereg["previously_captured"],
         "selection_has_read_any_slice": False,
         "scoring_run": False,
-        "state": ("OOS_ACCRUING" if n_prospective < 1 else "OOS_ACCRUING_WITH_PROSPECTIVE_BARS"),
-        "symbols": {
-            symbol: {
-                "prospective_bars": len(prospective.get(symbol, [])),
-                "descriptive_bars": len(descriptive.get(symbol, [])),
-            }
-            for symbol in sorted(fetched)
-        },
+        "state": ("OOS_ACCRUING" if not n_prospective else "OOS_ACCRUING_WITH_PROSPECTIVE_BARS"),
+        "symbols": per_symbol_captured,
     }
     CAPTURE.parent.mkdir(parents=True, exist_ok=True)
     CAPTURE.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8")
@@ -369,7 +514,7 @@ def capture(symbols: list[str], exchange_id: str) -> int:
     print(
         f"[oos] capture status {status}; prospective bars {n_prospective}, descriptive {n_descriptive}"
     )
-    if n_prospective == 0:
+    if not n_prospective:
         print(
             "[oos] zero prospective bars yet: every bar fetched so far starts at or before "
             "the freeze instant, which is the expected state within the first hour"

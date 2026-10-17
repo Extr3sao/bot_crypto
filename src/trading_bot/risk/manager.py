@@ -332,8 +332,30 @@ class RiskManager:
             risk_amount_usdt=round(risk_amount, 2),
         )
 
+    def mark_equity(self, equity: float) -> None:
+        """Replace equity with the book's net mark-to-market, peaks included.
+
+        WP-EDGE-017/P0.3. ``record_trade_result`` moves equity by realized PnL;
+        this method lets the caller mark it to the broker's *net* equity, which
+        also carries the unrealized leg and the commissions accrued on open
+        positions. It **assigns** rather than adds, so calling it after a
+        ``record_trade_result`` reconciles to the broker without double counting.
+
+        Sizing, both drawdown rules and the daily/weekly loss thresholds all read
+        ``equity`` and the peaks, so a caller that marks this way makes every one
+        of those gates net-of-cost instead of gross.
+        """
+        self.equity = float(equity)
+        self.peak_equity = max(self.peak_equity, self.equity)
+        self.day_peak_equity = max(self.day_peak_equity, self.equity)
+
     def record_trade_result(self, pnl: float) -> None:
-        """Record a completed trade's P&L."""
+        """Record a completed trade's P&L.
+
+        ``pnl`` must be the net figure the book realized (commissions and
+        execution cost already deducted). A gross number here silently moves the
+        daily loss, drawdown and sizing gates: see WP-EDGE-017/P0.3.
+        """
         self.trades_today += 1
         self.daily_pnl += pnl
         self.weekly_pnl += pnl
