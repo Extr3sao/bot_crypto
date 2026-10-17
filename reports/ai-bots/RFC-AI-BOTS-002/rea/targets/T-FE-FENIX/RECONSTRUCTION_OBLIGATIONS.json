@@ -39,6 +39,33 @@
       "divergence": "es justo el defecto que corregimos en BOT-VIS-01",
       "status": "REJECT_ANTI_PATTERN",
       "why_not_adopted": "reintroduciría `INTEGRITY_FAILURE` silencioso"
+    },
+    {
+      "claim": "La frescura se puede endurecer pasando max_age",
+      "source_fact": "get_cached: ttl = max_age or TIMEFRAME_TTL.get(timeframe, 120)",
+      "observed_by": "INSTRUMENTED_EXECUTION_NOT_REA",
+      "measurement": "get_cached('BTCUSDT','15m', max_age=0) devuelve un resultado, no None",
+      "own_implementation": "vision/lane.py: la latencia se decide por reloj, no por un TTL opcional",
+      "matched_test": "tests/unit/vision/test_integrity_and_latency.py",
+      "divergence": "su control de frescura acepta silenciosamente el valor que debería ser el más estricto",
+      "status": "DIVERGENT_WE_ARE_STRICTER",
+      "why_not_adopted": "replicar un parámetro que ignora el cero es replicar un fallo"
+    },
+    {
+      "claim": "El resultado de render distingue un PNG de un cartel de relleno",
+      "source_fact": "ChartResult.ok=True también en la ruta PLACEHOLDER",
+      "observed_by": "INSTRUMENTED_EXECUTION_NOT_REA",
+      "measurement": "sin mplfinance: backend=PLACEHOLDER, ok=True, descripción 'No chart data available'",
+      "own_implementation": "vision/chart.py levanta InsufficientBarsError en vez de dibujar un relleno",
+      "matched_test": "tests/unit/vision/test_visual_defects.py",
+      "divergence": "su fallo silencioso puede mandar un cartel al modelo; el nuestro falla cerrado",
+      "status": "REJECT_ANTI_PATTERN",
+      "why_not_adopted": "un placeholder que se hace pasar por gráfico es peor que un error"
     }
-  ]
+  ],
+  "instrumentation_evidence": {
+    "file": "instrumentation/fenix_chart_probe.json",
+    "class": "INSTRUMENTED_EXECUTION_NOT_REA",
+    "verdict": "RENDER_AND_CACHE_REPRODUCED"
+  }
 }

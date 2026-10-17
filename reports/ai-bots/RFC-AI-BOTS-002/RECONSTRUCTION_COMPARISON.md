@@ -20,9 +20,14 @@ iteración.**
 | contexto multi-timeframe | nof1: 6 timeframes, velas fijas | `BOT-CTX-01` agrega un TF superior | `NOT_COMPARABLE` hasta medir con el mismo reloj |
 | sin modelo con visión ⇒ sin gráfico | qrak: `supports_image_analysis` | ruta sin provider de imagen | `EQUIVALENT_ON_TESTED_CASES` |
 | comparación de corridas | ninguno de los dos la tiene | `NOT_COMPARABLE` como estado principal | `UNIQUE_TO_OURS` |
+| resultado `ok=True` con relleno en vez de gráfico | **ejecutado**: sin mplfinance el servicio devuelve `PLACEHOLDER` con `ok=True` | `InsufficientBarsError` en vez de dibujar un relleno | `DIVERGENT_WE_ARE_STRICTER` |
+| `max_age` para exigir frescura | **ejecutado**: `max_age=0` aplica el TTL por defecto | reloj de respuesta, no un parámetro opcional | `DIVERGENT_WE_ARE_STRICTER` |
 
 ## Lo que no se comparó, y por qué
 
+- **Render de FenixAI**: sí se ejecutó, con velas sintéticas y en un entorno nuestro
+  (`INSTRUMENTED_EXECUTION_NOT_REA`, exit 0). Demostró el PNG real y dos defectos medidos
+  (relleno silencioso y `max_age=0`); no demuestra nada sobre el modelo, que nunca se llamó.
 - **Rentabilidad**: ningún target se ejecutó con datos reales ni con LLM real. `NO_ECONOMIC_EDGE_FOUND`
   sigue siendo el estado honesto; no hay serie que medir.
 - **Manejo de JSON inválido / timeout / rate limit**: se leyó el código de reintentos

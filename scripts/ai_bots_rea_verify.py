@@ -337,6 +337,48 @@ def main() -> int:
         str(fenix.get("commit")),
     )
 
+    # 11. the instrumented run is recorded, labelled, and not dressed up as REA
+    instr = TARGETS / "T-FE-FENIX" / "instrumentation"
+    probe_json = _json(instr / "fenix_chart_probe.json")
+    report.check(
+        "instrumentation_artifact_present",
+        (instr / "fenix_chart_probe.py").is_file() and bool(probe_json),
+    )
+    report.check(
+        "instrumentation_is_labelled_not_rea",
+        probe_json.get("evidence_class") == "INSTRUMENTED_EXECUTION_NOT_REA",
+        str(probe_json.get("evidence_class")),
+    )
+    report.check(
+        "instrumentation_ran_against_the_pin",
+        probe_json.get("commit") == fenix.get("commit"),
+        "probe commit must equal the dossier pin: "
+        f"{probe_json.get('commit')} vs {fenix.get('commit')}",
+    )
+    report.check(
+        "instrumentation_does_not_claim_a_model_call",
+        any(
+            "no model was called" in str(item).lower()
+            for item in (probe_json.get("what_this_does_not_prove") or [])
+        ),
+        "an instrumented render must not be read as a real model call",
+    )
+    identity = next(
+        (s for s in probe_json.get("steps", []) if s.get("step") == "image_identity"),
+        {},
+    )
+    baseline_render = str((fenix.get("runtime_reproduction") or {}).get("render", ""))
+    report.check(
+        "instrumentation_hash_matches_the_baseline_claim",
+        bool(identity.get("sha256")) and str(identity["sha256"])[:12] in baseline_render,
+        f"probe {str(identity.get('sha256'))[:12]}… vs baseline text",
+    )
+    report.check(
+        "instrumentation_covers_the_host_limit",
+        "unsupported_host" in repo_log,
+        "the Windows importer limit is recorded next to the executed parts",
+    )
+
     payload = {
         "checks": report.checks,
         "failures": report.failures,

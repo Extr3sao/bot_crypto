@@ -300,3 +300,15 @@ git log -1 --format='%H %s'
 
 **Aviso que sigue vigente:** `.gitignore:60` es `reports/*`; los artefactos nuevos de
 `reports/` necesitan `git add -f` o no se publican.
+
+**Añadido al cerrar: ejecución instrumentada (no REA) del render de FenixAI.**
+`rea/targets/T-FE-FENIX/instrumentation/` guarda el probe, su salida y un README: el
+`ChartService` del commit exacto corrió offline con velas sintéticas (exit 0, backend
+`MPLFINANCE`, PNG 181.314 B, determinista, caché sin cruzar símbolos) y la misma corrida midió
+dos defectos reales: relleno silencioso con `ok=True` cuando falta un backend, y
+`get_cached(max_age=0)` que aplica el TTL por defecto porque el cero es falsy.
+
+Verificador: **65 PASS / 0 FAIL** (antes 59). Mutación nueva comprobada: disfrazar el probe de
+`REA_EVIDENCE` ⇒ 2 FAIL. La consistencia hash-probe↔dossier la vigila el propio verificador:
+detectó que la baseline sólo citaba 8 caracteres del sha y se corrigió el documento, no la
+comprobación.

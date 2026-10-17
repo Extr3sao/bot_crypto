@@ -42,6 +42,16 @@ Consecuencia aplicada:
 5. **Semantic Signal es el más cercano a nosotros** y aun así no liga la imagen a un hash:
    logra coherencia por construcción. Nuestro lane es más estricto.
 
+## 2b. Ejecución instrumentada (no REA) del render de FenixAI
+
+`instrumentation/fenix_chart_probe.py` corre el `ChartService` del commit exacto con velas
+sintéticas, offline y sin claves: **exit 0**, backend `MPLFINANCE`, PNG de 181.314 B
+(sha256 `96c7f41c…`), determinista con las mismas velas, y caché que no cruza símbolos.
+La misma ejecución encontró dos defectos reales: sin `mplfinance` el servicio devuelve
+`ok=True` con backend `PLACEHOLDER` (`"No chart data available"`), y `get_cached(max_age=0)`
+aplica el TTL por defecto porque el cero es falsy. Se etiqueta como
+`INSTRUMENTED_EXECUTION_NOT_REA`: REA no ejecuta Python y no se le atribuye.
+
 ## 3. Límites técnicos medidos (no excusas)
 
 - `import-reference-source` → **exit 1, `unsupported_host`**: REA no puede importar árboles de

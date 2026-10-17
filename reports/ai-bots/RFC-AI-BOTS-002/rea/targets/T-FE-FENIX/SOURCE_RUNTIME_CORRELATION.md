@@ -27,3 +27,21 @@
 Conclusión honesta: **no hay capacidad de FenixAI que nuestro runtime no tenga ya, y en los
 tres invariantes críticos estamos por delante**. Lo que aporta es un caso de estudio de cómo
 se degrada un pipeline visual cuando la imagen viaja como cadena suelta.
+
+## Lo que pasó de "leído" a "ejecutado"
+
+| afirmación | antes | ahora |
+| --- | --- | --- |
+| el renderizador produce un PNG desde las velas dadas | fuente | **ejecutado**: 181.314 B, backend mplfinance |
+| la cadena degrada cuando falta un backend | fuente | **ejecutado**: cae a PLACEHOLDER con `ok=True` |
+| la caché no cruza símbolos | fuente | **ejecutado**: ETHUSDT no recibe la imagen de BTCUSDT |
+| la frescura existe como primitiva | fuente | **ejecutado**: `is_valid()` es `False` a las 2 h |
+| `max_age` permite exigir frescura | supuesto agradable | **refutado**: `max_age=0` aplica el TTL por defecto |
+
+Ese último punto es un fallo real y reproducible en el commit fijado: `ttl = max_age or
+TIMEFRAME_TTL.get(timeframe, 120)` trata `0` como "no especificado". Quien intente endurecer
+la frescura pasando `max_age=0` obtiene lo contrario de lo que pide. Queda registrado como
+divergencia en `RECONSTRUCTION_OBLIGATIONS.json`.
+
+Nada de esto cambia la decisión (`DEFER`): el plano que importa —modelo real, coste,
+economía— sigue sin ejecutarse.

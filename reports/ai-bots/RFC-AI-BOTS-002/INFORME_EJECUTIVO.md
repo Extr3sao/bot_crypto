@@ -25,6 +25,9 @@ conclusión sobre el proyecto era una suposición.
    commit exacto: 14 módulos JS en uno, bundle de 868 kB en el otro, más dos capturas de
    pantalla verificables por hash.
 6. **Auditado por fuente** lo que REA no puede ejecutar: los backends Python/TypeScript.
+7. **Ejecutado el render de FenixAI** con velas sintéticas y sin claves: produjo un PNG real
+   y reveló dos fallos medidos — relleno silencioso con `ok=True` y `max_age=0` que aplica el
+   TTL por defecto. Etiquetado `INSTRUMENTED_EXECUTION_NOT_REA`, no como evidencia REA.
 
 ## Los tres hallazgos que cambian decisiones
 

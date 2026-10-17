@@ -36,5 +36,24 @@
   "disk_free_gb": 2.1,
   "sandbox": "C:/Users/GVLLFR0035/AppData/Local/Temp/rea31/fenix (fuera del repo principal)",
   "measured_at": "2026-10-18",
-  "not_run": "el backend Python (LangGraph + proveedores) no se arrancó: requiere claves y servicios; la cadena visual se auditó por fuente"
+  "not_run": "el backend Python (LangGraph + proveedores) no se arrancó: requiere claves y servicios; la cadena visual se auditó por fuente",
+  "runtime_reproduction": {
+    "class": "INSTRUMENTED_EXECUTION_NOT_REA",
+    "artifact": "instrumentation/fenix_chart_probe.py + instrumentation/fenix_chart_probe.json",
+    "exit_code": 0,
+    "environment": "venv --system-site-packages con mplfinance 0.12.10b0 + apscheduler; pandas 3.0.6 y matplotlib 3.11.2 del entorno del proyecto; plotly ausente. No es su entorno.",
+    "runner": "python fenix_chart_probe.py bd7373d59bee48addea51989796df27f69193a34 out.json",
+    "render": "YES — backend MPLFINANCE, 378,5 ms, PNG 181314 B, sha256 96c7f41c928e6b1810015ebf745783823b35fb6eacf5eb614a07ec4b7bebc61e",
+    "determinism": "YES — mismas velas, mismo PNG con la caché desactivada",
+    "cache": "YES — indexada por symbol_timeframe; ETHUSDT no hereda la imagen de BTCUSDT",
+    "placeholder_degradation": "OBSERVED — sin mplfinance la cadena cae a PLACEHOLDER con ok=True y descripción 'Placeholder: No chart data available'",
+    "upstream_runtime_reproduced": "PARTIAL: render + caché + frescura; NO el LLM",
+    "not_executed": [
+      "proveedor de modelo",
+      "LangGraph",
+      "exchange",
+      "riesgo",
+      "ejecutor"
+    ]
+  }
 }

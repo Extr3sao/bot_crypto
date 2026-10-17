@@ -294,10 +294,40 @@
       "name": "fenix_commit_is_pinned",
       "ok": true,
       "detail": "bd7373d59bee48addea51989796df27f69193a34"
+    },
+    {
+      "name": "instrumentation_artifact_present",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "instrumentation_is_labelled_not_rea",
+      "ok": true,
+      "detail": "INSTRUMENTED_EXECUTION_NOT_REA"
+    },
+    {
+      "name": "instrumentation_ran_against_the_pin",
+      "ok": true,
+      "detail": "probe commit must equal the dossier pin: bd7373d59bee48addea51989796df27f69193a34 vs bd7373d59bee48addea51989796df27f69193a34"
+    },
+    {
+      "name": "instrumentation_does_not_claim_a_model_call",
+      "ok": true,
+      "detail": "an instrumented render must not be read as a real model call"
+    },
+    {
+      "name": "instrumentation_hash_matches_the_baseline_claim",
+      "ok": true,
+      "detail": "probe 96c7f41c928e… vs baseline text"
+    },
+    {
+      "name": "instrumentation_covers_the_host_limit",
+      "ok": true,
+      "detail": "the Windows importer limit is recorded next to the executed parts"
     }
   ],
   "failures": [],
-  "passed": 59,
+  "passed": 65,
   "failed": 0,
   "evidence_ids_backed": [
     "ev_47c01accd3491fd6e10e893f8a045e5fee226fa520f648f4460396a619efbaf1",
