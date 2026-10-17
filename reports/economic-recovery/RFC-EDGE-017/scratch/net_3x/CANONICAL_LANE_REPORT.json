@@ -4,12 +4,12 @@
     "baseline_fills": 146,
     "baseline_frictionless_realised_usdt": -53.384527,
     "baseline_net_1x_usdt": -239.7503,
-    "difference_vs_baseline_net_1x_usdt": -54.30595,
-    "fills_changed": -79,
+    "difference_vs_baseline_net_1x_usdt": -260.821472,
+    "fills_changed": -25,
     "reads_as": "the baseline net was a report written after the decisions; this net is what RiskManager saw before each decision. A difference in fills is a decision that net risk no longer approved, not a data change",
     "source": "reports\\economic-recovery\\RFC-EDGE-016\\experimental_paper\\CANONICAL_LANE_REPORT.json",
-    "this_fills": 67,
-    "this_realised_usdt": -294.05625
+    "this_fills": 121,
+    "this_realised_usdt": -500.571772
   },
   "canonical_risk": {
     "changed_by_this_work_package": false,
@@ -27,62 +27,62 @@
     "source": "config\\risk.yaml"
   },
   "costs": {
-    "broker_execution_cost_usdt": 54.058334,
-    "broker_fees_usdt": 201.0,
+    "broker_execution_cost_usdt": 99.583602,
+    "broker_fees_usdt": 363.0,
     "cost_mode": "net",
-    "gross_after_execution_usdt": -93.05625,
+    "gross_after_execution_usdt": -137.571772,
     "lane_pnl_is": "NET_OF_VENUE_COST",
     "net_of_cost": {
       "caveat": "this re-prices the lane's fills after the fact; it is a research restatement of the frictionless book, not a second execution path",
-      "cost_1x_usdt": 85.0531,
-      "cost_2x_usdt": 170.1062,
-      "cost_3x_usdt": 255.1593,
+      "cost_1x_usdt": 154.2473,
+      "cost_2x_usdt": 308.4947,
+      "cost_3x_usdt": 462.742,
       "example_fee_floor": "10 bps per side at the base spot tier, before spread, slippage and impact",
-      "gross_realised_usdt": -93.05625,
+      "gross_realised_usdt": -137.571772,
       "model": "trading_bot.research.economic_recovery.alpha15.round_trip_cost_bps",
-      "net_1x_usdt": -178.1093,
-      "net_2x_usdt": -263.1624,
-      "net_3x_usdt": -348.2155,
+      "net_1x_usdt": -291.8191,
+      "net_2x_usdt": -446.0664,
+      "net_3x_usdt": -600.3138,
       "per_symbol": {
         "BTC/USDT": {
-          "cost_1x_usdt": 30.983,
-          "gross_usdt": -31.3338,
-          "trades": 25.0
+          "cost_1x_usdt": 49.5728,
+          "gross_usdt": -26.96,
+          "trades": 40.0
         },
         "ETH/USDT": {
-          "cost_1x_usdt": 32.2224,
-          "gross_usdt": -31.6008,
-          "trades": 26.0
+          "cost_1x_usdt": 58.2481,
+          "gross_usdt": -66.1718,
+          "trades": 47.0
         },
         "SOL/USDT": {
-          "cost_1x_usdt": 21.8477,
-          "gross_usdt": -30.1216,
-          "trades": 16.0
+          "cost_1x_usdt": 46.4264,
+          "gross_usdt": -44.44,
+          "trades": 34.0
         }
       },
       "venue": "BINANCE_SPOT"
     },
-    "net_realised_usdt": -294.05625,
+    "net_realised_usdt": -500.571772,
     "reading": "RiskManager.record_trade_result receives this net figure and the engine is marked to the broker's net equity before every decision (WP-EDGE-017/P0.3)",
     "reconciles": true,
-    "reference_gross_usdt": -38.997916,
+    "reference_gross_usdt": -37.98817,
     "stress_projection": {
-      "net_1x_usdt": -294.0563,
-      "net_2x_usdt": -549.1146,
-      "net_3x_usdt": -804.1729,
+      "net_1x_usdt": -500.5718,
+      "net_2x_usdt": -963.1554,
+      "net_3x_usdt": -1425.739,
       "role": "PROJECTION_NOT_A_BOOK",
       "rule": "an adverse multiplier m adds (m - 1) x the 1x cost to the net the book already paid; it is arithmetic on the same fills, not a second execution path"
     },
     "summary": {
-      "gross_realised_usdt": -93.05625,
-      "reference_gross_usdt": -38.997916
+      "gross_realised_usdt": -137.571772,
+      "reference_gross_usdt": -37.98817
     },
-    "total_cost_usdt": 255.058334,
+    "total_cost_usdt": 462.583602,
     "where_the_cost_is_charged": "inside PaperBroker: half spread and slippage move the fill, commissions are charged on both legs, and ClosedTrade.pnl is the result"
   },
   "coverage": {
-    "bars_with_a_fill": 67,
-    "bars_with_a_proposal": 237,
+    "bars_with_a_fill": 121,
+    "bars_with_a_proposal": 283,
     "evaluated_symbol_bars": 6000,
     "expected_symbol_bars": 6000,
     "ledger": "COVERAGE_LEDGER.jsonl",
@@ -90,31 +90,77 @@
   },
   "cycles": {
     "by_action": {
-      "FILL_OPENED": 67,
+      "FILL_OPENED": 121,
       "NO_TRADE": 52,
-      "POSITION_CLOSED": 67,
-      "PROPOSE_ENTRY": 173,
-      "PROPOSE_EXIT": 76,
-      "RISK_APPROVED": 67,
-      "RISK_REJECTED": 106,
+      "POSITION_CLOSED": 121,
+      "PROPOSE_ENTRY": 165,
+      "PROPOSE_EXIT": 147,
+      "RISK_APPROVED": 121,
+      "RISK_REJECTED": 44,
       "RISK_RESET_DAILY": 84,
-      "STRATEGY_EXIT": 30
+      "RISK_RESET_WEEKLY": 12,
+      "STRATEGY_EXIT": 48
     },
     "by_stage": {
       "DAY_BOUNDARY": 84,
-      "FILL": 67,
-      "PROPOSAL": 301,
-      "RECONCILIATION": 67,
-      "RISK_RESULT": 173,
-      "SIM_ORDER": 30
+      "FILL": 121,
+      "PROPOSAL": 364,
+      "RECONCILIATION": 121,
+      "RISK_RESULT": 165,
+      "SIM_ORDER": 48,
+      "WEEK_BOUNDARY": 12
     },
-    "total": 722
+    "total": 915
+  },
+  "defensive_blocks": {
+    "excessive_spread_bps": {
+      "declared": 50,
+      "evaluated_here": false,
+      "why_not": "a bar replay has no order book; the runtime entrypoint does evaluate it"
+    },
+    "extreme_atr_pct": {
+      "declared": 8.0,
+      "evaluated_here": true,
+      "evaluations": 217,
+      "input": "ATR(14)% at the signal bar, from bars at or before it",
+      "max_observed_pct": 2.973,
+      "refused": 0,
+      "unmeasured_refused": 0
+    },
+    "high_latency_ms": {
+      "declared": 2000,
+      "evaluated_here": false,
+      "why_not": "a bar replay has no data age; the runtime entrypoint does evaluate it"
+    },
+    "policy_source": "config/risk.yaml via load_settings",
+    "weekend_trading": {
+      "declared": false,
+      "entries_refused": 52,
+      "evaluated_here": true
+    }
   },
   "disk": {
-    "free_gib": 4.327,
+    "free_gib": 4.045,
     "policy_changed": false
   },
-  "generated_at_utc": "2026-10-17T11:41:19Z",
+  "equity_curve": {
+    "drawdown": {
+      "drawdown_pct": 5.005718,
+      "drawdown_usdt": 500.571772,
+      "method": "max peak-to-trough of the mark-to-market net equity curve",
+      "peak_equity": 10000.0,
+      "peak_ts_ms": 1784761200000,
+      "points": 2000,
+      "reason": null,
+      "status": "MEASURED",
+      "trough_equity": 9499.428228,
+      "trough_ts_ms": 1791252000000
+    },
+    "path": "EQUITY_CURVE.jsonl",
+    "points": 2000,
+    "sampling": "one mark-to-market point per bar timestamp (3 symbols, merged timeline)"
+  },
+  "generated_at_utc": "2026-10-17T16:31:44Z",
   "git_commit_hint": "see RUN_REPORT.json",
   "isolation": {
     "admission_gate_in_this_lane": "BYPASSED_BY_DESIGN_LABELLED_EXPERIMENTAL",
@@ -126,23 +172,23 @@
   },
   "net_risk_parity": {
     "broker_equity_identity": true,
-    "broker_net_equity_usdt": 9705.943749997,
-    "broker_realised_net_usdt": -294.056250003,
+    "broker_net_equity_usdt": 9499.428228364,
+    "broker_realised_net_usdt": -500.571771636,
     "broker_unrealised_net_usdt": 0.0,
     "recorded_input": "ClosedTrade.pnl (net of commissions and execution cost)",
     "rejections_by_rule": {
       "NO_TRADE": 52,
-      "RISK_REJECTED": 106
+      "RISK_REJECTED": 44
     },
     "risk_consecutive_losses": 0,
     "risk_daily_drawdown_pct": 0.0,
     "risk_daily_pnl_usdt": 0.0,
-    "risk_drawdown_pct": 2.94,
+    "risk_drawdown_pct": 5.01,
     "risk_equity_equals_broker_net": true,
-    "risk_equity_usdt": 9705.943749997,
+    "risk_equity_usdt": 9499.428228364,
     "risk_peak_equity_usdt": 10000.0,
     "risk_trades_today": 0,
-    "risk_weekly_pnl_usdt": -294.056250003,
+    "risk_weekly_pnl_usdt": 0.0,
     "sizing_input": "RiskManager.equity, marked to the broker's net equity"
   },
   "pit": {
@@ -179,42 +225,42 @@
     "symbols_in_book": []
   },
   "positions_and_pnl": {
-    "broker_fees_usdt": 201.0,
+    "broker_fees_usdt": 363.0,
     "by_symbol": {
       "BTC/USDT": {
         "by_reason": {
-          "signal": 13,
-          "stop_loss": 11,
-          "take_profit": 1
+          "signal": 20,
+          "stop_loss": 15,
+          "take_profit": 5
         },
-        "closed_trades": 25,
-        "fees": 75.0,
-        "net_pnl": -106.33380412774854
+        "closed_trades": 40,
+        "fees": 120.0,
+        "net_pnl": -146.95998415242465
       },
       "ETH/USDT": {
         "by_reason": {
-          "signal": 12,
-          "stop_loss": 12,
-          "take_profit": 2
+          "signal": 18,
+          "stop_loss": 25,
+          "take_profit": 4
         },
-        "closed_trades": 26,
-        "fees": 78.0,
-        "net_pnl": -109.60084536092289
+        "closed_trades": 47,
+        "fees": 141.0,
+        "net_pnl": -207.17179131491076
       },
       "SOL/USDT": {
         "by_reason": {
-          "signal": 5,
-          "stop_loss": 10,
-          "take_profit": 1
+          "signal": 10,
+          "stop_loss": 19,
+          "take_profit": 5
         },
-        "closed_trades": 16,
-        "fees": 48.0,
-        "net_pnl": -78.12160051422242
+        "closed_trades": 34,
+        "fees": 102.0,
+        "net_pnl": -146.43999616851553
       }
     },
-    "cash_usdt": 9705.943749997106,
-    "closed_trades": 67,
-    "equity_mark_to_market_usdt": 9705.943749997106,
+    "cash_usdt": 9499.42822836415,
+    "closed_trades": 121,
+    "equity_mark_to_market_usdt": 9499.42822836415,
     "identities": {
       "cash_equals_initial_plus_realised": true,
       "closed_trade_costs_are_named": true,
@@ -224,7 +270,7 @@
     },
     "identities_all_hold": true,
     "open_positions": [],
-    "realised_pnl_usdt": -294.0562500028939,
+    "realised_pnl_usdt": -500.57177163585095,
     "unrealised_pnl_usdt": 0.0
   },
   "protective_exits": {
@@ -238,13 +284,14 @@
   "risk_state_at_end": {
     "consecutive_losses": 0,
     "daily_pnl": 0.0,
-    "day_peak_equity": 9705.943749997094,
-    "equity": 9705.943749997094,
+    "day_peak_equity": 9499.42822836413,
+    "equity": 9499.42822836413,
     "kill_switch_active": false,
     "open_positions": 0,
     "peak_equity": 10000.0,
     "trades_today": 0,
-    "weekly_pnl": -294.0562500028939
+    "weekly_pnl": 0.0,
+    "weekly_start_ms": 1791763200000
   },
   "schema_version": "EDGE16_CANONICAL_LANE_V1",
   "tag": "EXPERIMENTAL_PROSPECTIVE_PAPER",
@@ -259,6 +306,77 @@
     "enforced_in_this_lane": true,
     "reading": "the policy says no weekend trading and this lane honours it; no runtime component reads the flag, so a 7/7 ACTIVE goal needs an explicit risk/governance decision rather than an implicit one \u2014 see WEEKEND_POLICY_CONFLICT.md",
     "weekend_entries_refused": 52
+  },
+  "weekly_risk": {
+    "weekly_blocks_total": 0,
+    "weeks": [
+      {
+        "week_start_ms": 1784505600000,
+        "weekly_blocks": 0,
+        "weekly_pnl_at_boundary": null
+      },
+      {
+        "week_start_ms": 1785110400000,
+        "weekly_blocks": 0,
+        "weekly_pnl_at_boundary": 0.0
+      },
+      {
+        "week_start_ms": 1785715200000,
+        "weekly_blocks": 0,
+        "weekly_pnl_at_boundary": 0.0
+      },
+      {
+        "week_start_ms": 1786320000000,
+        "weekly_blocks": 0,
+        "weekly_pnl_at_boundary": -51.247589201224216
+      },
+      {
+        "week_start_ms": 1786924800000,
+        "weekly_blocks": 0,
+        "weekly_pnl_at_boundary": -45.23267722686643
+      },
+      {
+        "week_start_ms": 1787529600000,
+        "weekly_blocks": 0,
+        "weekly_pnl_at_boundary": -21.360552619441968
+      },
+      {
+        "week_start_ms": 1788134400000,
+        "weekly_blocks": 0,
+        "weekly_pnl_at_boundary": -97.18507946956353
+      },
+      {
+        "week_start_ms": 1788739200000,
+        "weekly_blocks": 0,
+        "weekly_pnl_at_boundary": -11.543984009252396
+      },
+      {
+        "week_start_ms": 1789344000000,
+        "weekly_blocks": 0,
+        "weekly_pnl_at_boundary": -74.84435922836315
+      },
+      {
+        "week_start_ms": 1789948800000,
+        "weekly_blocks": 0,
+        "weekly_pnl_at_boundary": -21.728480741100547
+      },
+      {
+        "week_start_ms": 1790553600000,
+        "weekly_blocks": 0,
+        "weekly_pnl_at_boundary": -51.280638803589405
+      },
+      {
+        "week_start_ms": 1791158400000,
+        "weekly_blocks": 0,
+        "weekly_pnl_at_boundary": -80.34460626900656
+      },
+      {
+        "week_start_ms": 1791763200000,
+        "weekly_blocks": 0,
+        "weekly_pnl_at_boundary": -45.80380406744277
+      }
+    ],
+    "window": "UTC Monday 00:00 to Monday 00:00"
   },
   "work_package": "WP-EDGE-016/16C"
 }

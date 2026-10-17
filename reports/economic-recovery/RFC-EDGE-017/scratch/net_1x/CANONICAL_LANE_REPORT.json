@@ -98,6 +98,7 @@
       "RISK_APPROVED": 146,
       "RISK_REJECTED": 3,
       "RISK_RESET_DAILY": 84,
+      "RISK_RESET_WEEKLY": 12,
       "STRATEGY_EXIT": 62
     },
     "by_stage": {
@@ -106,15 +107,60 @@
       "PROPOSAL": 396,
       "RECONCILIATION": 146,
       "RISK_RESULT": 149,
-      "SIM_ORDER": 62
+      "SIM_ORDER": 62,
+      "WEEK_BOUNDARY": 12
     },
-    "total": 983
+    "total": 995
+  },
+  "defensive_blocks": {
+    "excessive_spread_bps": {
+      "declared": 50,
+      "evaluated_here": false,
+      "why_not": "a bar replay has no order book; the runtime entrypoint does evaluate it"
+    },
+    "extreme_atr_pct": {
+      "declared": 8.0,
+      "evaluated_here": true,
+      "evaluations": 201,
+      "input": "ATR(14)% at the signal bar, from bars at or before it",
+      "max_observed_pct": 2.973,
+      "refused": 0,
+      "unmeasured_refused": 0
+    },
+    "high_latency_ms": {
+      "declared": 2000,
+      "evaluated_here": false,
+      "why_not": "a bar replay has no data age; the runtime entrypoint does evaluate it"
+    },
+    "policy_source": "config/risk.yaml via load_settings",
+    "weekend_trading": {
+      "declared": false,
+      "entries_refused": 52,
+      "evaluated_here": true
+    }
   },
   "disk": {
-    "free_gib": 4.33,
+    "free_gib": 4.045,
     "policy_changed": false
   },
-  "generated_at_utc": "2026-10-17T11:41:15Z",
+  "equity_curve": {
+    "drawdown": {
+      "drawdown_pct": 2.387705,
+      "drawdown_usdt": 238.770489,
+      "method": "max peak-to-trough of the mark-to-market net equity curve",
+      "peak_equity": 10000.0,
+      "peak_ts_ms": 1784761200000,
+      "points": 2000,
+      "reason": null,
+      "status": "MEASURED",
+      "trough_equity": 9761.229511,
+      "trough_ts_ms": 1791828000000
+    },
+    "path": "EQUITY_CURVE.jsonl",
+    "points": 2000,
+    "sampling": "one mark-to-market point per bar timestamp (3 symbols, merged timeline)"
+  },
+  "generated_at_utc": "2026-10-17T16:31:41Z",
   "git_commit_hint": "see RUN_REPORT.json",
   "isolation": {
     "admission_gate_in_this_lane": "BYPASSED_BY_DESIGN_LABELLED_EXPERIMENTAL",
@@ -142,7 +188,7 @@
     "risk_equity_usdt": 9761.229510652,
     "risk_peak_equity_usdt": 10000.0,
     "risk_trades_today": 0,
-    "risk_weekly_pnl_usdt": -238.770489348,
+    "risk_weekly_pnl_usdt": -1.689539596,
     "sizing_input": "RiskManager.equity, marked to the broker's net equity"
   },
   "pit": {
@@ -244,7 +290,8 @@
     "open_positions": 0,
     "peak_equity": 10000.0,
     "trades_today": 0,
-    "weekly_pnl": -238.77048934833383
+    "weekly_pnl": -1.6895395957876755,
+    "weekly_start_ms": 1791763200000
   },
   "schema_version": "EDGE16_CANONICAL_LANE_V1",
   "tag": "EXPERIMENTAL_PROSPECTIVE_PAPER",
@@ -259,6 +306,77 @@
     "enforced_in_this_lane": true,
     "reading": "the policy says no weekend trading and this lane honours it; no runtime component reads the flag, so a 7/7 ACTIVE goal needs an explicit risk/governance decision rather than an implicit one \u2014 see WEEKEND_POLICY_CONFLICT.md",
     "weekend_entries_refused": 52
+  },
+  "weekly_risk": {
+    "weekly_blocks_total": 0,
+    "weeks": [
+      {
+        "week_start_ms": 1784505600000,
+        "weekly_blocks": 0,
+        "weekly_pnl_at_boundary": null
+      },
+      {
+        "week_start_ms": 1785110400000,
+        "weekly_blocks": 0,
+        "weekly_pnl_at_boundary": 0.0
+      },
+      {
+        "week_start_ms": 1785715200000,
+        "weekly_blocks": 0,
+        "weekly_pnl_at_boundary": 0.0
+      },
+      {
+        "week_start_ms": 1786320000000,
+        "weekly_blocks": 0,
+        "weekly_pnl_at_boundary": -22.05403898202062
+      },
+      {
+        "week_start_ms": 1786924800000,
+        "weekly_blocks": 0,
+        "weekly_pnl_at_boundary": -14.49881139876398
+      },
+      {
+        "week_start_ms": 1787529600000,
+        "weekly_blocks": 0,
+        "weekly_pnl_at_boundary": -8.122836555795114
+      },
+      {
+        "week_start_ms": 1788134400000,
+        "weekly_blocks": 0,
+        "weekly_pnl_at_boundary": -39.89419835001094
+      },
+      {
+        "week_start_ms": 1788739200000,
+        "weekly_blocks": 0,
+        "weekly_pnl_at_boundary": -4.348502936526437
+      },
+      {
+        "week_start_ms": 1789344000000,
+        "weekly_blocks": 0,
+        "weekly_pnl_at_boundary": -25.104913030069465
+      },
+      {
+        "week_start_ms": 1789948800000,
+        "weekly_blocks": 0,
+        "weekly_pnl_at_boundary": 3.7612476764059783
+      },
+      {
+        "week_start_ms": 1790553600000,
+        "weekly_blocks": 0,
+        "weekly_pnl_at_boundary": -14.639463374748551
+      },
+      {
+        "week_start_ms": 1791158400000,
+        "weekly_blocks": 0,
+        "weekly_pnl_at_boundary": -33.41567548176835
+      },
+      {
+        "week_start_ms": 1791763200000,
+        "weekly_blocks": 0,
+        "weekly_pnl_at_boundary": -78.7637573192487
+      }
+    ],
+    "window": "UTC Monday 00:00 to Monday 00:00"
   },
   "work_package": "WP-EDGE-016/16C"
 }

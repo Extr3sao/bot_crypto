@@ -1,18 +1,18 @@
 # WP-EDGE-017 — independent verification
 
-**VERIFIED** — 28/28 checks verified, 12/12 injected faults detected.
+**VERIFIED** — 31/31 checks verified, 14/14 injected faults detected.
 
 The verifier does not import any module that built these artifacts: the rules below are
 re-implemented from the published JSON and from the text of the runtime sources.
 
 | check | status | detail |
 | --- | --- | --- |
-| C1 slice rows are post-freeze | VERIFIED | 9 rows, freeze 1792221328939 |
+| C1 slice rows are post-freeze | VERIFIED | 24 rows, freeze 1792221328939 |
 | C2 every slice key is unique | VERIFIED |  |
 | C3 the manifest digest is the file's digest | VERIFIED |  |
-| C4 the row census adds up and the slice never shrank | VERIFIED | before 9 after 9 |
-| C5 the independent ledger records every slice row | VERIFIED | 9 ledger keys |
-| C6 a re-run added nothing and left the bytes identical | VERIFIED | 3 ledger entries |
+| C4 the row census adds up and the slice never shrank | VERIFIED | before 9 after 24 |
+| C5 the independent ledger records every slice row | VERIFIED | 24 ledger keys |
+| C6 a re-run added nothing and left the bytes identical | VERIFIED | 4 ledger entries |
 | C7 expected = observed + missing per symbol | VERIFIED |  |
 | C8 captured bars per symbol is the real count, not 0/1 | VERIFIED |  |
 | C9 missing hours are MISSING_NO_COLLECTOR | VERIFIED |  |
@@ -23,18 +23,21 @@ re-implemented from the published JSON and from the text of the runtime sources.
 | S2 the guard's decision follows its own arithmetic | VERIFIED |  |
 | S3 the fallback overstatement is the measured ratio | VERIFIED |  |
 | N1 1x: every trade reconciles its net | VERIFIED | 146 trades |
-| N2 2x: every trade reconciles its net | VERIFIED | 110 trades |
-| N3 3x: every trade reconciles its net | VERIFIED | 67 trades |
+| N2 2x: every trade reconciles its net | VERIFIED | 146 trades |
+| N3 3x: every trade reconciles its net | VERIFIED | 121 trades |
 | N4 no fill is free | VERIFIED |  |
 | N5 broker net, risk equity and reconciliation agree | VERIFIED |  |
 | N6 fills fall monotonically as costs rise | VERIFIED |  |
 | N7 lost fills are explained by a loss rule | VERIFIED |  |
 | N8 with costs off the engine reproduces WP-EDGE-016 fill for fill | VERIFIED |  |
 | N9 the economic result is a net loss | VERIFIED | -238.770489 |
+| D1x drawdown is the peak-to-trough fall of the equity curve | VERIFIED | 2000 marks, pct 2.387705 |
+| D2x drawdown is the peak-to-trough fall of the equity curve | VERIFIED | 2000 marks, pct 4.256923 |
+| D3x drawdown is the peak-to-trough fall of the equity curve | VERIFIED | 2000 marks, pct 5.005718 |
 | D1 the four declared blocks are evaluated on the paper path | VERIFIED |  |
 | D2 the risk policy was not edited and live stays off | VERIFIED |  |
 | D3 the block matrix maps all four rules | VERIFIED |  |
-| V1 every injected fault is detected | VERIFIED | 12/12 detected |
+| V1 every injected fault is detected | VERIFIED | 14/14 detected |
 
 ## Injected faults
 
@@ -52,3 +55,5 @@ re-implemented from the published JSON and from the text of the runtime sources.
 | M10 enable live trading in the runtime config | yes |
 | M11 break the frictionless equivalence | yes |
 | M12 let the collector write the slice without the lock | yes |
+| M13 publish peak_equity as drawdown_pct again | yes |
+| M14 claim a drawdown with no curve behind it | yes |
