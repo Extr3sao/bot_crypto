@@ -125,8 +125,9 @@ class PriceTable:
 
     input_usd_per_mtok: float = 0.15
     output_usd_per_mtok: float = 0.60
-    #: A 800x500 image at detail=high is billed as roughly this many input tokens.
-    image_tokens_estimate: int = 1_000
+    #: A 1152x720 image (spec v2) at detail=high is ~6 tiles of 512px, billed as roughly
+    #: this many input tokens. Under-declaring it would understate the cost of the call.
+    image_tokens_estimate: int = 1_400
 
     def estimate(self, *, prompt_tokens: int, completion_tokens: int) -> float:
         billed_input = max(prompt_tokens, self.image_tokens_estimate)
@@ -206,6 +207,30 @@ class OpenAICompatibleVisionProvider:
     # -- the call ------------------------------------------------------------
 
     def analyze(self, request: VisionRequest) -> VisionResponse:
+        return self.analyze_payload(self.build_payload(request), request)
+
+    @staticmethod
+    def attached_image_sha256(payload: dict[str, Any]) -> str:
+        """Hash of the bytes the payload will actually carry, or "" when it has no image.
+
+        The empty string matters: BOT-CTX-01 sends no image on purpose, and a trace must be
+        able to tell "no image" apart from "the image matched".
+        """
+        for message in payload.get("messages", []):
+            content = message.get("content")
+            if not isinstance(content, list):
+                continue
+            for part in content:
+                if isinstance(part, dict) and part.get("type") == "image_url":
+                    url = str(part.get("image_url", {}).get("url", ""))
+                    if url.startswith("data:") and "," in url:
+                        return hashlib.sha256(base64.b64decode(url.split(",", 1)[1])).hexdigest()
+        return ""
+
+    def analyze_payload(
+        self, payload: dict[str, Any], request: VisionRequest
+    ) -> VisionResponse:
+        """Send a prepared payload. Split out so a text-only bot can reuse the transport."""
         if not self._api_key:
             raise MissingCredentialError(
                 "MISSING_CREDENTIAL",
@@ -213,11 +238,9 @@ class OpenAICompatibleVisionProvider:
                 "cannot be made and no decision may be invented in its place",
             )
 
-        payload = self.build_payload(request)
         # Hash what the request will actually carry, not what the caller thinks it carries.
-        attached = payload["messages"][1]["content"][1]["image_url"]["url"].split(",", 1)[1]
-        attached_sha = hashlib.sha256(base64.b64decode(attached)).hexdigest()
-        if attached_sha != request.chart.sha256:
+        attached_sha = self.attached_image_sha256(payload)
+        if attached_sha and attached_sha != request.chart.sha256:
             raise ProviderError(
                 "IMAGE_MISMATCH", "the bytes in the request are not the chart's bytes"
             )

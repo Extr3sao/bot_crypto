@@ -43,16 +43,21 @@ from matplotlib.transforms import blended_transform_factory
 
 #: Bumped whenever a pixel changes. The ledger records it so a decision taken on an
 #: older rendering can be told apart from one taken after a chart redesign.
-CHART_SPEC_VERSION = "ai-vision-chart/1"
+CHART_SPEC_VERSION = "ai-vision-chart/2"
 
 #: Bars per image. 120 hours is five days of 1h bars: enough structure for a
 #: discretionary read, small enough that candle bodies stay legible at 800x500.
 DEFAULT_WINDOW_BARS = 120
 
 #: Fixed geometry. Changing these changes every hash, so they are part of the spec.
-WIDTH_IN = 8.0
-HEIGHT_IN = 5.0
-DPI = 100
+#: D3 (audit): 120 candles over 800 px gave a 3.80 px body, too thin for a vision model
+#: to read structure from. 9.6 in x 120 dpi = 1 152 px gives 8.2 px per slot and a
+#: 5.25 px body, at ~6 billed image tiles instead of 4.
+WIDTH_IN = 9.6
+HEIGHT_IN = 6.0
+DPI = 120
+#: Right margin leaves room for the last-price label *inside* the canvas (D2).
+RIGHT_MARGIN = 0.92
 
 _UP = "#1f8f4e"
 _DOWN = "#b3261e"
@@ -136,18 +141,18 @@ def _ema(values: list[float], span: int) -> list[float]:
     return out
 
 
-def render_chart_png(
+def build_figure(
     bars: Sequence[Any],
     *,
     symbol: str,
     timeframe: str = "1h",
     window_bars: int = DEFAULT_WINDOW_BARS,
-) -> ChartImage:
-    """Render the last ``window_bars`` bars to a deterministic PNG.
+) -> tuple[Figure, dict[str, Any]]:
+    """Build the chart figure and hand back its axes.
 
-    ``bars`` must be ordered oldest to newest and must contain no future bar: the
-    caller passes ``bars[:i + 1]`` at decision time. Only the tail is drawn when the
-    history is longer than the window.
+    Split out of ``render_chart_png`` so a test can inspect the drawing (how many
+    artists were added, where the labels landed) instead of guessing from pixels. The
+    renderer stays the only writer of the PNG.
     """
     if window_bars < 10:
         raise InsufficientBarsError(f"window_bars={window_bars} is too small to plot")
@@ -168,9 +173,9 @@ def render_chart_png(
     ema_slow = _ema(closes, 50)
 
     fig = Figure(figsize=(WIDTH_IN, HEIGHT_IN), dpi=DPI, facecolor="white")
-    try:
+    if True:
         grid = fig.add_gridspec(
-            2, 1, height_ratios=(4.0, 1.0), hspace=0.06, left=0.065, right=0.955,
+            2, 1, height_ratios=(4.0, 1.0), hspace=0.06, left=0.065, right=RIGHT_MARGIN,
             top=0.90, bottom=0.10,
         )
         price_ax = fig.add_subplot(grid[0])
@@ -188,24 +193,26 @@ def render_chart_png(
                     facecolor=body_color, edgecolor=wick_color, linewidth=0.6, zorder=3,
                 )
             )
-            vol_ax.bar(x, volumes[x], width=0.64, color=body_color, alpha=0.55, linewidth=0)
 
         price_ax.plot(xs, ema_fast, color=_EMA_FAST, linewidth=1.2, label="EMA 20", zorder=4)
         price_ax.plot(xs, ema_slow, color=_EMA_SLOW, linewidth=1.2, label="EMA 50", zorder=4)
 
         last = closes[-1]
         price_ax.axhline(last, color=_TEXT, linewidth=0.8, linestyle=(0, (4, 3)), zorder=1)
+        # D2 (audit): the label used to sit past the axes and touch the canvas edge, so
+        # the number was cut. It is now right-aligned *inside* the reserved margin.
         price_ax.annotate(
             f"{last:,.2f}",
             xy=(1.0, last),
             xycoords=blended_transform_factory(price_ax.transAxes, price_ax.transData),
-            xytext=(3, 0),
+            xytext=(-2, 0),
             textcoords="offset points",
             va="center",
-            ha="left",
+            ha="right",
             fontsize=8,
             color=_TEXT,
             annotation_clip=False,
+            bbox={"facecolor": "white", "edgecolor": "none", "alpha": 0.75, "pad": 1.0},
         )
 
         pad = (max(highs) - min(lows)) * 0.04 or max(abs(last) * 1e-4, 1e-6)
@@ -224,7 +231,18 @@ def render_chart_png(
             labelcolor=_TEXT,
         )
 
-        vol_ax.bar(xs, volumes, width=0.64, color=_GRID, linewidth=0.3, edgecolor="#b9c0c9")
+        # D1 (audit): one artist per candle. The histogram used to be drawn inside the
+        # candle loop *and* again here, which stacked alpha on the same pixels and
+        # doubled the drawing cost.
+        vol_ax.bar(
+            xs,
+            volumes,
+            width=0.64,
+            color=[_UP if c >= o else _DOWN for o, c in zip(opens, closes, strict=True)],
+            alpha=0.55,
+            linewidth=0.3,
+            edgecolor="#b9c0c9",
+        )
         vol_ax.set_ylim(0, max(volumes) * 1.12 if volumes and max(volumes) > 0 else 1.0)
         vol_ax.grid(True, axis="y", color=_GRID, linewidth=0.6, alpha=0.9)
         vol_ax.set_axisbelow(True)
@@ -249,6 +267,26 @@ def render_chart_png(
             ha="left",
         )
 
+    return fig, {"price": price_ax, "volume": vol_ax}
+
+
+def render_chart_png(
+    bars: Sequence[Any],
+    *,
+    symbol: str,
+    timeframe: str = "1h",
+    window_bars: int = DEFAULT_WINDOW_BARS,
+) -> ChartImage:
+    """Render the last ``window_bars`` bars to a deterministic PNG.
+
+    ``bars`` must be ordered oldest to newest and must contain no future bar: the
+    caller passes ``bars[:i + 1]`` at decision time. Only the tail is drawn when the
+    history is longer than the window.
+    """
+    fig, _axes = build_figure(
+        bars, symbol=symbol, timeframe=timeframe, window_bars=window_bars
+    )
+    try:
         buf = io.BytesIO()
         # A fixed metadata value keeps the PNG bytes independent of the local
         # matplotlib build; the spec version is the honest identity of the drawing.
@@ -263,6 +301,7 @@ def render_chart_png(
         fig.clear()
 
     png = buf.getvalue()
+    window = _bars_of(bars)[-window_bars:]
     if not png.startswith(b"\x89PNG\r\n\x1a\n"):
         raise RuntimeError("renderer did not produce a PNG")
     return ChartImage(

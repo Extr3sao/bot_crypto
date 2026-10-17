@@ -107,12 +107,35 @@ def test_infinity_is_rejected():
         parse_decision(_json(confidence=float("inf")), symbol="BTC/USDT")
 
 
-def test_an_invented_field_is_an_error_not_an_ignored_extra():
+def test_a_field_no_model_may_set_is_rejected_by_name():
+    """The RFC forbids these by name and requires rejection, not selective ignoring."""
     with pytest.raises(DecisionParseError) as caught:
         parse_decision(_json(leverage=50, size_usdt=9_000), symbol="BTC/USDT")
 
-    assert caught.value.code == "SCHEMA_VIOLATION"
+    assert caught.value.code == "SCHEMA_FORBIDDEN_FIELD"
     assert "leverage" in caught.value.detail
+    assert "size_usdt" in caught.value.detail
+
+
+@pytest.mark.parametrize(
+    "field",
+    ["quantity", "notional_usdt", "execute", "modify_risk", "override_gate", "allow_live"],
+)
+def test_every_forbidden_capability_is_refused(field):
+    with pytest.raises(DecisionParseError) as caught:
+        parse_decision(_json(**{field: 1}), symbol="BTC/USDT")
+
+    assert caught.value.code == "SCHEMA_FORBIDDEN_FIELD"
+    assert field in caught.value.detail
+
+
+def test_an_unknown_benign_field_is_still_a_schema_violation():
+    """Not every extra is a forbidden capability; an unknown key is still refused."""
+    with pytest.raises(DecisionParseError) as caught:
+        parse_decision(_json(colour="green"), symbol="BTC/USDT")
+
+    assert caught.value.code == "SCHEMA_VIOLATION"
+    assert "colour" in caught.value.detail
 
 
 @pytest.mark.parametrize(

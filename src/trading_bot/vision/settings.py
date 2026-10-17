@@ -27,7 +27,7 @@ DEFAULT_CONFIG = REPO_ROOT / "config" / "vision.yaml"
 class PriceConfig:
     input_usd_per_mtok: float = 0.15
     output_usd_per_mtok: float = 0.60
-    image_tokens_estimate: int = 1000
+    image_tokens_estimate: int = 1400
 
 
 @dataclass(frozen=True, slots=True)
@@ -126,7 +126,7 @@ def load_vision_config(
         prices=PriceConfig(
             input_usd_per_mtok=float(prices.get("input_usd_per_mtok", 0.15)),
             output_usd_per_mtok=float(prices.get("output_usd_per_mtok", 0.60)),
-            image_tokens_estimate=int(prices.get("image_tokens_estimate", 1000)),
+            image_tokens_estimate=int(prices.get("image_tokens_estimate", 1400)),
         ),
     )
     lane_config = LaneConfig(

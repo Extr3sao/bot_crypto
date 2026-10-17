@@ -133,13 +133,23 @@ def test_the_prompt_and_the_image_are_both_in_the_request():
 
 
 def test_a_valid_answer_returns_usage_ids_and_an_estimated_cost():
+    """The image is billed even when the provider reports fewer prompt tokens.
+
+    A 1152x720 chart is ~6 tiles, so a call reporting 1 234 prompt tokens still pays for
+    the declared image estimate; under-counting it would understate the cost of the run.
+    """
+    from trading_bot.vision.settings import load_vision_config
+
     request = request_for()
     response = provider(lambda _r: httpx.Response(200, json=ok_body())).analyze(request)
 
     assert response.model == "gpt-4o-mini-2024-07-18"
     assert response.request_id == "chatcmpl-abc123"
     assert response.usage["prompt_tokens"] == 1_234
-    expected = 1_234 / 1_000_000 * 0.15 + 87 / 1_000_000 * 0.60
+    declared_tokens = load_vision_config(env={}).provider.prices.image_tokens_estimate
+    assert declared_tokens == 1_400, "the declared image cost must track the chart spec"
+    assert declared_tokens > response.usage["prompt_tokens"]
+    expected = declared_tokens / 1_000_000 * 0.15 + 87 / 1_000_000 * 0.60
     assert response.cost_usd == pytest.approx(expected)
     assert response.attempts == 1
 

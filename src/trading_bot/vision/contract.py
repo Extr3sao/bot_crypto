@@ -37,6 +37,34 @@ DIRECTIONAL: tuple[str, ...] = ("LONG", "SHORT")
 #: Hard ceiling on the prose, so a rambling answer cannot become a 100 kB ledger line.
 MAX_RATIONALE = 600
 
+#: Fields a model must never be able to smuggle in. The RFC forbids them by name and
+#: requires the whole answer to be *rejected* when they appear — ignoring them
+#: selectively would leave the door open for a later caller that reads them.
+FORBIDDEN_FIELDS: frozenset[str] = frozenset(
+    {
+        "quantity",
+        "qty",
+        "amount",
+        "size",
+        "size_usdt",
+        "notional",
+        "notional_usdt",
+        "leverage",
+        "margin",
+        "execute",
+        "place_order",
+        "order_type",
+        "modify_risk",
+        "risk_pct",
+        "override_gate",
+        "skip_risk",
+        "allow_live",
+        "api_key",
+        "wallet",
+        "private_key",
+    }
+)
+
 
 class DecisionParseError(ValueError):
     """A model answer that cannot be turned into a decision.
@@ -71,6 +99,10 @@ class VisionDecision(BaseModel):
     stop_loss_pct: float | None = Field(default=None, gt=0.0, le=25.0)
     take_profit_pct: float | None = Field(default=None, gt=0.0, le=100.0)
     invalidation: str | None = Field(default=None, max_length=240)
+    #: Optional price the thesis dies at. Validated against the window's own range by
+    #: ``guards.assert_level_inside_market``, because an invented level would otherwise
+    #: become a real stop.
+    invalidation_price: float | None = Field(default=None, gt=0.0, le=10_000_000.0)
     rationale: str = Field(min_length=1, max_length=MAX_RATIONALE)
 
     @field_validator("symbol", mode="before")
@@ -188,6 +220,14 @@ def parse_decision(raw: str, *, symbol: str) -> VisionDecision:
     if payload is None:
         raise DecisionParseError(
             "INVALID_JSON", f"no candidate parsed as an object: {last_error}", raw=raw
+        )
+
+    forbidden = sorted(set(payload) & FORBIDDEN_FIELDS)
+    if forbidden:
+        raise DecisionParseError(
+            "SCHEMA_FORBIDDEN_FIELD",
+            f"the answer carries fields no model may set: {', '.join(forbidden)}",
+            raw=raw,
         )
 
     try:

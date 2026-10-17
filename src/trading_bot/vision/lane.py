@@ -31,7 +31,7 @@ from __future__ import annotations
 
 import hashlib
 import json
-from collections.abc import Sequence
+from collections.abc import Callable, Sequence
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from itertools import pairwise
@@ -51,8 +51,17 @@ from trading_bot.vision.contract import (
     parse_decision,
     resolve_intent,
 )
+from trading_bot.vision.guards import (
+    OpinionRejected,
+    assert_asset,
+    assert_causal,
+    assert_fresh,
+    assert_level_inside_market,
+    assert_tradeable_window,
+    check_costs,
+)
 from trading_bot.vision.ledger import DecisionLedger
-from trading_bot.vision.prompt import build_prompt
+from trading_bot.vision.prompt import PromptBundle, build_prompt
 from trading_bot.vision.provider import (
     ProviderError,
     VisionProvider,
@@ -100,6 +109,12 @@ class PendingOrder:
     intent: str
     decision: VisionDecision | None
     decision_seq: int
+    #: The bar the opinion was formed on, and the step between bars. They are kept so
+    #: execution can refuse a bar that is not the *immediately following* one: after a
+    #: data hole the next available bar may be hours later, and executing there would
+    #: fill at a price the opinion never described.
+    decision_ts_ms: int = 0
+    expected_step_ms: int = 0
 
 
 class VisionLane:
@@ -119,6 +134,7 @@ class VisionLane:
         max_calls: int | None = None,
         max_spend_usd: float | None = None,
         cost_multiplier: float = 1.0,
+        prompt_builder: Callable[[dict[str, Any], Sequence[Any]], PromptBundle] | None = None,
     ) -> None:
         if not series:
             raise ValueError("series is empty")
@@ -139,6 +155,12 @@ class VisionLane:
         self.window_bars = int(config.lane.window_bars)
         self.timeframe = config.lane.timeframe
         self.risk_policy = risk_policy
+        #: Which prompt a bot is asked with. BOT-VIS-01 draws a chart and uses the visual
+        #: prompt; BOT-CTX-01 sends numbers and must not be told an image exists, so the
+        #: prompt is a property of the bot rather than of the book.
+        self._prompt_builder = prompt_builder or (
+            lambda context, _bars: build_prompt(context)
+        )
 
         self._current_ms = [min(bars[0].ts_ms for bars in self.series.values())]
 
@@ -165,6 +187,11 @@ class VisionLane:
             _clock=lambda: self._current_ms[0] / 1000.0,
         )
         self._pending: dict[str, PendingOrder] = {}
+        #: Median distance between consecutive bars, per symbol. Used to tell "the next
+        #: bar" from "some later bar after a hole in the data".
+        self._step_ms: dict[str, int] = {
+            symbol: _median_step(bars) for symbol, bars in self.series.items()
+        }
         self._marks: dict[str, float] = {}
         self.equity_curve: list[dict[str, Any]] = []
         self.calls_made = 0
@@ -269,13 +296,36 @@ class VisionLane:
             bars_seen, symbol=symbol, timeframe=self.timeframe, window_bars=self.window_bars
         )
         context = self._context(symbol, bar, bars_seen)
-        prompt = build_prompt(context)
+        prompt = self._prompt_builder(context, bars_seen)
         request = VisionRequest(
             chart=chart,
             prompt=prompt,
             decision_ts_ms=int(bar.ts_ms),
             detail=self.config.provider.detail,
         )
+
+        # The guards run *before* the paid call: a chart that is stale, about another
+        # asset or built from a bar that had not closed cannot produce a tradeable
+        # opinion, so paying for the answer would be paying for nothing.
+        try:
+            assert_causal(bars_seen, int(bar.ts_ms))
+            assert_fresh(chart.last_ts_ms, int(bar.ts_ms))
+            assert_asset(chart.symbol, symbol)
+        except OpinionRejected as exc:
+            self.ledger.append(
+                "GUARD_REJECT",
+                {
+                    "ts_ms": int(bar.ts_ms),
+                    "ts_utc": _utc_iso(int(bar.ts_ms)),
+                    "symbol": symbol,
+                    "code": exc.code,
+                    "detail": exc.detail,
+                    "chart": chart.fingerprint(),
+                    "stage": "PRE_CALL",
+                },
+            )
+            self._bump(f"guard:{exc.code}")
+            return None
 
         base = {
             "ts_ms": int(bar.ts_ms),
@@ -341,6 +391,23 @@ class VisionLane:
             self._bump(f"parse_error:{exc.code}")
             return None
 
+        try:
+            assert_level_inside_market(decision.invalidation_price, bars_seen)
+        except OpinionRejected as exc:
+            self.ledger.append(
+                "GUARD_REJECT",
+                {
+                    **base,
+                    "code": exc.code,
+                    "detail": exc.detail,
+                    "provider": response.to_row(),
+                    "stage": "POST_PARSE",
+                    "decision": decision.model_dump(mode="json"),
+                },
+            )
+            self._bump(f"guard:{exc.code}")
+            return None
+
         resolved = resolve_intent(decision, position_side=self._position_side(symbol))
         line = self.ledger.append(
             "DECISION",
@@ -372,6 +439,32 @@ class VisionLane:
             return
         decision = pending.decision
         assert decision is not None
+
+        if (
+            pending.expected_step_ms
+            and int(bar.ts_ms) - pending.decision_ts_ms != pending.expected_step_ms
+        ):
+            # A hole in the data means this bar is not the one the opinion was formed for:
+            # the next available bar may be hours later, and filling there would trade at a
+            # price the model never described.
+            self.ledger.append(
+                "GUARD_REJECT",
+                {
+                    "ts_ms": int(bar.ts_ms),
+                    "ts_utc": _utc_iso(int(bar.ts_ms)),
+                    "symbol": symbol,
+                    "code": "STALE_EXECUTION",
+                    "detail": (
+                        f"the opinion was formed at {pending.decision_ts_ms} and the next "
+                        f"available bar is {int(bar.ts_ms)} "
+                        f"({int(bar.ts_ms) - pending.decision_ts_ms} ms later, expected "
+                        f"{pending.expected_step_ms}); dropping it instead of filling late"
+                    ),
+                    "stage": "EXECUTION",
+                },
+            )
+            self._bump("guard:STALE_EXECUTION")
+            return
 
         if pending.intent == "CLOSE":
             position = self.broker.positions.get(symbol)
@@ -446,6 +539,33 @@ class VisionLane:
         )
         if not check.approved or check.position_size is None:
             self._bump(f"risk_blocked:{check.blocked_by or 'unknown'}")
+            return
+        notional = float(check.position_size.notional_usdt)
+        try:
+            assert_tradeable_window(
+                int(bar.ts_ms), weekend_trading=bool(self.risk_policy.blocks.weekend_trading)
+            )
+            check_costs(
+                self.broker.cost_for(symbol, notional),
+                declared_frictionless=self.cost_multiplier == 0.0,
+            )
+        except OpinionRejected as exc:
+            self.ledger.append(
+                "DECISION_OUTCOME",
+                {
+                    "ts_ms": int(bar.ts_ms),
+                    "symbol": symbol,
+                    "decision_seq": pending.decision_seq,
+                    "intent": pending.intent,
+                    "risk_gate": exc.code,
+                    "approved": True,
+                    "executed": False,
+                    "risk_blocked_by": exc.code,
+                    "risk_reason": exc.detail,
+                    "notional_usdt": notional,
+                },
+            )
+            self._bump(f"gate:{exc.code}")
             return
         if symbol in self.broker.positions:
             self._bump("dropped:SYMBOL_SLOT_OCCUPIED")
@@ -581,6 +701,8 @@ class VisionLane:
                                     intent=decision.intent,
                                     decision=decision.decision,
                                     decision_seq=decision.decision_seq,
+                                    decision_ts_ms=int(bar.ts_ms),
+                                    expected_step_ms=int(self._step_ms[symbol]),
                                 )
 
                 self.equity_curve.append(
@@ -659,6 +781,16 @@ class VisionLane:
                 for trade in trades
             ],
         }
+
+
+def _median_step(bars: Sequence[Any]) -> int:
+    """Median gap between consecutive bars, or 0 when it cannot be measured."""
+    stamps = sorted(int(bar.ts_ms) for bar in bars)
+    gaps = [b - a for a, b in pairwise(stamps) if b > a]
+    if not gaps:
+        return 0
+    gaps.sort()
+    return gaps[len(gaps) // 2]
 
 
 def decision_due(

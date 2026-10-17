@@ -15,12 +15,13 @@ vision:
   timeout_s: 60
   max_attempts: 3
   supports_json_object: true
-  # detail=high factura la imagen como ~1k tokens de entrada; sirve para estimar coste.
+  # detail=high factura tiles de 512 px: 1152x720 son 6 tiles (~1.4k tokens de entrada).
+  # D3 (auditoría) subió la resolución del gráfico, así que la estimación sube con él.
   detail: high
   prices:
     input_usd_per_mtok: 0.15
     output_usd_per_mtok: 0.60
-    image_tokens_estimate: 1000
+    image_tokens_estimate: 1400
 
 lane:
   timeframe: 1h
