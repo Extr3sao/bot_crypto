@@ -10,7 +10,7 @@
     "timeframe": "1h"
   },
   "decision_bar_utc": "2026-04-07T12:00:00Z",
-  "generated_at_utc": "2026-10-17T19:45:10Z",
+  "generated_at_utc": "2026-10-17T19:47:22Z",
   "instructions": "set VISION_API_KEY in the repository .env (the value never goes in chat or in git) and re-run this script",
   "provider_config": {
     "api_key_env": "VISION_API_KEY",

@@ -1,6 +1,6 @@
 {
   "code": "MISSING_CREDENTIAL",
-  "generated_at_utc": "2026-10-17T19:41:59Z",
+  "generated_at_utc": "2026-10-17T19:47:25Z",
   "mode": "live",
   "provider": {
     "api_key_env": "VISION_API_KEY",
