@@ -1,0 +1,108 @@
+{
+  "answer": "net risk approves fewer trades as the cost rises: 1x 146, 2x 110, 3x 67",
+  "baseline": {
+    "fills": 146,
+    "frictionless_realised_usdt": -53.384527,
+    "how_risk_saw_it": "gross: the broker charged nothing and the cost was subtracted from a report after every decision had already been approved",
+    "restated_net_1x_usdt": -239.7503,
+    "source": "reports\\economic-recovery\\RFC-EDGE-016\\experimental_paper\\CANONICAL_LANE_REPORT.json"
+  },
+  "equivalence": {
+    "fills": 146,
+    "identical": true,
+    "rule": "with cost_mode=frictionless the repaired engine must mint the same 146 fills, prices, quantities, reasons and ids as WP-EDGE-016"
+  },
+  "fills_by_multiplier": {
+    "1x": 146,
+    "2x": 110,
+    "3x": 67
+  },
+  "generated_at_utc": "2026-10-17T12:17:57Z",
+  "monotonic": true,
+  "runs": {
+    "1x": {
+      "all_trades_reconcile": true,
+      "broker_equity_identity": true,
+      "commissions_usdt": 146.0,
+      "cost_multiplier": 1.0,
+      "cost_reconciles": true,
+      "drawdown_pct": 10000.0,
+      "execution_cost_usdt": 40.334453,
+      "fills": 146,
+      "gross_after_execution_usdt": -92.770489,
+      "net_realised_usdt": -238.770489,
+      "rejections_by_rule": {
+        "consecutive_loss_cooldown": 3
+      },
+      "risk_equity_equals_broker_net": true,
+      "risk_state": {
+        "consecutive_losses": 0,
+        "daily_pnl": 0.0,
+        "day_peak_equity": 9761.229510651669,
+        "equity": 9761.229510651669,
+        "kill_switch_active": false,
+        "open_positions": 0,
+        "peak_equity": 10000.0,
+        "trades_today": 0,
+        "weekly_pnl": -238.77048934833383
+      }
+    },
+    "2x": {
+      "all_trades_reconcile": true,
+      "broker_equity_identity": true,
+      "commissions_usdt": 220.0,
+      "cost_multiplier": 2.0,
+      "cost_reconciles": true,
+      "drawdown_pct": 10000.0,
+      "execution_cost_usdt": 60.918076,
+      "fills": 110,
+      "gross_after_execution_usdt": -73.032503,
+      "net_realised_usdt": -293.032503,
+      "rejections_by_rule": {
+        "consecutive_loss_cooldown": 1,
+        "weekly_loss_limit": 55
+      },
+      "risk_equity_equals_broker_net": true,
+      "risk_state": {
+        "consecutive_losses": 0,
+        "daily_pnl": 0.0,
+        "day_peak_equity": 9706.967496658235,
+        "equity": 9706.967496658235,
+        "kill_switch_active": false,
+        "open_positions": 0,
+        "peak_equity": 10000.0,
+        "trades_today": 0,
+        "weekly_pnl": -293.032503341769
+      }
+    },
+    "3x": {
+      "all_trades_reconcile": true,
+      "broker_equity_identity": true,
+      "commissions_usdt": 201.0,
+      "cost_multiplier": 3.0,
+      "cost_reconciles": true,
+      "drawdown_pct": 10000.0,
+      "execution_cost_usdt": 54.058334,
+      "fills": 67,
+      "gross_after_execution_usdt": -93.05625,
+      "net_realised_usdt": -294.05625,
+      "rejections_by_rule": {
+        "consecutive_loss_cooldown": 1,
+        "weekly_loss_limit": 105
+      },
+      "risk_equity_equals_broker_net": true,
+      "risk_state": {
+        "consecutive_losses": 0,
+        "daily_pnl": 0.0,
+        "day_peak_equity": 9705.943749997094,
+        "equity": 9705.943749997094,
+        "kill_switch_active": false,
+        "open_positions": 0,
+        "peak_equity": 10000.0,
+        "trades_today": 0,
+        "weekly_pnl": -294.0562500028939
+      }
+    }
+  },
+  "schema_version": "EDGE17_NET_RISK_REPLAY_V1"
+}

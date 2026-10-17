@@ -1,0 +1,264 @@
+{
+  "baseline_comparison": {
+    "baseline_available": true,
+    "baseline_fills": 146,
+    "baseline_frictionless_realised_usdt": -53.384527,
+    "baseline_net_1x_usdt": -239.7503,
+    "difference_vs_baseline_net_1x_usdt": -53.282203,
+    "fills_changed": -36,
+    "reads_as": "the baseline net was a report written after the decisions; this net is what RiskManager saw before each decision. A difference in fills is a decision that net risk no longer approved, not a data change",
+    "source": "reports\\economic-recovery\\RFC-EDGE-016\\experimental_paper\\CANONICAL_LANE_REPORT.json",
+    "this_fills": 110,
+    "this_realised_usdt": -293.032503
+  },
+  "canonical_risk": {
+    "changed_by_this_work_package": false,
+    "engine": "trading_bot.risk.manager.RiskManager",
+    "entry_gate": "RiskManager.check_signal",
+    "feedback": [
+      "record_trade_result",
+      "sync_open_positions",
+      "reset_daily"
+    ],
+    "loader": "trading_bot.config.settings.load_settings",
+    "policy_equals_yaml": true,
+    "policy_object_sha256": "fa72cc969737ae0ea04a4e11c7182cd9775d22e54fd609821c0059b33a2ab3f2",
+    "sizing": "RiskCheck.position_size (never a lane convention)",
+    "source": "config\\risk.yaml"
+  },
+  "costs": {
+    "broker_execution_cost_usdt": 60.918076,
+    "broker_fees_usdt": 220.0,
+    "cost_mode": "net",
+    "gross_after_execution_usdt": -73.032503,
+    "lane_pnl_is": "NET_OF_VENUE_COST",
+    "net_of_cost": {
+      "caveat": "this re-prices the lane's fills after the fact; it is a research restatement of the frictionless book, not a second execution path",
+      "cost_1x_usdt": 140.4886,
+      "cost_2x_usdt": 280.9773,
+      "cost_3x_usdt": 421.4659,
+      "example_fee_floor": "10 bps per side at the base spot tier, before spread, slippage and impact",
+      "gross_realised_usdt": -73.032503,
+      "model": "trading_bot.research.economic_recovery.alpha15.round_trip_cost_bps",
+      "net_1x_usdt": -213.5211,
+      "net_2x_usdt": -354.0098,
+      "net_3x_usdt": -494.4984,
+      "per_symbol": {
+        "BTC/USDT": {
+          "cost_1x_usdt": 43.3762,
+          "gross_usdt": -5.2057,
+          "trades": 35.0
+        },
+        "ETH/USDT": {
+          "cost_1x_usdt": 52.0515,
+          "gross_usdt": -41.5482,
+          "trades": 42.0
+        },
+        "SOL/USDT": {
+          "cost_1x_usdt": 45.0609,
+          "gross_usdt": -26.2786,
+          "trades": 33.0
+        }
+      },
+      "venue": "BINANCE_SPOT"
+    },
+    "net_realised_usdt": -293.032503,
+    "reading": "RiskManager.record_trade_result receives this net figure and the engine is marked to the broker's net equity before every decision (WP-EDGE-017/P0.3)",
+    "reconciles": true,
+    "reference_gross_usdt": -12.114427,
+    "stress_projection": {
+      "net_1x_usdt": -293.0325,
+      "net_2x_usdt": -573.9506,
+      "net_3x_usdt": -854.8687,
+      "role": "PROJECTION_NOT_A_BOOK",
+      "rule": "an adverse multiplier m adds (m - 1) x the 1x cost to the net the book already paid; it is arithmetic on the same fills, not a second execution path"
+    },
+    "summary": {
+      "gross_realised_usdt": -73.032503,
+      "reference_gross_usdt": -12.114427
+    },
+    "total_cost_usdt": 280.918076,
+    "where_the_cost_is_charged": "inside PaperBroker: half spread and slippage move the fill, commissions are charged on both legs, and ClosedTrade.pnl is the result"
+  },
+  "coverage": {
+    "bars_with_a_fill": 110,
+    "bars_with_a_proposal": 274,
+    "evaluated_symbol_bars": 6000,
+    "expected_symbol_bars": 6000,
+    "ledger": "COVERAGE_LEDGER.jsonl",
+    "observed_symbol_bars": 6000
+  },
+  "cycles": {
+    "by_action": {
+      "FILL_OPENED": 110,
+      "NO_TRADE": 52,
+      "POSITION_CLOSED": 110,
+      "PROPOSE_ENTRY": 166,
+      "PROPOSE_EXIT": 135,
+      "RISK_APPROVED": 110,
+      "RISK_REJECTED": 56,
+      "RISK_RESET_DAILY": 84,
+      "STRATEGY_EXIT": 49
+    },
+    "by_stage": {
+      "DAY_BOUNDARY": 84,
+      "FILL": 110,
+      "PROPOSAL": 353,
+      "RECONCILIATION": 110,
+      "RISK_RESULT": 166,
+      "SIM_ORDER": 49
+    },
+    "total": 872
+  },
+  "disk": {
+    "free_gib": 4.328,
+    "policy_changed": false
+  },
+  "generated_at_utc": "2026-10-17T11:41:17Z",
+  "git_commit_hint": "see RUN_REPORT.json",
+  "isolation": {
+    "admission_gate_in_this_lane": "BYPASSED_BY_DESIGN_LABELLED_EXPERIMENTAL",
+    "authoritative_ledger": "config\\strategy_admission.json",
+    "sha256_after": "6c4dd0be1fc2fff24920c9f9226c7f81f8d3d4dc80671b5a424721da497f7db1",
+    "sha256_before": "6c4dd0be1fc2fff24920c9f9226c7f81f8d3d4dc80671b5a424721da497f7db1",
+    "untouched": true,
+    "writes_only_under": "reports\\economic-recovery\\RFC-EDGE-016\\experimental_paper"
+  },
+  "net_risk_parity": {
+    "broker_equity_identity": true,
+    "broker_net_equity_usdt": 9706.967496658,
+    "broker_realised_net_usdt": -293.032503342,
+    "broker_unrealised_net_usdt": 0.0,
+    "recorded_input": "ClosedTrade.pnl (net of commissions and execution cost)",
+    "rejections_by_rule": {
+      "NO_TRADE": 52,
+      "RISK_REJECTED": 56
+    },
+    "risk_consecutive_losses": 0,
+    "risk_daily_drawdown_pct": 0.0,
+    "risk_daily_pnl_usdt": 0.0,
+    "risk_drawdown_pct": 2.93,
+    "risk_equity_equals_broker_net": true,
+    "risk_equity_usdt": 9706.967496658,
+    "risk_peak_equity_usdt": 10000.0,
+    "risk_trades_today": 0,
+    "risk_weekly_pnl_usdt": -293.032503342,
+    "sizing_input": "RiskManager.equity, marked to the broker's net equity"
+  },
+  "pit": {
+    "contract": {
+      "decision_clock": "once per closed bar, at data_available_at (the bar's close time)",
+      "entry_signal": "signal read off bar t fills at the open of bar t+1",
+      "exit_signal": "signal read off bar t fills at the open of bar t+1, never at bar t's open",
+      "intrabar": "not resolved here: these rules act on closes only",
+      "same_instant_reentry": "an entry filling at the same instant as the previous exit is dropped",
+      "schema_version": "EDGE16_PIT_CONTRACT_V1",
+      "terminal_mark": "an open position at the last closed bar is marked at that close, is_mark=true",
+      "undefined_indicator": "NaN; every gate that reads it is False"
+    },
+    "machines": "trading_bot.research.economic_recovery.pit15.machine_for",
+    "proposal_carries": [
+      "rule",
+      "signal_index",
+      "fill_index",
+      "detail known at the signal bar"
+    ],
+    "proposal_never_carries": [
+      "exit_ts_ms",
+      "exit_price",
+      "gross_bps",
+      "realised pnl",
+      "post-entry extrema"
+    ]
+  },
+  "portfolio": {
+    "book_id": "EDGE16LANE",
+    "equity_usdt": 10000.0,
+    "mode": "ONE_SHARED_BOOK",
+    "reading": "one budget and one broker book for all three symbols: max_open_positions and both exposure clamps bind across symbols. The WP-EDGE-015 lane's three 10 000 books are a different experiment and their balances are not capital.",
+    "symbols_in_book": []
+  },
+  "positions_and_pnl": {
+    "broker_fees_usdt": 220.0,
+    "by_symbol": {
+      "BTC/USDT": {
+        "by_reason": {
+          "signal": 21,
+          "stop_loss": 9,
+          "take_profit": 5
+        },
+        "closed_trades": 35,
+        "fees": 70.0,
+        "net_pnl": -75.20566788879836
+      },
+      "ETH/USDT": {
+        "by_reason": {
+          "signal": 18,
+          "stop_loss": 19,
+          "take_profit": 5
+        },
+        "closed_trades": 42,
+        "fees": 84.0,
+        "net_pnl": -125.54823679764294
+      },
+      "SOL/USDT": {
+        "by_reason": {
+          "signal": 10,
+          "stop_loss": 17,
+          "take_profit": 6
+        },
+        "closed_trades": 33,
+        "fees": 66.0,
+        "net_pnl": -92.27859865532766
+      }
+    },
+    "cash_usdt": 9706.967496658232,
+    "closed_trades": 110,
+    "equity_mark_to_market_usdt": 9706.967496658232,
+    "identities": {
+      "cash_equals_initial_plus_realised": true,
+      "closed_trade_costs_are_named": true,
+      "closed_trade_pnl_rebuilds": true,
+      "equity_equals_cash_plus_net_unrealised": true,
+      "ledger_equity_equals_initial_plus_realised": true
+    },
+    "identities_all_hold": true,
+    "open_positions": [],
+    "realised_pnl_usdt": -293.032503341769,
+    "unrealised_pnl_usdt": 0.0
+  },
+  "protective_exits": {
+    "both_hit_policy": "stop_first",
+    "levels_come_from": "RiskCheck.position_size (config/risk.yaml defaults), not the rule",
+    "owner": "trading_bot.paper.broker.PaperBroker.check_positions_ohlc",
+    "policy_overridden_here": false,
+    "residual_optimism": "a fill at exactly the stop level is optimistic for a gap through it, and no intrabar ordering between the stop and the target is claimed beyond the policy above",
+    "trigger": "a resting order: the stop level is tested against the bar's high/low and filled at that level. The order was placed when the entry filled, so it exists before the bar it triggers in \u2014 nothing here reads a bar's close to fill inside it"
+  },
+  "risk_state_at_end": {
+    "consecutive_losses": 0,
+    "daily_pnl": 0.0,
+    "day_peak_equity": 9706.967496658235,
+    "equity": 9706.967496658235,
+    "kill_switch_active": false,
+    "open_positions": 0,
+    "peak_equity": 10000.0,
+    "trades_today": 0,
+    "weekly_pnl": -293.032503341769
+  },
+  "schema_version": "EDGE16_CANONICAL_LANE_V1",
+  "tag": "EXPERIMENTAL_PROSPECTIVE_PAPER",
+  "timing_model": {
+    "fill_convention": "next bar open (the instant the signal bar closes)",
+    "latency_modelled_ms": 0,
+    "reading": "no execution latency is modelled: the fill instant equals the instant the deciding bar became available. A real venue adds queue and network delay, so every fill here is optimistic in timing even though it is no longer causally impossible"
+  },
+  "weekend_policy": {
+    "declared_blocks_weekend_trading": false,
+    "enforced_anywhere_in_the_runtime": false,
+    "enforced_in_this_lane": true,
+    "reading": "the policy says no weekend trading and this lane honours it; no runtime component reads the flag, so a 7/7 ACTIVE goal needs an explicit risk/governance decision rather than an implicit one \u2014 see WEEKEND_POLICY_CONFLICT.md",
+    "weekend_entries_refused": 52
+  },
+  "work_package": "WP-EDGE-016/16C"
+}

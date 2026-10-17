@@ -1,0 +1,80 @@
+{
+  "consequence": "a paper entry on a Saturday, or after a hostile spread/ATR/data age, is now refused by the canonical risk path with the block's name in the rejection record",
+  "live_trading_enabled": false,
+  "policy_source": "config/risk.yaml",
+  "replay_evidence": {
+    "excessive_spread_bps": {
+      "declared": 50,
+      "evaluated_here": false,
+      "why_not": "a bar replay has no order book; the runtime entrypoint does evaluate it"
+    },
+    "extreme_atr_pct": {
+      "declared": 8.0,
+      "evaluated_here": true,
+      "evaluations": 201,
+      "input": "ATR(14)% at the signal bar, from bars at or before it",
+      "max_observed_pct": 2.973,
+      "refused": 0,
+      "unmeasured_refused": 0
+    },
+    "high_latency_ms": {
+      "declared": 2000,
+      "evaluated_here": false,
+      "why_not": "a bar replay has no data age; the runtime entrypoint does evaluate it"
+    },
+    "policy_source": "config/risk.yaml via load_settings",
+    "weekend_trading": {
+      "declared": false,
+      "entries_refused": 52,
+      "evaluated_here": true
+    }
+  },
+  "rules": [
+    {
+      "declared": 50,
+      "enforced_at": "src/trading_bot/paper/paper_cycle.py:PaperCycleEngine.run_cycle_sync",
+      "evaluator": "src/trading_bot/risk/defensive_blocks.py",
+      "fail_closed_on_missing_input": true,
+      "inputs": "src/trading_bot/paper/harness.py:PaperSessionRunner._market_conditions",
+      "launcher_wires": "scripts/start_paper_trading.py:build_cycle_engine",
+      "replay": "NOT_MEASURED_IN_A_BAR_REPLAY (no order book in the holdout)",
+      "rule": "excessive_spread_bps",
+      "runtime": "evaluated: scanner spread_bps per active pair"
+    },
+    {
+      "declared": 8.0,
+      "enforced_at": "src/trading_bot/paper/paper_cycle.py:PaperCycleEngine.run_cycle_sync",
+      "evaluator": "src/trading_bot/risk/defensive_blocks.py",
+      "fail_closed_on_missing_input": true,
+      "inputs": "src/trading_bot/paper/harness.py:PaperSessionRunner._market_conditions",
+      "launcher_wires": "scripts/start_paper_trading.py:build_cycle_engine",
+      "replay": "evaluated from ATR(14)% at the signal bar",
+      "rule": "extreme_atr_pct",
+      "runtime": "evaluated: scanner atr_pct per active pair"
+    },
+    {
+      "declared": 2000,
+      "enforced_at": "src/trading_bot/paper/paper_cycle.py:PaperCycleEngine.run_cycle_sync",
+      "evaluator": "src/trading_bot/risk/defensive_blocks.py",
+      "fail_closed_on_missing_input": true,
+      "inputs": "src/trading_bot/paper/harness.py:PaperSessionRunner._market_conditions",
+      "launcher_wires": "scripts/start_paper_trading.py:build_cycle_engine",
+      "replay": "NOT_MEASURED_IN_A_BAR_REPLAY (no data age in a replay)",
+      "rule": "high_latency_ms",
+      "runtime": "evaluated: decision instant minus the snapshot the decision uses"
+    },
+    {
+      "declared": false,
+      "enforced_at": "src/trading_bot/paper/paper_cycle.py:PaperCycleEngine.run_cycle_sync",
+      "evaluator": "src/trading_bot/risk/defensive_blocks.py",
+      "fail_closed_on_missing_input": true,
+      "inputs": "src/trading_bot/paper/harness.py:PaperSessionRunner._market_conditions",
+      "launcher_wires": "scripts/start_paper_trading.py:build_cycle_engine",
+      "replay": "evaluated: 52 entries refused",
+      "rule": "weekend_trading",
+      "runtime": "evaluated from the calendar, not from the caller"
+    }
+  ],
+  "schema_version": "EDGE17_RISK_BLOCKS_MATRIX_V1",
+  "weekend_flag_changed": false
+}

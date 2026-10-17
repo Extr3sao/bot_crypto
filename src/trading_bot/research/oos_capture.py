@@ -323,7 +323,9 @@ def paginate(
 
         if len(batch) < page_limit:
             short_confirmations += 1
-            if short_confirmations <= retry_short_pages:
+            # only a confirmation that can actually fetch again is a retry; when
+            # the cursor already reached the window there is nothing left to ask
+            if short_confirmations <= retry_short_pages and cursor < end_ms:
                 retried += 1
                 continue
             stop_reason = "SHORT_PAGE_CONFIRMED"

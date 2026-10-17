@@ -1,0 +1,267 @@
+{
+  "capture_provenance": {
+    "backfilled_total": 9,
+    "reading": "a bar whose first ledger record is later than its close was backfilled by the append-only collector, not observed live at that hour; both are post-freeze data the protocol never saw, but only the first is live capture"
+  },
+  "classification_rule": "a bar no collector observed is MISSING_NO_COLLECTOR; it is never a quiet market. An observed bar with no proposal is NO_SIGNAL, which is a decision.",
+  "expected_closed_bars_per_symbol": 3,
+  "expected_opens_utc": [
+    "2026-10-17T08:00:00Z",
+    "2026-10-17T09:00:00Z",
+    "2026-10-17T10:00:00Z"
+  ],
+  "freeze_utc": "2026-10-17T07:15:28Z",
+  "generated_at_utc": "2026-10-17T11:59:44Z",
+  "identity": {
+    "holds": true,
+    "per_symbol_holds": true,
+    "rule": "expected == observed + missing, per symbol and in total"
+  },
+  "ladder": [
+    {
+      "captured_in": "OOS_PROSPECTIVE_1H.jsonl",
+      "expected_key": "BINANCE_SPOT|BTC/USDT|1h|1792224000000",
+      "missing": false,
+      "open_ms": 1792224000000,
+      "stages": [
+        "EXPECTED",
+        "OBSERVED",
+        "VALIDATED",
+        "EVALUATED",
+        "NO_SIGNAL"
+      ],
+      "symbol": "BTC/USDT"
+    },
+    {
+      "captured_in": "OOS_PROSPECTIVE_1H.jsonl",
+      "expected_key": "BINANCE_SPOT|BTC/USDT|1h|1792227600000",
+      "missing": false,
+      "open_ms": 1792227600000,
+      "stages": [
+        "EXPECTED",
+        "OBSERVED",
+        "VALIDATED",
+        "EVALUATED",
+        "NO_SIGNAL"
+      ],
+      "symbol": "BTC/USDT"
+    },
+    {
+      "captured_in": "OOS_PROSPECTIVE_1H.jsonl",
+      "expected_key": "BINANCE_SPOT|BTC/USDT|1h|1792231200000",
+      "missing": false,
+      "open_ms": 1792231200000,
+      "stages": [
+        "EXPECTED",
+        "OBSERVED",
+        "VALIDATED",
+        "EVALUATED",
+        "NO_SIGNAL"
+      ],
+      "symbol": "BTC/USDT"
+    },
+    {
+      "captured_in": "OOS_PROSPECTIVE_1H.jsonl",
+      "expected_key": "BINANCE_SPOT|ETH/USDT|1h|1792224000000",
+      "missing": false,
+      "open_ms": 1792224000000,
+      "stages": [
+        "EXPECTED",
+        "OBSERVED",
+        "VALIDATED",
+        "EVALUATED",
+        "NO_SIGNAL"
+      ],
+      "symbol": "ETH/USDT"
+    },
+    {
+      "captured_in": "OOS_PROSPECTIVE_1H.jsonl",
+      "expected_key": "BINANCE_SPOT|ETH/USDT|1h|1792227600000",
+      "missing": false,
+      "open_ms": 1792227600000,
+      "stages": [
+        "EXPECTED",
+        "OBSERVED",
+        "VALIDATED",
+        "EVALUATED",
+        "NO_SIGNAL"
+      ],
+      "symbol": "ETH/USDT"
+    },
+    {
+      "captured_in": "OOS_PROSPECTIVE_1H.jsonl",
+      "expected_key": "BINANCE_SPOT|ETH/USDT|1h|1792231200000",
+      "missing": false,
+      "open_ms": 1792231200000,
+      "stages": [
+        "EXPECTED",
+        "OBSERVED",
+        "VALIDATED",
+        "EVALUATED",
+        "NO_SIGNAL"
+      ],
+      "symbol": "ETH/USDT"
+    },
+    {
+      "captured_in": "OOS_PROSPECTIVE_1H.jsonl",
+      "expected_key": "BINANCE_SPOT|SOL/USDT|1h|1792224000000",
+      "missing": false,
+      "open_ms": 1792224000000,
+      "stages": [
+        "EXPECTED",
+        "OBSERVED",
+        "VALIDATED",
+        "EVALUATED",
+        "NO_SIGNAL"
+      ],
+      "symbol": "SOL/USDT"
+    },
+    {
+      "captured_in": "OOS_PROSPECTIVE_1H.jsonl",
+      "expected_key": "BINANCE_SPOT|SOL/USDT|1h|1792227600000",
+      "missing": false,
+      "open_ms": 1792227600000,
+      "stages": [
+        "EXPECTED",
+        "OBSERVED",
+        "VALIDATED",
+        "EVALUATED",
+        "NO_SIGNAL"
+      ],
+      "symbol": "SOL/USDT"
+    },
+    {
+      "captured_in": "OOS_PROSPECTIVE_1H.jsonl",
+      "expected_key": "BINANCE_SPOT|SOL/USDT|1h|1792231200000",
+      "missing": false,
+      "open_ms": 1792231200000,
+      "stages": [
+        "EXPECTED",
+        "OBSERVED",
+        "VALIDATED",
+        "EVALUATED",
+        "NO_SIGNAL"
+      ],
+      "symbol": "SOL/USDT"
+    }
+  ],
+  "ledger": {
+    "first_capture_utc": "2026-10-17T11:38:51Z",
+    "keys_recorded": 9,
+    "ledger_only_keys": 0,
+    "lines": 3,
+    "path": "reports/economic-recovery/RFC-EDGE-015/scratch/OOS_CAPTURE_LEDGER.jsonl",
+    "reading": "the ledger is written by the collector as a separate append-only file; a slice row the ledger never recorded is evidence the slice was not produced by this collector",
+    "slice_is_subset_of_ledger": true
+  },
+  "per_symbol": {
+    "BTC/USDT": {
+      "captured_at_close_or_within_one_hour": 0,
+      "captured_bars": 3,
+      "captured_by_backfill_later": 3,
+      "evaluated": 3,
+      "expected_closed_bars": 3,
+      "longest_consecutive_evaluated": {
+        "from_ms": 1792224000000,
+        "from_utc": "2026-10-17T08:00:00Z",
+        "hours": 3,
+        "to_utc": "2026-10-17T10:00:00Z"
+      },
+      "longest_consecutive_observed": {
+        "from_ms": 1792224000000,
+        "from_utc": "2026-10-17T08:00:00Z",
+        "hours": 3,
+        "to_utc": "2026-10-17T10:00:00Z"
+      },
+      "max_capture_lag_hours": 2.648,
+      "missing": 0,
+      "missing_opens_utc": [],
+      "observed": 3
+    },
+    "ETH/USDT": {
+      "captured_at_close_or_within_one_hour": 0,
+      "captured_bars": 3,
+      "captured_by_backfill_later": 3,
+      "evaluated": 3,
+      "expected_closed_bars": 3,
+      "longest_consecutive_evaluated": {
+        "from_ms": 1792224000000,
+        "from_utc": "2026-10-17T08:00:00Z",
+        "hours": 3,
+        "to_utc": "2026-10-17T10:00:00Z"
+      },
+      "longest_consecutive_observed": {
+        "from_ms": 1792224000000,
+        "from_utc": "2026-10-17T08:00:00Z",
+        "hours": 3,
+        "to_utc": "2026-10-17T10:00:00Z"
+      },
+      "max_capture_lag_hours": 2.648,
+      "missing": 0,
+      "missing_opens_utc": [],
+      "observed": 3
+    },
+    "SOL/USDT": {
+      "captured_at_close_or_within_one_hour": 0,
+      "captured_bars": 3,
+      "captured_by_backfill_later": 3,
+      "evaluated": 3,
+      "expected_closed_bars": 3,
+      "longest_consecutive_evaluated": {
+        "from_ms": 1792224000000,
+        "from_utc": "2026-10-17T08:00:00Z",
+        "hours": 3,
+        "to_utc": "2026-10-17T10:00:00Z"
+      },
+      "longest_consecutive_observed": {
+        "from_ms": 1792224000000,
+        "from_utc": "2026-10-17T08:00:00Z",
+        "hours": 3,
+        "to_utc": "2026-10-17T10:00:00Z"
+      },
+      "max_capture_lag_hours": 2.648,
+      "missing": 0,
+      "missing_opens_utc": [],
+      "observed": 3
+    }
+  },
+  "schema_version": "EDGE17_CAPTURE_INTEGRITY_V1",
+  "slice": {
+    "duplicates": 0,
+    "path": "reports/economic-recovery/RFC-EDGE-015/scratch/OOS_PROSPECTIVE_1H.jsonl",
+    "rows": 9,
+    "sha256_manifest": "983944ba8e296a802b4873014cc4190879a92ebbbcd0326baa599bbd34da6b66",
+    "unique_keys": 9
+  },
+  "totals": {
+    "bars_with_a_fill": 0,
+    "bars_with_a_proposal": 0,
+    "duplicate_slice_rows": 0,
+    "evaluated_symbol_bars": 9,
+    "expected_symbol_bars": 9,
+    "identity_holds": true,
+    "observed_symbol_bars": 9,
+    "per_symbol": {
+      "BTC/USDT": {
+        "evaluated": 3,
+        "expected": 3,
+        "missing": 0,
+        "observed": 3
+      },
+      "ETH/USDT": {
+        "evaluated": 3,
+        "expected": 3,
+        "missing": 0,
+        "observed": 3
+      },
+      "SOL/USDT": {
+        "evaluated": 3,
+        "expected": 3,
+        "missing": 0,
+        "observed": 3
+      }
+    },
+    "slice_rows": 9,
+    "unexpected_symbol_bars": 0
+  }
+}

@@ -404,7 +404,14 @@ class PaperSessionRunner:
 
         # Reflect the latest broker equity (post previous reconcile) so
         # risk sizing/limits use the live paper equity (one authority).
-        self._sync_risk_equity()
+        # WP-EDGE-017/P0.3: marked to the net book, including the unrealized leg
+        # and the commissions accrued on open positions.
+        marks = {
+            str(getattr(snap, "symbol", "")): float(getattr(snap, "last_price", 0.0) or 0.0)
+            for snap in snapshots
+            if getattr(snap, "active", False) and float(getattr(snap, "last_price", 0.0) or 0.0) > 0
+        }
+        self._sync_risk_equity(marks)
 
         history: dict[str, list[OHLCV]] = {}
         decision_ts: dict[str, int] = {}
@@ -494,8 +501,8 @@ class PaperSessionRunner:
             except (TypeError, ValueError) as exc:
                 self._log.warning("paper.cycle.risk_record_failed", error=str(exc))
 
-    def _sync_risk_equity(self) -> None:
-        """Sync the risk engine with the REAL paper book (equity + positions).
+    def _sync_risk_equity(self, marks: dict[str, float] | None = None) -> None:
+        """Sync the risk engine with the REAL paper book (net equity + positions).
 
         PORTFOLIO-CONTEXT-01: exposure-dependent decisions must see the
         portfolio state at decision time. Without the position map below,
@@ -510,8 +517,16 @@ class PaperSessionRunner:
         risk = getattr(engine, "risk_manager", None)
         if risk is not None and hasattr(risk, "equity"):
             try:
-                risk.equity = float(broker.equity)
-                risk.peak_equity = max(risk.peak_equity, risk.equity)
+                # The book's net equity, not just its realized cash: the mark
+                # carries the open leg and the commissions already owed on it.
+                equity = (
+                    float(broker.mark_to_market_equity(marks)) if marks else float(broker.equity)
+                )
+                if hasattr(risk, "mark_equity"):
+                    risk.mark_equity(equity)
+                else:
+                    risk.equity = equity
+                    risk.peak_equity = max(risk.peak_equity, equity)
                 risk.open_positions = {
                     symbol: {
                         "notional_usdt": float(p.notional_usdt),

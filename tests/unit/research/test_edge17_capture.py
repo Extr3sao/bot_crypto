@@ -95,7 +95,9 @@ def test_pagination_recovers_history_beyond_one_page() -> None:
         calls.append(since)
         return [bar for bar in bars if bar[0] >= since][:limit]
 
-    result = paginate(fetch_page, since_ms=START, end_ms=START + 2_500 * PERIOD_MS_1H)
+    # the window extends past the data, so the short last page can actually be
+    # confirmed by a second request instead of being cut off by the window end
+    result = paginate(fetch_page, since_ms=START, end_ms=START + 2_600 * PERIOD_MS_1H)
 
     assert len(result.rows) == 2_500
     assert result.rows[0][0] == START

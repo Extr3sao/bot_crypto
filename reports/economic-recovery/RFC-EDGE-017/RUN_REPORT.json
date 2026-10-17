@@ -1,0 +1,191 @@
+{
+  "answers": {
+    "consecutive_prospective_bars_captured_validated_evaluated": {
+      "fills_on_them": 0,
+      "longest_consecutive_evaluated_hours": 3,
+      "longest_consecutive_observed_hours": 3,
+      "per_symbol_captured": {
+        "BTC/USDT": 3,
+        "ETH/USDT": 3,
+        "SOL/USDT": 3
+      },
+      "per_symbol_evaluated": {
+        "BTC/USDT": 3,
+        "ETH/USDT": 3,
+        "SOL/USDT": 3
+      },
+      "proposals_on_them": 0,
+      "reading": "three closed hours per symbol, all captured by the repaired append-only collector and all evaluated by the lane; none produced a proposal. They were backfilled by the first fixed run, not observed live at their close: the ledger records the lag",
+      "window": "2026-10-17T08:00Z..2026-10-17T10:00Z"
+    },
+    "do_broker_net_risk_equity_and_reconciliation_agree": {
+      "per_run": {
+        "1x": {
+          "all_trades_reconcile": true,
+          "broker_equity_identity": true,
+          "net_realised_usdt": -238.770489,
+          "risk_equity_equals_broker_net": true
+        },
+        "2x": {
+          "all_trades_reconcile": true,
+          "broker_equity_identity": true,
+          "net_realised_usdt": -293.032503,
+          "risk_equity_equals_broker_net": true
+        },
+        "3x": {
+          "all_trades_reconcile": true,
+          "broker_equity_identity": true,
+          "net_realised_usdt": -294.05625,
+          "risk_equity_equals_broker_net": true
+        }
+      },
+      "reading": "yes: every ClosedTrade satisfies pnl = reference gross - execution cost - both commissions, the broker equity is 10 000 + realised + unrealised, and RiskManager.equity is marked to that same figure before every decision"
+    },
+    "how_many_are_missing_and_why": {
+      "expected_symbol_bars": 9,
+      "missing_symbol_bars": 0,
+      "observed_symbol_bars": 9,
+      "why": "none in the frozen window: the append-only collector's resumable fetch backfilled every closed hour since the freeze. Hours before the freeze are not expected. The collector is manual, so a future hour with no run is MISSING_NO_COLLECTOR and never a quiet market."
+    },
+    "what_still_blocks_continuous_prospective_paper": [
+      "no scheduler is authorized: a Windows scheduled task needs administrator privileges, which this package did not attempt",
+      "the collector is manual, so an hour nobody runs it is MISSING_NO_COLLECTOR",
+      "no strategy is admitted in config/strategy_admission.json, so the runtime paper path has nothing to execute; the experimental lane is a research lane that bypasses admission by design",
+      "the host volume is 99% full; the collector's own footprint is ~9.6 KB/h, so disk is no longer the reason, but the volume is not healthy"
+    ],
+    "which_paper_trades_net_risk_actually_allows": {
+      "1x": 146,
+      "2x": 110,
+      "3x": 67,
+      "baseline_gross": 146,
+      "reading": "net risk approves fewer trades as the cost rises: 1x 146, 2x 110, 3x 67",
+      "what_changed_at_2x_and_3x": {
+        "2x": {
+          "consecutive_loss_cooldown": 1,
+          "weekly_loss_limit": 55
+        },
+        "3x": {
+          "consecutive_loss_cooldown": 1,
+          "weekly_loss_limit": 105
+        }
+      }
+    }
+  },
+  "code": {
+    "scripts/edge15_oos_preregistration.py": "1efdc9cea86e23487fe9318eef68f69c7df57174e3335dbd7c823431958c637e",
+    "scripts/edge16_paper_lane.py": "66b11297a0f172b89d76280d0ec62570675578a8a5d05a2c4fa09fa52e630f06",
+    "scripts/edge17_capture.py": "8d75f5469921004c91cebad98f77059adbbe05e9b2145a516648254ff2be6b23",
+    "scripts/edge17_reports.py": "98e64cc02d750c0b2988b56a6519c709032083880bab4c29e486631bf7c436c5",
+    "scripts/edge17_verify.py": "6ac6dd6046fab3337271bbd790ad421df50dc881c378c944d5b4add066481c8d",
+    "scripts/start_paper_trading.py": "900a964354baa982cfb1f56650b0fb17b8628d50f7cb4713f7e192fd111ad21f",
+    "src/trading_bot/paper/broker.py": "4366809ac81d03a6e173af2504aa4c1b59804da0f1b28e8868d0b67c1edb490f",
+    "src/trading_bot/paper/harness.py": "c358ab7232753d5e7d9a99c1d914cdf9f9422be0e5fbfd870f2f59e43daa2ddf",
+    "src/trading_bot/paper/paper_cycle.py": "abe074b02c3ce1736c58de475366d5a367bcc43b9777f49772fda81d64d1847f",
+    "src/trading_bot/research/oos_capture.py": "e3292d43d3ce9e3b819d00f752dd1b07bd425368e036aab900abd557caf6a6c6",
+    "src/trading_bot/risk/defensive_blocks.py": "ea9fe7501365395811f25944104c038081621caa27a081555bf01e8ef613b367",
+    "src/trading_bot/risk/manager.py": "fc50f836bb04df05522e74a34f69f977db9a84a6fd4575f578df189bd09f9505"
+  },
+  "generated_at_utc": "2026-10-17T12:17:57Z",
+  "git": {
+    "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
+    "head_at_generation": "5b86b656f9a5015c19e55b49b3f16456bec66b8e",
+    "note": "the code under these numbers is the working tree at this head; the evidence is committed after it, so this hash names the code commit, not the evidence commit"
+  },
+  "issue": "https://github.com/Extr3sao/bot_crypto/issues/10",
+  "limitations": [
+    "the nine prospective bars were backfilled by the first fixed run, not captured live at their close; the honest claim is post-freeze data, not live observation",
+    "the replay has no order book and no data-age clock, so spread and latency blocks are enforced on the runtime entrypoint and declared NOT_MEASURED for the bar replay",
+    "the broker charges half the spread and slippage per side; a stop filled at its level is still optimistic for a gap through it",
+    "the 2x/3x nets are projections over the 1x fills plus re-runs whose extra cost changed which entries were approved"
+  ],
+  "metrics": {
+    "capture": {
+      "backfilled_total": 9,
+      "duplicates": 0,
+      "ledger_entries": 3,
+      "slice_rows": 9
+    },
+    "economic": {
+      "by_symbol": {
+        "BTC/USDT": {
+          "execution_usdt": 11.243971,
+          "fees_usdt": 47.0,
+          "net_usdt": -58.613298,
+          "reference_gross_usdt": -0.369327,
+          "trades": 47
+        },
+        "ETH/USDT": {
+          "execution_usdt": 13.387302,
+          "fees_usdt": 56.0,
+          "net_usdt": -110.659875,
+          "reference_gross_usdt": -41.272573,
+          "trades": 56
+        },
+        "SOL/USDT": {
+          "execution_usdt": 15.70318,
+          "fees_usdt": 43.0,
+          "net_usdt": -69.497316,
+          "reference_gross_usdt": -10.794136,
+          "trades": 43
+        }
+      },
+      "net_realised_usdt": -238.770489,
+      "verdict": "NO_RESTATED_EDGE_SURVIVES"
+    },
+    "net_risk": {
+      "equivalence_with_baseline": {
+        "fills": 146,
+        "identical": true,
+        "rule": "with cost_mode=frictionless the repaired engine must mint the same 146 fills, prices, quantities, reasons and ids as WP-EDGE-016"
+      },
+      "fills_by_multiplier": {
+        "1x": 146,
+        "2x": 110,
+        "3x": 67
+      },
+      "net_by_multiplier": {
+        "1x": -238.770489,
+        "2x": -293.032503,
+        "3x": -294.05625
+      }
+    },
+    "storage": {
+      "effective_bytes_per_hour": 9576.333,
+      "fallback_overstatement_factor": 25061.8,
+      "guard_inputs_unchanged": {
+        "collector_max_bytes": 67108864,
+        "hours": 24.0,
+        "note": "the guard's own defaults; this package changed no reserve, multiplier or limit",
+        "reserve_bytes": 2000000000,
+        "stress_multiplier": 1.5
+      },
+      "guard_state": "COHERENT"
+    }
+  },
+  "not_run": [
+    "clean-clone checkout rehearsal: the host volume has ~4.7 GB free and the rehearsal needs a second working tree; not attempted, and not counted as passing",
+    "multi-engine re-verification (Jesse/VeighNa): not executed in this package",
+    "scheduler creation: requires administrator privileges, not authorized"
+  ],
+  "schema_version": "EDGE17_RUN_REPORT_V1",
+  "verdicts": {
+    "capture_is_append_only_and_idempotent": true,
+    "coverage_identity_holds": true,
+    "defensive_blocks_enforced": true,
+    "disk_guard_relaxed": false,
+    "independent_verification": "VERIFIED",
+    "live_trading": "DISABLED",
+    "net_cost_is_charged_before_risk": true,
+    "prospective_capture": "MANUAL_NOT_SCHEDULED",
+    "risk_equity_equals_broker_net": true,
+    "risk_limits_changed": false,
+    "weekend_policy": "UNCHANGED (config/risk.yaml untouched)"
+  },
+  "verification": {
+    "artifact": "INDEPENDENT_VERIFICATION.json",
+    "checks": "27/27",
+    "mutations": "11/11",
+    "verdict": "VERIFIED"
+  },
+  "work_package": "WP-EDGE-017 \u2014 prospective capture integrity & net-risk parity"
+}

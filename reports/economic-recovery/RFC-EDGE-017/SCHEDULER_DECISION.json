@@ -1,0 +1,14 @@
+{
+  "delivered_instead": "manual collector, append-only, resumable and idempotent: scripts/edge15_oos_preregistration.py --capture",
+  "disk_guard_state_for_this_collector": "COHERENT",
+  "disk_is_no_longer_the_reason": true,
+  "fallback_rate_mb_per_hour": 240.0,
+  "measured_rate_mb_per_hour": 0.009576,
+  "reading": "on the measured rate the guard no longer blocks this collector: WP-EDGE-016's CAPTURE_BLOCKED_DISK was a misdiagnosis produced by pricing a 3-symbol hourly JSONL writer with another lane's 240 MB/h corpus reader. The host is still 99% full; that is a separate fact about the volume, not about this collector.",
+  "schema_version": "EDGE17_SCHEDULER_DECISION_V1",
+  "status": "PROSPECTIVE_CAPTURE_MANUAL_NOT_SCHEDULED",
+  "still_blocked_by": [
+    "no scheduler is authorized: creating a Windows scheduled task needs administrator privileges, which this package does not have and did not attempt",
+    "a GitHub cron cannot run it: the working copy and the holdout are local"
+  ]
+}

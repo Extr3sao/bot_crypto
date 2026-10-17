@@ -1,0 +1,39 @@
+{
+  "artifacts": {
+    "reports/economic-recovery/RFC-EDGE-017/CAPTURE_INTEGRITY.json": "4728110f36717e222d1639e29ecbc747f3348885fa5e642e99e1be2c521facf1",
+    "reports/economic-recovery/RFC-EDGE-017/ECONOMIC_RESULTS.csv": "133bdf5f3c0d2a940e3a0d8e1cae6e040ce9943b702cafe12cd4892931d8f1ed",
+    "reports/economic-recovery/RFC-EDGE-017/ECONOMIC_RESULTS.json": "cbc5e3624009a0e9061dc5479d7ba8c57093d9236c24231a1a362f2ae724dcff",
+    "reports/economic-recovery/RFC-EDGE-017/FINAL_REPORT.md": "2898c47b6dc610d9006585d49c11664436766aeb6220e6e188c1b6bfb3fa9557",
+    "reports/economic-recovery/RFC-EDGE-017/FULL_UNIT_SUITE.log": "eb48ca45e9a70cf2ef0967d94b3d1c1f743fc4557d232b8337125d18c5aef120",
+    "reports/economic-recovery/RFC-EDGE-017/INDEPENDENT_VERIFICATION.json": "7ba51fe5da55b9be86a916f9518967a221e6cb2618d91c8b6d2bce75263ed2f6",
+    "reports/economic-recovery/RFC-EDGE-017/INDEPENDENT_VERIFICATION.md": "8b253f581bcf4cc15f43fe64bbe1e79e1c0d0b36df07ec5c4e37a265afda139f",
+    "reports/economic-recovery/RFC-EDGE-017/INFORME_EJECUTIVO.md": "344f04e1d96b03e311d5fef79e2d80756677cf2ebd5119a257beb8d412fc3473",
+    "reports/economic-recovery/RFC-EDGE-017/NET_RISK_REPLAY.json": "2c45e49d31a1e39aaa60e65ac2f619320a66c19b909942438fca95eca5b4f67c",
+    "reports/economic-recovery/RFC-EDGE-017/PROSPECTIVE_COVERAGE.md": "e18cb403de88e9dbab39ff4224e1483fb01270be6be5235d042dbc6aa488fb8b",
+    "reports/economic-recovery/RFC-EDGE-017/RISK_BLOCKS_MATRIX.json": "4dce6097f327530e736ca93799c744ac656929348f61336b0928d66e707cce7f",
+    "reports/economic-recovery/RFC-EDGE-017/RUN_REPORT.json": "09e7d3b17e44f974a76e2ecf0ffeeff6dea9d216784011324eea84d53911440f",
+    "reports/economic-recovery/RFC-EDGE-017/RUN_REPORT.md": "c912374ef10d451b341377ba048a39e4565bca113c2b271d04b8bc0ae953c969",
+    "reports/economic-recovery/RFC-EDGE-017/SCHEDULER_DECISION.json": "ae1d41229e1123ddda4935c92e8fce32d7339202481eefdbfa820f700fc35f57",
+    "reports/economic-recovery/RFC-EDGE-017/STORAGE_MEASUREMENT.json": "09b8c16749110f2edbee31db4a4ee4509b116124574fd58e719b1132fff13917",
+    "reports/economic-recovery/RFC-EDGE-017/experimental_paper/CANONICAL_CYCLES.jsonl": "206c3106705478d00961526004e911580150bdff372ff29a1b5c79efbeda6b65",
+    "reports/economic-recovery/RFC-EDGE-017/experimental_paper/CANONICAL_LANE_REPORT.json": "af3f2d3a3db7fa87d5a3f25e7a07bfa64ebc1f2cfbbbca7600f7866d9dab3e9d",
+    "reports/economic-recovery/RFC-EDGE-017/experimental_paper/CANONICAL_TRADES.jsonl": "0ede85e8c8c832d1199529568e5af48066bbe326e92108817c22f75a3c7be2b3",
+    "reports/economic-recovery/RFC-EDGE-017/experimental_paper/COVERAGE_LEDGER.jsonl": "e7e1dab6582732480181b7487ea2cdfe9e89d6c6dbd474327225bddddad25c84"
+  },
+  "code": {
+    "scripts/edge15_oos_preregistration.py": "1efdc9cea86e23487fe9318eef68f69c7df57174e3335dbd7c823431958c637e",
+    "scripts/edge16_paper_lane.py": "66b11297a0f172b89d76280d0ec62570675578a8a5d05a2c4fa09fa52e630f06",
+    "scripts/edge17_capture.py": "8d75f5469921004c91cebad98f77059adbbe05e9b2145a516648254ff2be6b23",
+    "scripts/edge17_reports.py": "98e64cc02d750c0b2988b56a6519c709032083880bab4c29e486631bf7c436c5",
+    "scripts/edge17_verify.py": "6ac6dd6046fab3337271bbd790ad421df50dc881c378c944d5b4add066481c8d",
+    "scripts/start_paper_trading.py": "900a964354baa982cfb1f56650b0fb17b8628d50f7cb4713f7e192fd111ad21f",
+    "src/trading_bot/paper/broker.py": "4366809ac81d03a6e173af2504aa4c1b59804da0f1b28e8868d0b67c1edb490f",
+    "src/trading_bot/paper/harness.py": "c358ab7232753d5e7d9a99c1d914cdf9f9422be0e5fbfd870f2f59e43daa2ddf",
+    "src/trading_bot/paper/paper_cycle.py": "abe074b02c3ce1736c58de475366d5a367bcc43b9777f49772fda81d64d1847f",
+    "src/trading_bot/research/oos_capture.py": "e3292d43d3ce9e3b819d00f752dd1b07bd425368e036aab900abd557caf6a6c6",
+    "src/trading_bot/risk/defensive_blocks.py": "ea9fe7501365395811f25944104c038081621caa27a081555bf01e8ef613b367",
+    "src/trading_bot/risk/manager.py": "fc50f836bb04df05522e74a34f69f977db9a84a6fd4575f578df189bd09f9505"
+  },
+  "generated_at_utc": "2026-10-17T12:17:57Z",
+  "schema_version": "EDGE17_EVIDENCE_INDEX_V1"
+}
