@@ -1,6 +1,6 @@
 # WP-EDGE-015 — run report
 
-*Generated 2026-10-17T07:40Z against `a6943c4`. `FALSE_SUCCESS=0`, `BUILDER != VERIFIER`.*
+*Generated 2026-10-17T09:05Z against `d45a1fa`. `FALSE_SUCCESS=0`, `BUILDER != VERIFIER`.*
 *No real order, no credential, no leverage, no risk limit changed.*
 
 ## Execution classes, kept apart
@@ -10,7 +10,7 @@
 | `DEFECT_REPAIR` | certification defects closed with executed evidence | yes |
 | `HISTORICAL_RESEARCH` | families measured on consumed 1h corpora, priced per venue | yes |
 | `EXPERIMENTAL_PROSPECTIVE_PAPER` | new bars driven through the real broker and the real risk policy, in an isolated lane | yes |
-| `PROSPECTIVE_HOLDOUT` | bars after the frozen protocol | **frozen, accruing, 0 bars so far** |
+| `PROSPECTIVE_HOLDOUT` | bars after the frozen protocol | **frozen and accruing: 3 bars, not scored** |
 
 A historical measurement is never presented as prospective, and the lane's cycles are never
 counted as an admitted strategy's operations.
@@ -20,8 +20,10 @@ counted as an admitted strategy's operations.
 | # | defect | what was done | evidence |
 | --- | --- | --- | --- |
 | P0.1 | `order_check=false`: the 14R holdout could not show its freeze preceded its capture | a **two-phase** protocol: `--freeze` writes and commits, `--capture` runs later in another process; the check now has five clauses and a verdict | `OOS_PREREGISTRATION_V2.json`, `OOS_CAPTURE_MANIFEST_V2.json` |
+| P0.1b | the manifests stored this host's absolute paths, so the decisive checks only ran on the machine that wrote them | paths are written repository-relative, the verifier re-anchors the frozen 14R path by its tail, and two checks refuse a package that a clean checkout could not re-read or would not ship | `edge15_oos_preregistration.py`, `edge15_verify.py` V33/V34 |
 | P0.2 | the 14R verifier imported the builder's `engine_parity` module | the import is **gone** (not narrowed): rule, indicator, fee conventions and equity path are re-implemented in the verifier; a structural check asserts no builder import | `edge15_verify.py` V31, `edge14r_verify.py` V32 |
 | P0.3 | openings identified from outside by `(symbol, opened_at, entry_price)` | the broker mints `position_id`, `entry_order_id`, `exit_order_id`, `trade_id` per book; the sequence continues across `restore()` | `broker.py`, `test_broker_identity.py` |
+| P0.3b | a replay's evidence carried this host's wall clock in `opened_at`/`closed_at`, so no digest over it could hold | the broker accepts a clock; the lane hands it the bar being replayed, and two runs of the same bars now hash identically (measured) | `broker.py` (`clock`), `edge15_paper_lane.py`, `test_broker_identity.py` |
 | P0.4 | a single equity number could not say *which* quantity moved | `accounting_snapshot()` keeps realised, unrealised, cash and mark-to-market apart, returns the accrued entry commission as its own term, and checks four identities | `broker.py`, verifier V22-V23 |
 | P0.5 | Jesse's 7.02 bps residual and VeighNa's 2 unmatched trades were quantified but not decomposed | both re-derived from the published rows: the residual is exactly three terms, and the two trades are the window's last two entries | `PARITY_DIVERGENCE_EXPLAINED.json/.md` |
 
@@ -33,8 +35,9 @@ counted as an admitted strategy's operations.
 | committed in | `b4ff58892263b44de122b8fe6b08239ffb831032`, commit time `1792221564` |
 | captured at | `2026-10-17T07:20:21Z` (`1792221621701637600` ns), +292.8 s after the freeze |
 | working file vs committed blob | sha256 equal after LF normalisation (`cea0be8934…`) — the disk copy is CRLF, which is why both forms are compared |
-| prospective bars captured | **0** (the first hourly bar to open after the freeze has not closed yet) |
+| prospective bars captured | **3** (one per symbol; the first hourly bar to open after the freeze, 08:00Z → 09:00Z) |
 | descriptive bars captured | 0 new; the 14R slice is preserved and re-labelled descriptive |
+| state | `OOS_ACCRUING_WITH_PROSPECTIVE_BARS`; `selection_has_read_any_slice=false`, `scoring_run=false` |
 | verdict | `ORDER_VERIFIED` |
 
 The one assumption is stated in the artifact: the instants come from the same host clock read in
@@ -107,8 +110,11 @@ comparing two engines, and the cost model says so in its own `not_used` field.
 
 | quantity | value |
 | --- | --- |
-| cycles | 210 (`NO_TRADE` 182, `FILL_OPENED` 14, `PROTECTIVE_EXIT` 14) |
-| closed trades / realised PnL | 14 / **−12.8100 USDT** |
+| cycles | 210 (`NO_TRADE` 182, `FILL_OPENED` 14, `PROTECTIVE_EXIT` 14) over 6 003 bars scanned |
+| simulated orders | **28** = 14 entries + 14 exits, of which 0 exchange orders |
+| closed trades / realised PnL | 14 / **−12.8100 USDT** (gross −3.4767, commissions 9.3332) |
+| prospective bars the lane met | 3 (one per symbol), every decision on them `NO_TRADE` — no family had anything to do, and none was forced |
+| PnL by class | `DESCRIPTIVE` −12.809961 USDT; `PROSPECTIVE` 0.000000 USDT |
 | accounting identities | all hold, in all three books |
 | books | one per symbol (`EDGE15LANE-BTCUSDT`, …), so identifiers cannot collide |
 | authoritative ledger | sha256 unchanged before and after; nothing admitted |
@@ -120,15 +126,16 @@ protective stops (0.5 % / 0.75 %) are far tighter than the horizon the surviving
 every position was stopped out before its thesis could play out. Changing those limits is a
 risk-manager decision with its own RFC, and this work package did not touch them.
 
-The disk guard still reports `INSUFFICIENT_FREE_SPACE` (5.9 GiB free) and was not relaxed.
+The disk guard still reports `INSUFFICIENT_FREE_SPACE` (4.17 GiB free, down from 5.9) and was not
+relaxed; the lane's artifacts were written under the package directory only.
 
 ## P4 — verification
 
 | artifact | result |
 | --- | --- |
-| `edge15_verify.py` (imports no builder module) | **32/32 checks, verdict VERIFIED** |
+| `edge15_verify.py` (imports no builder module) | **34/34 checks, verdict VERIFIED** |
 | `edge14r_verify.py` (re-run with the tightened holdout check) | **32/32 checks, VERIFIED** |
-| broker behaviour tests | 7 new tests, all pass |
+| broker behaviour tests | 8 new tests, all pass (the 8th pins the replay clock) |
 | family causality tests | 10 tests: truncated series reproduce the completed history exactly |
 
 ## Publication

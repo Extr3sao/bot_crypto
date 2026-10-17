@@ -1,6 +1,6 @@
 # Informe ejecutivo — WP-EDGE-015
 
-*2026-10-17T07:40Z, `a6943c4`. `FALSE_SUCCESS=0`, `BUILDER != VERIFIER`. Sin órdenes reales, sin
+*2026-10-17T09:05Z, `d45a1fa`. `FALSE_SUCCESS=0`, `BUILDER != VERIFIER`. Sin órdenes reales, sin
 credenciales, sin apalancamiento y sin ningún cambio de límites de riesgo.*
 
 ## En una frase
@@ -16,9 +16,9 @@ congelado y acumulando en lugar de inventarse.
 | --- | --- |
 | protocolo prospectivo congelado en un commit y capturado en otro | ejecutado, `ORDER_VERIFIED` |
 | cuatro familias medidas con costes por venue y sensibilidad adversa | ejecutado (5 años, 9 activos) |
-| carril paper aislado sobre barras nuevas con el broker y el riesgo reales | ejecutado (210 ciclos, 14 operaciones) |
-| verificación independiente (sin importar el código del constructor) | 32/32, veredicto `VERIFIED` |
-| suite de rendimiento del broker y de causalidad de las familias | 7 + 10 pruebas, todas pasan |
+| carril paper aislado sobre barras nuevas con el broker y el riesgo reales | ejecutado (6 003 barras, 210 ciclos, 28 órdenes simuladas, 14 operaciones cerradas) |
+| verificación independiente (sin importar el código del constructor) | 34/34, veredicto `VERIFIED` |
+| suite de comportamiento del broker y de causalidad de las familias | 8 + 10 pruebas, todas pasan |
 | divergencias de Jesse y VeighNa | ambas resueltas con descomposición exacta |
 
 ## Los defectos, cerrados
@@ -27,14 +27,23 @@ congelado y acumulando en lugar de inventarse.
    `order_check=false`. Ahora el protocolo se congela en un commit (`b4ff588`, 07:15:28Z) y la
    captura corre después, en otro proceso (07:20:21Z); el orden se comprueba de tres formas
    independientes y el veredicto es `ORDER_VERIFIED`. Los datos anteriores se conservan como
-   evidencia **descriptiva**, etiquetada.
+   evidencia **descriptiva**, etiquetada. La captura posterior (09:01:39Z) ya contiene **3 barras
+   prospectivas** reales (una por símbolo, apertura 08:00Z), sin puntuar; además el manifiesto ya no
+   guarda rutas absolutas de esta máquina, y dos comprobaciones nuevas (V33/V34) fallan si el paquete
+   no se puede releer desde un checkout limpio o si el fichero que el manifiesto hashea no es el que
+   Git publica.
 2. **El verificador era el constructor.** Importaba el mismo módulo que fabricó los artefactos que
    juzgaba. El import se ha eliminado (no acotado) y hay una comprobación estructural que falla si
    vuelve.
 3. **La identidad de las operaciones se deducía de un reloj.** Dos ejecuciones en el mismo segundo
    podían compartir identidad. Ahora el broker acuña sus propios identificadores por libro, los
    continúa tras una recuperación y el carril usa un libro por símbolo. Lo encontró precisamente la
-   verificación independiente: 56 identificadores, 24 distintos, por culpa de compartir libro.
+   verificación independiente: 56 identificadores, 24 distintos, por culpa de compartir libro. El
+   mismo defecto llegaba a la evidencia del carril: `opened_at`/`closed_at` salían del reloj de la
+   máquina, así que dos ejecuciones de las mismas barras escribían ficheros distintos y ningún hash
+   sobre ellos podía sostenerse. El broker acepta ahora un reloj, el carril le pasa la barra que
+   procesa y el fichero de 14 operaciones hashea idéntico entre ejecuciones (`889734699a8d…`,
+   medido).
 4. **Una sola cifra de equity no decía qué se había movido.** Ahora se separan realizado, no
    realizado, caja y patrimonio a mercado, con la comisión de entrada devengada como término propio
    y cuatro identidades comprobadas.
@@ -68,11 +77,19 @@ bps para sobrevivir al adverso. Casi nada en estos datos logra ambas cosas.
 
 ## El carril experimental prospectivo
 
-210 ciclos sobre barras nuevas, con el broker y la política de riesgo reales: 182 `NO_TRADE`, 14
-entradas, 14 salidas protectoras, −12,81 USDT realizado, todas las identidades contables correctas y
-el ledger de admisión autoritativo **sin cambios** (hash idéntico antes y después). Cada ciclo lleva
-la etiqueta `EXPERIMENTAL_PROSPECTIVE_PAPER`; las familias rechazadas se registran como negativas a
-operar con su motivo; no se envió ninguna orden.
+6 003 barras exploradas, 210 ciclos de decisión con el broker y la política de riesgo reales: 182
+`NO_TRADE`, 14 entradas, 14 salidas protectoras, **28 órdenes simuladas** (14 de entrada y 14 de
+salida), −12,81 USDT realizado, todas las identidades contables correctas y el ledger de admisión
+autoritativo **sin cambios** (hash idéntico antes y después). Cada ciclo lleva la etiqueta
+`EXPERIMENTAL_PROSPECTIVE_PAPER`; las familias rechazadas se registran como negativas a operar con su
+motivo; no se envió ninguna orden.
+
+El carril consume ahora las barras capturadas, así que `PROSPECTIVE` no es una etiqueta que se pone
+solo: entraron **3 barras prospectivas** (una por símbolo) y **ninguna familia propuso nada en
+ellas** — 0 ciclos prospectivos, 0 señales forzadas. Por eso el PnL se separa así: `DESCRIPTIVE`
+−12,809961 USDT y `PROSPECTIVE` 0,000000 USDT. Una barra a la que se llega saltando más de 1,5 horas
+se trata como calentamiento (`NO_TRADE/GAP_BRIDGE_WARMUP`) en vez de operarse, porque las familias
+leen sus filtros sobre barras consecutivas.
 
 Su resultado es más de riesgo que de estrategia: los stops por defecto (0,5 % / 0,75 %) son mucho más
 estrechos que el horizonte que necesita la familia superviviente, así que todas las posiciones
@@ -82,14 +99,15 @@ risk-manager con su propio RFC.
 ## Lo que no se afirma
 
 - **Sin inferencia económica fuera de muestra**: los corpus están consumidos y la rebanada
-  prospectiva tiene **0 barras** en este momento (la primera barra horaria posterior a la congelación
-  aún no había cerrado; la captura informó cero en vez de inventarse una ventana).
+  prospectiva tiene **3 barras, ninguna puntuada**. Tres velas horarias no aceptan ni rechazan una
+  familia cuyo horizonte es de días, y la selección no ha leído ninguna.
 - **Sin adopción, y `ADOPT` es hoy imposible**: exige superar todos los umbrales en datos que la
   selección nunca tocó.
 - El filtro de percentil de ATR es una **aproximación de 50 cubos** (declarada); por eso la familia
   decisiva publica su evidencia por operación y el verificador re-deriva cada decisión contra las
   barras que existían cuando se tomó.
-- El guardián de disco sigue en `INSUFFICIENT_FREE_SPACE` (5,9 GiB libres) y **no se ha relajado**.
+- El guardián de disco sigue en `INSUFFICIENT_FREE_SPACE` (4,17 GiB libres ahora, frente a 5,9 al
+  principio de la sesión) y **no se ha relajado**; no se escribió ningún corpus nuevo grande.
 - Los motores externos no se han re-ejecutado: se han re-derivado sus filas publicadas.
 
 ## Siguiente hipótesis

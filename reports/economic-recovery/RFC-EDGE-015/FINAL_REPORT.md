@@ -1,7 +1,7 @@
 # WP-EDGE-015 — final report
 
-*2026-10-17T07:40Z against `a6943c4`. Every figure is reproducible from the artifacts in this
-directory; the verification that re-derives them is `INDEPENDENT_VERIFICATION.json` (32/32, verdict
+*2026-10-17T09:05Z against `d45a1fa`. Every figure is reproducible from the artifacts in this
+directory; the verification that re-derives them is `INDEPENDENT_VERIFICATION.json` (34/34, verdict
 `VERIFIED`), and it shares no code with the builder.*
 
 ## The short answer
@@ -24,6 +24,15 @@ working file still hashes to (`cea0be8934…`, LF-normalised), and the commit ti
 (`b4ff588`, 07:15:28Z → 07:20:21Z). Meanwhile the 14R slice and the consumed corpora are kept as
 **descriptive** evidence and labelled as such.
 
+The holdout then stopped being a promise. The first hourly bar to open after the freeze closed at
+09:00Z, the capture ran at 09:01:39Z, and the manifest now holds **3 prospective bars** (one per
+symbol, opening 08:00Z) with the state `OOS_ACCRUING_WITH_PROSPECTIVE_BARS`. Nothing is scored on
+them and the selection has read none of them; one bar per symbol is not a sample, it is the start of
+one. The capture also stopped writing this host's absolute paths into the manifest: paths are now
+repository-relative, the verifier re-anchors the frozen 14R path by its tail, and two new checks
+(V33, V34) fail if a path could not be re-read from a clean checkout or if the slice the manifest
+hashes is not the slice Git would ship.
+
 **The verifier was the builder.** `edge14r_verify.py` called back into
 `research.economic_recovery.engine_parity`, the module that produced the artifacts it judged. The
 import is gone rather than narrowed: the rule, the indicator, the two fee conventions and the
@@ -35,7 +44,11 @@ of the code, not a claim about it.
 `(symbol, opened_at, entry_price)`; two fills in one clock tick could share it, and a deduplicating
 reconciler then dropped real positions. The broker now mints its own `position_id`, order ids and
 `trade_id` per book (which is why the experimental lane uses one book per symbol), continues the
-sequence across `restore()`, and refuses to reuse an identifier after recovery.
+sequence across `restore()`, and refuses to reuse an identifier after recovery. The same class of
+defect reached the lane's own evidence: `opened_at`/`closed_at` were read from this host's wall
+clock, so two runs of the same bars wrote two different files and no digest over them could hold.
+The broker now accepts a clock, the lane hands it the bar being replayed, and the 14-row trade file
+hashes identically across runs (`889734699a8d…`, measured, not asserted).
 
 **One number could not say which quantity moved.** `accounting_snapshot()` keeps realised PnL,
 unrealised PnL, cash and mark-to-market equity apart, carries the accrued entry commission as its
@@ -81,10 +94,18 @@ adverse one. Almost nothing in this corpus does both.
 ## 3. The prospective lane
 
 A separate lane drives the **real** `PaperBroker` and the **real** risk policy over new bars:
-210 cycles, 182 `NO_TRADE`, 14 fills, 14 protective exits, realised −12.81 USDT, accounting
-identities holding in all three books, and the authoritative admission ledger's sha256 unchanged
-before and after. Every cycle carries `EXPERIMENTAL_PROSPECTIVE_PAPER`; rejected families are
-recorded as refusals with their reason, not silently dropped; no exchange order was sent.
+6 003 bars scanned, 210 decision cycles, 182 `NO_TRADE`, 14 fills, 14 protective exits, **28
+simulated orders** (14 entries, 14 exits), realised −12.81 USDT, accounting identities holding in all
+three books, and the authoritative admission ledger's sha256 unchanged before and after. Every cycle
+carries `EXPERIMENTAL_PROSPECTIVE_PAPER`; rejected families are recorded as refusals with their
+reason, not silently dropped; no exchange order was sent.
+
+The lane now also consumes the captured bars, so `PROSPECTIVE` is not a label it applies to itself:
+3 prospective bars entered the replay (one per symbol), and **no family proposed anything on them** —
+0 prospective cycles, 0 forced signals. That is why the PnL splits as it does: `DESCRIPTIVE`
+−12.809961 USDT, `PROSPECTIVE` 0.000000 USDT. A bar reached across a jump longer than 1.5 hours is
+treated as warmup (`NO_TRADE/GAP_BRIDGE_WARMUP`) rather than traded, because the families read their
+filters off consecutive bars.
 
 The lane's own economic result is a risk-policy observation: the default stops (0.5 % / 0.75 %) are
 far tighter than the horizon the surviving family needs, so every position was stopped out before
@@ -93,15 +114,17 @@ its thesis could play out. Altering those limits is the risk-manager's call unde
 ## 4. What is not claimed
 
 * **No out-of-sample economic inference.** The corpora are consumed, and the prospective slice has
-  **0 bars**: the first hourly bar to open after the freeze had not closed when the capture ran (it
-  fetched what existed and reported zero rather than inventing a window).
+  **3 bars, none scored**: the capture ran one bar after the freeze and reported exactly what
+  existed. Three hourly candles cannot accept or reject a family whose horizon is days, and the
+  selection has read none of them.
 * **No adoption, and no ADOPT verdict is possible yet.** `ADOPT` requires every threshold on data
   the selection never touched; the only such data has not accrued.
 * **The ATR-percentile gate is a 50-bucket approximation** (declared in the artifact). That is why
   the published per-trade evidence exists: the verifier re-derives each decision against the bars
   that existed when it was taken instead of demanding an identical trade list from a second
   approximation.
-* **The disk guard still reports `INSUFFICIENT_FREE_SPACE`** (5.9 GiB free). It was not relaxed.
+* **The disk guard still reports `INSUFFICIENT_FREE_SPACE`** (4.17 GiB free, down from 5.9 during
+  the session). It was not relaxed, and no new large corpus was written.
 * The external engines (Freqtrade, VeighNa, Jesse) were **not re-run**; their published rows were
   re-derived instead.
 

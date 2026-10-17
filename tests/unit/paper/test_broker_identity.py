@@ -200,3 +200,32 @@ def test_a_row_written_before_identity_existed_still_restores() -> None:
     # And the book keeps working.
     broker.execute_signal(_buy(price=200.0))
     assert broker.positions["BTC/USDT"].position_id
+
+
+def test_a_replay_can_pass_its_own_clock_so_its_evidence_is_byte_stable() -> None:
+    """The timestamps in a replay's evidence come from the replay, not this host.
+
+    ``opened_at`` and ``closed_at`` were read from the wall clock, so every rerun
+    of the same bars produced a different trade file and the digest recorded for
+    it could never hold. The broker now accepts a clock; a replay hands it the bar
+    it is processing, and two identical runs must produce identical rows.
+    """
+
+    def run_once() -> list[tuple[float, float, str]]:
+        now = [1_700_000_000.0]
+        broker = PaperBroker(
+            equity=10_000.0,
+            slippage_bps=0.0,
+            commission_bps=0.0,
+            book_id="TESTBOOK",
+            clock=lambda: now[0],
+        )
+        broker.execute_signal(_buy(price=100.0))
+        now[0] = 1_700_003_600.0  # the next hourly bar
+        broker.check_positions({"BTC/USDT": 98.0})  # stop-loss close (default 1 %)
+        return [(t.opened_at, t.closed_at, t.trade_id) for t in broker.closed_trades]
+
+    first, second = run_once(), run_once()
+    assert first == second, "a replay with its own clock must reproduce its rows exactly"
+    assert first[0][0] == 1_700_000_000.0
+    assert first[0][1] == 1_700_003_600.0

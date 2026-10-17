@@ -561,7 +561,10 @@ def check_alpha_matrix(checks: Checks) -> None:
         "V13",
         "every published verdict is re-derived from the matrix and the frozen thresholds",
         published == recomputed,
-        f"published {published} vs recomputed {recomputed}",
+        # sorted, so the published artifact hashes the same on every run: a detail
+        # string built from a set iteration order is not reproducible evidence
+        f"published {dict(sorted(published.items()))} vs recomputed "
+        f"{dict(sorted(recomputed.items()))}",
     )
     checks.add(
         "V14",

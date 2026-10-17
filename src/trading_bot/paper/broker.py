@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import hashlib
 import time
+from collections.abc import Callable
 from dataclasses import dataclass, field
 from typing import Any
 
@@ -152,8 +153,13 @@ class PaperBroker:
         slippage_bps: float = 1.0,
         commission_bps: float = 5.0,
         book_id: str | None = None,
+        clock: Callable[[], float] | None = None,
     ) -> None:
         del db_url  # legacy compat, unused
+        #: Where ``opened_at``/``closed_at`` come from. A replay passes its own
+        #: clock (the bar it is processing) so the evidence it writes is
+        #: byte-identical across runs; live paper trading keeps the wall clock.
+        self._clock: Callable[[], float] = clock or time.time
         #: Names the book these identifiers belong to. Callers that replay a
         #: fixed dataset pass a fixed one so the identifiers are reproducible;
         #: otherwise it is unique per broker instance, so two books can never
@@ -271,6 +277,7 @@ class PaperBroker:
             stop_loss_pct=sl_pct,
             take_profit_pct=tp_pct,
             entry_commission=commission,
+            opened_at=self._clock(),
             strategy_name=str(signal.strategy_name or ""),
             position_id=self._next_id("pos"),
             entry_order_id=self._next_id("ord"),
@@ -329,7 +336,7 @@ class PaperBroker:
             pnl=net_pnl,
             exit_reason=reason,
             opened_at=pos.opened_at,
-            closed_at=time.time(),
+            closed_at=self._clock(),
             strategy_name=pos.strategy_name,
             trade_id=self._next_id("trd"),
             position_id=pos.position_id,

@@ -24,13 +24,13 @@
       "what": "every clause of the order check is true (not a sentence containing False)"
     },
     {
-      "detail": "freeze 1792221328939466200 -> capture 1792221621701637600 (+292762171400 ns)",
+      "detail": "freeze 1792221328939466200 -> capture 1792227699913727000 (+6370974260800 ns)",
       "id": "V03",
       "ok": true,
       "what": "the ordering is reconstructed from the recorded integers"
     },
     {
-      "detail": "commit b4ff58892263 blob cea0be89347d219b\u2026",
+      "detail": "commit 5308b9dbba0f blob cea0be89347d219b\u2026",
       "id": "V04",
       "ok": true,
       "what": "the frozen file still hashes to the blob of the commit that added it"
@@ -48,7 +48,7 @@
       "what": "the protocol digest recomputes from the frozen protocol block"
     },
     {
-      "detail": "0 prospective bar(s); digest matches the manifest",
+      "detail": "3 prospective bar(s); digest matches the manifest",
       "id": "V07",
       "ok": true,
       "what": "every bar in the prospective slice opens after the freeze instant"
@@ -60,10 +60,22 @@
       "what": "the 14R slice is preserved and labelled descriptive"
     },
     {
-      "detail": "state OOS_ACCRUING, selection_has_read_any_slice=False",
+      "detail": "state OOS_ACCRUING_WITH_PROSPECTIVE_BARS, selection_has_read_any_slice=False",
       "id": "V09",
       "ok": true,
       "what": "the holdout is reserved: no selection read it and nothing scored it"
+    },
+    {
+      "detail": "3 relative path(s) + the frozen 14R path (absolute, as it was committed inside the protocol) re-anchored on the repository by its tail",
+      "id": "V33",
+      "ok": true,
+      "what": "every artefact this manifest records is repository-relative and resolves here"
+    },
+    {
+      "detail": "HEAD:reports/economic-recovery/RFC-EDGE-015/scratch/OOS_PROSPECTIVE_1H.jsonl matches the 419 LF-normalised bytes on disk",
+      "id": "V34",
+      "ok": true,
+      "what": "the prospective slice the manifest hashes is the one Git will ship"
     },
     {
       "detail": "worst deviation 0.000e+00 bps over 60 rows",
@@ -84,7 +96,7 @@
       "what": "the decisive family's entries satisfy their own gate on past bars only"
     },
     {
-      "detail": "published {'cross_sectional_rotation': 'REJECT', 'mean_reversion_vol_liq': 'EXPERIMENT_COST_FRAGILE', 'trend_pullback': 'REJECT', 'vol_regime_breakout': 'REJECT_OUTLIER_DRIVEN'} vs recomputed {'trend_pullback': 'REJECT', 'vol_regime_breakout': 'REJECT_OUTLIER_DRIVEN', 'cross_sectional_rotation': 'REJECT', 'mean_reversion_vol_liq': 'EXPERIMENT_COST_FRAGILE'}",
+      "detail": "published {'cross_sectional_rotation': 'REJECT', 'mean_reversion_vol_liq': 'EXPERIMENT_COST_FRAGILE', 'trend_pullback': 'REJECT', 'vol_regime_breakout': 'REJECT_OUTLIER_DRIVEN'} vs recomputed {'cross_sectional_rotation': 'REJECT', 'mean_reversion_vol_liq': 'EXPERIMENT_COST_FRAGILE', 'trend_pullback': 'REJECT', 'vol_regime_breakout': 'REJECT_OUTLIER_DRIVEN'}",
       "id": "V13",
       "ok": true,
       "what": "every published verdict is re-derived from the matrix and the frozen thresholds"
@@ -150,7 +162,7 @@
       "what": "the accounting identities hold in every book"
     },
     {
-      "detail": "4 (symbol, opened_at) group(s) shared by more than one position; identities remain distinct",
+      "detail": "no two positions shared an opened_at instant in this run",
       "id": "V24",
       "ok": true,
       "what": "positions that share a wall-clock instant still have distinct identities"
@@ -162,7 +174,7 @@
       "what": "rejected families were refused, not traded, and no signal was forced"
     },
     {
-      "detail": "14 simulated orders, none sent",
+      "detail": "28 simulated orders, none sent",
       "id": "V26",
       "ok": true,
       "what": "no exchange order was sent and the risk limits were not changed"
@@ -206,8 +218,8 @@
   ],
   "counts": {
     "failed": 0,
-    "passed": 32,
-    "total": 32
+    "passed": 34,
+    "total": 34
   },
   "schema_version": "EDGE15_INDEPENDENT_VERIFICATION_V1",
   "verdict": "VERIFIED",

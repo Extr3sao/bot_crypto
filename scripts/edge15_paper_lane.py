@@ -70,6 +70,40 @@ UNIVERSE: tuple[tuple[str, str, Path], ...] = (
 )
 
 
+#: Where the frozen protocol's capture writes the bars nobody had seen.
+PROSPECTIVE_SLICE = OUT / "scratch" / "OOS_PROSPECTIVE_1H.jsonl"
+
+
+def prospective_bars(symbol: str) -> list[Bar]:
+    """Bars the holdout capture produced, read from the slice it recorded.
+
+    These are the only bars in this lane that no decision in the package had
+    seen: the replay window ends before them. The lane does not fit anything to
+    them, it just receives them, which is what makes ``PROSPECTIVE`` mean
+    something in a cycle record.
+    """
+    if not PROSPECTIVE_SLICE.is_file():
+        return []
+    bars: list[Bar] = []
+    for line in PROSPECTIVE_SLICE.read_text(encoding="utf-8").splitlines():
+        if not line.strip():
+            continue
+        row = json.loads(line)
+        if str(row["symbol"]) != symbol:
+            continue
+        bars.append(
+            Bar(
+                ts_ms=int(row["timestamp"]),
+                open=float(row["open"]),
+                high=float(row["high"]),
+                low=float(row["low"]),
+                close=float(row["close"]),
+                volume=float(row["volume"]),
+            )
+        )
+    return sorted(bars, key=lambda bar: bar.ts_ms)
+
+
 def load_risk_config() -> dict[str, Any]:
     payload = yaml.safe_load(RISK_CONFIG.read_text(encoding="utf-8"))
     return dict(payload["risk"])
@@ -122,11 +156,15 @@ def run_symbol(
     # One book per symbol: a shared book id would mint the same identifiers in
     # three books, which is the collision class P0.3 exists to remove.
     book_id = f"{BOOK_ID}-{symbol.replace('/', '')}"
+    # The broker's clock is the bar being replayed, not this host's wall clock:
+    # a replay whose evidence changes every time it runs cannot be hashed.
+    current_ts = [bars[0].ts_ms if bars else 0]
     broker = PaperBroker(
         equity=equity,
         slippage_bps=slippage_bps,
         commission_bps=commission_bps,
         book_id=book_id,
+        clock=lambda: current_ts[0] / 1000.0,
     )
     notional = min(
         float(risk["max_order_notional_usdt"]),
@@ -158,7 +196,14 @@ def run_symbol(
     peak_equity = equity
     kill_switch = False
 
+    previous_ts: int | None = None
+    gap_bridge_cycles = 0
     for bar in bars:
+        current_ts[0] = bar.ts_ms
+        # A series that jumps is not a series: the families read their filters off
+        # consecutive bars, so a bridged gap is warmup, not tradeable information.
+        bridged = previous_ts is not None and bar.ts_ms - previous_ts > 1.5 * 3_600_000
+        previous_ts = bar.ts_ms
         day = datetime.fromtimestamp(bar.ts_ms / 1000, tz=UTC).strftime("%Y-%m-%d")
         if day != current_day:
             current_day = day
@@ -213,6 +258,17 @@ def run_symbol(
                 },
                 "equity": broker.equity,
             }
+            if bridged:
+                gap_bridge_cycles += 1
+                base.update(
+                    {
+                        "action": "NO_TRADE",
+                        "reason": "GAP_BRIDGE_WARMUP",
+                        "risk": "not evaluated: the series jumps into this bar",
+                    }
+                )
+                events.append(base)
+                continue
             if verdict.startswith("REJECT"):
                 base.update(
                     {
@@ -304,6 +360,11 @@ def run_symbol(
             events.append(base)
 
     marks = {symbol: bars[-1].close}
+    prospective_seen = (
+        sum(1 for bar in bars if freeze_ms is not None and bar.ts_ms > freeze_ms)
+        if freeze_ms is not None
+        else 0
+    )
     snapshot = broker.accounting_snapshot(marks)
     gaps = sum(
         1 for previous, current in pairwise(bars) if current.ts_ms - previous.ts_ms != 3_600_000
@@ -318,6 +379,8 @@ def run_symbol(
         "commission_bps": commission_bps,
         "slippage_bps": slippage_bps,
         "bars": len(bars),
+        "prospective_bars_seen": prospective_seen,
+        "gap_bridge_cycles": gap_bridge_cycles,
         "window_first_ms": bars[0].ts_ms if bars else None,
         "window_last_ms": bars[-1].ts_ms if bars else None,
         "gaps_in_window": gaps,
@@ -328,6 +391,14 @@ def run_symbol(
 def main() -> int:
     parser = argparse.ArgumentParser(description="WP-EDGE-015 experimental paper lane")
     parser.add_argument("--out", default=str(LANE_DIR))
+    parser.add_argument(
+        "--extend-prospective",
+        action="store_true",
+        help=(
+            "append the captured post-freeze bars to each series, so the lane actually "
+            "meets new data; off by default so the published replay stays byte-stable"
+        ),
+    )
     args = parser.parse_args()
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
@@ -338,9 +409,14 @@ def main() -> int:
     freeze_ms = prospective_freeze_ms()
 
     results = []
+    appended: dict[str, int] = {}
     for symbol, _slug, path in UNIVERSE:
         bars = load_ohlcv(path)
         window = bars[-WINDOW_BARS:]
+        if args.extend_prospective:
+            fresh = [bar for bar in prospective_bars(symbol) if bar.ts_ms > window[-1].ts_ms]
+            appended[symbol] = len(fresh)
+            window = [*window, *fresh]
         results.append(
             run_symbol(
                 symbol,
@@ -413,6 +489,23 @@ def main() -> int:
             ),
             "prospective_cycles": sum(1 for e in all_events if e["class"] == "PROSPECTIVE"),
             "descriptive_cycles": sum(1 for e in all_events if e["class"] == "DESCRIPTIVE"),
+            "prospective_bars_scanned": sum(r["prospective_bars_seen"] for r in results),
+            "bars_scanned": sum(r["bars"] for r in results),
+            "gap_bridge_cycles": sum(r["gap_bridge_cycles"] for r in results),
+            "no_cycle_on_a_prospective_bar": (
+                sum(r["prospective_bars_seen"] for r in results) > 0
+                and not any(e["class"] == "PROSPECTIVE" for e in all_events)
+            ),
+            "gap_bridge_rule": (
+                "a bar reached across a jump longer than 1.5 hours cannot trade: any proposal "
+                "there is recorded as NO_TRADE/GAP_BRIDGE_WARMUP, because the families read "
+                "their filters off consecutive bars"
+            ),
+            "reading": (
+                "a bar can be scanned without producing a cycle: the lane records decisions, "
+                "not ticks, so a prospective bar where no family has anything to do is "
+                "evidence of restraint rather than of a missing fill"
+            ),
         },
         "risk_policy": {
             "source": str(RISK_CONFIG.relative_to(REPO)),
@@ -435,12 +528,29 @@ def main() -> int:
         },
         "cycles": {"total": len(all_events), "by_action": by_action},
         "orders": {
-            "simulated_orders": by_action.get("FILL_OPENED", 0) + by_action.get("SIGNAL_EXIT", 0),
+            "simulated_orders": (
+                by_action.get("FILL_OPENED", 0)
+                + by_action.get("SIGNAL_EXIT", 0)
+                + by_action.get("PROTECTIVE_EXIT", 0)
+            ),
+            "simulated_entries": by_action.get("FILL_OPENED", 0),
+            "simulated_exits": by_action.get("SIGNAL_EXIT", 0)
+            + by_action.get("PROTECTIVE_EXIT", 0),
             "exchange_orders": 0,
             "order_sent": False,
         },
         "positions_and_pnl": {
             "closed_trades": len(all_trades),
+            "net_pnl_by_class_usdt": {
+                cls: round(
+                    sum(float(e.get("net_pnl", 0.0)) for e in all_events if e["class"] == cls), 6
+                )
+                for cls in ("DESCRIPTIVE", "PROSPECTIVE")
+            },
+            "closed_trades_by_class": {
+                cls: sum(1 for e in all_events if e["class"] == cls and "net_pnl" in e)
+                for cls in ("DESCRIPTIVE", "PROSPECTIVE")
+            },
             "per_family": per_family,
             "realised_pnl_usdt": realised_total,
             "unrealised_pnl_usdt": unrealised_total,
@@ -456,6 +566,13 @@ def main() -> int:
         },
         "data_coverage": {
             "window_bars_per_symbol": WINDOW_BARS,
+            "extended_with_prospective_slice": {
+                "requested": bool(args.extend_prospective),
+                "slice": PROSPECTIVE_SLICE.relative_to(REPO).as_posix(),
+                "slice_sha256": sha256(PROSPECTIVE_SLICE),
+                "bars_appended_per_symbol": appended,
+                "rule": "bars whose open is after the last replayed bar and after the freeze",
+            },
             "symbols": {
                 result["symbol"]: {
                     "bars": result["bars"],

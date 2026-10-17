@@ -1,12 +1,14 @@
 {
+  "artifact_hash_reading": "digests of the files as committed; the lane's trade file is byte-stable across runs because the broker takes the replay's clock, the verification report is byte-stable because its detail strings are ordered, and the paper report carries its own generation instant by design",
   "artifacts": {
     "ALPHA_EXPERIMENT_MATRIX.csv": "e68a23875fb2073924b85920d1a70220488e148dfdbe4f3b23f95563350db140",
     "ALPHA_RESULTS.json": "5430ff5866fcf5594511f5c500cb1297c97eddd0a20aaca866492e6d4282ac26",
-    "INDEPENDENT_VERIFICATION.json": "2cae79369ca75fb25cab7abe1c93544cef406ccd4d9c530d27741a5139791a25",
-    "OOS_CAPTURE_MANIFEST_V2.json": "38c6132bbe9bf481854f85c612f4785c92e5b4fa7fe2948a5fee9fb106e89116",
+    "EXPERIMENTAL_TRADES.jsonl": "889734699a8d8af046d27ef002a70fdf79ab91a5b3d94bfa576bbf5a23bf76d9",
+    "INDEPENDENT_VERIFICATION.json": "2160e3c37877da0e8763c07279c93287c3c3b66e5a6d49934055ebc466957414",
+    "OOS_CAPTURE_MANIFEST_V2.json": "585febb8a6d9f35a467924c430c608bd88f7299342b6326ba0e26980085a9028",
     "OOS_PREREGISTRATION_V2.json": "76351aaf63a80d8608a833012ab90bd1325936a9d92ad3eab9abd1a6bfd3666e",
     "PARITY_DIVERGENCE_EXPLAINED.json": "e8506ebe12288c18bd630e2c8d777e1b5acaca789f2b0868850f6ba1c126566a",
-    "PROSPECTIVE_PAPER_REPORT.json": "51075a9daa2ca69429ae3b68566d11381426e2de6f225ba0caafe487bbcde916"
+    "PROSPECTIVE_PAPER_REPORT.json": "077986b7c4d9a8ad2447da1c01e83861e5ef4d3c00d2a4b525937ff443a4fdf1"
   },
   "builder_neq_verifier": true,
   "candidate_registration": {
@@ -42,23 +44,25 @@
     {
       "class": "PROSPECTIVE_HOLDOUT",
       "produced": false,
-      "prospective_bars": 0,
-      "state": "OOS_ACCRUING"
+      "prospective_bars": 3,
+      "reading": "bars exist and are reserved; nothing has been scored on them",
+      "state": "OOS_ACCRUING_WITH_PROSPECTIVE_BARS"
     }
   ],
   "false_success": 0,
-  "generated_at_utc": "2026-10-17T07:40:00Z",
-  "git_head": "a6943c4c4e7d4f87d0ecf076600e837a586b486e",
+  "generated_at_utc": "2026-10-17T09:05:00Z",
+  "git_head": "d45a1fa",
   "open_items": [
-    "prospective holdout accruing: 0 bars after the freeze instant",
+    "prospective holdout accruing: 3 bars captured, none scored, selection has read nothing",
     "no admitted strategy with a measured positive gross edge after costs",
     "maker family deferred until a fill/queue model exists",
-    "disk guard at INSUFFICIENT_FREE_SPACE (5.9 GiB free), not relaxed"
+    "disk guard at INSUFFICIENT_FREE_SPACE (4.17 GiB free), not relaxed"
   ],
   "order_sent": false,
   "p0_defects": {
     "p0_1_holdout_order": {
       "capture_started_unix_ns": 1792221621701637600,
+      "captured_at_utc": "2026-10-17T09:01:39Z",
       "clauses": {
         "all_prospective_bars_open_after_freeze": true,
         "commit_precedes_capture": true,
@@ -67,14 +71,17 @@
         "protocol_digest_matches": true
       },
       "commit": "b4ff58892263b44de122b8fe6b08239ffb831032",
+      "first_prospective_bar_open_utc": "2026-10-17T08:00:00Z",
       "frozen_at_utc": "2026-10-17T07:15:28Z",
       "previous_capture_is_descriptive": "DESCRIPTIVE_FOR_THESE_HYPOTHESES",
+      "prospective_bars": 3,
+      "state": "OOS_ACCRUING_WITH_PROSPECTIVE_BARS",
       "verdict": "ORDER_VERIFIED"
     },
     "p0_2_independent_verifier": {
       "imports_builder_modules": false,
-      "result": "32/32",
-      "structural_check": "V31 refuses a builder import; V32 asserts the 14R import is gone",
+      "result": "34/34",
+      "structural_check": "V31 refuses a builder import; V32 asserts the 14R import is gone; V33/V34 keep every recorded path re-readable from a clean checkout",
       "verdict": "VERIFIED",
       "verifier": "scripts/edge15_verify.py"
     },
@@ -197,7 +204,13 @@
   },
   "p3_lane": {
     "authoritative_ledger_untouched": true,
+    "bars_scanned": 6003,
     "closed_trades": 14,
+    "closed_trades_by_class": {
+      "DESCRIPTIVE": 14,
+      "PROSPECTIVE": 0
+    },
+    "commissions_usdt": 9.333240000000002,
     "cycles": {
       "by_action": {
         "FILL_OPENED": 14,
@@ -207,15 +220,34 @@
       "total": 210
     },
     "disk": {
-      "free_gib": 5.902,
+      "free_gib": 4.169,
       "ok": false,
       "reasons": [
-        "free space cannot pay for the window: 8.640 GB needed at 1.5x, 4.338 GB usable above the 2.000 GB reserve"
+        "free space cannot pay for the window: 8.640 GB needed at 1.5x, 2.477 GB usable above the 2.000 GB reserve"
       ],
       "status": "INSUFFICIENT_FREE_SPACE",
       "thresholds_changed_by_this_work_package": false
     },
+    "gross_pnl_usdt": -3.4767205863824433,
+    "net_pnl_by_class_usdt": {
+      "DESCRIPTIVE": -12.809961,
+      "PROSPECTIVE": 0
+    },
+    "per_family": {
+      "mean_reversion_vol_liq": {
+        "closed_trades": 14,
+        "fees": 9.333240000000002,
+        "gross_pnl": -3.4767205863824433,
+        "net_pnl": -12.809960586382445,
+        "wins": 5
+      }
+    },
+    "prospective_bars_scanned": 3,
+    "prospective_cycles": 0,
     "realised_pnl_usdt": -12.809960586382445,
+    "simulated_entries": 14,
+    "simulated_exits": 14,
+    "simulated_orders": 28,
     "stop_policy_interaction": "the default protective stops (0.5%/0.75%) are far tighter than the surviving family's horizon, so every lane position closed by stop before its thesis played out",
     "tag": "EXPERIMENTAL_PROSPECTIVE_PAPER"
   },
