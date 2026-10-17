@@ -17,6 +17,7 @@ import json
 import os
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 from typing import Any
 
@@ -221,16 +222,18 @@ def verify_risk_untouched() -> None:
 # ------------------------------------------------ 6. live mode stays BLOCKED
 def verify_live_is_blocked_without_a_key() -> None:
     env = {k: v for k, v in os.environ.items() if k != "VISION_API_KEY"}
+    # The blocked probe writes to a scratch directory so verifying never rewrites the
+    # committed evidence it is checking.
+    scratch = Path(tempfile.mkdtemp(prefix="aibots-live-"))
     proc = subprocess.run(
-        [sys.executable, "scripts/ai_bots_run.py", "--mode", "live", "--out",
-         str(OUT / "blocked_live")],
+        [sys.executable, "scripts/ai_bots_run.py", "--mode", "live", "--out", str(scratch)],
         cwd=REPO,
         capture_output=True,
         text=True,
         env=env,
         check=False,
     )
-    report_path = OUT / "blocked_live" / "RUN_REPORT.json"
+    report_path = scratch / "RUN_REPORT.json"
     status = load_json(report_path)["status"] if report_path.exists() else None
     check(
         "live_without_key_is_blocked",
