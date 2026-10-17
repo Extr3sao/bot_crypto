@@ -1,0 +1,40 @@
+{
+  "rfc": "RFC-TAP-AI-BOTS-002 v3",
+  "generated_at": "2026-10-18",
+  "branch": "agent/ai-vision/RFC-AI-VISION-001",
+  "head_at_start": "6f637a7",
+  "targets": {
+    "total_targets": 6,
+    "rea_executed": 1,
+    "rea_evidence_ids": 4,
+    "blocked_storage_or_surface": 4,
+    "rejected_no_license": 1
+  },
+  "rea_operations_executed": 4,
+  "rea_exit_codes": [
+    1,
+    0,
+    0,
+    0,
+    0
+  ],
+  "tests": {
+    "red_vs_head": "6 failed, 9 passed",
+    "green": "15 passed",
+    "focal_suite": "372 passed",
+    "ruff": "clean",
+    "mypy": "clean"
+  },
+  "states": {
+    "REA_FOUNDATION_READY": true,
+    "REA_TARGET_OBSERVED": [
+      "T-NF-NOF1"
+    ],
+    "UPSTREAM_RUNTIME_REPRODUCED": false,
+    "AI_BOTS_RUNTIME_TESTED": true,
+    "REAL_MODEL_CALLED": false,
+    "PROSPECTIVE_PAPER_VALIDATED": false,
+    "ADOPT_VERIFIED": [],
+    "FALSE_SUCCESS": 0
+  }
+}

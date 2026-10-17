@@ -1,0 +1,118 @@
+{
+  "checks": [
+    {
+      "name": "findings_file_exists",
+      "ok": true,
+      "detail": "reports\\ai-bots\\RFC-AI-BOTS-002\\REA_FINDINGS_V2.json"
+    },
+    {
+      "name": "dossiers_store_evidence_ids",
+      "ok": true,
+      "detail": "4 stored"
+    },
+    {
+      "name": "T-NF-NOF1_ids_are_backed_by_stored_evidence",
+      "ok": true,
+      "detail": "all ids present in dossiers"
+    },
+    {
+      "name": "every_claimed_evidence_id_is_stored",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "no_certification_without_rea_evidence",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "name": "matrix_matches_findings",
+      "ok": true,
+      "detail": "only in matrix: []; only in findings: []"
+    },
+    {
+      "name": "matrix_yes_rows_carry_a_real_id",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "name": "license_LLM_trader",
+      "ok": true,
+      "detail": "expected MIT, reported MIT"
+    },
+    {
+      "name": "license_FenixAI_tradingBot",
+      "ok": true,
+      "detail": "expected Apache-2.0, reported Apache-2.0"
+    },
+    {
+      "name": "license_nof1.ai",
+      "ok": true,
+      "detail": "expected AGPL-3.0, reported AGPL-3.0"
+    },
+    {
+      "name": "license_TradingAgents",
+      "ok": true,
+      "detail": "expected Apache-2.0, reported Apache-2.0"
+    },
+    {
+      "name": "license_AI-trading",
+      "ok": true,
+      "detail": "expected NONE (404), reported NONE (404)"
+    },
+    {
+      "name": "integrity_failure_returns_none",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "late_response_guard_present",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "comparator_emits_not_comparable",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "p0_tests_exist",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "p0_tests_target_the_lane",
+      "ok": true,
+      "detail": "the real runtime, not a fake"
+    },
+    {
+      "name": "no_evidence_id_without_execution",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "name": "no_real_model_call_claimed",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "no_adoption_certified",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "false_success_zero",
+      "ok": true,
+      "detail": ""
+    }
+  ],
+  "failures": [],
+  "passed": 21,
+  "failed": 0,
+  "evidence_ids_backed": [
+    "ev_47c01accd3491fd6e10e893f8a045e5fee226fa520f648f4460396a619efbaf1",
+    "ev_82d99570975285bde3570fb1b4002ea6b323fefed4308ce5c39ac23d0621d56c",
+    "ev_aee35b0f11df7a73b082c5cbc72e10c97f27b22917da003998d93eaa455617fc",
+    "ev_f7020db13e2de339e89e64231dd55522fe97ab8d17447644e8dfb5ef0961bb00"
+  ]
+}

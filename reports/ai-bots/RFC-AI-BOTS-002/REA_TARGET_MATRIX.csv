@@ -1,0 +1,7 @@
+TARGET_ID,SOURCE,COMMIT,LICENSE,REA_EXECUTED,REA_OPERATION,REA_EVIDENCE_ID,ARTIFACT_SHA256,COVERAGE,OBSERVED,DECISION,BLOCKED_OR_LIMIT
+T-NF-NOF1,195440/nof1.ai,5d27641 (artifact: live bundle),AGPL-3.0,YES,analyze-javascript-application; list-browser-targets; capture-web-screenshot; analyze-web-bundle,ev_aee35b0f11df7a73b082c5cbc72e10c97f27b22917da003998d93eaa455617fc,5fbc183a1c15b1ffe993669699205a944dc72237d241c7db5a55c54681ff44b9,partial,"12 chunks parsed, 15 findings, 43-script bundle, public page captured",DEFER,static only; minified identifiers; 2 heap limits; no multimodal or decision trace
+T-QR-SIGNAL,qrak/LLM_trader,65e67dc,MIT,NO,CDP on local Streamlit panel,,,,none,DEFER,Streamlit UI is framework JS; 2.9 GB free
+T-FE-FENIX,Ganador1/FenixAI_tradingBot,bd7373d,Apache-2.0,NO,CDP on local service,,,,none,DEFER,no JS/Electron surface of its own; storage
+T-TA-CRITIC,TauricResearch/TradingAgents,e8f5503,Apache-2.0,NO,HTML/web report surface,,,,none,EXPERIMENT,Python graph; HTML report proves nothing by itself
+T-FM-DEMO,FortuneMal/AI-trading,74ed1f3,NONE,NO,none,,,,none,REJECT,no license (GitHub API 404) -> NO_COPY
+T-TAP-OWN,this repository,HEAD,repo license,NO,own dashboard/UI,,,,no JS/HTML application surface,NOT_APPLICABLE_TECHNICALLY,measured: no .js/.html app files in the repo

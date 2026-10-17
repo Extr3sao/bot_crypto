@@ -1,0 +1,12 @@
+{
+  "target_id": "T-QR-SIGNAL",
+  "source": "qrak/LLM_trader",
+  "commit_pinned": "65e67dc",
+  "license": "MIT",
+  "language": "Python (Streamlit)",
+  "reported_at": "2026-10-17T22:17:33+00:00",
+  "rea_executed": false,
+  "rea_operation_that_would_apply": "inspect_web_page / capture-browser-scenario sobre panel local",
+  "blocked_reason": "la UI es Streamlit: el DOM y el JS que vería REA son del framework, no de la lógica del proyecto; capturarla probaría la existencia del panel, no su cadena de decisión. La lógica está en Python y se audita con fuente/tests, no con REA. No se clonó ni sirvió localmente el target: el disco del host está al 99 % (2,9 GB libres de 238 GB) y el RFC prohíbe relajar el guardián de almacenamiento o borrar trabajo ajeno para hacer sitio. Es un BLOCKED_STORAGE medido, no una imposibilidad técnica afirmada.",
+  "storage": "2.9 GB free (99 % used)"
+}

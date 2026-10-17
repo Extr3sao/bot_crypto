@@ -1,0 +1,31 @@
+{
+  "target_id": "T-NF-NOF1",
+  "source": "195440/nof1.ai",
+  "upstream_commit_pinned_for_rfc": "5d27641",
+  "artifact": "public production JavaScript bundles served by https://nof1.ai/ (12 chunks)",
+  "artifact_kind": "compiled Next.js/Turbopack chunks (not the TS source tree)",
+  "artifact_sha256": "5fbc183a1c15b1ffe993669699205a944dc72237d241c7db5a55c54681ff44b9",
+  "artifact_sha256_method": "REA subject digest over the directory (12 files)",
+  "license": "AGPL-3.0",
+  "license_verified": "GitHub license API, HTTP 200, spdx_id=AGPL-3.0, 2026-10-18",
+  "language": "JavaScript (minified) / TypeScript source not fetched",
+  "host": "win32 x64, Node 22.20.0, Chrome 155.0.8059.40",
+  "rea_version": "6.4.0",
+  "fetched_at": "2026-10-17T22:17:33+00:00",
+  "files": {
+    "01dq_cdq0lujl.js": "e197c6f29e2f095ff4297036ac050deea53fd0abd972d03cfbf10dda3317d2cd",
+    "05g8vf69qxlul.js": "c2da9c3d9bc9948f00a8921c598ddd0af63a7c65869608827d45566ea3d74e72",
+    "0cz1d0mv5g_q7.js": "0973c1d64c88adc8e3c950410cb58b288f72118d5965b78049438deb8f2f9683",
+    "0gvneg1-scdrw.js": "fe3a8eec9144bc31bdd60c62ddd5345a9470e2eecbfc856b0ebab9492be9fd02",
+    "0qy_ydlr56154.js": "6ea336c95833b423c848149ae92922653adcd9b8af222a40fdb6431199b83d3d",
+    "1ht6x9rgxdzh-.js": "0d40a24d49c55d6e4ccae0c8966c32aecbb1f54586499b57536d2a6c0bc5ee0d",
+    "1ktnajvnydr6e.js": "fe9ae6fdddf18a8ab3fe8014bd07eb9b9dad183880d2487d50ebbc3f4ef07b88",
+    "2-93uiwpd3jjk.js": "83ba53a29f62cb670167d4abdd7917e603dee9b2db18f351491ccf6cd611e78c",
+    "2jyhu63pmvb8s.js": "de119a81164c6b46321598396f2338f1ad52c29322299c3abb498977daeaedad",
+    "3nfc0soddk6qg.js": "a4e58aba42dabf9435715f38962e7a2e5e90e0b5ecb0ba91709414220cfa6e5a",
+    "43txx5b5jj9oc.js": "3145cc5fee4a446063212fafd900a9fc97501ef73437cae44ddb3670bea74256",
+    "turbopack-1187cljhgen5m.js": "9338ac98ee13bc98f520ed4e2934fb6e1a2e8c53a0ddc8ff2f7b6c0955b109b4"
+  },
+  "disk_free_gb": 2.9,
+  "note": "Analysed the compiled artifact the public site actually ships, not a laboratory build. That is enough for structure and honest limits, and it is NOT enough to claim runtime behaviour: REA never executes the JavaScript it parses."
+}

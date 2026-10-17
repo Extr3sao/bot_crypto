@@ -1,0 +1,12 @@
+{
+  "target_id": "T-FE-FENIX",
+  "source": "Ganador1/FenixAI_tradingBot",
+  "commit_pinned": "bd7373d",
+  "license": "Apache-2.0",
+  "language": "Python",
+  "reported_at": "2026-10-17T22:17:33+00:00",
+  "rea_executed": false,
+  "rea_operation_that_would_apply": "capture de UI/servicio local si existiera",
+  "blocked_reason": "proyecto Python sin superficie JS/Electron propia identificada; la captura de Chart (Playwright) es del target *externo* TradingView, no del proyecto. No se clonó ni sirvió localmente el target: el disco del host está al 99 % (2,9 GB libres de 238 GB) y el RFC prohíbe relajar el guardián de almacenamiento o borrar trabajo ajeno para hacer sitio. Es un BLOCKED_STORAGE medido, no una imposibilidad técnica afirmada.",
+  "storage": "2.9 GB free (99 % used)"
+}

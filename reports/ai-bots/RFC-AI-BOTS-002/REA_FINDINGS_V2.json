@@ -1,0 +1,156 @@
+{
+  "rfc": "RFC-TAP-AI-BOTS-002 v3 REA-FIRST",
+  "generated_at": "2026-10-17T22:18:46+00:00",
+  "rea": {
+    "version": "6.4.0",
+    "node": "22.20.0",
+    "doctor_exit": 1,
+    "doctor_meaning": "global environment not healthy (native engines + config drift); does not disable JS/CDP operations, which were executed",
+    "capabilities_snapshot": "reports/ai-bots/rea/raw/capabilities.json"
+  },
+  "targets": [
+    {
+      "target_id": "T-NF-NOF1",
+      "rea_executed": true,
+      "evidence_ids": [
+        "ev_aee35b0f11df7a73b082c5cbc72e10c97f27b22917da003998d93eaa455617fc",
+        "ev_f7020db13e2de339e89e64231dd55522fe97ab8d17447644e8dfb5ef0961bb00",
+        "ev_47c01accd3491fd6e10e893f8a045e5fee226fa520f648f4460396a619efbaf1",
+        "ev_82d99570975285bde3570fb1b4002ea6b323fefed4308ce5c39ac23d0621d56c"
+      ],
+      "operation": [
+        "analyze_javascript_application",
+        "list_browser_targets",
+        "capture_web_screenshot",
+        "analyze_web_bundle"
+      ],
+      "artifact_sha256": "5fbc183a1c15b1ffe993669699205a944dc72237d241c7db5a55c54681ff44b9",
+      "statistics": {
+        "relevant_files": 12,
+        "nested_asar_containers": 0,
+        "text_bytes_read": 763875,
+        "invalid_utf8_files": 0,
+        "parsed_javascript_files": 12,
+        "visited_ast_nodes": 231769,
+        "findings": 15,
+        "modules": 0,
+        "parse_failures": 0
+      },
+      "coverage": {
+        "status": "partial",
+        "truncated": true,
+        "limits": [
+          {
+            "name": "javascript_analysis_parent_result_budget_bytes",
+            "value": 1997010848,
+            "unit": "bytes"
+          },
+          {
+            "name": "javascript_analysis_worker_heap_limit_bytes",
+            "value": 1098907648,
+            "unit": "bytes"
+          },
+          {
+            "name": "javascript_analysis_worker_timeout_ms",
+            "value": 120000,
+            "unit": "milliseconds"
+          }
+        ],
+        "raw_bytes": 731215
+      },
+      "limitations": [
+        "0cz1d0mv5g_q7.js: Resource constraint during analyze_javascript_application: Semantic graph for 0cz1d0mv5g_q7.js exceeds the parent's remaining result budget; static and module facts were retained",
+        "0gvneg1-scdrw.js: Resource constraint during analyze_javascript_application: Semantic graph for 0gvneg1-scdrw.js exceeds the parent's remaining result budget; static and module facts were retained",
+        "1ht6x9rgxdzh-.js: Resource constraint during analyze_javascript_application: Owned JavaScript worker exhausted its heap while analyzing 1ht6x9rgxdzh-.js during semantic",
+        "2-93uiwpd3jjk.js: Resource constraint during analyze_javascript_application: Owned JavaScript worker exhausted its heap while analyzing 2-93uiwpd3jjk.js during semantic",
+        "2jyhu63pmvb8s.js: Resource constraint during analyze_javascript_application: Semantic graph for 2jyhu63pmvb8s.js exceeds the parent's remaining result budget; static and module facts were retained",
+        "3nfc0soddk6qg.js: Resource constraint during analyze_javascript_application: Semantic graph for 3nfc0soddk6qg.js exceeds the parent's remaining result budget; static and module facts were retained",
+        "CommonJS and ESM binding relationships were recovered from inert syntax and resolved only within the inventoried artifact container.",
+        "Graph coverage is incomplete; unavailable facts remain explicit and must not be read as absence.",
+        "JavaScript and HTML were parsed as inert text; bundle bootstrap code was never executed.",
+        "Static imports, entrypoints, workers, endpoints, and storage relationships do not prove runtime execution.",
+        "Static paths and relationships may remain unresolved when expressions are dynamic or obfuscated.",
+        "Webpack/Rspack factories were recovered from AST literals; REA did not invoke push handlers or bundle bootstrap code."
+      ],
+      "decision": "DEFER"
+    },
+    {
+      "target_id": "T-QR-SIGNAL",
+      "rea_executed": false,
+      "evidence_ids": [],
+      "decision": "DEFER"
+    },
+    {
+      "target_id": "T-FE-FENIX",
+      "rea_executed": false,
+      "evidence_ids": [],
+      "decision": "DEFER"
+    },
+    {
+      "target_id": "T-TA-CRITIC",
+      "rea_executed": false,
+      "evidence_ids": [],
+      "decision": "EXPERIMENT"
+    },
+    {
+      "target_id": "T-FM-DEMO",
+      "rea_executed": false,
+      "evidence_ids": [],
+      "decision": "REJECT"
+    },
+    {
+      "target_id": "T-TAP-OWN",
+      "rea_executed": false,
+      "evidence_ids": [],
+      "decision": "NOT_APPLICABLE_TECHNICALLY"
+    }
+  ],
+  "licenses_verified": {
+    "qrak/LLM_trader": "MIT",
+    "Ganador1/FenixAI_tradingBot": "Apache-2.0",
+    "195440/nof1.ai": "AGPL-3.0",
+    "TauricResearch/TradingAgents": "Apache-2.0",
+    "FortuneMal/AI-trading": "NONE (404)"
+  },
+  "corrections_to_previous_audit": [
+    "FenixAI is Apache-2.0, not MIT (GitHub license API, spdx_id=Apache-2.0).",
+    "AGPL-3.0 does not forbid downloading, running or studying nof1.ai; it constrains copying, modification and redistribution. This session analysed the public bundle and copied no code.",
+    "A failing global doctor does not imply that analyze-javascript-application or CDP capture are unavailable: all four operations ran with exit 0 on this host.",
+    "El verificador independiente rechazo dos incoherencias del propio informe antes de publicarse: la cadena de licencia de FortuneMal y una afirmacion de estado que faltaba (REAL_MODEL_CALLED). Ambas se corrigieron; el verificador las detecto."
+  ],
+  "internal_p0": {
+    "image_integrity_fail_closed": {
+      "status": "FIXED",
+      "file": "src/trading_bot/vision/lane.py",
+      "test": "tests/unit/vision/test_integrity_and_latency.py::test_a_mismatched_image_hash_aborts_the_decision_and_every_fill",
+      "red": "6 failed against HEAD before the patch (recorded in this session)",
+      "green": "15 passed"
+    },
+    "comparator_not_comparable": {
+      "status": "FIXED",
+      "file": "src/trading_bot/vision/compare.py",
+      "test": "tests/unit/vision/test_compare.py::test_a_cadence_difference_is_not_comparable_without_being_told",
+      "behaviour": "a mismatch in declared or stated inputs makes the verdict NOT_COMPARABLE; the arithmetic is reported but cannot name a winner"
+    },
+    "late_response_cannot_fill": {
+      "status": "FIXED",
+      "file": "src/trading_bot/vision/lane.py",
+      "test": "tests/unit/vision/test_integrity_and_latency.py::test_an_answer_that_arrives_after_the_fill_bar_opened_is_dropped"
+    },
+    "defensive_blocks_and_week_roll": {
+      "status": "VERIFIED_EXISTING",
+      "evidence": "src/trading_bot/paper/paper_cycle.py::_defensive_verdict fails closed on missing conditions; RiskManager.check_signal calls roll_week() on every decision; tests/unit/risk/test_edge17_defensive_blocks.py covers the blocks"
+    }
+  },
+  "states": {
+    "REA_FOUNDATION_READY": true,
+    "TARGET_REA_AUDITED": [
+      "T-NF-NOF1"
+    ],
+    "REAL_MODEL_CALL_BLOCKED": true,
+    "EXTERNAL_PATTERN_ADOPTION_VERIFIED": false,
+    "FALSE_SUCCESS": 0,
+    "REAL_MODEL_CALLED": false,
+    "REAL_MODEL_CALLS_MADE": 0
+  }
+}
