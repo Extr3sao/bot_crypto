@@ -195,3 +195,39 @@ cd "$(git rev-parse --show-toplevel)" && ./.venv/Scripts/python -m pytest tests/
 - **Nunca** mover un elemento de §4 a §0/§2 sin evidencia ejecutada (log, artefacto, exit code).
 - `reports/economic-recovery/*` está en `.gitignore`: la evidencia nueva se añade con `git add -f`,
   sólo la propia del bloque.
+
+## RFC-TAP-AI-BOTS-002 v3 (REA-FIRST) — sesión 2026-10-18T00:20Z (rama `agent/ai-vision/RFC-AI-VISION-001`)
+
+**Objetivo**: cerrar los P0 propios que podían producir una operación falsa y obtener
+evidencia REA **real** de al menos un target externo. `HEAD` al empezar: `6f637a7`
+(comprobarlo con `git log --oneline -1`, no leyéndolo aquí). No se tocó `config/risk.yaml`
+ni EDGE-017F.
+
+| bloque | estado | evidencia |
+| --- | --- | --- |
+| REA sobre target real | **ejecutado** | 4 operaciones, exit 0: `analyze-javascript-application` (bundle público de nof1.ai, `ev_aee35b0f…`), `list-browser-targets` (`ev_f7020db1…`), `capture-web-screenshot` (`ev_47c01acc…`), `analyze-web-bundle` (`ev_82d99570…`) |
+| P0 hash de imagen | **cerrado** | `INTEGRITY_FAILURE` ⇒ `return None`: 0 decisiones, 0 fills. Test nuevo sobre `VisionLane` |
+| P0 latencia | **cerrado** | `LATE_RESPONSE` al ejecutar: una respuesta posterior a la apertura de la barra no rellena. Test nuevo (control con latencia 0 sí opera) |
+| P0 comparador | **cerrado** | `NOT_COMPARABLE` como veredicto si cambian cadencia/insumos; la aritmética se reporta aparte |
+| Defensas + `roll_week` | **verificado existente** | `paper_cycle._defensive_verdict` falla cerrado; `RiskManager.check_signal` llama `roll_week()`; `tests/unit/risk/test_edge17_defensive_blocks.py` |
+| Targets restantes | **BLOCKED medido** | disco 2,9 GB libres (99 % usado); Streamlit/Python sin superficie JS propia; FortuneMal sin licencia (API 404) |
+| Llamada multimodal real | **BLOCKED** | sin credencial ni autorización de gasto: cero llamadas, `REAL_MODEL_CALLED=false` |
+| Adopción externa | **not certified** | sólo nof1 tiene evidencia y no alcanza la cadena gráfico→modelo→decisión: `DEFER` |
+
+**Medición de tests**: contra `HEAD` antes del arreglo **6 failed / 9 passed**; después
+**15 passed**; suites focalizadas (`vision`, `intelligence`, `paper`, `risk`) **372 passed**;
+`ruff` y `mypy` limpios. Verificador independiente propio:
+`scripts/ai_bots_rea_verify.py` → **21 PASS / 0 FAIL** (rechazó dos incoherencias del informe
+antes de publicarse: la cadena de licencia de FortuneMal y una afirmación de estado ausente).
+
+**Comandos de reanudación**:
+
+```
+.venv/Scripts/python.exe scripts/ai_bots_rea_verify.py          # 21 PASS / 0 FAIL esperado
+.venv/Scripts/python.exe -m pytest tests/unit/vision -q         # tests del lane y del comparador
+npx -y rea-agents@6.4.0 analyze-javascript-application <ruta> --format json --fetch-source-maps
+```
+
+**Pendiente real y siguiente paso con valor**: ampliar el análisis de nof1 con
+`--fetch-source-maps` (nombres legibles) o conseguir un artefacto local autorizado de un
+target Python y observar su ciclo con REA CDP; ambos necesitan espacio en disco.
