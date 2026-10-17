@@ -34,3 +34,9 @@ reports/edge-recovery/WP-EDGE-09/** -text
 # published beside it in RUNNER_PREFLIGHT.json is a digest of these bytes, so normalising
 # them on the way in or out would make the recorded hash name a document nobody has.
 reports/edge-recovery/WP-EDGE-12/evidence/PROPOSED_DEFINITION.xml -text
+
+# The prospective holdout slices are digest-pinned: the capture manifest records the
+# sha256 of the bytes the collector wrote, and a checkout that rewrites their line
+# endings (core.autocrlf=true on this host did exactly that) makes the digest name a
+# file nobody has.  Same reason as the digest-pinned trees above, same treatment.
+reports/economic-recovery/RFC-EDGE-01*/scratch/*.jsonl -text
