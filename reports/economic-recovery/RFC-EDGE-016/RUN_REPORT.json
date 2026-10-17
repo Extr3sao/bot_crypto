@@ -1,0 +1,404 @@
+{
+  "adversarial": {
+    "caught": 21,
+    "scenarios": 21,
+    "verdict": "CAUGHT_EVERY_SCENARIO"
+  },
+  "answers": {
+    "blockers": [
+      "the disk guard reports INSUFFICIENT_FREE_SPACE for the declared collection window: no new collector is started",
+      "a scheduled collector needs a governance decision and free space before it exists",
+      "7/7 trading conflicts with blocks.weekend_trading=false and needs an ADR",
+      "5 policy fields are declared in config/risk.yaml and read by no runtime component",
+      "the prospective sample is empty, so no strategy can be adopted on it"
+    ],
+    "canonical_risk": {
+      "declared_but_not_enforced_in_the_runtime": [
+        "blocks.excessive_spread_bps",
+        "blocks.extreme_atr_pct",
+        "blocks.high_latency_ms",
+        "blocks.weekend_trading",
+        "live_trading_enabled"
+      ],
+      "entry_gate": "RiskManager.check_signal",
+      "manual_checks_left_in_the_lane": [],
+      "single_portfolio": "EDGE16LANE"
+    },
+    "economics": {
+      "adverse_multiplier": [],
+      "current_runtime": {
+        "admitted_strategies": [],
+        "equity_end_usdt": 10000.0,
+        "net_usdt": 0.0,
+        "trades": 0
+      },
+      "families": [
+        {
+          "cost_bps_max": 28.96,
+          "cost_bps_min": 23.3536,
+          "family": "mean_reversion_vol_liq",
+          "net_bps_1x": -7225.98,
+          "net_bps_2x": -34509.93,
+          "net_bps_3x": -61793.87,
+          "net_usdt_1x": -240.86,
+          "net_usdt_2x": -1150.32,
+          "net_usdt_3x": -2059.78,
+          "symbols": 9,
+          "trades": 947
+        },
+        {
+          "cost_bps_max": 28.96,
+          "cost_bps_min": 23.3536,
+          "family": "trend_pullback",
+          "net_bps_1x": -58645.78,
+          "net_bps_2x": -83253.7,
+          "net_bps_3x": -107861.61,
+          "net_usdt_1x": -1954.84,
+          "net_usdt_2x": -2775.1,
+          "net_usdt_3x": -3595.35,
+          "symbols": 9,
+          "trades": 860
+        },
+        {
+          "cost_bps_max": 28.96,
+          "cost_bps_min": 23.3536,
+          "family": "vol_regime_breakout",
+          "net_bps_1x": -5612.34,
+          "net_bps_2x": -12549.95,
+          "net_bps_3x": -19487.57,
+          "net_usdt_1x": -187.08,
+          "net_usdt_2x": -418.33,
+          "net_usdt_3x": -649.58,
+          "symbols": 9,
+          "trades": 242
+        }
+      ],
+      "verdict": "NO_RESTATED_EDGE_SURVIVES"
+    },
+    "fills_and_trades": {
+      "experimental_paper_lane": {
+        "caveat": "frictionless book; the same fills are re-priced in costs.net_of_cost",
+        "file": "reports/economic-recovery/RFC-EDGE-016/experimental_paper/CANONICAL_TRADES.jsonl",
+        "fills": 146,
+        "net_usdt_pre_cost": -53.38452708701357,
+        "trades": 146
+      },
+      "genuine_prospective_paper": {
+        "fills": 0,
+        "proof": "reports/economic-recovery/RFC-EDGE-016/CAPTURE_CONTINUITY.json",
+        "trades": 0
+      },
+      "historical_replay_015": {
+        "caveat": "HISTORICAL_DESCRIPTIVE_PRE_PIT_FIX: every exit filled at its own signal bar",
+        "fees_usdt": 9.33324,
+        "file": "reports/economic-recovery/RFC-EDGE-015/experimental_paper/EXPERIMENTAL_TRADES.jsonl",
+        "gross_usdt": -3.476721,
+        "net_usdt": -12.809961,
+        "trades": 14
+      },
+      "live": {
+        "fills": 0,
+        "proof": "no live path is enabled and no exchange client is used by this package",
+        "trades": 0
+      },
+      "restated_research": {
+        "caveat": "a research restatement, not an execution",
+        "file": "reports/economic-recovery/RFC-EDGE-016/ALPHA_RESTATEMENT_TRADES.jsonl",
+        "trades": 2049
+      }
+    },
+    "pit_result": {
+      "post_pit_violations": 0,
+      "pre_pit_exits_exploiting_their_own_signal_bar": 7081,
+      "reading": "no part of the historical alpha is admissible until the restated numbers are used",
+      "survivors": []
+    },
+    "prospective": {
+      "coverage_ratio": 0.5,
+      "disk": "CAPTURE_BLOCKED_DISK",
+      "evaluated": 3,
+      "fills": 0,
+      "observed": 3,
+      "scheduler": "DO_NOT_CREATE_A_SCHEDULER"
+    }
+  },
+  "code": [
+    {
+      "path": "scripts/edge16_paper_lane.py",
+      "sha256": "0689e8bc4479d3debb9876ec8cc14ee4e86290b12794ed027e345eb7374d9b56",
+      "tracked": true
+    },
+    {
+      "path": "scripts/edge16_artifacts.py",
+      "sha256": "14e9e9eaaa1bd1bb5892b2a0d50bf9967af50e54d0d190a069be8edac3e15c31",
+      "tracked": true
+    },
+    {
+      "path": "scripts/edge16_capture.py",
+      "sha256": "535adf0eb6f6f67eedd22c55dfbe55745445b33b78611ec3d5e085d5eef71030",
+      "tracked": true
+    },
+    {
+      "path": "scripts/edge16_adversarial.py",
+      "sha256": "c5bc044a6bcbc7c19e0ade171a9e7373d5ffd9b2de0bbec07797940601956fea",
+      "tracked": true
+    },
+    {
+      "path": "scripts/edge16_verify.py",
+      "sha256": "5d6b6aabaf4a949c7d20fe73aa211b1836c82f9f8172ccc729d31afa7eb105ad",
+      "tracked": true
+    },
+    {
+      "path": "scripts/edge16_reports.py",
+      "sha256": "08a15f13382f9e1671d29b3394a3503197ca539b07fad0f2a25c20bd94dcdf50",
+      "tracked": true
+    },
+    {
+      "path": "src/trading_bot/research/economic_recovery/pit15.py",
+      "sha256": "dd6c7882c3074402879ce4651d096c176dfce1dc01b46bfed0f0037be210dcd6",
+      "tracked": true
+    },
+    {
+      "path": "src/trading_bot/research/economic_recovery/causality.py",
+      "sha256": "7910f7dc7e04e5d229d8e9e2059e2cd609bd3443b85c72a6534cc2c5804ede38",
+      "tracked": true
+    },
+    {
+      "path": "tests/unit/research/test_edge16_pit.py",
+      "sha256": "afb340033c18e56761f923bbe5f6e2a2ef6ba0be51b2a25cec161378650a11d9",
+      "tracked": true
+    },
+    {
+      "path": "tests/unit/research/test_edge16_causality.py",
+      "sha256": "7e01debda06cd82ca5fb73b350bc4b759fa85b3930c1c3da97ba1606ef60c1be",
+      "tracked": true
+    }
+  ],
+  "evidence_index": [
+    {
+      "artifact": "BASELINE.json",
+      "bytes": 2129,
+      "exists": true,
+      "sha256": "739d976f0510bc6364ac2d2ce106ac19112144f5a9b62a451055bf8e2e5cb290"
+    },
+    {
+      "artifact": "PIT_DEFECT_MAP.json",
+      "bytes": 12679,
+      "exists": true,
+      "sha256": "6156d29203918bb88eef6f0d73194528b620f73c71130dc2d818025dc4c43acd"
+    },
+    {
+      "artifact": "PIT_DEFECT_MAP.md",
+      "bytes": 4132,
+      "exists": true,
+      "sha256": "9881b8daa6f39409adf1ca4b9dd6b487e2bab8c5282513d62b929c60cac7eeb9"
+    },
+    {
+      "artifact": "PIT_RECONCILIATION.md",
+      "bytes": 4368,
+      "exists": true,
+      "sha256": "bf7142cd7e137332e4ad1116a73b5480aea6e01fbb7c6d431c31c41a90fe73cc"
+    },
+    {
+      "artifact": "RISK_PARITY_MATRIX.json",
+      "bytes": 11371,
+      "exists": true,
+      "sha256": "0eeeb9638bbef915e417dd70dc174e56e202fa9ad34dd8786686a08df07729b0"
+    },
+    {
+      "artifact": "PORTFOLIO_ACCOUNTING.json",
+      "bytes": 1320,
+      "exists": true,
+      "sha256": "d2369150ee555ea08b1c813e35ab20d1509c64512565078d5f65ecba49cb4f4f"
+    },
+    {
+      "artifact": "WEEKEND_POLICY.json",
+      "bytes": 956,
+      "exists": true,
+      "sha256": "6032e0af8fa2bcd5b9ae2fab0cb348fb657ceca5b7dff4ed586053c2feb87692"
+    },
+    {
+      "artifact": "WEEKEND_POLICY_CONFLICT.md",
+      "bytes": 1340,
+      "exists": true,
+      "sha256": "795b3b693fa65557bd180ea0596352a42e0ccab802bdfa2c5df759280e0cbef1"
+    },
+    {
+      "artifact": "ALPHA_RESTATEMENT_TRADES.jsonl",
+      "bytes": 993785,
+      "exists": true,
+      "sha256": "f2c0a1c97f3ce1b087cd25db03a97c182ba8250abf8127bbbfcf33f3884507bc"
+    },
+    {
+      "artifact": "ECONOMIC_RESTATEMENT.csv",
+      "bytes": 10204,
+      "exists": true,
+      "sha256": "ea802c09e7df9dc0b2bdb9edba752880705e15afe78dccbb7fa1f97ccc479744"
+    },
+    {
+      "artifact": "CURRENT_VS_PROPOSED.json",
+      "bytes": 5510,
+      "exists": true,
+      "sha256": "ea12db85f05b0ba8667cee872a9a84cc6593475fa6b5062061147b6c9f02c387"
+    },
+    {
+      "artifact": "CAUSALITY_ADVERSARIAL.json",
+      "bytes": 12707,
+      "exists": true,
+      "sha256": "6535a4f279aba4feacdfc9eb4938349b390e9b4059cd7eab3985f7d92dd2d79e"
+    },
+    {
+      "artifact": "CAPACITY_PREFLIGHT.json",
+      "bytes": 718,
+      "exists": true,
+      "sha256": "098379da559c5703dbea912ef721638f1861150ce81f8ea3ab6b0c3e481010f6"
+    },
+    {
+      "artifact": "CAPTURE_CONTINUITY.json",
+      "bytes": 3265,
+      "exists": true,
+      "sha256": "1efe00b11e988e26c674150db657612c1f140ab91fbc16c4de57fb5d2442eef9"
+    },
+    {
+      "artifact": "PROSPECTIVE_COVERAGE.md",
+      "bytes": 1851,
+      "exists": true,
+      "sha256": "ffa0189a7ddb0fe159d14b19323a2269910bb4f1e34b7c9f01106d761af40d33"
+    },
+    {
+      "artifact": "FULL_UNIT_SUITE.log",
+      "bytes": 13233,
+      "exists": true,
+      "sha256": "da0c1ac3ded50f17a0baa4f8e74b3af5d8bddf7d1d7e29a49b6171883bf6c98b"
+    },
+    {
+      "artifact": "SCHEDULER_DECISION.json",
+      "bytes": 1428,
+      "exists": true,
+      "sha256": "2574e46dcb5677dcb2bd26ec9702272354d2684d1075d76344e6007fe8b8d606"
+    },
+    {
+      "artifact": "SCHEDULER_DECISION.md",
+      "bytes": 870,
+      "exists": true,
+      "sha256": "6dc2d22e8d64bef76e3afd4ffd8668c4e31257043580d40a49ec02a3baa95a3b"
+    },
+    {
+      "artifact": "RESEARCH_TO_RUNTIME_EXECUTION_GAP.md",
+      "bytes": 1658,
+      "exists": true,
+      "sha256": "6f274830bbf0d9cf62a0cce84c7fe2f9276ffef3f778641eedffd56b0a5f35b0"
+    },
+    {
+      "artifact": "INDEPENDENT_VERIFICATION.json",
+      "bytes": 16206,
+      "exists": true,
+      "sha256": "4060d1d56c993ea2f3cb147aaac9da85bc2a7135facb98280077f6511e6e156f"
+    },
+    {
+      "artifact": "INDEPENDENT_VERIFICATION.md",
+      "bytes": 10714,
+      "exists": true,
+      "sha256": "3254101d30556398f86cceee8eb6811e7312b24b4ad9a770e360ed8890a91fb2"
+    },
+    {
+      "artifact": "experimental_paper/CANONICAL_LANE_REPORT.json",
+      "bytes": 8283,
+      "exists": true,
+      "sha256": "bc903ba860a84f714df801938d7582bb036dbc7a564c2f643c491915d49b7806"
+    },
+    {
+      "artifact": "experimental_paper/CANONICAL_TRADES.jsonl",
+      "bytes": 76109,
+      "exists": true,
+      "sha256": "5dd38f015be8b87274d345a491f5d24c2f630735b235f23408eb097101d42c16"
+    },
+    {
+      "artifact": "experimental_paper/CANONICAL_CYCLES.jsonl",
+      "bytes": 360799,
+      "exists": true,
+      "sha256": "575367e437157da168def126d3d9bdc24a87f64c3ad0e7b4e1e9f87ae931839c"
+    },
+    {
+      "artifact": "experimental_paper/COVERAGE_LEDGER.jsonl",
+      "bytes": 1096464,
+      "exists": true,
+      "sha256": "6289c3b960da43a2bca1ef6ec414957a3d9dabc5fa1f76b1cd97a84b170aa5f9"
+    }
+  ],
+  "full_unit_suite": {
+    "failed": 4,
+    "failures": [
+      "tests/unit/research/test_st6_forward_regime.py::test_the_committed_artefacts_are_coherent",
+      "tests/unit/research/test_st6_forward_regime.py::test_the_independent_verifier_passes_without_rewriting_the_committed_artefact",
+      "tests/unit/test_dependency_closure_guard.py::test_all_imported_internal_modules_are_tracked",
+      "tests/unit/test_dependency_closure_guard.py::test_closure_guard_is_order_independent_under_module_pollution"
+    ],
+    "failures_inside_this_package": [
+      "tests/unit/test_dependency_closure_guard.py::test_all_imported_internal_modules_are_tracked",
+      "tests/unit/test_dependency_closure_guard.py::test_closure_guard_is_order_independent_under_module_pollution"
+    ],
+    "failures_outside_this_package": [
+      "tests/unit/research/test_st6_forward_regime.py::test_the_committed_artefacts_are_coherent",
+      "tests/unit/research/test_st6_forward_regime.py::test_the_independent_verifier_passes_without_rewriting_the_committed_artefact"
+    ],
+    "log": "FULL_UNIT_SUITE.log",
+    "note": "the two ST6 failures belong to the forward-regime line, whose committed data has accumulated enough windows to contradict its own 'one window cannot satisfy the rule' assertion; this package neither imports nor writes anything under data/st6 or scripts/st6_forward_regime.py",
+    "passed": 4012,
+    "remediation": "the dependency-closure guard failures were this package's untracked modules; they pass once the files are added to Git, which is what re-run after the run recorded here",
+    "status": "PASSED_WITH_UNRELATED_FAILURES",
+    "summary": "4 failed, 4012 passed in 939.34s (0:15:39)"
+  },
+  "generated_at_utc": "2026-10-17T11:01:25Z",
+  "headline": {
+    "disk": "INSUFFICIENT_FREE_SPACE at 5.043 GiB free; the guard was not relaxed (False)",
+    "economics": "restated net -240.86 USDT for the best family at 1x and worse at 2x: NO_RESTATED_EDGE_SURVIVES",
+    "lane": "146 closed trades, gross -53.384527 USDT, net -239.7503/-426.1162/-612.482 at 1x/2x/3x",
+    "point_in_time": "1.0 of 7081 pre-repair exits were filled at the bar whose close decided them; the restatement fills at the next executable bar and every row was rebuilt from the raw series by the verifier",
+    "portfolio": "one shared book of 10000.0 USDT; the 015 lane's three books are labelled THREE_INDEPENDENT_SIMULATIONS",
+    "prospective": "3 bars observed of 2 expected per symbol, 0 proposals, 0 fills: no prospective trade exists",
+    "prospective_capture": "PROSPECTIVE_CAPTURE_NOT_AUTOMATED",
+    "risk": "experimental orders go through RiskManager.check_signal (the runtime's own engine); the lane's manual checks are 0",
+    "scheduler": "DO_NOT_CREATE_A_SCHEDULER"
+  },
+  "interpretation_limits": [
+    "frictionless broker book: the lane's PnL is pre-cost by construction and its net view is a restatement",
+    "no execution latency is modelled: the fill instant equals the instant the deciding bar closed",
+    "one regime: the held-out tail of these series, 1h bars, long-only families",
+    "funding is not charged because the venue is spot"
+  ],
+  "repository": {
+    "baseline_head": "2b8a6ed7f66f6e7d30c41ab2c52150cad765bd1b",
+    "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
+    "head": "2b8a6ed7f66f6e7d30c41ab2c52150cad765bd1b"
+  },
+  "schema_version": "EDGE16_RUN_REPORT_V1",
+  "statuses": {
+    "CAPTURE_BLOCKED_DISK": true,
+    "ECONOMIC_RESULTS_RESTATED_NO_EDGE": true,
+    "INDEPENDENT_VERIFICATION_FAILED": false,
+    "INDEPENDENT_VERIFICATION_NOT_RUN": false,
+    "INDEPENDENT_VERIFIED": true,
+    "PIT_FIXED_RISK_PARITY_BLOCKED": false,
+    "PIT_FIXED_RISK_PARITY_VALIDATED": true,
+    "PROSPECTIVE_CAPTURE_NOT_AUTOMATED": true,
+    "PROSPECTIVE_CAPTURE_RUNNING_VALIDATED": false,
+    "PROSPECTIVE_EVIDENCE_INSUFFICIENT": true
+  },
+  "statuses_holding": [
+    "PIT_FIXED_RISK_PARITY_VALIDATED",
+    "ECONOMIC_RESULTS_RESTATED_NO_EDGE",
+    "PROSPECTIVE_CAPTURE_NOT_AUTOMATED",
+    "CAPTURE_BLOCKED_DISK",
+    "PROSPECTIVE_EVIDENCE_INSUFFICIENT",
+    "INDEPENDENT_VERIFIED"
+  ],
+  "verification": {
+    "checks_passed": 41,
+    "checks_total": 41,
+    "mutations_caught": 35,
+    "mutations_total": 35,
+    "verdict": "VERIFIED"
+  },
+  "work_package": "WP-EDGE-016"
+}

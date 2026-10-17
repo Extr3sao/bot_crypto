@@ -8,7 +8,28 @@
 > Política completa en `AGENTS.md` §7. Reglas de campaña: `FALSE_SUCCESS=0`, `BUILDER != VERIFIER`,
 > nada de trading real, credenciales, apalancamiento ni cambios de límites de riesgo.
 
-*Última actualización: 2026-10-17T09:10Z, sesión de WP-EDGE-015 (holdout con barras + carril extendido).*
+*Última actualización: 2026-10-17T12:20Z, sesión de WP-EDGE-016 (integridad point-in-time, paridad de riesgo, captura prospectiva).*
+
+## 0. WP-EDGE-016 (sesión actual, RFC-EDGE-016)
+
+**Objetivo:** que la evidencia histórica sea causalmente ejecutable, que el carril experimental use el
+riesgo canónico del runtime, y que la captura prospectiva sea un testigo real — sin inventar rentabilidad.
+
+**Resultado: `PIT_FIXED_RISK_PARITY_VALIDATED` + `ECONOMIC_RESULTS_RESTATED_NO_EDGE` + `CAPTURE_BLOCKED_DISK`.**
+
+| hecho | evidencia ejecutada |
+| --- | --- |
+| **Defecto PIT medido y corregido.** El 100 % de las salidas de WP-EDGE-015 se ejecutaba al open de la misma barra cuyo cierre la decidía | `PIT_DEFECT_MAP.json` (2 049 operaciones reparadas, 27 carriles, `share=1.0`), `PIT_RECONCILIATION.md`, `CAUSALITY_ADVERSARIAL.json`: pre-PIT 31/31, 37/37, 30/30 salidas explotadas → post-PIT 0 |
+| **Contrato temporal explícito**: decisión al cierre de *t*, ejecución al open de *t+1*; posición viva al final = `is_mark` (no es una operación) | `pit15.py` (`PIT_CONTRACT`, `audit_trade`), `test_edge16_pit.py` (42 pruebas en total con el adversario) |
+| **La propuesta no puede conocer el futuro**: máquinas incrementales, sin `exit_price`/`gross_bps`/resultado | carril canónico: 991 ciclos, 0 fugas (V30); escenario `FUTURE_OUTCOME_IN_A_PROPOSAL` capturado |
+| **Riesgo canónico**: `RiskManager.check_signal` con `RiskCheck.position_size`, realimentado con `record_trade_result`/`sync_open_positions`; 0 comprobaciones manuales en el carril | `RISK_PARITY_MATRIX.json`, `CANONICAL_LANE_REPORT.json` (146 aprobadas, 3 rechazadas), V20–V25 |
+| **Un solo libro de 10 000 USDT** (no 3×10 000 sumados) | `PORTFOLIO_ACCOUNTING.json` (`ONE_SHARED_BOOK` vs `THREE_INDEPENDENT_SIMULATIONS`, `not_a_claim_about_capital=true`), V20/V21 |
+| **Reestimación económica** con coste real de venue y sensibilidad adversa | `ECONOMIC_RESTATEMENT.csv` (54 filas reconstruidas desde las operaciones), `CURRENT_VS_PROPOSED.json` → **`NO_RESTATED_EDGE_SURVIVES`**; carril: bruto −53,38 → neto −239,75 / −426,12 / −612,48 USDT a 1×/2×/3× |
+| **Captura prospectiva honesta y bloqueada por el guardián de disco**: las horas que nadie observa aparecen como `MISSING_NO_COLLECTOR`, nunca como días tranquilos | `CAPTURE_CONTINUITY.json` (cobertura 3/6 = 0,5, 0 propuestas, 0 ejecuciones), `CAPACITY_PREFLIGHT.json` (`CAPTURE_BLOCKED_DISK`, guardián **no** relajado), `SCHEDULER_DECISION.json` (`DO_NOT_CREATE_A_SCHEDULER`) |
+| **Verificación independiente con inyección de fallos** | `scripts/edge16_verify.py`: **41/41** checks `VERIFIED`, **35/35** mutaciones detectadas (salida al cierre→open, resultado futuro en la propuesta, coste cero falso, barra perdida marcada como evaluada, fin de semana, estado mentiroso, hash que no cuadra…). El verificador no importa ningún módulo constructor |
+| **Pruebas** | `test_edge16_pit.py` + `test_edge16_causality.py`: 42 pruebas; lote dirigido `tests/unit/{paper,risk,config}` + determinismo: **290 passed**; suite completa `pytest tests/unit -q`: **4012 passed, 4 failed en 15:39** (`FULL_UNIT_SUITE.log`). De los 4 fallos: 2 son de la línea ST6 (su dato acumulado ya contradice su propia aserción de «una sola ventana», fuera de este paquete) y 2 del guardián de cierre de dependencias, causados por los módulos nuevos aún sin trackear: **re-ejecutados tras `git add` → 4/4 pass** |
+
+**No se tocó**: `config/risk.yaml`, `config/strategy_admission.json` (sha256 idéntico antes/después), el holdout congelado, ni ninguna tarea programada. `blocked_by=0` público: cero órdenes reales.
 
 ## 1. Objetivo actual
 

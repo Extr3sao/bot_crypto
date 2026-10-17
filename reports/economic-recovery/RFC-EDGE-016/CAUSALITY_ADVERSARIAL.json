@@ -1,0 +1,292 @@
+{
+  "counts": {
+    "caught": 21,
+    "scenarios": 21,
+    "uncaught": 0
+  },
+  "method": "each scenario is defined once in trading_bot.research.economic_recovery.causality, run here against real holdout tapes, and asserted caught by tests/unit/research/test_edge16_causality.py",
+  "scenarios": {
+    "BTCUSDT": [
+      {
+        "caught": true,
+        "expectation": "audit_trade reports the same-bar close-to-open exploit",
+        "injected": "an exit read off bar 500's close and filled at bar 500's open (vol_regime_breakout)",
+        "observed": "exit precedes entry; exit: earliest fill 1786561200000 precedes availability 1786564800000; exit filled at or before its own signal bar: the same-bar close-to-open exploit",
+        "scenario": "SAME_BAR_CLOSE_TO_OPEN_EXIT"
+      },
+      {
+        "caught": true,
+        "expectation": "a real proposal carries nothing from the future, and the detector notices when one does",
+        "injected": "an exit price attached to a real entry proposal",
+        "observed": "real proposal fields ['close', 'rank', 'rule']; injected payload flags ['exit_price']",
+        "scenario": "FUTURE_OUTCOME_IN_A_PROPOSAL"
+      },
+      {
+        "caught": true,
+        "expectation": "the open position is marked at the last close, flagged is_mark, and audits clean",
+        "injected": "the tape cut at bar 1854 of 2000, while a position was still open",
+        "observed": "1 mark(s) at cut 1854, 0 violation(s)",
+        "scenario": "TERMINAL_BAR_IS_A_MARK"
+      },
+      {
+        "caught": true,
+        "expectation": "the next present bar is used, nothing is invented, and no fill lands in the hole",
+        "injected": "4 consecutive hours removed from the tape",
+        "observed": "29 trades on the holed tape, 0 problem(s)",
+        "scenario": "GAP_IN_THE_SERIES"
+      },
+      {
+        "caught": true,
+        "expectation": "the decision waits for the late data, and the too-early fill is refused",
+        "injected": "a bar whose data is only available 15 minutes after its close",
+        "observed": "fill at the next bar after the late data clears (True); fill at the immediate next open: ['exit precedes entry']",
+        "scenario": "DELAYED_BAR_RECEIPT"
+      },
+      {
+        "caught": true,
+        "expectation": "the machine refuses a bar older than one it has already seen",
+        "injected": "bar 300 re-delivered after 600 bars had already been decided on",
+        "observed": "OutOfOrderBar raised",
+        "scenario": "BARS_OUT_OF_ORDER"
+      },
+      {
+        "caught": true,
+        "expectation": "the re-entry is dropped, so one lane never holds two positions at once",
+        "injected": "a rule that would re-enter on the very bar its previous exit filled",
+        "observed": "29 trades checked, 0 overlap(s)",
+        "scenario": "SAME_INSTANT_REENTRY"
+      }
+    ],
+    "ETHUSDT": [
+      {
+        "caught": true,
+        "expectation": "audit_trade reports the same-bar close-to-open exploit",
+        "injected": "an exit read off bar 500's close and filled at bar 500's open (vol_regime_breakout)",
+        "observed": "exit precedes entry; exit: earliest fill 1786561200000 precedes availability 1786564800000; exit filled at or before its own signal bar: the same-bar close-to-open exploit",
+        "scenario": "SAME_BAR_CLOSE_TO_OPEN_EXIT"
+      },
+      {
+        "caught": true,
+        "expectation": "a real proposal carries nothing from the future, and the detector notices when one does",
+        "injected": "an exit price attached to a real entry proposal",
+        "observed": "real proposal fields []; injected payload flags ['exit_price']",
+        "scenario": "FUTURE_OUTCOME_IN_A_PROPOSAL"
+      },
+      {
+        "caught": true,
+        "expectation": "the open position is marked at the last close, flagged is_mark, and audits clean",
+        "injected": "the tape cut at bar 1861 of 2000, while a position was still open",
+        "observed": "1 mark(s) at cut 1861, 0 violation(s)",
+        "scenario": "TERMINAL_BAR_IS_A_MARK"
+      },
+      {
+        "caught": true,
+        "expectation": "the next present bar is used, nothing is invented, and no fill lands in the hole",
+        "injected": "4 consecutive hours removed from the tape",
+        "observed": "34 trades on the holed tape, 0 problem(s)",
+        "scenario": "GAP_IN_THE_SERIES"
+      },
+      {
+        "caught": true,
+        "expectation": "the decision waits for the late data, and the too-early fill is refused",
+        "injected": "a bar whose data is only available 15 minutes after its close",
+        "observed": "fill at the next bar after the late data clears (True); fill at the immediate next open: ['exit precedes entry']",
+        "scenario": "DELAYED_BAR_RECEIPT"
+      },
+      {
+        "caught": true,
+        "expectation": "the machine refuses a bar older than one it has already seen",
+        "injected": "bar 300 re-delivered after 600 bars had already been decided on",
+        "observed": "OutOfOrderBar raised",
+        "scenario": "BARS_OUT_OF_ORDER"
+      },
+      {
+        "caught": true,
+        "expectation": "the re-entry is dropped, so one lane never holds two positions at once",
+        "injected": "a rule that would re-enter on the very bar its previous exit filled",
+        "observed": "34 trades checked, 0 overlap(s)",
+        "scenario": "SAME_INSTANT_REENTRY"
+      }
+    ],
+    "SOLUSDT": [
+      {
+        "caught": true,
+        "expectation": "audit_trade reports the same-bar close-to-open exploit",
+        "injected": "an exit read off bar 500's close and filled at bar 500's open (vol_regime_breakout)",
+        "observed": "exit precedes entry; exit: earliest fill 1786561200000 precedes availability 1786564800000; exit filled at or before its own signal bar: the same-bar close-to-open exploit",
+        "scenario": "SAME_BAR_CLOSE_TO_OPEN_EXIT"
+      },
+      {
+        "caught": true,
+        "expectation": "a real proposal carries nothing from the future, and the detector notices when one does",
+        "injected": "an exit price attached to a real entry proposal",
+        "observed": "real proposal fields ['close', 'rank', 'rule']; injected payload flags ['exit_price']",
+        "scenario": "FUTURE_OUTCOME_IN_A_PROPOSAL"
+      },
+      {
+        "caught": true,
+        "expectation": "the open position is marked at the last close, flagged is_mark, and audits clean",
+        "injected": "the tape cut at bar 1970 of 2000, while a position was still open",
+        "observed": "1 mark(s) at cut 1970, 0 violation(s)",
+        "scenario": "TERMINAL_BAR_IS_A_MARK"
+      },
+      {
+        "caught": true,
+        "expectation": "the next present bar is used, nothing is invented, and no fill lands in the hole",
+        "injected": "4 consecutive hours removed from the tape",
+        "observed": "30 trades on the holed tape, 0 problem(s)",
+        "scenario": "GAP_IN_THE_SERIES"
+      },
+      {
+        "caught": true,
+        "expectation": "the decision waits for the late data, and the too-early fill is refused",
+        "injected": "a bar whose data is only available 15 minutes after its close",
+        "observed": "fill at the next bar after the late data clears (True); fill at the immediate next open: ['exit precedes entry']",
+        "scenario": "DELAYED_BAR_RECEIPT"
+      },
+      {
+        "caught": true,
+        "expectation": "the machine refuses a bar older than one it has already seen",
+        "injected": "bar 300 re-delivered after 600 bars had already been decided on",
+        "observed": "OutOfOrderBar raised",
+        "scenario": "BARS_OUT_OF_ORDER"
+      },
+      {
+        "caught": true,
+        "expectation": "the re-entry is dropped, so one lane never holds two positions at once",
+        "injected": "a rule that would re-enter on the very bar its previous exit filled",
+        "observed": "30 trades checked, 0 overlap(s)",
+        "scenario": "SAME_INSTANT_REENTRY"
+      }
+    ]
+  },
+  "schema_version": "EDGE16_CAUSALITY_ADVERSARIAL_V1",
+  "shift_evidence": {
+    "BTCUSDT": {
+      "entries_matched_total": 29,
+      "exits_moved_total": 29,
+      "families": [
+        {
+          "entries_matched_by_timestamp": 5,
+          "family": "vol_regime_breakout",
+          "of_those_exits_moved_one_bar": 5,
+          "post_pit_exits_filled_at_their_own_signal_bar": 0,
+          "post_pit_terminal_marks": 0,
+          "post_pit_trades": 5,
+          "pre_pit_exits_filled_at_their_own_signal_bar": 5,
+          "pre_pit_trades": 5
+        },
+        {
+          "entries_matched_by_timestamp": 19,
+          "family": "trend_pullback",
+          "of_those_exits_moved_one_bar": 19,
+          "post_pit_exits_filled_at_their_own_signal_bar": 0,
+          "post_pit_terminal_marks": 0,
+          "post_pit_trades": 19,
+          "pre_pit_exits_filled_at_their_own_signal_bar": 21,
+          "pre_pit_trades": 21
+        },
+        {
+          "entries_matched_by_timestamp": 5,
+          "family": "mean_reversion_vol_liq",
+          "of_those_exits_moved_one_bar": 5,
+          "post_pit_exits_filled_at_their_own_signal_bar": 0,
+          "post_pit_terminal_marks": 0,
+          "post_pit_trades": 5,
+          "pre_pit_exits_filled_at_their_own_signal_bar": 5,
+          "pre_pit_trades": 5
+        }
+      ],
+      "post_pit_exploit_total": 0,
+      "pre_pit_exploit_total": 31,
+      "pre_pit_trades_total": 31,
+      "symbol": "BTCUSDT",
+      "window_bars": 2000
+    },
+    "ETHUSDT": {
+      "entries_matched_total": 32,
+      "exits_moved_total": 32,
+      "families": [
+        {
+          "entries_matched_by_timestamp": 4,
+          "family": "vol_regime_breakout",
+          "of_those_exits_moved_one_bar": 4,
+          "post_pit_exits_filled_at_their_own_signal_bar": 0,
+          "post_pit_terminal_marks": 0,
+          "post_pit_trades": 4,
+          "pre_pit_exits_filled_at_their_own_signal_bar": 4,
+          "pre_pit_trades": 4
+        },
+        {
+          "entries_matched_by_timestamp": 24,
+          "family": "trend_pullback",
+          "of_those_exits_moved_one_bar": 24,
+          "post_pit_exits_filled_at_their_own_signal_bar": 0,
+          "post_pit_terminal_marks": 0,
+          "post_pit_trades": 25,
+          "pre_pit_exits_filled_at_their_own_signal_bar": 28,
+          "pre_pit_trades": 28
+        },
+        {
+          "entries_matched_by_timestamp": 4,
+          "family": "mean_reversion_vol_liq",
+          "of_those_exits_moved_one_bar": 4,
+          "post_pit_exits_filled_at_their_own_signal_bar": 0,
+          "post_pit_terminal_marks": 0,
+          "post_pit_trades": 5,
+          "pre_pit_exits_filled_at_their_own_signal_bar": 5,
+          "pre_pit_trades": 5
+        }
+      ],
+      "post_pit_exploit_total": 0,
+      "pre_pit_exploit_total": 37,
+      "pre_pit_trades_total": 37,
+      "symbol": "ETHUSDT",
+      "window_bars": 2000
+    },
+    "SOLUSDT": {
+      "entries_matched_total": 30,
+      "exits_moved_total": 30,
+      "families": [
+        {
+          "entries_matched_by_timestamp": 4,
+          "family": "vol_regime_breakout",
+          "of_those_exits_moved_one_bar": 4,
+          "post_pit_exits_filled_at_their_own_signal_bar": 0,
+          "post_pit_terminal_marks": 0,
+          "post_pit_trades": 4,
+          "pre_pit_exits_filled_at_their_own_signal_bar": 4,
+          "pre_pit_trades": 4
+        },
+        {
+          "entries_matched_by_timestamp": 18,
+          "family": "trend_pullback",
+          "of_those_exits_moved_one_bar": 18,
+          "post_pit_exits_filled_at_their_own_signal_bar": 0,
+          "post_pit_terminal_marks": 0,
+          "post_pit_trades": 18,
+          "pre_pit_exits_filled_at_their_own_signal_bar": 18,
+          "pre_pit_trades": 18
+        },
+        {
+          "entries_matched_by_timestamp": 8,
+          "family": "mean_reversion_vol_liq",
+          "of_those_exits_moved_one_bar": 8,
+          "post_pit_exits_filled_at_their_own_signal_bar": 0,
+          "post_pit_terminal_marks": 0,
+          "post_pit_trades": 8,
+          "pre_pit_exits_filled_at_their_own_signal_bar": 8,
+          "pre_pit_trades": 8
+        }
+      ],
+      "post_pit_exploit_total": 0,
+      "pre_pit_exploit_total": 30,
+      "pre_pit_trades_total": 30,
+      "symbol": "SOLUSDT",
+      "window_bars": 2000
+    }
+  },
+  "uncaught": [],
+  "verdict": "CAUGHT_EVERY_SCENARIO",
+  "work_package": "WP-EDGE-016/16B"
+}

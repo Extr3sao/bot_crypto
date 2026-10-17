@@ -1,0 +1,234 @@
+{
+  "artifacts": [
+    {
+      "artifact": "BASELINE.json",
+      "bytes": 2129,
+      "exists": true,
+      "sha256": "739d976f0510bc6364ac2d2ce106ac19112144f5a9b62a451055bf8e2e5cb290"
+    },
+    {
+      "artifact": "PIT_DEFECT_MAP.json",
+      "bytes": 12679,
+      "exists": true,
+      "sha256": "6156d29203918bb88eef6f0d73194528b620f73c71130dc2d818025dc4c43acd"
+    },
+    {
+      "artifact": "PIT_DEFECT_MAP.md",
+      "bytes": 4132,
+      "exists": true,
+      "sha256": "9881b8daa6f39409adf1ca4b9dd6b487e2bab8c5282513d62b929c60cac7eeb9"
+    },
+    {
+      "artifact": "PIT_RECONCILIATION.md",
+      "bytes": 4368,
+      "exists": true,
+      "sha256": "bf7142cd7e137332e4ad1116a73b5480aea6e01fbb7c6d431c31c41a90fe73cc"
+    },
+    {
+      "artifact": "RISK_PARITY_MATRIX.json",
+      "bytes": 11371,
+      "exists": true,
+      "sha256": "0eeeb9638bbef915e417dd70dc174e56e202fa9ad34dd8786686a08df07729b0"
+    },
+    {
+      "artifact": "PORTFOLIO_ACCOUNTING.json",
+      "bytes": 1320,
+      "exists": true,
+      "sha256": "d2369150ee555ea08b1c813e35ab20d1509c64512565078d5f65ecba49cb4f4f"
+    },
+    {
+      "artifact": "WEEKEND_POLICY.json",
+      "bytes": 956,
+      "exists": true,
+      "sha256": "6032e0af8fa2bcd5b9ae2fab0cb348fb657ceca5b7dff4ed586053c2feb87692"
+    },
+    {
+      "artifact": "WEEKEND_POLICY_CONFLICT.md",
+      "bytes": 1340,
+      "exists": true,
+      "sha256": "795b3b693fa65557bd180ea0596352a42e0ccab802bdfa2c5df759280e0cbef1"
+    },
+    {
+      "artifact": "ALPHA_RESTATEMENT_TRADES.jsonl",
+      "bytes": 993785,
+      "exists": true,
+      "sha256": "f2c0a1c97f3ce1b087cd25db03a97c182ba8250abf8127bbbfcf33f3884507bc"
+    },
+    {
+      "artifact": "ECONOMIC_RESTATEMENT.csv",
+      "bytes": 10204,
+      "exists": true,
+      "sha256": "ea802c09e7df9dc0b2bdb9edba752880705e15afe78dccbb7fa1f97ccc479744"
+    },
+    {
+      "artifact": "CURRENT_VS_PROPOSED.json",
+      "bytes": 5510,
+      "exists": true,
+      "sha256": "ea12db85f05b0ba8667cee872a9a84cc6593475fa6b5062061147b6c9f02c387"
+    },
+    {
+      "artifact": "CAUSALITY_ADVERSARIAL.json",
+      "bytes": 12707,
+      "exists": true,
+      "sha256": "6535a4f279aba4feacdfc9eb4938349b390e9b4059cd7eab3985f7d92dd2d79e"
+    },
+    {
+      "artifact": "CAPACITY_PREFLIGHT.json",
+      "bytes": 718,
+      "exists": true,
+      "sha256": "098379da559c5703dbea912ef721638f1861150ce81f8ea3ab6b0c3e481010f6"
+    },
+    {
+      "artifact": "CAPTURE_CONTINUITY.json",
+      "bytes": 3265,
+      "exists": true,
+      "sha256": "1efe00b11e988e26c674150db657612c1f140ab91fbc16c4de57fb5d2442eef9"
+    },
+    {
+      "artifact": "PROSPECTIVE_COVERAGE.md",
+      "bytes": 1851,
+      "exists": true,
+      "sha256": "ffa0189a7ddb0fe159d14b19323a2269910bb4f1e34b7c9f01106d761af40d33"
+    },
+    {
+      "artifact": "FULL_UNIT_SUITE.log",
+      "bytes": 13233,
+      "exists": true,
+      "sha256": "da0c1ac3ded50f17a0baa4f8e74b3af5d8bddf7d1d7e29a49b6171883bf6c98b"
+    },
+    {
+      "artifact": "SCHEDULER_DECISION.json",
+      "bytes": 1428,
+      "exists": true,
+      "sha256": "2574e46dcb5677dcb2bd26ec9702272354d2684d1075d76344e6007fe8b8d606"
+    },
+    {
+      "artifact": "SCHEDULER_DECISION.md",
+      "bytes": 870,
+      "exists": true,
+      "sha256": "6dc2d22e8d64bef76e3afd4ffd8668c4e31257043580d40a49ec02a3baa95a3b"
+    },
+    {
+      "artifact": "RESEARCH_TO_RUNTIME_EXECUTION_GAP.md",
+      "bytes": 1658,
+      "exists": true,
+      "sha256": "6f274830bbf0d9cf62a0cce84c7fe2f9276ffef3f778641eedffd56b0a5f35b0"
+    },
+    {
+      "artifact": "INDEPENDENT_VERIFICATION.json",
+      "bytes": 16206,
+      "exists": true,
+      "sha256": "4060d1d56c993ea2f3cb147aaac9da85bc2a7135facb98280077f6511e6e156f"
+    },
+    {
+      "artifact": "INDEPENDENT_VERIFICATION.md",
+      "bytes": 10714,
+      "exists": true,
+      "sha256": "3254101d30556398f86cceee8eb6811e7312b24b4ad9a770e360ed8890a91fb2"
+    },
+    {
+      "artifact": "experimental_paper/CANONICAL_LANE_REPORT.json",
+      "bytes": 8283,
+      "exists": true,
+      "sha256": "bc903ba860a84f714df801938d7582bb036dbc7a564c2f643c491915d49b7806"
+    },
+    {
+      "artifact": "experimental_paper/CANONICAL_TRADES.jsonl",
+      "bytes": 76109,
+      "exists": true,
+      "sha256": "5dd38f015be8b87274d345a491f5d24c2f630735b235f23408eb097101d42c16"
+    },
+    {
+      "artifact": "experimental_paper/CANONICAL_CYCLES.jsonl",
+      "bytes": 360799,
+      "exists": true,
+      "sha256": "575367e437157da168def126d3d9bdc24a87f64c3ad0e7b4e1e9f87ae931839c"
+    },
+    {
+      "artifact": "experimental_paper/COVERAGE_LEDGER.jsonl",
+      "bytes": 1096464,
+      "exists": true,
+      "sha256": "6289c3b960da43a2bca1ef6ec414957a3d9dabc5fa1f76b1cd97a84b170aa5f9"
+    },
+    {
+      "artifact": "RUN_REPORT.json",
+      "bytes": 15300,
+      "exists": true,
+      "sha256": "b82df561c236d5409357ac99b5b3c98cb6210173c44985d3028cc78ee1c53ffa"
+    },
+    {
+      "artifact": "RUN_REPORT.md",
+      "bytes": 6520,
+      "exists": true,
+      "sha256": "05b39a3663877d241bcf3eb3a1d9f866b14ff0859ef4fc1bb005435066ad0578"
+    },
+    {
+      "artifact": "FINAL_REPORT.md",
+      "bytes": 3173,
+      "exists": true,
+      "sha256": "a224757a93cfbf5eb98e1ea5c1815eb762c8cc178b7379217b18dd0fa24b74f0"
+    },
+    {
+      "artifact": "INFORME_EJECUTIVO.md",
+      "bytes": 3128,
+      "exists": true,
+      "sha256": "ab65a0dd9ad6edb8eff2af10e3f5aef3ace45d283f644aa505f693ddf8168ada"
+    }
+  ],
+  "code": [
+    {
+      "path": "scripts/edge16_paper_lane.py",
+      "sha256": "0689e8bc4479d3debb9876ec8cc14ee4e86290b12794ed027e345eb7374d9b56",
+      "tracked": true
+    },
+    {
+      "path": "scripts/edge16_artifacts.py",
+      "sha256": "14e9e9eaaa1bd1bb5892b2a0d50bf9967af50e54d0d190a069be8edac3e15c31",
+      "tracked": true
+    },
+    {
+      "path": "scripts/edge16_capture.py",
+      "sha256": "535adf0eb6f6f67eedd22c55dfbe55745445b33b78611ec3d5e085d5eef71030",
+      "tracked": true
+    },
+    {
+      "path": "scripts/edge16_adversarial.py",
+      "sha256": "c5bc044a6bcbc7c19e0ade171a9e7373d5ffd9b2de0bbec07797940601956fea",
+      "tracked": true
+    },
+    {
+      "path": "scripts/edge16_verify.py",
+      "sha256": "5d6b6aabaf4a949c7d20fe73aa211b1836c82f9f8172ccc729d31afa7eb105ad",
+      "tracked": true
+    },
+    {
+      "path": "scripts/edge16_reports.py",
+      "sha256": "08a15f13382f9e1671d29b3394a3503197ca539b07fad0f2a25c20bd94dcdf50",
+      "tracked": true
+    },
+    {
+      "path": "src/trading_bot/research/economic_recovery/pit15.py",
+      "sha256": "dd6c7882c3074402879ce4651d096c176dfce1dc01b46bfed0f0037be210dcd6",
+      "tracked": true
+    },
+    {
+      "path": "src/trading_bot/research/economic_recovery/causality.py",
+      "sha256": "7910f7dc7e04e5d229d8e9e2059e2cd609bd3443b85c72a6534cc2c5804ede38",
+      "tracked": true
+    },
+    {
+      "path": "tests/unit/research/test_edge16_pit.py",
+      "sha256": "afb340033c18e56761f923bbe5f6e2a2ef6ba0be51b2a25cec161378650a11d9",
+      "tracked": true
+    },
+    {
+      "path": "tests/unit/research/test_edge16_causality.py",
+      "sha256": "7e01debda06cd82ca5fb73b350bc4b759fa85b3930c1c3da97ba1606ef60c1be",
+      "tracked": true
+    }
+  ],
+  "generated_at_utc": "2026-10-17T11:01:25Z",
+  "head": "2b8a6ed7f66f6e7d30c41ab2c52150cad765bd1b",
+  "schema_version": "EDGE16_EVIDENCE_INDEX_V1",
+  "self_hash_note": "this file is not listed among the artifacts it hashes, and neither is the run report: a file written after another cannot be hashed by it. The verifier re-hashes every artifact this index does list, against the bytes on disk"
+}
