@@ -30,6 +30,9 @@ dependencies = [
   "tenacity>=8.2.3",
   "structlog>=24.1.0",
   "python-dotenv>=1.0.1",
+  # matplotlib: el agente discrecional multimodal (RFC-AI-VISION-001) renderiza a PNG
+  # el gráfico que ve el modelo. Sin raster no hay visión: se declara explícitamente.
+  "matplotlib>=3.8,<4.0",
 ]
 
 [project.optional-dependencies]

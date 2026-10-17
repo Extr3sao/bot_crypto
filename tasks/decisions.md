@@ -1699,3 +1699,39 @@ lo que NO se requerirá per-ADR "next free" footnote nunca más.
   consecuencia. Cualquier cifra anterior de fills semanales queda superada.
 - **Reversión**: solo un ADR nuevo; relajar la ventana para que el libro pase es exactamente lo que
   este paquete se prohíbe.
+
+## ADR-AIV-01 — El agente discrecional multimodal decide, pero no dimensiona
+
+- **Contexto**: se pide un agente que *vea* gráficos y decida LONG/SHORT/CLOSE/NO_TRADE por sí
+  mismo, no que explique señales deterministas. Las cuatro referencias (qrak/LLM_trader,
+  Ganador1/FenixAI_tradingBot, FortuneMal/AI-trading, 195440/nof1.ai) envían o no imágenes según el
+  caso, pero ninguna convierte la respuesta en una decisión *validada* con identidad de imagen y
+  replay reproducible; dos ni siquiera adjuntan un gráfico (nof1.ai opera con datos numéricos).
+- **Decisión**:
+  - El modelo recibe **una imagen PNG determinista** (velas, volumen, EMA20/50 en una ventana fija)
+    y un prompt versionado. El hash SHA-256 de la imagen y del prompt viaja en el ledger, de modo
+    que "el modelo vio esto" es comprobable y reproducible.
+  - El modelo elige **acción, convicción, horizonte y dónde se equivoca**. **No elige tamaño,
+    apalancamiento ni límites**, y el `stop_loss_pct` que propone se registra pero no sustituye al
+    de la política: si el prompt pudiera elegir la distancia del stop, cambiaría el riesgo por
+    operación y la comparación con el carril determinista sería entre dos políticas, no entre dos
+    decisiones.
+  - El sizing y los stops salen del `RiskManager` real (`config/risk.yaml`), y el único gate es
+    `check_signal`; el `PaperBroker` real aplica el mismo `cost_for` que EDGE-016/017.
+  - **Una excepción declarada**: un `CLOSE` no pasa por `check_signal`. Un tope de número de
+    operaciones que bloquee una salida es un defecto, no una política; se registra como
+    `BYPASSED_FOR_REDUCTION`.
+  - La ejecución ocurre en la **apertura de la barra siguiente** a la decisión, igual que el carril
+    determinista, para que ningún relleno use un precio que el modelo no había visto.
+  - La coherencia con el libro es mecánica: no se promedia ni se invierte en un paso (`ALREADY_*`,
+    `OPPOSITE_*` se descartan y se cuentan), porque invertir en un paso paga dos spreads por una
+    opinión y el modelo nunca ve el relleno que provocó.
+  - El proveedor es un **adaptador OpenAI-compatible** (`VISION_API_KEY` en `.env`): el proveedor
+    es una decisión de despliegue, no de arquitectura.
+- **Qué NO cambia**: ningún límite de `config/risk.yaml`, ni el modo de operación (paper/shadow),
+  ni la ruta de ejecución real. El paquete no importa ningún cliente de exchange.
+- **Consecuencias**: sin credencial, el smoke y el lane devuelven **BLOCKED (exit 2)** y no inventan
+  una decisión. El valor económico solo puede afirmarse con decisiones *live*; un replay demuestra
+  la tubería, no el modelo (el veredicto se marca `NOT_EVIDENCE`).
+- **Reversión**: un ADR nuevo. Relajar la validación para "que el modelo opere" es exactamente lo
+  que este paquete se prohíbe.

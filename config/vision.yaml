@@ -1,0 +1,35 @@
+# ===========================================================
+# config/vision.yaml
+# RFC-AI-VISION-001 — agente discrecional multimodal (paper/shadow).
+# Este fichero NO modifica la política de riesgo: el sizing y los stops
+# siguen viniendo de config/risk.yaml vía RiskManager.
+# ===========================================================
+
+vision:
+  # Adaptador OpenAI-compatible: OpenAI, Groq, OpenRouter, DeepSeek, LM Studio...
+  provider: openai-compatible
+  base_url: https://api.openai.com/v1
+  model: gpt-4o-mini
+  # Nombre de la variable de entorno con la credencial. El valor nunca se escribe aquí.
+  api_key_env: VISION_API_KEY
+  timeout_s: 60
+  max_attempts: 3
+  supports_json_object: true
+  # detail=high factura la imagen como ~1k tokens de entrada; sirve para estimar coste.
+  detail: high
+  prices:
+    input_usd_per_mtok: 0.15
+    output_usd_per_mtok: 0.60
+    image_tokens_estimate: 1000
+
+lane:
+  timeframe: 1h
+  # Velas que ve el modelo. Cambiar esto cambia todos los hashes de imagen.
+  window_bars: 120
+  # Cadencia de decisión: una llamada cada N barras (24 = una vez al día en 1h).
+  # El carril determinista decide en cada barra; la cadencia se declara en el informe.
+  decision_every_bars: 24
+  # Techo duro de llamadas por corrida, para que un bucle no genere una factura.
+  max_calls_per_run: 300
+  # Presupuesto declarado de la corrida (USD). Se aborta si la estimación lo supera.
+  max_estimated_spend_usd: 2.00
