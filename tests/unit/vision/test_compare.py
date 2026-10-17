@@ -45,7 +45,8 @@ def test_a_missing_net_result_makes_the_comparison_unknown():
     assert "no measurable net result" in result["reason"]
 
 
-def test_different_cost_models_invalidate_the_comparison():
+def test_different_cost_models_make_the_comparison_not_comparable():
+    """RFC-TAP-AI-BOTS-002 v3 (BOT-15): a mismatch is the verdict, not a footnote."""
     result = comparison(
         run(-100.0, 40),
         run(-250.0, 40),
@@ -55,7 +56,42 @@ def test_different_cost_models_invalidate_the_comparison():
     assert result["inputs_match"] is False
     assert result["input_mismatches"] == ["cost_model"]
     assert result["reading"].startswith("NOT_A_COMPARISON")
+    assert result["verdict"] == "NOT_COMPARABLE"
+    assert result["comparison_valid"] is False
+    # The arithmetic is still reported, but it cannot name a winner.
+    assert result["arithmetic"]["would_be_verdict"] == "VISION_ADDS_VALUE"
+    assert result["arithmetic"]["delta_net_usdt"] == pytest.approx(150.0)
+
+
+def test_a_cadence_difference_is_not_comparable_without_being_told():
+    """Two books on different bar cadences are two different experiments."""
+    result = comparison(
+        run(-100.0, 40, cadence_ms=3_600_000),
+        run(-250.0, 40, cadence_ms=900_000),
+    )
+
+    assert result["verdict"] == "NOT_COMPARABLE"
+    assert result["comparison_valid"] is False
+    assert "cadence_ms" in result["input_mismatches"]
+
+
+def test_one_side_stating_a_cadence_the_other_omits_is_not_comparable():
+    """Not stating it is not the same as proving it equal."""
+    result = comparison(run(-100.0, 40, cadence_ms=3_600_000), run(-250.0, 40))
+
+    assert result["verdict"] == "NOT_COMPARABLE"
+    assert result["input_mismatches"] == ["cadence_ms"]
+
+
+def test_matching_declared_inputs_still_produce_a_verdict():
+    result = comparison(
+        run(-100.0, 40, cadence_ms=3_600_000, symbols=["BTC/USDT"]),
+        run(-250.0, 40, cadence_ms=3_600_000, symbols=["BTC/USDT"]),
+    )
+
     assert result["verdict"] == "VISION_ADDS_VALUE"
+    assert result["comparison_valid"] is True
+    assert result["input_mismatches"] == []
 
 
 def test_net_per_trade_exposes_a_result_that_only_traded_less():

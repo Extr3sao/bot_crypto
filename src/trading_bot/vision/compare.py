@@ -21,6 +21,51 @@ from typing import Any
 #: Below this, a difference is bookkeeping noise rather than an edge.
 NOISE_USDT = 0.01
 
+#: Inputs that must be identical before the arithmetic says anything about the model.
+#: When a run summary carries one of these, the comparator checks it itself instead of
+#: trusting the caller to remember: a forgotten flag used to be enough to publish
+#: ``VISION_ADDS_VALUE`` over two runs that were never comparable.
+COMPARABLE_INPUTS: tuple[str, ...] = (
+    "symbols",
+    "window",
+    "cadence_ms",
+    "bar_step_ms",
+    "initial_capital_usdt",
+    "cost_model",
+    "fee_bps",
+    "slippage_bps",
+    "risk_policy",
+)
+
+
+def _normalise(value: Any) -> Any:
+    """A stable shape for equality: sorted lists, rounded floats, verbatim objects."""
+    if isinstance(value, float):
+        return round(value, 9)
+    if isinstance(value, (list, tuple)):
+        return sorted(str(item) for item in value)
+    if isinstance(value, dict):
+        return {str(key): _normalise(item) for key, item in sorted(value.items())}
+    return value
+
+
+def _derived_mismatches(
+    vision: dict[str, Any], baseline: dict[str, Any]
+) -> list[str]:
+    """Inputs the summaries state themselves and that do not match (or cannot be shown to)."""
+    mismatches: list[str] = []
+    for key in COMPARABLE_INPUTS:
+        in_vision = key in vision
+        in_baseline = key in baseline
+        if not in_vision and not in_baseline:
+            continue
+        if in_vision != in_baseline:
+            # Declared on one side only: sameness cannot be established.
+            mismatches.append(key)
+        elif _normalise(vision[key]) != _normalise(baseline[key]):
+            mismatches.append(key)
+    return mismatches
+
 
 def _finite(value: Any) -> float | None:
     try:
@@ -59,21 +104,34 @@ def comparison(
 
     delta = vision_net - baseline_net
     if abs(delta) < NOISE_USDT:
-        verdict = "NO_MEASURABLE_DIFFERENCE"
+        arithmetic_verdict = "NO_MEASURABLE_DIFFERENCE"
     elif delta > 0:
-        verdict = "VISION_ADDS_VALUE"
+        arithmetic_verdict = "VISION_ADDS_VALUE"
     else:
-        verdict = "VISION_DESTROYS_VALUE"
+        arithmetic_verdict = "VISION_DESTROYS_VALUE"
 
     # A loss that is "better" only because it traded less is reported as such.
     per_trade_vision = _safe_div(vision_net, vision_fills) if vision_fills else None
     per_trade_baseline = _safe_div(baseline_net, baseline_fills) if baseline_fills else None
 
     flags: dict[str, bool] = dict(same_inputs or {})
-    mismatch = sorted(key for key, value in flags.items() if not value)
+    mismatch = sorted(
+        set(key for key, value in flags.items() if not value)
+        | set(_derived_mismatches(vision, baseline))
+    )
+    # NOT_COMPARABLE is the verdict, not a footnote: if the inputs differ, the delta is
+    # arithmetic about two different experiments and cannot name a winner. It is still
+    # reported, under ``arithmetic``, so nobody has to recompute it by hand.
+    comparable = not mismatch
+    verdict = arithmetic_verdict if comparable else "NOT_COMPARABLE"
 
     return {
         "verdict": verdict,
+        "comparison_valid": comparable,
+        "arithmetic": {
+            "would_be_verdict": arithmetic_verdict,
+            "delta_net_usdt": round(delta, 6),
+        },
         "delta_net_usdt": round(delta, 6),
         "relative_delta_pct": (
             None

@@ -115,6 +115,10 @@ class PendingOrder:
     #: fill at a price the opinion never described.
     decision_ts_ms: int = 0
     expected_step_ms: int = 0
+    #: When the provider's answer actually reached us (bar time + measured latency). A
+    #: response that lands after the fill bar has opened cannot be executed at that bar's
+    #: open price: that price is in the past by then. Zero means "not measured".
+    received_at_ms: int = 0
 
 
 class VisionLane:
@@ -357,15 +361,22 @@ class VisionLane:
             self.spend_usd += float(response.cost_usd)
 
         if response.image_sha256_in_request and response.image_sha256_in_request != chart.sha256:
+            # FAIL-CLOSED: an answer to a *different* image is not an opinion about this
+            # chart. Logging it and carrying on would let a mis-attached or corrupted
+            # image produce a proposal, a fill and a P&L attributed to a chart the model
+            # never saw. Nothing downstream may run: no decision, no fill, no approval.
             self.ledger.append(
                 "INTEGRITY_FAILURE",
                 {
                     **base,
                     "expected_image_sha256": chart.sha256,
                     "request_image_sha256": response.image_sha256_in_request,
+                    "decision": None,
+                    "discarded": True,
                 },
             )
             self._bump("integrity_failure")
+            return None
 
         entry: dict[str, Any] = {
             **base,
@@ -429,6 +440,10 @@ class VisionLane:
             intent=resolved.intent,
             decision=decision,
             decision_seq=line.seq,
+            decision_ts_ms=int(bar.ts_ms),
+            #: The answer's arrival time, on the bar clock. Execution refuses a fill
+            #: whose bar opened before the answer existed.
+            received_at_ms=int(bar.ts_ms) + max(0, int(response.latency_ms or 0)),
         )
 
     # -- execution -----------------------------------------------------------
@@ -464,6 +479,27 @@ class VisionLane:
                 },
             )
             self._bump("guard:STALE_EXECUTION")
+            return
+
+        if pending.received_at_ms and pending.received_at_ms > int(bar.ts_ms):
+            # The model answered after this bar had already opened. Filling at its open
+            # would be a retrospective entry at a price nobody could have taken.
+            self.ledger.append(
+                "GUARD_REJECT",
+                {
+                    "ts_ms": int(bar.ts_ms),
+                    "ts_utc": _utc_iso(int(bar.ts_ms)),
+                    "symbol": symbol,
+                    "code": "LATE_RESPONSE",
+                    "detail": (
+                        f"the answer arrived at {pending.received_at_ms}, after the fill bar "
+                        f"opened at {int(bar.ts_ms)}; the open price is no longer tradable, so "
+                        "the opinion is dropped instead of filled retroactively"
+                    ),
+                    "stage": "EXECUTION",
+                },
+            )
+            self._bump("guard:LATE_RESPONSE")
             return
 
         if pending.intent == "CLOSE":
@@ -703,6 +739,7 @@ class VisionLane:
                                     decision_seq=decision.decision_seq,
                                     decision_ts_ms=int(bar.ts_ms),
                                     expected_step_ms=int(self._step_ms[symbol]),
+                                    received_at_ms=int(decision.received_at_ms),
                                 )
 
                 self.equity_curve.append(
