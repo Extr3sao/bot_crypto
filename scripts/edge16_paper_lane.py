@@ -53,7 +53,8 @@ from trading_bot.research.economic_recovery.alpha15 import (
 )
 from trading_bot.research.economic_recovery.experiments import Bar, load_ohlcv
 from trading_bot.research.economic_recovery.pit15 import PIT_CONTRACT, machine_for
-from trading_bot.risk.manager import RiskManager
+from trading_bot.research.equity_drawdown import max_drawdown
+from trading_bot.risk.manager import RiskManager, week_start_ms_for
 from trading_bot.strategies.types import Signal
 
 REPO = Path(__file__).resolve().parents[1]
@@ -281,11 +282,16 @@ def main() -> int:
             note(symbol, ts_ms, "RECONCILIATION", closed_trade=trade.trade_id)
 
     previous_day: str | None = None
+    #: WP-EDGE-017F/P0.3: one mark-to-market point per bar timestamp. This is the
+    #: curve the drawdown is measured from; a peak level alone cannot describe a
+    #: fall, and a trades-only series would miss the intrabar marks.
+    equity_curve: list[dict[str, Any]] = []
     for ts_ms in timeline:
         current_ms[0] = ts_ms
         day = datetime.fromtimestamp(ts_ms / 1000, tz=UTC)
         if previous_day is not None and day.strftime("%Y-%m-%d") != previous_day:
             week_before = int(risk.weekly_start_ms)
+            weekly_pnl_before = float(risk.weekly_pnl)
             risk.reset_daily()  # the runtime resets the daily counters at the day boundary
             cycles.append(
                 {
@@ -310,6 +316,7 @@ def main() -> int:
                         "stage": "WEEK_BOUNDARY",
                         "action": "RISK_RESET_WEEKLY",
                         "previous_week_start_ms": week_before,
+                        "weekly_pnl_before_reset": weekly_pnl_before,
                         "risk": canonical_trade_result(risk),
                     }
                 )
@@ -586,10 +593,33 @@ def main() -> int:
                 if decision.fill_index < len(bars):
                     pending[(symbol, family.name)] = decision
 
+        equity_curve.append(
+            {
+                "ts_ms": ts_ms,
+                "equity_usdt": round(broker.mark_to_market_equity(marks), 6),
+                "open_positions": len(broker.positions),
+            }
+        )
+
     snapshot = broker.accounting_snapshot(
         {symbol: bars[-1].close for symbol, bars in series.items()}
     )
     trades = broker.closed_trades_rows()
+    curve_drawdown = max_drawdown((row["ts_ms"], row["equity_usdt"]) for row in equity_curve)
+    weekly_weeks: dict[int, dict[str, Any]] = {}
+    for cycle in cycles:
+        stamp = int(cycle.get("ts_ms", 0) or 0)
+        if not stamp:
+            continue
+        week_start = week_start_ms_for(stamp)
+        bucket = weekly_weeks.setdefault(
+            week_start,
+            {"week_start_ms": week_start, "weekly_blocks": 0, "weekly_pnl_at_boundary": None},
+        )
+        if cycle.get("blocked_by") == "weekly_loss_limit":
+            bucket["weekly_blocks"] += 1
+        if cycle.get("stage") == "WEEK_BOUNDARY":
+            bucket["weekly_pnl_at_boundary"] = cycle.get("weekly_pnl_before_reset")
     admission_after = sha256(ADMISSION)
 
     actions: dict[str, int] = {}
@@ -771,6 +801,17 @@ def main() -> int:
             "free_gib": round(free_bytes(REPO) / 1024**3, 3),
             "policy_changed": False,
         },
+        "equity_curve": {
+            "path": "EQUITY_CURVE.jsonl",
+            "points": len(equity_curve),
+            "sampling": "one mark-to-market point per bar timestamp (3 symbols, merged timeline)",
+            "drawdown": curve_drawdown.to_dict(),
+        },
+        "weekly_risk": {
+            "window": "UTC Monday 00:00 to Monday 00:00",
+            "weeks": [weekly_weeks[key] for key in sorted(weekly_weeks)],
+            "weekly_blocks_total": sum(row["weekly_blocks"] for row in weekly_weeks.values()),
+        },
     }
 
     (out / "CANONICAL_LANE_REPORT.json").write_text(
@@ -785,6 +826,9 @@ def main() -> int:
     with (out / "COVERAGE_LEDGER.jsonl").open("w", encoding="utf-8") as handle:
         for row in coverage_rows:
             handle.write(json.dumps(row, sort_keys=True) + "\n")
+    with (out / "EQUITY_CURVE.jsonl").open("w", encoding="utf-8") as handle:
+        for point in equity_curve:
+            handle.write(json.dumps(point, sort_keys=True) + "\n")
 
     print(f"[lane16] cycles {len(cycles)} {actions}")
     print(

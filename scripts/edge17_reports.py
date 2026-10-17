@@ -10,6 +10,7 @@ step wrote.
 from __future__ import annotations
 
 import csv
+import hashlib
 import json
 import sys
 from datetime import UTC, datetime
@@ -17,6 +18,8 @@ from pathlib import Path
 from typing import Any
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
+
+from trading_bot.research.equity_drawdown import max_drawdown
 
 REPO = Path(__file__).resolve().parents[1]
 OUT = REPO / "reports" / "economic-recovery" / "RFC-EDGE-017"
@@ -53,6 +56,31 @@ def lane_report(multiplier: float) -> dict[str, Any]:
     return _load(lane_dir(multiplier) / "CANONICAL_LANE_REPORT.json")
 
 
+def drawdown_block(multiplier: float) -> dict[str, Any]:
+    """Recompute the drawdown from the published curve.
+
+    WP-EDGE-017F/P0.3. The old field was ``risk_state_at_end.peak_equity`` — a
+    USDT level with no trough and no percentage. This measures the peak-to-trough
+    fall of ``EQUITY_CURVE.jsonl`` itself, and reports ``UNKNOWN`` when the curve
+    is missing or too short to describe a fall.
+    """
+    path = lane_dir(multiplier) / "EQUITY_CURVE.jsonl"
+    curve = _rows(path)
+    result = max_drawdown(
+        (point.get("ts_ms", 0), point.get("equity_usdt", float("nan"))) for point in curve
+    )
+    payload = result.to_dict()
+    payload.update(
+        {
+            "source": str(path.relative_to(REPO)) if path.is_file() else None,
+            "curve_points": len(curve),
+            "curve_sha256": hashlib.sha256(path.read_bytes()).hexdigest() if path.is_file() else None,
+            "derived_from": "the curve, not from the lane's own peak_equity",
+        }
+    )
+    return payload
+
+
 def replay() -> dict[str, Any]:
     """The 146 WP-EDGE-016 fills, replayed under net-risk gating at 1x/2x/3x."""
     baseline_report = _load(OUT_16 / "CANONICAL_LANE_REPORT.json")
@@ -79,6 +107,8 @@ def replay() -> dict[str, Any]:
                 rejections[rule] = rejections.get(rule, 0) + 1
         costs = report.get("costs") or {}
         parity = report.get("net_risk_parity") or {}
+        drawdown = drawdown_block(multiplier)
+        weekly = report.get("weekly_risk") or {}
         runs[f"{int(multiplier)}x"] = {
             "cost_multiplier": multiplier,
             "fills": len(trades),
@@ -107,7 +137,9 @@ def replay() -> dict[str, Any]:
                 for t in trades
             ),
             "cost_reconciles": costs.get("reconciles"),
-            "drawdown_pct": (report.get("risk_state_at_end") or {}).get("peak_equity"),
+            "drawdown_pct": drawdown["drawdown_pct"],
+            "drawdown": drawdown,
+            "weekly_risk": weekly,
             "risk_state": report.get("risk_state_at_end"),
         }
 

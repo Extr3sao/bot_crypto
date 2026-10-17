@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from itertools import pairwise
@@ -342,6 +343,51 @@ def p_block_readers(sources: dict[str, str]) -> list[str]:
     return problems
 
 
+def p_drawdown_from_curve(curve: list[dict[str, Any]], declared: dict[str, Any]) -> list[str]:
+    """Recompute the drawdown from the curve, without importing the metric module.
+
+    WP-EDGE-017F/P0.3. The published 017 field was ``peak_equity`` — a USDT level
+    with no trough. This check derives the peak-to-trough fall itself and refuses
+    a percentage that is really a balance, a number with no curve behind it, or a
+    digest that does not describe the curve on disk.
+    """
+    problems: list[str] = []
+    if declared.get("status") != "MEASURED":
+        problems.append(f"drawdown is {declared.get('status')!r}, not MEASURED")
+    if int(declared.get("curve_points") or 0) != len(curve) or len(curve) < 2:
+        problems.append(f"declared {declared.get('curve_points')} points, curve has {len(curve)}")
+    points = [
+        (int(row["ts_ms"]), float(row["equity_usdt"]))
+        for row in curve
+        if math.isfinite(float(row.get("equity_usdt", float("nan"))))
+    ]
+    if len(points) < 2:
+        return [*problems, "fewer than two finite marks"]
+    peak = points[0][1]
+    worst = 0.0
+    worst_peak = peak
+    for _ts, equity in points[1:]:
+        if equity > peak:
+            peak = equity
+            continue
+        if peak - equity > worst:
+            worst = peak - equity
+            worst_peak = peak
+    expected_pct = worst / worst_peak * 100.0 if worst_peak > 0 else float("nan")
+    declared_pct = declared.get("drawdown_pct")
+    if not isinstance(declared_pct, (int, float)) or not math.isfinite(float(declared_pct)):
+        problems.append(f"drawdown_pct {declared_pct!r} is not a finite number")
+    else:
+        if float(declared_pct) > 100.0 + 1e-9:
+            problems.append(f"drawdown_pct {declared_pct} > 100%: looks like a balance, not a fall")
+        if abs(float(declared_pct) - expected_pct) > 1e-6 * max(1.0, expected_pct):
+            problems.append(f"drawdown_pct {declared_pct} != recomputed {expected_pct:.6f}")
+    declared_usdt = declared.get("drawdown_usdt")
+    if not isinstance(declared_usdt, (int, float)) or abs(float(declared_usdt) - worst) > 1e-6:
+        problems.append(f"drawdown_usdt {declared_usdt!r} != recomputed {worst:.6f}")
+    return problems
+
+
 def p_single_writer(capture_module: str, collector: str) -> list[str]:
     """The slice is only written inside the locked read-merge-write transaction.
 
@@ -525,6 +571,18 @@ def main() -> int:
         str(economic.get("net_realised_usdt")),
     )
 
+    curves: dict[str, list[dict[str, Any]]] = {
+        name: rows(OUT / "scratch" / f"net_{name}" / "EQUITY_CURVE.jsonl")
+        for name in ("1x", "2x", "3x")
+    }
+    for name, curve in curves.items():
+        declared = ((replay.get("runs") or {}).get(name) or {}).get("drawdown") or {}
+        checks.check(
+            f"D{name} drawdown is the peak-to-trough fall of the equity curve",
+            p_drawdown_from_curve(curve, declared),
+            f"{len(curve)} marks, pct {declared.get('drawdown_pct')}",
+        )
+
     sources = {
         "evaluator": (REPO / "src/trading_bot/risk/defensive_blocks.py").read_text(
             encoding="utf-8"
@@ -632,6 +690,17 @@ def main() -> int:
             capture_source,
             collector_source.replace("merge_and_write(", "merge_slice("),
         ),
+    )
+    declared_1x = ((replay.get("runs") or {}).get("1x") or {}).get("drawdown") or {}
+    mutation(
+        "M13 publish peak_equity as drawdown_pct again",
+        p_drawdown_from_curve(
+            curves["1x"], {**declared_1x, "drawdown_pct": declared_1x.get("peak_equity")}
+        ),
+    )
+    mutation(
+        "M14 claim a drawdown with no curve behind it",
+        p_drawdown_from_curve([], {**declared_1x, "curve_points": 0}),
     )
 
     undetected = [row["id"] for row in mutations if not row["detected"]]
