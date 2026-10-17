@@ -24,13 +24,13 @@
       "what": "every clause of the order check is true (not a sentence containing False)"
     },
     {
-      "detail": "freeze 1792221328939466200 -> capture 1792238358854728300 (+17029915262100 ns)",
+      "detail": "freeze 1792221328939466200 -> capture 1792254789893210900 (+33460953744700 ns)",
       "id": "V03",
       "ok": true,
       "what": "the ordering is reconstructed from the recorded integers"
     },
     {
-      "detail": "commit 5b86b656f9a5 blob cea0be89347d219b\u2026",
+      "detail": "commit 05b977e757eb blob cea0be89347d219b\u2026",
       "id": "V04",
       "ok": true,
       "what": "the frozen file still hashes to the blob of the commit that added it"
@@ -48,7 +48,7 @@
       "what": "the protocol digest recomputes from the frozen protocol block"
     },
     {
-      "detail": "9 prospective bar(s); digest matches the manifest",
+      "detail": "24 prospective bar(s); digest matches the manifest",
       "id": "V07",
       "ok": true,
       "what": "every bar in the prospective slice opens after the freeze instant"
@@ -72,7 +72,7 @@
       "what": "every artefact this manifest records is repository-relative and resolves here"
     },
     {
-      "detail": "HEAD:reports/economic-recovery/RFC-EDGE-015/scratch/OOS_PROSPECTIVE_1H.jsonl matches the 1255 LF-normalised bytes on disk",
+      "detail": "HEAD:reports/economic-recovery/RFC-EDGE-015/scratch/OOS_PROSPECTIVE_1H.jsonl matches the 3344 LF-normalised bytes on disk",
       "id": "V34",
       "ok": true,
       "what": "the prospective slice the manifest hashes is the one Git will ship"

@@ -8,15 +8,15 @@ The verifier imports none of the modules that built these artefacts: the cost mo
 | --- | --- | --- | --- |
 | V01 | the v2 freeze and its capture manifest exist (the v1 evidence could not order them) | PASS | OOS_PREREGISTRATION_V2.json=True OOS_CAPTURE_MANIFEST_V2.json=True |
 | V02 | every clause of the order check is true (not a sentence containing False) | PASS | verdict ORDER_VERIFIED; freeze_precedes_capture=True, prereg_file_matches_committed_blob=True, commit_precedes_capture=True, protocol_digest_matches=True, all_prospective_bars_open_after_freeze=True |
-| V03 | the ordering is reconstructed from the recorded integers | PASS | freeze 1792221328939466200 -> capture 1792238358854728300 (+17029915262100 ns) |
-| V04 | the frozen file still hashes to the blob of the commit that added it | PASS | commit 5b86b656f9a5 blob cea0be89347d219b… |
+| V03 | the ordering is reconstructed from the recorded integers | PASS | freeze 1792221328939466200 -> capture 1792254789893210900 (+33460953744700 ns) |
+| V04 | the frozen file still hashes to the blob of the commit that added it | PASS | commit 05b977e757eb blob cea0be89347d219b… |
 | V05 | that commit is an ancestor of HEAD (the freeze was not rewritten) | PASS | git merge-base --is-ancestor -> 0 |
 | V06 | the protocol digest recomputes from the frozen protocol block | PASS | protocol sha256 3a88f70da2f10d0e… |
-| V07 | every bar in the prospective slice opens after the freeze instant | PASS | 9 prospective bar(s); digest matches the manifest |
+| V07 | every bar in the prospective slice opens after the freeze instant | PASS | 24 prospective bar(s); digest matches the manifest |
 | V08 | the 14R slice is preserved and labelled descriptive | PASS | d92ac8cd8e86641c… DESCRIPTIVE_FOR_THESE_HYPOTHESES |
 | V09 | the holdout is reserved: no selection read it and nothing scored it | PASS | state OOS_ACCRUING_WITH_PROSPECTIVE_BARS, selection_has_read_any_slice=False |
 | V33 | every artefact this manifest records is repository-relative and resolves here | PASS | 3 relative path(s) + the frozen 14R path (absolute, as it was committed inside the protocol) re-anchored on the repository by its tail |
-| V34 | the prospective slice the manifest hashes is the one Git will ship | PASS | HEAD:reports/economic-recovery/RFC-EDGE-015/scratch/OOS_PROSPECTIVE_1H.jsonl matches the 1255 LF-normalised bytes on disk |
+| V34 | the prospective slice the manifest hashes is the one Git will ship | PASS | HEAD:reports/economic-recovery/RFC-EDGE-015/scratch/OOS_PROSPECTIVE_1H.jsonl matches the 3344 LF-normalised bytes on disk |
 | V10 | every row's cost per round trip recomputes from the published cost model | PASS | worst deviation 0.000e+00 bps over 60 rows |
 | V11 | the sensitivity columns are the same trades priced at 1x, 2x and 3x | PASS | worst identity error 2.183e-11 bps; monotone True |
 | V12 | the decisive family's entries satisfy their own gate on past bars only | PASS | 119 published trades re-derived; worst z overshoot 0.000e+00; worst price mismatch 0.000e+00 |
