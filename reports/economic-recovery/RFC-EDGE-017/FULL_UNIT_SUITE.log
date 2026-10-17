@@ -10,67 +10,151 @@
 ........................................................................ [ 17%]
 ........................................................................ [ 19%]
 ........................................................................ [ 21%]
-........................................................................ [ 23%]
-........................F............................................... [ 24%]
-....................................................................F... [ 26%]
+........................................................................ [ 22%]
+........................................................................ [ 24%]
+.................................................F...................... [ 26%]
 ........................................................................ [ 28%]
-........................................................................ [ 30%]
+........................................................................ [ 29%]
 ........................................................................ [ 31%]
 ........................................................................ [ 33%]
 ........................................................................ [ 35%]
 ........................................................................ [ 37%]
-........................................................................ [ 39%]
-........................................................................ [ 40%]
-........................................................................ [ 42%]
+........................................................................ [ 38%]
+..........................................................FF............ [ 40%]
+.......F..............F...............FFF............F.........F........ [ 42%]
 ........................................................................ [ 44%]
-........................................................................ [ 46%]
+........................................................................ [ 45%]
 ........................................................................ [ 47%]
 ........................................................................ [ 49%]
 ........................................................................ [ 51%]
-........................................................................ [ 53%]
-........................................................................ [ 55%]
+........................................................................ [ 52%]
+........................................................................ [ 54%]
 ........................................................................ [ 56%]
 ........................................................................ [ 58%]
-........................................................................ [ 60%]
-........................................................................ [ 62%]
-.........................F...F.......................................... [ 63%]
+........................................................................ [ 59%]
+........................................................................ [ 61%]
+.........................................F...F.......................... [ 63%]
 ........................................................................ [ 65%]
-........................................................................ [ 67%]
-........................................................................ [ 69%]
-........................................................................ [ 71%]
+........................................................................ [ 66%]
+........................................................................ [ 68%]
+........................................................................ [ 70%]
 ........................................................................ [ 72%]
 ........................................................................ [ 74%]
-........................................................................ [ 76%]
-........................................................................ [ 78%]
+........................................................................ [ 75%]
+........................................................................ [ 77%]
 ........................................................................ [ 79%]
 ........................................................................ [ 81%]
-........................................................................ [ 83%]
-..FF.................................................................... [ 85%]
-........................................................................ [ 87%]
+........................................................................ [ 82%]
+..................FF.................................................... [ 84%]
+........................................................................ [ 86%]
 ........................................................................ [ 88%]
-........................................................................ [ 90%]
-........................................................................ [ 92%]
-........................................................................ [ 94%]
+........................................................................ [ 89%]
+........................................................................ [ 91%]
+........................................................................ [ 93%]
 ........................................................................ [ 95%]
-........................................................................ [ 97%]
-........................................................................ [ 99%]
-.....................                                                    [100%]
+........................................................................ [ 96%]
+........................................................................ [ 98%]
+....................................................                     [100%]
 ================================== FAILURES ===================================
-__________________ test_audit_is_deterministic_and_committed __________________
-tests\unit\research\test_active_recovery_wp.py:275: in test_audit_is_deterministic_and_committed
-    assert stored["payload_sha256"] == first, "the committed audit is stale: re-run scripts/active_economic_audit.py"
-E   AssertionError: the committed audit is stale: re-run scripts/active_economic_audit.py
-E   assert '023b66ffd121...4d6a5d2fb2a53' == 'c6ea34388745...6989f98f0cf23'
+______________________ test_state_view_is_deterministic _______________________
+tests\unit\research\test_active_recovery_wp.py:67: in test_state_view_is_deterministic
+    assert stored["payload_sha256"] == first, "the committed view is stale: re-run scripts/campaign_state_view.py"
+E   AssertionError: the committed view is stale: re-run scripts/campaign_state_view.py
+E   assert '51ef35aa5168...edff2ffb74a6f' == '25e35d0bda7f...bd3507fbb349b'
 E     
-E     - c6ea34388745471edbae3fd093ce63b9453a58be5226bc10a296989f98f0cf23
-E     + 023b66ffd1213b069607a8844f669c0ff00c0b35533619a031d4d6a5d2fb2a53
+E     - 25e35d0bda7f512f74e82a2a10a9c1d57b38beb496b3e1ebe05bd3507fbb349b
+E     + 51ef35aa5168d9758d0a0493bb9a10ee99708879ee37a1ad64dedff2ffb74a6f
+_ test_a_removed_required_input_blocks_in_full_mode_and_stays_partial_in_check _
+tests\unit\research\test_cost_barrier_adversarial.py:191: in test_a_removed_required_input_blocks_in_full_mode_and_stays_partial_in_check
+    assert row["detected"] is True, row["counter_evidence"]
+E   AssertionError: [full] inputs:published_pins_match_the_declared_sources: 8/9 present; pinned: 3 byte-exact, 0 state-exact, 0 line-ending-only, 1 drifted; data/recovery/ACTIVE_ECONOMIC_AUDIT.json state drift (pin 023b66ffd1213b06...); [check] inputs:published_pins_match_the_declared_sources: 8/9 present; pinned: 3 byte-exact, 0 state-exact, 0 line-ending-only, 1 drifted; data/recovery/ACTIVE_ECONOMIC_AUDIT.json state drift (pin 023b66ffd1213b06...)
+E   assert False is True
+_______________ test_a_line_ending_only_change_is_not_a_finding _______________
+tests\unit\research\test_cost_barrier_adversarial.py:200: in test_a_line_ending_only_change_is_not_a_finding
+    assert row["detected"] is True, row["counter_evidence"]
+E   AssertionError: [full] inputs:published_pins_match_the_declared_sources: 9/9 present; pinned: 3 byte-exact, 0 state-exact, 1 line-ending-only, 1 drifted; data/recovery/ACTIVE_ECONOMIC_AUDIT.json state drift (pin 023b66ffd1213b06...); [check] inputs:published_pins_match_the_declared_sources: 9/9 present; pinned: 3 byte-exact, 0 state-exact, 1 line-ending-only, 1 drifted; data/recovery/ACTIVE_ECONOMIC_AUDIT.json state drift (pin 023b66ffd1213b06...)
+E   assert False is True
+________ test_the_certification_record_digests_content_not_a_checkout _________
+tests\unit\research\test_cost_barrier_adversarial.py:353: in test_the_certification_record_digests_content_not_a_checkout
+    assert digest == expected, rel
+E   AssertionError: data/recovery/ACTIVE_ECONOMIC_AUDIT.json
+E   assert 'd1d49f09d8de...b08c14a207aa5' == 'dc88a8c5794a...2cf6de7a57c8a'
+E     
+E     - dc88a8c5794a26af39a71e997d626aafacef0368c456ab629e82cf6de7a57c8a
+E     + d1d49f09d8de20ad14437cbce1e7d362e597342ae21c452ff51b08c14a207aa5
+_______ test_payload_hash_reproduces_and_matches_the_committed_artefact _______
+tests\unit\research\test_cost_barrier_explorer.py:70: in test_payload_hash_reproduces_and_matches_the_committed_artefact
+    assert first == stored["payload_sha256"], (
+E   AssertionError: the committed artefact is not the fresh build; rerun scripts/cost_barrier_explorer.py
+E   assert '0ab1ac23dc14...a1921d7a78741' == '4383d812d6e1...373dfaa2621fb'
+E     
+E     - 4383d812d6e18928c53894c7ee3ba063723d351ab945fcfc206373dfaa2621fb
+E     + 0ab1ac23dc1471ac406698a844309374b8fd49e056472d0d4d4a1921d7a78741
+__________ test_the_gate_reproduces_the_committed_state_in_full_mode __________
+tests\unit\research\test_cost_barrier_gate.py:124: in test_the_gate_reproduces_the_committed_state_in_full_mode
+    assert report["status"] == gate.FULL_REPRODUCTION_PASS, report["failures"]
+E   AssertionError: ['cited input data/recovery/ACTIVE_ECONOMIC_AUDIT.json no longer matches the state pin the explorer published (023b66f...ad_sha256 0ab1ac23dc1471ac406698a844309374b8fd49e056472d0d4d4a1921d7a78741 != reco...; (+5 more)', '3 check(s) failed']
+E   assert 'INTEGRITY_FAILURE' == 'FULL_REPRODUCTION_PASS'
+E     
+E     - FULL_REPRODUCTION_PASS
+E     + INTEGRITY_FAILURE
+___________________ test_check_mode_is_partial_and_says_so ____________________
+tests\unit\research\test_cost_barrier_gate.py:138: in test_check_mode_is_partial_and_says_so
+    assert report["status"] == gate.CHECK_ONLY_PASS, report["failures"]
+E   AssertionError: ['cited input data/recovery/ACTIVE_ECONOMIC_AUDIT.json no longer matches the state pin the explorer published (023b66ffd1213b06...): the artefact must be regenerated and re-verified', '1 check(s) failed']
+E   assert 'INTEGRITY_FAILURE' == 'CHECK_ONLY_PASS'
+E     
+E     - CHECK_ONLY_PASS
+E     + INTEGRITY_FAILURE
+__________________ test_the_cli_has_one_exit_code_per_state ___________________
+tests\unit\research\test_cost_barrier_gate.py:152: in test_the_cli_has_one_exit_code_per_state
+    assert clean_check.returncode == 2, clean_check.stdout + clean_check.stderr
+E   AssertionError: cost-barrier drift gate: INTEGRITY_FAILURE (check mode) exit 5
+E       head 34622f3c9adeeb2c2417b2edff3d5754f3f54ae3  branch agent/edge-recovery/WP-EDGE-00-baseline
+E       checks 11/12 PASS
+E       controls 6/6 detected
+E       full certification satisfied: False (partial run)
+E       [PASS] artifact:explorer_self_hash_and_checks - payload_sha256 recomputes from the stored body and 0 checks failed
+E       [PASS] artifact:explorer_governance_flags_unchanged - promotion/rentable/certified/production_ready false; NOT_AUTHORIZED; 0 trades
+E       [PASS] artifact:verification_attests_the_explorer - status PASS, 0 failed checks, 0 missed controls, false_success 0, signals cross-pinned to the explorer's payload hash
+E       [PASS] inputs:declared_inputs_present - 9/9 declared inputs present
+E       [FAIL] inputs:published_pins_match_the_declared_sources - 9/9 present; pinned: 4 byte-exact, 0 state-exact, 0 line-ending-only, 1 drifted; data/recovery/ACTIVE_ECONOMIC_AUDIT.json state drift (pin 023b66ffd1213b06...)
+E       [PASS] producers:digests_match_the_pinned_manifest - 4/4 producer(s) match the pin recorded in data/recovery/wp7/evidence/PRODUCER_PINS.json (4 exact, 0 line-ending-only)
+E       [PASS] source:market_horizon_rows_match_the_pinned_source - every market-horizon row and the published lines reproduce from reports/strategy-baseline/COST_BARRIER.json (12 rows)
+E       [PASS] ci:activation_contract_covers_every_declared_input - 20 watched path(s) covered by both triggers; the gate and the materializer are invoked and no step is softened
+E       [PASS] reproduce:verifier_passes - verifier PASS on COST_BARRIER_EXPLORER.json; 13 mutation controls, 0 missed, false_success 0
+E       [PASS] reproduce:verification_document_unchanged - the fresh verification document equals the published one
+E       [PASS] read_only:no_published_file_changed - the gate and the tools it drives left every watched file byte-identical
+E       [PASS] controls:self_controls_detect_tampering - 6/6 controls detected
+E       FAILURES:
+E         - cited input data/recovery/ACTIVE_ECONOMIC_AUDIT.json no longer matches the state pin the explorer published (023b66ffd1213b06...): the artefact must be regenerated and re-verified
+E         - 1 check(s) failed
+E       INTEGRITY_FAILURE (no re-run could explain these):
+E         - inputs:published_pins_match_the_declared_sources: 9/9 present; pinned: 4 byte-exact, 0 state-exact, 0 line-ending-only, 1 drifted; data/recovery/ACTIVE_ECONOMIC_AUDIT.json state drift (pin 023b66ffd1213b06...)
+E     
+E   assert 5 == 2
+E    +  where 5 = CompletedProcess(args=['C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe', 'C:\\Users\\GVLLF...e-ending-only, 1 drifted; data/recovery/ACTIVE_ECONOMIC_AUDIT.json state drift (pin 023b66ffd1213b06...)\n", stderr='').returncode
+___________ test_a_missing_required_input_blocks_rather_than_fails ____________
+tests\unit\research\test_cost_barrier_gate.py:391: in test_a_missing_required_input_blocks_rather_than_fails
+    assert report["status"] == gate.BLOCKED_MISSING_INPUT
+E   AssertionError: assert 'INTEGRITY_FAILURE' == 'BLOCKED_MISSING_INPUT'
+E     
+E     - BLOCKED_MISSING_INPUT
+E     + INTEGRITY_FAILURE
+__ test_a_gate_run_leaves_the_published_artefacts_and_inputs_byte_identical ___
+tests\unit\research\test_cost_barrier_gate.py:542: in test_a_gate_run_leaves_the_published_artefacts_and_inputs_byte_identical
+    assert report["status"] == gate.FULL_REPRODUCTION_PASS
+E   AssertionError: assert 'INTEGRITY_FAILURE' == 'FULL_REPRODUCTION_PASS'
+E     
+E     - FULL_REPRODUCTION_PASS
+E     + INTEGRITY_FAILURE
 ________________ test_repeated_reproduction_is_byte_identical _________________
-tests\unit\research\test_recovery_determinism.py:226: in test_repeated_reproduction_is_byte_identical
-    assert stored_audit["payload_sha256"] == audit.payload_hash(audit_payload)
-E   AssertionError: assert '023b66ffd121...4d6a5d2fb2a53' == 'c6ea34388745...6989f98f0cf23'
+tests\unit\research\test_recovery_determinism.py:225: in test_repeated_reproduction_is_byte_identical
+    assert stored["payload_sha256"] == state_view.payload_hash(view_payload)
+E   AssertionError: assert '51ef35aa5168...edff2ffb74a6f' == '25e35d0bda7f...bd3507fbb349b'
 E     
-E     - c6ea34388745471edbae3fd093ce63b9453a58be5226bc10a296989f98f0cf23
-E     + 023b66ffd1213b069607a8844f669c0ff00c0b35533619a031d4d6a5d2fb2a53
+E     - 25e35d0bda7f512f74e82a2a10a9c1d57b38beb496b3e1ebe05bd3507fbb349b
+E     + 51ef35aa5168d9758d0a0493bb9a10ee99708879ee37a1ad64dedff2ffb74a6f
 ___________ test_the_clean_checkout_rehearsal_passes_on_this_commit ___________
 tests\unit\research\test_recovery_determinism.py:298: in test_the_clean_checkout_rehearsal_passes_on_this_commit
     assert report["status"] == "PASS", json.dumps(
@@ -78,7 +162,8 @@ E   AssertionError: {
 E       "status": "REPRODUCTION_FAILED",
 E       "failed": null,
 E       "moved": [
-E         "data/recovery/ACTIVE_ECONOMIC_AUDIT.json"
+E         "data/recovery/CAMPAIGN_STATE_VIEW.json",
+E         "data/recovery/CAMPAIGN_STATE_VIEW_REPORT.md"
 E       ],
 E       "steps": [
 E         {
@@ -105,9 +190,7 @@ E         {
 E           "step": "materialize_cost_barrier_input",
 E           "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe scripts/cost_barrier_evidence.py --materialize",
 E           "exit_code": 0,
-E           "expected_exit": 0,
-E           "result": "PASS",
-E           "stdout_tail": "
+E           "expected_exit": 
 E   assert 'REPRODUCTION_FAILED' == 'PASS'
 E     
 E     - PASS
@@ -119,17 +202,25 @@ E   assert True is False
 _ test_the_independent_verifier_passes_without_rewriting_the_committed_artefact _
 tests\unit\research\test_st6_forward_regime.py:844: in test_the_independent_verifier_passes_without_rewriting_the_committed_artefact
     assert result.returncode == 0, result.stdout + result.stderr
-E   AssertionError: FAIL 10847/10848 checks, 1 mismatches, FALSE_SUCCESS = 1
+E   AssertionError: FAIL 11050/11051 checks, 1 mismatches, FALSE_SUCCESS = 1
 E       FAIL the report states what it does not certify: a measured cost exceeded the modelled term beyond the declared boundary policy
-E     written -> C:\Users\GVLLFR0035\AppData\Local\Temp\pytest-of-GVLLFR0035\pytest-2030\test_the_independent_verifier_10\verification.json, C:\Users\GVLLFR0035\AppData\Local\Temp\pytest-of-GVLLFR0035\pytest-2030\test_the_independent_verifier_10\verification.md
+E     written -> C:\Users\GVLLFR0035\AppData\Local\Temp\pytest-of-GVLLFR0035\pytest-2099\test_the_independent_verifier_10\verification.json, C:\Users\GVLLFR0035\AppData\Local\Temp\pytest-of-GVLLFR0035\pytest-2099\test_the_independent_verifier_10\verification.md
 E     
 E   assert 1 == 0
-E    +  where 1 = CompletedProcess(args=['C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe', 'C:\\Users\\GVLLF...pData\\Local\\Temp\\pytest-of-GVLLFR0035\\pytest-2030\\test_the_independent_verifier_10\\verification.md\n', stderr='').returncode
+E    +  where 1 = CompletedProcess(args=['C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe', 'C:\\Users\\GVLLF...pData\\Local\\Temp\\pytest-of-GVLLFR0035\\pytest-2099\\test_the_independent_verifier_10\\verification.md\n', stderr='').returncode
 =========================== short test summary info ===========================
-FAILED tests/unit/research/test_active_recovery_wp.py::test_audit_is_deterministic_and_committed
+FAILED tests/unit/research/test_active_recovery_wp.py::test_state_view_is_deterministic
+FAILED tests/unit/research/test_cost_barrier_adversarial.py::test_a_removed_required_input_blocks_in_full_mode_and_stays_partial_in_check
+FAILED tests/unit/research/test_cost_barrier_adversarial.py::test_a_line_ending_only_change_is_not_a_finding
+FAILED tests/unit/research/test_cost_barrier_adversarial.py::test_the_certification_record_digests_content_not_a_checkout
+FAILED tests/unit/research/test_cost_barrier_explorer.py::test_payload_hash_reproduces_and_matches_the_committed_artefact
+FAILED tests/unit/research/test_cost_barrier_gate.py::test_the_gate_reproduces_the_committed_state_in_full_mode
+FAILED tests/unit/research/test_cost_barrier_gate.py::test_check_mode_is_partial_and_says_so
+FAILED tests/unit/research/test_cost_barrier_gate.py::test_the_cli_has_one_exit_code_per_state
+FAILED tests/unit/research/test_cost_barrier_gate.py::test_a_missing_required_input_blocks_rather_than_fails
+FAILED tests/unit/research/test_cost_barrier_gate.py::test_a_gate_run_leaves_the_published_artefacts_and_inputs_byte_identical
 FAILED tests/unit/research/test_recovery_determinism.py::test_repeated_reproduction_is_byte_identical
 FAILED tests/unit/research/test_recovery_determinism.py::test_the_clean_checkout_rehearsal_passes_on_this_commit
 FAILED tests/unit/research/test_st6_forward_regime.py::test_the_committed_artefacts_are_coherent
 FAILED tests/unit/research/test_st6_forward_regime.py::test_the_independent_verifier_passes_without_rewriting_the_committed_artefact
-5 failed, 4048 passed in 1316.95s (0:21:56)
-EXIT=1
+14 failed, 4070 passed in 1313.64s (0:21:53)

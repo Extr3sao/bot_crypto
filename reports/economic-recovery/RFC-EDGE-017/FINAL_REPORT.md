@@ -1,113 +1,161 @@
-# WP-EDGE-017 — final report
+# WP-EDGE-017 — final report (as closed by WP-EDGE-017F)
 
-## What was wrong
+> This document describes the code at the commit that carries it. It supersedes the
+> 13:51Z version, whose replay numbers (146/110/67) were produced by a risk engine whose
+> weekly loss accumulator never reset, and whose `drawdown_pct` was a USDT balance.
 
-WP-EDGE-016 certified its own runtime while four operational defects sat outside the
-checks it ran:
+## 1. Why 017F exists
 
-1. **The holdout collector was destructive.** `_write_slice` opened the slice with `w`,
-   so every `--capture` truncated it and rewrote it with one unpaginated page anchored at
-   the freeze instant. A growing history would eventually stall while silently destroying
-   what earlier runs had captured. The runbook called it "append-only/idempotent"; the
-   code did the opposite.
-2. **The coverage counter could not count.** `scripts/edge16_capture.py` reduced the slice
-   to `{symbol: last_timestamp}`, so `captured_bars_per_symbol` was always 0 or 1, and its
-   duplicate test compared a dict's keys with their own set. `OBSERVED`/`MISSING` and the
-   "7/7 monitoring" were therefore unreliable by construction.
-3. **Risk decided on gross and cost was booked after the decisions.** The lane ran the
-   broker with `commission_bps=0, slippage_bps=0`; `record_trade_result(trade.pnl)` fed a
-   frictionless number, and the venue cost was subtracted in a report afterwards. 146
-   fills were approved against −53.38 USDT gross while the same fills cost −239.75 USDT
-   net. The risk engine had real code paths and no economic parity.
-4. **Four declared blocks were never read.** `excessive_spread_bps`,
-   `extreme_atr_pct`, `high_latency_ms` and `weekend_trading` existed in
-   `config/risk.yaml` and in no runtime branch.
+The EDGE-017 branch was published while the checkpoint claimed it already was: the remote
+sat at `2536928` with six commits local-only. That was fixed in the previous session. 017F
+closes the defects that survived that publication:
 
-## What was repaired
+1. **The weekly loss window never rolled over.** `record_trade_result` accumulated
+   `weekly_pnl`; `reset_daily` explicitly did not reset it, and nothing else did either. One
+   bad week vetoed every later signal for the whole run — including the replay that
+   produced 110 and 67 fills.
+2. **The published drawdown was not a drawdown.** `edge17_reports.py` wrote
+   `drawdown_pct = risk_state_at_end.peak_equity` — `10 000.0`, a balance with no trough.
+3. **The economic replay had to be regenerated**, not re-attributed.
+4. **The full suite had never been re-run** on the published tree.
+5. **Prospective provenance was coarse**: a bar captured five minutes after its close was
+   counted the same as one recovered six hours later.
 
-**Capture is now a contract, not a promise.** `src/trading_bot/research/oos_capture.py`
-merges rows by `(symbol, open_ms)`, keeps the first captured value of a bar, records any
-conflicting re-fetch instead of dropping it, writes through a temporary sibling with
-`os.replace`, resumes from the newest held bar, paginates, confirms a short page with a
-second request, and refuses a bar whose close has not happened. An independent
-append-only ledger records what every capture attempt saw, so coverage can be re-derived
-without trusting the file the collector writes.
+## 2. What was repaired
 
-**Coverage is one row per `(symbol, hour)`**, with `expected = observed + missing` checked
-per symbol and in total. Missing hours are `MISSING_NO_COLLECTOR`, never a quiet market.
-Each row also records whether it was captured at its close or backfilled later.
+**A weekly window with a causal clock.** `RiskManager` anchors the window in
+`weekly_start_ms` (UTC Monday 00:00 to Monday 00:00), rolls it from the injectable clock in
+`check_signal`, `record_trade_result` and `reset_daily`, and carries the anchor through
+`extract_state`/`restore_state`, so a restart keeps the current week and drops a stale one.
+A clock that moves backwards never resets the loss. A legacy snapshot without an anchor
+keeps its loss but anchors it to the restore week, so it cannot veto forever. The replay
+emits `WEEK_BOUNDARY / RISK_RESET_WEEKLY` with `weekly_pnl_before_reset`. No limit, reserve
+or weekend flag changed (ADR-017F-01 in `tasks/decisions.md`).
 
-**The book pays before risk decides.** `PaperBroker` accepts a per-symbol `BrokerCost`
-(commission, half spread, slippage) and every `ClosedTrade` carries the exact
-decomposition `pnl = reference_gross − execution_cost − entry_commission −
-exit_commission`. `RiskManager.mark_equity` assigns the broker's net mark-to-market and
-the lane marks it before every `check_signal`, so daily loss, weekly loss, both drawdowns
-and the sizing all read net equity. `record_trade_result` now documents that its input
-must be net.
+**Drawdown from a curve.** The lane writes `EQUITY_CURVE.jsonl`, one mark-to-market point
+per bar timestamp. `trading_bot.research.equity_drawdown` computes the peak-to-trough fall
+and returns `UNKNOWN` when fewer than two finite marks exist. `edge17_reports.py` derives
+the published value from that file; `edge17_verify.py` re-implements the calculation
+without importing the module and injects the old `peak_equity`-as-percentage value as a
+fault (M13/M14).
 
-**The declared blocks are evaluated, fail closed.** `risk/defensive_blocks.py` runs the
-four rules in order; a condition that was not measured blocks (`spread_unknown`,
-`atr_unknown`, `latency_unknown`), and the weekend rule reads the calendar rather than
-the caller. It is wired on the canonical paper path (`start_paper_trading` →
-`PaperCycleEngine.run_cycle_sync`) from the runtime's own policy object.
+**The replay was re-executed** at 1×, 2× and 3× from this code, with the same historical
+data and the same policy, through `edge16_paper_lane.py --cost-mode net --cost-multiplier
+{1,2,3}`.
 
-## What the numbers say
+**Provenance per bar.** Every ladder row now carries `capture_class`:
+`RECEIVED_AT_CLOSE` (first ledger record within `[close, close + 1 h)`),
+`RECOVERED_LATER` (at or after `close + 1 h`), or `ABSENT`. `FIRST_SEEN_BEFORE_CLOSE` is
+counted separately as an integrity failure.
 
-| quantity | result |
+## 3. The numbers (regenerated, not carried over)
+
+| quantity | 017 (old) | 017F (this report) |
+| --- | --- | --- |
+| fills at 1× | 146 | **146** |
+| fills at 2× | 110 | **146** |
+| fills at 3× | 67 | **121** |
+| net realised at 1× | −238.7705 USDT | **−238.7705 USDT** |
+| net realised at 2× | −293.0325 USDT | **−425.6923 USDT** |
+| net realised at 3× | −294.0563 USDT | **−500.5718 USDT** |
+| drawdown at 1× | `10 000.0` (a level) | **2.3877 %** (238.7705 USDT) |
+| drawdown at 2× | `10 000.0` | **4.2569 %** (425.6923 USDT) |
+| drawdown at 3× | `10 000.0` | **5.0057 %** (500.5718 USDT) |
+| weekly resets in the replay | 0 | **12 per run** |
+| fill rejections at 1×/2× | — | 3 × `consecutive_loss_cooldown` |
+| fill rejections at 3× | — | 43 × `max_drawdown`, 1 × `consecutive_loss_cooldown` |
+
+The 2×/3× differences are the point: the old numbers were produced after the never-resetting
+weekly accumulator had tripped, so the book stopped trading for the rest of the run. With
+the window rolling, 2× keeps all 146 fills and 3× loses 25 to the *(total)* drawdown rule,
+not to a phantom weekly veto.
+
+**Weekly risk evolution at 1×** (`weekly_pnl` immediately before each Monday reset):
+
+| week starting (UTC) | weekly P&L before reset (USDT) |
 | --- | --- |
-| capture, first fixed run | 3 → 9 rows (+6), 0 conflicts |
-| capture, immediate re-run | 0 added, 0 lost, byte-identical |
-| coverage in the frozen window | 9 expected, 9 observed, 9 evaluated, **0 missing** |
-| longest consecutive evaluated run | 3 h per symbol (08:00Z–10:00Z, 2026-10-17) |
-| all nine bars | **backfilled** by the fixed collector, max lag 2.648 h |
-| measured collector cost | 9 576.3 B/h ≈ 0.0096 MB/h |
-| the fallback it replaced | 240 MB/h — overstated by **25 061.8x** |
-| guard decision | **COHERENT** for 24 h, its reserves and stress untouched |
-| net book at 1x | 146 fills, −238.7705 USDT (commissions 146.00 + execution 40.334) |
-| net book at 2x | 110 fills, −293.0325 USDT; **55 entries refused by the weekly loss limit** |
-| net book at 3x | 67 fills, −294.0563 USDT; **105 entries refused by the weekly loss limit** |
-| gross-gated baseline | 146 fills, −53.3845 frictionless / −239.7503 restated |
-| equivalence with costs off | 146/146 fills identical to WP-EDGE-016 |
+| 2026-08-10 | −22.05 |
+| 2026-08-17 | −14.50 |
+| 2026-08-24 | −8.12 |
+| 2026-08-31 | −39.89 |
+| 2026-09-07 | −4.35 |
+| 2026-09-14 | −25.10 |
+| 2026-09-21 | +3.76 |
+| 2026-09-28 | −14.64 |
+| 2026-10-05 | −33.42 |
+| 2026-10-12 | −78.76 |
 
-At the central cost the fills do not change: −238.77 is a 2.39% drawdown against a 5%
-limit, and the weekly limit (−292.8) is not reached. Under the adverse multipliers the
-weekly limit binds, and the engine refuses entries gross risk had approved — 36 fills at
-2x and 79 at 3x. That is the defect made visible: not a different dataset, the same data
-and the same policy with the cost where it belongs.
+The worst single week at 1× is −78.76 USDT (0.79 % of equity), at 2× −120.13, at 3×
+−97.19: no week reaches the 3 % (≈288 USDT) weekly limit, so the weekly rule is **enforced
+but not binding on this dataset** (`weekly_blocks_total = 0` in all three runs). That is a
+measurement, not an absence of the rule: the 14 weekly-window tests exercise the veto,
+including the exact 3.01 % case.
 
-**Verdicts:** `CAPTURE_APPEND_ONLY_VERIFIED`, `COVERAGE_IDENTITY_HOLDS`,
-`NET_RISK_PARITY_VERIFIED`, `DEFENSIVE_BLOCKS_ENFORCED`, `ECONOMIC_RESULTS_NET_NEGATIVE
-(NO_RESTATED_EDGE_SURVIVES)`, `PROSPECTIVE_CAPTURE_MANUAL_NOT_SCHEDULED`,
-`INDEPENDENT_VERIFIED`.
+At 1× the equity curve never makes a new high after its first mark, so the max drawdown
+equals the total net loss (2.3877 %). At 3× the trough is reached on 2026-10-05, before the
+last week's further loss, which is why its drawdown (5.0057 %) and its final loss (5.01 %)
+coincide only in magnitude.
 
-## What is still true
+## 4. Prospective capture
 
-- **The collector is not scheduled.** The guard no longer blocks it — that was a
-  misdiagnosis produced by pricing this writer with another lane's 240 MB/h — but a
-  Windows scheduled task needs administrator privileges, and a GitHub cron cannot reach a
-  local holdout. Every hour nobody runs the manual command is `MISSING_NO_COLLECTOR`.
-- **No strategy is admitted.** `config/strategy_admission.json` admits nothing for paper
-  execution, so the runtime path has nothing to trade; the experimental lane bypasses
-  admission by design and says so.
-- **Nine prospective bars is not evidence.** They were post-freeze data the protocol never
-  saw, and they were backfilled rather than observed live. No proposal fired on them, so
-  there is still zero prospective trading evidence.
-- **The host volume is 99% full.** The collector costs ~9.6 KB/h, but the volume is not
-  healthy and this package did not reclaim anything.
+The collector was run again against the venue after the fix; the slice grew from 9 to 24
+rows without touching the frozen protocol:
 
-## What was not run
+| quantity | value |
+| --- | --- |
+| expected closed bars (window 2026-10-17T08:00Z .. 15:00Z) | 8 per symbol, 24 total |
+| observed | 24 |
+| missing (`ABSENT`) | **0** |
+| received at close | **6** (2 per symbol) |
+| recovered later | **18** (6 per symbol) |
+| duplicates / conflicts | 0 / 0 |
+| ledger entries | 4 (append-only, independent of the slice) |
+| measured collector rate | 9 787 B/h (fallback overstatement 24 522×) |
+| disk guard | `COHERENT`, reserve 2 GB, 1.5×, 64 MiB valve — unchanged |
 
-The clean-clone rehearsal (needs a second working tree on a volume with ~4.7 GB free), the
-multi-engine Jesse/VeighNa re-verification, and the scheduler creation. None of them is
-reported as passing.
+`evaluated = 9`, `bars_with_a_proposal = 0`, `bars_with_a_fill = 0`: no strategy is
+admitted, so `NO_SIGNAL` here means "the lane evaluated the bar and proposed nothing", not
+"a quiet market". Missing bars are `MISSING_NO_COLLECTOR`, never a quiet market.
 
-## Limitations
+## 5. Verification
 
-- A stop still fills at its level: optimistic for a gap through it. No execution latency is
-  modelled in the bar replay.
-- The replay has no order book and no data-age clock, so the spread and latency blocks are
-  enforced on the runtime entrypoint and declared `NOT_MEASURED_IN_A_BAR_REPLAY`.
-- The 2x/3x nets belong to their own re-runs; only the 1x net is what the book realized.
-- Reference gross is computed at the costed quantity, so it differs from the frictionless
-  baseline's gross by ~0.95 USDT at 1x; the net difference is 0.98 USDT and both are
-  explained by the smaller position the spread buys.
+- `scripts/edge17_verify.py`: **VERIFIED, 31/31 checks, 14/14 injected faults**. New this
+  round: three drawdown checks (one per multiplier) recomputed from the curves without
+  importing the metric module, plus M13 (publish `peak_equity` as a percentage) and M14
+  (claim a drawdown with no curve).
+- `tests/unit/risk/test_edge17_weekly_window.py`: **14 passed** — Monday boundary, Sunday
+  accumulation, weekend without trades, multi-week gap, restart inside/outside the week,
+  legacy snapshot, backwards clock, daily-limit isolation.
+- `tests/unit/research/test_edge17_drawdown.py`: **12 passed** — including the regression
+  that a peak level cannot be a percentage and four `UNKNOWN` paths.
+- `tests/unit/research/test_edge17_capture.py`: **19 passed** (append-only, pagination,
+  coverage ladder, dedupe, atomicity, single-writer lock).
+- `scripts/edge17_prefix_replay.py`: **9/9** capture defects reproduced from `2536928` and
+  from four re-introduced mutants plus a no-lock variant.
+- Full `pytest tests/unit` on this tree: see section 6 (recorded, with owner, PASS/FAIL/
+  BLOCKED — no failure is converted into a pass).
+
+## 6. What is still blocked
+
+1. **No scheduler.** A Windows scheduled task needs administrator privileges; not
+   attempted. Consecutive live capture therefore depends on someone running the collector.
+2. **No admitted strategy.** `config/strategy_admission.json` is untouched; the runtime
+   paper path has nothing to execute. The experimental lane bypasses admission by design.
+3. **Spread and latency blocks are `NOT_MEASURED` in a bar replay** — they are enforced on
+   the runtime entrypoint, where the scanner measures them.
+4. **The host volume is ~99 % full** (≈4.2 GB free). The collector needs ~9.8 KB/h, so disk
+   is no longer the blocker, but the volume is not healthy.
+5. Full-suite failures owned by other lines are recorded in `RUN_REPORT.md` as `BLOCKED`
+   with their owner; they are not attributed to this package and not counted as passing.
+
+## 7. Verdict
+
+`CAPTURE_APPEND_ONLY_VERIFIED` · `COVERAGE_IDENTITY_HOLDS` · `PROVENANCE_PER_BAR` ·
+`NET_RISK_PARITY_VERIFIED` · `WEEKLY_WINDOW_ROLLS` (ADR-017F-01) ·
+`DRAWDOWN_MEASURED_FROM_CURVE` · `DEFENSIVE_BLOCKS_ENFORCED` ·
+`ECONOMIC_RESULTS_NET_NEGATIVE` · `PROSPECTIVE_CAPTURE_MANUAL_NOT_SCHEDULED` ·
+`INDEPENDENT_VERIFIED` · `LIVE_TRADING_DISABLED`.
+
+The economic conclusion does not improve with the corrected accounting: the book loses more
+money once every cost is charged inside the book and the weekly veto stops masking the
+strategy behind a single permanent block. `NO_RESTATED_EDGE_SURVIVES`.

@@ -1,176 +1,161 @@
-# WP-EDGE-017 — run report
+# WP-EDGE-017F — run report
 
-*agent/edge-recovery/WP-EDGE-00-baseline, generated 2026-10-17T11:10Z. Issue: [#10](https://github.com/Extr3sao/bot_crypto/issues/10).*
+Issue: <https://github.com/Extr3sao/bot_crypto/issues/10>
+Branch: `agent/edge-recovery/WP-EDGE-00-baseline`
+Baseline of this round: `5c81aad` (validated against `origin` before touching anything).
 
-Statuses (orthogonal — one passing does not confer another):
+Every number below comes from a command in this file executed on this tree. Nothing is
+copied from the earlier run report, and the earlier 146/110/67 fills are explicitly
+superseded.
 
-- `CAPTURE_APPEND_ONLY_VERIFIED` — **holds**
-- `CAPTURE_IDEMPOTENT_RERUN_VERIFIED` — **holds**
-- `COVERAGE_IDENTITY_HOLDS` — **holds**
-- `COLLECTOR_RATE_MEASURED` — **holds**
-- `DISK_GUARD_UNCHANGED` — **holds**
-- `NET_COST_BEFORE_RISK_VERIFIED` — **holds**
-- `NET_RISK_PARITY_VERIFIED` — **holds**
-- `DEFENSIVE_BLOCKS_ENFORCED` — **holds**
-- `WEEKEND_POLICY_CHANGED` — does not hold
-- `RISK_LIMITS_CHANGED` — does not hold
-- `LIVE_TRADING_ENABLED` — does not hold
-- `PROSPECTIVE_CAPTURE_SCHEDULED` — does not hold
-- `CLEAN_CLONE_REHEARSAL_RUN` — does not hold (not attempted; not counted as passing)
-- `INDEPENDENT_VERIFIED` — **holds** (27/27, 11/11 injected faults detected)
-- `FALSE_SUCCESS` — **0**
+## 1. What was executed
 
-## Headline
-
-The four runtime defects the issue names are closed, each with a test that reproduces
-the failure and an artifact that measures the fix:
-
-| defect | before | after |
+| # | command | result |
 | --- | --- | --- |
-| the collector truncated the holdout on every run | `_write_slice` opened the slice with `w`; one unpaginated page | append-only merge, atomic `os.replace`, resumable `since`, paginated, closed-bar only |
-| coverage could never count more than one bar per symbol | `{symbol: last_timestamp}`, dedupe compared a dict's keys with their own set | one ladder row per `(symbol, hour)`, `expected = observed + missing` per symbol |
-| risk decided on gross, cost was booked afterwards | 146 fills at −53.38 gross / −239.75 restated net | the book pays −238.77 net and RiskManager is marked to it before every decision |
-| the four defensive blocks were declared, not read | no runtime reader for spread, ATR, latency, weekend | fail-closed evaluator on the canonical paper path, policy untouched |
+| 1 | `pytest tests/unit/risk/test_edge17_weekly_window.py -q` | **FAIL first** (11 failed, 3 passed): no `weekly_start_ms`, no rollover |
+| 2 | same, after ADR-017F-01 | **14 passed** |
+| 3 | `pytest tests/unit/research/test_edge17_drawdown.py -q` | **12 passed** (curve arithmetic, `UNKNOWN` paths, old bug as regression) |
+| 4 | `pytest tests/unit/research/test_edge17_capture.py -q` | **19 passed** (append-only, pagination, ladder, dedupe, atomicity, single writer) |
+| 5 | `edge16_paper_lane.py --cost-mode net --cost-multiplier {1,2,3}` | three real re-runs; see §3 |
+| 6 | `edge15_oos_preregistration.py --capture` | **24 rows** (9 → 24), 0 conflicts, 0 missing |
+| 7 | `edge17_capture.py` | provenance per bar; 6 at close, 18 recovered, 0 absent |
+| 8 | `edge17_reports.py` | regenerated `NET_RISK_REPLAY`, `ECONOMIC_RESULTS`, drawdown, weekly evolution |
+| 9 | `edge17_verify.py` | **VERIFIED: 31/31 checks, 14/14 faults** |
+| 10 | `edge15_verify.py` | **35/35 VERIFIED** (V34 first failed until the capture was committed) |
+| 11 | `pytest tests/unit` | see §6: recorded as PASS/FAIL/BLOCKED |
+| 12 | `edge16_verify.py` | **42/44**; V57/V58 classified in §7, not converted to PASS |
 
-## A — capture: append-only, resumable, idempotent
+## 2. P0.1 — the weekly window
 
-`src/trading_bot/research/oos_capture.py` + `scripts/edge15_oos_preregistration.py`.
+**Defect reproduced first.** `weekly_pnl` was accumulated by `record_trade_result` and reset
+by nothing: `reset_daily` deliberately left it alone. The replay reset daily 84 times and
+weekly never, so a bad week vetoed every later entry. Written as failing tests before the
+fix: 11 of 14 failed.
 
-| evidence | value |
+**Fix (ADR-017F-01).** UTC Monday 00:00 → Monday 00:00, anchored in `weekly_start_ms`,
+rolled from the injectable clock in `check_signal`, `record_trade_result` and `reset_daily`,
+persisted through `extract_state`/`restore_state`. Backwards clock: no reset. Legacy
+snapshot without anchor: keeps its loss but anchors now, so it cannot veto forever.
+
+**Verified cases**: Monday midnight exactly, Sunday accumulation, weekend with no trades
+(day boundary observes Monday), three-week gap, restart inside the week, restart in a later
+week, legacy snapshot, backwards clock, daily limit untouched, 3.01 % inside a new week
+still vetoes.
+
+**Replay evidence**: **12 week boundaries per run**, `weekly_pnl` cleared to 0 at every one,
+10 of them with a non-zero week loss before the reset. Weekly vetoes that fired:
+**0 at 1×/2×/3×** — the worst week (−120.13 USDT at 2×, 1.2 % of equity) never reaches the
+3 % limit. The rule is enforced but not binding on this dataset; it is not inert evidence,
+because the unit test pins the exact 3.01 % veto.
+
+Weekly P&L before each reset (1×): −22.05, −14.50, −8.12, −39.89, −4.35, −25.10, +3.76,
+−14.64, −33.42, −78.76 USDT. 2× and 3× are in `NET_RISK_REPLAY.runs.*.weekly_risk`.
+
+## 3. P0.2 — regenerated replay (real executions)
+
+| multiplier | fills | net realised (USDT) | drawdown | drawdown USDT | rejections |
+| --- | --- | --- | --- | --- | --- |
+| 1× | **146** | **−238.770489** | **2.387705 %** | 238.770489 | 3 × consecutive-loss cooldown |
+| 2× | **146** | **−425.692312** | **4.256923 %** | 425.692312 | 3 × consecutive-loss cooldown |
+| 3× | **121** | **−500.571772** | **5.005718 %** | 500.571772 | 43 × max drawdown, 1 × cooldown |
+
+Frictionless equivalence still holds fill for fill against WP-EDGE-016 (146 identical
+fills, prices, quantities, reasons and ids), so the cost model and the gating are the only
+differences from the baseline.
+
+The old 110 and 67 were an artefact of the non-resetting weekly veto: 2× and 3× stopped
+trading for the rest of the window. They are not comparable and are withdrawn.
+
+## 4. P0.3 — drawdown from a verifiable curve
+
+`EQUITY_CURVE.jsonl` (2 000 mark-to-market points per run) is written by the lane. The
+published `drawdown_pct` is now the maximum peak-to-trough fall of that curve, computed by
+`trading_bot.research.equity_drawdown`, and it is `UNKNOWN` (never a number) when there are
+fewer than two finite marks. `edge17_verify.py` recomputes it without importing the module
+and injects two faults: M13 publishes `peak_equity` as a percentage again, M14 claims a
+drawdown with no curve. Both are detected.
+
+At 1× the curve never makes a new high after its first mark, so max drawdown equals the
+final loss; at 3× the trough (2026-10-05) precedes the last week's additional loss.
+
+## 5. P1 — prospective capture
+
+| quantity | value |
 | --- | --- |
-| slice before the first fixed capture | 3 rows, 1 per symbol, sha `e246b396…a120040` |
-| first fixed capture (resumable from the newest held bar) | 9 rows, **+6**, 0 conflicts, 0 duplicates |
-| two re-runs afterwards | **0 added, 0 lost, byte-identical sha `983944ba…d34a6b66`** (the third asked for nothing: the next hour had not closed) |
-| pagination | one page per symbol, short page confirmed with a second request (`retried_short_pages=1`) |
-| independent ledger | `RFC-EDGE-015/scratch/OOS_CAPTURE_LEDGER.jsonl`, 3 entries, every slice key recorded |
-| current-hour bar | excluded by `is_closed`; 0 partial bars admitted |
+| expected closed bars, 2026-10-17T08:00Z..15:00Z | 24 (8 per symbol) |
+| observed | 24 |
+| missing | **0** |
+| received at close (`RECEIVED_AT_CLOSE`) | **6** |
+| recovered later (`RECOVERED_LATER`) | **18** |
+| first seen before close (integrity failure) | 0 |
+| duplicates / conflicts | 0 / 0 |
+| evaluated by the lane | 9 |
+| proposals / fills on prospective bars | 0 / 0 |
+| collector rate | 9 787 B/h (fallback 240 MB/h, overstatement 24 522×) |
+| disk guard | `COHERENT`; reserve 2 GB, 1.5×, 64 MiB valve unchanged |
 
-Regression tests: `tests/unit/research/test_edge17_capture.py` (15) — repeated capture,
-2500-bar pagination, truncated retry, stalled page, page-limit truncation, multi-bar
-coverage, missing-hour classification, duplicate conflicts, partial bar, failed
-`os.replace` leaving the old bytes, corrupt-slice raise.
+The collector remains append-only with its single-writer lock; the frozen protocol was not
+touched. `NO_SIGNAL` means the lane evaluated the bar and proposed nothing, not a quiet
+market; `ABSENT` would mean no collector.
 
-## B — storage: the guard was pricing a different collector
+## 6. P0.4 — full suite on this tree
 
-| quantity | measured |
-| --- | ---: |
-| slice bytes / rows | 1 255 B / 9 |
-| bytes per bar | 139.4 |
-| rate (3 symbols, hourly) | 418.3 B/h |
-| overhead (ledger lines + manifest rewrite) | 9 158.0 B/h |
-| effective | **9 576.3 B/h** |
-| declared fallback it replaced | 240 000 000 B/h |
-| overstatement factor | **25 061.8x** |
-| guard state, 24 h at 1.5x, 64 MiB valve, 2 GB reserve, 4.67 GB free | **COHERENT** |
+Command:
 
-The guard was not touched: same stress multiplier, same reserve, same valve, same
-`plan_window`. What changed is the input. `CAPTURE_BLOCKED_DISK` was a misdiagnosis:
-the 240 MB/h figure belonged to a different capture lane. Disk is no longer the reason
-the collector is not scheduled; a manual runbook is (`PROSPECTIVE_COVERAGE.md`).
-
-## C — net risk: the cost is in the book before the decision
-
-`PaperBroker` now takes a per-symbol `cost_schedule` (`BrokerCost`: commission, half
-spread, slippage) and every `ClosedTrade` publishes the decomposition
-
-```
-pnl = reference_gross_pnl − execution_cost_usdt − entry_commission − exit_commission
+```bash
+./.venv/Scripts/python -m pytest tests/unit -q --tb=short -rf -p no:cacheprovider \
+  > reports/economic-recovery/RFC-EDGE-017/FULL_UNIT_SUITE.log 2>&1; echo "EXIT=$?"
 ```
 
-`RiskManager.mark_equity` assigns the broker's net mark-to-market (it does not add), and
-the lane marks it before every `check_signal`, so daily loss, weekly loss, both drawdowns
-and sizing all read net equity.
+Result: **4070 passed, 14 failed in 1313.64 s (21:53)**, `exit status 1`.
 
-| run | fills | commissions | execution cost | net | rejections |
-| --- | ---: | ---: | ---: | ---: | --- |
-| WP-EDGE-016 (gross decisions) | 146 | 0 | 0 | −53.3845 (frictionless) | 3 cooldown |
-| EDGE-017, 1x net | **146** | 146.000 | 40.334 | **−238.7705** | 3 cooldown |
-| EDGE-017, 2x net | **110** | 220.000 | 60.918 | **−293.0325** | 1 cooldown, **55 weekly loss limit** |
-| EDGE-017, 3x net | **67** | 201.000 | 54.058 | **−294.0563** | 1 cooldown, **105 weekly loss limit** |
+Every failure is named with its owner and its evidence. **None is converted to PASS** and none
+belongs to WP-EDGE-017F:
 
-At 1x the fills do not change: −238.77 is a 2.39% drawdown against a 5% limit and the
-weekly limit (−292.8) is not reached. At 2x and 3x the weekly loss limit binds and the
-risk engine refuses entries it had previously approved — 36 and 79 fills that gross risk
-took and net risk does not. That difference is the defect made visible, not a data change.
+| # | test | state | owner / cause | evidence |
+| --- | --- | --- | --- | --- |
+| 1 | `test_active_recovery_wp.py::test_state_view_is_deterministic` | **BLOCKED** | WP-8 line: the committed view is stale (`re-run scripts/campaign_state_view.py`); its inputs `evidence/real_decisions/*.jsonl` were already dirty when this session opened | recomputed `51ef35aa…` vs committed `25e35d0b…` |
+| 2–4 | `test_cost_barrier_adversarial.py` (3) | **BLOCKED** | cost-barrier / WP-3 economy line: the gate pins audit `023b66ff…` while the committed audit payload is `c6ea3438…` — inconsistent at `HEAD` before any 017F change | `COST_BARRIER_EXPLORER.json` line 10632 `state_sha256 023b66ff…`; `HEAD:ACTIVE_ECONOMIC_AUDIT.json` `payload_sha256 c6ea3438…` |
+| 5 | `test_cost_barrier_explorer.py::test_payload_hash_reproduces_and_matches_the_committed_artefact` | **BLOCKED** | same pin drift | same |
+| 6–10 | `test_cost_barrier_gate.py` (5) | **BLOCKED** | same pin drift: the gate returns `INTEGRITY_FAILURE` instead of `FULL_REPRODUCTION_PASS` | gate stdout: `data/recovery/ACTIVE_ECONOMIC_AUDIT.json state drift (pin 023b66ffd1213b06…)` |
+| 11–12 | `test_recovery_determinism.py` (2, including the clean-checkout rehearsal) | **BLOCKED** | WP-8 line: reproduces from the foreign dirty `evidence/real_decisions/*.jsonl` | `51ef35aa…` vs `25e35d0b…` |
+| 13–14 | `test_st6_forward_regime.py` (2) | **BLOCKED** | ST6 line: accumulated forward data now contradicts the test's "a single window cannot complete coverage" assertion | `coverage_complete` is `True`, test line 815 |
 
-**Equivalence:** with `--cost-mode frictionless` the repaired engine reproduces the
-WP-EDGE-016 ledger fill for fill — 146/146 identical trade ids, prices, quantities and
-PnLs. The fix changes what risk sees, not what the machines decide.
+**No test was skipped, weakened or renamed to make the suite green.** The audit files that the
+gate run rewrote during the suite were restored to `HEAD` (`data/recovery/ACTIVE_ECONOMIC_AUDIT.*`)
+because they are not this package's to change; only the report and log produced by this session
+remain modified.
 
-## D — defensive blocks
+## 7. EDGE-016 V57/V58 (reviewed, not hidden)
 
-`src/trading_bot/risk/defensive_blocks.py` evaluates all four declared rules, in order,
-before `RiskManager.check_signal`:
+| check | state | owner / cause | evidence |
+| --- | --- | --- | --- |
+| V57 artifact hashes | **BLOCKED** | foreign uncommitted edit: `reports/economic-recovery/RFC-EDGE-016/INDEPENDENT_VERIFICATION.json` was already modified when this session opened, and its hash in `EVIDENCE_INDEX.json` no longer matches | `git status` at session start; `edge16_verify.py` V57 message |
+| V58 authority line | **BLOCKED (package-caused, frozen evidence)** | EDGE-017 moved `def check_positions_ohlc` from line 398 to **490** and `broker.py`'s sha from `0250fc47…` to `4366809a…`; the EDGE-016 map still records the old pair | `RUNTIME_AUTHORITY_MAP.json` row `ohlc_simulator` |
 
-| rule | input | missing input |
-| --- | --- | --- |
-| `weekend_trading` | calendar | n/a |
-| `excessive_spread_bps` | scanner `spread_bps` | blocks (`spread_unknown`) |
-| `extreme_atr_pct` | scanner `atr_pct` | blocks (`atr_unknown`) |
-| `high_latency_ms` | decision instant − snapshot instant | blocks (`latency_unknown`) |
+Neither is repaired by rewriting EDGE-016's frozen evidence: that artifact states it
+describes `2536928`, and editing its line/hash would make it describe code it does not
+claim. The mechanical regeneration belongs to EDGE-016, and until then both checks are
+reported as failures with their exact cause.
 
-Wired at `scripts/start_paper_trading.py:build_cycle_engine` →
-`PaperCycleEngine.run_cycle_sync`, with the policy object built by the runtime's own
-loader. `config/risk.yaml` is byte-identical (weekend still `false`); `config/runtime.yaml`
-still disables live trading. In the replay the ATR rule was evaluated on 201 proposals
-(max observed 2.973% against a declared 8%) and the weekend rule refused 52 entries;
-spread and latency are declared `NOT_MEASURED_IN_A_BAR_REPLAY` and evaluated on the
-runtime entrypoint.
+## 8. Not run (declared)
 
-Regression tests: `tests/unit/risk/test_edge17_defensive_blocks.py` (12) and
-`tests/unit/paper/test_edge17_net_risk.py` (10).
+- Scheduler creation: requires administrator privileges; not attempted.
+- Strategy admission: not forced; `config/strategy_admission.json` untouched.
+- Live trading: disabled; no credentials, no orders.
+- Multi-engine re-verification (Jesse/VeighNa): not executed.
 
-## The five questions
+## 9. Reproduce
 
-1. **Consecutive prospective bars captured, validated and evaluated:** 3 per symbol
-   (9 total), 2026-10-17T08:00Z–10:00Z, all validated and evaluated by the lane. All
-   nine were **backfilled** by the first fixed run (max lag 2.648 h), not observed live at
-   their close; the ledger records that. Proposals on them: 0. Fills: 0.
-2. **How many are missing and why:** 0 in the frozen window (9 expected, 9 observed).
-   The resumable fetch backfilled every closed hour since the freeze. Hours with no run
-   in the future are `MISSING_NO_COLLECTOR`.
-3. **What paper trades net risk actually allows:** 146 at 1x, 110 at 2x, 67 at 3x, against
-   146 under gross gating. The 2x/3x losses are the weekly loss limit firing.
-4. **Do broker net, RiskManager equity and reconciliation agree:** yes — per trade, per
-   book and per run (`risk_equity_equals_broker_net=true`, `all_trades_reconcile=true` in
-   all three runs).
-5. **What still blocks continuous prospective paper:** no authorized scheduler; a manual
-   collector; no admitted strategy in `config/strategy_admission.json` (the runtime paper
-   path therefore has nothing to execute; the experimental lane bypasses admission by
-   design); and a host volume at 99% that is no longer the collector's constraint but is
-   not healthy either.
-
-## Verification
-
-`scripts/edge17_verify.py` does not import any builder module. It re-derives the guard's
-arithmetic, the coverage identity, the trade decomposition, the equity parity and the
-block wiring from the published JSON and the source text, then injects 11 faults into
-copies (dropped bar, duplicated bar, rewritten digest, a missing hour called quiet,
-inflated PnL, zero cost, reversed fill ladder, a huge rate claimed to fit, unwired
-blocks, live enabled, broken equivalence). **27/27 checks VERIFIED, 11/11 faults detected.**
-
-Targeted regressions: `tests/unit/paper tests/unit/risk` plus the EDGE-016 causality and
-PIT suites → **257 passed**. Full unit suite: **4048 passed, 5 failed in 21:56**
-(`FULL_UNIT_SUITE.log`). None of the five belongs to this package: three are the WP-8
-audit lane, whose committed audit is stale against `evidence/real_decisions/*.jsonl` —
-files another lane had already modified when this session opened and this package never
-touched — and two are the ST6 failures WP-EDGE-016 already recorded. A clean worktree of
-this commit is used to show the audit is clean there (see `CLEAN_CHECKOUT_REHEARSAL.json`).
-
-## Not run (declared, not counted as passing)
-
-- Clean-clone rehearsal: the host volume has ~4.7 GB free and the rehearsal needs a
-  second working tree. Not attempted.
-- Multi-engine re-verification (Jesse/VeighNa): not executed in this package.
-- Scheduler creation: needs administrator privileges; not authorized, not attempted.
-
-## Limitations
-
-- The nine prospective bars are post-freeze data the protocol never saw, but they were
-  not observed live at their close. The honest claim is "backfilled by the fixed
-  collector", not "live capture".
-- The bar replay has no order book and no data-age clock, so two of the four blocks are
-  enforced on the runtime entrypoint and declared unmeasured in the replay.
-- A stop still fills at its level, which is optimistic for a gap through it.
-- The 2x/3x nets are projections over their own re-run fills; only the 1x net is what the
-  book itself realized.
+```bash
+./.venv/Scripts/python -m pytest tests/unit/risk/test_edge17_weekly_window.py -q
+./.venv/Scripts/python -m pytest tests/unit/research/test_edge17_drawdown.py -q
+./.venv/Scripts/python scripts/edge15_oos_preregistration.py --capture
+./.venv/Scripts/python scripts/edge16_paper_lane.py --cost-mode net --cost-multiplier 1 --out reports/economic-recovery/RFC-EDGE-017/scratch/net_1x
+./.venv/Scripts/python scripts/edge16_paper_lane.py --cost-mode net --cost-multiplier 2 --out reports/economic-recovery/RFC-EDGE-017/scratch/net_2x
+./.venv/Scripts/python scripts/edge16_paper_lane.py --cost-mode net --cost-multiplier 3 --out reports/economic-recovery/RFC-EDGE-017/scratch/net_3x
+./.venv/Scripts/python scripts/edge17_capture.py
+./.venv/Scripts/python scripts/edge17_reports.py
+./.venv/Scripts/python scripts/edge17_verify.py      # 31/31, 14/14
+./.venv/Scripts/python scripts/edge15_verify.py      # 35/35 after the capture is committed
+```

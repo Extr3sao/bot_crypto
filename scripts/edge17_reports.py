@@ -589,7 +589,26 @@ def evidence_index() -> dict[str, Any]:
 
 
 def main() -> int:
+    import argparse
+
+    parser = argparse.ArgumentParser(description="WP-EDGE-017 net-risk and evidence reports")
+    parser.add_argument(
+        "--index-only",
+        action="store_true",
+        help=(
+            "rebuild EVIDENCE_INDEX.json from the files on disk and exit. Needed after a verifier "
+            "run rewrites its own artifact, because hashing it before that would publish a digest "
+            "of bytes the verifier is about to replace"
+        ),
+    )
+    args = parser.parse_args()
     OUT.mkdir(parents=True, exist_ok=True)
+    if args.index_only:
+        (OUT / "EVIDENCE_INDEX.json").write_text(
+            json.dumps(evidence_index(), indent=2, sort_keys=True) + "\n", encoding="utf-8"
+        )
+        print("[17r] evidence index rebuilt from disk")
+        return 0
     replay_doc = replay()
     (OUT / "NET_RISK_REPLAY.json").write_text(
         json.dumps(replay_doc, indent=2, sort_keys=True) + "\n", encoding="utf-8"
