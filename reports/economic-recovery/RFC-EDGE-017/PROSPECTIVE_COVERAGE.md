@@ -1,14 +1,14 @@
 # WP-EDGE-017 — prospective coverage and continuity
 
-*as of 2026-10-17T11:59:44Z, freeze 2026-10-17T07:15:28Z*
+*as of 2026-10-17T16:36:07Z, freeze 2026-10-17T07:15:28Z*
 
 ## The numbers, per symbol
 
 | symbol | captured bars | expected closed | observed | evaluated | missing | longest observed run | longest evaluated run |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| BTC/USDT | 3 | 3 | 3 | 3 | 0 | 3 h | 3 h |
-| ETH/USDT | 3 | 3 | 3 | 3 | 0 | 3 h | 3 h |
-| SOL/USDT | 3 | 3 | 3 | 3 | 0 | 3 h | 3 h |
+| BTC/USDT | 8 | 8 | 8 | 3 | 0 | 8 h | 3 h |
+| ETH/USDT | 8 | 8 | 8 | 3 | 0 | 8 h | 3 h |
+| SOL/USDT | 8 | 8 | 8 | 3 | 0 | 8 h | 3 h |
 
 **Identity** `expected = observed + missing`: holds.
 
@@ -23,10 +23,10 @@ first capture at
 
 ## What the collector costs
 
-- measured: **9576.3 B/h** (0.009576 MB/h) for three symbols, hourly;
-- the 240 MB/h declared fallback overstates it by **25061.8x**;
+- measured: **9787.0 B/h** (0.009787 MB/h) for three symbols, hourly;
+- the 240 MB/h declared fallback overstates it by **24522.3x**;
 - the existing guard, with its own reserve and 1.5x stress, returns **COHERENT** for a 24 h window and a 64 MiB valve;
-- peak transient cost of the atomic write: 2510 B (old and new file).
+- peak transient cost of the atomic write: 6688 B (old and new file).
 
 Disk is **no longer** the reason capture is not automated.
 

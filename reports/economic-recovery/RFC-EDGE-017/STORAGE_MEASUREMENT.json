@@ -1,7 +1,7 @@
 {
   "declared_fallback_bytes_per_hour": 240000000,
-  "effective_bytes_per_hour": 9576.333,
-  "fallback_overstatement_factor": 25061.8,
+  "effective_bytes_per_hour": 9787.0,
+  "fallback_overstatement_factor": 24522.3,
   "guard_inputs_unchanged": {
     "collector_max_bytes": 67108864,
     "hours": 24.0,
@@ -13,20 +13,20 @@
     "autoscaled": false,
     "collector_max_bytes": 67108864,
     "collector_max_gb": 0.067,
-    "effective_rate_bytes_per_hour": 9576.333,
-    "free_bytes": 4534915072,
-    "free_gb": 4.535,
+    "effective_rate_bytes_per_hour": 9787.0,
+    "free_bytes": 4253241344,
+    "free_gb": 4.253,
     "hours": 24.0,
-    "hours_affordable_by_disk": 264706.228,
-    "hours_affordable_by_valve": 7007.783,
+    "hours_affordable_by_disk": 230227.991,
+    "hours_affordable_by_valve": 6856.939,
     "ok": true,
-    "overhead_bytes_per_hour": 9158.0,
-    "rate_bytes_per_hour": 418.333,
+    "overhead_bytes_per_hour": 9369.0,
+    "rate_bytes_per_hour": 418.0,
     "rate_source": "measured from this collector's own slice, ledger and manifest at the commit that produced this report; not the 240 MB/h cross-lane fallback",
     "reasons": [
-      "the valve pays for 24.00 h at 1.5x (0.067 GB available, 0.000 GB needed) and the host keeps 2.535 GB above the reserve"
+      "the valve pays for 24.00 h at 1.5x (0.067 GB available, 0.000 GB needed) and the host keeps 2.253 GB above the reserve"
     ],
-    "recommended_collector_max_bytes": 344748,
+    "recommended_collector_max_bytes": 352332,
     "required_gb": 0.0,
     "required_gb_at_stress": 0.0,
     "reserve_bytes": 2000000000,
@@ -34,24 +34,24 @@
     "stress_multiplier": 1.5
   },
   "ledger": {
-    "bytes": 3171,
-    "bytes_per_line": 1057.0,
-    "lines": 3,
+    "bytes": 4476,
+    "bytes_per_line": 1119.0,
+    "lines": 4,
     "path": "reports/economic-recovery/RFC-EDGE-015/scratch/OOS_CAPTURE_LEDGER.jsonl"
   },
   "manifest": {
-    "bytes": 5987,
+    "bytes": 6012,
     "rewritten_per_run": true
   },
-  "measured_at_utc": "2026-10-17T11:59:44Z",
-  "overhead_bytes_per_hour": 9158.0,
-  "peak_transient_bytes_during_atomic_write": 2510,
-  "rate_bytes_per_hour": 418.333,
+  "measured_at_utc": "2026-10-17T16:36:07Z",
+  "overhead_bytes_per_hour": 9369.0,
+  "peak_transient_bytes_during_atomic_write": 6688,
+  "rate_bytes_per_hour": 418.0,
   "schema_version": "EDGE17_STORAGE_MEASUREMENT_V1",
   "slice": {
-    "bytes": 1255,
-    "bytes_per_row": 139.444,
+    "bytes": 3344,
+    "bytes_per_row": 139.333,
     "path": "reports/economic-recovery/RFC-EDGE-015/scratch/OOS_PROSPECTIVE_1H.jsonl",
-    "rows": 9
+    "rows": 24
   }
 }
