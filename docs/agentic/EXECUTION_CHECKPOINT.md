@@ -24,9 +24,12 @@ quedaba abierto en 017A.
 ## 1. Estado Git (verificado contra `origin`)
 
 - Rama: `agent/edge-recovery/WP-EDGE-00-baseline`.
-- **Publicado y verificado**: `2536928..1869f53` (`git push` fast-forward, sin `--force`;
-  `git rev-parse origin/agent/edge-recovery/WP-EDGE-00-baseline` = `1869f53584f1a41220365229a851a4ee01ee3894`
-  inmediatamente después del push).
+- **Publicado y verificado**: push de código `2536928..1869f53` y push de este checkpoint
+  `1869f53..14e892c`, ambos fast-forward y sin `--force`; tras el segundo,
+  `git rev-parse origin/agent/edge-recovery/WP-EDGE-00-baseline` = `14e892c7eae5b4367b4e478cc896eb5f79d12033`
+  = `HEAD`. La corrección de esta misma línea se publica en el commit siguiente: la cabecera
+  vigente se comprueba con `git rev-parse origin/agent/edge-recovery/WP-EDGE-00-baseline`, no
+  leyéndola aquí.
 - Commits publicados en esta sesión:
   - `1ad3a37` — *Serialise the holdout capture so two collectors cannot lose each other's bars.*
     (transacción de escritor único + 4 tests + C12/M12 del verificador + replay de prefijos).
