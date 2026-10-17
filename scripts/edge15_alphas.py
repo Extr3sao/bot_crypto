@@ -391,6 +391,51 @@ def verdict_for(family: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def decisive_family_evidence() -> dict[str, Any]:
+    """One family's held-out trades, published so a verifier can re-derive each one.
+
+    The ATR percentile gate inside this family is a 50-bucket approximation, which
+    means a second implementation cannot be expected to reproduce the trade *list*
+    exactly. What it can do — and what this publishes — is check every decision
+    against the bars that existed when it was taken: the z-score at the entry
+    decision, the entry and exit prices as real bar opens, and the hold under the
+    declared maximum. A look-ahead would have to break one of those.
+    """
+    family = FAMILY_BY_NAME["mean_reversion_vol_liq"]
+    symbol = "UNIUSDT"
+    path = _symbol_path(CORPORA[0], symbol)
+    if path is None:
+        return {}
+    bars = load_ohlcv(path)
+    _selection, tail = _split(bars)
+    trades = family_trades(family, tail)
+    return {
+        "family": family.name,
+        "corpus": CORPORA[0]["name"],
+        "symbol": symbol,
+        "segment": "HELD_OUT_TAIL",
+        "parameters": family.parameters,
+        "window_start_ms": tail[0].ts_ms if tail else None,
+        "window_end_ms": tail[-1].ts_ms if tail else None,
+        "trades": [
+            {
+                "entry_ts_ms": int(trade["entry_ts_ms"]),
+                "exit_ts_ms": int(trade["exit_ts_ms"]),
+                "entry_price": trade["entry_price"],
+                "exit_price": trade["exit_price"],
+                "gross_bps": trade["gross_bps"],
+                "bars_held": trade["bars_held"],
+            }
+            for trade in trades
+        ],
+        "approximation_declared": (
+            "the ATR percentile gate is computed on 50 buckets, so an independent "
+            "implementation may disagree on trades that sit exactly on the 0.5 boundary; "
+            "the per-trade checks published here do not depend on that gate's resolution"
+        ),
+    }
+
+
 def register_candidates(
     per_family: dict[str, Any], verdicts: list[dict[str, Any]]
 ) -> dict[str, Any]:
@@ -507,6 +552,7 @@ def main() -> int:
             "PROSPECTIVE": "bars after the frozen protocol instant; see OOS_CAPTURE_MANIFEST_V2.json",
         },
         "rotation": rotation_summary,
+        "decisive_family_evidence": decisive_family_evidence(),
         "verdicts": sorted(verdicts, key=lambda row: str(row["family"])),
         "rejected_family_audit": rejected,
         "candidate_registration": register,

@@ -162,6 +162,981 @@
     },
     "venue": "BINANCE_SPOT"
   },
+  "decisive_family_evidence": {
+    "approximation_declared": "the ATR percentile gate is computed on 50 buckets, so an independent implementation may disagree on trades that sit exactly on the 0.5 boundary; the per-trade checks published here do not depend on that gate's resolution",
+    "corpus": "EDGE08_ALTS_1H",
+    "family": "mean_reversion_vol_liq",
+    "parameters": {
+      "atr_hours": 24,
+      "atr_percentile_max": 0.5,
+      "atr_stop_multiple": 4.0,
+      "max_hold_hours": 48,
+      "mean_hours": 48,
+      "percentile_window_hours": 720,
+      "volume_median_hours": 168,
+      "volume_multiple_min": 1.2,
+      "z_entry": -2.0,
+      "z_exit": 0.0
+    },
+    "segment": "HELD_OUT_TAIL",
+    "symbol": "UNIUSDT",
+    "trades": [
+      {
+        "bars_held": 18,
+        "entry_price": 9.006,
+        "entry_ts_ms": 1740067200000,
+        "exit_price": 9.375,
+        "exit_ts_ms": 1740132000000,
+        "gross_bps": 409.7268487674888
+      },
+      {
+        "bars_held": 12,
+        "entry_price": 8.721,
+        "entry_ts_ms": 1740369600000,
+        "exit_price": 8.335,
+        "exit_ts_ms": 1740412800000,
+        "gross_bps": -442.6097924549932
+      },
+      {
+        "bars_held": 14,
+        "entry_price": 8.264,
+        "entry_ts_ms": 1740416400000,
+        "exit_price": 7.755,
+        "exit_ts_ms": 1740466800000,
+        "gross_bps": -615.924491771539
+      },
+      {
+        "bars_held": 41,
+        "entry_price": 7.525,
+        "entry_ts_ms": 1740708000000,
+        "exit_price": 7.448,
+        "exit_ts_ms": 1740855600000,
+        "gross_bps": -102.32558139534831
+      },
+      {
+        "bars_held": 37,
+        "entry_price": 6.86,
+        "entry_ts_ms": 1741309200000,
+        "exit_price": 7.121,
+        "exit_ts_ms": 1741442400000,
+        "gross_bps": 380.46647230320696
+      },
+      {
+        "bars_held": 24,
+        "entry_price": 6.57,
+        "entry_ts_ms": 1741539600000,
+        "exit_price": 6.293,
+        "exit_ts_ms": 1741626000000,
+        "gross_bps": -421.61339421613377
+      },
+      {
+        "bars_held": 15,
+        "entry_price": 6.7,
+        "entry_ts_ms": 1742734800000,
+        "exit_price": 6.785,
+        "exit_ts_ms": 1742788800000,
+        "gross_bps": 126.86567164179152
+      },
+      {
+        "bars_held": 39,
+        "entry_price": 6.89,
+        "entry_ts_ms": 1742997600000,
+        "exit_price": 6.577,
+        "exit_ts_ms": 1743138000000,
+        "gross_bps": -454.2815674891143
+      },
+      {
+        "bars_held": 9,
+        "entry_price": 6.51,
+        "entry_ts_ms": 1743141600000,
+        "exit_price": 6.207,
+        "exit_ts_ms": 1743174000000,
+        "gross_bps": -465.4377880184335
+      },
+      {
+        "bars_held": 48,
+        "entry_price": 6.108,
+        "entry_ts_ms": 1743177600000,
+        "exit_price": 5.953,
+        "exit_ts_ms": 1743350400000,
+        "gross_bps": -253.76555337262462
+      },
+      {
+        "bars_held": 12,
+        "entry_price": 5.803,
+        "entry_ts_ms": 1743382800000,
+        "exit_price": 5.971,
+        "exit_ts_ms": 1743426000000,
+        "gross_bps": 289.5054282267795
+      },
+      {
+        "bars_held": 6,
+        "entry_price": 5.726,
+        "entry_ts_ms": 1743937200000,
+        "exit_price": 5.546,
+        "exit_ts_ms": 1743958800000,
+        "gross_bps": -314.3555710792867
+      },
+      {
+        "bars_held": 9,
+        "entry_price": 5.376,
+        "entry_ts_ms": 1743962400000,
+        "exit_price": 5.119,
+        "exit_ts_ms": 1743994800000,
+        "gross_bps": -478.05059523809643
+      },
+      {
+        "bars_held": 12,
+        "entry_price": 5.042,
+        "entry_ts_ms": 1744826400000,
+        "exit_price": 5.245,
+        "exit_ts_ms": 1744869600000,
+        "gross_bps": 402.6180087266962
+      },
+      {
+        "bars_held": 20,
+        "entry_price": 5.711,
+        "entry_ts_ms": 1745730000000,
+        "exit_price": 5.462,
+        "exit_ts_ms": 1745802000000,
+        "gross_bps": -436.0007004027322
+      },
+      {
+        "bars_held": 32,
+        "entry_price": 5.381,
+        "entry_ts_ms": 1745805600000,
+        "exit_price": 5.509,
+        "exit_ts_ms": 1745920800000,
+        "gross_bps": 237.87400111503487
+      },
+      {
+        "bars_held": 28,
+        "entry_price": 5.272,
+        "entry_ts_ms": 1745964000000,
+        "exit_price": 5.34,
+        "exit_ts_ms": 1746064800000,
+        "gross_bps": 128.98330804248735
+      },
+      {
+        "bars_held": 6,
+        "entry_price": 4.985,
+        "entry_ts_ms": 1746403200000,
+        "exit_price": 5.102,
+        "exit_ts_ms": 1746424800000,
+        "gross_bps": 234.70411233701194
+      },
+      {
+        "bars_held": 32,
+        "entry_price": 4.944,
+        "entry_ts_ms": 1746460800000,
+        "exit_price": 4.967,
+        "exit_ts_ms": 1746576000000,
+        "gross_bps": 46.52103559870557
+      },
+      {
+        "bars_held": 8,
+        "entry_price": 4.785,
+        "entry_ts_ms": 1746637200000,
+        "exit_price": 4.899,
+        "exit_ts_ms": 1746666000000,
+        "gross_bps": 238.24451410658253
+      },
+      {
+        "bars_held": 31,
+        "entry_price": 6.818,
+        "entry_ts_ms": 1750946400000,
+        "exit_price": 6.949,
+        "exit_ts_ms": 1751058000000,
+        "gross_bps": 192.13845702552135
+      },
+      {
+        "bars_held": 9,
+        "entry_price": 6.592,
+        "entry_ts_ms": 1751414400000,
+        "exit_price": 7.08,
+        "exit_ts_ms": 1751446800000,
+        "gross_bps": 740.2912621359237
+      },
+      {
+        "bars_held": 31,
+        "entry_price": 6.905,
+        "entry_ts_ms": 1751644800000,
+        "exit_price": 7.364,
+        "exit_ts_ms": 1751756400000,
+        "gross_bps": 664.7356987690079
+      },
+      {
+        "bars_held": 23,
+        "entry_price": 9.674,
+        "entry_ts_ms": 1753970400000,
+        "exit_price": 9.179,
+        "exit_ts_ms": 1754053200000,
+        "gross_bps": -511.6807938805035
+      },
+      {
+        "bars_held": 14,
+        "entry_price": 8.738,
+        "entry_ts_ms": 1754161200000,
+        "exit_price": 9.082,
+        "exit_ts_ms": 1754211600000,
+        "gross_bps": 393.6827649347685
+      },
+      {
+        "bars_held": 1,
+        "entry_price": 10.469,
+        "entry_ts_ms": 1754834400000,
+        "exit_price": 11.016,
+        "exit_ts_ms": 1754838000000,
+        "gross_bps": 522.4949851943838
+      },
+      {
+        "bars_held": 39,
+        "entry_price": 10.639,
+        "entry_ts_ms": 1755486000000,
+        "exit_price": 10.114,
+        "exit_ts_ms": 1755626400000,
+        "gross_bps": -493.4674311495424
+      },
+      {
+        "bars_held": 9,
+        "entry_price": 9.95,
+        "entry_ts_ms": 1755648000000,
+        "exit_price": 10.368,
+        "exit_ts_ms": 1755680400000,
+        "gross_bps": 420.1005025125637
+      },
+      {
+        "bars_held": 36,
+        "entry_price": 10.11,
+        "entry_ts_ms": 1756137600000,
+        "exit_price": 9.974,
+        "exit_ts_ms": 1756267200000,
+        "gross_bps": -134.52027695351032
+      },
+      {
+        "bars_held": 24,
+        "entry_price": 9.652,
+        "entry_ts_ms": 1756454400000,
+        "exit_price": 9.818,
+        "exit_ts_ms": 1756540800000,
+        "gross_bps": 171.98508081226694
+      },
+      {
+        "bars_held": 7,
+        "entry_price": 9.548,
+        "entry_ts_ms": 1756688400000,
+        "exit_price": 9.741,
+        "exit_ts_ms": 1756713600000,
+        "gross_bps": 202.13657310431455
+      },
+      {
+        "bars_held": 10,
+        "entry_price": 9.265,
+        "entry_ts_ms": 1756760400000,
+        "exit_price": 9.626,
+        "exit_ts_ms": 1756796400000,
+        "gross_bps": 389.6384241770101
+      },
+      {
+        "bars_held": 16,
+        "entry_price": 9.23,
+        "entry_ts_ms": 1757001600000,
+        "exit_price": 9.59,
+        "exit_ts_ms": 1757059200000,
+        "gross_bps": 390.0325027085594
+      },
+      {
+        "bars_held": 48,
+        "entry_price": 9.181,
+        "entry_ts_ms": 1758297600000,
+        "exit_price": 9.097,
+        "exit_ts_ms": 1758470400000,
+        "gross_bps": -91.49330138329081
+      },
+      {
+        "bars_held": 5,
+        "entry_price": 8.788,
+        "entry_ts_ms": 1758502800000,
+        "exit_price": 8.473,
+        "exit_ts_ms": 1758520800000,
+        "gross_bps": -358.44333181611177
+      },
+      {
+        "bars_held": 3,
+        "entry_price": 7.936,
+        "entry_ts_ms": 1758686400000,
+        "exit_price": 8.133,
+        "exit_ts_ms": 1758697200000,
+        "gross_bps": 248.2358870967727
+      },
+      {
+        "bars_held": 16,
+        "entry_price": 7.899,
+        "entry_ts_ms": 1758758400000,
+        "exit_price": 7.681,
+        "exit_ts_ms": 1758816000000,
+        "gross_bps": -275.9843018103558
+      },
+      {
+        "bars_held": 4,
+        "entry_price": 7.425,
+        "entry_ts_ms": 1759064400000,
+        "exit_price": 7.559,
+        "exit_ts_ms": 1759078800000,
+        "gross_bps": 180.47138047138088
+      },
+      {
+        "bars_held": 5,
+        "entry_price": 7.483,
+        "entry_ts_ms": 1759248000000,
+        "exit_price": 7.705,
+        "exit_ts_ms": 1759266000000,
+        "gross_bps": 296.67245757049267
+      },
+      {
+        "bars_held": 22,
+        "entry_price": 8.062,
+        "entry_ts_ms": 1759554000000,
+        "exit_price": 8.165,
+        "exit_ts_ms": 1759633200000,
+        "gross_bps": 127.75986107665504
+      },
+      {
+        "bars_held": 9,
+        "entry_price": 5.935,
+        "entry_ts_ms": 1761170400000,
+        "exit_price": 6.228,
+        "exit_ts_ms": 1761202800000,
+        "gross_bps": 493.68155012637027
+      },
+      {
+        "bars_held": 24,
+        "entry_price": 6.322,
+        "entry_ts_ms": 1761685200000,
+        "exit_price": 6.437,
+        "exit_ts_ms": 1761771600000,
+        "gross_bps": 181.904460613731
+      },
+      {
+        "bars_held": 44,
+        "entry_price": 5.953,
+        "entry_ts_ms": 1761829200000,
+        "exit_price": 5.829,
+        "exit_ts_ms": 1761987600000,
+        "gross_bps": -208.29833697295518
+      },
+      {
+        "bars_held": 2,
+        "entry_price": 5.69,
+        "entry_ts_ms": 1762138800000,
+        "exit_price": 5.414,
+        "exit_ts_ms": 1762146000000,
+        "gross_bps": -485.0615114235512
+      },
+      {
+        "bars_held": 37,
+        "entry_price": 5.32,
+        "entry_ts_ms": 1762149600000,
+        "exit_price": 5.013,
+        "exit_ts_ms": 1762282800000,
+        "gross_bps": -577.0676691729326
+      },
+      {
+        "bars_held": 8,
+        "entry_price": 5.962,
+        "entry_ts_ms": 1764082800000,
+        "exit_price": 6.214,
+        "exit_ts_ms": 1764111600000,
+        "gross_bps": 422.67695404226924
+      },
+      {
+        "bars_held": 38,
+        "entry_price": 5.627,
+        "entry_ts_ms": 1764550800000,
+        "exit_price": 5.718,
+        "exit_ts_ms": 1764687600000,
+        "gross_bps": 161.72027723476035
+      },
+      {
+        "bars_held": 8,
+        "entry_price": 5.814,
+        "entry_ts_ms": 1764928800000,
+        "exit_price": 5.544,
+        "exit_ts_ms": 1764957600000,
+        "gross_bps": -464.3962848297223
+      },
+      {
+        "bars_held": 32,
+        "entry_price": 5.461,
+        "entry_ts_ms": 1764961200000,
+        "exit_price": 5.62,
+        "exit_ts_ms": 1765076400000,
+        "gross_bps": 291.1554660318627
+      },
+      {
+        "bars_held": 3,
+        "entry_price": 5.36,
+        "entry_ts_ms": 1765119600000,
+        "exit_price": 5.619,
+        "exit_ts_ms": 1765130400000,
+        "gross_bps": 483.2089552238794
+      },
+      {
+        "bars_held": 18,
+        "entry_price": 5.317,
+        "entry_ts_ms": 1765425600000,
+        "exit_price": 5.577,
+        "exit_ts_ms": 1765490400000,
+        "gross_bps": 488.99755501222495
+      },
+      {
+        "bars_held": 17,
+        "entry_price": 5.309,
+        "entry_ts_ms": 1765749600000,
+        "exit_price": 5.236,
+        "exit_ts_ms": 1765810800000,
+        "gross_bps": -137.50235449237258
+      },
+      {
+        "bars_held": 24,
+        "entry_price": 5.107,
+        "entry_ts_ms": 1765814400000,
+        "exit_price": 5.249,
+        "exit_ts_ms": 1765900800000,
+        "gross_bps": 278.04973565694
+      },
+      {
+        "bars_held": 15,
+        "entry_price": 4.961,
+        "entry_ts_ms": 1765994400000,
+        "exit_price": 5.187,
+        "exit_ts_ms": 1766048400000,
+        "gross_bps": 455.55331586373705
+      },
+      {
+        "bars_held": 31,
+        "entry_price": 5.92,
+        "entry_ts_ms": 1766484000000,
+        "exit_price": 5.869,
+        "exit_ts_ms": 1766595600000,
+        "gross_bps": -86.14864864864846
+      },
+      {
+        "bars_held": 27,
+        "entry_price": 5.73,
+        "entry_ts_ms": 1767200400000,
+        "exit_price": 5.832,
+        "exit_ts_ms": 1767297600000,
+        "gross_bps": 178.01047120418855
+      },
+      {
+        "bars_held": 48,
+        "entry_price": 5.748,
+        "entry_ts_ms": 1767801600000,
+        "exit_price": 5.499,
+        "exit_ts_ms": 1767974400000,
+        "gross_bps": -433.19415448851873
+      },
+      {
+        "bars_held": 22,
+        "entry_price": 5.413,
+        "entry_ts_ms": 1768208400000,
+        "exit_price": 5.447,
+        "exit_ts_ms": 1768287600000,
+        "gross_bps": 62.81174949196444
+      },
+      {
+        "bars_held": 38,
+        "entry_price": 5.4,
+        "entry_ts_ms": 1768492800000,
+        "exit_price": 5.352,
+        "exit_ts_ms": 1768629600000,
+        "gross_bps": -88.88888888888945
+      },
+      {
+        "bars_held": 48,
+        "entry_price": 5.095,
+        "entry_ts_ms": 1768780800000,
+        "exit_price": 4.803,
+        "exit_ts_ms": 1768953600000,
+        "gross_bps": -573.1108930323848
+      },
+      {
+        "bars_held": 29,
+        "entry_price": 4.727,
+        "entry_ts_ms": 1769360400000,
+        "exit_price": 4.724,
+        "exit_ts_ms": 1769464800000,
+        "gross_bps": -6.346519991538013
+      },
+      {
+        "bars_held": 3,
+        "entry_price": 4.575,
+        "entry_ts_ms": 1769698800000,
+        "exit_price": 4.401,
+        "exit_ts_ms": 1769709600000,
+        "gross_bps": -380.32786885246026
+      },
+      {
+        "bars_held": 43,
+        "entry_price": 4.321,
+        "entry_ts_ms": 1769713200000,
+        "exit_price": 4.1,
+        "exit_ts_ms": 1769868000000,
+        "gross_bps": -511.4556815551963
+      },
+      {
+        "bars_held": 45,
+        "entry_price": 3.976,
+        "entry_ts_ms": 1769871600000,
+        "exit_price": 3.913,
+        "exit_ts_ms": 1770033600000,
+        "gross_bps": -158.45070422535247
+      },
+      {
+        "bars_held": 3,
+        "entry_price": 3.803,
+        "entry_ts_ms": 1770141600000,
+        "exit_price": 3.984,
+        "exit_ts_ms": 1770152400000,
+        "gross_bps": 475.9400473310538
+      },
+      {
+        "bars_held": 24,
+        "entry_price": 3.721,
+        "entry_ts_ms": 1770217200000,
+        "exit_price": 3.627,
+        "exit_ts_ms": 1770303600000,
+        "gross_bps": -252.6202633700625
+      },
+      {
+        "bars_held": 25,
+        "entry_price": 3.357,
+        "entry_ts_ms": 1770307200000,
+        "exit_price": 3.536,
+        "exit_ts_ms": 1770397200000,
+        "gross_bps": 533.2141793267797
+      },
+      {
+        "bars_held": 9,
+        "entry_price": 3.407,
+        "entry_ts_ms": 1770627600000,
+        "exit_price": 3.534,
+        "exit_ts_ms": 1770660000000,
+        "gross_bps": 372.76196066921005
+      },
+      {
+        "bars_held": 31,
+        "entry_price": 3.346,
+        "entry_ts_ms": 1770706800000,
+        "exit_price": 3.395,
+        "exit_ts_ms": 1770818400000,
+        "gross_bps": 146.44351464435212
+      },
+      {
+        "bars_held": 39,
+        "entry_price": 3.438,
+        "entry_ts_ms": 1771441200000,
+        "exit_price": 3.429,
+        "exit_ts_ms": 1771581600000,
+        "gross_bps": -26.17801047120505
+      },
+      {
+        "bars_held": 8,
+        "entry_price": 3.283,
+        "entry_ts_ms": 1771812000000,
+        "exit_price": 3.546,
+        "exit_ts_ms": 1771840800000,
+        "gross_bps": 801.0965580261952
+      },
+      {
+        "bars_held": 13,
+        "entry_price": 3.575,
+        "entry_ts_ms": 1772262000000,
+        "exit_price": 3.795,
+        "exit_ts_ms": 1772308800000,
+        "gross_bps": 615.3846153846155
+      },
+      {
+        "bars_held": 37,
+        "entry_price": 3.919,
+        "entry_ts_ms": 1772802000000,
+        "exit_price": 3.749,
+        "exit_ts_ms": 1772935200000,
+        "gross_bps": -433.78412860423543
+      },
+      {
+        "bars_held": 16,
+        "entry_price": 3.695,
+        "entry_ts_ms": 1772978400000,
+        "exit_price": 3.819,
+        "exit_ts_ms": 1773036000000,
+        "gross_bps": 335.5886332882285
+      },
+      {
+        "bars_held": 2,
+        "entry_price": 3.861,
+        "entry_ts_ms": 1773835200000,
+        "exit_price": 3.77,
+        "exit_ts_ms": 1773842400000,
+        "gross_bps": -235.69023569023574
+      },
+      {
+        "bars_held": 48,
+        "entry_price": 3.683,
+        "entry_ts_ms": 1773846000000,
+        "exit_price": 3.565,
+        "exit_ts_ms": 1774018800000,
+        "gross_bps": -320.3909856095566
+      },
+      {
+        "bars_held": 29,
+        "entry_price": 3.485,
+        "entry_ts_ms": 1774137600000,
+        "exit_price": 3.525,
+        "exit_ts_ms": 1774242000000,
+        "gross_bps": 114.77761836441891
+      },
+      {
+        "bars_held": 32,
+        "entry_price": 3.38,
+        "entry_ts_ms": 1774609200000,
+        "exit_price": 3.433,
+        "exit_ts_ms": 1774724400000,
+        "gross_bps": 156.8047337278111
+      },
+      {
+        "bars_held": 9,
+        "entry_price": 3.445,
+        "entry_ts_ms": 1775102400000,
+        "exit_price": 3.325,
+        "exit_ts_ms": 1775134800000,
+        "gross_bps": -348.3309143686497
+      },
+      {
+        "bars_held": 48,
+        "entry_price": 3.134,
+        "entry_ts_ms": 1775138400000,
+        "exit_price": 3.136,
+        "exit_ts_ms": 1775311200000,
+        "gross_bps": 6.381620931716903
+      },
+      {
+        "bars_held": 36,
+        "entry_price": 3.066,
+        "entry_ts_ms": 1775959200000,
+        "exit_price": 3.08,
+        "exit_ts_ms": 1776088800000,
+        "gross_bps": 45.66210045662267
+      },
+      {
+        "bars_held": 4,
+        "entry_price": 3.201,
+        "entry_ts_ms": 1776801600000,
+        "exit_price": 3.273,
+        "exit_ts_ms": 1776816000000,
+        "gross_bps": 224.92970946579317
+      },
+      {
+        "bars_held": 27,
+        "entry_price": 3.195,
+        "entry_ts_ms": 1777305600000,
+        "exit_price": 3.258,
+        "exit_ts_ms": 1777402800000,
+        "gross_bps": 197.18309859154903
+      },
+      {
+        "bars_held": 33,
+        "entry_price": 3.155,
+        "entry_ts_ms": 1777489200000,
+        "exit_price": 3.226,
+        "exit_ts_ms": 1777608000000,
+        "gross_bps": 225.03961965134823
+      },
+      {
+        "bars_held": 47,
+        "entry_price": 3.708,
+        "entry_ts_ms": 1778601600000,
+        "exit_price": 3.723,
+        "exit_ts_ms": 1778770800000,
+        "gross_bps": 40.45307443365509
+      },
+      {
+        "bars_held": 25,
+        "entry_price": 3.492,
+        "entry_ts_ms": 1778925600000,
+        "exit_price": 3.571,
+        "exit_ts_ms": 1779015600000,
+        "gross_bps": 226.23138602520189
+      },
+      {
+        "bars_held": 20,
+        "entry_price": 3.44,
+        "entry_ts_ms": 1779069600000,
+        "exit_price": 3.514,
+        "exit_ts_ms": 1779141600000,
+        "gross_bps": 215.11627906976693
+      },
+      {
+        "bars_held": 12,
+        "entry_price": 3.536,
+        "entry_ts_ms": 1779476400000,
+        "exit_price": 3.349,
+        "exit_ts_ms": 1779519600000,
+        "gross_bps": -528.8461538461531
+      },
+      {
+        "bars_held": 13,
+        "entry_price": 3.289,
+        "entry_ts_ms": 1779523200000,
+        "exit_price": 3.561,
+        "exit_ts_ms": 1779570000000,
+        "gross_bps": 826.9990878686517
+      },
+      {
+        "bars_held": 12,
+        "entry_price": 3.311,
+        "entry_ts_ms": 1779750000000,
+        "exit_price": 3.359,
+        "exit_ts_ms": 1779793200000,
+        "gross_bps": 144.97130776200518
+      },
+      {
+        "bars_held": 31,
+        "entry_price": 3.247,
+        "entry_ts_ms": 1779818400000,
+        "exit_price": 3.102,
+        "exit_ts_ms": 1779930000000,
+        "gross_bps": -446.5660609793654
+      },
+      {
+        "bars_held": 47,
+        "entry_price": 3.073,
+        "entry_ts_ms": 1779933600000,
+        "exit_price": 3.05,
+        "exit_ts_ms": 1780102800000,
+        "gross_bps": -74.84542792059901
+      },
+      {
+        "bars_held": 47,
+        "entry_price": 2.987,
+        "entry_ts_ms": 1780239600000,
+        "exit_price": 2.91,
+        "exit_ts_ms": 1780408800000,
+        "gross_bps": -257.78372949447623
+      },
+      {
+        "bars_held": 21,
+        "entry_price": 2.841,
+        "entry_ts_ms": 1780412400000,
+        "exit_price": 2.895,
+        "exit_ts_ms": 1780488000000,
+        "gross_bps": 190.07391763463443
+      },
+      {
+        "bars_held": 40,
+        "entry_price": 2.666,
+        "entry_ts_ms": 1780538400000,
+        "exit_price": 2.472,
+        "exit_ts_ms": 1780682400000,
+        "gross_bps": -727.68192048012
+      },
+      {
+        "bars_held": 30,
+        "entry_price": 2.381,
+        "entry_ts_ms": 1780686000000,
+        "exit_price": 2.471,
+        "exit_ts_ms": 1780794000000,
+        "gross_bps": 377.992440151198
+      },
+      {
+        "bars_held": 39,
+        "entry_price": 2.468,
+        "entry_ts_ms": 1780966800000,
+        "exit_price": 2.502,
+        "exit_ts_ms": 1781107200000,
+        "gross_bps": 137.76337115072755
+      },
+      {
+        "bars_held": 9,
+        "entry_price": 2.407,
+        "entry_ts_ms": 1781118000000,
+        "exit_price": 2.489,
+        "exit_ts_ms": 1781150400000,
+        "gross_bps": 340.6730369754873
+      },
+      {
+        "bars_held": 7,
+        "entry_price": 2.482,
+        "entry_ts_ms": 1781449200000,
+        "exit_price": 2.578,
+        "exit_ts_ms": 1781474400000,
+        "gross_bps": 386.78485092667137
+      },
+      {
+        "bars_held": 6,
+        "entry_price": 2.967,
+        "entry_ts_ms": 1782014400000,
+        "exit_price": 3.051,
+        "exit_ts_ms": 1782036000000,
+        "gross_bps": 283.1142568250766
+      },
+      {
+        "bars_held": 41,
+        "entry_price": 2.895,
+        "entry_ts_ms": 1782198000000,
+        "exit_price": 2.927,
+        "exit_ts_ms": 1782345600000,
+        "gross_bps": 110.53540587219413
+      },
+      {
+        "bars_held": 8,
+        "entry_price": 2.755,
+        "entry_ts_ms": 1782396000000,
+        "exit_price": 2.893,
+        "exit_ts_ms": 1782424800000,
+        "gross_bps": 500.9074410163339
+      },
+      {
+        "bars_held": 45,
+        "entry_price": 2.869,
+        "entry_ts_ms": 1782781200000,
+        "exit_price": 2.846,
+        "exit_ts_ms": 1782943200000,
+        "gross_bps": -80.16730568142228
+      },
+      {
+        "bars_held": 14,
+        "entry_price": 3.146,
+        "entry_ts_ms": 1783249200000,
+        "exit_price": 3.197,
+        "exit_ts_ms": 1783299600000,
+        "gross_bps": 162.11061665607264
+      },
+      {
+        "bars_held": 24,
+        "entry_price": 3.539,
+        "entry_ts_ms": 1784246400000,
+        "exit_price": 3.64,
+        "exit_ts_ms": 1784332800000,
+        "gross_bps": 285.3913534896857
+      },
+      {
+        "bars_held": 6,
+        "entry_price": 3.441,
+        "entry_ts_ms": 1784527200000,
+        "exit_price": 3.524,
+        "exit_ts_ms": 1784548800000,
+        "gross_bps": 241.2089508863713
+      },
+      {
+        "bars_held": 31,
+        "entry_price": 3.728,
+        "entry_ts_ms": 1784952000000,
+        "exit_price": 3.725,
+        "exit_ts_ms": 1785063600000,
+        "gross_bps": -8.047210300429208
+      },
+      {
+        "bars_held": 37,
+        "entry_price": 3.928,
+        "entry_ts_ms": 1785772800000,
+        "exit_price": 3.942,
+        "exit_ts_ms": 1785906000000,
+        "gross_bps": 35.641547861506865
+      },
+      {
+        "bars_held": 12,
+        "entry_price": 3.941,
+        "entry_ts_ms": 1786377600000,
+        "exit_price": 4.005,
+        "exit_ts_ms": 1786420800000,
+        "gross_bps": 162.39533113423076
+      },
+      {
+        "bars_held": 3,
+        "entry_price": 3.892,
+        "entry_ts_ms": 1786449600000,
+        "exit_price": 3.752,
+        "exit_ts_ms": 1786460400000,
+        "gross_bps": -359.71223021582733
+      },
+      {
+        "bars_held": 15,
+        "entry_price": 3.7,
+        "entry_ts_ms": 1786464000000,
+        "exit_price": 3.619,
+        "exit_ts_ms": 1786518000000,
+        "gross_bps": -218.9189189189189
+      },
+      {
+        "bars_held": 48,
+        "entry_price": 3.501,
+        "entry_ts_ms": 1786521600000,
+        "exit_price": 3.465,
+        "exit_ts_ms": 1786694400000,
+        "gross_bps": -102.82776349614386
+      },
+      {
+        "bars_held": 7,
+        "entry_price": 3.392,
+        "entry_ts_ms": 1786705200000,
+        "exit_price": 3.204,
+        "exit_ts_ms": 1786730400000,
+        "gross_bps": -554.2452830188671
+      },
+      {
+        "bars_held": 37,
+        "entry_price": 3.172,
+        "entry_ts_ms": 1786734000000,
+        "exit_price": 3.275,
+        "exit_ts_ms": 1786867200000,
+        "gross_bps": 324.7162673392179
+      },
+      {
+        "bars_held": 6,
+        "entry_price": 8.946,
+        "entry_ts_ms": 1791205200000,
+        "exit_price": 9.105,
+        "exit_ts_ms": 1791226800000,
+        "gross_bps": 177.7330650570086
+      },
+      {
+        "bars_held": 21,
+        "entry_price": 8.87,
+        "entry_ts_ms": 1791259200000,
+        "exit_price": 8.519,
+        "exit_ts_ms": 1791334800000,
+        "gross_bps": -395.7158962795937
+      },
+      {
+        "bars_held": 16,
+        "entry_price": 8.217,
+        "entry_ts_ms": 1791338400000,
+        "exit_price": 7.828,
+        "exit_ts_ms": 1791396000000,
+        "gross_bps": -473.4087866617986
+      },
+      {
+        "bars_held": 8,
+        "entry_price": 7.442,
+        "entry_ts_ms": 1791817200000,
+        "exit_price": 7.152,
+        "exit_ts_ms": 1791846000000,
+        "gross_bps": -389.6801934963723
+      },
+      {
+        "bars_held": 15,
+        "entry_price": 6.972,
+        "entry_ts_ms": 1791849600000,
+        "exit_price": 7.533,
+        "exit_ts_ms": 1791903600000,
+        "gross_bps": 804.6471600688476
+      }
+    ],
+    "window_end_ms": 1792000800000,
+    "window_start_ms": 1737255600000
+  },
   "families": [
     {
       "differs_from": [

@@ -119,11 +119,14 @@ def run_symbol(
         + cost_for(symbol).slippage_bps_per_side
         + cost_for(symbol).impact_bps_per_side
     )
+    # One book per symbol: a shared book id would mint the same identifiers in
+    # three books, which is the collision class P0.3 exists to remove.
+    book_id = f"{BOOK_ID}-{symbol.replace('/', '')}"
     broker = PaperBroker(
         equity=equity,
         slippage_bps=slippage_bps,
         commission_bps=commission_bps,
-        book_id=BOOK_ID,
+        book_id=book_id,
     )
     notional = min(
         float(risk["max_order_notional_usdt"]),
@@ -307,6 +310,7 @@ def run_symbol(
     )
     return {
         "symbol": symbol,
+        "book_id": book_id,
         "events": events,
         "snapshot": snapshot,
         "closed_trades": broker.closed_trades_rows(),
@@ -383,6 +387,7 @@ def main() -> int:
 
     report: dict[str, Any] = {
         "schema_version": "EDGE15_PROSPECTIVE_PAPER_REPORT_V1",
+        "book_ids": [f"{BOOK_ID}-{symbol.replace('/', '')}" for symbol, _slug, _path in UNIVERSE],
         "work_package": "WP-EDGE-015/P3",
         "tag": TAG,
         "generated_at_utc": datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ"),
@@ -442,7 +447,7 @@ def main() -> int:
             "equity_mark_to_market_usdt": equity_total,
             "accounting_identities_all_hold": all(identity_flags.values()),
             "accounting_identity_detail": identity_flags,
-            "broker_book_id": BOOK_ID,
+            "broker_book_ids": [result["book_id"] for result in results],
             "open_positions_at_end": [
                 {"symbol": result["symbol"], **position}
                 for result in results

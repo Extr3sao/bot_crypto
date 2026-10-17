@@ -35,6 +35,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import subprocess
 import sys
 import time
 from pathlib import Path
@@ -76,6 +77,45 @@ def _canonical_sha(payload: dict[str, Any]) -> str:
     ).hexdigest()
 
 
+def _git_state(path: Path) -> dict[str, Any]:
+    """The committed blob and its commit time for ``path``, or why not.
+
+    The freeze file cannot contain its own digest (writing it would change it),
+    so the digest that binds it is the one Git recorded when the file was
+    committed. This reads that blob back and hashes it, both raw and with LF
+    normalisation, because a checkout may have rewritten line endings.
+    """
+    rel = path.relative_to(REPO).as_posix()
+    try:
+        blob = subprocess.run(
+            ["git", "-C", str(REPO), "show", f"HEAD:{rel}"],
+            capture_output=True,
+            check=True,
+        ).stdout
+        stamp = subprocess.run(
+            ["git", "-C", str(REPO), "log", "-1", "--format=%ct", "--", rel],
+            capture_output=True,
+            text=True,
+            check=True,
+        ).stdout.strip()
+        head = subprocess.run(
+            ["git", "-C", str(REPO), "rev-parse", "HEAD"],
+            capture_output=True,
+            text=True,
+            check=True,
+        ).stdout.strip()
+    except Exception as exc:  # git absent, or the file is not committed yet
+        return {"committed": False, "reason": f"{type(exc).__name__}: {exc}"}
+    return {
+        "committed": True,
+        "commit": head,
+        "commit_unix": int(stamp) if stamp.isdigit() else None,
+        "blob_sha256": hashlib.sha256(blob).hexdigest(),
+        "blob_sha256_lf": hashlib.sha256(blob.replace(b"\r\n", b"\n")).hexdigest(),
+        "path": rel,
+    }
+
+
 def freeze(protocol: dict[str, Any], *, force: bool = False) -> int:
     if PREREG.exists() and not force:
         print(f"[oos] REFUSED: {PREREG.name} already exists — a freeze is immutable")
@@ -94,6 +134,11 @@ def freeze(protocol: dict[str, Any], *, force: bool = False) -> int:
             "host wall clock, nanosecond resolution, read in the freeze process before "
             "this file was written; the file is committed before any capture runs"
         ),
+        "file_digest_binding": (
+            "this file cannot contain its own digest: the binding digest is the one Git "
+            "recorded in the commit that adds it, and the capture compares the working "
+            "bytes against that committed blob"
+        ),
         "prospective_boundary_ms": BOUNDARY_MS,
         "previously_captured": {
             "path": str(V1_SLICE),
@@ -109,7 +154,7 @@ def freeze(protocol: dict[str, Any], *, force: bool = False) -> int:
     payload["protocol_sha256"] = _canonical_sha(dict(payload["protocol"]))
     PREREG.parent.mkdir(parents=True, exist_ok=True)
     PREREG.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    payload["file_sha256"] = _sha256(PREREG)
+    payload["file_sha256"] = _sha256(PREREG)  # reported, not stored: see below
     print(f"[oos] FROZEN at {payload['frozen_at_utc']} (ns={ns})")
     print(f"[oos] file sha256 {payload['file_sha256']}")
     print(f"[oos] protocol sha256 {payload['protocol_sha256']}")
@@ -173,22 +218,40 @@ def capture(symbols: list[str], exchange_id: str) -> int:
     capture_ns = time.time_ns()
     prereg_sha = _sha256(PREREG)
     protocol_sha = _canonical_sha(dict(prereg["protocol"]))
-    order = {
+    git_state = _git_state(PREREG)
+    disk = PREREG.read_bytes()
+    disk_lf = hashlib.sha256(disk.replace(b"\r\n", b"\n")).hexdigest()
+    order: dict[str, Any] = {
         "method": (
-            "the frozen file records its own nanosecond instant; this process reads its "
-            "own instant before the first network call and compares the two integers"
+            "the frozen file records its own nanosecond instant and is committed before "
+            "this runs; the capture reads its own instant before the first network call, "
+            "compares the two integers, and compares the file on disk against the blob "
+            "Git holds for that commit"
         ),
         "freeze_at_unix_ns": freeze_ns,
         "capture_started_unix_ns": capture_ns,
         "delta_ns": capture_ns - freeze_ns,
         "assumption": (
-            "both instants come from the same host clock in different processes; sufficiency "
-            "rests on the frozen file being committed between the two, which the run report "
-            "records by commit sha"
+            "both instants come from the same host clock in different processes; the commit "
+            "between them is what makes the ordering checkable from outside this machine"
         ),
+        "preregistration_file": {
+            "disk_sha256": prereg_sha,
+            "disk_sha256_lf": disk_lf,
+            "git": git_state,
+        },
     }
     order["freeze_precedes_capture"] = capture_ns > freeze_ns
-    order["prereg_file_sha256_matches"] = prereg_sha == prereg.get("file_sha256")
+    committed_blob = git_state.get("blob_sha256")
+    committed_blob_lf = git_state.get("blob_sha256_lf")
+    order["prereg_file_matches_committed_blob"] = bool(
+        git_state.get("committed")
+        and (prereg_sha in (committed_blob, committed_blob_lf) or disk_lf == committed_blob_lf)
+    )
+    commit_unix = git_state.get("commit_unix")
+    order["commit_precedes_capture"] = bool(
+        isinstance(commit_unix, int) and commit_unix * 1_000_000_000 < capture_ns
+    )
     order["protocol_digest_matches"] = protocol_sha == prereg.get("protocol_sha256")
 
     start_ms = max(BOUNDARY_MS + 3_600_000, freeze_ms)
@@ -219,7 +282,8 @@ def capture(symbols: list[str], exchange_id: str) -> int:
     order["verdict"] = (
         "ORDER_VERIFIED"
         if order["freeze_precedes_capture"]
-        and order["prereg_file_sha256_matches"]
+        and order["prereg_file_matches_committed_blob"]
+        and order["commit_precedes_capture"]
         and order["protocol_digest_matches"]
         and order["all_prospective_bars_open_after_freeze"]
         else "ORDER_VIOLATED"
@@ -280,7 +344,10 @@ def capture(symbols: list[str], exchange_id: str) -> int:
     CAPTURE.parent.mkdir(parents=True, exist_ok=True)
     CAPTURE.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
-    print(f"[oos] order check: {order['verdict']} (delta {order['delta_ns']} ns)")
+    print(
+        f"[oos] order check: {order['verdict']} (freeze->capture {order['delta_ns'] / 1e9:.1f} s, "
+        f"committed={git_state.get('committed')}, commit={str(git_state.get('commit'))[:12]})"
+    )
     print(
         f"[oos] capture status {status}; prospective bars {n_prospective}, descriptive {n_descriptive}"
     )

@@ -1,4 +1,9 @@
 {
+  "book_ids": [
+    "EDGE15LANE-BTCUSDT",
+    "EDGE15LANE-ETHUSDT",
+    "EDGE15LANE-SOLUSDT"
+  ],
   "candidate_families": {
     "mean_reversion_vol_liq": {
       "parameters": {
@@ -52,10 +57,10 @@
   },
   "data_coverage": {
     "disk": {
-      "free_gib": 5.198,
+      "free_gib": 5.902,
       "ok": false,
       "reasons": [
-        "free space cannot pay for the window: 8.640 GB needed at 1.5x, 3.581 GB usable above the 2.000 GB reserve"
+        "free space cannot pay for the window: 8.640 GB needed at 1.5x, 4.338 GB usable above the 2.000 GB reserve"
       ],
       "status": "INSUFFICIENT_FREE_SPACE",
       "thresholds_changed_by_this_work_package": false
@@ -85,7 +90,7 @@
     },
     "window_bars_per_symbol": 2000
   },
-  "generated_at_utc": "2026-10-17T07:18:39Z",
+  "generated_at_utc": "2026-10-17T07:23:53Z",
   "lane_isolation": {
     "admitted_strategies": "COST_MODEL_V3 (evaluated live per cycle; never stored here)",
     "authoritative_ledger": "config\\strategy_admission.json",
@@ -108,7 +113,11 @@
       "equity_equals_cash_plus_net_unrealised": true,
       "ledger_equity_equals_initial_plus_realised": true
     },
-    "broker_book_id": "EDGE15LANE",
+    "broker_book_ids": [
+      "EDGE15LANE-BTCUSDT",
+      "EDGE15LANE-ETHUSDT",
+      "EDGE15LANE-SOLUSDT"
+    ],
     "closed_trades": 14,
     "equity_mark_to_market_usdt": 29987.190039413617,
     "open_positions_at_end": [],

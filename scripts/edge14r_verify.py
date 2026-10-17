@@ -38,6 +38,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 REPO = Path(__file__).resolve().parents[1]
 DEFAULT_OUT = REPO / "reports" / "economic-recovery" / "RFC-EDGE-014R"
+#: The successor package's evidence directory, where the two-phase freeze lives.
+OUT_15 = REPO / "reports" / "economic-recovery" / "RFC-EDGE-015"
 
 
 class Checks:
@@ -446,22 +448,48 @@ def main() -> int:
         )
 
     # 9. the reserved holdout
+    #
+    # WP-EDGE-015/P0.1 replaced the ordering evidence: this package's manifest
+    # could only compare two second-resolution timestamps taken in the same run
+    # and it recorded its own verdict as False. The check now requires the
+    # two-phase evidence (a freeze file committed before a separate capture
+    # process) and reports the old manifest's limitation instead of accepting it.
+    v2_capture = _load(OUT_15 / "OOS_CAPTURE_MANIFEST_V2.json")
     oos = _load(out / "OOS_CAPTURE_MANIFEST.json")
     prereg = _load(out / "OOS_PREREGISTRATION.json")
-    if oos and prereg:
-        prereg_path = out / "OOS_PREREGISTRATION.json"
-        capture_path = out / "OOS_CAPTURE_MANIFEST.json"
-        prereg_hash = hashlib.sha256(prereg_path.read_bytes()).hexdigest()
+    if v2_capture:
+        order = v2_capture["order_check"]
         checks.add(
             "V21",
-            "the holdout protocol was frozen before it was captured",
-            prereg_hash == oos["preregistration"]["sha256"]
-            and prereg["frozen_at_utc"] <= oos["captured_at_utc"]
-            and prereg_path.stat().st_mtime <= capture_path.stat().st_mtime,
+            "the holdout protocol's freeze was committed before the capture ran",
+            order["verdict"] == "ORDER_VERIFIED"
+            and order["freeze_precedes_capture"]
+            and order["commit_precedes_capture"]
+            and order["prereg_file_matches_committed_blob"],
             (
-                f"protocol sha256 {prereg_hash[:16]}… still matches the manifest; frozen "
-                f"{prereg['frozen_at_utc']} <= captured {oos['captured_at_utc']}; the "
-                "timestamps are second-resolution, so the hash is the binding commitment"
+                f"v2 evidence: freeze {order['freeze_at_unix_ns']} < commit "
+                f"{order['preregistration_file']['git'].get('commit_unix')} < capture "
+                f"{order['capture_started_unix_ns']}; the v1 manifest could not show this "
+                f"(its own record said: {oos['order_check'] if oos else 'absent'})"
+            ),
+        )
+    else:
+        checks.add(
+            "V21",
+            "the holdout protocol's freeze was committed before the capture ran",
+            False,
+            "no two-phase evidence; a same-run timestamp pair cannot order a freeze",
+        )
+    if oos and prereg:
+        prereg_path = out / "OOS_PREREGISTRATION.json"
+        prereg_hash = hashlib.sha256(prereg_path.read_bytes()).hexdigest()
+        checks.add(
+            "V21b",
+            "the v1 slice is preserved byte-for-byte as descriptive evidence",
+            prereg_hash == oos["preregistration"]["sha256"],
+            (
+                f"protocol sha256 {prereg_hash[:16]}… still matches its manifest; the slice "
+                "is now labelled descriptive for the WP-EDGE-015 hypotheses as well"
             ),
         )
         checks.add(
