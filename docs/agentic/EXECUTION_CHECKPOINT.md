@@ -33,9 +33,11 @@ riesgo canónico del runtime, y que la captura prospectiva sea un testigo real �
 
 **Git**: la reparación y sus pruebas se publicaron en `6f04e59` (*Fill every exit at the bar after the
 close that decided it, not before.*), empujado como fast-forward limpio (`2b8a6ed..6f04e59`) y releído
-por HEAD en `origin/agent/edge-recovery/WP-EDGE-00-baseline`. El commit siguiente sólo lleva la
-evidencia regenerada contra ese árbol; no se preparó ningún fichero ajeno (los ~170 sucios de otras
-líneas siguen sin tocar).
+por HEAD en `origin/agent/edge-recovery/WP-EDGE-00-baseline`. Los dos commits siguientes sólo llevan
+evidencia: `267c7a7` (la verificación deja de nombrar el HEAD que la publica, para que su hash no
+nazca obsoleto) y `cfa72d2` (el mapa de autoridad del runtime y la reconciliación PIT en JSON, dos
+entregables que el RFC nombraba y aún no existían). No se preparó ningún fichero ajeno: los ~160
+sucios de otras líneas siguen sin tocar.
 
 ## 1. Objetivo actual
 
