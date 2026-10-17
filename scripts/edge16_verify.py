@@ -921,6 +921,101 @@ def check_evidence_index(checks: Checks) -> None:
     )
 
 
+AUTHORITY_STAGES = {
+    "signal_calculation",
+    "closed_bar_availability",
+    "ohlc_simulator",
+    "paper_broker_fills",
+    "portfolio_and_risk",
+    "admission",
+    "scheduler",
+    "prospective_collector",
+}
+
+
+def authority_problems(authority: dict[str, Any]) -> list[str]:
+    """Every stage must resolve, and the recorded line must really contain the symbol."""
+    problems: list[str] = []
+    rows = authority.get("rows") or []
+    stages = {row["stage"] for row in rows}
+    if stages != AUTHORITY_STAGES:
+        problems.append(f"stages missing or unknown: {sorted(AUTHORITY_STAGES ^ stages)}")
+    for row in rows:
+        path = REPO / row["component"]
+        if not path.is_file():
+            problems.append(f"{row['stage']}: {row['component']} does not exist")
+            continue
+        lines = path.read_text(encoding="utf-8").splitlines()
+        line = row.get("line")
+        if not isinstance(line, int) or not (1 <= line <= len(lines)):
+            problems.append(f"{row['stage']}: no line recorded")
+            continue
+        if row["symbol"] not in lines[line - 1]:
+            problems.append(
+                f"{row['stage']}: line {line} of {row['component']} does not contain {row['symbol']!r}"
+            )
+        if _sha256(path) != row.get("sha256"):
+            problems.append(f"{row['stage']}: {row['component']} changed since the map was written")
+    if authority.get("unresolved"):
+        problems.append(f"the map itself lists unresolved stages: {authority['unresolved']}")
+    if authority.get("scheduled_jobs_owned_by_this_package"):
+        problems.append("the map claims this package owns a scheduled job")
+    return problems
+
+
+def reconciliation_problems(reconciliation: dict[str, Any]) -> list[str]:
+    """The reconciliation must be arithmetic on the defect map it summarises."""
+    problems: list[str] = []
+    defect = _load(OUT / "PIT_DEFECT_MAP.json") or {}
+    rows = defect.get("rows") or []
+    totals = reconciliation.get("totals") or {}
+    swept = sum(row["pre_pit_exits_filled_at_their_own_signal_bar"] for row in rows)
+    checked = sum(row["pre_pit_trades"] for row in rows)
+    if totals.get("pre_pit_exits_checked") != checked:
+        problems.append(f"pre-PIT exits {totals.get('pre_pit_exits_checked')} != {checked} on the map")
+    if totals.get("pre_pit_exits_filled_at_their_own_signal_bar") != swept:
+        problems.append(f"swept exits {totals.get('pre_pit_exits_filled_at_their_own_signal_bar')} != {swept}")
+    if abs(float(totals.get("swept_share", 0)) - (swept / checked if checked else 0)) > 1e-6:
+        problems.append("the swept share is not its own arithmetic")
+    if totals.get("post_pit_violations") != sum(row["post_pit_pit_violations"] for row in rows):
+        problems.append("post-repair violations do not add up from the rows")
+    if reconciliation.get("lanes_with_a_remaining_violation"):
+        problems.append("a lane still violates the contract")
+    if not reconciliation.get("window_shift"):
+        problems.append("no before/after window evidence is recorded")
+    return problems
+
+
+def check_authority_and_reconciliation(checks: Checks) -> None:
+    authority = _load(OUT / "RUNTIME_AUTHORITY_MAP.json") or {}
+    problems = authority_problems(authority)
+    checks.add(
+        "V58",
+        "each named decision has one owner, resolved at a line that really says so",
+        bool(authority) and not problems,
+        f"{len(authority.get('rows') or [])} stages, unresolved {authority.get('unresolved')}"
+        + (f"; {problems[0]}" if problems else ""),
+    )
+    checks.add(
+        "V59",
+        "the runtime authority map is published as both data and prose",
+        (OUT / "RUNTIME_AUTHORITY_MAP.md").is_file()
+        and "| stage | component |" in (OUT / "RUNTIME_AUTHORITY_MAP.md").read_text(encoding="utf-8"),
+        "RUNTIME_AUTHORITY_MAP.json and .md",
+    )
+    reconciliation = _load(OUT / "PIT_RECONCILIATION.json") or {}
+    recon = reconciliation_problems(reconciliation)
+    checks.add(
+        "V61",
+        "the reconciliation is arithmetic on the defect map and leaves no lane in violation",
+        bool(reconciliation) and not recon,
+        f"swept {reconciliation.get('totals', {}).get('swept_share')} of "
+        f"{reconciliation.get('totals', {}).get('pre_pit_exits_checked')} exits; "
+        f"{len(reconciliation.get('window_shift') or {})} symbols of window evidence"
+        + (f"; {recon[0]}" if recon else ""),
+    )
+
+
 def check_independence(checks: Checks) -> None:
     source = (REPO / "scripts" / "edge16_verify.py").read_text(encoding="utf-8")
     imports = re.findall(r"^\s*(?:from|import)\s+([\w\.]+)", source, flags=re.MULTILINE)
@@ -1177,6 +1272,25 @@ def mutations(series: Series) -> list[tuple[str, bool, str]]:
         found = evidence_index_problems(self_listed)
         note("an index that hashes itself", bool(found), found[0] if found else "MISSED")
 
+    authority = _load(OUT / "RUNTIME_AUTHORITY_MAP.json") or {}
+    if authority.get("rows"):
+        drifted = copy.deepcopy(authority)
+        drifted["rows"][0]["line"] = 1  # a line that does not contain the symbol
+        found = authority_problems(drifted)
+        note("a map whose line does not name the component", bool(found), found[0] if found else "MISSED")
+
+        missing = copy.deepcopy(authority)
+        missing["rows"] = [row for row in missing["rows"] if row["stage"] != "scheduler"]
+        found = authority_problems(missing)
+        note("a map with a stage quietly dropped", bool(found), found[0] if found else "MISSED")
+
+    reconciliation = _load(OUT / "PIT_RECONCILIATION.json") or {}
+    if reconciliation.get("totals"):
+        softened = copy.deepcopy(reconciliation)
+        softened["totals"]["pre_pit_exits_filled_at_their_own_signal_bar"] = 1
+        found = reconciliation_problems(softened)
+        note("a reconciliation that softens the swept count", bool(found), found[0] if found else "MISSED")
+
     run_report = _load(OUT / "RUN_REPORT.json") or {}
     if run_report:
         # the lie is the opposite of whatever the evidence supports right now, so the mutation
@@ -1220,6 +1334,7 @@ def main() -> int:
     check_forward(checks)
     check_run_report(checks)
     check_evidence_index(checks)
+    check_authority_and_reconciliation(checks)
     check_independence(checks)
 
     injected = mutations(series)

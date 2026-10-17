@@ -1,6 +1,6 @@
 # WP-EDGE-016 — independent verification
 
-*41/41 checks pass; 35/35 injected faults caught. Verdict **VERIFIED**.*
+*44/44 checks pass; 38/38 injected faults caught. Verdict **VERIFIED**.*
 
 The verifier imports no builder module. It rebuilds the ordering contract from the raw
 bar files named by each trade's corpus, the restatement table from the per-trade records
@@ -41,6 +41,9 @@ ledger. Then it mutates the artifacts and requires its own checks to fail.
 | a lane PnL that does not sum from its fills | yes | gross_realised_usdt 100.0 != -53.384527 summed from the fills |
 | an evidence hash that does not match the file | yes | BASELINE.json: hash does not match the bytes on disk |
 | an index that hashes itself | yes | the index lists a hash of itself, which cannot be truthful |
+| a map whose line does not name the component | yes | signal_calculation: line 1 of src/trading_bot/research/economic_recovery/pit15.py does not contain 'def machine_for' |
+| a map with a stage quietly dropped | yes | stages missing or unknown: ['scheduler'] |
+| a reconciliation that softens the swept count | yes | swept exits 1 != 7081 |
 | a run report claiming PIT_FIXED_RISK_PARITY_VALIDATED | yes | both PIT/parity outcomes are declared the same, so neither is informative |
 | a run report claiming PROSPECTIVE_EVIDENCE_INSUFFICIENT | yes | PROSPECTIVE_EVIDENCE_INSUFFICIENT is declared False but the evidence says True |
 | a run report claiming CAPTURE_BLOCKED_DISK | yes | CAPTURE_BLOCKED_DISK is declared False but the evidence says True |
@@ -80,15 +83,18 @@ ledger. Then it mutates the artifacts and requires its own checks to fail.
 | V43 | the unique key is venue, symbol, timeframe and open instant, with no duplicates | PASS | VENUE|SYMBOL|TIMEFRAME|OPEN_MS, 3 keys, 0 duplicate |
 | V56 | coverage is the observed-over-expected ratio, and a stalled collector shows as less | PASS | 3/6 symbol-bars = 0.500; current False; missing rows labelled 3 |
 | V44 | three captured bars are not sold as evidence of an edge | PASS | the run report carries the status PROSPECTIVE_EVIDENCE_INSUFFICIENT |
-| V45 | the disk guard blocked the collector and nobody lowered it | PASS | CAPTURE_BLOCKED_DISK at 5.043 GiB free, INSUFFICIENT_FREE_SPACE, guard_relaxed False |
+| V45 | the disk guard blocked the collector and nobody lowered it | PASS | CAPTURE_BLOCKED_DISK at 4.213 GiB free, INSUFFICIENT_FREE_SPACE, guard_relaxed False |
 | V46 | no scheduled job was created by this package | PASS | SCHEDULER_DECISION.json: DO_NOT_CREATE_A_SCHEDULER |
 | V47 | the workflow files on disk still contain no cron this package added | PASS | 3 workflow(s), scheduled: none |
 | V48 | the CURRENT/PROPOSED table is the published rows, and the verdict follows the threshold | PASS | worst deviation 0.0195 USDT over 27 restated rows; verdict NO_RESTATED_EDGE_SURVIVES; CURRENT net 0.0 |
 | V49 | the run report's statuses follow the evidence, true or false | PASS | holding ['PIT_FIXED_RISK_PARITY_VALIDATED', 'ECONOMIC_RESULTS_RESTATED_NO_EDGE', 'PROSPECTIVE_CAPTURE_NOT_AUTOMATED', 'CAPTURE_BLOCKED_DISK', 'PROSPECTIVE_EVIDENCE_INSUFFICIENT', 'INDEPENDENT_VERIFIED'] |
 | V55 | the defect map's own audit count is zero after the repair | PASS | post-repair violations 0 over 7081 pre-repair exits checked |
-| V57 | every artifact and code hash in the index matches the bytes on disk | PASS | 29 artifacts, 10 code files |
+| V57 | every artifact and code hash in the index matches the bytes on disk | PASS | 32 artifacts, 10 code files |
+| V58 | each named decision has one owner, resolved at a line that really says so | PASS | 8 stages, unresolved [] |
+| V59 | the runtime authority map is published as both data and prose | PASS | RUNTIME_AUTHORITY_MAP.json and .md |
+| V61 | the reconciliation is arithmetic on the defect map and leaves no lane in violation | PASS | swept 1.0 of 7081 exits; 3 symbols of window evidence |
 | V50 | this verifier imports none of the modules that built the artifacts | PASS | 14 imports scanned; forbidden: none |
-| V51 | the audited baseline is an ancestor of the verified HEAD | PASS | baseline 2b8a6ed7f66f is an ancestor of the verified tree |
+| V51 | the audited baseline is an ancestor of the verified HEAD | PASS | baseline 267c7a70d2e8 is an ancestor of the verified tree |
 | V52 | the pre-repair work package is preserved and named as historical, not corrected | PASS | label HISTORICAL_DESCRIPTIVE_PRE_PIT_FIX; WP-EDGE-015 artifacts still on disk untouched |
 | V53 | the risk policy file the lane loads is the one this verifier reads | PASS | risk.yaml 3c27c866d5f1… matches the baseline hash |
-| V60 | every injected fault is caught by the check that exists for it | PASS | 35/35 mutations caught |
+| V60 | every injected fault is caught by the check that exists for it | PASS | 38/38 mutations caught |

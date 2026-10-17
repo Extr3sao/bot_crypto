@@ -82,6 +82,69 @@ POLICY_FIELDS: tuple[tuple[str, str], ...] = (
 )
 
 
+#: Who owns each decision the RFC asks about, and where that ownership is written down. The
+#: symbol is searched for in the file, so a renamed or removed component turns the row into a
+#: gap instead of a stale claim. (stage, file, symbol, owns, does_not_own)
+AUTHORITY: tuple[tuple[str, str, str, str, str], ...] = (
+    (
+        "signal_calculation",
+        "src/trading_bot/research/economic_recovery/pit15.py",
+        "def machine_for",
+        "the rule: one object per family, fed closed bars only, one construction site",
+        "prices, sizes or admission — a machine emits a decision and nothing else",
+    ),
+    (
+        "closed_bar_availability",
+        "src/trading_bot/research/economic_recovery/pit15.py",
+        "def period_ms",
+        "the bar's own spacing and therefore the instant its close becomes available",
+        "the venue's clock: the series defines the period, not an assumption of one hour",
+    ),
+    (
+        "ohlc_simulator",
+        "src/trading_bot/paper/broker.py",
+        "def check_positions_ohlc",
+        "whether a resting stop or target was touched, and the order of an ambiguous bar",
+        "an intrabar path: the policy (stop_first) is enforced and the residual gap optimism is declared",
+    ),
+    (
+        "paper_broker_fills",
+        "src/trading_bot/paper/broker.py",
+        "def execute_signal",
+        "fills, commissions, position ids and the cash/realised/unrealised identities",
+        "which bar is executable: the driver owns the clock and passes the price",
+    ),
+        (
+        "portfolio_and_risk",
+        "src/trading_bot/risk/manager.py",
+        "def check_signal",
+        "approval, refusal, sizing, exposure clamps, loss limits and the kill switch",
+        "the cost model and the research restatement, which never place orders",
+    ),
+    (
+        "admission",
+        "src/trading_bot/autonomous/admission_ledger.py",
+        "def is_paper_admitted",
+        "whether a strategy may trade paper at all, from the committed ledger",
+        "the research lane's own tag: an experimental lane bypasses it by design and says so",
+    ),
+    (
+        "scheduler",
+        "scripts/edge16_capture.py",
+        "def main",
+        "nothing yet: no scheduled job runs this package's collector, and none was created",
+        "the collector's execution; the ST6 Windows task belongs to another line and runs every 15 min",
+    ),
+    (
+        "prospective_collector",
+        "scripts/edge15_oos_preregistration.py",
+        "--capture",
+        "appending newly closed public bars to the frozen holdout slice, idempotently",
+        "the schedule: it is a manual command while the disk guard reports INSUFFICIENT_FREE_SPACE",
+    ),
+)
+
+
 def sha256(path: Path) -> str | None:
     return hashlib.sha256(path.read_bytes()).hexdigest() if path.is_file() else None
 
@@ -289,6 +352,83 @@ def pit_defect_markdown(payload: dict[str, Any]) -> str:
 
 
 # --- 16C: risk parity, portfolio, weekend ----------------------------------------------
+
+
+def runtime_authority_markdown(authority: dict[str, Any]) -> str:
+    lines = [
+        "# Runtime authority map",
+        "",
+        "Who owns each decision this work package reasons about, and the line that says so. Each"
+        " row was resolved by searching the named file for the named symbol: an unresolved row is a"
+        " gap, not a convention.",
+        "",
+        "| stage | component | resolved at | owns | does not own |",
+        "| --- | --- | --- | --- | --- |",
+    ]
+    for row in authority["rows"]:
+        where = f"`{row['component']}`:{row['line']}" if row["resolved"] else "**NOT RESOLVED**"
+        lines.append(
+            f"| {row['stage']} | `{row['symbol']}` | {where} | {row['owns']} | {row['does_not_own']} |"
+        )
+    lines += [
+        "",
+        "## What is deliberately unowned",
+        "",
+        "A scheduled collector: no job in this repository runs the prospective capture, and this"
+        " package created none. The GitHub workflows declare no `schedule:` trigger at all; the only"
+        " scheduled task that exists on this machine belongs to the ST6 forward-regime line.",
+        "",
+    ]
+    return "\n".join(lines)
+
+
+def runtime_authority_map() -> dict[str, Any]:
+    """Which component owns each decision, with the line that says so, resolved by search."""
+    rows: list[dict[str, Any]] = []
+    for stage, relpath, symbol, owns, does_not_own in AUTHORITY:
+        path = REPO / relpath
+        resolved = path.is_file()
+        line: int | None = None
+        if resolved:
+            for number, text in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
+                if symbol in text:
+                    line = number
+                    break
+        rows.append(
+            {
+                "stage": stage,
+                "component": relpath,
+                "symbol": symbol,
+                "resolved": bool(resolved and line is not None),
+                "line": line,
+                "owns": owns,
+                "does_not_own": does_not_own,
+                "sha256": sha256(path),
+            }
+        )
+    gaps = [row["stage"] for row in rows if not row["resolved"]]
+    workflows = sorted((REPO / ".github" / "workflows").glob("*.yml"))
+    scheduled = [
+        path.name
+        for path in workflows
+        if re.search(r"^\s*schedule:", path.read_text(encoding="utf-8"), flags=re.MULTILINE)
+    ]
+    return {
+        "schema_version": "EDGE16_RUNTIME_AUTHORITY_MAP_V1",
+        "method": (
+            "for each stage the RFC names, the component is resolved by searching its file for the "
+            "symbol recorded here; an unresolved row is reported as a gap, never as a convention"
+        ),
+        "rows": rows,
+        "unresolved": gaps,
+        "github_workflows": {"total": len(workflows), "with_a_schedule_trigger": scheduled},
+        "scheduled_jobs_owned_by_this_package": [],
+        "reading": (
+            "the decision clock, the fills, the risk engine, admission and the collector each have "
+            "exactly one owner, and the scheduler has none: that is why the prospective lane is "
+            "reported as not automated rather than as slow"
+        ),
+    }
 
 
 def risk_parity_matrix() -> dict[str, Any]:
@@ -645,6 +785,18 @@ def main() -> int:
     (OUT / "CAPACITY_PREFLIGHT.json").write_text(
         json.dumps(capacity, indent=2, sort_keys=True) + "\n", encoding="utf-8"
     )
+
+    authority = runtime_authority_map()
+    (OUT / "RUNTIME_AUTHORITY_MAP.json").write_text(
+        json.dumps(authority, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    )
+    (OUT / "RUNTIME_AUTHORITY_MAP.md").write_text(
+        runtime_authority_markdown(authority), encoding="utf-8"
+    )
+    if authority["unresolved"]:
+        print(f"[16a] authority map unresolved: {authority['unresolved']}")
+    else:
+        print(f"[16a] authority map: {len(authority['rows'])} stages all resolved")
 
     baseline_bytes = json.dumps(base, sort_keys=True)
     (OUT / "BASELINE.json").write_bytes(baseline_bytes.encode("utf-8"))

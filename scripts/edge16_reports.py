@@ -78,6 +78,7 @@ def evidence_index(include_self: bool = False) -> list[dict[str, Any]]:
     which is written last, so no artifact ever carries a hash of a file that did not exist yet."""
     wanted = [
         "BASELINE.json", "PIT_DEFECT_MAP.json", "PIT_DEFECT_MAP.md", "PIT_RECONCILIATION.md",
+        "PIT_RECONCILIATION.json", "RUNTIME_AUTHORITY_MAP.json", "RUNTIME_AUTHORITY_MAP.md",
         "RISK_PARITY_MATRIX.json", "PORTFOLIO_ACCOUNTING.json", "WEEKEND_POLICY.json",
         "WEEKEND_POLICY_CONFLICT.md", "ALPHA_RESTATEMENT_TRADES.jsonl",
         "ECONOMIC_RESTATEMENT.csv", "CURRENT_VS_PROPOSED.json", "CAUSALITY_ADVERSARIAL.json",
@@ -631,6 +632,48 @@ def informe_markdown(payload: dict[str, Any]) -> str:
     )
 
 
+def pit_reconciliation_json() -> dict[str, Any]:
+    """The same reconciliation as data: totals, the swept share, and the per-lane shift.
+
+    The totals are recomputed from the rows on purpose: a summary that copies the summary it
+    summarises proves nothing, and the verifier checks this file against the map anyway.
+    """
+    defect = _load(OUT / "PIT_DEFECT_MAP.json") or {}
+    shift = (_load(OUT / "CAUSALITY_ADVERSARIAL.json") or {}).get("shift_evidence") or {}
+    rows = defect.get("rows") or []
+    swept = sum(row["pre_pit_exits_filled_at_their_own_signal_bar"] for row in rows)
+    checked = sum(row["pre_pit_trades"] for row in rows)
+    worsened = [
+        row["corpus"] + "/" + row["symbol"] + "/" + row["family"]
+        for row in rows
+        if row["post_pit_pit_violations"]
+    ]
+    return {
+        "schema_version": "EDGE16_PIT_RECONCILIATION_V1",
+        "old_rule": defect.get("defect"),
+        "new_rule": defect.get("reading"),
+        "contract": defect.get("contract"),
+        "totals": {
+            "pre_pit_exits_checked": checked,
+            "pre_pit_exits_filled_at_their_own_signal_bar": swept,
+            "swept_share": round(swept / checked, 6) if checked else 0.0,
+            "post_pit_violations": sum(row["post_pit_pit_violations"] for row in rows),
+            "post_pit_terminal_marks": sum(row["post_pit_terminal_marks"] for row in rows),
+            "lanes": len(rows),
+            "lanes_where_the_repair_reduced_the_trade_count": len(
+                [row for row in rows if row["post_pit_trades"] < row["pre_pit_trades"]]
+            ),
+        },
+        "lanes_with_a_remaining_violation": worsened,
+        "window_shift": shift,
+        "reading": (
+            "the repair moves the fill instant and nothing else; the exits that a rule would have "
+            "taken at its signal bar are taken at the next executable bar, or marked if the window "
+            "ends first, and no lane keeps a violation"
+        ),
+    }
+
+
 def pit_reconciliation_markdown() -> str:
     defect = _load(OUT / "PIT_DEFECT_MAP.json") or {}
     totals = defect.get("totals") or {}
@@ -746,6 +789,9 @@ def main() -> int:
     (OUT / "FINAL_REPORT.md").write_text(final_report_markdown(payload), encoding="utf-8")
     (OUT / "INFORME_EJECUTIVO.md").write_text(informe_markdown(payload), encoding="utf-8")
     (OUT / "PIT_RECONCILIATION.md").write_text(pit_reconciliation_markdown(), encoding="utf-8")
+    (OUT / "PIT_RECONCILIATION.json").write_text(
+        json.dumps(pit_reconciliation_json(), indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    )
     (OUT / "RESEARCH_TO_RUNTIME_EXECUTION_GAP.md").write_text(gap_markdown(), encoding="utf-8")
     (OUT / "EVIDENCE_INDEX.json").write_text(
         json.dumps(

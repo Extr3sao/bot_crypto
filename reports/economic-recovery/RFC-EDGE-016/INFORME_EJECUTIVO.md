@@ -30,7 +30,7 @@ Veredicto: **NO_RESTATED_EDGE_SURVIVES**. Ninguna estrategia se adopta y el runt
 
 ## 5. Verificación
 
-Un verificador independiente, que no importa ninguno de los módulos que construyeron los artefactos, reconstruye el orden temporal a partir de las velas crudas, rehace la tabla económica desde los registros por operación y después **muta** los artefactos: 35 de 35 fallos inyectados se detectan. Un artefacto que miente no pasa.
+Un verificador independiente, que no importa ninguno de los módulos que construyeron los artefactos, reconstruye el orden temporal a partir de las velas crudas, rehace la tabla económica desde los registros por operación y después **muta** los artefactos: 38 de 38 fallos inyectados se detectan. Un artefacto que miente no pasa.
 
 ## 6. Lo que bloquea
 

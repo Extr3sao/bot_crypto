@@ -1,10 +1,10 @@
 {
   "collector_max_bytes": 67108864,
-  "free_bytes": 5414707200,
-  "free_gib": 5.043,
+  "free_bytes": 4523433984,
+  "free_gib": 4.213,
   "guard_ok": false,
   "guard_reasons": [
-    "free space cannot pay for the window: 8.640 GB needed at 1.5x, 3.415 GB usable above the 2.000 GB reserve"
+    "free space cannot pay for the window: 8.640 GB needed at 1.5x, 2.523 GB usable above the 2.000 GB reserve"
   ],
   "guard_relaxed_by_this_package": false,
   "guard_state": "INSUFFICIENT_FREE_SPACE",

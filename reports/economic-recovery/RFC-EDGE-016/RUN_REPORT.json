@@ -130,7 +130,7 @@
     },
     {
       "path": "scripts/edge16_artifacts.py",
-      "sha256": "14e9e9eaaa1bd1bb5892b2a0d50bf9967af50e54d0d190a069be8edac3e15c31",
+      "sha256": "a50e24e9e119f82e185a77b7729ab0fbc4471be01a151b90dbb311748ef62706",
       "tracked": true
     },
     {
@@ -145,12 +145,12 @@
     },
     {
       "path": "scripts/edge16_verify.py",
-      "sha256": "197fcadc47078a3590a5d6e0285aad28b29bfcdbb16567c718d73619e1eaeda5",
+      "sha256": "0367ffa021e5c05d147cd951f1cc492390fbfd949ada7b88eeac293dd93626c2",
       "tracked": true
     },
     {
       "path": "scripts/edge16_reports.py",
-      "sha256": "08a15f13382f9e1671d29b3394a3503197ca539b07fad0f2a25c20bd94dcdf50",
+      "sha256": "0f6cb9c9bea84e6d56d69c7acc13aed4de781fc0fe6164dc5d9d49454897e369",
       "tracked": true
     },
     {
@@ -177,9 +177,9 @@
   "evidence_index": [
     {
       "artifact": "BASELINE.json",
-      "bytes": 2129,
+      "bytes": 2119,
       "exists": true,
-      "sha256": "739d976f0510bc6364ac2d2ce106ac19112144f5a9b62a451055bf8e2e5cb290"
+      "sha256": "1901ee6a47f5a670ffd4355323f7ddc06f9d7820fbb12c9c61403108b3e2b406"
     },
     {
       "artifact": "PIT_DEFECT_MAP.json",
@@ -198,6 +198,24 @@
       "bytes": 4368,
       "exists": true,
       "sha256": "bf7142cd7e137332e4ad1116a73b5480aea6e01fbb7c6d431c31c41a90fe73cc"
+    },
+    {
+      "artifact": "PIT_RECONCILIATION.json",
+      "bytes": 6114,
+      "exists": true,
+      "sha256": "d60bdc4e5c1e3159105f346622c62f915334347c5dc5785ff3c465089bde15d2"
+    },
+    {
+      "artifact": "RUNTIME_AUTHORITY_MAP.json",
+      "bytes": 4504,
+      "exists": true,
+      "sha256": "4c82e95390ee1c991a29b7deb94c328a891c06278c0e37a8c5d5973f16e57050"
+    },
+    {
+      "artifact": "RUNTIME_AUTHORITY_MAP.md",
+      "bytes": 2644,
+      "exists": true,
+      "sha256": "d6ab55cd933c1e0126fa7e8275dacb2d2a2bd65ddf1d1cfc85e3d6a40835ac17"
     },
     {
       "artifact": "RISK_PARITY_MATRIX.json",
@@ -251,7 +269,7 @@
       "artifact": "CAPACITY_PREFLIGHT.json",
       "bytes": 718,
       "exists": true,
-      "sha256": "098379da559c5703dbea912ef721638f1861150ce81f8ea3ab6b0c3e481010f6"
+      "sha256": "17132d604bada61e64fa15d35b30963becc8df3ac8e46abc4b1f55a59f6b8033"
     },
     {
       "artifact": "CAPTURE_CONTINUITY.json",
@@ -291,15 +309,15 @@
     },
     {
       "artifact": "INDEPENDENT_VERIFICATION.json",
-      "bytes": 16235,
+      "bytes": 17377,
       "exists": true,
-      "sha256": "8f614149f5d8c1fbb7fae26716fc545f9c933c974b3fbc2f1d919ce0da24bd18"
+      "sha256": "58506e10fb2d5b0ea78945f94773ffa3c057412dd915f6543af3292326d232bf"
     },
     {
       "artifact": "INDEPENDENT_VERIFICATION.md",
-      "bytes": 10743,
+      "bytes": 11480,
       "exists": true,
-      "sha256": "5dab9c98aeec5ae15d9fb8ac29780726ec0bd493b8ad36c57e862c7d44c0879c"
+      "sha256": "18a1d312590e170fb7234cbe79494a555283d078d1806c1bd44579e242786144"
     },
     {
       "artifact": "experimental_paper/CANONICAL_LANE_REPORT.json",
@@ -349,9 +367,9 @@
     "status": "PASSED_WITH_UNRELATED_FAILURES",
     "summary": "4 failed, 4012 passed in 939.34s (0:15:39)"
   },
-  "generated_at_utc": "2026-10-17T11:03:14Z",
+  "generated_at_utc": "2026-10-17T11:08:20Z",
   "headline": {
-    "disk": "INSUFFICIENT_FREE_SPACE at 5.043 GiB free; the guard was not relaxed (False)",
+    "disk": "INSUFFICIENT_FREE_SPACE at 4.213 GiB free; the guard was not relaxed (False)",
     "economics": "restated net -240.86 USDT for the best family at 1x and worse at 2x: NO_RESTATED_EDGE_SURVIVES",
     "lane": "146 closed trades, gross -53.384527 USDT, net -239.7503/-426.1162/-612.482 at 1x/2x/3x",
     "point_in_time": "1.0 of 7081 pre-repair exits were filled at the bar whose close decided them; the restatement fills at the next executable bar and every row was rebuilt from the raw series by the verifier",
@@ -368,9 +386,9 @@
     "funding is not charged because the venue is spot"
   ],
   "repository": {
-    "baseline_head": "2b8a6ed7f66f6e7d30c41ab2c52150cad765bd1b",
+    "baseline_head": "267c7a70d2e888d89852065513b14aefa254f216",
     "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
-    "head": "6f04e59b2c44fe1064a315c9217aa905e1ec60f7"
+    "head": "267c7a70d2e888d89852065513b14aefa254f216"
   },
   "schema_version": "EDGE16_RUN_REPORT_V1",
   "statuses": {
@@ -394,10 +412,10 @@
     "INDEPENDENT_VERIFIED"
   ],
   "verification": {
-    "checks_passed": 41,
-    "checks_total": 41,
-    "mutations_caught": 35,
-    "mutations_total": 35,
+    "checks_passed": 44,
+    "checks_total": 44,
+    "mutations_caught": 38,
+    "mutations_total": 38,
     "verdict": "VERIFIED"
   },
   "work_package": "WP-EDGE-016"

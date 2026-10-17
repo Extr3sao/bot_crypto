@@ -1,6 +1,6 @@
 # WP-EDGE-016 — run report
 
-*agent/edge-recovery/WP-EDGE-00-baseline @ 6f04e59b, generated 2026-10-17T11:03:14Z.*
+*agent/edge-recovery/WP-EDGE-00-baseline @ 267c7a70, generated 2026-10-17T11:08:20Z.*
 
 Statuses (orthogonal — one passing does not confer another). Every name is declared
 either true or false, so a missing status is visible:
@@ -25,7 +25,7 @@ either true or false, so a missing status is visible:
 - **lane**: 146 closed trades, gross -53.384527 USDT, net -239.7503/-426.1162/-612.482 at 1x/2x/3x
 - **prospective**: 3 bars observed of 2 expected per symbol, 0 proposals, 0 fills: no prospective trade exists
 - **prospective_capture**: PROSPECTIVE_CAPTURE_NOT_AUTOMATED
-- **disk**: INSUFFICIENT_FREE_SPACE at 5.043 GiB free; the guard was not relaxed (False)
+- **disk**: INSUFFICIENT_FREE_SPACE at 4.213 GiB free; the guard was not relaxed (False)
 - **scheduler**: DO_NOT_CREATE_A_SCHEDULER
 
 ## The six questions
@@ -47,10 +47,13 @@ either true or false, so a missing status is visible:
 
 | artifact | bytes | sha256 |
 | --- | --- | --- |
-| `BASELINE.json` | 2129 | 739d976f0510bc63… |
+| `BASELINE.json` | 2119 | 1901ee6a47f5a670… |
 | `PIT_DEFECT_MAP.json` | 12679 | 6156d29203918bb8… |
 | `PIT_DEFECT_MAP.md` | 4132 | 9881b8daa6f39409… |
 | `PIT_RECONCILIATION.md` | 4368 | bf7142cd7e137332… |
+| `PIT_RECONCILIATION.json` | 6114 | d60bdc4e5c1e3159… |
+| `RUNTIME_AUTHORITY_MAP.json` | 4504 | 4c82e95390ee1c99… |
+| `RUNTIME_AUTHORITY_MAP.md` | 2644 | d6ab55cd933c1e01… |
 | `RISK_PARITY_MATRIX.json` | 11371 | 0eeeb9638bbef915… |
 | `PORTFOLIO_ACCOUNTING.json` | 1320 | d2369150ee555ea0… |
 | `WEEKEND_POLICY.json` | 956 | 6032e0af8fa2bcd5… |
@@ -59,15 +62,15 @@ either true or false, so a missing status is visible:
 | `ECONOMIC_RESTATEMENT.csv` | 10204 | ea802c09e7df9dc0… |
 | `CURRENT_VS_PROPOSED.json` | 5510 | ea12db85f05b0ba8… |
 | `CAUSALITY_ADVERSARIAL.json` | 12707 | 6535a4f279aba4fe… |
-| `CAPACITY_PREFLIGHT.json` | 718 | 098379da559c5703… |
+| `CAPACITY_PREFLIGHT.json` | 718 | 17132d604bada61e… |
 | `CAPTURE_CONTINUITY.json` | 3265 | 1efe00b11e988e26… |
 | `PROSPECTIVE_COVERAGE.md` | 1851 | ffa0189a7ddb0fe1… |
 | `FULL_UNIT_SUITE.log` | 13233 | da0c1ac3ded50f17… |
 | `SCHEDULER_DECISION.json` | 1428 | 2574e46dcb5677dc… |
 | `SCHEDULER_DECISION.md` | 870 | 6dc2d22e8d64bef7… |
 | `RESEARCH_TO_RUNTIME_EXECUTION_GAP.md` | 1658 | 6f274830bbf0d9cf… |
-| `INDEPENDENT_VERIFICATION.json` | 16235 | 8f614149f5d8c1fb… |
-| `INDEPENDENT_VERIFICATION.md` | 10743 | 5dab9c98aeec5ae1… |
+| `INDEPENDENT_VERIFICATION.json` | 17377 | 58506e10fb2d5b0e… |
+| `INDEPENDENT_VERIFICATION.md` | 11480 | 18a1d312590e170f… |
 | `experimental_paper/CANONICAL_LANE_REPORT.json` | 8283 | bc903ba860a84f71… |
 | `experimental_paper/CANONICAL_TRADES.jsonl` | 76109 | 5dd38f015be8b872… |
 | `experimental_paper/CANONICAL_CYCLES.jsonl` | 360799 | 575367e437157da1… |

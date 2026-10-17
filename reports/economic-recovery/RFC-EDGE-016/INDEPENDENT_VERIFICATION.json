@@ -175,7 +175,7 @@
       "what": "three captured bars are not sold as evidence of an edge"
     },
     {
-      "detail": "CAPTURE_BLOCKED_DISK at 5.043 GiB free, INSUFFICIENT_FREE_SPACE, guard_relaxed False",
+      "detail": "CAPTURE_BLOCKED_DISK at 4.213 GiB free, INSUFFICIENT_FREE_SPACE, guard_relaxed False",
       "id": "V45",
       "ok": true,
       "what": "the disk guard blocked the collector and nobody lowered it"
@@ -211,10 +211,28 @@
       "what": "the defect map's own audit count is zero after the repair"
     },
     {
-      "detail": "29 artifacts, 10 code files",
+      "detail": "32 artifacts, 10 code files",
       "id": "V57",
       "ok": true,
       "what": "every artifact and code hash in the index matches the bytes on disk"
+    },
+    {
+      "detail": "8 stages, unresolved []",
+      "id": "V58",
+      "ok": true,
+      "what": "each named decision has one owner, resolved at a line that really says so"
+    },
+    {
+      "detail": "RUNTIME_AUTHORITY_MAP.json and .md",
+      "id": "V59",
+      "ok": true,
+      "what": "the runtime authority map is published as both data and prose"
+    },
+    {
+      "detail": "swept 1.0 of 7081 exits; 3 symbols of window evidence",
+      "id": "V61",
+      "ok": true,
+      "what": "the reconciliation is arithmetic on the defect map and leaves no lane in violation"
     },
     {
       "detail": "14 imports scanned; forbidden: none",
@@ -223,7 +241,7 @@
       "what": "this verifier imports none of the modules that built the artifacts"
     },
     {
-      "detail": "baseline 2b8a6ed7f66f is an ancestor of the verified tree",
+      "detail": "baseline 267c7a70d2e8 is an ancestor of the verified tree",
       "id": "V51",
       "ok": true,
       "what": "the audited baseline is an ancestor of the verified HEAD"
@@ -241,7 +259,7 @@
       "what": "the risk policy file the lane loads is the one this verifier reads"
     },
     {
-      "detail": "35/35 mutations caught",
+      "detail": "38/38 mutations caught",
       "id": "V60",
       "ok": true,
       "what": "every injected fault is caught by the check that exists for it"
@@ -249,10 +267,10 @@
   ],
   "counts": {
     "failed": 0,
-    "mutations": 35,
-    "mutations_caught": 35,
-    "passed": 41,
-    "total": 41
+    "mutations": 38,
+    "mutations_caught": 38,
+    "passed": 44,
+    "total": 44
   },
   "imports_no_builder_module": [
     "economic_recovery.alpha15",
@@ -412,6 +430,21 @@
       "detail": "the index lists a hash of itself, which cannot be truthful",
       "detected": true,
       "name": "an index that hashes itself"
+    },
+    {
+      "detail": "signal_calculation: line 1 of src/trading_bot/research/economic_recovery/pit15.py does not contain 'def machine_for'",
+      "detected": true,
+      "name": "a map whose line does not name the component"
+    },
+    {
+      "detail": "stages missing or unknown: ['scheduler']",
+      "detected": true,
+      "name": "a map with a stage quietly dropped"
+    },
+    {
+      "detail": "swept exits 1 != 7081",
+      "detected": true,
+      "name": "a reconciliation that softens the swept count"
     },
     {
       "detail": "both PIT/parity outcomes are declared the same, so neither is informative",
