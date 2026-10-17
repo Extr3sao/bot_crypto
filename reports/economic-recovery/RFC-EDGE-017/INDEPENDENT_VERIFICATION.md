@@ -1,6 +1,6 @@
 # WP-EDGE-017 — independent verification
 
-**VERIFIED** — 27/27 checks verified, 11/11 injected faults detected.
+**VERIFIED** — 28/28 checks verified, 12/12 injected faults detected.
 
 The verifier does not import any module that built these artifacts: the rules below are
 re-implemented from the published JSON and from the text of the runtime sources.
@@ -18,6 +18,7 @@ re-implemented from the published JSON and from the text of the runtime sources.
 | C9 missing hours are MISSING_NO_COLLECTOR | VERIFIED |  |
 | C10 evaluated hours match the lane's own ledger | VERIFIED | 9 |
 | C11 the still-forming hour never entered the slice | VERIFIED |  |
+| C12 the slice is written only through the single-writer transaction | VERIFIED |  |
 | S1 storage bytes and rows match the file | VERIFIED |  |
 | S2 the guard's decision follows its own arithmetic | VERIFIED |  |
 | S3 the fallback overstatement is the measured ratio | VERIFIED |  |
@@ -33,7 +34,7 @@ re-implemented from the published JSON and from the text of the runtime sources.
 | D1 the four declared blocks are evaluated on the paper path | VERIFIED |  |
 | D2 the risk policy was not edited and live stays off | VERIFIED |  |
 | D3 the block matrix maps all four rules | VERIFIED |  |
-| V1 every injected fault is detected | VERIFIED | 11/11 detected |
+| V1 every injected fault is detected | VERIFIED | 12/12 detected |
 
 ## Injected faults
 
@@ -50,3 +51,4 @@ re-implemented from the published JSON and from the text of the runtime sources.
 | M9 unwire the defensive blocks from the launcher | yes |
 | M10 enable live trading in the runtime config | yes |
 | M11 break the frictionless equivalence | yes |
+| M12 let the collector write the slice without the lock | yes |

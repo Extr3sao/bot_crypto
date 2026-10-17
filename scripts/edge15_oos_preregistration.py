@@ -48,13 +48,13 @@ from trading_bot.research.oos_capture import (
     PERIOD_MS_1H,
     is_closed,
     last_open_ms,
+    merge_and_write,
     merge_slice,
     next_since_ms,
     paginate,
     read_slice,
     row_from_ccxt,
     slice_sha256,
-    write_slice_atomic,
 )
 
 REPO = Path(__file__).resolve().parents[1]
@@ -351,13 +351,31 @@ def capture(symbols: list[str], exchange_id: str) -> int:
     sha_descriptive: str | None = None
     written: dict[str, Any] = {}
     if status == "CAPTURED":
-        slice_write = write_slice_atomic(PROSPECTIVE_SLICE, merge_prospective.rows)
-        descriptive_write = write_slice_atomic(DESCRIPTIVE_SLICE, merge_descriptive.rows)
-        n_prospective = int(slice_write["rows"])
-        sha_prospective = str(slice_write["sha256"])
-        n_descriptive = int(descriptive_write["rows"])
-        sha_descriptive = str(descriptive_write["sha256"])
-        written = {"prospective": slice_write, "descriptive": descriptive_write}
+        # Single-writer transaction: re-read under the lock, merge, replace atomically.
+        # The reads above happened before the (slow) network fetch, so they are only
+        # used to decide where to resume — never as the base of the write. Otherwise a
+        # second collector that finished during our fetch would lose its bars.
+        prospective_txn = merge_and_write(PROSPECTIVE_SLICE, incoming_prospective)
+        descriptive_txn = merge_and_write(DESCRIPTIVE_SLICE, incoming_descriptive)
+        merge_prospective = prospective_txn.merge
+        merge_descriptive = descriptive_txn.merge
+        rows_before = prospective_txn.rows_before
+        sha_before = prospective_txn.sha256_before
+        descriptive_sha_before = descriptive_txn.sha256_before
+        n_prospective = prospective_txn.rows_after
+        sha_prospective = prospective_txn.sha256_after
+        n_descriptive = descriptive_txn.rows_after
+        sha_descriptive = descriptive_txn.sha256_after
+        written = {
+            "prospective": {
+                "rows": prospective_txn.rows_after,
+                "bytes": prospective_txn.bytes_written,
+            },
+            "descriptive": {
+                "rows": descriptive_txn.rows_after,
+                "bytes": descriptive_txn.bytes_written,
+            },
+        }
         partial_excluded = sum(
             1
             for rows in fetched.values()

@@ -342,6 +342,28 @@ def p_block_readers(sources: dict[str, str]) -> list[str]:
     return problems
 
 
+def p_single_writer(capture_module: str, collector: str) -> list[str]:
+    """The slice is only written inside the locked read-merge-write transaction.
+
+    An atomic replace keeps a crash from tearing the file; it does not keep two
+    overlapping captures from one overwriting the rows the other just added. The
+    collector must therefore reach the slice through ``merge_and_write`` (which
+    re-reads under an exclusive lock), never through a raw write.
+    """
+    problems: list[str] = []
+    for symbol in ("def merge_and_write(", "def slice_lock(", "def is_closed("):
+        if symbol not in capture_module:
+            problems.append(f"oos_capture does not expose {symbol.strip()}")
+    if "os.O_CREAT | os.O_EXCL" not in capture_module:
+        problems.append("the lock file is not created exclusively")
+    body = collector.split("def capture(", 1)[-1]
+    if body.count("merge_and_write(") < 2:
+        problems.append("the collector does not write both slices through merge_and_write")
+    if "write_slice_atomic(" in body:
+        problems.append("the collector still writes a slice outside the transaction")
+    return problems
+
+
 def p_config_unchanged(risk_yaml: str, runtime_yaml: str) -> list[str]:
     problems: list[str] = []
     if "weekend_trading: false" not in risk_yaml:
@@ -444,6 +466,15 @@ def main() -> int:
     )
 
     free = int((storage.get("guard_plan") or {}).get("free_bytes", 0))
+    capture_source = (REPO / "src/trading_bot/research/oos_capture.py").read_text(encoding="utf-8")
+    collector_source = (REPO / "scripts/edge15_oos_preregistration.py").read_text(
+        encoding="utf-8"
+    )
+    checks.check(
+        "C12 the slice is written only through the single-writer transaction",
+        p_single_writer(capture_source, collector_source),
+    )
+
     checks.check(
         "S1 storage bytes and rows match the file",
         p_storage(storage, SLICE.stat().st_size if SLICE.is_file() else 0, len(slice_rows)),
@@ -594,6 +625,13 @@ def main() -> int:
     mutation(
         "M11 break the frictionless equivalence",
         p_baseline_equivalence(replay, [], rows(OUT_16 / "CANONICAL_TRADES.jsonl")),
+    )
+    mutation(
+        "M12 let the collector write the slice without the lock",
+        p_single_writer(
+            capture_source,
+            collector_source.replace("merge_and_write(", "merge_slice("),
+        ),
     )
 
     undetected = [row["id"] for row in mutations if not row["detected"]]

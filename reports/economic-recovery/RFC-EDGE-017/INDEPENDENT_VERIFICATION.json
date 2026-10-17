@@ -69,6 +69,12 @@
     },
     {
       "detail": "",
+      "id": "C12 the slice is written only through the single-writer transaction",
+      "problems": [],
+      "status": "VERIFIED"
+    },
+    {
+      "detail": "",
       "id": "S1 storage bytes and rows match the file",
       "problems": [],
       "status": "VERIFIED"
@@ -158,14 +164,14 @@
       "status": "VERIFIED"
     },
     {
-      "detail": "11/11 detected",
+      "detail": "12/12 detected",
       "id": "V1 every injected fault is detected",
       "problems": [],
       "status": "VERIFIED"
     }
   ],
   "failed": [],
-  "generated_at_utc": "2026-10-17T12:17:57Z",
+  "generated_at_utc": "2026-10-17T16:15:22Z",
   "mutations": [
     {
       "detected": true,
@@ -245,13 +251,20 @@
       "problems": [
         "0 frictionless fills != 146 baseline fills"
       ]
+    },
+    {
+      "detected": true,
+      "id": "M12 let the collector write the slice without the lock",
+      "problems": [
+        "the collector does not write both slices through merge_and_write"
+      ]
     }
   ],
-  "mutations_detected": 11,
-  "mutations_total": 11,
+  "mutations_detected": 12,
+  "mutations_total": 12,
   "schema_version": "EDGE17_INDEPENDENT_VERIFICATION_V1",
-  "total": 27,
+  "total": 28,
   "verdict": "VERIFIED",
-  "verified": 27,
+  "verified": 28,
   "verifier": "scripts/edge17_verify.py (does not import the builder modules)"
 }

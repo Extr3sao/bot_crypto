@@ -10,17 +10,22 @@ from __future__ import annotations
 
 import json
 import os
+import threading
+import time
 from pathlib import Path
 
 import pytest
 
+import trading_bot.research.oos_capture as oos_capture
 from trading_bot.research.oos_capture import (
     PERIOD_MS_1H,
     CaptureIntegrityError,
+    CaptureLockTimeout,
     closed_only,
     coverage_ladder,
     expected_closed_opens,
     is_closed,
+    merge_and_write,
     merge_slice,
     next_since_ms,
     paginate,
@@ -279,3 +284,94 @@ def test_rows_round_trip_through_disk_as_canonical_json(tmp_path: Path) -> None:
     assert len(lines) == 2
     assert json.loads(lines[0])["symbol"] == "BTC/USDT"
     assert written["sha256"] == slice_sha256(read_slice(slice_path))
+
+
+# -- 7. two captures at once must not lose each other's bars ----------------------------
+
+
+def _slow_write(monkeypatch: pytest.MonkeyPatch, delay_s: float = 0.25) -> None:
+    """Widen the read->write window so a lost update is deterministic, not a race."""
+    real = oos_capture.write_slice_atomic
+
+    def slow(path: Path, rows: list[dict[str, object]]) -> dict[str, object]:
+        time.sleep(delay_s)
+        return real(path, rows)
+
+    monkeypatch.setattr(oos_capture, "write_slice_atomic", slow)
+
+
+def test_two_concurrent_collectors_lose_no_bars(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    slice_path = tmp_path / "slice.jsonl"
+    _slow_write(monkeypatch)
+    barrier = threading.Barrier(2)
+    failures: list[BaseException] = []
+
+    def collect(symbol: str) -> None:
+        rows = _rows(symbol, _bars(30))
+        barrier.wait(timeout=10)
+        try:
+            merge_and_write(slice_path, rows)
+        except BaseException as exc:  # surfaced by the assertion below, never swallowed
+            failures.append(exc)
+
+    threads = [
+        threading.Thread(target=collect, args=(symbol,))
+        for symbol in ("BTC/USDT", "ETH/USDT")
+    ]
+    for thread in threads:
+        thread.start()
+    for thread in threads:
+        thread.join(timeout=30)
+
+    assert failures == []
+    rows = read_slice(slice_path)
+    assert len(rows) == 60, "a slow writer must not be overwritten by the other collector"
+    assert {row["symbol"] for row in rows} == {"BTC/USDT", "ETH/USDT"}
+
+
+def test_a_failed_write_releases_the_capture_lock(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    slice_path = tmp_path / "slice.jsonl"
+
+    def boom(*_args: object, **_kwargs: object) -> dict[str, object]:
+        raise OSError("disk full")
+
+    monkeypatch.setattr(oos_capture, "write_slice_atomic", boom)
+    with pytest.raises(OSError):
+        merge_and_write(slice_path, _rows("BTC/USDT", _bars(1)))
+    assert not list(tmp_path.glob("*.lock"))
+
+    monkeypatch.undo()
+    merge_and_write(slice_path, _rows("BTC/USDT", _bars(2)))
+    assert len(read_slice(slice_path)) == 2
+
+
+def test_a_stale_lock_is_reclaimed(tmp_path: Path) -> None:
+    slice_path = tmp_path / "slice.jsonl"
+    lock = slice_path.with_name(slice_path.name + ".lock")
+    lock.write_text("999999 0\n", encoding="utf-8")
+    old = time.time() - 3_600
+    os.utime(lock, (old, old))
+
+    result = merge_and_write(slice_path, _rows("BTC/USDT", _bars(2)), stale_after_s=60.0)
+
+    assert result.rows_after == 2
+    assert not lock.exists()
+
+
+def test_a_held_lock_times_out_without_writing(tmp_path: Path) -> None:
+    slice_path = tmp_path / "slice.jsonl"
+    write_slice_atomic(slice_path, _rows("BTC/USDT", _bars(1)))
+    before = slice_path.read_bytes()
+    lock = slice_path.with_name(slice_path.name + ".lock")
+    lock.write_text("1 0\n", encoding="utf-8")
+
+    with pytest.raises(CaptureLockTimeout):
+        merge_and_write(
+            slice_path, _rows("BTC/USDT", _bars(3)), timeout_s=0.2, stale_after_s=600.0
+        )
+
+    assert slice_path.read_bytes() == before, "a blocked collector must not write"

@@ -22,6 +22,10 @@ be tested without a network:
 * **atomic**: the merged slice is written to a temporary file in the same
   directory and moved over the target with ``os.replace``, so a crash leaves
   either the old file or the new one, never half of each;
+* **single-writer**: the read-merge-write transaction takes a sibling lock
+  file first, so two overlapping captures serialise instead of one silently
+  overwriting the rows the other just added. An atomic replace prevents a torn
+  file; it does not prevent a lost update, which is why the lock exists;
 * **resumable**: the next fetch starts at the newest bar the slice already
   holds for that symbol (plus one period), not at the freeze instant;
 * **paginated**: a symbol is fetched page by page until the venue stops
@@ -45,7 +49,9 @@ import hashlib
 import json
 import os
 import tempfile
-from collections.abc import Callable, Iterable, Sequence
+import time
+from collections.abc import Callable, Iterable, Iterator, Sequence
+from contextlib import contextmanager, suppress
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
@@ -57,6 +63,10 @@ SCHEMA_VERSION = "EDGE17_OOS_CAPTURE_V1"
 
 class CaptureIntegrityError(RuntimeError):
     """The slice on disk cannot be read as a slice; never guess our way past it."""
+
+
+class CaptureLockTimeout(RuntimeError):
+    """Another collector holds this slice; writing now would drop its bars."""
 
 
 @dataclass(frozen=True, slots=True)
@@ -71,6 +81,19 @@ class MergeResult:
     @property
     def keys(self) -> list[tuple[str, int]]:
         return [row_key(row) for row in self.rows]
+
+
+@dataclass(frozen=True, slots=True)
+class SliceWrite:
+    """What one locked read-merge-write transaction did to the slice."""
+
+    path: Path
+    merge: MergeResult
+    rows_before: int
+    sha256_before: str
+    rows_after: int
+    sha256_after: str
+    bytes_written: int
 
 
 @dataclass(frozen=True, slots=True)
@@ -223,6 +246,105 @@ def write_slice_atomic(path: Path, rows: Sequence[dict[str, Any]]) -> dict[str, 
         "bytes": len(payload.encode()),
         "sha256": hashlib.sha256(payload.encode()).hexdigest(),
     }
+
+
+def lock_path_for(path: Path) -> Path:
+    """The sibling lock of a slice: same directory, so it lives on the same volume."""
+    return path.with_name(path.name + ".lock")
+
+
+def _lock_age_s(lock_path: Path) -> float:
+    """Seconds since the lock was taken; ``0`` when it is already gone."""
+    try:
+        return max(0.0, time.time() - lock_path.stat().st_mtime)
+    except FileNotFoundError:
+        return 0.0
+
+
+@contextmanager
+def slice_lock(
+    path: Path,
+    *,
+    timeout_s: float = 30.0,
+    stale_after_s: float = 600.0,
+    poll_s: float = 0.05,
+) -> Iterator[Path]:
+    """Hold the slice's single-writer lock for the body of the block.
+
+    ``O_CREAT|O_EXCL`` is atomic on every platform Python supports, so exactly
+    one collector owns the slice. The lock is held only around read-merge-write
+    — milliseconds — never across a network fetch, which is why a lock older
+    than ``stale_after_s`` is a crashed writer and is reclaimed. A waiter that
+    exceeds ``timeout_s`` raises instead of writing, because writing after the
+    deadline would be exactly the lost update the lock exists to prevent.
+    """
+    lock_path = lock_path_for(path)
+    lock_path.parent.mkdir(parents=True, exist_ok=True)
+    deadline = time.monotonic() + float(timeout_s)
+    while True:
+        try:
+            handle = os.open(lock_path, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o644)
+        except FileExistsError:
+            age = _lock_age_s(lock_path)
+            if age > float(stale_after_s):
+                with suppress(FileNotFoundError):  # another waiter reclaimed it first
+                    lock_path.unlink()
+                continue
+            if time.monotonic() >= deadline:
+                raise CaptureLockTimeout(
+                    f"{lock_path.name} has been held for {age:.1f}s; refusing to write "
+                    "the slice while another collector owns it"
+                ) from None
+            time.sleep(float(poll_s))
+            continue
+        try:
+            os.write(handle, f"{os.getpid()} {time.time():.3f}\n".encode())
+            os.fsync(handle)
+        except BaseException:
+            # Do not leave a lock behind that the next collector would wait out:
+            # this host runs at 99% disk, so a failed write is a real branch.
+            os.close(handle)
+            with suppress(OSError):
+                lock_path.unlink()
+            raise
+        os.close(handle)
+        break
+
+    try:
+        yield lock_path
+    finally:
+        with suppress(FileNotFoundError):
+            lock_path.unlink()
+
+
+def merge_and_write(
+    path: Path,
+    incoming: Iterable[dict[str, Any]],
+    *,
+    timeout_s: float = 30.0,
+    stale_after_s: float = 600.0,
+) -> SliceWrite:
+    """The only supported way to add bars: lock, re-read, merge, replace atomically.
+
+    Re-reading under the lock is the point. A collector that read the slice before
+    a long fetch may hold a stale snapshot; merging that snapshot would erase every
+    row a second collector wrote in the meantime. Here the merge is always against
+    the bytes that are on disk while the lock is held.
+    """
+    incoming_rows = [normalise_row(row) for row in incoming]
+    with slice_lock(path, timeout_s=timeout_s, stale_after_s=stale_after_s):
+        existing = read_slice(path)
+        merge = merge_slice(existing, incoming_rows)
+        written = write_slice_atomic(path, merge.rows)
+        return SliceWrite(
+            path=path,
+            merge=merge,
+            rows_before=len(existing),
+            sha256_before=slice_sha256(existing),
+            rows_after=int(written["rows"]),
+            sha256_after=str(written["sha256"]),
+            bytes_written=int(written["bytes"]),
+        )
 
 
 def is_closed(open_ms: int, now_ms: int, period_ms: int = PERIOD_MS_1H) -> bool:
@@ -448,13 +570,17 @@ def coverage_ladder(
 __all__ = [
     "STAGES",
     "CaptureIntegrityError",
+    "CaptureLockTimeout",
     "MergeResult",
     "PaginationResult",
+    "SliceWrite",
     "closed_only",
     "coverage_ladder",
     "expected_closed_opens",
     "is_closed",
     "last_open_ms",
+    "lock_path_for",
+    "merge_and_write",
     "merge_slice",
     "next_since_ms",
     "normalise_row",
@@ -462,6 +588,7 @@ __all__ = [
     "read_slice",
     "row_from_ccxt",
     "row_key",
+    "slice_lock",
     "slice_sha256",
     "write_slice_atomic",
 ]
