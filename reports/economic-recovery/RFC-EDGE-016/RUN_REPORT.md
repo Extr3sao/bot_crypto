@@ -1,6 +1,6 @@
 # WP-EDGE-016 — run report
 
-*agent/edge-recovery/WP-EDGE-00-baseline @ 2b8a6ed7, generated 2026-10-17T11:01:25Z.*
+*agent/edge-recovery/WP-EDGE-00-baseline @ 6f04e59b, generated 2026-10-17T11:03:14Z.*
 
 Statuses (orthogonal — one passing does not confer another). Every name is declared
 either true or false, so a missing status is visible:
@@ -66,8 +66,8 @@ either true or false, so a missing status is visible:
 | `SCHEDULER_DECISION.json` | 1428 | 2574e46dcb5677dc… |
 | `SCHEDULER_DECISION.md` | 870 | 6dc2d22e8d64bef7… |
 | `RESEARCH_TO_RUNTIME_EXECUTION_GAP.md` | 1658 | 6f274830bbf0d9cf… |
-| `INDEPENDENT_VERIFICATION.json` | 16206 | 4060d1d56c993ea2… |
-| `INDEPENDENT_VERIFICATION.md` | 10714 | 3254101d30556398… |
+| `INDEPENDENT_VERIFICATION.json` | 16235 | 8f614149f5d8c1fb… |
+| `INDEPENDENT_VERIFICATION.md` | 10743 | 5dab9c98aeec5ae1… |
 | `experimental_paper/CANONICAL_LANE_REPORT.json` | 8283 | bc903ba860a84f71… |
 | `experimental_paper/CANONICAL_TRADES.jsonl` | 76109 | 5dd38f015be8b872… |
 | `experimental_paper/CANONICAL_CYCLES.jsonl` | 360799 | 575367e437157da1… |

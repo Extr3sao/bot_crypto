@@ -932,19 +932,18 @@ def check_independence(checks: Checks) -> None:
         f"{len(imports)} imports scanned; forbidden: {offenders or 'none'}",
     )
     baseline = _load(OUT / "BASELINE.json") or {}
-    head = subprocess.run(
-        ["git", "-C", str(REPO), "rev-parse", "HEAD"], capture_output=True, text=True, check=False
-    ).stdout.strip()
     ancestor = subprocess.run(
         ["git", "-C", str(REPO), "merge-base", "--is-ancestor", str(baseline.get("head")), "HEAD"],
         capture_output=True,
         check=False,
     )
+    # The detail names the audited baseline and not the current HEAD: the verification hash is
+    # published inside the same commit it describes, so it cannot carry that commit's own id.
     checks.add(
         "V51",
         "the audited baseline is an ancestor of the verified HEAD",
         bool(baseline.get("head")) and ancestor.returncode == 0,
-        f"{str(baseline.get('head'))[:12]} -> {head[:12]}",
+        f"baseline {str(baseline.get('head'))[:12]} is an ancestor of the verified tree",
     )
     preserved = (baseline.get("preserved_as_historical") or {}).get("label")
     checks.add(

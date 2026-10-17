@@ -223,7 +223,7 @@
       "what": "this verifier imports none of the modules that built the artifacts"
     },
     {
-      "detail": "2b8a6ed7f66f -> 2b8a6ed7f66f",
+      "detail": "baseline 2b8a6ed7f66f is an ancestor of the verified tree",
       "id": "V51",
       "ok": true,
       "what": "the audited baseline is an ancestor of the verified HEAD"

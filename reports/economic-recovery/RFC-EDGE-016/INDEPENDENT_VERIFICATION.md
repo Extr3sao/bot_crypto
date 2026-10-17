@@ -88,7 +88,7 @@ ledger. Then it mutates the artifacts and requires its own checks to fail.
 | V55 | the defect map's own audit count is zero after the repair | PASS | post-repair violations 0 over 7081 pre-repair exits checked |
 | V57 | every artifact and code hash in the index matches the bytes on disk | PASS | 29 artifacts, 10 code files |
 | V50 | this verifier imports none of the modules that built the artifacts | PASS | 14 imports scanned; forbidden: none |
-| V51 | the audited baseline is an ancestor of the verified HEAD | PASS | 2b8a6ed7f66f -> 2b8a6ed7f66f |
+| V51 | the audited baseline is an ancestor of the verified HEAD | PASS | baseline 2b8a6ed7f66f is an ancestor of the verified tree |
 | V52 | the pre-repair work package is preserved and named as historical, not corrected | PASS | label HISTORICAL_DESCRIPTIVE_PRE_PIT_FIX; WP-EDGE-015 artifacts still on disk untouched |
 | V53 | the risk policy file the lane loads is the one this verifier reads | PASS | risk.yaml 3c27c866d5f1… matches the baseline hash |
 | V60 | every injected fault is caught by the check that exists for it | PASS | 35/35 mutations caught |

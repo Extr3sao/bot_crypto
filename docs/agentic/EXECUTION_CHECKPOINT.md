@@ -31,6 +31,12 @@ riesgo canónico del runtime, y que la captura prospectiva sea un testigo real �
 
 **No se tocó**: `config/risk.yaml`, `config/strategy_admission.json` (sha256 idéntico antes/después), el holdout congelado, ni ninguna tarea programada. `blocked_by=0` público: cero órdenes reales.
 
+**Git**: la reparación y sus pruebas se publicaron en `6f04e59` (*Fill every exit at the bar after the
+close that decided it, not before.*), empujado como fast-forward limpio (`2b8a6ed..6f04e59`) y releído
+por HEAD en `origin/agent/edge-recovery/WP-EDGE-00-baseline`. El commit siguiente sólo lleva la
+evidencia regenerada contra ese árbol; no se preparó ningún fichero ajeno (los ~170 sucios de otras
+líneas siguen sin tocar).
+
 ## 1. Objetivo actual
 
 **WP-EDGE-015** (RFC-EDGE-015): pasar de demostrar que el motor funciona a buscar y validar

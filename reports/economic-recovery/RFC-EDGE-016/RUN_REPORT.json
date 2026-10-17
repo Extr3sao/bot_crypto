@@ -145,7 +145,7 @@
     },
     {
       "path": "scripts/edge16_verify.py",
-      "sha256": "5d6b6aabaf4a949c7d20fe73aa211b1836c82f9f8172ccc729d31afa7eb105ad",
+      "sha256": "197fcadc47078a3590a5d6e0285aad28b29bfcdbb16567c718d73619e1eaeda5",
       "tracked": true
     },
     {
@@ -291,15 +291,15 @@
     },
     {
       "artifact": "INDEPENDENT_VERIFICATION.json",
-      "bytes": 16206,
+      "bytes": 16235,
       "exists": true,
-      "sha256": "4060d1d56c993ea2f3cb147aaac9da85bc2a7135facb98280077f6511e6e156f"
+      "sha256": "8f614149f5d8c1fbb7fae26716fc545f9c933c974b3fbc2f1d919ce0da24bd18"
     },
     {
       "artifact": "INDEPENDENT_VERIFICATION.md",
-      "bytes": 10714,
+      "bytes": 10743,
       "exists": true,
-      "sha256": "3254101d30556398f86cceee8eb6811e7312b24b4ad9a770e360ed8890a91fb2"
+      "sha256": "5dab9c98aeec5ae15d9fb8ac29780726ec0bd493b8ad36c57e862c7d44c0879c"
     },
     {
       "artifact": "experimental_paper/CANONICAL_LANE_REPORT.json",
@@ -349,7 +349,7 @@
     "status": "PASSED_WITH_UNRELATED_FAILURES",
     "summary": "4 failed, 4012 passed in 939.34s (0:15:39)"
   },
-  "generated_at_utc": "2026-10-17T11:01:25Z",
+  "generated_at_utc": "2026-10-17T11:03:14Z",
   "headline": {
     "disk": "INSUFFICIENT_FREE_SPACE at 5.043 GiB free; the guard was not relaxed (False)",
     "economics": "restated net -240.86 USDT for the best family at 1x and worse at 2x: NO_RESTATED_EDGE_SURVIVES",
@@ -370,7 +370,7 @@
   "repository": {
     "baseline_head": "2b8a6ed7f66f6e7d30c41ab2c52150cad765bd1b",
     "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
-    "head": "2b8a6ed7f66f6e7d30c41ab2c52150cad765bd1b"
+    "head": "6f04e59b2c44fe1064a315c9217aa905e1ec60f7"
   },
   "schema_version": "EDGE16_RUN_REPORT_V1",
   "statuses": {
