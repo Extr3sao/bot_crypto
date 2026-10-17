@@ -24,7 +24,11 @@
 ## 3. Límites diarios y semanales
 
 - **Pérdida diaria**: `max_daily_loss_pct = 1.0%` → cooldown hasta el día siguiente.
-- **Pérdida semanal**: `max_weekly_loss_pct = 3.0%` → paper mode pausa por 1 día.
+- **Pérdida semanal**: `max_weekly_loss_pct = 3.0%` → veta nuevas entradas durante el resto de
+  la ventana semanal. La ventana es la **semana UTC de lunes 00:00 a lunes 00:00** (ADR-017F-01):
+  al cruzar ese límite el acumulador `weekly_pnl` vuelve a 0 y el veto se levanta. El reloj es el
+  inyectable del `RiskManager`, así que en el replay avanza con las barras y no con el reloj del
+  host.
 - **Drawdown total**: `max_total_drawdown_pct = 5.0%` → kill switch manual + revisión.
 
 ## 4. Exposición

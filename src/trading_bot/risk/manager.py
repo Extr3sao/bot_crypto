@@ -25,6 +25,20 @@ if TYPE_CHECKING:
     from trading_bot.strategies.types import Signal
 
 
+#: One week in milliseconds. The window is the UTC Monday-to-Monday week the
+#: reports already use: it has no DST and no local-calendar ambiguity.
+WEEK_MS = 7 * 24 * 3_600_000
+
+#: 1969-12-29T00:00:00Z — the Monday before the epoch (1970-01-01 was a Thursday),
+#: so ``(now - anchor) // WEEK_MS`` counts whole Monday-start weeks.
+_MONDAY_ANCHOR_MS = -3 * 24 * 3_600_000
+
+
+def week_start_ms_for(now_ms: int) -> int:
+    """Epoch-ms of the UTC Monday 00:00 that opens the week containing ``now_ms``."""
+    return _MONDAY_ANCHOR_MS + ((int(now_ms) - _MONDAY_ANCHOR_MS) // WEEK_MS) * WEEK_MS
+
+
 def _attrs(obj: Any, names: tuple[str, ...]) -> dict[str, Any]:
     """Read named attributes off a position object (DEF-VERIFY-011 helper)."""
     out: dict[str, Any] = {}
@@ -87,12 +101,16 @@ class RiskManager:
     #: Injectable clock (epoch seconds) so the runtime stays deterministic and
     #: the cooldown rule is testable without sleeping. Defaults to time.time.
     _clock: Callable[[], float] | None = field(default=None, repr=False)
+    #: Epoch-ms of the UTC Monday 00:00 that anchors ``weekly_pnl``.
+    weekly_start_ms: int = field(default=0)
 
     def __post_init__(self) -> None:
         if self._log is None:
             self._log = structlog.get_logger("risk_manager")
         if self._clock is None:
             self._clock = time.time
+        if self.weekly_start_ms <= 0:
+            self.weekly_start_ms = week_start_ms_for(self._now_ms())
         self.peak_equity = max(self.peak_equity, self.equity)
         self.day_peak_equity = max(self.day_peak_equity, self.equity)
 
@@ -144,12 +162,37 @@ class RiskManager:
         self._kill_switch_active = True
         self._log.warning("risk.kill_switch_activated", reason=reason)
 
+    def roll_week(self) -> bool:
+        """Move the weekly window forward when the causal clock crosses Monday 00:00.
+
+        The clock is the injectable one, so in the replay the window advances with
+        the bars and not with the machine's wall clock. A clock that moves
+        backwards never resets anything: the accumulator only ever belongs to the
+        newest week the process has observed.
+
+        Returns ``True`` only when a previously anchored window was replaced and
+        its loss was therefore cleared.
+        """
+        start = week_start_ms_for(self._now_ms())
+        if self.weekly_start_ms <= 0:
+            self.weekly_start_ms = start
+            return False
+        if start <= self.weekly_start_ms:
+            return False
+        self.weekly_start_ms = start
+        self.weekly_pnl = 0.0
+        return True
+
     def check_signal(self, signal: Signal) -> RiskCheck:
         """Evaluate a signal against all risk constraints.
 
         Returns RiskCheck with approved=True + PositionSize if OK,
         or approved=False with reason if blocked.
         """
+        # The weekly veto must lift at the boundary even before the first trade of
+        # the new week, so the roll is evaluated on every decision.
+        self.roll_week()
+
         # Kill switch
         if self._kill_switch_active or not self.risk.kill_switch_enabled:
             return RiskCheck(
@@ -356,6 +399,7 @@ class RiskManager:
         execution cost already deducted). A gross number here silently moves the
         daily loss, drawdown and sizing gates: see WP-EDGE-017/P0.3.
         """
+        self.roll_week()
         self.trades_today += 1
         self.daily_pnl += pnl
         self.weekly_pnl += pnl
@@ -390,9 +434,12 @@ class RiskManager:
     def reset_daily(self) -> None:
         """Reset daily counters (call at start of each trading day).
 
-        ``weekly_pnl`` is deliberately NOT reset here: the weekly loss limit is
-        measured over a week, not a day.
+        ``weekly_pnl`` is not reset by the *daily* boundary itself, but the day
+        boundary is where a week boundary is observed when no trade happens over
+        the weekend: ``roll_week`` clears the weekly accumulator only when the
+        clock has actually entered a new UTC week.
         """
+        self.roll_week()
         self.daily_pnl = 0.0
         self.trades_today = 0
         self.consecutive_losses = 0
@@ -410,6 +457,7 @@ class RiskManager:
         kill_switch_active: bool,
         day_peak_equity: float | None = None,
         last_loss_ms: int = 0,
+        weekly_start_ms: int | None = None,
     ) -> None:
         """Restore counters from durable state (GAP-R1 hardening).
 
@@ -428,6 +476,14 @@ class RiskManager:
         self.open_positions = dict(open_positions)
         self._last_loss_ms = int(last_loss_ms)
         self._kill_switch_active = bool(kill_switch_active)
+        if weekly_start_ms is None:
+            # Legacy snapshot without an anchor: keep the restored loss (never
+            # forgive it silently) but anchor it now, so the next boundary clears
+            # it and it cannot veto forever.
+            self.weekly_start_ms = week_start_ms_for(self._now_ms())
+        else:
+            self.weekly_start_ms = int(weekly_start_ms)
+            self.roll_week()
 
     def _position_to_row(self, symbol: str, position: Any) -> dict[str, Any]:
         """JSON-safe projection of one open position for the durable store.
@@ -461,6 +517,7 @@ class RiskManager:
         return {
             "daily_pnl": self.daily_pnl,
             "weekly_pnl": self.weekly_pnl,
+            "weekly_start_ms": self.weekly_start_ms,
             "trades_today": self.trades_today,
             "consecutive_losses": self.consecutive_losses,
             "peak_equity": self.peak_equity,

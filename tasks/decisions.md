@@ -1670,3 +1670,32 @@ lo que NO se requerirá per-ADR "next free" footnote nunca más.
     cooldown de 3 perdidas haciendo su trabajo sobre un libro que pierde dinero.
 - **Reversion**: solo un ADR nuevo. Relajar el halt o el criterio de concentracion para
   que este libro pase es exactamente lo que este WP se prohibe.
+
+## ADR-017F-01 — La ventana semanal de riesgo es la semana UTC de lunes a lunes
+
+- **Contexto**: `RiskManager.record_trade_result` acumulaba `weekly_pnl` y nada lo reiniciaba.
+  `reset_daily` no lo tocaba (correcto) pero no existía ninguna transición semanal, así que una
+  semana mala vetaba todas las señales del resto de la corrida. El replay hace resets diarios y
+  nunca observaba un reinicio semanal.
+- **Decisión**:
+  - La ventana es la semana ISO en UTC: de lunes 00:00 a lunes 00:00, sin DST ni calendario local.
+  - `RiskManager.weekly_start_ms` ancla la ventana y viaja en `extract_state`/`restore_state`, de
+    modo que un reinicio conserva la pérdida de la semana en curso.
+  - `roll_week()` se evalúa en `check_signal`, `record_trade_result` y `reset_daily`, usando el
+    reloj inyectable (en el replay, el timestamp de la barra). Un reloj que retrocede no reinicia
+    nada; una instantánea antigua sin ancla conserva su pérdida y la ancla a la semana del
+    restore, para que no pueda vetar para siempre.
+  - `reset_daily` sigue sin reiniciar la semana por sí mismo: el día frontera es donde se *observa*
+    el lunes cuando el fin de semana no tuvo operaciones, y ese cruce se registra como
+    `WEEK_BOUNDARY / RISK_RESET_WEEKLY` en la lane.
+- **Qué NO cambia**: `max_weekly_loss_pct`, el resto de límites, la reserva de disco y la política
+  de fin de semana. El límite sigue vetando; solo deja de vetar indefinidamente.
+- **Nota de contrato**: `docs/risk-policy.md` decía «pausa por 1 día». Esa pausa nunca se
+  implementó y no se introduce aquí: un veto de 24 h que se reevalúa contra el mismo acumulador
+  volvería a bloquear inmediatamente. Se documenta la semántica real (veto hasta el cierre de la
+  ventana), que es la más conservadora de las dos.
+- **Consecuencias**: el replay de 017 deja de arrastrar una pérdida semanal única durante todo el
+  periodo; los rechazos semanales pasan a ser por semana, y `NET_RISK_REPLAY` cambia en
+  consecuencia. Cualquier cifra anterior de fills semanales queda superada.
+- **Reversión**: solo un ADR nuevo; relajar la ventana para que el libro pase es exactamente lo que
+  este paquete se prohíbe.

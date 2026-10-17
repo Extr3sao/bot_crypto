@@ -285,6 +285,7 @@ def main() -> int:
         current_ms[0] = ts_ms
         day = datetime.fromtimestamp(ts_ms / 1000, tz=UTC)
         if previous_day is not None and day.strftime("%Y-%m-%d") != previous_day:
+            week_before = int(risk.weekly_start_ms)
             risk.reset_daily()  # the runtime resets the daily counters at the day boundary
             cycles.append(
                 {
@@ -297,6 +298,21 @@ def main() -> int:
                     "risk": canonical_trade_result(risk),
                 }
             )
+            if int(risk.weekly_start_ms) != week_before:
+                # WP-EDGE-017F/P0.1: the day boundary is where a week boundary is
+                # observed when the weekend had no trades. Recorded, not inferred.
+                cycles.append(
+                    {
+                        "cycle": len(cycles) + 1,
+                        "tag": TAG,
+                        "ts_ms": ts_ms,
+                        "symbol": "*",
+                        "stage": "WEEK_BOUNDARY",
+                        "action": "RISK_RESET_WEEKLY",
+                        "previous_week_start_ms": week_before,
+                        "risk": canonical_trade_result(risk),
+                    }
+                )
         previous_day = day.strftime("%Y-%m-%d")
 
         for symbol, _path in UNIVERSE:
@@ -973,6 +989,7 @@ def canonical_trade_result(risk: RiskManager) -> dict[str, Any]:
         "day_peak_equity": float(risk.day_peak_equity),
         "daily_pnl": float(risk.daily_pnl),
         "weekly_pnl": float(risk.weekly_pnl),
+        "weekly_start_ms": int(risk.weekly_start_ms),
         "trades_today": int(risk.trades_today),
         "consecutive_losses": int(risk.consecutive_losses),
         "open_positions": len(risk.open_positions),
