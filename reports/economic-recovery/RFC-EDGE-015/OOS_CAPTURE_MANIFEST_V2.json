@@ -1,10 +1,10 @@
 {
-  "capture_started_unix_ns": 1792221621701637600,
+  "capture_started_unix_ns": 1792227699913727000,
   "capture_status": "CAPTURED",
-  "captured_at_utc": "2026-10-17T07:20:21Z",
+  "captured_at_utc": "2026-10-17T09:01:39Z",
   "descriptive": {
     "bars": 0,
-    "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\economic-recovery\\RFC-EDGE-015\\scratch\\OOS_DESCRIPTIVE_1H.jsonl",
+    "path": "reports/economic-recovery/RFC-EDGE-015/scratch/OOS_DESCRIPTIVE_1H.jsonl",
     "reading": "kept as descriptive evidence: these bars were fetched after the freeze, so no hypothesis was fitted to them, but they start before the freeze instant and therefore carry no prospective claim",
     "rule": "boundary <= bar open_ms <= frozen_at_epoch_ms",
     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -12,9 +12,9 @@
   "order_check": {
     "all_prospective_bars_open_after_freeze": true,
     "assumption": "both instants come from the same host clock in different processes; the commit between them is what makes the ordering checkable from outside this machine",
-    "capture_started_unix_ns": 1792221621701637600,
+    "capture_started_unix_ns": 1792227699913727000,
     "commit_precedes_capture": true,
-    "delta_ns": 292762171400,
+    "delta_ns": 6370974260800,
     "freeze_at_unix_ns": 1792221328939466200,
     "freeze_precedes_capture": true,
     "method": "the frozen file records its own nanosecond instant and is committed before this runs; the capture reads its own instant before the first network call, compares the two integers, and compares the file on disk against the blob Git holds for that commit",
@@ -25,7 +25,7 @@
       "git": {
         "blob_sha256": "cea0be89347d219ba89e973aa8a1d21223615206586e7a57adf71186188dc4cd",
         "blob_sha256_lf": "cea0be89347d219ba89e973aa8a1d21223615206586e7a57adf71186188dc4cd",
-        "commit": "b4ff58892263b44de122b8fe6b08239ffb831032",
+        "commit": "5308b9dbba0f343b350046f943bcce9da28d0d97",
         "commit_unix": 1792221564,
         "committed": true,
         "path": "reports/economic-recovery/RFC-EDGE-015/OOS_PREREGISTRATION_V2.json"
@@ -38,7 +38,7 @@
     "file_sha256": "76351aaf63a80d8608a833012ab90bd1325936a9d92ad3eab9abd1a6bfd3666e",
     "frozen_at_unix_ns": 1792221328939466200,
     "frozen_at_utc": "2026-10-17T07:15:28Z",
-    "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\economic-recovery\\RFC-EDGE-015\\OOS_PREREGISTRATION_V2.json",
+    "path": "reports/economic-recovery/RFC-EDGE-015/OOS_PREREGISTRATION_V2.json",
     "protocol_sha256": "3a88f70da2f10d0eb3896383721f69245dfec5ef460377d1cc765bd196698f67"
   },
   "previously_captured": {
@@ -48,33 +48,34 @@
     "why": "captured by WP-EDGE-14R at 2026-10-16T20:01:44Z, before this protocol existed, so no bar in it can be prospective with respect to it"
   },
   "prospective": {
-    "bars": 0,
-    "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\economic-recovery\\RFC-EDGE-015\\scratch\\OOS_PROSPECTIVE_1H.jsonl",
+    "bars": 3,
+    "path": "reports/economic-recovery/RFC-EDGE-015/scratch/OOS_PROSPECTIVE_1H.jsonl",
     "rule": "bar open_ms > frozen_at_epoch_ms",
-    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    "sha256": "e246b39652e524216c64a57cb5bf795d575a73a05a8eb4b38a59bd59ae120040"
   },
   "schema_version": "EDGE15_OOS_CAPTURE_V2",
   "scoring_run": false,
   "selection_has_read_any_slice": false,
-  "state": "OOS_ACCRUING",
+  "state": "OOS_ACCRUING_WITH_PROSPECTIVE_BARS",
   "symbols": {
     "BTC/USDT": {
       "descriptive_bars": 0,
-      "prospective_bars": 0
+      "prospective_bars": 1
     },
     "ETH/USDT": {
       "descriptive_bars": 0,
-      "prospective_bars": 0
+      "prospective_bars": 1
     },
     "SOL/USDT": {
       "descriptive_bars": 0,
-      "prospective_bars": 0
+      "prospective_bars": 1
     }
   },
   "window": {
     "capture_from_ms": 1792221328939,
-    "capture_to_ms": 1792220400000,
-    "first_prospective_bar_open_ms": null,
+    "capture_to_ms": 1792227600000,
+    "first_prospective_bar_open_ms": 1792224000000,
+    "first_prospective_bar_open_utc": "2026-10-17T08:00:00Z",
     "freeze_epoch_ms": 1792221328939
   },
   "work_package": "WP-EDGE-015/P0.1"

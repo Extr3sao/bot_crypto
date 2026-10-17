@@ -71,6 +71,22 @@ class Checks:
         return sum(1 for r in self.rows if not r["ok"])
 
 
+def _resolve(recorded: str, *, repo: Path = REPO) -> Path:
+    """Locate a recorded artefact on this host (the 14R manifest stored an absolute path)."""
+    normalised = recorded.replace("\\", "/")
+    raw = Path(normalised)
+    if raw.is_absolute() and raw.exists():
+        return raw
+    if not raw.is_absolute() and (repo / raw).exists():
+        return repo / raw
+    parts = raw.parts
+    for index in range(len(parts)):
+        candidate = repo.joinpath(*parts[index:])
+        if candidate.exists():
+            return candidate
+    return raw
+
+
 def _load(path: Path) -> Any:
     if not path.is_file():
         return None
@@ -500,7 +516,7 @@ def main() -> int:
             and oos["scoring_run"] is False,
             "state OOS_ACCRUING, not scored",
         )
-        slice_path = Path(oos["slice_path"])
+        slice_path = _resolve(oos["slice_path"])
         checks.add(
             "V23",
             "the captured slice still hashes to its recorded digest",

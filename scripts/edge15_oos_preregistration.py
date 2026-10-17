@@ -71,6 +71,19 @@ def _sha256(path: Path) -> str | None:
     return hashlib.sha256(path.read_bytes()).hexdigest() if path.is_file() else None
 
 
+def _rel(path: Path) -> str:
+    """The path as the repository sees it, never as this host sees it.
+
+    Artefacts are published so that a clean checkout can re-verify them; a
+    ``C:\\Users\\…`` path in a committed manifest would make this machine the
+    only place the holdout can be checked.
+    """
+    try:
+        return path.resolve().relative_to(REPO).as_posix()
+    except ValueError:
+        return path.as_posix()
+
+
 def _canonical_sha(payload: dict[str, Any]) -> str:
     return hashlib.sha256(
         json.dumps(payload, sort_keys=True, separators=(",", ":")).encode()
@@ -299,7 +312,7 @@ def capture(symbols: list[str], exchange_id: str) -> int:
         "capture_started_unix_ns": capture_ns,
         "capture_status": status,
         "preregistration": {
-            "path": str(PREREG),
+            "path": _rel(PREREG),
             "file_sha256": prereg_sha,
             "protocol_sha256": protocol_sha,
             "frozen_at_unix_ns": freeze_ns,
@@ -311,15 +324,20 @@ def capture(symbols: list[str], exchange_id: str) -> int:
             "capture_to_ms": end_ms,
             "freeze_epoch_ms": freeze_ms,
             "first_prospective_bar_open_ms": first_prospective_open_ms,
+            "first_prospective_bar_open_utc": (
+                _utc(int(first_prospective_open_ms) * 1_000_000)
+                if first_prospective_open_ms is not None
+                else None
+            ),
         },
         "prospective": {
-            "path": str(PROSPECTIVE_SLICE),
+            "path": _rel(PROSPECTIVE_SLICE),
             "bars": n_prospective,
             "sha256": sha_prospective,
             "rule": "bar open_ms > frozen_at_epoch_ms",
         },
         "descriptive": {
-            "path": str(DESCRIPTIVE_SLICE),
+            "path": _rel(DESCRIPTIVE_SLICE),
             "bars": n_descriptive,
             "sha256": sha_descriptive,
             "rule": "boundary <= bar open_ms <= frozen_at_epoch_ms",

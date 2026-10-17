@@ -64,6 +64,33 @@ def _sha256(path: Path) -> str | None:
     return hashlib.sha256(path.read_bytes()).hexdigest() if path.is_file() else None
 
 
+def _resolve(recorded: str, *, repo: Path = REPO) -> Path:
+    """Locate an artefact from the path a manifest recorded, on any host.
+
+    Older manifests and the frozen 14R protocol block store an absolute Windows
+    path. A verifier that only works on the machine that wrote the file is not a
+    verifier, so the recorded path is re-anchored on the repository by its tail
+    whenever the absolute form is not present here.
+    """
+    normalised = recorded.replace("\\", "/")
+    raw = Path(normalised)
+    if raw.is_absolute() and raw.exists():
+        return raw
+    if not raw.is_absolute() and (repo / raw).exists():
+        return repo / raw
+    parts = raw.parts
+    for index in range(len(parts)):
+        candidate = repo.joinpath(*parts[index:])
+        if candidate.exists():
+            return candidate
+    return raw
+
+
+def _is_repo_relative(recorded: str) -> bool:
+    raw = Path(recorded)
+    return not raw.is_absolute() and "\\" not in recorded and not recorded.startswith("..")
+
+
 def _num(value: Any) -> float | None:
     """A number from a CSV cell (which is always text) or from JSON, or None."""
     if value in (None, ""):
@@ -302,7 +329,7 @@ def check_holdout(checks: Checks) -> None:
         == manifest["preregistration"]["protocol_sha256"],
         f"protocol sha256 {prereg['protocol_sha256'][:16]}…",
     )
-    slice_path = Path(manifest["prospective"]["path"])
+    slice_path = _resolve(manifest["prospective"]["path"])
     slice_ok = True
     prospective_bars = 0
     if slice_path.is_file():
@@ -326,7 +353,7 @@ def check_holdout(checks: Checks) -> None:
     checks.add(
         "V08",
         "the 14R slice is preserved and labelled descriptive",
-        _sha256(Path(previous["path"])) == previous["sha256"]
+        _sha256(_resolve(previous["path"])) == previous["sha256"]
         and previous["status"] == "DESCRIPTIVE_FOR_THESE_HYPOTHESES",
         f"{previous['sha256'][:16]}… {previous['status']}",
     )
@@ -337,6 +364,39 @@ def check_holdout(checks: Checks) -> None:
         and manifest["selection_has_read_any_slice"] is False
         and manifest["scoring_run"] is False,
         f"state {manifest['state']}, selection_has_read_any_slice=False",
+    )
+    current = [
+        manifest["preregistration"]["path"],
+        manifest["prospective"]["path"],
+        manifest["descriptive"]["path"],
+    ]
+    frozen_previous = str(previous["path"])
+    checks.add(
+        "V33",
+        "every artefact this manifest records is repository-relative and resolves here",
+        all(_is_repo_relative(str(item)) for item in current)
+        and all(_resolve(str(item)).exists() for item in current)
+        and _resolve(frozen_previous).name == Path("OOS_SLICE_1H.jsonl").name,
+        f"{len(current)} relative path(s) + the frozen 14R path "
+        f"({'absolute, as it was committed inside the protocol' if Path(frozen_previous).is_absolute() else 'relative'}) "
+        "re-anchored on the repository by its tail",
+    )
+    rel_slice = slice_path.resolve().relative_to(REPO).as_posix()
+    committed = subprocess.run(
+        ["git", "-C", str(REPO), "show", f"HEAD:{rel_slice}"], capture_output=True
+    )
+    disk_lf = slice_path.read_bytes().replace(b"\r\n", b"\n")
+    blob_lf = committed.stdout.replace(b"\r\n", b"\n") if committed.returncode == 0 else b""
+    checks.add(
+        "V34",
+        "the prospective slice the manifest hashes is the one Git will ship",
+        committed.returncode == 0 and blob_lf == disk_lf and bool(disk_lf),
+        f"HEAD:{rel_slice} "
+        + (
+            f"matches the {len(disk_lf)} LF-normalised bytes on disk"
+            if committed.returncode == 0 and blob_lf == disk_lf
+            else "differs from the working copy (capture, then commit, then verify)"
+        ),
     )
 
 
