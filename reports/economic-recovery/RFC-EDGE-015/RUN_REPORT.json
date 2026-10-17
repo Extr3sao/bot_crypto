@@ -51,7 +51,8 @@
   ],
   "false_success": 0,
   "generated_at_utc": "2026-10-17T09:05:00Z",
-  "git_head": "d45a1fa",
+  "git_head": "87b9c6a",
+  "git_head_reading": "the commit whose code produced these figures; a report cannot name the commit that contains its own amendment, and no figure here depends on a commit later than this one",
   "open_items": [
     "prospective holdout accruing: 3 bars captured, none scored, selection has read nothing",
     "no admitted strategy with a measured positive gross edge after costs",

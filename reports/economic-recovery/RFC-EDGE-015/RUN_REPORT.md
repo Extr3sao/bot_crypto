@@ -1,6 +1,6 @@
 # WP-EDGE-015 — run report
 
-*Generated 2026-10-17T09:05Z against `d45a1fa`. `FALSE_SUCCESS=0`, `BUILDER != VERIFIER`.*
+*Generated 2026-10-17T09:05Z against `87b9c6a`. `FALSE_SUCCESS=0`, `BUILDER != VERIFIER`.*
 *No real order, no credential, no leverage, no risk limit changed.*
 
 ## Execution classes, kept apart

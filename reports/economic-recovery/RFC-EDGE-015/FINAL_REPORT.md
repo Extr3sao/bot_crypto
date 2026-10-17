@@ -1,6 +1,6 @@
 # WP-EDGE-015 — final report
 
-*2026-10-17T09:05Z against `d45a1fa`. Every figure is reproducible from the artifacts in this
+*2026-10-17T09:05Z against `87b9c6a`. Every figure is reproducible from the artifacts in this
 directory; the verification that re-derives them is `INDEPENDENT_VERIFICATION.json` (34/34, verdict
 `VERIFIED`), and it shares no code with the builder.*
 

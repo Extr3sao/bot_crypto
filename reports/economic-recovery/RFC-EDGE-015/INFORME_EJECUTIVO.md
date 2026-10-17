@@ -1,6 +1,6 @@
 # Informe ejecutivo — WP-EDGE-015
 
-*2026-10-17T09:05Z, `d45a1fa`. `FALSE_SUCCESS=0`, `BUILDER != VERIFIER`. Sin órdenes reales, sin
+*2026-10-17T09:05Z, `87b9c6a`. `FALSE_SUCCESS=0`, `BUILDER != VERIFIER`. Sin órdenes reales, sin
 credenciales, sin apalancamiento y sin ningún cambio de límites de riesgo.*
 
 ## En una frase
