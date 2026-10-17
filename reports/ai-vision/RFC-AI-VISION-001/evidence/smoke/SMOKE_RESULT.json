@@ -1,0 +1,41 @@
+{
+  "chart": {
+    "bar_count": 120,
+    "bytes": 41856,
+    "chart_spec_version": "ai-vision-chart/1",
+    "first_open_utc": "2026-04-02T13:00:00Z",
+    "last_open_utc": "2026-04-07T12:00:00Z",
+    "sha256": "f8f707c05175f5409cee8f8ea4e85c9ebb83cb525acfea84d08be811cf722b68",
+    "symbol": "BTC/USDT",
+    "timeframe": "1h"
+  },
+  "decision_bar_utc": "2026-04-07T12:00:00Z",
+  "generated_at_utc": "2026-10-17T19:45:10Z",
+  "instructions": "set VISION_API_KEY in the repository .env (the value never goes in chat or in git) and re-run this script",
+  "provider_config": {
+    "api_key_env": "VISION_API_KEY",
+    "base_url": "https://api.openai.com/v1",
+    "detail": "high",
+    "lane": {
+      "decision_every_bars": 24,
+      "max_calls_per_run": 300,
+      "max_estimated_spend_usd": 2.0,
+      "timeframe": "1h",
+      "window_bars": 120
+    },
+    "max_attempts": 3,
+    "model": "gpt-4o-mini",
+    "prices": {
+      "image_tokens_estimate": 1000,
+      "input_usd_per_mtok": 0.15,
+      "output_usd_per_mtok": 0.6
+    },
+    "provider": "openai-compatible",
+    "supports_json_object": true,
+    "timeout_s": 60.0
+  },
+  "reason": "MISSING_CREDENTIAL",
+  "request_has_image": true,
+  "status": "BLOCKED",
+  "symbol": "BTC/USDT"
+}

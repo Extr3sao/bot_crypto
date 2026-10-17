@@ -1,0 +1,29 @@
+{
+  "code": "MISSING_CREDENTIAL",
+  "generated_at_utc": "2026-10-17T19:41:59Z",
+  "mode": "live",
+  "provider": {
+    "api_key_env": "VISION_API_KEY",
+    "base_url": "https://api.openai.com/v1",
+    "detail": "high",
+    "lane": {
+      "decision_every_bars": 24,
+      "max_calls_per_run": 300,
+      "max_estimated_spend_usd": 2.0,
+      "timeframe": "1h",
+      "window_bars": 120
+    },
+    "max_attempts": 3,
+    "model": "gpt-4o-mini",
+    "prices": {
+      "image_tokens_estimate": 1000,
+      "input_usd_per_mtok": 0.15,
+      "output_usd_per_mtok": 0.6
+    },
+    "provider": "openai-compatible",
+    "supports_json_object": true,
+    "timeout_s": 60.0
+  },
+  "reason": "set VISION_API_KEY in the repository .env; no decision is invented in its absence",
+  "status": "BLOCKED"
+}
