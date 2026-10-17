@@ -17,7 +17,7 @@ congelado y acumulando en lugar de inventarse.
 | protocolo prospectivo congelado en un commit y capturado en otro | ejecutado, `ORDER_VERIFIED` |
 | cuatro familias medidas con costes por venue y sensibilidad adversa | ejecutado (5 años, 9 activos) |
 | carril paper aislado sobre barras nuevas con el broker y el riesgo reales | ejecutado (6 003 barras, 210 ciclos, 28 órdenes simuladas, 14 operaciones cerradas) |
-| verificación independiente (sin importar el código del constructor) | 34/34, veredicto `VERIFIED` |
+| verificación independiente (sin importar el código del constructor) | 35/35, veredicto `VERIFIED` |
 | suite de comportamiento del broker y de causalidad de las familias | 8 + 10 pruebas, todas pasan |
 | divergencias de Jesse y VeighNa | ambas resueltas con descomposición exacta |
 
@@ -74,6 +74,27 @@ Dos lecturas que importan más que los signos:
 El problema de fondo es aritmético: los niveles alternativos cuestan 25–29 bps por vuelta completa a
 200 USDT, así que hacen falta ~30 bps brutos por operación para sobrevivir al coste central y ~58
 bps para sobrevivir al adverso. Casi nada en estos datos logra ambas cosas.
+
+## CURRENT vs PROPOSED (mismos datos, capital y restricciones)
+
+Misma cola reservada, mismos 10 000 USDT, mismo tamaño de orden que fija la propia política del
+runtime (333,33 USDT, leído de `config/risk.yaml`) y mismo modelo de costes. CURRENT no es una
+suposición: se lee del ledger autoritativo, que admite **0 estrategias**, así que el incumbente está
+plano (0 operaciones, 0 comisiones, 0 neto). Esa planitud es justamente el listón: hay que superar
+cero, no una pérdida.
+
+| propuesta | operaciones | neto 1× | neto 2× | decisión | ¿sustituye a CURRENT? |
+| --- | ---: | ---: | ---: | --- | --- |
+| `mean_reversion_vol_liq` | 811 | +702,50 USDT | −77,54 USDT | `EXPERIMENT_COST_FRAGILE` | no: muere con el coste adverso |
+| `vol_regime_breakout` | 171 | +1 112,22 USDT | +948,82 USDT | `REJECT_OUTLIER_DRIVEN` | no: sobrevive al coste y aun así no se puede dimensionar |
+| `trend_pullback` | 895 | −1 960,27 USDT | −2 815,42 USDT | `REJECT` | no |
+| `cross_sectional_rotation` | 355 | −382,15 USDT | −553,50 USDT | `REJECT` | no |
+| `maker_only_spread_capture` | — | — | — | `DEFER_NO_FILL_MODEL` | no: nunca se midió |
+
+**`NO_PROPOSAL_BEATS_CURRENT`.** La fila que merece lectura es la segunda: la familia de ruptura
+gana sus costes incluso a 2× (+948,82 USDT) y no sustituye nada, porque promover no es sólo un test
+de costes — cinco de sus 171 operaciones son 1,31 veces todo el bruto, y una expectativa que
+descansa en cinco aciertos no se puede dimensionar. Sobrevivir al coste es necesario, no suficiente.
 
 ## El carril experimental prospectivo
 

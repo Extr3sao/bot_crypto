@@ -162,6 +162,231 @@
     },
     "venue": "BINANCE_SPOT"
   },
+  "current_vs_proposed": {
+    "current": {
+      "admitted_strategies": [],
+      "definition": "the runtime exactly as committed: whatever config/strategy_admission.json admits",
+      "equity_end_usdt": 10000.0,
+      "fees_usdt": 0.0,
+      "net_usdt": 0.0,
+      "reading": "flat by construction: a strategy that is not admitted does not trade, so the bar a proposal has to clear is zero, not a loss",
+      "trades": 0
+    },
+    "proposed": {
+      "cross_sectional_rotation": {
+        "beats_current": false,
+        "decision": "REJECT",
+        "equity_end_usdt_1x": 9617.849412,
+        "fees_measured": true,
+        "fees_usdt": 342.689906,
+        "net_usdt_1x": -382.150588,
+        "net_usdt_2x": -553.495541,
+        "per_symbol": {
+          "PORTFOLIO": {
+            "net_usdt_1x": -382.150588,
+            "net_usdt_2x": -553.495541,
+            "trades": 355
+          }
+        },
+        "replaces_current": false,
+        "trades": 355
+      },
+      "mean_reversion_vol_liq": {
+        "beats_current": false,
+        "decision": "EXPERIMENT_COST_FRAGILE",
+        "equity_end_usdt_1x": 10702.496921,
+        "fees_measured": true,
+        "fees_usdt": 780.032733,
+        "net_usdt_1x": 702.496921,
+        "net_usdt_2x": -77.535812,
+        "per_symbol": {
+          "AAVEUSDT": {
+            "net_usdt_1x": 122.827599,
+            "net_usdt_2x": 7.954081,
+            "trades": 119
+          },
+          "BTCUSDT": {
+            "net_usdt_1x": -1.753005,
+            "net_usdt_2x": -5.645233,
+            "trades": 5
+          },
+          "CRVUSDT": {
+            "net_usdt_1x": 208.615521,
+            "net_usdt_2x": 95.672651,
+            "trades": 117
+          },
+          "ETHUSDT": {
+            "net_usdt_1x": -2.4592,
+            "net_usdt_2x": -6.351428,
+            "trades": 5
+          },
+          "KSMUSDT": {
+            "net_usdt_1x": -44.382773,
+            "net_usdt_2x": -179.528088,
+            "trades": 140
+          },
+          "SNXUSDT": {
+            "net_usdt_1x": 164.610132,
+            "net_usdt_2x": 18.846256,
+            "trades": 151
+          },
+          "SOLUSDT": {
+            "net_usdt_1x": -9.157856,
+            "net_usdt_2x": -15.904456,
+            "trades": 8
+          },
+          "SUSHIUSDT": {
+            "net_usdt_1x": 213.582393,
+            "net_usdt_2x": 71.679812,
+            "trades": 147
+          },
+          "UNIUSDT": {
+            "net_usdt_1x": 50.61411,
+            "net_usdt_2x": -64.259408,
+            "trades": 119
+          }
+        },
+        "replaces_current": false,
+        "trades": 811
+      },
+      "trend_pullback": {
+        "beats_current": false,
+        "decision": "REJECT",
+        "equity_end_usdt_1x": 8039.73298,
+        "fees_measured": true,
+        "fees_usdt": 855.155342,
+        "net_usdt_1x": -1960.26702,
+        "net_usdt_2x": -2815.422362,
+        "per_symbol": {
+          "AAVEUSDT": {
+            "net_usdt_1x": -374.765772,
+            "net_usdt_2x": -529.217561,
+            "trades": 160
+          },
+          "BTCUSDT": {
+            "net_usdt_1x": 60.285706,
+            "net_usdt_2x": 48.609023,
+            "trades": 15
+          },
+          "CRVUSDT": {
+            "net_usdt_1x": -311.273595,
+            "net_usdt_2x": -451.245529,
+            "trades": 145
+          },
+          "ETHUSDT": {
+            "net_usdt_1x": 57.957399,
+            "net_usdt_2x": 40.053151,
+            "trades": 23
+          },
+          "KSMUSDT": {
+            "net_usdt_1x": -432.564233,
+            "net_usdt_2x": -563.848254,
+            "trades": 136
+          },
+          "SNXUSDT": {
+            "net_usdt_1x": -251.926412,
+            "net_usdt_2x": -374.522519,
+            "trades": 127
+          },
+          "SOLUSDT": {
+            "net_usdt_1x": -12.608482,
+            "net_usdt_2x": -24.415031,
+            "trades": 14
+          },
+          "SUSHIUSDT": {
+            "net_usdt_1x": -420.274454,
+            "net_usdt_2x": -559.281064,
+            "trades": 144
+          },
+          "UNIUSDT": {
+            "net_usdt_1x": -275.097176,
+            "net_usdt_2x": -401.554578,
+            "trades": 131
+          }
+        },
+        "replaces_current": false,
+        "trades": 895
+      },
+      "vol_regime_breakout": {
+        "beats_current": true,
+        "decision": "REJECT_OUTLIER_DRIVEN",
+        "equity_end_usdt_1x": 11112.217291,
+        "fees_measured": true,
+        "fees_usdt": 163.396206,
+        "net_usdt_1x": 1112.217291,
+        "net_usdt_2x": 948.821085,
+        "per_symbol": {
+          "AAVEUSDT": {
+            "net_usdt_1x": 120.823733,
+            "net_usdt_2x": 96.690641,
+            "trades": 25
+          },
+          "BTCUSDT": {
+            "net_usdt_1x": 4.799472,
+            "net_usdt_2x": 2.464135,
+            "trades": 3
+          },
+          "CRVUSDT": {
+            "net_usdt_1x": 292.95469,
+            "net_usdt_2x": 263.994979,
+            "trades": 30
+          },
+          "ETHUSDT": {
+            "net_usdt_1x": -22.498403,
+            "net_usdt_2x": -25.612185,
+            "trades": 4
+          },
+          "KSMUSDT": {
+            "net_usdt_1x": 173.765258,
+            "net_usdt_2x": 152.528137,
+            "trades": 22
+          },
+          "SNXUSDT": {
+            "net_usdt_1x": 112.592433,
+            "net_usdt_2x": 88.459341,
+            "trades": 25
+          },
+          "SOLUSDT": {
+            "net_usdt_1x": 26.845456,
+            "net_usdt_2x": 24.315481,
+            "trades": 3
+          },
+          "SUSHIUSDT": {
+            "net_usdt_1x": 19.709774,
+            "net_usdt_2x": -11.180584,
+            "trades": 32
+          },
+          "UNIUSDT": {
+            "net_usdt_1x": 383.224879,
+            "net_usdt_2x": 357.161139,
+            "trades": 27
+          }
+        },
+        "replaces_current": false,
+        "trades": 171
+      }
+    },
+    "replaces_current": [],
+    "rule": "a proposal replaces the current runtime only if it is net positive on the same bars at the ADVERSE cost multiplier and clears every frozen threshold; being positive at the central cost is not enough",
+    "same_capital_and_constraints": {
+      "capital_usdt": 10000.0,
+      "changed_by_this_work_package": false,
+      "order_notional_usdt": 333.33,
+      "policy": {
+        "default_stop_loss_pct": 0.5,
+        "default_take_profit_pct": 0.75,
+        "max_asset_exposure_pct": 10,
+        "max_open_positions": 3,
+        "max_order_notional_usdt": 500,
+        "max_trades_per_day": 20,
+        "min_order_notional_usdt": 20
+      },
+      "rule": "min(max_order_notional_usdt, max(min_order_notional_usdt, capital * max_asset_exposure_pct / 100 / max_open_positions)) \u2014 the same rule the paper lane sized its orders with"
+    },
+    "same_data": "SEGMENT_B_HELD_OUT_TAIL of every series in the matrix",
+    "schema_version": "EDGE15_CURRENT_VS_PROPOSED_V1",
+    "verdict": "NO_PROPOSAL_BEATS_CURRENT"
+  },
   "decisive_family_evidence": {
     "approximation_declared": "the ATR percentile gate is computed on 50 buckets, so an independent implementation may disagree on trades that sit exactly on the 0.5 boundary; the per-trade checks published here do not depend on that gate's resolution",
     "corpus": "EDGE08_ALTS_1H",

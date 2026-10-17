@@ -91,6 +91,27 @@ The dilemma the search kept hitting is arithmetic: the alt tiers cost 25–29 bp
 200 USDT stake, so a family has to earn ~30 bps gross per trade to survive the *central* model and
 ~58 bps to survive the adverse one.
 
+### CURRENT vs PROPOSED, on the same bars, capital and constraints
+
+`ALPHA_RESULTS.json → current_vs_proposed`. Both sides get the held-out tail, 10 000 USDT of
+capital and the order size the runtime's own policy sets (333.33 USDT, from `config/risk.yaml`).
+CURRENT is read from the authoritative ledger rather than assumed: it admits **0 strategies**, so it
+is flat — 0 trades, 0 fees, 0 net, 10 000 USDT. Being flat is why the bar is zero and not a loss.
+
+| proposal | trades | net @1× | net @2× | decision | replaces CURRENT? |
+| --- | ---: | ---: | ---: | --- | --- |
+| `mean_reversion_vol_liq` | 811 | **+702.50 USDT** | −77.54 USDT | `EXPERIMENT_COST_FRAGILE` | no — negative at 2× |
+| `vol_regime_breakout` | 171 | +1 112.22 USDT | +948.82 USDT | `REJECT_OUTLIER_DRIVEN` | no — fails the concentration rule |
+| `trend_pullback` | 895 | −1 960.27 USDT | −2 815.42 USDT | `REJECT` | no |
+| `cross_sectional_rotation` | 355 | −382.15 USDT | −553.50 USDT | `REJECT` | no |
+| `maker_only_spread_capture` | — | — | — | `DEFER_NO_FILL_MODEL` | no — never measured |
+
+Verdict: **`NO_PROPOSAL_BEATS_CURRENT`**. The table is worth reading for one row: the breakout
+family *does* clear its costs at the adverse multiplier (+948.82 USDT), and it still does not
+replace anything, because replacing the runtime is not only a cost test — five trades carry 1.31×
+its gross, and a family that cannot be sized cannot be promoted. The matrix now carries `decision`
+and `current_runtime_net_bps_total` on every row so the comparison sits in the same table.
+
 ## P2 — the cost model
 
 Per venue and product, with the provenance of each component declared instead of implied:
@@ -133,7 +154,8 @@ relaxed; the lane's artifacts were written under the package directory only.
 
 | artifact | result |
 | --- | --- |
-| `edge15_verify.py` (imports no builder module) | **34/34 checks, verdict VERIFIED** |
+| `edge15_verify.py` (imports no builder module) | **35/35 checks, verdict VERIFIED** |
+| V35, the comparison above | re-derived from the matrix and `config/risk.yaml`; a tampered figure flips the verdict to `NOT_VERIFIED` (tried) |
 | `edge14r_verify.py` (re-run with the tightened holdout check) | **32/32 checks, VERIFIED** |
 | broker behaviour tests | 8 new tests, all pass (the 8th pins the replay clock) |
 | family causality tests | 10 tests: truncated series reproduce the completed history exactly |

@@ -1,7 +1,7 @@
 # WP-EDGE-015 — final report
 
 *2026-10-17T09:05Z against `87b9c6a`. Every figure is reproducible from the artifacts in this
-directory; the verification that re-derives them is `INDEPENDENT_VERIFICATION.json` (34/34, verdict
+directory; the verification that re-derives them is `INDEPENDENT_VERIFICATION.json` (35/35, verdict
 `VERIFIED`), and it shares no code with the builder.*
 
 ## The short answer
@@ -90,6 +90,26 @@ The two decisive readings:
 The arithmetic that keeps killing these hypotheses: the alt tiers cost 25–29 bps a round trip at the
 200 USDT stake, so a family must earn ~30 bps gross per trade at the central cost and ~58 bps at the
 adverse one. Almost nothing in this corpus does both.
+
+### The comparison the brief asks for: CURRENT vs PROPOSED
+
+Same held-out bars, same 10 000 USDT, same order size from the runtime's own policy (333.33 USDT),
+same cost model. CURRENT is not an assumption — it is read from the authoritative admission ledger,
+which admits **0 strategies**, so the incumbent is flat: 0 trades, 0 fees, 0 net. That flatness is
+the point: a proposal has to beat zero, not a loss.
+
+| proposal | trades | net @1× | net @2× | decision | replaces CURRENT? |
+| --- | ---: | ---: | ---: | --- | --- |
+| `mean_reversion_vol_liq` | 811 | +702.50 USDT | −77.54 USDT | `EXPERIMENT_COST_FRAGILE` | no: it dies at the adverse cost |
+| `vol_regime_breakout` | 171 | +1 112.22 USDT | +948.82 USDT | `REJECT_OUTLIER_DRIVEN` | no: it survives costs and still cannot be sized |
+| `trend_pullback` | 895 | −1 960.27 USDT | −2 815.42 USDT | `REJECT` | no |
+| `cross_sectional_rotation` | 355 | −382.15 USDT | −553.50 USDT | `REJECT` | no |
+| `maker_only_spread_capture` | — | — | — | `DEFER_NO_FILL_MODEL` | no: never measured |
+
+**`NO_PROPOSAL_BEATS_CURRENT`.** The instructive row is the second one: the breakout family clears
+its costs even at 2× (+948.82 USDT) and still replaces nothing, because promotion is not only a cost
+test — five of its 171 trades carry 1.31× its entire gross, and an expectation carried by five rides
+is not something a position can be sized on. Cost survival is necessary, not sufficient.
 
 ## 3. The prospective lane
 

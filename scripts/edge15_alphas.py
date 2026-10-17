@@ -87,6 +87,151 @@ REJECTED_FAMILIES = {
 }
 
 
+RISK_CONFIG = REPO / "config" / "risk.yaml"
+ADMISSION_LEDGER = REPO / "config" / "strategy_admission.json"
+
+#: Capital each side of the comparison is given, and the size of one order under the
+#: runtime's own policy. Both sides use them, so the comparison is like-for-like.
+COMPARISON_CAPITAL_USDT = 10_000.0
+
+
+def comparison_sizing() -> dict[str, Any]:
+    """The runtime's own sizing rule, read from the policy that the runtime applies."""
+    import yaml
+
+    risk = dict(yaml.safe_load(RISK_CONFIG.read_text(encoding="utf-8"))["risk"])
+    notional = min(
+        float(risk["max_order_notional_usdt"]),
+        max(
+            float(risk["min_order_notional_usdt"]),
+            COMPARISON_CAPITAL_USDT
+            * float(risk["max_asset_exposure_pct"])
+            / 100.0
+            / float(risk["max_open_positions"]),
+        ),
+    )
+    return {
+        "capital_usdt": COMPARISON_CAPITAL_USDT,
+        "order_notional_usdt": round(notional, 2),
+        "rule": (
+            "min(max_order_notional_usdt, max(min_order_notional_usdt, capital * "
+            "max_asset_exposure_pct / 100 / max_open_positions)) — the same rule the paper lane "
+            "sized its orders with"
+        ),
+        "policy": {
+            key: risk[key]
+            for key in (
+                "min_order_notional_usdt",
+                "max_order_notional_usdt",
+                "max_asset_exposure_pct",
+                "max_open_positions",
+                "max_trades_per_day",
+                "default_stop_loss_pct",
+                "default_take_profit_pct",
+            )
+        },
+        "changed_by_this_work_package": False,
+    }
+
+
+def admitted_now() -> list[str]:
+    """Every strategy the authoritative ledger admits for paper right now."""
+    payload = json.loads(ADMISSION_LEDGER.read_text(encoding="utf-8"))["strategies"]
+    return sorted(
+        key
+        for key, entry in payload.items()
+        if not key.startswith("_") and entry.get("admitted_for_paper")
+    )
+
+
+def current_vs_proposed(
+    tail_rows: list[dict[str, Any]], verdicts: list[dict[str, Any]]
+) -> dict[str, Any]:
+    """CURRENT (the runtime as it stands) against PROPOSED (each family), like for like.
+
+    Both sides are given the same capital, the same order size from ``config/risk.yaml``,
+    the same bars (the held-out tail every verdict was computed on) and the same cost
+    model. CURRENT is not a straw man: it is read from the authoritative admission ledger,
+    and if that ledger ever admits something the number moves with it.
+
+    A family whose bps total is negative loses exactly that fraction of its order
+    notional per trade, which is what makes the two sides comparable in USDT at all.
+    """
+    sizing = comparison_sizing()
+    notional = float(sizing["order_notional_usdt"])
+    verdict_by_family = {str(v["family"]): str(v["verdict"]) for v in verdicts}
+    proposed: dict[str, dict[str, Any]] = {}
+    for row in tail_rows:
+        family = str(row["family"])
+        bucket = proposed.setdefault(
+            family,
+            {
+                "trades": 0,
+                "net_usdt_1x": 0.0,
+                "net_usdt_2x": 0.0,
+                "fees_usdt": 0.0,
+                "fees_measured": True,
+                "per_symbol": {},
+            },
+        )
+        trades = int(row["trades"])
+        net_1x = float(row["net_bps_total_1x"]) / 10_000.0 * notional
+        net_2x = float(row["net_bps_total_2x"]) / 10_000.0 * notional
+        fees = row.get("fees_and_costs_bps_paid")
+        if fees is None:
+            bucket["fees_measured"] = False
+        else:
+            bucket["fees_usdt"] += float(fees) / 10_000.0 * notional
+        bucket["trades"] += trades
+        bucket["net_usdt_1x"] += net_1x
+        bucket["net_usdt_2x"] += net_2x
+        bucket["per_symbol"][str(row["symbol"])] = {
+            "trades": trades,
+            "net_usdt_1x": round(net_1x, 6),
+            "net_usdt_2x": round(net_2x, 6),
+        }
+
+    for family, bucket in proposed.items():
+        bucket["net_usdt_1x"] = round(bucket["net_usdt_1x"], 6)
+        bucket["net_usdt_2x"] = round(bucket["net_usdt_2x"], 6)
+        bucket["fees_usdt"] = round(bucket["fees_usdt"], 6)
+        bucket["equity_end_usdt_1x"] = round(COMPARISON_CAPITAL_USDT + bucket["net_usdt_1x"], 6)
+        bucket["decision"] = verdict_by_family.get(family, "UNKNOWN")
+        bucket["beats_current"] = bool(bucket["net_usdt_2x"] > 0.0 and bucket["trades"] > 0)
+        bucket["replaces_current"] = bool(bucket["decision"] == "ADOPT" and bucket["beats_current"])
+
+    winners = sorted(name for name, b in proposed.items() if b["replaces_current"])
+    return {
+        "schema_version": "EDGE15_CURRENT_VS_PROPOSED_V1",
+        "same_data": "SEGMENT_B_HELD_OUT_TAIL of every series in the matrix",
+        "same_capital_and_constraints": sizing,
+        "current": {
+            "definition": "the runtime exactly as committed: whatever config/strategy_admission.json admits",
+            "admitted_strategies": admitted_now(),
+            "trades": 0,
+            "net_usdt": 0.0,
+            "fees_usdt": 0.0,
+            "equity_end_usdt": COMPARISON_CAPITAL_USDT,
+            "reading": (
+                "flat by construction: a strategy that is not admitted does not trade, so the "
+                "bar a proposal has to clear is zero, not a loss"
+            ),
+        },
+        "proposed": dict(sorted(proposed.items())),
+        "replaces_current": winners,
+        "verdict": (
+            "NO_PROPOSAL_BEATS_CURRENT"
+            if not winners
+            else f"PROPOSAL_BEATS_CURRENT: {', '.join(winners)}"
+        ),
+        "rule": (
+            "a proposal replaces the current runtime only if it is net positive on the same "
+            "bars at the ADVERSE cost multiplier and clears every frozen threshold; being "
+            "positive at the central cost is not enough"
+        ),
+    }
+
+
 def _symbol_path(corpus: dict[str, Any], symbol: str) -> Path | None:
     matches = sorted(corpus["path"].glob(f"{symbol}*.json"))
     return matches[0] if matches else None
@@ -525,6 +670,23 @@ def main() -> int:
 
     rejected = audit_rejected_families()
     register = register_candidates(per_family, verdicts)
+    verdict_by_family = {str(v["family"]): str(v["verdict"]) for v in verdicts}
+    comparison = current_vs_proposed(
+        [
+            row
+            for row in single_rows + rotation_rows
+            if row["segment"] == "HELD_OUT_TAIL"
+            # the rotation family publishes one row per multiplier; the others
+            # carry 1x/2x/3x in one row, so the default is the central cost
+            and float(row.get("cost_multiplier", 1.0)) == 1.0
+        ],
+        verdicts,
+    )
+    for row in single_rows + rotation_rows:
+        row["decision"] = verdict_by_family.get(str(row["family"]), "UNKNOWN")
+        # The comparator is flat (nothing is admitted), so its net bps are zero on
+        # every row; stating it per row keeps the comparison in the same table.
+        row["current_runtime_net_bps_total"] = 0.0
 
     # "Found an edge" means the tail survives the adverse multiplier with enough
     # trades — not that some row happens to be positive at the central cost.
@@ -556,6 +718,7 @@ def main() -> int:
         "verdicts": sorted(verdicts, key=lambda row: str(row["family"])),
         "rejected_family_audit": rejected,
         "candidate_registration": register,
+        "current_vs_proposed": comparison,
         "no_economic_edge_found": not edge_found,
         "reading": (
             "no family clears its costs on the held-out tail with enough trades to be adopted; "
@@ -605,6 +768,8 @@ def main() -> int:
         "median_net_bps_per_trade",
         "top5_share_of_gross",
         "trades_losing_money_per_trade",
+        "decision",
+        "current_runtime_net_bps_total",
     ]
     with (out / "ALPHA_EXPERIMENT_MATRIX.csv").open("w", encoding="utf-8", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=columns, extrasaction="ignore")
@@ -616,6 +781,7 @@ def main() -> int:
     for verdict in sorted(verdicts, key=lambda v: str(v["family"])):
         print(f"[alpha] {verdict['family']:<26} {verdict['verdict']}")
     print(f"[alpha] NO_ECONOMIC_EDGE_FOUND={payload['no_economic_edge_found']}")
+    print(f"[alpha] CURRENT vs PROPOSED: {comparison['verdict']}")
     print(f"[alpha] candidates registered disabled -> {register['path']}")
     return 0
 

@@ -29,6 +29,8 @@ import sys
 from pathlib import Path
 from typing import Any
 
+import yaml
+
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 REPO = Path(__file__).resolve().parents[1]
@@ -400,6 +402,93 @@ def check_holdout(checks: Checks) -> None:
     )
 
 
+def check_current_vs_proposed(
+    checks: Checks, payload: dict[str, Any], rows: list[dict[str, str]]
+) -> None:
+    """Re-derive the CURRENT vs PROPOSED table from its own published rows.
+
+    The comparison is arithmetic — the same held-out bars, the same capital, the same order
+    size the runtime's policy sets — so it can be checked without the builder's code: the
+    verifier reads ``config/risk.yaml`` and ``config/strategy_admission.json`` itself and
+    rebuilds every figure, including the flat CURRENT side.
+    """
+    comparison = payload.get("current_vs_proposed") or {}
+    published = comparison.get("proposed") or {}
+    if not published:
+        checks.add(
+            "V35", "a CURRENT vs PROPOSED comparison exists", False, "missing from the payload"
+        )
+        return
+    risk = yaml.safe_load((REPO / "config" / "risk.yaml").read_text(encoding="utf-8"))["risk"]
+    capital = float(comparison["same_capital_and_constraints"]["capital_usdt"])
+    notional = round(
+        min(
+            float(risk["max_order_notional_usdt"]),
+            max(
+                float(risk["min_order_notional_usdt"]),
+                capital
+                * float(risk["max_asset_exposure_pct"])
+                / 100.0
+                / float(risk["max_open_positions"]),
+            ),
+        ),
+        2,
+    )
+    rebuild: dict[str, dict[str, float]] = {}
+    for row in rows:
+        if row.get("segment") != "HELD_OUT_TAIL":
+            continue
+        # the rotation family publishes one row per multiplier, the others carry 1x/2x/3x
+        if (_num(row.get("cost_multiplier")) or 1.0) != 1.0:
+            continue
+        metrics = rebuild.setdefault(
+            str(row["family"]), {"trades": 0.0, "net_1x": 0.0, "net_2x": 0.0}
+        )
+        metrics["trades"] += float(row["trades"])
+        metrics["net_1x"] += float(row["net_bps_total_1x"]) / 10_000.0 * notional
+        metrics["net_2x"] += float(row["net_bps_total_2x"]) / 10_000.0 * notional
+    worst = 0.0
+    for family, metrics in rebuild.items():
+        side = published.get(family)
+        if side is None:
+            worst = float("inf")
+            continue
+        worst = max(
+            worst,
+            abs(float(side["net_usdt_1x"]) - metrics["net_1x"]),
+            abs(float(side["net_usdt_2x"]) - metrics["net_2x"]),
+            abs(float(side["trades"]) - metrics["trades"]),
+        )
+    ledger = json.loads((REPO / "config" / "strategy_admission.json").read_text(encoding="utf-8"))[
+        "strategies"
+    ]
+    admitted = sorted(
+        key
+        for key, entry in ledger.items()
+        if not key.startswith("_") and entry.get("admitted_for_paper")
+    )
+    flat = comparison["current"]
+    rules_hold = all(
+        bool(side["replaces_current"])
+        == (str(side["decision"]) == "ADOPT" and float(side["net_usdt_2x"]) > 0.0)
+        for side in published.values()
+    )
+    checks.add(
+        "V35",
+        "the CURRENT vs PROPOSED table is arithmetic on the published rows, and CURRENT is read from the ledger",
+        worst < 1e-6
+        and flat["trades"] == 0
+        and float(flat["net_usdt"]) == 0.0
+        and list(flat["admitted_strategies"]) == admitted
+        and rules_hold
+        and list(comparison["replaces_current"]) == []
+        and comparison["verdict"] == "NO_PROPOSAL_BEATS_CURRENT",
+        f"worst deviation {worst:.3e} USDT over {len(rebuild)} proposals at "
+        f"{notional} USDT per order; CURRENT admits {len(admitted)} strategy(ies) and "
+        f"{comparison['verdict']}",
+    )
+
+
 def check_alpha_matrix(checks: Checks) -> None:
     payload = _load(OUT_15 / "ALPHA_RESULTS.json")
     matrix_path = OUT_15 / "ALPHA_EXPERIMENT_MATRIX.csv"
@@ -554,6 +643,7 @@ def check_alpha_matrix(checks: Checks) -> None:
             else:
                 verdict = "EXPERIMENT_AWAITING_PROSPECTIVE"
         recomputed[family_name] = verdict
+    check_current_vs_proposed(checks, payload, rows)
     published = {
         family: str(row["verdict"]) for family, row in verdicts.items() if family in recomputed
     }

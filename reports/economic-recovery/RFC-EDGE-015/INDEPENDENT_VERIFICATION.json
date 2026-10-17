@@ -96,6 +96,12 @@
       "what": "the decisive family's entries satisfy their own gate on past bars only"
     },
     {
+      "detail": "worst deviation 2.541e-07 USDT over 4 proposals at 333.33 USDT per order; CURRENT admits 0 strategy(ies) and NO_PROPOSAL_BEATS_CURRENT",
+      "id": "V35",
+      "ok": true,
+      "what": "the CURRENT vs PROPOSED table is arithmetic on the published rows, and CURRENT is read from the ledger"
+    },
+    {
       "detail": "published {'cross_sectional_rotation': 'REJECT', 'mean_reversion_vol_liq': 'EXPERIMENT_COST_FRAGILE', 'trend_pullback': 'REJECT', 'vol_regime_breakout': 'REJECT_OUTLIER_DRIVEN'} vs recomputed {'cross_sectional_rotation': 'REJECT', 'mean_reversion_vol_liq': 'EXPERIMENT_COST_FRAGILE', 'trend_pullback': 'REJECT', 'vol_regime_breakout': 'REJECT_OUTLIER_DRIVEN'}",
       "id": "V13",
       "ok": true,
@@ -204,7 +210,7 @@
       "what": "both divergences are reported as resolved"
     },
     {
-      "detail": "imports scanned: 13; forbidden found: []",
+      "detail": "imports scanned: 14; forbidden found: []",
       "id": "V31",
       "ok": true,
       "what": "this verifier imports no builder module"
@@ -218,8 +224,8 @@
   ],
   "counts": {
     "failed": 0,
-    "passed": 34,
-    "total": 34
+    "passed": 35,
+    "total": 35
   },
   "schema_version": "EDGE15_INDEPENDENT_VERIFICATION_V1",
   "verdict": "VERIFIED",

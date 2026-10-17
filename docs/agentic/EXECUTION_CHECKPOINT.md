@@ -32,9 +32,11 @@ prospectivas (3, sin puntuar).
   `a6943c4` — *Preregister the holdout in one commit and capture it in another…*;
   `c8c208d` — *Write down what the search found, including the family it rejected…* (informes);
   más el commit de la re-verificación que sigue a este checkpoint.
-- Re-verificación ejecutada a las 09:05Z sobre el árbol de trabajo: `edge15_verify.py` **34/34**
+- Re-verificación ejecutada a las 09:5xZ sobre el árbol de trabajo: `edge15_verify.py` **35/35**
   `VERIFIED` (V33/V34 añadidas: una ruta registrada tiene que poder releerse desde un checkout
-  limpio, y la rebanada que el manifiesto hashea tiene que ser la que Git publica),
+  limpio, y la rebanada que el manifiesto hashea tiene que ser la que Git publica; V35 re-deriva la
+  comparación CURRENT vs PROPOSED desde la matriz y `config/risk.yaml`, y se probó que un dato
+  manipulado la pone en `NOT_VERIFIED`),
   `edge14r_verify.py` 32/32 `VERIFIED`.
 - Últimos commits de la ronda: `d45a1fa` — *Capture the first prospective hour, and record paths a
   clean checkout can follow…*; después el de informes y el de re-verificación.
@@ -68,6 +70,12 @@ Cinco familias mecánicamente distintas, auditadas contra las ya rechazadas
 | `cross_sectional_rotation` | 355 | −35,63 bps | −11 465 | −16 605 | `REJECT` |
 | `maker_only_spread_capture` | — | — | — | — | `DEFER_NO_FILL_MODEL` (sin modelo de cola/fills) |
 
+Comparación **CURRENT vs PROPOSED** con los mismos datos, capital (10 000 USDT) y restricciones
+(tamaño de orden 333,33 USDT de la política real, leído por el constructor y re-leído por el
+verificador): CURRENT se lee del ledger autoritativo (0 estrategias admitidas → plano, 0 operaciones)
+y ninguna propuesta lo sustituye → `NO_PROPOSAL_BEATS_CURRENT`. La matriz lleva ahora `decision` y
+`current_runtime_net_bps_total` en cada fila.
+
 Modelo de costes por venue y producto con procedencia declarada (`KNOWN` comisión 10 bps/lado,
 `ESTIMATED` medio spread, `HYPOTHESIS` slippage √tamaño e impacto lineal): BTC/ETH 23,3536 bps;
 SOL 25,30 bps; alt fino 28,96 bps por vuelta completa a 200 USDT. Ningún coste cero en la
@@ -88,7 +96,7 @@ que el horizonte de la familia superviviente, así que todas las posiciones cerr
 
 ### P4 — verificación y pruebas
 
-- `scripts/edge15_verify.py` (no importa ningún módulo constructor): **34/34, veredicto VERIFIED**.
+- `scripts/edge15_verify.py` (no importa ningún módulo constructor): **35/35, veredicto VERIFIED**.
 - `scripts/edge14r_verify.py` con la comprobación de holdout endurecida: **32/32, VERIFIED**.
 - Causalidad de las familias: 10 pruebas que truncan la serie y exigen que la historia ya cerrada se
   reproduzca idéntica.

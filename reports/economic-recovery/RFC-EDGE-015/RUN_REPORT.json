@@ -1,10 +1,10 @@
 {
   "artifact_hash_reading": "digests of the files as committed; the lane's trade file is byte-stable across runs because the broker takes the replay's clock, the verification report is byte-stable because its detail strings are ordered, and the paper report carries its own generation instant by design",
   "artifacts": {
-    "ALPHA_EXPERIMENT_MATRIX.csv": "e68a23875fb2073924b85920d1a70220488e148dfdbe4f3b23f95563350db140",
-    "ALPHA_RESULTS.json": "5430ff5866fcf5594511f5c500cb1297c97eddd0a20aaca866492e6d4282ac26",
+    "ALPHA_EXPERIMENT_MATRIX.csv": "853a1a6d889f8618ef0afcc272a7e6493969b9c28a69c494cf2e4199c0d52c7f",
+    "ALPHA_RESULTS.json": "46f7e0243ada0986814872055e7be4be38e2733140f8fe019396682eec094f18",
     "EXPERIMENTAL_TRADES.jsonl": "889734699a8d8af046d27ef002a70fdf79ab91a5b3d94bfa576bbf5a23bf76d9",
-    "INDEPENDENT_VERIFICATION.json": "2160e3c37877da0e8763c07279c93287c3c3b66e5a6d49934055ebc466957414",
+    "INDEPENDENT_VERIFICATION.json": "6de99cf61f1b1e523392c265d41cc3bcf08e6cf1d12dd2735fcb47faefb8f5f2",
     "OOS_CAPTURE_MANIFEST_V2.json": "585febb8a6d9f35a467924c430c608bd88f7299342b6326ba0e26980085a9028",
     "OOS_PREREGISTRATION_V2.json": "76351aaf63a80d8608a833012ab90bd1325936a9d92ad3eab9abd1a6bfd3666e",
     "PARITY_DIVERGENCE_EXPLAINED.json": "e8506ebe12288c18bd630e2c8d777e1b5acaca789f2b0868850f6ba1c126566a",
@@ -81,8 +81,8 @@
     },
     "p0_2_independent_verifier": {
       "imports_builder_modules": false,
-      "result": "34/34",
-      "structural_check": "V31 refuses a builder import; V32 asserts the 14R import is gone; V33/V34 keep every recorded path re-readable from a clean checkout",
+      "result": "35/35",
+      "structural_check": "V31 refuses a builder import; V32 asserts the 14R import is gone; V33/V34 keep every recorded path re-readable and shipped; V35 re-derives the CURRENT vs PROPOSED table from the matrix, config/risk.yaml and the admission ledger",
       "verdict": "VERIFIED",
       "verifier": "scripts/edge15_verify.py"
     },
@@ -125,6 +125,51 @@
     }
   },
   "p1_alpha": {
+    "current_vs_proposed": {
+      "capital_usdt": 10000.0,
+      "current": {
+        "admitted_strategies": [],
+        "definition": "the runtime exactly as committed: whatever config/strategy_admission.json admits",
+        "equity_end_usdt": 10000.0,
+        "fees_usdt": 0.0,
+        "net_usdt": 0.0,
+        "reading": "flat by construction: a strategy that is not admitted does not trade, so the bar a proposal has to clear is zero, not a loss",
+        "trades": 0
+      },
+      "proposed": {
+        "cross_sectional_rotation": {
+          "decision": "REJECT",
+          "net_usdt_1x": -382.150588,
+          "net_usdt_2x": -553.495541,
+          "replaces_current": false,
+          "trades": 355
+        },
+        "mean_reversion_vol_liq": {
+          "decision": "EXPERIMENT_COST_FRAGILE",
+          "net_usdt_1x": 702.496921,
+          "net_usdt_2x": -77.535812,
+          "replaces_current": false,
+          "trades": 811
+        },
+        "trend_pullback": {
+          "decision": "REJECT",
+          "net_usdt_1x": -1960.26702,
+          "net_usdt_2x": -2815.422362,
+          "replaces_current": false,
+          "trades": 895
+        },
+        "vol_regime_breakout": {
+          "decision": "REJECT_OUTLIER_DRIVEN",
+          "net_usdt_1x": 1112.217291,
+          "net_usdt_2x": 948.821085,
+          "replaces_current": false,
+          "trades": 171
+        }
+      },
+      "same_capital_and_constraints": 333.33,
+      "verdict": "NO_PROPOSAL_BEATS_CURRENT",
+      "where": "ALPHA_RESULTS.json -> current_vs_proposed; ALPHA_EXPERIMENT_MATRIX.csv carries decision and current_runtime_net_bps_total per row"
+    },
     "families": [
       "vol_regime_breakout",
       "trend_pullback",
