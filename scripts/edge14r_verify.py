@@ -5,6 +5,13 @@ number that cannot be re-derived. It does not trust a summary field: it reads th
 primitive records (the exported bars, the broker's own fills, the engines' per-trade rows)
 and recomputes what each artifact claims.
 
+WP-EDGE-015/P0.2 removed the last structural exception to that: the decisive checks used
+to call back into ``research.economic_recovery.engine_parity`` — the same module that
+*built* the parity artefacts — so "verification" was the builder agreeing with itself.
+The rule, the indicator, the fee conventions and the equity path are now re-derived here,
+from the declared specification, in code that shares nothing with the builder. The import
+is gone rather than narrowed, so it cannot come back by accident.
+
 Exit code is 1 when any check fails, so the caller can gate on it.
 
     python scripts/edge14r_verify.py [--out reports/economic-recovery/RFC-EDGE-014R]
@@ -23,7 +30,11 @@ from typing import Any
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from trading_bot.research.economic_recovery import engine_parity as ep
+# NOTE (WP-EDGE-015/P0.2): nothing from ``trading_bot.research.economic_recovery`` is
+# imported here on purpose. The verifier must not be able to call the builder's code:
+# the decisive checks below are recomputed from the raw exported bars by the helpers
+# in this file, which implement the declared rule and the declared cost conventions
+# from their specification.
 
 REPO = Path(__file__).resolve().parents[1]
 DEFAULT_OUT = REPO / "reports" / "economic-recovery" / "RFC-EDGE-014R"
@@ -69,6 +80,130 @@ def _load(path: Path) -> Any:
         with path.open(encoding="utf-8") as handle:
             return list(csv.DictReader(handle))
     return path.read_text(encoding="utf-8")
+
+
+# --- independent recomputation (WP-EDGE-015/P0.2) --------------------------------
+#
+# Everything in this block is written from the *specification* that was frozen before
+# the parity run (docstring of scripts/edge14r_engine_parity.py) and not from the
+# builder's implementation:
+#
+#   rule      long while ema(fast) > ema(slow) on the previous CLOSED 1h bar, flat
+#             otherwise; a position still open at the end of the window is closed at
+#             the final bar's OPEN
+#   ema       SMA seed over the first ``span`` closes, then k = 2/(span+1) recursion
+#   costs     ADDITIVE: gross - 2*fee;  COMPOUNDED: (1+gross)*(1-fee)^2 - 1, in bps
+#   equity    multiplicative over trades, drawdown = worst peak-to-trough of that path
+
+Bar = tuple[int, float, float, float, float, float]  # ts_ms, o, h, l, c, v
+
+
+def _read_bars(path: Path) -> dict[str, list[Bar]]:
+    """The exported OHLCV snapshot as plain tuples, keyed by symbol."""
+    series: dict[str, list[Bar]] = {}
+    for line in path.read_text(encoding="utf-8").splitlines():
+        if not line.strip():
+            continue
+        row = json.loads(line)
+        series.setdefault(str(row["symbol"]), []).append(
+            (
+                int(row["timestamp"]),
+                float(row["open"]),
+                float(row["high"]),
+                float(row["low"]),
+                float(row["close"]),
+                float(row["volume"]),
+            )
+        )
+    for bars in series.values():
+        bars.sort(key=lambda b: b[0])
+    return series
+
+
+def _ema(values: list[float], span: int) -> list[float | None]:
+    """SMA-seeded recursive EMA, the definition both engines were fed."""
+    if span <= 0:
+        raise ValueError("span must be positive")
+    out: list[float | None] = [None] * len(values)
+    if len(values) < span:
+        return out
+    k = 2.0 / (span + 1.0)
+    previous = sum(values[:span]) / span
+    out[span - 1] = previous
+    for index in range(span, len(values)):
+        previous = values[index] * k + previous * (1.0 - k)
+        out[index] = previous
+    return out
+
+
+def _net_bps(gross_bps: float, fees_bps_per_side: float, convention: str) -> float:
+    if convention == "ADDITIVE":
+        return gross_bps - 2.0 * fees_bps_per_side
+    if convention == "COMPOUNDED":
+        fee = fees_bps_per_side / 10_000.0
+        return (((1.0 + gross_bps / 10_000.0) * (1.0 - fee) ** 2) - 1.0) * 10_000.0
+    raise ValueError(f"unknown fee convention {convention!r}")
+
+
+def _ma_cross_trades(
+    bars: list[Bar],
+    *,
+    fast: int = 12,
+    slow: int = 26,
+    fees_bps_per_side: float = 10.0,
+    convention: str = "ADDITIVE",
+) -> list[dict[str, float]]:
+    """The neutral rule, rebuilt from its specification."""
+    closes = [bar[4] for bar in bars]
+    fast_series, slow_series = _ema(closes, fast), _ema(closes, slow)
+    trades: list[dict[str, float]] = []
+    entry_index: int | None = None
+    for index in range(1, len(bars)):
+        left, right = fast_series[index - 1], slow_series[index - 1]
+        if left is None or right is None:
+            continue
+        long_now = left > right
+        if long_now and entry_index is None:
+            entry_index = index  # decided on the previous close, filled at this open
+        elif not long_now and entry_index is not None:
+            trades.append(_settle(bars, entry_index, index, fees_bps_per_side, convention))
+            entry_index = None
+    if entry_index is not None:
+        trades.append(_settle(bars, entry_index, len(bars) - 1, fees_bps_per_side, convention))
+    return trades
+
+
+def _settle(
+    bars: list[Bar],
+    entry_index: int,
+    exit_index: int,
+    fees_bps_per_side: float,
+    convention: str,
+) -> dict[str, float]:
+    entry_price = bars[entry_index][1]
+    exit_price = bars[exit_index][1] if exit_index > entry_index else bars[exit_index][4]
+    gross = (exit_price / entry_price - 1.0) * 10_000.0
+    return {
+        "entry_ts_ms": float(bars[entry_index][0]),
+        "exit_ts_ms": float(bars[exit_index][0]),
+        "entry_price": entry_price,
+        "exit_price": exit_price,
+        "gross_bps": gross,
+        "net_bps": _net_bps(gross, fees_bps_per_side, convention),
+    }
+
+
+def _equity_path(net_bps: list[float]) -> tuple[float, float]:
+    """Compounding multiple and worst peak-to-trough drawdown, in bps."""
+    equity = 1.0
+    peak = 1.0
+    worst = 0.0
+    for value in net_bps:
+        equity *= 1.0 + value / 10_000.0
+        peak = max(peak, equity)
+        if peak > 0:
+            worst = max(worst, (peak - equity) / peak)
+    return equity, worst * 10_000.0
 
 
 def main() -> int:
@@ -170,8 +305,8 @@ def main() -> int:
             "execution is in-process only",
         )
 
-    # 4. the engine parity numbers, re-derived from the per-trade rows
-    frozen_bars = ep.load_bars_jsonl(frozen) if frozen.is_file() else {}
+    # 4. the engine parity numbers, re-derived from the per-trade rows (no builder import)
+    frozen_bars = _read_bars(frozen) if frozen.is_file() else {}
     for name, fname in (
         ("freqtrade", "BENCHMARK_PARITY_REPORT.json"),
         ("vnpy_ctastrategy", "BENCHMARK_PARITY_REPORT_VNPY.json"),
@@ -186,9 +321,7 @@ def main() -> int:
         worst = 0.0
         for row in per_trade:
             g = float(row["ta_gross_bps"])
-            predicted = ep.net_bps(g, f, convention="ADDITIVE") - ep.net_bps(
-                g, f, convention="COMPOUNDED"
-            )
+            predicted = _net_bps(g, f, "ADDITIVE") - _net_bps(g, f, "COMPOUNDED")
             observed = float(row["net_bps_diff_additive"]) - float(row["net_bps_diff_compounded"])
             worst = max(worst, abs(observed - predicted))
         checks.add(
@@ -214,13 +347,11 @@ def main() -> int:
     # 5. the economic comparison re-derived for the arm that can be recomputed
     rows = _load(out / "ECONOMIC_COMPARISON.csv")
     if rows and frozen_bars:
-        last = max(b.ts_ms for series in frozen_bars.values() for b in series)
-        bars = {s: [b for b in series if b.ts_ms < last] for s, series in frozen_bars.items()}
-        ta: list[dict[str, Any]] = []
+        last = max(b[0] for series in frozen_bars.values() for b in series)
+        bars = {s: [b for b in series if b[0] < last] for s, series in frozen_bars.items()}
+        ta: list[dict[str, float]] = []
         for symbol in sorted(bars):
-            ta.extend(
-                ep.ta_side_trades(bars[symbol], fees_bps_per_side=ep.DEFAULT_FEES_BPS_PER_SIDE)
-            )
+            ta.extend(_ma_cross_trades(bars[symbol], fees_bps_per_side=10.0))
         recomputed_net = round(sum(r["net_bps"] for r in ta), 6)
         row = next(
             (r for r in rows if r["arm"].startswith("NEUTRAL_MA_CROSS_1H (this project")), None
@@ -233,12 +364,12 @@ def main() -> int:
             and abs(float(row["net_bps_total"]) - recomputed_net) <= 1e-3,
             f"recomputed {len(ta)} trades / {recomputed_net} bps",
         )
-        curve = ep.EquityCurve.from_net_bps([r["net_bps"] for r in ta])
+        equity_multiple, _worst = _equity_path([r["net_bps"] for r in ta])
         checks.add(
             "V12",
             "the simulator row's equity multiple is reproducible",
-            row is not None and abs(float(row["equity_multiple"]) - curve.equity_multiple) <= 1e-6,
-            f"recomputed equity multiple {curve.equity_multiple:.8f}",
+            row is not None and abs(float(row["equity_multiple"]) - equity_multiple) <= 1e-6,
+            f"recomputed equity multiple {equity_multiple:.8f}",
         )
         at_frequency = [r for r in rows if float(r["trades_per_day"] or 0) >= 3.0]
         checks.add(

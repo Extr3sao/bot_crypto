@@ -13,6 +13,7 @@ runner, which fails the session explicitly.
 
 from __future__ import annotations
 
+import hashlib
 import time
 from dataclasses import dataclass, field
 from typing import Any
@@ -50,6 +51,10 @@ class PaperPosition:
     # AUDIT-V1 provenance: originating strategy (travels to ClosedTrade for
     # PnL-by-strategy attribution).
     strategy_name: str = ""
+    # WP-EDGE-015/P0.3: stable identity. A position is named by the broker, not
+    # inferred from a wall-clock field two fast fills can share.
+    position_id: str = ""
+    entry_order_id: str = ""
 
     @property
     def stop_loss_price(self) -> float:
@@ -79,6 +84,8 @@ class PaperPosition:
             "stop_loss_pct": self.stop_loss_pct,
             "take_profit_pct": self.take_profit_pct,
             "opened_at": self.opened_at,
+            "position_id": self.position_id,
+            "entry_order_id": self.entry_order_id,
             "entry_commission": self.entry_commission,
             "strategy_name": self.strategy_name,
         }
@@ -100,7 +107,12 @@ class PaperPosition:
 
 @dataclass(frozen=True, slots=True)
 class ClosedTrade:
-    """A completed paper trade."""
+    """A completed paper trade.
+
+    ``pnl`` is net of both commissions; ``gross_pnl`` and the two commission
+    legs are carried so a reader can rebuild that number instead of trusting
+    it (WP-EDGE-015/P0.4).
+    """
 
     symbol: str
     side: str
@@ -112,6 +124,14 @@ class ClosedTrade:
     opened_at: float
     closed_at: float
     strategy_name: str = ""  # AUDIT-V1 provenance
+    # WP-EDGE-015/P0.3-P0.4: identity and the decomposition of ``pnl``.
+    trade_id: str = ""
+    position_id: str = ""
+    entry_order_id: str = ""
+    exit_order_id: str = ""
+    gross_pnl: float = 0.0
+    entry_commission: float = 0.0
+    exit_commission: float = 0.0
 
 
 class PaperBroker:
@@ -131,8 +151,17 @@ class PaperBroker:
         equity: float = 10_000.0,
         slippage_bps: float = 1.0,
         commission_bps: float = 5.0,
+        book_id: str | None = None,
     ) -> None:
         del db_url  # legacy compat, unused
+        #: Names the book these identifiers belong to. Callers that replay a
+        #: fixed dataset pass a fixed one so the identifiers are reproducible;
+        #: otherwise it is unique per broker instance, so two books can never
+        #: mint the same id (the defect `(symbol, opened_at)` had).
+        self._book_id = (
+            book_id or hashlib.sha256(f"{equity}|{time.time_ns()}".encode()).hexdigest()[:8]
+        )
+        self._sequence = 0
         self._equity = equity
         self._initial_equity = equity
         self._slippage_bps = slippage_bps
@@ -153,6 +182,20 @@ class PaperBroker:
     @property
     def equity(self) -> float:
         return self._equity
+
+    @property
+    def book_id(self) -> str:
+        return self._book_id
+
+    def _next_id(self, kind: str) -> str:
+        """Mint a stable, unique identifier: ``<kind>-<book>-<sequence>``.
+
+        Purely sequential inside the book, so a replay of the same input
+        sequence mints the same identifiers, and no two events of one book
+        share one. Uniqueness across books comes from ``book_id``.
+        """
+        self._sequence += 1
+        return f"{kind}-{self._book_id}-{self._sequence:08d}"
 
     @property
     def positions(self) -> dict[str, PaperPosition]:
@@ -229,6 +272,8 @@ class PaperBroker:
             take_profit_pct=tp_pct,
             entry_commission=commission,
             strategy_name=str(signal.strategy_name or ""),
+            position_id=self._next_id("pos"),
+            entry_order_id=self._next_id("ord"),
         )
 
         self._positions[symbol] = position
@@ -286,6 +331,13 @@ class PaperBroker:
             opened_at=pos.opened_at,
             closed_at=time.time(),
             strategy_name=pos.strategy_name,
+            trade_id=self._next_id("trd"),
+            position_id=pos.position_id,
+            entry_order_id=pos.entry_order_id,
+            exit_order_id=self._next_id("ordx"),
+            gross_pnl=gross_pnl,
+            entry_commission=entry_commission,
+            exit_commission=exit_commission,
         )
 
         self._closed_trades.append(trade)
@@ -485,9 +537,86 @@ class PaperBroker:
             total += pos.unrealized_pnl(price)
         return total
 
+    def accrued_entry_commissions(self) -> float:
+        """Entry commissions of positions still open, withheld from equity.
+
+        The broker charges both legs at close (``_close_position``), so while a
+        position is open its entry commission is an accrual, not yet a cash
+        movement. It is kept as its own term so the accounting identity closes
+        instead of being quietly omitted.
+        """
+        return sum(pos.entry_commission for pos in self._positions.values())
+
+    def unrealized_pnl_net(self, prices: dict[str, float]) -> float:
+        """Open-position PnL net of the entry commissions still accrued."""
+        return self.unrealized_pnl(prices) - self.accrued_entry_commissions()
+
     def mark_to_market_equity(self, prices: dict[str, float]) -> float:
-        """cash + realized + unrealized (authoritative equity + open PnL)."""
-        return self._equity + self.unrealized_pnl(prices)
+        """Ledger cash plus open PnL, net of the accrued entry commissions.
+
+        This is the economically complete view requested in WP-EDGE-015/P0.4:
+        a position that is open at the end of a replay contributes its marked
+        PnL *and* the commission already owed on its entry.
+        """
+        return self._equity + self.unrealized_pnl_net(prices)
+
+    def accounting_snapshot(self, prices: dict[str, float] | None = None) -> dict[str, Any]:
+        """The four quantities kept apart, with their identities checked.
+
+        ``realised_pnl`` is the sum of closed trades net of both commissions;
+        ``cash`` is the ledger (initial + realised); ``unrealised_pnl`` is the
+        mark of the positions still open; ``equity_mark_to_market`` is cash plus
+        that mark net of accrued entry commissions. Returning them separately,
+        and returning the residuals of the identities, is the point: a single
+        "equity" number cannot show which of the four went wrong.
+        """
+        mark_prices = dict(prices or {})
+        realised = sum(trade.pnl for trade in self._closed_trades)
+        gross = self.unrealized_pnl(mark_prices)
+        accrued = self.accrued_entry_commissions()
+        cash = self._initial_equity + realised
+        equity = cash + gross - accrued
+        return {
+            "initial_equity": self._initial_equity,
+            "cash": cash,
+            "realised_pnl": realised,
+            "unrealised_pnl": gross,
+            "accrued_entry_commissions": accrued,
+            "unrealised_pnl_net": gross - accrued,
+            "equity_mark_to_market": equity,
+            "ledger_equity": self._equity,
+            "open_positions": [
+                {
+                    "position_id": pos.position_id,
+                    "entry_order_id": pos.entry_order_id,
+                    "symbol": pos.symbol,
+                    "side": pos.side,
+                    "entry_price": pos.entry_price,
+                    "quantity": pos.quantity,
+                    "notional_usdt": pos.notional_usdt,
+                    "unrealised_pnl": pos.unrealized_pnl(mark_prices[pos.symbol])
+                    if mark_prices.get(pos.symbol, 0.0) > 0
+                    else 0.0,
+                    "mark_price": mark_prices.get(pos.symbol, 0.0),
+                }
+                for pos in self._positions.values()
+            ],
+            "identities": {
+                "cash_equals_initial_plus_realised": abs(cash - (self._initial_equity + realised))
+                <= 1e-9,
+                "ledger_equity_equals_initial_plus_realised": abs(self._equity - cash) <= 1e-9,
+                "equity_equals_cash_plus_net_unrealised": abs(equity - (cash + gross - accrued))
+                <= 1e-9,
+                "closed_trade_pnl_rebuilds": all(
+                    abs(
+                        trade.pnl
+                        - (trade.gross_pnl - trade.entry_commission - trade.exit_commission)
+                    )
+                    <= 1e-9
+                    for trade in self._closed_trades
+                ),
+            },
+        }
 
     # -- durable state (GAP-R1) ----------------------------------------------
 
@@ -514,6 +643,13 @@ class PaperBroker:
                 "opened_at": t.opened_at,
                 "closed_at": t.closed_at,
                 "strategy_name": t.strategy_name,
+                "trade_id": t.trade_id,
+                "position_id": t.position_id,
+                "entry_order_id": t.entry_order_id,
+                "exit_order_id": t.exit_order_id,
+                "gross_pnl": t.gross_pnl,
+                "entry_commission": t.entry_commission,
+                "exit_commission": t.exit_commission,
             }
             for t in self._closed_trades
         ]
@@ -539,7 +675,21 @@ class PaperBroker:
         self._fills_opened = int(fills_opened)
         self._fills_closed = int(fills_closed)
         self._positions = {p.symbol: p for p in open_positions}
-        self._closed_trades = [ClosedTrade(**row) for row in closed_trades]
+        self._closed_trades = [_closed_trade_from_row(row) for row in closed_trades]
+        # Continue the identifier sequence past everything the restored book
+        # already minted, so a recovered session never reuses an id.
+        for token in [p.position_id for p in self._positions.values()] + [
+            p.entry_order_id for p in self._positions.values()
+        ]:
+            self._sequence = max(self._sequence, _sequence_of(token))
+        for trade in self._closed_trades:
+            for token in (
+                trade.trade_id,
+                trade.position_id,
+                trade.entry_order_id,
+                trade.exit_order_id,
+            ):
+                self._sequence = max(self._sequence, _sequence_of(token))
         # Restored history was ALREADY accounted by Risk before the crash
         # (counters travel in risk_state) — mark it as reported so the next
         # reconcile_session does not re-feed it (DEF-101).
@@ -558,6 +708,19 @@ class PaperBroker:
         (used only by recovery paths; normal trading always goes through
         ``_close_position`` so the closed-trade ledger stays complete)."""
         self._equity += float(pnl)
+
+
+def _sequence_of(identifier: str) -> int:
+    """The sequence number inside ``<kind>-<book>-<sequence>``, or 0."""
+    tail = identifier.rsplit("-", 1)[-1] if identifier else ""
+    return int(tail) if tail.isdigit() else 0
+
+
+def _closed_trade_from_row(row: dict[str, Any]) -> ClosedTrade:
+    """Rebuild a ClosedTrade from a persisted row, newest fields defaulted."""
+    known = {f for f in ClosedTrade.__dataclass_fields__}
+    payload = {key: value for key, value in row.items() if key in known}
+    return ClosedTrade(**payload)
 
 
 __all__ = ["BrokerOrderError", "ClosedTrade", "PaperBroker", "PaperPosition"]

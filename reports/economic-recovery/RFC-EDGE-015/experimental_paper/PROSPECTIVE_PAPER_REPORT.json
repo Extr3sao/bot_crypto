@@ -1,0 +1,156 @@
+{
+  "candidate_families": {
+    "mean_reversion_vol_liq": {
+      "parameters": {
+        "atr_hours": 24,
+        "atr_percentile_max": 0.5,
+        "atr_stop_multiple": 4.0,
+        "max_hold_hours": 48,
+        "mean_hours": 48,
+        "percentile_window_hours": 720,
+        "volume_median_hours": 168,
+        "volume_multiple_min": 1.2,
+        "z_entry": -2.0,
+        "z_exit": 0.0
+      },
+      "trading_allowed_in_this_lane": true,
+      "verdict": "EXPERIMENT_COST_FRAGILE"
+    },
+    "trend_pullback": {
+      "parameters": {
+        "atr_hours": 24,
+        "fast_ema_hours": 20,
+        "slow_ema_hours": 50,
+        "stop_atr_multiple": 3.0,
+        "trend_ema_hours": 200,
+        "trend_slope_hours": 24
+      },
+      "trading_allowed_in_this_lane": false,
+      "verdict": "REJECT"
+    },
+    "vol_regime_breakout": {
+      "parameters": {
+        "atr_hours": 24,
+        "atr_percentile_max": 0.95,
+        "atr_percentile_min": 0.5,
+        "channel_hours": 168,
+        "percentile_window_hours": 720,
+        "regime_ema_hours": 200,
+        "trail_atr_multiple": 3.0
+      },
+      "trading_allowed_in_this_lane": false,
+      "verdict": "REJECT_OUTLIER_DRIVEN"
+    }
+  },
+  "cycles": {
+    "by_action": {
+      "FILL_OPENED": 14,
+      "NO_TRADE": 182,
+      "PROTECTIVE_EXIT": 14
+    },
+    "total": 210
+  },
+  "data_coverage": {
+    "disk": {
+      "free_gib": 5.198,
+      "ok": false,
+      "reasons": [
+        "free space cannot pay for the window: 8.640 GB needed at 1.5x, 3.581 GB usable above the 2.000 GB reserve"
+      ],
+      "status": "INSUFFICIENT_FREE_SPACE",
+      "thresholds_changed_by_this_work_package": false
+    },
+    "symbols": {
+      "BTC/USDT": {
+        "bars": 2000,
+        "events": 66,
+        "first_ms": 1784761200000,
+        "gaps_in_window": 0,
+        "last_ms": 1791957600000
+      },
+      "ETH/USDT": {
+        "bars": 2000,
+        "events": 78,
+        "first_ms": 1784761200000,
+        "gaps_in_window": 0,
+        "last_ms": 1791957600000
+      },
+      "SOL/USDT": {
+        "bars": 2000,
+        "events": 66,
+        "first_ms": 1784761200000,
+        "gaps_in_window": 0,
+        "last_ms": 1791957600000
+      }
+    },
+    "window_bars_per_symbol": 2000
+  },
+  "generated_at_utc": "2026-10-17T07:18:39Z",
+  "lane_isolation": {
+    "admitted_strategies": "COST_MODEL_V3 (evaluated live per cycle; never stored here)",
+    "authoritative_ledger": "config\\strategy_admission.json",
+    "counting_rule": "these cycles are EXPERIMENTAL_PROSPECTIVE_PAPER: they cannot count as an admitted strategy's operations, and the admission ledger still admits nothing",
+    "sha256_after": "6c4dd0be1fc2fff24920c9f9226c7f81f8d3d4dc80671b5a424721da497f7db1",
+    "sha256_before": "6c4dd0be1fc2fff24920c9f9226c7f81f8d3d4dc80671b5a424721da497f7db1",
+    "untouched": true,
+    "writes_only_under": "reports\\economic-recovery\\RFC-EDGE-015\\experimental_paper"
+  },
+  "orders": {
+    "exchange_orders": 0,
+    "order_sent": false,
+    "simulated_orders": 14
+  },
+  "positions_and_pnl": {
+    "accounting_identities_all_hold": true,
+    "accounting_identity_detail": {
+      "cash_equals_initial_plus_realised": true,
+      "closed_trade_pnl_rebuilds": true,
+      "equity_equals_cash_plus_net_unrealised": true,
+      "ledger_equity_equals_initial_plus_realised": true
+    },
+    "broker_book_id": "EDGE15LANE",
+    "closed_trades": 14,
+    "equity_mark_to_market_usdt": 29987.190039413617,
+    "open_positions_at_end": [],
+    "per_family": {
+      "mean_reversion_vol_liq": {
+        "closed_trades": 14,
+        "fees": 9.333240000000002,
+        "gross_pnl": -3.4767205863824433,
+        "net_pnl": -12.809960586382445,
+        "wins": 5
+      }
+    },
+    "realised_pnl_usdt": -12.809960586382445,
+    "unrealised_pnl_usdt": 0.0
+  },
+  "prospective_window": {
+    "classification": "a cycle is PROSPECTIVE only if its bar opened after the frozen protocol instant; everything else is DESCRIPTIVE and says so in its own record",
+    "descriptive_cycles": 210,
+    "freeze_epoch_ms": 1792221328939,
+    "prospective_cycles": 0
+  },
+  "reading": "the lane ran on new bars through the real broker and the real risk policy; it produced its own labelled record, touched no admitted ledger, and its cycles are evidence of process, not of edge \u2014 the alpha matrix is where edge is decided",
+  "risk_policy": {
+    "applied": {
+      "default_stop_loss_pct": 0.5,
+      "default_take_profit_pct": 0.75,
+      "max_asset_exposure_pct": 10,
+      "max_daily_loss_pct": 1.0,
+      "max_open_positions": 3,
+      "max_order_notional_usdt": 500,
+      "max_total_drawdown_pct": 5.0,
+      "max_trades_per_day": 20,
+      "min_order_notional_usdt": 20
+    },
+    "changed_by_this_work_package": false,
+    "source": "config\\risk.yaml",
+    "weekend_trading": false
+  },
+  "schema_version": "EDGE15_PROSPECTIVE_PAPER_REPORT_V1",
+  "tag": "EXPERIMENTAL_PROSPECTIVE_PAPER",
+  "untested_families": {
+    "maker_only_spread_capture": "no verifiable queue-position or fill-probability model exists in the tree, and without one a maker backtest reports fills it could not have obtained"
+  },
+  "work_package": "WP-EDGE-015/P3"
+}

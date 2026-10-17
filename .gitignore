@@ -428,3 +428,25 @@ reports/economic-recovery/RFC-EDGE-014R/*
 !reports/economic-recovery/RFC-EDGE-014R/scratch/
 reports/economic-recovery/RFC-EDGE-014R/scratch/*
 !reports/economic-recovery/RFC-EDGE-014R/scratch/PAPER_REPLAY_BARS.jsonl
+
+# ============================================================
+# RFC-EDGE-015 — búsqueda de alpha y paper prospectivo. Mismo mecanismo de
+# re-inclusión paso a paso que 014R: los artefactos del paquete (json/md/csv)
+# se versionan, y de `scratch/` y `experimental_paper/` solo lo que es
+# evidencia re-leíble (los ciclos y trades del carril experimental). Lo demás
+# se queda fuera porque es regenerable.
+# ============================================================
+!reports/economic-recovery/RFC-EDGE-015/
+reports/economic-recovery/RFC-EDGE-015/*
+!reports/economic-recovery/RFC-EDGE-015/*.json
+!reports/economic-recovery/RFC-EDGE-015/*.md
+!reports/economic-recovery/RFC-EDGE-015/*.csv
+!reports/economic-recovery/RFC-EDGE-015/*.jsonl
+!reports/economic-recovery/RFC-EDGE-015/experimental_paper/
+reports/economic-recovery/RFC-EDGE-015/experimental_paper/*
+!reports/economic-recovery/RFC-EDGE-015/experimental_paper/*.json
+!reports/economic-recovery/RFC-EDGE-015/experimental_paper/*.jsonl
+!reports/economic-recovery/RFC-EDGE-015/scratch/
+reports/economic-recovery/RFC-EDGE-015/scratch/*
+!reports/economic-recovery/RFC-EDGE-015/scratch/OOS_PROSPECTIVE_1H.jsonl
+!reports/economic-recovery/RFC-EDGE-015/scratch/OOS_DESCRIPTIVE_1H.jsonl

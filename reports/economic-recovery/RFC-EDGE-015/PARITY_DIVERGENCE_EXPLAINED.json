@@ -1,0 +1,112 @@
+{
+  "both_resolved": true,
+  "jesse": {
+    "claim": "the 7.021359 bps residual is not an engine disagreement: it is 6.985523 bps of PRICE on the two trades still open when the window ends (this project closes at the final bar's open, Jesse at its close), plus 0.095587 bps of our own fee-convention gap, minus 0.059741 bps because the engine's realised charge is 19.940259 bps rather than the declared 20 bps \u2014 every term read from the published rows",
+    "engine": "jesse",
+    "evidence": {
+      "decomposition": [
+        {
+          "declared_fee_charge_bps": 20.0,
+          "engine_fee_minus_declared_bps": -0.059751,
+          "engine_realised_fee_charge_bps": 19.940249,
+          "ext_entry_ts_ms": 1792094400000,
+          "ext_gross_bps": -49.800491,
+          "fee_convention_gap_of_our_gross_bps": 0.095587,
+          "gross_price_effect_bps": 6.985523,
+          "index": 19,
+          "observed_compounded_difference_bps": 7.021359,
+          "predicted_from_the_three_terms_bps": 7.021359,
+          "prediction_error_bps": -0.0,
+          "ta_gross_bps": -42.814968
+        },
+        {
+          "declared_fee_charge_bps": 20.0,
+          "engine_fee_minus_declared_bps": 0.017084,
+          "engine_realised_fee_charge_bps": 20.017084,
+          "ext_entry_ts_ms": 1792094400000,
+          "ext_gross_bps": 27.110767,
+          "fee_convention_gap_of_our_gross_bps": -0.038408,
+          "gross_price_effect_bps": -2.894632,
+          "index": 43,
+          "observed_compounded_difference_bps": -2.915956,
+          "predicted_from_the_three_terms_bps": -2.915956,
+          "prediction_error_bps": 0.0,
+          "ta_gross_bps": 24.216135
+        }
+      ],
+      "engine_implied_fee_rate_per_side": {
+        "max": 0.0009995068261663513,
+        "min": 0.0009994856724184335,
+        "n": 44
+      },
+      "fee_convention_gap_range_bps": [
+        -1.169343,
+        0.548469
+      ],
+      "forced_exit_exit_ts_ms": 1792159200000,
+      "material_detail": [
+        {
+          "entry_ts_ms": 1792094400000,
+          "exit_instant_agrees": false,
+          "external_gross_bps": -49.800491,
+          "gross_bps_diff": 6.985523,
+          "index": 19,
+          "ta_gross_bps": -42.814968
+        },
+        {
+          "entry_ts_ms": 1792094400000,
+          "exit_instant_agrees": false,
+          "external_gross_bps": 27.110767,
+          "gross_bps_diff": -2.894632,
+          "index": 43,
+          "ta_gross_bps": 24.216135
+        }
+      ],
+      "material_trades_are_the_forced_exits": true,
+      "materially_different_trades": [
+        19,
+        43
+      ],
+      "tolerance_bps": 1.0,
+      "trades_matched": 44,
+      "worst_agreement_among_other_trades_bps": 0.080318,
+      "worst_agreement_index": 41,
+      "worst_decomposition_error_bps": 1.21e-07
+    },
+    "verdict": "RESOLVED"
+  },
+  "method": "reconstruction from the published per-trade rows and the frozen bars; neither external engine was re-run, and no number was adjusted",
+  "reading": "both divergences are convention/boundary effects that the 14R package had already quantified partially; this decomposes them and shows the residual is zero within the preregistered tolerance once the convention is matched",
+  "schema_version": "EDGE15_PARITY_DIVERGENCE_EXPLAINED_V1",
+  "sources": {
+    "frozen_dataset": "reports/economic-recovery/RFC-EDGE-014R/scratch/PAPER_REPLAY_BARS.jsonl",
+    "jesse_report": "reports/economic-recovery/RFC-EDGE-014R/BENCHMARK_PARITY_REPORT_JESSE.json",
+    "vnpy_report": "reports/economic-recovery/RFC-EDGE-014R/BENCHMARK_PARITY_REPORT_VNPY.json"
+  },
+  "vnpy": {
+    "claim": "the two-trade gap is the window boundary, not the rule: VeighNa emitted 44 entries and 42 exits, this project's reader pairs fills in order, and the neutral rule's last two entries are exactly the two positions still open at the end of the window",
+    "engine": "vnpy_ctastrategy",
+    "evidence": {
+      "external_closes": 42,
+      "external_opens": 44,
+      "forced_close_entry_ts_ms": [
+        1792094400000,
+        1792094400000
+      ],
+      "last_two_entry_ts_ms": [
+        1792094400000,
+        1792094400000
+      ],
+      "matched_trades": 42,
+      "max_abs_gross_diff_on_matched_bps": 0.0,
+      "max_abs_net_diff_under_matched_convention_bps": 0.0,
+      "neutral_rule_forced_closes": 2,
+      "trades_only_in_the_engine": 0,
+      "trades_only_in_this_project": 2,
+      "unmatched_are_the_last_two_entries": true,
+      "unpaired_fills_reported": 2
+    },
+    "verdict": "RESOLVED"
+  },
+  "work_package": "WP-EDGE-015/P0.5"
+}

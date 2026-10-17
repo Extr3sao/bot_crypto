@@ -1,0 +1,845 @@
+{
+  "candidate_registration": {
+    "authoritative_ledger_untouched": true,
+    "counts_by_status": {
+      "COST_KILLED": 0,
+      "NO_GROSS_EDGE": 0,
+      "PAPER_ACTIVE": 0,
+      "PAPER_CANDIDATE": 0,
+      "PAPER_RETIRED": 0,
+      "REJECTED": 0,
+      "RESEARCH_CANDIDATE": 12,
+      "RESEARCH_REQUIRED": 3,
+      "UNKNOWN": 0
+    },
+    "paper_candidates": [],
+    "path": "config\\strategy_candidates_edge15.json",
+    "refusals": [
+      {
+        "reason": "status RESEARCH_CANDIDATE does not authorise PAPER",
+        "status": "RESEARCH_CANDIDATE",
+        "strategy_id": "cross_sectional_rotation@BTCUSDT@1h"
+      },
+      {
+        "reason": "status RESEARCH_CANDIDATE does not authorise PAPER",
+        "status": "RESEARCH_CANDIDATE",
+        "strategy_id": "cross_sectional_rotation@ETHUSDT@1h"
+      },
+      {
+        "reason": "status RESEARCH_CANDIDATE does not authorise PAPER",
+        "status": "RESEARCH_CANDIDATE",
+        "strategy_id": "cross_sectional_rotation@SOLUSDT@1h"
+      }
+    ],
+    "strategies": [
+      "cross_sectional_rotation@BTCUSDT@1h",
+      "cross_sectional_rotation@ETHUSDT@1h",
+      "cross_sectional_rotation@SOLUSDT@1h",
+      "maker_only_spread_capture@BTCUSDT@1h",
+      "maker_only_spread_capture@ETHUSDT@1h",
+      "maker_only_spread_capture@SOLUSDT@1h",
+      "mean_reversion_vol_liq@BTCUSDT@1h",
+      "mean_reversion_vol_liq@ETHUSDT@1h",
+      "mean_reversion_vol_liq@SOLUSDT@1h",
+      "trend_pullback@BTCUSDT@1h",
+      "trend_pullback@ETHUSDT@1h",
+      "trend_pullback@SOLUSDT@1h",
+      "vol_regime_breakout@BTCUSDT@1h",
+      "vol_regime_breakout@ETHUSDT@1h",
+      "vol_regime_breakout@SOLUSDT@1h"
+    ]
+  },
+  "cost_model": {
+    "anchor_stake_usdt": 200.0,
+    "examples": [
+      {
+        "fee_bps_per_side": 10.0,
+        "funding_bps_per_day": 0.0,
+        "half_spread_bps": 0.5,
+        "impact_bps_per_side": 0.0354,
+        "knowledge": {
+          "fee": "KNOWN: venue taker fee schedule, VIP0, one side",
+          "funding": "NOT_APPLICABLE: spot venue has no funding leg",
+          "half_spread": "ESTIMATED: recovery audit spread, split and widened by tier",
+          "impact": "HYPOTHESIS: linear size scaling of the audit's estimate, by tier",
+          "slippage": "HYPOTHESIS: sqrt(size) scaling of the audit's estimate, by tier"
+        },
+        "per_side_bps": 11.6768,
+        "round_trip_bps": 23.3536,
+        "slippage_bps_per_side": 1.1414,
+        "stake_usdt": 200.0,
+        "symbol": "BTC/USDT",
+        "tier": "TIER1",
+        "venue": "BINANCE_SPOT"
+      },
+      {
+        "fee_bps_per_side": 10.0,
+        "funding_bps_per_day": 0.0,
+        "half_spread_bps": 0.5,
+        "impact_bps_per_side": 0.0354,
+        "knowledge": {
+          "fee": "KNOWN: venue taker fee schedule, VIP0, one side",
+          "funding": "NOT_APPLICABLE: spot venue has no funding leg",
+          "half_spread": "ESTIMATED: recovery audit spread, split and widened by tier",
+          "impact": "HYPOTHESIS: linear size scaling of the audit's estimate, by tier",
+          "slippage": "HYPOTHESIS: sqrt(size) scaling of the audit's estimate, by tier"
+        },
+        "per_side_bps": 11.6768,
+        "round_trip_bps": 23.3536,
+        "slippage_bps_per_side": 1.1414,
+        "stake_usdt": 200.0,
+        "symbol": "ETH/USDT",
+        "tier": "TIER1",
+        "venue": "BINANCE_SPOT"
+      },
+      {
+        "fee_bps_per_side": 10.0,
+        "funding_bps_per_day": 0.0,
+        "half_spread_bps": 1.0,
+        "impact_bps_per_side": 0.05,
+        "knowledge": {
+          "fee": "KNOWN: venue taker fee schedule, VIP0, one side",
+          "funding": "NOT_APPLICABLE: spot venue has no funding leg",
+          "half_spread": "ESTIMATED: recovery audit spread, split and widened by tier",
+          "impact": "HYPOTHESIS: linear size scaling of the audit's estimate, by tier",
+          "slippage": "HYPOTHESIS: sqrt(size) scaling of the audit's estimate, by tier"
+        },
+        "per_side_bps": 12.65,
+        "round_trip_bps": 25.3,
+        "slippage_bps_per_side": 1.6,
+        "stake_usdt": 200.0,
+        "symbol": "SOL/USDT",
+        "tier": "MAJOR",
+        "venue": "BINANCE_SPOT"
+      },
+      {
+        "fee_bps_per_side": 10.0,
+        "funding_bps_per_day": 0.0,
+        "half_spread_bps": 2.0,
+        "impact_bps_per_side": 0.08,
+        "knowledge": {
+          "fee": "KNOWN: venue taker fee schedule, VIP0, one side",
+          "funding": "NOT_APPLICABLE: spot venue has no funding leg",
+          "half_spread": "ESTIMATED: recovery audit spread, split and widened by tier",
+          "impact": "HYPOTHESIS: linear size scaling of the audit's estimate, by tier",
+          "slippage": "HYPOTHESIS: sqrt(size) scaling of the audit's estimate, by tier"
+        },
+        "per_side_bps": 14.48,
+        "round_trip_bps": 28.96,
+        "slippage_bps_per_side": 2.4,
+        "stake_usdt": 200.0,
+        "symbol": "UNI/USDT",
+        "tier": "ALT",
+        "venue": "BINANCE_SPOT"
+      }
+    ],
+    "fee_bps_per_side": 10.0,
+    "half_spread_bps_by_tier": {
+      "ALT": 2.0,
+      "MAJOR": 1.0,
+      "TIER1": 0.5
+    },
+    "impact_bps_per_side_by_tier": {
+      "ALT": 0.08,
+      "MAJOR": 0.05,
+      "TIER1": 0.0354
+    },
+    "not_used": "zero spread and zero slippage: those were declared parity inputs for comparing two engines, and they are not a price at which a strategy may be certified",
+    "scaling": {
+      "impact": "stake/anchor",
+      "slippage": "sqrt(stake/anchor)"
+    },
+    "schema_version": "EDGE15_COST_MODEL_V1",
+    "sensitivity_multipliers": [
+      1.0,
+      2.0,
+      3.0
+    ],
+    "slippage_bps_per_side_by_tier": {
+      "ALT": 2.4,
+      "MAJOR": 1.6,
+      "TIER1": 1.1414
+    },
+    "venue": "BINANCE_SPOT"
+  },
+  "families": [
+    {
+      "differs_from": [
+        "breakout@5m",
+        "ema_crossover@5m"
+      ],
+      "hypothesis": "H: a close above the 168h high is informative only when realised volatility is in its upper-middle range \u2014 dead markets produce false breakouts and panic regimes produce reversals \u2014 so the Donchian entry is gated on the ATR percentile and on price being above the long trend.",
+      "name": "vol_regime_breakout",
+      "parameters": {
+        "atr_hours": 24,
+        "atr_percentile_max": 0.95,
+        "atr_percentile_min": 0.5,
+        "channel_hours": 168,
+        "percentile_window_hours": 720,
+        "regime_ema_hours": 200,
+        "trail_atr_multiple": 3.0
+      },
+      "required_evidence": "",
+      "status": "TESTED",
+      "untestable_reason": ""
+    },
+    {
+      "differs_from": [
+        "ema_crossover@5m"
+      ],
+      "hypothesis": "H: in an established uptrend, a first close back below a fast mean is a continuation entry rather than a reversal, provided the trend filter and the recovery above the fast mean are both required before entry.",
+      "name": "trend_pullback",
+      "parameters": {
+        "atr_hours": 24,
+        "fast_ema_hours": 20,
+        "slow_ema_hours": 50,
+        "stop_atr_multiple": 3.0,
+        "trend_ema_hours": 200,
+        "trend_slope_hours": 24
+      },
+      "required_evidence": "",
+      "status": "TESTED",
+      "untestable_reason": ""
+    },
+    {
+      "differs_from": [
+        "lead_lag"
+      ],
+      "hypothesis": "H: the relative ordering of 72h returns across a fixed liquid universe carries information that a single-asset trend rule cannot see, so holding the top-k names while the absolute trend filter is up beats holding any one of them.",
+      "name": "cross_sectional_rotation",
+      "parameters": {
+        "lookback_hours": 72,
+        "rebalance_hours": 24,
+        "regime_ema_hours": 200,
+        "top_k": 2,
+        "universe": [
+          "AAVEUSDT",
+          "CRVUSDT",
+          "KSMUSDT",
+          "SNXUSDT",
+          "SUSHIUSDT",
+          "UNIUSDT"
+        ]
+      },
+      "required_evidence": "",
+      "status": "TESTED",
+      "untestable_reason": ""
+    },
+    {
+      "differs_from": [
+        "breakout@5m",
+        "ema_crossover@5m",
+        "lead_lag"
+      ],
+      "hypothesis": "H: a two-sigma stretch below a 48h mean reverts only when volatility is low and the bar is liquid; without those two conditions the same stretch is the start of a trend and the strategy is on the wrong side of it.",
+      "name": "mean_reversion_vol_liq",
+      "parameters": {
+        "atr_hours": 24,
+        "atr_percentile_max": 0.5,
+        "atr_stop_multiple": 4.0,
+        "max_hold_hours": 48,
+        "mean_hours": 48,
+        "percentile_window_hours": 720,
+        "volume_median_hours": 168,
+        "volume_multiple_min": 1.2,
+        "z_entry": -2.0,
+        "z_exit": 0.0
+      },
+      "required_evidence": "",
+      "status": "TESTED",
+      "untestable_reason": ""
+    },
+    {
+      "differs_from": [],
+      "hypothesis": "H: a passive order inside the spread can be filled favourably often enough to beat the taker round trip. It is listed because the brief asks for it and it is NOT tested, because measuring it needs a fill model this repository does not have.",
+      "name": "maker_only_spread_capture",
+      "parameters": {
+        "inventory_hours": 4,
+        "quote_offset_bps": 1.0
+      },
+      "required_evidence": "a recorded order-book or trade-print source at sub-second resolution plus a queue model validated against real fills; then, and only then, a maker backtest",
+      "status": "DEFER_NO_FILL_MODEL",
+      "untestable_reason": "no verifiable queue-position or fill-probability model exists in the tree, and without one a maker backtest reports fills it could not have obtained"
+    }
+  ],
+  "frozen_protocol": {
+    "acceptance_thresholds": {
+      "max_data_points_used_for_selection": 1,
+      "max_drawdown_bps_max": 2000.0,
+      "min_closed_trades_per_strategy": 200,
+      "must_stay_positive_at_cost_multiplier": 2.0,
+      "net_expectancy_bps_per_trade_min": 0.0,
+      "profit_factor_min": 1.2
+    },
+    "comparator_CURRENT": "the runtime as it stands: no strategy admitted, no trades, flat equity \u2014 a candidate must beat zero, not merely exist",
+    "costs": {
+      "anchor_stake_usdt": 200.0,
+      "examples": [
+        {
+          "fee_bps_per_side": 10.0,
+          "funding_bps_per_day": 0.0,
+          "half_spread_bps": 0.5,
+          "impact_bps_per_side": 0.0354,
+          "knowledge": {
+            "fee": "KNOWN: venue taker fee schedule, VIP0, one side",
+            "funding": "NOT_APPLICABLE: spot venue has no funding leg",
+            "half_spread": "ESTIMATED: recovery audit spread, split and widened by tier",
+            "impact": "HYPOTHESIS: linear size scaling of the audit's estimate, by tier",
+            "slippage": "HYPOTHESIS: sqrt(size) scaling of the audit's estimate, by tier"
+          },
+          "per_side_bps": 11.6768,
+          "round_trip_bps": 23.3536,
+          "slippage_bps_per_side": 1.1414,
+          "stake_usdt": 200.0,
+          "symbol": "BTC/USDT",
+          "tier": "TIER1",
+          "venue": "BINANCE_SPOT"
+        },
+        {
+          "fee_bps_per_side": 10.0,
+          "funding_bps_per_day": 0.0,
+          "half_spread_bps": 0.5,
+          "impact_bps_per_side": 0.0354,
+          "knowledge": {
+            "fee": "KNOWN: venue taker fee schedule, VIP0, one side",
+            "funding": "NOT_APPLICABLE: spot venue has no funding leg",
+            "half_spread": "ESTIMATED: recovery audit spread, split and widened by tier",
+            "impact": "HYPOTHESIS: linear size scaling of the audit's estimate, by tier",
+            "slippage": "HYPOTHESIS: sqrt(size) scaling of the audit's estimate, by tier"
+          },
+          "per_side_bps": 11.6768,
+          "round_trip_bps": 23.3536,
+          "slippage_bps_per_side": 1.1414,
+          "stake_usdt": 200.0,
+          "symbol": "ETH/USDT",
+          "tier": "TIER1",
+          "venue": "BINANCE_SPOT"
+        },
+        {
+          "fee_bps_per_side": 10.0,
+          "funding_bps_per_day": 0.0,
+          "half_spread_bps": 1.0,
+          "impact_bps_per_side": 0.05,
+          "knowledge": {
+            "fee": "KNOWN: venue taker fee schedule, VIP0, one side",
+            "funding": "NOT_APPLICABLE: spot venue has no funding leg",
+            "half_spread": "ESTIMATED: recovery audit spread, split and widened by tier",
+            "impact": "HYPOTHESIS: linear size scaling of the audit's estimate, by tier",
+            "slippage": "HYPOTHESIS: sqrt(size) scaling of the audit's estimate, by tier"
+          },
+          "per_side_bps": 12.65,
+          "round_trip_bps": 25.3,
+          "slippage_bps_per_side": 1.6,
+          "stake_usdt": 200.0,
+          "symbol": "SOL/USDT",
+          "tier": "MAJOR",
+          "venue": "BINANCE_SPOT"
+        },
+        {
+          "fee_bps_per_side": 10.0,
+          "funding_bps_per_day": 0.0,
+          "half_spread_bps": 2.0,
+          "impact_bps_per_side": 0.08,
+          "knowledge": {
+            "fee": "KNOWN: venue taker fee schedule, VIP0, one side",
+            "funding": "NOT_APPLICABLE: spot venue has no funding leg",
+            "half_spread": "ESTIMATED: recovery audit spread, split and widened by tier",
+            "impact": "HYPOTHESIS: linear size scaling of the audit's estimate, by tier",
+            "slippage": "HYPOTHESIS: sqrt(size) scaling of the audit's estimate, by tier"
+          },
+          "per_side_bps": 14.48,
+          "round_trip_bps": 28.96,
+          "slippage_bps_per_side": 2.4,
+          "stake_usdt": 200.0,
+          "symbol": "UNI/USDT",
+          "tier": "ALT",
+          "venue": "BINANCE_SPOT"
+        }
+      ],
+      "fee_bps_per_side": 10.0,
+      "half_spread_bps_by_tier": {
+        "ALT": 2.0,
+        "MAJOR": 1.0,
+        "TIER1": 0.5
+      },
+      "impact_bps_per_side_by_tier": {
+        "ALT": 0.08,
+        "MAJOR": 0.05,
+        "TIER1": 0.0354
+      },
+      "not_used": "zero spread and zero slippage: those were declared parity inputs for comparing two engines, and they are not a price at which a strategy may be certified",
+      "scaling": {
+        "impact": "stake/anchor",
+        "slippage": "sqrt(stake/anchor)"
+      },
+      "schema_version": "EDGE15_COST_MODEL_V1",
+      "sensitivity_multipliers": [
+        1.0,
+        2.0,
+        3.0
+      ],
+      "slippage_bps_per_side_by_tier": {
+        "ALT": 2.4,
+        "MAJOR": 1.6,
+        "TIER1": 1.1414
+      },
+      "venue": "BINANCE_SPOT"
+    },
+    "expected_outcome_if_the_evidence_says_so": "NO_ECONOMIC_EDGE_FOUND, with the research lane kept and the next hypothesis named",
+    "families": [
+      {
+        "differs_from": [
+          "breakout@5m",
+          "ema_crossover@5m"
+        ],
+        "hypothesis": "H: a close above the 168h high is informative only when realised volatility is in its upper-middle range \u2014 dead markets produce false breakouts and panic regimes produce reversals \u2014 so the Donchian entry is gated on the ATR percentile and on price being above the long trend.",
+        "name": "vol_regime_breakout",
+        "parameters": {
+          "atr_hours": 24,
+          "atr_percentile_max": 0.95,
+          "atr_percentile_min": 0.5,
+          "channel_hours": 168,
+          "percentile_window_hours": 720,
+          "regime_ema_hours": 200,
+          "trail_atr_multiple": 3.0
+        },
+        "required_evidence": "",
+        "status": "TESTED",
+        "untestable_reason": ""
+      },
+      {
+        "differs_from": [
+          "ema_crossover@5m"
+        ],
+        "hypothesis": "H: in an established uptrend, a first close back below a fast mean is a continuation entry rather than a reversal, provided the trend filter and the recovery above the fast mean are both required before entry.",
+        "name": "trend_pullback",
+        "parameters": {
+          "atr_hours": 24,
+          "fast_ema_hours": 20,
+          "slow_ema_hours": 50,
+          "stop_atr_multiple": 3.0,
+          "trend_ema_hours": 200,
+          "trend_slope_hours": 24
+        },
+        "required_evidence": "",
+        "status": "TESTED",
+        "untestable_reason": ""
+      },
+      {
+        "differs_from": [
+          "lead_lag"
+        ],
+        "hypothesis": "H: the relative ordering of 72h returns across a fixed liquid universe carries information that a single-asset trend rule cannot see, so holding the top-k names while the absolute trend filter is up beats holding any one of them.",
+        "name": "cross_sectional_rotation",
+        "parameters": {
+          "lookback_hours": 72,
+          "rebalance_hours": 24,
+          "regime_ema_hours": 200,
+          "top_k": 2,
+          "universe": [
+            "AAVEUSDT",
+            "CRVUSDT",
+            "KSMUSDT",
+            "SNXUSDT",
+            "SUSHIUSDT",
+            "UNIUSDT"
+          ]
+        },
+        "required_evidence": "",
+        "status": "TESTED",
+        "untestable_reason": ""
+      },
+      {
+        "differs_from": [
+          "breakout@5m",
+          "ema_crossover@5m",
+          "lead_lag"
+        ],
+        "hypothesis": "H: a two-sigma stretch below a 48h mean reverts only when volatility is low and the bar is liquid; without those two conditions the same stretch is the start of a trend and the strategy is on the wrong side of it.",
+        "name": "mean_reversion_vol_liq",
+        "parameters": {
+          "atr_hours": 24,
+          "atr_percentile_max": 0.5,
+          "atr_stop_multiple": 4.0,
+          "max_hold_hours": 48,
+          "mean_hours": 48,
+          "percentile_window_hours": 720,
+          "volume_median_hours": 168,
+          "volume_multiple_min": 1.2,
+          "z_entry": -2.0,
+          "z_exit": 0.0
+        },
+        "required_evidence": "",
+        "status": "TESTED",
+        "untestable_reason": ""
+      },
+      {
+        "differs_from": [],
+        "hypothesis": "H: a passive order inside the spread can be filled favourably often enough to beat the taker round trip. It is listed because the brief asks for it and it is NOT tested, because measuring it needs a fill model this repository does not have.",
+        "name": "maker_only_spread_capture",
+        "parameters": {
+          "inventory_hours": 4,
+          "quote_offset_bps": 1.0
+        },
+        "required_evidence": "a recorded order-book or trade-print source at sub-second resolution plus a queue model validated against real fills; then, and only then, a maker backtest",
+        "status": "DEFER_NO_FILL_MODEL",
+        "untestable_reason": "no verifiable queue-position or fill-probability model exists in the tree, and without one a maker backtest reports fills it could not have obtained"
+      }
+    ],
+    "schema_version": "EDGE15_ALPHA_PROTOCOL_V1",
+    "selection_rule": "parameters are fixed here and are not searched on the evaluation segment; a family is ADOPTed only if it clears every threshold on data it did not select on, and this project has no such data until the prospective slice accrues",
+    "work_package": "WP-EDGE-015/P1-P3"
+  },
+  "next_hypothesis": "the tail says the surviving structure is the cost model, not the signal: a family whose gross expectancy per trade exceeds its own tier's round trip (>= 24 bps for a tier-1 pair, >= 28 bps for a thin alt) is the next thing to look for, and the prospective slice is the only place it can be confirmed",
+  "no_economic_edge_found": true,
+  "reading": "no family clears its costs on the held-out tail with enough trades to be adopted; the honest outcome is NO_ECONOMIC_EDGE_FOUND with the research lane kept",
+  "rejected_family_audit": {
+    "admission_ledger": "config\\strategy_admission.json",
+    "admitted_for_paper_in_ledger": [],
+    "audit": [
+      {
+        "checked_against": {
+          "breakout@5m": {
+            "expected_gross_edge_bps": -0.11,
+            "family": "breakout",
+            "status": "NO_GROSS_EDGE"
+          },
+          "ema_crossover@5m": {
+            "expected_gross_edge_bps": -4.56,
+            "family": "ema_crossover",
+            "status": "NO_GROSS_EDGE"
+          }
+        },
+        "differs_from": [
+          "breakout@5m",
+          "ema_crossover@5m"
+        ],
+        "family": "vol_regime_breakout",
+        "status": "TESTED",
+        "verdict": "DISTINCT_MECHANISM",
+        "why_not_a_rename": "differs from the rejected families on the entry condition, the exit condition and the conditioning variables; a rename would share at least one of the three"
+      },
+      {
+        "checked_against": {
+          "ema_crossover@5m": {
+            "expected_gross_edge_bps": -4.56,
+            "family": "ema_crossover",
+            "status": "NO_GROSS_EDGE"
+          }
+        },
+        "differs_from": [
+          "ema_crossover@5m"
+        ],
+        "family": "trend_pullback",
+        "status": "TESTED",
+        "verdict": "DISTINCT_MECHANISM",
+        "why_not_a_rename": "differs from the rejected families on the entry condition, the exit condition and the conditioning variables; a rename would share at least one of the three"
+      },
+      {
+        "checked_against": {},
+        "differs_from": [
+          "lead_lag"
+        ],
+        "family": "cross_sectional_rotation",
+        "status": "TESTED",
+        "verdict": "DISTINCT_MECHANISM",
+        "why_not_a_rename": "differs from the rejected families on the entry condition, the exit condition and the conditioning variables; a rename would share at least one of the three"
+      },
+      {
+        "checked_against": {
+          "breakout@5m": {
+            "expected_gross_edge_bps": -0.11,
+            "family": "breakout",
+            "status": "NO_GROSS_EDGE"
+          },
+          "ema_crossover@5m": {
+            "expected_gross_edge_bps": -4.56,
+            "family": "ema_crossover",
+            "status": "NO_GROSS_EDGE"
+          }
+        },
+        "differs_from": [
+          "breakout@5m",
+          "ema_crossover@5m",
+          "lead_lag"
+        ],
+        "family": "mean_reversion_vol_liq",
+        "status": "TESTED",
+        "verdict": "DISTINCT_MECHANISM",
+        "why_not_a_rename": "differs from the rejected families on the entry condition, the exit condition and the conditioning variables; a rename would share at least one of the three"
+      },
+      {
+        "checked_against": {},
+        "differs_from": [],
+        "family": "maker_only_spread_capture",
+        "status": "DEFER_NO_FILL_MODEL",
+        "verdict": "NEW",
+        "why_not_a_rename": "differs from the rejected families on the entry condition, the exit condition and the conditioning variables; a rename would share at least one of the three"
+      }
+    ],
+    "known_strategies": {
+      "breakout@15m": {
+        "expected_gross_edge_bps": -1.82,
+        "family": "breakout",
+        "status": "NO_GROSS_EDGE"
+      },
+      "breakout@1h": {
+        "expected_gross_edge_bps": -0.22,
+        "family": "breakout",
+        "status": "NO_GROSS_EDGE"
+      },
+      "breakout@30m": {
+        "expected_gross_edge_bps": -1.79,
+        "family": "breakout",
+        "status": "NO_GROSS_EDGE"
+      },
+      "breakout@5m": {
+        "expected_gross_edge_bps": -0.11,
+        "family": "breakout",
+        "status": "NO_GROSS_EDGE"
+      },
+      "ema_crossover@15m": {
+        "expected_gross_edge_bps": -1.12,
+        "family": "ema_crossover",
+        "status": "NO_GROSS_EDGE"
+      },
+      "ema_crossover@1h": {
+        "expected_gross_edge_bps": -0.96,
+        "family": "ema_crossover",
+        "status": "NO_GROSS_EDGE"
+      },
+      "ema_crossover@30m": {
+        "expected_gross_edge_bps": -0.73,
+        "family": "ema_crossover",
+        "status": "NO_GROSS_EDGE"
+      },
+      "ema_crossover@5m": {
+        "expected_gross_edge_bps": -4.56,
+        "family": "ema_crossover",
+        "status": "NO_GROSS_EDGE"
+      },
+      "mean_reversion@15m": {
+        "expected_gross_edge_bps": 2.71,
+        "family": "mean_reversion",
+        "status": "COST_KILLED"
+      },
+      "mean_reversion@1h": {
+        "expected_gross_edge_bps": -2.23,
+        "family": "mean_reversion",
+        "status": "NO_GROSS_EDGE"
+      },
+      "mean_reversion@30m": {
+        "expected_gross_edge_bps": 5.47,
+        "family": "mean_reversion",
+        "status": "COST_KILLED"
+      },
+      "mean_reversion@5m": {
+        "expected_gross_edge_bps": 1.49,
+        "family": "mean_reversion",
+        "status": "COST_KILLED"
+      },
+      "momentum@15m": {
+        "expected_gross_edge_bps": -3.97,
+        "family": "momentum",
+        "status": "NO_GROSS_EDGE"
+      },
+      "momentum@1h": {
+        "expected_gross_edge_bps": -2.33,
+        "family": "momentum",
+        "status": "NO_GROSS_EDGE"
+      },
+      "momentum@30m": {
+        "expected_gross_edge_bps": -2.61,
+        "family": "momentum",
+        "status": "NO_GROSS_EDGE"
+      },
+      "momentum@5m": {
+        "expected_gross_edge_bps": -1.88,
+        "family": "momentum",
+        "status": "NO_GROSS_EDGE"
+      },
+      "trend@15m": {
+        "expected_gross_edge_bps": 1.28,
+        "family": "trend",
+        "status": "COST_KILLED"
+      },
+      "trend@1h": {
+        "expected_gross_edge_bps": -1.25,
+        "family": "trend",
+        "status": "NO_GROSS_EDGE"
+      },
+      "trend@30m": {
+        "expected_gross_edge_bps": 2.21,
+        "family": "trend",
+        "status": "COST_KILLED"
+      },
+      "trend@5m": {
+        "expected_gross_edge_bps": -1.65,
+        "family": "trend",
+        "status": "NO_GROSS_EDGE"
+      },
+      "volatility@15m": {
+        "expected_gross_edge_bps": -7.06,
+        "family": "volatility",
+        "status": "NO_GROSS_EDGE"
+      },
+      "volatility@1h": {
+        "expected_gross_edge_bps": 6.28,
+        "family": "volatility",
+        "status": "COST_KILLED"
+      },
+      "volatility@30m": {
+        "expected_gross_edge_bps": 8.91,
+        "family": "volatility",
+        "status": "COST_KILLED"
+      },
+      "volatility@5m": {
+        "expected_gross_edge_bps": -4.73,
+        "family": "volatility",
+        "status": "NO_GROSS_EDGE"
+      }
+    },
+    "rejected_families": {
+      "breakout@5m": "gross -0.11 bps/trade over 2426 trades (docs/STRATEGY_DISCOVERY_V3_RESULTS.json)",
+      "ema_crossover@5m": "gross -4.56 bps/trade over 1725 trades (docs/STRATEGY_DISCOVERY_V3_RESULTS.json)",
+      "lead_lag": "retained orthogonal candidate, measured net <= 0 after the admission round trip (WP-EDGE-14C/14D)"
+    }
+  },
+  "rotation": {
+    "aligned_window": {
+      "bars": 50693,
+      "end_ms": 1792000800000,
+      "start_ms": 1609459200000
+    },
+    "segments": [
+      {
+        "days": 1479.0833333333333,
+        "max_drawdown_bps": 12398.594886385577,
+        "portfolio_net_bps_1x": -4560.141519286576,
+        "portfolio_net_bps_2x": -16737.82151928654,
+        "portfolio_net_bps_3x": -28915.501519286492,
+        "rebalances": 843,
+        "segment": "SELECTION",
+        "trades": 841
+      },
+      {
+        "days": 633.625,
+        "max_drawdown_bps": 14403.970341478298,
+        "portfolio_net_bps_1x": -11464.632284070001,
+        "portfolio_net_bps_2x": -16605.032284070006,
+        "portfolio_net_bps_3x": -21745.432284070008,
+        "rebalances": 355,
+        "segment": "HELD_OUT_TAIL",
+        "trades": 355
+      }
+    ],
+    "universe": [
+      "AAVEUSDT",
+      "CRVUSDT",
+      "KSMUSDT",
+      "SNXUSDT",
+      "SUSHIUSDT",
+      "UNIUSDT"
+    ]
+  },
+  "schema_version": "EDGE15_ALPHA_RESULTS_V1",
+  "segments": {
+    "PROSPECTIVE": "bars after the frozen protocol instant; see OOS_CAPTURE_MANIFEST_V2.json",
+    "SEGMENT_A_SELECTION": "first 70% of each series (in-sample; parameters were frozen, not fitted)",
+    "SEGMENT_B_HELD_OUT_TAIL": "last 30% of each series \u2014 held out from parameter choice, still inside a consumed corpus"
+  },
+  "verdicts": [
+    {
+      "adoptable_now": false,
+      "family": "cross_sectional_rotation",
+      "held_out_expectancy_bps_2x": -93.5495,
+      "held_out_gross_bps_per_trade": -35.6295,
+      "held_out_net_bps_1x": -11464.6323,
+      "held_out_net_bps_2x": -16605.0323,
+      "held_out_net_bps_3x": -21745.4323,
+      "held_out_trades": 355,
+      "thresholds": {
+        "max_data_points_used_for_selection": 1,
+        "max_drawdown_bps_max": 2000.0,
+        "min_closed_trades_per_strategy": 200,
+        "must_stay_positive_at_cost_multiplier": 2.0,
+        "net_expectancy_bps_per_trade_min": 0.0,
+        "profit_factor_min": 1.2
+      },
+      "verdict": "REJECT",
+      "why_not_adoptable": "ADOPT requires every threshold on data the selection never touched; the only such data is the prospective slice, and it has not accrued"
+    },
+    {
+      "adoptable_now": false,
+      "family": "maker_only_spread_capture",
+      "held_out_trades": 0,
+      "required_evidence": "a recorded order-book or trade-print source at sub-second resolution plus a queue model validated against real fills; then, and only then, a maker backtest",
+      "verdict": "DEFER_NO_FILL_MODEL",
+      "why_not_adoptable": "no verifiable queue-position or fill-probability model exists in the tree, and without one a maker backtest reports fills it could not have obtained"
+    },
+    {
+      "adoptable_now": false,
+      "family": "mean_reversion_vol_liq",
+      "held_out_expectancy_bps_2x": -2.8682,
+      "held_out_gross_bps_per_trade": 54.8413,
+      "held_out_losing_trade_share": 0.3859,
+      "held_out_net_bps_1x": 21075.1184,
+      "held_out_net_bps_2x": -2326.0976,
+      "held_out_top5_share_of_gross": 0.4954,
+      "held_out_trades": 811,
+      "thresholds": {
+        "max_data_points_used_for_selection": 1,
+        "max_drawdown_bps_max": 2000.0,
+        "min_closed_trades_per_strategy": 200,
+        "must_stay_positive_at_cost_multiplier": 2.0,
+        "net_expectancy_bps_per_trade_min": 0.0,
+        "profit_factor_min": 1.2
+      },
+      "verdict": "EXPERIMENT_COST_FRAGILE",
+      "why_not_adoptable": "ADOPT requires every threshold on data the selection never touched; the only such data is the prospective slice, and it has not accrued"
+    },
+    {
+      "adoptable_now": false,
+      "family": "trend_pullback",
+      "held_out_expectancy_bps_2x": -94.3726,
+      "held_out_gross_bps_per_trade": -37.0432,
+      "held_out_losing_trade_share": 0.8291,
+      "held_out_net_bps_1x": -58808.5987,
+      "held_out_net_bps_2x": -84463.5155,
+      "held_out_top5_share_of_gross": null,
+      "held_out_trades": 895,
+      "thresholds": {
+        "max_data_points_used_for_selection": 1,
+        "max_drawdown_bps_max": 2000.0,
+        "min_closed_trades_per_strategy": 200,
+        "must_stay_positive_at_cost_multiplier": 2.0,
+        "net_expectancy_bps_per_trade_min": 0.0,
+        "profit_factor_min": 1.2
+      },
+      "verdict": "REJECT",
+      "why_not_adoptable": "ADOPT requires every threshold on data the selection never touched; the only such data is the prospective slice, and it has not accrued"
+    },
+    {
+      "adoptable_now": false,
+      "family": "vol_regime_breakout",
+      "held_out_expectancy_bps_2x": 166.4615,
+      "held_out_gross_bps_per_trade": 223.7941,
+      "held_out_losing_trade_share": 0.5789,
+      "held_out_net_bps_1x": 33366.8524,
+      "held_out_net_bps_2x": 28464.9172,
+      "held_out_top5_share_of_gross": 1.3103,
+      "held_out_trades": 171,
+      "thresholds": {
+        "max_data_points_used_for_selection": 1,
+        "max_drawdown_bps_max": 2000.0,
+        "min_closed_trades_per_strategy": 200,
+        "must_stay_positive_at_cost_multiplier": 2.0,
+        "net_expectancy_bps_per_trade_min": 0.0,
+        "profit_factor_min": 1.2
+      },
+      "verdict": "REJECT_OUTLIER_DRIVEN",
+      "why_not_adoptable": "ADOPT requires every threshold on data the selection never touched; the only such data is the prospective slice, and it has not accrued"
+    }
+  ],
+  "work_package": "WP-EDGE-015/P1-P2"
+}
