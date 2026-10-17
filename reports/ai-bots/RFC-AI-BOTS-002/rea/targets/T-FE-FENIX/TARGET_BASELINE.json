@@ -1,12 +1,40 @@
 {
   "target_id": "T-FE-FENIX",
   "source": "Ganador1/FenixAI_tradingBot",
-  "commit_pinned": "bd7373d",
+  "repository_url": "https://github.com/Ganador1/FenixAI_tradingBot",
+  "commit": "bd7373d59bee48addea51989796df27f69193a34",
+  "commit_short": "bd7373d",
+  "commit_date": "2026-08-08T17:55:36Z",
   "license": "Apache-2.0",
-  "language": "Python",
-  "reported_at": "2026-10-17T22:17:33+00:00",
-  "rea_executed": false,
-  "rea_operation_that_would_apply": "capture de UI/servicio local si existiera",
-  "blocked_reason": "proyecto Python sin superficie JS/Electron propia identificada; la captura de Chart (Playwright) es del target *externo* TradingView, no del proyecto. No se clonó ni sirvió localmente el target: el disco del host está al 99 % (2,9 GB libres de 238 GB) y el RFC prohíbe relajar el guardián de almacenamiento o borrar trabajo ajeno para hacer sitio. Es un BLOCKED_STORAGE medido, no una imposibilidad técnica afirmada.",
-  "storage": "2.9 GB free (99 % used)"
+  "license_verified": "GitHub license API, HTTP 200, spdx_id=Apache-2.0, path LICENSE, 2026-10-18",
+  "license_correction": "El registro anterior decía MIT; la API devuelve Apache-2.0.",
+  "language": "Python (backend, LangGraph) + TypeScript/React (frontend Vite)",
+  "files_in_tree": 604,
+  "checkout_size_mb": 18,
+  "build": {
+    "command": "npm ci --ignore-scripts --no-audit --no-fund && npx vite build",
+    "exit_code": 0,
+    "npm_duration_s": 14,
+    "vite_duration_s": 9,
+    "node_modules_mb": 205,
+    "installed_packages": 285,
+    "modules_transformed": 2367,
+    "dist_files": 3,
+    "dist": {
+      "index.html": "e09162d81a7bfdbd0a353625235282d598fbc4fce1dde2a53771428c303f3aaf",
+      "assets/index-DbXadeOQ.js": "34f0acf7b3a3b373a2704e77870cb5415cde445f7cb15c5d89248b2944a055b4",
+      "assets/index-CRgl1zyg.css": "present (40.50 kB)"
+    },
+    "reproducibility_note": "build desde el commit exacto, sin red más allá del registro npm, sin secretos ni .env"
+  },
+  "artifact": "frontend/dist construido desde el commit exacto y servido en loopback 127.0.0.1:8123",
+  "artifact_sha256": "36a11145d5182a16c519cea6237ba5b1f49123da9f05859a541908aec6d6b696",
+  "artifact_sha256_method": "REA subject digest over the built directory",
+  "served_with": "python -m http.server 8123 --bind 127.0.0.1 (estático; sin backend ni API keys)",
+  "host": "win32 x64, Node 22.20.0, npm 11.21.0, Chrome 155.0.8059.40 (headless, perfil vacío, CDP 127.0.0.1:9222)",
+  "rea_version": "6.4.0",
+  "disk_free_gb": 2.1,
+  "sandbox": "C:/Users/GVLLFR0035/AppData/Local/Temp/rea31/fenix (fuera del repo principal)",
+  "measured_at": "2026-10-18",
+  "not_run": "el backend Python (LangGraph + proveedores) no se arrancó: requiere claves y servicios; la cadena visual se auditó por fuente"
 }

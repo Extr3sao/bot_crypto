@@ -1,40 +1,39 @@
-# T-NF-NOF1 · Traza observada (qué se vio, qué no)
+# T-NF-NOF1 · traza de comportamiento
 
-## Ejecutado de verdad
+`REA_EXECUTED = YES` sobre el artefacto del commit exacto. Lo observado y lo inferido van
+separados, y lo que no se puede saber queda `UNKNOWN`.
 
-| # | operación REA | evidence_id | resultado |
-|---|---|---|---|
-| 1 | `analyze-javascript-application` sobre los 12 chunks públicos | `ev_aee35b0f11df7a73b082c5cbc72e10c97f27b22917da003998d93eaa455617fc` | exit 0, 59,9 s |
-| 2 | `list-browser-targets` sobre Chrome 155 CDP loopback | `ev_f7020db13e2de339e89e64231dd55522fe97ab8d17447644e8dfb5ef0961bb00` | exit 0 |
-| 3 | `capture-web-screenshot` de `https://www.nof1.ai/` | `ev_47c01accd3491fd6e10e893f8a045e5fee226fa520f648f4460396a619efbaf1` | exit 0, PNG de viewport |
-| 4 | `analyze-web-bundle` de la misma página | `ev_82d99570975285bde3570fb1b4002ea6b323fefed4308ce5c39ac23d0621d56c` | exit 0, 43 scripts, 0 fallos |
+## Observado por REA (`ev_4b2bf9c5c313530cc7e1e399d4cde5c175ecdd0018a9f608ee12782522ea9ade`)
 
-## Lo que la evidencia sí sostiene
+- El dashboard del commit es **estático**: 2 ficheros JS + 1 HTML, 22 nodos y 27 aristas en
+  el grafo de aplicación, **0 módulos** (no hay bundler en `public/`), 22 hallazgos, 0 fallos
+  de parseo.
+- No hay `import` de framework, ni entrypoint de aplicación compilada, ni mapa de módulos:
+  REA no encuentra una "aplicación" en el sentido de un bundle, sólo dos scripts de página.
+- REA parsea HTML y JS como texto inerte: **no ejecutó** ninguno de los dos.
 
-* El sitio público sirve **12 chunks** con digest de directorio `5fbc183a…744b9`; se
-  parsearon 12/12 sin fallos, 231.769 nodos AST y **15 hallazgos**.
-* El grafo estático contiene 36 nodos (12 assets, 10 módulos, 7 endpoints, 6 desconocidos)
-  y 43 relaciones. Los «endpoints» extraídos son identificadores minificados (`dpl`, `a`,
-  `b`, `cookie`, `/_next/image`): la minificación destruye los nombres que darían sentido
-  al flujo.
-* La captura de runtime confirma que la página es un frontend Next.js y que el bundle
-  observado se parsea completo (43 scripts, 191.416 nodos).
+## Observado por fuente (no REA)
 
-## Lo que la evidencia NO sostiene (y por eso no se certifica)
+| paso | fichero | hecho |
+| --- | --- | --- |
+| datos | `src/services/okxWebSocket.ts`, `gateClient.ts` | velas y ticker por websocket/REST |
+| contexto | `src/services/multiTimeframeAnalysis.ts` | 6 timeframes (1m/3m/5m/15m/30m/1h) con `candleCount` fijo; EMA/RSI/ATR |
+| payload al modelo | `src/agents/*.ts`, `src/tools/trading/*.ts` | **texto**: números + estructura, sin imagen |
+| decisión | herramientas Voltagent (`execute`, `accountManagement`, …) | el LLM emite `symbol/side/leverage/amountUsdt` |
+| riesgo | `src/config/riskParams.ts`, `tradeExecution.ts` | `MAX_POSITIONS=5`, `MAX_LEVERAGE=15`, ajuste por ATR; **drawdown desactivado** |
+| ejecución | `gateClient.ts`, `okxClient.ts` | órdenes reales; testnet sólo por header |
+| post-trade | `src/database/*`, `trailingStopMonitor.ts` | SQLite/libSQL, trailing stop, cierre parcial |
 
-* **No se ejecutó el JavaScript del target**: la propia limitación de REA lo dice
-  («JavaScript and HTML were parsed as inert text»). No hay traza de ejecución.
-* **No se observó ninguna llamada multimodal**: ni petición, ni imagen adjunta, ni
-  respuesta JSON del modelo, ni decisión, ni riesgo, ni orden. El análisis estático de un
-  bundle minificado no llega a esa cadena.
-* La cobertura semántica es **parcial/truncada** y 2 ficheros agotaron el heap del worker
-  (`1ht6x9rgxdzh-.js`, `2-93uiwpd3jjk.js`): sus hechos semánticos no están.
-* Por tanto: `REA_TARGET_OBSERVED = YES` (superficie y estructura),
-  `UPSTREAM_RUNTIME_REPRODUCED = NO`, `BEHAVIOR_RECONSTRUCTED = NO`.
+## `UNKNOWN` (y se queda así)
 
-## Comparación con nuestro runtime
+- Si esa cadena funciona hoy: el modelo por defecto (`deepseek/deepseek-v3.2-exp` vía
+  OpenAI-compatible) no se invocó, no hay recibo.
+- Qué devuelve el modelo ante un JSON inválido, un timeout o un rate limit: no hay test ni
+  captura de ese escenario.
+- Si el despliegue real de alguien usa exactamente este commit: no hay recibo de despliegue.
 
-El patrón que nos interesa (PNG → llamada multimodal → decisión → riesgo → paper) **no se
-puede comparar** con lo observado en nof1: allí no hay traza de ese flujo, sólo estructura
-de bundle. Clasificación: `NOT_COMPARABLE` (no «equivalente» ni «divergente»), y la
-decisión de adopción queda `DEFER`, no `ADOPT_VERIFIED`.
+## Implicación para el RFC
+
+El target queda `REA_TARGET_OBSERVED` en su superficie estática y `NOT_APPLICABLE_TECHNICALLY`
+para la cadena de decisión, porque esa cadena es un servicio TypeScript que REA no ejecuta.
+No se convierte una limitación de herramienta en una certificación.

@@ -1,6 +1,33 @@
 {
   "target_id": "T-QR-SIGNAL",
-  "adoption": "NONE",
-  "obligations": [],
-  "reason_blocked": "REA was not executed against this target; see ADOPTION_DECISION.md"
+  "source_commit": "65e67dc2a8b6493adb74ab24b8e484530b667d27",
+  "rea_evidence_id": "ev_9b45318c072de54798bb93a37354c38ec82b2bccf31d3cd1fbf9be0898a16b99",
+  "license_decision": "MIT: compatible; no se importa código en esta iteración",
+  "obligations": [
+    {
+      "claim": "El gráfico enviado al modelo se genera desde el mismo contexto que se analiza",
+      "source_fact": "analysis_engine._generate_chart_image() usa self.context (symbol/timeframe/ohlcv)",
+      "own_implementation": "src/trading_bot/vision/lane.py + chart.py (window_fingerprint)",
+      "matched_test": "tests/unit/vision/test_integrity_and_latency.py::test_a_mismatched_image_hash_aborts_the_decision_and_every_fill",
+      "divergence": "ellos lo garantizan por construcción; nosotros además por hash explícito y aborto",
+      "status": "EQUIVALENT_ON_TESTED_CASES (our side stricter)",
+      "license_note": "MIT, sin copia"
+    },
+    {
+      "claim": "Sin modelo con capacidad de imagen, no se genera ni se envía gráfico",
+      "source_fact": "analysis_engine.run_tech_and_chart(): has_chart_analysis = supports_image_analysis(provider)",
+      "own_implementation": "src/trading_bot/vision/lane.py (provider capability path)",
+      "matched_test": "tests/unit/vision/test_integrity_and_latency.py + test_compare.py",
+      "divergence": "equivalente en intención",
+      "status": "EQUIVALENT_ON_TESTED_CASES"
+    },
+    {
+      "claim": "El risk manager recorta el tamaño pedido y registra la fricción",
+      "source_fact": "risk_manager._resolve_position_size_pct: min(requested, cap) + guard_type=position_size_clamp",
+      "own_implementation": "src/trading_bot/risk/manager.py (sin cambios)",
+      "matched_test": "tests/unit/risk/*",
+      "divergence": "nosotros no dejamos que el modelo pida tamaño; el recorte es defensa en profundidad",
+      "status": "ALREADY_SATISFIED"
+    }
+  ]
 }

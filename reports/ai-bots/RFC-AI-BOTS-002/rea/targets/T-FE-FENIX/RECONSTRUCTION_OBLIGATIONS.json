@@ -1,6 +1,44 @@
 {
   "target_id": "T-FE-FENIX",
-  "adoption": "NONE",
-  "obligations": [],
-  "reason_blocked": "REA was not executed against this target; see ADOPTION_DECISION.md"
+  "source_commit": "bd7373d59bee48addea51989796df27f69193a34",
+  "rea_evidence_id": "ev_be8c7d74bb6ed79011e4d135ba011c7df95df4d50fcdfc4086223f8fb5931cc6",
+  "license_decision": "Apache-2.0: compatible con aviso; no se copia código en esta iteración",
+  "obligations": [
+    {
+      "claim": "Cadena de fallback de render (Plotly → mplfinance → placeholder)",
+      "source_fact": "src/charts/service.py construye la lista de estrategias en ese orden",
+      "own_implementation": "src/trading_bot/vision/chart.py (un solo renderer determinista)",
+      "matched_test": "tests/unit/vision/test_chart.py, test_visual_defects.py",
+      "divergence": "ellos toleran tres backends; nosotros exigimos determinismo de bytes",
+      "status": "REJECT_FOR_OUR_CONTRACT",
+      "why_not_adopted": "tres renderers distintos rompen el hash reproducible de la imagen"
+    },
+    {
+      "claim": "Prompt que declara los indicadores visibles y sus valores numéricos",
+      "source_fact": "visual.py: visible_indicators + _format_visual_indicator_values(chart_indicators_summary)",
+      "own_implementation": "src/trading_bot/vision/lane.py (prompt versionado)",
+      "matched_test": "tests/unit/vision/test_integrity_and_latency.py",
+      "divergence": "ellos declaran indicadores que el gráfico muestra; nosotros versionamos el prompt entero",
+      "status": "EXPERIMENT_PENDING_MEASUREMENT",
+      "why_not_adopted": "cambiar el prompt exige medir; sin `REAL_MODEL_CALLED` no hay medida"
+    },
+    {
+      "claim": "TTL de frescura de la imagen por timeframe",
+      "source_fact": "ChartSnapshot.is_valid(max_age_seconds) con TIMEFRAME_CONFIG",
+      "own_implementation": "src/trading_bot/vision/lane.py (ventana PIT + LATE_RESPONSE)",
+      "matched_test": "tests/unit/vision/test_integrity_and_latency.py",
+      "divergence": "su TTL está en la caché y no se revalida al enviar; el nuestro bloquea por reloj de respuesta",
+      "status": "DIVERGENT_WE_ARE_STRICTER",
+      "why_not_adopted": "replicar su TTL sin revalidación debilitaría el lane"
+    },
+    {
+      "claim": "Imagen como cadena base64 sin hash ni símbolo ligados",
+      "source_fact": "visual.py lee state['chart_image_b64'] y etiqueta con state['symbol']",
+      "own_implementation": "n/a",
+      "matched_test": "n/a",
+      "divergence": "es justo el defecto que corregimos en BOT-VIS-01",
+      "status": "REJECT_ANTI_PATTERN",
+      "why_not_adopted": "reintroduciría `INTEGRITY_FAILURE` silencioso"
+    }
+  ]
 }

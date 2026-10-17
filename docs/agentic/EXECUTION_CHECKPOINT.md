@@ -251,3 +251,52 @@ de `reports/` hay que añadirlos con `git add -f`; si no, existen en disco y **n
 
 Estado sin cambios: `REAL_MODEL_CALLED=false`, ningún patrón externo certificado, disco
 2,9 GB libres.
+
+## 2026-10-18 · RFC-TAP-AI-BOTS-002 v3.1 (REA Target Authority)
+
+**Objetivo:** corregir la atribución no demostrada entre los bundles de `www.nof1.ai` y
+`195440/nof1.ai`, y ejecutar REA de verdad sobre artefactos del commit exacto de tres
+proyectos.
+
+**Base:** `a0ca055` (rama `agent/ai-vision/RFC-AI-VISION-001`).
+
+**Hecho**
+
+1. **P0 de procedencia, refutado con artefacto.** El commit `5d27641dfa47cc942aa0709ffb3f5237de876373`
+   (árbol `b3ae235a…`) se clonó en sandbox (2,3 MB) y **no contiene Next.js**: build `tsdown`,
+   cero literales `__NEXT`/`turbopack`, y su dashboard son `public/app.js` +
+   `public/monitor-script.js` en `open-nof1.195440.com`. El bundle público es Turbopack
+   (`__NEXT` 9/12, `turbopack` 7/12). La asociación no era sólo indemostrada: es imposible.
+2. **Evidencia de la v3 preservada** en `rea/targets/T-NF-PUBLIC/` (4 `evidence_id`, hashes
+   intactos), reetiquetada `UNATTRIBUTED_NO_DEPLOYMENT_RECEIPT`.
+3. **REA sobre el repo exacto**: `analyze_javascript_application` sobre `public/` →
+   `ev_4b2bf9c5…`, 3 ficheros, 4.812 nodos AST, exit 0.
+4. **REA sobre Semantic Signal** (`65e67dc2…`, MIT): estático `ev_9b45318c…`, bundle
+   `ev_b954b8b0…`, captura `ev_ee6845ff…`.
+5. **REA sobre FenixAI** (`bd7373d5…`, Apache-2.0): `npm ci` + `vite build` desde el commit
+   (exit 0) → `ev_be8c7d74…`, bundle `ev_fc2b6552…`, captura `ev_b3b1e837…`.
+6. **Auditoría de fuente** de los tres backends: nof1 no es visual y deja el apalancamiento al
+   modelo con el drawdown comentado; FenixAI manda la imagen sin hash ni símbolo; QRAK liga la
+   imagen por construcción y el risk manager recorta el tamaño.
+7. **Verificador ampliado a 59 comprobaciones** (antes 31), con mutaciones que lo rechazan:
+   reatribuir el bundle público ⇒ 2 FAIL; borrar `PROVENANCE.md` del repo exacto ⇒ 2 FAIL.
+
+**Pendiente / bloqueado**
+
+- `REAL_MODEL_CALLED = false`: sin credencial ni autorización de gasto.
+- `import-reference-source` → **exit 1 `unsupported_host`** en Windows: `compare-source-to-bundle`
+  queda bloqueado por falta de productor de `HistoricalSourceGraph`. Registrado, no simulado.
+- Backends Python/TypeScript de los tres targets sin ejecutar (requieren claves/servicios).
+- `T-TA-CRITIC` y `T-FM-DEMO` sin REA: sin superficie JS / sin licencia.
+
+**Reanudación verificable**
+
+```bash
+cd "$(git rev-parse --show-toplevel)"
+git log -1 --format='%H %s'
+./.venv/Scripts/python.exe scripts/ai_bots_rea_verify.py | tail -2   # esperado: 59 PASS / 0 FAIL, exit 0
+./.venv/Scripts/python.exe -m pytest tests/unit/vision tests/unit/intelligence -q | tail -2
+```
+
+**Aviso que sigue vigente:** `.gitignore:60` es `reports/*`; los artefactos nuevos de
+`reports/` necesitan `git add -f` o no se publican.

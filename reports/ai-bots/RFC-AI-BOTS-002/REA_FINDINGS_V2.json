@@ -1,24 +1,84 @@
 {
-  "rfc": "RFC-TAP-AI-BOTS-002 v3 REA-FIRST",
-  "generated_at": "2026-10-17T22:18:46+00:00",
+  "rfc": "RFC-TAP-AI-BOTS-002 v3.1 REA TARGET AUTHORITY",
+  "supersedes": "REA_FINDINGS_V2.json (v3) — the public-nof1 row was misattributed",
+  "generated_at": "2026-10-18",
   "rea": {
     "version": "6.4.0",
     "node": "22.20.0",
     "doctor_exit": 1,
-    "doctor_meaning": "global environment not healthy (native engines + config drift); does not disable JS/CDP operations, which were executed",
-    "capabilities_snapshot": "reports/ai-bots/rea/raw/capabilities.json"
+    "doctor_meaning": "global environment not healthy (native engines + config drift); JS/CDP operations executed anyway, all exit 0",
+    "host_limits_measured": [
+      {
+        "operation": "import-reference-source",
+        "exit_code": 1,
+        "error": "unsupported_host: Safe no-follow file opens are unavailable on this host",
+        "consequence": "REA-native compare-source-to-bundle is unavailable on Windows for this workflow"
+      },
+      {
+        "operation": "compare-source-to-bundle",
+        "exit_code": 0,
+        "envelope": "invalid_request / invalid_input",
+        "consequence": "requires a HistoricalSourceGraph that only the blocked importer can produce"
+      }
+    ]
+  },
+  "provenance_correction": {
+    "severity": "P0",
+    "previous_claim": "www.nof1.ai production chunks are the artifact of 195440/nof1.ai @ 5d27641",
+    "outcome": "REFUTED",
+    "evidence": [
+      "public bundle: __NEXT in 9/12 chunks, turbopack in 7/12, _next/static in 3/12, zero open-nof1/voltagent/gate-api/195440/vt_",
+      "pinned commit 5d27641dfa47cc942aa0709ffb3f5237de876373: 108 files, package.json build=tsdown, no next dependency, zero Next/Turbopack literals in the whole tree",
+      "pinned commit's own dashboard is public/app.js + public/monitor-script.js served at open-nof1.195440.com"
+    ],
+    "action": "evidence preserved verbatim under T-NF-PUBLIC as UNATTRIBUTED_NO_DEPLOYMENT_RECEIPT; new repo-exact dossier T-NF-NOF1",
+    "evidence_ids_preserved": [
+      "ev_aee35b0f11df7a73b082c5cbc72e10c97f27b22917da003998d93eaa455617fc",
+      "ev_f7020db13e2de339e89e64231dd55522fe97ab8d17447644e8dfb5ef0961bb00",
+      "ev_47c01accd3491fd6e10e893f8a045e5fee226fa520f648f4460396a619efbaf1",
+      "ev_82d99570975285bde3570fb1b4002ea6b323fefed4308ce5c39ac23d0621d56c"
+    ]
   },
   "targets": [
     {
       "target_id": "T-NF-NOF1",
+      "source": "195440/nof1.ai",
+      "commit": "5d27641dfa47cc942aa0709ffb3f5237de876373",
+      "tree_sha": "b3ae235a0ff6555ff7a77c5c76c93cad2b1f5463",
+      "license": "AGPL-3.0",
       "rea_executed": true,
+      "attribution": "REPO_EXACT",
+      "evidence_ids": [
+        "ev_4b2bf9c5c313530cc7e1e399d4cde5c175ecdd0018a9f608ee12782522ea9ade"
+      ],
+      "operations": [
+        "analyze_javascript_application"
+      ],
+      "artifact_sha256": "9bef5c9bb778b96fdb154b531980c792e85fd201900599c6d4e76b033bb79248",
+      "statistics": {
+        "relevant_files": 3,
+        "parsed_javascript_files": 2,
+        "visited_ast_nodes": 4812,
+        "findings": 22,
+        "parse_failures": 0
+      },
+      "rea_applicability": "surface only (static dashboard); decision loop is TypeScript REA does not execute",
+      "decision": "REJECT_CODE / REJECT_ANTI_PATTERN / EXPERIMENT_MTF"
+    },
+    {
+      "target_id": "T-NF-PUBLIC",
+      "source": "unattributed deployment https://nof1.ai/",
+      "commit": null,
+      "license": "UNKNOWN_FOR_THIS_ARTIFACT",
+      "rea_executed": true,
+      "attribution": "UNATTRIBUTED_NO_DEPLOYMENT_RECEIPT",
       "evidence_ids": [
         "ev_aee35b0f11df7a73b082c5cbc72e10c97f27b22917da003998d93eaa455617fc",
         "ev_f7020db13e2de339e89e64231dd55522fe97ab8d17447644e8dfb5ef0961bb00",
         "ev_47c01accd3491fd6e10e893f8a045e5fee226fa520f648f4460396a619efbaf1",
         "ev_82d99570975285bde3570fb1b4002ea6b323fefed4308ce5c39ac23d0621d56c"
       ],
-      "operation": [
+      "operations": [
         "analyze_javascript_application",
         "list_browser_targets",
         "capture_web_screenshot",
@@ -27,84 +87,116 @@
       "artifact_sha256": "5fbc183a1c15b1ffe993669699205a944dc72237d241c7db5a55c54681ff44b9",
       "statistics": {
         "relevant_files": 12,
-        "nested_asar_containers": 0,
-        "text_bytes_read": 763875,
-        "invalid_utf8_files": 0,
         "parsed_javascript_files": 12,
         "visited_ast_nodes": 231769,
         "findings": 15,
-        "modules": 0,
         "parse_failures": 0
       },
-      "coverage": {
-        "status": "partial",
-        "truncated": true,
-        "limits": [
-          {
-            "name": "javascript_analysis_parent_result_budget_bytes",
-            "value": 1997010848,
-            "unit": "bytes"
-          },
-          {
-            "name": "javascript_analysis_worker_heap_limit_bytes",
-            "value": 1098907648,
-            "unit": "bytes"
-          },
-          {
-            "name": "javascript_analysis_worker_timeout_ms",
-            "value": 120000,
-            "unit": "milliseconds"
-          }
-        ],
-        "raw_bytes": 731215
-      },
-      "limitations": [
-        "0cz1d0mv5g_q7.js: Resource constraint during analyze_javascript_application: Semantic graph for 0cz1d0mv5g_q7.js exceeds the parent's remaining result budget; static and module facts were retained",
-        "0gvneg1-scdrw.js: Resource constraint during analyze_javascript_application: Semantic graph for 0gvneg1-scdrw.js exceeds the parent's remaining result budget; static and module facts were retained",
-        "1ht6x9rgxdzh-.js: Resource constraint during analyze_javascript_application: Owned JavaScript worker exhausted its heap while analyzing 1ht6x9rgxdzh-.js during semantic",
-        "2-93uiwpd3jjk.js: Resource constraint during analyze_javascript_application: Owned JavaScript worker exhausted its heap while analyzing 2-93uiwpd3jjk.js during semantic",
-        "2jyhu63pmvb8s.js: Resource constraint during analyze_javascript_application: Semantic graph for 2jyhu63pmvb8s.js exceeds the parent's remaining result budget; static and module facts were retained",
-        "3nfc0soddk6qg.js: Resource constraint during analyze_javascript_application: Semantic graph for 3nfc0soddk6qg.js exceeds the parent's remaining result budget; static and module facts were retained",
-        "CommonJS and ESM binding relationships were recovered from inert syntax and resolved only within the inventoried artifact container.",
-        "Graph coverage is incomplete; unavailable facts remain explicit and must not be read as absence.",
-        "JavaScript and HTML were parsed as inert text; bundle bootstrap code was never executed.",
-        "Static imports, entrypoints, workers, endpoints, and storage relationships do not prove runtime execution.",
-        "Static paths and relationships may remain unresolved when expressions are dynamic or obfuscated.",
-        "Webpack/Rspack factories were recovered from AST literals; REA did not invoke push handlers or bundle bootstrap code."
-      ],
-      "decision": "DEFER"
+      "decision": "NO_ADOPTION (source unknown, no code studied for reuse)"
     },
     {
       "target_id": "T-QR-SIGNAL",
-      "rea_executed": false,
-      "evidence_ids": [],
-      "decision": "DEFER"
+      "source": "qrak/LLM_trader",
+      "commit": "65e67dc2a8b6493adb74ab24b8e484530b667d27",
+      "license": "MIT",
+      "rea_executed": true,
+      "attribution": "REPO_EXACT",
+      "evidence_ids": [
+        "ev_9b45318c072de54798bb93a37354c38ec82b2bccf31d3cd1fbf9be0898a16b99",
+        "ev_b954b8b016f1736a766bc45627a3d21f600503c1d4294e7147133a7ce461c46c",
+        "ev_ee6845ff71d389439559036e9c661edbaee90a518ac18bd29639ef72995417a3"
+      ],
+      "operations": [
+        "analyze_javascript_application",
+        "analyze_web_bundle",
+        "capture_web_screenshot"
+      ],
+      "artifact_sha256": "7effba616c5692dabaf95b364b0143f3c20be18afaf56a20c7707a98954de4fa",
+      "statistics": {
+        "relevant_files": 17,
+        "parsed_javascript_files": 14,
+        "visited_ast_nodes": 15628,
+        "findings": 86,
+        "parse_failures": 0
+      },
+      "rea_applicability": "dashboard surface complete; the chart→model chain is Python, audited by source",
+      "decision": "DEFER_CODE / EQUIVALENT_ON_TESTED_CASES (we are stricter on image integrity)"
     },
     {
       "target_id": "T-FE-FENIX",
-      "rea_executed": false,
-      "evidence_ids": [],
-      "decision": "DEFER"
+      "source": "Ganador1/FenixAI_tradingBot",
+      "commit": "bd7373d59bee48addea51989796df27f69193a34",
+      "license": "Apache-2.0",
+      "rea_executed": true,
+      "attribution": "REPO_EXACT_BUILT_ARTIFACT",
+      "build": "npm ci --ignore-scripts + vite build, exit 0, 285 packages, 2367 modules",
+      "evidence_ids": [
+        "ev_be8c7d74bb6ed79011e4d135ba011c7df95df4d50fcdfc4086223f8fb5931cc6",
+        "ev_fc2b6552ff6ca513ad2cfcf4563e44b5d50354c61453bb999a4088cb3116d5c8",
+        "ev_b3b1e8374c0403d7b7c2cd9c4af9dbb33144920f515de8cd95d647b4d73527a7"
+      ],
+      "operations": [
+        "analyze_javascript_application",
+        "analyze_web_bundle",
+        "capture_web_screenshot"
+      ],
+      "artifact_sha256": "36a11145d5182a16c519cea6237ba5b1f49123da9f05859a541908aec6d6b696",
+      "statistics": {
+        "relevant_files": 2,
+        "parsed_javascript_files": 1,
+        "visited_ast_nodes": 256917,
+        "findings": 35,
+        "parse_failures": 0
+      },
+      "rea_applicability": "frontend only; the visual pipeline is Python",
+      "decision": "DEFER_CODE / EXPERIMENT_PROMPT / REJECT_ANTI_PATTERN_IMAGE_TRANSPORT"
     },
     {
       "target_id": "T-TA-CRITIC",
+      "source": "TauricResearch/TradingAgents",
+      "commit": "e8f5503",
+      "license": "Apache-2.0",
       "rea_executed": false,
+      "attribution": "NOT_ATTEMPTED_THIS_ITERATION",
       "evidence_ids": [],
-      "decision": "EXPERIMENT"
+      "reason": "sin superficie web/JS propia; un informe HTML no prueba la orquestación",
+      "decision": "EXPERIMENT (source audit only, not promoted)"
     },
     {
       "target_id": "T-FM-DEMO",
+      "source": "FortuneMal/AI-trading",
+      "commit": "74ed1f3",
+      "license": "NONE (GitHub API 404)",
       "rea_executed": false,
+      "attribution": "NO_COPY",
       "evidence_ids": [],
+      "reason": "sin licencia: no se estudia para reutilización",
       "decision": "REJECT"
     },
     {
       "target_id": "T-TAP-OWN",
+      "source": "este repositorio",
       "rea_executed": false,
+      "attribution": "NOT_APPLICABLE_TECHNICALLY",
       "evidence_ids": [],
-      "decision": "NOT_APPLICABLE_TECHNICALLY"
+      "reason": "no hay aplicación JS/HTML propia que analizar; se verifica con pytest y el verificador independiente",
+      "decision": "BASELINE_REQUIRED (cumplido por tests, no por REA)"
     }
   ],
+  "status_vocabulary": {
+    "REA_CLI_EXECUTED": true,
+    "TARGET_REA_AUDITED": [
+      "T-NF-NOF1",
+      "T-NF-PUBLIC",
+      "T-QR-SIGNAL",
+      "T-FE-FENIX"
+    ],
+    "AI_BOTS_RUNTIME_TESTED": true,
+    "REAL_MODEL_CALLED": false,
+    "PROSPECTIVE_PAPER_VALIDATED": false,
+    "EXTERNAL_PATTERN_CERTIFIED": 0
+  },
+  "browser_targets_evidence_id": "ev_4d5ba8ab1f3bdc9bcb5e799f36ff90feb7e220a9c84d9a8249b6eec952b7999f",
   "licenses_verified": {
     "qrak/LLM_trader": "MIT",
     "Ganador1/FenixAI_tradingBot": "Apache-2.0",
@@ -112,45 +204,25 @@
     "TauricResearch/TradingAgents": "Apache-2.0",
     "FortuneMal/AI-trading": "NONE (404)"
   },
-  "corrections_to_previous_audit": [
-    "FenixAI is Apache-2.0, not MIT (GitHub license API, spdx_id=Apache-2.0).",
-    "AGPL-3.0 does not forbid downloading, running or studying nof1.ai; it constrains copying, modification and redistribution. This session analysed the public bundle and copied no code.",
-    "A failing global doctor does not imply that analyze-javascript-application or CDP capture are unavailable: all four operations ran with exit 0 on this host.",
-    "El verificador independiente rechazo dos incoherencias del propio informe antes de publicarse: la cadena de licencia de FortuneMal y una afirmacion de estado que faltaba (REAL_MODEL_CALLED). Ambas se corrigieron; el verificador las detecto."
-  ],
-  "internal_p0": {
-    "image_integrity_fail_closed": {
-      "status": "FIXED",
-      "file": "src/trading_bot/vision/lane.py",
-      "test": "tests/unit/vision/test_integrity_and_latency.py::test_a_mismatched_image_hash_aborts_the_decision_and_every_fill",
-      "red": "6 failed against HEAD before the patch (recorded in this session)",
-      "green": "15 passed"
-    },
-    "comparator_not_comparable": {
-      "status": "FIXED",
-      "file": "src/trading_bot/vision/compare.py",
-      "test": "tests/unit/vision/test_compare.py::test_a_cadence_difference_is_not_comparable_without_being_told",
-      "behaviour": "a mismatch in declared or stated inputs makes the verdict NOT_COMPARABLE; the arithmetic is reported but cannot name a winner"
-    },
-    "late_response_cannot_fill": {
-      "status": "FIXED",
-      "file": "src/trading_bot/vision/lane.py",
-      "test": "tests/unit/vision/test_integrity_and_latency.py::test_an_answer_that_arrives_after_the_fill_bar_opened_is_dropped"
-    },
-    "defensive_blocks_and_week_roll": {
-      "status": "VERIFIED_EXISTING",
-      "evidence": "src/trading_bot/paper/paper_cycle.py::_defensive_verdict fails closed on missing conditions; RiskManager.check_signal calls roll_week() on every decision; tests/unit/risk/test_edge17_defensive_blocks.py covers the blocks"
-    }
-  },
   "states": {
     "REA_FOUNDATION_READY": true,
     "TARGET_REA_AUDITED": [
-      "T-NF-NOF1"
+      "T-NF-NOF1",
+      "T-NF-PUBLIC",
+      "T-QR-SIGNAL",
+      "T-FE-FENIX"
     ],
-    "REAL_MODEL_CALL_BLOCKED": true,
-    "EXTERNAL_PATTERN_ADOPTION_VERIFIED": false,
-    "FALSE_SUCCESS": 0,
+    "AI_BOTS_RUNTIME_TESTED": true,
     "REAL_MODEL_CALLED": false,
-    "REAL_MODEL_CALLS_MADE": 0
+    "PROSPECTIVE_PAPER_VALIDATED": false,
+    "ADOPT_VERIFIED": [],
+    "NO_ECONOMIC_EDGE_FOUND": true,
+    "FALSE_SUCCESS": 0
+  },
+  "invariants": {
+    "FALSE_SUCCESS": 0,
+    "NO_REA_EVIDENCE_EQUALS_NO_CERTIFICATION": true,
+    "BUILDER_NE_VERIFIER": true,
+    "TEST_TARGET_EQ_RUNTIME_TARGET": true
   }
 }

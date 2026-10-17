@@ -1,55 +1,88 @@
 {
-  "schema_version": "AIBOT_RUN_REPORT_V1",
-  "generated_at": "2026-10-17T20:42:09.332840+00:00",
-  "mode": "mock",
-  "status": "EXECUTED",
-  "real_model_called": false,
-  "data": {
-    "source": "data/edge08/universe-1h (Binance 1h, committed)",
-    "symbols": [
-      "AAVEUSDT",
-      "UNIUSDT"
-    ],
-    "limit_bars": 600
-  },
-  "bots": [
+  "rfc": "RFC-TAP-AI-BOTS-002 v3.1",
+  "date": "2026-10-18",
+  "branch": "agent/ai-vision/RFC-AI-VISION-001",
+  "base_commit": "a0ca055",
+  "operations": [
     {
-      "bot_id": "BOT-VIS-01",
-      "symbols": "AAVEUSDT+UNIUSDT",
-      "model_status": "MOCK_TEST",
-      "prompt_version": "ai-vision-prompt/2",
-      "calls": 40,
-      "fills": 14,
-      "closed_trades": 14,
-      "net_realised_usdt": -34.448805,
-      "gross_realised_usdt": -20.448805,
-      "costs_usdt": 22.393861,
-      "final_equity_usdt": 9965.551195,
-      "drawdown_pct": 0.360436,
-      "stop_reason": null,
-      "images_attached": 40
+      "op": "git fetch exact commit",
+      "target": "nof1",
+      "exit": 0
     },
     {
-      "bot_id": "BOT-CTX-01",
-      "symbols": "AAVEUSDT+UNIUSDT",
-      "model_status": "MOCK_TEST",
-      "prompt_version": "aibot-ctx-prompt/1",
-      "calls": 40,
-      "fills": 14,
-      "closed_trades": 14,
-      "net_realised_usdt": -34.448805,
-      "gross_realised_usdt": -20.448805,
-      "costs_usdt": 22.393861,
-      "final_equity_usdt": 9965.551195,
-      "drawdown_pct": 0.360436,
-      "stop_reason": null,
-      "images_attached": 0
+      "op": "analyze_javascript_application",
+      "target": "nof1/public",
+      "exit": 0,
+      "evidence_id": "ev_4b2bf9c5c313530cc7e1e399d4cde5c175ecdd0018a9f608ee12782522ea9ade"
+    },
+    {
+      "op": "import-reference-source",
+      "target": "nof1",
+      "exit": 1,
+      "blocked": "unsupported_host"
+    },
+    {
+      "op": "compare-source-to-bundle",
+      "target": "nof1",
+      "exit": 0,
+      "blocked": "invalid_input (no HistoricalSourceGraph producer)"
+    },
+    {
+      "op": "analyze_javascript_application",
+      "target": "qrak/static",
+      "exit": 0,
+      "evidence_id": "ev_9b45318c072de54798bb93a37354c38ec82b2bccf31d3cd1fbf9be0898a16b99"
+    },
+    {
+      "op": "analyze_web_bundle",
+      "target": "qrak/127.0.0.1:8124",
+      "exit": 0,
+      "evidence_id": "ev_b954b8b016f1736a766bc45627a3d21f600503c1d4294e7147133a7ce461c46c"
+    },
+    {
+      "op": "capture_web_screenshot",
+      "target": "qrak/127.0.0.1:8124",
+      "exit": 0,
+      "evidence_id": "ev_ee6845ff71d389439559036e9c661edbaee90a518ac18bd29639ef72995417a3"
+    },
+    {
+      "op": "npm ci + vite build",
+      "target": "fenix/frontend",
+      "exit": 0,
+      "packages": 285,
+      "modules": 2367
+    },
+    {
+      "op": "analyze_javascript_application",
+      "target": "fenix/dist",
+      "exit": 0,
+      "evidence_id": "ev_be8c7d74bb6ed79011e4d135ba011c7df95df4d50fcdfc4086223f8fb5931cc6"
+    },
+    {
+      "op": "analyze_web_bundle",
+      "target": "fenix/127.0.0.1:8123",
+      "exit": 0,
+      "evidence_id": "ev_fc2b6552ff6ca513ad2cfcf4563e44b5d50354c61453bb999a4088cb3116d5c8"
+    },
+    {
+      "op": "capture_web_screenshot",
+      "target": "fenix/127.0.0.1:8123",
+      "exit": 0,
+      "evidence_id": "ev_b3b1e8374c0403d7b7c2cd9c4af9dbb33144920f515de8cd95d647b4d73527a7"
     }
   ],
-  "discarded_chart_dirs": [],
-  "economics": "NOT_EVIDENCE",
-  "limitations": [
-    "Mock mode answers with a fixed script; it proves plumbing, not edge.",
-    "Historical replay cannot be labelled as prospective evidence."
-  ]
+  "counts": {
+    "rea_operations_exit_0": 9,
+    "rea_operations_blocked": 2,
+    "targets_repo_exact": 3
+  },
+  "not_run": [
+    "LLM real",
+    "backends upstream",
+    "TradingAgents REA",
+    "FortuneMal"
+  ],
+  "real_model_called": false,
+  "orders_placed": 0,
+  "risk_config_touched": false
 }

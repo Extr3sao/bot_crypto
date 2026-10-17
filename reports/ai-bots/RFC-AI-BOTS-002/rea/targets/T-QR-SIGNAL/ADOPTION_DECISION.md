@@ -1,12 +1,24 @@
-# T-QR-SIGNAL · Decisión de adopción
+# T-QR-SIGNAL · decisión de adopción
 
-**Decisión: `DEFER`.**
+**Decisión: `DEFER` para código, `EQUIVALENT_ON_TESTED_CASES` para el invariante
+"gráfico desde el mismo contexto".**
 
-* `REA_EXECUTED = NO`. Ningún `evidence_id` de este target: no se ha ejecutado REA contra él.
-* Operación que aplicaría: inspect_web_page / capture-browser-scenario sobre panel local.
-* Motivo medido: la UI es Streamlit: el DOM y el JS que vería REA son del framework, no de la lógica del proyecto; capturarla probaría la existencia del panel, no su cadena de decisión. La lógica está en Python y se audita con fuente/tests, no con REA. No se clonó ni sirvió localmente el target: el disco del host está al 99 % (2,9 GB libres de 238 GB) y el RFC prohíbe relajar el guardián de almacenamiento o borrar trabajo ajeno para hacer sitio. Es un BLOCKED_STORAGE medido, no una imposibilidad técnica afirmada.
-* Licencia: MIT.
+| eje | estado | base |
+| --- | --- | --- |
+| `REA_EXECUTED` | **YES** — 3 operaciones, 3 `evidence_id` | `ev_9b45318c072de54798bb93a37354c38ec82b2bccf31d3cd1fbf9be0898a16b99`, `ev_b954b8b016f1736a766bc45627a3d21f600503c1d4294e7147133a7ce461c46c`, `ev_ee6845ff71d389439559036e9c661edbaee90a518ac18bd29639ef72995417a3` |
+| `REA_EVIDENCE_APPLICABLE` | sí, para la superficie del dashboard | 14/14 scripts, `complete` |
+| `SOURCE_AUDIT` | sí | cadena Python leída en el commit exacto |
+| `UPSTREAM_RUNTIME_REPRODUCED` | NO | backend no arrancado: requiere configuración del usuario |
+| `LICENSE` | MIT | compatible, sin copia |
+| `ADOPT` | ninguno | no hay capacidad que falte |
 
-No se atribuye a este target ninguna certificación `REA_AUDITED`, `BEHAVIOR_RECONSTRUCTED`
-ni `ADOPT_VERIFIED`. Si aparece un artefacto local autorizado y hay espacio, el dossier se
-completa con `TARGET_BASELINE` + `REA_COMMAND_LOG` + `REA_EVIDENCE` reales.
+## Por qué no se adopta nada
+
+Su cadena coincide con la nuestra en lo esencial y es **más laxa** en el punto crítico: no
+liga la imagen a un hash. Adoptar su diseño sería perder el `INTEGRITY_FAILURE` que acabamos
+de blindar.
+
+## Qué haría falta para cambiar
+
+Un caso en el que su preflight de prompt (lint de tokens, `validate_and_warn`) encuentre
+fallos que el nuestro no detecte, medido sobre nuestro ledger.

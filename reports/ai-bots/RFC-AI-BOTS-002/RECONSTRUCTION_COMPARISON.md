@@ -1,32 +1,37 @@
-# RECONSTRUCTION_COMPARISON — original observado vs nuestros bots
+# RECONSTRUCTION_COMPARISON — qué se comparó, con qué, y qué salió
 
-## Qué se puede comparar (y qué no)
+Regla: un caso comparado no es una equivalencia. Se declara el veredicto por caso, y
+`NOT_COMPARABLE` es un resultado, no un fracaso.
 
-| Caso | Original (observado con REA) | Nuestro runtime | Verdict |
+Implementación comparada: la que ya existe (`BOT-VIS-01`, `BOT-CTX-01`,
+`src/trading_bot/vision/`, `RiskManager`). **No se reimplementó ningún bot en esta
+iteración.**
+
+## Matriz de casos
+
+| caso | original observado | nuestro runtime | veredicto |
 | --- | --- | --- | --- |
-| Estructura de la app | Bundle Next.js de 12 chunks, 10 módulos, 43 scripts en la captura | No aplica: nuestro bot es Python sin UI | `NOT_COMPARABLE` |
-| Endpoints declarados | 7 nodos `endpoint`, todos minificados (`dpl`, `a`, `b`, `cookie`, `/_next/image`) | Rutas internas explícitas (`/api/health`, etc.) | `NOT_COMPARABLE` (no hay semántica legible en el original) |
-| Gráfico → llamada multimodal | **No observado** (REA no ejecuta el JS; el bundle no expone la llamada) | `vision/lane.py` construye PNG + hash y llama al proveedor con recibo | `UNKNOWN` en el original |
-| Decisión → riesgo → paper | **No observado** | `RiskManager.check_signal` → `PaperBroker` en la ruta canónica | `UNKNOWN` en el original |
-| Hash de imagen alterado | No observable | **Fail-closed**: `INTEGRITY_FAILURE` ⇒ 0 decisiones, 0 fills (test nuevo) | propio, verificado |
-| Respuesta tardía | No observable | **Fail-closed**: `LATE_RESPONSE` ⇒ no se rellena (test nuevo) | propio, verificado |
-| Comparación de valor | No observable | `comparison()` devuelve `NOT_COMPARABLE` si cambian cadencia/insumos/capital/costes | propio, verificado |
+| gráfico generado desde el mismo contexto que se analiza | qrak: `analysis_engine` genera el PNG con `self.context` | `vision/chart.py` + `window_fingerprint` | `EQUIVALENT_ON_TESTED_CASES` (nosotros además con hash) |
+| imagen alterada / ajena | FenixAI: base64 en `state`, sin hash ni símbolo ligado | `INTEGRITY_FAILURE` ⇒ 0 propuestas, 0 fills | `DIVERGENT_WE_ARE_STRICTER` |
+| respuesta del modelo más tarde que la apertura | no existe guarda en ninguno de los dos | `LATE_RESPONSE` bloquea el fill | `NOT_COMPARABLE` (no hay contraparte) |
+| modelo fija tamaño/apalancamiento | nof1: `execute(leverage, amountUsdt)` desde el LLM | prohibido por contrato; `RiskManager` decide | `DIVERGENT_BY_DESIGN` |
+| risk recorta tamaño | qrak: `_resolve_position_size_pct` + `position_size_clamp` | `RiskManager` (sin cambios) | `EQUIVALENT_ON_TESTED_CASES` |
+| guardas de drawdown | nof1: declaradas y **comentadas** | activas y testeadas | `DIVERGENT_WE_ARE_STRICTER` |
+| contexto multi-timeframe | nof1: 6 timeframes, velas fijas | `BOT-CTX-01` agrega un TF superior | `NOT_COMPARABLE` hasta medir con el mismo reloj |
+| sin modelo con visión ⇒ sin gráfico | qrak: `supports_image_analysis` | ruta sin provider de imagen | `EQUIVALENT_ON_TESTED_CASES` |
+| comparación de corridas | ninguno de los dos la tiene | `NOT_COMPARABLE` como estado principal | `UNIQUE_TO_OURS` |
 
-**Conclusión:** no existe hoy evidencia que permita decir que nuestro bot «se parece» al
-original en la cadena que importa, porque del original no hay traza de esa cadena. Lo que sí
-está probado es que nuestros tres defectos P0 ya no pueden producir una operación falsa.
+## Lo que no se comparó, y por qué
 
-## Divergencias que sí podemos afirmar
+- **Rentabilidad**: ningún target se ejecutó con datos reales ni con LLM real. `NO_ECONOMIC_EDGE_FOUND`
+  sigue siendo el estado honesto; no hay serie que medir.
+- **Manejo de JSON inválido / timeout / rate limit**: se leyó el código de reintentos
+  (FenixAI tiene backoff con feedback), pero no hay captura de esos escenarios. `UNKNOWN`.
+- **TradingAgents y FortuneMal**: sin superficie REA o sin licencia. `NOT_COMPARABLE`.
 
-1. Nuestro bot exige un **contrato cerrado** (`AITradeOpinion`, prohibido `quantity`,
-   `leverage`, `notional_usdt`, `execute`); en el bundle analizado no hay contrato legible.
-2. Nuestro lane **no ejecuta** lo que el modelo propone sin pasar por riesgo y por la barra
-   siguiente; del original no se observó ninguna regla equivalente.
-3. Nuestra comparación económica **se niega a emitir veredicto** cuando los insumos difieren;
-   el comparador anterior podía publicar `VISION_ADDS_VALUE` con cadencia distinta. Ese
-   defecto está cerrado y tiene test.
+## Conclusión
 
-## Lo que NO se afirma
-
-* No se afirma equivalencia funcional, ni superioridad, ni que el original sea peor.
-* No se afirma que el patrón de nof1 añada valor: `DEFER`, sin datos económicos.
+De los tres targets investigados esta sesión, **ninguno aporta una capacidad que nuestro
+runtime no tenga**, y en los tres invariantes críticos (integridad de imagen, latencia de
+respuesta, autoridad de tamaño) el nuestro es igual o más estricto. Eso es un resultado
+negativo útil: evita adopciones cosméticas.

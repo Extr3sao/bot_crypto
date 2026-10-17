@@ -1,111 +1,76 @@
-<!-- REA-FIRST --> Este informe corresponde al paquete AI-BOTS-002 (runs mock). La pasada REA-FIRST añade `FINAL_REPORT_REA_FIRST.md`, `RUN_REPORT_REA_FIRST.json`, `REA_FINDINGS_V2.json`, `REA_TARGET_MATRIX.csv`, `RECONSTRUCTION_COMPARISON.md`, `INFORME_EJECUTIVO.md` y `rea/targets/`.
+# FINAL_REPORT — RFC-TAP-AI-BOTS-002 v3.1 (REA Target Authority)
 
-# FINAL_REPORT — RFC-TAP-AI-BOTS-002
+**Fecha:** 2026-10-18 · **Rama:** `agent/ai-vision/RFC-AI-VISION-001`
+**Estado global:** `REA_FOUNDATION_READY` · `TARGET_REA_AUDITED` en 4 superficies ·
+`AI_BOTS_RUNTIME_TESTED` · **`REAL_MODEL_CALLED = false`** ·
+`EXTERNAL_PATTERN_CERTIFIED = 0` · `NO_ECONOMIC_EDGE_FOUND`.
 
-**Rama:** `agent/ai-vision/RFC-AI-VISION-001` (baseline `b17644a`, HEAD al ejecutar la
-verificación: ver `RUN_REPORT.json` y el log de Git).
-**Modo:** paper/shadow. Sin trading real, sin cambios de riesgo, sin coste de API.
+## 0. El P0 que abrió esta iteración
 
-## 1. Veredicto
+La v3 presentó los 12 chunks de `https://nof1.ai/` como artefacto de
+`195440/nof1.ai @ 5d27641`. **Era falso.** El commit medido no contiene Next.js en ningún
+fichero y su propio dashboard son dos scripts estáticos en `open-nof1.195440.com`. Un árbol
+sin Next.js no produce chunks de Turbopack.
 
-| Bot | Estado real | Qué está probado | Qué no |
-| --- | --- | --- | --- |
-| BOT-VIS-01 | `IMPLEMENTED`, `UNIT_TESTED`, `MOCK_TEST` | PNG causal adjunto, trazas, riesgo y broker canónicos, PnL neto reconciliado | **`REAL_MODEL_CALLED` BLOCKED**: sin `VISION_API_KEY` no hubo ninguna petición multimodal |
-| BOT-CTX-01 | `IMPLEMENTED`, `UNIT_TESTED`, `MOCK_TEST` | Mismo libro, cero imágenes, prompt MTF propio | Igual: bloqueado por credencial |
+Consecuencia aplicada:
 
-Ningún bot es `PAPER_RUNTIME_EXECUTED` ni `INDEPENDENT_VERIFIED` como estrategia: el
-modelo fue un guion determinista y la economía está marcada `NOT_EVIDENCE`.
+- la evidencia de la v3 se conserva **sin tocar un hash** en `rea/targets/T-NF-PUBLIC/`,
+  reetiquetada `UNATTRIBUTED_NO_DEPLOYMENT_RECEIPT`;
+- se creó `rea/targets/T-NF-NOF1/` sobre el commit exacto, con evidencia REA nueva.
 
-## 2. Correcciones P0 del análisis visual (RED → GREEN)
+## 1. Por target
 
-Los defectos se fijaron primero como tests que fallaban, y se corrigieron después:
+| target | `REA_EXECUTED` | artefacto | `REA_EVIDENCE_ID` | observado | decisión |
+| --- | --- | --- | --- | --- | --- |
+| `T-NF-NOF1` | **YES** | `public/` del commit `5d27641dfa47…` | `ev_4b2bf9c5c313530cc7e1e399d4cde5c175ecdd0018a9f608ee12782522ea9ade` | dashboard estático: 2 JS, 22 nodos de grafo, 0 módulos | `REJECT_CODE`, `EXPERIMENT_MTF` |
+| `T-NF-PUBLIC` | **YES** (v3, conservado) | chunks servidos por www.nof1.ai | 4 ids (`ev_aee35b0f…` …) | Next.js/Turbopack, 43 scripts | `NO_ADOPTION` (origen desconocido) |
+| `T-QR-SIGNAL` | **YES** | `src/dashboard/static` del commit `65e67dc2…` + página en loopback | `ev_9b45318c…`, `ev_b954b8b0…`, `ev_ee6845ff…` | 14 módulos JS, 15.628 nodos AST, `complete` | `DEFER_CODE`, invariante ya cubierto |
+| `T-FE-FENIX` | **YES** | `frontend/dist` construido desde `bd7373d5…` + página en loopback | `ev_be8c7d74…`, `ev_fc2b6552…`, `ev_b3b1e837…` | bundle 868 kB, 256.917 nodos AST, `/login` | `DEFER_CODE`, `REJECT` transporte de imagen |
+| `T-TA-CRITIC` | NO | — | — | sin superficie JS; un HTML no prueba orquestación | `EXPERIMENT` |
+| `T-FM-DEMO` | NO | — | — | sin licencia | `REJECT` |
+| `T-TAP-OWN` | NO aplica | — | — | no hay JS propio | verificado con pytest + verificador |
 
-| Defecto | RED observado | Test que lo fija |
+## 2. Hallazgos de fondo (no de forma)
+
+1. **nof1 no es un bot visual.** Cero `image_url`, cero `savefig`, cero payload multimodal en
+   todo `src/`. El RFC lo listaba como candidato de visión; la fuente lo desmiente.
+2. **nof1 invierte la autoridad.** El LLM emite `leverage` (hasta 15×) y `amountUsdt`. Nuestro
+   contrato lo prohíbe; es una diferencia de arquitectura, no de grado.
+3. **nof1 declara guardas que no aplica.** El drawdown de cuenta está comentado en el código.
+4. **FenixAI transporta la imagen como cadena base64 suelta.** No hay hash, ni símbolo, ni
+   reloj ligados a lo que se envía al modelo. Es exactamente el defecto que corregimos.
+5. **Semantic Signal es el más cercano a nosotros** y aun así no liga la imagen a un hash:
+   logra coherencia por construcción. Nuestro lane es más estricto.
+
+## 3. Límites técnicos medidos (no excusas)
+
+- `import-reference-source` → **exit 1, `unsupported_host`**: REA no puede importar árboles de
+  fuente en Windows (falta *safe no-follow file opens*). Por tanto
+  `compare-source-to-bundle` no se pudo ejecutar: exige un `HistoricalSourceGraph` que sólo
+  produce el importador bloqueado. Registrado, no simulado.
+- Backend Python de QRAK/FENIX y backend TypeScript de nof1 **no se ejecutaron**: requieren
+  claves y servicios. Se auditó por fuente; la etiqueta dice fuente, no REA.
+- Disco: 2.3 GB libres al empezar. Los tres checkouts (2.3 MB + 6.3 MB + 18 MB) y el build de
+  FenixAI (205 MB de `node_modules`) cupieron con margen; no se borró nada ajeno.
+
+## 4. Lo que sigue bloqueado
+
+| bloqueo | estado | qué lo desbloquea |
 | --- | --- | --- |
-| Volumen dibujado dos veces | 80 rectángulos de volumen para 40 velas | `test_D1_the_volume_histogram_is_drawn_once_per_candle` |
-| Etiqueta pegada al borde derecho | 34 px de tinta en el margen | `test_D2_the_last_price_label_is_not_clipped_by_the_canvas` |
-| Anotación fuera de la caja | la caja de texto excedía el ancho del lienzo | `test_D2_the_annotation_is_inside_the_figure_box` |
-| Cuerpos de vela demasiado finos | 3,80 px de cuerpo (5,93 px por ranura) | `test_D3_candles_are_wide_enough_to_read` |
-| Tokens de imagen mal estimados | 1 000 tokens declarados para una imagen que factura más | `test_D3_the_image_stays_within_the_budget_it_declares` |
+| `REAL_MODEL_CALLED` | **BLOQUEADO** por credencial y presupuesto | autorización explícita de gasto + clave fuera del chat |
+| comparación económica | `NOT_EVIDENCE` | una llamada real y corridas con reloj propio |
+| `ADOPT_VERIFIED` de patrón externo | 0 | evidencia REA + runtime del upstream reproducido |
+| TradingAgents | `EXPERIMENT` | encontrar una superficie que REA pueda observar |
 
-Además, en el lane:
+## 5. Verificación
 
-- el guard de *hueco de datos* impide ejecutar una opinión en una barra que no es la
-  siguiente en el tiempo (`test_guards_and_controls.py`), que era un fallo real de
-  causalidad de ejecución;
-- los guards de PIT/esquema (`guards.py`) rechazan imagen stale, activo ajeno, `data_time`
-  futuro y niveles fuera del mercado **antes** de pagar la llamada.
+`scripts/ai_bots_rea_verify.py` comprueba los artefactos, no las afirmaciones: ids de 64 hex,
+commit completo de 40, hashes de build, ausencia de atribución en el dossier público, y que
+el P0 siga cerrado en el runtime. Se probó por mutación: quitar un fichero del dossier debe
+hacer fallar el verificador.
 
-## 3. Registro de bots y ejecución
+## 6. Siguiente paso
 
-- `BotCapabilityRegistry` cerrado: dos bots, ambos desactivados por defecto, activación
-  explícita por `AI_BOTS_ENABLED` **y** `AI_BOTS_ALLOW`, y lista negra de capacidades que
-  lanza `RegistryError` si alguien intenta concederlas.
-- `AITradeOpinion` prohíbe por nombre `quantity`, `leverage`, `notional_usdt`, `execute`.
-- Un solo `RiskManager` y un solo `PaperBroker` por run; el bot no puede importarlos
-  (verificado por AST en la verificación independiente).
-
-## 4. Evidencia ejecutada
-
-```text
-pytest tests/unit/vision tests/unit/intelligence tests/unit/paper tests/unit/risk
-  366 passed
-ruff (vision, intelligence, scripts, tests)      All checks passed
-mypy (vision, intelligence, scripts)             Success: no issues found in 18 files
-
-python scripts/ai_bots_run.py --mode mock --limit-bars 600     EXIT 0
-python scripts/ai_bots_verify.py                               PASS 34 / FAIL 0
-python scripts/ai_bots_run.py --mode live                      EXIT 2 BLOCKED
-```
-
-| bot | llamadas | fills | cerrados | net USDT | costes USDT | PNG |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| BOT-VIS-01 | 40 | 14 | 14 | −34,448805 | 22,393861 | 40 |
-| BOT-CTX-01 | 40 | 14 | 14 | −34,448805 | 22,393861 | 0 |
-
-El resultado negativo es **esperado y no es un hallazgo**: el guion alterna
-LONG/NO_TRADE/SHORT sin ninguna señal, así que paga costes por construcción. Sirve para
-demostrar que las dos rutas usan el mismo libro (idénticos números) y que sólo la visual
-adjunta píxeles.
-
-Datos: `data/edge08/universe-1h` (Binance 1h ya versionado), 600 barras, AAVE y UNI,
-ventana de 120 barras, decisión cada 24, `cost_for` 1×, capital 10 000 USDT.
-
-## 5. Artefactos
-
-- `BOT_CAPABILITY_REGISTRY.json`, `VISION_SNAPSHOT_MANIFEST.json` (por bot),
-  `MODEL_INVOCATIONS.jsonl`, `BOT_DECISION_TRACE.jsonl`, `BOT_BENCHMARK.csv`,
-  `RUN_REPORT.json/.md`, `INDEPENDENT_VERIFICATION.json`, `REA_FINDINGS.json`.
-- Ledgers encadenados: `runs/bot-*/BOT-*_DECISIONS.jsonl` (cadena verificada, 40
-  decisiones por bot, 14 cierres).
-- Los 40 PNG enviados están guardados con su SHA-256; el verificador recalcula el hash del
-  fichero y lo compara con el manifiesto.
-
-## 6. Bloqueos declarados (no PASS)
-
-1. **`BLOCKED_MODEL_API`** para ambos bots: no hay credencial. Sin petición no hay
-   `provider_id`, `model_id`, `request_id` ni prueba de que el proveedor reciba la imagen.
-   Cualquier afirmación de visión real sería falsa.
-2. **Comparación económica**: `NOT_EVIDENCE`. Un replay histórico no es evidencia
-   prospectiva y el modelo no es un modelo.
-3. **REA**: CLI ejecutada (`doctor.json`, `help.txt`); análisis estático de terceros
-   `NOT_EXECUTED` por falta de clones, motores y licencias. Ver `REA_FINDINGS.json`.
-
-## 7. Limitaciones
-
-- Cadencia de decisión 24 barras frente a cada barra del sistema determinista.
-- Coste estimado por tabla de precios, no factura del proveedor.
-- Una sola realización no es un test de significancia.
-- `matplotlib` es dependencia del proyecto desde AI-VISION-001.
-- El `model_status` sólo se eleva a `REAL_MODEL_CALL` con recibo de éxito; hoy no existe.
-
-## 8. Reanudación exacta
-
-```bash
-printf 'VISION_API_KEY=sk-...\n' >> .env
-./.venv/Scripts/python scripts/ai_vision_smoke.py            # 1 llamada real, recibo
-./.venv/Scripts/python scripts/ai_bots_run.py --mode live --limit-bars 600
-./.venv/Scripts/python scripts/ai_bots_verify.py
-```
-
-Hasta entonces el estado correcto es **BLOCKED**, no PASS.
+Convertir la superficie de nof1 en conducta: `source maps` del despliegue, o levantar el
+backend TypeScript en laboratorio con el proveedor mockeado. Cualquier otra cosa es leer un
+README con más ceremonia.

@@ -26,6 +26,16 @@ MATRIX = REA / "REA_TARGET_MATRIX.csv"
 DOCS = REPO / "docs" / "ai-bots" / "RFC-AI-BOTS-002"
 
 EVIDENCE_ID = re.compile(r"^ev_[0-9a-f]{64}$")
+
+
+def _json(path: Path) -> dict:
+    if not path.is_file():
+        return {}
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def _read(path: Path) -> str:
+    return path.read_text(encoding="utf-8") if path.is_file() else ""
 #: Licencias medidas con la API de GitHub el 2026-10-18. Una regresión aquí reintroduce
 #: el error MIT/Apache que la auditoría anterior arrastraba.
 LICENSES = {
@@ -217,6 +227,114 @@ def main() -> int:
         "source_registry_corrects_fenix_license",
         "Apache-2.0" in fenix_licence and "MIT" not in fenix_licence,
         f"SRC-FENIX licence cell is {fenix_licence!r}",
+    )
+
+    # 8. v3.1 provenance: a deployment is not a repository, and the mistake cannot come back
+    public_house = TARGETS / "T-NF-PUBLIC"
+    repo_house = TARGETS / "T-NF-NOF1"
+    report.check("public_deployment_dossier_exists", (public_house / "PROVENANCE.md").is_file())
+    report.check("repo_exact_nof1_dossier_exists", (repo_house / "PROVENANCE.md").is_file())
+
+    public_baseline = _json(public_house / "TARGET_BASELINE.json")
+    claimed_source = str(public_baseline.get("source", ""))
+    report.check(
+        "public_bundle_is_not_attributed_to_a_repository",
+        "195440" not in claimed_source and claimed_source.startswith("unattributed"),
+        f"source is {claimed_source!r}",
+    )
+    report.check(
+        "public_bundle_has_no_commit",
+        public_baseline.get("upstream_commit") is None
+        and public_baseline.get("upstream_commit_pinned_for_rfc") is None,
+        "a deployment without a build receipt cannot carry a commit",
+    )
+    report.check(
+        "public_bundle_states_its_attribution_gap",
+        public_baseline.get("attribution") == "UNATTRIBUTED_NO_DEPLOYMENT_RECEIPT",
+        str(public_baseline.get("attribution")),
+    )
+
+    repo_baseline = _json(repo_house / "TARGET_BASELINE.json")
+    commit = str(repo_baseline.get("commit", ""))
+    report.check(
+        "repo_exact_pin_is_a_full_sha",
+        re.fullmatch(r"[0-9a-f]{40}", commit) is not None,
+        commit or "no commit recorded",
+    )
+    report.check(
+        "repo_exact_pin_is_the_rfc_commit",
+        commit.startswith("5d27641"),
+        "the RFC pinned 5d27641; a different commit would be a silent substitution",
+    )
+    report.check(
+        "repo_exact_records_its_tree",
+        re.fullmatch(r"[0-9a-f]{40}", str(repo_baseline.get("tree_sha", ""))) is not None,
+        str(repo_baseline.get("tree_sha")),
+    )
+    report.check(
+        "repo_exact_artifact_is_the_committed_dashboard",
+        "public/" in str(repo_baseline.get("artifact", "")),
+        "the analysed artifact must be the one the commit ships",
+    )
+
+    #: The contradiction that refuted the old attribution must stay recorded.
+    repo_provenance = (
+        (repo_house / "PROVENANCE.md").read_text(encoding="utf-8")
+        if (repo_house / "PROVENANCE.md").is_file()
+        else ""
+    )
+    report.check(
+        "provenance_records_the_build_system_contradiction",
+        "turbopack" in repo_provenance.lower() and "tsdown" in repo_provenance,
+        "Turbopack bundle vs a repository whose build is tsdown",
+    )
+    report.check(
+        "provenance_keeps_the_old_evidence_ids",
+        all(
+            evidence in (public_house / "REA_EVIDENCE.json").read_text(encoding="utf-8")
+            for evidence in (
+                "ev_aee35b0f11df7a73b082c5cbc72e10c97f27b22917da003998d93eaa455617fc",
+                "ev_82d99570975285bde3570fb1b4002ea6b323fefed4308ce5c39ac23d0621d56c",
+            )
+        )
+        if (public_house / "REA_EVIDENCE.json").is_file()
+        else False,
+        "demotion must not delete the v3 evidence",
+    )
+
+    #: A limitation of the tool is recorded, never converted into a pass.
+    repo_log = (_read(repo_house / "REA_COMMAND_LOG.jsonl") or "").lower()
+    report.check(
+        "rea_host_limitation_is_recorded",
+        "unsupported_host" in repo_log and "exit_code\": 1" in repo_log,
+        "import-reference-source failed on this Windows host",
+    )
+
+    # 9. every executed target cites its own evidence in the source/runtime correlation
+    for target in findings["targets"]:
+        if not target.get("rea_executed"):
+            continue
+        correlation = TARGETS / target["target_id"] / "SOURCE_RUNTIME_CORRELATION.md"
+        body = correlation.read_text(encoding="utf-8") if correlation.is_file() else ""
+        cited = [i for i in target["evidence_ids"] if i in body or i[:12] in body]
+        report.check(
+            f"{target['target_id']}_correlation_cites_evidence",
+            bool(cited),
+            f"{len(cited)}/{len(target['evidence_ids'])} ids cited",
+        )
+
+    # 10. the fenix build that was analysed is reproducible from the pin
+    fenix = _json(TARGETS / "T-FE-FENIX" / "TARGET_BASELINE.json")
+    build = fenix.get("build") or {}
+    report.check(
+        "fenix_artifact_was_built_from_the_pin",
+        build.get("exit_code") == 0 and bool(build.get("dist")),
+        "npm ci + vite build exit 0 with recorded dist hashes",
+    )
+    report.check(
+        "fenix_commit_is_pinned",
+        re.fullmatch(r"[0-9a-f]{40}", str(fenix.get("commit", ""))) is not None,
+        str(fenix.get("commit")),
     )
 
     payload = {

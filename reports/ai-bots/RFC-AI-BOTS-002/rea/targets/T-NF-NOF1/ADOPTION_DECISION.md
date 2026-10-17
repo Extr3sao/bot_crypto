@@ -1,17 +1,28 @@
-# T-NF-NOF1 · Decisión de adopción
+# T-NF-NOF1 · decisión de adopción
 
-**Decisión: `DEFER` (código `REJECT`; patrón `EXPERIMENT`).**
+**Decisión: `REJECT` para código, `REJECT_ANTI_PATTERN` para sus dos rasgos centrales,
+`EXPERIMENT` para el único rasgo reutilizable.**
 
-* `REA_EXECUTED = YES` sobre el artefacto **compilado** público (4 operaciones, 4 evidence_id
-  reales, exit 0 todos).
-* `REA_EVIDENCE_ID` válidos: `ev_aee35b0f…`, `ev_f7020db1…`, `ev_47c01acc…`, `ev_82d99570…`.
-* `UPSTREAM_RUNTIME_REPRODUCED = NO`: REA no ejecuta el JS y el bundle minificado no expone
-  la cadena gráfico→modelo→decisión.
-* `LICENSE = AGPL-3.0` (verificada por API de GitHub). **No se importa ni se traduce código.**
-* Valor observado: el sitio sirve un frontend Next.js con chunks separados y endpoints
-  minificados; nada que nuestro `BOT-VIS-01` no tenga ya con contrato explícito.
+| eje | estado | base |
+| --- | --- | --- |
+| `REA_EXECUTED` | **YES** — `ev_4b2bf9c5c313530cc7e1e399d4cde5c175ecdd0018a9f608ee12782522ea9ade` | análisis del `public/` del commit exacto, exit 0 |
+| `REA_EVIDENCE_APPLICABLE` | parcial | artefacto estático; la cadena de decisión es TypeScript que REA no ejecuta |
+| `UPSTREAM_RUNTIME_REPRODUCED` | NO | sin `npm ci`, sin provider, sin órdenes |
+| `LICENSE_DECISION` | AGPL-3.0 | estudiar sí; copiar/derivar, no |
+| `ADOPT` | ninguno | — |
 
-**Qué haría falta para subir de DEFER a ADOPT/REJECT razonado**: un build de laboratorio
-con source maps (`--fetch-source-maps`) o el árbol TS con nombres legibles, y una captura
-de red que muestre la petición al modelo. Sin eso, cualquier afirmación sobre su
-comportamiento sería una suposición.
+## Por qué `REJECT` de código
+
+AGPL-3.0 y una arquitectura en la que el modelo mueve el apalancamiento. Importar algo
+obligaría a arrastrar ambas cosas.
+
+## Por qué `EXPERIMENT` en un solo rasgo
+
+Su contexto multi-timeframe es el único elemento que nuestra `BOT-CTX-01` ya cubre de forma
+parcial. Ampliar a 6 timeframes es una hipótesis, no una mejora: sin medida económica no se
+toca el runtime.
+
+## Qué haría falta para cambiar de decisión
+
+Un escenario reproducible en el que la extensión de contexto multi-timeframe mejore el
+resultado neto del mismo libro, con el mismo reloj y costes. Hoy no existe.
