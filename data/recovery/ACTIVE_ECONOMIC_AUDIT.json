@@ -1,8 +1,8 @@
 {
   "artifact": "ACTIVE_ECONOMIC_AUDIT",
   "work_package": "WP-3 (POST RFC-049 / ACTIVE RECOVERY)",
-  "generated_at_utc": "2026-10-12T18:40:43Z",
-  "head": "90cee7327e69de1af0d599d9c5b008f43ed3b722",
+  "generated_at_utc": "2026-10-17T12:21:32Z",
+  "head": "9733f12479ceceef9ceac57dbfec708b28e89c14",
   "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
   "mode": "OFFLINE READ-ONLY AUDIT — no process started, no order, no key, no capital",
   "method": "tracked admission ledger + primary research artefacts + the live registry code path + the paper lane's own reports; the runtime cost plane is re-derived from COST_MODEL_V3, never typed",
@@ -396,19 +396,19 @@
       "resolved_from": "EVIDENCE_COPY",
       "present_on_this_machine": true,
       "local_forms": {
-        "sha256": "9dea77174d89ac2f15329f071c89083103fdb690cff15b3a70c240b5fe6bd7ac",
-        "sha256_lf": "6bd89eb626bf7e70edbf0f088bccaae81f320e57ec761e4884b6d9a1c3622d3a",
-        "sha256_crlf": "9dea77174d89ac2f15329f071c89083103fdb690cff15b3a70c240b5fe6bd7ac",
-        "bytes": 6290,
+        "sha256": "92c1735b30af7c58c8875809c11160bc034058425bc213aa55e9aa3c987f3d5c",
+        "sha256_lf": "9e8ea7f429035be73b9bd724fbbcf85415c9dd9f6713dff4aaa58089a300a445",
+        "sha256_crlf": "92c1735b30af7c58c8875809c11160bc034058425bc213aa55e9aa3c987f3d5c",
+        "bytes": 7308,
         "line_endings": "CRLF"
       },
       "local_reproduces_the_authority": false,
       "attested_field_values": {
-        "status": "HEALTHY",
+        "status": "WARNING",
         "standing_state.NEXT_CAMPAIGN": "NOT_AUTHORIZED",
         "standing_state.LIVE_TRADING": "DISABLED"
       },
-      "attested_fields_match_the_snapshot": true,
+      "attested_fields_match_the_snapshot": false,
       "evidence_reproduces_the_authority": true,
       "local_matches_the_evidence_copy": false,
       "note": "a live lane file: the certified state reads the dated snapshot the repository carries, and this observation is what the file says right now"
@@ -492,8 +492,8 @@
     {
       "path": "scripts/start_paper_trading.py",
       "exists": true,
-      "sha256_lf": "8cd8832010353ff10d1e1b04287720d40e732d61b1313683c20c54b76f0d0106",
-      "sha256_crlf": "742bec50406a4e6c2598e3da229fc899de3254577529a0e3f850c92893d44b1d",
+      "sha256_lf": "5d7c59cd779c7e91bb9e36094870a5df10945131c4ae91dec277eeb8f8d27251",
+      "sha256_crlf": "900a964354baa982cfb1f56650b0fb17b8628d50f7cb4713f7e192fd111ad21f",
       "composes_admission_ledger": true,
       "composes_paper_broker": true,
       "has_default_indicator_precompute": true,
@@ -5561,5 +5561,5 @@
     "state_written_outside_recovery": false,
     "frozen_artifacts_modified": false
   },
-  "payload_sha256": "023b66ffd1213b069607a8844f669c0ff00c0b35533619a031d4d6a5d2fb2a53"
+  "payload_sha256": "c6ea34388745471edbae3fd093ce63b9453a58be5226bc10a296989f98f0cf23"
 }
