@@ -20,10 +20,11 @@ Los defectos se fijaron primero como tests que fallaban, y se corrigieron despu�
 
 | Defecto | RED observado | Test que lo fija |
 | --- | --- | --- |
-| Volumen dibujado dos veces | 80 barras de volumen para 40 velas | `test_visual_defects.py::test_volume_is_drawn_once` |
-| Etiqueta pegada al borde derecho | 34 px de tinta en el margen | `test_visual_defects.py::test_price_axis_keeps_a_margin` |
-| Cuerpos de vela demasiado finos | 5,93 px por vela con ventana fija | `test_visual_defects.py::test_candle_bodies_are_wide_enough` |
-| Rejilla/leyenda robando tinta | conteo de píxeles por región | `test_visual_defects.py::test_grid_does_not_hide_price` |
+| Volumen dibujado dos veces | 80 rectángulos de volumen para 40 velas | `test_D1_the_volume_histogram_is_drawn_once_per_candle` |
+| Etiqueta pegada al borde derecho | 34 px de tinta en el margen | `test_D2_the_last_price_label_is_not_clipped_by_the_canvas` |
+| Anotación fuera de la caja | la caja de texto excedía el ancho del lienzo | `test_D2_the_annotation_is_inside_the_figure_box` |
+| Cuerpos de vela demasiado finos | 3,80 px de cuerpo (5,93 px por ranura) | `test_D3_candles_are_wide_enough_to_read` |
+| Tokens de imagen mal estimados | 1 000 tokens declarados para una imagen que factura más | `test_D3_the_image_stays_within_the_budget_it_declares` |
 
 Además, en el lane:
 
