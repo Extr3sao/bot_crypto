@@ -199,8 +199,16 @@ class InstrumentSpec:
         """
         if self.quantity_step <= 0 or not math.isfinite(quantity) or quantity <= 0.0:
             return 0.0
-        steps = int(quantity / self.quantity_step + 1e-9)
-        return round(steps * self.quantity_step, 12)
+        # A finite quantity can still produce a non-finite quotient (a tiny
+        # entry price did exactly that) and ``int(inf)`` raises. Same rule as
+        # above: an unrepresentable size is a refusal, never a crash.
+        quotient = quantity / self.quantity_step + 1e-9
+        if not math.isfinite(quotient):
+            return 0.0
+        rounded = int(quotient) * self.quantity_step
+        if not math.isfinite(rounded):
+            return 0.0
+        return round(rounded, 12)
 
     def to_dict(self) -> dict[str, Any]:
         return {

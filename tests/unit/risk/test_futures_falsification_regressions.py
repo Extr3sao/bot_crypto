@@ -659,6 +659,20 @@ def test_engine_error_cannot_be_laundered_into_an_order() -> None:
 # --------------------------------------------------------------------------
 
 
+def test_round_quantity_down_refuses_a_quotient_that_overflows(
+    instrument: InstrumentSpec,
+) -> None:
+    """A finite size with a tiny entry can give an infinite quotient.
+
+    The property suite found this as an ``OverflowError`` from ``int(inf)`` in
+    the risk plane (entry 2.1e-302, quantity about 4.7e307). The documented
+    contract is that an unrepresentable size becomes a refusal, never a crash.
+    """
+    assert instrument.round_quantity_down(1e308) == 0.0
+    step = instrument.quantity_step
+    assert instrument.round_quantity_down(step * 3) == pytest.approx(step * 3)
+
+
 @hyp_settings(max_examples=1000, deadline=None)
 @given(
     entry=st.one_of(
