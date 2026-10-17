@@ -40,6 +40,10 @@ Artefactos: `reports/ai-bots/RFC-AI-BOTS-002/` (RUN_REPORT, FINAL_REPORT,
 INDEPENDENT_VERIFICATION, REA_FINDINGS, manifests, ledgers) y
 `docs/ai-bots/RFC-AI-BOTS-002/` (autoridad, fuentes, matriz de patrones).
 
+**Publicado** (fast-forward sobre 091d55d): 520a6df (P0 visual y guards), 317d161
+(registro y runner de bots), 76d3992 (evidencia y verificación). Comprobar con
+git log --oneline -3, no leyéndolo aquí.
+
 **Pendiente real**: credencial del proveedor para `REAL_MODEL_CALLED`; sin ella el veredicto
 económico no puede existir. **No** se ha tocado riesgo, no hay ruta de orden real, y REA
 quedó en `doctor/help` ejecutados con análisis de terceros `NOT_EXECUTED`.
