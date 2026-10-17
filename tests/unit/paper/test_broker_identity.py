@@ -14,7 +14,7 @@ here instead of in a downstream artefact.
 
 from __future__ import annotations
 
-import time
+from dataclasses import replace
 
 import pytest
 
@@ -34,29 +34,39 @@ def _buy(symbol: str = "BTC/USDT", price: float = 100.0, notional: float = 1_000
     )
 
 
-def test_two_fills_in_the_same_clock_tick_cannot_share_an_identity(
-    monkeypatch: pytest.MonkeyPatch,
-) -> None:
-    """The 14R collision, reproduced and closed.
+def test_two_fills_sharing_the_legacy_identity_have_distinct_identifiers() -> None:
+    """The 14R collision, forced and then closed.
 
-    ``time.time`` is frozen, so both openings carry an identical ``opened_at``
-    *and* an identical entry price: exactly the pair the old external identity
-    used. The broker's own identifiers must still differ.
+    Two openings are made to share the *whole* legacy identity — same symbol, same
+    ``opened_at``, same entry price — which is what two fills inside one clock
+    tick produce on any platform whose clock is coarser than the fill rate. Under
+    the old scheme those two trades were one key and a deduplicating reconciler
+    dropped one of them; under the broker's own identifiers they cannot collide.
+
+    ``opened_at`` cannot simply be frozen here: its default factory is bound at
+    class-creation time, so the collision is constructed explicitly instead of
+    hoped for from a patched clock (which made the first version of this test
+    pass or fail on the host's timer resolution).
     """
-    monkeypatch.setattr(time, "time", lambda: 1_700_000_000.0)
-    broker = PaperBroker(equity=10_000.0, slippage_bps=0.0, book_id="TESTBOOK")
-    broker.execute_signal(_buy(price=100.0))
-    first = broker.positions["BTC/USDT"]
-    broker.check_positions({"BTC/USDT": 105.0})  # take profit-ish close
-    broker.execute_signal(_buy(price=100.0))
-    second = broker.positions["BTC/USDT"]
+    broker = PaperBroker(equity=10_000.0, slippage_bps=0.0, commission_bps=0.0, book_id="TESTBOOK")
+    same_instant = 1_700_000_000.0
+    for _ in range(2):
+        position = broker.execute_signal(_buy(price=100.0))
+        assert isinstance(position, PaperPosition)
+        broker.replace_position(replace(position, opened_at=same_instant))
+        broker.check_positions({"BTC/USDT": 90.0})  # stop-loss close
 
-    assert first.opened_at == second.opened_at  # the collision is real
-    assert first.entry_price == second.entry_price
-    assert first.position_id != second.position_id
-    assert first.entry_order_id != second.entry_order_id
-    assert first.position_id.startswith("pos-TESTBOOK-")
-    assert first.entry_order_id.startswith("ord-TESTBOOK-")
+    trades = broker.closed_trades
+    assert len(trades) == 2
+    legacy_identity = {(trade.symbol, trade.opened_at, trade.entry_price) for trade in trades}
+    assert legacy_identity == {("BTC/USDT", same_instant, 100.0)}, (
+        "the two trades must be indistinguishable under the old external identity"
+    )
+    identifiers = {trade.position_id for trade in trades} | {trade.trade_id for trade in trades}
+    assert len(identifiers) == 4
+    assert all(identifiers)
+    assert all(trade.trade_id.startswith("trd-TESTBOOK-") for trade in trades)
+    assert all(trade.position_id.startswith("pos-TESTBOOK-") for trade in trades)
 
 
 def test_a_close_names_the_position_and_the_orders_it_settled() -> None:

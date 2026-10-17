@@ -1,0 +1,229 @@
+{
+  "artifacts": {
+    "ALPHA_EXPERIMENT_MATRIX.csv": "e68a23875fb2073924b85920d1a70220488e148dfdbe4f3b23f95563350db140",
+    "ALPHA_RESULTS.json": "5430ff5866fcf5594511f5c500cb1297c97eddd0a20aaca866492e6d4282ac26",
+    "INDEPENDENT_VERIFICATION.json": "2cae79369ca75fb25cab7abe1c93544cef406ccd4d9c530d27741a5139791a25",
+    "OOS_CAPTURE_MANIFEST_V2.json": "38c6132bbe9bf481854f85c612f4785c92e5b4fa7fe2948a5fee9fb106e89116",
+    "OOS_PREREGISTRATION_V2.json": "76351aaf63a80d8608a833012ab90bd1325936a9d92ad3eab9abd1a6bfd3666e",
+    "PARITY_DIVERGENCE_EXPLAINED.json": "e8506ebe12288c18bd630e2c8d777e1b5acaca789f2b0868850f6ba1c126566a",
+    "PROSPECTIVE_PAPER_REPORT.json": "51075a9daa2ca69429ae3b68566d11381426e2de6f225ba0caafe487bbcde916"
+  },
+  "builder_neq_verifier": true,
+  "candidate_registration": {
+    "counts_by_status": {
+      "COST_KILLED": 0,
+      "NO_GROSS_EDGE": 0,
+      "PAPER_ACTIVE": 0,
+      "PAPER_CANDIDATE": 0,
+      "PAPER_RETIRED": 0,
+      "REJECTED": 0,
+      "RESEARCH_CANDIDATE": 12,
+      "RESEARCH_REQUIRED": 3,
+      "UNKNOWN": 0
+    },
+    "paper_candidates": [],
+    "path": "config\\strategy_candidates_edge15.json"
+  },
+  "credentials_used": false,
+  "execution_classes": [
+    {
+      "class": "DEFECT_REPAIR",
+      "produced": true
+    },
+    {
+      "class": "HISTORICAL_RESEARCH",
+      "corpora_are_consumed": true,
+      "produced": true
+    },
+    {
+      "class": "EXPERIMENTAL_PROSPECTIVE_PAPER",
+      "produced": true
+    },
+    {
+      "class": "PROSPECTIVE_HOLDOUT",
+      "produced": false,
+      "prospective_bars": 0,
+      "state": "OOS_ACCRUING"
+    }
+  ],
+  "false_success": 0,
+  "generated_at_utc": "2026-10-17T07:40:00Z",
+  "git_head": "a6943c4c4e7d4f87d0ecf076600e837a586b486e",
+  "open_items": [
+    "prospective holdout accruing: 0 bars after the freeze instant",
+    "no admitted strategy with a measured positive gross edge after costs",
+    "maker family deferred until a fill/queue model exists",
+    "disk guard at INSUFFICIENT_FREE_SPACE (5.9 GiB free), not relaxed"
+  ],
+  "order_sent": false,
+  "p0_defects": {
+    "p0_1_holdout_order": {
+      "capture_started_unix_ns": 1792221621701637600,
+      "clauses": {
+        "all_prospective_bars_open_after_freeze": true,
+        "commit_precedes_capture": true,
+        "freeze_precedes_capture": true,
+        "prereg_file_matches_committed_blob": true,
+        "protocol_digest_matches": true
+      },
+      "commit": "b4ff58892263b44de122b8fe6b08239ffb831032",
+      "frozen_at_utc": "2026-10-17T07:15:28Z",
+      "previous_capture_is_descriptive": "DESCRIPTIVE_FOR_THESE_HYPOTHESES",
+      "verdict": "ORDER_VERIFIED"
+    },
+    "p0_2_independent_verifier": {
+      "imports_builder_modules": false,
+      "result": "32/32",
+      "structural_check": "V31 refuses a builder import; V32 asserts the 14R import is gone",
+      "verdict": "VERIFIED",
+      "verifier": "scripts/edge15_verify.py"
+    },
+    "p0_3_broker_identity": {
+      "identifiers": [
+        "position_id",
+        "entry_order_id",
+        "exit_order_id",
+        "trade_id"
+      ],
+      "lane_books": [
+        "EDGE15LANE-BTCUSDT",
+        "EDGE15LANE-ETHUSDT",
+        "EDGE15LANE-SOLUSDT"
+      ],
+      "sequence_continues_across_restore": true,
+      "tests": "tests/unit/paper/test_broker_identity.py (7 tests)"
+    },
+    "p0_4_accounting": {
+      "accrued_entry_commissions_reported_separately": true,
+      "identities_hold_in_lane": true,
+      "quantities": [
+        "cash",
+        "realised_pnl",
+        "unrealised_pnl",
+        "equity_mark_to_market"
+      ]
+    },
+    "p0_5_parity_divergences": {
+      "jesse": {
+        "verdict": "RESOLVED",
+        "worst_agreement_among_other_trades_bps": 0.080318,
+        "worst_decomposition_error_bps": 1.21e-07
+      },
+      "vnpy": {
+        "they_are_the_last_two_entries": true,
+        "unmatched_trades": 2,
+        "verdict": "RESOLVED"
+      }
+    }
+  },
+  "p1_alpha": {
+    "families": [
+      "vol_regime_breakout",
+      "trend_pullback",
+      "cross_sectional_rotation",
+      "mean_reversion_vol_liq",
+      "maker_only_spread_capture"
+    ],
+    "held_out_tail": {
+      "cross_sectional_rotation": {
+        "gross_bps_per_trade": -35.6295,
+        "net_bps_1x": -11464.6323,
+        "net_bps_2x": -16605.0323,
+        "trades": 355
+      },
+      "mean_reversion_vol_liq": {
+        "gross_bps_per_trade": 54.8413,
+        "net_bps_1x": 21075.1184,
+        "net_bps_2x": -2326.0976,
+        "trades": 811
+      },
+      "trend_pullback": {
+        "gross_bps_per_trade": -37.0432,
+        "net_bps_1x": -58808.5987,
+        "net_bps_2x": -84463.5155,
+        "trades": 895
+      },
+      "vol_regime_breakout": {
+        "gross_bps_per_trade": 223.7941,
+        "net_bps_1x": 33366.8524,
+        "net_bps_2x": 28464.9172,
+        "trades": 171
+      }
+    },
+    "next_hypothesis": "the tail says the surviving structure is the cost model, not the signal: a family whose gross expectancy per trade exceeds its own tier's round trip (>= 24 bps for a tier-1 pair, >= 28 bps for a thin alt) is the next thing to look for, and the prospective slice is the only place it can be confirmed",
+    "no_economic_edge_found": true,
+    "verdicts": {
+      "cross_sectional_rotation": "REJECT",
+      "maker_only_spread_capture": "DEFER_NO_FILL_MODEL",
+      "mean_reversion_vol_liq": "EXPERIMENT_COST_FRAGILE",
+      "trend_pullback": "REJECT",
+      "vol_regime_breakout": "REJECT_OUTLIER_DRIVEN"
+    }
+  },
+  "p2_cost_model": {
+    "examples": [
+      {
+        "per_side_bps": 11.6768,
+        "round_trip_bps": 23.3536,
+        "symbol": "BTC/USDT",
+        "tier": "TIER1"
+      },
+      {
+        "per_side_bps": 11.6768,
+        "round_trip_bps": 23.3536,
+        "symbol": "ETH/USDT",
+        "tier": "TIER1"
+      },
+      {
+        "per_side_bps": 12.65,
+        "round_trip_bps": 25.3,
+        "symbol": "SOL/USDT",
+        "tier": "MAJOR"
+      },
+      {
+        "per_side_bps": 14.48,
+        "round_trip_bps": 28.96,
+        "symbol": "UNI/USDT",
+        "tier": "ALT"
+      }
+    ],
+    "schema_version": "EDGE15_COST_MODEL_V1",
+    "sensitivity": [
+      1.0,
+      2.0,
+      3.0
+    ],
+    "zero_cost_used_to_certify": false
+  },
+  "p3_lane": {
+    "authoritative_ledger_untouched": true,
+    "closed_trades": 14,
+    "cycles": {
+      "by_action": {
+        "FILL_OPENED": 14,
+        "NO_TRADE": 182,
+        "PROTECTIVE_EXIT": 14
+      },
+      "total": 210
+    },
+    "disk": {
+      "free_gib": 5.902,
+      "ok": false,
+      "reasons": [
+        "free space cannot pay for the window: 8.640 GB needed at 1.5x, 4.338 GB usable above the 2.000 GB reserve"
+      ],
+      "status": "INSUFFICIENT_FREE_SPACE",
+      "thresholds_changed_by_this_work_package": false
+    },
+    "realised_pnl_usdt": -12.809960586382445,
+    "stop_policy_interaction": "the default protective stops (0.5%/0.75%) are far tighter than the surviving family's horizon, so every lane position closed by stop before its thesis played out",
+    "tag": "EXPERIMENTAL_PROSPECTIVE_PAPER"
+  },
+  "promotion": {
+    "promoted": false,
+    "reason": "no family clears its costs; ADOPT needs prospective data"
+  },
+  "risk_limits_changed": false,
+  "schema_version": "EDGE15_RUN_REPORT_V1",
+  "work_package": "WP-EDGE-015"
+}

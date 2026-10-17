@@ -8,167 +8,104 @@
 > Política completa en `AGENTS.md` §7. Reglas de campaña: `FALSE_SUCCESS=0`, `BUILDER != VERIFIER`,
 > nada de trading real, credenciales, apalancamiento ni cambios de límites de riesgo.
 
-*Última actualización: 2026-10-16, sesión de recuperación RFC-EDGE-014R (segunda mitad).*
+*Última actualización: 2026-10-17, sesión de WP-EDGE-015 (alpha + paper prospectivo).*
 
 ## 1. Objetivo actual
 
-**WP-EDGE-014R** (RFC-EDGE-014R): recuperación económica del camino de paper trading.
-Entregables: paquete de evidencias en `reports/economic-recovery/RFC-EDGE-014R/`
-(`FINAL_REPORT.md`, `RUN_REPORT.md/json`, `INFORME_EJECUTIVO.md`, evidencia de ejecución paper,
-reconciliación de comisiones, benchmarks externos Freqtrade/VeighNa/Jesse, verificación
-independiente y suite adversarial), más su publicación por commits en la rama de trabajo.
+**WP-EDGE-015** (RFC-EDGE-015): pasar de demostrar que el motor funciona a buscar y validar
+estrategias con ventaja económica neta, sin inventar rentabilidad ni tocar los límites de riesgo.
+Entregables en `reports/economic-recovery/RFC-EDGE-015/`: `RUN_REPORT.md/json`, `FINAL_REPORT.md`,
+`INFORME_EJECUTIVO.md`, `ALPHA_EXPERIMENT_MATRIX.csv`, `ALPHA_RESULTS.json`,
+`PROSPECTIVE_PAPER_REPORT.json` (en `experimental_paper/`), `INDEPENDENT_VERIFICATION.json/md`,
+`PARITY_DIVERGENCE_EXPLAINED.json/md`, el par de congelación/captura del holdout
+(`OOS_PREREGISTRATION_V2.json`, `OOS_CAPTURE_MANIFEST_V2.json`) y el registro de candidatas
+`config/strategy_candidates_edge15.json`.
+
+**Resultado de la ronda: `NO_ECONOMIC_EDGE_FOUND`.** Ninguna familia cubre sus costes con muestra
+suficiente. No hay promoción, no se tocaron límites y el holdout queda congelado y acumulando.
 
 ## 2. Estado Git
 
-- Rama: `agent/edge-recovery/WP-EDGE-00-baseline`, publicada por fast-forward en `origin`
-  (`ee3922e..a7b3d49`); upstream `origin/agent/edge-recovery/WP-EDGE-00-baseline` = HEAD local.
-  `origin/main` es otra línea de trabajo (avanza con los WP de otros agentes: `8167067`
-  RUN-OP-004, `5e6f963` gates de calidad); este paquete no publica en `main`.
-- Últimos commits: `a7b3d49` — *Let the published paper ledger be checked by a test, not only by a
-  reader. [RFC-EDGE-014R]*; `8d293c3` — *Record the published state in the checkpoint.*;
-  `92327fd` — *Repair the cross-package failures the suite surfaced, and record the autonomy
-  policy. [RFC-EDGE-014R]*; `dbddc58` — *Answer the recovery brief with executed evidence, and
-  reconcile the paper arm's ledger. [RFC-EDGE-014R]*; base `ee3922e`
-  (*Render every deliverable the brief names…*, RFC-EDGE-014).
-- Publicado y ya no pendiente: el paquete `reports/economic-recovery/RFC-EDGE-014R/**`
-  (incluido el dataset del replay en `scratch/PAPER_REPLAY_BARS.jsonl`), `scripts/edge14r_*.py`,
-  `src/trading_bot/research/economic_recovery/**`, `.gitignore`, `tests/conftest.py`,
-  `tests/unit/research/test_st6_scheduler.py`,
-  `data/recovery/wp7/COST_BARRIER_CERTIFICATION.json` re-emitido, `AGENTS.md` §7 y este fichero.
-- Sin preparar: modificaciones de otros agentes/WPs (p. ej. `data/st6/**`, `.ci/**`,
-  `docs/research/work_packages/**`, `reports/economic-recovery/RFC-EDGE-014/**`,
-  `evidence/real_decisions/**`, tests nuevos de `swing`/`rfc035*` de otro agente). **No se tocan
-  ni se preparan**; se dejan intactas.
+- Rama: `agent/edge-recovery/WP-EDGE-00-baseline`.
+- Commits de esta ronda: `b4ff588` — *Freeze the WP-EDGE-015 protocol before its data…*;
+  `a6943c4` — *Preregister the holdout in one commit and capture it in another…*;
+  más el commit de informes que sigue a este checkpoint.
+- **No preparar ni tocar** lo ajeno: `data/st6/**`, `.ci/**`, `docs/research/work_packages/**`,
+  `reports/economic-recovery/RFC-EDGE-014/**`, `evidence/real_decisions/**`, los tests nuevos de
+  `swing`/`rfc035*` de otro agente, y en general los ~156 ficheros sucios de otras líneas de trabajo.
 
-## 3. Hecho (con evidencia)
+## 3. Hecho (con evidencia ejecutada)
 
-### Paquete 014R (ya generado, en staging)
+### P0 — defectos de certificación
 
-| Pieza | Evidencia |
-| --- | --- |
-| Ejecución paper canónica aislada, dos brazos (GATE_INTACT / SANDBOX_ADMISSION), 879 ciclos sobre barras reales | `PAPER_EXECUTION_EVIDENCE.json|md` |
-| Diagnóstico del camino de trading: 1758 invocaciones de router, todas `NO_TRADE:no_strategy_passed_gates` | `TRADE_PATH_RECONCILIATION.json|md` |
-| Reconciliación de las dos convenciones de comisiones | `FEE_CONVENTION_RECONCILIATION.json|md` |
-| Motores externos ejecutados: Freqtrade, VeighNa, Jesse (los tres en sus propios entornos) | `EXTERNAL_ENGINE_EXECUTION*.json`, `BENCHMARK_PARITY_REPORT*.json|md`, `ENGINE_DIFF*.csv` |
-| Intento bloqueado de Jesse preservado con su causa | `EXTERNAL_ENGINE_JESSE_ATTEMPT_BLOCKED.json` |
-| Comparación económica de 6 brazos | `ECONOMIC_COMPARISON.csv|json` |
-| Prerregistro y captura del holdout prospectivo (estado `OOS_ACCRUING`) | `OOS_PREREGISTRATION.*`, `OOS_CAPTURE_MANIFEST.json` |
-| Verificación independiente (builder ≠ verifier): **31/31, VERIFIED**, `open_items: []` (la primera pasada dio 30/31 con `V04b` abierto; ver §3, defecto del libro) | `INDEPENDENT_VERIFICATION.json|md` |
-| Suite adversarial: 10/10 casos ejecutados | `ADVERSARIAL_SUITE.json` |
-| Informes finales generados | `FINAL_REPORT.md`, `RUN_REPORT.md/json`, `INFORME_EJECUTIVO.md` |
-| Capacidad en disco recuperada (1 823 182 848 bytes de cachés regenerables) | `CAPACITY_RECLAIM.json` |
+| Defecto | Estado | Evidencia |
+| --- | --- | --- |
+| `order_check=false` en el holdout 14R | **cerrado**: protocolo en dos fases (congelación en un commit, captura en otro proceso) | `OOS_CAPTURE_MANIFEST_V2.json`: `ORDER_VERIFIED`, 5 cláusulas, congelado 07:15:28Z → commit `b4ff588` (07:19:24Z) → captura 07:20:21Z; blob LF-normalizado `cea0be8934…` idéntico al fichero en disco |
+| verificador = constructor (`engine_parity`) | **cerrado**: import eliminado (no acotado); regla, indicador, convenciones de comisión y curva de equity re-implementados | `edge15_verify.py` V31 (no importa constructor), `edge14r_verify.py` V32; 14R re-verificado 32/32 |
+| identidad por `(symbol, opened_at, entry_price)` | **cerrado**: el broker acuña `position_id`/`entry_order_id`/`exit_order_id`/`trade_id`, continúa la secuencia tras `restore()` | `broker.py`; `tests/unit/paper/test_broker_identity.py` (7 pruebas, incluida la colisión de reloj congelado); la verificación encontró que el carril compartía libro entre símbolos (56 ids, 24 distintos) y se corrigió con un libro por símbolo |
+| una sola cifra de equity | **cerrado**: `accounting_snapshot()` separa caja, realizado, no realizado y patrimonio a mercado, con la comisión de entrada devengada como término propio y 4 identidades | `broker.py`; V22/V23 sobre el carril: identidades correctas en los 3 libros |
+| divergencias de Jesse (7,02 bps) y VeighNa (2 operaciones) | **cerradas**: descomposición exacta | `PARITY_DIVERGENCE_EXPLAINED.json/.md`: `6.985523 (precio) + (−0.059751) (comisión realizada del motor) + 0.095587 (convención propia) = 7.021359`, error 0,0; las 42 restantes dentro de 1 bps; las 2 de VeighNa son las dos últimas entradas de la regla |
 
-### Gates de calidad sobre los ficheros de 014R (esta sesión)
+### P1/P2 — búsqueda de alpha y costes
 
-| Gate | Resultado |
-| --- | --- |
-| `ruff check` sobre `scripts/edge14r_*.py` + `src/trading_bot/research/economic_recovery/` | **All checks passed** (antes: 24 errores) |
-| `ruff format --check` sobre los mismos ficheros | **26 files already formatted** |
-| `mypy` (strict, config del repo) sobre los mismos ficheros | **0 errores** (antes: 136) |
+Cinco familias mecánicamente distintas, auditadas contra las ya rechazadas
+(`rejected_family_audit`). Cola reservada (30 % final, parámetros congelados de antemano):
 
-### Suite de tests: primera pasada completa y reparaciones
+| familia | operaciones | bruto/op | neto 1× | neto 2× | decisión |
+| --- | ---: | ---: | ---: | ---: | --- |
+| `mean_reversion_vol_liq` | 811 | +54,84 bps | +21 075 | −2 326 | `EXPERIMENT_COST_FRAGILE` |
+| `vol_regime_breakout` | 171 | +223,79 bps | +33 367 | +28 465 | `REJECT_OUTLIER_DRIVEN` (las 5 mejores = 1,31× todo el bruto; mediana negativa) |
+| `trend_pullback` | 895 | −37,04 bps | −58 809 | −84 464 | `REJECT` |
+| `cross_sectional_rotation` | 355 | −35,63 bps | −11 465 | −16 605 | `REJECT` |
+| `maker_only_spread_capture` | — | — | — | — | `DEFER_NO_FILL_MODEL` (sin modelo de cola/fills) |
 
-Primera pasada completa (`tests/unit`, 3952 tests): **10 fallos, 3942 pasados (26:32)**. Cada fallo
-quedó diagnosticado y reparado por su causa, nunca por el síntoma:
+Modelo de costes por venue y producto con procedencia declarada (`KNOWN` comisión 10 bps/lado,
+`ESTIMATED` medio spread, `HYPOTHESIS` slippage √tamaño e impacto lineal): BTC/ETH 23,3536 bps;
+SOL 25,30 bps; alt fino 28,96 bps por vuelta completa a 200 USDT. Ningún coste cero en la
+certificación. Sensibilidad 1×/2×/3× en cada fila de la matriz.
 
-| Fallo | Causa real | Reparación | Verificación |
-| --- | --- | --- | --- |
-| 8 fallos en `tests/unit/scanner/test_universe_scanner.py` (captura structlog vacía) | fuga de estado global: `research/edge03/run.py::quiet_runtime_logs` deja el wrapper de structlog en CRITICAL y nunca lo restaura; los tests de scanner corren después | `tests/conftest.py` nuevo: fixture autouse que captura y restaura `structlog.get_config()` alrededor de cada test | reproducido en par (`test_edge03_forward.py` + scanner: 8 failed) → tras el fix: **64 passed** |
-| `test_cost_barrier_adversarial.py::test_the_certification_record_digests_content_not_a_checkout` | el registro de certificación (emitido 2026-10-11) quedó obsoleto cuando WP-EDGE-01 regeneró `data/recovery/ACTIVE_ECONOMIC_AUDIT.json` en `7522255` (2026-10-12) | re-emisión por el propio certificador (`scripts/cost_barrier_certify.py --supersedes-reason ...`), que anota la supersesión en el registro | run 1 escribió el registro al día (sus contract tests aún veían el viejo → status FAILED); **run 2: EXIT=0, `status: CERTIFIED`, 0 razones, 0 advertencias, 0 digests desajustados**; cadena de supersesión con `previous_fingerprint` y motivo; lane tests: **93 passed** |
-| `test_st6_scheduler.py::test_an_observed_slot_costs_nothing_to_re_tick` | el test leía las dos últimas filas del log compartido; la tarea programada real escribe en él y un reintento deja filas `ALREADY_RUNNING` entre medias | el test se ata al resumen que cada tick imprime en su propio stdout (`tick_summary()`), no al tail del log ajeno | test aislado: **1 passed** |
+### P3 — carril prospectivo experimental
 
-Suites complementarias: `tests/integration` + `tests/regression` → **24 passed** (1 run, 4.7 s);
-`tests/bdd` → **23 passed**.
+210 ciclos con el `PaperBroker` y la política de `config/risk.yaml` reales: 182 `NO_TRADE`, 14
+entradas, 14 salidas protectoras, −12,81 USDT realizado, identidades contables correctas, ledger
+autoritativo con sha256 idéntico antes y después, familias rechazadas registradas como negativas a
+operar, 0 órdenes enviadas. Etiqueta `EXPERIMENTAL_PROSPECTIVE_PAPER` en cada ciclo.
+Hallazgo de riesgo (no de estrategia): los stops por defecto (0,5 %/0,75 %) son mucho más estrechos
+que el horizonte de la familia superviviente, así que todas las posiciones cerraron por stop.
 
-### Defecto del libro paper: diagnosticado y cerrado (V04b → reconciliado)
+### P4 — verificación y pruebas
 
-El paquete declaraba abierto `LEDGER_OPEN_CLOSE_MISMATCH` (299 aperturas vs 301 cierres). Diagnóstico
-ejecutado sobre el **mismo dataset exportado** (`scratch/PAPER_REPLAY_BARS.jsonl`), con el broker
-instrumentado para registrar cada transición que él mismo realiza:
-
-- el broker abrió **348** posiciones y cerró **347** (301 por la liquidación del bucle, **46 dentro del
-  propio ciclo del motor**);
-- el registro publicado veía 299 aperturas porque (a) identificaba cada apertura por
-  `(symbol, position.opened_at)` — un instante de `time.time()` que dos aperturas del mismo símbolo
-  pueden compartir en un replay rápido — y el dedupe **descartaba aperturas reales** (2 colisiones
-  medidas en la reproducción), y (b) solo leía los cierres que devolvía su propia llamada, de modo
-  que los 46 cierres del motor quedaban invisibles.
-- Reparación en `paper_exec._run_arm`: la identidad de una apertura pasa a ser
-  `(symbol, opened_at, entry_price)` y los cierres se drenan del propio libro del broker
-  (`closed_trades`), etiquetando su origen (`engine_cycle` / `settlement_check` / `final_mark`).
-- Evidencia regenerada **offline desde el dataset exportado**: `canonical_digest` y
-  `exported_sha256` **sin cambios**; ahora `realised_pnl = −212.544674 =` variación de equity
-  (antes −76.5958), 348 aperturas / 347 cierres / 1 posición abierta al terminar, y cada cierre
-  nombra una apertura registrada.
-- Verificación independiente re-ejecutada: **31/31, veredicto VERIFIED**; `open_items: []`; los
-  informes declaran el cierre en vez de absorberlo.
-
-Artefactos regenerados en consecuencia: `PAPER_EXECUTION_EVIDENCE.*`, `TRADE_PATH_RECONCILIATION.*`,
-`FEE_CONVENTION_RECONCILIATION.*`, `ECONOMIC_COMPARISON.*`, `ADVERSARIAL_SUITE.*`,
-`INDEPENDENT_VERIFICATION.*`, `RUN_REPORT.*`, `FINAL_REPORT.md`, `INFORME_EJECUTIVO.md`.
-
-Contra la regresión: `tests/unit/research/test_edge14r_paper_ledger.py` (5 checks, **5 passed**) lee
-la evidencia publicada y comprueba las identidades del libro; con la evidencia saboteeada en las
-tres formas que cubre (quitar los cierres del motor, tirar dos aperturas, duplicar una) el test
-falla — 1, 2 y 1 fallos respectivamente — y con la evidencia intacta pasa.
+- `scripts/edge15_verify.py` (no importa ningún módulo constructor): **32/32, veredicto VERIFIED**.
+- `scripts/edge14r_verify.py` con la comprobación de holdout endurecida: **32/32, VERIFIED**.
+- Causalidad de las familias: 10 pruebas que truncan la serie y exigen que la historia ya cerrada se
+  reproduzca idéntica.
+- `ruff check`, `ruff format --check` y `mypy` limpios en los ficheros del paquete.
 
 ## 4. Pendiente
 
-Nada de esta ronda queda sin ejecutar. Los dos elementos que siguen abiertos **no son trabajo
-pendiente de una sesión**, sino estado del mundo que solo el tiempo o una estrategia admitida
-pueden cambiar:
-
-1. **Holdout prospectivo `OOS_ACCRUING`** — necesita al menos el umbral congelado de operaciones
-   cerradas por estrategia antes de poder aceptar o rechazar nada; hoy tiene una fracción.
-2. **Una estrategia admitida** con borde bruto positivo medido tras costes: es la entrada que el
-   paquete no produce a propósito. Ninguna familia de las evaluadas la alcanza.
-
-Ronda cerrada y publicada: `tests/unit` completo **3952 passed** (`/tmp/edge14r/unit_tests_full2.log`,
-EXIT=0), `tests/integration` + `tests/regression` **24 passed**, `tests/bdd` **23 passed**,
-verificación independiente **31/31 VERIFIED**, suite adversarial **10/10**, registro de
-certificación re-emitido **CERTIFIED**, `ruff check` + `ruff format --check` + `mypy` limpios en
-los ficheros del paquete.
-
-### Pasada final de comprobación (post-reparaciones, con exit status capturado)
-
-Los tres ficheros que la suite completa no podía cubrir por sí sola fueron tocados **después** de
-su recolección (29-52 s después de la última escritura de `packages/ci`: `paper_exec.py`,
-`edge14r_reports.py`, `edge14r_verify.py`), así que la verificación se re-ejecutó **en el HEAD
-publicado** y se capturó el exit code de cada comando (`set -o pipefail`, `code=$?` por comando,
-no el de un `tail`):
-
-| Comando | Exit | Última línea |
-| --- | ---: | --- |
-| `ruff check` (14 scripts + paquete + `conftest` + test nuevo) | **0** | `All checks passed!` |
-| `ruff format --check` (los mismos) | **0** | `28 files already formatted` |
-| `mypy` (los mismos, config del repo) | **0** | sin errores |
-| `scripts/edge14r_verify.py` | **0** | `31/31 checks pass; verdict VERIFIED` |
-| `scripts/edge14r_adversarial.py` | **0** | `10/10 executed cases pass` |
-| `pytest tests/integration tests/regression tests/bdd` | **0** | `47 passed` |
-| `pytest` (test nuevo del libro + economic_recovery + scanner + cost-barrier) | **0** | `115 passed` |
-
-La verificación se re-emitió por su propio verificador en el HEAD publicado (`git_head`
-`a7b3d49`, antes `ee3922e`): mismo veredicto 31/31 con `V04b` en PASS; el diff del artefacto son
-solo el HEAD, el instante y la cifra de disco libre que el propio check V16 mide.
+1. **Holdout prospectivo `OOS_ACCRUING`**: 0 barras todavía. La primera barra horaria posterior a la
+   congelación (07:15:28Z) aún no había cerrado en la captura; al ser el primer corte de una serie
+   prospectiva no puede aceptar ni rechazar nada. Re-capturar cuando haya barras **después** de esa
+   instantánea (`--capture` es idempotente y sólo añade lo nuevo).
+2. **Ninguna estrategia admitida**: sigue siendo el freno correcto. Candidatas registradas
+   deshabilitadas (`RESEARCH_CANDIDATE` 12, `RESEARCH_REQUIRED` 3, `paper_candidates: []`).
+3. **Hipótesis siguiente** (fijada por la evidencia): familia cuyo bruto por operación supere con
+   margen la vuelta completa de su nivel (≥ 24 bps en primer nivel, ≥ 29 bps en alt fino) y aguante
+   el multiplicador adverso; menos operaciones y más grandes en BTC/ETH, y brazo maker sólo cuando
+   exista un modelo de fills validado contra ejecuciones reales.
 
 ## 5. Bloqueos / items abiertos (no ocultar)
 
-- **Cerrado**: `V04b` / `LEDGER_OPEN_CLOSE_MISMATCH` ya no es un item abierto — ver §3
-  (identidad de apertura y drenaje de cierres desde el libro del broker; 31/31 checks).
-- **Sin test unitario propio del bucle paper**: `paper_exec._run_arm` se apoya en el broker y en el
-  motor de ciclo reales, así que no tiene test unitario aislado; queda guardado por el test del
-  artefacto publicado, por la reproducción offline con la identidad de equity y por los 31/31
-  checks de la verificación independiente.
-- **Sin estrategia admitida**: el ledger de admisión comprometido (`config/strategy_admission.json`)
-  no admite ninguna familia. Es el freno correcto, no un defecto.
-- **Holdout prospectivo** `OOS_ACCRUING`: sin barras suficientes para puntuar.
-- **Contención con la tarea programada ST6** (entorno, no defecto): en este host corre la tarea
-  real `TradingAgentic-ST6-Forward` (ventanas a las 12:03/16:03/20:03 UTC y latido cada 15 min);
-  puede hacer esperar a los tests de `test_st6_scheduler.py` y escribía en el log compartido. Los
-  tests ya no dependen del tail de ese log, pero las esperas por el lease siguen siendo del entorno.
-- `quiet_runtime_logs` sigue dejando el structlog global en CRITICAL en un proceso largo del
-  *runtime*; el guardia creado es de tests. Un arreglo de producción (context manager que restaure)
-  queda **pendiente y fuera de este paquete** para no cambiar comportamiento de runtime sin su RFC.
+- **Guardián de disco** en `INSUFFICIENT_FREE_SPACE` (5,9 GiB libres **y cayendo**: el árbol de
+  `.git` y los artefactos de otras líneas crecen). **No se ha relajado**; cualquier trabajo nuevo
+  que escriba mucho debe planificar el espacio antes.
+- **Contención con la tarea programada ST6** (entorno, no defecto): puede hacer esperar a los tests
+  de `test_st6_scheduler.py`.
+- `quiet_runtime_logs` sigue dejando el structlog global en CRITICAL en procesos largos del
+  *runtime*; el guardia existente es de tests. Arreglo de producción **pendiente** y fuera de este
+  paquete (requiere su RFC).
+- El filtro de percentil de ATR de la familia de reversión es una **aproximación de 50 cubos**
+  (declarada en `ALPHA_RESULTS.json`); por eso la evidencia decisiva se publica por operación.
 
 ## 6. Comandos de reanudación
 
@@ -177,25 +114,24 @@ solo el HEAD, el instante y la cifra de disco libre que el propio check V16 mide
 git -C "$(git rev-parse --show-toplevel)" log --oneline -3
 git -C "$(git rev-parse --show-toplevel)" status --porcelain | head -40
 
-# 1. Suite unitaria completa (log persistente; ~26 min)
+# 1. Reproducir el paquete completo (rápido: ~1 min)
+cd "$(git rev-parse --show-toplevel)" && ./.venv/Scripts/python scripts/edge15_alphas.py
+cd "$(git rev-parse --show-toplevel)" && ./.venv/Scripts/python scripts/edge15_paper_lane.py
+cd "$(git rev-parse --show-toplevel)" && ./.venv/Scripts/python scripts/edge15_parity_explain.py
+cd "$(git rev-parse --show-toplevel)" && ./.venv/Scripts/python scripts/edge15_verify.py   # 32/32
+cd "$(git rev-parse --show-toplevel)" && ./.venv/Scripts/python scripts/edge14r_verify.py   # 32/32
+
+# 2. Holdout: congelar (una vez) y capturar (repetible, sólo añade lo nuevo)
+cd "$(git rev-parse --show-toplevel)" && ./.venv/Scripts/python scripts/edge15_oos_preregistration.py --capture
+
+# 3. Gates de estilo, tipos y pruebas
+cd "$(git rev-parse --show-toplevel)" && ./.venv/Scripts/python -m ruff check scripts/edge15_*.py scripts/edge14r_verify.py src/trading_bot/research/economic_recovery/alpha15.py src/trading_bot/paper/broker.py
+cd "$(git rev-parse --show-toplevel)" && ./.venv/Scripts/python -m mypy scripts/edge15_*.py src/trading_bot/research/economic_recovery/alpha15.py src/trading_bot/paper/broker.py
+cd "$(git rev-parse --show-toplevel)" && ./.venv/Scripts/python -m pytest tests/unit/paper tests/unit/research/test_alpha15_causality.py -q
+
+# 4. Suite completa (log persistente; ~26 min)
 cd "$(git rev-parse --show-toplevel)" && ./.venv/Scripts/python -m pytest tests/unit -q \
-  --tb=short -rf -p no:cacheprovider > /tmp/edge14r/unit_tests_full2.log 2>&1; echo "EXIT=$?"
-
-# 2. Integración, regresión y BDD
-cd "$(git rev-parse --show-toplevel)" && ./.venv/Scripts/python -m pytest tests/integration tests/regression tests/bdd -q \
-  --tb=short -rf -p no:cacheprovider > /tmp/edge14r/integration_regression.log 2>&1; echo "EXIT=$?"
-
-# 3. Re-emitir el registro de certificación (el propio certificador corre sus contract tests)
-cd "$(git rev-parse --show-toplevel)" && ./.venv/Scripts/python scripts/cost_barrier_certify.py \
-  --supersedes-reason "<por qué este registro reemplaza al de HEAD>" > /tmp/edge14r/cert_run2.log 2>&1; echo "EXIT=$?"
-
-# 4. Gates de estilo/tipos sobre el paquete 014R
-cd "$(git rev-parse --show-toplevel)" && ./.venv/Scripts/python -m ruff check scripts/edge14r_*.py src/trading_bot/research/economic_recovery/
-cd "$(git rev-parse --show-toplevel)" && ./.venv/Scripts/python -m mypy scripts/edge14r_*.py src/trading_bot/research/economic_recovery/
-
-# 5. Verificación independiente del paquete (re-deriva los números)
-cd "$(git rev-parse --show-toplevel)" && ./.venv/Scripts/python scripts/edge14r_verify.py
-cd "$(git rev-parse --show-toplevel)" && ./.venv/Scripts/python scripts/edge14r_adversarial.py
+  --tb=short -rf -p no:cacheprovider > /tmp/edge15/unit_tests_full.log 2>&1; echo "EXIT=$?"
 ```
 
 ## 7. Protocolo de actualización
