@@ -71,8 +71,18 @@ def sha256_bytes(payload: bytes) -> str:
     return hashlib.sha256(payload).hexdigest()
 
 
+TEXT_SUFFIXES = frozenset({".json", ".jsonl", ".md", ".csv", ".txt", ".py"})
+CR_BYTES = bytes((13,))
+LF_BYTES = bytes((10,))
+
+
 def sha256_file(path: Path) -> str:
-    return sha256_bytes(path.read_bytes())
+    """Hash text in canonical LF form: a CRLF checkout must not look like an edit."""
+
+    raw = path.read_bytes()
+    if path.suffix.lower() in TEXT_SUFFIXES:
+        raw = raw.replace(CR_BYTES + LF_BYTES, LF_BYTES)
+    return sha256_bytes(raw)
 
 
 def canon(payload: object) -> str:
@@ -211,7 +221,11 @@ def recompute_raw(root: Path) -> tuple[dict[str, dict[str, Any]], list[str], lis
             else:
                 execution = "EXECUTED_NO_EVIDENCE"
 
-            span = {"path": f"{PACKAGE_REL.as_posix()}/{path.relative_to(package).as_posix()}", "line": line, "file_sha256": file_sha}
+            span = {
+                "path": f"{PACKAGE_REL.as_posix()}/{path.relative_to(package).as_posix()}",
+                "line": line,
+                "file_sha256": file_sha,
+            }
             existing = events.get(key)
             if existing is None:
                 events[key] = {
@@ -272,12 +286,18 @@ def recompute_counts(events: Sequence[dict[str, Any]]) -> dict[str, Any]:
     return {
         "phase_v31": {
             "work": _block(row for row in phase if row["operation_family"] in WORK_FAMILIES),
-            "readiness": _block(row for row in phase if row["operation_family"] == "TARGET_READINESS"),
-            "distinct_evidence_ids": len({row["evidence"]["evidence_id"] for row in phase if row["evidence"]["evidence_id"]}),
+            "readiness": _block(
+                row for row in phase if row["operation_family"] == "TARGET_READINESS"
+            ),
+            "distinct_evidence_ids": len(
+                {row["evidence"]["evidence_id"] for row in phase if row["evidence"]["evidence_id"]}
+            ),
         },
         "all_dossiers": {
             "work": _block(row for row in events if row["operation_family"] in WORK_FAMILIES),
-            "distinct_evidence_ids": len({row["evidence"]["evidence_id"] for row in events if row["evidence"]["evidence_id"]}),
+            "distinct_evidence_ids": len(
+                {row["evidence"]["evidence_id"] for row in events if row["evidence"]["evidence_id"]}
+            ),
         },
     }
 
@@ -329,11 +349,17 @@ def _resolve(payload: Mapping[str, Any], pointer: str) -> Any:
 def _flatten_counters(counts: Mapping[str, Any]) -> dict[str, Any]:
     return {
         "phase_v31.work.operations": counts["phase_v31"]["work"]["operations"],
-        "phase_v31.work.executed_with_evidence_id": counts["phase_v31"]["work"]["executed_with_evidence_id"],
-        "phase_v31.work.executed_with_verified_artifact": counts["phase_v31"]["work"]["executed_with_verified_artifact"],
+        "phase_v31.work.executed_with_evidence_id": counts["phase_v31"]["work"][
+            "executed_with_evidence_id"
+        ],
+        "phase_v31.work.executed_with_verified_artifact": counts["phase_v31"]["work"][
+            "executed_with_verified_artifact"
+        ],
         "phase_v31.work.not_executed": counts["phase_v31"]["work"]["not_executed"],
         "phase_v31.distinct_evidence_ids": counts["phase_v31"]["distinct_evidence_ids"],
-        "all_dossiers.work.executed_with_evidence_id": counts["all_dossiers"]["work"]["executed_with_evidence_id"],
+        "all_dossiers.work.executed_with_evidence_id": counts["all_dossiers"]["work"][
+            "executed_with_evidence_id"
+        ],
         "all_dossiers.work.not_executed": counts["all_dossiers"]["work"]["not_executed"],
         "all_dossiers.distinct_evidence_ids": counts["all_dossiers"]["distinct_evidence_ids"],
     }
@@ -383,7 +409,9 @@ def verify_package(root: Path) -> Verdict:
     if verdict.check("current_manifest_exists", current_path.is_file(), str(current_path)):
         current = json.loads(current_path.read_text(encoding="utf-8"))
     supersession: dict[str, Any] = {}
-    if verdict.check("supersession_manifest_exists", supersession_path.is_file(), str(supersession_path)):
+    if verdict.check(
+        "supersession_manifest_exists", supersession_path.is_file(), str(supersession_path)
+    ):
         supersession = json.loads(supersession_path.read_text(encoding="utf-8"))
 
     raw, problems, conflicts = recompute_raw(root)
@@ -415,7 +443,14 @@ def verify_package(root: Path) -> Verdict:
     mismatched: list[str] = []
     for key in sorted(set(claimed) & set(raw)):
         mine, theirs = raw[key], claimed[key]
-        for field_name in ("target_id", "operation", "timestamp", "exit_code", "result", "execution_class"):
+        for field_name in (
+            "target_id",
+            "operation",
+            "timestamp",
+            "exit_code",
+            "result",
+            "execution_class",
+        ):
             if mine[field_name] != theirs.get(field_name):
                 mismatched.append(
                     f"{key[:8]} {field_name}: raw={mine[field_name]!r} "
@@ -436,7 +471,11 @@ def verify_package(root: Path) -> Verdict:
                 continue
             if sha256_file(path) != span["file_sha256"]:
                 span_problems.append(f"{span['path']} bytes changed")
-    verdict.check("stored_spans_point_at_the_bytes_they_hashed", not span_problems, "; ".join(span_problems[:4]))
+    verdict.check(
+        "stored_spans_point_at_the_bytes_they_hashed",
+        not span_problems,
+        "; ".join(span_problems[:4]),
+    )
 
     mine = recompute_counts(list(raw.values()))
     stated = canonical.get("counts", {})
@@ -471,7 +510,9 @@ def verify_package(root: Path) -> Verdict:
         claims = [claim for claim in loaded if isinstance(claim, dict)]
     claim_problems: list[str] = []
     native_ids = {
-        event["evidence"]["evidence_id"] for event in raw.values() if event["evidence"]["evidence_id"]
+        event["evidence"]["evidence_id"]
+        for event in raw.values()
+        if event["evidence"]["evidence_id"]
     }
     for claim in claims:
         if claim.get("kind") == "COUNTER":
@@ -485,8 +526,14 @@ def verify_package(root: Path) -> Verdict:
         elif claim.get("kind") == "EVIDENCE_ID":
             if claim.get("evidence_id") not in native_ids:
                 claim_problems.append(f"{claim.get('claim_id')}: id not in raw logs")
-    verdict.check("claims_resolve_to_evidence_or_counters", not claim_problems, "; ".join(claim_problems[:5]))
-    verdict.check("canonical_carries_verified_claims", len(canonical.get("claims", [])) == len(claims), "claim count")
+    verdict.check(
+        "claims_resolve_to_evidence_or_counters", not claim_problems, "; ".join(claim_problems[:5])
+    )
+    verdict.check(
+        "canonical_carries_verified_claims",
+        len(canonical.get("claims", [])) == len(claims),
+        "claim count",
+    )
     verdict.check(
         "no_local_key_is_attributed_to_rea",
         not canonical.get("evidence_inventory", {}).get("local_keys_misplaced_in_evidence_id"),
@@ -507,7 +554,9 @@ def verify_package(root: Path) -> Verdict:
         if not (derived / Path(str(record["path"])).name).is_file()
         or sha256_file(derived / Path(str(record["path"])).name) != record["sha256"]
     ]
-    verdict.check("derived_files_match_their_hashes", not hash_problems, ", ".join(hash_problems[:4]))
+    verdict.check(
+        "derived_files_match_their_hashes", not hash_problems, ", ".join(hash_problems[:4])
+    )
 
     counts_block = render_block(my_flat)
     block_targets = [
@@ -522,7 +571,9 @@ def verify_package(root: Path) -> Verdict:
         for path in block_targets
         if not path.is_file() or counts_block not in path.read_text(encoding="utf-8")
     ]
-    verdict.check("every_report_carries_the_same_counts_block", not block_problems, ", ".join(block_problems))
+    verdict.check(
+        "every_report_carries_the_same_counts_block", not block_problems, ", ".join(block_problems)
+    )
 
     stable_problems: list[str] = []
     for record in current.get("stable_copies", []):
@@ -534,7 +585,11 @@ def verify_package(root: Path) -> Verdict:
             stable_problems.append(f"missing {name}")
         elif sha256_file(derived / name) != sha256_file(package / name):
             stable_problems.append(f"{name} stable copy differs from derived")
-    verdict.check("stable_reports_are_byte_identical_to_derived", not stable_problems, ", ".join(stable_problems))
+    verdict.check(
+        "stable_reports_are_byte_identical_to_derived",
+        not stable_problems,
+        ", ".join(stable_problems),
+    )
 
     run_report = json.loads((derived / "RUN_REPORT.json").read_text(encoding="utf-8"))
     verdict.check(
@@ -558,7 +613,11 @@ def verify_package(root: Path) -> Verdict:
         defect = record.get("known_defect")
         if isinstance(defect, str):
             known_defects[str(record["path"])] = defect
-    verdict.check("superseded_documents_are_pinned_not_edited", not pinned_problems, "; ".join(pinned_problems[:5]))
+    verdict.check(
+        "superseded_documents_are_pinned_not_edited",
+        not pinned_problems,
+        "; ".join(pinned_problems[:5]),
+    )
 
     stale_path = package / "RUN_REPORT_REA_FIRST.json"
     stale_text = stale_path.read_text(encoding="utf-8") if stale_path.is_file() else ""
@@ -586,7 +645,11 @@ def verify_package(root: Path) -> Verdict:
         registered.add(str(record["path"]))
         if not (root / str(record["path"])).is_file():
             editorial_problems.append(f"{record['path']} missing")
-    verdict.check("editorial_documents_are_registered_and_present", not editorial_problems, "; ".join(editorial_problems))
+    verdict.check(
+        "editorial_documents_are_registered_and_present",
+        not editorial_problems,
+        "; ".join(editorial_problems),
+    )
     for path in discovered_reports(root):
         relative = path.relative_to(root).as_posix()
         if relative not in registered and relative not in superseded_paths:
@@ -608,7 +671,11 @@ def verify_package(root: Path) -> Verdict:
         if path.is_file() and path.suffix in {".md", ".json"}:
             for hit in _stale_matches(path.read_text(encoding="utf-8")):
                 stale_hits.append(f"{relative}: {hit}")
-    verdict.check("current_reports_do_not_count_an_exit_code_as_success", not stale_hits, "; ".join(stale_hits))
+    verdict.check(
+        "current_reports_do_not_count_an_exit_code_as_success",
+        not stale_hits,
+        "; ".join(stale_hits),
+    )
 
     local_key_hits: list[str] = []
     for json_relative in [
@@ -627,7 +694,11 @@ def verify_package(root: Path) -> Verdict:
         local_key_hits.extend(
             f"{json_relative}: {value}" for value in found if not REA_NATIVE_ID.match(value)
         )
-    verdict.check("current_reports_only_use_ids_rea_emitted", not local_key_hits, "; ".join(local_key_hits[:5]))
+    verdict.check(
+        "current_reports_only_use_ids_rea_emitted",
+        not local_key_hits,
+        "; ".join(local_key_hits[:5]),
+    )
 
     superseded_local: list[str] = []
     for record in supersession.get("documents", []):
@@ -755,7 +826,9 @@ MUTATIONS: tuple[tuple[str, Callable[[Path], None]], ...] = (
     ),
     (
         "event_duplicated_inside_one_file",
-        lambda pkg: _duplicate_first_row(pkg / "rea" / "targets" / "T-QR-SIGNAL" / "REA_COMMAND_LOG.jsonl"),
+        lambda pkg: _duplicate_first_row(
+            pkg / "rea" / "targets" / "T-QR-SIGNAL" / "REA_COMMAND_LOG.jsonl"
+        ),
     ),
     (
         "jsonl_truncated_mid_record",
@@ -786,8 +859,14 @@ MUTATIONS: tuple[tuple[str, Callable[[Path], None]], ...] = (
     (
         "derived_json_count_inflated",
         lambda pkg: _mutate_json(
-            pkg / "evidence-004" / "derived"
-            / json.loads((pkg / "evidence-004" / "canonical" / "CANONICAL_RUN.json").read_text(encoding="utf-8"))["ledger_sha256"][:12]
+            pkg
+            / "evidence-004"
+            / "derived"
+            / json.loads(
+                (pkg / "evidence-004" / "canonical" / "CANONICAL_RUN.json").read_text(
+                    encoding="utf-8"
+                )
+            )["ledger_sha256"][:12]
             / "RUN_REPORT.json",
             lambda payload: payload["counts"]["phase_v31"]["work"].__setitem__("not_executed", 0),
         ),
@@ -865,7 +944,9 @@ def run_mutations(root: Path) -> int:
         "results": records,
     }
     destination = root / EVIDENCE_REL / "MUTATION_REPORT.json"
-    destination.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    destination.write_text(
+        json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
+    )
 
     if failures:
         print("\nMUTATION HOLES:", file=sys.stderr)
@@ -880,7 +961,9 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--root", default=str(Path(__file__).resolve().parents[1]))
     parser.add_argument("--json", action="store_true")
-    parser.add_argument("--mutations", action="store_true", help="prove each check rejects a mutation")
+    parser.add_argument(
+        "--mutations", action="store_true", help="prove each check rejects a mutation"
+    )
     args = parser.parse_args(argv)
     root = Path(args.root).resolve()
 
@@ -892,7 +975,9 @@ def main(argv: Sequence[str] | None = None) -> int:
     canonical_ledger = root / EVIDENCE_REL / "canonical" / "CANONICAL_RUN.json"
     checked_ledger = ""
     if canonical_ledger.is_file():
-        checked_ledger = str(json.loads(canonical_ledger.read_text(encoding="utf-8")).get("ledger_sha256", ""))
+        checked_ledger = str(
+            json.loads(canonical_ledger.read_text(encoding="utf-8")).get("ledger_sha256", "")
+        )
     payload = {
         "verifier": "scripts/evidence004_verify.py",
         # Deterministic on purpose: re-running on an unchanged tree produces the same
@@ -905,7 +990,9 @@ def main(argv: Sequence[str] | None = None) -> int:
         "failures": verdict.failures,
     }
     destination = root / EVIDENCE_REL / "VERIFICATION.json"
-    destination.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    destination.write_text(
+        json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
+    )
     if args.json:
         print(json.dumps(payload, indent=2, ensure_ascii=False))
     else:

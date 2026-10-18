@@ -41,7 +41,7 @@
     },
     {
       "path": "reports/ai-bots/RFC-AI-BOTS-002/blocked_live/RUN_REPORT.json",
-      "sha256": "c70d4fb2e8f22881c7bba150d87af2c87e92c4fdc04f558dd28ae09f3038c26e",
+      "sha256": "2d7f6ccf53e2c467828ad4d649cb9ce446b0354371ccb11ad4029085c4e1b093",
       "bytes": 322,
       "role": "SUPERSEDED",
       "superseded_by": "RUN_REPORT.json",
@@ -50,12 +50,13 @@
     },
     {
       "path": "reports/ai-bots/RFC-AI-BOTS-002/blocked_live/RUN_REPORT.md",
-      "sha256": "991b5a82d4494f42ba265490f224b3a306b95a77dcd3e37c18e5307df53ffaad",
+      "sha256": "7361966686b27bd5c895fd28cb30c77fa829232034549f1dc690f665debd2df3",
       "bytes": 204,
       "role": "SUPERSEDED",
       "superseded_by": "RUN_REPORT.md",
       "reason": "Separate scope: the blocked live-trading lane, not the REA ledger.",
       "preserved_bytes": true
     }
-  ]
+  ],
+  "hash_convention": "sha256 over the file bytes, with CRLF normalised to LF for text suffixes (.json/.jsonl/.md/.csv/.txt/.py). A CRLF checkout of the same commit must not look like an edit; binary artefacts are hashed raw."
 }

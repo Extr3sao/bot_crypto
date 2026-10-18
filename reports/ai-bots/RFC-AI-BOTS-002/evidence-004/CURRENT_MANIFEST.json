@@ -48,12 +48,12 @@
     {
       "path": "reports/ai-bots/RFC-AI-BOTS-002/REA_FINDINGS_V2.json",
       "role": "CURRENT_EDITORIAL",
-      "sha256_at_generation": "489ff03d1a48b0cd3c24f76f4117af33113d9778473eee6169c0e04fbc54be3f"
+      "sha256_at_generation": "e67f7aefe524ab36a0d1ab2c9cc0eab11e28f2375c7dc41b60b16b48584c6fa7"
     },
     {
       "path": "reports/ai-bots/RFC-AI-BOTS-002/REA_TARGET_MATRIX.csv",
       "role": "CURRENT_EDITORIAL",
-      "sha256_at_generation": "38ba89015a2bf7bbe0a149fb1ecf6f0ca8c257aed8ae45ccd74aa22498f893a1"
+      "sha256_at_generation": "e97e990e90ea63efa26040f67f8644856483007c904a463d7ddcaa325118ffc3"
     },
     {
       "path": "reports/ai-bots/RFC-AI-BOTS-002/PATTERN_ADOPTION_MATRIX.md",
@@ -68,12 +68,12 @@
     {
       "path": "reports/ai-bots/RFC-AI-BOTS-002/INDEPENDENT_VERIFICATION_REA.json",
       "role": "CURRENT_EDITORIAL",
-      "sha256_at_generation": "e294729f292e20b61917ea43e604114d5be4017940922da44e80e5f585e4a292"
+      "sha256_at_generation": "53c4c4eeb1d42a740c7c940d1ba802b96fcb85a86036a9014b99d680afba0318"
     },
     {
       "path": "reports/ai-bots/RFC-AI-BOTS-002/evidence-004/FINAL_REPORT.md",
       "role": "CURRENT_EDITORIAL",
-      "sha256_at_generation": "3cf4754bc4042b26fbf29883162d97b039fe31f2c79cbe73bf3fbbc3729cf2e6"
+      "sha256_at_generation": "392ce820cb17653b92815f9bcf101f44ca495114a0ffca4216ec018d5a8570aa"
     }
   ],
   "superseded_manifest": "reports/ai-bots/RFC-AI-BOTS-002/evidence-004/SUPERSESSION_MANIFEST.json"

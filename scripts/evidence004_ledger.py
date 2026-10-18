@@ -76,8 +76,23 @@ def sha256_bytes(payload: bytes) -> str:
     return hashlib.sha256(payload).hexdigest()
 
 
+# Git checks text out with CRLF on Windows and stores LF; a byte hash of a text file
+# therefore differs between two checkouts of the same commit.  Text is hashed in its
+# canonical LF form so the pin means "these characters", not "this line ending".
+TEXT_SUFFIXES = frozenset({".json", ".jsonl", ".md", ".csv", ".txt", ".py"})
+CR_BYTES = bytes((13,))
+LF_BYTES = bytes((10,))
+
+
+def stable_bytes(path: Path) -> bytes:
+    raw = path.read_bytes()
+    if path.suffix.lower() in TEXT_SUFFIXES:
+        return raw.replace(CR_BYTES + LF_BYTES, LF_BYTES)
+    return raw
+
+
 def sha256_file(path: Path) -> str:
-    return sha256_bytes(path.read_bytes())
+    return sha256_bytes(stable_bytes(path))
 
 
 def canonical_json(payload: object) -> str:
@@ -242,7 +257,10 @@ def _dossier_digests(target_dir: Path) -> dict[str, str]:
 
 
 def _evidence_state(
-    payload: Mapping[str, Any], target_dir: Path, dossier_ids: set[str], dossier_digests: Mapping[str, str]
+    payload: Mapping[str, Any],
+    target_dir: Path,
+    dossier_ids: set[str],
+    dossier_digests: Mapping[str, str],
 ) -> EvidenceState:
     evidence_id = _as_text(payload, "evidence_id")
     if evidence_id is None:
@@ -311,7 +329,9 @@ def _read_source(path: Path, fallback_target: str) -> list[tuple[Mapping[str, An
     text = raw.decode("utf-8")
     if text and not text.endswith("\n"):
         # A truncated JSONL loses its last record; refusing is the only honest option.
-        raise LedgerError(f"{repo_relative(path)}: last line is not newline-terminated (truncated?)")
+        raise LedgerError(
+            f"{repo_relative(path)}: last line is not newline-terminated (truncated?)"
+        )
     rows: list[tuple[Mapping[str, Any], SourceSpan]] = []
     for index, line in enumerate(text.splitlines(), start=1):
         if not line.strip():
@@ -342,7 +362,15 @@ def load_events() -> list[LedgerEvent]:
 
     merged: dict[str, dict[str, Any]] = {}
     per_target: dict[str, tuple[set[str], dict[str, str]]] = {}
-    for target_id in ("T-FE-FENIX", "T-NF-NOF1", "T-NF-PUBLIC", "T-QR-SIGNAL", "T-TA-CRITIC", "T-FM-DEMO", "T-TAP-OWN"):
+    for target_id in (
+        "T-FE-FENIX",
+        "T-NF-NOF1",
+        "T-NF-PUBLIC",
+        "T-QR-SIGNAL",
+        "T-TA-CRITIC",
+        "T-FM-DEMO",
+        "T-TAP-OWN",
+    ):
         directory = REA_DIR / "targets" / target_id
         if directory.is_dir():
             per_target[target_id] = (_dossier_ids(directory), _dossier_digests(directory))
@@ -359,7 +387,9 @@ def load_events() -> list[LedgerEvent]:
             if timestamp is None:
                 raise LedgerError(f"{span.path}:{span.line}: event has no timestamp")
             dossier_ids, dossier_digests = per_target.get(target_id, (set(), {}))
-            evidence = _evidence_state(payload, REA_DIR / "targets" / target_id, dossier_ids, dossier_digests)
+            evidence = _evidence_state(
+                payload, REA_DIR / "targets" / target_id, dossier_ids, dossier_digests
+            )
             family = OPERATION_FAMILY.get(operation, "NON_REA")
             exit_code = _as_int(payload, "exit_code", "exit")
             result = _as_text(payload, "result", "envelope", "error")
@@ -393,15 +423,25 @@ def load_events() -> list[LedgerEvent]:
             # Same occurrence recorded twice: keep both spans, and fail if the copies
             # disagree about anything that matters.  Silently preferring one would
             # hide exactly the drift this package exists to catch.
-            for field in ("execution_class", "target_id", "operation", "timestamp", "exit_code", "result"):
-                if existing[field] != {
-                    "target_id": target_id,
-                    "operation": operation,
-                    "timestamp": timestamp,
-                    "exit_code": exit_code,
-                    "result": result,
-                    "execution_class": execution_class,
-                }[field]:
+            for field in (
+                "execution_class",
+                "target_id",
+                "operation",
+                "timestamp",
+                "exit_code",
+                "result",
+            ):
+                if (
+                    existing[field]
+                    != {
+                        "target_id": target_id,
+                        "operation": operation,
+                        "timestamp": timestamp,
+                        "exit_code": exit_code,
+                        "result": result,
+                        "execution_class": execution_class,
+                    }[field]
+                ):
                     raise LedgerError(
                         f"{span.path}:{span.line}: disagrees with an earlier copy of the same event "
                         f"on {field}"
@@ -448,7 +488,9 @@ def _block(events: Sequence[LedgerEvent]) -> dict[str, Any]:
         "executed_with_evidence_id": len(with_evidence),
         "executed_with_verified_artifact": len(verified),
         "executed_evidence_declared_unverified": len(with_evidence) - len(verified),
-        "not_executed": len([event for event in events if event.execution_class in NOT_EXECUTED_CLASSES]),
+        "not_executed": len(
+            [event for event in events if event.execution_class in NOT_EXECUTED_CLASSES]
+        ),
         "failed": len([event for event in events if event.execution_class == FAILED]),
         "not_executed_operations": sorted(
             f"{event.operation} ({event.execution_class})"
@@ -468,7 +510,9 @@ def build_counts(events: Sequence[LedgerEvent]) -> dict[str, Any]:
     with_phase_evidence = [
         event for event in phase_work if event.completed and event.evidence.evidence_id is not None
     ]
-    all_ids = {event.evidence.evidence_id for event in events if event.evidence.evidence_id is not None}
+    all_ids = {
+        event.evidence.evidence_id for event in events if event.evidence.evidence_id is not None
+    }
     return {
         "phase_v31": {
             # The 7 + 2 claim lives here and nowhere else: target work plus the two
@@ -478,26 +522,41 @@ def build_counts(events: Sequence[LedgerEvent]) -> dict[str, Any]:
                 "TARGET_ANALYSIS, SOURCE_IMPORT, SOURCE_COMPARE"
             ),
             "work": _block(phase_work),
-            "readiness": _block(_subset(phase, lambda event: event.operation_family == "TARGET_READINESS")),
+            "readiness": _block(
+                _subset(phase, lambda event: event.operation_family == "TARGET_READINESS")
+            ),
             "non_rea_steps": len(_subset(phase, lambda event: event.operation_family == "NON_REA")),
             "distinct_evidence_ids": len(
-                {event.evidence.evidence_id for event in phase if event.evidence.evidence_id is not None}
+                {
+                    event.evidence.evidence_id
+                    for event in phase
+                    if event.evidence.evidence_id is not None
+                }
             ),
         },
         "all_dossiers": {
             "definition": "every event recorded in the four target dossiers, any date",
             "work": _block(_subset(events, lambda event: event.operation_family in work_families)),
-            "readiness": _block(_subset(events, lambda event: event.operation_family == "TARGET_READINESS")),
-            "non_rea_steps": len(_subset(events, lambda event: event.operation_family == "NON_REA")),
+            "readiness": _block(
+                _subset(events, lambda event: event.operation_family == "TARGET_READINESS")
+            ),
+            "non_rea_steps": len(
+                _subset(events, lambda event: event.operation_family == "NON_REA")
+            ),
             "distinct_evidence_ids": len(
-                {event.evidence.evidence_id for event in events if event.evidence.evidence_id is not None}
+                {
+                    event.evidence.evidence_id
+                    for event in events
+                    if event.evidence.evidence_id is not None
+                }
             ),
-        },            "conflation_warning": (
-                "phase_v31 and all_dossiers share a subject but not a denominator: the phase counter "
-                f"({len(with_phase_evidence)} work operations with an evidence_id) and the dossier "
-                f"counter ({len(all_ids)} distinct evidence_ids) are both true and are not the same "
-                "counter."
-            ),
+        },
+        "conflation_warning": (
+            "phase_v31 and all_dossiers share a subject but not a denominator: the phase counter "
+            f"({len(with_phase_evidence)} work operations with an evidence_id) and the dossier "
+            f"counter ({len(all_ids)} distinct evidence_ids) are both true and are not the same "
+            "counter."
+        ),
     }
 
 
@@ -511,11 +570,7 @@ def build_ledger(events: Sequence[LedgerEvent] | None = None) -> dict[str, Any]:
     }
     payload["ledger_sha256"] = digest({"events": payload["events"], "counts": counts})
     payload["source_files"] = sorted(
-        {
-            span.path: span.file_sha256
-            for event in resolved
-            for span in event.sources
-        }.items()
+        {span.path: span.file_sha256 for event in resolved for span in event.sources}.items()
     )
     return payload
 
