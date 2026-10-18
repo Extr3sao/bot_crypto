@@ -1,36 +1,9 @@
 {
-  "schema_version": "TAP_ROADMAP_MASTER_V1",
-  "project": "Trading Agentic Portable",
-  "updated_at": "2026-10-18",
-  "repository": "https://github.com/Extr3sao/bot_crypto",
-  "authority_order": [
-    "REAL_RUNTIME",
-    "EXECUTION_EVIDENCE",
-    "TESTS",
-    "SOURCE_CODE",
-    "ARCH/RFC",
-    "EXTERNAL_SOURCE",
-    "ASSUMPTION"
-  ],
-  "source_branches": {
-    "main": "5e6f9632e8d9c15dabd60ea92ac68f350ca28c9d",
-    "agent/ai-bots/RFC-TAP-AI-BOTS-003": "0841d372cdf36e6b52b6d8ed2e02b9d4e8c23a5e",
-    "agent/edge-recovery/WP-EDGE-00-baseline": "b17644a6b458dcae5aae0000e11d2f4736b4e883",
-    "agent/evidence/RFC-TAP-EVIDENCE-004": "b7e100ae7317a0bba71c0f4118ed8a154dd58d18",
-    "agent/ai-vision/RFC-AI-VISION-001": "b7e100ae7317a0bba71c0f4118ed8a154dd58d18"
-  },
-  "states": [
-    "VERIFICADO_FOCAL",
-    "IMPLEMENTADO",
-    "EN_CURSO",
-    "PENDIENTE",
-    "PLANIFICADO",
-    "PROPUESTO",
-    "BLOQUEADO",
-    "RECHAZADO",
-    "NO_APLICA"
-  ],
-  "items": [
+  "schema_version": "TAP_ROADMAP_V1",
+  "version": "v1.3",
+  "updated": "2026-10-18",
+  "source_of_truth": "ROADMAP_TRADING_AGENTIC_PORTABLE.xlsx",
+  "rows": [
     {
       "ID": "TAP-001",
       "Frente": "Auditoría & gobernanza",
@@ -41,16 +14,16 @@
       "Prioridad": "P0",
       "Progreso": 1,
       "Orden": 1,
-      "Dependencias": "",
+      "Dependencias": null,
       "Gate": "Reporte publicado; mapa total de main no recertificado",
       "Evidencia": "b17644a / WP-EDGE-00",
       "URL": "https://github.com/Extr3sao/bot_crypto/tree/agent/edge-recovery/WP-EDGE-00-baseline",
       "Responsable": "Codex",
-      "Inicio": "",
-      "Fecha_objetivo": "",
+      "Inicio": null,
+      "Fecha_objetivo": null,
       "Actualizacion": "2026-10-18",
-      "Siguiente_paso": "",
-      "Bloqueo": "",
+      "Siguiente_paso": null,
+      "Bloqueo": null,
       "Tipo_evidencia": "REPO_REPORT",
       "Notas": "Cerrado sobre rama económica; NO equivale a que main esté integrado."
     },
@@ -69,13 +42,13 @@
       "Evidencia": "b17644a / FINAL_REPORT EDGE-017",
       "URL": "https://github.com/Extr3sao/bot_crypto/blob/agent/edge-recovery/WP-EDGE-00-baseline/reports/economic-recovery/RFC-EDGE-017/FINAL_REPORT.md",
       "Responsable": "Codex",
-      "Inicio": "",
-      "Fecha_objetivo": "",
+      "Inicio": null,
+      "Fecha_objetivo": null,
       "Actualizacion": "2026-10-18",
-      "Siguiente_paso": "",
-      "Bloqueo": "",
+      "Siguiente_paso": null,
+      "Bloqueo": null,
       "Tipo_evidencia": "REPO_REPORT",
-      "Notas": ""
+      "Notas": null
     },
     {
       "ID": "TAP-003",
@@ -92,13 +65,13 @@
       "Evidencia": "b17644a / NET_RISK_REPLAY.json",
       "URL": "https://github.com/Extr3sao/bot_crypto/blob/agent/edge-recovery/WP-EDGE-00-baseline/reports/economic-recovery/RFC-EDGE-017/NET_RISK_REPLAY.json",
       "Responsable": "Codex",
-      "Inicio": "",
-      "Fecha_objetivo": "",
+      "Inicio": null,
+      "Fecha_objetivo": null,
       "Actualizacion": "2026-10-18",
-      "Siguiente_paso": "",
-      "Bloqueo": "",
+      "Siguiente_paso": null,
+      "Bloqueo": null,
       "Tipo_evidencia": "REPO_REPORT",
-      "Notas": ""
+      "Notas": null
     },
     {
       "ID": "TAP-004",
@@ -115,11 +88,11 @@
       "Evidencia": "243ba12 / CANONICAL_RUN.json",
       "URL": "https://github.com/Extr3sao/bot_crypto/tree/agent/evidence/RFC-TAP-EVIDENCE-004/reports/ai-bots/RFC-AI-BOTS-002/evidence-004",
       "Responsable": "Codex",
-      "Inicio": "",
-      "Fecha_objetivo": "",
+      "Inicio": null,
+      "Fecha_objetivo": null,
       "Actualizacion": "2026-10-18",
-      "Siguiente_paso": "",
-      "Bloqueo": "",
+      "Siguiente_paso": null,
+      "Bloqueo": null,
       "Tipo_evidencia": "REPO_REPORT",
       "Notas": "Conservar documentos antiguos superseded."
     },
@@ -138,13 +111,13 @@
       "Evidencia": "b7e100a / VERIFICATION.json",
       "URL": "https://github.com/Extr3sao/bot_crypto/blob/agent/evidence/RFC-TAP-EVIDENCE-004/reports/ai-bots/RFC-AI-BOTS-002/evidence-004/VERIFICATION.json",
       "Responsable": "Codex",
-      "Inicio": "",
-      "Fecha_objetivo": "",
+      "Inicio": null,
+      "Fecha_objetivo": null,
       "Actualizacion": "2026-10-18",
-      "Siguiente_paso": "",
-      "Bloqueo": "",
+      "Siguiente_paso": null,
+      "Bloqueo": null,
       "Tipo_evidencia": "REPO_REPORT",
-      "Notas": ""
+      "Notas": null
     },
     {
       "ID": "TAP-006",
@@ -161,13 +134,13 @@
       "Evidencia": "b7e100a / FINAL_REPORT.md",
       "URL": "https://github.com/Extr3sao/bot_crypto/blob/agent/evidence/RFC-TAP-EVIDENCE-004/reports/ai-bots/RFC-AI-BOTS-002/evidence-004/FINAL_REPORT.md",
       "Responsable": "Codex",
-      "Inicio": "",
-      "Fecha_objetivo": "",
+      "Inicio": null,
+      "Fecha_objetivo": null,
       "Actualizacion": "2026-10-18",
-      "Siguiente_paso": "",
-      "Bloqueo": "",
+      "Siguiente_paso": null,
+      "Bloqueo": null,
       "Tipo_evidencia": "REPO_REPORT",
-      "Notas": ""
+      "Notas": null
     },
     {
       "ID": "TAP-007",
@@ -184,13 +157,13 @@
       "Evidencia": "Issue #13",
       "URL": "https://github.com/Extr3sao/bot_crypto/issues/13",
       "Responsable": "Codex",
-      "Inicio": "",
-      "Fecha_objetivo": "",
+      "Inicio": null,
+      "Fecha_objetivo": null,
       "Actualizacion": "2026-10-18",
       "Siguiente_paso": "Crear gate CI de informes en checkout limpio; no sobrescribir pruebas ajenas.",
       "Bloqueo": "Suite global no certificada en la rama AI.",
       "Tipo_evidencia": "REPO_REPORT",
-      "Notas": ""
+      "Notas": null
     },
     {
       "ID": "TAP-008",
@@ -207,11 +180,11 @@
       "Evidencia": "6403c71 / dossier REA",
       "URL": "https://github.com/Extr3sao/bot_crypto/tree/agent/ai-vision/RFC-AI-VISION-001/reports/ai-bots/RFC-AI-BOTS-002/rea",
       "Responsable": "Codex",
-      "Inicio": "",
-      "Fecha_objetivo": "",
+      "Inicio": null,
+      "Fecha_objetivo": null,
       "Actualizacion": "2026-10-18",
-      "Siguiente_paso": "",
-      "Bloqueo": "",
+      "Siguiente_paso": null,
+      "Bloqueo": null,
       "Tipo_evidencia": "REPO_REPORT",
       "Notas": "No confundir AST/DOM con backend ejecutado."
     },
@@ -230,13 +203,13 @@
       "Evidencia": "6403c71 / T-NF-PUBLIC PROVENANCE",
       "URL": "https://github.com/Extr3sao/bot_crypto/tree/agent/ai-vision/RFC-AI-VISION-001/reports/ai-bots/RFC-AI-BOTS-002/rea/targets/T-NF-PUBLIC",
       "Responsable": "Codex",
-      "Inicio": "",
-      "Fecha_objetivo": "",
+      "Inicio": null,
+      "Fecha_objetivo": null,
       "Actualizacion": "2026-10-18",
-      "Siguiente_paso": "",
-      "Bloqueo": "",
+      "Siguiente_paso": null,
+      "Bloqueo": null,
       "Tipo_evidencia": "REPO_REPORT",
-      "Notas": ""
+      "Notas": null
     },
     {
       "ID": "TAP-010",
@@ -253,13 +226,13 @@
       "Evidencia": "4dba317 / Fenix instrumentation",
       "URL": "https://github.com/Extr3sao/bot_crypto/tree/agent/ai-vision/RFC-AI-VISION-001/reports/ai-bots/RFC-AI-BOTS-002/rea/targets/T-FE-FENIX/instrumentation",
       "Responsable": "Codex",
-      "Inicio": "",
-      "Fecha_objetivo": "",
+      "Inicio": null,
+      "Fecha_objetivo": null,
       "Actualizacion": "2026-10-18",
-      "Siguiente_paso": "",
-      "Bloqueo": "",
+      "Siguiente_paso": null,
+      "Bloqueo": null,
       "Tipo_evidencia": "REPO_REPORT",
-      "Notas": ""
+      "Notas": null
     },
     {
       "ID": "TAP-011",
@@ -276,13 +249,13 @@
       "Evidencia": "Issue #11",
       "URL": "https://github.com/Extr3sao/bot_crypto/issues/11",
       "Responsable": "Codex",
-      "Inicio": "",
-      "Fecha_objetivo": "",
+      "Inicio": null,
+      "Fecha_objetivo": null,
       "Actualizacion": "2026-10-18",
       "Siguiente_paso": "Solo si surge un patrón diferencial con hipótesis medible.",
       "Bloqueo": "Sin cadena conductual funcional o no hay mejora demostrada.",
       "Tipo_evidencia": "REPO_REPORT",
-      "Notas": ""
+      "Notas": null
     },
     {
       "ID": "TAP-012",
@@ -299,11 +272,11 @@
       "Evidencia": "091d55d / source + tests",
       "URL": "https://github.com/Extr3sao/bot_crypto/tree/agent/ai-vision/RFC-AI-VISION-001/src/trading_bot/vision",
       "Responsable": "Codex",
-      "Inicio": "",
-      "Fecha_objetivo": "",
+      "Inicio": null,
+      "Fecha_objetivo": null,
       "Actualizacion": "2026-10-18",
-      "Siguiente_paso": "",
-      "Bloqueo": "",
+      "Siguiente_paso": null,
+      "Bloqueo": null,
       "Tipo_evidencia": "REPO_REPORT",
       "Notas": "No certifica decisiones con IA real."
     },
@@ -322,13 +295,13 @@
       "Evidencia": "4dba317 / registry.py",
       "URL": "https://github.com/Extr3sao/bot_crypto/blob/agent/ai-vision/RFC-AI-VISION-001/src/trading_bot/intelligence/ai_bots/registry.py",
       "Responsable": "Codex",
-      "Inicio": "",
-      "Fecha_objetivo": "",
+      "Inicio": null,
+      "Fecha_objetivo": null,
       "Actualizacion": "2026-10-18",
-      "Siguiente_paso": "",
-      "Bloqueo": "",
+      "Siguiente_paso": null,
+      "Bloqueo": null,
       "Tipo_evidencia": "REPO_REPORT",
-      "Notas": ""
+      "Notas": null
     },
     {
       "ID": "TAP-014",
@@ -345,13 +318,13 @@
       "Evidencia": "e4db7da / vision lane tests",
       "URL": "https://github.com/Extr3sao/bot_crypto/tree/agent/ai-vision/RFC-AI-VISION-001/tests/unit/vision",
       "Responsable": "Codex",
-      "Inicio": "",
-      "Fecha_objetivo": "",
+      "Inicio": null,
+      "Fecha_objetivo": null,
       "Actualizacion": "2026-10-18",
-      "Siguiente_paso": "",
-      "Bloqueo": "",
+      "Siguiente_paso": null,
+      "Bloqueo": null,
       "Tipo_evidencia": "REPO_REPORT",
-      "Notas": ""
+      "Notas": null
     },
     {
       "ID": "TAP-015",
@@ -368,13 +341,13 @@
       "Evidencia": "e4db7da / compare.py",
       "URL": "https://github.com/Extr3sao/bot_crypto/blob/agent/ai-vision/RFC-AI-VISION-001/src/trading_bot/vision/compare.py",
       "Responsable": "Codex",
-      "Inicio": "",
-      "Fecha_objetivo": "",
+      "Inicio": null,
+      "Fecha_objetivo": null,
       "Actualizacion": "2026-10-18",
-      "Siguiente_paso": "",
-      "Bloqueo": "",
+      "Siguiente_paso": null,
+      "Bloqueo": null,
       "Tipo_evidencia": "REPO_REPORT",
-      "Notas": ""
+      "Notas": null
     },
     {
       "ID": "TAP-016",
@@ -391,13 +364,13 @@
       "Evidencia": "2921f6d / BLOCK A",
       "URL": "https://github.com/Extr3sao/bot_crypto/tree/agent/ai-bots/RFC-TAP-AI-BOTS-003/src/trading_bot/vision",
       "Responsable": "Codex",
-      "Inicio": "",
-      "Fecha_objetivo": "",
+      "Inicio": null,
+      "Fecha_objetivo": null,
       "Actualizacion": "2026-10-18",
-      "Siguiente_paso": "",
-      "Bloqueo": "",
+      "Siguiente_paso": null,
+      "Bloqueo": null,
       "Tipo_evidencia": "REPO_REPORT",
-      "Notas": ""
+      "Notas": null
     },
     {
       "ID": "TAP-017",
@@ -414,13 +387,13 @@
       "Evidencia": "2921f6d / test_causal_clock",
       "URL": "https://github.com/Extr3sao/bot_crypto/blob/agent/ai-bots/RFC-TAP-AI-BOTS-003/tests/unit/vision/test_causal_clock.py",
       "Responsable": "Codex",
-      "Inicio": "",
-      "Fecha_objetivo": "",
+      "Inicio": null,
+      "Fecha_objetivo": null,
       "Actualizacion": "2026-10-18",
-      "Siguiente_paso": "",
-      "Bloqueo": "",
+      "Siguiente_paso": null,
+      "Bloqueo": null,
       "Tipo_evidencia": "REPO_REPORT",
-      "Notas": ""
+      "Notas": null
     },
     {
       "ID": "TAP-018",
@@ -437,11 +410,11 @@
       "Evidencia": "ffbc0ca / BLOCK-B FINAL_REPORT",
       "URL": "https://github.com/Extr3sao/bot_crypto/blob/agent/ai-bots/RFC-TAP-AI-BOTS-003/reports/ai-bots/RFC-AI-BOTS-003/BLOCK-B/FINAL_REPORT.md",
       "Responsable": "Codex",
-      "Inicio": "",
-      "Fecha_objetivo": "",
+      "Inicio": null,
+      "Fecha_objetivo": null,
       "Actualizacion": "2026-10-18",
-      "Siguiente_paso": "",
-      "Bloqueo": "",
+      "Siguiente_paso": null,
+      "Bloqueo": null,
       "Tipo_evidencia": "REPO_REPORT",
       "Notas": "La latencia de 900ms en 1h fuerza espera de casi 1h; no equivale a live tick."
     },
@@ -460,13 +433,13 @@
       "Evidencia": "ffbc0ca / BLOCK-B WP_RUN_REPORT.json",
       "URL": "https://github.com/Extr3sao/bot_crypto/blob/agent/ai-bots/RFC-TAP-AI-BOTS-003/reports/ai-bots/RFC-AI-BOTS-003/BLOCK-B/WP_RUN_REPORT.json",
       "Responsable": "Codex",
-      "Inicio": "",
-      "Fecha_objetivo": "",
+      "Inicio": null,
+      "Fecha_objetivo": null,
       "Actualizacion": "2026-10-18",
-      "Siguiente_paso": "",
-      "Bloqueo": "",
+      "Siguiente_paso": null,
+      "Bloqueo": null,
       "Tipo_evidencia": "REPO_REPORT",
-      "Notas": ""
+      "Notas": null
     },
     {
       "ID": "TAP-020",
@@ -483,11 +456,11 @@
       "Evidencia": "86d4f12 motor · 0841d37 cierre/recibos",
       "URL": "https://github.com/Extr3sao/bot_crypto/blob/agent/ai-bots/RFC-TAP-AI-BOTS-003/reports/ai-bots/RFC-AI-BOTS-003/BLOCK-C/FINAL_REPORT.md",
       "Responsable": "Codex",
-      "Inicio": "",
-      "Fecha_objetivo": "",
+      "Inicio": null,
+      "Fecha_objetivo": null,
       "Actualizacion": "2026-10-18",
-      "Siguiente_paso": "",
-      "Bloqueo": "",
+      "Siguiente_paso": null,
+      "Bloqueo": null,
       "Tipo_evidencia": "REPO_REPORT",
       "Notas": "Gaps OPEN antes de nuevas entradas. Caso sintético sí; datos reales sin gap OPEN >2%. 459 tests focalizados comunicados; sin modelo real. Reproducibilidad de captura revalidada hasta 0841d37."
     },
@@ -506,11 +479,11 @@
       "Evidencia": "0841d37 · COVERAGE_LEDGER + series_sha256",
       "URL": "https://github.com/Extr3sao/bot_crypto/blob/agent/ai-bots/RFC-TAP-AI-BOTS-003/reports/ai-bots/RFC-AI-BOTS-003/BLOCK-C/CAPTURE.json",
       "Responsable": "Codex",
-      "Inicio": "",
-      "Fecha_objetivo": "",
+      "Inicio": null,
+      "Fecha_objetivo": null,
       "Actualizacion": "2026-10-18",
-      "Siguiente_paso": "",
-      "Bloqueo": "",
+      "Siguiente_paso": null,
+      "Bloqueo": null,
       "Tipo_evidencia": "REPO_REPORT",
       "Notas": "Cov proof, DATA_GAP fail-closed; digest de barras consumidas. 53/53 mutaciones aplicadas detectadas; otras 12 omitidas por diseño."
     },
@@ -529,11 +502,11 @@
       "Evidencia": "0841d37 · CLEAN_ARCHIVE.json / series_sha256",
       "URL": "https://github.com/Extr3sao/bot_crypto/blob/agent/ai-bots/RFC-TAP-AI-BOTS-003/reports/ai-bots/RFC-AI-BOTS-003/BLOCK-C/evidence/CLEAN_ARCHIVE.json",
       "Responsable": "Codex",
-      "Inicio": "",
-      "Fecha_objetivo": "",
+      "Inicio": null,
+      "Fecha_objetivo": null,
       "Actualizacion": "2026-10-18",
       "Siguiente_paso": "Ejecutar clean-clone suite completa antes de certificar runtime global.",
-      "Bloqueo": "",
+      "Bloqueo": null,
       "Tipo_evidencia": "REPO_REPORT",
       "Notas": "Commits 86d4f12 (motor), eeb0bea (informe), 0841d37 (pin serie y reproducibilidad). El archivo de evidencia documenta equivalencia; los 459 tests no se reejecutaron tras cambios solo de captura/informes."
     },
@@ -552,11 +525,11 @@
       "Evidencia": "Issue #12",
       "URL": "https://github.com/Extr3sao/bot_crypto/issues/12",
       "Responsable": "Codex",
-      "Inicio": "",
-      "Fecha_objetivo": "",
+      "Inicio": null,
+      "Fecha_objetivo": null,
       "Actualizacion": "2026-10-18",
       "Siguiente_paso": "Preparar offline provider y políticas de presupuesto/reintentos; no API pagada.",
-      "Bloqueo": "",
+      "Bloqueo": null,
       "Tipo_evidencia": "REPO_REPORT",
       "Notas": "P0 siguiente bloque técnico: credenciales por env, recibos reales, errores, presupuesto y retries sin costes."
     },
@@ -575,13 +548,13 @@
       "Evidencia": "Issue #12",
       "URL": "https://github.com/Extr3sao/bot_crypto/issues/12",
       "Responsable": "Codex",
-      "Inicio": "",
-      "Fecha_objetivo": "",
+      "Inicio": null,
+      "Fecha_objetivo": null,
       "Actualizacion": "2026-10-18",
       "Siguiente_paso": "Preflight disco y diseño feed; no inventar fill intrabar.",
       "Bloqueo": "Datos 1h no miden ejecución sub-minuto; scheduler sin autorización.",
       "Tipo_evidencia": "REPO_REPORT",
-      "Notas": ""
+      "Notas": null
     },
     {
       "ID": "TAP-025",
@@ -598,13 +571,13 @@
       "Evidencia": "Issue #12",
       "URL": "https://github.com/Extr3sao/bot_crypto/issues/12",
       "Responsable": "Usuario (autorización) + Codex",
-      "Inicio": "",
-      "Fecha_objetivo": "",
+      "Inicio": null,
+      "Fecha_objetivo": null,
       "Actualizacion": "2026-10-18",
       "Siguiente_paso": "Solicitar solo cuando setup offline, risk y receipts estén listos.",
       "Bloqueo": "REAL_MODEL_CALLED=false; sin autorización coste/credencial.",
       "Tipo_evidencia": "REPO_REPORT",
-      "Notas": ""
+      "Notas": null
     },
     {
       "ID": "TAP-026",
@@ -621,13 +594,13 @@
       "Evidencia": "Issue #12",
       "URL": "https://github.com/Extr3sao/bot_crypto/issues/12",
       "Responsable": "Codex",
-      "Inicio": "",
-      "Fecha_objetivo": "",
+      "Inicio": null,
+      "Fecha_objetivo": null,
       "Actualizacion": "2026-10-18",
       "Siguiente_paso": "Congelar spec antes de OOS; almacenar decisiones reales.",
       "Bloqueo": "No receipts reales, sin muestras forward suficientes.",
       "Tipo_evidencia": "REPO_REPORT",
-      "Notas": ""
+      "Notas": null
     },
     {
       "ID": "TAP-027",
@@ -644,13 +617,13 @@
       "Evidencia": "Issue #14 / RFC 004",
       "URL": "https://github.com/Extr3sao/bot_crypto/issues/14",
       "Responsable": "Codex",
-      "Inicio": "",
-      "Fecha_objetivo": "",
+      "Inicio": null,
+      "Fecha_objetivo": null,
       "Actualizacion": "2026-10-18",
       "Siguiente_paso": "Crear rama aislada; ejecutar fases REA + Python instrumentado offline.",
-      "Bloqueo": "",
+      "Bloqueo": null,
       "Tipo_evidencia": "REPO_REPORT",
-      "Notas": ""
+      "Notas": null
     },
     {
       "ID": "TAP-028",
@@ -667,13 +640,13 @@
       "Evidencia": "Issue #14 / upstream e8f5503",
       "URL": "https://github.com/Extr3sao/bot_crypto/issues/14",
       "Responsable": "Codex",
-      "Inicio": "",
-      "Fecha_objetivo": "",
+      "Inicio": null,
+      "Fecha_objetivo": null,
       "Actualizacion": "2026-10-18",
       "Siguiente_paso": "Ejecutar REA CLI sobre reporte generado por mismo upstream; ensayos fake LLM sin red.",
-      "Bloqueo": "",
+      "Bloqueo": null,
       "Tipo_evidencia": "REPO_REPORT",
-      "Notas": ""
+      "Notas": null
     },
     {
       "ID": "TAP-029",
@@ -690,13 +663,13 @@
       "Evidencia": "Issue #14",
       "URL": "https://github.com/Extr3sao/bot_crypto/issues/14",
       "Responsable": "Codex",
-      "Inicio": "",
-      "Fecha_objetivo": "",
+      "Inicio": null,
+      "Fecha_objetivo": null,
       "Actualizacion": "2026-10-18",
       "Siguiente_paso": "Tests schema, injected adversarial, veto no vacuo.",
-      "Bloqueo": "",
+      "Bloqueo": null,
       "Tipo_evidencia": "REPO_REPORT",
-      "Notas": ""
+      "Notas": null
     },
     {
       "ID": "TAP-030",
@@ -713,13 +686,13 @@
       "Evidencia": "Issue #14",
       "URL": "https://github.com/Extr3sao/bot_crypto/issues/14",
       "Responsable": "Codex",
-      "Inicio": "",
-      "Fecha_objetivo": "",
+      "Inicio": null,
+      "Fecha_objetivo": null,
       "Actualizacion": "2026-10-18",
       "Siguiente_paso": "Conectar sin activar gate paper ni mercado live.",
-      "Bloqueo": "",
+      "Bloqueo": null,
       "Tipo_evidencia": "REPO_REPORT",
-      "Notas": ""
+      "Notas": null
     },
     {
       "ID": "TAP-031",
@@ -736,13 +709,13 @@
       "Evidencia": "Issue #14",
       "URL": "https://github.com/Extr3sao/bot_crypto/issues/14",
       "Responsable": "Codex",
-      "Inicio": "",
-      "Fecha_objetivo": "",
+      "Inicio": null,
+      "Fecha_objetivo": null,
       "Actualizacion": "2026-10-18",
       "Siguiente_paso": "Exigir comparativa neta incremental y independencia del crítico.",
       "Bloqueo": "Falta evidencia modelo real + ablation y gate AI-BOTS-003C.",
       "Tipo_evidencia": "REPO_REPORT",
-      "Notas": ""
+      "Notas": null
     },
     {
       "ID": "TAP-032",
@@ -759,13 +732,13 @@
       "Evidencia": "VNext arquitectura / planned",
       "URL": "https://github.com/Extr3sao/bot_crypto/issues/12",
       "Responsable": "Codex",
-      "Inicio": "",
-      "Fecha_objetivo": "",
+      "Inicio": null,
+      "Fecha_objetivo": null,
       "Actualizacion": "2026-10-18",
       "Siguiente_paso": "Auditar componentes existentes; no inventar clases duplicadas.",
-      "Bloqueo": "",
+      "Bloqueo": null,
       "Tipo_evidencia": "DESIGN_ONLY",
-      "Notas": ""
+      "Notas": null
     },
     {
       "ID": "TAP-033",
@@ -782,13 +755,13 @@
       "Evidencia": "VNext arquitectura / planned",
       "URL": "https://github.com/Extr3sao/bot_crypto/issues/12",
       "Responsable": "Codex",
-      "Inicio": "",
-      "Fecha_objetivo": "",
+      "Inicio": null,
+      "Fecha_objetivo": null,
       "Actualizacion": "2026-10-18",
       "Siguiente_paso": "Solo implementarlo si route/casos de uso están justificados.",
-      "Bloqueo": "",
+      "Bloqueo": null,
       "Tipo_evidencia": "DESIGN_ONLY",
-      "Notas": ""
+      "Notas": null
     },
     {
       "ID": "TAP-034",
@@ -805,11 +778,11 @@
       "Evidencia": "Strategy architecture / partial tests",
       "URL": "https://github.com/Extr3sao/bot_crypto/tree/agent/edge-recovery/WP-EDGE-00-baseline/src/trading_bot/research",
       "Responsable": "Codex",
-      "Inicio": "",
-      "Fecha_objetivo": "",
+      "Inicio": null,
+      "Fecha_objetivo": null,
       "Actualizacion": "2026-10-18",
       "Siguiente_paso": "Auditar TEST_ONLY vs RUNTIME_REACHABLE antes de implementar.",
-      "Bloqueo": "",
+      "Bloqueo": null,
       "Tipo_evidencia": "SOURCE_AND_DESIGN",
       "Notas": "En historia del proyecto se reportó router puro, pero falta certificación reachability."
     },
@@ -828,13 +801,13 @@
       "Evidencia": "EDGE-017 FINAL_REPORT",
       "URL": "https://github.com/Extr3sao/bot_crypto/blob/agent/edge-recovery/WP-EDGE-00-baseline/reports/economic-recovery/RFC-EDGE-017/FINAL_REPORT.md",
       "Responsable": "Codex",
-      "Inicio": "",
-      "Fecha_objetivo": "",
+      "Inicio": null,
+      "Fecha_objetivo": null,
       "Actualizacion": "2026-10-18",
       "Siguiente_paso": "Congelar criterios de admisión, comprobar gates/costes y promover solo con evidencia.",
       "Bloqueo": "Aún 0 estrategias admitidas.",
       "Tipo_evidencia": "REPO_REPORT",
-      "Notas": ""
+      "Notas": null
     },
     {
       "ID": "TAP-036",
@@ -851,11 +824,11 @@
       "Evidencia": "NET_RISK_REPLAY.json",
       "URL": "https://github.com/Extr3sao/bot_crypto/blob/agent/edge-recovery/WP-EDGE-00-baseline/reports/economic-recovery/RFC-EDGE-017/NET_RISK_REPLAY.json",
       "Responsable": "Codex",
-      "Inicio": "",
-      "Fecha_objetivo": "",
+      "Inicio": null,
+      "Fecha_objetivo": null,
       "Actualizacion": "2026-10-18",
-      "Siguiente_paso": "",
-      "Bloqueo": "",
+      "Siguiente_paso": null,
+      "Bloqueo": null,
       "Tipo_evidencia": "REPO_REPORT",
       "Notas": "Replay histórico determinista NO edge positivo."
     },
@@ -874,11 +847,11 @@
       "Evidencia": "CAPTURE_INTEGRITY / EDGE-017",
       "URL": "https://github.com/Extr3sao/bot_crypto/blob/agent/edge-recovery/WP-EDGE-00-baseline/reports/economic-recovery/RFC-EDGE-017/FINAL_REPORT.md",
       "Responsable": "Codex",
-      "Inicio": "",
-      "Fecha_objetivo": "",
+      "Inicio": null,
+      "Fecha_objetivo": null,
       "Actualizacion": "2026-10-18",
-      "Siguiente_paso": "",
-      "Bloqueo": "",
+      "Siguiente_paso": null,
+      "Bloqueo": null,
       "Tipo_evidencia": "REPO_REPORT",
       "Notas": "Manual ≠ captura continua; 9 evaluadas sin propuesta."
     },
@@ -897,13 +870,13 @@
       "Evidencia": "RFC-TAP-EDGE-001",
       "URL": "https://github.com/Extr3sao/bot_crypto/issues/10",
       "Responsable": "Codex",
-      "Inicio": "",
-      "Fecha_objetivo": "",
+      "Inicio": null,
+      "Fecha_objetivo": null,
       "Actualizacion": "2026-10-18",
       "Siguiente_paso": "Contrastarlo con código y candidatos ya existentes.",
-      "Bloqueo": "",
+      "Bloqueo": null,
       "Tipo_evidencia": "DESIGN_ONLY",
-      "Notas": ""
+      "Notas": null
     },
     {
       "ID": "TAP-039",
@@ -920,13 +893,13 @@
       "Evidencia": "RFC-TAP-EDGE-001",
       "URL": "https://github.com/Extr3sao/bot_crypto/issues/10",
       "Responsable": "Codex",
-      "Inicio": "",
-      "Fecha_objetivo": "",
+      "Inicio": null,
+      "Fecha_objetivo": null,
       "Actualizacion": "2026-10-18",
       "Siguiente_paso": "Implementar solo tras baseline de INTRA-A.",
-      "Bloqueo": "",
+      "Bloqueo": null,
       "Tipo_evidencia": "DESIGN_ONLY",
-      "Notas": ""
+      "Notas": null
     },
     {
       "ID": "TAP-040",
@@ -943,13 +916,13 @@
       "Evidencia": "RFC-TAP-EDGE-001",
       "URL": "https://github.com/Extr3sao/bot_crypto/issues/10",
       "Responsable": "Codex",
-      "Inicio": "",
-      "Fecha_objetivo": "",
+      "Inicio": null,
+      "Fecha_objetivo": null,
       "Actualizacion": "2026-10-18",
       "Siguiente_paso": "Ablation matched assets/capital y fees.",
-      "Bloqueo": "",
+      "Bloqueo": null,
       "Tipo_evidencia": "DESIGN_ONLY",
-      "Notas": ""
+      "Notas": null
     },
     {
       "ID": "TAP-041",
@@ -966,13 +939,13 @@
       "Evidencia": "EDGE-017 neto negativo",
       "URL": "https://github.com/Extr3sao/bot_crypto/issues/10",
       "Responsable": "Codex",
-      "Inicio": "",
-      "Fecha_objetivo": "",
+      "Inicio": null,
+      "Fecha_objetivo": null,
       "Actualizacion": "2026-10-18",
       "Siguiente_paso": "Experiment spec preregistrada y OOS intocado.",
       "Bloqueo": "La rentabilidad actual no está demostrada.",
       "Tipo_evidencia": "REPO_REPORT",
-      "Notas": ""
+      "Notas": null
     },
     {
       "ID": "TAP-042",
@@ -989,8 +962,8 @@
       "Evidencia": "Objetivo de producto; aún sin validación",
       "URL": "https://github.com/Extr3sao/bot_crypto/issues/10",
       "Responsable": "Usuario (policy) + Quant",
-      "Inicio": "",
-      "Fecha_objetivo": "",
+      "Inicio": null,
+      "Fecha_objetivo": null,
       "Actualizacion": "2026-10-18",
       "Siguiente_paso": "Medir días sin fills en PAPER; evaluar universos; política 7/7 separada.",
       "Bloqueo": "weekend_trading=false, sin edge y sin estrategia admitida.",
@@ -1012,13 +985,13 @@
       "Evidencia": "Arquitectura VNext",
       "URL": "https://github.com/Extr3sao/bot_crypto/issues/12",
       "Responsable": "Codex",
-      "Inicio": "",
-      "Fecha_objetivo": "",
+      "Inicio": null,
+      "Fecha_objetivo": null,
       "Actualizacion": "2026-10-18",
       "Siguiente_paso": "Alinear IDs, clocks, price evidence; no duplicar ledger.",
-      "Bloqueo": "",
+      "Bloqueo": null,
       "Tipo_evidencia": "DESIGN_AND_PARTIAL_SOURCE",
-      "Notas": ""
+      "Notas": null
     },
     {
       "ID": "TAP-044",
@@ -1035,13 +1008,13 @@
       "Evidencia": "VNext arquitectura / propuesta",
       "URL": "https://github.com/Extr3sao/bot_crypto/issues/14",
       "Responsable": "Codex",
-      "Inicio": "",
-      "Fecha_objetivo": "",
+      "Inicio": null,
+      "Fecha_objetivo": null,
       "Actualizacion": "2026-10-18",
       "Siguiente_paso": "Auditar entrypoint reachability, estado y retry antes de RFC.",
-      "Bloqueo": "",
+      "Bloqueo": null,
       "Tipo_evidencia": "DESIGN_ONLY",
-      "Notas": ""
+      "Notas": null
     },
     {
       "ID": "TAP-045",
@@ -1058,13 +1031,13 @@
       "Evidencia": "Arquitectura VNext / propuesta",
       "URL": "https://github.com/Extr3sao/bot_crypto/issues/14",
       "Responsable": "Codex",
-      "Inicio": "",
-      "Fecha_objetivo": "",
+      "Inicio": null,
+      "Fecha_objetivo": null,
       "Actualizacion": "2026-10-18",
       "Siguiente_paso": "Integrar en crítico si demuestra función ortogonal.",
-      "Bloqueo": "",
+      "Bloqueo": null,
       "Tipo_evidencia": "DESIGN_ONLY",
-      "Notas": ""
+      "Notas": null
     },
     {
       "ID": "TAP-046",
@@ -1081,13 +1054,13 @@
       "Evidencia": "Arquitectura VNext / propuesta",
       "URL": "https://github.com/Extr3sao/bot_crypto/issues/14",
       "Responsable": "Codex",
-      "Inicio": "",
-      "Fecha_objetivo": "",
+      "Inicio": null,
+      "Fecha_objetivo": null,
       "Actualizacion": "2026-10-18",
       "Siguiente_paso": "Comenzar con post-trade lessons offline, sin auto-promoción.",
-      "Bloqueo": "",
+      "Bloqueo": null,
       "Tipo_evidencia": "DESIGN_ONLY",
-      "Notas": ""
+      "Notas": null
     },
     {
       "ID": "TAP-047",
@@ -1104,13 +1077,13 @@
       "Evidencia": "Codex fuentes prompt v1/v2",
       "URL": "https://github.com/Extr3sao/bot_crypto/tree/agent/ai-bots/RFC-TAP-AI-BOTS-003/src/trading_bot/vision",
       "Responsable": "Codex",
-      "Inicio": "",
-      "Fecha_objetivo": "",
+      "Inicio": null,
+      "Fecha_objetivo": null,
       "Actualizacion": "2026-10-18",
       "Siguiente_paso": "Fijar schema + versiones + evaluación coste/latencia.",
-      "Bloqueo": "",
+      "Bloqueo": null,
       "Tipo_evidencia": "PARTIAL_SOURCE",
-      "Notas": ""
+      "Notas": null
     },
     {
       "ID": "TAP-048",
@@ -1127,13 +1100,13 @@
       "Evidencia": "EDGE-017 RUN_REPORT + issues",
       "URL": "https://github.com/Extr3sao/bot_crypto/blob/agent/edge-recovery/WP-EDGE-00-baseline/reports/economic-recovery/RFC-EDGE-017/FINAL_REPORT.md",
       "Responsable": "Codex",
-      "Inicio": "",
-      "Fecha_objetivo": "",
+      "Inicio": null,
+      "Fecha_objetivo": null,
       "Actualizacion": "2026-10-18",
       "Siguiente_paso": "Separar worktree limpio, reparar 14 tests por owner y ejecutar CI.",
       "Bloqueo": "14 FAIL previos en EDGE, ~180 archivos concurrentes sucios en local.",
       "Tipo_evidencia": "REPO_REPORT",
-      "Notas": ""
+      "Notas": null
     },
     {
       "ID": "TAP-049",
@@ -1150,13 +1123,13 @@
       "Evidencia": "EDGE-017 / no scheduled task",
       "URL": "https://github.com/Extr3sao/bot_crypto/blob/agent/edge-recovery/WP-EDGE-00-baseline/reports/economic-recovery/RFC-EDGE-017/FINAL_REPORT.md",
       "Responsable": "Codex",
-      "Inicio": "",
-      "Fecha_objetivo": "",
+      "Inicio": null,
+      "Fecha_objetivo": null,
       "Actualizacion": "2026-10-18",
       "Siguiente_paso": "Preparar launcher sin admin; acción privilegiada solo con autorización.",
       "Bloqueo": "Tarea Windows requiere permisos admin o alternativa de usuario.",
       "Tipo_evidencia": "REPO_REPORT",
-      "Notas": ""
+      "Notas": null
     },
     {
       "ID": "TAP-050",
@@ -1168,18 +1141,18 @@
       "Prioridad": "P0",
       "Progreso": 0,
       "Orden": 13,
-      "Dependencias": "",
+      "Dependencias": null,
       "Gate": "Host históricamente ~99% usado; sin medición actual",
       "Evidencia": "EDGE-017 (4.2GB libre histórico)",
       "URL": "https://github.com/Extr3sao/bot_crypto/blob/agent/edge-recovery/WP-EDGE-00-baseline/reports/economic-recovery/RFC-EDGE-017/FINAL_REPORT.md",
       "Responsable": "Usuario / Codex preflight",
-      "Inicio": "",
-      "Fecha_objetivo": "",
+      "Inicio": null,
+      "Fecha_objetivo": null,
       "Actualizacion": "2026-10-18",
       "Siguiente_paso": "Medir espacio en runtime al reanudar; limpiar solo temporales autorizados.",
       "Bloqueo": "No hay lectura actual del disco; dato anterior no es live.",
       "Tipo_evidencia": "HISTORICAL_REPORT",
-      "Notas": ""
+      "Notas": null
     },
     {
       "ID": "TAP-051",
@@ -1196,13 +1169,13 @@
       "Evidencia": "registry.py / b7e100a",
       "URL": "https://github.com/Extr3sao/bot_crypto/blob/agent/ai-bots/RFC-TAP-AI-BOTS-003/src/trading_bot/intelligence/ai_bots/registry.py",
       "Responsable": "Codex",
-      "Inicio": "",
-      "Fecha_objetivo": "",
+      "Inicio": null,
+      "Fecha_objetivo": null,
       "Actualizacion": "2026-10-18",
-      "Siguiente_paso": "",
-      "Bloqueo": "",
+      "Siguiente_paso": null,
+      "Bloqueo": null,
       "Tipo_evidencia": "REPO_REPORT",
-      "Notas": ""
+      "Notas": null
     },
     {
       "ID": "TAP-052",
@@ -1219,11 +1192,11 @@
       "Evidencia": "EDGE-017 FINAL_REPORT",
       "URL": "https://github.com/Extr3sao/bot_crypto/blob/agent/edge-recovery/WP-EDGE-00-baseline/reports/economic-recovery/RFC-EDGE-017/FINAL_REPORT.md",
       "Responsable": "Codex",
-      "Inicio": "",
-      "Fecha_objetivo": "",
+      "Inicio": null,
+      "Fecha_objetivo": null,
       "Actualizacion": "2026-10-18",
-      "Siguiente_paso": "",
-      "Bloqueo": "",
+      "Siguiente_paso": null,
+      "Bloqueo": null,
       "Tipo_evidencia": "REPO_REPORT",
       "Notas": "No equiparar automáticamente replay 1h con validación de spread/latencia."
     },
@@ -1237,18 +1210,18 @@
       "Prioridad": "P0",
       "Progreso": 1,
       "Orden": 2,
-      "Dependencias": "",
+      "Dependencias": null,
       "Gate": "Paper por defecto; permisos críticos bloqueados",
       "Evidencia": "AGENTS + WP reports",
       "URL": "https://github.com/Extr3sao/bot_crypto/issues/12",
       "Responsable": "Codex",
-      "Inicio": "",
-      "Fecha_objetivo": "",
+      "Inicio": null,
+      "Fecha_objetivo": null,
       "Actualizacion": "2026-10-18",
-      "Siguiente_paso": "",
-      "Bloqueo": "",
+      "Siguiente_paso": null,
+      "Bloqueo": null,
       "Tipo_evidencia": "GOVERNANCE_POLICY",
-      "Notas": ""
+      "Notas": null
     },
     {
       "ID": "TAP-054",
@@ -1265,13 +1238,13 @@
       "Evidencia": "TAP-EDGE-001",
       "URL": "https://github.com/Extr3sao/bot_crypto/issues/10",
       "Responsable": "Codex",
-      "Inicio": "",
-      "Fecha_objetivo": "",
+      "Inicio": null,
+      "Fecha_objetivo": null,
       "Actualizacion": "2026-10-18",
       "Siguiente_paso": "Primer CSV/JSON diario de capturas/sesiones; interfaz opcional.",
-      "Bloqueo": "",
+      "Bloqueo": null,
       "Tipo_evidencia": "REPO_REPORT",
-      "Notas": ""
+      "Notas": null
     },
     {
       "ID": "TAP-055",
@@ -1288,13 +1261,13 @@
       "Evidencia": "Arquitectura VNext",
       "URL": "https://github.com/Extr3sao/bot_crypto/issues/10",
       "Responsable": "Codex",
-      "Inicio": "",
-      "Fecha_objetivo": "",
+      "Inicio": null,
+      "Fecha_objetivo": null,
       "Actualizacion": "2026-10-18",
       "Siguiente_paso": "Mantener PAPER hasta robustez/out-of-sample/approval.",
-      "Bloqueo": "",
+      "Bloqueo": null,
       "Tipo_evidencia": "DESIGN_ONLY",
-      "Notas": ""
+      "Notas": null
     },
     {
       "ID": "TAP-056",
@@ -1306,16 +1279,16 @@
       "Prioridad": "P0",
       "Progreso": 1,
       "Orden": 0,
-      "Dependencias": "",
+      "Dependencias": null,
       "Gate": "Registro inicial 2026-10-18, rama de gestión aislada",
       "Evidencia": "ROADMAP_TRADING_AGENTIC_PORTABLE.xlsx",
       "URL": "https://github.com/Extr3sao/bot_crypto",
       "Responsable": "ChatGPT + Codex",
-      "Inicio": "",
-      "Fecha_objetivo": "",
+      "Inicio": null,
+      "Fecha_objetivo": null,
       "Actualizacion": "2026-10-18",
       "Siguiente_paso": "Actualizar tras cada commit/RFC/WP con ejecución y evidencia.",
-      "Bloqueo": "",
+      "Bloqueo": null,
       "Tipo_evidencia": "PROJECT_MANAGEMENT",
       "Notas": "Roadmap en Biblioteca y rama GitHub de gestión; cambios versionados. Se actualiza al compartir nuevo progreso, no por monitorización continua no configurada."
     },
@@ -1327,18 +1300,18 @@
       "Actividad": "Sincronizar Excel del roadmap a rama GitHub del proyecto",
       "Estado": "VERIFICADO_FOCAL",
       "Prioridad": "P0",
-      "Progreso": 1.0,
+      "Progreso": 1,
       "Orden": 1,
       "Dependencias": "TAP-056",
       "Gate": "Excel binario y JSON/CSV publicados por Git blob SHA; rama independiente; merge a main pendiente",
       "Evidencia": "PR #15 · 8597750 + revisión v1.2",
       "URL": "https://github.com/Extr3sao/bot_crypto/pull/15",
       "Responsable": "ChatGPT",
-      "Inicio": "",
-      "Fecha_objetivo": "",
+      "Inicio": null,
+      "Fecha_objetivo": null,
       "Actualizacion": "2026-10-18",
       "Siguiente_paso": "Actualización incremental del Excel tras cada nueva fase; valorar PR a main",
-      "Bloqueo": "",
+      "Bloqueo": null,
       "Tipo_evidencia": "PROJECT_MANAGEMENT",
       "Notas": "Excel+JSON+CSV en rama project/roadmap-trading-agentic, PR no fusionado a main. Revision v1.2 añade UX consolas invisibles."
     },
@@ -1357,13 +1330,13 @@
       "Evidencia": "003B mock -15.68 y 003C -97.93 (escenarios distintos)",
       "URL": "https://github.com/Extr3sao/bot_crypto/blob/agent/ai-bots/RFC-TAP-AI-BOTS-003/reports/ai-bots/RFC-AI-BOTS-003/BLOCK-C/FINAL_REPORT.md",
       "Responsable": "Codex",
-      "Inicio": "",
-      "Fecha_objetivo": "",
+      "Inicio": null,
+      "Fecha_objetivo": null,
       "Actualizacion": "2026-10-18",
       "Siguiente_paso": "Medir eficacia de IA real + costes; si no mejora descartar.",
       "Bloqueo": "Real model call 0, prosp paper no validado.",
       "Tipo_evidencia": "ECONOMIC_REPLAY",
-      "Notas": ""
+      "Notas": null
     },
     {
       "ID": "TAP-059",
@@ -1380,13 +1353,13 @@
       "Evidencia": "BLOCK-C real AAVE/UNI",
       "URL": "https://github.com/Extr3sao/bot_crypto/blob/agent/ai-bots/RFC-TAP-AI-BOTS-003/reports/ai-bots/RFC-AI-BOTS-003/BLOCK-C/FINAL_REPORT.md",
       "Responsable": "Codex",
-      "Inicio": "",
-      "Fecha_objetivo": "",
+      "Inicio": null,
+      "Fecha_objetivo": null,
       "Actualizacion": "2026-10-18",
       "Siguiente_paso": "Evitar filtraciones HTF y falsos cruces multiasset.",
-      "Bloqueo": "",
+      "Bloqueo": null,
       "Tipo_evidencia": "SOURCE_AND_TESTS",
-      "Notas": ""
+      "Notas": null
     },
     {
       "ID": "TAP-060",
@@ -1403,822 +1376,83 @@
       "Evidencia": "source_registry.md",
       "URL": "https://github.com/Extr3sao/bot_crypto/blob/agent/ai-vision/RFC-AI-VISION-001/reports/ai-bots/RFC-AI-BOTS-002/source_registry.md",
       "Responsable": "Codex",
-      "Inicio": "",
-      "Fecha_objetivo": "",
+      "Inicio": null,
+      "Fecha_objetivo": null,
       "Actualizacion": "2026-10-18",
-      "Siguiente_paso": "",
-      "Bloqueo": "",
+      "Siguiente_paso": null,
+      "Bloqueo": null,
       "Tipo_evidencia": "REPO_REPORT",
-      "Notas": ""
+      "Notas": null
     },
     {
       "ID": "TAP-061",
       "Frente": "Infra & experiencia Windows",
       "Fase": "03 Runtime Authority",
       "RFC_WP": "WP-OPS-BACKGROUND-001",
-      "Actividad": "Eliminar ventanas visibles de bash/cmd/PowerShell al ejecutar agentes, pruebas y workers en Windows",
-      "Estado": "PENDIENTE",
+      "Actividad": "Ejecución de Python y supervisores internos sin nuevas consolas Windows",
+      "Estado": "VERIFICADO_FOCAL",
       "Prioridad": "P1",
-      "Progreso": 0.0,
+      "Progreso": 0.85,
       "Orden": 12,
       "Dependencias": "TAP-044; TAP-049",
-      "Gate": "0 ventanas de consola emergentes en arranque, captura, tests y cancelación; logs stdout/stderr y exit code persistidos; no procesos huérfanos ni secretos en logs",
-      "Evidencia": "Incidencia usuario 2026-10-18: ventanas bash apareciendo mientras Codex trabaja",
-      "URL": "https://github.com/Extr3sao/bot_crypto/pull/15",
+      "Gate": "13 pruebas ops; 0 HIGH; 335 tests focales; logs/exit/timeout; visual NOT_OBSERVABLE",
+      "Evidencia": "fe9b5e2 · RUN_REPORT.json · FINAL_REPORT.md",
+      "URL": "https://github.com/Extr3sao/bot_crypto/blob/agent/ai-bots/RFC-TAP-AI-BOTS-003/reports/ops/WP-OPS-BACKGROUND-001/FINAL_REPORT.md",
       "Responsable": "Codex",
-      "Inicio": "",
-      "Fecha_objetivo": "",
+      "Inicio": null,
+      "Fecha_objetivo": null,
       "Actualizacion": "2026-10-18",
-      "Siguiente_paso": "Inventariar lanzadores Python/Windows y shell wrappers; usar CREATE_NO_WINDOW/STARTUPINFO en procesos hijos; pruebas Windows E2E y cleanup seguro.",
-      "Bloqueo": "Origen exacto de las ventanas aún no identificado en runtime local; no cerrar por cambiar solo scripts.",
-      "Tipo_evidencia": "USER_INCIDENT_UNVERIFIED_ROOT_CAUSE",
-      "Notas": "No suprimir stdout/stderr ni esconder fallos; no matar procesos ajenos; shell=False para subprocess cuando sea viable; no desactivar shells requeridos por Codebuff/terminal integrado si no son controlables."
+      "Siguiente_paso": "Mantener windowless y comprobar experiencia visual después de corregir Freebuff.",
+      "Bloqueo": "Freebuff Bun.spawn sin windowsHide; prueba visual NOT_OBSERVABLE; Scheduler no instalado.",
+      "Tipo_evidencia": "REAL_RUNTIME_FOCAL",
+      "Notas": "Origin PE confirmado Freebuff GUI→bun CONSOLE→bash; wrapper propio CREATE_NO_WINDOW+SW_HIDE; 324 MEDIUM: 303 subprocess.run, 20 bat/cmd, 1 probe."
+    },
+    {
+      "ID": "TAP-062",
+      "Frente": "Infra & experiencia Windows",
+      "Fase": "03 Runtime Authority",
+      "RFC_WP": "FREEBUFF-WINDOWSHIDE",
+      "Actividad": "Eliminar ventanas Bash/CMD abiertas por Freebuff/Codebuff al invocar Bun.spawn",
+      "Estado": "BLOQUEADO",
+      "Prioridad": "P1",
+      "Progreso": 0.25,
+      "Orden": 13,
+      "Dependencias": "TAP-061",
+      "Gate": "No aparecen popups en arranque real desde Freebuff GUI; pruebas visuales independientes y logs intactos",
+      "Evidencia": "fe9b5e2 · WINDOWLESS_EXECUTION.md · WINDOWLESS_LIVE_PROBE.json",
+      "URL": "https://github.com/Extr3sao/bot_crypto/blob/agent/ai-bots/RFC-TAP-AI-BOTS-003/docs/runtime/WINDOWLESS_EXECUTION.md",
+      "Responsable": "Proveedor Freebuff/Codebuff",
+      "Inicio": null,
+      "Fecha_objetivo": null,
+      "Actualizacion": "2026-10-18",
+      "Siguiente_paso": "Solicitar corrección oficial de Bun.spawn con windowsHide:true; repetir prueba visual Windows.",
+      "Bloqueo": "Bun.spawn sin windowsHide en Freebuff Desktop 0.0.173; sin ajustar binarios firmados.",
+      "Tipo_evidencia": "EXTERNAL_RUNTIME_DIAGNOSIS",
+      "Notas": "Causa demostrada por cadena de padres y subsistemas PE; mitigación lanzar Freebuff desde terminal existente, no solución definitiva."
+    },
+    {
+      "ID": "TAP-063",
+      "Frente": "Infra & experiencia Windows",
+      "Fase": "03 Runtime Authority",
+      "RFC_WP": "WP-OPS-BACKGROUND-001",
+      "Actividad": "Activar y validar tarea programada con pythonw.exe y lanzador sin consola",
+      "Estado": "PENDIENTE",
+      "Prioridad": "P1",
+      "Progreso": 0.55,
+      "Orden": 14,
+      "Dependencias": "TAP-061",
+      "Gate": "XML y argumentos probados; tarea instalada y ejecución visual verificada con cancelación limpia",
+      "Evidencia": "fe9b5e2 · scripts/cap004_supervisor.py · RUN_REPORT.json",
+      "URL": "https://github.com/Extr3sao/bot_crypto/blob/agent/ai-bots/RFC-TAP-AI-BOTS-003/reports/ops/WP-OPS-BACKGROUND-001/RUN_REPORT.json",
+      "Responsable": "Codex",
+      "Inicio": null,
+      "Fecha_objetivo": null,
+      "Actualizacion": "2026-10-18",
+      "Siguiente_paso": "Instalación en host autorizada, test GUI de scheduler y evidencia independiente.",
+      "Bloqueo": "Tarea no registrada en Windows: modificación del host con privilegios pendiente.",
+      "Tipo_evidencia": "IMPLEMENTED_NOT_DEPLOYED",
+      "Notas": "Código y pruebas preparados, pero Task Scheduler no modificado. No desplegar sin autorización."
     }
   ],
-  "phases": [
-    [
-      "00 Auditoría",
-      "PARCIAL",
-      "Runtime económico auditado por rama; main no integrado, suite global 14 FAIL."
-    ],
-    [
-      "01 Research",
-      "VERIFICADO_FOCAL",
-      "REA estructuras JS; Python Fenix instrumentado; patrones sin certificación funcional."
-    ],
-    [
-      "02 Arquitectura",
-      "DISEÑADO",
-      "VNext y RFCs; la arquitectura propuesta no equivale a runtime."
-    ],
-    [
-      "03 Runtime Authority",
-      "PARCIAL",
-      "Paper y Risk canónicos, permisos; falta integrar ramas, CI y runtime map completo. Ventanas Bash Windows reportadas: raíz por verificar."
-    ],
-    [
-      "04 Foundation",
-      "VERIFICADO_FOCAL",
-      "BOT-VIS-01, BOT-CTX-01 y capability registry en ramas AI."
-    ],
-    [
-      "05 Communication",
-      "PLANIFICADO",
-      "Contratos estructura critic/AgentMessage aún incompletos."
-    ],
-    [
-      "06 Market Intelligence",
-      "PLANIFICADO",
-      "MarketContext y régimen aún no certificados en runtime principal."
-    ],
-    [
-      "07 Asset Intelligence",
-      "PARCIAL",
-      "PIT/data coverage probados en bloque C; AssetMemory propuesta."
-    ],
-    [
-      "08 Strategy Intelligence",
-      "PARCIAL",
-      "Experimentos y router research, sin estrategia admitida."
-    ],
-    [
-      "09 Decision / critic",
-      "EN_CURSO",
-      "AI decisor mock; BOT-CRI-01 RFC-004 propuesto."
-    ],
-    [
-      "10 Risk / Portfolio",
-      "VERIFICADO_FOCAL",
-      "Riesgo semanal, MTM, gaps; suites focales, no full global."
-    ],
-    [
-      "11 Memory",
-      "PLANIFICADO",
-      "Separación de memorias y aprendizaje offline sin auto producción."
-    ],
-    [
-      "12 Observabilidad",
-      "VERIFICADO_FOCAL",
-      "EVIDENCE-004F y ledgers; CI global pendiente."
-    ],
-    [
-      "13 Agent Utility",
-      "BLOQUEADO",
-      "Sin IA real, ablation/edge real pendientes; baseline neto negativo."
-    ],
-    [
-      "14 Paper",
-      "PARCIAL",
-      "Replays paper 1h mock ejecutados; paper prospectivo contínuo pendiente."
-    ],
-    [
-      "15 Shadow / Canary",
-      "PLANIFICADO",
-      "Critic SHADOW preparado, no ejecutado; canary live prohibido."
-    ]
-  ],
-  "rfcs": [
-    [
-      "RFC-AI-VISION-001",
-      "IA visual",
-      "VERIFICADO_FOCAL",
-      "Visión PNG + contratos + provider + ledger, sin modelo real",
-      "091d55d / e4db7da",
-      "TAP-012;TAP-014",
-      "https://github.com/Extr3sao/bot_crypto/tree/agent/ai-vision/RFC-AI-VISION-001/src/trading_bot/vision"
-    ],
-    [
-      "RFC-TAP-AI-BOTS-002",
-      "REA/Bots",
-      "VERIFICADO_FOCAL",
-      "REA real selectivo; 2/7 artefactos REA por hash; VIS y CTX ya existen",
-      "4dba317 / c4e6e3b",
-      "TAP-008;TAP-009;TAP-010;TAP-013",
-      "https://github.com/Extr3sao/bot_crypto/issues/11"
-    ],
-    [
-      "RFC-TAP-EVIDENCE-004",
-      "Gobernanza",
-      "VERIFICADO_FOCAL",
-      "Ledger normalizado, verified receipts, supersession, cierre 004F",
-      "b7e100a",
-      "TAP-004;TAP-005;TAP-006",
-      "https://github.com/Extr3sao/bot_crypto/issues/13"
-    ],
-    [
-      "WP-EDGE-017F",
-      "Económico",
-      "VERIFICADO_FOCAL",
-      "Risk weekly/drawdown corregidos y replay neto NEGATIVO",
-      "b17644a",
-      "TAP-002;TAP-003;TAP-036;TAP-037",
-      "https://github.com/Extr3sao/bot_crypto/blob/agent/edge-recovery/WP-EDGE-00-baseline/reports/economic-recovery/RFC-EDGE-017/FINAL_REPORT.md"
-    ],
-    [
-      "RFC-TAP-AI-BOTS-003 A",
-      "Reloj",
-      "VERIFICADO_FOCAL",
-      "Bar close PIT y risk equity MTM",
-      "2921f6d",
-      "TAP-016;TAP-017",
-      "https://github.com/Extr3sao/bot_crypto/issues/12"
-    ],
-    [
-      "RFC-TAP-AI-BOTS-003 B",
-      "Paper causal",
-      "VERIFICADO_FOCAL",
-      "Primer precio de apertura posterior + stops y costes",
-      "ffbc0ca",
-      "TAP-018;TAP-019",
-      "https://github.com/Extr3sao/bot_crypto/issues/12"
-    ],
-    [
-      "RFC-TAP-AI-BOTS-003 C",
-      "Risk gaps",
-      "VERIFICADO_FOCAL",
-      "OPEN GAPS+risk y cobertura PIT; 459 tests focales previos; 120 checks/53 mutaciones regeneradas; pin datos 1000 bars",
-      "86d4f12 · 0841d37 (pines y reproducibilidad)",
-      "TAP-020;TAP-021;TAP-022",
-      "https://github.com/Extr3sao/bot_crypto/issues/12"
-    ],
-    [
-      "RFC-TAP-AI-BOTS-003 D/E",
-      "Modelo y captura",
-      "PENDIENTE",
-      "Receipts reales, provider offline, feed sub-bar y prospectivo",
-      "No ejecutado",
-      "TAP-023;TAP-024;TAP-025",
-      "https://github.com/Extr3sao/bot_crypto/issues/12"
-    ],
-    [
-      "RFC-TAP-AI-BOTS-004",
-      "Critic REA",
-      "PROPUESTO",
-      "TradingAgents → REA HTML + Python debate → BOT-CRI-01 SHADOW",
-      "Issue #14; paquete preparado",
-      "TAP-027;TAP-028;TAP-029;TAP-030;TAP-031",
-      "https://github.com/Extr3sao/bot_crypto/issues/14"
-    ],
-    [
-      "RFC-TAP-EDGE-001",
-      "Estrategias",
-      "PLANIFICADO",
-      "INTRA-A/INTRA-B/TREND-C y validación OOS",
-      "Documento local de diseño",
-      "TAP-038;TAP-039;TAP-040;TAP-041",
-      "https://github.com/Extr3sao/bot_crypto/issues/10"
-    ],
-    [
-      "STRATEGY ADMISSION",
-      "Estrategias",
-      "BLOQUEADO",
-      "Ninguna estrategia admitida al trading runtime paper",
-      "config/strategy_admission.json 017F",
-      "TAP-035",
-      "https://github.com/Extr3sao/bot_crypto/issues/10"
-    ],
-    [
-      "MASTER PLATFORM VNEXT",
-      "Arquitectura",
-      "DISEÑADO",
-      "Multi-asset, multi-strategy, multi-agent; sin certificar end-to-end",
-      "14 docs de referencia",
-      "TAP-032;TAP-033;TAP-034;TAP-044",
-      "https://github.com/Extr3sao/bot_crypto"
-    ],
-    [
-      "ROADMAP-MASTER-001",
-      "Gestión proyecto",
-      "EN_CURSO",
-      "Excel vivo y tracker versionado + control de cambios",
-      "Corte 2026-10-18",
-      "TAP-056;TAP-057",
-      "https://github.com/Extr3sao/bot_crypto"
-    ],
-    [
-      "WP-OPS-BACKGROUND-001",
-      "Windows UX",
-      "PENDIENTE",
-      "Supresión de ventanas de terminal visible sin perder logs o exit codes; investigar launcher antes de cambiar código",
-      "Usuario 2026-10-18",
-      "TAP-061",
-      "https://github.com/Extr3sao/bot_crypto/pull/15"
-    ]
-  ],
-  "blockers": [
-    [
-      "BL-01",
-      "P0",
-      "Alta",
-      "Proveedor de IA real sin credencial/autorización",
-      "MODELO",
-      "TAP-025; TAP-026",
-      "MODEL_API_UNAVAILABLE",
-      "No realizar llamadas de pago ni afirmar real_model_called",
-      "Usuario: key local y autorizar coste acotado",
-      "BLOQUEADO"
-    ],
-    [
-      "BL-02",
-      "P0",
-      "Alta",
-      "Sin mejora económica robusta",
-      "RENTABILIDAD",
-      "TAP-041; TAP-058",
-      "ECONOMIC_EDGE_UNPROVEN",
-      "EDGE neto -238.77 USDT; IA mock -15.68/-97.93 en escenarios no equiparables",
-      "Diseñar y correr OOS prospectivo por estrategias",
-      "ABIERTO"
-    ],
-    [
-      "BL-03",
-      "P0",
-      "Alta",
-      "Sin estrategia admitida al runtime paper",
-      "TRADING",
-      "TAP-035",
-      "NO_ADMITTED_STRATEGY",
-      "Experiment lane NO equivale canonical paper admission",
-      "Gate OOS/risk y promover solo evidencia",
-      "ABIERTO"
-    ],
-    [
-      "BL-04",
-      "P0",
-      "Alta",
-      "Suite full del repo sin PASS",
-      "CALIDAD",
-      "TAP-048",
-      "GLOBAL_TEST_GATE_FAIL",
-      "EDGE 4070 PASS / 14 FAIL; AI full no ejecutada",
-      "Resolver con owner, ejecutar checkout limpio",
-      "ABIERTO"
-    ],
-    [
-      "BL-05",
-      "P0",
-      "Alta",
-      "No hay feed prospectivo sub-vela ni latencia real",
-      "DATOS",
-      "TAP-024; TAP-026",
-      "PROSPECTIVE_PRICE_SOURCE_MISSING",
-      "Replays 1h y latencia declarada; no ticks observados",
-      "Implementar collector que registre reception timestamps y hashes",
-      "ABIERTO"
-    ],
-    [
-      "BL-06",
-      "P0",
-      "Alta",
-      "Captura continua sin scheduler",
-      "INFRA",
-      "TAP-049",
-      "MANUAL_COLLECTOR",
-      "24 barras manuales, solo 6 al cierre",
-      "Programación sin privilegios si factible; aprobación si admin",
-      "ABIERTO"
-    ],
-    [
-      "BL-07",
-      "P0",
-      "Alta",
-      "Host históricamente 99% disco ocupado",
-      "INFRA",
-      "TAP-050",
-      "DISK_PRECHECK_REQUIRED",
-      "Informe 017F habló de ~4.2 GB libres; no lectura de hoy",
-      "Auditar en runtime, no borrar datos ni worktrees ajenos",
-      "ABIERTO"
-    ],
-    [
-      "BL-08",
-      "P1",
-      "Media",
-      "Cambios concurrentes ~180 archivos ajenos",
-      "GITHUB",
-      "TAP-048; TAP-057",
-      "DIRTY_WORKTREE",
-      "No tocar staged/untracked ajenos; GitHub por rama",
-      "Aislar build/clone limpio y push fast-forward",
-      "ABIERTO"
-    ],
-    [
-      "BL-09",
-      "P0",
-      "Media",
-      "Política fin de semana no permite 7/7",
-      "RISK",
-      "TAP-042",
-      "WEEKEND_TRADING_FALSE",
-      "Objetivo ACTIVE 3 fills diarios 7/7 no equivale permiso",
-      "Revisar riesgos y obtener aprobación explícita antes de cambiar",
-      "BLOQUEADO"
-    ],
-    [
-      "BL-10",
-      "P1",
-      "Media",
-      "5/7 evidencias REA no verificadas por bytes",
-      "REA",
-      "TAP-011",
-      "PARTIAL_RAW_PROVENANCE",
-      "7 IDs no significan siete artefactos comprobados",
-      "Solo ampliar cuando patrón diferencial lo justifique",
-      "ABIERTO"
-    ],
-    [
-      "BL-11",
-      "P1",
-      "Media",
-      "BOT-CRI-01 diseño sin REA ni runtime",
-      "AGENTES",
-      "TAP-027;TAP-028",
-      "DESIGN_ONLY",
-      "Repositorio TradingAgents pinned, análisis externo de fuente",
-      "Laboratorio REA + Python stub sin red",
-      "ABIERTO"
-    ],
-    [
-      "BL-12",
-      "P0",
-      "Alta",
-      "Ramas EDGE, EVIDENCE y AI no integradas en main",
-      "ARQUITECTURA",
-      "TAP-001;TAP-048",
-      "BRANCH_DIVERGENCE",
-      "main atrasado a 2026-09-22; ramas en octubre",
-      "Integración guiada solo tras tests/reachability",
-      "ABIERTO"
-    ],
-    [
-      "BL-13",
-      "P1",
-      "Media",
-      "Ablation del crítico/visual sin señal IA real",
-      "ECONOMIA",
-      "TAP-026;TAP-031",
-      "MOCK_NO_INFORMATION",
-      "Guion ignora prompt, ambos bots idénticos",
-      "Receipts + experimento matched y muestras",
-      "ABIERTO"
-    ],
-    [
-      "BL-14",
-      "P1",
-      "Alta",
-      "Ventanas emergentes de bash/cmd/PowerShell durante ejecución automática",
-      "WINDOWS_UX",
-      "TAP-061",
-      "VISIBLE_CONSOLE_WINDOWS",
-      "Usuario reporta popups; no se ha identificado aún launcher concreto",
-      "Redirigir stdout/stderr y ocultar ventanas de procesos hijos; probar arranque y cancelación reales",
-      "ABIERTO"
-    ]
-  ],
-  "dependencies": [
-    [
-      "TAP-023",
-      "TAP-020",
-      "Obligatoria",
-      "Bloque D requiere reloj, precio y riesgo validados"
-    ],
-    [
-      "TAP-024",
-      "TAP-021",
-      "Obligatoria",
-      "Collector debe respetar CoverageProof"
-    ],
-    [
-      "TAP-025",
-      "TAP-023",
-      "Obligatoria",
-      "Recibos/costes honestos antes del pago"
-    ],
-    [
-      "TAP-025",
-      "TAP-024",
-      "Obligatoria",
-      "Cotizaciones realmente posteriores a respuesta"
-    ],
-    [
-      "TAP-026",
-      "TAP-025",
-      "Obligatoria",
-      "LLM real registrado, no mock"
-    ],
-    [
-      "TAP-026",
-      "TAP-048",
-      "Calidad",
-      "No declarar CERTIFIED con suite global roja"
-    ],
-    [
-      "TAP-027",
-      "TAP-028",
-      "Obligatoria",
-      "REA/Python lab antes de adoptar patrón crítico"
-    ],
-    [
-      "TAP-029",
-      "TAP-028",
-      "Obligatoria",
-      "Contrato se basa en comportamiento origen probado"
-    ],
-    [
-      "TAP-030",
-      "TAP-029",
-      "Obligatoria",
-      "Critic tipado antes de SHADOW"
-    ],
-    [
-      "TAP-031",
-      "TAP-030",
-      "Obligatoria",
-      "Primero shadow parity sin alterar órdenes"
-    ],
-    [
-      "TAP-031",
-      "TAP-026",
-      "Obligatoria",
-      "Ablation y provider real antes gated"
-    ],
-    [
-      "TAP-035",
-      "TAP-041",
-      "Obligatoria",
-      "Promoción estrategia solo con OOS neto y risk gates"
-    ],
-    [
-      "TAP-042",
-      "TAP-035",
-      "Obligatoria",
-      "Meta 3 fills diarios requiere estrategia admitida"
-    ],
-    [
-      "TAP-042",
-      "TAP-041",
-      "Obligatoria",
-      "Frecuencia no sustituye edge neto"
-    ],
-    [
-      "TAP-049",
-      "TAP-024",
-      "Obligatoria",
-      "Recibir datos observables y registrar latencia"
-    ],
-    [
-      "TAP-054",
-      "TAP-049",
-      "Obligatoria",
-      "Reporte diario requiere adquisición continua"
-    ],
-    [
-      "TAP-058",
-      "TAP-026",
-      "Obligatoria",
-      "No concluir IA rentable con mock"
-    ],
-    [
-      "TAP-048",
-      "TAP-005",
-      "Calidad",
-      "Necesita evidencia consistente antes de CI"
-    ],
-    [
-      "TAP-057",
-      "TAP-056",
-      "Obligatoria",
-      "Publicación GitHub del workbook creado"
-    ],
-    [
-      "TAP-041",
-      "TAP-036",
-      "Obligatoria",
-      "Baseline pérdidas exige nuevos experimentos"
-    ]
-  ],
-  "evidence": [
-    [
-      "EV-001",
-      "2026-10-17",
-      "EDGE-017F",
-      "REPLAY_DETERMINISTA",
-      "NET_RISK_REPLAY",
-      "b17644a",
-      146,
-      -238.770489,
-      "USDT",
-      "1x, 2.387705% drawdown; no edge",
-      "https://github.com/Extr3sao/bot_crypto/blob/agent/edge-recovery/WP-EDGE-00-baseline/reports/economic-recovery/RFC-EDGE-017/NET_RISK_REPLAY.json"
-    ],
-    [
-      "EV-002",
-      "2026-10-17",
-      "EDGE-017F",
-      "REPLAY_DETERMINISTA",
-      "NET_RISK_REPLAY",
-      "b17644a",
-      146,
-      -425.692312,
-      "USDT",
-      "2x, drawdown 4.256923%",
-      "https://github.com/Extr3sao/bot_crypto/blob/agent/edge-recovery/WP-EDGE-00-baseline/reports/economic-recovery/RFC-EDGE-017/NET_RISK_REPLAY.json"
-    ],
-    [
-      "EV-003",
-      "2026-10-17",
-      "EDGE-017F",
-      "REPLAY_DETERMINISTA",
-      "NET_RISK_REPLAY",
-      "b17644a",
-      121,
-      -500.571772,
-      "USDT",
-      "3x, drawdown 5.005718%",
-      "https://github.com/Extr3sao/bot_crypto/blob/agent/edge-recovery/WP-EDGE-00-baseline/reports/economic-recovery/RFC-EDGE-017/NET_RISK_REPLAY.json"
-    ],
-    [
-      "EV-004",
-      "2026-10-17",
-      "EDGE-017F",
-      "TESTS",
-      "Full pytest tests/unit",
-      "64da0cd",
-      4070,
-      14,
-      "tests",
-      "4070 passed + 14 failed, exit 1: NO PASS global",
-      "https://github.com/Extr3sao/bot_crypto/blob/agent/edge-recovery/WP-EDGE-00-baseline/reports/economic-recovery/RFC-EDGE-017/FINAL_REPORT.md"
-    ],
-    [
-      "EV-005",
-      "2026-10-17",
-      "EDGE-017F",
-      "CAPTURA_PROSPECTIVA_MANUAL",
-      "OHLCV BTC/ETH/SOL",
-      "b17644a",
-      24,
-      6,
-      "bars",
-      "24 observadas, 6 al cierre y 18 recuperadas; 0 trades",
-      "https://github.com/Extr3sao/bot_crypto/blob/agent/edge-recovery/WP-EDGE-00-baseline/reports/economic-recovery/RFC-EDGE-017/FINAL_REPORT.md"
-    ],
-    [
-      "EV-006",
-      "2026-10-18",
-      "EVIDENCE-004F",
-      "VERIFY_FOCAL",
-      "Evidence canonical",
-      "b7e100a",
-      42,
-      18,
-      "checks/mutations",
-      "42/42 checks y 18/18 mutaciones, no global",
-      "https://github.com/Extr3sao/bot_crypto/blob/agent/evidence/RFC-TAP-EVIDENCE-004/reports/ai-bots/RFC-AI-BOTS-002/evidence-004/VERIFICATION.json"
-    ],
-    [
-      "EV-007",
-      "2026-10-18",
-      "REA-002",
-      "REA_STRUCTURAL",
-      "Repositorio nof1 / Fenix / Semantic",
-      "c4e6e3b",
-      7,
-      2,
-      "ops",
-      "7 con evidence_id, 2 no ejecutadas; 2/7 ficheros hash verificados",
-      "https://github.com/Extr3sao/bot_crypto/tree/agent/ai-vision/RFC-AI-VISION-001/reports/ai-bots/RFC-AI-BOTS-002/rea"
-    ],
-    [
-      "EV-008",
-      "2026-10-18",
-      "AI-BOTS-003B",
-      "REPLAY_MOCK",
-      "VIS / CTX",
-      "ffbc0ca",
-      14,
-      -15.680073,
-      "USDT",
-      "Por bot; 40 mock LLM calls; economía idéntica por script",
-      "https://github.com/Extr3sao/bot_crypto/blob/agent/ai-bots/RFC-TAP-AI-BOTS-003/reports/ai-bots/RFC-AI-BOTS-003/BLOCK-B/RUN_REPORT.json"
-    ],
-    [
-      "EV-009",
-      "2026-10-18",
-      "AI-BOTS-003C",
-      "REPLAY_MOCK",
-      "Real_0ms (datos Binance 1h replay)",
-      "86d4f12",
-      34,
-      -85.426764,
-      "USDT",
-      "34 trades paper offline; no modelo real",
-      "https://github.com/Extr3sao/bot_crypto/blob/agent/ai-bots/RFC-TAP-AI-BOTS-003/reports/ai-bots/RFC-AI-BOTS-003/BLOCK-C/WP_RUN_REPORT.json"
-    ],
-    [
-      "EV-010",
-      "2026-10-18",
-      "AI-BOTS-003C",
-      "REPLAY_MOCK",
-      "Real_900ms (datos Binance 1h replay)",
-      "86d4f12",
-      34,
-      -97.926767,
-      "USDT",
-      "900ms declarados, no medidos de red",
-      "https://github.com/Extr3sao/bot_crypto/blob/agent/ai-bots/RFC-TAP-AI-BOTS-003/reports/ai-bots/RFC-AI-BOTS-003/BLOCK-C/WP_RUN_REPORT.json"
-    ],
-    [
-      "EV-011",
-      "2026-10-18",
-      "AI-BOTS-003C",
-      "REPLAY_MOCK",
-      "Real_900ms+hole",
-      "86d4f12",
-      34,
-      -85.449238,
-      "USDT",
-      "2 huecos DATA_GAP; no comparación directa",
-      "https://github.com/Extr3sao/bot_crypto/blob/agent/ai-bots/RFC-TAP-AI-BOTS-003/reports/ai-bots/RFC-AI-BOTS-003/BLOCK-C/WP_RUN_REPORT.json"
-    ],
-    [
-      "EV-012",
-      "2026-10-18",
-      "AI-BOTS-003C",
-      "REPLAY_MOCK",
-      "Real_900ms wide_stop",
-      "86d4f12",
-      34,
-      -34.247921,
-      "USDT",
-      "Override policy SOLO escenario offline; sin cambiar config",
-      "https://github.com/Extr3sao/bot_crypto/blob/agent/ai-bots/RFC-TAP-AI-BOTS-003/reports/ai-bots/RFC-AI-BOTS-003/BLOCK-C/WP_RUN_REPORT.json"
-    ],
-    [
-      "EV-013",
-      "2026-10-18",
-      "AI-BOTS-003C",
-      "REPLAY_SINTETICO",
-      "Gap open con veto por daily loss",
-      "86d4f12",
-      1,
-      -16.232058,
-      "USDT",
-      "Gaps sintéticos, 1 salida por stop, NO mercado observado",
-      "https://github.com/Extr3sao/bot_crypto/blob/agent/ai-bots/RFC-TAP-AI-BOTS-003/reports/ai-bots/RFC-AI-BOTS-003/BLOCK-C/FINAL_REPORT.md"
-    ],
-    [
-      "EV-014",
-      "2026-10-18",
-      "AI-BOTS-003C",
-      "VERIFY_FOCAL",
-      "Suites visión/paper/risk/intelligence/reports",
-      "86d4f12",
-      459,
-      0,
-      "tests failed",
-      "459 pass según report; 120/120 checks y 53/53 mutaciones aplicadas",
-      "https://github.com/Extr3sao/bot_crypto/blob/agent/ai-bots/RFC-TAP-AI-BOTS-003/reports/ai-bots/RFC-AI-BOTS-003/BLOCK-C/FINAL_REPORT.md"
-    ],
-    [
-      "EV-015",
-      "2026-10-18",
-      "AI-BOTS-004",
-      "DISEÑO_ONLY",
-      "TradingAgents upstream commit e8f5503",
-      "e8f5503",
-      0,
-      0,
-      "ops REA",
-      "Fuente Apache-2.0 revisada; REA en upstream no ejecutado",
-      "https://github.com/Extr3sao/bot_crypto/issues/14"
-    ],
-    [
-      "EV-016",
-      "2026-10-18",
-      "AI-BOTS-003C",
-      "SOURCE_RUNTIME_PIN",
-      "series_sha256 + --bars=1000 regeneración",
-      "0841d37",
-      5,
-      120,
-      "checks",
-      "5 capturas con series_sha256; 24 comprobaciones por escenario, 53 mutaciones detectadas (12 no aplicadas); sin IA real.",
-      "https://github.com/Extr3sao/bot_crypto/blob/agent/ai-bots/RFC-TAP-AI-BOTS-003/reports/ai-bots/RFC-AI-BOTS-003/BLOCK-C/FINAL_REPORT.md"
-    ]
-  ],
-  "change_log": [
-    [
-      "2026-10-18",
-      "ROADMAP-MASTER-001",
-      "INITIAL_CREATED",
-      "Se construye inventario a partir de ramas, reports y RFCs; nada se marca PRODUCTION_READY.",
-      "ChatGPT",
-      "Fuentes: GitHub AI-003C eeb0bea; EDGE b17644a; EVIDENCE b7e100a; issue #14",
-      "v1.0"
-    ],
-    [
-      "2026-10-18",
-      "AI-BOTS-003C",
-      "STATE_CORRECTED",
-      "Cambia de EN_CURSO a VERIFICADO_FOCAL tras observar evidencia publicada en GitHub de 459 tests y 120 checks.",
-      "ChatGPT",
-      "reports/ai-bots/RFC-AI-BOTS-003/BLOCK-C/FINAL_REPORT.md",
-      "v1.0"
-    ],
-    [
-      "2026-10-18",
-      "AI-BOTS-004",
-      "PLANNED",
-      "Critic REA RFC-004 preparado, pero no existe branch con código; no equiparar diseño con implementación.",
-      "ChatGPT",
-      "https://github.com/Extr3sao/bot_crypto/issues/14",
-      "v1.0"
-    ],
-    [
-      "2026-10-18",
-      "EVIDENCE-004F",
-      "TARGETED_CLOSED",
-      "Cierre focal con 42 checks / 18 mutaciones, suite global pendiente.",
-      "ChatGPT",
-      "https://github.com/Extr3sao/bot_crypto/issues/13",
-      "v1.0"
-    ],
-    [
-      "2026-10-18",
-      "ROADMAP-MASTER-001",
-      "REMOTE_PUBLISHED",
-      "Excel y espejo JSON/CSV subidos a rama project/roadmap-trading-agentic; hash Git XLSX verificado; se prepara revisión 1.1.",
-      "ChatGPT",
-      "https://github.com/Extr3sao/bot_crypto/commit/5f8c7610c052cad019421041cab5b360e7befc4e",
-      "v1.1"
-    ],
-    [
-      "2026-10-18",
-      "AI-BOTS-003C",
-      "EVIDENCE_REPINNED",
-      "Actualiza autoridad remota a 0841d37; series_sha256 de barras consumidas y captura con 1000 barras; 120 checks y 53 mutaciones re-verificados según informe; NO se rerun 459 tests.",
-      "ChatGPT",
-      "https://github.com/Extr3sao/bot_crypto/commit/0841d372cdf36e6b52b6d8ed2e02b9d4e8c23a5e",
-      "v1.2"
-    ],
-    [
-      "2026-10-18",
-      "TAP-061",
-      "USER_REPORTED_DEFECT",
-      "Nuevo WP Windows: ningún proceso bash/cmd/PowerShell debe abrir ventana visible; conservar logs, errors y limpieza de hijos sin afectar procesos ajenos.",
-      "ChatGPT",
-      "Incidencia del usuario en esta conversación; raíz aún no comprobada",
-      "v1.2"
-    ]
-  ],
-  "data_classification": "GitHub remote source/reports, historical and planned separately; no live API model, no live orders",
-  "notes": [
-    "Fase0~15 del proyecto, no confundir design-only con ejecución.",
-    "Ningún plazo de entrega es promesa: fecha objetivo vacía hasta decisión del responsable.",
-    "El Excel puede editarse; actualizar JSON canónico y Excel conjuntamente al registrar nuevo reporte.",
-    "No se actualiza automáticamente sin una nueva sesión o una tarea programada explícita.",
-    "WP-OPS-BACKGROUND-001: procesos CLI sí pueden ser necesarios, ventanas emergentes no; no ocultar errores/logs."
-  ],
-  "version": "1.2"
+  "authority_note": "Ramas e informes GitHub; no equivale a merge main, no confirma ausencia visual de ventanas"
 }
