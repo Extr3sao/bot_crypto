@@ -20,7 +20,7 @@ informe antiguo sigue en el árbol, byte a byte, con su hash en `SUPERSESSION_MA
 | --- | --- | --- |
 | Clasificador | `scripts/evidence004_ledger.py` | `execution_class` separado de `exit_code`; evidencia declarada ≠ verificada; ids locales ≠ ids de REA; logs truncados o duplicados se rechazan |
 | Generador | `scripts/evidence004_generate.py` | un objeto canónico → todos los informes; claims atados a contador o `evidence_id`; escritura atómica; un solo escritor |
-| Verificador | `scripts/evidence004_verify.py` | relee los logs por su cuenta, recomputa todo, descubre todos los informes y rechaza 14 mutaciones |
+| Verificador | `scripts/evidence004_verify.py` | relee los logs por su cuenta, recomputa todo, descubre todos los informes bajo `reports/ai-bots/` y rechaza 14 mutaciones |
 | Objeto canónico | `evidence-004/canonical/CANONICAL_RUN.json` | 16 eventos, dos ámbitos, claims resueltos |
 | Informes derivados | `evidence-004/derived/<ledger_sha>/` | `RUN_REPORT.json/.md`, `INFORME_EJECUTIVO_NUMEROS.md`, manifiesto con hashes |
 | Sello histórico | `evidence-004/SUPERSESSION_MANIFEST.json` | 6 documentos antiguos con hash de bytes y motivo; ninguno editado |
@@ -67,6 +67,7 @@ por la que ningún patrón externo puede certificarse todavía.
 ./.venv/Scripts/python.exe scripts/evidence004_verify.py        exit 0   (36 PASS / 0 FAIL)
 ./.venv/Scripts/python.exe scripts/evidence004_verify.py --mutations
                                                                 exit 0   (14/14 rechazadas)
+                                                                -> evidence-004/MUTATION_REPORT.json
 ./.venv/Scripts/python.exe scripts/ai_bots_rea_verify.py        exit 0   (73 PASS / 0 FAIL)
 ./.venv/Scripts/python.exe -m pytest tests/unit/reports tests/unit/vision tests/unit/intelligence -q
                                                                 exit 0   (176 passed)
@@ -79,6 +80,7 @@ por la que ningún patrón externo puede certificarse todavía.
 - No reejecuta REA ni llama a ningún modelo: cuenta lo que los logs ya registraron.
 - No convierte evidencia declarada en verificada: sigue habiendo 5 ids sin artefacto en disco.
 - No certifica ningún patrón externo ni mide rentabilidad (`REAL_MODEL_CALLED = false`).
+- Descubre los informes de `reports/ai-bots/`; los de la raíz pertenecen a otros agentes.
 - No ejecuta la suite completa del repositorio: sólo los paquetes afectados. Un PASS global con
   ficheros ajenos en vuelo sería exactamente el tipo de afirmación que este WP elimina.
 

@@ -73,7 +73,7 @@
     {
       "path": "reports/ai-bots/RFC-AI-BOTS-002/evidence-004/FINAL_REPORT.md",
       "role": "CURRENT_EDITORIAL",
-      "sha256_at_generation": "86839f70706ce9c9607d0784a6f69aa7ecd654c6d205f548e4f9c13947c99f51"
+      "sha256_at_generation": "3cf4754bc4042b26fbf29883162d97b039fe31f2c79cbe73bf3fbbc3729cf2e6"
     }
   ],
   "superseded_manifest": "reports/ai-bots/RFC-AI-BOTS-002/evidence-004/SUPERSESSION_MANIFEST.json"

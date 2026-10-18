@@ -820,10 +820,15 @@ def _duplicate_first_row(path: Path) -> None:
 
 
 def run_mutations(root: Path) -> int:
-    """Every mutation must be rejected.  A mutation that passes is a hole."""
+    """Every mutation must be rejected.  A mutation that passes is a hole.
+
+    The verdict is written to ``MUTATION_REPORT.json`` so the claim "14/14 rejected"
+    is an artefact with the failing check named, not a line of console output.
+    """
 
     package = root / PACKAGE_REL
     failures: list[str] = []
+    records: list[dict[str, Any]] = []
     for name, apply in MUTATIONS:
         with tempfile.TemporaryDirectory(prefix="evidence004-mut-") as temporary:
             copy = Path(temporary) / "reports"
@@ -833,13 +838,35 @@ def run_mutations(root: Path) -> int:
                 apply(applied)
             except (AssertionError, FileNotFoundError) as exc:
                 failures.append(f"{name}: mutation could not be applied ({exc})")
+                records.append({"mutation": name, "detected": False, "reason": str(exc)})
                 continue
             verdict = verify_package(Path(temporary))
-            if not verdict.failures:
-                failures.append(f"{name}: NOT DETECTED ({len(verdict.checks)} checks all passed)")
-            else:
-                first = verdict.failures[0]["name"]
+            detected = bool(verdict.failures)
+            first = verdict.failures[0]["name"] if detected else None
+            records.append(
+                {
+                    "mutation": name,
+                    "detected": detected,
+                    "failures": len(verdict.failures),
+                    "first_failing_check": first,
+                }
+            )
+            if detected:
                 print(f"  rejected {name}: {len(verdict.failures)} failure(s), first={first}")
+            else:
+                failures.append(f"{name}: NOT DETECTED ({len(verdict.checks)} checks all passed)")
+
+    report = {
+        "schema": "evidence004/mutation-report/1",
+        "verifier": "scripts/evidence004_verify.py",
+        "mutations": len(MUTATIONS),
+        "detected": len([record for record in records if record["detected"]]),
+        "holes": len(failures),
+        "results": records,
+    }
+    destination = root / EVIDENCE_REL / "MUTATION_REPORT.json"
+    destination.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+
     if failures:
         print("\nMUTATION HOLES:", file=sys.stderr)
         for failure in failures:

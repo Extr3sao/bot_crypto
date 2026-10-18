@@ -53,6 +53,15 @@ cd "$(git rev-parse --show-toplevel)"
 ./.venv/Scripts/python.exe scripts/evidence004_verify.py --mutations
 ```
 
+## Perímetro del descubrimiento
+
+El verificador descubre **todos** los ficheros de tipo informe bajo `reports/ai-bots/`
+(`RUN_REPORT*`, `FINAL_REPORT*`, `REA_FINDINGS*`, `INFORME_*`, `INDEPENDENT_VERIFICATION*`,
+`*MATRIX*`, `RECONSTRUCTION_*`) y falla si alguno no está registrado como vigente, derivado o
+superseded. Los informes de la **raíz** del repositorio (`RUN_REPORT.json`, `FINAL_REPORT.md`,
+`INFORME_EJECUTIVO.md` de otros paquetes) quedan fuera: pertenecen a otros agentes y este WP no los
+toca. Ampliar el perímetro exige registrar antes esas familias, no relajar la comprobación.
+
 ## Cifras actuales
 
 | contador | valor |
@@ -65,6 +74,16 @@ cd "$(git rev-parse --show-toplevel)"
 
 Las cifras de la tabla anterior son una copia legible: el verificador exige el bloque
 generado en cada informe, no este README. Si divergen, gana el bloque.
+
+## Evidencia de la propia verificación
+
+- `VERIFICATION.json` — resultado determinista de la última corrida: si el árbol no cambia,
+  el fichero no cambia. Registra el `ledger_sha256` que se verificó.
+- `MUTATION_REPORT.json` — una entrada por mutación con `detected`, número de fallos y la
+  primera comprobación que la rechazó. "14/14" es un artefacto, no una frase.
+
+Ninguno de los dos se escribe a mano, y una corrida posterior sobre el mismo árbol produce los
+mismos bytes.
 
 ## Lo que este paquete no hace
 
