@@ -23,5 +23,9 @@
     }
   ],
   "note": "Runs from the committed tree, not the working copy: TEST_TARGET == RUNTIME_TARGET. The archive proves the code moved, not that the archive's own git metadata exists.",
-  "line_endings": "core.autocrlf rewrites on checkout; the archive is LF and the suite passes on it, so no test depends on CRLF."
+  "line_endings": "core.autocrlf rewrites on checkout; the archive is LF and the suite passes on it, so no test depends on CRLF.",
+  "code_equivalence": {
+    "published_head": "e7f9314",
+    "statement": "git diff 86d4f12 e7f9314 -- src/ tests/ is empty, so the rehearsal above also describes the published head; the later commits touch only the capture script, evidence and reports."
+  }
 }
