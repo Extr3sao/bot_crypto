@@ -1,38 +1,46 @@
 [
   {
     "claim_id": "C-01",
-    "kind": "COUNTER",
-    "pointer": "counts.phase_v31.work.operations",
-    "expected": 9,
-    "text": "This iteration ran 9 REA work operations (target analysis plus its two blocked prerequisites)."
+    "kind": "NARRATIVE",
+    "template": "{operations} REA work operations were registered; {executed_with_evidence_id} executed and returned an evidence_id; {not_executed} did not execute: `import-reference-source` (unsupported_host) and `compare-source-to-bundle` (NOT_EXECUTED_INVALID_INPUT with exit code zero).",
+    "counters": {
+      "operations": "counts.phase_v31.work.operations",
+      "executed_with_evidence_id": "counts.phase_v31.work.executed_with_evidence_id",
+      "not_executed": "counts.phase_v31.work.not_executed"
+    },
+    "note": "Registered, executed and refused are three different counts. The old sentence said this iteration ran nine operations, which read as nine successes."
   },
   {
     "claim_id": "C-02",
-    "kind": "COUNTER",
-    "pointer": "counts.phase_v31.work.executed_with_evidence_id",
-    "expected": 7,
-    "text": "7 of them returned an evidence_id from REA."
+    "kind": "NARRATIVE",
+    "template": "{executed_with_evidence_id} of those returned an evidence_id from REA.",
+    "counters": {
+      "executed_with_evidence_id": "counts.phase_v31.work.executed_with_evidence_id"
+    }
   },
   {
     "claim_id": "C-03",
     "kind": "COUNTER",
     "pointer": "counts.phase_v31.work.not_executed",
     "expected": 2,
-    "text": "2 did not execute: import-reference-source (unsupported_host) and compare-source-to-bundle (NOT_EXECUTED_INVALID_INPUT with exit 0)."
+    "text": "Operations that did not execute are listed with their execution class in RUN_REPORT.md."
   },
   {
     "claim_id": "C-04",
-    "kind": "COUNTER",
-    "pointer": "counts.phase_v31.work.executed_with_verified_artifact",
-    "expected": 2,
-    "text": "Only 2 of the 7 have evidence bytes on disk whose sha256 matches the declared digest."
+    "kind": "NARRATIVE",
+    "template": "Only {executed_with_verified_artifact} of the {executed_with_evidence_id} have evidence bytes on disk whose sha256 matches the declared digest.",
+    "counters": {
+      "executed_with_verified_artifact": "counts.phase_v31.work.executed_with_verified_artifact",
+      "executed_with_evidence_id": "counts.phase_v31.work.executed_with_evidence_id"
+    }
   },
   {
     "claim_id": "C-05",
-    "kind": "COUNTER",
-    "pointer": "counts.all_dossiers.distinct_evidence_ids",
-    "expected": 12,
-    "text": "The four dossiers together hold 12 distinct evidence_ids; this is a different denominator and is never added to the phase counter."
+    "kind": "NARRATIVE",
+    "template": "The four dossiers together hold {distinct_evidence_ids} distinct evidence_ids; this is a different denominator and is never added to the phase counter.",
+    "counters": {
+      "distinct_evidence_ids": "counts.all_dossiers.distinct_evidence_ids"
+    }
   },
   {
     "claim_id": "C-06",

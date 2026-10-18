@@ -450,3 +450,15 @@ reports/economic-recovery/RFC-EDGE-015/experimental_paper/*
 reports/economic-recovery/RFC-EDGE-015/scratch/*
 !reports/economic-recovery/RFC-EDGE-015/scratch/OOS_PROSPECTIVE_1H.jsonl
 !reports/economic-recovery/RFC-EDGE-015/scratch/OOS_DESCRIPTIVE_1H.jsonl
+
+# ============================================================
+# RFC-AI-BOTS-002 — el paquete de evidencia EVIDENCE-004 SI se versiona.
+# Mismo mecanismo de re-inclusion paso a paso que los paquetes anteriores:
+# `reports/*` ignora el arbol entero y git no re-incluye un fichero cuyo padre
+# esta excluido. Sin esto, cada proyeccion nueva (`derived/`) y cada manifiesto
+# historico naceran ignorados, y un checkout limpio no podria verificar lo que
+# el informe afirma.
+# ============================================================
+!reports/ai-bots/
+reports/ai-bots/*
+!reports/ai-bots/RFC-AI-BOTS-002/

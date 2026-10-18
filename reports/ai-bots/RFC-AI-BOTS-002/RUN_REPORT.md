@@ -1,7 +1,7 @@
 # RUN_REPORT — RFC-TAP-EVIDENCE-004 (generado)
 
 Generado por `scripts/evidence004_generate.py` a partir de `reports/ai-bots/RFC-AI-BOTS-002/evidence-004/canonical/CANONICAL_RUN.json`.
-`ledger_sha256`: `c5bc42ecccf86965effb52e505b3e0f9e3dadd5ea62ecb0b4bfbc0f43b629869`. No editar a mano: el verificador
+`ledger_sha256`: `0ba3a1bece61e61bcdc12bcd02adda5e53153aae65cb5dc46879773a223f343b`. No editar a mano: el verificador
 independiente recalcula estos números desde los logs crudos y falla si no coinciden.
 
 ## Contadores
@@ -28,7 +28,7 @@ Los dos ámbitos no se suman: `phase_v31` cubre el trabajo de esta iteración y
 
 ## Operaciones de esta iteración
 
-**7 operaciones REA ejecutadas con `evidence_id`** en esta fase, de 9 de trabajo; 2 no se ejecutaron y la última columna lo dice. La clase de ejecución va en la celda de evidencia: un exit 0 sin `evidence_id` nunca cuenta como éxito.
+**7 operaciones REA ejecutadas con `evidence_id`** en esta fase, de 9 registradas; 2 no se ejecutaron y la última columna lo dice. La clase de ejecución va en la celda de evidencia: un exit 0 sin `evidence_id` nunca cuenta como éxito.
 
 | # | operación | sujeto | exit | `evidence_id` |
 | --- | --- | --- | --- | --- |

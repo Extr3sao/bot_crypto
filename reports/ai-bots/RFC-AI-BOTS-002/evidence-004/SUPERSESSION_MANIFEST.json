@@ -1,62 +1,96 @@
 {
-  "schema": "evidence004/supersession-manifest/1",
-  "note": "Superseded documents are never edited or deleted: their bytes are pinned here so the verifier can prove the historical claim still exists and is labelled, not laundered.",
+  "schema": "evidence004/supersession-manifest/2",
+  "supersedes": {
+    "path": "reports/ai-bots/RFC-AI-BOTS-002/evidence-004/superseded-manifests/SUPERSESSION_MANIFEST.v1.json",
+    "content_sha256": "ecc87ac7c7eafc017ab67b32a12113a58ffe28f1922b275f1b151f0a270c4c17",
+    "why": "v1 called a text-digest pin \"preserved_bytes\", which overstates what a hash normalised to LF can prove. v1 is archived untouched; nothing historical was rewritten."
+  },
+  "note": "Superseded documents are never edited or deleted: their content is pinned here so the verifier can prove the historical claim still exists and is labelled, not laundered.",
+  "hash_domains": {
+    "TEXT_CANONICAL_LF": {
+      "normalisation": "CRLF folded to LF before hashing",
+      "authority": "every pin on a text document in this manifest",
+      "not": "byte identity of a checkout: LF and CRLF checkouts differ here, by design"
+    },
+    "BINARY_RAW": {
+      "normalisation": "none: bytes as committed",
+      "authority": "artefact provenance for non-text files",
+      "not": "a way to pin a text document"
+    }
+  },
   "documents": [
     {
       "path": "reports/ai-bots/RFC-AI-BOTS-002/RUN_REPORT_REA_FIRST.json",
-      "sha256": "2cd16668e8ed328b0878d3264d39fda4e8dbaf22af3519cd2094ef83bac620f7",
-      "bytes": 2368,
+      "preservation": {
+        "hash_domain": "TEXT_CANONICAL_LF",
+        "content_sha256": "2cd16668e8ed328b0878d3264d39fda4e8dbaf22af3519cd2094ef83bac620f7",
+        "content_bytes": 2368,
+        "checkout_note": "content identity: a CRLF checkout holds different raw bytes for the same document"
+      },
       "role": "SUPERSEDED",
       "superseded_by": "evidence-004/canonical/CANONICAL_RUN.json",
-      "reason": "Historical projection of the v3.1 round. It counts 9 operations by exit code, which is the defect EVIDENCE-004 exists to stop. Preserved byte-for-byte as the record of what was published; never edited.",
-      "preserved_bytes": true
+      "reason": "Historical projection of the v3.1 round. It counts 9 operations by exit code, which is the defect EVIDENCE-004 exists to stop. Preserved byte-for-byte as the record of what was published; never edited."
     },
     {
       "path": "reports/ai-bots/RFC-AI-BOTS-002/FINAL_REPORT_REA_FIRST.md",
-      "sha256": "b6c3577138340c180f8d0eb05f63cf8aee39693daf03b506f477ccce7c974059",
-      "bytes": 4835,
+      "preservation": {
+        "hash_domain": "TEXT_CANONICAL_LF",
+        "content_sha256": "b6c3577138340c180f8d0eb05f63cf8aee39693daf03b506f477ccce7c974059",
+        "content_bytes": 4835,
+        "checkout_note": "content identity: a CRLF checkout holds different raw bytes for the same document"
+      },
       "role": "SUPERSEDED",
       "superseded_by": "FINAL_REPORT.md",
-      "reason": "Superseded narrative of the v3 iteration, kept for audit.",
-      "preserved_bytes": true
+      "reason": "Superseded narrative of the v3 iteration, kept for audit."
     },
     {
       "path": "reports/ai-bots/RFC-AI-BOTS-002/REA_FINDINGS.json",
-      "sha256": "a50dcd7d3f85c73c74e575297aff923689f53300cd08a83bacc4d00e8e4dfd95",
-      "bytes": 3504,
+      "preservation": {
+        "hash_domain": "TEXT_CANONICAL_LF",
+        "content_sha256": "a50dcd7d3f85c73c74e575297aff923689f53300cd08a83bacc4d00e8e4dfd95",
+        "content_bytes": 3504,
+        "checkout_note": "content identity: a CRLF checkout holds different raw bytes for the same document"
+      },
       "role": "SUPERSEDED",
       "superseded_by": "REA_FINDINGS_V2.json",
       "reason": "v2 findings. Its evidence_id fields are local keys (rea-doctor-2026-10-17, ...), not ids REA emitted, so they cannot be attributed to REA. Kept as the record of that defect.",
-      "preserved_bytes": true,
       "known_defect": "local key in evidence_id: rea-doctor-2026-10-17, rea-help-2026-10-17, rea-analyze-js-nof1, rea-browser-targets, rea-python-sources"
     },
     {
       "path": "reports/ai-bots/RFC-AI-BOTS-002/INDEPENDENT_VERIFICATION.json",
-      "sha256": "67e26e96f3adf684c4e9240a422b60300b25e7720ab47568f7c68b1e2a3ecd15",
-      "bytes": 183,
+      "preservation": {
+        "hash_domain": "TEXT_CANONICAL_LF",
+        "content_sha256": "67e26e96f3adf684c4e9240a422b60300b25e7720ab47568f7c68b1e2a3ecd15",
+        "content_bytes": 183,
+        "checkout_note": "content identity: a CRLF checkout holds different raw bytes for the same document"
+      },
       "role": "SUPERSEDED",
       "superseded_by": "INDEPENDENT_VERIFICATION_REA.json",
-      "reason": "Placeholder (status PENDING_RERUN) from before the independent verifier was rerun.",
-      "preserved_bytes": true
+      "reason": "Placeholder (status PENDING_RERUN) from before the independent verifier was rerun."
     },
     {
       "path": "reports/ai-bots/RFC-AI-BOTS-002/blocked_live/RUN_REPORT.json",
-      "sha256": "2d7f6ccf53e2c467828ad4d649cb9ce446b0354371ccb11ad4029085c4e1b093",
-      "bytes": 322,
+      "preservation": {
+        "hash_domain": "TEXT_CANONICAL_LF",
+        "content_sha256": "2d7f6ccf53e2c467828ad4d649cb9ce446b0354371ccb11ad4029085c4e1b093",
+        "content_bytes": 313,
+        "checkout_note": "content identity: a CRLF checkout holds different raw bytes for the same document"
+      },
       "role": "SUPERSEDED",
       "superseded_by": "RUN_REPORT.json",
-      "reason": "Separate scope: the blocked live-trading lane, not the REA ledger. Not a competing number.",
-      "preserved_bytes": true
+      "reason": "Separate scope: the blocked live-trading lane, not the REA ledger. Not a competing number."
     },
     {
       "path": "reports/ai-bots/RFC-AI-BOTS-002/blocked_live/RUN_REPORT.md",
-      "sha256": "7361966686b27bd5c895fd28cb30c77fa829232034549f1dc690f665debd2df3",
-      "bytes": 204,
+      "preservation": {
+        "hash_domain": "TEXT_CANONICAL_LF",
+        "content_sha256": "7361966686b27bd5c895fd28cb30c77fa829232034549f1dc690f665debd2df3",
+        "content_bytes": 199,
+        "checkout_note": "content identity: a CRLF checkout holds different raw bytes for the same document"
+      },
       "role": "SUPERSEDED",
       "superseded_by": "RUN_REPORT.md",
-      "reason": "Separate scope: the blocked live-trading lane, not the REA ledger.",
-      "preserved_bytes": true
+      "reason": "Separate scope: the blocked live-trading lane, not the REA ledger."
     }
-  ],
-  "hash_convention": "sha256 over the file bytes, with CRLF normalised to LF for text suffixes (.json/.jsonl/.md/.csv/.txt/.py). A CRLF checkout of the same commit must not look like an edit; binary artefacts are hashed raw."
+  ]
 }

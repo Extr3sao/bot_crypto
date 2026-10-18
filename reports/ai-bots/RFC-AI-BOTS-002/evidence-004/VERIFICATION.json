@@ -1,22 +1,22 @@
 {
   "verifier": "scripts/evidence004_verify.py",
-  "verified_ledger_sha256": "c5bc42ecccf86965effb52e505b3e0f9e3dadd5ea62ecb0b4bfbc0f43b629869",
+  "verified_ledger_sha256": "0ba3a1bece61e61bcdc12bcd02adda5e53153aae65cb5dc46879773a223f343b",
   "role": "independent of scripts/evidence004_generate.py and scripts/evidence004_ledger.py",
   "checks": [
     {
       "name": "canonical_exists",
       "ok": true,
-      "detail": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\ai-bots\\RFC-AI-BOTS-002\\evidence-004\\canonical\\CANONICAL_RUN.json"
+      "detail": "reports/ai-bots/RFC-AI-BOTS-002/evidence-004/canonical/CANONICAL_RUN.json"
     },
     {
       "name": "current_manifest_exists",
       "ok": true,
-      "detail": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\ai-bots\\RFC-AI-BOTS-002\\evidence-004\\CURRENT_MANIFEST.json"
+      "detail": "reports/ai-bots/RFC-AI-BOTS-002/evidence-004/CURRENT_MANIFEST.json"
     },
     {
       "name": "supersession_manifest_exists",
       "ok": true,
-      "detail": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\ai-bots\\RFC-AI-BOTS-002\\evidence-004\\SUPERSESSION_MANIFEST.json"
+      "detail": "reports/ai-bots/RFC-AI-BOTS-002/evidence-004/SUPERSESSION_MANIFEST.json"
     },
     {
       "name": "raw_logs_parse_without_loss",
@@ -46,7 +46,12 @@
     {
       "name": "stored_spans_point_at_the_bytes_they_hashed",
       "ok": true,
-      "detail": ""
+      "detail": "32 span(s); "
+    },
+    {
+      "name": "source_pins_use_one_declared_hash_domain",
+      "ok": true,
+      "detail": "5 pin(s); "
     },
     {
       "name": "counts_recomputed_from_raw_logs",
@@ -71,7 +76,7 @@
     {
       "name": "claims_file_exists",
       "ok": true,
-      "detail": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\ai-bots\\RFC-AI-BOTS-002\\evidence-004\\CLAIMS.json"
+      "detail": "reports/ai-bots/RFC-AI-BOTS-002/evidence-004/CLAIMS.json"
     },
     {
       "name": "claims_resolve_to_evidence_or_counters",
@@ -84,19 +89,34 @@
       "detail": "claim count"
     },
     {
+      "name": "narrative_claims_are_not_written_by_hand",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "name": "no_local_key_is_attributed_to_rea",
       "ok": true,
       "detail": "the canonical ledger itself must contain no local key in an evidence_id field"
     },
     {
-      "name": "derived_dir_is_named_by_ledger_sha",
+      "name": "current_manifest_names_an_existing_projection",
       "ok": true,
-      "detail": "c5bc42ecccf8"
+      "detail": "reports/ai-bots/RFC-AI-BOTS-002/evidence-004/derived/0ba3a1bece61.4ed5e5e9"
+    },
+    {
+      "name": "projection_is_named_by_the_ledger_it_projects",
+      "ok": true,
+      "detail": "0ba3a1bece61.4ed5e5e9 vs ledger 0ba3a1bece61"
+    },
+    {
+      "name": "current_manifest_names_this_ledger",
+      "ok": true,
+      "detail": "a projection of another ledger is being served as current"
     },
     {
       "name": "derived_manifest_exists",
       "ok": true,
-      "detail": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\ai-bots\\RFC-AI-BOTS-002\\evidence-004\\derived\\c5bc42ecccf8\\MANIFEST.json"
+      "detail": "reports/ai-bots/RFC-AI-BOTS-002/evidence-004/derived/0ba3a1bece61.4ed5e5e9/MANIFEST.json"
     },
     {
       "name": "derived_files_match_their_hashes",
@@ -120,6 +140,11 @@
     },
     {
       "name": "superseded_documents_are_pinned_not_edited",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "supersession_declares_the_identity_it_pins",
       "ok": true,
       "detail": ""
     },
@@ -176,15 +201,20 @@
     {
       "name": "readme_exists",
       "ok": true,
-      "detail": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\ai-bots\\RFC-AI-BOTS-002\\evidence-004\\README.md"
+      "detail": "reports/ai-bots/RFC-AI-BOTS-002/evidence-004/README.md"
     },
     {
       "name": "readme_documents_how_to_reproduce",
       "ok": true,
       "detail": "the README must name both the generator and this verifier"
+    },
+    {
+      "name": "checks_carry_no_absolute_path",
+      "ok": true,
+      "detail": ""
     }
   ],
-  "passed": 36,
+  "passed": 42,
   "failed": 0,
   "failures": []
 }

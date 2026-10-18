@@ -25,9 +25,68 @@ LEDGER_SCHEMA = "evidence004/ledger/1"
 CANONICAL_SCHEMA = "evidence004/canonical-run/1"
 
 REPO = Path(__file__).resolve().parents[1]
-PACKAGE = REPO / "reports" / "ai-bots" / "RFC-AI-BOTS-002"
-REA_DIR = PACKAGE / "rea"
-EVIDENCE_DIR = PACKAGE / "evidence-004"
+PACKAGE_REL_PARTS = ("reports", "ai-bots", "RFC-AI-BOTS-002")
+
+
+@dataclass(frozen=True)
+class Layout:
+    """Every path the package reads or writes, resolved from one repository root.
+
+    Tests and the two independent verifications ask the same questions of a copy, so
+    nothing below may reach for a module-level path when a layout can be passed.
+    """
+
+    root: Path = REPO
+
+    @property
+    def package(self) -> Path:
+        return self.root.joinpath(*PACKAGE_REL_PARTS)
+
+    @property
+    def rea(self) -> Path:
+        return self.package / "rea"
+
+    @property
+    def evidence(self) -> Path:
+        return self.package / "evidence-004"
+
+    @property
+    def canonical(self) -> Path:
+        return self.evidence / "canonical" / "CANONICAL_RUN.json"
+
+    @property
+    def derived(self) -> Path:
+        return self.evidence / "derived"
+
+    @property
+    def current_manifest(self) -> Path:
+        return self.evidence / "CURRENT_MANIFEST.json"
+
+    @property
+    def supersession_manifest(self) -> Path:
+        return self.evidence / "SUPERSESSION_MANIFEST.json"
+
+    @property
+    def superseded_projections(self) -> Path:
+        return self.evidence / "SUPERSEDED_PROJECTIONS.json"
+
+    @property
+    def claims(self) -> Path:
+        return self.evidence / "CLAIMS.json"
+
+    @property
+    def lock(self) -> Path:
+        return self.evidence / ".writer.lock"
+
+    @property
+    def stale_report(self) -> Path:
+        return self.package / "RUN_REPORT_REA_FIRST.json"
+
+
+DEFAULT_LAYOUT = Layout()
+PACKAGE = DEFAULT_LAYOUT.package
+REA_DIR = DEFAULT_LAYOUT.rea
+EVIDENCE_DIR = DEFAULT_LAYOUT.evidence
 
 # Start of this iteration's working day.  T-NF-PUBLIC was recorded on 2026-10-17 and
 # belongs to the previous round; excluding it by timestamp is what makes the two
@@ -76,18 +135,46 @@ def sha256_bytes(payload: bytes) -> str:
     return hashlib.sha256(payload).hexdigest()
 
 
-# Git checks text out with CRLF on Windows and stores LF; a byte hash of a text file
-# therefore differs between two checkouts of the same commit.  Text is hashed in its
-# canonical LF form so the pin means "these characters", not "this line ending".
+# Two hash domains, named, with one authority each.  A pin that does not say which
+# domain it lives in is exactly the defect this package exists to close:
+#
+#   TEXT_CANONICAL_LF  sha256 of the bytes with CRLF folded to LF.  The only identity a
+#                      text pin may use: git checks the same commit out as LF or CRLF,
+#                      and a raw-byte pin would make one checkout look like an edit.
+#   BINARY_RAW         sha256 of the bytes exactly as committed.  Binary artefacts are
+#                      never converted, so raw and canonical coincide.
+#
+# A text file has no byte identity across checkouts, and no document may claim one.
 TEXT_SUFFIXES = frozenset({".json", ".jsonl", ".md", ".csv", ".txt", ".py"})
-CR_BYTES = bytes((13,))
-LF_BYTES = bytes((10,))
+CRLF = b"\r\n"
+LF = b"\n"
+TEXT_DOMAIN = "TEXT_CANONICAL_LF"
+BINARY_DOMAIN = "BINARY_RAW"
+
+HASH_DOMAINS = {
+    TEXT_DOMAIN: {
+        "normalisation": "CRLF folded to LF before hashing",
+        "authority": "every pin on a text document, including superseded reports",
+        "not": "byte identity of a checkout: an LF and a CRLF checkout differ here",
+    },
+    BINARY_DOMAIN: {
+        "normalisation": "none: bytes as committed",
+        "authority": "artefact provenance for .png and other non-text files",
+        "not": "a way to pin a text document",
+    },
+}
+
+
+def hash_domain_for(path: Path) -> str:
+    return TEXT_DOMAIN if path.suffix.lower() in TEXT_SUFFIXES else BINARY_DOMAIN
 
 
 def stable_bytes(path: Path) -> bytes:
+    """The bytes a pin may point at: canonical LF for text, raw for everything else."""
+
     raw = path.read_bytes()
     if path.suffix.lower() in TEXT_SUFFIXES:
-        return raw.replace(CR_BYTES + LF_BYTES, LF_BYTES)
+        return raw.replace(CRLF, LF)
     return raw
 
 
@@ -103,23 +190,33 @@ def digest(payload: object) -> str:
     return sha256_bytes(canonical_json(payload).encode("utf-8"))
 
 
-def repo_relative(path: Path) -> str:
+def repo_relative(path: Path, root: Path | None = None) -> str:
     try:
-        return path.resolve().relative_to(REPO).as_posix()
+        return path.resolve().relative_to((root or REPO).resolve()).as_posix()
     except ValueError:
         return path.as_posix()
 
 
 @dataclass(frozen=True)
 class SourceSpan:
-    """Where an event was read from, and the bytes that were read."""
+    """Where an event was read from, and the content that was read.
+
+    ``content_sha256`` is the canonical-text digest, never the checkout's raw bytes:
+    the same event recorded in an LF and a CRLF checkout must produce one identity.
+    """
 
     path: str
     line: int
-    file_sha256: str
+    content_sha256: str
+    hash_domain: str = TEXT_DOMAIN
 
     def as_dict(self) -> dict[str, Any]:
-        return {"path": self.path, "line": self.line, "file_sha256": self.file_sha256}
+        return {
+            "path": self.path,
+            "line": self.line,
+            "content_sha256": self.content_sha256,
+            "hash_domain": self.hash_domain,
+        }
 
 
 @dataclass(frozen=True)
@@ -307,14 +404,14 @@ def _classify(
     return EXECUTED_NO_EVIDENCE
 
 
-def _raw_sources() -> list[tuple[Path, str]]:
+def _raw_sources(layout: Layout) -> list[tuple[Path, str]]:
     """Consolidated log first, then every dossier log; target id from the directory."""
 
     sources: list[tuple[Path, str]] = []
-    consolidated = REA_DIR / "REA_COMMAND_LOG.jsonl"
+    consolidated = layout.rea / "REA_COMMAND_LOG.jsonl"
     if consolidated.is_file():
         sources.append((consolidated, "T-CONSOLIDATED"))
-    targets_dir = REA_DIR / "targets"
+    targets_dir = layout.rea / "targets"
     if targets_dir.is_dir():
         for directory in sorted(targets_dir.iterdir()):
             log = directory / "REA_COMMAND_LOG.jsonl"
@@ -323,14 +420,16 @@ def _raw_sources() -> list[tuple[Path, str]]:
     return sources
 
 
-def _read_source(path: Path, fallback_target: str) -> list[tuple[Mapping[str, Any], SourceSpan]]:
-    raw = path.read_bytes()
-    file_digest = sha256_bytes(raw)
-    text = raw.decode("utf-8")
+def _read_source(
+    path: Path, fallback_target: str, layout: Layout
+) -> list[tuple[Mapping[str, Any], SourceSpan]]:
+    canonical = stable_bytes(path)
+    file_digest = sha256_bytes(canonical)
+    text = canonical.decode("utf-8")
     if text and not text.endswith("\n"):
         # A truncated JSONL loses its last record; refusing is the only honest option.
         raise LedgerError(
-            f"{repo_relative(path)}: last line is not newline-terminated (truncated?)"
+            f"{repo_relative(path, layout.root)}: last line is not newline-terminated (truncated?)"
         )
     rows: list[tuple[Mapping[str, Any], SourceSpan]] = []
     for index, line in enumerate(text.splitlines(), start=1):
@@ -339,10 +438,14 @@ def _read_source(path: Path, fallback_target: str) -> list[tuple[Mapping[str, An
         try:
             payload = json.loads(line)
         except json.JSONDecodeError as exc:
-            raise LedgerError(f"{repo_relative(path)}:{index}: {exc}") from exc
+            raise LedgerError(f"{repo_relative(path, layout.root)}:{index}: {exc}") from exc
         if not isinstance(payload, dict):
-            raise LedgerError(f"{repo_relative(path)}:{index}: event is not an object")
-        span = SourceSpan(repo_relative(path), index, file_digest)
+            raise LedgerError(
+                f"{repo_relative(path, layout.root)}:{index}: event is not an object"
+            )
+        span = SourceSpan(
+            repo_relative(path, layout.root), index, file_digest, hash_domain_for(path)
+        )
         rows.append((payload, span))
     return rows
 
@@ -357,28 +460,24 @@ def _target_of(payload: Mapping[str, Any], fallback: str, span: SourceSpan) -> s
     raise LedgerError(f"{span.path}:{span.line}: event has no target_id")
 
 
-def load_events() -> list[LedgerEvent]:
+def load_events(root: Path | None = None) -> list[LedgerEvent]:
     """Read every raw log and merge duplicates into one event per real occurrence."""
 
+    layout = Layout(root) if root is not None else DEFAULT_LAYOUT
     merged: dict[str, dict[str, Any]] = {}
     per_target: dict[str, tuple[set[str], dict[str, str]]] = {}
-    for target_id in (
-        "T-FE-FENIX",
-        "T-NF-NOF1",
-        "T-NF-PUBLIC",
-        "T-QR-SIGNAL",
-        "T-TA-CRITIC",
-        "T-FM-DEMO",
-        "T-TAP-OWN",
-    ):
-        directory = REA_DIR / "targets" / target_id
-        if directory.is_dir():
-            per_target[target_id] = (_dossier_ids(directory), _dossier_digests(directory))
-        else:
-            per_target[target_id] = (set(), {})
+    targets_dir = layout.rea / "targets"
+    known = (
+        sorted(directory.name for directory in targets_dir.iterdir() if directory.is_dir())
+        if targets_dir.is_dir()
+        else []
+    )
+    for target_id in known:
+        directory = targets_dir / target_id
+        per_target[target_id] = (_dossier_ids(directory), _dossier_digests(directory))
 
-    for path, fallback in _raw_sources():
-        for payload, span in _read_source(path, fallback):
+    for path, fallback in _raw_sources(layout):
+        for payload, span in _read_source(path, fallback, layout):
             target_id = _target_of(payload, fallback, span)
             operation = _as_text(payload, "operation")
             if operation is None:
@@ -388,7 +487,7 @@ def load_events() -> list[LedgerEvent]:
                 raise LedgerError(f"{span.path}:{span.line}: event has no timestamp")
             dossier_ids, dossier_digests = per_target.get(target_id, (set(), {}))
             evidence = _evidence_state(
-                payload, REA_DIR / "targets" / target_id, dossier_ids, dossier_digests
+                payload, layout.rea / "targets" / target_id, dossier_ids, dossier_digests
             )
             family = OPERATION_FAMILY.get(operation, "NON_REA")
             exit_code = _as_int(payload, "exit_code", "exit")
@@ -560,18 +659,30 @@ def build_counts(events: Sequence[LedgerEvent]) -> dict[str, Any]:
     }
 
 
-def build_ledger(events: Sequence[LedgerEvent] | None = None) -> dict[str, Any]:
-    resolved = list(events if events is not None else load_events())
+def build_ledger(
+    events: Sequence[LedgerEvent] | None = None, root: Path | None = None
+) -> dict[str, Any]:
+    layout = Layout(root) if root is not None else DEFAULT_LAYOUT
+    resolved = list(events if events is not None else load_events(layout.root))
     counts = build_counts(resolved)
     payload = {
         "schema": LEDGER_SCHEMA,
+        "hash_domains": HASH_DOMAINS,
         "events": [event.as_dict() for event in resolved],
         "counts": counts,
     }
     payload["ledger_sha256"] = digest({"events": payload["events"], "counts": counts})
-    payload["source_files"] = sorted(
-        {span.path: span.file_sha256 for event in resolved for span in event.sources}.items()
-    )
+    pins: dict[str, dict[str, Any]] = {}
+    for event in resolved:
+        for span in event.sources:
+            path = layout.root / span.path
+            pins[span.path] = {
+                "path": span.path,
+                "hash_domain": span.hash_domain,
+                "content_sha256": span.content_sha256,
+                "content_bytes": len(stable_bytes(path)) if path.is_file() else 0,
+            }
+    payload["source_files"] = [pins[path] for path in sorted(pins)]
     return payload
 
 

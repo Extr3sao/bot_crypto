@@ -72,17 +72,35 @@ def sha256_bytes(payload: bytes) -> str:
 
 
 TEXT_SUFFIXES = frozenset({".json", ".jsonl", ".md", ".csv", ".txt", ".py"})
-CR_BYTES = bytes((13,))
-LF_BYTES = bytes((10,))
+TEXT_DOMAIN = "TEXT_CANONICAL_LF"
+BINARY_DOMAIN = "BINARY_RAW"
+
+
+def hash_domain_for(path: Path) -> str:
+    return TEXT_DOMAIN if path.suffix.lower() in TEXT_SUFFIXES else BINARY_DOMAIN
 
 
 def sha256_file(path: Path) -> str:
-    """Hash text in canonical LF form: a CRLF checkout must not look like an edit."""
+    """Hash text in canonical LF form: a CRLF checkout must not look like an edit.
+
+    This is the content domain, and it is the only one a pin may use for a text file.
+    It is deliberately re-implemented here rather than imported from the builder: the
+    two sides agreeing is only evidence when they agree independently.
+    """
 
     raw = path.read_bytes()
     if path.suffix.lower() in TEXT_SUFFIXES:
-        raw = raw.replace(CR_BYTES + LF_BYTES, LF_BYTES)
+        raw = raw.replace(b"\r\n", b"\n")
     return sha256_bytes(raw)
+
+
+def _rel(path: Path, root: Path) -> str:
+    """A path that is identical in two different checkouts."""
+
+    try:
+        return path.resolve().relative_to(root.resolve()).as_posix()
+    except ValueError:
+        return path.name
 
 
 def canon(payload: object) -> str:
@@ -224,7 +242,8 @@ def recompute_raw(root: Path) -> tuple[dict[str, dict[str, Any]], list[str], lis
             span = {
                 "path": f"{PACKAGE_REL.as_posix()}/{path.relative_to(package).as_posix()}",
                 "line": line,
-                "file_sha256": file_sha,
+                "content_sha256": file_sha,
+                "hash_domain": hash_domain_for(path),
             }
             existing = events.get(key)
             if existing is None:
@@ -385,6 +404,13 @@ def _evidence_ids_in_json(node: object, found: list[str]) -> None:
             _evidence_ids_in_json(item, found)
 
 
+ABSOLUTE_PATH = re.compile(r"(^|[\s\"'(])([A-Za-z]:[\\/]|/(?:home|Users|tmp|var|private|mnt)/)")
+
+
+def _looks_absolute(text: str) -> bool:
+    return bool(ABSOLUTE_PATH.search(text))
+
+
 def _stale_matches(text: str) -> list[str]:
     hits = [pattern for pattern in STALE_PATTERNS if pattern in text]
     hits.extend(match.group(0) for pattern in STALE_REGEXES for match in pattern.finditer(text))
@@ -403,14 +429,16 @@ def verify_package(root: Path) -> Verdict:
     supersession_path = evidence / "SUPERSESSION_MANIFEST.json"
 
     canonical: dict[str, Any] = {}
-    if verdict.check("canonical_exists", canonical_path.is_file(), str(canonical_path)):
+    if verdict.check("canonical_exists", canonical_path.is_file(), _rel(canonical_path, root)):
         canonical = json.loads(canonical_path.read_text(encoding="utf-8"))
     current: dict[str, Any] = {}
-    if verdict.check("current_manifest_exists", current_path.is_file(), str(current_path)):
+    if verdict.check("current_manifest_exists", current_path.is_file(), _rel(current_path, root)):
         current = json.loads(current_path.read_text(encoding="utf-8"))
     supersession: dict[str, Any] = {}
     if verdict.check(
-        "supersession_manifest_exists", supersession_path.is_file(), str(supersession_path)
+        "supersession_manifest_exists",
+        supersession_path.is_file(),
+        _rel(supersession_path, root),
     ):
         supersession = json.loads(supersession_path.read_text(encoding="utf-8"))
 
@@ -462,19 +490,56 @@ def verify_package(root: Path) -> Verdict:
             mismatched.append(f"{key[:8]} evidence_id drifted")
     verdict.check("every_event_matches_its_raw_bytes", not mismatched, "; ".join(mismatched[:6]))
 
+    # The previous version of this check iterated a span list the generator had stripped
+    # out, so it evaluated nothing and passed.  A check with no subject is not a pass.
     span_problems: list[str] = []
+    spans_checked = 0
     for event in canonical.get("events", []):
         for span in event.get("sources", []):
+            spans_checked += 1
             path = root / span["path"]
             if not path.is_file():
                 span_problems.append(f"{span['path']} missing")
                 continue
-            if sha256_file(path) != span["file_sha256"]:
-                span_problems.append(f"{span['path']} bytes changed")
+            if sha256_file(path) != span.get("content_sha256"):
+                span_problems.append(f"{span['path']} content changed")
+            if span.get("hash_domain") != hash_domain_for(path):
+                span_problems.append(f"{span['path']} declares the wrong hash domain")
+    if spans_checked == 0:
+        span_problems.append("the canonical object publishes no span to check")
     verdict.check(
         "stored_spans_point_at_the_bytes_they_hashed",
         not span_problems,
-        "; ".join(span_problems[:4]),
+        f"{spans_checked} span(s); " + "; ".join(span_problems[:4]),
+    )
+
+    # E4-01: one origin, one identity.  The pins must be in the content domain, and the
+    # object must say which domain each one lives in.
+    domains = canonical.get("hash_domains", {})
+    domain_problems: list[str] = []
+    for name in (TEXT_DOMAIN, BINARY_DOMAIN):
+        entry = domains.get(name) if isinstance(domains, Mapping) else None
+        if not isinstance(entry, Mapping) or not entry.get("authority"):
+            domain_problems.append(f"{name} is not declared with an authority")
+    pins = canonical.get("source_files", [])
+    if not isinstance(pins, list) or not pins:
+        domain_problems.append("no source file is pinned")
+        pins = []
+    for pin in pins:
+        path = root / str(pin.get("path", ""))
+        if not path.is_file():
+            domain_problems.append(f"{pin.get('path')} missing")
+            continue
+        if pin.get("hash_domain") != hash_domain_for(path):
+            domain_problems.append(f"{pin.get('path')}: declared domain is not the file's domain")
+        if pin.get("hash_domain") == TEXT_DOMAIN and pin.get("content_sha256") != sha256_file(path):
+            domain_problems.append(f"{pin.get('path')}: content digest drifted")
+        if pin.get("hash_domain") == BINARY_DOMAIN and pin.get("content_sha256") != sha256_file(path):
+            domain_problems.append(f"{pin.get('path')}: artefact digest drifted")
+    verdict.check(
+        "source_pins_use_one_declared_hash_domain",
+        not domain_problems,
+        f"{len(pins)} pin(s); " + "; ".join(domain_problems[:4]),
     )
 
     mine = recompute_counts(list(raw.values()))
@@ -505,7 +570,7 @@ def verify_package(root: Path) -> Verdict:
 
     claims_path = evidence / "CLAIMS.json"
     claims: list[Mapping[str, Any]] = []
-    if verdict.check("claims_file_exists", claims_path.is_file(), str(claims_path)):
+    if verdict.check("claims_file_exists", claims_path.is_file(), _rel(claims_path, root)):
         loaded = json.loads(claims_path.read_text(encoding="utf-8"))
         claims = [claim for claim in loaded if isinstance(claim, dict)]
     claim_problems: list[str] = []
@@ -526,6 +591,10 @@ def verify_package(root: Path) -> Verdict:
         elif claim.get("kind") == "EVIDENCE_ID":
             if claim.get("evidence_id") not in native_ids:
                 claim_problems.append(f"{claim.get('claim_id')}: id not in raw logs")
+        elif claim.get("kind") == "NARRATIVE":
+            text = claim.get("text")
+            if isinstance(text, str) and re.search(r"(?<![\w.\-])\d+(?![\w.])", text):
+                claim_problems.append(f"{claim.get('claim_id')}: free text carries a stand-alone number")
     verdict.check(
         "claims_resolve_to_evidence_or_counters", not claim_problems, "; ".join(claim_problems[:5])
     )
@@ -534,6 +603,60 @@ def verify_package(root: Path) -> Verdict:
         len(canonical.get("claims", [])) == len(claims),
         "claim count",
     )
+
+    # E4-03: every narrative sentence is re-rendered here from the recomputed counters.
+    # A sentence that says nine operations ran while two were refused fails, even if the
+    # generator happily wrote it.
+    narrative_problems: list[str] = []
+    published = {str(claim.get("claim_id")): claim for claim in canonical.get("claims", [])}
+    flat = _flatten_counters(mine)
+    for claim in claims:
+        if claim.get("kind") != "NARRATIVE":
+            continue
+        claim_id = str(claim.get("claim_id"))
+        template = str(claim.get("template", ""))
+        counters = claim.get("counters")
+        if not isinstance(counters, Mapping) or not counters:
+            narrative_problems.append(f"{claim_id}: no counters declared")
+            continue
+        values: dict[str, int] = {}
+        for name, pointer in counters.items():
+            resolved_pointer = str(pointer)
+            if resolved_pointer.startswith("counts."):
+                resolved_pointer = resolved_pointer[len("counts.") :]
+            value = flat.get(resolved_pointer)
+            if not isinstance(value, int):
+                narrative_problems.append(f"{claim_id}: {pointer} is not a recomputed counter")
+                break
+            values[str(name)] = value
+        else:
+            if "operations" in values and "not_executed" not in values:
+                narrative_problems.append(
+                    f"{claim_id}: reports attempts without the refusals, so it reads as completed work"
+                )
+            expected = template
+            for name, value in values.items():
+                expected = expected.replace("{" + name + "}", str(value))
+            if "{" in expected:
+                narrative_problems.append(f"{claim_id}: template leaves a placeholder unresolved")
+            allowed = {str(value) for value in values.values()}
+            for literal in claim.get("allowed_literals", []) or []:
+                allowed.add(str(literal))
+            stray = sorted(
+                set(re.findall(r"(?<![\w.\-])(\d+)(?![\w.])", expected)) - allowed
+            )
+            if stray:
+                narrative_problems.append(
+                    f"{claim_id}: renders unsupported number(s) {', '.join(stray)}"
+                )
+            actual = str(published.get(claim_id, {}).get("rendered", ""))
+            if actual != expected:
+                narrative_problems.append(f"{claim_id}: published text is not the rendered counters")
+    verdict.check(
+        "narrative_claims_are_not_written_by_hand",
+        not narrative_problems,
+        "; ".join(narrative_problems[:4]),
+    )
     verdict.check(
         "no_local_key_is_attributed_to_rea",
         not canonical.get("evidence_inventory", {}).get("local_keys_misplaced_in_evidence_id"),
@@ -541,12 +664,30 @@ def verify_package(root: Path) -> Verdict:
     )
 
     ledger_sha = str(canonical.get("ledger_sha256", ""))
-    derived = evidence / "derived" / ledger_sha[:12]
-    verdict.check("derived_dir_is_named_by_ledger_sha", derived.is_dir(), str(derived.name))
+    # The projection is resolved from the manifest, not guessed from the ledger hash: a
+    # re-render of the same ledger is a different projection and must not overwrite the
+    # published one.
+    declared_dir = current.get("derived_dir")
+    derived = root / str(declared_dir) if isinstance(declared_dir, str) else evidence / "derived"
+    verdict.check(
+        "current_manifest_names_an_existing_projection",
+        derived.is_dir(),
+        str(declared_dir),
+    )
+    verdict.check(
+        "projection_is_named_by_the_ledger_it_projects",
+        derived.name.startswith(ledger_sha[:12]),
+        f"{derived.name} vs ledger {ledger_sha[:12]}",
+    )
+    verdict.check(
+        "current_manifest_names_this_ledger",
+        str(current.get("ledger_sha256")) == ledger_sha,
+        "a projection of another ledger is being served as current",
+    )
 
     manifest: dict[str, Any] = {}
     manifest_path = derived / "MANIFEST.json"
-    if verdict.check("derived_manifest_exists", manifest_path.is_file(), str(manifest_path)):
+    if verdict.check("derived_manifest_exists", manifest_path.is_file(), _rel(manifest_path, root)):
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     hash_problems = [
         record["path"]
@@ -599,17 +740,32 @@ def verify_package(root: Path) -> Verdict:
     )
 
     pinned_problems: list[str] = []
+    identity_problems: list[str] = []
     known_defects: dict[str, str] = {}
     superseded_paths: set[str] = set()
+    if "hash_domains" not in supersession:
+        identity_problems.append("the manifest does not declare its hash domains")
     for record in supersession.get("documents", []):
         superseded_paths.add(str(record["path"]))
         path = root / record["path"]
+        preservation = record.get("preservation")
+        if not isinstance(preservation, Mapping):
+            identity_problems.append(f"{record.get('path')}: no preservation record")
+            continue
+        domain = preservation.get("hash_domain")
+        pinned_sha = preservation.get("content_sha256")
+        if domain != hash_domain_for(path):
+            identity_problems.append(f"{record.get('path')}: {domain!r} is not this file's domain")
         if not path.is_file():
             pinned_problems.append(f"{record['path']} missing")
-        elif sha256_file(path) != record["sha256"]:
-            pinned_problems.append(f"{record['path']} bytes changed")
-        if record.get("preserved_bytes") is not True:
-            pinned_problems.append(f"{record['path']} not marked preserved")
+        elif sha256_file(path) != pinned_sha:
+            pinned_problems.append(f"{record['path']} content changed")
+        # E4-02: a text document has no byte identity across checkouts.  Claiming one is
+        # the overstatement this manifest existed to remove.
+        if record.get("preserved_bytes") is True and domain != BINARY_DOMAIN:
+            identity_problems.append(
+                f"{record.get('path')}: claims byte identity for a {domain} document"
+            )
         defect = record.get("known_defect")
         if isinstance(defect, str):
             known_defects[str(record["path"])] = defect
@@ -617,6 +773,11 @@ def verify_package(root: Path) -> Verdict:
         "superseded_documents_are_pinned_not_edited",
         not pinned_problems,
         "; ".join(pinned_problems[:5]),
+    )
+    verdict.check(
+        "supersession_declares_the_identity_it_pins",
+        not identity_problems,
+        "; ".join(identity_problems[:5]),
     )
 
     stale_path = package / "RUN_REPORT_REA_FIRST.json"
@@ -638,6 +799,16 @@ def verify_package(root: Path) -> Verdict:
     registered: set[str] = set()
     for record in current.get("documents", []):
         registered.add(str(record["path"]))
+    # A projection that stopped being current is recorded, not deleted: its documents
+    # are declared superseded, so they are not competing claims about the present.
+    recorded = json.loads(
+        (evidence / "SUPERSEDED_PROJECTIONS.json").read_text(encoding="utf-8")
+    ) if (evidence / "SUPERSEDED_PROJECTIONS.json").is_file() else {}
+    recorded_dirs = [
+        str(row.get("derived_dir", ""))
+        for row in recorded.get("projections", [])
+        if isinstance(row, dict)
+    ]
     for record in current.get("stable_copies", []):
         registered.add(str(record["path"]))
     editorial_problems: list[str] = []
@@ -652,6 +823,8 @@ def verify_package(root: Path) -> Verdict:
     )
     for path in discovered_reports(root):
         relative = path.relative_to(root).as_posix()
+        if any(relative.startswith(f"{prefix}/") for prefix in recorded_dirs if prefix):
+            continue
         if relative not in registered and relative not in superseded_paths:
             verdict.check(
                 "no_unregistered_report_is_presented_as_current",
@@ -744,13 +917,26 @@ def verify_package(root: Path) -> Verdict:
     )
 
     readme = evidence / "README.md"
-    if verdict.check("readme_exists", readme.is_file(), str(readme)):
+    if verdict.check("readme_exists", readme.is_file(), _rel(readme, root)):
         text = readme.read_text(encoding="utf-8")
         verdict.check(
             "readme_documents_how_to_reproduce",
             "evidence004_generate.py" in text and "evidence004_verify.py" in text,
             "the README must name both the generator and this verifier",
         )
+
+    # E4-04: this artefact has to read the same in any checkout, so no check may quote
+    # a path that only exists on the machine that produced it.
+    absolute = [
+        f"{check['name']}: {check['detail']}"
+        for check in verdict.checks
+        if check["detail"] and _looks_absolute(str(check["detail"]))
+    ]
+    verdict.check(
+        "checks_carry_no_absolute_path",
+        not absolute,
+        "; ".join(absolute[:4]),
+    )
 
     return verdict
 
@@ -859,16 +1045,36 @@ MUTATIONS: tuple[tuple[str, Callable[[Path], None]], ...] = (
     (
         "derived_json_count_inflated",
         lambda pkg: _mutate_json(
-            pkg
-            / "evidence-004"
-            / "derived"
-            / json.loads(
-                (pkg / "evidence-004" / "canonical" / "CANONICAL_RUN.json").read_text(
-                    encoding="utf-8"
-                )
-            )["ledger_sha256"][:12]
-            / "RUN_REPORT.json",
+            _current_derived(pkg) / "RUN_REPORT.json",
             lambda payload: payload["counts"]["phase_v31"]["work"].__setitem__("not_executed", 0),
+        ),
+    ),
+    (
+        "text_pin_relabelled_as_binary",
+        lambda pkg: _mutate_json(
+            pkg / "evidence-004" / "canonical" / "CANONICAL_RUN.json",
+            lambda payload: _relabel_first_text_pin(payload),
+        ),
+    ),
+    (
+        "spans_stripped_from_canonical",
+        lambda pkg: _mutate_json(
+            pkg / "evidence-004" / "canonical" / "CANONICAL_RUN.json",
+            _strip_spans,
+        ),
+    ),
+    (
+        "supersession_claims_byte_preservation",
+        lambda pkg: _mutate_json(
+            pkg / "evidence-004" / "SUPERSESSION_MANIFEST.json",
+            lambda payload: payload["documents"][0].__setitem__("preserved_bytes", True),
+        ),
+    ),
+    (
+        "narrative_claim_hardcodes_nine",
+        lambda pkg: _mutate_json(
+            pkg / "evidence-004" / "CLAIMS.json",
+            lambda payload: _hardcode_nine(payload),
         ),
     ),
     (
@@ -880,6 +1086,40 @@ MUTATIONS: tuple[tuple[str, Callable[[Path], None]], ...] = (
         ),
     ),
 )
+
+
+def _current_derived(package: Path) -> Path:
+    current = json.loads(
+        (package / "evidence-004" / "CURRENT_MANIFEST.json").read_text(encoding="utf-8")
+    )
+    # package = <root>/reports/ai-bots/RFC-AI-BOTS-002
+    return package.parents[2] / str(current["derived_dir"])
+
+
+def _strip_spans(payload: dict[str, Any]) -> None:
+    for event in payload.get("events", []):
+        if isinstance(event, dict):
+            event.pop("sources", None)
+
+
+def _relabel_first_text_pin(payload: dict[str, Any]) -> None:
+    for pin in payload.get("source_files", []):
+        if pin.get("hash_domain") == "TEXT_CANONICAL_LF":
+            pin["hash_domain"] = "BINARY_RAW"
+            return
+    raise AssertionError("no text pin to relabel")
+
+
+def _hardcode_nine(claims: object) -> None:
+    if not isinstance(claims, list):
+        raise AssertionError("claims file is not a list")
+    for claim in claims:
+        if isinstance(claim, dict) and claim.get("kind") == "NARRATIVE":
+            claim["template"] = "This iteration ran 9 REA work operations. " + str(
+                claim.get("template", "")
+            )
+            return
+    raise AssertionError("no narrative claim to break")
 
 
 def _write_extra_report(path: Path) -> None:
@@ -957,6 +1197,35 @@ def run_mutations(root: Path) -> int:
     return 0
 
 
+def build_payload(root: Path) -> dict[str, Any]:
+    """The persisted verdict.  Deliberately deterministic and root-relative.
+
+    A timestamp would make every run look fresh, and an absolute path would make the
+    artefact unreadable in the checkout that did not produce it.
+    """
+
+    verdict = verify_package(root)
+    canonical_path = root / EVIDENCE_REL / "canonical" / "CANONICAL_RUN.json"
+    checked_ledger = ""
+    if canonical_path.is_file():
+        checked_ledger = str(
+            json.loads(canonical_path.read_text(encoding="utf-8")).get("ledger_sha256", "")
+        )
+    return {
+        "verifier": "scripts/evidence004_verify.py",
+        "verified_ledger_sha256": checked_ledger,
+        "role": "independent of scripts/evidence004_generate.py and scripts/evidence004_ledger.py",
+        "checks": verdict.checks,
+        "passed": len(verdict.checks) - len(verdict.failures),
+        "failed": len(verdict.failures),
+        "failures": verdict.failures,
+    }
+
+
+def render_payload(payload: Mapping[str, Any]) -> str:
+    return json.dumps(payload, indent=2, ensure_ascii=False) + "\n"
+
+
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--root", default=str(Path(__file__).resolve().parents[1]))
@@ -972,27 +1241,9 @@ def main(argv: Sequence[str] | None = None) -> int:
         return status
 
     verdict = verify_package(root)
-    canonical_ledger = root / EVIDENCE_REL / "canonical" / "CANONICAL_RUN.json"
-    checked_ledger = ""
-    if canonical_ledger.is_file():
-        checked_ledger = str(
-            json.loads(canonical_ledger.read_text(encoding="utf-8")).get("ledger_sha256", "")
-        )
-    payload = {
-        "verifier": "scripts/evidence004_verify.py",
-        # Deterministic on purpose: re-running on an unchanged tree produces the same
-        # bytes, so a stale verification cannot hide behind a fresh timestamp.
-        "verified_ledger_sha256": checked_ledger,
-        "role": "independent of scripts/evidence004_generate.py and scripts/evidence004_ledger.py",
-        "checks": verdict.checks,
-        "passed": len(verdict.checks) - len(verdict.failures),
-        "failed": len(verdict.failures),
-        "failures": verdict.failures,
-    }
+    payload = build_payload(root)
     destination = root / EVIDENCE_REL / "VERIFICATION.json"
-    destination.write_text(
-        json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
-    )
+    destination.write_text(render_payload(payload), encoding="utf-8")
     if args.json:
         print(json.dumps(payload, indent=2, ensure_ascii=False))
     else:

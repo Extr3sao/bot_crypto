@@ -2,7 +2,19 @@
   "schema": "evidence004/run-report/1",
   "generated_by": "scripts/evidence004_generate.py",
   "canonical": "reports/ai-bots/RFC-AI-BOTS-002/evidence-004/canonical/CANONICAL_RUN.json",
-  "ledger_sha256": "c5bc42ecccf86965effb52e505b3e0f9e3dadd5ea62ecb0b4bfbc0f43b629869",
+  "ledger_sha256": "0ba3a1bece61e61bcdc12bcd02adda5e53153aae65cb5dc46879773a223f343b",
+  "hash_domains": {
+    "TEXT_CANONICAL_LF": {
+      "normalisation": "CRLF folded to LF before hashing",
+      "authority": "every pin on a text document, including superseded reports",
+      "not": "byte identity of a checkout: an LF and a CRLF checkout differ here"
+    },
+    "BINARY_RAW": {
+      "normalisation": "none: bytes as committed",
+      "authority": "artefact provenance for .png and other non-text files",
+      "not": "a way to pin a text document"
+    }
+  },
   "counts": {
     "phase_v31": {
       "definition": "REA target work and its prerequisites recorded at or after 2026-10-18T00:00:00Z: TARGET_ANALYSIS, SOURCE_IMPORT, SOURCE_COMPARE",
@@ -76,9 +88,10 @@
       "distinct_evidence_ids": 12
     },
     "conflation_warning": "phase_v31 and all_dossiers share a subject but not a denominator: the phase counter (7 work operations with an evidence_id) and the dossier counter (12 distinct evidence_ids) are both true and are not the same counter.",
+    "rea_operations_registered": 9,
     "rea_operations_evidenced": 7,
     "rea_operations_not_executed": 2,
-    "legacy_alias_note": "rea_operations_evidenced / rea_operations_not_executed are aliases of counts.phase_v31.work for readers of the previous schema; they are generated from the same object and are not a second source of truth."
+    "legacy_alias_note": "rea_operations_registered / rea_operations_evidenced / rea_operations_not_executed are aliases of counts.phase_v31.work for readers of the previous schema; they are generated from the same object and are not a second source of truth. Registered operations are attempts; only executed_with_evidence_id is work REA completed."
   },
   "counter_values": {
     "phase_v31.work.operations": 9,
@@ -90,6 +103,132 @@
     "all_dossiers.work.not_executed": 2,
     "all_dossiers.distinct_evidence_ids": 12
   },
+  "claims": [
+    {
+      "claim_id": "C-01",
+      "kind": "NARRATIVE",
+      "template": "{operations} REA work operations were registered; {executed_with_evidence_id} executed and returned an evidence_id; {not_executed} did not execute: `import-reference-source` (unsupported_host) and `compare-source-to-bundle` (NOT_EXECUTED_INVALID_INPUT with exit code zero).",
+      "counters": {
+        "operations": "counts.phase_v31.work.operations",
+        "executed_with_evidence_id": "counts.phase_v31.work.executed_with_evidence_id",
+        "not_executed": "counts.phase_v31.work.not_executed"
+      },
+      "note": "Registered, executed and refused are three different counts. The old sentence said this iteration ran nine operations, which read as nine successes.",
+      "rendered": "9 REA work operations were registered; 7 executed and returned an evidence_id; 2 did not execute: `import-reference-source` (unsupported_host) and `compare-source-to-bundle` (NOT_EXECUTED_INVALID_INPUT with exit code zero).",
+      "resolved_values": {
+        "operations": 9,
+        "executed_with_evidence_id": 7,
+        "not_executed": 2
+      },
+      "verified": true
+    },
+    {
+      "claim_id": "C-02",
+      "kind": "NARRATIVE",
+      "template": "{executed_with_evidence_id} of those returned an evidence_id from REA.",
+      "counters": {
+        "executed_with_evidence_id": "counts.phase_v31.work.executed_with_evidence_id"
+      },
+      "rendered": "7 of those returned an evidence_id from REA.",
+      "resolved_values": {
+        "executed_with_evidence_id": 7
+      },
+      "verified": true
+    },
+    {
+      "claim_id": "C-03",
+      "kind": "COUNTER",
+      "pointer": "counts.phase_v31.work.not_executed",
+      "expected": 2,
+      "text": "Operations that did not execute are listed with their execution class in RUN_REPORT.md.",
+      "resolved_value": 2,
+      "verified": true
+    },
+    {
+      "claim_id": "C-04",
+      "kind": "NARRATIVE",
+      "template": "Only {executed_with_verified_artifact} of the {executed_with_evidence_id} have evidence bytes on disk whose sha256 matches the declared digest.",
+      "counters": {
+        "executed_with_verified_artifact": "counts.phase_v31.work.executed_with_verified_artifact",
+        "executed_with_evidence_id": "counts.phase_v31.work.executed_with_evidence_id"
+      },
+      "rendered": "Only 2 of the 7 have evidence bytes on disk whose sha256 matches the declared digest.",
+      "resolved_values": {
+        "executed_with_verified_artifact": 2,
+        "executed_with_evidence_id": 7
+      },
+      "verified": true
+    },
+    {
+      "claim_id": "C-05",
+      "kind": "NARRATIVE",
+      "template": "The four dossiers together hold {distinct_evidence_ids} distinct evidence_ids; this is a different denominator and is never added to the phase counter.",
+      "counters": {
+        "distinct_evidence_ids": "counts.all_dossiers.distinct_evidence_ids"
+      },
+      "rendered": "The four dossiers together hold 12 distinct evidence_ids; this is a different denominator and is never added to the phase counter.",
+      "resolved_values": {
+        "distinct_evidence_ids": 12
+      },
+      "verified": true
+    },
+    {
+      "claim_id": "C-06",
+      "kind": "EVIDENCE_ID",
+      "evidence_id": "ev_4b2bf9c5c313530cc7e1e399d4cde5c175ecdd0018a9f608ee12782522ea9ade",
+      "text": "REA analysed the pinned nof1 public/ tree and emitted this id.",
+      "resolved_value": "ev_4b2bf9c5c313530cc7e1e399d4cde5c175ecdd0018a9f608ee12782522ea9ade",
+      "verified": true
+    },
+    {
+      "claim_id": "C-07",
+      "kind": "EVIDENCE_ID",
+      "evidence_id": "ev_be8c7d74bb6ed79011e4d135ba011c7df95df4d50fcdfc4086223f8fb5931cc6",
+      "text": "REA analysed the FenixAI dist/ build produced from the pinned commit and emitted this id.",
+      "resolved_value": "ev_be8c7d74bb6ed79011e4d135ba011c7df95df4d50fcdfc4086223f8fb5931cc6",
+      "verified": true
+    },
+    {
+      "claim_id": "C-08",
+      "kind": "EVIDENCE_ID",
+      "evidence_id": "ev_9b45318c072de54798bb93a37354c38ec82b2bccf31d3cd1fbf9be0898a16b99",
+      "text": "REA analysed Semantic Signal's static dashboard and emitted this id.",
+      "resolved_value": "ev_9b45318c072de54798bb93a37354c38ec82b2bccf31d3cd1fbf9be0898a16b99",
+      "verified": true
+    }
+  ],
+  "source_files": [
+    {
+      "path": "reports/ai-bots/RFC-AI-BOTS-002/rea/REA_COMMAND_LOG.jsonl",
+      "hash_domain": "TEXT_CANONICAL_LF",
+      "content_sha256": "02ee19de25448f8f7852ddc2ba6f3e28d5acf22678f2b5efb88462d36b30f483",
+      "content_bytes": 9303
+    },
+    {
+      "path": "reports/ai-bots/RFC-AI-BOTS-002/rea/targets/T-FE-FENIX/REA_COMMAND_LOG.jsonl",
+      "hash_domain": "TEXT_CANONICAL_LF",
+      "content_sha256": "a0bb1daf67b3fb63070a39d05824b67d60c12201e3e248b0637e12cf2a87a0a6",
+      "content_bytes": 1875
+    },
+    {
+      "path": "reports/ai-bots/RFC-AI-BOTS-002/rea/targets/T-NF-NOF1/REA_COMMAND_LOG.jsonl",
+      "hash_domain": "TEXT_CANONICAL_LF",
+      "content_sha256": "31dde568c045751e2a07fb411cd1bb5ea8ff3190f7c4326b00d85a3668b47885",
+      "content_bytes": 2225
+    },
+    {
+      "path": "reports/ai-bots/RFC-AI-BOTS-002/rea/targets/T-NF-PUBLIC/REA_COMMAND_LOG.jsonl",
+      "hash_domain": "TEXT_CANONICAL_LF",
+      "content_sha256": "75ebc45e524ef47a6ce81d31e0efce32ddd1b28fbf3dadcdec6c7649d140a256",
+      "content_bytes": 2743
+    },
+    {
+      "path": "reports/ai-bots/RFC-AI-BOTS-002/rea/targets/T-QR-SIGNAL/REA_COMMAND_LOG.jsonl",
+      "hash_domain": "TEXT_CANONICAL_LF",
+      "content_sha256": "9736ebeac9c7ba5ff336e9952ddb5e86e2ad176c164237f22187aa64b3b29c3d",
+      "content_bytes": 2023
+    }
+  ],
   "operations": [
     {
       "event_key": "03263a30d922aeeb4a7f146c16b8fcebb4b4b4bb8afab704407a9a3b49c2a272",
@@ -108,7 +247,21 @@
         "digest_matched_path": null,
         "corroborated_in_dossier": true,
         "status": "EVIDENCE_ID_CORROBORATED_IN_DOSSIER"
-      }
+      },
+      "sources": [
+        {
+          "path": "reports/ai-bots/RFC-AI-BOTS-002/rea/REA_COMMAND_LOG.jsonl",
+          "line": 9,
+          "content_sha256": "02ee19de25448f8f7852ddc2ba6f3e28d5acf22678f2b5efb88462d36b30f483",
+          "hash_domain": "TEXT_CANONICAL_LF"
+        },
+        {
+          "path": "reports/ai-bots/RFC-AI-BOTS-002/rea/targets/T-NF-PUBLIC/REA_COMMAND_LOG.jsonl",
+          "line": 2,
+          "content_sha256": "75ebc45e524ef47a6ce81d31e0efce32ddd1b28fbf3dadcdec6c7649d140a256",
+          "hash_domain": "TEXT_CANONICAL_LF"
+        }
+      ]
     },
     {
       "event_key": "f6bce7effe3d6c43ded0edb46fd7c1eb93b362fc4bcb369880b2fecaf8d3a935",
@@ -127,7 +280,21 @@
         "digest_matched_path": null,
         "corroborated_in_dossier": true,
         "status": "EVIDENCE_ID_CORROBORATED_IN_DOSSIER"
-      }
+      },
+      "sources": [
+        {
+          "path": "reports/ai-bots/RFC-AI-BOTS-002/rea/REA_COMMAND_LOG.jsonl",
+          "line": 12,
+          "content_sha256": "02ee19de25448f8f7852ddc2ba6f3e28d5acf22678f2b5efb88462d36b30f483",
+          "hash_domain": "TEXT_CANONICAL_LF"
+        },
+        {
+          "path": "reports/ai-bots/RFC-AI-BOTS-002/rea/targets/T-NF-PUBLIC/REA_COMMAND_LOG.jsonl",
+          "line": 5,
+          "content_sha256": "75ebc45e524ef47a6ce81d31e0efce32ddd1b28fbf3dadcdec6c7649d140a256",
+          "hash_domain": "TEXT_CANONICAL_LF"
+        }
+      ]
     },
     {
       "event_key": "cf169f9a701e6ab3853ab934400fcea6cc882c63c6495e1253f5cb549845d613",
@@ -146,7 +313,21 @@
         "digest_matched_path": "reports/ai-bots/RFC-AI-BOTS-002/rea/targets/T-NF-PUBLIC/rea_screenshot_evidence.json",
         "corroborated_in_dossier": true,
         "status": "EVIDENCE_ARTIFACT_VERIFIED"
-      }
+      },
+      "sources": [
+        {
+          "path": "reports/ai-bots/RFC-AI-BOTS-002/rea/REA_COMMAND_LOG.jsonl",
+          "line": 11,
+          "content_sha256": "02ee19de25448f8f7852ddc2ba6f3e28d5acf22678f2b5efb88462d36b30f483",
+          "hash_domain": "TEXT_CANONICAL_LF"
+        },
+        {
+          "path": "reports/ai-bots/RFC-AI-BOTS-002/rea/targets/T-NF-PUBLIC/REA_COMMAND_LOG.jsonl",
+          "line": 4,
+          "content_sha256": "75ebc45e524ef47a6ce81d31e0efce32ddd1b28fbf3dadcdec6c7649d140a256",
+          "hash_domain": "TEXT_CANONICAL_LF"
+        }
+      ]
     },
     {
       "event_key": "66c24ed196bd32a1a3121948db9b0d13e8e5d64d521e0d1e65bc44bc207679ff",
@@ -165,7 +346,21 @@
         "digest_matched_path": null,
         "corroborated_in_dossier": false,
         "status": "EVIDENCE_ABSENT"
-      }
+      },
+      "sources": [
+        {
+          "path": "reports/ai-bots/RFC-AI-BOTS-002/rea/REA_COMMAND_LOG.jsonl",
+          "line": 8,
+          "content_sha256": "02ee19de25448f8f7852ddc2ba6f3e28d5acf22678f2b5efb88462d36b30f483",
+          "hash_domain": "TEXT_CANONICAL_LF"
+        },
+        {
+          "path": "reports/ai-bots/RFC-AI-BOTS-002/rea/targets/T-NF-PUBLIC/REA_COMMAND_LOG.jsonl",
+          "line": 1,
+          "content_sha256": "75ebc45e524ef47a6ce81d31e0efce32ddd1b28fbf3dadcdec6c7649d140a256",
+          "hash_domain": "TEXT_CANONICAL_LF"
+        }
+      ]
     },
     {
       "event_key": "c5b2c9a4124c4480738883d33215bbaa6410521f66c1c634e09d37009bf15a90",
@@ -184,7 +379,21 @@
         "digest_matched_path": null,
         "corroborated_in_dossier": false,
         "status": "EVIDENCE_ID_DECLARED_ONLY"
-      }
+      },
+      "sources": [
+        {
+          "path": "reports/ai-bots/RFC-AI-BOTS-002/rea/REA_COMMAND_LOG.jsonl",
+          "line": 10,
+          "content_sha256": "02ee19de25448f8f7852ddc2ba6f3e28d5acf22678f2b5efb88462d36b30f483",
+          "hash_domain": "TEXT_CANONICAL_LF"
+        },
+        {
+          "path": "reports/ai-bots/RFC-AI-BOTS-002/rea/targets/T-NF-PUBLIC/REA_COMMAND_LOG.jsonl",
+          "line": 3,
+          "content_sha256": "75ebc45e524ef47a6ce81d31e0efce32ddd1b28fbf3dadcdec6c7649d140a256",
+          "hash_domain": "TEXT_CANONICAL_LF"
+        }
+      ]
     },
     {
       "event_key": "4a07621608eefc00056ea6a554d6ba3c1ed977e564d1b6a999732f0280891efa",
@@ -203,7 +412,21 @@
         "digest_matched_path": null,
         "corroborated_in_dossier": false,
         "status": "EVIDENCE_ABSENT"
-      }
+      },
+      "sources": [
+        {
+          "path": "reports/ai-bots/RFC-AI-BOTS-002/rea/REA_COMMAND_LOG.jsonl",
+          "line": 4,
+          "content_sha256": "02ee19de25448f8f7852ddc2ba6f3e28d5acf22678f2b5efb88462d36b30f483",
+          "hash_domain": "TEXT_CANONICAL_LF"
+        },
+        {
+          "path": "reports/ai-bots/RFC-AI-BOTS-002/rea/targets/T-NF-NOF1/REA_COMMAND_LOG.jsonl",
+          "line": 1,
+          "content_sha256": "31dde568c045751e2a07fb411cd1bb5ea8ff3190f7c4326b00d85a3668b47885",
+          "hash_domain": "TEXT_CANONICAL_LF"
+        }
+      ]
     },
     {
       "event_key": "f64fc55b9c5da884925180d11a190b4f475f04a1c81fd3191707b16400b264b1",
@@ -222,7 +445,21 @@
         "digest_matched_path": null,
         "corroborated_in_dossier": true,
         "status": "EVIDENCE_ID_CORROBORATED_IN_DOSSIER"
-      }
+      },
+      "sources": [
+        {
+          "path": "reports/ai-bots/RFC-AI-BOTS-002/rea/REA_COMMAND_LOG.jsonl",
+          "line": 5,
+          "content_sha256": "02ee19de25448f8f7852ddc2ba6f3e28d5acf22678f2b5efb88462d36b30f483",
+          "hash_domain": "TEXT_CANONICAL_LF"
+        },
+        {
+          "path": "reports/ai-bots/RFC-AI-BOTS-002/rea/targets/T-NF-NOF1/REA_COMMAND_LOG.jsonl",
+          "line": 2,
+          "content_sha256": "31dde568c045751e2a07fb411cd1bb5ea8ff3190f7c4326b00d85a3668b47885",
+          "hash_domain": "TEXT_CANONICAL_LF"
+        }
+      ]
     },
     {
       "event_key": "a242bb9cd0ffba02d1848aff5d191c5804e0ef057dbd76986926d72c17597d6f",
@@ -241,7 +478,21 @@
         "digest_matched_path": null,
         "corroborated_in_dossier": false,
         "status": "EVIDENCE_ABSENT"
-      }
+      },
+      "sources": [
+        {
+          "path": "reports/ai-bots/RFC-AI-BOTS-002/rea/REA_COMMAND_LOG.jsonl",
+          "line": 6,
+          "content_sha256": "02ee19de25448f8f7852ddc2ba6f3e28d5acf22678f2b5efb88462d36b30f483",
+          "hash_domain": "TEXT_CANONICAL_LF"
+        },
+        {
+          "path": "reports/ai-bots/RFC-AI-BOTS-002/rea/targets/T-NF-NOF1/REA_COMMAND_LOG.jsonl",
+          "line": 3,
+          "content_sha256": "31dde568c045751e2a07fb411cd1bb5ea8ff3190f7c4326b00d85a3668b47885",
+          "hash_domain": "TEXT_CANONICAL_LF"
+        }
+      ]
     },
     {
       "event_key": "99f67c66b828ea7111cefc286831c29f9193e8592df0f277aeba1aa6e5f812de",
@@ -260,7 +511,21 @@
         "digest_matched_path": null,
         "corroborated_in_dossier": false,
         "status": "EVIDENCE_ABSENT"
-      }
+      },
+      "sources": [
+        {
+          "path": "reports/ai-bots/RFC-AI-BOTS-002/rea/REA_COMMAND_LOG.jsonl",
+          "line": 7,
+          "content_sha256": "02ee19de25448f8f7852ddc2ba6f3e28d5acf22678f2b5efb88462d36b30f483",
+          "hash_domain": "TEXT_CANONICAL_LF"
+        },
+        {
+          "path": "reports/ai-bots/RFC-AI-BOTS-002/rea/targets/T-NF-NOF1/REA_COMMAND_LOG.jsonl",
+          "line": 4,
+          "content_sha256": "31dde568c045751e2a07fb411cd1bb5ea8ff3190f7c4326b00d85a3668b47885",
+          "hash_domain": "TEXT_CANONICAL_LF"
+        }
+      ]
     },
     {
       "event_key": "91e87b753b7ac1a6c705a422e64a444c4c56c05d12a600b3f5abadf5c6686524",
@@ -279,7 +544,21 @@
         "digest_matched_path": null,
         "corroborated_in_dossier": true,
         "status": "EVIDENCE_ID_CORROBORATED_IN_DOSSIER"
-      }
+      },
+      "sources": [
+        {
+          "path": "reports/ai-bots/RFC-AI-BOTS-002/rea/REA_COMMAND_LOG.jsonl",
+          "line": 13,
+          "content_sha256": "02ee19de25448f8f7852ddc2ba6f3e28d5acf22678f2b5efb88462d36b30f483",
+          "hash_domain": "TEXT_CANONICAL_LF"
+        },
+        {
+          "path": "reports/ai-bots/RFC-AI-BOTS-002/rea/targets/T-QR-SIGNAL/REA_COMMAND_LOG.jsonl",
+          "line": 1,
+          "content_sha256": "9736ebeac9c7ba5ff336e9952ddb5e86e2ad176c164237f22187aa64b3b29c3d",
+          "hash_domain": "TEXT_CANONICAL_LF"
+        }
+      ]
     },
     {
       "event_key": "5bef070e1f839eb1cced6051062353b774924a305fa33b6873c3e899ce8f460f",
@@ -298,7 +577,21 @@
         "digest_matched_path": null,
         "corroborated_in_dossier": true,
         "status": "EVIDENCE_ID_CORROBORATED_IN_DOSSIER"
-      }
+      },
+      "sources": [
+        {
+          "path": "reports/ai-bots/RFC-AI-BOTS-002/rea/REA_COMMAND_LOG.jsonl",
+          "line": 1,
+          "content_sha256": "02ee19de25448f8f7852ddc2ba6f3e28d5acf22678f2b5efb88462d36b30f483",
+          "hash_domain": "TEXT_CANONICAL_LF"
+        },
+        {
+          "path": "reports/ai-bots/RFC-AI-BOTS-002/rea/targets/T-FE-FENIX/REA_COMMAND_LOG.jsonl",
+          "line": 1,
+          "content_sha256": "a0bb1daf67b3fb63070a39d05824b67d60c12201e3e248b0637e12cf2a87a0a6",
+          "hash_domain": "TEXT_CANONICAL_LF"
+        }
+      ]
     },
     {
       "event_key": "ca10ec93f8c92766a209202c8427aeabc69ad9650c704277f29238a7d205d765",
@@ -317,7 +610,21 @@
         "digest_matched_path": null,
         "corroborated_in_dossier": false,
         "status": "EVIDENCE_ID_DECLARED_ONLY"
-      }
+      },
+      "sources": [
+        {
+          "path": "reports/ai-bots/RFC-AI-BOTS-002/rea/REA_COMMAND_LOG.jsonl",
+          "line": 14,
+          "content_sha256": "02ee19de25448f8f7852ddc2ba6f3e28d5acf22678f2b5efb88462d36b30f483",
+          "hash_domain": "TEXT_CANONICAL_LF"
+        },
+        {
+          "path": "reports/ai-bots/RFC-AI-BOTS-002/rea/targets/T-QR-SIGNAL/REA_COMMAND_LOG.jsonl",
+          "line": 2,
+          "content_sha256": "9736ebeac9c7ba5ff336e9952ddb5e86e2ad176c164237f22187aa64b3b29c3d",
+          "hash_domain": "TEXT_CANONICAL_LF"
+        }
+      ]
     },
     {
       "event_key": "319a767689ce807191698bb126753530d66451a4e4a1840d068cb8821858441c",
@@ -336,7 +643,21 @@
         "digest_matched_path": null,
         "corroborated_in_dossier": true,
         "status": "EVIDENCE_ID_CORROBORATED_IN_DOSSIER"
-      }
+      },
+      "sources": [
+        {
+          "path": "reports/ai-bots/RFC-AI-BOTS-002/rea/REA_COMMAND_LOG.jsonl",
+          "line": 15,
+          "content_sha256": "02ee19de25448f8f7852ddc2ba6f3e28d5acf22678f2b5efb88462d36b30f483",
+          "hash_domain": "TEXT_CANONICAL_LF"
+        },
+        {
+          "path": "reports/ai-bots/RFC-AI-BOTS-002/rea/targets/T-QR-SIGNAL/REA_COMMAND_LOG.jsonl",
+          "line": 3,
+          "content_sha256": "9736ebeac9c7ba5ff336e9952ddb5e86e2ad176c164237f22187aa64b3b29c3d",
+          "hash_domain": "TEXT_CANONICAL_LF"
+        }
+      ]
     },
     {
       "event_key": "3d5686bf81c21e155db498e4b433c0e9ffbec7ca0490ecf7dd8dd7faf450b0b9",
@@ -355,7 +676,21 @@
         "digest_matched_path": null,
         "corroborated_in_dossier": true,
         "status": "EVIDENCE_ID_CORROBORATED_IN_DOSSIER"
-      }
+      },
+      "sources": [
+        {
+          "path": "reports/ai-bots/RFC-AI-BOTS-002/rea/REA_COMMAND_LOG.jsonl",
+          "line": 2,
+          "content_sha256": "02ee19de25448f8f7852ddc2ba6f3e28d5acf22678f2b5efb88462d36b30f483",
+          "hash_domain": "TEXT_CANONICAL_LF"
+        },
+        {
+          "path": "reports/ai-bots/RFC-AI-BOTS-002/rea/targets/T-FE-FENIX/REA_COMMAND_LOG.jsonl",
+          "line": 2,
+          "content_sha256": "a0bb1daf67b3fb63070a39d05824b67d60c12201e3e248b0637e12cf2a87a0a6",
+          "hash_domain": "TEXT_CANONICAL_LF"
+        }
+      ]
     },
     {
       "event_key": "ce1b78e84cfb53312c0a0cd341c656ad267b5192ee6aff2c3382612a8639e5aa",
@@ -374,7 +709,21 @@
         "digest_matched_path": "reports/ai-bots/RFC-AI-BOTS-002/rea/targets/T-QR-SIGNAL/rea_screenshot.png",
         "corroborated_in_dossier": true,
         "status": "EVIDENCE_ARTIFACT_VERIFIED"
-      }
+      },
+      "sources": [
+        {
+          "path": "reports/ai-bots/RFC-AI-BOTS-002/rea/REA_COMMAND_LOG.jsonl",
+          "line": 16,
+          "content_sha256": "02ee19de25448f8f7852ddc2ba6f3e28d5acf22678f2b5efb88462d36b30f483",
+          "hash_domain": "TEXT_CANONICAL_LF"
+        },
+        {
+          "path": "reports/ai-bots/RFC-AI-BOTS-002/rea/targets/T-QR-SIGNAL/REA_COMMAND_LOG.jsonl",
+          "line": 4,
+          "content_sha256": "9736ebeac9c7ba5ff336e9952ddb5e86e2ad176c164237f22187aa64b3b29c3d",
+          "hash_domain": "TEXT_CANONICAL_LF"
+        }
+      ]
     },
     {
       "event_key": "77375b64e5fa2ba6d2b9b48fe7c7450b3782bef46a059e3e997d8e7b08260c01",
@@ -393,7 +742,21 @@
         "digest_matched_path": "reports/ai-bots/RFC-AI-BOTS-002/rea/targets/T-FE-FENIX/rea_screenshot.png",
         "corroborated_in_dossier": true,
         "status": "EVIDENCE_ARTIFACT_VERIFIED"
-      }
+      },
+      "sources": [
+        {
+          "path": "reports/ai-bots/RFC-AI-BOTS-002/rea/REA_COMMAND_LOG.jsonl",
+          "line": 3,
+          "content_sha256": "02ee19de25448f8f7852ddc2ba6f3e28d5acf22678f2b5efb88462d36b30f483",
+          "hash_domain": "TEXT_CANONICAL_LF"
+        },
+        {
+          "path": "reports/ai-bots/RFC-AI-BOTS-002/rea/targets/T-FE-FENIX/REA_COMMAND_LOG.jsonl",
+          "line": 3,
+          "content_sha256": "a0bb1daf67b3fb63070a39d05824b67d60c12201e3e248b0637e12cf2a87a0a6",
+          "hash_domain": "TEXT_CANONICAL_LF"
+        }
+      ]
     }
   ],
   "evidence_inventory": {

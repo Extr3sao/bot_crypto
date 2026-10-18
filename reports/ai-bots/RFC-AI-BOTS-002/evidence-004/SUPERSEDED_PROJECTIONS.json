@@ -1,0 +1,12 @@
+{
+  "schema": "evidence004/superseded-projections/1",
+  "note": "A projection stops being current when CURRENT_MANIFEST.json switches away from it. It is recorded here first and then kept: no report is ever deleted to make the current one look unambiguous.",
+  "projections": [
+    {
+      "derived_dir": "reports/ai-bots/RFC-AI-BOTS-002/evidence-004/derived/c5bc42ecccf8",
+      "ledger_sha256": "c5bc42ecccf86965effb52e505b3e0f9e3dadd5ea62ecb0b4bfbc0f43b629869",
+      "canonical_sha256": "39d1f89b0257fe538ce224356b064b51f4020b93f980cbcdc6c041defd5768a1",
+      "superseded_by": "0ba3a1bece61.4ed5e5e9"
+    }
+  ]
+}

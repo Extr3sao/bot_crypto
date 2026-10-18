@@ -102,10 +102,8 @@ def test_a_local_key_is_never_read_as_an_rea_id(tmp_path: Path) -> None:
             }
         ],
     )
-    with pytest.MonkeyPatch.context() as patch:
-        patch.setattr(ledger, "REA_DIR", package / "rea")
-        events = ledger.load_events()
-        inventory = ledger.evidence_inventory(events)
+    events = ledger.load_events(root=tmp_path)
+    inventory = ledger.evidence_inventory(events)
 
     assert events[0].evidence.id_kind == "LOCAL_KEY"
     assert inventory["rea_native_id_count"] == 0
@@ -122,10 +120,8 @@ def test_a_truncated_log_is_refused_instead_of_silently_shortened(tmp_path: Path
     raw = log.read_bytes()
     log.write_bytes(raw[:-5])
 
-    with pytest.MonkeyPatch.context() as patch:
-        patch.setattr(ledger, "REA_DIR", package / "rea")
-        with pytest.raises(ledger.LedgerError, match="truncated"):
-            ledger.load_events()
+    with pytest.raises(ledger.LedgerError, match="truncated"):
+        ledger.load_events(root=tmp_path)
 
 
 def test_two_copies_of_one_event_must_agree(tmp_path: Path) -> None:
@@ -142,10 +138,8 @@ def test_two_copies_of_one_event_must_agree(tmp_path: Path) -> None:
         [{**row, "exit_code": 1}],
     )
 
-    with pytest.MonkeyPatch.context() as patch:
-        patch.setattr(ledger, "REA_DIR", package / "rea")
-        with pytest.raises(ledger.LedgerError, match="disagrees"):
-            ledger.load_events()
+    with pytest.raises(ledger.LedgerError, match="disagrees"):
+        ledger.load_events(root=tmp_path)
 
 
 def test_a_verified_artefact_is_distinguished_from_a_declared_id() -> None:

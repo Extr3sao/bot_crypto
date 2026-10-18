@@ -1,62 +1,62 @@
 {
   "schema": "evidence004/mutation-report/1",
   "verifier": "scripts/evidence004_verify.py",
-  "mutations": 14,
-  "detected": 14,
+  "mutations": 18,
+  "detected": 18,
   "holes": 0,
   "results": [
     {
       "mutation": "evidence_id_rewritten_in_raw_log",
       "detected": true,
-      "failures": 6,
+      "failures": 9,
       "first_failing_check": "canonical_event_set_equals_raw_checkout"
     },
     {
       "mutation": "result_changed_to_success_in_raw_log",
       "detected": true,
-      "failures": 1,
+      "failures": 3,
       "first_failing_check": "copies_of_one_event_agree"
     },
     {
       "mutation": "exit_code_flipped_in_raw_log",
       "detected": true,
-      "failures": 1,
+      "failures": 3,
       "first_failing_check": "copies_of_one_event_agree"
     },
     {
       "mutation": "target_id_swapped_in_raw_log",
       "detected": true,
-      "failures": 5,
+      "failures": 8,
       "first_failing_check": "canonical_event_set_equals_raw_checkout"
     },
     {
       "mutation": "declared_digest_swapped_in_raw_log",
       "detected": true,
-      "failures": 1,
+      "failures": 3,
       "first_failing_check": "copies_of_one_event_agree"
     },
     {
       "mutation": "consolidated_log_diverges_from_dossier_log",
       "detected": true,
-      "failures": 2,
+      "failures": 4,
       "first_failing_check": "copies_of_one_event_agree"
     },
     {
       "mutation": "evidence_artifact_deleted",
       "detected": true,
-      "failures": 4,
+      "failures": 5,
       "first_failing_check": "every_event_matches_its_raw_bytes"
     },
     {
       "mutation": "event_duplicated_inside_one_file",
       "detected": true,
-      "failures": 1,
+      "failures": 3,
       "first_failing_check": "no_event_recorded_twice_in_the_same_file"
     },
     {
       "mutation": "jsonl_truncated_mid_record",
       "detected": true,
-      "failures": 1,
+      "failures": 3,
       "first_failing_check": "raw_logs_parse_without_loss"
     },
     {
@@ -82,6 +82,30 @@
       "detected": true,
       "failures": 3,
       "first_failing_check": "derived_files_match_their_hashes"
+    },
+    {
+      "mutation": "text_pin_relabelled_as_binary",
+      "detected": true,
+      "failures": 1,
+      "first_failing_check": "source_pins_use_one_declared_hash_domain"
+    },
+    {
+      "mutation": "spans_stripped_from_canonical",
+      "detected": true,
+      "failures": 1,
+      "first_failing_check": "stored_spans_point_at_the_bytes_they_hashed"
+    },
+    {
+      "mutation": "supersession_claims_byte_preservation",
+      "detected": true,
+      "failures": 1,
+      "first_failing_check": "supersession_declares_the_identity_it_pins"
+    },
+    {
+      "mutation": "narrative_claim_hardcodes_nine",
+      "detected": true,
+      "failures": 1,
+      "first_failing_check": "narrative_claims_are_not_written_by_hand"
     },
     {
       "mutation": "mock_provider_rewritten_as_real",
