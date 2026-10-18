@@ -1,6 +1,6 @@
 # Trading Agentic Portable — Roadmap maestro
 
-**Fecha de corte:** 2026-10-18 · **Versión inicial:** 1.0 · **Estado:** inventario de gestión, NO certificado de producción.
+**Fecha de corte:** 2026-10-18 · **Versión actual:** 1.1 · **Estado:** inventario de gestión, NO certificado de producción.
 
 Este directorio conserva el seguimiento de Trading Agentic Portable en formato Excel y un espejo de datos fácilmente revisable en Git. La autoridad de cada estado viene de los commits y evidencias de las ramas, **no** de la existencia del RFC.
 
@@ -30,3 +30,8 @@ Este directorio conserva el seguimiento de Trading Agentic Portable en formato E
 **Gobernanza:** `FALSE_SUCCESS=0`, `BUILDER != VERIFIER`, `TEST_TARGET == RUNTIME_TARGET`, `NO_TRADE` es decisión de primera clase. No hacer live trading, gastos API, cambios de riesgo o uso de secretos sin permiso.
 
 Issues principales: [#10](https://github.com/Extr3sao/bot_crypto/issues/10) · [#11](https://github.com/Extr3sao/bot_crypto/issues/11) · [#12](https://github.com/Extr3sao/bot_crypto/issues/12) · [#13](https://github.com/Extr3sao/bot_crypto/issues/13) · [#14](https://github.com/Extr3sao/bot_crypto/issues/14).
+
+## Publicación
+
+- La revisión v1.1 actualiza la fila `TAP-057` tras comprobar la primera subida a GitHub.
+- La rama `project/roadmap-trading-agentic` conserva los archivos Excel, JSON, CSV y README; la integración a `main` requiere PR.

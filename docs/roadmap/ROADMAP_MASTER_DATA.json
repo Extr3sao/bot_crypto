@@ -1317,7 +1317,7 @@
       "Siguiente_paso": "Actualizar tras cada commit/RFC/WP con ejecución y evidencia.",
       "Bloqueo": "",
       "Tipo_evidencia": "PROJECT_MANAGEMENT",
-      "Notas": "Estado fichero Excel: generado en esta sesión, subida GitHub pendiente hasta commit."
+      "Notas": "Excel maestro creado en esta sesión y publicado en rama independiente; no está aún en main."
     },
     {
       "ID": "TAP-057",
@@ -1325,22 +1325,22 @@
       "Fase": "12 Observabilidad",
       "RFC_WP": "ROADMAP-MASTER-001",
       "Actividad": "Sincronizar Excel del roadmap a rama GitHub del proyecto",
-      "Estado": "EN_CURSO",
+      "Estado": "VERIFICADO_FOCAL",
       "Prioridad": "P0",
-      "Progreso": 0.35,
+      "Progreso": 1.0,
       "Orden": 1,
       "Dependencias": "TAP-056",
-      "Gate": "Ruta versionada y hash remoto del .xlsx",
-      "Evidencia": "Pendiente GitHub blob SHA",
-      "URL": "https://github.com/Extr3sao/bot_crypto",
+      "Gate": "Excel binario y JSON/CSV publicados por Git blob SHA; rama independiente; merge a main pendiente",
+      "Evidencia": "5f8c7610c / Excel blob 85d2f911",
+      "URL": "https://github.com/Extr3sao/bot_crypto/tree/project/roadmap-trading-agentic/docs/roadmap",
       "Responsable": "ChatGPT",
       "Inicio": "",
       "Fecha_objetivo": "",
       "Actualizacion": "2026-10-18",
-      "Siguiente_paso": "Publicar Excel + JSON/CSV + README en rama aislada.",
+      "Siguiente_paso": "Actualización incremental del Excel tras cada nueva fase; valorar PR a main",
       "Bloqueo": "",
       "Tipo_evidencia": "PROJECT_MANAGEMENT",
-      "Notas": ""
+      "Notas": "GitHub commit creado y objeto XLSX verificado por Git SHA-1; la integración en main aún no se ha realizado."
     },
     {
       "ID": "TAP-058",
@@ -2126,6 +2126,15 @@
       "ChatGPT",
       "https://github.com/Extr3sao/bot_crypto/issues/13",
       "v1.0"
+    ],
+    [
+      "2026-10-18",
+      "ROADMAP-MASTER-001",
+      "REMOTE_PUBLISHED",
+      "Excel y espejo JSON/CSV subidos a rama project/roadmap-trading-agentic; hash Git XLSX verificado; se prepara revisión 1.1.",
+      "ChatGPT",
+      "https://github.com/Extr3sao/bot_crypto/commit/5f8c7610c052cad019421041cab5b360e7befc4e",
+      "v1.1"
     ]
   ],
   "data_classification": "GitHub remote source/reports, historical and planned separately; no live API model, no live orders",
@@ -2134,5 +2143,6 @@
     "Ningún plazo de entrega es promesa: fecha objetivo vacía hasta decisión del responsable.",
     "El Excel puede editarse; actualizar JSON canónico y Excel conjuntamente al registrar nuevo reporte.",
     "No se actualiza automáticamente sin una nueva sesión o una tarea programada explícita."
-  ]
+  ],
+  "version": "1.1"
 }
