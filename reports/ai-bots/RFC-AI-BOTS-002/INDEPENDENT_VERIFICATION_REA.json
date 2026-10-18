@@ -324,10 +324,35 @@
       "name": "instrumentation_covers_the_host_limit",
       "ok": true,
       "detail": "the Windows importer limit is recorded next to the executed parts"
+    },
+    {
+      "name": "rea_log_consolidated_matches_the_targets",
+      "ok": true,
+      "detail": "16 entries vs 16 in dossiers"
+    },
+    {
+      "name": "unexecuted_operations_carry_no_evidence_id",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "name": "an_exit_code_of_zero_is_not_a_success",
+      "ok": true,
+      "detail": "1 exit-0 entries are recorded as unexecuted"
+    },
+    {
+      "name": "run_table_annotates_exit_zero_without_evidence",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "name": "run_table_counts_evidenced_work_only",
+      "ok": true,
+      "detail": "report says 7, table shows 7"
     }
   ],
   "failures": [],
-  "passed": 65,
+  "passed": 70,
   "failed": 0,
   "evidence_ids_backed": [
     "ev_47c01accd3491fd6e10e893f8a045e5fee226fa520f648f4460396a619efbaf1",

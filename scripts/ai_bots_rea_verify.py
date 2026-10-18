@@ -379,6 +379,94 @@ def main() -> int:
         "the Windows importer limit is recorded next to the executed parts",
     )
 
+    # 12. one consolidated log, and an exit code of 0 is never read as success
+    per_target: list[dict] = []
+    for log in TARGETS.glob("*/REA_COMMAND_LOG.jsonl"):
+        for line in log.read_text(encoding="utf-8").splitlines():
+            if line.strip():
+                row = json.loads(line)
+                row.setdefault("target_id", log.parent.name)
+                per_target.append(row)
+    consolidated_log = REA / "rea" / "REA_COMMAND_LOG.jsonl"
+    consolidated: list[dict] = []
+    if consolidated_log.is_file():
+        consolidated = [
+            json.loads(line)
+            for line in consolidated_log.read_text(encoding="utf-8").splitlines()
+            if line.strip()
+        ]
+    #: Whole records, not just their keys: an edited field must break the match.
+    canonical = lambda r: json.dumps(r, sort_keys=True, ensure_ascii=False)  # noqa: E731
+    report.check(
+        "rea_log_consolidated_matches_the_targets",
+        bool(consolidated)
+        and sorted(map(canonical, consolidated)) == sorted(map(canonical, per_target)),
+        f"{len(consolidated)} entries vs {len(per_target)} in dossiers",
+    )
+    #: `compare-source-to-bundle` returned exit_code 0 with an
+    #: `NOT_EXECUTED_INVALID_INPUT` result. Counting exit codes would be a
+    #: false success, so the rule is stated on the result, not the exit code.
+    NOT_A_SUCCESS = ("NOT_EXECUTED", "BLOCKED")
+    laundered = [
+        f"{r.get('target_id')}:{r.get('operation')}"
+        for r in per_target
+        if str(r.get("result", "")).upper().startswith(NOT_A_SUCCESS) and r.get("evidence_id")
+    ]
+    report.check(
+        "unexecuted_operations_carry_no_evidence_id",
+        not laundered,
+        str(laundered[:3]),
+    )
+    exit_zero_but_unexecuted = [
+        r
+        for r in per_target
+        if r.get("exit_code") == 0 and str(r.get("result", "")).upper().startswith(NOT_A_SUCCESS)
+    ]
+    report.check(
+        "an_exit_code_of_zero_is_not_a_success",
+        all(not r.get("evidence_id") for r in exit_zero_but_unexecuted),
+        f"{len(exit_zero_but_unexecuted)} exit-0 entries are recorded as unexecuted",
+    )
+
+    #: The run table is where a human reads "exit" and concludes "worked".
+    run_md = _read(REA / "RUN_REPORT.md")
+    REA_OPS = (
+        "analyze_javascript_application",
+        "analyze_web_bundle",
+        "capture_web_screenshot",
+        "import-reference-source",
+        "compare-source-to-bundle",
+        "list-browser-targets",
+    )
+    unannotated: list[str] = []
+    evidenced_rows = 0
+    for line in run_md.splitlines():
+        cells = [c.strip() for c in line.strip().strip("|").split("|")]
+        if len(cells) != 5 or not line.lstrip().startswith("|"):
+            continue
+        operation = cells[1].strip("`")
+        if not any(op in operation for op in REA_OPS):
+            continue
+        if "ev_" in cells[4]:
+            evidenced_rows += 1
+            continue
+        if cells[3] in {"0", "**0**"} and not any(
+            marker in cells[4].lower()
+            for marker in ("invalid", "not_executed", "blocked", "unsupported", "no ejecut")
+        ):
+            unannotated.append(operation)
+    report.check(
+        "run_table_annotates_exit_zero_without_evidence",
+        not unannotated,
+        str(unannotated[:3]),
+    )
+    claimed = re.search(r"(\d+)\s+operaciones REA ejecutadas con", run_md)
+    report.check(
+        "run_table_counts_evidenced_work_only",
+        bool(claimed) and int(claimed.group(1)) == evidenced_rows,
+        f"report says {claimed.group(1) if claimed else 'nothing'}, table shows {evidenced_rows}",
+    )
+
     payload = {
         "checks": report.checks,
         "failures": report.failures,

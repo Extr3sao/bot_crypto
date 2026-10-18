@@ -278,8 +278,20 @@ proyectos.
 6. **Auditoría de fuente** de los tres backends: nof1 no es visual y deja el apalancamiento al
    modelo con el drawdown comentado; FenixAI manda la imagen sin hash ni símbolo; QRAK liga la
    imagen por construcción y el risk manager recorta el tamaño.
-7. **Verificador ampliado a 59 comprobaciones** (antes 31), con mutaciones que lo rechazan:
-   reatribuir el bundle público ⇒ 2 FAIL; borrar `PROVENANCE.md` del repo exacto ⇒ 2 FAIL.
+7. **Verificador ampliado** (31 → 59 → **70** comprobaciones), con mutaciones que lo rechazan:
+   reatribuir el bundle público ⇒ 2 FAIL; borrar `PROVENANCE.md` del repo exacto ⇒ 2 FAIL;
+   disfrazar el probe de `REA_EVIDENCE` ⇒ 2 FAIL.
+8. **Ejecución instrumentada del renderizador de FenixAI** (`4dba317`): `ChartService` del
+   commit `bd7373d5…` con 120 velas sintéticas en venv desechable, sin red ni claves → PNG
+   181.314 B `96c7f41c…`, determinista, caché por símbolo. Hallazgos: sin `mplfinance` devuelve
+   `PLACEHOLDER` con `ok=True`, y `get_cached(max_age=0)` trata el 0 como "no especificado".
+   Etiquetado `INSTRUMENTED_EXECUTION_NOT_REA`; nunca se cuenta como llamada de modelo.
+9. **`exit 0` dejó de contar como éxito.** `compare-source-to-bundle` devolvió `exit_code: 0`
+   con resultado `NOT_EXECUTED_INVALID_INPUT`, y `RUN_REPORT.md` lo sumaba como operación
+   correcta ("9 operaciones REA con exit 0"). Corregido a 7 con `evidence_id` + 2 declaradas no
+   ejecutadas, y el verificador ahora comprueba la tabla fila por fila
+   (`run_table_annotates_exit_zero_without_evidence`, `run_table_counts_evidenced_work_only`)
+   además del log consolidado (`rea/REA_COMMAND_LOG.jsonl`, 16 entradas = suma de los 4 dossiers).
 
 **Pendiente / bloqueado**
 
@@ -294,9 +306,14 @@ proyectos.
 ```bash
 cd "$(git rev-parse --show-toplevel)"
 git log -1 --format='%H %s'
-./.venv/Scripts/python.exe scripts/ai_bots_rea_verify.py | tail -2   # esperado: 59 PASS / 0 FAIL, exit 0
+./.venv/Scripts/python.exe scripts/ai_bots_rea_verify.py | tail -2   # esperado: 70 PASS / 0 FAIL, exit 0
 ./.venv/Scripts/python.exe -m pytest tests/unit/vision tests/unit/intelligence -q | tail -2
+./.venv/Scripts/ruff.exe check scripts/ai_bots_rea_verify.py
 ```
+
+**Commits de este paquete:** `6403c71` (procedencia + REA de los tres commits), `4dba317`
+(renderizador de FenixAI ejecutado) y el commit que contiene estas líneas (log consolidado y
+`exit 0 != éxito` en el verificador). Comprobar con `git log --oneline -3`, no leyéndolo aquí.
 
 **Aviso que sigue vigente:** `.gitignore:60` es `reports/*`; los artefactos nuevos de
 `reports/` necesitan `git add -f` o no se publican.
