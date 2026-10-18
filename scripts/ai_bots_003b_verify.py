@@ -438,7 +438,7 @@ def mutations(rows: list[dict[str, Any]], summary: dict[str, Any]) -> list[dict[
     cannot be the thing that catches it: what must fail is the rule the defect broke.
     """
 
-    def resealed(edit) -> list[dict[str, Any]]:
+    def resealed(edit: Any) -> list[dict[str, Any]]:
         copy = json.loads(json.dumps(rows))
         edit(copy)
         return reseal(copy)
@@ -446,32 +446,32 @@ def mutations(rows: list[dict[str, Any]], summary: dict[str, Any]) -> list[dict[
     def first(copy: list[dict[str, Any]], kind: str) -> dict[str, Any]:
         return next(row["entry"] for row in copy if row["entry"].get("kind") == kind)
 
-    def fill_before_answer(copy):
+    def fill_before_answer(copy: list[dict[str, Any]]) -> None:
         entry = first(copy, "FILL")
         entry["quote_ts_ms"] = entry["received_at_ms"] - 1
 
-    def fill_before_decision(copy):
+    def fill_before_decision(copy: list[dict[str, Any]]) -> None:
         entry = first(copy, "FILL")
         entry["quote_ts_ms"] = entry["decision_ts_ms"] - 1
 
-    def lag_lie(copy):
+    def lag_lie(copy: list[dict[str, Any]]) -> None:
         entry = first(copy, "FILL")
         entry["quote_lag_ms"] = entry["quote_lag_ms"] + 60_000
 
-    def invented_price(copy):
+    def invented_price(copy: list[dict[str, Any]]) -> None:
         entry = first(copy, "FILL")
         entry["quote_source"] = "interpolated"
 
-    def stale_opinion(copy):
+    def stale_opinion(copy: list[dict[str, Any]]) -> None:
         entry = first(copy, "FILL")
         entry["quote_ts_ms"] = entry["decision_ts_ms"] + 10 * 3_600_000
         entry["ts_ms"] = entry["quote_ts_ms"]
 
-    def pnl_edit(copy):
+    def pnl_edit(copy: list[dict[str, Any]]) -> None:
         entry = first(copy, "CLOSE")
         entry["pnl_net_usdt"] = float(entry["pnl_net_usdt"]) + 1.0
 
-    def stop_credit(copy):
+    def stop_credit(copy: list[dict[str, Any]]) -> None:
         for row in copy:
             entry = row["entry"]
             if (
@@ -485,11 +485,11 @@ def mutations(rows: list[dict[str, Any]], summary: dict[str, Any]) -> list[dict[
                 entry["exit_price"] = level * (1.01 if entry.get("side") == "buy" else 0.99)
                 return
 
-    def exit_before_entry(copy):
+    def exit_before_entry(copy: list[dict[str, Any]]) -> None:
         entry = first(copy, "CLOSE")
         entry["ts_ms"] = entry["entry_quote_ts_ms"] - 1
 
-    def dropped_terminal(copy):
+    def dropped_terminal(copy: list[dict[str, Any]]) -> None:
         target = first(copy, "FILL")["decision_seq"]
         copy[:] = [
             row
@@ -500,7 +500,7 @@ def mutations(rows: list[dict[str, Any]], summary: dict[str, Any]) -> list[dict[
             )
         ]
 
-    def duplicated_position(copy):
+    def duplicated_position(copy: list[dict[str, Any]]) -> None:
         fill = next(row for row in copy if row["entry"].get("kind") == "FILL")
         copy.append(json.loads(json.dumps(fill)))
 
