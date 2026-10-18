@@ -14,7 +14,7 @@
   ],
   "source_branches": {
     "main": "5e6f9632e8d9c15dabd60ea92ac68f350ca28c9d",
-    "agent/ai-bots/RFC-TAP-AI-BOTS-003": "eeb0bea1049e551bd4744e5f1d4ea195f4b5d139",
+    "agent/ai-bots/RFC-TAP-AI-BOTS-003": "0841d372cdf36e6b52b6d8ed2e02b9d4e8c23a5e",
     "agent/edge-recovery/WP-EDGE-00-baseline": "b17644a6b458dcae5aae0000e11d2f4736b4e883",
     "agent/evidence/RFC-TAP-EVIDENCE-004": "b7e100ae7317a0bba71c0f4118ed8a154dd58d18",
     "agent/ai-vision/RFC-AI-VISION-001": "b7e100ae7317a0bba71c0f4118ed8a154dd58d18"
@@ -480,7 +480,7 @@
       "Orden": 11,
       "Dependencias": "TAP-019",
       "Gate": "459 tests suites afectadas; 120 checks en 5 escenarios",
-      "Evidencia": "86d4f12 / BLOCK-C FINAL_REPORT",
+      "Evidencia": "86d4f12 motor · 0841d37 cierre/recibos",
       "URL": "https://github.com/Extr3sao/bot_crypto/blob/agent/ai-bots/RFC-TAP-AI-BOTS-003/reports/ai-bots/RFC-AI-BOTS-003/BLOCK-C/FINAL_REPORT.md",
       "Responsable": "Codex",
       "Inicio": "",
@@ -489,7 +489,7 @@
       "Siguiente_paso": "",
       "Bloqueo": "",
       "Tipo_evidencia": "REPO_REPORT",
-      "Notas": "Runtime commit 86d4f12; evidencia publicada hasta eeb0bea."
+      "Notas": "Gaps OPEN antes de nuevas entradas. Caso sintético sí; datos reales sin gap OPEN >2%. 459 tests focalizados comunicados; sin modelo real. Reproducibilidad de captura revalidada hasta 0841d37."
     },
     {
       "ID": "TAP-021",
@@ -503,7 +503,7 @@
       "Orden": 11,
       "Dependencias": "TAP-020",
       "Gate": "53 mutaciones detectadas / 12 omitidas por diseño",
-      "Evidencia": "eeb0bea / BLOCK-C CAPTURE.json",
+      "Evidencia": "0841d37 · COVERAGE_LEDGER + series_sha256",
       "URL": "https://github.com/Extr3sao/bot_crypto/blob/agent/ai-bots/RFC-TAP-AI-BOTS-003/reports/ai-bots/RFC-AI-BOTS-003/BLOCK-C/CAPTURE.json",
       "Responsable": "Codex",
       "Inicio": "",
@@ -512,7 +512,7 @@
       "Siguiente_paso": "",
       "Bloqueo": "",
       "Tipo_evidencia": "REPO_REPORT",
-      "Notas": ""
+      "Notas": "Cov proof, DATA_GAP fail-closed; digest de barras consumidas. 53/53 mutaciones aplicadas detectadas; otras 12 omitidas por diseño."
     },
     {
       "ID": "TAP-022",
@@ -525,17 +525,17 @@
       "Progreso": 1,
       "Orden": 12,
       "Dependencias": "TAP-020",
-      "Gate": "19 tests + 24 checks desde archive, no suite global",
-      "Evidencia": "eeb0bea / CLEAN_ARCHIVE.json",
+      "Gate": "Reporte: 24 checks + 19 tests de archive para commit motor 86d4f12; captura regenerada 120 checks y 53/53 mutaciones tras fix --bars=1000. Suite global NO repetida.",
+      "Evidencia": "0841d37 · CLEAN_ARCHIVE.json / series_sha256",
       "URL": "https://github.com/Extr3sao/bot_crypto/blob/agent/ai-bots/RFC-TAP-AI-BOTS-003/reports/ai-bots/RFC-AI-BOTS-003/BLOCK-C/evidence/CLEAN_ARCHIVE.json",
       "Responsable": "Codex",
       "Inicio": "",
       "Fecha_objetivo": "",
       "Actualizacion": "2026-10-18",
-      "Siguiente_paso": "",
+      "Siguiente_paso": "Ejecutar clean-clone suite completa antes de certificar runtime global.",
       "Bloqueo": "",
       "Tipo_evidencia": "REPO_REPORT",
-      "Notas": ""
+      "Notas": "Commits 86d4f12 (motor), eeb0bea (informe), 0841d37 (pin serie y reproducibilidad). El archivo de evidencia documenta equivalencia; los 459 tests no se reejecutaron tras cambios solo de captura/informes."
     },
     {
       "ID": "TAP-023",
@@ -558,7 +558,7 @@
       "Siguiente_paso": "Preparar offline provider y políticas de presupuesto/reintentos; no API pagada.",
       "Bloqueo": "",
       "Tipo_evidencia": "REPO_REPORT",
-      "Notas": ""
+      "Notas": "P0 siguiente bloque técnico: credenciales por env, recibos reales, errores, presupuesto y retries sin costes."
     },
     {
       "ID": "TAP-024",
@@ -1317,7 +1317,7 @@
       "Siguiente_paso": "Actualizar tras cada commit/RFC/WP con ejecución y evidencia.",
       "Bloqueo": "",
       "Tipo_evidencia": "PROJECT_MANAGEMENT",
-      "Notas": "Excel maestro creado en esta sesión y publicado en rama independiente; no está aún en main."
+      "Notas": "Roadmap en Biblioteca y rama GitHub de gestión; cambios versionados. Se actualiza al compartir nuevo progreso, no por monitorización continua no configurada."
     },
     {
       "ID": "TAP-057",
@@ -1331,8 +1331,8 @@
       "Orden": 1,
       "Dependencias": "TAP-056",
       "Gate": "Excel binario y JSON/CSV publicados por Git blob SHA; rama independiente; merge a main pendiente",
-      "Evidencia": "5f8c7610c / Excel blob 85d2f911",
-      "URL": "https://github.com/Extr3sao/bot_crypto/tree/project/roadmap-trading-agentic/docs/roadmap",
+      "Evidencia": "PR #15 · 8597750 + revisión v1.2",
+      "URL": "https://github.com/Extr3sao/bot_crypto/pull/15",
       "Responsable": "ChatGPT",
       "Inicio": "",
       "Fecha_objetivo": "",
@@ -1340,7 +1340,7 @@
       "Siguiente_paso": "Actualización incremental del Excel tras cada nueva fase; valorar PR a main",
       "Bloqueo": "",
       "Tipo_evidencia": "PROJECT_MANAGEMENT",
-      "Notas": "GitHub commit creado y objeto XLSX verificado por Git SHA-1; la integración en main aún no se ha realizado."
+      "Notas": "Excel+JSON+CSV en rama project/roadmap-trading-agentic, PR no fusionado a main. Revision v1.2 añade UX consolas invisibles."
     },
     {
       "ID": "TAP-058",
@@ -1410,6 +1410,29 @@
       "Bloqueo": "",
       "Tipo_evidencia": "REPO_REPORT",
       "Notas": ""
+    },
+    {
+      "ID": "TAP-061",
+      "Frente": "Infra & experiencia Windows",
+      "Fase": "03 Runtime Authority",
+      "RFC_WP": "WP-OPS-BACKGROUND-001",
+      "Actividad": "Eliminar ventanas visibles de bash/cmd/PowerShell al ejecutar agentes, pruebas y workers en Windows",
+      "Estado": "PENDIENTE",
+      "Prioridad": "P1",
+      "Progreso": 0.0,
+      "Orden": 12,
+      "Dependencias": "TAP-044; TAP-049",
+      "Gate": "0 ventanas de consola emergentes en arranque, captura, tests y cancelación; logs stdout/stderr y exit code persistidos; no procesos huérfanos ni secretos en logs",
+      "Evidencia": "Incidencia usuario 2026-10-18: ventanas bash apareciendo mientras Codex trabaja",
+      "URL": "https://github.com/Extr3sao/bot_crypto/pull/15",
+      "Responsable": "Codex",
+      "Inicio": "",
+      "Fecha_objetivo": "",
+      "Actualizacion": "2026-10-18",
+      "Siguiente_paso": "Inventariar lanzadores Python/Windows y shell wrappers; usar CREATE_NO_WINDOW/STARTUPINFO en procesos hijos; pruebas Windows E2E y cleanup seguro.",
+      "Bloqueo": "Origen exacto de las ventanas aún no identificado en runtime local; no cerrar por cambiar solo scripts.",
+      "Tipo_evidencia": "USER_INCIDENT_UNVERIFIED_ROOT_CAUSE",
+      "Notas": "No suprimir stdout/stderr ni esconder fallos; no matar procesos ajenos; shell=False para subprocess cuando sea viable; no desactivar shells requeridos por Codebuff/terminal integrado si no son controlables."
     }
   ],
   "phases": [
@@ -1431,7 +1454,7 @@
     [
       "03 Runtime Authority",
       "PARCIAL",
-      "Paper y Risk canónicos, permisos; falta integrar ramas, CI y runtime map completo."
+      "Paper y Risk canónicos, permisos; falta integrar ramas, CI y runtime map completo. Ventanas Bash Windows reportadas: raíz por verificar."
     ],
     [
       "04 Foundation",
@@ -1553,8 +1576,8 @@
       "RFC-TAP-AI-BOTS-003 C",
       "Risk gaps",
       "VERIFICADO_FOCAL",
-      "OPEN_GAP + riesgos y data coverage; suite afectada 459 passed",
-      "86d4f12 / eeb0bea",
+      "OPEN GAPS+risk y cobertura PIT; 459 tests focales previos; 120 checks/53 mutaciones regeneradas; pin datos 1000 bars",
+      "86d4f12 · 0841d37 (pines y reproducibilidad)",
       "TAP-020;TAP-021;TAP-022",
       "https://github.com/Extr3sao/bot_crypto/issues/12"
     ],
@@ -1611,6 +1634,15 @@
       "Corte 2026-10-18",
       "TAP-056;TAP-057",
       "https://github.com/Extr3sao/bot_crypto"
+    ],
+    [
+      "WP-OPS-BACKGROUND-001",
+      "Windows UX",
+      "PENDIENTE",
+      "Supresión de ventanas de terminal visible sin perder logs o exit codes; investigar launcher antes de cambiar código",
+      "Usuario 2026-10-18",
+      "TAP-061",
+      "https://github.com/Extr3sao/bot_crypto/pull/15"
     ]
   ],
   "blockers": [
@@ -1768,6 +1800,18 @@
       "MOCK_NO_INFORMATION",
       "Guion ignora prompt, ambos bots idénticos",
       "Receipts + experimento matched y muestras",
+      "ABIERTO"
+    ],
+    [
+      "BL-14",
+      "P1",
+      "Alta",
+      "Ventanas emergentes de bash/cmd/PowerShell durante ejecución automática",
+      "WINDOWS_UX",
+      "TAP-061",
+      "VISIBLE_CONSOLE_WINDOWS",
+      "Usuario reporta popups; no se ha identificado aún launcher concreto",
+      "Redirigir stdout/stderr y ocultar ventanas de procesos hijos; probar arranque y cancelación reales",
       "ABIERTO"
     ]
   ],
@@ -2088,6 +2132,19 @@
       "ops REA",
       "Fuente Apache-2.0 revisada; REA en upstream no ejecutado",
       "https://github.com/Extr3sao/bot_crypto/issues/14"
+    ],
+    [
+      "EV-016",
+      "2026-10-18",
+      "AI-BOTS-003C",
+      "SOURCE_RUNTIME_PIN",
+      "series_sha256 + --bars=1000 regeneración",
+      "0841d37",
+      5,
+      120,
+      "checks",
+      "5 capturas con series_sha256; 24 comprobaciones por escenario, 53 mutaciones detectadas (12 no aplicadas); sin IA real.",
+      "https://github.com/Extr3sao/bot_crypto/blob/agent/ai-bots/RFC-TAP-AI-BOTS-003/reports/ai-bots/RFC-AI-BOTS-003/BLOCK-C/FINAL_REPORT.md"
     ]
   ],
   "change_log": [
@@ -2135,6 +2192,24 @@
       "ChatGPT",
       "https://github.com/Extr3sao/bot_crypto/commit/5f8c7610c052cad019421041cab5b360e7befc4e",
       "v1.1"
+    ],
+    [
+      "2026-10-18",
+      "AI-BOTS-003C",
+      "EVIDENCE_REPINNED",
+      "Actualiza autoridad remota a 0841d37; series_sha256 de barras consumidas y captura con 1000 barras; 120 checks y 53 mutaciones re-verificados según informe; NO se rerun 459 tests.",
+      "ChatGPT",
+      "https://github.com/Extr3sao/bot_crypto/commit/0841d372cdf36e6b52b6d8ed2e02b9d4e8c23a5e",
+      "v1.2"
+    ],
+    [
+      "2026-10-18",
+      "TAP-061",
+      "USER_REPORTED_DEFECT",
+      "Nuevo WP Windows: ningún proceso bash/cmd/PowerShell debe abrir ventana visible; conservar logs, errors y limpieza de hijos sin afectar procesos ajenos.",
+      "ChatGPT",
+      "Incidencia del usuario en esta conversación; raíz aún no comprobada",
+      "v1.2"
     ]
   ],
   "data_classification": "GitHub remote source/reports, historical and planned separately; no live API model, no live orders",
@@ -2142,7 +2217,8 @@
     "Fase0~15 del proyecto, no confundir design-only con ejecución.",
     "Ningún plazo de entrega es promesa: fecha objetivo vacía hasta decisión del responsable.",
     "El Excel puede editarse; actualizar JSON canónico y Excel conjuntamente al registrar nuevo reporte.",
-    "No se actualiza automáticamente sin una nueva sesión o una tarea programada explícita."
+    "No se actualiza automáticamente sin una nueva sesión o una tarea programada explícita.",
+    "WP-OPS-BACKGROUND-001: procesos CLI sí pueden ser necesarios, ventanas emergentes no; no ocultar errores/logs."
   ],
-  "version": "1.1"
+  "version": "1.2"
 }

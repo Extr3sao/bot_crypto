@@ -1,12 +1,12 @@
 # Trading Agentic Portable — Roadmap maestro
 
-**Fecha de corte:** 2026-10-18 · **Versión actual:** 1.1 · **Estado:** inventario de gestión, NO certificado de producción.
+**Fecha de corte:** 2026-10-18 · **Versión actual:** 1.2 · **Estado:** inventario de gestión, NO certificado de producción.
 
 Este directorio conserva el seguimiento de Trading Agentic Portable en formato Excel y un espejo de datos fácilmente revisable en Git. La autoridad de cada estado viene de los commits y evidencias de las ramas, **no** de la existencia del RFC.
 
 ## Archivos
 
-- `ROADMAP_TRADING_AGENTIC_PORTABLE.xlsx`: Excel maestro con 9 hojas (RESUMEN, ROADMAP, FASES, RFC_Y_WP, BLOQUEOS, DEPENDENCIAS, EVIDENCIAS, HISTORIAL, COMO_ACTUALIZAR), 60 tareas con ID estable, filtros, prioridades y visualizaciones.
+- `ROADMAP_TRADING_AGENTIC_PORTABLE.xlsx`: Excel maestro con 9 hojas (RESUMEN, ROADMAP, FASES, RFC_Y_WP, BLOQUEOS, DEPENDENCIAS, EVIDENCIAS, HISTORIAL, COMO_ACTUALIZAR), 61 tareas con ID estable, filtros, prioridades y visualizaciones.
 - `ROADMAP_MASTER_DATA.json`: snapshot estructurado de fuentes/estados para actualizaciones y futuros automatismos.
 - `ROADMAP_MASTER.csv`: vista de las 60 tareas para diff, búsquedas y herramientas simples.
 
@@ -35,3 +35,9 @@ Issues principales: [#10](https://github.com/Extr3sao/bot_crypto/issues/10) · [
 
 - La revisión v1.1 actualiza la fila `TAP-057` tras comprobar la primera subida a GitHub.
 - La rama `project/roadmap-trading-agentic` conserva los archivos Excel, JSON, CSV y README; la integración a `main` requiere PR.
+
+## Revisión v1.2 — 2026-10-18
+
+- AI-BOTS-003C remota `0841d37`: nueva evidencia de `series_sha256` de barras consumidas, captura 1000 barras y 120 checks/53 mutaciones reportados; 459 tests de runtime NO repetidos.
+- `TAP-061` / `BL-14` (P1): ventanas emergentes de bash/cmd/PowerShell en Windows; **reportadas, no corregidas**. Véase `WP_OPS_BACKGROUND_001_NO_VISIBLE_CONSOLES.md`.
+- El Excel v1.2, JSON y CSV actualizan 61 entregables. La issue/PR de roadmap permanece sin merge; no tocar ramas de otros agentes.
