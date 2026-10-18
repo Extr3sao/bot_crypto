@@ -1,0 +1,1 @@
+{"schema_version": "execution-record-v1", "event": "spawn_error", "at_utc": "2026-10-18T18:43:41.475Z", "label": "does-not-exist.exe", "command": ["does-not-exist.exe"], "error": "FileNotFoundError: [WinError 2] El sistema no puede encontrar el archivo especificado"}

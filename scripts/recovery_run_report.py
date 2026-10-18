@@ -17,7 +17,11 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
+from trading_bot.ops import windowless
+
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT / "src") not in sys.path:
+    sys.path.insert(0, str(ROOT / "src"))
 OUT = ROOT / "data" / "recovery"
 
 COMMANDS: list[dict[str, str]] = [
@@ -58,9 +62,11 @@ def run(command: str) -> dict[str, Any]:
     but it is executed through this interpreter's own absolute path because the shell
     on Windows does not resolve the forward-slash venv prefix.
     """
-    executable = f'"{sys.executable}"'
-    runnable = command.replace(".venv/Scripts/python.exe", executable, 1)
-    completed = subprocess.run(runnable, cwd=ROOT, shell=True, capture_output=True, text=True)
+    # The documented commands all start with the venv interpreter; keeping the
+    # documented text and executing an argv list is what removes the ``cmd.exe``
+    # hop (a shell allocates its own console) without rewriting the evidence.
+    argv = [sys.executable, *command.split()[1:]]
+    completed = windowless.run(argv, cwd=ROOT, text=True)
     tail = "\n".join((completed.stdout or "").strip().splitlines()[-6:])
     if completed.returncode != 0 and not tail:
         tail = "\n".join((completed.stderr or "").strip().splitlines()[-6:])

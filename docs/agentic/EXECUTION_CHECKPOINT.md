@@ -1,3 +1,80 @@
+## 2026-10-18 · WP-OPS-BACKGROUND-001 — ejecución sin ventanas en Windows
+
+**Objetivo:** que Trading Agentic Portable no abra ventanas de consola durante una ejecución
+automática, sin perder stdout, stderr, exit codes, PID, timeouts ni limpieza de hijos.
+
+**Rama:** `agent/ai-bots/RFC-TAP-AI-BOTS-003` · **Commit:** el que contiene esta sección.
+
+**Origen medido, no supuesto** (`scripts/ops_window_origin.py`, subsistema del PE por ancestro):
+
+```text
+explorer.exe (GUI) -> Freebuff.exe (GUI) -> bun.exe (CONSOLE) -> bash.exe -> python.exe
+```
+
+El primer proceso de consola de la cadena es `bun.exe`, hijo de una app GUI: **esa** es la
+ventana de Bash/CMD. La segunda fuente, propia, era la tarea programada con `python.exe` bajo
+`InteractiveToken`, que posee consola mientras dura la campaña.
+
+**Hecho**
+
+1. `src/trading_bot/ops/windowless.py`: una sola implementación de `CREATE_NO_WINDOW` +
+   `STARTUPINFO(STARTF_USESHOWWINDOW, SW_HIDE)`; `run`/`spawn`, registro JSONL (spawn/exit con
+   PID, comando, cwd, duración, timeout, exit code), `terminate_tree` scoped al handle de
+   `Popen`, job object opcional `KILL_ON_JOB_CLOSE`. `TAP_WINDOWLESS=0` es la única salida.
+2. `scripts/windowless.py`: lanzador para `pythonw.exe` con `--log`, `--event-log`, `--timeout`,
+   `--keep-together`; propaga el exit code del hijo (124 timeout, 127 arranque, 130 cancelado).
+3. `supervisor.py`, `cap004_supervisor.py`, `wp9_runtime_rehearsal.py`, `recovery_run_report.py`
+   y `alpha002_capture.cmd` pasan por ese helper. La tarea programada registra ahora
+   `pythonw.exe scripts/windowless.py … -- cap004_supervisor.py run`.
+4. `scripts/ops_background_audit.py` inventaría los puntos de lanzamiento; `ops_window_origin.py`
+   atribuye la ventana; `ops_windowless_probe.py` mide la adjunción de consola.
+
+```text
+RED   pytest tests/unit/ops/test_windowless.py
+      ModuleNotFoundError: No module named 'trading_bot.ops'            exit 1
+RED   ops_background_audit.py            HIGH 7 / MEDIUM 333            exit 1
+GREEN pytest tests/unit/ops                                13 passed    exit 0
+GREEN pytest tests/unit/autonomous                        284 passed    exit 0
+GREEN pytest test_campaign_supervisor                      39 passed    exit 0
+GREEN pytest st6_scheduler+edge12_runner+edge04r           90 passed    exit 0
+GREEN pytest test_edge04_autonomous                        87 passed    exit 0
+GREEN ops_background_audit.py            CLEAN 0 HIGH / 324 MEDIUM     exit 0
+GREEN ruff / mypy (7 ficheros nuevos o tocados)          limpio            exit 0
+GREEN pythonw windowless.py -- pytest tests/unit/ops     12 passed      exit 0
+GREEN pythonw windowless.py -- ai_bots_003c_capture.py --bars 200        exit 0
+GREEN pythonw windowless.py --timeout 2 --keep-together -- sleep(60)     exit 124, job_object=true
+GREEN probe desde pythonw: plain 9 procesos adjuntos / guarded 2         PASS estructural
+```
+
+**Pendiente / bloqueado**
+
+- `visual_verdict = NOT_OBSERVABLE`: la consola de este host la aloja Windows Terminal (ConPTY),
+  sin `HWND`. Se declara el mecanismo y la diferencia de adjunción; no se afirma "no se vio".
+- 303 `subprocess.run` acotadas y 20 `.cmd`/`.bat` históricos siguen sin el helper (MEDIUM);
+  1 probe de `edge04r` usa `cmd.exe` como acción de una tarea que sólo lee su definición.
+- **Ventana de Codebuff**: `orchestrator.js` pasa `windowsHide` en varias rutas pero no en el
+  `Bun.spawn` del shell. No hay ajuste de usuario en la build 0.0.173; mitigación: iniciar
+  Freebuff desde una consola existente. Detalle en `docs/runtime/WINDOWLESS_EXECUTION.md` §6.
+- **TAP-061**: el Excel maestro no existe en este host (sólo `~$Tareas_Programadas.xlsx`, sin su
+  libro). Fila lista en `reports/ops/WP-OPS-BACKGROUND-001/TAP-061_ROW.{md,json}`; no se creó un
+  libro nuevo en su lugar.
+- `wp9_runtime_rehearsal.py` conserva 10 errores de mypy **preexistentes en HEAD**; este WP no
+  añade ninguno y no los silencia.
+
+**Reanudación verificable**
+
+```bash
+cd "$(git rev-parse --show-toplevel)"
+git log -1 --format='%H %s'
+./.venv/Scripts/python.exe -m pytest tests/unit/ops -q                      # 13 passed
+./.venv/Scripts/python.exe scripts/ops_background_audit.py \
+  --json reports/ops/WP-OPS-BACKGROUND-001/WINDOWLESS_AUDIT_GREEN.json      # CLEAN
+./.venv/Scripts/python.exe scripts/ops_windowless_probe.py \
+  --out reports/ops/WP-OPS-BACKGROUND-001/WINDOWLESS_LIVE_PROBE.json       # PASS estructural
+```
+
+---
+
 ## 2026-10-18 · RFC-TAP-AI-BOTS-003 bloque A — reloj de cierre y paridad de riesgo
 
 **Objetivo:** que una decisión sobre el cierre de una vela no pueda existir antes de que esa vela

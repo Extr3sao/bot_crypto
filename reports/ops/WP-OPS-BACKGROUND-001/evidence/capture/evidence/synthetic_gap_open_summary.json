@@ -1,0 +1,90 @@
+{
+  "book_id": "ai-vision-paper-003c-synthetic_gap_open",
+  "calls": 114,
+  "closed_trades": 1,
+  "costs_usdt": 1.235647,
+  "counters": {
+    "action:LONG": 58,
+    "action:NO_TRADE": 56,
+    "closed_trades": 1,
+    "dropped:ALREADY_LONG": 52,
+    "dropped:MODEL_NO_TRADE": 56,
+    "fills": 1,
+    "gap_exits": 1,
+    "guard:RUN_ENDED_WITH_ORDER_PENDING": 1,
+    "risk_blocked:daily_loss_limit": 4
+  },
+  "decision_points": 2,
+  "drawdown_pct": 0.162321,
+  "drawdown_status": "MEASURED",
+  "drawdown_usdt": 16.232058,
+  "equity_points": 76,
+  "estimated_spend_usd": 0.0,
+  "execution": {
+    "bar_interval_ms": 3600000,
+    "data_gap_policy": "fail_closed_unless_independent_coverage",
+    "exit_ts_resolutions": [
+      "OPEN_GAP",
+      "BAR_WINDOW",
+      "QUOTE"
+    ],
+    "expired_opinions": 0,
+    "fills": 1,
+    "gap_exits": 1,
+    "gap_policy": "open_on_gap",
+    "max_opinion_age_ms": 3600000,
+    "open_phase_order": "gap_close>mark>entries>intrabar",
+    "quote_lag_ms": {
+      "max": 0,
+      "median": 0,
+      "min": 0
+    },
+    "quote_source": "bar_open",
+    "stale_valuation_vetoes": 0,
+    "stop_coverage": "entry_at_open_full_bar",
+    "waiting_events": 0
+  },
+  "fills": 1,
+  "final_equity_usdt": 9983.767942,
+  "gross_realised_usdt": -15.232058,
+  "net_realised_usdt": -16.232058,
+  "open_positions_at_end": {},
+  "provider": "replay",
+  "reconciliation": {
+    "curve_end_equity_usdt": 9983.76794176,
+    "entry_commission_usdt": 0.5,
+    "execution_cost_usdt": 0.2356472,
+    "exit_commission_usdt": 0.5,
+    "final_equity_usdt": 9983.76794176,
+    "identities": {
+      "cash_rebuilds_from_realised_pnl": true,
+      "curve_ends_at_final_equity": true,
+      "every_close_after_its_entry_quote": true,
+      "net_pnl_nets_every_named_cost": true,
+      "risk_equity_matches_marked_equity": true
+    },
+    "initial_equity_usdt": 10000.0,
+    "marked_equity_usdt": 9983.76794176,
+    "marks_complete_at_end": true,
+    "net_realised_usdt": -16.23205824,
+    "open_gap_exits": 1,
+    "open_positions_at_end": 0,
+    "reference_gross_usdt": -14.99641104,
+    "risk_equity_usdt": 9983.76794176,
+    "tolerance_usdt": 1e-06
+  },
+  "risk_equity_usdt": 9983.767942,
+  "stop_reason": null,
+  "trades": [
+    {
+      "closed_at_utc": "2026-03-05T00:00:00Z",
+      "entry_price": 100.02393211860658,
+      "exit_price": 96.97679139926147,
+      "exit_reason": "stop_loss",
+      "opened_at_utc": "2026-03-02T20:00:00Z",
+      "pnl_net_usdt": -16.23205824,
+      "side": "buy",
+      "symbol": "BTC/USDT"
+    }
+  ]
+}

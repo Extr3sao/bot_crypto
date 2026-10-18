@@ -59,6 +59,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
 from trading_bot.autonomous.paper_loop import STOP_FILE_NAME  # noqa: E402
+from trading_bot.ops import windowless  # noqa: E402
 from trading_bot.research.router_gates import (  # noqa: E402
     DEFAULT_FRESHNESS_GRACE_BARS,
     timeframe_ms,
@@ -287,8 +288,16 @@ def run_leg(args: argparse.Namespace, leg: Leg, run_dir: Path) -> dict[str, Any]
     legs_dir.mkdir(parents=True, exist_ok=True)
     log_path = legs_dir / "stdout.log"
     with log_path.open("w", encoding="utf-8", errors="replace") as stream:
-        process = subprocess.Popen(
-            command, cwd=ROOT, stdout=stream, stderr=subprocess.STDOUT, text=True
+        # §51 — the runtime is a console process started from whatever context the
+        # operator used; it must not be given a console window of its own.
+        process = windowless.spawn(
+            command,
+            cwd=ROOT,
+            stdout=stream,
+            stderr=subprocess.STDOUT,
+            text=True,
+            event_log=windowless.ExecutionLog(legs_dir / "execution.jsonl"),
+            label=leg.name,
         )
     stop_file = run_dir / STOP_FILE_NAME
     samples: list[dict[str, Any]] = []

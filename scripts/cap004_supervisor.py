@@ -57,10 +57,14 @@ from collections.abc import Callable, Mapping, Sequence
 from pathlib import Path
 from typing import Any
 
+from trading_bot.ops import windowless
+
 REPO = Path(__file__).resolve().parents[1]
 SCRIPT = Path(__file__).resolve()
-sys.path.insert(0, str(REPO / "src"))
-sys.path.insert(0, str(REPO / "scripts"))
+if str(REPO / "src") not in sys.path:
+    sys.path.insert(0, str(REPO / "src"))
+if str(REPO / "scripts") not in sys.path:
+    sys.path.insert(0, str(REPO / "scripts"))
 
 import cap004_campaign_runner as campaign  # noqa: E402
 
@@ -1066,11 +1070,26 @@ def python_executable() -> str:
 
 
 def task_command() -> str:
-    return python_executable()
+    """The scheduler starts ``pythonw.exe``: a GUI-subsystem task owns no console."""
+    return windowless.pythonw_executable()
 
 
 def task_arguments() -> str:
-    return f'"{SCRIPT}" run'
+    """The scheduled action is the windowless launcher, never the interpreter itself.
+
+    ``python.exe`` under ``InteractiveToken`` owns a console for the whole task,
+    which is a window that stays open for as long as the campaign runs. The
+    launcher starts the real interpreter with ``CREATE_NO_WINDOW``, redirects both
+    streams to the campaign log and returns the child's exit code unchanged, so
+    the scheduler still sees failures.
+    """
+    launcher = REPO / "scripts" / "windowless.py"
+    log = REPO / "logs" / "cap004_supervisor.log"
+    events = REPO / "logs" / "cap004_supervisor.execution.jsonl"
+    return (
+        f'"{launcher}" --log "{log}" --event-log "{events}" --label cap004_supervisor '
+        f'--keep-together -- "{python_executable()}" "{SCRIPT}" run'
+    )
 
 
 def task_working_directory() -> str:
@@ -1154,7 +1173,7 @@ def build_task_xml(
 
 def _run(args: Sequence[str], *, timeout: int = 60) -> dict[str, Any]:
     try:
-        proc = subprocess.run(args, capture_output=True, text=True, check=False, timeout=timeout)
+        proc = windowless.run(args, timeout=timeout, text=True)
     except (OSError, subprocess.TimeoutExpired) as exc:  # pragma: no cover - platform dependent
         return {"ok": False, "returncode": None, "stdout": "", "stderr": repr(exc)}
     return {

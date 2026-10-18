@@ -40,7 +40,9 @@ from collections import deque
 from dataclasses import dataclass, field
 from enum import StrEnum
 from pathlib import Path
-from typing import Any, Final
+from typing import IO, Any, Final
+
+from trading_bot.ops import windowless
 
 __all__ = [
     "DEFAULT_BACKOFF_SECONDS",
@@ -267,7 +269,8 @@ class ProcessRuntime:
     restart_times: list[float] = field(default_factory=list)
     next_restart_at: float | None = None
     failure_reason: str | None = None
-    _process: subprocess.Popen[bytes] | None = None
+    _process: subprocess.Popen[Any] | None = None
+    _log_handle: IO[bytes] | None = None
 
     # -- lifecycle ---------------------------------------------------------
 
@@ -287,14 +290,20 @@ class ProcessRuntime:
         # this child the moment it started, so it is cleared before it is spawned.
         self.clear_stop_file()
         env = {**os.environ, **self.spec.env}
-        handle = log_path.open("ab")
-        self._process = subprocess.Popen(
+        # §27 — a supervised child is started by the one windowless spawner, not by
+        # ``subprocess.Popen`` directly: an interactive scheduled task has no console
+        # of its own, so an unflagged child would be given a new one, i.e. a window,
+        # for as long as the collector runs.
+        self._log_handle = log_path.open("ab")
+        self._process = windowless.spawn(
             self.spec.command,
-            cwd=str(self.spec.cwd),
+            cwd=self.spec.cwd,
             env=env,
-            stdout=handle,
+            stdout=self._log_handle,
             stderr=subprocess.STDOUT,
             stdin=subprocess.DEVNULL,
+            event_log=windowless.ExecutionLog(log_path.parent / "execution.jsonl"),
+            label=self.spec.name,
         )
         self.pid = self._process.pid
         self.started_at_ms = int(time.time() * 1000)
@@ -392,18 +401,14 @@ class ProcessRuntime:
         """
         process = self._process
         if process is not None and process.poll() is None:
-            if not hard:
-                with contextlib.suppress(OSError, ValueError):
-                    process.terminate()
-                try:
-                    process.wait(timeout=timeout)
-                except subprocess.TimeoutExpired:  # pragma: no cover - slow child
-                    hard = True
-            if hard:
-                with contextlib.suppress(OSError, ValueError):
-                    process.kill()
-                with contextlib.suppress(subprocess.TimeoutExpired):
-                    process.wait(timeout=timeout)
+            # §51 — end the child *and its descendants*: a capture's writer and a
+            # rehearsal's grandchild are the same failure as the child itself, and
+            # the ``Popen`` handle is what proves which tree is ours to end.
+            windowless.terminate_tree(process, timeout=timeout, hard=hard)
+        if self._log_handle is not None:
+            with contextlib.suppress(OSError):
+                self._log_handle.close()
+            self._log_handle = None
         self.exit_code = process.poll() if process is not None else None
         self.ended_at_ms = int(time.time() * 1000)
         self.pid = None
