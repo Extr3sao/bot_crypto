@@ -42,7 +42,7 @@ from pathlib import Path
 from typing import Any
 
 from trading_bot.config.risk import Risk
-from trading_bot.paper.broker import BrokerCost, PaperBroker
+from trading_bot.paper.broker import BrokerCost, ClosedTrade, PaperBroker
 from trading_bot.research.economic_recovery.alpha15 import cost_for
 from trading_bot.research.equity_drawdown import max_drawdown
 from trading_bot.risk.manager import RiskManager
@@ -57,6 +57,7 @@ from trading_bot.vision.contract import (
 )
 from trading_bot.vision.execution import (
     Quote,
+    QuoteFeed,
     quote_at,
     schedule,
 )
@@ -155,6 +156,7 @@ class VisionLane:
         max_spend_usd: float | None = None,
         cost_multiplier: float = 1.0,
         prompt_builder: Callable[[dict[str, Any], Sequence[Any]], PromptBundle] | None = None,
+        quote_feed: QuoteFeed | None = None,
     ) -> None:
         if not series:
             raise ValueError("series is empty")
@@ -220,6 +222,23 @@ class VisionLane:
         self._step_ms: dict[str, int] = {
             symbol: _median_step(bars) for symbol, bars in self.series.items()
         }
+        #: A hole in one symbol's grid is detected by asking whether the bar that *should*
+        #: follow the decision exists. That question needs the timestamps, not the median.
+        self._bar_ts_ms: dict[str, set[int]] = {
+            symbol: {int(bar.ts_ms) for bar in bars} for symbol, bars in self.series.items()
+        }
+        for symbol, step in self._step_ms.items():
+            if step and step != self.interval_ms:
+                raise ValueError(
+                    f"{symbol} is sampled every {step} ms but the lane declares "
+                    f"{self.timeframe!r} ({self.interval_ms} ms): mixed timeframes need an "
+                    "event queue this lane does not have, so they are refused rather than "
+                    "silently aligned to one clock"
+                )
+        #: The only source allowed to turn a data hole into an executable interval. It is
+        #: not built from the bars being replayed, so it can say something the replay
+        #: cannot: that the venue was open and priced while the bar was missing.
+        self.quote_feed = quote_feed
         self._marks: dict[str, float] = {}
         #: Where each open position's entry came from, keyed by position id: the quote and
         #: the answer's arrival. A CLOSE row without it cannot show that its exit happened
@@ -236,6 +255,82 @@ class VisionLane:
     def _bump(self, key: str) -> None:
         self.counters[key] = self.counters.get(key, 0) + 1
 
+    def _reject_pending(
+        self,
+        symbol: str,
+        ts_ms: int,
+        pending: PendingOrder,
+        code: str,
+        detail: str,
+        *,
+        extra: dict[str, Any] | None = None,
+        phase: str = "OPEN_ENTRY",
+    ) -> None:
+        """Name why an approved opinion could not be executed, and close it out.
+
+        ``decision_seq`` is carried on purpose: a rejection is the terminal row of that
+        decision, and a verifier that only learned to join fills to outcomes would call
+        this decision orphaned.
+        """
+        self.ledger.append(
+            "GUARD_REJECT",
+            {
+                "ts_ms": int(ts_ms),
+                "ts_utc": _utc_iso(int(ts_ms)),
+                "symbol": symbol,
+                "code": code,
+                "detail": detail,
+                "stage": "EXECUTION",
+                "phase": phase,
+                "decision_seq": pending.decision_seq,
+                **(extra or {}),
+            },
+        )
+        self._bump(f"guard:{code}")
+
+    def _data_gap(
+        self, symbol: str, pending: PendingOrder, at_ms: int
+    ) -> dict[str, Any] | None:
+        """Is a bar that should exist between the opinion and this quote missing?
+
+        ``None`` means the grid is intact. Otherwise the record says which bar is absent,
+        how many in a row, and whether an independent feed proved the venue stayed open
+        and priced through the hole. A hole is only executable with that proof: the next
+        quote is later than the hole, which is not the same as continuous.
+        """
+        stamps = self._bar_ts_ms.get(symbol, set())
+        probe = int(pending.decision_bar_open_ms) + self.interval_ms
+        if probe >= int(at_ms) or probe in stamps:
+            return None
+        missing = probe
+        run = 0
+        while probe < int(at_ms) and probe not in stamps:
+            run += 1
+            probe += self.interval_ms
+        record: dict[str, Any] = {
+            "covered": False,
+            "missing_bar_open_ms": missing,
+            "missing_bars": run,
+            "source": None,
+            "reason": "no independent quote feed was supplied",
+        }
+        if run > 1:
+            record["reason"] = f"{run} consecutive bars are missing, not a one-bar hole"
+            return record
+        if self.quote_feed is None:
+            return record
+        proof = self.quote_feed.prove_coverage(symbol, missing, self.interval_ms)
+        if proof is None:
+            record["reason"] = (
+                f"{getattr(self.quote_feed, 'name', 'the feed')} returned no coverage proof"
+            )
+            return record
+        covered, reason = proof.covers(self.interval_ms)
+        record["covered"] = bool(covered)
+        record["source"] = proof.source if covered else None
+        record["reason"] = reason
+        return record
+
     def _position_side(self, symbol: str) -> str | None:
         position = self.broker.positions.get(symbol)
         return None if position is None else str(position.side)
@@ -247,7 +342,19 @@ class VisionLane:
         exit_ts_ms: int,
         window_start_ms: int,
         bars_held: int | None = None,
+        resolution: str = "BAR_WINDOW",
+        gap_price_source: str | None = None,
+        gap_open_price: float | None = None,
+        phase: str = "INTRABAR",
     ) -> None:
+        """Record one exit and hand its net PnL to the risk engine.
+
+        ``resolution`` is the point of the row: ``OPEN_GAP`` means the instant is known
+        exactly (the bar's open crossed the stop), ``BAR_WINDOW`` means only a range is
+        knowable from OHLC, and ``QUOTE`` means a market order at a named quote. Inventing
+        a precise tick for an intrabar touch is what the window is here to prevent.
+        """
+        equity_before = float(self.risk.equity)
         self.risk.record_trade_result(float(trade.pnl))
         self.risk.sync_open_positions(dict(self.broker.positions))
         #: Kept after the close, not popped: the reconciliation at the end of the run
@@ -259,12 +366,24 @@ class VisionLane:
             {
                 "ts_ms": exit_ts_ms,
                 "ts_utc": _utc_iso(exit_ts_ms),
+                #: Which phase of the timestamp produced this row. Within one instant the
+                #: order is the whole point, so it is written down rather than inferred.
+                "phase": phase,
                 # The stop is checked on the bar's range, which is only a fact when the
                 # bar ends. The exit happened somewhere inside it, so the row declares
-                # the window rather than inventing an intrabar instant.
+                # the window rather than inventing an intrabar instant. A stop crossed by
+                # the OPEN is the exception: that instant is exactly known.
                 "exit_ts_lower_bound_ms": window_start_ms,
                 "exit_ts_upper_bound_ms": exit_ts_ms,
-                "exit_ts_resolution": "bar",
+                "exit_ts_resolution": resolution,
+                "gap_price_source": gap_price_source,
+                "gap_open_price": gap_open_price,
+                "exit_reference_price": round(float(trade.reference_exit_price), 8),
+                #: The UTC day whose risk window this loss lands in: the day the *bar*
+                #: opened, because that is the boundary ``reset_daily`` was called on.
+                #: Using the exit instant instead would mis-file a bar that ends after
+                #: midnight.
+                "day_utc": _day_of(window_start_ms),
                 "entry_quote_ts_ms": entry.get("quote_ts_ms"),
                 "entry_decision_ts_ms": entry.get("decision_ts_ms"),
                 "entry_received_at_ms": entry.get("received_at_ms"),
@@ -292,10 +411,18 @@ class VisionLane:
                 "trade_id": trade.trade_id,
                 "position_id": trade.position_id,
                 "bars_held": bars_held,
+                #: The hand-off to the risk engine, as two numbers rather than a claim:
+                #: the equity it held before the trade and the calendar windows the loss
+                #: landed in. A verifier can rebuild all three from the rows alone.
+                "risk_equity_before": round(equity_before, 8),
                 "risk_equity_after": round(float(self.risk.equity), 8),
+                "risk_daily_pnl_after": round(float(self.risk.daily_pnl), 8),
+                "risk_weekly_pnl_after": round(float(self.risk.weekly_pnl), 8),
             },
         )
         self._bump("closed_trades")
+        if resolution == "OPEN_GAP":
+            self._bump("gap_exits")
 
     # -- context for the prompt ---------------------------------------------
 
@@ -382,6 +509,7 @@ class VisionLane:
                     "detail": exc.detail,
                     "chart": chart.fingerprint(),
                     "stage": "PRE_CALL",
+                    "phase": "DECISION",
                 },
             )
             self._bump(f"guard:{exc.code}")
@@ -481,6 +609,7 @@ class VisionLane:
             "DECISION",
             {
                 **entry,
+                "phase": "DECISION",
                 "decision": decision.model_dump(mode="json"),
                 "intent": resolved.intent,
                 "coherence_reason": resolved.reason,
@@ -520,26 +649,60 @@ class VisionLane:
         """
         decision = pending.decision
         assert decision is not None
+        ts = int(bar.ts_ms)
 
-        quote: Quote | None = quote_at(
-            symbol, self.series[symbol], int(bar.ts_ms), interval_ms=self.interval_ms
-        )
-        if quote is None:
-            self.ledger.append(
-                "GUARD_REJECT",
-                {
-                    "ts_ms": int(bar.ts_ms),
-                    "ts_utc": _utc_iso(int(bar.ts_ms)),
-                    "symbol": symbol,
-                    "code": "NO_QUOTE_AT_BAR",
-                    "detail": (
-                        f"bar {int(bar.ts_ms)} is not in the dataset the run declared, so "
-                        "its open is not a price this replay can prove was available"
-                    ),
-                    "stage": "EXECUTION",
+        # A hole in the data is not a price and not permission to trade. It is refused
+        # unless a *separate* feed proves the venue stayed open and priced through it;
+        # a later timestamp only says the clock advanced.
+        gap = self._data_gap(symbol, pending, ts)
+        if gap is not None and not gap["covered"]:
+            self._reject_pending(
+                symbol,
+                ts,
+                pending,
+                "DATA_GAP",
+                (
+                    f"the bar that should have followed the decision at "
+                    f"{gap['missing_bar_open_ms']} is absent; a quote at {ts} is later, not "
+                    f"proof of continuity ({gap['reason']})"
+                ),
+                extra={
+                    "missing_bar_open_ms": gap["missing_bar_open_ms"],
+                    "missing_bars": gap["missing_bars"],
+                    "coverage_reason": gap["reason"],
                 },
             )
-            self._bump("guard:NO_QUOTE_AT_BAR")
+            return "RESOLVED"
+
+        open_price = float(bar.open)
+        if open_price <= 0:
+            self._reject_pending(
+                symbol,
+                ts,
+                pending,
+                "NO_EXECUTABLE_PRICE",
+                (
+                    f"the bar that opens at {ts} has no positive open price; a zero is a "
+                    "missing observation, not a market"
+                ),
+                extra={"quote_bar_open_ms": ts, "quote_price": open_price},
+            )
+            return "RESOLVED"
+
+        quote: Quote | None = quote_at(
+            symbol, self.series[symbol], ts, interval_ms=self.interval_ms
+        )
+        if quote is None:
+            self._reject_pending(
+                symbol,
+                ts,
+                pending,
+                "NO_QUOTE_AT_BAR",
+                (
+                    f"bar {ts} is not in the dataset the run declared, so its open is not "
+                    "a price this replay can prove was available"
+                ),
+            )
             return "RESOLVED"
 
         outcome = schedule(
@@ -610,6 +773,8 @@ class VisionLane:
                     exit_ts_ms=quote.ts_ms,
                     window_start_ms=quote.ts_ms,
                     bars_held=bars_held,
+                    resolution="QUOTE",
+                    phase="OPEN_ENTRY",
                 )
             self.ledger.append(
                 "DECISION_OUTCOME",
@@ -619,6 +784,7 @@ class VisionLane:
                     "decision_seq": pending.decision_seq,
                     "intent": "CLOSE",
                     "risk_gate": "BYPASSED_FOR_REDUCTION",
+                    "phase": "OPEN_ENTRY",
                     "executed": result is not None,
                 },
             )
@@ -643,6 +809,7 @@ class VisionLane:
                 "decision_seq": pending.decision_seq,
                 "intent": pending.intent,
                 "risk_gate": "check_signal",
+                "phase": "OPEN_ENTRY",
                 "approved": bool(check.approved),
                 "risk_blocked_by": check.blocked_by,
                 "risk_reason": check.reason,
@@ -681,6 +848,7 @@ class VisionLane:
                     "decision_seq": pending.decision_seq,
                     "intent": pending.intent,
                     "risk_gate": exc.code,
+                    "phase": "OPEN_ENTRY",
                     "approved": True,
                     "executed": False,
                     "risk_blocked_by": exc.code,
@@ -691,6 +859,21 @@ class VisionLane:
             self._bump(f"gate:{exc.code}")
             return "RESOLVED"
         if symbol in self.broker.positions:
+            self.ledger.append(
+                "DECISION_OUTCOME",
+                {
+                    "ts_ms": ts,
+                    "symbol": symbol,
+                    "decision_seq": pending.decision_seq,
+                    "intent": pending.intent,
+                    "risk_gate": "SYMBOL_SLOT_OCCUPIED",
+                    "phase": "OPEN_ENTRY",
+                    "approved": True,
+                    "executed": False,
+                    "risk_blocked_by": "SYMBOL_SLOT_OCCUPIED",
+                    "risk_reason": "the book already holds this symbol",
+                },
+            )
             self._bump("dropped:SYMBOL_SLOT_OCCUPIED")
             return "RESOLVED"
 
@@ -739,6 +922,7 @@ class VisionLane:
                 "symbol": symbol,
                 "side": side,
                 "intent": pending.intent,
+                "phase": "OPEN_ENTRY",
                 "decision_seq": pending.decision_seq,
                 "decision_ts_ms": pending.decision_ts_ms,
                 "received_at_ms": pending.received_at_ms,
@@ -750,6 +934,10 @@ class VisionLane:
                 "quote_bar_open_ms": quote.bar_open_ms,
                 "quote_lag_ms": outcome.lag_ms,
                 "opinion_age_ms": outcome.age_ms,
+                "data_gap_covered_by": gap["source"] if gap is not None else None,
+                "data_gap_missing_bar_open_ms": (
+                    gap["missing_bar_open_ms"] if gap is not None else None
+                ),
                 "stop_loss_price": stop_price,
                 "take_profit_price": target_price,
                 "position_id": getattr(filled, "position_id", ""),
@@ -804,7 +992,13 @@ class VisionLane:
                         "execution_quote": "bar_open",
                         "stop_coverage": "entry_at_open_full_bar",
                         "gap_policy": "open_on_gap",
-                        "exit_ts_resolution": "bar",
+                        # The order inside one timestamp. A reader who does not know it
+                        # cannot tell an early stop from a late one in the rows.
+                        "open_phase_order": "gap_close>mark>entries>intrabar",
+                        "exit_ts_resolutions": ["OPEN_GAP", "BAR_WINDOW", "QUOTE"],
+                        "gap_price_source": "bar_open",
+                        "data_gap_policy": "fail_closed_unless_independent_coverage",
+                        "quote_feed": getattr(self.quote_feed, "name", None),
                     },
                     "dataset": {
                         symbol: {
@@ -819,6 +1013,7 @@ class VisionLane:
             )
 
             previous_day: str | None = None
+            symbols = sorted(self.series)
             for ts in timeline:
                 close_ms = bar_close_ms(ts, self.interval_ms)
                 day = _day_of(ts)
@@ -826,26 +1021,78 @@ class VisionLane:
                     self.risk.reset_daily()
                 previous_day = day
 
+                # Stable symbol order for every phase. A dict's insertion order is not a
+                # policy: with one free slot, whoever is iterated first would take it.
                 present = [
-                    (symbol, bars, index_of[symbol][ts])
-                    for symbol, bars in self.series.items()
+                    (symbol, self.series[symbol], index_of[symbol][ts])
+                    for symbol in symbols
                     if ts in index_of[symbol]
                 ]
+                open_prices: dict[str, float] = {}
+                for symbol, bars, index in present:
+                    price = float(bars[index].open)
+                    if price > 0:
+                        open_prices[symbol] = price
 
-                # 1. Entries, on a quote that exists at or after the answer: this bar's
-                #    open. The clock is the open, because that is the instant being paid.
+                # -- OPEN(ts) --------------------------------------------------
                 self._current_ms[0] = ts
+
+                # 1. Stops the observable open already crossed, for positions that
+                #    existed *before* it. Every symbol is settled before a single order
+                #    is approved, so no symbol's position in the iteration decides what
+                #    the risk engine sees.
+                for symbol, price in sorted(open_prices.items()):
+                    trade: ClosedTrade | None = self.broker.exit_on_open_gap(symbol, price)
+                    if trade is None:
+                        continue
+                    opened_ms = int(float(trade.opened_at) * 1000)
+                    self._record_close(
+                        trade,
+                        exit_ts_ms=ts,
+                        window_start_ms=ts,
+                        bars_held=max(0, round((ts - opened_ms) / self.interval_ms)),
+                        resolution="OPEN_GAP",
+                        phase="OPEN_GAP",
+                        gap_price_source="bar_open",
+                        gap_open_price=price,
+                    )
+
+                # 2. Mark what is left at the opens that are observable now. A held
+                #    symbol without one makes the book's equity ambiguous — assuming its
+                #    missing PnL is zero would understate the risk being approved.
+                stale = sorted(
+                    symbol for symbol in self.broker.positions if symbol not in open_prices
+                )
+                if stale:
+                    self._bump("veto:STALE_VALUATION")
+                else:
+                    self.risk.mark_equity(
+                        float(self.broker.mark_to_market_equity(dict(open_prices)))
+                    )
+
+                # 3. Entries, on quotes that exist at or after the answer.
                 for symbol, bars, index in present:
                     pending = self._pending.get(symbol)
                     if pending is None:
                         continue
+                    if stale:
+                        self._reject_pending(
+                            symbol,
+                            ts,
+                            pending,
+                            "STALE_VALUATION",
+                            (
+                                f"{', '.join(stale)} has no quote at this open: the book's "
+                                "equity is ambiguous, so no new risk is approved against it"
+                            ),
+                            extra={"stale_marks": stale},
+                        )
+                        self._pending.pop(symbol, None)
+                        continue
                     if self._execute(symbol, bars[index], pending, index) == "RESOLVED":
                         self._pending.pop(symbol, None)
 
-                # 2. The bar has ended, so its range is a fact — including for a position
-                #    opened at this bar's open, which the old ordering never checked. The
-                #    exit is therefore recorded at the bar's close: the earliest instant a
-                #    stop hit inside it could have been known.
+                # -- CLOSE(ts + interval) --------------------------------------
                 self._current_ms[0] = close_ms
                 candles = {
                     symbol: (
@@ -856,33 +1103,50 @@ class VisionLane:
                     )
                     for symbol, bars, index in present
                 }
+                # The bar has ended, so its range is a fact — including for a position
+                # opened at this bar's open, which must be checked *after* it exists. The
+                # exit is recorded at the close because that is the earliest instant an
+                # intrabar touch could have been known; the level, not the range, is the
+                # price. A stop the open itself crossed was already settled above.
                 for trade in self.broker.check_positions_ohlc(
                     candles, gap_policy="open_on_gap"
                 ):
                     opened_ms = int(float(trade.opened_at) * 1000)
-                    held = max(0, round((close_ms - opened_ms) / 3_600_000))
                     self._record_close(
-                        trade, exit_ts_ms=close_ms, window_start_ms=ts, bars_held=held
+                        trade,
+                        exit_ts_ms=close_ms,
+                        window_start_ms=ts,
+                        bars_held=max(0, round((close_ms - opened_ms) / self.interval_ms)),
+                        resolution="BAR_WINDOW",
+                        phase="INTRABAR",
                     )
 
+                quoted = {
+                    symbol
+                    for symbol, bars, index in present
+                    if float(bars[index].close) > 0
+                }
                 for symbol, bars, index in present:
-                    self._marks[symbol] = float(bars[index].close)
+                    if symbol in quoted:
+                        self._marks[symbol] = float(bars[index].close)
 
                 # Marking the risk engine with the same net equity the curve publishes is
                 # what makes its drawdown and sizing gates describe the book the report
-                # describes.
+                # describes. A carried-over mark is declared, never passed off as fresh.
                 marked = float(self.broker.mark_to_market_equity(dict(self._marks)))
                 self.risk.mark_equity(marked)
+                carried = sorted(symbol for symbol in self.broker.positions if symbol not in quoted)
                 self.equity_curve.append(
                     {
                         "ts_ms": close_ms,
                         "ts_utc": _utc_iso(close_ms),
                         "equity": round(marked, 8),
                         "risk_equity": round(float(self.risk.equity), 8),
+                        "stale_marks": carried,
                     }
                 )
 
-                # 3. Decisions are formed on the close, which is now known, and are sized
+                # 4. Decisions are formed on the close, which is now known, and are sized
                 #    against the equity this close produced.
                 for symbol, bars, index in present:
                     if not decision_due(
@@ -894,12 +1158,42 @@ class VisionLane:
                         continue
                     decision = self._decide(symbol, bars[index], bars[: index + 1])
                     if decision is not None:
+                        waiting = self._pending.get(symbol)
+                        if waiting is not None:
+                            # A newer view supersedes an order that never found a quote.
+                            # It is recorded rather than dropped: an opinion that vanished
+                            # without a row would look like one that was never made.
+                            self._reject_pending(
+                                symbol,
+                                close_ms,
+                                waiting,
+                                "SUPERSEDED_BY_NEWER_OPINION",
+                                (
+                                    "a newer opinion replaced this one before any quote "
+                                    "existed at or after its answer"
+                                ),
+                                extra={"replaced_by_decision_seq": decision.decision_seq},
+                                phase="DECISION",
+                            )
                         self._pending[symbol] = replace(
                             decision,
                             bar_index=index + 1,
                             decision_bar_index=index,
                             expected_step_ms=int(self._step_ms[symbol]),
                         )
+
+            #: An order still waiting when the dataset ends never became a trade, and
+            #: saying so is the difference between "no fill" and "no record".
+            for symbol, pending in sorted(self._pending.items()):
+                self._reject_pending(
+                    symbol,
+                    self._current_ms[0],
+                    pending,
+                    "RUN_ENDED_WITH_ORDER_PENDING",
+                    "the dataset ended before a quote existed at or after the answer",
+                    phase="RUN_END",
+                )
+            self._pending.clear()
 
             summary = self._summary()
             self.ledger.append("RUN_END", summary)
@@ -988,7 +1282,11 @@ class VisionLane:
             "max_opinion_age_ms": self.max_opinion_age_ms,
             "stop_coverage": "entry_at_open_full_bar",
             "gap_policy": "open_on_gap",
-            "exit_ts_resolution": "bar",
+            "open_phase_order": "gap_close>mark>entries>intrabar",
+            "exit_ts_resolutions": ["OPEN_GAP", "BAR_WINDOW", "QUOTE"],
+            "data_gap_policy": "fail_closed_unless_independent_coverage",
+            "gap_exits": int(self.counters.get("gap_exits", 0)),
+            "stale_valuation_vetoes": int(self.counters.get("veto:STALE_VALUATION", 0)),
             "fills": int(self.counters.get("fills", 0)),
             "waiting_events": int(self.counters.get("requote:WAITING_FOR_QUOTE", 0)),
             "expired_opinions": int(self.counters.get("guard:LATE_RESPONSE", 0)),
@@ -1039,6 +1337,10 @@ class VisionLane:
             "entry_commission_usdt": round(entry_commission, 8),
             "exit_commission_usdt": round(exit_commission, 8),
             "open_positions_at_end": len(self.broker.positions),
+            "open_gap_exits": int(self.counters.get("gap_exits", 0)),
+            "marks_complete_at_end": all(
+                float(self._marks.get(symbol, 0.0)) > 0 for symbol in self.broker.positions
+            ),
             "tolerance_usdt": tolerance,
             "identities": {
                 "cash_rebuilds_from_realised_pnl": abs(final - (initial + realised))

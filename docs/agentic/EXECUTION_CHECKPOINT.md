@@ -581,3 +581,79 @@ git log -1 --format='%H %s'
 
 **Siguiente WP**: `AI-BOTS-003C/D` — proveedor offline listo (`NO_KEY => BLOCKED`) y colector
 prospectivo con hash. La llamada real multimodal sigue necesitando clave y aprobación de coste.
+
+---
+
+## WP-TAP-AI-BOTS-003C — orden causal de la apertura, hueco y frescura (2026-10-18)
+
+**Rama:** `agent/ai-bots/RFC-TAP-AI-BOTS-003` · **Baseline:** `ffbc0ca` · **Estado:** motor,
+tests y evidencia en el árbol, pendiente de commit al escribir esto.
+
+**Objetivo.** Cerrar el P0 que dejó escrito el bloque B: los rellenos de entrada al OPEN se
+ejecutaban antes de que el broker reconociese los stops que ese mismo OPEN ya había cruzado,
+así que una pérdida evadía el motor de riesgo mientras la misma apertura aprobaba riesgo nuevo.
+
+**Hecho.**
+
+- `vision/lane.py`: `run` por fases — OPEN_GAP (posiciones preexistentes, todos los símbolos,
+  antes de una sola aprobación), marca de apertura con veto `STALE_VALUATION` si un activo con
+  posición no tiene apertura, entrada con la equidad que produce ese mismo OPEN, y CLOSE para
+  rango intrabar + conciliación + propuestas nuevas. Nunca HIGH/LOW de la vela en una puerta de
+  apertura.
+- `paper/broker.py`: `stop_gapped()` compartido por ambas fases y `exit_on_open_gap()` (opt-in).
+  El default `gap_policy="stop_price"` no cambia para otros llamantes.
+- `vision/execution.py`: `CoverageProof`/`QuoteFeed` — un hueco sólo se cruza con prueba
+  independiente de cobertura; sin ella es `DATA_GAP` y no opera.
+- `test_open_phase_causality.py`: C-01…C-12, reduce-only y simetría largo/corto contra el
+  `VisionLane` real, el `RiskManager` de `config/risk.yaml` y el `PaperBroker` de producción.
+- `scripts/ai_bots_003c_capture.py` (5 escenarios) y `scripts/ai_bots_003c_verify.py`
+  (independiente, sin importar `trading_bot`, 120 comprobaciones y 13 mutaciones con la cadena
+  re-sellada).
+
+```text
+RED antes de implementar            18 failed / 1 passed     exit 1 (commit ffbc0ca)
+tests/unit/vision                  160 passed                exit 0
+tests/unit/paper                    73 passed                exit 0
+tests/unit/risk                    147 passed                exit 0
+tests/unit/intelligence             28 passed                exit 0
+tests/unit/reports                  51 passed                exit 0
+ruff / mypy (alcance tocado)        limpio                    exit 0
+ai_bots_003c_verify.py × 5 escenarios        120 PASS / 0 FAIL   exit 0
+ai_bots_003c_verify.py --mutations × 5       53/53 detectadas    exit 0
+ai_bots_003b_verify.py (BLOCK-B, re-verificado) 21/21 + 10/10    exit 0
+```
+
+**P0 dentro de un instante** (`synthetic_gap_open`, escenario declarado sintético):
+`seq 110 CLOSE BTC/USDT OPEN_GAP stop_loss bar_open −16.232058` precede a
+`seq 111 DECISION_OUTCOME ETH/USDT risk_blocked_by=daily_loss_limit`, mismo `ts_ms`.
+
+**Dos expectativas endurecidas, dichas en voz alta.** El test del hueco ya no acepta rellenar
+porque la cotización siguiente sea posterior (ahora exige `DATA_GAP`, salvo prueba independiente
+de cobertura); `exit_ts_resolution` pasa de `"bar"` a un vocabulario cerrado
+(`OPEN_GAP`/`BAR_WINDOW`/`QUOTE`), aceptado por el verificador de 003B sin debilitar la regla.
+
+**Pendiente / bloqueado**
+
+- `REAL_MODEL_CALLED = false` · `PROSPECTIVE_PAPER_VALIDATED = false`; proveedor replay.
+- El hueco de apertura no existe en el dataset (mayor salto cierre→apertura 0,30 %); el camino
+  está probado por construcción, no por el mercado.
+- Con el stop canónico (0,5 %) las posiciones mueren en la vela en que nacen; el escenario de
+  2 % es un override declarado del guion, no una política.
+- Suite completa del repositorio no ejecutada (~180 ficheros ajenos en vuelo).
+
+**Reanudación verificable**
+
+```bash
+cd "$(git rev-parse --show-toplevel)"
+git log -1 --format='%H %s'
+./.venv/Scripts/python.exe -m pytest tests/unit/vision/test_open_phase_causality.py -q   # 19 passed
+./.venv/Scripts/python.exe scripts/ai_bots_003c_verify.py \
+  --ledger   reports/ai-bots/RFC-AI-BOTS-003/BLOCK-C/evidence/synthetic_gap_open_ledger.jsonl \
+  --summary  reports/ai-bots/RFC-AI-BOTS-003/BLOCK-C/evidence/synthetic_gap_open_summary.json \
+  --coverage reports/ai-bots/RFC-AI-BOTS-003/BLOCK-C/DATA_COVERAGE_LEDGER.jsonl \
+  --scenario synthetic_gap_open --root .                       # 24 PASS / 0 FAIL
+```
+
+**Siguiente WP**: `AI-BOTS-003D` (proveedor offline, `NO_KEY => BLOCKED`) y `003E` (colector
+prospectivo append-only que satisfaga `QuoteFeed.prove_coverage`). Sin cotizaciones reales el
+carril no opera un hueco: ahora es una fila `DATA_GAP`, no una convención del informe.

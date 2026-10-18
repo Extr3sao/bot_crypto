@@ -1,0 +1,243 @@
+{
+  "bars": 1000,
+  "decision_every_bars": 24,
+  "git": {
+    "branch": "agent/ai-bots/RFC-TAP-AI-BOTS-003",
+    "dirty_paths": 181,
+    "head": "ffbc0cad593bbe3a8202a99d6c90fd9a499fda03"
+  },
+  "prospective_paper_validated": false,
+  "provider": "replay (scripted transport; NOT a model)",
+  "python": "3.11.15",
+  "real_model_called": false,
+  "scenarios": [
+    {
+      "chain": {
+        "head_sha256": "0d08395505522e08a5fc2aec69673fcf47d57b520490d6b66d5e6125ad29596b",
+        "kinds": {
+          "CLOSE": 34,
+          "DECISION": 74,
+          "DECISION_OUTCOME": 66,
+          "FILL": 34,
+          "RUN": 1,
+          "RUN_END": 1
+        },
+        "lines": 210,
+        "ok": true,
+        "reason": "INTACT"
+      },
+      "closed_trades": 34,
+      "counters": {
+        "action:CLOSE": 12,
+        "action:LONG": 25,
+        "action:NO_TRADE": 12,
+        "action:SHORT": 25,
+        "closed_trades": 34,
+        "dropped:MODEL_NO_TRADE": 12,
+        "dropped:NO_POSITION_TO_CLOSE": 12,
+        "fills": 34,
+        "gate:WEEKEND_BLOCK": 16,
+        "requote:WAITING_FOR_QUOTE": 50
+      },
+      "fills": 34,
+      "gap_exits": 0,
+      "identities": {
+        "cash_rebuilds_from_realised_pnl": true,
+        "curve_ends_at_final_equity": true,
+        "every_close_after_its_entry_quote": true,
+        "net_pnl_nets_every_named_cost": true,
+        "risk_equity_matches_marked_equity": true
+      },
+      "latency_ms": 900,
+      "ledger": "evidence\\real_900ms_ledger.jsonl",
+      "name": "real_900ms",
+      "net_realised_usdt": -97.926767,
+      "policy_override": null,
+      "synthetic_dataset": false
+    },
+    {
+      "chain": {
+        "head_sha256": "1e01f0dbfbef0f6eef619f166ab3027fef30a5241e34f6b99cd6309ff1db35ae",
+        "kinds": {
+          "CLOSE": 34,
+          "DECISION": 74,
+          "DECISION_OUTCOME": 66,
+          "FILL": 34,
+          "RUN": 1,
+          "RUN_END": 1
+        },
+        "lines": 210,
+        "ok": true,
+        "reason": "INTACT"
+      },
+      "closed_trades": 34,
+      "counters": {
+        "action:CLOSE": 12,
+        "action:LONG": 25,
+        "action:NO_TRADE": 12,
+        "action:SHORT": 25,
+        "closed_trades": 34,
+        "dropped:MODEL_NO_TRADE": 12,
+        "dropped:NO_POSITION_TO_CLOSE": 12,
+        "fills": 34,
+        "gate:WEEKEND_BLOCK": 16,
+        "requote:WAITING_FOR_QUOTE": 50
+      },
+      "fills": 34,
+      "gap_exits": 0,
+      "identities": {
+        "cash_rebuilds_from_realised_pnl": true,
+        "curve_ends_at_final_equity": true,
+        "every_close_after_its_entry_quote": true,
+        "net_pnl_nets_every_named_cost": true,
+        "risk_equity_matches_marked_equity": true
+      },
+      "latency_ms": 900,
+      "ledger": "evidence\\real_900ms_wide_stop_ledger.jsonl",
+      "name": "real_900ms_wide_stop",
+      "net_realised_usdt": -34.247921,
+      "policy_override": {
+        "default_stop_loss_pct": 2.0,
+        "default_take_profit_pct": 3.0
+      },
+      "synthetic_dataset": false
+    },
+    {
+      "chain": {
+        "head_sha256": "0388ca3b48e0b3036fb0698174cb1b2055329d60f205ed120abe65ea473fb89f",
+        "kinds": {
+          "CLOSE": 34,
+          "DECISION": 74,
+          "DECISION_OUTCOME": 66,
+          "FILL": 34,
+          "RUN": 1,
+          "RUN_END": 1
+        },
+        "lines": 210,
+        "ok": true,
+        "reason": "INTACT"
+      },
+      "closed_trades": 34,
+      "counters": {
+        "action:CLOSE": 12,
+        "action:LONG": 25,
+        "action:NO_TRADE": 12,
+        "action:SHORT": 25,
+        "closed_trades": 34,
+        "dropped:MODEL_NO_TRADE": 12,
+        "dropped:NO_POSITION_TO_CLOSE": 12,
+        "fills": 34,
+        "gate:WEEKEND_BLOCK": 16
+      },
+      "fills": 34,
+      "gap_exits": 0,
+      "identities": {
+        "cash_rebuilds_from_realised_pnl": true,
+        "curve_ends_at_final_equity": true,
+        "every_close_after_its_entry_quote": true,
+        "net_pnl_nets_every_named_cost": true,
+        "risk_equity_matches_marked_equity": true
+      },
+      "latency_ms": 0,
+      "ledger": "evidence\\real_0ms_ledger.jsonl",
+      "name": "real_0ms",
+      "net_realised_usdt": -85.426764,
+      "policy_override": null,
+      "synthetic_dataset": false
+    },
+    {
+      "chain": {
+        "head_sha256": "9f2eddd392c91f3b9ad7d5418f93bb00f561df49984b567a7bd71b808a34cf13",
+        "kinds": {
+          "CLOSE": 34,
+          "DECISION": 74,
+          "DECISION_OUTCOME": 62,
+          "FILL": 34,
+          "GUARD_REJECT": 2,
+          "RUN": 1,
+          "RUN_END": 1
+        },
+        "lines": 208,
+        "ok": true,
+        "reason": "INTACT"
+      },
+      "closed_trades": 34,
+      "counters": {
+        "action:CLOSE": 12,
+        "action:LONG": 25,
+        "action:NO_TRADE": 12,
+        "action:SHORT": 25,
+        "closed_trades": 34,
+        "dropped:MODEL_NO_TRADE": 12,
+        "dropped:NO_POSITION_TO_CLOSE": 12,
+        "fills": 34,
+        "gate:WEEKEND_BLOCK": 14,
+        "guard:DATA_GAP": 2,
+        "requote:WAITING_FOR_QUOTE": 48
+      },
+      "fills": 34,
+      "gap_exits": 0,
+      "identities": {
+        "cash_rebuilds_from_realised_pnl": true,
+        "curve_ends_at_final_equity": true,
+        "every_close_after_its_entry_quote": true,
+        "net_pnl_nets_every_named_cost": true,
+        "risk_equity_matches_marked_equity": true
+      },
+      "latency_ms": 900,
+      "ledger": "evidence\\real_900ms_hole_ledger.jsonl",
+      "name": "real_900ms_hole",
+      "net_realised_usdt": -85.449238,
+      "policy_override": null,
+      "synthetic_dataset": false
+    },
+    {
+      "chain": {
+        "head_sha256": "b0909f1f661be8015f507e2976dc30c77bc32294e4a1c938af49131092ae1408",
+        "kinds": {
+          "CLOSE": 1,
+          "DECISION": 114,
+          "DECISION_OUTCOME": 5,
+          "FILL": 1,
+          "GUARD_REJECT": 1,
+          "RUN": 1,
+          "RUN_END": 1
+        },
+        "lines": 124,
+        "ok": true,
+        "reason": "INTACT"
+      },
+      "closed_trades": 1,
+      "counters": {
+        "action:LONG": 58,
+        "action:NO_TRADE": 56,
+        "closed_trades": 1,
+        "dropped:ALREADY_LONG": 52,
+        "dropped:MODEL_NO_TRADE": 56,
+        "fills": 1,
+        "gap_exits": 1,
+        "guard:RUN_ENDED_WITH_ORDER_PENDING": 1,
+        "risk_blocked:daily_loss_limit": 4
+      },
+      "fills": 1,
+      "gap_exits": 1,
+      "identities": {
+        "cash_rebuilds_from_realised_pnl": true,
+        "curve_ends_at_final_equity": true,
+        "every_close_after_its_entry_quote": true,
+        "net_pnl_nets_every_named_cost": true,
+        "risk_equity_matches_marked_equity": true
+      },
+      "latency_ms": 0,
+      "ledger": "evidence\\synthetic_gap_open_ledger.jsonl",
+      "name": "synthetic_gap_open",
+      "net_realised_usdt": -16.232058,
+      "policy_override": {
+        "max_daily_loss_pct": 0.05
+      },
+      "synthetic_dataset": true
+    }
+  ],
+  "tool": "ai_bots_003c_capture",
+  "window_bars": 120
+}

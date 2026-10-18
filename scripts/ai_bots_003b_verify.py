@@ -40,6 +40,10 @@ from typing import Any
 GENESIS = "0" * 64
 TOLERANCE = 1e-6
 ACTIONABLE = {"OPEN_LONG", "OPEN_SHORT", "CLOSE"}
+#: How precisely an exit instant is known. ``bar`` is the BLOCK-B spelling of
+#: ``BAR_WINDOW`` and is kept so the evidence published under it still verifies; the
+#: vocabulary is closed, so a new label cannot slip through by being unrecognised.
+KNOWN_EXIT_RESOLUTIONS = {"bar", "BAR_WINDOW", "OPEN_GAP", "QUOTE"}
 
 
 @dataclass
@@ -228,12 +232,26 @@ def verify_rows(rows: list[dict[str, Any]], summary: dict[str, Any]) -> Verdict:
         f"{len(late_exit)} closes precede the quote that opened them or lack provenance",
     )
 
-    window_wrong = [
-        c
-        for c in closes
-        if c.get("exit_ts_resolution") != "bar"
-        or not (c.get("exit_ts_lower_bound_ms", 0) <= c.get("ts_ms", 0) <= c.get("exit_ts_upper_bound_ms", 0))
-    ]
+    interval = int(lane.get("bar_interval_ms") or 0)
+
+    def window_broken(close: dict[str, Any]) -> bool:
+        resolution = close.get("exit_ts_resolution")
+        lower = int(close.get("exit_ts_lower_bound_ms") or 0)
+        upper = int(close.get("exit_ts_upper_bound_ms") or 0)
+        stamp = int(close.get("ts_ms") or 0)
+        if resolution not in KNOWN_EXIT_RESOLUTIONS or not (lower <= stamp <= upper):
+            return True
+        if resolution in {"OPEN_GAP", "QUOTE"} and (lower != stamp or upper != stamp):
+            # An instant that is exactly known must not be dressed up as a window.
+            return True
+        if resolution == "OPEN_GAP" and close.get("gap_price_source") != "bar_open":
+            # A gap exit must name the open it paid and where that price came from.
+            return True
+        return bool(
+            resolution == "BAR_WINDOW" and interval > 0 and upper - lower != interval
+        )
+
+    window_wrong = [c for c in closes if window_broken(c)]
     verdict.add(
         "exit_window_is_declared",
         not window_wrong,

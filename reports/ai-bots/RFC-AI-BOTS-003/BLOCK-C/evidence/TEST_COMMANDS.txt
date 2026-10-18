@@ -1,0 +1,46 @@
+# WP-TAP-AI-BOTS-003C — comandos, salida literal y códigos de salida
+# commit: ffbc0cad593bbe3a8202a99d6c90fd9a499fda03  branch: agent/ai-bots/RFC-TAP-AI-BOTS-003
+
+$ .venv/Scripts/python.exe -m pytest tests/unit/vision -q -p no:warnings
+................                                                         [100%]
+160 passed in 155.72s (0:02:35)
+exit: 0
+
+$ .venv/Scripts/python.exe -m pytest tests/unit/paper -q -p no:warnings
+.                                                                        [100%]
+73 passed in 2.20s
+exit: 0
+
+$ .venv/Scripts/python.exe -m pytest tests/unit/risk -q -p no:warnings
+...                                                                      [100%]
+147 passed in 11.67s
+exit: 0
+
+$ .venv/Scripts/python.exe -m pytest tests/unit/intelligence -q -p no:warnings
+............................                                             [100%]
+28 passed in 4.90s
+exit: 0
+
+$ .venv/Scripts/python.exe -m pytest tests/unit/reports -q -p no:warnings
+...................................................                      [100%]
+51 passed in 9.22s
+exit: 0
+
+# Evidencia previa: BLOCK-B sigue verificando con el vocabulario extendido
+$ .venv/Scripts/python.exe scripts/ai_bots_003b_verify.py --ledger reports/ai-bots/RFC-AI-BOTS-003/BLOCK-B/runs/bot-vis-01/BOT-VIS-01_DECISIONS.jsonl --summary reports/ai-bots/RFC-AI-BOTS-003/BLOCK-B/runs/bot-vis-01/SUMMARY.json
+PASS 21 pass 0 fail
+exit: 0
+$ ... bot-ctx-01
+PASS 21 pass 0 fail
+exit: 0
+$ ... --mutations (ambos bots)
+PASS 10/10 y 10/10
+exit: 0
+$ .venv/Scripts/python.exe -m ruff check src/trading_bot/vision src/trading_bot/paper/broker.py tests/unit/vision scripts/ai_bots_003b_verify.py scripts/ai_bots_003c_capture.py scripts/ai_bots_003c_verify.py
+All checks passed!
+exit: 0
+
+$ .venv/Scripts/python.exe -m mypy src/trading_bot/vision src/trading_bot/paper/broker.py scripts/ai_bots_003c_verify.py scripts/ai_bots_003c_capture.py
+Success: no issues found in 15 source files
+exit: 0
+

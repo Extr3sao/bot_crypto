@@ -28,7 +28,7 @@ from __future__ import annotations
 from collections.abc import Sequence
 from dataclasses import dataclass
 from itertools import pairwise
-from typing import Any
+from typing import Any, Protocol, runtime_checkable
 
 #: The only price source this replay can prove it had. Named so a reader can audit it.
 BAR_OPEN_SOURCE = "bar_open"
@@ -63,6 +63,55 @@ class Quote:
             "quote_source": self.source,
             "quote_bar_open_ms": self.bar_open_ms,
         }
+
+
+@dataclass(frozen=True, slots=True)
+class CoverageProof:
+    """Independent evidence that a missing bar is not a market outage.
+
+    An OHLC series with a hole in it cannot say whether the venue was closed, whether the
+    feed dropped, or whether nothing traded. A hole is therefore **not** permission to
+    trade: the next timestamp is later than the gap, not proof that the gap was priced.
+    This record is the only thing that turns a hole into an executable interval, and it
+    comes from a *separate* source that names itself.
+    """
+
+    symbol: str
+    missing_bar_open_ms: int
+    source: str
+    quotes: tuple[Quote, ...]
+    venue_open: bool = False
+
+    def covers(self, interval_ms: int) -> tuple[bool, str]:
+        """Did this feed observe both halves of the interval, in order, by itself?"""
+
+        if not self.venue_open:
+            return False, "the feed reports the venue as closed during the hole"
+        if not self.source or self.source == BAR_OPEN_SOURCE:
+            return False, "the proof must name a source other than the replay's own bars"
+        if len(self.quotes) < 2:
+            return False, "a single observation is a point, not coverage"
+        stamps = [int(quote.ts_ms) for quote in self.quotes]
+        if stamps != sorted(stamps) or len(set(stamps)) != len(stamps):
+            return False, "the observations are not strictly increasing"
+        end = self.missing_bar_open_ms + int(interval_ms)
+        if stamps[0] < self.missing_bar_open_ms or stamps[-1] >= end:
+            return False, "the observations fall outside the missing bar"
+        middle = self.missing_bar_open_ms + int(interval_ms) / 2.0
+        if not (stamps[0] <= middle <= stamps[-1]):
+            return False, "only one half of the interval was observed"
+        return True, "both halves of the interval were observed by an independent feed"
+
+
+@runtime_checkable
+class QuoteFeed(Protocol):
+    """A price source the lane did not build from the bars it is replaying."""
+
+    name: str
+
+    def prove_coverage(
+        self, symbol: str, missing_bar_open_ms: int, interval_ms: int
+    ) -> CoverageProof | None: ...
 
 
 @dataclass(frozen=True, slots=True)
@@ -152,7 +201,14 @@ def schedule(
 
     age = int(quote.ts_ms) - int(decision_ts_ms)
     lag = int(quote.ts_ms) - int(received_at_ms)
-    if max_age_ms > 0 and age > int(max_age_ms):
+    if int(max_age_ms) <= 0:
+        # Zero used to mean "no expiry", which is a silent infinite window dressed up as
+        # a default. The lane resolves "one bar" before calling, so a zero here is a bug
+        # in the caller and must stop the run instead of trading a view forever.
+        raise ValueError(
+            "max_age_ms must be a positive, declared window; zero is not 'no expiry'"
+        )
+    if age > int(max_age_ms):
         return FillDecision(
             status="EXPIRED",
             quote=quote,

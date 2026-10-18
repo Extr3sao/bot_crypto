@@ -184,6 +184,22 @@ class ClosedTrade:
         return self.execution_cost_usdt + self.entry_commission + self.exit_commission
 
 
+def stop_gapped(open_price: float, stop_price: float, *, side: str) -> bool:
+    """Did the bar open beyond the protective stop?
+
+    One predicate for both phases: the CLOSE evaluator uses it to decide whether a stop
+    fills at the level or at the open, and the OPEN phase uses it to settle the position
+    at the instant the gap is observable. Duplicating the comparison would let the two
+    answer differently about the same bar.
+    """
+
+    if side == "buy":
+        return float(open_price) <= float(stop_price)
+    if side == "sell":
+        return float(open_price) >= float(stop_price)
+    raise ValueError(f"unknown position side {side!r}")
+
+
 def _gap_exit(open_price: float, stop_price: float, *, side: str, gap_policy: str) -> float:
     """The price a stop fills at, honouring a bar that opened through it.
 
@@ -193,11 +209,8 @@ def _gap_exit(open_price: float, stop_price: float, *, side: str, gap_policy: st
     keep their exact numbers.
     """
 
-    if gap_policy == "open_on_gap":
-        if side == "buy" and open_price <= stop_price:
-            return float(open_price)
-        if side == "sell" and open_price >= stop_price:
-            return float(open_price)
+    if gap_policy == "open_on_gap" and stop_gapped(open_price, stop_price, side=side):
+        return float(open_price)
     return float(stop_price)
 
 
@@ -503,6 +516,33 @@ class PaperBroker:
                 closed.append(trade)
                 self._risk_events.append(f"{symbol}:{exit_reason} at {price:.2f}")
         return closed
+
+    def exit_on_open_gap(self, symbol: str, open_price: float) -> ClosedTrade | None:
+        """Close ``symbol`` if the bar's OPEN already crossed its protective stop.
+
+        This is the OPEN-phase primitive: a stop that the market gapped through is a fact
+        at the moment the bar opens, not at its close. Settling it here is what lets the
+        caller hand the loss to the risk engine *before* the same open accepts new risk.
+
+        Only stops are settled. A take-profit that gapped is left to the CLOSE pass, whose
+        protective evaluator credits the target and never the better open: a gain is not
+        brought forward, a loss is.
+
+        Returns the closed trade, or ``None`` when the position does not exist, the price
+        is not executable, or the open did not cross the level.
+        """
+
+        position = self._positions.get(symbol)
+        if position is None:
+            return None
+        price = float(open_price)
+        if price <= 0:
+            return None
+        if not stop_gapped(price, position.stop_loss_price, side=position.side):
+            return None
+        trade = self._close_position(symbol, price, "stop_loss")
+        self._risk_events.append(f"{symbol}:stop_loss at {price:.2f} (open gap)")
+        return trade
 
     def check_positions_ohlc(
         self,

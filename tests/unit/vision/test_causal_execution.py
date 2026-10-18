@@ -282,7 +282,7 @@ def test_the_bar_a_position_is_opened_on_is_checked_for_stops(tmp_path):
     assert stops[0]["exit_ts_lower_bound_ms"] == fill["quote_ts_ms"], (
         "the exit happened inside the entry bar, so its known window starts at the entry"
     )
-    assert stops[0]["exit_ts_resolution"] == "bar"
+    assert stops[0]["exit_ts_resolution"] == "BAR_WINDOW"
 
 
 # -- B-04: un hueco se rellena en la apertura, no en el nivel del stop -----------

@@ -1,0 +1,132 @@
+{
+  "checks": [
+    {
+      "detail": "",
+      "name": "ledger_hash_chain",
+      "status": "PASS"
+    },
+    {
+      "detail": "phase_order=gap_close>mark>entries>intrabar gap_policy=fail_closed_unless_independent_coverage resolutions=['OPEN_GAP', 'BAR_WINDOW', 'QUOTE'] max_age=3600000",
+      "name": "run_declares_open_phase_doctrine",
+      "status": "PASS"
+    },
+    {
+      "detail": "",
+      "name": "open_gap_settled_before_new_risk",
+      "status": "PASS"
+    },
+    {
+      "detail": "",
+      "name": "open_gap_is_an_exact_instant_at_the_observable_open",
+      "status": "PASS"
+    },
+    {
+      "detail": "",
+      "name": "stop_never_credited_better_than_its_level",
+      "status": "PASS"
+    },
+    {
+      "detail": "",
+      "name": "exit_instant_resolution_is_declared",
+      "status": "PASS"
+    },
+    {
+      "detail": "0 fills paid a price that predates the answer",
+      "name": "fill_quote_at_or_after_answer",
+      "status": "PASS"
+    },
+    {
+      "detail": "0 fills predate the decision instant",
+      "name": "fill_quote_at_or_after_decision",
+      "status": "PASS"
+    },
+    {
+      "detail": "0 fills carry a lag that is not quote_ts - received_at",
+      "name": "fill_quote_lag_is_measured",
+      "status": "PASS"
+    },
+    {
+      "detail": "0 fills are older than max_opinion_age_ms=3600000",
+      "name": "fill_quote_within_opinion_window",
+      "status": "PASS"
+    },
+    {
+      "detail": "",
+      "name": "fill_price_has_a_declared_source",
+      "status": "PASS"
+    },
+    {
+      "detail": "",
+      "name": "data_gap_is_terminal_and_named",
+      "status": "PASS"
+    },
+    {
+      "detail": "",
+      "name": "risk_engine_receives_each_close",
+      "status": "PASS"
+    },
+    {
+      "detail": "",
+      "name": "calendar_windows_rebuilt_from_the_rows",
+      "status": "PASS"
+    },
+    {
+      "detail": "",
+      "name": "net_pnl_nets_every_named_cost",
+      "status": "PASS"
+    },
+    {
+      "detail": "10000.0 + -16.23205824 != 9983.76794176",
+      "name": "cash_rebuilds_from_realised_pnl",
+      "status": "PASS"
+    },
+    {
+      "detail": "{\"cash_rebuilds_from_realised_pnl\": true, \"curve_ends_at_final_equity\": true, \"every_close_after_its_entry_quote\": true, \"net_pnl_nets_every_named_cost\": true, \"risk_equity_matches_marked_equity\": true}",
+      "name": "reconciliation_identities_all_true",
+      "status": "PASS"
+    },
+    {
+      "detail": "0 closes precede the quote that opened them or lack provenance",
+      "name": "every_close_after_its_entry_quote",
+      "status": "PASS"
+    },
+    {
+      "detail": "summary fills=1 rows=1; closes=1 rows=1; gap_exits=1 rows=1",
+      "name": "counters_match_rows",
+      "status": "PASS"
+    },
+    {
+      "detail": "0 actionable decisions have no terminal row: []",
+      "name": "every_actionable_decision_is_resolved",
+      "status": "PASS"
+    },
+    {
+      "detail": "duplicates=[] orphan_closes=[]",
+      "name": "position_ids_are_unique_and_owned",
+      "status": "PASS"
+    },
+    {
+      "detail": "first=RUN last=RUN_END runs=1 run_ends=1",
+      "name": "one_ledger_holds_exactly_one_run",
+      "status": "PASS"
+    },
+    {
+      "detail": "unmatched=[] declared_but_unreacted=[]",
+      "name": "published_coverage_matches_the_rows",
+      "status": "PASS"
+    },
+    {
+      "detail": "absolute paths in the summary: []",
+      "name": "summary_is_portable_between_roots",
+      "status": "PASS"
+    }
+  ],
+  "failed": 0,
+  "ledger": "reports/ai-bots/RFC-AI-BOTS-003/BLOCK-C/evidence/synthetic_gap_open_ledger.jsonl",
+  "passed": 24,
+  "scenario": "synthetic_gap_open",
+  "summary": "reports/ai-bots/RFC-AI-BOTS-003/BLOCK-C/evidence/synthetic_gap_open_summary.json",
+  "tool": "ai_bots_003c_verify",
+  "verdict": "PASS",
+  "verifier": "independent (no trading_bot import)"
+}

@@ -264,27 +264,49 @@ def test_the_kill_switch_blocks_entries_through_the_canonical_risk_manager(tmp_p
 
 
 def test_a_hole_in_the_data_never_becomes_a_price_before_the_answer(tmp_path):
-    """Un hueco no puede producir un relleno con un precio anterior a la respuesta.
+    """Un hueco no se convierte en precio, y un timestamp posterior no lo demuestra.
 
-    Este test afirmaba `STALE_EXECUTION`: el carril exigía que la cotización fuese
-exactamente la vela siguiente, y con un hueco descartaba la opinión. Esa regla no era la
-    que protegía el PIT — descartar por índice no distingue un hueco de una latencia real,
-    y con latencia real descartaba *todo*. La condición que ahora se comprueba es la que
-    de verdad impide operar a un precio no descrito: lo pagado es una cotización que
-    existía en o después de la respuesta, y su espera queda declarada en la fila.
+    Historia de esta expectativa, porque cambió dos veces. Afirmaba `STALE_EXECUTION`
+    (descartar por índice, que con latencia real descartaba *todo*), y después aceptaba
+    un relleno a través del hueco porque la cotización siguiente era posterior a la
+    respuesta y estaba dentro de la ventana de la opinión. Ninguna de las dos cosas
+    demuestra continuidad: el reloj avanzó, pero el precio del hueco no lo vio nadie.
+
+    WP-TAP-AI-BOTS-003C: el hueco se etiqueta `DATA_GAP` y esa decisión no opera. Las
+    decisiones cuyos datos sí son continuos siguen operando con la misma condición de
+    cotización: en o después de la respuesta, nunca antes.
     """
+    # The cadence puts the first decision on bar 30, so bar 31 is the quote it would
+    # have been filled at. Removing exactly that bar is what makes the hole matter.
+    expected = int(bars()[31].ts_ms)
     series = [bar for index, bar in enumerate(bars()) if index != 31]
     _, summary = run(tmp_path, ReplayProvider([LONG] * 40), series=series)
     ledger = entries(tmp_path)
 
-    assert summary["fills"] >= 1, "a one-bar hole is inside the opinion's window"
-    for fill in (row for row in ledger if row["kind"] == "FILL"):
+    gaps = [row for row in ledger if row.get("code") == "DATA_GAP"]
+    assert gaps, "the missing bar must be named, not traded through"
+    assert gaps[0]["missing_bar_open_ms"] == expected
+    assert gaps[0]["stage"] == "EXECUTION"
+    rejected_seq = gaps[0]["decision_seq"]
+    assert not [
+        row
+        for row in ledger
+        if row["kind"] == "FILL" and row.get("decision_seq") == rejected_seq
+    ]
+
+    fills = [row for row in ledger if row["kind"] == "FILL"]
+    assert fills, "the decisions with continuous data must still trade"
+    for fill in fills:
         assert fill["quote_ts_ms"] >= fill["received_at_ms"]
         assert fill["quote_ts_ms"] >= fill["decision_ts_ms"]
         assert fill["quote_lag_ms"] == fill["quote_ts_ms"] - fill["received_at_ms"]
         assert fill["fill_bar_index"] > fill["decision_bar_index"], (
             "the fill can never be stamped on the bar whose close it read"
         )
+        assert fill.get("data_gap_covered_by") is None, (
+            "this run has no independent feed, so no hole may be crossed"
+        )
+    assert summary["fills"] == len(fills)
 
 
 def test_a_frictionless_run_must_declare_itself(tmp_path):
