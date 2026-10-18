@@ -1759,3 +1759,31 @@ lo que NO se requerirá per-ADR "next free" footnote nunca más.
   obligación de pasar por `run_bot` en vez de invocar el lane a mano.
 - **Reversión**: otro ADR; relajar el registro para que el bot opere es exactamente lo
   que este ADR prohíbe.
+
+## ADR-AIB-02 — Un crítico que opina, no un segundo gestor
+
+- **Fecha**: 2026-10-18.
+- **Contexto**: RFC-TAP-AI-BOTS-004 introduce BOT-CRI-01 a partir del mecanismo de debate
+  de `TauricResearch/TradingAgents` (Apache-2.0, commit `e8f5503e…`). El upstream mezcla
+  juicio epistémico con asignación de capital: el Research Manager escribe "strategic
+  actions" y el trader sugiere tamaño. Copiar ese contrato crearía un segundo sizing.
+- **Decisión**:
+  1. El crítico recibe una `FrozenTradeProposal` ya hasheada y una `EvidenceLedger`
+     autenticada; sólo puede responder `ACCEPT`, `CHALLENGE` o `ABSTAIN`.
+  2. No existen campos de tamaño, leverage, stop, take-profit, dirección ni orden; el
+     esquema es `extra="forbid"` y un campo prohibido es un fallo tipado.
+  3. Una cita que no resuelve contra la evidencia autenticada es `ABSTAIN`, nunca una
+     aceptación; una respuesta tardía tampoco es una opinión.
+  4. `SHADOW_ONLY` no tiene ruta al broker: la economía es idéntica por construcción.
+     `GATED_PAPER` exige el token `AI_BOTS_003C_VALIDATED` y su única acción es suprimir
+     una apertura nueva; `CLOSE`, `REDUCE`, `STOP` y `TAKE_PROFIT` nunca se bloquean.
+  5. Se adopta el mecanismo, no el framework: no se instala TradingAgents/LangGraph en el
+     runtime ni se copia su código.
+- **Qué NO cambia**: `config/risk.yaml`, `RiskManager`, `PaperBroker`, adaptadores de
+  exchange, ni el estado por defecto OFF de todos los bots.
+- **Consecuencias**: el crítico puede empeorar el resultado (vetar una apertura buena) y no
+  puede mejorarlo por sí mismo; su valor sólo se afirma con ablación prospectiva. En esta
+  rama `ECONOMIC_VALUE=UNMEASURED` y `GATED_PAPER` queda bloqueado hasta certificar
+  AI-BOTS-003C.
+- **Reversión**: otro ADR. Dar al crítico capacidad de sizing o de cierre exige derogar
+  explícitamente este documento.
