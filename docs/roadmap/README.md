@@ -1,6 +1,6 @@
 # Trading Agentic Portable — Roadmap maestro
 
-**Fecha de corte:** 2026-10-18 · **Versión actual:** 1.4 · **Estado:** inventario de gestión, NO certificado de producción.
+**Fecha de corte:** 2026-10-18 · **Versión actual:** 1.5 · **Estado:** inventario de gestión, NO certificado de producción.
 
 Este directorio conserva el seguimiento de Trading Agentic Portable en formato Excel y un espejo de datos fácilmente revisable en Git. La autoridad de cada estado viene de los commits y evidencias de las ramas, **no** de la existencia del RFC.
 
@@ -51,3 +51,12 @@ Issues principales: [#10](https://github.com/Extr3sao/bot_crypto/issues/10) · [
 - RFC-TAP-MARKET-005 `PROPOSED` en issue [#16](https://github.com/Extr3sao/bot_crypto/issues/16): **datos incrementales**, MarketSnapshot PIT, disparadores IA por evento y auditoría de recargas 1000x1h/500x4h/500x1d. Se añaden `TAP-064` a `TAP-071`, bloqueos `BL-16/BL-17`, una evidencia de correlación de código `EV-018` y roadmap de 71 entregables.
 - **Sin nueva ejecución:** no atribuir esas descargas a Task Scheduler solo por parecerse a `real_market_context`; falta correlacionar proceso/task/run_id. El RFC no desactiva tareas ni activa LLM real; `REAL_MODEL_CALLED=false` permanece.
 - El Excel, JSON y CSV deben actualizarse juntos con este README en la rama del roadmap. El PR #15 permanece sin fusionar a `main`.
+
+## Revisión v1.5 — 2026-10-18
+
+- **RFC-TAP-MARKET-005 ejecutado (offline)** en la rama `agent/market/RFC-TAP-MARKET-005`, commit `c6bb431`: `TAP-064`, `TAP-065`, `TAP-069` y `TAP-070` pasan a `VERIFICADO_FOCAL`; `TAP-066`, `TAP-067` y `TAP-068` pasan a `IMPLEMENTADO`; `TAP-071` sigue `BLOQUEADO` (`USER_APPROVAL_REQUIRED`).
+- Medición sobre 12 series reales capturadas el 2026-10-18, 96 ciclos de 15 min: **1 164 → 136 peticiones (−88,32 %)**, **770 312 → 8 496 velas (−98,90 %)**, **12/12 ventanas cerradas idénticas**. Régimen estable: **108,6 KiB/día** frente a **133,32 MiB/día** (−99,92 %).
+- Verificador independiente: **8/8 checks** y **5/5 mutaciones**; la suite completa del repositorio queda **NOT_RUN**, no PASS. Evidencias `EV-019` y `EV-020`.
+- **Host intacto:** seis tareas `TradingAgentic-*` auditadas en solo lectura; ninguna detenida, creada ni editada. Se midió que cinco lanzan `python.exe` cada 15 minutos y que CAP004 pasa 1 080 de 1 081 operaciones en `NOOP` sin descargar. `BL-16` conserva el bloqueo de atribución (la captura del usuario es `NOT_ATTRIBUTABLE`).
+- `MODELOS REALES` sigue en **0**: `REAL_MODEL_CALLED=false`.
+- Limitación de edición: el libro se actualizó con `openpyxl`; las extensiones XML no soportadas por esa librería (si existían) se descartan al guardar. Los valores de las nueve hojas se releyeron y contrastaron con el JSON y el CSV.
