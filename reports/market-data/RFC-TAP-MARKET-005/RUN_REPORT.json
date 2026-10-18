@@ -25,8 +25,8 @@
       "sha256": "4cd0116d99c184df367c9c7b47a607e046ef436b5fb2d40cb9d52390fe5939d1"
     },
     "FINAL_REPORT.md": {
-      "bytes": 4260,
-      "sha256": "0ed81d5add2d88e015874cab01d6569cc4338825599e37e40826ddcffb4d3dc1"
+      "bytes": 4648,
+      "sha256": "6b04c743cd1d2f0bca524907ff993578aa3830a5eea5d2083f02b70cddae42f6"
     },
     "INDEPENDENT_VERIFICATION.json": {
       "bytes": 2274,
@@ -41,8 +41,8 @@
       "sha256": "28d7d94384287565d78b6592514ecf1dbd370cedf8b44ea69f254c3eca6c22ad"
     },
     "RUN_REPORT.md": {
-      "bytes": 11771,
-      "sha256": "d1cc07baa9f3a173fceee6b5180930ab6fc2189dde24e49eb7a12ee3d930cd99"
+      "bytes": 11995,
+      "sha256": "3ba746a9a7e929d42c83d7cc7210281ab0884aee506036a6b2340ce3c2378c5d"
     },
     "SCHEDULER_INVENTORY.json": {
       "bytes": 11918,
@@ -119,7 +119,8 @@
     "No lease/lock in the CLI; two concurrent invocations would race on the watermark (declared, unmitigated).",
     "Provider has no since parameter: delta is bounded last-N + dedupe.",
     "Data equivalence measured on 12 real series over a 24h window; venue maintenance gaps only simulated.",
-    "REAL_MODEL_CALLED=false: no authorized provider, so the AI gate is verified offline only."
+    "REAL_MODEL_CALLED=false: no authorized provider, so the AI gate is verified offline only.",
+    "REA was not executed: this RFC adopts no third-party code; sources are the public exchange API and the local runtime."
   ],
   "protected_surfaces": {
     "config/risk.yaml": "UNCHANGED",

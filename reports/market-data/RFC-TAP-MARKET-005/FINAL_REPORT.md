@@ -40,6 +40,7 @@ IA: 4 decisiones, 0 triggers, 0 llamadas de modelo (credencial ausente)
 - No dice que el bot gane dinero. El lector incremental reduce coste y error; no crea ventaja.
 - No dice que la IA esté validada: `REAL_MODEL_CALLED=false`, gate verificado sólo offline.
 - No dice que las ventanas hayan desaparecido. Siguen ahí hasta que se autorice re-registrar las tareas.
+- **REA no se ejecutó en este RFC, y se declara el motivo:** aquí no se adopta código de terceros. Las únicas fuentes son la API pública del exchange (medida con `curl` y capturada en el fixture) y el runtime local. No hay candidato GitHub que clasificar, así que no se repitió ni se amplió ninguna investigación REA previa; el `source_registry` de AI-BOTS-002/003D no se tocó.
 
 ## Fallos encontrados durante la construcción (y corregidos)
 

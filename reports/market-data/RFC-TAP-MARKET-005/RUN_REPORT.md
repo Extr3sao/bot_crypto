@@ -127,6 +127,7 @@ Casos adversariales cubiertos: vela en formación nunca persistida; duplicado en
 - **`since`:** el provider del runtime no lo expone; el delta es acotado + deduplicado. Un backlog > 1 000 velas se rechaza y exige `reconcile`.
 - **Equivalencia de datos:** demostrada sobre datos reales capturados hoy (12 series), en ventana de 24 h. No cubre regímenes anómalos del exchange (mantenimiento, huecos del venue) más allá de los casos simulados.
 - **Ventanas:** siguen existiendo hasta que se autorice WP-005H. Medido: 5 tareas de consola cada 15 min.
+- **REA:** no se ejecutó porque este RFC no adopta código de terceros; las fuentes son la API pública del exchange y el runtime local. No se repitió ninguna investigación REA anterior ni se modificó `source_registry`.
 
 ## 9. Decisión
 
