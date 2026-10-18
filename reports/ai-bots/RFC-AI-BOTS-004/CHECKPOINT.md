@@ -3,7 +3,10 @@
 **Actualizado:** 2026-10-18
 **Rama:** `agent/ai-critic/RFC-TAP-AI-BOTS-004`
 **Worktree:** `C:/Users/GVLLFR0035/Downloads/bot_crypto_004` (creado desde `b7e100a`)
-**Base:** `b7e100a` · **C1:** ver `git log -1 --format=%H` (implementación + evidencia)
+**Base:** `b7e100a`
+**C1:** `fb059432fb47b70c730cf5c4795de8c2b56878a9` — implementación + evidencia
+**C2:** `6871a2b6c398f4d221200418ea57f7718a615b39` — bytes de auditoría pinneados; tests y verificador ejecutados en ese checkout limpio
+**C3:** commit de este checkpoint/receipt (solo `reports/`; no cambia `src/` ni `tests/`)
 **Estado:** `IMPLEMENTED / SHADOW_ONLY` · `ECONOMIC_VALUE=UNMEASURED` · `GATED_PAPER=BLOCKED`
 
 ## 1. Objetivo
@@ -51,6 +54,15 @@ PYTHONPATH="$PWD/src" "/c/Users/GVLLFR0035/Downloads/bot freebuff/.venv/Scripts/
 ```
 
 Resultado esperado: 45 passed; verificador `PASS` con 59/59 checks y 7/7 mutaciones.
+
+Ensayo ya ejecutado en extracción limpia de `git archive` (`CLEAN_CHECKOUT_REHEARSAL.json`):
+45 passed y verificador `PASS` 59/59 + 7/7, con el SHA del HTML recalculado igual al declarado.
+
+```bash
+TMP=$(mktemp -d) && git archive HEAD | tar -x -C "$TMP"
+PYTHONPATH="$TMP/src" "<venv>/python" -m pytest tests/unit/intelligence/ai_critic tests/unit/intelligence/ai_bots -q
+"<venv>/python" scripts/ai_critic/verify_rfc004.py --root "$TMP/reports/ai-bots/RFC-AI-BOTS-004" --mutations
+```
 
 ## 5. Reglas que no se relajan
 

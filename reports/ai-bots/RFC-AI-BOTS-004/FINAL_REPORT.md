@@ -23,12 +23,12 @@
 
 ## 2. Commits
 
-- `C1` — implementación, tests, harness upstream, dossier REA, ablación, informes.
-- `C2` — receipts de test en checkout limpio y actualización de este informe/checkpoint.
+- `C1` `fb059432fb47b70c730cf5c4795de8c2b56878a9` — implementación, tests, harness upstream, dossier REA, ablación, informes.
+- `C2` `6871a2b6c398f4d221200418ea57f7718a615b39` — bytes de auditoría pinneados; tests (45 passed) y verificador (59/59, 7/7) ejecutados en extracción limpia `git archive` de este commit.
+- `C3` — solo `reports/` (receipts y actualización de este informe/checkpoint); no modifica `src/` ni `tests/`.
 
-Los hashes exactos están en `CHECKPOINT.md` y en `git log -1`. Antes de `C1` no se tocó
-ningún fichero del árbol de AI-BOTS-003C: se trabajó en un worktree separado creado desde
-`b7e100a` con `git worktree add`.
+Antes de `C1` no se tocó ningún fichero del árbol de AI-BOTS-003C: se trabajó en un worktree
+separado creado desde `b7e100a` con `git worktree add`.
 
 ## 3. Implemented
 
@@ -151,6 +151,7 @@ JavaScript; la conducta Python se prueba con el harness, etiquetada
 | `ABLATION_REPORT.json/md` | brazos, métricas, veredicto |
 | `INDEPENDENT_VERIFICATION.json` / `MUTATION_REPORT.json` | 59/59 checks, 7/7 mutaciones |
 | `TEST_RED_GREEN.json` | RED en base, GREEN en HEAD, mismo target |
+| `CLEAN_CHECKOUT_REHEARSAL.json` | tests y verificador sobre una extracción limpia de `git archive` (45 passed; 59/59; 7/7) |
 
 ## 11. Architecture status
 

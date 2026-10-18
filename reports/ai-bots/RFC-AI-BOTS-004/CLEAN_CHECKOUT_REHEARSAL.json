@@ -1,0 +1,25 @@
+{
+  "archive_sha256": "aaf9d8ac1d294b94023d4766cf89ef81ae3b6778d731ab3d2578f5825d0663fd",
+  "extraction_root": "temp directory (not the working tree)",
+  "html_sha256_declared": "7949425ac495b75dc796a2c1e79812c5bd6a921f2467bf4d2a921ec25da92f9c",
+  "html_sha256_matches": true,
+  "html_sha256_recomputed": "7949425ac495b75dc796a2c1e79812c5bd6a921f2467bf4d2a921ec25da92f9c",
+  "method": "git archive HEAD | tar -x into an empty temp directory; tests and verifier run against that extraction",
+  "note": "line endings are stored byte-unchanged for this tree (.gitattributes -text); a converted checkout changes the bytes and would be rejected, which is the intended fail-closed behaviour",
+  "schema_version": "TAP004_CLEAN_CHECKOUT_V1",
+  "tests": {
+    "command": "pytest tests/unit/intelligence/ai_critic tests/unit/intelligence/ai_bots -q",
+    "exit_code": 0,
+    "result": "45 passed",
+    "tail": "45 passed, 14 warnings in 4.62s"
+  },
+  "verification": {
+    "checks_passed": 59,
+    "checks_total": 59,
+    "command": "verify_rfc004.py --root <clean>/reports/ai-bots/RFC-AI-BOTS-004 --mutations",
+    "exit_code": 0,
+    "mutations_rejected": 7,
+    "mutations_total": 7,
+    "verdict": "PASS"
+  }
+}

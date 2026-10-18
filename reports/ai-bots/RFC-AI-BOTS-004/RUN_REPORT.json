@@ -5,6 +5,11 @@
   "bot": "BOT-CRI-01",
   "branch": "agent/ai-critic/RFC-TAP-AI-BOTS-004",
   "base_commit": "b7e100a",
+  "commits": {
+    "C1_implementation": "fb059432fb47b70c730cf5c4795de8c2b56878a9",
+    "C2_pinned_audit_bytes_and_clean_checkout": "6871a2b6c398f4d221200418ea57f7718a615b39",
+    "C3_receipts_and_reports_only": "see git log -1 (reports-only change)"
+  },
   "worktree": "bot_crypto_004 (separate git worktree; the AI-BOTS-003C worktree was not touched)",
   "run_date": "2026-10-18",
   "phase": {
@@ -110,6 +115,14 @@
     "mutations_rejected": 7,
     "mutations_total": 7,
     "false_success": 0,
+    "clean_checkout": {
+      "method": "git archive HEAD | tar -x into an empty directory",
+      "archive_sha256": "aaf9d8ac1d294b94023d4766cf89ef81ae3b6778d731ab3d2578f5825d0663fd",
+      "tests_passed": 45,
+      "verifier_checks": "59/59",
+      "mutations": "7/7",
+      "html_sha256_recomputed_equals_declared": true
+    },
     "authorship_limit": "builder and verifier were written by the same agent; independence is structural (no builder imports, values recomputed), not institutional"
   },
   "limitations": [
