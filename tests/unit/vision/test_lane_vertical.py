@@ -165,19 +165,28 @@ def test_the_ledger_chain_verifies_after_a_run(tmp_path):
 
 
 def test_a_decision_is_executed_at_the_next_bar_open_never_its_own(tmp_path):
+    """RFC-TAP-AI-BOTS-003: the decision instant is the close, and the fill is the next open.
+
+    Both happen at the same wall-clock instant, which is the point: the bar that opens as
+    the opinion is formed is the first one whose *open* the opinion could have traded.
+    """
     provider = ReplayProvider(long_then_flat)
     _, summary = run_lane(tmp_path, provider)
     lines = read_entries(tmp_path / "decisions.jsonl")
-    decision_ts = {
-        line["seq"]: line["entry"]["ts_ms"]
+    decisions = {
+        line["seq"]: line["entry"]
         for line in lines
         if line["entry"]["kind"] == "DECISION"
     }
     fills = [line["entry"] for line in lines if line["entry"]["kind"] == "FILL"]
     assert fills, "the scripted LONG must fill"
     for fill in fills:
-        decided_at = decision_ts[fill["decision_seq"]]
-        assert fill["ts_ms"] - decided_at == HOUR_MS
+        decision = decisions[fill["decision_seq"]]
+        assert decision["ts_ms"] == decision["decision_bar_ts_ms"] + HOUR_MS
+        assert fill["ts_ms"] == decision["ts_ms"], (
+            "the fill bar opens at the instant the decision was formed; filling earlier "
+            "would have used a price from before the opinion existed"
+        )
         assert fill["fill_bar_index"] == fill["decision_bar_index"] + 1
     del summary
 
@@ -194,7 +203,9 @@ def test_the_recorded_image_is_reproducible_from_the_bars(tmp_path):
         entry = line["entry"]
         if entry["kind"] != "DECISION":
             continue
-        index = next(i for i, bar in enumerate(bars) if bar.ts_ms == entry["ts_ms"])
+        index = next(
+            i for i, bar in enumerate(bars) if bar.ts_ms == entry["decision_bar_ts_ms"]
+        )
         rebuilt = render_chart_png(bars[: index + 1], symbol=entry["symbol"], window_bars=30)
         assert rebuilt.sha256 == entry["chart"]["sha256"]
         assert entry["window_fingerprint"]

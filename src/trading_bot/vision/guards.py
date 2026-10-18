@@ -4,9 +4,10 @@ The RFC is explicit that no trade may be produced by model text without schema, 
 the canonical RiskManager. Schema is ``contract.py`` and risk is ``RiskManager``; this
 module is the middle layer that answers, mechanically:
 
-* **PIT** — does every bar in the picture predate the decision? A chart that contains
-  the bar it is deciding on is a look-ahead, and the position it produces would be
-  unfalsifiable.
+* **PIT** — has every bar in the picture *closed* before the decision instant? A chart
+  that contains a bar still forming at that instant is a look-ahead, and the position it
+  produces would be unfalsifiable. The check needs the bar duration, because a bar's
+  timestamp is its open (RFC-TAP-AI-BOTS-003).
 * **Freshness** — is the image the one rendered for *this* decision bar? A cached or
   re-used snapshot makes the model answer an old market; the RFC calls it `STALE_CHART`
   and requires zero orders.
@@ -43,14 +44,28 @@ class OpinionRejected(RuntimeError):
         self.detail = detail
 
 
-def assert_causal(bars: Sequence[Any], decision_ts_ms: int) -> None:
-    """Every bar must have closed at or before the decision instant."""
-    future = [int(bar.ts_ms) for bar in bars if int(bar.ts_ms) > int(decision_ts_ms)]
-    if future:
+def assert_causal(
+    bars: Sequence[Any], decision_ts_ms: int, *, bar_interval_ms: int
+) -> None:
+    """Every bar in the picture must have **closed** at or before the decision instant.
+
+    ``bar_interval_ms`` is required on purpose. A bar's ``ts_ms`` is its open, so the
+    earlier version of this check compared opens against the decision instant and let a
+    decision made at the close of the last bar pass as if it had been made one timeframe
+    earlier — the bar it was reading had not closed yet at that instant. A caller that
+    does not know the bar duration cannot answer this question, so it has to say so.
+    """
+
+    interval = int(bar_interval_ms)
+    if interval <= 0:
+        raise ValueError("bar_interval_ms must be positive")
+    unclosed = [int(bar.ts_ms) for bar in bars if int(bar.ts_ms) + interval > int(decision_ts_ms)]
+    if unclosed:
         raise OpinionRejected(
             "PIT_VIOLATION",
-            f"{len(future)} bar(s) open after the decision instant "
-            f"(first {future[0]} > {int(decision_ts_ms)})",
+            f"{len(unclosed)} bar(s) had not closed at the decision instant "
+            f"(first opens at {unclosed[0]}, closes at {unclosed[0] + interval} "
+            f"> {int(decision_ts_ms)})",
         )
 
 

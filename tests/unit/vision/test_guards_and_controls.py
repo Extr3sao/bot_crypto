@@ -18,6 +18,7 @@ from trading_bot.paper.broker import BrokerCost
 from trading_bot.research.economic_recovery.experiments import Bar
 from trading_bot.vision import lane as lane_module
 from trading_bot.vision.chart import render_chart_png
+from trading_bot.vision.clock import timeframe_ms
 from trading_bot.vision.guards import (
     OpinionRejected,
     assert_asset,
@@ -109,10 +110,20 @@ def entries(path: Path) -> list[dict]:
 
 
 def test_AIV_03_a_bar_that_had_not_closed_is_a_pit_violation():
+    """AIV-03: `ts_ms` is the open, so the instant must be the close (BOT-03).
+
+    The old version of this test asked whether a bar's *open* was after the decision
+    instant, which every decision taken on that bar's close satisfies. It now asks what
+    it meant to ask: had the last bar in the picture closed by then?
+    """
     series = bars(20)
-    assert_causal(series, series[-1].ts_ms)
+    interval = timeframe_ms("1h")
+
+    # The close of the last bar is knowable, so every bar in the window has closed.
+    assert_causal(series, series[-1].ts_ms + interval, bar_interval_ms=interval)
+    # The instant the old code stamped on the decision: the last bar is still forming.
     with pytest.raises(OpinionRejected) as caught:
-        assert_causal(series, series[-2].ts_ms)
+        assert_causal(series, series[-1].ts_ms, bar_interval_ms=interval)
     assert caught.value.code == "PIT_VIOLATION"
 
 
@@ -285,7 +296,10 @@ def test_the_window_fingerprint_in_the_ledger_matches_the_bars_drawn(tmp_path):
     for row in entries(tmp_path):
         if row["kind"] != "DECISION":
             continue
-        index = next(i for i, bar in enumerate(series) if bar.ts_ms == row["ts_ms"])
+        # The decision instant is the bar's close, so the row names the bar it was
+        # formed on explicitly instead of leaving it to be inferred from the clock.
+        assert "decision_bar_ts_ms" in row
+        index = next(i for i, bar in enumerate(series) if bar.ts_ms == row["decision_bar_ts_ms"])
         expected = window_fingerprint(series[: index + 1], window_bars=30)
         assert row["window_fingerprint"] == expected
         rebuilt = render_chart_png(series[: index + 1], symbol="BTC/USDT", window_bars=30)

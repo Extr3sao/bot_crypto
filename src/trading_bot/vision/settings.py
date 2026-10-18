@@ -50,6 +50,10 @@ class LaneConfig:
     decision_every_bars: int = 24
     max_calls_per_run: int = 300
     max_estimated_spend_usd: float = 2.0
+    #: How long after a bar closes its data is actually available. Zero means "not
+    #: measured", and the ledger records the value so a run that assumed zero is
+    #: distinguishable from one that measured it (RFC-TAP-AI-BOTS-003).
+    data_delay_ms: int = 0
 
 
 @dataclass(frozen=True, slots=True)
@@ -85,6 +89,7 @@ class VisionConfig:
                 "decision_every_bars": self.lane.decision_every_bars,
                 "max_calls_per_run": self.lane.max_calls_per_run,
                 "max_estimated_spend_usd": self.lane.max_estimated_spend_usd,
+                "data_delay_ms": self.lane.data_delay_ms,
             },
         }
 
@@ -135,9 +140,12 @@ def load_vision_config(
         decision_every_bars=int(lane.get("decision_every_bars") or 24),
         max_calls_per_run=int(lane.get("max_calls_per_run") or 300),
         max_estimated_spend_usd=float(lane.get("max_estimated_spend_usd") or 2.0),
+        data_delay_ms=int(source.get("VISION_DATA_DELAY_MS") or lane.get("data_delay_ms") or 0),
     )
     if lane_config.decision_every_bars < 1:
         raise ValueError("lane.decision_every_bars must be >= 1")
     if lane_config.window_bars < 20:
         raise ValueError("lane.window_bars must be >= 20")
+    if lane_config.data_delay_ms < 0:
+        raise ValueError("lane.data_delay_ms cannot be negative: the feed cannot deliver early")
     return VisionConfig(provider=provider, lane=lane_config)

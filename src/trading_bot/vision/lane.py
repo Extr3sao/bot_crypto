@@ -9,9 +9,12 @@ it instead. Everything downstream is the runtime's own machinery:
 
 Timing is the same discipline the deterministic lane uses, and it matters:
 
-* the decision is taken on the **close** of bar *i*, using bars ``[: i + 1]`` only;
+* the decision is taken on the **close** of bar *i*, using bars ``[: i + 1]`` only, and
+  is stamped at ``open + timeframe + data_delay`` — the instant that close was knowable;
 * it becomes executable at the **open** of bar *i + 1*, so no fill can use a price the
-  model had not seen;
+  model had not seen, and an answer whose latency carries it past that open is dropped;
+* the risk engine is marked with the same net equity the curve publishes, every bar, so
+  its drawdown and sizing gates see the book the report describes.
 * protective exits are checked before new entries on every bar, with the broker's
   conservative both-hit policy (``stop_first``).
 
@@ -32,7 +35,7 @@ from __future__ import annotations
 import hashlib
 import json
 from collections.abc import Callable, Sequence
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from datetime import UTC, datetime
 from itertools import pairwise
 from pathlib import Path
@@ -45,6 +48,7 @@ from trading_bot.research.equity_drawdown import max_drawdown
 from trading_bot.risk.manager import RiskManager
 from trading_bot.strategies.types import Side, Signal
 from trading_bot.vision.chart import ChartImage, render_chart_png, window_fingerprint
+from trading_bot.vision.clock import bar_close_ms, information_ms, timeframe_ms
 from trading_bot.vision.contract import (
     DecisionParseError,
     VisionDecision,
@@ -114,10 +118,15 @@ class PendingOrder:
     #: data hole the next available bar may be hours later, and executing there would
     #: fill at a price the opinion never described.
     decision_ts_ms: int = 0
+    #: The open of the bar the opinion was formed on. Kept separately from
+    #: ``decision_ts_ms`` (its close) because execution must refuse a bar that is not the
+    #: immediately following one, and that comparison is between two opens.
+    decision_bar_open_ms: int = 0
     expected_step_ms: int = 0
-    #: When the provider's answer actually reached us (bar time + measured latency). A
-    #: response that lands after the fill bar has opened cannot be executed at that bar's
-    #: open price: that price is in the past by then. Zero means "not measured".
+    #: When the provider's answer actually reached us: the decision instant (the close of
+    #: the bar the opinion was formed on) plus measured latency. A response that lands
+    #: after the fill bar has opened cannot be executed at that bar's open price. Zero
+    #: means "not measured".
     received_at_ms: int = 0
 
 
@@ -158,6 +167,10 @@ class VisionLane:
         self.ledger = DecisionLedger(ledger_path)
         self.window_bars = int(config.lane.window_bars)
         self.timeframe = config.lane.timeframe
+        #: Bar duration and feed delay: the two terms that turn a bar's open into the
+        #: instant its close was knowable. Read once, recorded in the ledger.
+        self.interval_ms = timeframe_ms(self.timeframe)
+        self.data_delay_ms = int(config.lane.data_delay_ms)
         self.risk_policy = risk_policy
         #: Which prompt a bot is asked with. BOT-VIS-01 draws a chart and uses the visual
         #: prompt; BOT-CTX-01 sends numbers and must not be told an image exists, so the
@@ -296,6 +309,12 @@ class VisionLane:
             self.stop_reason = "SPEND_BUDGET_REACHED"
             return None
 
+        #: The close of the last bar in the window, not its open. This instant is the
+        #: whole point of the clock module: a decision that reads the close cannot exist
+        #: before the bar closed, and the ledger records when it really did.
+        decision_ts_ms = information_ms(
+            int(bar.ts_ms), self.interval_ms, self.data_delay_ms
+        )
         chart: ChartImage = render_chart_png(
             bars_seen, symbol=symbol, timeframe=self.timeframe, window_bars=self.window_bars
         )
@@ -304,7 +323,7 @@ class VisionLane:
         request = VisionRequest(
             chart=chart,
             prompt=prompt,
-            decision_ts_ms=int(bar.ts_ms),
+            decision_ts_ms=decision_ts_ms,
             detail=self.config.provider.detail,
         )
 
@@ -312,15 +331,15 @@ class VisionLane:
         # asset or built from a bar that had not closed cannot produce a tradeable
         # opinion, so paying for the answer would be paying for nothing.
         try:
-            assert_causal(bars_seen, int(bar.ts_ms))
+            assert_causal(bars_seen, decision_ts_ms, bar_interval_ms=self.interval_ms)
             assert_fresh(chart.last_ts_ms, int(bar.ts_ms))
             assert_asset(chart.symbol, symbol)
         except OpinionRejected as exc:
             self.ledger.append(
                 "GUARD_REJECT",
                 {
-                    "ts_ms": int(bar.ts_ms),
-                    "ts_utc": _utc_iso(int(bar.ts_ms)),
+                    "ts_ms": decision_ts_ms,
+                    "ts_utc": _utc_iso(decision_ts_ms),
                     "symbol": symbol,
                     "code": exc.code,
                     "detail": exc.detail,
@@ -332,9 +351,10 @@ class VisionLane:
             return None
 
         base = {
-            "ts_ms": int(bar.ts_ms),
-            "ts_utc": _utc_iso(int(bar.ts_ms)),
+            "ts_ms": decision_ts_ms,
+            "ts_utc": _utc_iso(decision_ts_ms),
             "symbol": symbol,
+            "decision_bar_ts_ms": int(bar.ts_ms),
             "chart": chart.fingerprint(),
             "window_fingerprint": window_fingerprint(bars_seen, window_bars=self.window_bars),
             "prompt": {"version": prompt.version, "sha256": prompt.sha256, "context": context},
@@ -440,10 +460,12 @@ class VisionLane:
             intent=resolved.intent,
             decision=decision,
             decision_seq=line.seq,
-            decision_ts_ms=int(bar.ts_ms),
-            #: The answer's arrival time, on the bar clock. Execution refuses a fill
-            #: whose bar opened before the answer existed.
-            received_at_ms=int(bar.ts_ms) + max(0, int(response.latency_ms or 0)),
+            decision_bar_open_ms=int(bar.ts_ms),
+            decision_ts_ms=decision_ts_ms,
+            #: The answer's arrival time, on the bar clock: the close it was formed on
+            #: plus measured latency. Execution refuses a fill whose bar opened before
+            #: the answer existed, and with this clock that means any real latency.
+            received_at_ms=decision_ts_ms + max(0, int(response.latency_ms or 0)),
         )
 
     # -- execution -----------------------------------------------------------
@@ -457,7 +479,7 @@ class VisionLane:
 
         if (
             pending.expected_step_ms
-            and int(bar.ts_ms) - pending.decision_ts_ms != pending.expected_step_ms
+            and int(bar.ts_ms) - pending.decision_bar_open_ms != pending.expected_step_ms
         ):
             # A hole in the data means this bar is not the one the opinion was formed for:
             # the next available bar may be hours later, and filling there would trade at a
@@ -470,9 +492,10 @@ class VisionLane:
                     "symbol": symbol,
                     "code": "STALE_EXECUTION",
                     "detail": (
-                        f"the opinion was formed at {pending.decision_ts_ms} and the next "
-                        f"available bar is {int(bar.ts_ms)} "
-                        f"({int(bar.ts_ms) - pending.decision_ts_ms} ms later, expected "
+                        f"the opinion was formed on the bar opening at "
+                        f"{pending.decision_bar_open_ms} and the next available bar is "
+                        f"{int(bar.ts_ms)} "
+                        f"({int(bar.ts_ms) - pending.decision_bar_open_ms} ms later, expected "
                         f"{pending.expected_step_ms}); dropping it instead of filling late"
                     ),
                     "stage": "EXECUTION",
@@ -681,6 +704,8 @@ class VisionLane:
                         "decision_every_bars": self.decision_every,
                         "window_bars": self.window_bars,
                         "timeframe": self.timeframe,
+                        "bar_interval_ms": self.interval_ms,
+                        "data_delay_ms": self.data_delay_ms,
                         "max_calls": self.max_calls,
                         "max_spend_usd": self.max_spend_usd,
                     },
@@ -709,8 +734,10 @@ class VisionLane:
                     if index is None:
                         continue
                     bar = bars[index]
-                    self._marks[symbol] = float(bar.close)
 
+                    # Execution first, on prices this bar's open makes tradable, and
+                    # without this bar's close anywhere in the marks: the close is not
+                    # knowable until the bar ends.
                     closed = self.broker.check_positions_ohlc(
                         {symbol: (float(bar.open), float(bar.high), float(bar.low), float(bar.close))}
                     )
@@ -723,32 +750,37 @@ class VisionLane:
                     if pending is not None and pending.bar_index == index:
                         self._execute(symbol, bar, pending, index)
 
+                    # The bar has now ended for this symbol, so its close is a fact.
+                    self._marks[symbol] = float(bar.close)
+
                     if decision_due(
                         index,
                         window_bars=self.window_bars,
                         every=self.decision_every,
                         stop_reason=self.stop_reason,
                     ):
-                            bars_seen = bars[: index + 1]
-                            decision = self._decide(symbol, bar, bars_seen)
-                            if decision is not None:
-                                self._pending[symbol] = PendingOrder(
-                                    bar_index=index + 1,
-                                    intent=decision.intent,
-                                    decision=decision.decision,
-                                    decision_seq=decision.decision_seq,
-                                    decision_ts_ms=int(bar.ts_ms),
-                                    expected_step_ms=int(self._step_ms[symbol]),
-                                    received_at_ms=int(decision.received_at_ms),
-                                )
+                        bars_seen = bars[: index + 1]
+                        decision = self._decide(symbol, bar, bars_seen)
+                        if decision is not None:
+                            self._pending[symbol] = replace(
+                                decision,
+                                bar_index=index + 1,
+                                expected_step_ms=int(self._step_ms[symbol]),
+                            )
 
+                # The bar has closed: this is the instant the decision instant refers to,
+                # and the instant the book's mark is known. Marking the risk engine with
+                # the same net equity the curve publishes is what makes its drawdown and
+                # sizing gates describe the book the report describes.
+                close_ms = bar_close_ms(ts, self.interval_ms)
+                self._current_ms[0] = close_ms
+                marked = float(self.broker.mark_to_market_equity(dict(self._marks)))
+                self.risk.mark_equity(marked)
                 self.equity_curve.append(
                     {
-                        "ts_ms": ts,
-                        "ts_utc": _utc_iso(ts),
-                        "equity": round(
-                            float(self.broker.mark_to_market_equity(dict(self._marks))), 8
-                        ),
+                        "ts_ms": close_ms,
+                        "ts_utc": _utc_iso(close_ms),
+                        "equity": round(marked, 8),
                         "risk_equity": round(float(self.risk.equity), 8),
                     }
                 )
