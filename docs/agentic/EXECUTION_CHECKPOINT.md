@@ -512,3 +512,72 @@ git log -1 --format='%H %s'
 
 **Siguiente WP**: `AI-BOTS-003` (issue #12): causalidad de `bar.ts_ms`, latencia de respuesta y MTM
 neto. EVIDENCE-004 no lo bloquea; garantiza que sus cifras no puedan contradecirse.
+
+---
+
+## WP-TAP-AI-BOTS-003B — motor de ejecución paper causal (2026-10-18)
+
+**Rama:** `agent/ai-bots/RFC-TAP-AI-BOTS-003` · **Baseline:** `2921f6d` · **Motor:** `96957a2` · **Evidencia:** `e6707f9` (publicado; fast-forward sobre `2921f6d`)
+
+**Objetivo.** Cerrar la consecuencia que el bloque A dejó escrita: con el reloj correcto,
+cualquier latencia real descartaba el fill, porque el carril pedía la apertura de una vela
+que ya había abierto antes de la respuesta. Un proveedor real producía `NO_TRADE` eterno.
+
+**Hecho (verificado).**
+
+- `src/trading_bot/vision/execution.py`: `Quote`/`quote_at`/`schedule`. Sólo una apertura de
+  vela es cotización; cualquier instante dentro de una vela lanza `InsufficientResolution`
+  en vez de interpolar. Ventana de la opinión declarada (`max_opinion_age_ms`, una vela por
+  defecto) y registrada en la fila `RUN`.
+- `lane.py`: entradas primero (la cotización es la primera apertura `>= received_at_ms`),
+  después el rango de la vela para los stops, después marcas y decisiones. Cada `FILL` y
+  cada `CLOSE` declaran su procedencia y su ventana.
+- `paper/broker.py`: `check_positions_ohlc(..., gap_policy="open_on_gap")`; el valor por
+  defecto no cambia para el resto de llamantes.
+- `summary.reconciliation` con cinco identidades y `summary.execution` con la espera medida.
+- `scripts/ai_bots_003b_verify.py`: verificador **independiente** (sin importar `trading_bot`)
+  con 21 comprobaciones y 10 mutaciones.
+
+```text
+pytest tests/unit/vision/test_causal_execution.py   9 failed / 1 passed  ->  10 passed
+pytest vision+paper+reports+intelligence            293 passed            exit 0
+ruff / mypy                                         limpio                exit 0
+ai_bots_003b_verify.py  VIS / CTX                   21 PASS / 0 FAIL c/u  exit 0
+ai_bots_003b_verify.py --mutations  VIS / CTX       10 / 10 detectadas    exit 0
+ai_bots_rea_verify.py                               73 PASS / 0 FAIL      exit 0
+ai_bots_run.py --mode live (sin clave)              BLOCKED               exit 2
+git archive HEAD -> raíces LF y CRLF                economía idéntica; verificación byte-idéntica
+```
+
+**Paper con 900 ms declarados:** 14 rellenos por bot (antes: 0), espera 1 h − 900 ms,
+8 stops / 6 objetivos, bruto +6.70, costes −22.38, neto −15.68. `MOCK_TEST`.
+
+**Sustituido, dicho en voz alta:** `test_a_latency_below_the_timeframe_...` afirmaba
+`fills == 0` con 60 s y el test del hueco afirmaba `STALE_EXECUTION`; ambas eran la
+consecuencia de B-01, no propiedades. Ahora comprueban lo que importa: ningún relleno paga
+un precio anterior a la respuesta.
+
+**Pendiente / bloqueado**
+
+- `REAL_MODEL_CALLED = false`; el bloqueo de la llamada real multimodal sigue en `BLOCKED_MODEL_API`.
+- Los dos bots dan el mismo resultado porque el guion mock ignora el prompt: fontanería, no paridad.
+- El ledger no es byte-idéntico entre runs: cada línea sella `recorded_at_utc`. Se compara
+  por contenido económico y por cadena recalculada.
+- Suite completa del repositorio no ejecutada (171 ficheros ajenos en vuelo).
+
+**Reanudación verificable**
+
+```bash
+cd "$(git rev-parse --show-toplevel)"
+git log -1 --format='%H %s'
+./.venv/Scripts/python.exe -m pytest tests/unit/vision/test_causal_execution.py -q   # esperado: 10 passed
+./.venv/Scripts/python.exe scripts/ai_bots_003b_verify.py \
+  --ledger reports/ai-bots/RFC-AI-BOTS-003/BLOCK-B/runs/bot-vis-01/BOT-VIS-01_DECISIONS.jsonl \
+  --summary reports/ai-bots/RFC-AI-BOTS-003/BLOCK-B/runs/bot-vis-01/SUMMARY.json --root .   # esperado: 21 PASS / 0 FAIL
+./.venv/Scripts/python.exe scripts/ai_bots_003b_verify.py \
+  --ledger reports/ai-bots/RFC-AI-BOTS-003/BLOCK-B/runs/bot-vis-01/BOT-VIS-01_DECISIONS.jsonl \
+  --summary reports/ai-bots/RFC-AI-BOTS-003/BLOCK-B/runs/bot-vis-01/SUMMARY.json --mutations   # esperado: 10/10
+```
+
+**Siguiente WP**: `AI-BOTS-003C/D` — proveedor offline listo (`NO_KEY => BLOCKED`) y colector
+prospectivo con hash. La llamada real multimodal sigue necesitando clave y aprobación de coste.
