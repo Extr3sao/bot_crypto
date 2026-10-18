@@ -1,3 +1,69 @@
+## 2026-10-18 · WP-TAP-EVIDENCE-004F — cierre de identidad, y traspaso a AI-BOTS-003
+
+**Objetivo:** cerrar los cinco defectos residuales de EVIDENCE-004 (E4-01..E4-05) sin abrir otro
+RFC ni rehacer el paquete, y publicar la reparación con verificación desde checkouts
+independientes. Después, AI-BOTS-003 en una rama aparte.
+
+**Base:** `243ba12` (rama `agent/evidence/RFC-TAP-EVIDENCE-004`).
+**Commit de este bloque:** `978c485`.
+
+**Hecho**
+
+1. **E4-01 — un origen, una identidad.** `SourceSpan` guarda `content_sha256` en el dominio
+   `TEXT_CANONICAL_LF`; clasificador, generador y verificador aplican la misma regla (antes
+   `_read_source` hasheaba bytes del checkout y el verificador normalizaba a LF).
+2. **E4-01b — la comprobación de spans tenía cero sujetos.** El generador publicaba eventos sin
+   `sources`, así que `stored_spans_point_at_the_bytes_they_hashed` pasaba sin evaluar nada.
+   Ahora los spans se publican y, sin spans, el check falla.
+3. **E4-02 — texto no es bytes.** `SUPERSESSION_MANIFEST.json` v2 declara dominio y autoridad por
+   documento (`preservation.content_sha256`); v1 se conserva intacto en
+   `evidence-004/superseded-manifests/SUPERSESSION_MANIFEST.v1.json`.
+4. **E4-03 — cifras renderizadas.** Los claims NARRATIVE se generan desde contadores; el texto
+   libre con un número se rechaza. La frase publicada es «9 registradas, 7 ejecutadas, 2 no
+   ejecutadas», y `CLAIMS.json` v1 queda archivado.
+5. **E4-04 — verificador portable.** Detalles repo-relativos; dos raíces (LF y CRLF) producen
+   `VERIFICATION.json` idéntico **byte a byte**.
+6. **E4-05 — publicación transaccional.** Proyección candidata completa → relectura y re-hash →
+   conmutación de `CURRENT_MANIFEST.json` → poda solo de huérfanas. La proyección anterior sobrevive
+   y queda registrada en `SUPERSEDED_PROJECTIONS.json`.
+7. **`.gitignore`**: `reports/*` ignoraba el árbol entero, así que cada proyección nueva nacía
+   invisible para git y un checkout limpio no podría verificarla. Se re-incluye el paquete paso a
+   paso, como los paquetes de evidencia anteriores.
+
+**Verificación real (no reutilizada de informes previos)**
+
+```text
+scripts/evidence004_verify.py                     exit 0   42 PASS / 0 FAIL
+scripts/evidence004_verify.py --mutations         exit 0   18/18 rechazadas
+scripts/ai_bots_rea_verify.py                     exit 0   73 PASS / 0 FAIL
+pytest reports+vision+intelligence                exit 0   193 passed (17 nuevos)
+ruff / mypy (scripts + tests/unit/reports)        exit 0
+git archive HEAD -> raíz LF                       exit 0   42 PASS / 0 FAIL
+git archive HEAD -> raíz convertida a CRLF        exit 0   42 PASS / 0 FAIL
+VERIFICATION.json LF vs CRLF vs commit            idénticos (cmp, sin diferencias)
+--mutations sobre la extracción del archivo       exit 0   18/18 rechazadas
+```
+
+**Pendiente / bloqueado**
+
+- `REAL_MODEL_CALLED = false`: sin credencial ni autorización de gasto. Cinco de las siete
+  evidencias siguen siendo declaradas, no verificadas byte a byte.
+- **AI-BOTS-003 no empezado en este checkpoint**; el siguiente bloque lo actualiza con su rama,
+  su commit y sus resultados.
+- Suite completa del repositorio no ejecutada: hay ficheros ajenos modificados en el árbol (otros
+  agentes). Declarar un PASS global con eso en vuelo sería el defecto que este WP elimina.
+
+**Reanudación verificable**
+
+```bash
+cd "$(git rev-parse --show-toplevel)"
+git log -1 --format='%H %s'                                    # esperado: 978c485 o su sucesor
+./.venv/Scripts/python.exe scripts/evidence004_verify.py       # esperado: 42 PASS / 0 FAIL, exit 0
+./.venv/Scripts/python.exe -m pytest tests/unit/reports -q     # esperado: 41 passed, exit 0
+git archive HEAD | tar -x -C "$TEMP/ev004-lf"                  # extracción limpia
+./.venv/Scripts/python.exe scripts/evidence004_verify.py --root "$TEMP/ev004-lf"   # 42 PASS
+```
+
 # Execution checkpoint — reanudación entre sesiones
 
 > Documento vivo. **Antes de empezar cualquier sesión**: leer este fichero y validarlo contra Git
