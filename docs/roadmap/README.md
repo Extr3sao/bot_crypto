@@ -1,14 +1,14 @@
 # Trading Agentic Portable — Roadmap maestro
 
-**Fecha de corte:** 2026-10-18 · **Versión actual:** 1.2 · **Estado:** inventario de gestión, NO certificado de producción.
+**Fecha de corte:** 2026-10-18 · **Versión actual:** 1.4 · **Estado:** inventario de gestión, NO certificado de producción.
 
 Este directorio conserva el seguimiento de Trading Agentic Portable en formato Excel y un espejo de datos fácilmente revisable en Git. La autoridad de cada estado viene de los commits y evidencias de las ramas, **no** de la existencia del RFC.
 
 ## Archivos
 
-- `ROADMAP_TRADING_AGENTIC_PORTABLE.xlsx`: Excel maestro con 9 hojas (RESUMEN, ROADMAP, FASES, RFC_Y_WP, BLOQUEOS, DEPENDENCIAS, EVIDENCIAS, HISTORIAL, COMO_ACTUALIZAR), 61 tareas con ID estable, filtros, prioridades y visualizaciones.
+- `ROADMAP_TRADING_AGENTIC_PORTABLE.xlsx`: Excel maestro con 9 hojas (RESUMEN, ROADMAP, FASES, RFC_Y_WP, BLOQUEOS, DEPENDENCIAS, EVIDENCIAS, HISTORIAL, COMO_ACTUALIZAR), 71 tareas con ID estable, filtros, prioridades y visualizaciones.
 - `ROADMAP_MASTER_DATA.json`: snapshot estructurado de fuentes/estados para actualizaciones y futuros automatismos.
-- `ROADMAP_MASTER.csv`: vista de las 60 tareas para diff, búsquedas y herramientas simples.
+- `ROADMAP_MASTER.csv`: vista de las 71 tareas para diff, búsquedas y herramientas simples.
 
 ## Regla para actualizar
 
@@ -29,7 +29,7 @@ Este directorio conserva el seguimiento de Trading Agentic Portable en formato E
 
 **Gobernanza:** `FALSE_SUCCESS=0`, `BUILDER != VERIFIER`, `TEST_TARGET == RUNTIME_TARGET`, `NO_TRADE` es decisión de primera clase. No hacer live trading, gastos API, cambios de riesgo o uso de secretos sin permiso.
 
-Issues principales: [#10](https://github.com/Extr3sao/bot_crypto/issues/10) · [#11](https://github.com/Extr3sao/bot_crypto/issues/11) · [#12](https://github.com/Extr3sao/bot_crypto/issues/12) · [#13](https://github.com/Extr3sao/bot_crypto/issues/13) · [#14](https://github.com/Extr3sao/bot_crypto/issues/14).
+Issues principales: [#10](https://github.com/Extr3sao/bot_crypto/issues/10) · [#11](https://github.com/Extr3sao/bot_crypto/issues/11) · [#12](https://github.com/Extr3sao/bot_crypto/issues/12) · [#13](https://github.com/Extr3sao/bot_crypto/issues/13) · [#14](https://github.com/Extr3sao/bot_crypto/issues/14) · [#16](https://github.com/Extr3sao/bot_crypto/issues/16).
 
 ## Publicación
 
@@ -41,3 +41,13 @@ Issues principales: [#10](https://github.com/Extr3sao/bot_crypto/issues/10) · [
 - AI-BOTS-003C remota `0841d37`: nueva evidencia de `series_sha256` de barras consumidas, captura 1000 barras y 120 checks/53 mutaciones reportados; 459 tests de runtime NO repetidos.
 - `TAP-061` / `BL-14` (P1): ventanas emergentes de bash/cmd/PowerShell en Windows; **reportadas, no corregidas**. Véase `WP_OPS_BACKGROUND_001_NO_VISIBLE_CONSOLES.md`.
 - El Excel v1.2, JSON y CSV actualizan 61 entregables. La issue/PR de roadmap permanece sin merge; no tocar ramas de otros agentes.
+
+## Revisión v1.3 — 2026-10-18
+
+- WP-OPS-BACKGROUND-001 `fe9b5e2`: `TAP-061` marcado `VERIFICADO_FOCAL` para procesos internos, pero pantalla visual `NOT_OBSERVABLE`. `TAP-062` Freebuff/Bun externo bloqueado; `TAP-063` Task Scheduler sin activar. Inventario total 63. No confirmar popup resuelto.
+
+## Revisión v1.4 — 2026-10-18
+
+- RFC-TAP-MARKET-005 `PROPOSED` en issue [#16](https://github.com/Extr3sao/bot_crypto/issues/16): **datos incrementales**, MarketSnapshot PIT, disparadores IA por evento y auditoría de recargas 1000x1h/500x4h/500x1d. Se añaden `TAP-064` a `TAP-071`, bloqueos `BL-16/BL-17`, una evidencia de correlación de código `EV-018` y roadmap de 71 entregables.
+- **Sin nueva ejecución:** no atribuir esas descargas a Task Scheduler solo por parecerse a `real_market_context`; falta correlacionar proceso/task/run_id. El RFC no desactiva tareas ni activa LLM real; `REAL_MODEL_CALLED=false` permanece.
+- El Excel, JSON y CSV deben actualizarse juntos con este README en la rama del roadmap. El PR #15 permanece sin fusionar a `main`.
