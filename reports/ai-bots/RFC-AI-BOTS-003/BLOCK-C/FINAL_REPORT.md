@@ -68,6 +68,27 @@ capture 5 escenarios         5 cadenas intactas            exit 0
 BLOCK-B re-verificado        21/21 por bot + 10/10 mutaciones exit 0 (evidencia previa intacta)
 ```
 
+### Pines de reproducibilidad
+
+No basta con decir "son datos reales": hay que poder repetir la cifra. `CAPTURE.json` guarda
+ahora las versiones instaladas y, por escenario, el `series_sha256` de **las barras que el
+carril consumió** (no del fichero en disco: la rebanada y el hueco son lo que corre), más
+`declared_bars` y `removed_bar_open_ms`.
+
+| Pin | Valor |
+| --- | --- |
+| python · numpy · pydantic · pyyaml | 3.11.15 · 2.0.2 · 2.13.4 · 6.0.3 |
+| pytest · ruff · mypy | 9.1.1 · 0.15.20 · 2.1.0 |
+| ventana | `--bars 1000` (por defecto en el script, para que el comando documentado reproduzca) |
+| `real_*` (900 ms, 0 ms, wide stop) | `2b4c1614de8a2518…` |
+| `real_900ms_hole` | `34204820039f5a90…` (distinto: es el único con una barra quitada) |
+| `synthetic_gap_open` | `246b02854c56be98…` |
+
+Los tres escenarios reales comparten digest —mismos datos— y el del hueco difiere, que es la
+prueba de que el pin mide lo que se leyó y no una etiqueta. El valor por defecto de `--bars`
+era 960 y la evidencia publicada se capturó con 1000: eso hacía que el comando del informe no
+reprodujera sus propios artefactos. Corregido en el script, no en el informe.
+
 **Commit del motor:** `86d4f12` (padre `ffbc0ca`). **Ensayo desde árbol limpio:**
 `git archive HEAD | tar -x` en `/tmp/003c_archive` —el verificador independiente da 24 PASS /
 0 FAIL y `test_open_phase_causality.py` da 19 passed **desde el código commiteado**, no desde

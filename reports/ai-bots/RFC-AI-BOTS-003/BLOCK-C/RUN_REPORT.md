@@ -75,8 +75,10 @@ Lecturas que no se esconden:
   declarada, barras observadas, aperturas ausentes y las filas que reaccionaron a cada hueco.
 * [RISK_NET_RECONCILIATION.json](RISK_NET_RECONCILIATION.json) — la reconciliación del
   carril y el rastro de riesgo de cada cierre.
-* [CAPTURE.json](CAPTURE.json) — qué se corrió, con qué latencia, con qué overrides y con qué
-  digest de dataset; declara `real_model_called=false`.
+* [CAPTURE.json](CAPTURE.json) — qué se corrió, con qué latencia, con qué overrides, con qué
+  `series_sha256` (las barras realmente consumidas, no el fichero) y con las versiones
+  instaladas; declara `real_model_called=false`. Los tres escenarios reales comparten digest y
+  el del hueco difiere, así que el pin distingue lo que se leyó de lo que se quería leer.
 * `evidence/*_ledger.jsonl`, `evidence/*_summary.json` — la cadena real y el resumen de cada
   escenario.
 

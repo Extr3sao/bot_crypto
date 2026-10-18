@@ -164,6 +164,45 @@ class ScriptedTransport(ReplayProvider):
         return replace(super().analyze(request), latency_ms=self._latency_ms)
 
 
+# ------------------------------------------------------------------ pins
+
+
+def consumed_series_digest(series: dict[str, list[Bar]]) -> str:
+    """SHA-256 of the exact bars the lane consumed, not of the file on disk.
+
+    A file hash pins the input; this pins the *slice* after ``load_bars`` and after the
+    hole was punched. Those differ, and the run only means something against what it
+    actually read. Two runs whose digests differ are not comparable evidence.
+    """
+
+    canonical = json.dumps(
+        {
+            symbol: [
+                [int(bar.ts_ms), bar.open, bar.high, bar.low, bar.close, bar.volume]
+                for bar in bars
+            ]
+            for symbol, bars in sorted(series.items())
+        },
+        sort_keys=True,
+        separators=(",", ":"),
+    )
+    return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
+
+
+def library_versions() -> dict[str, str]:
+    """The packages whose arithmetic could move a price, with their installed versions."""
+
+    from importlib import metadata
+
+    out: dict[str, str] = {"python": platform.python_version()}
+    for name in ("numpy", "pydantic", "pyyaml", "pytest", "ruff", "mypy"):
+        try:
+            out[name] = metadata.version(name)
+        except metadata.PackageNotFoundError:
+            out[name] = "absent"
+    return out
+
+
 # ------------------------------------------------------------------ scenarios
 
 
@@ -481,7 +520,10 @@ def git_revision() -> dict[str, Any]:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Capture an AI-BOTS-003C paper run")
     parser.add_argument("--out", default=str(DEFAULT_OUT))
-    parser.add_argument("--bars", type=int, default=960)
+    #: 1000, not a round 960: this is the window the published BLOCK-C evidence was
+    #: captured with (``equity_points == 1000``). A default that silently produced 960
+    #: bars would make the documented command fail to reproduce the artifacts it points at.
+    parser.add_argument("--bars", type=int, default=1000)
     parser.add_argument("--every", type=int, default=24)
     args = parser.parse_args(argv)
 
@@ -548,10 +590,14 @@ def main(argv: list[str] | None = None) -> int:
         "provider": "replay (scripted transport; NOT a model)",
         "real_model_called": False,
         "prospective_paper_validated": False,
+        "libraries": library_versions(),
         "scenarios": [
             {
                 "name": run["name"],
                 "latency_ms": run["latency_ms"],
+                "series_sha256": consumed_series_digest(run["series"]),
+                "declared_bars": run["declared_bars"],
+                "removed_bar_open_ms": run["removed_bar_open_ms"],
                 "synthetic_dataset": bool(run.get("synthetic")),
                 "ledger": str(run["ledger"].relative_to(out_dir)),
                 "chain": run["chain"],

@@ -79,3 +79,21 @@ exit: 0
 # Nota: los 459 tests se ejecutaron en la copia de trabajo con el mismo commit de motor;
 # el árbol limpio prueba el subconjunto que prueba el P0 (19 + 24 comprobaciones).
 # Suite completa del repositorio: NO ejecutada (~180 ficheros ajenos en vuelo).
+
+# --- Pines de reproducibilidad (añadidos tras la revisión de cierre) -----------
+
+$ .venv/Scripts/python.exe scripts/ai_bots_003c_capture.py      # --bars por defecto = 1000
+capture_exit: 0
+CAPTURE.json: bars=1000, libraries={python 3.11.15, numpy 2.0.2, pydantic 2.13.4,
+              pyyaml 6.0.3, pytest 9.1.1, ruff 0.15.20, mypy 2.1.0}
+series_sha256: real_* -> 2b4c1614… | real_900ms_hole -> 34204820… | synthetic_gap_open -> 246b0285…
+PIT_OPEN_EVENT_TRACE.jsonl: 953 filas (idéntico al publicado)
+resúmenes por escenario: contenido idéntico al publicado (comparado con LF normalizado)
+
+# El default era 960 y la evidencia se había capturado con 1000: el comando del informe
+# no reproducía sus propios artefactos. Corregido el default, no el informe. Con 960 los
+# resúmenes cambian (equity_points 1000 -> 960, calls 74 -> 70) aunque el neto coincida:
+# por eso se fija la ventana en el script.
+
+$ verifier (24 checks) + --mutations, × 5 escenarios   -> 120 PASS / 0 FAIL, 53/53 detectadas
+exit: 0

@@ -608,7 +608,9 @@ así que una pérdida evadía el motor de riesgo mientras la misma apertura apro
   `VisionLane` real, el `RiskManager` de `config/risk.yaml` y el `PaperBroker` de producción.
 - `scripts/ai_bots_003c_capture.py` (5 escenarios) y `scripts/ai_bots_003c_verify.py`
   (independiente, sin importar `trading_bot`, 120 comprobaciones y 13 mutaciones con la cadena
-  re-sellada).
+  re-sellada). `CAPTURE.json` publica `series_sha256` de las barras consumidas y las versiones
+  instaladas; el default de `--bars` pasa a 1000, que es la ventana con la que se capturó la
+  evidencia (con 960 el comando documentado no reproducía sus propios artefactos).
 
 ```text
 RED antes de implementar            18 failed / 1 passed     exit 1 (commit ffbc0ca)
