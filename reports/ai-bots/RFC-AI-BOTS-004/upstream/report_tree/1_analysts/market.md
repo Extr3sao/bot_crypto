@@ -1,0 +1,1 @@
+Momentum above the 20/50 EMA with rising volume; resistance at 71 400.

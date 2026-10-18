@@ -1,0 +1,140 @@
+{
+  "checks": [
+    {
+      "check": "license_is_apache_2_0",
+      "detail": "Apache License",
+      "ok": true
+    },
+    {
+      "check": "upstream_head_matches_pin",
+      "detail": "e8f5503e9b86d5c2710b0c76b1f686703968c9df",
+      "ok": true
+    },
+    {
+      "check": "every_exercised_file_present",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "bull_prompt_states_the_opponent_has_not_spoken",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "bull_does_not_receive_an_invented_bear_argument",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "router_sends_bull_opening_to_bear",
+      "detail": "Bear Researcher",
+      "ok": true
+    },
+    {
+      "check": "bear_receives_the_real_bull_argument",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "bear_does_not_treat_the_bull_as_silent",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "router_terminates_at_round_budget",
+      "detail": "Research Manager",
+      "ok": true
+    },
+    {
+      "check": "router_terminates_when_count_exceeds_budget",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "manager_prompt_contains_the_debate_history",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "structured_plan_renders_recommendation",
+      "detail": "**Recommendation**: Overweight\n\n**Rationale**: The bull case carried the growth ",
+      "ok": true
+    },
+    {
+      "check": "schema_rejects_unknown_rating",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "failed_structured_call_falls_back_once_to_free_text",
+      "detail": "structured=1 free_text=1",
+      "ok": true
+    },
+    {
+      "check": "provider_without_structured_support_uses_free_text",
+      "detail": "free-text-only plan",
+      "ok": true
+    },
+    {
+      "check": "complete_report_html_written",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "complete_report_md_written",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "html_has_no_script",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "html_has_no_remote_asset",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "html_shows_bull_bear_and_manager_sections",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "html_carries_the_debate_text",
+      "detail": "",
+      "ok": true
+    }
+  ],
+  "checks_passed": 21,
+  "checks_total": 21,
+  "file_sha256": {
+    "tradingagents/agents/context.py": "ce70e4d8c26e5d5249a7fca9ae15afcb2ea61455a1689c78e5cf51b20c3880cc",
+    "tradingagents/agents/managers/research_manager.py": "7663292ed1db015dfcec57cddfd3f43011b4421824096a16ac64c266e379c380",
+    "tradingagents/agents/rating.py": "71d2072100095891222e43101afc7e6c52c1910325b1373d0497f96b493ee625",
+    "tradingagents/agents/researchers/bear_researcher.py": "82d808a519b60d6324c1eb2f3f72278398a9b20bc2ac63805a0a8a68866c98e1",
+    "tradingagents/agents/researchers/bull_researcher.py": "e1bd66b62510fab9fcdc76f9ffca6ed6b3f417d0d08ddfe5e68e17abb8208f73",
+    "tradingagents/agents/schemas.py": "336f6a8170bc1553980a95210c3a798d92c34a4c260a0cda571abbc4dc447d76",
+    "tradingagents/agents/state.py": "072f375347fae502752d19d3901b954107ff0d74641ce8cc8429124a9604a503",
+    "tradingagents/agents/structured.py": "d609a2374210611c38fa581107c8184857595b72b776e4356bf281b276d0c39e",
+    "tradingagents/graph/conditional_logic.py": "64d79bc5fd04134774089bd80f6e2a9f99b8433b53786b89ff4458a6fdbce380",
+    "tradingagents/report_html.py": "6d7db41aa9d3064c22fdcf260b9fd570b95161582c2a3ed5ba6392bba3246087",
+    "tradingagents/reporting.py": "76b89887dffd1df37a1a9925842aef7362c7bf1c2738a766702e3802bb6fa902"
+  },
+  "final_state_sha256": "dd4b6211618e35ebef6908fb5e1fe00b9ed02ff563f0763b00d9fcadbe3297fd",
+  "generated_at": "2026-10-18T17:42:38Z",
+  "html_sha256": "7949425ac495b75dc796a2c1e79812c5bd6a921f2467bf4d2a921ec25da92f9c",
+  "license": "Apache-2.0",
+  "license_sha256": "1eb85fc97224598dad1852b5d6483bbcf0aa8608790dcc657a5a2a761ae9c8c6",
+  "model_status": "STUB",
+  "network_calls": 0,
+  "orders": 0,
+  "platform": "Windows-10-10.0.26200-SP0",
+  "python": "3.11.15 (main, Jun 23 2026, 15:20:37) [MSC v.1944 64 bit (AMD64)]",
+  "reconstruction_stage": "UPSTREAM_PYTHON_INSTRUMENTED_NOT_REA",
+  "schema_version": "TAP004_UPSTREAM_HARNESS_V1",
+  "source_commit": "e8f5503e9b86d5c2710b0c76b1f686703968c9df",
+  "source_id": "T-TA-CRITIC",
+  "source_url": "https://github.com/TauricResearch/TradingAgents.git",
+  "trace_rows": 9
+}

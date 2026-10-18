@@ -1,0 +1,315 @@
+{
+  "checks": [
+    {
+      "check": "SRC-01",
+      "detail": "manifest commit e8f5503e9b86d5c2710b0c76b1f686703968c9df",
+      "ok": true
+    },
+    {
+      "check": "SRC-01b",
+      "detail": "pin flag=True license=Apache-2.0",
+      "ok": true
+    },
+    {
+      "check": "SRC-02",
+      "detail": "15 files pinned",
+      "ok": true
+    },
+    {
+      "check": "SRC-03",
+      "detail": "promoted artifacts are byte-identical to their detailed sources",
+      "ok": true
+    },
+    {
+      "check": "PY-01",
+      "detail": "9 rows",
+      "ok": true
+    },
+    {
+      "check": "PY-01b",
+      "detail": "every row declares STUB, zero network, zero orders, pinned commit",
+      "ok": true
+    },
+    {
+      "check": "PY-02",
+      "detail": "sequences [1, 2, 3, 4, 5, 6, 7, 8, 9]",
+      "ok": true
+    },
+    {
+      "check": "PY-02b",
+      "detail": "trace ids unique",
+      "ok": true
+    },
+    {
+      "check": "PY-03",
+      "detail": "bull=1 bear=1 router=3 manager=1",
+      "ok": true
+    },
+    {
+      "check": "PY-03b",
+      "detail": "bull output feeds the router",
+      "ok": true
+    },
+    {
+      "check": "PY-03c",
+      "detail": "bear reviews the state the bull produced",
+      "ok": true
+    },
+    {
+      "check": "PY-03d",
+      "detail": "manager consumes the debate state",
+      "ok": true
+    },
+    {
+      "check": "PY-03e",
+      "detail": "router decisions Bear Researcher -> Research Manager",
+      "ok": true
+    },
+    {
+      "check": "PY-03f",
+      "detail": "bull opens; bear answers the real argument",
+      "ok": true
+    },
+    {
+      "check": "PY-04",
+      "detail": "fallback=1 no_structured=1 schema=1",
+      "ok": true
+    },
+    {
+      "check": "PY-05",
+      "detail": "report tree present",
+      "ok": true
+    },
+    {
+      "check": "PY-05b",
+      "detail": "html bytes match the declared hash",
+      "ok": true
+    },
+    {
+      "check": "PY-05c",
+      "detail": "html carries no script",
+      "ok": true
+    },
+    {
+      "check": "PY-05d",
+      "detail": "html loads no remote asset",
+      "ok": true
+    },
+    {
+      "check": "PY-05e",
+      "detail": "rendered sections exist",
+      "ok": true
+    },
+    {
+      "check": "PY-05f",
+      "detail": "the debate text produced by the harness is in the page",
+      "ok": true
+    },
+    {
+      "check": "PY-06",
+      "detail": "final state hash matches the renderer's input",
+      "ok": true
+    },
+    {
+      "check": "REA-01",
+      "detail": "5 operations logged",
+      "ok": true
+    },
+    {
+      "check": "REA-01b",
+      "detail": "every browser operation exited 0 and is not NOT_EXECUTED",
+      "ok": true
+    },
+    {
+      "check": "REA-01c",
+      "detail": "3 unique native evidence ids",
+      "ok": true
+    },
+    {
+      "check": "REA-01d",
+      "detail": "the target dossier only names ids that the log contains",
+      "ok": true
+    },
+    {
+      "check": "REA-01e",
+      "detail": "every observed operation in the dossier exited 0 and was executed",
+      "ok": true
+    },
+    {
+      "check": "REA-02",
+      "detail": "REA observed the same bytes that were rendered",
+      "ok": true
+    },
+    {
+      "check": "REA-02b",
+      "detail": "loopback target http://127.0.0.1:9184/complete_report.html id=FC69F1F46EE8D0F152F070970D0DC3A5",
+      "ok": true
+    },
+    {
+      "check": "REA-04",
+      "detail": "the dossier does not claim REA audited the reasoning",
+      "ok": true
+    },
+    {
+      "check": "REA-03",
+      "detail": "scripts_total=0",
+      "ok": true
+    },
+    {
+      "check": "REA-03b",
+      "detail": "missing headings []",
+      "ok": true
+    },
+    {
+      "check": "REA-03c",
+      "detail": "screenshot is a PNG",
+      "ok": true
+    },
+    {
+      "check": "REA-03d",
+      "detail": "screenshot bytes match the declared artifact hash",
+      "ok": true
+    },
+    {
+      "check": "REA-03e",
+      "detail": "envelope artifact hash matches the saved PNG",
+      "ok": true
+    },
+    {
+      "check": "REA-05",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "REA-05b",
+      "detail": "the raw screenshot envelope matches the dossier",
+      "ok": true
+    },
+    {
+      "check": "REA-05c",
+      "detail": "decoded REA artifact equals the saved PNG",
+      "ok": true
+    },
+    {
+      "check": "REA-05d",
+      "detail": "raw inspect: scripts=0, headings=10",
+      "ok": true
+    },
+    {
+      "check": "ABL-01",
+      "detail": "all three executed arms have run ledgers",
+      "ok": true
+    },
+    {
+      "check": "ABL-01b",
+      "detail": "the repeated baseline is economically identical",
+      "ok": true
+    },
+    {
+      "check": "ABL-01c",
+      "detail": "the report quotes the baseline ledger",
+      "ok": true
+    },
+    {
+      "check": "ABL-01d",
+      "detail": "SHADOW declares identical economics and no application",
+      "ok": true
+    },
+    {
+      "check": "ABL-01e",
+      "detail": "NO_TRADE fills=0",
+      "ok": true
+    },
+    {
+      "check": "ABL-02",
+      "detail": "GATED status=BLOCKED_GATED_PAPER_NOT_AUTHORIZED",
+      "ok": true
+    },
+    {
+      "check": "ABL-03",
+      "detail": "value=UNMEASURED real=False",
+      "ok": true
+    },
+    {
+      "check": "ABL-03b",
+      "detail": "recommendation=DO_NOT_ADOPT_PENDING_PROSPECTIVE",
+      "ok": true
+    },
+    {
+      "check": "ABL-03c",
+      "detail": "the ablation's ownership fields are coherent",
+      "ok": true
+    },
+    {
+      "check": "CRI-01",
+      "detail": "8 reviews",
+      "ok": true
+    },
+    {
+      "check": "CRI-01b",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "CRI-02",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "CRI-02b",
+      "detail": "no shadow review touched the economy",
+      "ok": true
+    },
+    {
+      "check": "CRI-03",
+      "detail": "16 messages, hashes recomputed",
+      "ok": true
+    },
+    {
+      "check": "CRI-04",
+      "detail": "receipt kinds ['MOCK']",
+      "ok": true
+    },
+    {
+      "check": "CRI-05",
+      "detail": "4 protective reviews, 0 blocked",
+      "ok": true
+    },
+    {
+      "check": "CLAIM-01",
+      "detail": "ablation status INCONCLUSIVE_VALUE",
+      "ok": true
+    },
+    {
+      "check": "CLAIM-02",
+      "detail": "no prospective or real-model claim",
+      "ok": true
+    },
+    {
+      "check": "CLAIM-03",
+      "detail": "false_success is zero",
+      "ok": true
+    },
+    {
+      "check": "EMPTY-01",
+      "detail": "no check ran on an empty collection",
+      "ok": true
+    }
+  ],
+  "checks_failed": 0,
+  "checks_passed": 59,
+  "checks_total": 59,
+  "failed": [],
+  "false_success": 0,
+  "generated_at": "2026-10-18T17:58:13Z",
+  "imports_builder_modules": false,
+  "mutation_report": {
+    "all_rejected": true,
+    "mutations_rejected": 7,
+    "mutations_total": 7
+  },
+  "root": "bot_crypto_004/reports/ai-bots/RFC-AI-BOTS-004",
+  "schema_version": "TAP004_INDEPENDENT_VERIFICATION_V1",
+  "verdict": "PASS",
+  "verifier": "scripts/ai_critic/verify_rfc004.py"
+}

@@ -1,0 +1,18 @@
+{
+  "analyst_reports_provenance": "declared fixture inputs, not produced by this harness",
+  "final_state_sha256": "dd4b6211618e35ebef6908fb5e1fe00b9ed02ff563f0763b00d9fcadbe3297fd",
+  "generated_at": "2026-10-18T17:42:38Z",
+  "html_bytes": 29375,
+  "html_path": "report_tree/complete_report.html",
+  "html_sha256": "7949425ac495b75dc796a2c1e79812c5bd6a921f2467bf4d2a921ec25da92f9c",
+  "javascript_present": false,
+  "markdown_sha256": "2d6beae49e31f619a99125114f1a5667698fb18b0ceddd06cdc3bc7cd00b637f",
+  "remote_assets_present": false,
+  "render_html_source_sha256": "6d7db41aa9d3064c22fdcf260b9fd570b95161582c2a3ed5ba6392bba3246087",
+  "renderer": "tradingagents.reporting.write_report_tree(html=True)",
+  "renderer_source_sha256": "76b89887dffd1df37a1a9925842aef7362c7bf1c2738a766702e3802bb6fa902",
+  "schema_version": "TAP004_HTML_REPORT_V1",
+  "source_commit": "e8f5503e9b86d5c2710b0c76b1f686703968c9df",
+  "source_id": "T-TA-CRITIC",
+  "state_provenance": "nodes executed in this harness from the pinned source"
+}

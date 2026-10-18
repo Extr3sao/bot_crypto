@@ -1,0 +1,2 @@
+
+Bear Analyst: Scripted upstream fixture turn 2: the case is argued from the supplied research reports, names the opposing argument it answers, and states no order, size, leverage or risk change. MODEL_STATUS=STUB.

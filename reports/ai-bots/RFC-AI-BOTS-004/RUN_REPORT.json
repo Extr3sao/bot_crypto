@@ -1,0 +1,122 @@
+{
+  "schema_version": "TAP004_RUN_REPORT_V1",
+  "rfc": "RFC-TAP-AI-BOTS-004",
+  "issue": "https://github.com/Extr3sao/bot_crypto/issues/14",
+  "bot": "BOT-CRI-01",
+  "branch": "agent/ai-critic/RFC-TAP-AI-BOTS-004",
+  "base_commit": "b7e100a",
+  "worktree": "bot_crypto_004 (separate git worktree; the AI-BOTS-003C worktree was not touched)",
+  "run_date": "2026-10-18",
+  "phase": {
+    "R0_source_pin": "DONE",
+    "R1_rea_target": "DONE",
+    "R2_upstream_python": "DONE",
+    "R3_contracts_registry": "DONE",
+    "R4_shadow_ablation": "DONE_SHADOW_ONLY",
+    "R5_gated_paper": "BLOCKED_GATED_PAPER_NOT_AUTHORIZED",
+    "R6_independent_verification": "DONE_WITH_STATED_LIMIT",
+    "R7_prospective_value": "BLOCKED_MODEL_API_UNAVAILABLE"
+  },
+  "upstream": {
+    "source_id": "T-TA-CRITIC",
+    "project": "TauricResearch/TradingAgents",
+    "commit": "e8f5503e9b86d5c2710b0c76b1f686703968c9df",
+    "license": "Apache-2.0",
+    "checkout_bytes": 9517056,
+    "runtime_dependency": false,
+    "harness_checks_passed": 21,
+    "harness_checks_total": 21,
+    "network_calls_measured": 0,
+    "orders": 0,
+    "model_status": "STUB",
+    "trace_rows": 9,
+    "upstream_tests_passed": 64,
+    "upstream_test_exit_codes": [0, 0, 0],
+    "html_sha256": "7949425ac495b75dc796a2c1e79812c5bd6a921f2467bf4d2a921ec25da92f9c",
+    "final_state_sha256": "dd4b6211618e35ebef6908fb5e1fe00b9ed02ff563f0763b00d9fcadbe3297fd"
+  },
+  "rea": {
+    "package": "rea-agents@6.4.0",
+    "status": "REA_UI_OBSERVED",
+    "operations_executed": 3,
+    "operations": ["list_browser_targets", "inspect_web_page", "capture_web_screenshot"],
+    "evidence_ids": [
+      "ev_e2b98a29dc18bdbd25a09f99efc10fd01e8d4d64d043e8ed93f0a4b7bcabb058",
+      "ev_3548a228b86c7d375c0c317ebbd24ee0cea8330aab57582ed4e1f4bcd6051197",
+      "ev_64fa51447fe7b98d693aa0c7d32bcada61e85af72d3133f3453b3f6ac3256166"
+    ],
+    "browser_target_id": "FC69F1F46EE8D0F152F070970D0DC3A5",
+    "screenshot_sha256": "a155d92efa7e5e4db195b6ec7ef29da4cd3b681b533e1e7c52ee1864051b1e21",
+    "scripts_observed": 0,
+    "doctor_exit_code": 1,
+    "doctor_note": "Ghidra/Hopper absent; unrelated to a web page and recorded, not hidden",
+    "reasoning_audited_by_rea": false
+  },
+  "runtime": {
+    "package": "trading_bot.intelligence.ai_critic",
+    "registered_bot": "BOT-CRI-01",
+    "enabled_by_default": false,
+    "default_mode": "OFF",
+    "allowed_gate_effect": "SUPPRESS_NEW_ENTRY",
+    "protective_intents_never_blocked": ["CLOSE", "REDUCE", "STOP", "TAKE_PROFIT"],
+    "prompt_id": "TAP-PROMPT-CRI-001/v1",
+    "gated_paper_status": "BLOCKED_GATED_PAPER_NOT_AUTHORIZED",
+    "real_critic_model_called": false
+  },
+  "tests": {
+    "acceptance_criteria": "ACC-CRI-01..16 (17 test items; ACC-CRI-08 is parametrised twice)",
+    "red_green": {
+      "red_exit_code": 2,
+      "red_reason": "collection error at base b7e100a: package absent",
+      "green_exit_code": 0,
+      "test_target": "trading_bot.intelligence.ai_critic",
+      "runtime_target": "trading_bot.intelligence.ai_critic",
+      "test_target_equals_runtime_target": true,
+      "receipt": "TEST_RED_GREEN.json"
+    },
+    "commands": [
+      {"command": "pytest tests/unit/intelligence/ai_critic -q", "exit_code": 0, "result": "17 passed"},
+      {"command": "pytest tests/unit/intelligence/ai_bots -q", "exit_code": 0, "result": "28 passed"},
+      {"command": "pytest tests/unit/intelligence tests/unit/vision -q", "exit_code": 0, "result": "169 passed"},
+      {"command": "pytest (pinned upstream) test_debate_opening test_structured_agents test_report_html", "exit_code": 0, "result": "64 passed"},
+      {"command": "ruff check src/.../ai_critic tests/.../ai_critic scripts/ai_critic", "exit_code": 0},
+      {"command": "mypy src/trading_bot/intelligence/ai_critic", "exit_code": 0}
+    ]
+  },
+  "ablation": {
+    "arms_executed": ["NO_CRITIC", "NO_CRITIC_REPEAT", "SHADOW", "NO_TRADE"],
+    "arms_blocked": ["GATED_PAPER"],
+    "matched_opportunities": 10,
+    "actionable_proposals": 4,
+    "same_sequence_across_arms": true,
+    "economics_identical_baseline_vs_shadow": true,
+    "shadow_reviews": 8,
+    "verdicts": {"ACCEPT": 3, "CHALLENGE": 5},
+    "challenge_rate_on_entries": 0.25,
+    "degenerate_blanket_veto": false,
+    "protective_reviews": 4,
+    "protective_blocked": 0,
+    "would_suppress_entries_if_gated": 1,
+    "critic_cost_usd": 0.0,
+    "economic_value": "UNMEASURED",
+    "recommendation": "DO_NOT_ADOPT_PENDING_PROSPECTIVE"
+  },
+  "verification": {
+    "verifier": "scripts/ai_critic/verify_rfc004.py",
+    "imports_builder_modules": false,
+    "checks_passed": 59,
+    "checks_total": 59,
+    "verdict": "PASS",
+    "mutations_rejected": 7,
+    "mutations_total": 7,
+    "false_success": 0,
+    "authorship_limit": "builder and verifier were written by the same agent; independence is structural (no builder imports, values recomputed), not institutional"
+  },
+  "limitations": [
+    "RFC_TAP_AI_BOTS_004_REA_INDEPENDENT_CRITIC.md was not present in the session attachments; ACC-CRI-01..16 was reconstructed from the execution prompt and roadmap and is documented in FINAL_REPORT",
+    "REA observed the rendered page only; it did not audit the Python debate",
+    "no paid model call: REAL_CRITIC_MODEL_CALLED=false",
+    "GATED_PAPER blocked pending AI-BOTS-003C; its suppression count is a simulation without economics",
+    "analyst reports in the upstream final_state are declared fixture inputs, not harness output"
+  ]
+}

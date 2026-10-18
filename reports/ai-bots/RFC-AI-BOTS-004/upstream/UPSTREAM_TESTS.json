@@ -1,0 +1,41 @@
+{
+  "schema_version": "TAP004_UPSTREAM_TESTS_V1",
+  "source_commit": "e8f5503e9b86d5c2710b0c76b1f686703968c9df",
+  "source_commit_expected": "e8f5503e9b86d5c2710b0c76b1f686703968c9df",
+  "interpreter": "C:\\Users\\GVLLFR0035\\Downloads\\ta_lab\\.venv\\Scripts\\python.exe",
+  "python": "3.11.15 (main, Jun 23 2026, 15:20:37) [MSC v.1944 64 bit (AMD64)]",
+  "runs": [
+    {
+      "test_file": "tests/test_debate_opening.py",
+      "command": "C:\\Users\\GVLLFR0035\\Downloads\\ta_lab\\.venv\\Scripts\\python.exe -m pytest tests/test_debate_opening.py -q",
+      "cwd": "C:\\Users\\GVLLFR0035\\Downloads\\ta_lab",
+      "started_at": "2026-10-18T17:43:59Z",
+      "exit_code": 0,
+      "stdout": "........                                                                 [100%]\n8 passed in 1.35s\n",
+      "stderr": "",
+      "network": "blocked by tests/conftest.py _no_network fixture"
+    },
+    {
+      "test_file": "tests/test_structured_agents.py",
+      "command": "C:\\Users\\GVLLFR0035\\Downloads\\ta_lab\\.venv\\Scripts\\python.exe -m pytest tests/test_structured_agents.py -q",
+      "cwd": "C:\\Users\\GVLLFR0035\\Downloads\\ta_lab",
+      "started_at": "2026-10-18T17:44:02Z",
+      "exit_code": 0,
+      "stdout": "..........................................                               [100%]\n42 passed in 1.54s\n",
+      "stderr": "",
+      "network": "blocked by tests/conftest.py _no_network fixture"
+    },
+    {
+      "test_file": "tests/test_report_html.py",
+      "command": "C:\\Users\\GVLLFR0035\\Downloads\\ta_lab\\.venv\\Scripts\\python.exe -m pytest tests/test_report_html.py -q",
+      "cwd": "C:\\Users\\GVLLFR0035\\Downloads\\ta_lab",
+      "started_at": "2026-10-18T17:44:06Z",
+      "exit_code": 0,
+      "stdout": "..............                                                           [100%]\n14 passed in 1.37s\n",
+      "stderr": "",
+      "network": "blocked by tests/conftest.py _no_network fixture"
+    }
+  ],
+  "all_passed": true,
+  "generated_at": "2026-10-18T17:44:09Z"
+}

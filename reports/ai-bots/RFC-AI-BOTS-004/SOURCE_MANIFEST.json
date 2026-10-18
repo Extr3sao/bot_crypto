@@ -1,0 +1,138 @@
+{
+  "acquisition": {
+    "checkout_bytes": 277511052,
+    "command": "git clone --filter=blob:none --no-checkout https://github.com/TauricResearch/TradingAgents.git ta_lab && git -C ta_lab checkout --detach e8f5503e9b86d5c2710b0c76b1f686703968c9df",
+    "no_framework_installed_in_runtime": true
+  },
+  "commit": "e8f5503e9b86d5c2710b0c76b1f686703968c9df",
+  "commit_expected": "e8f5503e9b86d5c2710b0c76b1f686703968c9df",
+  "commit_matches_pin": true,
+  "files": [
+    {
+      "bytes": 11558,
+      "git_blob": "261eeb9e9f8b2b4b0d119366dda99c6fd7d35c64",
+      "path": "LICENSE",
+      "sha256": "1eb85fc97224598dad1852b5d6483bbcf0aa8608790dcc657a5a2a761ae9c8c6"
+    },
+    {
+      "bytes": 3453,
+      "git_blob": "a671d1360a1ab8ed450b0a89058511cd6f51b009",
+      "path": "tradingagents/agents/researchers/bull_researcher.py",
+      "sha256": "e1bd66b62510fab9fcdc76f9ffca6ed6b3f417d0d08ddfe5e68e17abb8208f73"
+    },
+    {
+      "bytes": 3531,
+      "git_blob": "d483e893df15647f9b4e8ef4492d8f6ffe407540",
+      "path": "tradingagents/agents/researchers/bear_researcher.py",
+      "sha256": "82d808a519b60d6324c1eb2f3f72278398a9b20bc2ac63805a0a8a68866c98e1"
+    },
+    {
+      "bytes": 3154,
+      "git_blob": "3bf288c60b6602a449f303fac7d27cb4b174cf61",
+      "path": "tradingagents/agents/managers/research_manager.py",
+      "sha256": "7663292ed1db015dfcec57cddfd3f43011b4421824096a16ac64c266e379c380"
+    },
+    {
+      "bytes": 9239,
+      "git_blob": "88a01b9d231c20f619610c8836c694cd776a2d3d",
+      "path": "tradingagents/agents/context.py",
+      "sha256": "ce70e4d8c26e5d5249a7fca9ae15afcb2ea61455a1689c78e5cf51b20c3880cc"
+    },
+    {
+      "bytes": 15607,
+      "git_blob": "be561f2c467ab2e414f8b2c9bf206fbb2653efbc",
+      "path": "tradingagents/agents/schemas.py",
+      "sha256": "336f6a8170bc1553980a95210c3a798d92c34a4c260a0cda571abbc4dc447d76"
+    },
+    {
+      "bytes": 3837,
+      "git_blob": "8992e535167be65451cc39ec04a58fc19cf6bdda",
+      "path": "tradingagents/agents/structured.py",
+      "sha256": "d609a2374210611c38fa581107c8184857595b72b776e4356bf281b276d0c39e"
+    },
+    {
+      "bytes": 3228,
+      "git_blob": "dc48132c163c2f37e1465def23a3b954e32fb87b",
+      "path": "tradingagents/agents/state.py",
+      "sha256": "072f375347fae502752d19d3901b954107ff0d74641ce8cc8429124a9604a503"
+    },
+    {
+      "bytes": 1507,
+      "git_blob": "2c6caca2cb0c75fb280916de531eb1f466a0955d",
+      "path": "tradingagents/graph/conditional_logic.py",
+      "sha256": "64d79bc5fd04134774089bd80f6e2a9f99b8433b53786b89ff4458a6fdbce380"
+    },
+    {
+      "bytes": 5805,
+      "git_blob": "6f57e4a1835d4460ffd13d866bdc8e61d5d0d9bf",
+      "path": "tradingagents/reporting.py",
+      "sha256": "76b89887dffd1df37a1a9925842aef7362c7bf1c2738a766702e3802bb6fa902"
+    },
+    {
+      "bytes": 15126,
+      "git_blob": "a304b25c608abf30c9a683dbcaabc2a98c16b939",
+      "path": "tradingagents/report_html.py",
+      "sha256": "6d7db41aa9d3064c22fdcf260b9fd570b95161582c2a3ed5ba6392bba3246087"
+    },
+    {
+      "bytes": 5736,
+      "git_blob": "83f48084dcc43e5c5c18c30c6533bcb411f79a11",
+      "path": "tradingagents/agents/rating.py",
+      "sha256": "71d2072100095891222e43101afc7e6c52c1910325b1373d0497f96b493ee625"
+    },
+    {
+      "bytes": 4268,
+      "git_blob": "7e03968493fbff485901506fb0edef9eb3dc0bfc",
+      "path": "tests/test_debate_opening.py",
+      "sha256": "fa634dc2f208f161e4f608bbc22e7dd620dd603246866f78eaa491242cf21e8a"
+    },
+    {
+      "bytes": 23430,
+      "git_blob": "e168c12cdfef7fc66abb46cb2f4ba25fc7b5dbb9",
+      "path": "tests/test_structured_agents.py",
+      "sha256": "8840750c491842d4dcca5a7759d20a364f7088c97e097af251dc5fc52de1549d"
+    },
+    {
+      "bytes": 8546,
+      "git_blob": "d7a6dfdc721a2d52156a6b59f43d776caf997a08",
+      "path": "tests/test_report_html.py",
+      "sha256": "c9bfdcc770d8c49523cf073abc13332eb9301da55d999aff7dd4477bda78c48d"
+    }
+  ],
+  "generated_at": "2026-10-18T17:53:24Z",
+  "license": "Apache-2.0",
+  "license_sha256": "1eb85fc97224598dad1852b5d6483bbcf0aa8608790dcc657a5a2a761ae9c8c6",
+  "limits": [
+    "the upstream checkout is a separate lab, not a runtime dependency",
+    "hashes are of the detached checkout, not of a remote artifact cache"
+  ],
+  "project": "TauricResearch/TradingAgents",
+  "promoted_artifacts": {
+    "REA_OPERATION_LOG.jsonl": {
+      "bytes": 3308,
+      "identical_to_source": true,
+      "sha256": "a24eb1dd1b9d17902e40dd5c519c0196187d541cb3da2a38c810bdd5b0a8702f",
+      "source": "rea/REA_OPERATION_LOG.jsonl"
+    },
+    "REA_TARGET_EVIDENCE.json": {
+      "bytes": 6489,
+      "identical_to_source": true,
+      "sha256": "110ea3b19a054a713aaf313d520baf6353b8809c86714f8f6c236693e961c04c",
+      "source": "rea/REA_TARGET_EVIDENCE.json"
+    },
+    "UPSTREAM_PYTHON_TRACE.jsonl": {
+      "bytes": 7020,
+      "identical_to_source": true,
+      "sha256": "fb1c563e4396bb0415aa84ac861f8c96b76edad68b9350f616e55bab9f61da22",
+      "source": "upstream/UPSTREAM_PYTHON_TRACE.jsonl"
+    }
+  },
+  "runtime_entries": {
+    "branch": "agent/ai-critic/RFC-TAP-AI-BOTS-004",
+    "tracker_head": "b7e100ae7317a0bba71c0f4118ed8a154dd58d18",
+    "worktree": "C:\\Users\\GVLLFR0035\\Downloads\\bot_crypto_004"
+  },
+  "schema_version": "TAP004_SOURCE_MANIFEST_V1",
+  "source_id": "T-TA-CRITIC",
+  "url": "https://github.com/TauricResearch/TradingAgents.git"
+}

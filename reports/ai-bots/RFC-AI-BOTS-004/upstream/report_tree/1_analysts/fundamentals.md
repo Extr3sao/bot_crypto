@@ -1,0 +1,1 @@
+(crypto: fundamentals are not supplied in this fixture)

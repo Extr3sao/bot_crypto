@@ -1,0 +1,38 @@
+{
+  "generated_at": "2026-10-18T17:55:38Z",
+  "green": {
+    "commit": "b7e100ae7317a0bba71c0f4118ed8a154dd58d18",
+    "related_suite": {
+      "command": "C:/Users/GVLLFR0035/Downloads/bot freebuff/.venv/Scripts/python.exe -m pytest tests/unit/intelligence/ai_bots -q",
+      "cwd": "C:\\Users\\GVLLFR0035\\Downloads\\bot_crypto_004",
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "............................                                             [100%]\n============================== warnings summary ===============================\n..\\bot freebuff\\.venv\\Lib\\site-packages\\matplotlib\\_fontconfig_pattern.py:64\n  C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Lib\\site-packages\\matplotlib\\_fontconfig_pattern.py:64: PyparsingDeprecationWarning: 'oneOf' deprecated - use 'one_of'\n    prop = Group((name + Suppress(\"=\") + comma_separated(value)) | oneOf(_CONSTANTS))\n\n..\\bot freebuff\\.venv\\Lib\\site-packages\\matplotlib\\_fontconfig_pattern.py:85\n..\\bot freebuff\\.venv\\Lib\\site-packages\\matplotlib\\_fontconfig_pattern.py:85\n..\\bot freebuff\\.venv\\Lib\\site-packages\\matplotlib\\_fontconfig_pattern.py:85\n..\\bot freebuff\\.venv\\Lib\\site-packages\\matplotlib\\_fontconfig_pattern.py:85\n..\\bot freebuff\\.venv\\Lib\\site-packages\\matplotlib\\_fontconfig_pattern.py:85\n..\\bot freebuff\\.venv\\Lib\\site-packages\\matplotlib\\_fontconfig_pattern.py:85\n  C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Lib\\site-packages\\matplotlib\\_fontconfig_pattern.py:85: PyparsingDeprecationWarning: 'parseString' deprecated - use 'parse_string'\n    parse = parser.parseString(pattern)\n\n..\\bot freebuff\\.venv\\Lib\\site-packages\\matplotlib\\_fontconfig_pattern.py:89\n..\\bot freebuff\\.venv\\Lib\\site-packages\\matplotlib\\_fontconfig_pattern.py:89\n..\\bot freebuff\\.venv\\Lib\\site-packages\\matplotlib\\_fontconfig_pattern.py:89\n..\\bot freebuff\\.venv\\Lib\\site-packages\\matplotlib\\_fontconfig_pattern.py:89\n..\\bot freebuff\\.venv\\Lib\\site-packages\\matplotlib\\_fontconfig_pattern.py:89\n..\\bot freebuff\\.venv\\Lib\\site-packages\\matplotlib\\_fontconfig_pattern.py:89\n  C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Lib\\site-packages\\matplotlib\\_fontconfig_pattern.py:89: PyparsingDeprecationWarning: 'resetCache' deprecated - use 'reset_cache'\n    parser.resetCache()\n\n..\\bot freebuff\\.venv\\Lib\\site-packages\\matplotlib\\_mathtext.py:45\n  C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Lib\\site-packages\\matplotlib\\_mathtext.py:45: PyparsingDeprecationWarning: 'enablePackrat' deprecated - use 'enable_packrat'\n    ParserElement.enablePackrat()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n28 passed, 14 warnings in 4.01s\n"
+    },
+    "result": {
+      "command": "C:/Users/GVLLFR0035/Downloads/bot freebuff/.venv/Scripts/python.exe -m pytest tests/unit/intelligence/ai_critic/test_bot_cri_01.py -q",
+      "cwd": "C:\\Users\\GVLLFR0035\\Downloads\\bot_crypto_004",
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": ".................                                                        [100%]\n17 passed in 0.39s\n"
+    }
+  },
+  "imported_module_path": "C:\\Users\\GVLLFR0035\\Downloads\\bot_crypto_004\\src\\trading_bot\\intelligence\\ai_critic\\__init__.py",
+  "red": {
+    "base_commit": "b7e100a",
+    "expected": "collection error: the module does not exist at the base commit",
+    "module_present": false,
+    "result": {
+      "command": "C:/Users/GVLLFR0035/Downloads/bot freebuff/.venv/Scripts/python.exe -m pytest tests/unit/intelligence/ai_critic/test_bot_cri_01.py -q",
+      "cwd": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\tap004-red-base-id8b_4xn",
+      "exit_code": 2,
+      "stderr": "",
+      "stdout": "\n=================================== ERRORS ====================================\n____ ERROR collecting tests/unit/intelligence/ai_critic/test_bot_cri_01.py ____\nImportError while importing test module 'C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\tap004-red-base-id8b_4xn\\tests\\unit\\intelligence\\ai_critic\\test_bot_cri_01.py'.\nHint: make sure your test modules/packages have valid Python names.\nTraceback:\nC:\\Users\\GVLLFR0035\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\\Lib\\importlib\\__init__.py:126: in import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntests\\unit\\intelligence\\ai_critic\\test_bot_cri_01.py:21: in <module>\n    from trading_bot.intelligence.ai_critic.contracts import (\nE   ModuleNotFoundError: No module named 'trading_bot.intelligence.ai_critic'\n=========================== short test summary info ===========================\nERROR tests/unit/intelligence/ai_critic/test_bot_cri_01.py\n!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!\n1 error in 0.45s\n"
+    }
+  },
+  "runtime_target": "trading_bot.intelligence.ai_critic",
+  "schema_version": "TAP004_TEST_RECEIPT_V1",
+  "test_file_sha256": "682b2548fc9ee48327676fd4992cad0a32d6d219f96da8b060917206cd9a37cf",
+  "test_target": "trading_bot.intelligence.ai_critic",
+  "test_target_equals_runtime_target": true
+}

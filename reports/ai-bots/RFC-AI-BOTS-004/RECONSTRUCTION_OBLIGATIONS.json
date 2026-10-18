@@ -1,0 +1,109 @@
+{
+  "schema_version": "TAP004_RECONSTRUCTION_OBLIGATIONS_V1",
+  "source_id": "T-TA-CRITIC",
+  "source_commit": "e8f5503e9b86d5c2710b0c76b1f686703968c9df",
+  "method": "mechanism adoption, not framework or code copy",
+  "obligations": [
+    {
+      "id": "CRI-OBL-01",
+      "observed_in_upstream": "Bull and Bear researchers receive an explicit opening marker when the opponent has not spoken (tradingagents/agents/context.py:opponent_argument_or_opening).",
+      "mechanism": "a critique must not fabricate the other side of the argument",
+      "tap_implementation": "CriticReview ACCEPT/CHALLENGE citations must resolve to authenticated ledger refs; no ref means ACCEPT is refused",
+      "tests": ["ACC-CRI-04", "ACC-CRI-06"],
+      "status": "ADOPTED_MECHANISM",
+      "evidence": "UPSTREAM_PYTHON_TRACE.jsonl rows 1-3; CRITIC_REVIEWS.jsonl"
+    },
+    {
+      "id": "CRI-OBL-02",
+      "observed_in_upstream": "Research Manager uses structured output with a silent free-text fallback on any structured failure (tradingagents/agents/structured.py).",
+      "mechanism": "a verdict must be typed, but the fallback must not turn a parse failure into an opinion",
+      "tap_implementation": "strict JSON only; parse/schema failure becomes ABSTAIN with a stable reason, never a free-text verdict",
+      "tests": ["ACC-CRI-09", "ACC-CRI-10"],
+      "status": "ADOPTED_MECHANISM_WITH_HARDENING",
+      "evidence": "UPSTREAM_PYTHON_TRACE.jsonl rows 7-9 show the upstream fallback; DECISION_TRACE.jsonl shows fail-closed abstains"
+    },
+    {
+      "id": "CRI-OBL-03",
+      "observed_in_upstream": "ConditionalLogic.should_continue_debate terminates at 2 * max_debate_rounds; debate turns are string-prefixed (Bull/Bear).",
+      "mechanism": "bounded rounds; termination is a state machine, not a model request",
+      "tap_implementation": "verdict is a closed enum; one provider attempt per proposal; call and spend budgets checked before spending; late answers become ABSTAIN LATE_RESPONSE",
+      "tests": ["ACC-CRI-03", "ACC-CRI-13", "ACC-CRI-14"],
+      "status": "ADOPTED_MECHANISM_REJECTING_STRING_ROUTING",
+      "evidence": "UPSTREAM_PYTHON_TRACE.jsonl row 2 and 4 (router); ABLATION_REPORT.json arms.SHADOW"
+    },
+    {
+      "id": "CRI-OBL-04",
+      "observed_in_upstream": "Research Manager emits strategic actions and allocation language; the upstream trader sizes positions.",
+      "mechanism": "epistemic judgement must be separated from capital allocation",
+      "tap_implementation": "CriticReview has no size/leverage/stop/order/direction fields; extra=forbid; the gate may only suppress a new entry",
+      "tests": ["ACC-CRI-01", "ACC-CRI-15"],
+      "status": "REJECTED_UPSTREAM_CONTRACT",
+      "evidence": "BOT_CAPABILITY_REGISTRY.json critic_policy; DECISION_TRACE.jsonl economics_affected=false"
+    },
+    {
+      "id": "CRI-OBL-05",
+      "observed_in_upstream": "The debate is pure prose; the framework does not authenticate the evidence an argument cites.",
+      "mechanism": "a counter-argument is only as good as the evidence behind it",
+      "tap_implementation": "EvidenceLedger with producer-owned digests; every citation resolved; contradiction is a typed refusal",
+      "tests": ["ACC-CRI-05", "ACC-CRI-06", "ACC-CRI-08"],
+      "status": "ADOPTED_MECHANISM",
+      "evidence": "CRITIC_REVIEWS.jsonl evidence_refs/counter_evidence_refs"
+    },
+    {
+      "id": "CRI-OBL-06",
+      "observed_in_upstream": "complete_report.html is a static, script-free rendering of the final state (tradingagents/report_html.py).",
+      "mechanism": "the report is a representation surface, not an execution surface",
+      "tap_implementation": "REA observes the rendered page only; the dossier records visual_observation_only=true and reasoning_audited_by_rea=false",
+      "tests": ["REA-04", "REA-03"],
+      "status": "ADOPTED_MECHANISM_WITH_EXPLICIT_LIMIT",
+      "evidence": "REA_TARGET_EVIDENCE.json inspect_facts.scripts_total=0; screenshot SHA-256"
+    },
+    {
+      "id": "CRI-OBL-07",
+      "observed_in_upstream": "Multi-round debate spends tokens by default; no upstream ablation proves incremental value.",
+      "mechanism": "run the cheapest version and demand evidence before promotion",
+      "tap_implementation": "one call per proposal, budget caps, ablation with NO_CRITIC / SHADOW / NO_TRADE and a blocked GATED arm; ECONOMIC_VALUE=UNMEASURED",
+      "tests": ["ACC-CRI-13"],
+      "status": "ADOPTED_MECHANISM_UNCERTIFIED_VALUE",
+      "evidence": "ABLATION_REPORT.json value"
+    },
+    {
+      "id": "CRI-OBL-08",
+      "observed_in_upstream": "The checked-in HTML contains no JavaScript and loads nothing.",
+      "mechanism": "REA cannot audit the Python reasoning through the page",
+      "tap_implementation": "the Python behaviour is proven by the instrumented harness only; the two claims are recorded as different evidence classes",
+      "tests": ["PY-04", "REA-05d"],
+      "status": "REA_NOT_APPLICABLE_TO_REASONING",
+      "evidence": "UPSTREAM_HARNESS_META.json checks; REA_TARGET_EVIDENCE.json"
+    },
+    {
+      "id": "CRI-OBL-09",
+      "observed_in_upstream": "Not applicable: upstream has no shadow/gated separation.",
+      "mechanism": "a critic must earn the right to block",
+      "tap_implementation": "SHADOW_ONLY is the default; GATED_PAPER requires AI_BOTS_003C_VALIDATED and is not executed here",
+      "tests": ["ACC-CRI-15"],
+      "status": "BLOCKED_GATED_PAPER_NOT_AUTHORIZED",
+      "evidence": "ABLATION_REPORT.json arms.GATED_PAPER"
+    },
+    {
+      "id": "CRI-OBL-10",
+      "observed_in_upstream": "Not applicable: no independent verifier ships with the framework.",
+      "mechanism": "the builder cannot certify its own artefact",
+      "tap_implementation": "scripts/ai_critic/verify_rfc004.py imports no builder module and recomputes hashes, economics and contract rules; 7 mutations must be rejected by rule",
+      "tests": ["INDEPENDENT_VERIFICATION.json", "MUTATION_REPORT.json"],
+      "status": "IMPLEMENTED_WITH_STATED_LIMIT",
+      "evidence": "INDEPENDENT_VERIFICATION.json; MUTATION_REPORT.json"
+    }
+  ],
+  "rejected_contracts": [
+    "upstream Research Manager allocation / strategic actions",
+    "startswith('Bull') string routing",
+    "free-text fallback for a decision verdict",
+    "multi-round debate as a default"
+  ],
+  "limitations": [
+    "the REA observation covers the rendered page, not the Python debate",
+    "upstream tests were executed, but no real LLM was called",
+    "GATED_PAPER is blocked pending AI-BOTS-003C"
+  ]
+}

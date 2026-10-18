@@ -1,0 +1,1 @@
+No scheduled macro event inside the decision window.

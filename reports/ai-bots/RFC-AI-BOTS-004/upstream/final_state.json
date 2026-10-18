@@ -1,0 +1,20 @@
+{
+  "asset_type": "crypto",
+  "company_of_interest": "BTC/USDT",
+  "fundamentals_report": "(crypto: fundamentals are not supplied in this fixture)",
+  "instrument_context": "Instrument: BTC/USDT (crypto pair), resolved for this fixture.",
+  "investment_debate_state": {
+    "bear_history": "\nBear Analyst: Scripted upstream fixture turn 2: the case is argued from the supplied research reports, names the opposing argument it answers, and states no order, size, leverage or risk change. MODEL_STATUS=STUB.",
+    "bull_history": "\nBull Analyst: Scripted upstream fixture turn 1: the case is argued from the supplied research reports, names the opposing argument it answers, and states no order, size, leverage or risk change. MODEL_STATUS=STUB.",
+    "count": 2,
+    "current_response": "**Recommendation**: Overweight\n\n**Rationale**: The bull case carried the growth argument while the bear case failed to price the demand trend; the debate history is the deciding evidence.\n\n**Strategic Actions**: Gradually increase exposure against a standard allocation.",
+    "history": "\nBull Analyst: Scripted upstream fixture turn 1: the case is argued from the supplied research reports, names the opposing argument it answers, and states no order, size, leverage or risk change. MODEL_STATUS=STUB.\nBear Analyst: Scripted upstream fixture turn 2: the case is argued from the supplied research reports, names the opposing argument it answers, and states no order, size, leverage or risk change. MODEL_STATUS=STUB."
+  },
+  "investment_plan": "**Recommendation**: Overweight\n\n**Rationale**: The bull case carried the growth argument while the bear case failed to price the demand trend; the debate history is the deciding evidence.\n\n**Strategic Actions**: Gradually increase exposure against a standard allocation.",
+  "market_report": "Momentum above the 20/50 EMA with rising volume; resistance at 71 400.",
+  "memory_note": "",
+  "news_report": "No scheduled macro event inside the decision window.",
+  "portfolio_context": "",
+  "sentiment_report": "Positioning is neutral-to-long; funding is not stretched.",
+  "trade_date": "2026-10-17"
+}

@@ -1,0 +1,91 @@
+{
+  "all_rejected": true,
+  "generated_at": "2026-10-18T17:58:14Z",
+  "mutations_rejected": 7,
+  "mutations_total": 7,
+  "results": [
+    {
+      "expected_check": "REA-05",
+      "failed_checks": [
+        "REA-01c",
+        "REA-05"
+      ],
+      "mutation": "M1_fake_evidence_id",
+      "rejected": true,
+      "rejected_by_rule": true,
+      "rule": "a forged evidence id cannot agree with the raw REA envelope",
+      "verdict": "FAIL"
+    },
+    {
+      "expected_check": "SRC-01",
+      "failed_checks": [
+        "SRC-01",
+        "PY-01b"
+      ],
+      "mutation": "M2_foreign_source_commit",
+      "rejected": true,
+      "rejected_by_rule": true,
+      "rule": "a self-consistent manifest still names the wrong commit",
+      "verdict": "FAIL"
+    },
+    {
+      "expected_check": "REA-01e",
+      "failed_checks": [
+        "REA-01e"
+      ],
+      "mutation": "M3_exit_zero_not_executed",
+      "rejected": true,
+      "rejected_by_rule": true,
+      "rule": "exit 0 with NOT_EXECUTED is not execution",
+      "verdict": "FAIL"
+    },
+    {
+      "expected_check": "REA-04",
+      "failed_checks": [
+        "REA-04"
+      ],
+      "mutation": "M4_rea_audited_reasoning",
+      "rejected": true,
+      "rejected_by_rule": true,
+      "rule": "REA observing a page cannot audit Python reasoning",
+      "verdict": "FAIL"
+    },
+    {
+      "expected_check": "ABL-03b",
+      "failed_checks": [
+        "ABL-03b",
+        "CLAIM-01"
+      ],
+      "mutation": "M5_adopt_verified_without_edge",
+      "rejected": true,
+      "rejected_by_rule": true,
+      "rule": "ADOPT_VERIFIED without prospective evidence is refused",
+      "verdict": "FAIL"
+    },
+    {
+      "expected_check": "REA-05b",
+      "failed_checks": [
+        "REA-05b",
+        "REA-05c"
+      ],
+      "mutation": "M6_correct_id_wrong_bytes",
+      "rejected": true,
+      "rejected_by_rule": true,
+      "rule": "correct ids with different bytes are refused against the raw envelope",
+      "verdict": "FAIL"
+    },
+    {
+      "expected_check": "CRI-01b",
+      "failed_checks": [
+        "CRI-01b",
+        "CRI-02"
+      ],
+      "mutation": "M7_resealed_contract_violation",
+      "rejected": true,
+      "rejected_by_rule": true,
+      "rule": "a re-sealed review that cites counter-evidence as ACCEPT is refused by the rule",
+      "verdict": "FAIL"
+    }
+  ],
+  "schema_version": "TAP004_MUTATION_REPORT_V1"
+}

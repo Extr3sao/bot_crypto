@@ -225,6 +225,31 @@ def default_registry(env: Mapping[str, str] | None = None) -> BotCapabilityRegis
             notes="scientific control for BOT-VIS-01: same book, no pixels",
         )
     )
+    # BOT-CRI-01 reviews a frozen proposal; it holds no book and no execution tool.
+    # SHADOW_ONLY is the only mode it may enter without the AI-BOTS-003C gate.
+    registry.register(
+        BotSpec(
+            bot_id="BOT-CRI-01",
+            bot_version="1.0.0",
+            family="EPISTEMIC_CRITIC",
+            enabled="BOT-CRI-01" in allowed,
+            model_provider="openai-compatible",
+            model_id=provider_model,
+            input_contract="FrozenTradeProposal + EvidenceLedger (authenticated refs)",
+            output_contract="CriticReview(TAP_CRITIC_REVIEW_V1) ACCEPT|CHALLENGE|ABSTAIN",
+            allowed_tools=("read_ohlcv", "invoke_llm"),
+            forbidden_actions=tuple(sorted(FORBIDDEN_CAPABILITIES)),
+            max_calls_per_day=48,
+            max_latency_ms=8_000,
+            cost_budget_usd=0.5,
+            paper_namespace="AI_CRITIC_SHADOW",
+            reliability_status="IMPLEMENTED",
+            notes=(
+                "default OFF; SHADOW_ONLY observes and cannot alter fills/PNL/risk; "
+                "GATED_PAPER blocked until AI-BOTS-003C validation"
+            ),
+        )
+    )
     return registry
 
 

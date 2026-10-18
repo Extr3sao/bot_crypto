@@ -462,3 +462,6 @@ reports/economic-recovery/RFC-EDGE-015/scratch/*
 !reports/ai-bots/
 reports/ai-bots/*
 !reports/ai-bots/RFC-AI-BOTS-002/
+# RFC-AI-BOTS-004 — BOT-CRI-01 (critic + REA). Explicit, like the other packages:
+# the dossier, the REA stdout hashes and the ablation ledgers must survive a clean clone.
+!reports/ai-bots/RFC-AI-BOTS-004/

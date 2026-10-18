@@ -1,0 +1,5978 @@
+{
+  "analysis_profile": null,
+  "authority": "external-service",
+  "confidence": "observed",
+  "environment": {
+    "architecture": "unknown",
+    "id": "Chrome/155.0.8059.40@537.36 (@cfaadc5a132d78e1828635aa8405a499f3e14864)",
+    "isolation": "none",
+    "platform": "unknown"
+  },
+  "evidence_id": "ev_3548a228b86c7d375c0c317ebbd24ee0cea8330aab57582ed4e1f4bcd6051197",
+  "evidence_links": [],
+  "limitations": [
+    "Artifact identity is unavailable for this observation.",
+    "Observation starts when REA attaches; prior network and console activity is unavailable.",
+    "Raw network headers, bodies, cookies, storage values, console objects, and WebSocket payloads are never retained; explicitly requested primitive console text is retained verbatim, while payload captures retain value-free shapes.",
+    "Source maps are reported only as declarative URLs and are not fetched.",
+    "URL-less scripts and console events without an allowed source URL are excluded because their origin cannot be proven.",
+    "Browser host platform and architecture were not observed."
+  ],
+  "locations": [],
+  "normalized_result": {
+    "accessibility": {
+      "nodes": [
+        {
+          "description": null,
+          "ignored": false,
+          "name": "BTC/USDT 2026-10-17: TradingAgents report",
+          "node_id": "1",
+          "parent_id": null,
+          "role": "RootWebArea",
+          "states": [
+            {
+              "name": "focusable",
+              "value": true
+            },
+            {
+              "name": "focused",
+              "value": true
+            }
+          ]
+        },
+        {
+          "description": null,
+          "ignored": true,
+          "name": null,
+          "node_id": "133",
+          "parent_id": "1",
+          "role": "none",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": true,
+          "name": null,
+          "node_id": "149",
+          "parent_id": "133",
+          "role": "none",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "",
+          "node_id": "151",
+          "parent_id": "149",
+          "role": "generic",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "",
+          "node_id": "3",
+          "parent_id": "151",
+          "role": "banner",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Sections",
+          "node_id": "43",
+          "parent_id": "151",
+          "role": "navigation",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "",
+          "node_id": "84",
+          "parent_id": "151",
+          "role": "main",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "",
+          "node_id": "126",
+          "parent_id": "151",
+          "role": "contentinfo",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Tauric Research",
+          "node_id": "4",
+          "parent_id": "3",
+          "role": "link",
+          "states": [
+            {
+              "name": "focusable",
+              "value": true
+            }
+          ]
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "BTC/USDT",
+          "node_id": "6",
+          "parent_id": "3",
+          "role": "heading",
+          "states": [
+            {
+              "name": "level",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "",
+          "node_id": "8",
+          "parent_id": "3",
+          "role": "paragraph",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "",
+          "node_id": "10",
+          "parent_id": "3",
+          "role": "DescriptionList",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "",
+          "node_id": "44",
+          "parent_id": "43",
+          "role": "list",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "",
+          "node_id": "85",
+          "parent_id": "84",
+          "role": "generic",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "",
+          "node_id": "104",
+          "parent_id": "84",
+          "role": "generic",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "TradingAgents",
+          "node_id": "127",
+          "parent_id": "126",
+          "role": "link",
+          "states": [
+            {
+              "name": "focusable",
+              "value": true
+            }
+          ]
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": " powered by ",
+          "node_id": "129",
+          "parent_id": "126",
+          "role": "StaticText",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Tauric Research",
+          "node_id": "130",
+          "parent_id": "126",
+          "role": "link",
+          "states": [
+            {
+              "name": "focusable",
+              "value": true
+            }
+          ]
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "",
+          "node_id": "5",
+          "parent_id": "4",
+          "role": "image",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": true,
+          "name": null,
+          "node_id": "286",
+          "parent_id": "6",
+          "role": "none",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "BTC/USDT",
+          "node_id": "7",
+          "parent_id": "286",
+          "role": "StaticText",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Analysis of 2026-10-17",
+          "node_id": "9",
+          "parent_id": "8",
+          "role": "StaticText",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Generated",
+          "node_id": "11",
+          "parent_id": "10",
+          "role": "term",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "",
+          "node_id": "13",
+          "parent_id": "10",
+          "role": "definition",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Deep model",
+          "node_id": "15",
+          "parent_id": "10",
+          "role": "term",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "",
+          "node_id": "17",
+          "parent_id": "10",
+          "role": "definition",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Quick model",
+          "node_id": "20",
+          "parent_id": "10",
+          "role": "term",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "",
+          "node_id": "22",
+          "parent_id": "10",
+          "role": "definition",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Analysts",
+          "node_id": "25",
+          "parent_id": "10",
+          "role": "term",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "",
+          "node_id": "27",
+          "parent_id": "10",
+          "role": "definition",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Debate rounds",
+          "node_id": "32",
+          "parent_id": "10",
+          "role": "term",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "",
+          "node_id": "34",
+          "parent_id": "10",
+          "role": "definition",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Version",
+          "node_id": "39",
+          "parent_id": "10",
+          "role": "term",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "",
+          "node_id": "41",
+          "parent_id": "10",
+          "role": "definition",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "",
+          "node_id": "45",
+          "parent_id": "44",
+          "role": "listitem",
+          "states": [
+            {
+              "name": "level",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "",
+          "node_id": "67",
+          "parent_id": "44",
+          "role": "listitem",
+          "states": [
+            {
+              "name": "level",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "I. Analyst Team Reports",
+          "node_id": "86",
+          "parent_id": "85",
+          "role": "heading",
+          "states": [
+            {
+              "name": "level",
+              "value": 2
+            }
+          ]
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Market Analyst",
+          "node_id": "88",
+          "parent_id": "85",
+          "role": "heading",
+          "states": [
+            {
+              "name": "level",
+              "value": 3
+            }
+          ]
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "",
+          "node_id": "90",
+          "parent_id": "85",
+          "role": "paragraph",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Sentiment Analyst",
+          "node_id": "92",
+          "parent_id": "85",
+          "role": "heading",
+          "states": [
+            {
+              "name": "level",
+              "value": 3
+            }
+          ]
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "",
+          "node_id": "94",
+          "parent_id": "85",
+          "role": "paragraph",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "News Analyst",
+          "node_id": "96",
+          "parent_id": "85",
+          "role": "heading",
+          "states": [
+            {
+              "name": "level",
+              "value": 3
+            }
+          ]
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "",
+          "node_id": "98",
+          "parent_id": "85",
+          "role": "paragraph",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Fundamentals Analyst",
+          "node_id": "100",
+          "parent_id": "85",
+          "role": "heading",
+          "states": [
+            {
+              "name": "level",
+              "value": 3
+            }
+          ]
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "",
+          "node_id": "102",
+          "parent_id": "85",
+          "role": "paragraph",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "II. Research Team Decision",
+          "node_id": "105",
+          "parent_id": "104",
+          "role": "heading",
+          "states": [
+            {
+              "name": "level",
+              "value": 2
+            }
+          ]
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Bull Researcher",
+          "node_id": "107",
+          "parent_id": "104",
+          "role": "heading",
+          "states": [
+            {
+              "name": "level",
+              "value": 3
+            }
+          ]
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "",
+          "node_id": "109",
+          "parent_id": "104",
+          "role": "paragraph",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Bear Researcher",
+          "node_id": "111",
+          "parent_id": "104",
+          "role": "heading",
+          "states": [
+            {
+              "name": "level",
+              "value": 3
+            }
+          ]
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "",
+          "node_id": "113",
+          "parent_id": "104",
+          "role": "paragraph",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Research Manager",
+          "node_id": "115",
+          "parent_id": "104",
+          "role": "heading",
+          "states": [
+            {
+              "name": "level",
+              "value": 3
+            }
+          ]
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "",
+          "node_id": "117",
+          "parent_id": "104",
+          "role": "paragraph",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "",
+          "node_id": "120",
+          "parent_id": "104",
+          "role": "paragraph",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "",
+          "node_id": "123",
+          "parent_id": "104",
+          "role": "paragraph",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "TradingAgents",
+          "node_id": "128",
+          "parent_id": "127",
+          "role": "StaticText",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": " powered by ",
+          "node_id": "-1000000062",
+          "parent_id": "129",
+          "role": "InlineTextBox",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Tauric Research",
+          "node_id": "131",
+          "parent_id": "130",
+          "role": "StaticText",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "BTC/USDT",
+          "node_id": "-1000000002",
+          "parent_id": "7",
+          "role": "InlineTextBox",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Analysis of 2026-10-17",
+          "node_id": "-1000000003",
+          "parent_id": "9",
+          "role": "InlineTextBox",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Generated",
+          "node_id": "12",
+          "parent_id": "11",
+          "role": "StaticText",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "2026-10-18 19:42",
+          "node_id": "14",
+          "parent_id": "13",
+          "role": "StaticText",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Deep model",
+          "node_id": "16",
+          "parent_id": "15",
+          "role": "StaticText",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "",
+          "node_id": "291",
+          "parent_id": "17",
+          "role": "generic",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "",
+          "node_id": "293",
+          "parent_id": "17",
+          "role": "generic",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Quick model",
+          "node_id": "21",
+          "parent_id": "20",
+          "role": "StaticText",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "",
+          "node_id": "295",
+          "parent_id": "22",
+          "role": "generic",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "",
+          "node_id": "297",
+          "parent_id": "22",
+          "role": "generic",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Analysts",
+          "node_id": "26",
+          "parent_id": "25",
+          "role": "StaticText",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "",
+          "node_id": "299",
+          "parent_id": "27",
+          "role": "generic",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "",
+          "node_id": "301",
+          "parent_id": "27",
+          "role": "generic",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "",
+          "node_id": "303",
+          "parent_id": "27",
+          "role": "generic",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "",
+          "node_id": "305",
+          "parent_id": "27",
+          "role": "generic",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Debate rounds",
+          "node_id": "33",
+          "parent_id": "32",
+          "role": "StaticText",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "",
+          "node_id": "307",
+          "parent_id": "34",
+          "role": "generic",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "",
+          "node_id": "311",
+          "parent_id": "34",
+          "role": "generic",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Version",
+          "node_id": "40",
+          "parent_id": "39",
+          "role": "StaticText",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "TradingAgents TAP-004-upstream-fixture",
+          "node_id": "42",
+          "parent_id": "41",
+          "role": "StaticText",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "I Analyst Team Reports",
+          "node_id": "46",
+          "parent_id": "45",
+          "role": "link",
+          "states": [
+            {
+              "name": "focusable",
+              "value": true
+            }
+          ]
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "",
+          "node_id": "50",
+          "parent_id": "45",
+          "role": "list",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "II Research Team Decision",
+          "node_id": "68",
+          "parent_id": "67",
+          "role": "link",
+          "states": [
+            {
+              "name": "focusable",
+              "value": true
+            }
+          ]
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "",
+          "node_id": "72",
+          "parent_id": "67",
+          "role": "list",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "I. Analyst Team Reports",
+          "node_id": "87",
+          "parent_id": "86",
+          "role": "StaticText",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Market Analyst",
+          "node_id": "89",
+          "parent_id": "88",
+          "role": "StaticText",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Momentum above the 20/50 EMA with rising volume; resistance at 71 400.",
+          "node_id": "91",
+          "parent_id": "90",
+          "role": "StaticText",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Sentiment Analyst",
+          "node_id": "93",
+          "parent_id": "92",
+          "role": "StaticText",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Positioning is neutral-to-long; funding is not stretched.",
+          "node_id": "95",
+          "parent_id": "94",
+          "role": "StaticText",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "News Analyst",
+          "node_id": "97",
+          "parent_id": "96",
+          "role": "StaticText",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "No scheduled macro event inside the decision window.",
+          "node_id": "99",
+          "parent_id": "98",
+          "role": "StaticText",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Fundamentals Analyst",
+          "node_id": "101",
+          "parent_id": "100",
+          "role": "StaticText",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "(crypto: fundamentals are not supplied in this fixture)",
+          "node_id": "103",
+          "parent_id": "102",
+          "role": "StaticText",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "II. Research Team Decision",
+          "node_id": "106",
+          "parent_id": "105",
+          "role": "StaticText",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Bull Researcher",
+          "node_id": "108",
+          "parent_id": "107",
+          "role": "StaticText",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Bull Analyst: Scripted upstream fixture turn 1: the case is argued from the supplied research reports, names the opposing argument it answers, and states no order, size, leverage or risk change. MODEL_STATUS=STUB.",
+          "node_id": "110",
+          "parent_id": "109",
+          "role": "StaticText",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Bear Researcher",
+          "node_id": "112",
+          "parent_id": "111",
+          "role": "StaticText",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Bear Analyst: Scripted upstream fixture turn 2: the case is argued from the supplied research reports, names the opposing argument it answers, and states no order, size, leverage or risk change. MODEL_STATUS=STUB.",
+          "node_id": "114",
+          "parent_id": "113",
+          "role": "StaticText",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Research Manager",
+          "node_id": "116",
+          "parent_id": "115",
+          "role": "StaticText",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "",
+          "node_id": "350",
+          "parent_id": "117",
+          "role": "strong",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": ": Overweight",
+          "node_id": "119",
+          "parent_id": "117",
+          "role": "StaticText",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "",
+          "node_id": "352",
+          "parent_id": "120",
+          "role": "strong",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": ": The bull case carried the growth argument while the bear case failed to price the demand trend; the debate history is the deciding evidence.",
+          "node_id": "122",
+          "parent_id": "120",
+          "role": "StaticText",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "",
+          "node_id": "354",
+          "parent_id": "123",
+          "role": "strong",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": ": Gradually increase exposure against a standard allocation.",
+          "node_id": "125",
+          "parent_id": "123",
+          "role": "StaticText",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "TradingAgents",
+          "node_id": "-1000000061",
+          "parent_id": "128",
+          "role": "InlineTextBox",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Tauric Research",
+          "node_id": "-1000000063",
+          "parent_id": "131",
+          "role": "InlineTextBox",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Generated",
+          "node_id": "-1000000004",
+          "parent_id": "12",
+          "role": "InlineTextBox",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "2026-10-18 19:42",
+          "node_id": "-1000000005",
+          "parent_id": "14",
+          "role": "InlineTextBox",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Deep model",
+          "node_id": "-1000000006",
+          "parent_id": "16",
+          "role": "InlineTextBox",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "scripted-stub",
+          "node_id": "18",
+          "parent_id": "291",
+          "role": "StaticText",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "STUB-UPSTREAM-CRITIC-004",
+          "node_id": "19",
+          "parent_id": "293",
+          "role": "StaticText",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Quick model",
+          "node_id": "-1000000009",
+          "parent_id": "21",
+          "role": "InlineTextBox",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "scripted-stub",
+          "node_id": "23",
+          "parent_id": "295",
+          "role": "StaticText",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "STUB-UPSTREAM-CRITIC-004",
+          "node_id": "24",
+          "parent_id": "297",
+          "role": "StaticText",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Analysts",
+          "node_id": "-1000000012",
+          "parent_id": "26",
+          "role": "InlineTextBox",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "market",
+          "node_id": "28",
+          "parent_id": "299",
+          "role": "StaticText",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "sentiment",
+          "node_id": "29",
+          "parent_id": "301",
+          "role": "StaticText",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "news",
+          "node_id": "30",
+          "parent_id": "303",
+          "role": "StaticText",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "fundamentals",
+          "node_id": "31",
+          "parent_id": "305",
+          "role": "StaticText",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Debate rounds",
+          "node_id": "-1000000017",
+          "parent_id": "33",
+          "role": "InlineTextBox",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "research",
+          "node_id": "35",
+          "parent_id": "307",
+          "role": "StaticText",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "",
+          "node_id": "309",
+          "parent_id": "307",
+          "role": "generic",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "risk",
+          "node_id": "37",
+          "parent_id": "311",
+          "role": "StaticText",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "",
+          "node_id": "313",
+          "parent_id": "311",
+          "role": "generic",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Version",
+          "node_id": "-1000000022",
+          "parent_id": "40",
+          "role": "InlineTextBox",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "TradingAgents TAP-004-upstream-fixture",
+          "node_id": "-1000000023",
+          "parent_id": "42",
+          "role": "InlineTextBox",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": true,
+          "name": null,
+          "node_id": "317",
+          "parent_id": "46",
+          "role": "none",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "I",
+          "node_id": "47",
+          "parent_id": "317",
+          "role": "StaticText",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": true,
+          "name": null,
+          "node_id": "48",
+          "parent_id": "46",
+          "role": "none",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Analyst Team Reports",
+          "node_id": "49",
+          "parent_id": "48",
+          "role": "StaticText",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "",
+          "node_id": "51",
+          "parent_id": "50",
+          "role": "listitem",
+          "states": [
+            {
+              "name": "level",
+              "value": 2
+            }
+          ]
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "",
+          "node_id": "55",
+          "parent_id": "50",
+          "role": "listitem",
+          "states": [
+            {
+              "name": "level",
+              "value": 2
+            }
+          ]
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "",
+          "node_id": "59",
+          "parent_id": "50",
+          "role": "listitem",
+          "states": [
+            {
+              "name": "level",
+              "value": 2
+            }
+          ]
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "",
+          "node_id": "63",
+          "parent_id": "50",
+          "role": "listitem",
+          "states": [
+            {
+              "name": "level",
+              "value": 2
+            }
+          ]
+        },
+        {
+          "description": null,
+          "ignored": true,
+          "name": null,
+          "node_id": "327",
+          "parent_id": "68",
+          "role": "none",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "II",
+          "node_id": "69",
+          "parent_id": "327",
+          "role": "StaticText",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": true,
+          "name": null,
+          "node_id": "70",
+          "parent_id": "68",
+          "role": "none",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Research Team Decision",
+          "node_id": "71",
+          "parent_id": "70",
+          "role": "StaticText",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "",
+          "node_id": "73",
+          "parent_id": "72",
+          "role": "listitem",
+          "states": [
+            {
+              "name": "level",
+              "value": 2
+            }
+          ]
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "",
+          "node_id": "77",
+          "parent_id": "72",
+          "role": "listitem",
+          "states": [
+            {
+              "name": "level",
+              "value": 2
+            }
+          ]
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "",
+          "node_id": "81",
+          "parent_id": "72",
+          "role": "listitem",
+          "states": [
+            {
+              "name": "level",
+              "value": 2
+            }
+          ]
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "I. Analyst Team Reports",
+          "node_id": "-1000000035",
+          "parent_id": "87",
+          "role": "InlineTextBox",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Market Analyst",
+          "node_id": "-1000000036",
+          "parent_id": "89",
+          "role": "InlineTextBox",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Momentum above the 20/50 EMA with rising volume; resistance at 71 400.",
+          "node_id": "-1000000037",
+          "parent_id": "91",
+          "role": "InlineTextBox",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Sentiment Analyst",
+          "node_id": "-1000000038",
+          "parent_id": "93",
+          "role": "InlineTextBox",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Positioning is neutral-to-long; funding is not stretched.",
+          "node_id": "-1000000039",
+          "parent_id": "95",
+          "role": "InlineTextBox",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "News Analyst",
+          "node_id": "-1000000040",
+          "parent_id": "97",
+          "role": "InlineTextBox",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "No scheduled macro event inside the decision window.",
+          "node_id": "-1000000041",
+          "parent_id": "99",
+          "role": "InlineTextBox",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Fundamentals Analyst",
+          "node_id": "-1000000042",
+          "parent_id": "101",
+          "role": "InlineTextBox",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "(crypto: fundamentals are not supplied in this fixture)",
+          "node_id": "-1000000043",
+          "parent_id": "103",
+          "role": "InlineTextBox",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "II. Research Team Decision",
+          "node_id": "-1000000044",
+          "parent_id": "106",
+          "role": "InlineTextBox",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Bull Researcher",
+          "node_id": "-1000000045",
+          "parent_id": "108",
+          "role": "InlineTextBox",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Bull Analyst: Scripted upstream fixture turn 1: the case is argued from the supplied ",
+          "node_id": "-1000000046",
+          "parent_id": "110",
+          "role": "InlineTextBox",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "research reports, names the opposing argument it answers, and states no order, size, ",
+          "node_id": "-1000000047",
+          "parent_id": "110",
+          "role": "InlineTextBox",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "leverage or risk change. MODEL_STATUS=STUB.",
+          "node_id": "-1000000048",
+          "parent_id": "110",
+          "role": "InlineTextBox",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Bear Researcher",
+          "node_id": "-1000000049",
+          "parent_id": "112",
+          "role": "InlineTextBox",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Bear Analyst: Scripted upstream fixture turn 2: the case is argued from the supplied ",
+          "node_id": "-1000000050",
+          "parent_id": "114",
+          "role": "InlineTextBox",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "research reports, names the opposing argument it answers, and states no order, size, ",
+          "node_id": "-1000000051",
+          "parent_id": "114",
+          "role": "InlineTextBox",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "leverage or risk change. MODEL_STATUS=STUB.",
+          "node_id": "-1000000052",
+          "parent_id": "114",
+          "role": "InlineTextBox",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Research Manager",
+          "node_id": "-1000000053",
+          "parent_id": "116",
+          "role": "InlineTextBox",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Recommendation",
+          "node_id": "118",
+          "parent_id": "350",
+          "role": "StaticText",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": ": Overweight",
+          "node_id": "-1000000055",
+          "parent_id": "119",
+          "role": "InlineTextBox",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Rationale",
+          "node_id": "121",
+          "parent_id": "352",
+          "role": "StaticText",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": ": The bull case carried the growth argument while the bear case failed to ",
+          "node_id": "-1000000057",
+          "parent_id": "122",
+          "role": "InlineTextBox",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "price the demand trend; the debate history is the deciding evidence.",
+          "node_id": "-1000000058",
+          "parent_id": "122",
+          "role": "InlineTextBox",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Strategic Actions",
+          "node_id": "124",
+          "parent_id": "354",
+          "role": "StaticText",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": ": Gradually increase exposure against a standard allocation.",
+          "node_id": "-1000000060",
+          "parent_id": "125",
+          "role": "InlineTextBox",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "scripted-stub",
+          "node_id": "-1000000007",
+          "parent_id": "18",
+          "role": "InlineTextBox",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "STUB-UPSTREAM-CRITIC-004",
+          "node_id": "-1000000008",
+          "parent_id": "19",
+          "role": "InlineTextBox",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "scripted-stub",
+          "node_id": "-1000000010",
+          "parent_id": "23",
+          "role": "InlineTextBox",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "STUB-UPSTREAM-CRITIC-004",
+          "node_id": "-1000000011",
+          "parent_id": "24",
+          "role": "InlineTextBox",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "market",
+          "node_id": "-1000000013",
+          "parent_id": "28",
+          "role": "InlineTextBox",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "sentiment",
+          "node_id": "-1000000014",
+          "parent_id": "29",
+          "role": "InlineTextBox",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "news",
+          "node_id": "-1000000015",
+          "parent_id": "30",
+          "role": "InlineTextBox",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "fundamentals",
+          "node_id": "-1000000016",
+          "parent_id": "31",
+          "role": "InlineTextBox",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "research",
+          "node_id": "-1000000018",
+          "parent_id": "35",
+          "role": "InlineTextBox",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "1",
+          "node_id": "36",
+          "parent_id": "309",
+          "role": "StaticText",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "risk",
+          "node_id": "-1000000020",
+          "parent_id": "37",
+          "role": "InlineTextBox",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "1",
+          "node_id": "38",
+          "parent_id": "313",
+          "role": "StaticText",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "I",
+          "node_id": "-1000000024",
+          "parent_id": "47",
+          "role": "InlineTextBox",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Analyst Team Reports",
+          "node_id": "-1000000025",
+          "parent_id": "49",
+          "role": "InlineTextBox",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Market Analyst",
+          "node_id": "52",
+          "parent_id": "51",
+          "role": "link",
+          "states": [
+            {
+              "name": "focusable",
+              "value": true
+            }
+          ]
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Sentiment Analyst",
+          "node_id": "56",
+          "parent_id": "55",
+          "role": "link",
+          "states": [
+            {
+              "name": "focusable",
+              "value": true
+            }
+          ]
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "News Analyst",
+          "node_id": "60",
+          "parent_id": "59",
+          "role": "link",
+          "states": [
+            {
+              "name": "focusable",
+              "value": true
+            }
+          ]
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Fundamentals Analyst",
+          "node_id": "64",
+          "parent_id": "63",
+          "role": "link",
+          "states": [
+            {
+              "name": "focusable",
+              "value": true
+            }
+          ]
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "II",
+          "node_id": "-1000000030",
+          "parent_id": "69",
+          "role": "InlineTextBox",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Research Team Decision",
+          "node_id": "-1000000031",
+          "parent_id": "71",
+          "role": "InlineTextBox",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Bull Researcher",
+          "node_id": "74",
+          "parent_id": "73",
+          "role": "link",
+          "states": [
+            {
+              "name": "focusable",
+              "value": true
+            }
+          ]
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Bear Researcher",
+          "node_id": "78",
+          "parent_id": "77",
+          "role": "link",
+          "states": [
+            {
+              "name": "focusable",
+              "value": true
+            }
+          ]
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Research Manager",
+          "node_id": "2",
+          "parent_id": "81",
+          "role": "link",
+          "states": [
+            {
+              "name": "focusable",
+              "value": true
+            }
+          ]
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Recommendation",
+          "node_id": "-1000000054",
+          "parent_id": "118",
+          "role": "InlineTextBox",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Rationale",
+          "node_id": "-1000000056",
+          "parent_id": "121",
+          "role": "InlineTextBox",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Strategic Actions",
+          "node_id": "-1000000059",
+          "parent_id": "124",
+          "role": "InlineTextBox",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "1",
+          "node_id": "-1000000019",
+          "parent_id": "36",
+          "role": "InlineTextBox",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "1",
+          "node_id": "-1000000021",
+          "parent_id": "38",
+          "role": "InlineTextBox",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": true,
+          "name": null,
+          "node_id": "319",
+          "parent_id": "52",
+          "role": "none",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": true,
+          "name": null,
+          "node_id": "53",
+          "parent_id": "52",
+          "role": "none",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Market Analyst",
+          "node_id": "54",
+          "parent_id": "53",
+          "role": "StaticText",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": true,
+          "name": null,
+          "node_id": "321",
+          "parent_id": "56",
+          "role": "none",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": true,
+          "name": null,
+          "node_id": "57",
+          "parent_id": "56",
+          "role": "none",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Sentiment Analyst",
+          "node_id": "58",
+          "parent_id": "57",
+          "role": "StaticText",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": true,
+          "name": null,
+          "node_id": "323",
+          "parent_id": "60",
+          "role": "none",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": true,
+          "name": null,
+          "node_id": "61",
+          "parent_id": "60",
+          "role": "none",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "News Analyst",
+          "node_id": "62",
+          "parent_id": "61",
+          "role": "StaticText",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": true,
+          "name": null,
+          "node_id": "325",
+          "parent_id": "64",
+          "role": "none",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": true,
+          "name": null,
+          "node_id": "65",
+          "parent_id": "64",
+          "role": "none",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Fundamentals Analyst",
+          "node_id": "66",
+          "parent_id": "65",
+          "role": "StaticText",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": true,
+          "name": null,
+          "node_id": "329",
+          "parent_id": "74",
+          "role": "none",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": true,
+          "name": null,
+          "node_id": "75",
+          "parent_id": "74",
+          "role": "none",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Bull Researcher",
+          "node_id": "76",
+          "parent_id": "75",
+          "role": "StaticText",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": true,
+          "name": null,
+          "node_id": "331",
+          "parent_id": "78",
+          "role": "none",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": true,
+          "name": null,
+          "node_id": "79",
+          "parent_id": "78",
+          "role": "none",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Bear Researcher",
+          "node_id": "80",
+          "parent_id": "79",
+          "role": "StaticText",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": true,
+          "name": null,
+          "node_id": "333",
+          "parent_id": "2",
+          "role": "none",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": true,
+          "name": null,
+          "node_id": "82",
+          "parent_id": "2",
+          "role": "none",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Research Manager",
+          "node_id": "83",
+          "parent_id": "82",
+          "role": "StaticText",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Market Analyst",
+          "node_id": "-1000000026",
+          "parent_id": "54",
+          "role": "InlineTextBox",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Sentiment Analyst",
+          "node_id": "-1000000027",
+          "parent_id": "58",
+          "role": "InlineTextBox",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "News Analyst",
+          "node_id": "-1000000028",
+          "parent_id": "62",
+          "role": "InlineTextBox",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Fundamentals Analyst",
+          "node_id": "-1000000029",
+          "parent_id": "66",
+          "role": "InlineTextBox",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Bull Researcher",
+          "node_id": "-1000000032",
+          "parent_id": "76",
+          "role": "InlineTextBox",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Bear Researcher",
+          "node_id": "-1000000033",
+          "parent_id": "80",
+          "role": "InlineTextBox",
+          "states": []
+        },
+        {
+          "description": null,
+          "ignored": false,
+          "name": "Research Manager",
+          "node_id": "-1000000034",
+          "parent_id": "83",
+          "role": "InlineTextBox",
+          "states": []
+        }
+      ],
+      "text_capture": {
+        "excluded_fields": 0,
+        "retained_bytes": 3526,
+        "status": "included"
+      },
+      "total_nodes": 221
+    },
+    "browser": {
+      "js_version": "15.5.35.20",
+      "product": "Chrome/155.0.8059.40",
+      "protocol_version": "1.3",
+      "revision": "537.36 (@cfaadc5a132d78e1828635aa8405a499f3e14864)",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36"
+    },
+    "capture_window": {
+      "ended_at": "2026-10-18T17:46:54.935Z",
+      "observation_ms": 500,
+      "started_at": "2026-10-18T17:46:54.364Z"
+    },
+    "completeness": {
+      "attach_limited_sections": [
+        "console_events",
+        "metadata",
+        "network_requests",
+        "websocket_connections",
+        "websocket_frames"
+      ],
+      "conditions": [
+        "attach_limited",
+        "policy_filtered"
+      ],
+      "dropped_events": {
+        "console_events": 0,
+        "network_requests": 0,
+        "scripts": 0,
+        "timeline_events": 0,
+        "total": 0,
+        "webmcp_tools": 0,
+        "websocket_connections": 0,
+        "websocket_frames": 0
+      },
+      "excluded": [
+        {
+          "count": null,
+          "reason": "not_approved",
+          "section": "console_text"
+        },
+        {
+          "count": null,
+          "reason": "not_approved",
+          "section": "json_body_shapes"
+        },
+        {
+          "count": 3,
+          "reason": "disallowed_origin",
+          "section": "metadata"
+        },
+        {
+          "count": 0,
+          "reason": "not_approved",
+          "section": "script_sources"
+        },
+        {
+          "count": null,
+          "reason": "not_approved",
+          "section": "storage_keys"
+        },
+        {
+          "count": null,
+          "reason": "not_approved",
+          "section": "websocket_shapes"
+        },
+        {
+          "count": 1,
+          "reason": "out_of_target_scope",
+          "section": "workers"
+        }
+      ],
+      "policy_filtered_sections": [
+        "console_text",
+        "json_body_shapes",
+        "metadata",
+        "script_sources",
+        "storage_keys",
+        "websocket_shapes",
+        "workers"
+      ],
+      "status": "policy_filtered",
+      "truncated_sections": [],
+      "unavailable_sections": []
+    },
+    "console": {
+      "coverage_started_at": "2026-10-18T17:46:54.364Z",
+      "events": [],
+      "prior_activity_available": false
+    },
+    "dom": {
+      "nodes": [
+        {
+          "attribute_names": [],
+          "index": 0,
+          "node_name": "#document",
+          "node_type": 9,
+          "node_value_length": 0,
+          "parent_index": -1
+        },
+        {
+          "attribute_names": [],
+          "index": 1,
+          "node_name": "html",
+          "node_type": 10,
+          "node_value_length": 0,
+          "parent_index": 0
+        },
+        {
+          "attribute_names": [
+            "lang"
+          ],
+          "index": 2,
+          "node_name": "HTML",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 0
+        },
+        {
+          "attribute_names": [],
+          "index": 3,
+          "node_name": "HEAD",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 2
+        },
+        {
+          "attribute_names": [],
+          "index": 4,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 3
+        },
+        {
+          "attribute_names": [
+            "charset"
+          ],
+          "index": 5,
+          "node_name": "META",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 3
+        },
+        {
+          "attribute_names": [],
+          "index": 6,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 3
+        },
+        {
+          "attribute_names": [
+            "name",
+            "content"
+          ],
+          "index": 7,
+          "node_name": "META",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 3
+        },
+        {
+          "attribute_names": [],
+          "index": 8,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 3
+        },
+        {
+          "attribute_names": [
+            "http-equiv",
+            "content"
+          ],
+          "index": 9,
+          "node_name": "META",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 3
+        },
+        {
+          "attribute_names": [],
+          "index": 10,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 3
+        },
+        {
+          "attribute_names": [],
+          "index": 11,
+          "node_name": "TITLE",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 3
+        },
+        {
+          "attribute_names": [],
+          "index": 12,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 41,
+          "parent_index": 11
+        },
+        {
+          "attribute_names": [],
+          "index": 13,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 3
+        },
+        {
+          "attribute_names": [],
+          "index": 14,
+          "node_name": "STYLE",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 3
+        },
+        {
+          "attribute_names": [],
+          "index": 15,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 8395,
+          "parent_index": 14
+        },
+        {
+          "attribute_names": [],
+          "index": 16,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 3
+        },
+        {
+          "attribute_names": [],
+          "index": 17,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 2
+        },
+        {
+          "attribute_names": [],
+          "index": 18,
+          "node_name": "BODY",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 2
+        },
+        {
+          "attribute_names": [],
+          "index": 19,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 18
+        },
+        {
+          "attribute_names": [
+            "class",
+            "id"
+          ],
+          "index": 20,
+          "node_name": "DIV",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 18
+        },
+        {
+          "attribute_names": [],
+          "index": 21,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 20
+        },
+        {
+          "attribute_names": [
+            "class"
+          ],
+          "index": 22,
+          "node_name": "HEADER",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 20
+        },
+        {
+          "attribute_names": [],
+          "index": 23,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 22
+        },
+        {
+          "attribute_names": [
+            "class",
+            "href",
+            "rel",
+            "aria-label"
+          ],
+          "index": 24,
+          "node_name": "A",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 22
+        },
+        {
+          "attribute_names": [
+            "width",
+            "height",
+            "viewBox",
+            "fill",
+            "xmlns"
+          ],
+          "index": 25,
+          "node_name": "svg",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 24
+        },
+        {
+          "attribute_names": [],
+          "index": 26,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [
+            "d",
+            "fill"
+          ],
+          "index": 27,
+          "node_name": "path",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 28,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [
+            "x",
+            "y",
+            "width",
+            "height",
+            "rx",
+            "fill"
+          ],
+          "index": 29,
+          "node_name": "rect",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 30,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [
+            "x",
+            "y",
+            "width",
+            "height",
+            "rx",
+            "fill"
+          ],
+          "index": 31,
+          "node_name": "rect",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 32,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [
+            "y",
+            "width",
+            "height",
+            "rx",
+            "fill"
+          ],
+          "index": 33,
+          "node_name": "rect",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 34,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [
+            "x",
+            "y",
+            "width",
+            "height",
+            "rx",
+            "fill"
+          ],
+          "index": 35,
+          "node_name": "rect",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 36,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [
+            "x",
+            "y",
+            "width",
+            "height",
+            "rx",
+            "fill"
+          ],
+          "index": 37,
+          "node_name": "rect",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 38,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [
+            "x",
+            "y",
+            "width",
+            "height",
+            "rx",
+            "fill"
+          ],
+          "index": 39,
+          "node_name": "rect",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 40,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [
+            "x",
+            "y",
+            "width",
+            "height",
+            "rx",
+            "fill"
+          ],
+          "index": 41,
+          "node_name": "rect",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 42,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [
+            "x",
+            "y",
+            "width",
+            "height",
+            "rx",
+            "fill"
+          ],
+          "index": 43,
+          "node_name": "rect",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 44,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [
+            "x",
+            "y",
+            "width",
+            "height",
+            "rx",
+            "fill"
+          ],
+          "index": 45,
+          "node_name": "rect",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 46,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [
+            "x",
+            "y",
+            "width",
+            "height",
+            "rx",
+            "fill"
+          ],
+          "index": 47,
+          "node_name": "rect",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 48,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [
+            "x",
+            "y",
+            "width",
+            "height",
+            "rx",
+            "fill"
+          ],
+          "index": 49,
+          "node_name": "rect",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 50,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [
+            "x",
+            "y",
+            "width",
+            "height",
+            "rx",
+            "fill"
+          ],
+          "index": 51,
+          "node_name": "rect",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 52,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [
+            "x",
+            "y",
+            "width",
+            "height",
+            "rx",
+            "fill"
+          ],
+          "index": 53,
+          "node_name": "rect",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 54,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [
+            "x",
+            "y",
+            "width",
+            "height",
+            "rx",
+            "fill"
+          ],
+          "index": 55,
+          "node_name": "rect",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 56,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [
+            "x",
+            "y",
+            "width",
+            "height",
+            "rx",
+            "fill"
+          ],
+          "index": 57,
+          "node_name": "rect",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 58,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [
+            "x",
+            "y",
+            "width",
+            "height",
+            "rx",
+            "fill"
+          ],
+          "index": 59,
+          "node_name": "rect",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 60,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [
+            "x",
+            "y",
+            "width",
+            "height",
+            "rx",
+            "fill"
+          ],
+          "index": 61,
+          "node_name": "rect",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 62,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [
+            "x",
+            "y",
+            "width",
+            "height",
+            "rx",
+            "fill"
+          ],
+          "index": 63,
+          "node_name": "rect",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 64,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [
+            "x",
+            "y",
+            "width",
+            "height",
+            "rx",
+            "fill"
+          ],
+          "index": 65,
+          "node_name": "rect",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 66,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [
+            "x",
+            "y",
+            "width",
+            "height",
+            "rx",
+            "fill"
+          ],
+          "index": 67,
+          "node_name": "rect",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 68,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [
+            "x",
+            "y",
+            "width",
+            "height",
+            "rx",
+            "fill"
+          ],
+          "index": 69,
+          "node_name": "rect",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 70,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [
+            "x",
+            "y",
+            "width",
+            "height",
+            "rx",
+            "fill"
+          ],
+          "index": 71,
+          "node_name": "rect",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 72,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [
+            "x",
+            "y",
+            "width",
+            "height",
+            "rx",
+            "fill"
+          ],
+          "index": 73,
+          "node_name": "rect",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 74,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [
+            "width",
+            "height",
+            "rx",
+            "fill"
+          ],
+          "index": 75,
+          "node_name": "rect",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 76,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [
+            "x",
+            "width",
+            "height",
+            "rx",
+            "fill"
+          ],
+          "index": 77,
+          "node_name": "rect",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 78,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [
+            "x",
+            "y",
+            "width",
+            "height",
+            "rx",
+            "stroke",
+            "stroke-width"
+          ],
+          "index": 79,
+          "node_name": "rect",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 80,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [
+            "x",
+            "y",
+            "width",
+            "height",
+            "rx",
+            "stroke",
+            "stroke-width"
+          ],
+          "index": 81,
+          "node_name": "rect",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 82,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [
+            "x",
+            "y",
+            "width",
+            "height",
+            "rx",
+            "stroke",
+            "stroke-width"
+          ],
+          "index": 83,
+          "node_name": "rect",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 84,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [
+            "x",
+            "y",
+            "width",
+            "height",
+            "rx",
+            "stroke",
+            "stroke-width"
+          ],
+          "index": 85,
+          "node_name": "rect",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 86,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [
+            "x",
+            "y",
+            "width",
+            "height",
+            "rx",
+            "stroke",
+            "stroke-width"
+          ],
+          "index": 87,
+          "node_name": "rect",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 88,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [
+            "x",
+            "y",
+            "width",
+            "height",
+            "rx",
+            "stroke",
+            "stroke-width"
+          ],
+          "index": 89,
+          "node_name": "rect",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 90,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [
+            "x",
+            "y",
+            "width",
+            "height",
+            "rx",
+            "stroke",
+            "stroke-width"
+          ],
+          "index": 91,
+          "node_name": "rect",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 92,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [
+            "x",
+            "y",
+            "width",
+            "height",
+            "rx",
+            "stroke",
+            "stroke-width"
+          ],
+          "index": 93,
+          "node_name": "rect",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 94,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [
+            "x",
+            "y",
+            "width",
+            "height",
+            "rx",
+            "stroke",
+            "stroke-width"
+          ],
+          "index": 95,
+          "node_name": "rect",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 96,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [
+            "x",
+            "y",
+            "width",
+            "height",
+            "rx",
+            "stroke",
+            "stroke-width"
+          ],
+          "index": 97,
+          "node_name": "rect",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 98,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [
+            "x",
+            "y",
+            "width",
+            "height",
+            "rx",
+            "stroke",
+            "stroke-width"
+          ],
+          "index": 99,
+          "node_name": "rect",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 100,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [
+            "x",
+            "y",
+            "width",
+            "height",
+            "rx",
+            "stroke",
+            "stroke-width"
+          ],
+          "index": 101,
+          "node_name": "rect",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 102,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [
+            "x",
+            "y",
+            "width",
+            "height",
+            "rx",
+            "stroke",
+            "stroke-width"
+          ],
+          "index": 103,
+          "node_name": "rect",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 104,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [
+            "x",
+            "y",
+            "width",
+            "height",
+            "rx",
+            "stroke",
+            "stroke-width"
+          ],
+          "index": 105,
+          "node_name": "rect",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 106,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [
+            "x",
+            "y",
+            "width",
+            "height",
+            "rx",
+            "stroke",
+            "stroke-width"
+          ],
+          "index": 107,
+          "node_name": "rect",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 108,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [
+            "x",
+            "y",
+            "width",
+            "height",
+            "rx",
+            "stroke",
+            "stroke-width"
+          ],
+          "index": 109,
+          "node_name": "rect",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 110,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [
+            "x",
+            "y",
+            "width",
+            "height",
+            "rx",
+            "stroke",
+            "stroke-width"
+          ],
+          "index": 111,
+          "node_name": "rect",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 112,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [
+            "x",
+            "y",
+            "width",
+            "height",
+            "rx",
+            "stroke",
+            "stroke-width"
+          ],
+          "index": 113,
+          "node_name": "rect",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 114,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [
+            "x",
+            "y",
+            "width",
+            "height",
+            "rx",
+            "stroke",
+            "stroke-width"
+          ],
+          "index": 115,
+          "node_name": "rect",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 116,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [
+            "x",
+            "y",
+            "width",
+            "height",
+            "rx",
+            "stroke",
+            "stroke-width"
+          ],
+          "index": 117,
+          "node_name": "rect",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 118,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [
+            "x",
+            "y",
+            "width",
+            "height",
+            "rx",
+            "stroke",
+            "stroke-width"
+          ],
+          "index": 119,
+          "node_name": "rect",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 120,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [
+            "x",
+            "y",
+            "width",
+            "height",
+            "rx",
+            "stroke",
+            "stroke-width"
+          ],
+          "index": 121,
+          "node_name": "rect",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 122,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [
+            "x",
+            "y",
+            "width",
+            "height",
+            "rx",
+            "stroke",
+            "stroke-width"
+          ],
+          "index": 123,
+          "node_name": "rect",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 124,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [
+            "x",
+            "y",
+            "width",
+            "height",
+            "rx",
+            "stroke",
+            "stroke-width"
+          ],
+          "index": 125,
+          "node_name": "rect",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 126,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [
+            "x",
+            "y",
+            "width",
+            "height",
+            "rx",
+            "stroke",
+            "stroke-width"
+          ],
+          "index": 127,
+          "node_name": "rect",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 128,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [
+            "x",
+            "y",
+            "width",
+            "height",
+            "rx",
+            "stroke",
+            "stroke-width"
+          ],
+          "index": 129,
+          "node_name": "rect",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 130,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [
+            "x",
+            "y",
+            "width",
+            "height",
+            "rx",
+            "stroke",
+            "stroke-width"
+          ],
+          "index": 131,
+          "node_name": "rect",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 132,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [
+            "x",
+            "y",
+            "width",
+            "height",
+            "rx",
+            "stroke",
+            "stroke-width"
+          ],
+          "index": 133,
+          "node_name": "rect",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 134,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [
+            "x",
+            "y",
+            "width",
+            "height",
+            "rx",
+            "stroke",
+            "stroke-width"
+          ],
+          "index": 135,
+          "node_name": "rect",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 136,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [
+            "x",
+            "y",
+            "width",
+            "height",
+            "rx",
+            "stroke",
+            "stroke-width"
+          ],
+          "index": 137,
+          "node_name": "rect",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 138,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [
+            "x",
+            "y",
+            "width",
+            "height",
+            "rx",
+            "stroke",
+            "stroke-width"
+          ],
+          "index": 139,
+          "node_name": "rect",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 140,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [
+            "x",
+            "y",
+            "width",
+            "height",
+            "rx",
+            "stroke",
+            "stroke-width"
+          ],
+          "index": 141,
+          "node_name": "rect",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 142,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [
+            "x",
+            "y",
+            "width",
+            "height",
+            "rx",
+            "stroke",
+            "stroke-width"
+          ],
+          "index": 143,
+          "node_name": "rect",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 144,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [
+            "x",
+            "y",
+            "width",
+            "height",
+            "rx",
+            "stroke",
+            "stroke-width"
+          ],
+          "index": 145,
+          "node_name": "rect",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 146,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [
+            "x",
+            "y",
+            "width",
+            "height",
+            "rx",
+            "stroke",
+            "stroke-width"
+          ],
+          "index": 147,
+          "node_name": "rect",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 148,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [
+            "x",
+            "y",
+            "width",
+            "height",
+            "rx",
+            "stroke",
+            "stroke-width"
+          ],
+          "index": 149,
+          "node_name": "rect",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 150,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [
+            "x",
+            "y",
+            "width",
+            "height",
+            "rx",
+            "stroke",
+            "stroke-width"
+          ],
+          "index": 151,
+          "node_name": "rect",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 152,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [
+            "x",
+            "y",
+            "width",
+            "height",
+            "rx",
+            "stroke",
+            "stroke-width"
+          ],
+          "index": 153,
+          "node_name": "rect",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 154,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [
+            "x",
+            "y",
+            "width",
+            "height",
+            "rx",
+            "fill"
+          ],
+          "index": 155,
+          "node_name": "rect",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 156,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 25
+        },
+        {
+          "attribute_names": [],
+          "index": 157,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 22
+        },
+        {
+          "attribute_names": [],
+          "index": 158,
+          "node_name": "H1",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 22
+        },
+        {
+          "attribute_names": [
+            "class"
+          ],
+          "index": 159,
+          "node_name": "SPAN",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 158
+        },
+        {
+          "attribute_names": [],
+          "index": 160,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 8,
+          "parent_index": 159
+        },
+        {
+          "attribute_names": [],
+          "index": 161,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 22
+        },
+        {
+          "attribute_names": [
+            "class"
+          ],
+          "index": 162,
+          "node_name": "P",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 22
+        },
+        {
+          "attribute_names": [],
+          "index": 163,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 22,
+          "parent_index": 162
+        },
+        {
+          "attribute_names": [],
+          "index": 164,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 22
+        },
+        {
+          "attribute_names": [
+            "class"
+          ],
+          "index": 165,
+          "node_name": "DL",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 22
+        },
+        {
+          "attribute_names": [
+            "class"
+          ],
+          "index": 166,
+          "node_name": "DIV",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 165
+        },
+        {
+          "attribute_names": [],
+          "index": 167,
+          "node_name": "DT",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 166
+        },
+        {
+          "attribute_names": [],
+          "index": 168,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 9,
+          "parent_index": 167
+        },
+        {
+          "attribute_names": [],
+          "index": 169,
+          "node_name": "DD",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 166
+        },
+        {
+          "attribute_names": [],
+          "index": 170,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 16,
+          "parent_index": 169
+        },
+        {
+          "attribute_names": [
+            "class"
+          ],
+          "index": 171,
+          "node_name": "DIV",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 165
+        },
+        {
+          "attribute_names": [],
+          "index": 172,
+          "node_name": "DT",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 171
+        },
+        {
+          "attribute_names": [],
+          "index": 173,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 10,
+          "parent_index": 172
+        },
+        {
+          "attribute_names": [],
+          "index": 174,
+          "node_name": "DD",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 171
+        },
+        {
+          "attribute_names": [
+            "class"
+          ],
+          "index": 175,
+          "node_name": "SPAN",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 174
+        },
+        {
+          "attribute_names": [],
+          "index": 176,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 13,
+          "parent_index": 175
+        },
+        {
+          "attribute_names": [],
+          "index": 177,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 174
+        },
+        {
+          "attribute_names": [
+            "class"
+          ],
+          "index": 178,
+          "node_name": "SPAN",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 174
+        },
+        {
+          "attribute_names": [],
+          "index": 179,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 24,
+          "parent_index": 178
+        },
+        {
+          "attribute_names": [
+            "class"
+          ],
+          "index": 180,
+          "node_name": "DIV",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 165
+        },
+        {
+          "attribute_names": [],
+          "index": 181,
+          "node_name": "DT",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 180
+        },
+        {
+          "attribute_names": [],
+          "index": 182,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 11,
+          "parent_index": 181
+        },
+        {
+          "attribute_names": [],
+          "index": 183,
+          "node_name": "DD",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 180
+        },
+        {
+          "attribute_names": [
+            "class"
+          ],
+          "index": 184,
+          "node_name": "SPAN",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 183
+        },
+        {
+          "attribute_names": [],
+          "index": 185,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 13,
+          "parent_index": 184
+        },
+        {
+          "attribute_names": [],
+          "index": 186,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 183
+        },
+        {
+          "attribute_names": [
+            "class"
+          ],
+          "index": 187,
+          "node_name": "SPAN",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 183
+        },
+        {
+          "attribute_names": [],
+          "index": 188,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 24,
+          "parent_index": 187
+        },
+        {
+          "attribute_names": [
+            "class"
+          ],
+          "index": 189,
+          "node_name": "DIV",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 165
+        },
+        {
+          "attribute_names": [],
+          "index": 190,
+          "node_name": "DT",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 189
+        },
+        {
+          "attribute_names": [],
+          "index": 191,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 8,
+          "parent_index": 190
+        },
+        {
+          "attribute_names": [],
+          "index": 192,
+          "node_name": "DD",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 189
+        },
+        {
+          "attribute_names": [
+            "class"
+          ],
+          "index": 193,
+          "node_name": "SPAN",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 192
+        },
+        {
+          "attribute_names": [],
+          "index": 194,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 6,
+          "parent_index": 193
+        },
+        {
+          "attribute_names": [],
+          "index": 195,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 192
+        },
+        {
+          "attribute_names": [
+            "class"
+          ],
+          "index": 196,
+          "node_name": "SPAN",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 192
+        },
+        {
+          "attribute_names": [],
+          "index": 197,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 9,
+          "parent_index": 196
+        },
+        {
+          "attribute_names": [],
+          "index": 198,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 192
+        },
+        {
+          "attribute_names": [
+            "class"
+          ],
+          "index": 199,
+          "node_name": "SPAN",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 192
+        },
+        {
+          "attribute_names": [],
+          "index": 200,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 4,
+          "parent_index": 199
+        },
+        {
+          "attribute_names": [],
+          "index": 201,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 192
+        },
+        {
+          "attribute_names": [
+            "class"
+          ],
+          "index": 202,
+          "node_name": "SPAN",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 192
+        },
+        {
+          "attribute_names": [],
+          "index": 203,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 12,
+          "parent_index": 202
+        },
+        {
+          "attribute_names": [
+            "class"
+          ],
+          "index": 204,
+          "node_name": "DIV",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 165
+        },
+        {
+          "attribute_names": [],
+          "index": 205,
+          "node_name": "DT",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 204
+        },
+        {
+          "attribute_names": [],
+          "index": 206,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 13,
+          "parent_index": 205
+        },
+        {
+          "attribute_names": [],
+          "index": 207,
+          "node_name": "DD",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 204
+        },
+        {
+          "attribute_names": [
+            "class"
+          ],
+          "index": 208,
+          "node_name": "SPAN",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 207
+        },
+        {
+          "attribute_names": [
+            "class"
+          ],
+          "index": 209,
+          "node_name": "SPAN",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 208
+        },
+        {
+          "attribute_names": [],
+          "index": 210,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 8,
+          "parent_index": 209
+        },
+        {
+          "attribute_names": [
+            "class"
+          ],
+          "index": 211,
+          "node_name": "SPAN",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 208
+        },
+        {
+          "attribute_names": [],
+          "index": 212,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 211
+        },
+        {
+          "attribute_names": [],
+          "index": 213,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 207
+        },
+        {
+          "attribute_names": [
+            "class"
+          ],
+          "index": 214,
+          "node_name": "SPAN",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 207
+        },
+        {
+          "attribute_names": [
+            "class"
+          ],
+          "index": 215,
+          "node_name": "SPAN",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 214
+        },
+        {
+          "attribute_names": [],
+          "index": 216,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 4,
+          "parent_index": 215
+        },
+        {
+          "attribute_names": [
+            "class"
+          ],
+          "index": 217,
+          "node_name": "SPAN",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 214
+        },
+        {
+          "attribute_names": [],
+          "index": 218,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 217
+        },
+        {
+          "attribute_names": [
+            "class"
+          ],
+          "index": 219,
+          "node_name": "DIV",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 165
+        },
+        {
+          "attribute_names": [],
+          "index": 220,
+          "node_name": "DT",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 219
+        },
+        {
+          "attribute_names": [],
+          "index": 221,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 7,
+          "parent_index": 220
+        },
+        {
+          "attribute_names": [],
+          "index": 222,
+          "node_name": "DD",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 219
+        },
+        {
+          "attribute_names": [],
+          "index": 223,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 38,
+          "parent_index": 222
+        },
+        {
+          "attribute_names": [],
+          "index": 224,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 22
+        },
+        {
+          "attribute_names": [],
+          "index": 225,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 20
+        },
+        {
+          "attribute_names": [
+            "class",
+            "aria-label"
+          ],
+          "index": 226,
+          "node_name": "NAV",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 20
+        },
+        {
+          "attribute_names": [],
+          "index": 227,
+          "node_name": "UL",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 226
+        },
+        {
+          "attribute_names": [],
+          "index": 228,
+          "node_name": "LI",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 227
+        },
+        {
+          "attribute_names": [
+            "href"
+          ],
+          "index": 229,
+          "node_name": "A",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 228
+        },
+        {
+          "attribute_names": [
+            "class"
+          ],
+          "index": 230,
+          "node_name": "SPAN",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 229
+        },
+        {
+          "attribute_names": [],
+          "index": 231,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 230
+        },
+        {
+          "attribute_names": [],
+          "index": 232,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 229
+        },
+        {
+          "attribute_names": [
+            "class"
+          ],
+          "index": 233,
+          "node_name": "SPAN",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 229
+        },
+        {
+          "attribute_names": [],
+          "index": 234,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 20,
+          "parent_index": 233
+        },
+        {
+          "attribute_names": [],
+          "index": 235,
+          "node_name": "UL",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 228
+        },
+        {
+          "attribute_names": [],
+          "index": 236,
+          "node_name": "LI",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 235
+        },
+        {
+          "attribute_names": [
+            "href"
+          ],
+          "index": 237,
+          "node_name": "A",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 236
+        },
+        {
+          "attribute_names": [
+            "class"
+          ],
+          "index": 238,
+          "node_name": "SPAN",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 237
+        },
+        {
+          "attribute_names": [],
+          "index": 239,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 237
+        },
+        {
+          "attribute_names": [
+            "class"
+          ],
+          "index": 240,
+          "node_name": "SPAN",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 237
+        },
+        {
+          "attribute_names": [],
+          "index": 241,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 14,
+          "parent_index": 240
+        },
+        {
+          "attribute_names": [],
+          "index": 242,
+          "node_name": "LI",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 235
+        },
+        {
+          "attribute_names": [
+            "href"
+          ],
+          "index": 243,
+          "node_name": "A",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 242
+        },
+        {
+          "attribute_names": [
+            "class"
+          ],
+          "index": 244,
+          "node_name": "SPAN",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 243
+        },
+        {
+          "attribute_names": [],
+          "index": 245,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 243
+        },
+        {
+          "attribute_names": [
+            "class"
+          ],
+          "index": 246,
+          "node_name": "SPAN",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 243
+        },
+        {
+          "attribute_names": [],
+          "index": 247,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 17,
+          "parent_index": 246
+        },
+        {
+          "attribute_names": [],
+          "index": 248,
+          "node_name": "LI",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 235
+        },
+        {
+          "attribute_names": [
+            "href"
+          ],
+          "index": 249,
+          "node_name": "A",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 248
+        },
+        {
+          "attribute_names": [
+            "class"
+          ],
+          "index": 250,
+          "node_name": "SPAN",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 249
+        },
+        {
+          "attribute_names": [],
+          "index": 251,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 249
+        },
+        {
+          "attribute_names": [
+            "class"
+          ],
+          "index": 252,
+          "node_name": "SPAN",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 249
+        },
+        {
+          "attribute_names": [],
+          "index": 253,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 12,
+          "parent_index": 252
+        },
+        {
+          "attribute_names": [],
+          "index": 254,
+          "node_name": "LI",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 235
+        },
+        {
+          "attribute_names": [
+            "href"
+          ],
+          "index": 255,
+          "node_name": "A",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 254
+        },
+        {
+          "attribute_names": [
+            "class"
+          ],
+          "index": 256,
+          "node_name": "SPAN",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 255
+        },
+        {
+          "attribute_names": [],
+          "index": 257,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 255
+        },
+        {
+          "attribute_names": [
+            "class"
+          ],
+          "index": 258,
+          "node_name": "SPAN",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 255
+        },
+        {
+          "attribute_names": [],
+          "index": 259,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 20,
+          "parent_index": 258
+        },
+        {
+          "attribute_names": [],
+          "index": 260,
+          "node_name": "LI",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 227
+        },
+        {
+          "attribute_names": [
+            "href"
+          ],
+          "index": 261,
+          "node_name": "A",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 260
+        },
+        {
+          "attribute_names": [
+            "class"
+          ],
+          "index": 262,
+          "node_name": "SPAN",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 261
+        },
+        {
+          "attribute_names": [],
+          "index": 263,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 2,
+          "parent_index": 262
+        },
+        {
+          "attribute_names": [],
+          "index": 264,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 261
+        },
+        {
+          "attribute_names": [
+            "class"
+          ],
+          "index": 265,
+          "node_name": "SPAN",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 261
+        },
+        {
+          "attribute_names": [],
+          "index": 266,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 22,
+          "parent_index": 265
+        },
+        {
+          "attribute_names": [],
+          "index": 267,
+          "node_name": "UL",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 260
+        },
+        {
+          "attribute_names": [],
+          "index": 268,
+          "node_name": "LI",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 267
+        },
+        {
+          "attribute_names": [
+            "href"
+          ],
+          "index": 269,
+          "node_name": "A",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 268
+        },
+        {
+          "attribute_names": [
+            "class"
+          ],
+          "index": 270,
+          "node_name": "SPAN",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 269
+        },
+        {
+          "attribute_names": [],
+          "index": 271,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 269
+        },
+        {
+          "attribute_names": [
+            "class"
+          ],
+          "index": 272,
+          "node_name": "SPAN",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 269
+        },
+        {
+          "attribute_names": [],
+          "index": 273,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 15,
+          "parent_index": 272
+        },
+        {
+          "attribute_names": [],
+          "index": 274,
+          "node_name": "LI",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 267
+        },
+        {
+          "attribute_names": [
+            "href"
+          ],
+          "index": 275,
+          "node_name": "A",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 274
+        },
+        {
+          "attribute_names": [
+            "class"
+          ],
+          "index": 276,
+          "node_name": "SPAN",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 275
+        },
+        {
+          "attribute_names": [],
+          "index": 277,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 275
+        },
+        {
+          "attribute_names": [
+            "class"
+          ],
+          "index": 278,
+          "node_name": "SPAN",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 275
+        },
+        {
+          "attribute_names": [],
+          "index": 279,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 15,
+          "parent_index": 278
+        },
+        {
+          "attribute_names": [],
+          "index": 280,
+          "node_name": "LI",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 267
+        },
+        {
+          "attribute_names": [
+            "href"
+          ],
+          "index": 281,
+          "node_name": "A",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 280
+        },
+        {
+          "attribute_names": [
+            "class"
+          ],
+          "index": 282,
+          "node_name": "SPAN",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 281
+        },
+        {
+          "attribute_names": [],
+          "index": 283,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 281
+        },
+        {
+          "attribute_names": [
+            "class"
+          ],
+          "index": 284,
+          "node_name": "SPAN",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 281
+        },
+        {
+          "attribute_names": [],
+          "index": 285,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 16,
+          "parent_index": 284
+        },
+        {
+          "attribute_names": [],
+          "index": 286,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 20
+        },
+        {
+          "attribute_names": [],
+          "index": 287,
+          "node_name": "MAIN",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 20
+        },
+        {
+          "attribute_names": [],
+          "index": 288,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 287
+        },
+        {
+          "attribute_names": [
+            "id"
+          ],
+          "index": 289,
+          "node_name": "SECTION",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 287
+        },
+        {
+          "attribute_names": [],
+          "index": 290,
+          "node_name": "H2",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 289
+        },
+        {
+          "attribute_names": [],
+          "index": 291,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 23,
+          "parent_index": 290
+        },
+        {
+          "attribute_names": [
+            "id"
+          ],
+          "index": 292,
+          "node_name": "H3",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 289
+        },
+        {
+          "attribute_names": [],
+          "index": 293,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 14,
+          "parent_index": 292
+        },
+        {
+          "attribute_names": [],
+          "index": 294,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 289
+        },
+        {
+          "attribute_names": [],
+          "index": 295,
+          "node_name": "P",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 289
+        },
+        {
+          "attribute_names": [],
+          "index": 296,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 70,
+          "parent_index": 295
+        },
+        {
+          "attribute_names": [],
+          "index": 297,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 289
+        },
+        {
+          "attribute_names": [
+            "id"
+          ],
+          "index": 298,
+          "node_name": "H3",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 289
+        },
+        {
+          "attribute_names": [],
+          "index": 299,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 17,
+          "parent_index": 298
+        },
+        {
+          "attribute_names": [],
+          "index": 300,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 289
+        },
+        {
+          "attribute_names": [],
+          "index": 301,
+          "node_name": "P",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 289
+        },
+        {
+          "attribute_names": [],
+          "index": 302,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 57,
+          "parent_index": 301
+        },
+        {
+          "attribute_names": [],
+          "index": 303,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 289
+        },
+        {
+          "attribute_names": [
+            "id"
+          ],
+          "index": 304,
+          "node_name": "H3",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 289
+        },
+        {
+          "attribute_names": [],
+          "index": 305,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 12,
+          "parent_index": 304
+        },
+        {
+          "attribute_names": [],
+          "index": 306,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 289
+        },
+        {
+          "attribute_names": [],
+          "index": 307,
+          "node_name": "P",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 289
+        },
+        {
+          "attribute_names": [],
+          "index": 308,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 52,
+          "parent_index": 307
+        },
+        {
+          "attribute_names": [],
+          "index": 309,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 289
+        },
+        {
+          "attribute_names": [
+            "id"
+          ],
+          "index": 310,
+          "node_name": "H3",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 289
+        },
+        {
+          "attribute_names": [],
+          "index": 311,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 20,
+          "parent_index": 310
+        },
+        {
+          "attribute_names": [],
+          "index": 312,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 289
+        },
+        {
+          "attribute_names": [],
+          "index": 313,
+          "node_name": "P",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 289
+        },
+        {
+          "attribute_names": [],
+          "index": 314,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 55,
+          "parent_index": 313
+        },
+        {
+          "attribute_names": [],
+          "index": 315,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 289
+        },
+        {
+          "attribute_names": [
+            "id"
+          ],
+          "index": 316,
+          "node_name": "SECTION",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 287
+        },
+        {
+          "attribute_names": [],
+          "index": 317,
+          "node_name": "H2",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 316
+        },
+        {
+          "attribute_names": [],
+          "index": 318,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 26,
+          "parent_index": 317
+        },
+        {
+          "attribute_names": [
+            "id"
+          ],
+          "index": 319,
+          "node_name": "H3",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 316
+        },
+        {
+          "attribute_names": [],
+          "index": 320,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 15,
+          "parent_index": 319
+        },
+        {
+          "attribute_names": [],
+          "index": 321,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 316
+        },
+        {
+          "attribute_names": [],
+          "index": 322,
+          "node_name": "P",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 316
+        },
+        {
+          "attribute_names": [],
+          "index": 323,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 213,
+          "parent_index": 322
+        },
+        {
+          "attribute_names": [],
+          "index": 324,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 316
+        },
+        {
+          "attribute_names": [
+            "id"
+          ],
+          "index": 325,
+          "node_name": "H3",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 316
+        },
+        {
+          "attribute_names": [],
+          "index": 326,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 15,
+          "parent_index": 325
+        },
+        {
+          "attribute_names": [],
+          "index": 327,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 316
+        },
+        {
+          "attribute_names": [],
+          "index": 328,
+          "node_name": "P",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 316
+        },
+        {
+          "attribute_names": [],
+          "index": 329,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 213,
+          "parent_index": 328
+        },
+        {
+          "attribute_names": [],
+          "index": 330,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 316
+        },
+        {
+          "attribute_names": [
+            "id"
+          ],
+          "index": 331,
+          "node_name": "H3",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 316
+        },
+        {
+          "attribute_names": [],
+          "index": 332,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 16,
+          "parent_index": 331
+        },
+        {
+          "attribute_names": [],
+          "index": 333,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 316
+        },
+        {
+          "attribute_names": [],
+          "index": 334,
+          "node_name": "P",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 316
+        },
+        {
+          "attribute_names": [],
+          "index": 335,
+          "node_name": "STRONG",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 334
+        },
+        {
+          "attribute_names": [],
+          "index": 336,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 14,
+          "parent_index": 335
+        },
+        {
+          "attribute_names": [],
+          "index": 337,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 12,
+          "parent_index": 334
+        },
+        {
+          "attribute_names": [],
+          "index": 338,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 316
+        },
+        {
+          "attribute_names": [],
+          "index": 339,
+          "node_name": "P",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 316
+        },
+        {
+          "attribute_names": [],
+          "index": 340,
+          "node_name": "STRONG",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 339
+        },
+        {
+          "attribute_names": [],
+          "index": 341,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 9,
+          "parent_index": 340
+        },
+        {
+          "attribute_names": [],
+          "index": 342,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 142,
+          "parent_index": 339
+        },
+        {
+          "attribute_names": [],
+          "index": 343,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 316
+        },
+        {
+          "attribute_names": [],
+          "index": 344,
+          "node_name": "P",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 316
+        },
+        {
+          "attribute_names": [],
+          "index": 345,
+          "node_name": "STRONG",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 344
+        },
+        {
+          "attribute_names": [],
+          "index": 346,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 17,
+          "parent_index": 345
+        },
+        {
+          "attribute_names": [],
+          "index": 347,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 60,
+          "parent_index": 344
+        },
+        {
+          "attribute_names": [],
+          "index": 348,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 316
+        },
+        {
+          "attribute_names": [],
+          "index": 349,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 287
+        },
+        {
+          "attribute_names": [],
+          "index": 350,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 20
+        },
+        {
+          "attribute_names": [
+            "class"
+          ],
+          "index": 351,
+          "node_name": "FOOTER",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 20
+        },
+        {
+          "attribute_names": [
+            "href",
+            "rel"
+          ],
+          "index": 352,
+          "node_name": "A",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 351
+        },
+        {
+          "attribute_names": [],
+          "index": 353,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 13,
+          "parent_index": 352
+        },
+        {
+          "attribute_names": [],
+          "index": 354,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 12,
+          "parent_index": 351
+        },
+        {
+          "attribute_names": [
+            "class",
+            "href",
+            "rel"
+          ],
+          "index": 355,
+          "node_name": "A",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 351
+        },
+        {
+          "attribute_names": [],
+          "index": 356,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 15,
+          "parent_index": 355
+        },
+        {
+          "attribute_names": [],
+          "index": 357,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 20
+        },
+        {
+          "attribute_names": [],
+          "index": 358,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 1,
+          "parent_index": 18
+        },
+        {
+          "attribute_names": [
+            "class",
+            "href"
+          ],
+          "index": 359,
+          "node_name": "A",
+          "node_type": 1,
+          "node_value_length": 0,
+          "parent_index": 18
+        },
+        {
+          "attribute_names": [],
+          "index": 360,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 3,
+          "parent_index": 359
+        },
+        {
+          "attribute_names": [],
+          "index": 361,
+          "node_name": "#text",
+          "node_type": 3,
+          "node_value_length": 3,
+          "parent_index": 18
+        }
+      ],
+      "total_nodes": 362
+    },
+    "frames": [
+      {
+        "frame_id": "FC69F1F46EE8D0F152F070970D0DC3A5",
+        "origin": "http://127.0.0.1:9184",
+        "parent_frame_id": null,
+        "url": "http://127.0.0.1:9184/complete_report.html"
+      }
+    ],
+    "limitations": [
+      "Observation starts when REA attaches; prior network and console activity is unavailable.",
+      "Raw network headers, bodies, cookies, storage values, console objects, and WebSocket payloads are never retained; explicitly requested primitive console text is retained verbatim, while payload captures retain value-free shapes.",
+      "Source maps are reported only as declarative URLs and are not fetched.",
+      "URL-less scripts and console events without an allowed source URL are excluded because their origin cannot be proven."
+    ],
+    "metadata": {
+      "agent_hints": [],
+      "dom_urls": [
+        {
+          "attribute": "href",
+          "destination_scope": "outside_policy",
+          "node_index": 24,
+          "url": null
+        },
+        {
+          "attribute": "href",
+          "destination_scope": "approved",
+          "node_index": 229,
+          "url": "http://127.0.0.1:9184/complete_report.html#s1"
+        },
+        {
+          "attribute": "href",
+          "destination_scope": "approved",
+          "node_index": 237,
+          "url": "http://127.0.0.1:9184/complete_report.html#s1-1"
+        },
+        {
+          "attribute": "href",
+          "destination_scope": "approved",
+          "node_index": 243,
+          "url": "http://127.0.0.1:9184/complete_report.html#s1-2"
+        },
+        {
+          "attribute": "href",
+          "destination_scope": "approved",
+          "node_index": 249,
+          "url": "http://127.0.0.1:9184/complete_report.html#s1-3"
+        },
+        {
+          "attribute": "href",
+          "destination_scope": "approved",
+          "node_index": 255,
+          "url": "http://127.0.0.1:9184/complete_report.html#s1-4"
+        },
+        {
+          "attribute": "href",
+          "destination_scope": "approved",
+          "node_index": 261,
+          "url": "http://127.0.0.1:9184/complete_report.html#s2"
+        },
+        {
+          "attribute": "href",
+          "destination_scope": "approved",
+          "node_index": 269,
+          "url": "http://127.0.0.1:9184/complete_report.html#s2-1"
+        },
+        {
+          "attribute": "href",
+          "destination_scope": "approved",
+          "node_index": 275,
+          "url": "http://127.0.0.1:9184/complete_report.html#s2-2"
+        },
+        {
+          "attribute": "href",
+          "destination_scope": "approved",
+          "node_index": 281,
+          "url": "http://127.0.0.1:9184/complete_report.html#s2-3"
+        },
+        {
+          "attribute": "href",
+          "destination_scope": "outside_policy",
+          "node_index": 352,
+          "url": null
+        },
+        {
+          "attribute": "href",
+          "destination_scope": "outside_policy",
+          "node_index": 355,
+          "url": null
+        },
+        {
+          "attribute": "href",
+          "destination_scope": "approved",
+          "node_index": 359,
+          "url": "http://127.0.0.1:9184/complete_report.html#top"
+        }
+      ],
+      "excluded_dom_urls": 3,
+      "headers_allowlisted": true,
+      "responses": []
+    },
+    "network": {
+      "coverage_started_at": "2026-10-18T17:46:54.364Z",
+      "prior_activity_available": false,
+      "requests": [],
+      "websocket_connections": []
+    },
+    "resources": [],
+    "scripts": {
+      "items": [],
+      "total": 0
+    },
+    "storage": {
+      "cache_names": [],
+      "content_fingerprints": [],
+      "fingerprint_algorithm": "sha256",
+      "fingerprints_complete": false,
+      "indexed_db_names": [],
+      "local_storage_keys": [],
+      "origin": "http://127.0.0.1:9184",
+      "quota_bytes": 153025194393,
+      "session_storage_keys": [],
+      "usage_bytes": 0,
+      "values_redacted": true
+    },
+    "target": {
+      "attached": false,
+      "origin": "http://127.0.0.1:9184",
+      "target_id": "FC69F1F46EE8D0F152F070970D0DC3A5",
+      "title": "BTC/USDT 2026-10-17: TradingAgents report",
+      "type": "page",
+      "url": "http://127.0.0.1:9184/complete_report.html"
+    },
+    "workers": []
+  },
+  "operation": "inspect_web_page",
+  "parameters": {
+    "allowed_origins": [
+      "http://127.0.0.1:9184"
+    ],
+    "cdp_endpoint": "http://127.0.0.1:9222",
+    "include_accessibility_text": true,
+    "include_console_text": false,
+    "include_json_body_shapes": false,
+    "include_script_sources": false,
+    "include_storage_fingerprints": false,
+    "include_storage_keys": false,
+    "include_websocket_shapes": false,
+    "observation_ms": 500,
+    "target_id": "FC69F1F46EE8D0F152F070970D0DC3A5"
+  },
+  "predicate_type": "rea.web-page-inspection",
+  "provider": {
+    "id": "rea-cdp-browser",
+    "name": "REA Chrome DevTools Protocol observation provider",
+    "version": "2"
+  },
+  "raw_result": null,
+  "subject": null
+}

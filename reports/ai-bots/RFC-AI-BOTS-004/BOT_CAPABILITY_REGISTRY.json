@@ -1,0 +1,167 @@
+{
+  "bot_count": 3,
+  "bot_cri_01": {
+    "allowed_tools": [
+      "read_ohlcv",
+      "invoke_llm"
+    ],
+    "bot_id": "BOT-CRI-01",
+    "bot_version": "1.0.0",
+    "cost_budget_usd": 0.5,
+    "enabled": false,
+    "family": "EPISTEMIC_CRITIC",
+    "forbidden_actions": [
+      "call_exchange",
+      "cancel_order",
+      "execute_shell",
+      "modify_order",
+      "modify_risk",
+      "place_order",
+      "read_secrets",
+      "set_leverage",
+      "withdraw",
+      "write_filesystem"
+    ],
+    "input_contract": "FrozenTradeProposal + EvidenceLedger (authenticated refs)",
+    "max_calls_per_day": 48,
+    "max_latency_ms": 8000,
+    "model_id": "gpt-4o-mini",
+    "model_provider": "openai-compatible",
+    "notes": "default OFF; SHADOW_ONLY observes and cannot alter fills/PNL/risk; GATED_PAPER blocked until AI-BOTS-003C validation",
+    "output_contract": "CriticReview(TAP_CRITIC_REVIEW_V1) ACCEPT|CHALLENGE|ABSTAIN",
+    "paper_namespace": "AI_CRITIC_SHADOW",
+    "reliability_status": "IMPLEMENTED"
+  },
+  "bots": [
+    {
+      "allowed_tools": [
+        "read_ohlcv",
+        "render_chart",
+        "invoke_llm",
+        "read_positions"
+      ],
+      "bot_id": "BOT-VIS-01",
+      "bot_version": "1.2.0",
+      "cost_budget_usd": 2.0,
+      "enabled": false,
+      "family": "VISUAL_DISCRETIONARY",
+      "forbidden_actions": [
+        "call_exchange",
+        "cancel_order",
+        "execute_shell",
+        "modify_order",
+        "modify_risk",
+        "place_order",
+        "read_secrets",
+        "set_leverage",
+        "withdraw",
+        "write_filesystem"
+      ],
+      "input_contract": "ChartSnapshotBundle(png, sha256) + MarketContext",
+      "max_calls_per_day": 96,
+      "max_latency_ms": 60000,
+      "model_id": "gpt-4o-mini",
+      "model_provider": "openai-compatible",
+      "notes": "vision lane in src/trading_bot/vision; paper only",
+      "output_contract": "AITradeOpinion(AIBOT_OPINION_V1)",
+      "paper_namespace": "AI_BOTS_EXPERIMENTAL",
+      "reliability_status": "UNIT_TESTED"
+    },
+    {
+      "allowed_tools": [
+        "read_ohlcv",
+        "invoke_llm",
+        "read_positions"
+      ],
+      "bot_id": "BOT-CTX-01",
+      "bot_version": "1.0.0",
+      "cost_budget_usd": 2.0,
+      "enabled": false,
+      "family": "STRUCTURED_DISCRETIONARY",
+      "forbidden_actions": [
+        "call_exchange",
+        "cancel_order",
+        "execute_shell",
+        "modify_order",
+        "modify_risk",
+        "place_order",
+        "read_secrets",
+        "set_leverage",
+        "withdraw",
+        "write_filesystem"
+      ],
+      "input_contract": "FeatureSnapshot(MTF numeric) \u2014 no image",
+      "max_calls_per_day": 96,
+      "max_latency_ms": 60000,
+      "model_id": "gpt-4o-mini",
+      "model_provider": "openai-compatible",
+      "notes": "scientific control for BOT-VIS-01: same book, no pixels",
+      "output_contract": "AITradeOpinion(AIBOT_OPINION_V1)",
+      "paper_namespace": "AI_BOTS_EXPERIMENTAL",
+      "reliability_status": "UNIT_TESTED"
+    },
+    {
+      "allowed_tools": [
+        "read_ohlcv",
+        "invoke_llm"
+      ],
+      "bot_id": "BOT-CRI-01",
+      "bot_version": "1.0.0",
+      "cost_budget_usd": 0.5,
+      "enabled": false,
+      "family": "EPISTEMIC_CRITIC",
+      "forbidden_actions": [
+        "call_exchange",
+        "cancel_order",
+        "execute_shell",
+        "modify_order",
+        "modify_risk",
+        "place_order",
+        "read_secrets",
+        "set_leverage",
+        "withdraw",
+        "write_filesystem"
+      ],
+      "input_contract": "FrozenTradeProposal + EvidenceLedger (authenticated refs)",
+      "max_calls_per_day": 48,
+      "max_latency_ms": 8000,
+      "model_id": "gpt-4o-mini",
+      "model_provider": "openai-compatible",
+      "notes": "default OFF; SHADOW_ONLY observes and cannot alter fills/PNL/risk; GATED_PAPER blocked until AI-BOTS-003C validation",
+      "output_contract": "CriticReview(TAP_CRITIC_REVIEW_V1) ACCEPT|CHALLENGE|ABSTAIN",
+      "paper_namespace": "AI_CRITIC_SHADOW",
+      "reliability_status": "IMPLEMENTED"
+    }
+  ],
+  "critic_policy": {
+    "allowed_effect": "SUPPRESS_NEW_ENTRY only",
+    "default_mode": "OFF",
+    "gated_paper_authorization_required": "AI_BOTS_003C_VALIDATED",
+    "gated_paper_status": "BLOCKED_GATED_PAPER_NOT_AUTHORIZED",
+    "modes": [
+      "OFF",
+      "SHADOW_ONLY",
+      "GATED_PAPER"
+    ],
+    "protective_intents_never_blocked": [
+      "CLOSE",
+      "REDUCE",
+      "STOP",
+      "TAKE_PROFIT"
+    ]
+  },
+  "enabled_globally": false,
+  "generated_by": "scripts/ai_critic/emit_registry.py equivalent projection of default_registry(env={})",
+  "note": "AI_BOTS_ENABLED must be true AND the bot's own enabled flag must be true; no bot holds an execution capability by construction",
+  "schema_version": "AIBOT_CAPABILITY_REGISTRY_V1",
+  "states_vocabulary": [
+    "NOT_STARTED",
+    "DESIGN_ONLY",
+    "IMPLEMENTED",
+    "UNIT_TESTED",
+    "REAL_MODEL_CALLED",
+    "PAPER_RUNTIME_EXECUTED",
+    "INDEPENDENT_VERIFIED",
+    "BLOCKED"
+  ]
+}

@@ -1,0 +1,139 @@
+{
+  "arms": {
+    "GATED_PAPER": {
+      "economics_measured": false,
+      "executed": false,
+      "reason": "AI-BOTS-003C runtime validation is not certified on this branch; the gate therefore never altered the book",
+      "simulation_only": true,
+      "status": "BLOCKED_GATED_PAPER_NOT_AUTHORIZED",
+      "would_suppress_entries": 1
+    },
+    "NO_CRITIC": {
+      "economics": {
+        "closed_trades": 2,
+        "costs_usdt": 2.480322,
+        "drawdown_pct": 0.0,
+        "equity_points": 240,
+        "fills": 2,
+        "final_equity_usdt": 10005.258942,
+        "gross_realised_usdt": 7.258942,
+        "net_realised_usdt": 5.258942,
+        "risk_equity_usdt": 10005.258942
+      },
+      "executed": true,
+      "model_status": "MOCK_TEST",
+      "net_realised_usdt": 5.258942,
+      "wall_seconds": 1.71
+    },
+    "NO_CRITIC_REPEAT": {
+      "baseline_identical": true,
+      "economics": {
+        "closed_trades": 2,
+        "costs_usdt": 2.480322,
+        "drawdown_pct": 0.0,
+        "equity_points": 240,
+        "fills": 2,
+        "final_equity_usdt": 10005.258942,
+        "gross_realised_usdt": 7.258942,
+        "net_realised_usdt": 5.258942,
+        "risk_equity_usdt": 10005.258942
+      },
+      "executed": true,
+      "wall_seconds": 1.797
+    },
+    "NO_TRADE": {
+      "economics": {
+        "closed_trades": 0,
+        "costs_usdt": 0,
+        "drawdown_pct": 0.0,
+        "equity_points": 240,
+        "fills": 0,
+        "final_equity_usdt": 10000.0,
+        "gross_realised_usdt": 0,
+        "net_realised_usdt": 0,
+        "risk_equity_usdt": 10000.0
+      },
+      "executed": true,
+      "wall_seconds": 1.703
+    },
+    "SHADOW": {
+      "applied_to_economics": false,
+      "challenge_rate_on_entries": 0.25,
+      "critic_cost_usd": 0.0,
+      "degenerate_blanket_veto": false,
+      "economics": {
+        "closed_trades": 2,
+        "costs_usdt": 2.480322,
+        "drawdown_pct": 0.0,
+        "equity_points": 240,
+        "fills": 2,
+        "final_equity_usdt": 10005.258942,
+        "gross_realised_usdt": 7.258942,
+        "net_realised_usdt": 5.258942,
+        "risk_equity_usdt": 10005.258942
+      },
+      "economics_identical_to_baseline": true,
+      "executed": true,
+      "protective_blocked": 0,
+      "protective_reviews": 4,
+      "receipt_kinds": {
+        "MOCK": 8
+      },
+      "review_latency_ms_max": 1.58,
+      "review_latency_ms_median": 1.043,
+      "review_scope": "lane decisions plus 4 explicitly labelled protective probes",
+      "reviews": 8,
+      "verdicts": {
+        "ACCEPT": 3,
+        "CHALLENGE": 5
+      },
+      "would_suppress_entries_if_gated": 1
+    }
+  },
+  "control": {
+    "builder_is_not_verifier": true,
+    "false_success": 0,
+    "independent_verification_required": true
+  },
+  "generated_at": "2026-10-18T17:58:13Z",
+  "matched_opportunities": {
+    "actionable_proposals": 4,
+    "assets": [
+      "BTC/USDT",
+      "ETH/USDT"
+    ],
+    "decision_points": 10,
+    "note": "historical synthetic bars; not a forward test",
+    "regimes": [
+      "drift_up_with_wobble",
+      "drift_down_with_wobble"
+    ],
+    "same_sequence_across_arms": true
+  },
+  "platform": "Windows-10-10.0.26200-SP0",
+  "python": "3.11.15 (main, Jun 23 2026, 15:20:37) [MSC v.1944 64 bit (AMD64)]",
+  "runtime_module_sha256": {
+    "trading_bot/intelligence/ai_critic/contracts.py": "bac4032065e549e6908da50f8e88eae7b359bcb65c0a5985d228222a1d78f16e",
+    "trading_bot/intelligence/ai_critic/critic.py": "4399ee0668afcc50a2088b12c76c910f426e93db316f344f5e2fa4f2c3cb0990",
+    "trading_bot/intelligence/ai_critic/policy.py": "c59a97af29715997fa1555348dc437d069f8030f3f480c6a13105fcb791dc24f",
+    "trading_bot/intelligence/ai_critic/prompt.py": "8ee95a4c02c5021735687b982e50007ddad615095082c36b10646c24f53adae9",
+    "trading_bot/intelligence/ai_critic/provider.py": "97df424d2d0b24e9442e42d87462176b453c3922222cb6e5cef8093ac2616865",
+    "trading_bot/intelligence/ai_critic/trace.py": "ec6c9bb99579f51f1139cd0477531f32319d317350259a93fef58470787965d7"
+  },
+  "runtime_source_path": "src/trading_bot/intelligence/ai_critic",
+  "runtime_target": "trading_bot.intelligence.ai_critic",
+  "schema_version": "TAP004_ABLATION_V1",
+  "started_at": "2026-10-18T17:58:07Z",
+  "test_source_path": "tests/unit/intelligence/ai_critic/test_bot_cri_01.py",
+  "test_target": "trading_bot.intelligence.ai_critic",
+  "test_target_equals_runtime_target": true,
+  "value": {
+    "economic_value": "UNMEASURED",
+    "prospective_edge_verified": false,
+    "real_critic_model_called": false,
+    "reason": "reviewer answers are scripted and data is historical; no paid model call, no out-of-sample sample, no economic claim",
+    "recommendation": "DO_NOT_ADOPT_PENDING_PROSPECTIVE",
+    "shadow_continues": true,
+    "status": "INCONCLUSIVE_VALUE"
+  }
+}

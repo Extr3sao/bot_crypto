@@ -106,7 +106,11 @@ def test_the_registry_is_disabled_by_default(monkeypatch):
 
     assert registry.enabled is False
     assert registry.active() == []
-    assert {spec.bot_id for spec in registry.specs.values()} == {"BOT-VIS-01", "BOT-CTX-01"}
+    assert {spec.bot_id for spec in registry.specs.values()} == {
+        "BOT-VIS-01",
+        "BOT-CTX-01",
+        "BOT-CRI-01",
+    }
 
 
 def test_enabling_globally_and_per_bot_is_required():
@@ -160,7 +164,7 @@ def test_the_registry_projects_to_json_with_the_switch_visible(tmp_path):
 
     assert doc["schema_version"] == "AIBOT_CAPABILITY_REGISTRY_V1"
     assert doc["enabled_globally"] is True
-    assert doc["bot_count"] == 2
+    assert doc["bot_count"] == 3
     assert all(row["forbidden_actions"] for row in doc["bots"])
 
 
