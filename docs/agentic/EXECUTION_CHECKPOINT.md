@@ -333,3 +333,61 @@ Verificador: **65 PASS / 0 FAIL** (antes 59). Mutación nueva comprobada: disfra
 `REA_EVIDENCE` ⇒ 2 FAIL. La consistencia hash-probe↔dossier la vigila el propio verificador:
 detectó que la baseline sólo citaba 8 caracteres del sha y se corrigió el documento, no la
 comprobación.
+
+## RFC-TAP-EVIDENCE-004 — sesión 2026-10-18 (rama `agent/evidence/RFC-TAP-EVIDENCE-004`)
+
+> Sección añadida al final, sin reescribir las anteriores: otro agente puede tener este fichero
+> abierto. Si algo aquí discrepa de Git, manda Git.
+
+**Objetivo**: que ninguna cifra del RFC AI-BOTS-002 vuelva a contradecirse entre informes, y que
+ningún `exit_code == 0` se lea como trabajo completado.
+
+**Base**: `c4e6e3b5ec3f40090a0aa66fee2733c0b00c9546` (rama `agent/ai-vision/RFC-AI-VISION-001`).
+
+**Hecho**
+
+1. **Clasificador** `scripts/evidence004_ledger.py`: 16 eventos de los 5 logs crudos, merge de
+   copias duplicadas con rechazo si discrepan, `execution_class` independiente de `exit_code`,
+   `evidence_id` sólo válido como id de REA si cumple `ev_<64 hex>`, artefacto verificado por sha256.
+2. **Generador** `scripts/evidence004_generate.py`: `CANONICAL_RUN.json` → `RUN_REPORT.json/.md`,
+   `INFORME_EJECUTIVO_NUMEROS.md` y bloques numéricos en `FINAL_REPORT.md`/`INFORME_EJECUTIVO.md`.
+   Claims atados a contador o `evidence_id`; escritura atómica; lock de escritor único.
+3. **Verificador independiente** `scripts/evidence004_verify.py`: relee los logs por su cuenta (no
+   importa clasificador ni generador), descubre todos los informes, y rechaza **14/14** mutaciones.
+4. **Sello histórico**: `evidence-004/SUPERSESSION_MANIFEST.json` conserva 6 documentos con hash de
+   bytes. El informe que contaba 9 operaciones por código de salida sigue en el árbol, intacto y
+   marcado; no se ha reescrito para que cuadre.
+5. **Dos denominadores**: 7 evidenciadas + 2 no ejecutadas (trabajo de esta iteración) y 12 ids
+   distintos (los cuatro dossiers). Ningún documento los suma.
+
+**Medido**
+
+```text
+scripts/evidence004_generate.py                 exit 0
+scripts/evidence004_verify.py                   exit 0   36 PASS / 0 FAIL
+scripts/evidence004_verify.py --mutations       exit 0   14/14 rechazadas
+scripts/ai_bots_rea_verify.py                   exit 0   73 PASS / 0 FAIL  (sin degradar)
+pytest tests/unit/reports tests/unit/vision tests/unit/intelligence
+                                                exit 0   176 passed
+ruff / mypy sobre los tres scripts              exit 0
+```
+
+**Pendiente / bloqueado**
+
+- `REAL_MODEL_CALLED = false`; ninguna operación REA reejecutada: este paquete cuenta logs.
+- 5 de las 7 evidencias son declaradas, sin artefacto en disco: no se certifica ningún patrón.
+- Suite completa del repositorio no ejecutada (hay 169 ficheros ajenos en vuelo). Declarado, no PASS.
+
+**Reanudación verificable**
+
+```bash
+cd "$(git rev-parse --show-toplevel)"
+git log -1 --format='%H %s'
+./.venv/Scripts/python.exe scripts/evidence004_generate.py --json | head -4
+./.venv/Scripts/python.exe scripts/evidence004_verify.py            # esperado: 36 PASS / 0 FAIL
+./.venv/Scripts/python.exe scripts/evidence004_verify.py --mutations
+./.venv/Scripts/python.exe scripts/ai_bots_rea_verify.py | tail -2  # esperado: 73 PASS / 0 FAIL
+```
+
+**Siguiente WP**: `AI-BOTS-003` (issue #12): causalidad de `bar.ts_ms`, latencia de respuesta y MTM
+neto. EVIDENCE-004 no lo bloquea; garantiza que sus cifras no puedan contradecirse.

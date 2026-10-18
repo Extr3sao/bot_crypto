@@ -1,0 +1,61 @@
+{
+  "schema": "evidence004/supersession-manifest/1",
+  "note": "Superseded documents are never edited or deleted: their bytes are pinned here so the verifier can prove the historical claim still exists and is labelled, not laundered.",
+  "documents": [
+    {
+      "path": "reports/ai-bots/RFC-AI-BOTS-002/RUN_REPORT_REA_FIRST.json",
+      "sha256": "2cd16668e8ed328b0878d3264d39fda4e8dbaf22af3519cd2094ef83bac620f7",
+      "bytes": 2368,
+      "role": "SUPERSEDED",
+      "superseded_by": "evidence-004/canonical/CANONICAL_RUN.json",
+      "reason": "Historical projection of the v3.1 round. It counts 9 operations by exit code, which is the defect EVIDENCE-004 exists to stop. Preserved byte-for-byte as the record of what was published; never edited.",
+      "preserved_bytes": true
+    },
+    {
+      "path": "reports/ai-bots/RFC-AI-BOTS-002/FINAL_REPORT_REA_FIRST.md",
+      "sha256": "b6c3577138340c180f8d0eb05f63cf8aee39693daf03b506f477ccce7c974059",
+      "bytes": 4835,
+      "role": "SUPERSEDED",
+      "superseded_by": "FINAL_REPORT.md",
+      "reason": "Superseded narrative of the v3 iteration, kept for audit.",
+      "preserved_bytes": true
+    },
+    {
+      "path": "reports/ai-bots/RFC-AI-BOTS-002/REA_FINDINGS.json",
+      "sha256": "a50dcd7d3f85c73c74e575297aff923689f53300cd08a83bacc4d00e8e4dfd95",
+      "bytes": 3504,
+      "role": "SUPERSEDED",
+      "superseded_by": "REA_FINDINGS_V2.json",
+      "reason": "v2 findings. Its evidence_id fields are local keys (rea-doctor-2026-10-17, ...), not ids REA emitted, so they cannot be attributed to REA. Kept as the record of that defect.",
+      "preserved_bytes": true,
+      "known_defect": "local key in evidence_id: rea-doctor-2026-10-17, rea-help-2026-10-17, rea-analyze-js-nof1, rea-browser-targets, rea-python-sources"
+    },
+    {
+      "path": "reports/ai-bots/RFC-AI-BOTS-002/INDEPENDENT_VERIFICATION.json",
+      "sha256": "67e26e96f3adf684c4e9240a422b60300b25e7720ab47568f7c68b1e2a3ecd15",
+      "bytes": 183,
+      "role": "SUPERSEDED",
+      "superseded_by": "INDEPENDENT_VERIFICATION_REA.json",
+      "reason": "Placeholder (status PENDING_RERUN) from before the independent verifier was rerun.",
+      "preserved_bytes": true
+    },
+    {
+      "path": "reports/ai-bots/RFC-AI-BOTS-002/blocked_live/RUN_REPORT.json",
+      "sha256": "c70d4fb2e8f22881c7bba150d87af2c87e92c4fdc04f558dd28ae09f3038c26e",
+      "bytes": 322,
+      "role": "SUPERSEDED",
+      "superseded_by": "RUN_REPORT.json",
+      "reason": "Separate scope: the blocked live-trading lane, not the REA ledger. Not a competing number.",
+      "preserved_bytes": true
+    },
+    {
+      "path": "reports/ai-bots/RFC-AI-BOTS-002/blocked_live/RUN_REPORT.md",
+      "sha256": "991b5a82d4494f42ba265490f224b3a306b95a77dcd3e37c18e5307df53ffaad",
+      "bytes": 204,
+      "role": "SUPERSEDED",
+      "superseded_by": "RUN_REPORT.md",
+      "reason": "Separate scope: the blocked live-trading lane, not the REA ledger.",
+      "preserved_bytes": true
+    }
+  ]
+}

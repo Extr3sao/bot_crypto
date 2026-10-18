@@ -84,3 +84,23 @@ hacer fallar el verificador.
 Convertir la superficie de nof1 en conducta: `source maps` del despliegue, o levantar el
 backend TypeScript en laboratorio con el proveedor mockeado. Cualquier otra cosa es leer un
 README con más ceremonia.
+
+<!-- EVIDENCE004:COUNTS:BEGIN -->
+
+Números canónicos (generado por `scripts/evidence004_generate.py`; no editar a mano).
+
+| contador | valor |
+| --- | --- |
+| `phase_v31.work.operations` | 9 |
+| `phase_v31.work.executed_with_evidence_id` | 7 |
+| `phase_v31.work.executed_with_verified_artifact` | 2 |
+| `phase_v31.work.not_executed` | 2 |
+| `phase_v31.distinct_evidence_ids` | 8 |
+| `all_dossiers.work.executed_with_evidence_id` | 10 |
+| `all_dossiers.work.not_executed` | 2 |
+| `all_dossiers.distinct_evidence_ids` | 12 |
+
+Los dos ámbitos no se suman: `phase_v31` cubre el trabajo de esta iteración y
+`all_dossiers` cubre todo lo registrado en los cuatro dossiers, con otro denominador.
+
+<!-- EVIDENCE004:COUNTS:END -->

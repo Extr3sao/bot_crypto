@@ -1,89 +1,435 @@
 {
-  "rfc": "RFC-TAP-AI-BOTS-002 v3.1",
-  "date": "2026-10-18",
-  "branch": "agent/ai-vision/RFC-AI-VISION-001",
-  "base_commit": "a0ca055",
-  "operations": [
-    {
-      "op": "git fetch exact commit",
-      "target": "nof1",
-      "exit": 0
-    },
-    {
-      "op": "analyze_javascript_application",
-      "target": "nof1/public",
-      "exit": 0,
-      "evidence_id": "ev_4b2bf9c5c313530cc7e1e399d4cde5c175ecdd0018a9f608ee12782522ea9ade"
-    },
-    {
-      "op": "import-reference-source",
-      "target": "nof1",
-      "exit": 1,
-      "blocked": "unsupported_host"
-    },
-    {
-      "op": "compare-source-to-bundle",
-      "target": "nof1",
-      "exit": 0,
-      "blocked": "invalid_input (no HistoricalSourceGraph producer)"
-    },
-    {
-      "op": "analyze_javascript_application",
-      "target": "qrak/static",
-      "exit": 0,
-      "evidence_id": "ev_9b45318c072de54798bb93a37354c38ec82b2bccf31d3cd1fbf9be0898a16b99"
-    },
-    {
-      "op": "analyze_web_bundle",
-      "target": "qrak/127.0.0.1:8124",
-      "exit": 0,
-      "evidence_id": "ev_b954b8b016f1736a766bc45627a3d21f600503c1d4294e7147133a7ce461c46c"
-    },
-    {
-      "op": "capture_web_screenshot",
-      "target": "qrak/127.0.0.1:8124",
-      "exit": 0,
-      "evidence_id": "ev_ee6845ff71d389439559036e9c661edbaee90a518ac18bd29639ef72995417a3"
-    },
-    {
-      "op": "npm ci + vite build",
-      "target": "fenix/frontend",
-      "exit": 0,
-      "packages": 285,
-      "modules": 2367
-    },
-    {
-      "op": "analyze_javascript_application",
-      "target": "fenix/dist",
-      "exit": 0,
-      "evidence_id": "ev_be8c7d74bb6ed79011e4d135ba011c7df95df4d50fcdfc4086223f8fb5931cc6"
-    },
-    {
-      "op": "analyze_web_bundle",
-      "target": "fenix/127.0.0.1:8123",
-      "exit": 0,
-      "evidence_id": "ev_fc2b6552ff6ca513ad2cfcf4563e44b5d50354c61453bb999a4088cb3116d5c8"
-    },
-    {
-      "op": "capture_web_screenshot",
-      "target": "fenix/127.0.0.1:8123",
-      "exit": 0,
-      "evidence_id": "ev_b3b1e8374c0403d7b7c2cd9c4af9dbb33144920f515de8cd95d647b4d73527a7"
-    }
-  ],
+  "schema": "evidence004/run-report/1",
+  "generated_by": "scripts/evidence004_generate.py",
+  "canonical": "reports/ai-bots/RFC-AI-BOTS-002/evidence-004/canonical/CANONICAL_RUN.json",
+  "ledger_sha256": "c5bc42ecccf86965effb52e505b3e0f9e3dadd5ea62ecb0b4bfbc0f43b629869",
   "counts": {
+    "phase_v31": {
+      "definition": "REA target work and its prerequisites recorded at or after 2026-10-18T00:00:00Z: TARGET_ANALYSIS, SOURCE_IMPORT, SOURCE_COMPARE",
+      "work": {
+        "operations": 9,
+        "executed_with_evidence_id": 7,
+        "executed_with_verified_artifact": 2,
+        "executed_evidence_declared_unverified": 5,
+        "not_executed": 2,
+        "failed": 0,
+        "not_executed_operations": [
+          "compare-source-to-bundle (REFUSED_INVALID_INPUT)",
+          "import-reference-source (BLOCKED_UNSUPPORTED_HOST)"
+        ],
+        "class_breakdown": {
+          "BLOCKED_UNSUPPORTED_HOST": 1,
+          "EXECUTED_EVIDENCE_DECLARED": 5,
+          "EXECUTED_EVIDENCE_VERIFIED": 2,
+          "REFUSED_INVALID_INPUT": 1
+        }
+      },
+      "readiness": {
+        "operations": 1,
+        "executed_with_evidence_id": 1,
+        "executed_with_verified_artifact": 0,
+        "executed_evidence_declared_unverified": 1,
+        "not_executed": 0,
+        "failed": 0,
+        "not_executed_operations": [],
+        "class_breakdown": {
+          "EXECUTED_EVIDENCE_DECLARED": 1
+        }
+      },
+      "non_rea_steps": 1,
+      "distinct_evidence_ids": 8
+    },
+    "all_dossiers": {
+      "definition": "every event recorded in the four target dossiers, any date",
+      "work": {
+        "operations": 12,
+        "executed_with_evidence_id": 10,
+        "executed_with_verified_artifact": 3,
+        "executed_evidence_declared_unverified": 7,
+        "not_executed": 2,
+        "failed": 0,
+        "not_executed_operations": [
+          "compare-source-to-bundle (REFUSED_INVALID_INPUT)",
+          "import-reference-source (BLOCKED_UNSUPPORTED_HOST)"
+        ],
+        "class_breakdown": {
+          "BLOCKED_UNSUPPORTED_HOST": 1,
+          "EXECUTED_EVIDENCE_DECLARED": 7,
+          "EXECUTED_EVIDENCE_VERIFIED": 3,
+          "REFUSED_INVALID_INPUT": 1
+        }
+      },
+      "readiness": {
+        "operations": 3,
+        "executed_with_evidence_id": 2,
+        "executed_with_verified_artifact": 0,
+        "executed_evidence_declared_unverified": 2,
+        "not_executed": 0,
+        "failed": 0,
+        "not_executed_operations": [],
+        "class_breakdown": {
+          "DIAGNOSTIC_UNHEALTHY": 1,
+          "EXECUTED_EVIDENCE_DECLARED": 2
+        }
+      },
+      "non_rea_steps": 1,
+      "distinct_evidence_ids": 12
+    },
+    "conflation_warning": "phase_v31 and all_dossiers share a subject but not a denominator: the phase counter (7 work operations with an evidence_id) and the dossier counter (12 distinct evidence_ids) are both true and are not the same counter.",
     "rea_operations_evidenced": 7,
     "rea_operations_not_executed": 2,
-    "targets_repo_exact": 3
+    "legacy_alias_note": "rea_operations_evidenced / rea_operations_not_executed are aliases of counts.phase_v31.work for readers of the previous schema; they are generated from the same object and are not a second source of truth."
+  },
+  "counter_values": {
+    "phase_v31.work.operations": 9,
+    "phase_v31.work.executed_with_evidence_id": 7,
+    "phase_v31.work.executed_with_verified_artifact": 2,
+    "phase_v31.work.not_executed": 2,
+    "phase_v31.distinct_evidence_ids": 8,
+    "all_dossiers.work.executed_with_evidence_id": 10,
+    "all_dossiers.work.not_executed": 2,
+    "all_dossiers.distinct_evidence_ids": 12
+  },
+  "operations": [
+    {
+      "event_key": "03263a30d922aeeb4a7f146c16b8fcebb4b4b4bb8afab704407a9a3b49c2a272",
+      "target_id": "T-NF-PUBLIC",
+      "operation": "analyze_javascript_application",
+      "operation_family": "TARGET_ANALYSIS",
+      "timestamp": "2026-10-17T22:17:33+00:00",
+      "exit_code": 0,
+      "result": null,
+      "execution_class": "EXECUTED_EVIDENCE_DECLARED",
+      "completed": true,
+      "evidence": {
+        "evidence_id": "ev_aee35b0f11df7a73b082c5cbc72e10c97f27b22917da003998d93eaa455617fc",
+        "id_kind": "REA_NATIVE",
+        "declared_digest": "640c335fb55e0ce5a2b836b68e1483df2afd563d808421730f41d00ca320f773",
+        "digest_matched_path": null,
+        "corroborated_in_dossier": true,
+        "status": "EVIDENCE_ID_CORROBORATED_IN_DOSSIER"
+      }
+    },
+    {
+      "event_key": "f6bce7effe3d6c43ded0edb46fd7c1eb93b362fc4bcb369880b2fecaf8d3a935",
+      "target_id": "T-NF-PUBLIC",
+      "operation": "analyze_web_bundle",
+      "operation_family": "TARGET_ANALYSIS",
+      "timestamp": "2026-10-17T22:17:33+00:00",
+      "exit_code": 0,
+      "result": null,
+      "execution_class": "EXECUTED_EVIDENCE_DECLARED",
+      "completed": true,
+      "evidence": {
+        "evidence_id": "ev_82d99570975285bde3570fb1b4002ea6b323fefed4308ce5c39ac23d0621d56c",
+        "id_kind": "REA_NATIVE",
+        "declared_digest": "3aaa6fd29c13d174c0d393802aae85a4c8605af38b3abb901e6ffb506ebbb7c4",
+        "digest_matched_path": null,
+        "corroborated_in_dossier": true,
+        "status": "EVIDENCE_ID_CORROBORATED_IN_DOSSIER"
+      }
+    },
+    {
+      "event_key": "cf169f9a701e6ab3853ab934400fcea6cc882c63c6495e1253f5cb549845d613",
+      "target_id": "T-NF-PUBLIC",
+      "operation": "capture_web_screenshot",
+      "operation_family": "TARGET_ANALYSIS",
+      "timestamp": "2026-10-17T22:17:33+00:00",
+      "exit_code": 0,
+      "result": null,
+      "execution_class": "EXECUTED_EVIDENCE_VERIFIED",
+      "completed": true,
+      "evidence": {
+        "evidence_id": "ev_47c01accd3491fd6e10e893f8a045e5fee226fa520f648f4460396a619efbaf1",
+        "id_kind": "REA_NATIVE",
+        "declared_digest": "128fa8375abc68885744bc337a79ebec651a194ab4bc3d3395449f483ed2eda7",
+        "digest_matched_path": "reports/ai-bots/RFC-AI-BOTS-002/rea/targets/T-NF-PUBLIC/rea_screenshot_evidence.json",
+        "corroborated_in_dossier": true,
+        "status": "EVIDENCE_ARTIFACT_VERIFIED"
+      }
+    },
+    {
+      "event_key": "66c24ed196bd32a1a3121948db9b0d13e8e5d64d521e0d1e65bc44bc207679ff",
+      "target_id": "T-NF-PUBLIC",
+      "operation": "doctor",
+      "operation_family": "TARGET_READINESS",
+      "timestamp": "2026-10-17T22:17:33+00:00",
+      "exit_code": 1,
+      "result": null,
+      "execution_class": "DIAGNOSTIC_UNHEALTHY",
+      "completed": false,
+      "evidence": {
+        "evidence_id": null,
+        "id_kind": "NONE",
+        "declared_digest": null,
+        "digest_matched_path": null,
+        "corroborated_in_dossier": false,
+        "status": "EVIDENCE_ABSENT"
+      }
+    },
+    {
+      "event_key": "c5b2c9a4124c4480738883d33215bbaa6410521f66c1c634e09d37009bf15a90",
+      "target_id": "T-NF-PUBLIC",
+      "operation": "list_browser_targets",
+      "operation_family": "TARGET_READINESS",
+      "timestamp": "2026-10-17T22:17:33+00:00",
+      "exit_code": 0,
+      "result": null,
+      "execution_class": "EXECUTED_EVIDENCE_DECLARED",
+      "completed": true,
+      "evidence": {
+        "evidence_id": "ev_f7020db13e2de339e89e64231dd55522fe97ab8d17447644e8dfb5ef0961bb00",
+        "id_kind": "REA_NATIVE",
+        "declared_digest": "647471a64084c3775b5c9cdee8cac25361344352a7cb5587789a960344b1d527",
+        "digest_matched_path": null,
+        "corroborated_in_dossier": false,
+        "status": "EVIDENCE_ID_DECLARED_ONLY"
+      }
+    },
+    {
+      "event_key": "4a07621608eefc00056ea6a554d6ba3c1ed977e564d1b6a999732f0280891efa",
+      "target_id": "T-NF-NOF1",
+      "operation": "git fetch / checkout",
+      "operation_family": "NON_REA",
+      "timestamp": "2026-10-18T00:52:00Z",
+      "exit_code": 0,
+      "result": "committed pin resolved: b3ae235a0ff6555ff7a77c5c76c93cad2b1f5463",
+      "execution_class": "NON_REA_STEP",
+      "completed": false,
+      "evidence": {
+        "evidence_id": null,
+        "id_kind": "NONE",
+        "declared_digest": null,
+        "digest_matched_path": null,
+        "corroborated_in_dossier": false,
+        "status": "EVIDENCE_ABSENT"
+      }
+    },
+    {
+      "event_key": "f64fc55b9c5da884925180d11a190b4f475f04a1c81fd3191707b16400b264b1",
+      "target_id": "T-NF-NOF1",
+      "operation": "analyze_javascript_application",
+      "operation_family": "TARGET_ANALYSIS",
+      "timestamp": "2026-10-18T00:57:00Z",
+      "exit_code": 0,
+      "result": "3 relevant files, 2 parsed JS, 4812 AST nodes, 22 findings, 0 parse failures, 22 nodes / 27 edges",
+      "execution_class": "EXECUTED_EVIDENCE_DECLARED",
+      "completed": true,
+      "evidence": {
+        "evidence_id": "ev_4b2bf9c5c313530cc7e1e399d4cde5c175ecdd0018a9f608ee12782522ea9ade",
+        "id_kind": "REA_NATIVE",
+        "declared_digest": "58acee1ab07e00158681948ba860d9a0e4b4a72bd5899b838626450393acfae3",
+        "digest_matched_path": null,
+        "corroborated_in_dossier": true,
+        "status": "EVIDENCE_ID_CORROBORATED_IN_DOSSIER"
+      }
+    },
+    {
+      "event_key": "a242bb9cd0ffba02d1848aff5d191c5804e0ef057dbd76986926d72c17597d6f",
+      "target_id": "T-NF-NOF1",
+      "operation": "import-reference-source",
+      "operation_family": "SOURCE_IMPORT",
+      "timestamp": "2026-10-18T01:02:00Z",
+      "exit_code": 1,
+      "result": "BLOCKED_UNSUPPORTED_HOST",
+      "execution_class": "BLOCKED_UNSUPPORTED_HOST",
+      "completed": false,
+      "evidence": {
+        "evidence_id": null,
+        "id_kind": "NONE",
+        "declared_digest": null,
+        "digest_matched_path": null,
+        "corroborated_in_dossier": false,
+        "status": "EVIDENCE_ABSENT"
+      }
+    },
+    {
+      "event_key": "99f67c66b828ea7111cefc286831c29f9193e8592df0f277aeba1aa6e5f812de",
+      "target_id": "T-NF-NOF1",
+      "operation": "compare-source-to-bundle",
+      "operation_family": "SOURCE_COMPARE",
+      "timestamp": "2026-10-18T01:03:00Z",
+      "exit_code": 0,
+      "result": "NOT_EXECUTED_INVALID_INPUT",
+      "execution_class": "REFUSED_INVALID_INPUT",
+      "completed": false,
+      "evidence": {
+        "evidence_id": null,
+        "id_kind": "NONE",
+        "declared_digest": null,
+        "digest_matched_path": null,
+        "corroborated_in_dossier": false,
+        "status": "EVIDENCE_ABSENT"
+      }
+    },
+    {
+      "event_key": "91e87b753b7ac1a6c705a422e64a444c4c56c05d12a600b3f5abadf5c6686524",
+      "target_id": "T-QR-SIGNAL",
+      "operation": "analyze_javascript_application",
+      "operation_family": "TARGET_ANALYSIS",
+      "timestamp": "2026-10-18T01:12:00Z",
+      "exit_code": 0,
+      "result": "17 relevant files, 14 parsed JS, 15628 AST nodes, 86 findings, 79 nodes / 115 edges",
+      "execution_class": "EXECUTED_EVIDENCE_DECLARED",
+      "completed": true,
+      "evidence": {
+        "evidence_id": "ev_9b45318c072de54798bb93a37354c38ec82b2bccf31d3cd1fbf9be0898a16b99",
+        "id_kind": "REA_NATIVE",
+        "declared_digest": null,
+        "digest_matched_path": null,
+        "corroborated_in_dossier": true,
+        "status": "EVIDENCE_ID_CORROBORATED_IN_DOSSIER"
+      }
+    },
+    {
+      "event_key": "5bef070e1f839eb1cced6051062353b774924a305fa33b6873c3e899ce8f460f",
+      "target_id": "T-FE-FENIX",
+      "operation": "analyze_javascript_application",
+      "operation_family": "TARGET_ANALYSIS",
+      "timestamp": "2026-10-18T01:20:00Z",
+      "exit_code": 0,
+      "result": "2 relevant files, 1 parsed JS (868 kB bundle), 256917 AST nodes, 35 findings, 33 nodes / 40 edges, 0 parse failures",
+      "execution_class": "EXECUTED_EVIDENCE_DECLARED",
+      "completed": true,
+      "evidence": {
+        "evidence_id": "ev_be8c7d74bb6ed79011e4d135ba011c7df95df4d50fcdfc4086223f8fb5931cc6",
+        "id_kind": "REA_NATIVE",
+        "declared_digest": null,
+        "digest_matched_path": null,
+        "corroborated_in_dossier": true,
+        "status": "EVIDENCE_ID_CORROBORATED_IN_DOSSIER"
+      }
+    },
+    {
+      "event_key": "ca10ec93f8c92766a209202c8427aeabc69ad9650c704277f29238a7d205d765",
+      "target_id": "T-QR-SIGNAL",
+      "operation": "list_browser_targets",
+      "operation_family": "TARGET_READINESS",
+      "timestamp": "2026-10-18T01:30:00Z",
+      "exit_code": 0,
+      "result": "2 page targets: 127.0.0.1:8124 (Semantic Signal LLM), 127.0.0.1:8123 (Fenix Trading Bot)",
+      "execution_class": "EXECUTED_EVIDENCE_DECLARED",
+      "completed": true,
+      "evidence": {
+        "evidence_id": "ev_4d5ba8ab1f3bdc9bcb5e799f36ff90feb7e220a9c84d9a8249b6eec952b7999f",
+        "id_kind": "REA_NATIVE",
+        "declared_digest": null,
+        "digest_matched_path": null,
+        "corroborated_in_dossier": false,
+        "status": "EVIDENCE_ID_DECLARED_ONLY"
+      }
+    },
+    {
+      "event_key": "319a767689ce807191698bb126753530d66451a4e4a1840d068cb8821858441c",
+      "target_id": "T-QR-SIGNAL",
+      "operation": "analyze_web_bundle",
+      "operation_family": "TARGET_ANALYSIS",
+      "timestamp": "2026-10-18T01:31:00Z",
+      "exit_code": 0,
+      "result": "14 scripts observed, 14 parsed, 0 failures, 5 observations, 0 unknowns, completeness=complete",
+      "execution_class": "EXECUTED_EVIDENCE_DECLARED",
+      "completed": true,
+      "evidence": {
+        "evidence_id": "ev_b954b8b016f1736a766bc45627a3d21f600503c1d4294e7147133a7ce461c46c",
+        "id_kind": "REA_NATIVE",
+        "declared_digest": null,
+        "digest_matched_path": null,
+        "corroborated_in_dossier": true,
+        "status": "EVIDENCE_ID_CORROBORATED_IN_DOSSIER"
+      }
+    },
+    {
+      "event_key": "3d5686bf81c21e155db498e4b433c0e9ffbec7ca0490ecf7dd8dd7faf450b0b9",
+      "target_id": "T-FE-FENIX",
+      "operation": "analyze_web_bundle",
+      "operation_family": "TARGET_ANALYSIS",
+      "timestamp": "2026-10-18T01:31:30Z",
+      "exit_code": 0,
+      "result": "1 script observed and parsed, 0 failures, 5 observations, 1 inference, 0 unknowns, completeness=complete",
+      "execution_class": "EXECUTED_EVIDENCE_DECLARED",
+      "completed": true,
+      "evidence": {
+        "evidence_id": "ev_fc2b6552ff6ca513ad2cfcf4563e44b5d50354c61453bb999a4088cb3116d5c8",
+        "id_kind": "REA_NATIVE",
+        "declared_digest": null,
+        "digest_matched_path": null,
+        "corroborated_in_dossier": true,
+        "status": "EVIDENCE_ID_CORROBORATED_IN_DOSSIER"
+      }
+    },
+    {
+      "event_key": "ce1b78e84cfb53312c0a0cd341c656ad267b5192ee6aff2c3382612a8639e5aa",
+      "target_id": "T-QR-SIGNAL",
+      "operation": "capture_web_screenshot",
+      "operation_family": "TARGET_ANALYSIS",
+      "timestamp": "2026-10-18T01:32:00Z",
+      "exit_code": 0,
+      "result": "complete_within_window",
+      "execution_class": "EXECUTED_EVIDENCE_VERIFIED",
+      "completed": true,
+      "evidence": {
+        "evidence_id": "ev_ee6845ff71d389439559036e9c661edbaee90a518ac18bd29639ef72995417a3",
+        "id_kind": "REA_NATIVE",
+        "declared_digest": "1d3d97451fbfa2f77fc0ec7a3634aab7c7e5578897f6d6764c03b479d8ba0e0b",
+        "digest_matched_path": "reports/ai-bots/RFC-AI-BOTS-002/rea/targets/T-QR-SIGNAL/rea_screenshot.png",
+        "corroborated_in_dossier": true,
+        "status": "EVIDENCE_ARTIFACT_VERIFIED"
+      }
+    },
+    {
+      "event_key": "77375b64e5fa2ba6d2b9b48fe7c7450b3782bef46a059e3e997d8e7b08260c01",
+      "target_id": "T-FE-FENIX",
+      "operation": "capture_web_screenshot",
+      "operation_family": "TARGET_ANALYSIS",
+      "timestamp": "2026-10-18T01:33:00Z",
+      "exit_code": 0,
+      "result": "complete_within_window",
+      "execution_class": "EXECUTED_EVIDENCE_VERIFIED",
+      "completed": true,
+      "evidence": {
+        "evidence_id": "ev_b3b1e8374c0403d7b7c2cd9c4af9dbb33144920f515de8cd95d647b4d73527a7",
+        "id_kind": "REA_NATIVE",
+        "declared_digest": "977ade7ba3afccd7370f0779f0611ccea168c82e26d383d52565ca9358a70233",
+        "digest_matched_path": "reports/ai-bots/RFC-AI-BOTS-002/rea/targets/T-FE-FENIX/rea_screenshot.png",
+        "corroborated_in_dossier": true,
+        "status": "EVIDENCE_ARTIFACT_VERIFIED"
+      }
+    }
+  ],
+  "evidence_inventory": {
+    "rea_native_ids": {
+      "T-FE-FENIX": [
+        "ev_b3b1e8374c0403d7b7c2cd9c4af9dbb33144920f515de8cd95d647b4d73527a7",
+        "ev_be8c7d74bb6ed79011e4d135ba011c7df95df4d50fcdfc4086223f8fb5931cc6",
+        "ev_fc2b6552ff6ca513ad2cfcf4563e44b5d50354c61453bb999a4088cb3116d5c8"
+      ],
+      "T-NF-NOF1": [
+        "ev_4b2bf9c5c313530cc7e1e399d4cde5c175ecdd0018a9f608ee12782522ea9ade"
+      ],
+      "T-NF-PUBLIC": [
+        "ev_47c01accd3491fd6e10e893f8a045e5fee226fa520f648f4460396a619efbaf1",
+        "ev_82d99570975285bde3570fb1b4002ea6b323fefed4308ce5c39ac23d0621d56c",
+        "ev_aee35b0f11df7a73b082c5cbc72e10c97f27b22917da003998d93eaa455617fc",
+        "ev_f7020db13e2de339e89e64231dd55522fe97ab8d17447644e8dfb5ef0961bb00"
+      ],
+      "T-QR-SIGNAL": [
+        "ev_4d5ba8ab1f3bdc9bcb5e799f36ff90feb7e220a9c84d9a8249b6eec952b7999f",
+        "ev_9b45318c072de54798bb93a37354c38ec82b2bccf31d3cd1fbf9be0898a16b99",
+        "ev_b954b8b016f1736a766bc45627a3d21f600503c1d4294e7147133a7ce461c46c",
+        "ev_ee6845ff71d389439559036e9c661edbaee90a518ac18bd29639ef72995417a3"
+      ]
+    },
+    "rea_native_id_count": 12,
+    "local_keys_misplaced_in_evidence_id": []
   },
   "not_run": [
-    "LLM real",
-    "backends upstream",
-    "TradingAgents REA",
-    "FortuneMal"
+    "real multimodal model call (no credential, no spending authorisation)",
+    "upstream Python/TypeScript backends of T-NF-NOF1, T-QR-SIGNAL, T-FE-FENIX",
+    "REA on T-TA-CRITIC and T-FM-DEMO (no inspectable surface / no licence)",
+    "compare-source-to-bundle (importer blocked on this host)"
   ],
   "real_model_called": false,
   "orders_placed": 0,
   "risk_config_touched": false,
-  "count_note": "An exit code of 0 is not a success criterion. compare-source-to-bundle returned exit 0 with NOT_EXECUTED_INVALID_INPUT and produced no evidence_id, so it is counted under rea_operations_not_executed, not under rea_operations_evidenced."
+  "count_note": "An exit code of 0 is not a success criterion. compare-source-to-bundle returned exit 0 with NOT_EXECUTED_INVALID_INPUT and produced no evidence_id, so it is counted as not executed. phase_v31 and all_dossiers are separate denominators."
 }
