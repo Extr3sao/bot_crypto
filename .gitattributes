@@ -40,3 +40,9 @@ reports/edge-recovery/WP-EDGE-12/evidence/PROPOSED_DEFINITION.xml -text
 # endings (core.autocrlf=true on this host did exactly that) makes the digest name a
 # file nobody has.  Same reason as the digest-pinned trees above, same treatment.
 reports/economic-recovery/RFC-EDGE-01*/scratch/*.jsonl -text
+
+# RFC-AI-BOTS-004 publishes digest-pinned audit bytes: the HTML rendered by the pinned
+# upstream, the REA stdout envelopes and the run ledgers. The dossier records their
+# sha256, so a checkout that rewrote line endings would make every digest name a file
+# nobody has. Store and check these bytes unchanged.
+reports/ai-bots/RFC-AI-BOTS-004/** -text
