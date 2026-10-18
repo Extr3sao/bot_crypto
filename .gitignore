@@ -39,6 +39,9 @@ data/processed/*
 data/backtests/*
 data/storage/*
 data/chart_snapshots/*
+# RFC-TAP-MARKET-005: local OHLCV store, watermarks and response cache are
+# runtime state, not evidence. The evidence lives in reports/ (committed with -f).
+data/market/
 data/*.db
 # WP-EDGE-03 — tienda forward: OHLCV crudo de ~5 MB que crece en cada corrida. Se
 # mantiene local por el mismo criterio que los corpus crudos de arriba; lo que SI

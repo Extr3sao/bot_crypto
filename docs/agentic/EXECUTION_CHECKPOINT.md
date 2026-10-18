@@ -1,3 +1,58 @@
+## 2026-10-18 · RFC-TAP-MARKET-005 — datos incrementales, snapshot PIT y gate de IA
+
+**Objetivo:** dejar de repetir descargas históricas y hacer que el análisis se dispare por evento
+cerrado, sin apagar nada ni tocar el host.
+
+**Rama:** `agent/market/RFC-TAP-MARKET-005` · **Base:** `fe9b5e2623b0d023833249e9687b753eaacd27d4`
+**Worktree:** `C:/Users/GVLLFR0035/Downloads/bot_crypto_005` (nuevo; no se reutilizó ninguno).
+
+**Hecho y medido**
+
+1. Auditoría read-only del host: **6 tareas** `TradingAgentic-*`, todas `Ready` y `PT15M`; **5** lanzan
+   `python.exe` (consola). CAP004 no descarga cada 15 min: 1080 `NOOP` / 1 `RUN` en
+   `evidence/real_decisions/operations.jsonl`. La captura del usuario es `NOT_ATTRIBUTABLE`.
+2. `market_data/incremental.py`: watermark por `(source,symbol,timeframe)`, bootstrap único, delta
+   acotado con overlap de reparación, sólo velas cerradas, cobertura probada o fallo cerrado.
+3. `market_data/timeframe_store.py`: vista con dimensión de timeframe sobre `OHLCVStore` (cuya PK
+   `(symbol,timestamp)` mezclaba 1h/4h/1d).
+4. `market_data/snapshot.py`: `MarketSnapshot` PIT + gate de disponibilidad/frescura/precio.
+5. `market_data/market_events.py`: `EventGate` (dedupe, cooldown, tope horario, presupuesto,
+   credencial) + `ResponseCache` ligada a `snapshot_hash+prompt+modelo`.
+6. `scripts/mkt005_market_intel.py` (capture/ingest/baseline/snapshot) y `scripts/mkt005_verify.py`
+   (verificador independiente + mutaciones).
+
+```text
+GREEN pytest tests/unit/market_data tests/unit/storage                  158 passed
+GREEN pytest tests/unit/research/test_real_market_context.py             21 passed
+GREEN pytest tests/unit/market_data/test_incremental_ingestion.py +
+      test_market_snapshot_events.py                                      28 passed
+GREEN ruff / mypy (8 ficheros)                                          limpio
+GREEN mkt005_verify.py --mutations                 8 PASS / 0 FAIL, 5/5 detectadas
+GREEN baseline 96 ciclos: 1164 -> 136 peticiones, 770312 -> 8496 velas, 12/12 series idénticas
+GREEN snapshot PIT: 4/4 causales, 0 triggers, 0 llamadas de modelo
+RED   suite completa del repositorio                                    NOT_RUN
+```
+
+**Pendiente / bloqueado**
+
+- **WP-005H (NO EJECUTADO):** re-registrar las 5 tareas de consola con `pythonw.exe` +
+  `scripts/windowless.py`. Requiere autorización de modificación del host y rollback ensayado.
+  No se creó, detuvo, editó ni ejecutó ninguna tarea.
+- Sin lease propio en el CLI: dos invocaciones concurrentes competirían por el watermark.
+- `REAL_MODEL_CALLED=false`; el gate de IA está verificado sólo offline.
+
+**Reanudación**
+
+```bash
+cd C:/Users/GVLLFR0035/Downloads/bot_crypto_005
+./.venv/Scripts/python.exe -m pytest tests/unit/market_data tests/unit/storage -q
+./.venv/Scripts/python.exe scripts/mkt005_verify.py --mutations
+./.venv/Scripts/python.exe scripts/mkt005_market_intel.py baseline \
+  --fixture reports/market-data/RFC-TAP-MARKET-005/MARKET_DATA_FIXTURE.json --cycles 96
+```
+
+---
+
 ## 2026-10-18 · WP-OPS-BACKGROUND-001 — ejecución sin ventanas en Windows
 
 **Objetivo:** que Trading Agentic Portable no abra ventanas de consola durante una ejecución

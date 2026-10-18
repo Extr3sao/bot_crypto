@@ -1,0 +1,242 @@
+{
+  "captured_at_utc": "2026-10-18T19:46:42.2940990Z",
+  "hostname": "DESKTOP-4CHO695",
+  "measured_transfer": {
+    "bootstrap_bytes_once": 1429413.7,
+    "bytes_reduction_pct": 98.9,
+    "current_bytes": 139791619.5,
+    "current_mib": 133.32,
+    "note": "Payload bytes are measured per request shape on the same public endpoint; the totals multiply those measurements by the rows each strategy actually transferred in the replay window. ccxt envelope overhead is not included on either side.",
+    "proposed_bytes": 1540625.1,
+    "proposed_kib": 1504.52,
+    "steady_state_bytes_per_day": 111211.4,
+    "steady_state_kib_per_day": 108.6,
+    "steady_state_reduction_pct": 99.92,
+    "window": {
+      "cycles": 96,
+      "end_ms": 1792352634561,
+      "start_ms": 1792266234561,
+      "step_ms": 900000
+    }
+  },
+  "method": "Get-ScheduledTask + Get-ScheduledTaskInfo + Get-CimInstance Win32_Process (read-only)",
+  "payload_bytes_measured": {
+    "bytes": {
+      "1d_limit_5": 928,
+      "1d_limit_500": 93640,
+      "1h_limit_1000": 178500,
+      "1h_limit_5": 891,
+      "4h_limit_5": 904,
+      "4h_limit_500": 90774
+    },
+    "bytes_per_row": {
+      "1d": 187.28,
+      "1h": 178.5,
+      "4h": 181.548
+    },
+    "method": "curl -s -o /dev/null -w %{size_download} https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=<tf>&limit=<n>"
+  },
+  "processes_observed": [
+    {
+      "command_line": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Programs\\@codebufffreebuff-desktop\\resources\\bun\\bun.exe C:\\Users\\GVLLFR0035\\AppData\\Local\\Programs\\@codebufffreebuff-desktop\\resources\\orchestrator\\orchestrator.js",
+      "created": "2026-10-15T08:04:37.2941900+02:00",
+      "name": "bun.exe",
+      "pid": 26968,
+      "ppid": 1260
+    },
+    {
+      "command_line": "\"C:\\Users\\GVLLFR0035\\Downloads\\Deures Dylan\\DylanRepas-worktrees\\RFC-014-RHYTHM\\.venv\\Scripts\\python.exe\" -",
+      "created": "2026-10-15T22:33:31.4624160+02:00",
+      "name": "python.exe",
+      "pid": 14424,
+      "ppid": 33700
+    },
+    {
+      "command_line": "\"C:\\Users\\GVLLFR0035\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\\python.exe\"  -",
+      "created": "2026-10-15T22:33:31.4831150+02:00",
+      "name": "python.exe",
+      "pid": 28232,
+      "ppid": 14424
+    },
+    {
+      "command_line": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\edge14r\\pg\\.venv\\Scripts\\python.exe -u run_pg.py",
+      "created": "2026-10-16T18:42:44.7434380+02:00",
+      "name": "python.exe",
+      "pid": 14692,
+      "ppid": 11340
+    },
+    {
+      "command_line": "\"C:\\Users\\GVLLFR0035\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\\python.exe\"  -u run_pg.py",
+      "created": "2026-10-16T18:42:44.7565360+02:00",
+      "name": "python.exe",
+      "pid": 32340,
+      "ppid": 14692
+    },
+    {
+      "command_line": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\edge14r\\pg\\.venv\\Scripts\\python.exe run_pg.py",
+      "created": "2026-10-16T21:43:03.2149730+02:00",
+      "name": "python.exe",
+      "pid": 25196,
+      "ppid": 33360
+    },
+    {
+      "command_line": "\"C:\\Users\\GVLLFR0035\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\\python.exe\"  run_pg.py",
+      "created": "2026-10-16T21:43:03.2316420+02:00",
+      "name": "python.exe",
+      "pid": 12612,
+      "ppid": 25196
+    },
+    {
+      "command_line": "\"C:\\Users\\GVLLFR0035\\Downloads\\Deures Dylan\\DylanRepas-worktrees\\RFC-014-RHYTHM\\.venv\\Scripts\\python.exe\" -m src.web --port 8935 --db C:/Users/GVLLFR~1/AppData/Local/Temp/tmp.oqB9GK3VNu.sqlite3 --learner papa-demo --name \"Demo Proves\"",
+      "created": "2026-10-18T18:40:09.1769330+02:00",
+      "name": "python.exe",
+      "pid": 10036,
+      "ppid": 33436
+    },
+    {
+      "command_line": "\"C:\\Users\\GVLLFR0035\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\\python.exe\"  -m src.web --port 8935 --db C:/Users/GVLLFR~1/AppData/Local/Temp/tmp.oqB9GK3VNu.sqlite3 --learner papa-demo --name \"Demo Proves\"",
+      "created": "2026-10-18T18:40:09.1956640+02:00",
+      "name": "python.exe",
+      "pid": 11608,
+      "ppid": 10036
+    },
+    {
+      "command_line": "\"C:\\Users\\GVLLFR0035\\Downloads\\Deures Dylan\\release-rfc026\\.venv\\Scripts\\python.exe\" -m src.web --db \"C:\\Users\\GVLLFR0035\\Downloads\\Deures Dylan\\DylanRepas-userdata\\dylan.sqlite3\" --port 8391 --learner dylan --name Dylan ",
+      "created": "2026-10-18T18:53:06.6069890+02:00",
+      "name": "python.exe",
+      "pid": 17888,
+      "ppid": 26784
+    },
+    {
+      "command_line": "\"C:\\Users\\GVLLFR0035\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\\python.exe\" -m src.web --db \"C:\\Users\\GVLLFR0035\\Downloads\\Deures Dylan\\DylanRepas-userdata\\dylan.sqlite3\" --port 8391 --learner dylan --name Dylan ",
+      "created": "2026-10-18T18:53:06.6489970+02:00",
+      "name": "python.exe",
+      "pid": 11592,
+      "ppid": 17888
+    },
+    {
+      "command_line": "\"C:\\Program Files\\nodejs\\node.exe\" C:\\Users\\GVLLFR0035\\AppData\\Roaming\\npm/node_modules/npm/bin/npx-cli.js -y rea-agents@6.4.0 --version",
+      "created": "2026-10-18T21:46:41.4728150+02:00",
+      "name": "node.exe",
+      "pid": 35872,
+      "ppid": 34896
+    }
+  ],
+  "tasks": [
+    {
+      "action": "PRESERVE. Do not stop.",
+      "arguments": null,
+      "classification": "KEEP_CRITICAL",
+      "console_subsystem": false,
+      "data_plane": "Binance futures funding/OpenInterest/taker series (public, 1000-row pages); no OHLCV fetch",
+      "execute": "\"C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\scripts\\alpha002_capture.cmd\"",
+      "last_run_time": "2026-10-18T21:41:01.0000000+02:00",
+      "last_task_result": 0,
+      "next_run_time": "2026-10-18T21:56:00.0000000+02:00",
+      "owner": "scripts/alpha002_capture.cmd -> pythonw.exe + scripts/windowless.py -> alpha002_capture.py",
+      "reason": "Venue keeps /futures/data for 30 days only: a missed run destroys data permanently. Already windowless.",
+      "repetition_interval": "PT15M",
+      "risks": "log file is 12 MB and grows; no rotation configured in the wrapper.",
+      "state": "Ready",
+      "task_name": "TradingAgentic-ALPHA002-Capture",
+      "task_path": "\\",
+      "working_directory": null
+    },
+    {
+      "action": "PRESERVE. Re-register only under WP-005H after approval.",
+      "arguments": "\"C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\scripts\\cap004_supervisor.py\" run",
+      "classification": "KEEP_CAMPAIGN + OPTIMIZE_CANDIDATE",
+      "console_subsystem": true,
+      "data_plane": "OHLCV 1h/4h/1d via CCXTExchangeConnector (1000/500/500 per asset)",
+      "execute": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+      "last_run_time": "2026-10-18T21:45:01.0000000+02:00",
+      "last_task_result": 3,
+      "next_run_time": "2026-10-18T22:00:00.0000000+02:00",
+      "owner": "cap004_supervisor.py -> cap004_campaign_runner.py -> real_market_context.fetch_provider_ohlcv",
+      "reason": "Only path that can reach the 1000/500/500 shape. 1080 of 1081 operations are NOOP; one RUN on 2026-10-07 fetched 4 assets x 3 timeframes.",
+      "repetition_interval": "PT15M",
+      "risks": "python.exe action => console window every 15 min; last_task_result 3 is the supervisor's NOOP exit code, not a failure (log shows exit=3).",
+      "state": "Ready",
+      "task_name": "TradingAgentic-CAP004-Campaign",
+      "task_path": "\\",
+      "working_directory": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff"
+    },
+    {
+      "action": "PRESERVE. Windowless re-registration is WP-005H.",
+      "arguments": "\"C:/Users/GVLLFR0035/Downloads/bot freebuff/scripts/cap004d_health_check.py\"",
+      "classification": "KEEP_OPS",
+      "console_subsystem": true,
+      "data_plane": "none (reads campaign health files)",
+      "execute": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+      "last_run_time": "2026-10-18T21:36:22.0000000+02:00",
+      "last_task_result": 30,
+      "next_run_time": "2026-10-18T21:51:21.0000000+02:00",
+      "owner": "scripts/cap004d_health_check.py -> reports/cap004d",
+      "reason": "Operational health of the campaign; no market download.",
+      "repetition_interval": "PT15M",
+      "risks": "python.exe action => console window; last_task_result 30 is not interpreted here.",
+      "state": "Ready",
+      "task_name": "TradingAgentic-CAP004D-HealthWatch",
+      "task_path": "\\",
+      "working_directory": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff"
+    },
+    {
+      "action": "PRESERVE. Do not stop.",
+      "arguments": "\"C:/Users/GVLLFR0035/Downloads/bot freebuff/scripts/edge04_observer.py\" --scheduled --due",
+      "classification": "RESEARCH_ONLY",
+      "console_subsystem": true,
+      "data_plane": "research observer; no OHLCV download (reads its own records)",
+      "execute": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+      "last_run_time": "2026-10-18T21:40:54.0000000+02:00",
+      "last_task_result": 5,
+      "next_run_time": "2026-10-18T21:55:53.0000000+02:00",
+      "owner": "scripts/edge04_observer.py --scheduled --due",
+      "reason": "No market fetch in the entrypoint; last_task_result 5 not interpreted.",
+      "repetition_interval": "PT15M",
+      "risks": "python.exe action => console window.",
+      "state": "Ready",
+      "task_name": "TradingAgentic-EDGE04-Forward",
+      "task_path": "\\",
+      "working_directory": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff"
+    },
+    {
+      "action": "PRESERVE.",
+      "arguments": "\"C:/Users/GVLLFR0035/Downloads/bot freebuff/scripts/edge05_watchdog.py\"",
+      "classification": "RESEARCH_ONLY",
+      "console_subsystem": true,
+      "data_plane": "none observed in source (watchdog)",
+      "execute": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+      "last_run_time": "2026-10-18T21:32:31.0000000+02:00",
+      "last_task_result": 12,
+      "next_run_time": "2026-10-18T21:47:30.0000000+02:00",
+      "owner": "scripts/edge05_watchdog.py",
+      "reason": "Watchdog for the forward observer; last_task_result 12 not interpreted.",
+      "repetition_interval": "PT15M",
+      "risks": "python.exe action => console window.",
+      "state": "Ready",
+      "task_name": "TradingAgentic-EDGE05-Watchdog",
+      "task_path": "\\",
+      "working_directory": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff"
+    },
+    {
+      "action": "PRESERVE. Migration onto the shared reader is a separate RFC.",
+      "arguments": "\"C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\scripts\\st6_forward_regime.py\" --due --scheduled",
+      "classification": "KEEP_BOOTSTRAP / RESEARCH_ONLY",
+      "console_subsystem": true,
+      "data_plane": "25 klines 1h via urllib (own parser), 3 symbols",
+      "execute": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+      "last_run_time": "2026-10-18T21:33:01.0000000+02:00",
+      "last_task_result": 0,
+      "next_run_time": "2026-10-18T21:48:00.0000000+02:00",
+      "owner": "scripts/st6_forward_regime.py --due --scheduled",
+      "reason": "Small fixed window (25 bars); does not use the connector and cannot be the 1000/500/500 console output.",
+      "repetition_interval": "PT15M",
+      "risks": "python.exe action => console window; second ad-hoc HTTP client for the same venue.",
+      "state": "Ready",
+      "task_name": "TradingAgentic-ST6-Forward",
+      "task_path": "\\",
+      "working_directory": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff"
+    }
+  ],
+  "user_or_token_captured": false
+}

@@ -1,0 +1,190 @@
+{
+  "ai": {
+    "budget_usd": 0.0,
+    "model_calls": 0,
+    "real_model_called": false,
+    "reason": "MISSING_CREDENTIAL",
+    "trigger_decisions": 4,
+    "triggers": 0
+  },
+  "artifacts": {
+    "AI_TRIGGER_LEDGER.jsonl": {
+      "bytes": 1655,
+      "sha256": "1d1a3f36658ebd130204426d2a0480ced39692514180f9e8609b28843e9416fd"
+    },
+    "COVERAGE_LEDGER.jsonl": {
+      "bytes": 1603713,
+      "sha256": "ea86705bdf4445f91ee74dd5c60bc2d606fb870728e12b3107f4077a59029922"
+    },
+    "CURRENT_VS_PROPOSED.json": {
+      "bytes": 10576,
+      "sha256": "bc885d2556e46cbac2e09667c06adc70c8e57be84797bbb2e6509aa639345a99"
+    },
+    "FETCH_PROCESS_TRACE.jsonl": {
+      "bytes": 5289,
+      "sha256": "4cd0116d99c184df367c9c7b47a607e046ef436b5fb2d40cb9d52390fe5939d1"
+    },
+    "FINAL_REPORT.md": {
+      "bytes": 4260,
+      "sha256": "0ed81d5add2d88e015874cab01d6569cc4338825599e37e40826ddcffb4d3dc1"
+    },
+    "INDEPENDENT_VERIFICATION.json": {
+      "bytes": 2274,
+      "sha256": "81a9129bf488e473e1abef7ab2181a4856c96be9c098a89aa9b7aa145e3148b5"
+    },
+    "INGEST_SUMMARY.json": {
+      "bytes": 737,
+      "sha256": "e4b01723f46fec06400839766d3d59f5874e2dec296bbea8cfd92af17d352d55"
+    },
+    "MARKET_DATA_FIXTURE.json": {
+      "bytes": 890703,
+      "sha256": "28d7d94384287565d78b6592514ecf1dbd370cedf8b44ea69f254c3eca6c22ad"
+    },
+    "RUN_REPORT.md": {
+      "bytes": 11771,
+      "sha256": "d1cc07baa9f3a173fceee6b5180930ab6fc2189dde24e49eb7a12ee3d930cd99"
+    },
+    "SCHEDULER_INVENTORY.json": {
+      "bytes": 11918,
+      "sha256": "319bc00cdc245a90fd97f04abf0cb3a8d3f6bf0b2a607c60237692ac90a02b56"
+    },
+    "SCHEDULER_INVENTORY.raw.json": {
+      "bytes": 13780,
+      "sha256": "2046c723e2fb030e4a87b3f3f1cf310349eb9e1e65f59ac68135a047cb837b71"
+    },
+    "SNAPSHOT_GATE_REPORT.json": {
+      "bytes": 8501,
+      "sha256": "d16ee6251486fffd6831386d3090da2e41e7bb3dd7388f0de772ece0cd6112ba"
+    }
+  },
+  "base_commit": "fe9b5e2623b0d023833249e9687b753eaacd27d4",
+  "branch": "agent/market/RFC-TAP-MARKET-005",
+  "comparison": {
+    "current_requests": 1164,
+    "current_rows": 770312,
+    "data_equivalent": true,
+    "payload": {
+      "bootstrap_bytes_once": 1429413.7,
+      "bytes_reduction_pct": 98.9,
+      "current_bytes": 139791619.5,
+      "current_mib": 133.32,
+      "note": "Payload bytes are measured per request shape on the same public endpoint; the totals multiply those measurements by the rows each strategy actually transferred in the replay window. ccxt envelope overhead is not included on either side.",
+      "proposed_bytes": 1540625.1,
+      "proposed_kib": 1504.52,
+      "steady_state_bytes_per_day": 111211.4,
+      "steady_state_kib_per_day": 108.6,
+      "steady_state_reduction_pct": 99.92,
+      "window": {
+        "cycles": 96,
+        "end_ms": 1792352634561,
+        "start_ms": 1792266234561,
+        "step_ms": 900000
+      }
+    },
+    "proposed_requests": 136,
+    "proposed_rows": 8496,
+    "requests_reduction_pct": 88.32,
+    "rows_reduction_pct": 98.9,
+    "window": {
+      "assets": 4,
+      "cycles": 96,
+      "step_ms": 900000,
+      "timeframes": 3
+    }
+  },
+  "date_utc": "2026-10-18",
+  "decisions": {
+    "disable_any_download": "REJECT",
+    "event_ai_gate": "EXPERIMENT",
+    "incremental_reader": "ADOPT_OFFLINE_NOT_ACTIVATED",
+    "pit_snapshot": "ADOPT",
+    "windowless_task_registration": "DEFER_USER_APPROVAL"
+  },
+  "false_success_guard": {
+    "failing_checks_marked_pass": 0,
+    "not_run_marked_pass": 0
+  },
+  "head_commit_at_report": null,
+  "independent_verification": {
+    "checks_failed": 0,
+    "checks_passed": 8,
+    "imports_trading_bot": false,
+    "mutations_detected": 5,
+    "mutations_total": 5,
+    "verifier": "scripts/mkt005_verify.py"
+  },
+  "limitations": [
+    "Full repository test suite not executed (other worktrees active): NOT_RUN.",
+    "No process-level req_id evidence survived for the user screenshot: NOT_ATTRIBUTABLE.",
+    "No lease/lock in the CLI; two concurrent invocations would race on the watermark (declared, unmitigated).",
+    "Provider has no since parameter: delta is bounded last-N + dedupe.",
+    "Data equivalence measured on 12 real series over a 24h window; venue maintenance gaps only simulated.",
+    "REAL_MODEL_CALLED=false: no authorized provider, so the AI gate is verified offline only."
+  ],
+  "protected_surfaces": {
+    "config/risk.yaml": "UNCHANGED",
+    "config/strategy_admission.json": "UNCHANGED",
+    "src/trading_bot/paper/broker.py": "UNCHANGED",
+    "src/trading_bot/risk/manager.py": "UNCHANGED"
+  },
+  "rfc": "RFC-TAP-MARKET-005",
+  "runtime_audit": {
+    "attribution_of_user_screenshot": "NOT_ATTRIBUTABLE",
+    "campaign_operations": {
+      "NOOP": 1080,
+      "RUN": 1
+    },
+    "host_modified": false,
+    "only_code_path_with_runtime_limits": "real_market_context.fetch_provider_ohlcv (1000/500/500)",
+    "scheduled_campaign_downloads_per_15_min": false,
+    "tasks_all_ready": true,
+    "tasks_found": 6,
+    "tasks_stopped_or_created": 0,
+    "tasks_with_console_interpreter": 5
+  },
+  "scope": {
+    "implemented": [
+      "WP-005A",
+      "WP-005B",
+      "WP-005C",
+      "WP-005D",
+      "WP-005E",
+      "WP-005F",
+      "WP-005G"
+    ],
+    "not_executed": [
+      "WP-005H"
+    ]
+  },
+  "self_reference_note": "A commit cannot contain its own hash: the published commit is the one that adds this file; see git log -- reports/market-data/RFC-TAP-MARKET-005.",
+  "snapshot": {
+    "available_at_ms": 1792350000000,
+    "causal": 4,
+    "count": 4,
+    "decision_ms": 1792352634561
+  },
+  "tests": {
+    "full_repository_suite": "NOT_RUN",
+    "market_data_and_storage": {
+      "failed": 0,
+      "passed": 158
+    },
+    "mypy": "PASS",
+    "new_unit_tests": {
+      "failed": 0,
+      "file_count": 2,
+      "passed": 28
+    },
+    "real_market_context": {
+      "failed": 0,
+      "passed": 21
+    },
+    "ruff": "PASS",
+    "targeted_market_connector_suite": {
+      "failed": 0,
+      "passed": 59
+    }
+  },
+  "title": "Continuous market intelligence & incremental data orchestration",
+  "worktree": "C:/Users/GVLLFR0035/Downloads/bot_crypto_005"
+}

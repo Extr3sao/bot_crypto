@@ -1,0 +1,224 @@
+{
+    "captured_at_utc":  "2026-10-18T19:46:42.2940990Z",
+    "hostname":  "DESKTOP-4CHO695",
+    "tasks":  [
+                  {
+                      "task_name":  "TradingAgentic-ALPHA002-Capture",
+                      "task_path":  "\\",
+                      "state":  "Ready",
+                      "last_run_time":  "2026-10-18T21:41:01.0000000+02:00",
+                      "last_task_result":  0,
+                      "next_run_time":  "2026-10-18T21:56:00.0000000+02:00",
+                      "triggers":  [
+                                       {
+                                           "repetition":  "PT15M",
+                                           "type":  "MSFT_TaskTimeTrigger",
+                                           "start_boundary":  "2026-10-07T07:26:00"
+                                       }
+                                   ],
+                      "actions":  [
+                                      {
+                                          "execute":  "\"C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\scripts\\alpha002_capture.cmd\"",
+                                          "arguments":  null,
+                                          "working_directory":  null
+                                      }
+                                  ]
+                  },
+                  {
+                      "task_name":  "TradingAgentic-CAP004-Campaign",
+                      "task_path":  "\\",
+                      "state":  "Ready",
+                      "last_run_time":  "2026-10-18T21:45:01.0000000+02:00",
+                      "last_task_result":  3,
+                      "next_run_time":  "2026-10-18T22:00:00.0000000+02:00",
+                      "triggers":  [
+                                       {
+                                           "repetition":  "PT15M",
+                                           "type":  "MSFT_TaskTimeTrigger",
+                                           "start_boundary":  "2026-10-06T22:00:00"
+                                       }
+                                   ],
+                      "actions":  [
+                                      {
+                                          "execute":  "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+                                          "arguments":  "\"C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\scripts\\cap004_supervisor.py\" run",
+                                          "working_directory":  "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff"
+                                      }
+                                  ]
+                  },
+                  {
+                      "task_name":  "TradingAgentic-CAP004D-HealthWatch",
+                      "task_path":  "\\",
+                      "state":  "Ready",
+                      "last_run_time":  "2026-10-18T21:36:22.0000000+02:00",
+                      "last_task_result":  30,
+                      "next_run_time":  "2026-10-18T21:51:21.0000000+02:00",
+                      "triggers":  [
+                                       {
+                                           "repetition":  "PT15M",
+                                           "type":  "MSFT_TaskTimeTrigger",
+                                           "start_boundary":  "2026-10-08T09:51:21"
+                                       }
+                                   ],
+                      "actions":  [
+                                      {
+                                          "execute":  "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+                                          "arguments":  "\"C:/Users/GVLLFR0035/Downloads/bot freebuff/scripts/cap004d_health_check.py\"",
+                                          "working_directory":  "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff"
+                                      }
+                                  ]
+                  },
+                  {
+                      "task_name":  "TradingAgentic-EDGE04-Forward",
+                      "task_path":  "\\",
+                      "state":  "Ready",
+                      "last_run_time":  "2026-10-18T21:40:54.0000000+02:00",
+                      "last_task_result":  5,
+                      "next_run_time":  "2026-10-18T21:55:53.0000000+02:00",
+                      "triggers":  [
+                                       {
+                                           "repetition":  "PT15M",
+                                           "type":  "MSFT_TaskTimeTrigger",
+                                           "start_boundary":  "2026-10-13T13:25:53"
+                                       }
+                                   ],
+                      "actions":  [
+                                      {
+                                          "execute":  "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+                                          "arguments":  "\"C:/Users/GVLLFR0035/Downloads/bot freebuff/scripts/edge04_observer.py\" --scheduled --due",
+                                          "working_directory":  "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff"
+                                      }
+                                  ]
+                  },
+                  {
+                      "task_name":  "TradingAgentic-EDGE05-Watchdog",
+                      "task_path":  "\\",
+                      "state":  "Ready",
+                      "last_run_time":  "2026-10-18T21:32:31.0000000+02:00",
+                      "last_task_result":  12,
+                      "next_run_time":  "2026-10-18T21:47:30.0000000+02:00",
+                      "triggers":  [
+                                       {
+                                           "repetition":  "PT15M",
+                                           "type":  "MSFT_TaskTimeTrigger",
+                                           "start_boundary":  "2026-10-13T21:02:30"
+                                       }
+                                   ],
+                      "actions":  [
+                                      {
+                                          "execute":  "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+                                          "arguments":  "\"C:/Users/GVLLFR0035/Downloads/bot freebuff/scripts/edge05_watchdog.py\"",
+                                          "working_directory":  "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff"
+                                      }
+                                  ]
+                  },
+                  {
+                      "task_name":  "TradingAgentic-ST6-Forward",
+                      "task_path":  "\\",
+                      "state":  "Ready",
+                      "last_run_time":  "2026-10-18T21:33:01.0000000+02:00",
+                      "last_task_result":  0,
+                      "next_run_time":  "2026-10-18T21:48:00.0000000+02:00",
+                      "triggers":  [
+                                       {
+                                           "repetition":  "PT15M",
+                                           "type":  "MSFT_TaskTimeTrigger",
+                                           "start_boundary":  "2026-10-08T19:18:00"
+                                       }
+                                   ],
+                      "actions":  [
+                                      {
+                                          "execute":  "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+                                          "arguments":  "\"C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\scripts\\st6_forward_regime.py\" --due --scheduled",
+                                          "working_directory":  "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff"
+                                      }
+                                  ]
+                  }
+              ],
+    "processes":  [
+                      {
+                          "pid":  26968,
+                          "ppid":  1260,
+                          "name":  "bun.exe",
+                          "created":  "2026-10-15T08:04:37.2941900+02:00",
+                          "command_line":  "C:\\Users\\GVLLFR0035\\AppData\\Local\\Programs\\@codebufffreebuff-desktop\\resources\\bun\\bun.exe C:\\Users\\GVLLFR0035\\AppData\\Local\\Programs\\@codebufffreebuff-desktop\\resources\\orchestrator\\orchestrator.js"
+                      },
+                      {
+                          "pid":  14424,
+                          "ppid":  33700,
+                          "name":  "python.exe",
+                          "created":  "2026-10-15T22:33:31.4624160+02:00",
+                          "command_line":  "\"C:\\Users\\GVLLFR0035\\Downloads\\Deures Dylan\\DylanRepas-worktrees\\RFC-014-RHYTHM\\.venv\\Scripts\\python.exe\" -"
+                      },
+                      {
+                          "pid":  28232,
+                          "ppid":  14424,
+                          "name":  "python.exe",
+                          "created":  "2026-10-15T22:33:31.4831150+02:00",
+                          "command_line":  "\"C:\\Users\\GVLLFR0035\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\\python.exe\"  -"
+                      },
+                      {
+                          "pid":  14692,
+                          "ppid":  11340,
+                          "name":  "python.exe",
+                          "created":  "2026-10-16T18:42:44.7434380+02:00",
+                          "command_line":  "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\edge14r\\pg\\.venv\\Scripts\\python.exe -u run_pg.py"
+                      },
+                      {
+                          "pid":  32340,
+                          "ppid":  14692,
+                          "name":  "python.exe",
+                          "created":  "2026-10-16T18:42:44.7565360+02:00",
+                          "command_line":  "\"C:\\Users\\GVLLFR0035\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\\python.exe\"  -u run_pg.py"
+                      },
+                      {
+                          "pid":  25196,
+                          "ppid":  33360,
+                          "name":  "python.exe",
+                          "created":  "2026-10-16T21:43:03.2149730+02:00",
+                          "command_line":  "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\edge14r\\pg\\.venv\\Scripts\\python.exe run_pg.py"
+                      },
+                      {
+                          "pid":  12612,
+                          "ppid":  25196,
+                          "name":  "python.exe",
+                          "created":  "2026-10-16T21:43:03.2316420+02:00",
+                          "command_line":  "\"C:\\Users\\GVLLFR0035\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\\python.exe\"  run_pg.py"
+                      },
+                      {
+                          "pid":  10036,
+                          "ppid":  33436,
+                          "name":  "python.exe",
+                          "created":  "2026-10-18T18:40:09.1769330+02:00",
+                          "command_line":  "\"C:\\Users\\GVLLFR0035\\Downloads\\Deures Dylan\\DylanRepas-worktrees\\RFC-014-RHYTHM\\.venv\\Scripts\\python.exe\" -m src.web --port 8935 --db C:/Users/GVLLFR~1/AppData/Local/Temp/tmp.oqB9GK3VNu.sqlite3 --learner papa-demo --name \"Demo Proves\""
+                      },
+                      {
+                          "pid":  11608,
+                          "ppid":  10036,
+                          "name":  "python.exe",
+                          "created":  "2026-10-18T18:40:09.1956640+02:00",
+                          "command_line":  "\"C:\\Users\\GVLLFR0035\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\\python.exe\"  -m src.web --port 8935 --db C:/Users/GVLLFR~1/AppData/Local/Temp/tmp.oqB9GK3VNu.sqlite3 --learner papa-demo --name \"Demo Proves\""
+                      },
+                      {
+                          "pid":  17888,
+                          "ppid":  26784,
+                          "name":  "python.exe",
+                          "created":  "2026-10-18T18:53:06.6069890+02:00",
+                          "command_line":  "\"C:\\Users\\GVLLFR0035\\Downloads\\Deures Dylan\\release-rfc026\\.venv\\Scripts\\python.exe\" -m src.web --db \"C:\\Users\\GVLLFR0035\\Downloads\\Deures Dylan\\DylanRepas-userdata\\dylan.sqlite3\" --port 8391 --learner dylan --name Dylan "
+                      },
+                      {
+                          "pid":  11592,
+                          "ppid":  17888,
+                          "name":  "python.exe",
+                          "created":  "2026-10-18T18:53:06.6489970+02:00",
+                          "command_line":  "\"C:\\Users\\GVLLFR0035\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\\python.exe\" -m src.web --db \"C:\\Users\\GVLLFR0035\\Downloads\\Deures Dylan\\DylanRepas-userdata\\dylan.sqlite3\" --port 8391 --learner dylan --name Dylan "
+                      },
+                      {
+                          "pid":  35872,
+                          "ppid":  34896,
+                          "name":  "node.exe",
+                          "created":  "2026-10-18T21:46:41.4728150+02:00",
+                          "command_line":  "\"C:\\Program Files\\nodejs\\node.exe\" C:\\Users\\GVLLFR0035\\AppData\\Roaming\\npm/node_modules/npm/bin/npx-cli.js -y rea-agents@6.4.0 --version"
+                      }
+                  ]
+}

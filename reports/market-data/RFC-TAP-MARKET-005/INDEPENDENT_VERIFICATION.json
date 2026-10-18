@@ -1,0 +1,78 @@
+{
+  "baseline": "fe9b5e2623b0d023833249e9687b753eaacd27d4",
+  "checks": [
+    {
+      "check": "fixture_integrity",
+      "detail": "12 captured series match their hashes",
+      "status": "PASS"
+    },
+    {
+      "check": "comparison_is_fair",
+      "detail": "12/12 tails identical and reproducible",
+      "status": "PASS"
+    },
+    {
+      "check": "reduction_arithmetic",
+      "detail": "1164->136 requests (88.32%), 770312->8496 rows (98.9%)",
+      "status": "PASS"
+    },
+    {
+      "check": "request_discipline",
+      "detail": "1164 cycles respect the request discipline",
+      "status": "PASS"
+    },
+    {
+      "check": "watermark_chain",
+      "detail": "12 watermarks self-consistent",
+      "status": "PASS"
+    },
+    {
+      "check": "snapshot_causality",
+      "detail": "4/4 snapshots are causal",
+      "status": "PASS"
+    },
+    {
+      "check": "ai_spend_is_bounded",
+      "detail": "4 trigger decisions, zero model calls, hash chain intact",
+      "status": "PASS"
+    },
+    {
+      "check": "protected_files",
+      "detail": "risk/broker/admission untouched",
+      "status": "PASS"
+    }
+  ],
+  "failed": 0,
+  "independent_of": "trading_bot (no imports)",
+  "mutations": [
+    {
+      "detail": "proposed request total; request percentage",
+      "detected": true,
+      "mutation": "M1_proposed_requests_forged"
+    },
+    {
+      "detail": "BTC/USDT 4h: last open 1792339200000 is not the last closed bar 1792324800000",
+      "detected": true,
+      "mutation": "M2_future_higher_timeframe_bar"
+    },
+    {
+      "detail": "watermark past the closed boundary in ae837135-a2ed-4367-8c3e-97147c9c28eb",
+      "detected": true,
+      "mutation": "M3_watermark_crosses_boundary"
+    },
+    {
+      "detail": "analysis authorized without credential: BTC/USDT:1h:1792346400000; trigger hash chain broken at BTC/USDT:1h:1792346400000",
+      "detected": true,
+      "mutation": "M4_analysis_without_credential"
+    },
+    {
+      "detail": "NO_NEW_DATA made 1 requests",
+      "detected": true,
+      "mutation": "M5_request_without_new_data"
+    }
+  ],
+  "mutations_detected": 5,
+  "mutations_total": 5,
+  "passed": 8,
+  "verifier": "scripts/mkt005_verify.py"
+}

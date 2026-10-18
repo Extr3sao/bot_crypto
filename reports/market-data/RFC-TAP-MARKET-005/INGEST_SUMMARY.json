@@ -1,0 +1,33 @@
+{
+  "detail_location": "COVERAGE_LEDGER.jsonl (one row per ingest, 1164 rows)",
+  "first_cycle": {
+    "cycle": 0,
+    "requests_made": 1,
+    "rows_new": 975,
+    "rows_returned": 976,
+    "status": "BOOTSTRAP",
+    "symbol": "BTC/USDT",
+    "timeframe": "1h"
+  },
+  "last_cycle": {
+    "cycle": 96,
+    "requests_made": 0,
+    "rows_new": 0,
+    "rows_returned": 0,
+    "status": "NO_NEW_DATA",
+    "symbol": "XRP/USDT",
+    "timeframe": "1d"
+  },
+  "mode": "REPLAY",
+  "now_ms": 1792352634561,
+  "requests_made": 136,
+  "result_count": 1164,
+  "rows_new": 7988,
+  "rows_returned": 8496,
+  "run_id": "mkt005-ingest",
+  "statuses": {
+    "BOOTSTRAP": 12,
+    "DELTA": 124,
+    "NO_NEW_DATA": 1028
+  }
+}

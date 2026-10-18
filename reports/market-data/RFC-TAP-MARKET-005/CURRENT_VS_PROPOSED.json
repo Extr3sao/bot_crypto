@@ -1,0 +1,370 @@
+{
+  "cycles": 96,
+  "decision_bars": 200,
+  "end_ms": 1792352634561,
+  "fixture": "C:\\Users\\GVLLFR0035\\Downloads\\bot_crypto_005\\reports\\market-data\\RFC-TAP-MARKET-005\\MARKET_DATA_FIXTURE.json",
+  "fixture_sha256": "28d7d94384287565d78b6592514ecf1dbd370cedf8b44ea69f254c3eca6c22ad",
+  "kind": "CURRENT_VS_PROPOSED",
+  "run_id": "mkt005-baseline",
+  "series": [
+    {
+      "current": {
+        "requests": 97,
+        "rows_transferred": 95848
+      },
+      "current_tail_bars": 200,
+      "current_tail_sha256": "4e6fe2fd8b4e6b53bf5a2f40fb60eb26da200feebb282ed08a803022d3e8ddda",
+      "data_equivalent": true,
+      "proposed": {
+        "requests": 25,
+        "rows_transferred": 1096,
+        "statuses": {
+          "BOOTSTRAP": 1,
+          "DELTA": 24,
+          "NO_NEW_DATA": 72
+        }
+      },
+      "proposed_tail_bars": 200,
+      "proposed_tail_sha256": "4e6fe2fd8b4e6b53bf5a2f40fb60eb26da200feebb282ed08a803022d3e8ddda",
+      "reduction": {
+        "requests": 72,
+        "requests_pct": 74.23,
+        "rows": 94752,
+        "rows_pct": 98.86
+      },
+      "symbol": "BTC/USDT",
+      "timeframe": "1h",
+      "warmup_limit": 1000
+    },
+    {
+      "current": {
+        "requests": 97,
+        "rows_transferred": 48248
+      },
+      "current_tail_bars": 200,
+      "current_tail_sha256": "4b368ebee915aba7ccf8fa14b779bf0bf9b3f2da9d2b6e693c59b8d018fe6e7f",
+      "data_equivalent": true,
+      "proposed": {
+        "requests": 7,
+        "rows_transferred": 524,
+        "statuses": {
+          "BOOTSTRAP": 1,
+          "DELTA": 6,
+          "NO_NEW_DATA": 90
+        }
+      },
+      "proposed_tail_bars": 200,
+      "proposed_tail_sha256": "4b368ebee915aba7ccf8fa14b779bf0bf9b3f2da9d2b6e693c59b8d018fe6e7f",
+      "reduction": {
+        "requests": 90,
+        "requests_pct": 92.78,
+        "rows": 47724,
+        "rows_pct": 98.91
+      },
+      "symbol": "BTC/USDT",
+      "timeframe": "4h",
+      "warmup_limit": 500
+    },
+    {
+      "current": {
+        "requests": 97,
+        "rows_transferred": 48482
+      },
+      "current_tail_bars": 200,
+      "current_tail_sha256": "9c86e9d10f931dac5d56cbbb9c8fb8a283c152597b5a508349b436bcb60167e8",
+      "data_equivalent": true,
+      "proposed": {
+        "requests": 2,
+        "rows_transferred": 504,
+        "statuses": {
+          "BOOTSTRAP": 1,
+          "DELTA": 1,
+          "NO_NEW_DATA": 95
+        }
+      },
+      "proposed_tail_bars": 200,
+      "proposed_tail_sha256": "9c86e9d10f931dac5d56cbbb9c8fb8a283c152597b5a508349b436bcb60167e8",
+      "reduction": {
+        "requests": 95,
+        "requests_pct": 97.94,
+        "rows": 47978,
+        "rows_pct": 98.96
+      },
+      "symbol": "BTC/USDT",
+      "timeframe": "1d",
+      "warmup_limit": 500
+    },
+    {
+      "current": {
+        "requests": 97,
+        "rows_transferred": 95848
+      },
+      "current_tail_bars": 200,
+      "current_tail_sha256": "83617837fa98bdcc47160e26907efafee89980e6d1d7ecfea0e077fa7afbd852",
+      "data_equivalent": true,
+      "proposed": {
+        "requests": 25,
+        "rows_transferred": 1096,
+        "statuses": {
+          "BOOTSTRAP": 1,
+          "DELTA": 24,
+          "NO_NEW_DATA": 72
+        }
+      },
+      "proposed_tail_bars": 200,
+      "proposed_tail_sha256": "83617837fa98bdcc47160e26907efafee89980e6d1d7ecfea0e077fa7afbd852",
+      "reduction": {
+        "requests": 72,
+        "requests_pct": 74.23,
+        "rows": 94752,
+        "rows_pct": 98.86
+      },
+      "symbol": "ETH/USDT",
+      "timeframe": "1h",
+      "warmup_limit": 1000
+    },
+    {
+      "current": {
+        "requests": 97,
+        "rows_transferred": 48248
+      },
+      "current_tail_bars": 200,
+      "current_tail_sha256": "48eb7ddb8d08de096ac8369d05b562e6b08a91aa7642607da5b28760e0b8e800",
+      "data_equivalent": true,
+      "proposed": {
+        "requests": 7,
+        "rows_transferred": 524,
+        "statuses": {
+          "BOOTSTRAP": 1,
+          "DELTA": 6,
+          "NO_NEW_DATA": 90
+        }
+      },
+      "proposed_tail_bars": 200,
+      "proposed_tail_sha256": "48eb7ddb8d08de096ac8369d05b562e6b08a91aa7642607da5b28760e0b8e800",
+      "reduction": {
+        "requests": 90,
+        "requests_pct": 92.78,
+        "rows": 47724,
+        "rows_pct": 98.91
+      },
+      "symbol": "ETH/USDT",
+      "timeframe": "4h",
+      "warmup_limit": 500
+    },
+    {
+      "current": {
+        "requests": 97,
+        "rows_transferred": 48482
+      },
+      "current_tail_bars": 200,
+      "current_tail_sha256": "f852950b364c5b181d818c6acdc7acd2f46d7782994724a74a1693f411c08135",
+      "data_equivalent": true,
+      "proposed": {
+        "requests": 2,
+        "rows_transferred": 504,
+        "statuses": {
+          "BOOTSTRAP": 1,
+          "DELTA": 1,
+          "NO_NEW_DATA": 95
+        }
+      },
+      "proposed_tail_bars": 200,
+      "proposed_tail_sha256": "f852950b364c5b181d818c6acdc7acd2f46d7782994724a74a1693f411c08135",
+      "reduction": {
+        "requests": 95,
+        "requests_pct": 97.94,
+        "rows": 47978,
+        "rows_pct": 98.96
+      },
+      "symbol": "ETH/USDT",
+      "timeframe": "1d",
+      "warmup_limit": 500
+    },
+    {
+      "current": {
+        "requests": 97,
+        "rows_transferred": 95848
+      },
+      "current_tail_bars": 200,
+      "current_tail_sha256": "b503ddcd7abb15e9718a8381b14feaca58e26cf37d243c0c24c109554a1c56b1",
+      "data_equivalent": true,
+      "proposed": {
+        "requests": 25,
+        "rows_transferred": 1096,
+        "statuses": {
+          "BOOTSTRAP": 1,
+          "DELTA": 24,
+          "NO_NEW_DATA": 72
+        }
+      },
+      "proposed_tail_bars": 200,
+      "proposed_tail_sha256": "b503ddcd7abb15e9718a8381b14feaca58e26cf37d243c0c24c109554a1c56b1",
+      "reduction": {
+        "requests": 72,
+        "requests_pct": 74.23,
+        "rows": 94752,
+        "rows_pct": 98.86
+      },
+      "symbol": "SOL/USDT",
+      "timeframe": "1h",
+      "warmup_limit": 1000
+    },
+    {
+      "current": {
+        "requests": 97,
+        "rows_transferred": 48248
+      },
+      "current_tail_bars": 200,
+      "current_tail_sha256": "fca3f30508ac61ed4fb522c8af521a44594ccbbe24262b9bec8e50d622adb28a",
+      "data_equivalent": true,
+      "proposed": {
+        "requests": 7,
+        "rows_transferred": 524,
+        "statuses": {
+          "BOOTSTRAP": 1,
+          "DELTA": 6,
+          "NO_NEW_DATA": 90
+        }
+      },
+      "proposed_tail_bars": 200,
+      "proposed_tail_sha256": "fca3f30508ac61ed4fb522c8af521a44594ccbbe24262b9bec8e50d622adb28a",
+      "reduction": {
+        "requests": 90,
+        "requests_pct": 92.78,
+        "rows": 47724,
+        "rows_pct": 98.91
+      },
+      "symbol": "SOL/USDT",
+      "timeframe": "4h",
+      "warmup_limit": 500
+    },
+    {
+      "current": {
+        "requests": 97,
+        "rows_transferred": 48482
+      },
+      "current_tail_bars": 200,
+      "current_tail_sha256": "31af49f62ea39cb4c0436b7744465ce68477729d6ec9f8a08ecc75477faaabc0",
+      "data_equivalent": true,
+      "proposed": {
+        "requests": 2,
+        "rows_transferred": 504,
+        "statuses": {
+          "BOOTSTRAP": 1,
+          "DELTA": 1,
+          "NO_NEW_DATA": 95
+        }
+      },
+      "proposed_tail_bars": 200,
+      "proposed_tail_sha256": "31af49f62ea39cb4c0436b7744465ce68477729d6ec9f8a08ecc75477faaabc0",
+      "reduction": {
+        "requests": 95,
+        "requests_pct": 97.94,
+        "rows": 47978,
+        "rows_pct": 98.96
+      },
+      "symbol": "SOL/USDT",
+      "timeframe": "1d",
+      "warmup_limit": 500
+    },
+    {
+      "current": {
+        "requests": 97,
+        "rows_transferred": 95848
+      },
+      "current_tail_bars": 200,
+      "current_tail_sha256": "6bb8ccc4c8bb709fb9bf5a1ea3a82ae3b34bed67053244bf1cd73d5734c0cbb1",
+      "data_equivalent": true,
+      "proposed": {
+        "requests": 25,
+        "rows_transferred": 1096,
+        "statuses": {
+          "BOOTSTRAP": 1,
+          "DELTA": 24,
+          "NO_NEW_DATA": 72
+        }
+      },
+      "proposed_tail_bars": 200,
+      "proposed_tail_sha256": "6bb8ccc4c8bb709fb9bf5a1ea3a82ae3b34bed67053244bf1cd73d5734c0cbb1",
+      "reduction": {
+        "requests": 72,
+        "requests_pct": 74.23,
+        "rows": 94752,
+        "rows_pct": 98.86
+      },
+      "symbol": "XRP/USDT",
+      "timeframe": "1h",
+      "warmup_limit": 1000
+    },
+    {
+      "current": {
+        "requests": 97,
+        "rows_transferred": 48248
+      },
+      "current_tail_bars": 200,
+      "current_tail_sha256": "11f8f69b509c89a5b1c11d88292506388993dbc3255b8cd43f1ced04389150ec",
+      "data_equivalent": true,
+      "proposed": {
+        "requests": 7,
+        "rows_transferred": 524,
+        "statuses": {
+          "BOOTSTRAP": 1,
+          "DELTA": 6,
+          "NO_NEW_DATA": 90
+        }
+      },
+      "proposed_tail_bars": 200,
+      "proposed_tail_sha256": "11f8f69b509c89a5b1c11d88292506388993dbc3255b8cd43f1ced04389150ec",
+      "reduction": {
+        "requests": 90,
+        "requests_pct": 92.78,
+        "rows": 47724,
+        "rows_pct": 98.91
+      },
+      "symbol": "XRP/USDT",
+      "timeframe": "4h",
+      "warmup_limit": 500
+    },
+    {
+      "current": {
+        "requests": 97,
+        "rows_transferred": 48482
+      },
+      "current_tail_bars": 200,
+      "current_tail_sha256": "cf6222978885575dc7e8b6a8dbb130d7349fe1d8c3734f2c1fdd33f95a83026e",
+      "data_equivalent": true,
+      "proposed": {
+        "requests": 2,
+        "rows_transferred": 504,
+        "statuses": {
+          "BOOTSTRAP": 1,
+          "DELTA": 1,
+          "NO_NEW_DATA": 95
+        }
+      },
+      "proposed_tail_bars": 200,
+      "proposed_tail_sha256": "cf6222978885575dc7e8b6a8dbb130d7349fe1d8c3734f2c1fdd33f95a83026e",
+      "reduction": {
+        "requests": 95,
+        "requests_pct": 97.94,
+        "rows": 47978,
+        "rows_pct": 98.96
+      },
+      "symbol": "XRP/USDT",
+      "timeframe": "1d",
+      "warmup_limit": 500
+    }
+  ],
+  "start_ms": 1792266234561,
+  "step_ms": 900000,
+  "totals": {
+    "all_data_equivalent": true,
+    "current_requests": 1164,
+    "current_rows": 770312,
+    "proposed_requests": 136,
+    "proposed_rows": 8496,
+    "requests_pct": 88.32,
+    "rows_pct": 98.9
+  }
+}
