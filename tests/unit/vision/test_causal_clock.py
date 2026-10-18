@@ -149,20 +149,30 @@ def test_a_bar_that_has_not_closed_at_the_decision_instant_is_a_violation() -> N
     assert_causal(window, int(window[1].ts_ms) + HOUR_MS, bar_interval_ms=HOUR_MS)
 
 
-def test_a_latency_below_the_timeframe_no_longer_buys_the_next_open(tmp_path: Path) -> None:
-    """With the close clock, the fill bar opens exactly when the answer is due."""
+def test_a_latency_below_the_timeframe_waits_for_the_next_quote(tmp_path: Path) -> None:
+    """60 s de latencia no compran la apertura anterior: esperan a la siguiente.
+
+    Este test afirmaba `fills == 0`. Con el reloj de cierre, la vela de ejecución abría
+    justo cuando la respuesta vencía, así que cualquier latencia descartaba la orden: el
+    descarte era el síntoma de no tener ninguna cotización posterior a la respuesta.
+    WP-TAP-AI-BOTS-003B le da una, y la condición que sigue prohibida es la que importa —
+    ningún relleno puede pagar un precio que ya existía antes de la respuesta.
+    """
 
     summary = run_lane(tmp_path, RecordingProvider([LONG] * 40, latency_ms=60_000))
     rows = ledger_rows(tmp_path)
+    fills = [row for row in rows if row["kind"] == "FILL"]
 
-    late = [
-        row
-        for row in rows
-        if row["kind"] == "GUARD_REJECT" and row["code"] == "LATE_RESPONSE"
-    ]
-    assert late, "an answer that arrives after the close cannot fill at the next open"
-    assert summary["fills"] == 0
-    assert not [row for row in rows if row["kind"] == "FILL"]
+    assert summary["fills"] > 0, "el reloj no puede prohibir toda operación"
+    assert not [row for row in rows if row.get("code") == "LATE_RESPONSE"]
+    assert fills, "the waiting order must reach the quote that exists after the answer"
+    for fill in fills:
+        assert fill["quote_ts_ms"] >= fill["received_at_ms"]
+        assert fill["quote_ts_ms"] > fill["decision_ts_ms"], (
+            "the Block A defect: paying the open that had already happened when the "
+            "answer arrived"
+        )
+    assert summary["counters"].get("requote:WAITING_FOR_QUOTE", 0) >= 1
 
 
 def test_a_zero_latency_answer_still_fills(tmp_path: Path) -> None:

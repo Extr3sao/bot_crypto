@@ -55,6 +55,11 @@ from trading_bot.vision.contract import (
     parse_decision,
     resolve_intent,
 )
+from trading_bot.vision.execution import (
+    Quote,
+    quote_at,
+    schedule,
+)
 from trading_bot.vision.guards import (
     OpinionRejected,
     assert_asset,
@@ -124,10 +129,12 @@ class PendingOrder:
     decision_bar_open_ms: int = 0
     expected_step_ms: int = 0
     #: When the provider's answer actually reached us: the decision instant (the close of
-    #: the bar the opinion was formed on) plus measured latency. A response that lands
-    #: after the fill bar has opened cannot be executed at that bar's open price. Zero
-    #: means "not measured".
+    #: the bar the opinion was formed on) plus measured latency. The fill price must be a
+    #: quote that existed at or after this instant. Zero means "not measured".
     received_at_ms: int = 0
+    #: The index of the bar the opinion was formed on, so a fill can name the bar it
+    #: actually read. ``bar_index`` is where it is *expected* to execute.
+    decision_bar_index: int = 0
 
 
 class VisionLane:
@@ -171,6 +178,10 @@ class VisionLane:
         #: instant its close was knowable. Read once, recorded in the ledger.
         self.interval_ms = timeframe_ms(self.timeframe)
         self.data_delay_ms = int(config.lane.data_delay_ms)
+        #: How long an opinion stays tradable once formed. Zero in the config means "one
+        #: bar", which is the finest window this bar grid can express: a sub-bar latency
+        #: costs exactly one bar of delay, and a latency beyond it is a stale view.
+        self.max_opinion_age_ms = int(config.lane.max_opinion_age_ms) or self.interval_ms
         self.risk_policy = risk_policy
         #: Which prompt a bot is asked with. BOT-VIS-01 draws a chart and uses the visual
         #: prompt; BOT-CTX-01 sends numbers and must not be told an image exists, so the
@@ -210,6 +221,10 @@ class VisionLane:
             symbol: _median_step(bars) for symbol, bars in self.series.items()
         }
         self._marks: dict[str, float] = {}
+        #: Where each open position's entry came from, keyed by position id: the quote and
+        #: the answer's arrival. A CLOSE row without it cannot show that its exit happened
+        #: after the entry existed.
+        self._entry_provenance: dict[str, dict[str, Any]] = {}
         self.equity_curve: list[dict[str, Any]] = []
         self.calls_made = 0
         self.spend_usd = 0.0
@@ -225,14 +240,36 @@ class VisionLane:
         position = self.broker.positions.get(symbol)
         return None if position is None else str(position.side)
 
-    def _record_close(self, trade: Any, ts_ms: int, bars_held: int | None = None) -> None:
+    def _record_close(
+        self,
+        trade: Any,
+        *,
+        exit_ts_ms: int,
+        window_start_ms: int,
+        bars_held: int | None = None,
+    ) -> None:
         self.risk.record_trade_result(float(trade.pnl))
         self.risk.sync_open_positions(dict(self.broker.positions))
+        #: Kept after the close, not popped: the reconciliation at the end of the run
+        #: checks every close against the quote that opened it, and a discarded record
+        #: would make that check pass by having nothing to compare.
+        entry = self._entry_provenance.get(str(trade.position_id), {})
         self.ledger.append(
             "CLOSE",
             {
-                "ts_ms": ts_ms,
-                "ts_utc": _utc_iso(ts_ms),
+                "ts_ms": exit_ts_ms,
+                "ts_utc": _utc_iso(exit_ts_ms),
+                # The stop is checked on the bar's range, which is only a fact when the
+                # bar ends. The exit happened somewhere inside it, so the row declares
+                # the window rather than inventing an intrabar instant.
+                "exit_ts_lower_bound_ms": window_start_ms,
+                "exit_ts_upper_bound_ms": exit_ts_ms,
+                "exit_ts_resolution": "bar",
+                "entry_quote_ts_ms": entry.get("quote_ts_ms"),
+                "entry_decision_ts_ms": entry.get("decision_ts_ms"),
+                "entry_received_at_ms": entry.get("received_at_ms"),
+                "stop_loss_price": entry.get("stop_loss_price"),
+                "take_profit_price": entry.get("take_profit_price"),
                 "symbol": trade.symbol,
                 "side": trade.side,
                 "exit_reason": trade.exit_reason,
@@ -470,43 +507,53 @@ class VisionLane:
 
     # -- execution -----------------------------------------------------------
 
-    def _execute(self, symbol: str, bar: Any, pending: PendingOrder, bar_index: int) -> None:
-        price = float(bar.open)
-        if price <= 0:
-            return
+    def _execute(self, symbol: str, bar: Any, pending: PendingOrder, bar_index: int) -> str:
+        """Execute one pending opinion at this bar's open, or say why it cannot.
+
+        Returns ``"RESOLVED"`` when the order is finished (filled or rejected) and
+        ``"WAITING"`` when this bar's open predates the answer, in which case the order
+        survives to the next quote.
+
+        The price is looked up in the dataset itself, never reconstructed: ``quote_at``
+        only returns a bar **open**, and raises if a price strictly inside a bar is asked
+        for. That is what keeps a fill from being invented out of OHLC.
+        """
         decision = pending.decision
         assert decision is not None
 
-        if (
-            pending.expected_step_ms
-            and int(bar.ts_ms) - pending.decision_bar_open_ms != pending.expected_step_ms
-        ):
-            # A hole in the data means this bar is not the one the opinion was formed for:
-            # the next available bar may be hours later, and filling there would trade at a
-            # price the model never described.
+        quote: Quote | None = quote_at(
+            symbol, self.series[symbol], int(bar.ts_ms), interval_ms=self.interval_ms
+        )
+        if quote is None:
             self.ledger.append(
                 "GUARD_REJECT",
                 {
                     "ts_ms": int(bar.ts_ms),
                     "ts_utc": _utc_iso(int(bar.ts_ms)),
                     "symbol": symbol,
-                    "code": "STALE_EXECUTION",
+                    "code": "NO_QUOTE_AT_BAR",
                     "detail": (
-                        f"the opinion was formed on the bar opening at "
-                        f"{pending.decision_bar_open_ms} and the next available bar is "
-                        f"{int(bar.ts_ms)} "
-                        f"({int(bar.ts_ms) - pending.decision_bar_open_ms} ms later, expected "
-                        f"{pending.expected_step_ms}); dropping it instead of filling late"
+                        f"bar {int(bar.ts_ms)} is not in the dataset the run declared, so "
+                        "its open is not a price this replay can prove was available"
                     ),
                     "stage": "EXECUTION",
                 },
             )
-            self._bump("guard:STALE_EXECUTION")
-            return
+            self._bump("guard:NO_QUOTE_AT_BAR")
+            return "RESOLVED"
 
-        if pending.received_at_ms and pending.received_at_ms > int(bar.ts_ms):
-            # The model answered after this bar had already opened. Filling at its open
-            # would be a retrospective entry at a price nobody could have taken.
+        outcome = schedule(
+            quote,
+            received_at_ms=pending.received_at_ms,
+            decision_ts_ms=pending.decision_ts_ms,
+            max_age_ms=self.max_opinion_age_ms,
+        )
+        if outcome.status == "WAIT":
+            # The price existed before the answer did. Waiting is not a rejection: a
+            # provider that takes ninety seconds still gets its next quote.
+            self._bump("requote:WAITING_FOR_QUOTE")
+            return "WAITING"
+        if outcome.status == "EXPIRED":
             self.ledger.append(
                 "GUARD_REJECT",
                 {
@@ -515,20 +562,30 @@ class VisionLane:
                     "symbol": symbol,
                     "code": "LATE_RESPONSE",
                     "detail": (
-                        f"the answer arrived at {pending.received_at_ms}, after the fill bar "
-                        f"opened at {int(bar.ts_ms)}; the open price is no longer tradable, so "
-                        "the opinion is dropped instead of filled retroactively"
+                        f"the answer arrived at {pending.received_at_ms} and the first "
+                        f"executable quote is {quote.ts_ms}: the opinion is "
+                        f"{outcome.age_ms} ms old against a {self.max_opinion_age_ms} ms "
+                        "window, so filling it would trade a view that no longer exists"
                     ),
+                    "opinion_age_ms": outcome.age_ms,
+                    "max_opinion_age_ms": self.max_opinion_age_ms,
+                    "decision_ts_ms": pending.decision_ts_ms,
+                    "received_at_ms": pending.received_at_ms,
+                    **quote.to_row(),
                     "stage": "EXECUTION",
                 },
             )
             self._bump("guard:LATE_RESPONSE")
-            return
+            return "RESOLVED"
+
+        price = float(quote.price)
+        if price <= 0:
+            return "RESOLVED"
 
         if pending.intent == "CLOSE":
             position = self.broker.positions.get(symbol)
             if position is None:
-                return
+                return "RESOLVED"
             closing_side: Side = "sell" if str(position.side) == "buy" else "buy"
             close_signal = Signal(
                 symbol=symbol,
@@ -543,10 +600,17 @@ class VisionLane:
                 },
             )
             opened = float(position.opened_at)
-            bars_held = round((float(bar.ts_ms) / 1000.0 - opened) / 3600.0)
+            bars_held = round((float(quote.ts_ms) / 1000.0 - opened) / 3600.0)
             result = self.broker.execute_signal(close_signal)
             if result is not None and hasattr(result, "pnl"):
-                self._record_close(result, int(bar.ts_ms), bars_held=bars_held)
+                # A model CLOSE is a market order at the quote that carried it, so the
+                # exit instant is the quote, not the end of the bar.
+                self._record_close(
+                    result,
+                    exit_ts_ms=quote.ts_ms,
+                    window_start_ms=quote.ts_ms,
+                    bars_held=bars_held,
+                )
             self.ledger.append(
                 "DECISION_OUTCOME",
                 {
@@ -558,7 +622,7 @@ class VisionLane:
                     "executed": result is not None,
                 },
             )
-            return
+            return "RESOLVED"
 
         side: Side = "buy" if pending.intent == "OPEN_LONG" else "sell"
         signal = Signal(
@@ -598,7 +662,7 @@ class VisionLane:
         )
         if not check.approved or check.position_size is None:
             self._bump(f"risk_blocked:{check.blocked_by or 'unknown'}")
-            return
+            return "RESOLVED"
         notional = float(check.position_size.notional_usdt)
         try:
             assert_tradeable_window(
@@ -625,10 +689,10 @@ class VisionLane:
                 },
             )
             self._bump(f"gate:{exc.code}")
-            return
+            return "RESOLVED"
         if symbol in self.broker.positions:
             self._bump("dropped:SYMBOL_SLOT_OCCUPIED")
-            return
+            return "RESOLVED"
 
         sized = check.position_size
         order = Signal(
@@ -649,8 +713,24 @@ class VisionLane:
         filled = self.broker.execute_signal(order)
         if filled is None:
             self._bump("broker_rejected")
-            return
+            return "RESOLVED"
         self.risk.sync_open_positions(dict(self.broker.positions))
+        position_id = str(getattr(filled, "position_id", ""))
+        #: The protective levels the broker actually holds, read from the position it just
+        #: created. Recomputing them here from ``stop_loss_pct`` would be a second source
+        #: of truth for the same number, and the CLOSE row exists to check the first.
+        position = self.broker.positions.get(symbol)
+        stop_price = float(position.stop_loss_price) if position is not None else 0.0
+        target_price = float(position.take_profit_price) if position is not None else 0.0
+        self._entry_provenance[position_id] = {
+            "quote_ts_ms": quote.ts_ms,
+            "quote_source": quote.source,
+            "quote_lag_ms": outcome.lag_ms,
+            "decision_ts_ms": pending.decision_ts_ms,
+            "received_at_ms": pending.received_at_ms,
+            "stop_loss_price": stop_price,
+            "take_profit_price": target_price,
+        }
         self.ledger.append(
             "FILL",
             {
@@ -660,8 +740,18 @@ class VisionLane:
                 "side": side,
                 "intent": pending.intent,
                 "decision_seq": pending.decision_seq,
-                "decision_bar_index": bar_index - 1,
+                "decision_ts_ms": pending.decision_ts_ms,
+                "received_at_ms": pending.received_at_ms,
+                "decision_bar_index": pending.decision_bar_index,
                 "fill_bar_index": bar_index,
+                "quote_ts_ms": quote.ts_ms,
+                "quote_price": quote.price,
+                "quote_source": quote.source,
+                "quote_bar_open_ms": quote.bar_open_ms,
+                "quote_lag_ms": outcome.lag_ms,
+                "opinion_age_ms": outcome.age_ms,
+                "stop_loss_price": stop_price,
+                "take_profit_price": target_price,
                 "position_id": getattr(filled, "position_id", ""),
                 "entry_price": float(getattr(filled, "entry_price", price)),
                 "reference_price": price,
@@ -672,6 +762,7 @@ class VisionLane:
             },
         )
         self._bump("fills")
+        return "RESOLVED"
 
     # -- the run -------------------------------------------------------------
 
@@ -706,8 +797,14 @@ class VisionLane:
                         "timeframe": self.timeframe,
                         "bar_interval_ms": self.interval_ms,
                         "data_delay_ms": self.data_delay_ms,
+                        "max_opinion_age_ms": self.max_opinion_age_ms,
                         "max_calls": self.max_calls,
                         "max_spend_usd": self.max_spend_usd,
+                        # Declared conventions a reader needs to interpret every fill:
+                        "execution_quote": "bar_open",
+                        "stop_coverage": "entry_at_open_full_bar",
+                        "gap_policy": "open_on_gap",
+                        "exit_ts_resolution": "bar",
                     },
                     "dataset": {
                         symbol: {
@@ -723,57 +820,57 @@ class VisionLane:
 
             previous_day: str | None = None
             for ts in timeline:
-                self._current_ms[0] = ts
+                close_ms = bar_close_ms(ts, self.interval_ms)
                 day = _day_of(ts)
                 if previous_day is not None and day != previous_day:
                     self.risk.reset_daily()
                 previous_day = day
 
-                for symbol, bars in self.series.items():
-                    index = index_of[symbol].get(ts)
-                    if index is None:
+                present = [
+                    (symbol, bars, index_of[symbol][ts])
+                    for symbol, bars in self.series.items()
+                    if ts in index_of[symbol]
+                ]
+
+                # 1. Entries, on a quote that exists at or after the answer: this bar's
+                #    open. The clock is the open, because that is the instant being paid.
+                self._current_ms[0] = ts
+                for symbol, bars, index in present:
+                    pending = self._pending.get(symbol)
+                    if pending is None:
                         continue
-                    bar = bars[index]
+                    if self._execute(symbol, bars[index], pending, index) == "RESOLVED":
+                        self._pending.pop(symbol, None)
 
-                    # Execution first, on prices this bar's open makes tradable, and
-                    # without this bar's close anywhere in the marks: the close is not
-                    # knowable until the bar ends.
-                    closed = self.broker.check_positions_ohlc(
-                        {symbol: (float(bar.open), float(bar.high), float(bar.low), float(bar.close))}
-                    )
-                    for trade in closed:
-                        opened_ms = int(float(trade.opened_at) * 1000)
-                        held = max(0, round((ts - opened_ms) / 3_600_000))
-                        self._record_close(trade, ts, bars_held=held)
-
-                    pending = self._pending.pop(symbol, None)
-                    if pending is not None and pending.bar_index == index:
-                        self._execute(symbol, bar, pending, index)
-
-                    # The bar has now ended for this symbol, so its close is a fact.
-                    self._marks[symbol] = float(bar.close)
-
-                    if decision_due(
-                        index,
-                        window_bars=self.window_bars,
-                        every=self.decision_every,
-                        stop_reason=self.stop_reason,
-                    ):
-                        bars_seen = bars[: index + 1]
-                        decision = self._decide(symbol, bar, bars_seen)
-                        if decision is not None:
-                            self._pending[symbol] = replace(
-                                decision,
-                                bar_index=index + 1,
-                                expected_step_ms=int(self._step_ms[symbol]),
-                            )
-
-                # The bar has closed: this is the instant the decision instant refers to,
-                # and the instant the book's mark is known. Marking the risk engine with
-                # the same net equity the curve publishes is what makes its drawdown and
-                # sizing gates describe the book the report describes.
-                close_ms = bar_close_ms(ts, self.interval_ms)
+                # 2. The bar has ended, so its range is a fact — including for a position
+                #    opened at this bar's open, which the old ordering never checked. The
+                #    exit is therefore recorded at the bar's close: the earliest instant a
+                #    stop hit inside it could have been known.
                 self._current_ms[0] = close_ms
+                candles = {
+                    symbol: (
+                        float(bars[index].open),
+                        float(bars[index].high),
+                        float(bars[index].low),
+                        float(bars[index].close),
+                    )
+                    for symbol, bars, index in present
+                }
+                for trade in self.broker.check_positions_ohlc(
+                    candles, gap_policy="open_on_gap"
+                ):
+                    opened_ms = int(float(trade.opened_at) * 1000)
+                    held = max(0, round((close_ms - opened_ms) / 3_600_000))
+                    self._record_close(
+                        trade, exit_ts_ms=close_ms, window_start_ms=ts, bars_held=held
+                    )
+
+                for symbol, bars, index in present:
+                    self._marks[symbol] = float(bars[index].close)
+
+                # Marking the risk engine with the same net equity the curve publishes is
+                # what makes its drawdown and sizing gates describe the book the report
+                # describes.
                 marked = float(self.broker.mark_to_market_equity(dict(self._marks)))
                 self.risk.mark_equity(marked)
                 self.equity_curve.append(
@@ -784,6 +881,25 @@ class VisionLane:
                         "risk_equity": round(float(self.risk.equity), 8),
                     }
                 )
+
+                # 3. Decisions are formed on the close, which is now known, and are sized
+                #    against the equity this close produced.
+                for symbol, bars, index in present:
+                    if not decision_due(
+                        index,
+                        window_bars=self.window_bars,
+                        every=self.decision_every,
+                        stop_reason=self.stop_reason,
+                    ):
+                        continue
+                    decision = self._decide(symbol, bars[index], bars[: index + 1])
+                    if decision is not None:
+                        self._pending[symbol] = replace(
+                            decision,
+                            bar_index=index + 1,
+                            decision_bar_index=index,
+                            expected_step_ms=int(self._step_ms[symbol]),
+                        )
 
             summary = self._summary()
             self.ledger.append("RUN_END", summary)
@@ -827,6 +943,8 @@ class VisionLane:
                 else round(float(drawdown.drawdown_usdt or 0.0), 6)
             ),
             "equity_points": len(self.equity_curve),
+            "execution": self._execution_report(),
+            "reconciliation": self._reconciliation(trades),
             "counters": dict(sorted(self.counters.items())),
             "open_positions_at_end": {
                 symbol: {
@@ -849,6 +967,94 @@ class VisionLane:
                 }
                 for trade in trades
             ],
+        }
+
+
+    def _execution_report(self) -> dict[str, Any]:
+        """What the fill model actually did, in the terms a reader has to check.
+
+        ``quote_lag_ms`` is the wait between the answer and the price paid, which is the
+        number the old lane could not report because it never waited: it rejected the
+        order instead.
+        """
+        lags = [
+            int(entry["quote_lag_ms"])
+            for entry in self._entry_provenance.values()
+            if "quote_lag_ms" in entry
+        ]
+        return {
+            "quote_source": "bar_open",
+            "bar_interval_ms": self.interval_ms,
+            "max_opinion_age_ms": self.max_opinion_age_ms,
+            "stop_coverage": "entry_at_open_full_bar",
+            "gap_policy": "open_on_gap",
+            "exit_ts_resolution": "bar",
+            "fills": int(self.counters.get("fills", 0)),
+            "waiting_events": int(self.counters.get("requote:WAITING_FOR_QUOTE", 0)),
+            "expired_opinions": int(self.counters.get("guard:LATE_RESPONSE", 0)),
+            "quote_lag_ms": {
+                "min": min(lags) if lags else None,
+                "max": max(lags) if lags else None,
+                "median": (sorted(lags)[len(lags) // 2] if lags else None),
+            },
+        }
+
+    def _close_after_entry(self, trade: Any) -> bool:
+        """Did this exit happen after the quote that opened it existed?
+
+        Missing provenance fails the check. A default that made it pass would be the same
+        vacuous guard this block exists to remove.
+        """
+        provenance = self._entry_provenance.get(str(trade.position_id))
+        if provenance is None:
+            return False
+        return float(trade.closed_at) * 1000 + 0.5 >= float(provenance["quote_ts_ms"])
+
+    def _reconciliation(self, trades: Sequence[Any]) -> dict[str, Any]:
+        """The four quantities kept apart, with every identity checked.
+
+        A single "equity" number cannot show which of cash, realised PnL, costs or the
+        risk engine's view went wrong, so the residual of each identity is computed and
+        returned as a boolean. ``False`` here invalidates the run; it is not a warning.
+        """
+        initial = float(self.equity)
+        final = float(self.broker.equity)
+        realised = sum(float(trade.pnl) for trade in trades)
+        reference_gross = sum(float(trade.reference_gross_pnl) for trade in trades)
+        execution_cost = sum(float(trade.execution_cost_usdt) for trade in trades)
+        entry_commission = sum(float(trade.entry_commission) for trade in trades)
+        exit_commission = sum(float(trade.exit_commission) for trade in trades)
+        marked_now = float(self.broker.mark_to_market_equity(dict(self._marks)))
+        curve_end = float(self.equity_curve[-1]["equity"]) if self.equity_curve else final
+        tolerance = 1e-6
+        return {
+            "initial_equity_usdt": round(initial, 8),
+            "final_equity_usdt": round(final, 8),
+            "marked_equity_usdt": round(marked_now, 8),
+            "curve_end_equity_usdt": round(curve_end, 8),
+            "risk_equity_usdt": round(float(self.risk.equity), 8),
+            "net_realised_usdt": round(realised, 8),
+            "reference_gross_usdt": round(reference_gross, 8),
+            "execution_cost_usdt": round(execution_cost, 8),
+            "entry_commission_usdt": round(entry_commission, 8),
+            "exit_commission_usdt": round(exit_commission, 8),
+            "open_positions_at_end": len(self.broker.positions),
+            "tolerance_usdt": tolerance,
+            "identities": {
+                "cash_rebuilds_from_realised_pnl": abs(final - (initial + realised))
+                <= tolerance,
+                "net_pnl_nets_every_named_cost": abs(
+                    realised
+                    - (reference_gross - execution_cost - entry_commission - exit_commission)
+                )
+                <= tolerance,
+                "risk_equity_matches_marked_equity": abs(float(self.risk.equity) - marked_now)
+                <= tolerance,
+                "curve_ends_at_final_equity": abs(curve_end - marked_now) <= tolerance,
+                "every_close_after_its_entry_quote": all(
+                    self._close_after_entry(trade) for trade in trades
+                ),
+            },
         }
 
 

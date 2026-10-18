@@ -263,21 +263,28 @@ def test_the_kill_switch_blocks_entries_through_the_canonical_risk_manager(tmp_p
     assert blocked, "check_signal must be the gate that refuses, not a lane convention"
 
 
-def test_a_decision_is_dropped_when_the_next_bar_is_missing(tmp_path):
-    """A hole in the data must not become a late fill.
+def test_a_hole_in_the_data_never_becomes_a_price_before_the_answer(tmp_path):
+    """Un hueco no puede producir un relleno con un precio anterior a la respuesta.
 
-    With bar 31 removed, the opinion formed on bar 30 would otherwise execute on the bar
-    that is two hours later — at a price the model never described.
+    Este test afirmaba `STALE_EXECUTION`: el carril exigía que la cotización fuese
+exactamente la vela siguiente, y con un hueco descartaba la opinión. Esa regla no era la
+    que protegía el PIT — descartar por índice no distingue un hueco de una latencia real,
+    y con latencia real descartaba *todo*. La condición que ahora se comprueba es la que
+    de verdad impide operar a un precio no descrito: lo pagado es una cotización que
+    existía en o después de la respuesta, y su espera queda declarada en la fila.
     """
     series = [bar for index, bar in enumerate(bars()) if index != 31]
     _, summary = run(tmp_path, ReplayProvider([LONG] * 40), series=series)
     ledger = entries(tmp_path)
 
-    assert summary["counters"].get("guard:STALE_EXECUTION", 0) >= 1
-    dropped = [row for row in ledger if row.get("code") == "STALE_EXECUTION"]
-    assert dropped and "expected" in dropped[0]["detail"]
+    assert summary["fills"] >= 1, "a one-bar hole is inside the opinion's window"
     for fill in (row for row in ledger if row["kind"] == "FILL"):
-        assert fill["fill_bar_index"] == fill["decision_bar_index"] + 1
+        assert fill["quote_ts_ms"] >= fill["received_at_ms"]
+        assert fill["quote_ts_ms"] >= fill["decision_ts_ms"]
+        assert fill["quote_lag_ms"] == fill["quote_ts_ms"] - fill["received_at_ms"]
+        assert fill["fill_bar_index"] > fill["decision_bar_index"], (
+            "the fill can never be stamped on the bar whose close it read"
+        )
 
 
 def test_a_frictionless_run_must_declare_itself(tmp_path):

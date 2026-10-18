@@ -184,6 +184,23 @@ class ClosedTrade:
         return self.execution_cost_usdt + self.entry_commission + self.exit_commission
 
 
+def _gap_exit(open_price: float, stop_price: float, *, side: str, gap_policy: str) -> float:
+    """The price a stop fills at, honouring a bar that opened through it.
+
+    A stop is an order, not a price guarantee: if the bar opened beyond it, the level was
+    never traded after the order existed and the first available price is the open. With
+    the legacy ``stop_price`` policy the level is returned unchanged, so existing callers
+    keep their exact numbers.
+    """
+
+    if gap_policy == "open_on_gap":
+        if side == "buy" and open_price <= stop_price:
+            return float(open_price)
+        if side == "sell" and open_price >= stop_price:
+            return float(open_price)
+    return float(stop_price)
+
+
 class PaperBroker:
     """Paper-trade fill simulator.
 
@@ -492,6 +509,7 @@ class PaperBroker:
         candles: dict[str, tuple[float, float, float, float]],
         *,
         both_hit_policy: str = "stop_first",
+        gap_policy: str = "stop_price",
     ) -> list[ClosedTrade]:
         """Check positions using OHLC data (high/low) for more accurate SL/TP.
 
@@ -509,6 +527,14 @@ class PaperBroker:
         Args:
             candles: dict of symbol -> (open, high, low, close)
             both_hit_policy: How to handle simultaneous SL/TP hits.
+            gap_policy: What a stop that the bar *opened* through is filled at.
+                ``"stop_price"`` (default) fills at the stop level, which is the
+                historical behaviour every existing caller relies on.
+                ``"open_on_gap"`` fills at the bar's open: once the market has gapped
+                past the stop, the stop level was never available, and pretending it
+                was understates the loss the strategy actually took. A take-profit gap
+                is still credited at the target, never at the better open — the audit
+                never books a favourable fill it cannot prove.
 
         Returns:
             List of closed trades.
@@ -542,10 +568,10 @@ class PaperBroker:
                         trigger_price = tp_price
                         exit_reason = "take_profit"
                     else:  # stop_first (default, conservative)
-                        trigger_price = sl_price
+                        trigger_price = _gap_exit(_open, sl_price, side="buy", gap_policy=gap_policy)
                         exit_reason = "stop_loss"
                 elif sl_hit:
-                    trigger_price = sl_price
+                    trigger_price = _gap_exit(_open, sl_price, side="buy", gap_policy=gap_policy)
                     exit_reason = "stop_loss"
                 elif tp_hit:
                     trigger_price = tp_price
@@ -564,10 +590,12 @@ class PaperBroker:
                         trigger_price = tp_price
                         exit_reason = "take_profit"
                     else:
-                        trigger_price = sl_price
+                        trigger_price = _gap_exit(
+                            _open, sl_price, side="sell", gap_policy=gap_policy
+                        )
                         exit_reason = "stop_loss"
                 elif sl_hit:
-                    trigger_price = sl_price
+                    trigger_price = _gap_exit(_open, sl_price, side="sell", gap_policy=gap_policy)
                     exit_reason = "stop_loss"
                 elif tp_hit:
                     trigger_price = tp_price

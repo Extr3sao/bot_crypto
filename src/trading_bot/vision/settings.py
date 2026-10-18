@@ -54,6 +54,11 @@ class LaneConfig:
     #: measured", and the ledger records the value so a run that assumed zero is
     #: distinguishable from one that measured it (RFC-TAP-AI-BOTS-003).
     data_delay_ms: int = 0
+    #: How long an opinion stays tradable after the instant it was formed. Zero means
+    #: "one bar": an opinion may be filled on the next bar's open after a sub-bar
+    #: latency, and expires once that bar has closed. Declared, never assumed
+    #: (WP-TAP-AI-BOTS-003B).
+    max_opinion_age_ms: int = 0
 
 
 @dataclass(frozen=True, slots=True)
@@ -90,6 +95,7 @@ class VisionConfig:
                 "max_calls_per_run": self.lane.max_calls_per_run,
                 "max_estimated_spend_usd": self.lane.max_estimated_spend_usd,
                 "data_delay_ms": self.lane.data_delay_ms,
+                "max_opinion_age_ms": self.lane.max_opinion_age_ms,
             },
         }
 
@@ -141,6 +147,9 @@ def load_vision_config(
         max_calls_per_run=int(lane.get("max_calls_per_run") or 300),
         max_estimated_spend_usd=float(lane.get("max_estimated_spend_usd") or 2.0),
         data_delay_ms=int(source.get("VISION_DATA_DELAY_MS") or lane.get("data_delay_ms") or 0),
+        max_opinion_age_ms=int(
+            source.get("VISION_MAX_OPINION_AGE_MS") or lane.get("max_opinion_age_ms") or 0
+        ),
     )
     if lane_config.decision_every_bars < 1:
         raise ValueError("lane.decision_every_bars must be >= 1")
@@ -148,4 +157,6 @@ def load_vision_config(
         raise ValueError("lane.window_bars must be >= 20")
     if lane_config.data_delay_ms < 0:
         raise ValueError("lane.data_delay_ms cannot be negative: the feed cannot deliver early")
+    if lane_config.max_opinion_age_ms < 0:
+        raise ValueError("lane.max_opinion_age_ms cannot be negative")
     return VisionConfig(provider=provider, lane=lane_config)

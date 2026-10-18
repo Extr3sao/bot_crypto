@@ -110,6 +110,28 @@ class MockScript:
         )
 
 
+class DeclaredLatency:
+    """A mock transport with a declared round trip.
+
+    The mock answers instantly, which would hide the whole point of the causal execution
+    engine: with zero latency the fill lands on the very next quote and the waiting path
+    is never exercised. This wrapper stamps a round trip the run *declares*, so a paper
+    rehearsal shows what a real provider's delay does to fills — and it keeps the
+    ``mock-script`` name so no report can ever label the result as a real model call.
+    """
+
+    def __init__(self, inner: Any, *, latency_ms: int) -> None:
+        self.inner = inner
+        self.name = getattr(inner, "name", "mock-script")
+        self.latency_ms = int(latency_ms)
+
+    def analyze(self, request: VisionRequest) -> Any:
+        from dataclasses import replace
+
+        response = self.inner.analyze(request)
+        return replace(response, latency_ms=self.latency_ms)
+
+
 class ManifestProvider:
     """Guarda el PNG exacto que se envía y anota su hash en un manifiesto."""
 
@@ -156,6 +178,7 @@ def run_pair(
     max_calls: int | None,
     providers: dict[str, Any] | None = None,
     allow_disabled: bool = False,
+    latency_ms: int = 0,
 ) -> dict[str, Any]:
     settings = load_settings(config_dir=REPO / "config", env_file=None)
     config = load_vision_config(env={})
@@ -174,6 +197,8 @@ def run_pair(
                 stale.unlink()
         send_image = bot_id == "BOT-VIS-01"
         base = (providers or {}).get(bot_id) or MockScript(send_image=send_image)
+        if latency_ms:
+            base = DeclaredLatency(base, latency_ms=latency_ms)
         provider = ManifestProvider(base, bot_dir, send_image=send_image)
         summary = run_bot(
             registry=registry,
@@ -189,6 +214,11 @@ def run_pair(
             decision_every_bars=decision_every_bars,
             max_calls=max_calls,
             allow_disabled=allow_disabled,
+        )
+        #: The lane's own summary, written next to the ledger it describes: the independent
+        #: verifier reads both and re-derives every identity from the rows themselves.
+        (bot_dir / "SUMMARY.json").write_text(
+            json.dumps(summary, indent=2, sort_keys=True), encoding="utf-8"
         )
         manifest = {
             "bot_id": bot_id,
@@ -255,6 +285,15 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--spend-usd", type=float, default=None)
     parser.add_argument("--decision-every-bars", type=int, default=None)
     parser.add_argument("--max-calls", type=int, default=None)
+    parser.add_argument(
+        "--latency-ms",
+        type=int,
+        default=0,
+        help=(
+            "mock only: declared provider round trip, so the causal execution engine "
+            "waits for a real quote instead of filling instantly"
+        ),
+    )
     args = parser.parse_args(argv)
 
     out = Path(args.out)
@@ -317,6 +356,7 @@ def main(argv: list[str] | None = None) -> int:
             decision_every_bars=args.decision_every_bars,
             max_calls=args.max_calls,
             allow_disabled=args.mode == "mock",
+            latency_ms=args.latency_ms if args.mode == "mock" else 0,
         )
 
     rows = benchmark_rows(result)

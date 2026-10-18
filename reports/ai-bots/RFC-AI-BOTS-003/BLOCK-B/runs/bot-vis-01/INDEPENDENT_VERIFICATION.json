@@ -1,0 +1,116 @@
+{
+  "checks": [
+    {
+      "detail": "",
+      "name": "ledger_hash_chain",
+      "status": "PASS"
+    },
+    {
+      "detail": "lane={'execution_quote': 'bar_open', 'gap_policy': 'open_on_gap', 'stop_coverage': 'entry_at_open_full_bar'} max_opinion_age_ms=3600000",
+      "name": "run_declares_execution_conventions",
+      "status": "PASS"
+    },
+    {
+      "detail": "0 fills paid a price that predates the answer",
+      "name": "fill_quote_at_or_after_answer",
+      "status": "PASS"
+    },
+    {
+      "detail": "0 fills predate the decision instant",
+      "name": "fill_quote_at_or_after_decision",
+      "status": "PASS"
+    },
+    {
+      "detail": "0 fills carry a lag that is not quote_ts - received_at",
+      "name": "fill_quote_lag_is_measured",
+      "status": "PASS"
+    },
+    {
+      "detail": "0 fills are not a bar open from the declared dataset",
+      "name": "fill_quote_is_a_declared_bar_open",
+      "status": "PASS"
+    },
+    {
+      "detail": "0 fills are older than max_opinion_age_ms=3600000",
+      "name": "fill_quote_within_opinion_window",
+      "status": "PASS"
+    },
+    {
+      "detail": "0 closes precede the quote that opened them or lack provenance",
+      "name": "exit_not_before_entry_quote",
+      "status": "PASS"
+    },
+    {
+      "detail": "0 closes do not declare the bar window they happened in",
+      "name": "exit_window_is_declared",
+      "status": "PASS"
+    },
+    {
+      "detail": "",
+      "name": "stop_never_credited_better_than_its_level",
+      "status": "PASS"
+    },
+    {
+      "detail": "",
+      "name": "success_is_backed_by_its_own_prices",
+      "status": "PASS"
+    },
+    {
+      "detail": "",
+      "name": "net_pnl_nets_every_named_cost",
+      "status": "PASS"
+    },
+    {
+      "detail": "10000.0 + -15.680073389999997 != 9984.31992659",
+      "name": "cash_rebuilds_from_realised_pnl",
+      "status": "PASS"
+    },
+    {
+      "detail": "risk=9984.319927 marked=9984.31992659",
+      "name": "risk_equity_matches_marked_equity",
+      "status": "PASS"
+    },
+    {
+      "detail": "curve=9984.31992659 marked=9984.31992659",
+      "name": "curve_ends_at_marked_equity",
+      "status": "PASS"
+    },
+    {
+      "detail": "summary fills=14 rows=14; summary closes=14 rows=14",
+      "name": "counters_match_rows",
+      "status": "PASS"
+    },
+    {
+      "detail": "0 actionable decisions have no terminal row: []",
+      "name": "every_actionable_decision_is_resolved",
+      "status": "PASS"
+    },
+    {
+      "detail": "decisions filled more than once: []",
+      "name": "one_decision_executes_at_most_once",
+      "status": "PASS"
+    },
+    {
+      "detail": "duplicates=[] orphan_closes=[]",
+      "name": "position_ids_are_unique_and_owned",
+      "status": "PASS"
+    },
+    {
+      "detail": "first=RUN last=RUN_END rows=96",
+      "name": "ledger_is_bracketed_by_run_and_run_end",
+      "status": "PASS"
+    },
+    {
+      "detail": "absolute paths in the summary: []",
+      "name": "summary_is_portable_between_roots",
+      "status": "PASS"
+    }
+  ],
+  "failed": 0,
+  "ledger": "reports/ai-bots/RFC-AI-BOTS-003/BLOCK-B/runs/bot-vis-01/BOT-VIS-01_DECISIONS.jsonl",
+  "passed": 21,
+  "summary": "reports/ai-bots/RFC-AI-BOTS-003/BLOCK-B/runs/bot-vis-01/SUMMARY.json",
+  "tool": "ai_bots_003b_verify",
+  "verdict": "PASS",
+  "verifier": "independent (no trading_bot import)"
+}
