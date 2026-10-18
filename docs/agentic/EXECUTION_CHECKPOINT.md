@@ -1,3 +1,58 @@
+## 2026-10-18 · RFC-TAP-AI-BOTS-003 bloque A — reloj de cierre y paridad de riesgo
+
+**Objetivo:** que una decisión sobre el cierre de una vela no pueda existir antes de que esa vela
+cierre, y que el motor de riesgo vea la misma equity neta que publica la curva.
+
+**Rama:** `agent/ai-bots/RFC-TAP-AI-BOTS-003`, creada desde `b7e100a` (EVIDENCE-004F ya incluido).
+**Commit:** `2557a9f`.
+
+**Hecho**
+
+1. `src/trading_bot/vision/clock.py`: `timeframe_ms` (lanza `UnknownTimeframe` en vez de adivinar)
+   e `information_ms = open + timeframe + data_delay`.
+2. `guards.assert_causal(bars, instant, bar_interval_ms=…)` exige que **cada vela haya cerrado**;
+   el intervalo es argumento obligatorio. La prueba AIV-03 antigua comparaba aperturas y pasaba
+   siempre: ahora falla en el caso que decía cubrir.
+3. `lane.py`: decisión sellada en el cierre, `decision_bar_ts_ms` nombra la vela,
+   `received_at_ms = cierre + latencia`, y `_marks` deja de contener el cierre de la vela antes de
+   ejecutar en su apertura.
+4. `lane.run`: al cerrar cada vela, `risk.mark_equity(mtm)`; la curva publica el mismo número en
+   `equity` y `risk_equity`. Antes el riesgo sólo veía PnL realizado.
+5. `lane.data_delay_ms` (+ `VISION_DATA_DELAY_MS`) declarado y registrado en el ledger: cero
+   significa «no medido», no «instantáneo».
+
+**Consecuencia declarada:** con el reloj correcto, cualquier latencia real descarta el fill
+(la vela de ejecución abre justo cuando la respuesta vence). `NO_TRADE` es resultado legítimo.
+
+**Verificación**
+
+```text
+pytest tests/unit/vision/test_causal_clock.py -q                      exit 0   7 passed
+pytest tests/unit/vision tests/unit/intelligence tests/unit/reports -q exit 0  200 passed
+ruff check src/trading_bot/vision tests/unit/vision                   exit 0
+mypy src/trading_bot/vision/{clock,guards,lane,settings}.py           exit 0
+scripts/evidence004_verify.py (misma rama)                            exit 0   42 PASS / 0 FAIL
+RED comprobado: 5 fallos con `decision_ts_ms = bar.ts_ms`;
+                paridad falla con equity 10001.37988951 vs riesgo 10000.0
+```
+
+**Pendiente / bloqueado**
+
+- `REAL_MODEL_CALLED = false`. Sin clave ni autorización de gasto no hay llamada real.
+- `data_delay_ms` no es una medición de red; es un parámetro declarado.
+- Falta el bloque B (costes), y el run prospectivo VIS/CTX/CURRENT/NO_TRADE con el mismo
+  calendario, capital y fricción.
+
+**Reanudación**
+
+```bash
+cd "$(git rev-parse --show-toplevel)"
+git checkout agent/ai-bots/RFC-TAP-AI-BOTS-003
+git log -1 --format='%H %s'                                   # esperado: 2557a9f
+./.venv/Scripts/python.exe -m pytest tests/unit/vision/test_causal_clock.py -q   # 7 passed
+./.venv/Scripts/python.exe scripts/evidence004_verify.py      # 42 PASS / 0 FAIL
+```
+
 ## 2026-10-18 · WP-TAP-EVIDENCE-004F — cierre de identidad, y traspaso a AI-BOTS-003
 
 **Objetivo:** cerrar los cinco defectos residuales de EVIDENCE-004 (E4-01..E4-05) sin abrir otro
