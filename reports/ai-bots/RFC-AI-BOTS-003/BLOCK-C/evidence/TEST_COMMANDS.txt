@@ -44,3 +44,38 @@ $ .venv/Scripts/python.exe -m mypy src/trading_bot/vision src/trading_bot/paper/
 Success: no issues found in 15 source files
 exit: 0
 
+
+# --- Segunda pasada, sobre el código ya commiteado (86d4f12) -------------------
+
+$ .venv/Scripts/python.exe -m pytest tests/unit/vision tests/unit/paper tests/unit/risk tests/unit/intelligence tests/unit/reports -q
+459 passed, 14 warnings in 309.22s (0:05:09)
+exit: 0
+
+$ .venv/Scripts/python.exe -m pytest tests/unit/vision/test_open_phase_causality.py -q
+19 passed, 14 warnings in 210.31s (0:03:30)
+exit: 0
+
+$ .venv/Scripts/python.exe -m ruff check src/trading_bot/vision src/trading_bot/paper/broker.py tests/unit/vision scripts/ai_bots_003c_capture.py scripts/ai_bots_003c_verify.py scripts/ai_bots_003b_verify.py
+All checks passed!
+exit: 0
+
+$ .venv/Scripts/python.exe -m mypy src/trading_bot/vision/lane.py src/trading_bot/vision/execution.py src/trading_bot/paper/broker.py scripts/ai_bots_003c_capture.py scripts/ai_bots_003c_verify.py scripts/ai_bots_003b_verify.py tests/unit/vision/test_open_phase_causality.py tests/unit/vision/test_causal_execution.py tests/unit/vision/test_guards_and_controls.py
+Success: no issues found in 9 source files
+exit: 0
+
+# --- Árbol limpio: git archive del commit del motor ---------------------------
+
+$ git archive HEAD | tar -x -C /tmp/003c_archive          # 162 MB, LF
+$ cd /tmp/003c_archive
+$ python scripts/ai_bots_003c_verify.py --ledger reports/.../synthetic_gap_open_ledger.jsonl \
+    --summary reports/.../synthetic_gap_open_summary.json \
+    --coverage reports/.../DATA_COVERAGE_LEDGER.jsonl --scenario synthetic_gap_open --root .
+"failed": 0, "passed": 24, "verdict": "PASS"
+exit: 0
+$ PYTHONPATH=/tmp/003c_archive/src python -m pytest tests/unit/vision/test_open_phase_causality.py -q -p no:warnings
+19 passed in 210.66s (0:03:30)
+exit: 0
+
+# Nota: los 459 tests se ejecutaron en la copia de trabajo con el mismo commit de motor;
+# el árbol limpio prueba el subconjunto que prueba el P0 (19 + 24 comprobaciones).
+# Suite completa del repositorio: NO ejecutada (~180 ficheros ajenos en vuelo).

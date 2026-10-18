@@ -57,18 +57,23 @@ fixture bit-exacto.
 
 ```
 RED antes de implementar     18 failed / 1 passed          exit 1   (commit ffbc0ca)
-tests/unit/vision            160 passed                    exit 0
-tests/unit/paper              73 passed                    exit 0
-tests/unit/risk              147 passed                    exit 0
-tests/unit/intelligence       28 passed                    exit 0
-tests/unit/reports            51 passed                    exit 0
+suites afectadas (juntas)    459 passed                    exit 0   (vision 160 · paper 73 · risk 147
+                                                                     · intelligence 28 · reports 51)
+test_open_phase_causality     19 passed                    exit 0
 ruff (carril, broker, tests, verificadores)  All checks passed!   exit 0
-mypy (15 ficheros)           Success: no issues found      exit 0
+mypy (9 ficheros tocados)    Success: no issues found      exit 0
 capture 5 escenarios         5 cadenas intactas            exit 0
 003c verify × 5              120 comprobaciones / 0 fallos  exit 0
 003c mutations × 5           53 aplicadas / 53 detectadas   exit 0   (12 omitidas por diseño)
 BLOCK-B re-verificado        21/21 por bot + 10/10 mutaciones exit 0 (evidencia previa intacta)
 ```
+
+**Commit del motor:** `86d4f12` (padre `ffbc0ca`). **Ensayo desde árbol limpio:**
+`git archive HEAD | tar -x` en `/tmp/003c_archive` —el verificador independiente da 24 PASS /
+0 FAIL y `test_open_phase_causality.py` da 19 passed **desde el código commiteado**, no desde
+el árbol de trabajo ([CLEAN_ARCHIVE.json](evidence/CLEAN_ARCHIVE.json)). Los 459 tests de las
+suites afectadas se ejecutaron en la copia de trabajo con el mismo commit de motor; el árbol
+tiene ~180 ficheros ajenos en vuelo y no se tocaron.
 
 El P0 tiene su recibo dentro de un solo instante, en el escenario declarado
 `synthetic_gap_open` (mismo caso que C-01, ejecutado de punta a punta):
