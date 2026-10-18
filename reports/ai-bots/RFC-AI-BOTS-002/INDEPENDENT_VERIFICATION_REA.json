@@ -349,10 +349,25 @@
       "name": "run_table_counts_evidenced_work_only",
       "ok": true,
       "detail": "report says 7, table shows 7"
+    },
+    {
+      "name": "json_counts_name_evidenced_work_not_exit_codes",
+      "ok": true,
+      "detail": "counts={'rea_operations_evidenced': 7, 'rea_operations_not_executed': 2, 'targets_repo_exact': 3}"
+    },
+    {
+      "name": "findings_do_not_summarise_exit_zero_as_success",
+      "ok": true,
+      "detail": "global environment not healthy (native engines + config drift); JS/CDP operations were exe"
+    },
+    {
+      "name": "prose_does_not_count_refused_inputs_as_operations",
+      "ok": true,
+      "detail": "[]"
     }
   ],
   "failures": [],
-  "passed": 70,
+  "passed": 73,
   "failed": 0,
   "evidence_ids_backed": [
     "ev_47c01accd3491fd6e10e893f8a045e5fee226fa520f648f4460396a619efbaf1",

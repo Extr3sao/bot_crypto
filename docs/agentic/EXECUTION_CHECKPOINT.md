@@ -278,7 +278,7 @@ proyectos.
 6. **Auditoría de fuente** de los tres backends: nof1 no es visual y deja el apalancamiento al
    modelo con el drawdown comentado; FenixAI manda la imagen sin hash ni símbolo; QRAK liga la
    imagen por construcción y el risk manager recorta el tamaño.
-7. **Verificador ampliado** (31 → 59 → **70** comprobaciones), con mutaciones que lo rechazan:
+7. **Verificador ampliado** (31 → 59 → 70 → **73** comprobaciones), con mutaciones que lo rechazan:
    reatribuir el bundle público ⇒ 2 FAIL; borrar `PROVENANCE.md` del repo exacto ⇒ 2 FAIL;
    disfrazar el probe de `REA_EVIDENCE` ⇒ 2 FAIL.
 8. **Ejecución instrumentada del renderizador de FenixAI** (`4dba317`): `ChartService` del
@@ -292,6 +292,10 @@ proyectos.
    ejecutadas, y el verificador ahora comprueba la tabla fila por fila
    (`run_table_annotates_exit_zero_without_evidence`, `run_table_counts_evidenced_work_only`)
    además del log consolidado (`rea/REA_COMMAND_LOG.jsonl`, 16 entradas = suma de los 4 dossiers).
+   La misma sobreafirmación estaba en otros tres sitios y los tres quedaron ligados al mismo
+   número: `RUN_REPORT.json` (`rea_operations_exit_0: 9` → `rea_operations_evidenced: 7` +
+   `rea_operations_not_executed: 2`), `source_registry.md` ("Las 9 operaciones REA…") y
+   `REA_FINDINGS_V2.json` ("all exit 0"). Mutar cualquiera de los tres ⇒ 3 FAIL.
 
 **Pendiente / bloqueado**
 
@@ -306,7 +310,7 @@ proyectos.
 ```bash
 cd "$(git rev-parse --show-toplevel)"
 git log -1 --format='%H %s'
-./.venv/Scripts/python.exe scripts/ai_bots_rea_verify.py | tail -2   # esperado: 70 PASS / 0 FAIL, exit 0
+./.venv/Scripts/python.exe scripts/ai_bots_rea_verify.py | tail -2   # esperado: 73 PASS / 0 FAIL, exit 0
 ./.venv/Scripts/python.exe -m pytest tests/unit/vision tests/unit/intelligence -q | tail -2
 ./.venv/Scripts/ruff.exe check scripts/ai_bots_rea_verify.py
 ```

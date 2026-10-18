@@ -467,6 +467,36 @@ def main() -> int:
         f"report says {claimed.group(1) if claimed else 'nothing'}, table shows {evidenced_rows}",
     )
 
+    #: The same overclaim lived in three more places. One number, checked everywhere.
+    run_json = _json(REA / "RUN_REPORT.json")
+    counts = run_json.get("counts") or {}
+    report.check(
+        "json_counts_name_evidenced_work_not_exit_codes",
+        "rea_operations_exit_0" not in counts
+        and counts.get("rea_operations_evidenced") == evidenced_rows
+        and counts.get("rea_operations_not_executed") == len(exit_zero_but_unexecuted)
+        + len([r for r in per_target if str(r.get("result", "")).upper().startswith("BLOCKED")]),
+        f"counts={counts}",
+    )
+    findings_rea = (_json(FINDINGS).get("rea") or {})
+    report.check(
+        "findings_do_not_summarise_exit_zero_as_success",
+        "all exit 0" not in str(findings_rea.get("doctor_meaning", "")).lower(),
+        str(findings_rea.get("doctor_meaning", ""))[:90],
+    )
+    registry_body = _read(DOCS / "source_registry.md")
+    stale_claims = re.findall(r"\d+\s+operaciones REA con exit 0", run_md)
+    #: A count of REA operations is only honest with the evidence hedge next to it.
+    for match in re.finditer(r"Las\s+\d+\s+operaciones REA", registry_body):
+        tail = registry_body[match.end() : match.end() + 40]
+        if "evidence_id" not in tail:
+            stale_claims.append(match.group(0))
+    report.check(
+        "prose_does_not_count_refused_inputs_as_operations",
+        not stale_claims,
+        str(stale_claims[:2]),
+    )
+
     payload = {
         "checks": report.checks,
         "failures": report.failures,

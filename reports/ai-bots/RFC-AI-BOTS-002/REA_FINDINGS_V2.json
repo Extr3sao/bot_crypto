@@ -6,7 +6,7 @@
     "version": "6.4.0",
     "node": "22.20.0",
     "doctor_exit": 1,
-    "doctor_meaning": "global environment not healthy (native engines + config drift); JS/CDP operations executed anyway, all exit 0",
+    "doctor_meaning": "global environment not healthy (native engines + config drift); JS/CDP operations were executed anyway: 7 produced evidence_id, 1 returned exit 0 with NOT_EXECUTED_INVALID_INPUT and 1 was blocked (unsupported_host)",
     "host_limits_measured": [
       {
         "operation": "import-reference-source",

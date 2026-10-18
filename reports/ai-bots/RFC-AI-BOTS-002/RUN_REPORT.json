@@ -72,8 +72,8 @@
     }
   ],
   "counts": {
-    "rea_operations_exit_0": 9,
-    "rea_operations_blocked": 2,
+    "rea_operations_evidenced": 7,
+    "rea_operations_not_executed": 2,
     "targets_repo_exact": 3
   },
   "not_run": [
@@ -84,5 +84,6 @@
   ],
   "real_model_called": false,
   "orders_placed": 0,
-  "risk_config_touched": false
+  "risk_config_touched": false,
+  "count_note": "An exit code of 0 is not a success criterion. compare-source-to-bundle returned exit 0 with NOT_EXECUTED_INVALID_INPUT and produced no evidence_id, so it is counted under rea_operations_not_executed, not under rea_operations_evidenced."
 }

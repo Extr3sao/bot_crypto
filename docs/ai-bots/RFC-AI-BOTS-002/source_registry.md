@@ -29,8 +29,10 @@ dos filas distintas y ninguna afirma un vínculo que no exista.
 3. **AGPL-3.0 no prohíbe estudiar nof1.ai.** Permite descargar, ejecutar y estudiar; las
    obligaciones nacen al copiar, modificar o redistribuir. En esta sesión se analizó el árbol
    del commit y **no se copió ni tradujo código**.
-4. **Un `doctor` global en rojo no deshabilita JS/CDP.** Las 9 operaciones REA de esta
-   iteración salieron con exit 0 sin Ghidra/Hopper/IDA.
+4. **Un `doctor` global en rojo no deshabilita JS/CDP.** Las 7 operaciones REA con
+   `evidence_id` de esta iteración salieron con exit 0 sin Ghidra/Hopper/IDA. Una octava
+   (`compare-source-to-bundle`) devolvió exit **0** con `NOT_EXECUTED_INVALID_INPUT` y
+   **no cuenta como ejecución**: el código de salida no es un criterio de éxito.
 5. **Hay un límite real del host, medido:** `import-reference-source` falla con
    `unsupported_host` en Windows, y con él `compare-source-to-bundle`. Está registrado como
    bloqueo, no como aprobado.
