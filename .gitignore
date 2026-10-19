@@ -463,3 +463,14 @@ reports/economic-recovery/RFC-EDGE-015/scratch/*
 reports/ai-bots/*
 !reports/ai-bots/RFC-AI-BOTS-002/
 !reports/ai-bots/RFC-AI-BOTS-003/
+# RFC-TAP-AI-BOTS-003G — el colector, la sesión PAPER, el fallo de agregación y su
+# verificación se publican porque el verificador reconstruye cada cifra desde estos bytes.
+# La preflight se conserva en disco pero no se versiona: corrió con código anterior a la
+# congelación y no es evidencia de la sesión publicada.
+!reports/ai-bots/RFC-AI-BOTS-003G/
+reports/ai-bots/RFC-AI-BOTS-003G/session-preflight/
+# RFC-TAP-AI-BOTS-003H — la corrección contable, la sesión de smoke y su verificación.
+# Los logs de la WP (freeze, métricas, salidas de comando) son evidencia citada por los
+# informes: se publican, no se dejan como artefactos locales.
+!reports/ai-bots/RFC-AI-BOTS-003H/
+!logs/rfc003h/

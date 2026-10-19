@@ -1,0 +1,9 @@
+{
+  "commit": "fe9b5e2623b0d023833249e9687b753eaacd27d4",
+  "live_enabled": false,
+  "mode": "PAPER",
+  "out_dir": "reports\\ai-bots\\RFC-AI-BOTS-003G\\smoke",
+  "risk_yaml_sha256": "3c27c866d5f11afea96a80598c1e72c69816ecc3b77e97c5ad7fa86417593a2e",
+  "started_at_utc": "2026-10-19T06:44:32Z",
+  "vision_yaml_sha256": "ba817ef6f2c8768ee8bd094ffbdb0f705281f7056466c95cd0b2016e6e3fd766"
+}

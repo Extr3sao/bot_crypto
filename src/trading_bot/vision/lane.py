@@ -39,7 +39,7 @@ from dataclasses import dataclass, replace
 from datetime import UTC, datetime
 from itertools import pairwise
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 from trading_bot.config.risk import Risk
 from trading_bot.paper.broker import BrokerCost, ClosedTrade, PaperBroker
@@ -56,8 +56,10 @@ from trading_bot.vision.contract import (
     resolve_intent,
 )
 from trading_bot.vision.execution import (
+    BAR_OPEN_SOURCE,
     Quote,
     QuoteFeed,
+    SubBarQuoteFeed,
     quote_at,
     schedule,
 )
@@ -84,6 +86,36 @@ from trading_bot.vision.settings import VisionConfig
 PORTFOLIO_EQUITY_USDT = 10_000.0
 BOOK_ID = "ai-vision-paper"
 MAX_RAW_ANSWER_CHARS = 4_000
+
+#: Version of the accounting contract this lane publishes. Bumped when a field's
+#: *meaning* changes, not when one is added: 003H added the open-position terms and kept
+#: every pre-existing key with its old meaning, so the contract is additive.
+ACCOUNTING_SCHEMA_VERSION = "paper-accounting/2"
+
+#: One definition per published cost/PnL term. A reader should not have to infer whether
+#: ``costs_usdt`` includes a position that is still open; 003G-D5 was exactly that guess.
+COST_MEANINGS: dict[str, str] = {
+    "costs_usdt": (
+        "realised cost of closed trades only: execution + entry + exit commissions. "
+        "Unchanged since 003B; it does NOT include open positions."
+    ),
+    "costs_realised_usdt": "same value as costs_usdt, named for symmetry with costs_total_usdt",
+    "entry_commissions_realised_usdt": "entry commissions inside closed trades",
+    "exit_commissions_realised_usdt": "exit commissions inside closed trades",
+    "execution_costs_realised_usdt": "spread/impact cost embedded in closed-trade fills",
+    "entry_commissions_accrued_open_usdt": (
+        "entry commissions of positions still open: charged at close by the broker, but "
+        "already owed and already withheld from marked equity"
+    ),
+    "costs_total_usdt": "costs_usdt + entry_commissions_accrued_open_usdt",
+    "pnl_realised_usdt": "net PnL of closed trades (same value as net_realised_usdt)",
+    "pnl_unrealised_usdt": (
+        "open positions marked at the last observable close, net of accrued entry "
+        "commissions"
+    ),
+    "pnl_total_usdt": "pnl_realised_usdt + pnl_unrealised_usdt",
+    "marked_equity_usdt": "initial equity + pnl_total_usdt",
+}
 
 
 def _utc_iso(ms: int) -> str:
@@ -157,6 +189,8 @@ class VisionLane:
         cost_multiplier: float = 1.0,
         prompt_builder: Callable[[dict[str, Any], Sequence[Any]], PromptBundle] | None = None,
         quote_feed: QuoteFeed | None = None,
+        subbar_entries: bool = False,
+        decision_from_ms: int | None = None,
     ) -> None:
         if not series:
             raise ValueError("series is empty")
@@ -180,6 +214,13 @@ class VisionLane:
         #: instant its close was knowable. Read once, recorded in the ledger.
         self.interval_ms = timeframe_ms(self.timeframe)
         self.data_delay_ms = int(config.lane.data_delay_ms)
+        #: Opt-in lower bound for the *instant a decision is formed*. A live session
+        #: carries a warm-up window it must never decide on: those bars closed before the
+        #: session existed, so a decision stamped there would be a replay dressed as a
+        #: live run. ``None`` keeps the historical behaviour (every bar from the window).
+        self.decision_from_ms = (
+            None if decision_from_ms is None else int(decision_from_ms)
+        )
         #: How long an opinion stays tradable once formed. Zero in the config means "one
         #: bar", which is the finest window this bar grid can express: a sub-bar latency
         #: costs exactly one bar of delay, and a latency beyond it is a stale view.
@@ -239,6 +280,24 @@ class VisionLane:
         #: not built from the bars being replayed, so it can say something the replay
         #: cannot: that the venue was open and priced while the bar was missing.
         self.quote_feed = quote_feed
+        #: Opt-in. A feed that can price inside a bar is used only when the caller says so:
+        #: the published behaviour (one fill per bar open) stays the default, so a caller
+        #: that passes a feed for coverage does not silently change its fill prices.
+        self.subbar_entries = bool(subbar_entries)
+        #: The coarse contract only proves coverage. The finer one, if the same object
+        #: offers it, can say when inside the bar a price existed. Duck-typed rather than
+        #: asserted, because a coverage-only feed is a valid, weaker object.
+        self.subbar_feed: SubBarQuoteFeed | None = (
+            cast("SubBarQuoteFeed", quote_feed)
+            if quote_feed is not None
+            and callable(getattr(quote_feed, "first_quote_at_or_after", None))
+            and callable(getattr(quote_feed, "range_between", None))
+            else None
+        )
+        #: Set when a fill happens inside a bar, consumed by that bar's CLOSE phase and
+        #: cleared there: the range of the entry bar must start at the fill, never at the
+        #: bar's open.
+        self._entry_bar: dict[str, dict[str, Any]] = {}
         self._marks: dict[str, float] = {}
         #: Where each open position's entry came from, keyed by position id: the quote and
         #: the answer's arrival. A CLOSE row without it cannot show that its exit happened
@@ -634,6 +693,46 @@ class VisionLane:
             received_at_ms=decision_ts_ms + max(0, int(response.latency_ms or 0)),
         )
 
+    def _entry_bar_range(
+        self, symbol: str, quote: Quote, bar_open_ms: int
+    ) -> dict[str, Any] | None:
+        """The part of the entry bar that happened *after* the fill, or ``None``.
+
+        A bar-open fill needs no adjustment: nothing of the bar predates its open. An
+        inside-bar fill does, and using the bar's whole high/low would let the stop read a
+        price that occurred before the position existed. The declared row is what a
+        verifier recomputes from the raw minutes, so the claim is not just a comment.
+        """
+
+        if int(quote.ts_ms) <= int(bar_open_ms):
+            return None
+        feed = self.subbar_feed
+        if feed is None:  # pragma: no cover - guarded by the caller's branch
+            return None
+        until_ms = int(bar_open_ms) + self.interval_ms
+        span = feed.range_between(symbol, int(quote.ts_ms), until_ms)
+        if span is None:
+            #: No minute is observable after the fill inside this bar: the range is the
+            #: fill itself. Zero minutes is a measured fact, not a missing value.
+            return {
+                "entry_bar_range_from_ms": int(quote.ts_ms),
+                "entry_bar_range_until_ms": until_ms,
+                "entry_bar_range_minutes": 0,
+                "entry_bar_range_high": float(quote.price),
+                "entry_bar_range_low": float(quote.price),
+                "entry_bar_range_last": None,
+                "entry_bar_range_source": feed.name,
+            }
+        return {
+            "entry_bar_range_from_ms": int(quote.ts_ms),
+            "entry_bar_range_until_ms": until_ms,
+            "entry_bar_range_minutes": int(span.minutes),
+            "entry_bar_range_high": float(span.high),
+            "entry_bar_range_low": float(span.low),
+            "entry_bar_range_last": float(span.last),
+            "entry_bar_range_source": span.source,
+        }
+
     # -- execution -----------------------------------------------------------
 
     def _execute(self, symbol: str, bar: Any, pending: PendingOrder, bar_index: int) -> str:
@@ -711,6 +810,36 @@ class VisionLane:
             decision_ts_ms=pending.decision_ts_ms,
             max_age_ms=self.max_opinion_age_ms,
         )
+        if outcome.status == "WAIT" and self.subbar_entries and self.subbar_feed is not None:
+            # The bar's open predates the answer, but a finer feed may have priced inside
+            # this bar after it. It is the same rule as the bar quote, one resolution down:
+            # never a price older than the answer, and never a price outside this bar.
+            sub = self.subbar_feed.first_quote_at_or_after(
+                symbol, pending.received_at_ms, horizon_ms=self.interval_ms
+            )
+            if sub is not None and int(sub.ts_ms) < int(pending.received_at_ms):
+                self._reject_pending(
+                    symbol,
+                    ts,
+                    pending,
+                    "FEED_CONTRACT_VIOLATION",
+                    (
+                        f"the feed answered {sub.ts_ms} for an instant at "
+                        f"{pending.received_at_ms}: a price older than the answer is not "
+                        "executable, and a feed that returns one is refused rather than "
+                        "trusted"
+                    ),
+                    extra={"feed_quote_ts_ms": int(sub.ts_ms)},
+                )
+                return "RESOLVED"
+            if sub is not None and ts <= int(sub.ts_ms) < ts + self.interval_ms:
+                quote = sub
+                outcome = schedule(
+                    quote,
+                    received_at_ms=pending.received_at_ms,
+                    decision_ts_ms=pending.decision_ts_ms,
+                    max_age_ms=self.max_opinion_age_ms,
+                )
         if outcome.status == "WAIT":
             # The price existed before the answer did. Waiting is not a rejection: a
             # provider that takes ninety seconds still gets its next quote.
@@ -914,6 +1043,17 @@ class VisionLane:
             "stop_loss_price": stop_price,
             "take_profit_price": target_price,
         }
+        #: The post-fill range of the entry bar, when the fill happened inside the bar.
+        #: ``None`` for a bar-open fill: there, the bar's own range is already causal.
+        range_row = self._entry_bar_range(symbol, quote, ts)
+        if range_row is not None:
+            self._entry_provenance[position_id].update(range_row)
+            self._entry_bar[symbol] = {
+                "entry": price,
+                "high": float(range_row["entry_bar_range_high"]),
+                "low": float(range_row["entry_bar_range_low"]),
+                "last": range_row["entry_bar_range_last"],
+            }
         self.ledger.append(
             "FILL",
             {
@@ -931,9 +1071,11 @@ class VisionLane:
                 "quote_ts_ms": quote.ts_ms,
                 "quote_price": quote.price,
                 "quote_source": quote.source,
+                "entry_quote_source": quote.source,
                 "quote_bar_open_ms": quote.bar_open_ms,
                 "quote_lag_ms": outcome.lag_ms,
                 "opinion_age_ms": outcome.age_ms,
+                **(range_row or {}),
                 "data_gap_covered_by": gap["source"] if gap is not None else None,
                 "data_gap_missing_bar_open_ms": (
                     gap["missing_bar_open_ms"] if gap is not None else None
@@ -945,6 +1087,22 @@ class VisionLane:
                 "reference_price": price,
                 "quantity": float(getattr(filled, "quantity", 0.0)),
                 "notional_usdt": float(sized.notional_usdt),
+                # 003H: the commission this fill already owes, with the schedule that
+                # produced it, so the open-position accrual can be rebuilt from the ledger
+                # alone instead of being taken on the summary's word.
+                "entry_commission_usdt": (
+                    round(float(position.entry_commission), 8)
+                    if position is not None
+                    else None
+                ),
+                "commission_bps": (
+                    round(float(position.commission_bps), 8) if position is not None else None
+                ),
+                "price_bps_per_side": (
+                    round(float(position.price_bps_per_side), 8)
+                    if position is not None
+                    else None
+                ),
                 "stop_loss_pct": float(sized.stop_loss_pct),
                 "take_profit_pct": float(sized.take_profit_pct),
             },
@@ -985,6 +1143,7 @@ class VisionLane:
                         "timeframe": self.timeframe,
                         "bar_interval_ms": self.interval_ms,
                         "data_delay_ms": self.data_delay_ms,
+                        "decision_from_ms": self.decision_from_ms,
                         "max_opinion_age_ms": self.max_opinion_age_ms,
                         "max_calls": self.max_calls,
                         "max_spend_usd": self.max_spend_usd,
@@ -1103,6 +1262,22 @@ class VisionLane:
                     )
                     for symbol, bars, index in present
                 }
+                # A position that opened inside this bar may only see the bar from its
+                # fill onwards. Replacing the candle for those symbols is the whole
+                # look-ahead guard: the stop is checked on a range that did not exist
+                # before the fill did. Symbols opened at the bar's open are untouched.
+                for symbol, info in self._entry_bar.items():
+                    current = candles.get(symbol)
+                    if current is None:
+                        continue
+                    entry_price = float(info["entry"])
+                    last = info.get("last")
+                    candles[symbol] = (
+                        entry_price,
+                        max(entry_price, float(info["high"])),
+                        min(entry_price, float(info["low"])),
+                        float(current[3]) if last is None else float(last),
+                    )
                 # The bar has ended, so its range is a fact — including for a position
                 # opened at this bar's open, which must be checked *after* it exists. The
                 # exit is recorded at the close because that is the earliest instant an
@@ -1120,6 +1295,8 @@ class VisionLane:
                         resolution="BAR_WINDOW",
                         phase="INTRABAR",
                     )
+                #: Consumed. A later bar starts from its own range, not from this override.
+                self._entry_bar.clear()
 
                 quoted = {
                     symbol
@@ -1149,6 +1326,15 @@ class VisionLane:
                 # 4. Decisions are formed on the close, which is now known, and are sized
                 #    against the equity this close produced.
                 for symbol, bars, index in present:
+                    if (
+                        self.decision_from_ms is not None
+                        and information_ms(ts, self.interval_ms, self.data_delay_ms)
+                        < self.decision_from_ms
+                    ):
+                        # The bar closed before the session began: it is context, not a
+                        # prospective decision, and paying for an opinion about it would
+                        # be a replay inside a live run.
+                        continue
                     if not decision_due(
                         index,
                         window_bars=self.window_bars,
@@ -1201,9 +1387,61 @@ class VisionLane:
         finally:
             self.ledger.close()
 
+    def _accounting(self, trades: Sequence[Any]) -> dict[str, Any]:
+        """The one place where costs and PnL are separated, for summary and reconciliation.
+
+        003G-D5 lived here: the summary summed ``trades`` (closed operations) and published
+        ``costs_usdt = 0`` while an open position had already accrued 0.5 USDT of entry
+        commission and the marked equity already reflected it. Two readers of the same run
+        could not both be right, so the terms are now computed once and returned under
+        names that say which half of the book they describe.
+
+        No cost is counted twice: a position is either open (its entry commission is
+        accrued) or closed (its commissions are realised), never both — the broker pops
+        the position when it closes, and the disjointness is checked as an identity.
+        """
+        realised_entry = sum(float(t.entry_commission) for t in trades)
+        realised_exit = sum(float(t.exit_commission) for t in trades)
+        realised_execution = sum(float(t.execution_cost_usdt) for t in trades)
+        accrued_open = float(self.broker.accrued_entry_commissions())
+        realised = sum(float(t.pnl) for t in trades)
+        prices = {symbol: float(price) for symbol, price in self._marks.items()}
+        unrealised_gross = float(self.broker.unrealized_pnl(prices))
+        unrealised_net = float(self.broker.unrealized_pnl_net(prices))
+        costs_realised = realised_entry + realised_exit + realised_execution
+        costs_total = costs_realised + accrued_open
+        pnl_total = realised + unrealised_net
+        open_ids = {
+            str(position.position_id): symbol
+            for symbol, position in self.broker.positions.items()
+        }
+        closed_ids = {str(trade.position_id) for trade in trades}
+        overlap = sorted(set(open_ids) & closed_ids)
+        initial = float(self.equity)
+        marked = float(self.broker.mark_to_market_equity(prices))
+        return {
+            "initial_equity_usdt": round(initial, 8),
+            "entry_commissions_realised_usdt": round(realised_entry, 8),
+            "exit_commissions_realised_usdt": round(realised_exit, 8),
+            "execution_costs_realised_usdt": round(realised_execution, 8),
+            "costs_realised_usdt": round(costs_realised, 8),
+            "entry_commissions_accrued_open_usdt": round(accrued_open, 8),
+            "costs_total_usdt": round(costs_total, 8),
+            "pnl_realised_usdt": round(realised, 8),
+            "pnl_unrealised_usdt": round(unrealised_net, 8),
+            "pnl_unrealised_gross_usdt": round(unrealised_gross, 8),
+            "pnl_total_usdt": round(pnl_total, 8),
+            "marked_equity_usdt": round(marked, 8),
+            "cash_equity_usdt": round(float(self.broker.equity), 8),
+            "open_position_ids": sorted(open_ids),
+            "overlapping_position_ids": overlap,
+            "prices_used_for_mark": {symbol: round(price, 8) for symbol, price in prices.items()},
+        }
+
     def _summary(self) -> dict[str, Any]:
         trades = list(self.broker.closed_trades)
         net = sum(float(trade.pnl) for trade in trades)
+        accounting = self._accounting(trades)
         drawdown = max_drawdown(
             (int(point["ts_ms"]), float(point["equity"])) for point in self.equity_curve
         )
@@ -1222,7 +1460,27 @@ class VisionLane:
             "closed_trades": len(trades),
             "net_realised_usdt": round(net, 6),
             "gross_realised_usdt": round(sum(float(t.gross_pnl) for t in trades), 6),
+            #: Unchanged meaning (realised closed-trade cost). The open half of the book is
+            #: named next to it so the two can never be confused again.
             "costs_usdt": round(sum(float(t.total_cost_usdt) for t in trades), 6),
+            "entry_commissions_realised_usdt": accounting["entry_commissions_realised_usdt"],
+            "exit_commissions_realised_usdt": accounting["exit_commissions_realised_usdt"],
+            "execution_costs_realised_usdt": accounting["execution_costs_realised_usdt"],
+            "costs_realised_usdt": accounting["costs_realised_usdt"],
+            "entry_commissions_accrued_open_usdt": accounting[
+                "entry_commissions_accrued_open_usdt"
+            ],
+            "costs_total_usdt": accounting["costs_total_usdt"],
+            "pnl_realised_usdt": accounting["pnl_realised_usdt"],
+            "pnl_unrealised_usdt": accounting["pnl_unrealised_usdt"],
+            "pnl_total_usdt": accounting["pnl_total_usdt"],
+            "marked_equity_usdt": accounting["marked_equity_usdt"],
+            "accounting": {
+                "schema_version": ACCOUNTING_SCHEMA_VERSION,
+                "initial_equity_usdt": accounting["initial_equity_usdt"],
+                "mark_prices": accounting["prices_used_for_mark"],
+                "meanings": dict(COST_MEANINGS),
+            },
             "final_equity_usdt": round(float(self.broker.equity), 6),
             "risk_equity_usdt": round(float(self.risk.equity), 6),
             "drawdown_pct": (
@@ -1245,6 +1503,17 @@ class VisionLane:
                     "side": position.side,
                     "entry_price": float(position.entry_price),
                     "notional_usdt": float(position.notional_usdt),
+                    "position_id": str(position.position_id),
+                    "entry_commission_usdt": round(float(position.entry_commission), 8),
+                    "mark_price": float(self._marks.get(symbol, 0.0)),
+                    "unrealised_pnl_usdt": round(
+                        float(
+                            position.unrealized_pnl(float(self._marks.get(symbol, 0.0)))
+                        ),
+                        8,
+                    )
+                    if float(self._marks.get(symbol, 0.0)) > 0
+                    else None,
                 }
                 for symbol, position in self.broker.positions.items()
             },
@@ -1276,11 +1545,34 @@ class VisionLane:
             for entry in self._entry_provenance.values()
             if "quote_lag_ms" in entry
         ]
+        sources: dict[str, int] = {}
+        for entry in self._entry_provenance.values():
+            source = str(entry.get("quote_source") or "unknown")
+            sources[source] = sources.get(source, 0) + 1
+        sub_bar_fills = sum(
+            1
+            for entry in self._entry_provenance.values()
+            if str(entry.get("quote_source") or BAR_OPEN_SOURCE) != BAR_OPEN_SOURCE
+        )
         return {
             "quote_source": "bar_open",
+            "entry_quote_sources": dict(sorted(sources.items())),
+            "subbar_entries": self.subbar_entries,
+            "sub_bar_fills": sub_bar_fills,
+            #: A bar-open fill already sees its whole bar; an inside-bar fill only sees the
+            #: minutes strictly after it. Named so the difference is auditable.
+            "entry_bar_range_policy": (
+                "minutes_strictly_after_the_fill"
+                if sub_bar_fills
+                else "full_bar_from_its_open"
+            ),
             "bar_interval_ms": self.interval_ms,
             "max_opinion_age_ms": self.max_opinion_age_ms,
-            "stop_coverage": "entry_at_open_full_bar",
+            "stop_coverage": (
+                "entry_bar_from_the_fill"
+                if sub_bar_fills
+                else "entry_at_open_full_bar"
+            ),
             "gap_policy": "open_on_gap",
             "open_phase_order": "gap_close>mark>entries>intrabar",
             "exit_ts_resolutions": ["OPEN_GAP", "BAR_WINDOW", "QUOTE"],
@@ -1322,6 +1614,7 @@ class VisionLane:
         execution_cost = sum(float(trade.execution_cost_usdt) for trade in trades)
         entry_commission = sum(float(trade.entry_commission) for trade in trades)
         exit_commission = sum(float(trade.exit_commission) for trade in trades)
+        accounting = self._accounting(trades)
         marked_now = float(self.broker.mark_to_market_equity(dict(self._marks)))
         curve_end = float(self.equity_curve[-1]["equity"]) if self.equity_curve else final
         tolerance = 1e-6
@@ -1336,7 +1629,18 @@ class VisionLane:
             "execution_cost_usdt": round(execution_cost, 8),
             "entry_commission_usdt": round(entry_commission, 8),
             "exit_commission_usdt": round(exit_commission, 8),
+            #: The open half of the book, kept apart from the realised half.
+            "accounting_schema_version": ACCOUNTING_SCHEMA_VERSION,
+            "costs_realised_usdt": accounting["costs_realised_usdt"],
+            "entry_commissions_accrued_open_usdt": accounting[
+                "entry_commissions_accrued_open_usdt"
+            ],
+            "costs_total_usdt": accounting["costs_total_usdt"],
+            "unrealised_pnl_gross_usdt": accounting["pnl_unrealised_gross_usdt"],
+            "unrealised_pnl_net_usdt": accounting["pnl_unrealised_usdt"],
+            "pnl_total_usdt": accounting["pnl_total_usdt"],
             "open_positions_at_end": len(self.broker.positions),
+            "open_position_ids_at_end": accounting["open_position_ids"],
             "open_gap_exits": int(self.counters.get("gap_exits", 0)),
             "marks_complete_at_end": all(
                 float(self._marks.get(symbol, 0.0)) > 0 for symbol in self.broker.positions
@@ -1356,6 +1660,40 @@ class VisionLane:
                 "every_close_after_its_entry_quote": all(
                     self._close_after_entry(trade) for trade in trades
                 ),
+                "every_fill_pays_at_or_after_its_answer": all(
+                    "quote_ts_ms" in entry
+                    and "received_at_ms" in entry
+                    and int(entry["quote_ts_ms"]) >= int(entry["received_at_ms"])
+                    for entry in self._entry_provenance.values()
+                ),
+                # 003H: the open half of the book is accounted for, named and disjoint.
+                "total_costs_equal_realised_plus_accrued": abs(
+                    accounting["costs_total_usdt"]
+                    - (accounting["costs_realised_usdt"] + accounting["entry_commissions_accrued_open_usdt"])
+                )
+                <= tolerance,
+                "realised_costs_equal_closed_trade_legs": abs(
+                    accounting["costs_realised_usdt"]
+                    - (entry_commission + exit_commission + execution_cost)
+                )
+                <= tolerance,
+                "marked_equity_rebuilds_from_open_position": abs(
+                    marked_now
+                    - (
+                        final
+                        + accounting["pnl_unrealised_gross_usdt"]
+                        - accounting["entry_commissions_accrued_open_usdt"]
+                    )
+                )
+                <= tolerance,
+                "total_pnl_moves_the_marked_book": abs(
+                    accounting["marked_equity_usdt"]
+                    - (initial + accounting["pnl_total_usdt"])
+                )
+                <= tolerance,
+                "open_positions_are_disjoint_from_closed_trades": not accounting[
+                    "overlapping_position_ids"
+                ],
             },
         }
 

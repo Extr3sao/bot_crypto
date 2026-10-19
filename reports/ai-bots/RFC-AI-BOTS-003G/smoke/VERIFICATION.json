@@ -1,0 +1,134 @@
+{
+  "checks": [
+    {
+      "code": "stream_chain_intact",
+      "detail": "5 chained rows",
+      "ok": true
+    },
+    {
+      "code": "session_is_paper",
+      "detail": "mode=PAPER live_enabled=False",
+      "ok": true
+    },
+    {
+      "code": "subbar_enabled_for_paper_only",
+      "detail": "subbar_entries=PAPER_ONLY",
+      "ok": true
+    },
+    {
+      "code": "tested_runtime_equals_used_runtime",
+      "detail": "src/trading_bot/vision/prospective.py: db59c211f3b259b8f70755a8153afd97696d53e30c17315559cb3e69c9315f79 -> e4ff5753c2f9b425b78c21caef1e462ddf5bfbee50595219ad58afa36a54e404; src/trading_bot/market_data/minute_collector.py: ab1a057ffd23b9cd03b26367a693379e02d3da6a443a1390e6089d9a1d27c495 -> 4fd7ddd8baa9e827f14a4565ef1dc92a685f400e44a2c0eed73a5366862bc0f9",
+      "ok": false
+    },
+    {
+      "code": "no_live_order_route_in_runtime",
+      "detail": "no order endpoint or order call in the runtime set",
+      "ok": true
+    },
+    {
+      "code": "every_stored_minute_is_closed",
+      "detail": "no forming bar was stored",
+      "ok": true
+    },
+    {
+      "code": "minutes_strictly_increasing",
+      "detail": "no duplicate or out-of-order minute in any store",
+      "ok": true
+    },
+    {
+      "code": "a_cycle_was_executed",
+      "detail": "2 executed cycles",
+      "ok": true
+    },
+    {
+      "code": "data_time_le_decision_time",
+      "detail": "ok",
+      "ok": true
+    },
+    {
+      "code": "declared_delay_is_inside_the_wait",
+      "detail": "declared delivery delay respected",
+      "ok": true
+    },
+    {
+      "code": "published_series_rebuilds_from_minutes",
+      "detail": "per-cycle series digests match",
+      "ok": true
+    },
+    {
+      "code": "cycle_ledgers_are_chained",
+      "detail": "chains intact",
+      "ok": true
+    },
+    {
+      "code": "subbar_fills_are_observed_prices",
+      "detail": "fill price = 1m open at or after the answer",
+      "ok": true
+    },
+    {
+      "code": "entry_bar_range_is_post_fill",
+      "detail": "range rebuilt minute by minute",
+      "ok": true
+    },
+    {
+      "code": "at_least_one_subbar_fill",
+      "detail": "1 of 1 fills happened inside the entry bar",
+      "ok": true
+    },
+    {
+      "code": "fills_have_an_approved_risk_gate",
+      "detail": "every fill joins an approved decision",
+      "ok": true
+    },
+    {
+      "code": "close_pnl_identity_holds",
+      "detail": "net = gross - commissions - execution cost",
+      "ok": true
+    },
+    {
+      "code": "no_past_decision_changed",
+      "detail": "prefix determinism checked",
+      "ok": true
+    },
+    {
+      "code": "summary_net_matches_ledger",
+      "detail": "summary=0 ledger=0",
+      "ok": true
+    },
+    {
+      "code": "summary_fills_match_ledger",
+      "detail": "summary=1 ledger=1",
+      "ok": true
+    },
+    {
+      "code": "summary_closed_match_ledger",
+      "detail": "summary=0 ledger=0",
+      "ok": true
+    },
+    {
+      "code": "no_live_orders_recorded",
+      "detail": "every stream row records live_orders=0",
+      "ok": true
+    },
+    {
+      "code": "no_live_mode_in_any_artifact",
+      "detail": "no artefact claims LIVE",
+      "ok": true
+    },
+    {
+      "code": "receipt_is_never_before_the_close",
+      "detail": "420 minutes with a positive delivery latency",
+      "ok": true
+    },
+    {
+      "code": "manifest_matches_the_minute_bytes",
+      "detail": "each store's sha256 matches the manifest",
+      "ok": true
+    }
+  ],
+  "failed": 1,
+  "passed": 24,
+  "schema_version": "AI_BOTS_003G_VERIFICATION_V1",
+  "session": "reports\\ai-bots\\RFC-AI-BOTS-003G\\smoke",
+  "verdict": "FAIL"
+}

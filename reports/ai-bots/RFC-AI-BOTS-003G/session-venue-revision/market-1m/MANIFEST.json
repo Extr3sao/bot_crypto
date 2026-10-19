@@ -1,0 +1,46 @@
+{
+  "blocked": {
+    "ETHUSDT": "DUPLICATE_CONFLICT: ETHUSDT minute 1792394280000 was already stored as (2435.46, 2435.63, 2434.27, 2434.28, 60.3066) and arrived again as (2435.46, 2435.63, 2434.02, 2434.02, 60.9785); one of the two observations is not the bar, so the symbol is blocked rather than silently overwritten"
+  },
+  "events": 2544,
+  "events_sha256": "706eabcd8d62e7c5a90bd53031f86b96549351212b95416bb5714664d9f3467e",
+  "generated_at_utc": "2026-10-19T07:27:33Z",
+  "max_skew_ms": 5000,
+  "schema_version": "MINUTE_COLLECTOR_MANIFEST_V1",
+  "settle_ms": 2500,
+  "skew_ms": -176,
+  "source": "binance_spot_rest_1m",
+  "stale_after_ms": 150000,
+  "symbols": {
+    "BTCUSDT": {
+      "contiguous_tail_minutes": 269,
+      "dropped_prefix_minutes": 0,
+      "first_open_ms": 1792378680000,
+      "first_open_utc": "2026-10-19T02:58:00Z",
+      "gaps": [],
+      "health": {
+        "reason": "the last closed minute arrived inside its window",
+        "state": "OK"
+      },
+      "last_open_ms": 1792394760000,
+      "last_open_utc": "2026-10-19T07:26:00Z",
+      "minutes": 269,
+      "sha256": "7064384ef6e80e685e7c0fd7ecce3b838177007bf95efe6bd1ebd3da0d5416d4"
+    },
+    "ETHUSDT": {
+      "contiguous_tail_minutes": 260,
+      "dropped_prefix_minutes": 0,
+      "first_open_ms": 1792378740000,
+      "first_open_utc": "2026-10-19T02:59:00Z",
+      "gaps": [],
+      "health": {
+        "reason": "DUPLICATE_CONFLICT: ETHUSDT minute 1792394280000 was already stored as (2435.46, 2435.63, 2434.27, 2434.28, 60.3066) and arrived again as (2435.46, 2435.63, 2434.02, 2434.02, 60.9785); one of the two observations is not the bar, so the symbol is blocked rather than silently overwritten",
+        "state": "BLOCKED"
+      },
+      "last_open_ms": 1792394280000,
+      "last_open_utc": "2026-10-19T07:18:00Z",
+      "minutes": 260,
+      "sha256": "798e2a1024ad98bfdc8b9e2e79538b6684e6a75c5a2b9f92e3db3ab39b106c72"
+    }
+  }
+}

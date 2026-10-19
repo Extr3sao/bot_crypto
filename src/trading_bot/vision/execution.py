@@ -66,6 +66,26 @@ class Quote:
 
 
 @dataclass(frozen=True, slots=True)
+class QuoteRange:
+    """What a finer feed observed *after* an instant, inside one bar.
+
+    ``after_ms`` is exclusive on purpose: the minute that contains the fill may have
+    printed a high or a low before the fill instant, and a minute OHLC does not say in
+    which order. Using it whole would be the look-ahead this record exists to prevent,
+    so the first observable minute is the one that opens strictly after the fill.
+    """
+
+    symbol: str
+    after_ms: int
+    until_ms: int
+    minutes: int
+    high: float
+    low: float
+    last: float
+    source: str
+
+
+@dataclass(frozen=True, slots=True)
 class CoverageProof:
     """Independent evidence that a missing bar is not a market outage.
 
@@ -112,6 +132,27 @@ class QuoteFeed(Protocol):
     def prove_coverage(
         self, symbol: str, missing_bar_open_ms: int, interval_ms: int
     ) -> CoverageProof | None: ...
+
+
+@runtime_checkable
+class SubBarQuoteFeed(Protocol):
+    """A feed that can price *inside* a bar, and prove how far after the fill it read.
+
+    The two methods answer different questions and are kept apart: one is the price that
+    exists at or after an instant (never before it), the other is the range the price
+    covered strictly after the fill, which is the only part of the entry bar a stop is
+    allowed to see.
+    """
+
+    name: str
+
+    def first_quote_at_or_after(
+        self, symbol: str, ts_ms: int, *, horizon_ms: int
+    ) -> Quote | None: ...
+
+    def range_between(
+        self, symbol: str, after_ms: int, until_ms: int
+    ) -> QuoteRange | None: ...
 
 
 @dataclass(frozen=True, slots=True)

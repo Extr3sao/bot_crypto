@@ -162,15 +162,38 @@ def _artifact_digest(root: Path) -> dict[str, str]:
     return digests
 
 
-def test_runtime_artifacts_are_untouched_by_serving() -> None:
-    before = _artifact_digest(REPO)
-    with _serving(_obs()) as (host, port):
+def _seeded_root(tmp_path: Path) -> Path:
+    """A repository root owned by this test, with real artifacts inside ``reports/``.
+
+    003H: the property under test is *the dashboard does not write to the artifacts it
+    serves*. Hashing the live ``reports/`` measured something else as well — every other
+    writer in the checkout — so a PAPER session appending its minutes (or another agent
+    touching a report) failed the test while the dashboard had written nothing. Reproduced
+    on 2026-10-19: with a foreign writer appending one file, the digest differed for that
+    file alone and for no other of the 7 844 artifacts.
+    """
+    root = tmp_path / "served"
+    run = root / "reports" / "ai-bots" / "sample-run"
+    run.mkdir(parents=True)
+    (run / "RUN_REPORT.json").write_text('{"schema_version":"probe/1"}', encoding="utf-8")
+    (run / "summary.json").write_text('{"fills": 1, "closed_trades": 0}', encoding="utf-8")
+    (root / "reports" / "runtime").mkdir(parents=True)
+    (root / "reports" / "runtime" / "decisions.jsonl").write_text(
+        '{"kind": "RUN"}\n', encoding="utf-8"
+    )
+    return root
+
+
+def test_runtime_artifacts_are_untouched_by_serving(tmp_path: Path) -> None:
+    root = _seeded_root(tmp_path)
+    before = _artifact_digest(root)
+    with _serving(StrategyEcosystemObservatory(repo_root=root)) as (host, port):
         conn = http.client.HTTPConnection(host, port, timeout=10)
         for path in ("/api/snapshot", "/api/traces", "/api/system", "/api/agents"):
             conn.request("GET", path)
             conn.getresponse().read()
         conn.close()
-    assert _artifact_digest(REPO) == before
+    assert _artifact_digest(root) == before
 
 
 def test_sse_stream_opens_and_closes_cleanly() -> None:

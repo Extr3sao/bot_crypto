@@ -736,3 +736,174 @@ git log -1 --format='%H %s'
 **Siguiente WP**: `AI-BOTS-003D` (proveedor offline, `NO_KEY => BLOCKED`) y `003E` (colector
 prospectivo append-only que satisfaga `QuoteFeed.prove_coverage`). Sin cotizaciones reales el
 carril no opera un hueco: ahora es una fila `DATA_GAP`, no una convención del informe.
+
+
+---
+
+## 2026-10-18 · RFC-TAP-AI-BOTS-003F — ejecución sub-bar, panel real y auditoría de 003D/003E
+
+**Rama:** `agent/ai-bots/RFC-TAP-AI-BOTS-003` · **Base:** `fe9b5e2` · **Sin commits** (el
+operador no autorizó commit/push). **LIVE no habilitado**, `config/risk.yaml` intacto.
+
+**Procedencia P0.** `RFC-TAP-AI-BOTS-003F.md` no existía en HEAD, ramas ni worktrees
+(comandos en `reports/ai-bots/RFC-AI-BOTS-003F/STATE_AUDIT.md`); se reconstruyó y se marca
+como tal en el propio documento.
+
+**Hecho**
+
+1. 003D auditado: verificado (10 PASS / 0 FAIL, 4/4 mutaciones, 16 tests) pero **sin
+   commitear** en `../bot_crypto_003d`, worktree sin venv. Su dependencia se importó al árbol
+   canónico (feed, tests, scripts, datos, informes) sin tocar aquel worktree.
+2. 003E implementado: `QuoteRange`/`SubBarQuoteFeed` en `vision/execution.py`,
+   `MinuteBarQuoteFeed.range_between` en `vision/quotes.py`, `subbar_entries=False` por
+   defecto en `vision/lane.py` con relleno en el primer minuto posterior, rechazo de feed que
+   responde hacia atrás y rango de la vela de entrada limitado a minutos posteriores.
+3. Economía medida (mismos 34 trades): CURRENT −97,926767 → PROPOSED −79,180509 USDT
+   (+18,746258), DD −0,187463 pp, espera mediana 3 599 100 → 59 100 ms, precio +22,618 bps,
+   Δnotional 0,0, llamadas/gasto 74/0,0 en ambos. Control a 0 ms idéntico.
+4. Panel `VISION LANE` en el dashboard PAPER existente, alimentado por artefactos reales
+   (estados ABSENT/PARTIAL/FAILED/VERIFIED, sha256 por fuente). Servido en vivo en
+   `127.0.0.1:8787` (`vision_lane.state = VERIFIED`).
+5. Verificación independiente: `scripts/ai_bots_003e_verify.py` **12 PASS / 0 FAIL**,
+   **4/4 mutaciones**; 003C re-verificado 24/24; 003D 10/10.
+
+```text
+RED (sin QuoteRange)                 ImportError                              exit 2
+GREEN sub-bar                        tests/unit/vision/test_subbar_execution  6 passed
+GREEN visión / paper / riesgo / intelligence / reports    182 / 73 / 147 / 28 / 51
+GREEN observabilidad / proveedor     39 / 12 passed                           exit 0
+GREEN ruff + mypy (tocado)           limpio                                   exit 0
+captura 4 escenarios + verify ×2     12 PASS / 0 FAIL · mutaciones 4/4        exit 0
+dashboard en vivo                    /api/status vision_lane VERIFIED         exit 0
+```
+
+**Pendiente / bloqueado**
+
+- `REAL_MODEL_CALLED=false`: sin clave ni autorización de gasto; la puerta de credenciales ya
+  existía (`MISSING_CREDENTIAL`, test que prueba que sin clave no hay petición HTTP).
+- Feed de 1 m **vivo** inexistente: la capacidad sub-bar es opt-in y ningún runner la activa.
+- `BUILDER != VERIFIER` como segundo agente sigue pendiente; G6 lo registró el constructor en
+  `REGRESSION.json` y así se declara.
+- Suite completa del repositorio no ejecutada (~180 rutas ajenas en vuelo).
+- **Disco CRÍTICO: 0,77 GB libres**; el dashboard lo marca `CRITICAL`. Artefactos de 003E:
+  1,3 MB. No se descargaron datos nuevos.
+- 0 ejecuciones REA nuevas (evidencia REA existente reutilizada; disco crítico y roadmap
+  prohíben repetir investigación). Ningún patrón externo pasa de `DEFER`/`EXPERIMENT`.
+
+**Reanudación verificable**
+
+```bash
+cd "$(git rev-parse --show-toplevel)"
+./.venv/Scripts/python.exe -m pytest tests/unit/vision/test_subbar_execution.py -q   # 6 passed
+./.venv/Scripts/python.exe scripts/ai_bots_003e_verify.py                           # 12 PASS
+./.venv/Scripts/python.exe scripts/ai_bots_003e_verify.py --mutations               # 4/4
+./.venv/Scripts/python.exe -m pytest tests/unit/observability/test_vision_panel.py -q  # 5 passed
+./.venv/Scripts/python.exe scripts/paper_lab_dashboard.py --once | grep "VISION LANE"
+```
+
+**Siguiente WP**: `WP-TAP-AI-BOTS-003G` (`003E/NEXT_WORK_PACKAGE.md`) — colector de 1 m append-only y activación
+explícita de `subbar_entries` en el runner PAPER cuando el feed vivo exista.
+
+## 2026-10-19 · RFC-TAP-AI-BOTS-003G — colector 1 m real y sesión PAPER prospectiva
+
+**Objetivo:** conectar el carril causal con velas reales de 1 m, operar prospectivamente en
+PAPER y dejar trazas reconstruibles desde los bytes crudos. Ver `RFC-TAP-AI-BOTS-003G.md` y
+`reports/ai-bots/RFC-AI-BOTS-003G/FINAL_REPORT.md`.
+
+**Rama:** `agent/ai-bots/RFC-TAP-AI-BOTS-003` · **Último commit:** `fe9b5e2` · **Sin commitear:**
+todo el trabajo de 003G (el operador no autorizó commit/push).
+
+**Hecho**
+
+1. `src/trading_bot/market_data/minute_collector.py`: fuente Binance REST pública
+   (`klines`/`time`), dos relojes y tres timestamps, vela en formación nunca guardada,
+   duplicado idéntico ignorado / conflicto bloquea sin reescribir, desorden bloquea, huecos
+   rellenados hacia delante antes de aceptar el minuto posterior, reconexión con backoff,
+   frescura/skew, JSONL append-only + `MANIFEST.json` con sha256 + `EVENTS.jsonl` encadenado.
+2. `src/trading_bot/vision/prospective.py`: sesión PAPER-only (`LiveModeRefused`), medición real
+   de `data_delay_ms` (p95 de minutos cerrados tras el inicio), gate
+   `decision_time >= data_time + delay + settle`, `BLOCKED` fail-closed, prefijo determinista
+   entre ciclos.
+3. `vision/lane.py`: `decision_from_ms` opt-in para que ninguna decisión use el warm-up.
+4. `scripts/ai_bots_003g_paper.py`, `ai_bots_003g_compare.py`, `ai_bots_003g_verify.py`.
+5. Sesión real de 32 min: 276 min × 2 símbolos, 0 gaps, 8 ciclos, 14 decisiones, **1 relleno
+   sub-bar**, 0 bloqueos, retardo medido 2 956 ms. Comparación: CURRENT 0 rellenos / PROPOSED 1.
+6. Defectos corregidos durante la ejecución: grupo 5 m cortado por el inicio (D1), vela revisada
+   por el venue → `settle_ms` 2 500 (D2), mismo defecto en el verificador (D3).
+
+**Pendiente / bloqueado**
+
+- `INDEPENDENT_VERIFICATION_PENDING`: verificador propio (25 PASS / 0 FAIL, 4/4 mutaciones)
+  pero `BUILDER == VERIFIER`.
+- `INSUFFICIENT_SAMPLE`: 1 relleno, 0 cierres; la puerta económica de 003F exige ≥ 30.
+- `REAL_MODEL_CALLED=false`: sin clave ni autorización de gasto; señal `paper-script`.
+- D5 declarado, no corregido: `costs_usdt` sólo agrega operaciones cerradas (0,5 USDT de la
+  posición abierta no aparecen en ese campo, sí en el equity marcado).
+- G6: `test_runtime_artifacts_are_untouched_by_serving` falla si un escritor toca `reports/`
+  durante la suite; aislado 14/14.
+
+**Reanudación verificable**
+
+```bash
+cd "$(git rev-parse --show-toplevel)"
+./.venv/Scripts/python.exe -m pytest tests/unit/market_data tests/unit/vision/test_prospective_session.py -q
+./.venv/Scripts/python.exe scripts/ai_bots_003g_verify.py \
+  --session reports/ai-bots/RFC-AI-BOTS-003G/session --root .        # 25 PASS / 0 FAIL
+./.venv/Scripts/python.exe scripts/ai_bots_003g_compare.py \
+  --session reports/ai-bots/RFC-AI-BOTS-003G/session                 # CURRENT 0 / PROPOSED 1
+```
+
+## 2026-10-19 · RFC-TAP-AI-BOTS-003H — integridad contable y preparación PAPER
+
+**Objetivo:** resolver D5 de 003G (contabilidad de posiciones abiertas) y los defectos de
+validación pendientes, conservando la evidencia original. Ver `RFC-TAP-AI-BOTS-003H.md`.
+
+**Rama:** `agent/ai-bots/RFC-TAP-AI-BOTS-003` · **Último commit:** `fe9b5e2` · **Sin commitear:**
+todo 003G/003H salvo lo que este WP commitee al cerrar.
+
+**Hecho**
+
+1. Auditoría: `costs_usdt` sólo sumaba operaciones cerradas (`lane.py:1365`), el broker ya
+   calculaba el devengo y el equity marcado ya lo descontaba; la fila `FILL` no llevaba la
+   comisión. Discrepancia de duración atribuida: los 50 min declarados son de
+   `session-aborted-aggregation` (duration_s=3000), la sesión publicada declaró 2 400 s y
+   terminó por `--max-cycles 8` a los 31 min 26 s de reloj.
+2. Contrato `paper-accounting/2` en el lane: `costs_usdt` intacto; nuevos
+   `costs_realised_usdt`, `entry_commissions_accrued_open_usdt`, `costs_total_usdt`,
+   `pnl_realised_usdt`, `pnl_unrealised_usdt`, `pnl_total_usdt`, `marked_equity_usdt`, con
+   significados publicados y cinco identidades nuevas en `reconciliation.identities`.
+   La fila `FILL` publica `entry_commission_usdt`, `commission_bps`, `price_bps_per_side`.
+3. Dashboard: fallo reproducido (1 fichero ajeno de 7 845 difiere) y corregido aislando el
+   sujeto en `tmp_path`; 14/14 con escritor concurrente activo.
+4. Tests nuevos: `tests/unit/vision/test_accounting_integrity.py` (5) y
+   `tests/unit/market_data/test_data_integrity_003h.py` (6, incluidos los cuatro instantes y
+   las dos esperas).
+5. Verificador nuevo `scripts/ai_bots_003h_verify.py` (33 checks: los 25 de 003G por
+   importación + 8 de contabilidad/instantes/settle/proyección).
+
+**Hecho después (verificado)**
+
+- Smoke PAPER de 10 ciclos con código congelado: **terminado**. 1 relleno, 0 cierres,
+  `costs_total_usdt = 0,5`, `pnl_unrealised_usdt = +0,49443125`, `marked_equity_usdt =
+  10 000,49443125`, 11 identidades, `settle` mínimo 2 544 ms. Verificador de 003H: 33/33 y
+  sobre 003G 5 fallos (demuestra que no es vacuo). H1-H7 PASS, H8 `INSUFFICIENT_SAMPLE`.
+  Evidencia: `reports/ai-bots/RFC-AI-BOTS-003H/{RUN_REPORT,FINAL_REPORT,INDEPENDENT_VERIFICATION}.md`.
+- Regresión amplia: 671 passed, exit 0 (unit/contract/integration/runtime/wide).
+
+**Pendiente / bloqueado**
+
+- `INDEPENDENT_VERIFICATION_PENDING`: sin segundo agente revisor.
+- Drift declarado: el verificador de 003G pasa 24/25 sobre su propia sesión porque 003H cambió
+  `lane.py` y `prospective.py` (`STATE_AUDIT.md` §6.1).
+- Ajenos pendientes en el árbol (no se tocan): `data/st6/**`, `reports/economic-recovery/**`,
+  `scripts/paper_lab_dashboard.py`, `RUN_REPORT.*` de raíz, etc.
+
+**Reanudación verificable**
+
+```bash
+cd "$(git rev-parse --show-toplevel)"
+./.venv/Scripts/python.exe -m pytest tests/unit/vision/test_accounting_integrity.py \
+  tests/unit/market_data/test_data_integrity_003h.py tests/unit/observability/test_dashboard_server.py -q
+./.venv/Scripts/python.exe scripts/ai_bots_003h_verify.py \
+  --session reports/ai-bots/RFC-AI-BOTS-003H/smoke --root . --json-out /tmp/003h.json
+```
