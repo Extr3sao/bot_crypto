@@ -1,0 +1,129 @@
+{
+  "checks": [
+    {
+      "check": "V1_dataset_provenance",
+      "detail": "3 files, drifted=[]",
+      "status": "PASS"
+    },
+    {
+      "check": "V2_config_frozen",
+      "detail": "3 config digests",
+      "status": "PASS"
+    },
+    {
+      "check": "V3_design_binding",
+      "detail": "design sha256 a0776fa3fbe6d2e1…",
+      "status": "PASS"
+    },
+    {
+      "check": "V4_holdout_closed",
+      "detail": "0 rows at or after 2026-08-06T00:00:00Z; partitions inside=True",
+      "status": "PASS"
+    },
+    {
+      "check": "V5_forward_returns_recomputed",
+      "detail": "6692 values compared from raw bars, 0 mismatched",
+      "status": "PASS"
+    },
+    {
+      "check": "V6_means_consistent",
+      "detail": "72 symbol cells, 0 inconsistencies",
+      "status": "PASS"
+    },
+    {
+      "check": "V7_multiple_testing",
+      "detail": "1 surviving cells; builder=1",
+      "status": "PASS"
+    },
+    {
+      "check": "V8_cost_subtracted",
+      "detail": "costs={'BTCUSDT': 24.786, 'ETHUSDT': 24.786, 'SOLUSDT': 27.31}, 0 defects",
+      "status": "PASS"
+    },
+    {
+      "check": "V9_closed_trade_view",
+      "detail": "24 cells priced; unpriced=0; censored=0",
+      "status": "PASS"
+    },
+    {
+      "check": "V10_no_promotion",
+      "detail": "paper/live authorisation untouched",
+      "status": "PASS"
+    },
+    {
+      "check": "V11_verdict_from_numbers",
+      "detail": "0 advanced candidates",
+      "status": "PASS"
+    },
+    {
+      "check": "V12_runtime_paper",
+      "detail": "mode=paper live_enabled=False",
+      "status": "PASS"
+    }
+  ],
+  "controls": [
+    {
+      "control": "tampered_forward_return",
+      "detail": "breakout/1h/BTCUSDT shifted by +50 bps",
+      "detected": true
+    },
+    {
+      "control": "holdout_injection",
+      "detail": "a row at 2026-08-10T00:00:00Z is outside every allowed partition",
+      "detected": true
+    },
+    {
+      "control": "cost_omitted",
+      "detail": "6 cells would pass a zero-cost gate and fail the real one: ['momentum/1h', 'breakout/1h', 'mean_reversion/5m']",
+      "detected": true
+    },
+    {
+      "control": "false_success",
+      "detail": "a negative-net cell relabelled ADVANCE is contradicted by its own number",
+      "detected": true
+    },
+    {
+      "control": "multiple_testing_inoperative",
+      "detail": "q=1.0 keeps 84 vs 1 at q=0.1",
+      "detected": true
+    },
+    {
+      "control": "dataset_byte_append",
+      "detail": "an appended byte changes the digest the design froze",
+      "detected": true
+    },
+    {
+      "control": "sample_gate_inflated",
+      "detail": "the smallest IS cell has 0 signals; the gate is 20",
+      "detected": true
+    },
+    {
+      "control": "verdict_contradicts_gates",
+      "detail": "0 cells claim a state their gates deny",
+      "detected": true
+    },
+    {
+      "control": "cost_below_floor",
+      "detail": "min round trip 24.7864 bps vs floor 20.0 bps",
+      "detected": true
+    },
+    {
+      "control": "closed_trade_recomputed",
+      "detail": "35 closed trades recomputed here, 0 mismatched; 35 change when the fees are removed: []",
+      "detected": true
+    }
+  ],
+  "experiment": "EXP-003N-GROSS-FIRST-DISCOVERY-001",
+  "generated_at_utc": "2026-10-20T19:38:28Z",
+  "schema_version": "AI_BOTS_003N_VERIFICATION_V1",
+  "summary": {
+    "checks": 12,
+    "controls": 10,
+    "controls_detected": 10,
+    "failed": 0,
+    "false_success": 0,
+    "passed": 12
+  },
+  "verdict": "PASS",
+  "verifier": "scripts/exp_003n_verify.py (shares no code with the builders)"
+}
