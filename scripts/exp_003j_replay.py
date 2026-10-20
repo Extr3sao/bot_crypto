@@ -193,11 +193,23 @@ def run_arm(
     equity: float,
     out_dir: Path,
     max_bars: int | None = None,
+    # 003K reuses this runner unchanged for a second strategy and a second dataset: the
+    # defaults are exactly the 003J values, so calling it the old way still reproduces the
+    # frozen experiment.
+    dataset_dir: Path = DATASET_DIR,
+    strategy_id: str = STRATEGY_EMA_CROSSOVER,
+    book_prefix: str = "paper-003j",
+    run_schema: str = "AI_BOTS_003J_REPLAY_RUN_V1",
+    experiment: str = "EXP-003J-REAL-SIGNAL-PAPER-001",
 ) -> dict[str, Any]:
     source = ARMS[arm]
     interval_ms = timeframe_ms(timeframe)
     series, dataset_report = load_series(
-        symbols=symbols, start_ms=start_ms, end_ms=end_ms, interval_ms=interval_ms
+        symbols=symbols,
+        start_ms=start_ms,
+        end_ms=end_ms,
+        interval_ms=interval_ms,
+        dataset_dir=dataset_dir,
     )
     if max_bars is not None:
         series = {symbol: bars[:max_bars] for symbol, bars in series.items()}
@@ -234,7 +246,7 @@ def run_arm(
         latency_ms=0,
         trace_path=trace_path,
         mode="PAPER",
-        strategy_id=STRATEGY_EMA_CROSSOVER,
+        strategy_id=strategy_id,
     )
     lane = VisionLane(
         series={symbol: list(bars) for symbol, bars in series.items()},
@@ -243,7 +255,7 @@ def run_arm(
         risk_policy=settings.risk,
         ledger_path=ledger_path,
         equity=equity,
-        book_id=f"paper-003j-{arm}",
+        book_id=f"{book_prefix}-{arm}",
         decision_every_bars=decision_every,
         # A run-scoped ceiling, not a policy: the provider is local and costs nothing, and
         # the default (300) would stop a 60-day replay well before its end.
@@ -255,11 +267,11 @@ def run_arm(
     summary = lane.run()
     entries = read_entries(ledger_path)
     meta = {
-        "schema_version": "AI_BOTS_003J_REPLAY_RUN_V1",
-        "experiment": "EXP-003J-REAL-SIGNAL-PAPER-001",
+        "schema_version": run_schema,
+        "experiment": experiment,
         "arm": arm,
         "signal_source": source,
-        "strategy_id": STRATEGY_EMA_CROSSOVER if arm == "real" else None,
+        "strategy_id": strategy_id if arm == "real" else None,
         "partition": partition,
         "window_start_utc": _utc(start_ms),
         "window_end_utc": _utc(end_ms),
@@ -298,6 +310,7 @@ def run_arm(
                 "no_trade": getattr(provider, "no_trade", None),
                 "blocked": getattr(provider, "blocked", None),
                 "rotation_seen": getattr(provider, "seen", None),
+                "strategy_version": getattr(provider, "strategy_version", None),
             }.items()
             if value is not None
         },
@@ -390,11 +403,17 @@ def main(argv: list[str] | None = None) -> int:
             )
             left = _normalized(read_entries(first["dir"] / "ledger.jsonl"))
             right = _normalized(read_entries(second["dir"] / "ledger.jsonl"))
+            # ``identical`` used to sit next to two different ledger hashes, because it meant
+            # "identical after the wall-clock stamp is removed" and nothing said so.  The names
+            # now claim exactly what was measured: the row bodies, and the bytes separately.
             verdict = {
                 "arm": arm,
                 "partition": args.partition,
                 "rows": len(left),
-                "identical": left == right,
+                "rows_identical": left == right,
+                "byte_identical": first["ledger_sha256"] == second["ledger_sha256"],
+                "comparison": "ledger row bodies, with recorded_at_utc removed from each row",
+                "fields_excluded": ["recorded_at_utc"],
                 "first_sha256": first["ledger_sha256"],
                 "second_sha256": second["ledger_sha256"],
             }
@@ -403,7 +422,7 @@ def main(argv: list[str] | None = None) -> int:
                 encoding="utf-8",
                 newline="\n",
             )
-            if not verdict["identical"]:
+            if not verdict["rows_identical"]:
                 print(f"[003j-replay] FAIL — {arm} is not reproducible", file=sys.stderr)
                 return 1
         summary = first["meta"]["summary"]

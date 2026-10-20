@@ -37,12 +37,13 @@ from trading_bot.vision.prospective import (  # noqa: E402
     ProspectiveSession,
     SessionAborted,
 )
-from trading_bot.vision.signal_sources import (  # noqa: E402
-    SIGNAL_SOURCES,
-    SIGNAL_SOURCE_LEGACY,
-    STRATEGY_EMA_CROSSOVER,
-)
 from trading_bot.vision.settings import load_vision_config  # noqa: E402
+from trading_bot.vision.signal_sources import (  # noqa: E402
+    SIGNAL_SOURCE_LEGACY,
+    SIGNAL_SOURCES,
+    STRATEGY_EMA_CROSSOVER,
+    SUPPORTED_STRATEGIES,
+)
 
 DEFAULT_OUT = REPO / "reports" / "ai-bots" / "RFC-AI-BOTS-003G" / "session"
 
@@ -81,7 +82,12 @@ def main(argv: list[str] | None = None) -> int:
         choices=SIGNAL_SOURCES,
         help="legacy_parity (script) or strategy_experimental (runtime strategy family)",
     )
-    parser.add_argument("--strategy-id", default=STRATEGY_EMA_CROSSOVER)
+    parser.add_argument(
+        "--strategy-id",
+        default=STRATEGY_EMA_CROSSOVER,
+        choices=SUPPORTED_STRATEGIES,
+        help="family the experimental source may ask (default: ema_crossover)",
+    )
     parser.add_argument("--out", default=str(DEFAULT_OUT))
     args = parser.parse_args(argv)
 

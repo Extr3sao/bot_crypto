@@ -48,13 +48,14 @@ from trading_bot.vision.provider import VisionRequest, VisionResponse
 from trading_bot.vision.quotes import MinuteBarQuoteFeed, MinuteSeries
 from trading_bot.vision.settings import VisionConfig
 from trading_bot.vision.signal_sources import (
-    MIN_CANDLES,
     SIGNAL_SOURCE_LEGACY,
     SIGNAL_SOURCE_STRATEGY,
     SIGNAL_SOURCES,
     STRATEGY_EMA_CROSSOVER,
+    SUPPORTED_STRATEGIES,
     SignalSourceConfigError,
     build_signal_provider,
+    min_candles_for,
     provider_name,
 )
 
@@ -161,15 +162,19 @@ class ProspectiveConfig:
             raise SignalSourceConfigError(
                 f"unknown signal source {self.signal_source!r}; allowed: {list(SIGNAL_SOURCES)}"
             )
-        if self.signal_source == SIGNAL_SOURCE_STRATEGY and self.strategy_id != STRATEGY_EMA_CROSSOVER:
+        if self.signal_source == SIGNAL_SOURCE_STRATEGY:
+            # 003K widened the admitted set to the families that already exist in
+            # ``research/families``; each one carries its own minimum window.
+            required = min_candles_for(self.strategy_id)
+            if self.window_bars < required:
+                raise SignalSourceConfigError(
+                    f"the experimental source needs window_bars >= {required} for "
+                    f"{self.strategy_id!r} (the family's own guard); got {self.window_bars}"
+                )
+        elif self.strategy_id not in SUPPORTED_STRATEGIES:
             raise SignalSourceConfigError(
-                f"strategy {self.strategy_id!r} is not admitted to the experimental source; "
-                f"the only admitted strategy is {STRATEGY_EMA_CROSSOVER!r}"
-            )
-        if self.signal_source == SIGNAL_SOURCE_STRATEGY and self.window_bars < MIN_CANDLES:
-            raise SignalSourceConfigError(
-                f"the experimental source needs window_bars >= {MIN_CANDLES} (the family's "
-                f"own guard); got {self.window_bars}"
+                f"strategy {self.strategy_id!r} is not admitted; allowed: "
+                f"{sorted(SUPPORTED_STRATEGIES)}"
             )
 
     @property

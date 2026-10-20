@@ -1,3 +1,172 @@
+## 2026-10-20 · EXP-003K-CANDIDATE-001 — segunda estrategia y suelo de costes
+
+**Objetivo:** demostrar el ciclo completo PAPER y evaluar una segunda `AlphaFamily` con ventaja
+económica verificable después de costes, sin tocar 003J. **Rama:**
+`agent/ai-bots/RFC-TAP-AI-BOTS-003` · **HEAD de partida:** `56aea83` · **Modo:** PAPER/OFFLINE,
+`LIVE_ENABLED=false`.
+
+**Hecho (medido)**
+
+1. **WP-1 — determinismo de 003J cerrado.** `control/research`: 3 541 filas, dos repeticiones
+   idénticas y **byte-idénticas al ledger congelado**. `real/research`: 3 732 filas, repeticiones
+   idénticas entre sí pero **no byte-idénticas** al congelado; la causa está medida, no supuesta:
+   sobre 10 días, 986 filas en ambos lados, mismos `kind/symbol/side/intent/entry/exit/pnl`,
+   140 fills, 140 cierres y neto `-191.2241394` en los dos. Lo que cambió es el **texto** de la
+   decisión (`rationale`, `invalidation`, `provider.response_chars`) al generalizar el adaptador.
+   Artefactos: `runs/<arm>/research/DETERMINISM.json`, `runs/real/research/SEMANTIC_PARITY.json`.
+2. **WP-1 — ciclo completo.** 732 operaciones cerradas reconstruidas desde las barras congeladas:
+   5 856/5 856 checks (precio de entrada desde el open citado, referencia de salida dentro del
+   rango de su barra, ventana de resolución, delta de caja = PnL neto, posición retirada del libro,
+   bruto recalculado desde los dos precios). `analysis/CLOSED_CYCLE.json`.
+3. **WP-2 — economía.** El OOS de 003J está **dominado por costes**: bruto de referencia
+   `+0.416601` USDT frente a `225.817645` de costes y `-225.401044` netos (100.18 % de la pérdida).
+   El IC95 % del bruto por operación `[-0.458661, 0.433836]` contiene el cero: la entrada no tiene
+   ventaja direccional demostrable. MFE medio 0.597 % frente a −0.26 % neto por operación.
+   `analysis/ECONOMIC_AUDIT.json` con cuatro hipótesis refutables.
+4. **WP-3 — seis familias sobre dataset nuevo.** Dataset PIT `2026-06-21 → 2026-08-20`
+   (3 × 86 400 barras, 0 huecos; digests sellados antes de correr). Research: ninguna familia pasa
+   las tres puertas. Mejor bruto/op `mean_reversion` `+0.426958` USDT (47 cierres) frente al suelo
+   de costes de `1.29`. `ema_crossover` `-0.369793`; `momentum` `-0.037653`; `breakout` `-0.717660`;
+   `trend` `-0.094225`; `volatility` `-0.012953`. Etapa B **BLOCKED / NO_VIABLE_CANDIDATE** y el
+   holdout `2026-08-06 → 2026-08-20` **no se abrió**: queda intacto para el próximo experimento.
+5. **WP-4 — verificación.** Verificador separado `scripts/exp_003k_verify.py`: 11 PASS, 1
+   `NOT_EXECUTED` (holdout sin tocar, por diseño), **6/6 controles negativos detectados**
+   (look-ahead, fill anterior a la respuesta, doble contabilización, neto manipulado, selección que
+   ignora su regla, éxito falso), `false_success=0`. Tests: `325 passed` (vision+reports),
+   `ruff` 0, `mypy` 0.
+
+**Pendiente / bloqueado**
+
+- **Ninguna familia tiene ventaja bruta.** No es un problema de salidas: el suelo de costes
+  (25.8 bp round-trip sobre 500 USDT) está por encima del bruto de las seis.
+- `GAP-VK9_oos_scope`: el holdout no se usó. Declarado, no contabilizado como superado.
+- **003J arrastra un drift externo:** `RUN_REPORT.md` (13:39 local), `FINAL_REPORT.md` (13:35) y
+  `analysis/DEFECTS.json` (13:38) fueron reescritos por otro proceso/agente después del sellado de
+  las 11:45. `V17_sha256sums` da 25/28. No se reparó ni se volvió a sellar: sobrescribir ficheros
+  de otro escritor destruiría la evidencia del drift. Ledgers, dataset y `RUN_REPORT.json` siguen
+  intactos.
+- El verificador es otro programa, no otra persona (`INDEPENDENT_VERIFIER=PROGRAM_NOT_PERSON`).
+
+**Reanudación verificable**
+
+```bash
+cd "$(git rev-parse --show-toplevel)"
+./.venv/Scripts/python.exe scripts/exp_003k_audit.py
+./.venv/Scripts/python.exe scripts/exp_003k_select.py          # BLOCKED, no_viable_candidate
+./.venv/Scripts/python.exe scripts/exp_003k_cycle.py --partition research
+./.venv/Scripts/python.exe scripts/exp_003k_determinism.py --days 2
+./.venv/Scripts/python.exe scripts/exp_003k_verify.py --negative-controls
+./.venv/Scripts/python.exe scripts/exp_003k_report.py
+(cd reports/ai-bots/EXP-003K-CANDIDATE-001 && sha256sum -c SHA256SUMS.txt)
+```
+
+## 2026-10-20 · EXP-003I-THROUGHPUT-001 — diagnóstico de exposición, capacidad y cierres
+
+**Objetivo:** explicar con evidencia por qué la sesión 003I registró 0/30 cierres naturales y
+35/36 señales bloqueadas, sin cambiar el runtime ni ningún límite de riesgo. **Rama:**
+`agent/ai-bots/RFC-TAP-AI-BOTS-003` · **HEAD:** `5fd791d` · **Modo:** PAPER/OFFLINE.
+
+**Hecho (medido)**
+
+1. **Reconstrucción conciliada 11/11** contra la evidencia de 003I: 72 decisiones, 36 direccionales
+   (18 LONG + 18 SHORT, todas BTC), 35 bloqueadas, 1 relleno, 0 cierres. El escenario base
+   reproduce el relleno al céntimo (82381.72 @ 10:46:00Z), la equity marcada (9998.65205113) y
+   el drawdown (0.030308 %).
+2. **El bloqueo tiene tres capas, no una.** (a) *Generador:* `PaperScriptProvider` rota
+   `LONG/NO_TRADE/SHORT/NO_TRADE` con contador global; ETH cae siempre en NO_TRADE (36/36).
+   (b) *Capacidad:* `PaperBroker._positions` está indexado por símbolo, así que 1 slot/símbolo
+   es estructural y `max_open_positions=3` nunca se activa; tras el primer relleno, las 35
+   señales restantes del símbolo se descartan.
+   (c) *Salida:* el objetivo a +75 bp quedó por encima de la excursión favorable de +45.6 bp
+   (stop a −50 bp vs adversa −30.1 bp), así que la única posición viva no tenía nivel que tocar.
+3. **Contrafactuales (simulados, no fills).** 2 y 3 slots: 2 y 3 rellenos, **0 cierres**, 1.0 y
+   1.5 USDT de comisión, utilización 9.7 %/14.2 % — más capacidad compra exposición, no cierres.
+   Reversión en caliente: 34 cierres y **−43.94 USDT** con 34.50 USDT de comisiones (0.248 % del
+   notional por giro): convierte señales en cierres destruyendo economía. Rejilla de salidas en
+   muestra: TP 0.45 % → 2 cierres/−2.25; TP 0.25 % → 2 cierres/+0.50; TP ≥ 0.50 % → 0 cierres.
+4. **Escenario B (diversificación): NOT_EXECUTABLE.** No hay archivo de 1 m de otros símbolos para
+   la ventana 2026-10-19; `data/quote-feed-1m` sólo tiene AAVE/UNI de 2021. Además el generador
+   paritario repartiría el mismo patrón, no generaría opiniones nuevas.
+5. **Decisión: `NO_CHANGE`.** Ningún cambio supera el criterio del RFC (mejora demostrada y
+   validada fuera de muestra). Veredicto del experimento: `PARTIAL` (3 de 4 escenarios
+   ejecutables); `INDEPENDENT_VERIFIER=BLOCKED`; `ECONOMIC_SAMPLE=INSUFFICIENT_SAMPLE`.
+
+**Artefactos** — `reports/ai-bots/EXP-003I-THROUGHPUT-001/`: `RUNTIME_CAPACITY_MAP.md`,
+`SIGNAL_BLOCKING_ANALYSIS.md`, `EXIT_DURATION_ANALYSIS.md`, `SCENARIO_COMPARISON.csv`,
+`ECONOMIC_THROUGHPUT_REPORT.md`, `RUN_REPORT.md`, `RUN_REPORT.json`, `EVIDENCE_MANIFEST.json`.
+Generador `scripts/exp_003i_throughput.py` (exige `--outdir`, exige `--overwrite` para republicar);
+verificador separado `scripts/exp_003i_verify.py` (12/12: digests, entradas intactas, recuentos
+re-derivados, sin CERTIFIED/PRODUCTION_READY). Los artefactos de 003I se leen en su sitio: V4
+confirma que sus digests no cambiaron.
+
+**Pendiente / bloqueado**
+
+- La pregunta que sigue abierta no es de capacidad sino de fuente de decisión: mientras el
+  proveedor sea `paper-script`, la tasa de cierres mide el script. Próxima acción: sesión con
+  fuente no paritaria + rejilla de salidas preregistrada. Presupuesto de muestra con el generador
+  actual: ~45 h continuas para 30 cierres incluso en el mejor caso de la rejilla.
+- `INDEPENDENT_VERIFIER=BLOCKED` (mismo autor) y los dos informes raíz perdidos de 003I siguen
+  declarados como no recuperables; este experimento no los reconstruye.
+
+**Reanudación verificable**
+
+```bash
+cd "$(git rev-parse --show-toplevel)"
+./.venv/Scripts/python.exe scripts/exp_003i_throughput.py \
+  --outdir reports/ai-bots/EXP-003I-THROUGHPUT-001 --overwrite
+./.venv/Scripts/python.exe scripts/exp_003i_verify.py \
+  --outdir reports/ai-bots/EXP-003I-THROUGHPUT-001
+```
+
+## 2026-10-19 · WP003I — reproducibilidad cerrada (D3/D4) y sesión prospectiva terminada
+
+**Objetivo:** cerrar D3 (lock) y D4 (fixtures no versionadas), procesar la sesión prospectiva ya
+terminada y dejar listo el paquete de verificación externa. Sin LIVE, sin tocar la estrategia.
+
+**Rama:** `wp003i/reproducibility` en el worktree `bot-freebuff-wp003i-cert` · **HEAD:** `72702ecf` · **Base:** `5fd791d`.
+
+**Hecho (medido)**
+
+1. **D3 `CLOSED`.** `pyproject.toml` declaraba `matplotlib` y `uv.lock` no lo contenía (`uv lock --check` exit 1).
+   Lock regenerado aditivo (0 líneas eliminadas, 0 versiones existentes cambiadas). En el worktree limpio:
+   `uv lock --check` exit 0 y `uv sync --frozen` en entorno vacío exit 0, con import de `matplotlib 3.11.2`,
+   `vision.lane` y `paper.broker`.
+2. **D4 `PARTIALLY_CLOSED`.** Una prueba versionada (`test_edge16_pit.py`) exigía un cambio de `alpha15.py`
+   sin commitear y 13 pruebas exigían `data/quote-feed-1m/**`. Versionados: quote-feed (con `-text`),
+   `tests/fixtures/rfc003e/**`, `vision_panel.py`, registro PIT. Suite completa en dos worktrees limpios:
+   base `5fd791d` = 114 failed + 16 errors; rama = 99 + 14; **0 fallos nuevos**, 17 reparados.
+3. **Sesión prospectiva terminada** (`10:43:30Z→13:43:30Z`): 37 ciclos, 1 relleno, **0 cierres naturales**,
+   0 órdenes, PnL realizado 0, equity marcado 9998.65205113. `H8-ECONOMICS = NOT_MEASURED`.
+4. **Paquete externo** regenerado y verificado: `verify_package.py` exit 0 (8 escenarios 25/25, forjado
+   rechazado, auditoría Decimal 16/16, 149 hashes 003G/003H OK) y nuevo `runtime_identity_check.py`
+   (D5: 11/11 ficheros = blob en LF o CRLF).
+5. **Veredicto `PARTIAL`**: H1–H8 PASS, `FALSE_SUCCESS = 0`, `BUILDER != VERIFIER` a nivel técnico.
+
+**Pendiente / bloqueado**
+
+- **113 rojos de otros WPs** en `tests/unit/research/**`: afirman contra `reports/**`, ignorado por
+  `.gitignore:60/463` (229 árboles presentes pero no versionados). `BLOCKED` sobre una decisión de repositorio,
+  no sobre trabajo de WP003I. Lista exacta en `REGRESSION.json` y `REPRODUCIBILITY_D3_D4.md`.
+- **Independencia de autor `BLOCKED`**: el verificador es aritmética distinta del mismo autor; falta revisión
+  de un tercero con identidad verificable.
+- **Muestra económica insuficiente**: 1 relleno y 0 cierres en 3 h. No se acelera cambiando umbrales.
+
+**Reanudación verificable**
+
+```bash
+cd "C:/Users/GVLLFR0035/Downloads/bot-freebuff-wp003i-cert"
+git log -1 --format='%H %s'
+./.venv/Scripts/python.exe -m pytest tests/unit/reports/test_ai_bots_003i_verify.py -q   # 4 passed
+cd "C:/Users/GVLLFR0035/Downloads/bot freebuff"
+./.venv/Scripts/python.exe scripts/ai_bots_003i_report.py                              # verdict PARTIAL
+./.venv/Scripts/python.exe reports/ai-bots/RFC-AI-BOTS-003I/EXTERNAL_VERIFIER_PACKAGE/verify_package.py
+```
+
+> Esta sección se escribe en el checkout principal sin commit: el fichero tiene otros escritores activos
+> y el WP no lo reatribuye.
+
+---
+
 ## 2026-10-18 · WP-OPS-BACKGROUND-001 — ejecución sin ventanas en Windows
 
 **Objetivo:** que Trading Agentic Portable no abra ventanas de consola durante una ejecución
@@ -907,3 +1076,104 @@ cd "$(git rev-parse --show-toplevel)"
 ./.venv/Scripts/python.exe scripts/ai_bots_003h_verify.py \
   --session reports/ai-bots/RFC-AI-BOTS-003H/smoke --root . --json-out /tmp/003h.json
 ```
+
+---
+
+## WP003I — Paper Accounting Closed-Trade Verification (en curso → completado en esta sesión)
+
+**Objetivo.** Cerrar H8 de 003H con cierres **observados** en el runtime PAPER, reconciliados
+desde el ledger por un verificador independiente, más una sesión prospectiva real informada
+aparte.
+
+**Base Git.** `5fd791d` (HEAD verificado; el runtime PAPER `vision/`, `paper/`,
+`market_data/` no se modificó: `git diff 5fd791d -- <esas rutas>` vacío).
+
+**Hecho**
+
+- `scripts/ai_bots_003i_scenarios.py`: 8 escenarios controlados sobre `VisionLane` +
+  `PaperBroker` + `RiskManager` reales, cada uno ejecutado dos veces (`run-1`/`run-2`),
+  con `run_id` y digests de entrada en `RUN_META.json`/`EVIDENCE.json`.
+  Resultado: 7 escenarios con cierre (3 con beneficio, 4 con pérdida), `MULTI_FILL` con
+  4 rellenos/3 cierres, `OPEN_AT_END` con posición viva marcada.
+- `scripts/ai_bots_003i_verify.py`: verificador que **no importa `trading_bot`**; reconstruye
+  entrada, salida, efectivo, marca y disyunción abierto/cerrado desde `ledger.jsonl` +
+  `bars.jsonl`, y ejecuta 13 mutaciones **re-selladas** (coste, cantidad, precio, PnL, comisión,
+  `position_id`, instante, cierre duplicado, cadena, exposición) — 5 tipos en `OPEN_AT_END`,
+  que no tiene cierre que mutar. 25/25 y 17/17 por escenario, **96/96 sondas** en total
+  (el `82/82` de `SUPERSEDED/constructor-1320_FINAL_REPORT.md` es otro conjunto de sondas de
+  otro hilo: no se cita como propio);
+  los checks de divergencia D1/D2 (settle por reloj del venue, marca con la última vela cerrada)
+  viven en `PRESERVED_003G` y `SESSION_003I`, no reescriben la evidencia congelada.
+- `tests/unit/vision/test_closed_trade_cycle.py`: 7 tests (cierre con beneficio/pérdida,
+  lado corto, comisiones una vez, cierre total, reconciliación tras reinicio, replay idéntico).
+- Sesión prospectiva PAPER real (Binance 1 m, 3 h, `paper-script`): 37 ciclos, 1 relleno,
+  **0 cierres naturales**; posición viva marcada. Rango medido desde la entrada:
+  [82 134, 82 757,33] con stop 81 969,81 y objetivo 82 999,58 → no se cruzó ningún nivel.
+- Defectos de medición encontrados en el verificador heredado de 003H, con evidencia:
+  - **D1** `live_minutes_were_seen_after_they_settled` compara reloj host (`received_at_ms`) con
+    reloj venue (`close_ms`); el host iba una mediana de 186 ms por detrás (rango medido 40-260 ms).
+    4/358 minutos leen por debajo de `settle_ms`, pero con el reloj del venue
+    (`server_time_ms - close_ms`) hay **0** violaciones y el mínimo es 2 531 ms ≥ 2 500 ms.
+    Re-ejecutado con el verificador extendido: `PRESERVED_003G` 24 PASS / 1 FAIL (sólo el drift de
+    runtime ya conocido) y `SESSION_003I` 31 PASS / 2 FAIL (sólo D1 y D2).
+  - **D2** `marked_equity_rebuilds_from_raw_minutes` usa el minuto más nuevo, que puede pertenecer
+    a una vela en formación; el lane sólo marca velas cerradas. Reconstruido con la última vela
+    completa, la marca coincide con la publicada.
+
+**Entregables exigidos (§6 de la misión)** — todos en
+`reports/ai-bots/RFC-AI-BOTS-003I/ledger-accounting/` y hasheados en `EVIDENCE_MANIFEST.json`
+(`files`: 7 documentos, `evidence`: 50 artefactos de origen; `missing: []`, digests
+re-verificados contra disco):
+
+`RUN_REPORT.md` · `RUN_REPORT.json` · `INDEPENDENT_VERIFICATION.md` · `ECONOMIC_VALIDATION.md` ·
+`EVIDENCE_MANIFEST.json` (alias `EVIDENCE_INDEX.json`) · `FINAL_REPORT.md`, más
+`LEDGER_AUDIT.md` y `EVIDENCE.md`. `INDEPENDENT_VERIFICATION.md` y `ECONOMIC_VALIDATION.md` los
+emite ahora el generador, no se escriben a mano, y el manifiesto ya no hashea ficheros del
+raíz compartido como si fueran propios (antes podía caer en `root/FINAL_REPORT.md`).
+
+**Protección de evidencias (§2 de la misión)** — `--outdir` es **obligatorio** (sin él: exit 2)
+y un directorio que ya contiene un manifiesto exige `--overwrite` (sin él: exit 3). Ambas guardas
+probadas. Este hilo escribió el 19:34 UTC sólo `ledger-accounting/*` y
+`verification/{PRESERVED_003G,SESSION_003I_003H}.json`; los informes raíz del otro hilo no se
+tocaron.
+
+**Pendiente / bloqueado**
+
+- `INDEPENDENT_VERIFICATION_PENDING`: el verificador es aritmética distinta del mismo autor, no
+  una revisión de un tercero; el veredicto no puede ser `PASS`. Dimensión `INDEPENDENT_VERIFIER`
+  = `BLOCKED`; `EVIDENCE_TRACEABLE` = `PARTIAL` por los dos informes raíz perdidos.
+- `H8-ECONOMICS = INSUFFICIENT_SAMPLE`: 0 cierres naturales (umbral 30). Diagnóstico
+  cuantitativo en `ECONOMIC_VALIDATION.md`: 1 relleno/3 h (0,333/h ⇒ ~90 h para 30 rellenos);
+  objetivo a +75 bp frente a una excursión máxima de +45,6 bp (faltaron 29,4 bp) y stop a
+  −50 bp con excursión adversa −30,1 bp; **35 de 36 señales direccionales** bloqueadas por la
+  posición abierta (`ALREADY_LONG`=17, `OPPOSITE_LONG_OPEN`=18); utilización de capital 5 % y
+  drawdown 0,03 % sin eventos de riesgo. El techo es un slot por símbolo, no la falta de ciclos.
+- **Colisión de escritor detectada (dos hilos, mismo WP, mismo directorio):** otro hilo escribe
+  en `reports/ai-bots/RFC-AI-BOTS-003I/` desde otros worktrees (`wp003i-cert`, commits `cc3e84b`
+  / `26fd395` / `9f3892f`) y es el autor de `GATE_MATRIX.json`, `WP003I_FILE_MANIFEST.json`,
+  `REPRODUCIBILITY_D3_D4.md`, del `REGRESSION.json` V2 (13:20 UTC) y del `RUN_REPORT.md` raíz.
+  No se tocan ni se reescriben sus ficheros. La evidencia de este hilo se publica aparte:
+  `REGRESSION_003I_ACCOUNTING.json` y documentos en
+  `reports/ai-bots/RFC-AI-BOTS-003I/ledger-accounting/` (`--outdir`). Los datos de escenarios,
+  verificaciones y sesión seguían intactos (schema V1, `run_id` propios) en la última
+  comprobación. **Incidente de hoy:** dos ejecuciones del generador sin `--outdir`
+  reescribieron `reports/ai-bots/RFC-AI-BOTS-003I/{RUN_REPORT,FINAL_REPORT}.{md,json}` a las
+  16:26 UTC, que son ficheros de ese otro hilo (ignorados por Git, no recuperables desde el
+  repo). Este hilo no volverá a escribir fuera de `ledger-accounting/`; ese hilo debe
+  re-generar su informe raíz.
+
+**Reanudación verificable**
+
+```bash
+cd "$(git rev-parse --show-toplevel)"
+./.venv/Scripts/python.exe scripts/ai_bots_003i_scenarios.py --clean
+for d in reports/ai-bots/RFC-AI-BOTS-003I/controlled/*/; do
+  n=$(basename "$d")
+  ./.venv/Scripts/python.exe scripts/ai_bots_003i_verify.py --run "$d/run-1" --replay "$d/run-2"     --json-out "reports/ai-bots/RFC-AI-BOTS-003I/verification/$n.json"     --md-out "reports/ai-bots/RFC-AI-BOTS-003I/verification/$n.md"
+done
+./.venv/Scripts/python.exe scripts/ai_bots_003i_report.py   --regression REGRESSION_003I_ACCOUNTING.json --outdir reports/ai-bots/RFC-AI-BOTS-003I/ledger-accounting --overwrite
+./.venv/Scripts/python.exe -m pytest tests/unit/vision/test_closed_trade_cycle.py -q
+```
+
+Cada comando produce artefacto y exit code; el informe recalcula H1-H8 desde ficheros y falla si
+falta uno.

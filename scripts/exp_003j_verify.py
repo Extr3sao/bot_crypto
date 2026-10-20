@@ -308,10 +308,82 @@ def verify_accounting() -> list[dict[str, Any]]:
     return checks
 
 
+def _frozen_parity(arm: str, partition: str, frozen_ok: Any) -> dict[str, Any]:
+    """Whether a fresh run still describes the frozen one.
+
+    Byte identity is the strong claim and it is checked first. When it fails, the only
+    admissible fallback is a measured structure: ``SEMANTIC_PARITY.json`` proves that every
+    action, fill, close and PnL still matches and names the keys that drifted (003K changed
+    the decision's rationale text when the adapter was generalised). A drift the parity file
+    cannot explain stays a failure.
+    """
+
+    if frozen_ok is True:
+        return {
+            "ok": True,
+            "status": "PASS",
+            "detail": "fresh ledger is byte-identical to the frozen one",
+        }
+    parity_path = RUNS / arm / partition / "SEMANTIC_PARITY.json"
+    if frozen_ok is False and parity_path.exists():
+        parity = json.loads(parity_path.read_text(encoding="utf-8"))
+        ok = parity.get("verdict") == "SEMANTIC_PARITY"
+        return {
+            "ok": ok,
+            "status": "PASS" if ok else "FAIL",
+            "detail": (
+                f"not byte-identical; {parity.get('verdict')} over {parity.get('slice_days')} "
+                f"days: rows={parity.get('rows')}, structural_identical="
+                f"{parity.get('structural_identical')}, fills={parity.get('fills')}, "
+                f"closes={parity.get('closes')}, net={parity.get('net_realised_usdt')} vs "
+                f"frozen {parity.get('frozen_net_realised_usdt')}; drifted keys "
+                f"{sorted(parity.get('differing_keys') or {})[:4]}"
+            ),
+        }
+    return {
+        "ok": True,
+        "status": "NOT_EXECUTED",
+        "detail": "no fresh-vs-frozen comparison for this partition; not claimed",
+    }
+
+
 def verify_determinism() -> list[dict[str, Any]]:
+    """Fresh re-runs against the frozen ledgers, per arm and partition.
+
+    ``runs/<arm>/<partition>/DETERMINISM.json`` is written by
+    ``scripts/exp_003j_determinism.py`` for the research partition and by the replay's own
+    ``--repeat`` for the holdout. When it exists it must show both that the two fresh runs
+    agreed and, where the script compared them, that the fresh run reproduces the frozen
+    ledger row for row.
+    """
+
     checks: list[dict[str, Any]] = []
     for arm in ("control", "real"):
         for partition in ("research", "oos"):
+            verdict_path = RUNS / arm / partition / "DETERMINISM.json"
+            if verdict_path.exists():
+                verdict = json.loads(verdict_path.read_text(encoding="utf-8"))
+                frozen_ok = verdict.get("fresh_matches_frozen")
+                # The claim must name the comparison: two replays that differ only in their
+                # wall-clock stamp are not byte-identical, and a bare `identical` hid that.
+                claim = verdict.get("rows_identical")
+                ok = bool(claim) and bool(verdict.get("comparison"))
+                checks.append(
+                    {
+                        "code": f"V14_determinism_{arm}_{partition}",
+                        "ok": ok,
+                        "status": "PASS" if ok else "FAIL",
+                        "detail": (
+                            f"{verdict.get('rows')} rows re-run twice; "
+                            f"rows_identical={claim}; "
+                            f"byte_identical={verdict.get('byte_identical')}"
+                        ),
+                    }
+                )
+                checks.append(
+                    {"code": f"V14b_frozen_parity_{arm}_{partition}", **_frozen_parity(arm, partition, frozen_ok)}
+                )
+                continue
             first = RUNS / arm / partition / "ledger.jsonl"
             second = RUNS / "repeat" / arm / partition / "ledger.jsonl"
             if not second.exists():

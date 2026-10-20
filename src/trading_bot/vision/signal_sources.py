@@ -51,7 +51,12 @@ from trading_bot.indicators.builtin import AtrIndicator, EmaIndicator, RsiIndica
 from trading_bot.indicators.exceptions import IndicatorError
 from trading_bot.indicators.types import IndicatorResult
 from trading_bot.market_data.types import OHLCV
+from trading_bot.research.families.breakout_family import BreakoutFamily
 from trading_bot.research.families.ema_crossover_family import EmaCrossoverFamily
+from trading_bot.research.families.mean_reversion_family import MeanReversionFamily
+from trading_bot.research.families.momentum_family import MomentumFamily
+from trading_bot.research.families.trend_family import TrendFamily
+from trading_bot.research.families.volatility_family import VolatilityFamily
 from trading_bot.vision.clock import bar_close_ms, information_ms
 from trading_bot.vision.provider import VisionRequest, VisionResponse
 
@@ -59,11 +64,97 @@ SIGNAL_SOURCE_LEGACY: Final = "legacy_parity"
 SIGNAL_SOURCE_STRATEGY: Final = "strategy_experimental"
 SIGNAL_SOURCES: Final = (SIGNAL_SOURCE_LEGACY, SIGNAL_SOURCE_STRATEGY)
 
-#: The one strategy this adapter may ask. It is the family the canonical PAPER runtime
-#: executes through ``StrategyRouter`` (RUN-OP-003 / RUN-OP-004); the older
-#: ``EmaCrossoverStrategy`` class is TEST_ONLY and is deliberately not reachable here.
+#: The strategy the canonical PAPER runtime executes through ``StrategyRouter``
+#: (RUN-OP-003 / RUN-OP-004); the older ``EmaCrossoverStrategy`` class is TEST_ONLY and is
+#: deliberately not reachable here.
 STRATEGY_EMA_CROSSOVER: Final = "ema_crossover"
-SUPPORTED_STRATEGIES: Final = (STRATEGY_EMA_CROSSOVER,)
+
+#: 003K: the other AlphaFamilies that already exist in ``research/families``. They are
+#: admitted to the **experimental** paper source only after being selected on a research
+#: window; their classification says so, and none of them is the default.
+STRATEGY_MOMENTUM: Final = "momentum"
+STRATEGY_BREAKOUT: Final = "breakout"
+STRATEGY_MEAN_REVERSION: Final = "mean_reversion"
+STRATEGY_TREND: Final = "trend"
+STRATEGY_VOLATILITY: Final = "volatility"
+
+
+@dataclass(frozen=True, slots=True)
+class StrategySpec:
+    """What the adapter needs to know about one admitted family.
+
+    ``min_candles`` is the family's own guard, copied here so the adapter can refuse the
+    window *before* asking a family that would answer "no signal" — an empty list from a
+    starved family and an empty list from a quiet market must not look the same.
+    """
+
+    strategy_id: str
+    family_cls: type
+    family_name: str
+    min_candles: int
+    invalidation: str
+    indicator_kind: str
+    classification: str
+
+
+STRATEGY_SPECS: Final[dict[str, StrategySpec]] = {
+    STRATEGY_EMA_CROSSOVER: StrategySpec(
+        strategy_id=STRATEGY_EMA_CROSSOVER,
+        family_cls=EmaCrossoverFamily,
+        family_name="ema_crossover",
+        min_candles=22,
+        invalidation="fast EMA crosses back against the position",
+        indicator_kind="ema_rsi_atr",
+        classification="RUNTIME_REACHABLE",
+    ),
+    STRATEGY_MOMENTUM: StrategySpec(
+        strategy_id=STRATEGY_MOMENTUM,
+        family_cls=MomentumFamily,
+        family_name="momentum",
+        min_candles=36,
+        invalidation="MACD histogram changes sign or momentum falls below its threshold",
+        indicator_kind="family_native",
+        classification="EXPERIMENTAL_PAPER",
+    ),
+    STRATEGY_BREAKOUT: StrategySpec(
+        strategy_id=STRATEGY_BREAKOUT,
+        family_cls=BreakoutFamily,
+        family_name="breakout",
+        min_candles=21,
+        invalidation="close returns inside the Donchian channel",
+        indicator_kind="family_native",
+        classification="EXPERIMENTAL_PAPER",
+    ),
+    STRATEGY_MEAN_REVERSION: StrategySpec(
+        strategy_id=STRATEGY_MEAN_REVERSION,
+        family_cls=MeanReversionFamily,
+        family_name="mean_reversion",
+        min_candles=22,
+        invalidation="close re-enters the band on the wrong side or the band expands",
+        indicator_kind="family_native",
+        classification="EXPERIMENTAL_PAPER",
+    ),
+    STRATEGY_TREND: StrategySpec(
+        strategy_id=STRATEGY_TREND,
+        family_cls=TrendFamily,
+        family_name="trend",
+        min_candles=56,
+        invalidation="EMA ribbon loses its stack or the slow slope flips",
+        indicator_kind="family_native",
+        classification="EXPERIMENTAL_PAPER",
+    ),
+    STRATEGY_VOLATILITY: StrategySpec(
+        strategy_id=STRATEGY_VOLATILITY,
+        family_cls=VolatilityFamily,
+        family_name="volatility",
+        min_candles=27,
+        invalidation="close returns inside the Bollinger band",
+        indicator_kind="family_native",
+        classification="EXPERIMENTAL_PAPER",
+    ),
+}
+
+SUPPORTED_STRATEGIES: Final = tuple(STRATEGY_SPECS)
 
 #: The family computes these itself when handed no indicators. The adapter computes the
 #: same four inside the PIT window so the trace can carry the numbers the decision used,
@@ -77,8 +168,20 @@ INDICATOR_PARAMS: Final[dict[str, int]] = {
 
 #: Below this many candles the family refuses to produce a signal (its own guard). The
 #: adapter reports that as a typed NO_TRADE instead of letting an empty list look like
-#: a market opinion.
+#: a market opinion. Kept as the EMA value for callers that predate the registry.
 MIN_CANDLES: Final = 22
+
+
+def min_candles_for(strategy_id: str) -> int:
+    """The family's own minimum, or a refusal for an id that is not admitted."""
+
+    spec = STRATEGY_SPECS.get(str(strategy_id))
+    if spec is None:
+        raise SignalSourceConfigError(
+            f"strategy {strategy_id!r} is not admitted to this adapter; "
+            f"allowed: {sorted(SUPPORTED_STRATEGIES)}"
+        )
+    return spec.min_candles
 
 #: The family exposes no calibrated conviction. Sending a fixed score keeps the two arms
 #: comparable on the one field ``PositionSize`` echoes, and the report says so rather than
@@ -237,11 +340,11 @@ def compute_indicators(candles: Sequence[OHLCV]) -> dict[str, IndicatorResult]:
     }
 
 
-def _strategy_version() -> str:
+def _strategy_version(family_cls: type = EmaCrossoverFamily) -> str:
     """A version that is a hash of the code, not a number somebody remembered to bump."""
 
     try:
-        path = inspect.getsourcefile(EmaCrossoverFamily)
+        path = inspect.getsourcefile(family_cls)
     except (TypeError, OSError):  # pragma: no cover - frozen interpreter
         return "UNKNOWN"
     if not path:
@@ -252,11 +355,15 @@ def _strategy_version() -> str:
 
 @dataclass
 class StrategySignalProvider:
-    """``VisionProvider``-shaped adapter over the runtime's EMA crossover family.
+    """``VisionProvider``-shaped adapter over one admitted AlphaFamily.
 
     It answers with the decision contract the lane already parses, so nothing downstream
     has to learn a new shape. ``image_sha256_in_request`` is deliberately empty: this
     adapter reads numbers, and claiming an attached chart would be a false receipt.
+
+    The family is chosen by ``strategy_id`` from :data:`STRATEGY_SPECS`; the default is the
+    EMA family that 003J proved, and every other family declares itself
+    ``EXPERIMENTAL_PAPER`` in the trace until it has its own evidence.
     """
 
     series: Mapping[str, Sequence[Any]]
@@ -266,13 +373,14 @@ class StrategySignalProvider:
     strategy_id: str = STRATEGY_EMA_CROSSOVER
     mode: str = PAPER_MODE
     trace_path: Path | None = None
-    family: EmaCrossoverFamily = field(default_factory=EmaCrossoverFamily)
+    family: Any = None
     name: str = "strategy-signal"
-    model: str = "ema_crossover@strategy-signal/1"
+    model: str = "strategy-signal/1"
     calls: int = 0
     no_trade: int = 0
     blocked: int = 0
-    strategy_version: str = field(default_factory=_strategy_version)
+    strategy_version: str = ""
+    spec: StrategySpec = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
         if str(self.mode).upper() != PAPER_MODE:
@@ -280,17 +388,25 @@ class StrategySignalProvider:
                 f"strategy_experimental is PAPER only; mode {self.mode!r} is refused before "
                 "any decision is formed"
             )
-        if self.strategy_id not in SUPPORTED_STRATEGIES:
+        spec = STRATEGY_SPECS.get(str(self.strategy_id))
+        if spec is None:
             raise SignalSourceConfigError(
                 f"strategy {self.strategy_id!r} is not admitted to this adapter; "
                 f"allowed: {sorted(SUPPORTED_STRATEGIES)}"
             )
+        self.spec = spec
         if int(self.interval_ms) <= 0:
             raise SignalSourceConfigError("interval_ms must be positive")
-        if int(self.window_bars) < MIN_CANDLES:
+        if int(self.window_bars) < spec.min_candles:
             raise SignalSourceConfigError(
-                f"window_bars must be >= {MIN_CANDLES}: the family refuses fewer"
+                f"window_bars must be >= {spec.min_candles} for {spec.family_name}: "
+                "the family refuses fewer candles"
             )
+        if self.family is None:
+            self.family = spec.family_cls()
+        self.model = f"{spec.family_name}@strategy-signal/1"
+        if not self.strategy_version:
+            self.strategy_version = _strategy_version(type(self.family))
 
     # -- trace ---------------------------------------------------------------
 
@@ -348,7 +464,7 @@ class StrategySignalProvider:
                 "provider": self.name,
                 "strategy_id": self.strategy_id,
                 "strategy_version": self.strategy_version,
-                "strategy_classification": "RUNTIME_REACHABLE",
+                "strategy_classification": self.spec.classification,
                 "asset": symbol,
                 "timeframe": self.timeframe,
                 "decision_time_ms": int(request.decision_ts_ms),
@@ -369,6 +485,37 @@ class StrategySignalProvider:
             }
         )
         return self._response(payload)
+
+    def _rationale(
+        self,
+        *,
+        signal: Any,
+        action: str,
+        stop_pct: float,
+        last_close: float,
+        indicators: Mapping[str, IndicatorResult],
+    ) -> str:
+        """A sentence a reader can check, built only from what the decision consumed."""
+
+        facts = [f"{self.spec.family_name} {action}"]
+        if indicators:
+            facts.append(
+                f"EMA{INDICATOR_PARAMS['ema_fast']}="
+                f"{_as_float(indicators['ema_fast']):.6f} vs "
+                f"EMA{INDICATOR_PARAMS['ema_slow']}="
+                f"{_as_float(indicators['ema_slow']):.6f}"
+            )
+            facts.append(f"RSI={_as_float(indicators['rsi']):.2f}")
+            facts.append(f"ATR={_as_float(indicators['atr']):.6f}")
+        family = getattr(signal, "family", self.spec.family_name)
+        facts.append(f"family={family}")
+        facts.append(f"close {last_close:.6f}")
+        facts.append(f"structural stop {stop_pct:.4f}% away")
+        return (
+            ", ".join(facts)
+            + f". Declared confidence {DECLARED_CONFIDENCE} is a fixed placeholder: the "
+            "family exposes no calibrated conviction."
+        )
 
     def analyze(self, request: VisionRequest) -> VisionResponse:
         symbol = str(request.chart.symbol)
@@ -393,12 +540,15 @@ class StrategySignalProvider:
             )
 
         candles = window.candles()
-        if len(candles) < MIN_CANDLES:
+        if len(candles) < self.spec.min_candles:
             return self._no_trade(
                 request=request,
                 symbol=symbol,
                 reason="INSUFFICIENT_WINDOW",
-                detail=f"{len(candles)} candles in the window, {MIN_CANDLES} required",
+                detail=(
+                    f"{len(candles)} candles in the window, {self.spec.min_candles} required "
+                    f"by {self.spec.family_name}"
+                ),
                 extra={
                     "decision_bar_open_ms": last_open_ms,
                     "market_data_fingerprint": window.digest,
@@ -407,7 +557,12 @@ class StrategySignalProvider:
                 },
             )
         try:
-            indicators = compute_indicators(candles)
+            # The EMA family is handed the four indicators the adapter computed, because
+            # the trace publishes them; every other family computes its own inside the same
+            # PIT window (its documented contract) and the trace names that difference.
+            indicators: dict[str, IndicatorResult] = (
+                compute_indicators(candles) if self.spec.indicator_kind == "ema_rsi_atr" else {}
+            )
         except IndicatorError as exc:
             return self._no_trade(
                 request=request,
@@ -429,6 +584,7 @@ class StrategySignalProvider:
             "max_input_data_time_utc": _utc(window.max_input_data_time_ms),
             "window_bars": len(candles),
             "last_close": last_close,
+            "indicator_source": self.spec.indicator_kind,
             "indicators": {key: _round(_as_float(value)) for key, value in indicators.items()},
         }
         if not signals:
@@ -437,8 +593,8 @@ class StrategySignalProvider:
                 symbol=symbol,
                 reason="STRATEGY_NO_SIGNAL",
                 detail=(
-                    "ema_crossover produced no direction: EMA alignment and RSI confirmation "
-                    "did not both hold, or ATR was zero"
+                    f"{self.spec.family_name} produced no direction on this window; the "
+                    "family's own pre-registered condition did not hold"
                 ),
                 quality="PASS",
                 extra=base,
@@ -466,16 +622,15 @@ class StrategySignalProvider:
             "horizon_bars": 8,
             "stop_loss_pct": round(stop_pct, 6),
             "take_profit_pct": None,
-            "invalidation": (
-                f"fast EMA crosses back {'below' if action == 'LONG' else 'above'} slow EMA"
-            )[:240],
+            "invalidation": f"{self.spec.invalidation}"[:240],
             "rationale": (
-                f"ema_crossover {action}: EMA{INDICATOR_PARAMS['ema_fast']}="
-                f"{_as_float(indicators['ema_fast']):.6f} vs EMA{INDICATOR_PARAMS['ema_slow']}="
-                f"{_as_float(indicators['ema_slow']):.6f}, RSI={_as_float(indicators['rsi']):.2f}, "
-                f"ATR={_as_float(indicators['atr']):.6f}, structural stop {stop_pct:.4f}% away. "
-                f"Declared confidence {DECLARED_CONFIDENCE} is a fixed placeholder: the "
-                "family exposes no calibrated conviction."
+                self._rationale(
+                    signal=signal,
+                    action=action,
+                    stop_pct=stop_pct,
+                    last_close=last_close,
+                    indicators=indicators,
+                )
             )[:600],
         }
         self._trace(
@@ -484,7 +639,7 @@ class StrategySignalProvider:
                 "provider": self.name,
                 "strategy_id": self.strategy_id,
                 "strategy_version": self.strategy_version,
-                "strategy_classification": "RUNTIME_REACHABLE",
+                "strategy_classification": self.spec.classification,
                 "asset": symbol,
                 "timeframe": self.timeframe,
                 "decision_time_ms": decision_ts_ms,
@@ -566,14 +721,22 @@ __all__ = [
     "SIGNAL_SOURCES",
     "SIGNAL_SOURCE_LEGACY",
     "SIGNAL_SOURCE_STRATEGY",
+    "STRATEGY_BREAKOUT",
     "STRATEGY_EMA_CROSSOVER",
+    "STRATEGY_MEAN_REVERSION",
+    "STRATEGY_MOMENTUM",
+    "STRATEGY_SPECS",
+    "STRATEGY_TREND",
+    "STRATEGY_VOLATILITY",
     "SUPPORTED_STRATEGIES",
     "PitWindow",
     "SignalBlocked",
     "SignalSourceConfigError",
     "StrategySignalProvider",
+    "StrategySpec",
     "build_signal_provider",
     "compute_indicators",
+    "min_candles_for",
     "point_in_time_window",
     "provider_name",
 ]
