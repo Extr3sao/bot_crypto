@@ -114,6 +114,9 @@ def build_session(
     max_cycles: int = 3,
     latency_ms: int = 30_000,
     freeze_after_bootstrap: bool = False,
+    signal_source: str = "legacy_parity",
+    window_bars: int = 20,
+    decision_every_bars: int = 1,
 ) -> tuple[ProspectiveSession, FakeClock, SyntheticVenue]:
     clock = FakeClock(T0 + 300 * MINUTE_MS)
     venue = SyntheticVenue(clock)
@@ -129,21 +132,27 @@ def build_session(
     vision = load_vision_config(env={})
     vision = replace(
         vision,
-        lane=replace(vision.lane, timeframe="5m", window_bars=20, decision_every_bars=1),
+        lane=replace(
+            vision.lane,
+            timeframe="5m",
+            window_bars=window_bars,
+            decision_every_bars=decision_every_bars,
+        ),
     )
     settings = load_settings(config_dir=REPO / "config", env_file=None)
     session = ProspectiveSession(
         config=ProspectiveConfig(
             symbols=SYMBOLS,
             timeframe="5m",
-            window_bars=20,
-            decision_every_bars=1,
+            window_bars=window_bars,
+            decision_every_bars=decision_every_bars,
             duration_s=duration_s,
             poll_interval_s=15.0,
             settle_ms=0,
             latency_ms=latency_ms,
             warmup_minutes=240,
             max_cycles=max_cycles,
+            signal_source=signal_source,
         ),
         out_dir=out,
         vision_config=vision,
@@ -284,3 +293,113 @@ def test_prefix_comparison_detects_a_rewritten_decision() -> None:
     assert result["ok"] is False
     assert result["reason"] == "PREFIX_DIVERGENCE"
     assert result["first_mismatch_seq"] == 2
+
+
+# ---------------------------------------------------------------------------
+# 003J — the signal source is a configurable, opt-in part of the true session
+# ---------------------------------------------------------------------------
+
+
+def test_the_default_source_is_the_legacy_script(tmp_path: Path) -> None:
+    session, _clock, _venue = build_session(tmp_path)
+    summary = session.run()
+    assert summary["signal_source"] == "legacy_parity"
+    assert summary["provider"] == "paper-script"
+    start = json.loads((tmp_path / "session" / "SESSION_START.json").read_text(encoding="utf-8"))
+    assert start["signal_source"] == "legacy_parity"
+    assert start["strategy_id"] is None
+    cycles = [
+        row["entry"]
+        for row in read_entries(tmp_path / "session" / "STREAM.jsonl")
+        if row["entry"]["kind"] == "CYCLE"
+    ]
+    decisions = [
+        row["entry"]
+        for row in read_entries(tmp_path / "session" / cycles[-1]["ledger"]["path"])
+        if row["entry"]["kind"] == "DECISION"
+    ]
+    providers = {row["provider"]["provider"] for row in decisions if "provider" in row}
+    assert providers == {"paper-script"}
+    # The scripted rotation is untouched: two of every four answers are directional.
+    actions = [row["decision"]["action"] for row in decisions if row.get("decision")]
+    assert "LONG" in actions and "SHORT" in actions
+
+
+def test_the_experimental_source_runs_through_the_same_session(tmp_path: Path) -> None:
+    session, _clock, _venue = build_session(
+        tmp_path, signal_source="strategy_experimental", window_bars=24
+    )
+    summary = session.run()
+
+    assert summary["signal_source"] == "strategy_experimental"
+    assert summary["provider"] == "strategy-signal"
+    assert summary["live_orders"] == 0
+    assert summary["cycles_executed"] >= 2
+    assert (tmp_path / "session" / "cycles" / "cycle-0001" / "SIGNAL_TRACE.jsonl").exists()
+
+    trace: list[dict[str, object]] = []
+    for path in sorted((tmp_path / "session" / "cycles").glob("*/SIGNAL_TRACE.jsonl")):
+        trace.extend(json.loads(line) for line in path.read_text(encoding="utf-8").splitlines())
+    assert trace
+    assert {row["action"] for row in trace} <= {"LONG", "SHORT", "NO_TRADE"}
+    assert all(row["strategy_id"] == "ema_crossover" for row in trace)
+    assert all(row["quality_status"] in {"PASS", "REJECT"} for row in trace)
+    assert all(
+        row["max_input_data_time_ms"] is None
+        or int(row["max_input_data_time_ms"]) <= int(row["decision_time_ms"])
+        for row in trace
+    )
+    # The decisions the lane recorded name the provider that formed them.
+    last = [
+        row["entry"]
+        for row in read_entries(
+            tmp_path / "session" / "STREAM.jsonl"
+        )
+        if row["entry"]["kind"] == "CYCLE"
+    ][-1]
+    entries = read_entries(tmp_path / "session" / last["ledger"]["path"])
+    providers = {
+        row["entry"]["provider"]["provider"]
+        for row in entries
+        if row["entry"]["kind"] == "DECISION" and "provider" in row["entry"]
+    }
+    assert providers == {"strategy-signal"}
+
+
+def test_a_late_answer_fills_once_the_cadence_leaves_it_a_bar(tmp_path: Path) -> None:
+    """DEF-003J-08, pinned: the answer arrives after the next open, so it needs a bar.
+
+    With a decision every bar, the newer opinion is formed at the very close that the
+    older order needed as its next open, and the order is superseded before that open is
+    processed. Every second bar leaves the open free, and the same lane fills it — with
+    the quote stamped at or after the answer, never before it.
+    """
+
+    session, _clock, _venue = build_session(
+        tmp_path, latency_ms=30_000, max_cycles=4, decision_every_bars=2
+    )
+    summary = session.run()
+    assert summary["live_orders"] == 0
+    assert summary["fills"] >= 1
+
+    fills: list[dict[str, object]] = []
+    for path in sorted((tmp_path / "session" / "cycles").glob("*/ledger.jsonl")):
+        fills.extend(
+            row["entry"]
+            for row in read_entries(path)
+            if row["entry"]["kind"] == "FILL"
+        )
+    assert fills
+    for fill in fills:
+        assert int(fill["quote_ts_ms"]) >= int(fill["received_at_ms"])
+        assert int(fill["opinion_age_ms"]) >= 0
+
+
+def test_an_unknown_signal_source_is_refused_by_the_config() -> None:
+    with pytest.raises(ValueError, match="unknown signal source"):
+        ProspectiveConfig(signal_source="parity_fallback")
+
+
+def test_the_experimental_source_refuses_a_window_the_family_cannot_read() -> None:
+    with pytest.raises(ValueError, match="window_bars"):
+        ProspectiveConfig(signal_source="strategy_experimental", window_bars=20)

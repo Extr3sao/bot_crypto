@@ -47,6 +47,16 @@ from trading_bot.vision.ledger import DecisionLedger, read_entries
 from trading_bot.vision.provider import VisionRequest, VisionResponse
 from trading_bot.vision.quotes import MinuteBarQuoteFeed, MinuteSeries
 from trading_bot.vision.settings import VisionConfig
+from trading_bot.vision.signal_sources import (
+    MIN_CANDLES,
+    SIGNAL_SOURCE_LEGACY,
+    SIGNAL_SOURCE_STRATEGY,
+    SIGNAL_SOURCES,
+    STRATEGY_EMA_CROSSOVER,
+    SignalSourceConfigError,
+    build_signal_provider,
+    provider_name,
+)
 
 PAPER = "PAPER"
 LIVE = "LIVE"
@@ -66,6 +76,10 @@ RUNTIME_PATHS = (
     "src/trading_bot/market_data/minute_collector.py",
     "src/trading_bot/risk/manager.py",
     "src/trading_bot/paper/broker.py",
+    # 003J: the signal source and the strategy it may ask are part of the run's identity.
+    "src/trading_bot/vision/signal_sources.py",
+    "src/trading_bot/research/families/ema_crossover_family.py",
+    "src/trading_bot/indicators/builtin.py",
 )
 
 
@@ -122,6 +136,11 @@ class ProspectiveConfig:
     max_cycles: int | None = None
     stale_after_ms: int = 150_000
     max_skew_ms: int = 5_000
+    #: 003J: which generator forms the decision. ``legacy_parity`` is the script that
+    #: always ran here; ``strategy_experimental`` is the opt-in adapter and refuses any
+    #: other mode. There is no third value and no silent fallback between them.
+    signal_source: str = SIGNAL_SOURCE_LEGACY
+    strategy_id: str = STRATEGY_EMA_CROSSOVER
 
     def __post_init__(self) -> None:
         if str(self.mode).upper() not in ALLOWED_MODES:
@@ -138,6 +157,20 @@ class ProspectiveConfig:
         timeframe_ms(self.timeframe)
         if self.duration_s <= 0:
             raise ValueError("duration_s must be positive")
+        if self.signal_source not in SIGNAL_SOURCES:
+            raise SignalSourceConfigError(
+                f"unknown signal source {self.signal_source!r}; allowed: {list(SIGNAL_SOURCES)}"
+            )
+        if self.signal_source == SIGNAL_SOURCE_STRATEGY and self.strategy_id != STRATEGY_EMA_CROSSOVER:
+            raise SignalSourceConfigError(
+                f"strategy {self.strategy_id!r} is not admitted to the experimental source; "
+                f"the only admitted strategy is {STRATEGY_EMA_CROSSOVER!r}"
+            )
+        if self.signal_source == SIGNAL_SOURCE_STRATEGY and self.window_bars < MIN_CANDLES:
+            raise SignalSourceConfigError(
+                f"the experimental source needs window_bars >= {MIN_CANDLES} (the family's "
+                f"own guard); got {self.window_bars}"
+            )
 
     @property
     def interval_ms(self) -> int:
@@ -393,7 +426,20 @@ class ProspectiveSession:
         ledger_path = directory / "ledger.jsonl"
         if ledger_path.exists():
             ledger_path.unlink()
-        provider = PaperScriptProvider(latency_ms=self.config.latency_ms)
+        # 003J: one resolution point for the signal source. The legacy branch builds the
+        # same ``PaperScriptProvider(latency_ms=...)`` this line used to build; the
+        # experimental branch builds the adapter. Anything else refuses the run.
+        provider = build_signal_provider(
+            self.config.signal_source,
+            series=series,
+            timeframe=self.config.timeframe,
+            interval_ms=self.config.interval_ms,
+            window_bars=self.config.window_bars,
+            latency_ms=self.config.latency_ms,
+            trace_path=directory / "SIGNAL_TRACE.jsonl",
+            mode=self.config.mode,
+            strategy_id=self.config.strategy_id,
+        )
         lane = VisionLane(
             series={symbol: list(bars) for symbol, bars in series.items()},
             provider=provider,
@@ -535,8 +581,14 @@ class ProspectiveSession:
                 "declared_latency_ms": self.config.latency_ms,
                 "warmup_minutes": self.config.warmup_minutes,
                 "equity": self.config.equity,
+                "signal_source": self.config.signal_source,
+                "strategy_id": self.config.strategy_id,
             },
-            "provider": PaperScriptProvider.name,
+            "provider": provider_name(self.config.signal_source),
+            "signal_source": self.config.signal_source,
+            "strategy_id": self.config.strategy_id
+            if self.config.signal_source == SIGNAL_SOURCE_STRATEGY
+            else None,
             "real_model_called": False,
             "subbar_entries": "PAPER_ONLY",
             "runtime_sha256": self._runtime,
@@ -736,7 +788,11 @@ class ProspectiveSession:
             "live_enabled": False,
             "live_orders": 0,
             "real_model_called": False,
-            "provider": PaperScriptProvider.name,
+            "provider": provider_name(self.config.signal_source),
+            "signal_source": self.config.signal_source,
+            "strategy_id": self.config.strategy_id
+            if self.config.signal_source == SIGNAL_SOURCE_STRATEGY
+            else None,
             "cycles_executed": len(executed),
             "cycles_blocked": blocked,
             "data_delay_ms": self._data_delay_ms,

@@ -37,6 +37,11 @@ from trading_bot.vision.prospective import (  # noqa: E402
     ProspectiveSession,
     SessionAborted,
 )
+from trading_bot.vision.signal_sources import (  # noqa: E402
+    SIGNAL_SOURCES,
+    SIGNAL_SOURCE_LEGACY,
+    STRATEGY_EMA_CROSSOVER,
+)
 from trading_bot.vision.settings import load_vision_config  # noqa: E402
 
 DEFAULT_OUT = REPO / "reports" / "ai-bots" / "RFC-AI-BOTS-003G" / "session"
@@ -68,6 +73,15 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--settle-ms", type=int, default=2_500)
     parser.add_argument("--latency-ms", type=int, default=30_000)
     parser.add_argument("--warmup-minutes", type=int, default=240)
+    # 003J: the default is the source that always ran here. The experimental adapter is
+    # an explicit opt-in and there is no fallback between the two.
+    parser.add_argument(
+        "--signal-source",
+        default=SIGNAL_SOURCE_LEGACY,
+        choices=SIGNAL_SOURCES,
+        help="legacy_parity (script) or strategy_experimental (runtime strategy family)",
+    )
+    parser.add_argument("--strategy-id", default=STRATEGY_EMA_CROSSOVER)
     parser.add_argument("--out", default=str(DEFAULT_OUT))
     args = parser.parse_args(argv)
 
@@ -99,6 +113,8 @@ def main(argv: list[str] | None = None) -> int:
         warmup_minutes=args.warmup_minutes,
         mode=PAPER,
         max_cycles=args.max_cycles,
+        signal_source=args.signal_source,
+        strategy_id=args.strategy_id,
     )
     session = ProspectiveSession(
         config=config,
@@ -113,6 +129,8 @@ def main(argv: list[str] | None = None) -> int:
         "started_at_utc": datetime.now(tz=UTC).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "mode": PAPER,
         "live_enabled": False,
+        "signal_source": args.signal_source,
+        "strategy_id": args.strategy_id,
         "risk_yaml_sha256": _sha256(REPO / "config" / "risk.yaml"),
         "vision_yaml_sha256": _sha256(REPO / "config" / "vision.yaml"),
         "out_dir": str(out),
@@ -131,7 +149,7 @@ def main(argv: list[str] | None = None) -> int:
         return 2
     print(json.dumps({k: summary[k] for k in (
         "cycles_executed", "cycles_blocked", "fills", "closed_trades",
-        "net_realised_usdt", "data_delay_ms",
+        "net_realised_usdt", "data_delay_ms", "signal_source",
     )}, indent=2))
     if summary["cycles_executed"] == 0:
         print("[003g] BLOCKED — no cycle could be executed on real data")
