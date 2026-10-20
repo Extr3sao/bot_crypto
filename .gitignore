@@ -511,3 +511,22 @@ reports/ai-bots/EXP-003M-MAKER-FILL-REALITY-001/*
 !reports/ai-bots/EXP-003M-MAKER-FILL-REALITY-001/dataset/
 reports/ai-bots/EXP-003M-MAKER-FILL-REALITY-001/dataset/*
 !reports/ai-bots/EXP-003M-MAKER-FILL-REALITY-001/dataset/TAPE_MANIFEST.json
+# EXP-003N-GROSS-FIRST-DISCOVERY-001 — informes, diseño, análisis, evidencia y manifiestos se
+# publican; los datos de mercado siguen fuera porque son regenerables y los certifica un
+# manifiesto SHA-256. La cinta y los JSONL pesados no entran.
+!reports/ai-bots/EXP-003N-GROSS-FIRST-DISCOVERY-001/
+reports/ai-bots/EXP-003N-GROSS-FIRST-DISCOVERY-001/*
+!reports/ai-bots/EXP-003N-GROSS-FIRST-DISCOVERY-001/*.md
+!reports/ai-bots/EXP-003N-GROSS-FIRST-DISCOVERY-001/*.json
+!reports/ai-bots/EXP-003N-GROSS-FIRST-DISCOVERY-001/*.csv
+!reports/ai-bots/EXP-003N-GROSS-FIRST-DISCOVERY-001/*.txt
+!reports/ai-bots/EXP-003N-GROSS-FIRST-DISCOVERY-001/analysis/
+!reports/ai-bots/EXP-003N-GROSS-FIRST-DISCOVERY-001/analysis/*.json
+# The signal table is 3.7 MiB and the seal hashes it: a manifest that names a file the
+# checkout does not have is a seal that verifies only on the machine that made it.
+!reports/ai-bots/EXP-003N-GROSS-FIRST-DISCOVERY-001/analysis/*.jsonl.gz
+!reports/ai-bots/EXP-003N-GROSS-FIRST-DISCOVERY-001/design/
+!reports/ai-bots/EXP-003N-GROSS-FIRST-DISCOVERY-001/design/*.json
+!reports/ai-bots/EXP-003N-GROSS-FIRST-DISCOVERY-001/design/*.md
+!reports/ai-bots/EXP-003N-GROSS-FIRST-DISCOVERY-001/evidence/
+!reports/ai-bots/EXP-003N-GROSS-FIRST-DISCOVERY-001/evidence/*

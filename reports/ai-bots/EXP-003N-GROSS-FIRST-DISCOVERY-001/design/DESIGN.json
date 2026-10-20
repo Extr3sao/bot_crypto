@@ -1,0 +1,385 @@
+{
+  "admission_snapshot": {
+    "period": "W1-W7 2026-03-01..2026-09-24",
+    "strategies": {
+      "breakout@15m": {
+        "admitted_for_paper": false,
+        "expected_gross_edge_bps": -1.82,
+        "status": "NO_GROSS_EDGE"
+      },
+      "breakout@1h": {
+        "admitted_for_paper": false,
+        "expected_gross_edge_bps": -0.22,
+        "status": "NO_GROSS_EDGE"
+      },
+      "breakout@30m": {
+        "admitted_for_paper": false,
+        "expected_gross_edge_bps": -1.79,
+        "status": "NO_GROSS_EDGE"
+      },
+      "breakout@5m": {
+        "admitted_for_paper": false,
+        "expected_gross_edge_bps": -0.11,
+        "status": "NO_GROSS_EDGE"
+      },
+      "ema_crossover@15m": {
+        "admitted_for_paper": false,
+        "expected_gross_edge_bps": -1.12,
+        "status": "NO_GROSS_EDGE"
+      },
+      "ema_crossover@1h": {
+        "admitted_for_paper": false,
+        "expected_gross_edge_bps": -0.96,
+        "status": "NO_GROSS_EDGE"
+      },
+      "ema_crossover@30m": {
+        "admitted_for_paper": false,
+        "expected_gross_edge_bps": -0.73,
+        "status": "NO_GROSS_EDGE"
+      },
+      "ema_crossover@5m": {
+        "admitted_for_paper": false,
+        "expected_gross_edge_bps": -4.56,
+        "status": "NO_GROSS_EDGE"
+      },
+      "mean_reversion@15m": {
+        "admitted_for_paper": false,
+        "expected_gross_edge_bps": 2.71,
+        "status": "COST_KILLED"
+      },
+      "mean_reversion@1h": {
+        "admitted_for_paper": false,
+        "expected_gross_edge_bps": -2.23,
+        "status": "NO_GROSS_EDGE"
+      },
+      "mean_reversion@30m": {
+        "admitted_for_paper": false,
+        "expected_gross_edge_bps": 5.47,
+        "status": "COST_KILLED"
+      },
+      "mean_reversion@5m": {
+        "admitted_for_paper": false,
+        "expected_gross_edge_bps": 1.49,
+        "status": "COST_KILLED"
+      },
+      "momentum@15m": {
+        "admitted_for_paper": false,
+        "expected_gross_edge_bps": -3.97,
+        "status": "NO_GROSS_EDGE"
+      },
+      "momentum@1h": {
+        "admitted_for_paper": false,
+        "expected_gross_edge_bps": -2.33,
+        "status": "NO_GROSS_EDGE"
+      },
+      "momentum@30m": {
+        "admitted_for_paper": false,
+        "expected_gross_edge_bps": -2.61,
+        "status": "NO_GROSS_EDGE"
+      },
+      "momentum@5m": {
+        "admitted_for_paper": false,
+        "expected_gross_edge_bps": -1.88,
+        "status": "NO_GROSS_EDGE"
+      },
+      "trend@15m": {
+        "admitted_for_paper": false,
+        "expected_gross_edge_bps": 1.28,
+        "status": "COST_KILLED"
+      },
+      "trend@1h": {
+        "admitted_for_paper": false,
+        "expected_gross_edge_bps": -1.25,
+        "status": "NO_GROSS_EDGE"
+      },
+      "trend@30m": {
+        "admitted_for_paper": false,
+        "expected_gross_edge_bps": 2.21,
+        "status": "COST_KILLED"
+      },
+      "trend@5m": {
+        "admitted_for_paper": false,
+        "expected_gross_edge_bps": -1.65,
+        "status": "NO_GROSS_EDGE"
+      },
+      "volatility@15m": {
+        "admitted_for_paper": false,
+        "expected_gross_edge_bps": -7.06,
+        "status": "NO_GROSS_EDGE"
+      },
+      "volatility@1h": {
+        "admitted_for_paper": false,
+        "expected_gross_edge_bps": 6.28,
+        "status": "COST_KILLED"
+      },
+      "volatility@30m": {
+        "admitted_for_paper": false,
+        "expected_gross_edge_bps": 8.91,
+        "status": "COST_KILLED"
+      },
+      "volatility@5m": {
+        "admitted_for_paper": false,
+        "expected_gross_edge_bps": -4.73,
+        "status": "NO_GROSS_EDGE"
+      }
+    }
+  },
+  "candidates": {
+    "excluded": {
+      "cand001-cand003": "already REJECTED_INITIAL_EXPERIMENT with negative gross expectancy per trade; re-running them would spend this experiment's sample on a refuted mechanism",
+      "cross_sectional_rotation": "REJECT at WP-EDGE-015 and degenerate on three assets: a top-k rotation over BTC/ETH/SOL is a single-asset trend rule with extra steps",
+      "maker_only_spread_capture": "DEFER_NO_FILL_MODEL, and EXP-003M now prices the fill side of it"
+    },
+    "lane_a_runtime_families": [
+      {
+        "classification": "RUNTIME_REACHABLE",
+        "family": "ema_crossover",
+        "id": "ema_crossover",
+        "min_candles": 22,
+        "module": "trading_bot\\research\\families\\ema_crossover_family"
+      },
+      {
+        "classification": "EXPERIMENTAL_PAPER",
+        "family": "momentum",
+        "id": "momentum",
+        "min_candles": 36,
+        "module": "trading_bot\\research\\families\\momentum_family"
+      },
+      {
+        "classification": "EXPERIMENTAL_PAPER",
+        "family": "breakout",
+        "id": "breakout",
+        "min_candles": 21,
+        "module": "trading_bot\\research\\families\\breakout_family"
+      },
+      {
+        "classification": "EXPERIMENTAL_PAPER",
+        "family": "mean_reversion",
+        "id": "mean_reversion",
+        "min_candles": 22,
+        "module": "trading_bot\\research\\families\\mean_reversion_family"
+      },
+      {
+        "classification": "EXPERIMENTAL_PAPER",
+        "family": "trend",
+        "id": "trend",
+        "min_candles": 56,
+        "module": "trading_bot\\research\\families\\trend_family"
+      },
+      {
+        "classification": "EXPERIMENTAL_PAPER",
+        "family": "volatility",
+        "id": "volatility",
+        "min_candles": 27,
+        "module": "trading_bot\\research\\families\\volatility_family"
+      }
+    ],
+    "lane_b_alpha15_families": [
+      {
+        "differs_from": [
+          "breakout@5m",
+          "ema_crossover@5m"
+        ],
+        "family": "vol_regime_breakout",
+        "parameters": {
+          "atr_hours": 24,
+          "atr_percentile_max": 0.95,
+          "atr_percentile_min": 0.5,
+          "channel_hours": 168,
+          "percentile_window_hours": 720,
+          "regime_ema_hours": 200,
+          "trail_atr_multiple": 3.0
+        },
+        "status": "TESTED"
+      },
+      {
+        "differs_from": [
+          "ema_crossover@5m"
+        ],
+        "family": "trend_pullback",
+        "parameters": {
+          "atr_hours": 24,
+          "fast_ema_hours": 20,
+          "slow_ema_hours": 50,
+          "stop_atr_multiple": 3.0,
+          "trend_ema_hours": 200,
+          "trend_slope_hours": 24
+        },
+        "status": "TESTED"
+      },
+      {
+        "differs_from": [
+          "breakout@5m",
+          "ema_crossover@5m",
+          "lead_lag"
+        ],
+        "family": "mean_reversion_vol_liq",
+        "parameters": {
+          "atr_hours": 24,
+          "atr_percentile_max": 0.5,
+          "atr_stop_multiple": 4.0,
+          "max_hold_hours": 48,
+          "mean_hours": 48,
+          "percentile_window_hours": 720,
+          "volume_median_hours": 168,
+          "volume_multiple_min": 1.2,
+          "z_entry": -2.0,
+          "z_exit": 0.0
+        },
+        "status": "TESTED"
+      }
+    ],
+    "symbols": [
+      "BTCUSDT",
+      "ETHUSDT",
+      "SOLUSDT"
+    ],
+    "timeframes_lane_a": [
+      "5m",
+      "1h",
+      "4h"
+    ],
+    "timeframes_lane_b": [
+      "1h",
+      "4h"
+    ]
+  },
+  "commit": "98009257a7c36589291f9e0d9797b438837f24b2",
+  "cost_model": {
+    "components": "fee + half spread + slippage + impact per side, on both legs; the fee floor is the comparable minimum, the full round trip is the gate",
+    "fee_bps_per_side": 10.0,
+    "fee_floor_bps_bnb": 15.0,
+    "fee_floor_bps_no_bnb": 20.0,
+    "source": "trading_bot.research.economic_recovery.alpha15.cost_for (the same model EXP-003L and EXP-003M priced)",
+    "stake_usdt": 500.0
+  },
+  "dataset": {
+    "manifest_sha256": "06339ca29a2334fb95d4c3773c7ef8b6f27b524c274dbd37c1e708704cf654ba",
+    "path": "reports/ai-bots/EXP-003K-CANDIDATE-001/dataset",
+    "source": "frozen EXP-003K dataset (Binance spot /api/v3/klines, 1m)",
+    "symbols": {
+      "BTCUSDT": {
+        "bytes": 1474761,
+        "file": "BTCUSDT.1m.jsonl.gz",
+        "sha256": "7fbdfefa12785bb025d525994466b5a64d5c0668d6ff997f5f7566bc42d13814"
+      },
+      "ETHUSDT": {
+        "bytes": 1375601,
+        "file": "ETHUSDT.1m.jsonl.gz",
+        "sha256": "cf04dc37617a0998016fcd7edfb9b2a77c9aa5fa656bbb54422805a5964650a6"
+      },
+      "SOLUSDT": {
+        "bytes": 1077312,
+        "file": "SOLUSDT.1m.jsonl.gz",
+        "sha256": "33342aacc2ac75f897e2c9df2602a41d340c96ed08cd683dbd3871c3c7c60c32"
+      }
+    }
+  },
+  "decision_rules": {
+    "ADVANCE_TO_VALIDATION": "S1, S2, S3 and S4 hold and the closed-trade view in VAL is net positive after full cost",
+    "EXPERIMENT": "S1 holds and S2/S3 do not: the signal carries information this sample cannot turn into money",
+    "INSUFFICIENT_EVIDENCE": "S0 fails, or the measurement depends on an input the experiment cannot verify",
+    "NO_VIABLE_CANDIDATES": "no candidate reaches ADVANCE_TO_VALIDATION; the refuted hypotheses are listed with the measured deficit",
+    "REJECT": "S1 fails, or S1 holds but S3 shows the gross cannot cover even the fee floor"
+  },
+  "exit_policy": {
+    "atr_period": 14,
+    "entry": "open of the bar after the decision bar, plus the adverse price terms of the cost model",
+    "exit": "open of the bar 12 bars later, or the stop level if the stop is touched first",
+    "horizon_bars": 12,
+    "intrabar": "stop_first: when a bar holds both the stop and the horizon price, the stop is taken",
+    "stop_atr_multiple": 2.0,
+    "target": "NONE"
+  },
+  "experiment": "EXP-003N-GROSS-FIRST-DISCOVERY-001",
+  "frozen_at_utc": "2026-10-20T18:38:16Z",
+  "gates": {
+    "S0_sample": "a cell needs >= 50 signals in RESEARCH, >= 20 in IS and >= 15 in VAL; below that the verdict is INSUFFICIENT_EVIDENCE, never a pass",
+    "S1_existence": "in IS, the mean signed forward return at some horizon > 0 and its bootstrap 95% lower bound > 0",
+    "S2_replication": "the same horizon has a positive mean in VAL, a block the horizon was not chosen on",
+    "S3_economic": "VAL mean gross - full round-trip cost (fee + half spread + slippage + impact at 500 USDT) > 0, and the VAL mean gross at least covers the fee floor (20 bps, or 15 bps with the BNB discount)",
+    "S4_multiple_testing": "the cell survives Benjamini-Hochberg at q = 0.10 inside its stage's test family",
+    "S5_holdout_integrity": "no input row, signal or statistic covers 2026-08-06 -> 2026-08-20; the holdout is never read",
+    "S6_governance": "config/runtime.yaml still declares paper with live_trading_enabled false, no live order exists, and this experiment changes no risk limit",
+    "S7_null_baseline": "a coin-flip signal with the same cadence and the same exit policy must fail S1-S4; if it does not, the gates are measuring costs and not edge"
+  },
+  "governance": {
+    "builder_is_not_verifier": true,
+    "false_success_target": 0,
+    "live_trading": "DISABLED",
+    "paper_promotion": "NOT_AUTHORIZED",
+    "trades_authorized": 0
+  },
+  "holdout": {
+    "end_utc": "2026-08-20T00:00:00Z",
+    "rule": "no bar, signal, trade or statistic for this window is produced, stored or summarised; the runner and the verifier both refuse a row inside it",
+    "start_utc": "2026-08-06T00:00:00Z",
+    "status": "CLOSED"
+  },
+  "horizons_bars": [
+    1,
+    3,
+    6,
+    12,
+    24,
+    48
+  ],
+  "invariants": {
+    "config_sha256": {
+      "risk.yaml": "3c27c866d5f11afea96a80598c1e72c69816ecc3b77e97c5ad7fa86417593a2e",
+      "runtime.yaml": "ac3cf4fce9ff6246997a059f1c409609a7c87a6bb416198c041ca479fc49a159",
+      "vision.yaml": "ba817ef6f2c8768ee8bd094ffbdb0f705281f7056466c95cd0b2016e6e3fd766"
+    },
+    "live_orders": 0,
+    "risk_limits_unchanged": true
+  },
+  "partitions": {
+    "IS": {
+      "end_utc": "2026-07-11T00:00:00Z",
+      "start_utc": "2026-06-21T00:00:00Z"
+    },
+    "TEST": {
+      "end_utc": "2026-08-06T00:00:00Z",
+      "start_utc": "2026-07-26T00:00:00Z"
+    },
+    "VAL": {
+      "end_utc": "2026-07-26T00:00:00Z",
+      "start_utc": "2026-07-11T00:00:00Z"
+    }
+  },
+  "predecessor": {
+    "decision": "REJECT",
+    "path": "reports/ai-bots/EXP-003M-MAKER-FILL-REALITY-001",
+    "seal_sha256": "2d8df077e6124aaa1c2b4e8b1afc4ba18bcf911cfb4cf01e2b8d84e09182386e"
+  },
+  "prior_evidence": {
+    "EXP-003L": "the taker round trip is ~25.4 bps at 500 USDT; the best configuration's gross was 8.5 bps per trade and every other cell was negative",
+    "EXP-003M": "5m/mean_reversion REJECT: the maker fill ceiling is 0.2669 USDT per closed trade against a 0.75 USDT fee floor (0.356x coverage)",
+    "SOURCE-TO-RUNTIME": "all five cand001-cand003 arms REJECTED_INITIAL_EXPERIMENT with negative gross expectancy per trade",
+    "STRATEGY_ADMISSION": "the authoritative ledger records NO_GROSS_EDGE or COST_KILLED for all 24 (family, timeframe) cells; the largest zero-cost gross is volatility@30m at 8.91 bps",
+    "WP-EDGE-015": "NO_ECONOMIC_EDGE_FOUND on the 1h alt corpora: trend_pullback REJECT, vol_regime_breakout REJECT_OUTLIER_DRIVEN, mean_reversion_vol_liq EXPERIMENT_COST_FRAGILE, cross_sectional_rotation REJECT, maker hypothesis DEFER_NO_FILL_MODEL"
+  },
+  "question": "Does any mechanism that already exists in this repository produce a gross income per signal that covers its own round-trip cost on valid, point-in-time bars?",
+  "schema_version": "AI_BOTS_003N_DESIGN_V1",
+  "statistics": {
+    "bootstrap": {
+      "alpha": 0.05,
+      "block_days": 5,
+      "method": "moving block bootstrap over signals ordered in time",
+      "resamples": 10000,
+      "seed": 20261020,
+      "unit": "signed forward return in bps per signal"
+    },
+    "multiple_testing": {
+      "family": "every (candidate, horizon) cell tested in stage 1, then every surviving cell in stage 2",
+      "method": "Benjamini-Hochberg",
+      "q": 0.1
+    }
+  },
+  "timeframes": {
+    "1h": 3600000,
+    "4h": 14400000,
+    "5m": 300000
+  },
+  "why_not_another_fill_model": "EXP-003M measured that 5m/mean_reversion's most generous fill model still earns 0.2669 USDT per closed trade against a 0.75 USDT fee floor. Modelling fills more carefully cannot create gross income; only a different gross can."
+}

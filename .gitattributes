@@ -46,3 +46,8 @@ reports/economic-recovery/RFC-EDGE-01*/scratch/*.jsonl -text
 # files to CRLF and the seal verified 0/18: the hash named bytes nobody had.  The tree is
 # stored exactly as written so the manifest is a check and not a coincidence.
 reports/ai-bots/EXP-003M-MAKER-FILL-REALITY-001/** -text
+
+# EXP-003N publishes SHA256SUMS.txt over its own tree, and the universe/inventory documents
+# are compared byte for byte by the verifier. A checkout that rewrote their line endings
+# would break both, exactly as it broke EXP-003M's seal (see 003N's evidence/).
+reports/ai-bots/EXP-003N-GROSS-FIRST-DISCOVERY-001/** -text

@@ -1,3 +1,125 @@
+## 2026-10-20 · EXP-003M-MAKER-FILL-REALITY-001 — fills maker contra la cinta, y evidencia reproducible
+
+**Objetivo:** sustituir el supuesto «toque = fill» de 003L por la cinta de operaciones observada, y
+entregar un pipeline que genere, verifique y selle sin poder romperse en el orden. **Rama:**
+`agent/ai-bots/RFC-TAP-AI-BOTS-003` · **HEAD:** `b0e15497d967` · **Modo:** OFFLINE,
+`LIVE_ENABLED=false`, 0 órdenes, 0 credenciales.
+
+**Hecho (medido)**
+
+1. **Predecesor reproducido antes de juzgarlo.** El sello de 003L verifica 70/70 ficheros. Las 47
+   señales se extraen de su ledger con los límites re-derivados de su tabla de costes. El escenario
+   F0 (supuesto de 003L: todo toque llena entero al precio mejorado) restablece lo publicado
+   exactamente: tasa `0.93617`, neto/señal `-0.45225547`, neto/cierre `-0.48309107`, bruto/cierre
+   `0.26690893` (deltas 0.0).
+2. **Auditoría de datos.** `data.binance.vision` publica para spot **solo** `aggTrades`, `klines`
+   y `trades`: no hay libro L2 ni `bookTicker` (404), así que la cola no se puede observar. La
+   profundidad por bandas de USDⓈ-M existe, es otro instrumento y se usa solo como calibración.
+   Cinta: **42 pares** `(símbolo, día)`, **680.484** operaciones conservadas de 27.887.409 dentro de
+   las ventanas, **405,6 MiB** descargados, sin filtro por precio, lado ni resultado. Klines del
+   mismo archivo contra el dataset congelado: **60.480 barras comparadas, 60.480 exactas**.
+3. **Fills.** F0 44/47; F1 (cola 1x, 400 ms) 42/47 con neto/cierre `-0.5347`; F2 (cola 4x, 2 s,
+   5 min, 2 bp, spot VIP0) 33/47 con `-0.9233`; F3 (cinta sin cola) 44/47 con `-0.4709`. Barrido de
+   24 puntos de cola y latencia: **0 con neto por cierre positivo**. Selección adversa medida:
+   `+2.06` bp en contra a 5 minutos con cinta frente a `-1.78` bp en el conjunto que F0 habría
+   llenado (Δ `3.84` bp). La cola apenas muerde con 500 USDT: cambia 3 de 47 fracciones.
+4. **Economía.** Techo bruto por cierre `0.2669` USDT frente a suelo de `0.75` (7.5 bp, BNB) o
+   `1.00` (10 bp): cobertura **0.356x**. Fallan `G4_economics_pessimistic`, `G5_optimistic_ceiling` y
+   `G7_evidence_class`. Veredicto **`REJECT`**: no hay ventaja neta tras modelar fills maker, y
+   tampoco la habría con fills perfectos.
+5. **Pipeline y sello.** `exp_003m_pipeline.py generate` → tests → verificación **antes** del
+   informe → informe → `seal`. El verificador se niega a escribir si existe `SEAL.json`; el sello
+   excluye `SHA256SUMS.txt`, `SEAL.json` y el propio manifiesto de datos (sin hash circular) y
+   recorre el árbol completo con `os.walk`, no un listado truncado. **14/14 PASS, 8/8 controles
+   negativos, `false_success=0`**; **18** ficheros publicados + **126** de datos sellados, ambos
+   `sha256sum -c` OK; idempotencia **12/12** artefactos byte-idénticos; **25** tests, `ruff` 0,
+   `mypy --strict` 0. Configuración congelada por digest (`risk.yaml` `3c27c866d5f1`,
+   `runtime.yaml` `ac3cf4fce9ff`, `vision.yaml` `ba817ef6f2c8`): el motor de fills se niega a
+   cotizar si `default_stop_loss_pct`/`default_take_profit_pct` o el flag live cambian.
+6. **Defectos registrados.** D1 el toque no es un fill (el daño es *cuándo*, no cuántos); D2 el
+   escenario base de 003L usaba el descuento BNB (0.25 USDT por operación sin declararlo); D3 el
+   archivo diario publica microsegundos y el dataset congelado milisegundos (una comprobación que
+   asumiera una sola unidad comparaba cero barras); D4 la cola no es observable; D5 bug propio: el
+   índice del fill se calculaba con la época en vez de con el índice de barra y dejaba el 100 % de
+   los fills en `OPEN_AT_END` — detectado por la distribución de estados y corregido.
+
+**Pendiente / bloqueado**
+
+- **Fills estimados, no observados**: no se envió ninguna orden. El techo honesto es
+  `ESTIMATED_FROM_OBSERVED_TRADE_TAPE`, nunca una promoción.
+- El holdout `2026-08-06 → 2026-08-20` sigue **cerrado**; el verificador falla si aparece una fila o
+  una URL con fechas de esa ventana.
+- La cinta y las klines (400 MiB) quedan fuera de git: un checkout limpio debe ejecutar `generate`
+  (descarga cacheada) antes de que `DATASET_SHA256SUMS.txt` pueda verificar.
+- Solo se juzgó `5m/mean_reversion`; no dice nada de otros timeframes ni de otras familias.
+
+**Reanudación verificable**
+
+```bash
+cd "$(git rev-parse --show-toplevel)"
+./.venv/Scripts/python.exe scripts/exp_003m_pipeline.py status
+./.venv/Scripts/python.exe scripts/exp_003m_pipeline.py verify --online   # solo lectura
+./.venv/Scripts/python.exe scripts/exp_003m_pipeline.py idempotent
+(cd reports/ai-bots/EXP-003M-MAKER-FILL-REALITY-001 && sha256sum -c SHA256SUMS.txt && sha256sum -c DATASET_SHA256SUMS.txt)
+```
+
+## 2026-10-20 · EXP-003L-EXECUTION-ECONOMICS-001 — el peaje, descompuesto y medido
+
+**Objetivo:** medir si el mecanismo de ejecución (taker vs maker, comisión vs spread) es lo que
+mata la ventaja, o si la ventaja no existe. **Rama:** `agent/ai-bots/RFC-TAP-AI-BOTS-003` ·
+**HEAD de partida:** `b0e15497d967` · **Modo:** PAPER/OFFLINE, `LIVE_ENABLED=false`.
+
+**Hecho (medido)**
+
+1. **Baseline y dataset.** Los digests de `BTCUSDT`/`ETHUSDT`/`SOLUSDT` recomputan contra el
+   manifiesto congelado de 003K (`7fbdfefa…`, `cf04dc37…`, `33342aac…`); `risk.yaml` y
+   `vision.yaml` son idénticos a los de 003K. Diseño sellado **13:23:34Z**, corrida más temprana
+   **13:36:24Z** (`VL1`). Reproducción a 5 m de las dos familias de 003K: `all_rows_identical=True`,
+   `all_nets_match=True` (`VB4`).
+2. **Grid ejecutado:** 4 timeframes × 2 familias = **8 corridas**, **1 430 cierres**. Celdas sin
+   corrida declaradas en `TIMEFRAME_COMPARISON.md` por presupuesto de cómputo (decidido antes de
+   mirar resultados de 003L).
+3. **Economía.** Mejor configuración `5m/mean_reversion` (47 cierres): bruto de referencia
+   `+0.426958` USDT/op frente a `1.268963` de coste, neto `-0.842005`, IC95 % `[-1.9443, 0.1845]`,
+   profit factor 0.582. Taker ≈ **25.4 bp** de peaje; maker spot BNB ≈ **17.6 bp** (medido, 0.936
+   de fill rate **simulado**), selección adversa `-4.84 bp`. El único escenario cercano a cero
+   (`-0.0140` USDT/op) es maker de futuros a 2 bp, que este carril spot no puede ejecutar.
+4. **Conclusión:** bajar el peaje recorta la pérdida, no crea la ventaja. Veredicto
+   `NO_VIABLE_CANDIDATE`: 6 `REJECTED` + 2 `BLOCKED_INSUFFICIENT_EVIDENCE` (34 y 20 cierres).
+   El holdout `2026-08-06 → 2026-08-20` **no se abrió**.
+5. **Verificación.** `scripts/exp_003l_verify.py --negative-controls`: **15/15 PASS** y **8/8**
+   controles negativos detectados (look-ahead, fill anterior a la respuesta, doble cierre, neto
+   manipulado, métricas que no recomputan, éxito falso, fuga de holdout, maker vendido como
+   observado), `false_success=0`. Sello `SHA256SUMS.txt` con **70 ficheros**, verificado con
+   `sha256sum -c` sin discrepancias. El sello se emite **después** del verificador: correr
+   `exp_003l_verify.py` tras `exp_003l_report.py` reescribe `analysis/VERIFICATION.json` y rompe
+   su hash, así que el orden del bloque de reanudación no es cosmético. Tests nuevos
+   `tests/unit/reports/test_exp_003l_execution.py`: **28 passed**; `ruff` 0; `mypy --strict` 0 en
+   los cinco scripts del experimento.
+
+**Pendiente / bloqueado**
+
+- **Fills maker simulados, nunca observados.** El fill rate 0.936 y la selección adversa salen de
+  barras de 1 m, no del libro. Declarado así en los 8 ficheros de ejecución (`VL15`).
+- **Holdout cerrado por directiva.** `GAP-VK9_oos_scope` sigue abierto; no se contabiliza como
+  superado.
+- **El verificador es otro programa, no otra persona** (`INDEPENDENT_VERIFIER=PROGRAM_NOT_PERSON`).
+- `reports/ai-bots/*` está ignorado por git (`.gitignore:463`): la evidencia viaja por artefactos
+  locales sellados, no por commit.
+
+**Reanudación verificable**
+
+```bash
+cd "$(git rev-parse --show-toplevel)"
+./.venv/Scripts/python.exe scripts/exp_003l_baseline.py
+./.venv/Scripts/python.exe scripts/exp_003l_execution.py --timeframe 5m
+./.venv/Scripts/python.exe scripts/exp_003l_analysis.py
+./.venv/Scripts/python.exe scripts/exp_003l_verify.py --negative-controls
+./.venv/Scripts/python.exe scripts/exp_003l_report.py
+(cd reports/ai-bots/EXP-003L-EXECUTION-ECONOMICS-001 && sha256sum -c SHA256SUMS.txt)
+```
+
+
 ## 2026-10-20 · EXP-003K-CANDIDATE-001 — segunda estrategia y suelo de costes
 
 **Objetivo:** demostrar el ciclo completo PAPER y evaluar una segunda `AlphaFamily` con ventaja
@@ -1177,3 +1299,151 @@ done
 
 Cada comando produce artefacto y exit code; el informe recalcula H1-H8 desde ficheros y falla si
 falta uno.
+
+---
+
+## DEF-RUN-014 — cierre del contrato del stop (2026-10-20, hilo `agent/ai-bots/RFC-TAP-AI-BOTS-003`)
+
+> Sección añadida por el hilo de DEF-RUN-014. No reescribe nada de las secciones anteriores;
+> otro hilo sigue siendo el dueño de su propio estado y de sus ficheros.
+
+**Objetivo**: que el stop declarado por la estrategia sea el que el libro arriesga, con origen
+publicado, y que un stop que no puede pagar su fricción sea `NO_TRADE` con causa.
+
+**Último commit**: `b0e15497d967ff1c1d3015203ffb7cbfcf0a70a0` (árbol de trabajo sucio; esta
+corrección **no** se ha commiteado).
+
+**Hecho (con evidencia)**
+
+- `risk/manager.py`: `StopResolution`, `resolve_stop`, `risk_at_stop_usdt`, `sizing_basis`,
+  `cost_bps_for`, `stop_cost_policy` (`OFF`/`REPORT`/`REJECT`), bloqueos `invalid_stop` y
+  `stop_inside_costs`.
+- `vision/lane.py`: el modelo entrega su stop/objetivo; la orden lleva el efectivo; el ledger
+  publica el contrato completo en `DECISION_OUTCOME` y `FILL`; `REJECT` activo.
+- `paper/broker.py`: `STOP_LOSS_REQUIRED` en vez del 1 % silencioso.
+- Tests nuevos: `tests/unit/risk/test_def_run_014_stop_contract.py` (13),
+  `tests/unit/vision/test_def_run_014_lane_contract.py` (4). Contra `HEAD`: **15 failed, 2
+  passed**; con la corrección: **17 passed** (26 con DEF-RUN-015).
+- Suites: `tests/unit/risk tests/unit/paper tests/unit/vision` → 508 passed;
+  `tests/integration` → 24 passed.
+- Verificador independiente `scripts/def_run_verify.py` (stdlib, sin importar runtime):
+  **147/147 PASS** sobre la captura, el E2E determinista y tres sesiones PAPER reales. Dos
+  controles negativos fallan como deben (incluida una mentira con hash recalculado).
+- Runtime PAPER real: `DEF-RUN-PAPER/de3-*` (4 ciclos, 1 fill), `-model-*` (12 ciclos, 0 fills,
+  1 `stop_inside_costs` con 8.41 ≤ 24.79 bps), `-real-20261020T170319Z` (60 ciclos, 1 fill,
+  0 cierres, identidades 11/11).
+- Informes: `reports/ai-bots/RFC-DEF-RUN-014/{RUN_REPORT.md,RUN_REPORT.json,DEF-RUN-014_FINAL_REPORT.md}`.
+
+**Pendiente**
+
+- `REAL_RUNTIME_PAPER_E2E` = `NOT_OBSERVED`: ninguna sesión real ha cerrado una posición.
+- `DEF-RUN-016` (nuevo): `SUPERSEDED_BY_NEWER_OPINION` — 5 de 12 opiniones del modelo expiran
+  antes de tener cotización ejecutable con `decision_every_bars=1` y 30 s de latencia.
+
+**Bloqueos**
+
+- La suite global no completa: `tests/unit/research` se cuelga (>10 min, 51 %). Muestras
+  ejecutadas fallan por artefactos de campaña obsoletos (`test_active_recovery_wp.py`: "the
+  committed view is stale"), ajenos a este defecto.
+- `tests/unit/market_structure` no colecciona (`ImportError` circular `trade_journal ↔
+  market_structure`), pre-existente.
+- `tick_size_check = NOT_AVAILABLE`: sin metadatos de instrumento.
+
+**Reanudación verificable**
+
+```bash
+cd "$(git rev-parse --show-toplevel)"
+./.venv/Scripts/python.exe -m pytest tests/unit/risk/test_def_run_014_stop_contract.py \
+  tests/unit/vision/test_def_run_014_lane_contract.py -q -p no:cacheprovider
+./.venv/Scripts/python.exe scripts/def_run_verify.py --root reports/ai-bots \
+  --session reports/ai-bots/DEF-RUN-PAPER/de3-20261020T152902Z \
+  --session reports/ai-bots/DEF-RUN-PAPER/model-20261020T170635Z \
+  --session reports/ai-bots/DEF-RUN-PAPER/real-20261020T170319Z
+# sesión de mercado para intentar el cierre real (no fabricar el resultado):
+./.venv/Scripts/python.exe scripts/ai_bots_003g_paper.py --mode PAPER --symbols BTCUSDT ETHUSDT \
+  --timeframe 15m --window-bars 24 --decision-every-bars 1 --duration-s 21600 \
+  --poll-s 30 --latency-ms 30000 --warmup-minutes 1440 \
+  --signal-source strategy_experimental --strategy-id mean_reversion \
+  --out reports/ai-bots/DEF-RUN-PAPER/close-<stamp>
+```
+
+## 2026-10-20 · EXP-003N-GROSS-FIRST-DISCOVERY-001 — de dónde sale el ingreso bruto
+
+**Objetivo:** decidir si existe al menos un candidato con expectativa económica neta antes de
+gastar más en modelar fills maker. **Rama:** `agent/ai-bots/RFC-TAP-AI-BOTS-003` · **Modo:**
+research offline, `LIVE_ENABLED=false`, 0 órdenes, holdout `2026-08-06 → 2026-08-20` **cerrado**.
+
+**Fase 0 — integración de 003M (hecha, con defectos reparados)**
+
+1. `sha256sum -c` en el árbol de trabajo: **18/18** artefactos publicados y **126/126** datos.
+2. Commits trazables de 003M sin la cinta: `f014813` (scripts + tests), `10919df` (artefactos,
+   diseño, análisis, manifiestos; `.gitignore` publica el informe y deja fuera los 400 MiB).
+3. **Checkout limpio** (`git worktree --detach`): el sello verificaba **0/18** porque
+   `core.autocrlf=true` reescribía los ficheros a CRLF. Reparado en `9800925`
+   (`.gitattributes ... -text`); después **18/18**. Segundo defecto: 8 de 25 tests sellaban
+   usando `EXP-003L/SHA256SUMS.txt`, un árbol no commiteado, y pasaban solo en esta máquina.
+   Reparado en `fefb077` (el sello nombra la ausencia en vez de fallar); después **25/25** en un
+   worktree que nunca tuvo 003L.
+4. Datos externos **regenerados** en el checkout limpio: 3 × 86 400 barras desde
+   `/api/v3/klines` con los digests congelados exactos, y **126/126** ficheros de cinta/klines
+   re-descargados de `data.binance.vision` byte-idénticos (`TAPE_MANIFEST.json`
+   `2d515444…`). Evidencia: `reports/ai-bots/EXP-003N-…/evidence/CLEAN_CHECKOUT_REHEARSAL.*`.
+   La ventana de Git dentro del worktree quedó en **0 líneas**.
+
+**Fase 1 — inventario real**
+
+`design/STRATEGY_UNIVERSE.json` se deriva del árbol (AST: imports y llamadas, no prosa):
+**6** `RUNTIME_REACHABLE` (las seis AlphaFamilies del adaptador PAPER), **1** `TEST_ONLY`
+(`EmaCrossoverStrategy`), **3** `EXPERIMENTAL` (cand001-cand003, ya `REJECTED_INITIAL_EXPERIMENT`),
+**6** `RESEARCH_ONLY` (máquinas PIT de WP-EDGE-015 y las tres carteras de research). No se
+inventó ninguna estrategia ni se duplicó una implementación: se llaman las clases reales.
+
+**Fase 2/3 — screening económico (protocolo congelado en disco antes de mirar ninguna cifra)**
+
+24 celdas (6 familias × 5m/1h/4h + 3 familias WP-EDGE-015 × 1h/4h) sobre BTC/ETH/SOL, 46 días,
+IS 06-21→07-11 / VAL 07-11→07-26 / TEST 07-26→08-06. Retorno forward por señal a 6 horizontes,
+entrada en el open siguiente, bloque de 5 días, 10 000 remuestreos, BH q=0,10.
+
+- **13 `REJECT`**, **10 `INSUFFICIENT_EVIDENCE`**, **1 `EXPERIMENT`**, **0** `ADVANCE`.
+- Mejor celda con muestra suficiente: `momentum@1h` — bruto **23.49 bps**/señal en VAL frente a
+  **27.31 bps** de coste completo (suelo de comisiones 20 bps; 24.786 en BTC/ETH, 27.31 en SOL):
+  neto **-3.82 bps**/señal y **-37.58 bps** por operación cerrada sobre 576 cierres.
+- `5m/mean_reversion`: **-51.82 bps** por cierre, mismo signo que 003M (-48.31) por otro método.
+- El único neto positivo (+234.90 bps) es `volatility@4h` con **1** operación: se publica como
+  `INSUFFICIENT_EVIDENCE`, no como candidato.
+- Lane B (WP-EDGE-015) no produce muestra: el warm-up de percentiles (720 h) consume la ventana
+  de 46 días. Ceros declarados `INSUFFICIENT_EVIDENCE`, nunca `REJECT`.
+
+**Fase 4/5 — verificación y entrega**
+
+Verificador separado `scripts/exp_003n_verify.py`: **12/12** comprobaciones, **10/10** controles
+negativos detectados, `false_success=0`, **6 692** retornos forward recalculados desde las barras
+(0 discrepancias), **35** operaciones cerradas recalculadas (0 discrepancias). Ocho entregables
+más `ECONOMIC_SCREENING.csv`, `SEAL.json` y `SHA256SUMS.txt`.
+
+**Límite de procedencia (declarado, no maquillado)**
+
+El protocolo se congeló en disco a las `18:38:16Z` y el screening corrió a las `19:32:34Z`, pero
+`design/DESIGN.json` y `design/PREREGISTRATION.md` **entraron en Git después** de que existiera
+el análisis. El congelamiento está anclado por contenido (`SCREENING.json` guarda el
+`design_sha256`; el verificador V3 lo compara) y **no** por tiempo. El análisis es
+**retrospectivo con protocolo declarado**, no prospectivo; así consta en `RUN_REPORT.md`,
+`FINAL_REPORT.md` y `RUN_REPORT.json → preregistration.prospective = false`.
+
+**Pendiente / bloqueado**
+
+- `NO_VIABLE_CANDIDATES` no es una propiedad del mercado: es lo que ocurre con las 9 familias
+  implementadas, 3 activos y 46 días. Una familia nueva no está probada; está sin escribir.
+- `tests/unit/research` sigue colgándose (>10 min) — pre-existente, ajeno a este experimento.
+- El verificador es un programa, no una persona (`INDEPENDENT_VERIFIER=PROGRAM_NOT_PERSON`).
+
+**Reanudación verificable**
+
+```bash
+cd "$(git rev-parse --show-toplevel)"
+./.venv/Scripts/python.exe scripts/exp_003n_preregister.py --check
+./.venv/Scripts/python.exe scripts/exp_003n_pipeline.py status
+./.venv/Scripts/python.exe scripts/exp_003n_verify.py --negative-controls --json-out /tmp/003n-verify.json
+./.venv/Scripts/python.exe scripts/exp_003n_pipeline.py seal
+(cd reports/ai-bots/EXP-003N-GROSS-FIRST-DISCOVERY-001 && sha256sum -c SHA256SUMS.txt)
+```
