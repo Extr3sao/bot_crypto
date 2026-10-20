@@ -1,0 +1,89 @@
+# CLEAN CHECKOUT REPRODUCTION — EXP-003N
+# worktree=C:\Users\GVLLFR~1\AppData\Local\Temp\003n-repro
+
+$ C:\Users\GVLLFR0035\Downloads\bot freebuff\.venv\Scripts\python.exe scripts/exp_003n_validate.py --out C:\Users\GVLLFR~1\AppData\Local\Temp\003n-repro\repro-out   # cwd=C:\Users\GVLLFR~1\AppData\Local\Temp\003n-repro rc=0 37.5s
+[003n-validate] lane_a::breakout::1h: VAL trades=52 mean=-16.5486 bps net(full)=-43.8582
+[003n-validate] lane_a::breakout::4h: VAL trades=15 mean=-83.7680 bps net(full)=-111.0777
+[003n-validate] lane_a::breakout::5m: VAL trades=653 mean=-29.3292 bps net(full)=-56.6389
+[003n-validate] lane_a::ema_crossover::1h: VAL trades=961 mean=-20.8683 bps net(full)=-48.1780
+[003n-validate] lane_a::ema_crossover::4h: VAL trades=230 mean=-157.1561 bps net(full)=-184.4657
+[003n-validate] lane_a::ema_crossover::5m: VAL trades=11179 mean=-27.5917 bps net(full)=-54.9013
+[003n-validate] lane_a::mean_reversion::1h: VAL trades=36 mean=-56.2871 bps net(full)=-83.5968
+[003n-validate] lane_a::mean_reversion::4h: VAL trades=10 mean=-173.8881 bps net(full)=-201.1978
+[003n-validate] lane_a::mean_reversion::5m: VAL trades=506 mean=-24.5148 bps net(full)=-51.8245
+[003n-validate] lane_a::momentum::1h: VAL trades=576 mean=-10.2726 bps net(full)=-37.5823
+[003n-validate] lane_a::momentum::4h: VAL trades=224 mean=-125.3727 bps net(full)=-152.6823
+[003n-validate] lane_a::momentum::5m: VAL trades=1617 mean=-30.9236 bps net(full)=-58.2332
+[003n-validate] lane_a::trend::1h: VAL trades=343 mean=-40.3481 bps net(full)=-67.6577
+[003n-validate] lane_a::trend::4h: VAL trades=140 mean=-159.3746 bps net(full)=-186.6843
+[003n-validate] lane_a::trend::5m: VAL trades=121 mean=-34.9624 bps net(full)=-62.2721
+[003n-validate] lane_a::volatility::1h: VAL trades=16 mean=-78.7010 bps net(full)=-106.0107
+[003n-validate] lane_a::volatility::4h: VAL trades=1 mean=262.2054 bps net(full)=234.8958
+[003n-validate] lane_a::volatility::5m: VAL trades=50 mean=-24.9941 bps net(full)=-52.3038
+[003n-validate] lane_b::mean_reversion_vol_liq::1h: VAL trades=4 mean=-176.1070 bps net(full)=-203.4167
+[003n-validate] lane_b::mean_reversion_vol_liq::4h: VAL trades=0 mean=n/a bps net(full)=n/a
+[003n-validate] lane_b::trend_pullback::1h: VAL trades=17 mean=-96.6720 bps net(full)=-123.9817
+[003n-validate] lane_b::trend_pullback::4h: VAL trades=0 mean=n/a bps net(full)=n/a
+[003n-validate] lane_b::vol_regime_breakout::1h: VAL trades=0 mean=n/a bps net(full)=n/a
+[003n-validate] lane_b::vol_regime_breakout::4h: VAL trades=0 mean=n/a bps net(full)=n/a
+[003n-validate] verdict=NO_VIABLE_CANDIDATES
+
+$ C:\Users\GVLLFR0035\Downloads\bot freebuff\.venv\Scripts\python.exe scripts/exp_003n_verify.py --out C:\Users\GVLLFR~1\AppData\Local\Temp\003n-repro\repro-out --negative-controls --json-out C:\Users\GVLLFR~1\AppData\Local\Temp\003n-repro\repro-out\analysis\VERIFICATION_REPRODUCED.json   # cwd=C:\Users\GVLLFR~1\AppData\Local\Temp\003n-repro rc=0 73.0s
+[003n-verify] PASS V1_dataset_provenance: 3 files, drifted=[]
+[003n-verify] PASS V2_config_frozen: 3 config digests
+[003n-verify] PASS V3_design_binding: design sha256 a0776fa3fbe6d2e1…
+[003n-verify] PASS V4_holdout_closed: 0 rows at or after 2026-08-06T00:00:00Z; partitions inside=True
+[003n-verify] PASS V5_forward_returns_recomputed: 6692 values compared from raw bars, 0 mismatched
+[003n-verify] PASS V6_means_consistent: 72 symbol cells, 0 inconsistencies
+[003n-verify] PASS V7_multiple_testing: 1 surviving cells; builder=1
+[003n-verify] PASS V8_cost_subtracted: costs={'BTCUSDT': 24.786, 'ETHUSDT': 24.786, 'SOLUSDT': 27.31}, 0 defects
+[003n-verify] PASS V9_closed_trade_view: 24 cells priced; unpriced=0; censored=0
+[003n-verify] PASS V10_no_promotion: paper/live authorisation untouched
+[003n-verify] PASS V11_verdict_from_numbers: 0 advanced candidates
+[003n-verify] PASS V12_runtime_paper: mode=paper live_enabled=False
+[003n-verify] DETECTED tampered_forward_return: breakout/1h/BTCUSDT shifted by +50 bps
+[003n-verify] DETECTED holdout_injection: a row at 2026-08-10T00:00:00Z is outside every allowed partition
+[003n-verify] DETECTED cost_omitted: 6 cells would pass a zero-cost gate and fail the real one: ['momentum/1h', 'breakout/1h', 'mean_reversion/5m']
+[003n-verify] DETECTED false_success: a negative-net cell relabelled ADVANCE is contradicted by its own number
+[003n-verify] DETECTED multiple_testing_inoperative: q=1.0 keeps 84 vs 1 at q=0.1
+[003n-verify] DETECTED dataset_byte_append: an appended byte changes the digest the design froze
+[003n-verify] DETECTED sample_gate_inflated: the smallest IS cell has 0 signals; the gate is 20
+[003n-verify] DETECTED verdict_contradicts_gates: 0 cells claim a state their gates deny
+[003n-verify] DETECTED cost_below_floor: min round trip 24.7864 bps vs floor 20.0 bps
+[003n-verify] DETECTED closed_trade_recomputed: 35 closed trades recomputed here, 0 mismatched; 35 change when the fees are removed: []
+[003n-verify] 12/12 checks, 10/10 controls, verdict=PASS
+
+$ C:\Users\GVLLFR0035\Downloads\bot freebuff\.venv\Scripts\python.exe -m pytest tests/unit/reports/test_exp_003n_screen.py -q   # cwd=C:\Users\GVLLFR~1\AppData\Local\Temp\003n-repro rc=0 5.6s
+....................                                                     [100%]
+============================== warnings summary ===============================
+..\..\..\..\..\GVLLFR0035\Downloads\bot freebuff\.venv\Lib\site-packages\matplotlib\_fontconfig_pattern.py:64
+  C:\Users\GVLLFR0035\Downloads\bot freebuff\.venv\Lib\site-packages\matplotlib\_fontconfig_pattern.py:64: PyparsingDeprecationWarning: 'oneOf' deprecated - use 'one_of'
+    prop = Group((name + Suppress("=") + comma_separated(value)) | oneOf(_CONSTANTS))
+
+..\..\..\..\..\GVLLFR0035\Downloads\bot freebuff\.venv\Lib\site-packages\matplotlib\_fontconfig_pattern.py:85
+..\..\..\..\..\GVLLFR0035\Downloads\bot freebuff\.venv\Lib\site-packages\matplotlib\_fontconfig_pattern.py:85
+..\..\..\..\..\GVLLFR0035\Downloads\bot freebuff\.venv\Lib\site-packages\matplotlib\_fontconfig_pattern.py:85
+..\..\..\..\..\GVLLFR0035\Downloads\bot freebuff\.venv\Lib\site-packages\matplotlib\_fontconfig_pattern.py:85
+..\..\..\..\..\GVLLFR0035\Downloads\bot freebuff\.venv\Lib\site-packages\matplotlib\_fontconfig_pattern.py:85
+..\..\..\..\..\GVLLFR0035\Downloads\bot freebuff\.venv\Lib\site-packages\matplotlib\_fontconfig_pattern.py:85
+  C:\Users\GVLLFR0035\Downloads\bot freebuff\.venv\Lib\site-packages\matplotlib\_fontconfig_pattern.py:85: PyparsingDeprecationWarning: 'parseString' deprecated - use 'parse_string'
+    parse = parser.parseString(pattern)
+
+..\..\..\..\..\GVLLFR0035\Downloads\bot freebuff\.venv\Lib\site-packages\matplotlib\_fontconfig_pattern.py:89
+..\..\..\..\..\GVLLFR0035\Downloads\bot freebuff\.venv\Lib\site-packages\matplotlib\_fontconfig_pattern.py:89
+..\..\..\..\..\GVLLFR0035\Downloads\bot freebuff\.venv\Lib\site-packages\matplotlib\_fontconfig_pattern.py:89
+..\..\..\..\..\GVLLFR0035\Downloads\bot freebuff\.venv\Lib\site-packages\matplotlib\_fontconfig_pattern.py:89
+..\..\..\..\..\GVLLFR0035\Downloads\bot freebuff\.venv\Lib\site-packages\matplotlib\_fontconfig_pattern.py:89
+..\..\..\..\..\GVLLFR0035\Downloads\bot freebuff\.venv\Lib\site-packages\matplotlib\_fontconfig_pattern.py:89
+  C:\Users\GVLLFR0035\Downloads\bot freebuff\.venv\Lib\site-packages\matplotlib\_fontconfig_pattern.py:89: PyparsingDeprecationWarning: 'resetCache' deprecated - use 'reset_cache'
+    parser.resetCache()
+
+..\..\..\..\..\GVLLFR0035\Downloads\bot freebuff\.venv\Lib\site-packages\matplotlib\_mathtext.py:45
+  C:\Users\GVLLFR0035\Downloads\bot freebuff\.venv\Lib\site-packages\matplotlib\_mathtext.py:45: PyparsingDeprecationWarning: 'enablePackrat' deprecated - use 'enable_packrat'
+    ParserElement.enablePackrat()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+20 passed, 14 warnings in 3.86s
+
+# cells=24 differences=0
+# verdict=REPRODUCED tests_exit=0

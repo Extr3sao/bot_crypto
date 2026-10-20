@@ -1419,7 +1419,25 @@ entrada en el open siguiente, bloque de 5 días, 10 000 remuestreos, BH q=0,10.
 Verificador separado `scripts/exp_003n_verify.py`: **12/12** comprobaciones, **10/10** controles
 negativos detectados, `false_success=0`, **6 692** retornos forward recalculados desde las barras
 (0 discrepancias), **35** operaciones cerradas recalculadas (0 discrepancias). Ocho entregables
-más `ECONOMIC_SCREENING.csv`, `SEAL.json` y `SHA256SUMS.txt`.
+más `ECONOMIC_SCREENING.csv`, `SEAL.json` (29 ficheros) y `SHA256SUMS.txt` (`c65d92ef…`).
+
+**Reproducción desde checkout limpio (hecha, no prometida)**
+
+`scripts/exp_003n_rehearsal.py --commit cd3fc31` materializa el commit en un `git worktree`
+`--detach` (0 líneas en `git status` antes de empezar), copia las tres cajas de 1 minuto solo
+después de que su SHA-256 coincida con el que fijó el diseño, y re-ejecuta screening, validación,
+verificación y tests **dentro** de ese worktree. Resultado: **24/24** celdas de screening
+idénticas, **24/24** de validación idénticas, **0** diferencias hoja a hoja, veredicto
+`NO_VIABLE_CANDIDATES` en ambos lados, **12/12** comprobaciones y **10/10** controles del
+verificador en el worktree, **20** tests pasan. Evidencia:
+`reports/ai-bots/EXP-003N-…/evidence/CLEAN_CHECKOUT_REPRODUCTION.{json,_STDOUT.txt}`.
+
+Reproducir encontró un defecto que el constructor no vio: **DEF-003N-01** —
+`exp_003n_screen.py` imprimía `target.relative_to(REPO)` y lanzaba `ValueError` cuando `--out`
+caía fuera del repositorio (ruta corta 8.3 del worktree), **después** de haber escrito
+`SCREENING.json`, `SIGNALS.jsonl.gz` y `ECONOMIC_SCREENING.csv`. Un llamador que solo mirase el
+exit code habría tirado un resultado correcto. Reparado con un guard `is_relative_to`; no se tocó
+código de medida. Es la razón por la que la reproducción existe.
 
 **Límite de procedencia (declarado, no maquillado)**
 
@@ -1430,8 +1448,19 @@ el análisis. El congelamiento está anclado por contenido (`SCREENING.json` gua
 **retrospectivo con protocolo declarado**, no prospectivo; así consta en `RUN_REPORT.md`,
 `FINAL_REPORT.md` y `RUN_REPORT.json → preregistration.prospective = false`.
 
+**Commits del experimento**
+
+| commit | contenido |
+| --- | --- |
+| `a5bda8f` | protocolo (`design/`), preregistración legible, los seis programas y su test |
+| `cd3fc31` | análisis publicado (señales, screening, validación, decisión, verificación, tests) + evidencia de la Fase 0 |
+| (siguiente) | entregables, evidencia de reproducción, `DEF-003N-01`, sello y este checkpoint |
+
 **Pendiente / bloqueado**
 
+- El verificador **no regenera las señales**: recalcula retorno, coste, puertas y veredicto desde
+  las barras para los timestamps publicados. Un look-ahead dentro de la ventana PIT de una familia
+  lo cubren los tests, que no son independientes del constructor.
 - `NO_VIABLE_CANDIDATES` no es una propiedad del mercado: es lo que ocurre con las 9 familias
   implementadas, 3 activos y 46 días. Una familia nueva no está probada; está sin escribir.
 - `tests/unit/research` sigue colgándose (>10 min) — pre-existente, ajeno a este experimento.
@@ -1444,6 +1473,7 @@ cd "$(git rev-parse --show-toplevel)"
 ./.venv/Scripts/python.exe scripts/exp_003n_preregister.py --check
 ./.venv/Scripts/python.exe scripts/exp_003n_pipeline.py status
 ./.venv/Scripts/python.exe scripts/exp_003n_verify.py --negative-controls --json-out /tmp/003n-verify.json
-./.venv/Scripts/python.exe scripts/exp_003n_pipeline.py seal
+./.venv/Scripts/python.exe scripts/exp_003n_rehearsal.py --commit cd3fc31 --resume
 (cd reports/ai-bots/EXP-003N-GROSS-FIRST-DISCOVERY-001 && sha256sum -c SHA256SUMS.txt)
+# un re-sello exige borrar SEAL.json y SHA256SUMS.txt: el pipeline se niega a sellar dos veces
 ```

@@ -309,6 +309,11 @@ def verification_md(verification: dict[str, Any]) -> str:
         "- No es una revisión humana: `BUILDER != VERIFIER` se cumple como dos programas, y así se",
         "  declara en lugar de presentarse como una auditoría externa.",
         "- No juzga si el dataset es el mercado: juzga si los números publicados se derivan de él.",
+        "- **No regenera las señales.** Toma los timestamps de señal publicados y recalcula desde",
+        "  las barras el retorno forward, el coste, las puertas y el veredicto. Un look-ahead dentro",
+        "  de la ventana PIT de una familia no lo detectaría este programa: esa parte la cubren",
+        "  `tests/unit/reports/test_exp_003n_screen.py` y los tests de familia, que **no** son",
+        "  independientes del constructor. Es el hueco de independencia que queda declarado.",
         "",
     ]
     return "\n".join(lines)
@@ -394,6 +399,14 @@ def run_report_md(
                 _read_json(OUT / "design" / "STRATEGY_UNIVERSE.json")["counts"].items()
             )
         ),
+        "- **`RUNTIME_AUTHORITATIVE` no aparece en el inventario derivado.** El criterio es «importada",
+        "  o instanciada desde un entrypoint», y las seis AlphaFamilies se construyen en",
+        "  `scripts/autonomous_paper.py` pero su señal pasa después por router, admisión, riesgo y",
+        "  decisión antes de ejecutarse: eso las deja en `RUNTIME_REACHABLE`. El mapa de autoridad",
+        "  del propio repositorio (`docs/runtime/runtime_authority_map.md`) las lista como",
+        "  `RUNTIME_AUTHORITATIVE`. La diferencia es de vocabulario, no de medida: en ambos casos son",
+        "  las mismas seis clases y las mismas señales, y ninguna puerta económica depende de la",
+        "  etiqueta. Se deja visible en lugar de reconciliarse por decreto.",
         "- `screened_here = no` en las clases `*Machine` de `pit15.py` quiere decir que la celda se",
         "  midió por familia (lane B), no por clase: la unidad de este experimento es la familia, no",
         "  el objeto Python que la implementa. Las tres familias de lane B se ejecutan con esas",
@@ -491,6 +504,17 @@ def run_report_md(
     ]
     lines += reproduction_md(_optional_json(OUT / "evidence" / "CLEAN_CHECKOUT_REPRODUCTION.json"))
     lines += [
+        "## Defectos encontrados y reparados",
+        "",
+        "| id | defecto | impacto | reparación |",
+        "| --- | --- | --- | --- |",
+        "| `DEF-003N-01` | `exp_003n_screen.py` imprimía `target.relative_to(REPO)` y lanzaba `ValueError` cuando `--out` apuntaba fuera del repositorio (el worktree llegaba en forma corta 8.3) | el fallo ocurría **después** de escribir `SCREENING.json`, `SIGNALS.jsonl.gz` y `ECONOMIC_SCREENING.csv`: un llamador que solo mira el código de salida habría tirado un resultado bueno | la línea de diagnóstico usa la ruta absoluta si el destino está fuera del repo; no se tocó código de medida |",
+        "",
+        "`DEF-003N-01` lo encontró la reproducción desde checkout limpio, no el constructor: es la",
+        "razón por la que esa reproducción existe. Los defectos heredados de `EXP-003M` (`R1` CRLF en",
+        "el sello, `R2` tests que dependían de un árbol no commiteado) están en",
+        "`evidence/CLEAN_CHECKOUT_REHEARSAL.json` con su commit de reparación.",
+        "",
         "## Gobernanza",
         "",
         "```",
@@ -612,18 +636,52 @@ def final_md(
         "para decidir, pero ambos ya habían ocurrido cuando se congeló el protocolo.",
         "",
     ]
+    reproduction = _optional_json(OUT / "evidence" / "CLEAN_CHECKOUT_REPRODUCTION.json")
+    if reproduction:
+        outcome = reproduction["result"]
+        lines += [
+            f"Reproducción desde checkout limpio (`{outcome['commit'][:7]}`): "
+            f"{outcome['cells_compared'] - outcome['cells_mismatched']}/{outcome['cells_compared']}"
+            f" celdas idénticas, {outcome['validation_compared'] - outcome['validation_mismatched']}"
+            f"/{outcome['validation_compared']} en validación, veredicto "
+            f"`{reproduction['verdict']}`. Los números se re-derivan; el mercado, no.",
+            "",
+        ]
 
     lines += ["## El número que decide", ""]
+    sufficient = [row for row in ordered if row["verdict"] != "INSUFFICIENT_EVIDENCE"]
+    # The smallest *deficit* is the highest net per signal, not the lowest: a cell at -210 bps
+    # is further from paying its toll than one at -3 bps, and sorting ascending would crown it.
+    best_signal = (
+        max(
+            (row for row in sufficient if row["net_val_signal_bps"] is not None),
+            key=lambda row: row["net_val_signal_bps"],
+        )
+        if sufficient
+        else None
+    )
     if best is not None:
         lines += [
-            f"- Mejor celda: `{best['family']}@{best['timeframe']}` ({best['lane']}).",
-            f"- Bruto por señal en VAL: **{_num(best['val_mean_bps'])} bps**; coste completo "
-            f"**{_num(best['cost_full_bps'])} bps**; neto por señal "
-            f"**{_num(best['net_val_signal_bps'])} bps**.",
-            f"- Neto por operación cerrada: **{_num(best['closed_net_full_bps'])} bps** con "
+            f"- Mejor celda por **operación cerrada** (el criterio de la tabla): "
+            f"`{best['family']}@{best['timeframe']}` ({best['lane']}), "
+            f"**{_num(best['closed_net_full_bps'])} bps** netos con "
             f"{best['closed_trades_val']} cierre(s) en VAL, acierto "
             f"{_num((best['closed_win_rate'] or 0) * 100, 1)} % y PF "
             f"{_num(best['closed_profit_factor'])}.",
+            f"- La misma celda por **señal**: bruto **{_num(best['val_mean_bps'])} bps** frente a "
+            f"coste completo **{_num(best['cost_full_bps'])} bps** → neto "
+            f"**{_num(best['net_val_signal_bps'])} bps**.",
+        ]
+        if best_signal is not None and best_signal["key"] != best["key"]:
+            lines += [
+                f"- El déficit **por señal** más pequeño es otro: "
+                f"`{best_signal['family']}@{best_signal['timeframe']}` "
+                f"({_num(best_signal['val_mean_bps'])} bps brutos menos "
+                f"{_num(best_signal['cost_full_bps'])} bps = "
+                f"{_num(best_signal['net_val_signal_bps'])} bps). Se publican las dos lecturas",
+                "porque el orden depende de la unidad y ninguna de las dos cubre el peaje.",
+            ]
+        lines += [
             f"- Celdas con neto positivo tras coste completo: **{positives}** de **{len(rows)}**.",
             "",
         ]

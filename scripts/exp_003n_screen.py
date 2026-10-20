@@ -885,7 +885,10 @@ def main(argv: list[str] | None = None) -> int:
     )
     write_csv(out / "ECONOMIC_SCREENING.csv", {"cells": screening["decisions"]})
     print(f"[003n-screen] verdict={payload['verdict']} counts={payload['counts']}")
-    print(f"[003n-screen] wrote {target.relative_to(REPO)}")
+    # A rehearsal runs this from a worktree with an --out outside the repo, and a bare
+    # relative_to() raised after every artifact had already been written (DEF-003N-01).
+    shown = target.relative_to(REPO) if target.is_relative_to(REPO) else target
+    print(f"[003n-screen] wrote {shown}")
     return 0
 
 

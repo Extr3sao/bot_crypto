@@ -149,7 +149,7 @@ def stage_tests(out: Path = OUT) -> int:
     ruff_code = run([PYTHON, "-m", "ruff", "check", "scripts/exp_003n_preregister.py",
                      "scripts/exp_003n_screen.py", "scripts/exp_003n_validate.py",
                      "scripts/exp_003n_verify.py", "scripts/exp_003n_report.py",
-                     "scripts/exp_003n_pipeline.py",
+                     "scripts/exp_003n_pipeline.py", "scripts/exp_003n_rehearsal.py",
                      "tests/unit/reports/test_exp_003n_screen.py"],
                     log=out / "evidence" / "ruff.log")
     payload["commands"]["ruff"] = {"exit_code": ruff_code}
@@ -157,7 +157,7 @@ def stage_tests(out: Path = OUT) -> int:
         [PYTHON, "-m", "mypy", "--strict", "scripts/exp_003n_preregister.py",
          "scripts/exp_003n_screen.py", "scripts/exp_003n_validate.py",
          "scripts/exp_003n_verify.py", "scripts/exp_003n_report.py",
-         "scripts/exp_003n_pipeline.py"],
+         "scripts/exp_003n_pipeline.py", "scripts/exp_003n_rehearsal.py"],
         log=out / "evidence" / "mypy.log",
     )
     payload["commands"]["mypy"] = {"exit_code": mypy_code}
