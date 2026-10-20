@@ -672,11 +672,16 @@ def main(argv: list[str] | None = None) -> int:
         promotion = "NO_CHANGE"
         profitability = "NOT_ESTABLISHED"
 
+    commit = _git("rev-parse", "HEAD")
     report = {
         "schema_version": SCHEMA,
         "experiment": "EXP-003J-REAL-SIGNAL-PAPER-001",
+        # Stable across regenerations: names the evidence commit the numbers were produced
+        # under, so two reports can be compared without diffing timestamps.
+        "run_id": f"EXP-003J-REAL-SIGNAL-PAPER-001@{commit[:12]}",
+        "author": "builder agent (session author of the wiring)",
         "generated_at_utc": _utc_now(),
-        "commit": _git("rev-parse", "HEAD"),
+        "commit": commit,
         "branch": _git("rev-parse", "--abbrev-ref", "HEAD"),
         "git_status_dirty_files": len(
             [line for line in _git("status", "--porcelain").splitlines() if line.strip()]
