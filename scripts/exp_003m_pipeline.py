@@ -290,7 +290,13 @@ def seal(out: Path) -> int:
             "tests_sha256": _sha256(out / "analysis" / "TESTS.json"),
             "sealed_commit": provenance["commit"],
             "sealed_dirty_paths_sha256": provenance["dirty_paths_sha256"],
-            "predecessor_seal_sha256": _sha256(PREDECESSOR / "SHA256SUMS.txt"),
+            # The predecessor's manifest is provenance, not a precondition: EXP-003L's
+            # published tree is not committed, so a clean checkout cannot hash it. Recording
+            # the absence by name keeps the seal honest instead of crashing on a file the
+            # experiment never owned.
+            "predecessor_seal_sha256": _sha256(PREDECESSOR / "SHA256SUMS.txt")
+            if (PREDECESSOR / "SHA256SUMS.txt").exists()
+            else "NOT_PRESENT_IN_CHECKOUT",
             "self_reference": "none: SHA256SUMS.txt and SEAL.json are excluded by construction",
         },
     )
