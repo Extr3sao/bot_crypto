@@ -40,3 +40,9 @@ reports/edge-recovery/WP-EDGE-12/evidence/PROPOSED_DEFINITION.xml -text
 # endings (core.autocrlf=true on this host did exactly that) makes the digest name a
 # file nobody has.  Same reason as the digest-pinned trees above, same treatment.
 reports/economic-recovery/RFC-EDGE-01*/scratch/*.jsonl -text
+
+# EXP-003M publishes digests of its own artifacts (SHA256SUMS.txt) and of the regenerable
+# tape (DATASET_SHA256SUMS.txt).  A clean checkout with core.autocrlf=true rewrote those
+# files to CRLF and the seal verified 0/18: the hash named bytes nobody had.  The tree is
+# stored exactly as written so the manifest is a check and not a coincidence.
+reports/ai-bots/EXP-003M-MAKER-FILL-REALITY-001/** -text
