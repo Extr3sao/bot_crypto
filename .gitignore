@@ -474,3 +474,40 @@ reports/ai-bots/RFC-AI-BOTS-003G/session-preflight/
 # informes: se publican, no se dejan como artefactos locales.
 !reports/ai-bots/RFC-AI-BOTS-003H/
 !logs/rfc003h/
+# EXP-003J-REAL-SIGNAL-PAPER-001 — los informes, el rastro de decisiones y el análisis se
+# publican para que un checkout limpio pueda comprobar lo que el informe afirma sin depender de
+# este disco. Lo pesado y regenerable (dataset, sesiones live, replays, logs) sigue fuera: su
+# integridad la sostiene el sello SHA-256, que se publica igual.
+!reports/ai-bots/EXP-003J-REAL-SIGNAL-PAPER-001/
+reports/ai-bots/EXP-003J-REAL-SIGNAL-PAPER-001/*
+!reports/ai-bots/EXP-003J-REAL-SIGNAL-PAPER-001/*.md
+!reports/ai-bots/EXP-003J-REAL-SIGNAL-PAPER-001/*.json
+!reports/ai-bots/EXP-003J-REAL-SIGNAL-PAPER-001/*.jsonl
+!reports/ai-bots/EXP-003J-REAL-SIGNAL-PAPER-001/*.csv
+!reports/ai-bots/EXP-003J-REAL-SIGNAL-PAPER-001/*.txt
+!reports/ai-bots/EXP-003J-REAL-SIGNAL-PAPER-001/analysis/
+!reports/ai-bots/EXP-003J-REAL-SIGNAL-PAPER-001/analysis/*.json
+!reports/ai-bots/EXP-003J-REAL-SIGNAL-PAPER-001/analysis/*.md
+# DIRECTIVE-2026-10-20 — informe de la directiva que cierra WP-005L, audita el E2E paper y
+# resuelve la consistencia de la evidencia de 003J. Sólo texto: los artefactos pesados viven en
+# las carpetas de cada experimento.
+!reports/ai-bots/DIRECTIVE-2026-10-20/
+reports/ai-bots/DIRECTIVE-2026-10-20/*
+!reports/ai-bots/DIRECTIVE-2026-10-20/*.md
+!reports/ai-bots/DIRECTIVE-2026-10-20/*.json
+# EXP-003M-MAKER-FILL-REALITY-001 — se publican los informes, el diseño, el análisis y los
+# manifiestos de datos (que llevan los digests de la cinta). La cinta y las klines descargadas
+# quedan fuera: son 400 MiB regenerables, y su integridad la sostiene DATASET_SHA256SUMS.txt.
+!reports/ai-bots/EXP-003M-MAKER-FILL-REALITY-001/
+reports/ai-bots/EXP-003M-MAKER-FILL-REALITY-001/*
+!reports/ai-bots/EXP-003M-MAKER-FILL-REALITY-001/*.md
+!reports/ai-bots/EXP-003M-MAKER-FILL-REALITY-001/*.json
+!reports/ai-bots/EXP-003M-MAKER-FILL-REALITY-001/*.txt
+!reports/ai-bots/EXP-003M-MAKER-FILL-REALITY-001/analysis/
+!reports/ai-bots/EXP-003M-MAKER-FILL-REALITY-001/analysis/*.json
+!reports/ai-bots/EXP-003M-MAKER-FILL-REALITY-001/design/
+!reports/ai-bots/EXP-003M-MAKER-FILL-REALITY-001/design/*.json
+!reports/ai-bots/EXP-003M-MAKER-FILL-REALITY-001/design/*.md
+!reports/ai-bots/EXP-003M-MAKER-FILL-REALITY-001/dataset/
+reports/ai-bots/EXP-003M-MAKER-FILL-REALITY-001/dataset/*
+!reports/ai-bots/EXP-003M-MAKER-FILL-REALITY-001/dataset/TAPE_MANIFEST.json

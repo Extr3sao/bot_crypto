@@ -1,0 +1,51 @@
+{
+  "dataset_files": 126,
+  "dataset_manifest": "DATASET_SHA256SUMS.txt",
+  "dataset_manifest_sha256": "84e2fe6eb4758693a7088d82bd3efb05b7b13fae8efefb768995f882857cbb8c",
+  "deliverables": [
+    "BASELINE.md",
+    "EXECUTION_MODEL.md",
+    "FILL_REALISM.md",
+    "ECONOMICS_COMPARISON.md",
+    "CANDIDATE_DECISION.md",
+    "RUN_REPORT.md",
+    "RUN_REPORT.json",
+    "INDEPENDENT_VERIFICATION.md",
+    "FINAL_REPORT.md"
+  ],
+  "excludes": [
+    "raw/",
+    "SHA256SUMS.txt",
+    "SEAL.json",
+    "DATASET_SHA256SUMS.txt"
+  ],
+  "experiment": "EXP-003M-MAKER-FILL-REALITY-001",
+  "files": 18,
+  "manifest": "SHA256SUMS.txt",
+  "manifest_sha256": "a8b6b5b980af0243d5488bc649a3781d6b0be2c54bd162e65e49befe07b50298",
+  "order": [
+    "preregister",
+    "tape",
+    "fills",
+    "compare",
+    "tests",
+    "verify",
+    "report",
+    "seal"
+  ],
+  "plan_sha256": "f7c62d6dd3aa0ada7ba622d7b7f270b31a9669befe88d6158b32596835bd27c0",
+  "pre_seal_verification": {
+    "checks": 14,
+    "failed": 0,
+    "negative_controls_detected": 8,
+    "not_executed": 1,
+    "passed": 13
+  },
+  "pre_seal_verification_sha256": "a725504c3fd4d1d57701910f58b93070f6fbfaf24d55efb555cc5829ab79a756",
+  "predecessor_seal_sha256": "6aabe23c35b5ac86d4b0cbb59df0e3d6c7a69dc992068c79e70834c44cf043b3",
+  "schema_version": "AI_BOTS_003M_SEAL_V1",
+  "sealed_commit": "b0e15497d967ff1c1d3015203ffb7cbfcf0a70a0",
+  "sealed_dirty_paths_sha256": "d040a2a18501302c86bed821740944045a480e8b5fdeef411af5d4376c4c5361",
+  "self_reference": "none: SHA256SUMS.txt and SEAL.json are excluded by construction",
+  "tests_sha256": "ed98693a3dddc8f32b2b0255092f0747da811c63147f0d9ac0f3a174967e2861"
+}
