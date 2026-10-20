@@ -1454,7 +1454,14 @@ el análisis. El congelamiento está anclado por contenido (`SCREENING.json` gua
 | --- | --- |
 | `a5bda8f` | protocolo (`design/`), preregistración legible, los seis programas y su test |
 | `cd3fc31` | análisis publicado (señales, screening, validación, decisión, verificación, tests) + evidencia de la Fase 0 |
-| (siguiente) | entregables, evidencia de reproducción, `DEF-003N-01`, sello y este checkpoint |
+| `6b0dac1` | entregables, evidencia de reproducción, `DEF-003N-01`, sello y este checkpoint |
+
+**Sello comprobado en un checkout limpio.** `git worktree add --detach /tmp/003n-sealcheck 6b0dac1`
+con `git status` en **0** líneas: `cd reports/ai-bots/EXP-003N-GROSS-FIRST-DISCOVERY-001 &&
+sha256sum -c SHA256SUMS.txt` → **29/29 OK**, y `pipeline status` informa `seal OK (29 files)`.
+Matiz de lectura: `SEAL.json → sealed_commit` vale `cd3fc31` porque es el HEAD que existía al
+escribir el sello; los 29 ficheros sellados se publican en `6b0dac1`, cuyo árbol es ese mismo
+contenido más `SEAL.json` y `SHA256SUMS.txt` (excluidos del manifiesto por construcción).
 
 **Pendiente / bloqueado**
 
