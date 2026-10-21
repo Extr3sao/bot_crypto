@@ -1167,6 +1167,9 @@ def verify(
         "run_id": f"def-run-018-b-{datetime.now(tz=UTC).strftime('%Y%m%dT%H%M%SZ')}",
         "generated_at_utc": datetime.now(tz=UTC).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "subject": SUBJECT,
+        #: El dictamen pertenece a los bytes de un árbol concreto: sin `root` no se puede
+        #: saber si B verificó el paquete sellado o una reproducción reparada.
+        "root": str(root),
         "independence": independence(),
         "input_hashes": {
             "oos_plan": plan_hash,

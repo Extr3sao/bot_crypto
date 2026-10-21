@@ -250,6 +250,9 @@ def test_the_pristine_fixture_passes(pristine):
     #: 383 comprobaciones es el contrato de B: 32 runs por 10 controles, mas cadena, celdas,
     #: delta, bootstrap, regla y estrés. Un PASS con menos comprobaciones no es el mismo B.
     assert payload["checks_total"] == 383
+    #: el dictamen nombra el árbol que verificó: sin eso no se distingue el paquete
+    #: sellado de una reproducción reparada.
+    assert payload["root"] == str(pristine.resolve())
     assert payload["oos_decision"] == "NOT_EVIDENCED"
     assert payload["stress_classification"]["used_for_decision"] is False
 
