@@ -424,10 +424,11 @@ def build(repo: Path) -> dict[str, Any]:
         "role": "BUILDER_PUBLISHED_READ_ONLY_INVENTORY_NOT_VERIFICATION",
         "disclaimer": DISCLAIMER,
         "digest_policy": (
-            "For a tracked reference, compare blob_sha256: it is the digest of the committed "
-            "bytes and a clean checkout reproduces it. sha256 is this host's working-tree "
-            "image and can differ where end-of-line normalisation applies. For the live "
-            "store, compare only attested byte prefixes."
+            "Both digests are published because they answer different questions. If you hash "
+            "a checkout on disk, compare against sha256. If you hash the git object at "
+            "last_commit, compare against blob_sha256. The two differ wherever end-of-line "
+            "normalisation applies and coincide for a tree pinned -text. For the live store, "
+            "compare only attested byte prefixes."
         ),
         "generated_at_utc": datetime.now(tz=UTC).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "repository": {

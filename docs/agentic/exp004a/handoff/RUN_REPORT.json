@@ -153,8 +153,8 @@
       "this mission is a single builder session; a second prompt in it would not create a distinct principal (RFC-051 5)"
     ]
   },
-  "source_inventory_sha256": "1c7d9cfbedf895b995a89264de60ac74d17bbab053586eb16a4f150994314928",
-  "source_inventory_note": "sha256 of docs/agentic/exp004a/handoff/EVIDENCE_INVENTORY.json, the same for the worktree file and the committed blob because the handoff tree is pinned -text in .gitattributes",
+  "source_inventory_sha256": "c8b4f57966f289860bd4cf81ac866ae4d46650667a50c46e66e2b46a8b3ed9b0",
+  "source_inventory_note": "sha256 of docs/agentic/exp004a/handoff/EVIDENCE_INVENTORY.json; identical for the worktree file, the committed blob and a fresh checkout, because the handoff tree is pinned -text in .gitattributes",
   "claim_matrix": "docs/agentic/exp004a/handoff/CLAIM_SUBMISSION.json",
   "raw_byte_limitations": [
     "the bar store is gitignored and live, so its whole-file digests are transient and only attested prefixes are stable",

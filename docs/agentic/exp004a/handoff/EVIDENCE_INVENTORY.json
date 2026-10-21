@@ -162,7 +162,7 @@
     "sha256": "3d5755d78af7c9f1e8d959ae1559228ccb19c5fdd152181efa6b98d766008434",
     "size_bytes": 2030451
   },
-  "digest_policy": "For a tracked reference, compare blob_sha256: it is the digest of the committed bytes and a clean checkout reproduces it. sha256 is this host's working-tree image and can differ where end-of-line normalisation applies. For the live store, compare only attested byte prefixes.",
+  "digest_policy": "Both digests are published because they answer different questions. If you hash a checkout on disk, compare against sha256. If you hash the git object at last_commit, compare against blob_sha256. The two differ wherever end-of-line normalisation applies and coincide for a tree pinned -text. For the live store, compare only attested byte prefixes.",
   "disclaimer": "BUILDER_PUBLISHED_INVENTORY_NOT_VERIFICATION: these digests were computed by the EXP-004A builder. An independent verifier must recompute them from the same bytes and must not treat this document as evidence of its own correctness.",
   "economic_executions": 0,
   "forbidden_output_roots": [
@@ -170,7 +170,7 @@
     "reports/ai-bots",
     "evidence"
   ],
-  "generated_at_utc": "2026-10-21T08:45:12Z",
+  "generated_at_utc": "2026-10-21T08:47:54Z",
   "live_store": {
     "note": "appended by the forward observer, therefore outside git and still growing; whole-file digests are transient, sealed prefix digests are stable",
     "root": "data/forward/edge03",
@@ -227,8 +227,8 @@
   },
   "repository": {
     "branch": "agent/ai-bots/RFC-TAP-AI-BOTS-003",
-    "head_commit": "8aac8b475a156d7961c0d15fa74c5ec9a175af50",
-    "head_tree": "34b9927a2197949c6df98c8698bf7301a1413fd3",
+    "head_commit": "d7181f6f05a8a1214509f12eaf89a41c5a11939d",
+    "head_tree": "4cfd9f703f4f022c00fdf8849f086c8a76a56326",
     "root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff"
   },
   "role": "BUILDER_PUBLISHED_READ_ONLY_INVENTORY_NOT_VERIFICATION",

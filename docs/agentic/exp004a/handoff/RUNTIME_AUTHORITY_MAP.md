@@ -117,18 +117,18 @@ mission would be a write to the evidence under audit.
 
 | Evidence | In Git? | Stable unit | Verifier must |
 | --- | --- | --- | --- |
-| Phase-1 manifest, datasets, prior-runs ledger, baseline | yes | committed blob | hash the **blob** at `evaluated_commit`, not the checkout |
+| Phase-1 manifest, datasets, prior-runs ledger, baseline | yes | whole file | compare a **checkout** against `sha256`, a **Git object** against `blob_sha256` |
 | Gate results at `8aac8b4` | yes, `handoff/gate/*.json` + `*.txt` | whole file | recompute the exit codes by re-running |
 | Admission attestation chains | yes (`47116b2`) | whole file, append-only | verify each record's `sha256` and `prev_sha256` chain from genesis |
 | Bar series (`data/forward/edge03`) | **no** — gitignored, live | **attested byte prefix** (`byte_end`) | recompute the prefix digest; **never** a whole-file digest, it changes hourly |
 | ST-6 cost tape | yes | whole file | hash, then check the 200 USDT walk actually covers the declared 500 |
 | `coverage.json` | documented only | none | treat as a claim, re-derive 235/234/229/5 from bars |
 
-The manifest is the concrete case for the blob rule: its worktree bytes hash to `3761481d…` while
-its committed bytes hash to `07d4702a…`, because end-of-line normalisation applies on this host.
-A verifier that hashed a checkout and compared against a published working-tree digest would
-report `DIGEST_MISMATCH` against an honest repository. The inventory therefore publishes
-`blob_sha256` beside the worktree `sha256`.
+The manifest is the concrete case for publishing both digests: a checkout of `d7181f6` yields
+`3761481d…`, the Git object yields `07d4702a…`, and end-of-line normalisation is the whole
+difference. A verifier that hashed one form and compared against the other's number would report
+`DIGEST_MISMATCH` against an honest repository — so the inventory publishes `sha256` and
+`blob_sha256` side by side and says which addresses which.
 
 The asymmetry between rows 3 and 4 is the single most important operational fact for B: a
 whole-file digest of a series file is true for one instant, while the sealed prefix is true

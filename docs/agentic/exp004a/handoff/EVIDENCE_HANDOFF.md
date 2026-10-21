@@ -16,7 +16,7 @@ one, A is certifying A.
 
 | Item | Path | Digest of record |
 | --- | --- | --- |
-| Inventory (machine-readable) | `docs/agentic/exp004a/handoff/EVIDENCE_INVENTORY.json` | regenerate with the command in §2 |
+| Inventory (machine-readable) | `docs/agentic/exp004a/handoff/EVIDENCE_INVENTORY.json` | sha256 `c8b4f57966f28986…` |
 | Authority map (WP-051-00) | `docs/agentic/exp004a/handoff/RUNTIME_AUTHORITY_MAP.md` | `git ls-files` at `8aac8b4` |
 | Protocol | `docs/RFC-050_EXP004A_TWO_PHASE_FREEZE.md` | sha256 `cc7820a99d055438…` |
 | Phase-1 manifest | `config/preregistrations/EXP-004A.json` | blob sha256 `07d4702adc264f03…`, commit `fed25aa` |
@@ -29,12 +29,21 @@ one, A is certifying A.
 | Cost tape | `data/st6/ST6_OBSERVATIONS.jsonl` | sha256 `3d5755d78af7c9f1…`, 912 rows |
 | Bar store (live, gitignored) | `data/forward/edge03/{1h,15m}/{BTC,ETH,SOL}.jsonl` | **attested prefixes only** |
 
-**Digest policy.** For a tracked reference, compare `blob_sha256` from the inventory, not the
-working-tree `sha256`: a checkout with `core.autocrlf=true` can hold CRLF bytes whose digest names
-a file nobody else has. This is not hypothetical here — the phase-1 manifest's worktree bytes hash
-to `3761481d…` while its committed bytes hash to `07d4702a…`, and the committed one is the
-reference. The admission ledgers are pinned LF via `.gitattributes`, so both agree (`73f8ba7b…`,
-`1f10efb4…`). For the live bar store, neither applies: compare the attested prefixes only.
+**Digest policy — which number to compare, depending on what you hashed.** Both digests are
+published because they answer different questions, and picking the wrong one produces a
+`DIGEST_MISMATCH` against an honest repository.
+
+| You hash | Compare against | Measured example on this repo |
+| --- | --- | --- |
+| a checkout on disk | `sha256` | manifest checkout → `3761481d…` |
+| the Git object at `last_commit` | `blob_sha256` | manifest blob → `07d4702a…` |
+| either, for a tree pinned `-text` | both agree | ledger → `73f8ba7b…` / `1f10efb4…` |
+| the live bar store | attested prefixes only | neither applies |
+
+This was measured, not assumed: a throwaway worktree at `d7181f6` produced `3761481d…` for the
+manifest, which is the inventory's `sha256`, while `git cat-file blob` produced `07d4702a…`. The
+handoff tree itself is pinned `-text`, so its own published digest (`c8b4f579…`) is byte-identical
+in the worktree, in the Git object and in a fresh checkout.
 
 `evaluated_commit = 47116b2f2c5fd37ed1a60550eefe17d8bd703638`. This is *not* the commit the
 builder's own report names (`d05f8de`); see finding A-1 in the authority map for the proof, which
