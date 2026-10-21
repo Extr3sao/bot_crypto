@@ -48,6 +48,13 @@ from typing import Any
 REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO / "src"))
 
+from trading_bot.research.prospective.provenance import (  # noqa: E402
+    SUCCESSOR_DECLARATION,
+    DeclarationError,
+    ProvenanceRecord,
+    authorize,
+    eligibility_defects,
+)
 from trading_bot.research.prospective.store import (  # noqa: E402
     DEFAULT_LAG_BOUND_MS,
     INTERVAL_MS,
@@ -56,6 +63,7 @@ from trading_bot.research.prospective.store import (  # noqa: E402
 )
 
 DECLARATION = REPO / "config" / "preregistrations" / "EXP-004A.datasets.json"
+SUCCESSOR = REPO / SUCCESSOR_DECLARATION
 DEFAULT_OUT = REPO / "data" / "exp004a"
 SCHEMA_VERSION = "1.0"
 
@@ -63,10 +71,15 @@ EXIT_OK = 0
 EXIT_CONTRACT = 2
 EXIT_EMPTY = 3
 EXIT_SOURCE = 4
+EXIT_NOT_ELIGIBLE = 5
 
 
 class SliceError(RuntimeError):
     """The slice cannot be produced without inventing something, so it is not produced."""
+
+
+class NotEligible(SliceError):
+    """The bytes exist and the slice is well formed, but no declaration authorised the capture."""
 
 
 @dataclass(frozen=True, slots=True)
@@ -172,8 +185,15 @@ def resolve_spec(
     )
 
 
-def build_slice(spec: SliceSpec) -> tuple[bytes, dict[str, Any]]:
-    """Return the selected bytes, unmodified, plus the manifest that describes them."""
+def build_slice(
+    spec: SliceSpec, *, provenance: ProvenanceRecord | None = None
+) -> tuple[bytes, dict[str, Any]]:
+    """Return the selected bytes, unmodified, plus the manifest that describes them.
+
+    When ``provenance`` is supplied the slice must also be *eligible*: every selected bar has to
+    open inside the declared window and to have been fetched at or after the declaration's
+    effective instant. A correct extraction is not the same thing as an authorised one.
+    """
     if spec.period_end_ms <= spec.period_start_ms:
         raise SliceError("the window ends before it starts")
     try:
@@ -218,6 +238,14 @@ def build_slice(spec: SliceSpec) -> tuple[bytes, dict[str, Any]]:
 
     bars = [index.bars[position] for position in selected]
     lags = [bar.lag_ms for bar in bars]
+    if provenance is not None:
+        span = INTERVAL_MS[spec.interval]
+        defects = eligibility_defects(
+            provenance,
+            ((bar.open_ms, bar.open_ms + span + bar.lag_ms) for bar in bars),
+        )
+        if defects:
+            raise NotEligible("; ".join(defect.detail or defect.code for defect in defects))
     prefix_bytes = index.byte_ends[selected[-1]]
     manifest: dict[str, Any] = {
         "schema_version": SCHEMA_VERSION,
@@ -274,6 +302,8 @@ def build_slice(spec: SliceSpec) -> tuple[bytes, dict[str, Any]]:
             "into this manifest, so re-extracting an unchanged source yields identical bytes."
         ),
     }
+    if provenance is not None:
+        manifest["provenance"] = {**provenance.as_dict(), "eligible": True, "bars": len(bars)}
     return payload, manifest
 
 
@@ -307,6 +337,12 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--slice", dest="slice_spec", required=True, help="<interval>:<asset>, e.g. 1h:BTC"
     )
+    parser.add_argument(
+        "--declaration",
+        type=Path,
+        default=SUCCESSOR,
+        help="successor declaration that authorises the capture (phase 1 cannot)",
+    )
     parser.add_argument("--out", type=Path, default=DEFAULT_OUT)
     parser.add_argument("--period-start", default=None, help="override period_start_utc (ISO-8601)")
     parser.add_argument("--period-end", default=None, help="override period_end_utc (ISO-8601)")
@@ -328,7 +364,13 @@ def main(argv: list[str] | None = None) -> int:
             period_end=args.period_end,
             source=args.source,
         )
-        payload, manifest = build_slice(spec)
+        provenance = authorize(args.declaration, repo=REPO)
+        if spec.period_start_ms < provenance.window_start_ms or spec.period_end_ms > provenance.window_end_ms:
+            raise SliceError(
+                "the requested window leaves the declared capture window; a rehearsal may cut the "
+                "window short, never extend it"
+            )
+        payload, manifest = build_slice(spec, provenance=provenance)
         if not args.dry_run:
             dataset, manifest_path = write_slice(payload, manifest, Path(args.out))
             manifest["written"] = {
@@ -337,9 +379,25 @@ def main(argv: list[str] | None = None) -> int:
             }
         else:
             manifest["written"] = None
+    except DeclarationError as error:
+        print(
+            json.dumps(
+                {
+                    "ok": False,
+                    "error": str(error),
+                    "defects": [defect.as_dict() for defect in error.defects],
+                    "slice": args.slice_spec,
+                },
+                sort_keys=True,
+            ),
+            file=sys.stderr,
+        )
+        return EXIT_NOT_ELIGIBLE if error.eligibility else EXIT_CONTRACT
     except SliceError as error:
         message = str(error)
         code = EXIT_EMPTY if "empty slice is not a dataset" in message else EXIT_CONTRACT
+        if isinstance(error, NotEligible):
+            code = EXIT_NOT_ELIGIBLE
         if "does not exist" in message or "holds no bars" in message or "is not JSON" in message:
             code = EXIT_SOURCE
         print(

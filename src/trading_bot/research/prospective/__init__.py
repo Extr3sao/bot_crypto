@@ -20,6 +20,10 @@ Three pieces, each with one job:
 :mod:`.independence` counts **observation days**, not experiments: two experiments reading
 the same day produce one observation, and the module says so in numbers.
 
+:mod:`.provenance` answers a question the three pieces above cannot: *which declaration
+ authorised this capture, under which commit, and was it in force before the bar was fetched?*
+ A slice can be a perfect projection of stored bytes and still be ineligible.
+
 Read-only with respect to market data; nothing here places an order or changes a verdict.
 """
 
@@ -45,6 +49,14 @@ from .independence import (
     independent_day_count,
 )
 from .ledger import ATT_LEDGER_VERSION, AttestationLedger, LedgerVerification
+from .provenance import (
+    Declaration,
+    DeclarationError,
+    Defect,
+    ProvenanceRecord,
+    authorize,
+    eligibility_defects,
+)
 from .store import (
     DEFAULT_LAG_BOUND_MS,
     INTERVAL_MS,
@@ -68,13 +80,19 @@ __all__ = [
     "AttestationLedger",
     "Bar",
     "DayAdmission",
+    "Declaration",
+    "DeclarationError",
+    "Defect",
     "DuplicateUsage",
     "LedgerVerification",
     "ObservationBook",
+    "ProvenanceRecord",
     "SeriesIndex",
     "StoreError",
     "accumulate",
+    "authorize",
     "classify_day",
+    "eligibility_defects",
     "expected_bars",
     "experiments_sharing",
     "independent_day_count",

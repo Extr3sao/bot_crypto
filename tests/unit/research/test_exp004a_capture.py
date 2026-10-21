@@ -278,3 +278,84 @@ def test_the_cli_refuses_the_tape_slice_with_a_contract_error(
 ) -> None:
     assert main(["--slice", "st6:tape", "--dry-run"]) == EXIT_CONTRACT
     assert "not a bar series" in json.loads(capsys.readouterr().err)["error"]
+
+
+# --------------------------------------------------------------------------- #
+# provenance: a correct slice is not an authorised one
+# --------------------------------------------------------------------------- #
+def test_the_capture_is_blocked_without_a_declaration(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """RFC §7: a missing declaration is a BLOCK, and nothing is written."""
+    source = _series(tmp_path, [_row(_ms("2026-10-22T00:00:00Z"))])
+    code = main(
+        [
+            "--slice",
+            "1h:BTC",
+            "--out",
+            str(tmp_path / "out"),
+            "--source",
+            str(source),
+            "--declaration",
+            str(tmp_path / "absent.json"),
+        ]
+    )
+    assert code == EXIT_CONTRACT
+    assert not (tmp_path / "out").exists()
+    printed = json.loads(capsys.readouterr().err)
+    assert printed["defects"][0]["code"] == "DECLARATION_MISSING"
+
+
+def test_a_slice_fetched_before_the_declaration_took_effect_is_not_eligible(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """RFC §7: the bars exist and are well formed, and they still do not count."""
+    source = _series(
+        tmp_path,
+        [_row(_ms("2026-10-22T00:00:00Z"), fetched_ms=_ms("2026-10-21T09:00:00Z"))],
+    )
+    code = main(
+        ["--slice", "1h:BTC", "--out", str(tmp_path / "out"), "--source", str(source)]
+    )
+    assert code == capture.EXIT_NOT_ELIGIBLE
+    assert not (tmp_path / "out").exists()
+    assert "before" in json.loads(capsys.readouterr().err)["error"]
+
+
+def test_a_rehearsal_may_not_extend_the_declared_window(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    source = _series(tmp_path, [_row(_ms("2026-10-22T00:00:00Z"))])
+    code = main(
+        [
+            "--slice",
+            "1h:BTC",
+            "--out",
+            str(tmp_path / "out"),
+            "--source",
+            str(source),
+            "--period-end",
+            "2027-06-01T00:00:00Z",
+        ]
+    )
+    assert code == EXIT_CONTRACT
+    assert "never extend" in json.loads(capsys.readouterr().err)["error"]
+
+
+def test_the_written_manifest_names_the_declaration_and_commit_it_ran_under(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    source = _series(tmp_path, [_row(_ms("2026-10-22T00:00:00Z"))])
+    code = main(["--slice", "1h:BTC", "--out", str(tmp_path / "out"), "--source", str(source)])
+    assert code == capture.EXIT_OK
+    manifest = json.loads(capsys.readouterr().out)["manifest"]
+    provenance = manifest["provenance"]
+    assert provenance["eligible"] is True
+    assert provenance["declaration_id"] == "EXP-004A.datasets.phase2/v1"
+    assert len(provenance["generator"]["commit"]) == 40
+    assert provenance["declaration_commit"]
+    assert provenance["temporal"]["external_timestamp"] == "UNAVAILABLE"
+    written = json.loads(
+        (tmp_path / "out" / "EXP-004A-1H-BTC.MANIFEST.json").read_text(encoding="utf-8")
+    )
+    assert written["provenance"] == provenance
