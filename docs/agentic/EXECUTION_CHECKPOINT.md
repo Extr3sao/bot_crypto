@@ -1563,3 +1563,11 @@ cd "$(git rev-parse --show-toplevel)"
 
 **Decisión para WP-003-03: GO** con este aislamiento como condición previa, y con
 `PAPER_VALIDATION` aún en `NOT_PERFORMED` hasta que ese WP lo mida.
+
+**Addendum 2026-10-21 (exclusiones y recibo final).** El comando de la suite completa
+llevaba dos `--ignore` sin motivo registrado (`test_vision_panel.py`, `test_edge16_pit.py`).
+Ahora ambas aparecen con su razón en `SUITE_IDENTITY.json.repo_wide.excluded_paths` y en
+los dos informes (`4c322d5b`), y la suite de aceptación se ejecuta sin ningún `--ignore`.
+El recibo `VERIFICATION.json` de este commit juzga `4c322d5b`: **PASS**, 16/16 checks,
+**8/8 controles negativos rechazados**, 51 ficheros de evidencia dentro del commit y 49
+cubiertos por el manifiesto. Re-ejecutado sobre el propio commit del recibo → **PASS**.
