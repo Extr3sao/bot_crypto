@@ -903,11 +903,14 @@ class _Log:
 def _ccxt_connector(venue: Any) -> Any:
     from trading_bot.market_data.exchange_connector import CCXTExchangeConnector
 
-    connector = object.__new__(CCXTExchangeConnector)
-    connector._exchange_instance = venue  # type: ignore[assignment]
-    connector._config = None  # type: ignore[assignment]
-    connector._log = _Log()  # type: ignore[assignment]
-    connector._retry_decorator = lambda function: function  # type: ignore[attr-defined]
+    # Built without __init__ and then populated: every attribute below belongs to the
+    # real connector, so the object stays typed as Any on purpose rather than being
+    # half-typed by a cast that would hide a wrong attribute name.
+    connector: Any = object.__new__(CCXTExchangeConnector)
+    connector._exchange_instance = venue
+    connector._config = None
+    connector._log = _Log()
+    connector._retry_decorator = lambda function: function
     return connector
 
 
@@ -929,22 +932,22 @@ def abuse_futures_order(root: Path) -> dict[str, Any]:
         BitunixFuturesConnector,
     )
 
-    client = object.__new__(BitunixFuturesClient)
+    client: Any = object.__new__(BitunixFuturesClient)
     http_calls: list[str] = []
 
     def _request(*_args: Any, **_kwargs: Any) -> Any:
         http_calls.append("request")
         return {"code": 0, "data": {"orderId": "venue-order-1"}}
 
-    client._request = _request  # type: ignore[method-assign]
-    client.futures_base_url = "https://fapi.bitunix.com"  # type: ignore[attr-defined]
-    client._symbol_cache = None  # type: ignore[attr-defined]
+    client._request = _request
+    client.futures_base_url = "https://fapi.bitunix.com"
+    client._symbol_cache = None
 
     direct = _attempt(
         lambda: client.place_order(symbol="BTCUSDT", side="BUY", qty=0.01, client_id="scenario-1")
     )
-    connector = object.__new__(BitunixFuturesConnector)
-    connector._client = client  # type: ignore[assignment]
+    connector: Any = object.__new__(BitunixFuturesConnector)
+    connector._client = client
     via_connector = _attempt(lambda: connector.create_order("BTCUSDT", "buy", "market", 0.01))
     return {
         "status": "OK",
@@ -1072,7 +1075,8 @@ def abuse_policy_weaken(root: Path) -> dict[str, Any]:
 
     weaken = _attempt(lambda: isolation.install(isolation.policy_for_mode("live")))
     order = _attempt(lambda: isolation.assert_order_allowed("scenario.live_order"))
-    policy_now = None if isolation.active() is None else isolation.active().policy.as_dict()
+    guard = isolation.active()
+    policy_now = None if guard is None else guard.policy.as_dict()
     return {
         "status": "OK",
         "guard_attempts": {"install_live_policy": weaken},
@@ -1143,6 +1147,7 @@ def _run_child(mode: str, root: Path, args: argparse.Namespace, timeout: float) 
     )
     seconds = round(time.perf_counter() - started, 2)
     payload_path = case / "child.json"
+    payload: dict[str, Any]
     if payload_path.exists():
         payload = json.loads(payload_path.read_text(encoding="utf-8"))
     else:

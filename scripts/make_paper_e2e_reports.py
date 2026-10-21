@@ -284,7 +284,10 @@ def main() -> int:
     dimensions = _dimensions(lab, verification, sync, pytest_result, counts)
     parameters = lab.get("parameters") or {}
     dataset = lab.get("dataset") or {}
-    checks = verification.get("checks") or []
+    raw_checks = verification.get("checks")
+    checks: list[dict[str, Any]] = (
+        [row for row in raw_checks if isinstance(row, dict)] if isinstance(raw_checks, list) else []
+    )
     title = "WP-003-03 — PAPER end-to-end validation"
 
     run_report = {
@@ -334,7 +337,9 @@ def main() -> int:
         ],
     }
 
-    final_report = {
+    # Heterogeneous by design: one key per reported dimension, so the value type is
+    # deliberately opaque and mypy must not try to narrow it per key.
+    final_report: dict[str, Any] = {
         "schema": "wp00303-final-report/1",
         "work_package": "WP-003-03",
         "title": title,
