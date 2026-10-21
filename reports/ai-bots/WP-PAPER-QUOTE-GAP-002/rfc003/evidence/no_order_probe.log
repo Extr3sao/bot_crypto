@@ -1,0 +1,34 @@
+2026-10-21 14:26:15 [info     ] risk.signal_approved           confidence=0.6 notional=500.0 side=buy symbol=BTC/USDT
+2026-10-21 14:26:15 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=100.02393211860658 quantity=4.998803680374302 side=buy symbol=BTC/USDT
+2026-10-21 14:26:16 [info     ] paper.fill_closed              entry_commission=0.5 equity=9996.380966197243 exit_commission=0.5 gross_pnl=-2.619033802756882 net_pnl=-3.619033802756882 reason=stop_loss symbol=BTC/USDT
+2026-10-21 14:26:16 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-3.619033802756882 equity=9997.260975337244 pnl=-3.619033802756882 weekly_pnl=-3.619033802756882
+{
+  "broker_public_methods": 21,
+  "broker_submission_attrs": [],
+  "calls_crossed": [],
+  "closes_in_resume": 1,
+  "limitations": "this measures the lane path only. src/trading_bot/app.py still exposes a gated live order command that this probe never executes, and no exchange was contacted, so external_orders remains NOT_VERIFIABLE",
+  "modules_loaded": 1409,
+  "open_after_resume": 0,
+  "order_submit_attempts": 0,
+  "schema": "NO_ORDER_PROBE_V1",
+  "scope": "one lane session: open a position, commit, resume through a covered hole",
+  "spies_armed": 3,
+  "spy_boundaries": [
+    "ccxt.Exchange.create_order",
+    "ccxt.binance.create_order",
+    "ccxt.binanceusdm.create_order"
+  ],
+  "submission_modules_loaded": [
+    "ccxt.abstract.coinbaseexchange",
+    "ccxt.base.exchange",
+    "ccxt.coinbaseexchange",
+    "trading_bot.config.exchange",
+    "trading_bot.execution",
+    "trading_bot.execution.idempotency",
+    "trading_bot.execution.live_gate",
+    "trading_bot.market_data.exchange_connector",
+    "trading_bot.vision.execution"
+  ],
+  "verdict": "the boundary was armed and nothing crossed it"
+}

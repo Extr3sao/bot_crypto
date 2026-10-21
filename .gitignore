@@ -522,3 +522,7 @@ reports/ai-bots/EXP-003M-MAKER-FILL-REALITY-001/dataset/*
 # ============================================================
 !reports/ai-bots/WP-PAPER-RESUME-001/
 !reports/ai-bots/WP-PAPER-QUOTE-GAP-002/
+# Los logs primarios de la Fase A se versionan: `*.log` los ignoraba y el primer commit de
+# evidencia publicó el manifiesto sin los ficheros que el manifiesto hashea. Un sello que
+# nombra bytes que nadie tiene es exactamente lo que este RFC vino a cerrar.
+!reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc003/evidence/*.log
