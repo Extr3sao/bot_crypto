@@ -88,6 +88,17 @@ def check_scenarios_complete(lab: dict[str, Any], _ctx: dict[str, Any]) -> Check
     return True, "every scenario was executed by a child process"
 
 
+def _body_is_empty(body: list[ast.stmt]) -> bool:
+    """True for a method whose whole body is a docstring, ``pass`` or ``...``."""
+    real = [
+        node
+        for node in body
+        if not isinstance(node, ast.Pass)
+        and not (isinstance(node, ast.Expr) and isinstance(node.value, ast.Constant))
+    ]
+    return not real
+
+
 def check_inventory_gated(lab: dict[str, Any], ctx: dict[str, Any]) -> Check:
     """Every runtime order route is gated, or delegates to one that is.
 
@@ -105,6 +116,7 @@ def check_inventory_gated(lab: dict[str, Any], ctx: dict[str, Any]) -> Check:
     problems = []
     gated = 0
     delegated = 0
+    abstract = 0
     for row in routes:
         blob = _blob(repo, commit, str(row["file"]))
         if blob is None:
@@ -113,13 +125,25 @@ def check_inventory_gated(lab: dict[str, Any], ctx: dict[str, Any]) -> Check:
         text = blob.decode("utf-8", errors="replace").replace("\r\n", "\n")
         tree = ast.parse(text)
         segment = None
+        body: list[ast.stmt] = []
+        decorated = False
         for node in ast.walk(tree):
             if isinstance(node, ast.ClassDef) and node.name == row["class"]:
                 for item in node.body:
                     if isinstance(item, ast.FunctionDef | ast.AsyncFunctionDef) and item.name == row["method"]:
                         segment = ast.get_source_segment(text, item)
+                        body = item.body
+                        decorated = any(
+                            "abstractmethod" in ast.get_source_segment(text, dec) or ""
+                            for dec in item.decorator_list
+                        )
         if segment is None:
             problems.append(f"{row['route']}: not found in {row['file']}")
+            continue
+        if decorated or _body_is_empty(body):
+            #: An abstract method or a Protocol member has no code to run; counting it as
+            #: gated would be a claim about a function that cannot execute.
+            abstract += 1
             continue
         if "assert_order_allowed" in segment:
             gated += 1
@@ -131,7 +155,10 @@ def check_inventory_gated(lab: dict[str, Any], ctx: dict[str, Any]) -> Check:
             problems.append(f"{row['route']}: no gate and no delegation in its body")
     if problems:
         return False, "; ".join(problems[:6])
-    return True, f"{gated} runtime route(s) gated in place, {delegated} delegating route(s)"
+    return True, (
+        f"{gated} runtime route(s) gated in place, {delegated} delegating, "
+        f"{abstract} abstract/Protocol member(s) with no body"
+    )
 
 
 def check_runtime_isolated(lab: dict[str, Any], _ctx: dict[str, Any]) -> Check:
@@ -315,13 +342,34 @@ def check_suite(lab: dict[str, Any], ctx: dict[str, Any]) -> Check:
         problems.append(f"acceptance exit={suite.get('exit_code')}")
     if (suite.get("failed") or 0) != 0:
         problems.append(f"acceptance failed={suite.get('failed')}")
-    if repo_wide.get("non_baseline_failures"):
-        problems.append(f"{repo_wide.get('non_baseline_failures')} new repo-wide failure(s)")
+    unexplained = repo_wide.get("non_baseline_unexplained")
+    if unexplained is None:
+        unexplained = repo_wide.get("non_baseline_failures", 0)
+    if unexplained:
+        problems.append(f"{unexplained} unexplained repo-wide failure(s)")
+    #: A declared flake is accepted only with both isolated reruns passing and the test id
+    #: actually present in the non-baseline list; anything less is a regression in disguise.
+    flake = repo_wide.get("flake")
+    new_failures = repo_wide.get("non_baseline_failure_ids") or []
+    if flake:
+        head = flake.get("head_alone") or {}
+        base = flake.get("baseline_alone") or {}
+        if not flake.get("explained"):
+            problems.append("flake declared but not explained")
+        if head.get("exit_code") != 0 or int(head.get("passed") or 0) != 1:
+            problems.append("flake does not pass alone at head")
+        if base.get("exit_code") != 0 or int(base.get("passed") or 0) != 1:
+            problems.append("flake does not pass alone at baseline")
+        if str(flake.get("test")) not in new_failures:
+            problems.append("declared flake is not in the non-baseline failure list")
+    elif repo_wide.get("non_baseline_failures"):
+        problems.append("new repo-wide failures with no rerun evidence")
     if problems:
         return False, "; ".join(problems)
     return True, (
         f"acceptance {suite.get('passed')} passed, exit 0; "
-        f"{repo_wide.get('failed', '—')} repo-wide failure(s), none new"
+        f"{repo_wide.get('failed', '—')} repo-wide failure(s), {unexplained} unexplained"
+        + (" (one declared flake re-run on both commits)" if flake else "")
     )
 
 
