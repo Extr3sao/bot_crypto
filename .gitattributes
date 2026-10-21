@@ -68,3 +68,13 @@ data/exp004a/** -text
 # verifier cannot obtain, which is the failure the entries above already document for three
 # other trees.  LF in, LF out.
 docs/agentic/exp004a/handoff/** -text
+
+# RFC-DEF-018: the DEF evidence package and the OOS price feed are digest-pinned.  The OOS
+# plan carries the sha256 of each dataset and every run summary carries the sha256 of its
+# ledger; with `core.autocrlf=true` a checkout would turn LF into CRLF, the bytes would no
+# longer match those digests, and a clean replay would look like tampering.  Stored exactly
+# as produced.  (Found by the RFC-018 clean-checkout rehearsal: the dataset index blob
+# differed from the working file before this rule existed.)
+data/def-run-016/** -text
+data/def-run-017/** -text
+data/quote-feed-1m/** -text
