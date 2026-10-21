@@ -69,6 +69,7 @@ RUFF_TARGETS = (
     "scripts/exp_003p_report.py",
     "scripts/exp_003p_contract.py",
     "scripts/exp_003p_pipeline.py",
+    "scripts/exp_003p_checkout_compare.py",
     "tests/unit/paper/test_execution_lifecycle.py",
     "src/trading_bot/paper/broker.py",
     "src/trading_bot/vision/lane.py",
@@ -154,11 +155,12 @@ def run_tests(out: Path) -> int:
 
 
 def run_checkout_check(out: Path) -> int:
-    """Try to reproduce the rehearsal from a clean worktree at HEAD.
+    """Reproduce the run from a detached worktree at HEAD and compare the two directories.
 
-    The work of this experiment is uncommitted by design (the user decides when to commit),
-    so a worktree at HEAD cannot contain it. That is recorded as NOT_PERFORMED with the
-    exact command to run afterwards — never as a pass.
+    The rehearsal is executed *in the checkout* by the checkout's own interpreter, and the
+    verdict comes from `exp_003p_checkout_compare.py` reading both trees — never from this
+    process comparing a file it just wrote with itself. A worktree that cannot carry the
+    code is recorded as NOT_PERFORMED, not as a pass.
     """
 
     evidence = out / "evidence"
@@ -217,52 +219,118 @@ def run_checkout_check(out: Path) -> int:
         )
         return 0
     worktree = REPO.parent / "003p-checkout"
-    subprocess.run(
+    if worktree.resolve() == REPO.resolve():
+        # Executed from inside the checkout: the "worktree" is the tree we are standing in,
+        # so the rehearsal would overwrite the published artifacts and the digest comparison
+        # would compare a file with itself. That is a green verdict for reproducing nothing.
+        payload["verdict"] = "REFUSED_SELF_COMPARISON"
+        payload["detail"] = (
+            "this process runs inside the checkout path it would have created; comparing it "
+            "with itself proves nothing. Run the gate from the publishing tree, or compare "
+            "two directories with scripts/exp_003p_checkout_compare.py."
+        )
+        write_json(evidence / "CLEAN_CHECKOUT_REPRODUCTION.json", payload)
+        print("[003p-pipeline] REFUSED — this is the checkout itself, not a copy of it")
+        return 7
+    added = subprocess.run(
         ["git", "worktree", "add", "--detach", str(worktree), head],
         cwd=str(REPO),
         capture_output=True,
         text=True,
         check=False,
     )
-    dataset_target = worktree / "reports" / "ai-bots" / "EXP-003K-CANDIDATE-001" / "dataset"
-    dataset_target.mkdir(parents=True, exist_ok=True)
-    source = REPO / "reports" / "ai-bots" / "EXP-003K-CANDIDATE-001" / "dataset"
-    for path in sorted(source.glob("*.jsonl.gz")):
-        (dataset_target / path.name).write_bytes(path.read_bytes())
-    completed = subprocess.run(
-        [PYTHON, str(worktree / "scripts" / "exp_003p_rehearsal.py"), "--out",
-         str(worktree / "reports" / "ai-bots" / "EXP-003P-PAPER-EXECUTION-001"),
-         "--checkout-check"],
-        cwd=str(worktree),
-        capture_output=True,
-        text=True,
-        check=False,
+    if added.returncode != 0:
+        # Reuse an existing checkout only when it already sits on the commit under test;
+        # anything else reproduces a different tree and must not be compared.
+        there = subprocess.run(
+            ["git", "rev-parse", "HEAD"],
+            cwd=str(worktree),
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        if there.returncode != 0 or there.stdout.strip() != head:
+            payload["verdict"] = "FAILED"
+            payload["detail"] = (
+                f"worktree {worktree} exists but is not at {head}: {added.stderr.strip()}"
+            )
+            write_json(evidence / "CLEAN_CHECKOUT_REPRODUCTION.json", payload)
+            print("[003p-pipeline] checkout FAILED — the worktree exists at another commit")
+            return 5
+    python = worktree / (".venv/Scripts/python.exe" if sys.platform == "win32" else ".venv/bin/python")
+    if not python.exists():
+        payload["verdict"] = "FAILED"
+        payload["detail"] = (
+            f"no interpreter at {python}: install the checkout's dependencies first (the "
+            "committed uv.lock cannot satisfy `uv sync --locked`, see FINAL_REPORT), then "
+            "re-run this phase"
+        )
+        write_json(evidence / "CLEAN_CHECKOUT_REPRODUCTION.json", payload)
+        print("[003p-pipeline] checkout FAILED — the worktree has no environment")
+        return 5
+
+    reproduced_out = worktree / "reports" / "ai-bots" / out.name
+    phases: tuple[list[str], ...] = (
+        ["scripts/exp_003p_baseline.py", "--out", str(reproduced_out)],
+        ["scripts/exp_003p_preregister.py"],
+        ["scripts/exp_003p_schema.py", "--out", str(reproduced_out)],
+        ["scripts/exp_003p_rehearsal.py", "--out", str(reproduced_out)],
+        [
+            "scripts/exp_003p_rehearsal.py",
+            "--out",
+            str(reproduced_out / "runs" / "run-2"),
+        ],
+        [
+            "scripts/exp_003p_controls.py",
+            "--out",
+            str(reproduced_out / "NEGATIVE_CONTROLS.json"),
+        ],
+        ["scripts/exp_003p_verify.py", "--out", str(reproduced_out)],
     )
-    reproduced = worktree / "reports" / "ai-bots" / "EXP-003P-PAPER-EXECUTION-001" / "DIGESTS.json"
-    published = read_json(out / "DIGESTS.json")
-    payload.update(
-        {
-            "worktree": str(worktree),
-            "rehearsal_exit_code": completed.returncode,
-            "rehearsal_tail": completed.stdout.strip().splitlines()[-2:],
-            "run_digest_published": published.get("run_digest"),
-            "run_digest_reproduced": (
-                read_json(reproduced).get("run_digest") if reproduced.exists() else None
-            ),
-        }
-    )
-    identical = payload["run_digest_published"] == payload["run_digest_reproduced"]
-    payload["verdict"] = "REPRODUCED" if (completed.returncode == 0 and identical) else "FAILED"
-    write_json(evidence / "CLEAN_CHECKOUT_REPRODUCTION.json", payload)
-    subprocess.run(
-        ["git", "worktree", "remove", "--force", str(worktree)],
+    executed: list[dict[str, Any]] = []
+    for phase in phases:
+        done = subprocess.run(
+            [str(python), *phase], cwd=str(worktree), capture_output=True, text=True, check=False
+        )
+        executed.append({"script": phase[0], "exit_code": done.returncode})
+        if done.returncode != 0:
+            payload["verdict"] = "FAILED"
+            payload["detail"] = f"{phase[0]} exited {done.returncode} inside the checkout"
+            payload["phases"] = executed
+            payload["stderr_tail"] = done.stderr.strip().splitlines()[-6:]
+            write_json(evidence / "CLEAN_CHECKOUT_REPRODUCTION.json", payload)
+            print(f"[003p-pipeline] checkout FAILED — {phase[0]} exited {done.returncode}")
+            return 5
+
+    comparison = subprocess.run(
+        [
+            PYTHON,
+            str(REPO / "scripts" / "exp_003p_checkout_compare.py"),
+            "--published",
+            str(out),
+            "--reproduced",
+            str(reproduced_out),
+            "--out",
+            str(evidence / "CLEAN_CHECKOUT_REPRODUCTION.json"),
+            "--worktree",
+            str(worktree),
+            "--checkout-commit",
+            head,
+        ],
         cwd=str(REPO),
         capture_output=True,
         text=True,
         check=False,
     )
-    print(f"[003p-pipeline] checkout {payload['verdict']}")
-    return 0 if payload["verdict"] == "REPRODUCED" else 5
+    payload["phases"] = executed
+    print(
+        "[003p-pipeline] checkout "
+        f"{'REPRODUCED' if comparison.returncode == 0 else 'FAILED'} "
+        f"worktree={worktree} (kept for inspection)"
+    )
+    if comparison.returncode != 0:
+        print(comparison.stdout.strip() or comparison.stderr.strip())
+    return 0 if comparison.returncode == 0 else 5
 
 
 def rehearse(out: Path) -> int:

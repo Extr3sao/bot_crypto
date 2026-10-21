@@ -11,6 +11,7 @@ that support it and the limitations that qualify it.
 from __future__ import annotations
 
 import argparse
+import json
 import platform
 import sys
 from datetime import UTC, datetime
@@ -215,6 +216,23 @@ DEFECTS = (
         ),
         "treatment": "declared here; the protocol carries no result-dependent content",
     },
+    {
+        "id": "DEF-003P-07",
+        "severity": "high",
+        "summary": "the checkout gate could compare a run against itself and call it a reproduction",
+        "detail": (
+            "run_checkout_check derived the worktree path from ``REPO.parent``. Executed from "
+            "inside the checkout that path *is* the checkout, so the rehearsal would rewrite "
+            "the published artifacts and the digest comparison would compare a file with "
+            "itself: a green verdict for an operation that reproduced nothing. Found while "
+            "running this phase's own reproduction, before any verdict was published."
+        ),
+        "treatment": (
+            "the gate refuses to run when the worktree path resolves to the repository it is "
+            "executing from, and the reproduction verdict is now produced by a separate "
+            "comparison script (exp_003p_checkout_compare.py) that reads two directories"
+        ),
+    },
 )
 
 BLOCKERS = (
@@ -223,8 +241,10 @@ BLOCKERS = (
     "venue. The offline book is not a substitute.",
     "organizational_independence=false: producer, verifier and controls were written by one "
     "agent. The separation is between programs.",
-    "PROTOCOL.json is not committed, so prospective status rests on file order and the "
-    "protocol hash recorded by the rehearsal, not on a commit that predates the run.",
+    "Prospective status does not rest on a commit that predates the run: the artifacts are "
+    "committed by the evidence commit, which follows the code commit the run binds. The "
+    "preregistration is a frozen document (`PROTOCOL_FROZEN_UTC`), its digest is recorded in "
+    "every run, and a clean checkout re-derives the identical file from the frozen constants.",
 )
 
 
@@ -259,8 +279,13 @@ def build_run_report(out: Path, data: dict[str, Any]) -> dict[str, Any]:
 
     technical = verification.get("technical_execution_validation", "NOT_PERFORMED")
     paper = verification.get("paper_validation", "BLOCKED_NOT_CONFIGURED")
+    checkout = data["checkout"] or {}
+    checkout_state = {
+        "REPRODUCED": "PASS",
+        "FAILED": "FAIL",
+    }.get(str(checkout.get("verdict")), "NOT_PERFORMED")
     status = "PASS" if technical == "PASS" and paper == "PASS" else "PARTIAL"
-    if technical == "FAIL":
+    if technical == "FAIL" or checkout_state == "FAIL":
         status = "FAIL"
 
     return {
@@ -284,6 +309,7 @@ def build_run_report(out: Path, data: dict[str, Any]) -> dict[str, Any]:
             "scripts/exp_003p_rehearsal.py",
             "scripts/exp_003p_controls.py",
             "scripts/exp_003p_verify.py",
+            "scripts/exp_003p_checkout_compare.py",
             "scripts/exp_003p_report.py",
         ],
         "runtime": {
@@ -326,7 +352,10 @@ def build_run_report(out: Path, data: dict[str, Any]) -> dict[str, Any]:
             "IMPLEMENTATION": "PASS",
             "TESTS": tests.get("state", "NOT_PERFORMED"),
             "OFFLINE_RUNTIME_VALIDATION": technical,
+            "CLEAN_CHECKOUT_REPRODUCTION": checkout_state,
             "PAPER_VALIDATION": paper,
+            "ECONOMIC_EDGE": "NOT_EVALUATED",
+            "STRATEGY_PROMOTION": "DENIED",
             "INDEPENDENT_VERIFICATION": (
                 "PARTIAL" if verification.get("organizational_independence") is False else "PASS"
             ),
@@ -430,9 +459,11 @@ def render_final(data: dict[str, Any], report: dict[str, Any]) -> str:
         "# FINAL REPORT — EXP-003P PAPER EXECUTION LIFECYCLE",
         "",
         "- **PHASE**: `EXP-003P-PAPER-EXECUTION-001`",
-        f"- **COMMITS**: `{report['commit']}` is the base commit. The 003P code lives in the "
-        "working tree on top of it and is **not committed** — a deliberate stop, since the "
-        "tree already carried foreign modifications and committing is the user's decision.",
+        f"- **COMMITS**: the code is committed; the run binds `{report['commit']}`, the commit "
+        "that carries the implementation, the frozen 003K input and the scripts. The "
+        "artifacts are carried by the evidence commit that follows it "
+        "(`git log -1 --format=%H -- reports/ai-bots/EXP-003P-PAPER-EXECUTION-001`), because a "
+        "file cannot contain the hash of the commit that adds it.",
         "- **IMPLEMENTED**: typed lifecycle contracts, hash-chained event store, order state "
         "machine, idempotent fill ledger, provenance gate, offline venue double, "
         "reconciliation, broker instrumentation, 17 adversarial controls, separate verifier",
@@ -441,6 +472,9 @@ def render_final(data: dict[str, Any], report: dict[str, Any]) -> str:
         f"- **RUNTIME_VALIDATION**: `{verification.get('technical_execution_validation')}` "
         f"({verification.get('checks_passed')}/{verification.get('checks_total')} checks, "
         f"{report['controls']['effective']}/{report['controls']['total']} controls)",
+        f"- **CLEAN_CHECKOUT_REPRODUCTION**: "
+        f"`{report['dimensions']['CLEAN_CHECKOUT_REPRODUCTION']}` "
+        f"({checkout.get('verdict', 'NOT_PERFORMED')})",
         "- **PAPER_VALIDATION**: `BLOCKED_NOT_CONFIGURED` — no authorised paper provider exists "
         "in this workspace, so nothing here is observed paper execution",
         f"- **FALSE_SUCCESS**: `{verification.get('false_success', 0)}`",
@@ -505,14 +539,24 @@ def render_final(data: dict[str, Any], report: dict[str, Any]) -> str:
         "cost decomposition of the broker is reported instead.",
         "- Depends on `EXP-003O=PASS_PARTIAL_INCOMPLETE_REAL_DATA`; 003P does not repair that "
         "coverage or its independence.",
-        "- Artifacts are not committed: the tree already carried foreign modifications and "
-        "003P does not stage or commit another agent's work. `reports/ai-bots/*` is also "
-        "git-ignored (`.gitignore:463`), so publishing these files would need `git add -f`.",
+        "- The clean-checkout reproduction needs the 003K frozen dataset, which the code commit "
+        "publishes under `reports/ai-bots/EXP-003K-CANDIDATE-001/dataset` (3.9 MB) so the "
+        "checkout is self-contained; the three SHA-256 digests are the ones `BASELINE.json` "
+        "recorded.",
+        "- Dependencies are installed from the committed `uv.lock`. `uv sync --locked` refuses "
+        "this repository because that lock predates the current `pyproject.toml` (it does not "
+        "know `matplotlib`) — a pre-existing repository defect, not a 003P one. The clean "
+        "checkout therefore installs the baseline's exact versions with `uv pip sync` from a "
+        "frozen freeze file, declared with its command in "
+        "`evidence/CLEAN_CHECKOUT_REPRODUCTION.json`.",
         "",
         "## Clean-checkout reproduction",
         "",
         f"- result: `{checkout.get('verdict', 'NOT_PERFORMED')}`",
         f"- detail: {checkout.get('detail', 'not executed')}",
+        f"- commit reproduced: `{checkout.get('commit', 'none')}`",
+        f"- comparisons: {json.dumps(checkout.get('comparisons') or {}, sort_keys=True)}",
+        f"- method: {checkout.get('method', 'not executed')}",
         "",
         "## Measurements (uninterpreted)",
         "",
