@@ -1,7 +1,7 @@
 {
   "schema": "FINAL_REPORT_V2",
   "phase": "A",
-  "run_id": "rfc003-20261021T123509Z",
+  "run_id": "rfc003-20261021T123721Z",
   "code_sha": "aab65cf9d60e520119426fc74bccd84e110eee1e",
   "test_commit_sha": "fed5476452fc94308c28f62905f78391a6e41d23",
   "tree_sha": "21f69ab0ac77e14d6328798bc7e867d5c95e1b14",
@@ -304,19 +304,19 @@
       "id": "NEG-01",
       "expectation": "the import gate refuses a foreign package",
       "accepted_invalid": false,
-      "detail": "gate exit 3, status=REFUSED, origin=C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\tmpibqs68wd\\src\\trading_bot\\__init__.py"
+      "detail": "gate exit 3, status=REFUSED, origin=C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\tmpdakjncos\\src\\trading_bot\\__init__.py"
     },
     {
       "id": "NEG-06",
       "expectation": "a pre-commit crash resumes consistently",
       "accepted_invalid": false,
-      "detail": "2 passed in 7.14s"
+      "detail": "2 passed in 8.87s"
     },
     {
       "id": "NEG-07",
       "expectation": "a post-commit crash does not close twice",
       "accepted_invalid": false,
-      "detail": "1 passed in 6.36s"
+      "detail": "1 passed in 5.44s"
     },
     {
       "id": "NEG-08",

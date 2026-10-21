@@ -2,7 +2,7 @@
   "schema": "EVIDENCE_MANIFEST_V2",
   "wp": "WP-PAPER-QUOTE-GAP-002",
   "rfc": "RFC-PAPER-QUOTE-GAP-003",
-  "generated_at_utc": "2026-10-21T12:35:10+00:00",
+  "generated_at_utc": "2026-10-21T12:37:21+00:00",
   "code_sha": "aab65cf9d60e520119426fc74bccd84e110eee1e",
   "runtime_inventory": [
     "src/trading_bot/vision/lane.py",
@@ -376,18 +376,18 @@
     {
       "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc003/FINAL_REPORT.json",
       "role": "artifact",
-      "sha256": "429e96b6ce9be1d6c896548b5629fdb527123b0488d0e58889ff0f7a030432b9",
+      "sha256": "1e0e98c7ca4d5bdcd426569c468f71eab830ec929fce158323a8209effc38574",
       "byte_count": 17501,
       "producer": "builder",
-      "created_utc": "2026-10-21T12:35:09+00:00"
+      "created_utc": "2026-10-21T12:37:21+00:00"
     },
     {
       "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc003/FINAL_REPORT.md",
       "role": "report",
-      "sha256": "bd300dfb7cc30a75724e3070b2babed948d5440e2ff41bcda9cb1820fd92a833",
-      "byte_count": 6618,
+      "sha256": "a4e29a0258b3edfc19c046cf0a9ee717d2b79deb0d092a5d98f5bde92026ec16",
+      "byte_count": 7675,
       "producer": "builder",
-      "created_utc": "2026-10-21T12:31:41+00:00"
+      "created_utc": "2026-10-21T12:37:14+00:00"
     },
     {
       "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc003/import_identity_neg01.json",
@@ -432,10 +432,10 @@
     {
       "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc003/RUN_REPORT.json",
       "role": "artifact",
-      "sha256": "34b63496b6c2f9d4d1c085c5f4d360450230460996e5605db05ba8b670c54f96",
+      "sha256": "e77db2f5c1d5ca965aac45d7c34c8eae5a9c40a1d7e97e187d34c145f6c3a7e7",
       "byte_count": 18283,
       "producer": "builder",
-      "created_utc": "2026-10-21T12:35:09+00:00"
+      "created_utc": "2026-10-21T12:37:21+00:00"
     },
     {
       "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc003/RUN_REPORT.md",
@@ -546,7 +546,7 @@
   "anchor": "this manifest is not hashed inside itself; the commit that publishes it (EVIDENCE_SHA) is the external anchor, and tests re-hash every entry from disk",
   "totals": {
     "entries": 64,
-    "bytes": 3749870,
+    "bytes": 3750927,
     "by_role": {
       "input-dataset": 4,
       "artifact": 34,

@@ -11,7 +11,7 @@ checkout limpio, y no se afirma nada por encima de la recuperación de un hueco 
 |---|---|
 | `aab65cf` | **`CODE_SHA`** — código, tests, scripts, `pyproject.toml`, `uv.lock`, fixture de 1 minuto y el `archive/` del WP |
 | `fed5476` | test de la rama post-`COMMIT` (solo `tests/`, 0 ficheros de `src/`) |
-| `EVIDENCE_SHA` | informes, artefactos y manifiesto (ver `SEAL` al final) |
+| commit de evidencia | informes, artefactos y manifiesto. Su SHA no puede escribirse dentro de si mismo: el ancla es el commit que los publica, y `verify_phase_a.py --evidence-sha` lo comprueba desde un clon limpio |
 
 El diff `aab65cf..fed5476` toca **un** fichero, y es un test. Ningún byte de runtime cambió
 entre los dos, así que el sello de runtime sigue describiendo el árbol que corrió los 694.
@@ -96,6 +96,15 @@ cadena separadas de hashes de fichero), O9 (claims de órdenes medidos).
    `ccxt.binance({...})` y el constructor contactó la API de Binance, que respondió
    `AuthenticationError`. Sin orden, sin credenciales reales, pero **fue una petición externa
    no intencionada**; el caso se reescribió sobre `ccxt.Exchange({})`, que no abre transporte.
+4. **`*.log` volvió a comerse la evidencia.** El primer commit de evidencia publicó un
+   manifiesto de once ficheros primarios y un árbol con tres: `part-*.log` y compañía seguían
+   ignorados por `.gitignore:56`. El sello nombraba bytes que nadie podía hacer checkout. Se
+   añadió una re-inclusión acotada a `rfc003/evidence/*.log` y el commit siguiente los publicó
+   sin tocar un byte, para que el manifiesto siguiera re-hasheando. **El fallo se detectó
+   preguntando qué contiene el commit, no qué contiene el directorio.**
+5. **La rama post-`COMMIT` no tenía regresión.** Los 14 kills dejan `closed 0→0`: todos caen
+   antes del commit. Se añadió el test que mata después, y su delta de conteo (694 → 695) se
+   declara en lugar de sumarse al total.
 
 ## BLOCKERS
 
