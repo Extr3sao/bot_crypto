@@ -379,7 +379,7 @@ def execute() -> int:
 
 def report() -> int:
     payload = json.loads((OUT / "RUN_REPORT.json").read_text(encoding="utf-8"))
-    verification_path = OUT / "evidence" / "INDEPENDENT_VERIFICATION_B.json"
+    verification_path = OUT / "evidence" / "SEALED_AND_NEW_LEDGER_B.json"
     negative_path = OUT / "evidence" / "NEGATIVE_CONTROL_B.json"
     verification = (
         json.loads(verification_path.read_text(encoding="utf-8"))
@@ -417,7 +417,7 @@ def report() -> int:
         f"- runtime sucio: {provenance['code_provenance']['runtime_dirty']}",
         "- rutas sucias fuera del runtime: "
         f"{provenance['code_provenance']['dirty_outside_runtime_total']}",
-        f"- cadena: {provenance['chain']['ok']} ({provenance['chain']['rows']} filas)",
+        f"- cadena: {provenance['chain']['ok']} ({provenance['chain']['lines']} líneas)",
         "",
         "## La rama de control",
         "",
@@ -453,18 +453,21 @@ def report() -> int:
             f"({verification['checks_total']} comprobaciones)",
             f"- procedencia de código: `{domain['status']}` {domain['counts']} "
             f"({domain['checks_total']} comprobaciones)",
-            f"- commit visto por B: `{domain['ledgers'][0].get('commit')}`",
-            f"- motivos: {domain['ledgers'][0].get('reasons')}",
+            f"- commit visto por B: "
+            f"`{next((item.get('commit') for item in domain['ledgers'] if item['status'] == 'PASS'), None)}`",
+            "- ledgers históricos sin bloque: "
+            f"{domain['counts']['NOT_EVIDENCED']} (no se les rellena un commit)",
         ]
     lines += ["", "## Control negativo (B)", ""]
     if negative is None:
         lines.append("- pendiente.")
     else:
         domain = negative["run_provenance"]
+        tampered = next((item for item in domain["ledgers"] if item["status"] == "FAIL"), {})
         lines += [
             f"- ledger con el commit alterado y la cadena recalculada: "
             f"`{domain['status']}` {domain['counts']}",
-            f"- motivos: {domain['ledgers'][0].get('reasons')}",
+            f"- motivos: {tampered.get('reasons')}",
         ]
     lines += [
         "",
