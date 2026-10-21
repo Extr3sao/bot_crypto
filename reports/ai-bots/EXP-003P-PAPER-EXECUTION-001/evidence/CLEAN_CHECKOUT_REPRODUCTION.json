@@ -1,30 +1,30 @@
 {
-  "commit": "bdd96f4cf9eda379294d92282aa78707c669ffd5",
+  "commit": "59bc7ca21ce2221e75368f55122ab51dd4c5ed89",
   "comparisons": {
     "commit_bound:execution_trace_sha256": {
-      "byte_identical": true,
+      "byte_identical": false,
       "published": "f0264348e3823c2fd2cfd95b5a4643496f34a95bacfcd914fce3dcf25b52429e",
-      "reproduced": "f0264348e3823c2fd2cfd95b5a4643496f34a95bacfcd914fce3dcf25b52429e"
+      "reproduced": "a68045434a9c67e1bf489bbee2d3bc880cdb9f5ee0c2884c8186815aa84e1b01"
     },
     "commit_bound:run_digest": {
-      "byte_identical": true,
+      "byte_identical": false,
       "published": "sha256:433a819e7537d73aa484fda414b21c63b4efba4afc164d6f7b3fce0ba7a3f95c",
-      "reproduced": "sha256:433a819e7537d73aa484fda414b21c63b4efba4afc164d6f7b3fce0ba7a3f95c"
+      "reproduced": "sha256:d42ba9d2a1d105e48a2956b4f9893282fee23cb816ac8da5ecb2c73f243fc051"
     },
     "commit_bound:scenario_trace_sha256": {
-      "byte_identical": true,
+      "byte_identical": false,
       "published": "a97955f89591225e5f8a7216eab780bb8c86574e9bdc96b1743f21aa3a62a385",
-      "reproduced": "a97955f89591225e5f8a7216eab780bb8c86574e9bdc96b1743f21aa3a62a385"
+      "reproduced": "5edd4cfa33d1f18ef97e25f4ea6c0d9404ee3e5330ae5bd27bd801e626796bbf"
     },
     "commit_bound:store_digest_runtime": {
-      "byte_identical": true,
+      "byte_identical": false,
       "published": "sha256:2b417f11b3cc4bfde2e80a31d9a630a09b258d0c3396ab4f9da69ed462d37e79",
-      "reproduced": "sha256:2b417f11b3cc4bfde2e80a31d9a630a09b258d0c3396ab4f9da69ed462d37e79"
+      "reproduced": "sha256:6fa6432ba4e6a5455d194487b4b2dd4f305300e325d4a3511c344e00dfa652e7"
     },
     "commit_bound:store_digest_scenario": {
-      "byte_identical": true,
+      "byte_identical": false,
       "published": "sha256:ebd26e2e7c7f6947ee0ce60cd6aa4b027f6fd490471af532d109ea292ef000ea",
-      "reproduced": "sha256:ebd26e2e7c7f6947ee0ce60cd6aa4b027f6fd490471af532d109ea292ef000ea"
+      "reproduced": "sha256:7604ca30097a836fd296f8128f4f25412ee8c0cb50cc13b2c536396dd2a098e0"
     },
     "controls": {
       "effective_published": 17,
@@ -93,13 +93,13 @@
       "state_reproduced": "PASS"
     },
     "trace:EXECUTION_TRACE.jsonl": {
-      "byte_identical": true,
+      "byte_identical": false,
       "identical_after_commit_normalisation": true,
       "rows_published": 276,
       "rows_reproduced": 276
     },
     "trace:SCENARIO_TRACE.jsonl": {
-      "byte_identical": true,
+      "byte_identical": false,
       "identical_after_commit_normalisation": true,
       "rows_published": 32,
       "rows_reproduced": 32
@@ -135,15 +135,57 @@
     "platform": "Windows-10-10.0.26200-SP0",
     "python": "3.11.15"
   },
-  "generated_at_utc": "2026-10-21T13:57:05Z",
-  "install_command": "uv sync --frozen (committed uv.lock) then uv pip sync evidence/environment.freeze.txt",
+  "environment_audit": {
+    "ok": true,
+    "paths_outside_checkout": [],
+    "pins_in_freeze": 114,
+    "pins_installed": 114,
+    "pins_mismatch": [],
+    "site_packages": "C:\\Users\\GVLLFR0035\\Downloads\\003p-checkout\\.venv\\Lib\\site-packages"
+  },
+  "generated_at_utc": "2026-10-21T15:44:33Z",
+  "install_command": "uv venv --python 3.11 .venv; uv pip sync evidence/environment.freeze.txt --python .venv/Scripts/python.exe; uv pip install --no-deps -e .",
   "method": "git worktree add --detach <commit>; dependencies installed from the committed uv.lock; the 003K dataset read from the checkout itself; every phase re-run there; the two directories then compared by this program",
+  "phases": [
+    {
+      "exit_code": 0,
+      "script": "scripts/exp_003p_baseline.py"
+    },
+    {
+      "exit_code": 0,
+      "script": "scripts/exp_003p_preregister.py"
+    },
+    {
+      "exit_code": 0,
+      "script": "scripts/exp_003p_schema.py"
+    },
+    {
+      "exit_code": 0,
+      "script": "scripts/exp_003p_rehearsal.py"
+    },
+    {
+      "exit_code": 0,
+      "script": "scripts/exp_003p_rehearsal.py"
+    },
+    {
+      "exit_code": 0,
+      "script": "scripts/exp_003p_controls.py"
+    },
+    {
+      "exit_code": 0,
+      "script": "scripts/exp_003p_verify.py"
+    },
+    {
+      "exit_code": 0,
+      "script": "scripts/exp_003p_pipeline.py"
+    }
+  ],
   "published_tree": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\ai-bots\\EXP-003P-PAPER-EXECUTION-001",
   "reproduced_tree": "C:\\Users\\GVLLFR0035\\Downloads\\003p-checkout\\reports\\ai-bots\\EXP-003P-PAPER-EXECUTION-001",
   "requirements": {
-    "lines": 115,
+    "lines": 123,
     "path": "reports/ai-bots/EXP-003P-PAPER-EXECUTION-001/evidence/environment.freeze.txt",
-    "sha256": "71c639284908c904021e976e081beb93a12336b6179c76405caf293a92f6a89a"
+    "sha256": "b0c7fc9309d82ede08df325e51145b170118b2a0730aff2a7f39b7009f5e4738"
   },
   "run_id": "EXP-003P-PAPER-EXECUTION-001",
   "schema_version": "AI_BOTS_003P_CHECKOUT_REPRODUCTION_V1",

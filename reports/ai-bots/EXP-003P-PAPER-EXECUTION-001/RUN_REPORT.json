@@ -5,6 +5,12 @@
     "Prospective status does not rest on a commit that predates the run: the artifacts are committed by the evidence commit, which follows the code commit the run binds. The preregistration is a frozen document (`PROTOCOL_FROZEN_UTC`), its digest is recorded in every run, and a clean checkout re-derives the identical file from the frozen constants."
   ],
   "branch": "agent/ai-bots/RFC-TAP-AI-BOTS-003",
+  "checkout_environment": {
+    "paths_outside_checkout": [],
+    "pins": "114/114",
+    "pins_mismatch": [],
+    "state": "PASS"
+  },
   "checks": {
     "failed": [],
     "passed": 18,
@@ -23,6 +29,7 @@
     "scenario_trace_sha256": "a97955f89591225e5f8a7216eab780bb8c86574e9bdc96b1743f21aa3a62a385"
   },
   "dimensions": {
+    "CHECKOUT_ENVIRONMENT": "PASS",
     "CLEAN_CHECKOUT_REPRODUCTION": "PASS",
     "ECONOMIC_EDGE": "NOT_EVALUATED",
     "FALSE_SUCCESS": 0,
@@ -53,8 +60,8 @@
     "VERIFICATION.json",
     "INDEPENDENCE_AUDIT.json"
   ],
-  "generated_at_utc": "2026-10-21T15:21:08Z",
-  "head_when_report_rendered": "fc036d967923f09a6092cb0e5de7409afd07ebd7",
+  "generated_at_utc": "2026-10-21T15:44:49Z",
+  "head_when_report_rendered": "61c9fd61869f6b68739d051f0bc55016c0ccf565",
   "holdout": "CLOSED",
   "orders_and_fills_by_provenance": {
     "OFFLINE_SIMULATED": 308
