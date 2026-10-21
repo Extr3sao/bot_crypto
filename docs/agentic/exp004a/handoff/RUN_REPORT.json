@@ -3,7 +3,20 @@
   "role": "EXP-004A_BUILDER_A",
   "builder_identity": "tap-foundation-2026-10-21",
   "independent_verifier_identity": "NOT_YET_ASSIGNED",
-  "generated_at_utc": "2026-10-21T08:45:00Z",
+  "run_id": "exp004a-handoff-2026-10-21",
+  "generated_at_utc": "2026-10-21T08:46:27Z",
+  "timestamps": {
+    "written_at_utc": "2026-10-21T08:46:27Z",
+    "started_at_utc": null,
+    "finished_at_utc": null,
+    "note": "the builder run was not instrumented with start/finish clocks, so those two are null rather than invented; written_at_utc is the host clock at the moment of writing and is not externally attested"
+  },
+  "environment": {
+    "os": "Windows 10",
+    "python": "3.11.15",
+    "worktree": "C:/Users/GVLLFR0035/Downloads/bot freebuff",
+    "command_prefix": "./.venv/Scripts/python.exe"
+  },
   "status": "BLOCKED",
   "status_reason": "BLOCKED_MISSING_INDEPENDENT_VERIFIER",
   "scope_executed": ["WP-051-00", "WP-051-01"],
@@ -125,6 +138,35 @@
       "DECLARED_SIZE_NOT_WALKED",
       "BLOCKED_MISSING_INDEPENDENT_VERIFIER"
     ]
+  },
+  "independence": {
+    "status": "BLOCKED",
+    "reason_code": "BLOCKED_MISSING_INDEPENDENT_VERIFIER",
+    "builder_agent_id": "EXP-004A_BUILDER_A",
+    "verifier_agent_id": null,
+    "verifier_implementation_commit": null,
+    "separate_worktree": false,
+    "disjoint_write_rights": false,
+    "evidence": [
+      "scripts/exp004a_verify.py absent",
+      "docs/agentic/exp004a/independent/ absent",
+      "this mission is a single builder session; a second prompt in it would not create a distinct principal (RFC-051 5)"
+    ]
+  },
+  "source_inventory_sha256": "1c7d9cfbedf895b995a89264de60ac74d17bbab053586eb16a4f150994314928",
+  "source_inventory_note": "sha256 of docs/agentic/exp004a/handoff/EVIDENCE_INVENTORY.json, the same for the worktree file and the committed blob because the handoff tree is pinned -text in .gitattributes",
+  "claim_matrix": "docs/agentic/exp004a/handoff/CLAIM_SUBMISSION.json",
+  "raw_byte_limitations": [
+    "the bar store is gitignored and live, so its whole-file digests are transient and only attested prefixes are stable",
+    "a clean checkout can reproduce the sealed ledgers but not the bars they were computed from",
+    "chronology rests on the Git commit clock; no external timestamping authority exists",
+    "only 9 sealed prefixes were recomputed here; the full 234-record sweep belongs to the verifier"
+  ],
+  "next_work_package": {
+    "id": "WP-051-02",
+    "owner": "independent verifier (B) — distinct principal, isolated worktree, write access limited to docs/agentic/exp004a/independent/",
+    "first_step": "implement the verify / inspect-evidence CLI with exit codes 0/2/3/4 against evaluated_commit 47116b2, then run T-01..T-20",
+    "blocked_on": "BLOCKED_MISSING_INDEPENDENT_VERIFIER"
   },
   "claims": {
     "C-001": "SUBMITTED_NOT_VERIFIED",

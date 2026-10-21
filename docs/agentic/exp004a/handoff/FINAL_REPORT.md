@@ -55,8 +55,11 @@ declared, 200 walked); `PHASE2_CAPTURE_OPEN` (`start_utc 2026-10-22`, `closed: f
 `INSUFFICIENT_ADMITTED_DAYS` (4 joint days, 0 in-window, 90 required).
 
 **EVIDENCE** — `RUNTIME_AUTHORITY_MAP.md`, `EVIDENCE_HANDOFF.md`,
-`EVIDENCE_INVENTORY.json` (28 tracked references, 6 live store series),
+`EVIDENCE_INVENTORY.json` (28 tracked references, 6 live store series, sha256
+`1c7d9cfe…`), `CLAIM_SUBMISSION.json` (the matrix below, machine-readable),
 `RUN_REPORT.json` / `RUN_REPORT.md`, `gate/INSPECT.{json,txt}`, `gate/AUTHORIZE.{json,txt}`.
+The handoff tree is pinned `-text` in `.gitattributes`, so those digests survive a checkout
+instead of naming bytes a fresh clone cannot reproduce.
 
 **ARCHITECTURE_STATUS** — unchanged. The two-phase freeze, the sealed attestation chains, the
 prefix-digest scheme and the knowledge-classed cost model stand exactly as delivered. This
@@ -78,6 +81,9 @@ verification quality.
 ---
 
 ## Claim matrix
+
+The same twelve rows exist in machine-readable form in `CLAIM_SUBMISSION.json`; this table is
+its human rendering and the two must stay identical.
 
 `DECISION` is the *builder's* submission. A builder may submit and may point at evidence; it may
 not decide. Every row is `SUBMITTED_NOT_VERIFIED`.

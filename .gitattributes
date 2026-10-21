@@ -62,3 +62,9 @@ reports/ai-bots/EXP-003O-INDEPENDENT-SIGNAL-VERIFICATION-001/** -text
 # ledger fail its own verification on a machine that never touched the data, so the tree is
 # stored exactly as it was sealed.
 data/exp004a/** -text
+
+# The RFC-051 handoff publishes the sha256 of its own inventory and of every reference it
+# lists.  A checkout that rewrote these line endings would make those digests name bytes the
+# verifier cannot obtain, which is the failure the entries above already document for three
+# other trees.  LF in, LF out.
+docs/agentic/exp004a/handoff/** -text
