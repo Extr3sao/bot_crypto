@@ -9,7 +9,7 @@
 - **CHECKOUT_ENVIRONMENT**: `PASS` (114/114 pins matched, 0 pointers outside the checkout)
 - **PAPER_VALIDATION**: `BLOCKED_NOT_CONFIGURED` — no authorised paper provider exists in this workspace, so nothing here is observed paper execution; the minimum integration plan and its P1..P10 acceptance checks are in `design/PAPER_INTEGRATION_PLAN.md` and were not executed
 - **FALSE_SUCCESS**: `0`
-- **DEFECTS**: 8 found and fixed/declared during the phase
+- **DEFECTS**: 10 found and fixed/declared during the phase
 - **BLOCKERS**: 3
 - **EVIDENCE**: `EXECUTION_TRACE.jsonl`, `SCENARIO_TRACE.jsonl`, `ORDER_LIFECYCLE.csv`, `RECONCILIATION.json`, `METRICS.json`, `NEGATIVE_CONTROLS.json`, `VERIFICATION.json`, `INDEPENDENCE_AUDIT.json`, `SHA256SUMS.txt`
 - **ARCHITECTURE_STATUS**: the existing paper runtime is instrumented at its real execution boundary (`PaperBroker`); no second risk engine, broker or platform was added. The offline venue is a declared test double.
@@ -98,6 +98,18 @@ run_checkout_check derived the worktree path from ``REPO.parent``. Executed from
 `program_independence` was decided by searching the verifier's text for each producer module stem. Those stems ("store", "engine", "venue", "reconcile", "recorder", "contracts") also occur as ordinary words in its prose, so the audit published `program_independence=false` for a verifier that imports no `trading_bot` module at all. An audit that understates its own separation is still wrong: the claim has to match the code.
 
 **Treatment:** the scan parses the verifier with `ast` and collects its real imports; the markdown heading follows the measured value instead of asserting it
+
+### DEF-003P-09 — the freeze file bound the checkout to the tree that wrote it (`high`)
+
+`evidence/environment.freeze.txt` ended with `-e file:///C:/Users/.../bot freebuff`. A checkout synced from that file installed the *publishing* tree's `src` as its own project, so the suites it ran imported code from outside the checkout and the reproduction credited a tree it had not reproduced. The file also described an environment it could not produce: `uv sync --frozen` resolved 104 pins against the 115 the file names.
+
+**Treatment:** the freeze file names no tree, the procedure is `uv venv` + `uv pip sync` + `uv pip install --no-deps -e .`, and the gate audits the interpreter's own `.pth`/`direct_url.json` pointers and its pin set before running a phase: 114/114 pins and zero pointers outside the checkout, or the verdict is FAILED
+
+### DEF-003P-10 — the comparer overwrote the evidence and dropped the environment audit (`medium`)
+
+the gate wrote `evidence/CLEAN_CHECKOUT_REPRODUCTION.json` with the audit before handing the verdict to `exp_003p_checkout_compare.py`, which rewrites the same path with its own payload. The recorded evidence therefore arrived with a `REPRODUCED` verdict and no audit, and the report refused it (`status=FAIL`) instead of inheriting a clean verdict nothing had checked.
+
+**Treatment:** the gate merges the audit into the file the comparer owns before publishing it, and `CHECKOUT_ENVIRONMENT` is a reported dimension: a clean reproduction without one is `NOT_PERFORMED`, never `PASS`
 
 ## Blockers
 

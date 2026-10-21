@@ -252,6 +252,42 @@ DEFECTS = (
             "markdown heading follows the measured value instead of asserting it"
         ),
     },
+    {
+        "id": "DEF-003P-09",
+        "severity": "high",
+        "summary": "the freeze file bound the checkout to the tree that wrote it",
+        "detail": (
+            "`evidence/environment.freeze.txt` ended with `-e file:///C:/Users/.../bot "
+            "freebuff`. A checkout synced from that file installed the *publishing* tree's "
+            "`src` as its own project, so the suites it ran imported code from outside the "
+            "checkout and the reproduction credited a tree it had not reproduced. The file "
+            "also described an environment it could not produce: `uv sync --frozen` "
+            "resolved 104 pins against the 115 the file names."
+        ),
+        "treatment": (
+            "the freeze file names no tree, the procedure is `uv venv` + `uv pip sync` + "
+            "`uv pip install --no-deps -e .`, and the gate audits the interpreter's own "
+            "`.pth`/`direct_url.json` pointers and its pin set before running a phase: "
+            "114/114 pins and zero pointers outside the checkout, or the verdict is FAILED"
+        ),
+    },
+    {
+        "id": "DEF-003P-10",
+        "severity": "medium",
+        "summary": "the comparer overwrote the evidence and dropped the environment audit",
+        "detail": (
+            "the gate wrote `evidence/CLEAN_CHECKOUT_REPRODUCTION.json` with the audit before "
+            "handing the verdict to `exp_003p_checkout_compare.py`, which rewrites the same "
+            "path with its own payload. The recorded evidence therefore arrived with a "
+            "`REPRODUCED` verdict and no audit, and the report refused it (`status=FAIL`) "
+            "instead of inheriting a clean verdict nothing had checked."
+        ),
+        "treatment": (
+            "the gate merges the audit into the file the comparer owns before publishing it, "
+            "and `CHECKOUT_ENVIRONMENT` is a reported dimension: a clean reproduction without "
+            "one is `NOT_PERFORMED`, never `PASS`"
+        ),
+    },
 )
 
 BLOCKERS = (

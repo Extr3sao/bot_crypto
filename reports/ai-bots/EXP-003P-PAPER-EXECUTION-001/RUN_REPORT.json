@@ -60,8 +60,8 @@
     "VERIFICATION.json",
     "INDEPENDENCE_AUDIT.json"
   ],
-  "generated_at_utc": "2026-10-21T15:44:49Z",
-  "head_when_report_rendered": "61c9fd61869f6b68739d051f0bc55016c0ccf565",
+  "generated_at_utc": "2026-10-21T15:48:00Z",
+  "head_when_report_rendered": "15721195a6889d0f44253fb2f085c7a8732e4ee6",
   "holdout": "CLOSED",
   "orders_and_fills_by_provenance": {
     "OFFLINE_SIMULATED": 308
