@@ -56,6 +56,11 @@ reports/ai-bots/EXP-003N-GROSS-FIRST-DISCOVERY-001/** -text
 # the bytes must survive a checkout unchanged: LF in, LF out, no normalisation either way.
 reports/ai-bots/EXP-003O-INDEPENDENT-SIGNAL-VERIFICATION-001/** -text
 
+# EXP-003P commits the traces it replays and seals them in SHA256SUMS.txt, and the checkout
+# gate compares its artefacts with these bytes.  Storing them normalised would turn the seal
+# into a statement about CRLF and the comparison into a statement about the platform.
+reports/ai-bots/EXP-003P-PAPER-EXECUTION-001/** -text
+
 # EXP-004A's admission ledger is digest-pinned: every attestation records the sha256 of a
 # byte prefix of the bar store and the chain links each record to the previous one.  Git's
 # end-of-line normalisation would rewrite those bytes on checkout and make the committed
