@@ -660,3 +660,43 @@ def test_a_partial_minute_grid_blocks_instead_of_resuming_on_a_guess(tmp_path: P
 
     assert blocked.value.report.code == "GAP_NOT_COVERED"
     assert "59/60" in blocked.value.report.detail
+# -- 8. la rama posterior al COMMIT ----------------------------------------------
+
+
+def test_a_resume_after_the_gap_close_was_committed_books_nothing_twice(tmp_path: Path) -> None:
+    """El lado posterior al ``COMMIT``: el cierre ya está en disco y reanudar no lo repite.
+
+    Los 14 kills originales caían todos antes del commit, así que la otra mitad de la
+    frontera no tenía regresión. Dos reanudaciones seguidas sobre el libro que ya cerró
+    tienen que dejar el mismo digest, un solo cierre y ninguna posición abierta: si la
+    segunda encontrara el libro a medias, volvería a cerrar o bloquearía para siempre.
+    """
+    store, _, book_first, _ = _first_run(tmp_path, _bars(OPEN_AT_END))
+    assert len(book_first.open_positions) == 1
+
+    _, _, entries_second = _resume(
+        tmp_path, _holed_bars(EXTEND_STOP), store, quote_feed=_hole_series(low=99.0)
+    )
+    assert len(_closes(entries_second)) == 1
+    book_second = store.load()
+    assert book_second is not None
+    assert len(book_second.closed_trades) == 1
+    assert book_second.open_positions == []
+    committed_digest = book_second.state_digest
+
+    for attempt in ("run-3", "run-4"):
+        _, summary, entries = _resume(
+            tmp_path,
+            _holed_bars(EXTEND_STOP),
+            store,
+            name=attempt,
+            quote_feed=_hole_series(low=99.0),
+        )
+        assert _closes(entries) == [], attempt
+        current = store.load()
+        assert current is not None
+        assert current.state_digest == committed_digest, attempt
+        assert len(current.closed_trades) == 1, attempt
+        assert current.open_positions == [], attempt
+        #: La reanudación corrió de verdad; no es un libro que se negó a abrirse.
+        assert isinstance(summary, dict), attempt
