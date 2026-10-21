@@ -83,7 +83,7 @@
    "result": "PASS"
   },
   "INDEPENDENT_VERIFICATION": {
-   "basis": "verify_isolation.py PASS: 16/16 check(s) accepted, 8/8 negative control(s) rejected, against the evidence commit",
+   "basis": "verify_isolation.py PASS: 16/16 check(s) accepted, 8/8 negative control(s) rejected, against 95b484a8519b",
    "result": "PASS"
   },
   "NETWORK_ISOLATION": {
@@ -164,7 +164,7 @@
   "runtime_authority_map.md"
  ],
  "evidence_commit": "ANCHOR_EXTERNAL \u2014 the commit that contains EVIDENCE_MANIFEST.json",
- "generated_at_utc": "2026-10-21T18:03:03Z",
+ "generated_at_utc": "2026-10-21T18:11:26Z",
  "go_no_go_wp_003_03": "GO",
  "head_at_report": "0bdda77",
  "limitations": [
@@ -569,6 +569,17 @@
    "baseline_failures_sha256": "6287ccdabc2d265df4b092bb8b9bafd572f531ed8e0c57e3231c8ab8932e1330",
    "command": ".venv/Scripts/python.exe -m pytest -q --ignore=tests/unit/observability/test_vision_panel.py --ignore=tests/unit/research/test_edge16_pit.py",
    "errors": 14,
+   "excluded_paths": [
+    {
+     "path": "tests/unit/observability/test_vision_panel.py",
+     "reason": "Textual UI test that needs an interactive terminal in the full run; it passes on its own (5 passed, recorded in the RFC-003 checkpoint) and it is ignored in the baseline command too"
+    },
+    {
+     "path": "tests/unit/research/test_edge16_pit.py",
+     "reason": "versioned test that only passes with an uncommitted alpha15.py change (D4 PARTIALLY_CLOSED in the certification WP); ignored in the baseline command too"
+    }
+   ],
+   "exclusion_note": "the repository-wide command carries two --ignore flags inherited from the baseline run; they are listed here so that no test is excluded silently, and the acceptance suite above runs with no ignore flag at all",
    "exit_code": 1,
    "failed": 102,
    "failures_at_baseline": 115,

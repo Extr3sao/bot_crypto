@@ -41,3 +41,23 @@ Repo completo: 102 fallos y
 14 errores de recolección, idénticos al commit
 padre `e661c32`
 (1 nuevos).
+
+**Exclusiones registradas** (heredadas del comando de baseline, no silenciosas):
+`tests/unit/observability/test_vision_panel.py`, `tests/unit/research/test_edge16_pit.py`. Motivo completo en `SUITE_IDENTITY.json.repo_wide.excluded_paths`.
+La suite de aceptación se ejecuta sin ningún `--ignore`.
+
+## Estado por dimensión
+
+| Dimensión | Resultado |
+|---|---|
+| `IMPLEMENTATION_STATUS` | PASS |
+| `TEST_STATUS` | PASS |
+| `RUNTIME_VALIDATION` | PASS |
+| `NETWORK_ISOLATION` | PASS |
+| `EXTERNAL_ORDER_PREVENTION` | PASS |
+| `INDEPENDENT_VERIFICATION` | PASS |
+| `PAPER_VALIDATION` | NOT_PERFORMED |
+| `FALSE_SUCCESS` | 0 |
+
+Base de cada valor en `FINAL_REPORT.md`/`FINAL_REPORT.json`; el recibo del verificador
+independiente está en `VERIFICATION.json`.

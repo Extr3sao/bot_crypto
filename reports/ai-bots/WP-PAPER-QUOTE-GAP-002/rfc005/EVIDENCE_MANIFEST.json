@@ -11,17 +11,17 @@
   {
    "bytes": 6110,
    "path": "EXTERNAL_ORDER_PREVENTION.json",
-   "sha256": "0a1bcb9d48bf89b467c70263195e7ef8bd9c63f3f67e1e977909fbd4807e5848"
+   "sha256": "908b563199777ff9753d4172e68596fedce6f40f208dca17d84f1336d63fd20b"
   },
   {
-   "bytes": 18465,
+   "bytes": 19243,
    "path": "FINAL_REPORT.json",
-   "sha256": "4b97a6226df79b9f2c0817b70dd47d7bda1cdaceccc82e4625d449f800a6d18c"
+   "sha256": "8ba7bfaa441d1076ea931127e83db913a6c1fec024fd65ff24317871c26a51d7"
   },
   {
-   "bytes": 5104,
+   "bytes": 5375,
    "path": "FINAL_REPORT.md",
-   "sha256": "ed33b90801a6c615c3efaf6dc345762d087dab330d846472a972a8d741ce9ef4"
+   "sha256": "099af5e449bc19e4714465d183b54a274d3906d513bd1a67349904f11e8b9656"
   },
   {
    "bytes": 566,
@@ -226,17 +226,17 @@
   {
    "bytes": 6548,
    "path": "NETWORK_ISOLATION_AUDIT.json",
-   "sha256": "b4ce26591c341de28169f18cb5768f2fd018eb83d9a97d1080a5e45bd9ca49ec"
+   "sha256": "278025d509a4149e4130ff51dbcffb1c9eb918f4cdeee6b8eb4f82e9dffe919b"
   },
   {
-   "bytes": 17374,
+   "bytes": 18152,
    "path": "RUN_REPORT.json",
-   "sha256": "6dfd172db15d428f71ee71ced3fea45c361f10c4490994d98ab6d24410744c07"
+   "sha256": "0888d28537bd680a79a8360ca317305e90a577f3d21a49a6452c46fa9aeefa25"
   },
   {
-   "bytes": 1974,
+   "bytes": 2752,
    "path": "RUN_REPORT.md",
-   "sha256": "a42f5e52fc75ca3b81c9515ea97a144402a1172e0e78f783bc975edae24614f2"
+   "sha256": "f0eb05df4e7eb875a9510e4948dd2ecd881d353754875ce03de8babd1fa81576"
   },
   {
    "bytes": 4026,
@@ -244,12 +244,12 @@
    "sha256": "214a7f75846374ac392b90a49cf95facc788c37523c39895cc262377c18d1195"
   },
   {
-   "bytes": 2942,
+   "bytes": 3716,
    "path": "SUITE_IDENTITY.json",
-   "sha256": "b68da998a5062d1953cfb748936d7e96400eaf3ae9dab0c3bc242077a09ea3cb"
+   "sha256": "b2fa4dcd0f4b9785b2eca2debc070df6f7087e7e463b5127a93a4c20feadebdd"
   }
  ],
- "generated_at_utc": "2026-10-21T18:03:03Z",
+ "generated_at_utc": "2026-10-21T18:11:26Z",
  "gitignored_files": [],
  "hash_policy": "sha256 of the text with CRLF normalised to LF",
  "hidden_by_ignore_rules": 0,
@@ -258,5 +258,5 @@
  "run_id": "20261021T165123Z-18208",
  "schema": "rfc005-evidence-manifest/1",
  "source_commit": "0bdda77d4b4c66273c4cda2b23b6ef0dcae3a7c8",
- "total_bytes": 709652
+ "total_bytes": 713031
 }

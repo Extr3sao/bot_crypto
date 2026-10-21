@@ -192,6 +192,28 @@ def write_orders(lab: dict[str, Any], inventory: dict[str, Any], bundle: Path) -
     return payload
 
 
+#: Tests kept out of the repository-wide run. They are inherited from the baseline command,
+#: so the comparison stays like-for-like, but each one is named here with its reason: an
+#: exclusion without a recorded reason would be a hidden failure.
+REPO_WIDE_EXCLUSIONS: tuple[dict[str, str], ...] = (
+    {
+        "path": "tests/unit/observability/test_vision_panel.py",
+        "reason": (
+            "Textual UI test that needs an interactive terminal in the full run; it passes on "
+            "its own (5 passed, recorded in the RFC-003 checkpoint) and it is ignored in the "
+            "baseline command too"
+        ),
+    },
+    {
+        "path": "tests/unit/research/test_edge16_pit.py",
+        "reason": (
+            "versioned test that only passes with an uncommitted alpha15.py change (D4 "
+            "PARTIALLY_CLOSED in the certification WP); ignored in the baseline command too"
+        ),
+    },
+)
+
+
 def write_suite(args: argparse.Namespace, bundle: Path) -> dict[str, Any]:
     suite = parse_pytest(Path(args.suite_log))
     repo = parse_pytest(Path(args.repo_suite_log)) if args.repo_suite_log else None
@@ -272,6 +294,12 @@ def write_suite(args: argparse.Namespace, bundle: Path) -> dict[str, Any]:
                 "the repository-wide suite is not green at the parent commit; the failing ids "
                 "are identical with and without this WP, and the acceptance suite below is the "
                 "one this WP is judged on."
+            ),
+            "excluded_paths": REPO_WIDE_EXCLUSIONS,
+            "exclusion_note": (
+                "the repository-wide command carries two --ignore flags inherited from the "
+                "baseline run; they are listed here so that no test is excluded silently, and "
+                "the acceptance suite above runs with no ignore flag at all"
             ),
         }
         if repo
@@ -649,11 +677,15 @@ def write_markdown(
     dims = "\n".join(
         f"| {name} | {value['result']} | {value['basis']} |" for name, value in final["dimensions"].items()
     )
+    exclusion_list = ", ".join(f"`{row['path']}`" for row in REPO_WIDE_EXCLUSIONS)
     controls = (verification or {}).get("negative_controls") or []
     control_rows = "\n".join(
         f"| {row['id']} | {row['mutation']} | {'rejected' if row['rejected'] else 'ACCEPTED'} | "
         f"{', '.join(row['rejected_by'][:3])} |"
         for row in controls
+    )
+    dim_rows = "\n".join(
+        f"| `{name}` | {value['result']} |" for name, value in final["dimensions"].items()
     )
     run_md = f"""# RUN REPORT — RFC-PAPER-ISOLATION-005
 
@@ -689,6 +721,19 @@ Repo completo: {(suite.get('repo_wide') or {}).get('failed', '—')} fallos y
 {(suite.get('repo_wide') or {}).get('errors', '—')} errores de recolección, idénticos al commit
 padre `{(suite.get('repo_wide') or {}).get('baseline_commit', '—')}`
 ({(suite.get('repo_wide') or {}).get('non_baseline_failures', '—')} nuevos).
+
+**Exclusiones registradas** (heredadas del comando de baseline, no silenciosas):
+{exclusion_list}. Motivo completo en `SUITE_IDENTITY.json.repo_wide.excluded_paths`.
+La suite de aceptación se ejecuta sin ningún `--ignore`.
+
+## Estado por dimensión
+
+| Dimensión | Resultado |
+|---|---|
+{dim_rows}
+
+Base de cada valor en `FINAL_REPORT.md`/`FINAL_REPORT.json`; el recibo del verificador
+independiente está en `VERIFICATION.json`.
 """
     (bundle / "RUN_REPORT.md").write_text(run_md, encoding="utf-8")
 
@@ -727,6 +772,10 @@ trading real ni una validación paper E2E.
 Repo completo: `exit {(suite.get('repo_wide') or {}).get('exit_code', '—')}`,
 {(suite.get('repo_wide') or {}).get('failed', '—')} fallos preexistentes
 ({(suite.get('repo_wide') or {}).get('non_baseline_failures', '—')} nuevos).
+
+Exclusiones registradas (heredadas del comando de baseline, con motivo en
+`SUITE_IDENTITY.json.repo_wide.excluded_paths`): {exclusion_list}.
+La suite de aceptación se ejecuta sin ningún `--ignore`.
 
 ## RUNTIME_VALIDATION
 

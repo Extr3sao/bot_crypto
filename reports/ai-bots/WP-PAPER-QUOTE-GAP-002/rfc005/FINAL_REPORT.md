@@ -34,6 +34,10 @@ Repo completo: `exit 1`,
 102 fallos preexistentes
 (1 nuevos).
 
+Exclusiones registradas (heredadas del comando de baseline, con motivo en
+`SUITE_IDENTITY.json.repo_wide.excluded_paths`): `tests/unit/observability/test_vision_panel.py`, `tests/unit/research/test_edge16_pit.py`.
+La suite de aceptación se ejecuta sin ningún `--ignore`.
+
 ## RUNTIME_VALIDATION
 
 10 procesos hijos: 9 PASS,
@@ -101,7 +105,7 @@ WP-003-02 cerrado como `PASS (LAB ONLY)`.
 | RUNTIME_VALIDATION | PASS | 10 child process(es): 9 PASS, 1 LIMITATION, 0 FAIL |
 | NETWORK_ISOLATION | PASS | 16 of 16 audited attempt(s) denied; external attempts allowed: 0; OS sandbox: NOT_AVAILABLE |
 | EXTERNAL_ORDER_PREVENTION | PASS | 8 refusal(s) across 13 inventoried route(s); venue calls, HTTP requests and spot client calls are all 0 |
-| INDEPENDENT_VERIFICATION | PASS | verify_isolation.py PASS: 16/16 check(s) accepted, 8/8 negative control(s) rejected, against the evidence commit |
+| INDEPENDENT_VERIFICATION | PASS | verify_isolation.py PASS: 16/16 check(s) accepted, 8/8 negative control(s) rejected, against 95b484a8519b |
 | PAPER_VALIDATION | NOT_PERFORMED | out of scope by the RFC; WP-003-03 owns the end-to-end paper session |
 | FALSE_SUCCESS | 0 | a limitation is never counted as PASS; the verifier's eight negative controls must all be rejected before it accepts the bundle |
 
