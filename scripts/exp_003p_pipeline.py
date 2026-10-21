@@ -154,7 +154,9 @@ def run_tests(out: Path) -> int:
     return 0 if not failed else 4
 
 
-def run_checkout_check(out: Path) -> int:
+def run_checkout_check(
+    out: Path, install_command: str = "not recorded", requirements: str | None = None
+) -> int:
     """Reproduce the run from a detached worktree at HEAD and compare the two directories.
 
     The rehearsal is executed *in the checkout* by the checkout's own interpreter, and the
@@ -316,7 +318,10 @@ def run_checkout_check(out: Path) -> int:
             str(worktree),
             "--checkout-commit",
             head,
-        ],
+            "--install-command",
+            install_command,
+        ]
+        + (["--requirements", requirements] if requirements else []),
         cwd=str(REPO),
         capture_output=True,
         text=True,
@@ -408,6 +413,16 @@ def main(argv: list[str] | None = None) -> int:
         ),
     )
     parser.add_argument("--out", default=str(OUT))
+    parser.add_argument(
+        "--install-command",
+        default="not recorded",
+        help="how the checkout's environment was built; copied into the reproduction evidence",
+    )
+    parser.add_argument(
+        "--requirements",
+        default=None,
+        help="frozen freeze file the checkout's environment was synced from (hashed)",
+    )
     args = parser.parse_args(argv)
     out = Path(args.out)
     scripts = REPO / "scripts"
@@ -432,7 +447,7 @@ def main(argv: list[str] | None = None) -> int:
     if args.phase == "tests":
         return run_tests(out)
     if args.phase == "checkout":
-        return run_checkout_check(out)
+        return run_checkout_check(out, args.install_command, args.requirements)
     if args.phase == "report":
         return _run([str(scripts / "exp_003p_report.py"), "--out", str(out)], label="report")
     if args.phase == "seal":
