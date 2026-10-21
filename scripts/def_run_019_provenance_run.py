@@ -52,6 +52,10 @@ DATA_DELAY_MS = 3_620
 DECISION_EVERY_BARS = 1
 MAX_OPINION_AGE_MS = 60_000
 EQUITY_USDT = 10_000.0
+#: Las dos ramas comparten `book_id` a propósito: cambia solo la raíz de código. Si el
+#: identificador de la rama entrase en `position_id`, la comparación fila a fila mediría
+#: el nombre de la carpeta además de la economía.
+BOOK_ID = "def-run-019"
 COST_MULTIPLIER = 1.0
 LIFECYCLE = "DEFER"
 
@@ -197,7 +201,7 @@ def run_once(label: str, *, code_root: Path) -> dict[str, Any]:
         config=config,
         risk_policy=load_settings(config_dir=REPO / "config", env_file=None).risk,
         ledger_path=ledger,
-        book_id=f"def-run-019-{label}",
+        book_id=BOOK_ID,
         equity=EQUITY_USDT,
         decision_every_bars=DECISION_EVERY_BARS,
         cost_multiplier=COST_MULTIPLIER,
@@ -291,7 +295,23 @@ def compare(provenance_ledger: Path, control_ledger: Path) -> dict[str, Any]:
     }
 
 
+def preflight() -> tuple[bool, dict[str, Any]]:
+    """Un run con el runtime sucio no es admisible: sus bytes no están en ningún commit."""
+    from trading_bot.vision.provenance import capture
+
+    block = capture(REPO)
+    return (not block["unavailable_reasons"], block)
+
+
 def execute() -> int:
+    admissible, block = preflight()
+    if not admissible:
+        print(
+            "refused: la procedencia del código no es admisible en este instante "
+            f"(commit={block['commit']} motivos={block['unavailable_reasons']} "
+            f"runtime_dirty={block['worktree']['runtime_dirty']})"
+        )
+        return 2
     rows = load_minutes()
     frozen = plan(rows)
     EVIDENCE.mkdir(parents=True, exist_ok=True)
@@ -320,6 +340,14 @@ def execute() -> int:
         "generated_at_utc": utc_now(),
         "builder": "scripts/def_run_019_provenance_run.py",
         "plan": frozen,
+        "preflight": {
+            "commit": block["commit"],
+            "policy": block["policy"],
+            "files_hashed": len(block["files"]),
+            "runtime_dirty": block["worktree"]["runtime_dirty"],
+            "dirty_outside_runtime_total": block["worktree"]["dirty_outside_runtime_total"],
+            "admissible": admissible,
+        },
         "runs": {"provenance": provenance, "control": control},
         "comparison": comparison,
         "economics_unchanged_by_the_record": economic_unchanged,
