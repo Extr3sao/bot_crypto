@@ -1,0 +1,85 @@
+{
+  "commit": "78a0da82a2328535776450bdb680b347e0978a48",
+  "comparisons": {
+    "SIGNAL_PARITY_SUMMARY.json": {
+      "identical_counts": true,
+      "mismatches_published": 0,
+      "mismatches_reproduced": 0,
+      "verdict_published": "PASS",
+      "verdict_reproduced": "PASS"
+    },
+    "VERIFICATION.json": {
+      "checks_reproduced": "12/12",
+      "controls_reproduced": 12,
+      "technical_published": "PASS",
+      "technical_reproduced": "PASS"
+    },
+    "independent_evaluations.jsonl.gz": {
+      "bit_identical": true,
+      "published_sha256": "e2110fa777a3407483ffc15404fda18bf31e07144a7f81aa29e1efb62c592c9c",
+      "reproduced_sha256": "e2110fa777a3407483ffc15404fda18bf31e07144a7f81aa29e1efb62c592c9c"
+    },
+    "original_evaluations.jsonl.gz": {
+      "bit_identical": true,
+      "published_sha256": "024bd453635115c175725d6438160b4327a911ea38ae3a8e3aab5f7895a51498",
+      "reproduced_sha256": "024bd453635115c175725d6438160b4327a911ea38ae3a8e3aab5f7895a51498"
+    }
+  },
+  "dataset_digests_expected": 3,
+  "dataset_digests_matched": 3,
+  "generated_at_utc": "2026-10-21T09:13:46Z",
+  "method": {
+    "comparison": "both evaluation streams compared byte for byte; summaries compared on their verdicts and counts",
+    "dataset": "copied in only after each SHA-256 matched the protocol's frozen digest",
+    "stages": [
+      "rebuild",
+      "original",
+      "compare",
+      "verify"
+    ],
+    "worktree": "git worktree add --detach <commit>; nothing copied from the dirty tree"
+  },
+  "result": {
+    "checks": "12/12",
+    "controls": 12,
+    "counts_identical": true,
+    "false_success": 0,
+    "streams_bit_identical": true,
+    "technical_reproduced": "PASS"
+  },
+  "run_id": "EXP-003O-INDEPENDENT-SIGNAL-VERIFICATION-001",
+  "schema_version": "AI_BOTS_003O_CHECKOUT_REPRODUCTION_V1",
+  "stages": [
+    {
+      "exit_code": 0,
+      "stage": "rebuild",
+      "tail": [
+        "[003o-rebuild] rows=275724 states=[('NOT_READY', 11718), ('NO_SIGNAL', 211158), ('SIGNAL', 52848)] trades=40 -> reports/ai-bots/EXP-003O-INDEPENDENT-SIGNAL-VERIFICATION-001/signals/independent_evaluations.jsonl.gz"
+      ]
+    },
+    {
+      "exit_code": 0,
+      "stage": "original",
+      "tail": [
+        "[003o-original] published anchor: {\"extra_examples\": [], \"extra_in_replay\": 0, \"lane_b_extra\": 0, \"lane_b_missing\": 0, \"matches\": true, \"missing_examples\": [], \"missing_from_replay\": 0, \"published_lane_b_trades\": 39, \"published_signals\": 52769, \"replayed_lane_b_trades\": 39, \"replayed_signals\": 52769}"
+      ]
+    },
+    {
+      "exit_code": 0,
+      "stage": "compare",
+      "tail": [
+        "[003o-compare] verdict=PASS compared=275724 signals=52848/52848 mismatches=0 classes={} violations=0"
+      ]
+    },
+    {
+      "exit_code": 0,
+      "stage": "verify",
+      "tail": [
+        "[003o-verify]   V12_no_false_success: True"
+      ]
+    }
+  ],
+  "verdict": "REPRODUCED",
+  "worktree_add": "HEAD is now at 78a0da8 Record what the verifier got wrong before it judged anything",
+  "worktree_status_lines_before": 0
+}

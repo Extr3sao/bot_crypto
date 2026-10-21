@@ -3,13 +3,104 @@
     "see status: a required dimension is not PASS"
   ],
   "cells_evaluable": 24,
+  "cells_evaluated_without_signal": [
+    "vol_regime_breakout@1h"
+  ],
   "cells_total": 24,
+  "cells_without_evaluable_instants": [
+    "mean_reversion_vol_liq@4h",
+    "vol_regime_breakout@4h"
+  ],
   "cells_zero_sample": [
     "vol_regime_breakout@1h",
     "vol_regime_breakout@4h",
     "mean_reversion_vol_liq@4h"
   ],
-  "clean_checkout_reproduction": null,
+  "clean_checkout_reproduction": {
+    "commit": "78a0da82a2328535776450bdb680b347e0978a48",
+    "comparisons": {
+      "SIGNAL_PARITY_SUMMARY.json": {
+        "identical_counts": true,
+        "mismatches_published": 0,
+        "mismatches_reproduced": 0,
+        "verdict_published": "PASS",
+        "verdict_reproduced": "PASS"
+      },
+      "VERIFICATION.json": {
+        "checks_reproduced": "12/12",
+        "controls_reproduced": 12,
+        "technical_published": "PASS",
+        "technical_reproduced": "PASS"
+      },
+      "independent_evaluations.jsonl.gz": {
+        "bit_identical": true,
+        "published_sha256": "e2110fa777a3407483ffc15404fda18bf31e07144a7f81aa29e1efb62c592c9c",
+        "reproduced_sha256": "e2110fa777a3407483ffc15404fda18bf31e07144a7f81aa29e1efb62c592c9c"
+      },
+      "original_evaluations.jsonl.gz": {
+        "bit_identical": true,
+        "published_sha256": "024bd453635115c175725d6438160b4327a911ea38ae3a8e3aab5f7895a51498",
+        "reproduced_sha256": "024bd453635115c175725d6438160b4327a911ea38ae3a8e3aab5f7895a51498"
+      }
+    },
+    "dataset_digests_expected": 3,
+    "dataset_digests_matched": 3,
+    "generated_at_utc": "2026-10-21T09:13:46Z",
+    "method": {
+      "comparison": "both evaluation streams compared byte for byte; summaries compared on their verdicts and counts",
+      "dataset": "copied in only after each SHA-256 matched the protocol's frozen digest",
+      "stages": [
+        "rebuild",
+        "original",
+        "compare",
+        "verify"
+      ],
+      "worktree": "git worktree add --detach <commit>; nothing copied from the dirty tree"
+    },
+    "result": {
+      "checks": "12/12",
+      "controls": 12,
+      "counts_identical": true,
+      "false_success": 0,
+      "streams_bit_identical": true,
+      "technical_reproduced": "PASS"
+    },
+    "run_id": "EXP-003O-INDEPENDENT-SIGNAL-VERIFICATION-001",
+    "schema_version": "AI_BOTS_003O_CHECKOUT_REPRODUCTION_V1",
+    "stages": [
+      {
+        "exit_code": 0,
+        "stage": "rebuild",
+        "tail": [
+          "[003o-rebuild] rows=275724 states=[('NOT_READY', 11718), ('NO_SIGNAL', 211158), ('SIGNAL', 52848)] trades=40 -> reports/ai-bots/EXP-003O-INDEPENDENT-SIGNAL-VERIFICATION-001/signals/independent_evaluations.jsonl.gz"
+        ]
+      },
+      {
+        "exit_code": 0,
+        "stage": "original",
+        "tail": [
+          "[003o-original] published anchor: {\"extra_examples\": [], \"extra_in_replay\": 0, \"lane_b_extra\": 0, \"lane_b_missing\": 0, \"matches\": true, \"missing_examples\": [], \"missing_from_replay\": 0, \"published_lane_b_trades\": 39, \"published_signals\": 52769, \"replayed_lane_b_trades\": 39, \"replayed_signals\": 52769}"
+        ]
+      },
+      {
+        "exit_code": 0,
+        "stage": "compare",
+        "tail": [
+          "[003o-compare] verdict=PASS compared=275724 signals=52848/52848 mismatches=0 classes={} violations=0"
+        ]
+      },
+      {
+        "exit_code": 0,
+        "stage": "verify",
+        "tail": [
+          "[003o-verify]   V12_no_false_success: True"
+        ]
+      }
+    ],
+    "verdict": "REPRODUCED",
+    "worktree_add": "HEAD is now at 78a0da8 Record what the verifier got wrong before it judged anything",
+    "worktree_status_lines_before": 0
+  },
   "config_unchanged": true,
   "defects": [
     {
@@ -39,6 +130,38 @@
       "severity": "medium",
       "summary": "two lane-B 4h cells have zero evaluable bars in a 46-day window",
       "treatment": "declared INSUFFICIENT_EVIDENCE_REAL_WINDOW; functional coverage rests on fixtures"
+    },
+    {
+      "detail": "the window digest packs float64 bits; the verifier summed minute volumes with Python's sum while the producers used numpy's pairwise reduction, so 37,224 per-row digests disagreed in both streams. The audit was blaming the producers for a defect in itself.",
+      "id": "DEF-003O-05",
+      "origin": "EXP-003O verifier",
+      "severity": "high",
+      "summary": "the verifier's own bar reader disagreed with the producers' arithmetic",
+      "treatment": "reader now uses the same IEEE-754 reduction and a digest-format self-check runs before any declared digest is judged; 0 mismatches after the fix"
+    },
+    {
+      "detail": "NEG-06 and NEG-10 mutated one side of a join with no counterpart, so the join invented MISSING/EXTRA_EVALUATION and the expected class was never the one read; NEG-07 placed its spurious key on an instant that already existed in both streams.",
+      "id": "DEF-003O-06",
+      "origin": "EXP-003O verifier",
+      "severity": "high",
+      "summary": "negative controls asserted on the first difference class of a one-sided join",
+      "treatment": "each control now mutates a single row inside a complete cell and requires exactly one class with exactly one instance; 12/12 effective"
+    },
+    {
+      "detail": "coverage counted cells by zero signals, so the two 4h lane-B cells that are entirely NOT_READY looked identical to a cell that was evaluated 1,083 times and never fired.",
+      "id": "DEF-003O-07",
+      "origin": "EXP-003O verifier",
+      "severity": "high",
+      "summary": "a cell with no evaluable instant could borrow a quiet cell's zero",
+      "treatment": "evaluated instants are counted separately from signals; the full certification is INCOMPLETE_REAL_DATA_COVERAGE, not PASS"
+    },
+    {
+      "detail": "design/PROTOCOL.json was made relative to the repository before being resolved",
+      "id": "DEF-003O-08",
+      "origin": "EXP-003O tooling",
+      "severity": "low",
+      "summary": "report generation crashed on a relative --out path",
+      "treatment": "every entry point resolves --out first"
     }
   ],
   "design_sha256": "b28a7b4c53168fd5d22c0a52d333703f8ce097c0ca632bdf0269ff1cb3cc5b70",
@@ -55,11 +178,15 @@
   "evidence": [
     "BASELINE_MANIFEST.json",
     "CELL_COVERAGE_MANIFEST.csv",
+    "CLEAN_CHECKOUT_REPRODUCTION.json",
+    "FINAL_REPORT.md",
     "INDEPENDENCE_AUDIT.json",
     "INDEPENDENCE_AUDIT.md",
     "INDEPENDENT_VERIFICATION.md",
     "NEGATIVE_CONTROLS.json",
     "PIT_AUDIT.json",
+    "RUN_REPORT.json",
+    "RUN_REPORT.md",
     "SIGNAL_PARITY.csv",
     "SIGNAL_PARITY_SUMMARY.json",
     "SIGNAL_SPECIFICATIONS.md",
@@ -68,6 +195,10 @@
     "design/DESIGN.sha256",
     "design/PREREGISTRATION.md",
     "design/PROTOCOL.json",
+    "evidence/TESTS.json",
+    "evidence/mypy.log",
+    "evidence/pytest_reports.log",
+    "evidence/ruff.log",
     "fixtures/FIXTURE_MANIFEST.json",
     "fixtures/independent/mean_reversion_vol_liq_active.jsonl.gz",
     "fixtures/independent/mean_reversion_vol_liq_quiet.jsonl.gz",
@@ -91,7 +222,7 @@
     "signals/independent_evaluations.jsonl.gz",
     "signals/original_evaluations.jsonl.gz"
   ],
-  "experiment_commit": "8aac8b475a156d7961c0d15fa74c5ec9a175af50",
+  "experiment_commit": "54d010c38d17c8c00c6b41852a0fb03ed3ca0b62",
   "false_success_observed": 0,
   "fixtures": {
     "fixtures": [
@@ -169,6 +300,7 @@
   "holdout": "CLOSED",
   "holdout_opened": false,
   "independent_implementation_verified": true,
+  "independent_verifier_scope": "program-level: the verifier recomputes decisions from the bytes and owns its own digest, join and controls; it is a second program, not a second author",
   "independent_verifier_verified": true,
   "input_manifest_sha256": "06339ca29a2334fb95d4c3773c7ef8b6f27b524c274dbd37c1e708704cf654ba",
   "live": "DISABLED",
@@ -178,6 +310,8 @@
   "negative_controls_effective": 12,
   "negative_controls_total": 12,
   "orders_authorised": 0,
+  "organizational_independence": false,
+  "organizational_independence_note": "builder A, builder B and verifier C were written by the same agent in the same session; RFC-EXP-003O forbids certifying organizational independence on that basis",
   "paper_orders": 0,
   "pit_rows_audited": {
     "independent": 275724,
@@ -204,8 +338,27 @@
   "strategy_promotion": "DENIED",
   "technical_signal_parity": "PASS",
   "tests": {
-    "note": "no TESTS.json: the suites were not executed for this report",
-    "state": "NOT_RUN"
+    "executed_at_utc": "2026-10-21T09:13:09Z",
+    "failed": [],
+    "mypy": {
+      "exit_code": 0,
+      "tail": "Success: no issues found in 11 source files"
+    },
+    "pytest_reports": {
+      "exit_code": 0,
+      "tail": "174 passed, 14 warnings in 21.95s"
+    },
+    "ruff": {
+      "exit_code": 0,
+      "tail": "All checks passed!"
+    },
+    "state": "PASS"
   },
-  "verdict": "PASS_PARTIAL_INCOMPLETE_REAL_DATA"
+  "verdict": "PASS_PARTIAL_INCOMPLETE_REAL_DATA",
+  "verifier_defects": [
+    "DEF-003O-05",
+    "DEF-003O-06",
+    "DEF-003O-07",
+    "DEF-003O-08"
+  ]
 }

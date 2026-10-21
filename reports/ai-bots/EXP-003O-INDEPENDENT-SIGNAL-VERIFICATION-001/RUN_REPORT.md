@@ -3,7 +3,7 @@
 **status `INCOMPLETE`** · `TECHNICAL_SIGNAL_PARITY=PASS` · `FULL_INDEPENDENT_CERTIFICATION=INCOMPLETE_REAL_DATA_COVERAGE` · `ECONOMIC_EDGE=NOT_EVALUATED`
 
 - design digest `b28a7b4c53168fd5…` · preregistration commit `4ea93d8` · prospective=`True`
-- source commit `f831c66` · experiment commit `8aac8b4`
+- source commit `f831c66` · experiment commit `54d010c`
 - 24 cells (24 evaluable) · 275724 keys · 52848 / 52848 signals
 - 0 unexplained differences · 0 PIT violations · 12/12 controls
 
@@ -18,7 +18,7 @@
 | PIT violations | 0 |
 | prefix invariance | True |
 | functional coverage | True |
-| clean-checkout reproduction | NOT_RUN |
+| clean-checkout reproduction | REPRODUCED |
 | holdout opened | False |
 | orders (live / paper) | 0 / 0 |
 | config unchanged | True |
@@ -33,7 +33,7 @@ per-symbol detail.
 
 ## Tests executed for this report
 
-`{"note": "no TESTS.json: the suites were not executed for this report", "state": "NOT_RUN"}`
+`{"executed_at_utc": "2026-10-21T09:13:09Z", "failed": [], "mypy": {"exit_code": 0, "tail": "Success: no issues found in 11 source files"}, "pytest_reports": {"exit_code": 0, "tail": "174 passed, 14 warnings in 21.95s"}, "ruff": {"exit_code": 0, "tail": "All checks passed!"}, "state": "PASS"}`
 
 ## Limits
 

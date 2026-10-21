@@ -7,7 +7,7 @@
 ## COMMITS
 
 - baseline + protocol: `4ea93d815ed6` (prospective=`True`)
-- experiment HEAD: `8aac8b475a15`
+- experiment HEAD: `54d010c38d17`
 
 ## IMPLEMENTED
 
@@ -32,12 +32,13 @@
 - 275724 evaluation keys over 24 cells, 52848 signals in the original stream and 52848 in the independent one.
 - **0 unexplained differences**, **0 PIT violations** over 275724 + 275724 audited rows.
 - 12/12 negative controls effective and detected.
-- cells without a real sample: `vol_regime_breakout@1h, vol_regime_breakout@4h, mean_reversion_vol_liq@4h` — their functional
-  coverage rests on the frozen fixtures, which prove implementation behaviour only.
+- cells with no evaluable instant at all: `mean_reversion_vol_liq@4h, vol_regime_breakout@4h` — the 46-day window never clears their warm-up, so their coverage rests on the frozen fixtures, which prove implementation behaviour only.
+- cells evaluated but silent: `vol_regime_breakout@1h` — real NO_SIGNAL instants compared key by key; a zero here is a compared zero, not a missing sample.
+- cells with zero signals in the independent stream: `vol_regime_breakout@1h, vol_regime_breakout@4h, mean_reversion_vol_liq@4h`.
 
 ## TESTS
 
-`{"note": "no TESTS.json: the suites were not executed for this report", "state": "NOT_RUN"}`
+`{"executed_at_utc": "2026-10-21T09:13:09Z", "failed": [], "mypy": {"exit_code": 0, "tail": "Success: no issues found in 11 source files"}, "pytest_reports": {"exit_code": 0, "tail": "174 passed, 14 warnings in 21.95s"}, "ruff": {"exit_code": 0, "tail": "All checks passed!"}, "state": "PASS"}`
 
 `PAPER_VALIDATION=NOT_PERFORMED` · `FALSE_SUCCESS=0`
 
@@ -55,6 +56,18 @@
 - **DEF-003O-04** (medium): two lane-B 4h cells have zero evaluable bars in a 46-day window
   - 276 bars against a 744-bar warm-up: the cell can be announced but not evaluated
   - treatment: declared INSUFFICIENT_EVIDENCE_REAL_WINDOW; functional coverage rests on fixtures
+- **DEF-003O-05** (high): the verifier's own bar reader disagreed with the producers' arithmetic
+  - the window digest packs float64 bits; the verifier summed minute volumes with Python's sum while the producers used numpy's pairwise reduction, so 37,224 per-row digests disagreed in both streams. The audit was blaming the producers for a defect in itself.
+  - treatment: reader now uses the same IEEE-754 reduction and a digest-format self-check runs before any declared digest is judged; 0 mismatches after the fix
+- **DEF-003O-06** (high): negative controls asserted on the first difference class of a one-sided join
+  - NEG-06 and NEG-10 mutated one side of a join with no counterpart, so the join invented MISSING/EXTRA_EVALUATION and the expected class was never the one read; NEG-07 placed its spurious key on an instant that already existed in both streams.
+  - treatment: each control now mutates a single row inside a complete cell and requires exactly one class with exactly one instance; 12/12 effective
+- **DEF-003O-07** (high): a cell with no evaluable instant could borrow a quiet cell's zero
+  - coverage counted cells by zero signals, so the two 4h lane-B cells that are entirely NOT_READY looked identical to a cell that was evaluated 1,083 times and never fired.
+  - treatment: evaluated instants are counted separately from signals; the full certification is INCOMPLETE_REAL_DATA_COVERAGE, not PASS
+- **DEF-003O-08** (low): report generation crashed on a relative --out path
+  - design/PROTOCOL.json was made relative to the repository before being resolved
+  - treatment: every entry point resolves --out first
 
 ## BLOCKERS
 
@@ -76,9 +89,9 @@
 | `NEGATIVE_CONTROLS.json` | `e0eafa8a0513606f…` |
 | `INDEPENDENCE_AUDIT.md` | `37818f02a1c71b00…` |
 | `INDEPENDENT_VERIFICATION.md` | `19716272b7acfbd2…` |
-| `CLEAN_CHECKOUT_REPRODUCTION.json` | `**missing**` |
+| `CLEAN_CHECKOUT_REPRODUCTION.json` | `fefca46da935f381…` |
 | `CELL_COVERAGE_MANIFEST.csv` | `c9e33e46811eb7eb…` |
-| `RUN_REPORT.json` | `a127b66fcf67a665…` |
+| `RUN_REPORT.json` | `db913b3d6a7706ac…` |
 
 ## ARCHITECTURE_STATUS
 
