@@ -1498,3 +1498,68 @@ cd "$(git rev-parse --show-toplevel)"
   --repo . --evidence-sha "$(git rev-parse HEAD)" --negative-controls \
   --json /tmp/isolation_verdict.json
 ```
+
+## 2026-10-21 · RFC-PAPER-ISOLATION-005 / WP-003-02 — cierre y verificación independiente
+
+**Estado real (Git manda).** Rama `wp/isolation-005`; la evidencia está sellada en los
+commits `95b484a` (informes y manifiesto) y `4fc8f46` (recibo del verificador), y este
+párrafo lo añade el commit que lo contiene, sin tocar la evidencia. Worktree limpio salvo
+`.tmp/` (ignorado). Nada empujado al remoto. Sin trading real ni credenciales.
+
+**Commits de esta fase.**
+
+| Commit | Contenido |
+|---|---|
+| `0bdda77` | runtime, puertas, laboratorio y verificador |
+| `1f0af7e` | informe de suites y regla del flake declarado |
+| `0b62093` | sello de la evidencia: inventario, batería, identidad de suites, manifiesto |
+| `dbb6c07` | registro del WP y su recibo de verificación |
+| `95b484a` | el veredicto del verificador entra en el informe; `VERIFICATION.json` fuera del manifiesto |
+| `4fc8f46` | recibo final del verificador contra `95b484a` |
+
+**Verificación independiente (ejecutada, no inferida).**
+
+- `scripts/verify_isolation.py --evidence-sha 95b484a8 --negative-controls` → **PASS**:
+  16/16 checks aceptados, **8/8 controles negativos rechazados**, 51 ficheros de evidencia
+  dentro del commit, 49 ficheros hasheados y cubiertos por el manifiesto.
+- Re-ejecutado contra `4fc8f46a` (commit que contiene el propio recibo) → **PASS**.
+- Replay desde **checkout limpio** (`git clone` + `git checkout dbb6c07`, 0 ficheros
+  sucios) con `scripts/verify_recovery.py` de RFC-004 → **PASS**, 16/16 checks y 10/10
+  controles negativos rechazados. La evidencia se reproduce fuera del worktree de trabajo.
+- Dos defectos de evidencia corregidos en `95b484a`: el generador de informes leía una
+  clave que el verificador nunca escribía (la fila quedaba en “has not run” aun con PASS) y
+  `VERIFICATION.json` entraba en el manifiesto que el propio verificador produce después,
+  lo que hacía el hash autorreferencial. Ahora el verificador registra el commit juzgado y
+  el recibo queda fuera del manifiesto, igual que `EVIDENCE_MANIFEST.json`.
+
+**Incidente registrado.** El disco llegó al 100 % durante el commit; se liberaron 511 MB
+eliminando los dos worktrees temporales (`rfc004-cleanclone`, `rfc005-baseline`) ya usados
+para la baseline y el replay. Ningún fichero versionado se perdió; el commit se rehizo.
+
+**Limitaciones que no se convierten en PASS.**
+
+- `OS_SANDBOX = NOT_AVAILABLE`: la barrera es por proceso (audit hook). ISO-09 mide que un
+  hijo sale de ella; no hay contenedor ni usuario sin red en esta máquina.
+- `PAPER_VALIDATION = NOT_PERFORMED`: sesión paper E2E y reconciliación externa son de
+  WP-003-03.
+- `mypy scripts/verify_isolation.py` reporta 1 error preexistente
+  (`Unsupported right operand type for in`, línea 137, `ast.get_source_segment`). Es
+  anterior a este WP y está fuera de su alcance; `ruff` pasa y `mypy src/` no cambia.
+
+**Reanudación verificable (copiar y ejecutar).**
+
+```bash
+cd "$(git rev-parse --show-toplevel)"
+.venv/Scripts/python.exe -m pytest -q tests/unit/vision tests/unit/paper tests/unit/risk \
+  tests/unit/execution tests/unit/market_data
+.venv/Scripts/python.exe scripts/verify_isolation.py \
+  --lab reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc005/lab/ISOLATION_LAB.json \
+  --bundle reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc005 \
+  --inventory reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc005/ISOLATION_INVENTORY.json \
+  --suite reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc005/SUITE_IDENTITY.json \
+  --repo . --evidence-sha "$(git rev-parse HEAD)" --negative-controls \
+  --json /tmp/isolation_verdict.json
+```
+
+**Decisión para WP-003-03: GO** con este aislamiento como condición previa, y con
+`PAPER_VALIDATION` aún en `NOT_PERFORMED` hasta que ese WP lo mida.
