@@ -1,3 +1,48 @@
+## 2026-10-21 · Conciliación del paquete `EXP-003N_preflight_blocked_20261020` — el bloqueo era un identificador gastado, no un checkout ausente
+
+**Objetivo:** decidir si el preflight recibido (sandbox sin checkout autoritativo) describe trabajo pendiente aquí, y qué parte de él es adoptable.
+
+**Hecho**
+
+1. **La premisa es falsa.** `origin` es `github.com/Extr3sao/bot_crypto.git`; el paquete buscó
+   `Extr3sao/Bot-Trading`. El checkout es este, y `EXP-003N-GROSS-FIRST-DISCOVERY-001` está cerrado en
+   `HEAD` (`cd3fc31` al abrir; `277d1df` al cerrar, por los commits de otro agente `6b0dac1` y `277d1df`).
+2. **B01–B05, disueltos uno a uno** con evidencia por fichero, en
+   `docs/agentic/RECONCILIATION_EXP-003N_PREREG_PRECHECK.md`. N en cifras: **13 `REJECT`**,
+   **10 `INSUFFICIENT_EVIDENCE`**, **1 `EXPERIMENT`**, **0 `ADVANCE`**; verificador **12/12** y
+   **10/10** controles; holdout `2026-08-06 → 2026-08-20` `CLOSED`, `holdout_opened: False`.
+3. **Prueba decisiva, medida sin tocar el código recibido:** el gate del paquete, con su ledger rellenado
+   con el inventario real (`inventory_completed: true`, `exp003n_executions: 1`), responde `BLOCKED`,
+   exit 2, `PRIOR_EXP003N_RUNS_FOUND_RETROSPECTIVE_ONLY`. Sus 16 tests se re-ejecutaron aquí: **16/16 OK**.
+   El diagnóstico es reproducible; la premisa no. Nada del paquete se copió al árbol.
+4. **Dataset de N recomprobado aquí:** los tres `.jsonl.gz` de 1m coinciden byte a byte con los digests
+   congelados en `design/DESIGN.json` (`7fbdfefa…`, `cf04dc37…`, `33342aac…`); los bytes quedan fuera de
+   Git por regenerables y los certifica el digest, no una promesa.
+5. **Un defecto se observó y dejó de existir durante la conciliación.** A `cd3fc31` faltaban `SEAL.json` y
+   `SHA256SUMS.txt` y los ocho entregables estaban sin seguimiento; a `277d1df` el sello existe y
+   **`sha256sum -c` → 29/29 OK**, con `design_sha256 a0776fa3…` igual al que compara V3. Se registra como
+   observación cerrada por otro agente; **no se tocó** ese árbol ni se le atribuye nada a este.
+
+**Adoptado:** la forma del preflight fail-closed (digests reales, embargo, rechazo de holdout ya
+inspeccionado, `BUILDER != VERIFIER`, ledger de ejecuciones previas, prereg commiteado) como guarda
+**parametrizada por identificador** para el próximo experimento.
+**No adoptado:** el `preregistration.json` del sandbox (**43 `null`**,
+`reconstructed_from_prior_session_summary_not_runtime`) ni su ledger de previas; rellenarlos ahora sería
+fijar umbrales después de conocer el resultado.
+
+**No ejecutado:** economía (`economic_executions: 0`); `scripts/exp_003n_verify.py` no se re-ejecutó — se leyó
+su salida publicada, no se reprodujo. `INDEPENDENT_VERIFIER = PROGRAM_NOT_PERSON` sigue siendo cierto.
+
+**Reanudación verificable**
+
+```bash
+cd "$(git rev-parse --show-toplevel)"
+(cd reports/ai-bots/EXP-003N-GROSS-FIRST-DISCOVERY-001 && sha256sum -c SHA256SUMS.txt)   # 29/29
+git ls-tree -r --name-only HEAD | grep -c EXP-003N                                      # 31
+```
+
+---
+
 ## 2026-10-20 · EXP-003M-MAKER-FILL-REALITY-001 — fills maker contra la cinta, y evidencia reproducible
 
 **Objetivo:** sustituir el supuesto «toque = fill» de 003L por la cinta de operaciones observada, y
@@ -1483,4 +1528,61 @@ cd "$(git rev-parse --show-toplevel)"
 ./.venv/Scripts/python.exe scripts/exp_003n_rehearsal.py --commit cd3fc31 --resume
 (cd reports/ai-bots/EXP-003N-GROSS-FIRST-DISCOVERY-001 && sha256sum -c SHA256SUMS.txt)
 # un re-sello exige borrar SEAL.json y SHA256SUMS.txt: el pipeline se niega a sellar dos veces
+```
+
+---
+
+## 2026-10-21 · Recuperación de experimentos: `EXP-003N` reproducido desde `HEAD` limpio, gate reutilizable, y ningún experimento nuevo autorizado
+
+**Objetivo:** establecer autoridad real, reproducir el verificador de `EXP-003N` en vez de citarlo, conservar `N`
+cerrado, extraer el gate fail-closed como componente reutilizable, auditar la cadena económica y decidir si existe
+un siguiente experimento legítimo.
+
+**Hecho**
+
+1. **Autoridad:** este checkout, `origin = bot_crypto.git`, rama `agent/ai-bots/RFC-TAP-AI-BOTS-003`, `HEAD 277d1df`,
+   **13 commits por delante** de su remoto y 0 por detrás, 21 worktrees, 58 ficheros modificados y 211 sin seguimiento
+   (ajenos). Detalle en `docs/agentic/RUNTIME_AUTHORITY_REPORT.md`.
+2. **Verificador reproducido, no citado.** El árbol sellado se niega (`SEAL.json` → exit 4, correcto). Sobre un
+   worktree **detachado en `277d1df`** con los tres `.jsonl.gz` congelados copiados y el sello excluido solo en la
+   copia: **12/12 checks, 10/10 controles, verdict `PASS`, exit 0**, y las listas `checks`/`controls` **idénticas
+   campo a campo** a `analysis/VERIFICATION.json`. Antes se había ejecutado también en el árbol sucio: mismo
+   resultado. La reproducción limpia es la que cuenta.
+3. **`EXP-003N` sigue cerrado.** Los 43 `null` del borrador recibido siguen siendo 43 y `DRAFT_UNFROZEN`: el
+   borrador vive solo en el zip, nunca en este repositorio (`config/preregistration.json` no existe aquí).
+4. **Gate extraído:** `src/trading_bot/research/prereg_gate.py` (`PREREG_GATE_V1`), parametrizado por identificador,
+   con `SPENT_EXPERIMENT_IDENTIFIER`, ledger de ejecuciones previas en tres formatos (se toma el máximo) y contrato
+   de salida `0` autorizado / `3` inspección / `2` bloqueado. Tests: **51 passed, 1 skipped** (symlink sin privilegio
+   en Windows); `ruff` y `mypy` limpios. Contra este repositorio: `EXP-003N` → **BLOCKED, exit 2,
+   `SPENT_EXPERIMENT_IDENTIFIER:EXP-003N-GROSS-FIRST-DISCOVERY-001`**.
+5. **Tres hallazgos de auditoría** (`EXPERIMENT_INVENTORY.md`, `ECONOMIC_EVIDENCE_REPORT.md`):
+   `EXP-003J` **es** el brazo `real` de `EXP-003K` (mismos 505 cierres, mismo −225.401044), no una segunda
+   confirmación; la ventana `2026-08-06→2026-08-20` **la leyó `003K`** (131 + 175 cierres) aunque `N` la marque
+   `CLOSED`; y el corpus forward es **229 días `DENSE_BUT_BACKFILLED` frente a 5 `PROSPECTIVELY_OBSERVED`** de 235.
+6. **Ningún experimento autorizado.** Mejor gross medido en todo el repositorio: **14.80 bps contra 24.79–27.31 bps**
+   de ida y vuelta (5 mediciones independientes, 0.08×–0.67× del peaje). Se propone `EXP-004A` (medir el peaje real
+   sobre cotizaciones observadas prospectivamente) y **no se ejecuta**: exige 90 días prospectivos y un freeze en dos
+   fases que el gate todavía no sabe expresar (`NEXT_EXPERIMENT_PROPOSAL.md` §4).
+
+**Pendiente / bloqueado**
+
+- `EXP-004A` **no autorizado**: faltan 85 de 90 días prospectivos y el freeze en dos fases no existe. No se relaja el
+  chequeo de digests para rodearlo.
+- El verificador de `N` es un programa, no una persona: `INDEPENDENT_VERIFIER=PROGRAM_NOT_PERSON`.
+- `EXP-003J` sigue **sin seguimiento en Git** (run completo, verificado y negativo). No se commitea aquí porque es de
+  otro workstream; queda registrado como riesgo en `RUNTIME_AUTHORITY_REPORT.md` §4.
+- Un test del gate queda **skipped** (symlink en Windows): esa rama no está verificada en esta máquina.
+- El comando de reanudación de la entrada anterior (`exp_003n_verify.py --negative-controls --json-out /tmp/...`)
+  ahora devuelve **exit 4**: el sello existe. Es correcto; para reproducir hay que usar una copia sin `SEAL.json`.
+
+**Reanudación verificable**
+
+```bash
+cd "$(git rev-parse --show-toplevel)"
+git log -1 --format='%H %s' && git rev-list --count origin/agent/ai-bots/RFC-TAP-AI-BOTS-003..HEAD   # 13
+(cd reports/ai-bots/EXP-003N-GROSS-FIRST-DISCOVERY-001 && sha256sum -c SHA256SUMS.txt)               # 29/29
+./.venv/Scripts/python.exe -m pytest tests/unit/research/test_prereg_gate.py -q                       # 51 passed, 1 skipped
+./.venv/Scripts/python.exe -m trading_bot.research.prereg_gate --repo . --experiment-id EXP-003N --mode authorize
+./.venv/Scripts/python.exe -c "import json;c=json.load(open('data/forward/edge04/coverage.json'));from collections import Counter;print(Counter(d['class'] for d in c['days']))"
+# reproducir el verificador desde HEAD limpio: ver FINAL_REPORT.md, bloque "Reproduce this report", paso 3
 ```
