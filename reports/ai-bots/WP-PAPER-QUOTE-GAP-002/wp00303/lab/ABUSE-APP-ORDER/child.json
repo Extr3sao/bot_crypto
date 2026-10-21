@@ -1,0 +1,16 @@
+{
+ "child_seconds": 1.651,
+ "order_attempts": {
+  "app_place_order_without_confirm": {
+   "detail": "the CLI refuses before any client exists (--confirm-live gate)",
+   "exit_code": 2,
+   "outcome": "REFUSED"
+  }
+ },
+ "pre_hook": [
+  "asyncio event loop (its self-pipe is a loopback socketpair on Windows; created before the hook, no venue object exists yet)"
+ ],
+ "recorded_at_utc": "2026-10-21T19:34:36Z",
+ "status": "OK",
+ "venue_calls": []
+}

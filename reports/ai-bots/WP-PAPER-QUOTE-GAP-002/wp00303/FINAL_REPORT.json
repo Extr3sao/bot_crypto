@@ -1,0 +1,75 @@
+{
+ "claims_not_made": [
+  "PRODUCTION_READY",
+  "OS_SANDBOX",
+  "EXTERNAL_SESSION",
+  "MARKET_PERFORMANCE_FROM_SCENARIO_LEDGER"
+ ],
+ "decision": "BLOCKED",
+ "dimensions": {
+  "EXTERNAL_ORDER_PREVENTION": {
+   "basis": "13 refusals across 8 abuse scenarios; 0 venue calls",
+   "result": "FAIL"
+  },
+  "FALSE_SUCCESS": {
+   "basis": "unsupported_pass_count=0; every dimension above is derived from a measured artefact, and a blocked check is never counted as passed",
+   "result": "FAIL"
+  },
+  "GITHUB_SYNC": {
+   "basis": "GITHUB_SYNC.json is absent: remote state was not measured",
+   "result": "NOT_CHECKED"
+  },
+  "IMPLEMENTATION_STATUS": {
+   "basis": "paper_e2e_lab.py and verify_paper_e2e.py are committed with the evidence; no runtime file was modified (runtime_identity check re-hashes 13 files)",
+   "result": "PASS"
+  },
+  "INDEPENDENT_VERIFICATION": {
+   "basis": "verify_paper_e2e.py: 0/0 checks, None/None negative controls rejected",
+   "result": "NOT_RUN"
+  },
+  "NETWORK_ISOLATION": {
+   "basis": "the network check failed: see VERIFICATION.json",
+   "result": "FAIL"
+  },
+  "PAPER_VALIDATION": {
+   "basis": "recorded Binance 1h klines (sha256-matched); orders=23 fills_closed=21 PAPER only. EXTERNAL_SESSION=NOT_PERFORMED: the paper policy denies the network, so no venue-connected session can exist under it.",
+   "result": "BLOCKED"
+  },
+  "RUNTIME_VALIDATION": {
+   "basis": "the real AutonomousPaperRuntime ran 23 orders / 480 decisions in E2E-SCENARIO and 480 decisions in E2E-COMMITTED",
+   "result": "FAIL"
+  },
+  "TEST_STATUS": {
+   "basis": "pytest: 541 passed in 44.56s (exit 0)",
+   "result": "PASS"
+  }
+ },
+ "generated_at_utc": "2026-10-21T19:36:12Z",
+ "github_sync": null,
+ "limitations": [
+  "OS_SANDBOX = NOT_AVAILABLE: the barrier is a per-process audit hook; a child process started without it is outside it.",
+  "EXTERNAL_SESSION = NOT_PERFORMED: the paper policy denies the network by design, so no venue-connected paper session can exist under it.",
+  "SPREAD = ESTIMATED (COST_MODEL_V3 default): this corpus holds no quote series.",
+  "SCENARIO admission ledger is a declared input, not research evidence; the committed ledger admits nothing for PAPER.",
+  "Committed-ledger run produced 0 orders by governance, so fills were only observable in the declared scenario run."
+ ],
+ "paper": {
+  "committed_decisions": 480,
+  "committed_orders": 0,
+  "committed_shadow_decisions": 1,
+  "committed_trade_decisions": 0,
+  "decisions": 480,
+  "restart_duplicated_cloids": 0,
+  "scenario_fills_closed": 21,
+  "scenario_fills_opened": 21,
+  "scenario_no_trade_decisions": 448,
+  "scenario_orders": 23,
+  "scenario_risk_vetoes": 280,
+  "scenario_strategic_refusals": 168,
+  "scenario_trade_decisions": 32,
+  "scenario_unexecuted_trade_decisions": 9
+ },
+ "schema": "wp00303-final-report/1",
+ "title": "WP-003-03 \u2014 PAPER end-to-end validation",
+ "work_package": "WP-003-03"
+}
