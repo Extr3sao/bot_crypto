@@ -25,6 +25,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import shutil
 import subprocess
 import sys
@@ -77,14 +78,20 @@ def copy_verified(source: Path, destination: Path) -> dict[str, Any]:
 
 
 def run(command: list[str], cwd: Path, timeout: int = 3600) -> dict[str, Any]:
+    #: El paquete `trading_bot` puede estar instalado en modo editable apuntando al árbol
+    #: de trabajo. Sin este `PYTHONPATH`, un «checkout limpio» importaría el código de
+    #: fuera del commit, que es justo lo que el replay debe descartar.
+    env = dict(os.environ)
+    env["PYTHONPATH"] = str(cwd / "src")
     started = time.monotonic()
     result = subprocess.run(
-        command, cwd=cwd, capture_output=True, text=True, timeout=timeout, check=False
+        command, cwd=cwd, capture_output=True, text=True, timeout=timeout, check=False, env=env
     )
     elapsed = round(time.monotonic() - started, 2)
     return {
         "command": " ".join(command),
         "cwd": str(cwd),
+        "pythonpath": f"{cwd / 'src'}",
         "exit_code": result.returncode,
         "duration_seconds": elapsed,
         "stdout_tail": "\n".join(result.stdout.strip().splitlines()[-20:]),
@@ -103,6 +110,37 @@ ECONOMIC_FIELDS = (
     "days",
 )
 METADATA_FIELDS = ("missing_minutes", "days_with_trades")
+
+
+def restore_gitignored_inputs(worktree: Path) -> list[dict[str, Any]]:
+    """Devuelve al `worktree` los insumos que Git ignora pero cuyo byte está en `data/`.
+
+    El manifiesto de origen declara, para cada copia, la ruta original y el sha256. Solo se
+    restaura lo que coincide con esa huella: no es una copia de conveniencia, es el mismo
+    byte que el paquete versionado ya publica. La sesión de 256 minutos de RFC-016 vivía en
+    `reports/` (ignorado), por eso un checkout limpio sin este paso no podía ni empezar.
+    """
+    manifest_path = REPO / "data" / "def-run-016" / "SOURCE_MANIFEST.json"
+    if not manifest_path.is_file():
+        return []
+    entries = json.loads(manifest_path.read_text(encoding="utf-8")).get("entries") or {}
+    restored: list[dict[str, Any]] = []
+    for relative, declared in sorted(entries.items()):
+        origin = str(declared.get("origin") or "")
+        if not origin.startswith("reports/"):
+            continue
+        source = REPO / "data" / "def-run-016" / relative
+        destination = worktree / origin
+        if not source.is_file() or destination.exists():
+            continue
+        entry = copy_verified(source, destination)
+        entry["origin"] = origin
+        entry["manifest_sha256"] = declared.get("sha256")
+        entry["manifest_match"] = entry["sha256"] == declared.get("sha256")
+        if not entry["manifest_match"]:
+            entry["identical"] = False
+        restored.append(entry)
+    return restored
 
 
 def compare_cells(
@@ -241,7 +279,10 @@ def main(argv: list[str] | None = None) -> int:
             entry["expected_sha256"] = expected
             entry["identical"] = False
         report["inputs"].append(entry)
-    if not all(entry["identical"] for entry in report["inputs"]):
+    report["restored_inputs"] = restore_gitignored_inputs(worktree)
+    if not all(entry["identical"] for entry in report["inputs"]) or not all(
+        entry["manifest_match"] for entry in report["restored_inputs"]
+    ):
         report["status"] = "BLOCKED"
         report["blockers"] = ["INPUT_HASH_MISMATCH"]
         Path(args.json).write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")

@@ -60,11 +60,14 @@ def main(argv: list[str] | None = None) -> int:
     rows: list[dict[str, Any]] = []
     for lifecycle, label in (("SUPERSEDE", "CURRENT"), ("DEFER", "PROPOSED")):
         for name, spec in audit.SCENARIOS.items():
-            work = work_root / label / name
+            #: `run_scenario` escribe en `out_dir/<name>/ledger.jsonl`; leer
+            #: `out_dir/ledger.jsonl` hacía que la reproducción muriera en el primer
+            #: escenario con MISSING_LEDGER. Lo detectó el replay desde checkout limpio.
+            work = work_root / label
             work.mkdir(parents=True, exist_ok=True)
             result = audit.run_scenario(name, spec, minutes, work, lifecycle)
             published_path = PUBLISHED / label / f"{name}.jsonl"
-            fresh_path = work / "ledger.jsonl"
+            fresh_path = work / name / "ledger.jsonl"
             published = reconstruct(published_path, source_commit="d05f8de")
             fresh = reconstruct(fresh_path, source_commit="worktree")
             delta = fresh.net_exact() - published.net_exact()
