@@ -179,6 +179,11 @@ def _report(out: Path) -> dict[str, Any]:
         status = "INCOMPLETE" if status == "PASS" else status
     if reproduction is None or reproduction.get("verdict") != "REPRODUCED":
         status = "INCOMPLETE" if status == "PASS" else status
+    #: A technical parity that holds on an incomplete coverage is not the run's PASS: two cells
+    #: have no evaluable instant and one author wrote both builders and the verifier. The RFC
+    #: names that result PASS_PARTIAL_INCOMPLETE_REAL_DATA, so the status says INCOMPLETE.
+    if verification["full_independent_certification"] != "PASS" and status == "PASS":
+        status = "INCOMPLETE"
 
     environment = {
         "python": platform.python_version(),
