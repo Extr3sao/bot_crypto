@@ -1,0 +1,211 @@
+{
+  "blockers": [
+    "see status: a required dimension is not PASS"
+  ],
+  "cells_evaluable": 24,
+  "cells_total": 24,
+  "cells_zero_sample": [
+    "vol_regime_breakout@1h",
+    "vol_regime_breakout@4h",
+    "mean_reversion_vol_liq@4h"
+  ],
+  "clean_checkout_reproduction": null,
+  "config_unchanged": true,
+  "defects": [
+    {
+      "detail": "re-producing a signal needs max(min_candles+1, 80) bars of history, not merely the formula: an EMA re-seeded on 80 bars differs from an EMA over the whole series. EXP-003N's published numbers therefore cannot be reproduced from the rule text alone.",
+      "id": "DEF-003O-01",
+      "severity": "medium",
+      "summary": "lane-A decisions depend on an undocumented fixed 80-bar window",
+      "treatment": "reproduced exactly; documented in SIGNAL_SPECIFICATIONS.md"
+    },
+    {
+      "detail": "on 4h bars, channel_hours=168 is a 672-hour channel; the 4h cells run a ~4x longer rule than their names claim",
+      "id": "DEF-003O-02",
+      "severity": "medium",
+      "summary": "lane-B parameter names say hours, the machines consume bars",
+      "treatment": "reproduced as frozen; the 4h cells still have no sample in this window"
+    },
+    {
+      "detail": "a signal count from lane A is not a trade count; the parity compares decisions, and 003N priced overlaps downstream",
+      "id": "DEF-003O-03",
+      "severity": "low",
+      "summary": "lane A has no position state, so signals overlap bar by bar",
+      "treatment": "reproduced; documented as a property of the screening"
+    },
+    {
+      "detail": "276 bars against a 744-bar warm-up: the cell can be announced but not evaluated",
+      "id": "DEF-003O-04",
+      "severity": "medium",
+      "summary": "two lane-B 4h cells have zero evaluable bars in a 46-day window",
+      "treatment": "declared INSUFFICIENT_EVIDENCE_REAL_WINDOW; functional coverage rests on fixtures"
+    }
+  ],
+  "design_sha256": "b28a7b4c53168fd5d22c0a52d333703f8ce097c0ca632bdf0269ff1cb3cc5b70",
+  "differences_by_class": {},
+  "economic_edge": "NOT_EVALUATED",
+  "environment": {
+    "numpy": "2.0.2",
+    "platform": "Windows-10-10.0.26200-SP0",
+    "python": "3.11.15",
+    "seeds": "no stochastic step in either producer; the bootstrap of 003N is not used here",
+    "timezone": "UTC"
+  },
+  "evaluations_compared": 275724,
+  "evidence": [
+    "BASELINE_MANIFEST.json",
+    "CELL_COVERAGE_MANIFEST.csv",
+    "INDEPENDENCE_AUDIT.json",
+    "INDEPENDENCE_AUDIT.md",
+    "INDEPENDENT_VERIFICATION.md",
+    "NEGATIVE_CONTROLS.json",
+    "PIT_AUDIT.json",
+    "SIGNAL_PARITY.csv",
+    "SIGNAL_PARITY_SUMMARY.json",
+    "SIGNAL_SPECIFICATIONS.md",
+    "SOURCE_DEPENDENCY_MAP.md",
+    "VERIFICATION.json",
+    "design/DESIGN.sha256",
+    "design/PREREGISTRATION.md",
+    "design/PROTOCOL.json",
+    "fixtures/FIXTURE_MANIFEST.json",
+    "fixtures/independent/mean_reversion_vol_liq_active.jsonl.gz",
+    "fixtures/independent/mean_reversion_vol_liq_quiet.jsonl.gz",
+    "fixtures/independent/trend_pullback_active.jsonl.gz",
+    "fixtures/independent/trend_pullback_quiet.jsonl.gz",
+    "fixtures/independent/vol_regime_breakout_active.jsonl.gz",
+    "fixtures/independent/vol_regime_breakout_quiet.jsonl.gz",
+    "fixtures/mean_reversion_vol_liq_active.json",
+    "fixtures/mean_reversion_vol_liq_quiet.json",
+    "fixtures/original/mean_reversion_vol_liq_active.jsonl.gz",
+    "fixtures/original/mean_reversion_vol_liq_quiet.jsonl.gz",
+    "fixtures/original/trend_pullback_active.jsonl.gz",
+    "fixtures/original/trend_pullback_quiet.jsonl.gz",
+    "fixtures/original/vol_regime_breakout_active.jsonl.gz",
+    "fixtures/original/vol_regime_breakout_quiet.jsonl.gz",
+    "fixtures/trend_pullback_active.json",
+    "fixtures/trend_pullback_quiet.json",
+    "fixtures/vol_regime_breakout_active.json",
+    "fixtures/vol_regime_breakout_quiet.json",
+    "parity_differences.jsonl.gz",
+    "signals/independent_evaluations.jsonl.gz",
+    "signals/original_evaluations.jsonl.gz"
+  ],
+  "experiment_commit": "8aac8b475a156d7961c0d15fa74c5ec9a175af50",
+  "false_success_observed": 0,
+  "fixtures": {
+    "fixtures": [
+      {
+        "bars": 1400,
+        "bytes": 219827,
+        "cell_id": "vol_regime_breakout@1h",
+        "expected": "at least one ENTRY after bar 743",
+        "family": "vol_regime_breakout",
+        "fixture_id": "vol_regime_breakout_active",
+        "generator": "synthetic_lcg_v1",
+        "generator_seed": 11,
+        "interval_ms": 3600000
+      },
+      {
+        "bars": 1400,
+        "bytes": 217583,
+        "cell_id": "vol_regime_breakout@1h",
+        "expected": "no ENTRY",
+        "family": "vol_regime_breakout",
+        "fixture_id": "vol_regime_breakout_quiet",
+        "generator": "synthetic_lcg_v1",
+        "generator_seed": 11,
+        "interval_ms": 3600000
+      },
+      {
+        "bars": 1400,
+        "bytes": 219788,
+        "cell_id": "trend_pullback@1h",
+        "expected": "at least one ENTRY after bar 223",
+        "family": "trend_pullback",
+        "fixture_id": "trend_pullback_active",
+        "generator": "synthetic_lcg_v1",
+        "generator_seed": 7,
+        "interval_ms": 3600000
+      },
+      {
+        "bars": 1400,
+        "bytes": 215527,
+        "cell_id": "trend_pullback@1h",
+        "expected": "no ENTRY",
+        "family": "trend_pullback",
+        "fixture_id": "trend_pullback_quiet",
+        "generator": "synthetic_lcg_v1",
+        "generator_seed": 7,
+        "interval_ms": 3600000
+      },
+      {
+        "bars": 1400,
+        "bytes": 219642,
+        "cell_id": "mean_reversion_vol_liq@1h",
+        "expected": "at least one ENTRY after bar 743",
+        "family": "mean_reversion_vol_liq",
+        "fixture_id": "mean_reversion_vol_liq_active",
+        "generator": "synthetic_lcg_v1",
+        "generator_seed": 3,
+        "interval_ms": 3600000
+      },
+      {
+        "bars": 1400,
+        "bytes": 219427,
+        "cell_id": "mean_reversion_vol_liq@1h",
+        "expected": "no ENTRY",
+        "family": "mean_reversion_vol_liq",
+        "fixture_id": "mean_reversion_vol_liq_quiet",
+        "generator": "synthetic_lcg_v1",
+        "generator_seed": 3,
+        "interval_ms": 3600000
+      }
+    ],
+    "generator": "synthetic_lcg_v1"
+  },
+  "full_independent_certification": "INCOMPLETE_REAL_DATA_COVERAGE",
+  "functional_coverage": true,
+  "holdout": "CLOSED",
+  "holdout_opened": false,
+  "independent_implementation_verified": true,
+  "independent_verifier_verified": true,
+  "input_manifest_sha256": "06339ca29a2334fb95d4c3773c7ef8b6f27b524c274dbd37c1e708704cf654ba",
+  "live": "DISABLED",
+  "live_orders": 0,
+  "mismatches_unexplained": 0,
+  "negative_controls_detected": 12,
+  "negative_controls_effective": 12,
+  "negative_controls_total": 12,
+  "orders_authorised": 0,
+  "paper_orders": 0,
+  "pit_rows_audited": {
+    "independent": 275724,
+    "original": 275724
+  },
+  "pit_violations": 0,
+  "prefix_invariance": true,
+  "preregistration_commit": "4ea93d815ed6e3573239ae34bd7782cff4efe9c0",
+  "prospective": true,
+  "prospective_evidence": {
+    "design_commit_is_ancestor": true,
+    "evaluations_present_at_prereg": [],
+    "preregistration_commit": "4ea93d815ed6e3573239ae34bd7782cff4efe9c0",
+    "prospective": true,
+    "reason": "the protocol commit contains design and code only; evaluations came later"
+  },
+  "run_id": "EXP-003O-INDEPENDENT-SIGNAL-VERIFICATION-001",
+  "schema_version": "AI_BOTS_003O_RUN_REPORT_V1",
+  "signals_independent": 52848,
+  "signals_original": 52848,
+  "source_branch": "agent/ai-bots/RFC-TAP-AI-BOTS-003",
+  "source_commit": "f831c669f2e6fc34a5e828bb753b9dab2bd7da50",
+  "status": "INCOMPLETE",
+  "strategy_promotion": "DENIED",
+  "technical_signal_parity": "PASS",
+  "tests": {
+    "note": "no TESTS.json: the suites were not executed for this report",
+    "state": "NOT_RUN"
+  },
+  "verdict": "PASS_PARTIAL_INCOMPLETE_REAL_DATA"
+}

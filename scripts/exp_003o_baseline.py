@@ -34,12 +34,11 @@ if str(REPO / "scripts") not in sys.path:
     sys.path.insert(0, str(REPO / "scripts"))
 
 from exp_003o_contract import (  # noqa: E402
-    DAY_MS,
     HOLDOUT,
     LANE_A_WINDOW,
     OUT,
     PARTITIONS,
-    REPO as ROOT,
+    REPO,
     SOURCE_003N,
     TIMEFRAME_MS,
     cell_inventory,
@@ -47,6 +46,8 @@ from exp_003o_contract import (  # noqa: E402
     utc_ms,
     write_json,
 )
+
+ROOT = REPO
 
 DATASET = ROOT / "reports" / "ai-bots" / "EXP-003K-CANDIDATE-001" / "dataset"
 
@@ -206,9 +207,7 @@ def _dependency_map() -> str:
             lines.append(f"| `{relative}` | **absent from this checkout** |")
             continue
         imports = _imports(path)
-        lines.append(
-            f"| `{relative}` | {', '.join(f'`{name}`' for name in imports) or '(none)'} |"
-        )
+        lines.append(f"| `{relative}` | {', '.join(f'`{name}`' for name in imports) or '(none)'} |")
     lines += [
         "",
         "## Independent rebuilder (EXP-003O)",
@@ -286,21 +285,28 @@ def build(out: Path) -> dict[str, Any]:
     state = "OK"
     reasons: list[str] = []
     if seal["state"] != "OK":
-        state, _ = "BLOCKED", reasons.append(f"003N seal {seal['state']}: {seal['failed'][:3]}")
+        state = "BLOCKED"
+        reasons.append(f"003N seal {seal['state']}: {seal['failed'][:3]}")
     if dataset["state"] != "OK":
-        state, _ = "BLOCKED", reasons.append("dataset digest mismatch")
+        state = "BLOCKED"
+        reasons.append("dataset digest mismatch")
     if not config_ok:
-        state, _ = "BLOCKED", reasons.append("config digests differ from DESIGN invariants")
+        state = "BLOCKED"
+        reasons.append("config digests differ from DESIGN invariants")
     manifest["state"] = state
     manifest["blockers"] = reasons
 
     write_json(out / "BASELINE_MANIFEST.json", manifest)
     (out / "SOURCE_DEPENDENCY_MAP.md").write_text(_dependency_map(), encoding="utf-8", newline="\n")
     buffer = io.StringIO()
-    writer = csv.DictWriter(buffer, fieldnames=list(_cell_rows(bars)[0].keys()), lineterminator="\n")
+    writer = csv.DictWriter(
+        buffer, fieldnames=list(_cell_rows(bars)[0].keys()), lineterminator="\n"
+    )
     writer.writeheader()
     writer.writerows(_cell_rows(bars))
-    (out / "CELL_COVERAGE_MANIFEST.csv").write_text(buffer.getvalue(), encoding="utf-8", newline="\n")
+    (out / "CELL_COVERAGE_MANIFEST.csv").write_text(
+        buffer.getvalue(), encoding="utf-8", newline="\n"
+    )
     return manifest
 
 
@@ -309,7 +315,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--out", default=str(OUT))
     parser.add_argument("--json", action="store_true", help="print the manifest to stdout")
     args = parser.parse_args(argv)
-    out = Path(args.out)
+    out = Path(args.out).resolve()
     out.mkdir(parents=True, exist_ok=True)
     manifest = build(out)
     seal = manifest["source_003n"]["seal"]

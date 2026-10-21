@@ -22,7 +22,7 @@ import argparse
 import json
 import subprocess
 import sys
-from datetime import datetime, UTC
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
@@ -31,24 +31,21 @@ if str(REPO / "scripts") not in sys.path:
     sys.path.insert(0, str(REPO / "scripts"))
 
 from exp_003o_contract import (  # noqa: E402
-    DAY_MS,
     HOLDOUT,
-    LANE_A_FAMILIES,
     LANE_A_WINDOW,
-    LANE_B_FAMILIES,
     LANE_B_WARMUP,
     OUT,
     PARTITIONS,
-    REPO as ROOT,
-    SOURCE_003N,
+    REPO,
     SYMBOLS,
     TIMEFRAME_MS,
     cell_inventory,
     parameter_hash,
-    sha256_bytes,
     sha256_file,
     write_json,
 )
+
+ROOT = REPO
 
 PROTOCOL_SCHEMA = "AI_BOTS_003O_PROTOCOL_V1"
 
@@ -191,8 +188,8 @@ This is a question about **causal correctness**, not about money. `ECONOMIC_EDGE
 
 `EvaluationKey = (cell_id, symbol, decision_time)`, with
 
-- `cell_id` = `family@timeframe` over the 24 cells 003N screened (6 lane-A families × 5m/1h/4h
-  and 3 lane-B families × 1h/4h), three symbols each;
+- `cell_id` = `family@timeframe` over the 24 cells 003N screened (6 lane-A families x 5m/1h/4h
+  and 3 lane-B families x 1h/4h), three symbols each;
 - `decision_time` = the bar close at which the decision was taken.
 
 Every key carries one state: `SIGNAL` (with `LONG`, `SHORT` or `FLAT`), `NO_SIGNAL`,
@@ -561,7 +558,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--out", default=str(OUT))
     parser.add_argument("--check", action="store_true")
     args = parser.parse_args(argv)
-    out = Path(args.out)
+    out = Path(args.out).resolve()
     protocol_path = out / "design" / "PROTOCOL.json"
     digest_path = out / "design" / "DESIGN.sha256"
 
@@ -614,7 +611,9 @@ def main(argv: list[str] | None = None) -> int:
         f"[003o-prereg] written  digest={digest[:16]}…  cells={len(protocol['cells'])}  "
         f"controls={len(protocol['negative_controls'])}  fixtures={len(protocol['fixtures'])}"
     )
-    print(f"[003o-prereg] HEAD={_git('rev-parse', '--short', 'HEAD')} — commit design/ before running")
+    print(
+        f"[003o-prereg] HEAD={_git('rev-parse', '--short', 'HEAD')} — commit design/ before running"
+    )
     return 0
 
 
