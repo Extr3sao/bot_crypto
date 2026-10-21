@@ -2,7 +2,7 @@
   "schema": "EVIDENCE_MANIFEST_V2",
   "wp": "WP-PAPER-QUOTE-GAP-002",
   "rfc": "RFC-PAPER-QUOTE-GAP-003",
-  "generated_at_utc": "2026-10-21T12:37:21+00:00",
+  "generated_at_utc": "2026-10-21T12:40:32+00:00",
   "code_sha": "aab65cf9d60e520119426fc74bccd84e110eee1e",
   "runtime_inventory": [
     "src/trading_bot/vision/lane.py",
@@ -200,10 +200,10 @@
     {
       "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/EVIDENCE_MANIFEST.json",
       "role": "artifact",
-      "sha256": "a4904d789477562bec4675f41e745f4e7c5acc638b9b6676578a28c173a324d6",
-      "byte_count": 8874,
+      "sha256": "c56e2026eb1aaae57ac5518da3d8f9b021f472657813bdfd7d8d327a75da1e95",
+      "byte_count": 9646,
       "producer": "builder",
-      "created_utc": "2026-10-21T10:09:43+00:00"
+      "created_utc": "2026-10-21T12:39:57+00:00"
     },
     {
       "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/FINAL_REPORT.md",
@@ -376,10 +376,10 @@
     {
       "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc003/FINAL_REPORT.json",
       "role": "artifact",
-      "sha256": "1e0e98c7ca4d5bdcd426569c468f71eab830ec929fce158323a8209effc38574",
+      "sha256": "6bd2c6fee791a78b0033525ea90026a66d702f42ce39545c8bcfbf19395ef523",
       "byte_count": 17501,
       "producer": "builder",
-      "created_utc": "2026-10-21T12:37:21+00:00"
+      "created_utc": "2026-10-21T12:40:32+00:00"
     },
     {
       "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc003/FINAL_REPORT.md",
@@ -432,10 +432,10 @@
     {
       "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc003/RUN_REPORT.json",
       "role": "artifact",
-      "sha256": "e77db2f5c1d5ca965aac45d7c34c8eae5a9c40a1d7e97e187d34c145f6c3a7e7",
+      "sha256": "b72e85cba02908582f46a1023f640de3a3c6244f0ed5d9b7a070b307e17581ab",
       "byte_count": 18283,
       "producer": "builder",
-      "created_utc": "2026-10-21T12:37:21+00:00"
+      "created_utc": "2026-10-21T12:40:32+00:00"
     },
     {
       "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc003/RUN_REPORT.md",
@@ -546,7 +546,7 @@
   "anchor": "this manifest is not hashed inside itself; the commit that publishes it (EVIDENCE_SHA) is the external anchor, and tests re-hash every entry from disk",
   "totals": {
     "entries": 64,
-    "bytes": 3750927,
+    "bytes": 3751699,
     "by_role": {
       "input-dataset": 4,
       "artifact": 34,

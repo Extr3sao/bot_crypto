@@ -208,5 +208,10 @@
     "tests/unit/vision/test_session_durable.py": "00dd59353a1e0bc14b76ed5ef14249b9dd896481d3ea27aa6fc1b934b6a95d87",
     "tests/unit/vision/test_session_recovery.py": "66be2b390823d68821f72b6a82154e140a205511a746d8a2eb931c41b849414e"
   },
-  "wp": "WP-PAPER-QUOTE-GAP-002"
+  "wp": "WP-PAPER-QUOTE-GAP-002",
+  "historical": true,
+  "superseded_by": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc003/EVIDENCE_MANIFEST.json",
+  "superseded_on": "2026-10-21 (RFC-PAPER-QUOTE-GAP-003)",
+  "reading_note": "The `files[]` hashes below describe the tree as it was on 2026-10-21T10:09Z, before this audit was closed: the reports it lists have since been rewritten (GIT_AUTHORITY_AUDIT.* now carries the closure section, FINAL_REPORT.* the Phase-A result). Re-hashing them will produce a mismatch that is expected and is not tampering. The `runtime_hashes` block does still match the disk. For verification, use the successor manifest, which is anchored by the evidence commit.",
+  "decision_note": "decision=PARTIAL is the A5 verdict of record; the successor reports PASS (LAB ONLY)."
 }

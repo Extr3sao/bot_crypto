@@ -1,6 +1,6 @@
 {
   "schema": "PHASE_A_VERIFICATION_V1",
-  "generated_at_utc": "2026-10-21T12:37:50+00:00",
+  "generated_at_utc": "2026-10-21T12:40:25+00:00",
   "code_sha": "aab65cf9d60e520119426fc74bccd84e110eee1e",
   "checkout": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\rfc003-clean",
   "verifier": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc003/tools/verify_phase_a.py",
@@ -105,19 +105,19 @@
       "id": "NEG-01",
       "expectation": "the import gate refuses a foreign package",
       "accepted_invalid": false,
-      "detail": "gate exit 3, status=REFUSED, origin=C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\tmpv9lhwfc5\\src\\trading_bot\\__init__.py"
+      "detail": "gate exit 3, status=REFUSED, origin=C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\tmpg_fzbn6d\\src\\trading_bot\\__init__.py"
     },
     {
       "id": "NEG-06",
       "expectation": "a pre-commit crash resumes consistently",
       "accepted_invalid": false,
-      "detail": "2 passed in 10.22s"
+      "detail": "2 passed in 8.53s"
     },
     {
       "id": "NEG-07",
       "expectation": "a post-commit crash does not close twice",
       "accepted_invalid": false,
-      "detail": "1 passed in 7.69s"
+      "detail": "1 passed in 7.06s"
     },
     {
       "id": "NEG-08",
