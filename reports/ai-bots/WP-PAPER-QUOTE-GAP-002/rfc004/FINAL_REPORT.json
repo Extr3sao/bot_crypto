@@ -586,7 +586,7 @@
   "rule": "a scenario without a child exit 86, or with a failed check inside a PASS, is not counted"
  },
  "filesystem": "NTFS",
- "generated_at_utc": "2026-10-21T16:05:33Z",
+ "generated_at_utc": "2026-10-21T16:07:18Z",
  "limitations": [
   "PAPER_VALIDATION = NOT_PERFORMED",
   "EXTERNAL_ORDERS / RECONCILIATION = NOT_VERIFIABLE",

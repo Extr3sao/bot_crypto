@@ -794,11 +794,16 @@ def hsum(lab: dict) -> int:
     return sum(len(item.get("children") or []) for item in lab["scenarios"])
 
 
+#: The manifest cannot hash itself, and the receipt of a verification run changes every time
+#: the verifier runs: listing either one makes the manifest stale the moment it is written.
+MANIFEST_EXCLUDED = {"EVIDENCE_MANIFEST.json", "VERIFIER_REPLAY.json"}
+
+
 def write_manifest(bundle: Path, args: argparse.Namespace, lab: dict) -> dict:
     ignored = []
     files = []
     for path in sorted(bundle.rglob("*")):
-        if not path.is_file():
+        if not path.is_file() or path.name in MANIFEST_EXCLUDED:
             continue
         relative = str(path.relative_to(bundle)).replace("\\", "/")
         files.append(
